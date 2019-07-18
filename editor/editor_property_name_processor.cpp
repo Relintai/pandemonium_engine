@@ -136,6 +136,7 @@ EditorPropertyNameProcessor::EditorPropertyNameProcessor() {
 	capitalize_string_remaps["rcedit"] = "rcedit";
 	capitalize_string_remaps["rcodesign"] = "rcodesign";
 	capitalize_string_remaps["signtool"] = "signtool";
+	capitalize_string_remaps["uri"] = "URI";
 	capitalize_string_remaps["wine"] = "wine";
 }
 
