@@ -35,6 +35,7 @@ def get_opts():
         EnumVariable("linker", "Linker program", "default", ("default", "bfd", "gold", "lld", "mold")),
         BoolVariable("use_llvm", "Use the LLVM compiler", False),
         BoolVariable("use_static_cpp", "Link libgcc and libstdc++ statically for better portability", True),
+        BoolVariable('use_coverage', 'Test Pandemonium coverage', False),
         BoolVariable("use_ubsan", "Use LLVM/GCC compiler undefined behavior sanitizer (UBSAN)", False),
         BoolVariable("use_asan", "Use LLVM/GCC compiler address sanitizer (ASAN))", False),
         BoolVariable("use_lsan", "Use LLVM/GCC compiler leak sanitizer (LSAN))", False),
@@ -125,6 +126,10 @@ def configure(env):
                 env.Append(LINKFLAGS=["-fuse-ld=mold"])
         else:
             env.Append(LINKFLAGS=["-fuse-ld=%s" % env["linker"]])
+
+    if env['use_coverage']:
+        env.Append(CCFLAGS=['-ftest-coverage', '-fprofile-arcs'])
+        env.Append(LINKFLAGS=['-ftest-coverage', '-fprofile-arcs'])
 
     # Sanitizers
     if env["use_ubsan"] or env["use_asan"] or env["use_lsan"] or env["use_tsan"] or env["use_msan"]:
