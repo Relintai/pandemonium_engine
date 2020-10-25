@@ -99,6 +99,7 @@ class InspectorDock : public VBoxContainer {
 	Button *warning;
 	AcceptDialog *warning_dialog;
 
+	List<Pair<StringName, Variant>> stored_properties;
 	void _menu_option(int p_option);
 
 	void _new_resource();
@@ -139,6 +140,9 @@ public:
 	Container *get_addon_area();
 	EditorInspector *get_inspector() { return inspector; }
 
+
+	void store_script_properties(Object *p_object);
+	void apply_script_properties(Object *p_object);
 	InspectorDock(EditorNode *p_editor, EditorData &p_editor_data);
 	~InspectorDock();
 };
