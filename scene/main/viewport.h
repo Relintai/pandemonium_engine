@@ -460,6 +460,7 @@ private:
 
 		bool key_event_accepted;
 		RBMap<int, ObjectID> touch_focus;
+		bool mouse_in_window;
 		Control *mouse_focus;
 		Control *last_mouse_focus;
 		Control *mouse_click_grabber;
