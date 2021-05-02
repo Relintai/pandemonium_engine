@@ -620,6 +620,7 @@ private:
 	bool update_pending;
 	RID texture;
 	int width;
+	bool use_hdr = false;
 
 	void _queue_update();
 	void _update();
@@ -633,6 +634,9 @@ public:
 
 	void set_width(int p_width);
 	int get_width() const;
+
+	void set_use_hdr(bool p_enabled);
+	bool is_using_hdr() const;
 
 	virtual RID get_rid() const { return texture; }
 	virtual int get_height() const { return 1; }
