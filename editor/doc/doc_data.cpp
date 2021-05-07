@@ -38,6 +38,7 @@
 #include "core/object/script_language.h"
 #include "core/string/translation.h"
 #include "core/version.h"
+#include "editor/editor_settings.h"
 #include "scene/resources/theme.h"
 #include "core/io/xml_parser.h"
 #include "core/object/class_db.h"
@@ -303,8 +304,15 @@ void DocData::generate(bool p_basic_types) {
 
 		List<PropertyInfo> properties;
 		List<PropertyInfo> own_properties;
-		if (name == "ProjectSettings") {
-			//special case for project settings, so settings can be documented
+
+		// Special case for editor and project settings, so they can be documented.
+		if (name == "EditorSettings") {
+			// We don't create the full blown EditorSettings (+ config file) with `create()`,
+			// instead we just make a local instance to get default values.
+			Ref<EditorSettings> edset = memnew(EditorSettings);
+			edset->get_property_list(&properties);
+			own_properties = properties;
+		} else if (name == "ProjectSettings") {
 			ProjectSettings::get_singleton()->get_property_list(&properties);
 			own_properties = properties;
 		} else {
@@ -338,6 +346,13 @@ void DocData::generate(bool p_basic_types) {
 
 			bool default_value_valid = false;
 			Variant default_value;
+
+			if (name == "EditorSettings") {
+				if (E->get().name == "resource_local_to_scene" || E->get().name == "resource_name" || E->get().name == "resource_path" || E->get().name == "script") {
+					// Don't include spurious properties in the generated EditorSettings class reference.
+					continue;
+				}
+			}
 
 			if (name == "ProjectSettings") {
 				// Special case for project settings, so that settings are not taken from the current project's settings
