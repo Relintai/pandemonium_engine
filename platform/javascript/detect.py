@@ -183,9 +183,6 @@ def configure(env):
 
     # Thread support (via SharedArrayBuffer).
     if env["threads_enabled"]:
-        stack_size_opt = "STACK_SIZE" if cc_semver >= (3, 1, 25) else "TOTAL_STACK"
-        env.Append(LINKFLAGS=["-s", "%s=%sKB" % (stack_size_opt, env["stack_size"])])
-
         env.Append(CPPDEFINES=["PTHREAD_NO_RENAME"])
         env.Append(CCFLAGS=["-s", "USE_PTHREADS=1"])
         env.Append(LINKFLAGS=["-s", "USE_PTHREADS=1"])
@@ -205,6 +202,7 @@ def configure(env):
         if cc_semver < (2, 0, 10):
             print("GDNative support requires emscripten >= 2.0.10, detected: %s.%s.%s" % cc_semver)
             sys.exit(255)
+
         if env["threads_enabled"] and cc_semver < (3, 1, 14):
             print("Threads and GDNative requires emscripten => 3.1.14, detected: %s.%s.%s" % cc_semver)
             sys.exit(255)
