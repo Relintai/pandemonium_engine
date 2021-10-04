@@ -52,6 +52,7 @@ class GLTFSkin;
 class GLTFNode;
 class GLTFSpecGloss;
 class GLTFSkeleton;
+class GLTFTextureSampler;
 class MultiMeshInstance;
 
 using GLTFAccessorIndex = int;
@@ -67,6 +68,7 @@ using GLTFNodeIndex = int;
 using GLTFSkeletonIndex = int;
 using GLTFSkinIndex = int;
 using GLTFTextureIndex = int;
+using GLTFTextureSamplerIndex = int;
 
 class GLTFDocument : public Resource {
 	GDCLASS(GLTFDocument, Resource);
@@ -178,6 +180,10 @@ private:
 	GLTFTextureIndex _set_texture(Ref<GLTFState> state, Ref<Texture> p_texture);
 	Ref<Texture> _get_texture(Ref<GLTFState> state,
 			const GLTFTextureIndex p_texture);
+	GLTFTextureSamplerIndex _set_sampler_for_mode(Ref<GLTFState> state,
+			uint32_t p_mode);
+	Ref<GLTFTextureSampler> _get_sampler_for_texture(Ref<GLTFState> state,
+			const GLTFTextureIndex p_texture);
 	Error _parse_json(const String &p_path, Ref<GLTFState> state);
 	Error _parse_glb(const String &p_path, Ref<GLTFState> state);
 	void _compute_node_heights(Ref<GLTFState> state);
@@ -225,10 +231,12 @@ private:
 			const bool p_for_vertex);
 	Error _parse_meshes(Ref<GLTFState> state);
 	Error _serialize_textures(Ref<GLTFState> state);
+	Error _serialize_texture_samplers(Ref<GLTFState> state);
 	Error _serialize_images(Ref<GLTFState> state, const String &p_path);
 	Error _serialize_lights(Ref<GLTFState> state);
 	Error _parse_images(Ref<GLTFState> state, const String &p_base_path);
 	Error _parse_textures(Ref<GLTFState> state);
+	Error _parse_texture_samplers(Ref<GLTFState> state);
 	Error _parse_materials(Ref<GLTFState> state);
 	void _set_texture_transform_uv1(const Dictionary &d, Ref<SpatialMaterial> material);
 	void spec_gloss_to_rough_metal(Ref<GLTFSpecGloss> r_spec_gloss,
