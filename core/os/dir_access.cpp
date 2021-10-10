@@ -479,6 +479,7 @@ String DirAccess::get_filesystem_abspath_for(String p_path) {
 
 DirAccess::DirAccess() {
 	_access_type = ACCESS_FILESYSTEM;
+	next_is_dir = false;
 }
 
 DirAccess::~DirAccess() {

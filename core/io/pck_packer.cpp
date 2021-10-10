@@ -178,6 +178,7 @@ Error PCKPacker::flush(bool p_verbose) {
 
 PCKPacker::PCKPacker() {
 	file = nullptr;
+	alignment = 0;
 };
 
 PCKPacker::~PCKPacker() {

@@ -130,6 +130,7 @@ void HashingContext::_bind_methods() {
 
 HashingContext::HashingContext() {
 	ctx = nullptr;
+	type = HashType::HASH_MD5;
 }
 
 HashingContext::~HashingContext() {
