@@ -4244,6 +4244,7 @@ RID RasterizerStorageGLES2::light_create(RS::LightType p_type) {
 	light->param[RS::LIGHT_PARAM_SHADOW_SPLIT_3_OFFSET] = 0.6;
 	light->param[RS::LIGHT_PARAM_SHADOW_NORMAL_BIAS] = 0.1;
 	light->param[RS::LIGHT_PARAM_SHADOW_BIAS_SPLIT_SCALE] = 0.1;
+	light->param[RS::LIGHT_PARAM_SHADOW_FADE_START] = 0.8;
 
 	light->color = Color(1, 1, 1, 1);
 	light->shadow = false;
@@ -4281,7 +4282,8 @@ void RasterizerStorageGLES2::light_set_param(RID p_light, RS::LightParam p_param
 		case RS::LIGHT_PARAM_SHADOW_SPLIT_2_OFFSET:
 		case RS::LIGHT_PARAM_SHADOW_SPLIT_3_OFFSET:
 		case RS::LIGHT_PARAM_SHADOW_NORMAL_BIAS:
-		case RS::LIGHT_PARAM_SHADOW_BIAS: {
+		case RS::LIGHT_PARAM_SHADOW_BIAS:
+		case RS::LIGHT_PARAM_SHADOW_FADE_START: {
 			light->version++;
 			light->instance_change_notify(true, false);
 		} break;
