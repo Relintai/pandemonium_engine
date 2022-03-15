@@ -116,7 +116,6 @@
 #include "editor/plugins/animation_tree_player_editor_plugin.h"
 #include "editor/plugins/asset_library_editor_plugin.h"
 #include "editor/plugins/audio_stream_editor_plugin.h"
-#include "editor/plugins/baked_lightmap_editor_plugin.h"
 #include "editor/plugins/camera_editor_plugin.h"
 #include "editor/plugins/canvas_item_editor_plugin.h"
 #include "editor/plugins/collision_polygon_2d_editor_plugin.h"
@@ -6949,7 +6948,6 @@ EditorNode::EditorNode() {
 	add_editor_plugin(memnew(TextureRegionEditorPlugin(this)));
 	add_editor_plugin(memnew(Particles2DEditorPlugin(this)));
 	add_editor_plugin(memnew(GIProbeEditorPlugin(this)));
-	add_editor_plugin(memnew(BakedLightmapEditorPlugin(this)));
 	add_editor_plugin(memnew(RoomManagerEditorPlugin(this)));
 	add_editor_plugin(memnew(RoomEditorPlugin(this)));
 	add_editor_plugin(memnew(OccluderEditorPlugin(this)));
