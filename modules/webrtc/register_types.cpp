@@ -37,10 +37,7 @@
 #include "emscripten.h"
 #include "webrtc_peer_connection_js.h"
 #endif
-#ifdef WEBRTC_GDNATIVE_ENABLED
-#include "webrtc_data_channel_gdnative.h"
-#include "webrtc_peer_connection_gdnative.h"
-#endif
+
 #include "webrtc_multiplayer.h"
 
 void register_webrtc_types() {
@@ -52,15 +49,10 @@ void register_webrtc_types() {
 
 #ifdef JAVASCRIPT_ENABLED
 	WebRTCPeerConnectionJS::make_default();
-#elif defined(WEBRTC_GDNATIVE_ENABLED)
-	WebRTCPeerConnectionGDNative::make_default();
 #endif
 
 	ClassDB::register_custom_instance_class<WebRTCPeerConnection>();
-#ifdef WEBRTC_GDNATIVE_ENABLED
-	ClassDB::register_class<WebRTCPeerConnectionGDNative>();
-	ClassDB::register_class<WebRTCDataChannelGDNative>();
-#endif
+
 	ClassDB::register_virtual_class<WebRTCDataChannel>();
 	ClassDB::register_class<WebRTCMultiplayer>();
 }
