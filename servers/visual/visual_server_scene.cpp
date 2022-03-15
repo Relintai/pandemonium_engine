@@ -567,8 +567,7 @@ void VisualServerScene::instance_set_base(RID p_instance, RID p_base) {
 			} break;
 			case VS::INSTANCE_MESH:
 			case VS::INSTANCE_MULTIMESH:
-			case VS::INSTANCE_IMMEDIATE:
-			case VS::INSTANCE_PARTICLES: {
+			case VS::INSTANCE_IMMEDIATE: {
 				InstanceGeometryData *geom = memnew(InstanceGeometryData);
 				instance->base_data = geom;
 				if (instance->base_type == VS::INSTANCE_MESH) {
@@ -582,6 +581,7 @@ void VisualServerScene::instance_set_base(RID p_instance, RID p_base) {
 
 				reflection_probe->instance = VSG::scene_render->reflection_probe_instance_create(p_base);
 			} break;
+			
 			default: {
 			}
 		}
@@ -1031,7 +1031,7 @@ void VisualServerScene::instance_set_visible(RID p_instance, bool p_visible) {
 	}
 }
 inline bool is_geometry_instance(VisualServer::InstanceType p_type) {
-	return p_type == VS::INSTANCE_MESH || p_type == VS::INSTANCE_MULTIMESH || p_type == VS::INSTANCE_PARTICLES || p_type == VS::INSTANCE_IMMEDIATE;
+	return p_type == VS::INSTANCE_MESH || p_type == VS::INSTANCE_MULTIMESH || p_type == VS::INSTANCE_IMMEDIATE;
 }
 
 void VisualServerScene::instance_set_custom_aabb(RID p_instance, AABB p_aabb) {
@@ -1793,10 +1793,6 @@ void VisualServerScene::_update_instance(Instance *p_instance) {
 		reflection_probe->reflection_dirty = true;
 	}
 
-	if (p_instance->base_type == VS::INSTANCE_PARTICLES) {
-		VSG::storage->particles_set_emission_transform(p_instance->base, *instance_xform);
-	}
-
 	if (p_instance->aabb.has_no_surface()) {
 		return;
 	}
@@ -1882,14 +1878,6 @@ void VisualServerScene::_update_instance_aabb(Instance *p_instance) {
 				new_aabb = *p_instance->custom_aabb;
 			} else {
 				new_aabb = VSG::storage->immediate_get_aabb(p_instance->base);
-			}
-
-		} break;
-		case VisualServer::INSTANCE_PARTICLES: {
-			if (p_instance->custom_aabb) {
-				new_aabb = *p_instance->custom_aabb;
-			} else {
-				new_aabb = VSG::storage->particles_get_aabb(p_instance->base);
 			}
 
 		} break;
@@ -2012,39 +2000,7 @@ void VisualServerScene::_update_dirty_instance(Instance *p_instance) {
 					if (mat.is_valid() && VSG::storage->material_is_animated(mat)) {
 						is_animated = true;
 					}
-				} else if (p_instance->base_type == VS::INSTANCE_PARTICLES) {
-					bool cast_shadows = false;
-
-					int dp = VSG::storage->particles_get_draw_passes(p_instance->base);
-
-					for (int i = 0; i < dp; i++) {
-						RID mesh = VSG::storage->particles_get_draw_pass_mesh(p_instance->base, i);
-						if (!mesh.is_valid()) {
-							continue;
-						}
-
-						int sc = VSG::storage->mesh_get_surface_count(mesh);
-						for (int j = 0; j < sc; j++) {
-							RID mat = VSG::storage->mesh_surface_get_material(mesh, j);
-
-							if (!mat.is_valid()) {
-								cast_shadows = true;
-							} else {
-								if (VSG::storage->material_casts_shadows(mat)) {
-									cast_shadows = true;
-								}
-
-								if (VSG::storage->material_is_animated(mat)) {
-									is_animated = true;
-								}
-							}
-						}
-					}
-
-					if (!cast_shadows) {
-						can_cast_shadows = false;
-					}
-				}
+				} 
 			}
 
 			if (p_instance->material_overlay.is_valid()) {
@@ -2706,20 +2662,6 @@ void VisualServerScene::_prepare_scene(const Transform p_cam_transform, const Ca
 
 			if (ins->redraw_if_visible) {
 				VisualServerRaster::redraw_request(false);
-			}
-
-			if (ins->base_type == VS::INSTANCE_PARTICLES) {
-				//particles visible? process them
-				if (VSG::storage->particles_is_inactive(ins->base)) {
-					//but if nothing is going on, don't do it.
-					keep = false;
-				} else {
-					if (OS::get_singleton()->is_update_pending(true)) {
-						VSG::storage->particles_request_process(ins->base);
-						//particles visible? request redraw
-						VisualServerRaster::redraw_request(false);
-					}
-				}
 			}
 
 			if (geom->lighting_dirty) {

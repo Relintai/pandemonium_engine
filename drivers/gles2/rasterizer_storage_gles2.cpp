@@ -4528,96 +4528,6 @@ int RasterizerStorageGLES2::reflection_probe_get_resolution(RID p_probe) const {
 	return reflection_probe->resolution;
 }
 
-///////
-
-RID RasterizerStorageGLES2::particles_create() {
-	return RID();
-}
-
-void RasterizerStorageGLES2::particles_set_emitting(RID p_particles, bool p_emitting) {
-}
-
-bool RasterizerStorageGLES2::particles_get_emitting(RID p_particles) {
-	return false;
-}
-
-void RasterizerStorageGLES2::particles_set_amount(RID p_particles, int p_amount) {
-}
-
-void RasterizerStorageGLES2::particles_set_lifetime(RID p_particles, float p_lifetime) {
-}
-
-void RasterizerStorageGLES2::particles_set_one_shot(RID p_particles, bool p_one_shot) {
-}
-
-void RasterizerStorageGLES2::particles_set_pre_process_time(RID p_particles, float p_time) {
-}
-
-void RasterizerStorageGLES2::particles_set_explosiveness_ratio(RID p_particles, float p_ratio) {
-}
-
-void RasterizerStorageGLES2::particles_set_randomness_ratio(RID p_particles, float p_ratio) {
-}
-
-void RasterizerStorageGLES2::particles_set_custom_aabb(RID p_particles, const AABB &p_aabb) {
-}
-
-void RasterizerStorageGLES2::particles_set_speed_scale(RID p_particles, float p_scale) {
-}
-
-void RasterizerStorageGLES2::particles_set_use_local_coordinates(RID p_particles, bool p_enable) {
-}
-
-void RasterizerStorageGLES2::particles_set_fixed_fps(RID p_particles, int p_fps) {
-}
-
-void RasterizerStorageGLES2::particles_set_fractional_delta(RID p_particles, bool p_enable) {
-}
-
-void RasterizerStorageGLES2::particles_set_process_material(RID p_particles, RID p_material) {
-}
-
-void RasterizerStorageGLES2::particles_set_draw_order(RID p_particles, VS::ParticlesDrawOrder p_order) {
-}
-
-void RasterizerStorageGLES2::particles_set_draw_passes(RID p_particles, int p_passes) {
-}
-
-void RasterizerStorageGLES2::particles_set_draw_pass_mesh(RID p_particles, int p_pass, RID p_mesh) {
-}
-
-void RasterizerStorageGLES2::particles_restart(RID p_particles) {
-}
-
-void RasterizerStorageGLES2::particles_request_process(RID p_particles) {
-}
-
-AABB RasterizerStorageGLES2::particles_get_current_aabb(RID p_particles) {
-	return AABB();
-}
-
-AABB RasterizerStorageGLES2::particles_get_aabb(RID p_particles) const {
-	return AABB();
-}
-
-void RasterizerStorageGLES2::particles_set_emission_transform(RID p_particles, const Transform &p_transform) {
-}
-
-int RasterizerStorageGLES2::particles_get_draw_passes(RID p_particles) const {
-	return 0;
-}
-
-RID RasterizerStorageGLES2::particles_get_draw_pass_mesh(RID p_particles, int p_pass) const {
-	return RID();
-}
-
-void RasterizerStorageGLES2::update_particles() {
-}
-
-bool RasterizerStorageGLES2::particles_is_inactive(RID p_particles) const {
-	return true;
-}
-
 ////////
 
 void RasterizerStorageGLES2::instance_add_skeleton(RID p_skeleton, RasterizerScene::InstanceBase *p_instance) {
@@ -4649,10 +4559,6 @@ void RasterizerStorageGLES2::instance_add_dependency(RID p_base, RasterizerScene
 			inst = immediate_owner.getornull(p_base);
 			ERR_FAIL_COND(!inst);
 		} break;
-		/*case VS::INSTANCE_PARTICLES: {
-			inst = particles_owner.getornull(p_base);
-			ERR_FAIL_COND(!inst);
-		} break;*/
 		case VS::INSTANCE_REFLECTION_PROBE: {
 			inst = reflection_probe_owner.getornull(p_base);
 			ERR_FAIL_COND(!inst);
@@ -4685,10 +4591,6 @@ void RasterizerStorageGLES2::instance_remove_dependency(RID p_base, RasterizerSc
 			inst = immediate_owner.getornull(p_base);
 			ERR_FAIL_COND(!inst);
 		} break;
-		/*case VS::INSTANCE_PARTICLES: {
-			inst = particles_owner.getornull(p_base);
-			ERR_FAIL_COND(!inst);
-		} break;*/
 		case VS::INSTANCE_REFLECTION_PROBE: {
 			inst = reflection_probe_owner.getornull(p_base);
 			ERR_FAIL_COND(!inst);

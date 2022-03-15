@@ -516,43 +516,6 @@ public:
 	virtual void reflection_probe_set_cull_mask(RID p_probe, uint32_t p_layers) = 0;
 	virtual void reflection_probe_set_resolution(RID p_probe, int p_resolution) = 0;
 
-	/* PARTICLES API */
-
-	virtual RID particles_create() = 0;
-
-	virtual void particles_set_emitting(RID p_particles, bool p_emitting) = 0;
-	virtual bool particles_get_emitting(RID p_particles) = 0;
-	virtual void particles_set_amount(RID p_particles, int p_amount) = 0;
-	virtual void particles_set_lifetime(RID p_particles, float p_lifetime) = 0;
-	virtual void particles_set_one_shot(RID p_particles, bool p_one_shot) = 0;
-	virtual void particles_set_pre_process_time(RID p_particles, float p_time) = 0;
-	virtual void particles_set_explosiveness_ratio(RID p_particles, float p_ratio) = 0;
-	virtual void particles_set_randomness_ratio(RID p_particles, float p_ratio) = 0;
-	virtual void particles_set_custom_aabb(RID p_particles, const AABB &p_aabb) = 0;
-	virtual void particles_set_speed_scale(RID p_particles, float p_scale) = 0;
-	virtual void particles_set_use_local_coordinates(RID p_particles, bool p_enable) = 0;
-	virtual void particles_set_process_material(RID p_particles, RID p_material) = 0;
-	virtual void particles_set_fixed_fps(RID p_particles, int p_fps) = 0;
-	virtual void particles_set_fractional_delta(RID p_particles, bool p_enable) = 0;
-	virtual bool particles_is_inactive(RID p_particles) = 0;
-	virtual void particles_request_process(RID p_particles) = 0;
-	virtual void particles_restart(RID p_particles) = 0;
-
-	enum ParticlesDrawOrder {
-		PARTICLES_DRAW_ORDER_INDEX,
-		PARTICLES_DRAW_ORDER_LIFETIME,
-		PARTICLES_DRAW_ORDER_VIEW_DEPTH,
-	};
-
-	virtual void particles_set_draw_order(RID p_particles, ParticlesDrawOrder p_order) = 0;
-
-	virtual void particles_set_draw_passes(RID p_particles, int p_count) = 0;
-	virtual void particles_set_draw_pass_mesh(RID p_particles, int p_pass, RID p_mesh) = 0;
-
-	virtual AABB particles_get_current_aabb(RID p_particles) = 0;
-
-	virtual void particles_set_emission_transform(RID p_particles, const Transform &p_transform) = 0; //this is only used for 2D, in 3D it's automatic
-
 	/* CAMERA API */
 
 	virtual RID camera_create() = 0;
@@ -784,12 +747,11 @@ public:
 		INSTANCE_MESH,
 		INSTANCE_MULTIMESH,
 		INSTANCE_IMMEDIATE,
-		INSTANCE_PARTICLES,
 		INSTANCE_LIGHT,
 		INSTANCE_REFLECTION_PROBE,
 		INSTANCE_MAX,
 
-		INSTANCE_GEOMETRY_MASK = (1 << INSTANCE_MESH) | (1 << INSTANCE_MULTIMESH) | (1 << INSTANCE_IMMEDIATE) | (1 << INSTANCE_PARTICLES)
+		INSTANCE_GEOMETRY_MASK = (1 << INSTANCE_MESH) | (1 << INSTANCE_MULTIMESH) | (1 << INSTANCE_IMMEDIATE)
 	};
 
 	virtual RID instance_create2(RID p_base, RID p_scenario);
@@ -964,7 +926,6 @@ public:
 	virtual void canvas_item_add_triangle_array(RID p_item, const Vector<int> &p_indices, const Vector<Point2> &p_points, const Vector<Color> &p_colors, const Vector<Point2> &p_uvs = Vector<Point2>(), const Vector<int> &p_bones = Vector<int>(), const Vector<float> &p_weights = Vector<float>(), RID p_texture = RID(), int p_count = -1, RID p_normal_map = RID(), bool p_antialiased = false, bool p_antialiasing_use_indices = false) = 0;
 	virtual void canvas_item_add_mesh(RID p_item, const RID &p_mesh, const Transform2D &p_transform = Transform2D(), const Color &p_modulate = Color(1, 1, 1), RID p_texture = RID(), RID p_normal_map = RID()) = 0;
 	virtual void canvas_item_add_multimesh(RID p_item, RID p_mesh, RID p_texture = RID(), RID p_normal_map = RID()) = 0;
-	virtual void canvas_item_add_particles(RID p_item, RID p_particles, RID p_texture, RID p_normal_map) = 0;
 	virtual void canvas_item_add_set_transform(RID p_item, const Transform2D &p_transform) = 0;
 	virtual void canvas_item_add_clip_ignore(RID p_item, bool p_ignore) = 0;
 	virtual void canvas_item_set_sort_children_by_y(RID p_item, bool p_enable) = 0;
@@ -1166,7 +1127,6 @@ VARIANT_ENUM_CAST(VisualServer::LightOmniShadowDetail);
 VARIANT_ENUM_CAST(VisualServer::LightDirectionalShadowMode);
 VARIANT_ENUM_CAST(VisualServer::LightDirectionalShadowDepthRangeMode);
 VARIANT_ENUM_CAST(VisualServer::ReflectionProbeUpdateMode);
-VARIANT_ENUM_CAST(VisualServer::ParticlesDrawOrder);
 VARIANT_ENUM_CAST(VisualServer::EnvironmentBG);
 VARIANT_ENUM_CAST(VisualServer::EnvironmentDOFBlurQuality);
 VARIANT_ENUM_CAST(VisualServer::EnvironmentGlowBlendMode);

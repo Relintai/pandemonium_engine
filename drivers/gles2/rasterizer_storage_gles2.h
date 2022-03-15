@@ -1036,44 +1036,6 @@ public:
 	virtual float reflection_probe_get_origin_max_distance(RID p_probe) const;
 	virtual bool reflection_probe_renders_shadows(RID p_probe) const;
 
-	/* PARTICLES */
-	void update_particles();
-
-	virtual RID particles_create();
-
-	virtual void particles_set_emitting(RID p_particles, bool p_emitting);
-	virtual bool particles_get_emitting(RID p_particles);
-
-	virtual void particles_set_amount(RID p_particles, int p_amount);
-	virtual void particles_set_lifetime(RID p_particles, float p_lifetime);
-	virtual void particles_set_one_shot(RID p_particles, bool p_one_shot);
-	virtual void particles_set_pre_process_time(RID p_particles, float p_time);
-	virtual void particles_set_explosiveness_ratio(RID p_particles, float p_ratio);
-	virtual void particles_set_randomness_ratio(RID p_particles, float p_ratio);
-	virtual void particles_set_custom_aabb(RID p_particles, const AABB &p_aabb);
-	virtual void particles_set_speed_scale(RID p_particles, float p_scale);
-	virtual void particles_set_use_local_coordinates(RID p_particles, bool p_enable);
-	virtual void particles_set_process_material(RID p_particles, RID p_material);
-	virtual void particles_set_fixed_fps(RID p_particles, int p_fps);
-	virtual void particles_set_fractional_delta(RID p_particles, bool p_enable);
-	virtual void particles_restart(RID p_particles);
-
-	virtual void particles_set_draw_order(RID p_particles, VS::ParticlesDrawOrder p_order);
-
-	virtual void particles_set_draw_passes(RID p_particles, int p_passes);
-	virtual void particles_set_draw_pass_mesh(RID p_particles, int p_pass, RID p_mesh);
-
-	virtual void particles_request_process(RID p_particles);
-	virtual AABB particles_get_current_aabb(RID p_particles);
-	virtual AABB particles_get_aabb(RID p_particles) const;
-
-	virtual void particles_set_emission_transform(RID p_particles, const Transform &p_transform);
-
-	virtual int particles_get_draw_passes(RID p_particles) const;
-	virtual RID particles_get_draw_pass_mesh(RID p_particles, int p_pass) const;
-
-	virtual bool particles_is_inactive(RID p_particles) const;
-
 	/* INSTANCE */
 
 	virtual void instance_add_skeleton(RID p_skeleton, RasterizerScene::InstanceBase *p_instance);

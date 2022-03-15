@@ -117,9 +117,6 @@ String get_command_type_string(const RasterizerCanvas::Item::Command &p_command)
 		case RasterizerCanvas::Item::Command::TYPE_MULTIMESH: {
 			sz = "MM";
 		} break;
-		case RasterizerCanvas::Item::Command::TYPE_PARTICLES: {
-			sz = "PA";
-		} break;
 		case RasterizerCanvas::Item::Command::TYPE_CIRCLE: {
 			sz = "c";
 		} break;

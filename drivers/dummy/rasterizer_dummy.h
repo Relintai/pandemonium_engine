@@ -548,42 +548,6 @@ public:
 	void instance_add_dependency(RID p_base, RasterizerScene::InstanceBase *p_instance) {}
 	void instance_remove_dependency(RID p_base, RasterizerScene::InstanceBase *p_instance) {}
 
-	/* PARTICLES */
-
-	RID particles_create() { return RID(); }
-
-	void particles_set_emitting(RID p_particles, bool p_emitting) {}
-	void particles_set_amount(RID p_particles, int p_amount) {}
-	void particles_set_lifetime(RID p_particles, float p_lifetime) {}
-	void particles_set_one_shot(RID p_particles, bool p_one_shot) {}
-	void particles_set_pre_process_time(RID p_particles, float p_time) {}
-	void particles_set_explosiveness_ratio(RID p_particles, float p_ratio) {}
-	void particles_set_randomness_ratio(RID p_particles, float p_ratio) {}
-	void particles_set_custom_aabb(RID p_particles, const AABB &p_aabb) {}
-	void particles_set_speed_scale(RID p_particles, float p_scale) {}
-	void particles_set_use_local_coordinates(RID p_particles, bool p_enable) {}
-	void particles_set_process_material(RID p_particles, RID p_material) {}
-	void particles_set_fixed_fps(RID p_particles, int p_fps) {}
-	void particles_set_fractional_delta(RID p_particles, bool p_enable) {}
-	void particles_restart(RID p_particles) {}
-
-	void particles_set_draw_order(RID p_particles, VS::ParticlesDrawOrder p_order) {}
-
-	void particles_set_draw_passes(RID p_particles, int p_count) {}
-	void particles_set_draw_pass_mesh(RID p_particles, int p_pass, RID p_mesh) {}
-
-	void particles_request_process(RID p_particles) {}
-	AABB particles_get_current_aabb(RID p_particles) { return AABB(); }
-	AABB particles_get_aabb(RID p_particles) const { return AABB(); }
-
-	void particles_set_emission_transform(RID p_particles, const Transform &p_transform) {}
-
-	bool particles_get_emitting(RID p_particles) { return false; }
-	int particles_get_draw_passes(RID p_particles) const { return 0; }
-	RID particles_get_draw_pass_mesh(RID p_particles, int p_pass) const { return RID(); }
-
-	virtual bool particles_is_inactive(RID p_particles) const { return false; }
-
 	/* RENDER TARGET */
 
 	RID render_target_create() { return RID(); }
