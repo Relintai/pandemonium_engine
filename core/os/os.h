@@ -185,7 +185,6 @@ public:
 	virtual void get_fullscreen_mode_list(List<VideoMode> *p_list, int p_screen = 0) const = 0;
 
 	enum VideoDriver {
-		VIDEO_DRIVER_GLES3,
 		VIDEO_DRIVER_GLES2,
 		VIDEO_DRIVER_MAX,
 	};

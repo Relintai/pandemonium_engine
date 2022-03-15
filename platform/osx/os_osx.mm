@@ -36,7 +36,6 @@
 #include "core/version_generated.gen.h"
 #include "dir_access_osx.h"
 #include "drivers/gles2/rasterizer_gles2.h"
-#include "drivers/gles3/rasterizer_gles3.h"
 #include "main/main.h"
 #include "servers/visual/visual_server_raster.h"
 
@@ -1723,31 +1722,16 @@ Error OS_OSX::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 
 	/*** END OSX INITIALIZATION ***/
 
-	bool gles3 = true;
-	if (p_video_driver == VIDEO_DRIVER_GLES2) {
-		gles3 = false;
-	}
+	bool gles2 = true;
+	//if (p_video_driver == VIDEO_DRIVER_GLES2) {
+	//	gles3 = false;
+	//}
 
 	bool editor = Engine::get_singleton()->is_editor_hint();
 	bool gl_initialization_error = false;
 
 	while (true) {
 		if (gles3) {
-			if (RasterizerGLES3::is_viable() == OK) {
-				RasterizerGLES3::register_config();
-				RasterizerGLES3::make_current();
-				break;
-			} else {
-				if (GLOBAL_GET("rendering/quality/driver/fallback_to_gles2") || editor) {
-					p_video_driver = VIDEO_DRIVER_GLES2;
-					gles3 = false;
-					continue;
-				} else {
-					gl_initialization_error = true;
-					break;
-				}
-			}
-		} else {
 			if (RasterizerGLES2::is_viable() == OK) {
 				RasterizerGLES2::register_config();
 				RasterizerGLES2::make_current();
@@ -1756,6 +1740,8 @@ Error OS_OSX::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 				gl_initialization_error = true;
 				break;
 			}
+		} else {
+			break;
 		}
 	}
 

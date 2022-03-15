@@ -33,7 +33,6 @@
 #include "os_iphone.h"
 
 #include "drivers/gles2/rasterizer_gles2.h"
-#include "drivers/gles3/rasterizer_gles3.h"
 #include "servers/visual/visual_server_raster.h"
 #include "servers/visual/visual_server_wrap_mt.h"
 
@@ -75,8 +74,6 @@ int OSIPhone::get_video_driver_count() const {
 
 const char *OSIPhone::get_video_driver_name(int p_driver) const {
 	switch (p_driver) {
-		case VIDEO_DRIVER_GLES3:
-			return "GLES3";
 		case VIDEO_DRIVER_GLES2:
 			return "GLES2";
 	}
@@ -119,26 +116,12 @@ void OSIPhone::start() {
 }
 
 Error OSIPhone::initialize(const VideoMode &p_desired, int p_video_driver, int p_audio_driver) {
-	bool use_gl3 = GLOBAL_GET("rendering/quality/driver/driver_name") == "GLES3";
+	//bool use_gl3 = GLOBAL_GET("rendering/quality/driver/driver_name") == "GLES3";
+	bool use_gl2 = GLOBAL_GET("rendering/quality/driver/driver_name") == "GLES2";
 	bool gl_initialization_error = false;
 
 	while (true) {
-		if (use_gl3) {
-			if (RasterizerGLES3::is_viable() == OK && gles3_available) {
-				RasterizerGLES3::register_config();
-				RasterizerGLES3::make_current();
-				break;
-			} else {
-				if (GLOBAL_GET("rendering/quality/driver/fallback_to_gles2")) {
-					p_video_driver = VIDEO_DRIVER_GLES2;
-					use_gl3 = false;
-					continue;
-				} else {
-					gl_initialization_error = true;
-					break;
-				}
-			}
-		} else {
+		if (use_gl2) {
 			if (RasterizerGLES2::is_viable() == OK) {
 				RasterizerGLES2::register_config();
 				RasterizerGLES2::make_current();
@@ -147,6 +130,8 @@ Error OSIPhone::initialize(const VideoMode &p_desired, int p_video_driver, int p
 				gl_initialization_error = true;
 				break;
 			}
+		} else {
+			break;
 		}
 	}
 

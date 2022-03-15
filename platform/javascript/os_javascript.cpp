@@ -32,7 +32,6 @@
 
 #include "core/io/json.h"
 #include "drivers/gles2/rasterizer_gles2.h"
-#include "drivers/gles3/rasterizer_gles3.h"
 #include "drivers/unix/dir_access_unix.h"
 #include "drivers/unix/file_access_unix.h"
 #include "main/main.h"
@@ -627,8 +626,6 @@ int OS_JavaScript::get_video_driver_count() const {
 
 const char *OS_JavaScript::get_video_driver_name(int p_driver) const {
 	switch (p_driver) {
-		case VIDEO_DRIVER_GLES3:
-			return "GLES3";
 		case VIDEO_DRIVER_GLES2:
 			return "GLES2";
 	}
@@ -694,31 +691,15 @@ Error OS_JavaScript::initialize(const VideoMode &p_desired, int p_video_driver, 
 		set_window_per_pixel_transparency_enabled(true);
 	}
 
-	bool gles3 = true;
-	if (p_video_driver == VIDEO_DRIVER_GLES2) {
-		gles3 = false;
-	}
+	bool gles2 = true;
+	//if (p_video_driver == VIDEO_DRIVER_GLES2) {
+	//	gles3 = true;
+	//}
 
 	bool gl_initialization_error = false;
 
 	while (true) {
 		if (gles3) {
-			if (godot_js_display_has_webgl(2) && RasterizerGLES3::is_viable() == OK) {
-				attributes.majorVersion = 2;
-				RasterizerGLES3::register_config();
-				RasterizerGLES3::make_current();
-				break;
-			} else {
-				if (GLOBAL_GET("rendering/quality/driver/fallback_to_gles2")) {
-					p_video_driver = VIDEO_DRIVER_GLES2;
-					gles3 = false;
-					continue;
-				} else {
-					gl_initialization_error = true;
-					break;
-				}
-			}
-		} else {
 			if (godot_js_display_has_webgl(1) && RasterizerGLES2::is_viable() == OK) {
 				attributes.majorVersion = 1;
 				RasterizerGLES2::register_config();
@@ -728,6 +709,8 @@ Error OS_JavaScript::initialize(const VideoMode &p_desired, int p_video_driver, 
 				gl_initialization_error = true;
 				break;
 			}
+		} else {
+			break;
 		}
 	}
 

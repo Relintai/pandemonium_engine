@@ -32,7 +32,6 @@
 
 #include "core/project_settings.h"
 #include "drivers/gles2/rasterizer_gles2.h"
-#include "drivers/gles3/rasterizer_gles3.h"
 #include "drivers/unix/dir_access_unix.h"
 #include "drivers/unix/file_access_unix.h"
 #include "main/main.h"
@@ -82,8 +81,6 @@ int OS_Android::get_video_driver_count() const {
 
 const char *OS_Android::get_video_driver_name(int p_driver) const {
 	switch (p_driver) {
-		case VIDEO_DRIVER_GLES3:
-			return "GLES3";
 		case VIDEO_DRIVER_GLES2:
 			return "GLES2";
 	}
@@ -127,28 +124,13 @@ int OS_Android::get_current_video_driver() const {
 }
 
 Error OS_Android::initialize(const VideoMode &p_desired, int p_video_driver, int p_audio_driver) {
-	bool use_gl3 = godot_java->get_gles_version_code() >= 0x00030000;
-	use_gl3 = use_gl3 && (GLOBAL_GET("rendering/quality/driver/driver_name") == "GLES3");
+	//bool use_gl3 = godot_java->get_gles_version_code() >= 0x00030000;
+	//use_gl3 = use_gl3 && (GLOBAL_GET("rendering/quality/driver/driver_name") == "GLES3");
+	bool use_gl2 = (GLOBAL_GET("rendering/quality/driver/driver_name") == "GLES2");
 	bool gl_initialization_error = false;
 
 	while (true) {
-		if (use_gl3) {
-			if (RasterizerGLES3::is_viable() == OK) {
-				godot_java->gfx_init(false);
-				RasterizerGLES3::register_config();
-				RasterizerGLES3::make_current();
-				break;
-			} else {
-				if (GLOBAL_GET("rendering/quality/driver/fallback_to_gles2")) {
-					p_video_driver = VIDEO_DRIVER_GLES2;
-					use_gl3 = false;
-					continue;
-				} else {
-					gl_initialization_error = true;
-					break;
-				}
-			}
-		} else {
+		if (use_gl2) {
 			if (RasterizerGLES2::is_viable() == OK) {
 				godot_java->gfx_init(true);
 				RasterizerGLES2::register_config();
@@ -158,6 +140,8 @@ Error OS_Android::initialize(const VideoMode &p_desired, int p_video_driver, int
 				gl_initialization_error = true;
 				break;
 			}
+		} else {
+			break;
 		}
 	}
 

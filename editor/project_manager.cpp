@@ -52,11 +52,6 @@
 #include "scene/gui/tool_button.h"
 #include "servers/navigation_server.h"
 
-// Used to test for GLES3 support.
-#ifndef SERVER_ENABLED
-#include "drivers/gles3/rasterizer_gles3.h"
-#endif
-
 static inline String get_project_key_from_path(const String &dir) {
 	return dir.replace("/", "::");
 }
@@ -851,7 +846,7 @@ public:
 
 		// Enable GLES3 by default as it's the default value for the project setting.
 #ifndef SERVER_ENABLED
-		bool gles3_viable = RasterizerGLES3::is_viable() == OK;
+		bool gles3_viable = false;
 #else
 		// Whatever, project manager isn't even used in headless builds.
 		bool gles3_viable = false;
@@ -860,30 +855,11 @@ public:
 		Container *rvb = memnew(VBoxContainer);
 		rvb->set_h_size_flags(SIZE_EXPAND_FILL);
 		rshb->add_child(rvb);
-		Button *rs_button = memnew(CheckBox);
-		rs_button->set_button_group(rasterizer_button_group);
-		rs_button->set_text(TTR("OpenGL ES 3.0"));
-		rs_button->set_meta("driver_name", "GLES3");
-		rvb->add_child(rs_button);
-		if (gles3_viable) {
-			rs_button->set_pressed(true);
-		} else {
-			// If GLES3 can't be used, don't let users shoot themselves in the foot.
-			rs_button->set_disabled(true);
-			l = memnew(Label);
-			l->set_text(TTR("Not supported by your GPU drivers."));
-			rvb->add_child(l);
-		}
-		l = memnew(Label);
-		l->set_text(TTR("Higher visual quality\nAll features available\nIncompatible with older hardware\nNot recommended for web games"));
-		rvb->add_child(l);
-
-		rshb->add_child(memnew(VSeparator));
 
 		rvb = memnew(VBoxContainer);
 		rvb->set_h_size_flags(SIZE_EXPAND_FILL);
 		rshb->add_child(rvb);
-		rs_button = memnew(CheckBox);
+		Button *rs_button = memnew(CheckBox);
 		rs_button->set_button_group(rasterizer_button_group);
 		rs_button->set_text(TTR("OpenGL ES 2.0"));
 		rs_button->set_meta("driver_name", "GLES2");

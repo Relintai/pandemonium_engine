@@ -4,7 +4,6 @@ Import("env")
 
 javascript_files = [
     "audio_driver_javascript.cpp",
-    "godot_webgl2.cpp",
     "http_client_javascript.cpp",
     "javascript_singleton.cpp",
     "javascript_main.cpp",
