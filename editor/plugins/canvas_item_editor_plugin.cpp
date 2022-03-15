@@ -41,7 +41,6 @@
 #include "editor/plugins/script_editor_plugin.h"
 #include "editor/script_editor_debugger.h"
 #include "scene/2d/light_2d.h"
-#include "scene/2d/particles_2d.h"
 #include "scene/2d/polygon_2d.h"
 #include "scene/2d/skeleton_2d.h"
 #include "scene/2d/sprite.h"
@@ -6535,8 +6534,6 @@ void CanvasItemEditorViewport::_perform_drop_data() {
 				Node *child;
 				if (default_type == "Light2D") {
 					child = memnew(Light2D);
-				} else if (default_type == "Particles2D") {
-					child = memnew(Particles2D);
 				} else if (default_type == "Polygon2D") {
 					child = memnew(Polygon2D);
 				} else if (default_type == "TouchScreenButton") {

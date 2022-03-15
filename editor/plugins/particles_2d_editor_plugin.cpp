@@ -97,24 +97,6 @@ void Particles2DEditorPlugin::_menu_callback(int p_idx) {
 		case MENU_CLEAR_EMISSION_MASK: {
 			emission_mask->popup_centered_minsize();
 		} break;
-		case MENU_OPTION_CONVERT_TO_CPU_PARTICLES: {
-			CPUParticles2D *cpu_particles = memnew(CPUParticles2D);
-			cpu_particles->convert_from_particles(particles);
-			cpu_particles->set_name(particles->get_name());
-			cpu_particles->set_transform(particles->get_transform());
-			cpu_particles->set_visible(particles->is_visible());
-			cpu_particles->set_pause_mode(particles->get_pause_mode());
-			cpu_particles->set_z_index(particles->get_z_index());
-
-			UndoRedo *ur = EditorNode::get_singleton()->get_undo_redo();
-			ur->create_action(TTR("Convert to CPUParticles"));
-			ur->add_do_method(EditorNode::get_singleton()->get_scene_tree_dock(), "replace_node", particles, cpu_particles, true, false);
-			ur->add_do_reference(cpu_particles);
-			ur->add_undo_method(EditorNode::get_singleton()->get_scene_tree_dock(), "replace_node", cpu_particles, particles, false, false);
-			ur->add_undo_reference(particles);
-			ur->commit_action();
-
-		} break;
 		case MENU_RESTART: {
 			particles->restart();
 		}
@@ -381,8 +363,6 @@ Particles2DEditorPlugin::Particles2DEditorPlugin(EditorNode *p_node) {
 	menu->get_popup()->add_separator();
 	menu->get_popup()->add_item(TTR("Load Emission Mask"), MENU_LOAD_EMISSION_MASK);
 	//	menu->get_popup()->add_item(TTR("Clear Emission Mask"), MENU_CLEAR_EMISSION_MASK);
-	menu->get_popup()->add_separator();
-	menu->get_popup()->add_item(TTR("Convert to CPUParticles2D"), MENU_OPTION_CONVERT_TO_CPU_PARTICLES);
 	menu->get_popup()->add_separator();
 	menu->get_popup()->add_item(TTR("Restart"), MENU_RESTART);
 	menu->set_text(TTR("Particles"));

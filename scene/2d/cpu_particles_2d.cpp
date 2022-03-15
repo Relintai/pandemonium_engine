@@ -32,7 +32,6 @@
 #include "core/core_string_names.h"
 #include "core/os/os.h"
 #include "scene/2d/canvas_item.h"
-#include "scene/2d/particles_2d.h"
 #include "scene/resources/particles_material.h"
 #include "servers/visual_server.h"
 
@@ -1105,86 +1104,6 @@ void CPUParticles2D::_notification(int p_what) {
 	}
 }
 
-void CPUParticles2D::convert_from_particles(Node *p_particles) {
-	Particles2D *particles = Object::cast_to<Particles2D>(p_particles);
-	ERR_FAIL_COND_MSG(!particles, "Only Particles2D nodes can be converted to CPUParticles2D.");
-
-	set_emitting(particles->is_emitting());
-	set_amount(particles->get_amount());
-	set_lifetime(particles->get_lifetime());
-	set_one_shot(particles->get_one_shot());
-	set_pre_process_time(particles->get_pre_process_time());
-	set_explosiveness_ratio(particles->get_explosiveness_ratio());
-	set_randomness_ratio(particles->get_randomness_ratio());
-	set_use_local_coordinates(particles->get_use_local_coordinates());
-	set_fixed_fps(particles->get_fixed_fps());
-	set_fractional_delta(particles->get_fractional_delta());
-	set_speed_scale(particles->get_speed_scale());
-	set_draw_order(DrawOrder(particles->get_draw_order()));
-	set_texture(particles->get_texture());
-
-	Ref<Material> mat = particles->get_material();
-	if (mat.is_valid()) {
-		set_material(mat);
-	}
-
-	Ref<ParticlesMaterial> material = particles->get_process_material();
-	if (material.is_null()) {
-		return;
-	}
-
-	Vector3 dir = material->get_direction();
-	set_direction(Vector2(dir.x, dir.y));
-	set_spread(material->get_spread());
-
-	set_color(material->get_color());
-
-	Ref<GradientTexture> gt = material->get_color_ramp();
-	if (gt.is_valid()) {
-		set_color_ramp(gt->get_gradient());
-	}
-
-	Ref<GradientTexture> gti = material->get_color_initial_ramp();
-	if (gti.is_valid()) {
-		set_color_initial_ramp(gti->get_gradient());
-	}
-
-	set_particle_flag(FLAG_ALIGN_Y_TO_VELOCITY, material->get_flag(ParticlesMaterial::FLAG_ALIGN_Y_TO_VELOCITY));
-
-	set_emission_shape(EmissionShape(material->get_emission_shape()));
-	set_emission_sphere_radius(material->get_emission_sphere_radius());
-	Vector2 rect_extents = Vector2(material->get_emission_box_extents().x, material->get_emission_box_extents().y);
-	set_emission_rect_extents(rect_extents);
-
-	Vector2 gravity = Vector2(material->get_gravity().x, material->get_gravity().y);
-	set_gravity(gravity);
-	set_lifetime_randomness(material->get_lifetime_randomness());
-
-#define CONVERT_PARAM(m_param)                                                            \
-	set_param(m_param, material->get_param(ParticlesMaterial::m_param));                  \
-	{                                                                                     \
-		Ref<CurveTexture> ctex = material->get_param_texture(ParticlesMaterial::m_param); \
-		if (ctex.is_valid())                                                              \
-			set_param_curve(m_param, ctex->get_curve());                                  \
-	}                                                                                     \
-	set_param_randomness(m_param, material->get_param_randomness(ParticlesMaterial::m_param));
-
-	CONVERT_PARAM(PARAM_INITIAL_LINEAR_VELOCITY);
-	CONVERT_PARAM(PARAM_ANGULAR_VELOCITY);
-	CONVERT_PARAM(PARAM_ORBIT_VELOCITY);
-	CONVERT_PARAM(PARAM_LINEAR_ACCEL);
-	CONVERT_PARAM(PARAM_RADIAL_ACCEL);
-	CONVERT_PARAM(PARAM_TANGENTIAL_ACCEL);
-	CONVERT_PARAM(PARAM_DAMPING);
-	CONVERT_PARAM(PARAM_ANGLE);
-	CONVERT_PARAM(PARAM_SCALE);
-	CONVERT_PARAM(PARAM_HUE_VARIATION);
-	CONVERT_PARAM(PARAM_ANIM_SPEED);
-	CONVERT_PARAM(PARAM_ANIM_OFFSET);
-
-#undef CONVERT_PARAM
-}
-
 void CPUParticles2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_emitting", "emitting"), &CPUParticles2D::set_emitting);
 	ClassDB::bind_method(D_METHOD("set_amount", "amount"), &CPUParticles2D::set_amount);
@@ -1295,8 +1214,6 @@ void CPUParticles2D::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_gravity"), &CPUParticles2D::get_gravity);
 	ClassDB::bind_method(D_METHOD("set_gravity", "accel_vec"), &CPUParticles2D::set_gravity);
-
-	ClassDB::bind_method(D_METHOD("convert_from_particles", "particles"), &CPUParticles2D::convert_from_particles);
 
 	ClassDB::bind_method(D_METHOD("_update_render_thread"), &CPUParticles2D::_update_render_thread);
 	ClassDB::bind_method(D_METHOD("_texture_changed"), &CPUParticles2D::_texture_changed);

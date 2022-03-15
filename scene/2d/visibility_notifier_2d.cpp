@@ -198,13 +198,6 @@ void VisibilityEnabler2D::_find_nodes(Node *p_node) {
 		}
 	}
 
-	{
-		Particles2D *ps = Object::cast_to<Particles2D>(p_node);
-		if (ps) {
-			add = true;
-		}
-	}
-
 	if (add) {
 		p_node->connect(SceneStringNames::get_singleton()->tree_exiting, this, "_node_removed", varray(p_node), CONNECT_ONESHOT);
 		nodes[p_node] = meta;
@@ -293,14 +286,6 @@ void VisibilityEnabler2D::_change_node_state(Node *p_node, bool p_enabled) {
 			} else {
 				as->stop();
 			}
-		}
-	}
-
-	if (enabler[ENABLER_PAUSE_PARTICLES]) {
-		Particles2D *ps = Object::cast_to<Particles2D>(p_node);
-
-		if (ps) {
-			ps->set_emitting(p_enabled);
 		}
 	}
 }
