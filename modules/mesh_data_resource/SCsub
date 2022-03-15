@@ -24,9 +24,6 @@ module_env.add_source_files(env.modules_sources,"mesh_data_resource_collection.c
 module_env.add_source_files(env.modules_sources,"plugin/mdr_import_plugin_base.cpp")
 
 if 'TOOLS_ENABLED' in env["CPPDEFINES"]:
-    module_env.add_source_files(env.modules_sources,"plugin_collada/editor_import_collada_mdr.cpp")
-    module_env.add_source_files(env.modules_sources,"plugin_collada/editor_plugin_collada_mdr.cpp")
-
     module_env.add_source_files(env.modules_sources,"plugin_gltf/editor_import_gltf_mdr.cpp")
     module_env.add_source_files(env.modules_sources,"plugin_gltf/editor_plugin_gltf_mdr.cpp")
 
