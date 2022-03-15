@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="VoxelMesherCubic" inherits="VoxelMesherDefault" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="format" type="int" setter="set_format" getter="get_format" overrides="VoxelMesher" default="26" />
+	</members>
+	<constants>
+	</constants>
+</class>

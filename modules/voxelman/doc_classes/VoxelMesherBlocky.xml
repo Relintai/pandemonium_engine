@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="VoxelMesherBlocky" inherits="VoxelMesherDefault" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="always_add_colors" type="bool" setter="set_always_add_colors" getter="get_always_add_colors" default="false">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

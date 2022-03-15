@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ItemEnums" inherits="Object" version="3.5">
+	<brief_description>
+		Contains lots of general-use enums for items.
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<constants>
+		<constant name="ITEM_RARITY_NONE" value="0" enum="ItemRarity">
+		</constant>
+		<constant name="ITEM_RARITY_COMMON" value="1" enum="ItemRarity">
+		</constant>
+		<constant name="ITEM_RARITY_UNCOMMON" value="2" enum="ItemRarity">
+		</constant>
+		<constant name="ITEM_RARITY_SUPERIOR" value="3" enum="ItemRarity">
+		</constant>
+		<constant name="ITEM_RARITY_HEROIC" value="4" enum="ItemRarity">
+		</constant>
+		<constant name="ITEM_RARITY_MYTHIC" value="5" enum="ItemRarity">
+		</constant>
+		<constant name="ITEM_RARITY_ARTIFACT" value="6" enum="ItemRarity">
+		</constant>
+		<constant name="ITEM_RARITY_FLAG_NONE" value="0" enum="ItemRarityFlag">
+		</constant>
+		<constant name="ITEM_RARITY_FLAG_COMMON" value="1" enum="ItemRarityFlag">
+		</constant>
+		<constant name="ITEM_RARITY_FLAG_UNCOMMON" value="2" enum="ItemRarityFlag">
+		</constant>
+		<constant name="ITEM_RARITY_FLAG_SUPERIOR" value="4" enum="ItemRarityFlag">
+		</constant>
+		<constant name="ITEM_RARITY_FLAG_HEROIC" value="8" enum="ItemRarityFlag">
+		</constant>
+		<constant name="ITEM_RARITY_FLAG_MYTHIC" value="16" enum="ItemRarityFlag">
+		</constant>
+		<constant name="ITEM_RARITY_FLAG_ARTIFACT" value="32" enum="ItemRarityFlag">
+		</constant>
+		<constant name="ITEM_TYPE_NONE" value="0" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_EQUIPMENT" value="1" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_POTION" value="2" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_HERB" value="4" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_ORE" value="8" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_GEMSTONE" value="16" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_FOOD" value="32" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_ALCHEMY" value="64" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_ENGINEERING" value="128" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_ENCHANTING" value="256" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_TAILORING" value="512" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_RECIPE" value="1024" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_CURRENCY" value="2048" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_BAG" value="4096" enum="ItemType">
+		</constant>
+		<constant name="ITEM_SUB_TYPE_NONE" value="0" enum="ItemSubtype">
+		</constant>
+		<constant name="ITEM_SUB_TYPE_SWORD" value="1" enum="ItemSubtype">
+		</constant>
+		<constant name="ITEM_SUB_TYPE_AXE" value="2" enum="ItemSubtype">
+		</constant>
+		<constant name="ITEM_SUB_TYPE_MACE" value="3" enum="ItemSubtype">
+		</constant>
+		<constant name="ITEM_SUB_TYPE_DAGGER" value="4" enum="ItemSubtype">
+		</constant>
+		<constant name="ITEM_SUB_TYPE_BOW" value="5" enum="ItemSubtype">
+		</constant>
+		<constant name="ITEM_SUB_TYPE_CROSSBOW" value="6" enum="ItemSubtype">
+		</constant>
+		<constant name="ITEM_SUB_TYPE_GUN" value="7" enum="ItemSubtype">
+		</constant>
+		<constant name="ITEM_SUB_TYPE_WAND" value="8" enum="ItemSubtype">
+		</constant>
+		<constant name="ITEM_SUB_TYPE_QUEST_ITEM" value="9" enum="ItemSubtype">
+		</constant>
+		<constant name="ITEM_SUB_SUB_TYPE_NONE" value="0" enum="ItemSubSubtype">
+		</constant>
+		<constant name="ITEM_SUB_SUB_TYPE_TWO_HAND" value="1" enum="ItemSubSubtype">
+		</constant>
+		<constant name="ITEM_SUB_SUB_TYPE_ONE_HAND" value="2" enum="ItemSubSubtype">
+		</constant>
+		<constant name="ITEM_SUB_SUB_TYPE_LEFT_HAND" value="3" enum="ItemSubSubtype">
+		</constant>
+		<constant name="ITEM_SUB_SUB_TYPE_RIGHT_HAND" value="4" enum="ItemSubSubtype">
+		</constant>
+		<constant name="ARMOR_TYPE_NONE" value="0" enum="ArmorType">
+		</constant>
+		<constant name="ARMOR_TYPE_CLOTH" value="1" enum="ArmorType">
+		</constant>
+		<constant name="ARMOR_TYPE_LEATHER" value="2" enum="ArmorType">
+		</constant>
+		<constant name="ARMOR_TYPE_MAIL" value="3" enum="ArmorType">
+		</constant>
+		<constant name="ARMOR_TYPE_PLATE" value="4" enum="ArmorType">
+		</constant>
+		<constant name="ARMOR_TYPE_MAX" value="5" enum="ArmorType">
+		</constant>
+	</constants>
+</class>

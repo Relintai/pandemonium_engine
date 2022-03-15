@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="Prop2DDataPortal" inherits="Prop2DDataEntry" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="is_active" type="bool" setter="set_is_active" getter="get_is_active" default="true">
+		</member>
+		<member name="is_two_way" type="bool" setter="set_is_two_way" getter="get_is_two_way" default="true">
+		</member>
+		<member name="points" type="PoolVector2Array" setter="set_points" getter="get_points" default="PoolVector2Array(  )">
+		</member>
+		<member name="portal_margin" type="float" setter="set_portal_margin" getter="get_portal_margin" default="1.0">
+		</member>
+		<member name="use_default_margin" type="bool" setter="set_use_default_margin" getter="get_use_default_margin" default="true">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

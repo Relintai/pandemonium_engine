@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CharacterSpec" inherits="Resource" version="3.5">
+	<brief_description>
+		Contains data for a character's specialization.
+	</brief_description>
+	<description>
+		Specialization in ESS means talents, and talent tabs.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_num_columns" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="row" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_num_ranks" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="row" type="int" />
+			<argument index="1" name="culomn" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_talent">
+			<return type="Spell" />
+			<argument index="0" name="row" type="int" />
+			<argument index="1" name="culomn" type="int" />
+			<argument index="2" name="rank" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_talent_with_id">
+			<return type="Spell" />
+			<argument index="0" name="id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_talents">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="has_talent_with_id">
+			<return type="bool" />
+			<argument index="0" name="id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_num_columns">
+			<return type="void" />
+			<argument index="0" name="row" type="int" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_num_ranks">
+			<return type="void" />
+			<argument index="0" name="row" type="int" />
+			<argument index="1" name="culomn" type="int" />
+			<argument index="2" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_talent">
+			<return type="void" />
+			<argument index="0" name="row" type="int" />
+			<argument index="1" name="culomn" type="int" />
+			<argument index="2" name="rank" type="int" />
+			<argument index="3" name="arg3" type="Spell" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+		</member>
+		<member name="num_rows" type="int" setter="set_num_rows" getter="get_num_rows" default="0">
+		</member>
+		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

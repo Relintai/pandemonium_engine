@@ -1,0 +1,10 @@
+Import('env')
+
+env.add_source_files(env.modules_sources,"register_types.cpp")
+
+if env["tools"]:
+    env.add_source_files(env.modules_sources, "skeleton_editor_plugin_remover.cpp")
+    env.add_source_files(env.modules_sources, "skeleton_editor_plugin.cpp")
+    env.add_source_files(env.modules_sources, "spatial_editor_gizmos.cpp")
+    env.add_source_files(env.modules_sources, "skeleton_editor_module_plugin.cpp")
+    

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="Terrain2DStructure" inherits="Resource" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_write_to_chunk" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="chunk" type="Terrain2DChunk" />
+			<description>
+			</description>
+		</method>
+		<method name="set_position">
+			<return type="void" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="y" type="int" />
+			<argument index="2" name="z" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="write_to_chunk">
+			<return type="void" />
+			<argument index="0" name="chunk" type="Terrain2DChunk" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="chunk_aabb" type="AABB" setter="set_chunk_aabb" getter="get_chunk_aabb" default="AABB( 0, 0, 0, 0, 0, 0 )">
+		</member>
+		<member name="position_x" type="int" setter="set_position_x" getter="get_position_x" default="0">
+		</member>
+		<member name="position_y" type="int" setter="set_position_y" getter="get_position_y" default="0">
+		</member>
+		<member name="position_z" type="int" setter="set_position_z" getter="get_position_z" default="0">
+		</member>
+		<member name="use_aabb" type="bool" setter="set_use_aabb" getter="get_use_aabb" default="true">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

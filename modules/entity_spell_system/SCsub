@@ -1,0 +1,147 @@
+import os
+
+Import('env')
+
+module_env = env.Clone()
+
+if os.path.isdir('../mesh_data_resource'):
+    module_env.Append(CPPDEFINES=['MESH_DATA_RESOURCE_PRESENT'])
+
+if os.path.isdir('../props'):
+    module_env.Append(CPPDEFINES=['PROPS_PRESENT'])
+
+has_texture_packer = False
+
+if os.path.isdir('../texture_packer'):
+    has_texture_packer = True
+    module_env.Append(CPPDEFINES=['TEXTURE_PACKER_PRESENT'])
+
+sources = [
+    "register_types.cpp",
+
+    "entity_enums.cpp",
+    "spell_enums.cpp",
+    "item_enums.cpp",
+
+    "data/auras/aura_group.cpp",
+
+    "data/items/item_instance.cpp",
+    "data/items/item_template.cpp",
+    "data/items/equipment_data.cpp",
+    "data/items/craft_recipe_helper.cpp",
+    "data/items/craft_recipe.cpp",
+    "data/items/model_visual.cpp",
+    "data/items/model_visual_entry.cpp",
+    "data/species/entity_species_data.cpp",
+    "data/species/species_model_data.cpp",
+    "data/species/species_instance.cpp",
+
+    "data/spells/spell_cooldown_manipulation_data.cpp",
+    "data/spells/spell.cpp",
+    "data/spells/spell_effect_visual.cpp",
+    "data/spells/spell_effect_visual_simple.cpp",
+
+    "data/atlases/character_atlas.cpp",
+    "data/atlases/character_atlas_entry.cpp",
+
+    "entities/data/entity_data.cpp",
+    "entities/data/entity_class_data.cpp",
+
+    "entities/data/vendor_item_data.cpp",
+    "entities/data/vendor_item_data_entry.cpp",
+
+    "entities/data/entity_data_container.cpp",
+
+    "entities/data/item_container_data.cpp",
+    "entities/data/item_container_data_entry.cpp",
+
+    "entities/skills/entity_skill.cpp",
+    "entities/skills/entity_skill_data.cpp",
+
+    "entities/data/character_spec.cpp",
+    
+    "skeleton/character_bones.cpp",
+
+    "entities/stats/stat_data.cpp",
+    "entities/stats/level_stat_data.cpp",
+    "entities/stats/simple_level_stat_data.cpp",
+    "entities/stats/complex_level_stat_data.cpp",
+
+    "inventory/bag.cpp",
+    #"inventory/inventory.cpp",
+
+    "infos/aura_infos.cpp",
+    "infos/spell_cast_info.cpp",
+
+    "pipelines/spell_damage_info.cpp",
+    "pipelines/spell_heal_info.cpp",
+    "entities/auras/aura_data.cpp",
+    "entities/entity.cpp",
+
+    "entities/resources/entity_resource_cost_data.cpp",
+    "entities/resources/entity_resource_cost_data_health.cpp",
+    "entities/resources/entity_resource_cost_data_resource.cpp",
+    "entities/resources/entity_resource.cpp",
+    "entities/resources/entity_resource_health.cpp",
+    "entities/resources/entity_resource_speed.cpp",
+
+    "drag_and_drop/es_drag_and_drop.cpp",
+
+    "skeleton/character_skeleton_2d.cpp",
+    "skeleton/character_skeleton_3d.cpp",
+
+    "skeleton/skeleton_model_entry.cpp",
+
+    "utility/entity_create_info.cpp",
+
+    "data/loot/loot_data_base.cpp",
+
+    "entities/ai/entity_ai.cpp",
+
+    "formations/ai_formation.cpp",
+
+    "projectiles/3d/spell_follow_projectile_3d.cpp",
+
+    "profiles/input/input_profile_modifier.cpp",
+    "profiles/input/input_profile_modifier_entry.cpp",
+    "profiles/input/input_profile.cpp",
+
+    "profiles/actionbar/action_bar_button_entry.cpp",
+    "profiles/actionbar/action_bar_entry.cpp",
+    "profiles/actionbar/action_bar_profile.cpp",
+
+    "profiles/class_profile.cpp",
+
+    "profiles/player_profile.cpp",
+
+    "spawners/ess_entity_spawner.cpp",
+
+    "singletons/profile_manager.cpp",
+    "singletons/ess.cpp",
+
+    "database/ess_resource_db.cpp",
+    "database/ess_resource_db_static.cpp",
+    "database/ess_resource_db_map.cpp",
+    "database/ess_resource_db_folders.cpp",
+
+    "editor/ess_editor_plugin.cpp",
+
+    "props/prop_data_entity.cpp",
+
+    "material_cache/ess_material_cache.cpp"
+]
+
+if has_texture_packer:
+    sources.append("material_cache/ess_material_cache_pcm.cpp")
+
+if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
+    # Shared lib compilation
+    module_env.Append(CCFLAGS=['-fPIC'])
+    module_env['LIBS'] = []
+    shared_lib = module_env.SharedLibrary(target='#bin/ess', source=sources)
+    shared_lib_shim = shared_lib[0].name.rsplit('.', 1)[0]
+    env.Append(LIBS=[shared_lib_shim])
+    env.Append(LIBPATH=['#bin'])
+else:
+    # Static compilation
+    module_env.add_source_files(env.modules_sources, sources)

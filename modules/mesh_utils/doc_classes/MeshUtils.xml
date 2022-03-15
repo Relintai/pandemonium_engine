@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MeshUtils" inherits="Object" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="bake_mesh_array_uv" qualifiers="const">
+			<return type="Array" />
+			<argument index="0" name="arr" type="Array" />
+			<argument index="1" name="tex" type="Texture" />
+			<argument index="2" name="mul_color" type="float" default="0.7" />
+			<description>
+			</description>
+		</method>
+		<method name="merge_mesh_array" qualifiers="const">
+			<return type="Array" />
+			<argument index="0" name="arr" type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_doubles" qualifiers="const">
+			<return type="Array" />
+			<argument index="0" name="arr" type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_doubles_interpolate_normals" qualifiers="const">
+			<return type="Array" />
+			<argument index="0" name="arr" type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="uv_unwrap" qualifiers="const">
+			<return type="PoolVector2Array" />
+			<argument index="0" name="arr" type="Array" />
+			<argument index="1" name="block_align" type="bool" default="true" />
+			<argument index="2" name="texel_size" type="float" default="0.05" />
+			<argument index="3" name="padding" type="int" default="1" />
+			<argument index="4" name="max_chart_size" type="int" default="4094" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

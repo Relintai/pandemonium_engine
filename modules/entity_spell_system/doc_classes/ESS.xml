@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ESS" inherits="Object" version="3.5">
+	<brief_description>
+		The ESS singleton.
+	</brief_description>
+	<description>
+		Gives easy access to entity and spell related data, providing easy lookups.
+		Make sure that you add everything both server and clientside before use, because the system uses ids (get_id()) for server clinet communications. This also means that ids should be unique per resources for every ESS-related resources. 
+		For example you shouldn't register 2 spells with id 1 (you will get an error), but you can register a [Spell] with id1 and an [Aura] with an id 1.
+		Also grants access easy to ESS-related project settings.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="can_character_level_up">
+			<return type="bool" />
+			<argument index="0" name="current_level" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="can_class_level_up">
+			<return type="bool" />
+			<argument index="0" name="current_level" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="ensure_materials_loaded">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="equip_slot_get_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="equip_slot_get_id" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="equip_slot_get_name" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="equip_slot_get_property_id" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="equip_slot_get_property_name" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="equip_slot_is_property" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_character_xp">
+			<return type="int" />
+			<argument index="0" name="current_level" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_class_xp">
+			<return type="int" />
+			<argument index="0" name="current_level" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="load_all">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="load_resource">
+			<return type="Resource" />
+			<argument index="0" name="path" type="String" />
+			<argument index="1" name="type_hint" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="load_resource_db">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="material_add">
+			<return type="void" />
+			<argument index="0" name="value" type="Material" />
+			<description>
+			</description>
+		</method>
+		<method name="material_cache_get">
+			<return type="ESSMaterialCache" />
+			<argument index="0" name="key" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="material_cache_unref">
+			<return type="void" />
+			<argument index="0" name="key" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="material_get">
+			<return type="Material" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="material_get_num" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="material_remove">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="material_set">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="Material" />
+			<description>
+			</description>
+		</method>
+		<method name="materials_clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="materials_load">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="request_entity_spawn">
+			<return type="void" />
+			<argument index="0" name="info" type="EntityCreateInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="request_entity_spawn_deferred">
+			<return type="void" />
+			<argument index="0" name="info" type="EntityCreateInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="set_character_xp">
+			<return type="void" />
+			<argument index="0" name="current_level" type="int" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_class_xp">
+			<return type="void" />
+			<argument index="0" name="current_level" type="int" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="skeletons_bone_attachment_index_get" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="skeletons_bone_attachments_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="skeletons_bones_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="skeletons_bones_index_get" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_get_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_get_id" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_get_name" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_get_property_id" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_get_property_name" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_is_property" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="allow_class_recipe_learning" type="bool" setter="set_allow_class_recipe_learning" getter="get_allow_class_recipe_learning" default="false">
+		</member>
+		<member name="allow_class_spell_learning" type="bool" setter="set_allow_class_spell_learning" getter="get_allow_class_spell_learning" default="false">
+		</member>
+		<member name="auto_learn_spells" type="int" setter="set_auto_learn_spells" getter="get_auto_learn_spells" default="1">
+		</member>
+		<member name="automatic_load" type="bool" setter="set_automatic_load" getter="get_automatic_load" default="false">
+		</member>
+		<member name="background_color" type="Color" setter="set_background_color" getter="get_background_color" default="Color( 0, 0, 0, 1 )">
+		</member>
+		<member name="character_xp_data" type="PoolIntArray" setter="set_character_xp_data" getter="get_character_xp_data" default="PoolIntArray(  )">
+		</member>
+		<member name="class_xp_data" type="PoolIntArray" setter="set_class_xp_data" getter="get_class_xp_data" default="PoolIntArray(  )">
+		</member>
+		<member name="default_ess_material_cache_class" type="String" setter="set_default_ess_material_cache_class" getter="get_default_ess_material_cache_class" default="&quot;ESSMaterialCachePCM&quot;">
+		</member>
+		<member name="entity_spawner" type="ESSEntitySpawner" setter="set_entity_spawner" getter="get_entity_spawner">
+		</member>
+		<member name="entity_types" type="String" setter="entity_types_set" getter="entity_types_get" default="&quot;None,Creature,Totem,Idol,Humanoid,Mechanical,Beast,Dragonkin,Elemental,Ghost,Energy,Anomaly,Demon,Object&quot;">
+		</member>
+		<member name="equip_slot_string" type="String" setter="equip_slot_set_string" getter="equip_slot_get_string" default="&quot;Head,Neck,Shoulder,Chest,Gloves,Belt,Legs,Feet,Ring_1,Ring_2,Trinket_1,Trinket_2,Main_Hand,Off_Hand,None&quot;">
+		</member>
+		<member name="equip_slots" type="PoolStringArray" setter="equip_slots_set" getter="equip_slots_get" default="PoolStringArray( &quot;Head&quot;, &quot;Neck&quot;, &quot;Shoulder&quot;, &quot;Chest&quot;, &quot;Gloves&quot;, &quot;Belt&quot;, &quot;Legs&quot;, &quot;Feet&quot;, &quot;Ring_1&quot;, &quot;Ring_2&quot;, &quot;Trinket_1&quot;, &quot;Trinket_2&quot;, &quot;Main_Hand&quot;, &quot;Off_Hand&quot; )">
+		</member>
+		<member name="keep_original_atlases" type="bool" setter="set_keep_original_atlases" getter="get_keep_original_atlases" default="false">
+		</member>
+		<member name="main_stat_count" type="int" setter="stat_set_main_stat_count" getter="stat_get_main_stat_count" default="5">
+		</member>
+		<member name="margin" type="int" setter="set_margin" getter="get_margin" default="0">
+		</member>
+		<member name="material_paths" type="PoolStringArray" setter="material_paths_set" getter="material_paths_get" default="PoolStringArray(  )">
+		</member>
+		<member name="materials" type="Array" setter="materials_set" getter="materials_get" default="[  ]">
+		</member>
+		<member name="max_atlas_size" type="int" setter="set_max_atlas_size" getter="get_max_atlas_size" default="1024">
+		</member>
+		<member name="max_character_level" type="int" setter="" getter="get_max_character_level" default="0">
+		</member>
+		<member name="max_class_level" type="int" setter="" getter="get_max_class_level" default="0">
+		</member>
+		<member name="model_visual_groups" type="String" setter="model_visual_groups_set" getter="model_visual_groups_get" default="&quot;None,Bodypart,Alt Bodypart,Attachment&quot;">
+		</member>
+		<member name="resource_db" type="ESSResourceDB" setter="set_resource_db" getter="get_resource_db">
+		</member>
+		<member name="resource_db_path" type="String" setter="set_resource_db_path" getter="get_resource_db_path" default="&quot;&quot;">
+		</member>
+		<member name="scale_spells_by_default" type="bool" setter="set_scale_spells_by_default" getter="get_scale_spells_by_default" default="false">
+		</member>
+		<member name="skeletons_bone_attachment_points" type="PoolStringArray" setter="skeletons_bone_attachment_points_set" getter="skeletons_bone_attachment_points_get" default="PoolStringArray(  )">
+		</member>
+		<member name="skeletons_bones" type="PoolStringArray" setter="skeletons_bones_set" getter="skeletons_bones_get" default="PoolStringArray(  )">
+		</member>
+		<member name="stat_string" type="String" setter="stat_set_string" getter="stat_get_string" default="&quot;Agility,Strength,Stamina,Intellect,Spirit,Health,Speed,Global Cooldown,Haste&quot;">
+		</member>
+		<member name="stats" type="PoolStringArray" setter="stats_set" getter="stats_get" default="PoolStringArray( &quot;Agility&quot;, &quot;Strength&quot;, &quot;Stamina&quot;, &quot;Intellect&quot;, &quot;Spirit&quot;, &quot;Health&quot;, &quot;Speed&quot;, &quot;Global Cooldown&quot;, &quot;Haste&quot; )">
+		</member>
+		<member name="texture_flags" type="int" setter="set_texture_flags" getter="get_texture_flags" default="5">
+		</member>
+		<member name="texture_layers" type="String" setter="texture_layers_set" getter="texture_layers_get" default="&quot;None,Skin,Underwear,Shirt,Clothes Base,Clothes 1,Clothes 2,Clothes 3,Clothes 4,Clothes 5,Belt,Tabard,Overlay&quot;">
+		</member>
+		<member name="use_class_xp" type="bool" setter="set_use_class_xp" getter="get_use_class_xp" default="false">
+		</member>
+		<member name="use_spell_points" type="bool" setter="set_use_spell_points" getter="get_use_spell_points" default="false">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

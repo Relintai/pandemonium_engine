@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="AuraGroup" inherits="Resource" version="3.5">
+	<brief_description>
+		Used to make some [Aura]s override each other.
+	</brief_description>
+	<description>
+		Only one [Aura] with the same group is allowed on an [Entity] by the same caster by default.
+		For example if an [Entity] wants to apply the same [Aura] except different ranks to a target, this is how you can prevent it easily.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="text_description" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

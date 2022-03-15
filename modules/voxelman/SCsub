@@ -1,0 +1,103 @@
+import os
+
+Import('env')
+
+module_env = env.Clone()
+
+has_texture_packer = False
+if os.path.isdir('../texture_packer'):
+    module_env.Append(CPPDEFINES=['TEXTURE_PACKER_PRESENT'])
+    has_texture_packer = True
+
+if os.path.isdir('../thread_pool'):
+    module_env.Append(CPPDEFINES=['THREAD_POOL_PRESENT'])
+
+if os.path.isdir('../mesh_data_resource'):
+    module_env.Append(CPPDEFINES=['MESH_DATA_RESOURCE_PRESENT'])
+
+if os.path.isdir('../props'):
+    module_env.Append(CPPDEFINES=['PROPS_PRESENT'])
+
+if os.path.isdir('../mesh_utils'):
+    module_env.Append(CPPDEFINES=['MESH_UTILS_PRESENT'])
+
+sources = [
+
+    "register_types.cpp",
+
+    "library/voxel_library.cpp",
+    "library/voxel_library_simple.cpp",
+    
+    "nodes/voxel_light_node.cpp",
+
+    "library/voxel_surface.cpp",
+    "library/voxel_surface_simple.cpp",
+    "library/voxel_material_cache.cpp",
+
+    "data/voxel_light.cpp",
+
+    "meshers/voxel_mesher.cpp",
+
+    "meshers/marching_cubes/marching_cubes_cell_data.cpp",
+    "meshers/marching_cubes/voxel_mesher_marching_cubes.cpp",
+    "meshers/marching_cubes/marching_cubes_tables.cpp",
+
+    "meshers/blocky/voxel_mesher_blocky.cpp",
+    "meshers/blocky/voxel_mesher_liquid_blocky.cpp",
+    "meshers/default/voxel_mesher_default.cpp",
+
+    "world/voxel_world.cpp",
+    "world/voxel_chunk.cpp",
+    "world/voxel_structure.cpp",
+    "world/block_voxel_structure.cpp",
+    "world/environment_data.cpp",
+
+    "world/blocky/voxel_chunk_blocky.cpp",
+    "world/blocky/voxel_world_blocky.cpp",
+
+    "world/default/voxel_world_default.cpp",
+    "world/default/voxel_chunk_default.cpp",
+
+    "world/marching_cubes/voxel_chunk_marching_cubes.cpp",
+    "world/marching_cubes/voxel_world_marching_cubes.cpp",
+
+    "meshers/cubic/voxel_mesher_cubic.cpp",
+    "meshers/cubic/voxel_cube_points.cpp",
+
+    "level_generator/voxel_level_generator.cpp",
+    "level_generator/voxel_level_generator_flat.cpp",
+
+    "world/cubic/voxel_chunk_cubic.cpp",
+    "world/cubic/voxel_world_cubic.cpp",
+
+    "areas/world_area.cpp",
+
+    "world/voxel_world_editor.cpp",
+    
+    "thirdparty/lz4/lz4.c",
+
+    "world/jobs/voxel_job.cpp",
+    "world/jobs/voxel_terrain_job.cpp",
+    "world/jobs/voxel_mesher_job_step.cpp",
+    "world/jobs/voxel_light_job.cpp",
+    "world/jobs/voxel_prop_job.cpp",
+]
+
+if has_texture_packer:
+    sources.append("library/voxel_library_merger.cpp")
+    sources.append("library/voxel_surface_merger.cpp")
+    sources.append("library/voxel_library_merger_pcm.cpp")
+    sources.append("library/voxel_material_cache_pcm.cpp")
+
+if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
+    # Shared lib compilation
+    module_env.Append(CCFLAGS=['-fPIC'])
+    module_env['LIBS'] = []
+    shared_lib = module_env.SharedLibrary(target='#bin/voxelman', source=sources)
+    shared_lib_shim = shared_lib[0].name.rsplit('.', 1)[0]
+    env.Append(LIBS=[shared_lib_shim])
+    env.Append(LIBPATH=['#bin'])
+else:
+    # Static compilation
+    module_env.add_source_files(env.modules_sources, sources)
+

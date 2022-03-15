@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="LootDataBase" inherits="Resource" version="3.5">
+	<brief_description>
+		Base class for storing loot information for entities.
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_get_loot" qualifiers="virtual">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="get_item" qualifiers="const">
+			<return type="ItemTemplate" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_item_chance" qualifiers="const">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_loot">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="get_loot_db" qualifiers="const">
+			<return type="LootDataBase" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_loot_db_chance" qualifiers="const">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_item">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="ItemTemplate" />
+			<description>
+			</description>
+		</method>
+		<method name="set_item_chance">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_loot_db">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="LootDataBase" />
+			<description>
+			</description>
+		</method>
+		<method name="set_loot_db_chance">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="items_size" type="int" setter="set_items_size" getter="get_items_size" default="0">
+		</member>
+		<member name="loot_db_size" type="int" setter="set_loot_db_size" getter="get_loot_db_size" default="0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

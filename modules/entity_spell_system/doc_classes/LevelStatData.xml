@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="LevelStatData" inherits="Resource" version="3.5">
+	<brief_description>
+		Base class for storing level stat information for entities.
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_get_stat_diff" qualifiers="virtual">
+			<return type="int" />
+			<argument index="0" name="main_stat" type="int" />
+			<argument index="1" name="old_level" type="int" />
+			<argument index="2" name="new_level" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_stat_diff">
+			<return type="int" />
+			<argument index="0" name="stat" type="int" />
+			<argument index="1" name="old_level" type="int" />
+			<argument index="2" name="new_level" type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PropCache" inherits="Object" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="ensure_materials_loaded">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="load_resource">
+			<return type="Resource" />
+			<argument index="0" name="path" type="String" />
+			<argument index="1" name="type_hint" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="material_add">
+			<return type="void" />
+			<argument index="0" name="value" type="Material" />
+			<description>
+			</description>
+		</method>
+		<method name="material_cache_custom_key_get">
+			<return type="PropMaterialCache" />
+			<argument index="0" name="key" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="material_cache_custom_key_unref">
+			<return type="void" />
+			<argument index="0" name="key" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="material_cache_get">
+			<return type="PropMaterialCache" />
+			<argument index="0" name="prop" type="PropData" />
+			<description>
+			</description>
+		</method>
+		<method name="material_cache_unref">
+			<return type="void" />
+			<argument index="0" name="prop" type="PropData" />
+			<description>
+			</description>
+		</method>
+		<method name="material_get">
+			<return type="Material" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="material_get_num" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="material_remove">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="material_set">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="Material" />
+			<description>
+			</description>
+		</method>
+		<method name="materials_clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="materials_load">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="tiled_wall_material_cache_get">
+			<return type="PropMaterialCache" />
+			<argument index="0" name="twd" type="TiledWallData" />
+			<description>
+			</description>
+		</method>
+		<method name="tiled_wall_material_cache_unref">
+			<return type="void" />
+			<argument index="0" name="twd" type="TiledWallData" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="background_color" type="Color" setter="set_background_color" getter="get_background_color" default="Color( 0, 0, 0, 1 )">
+		</member>
+		<member name="default_prop_material_cache_class" type="String" setter="set_default_prop_material_cache_class" getter="get_default_prop_material_cache_class" default="&quot;PropMaterialCachePCM&quot;">
+		</member>
+		<member name="keep_original_atlases" type="bool" setter="set_keep_original_atlases" getter="get_keep_original_atlases" default="false">
+		</member>
+		<member name="margin" type="int" setter="set_margin" getter="get_margin" default="0">
+		</member>
+		<member name="material_paths" type="PoolStringArray" setter="material_paths_set" getter="material_paths_get" default="PoolStringArray(  )">
+		</member>
+		<member name="materials" type="Array" setter="materials_set" getter="materials_get" default="[  ]">
+		</member>
+		<member name="max_atlas_size" type="int" setter="set_max_atlas_size" getter="get_max_atlas_size" default="1024">
+		</member>
+		<member name="texture_flags" type="int" setter="set_texture_flags" getter="get_texture_flags" default="5">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

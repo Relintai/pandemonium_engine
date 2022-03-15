@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="AuraApplyInfo" inherits="Reference" version="3.5">
+	<brief_description>
+		Helper class, which is used to apply an [Aura] to an [Entity].
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="aura" type="Spell" setter="set_aura" getter="get_aura">
+		</member>
+		<member name="caster" type="Entity" setter="caster_set" getter="caster_get">
+		</member>
+		<member name="spell_scale" type="float" setter="spell_scale_set" getter="spell_scale_get" default="0.0">
+		</member>
+		<member name="target" type="Entity" setter="target_set" getter="target_get">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

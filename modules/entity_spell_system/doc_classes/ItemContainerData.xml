@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ItemContainerData" inherits="Resource" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_container_data">
+			<return type="ItemContainerDataEntry" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_num_container_datas">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_container_data">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="container_data" type="ItemContainerDataEntry" />
+			<description>
+			</description>
+		</method>
+		<method name="set_num_container_datas">
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="container_datas" type="Array" setter="set_container_datas" getter="get_container_datas" default="[  ]">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

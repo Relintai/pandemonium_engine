@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ActionBarEntry" inherits="Reference" version="3.5">
+	<brief_description>
+		Stores the data for an actionbar. Also see [ProfileManager].
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="emit_change">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="from_dict">
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="get_action_bar_entry_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_button">
+			<return type="ActionBarButtonEntry" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_button_for_slotid">
+			<return type="ActionBarButtonEntry" />
+			<argument index="0" name="slot_id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_owner">
+			<return type="ActionBarProfile" />
+			<description>
+			</description>
+		</method>
+		<method name="to_dict" qualifiers="const">
+			<return type="Dictionary" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="action_bar_id" type="int" setter="set_action_bar_id" getter="get_action_bar_id" default="0">
+		</member>
+		<member name="size" type="float" setter="set_size" getter="get_size" default="45.0">
+		</member>
+		<member name="slot_num" type="int" setter="set_slot_num" getter="get_slot_num" default="12">
+		</member>
+	</members>
+	<signals>
+		<signal name="changed">
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+	</constants>
+</class>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ConfirmationDialog" inherits="AcceptDialog" version="3.5">
+	<brief_description>
+		Dialog for confirmation of actions.
+	</brief_description>
+	<description>
+		Dialog for confirmation of actions. This dialog inherits from [AcceptDialog], but has by default an OK and Cancel button (in host OS order).
+		To get cancel action, you can use:
+		[codeblock]
+		get_cancel().connect("pressed", self, "cancelled")
+		[/codeblock].
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_cancel">
+			<return type="Button" />
+			<description>
+				Returns the cancel button.
+				[b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="rect_min_size" type="Vector2" setter="set_custom_minimum_size" getter="get_custom_minimum_size" overrides="Control" default="Vector2( 200, 70 )" />
+		<member name="window_title" type="String" setter="set_title" getter="get_title" overrides="WindowDialog" default="&quot;Please Confirm...&quot;" />
+	</members>
+	<constants>
+	</constants>
+</class>

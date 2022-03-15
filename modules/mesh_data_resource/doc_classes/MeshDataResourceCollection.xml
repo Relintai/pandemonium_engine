@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MeshDataResourceCollection" inherits="Resource" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_mdr">
+			<return type="void" />
+			<argument index="0" name="mdr" type="MeshDataResource" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="mdrs" type="Array" setter="set_mdrs" getter="get_mdrs" default="[  ]">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

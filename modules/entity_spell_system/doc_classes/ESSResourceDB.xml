@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ESSResourceDB" inherits="Resource" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_initialize" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="add_craft_recipe">
+			<return type="void" />
+			<argument index="0" name="craft_recipe" type="CraftRecipe" />
+			<description>
+			</description>
+		</method>
+		<method name="add_entity_data">
+			<return type="void" />
+			<argument index="0" name="cls" type="EntityData" />
+			<description>
+			</description>
+		</method>
+		<method name="add_entity_resource">
+			<return type="void" />
+			<argument index="0" name="cls" type="EntityResource" />
+			<description>
+			</description>
+		</method>
+		<method name="add_entity_resource_db">
+			<return type="void" />
+			<argument index="0" name="other" type="ESSResourceDB" />
+			<description>
+			</description>
+		</method>
+		<method name="add_entity_skill">
+			<return type="void" />
+			<argument index="0" name="cls" type="EntitySkillData" />
+			<description>
+			</description>
+		</method>
+		<method name="add_entity_species_data">
+			<return type="void" />
+			<argument index="0" name="pcd" type="EntitySpeciesData" />
+			<description>
+			</description>
+		</method>
+		<method name="add_item_template">
+			<return type="void" />
+			<argument index="0" name="item_template" type="ItemTemplate" />
+			<description>
+			</description>
+		</method>
+		<method name="add_spell">
+			<return type="void" />
+			<argument index="0" name="spell" type="Spell" />
+			<description>
+			</description>
+		</method>
+		<method name="clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="craft_recipe_id_to_path" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="craft_recipe_path_to_id" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="entity_data_id_to_path" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="entity_data_path_to_id" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="entity_resource_id_to_path" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="entity_resource_path_to_id" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="entity_skill_id_to_path" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="entity_skill_path_to_id" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="entity_species_id_to_path" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="entity_species_path_to_id" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_craft_recipe">
+			<return type="CraftRecipe" />
+			<argument index="0" name="craft_recipe_id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_craft_recipe_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_craft_recipe_index">
+			<return type="CraftRecipe" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_craft_recipe_path">
+			<return type="CraftRecipe" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_craft_recipes" qualifiers="const">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_data">
+			<return type="EntityData" />
+			<argument index="0" name="class_id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_data_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_data_index">
+			<return type="EntityData" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_data_path">
+			<return type="EntityData" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_datas" qualifiers="const">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_resource">
+			<return type="EntityResource" />
+			<argument index="0" name="class_id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_resource_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_resource_index">
+			<return type="EntityResource" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_resource_path">
+			<return type="EntityResource" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_resources" qualifiers="const">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_skill">
+			<return type="EntitySkillData" />
+			<argument index="0" name="class_id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_skill_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_skill_index">
+			<return type="EntitySkillData" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_skill_path">
+			<return type="EntitySkillData" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_skills" qualifiers="const">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_species_data">
+			<return type="EntitySpeciesData" />
+			<argument index="0" name="pcd_id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_species_data_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_species_data_index">
+			<return type="EntitySpeciesData" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_species_data_path">
+			<return type="EntitySpeciesData" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_species_datas" qualifiers="const">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="get_item_template">
+			<return type="ItemTemplate" />
+			<argument index="0" name="item_template_id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_item_template_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_item_template_index">
+			<return type="ItemTemplate" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_item_template_path">
+			<return type="ItemTemplate" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_item_templates" qualifiers="const">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="get_skill_for_armor_type">
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_spell">
+			<return type="Spell" />
+			<argument index="0" name="spell_id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_spell_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_spell_index">
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_spell_path">
+			<return type="Spell" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_spells" qualifiers="const">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="initialize">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="item_template_id_to_path" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="item_template_path_to_id" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_craft_recipes">
+			<return type="void" />
+			<argument index="0" name="recipe" type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="set_entity_datas">
+			<return type="void" />
+			<argument index="0" name="recipe" type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="set_entity_resources">
+			<return type="void" />
+			<argument index="0" name="recipe" type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="set_entity_skills">
+			<return type="void" />
+			<argument index="0" name="recipe" type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="set_entity_species_datas">
+			<return type="void" />
+			<argument index="0" name="recipe" type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="set_item_templates">
+			<return type="void" />
+			<argument index="0" name="recipe" type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="set_skill_for_armor_type">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="aura" type="Spell" />
+			<description>
+			</description>
+		</method>
+		<method name="set_spells">
+			<return type="void" />
+			<argument index="0" name="recipe" type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="spell_id_to_path" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="spell_path_to_id" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="skill_for_armor_type_0" type="Spell" setter="set_skill_for_armor_type" getter="get_skill_for_armor_type">
+		</member>
+		<member name="skill_for_armor_type_1" type="Spell" setter="set_skill_for_armor_type" getter="get_skill_for_armor_type">
+		</member>
+		<member name="skill_for_armor_type_2" type="Spell" setter="set_skill_for_armor_type" getter="get_skill_for_armor_type">
+		</member>
+		<member name="skill_for_armor_type_3" type="Spell" setter="set_skill_for_armor_type" getter="get_skill_for_armor_type">
+		</member>
+		<member name="skill_for_armor_type_4" type="Spell" setter="set_skill_for_armor_type" getter="get_skill_for_armor_type">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

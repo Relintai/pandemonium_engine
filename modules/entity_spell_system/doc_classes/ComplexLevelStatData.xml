@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ComplexLevelStatData" inherits="LevelStatData" version="3.5">
+	<brief_description>
+		Per level stat information for an [Entity].
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_stat_for_level">
+			<return type="int" />
+			<argument index="0" name="main_stat" type="int" />
+			<argument index="1" name="level" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_stat_for_level">
+			<return type="void" />
+			<argument index="0" name="main_stat" type="int" />
+			<argument index="1" name="level" type="int" />
+			<argument index="2" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

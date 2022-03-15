@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SpeciesInstance" inherits="Resource" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_from_dict" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="_to_dict" qualifiers="virtual">
+			<return type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="from_dict">
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="to_dict">
+			<return type="Dictionary" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="hair_color_index" type="int" setter="set_hair_color_index" getter="get_hair_color_index" default="0">
+		</member>
+		<member name="hair_style_index" type="int" setter="set_hair_style_index" getter="get_hair_style_index" default="0">
+		</member>
+		<member name="head_index" type="int" setter="set_head_index" getter="get_head_index" default="0">
+		</member>
+		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+		</member>
+		<member name="skin_color_index" type="int" setter="set_skin_color_index" getter="get_skin_color_index" default="0">
+		</member>
+		<member name="species" type="EntitySpeciesData" setter="set_species" getter="get_species">
+		</member>
+		<member name="species_id" type="int" setter="set_species_id" getter="get_species_id" default="0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

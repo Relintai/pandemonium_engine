@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ActionBarButtonEntry" inherits="Reference" version="3.5">
+	<brief_description>
+		Stores the data for an actionbar button. ProfileManager uses it.
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="emit_change">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="from_dict">
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="get_owner">
+			<return type="ActionBarEntry" />
+			<description>
+			</description>
+		</method>
+		<method name="to_dict" qualifiers="const">
+			<return type="Dictionary" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="action_bar_id" type="int" setter="set_action_bar_id" getter="get_action_bar_id" default="0">
+		</member>
+		<member name="item_path" type="String" setter="set_item_path" getter="get_item_path" default="&quot;&quot;">
+		</member>
+		<member name="slot_id" type="int" setter="set_slot_id" getter="get_slot_id" default="0">
+		</member>
+		<member name="type" type="int" setter="set_type" getter="get_type" enum="ActionBarButtonEntry.ActionBarButtonEntryType" default="0">
+		</member>
+	</members>
+	<signals>
+		<signal name="changed">
+			<argument index="0" name="action_bar_button_entry" type="ActionBarButtonEntry" />
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+		<constant name="ACTION_BAR_BUTTON_ENTRY_TYPE_NONE" value="0" enum="ActionBarButtonEntryType">
+		</constant>
+		<constant name="ACTION_BAR_BUTTON_ENTRY_TYPE_SPELL" value="1" enum="ActionBarButtonEntryType">
+		</constant>
+		<constant name="ACTION_BAR_BUTTON_ENTRY_TYPE_ITEM" value="2" enum="ActionBarButtonEntryType">
+		</constant>
+	</constants>
+</class>

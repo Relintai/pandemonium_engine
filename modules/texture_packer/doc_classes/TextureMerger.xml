@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="TextureMerger" inherits="Node" version="3.5">
+	<brief_description>
+		A node, that can merge textures.
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_texture_added" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="texture" type="AtlasTexture" />
+			<description>
+			</description>
+		</method>
+		<method name="_texture_merged" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="_texture_removed" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="add_texture">
+			<return type="AtlasTexture" />
+			<argument index="0" name="texture" type="Texture" />
+			<description>
+			</description>
+		</method>
+		<method name="clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_dirty" qualifiers="const">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="get_generated_texture">
+			<return type="ImageTexture" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_generated_texture_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_original_texture">
+			<return type="Texture" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_packer" qualifiers="const">
+			<return type="TexturePacker" />
+			<description>
+			</description>
+		</method>
+		<method name="get_texture">
+			<return type="AtlasTexture" />
+			<argument index="0" name="texture" type="Texture" />
+			<description>
+			</description>
+		</method>
+		<method name="get_texture_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_texture_index">
+			<return type="AtlasTexture" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="merge">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_texture">
+			<return type="void" />
+			<argument index="0" name="texture" type="Texture" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_texture_index">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_dirty">
+			<return type="void" />
+			<argument index="0" name="value" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="set_packer">
+			<return type="void" />
+			<argument index="0" name="packer" type="TexturePacker" />
+			<description>
+			</description>
+		</method>
+		<method name="unref_texture">
+			<return type="bool" />
+			<argument index="0" name="texture" type="Texture" />
+			<description>
+			</description>
+		</method>
+		<method name="unref_texture_index">
+			<return type="bool" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="automatic_merge" type="bool" setter="set_automatic_merge" getter="get_automatic_merge" default="false">
+		</member>
+		<member name="background_color" type="Color" setter="set_background_color" getter="get_background_color" default="Color( 0, 0, 0, 1 )">
+		</member>
+		<member name="keep_original_atlases" type="bool" setter="set_keep_original_atlases" getter="get_keep_original_atlases" default="false">
+		</member>
+		<member name="margin" type="int" setter="set_margin" getter="get_margin" default="0">
+		</member>
+		<member name="max_atlas_size" type="int" setter="set_max_atlas_size" getter="get_max_atlas_size" default="1024">
+		</member>
+		<member name="texture_flags" type="int" setter="set_texture_flags" getter="get_texture_flags" default="5">
+		</member>
+		<member name="textures" type="Array" setter="set_textures" getter="get_textures" default="[  ]">
+		</member>
+	</members>
+	<signals>
+		<signal name="texture_added">
+			<argument index="0" name="texture" type="AtlasTexture" />
+			<description>
+			</description>
+		</signal>
+		<signal name="texture_merged">
+			<description>
+			</description>
+		</signal>
+		<signal name="texture_removed">
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+	</constants>
+</class>

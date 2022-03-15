@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="FastQuadraticMeshSimplifier" inherits="Reference" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_arrays">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="initialize">
+			<return type="void" />
+			<argument index="0" name="arrays" type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="simplify_mesh">
+			<return type="void" />
+			<argument index="0" name="target_count" type="int" />
+			<argument index="1" name="agressiveness" type="float" default="7" />
+			<argument index="2" name="verbose" type="bool" default="false" />
+			<description>
+			</description>
+		</method>
+		<method name="simplify_mesh_lossless">
+			<return type="void" />
+			<argument index="0" name="verbose" type="bool" default="false" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="enable_smart_link" type="bool" setter="set_enable_smart_link" getter="get_enable_smart_link" default="false">
+		</member>
+		<member name="format" type="int" setter="set_format" getter="get_format" default="0">
+		</member>
+		<member name="max_iteration_count" type="int" setter="set_max_iteration_count" getter="get_max_iteration_count" default="100">
+		</member>
+		<member name="max_lossless_iteration_count" type="int" setter="set_max_lossless_iteration_count" getter="get_max_lossless_iteration_count" default="9990">
+		</member>
+		<member name="preserve_border_edges" type="bool" setter="set_preserve_border_edges" getter="get_preserve_border_edges" default="false">
+		</member>
+		<member name="preserve_uv_foldover_edges" type="bool" setter="set_preserve_uv_foldover_edges" getter="get_preserve_uv_foldover_edges" default="false">
+		</member>
+		<member name="preserve_uv_seam_edges" type="bool" setter="set_preserve_uv_seam_edges" getter="get_preserve_uv_seam_edges" default="false">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

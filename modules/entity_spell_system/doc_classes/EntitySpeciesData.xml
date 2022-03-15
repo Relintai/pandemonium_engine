@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="EntitySpeciesData" inherits="Resource" version="3.5">
+	<brief_description>
+		Contains visual data for a species.
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_generate_name" qualifiers="virtual">
+			<return type="String" />
+			<argument index="0" name="seed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="add_aura">
+			<return type="void" />
+			<argument index="0" name="aura" type="Spell" />
+			<description>
+			</description>
+		</method>
+		<method name="add_model_data">
+			<return type="void" />
+			<argument index="0" name="model_data" type="SpeciesModelData" />
+			<description>
+			</description>
+		</method>
+		<method name="add_spell">
+			<return type="void" />
+			<argument index="0" name="spell" type="Spell" />
+			<description>
+			</description>
+		</method>
+		<method name="generate_name">
+			<return type="String" />
+			<argument index="0" name="arg0" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_aura" qualifiers="const">
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_aura_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_model_data" qualifiers="const">
+			<return type="SpeciesModelData" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_model_data_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_spell" qualifiers="const">
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_spell_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_aura">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_model_data">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_spell">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_aura">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="data" type="Spell" />
+			<description>
+			</description>
+		</method>
+		<method name="set_model_data">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="data" type="SpeciesModelData" />
+			<description>
+			</description>
+		</method>
+		<method name="set_spell">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="data" type="Spell" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="auras" type="Array" setter="set_auras" getter="get_auras" default="[  ]">
+		</member>
+		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+		</member>
+		<member name="model_datas" type="Array" setter="set_model_datas" getter="get_model_datas" default="[  ]">
+		</member>
+		<member name="spells" type="Array" setter="set_spells" getter="get_spells" default="[  ]">
+		</member>
+		<member name="text_description" type="String" setter="set_text_description" getter="get_text_description" default="&quot;&quot;">
+		</member>
+		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+		</member>
+		<member name="type" type="int" setter="set_type" getter="get_type" default="0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

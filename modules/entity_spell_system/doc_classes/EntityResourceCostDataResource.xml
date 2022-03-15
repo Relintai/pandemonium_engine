@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="EntityResourceCostDataResource" inherits="EntityResourceCostData" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="entity_resource_data" type="EntityResource" setter="set_entity_resource_data" getter="get_entity_resource_data">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

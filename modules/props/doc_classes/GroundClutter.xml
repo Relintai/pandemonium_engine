@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GroundClutter" inherits="Resource" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_add_textures_to" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="packer" type="TexturePacker" />
+			<description>
+			</description>
+		</method>
+		<method name="add_textures_to">
+			<return type="void" />
+			<argument index="0" name="packer" type="TexturePacker" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PropUtils" inherits="Object" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_processor">
+			<return type="int" />
+			<argument index="0" name="processor" type="PropDataEntry" />
+			<description>
+			</description>
+		</method>
+		<method name="convert_tree">
+			<return type="PropData" />
+			<argument index="0" name="root" type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="get_processor">
+			<return type="PropDataEntry" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_processor_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_processor">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="swap_processors">
+			<return type="void" />
+			<argument index="0" name="index1" type="int" />
+			<argument index="1" name="index2" type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

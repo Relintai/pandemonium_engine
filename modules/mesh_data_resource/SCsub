@@ -1,0 +1,40 @@
+import os
+
+Import('env')
+
+module_env = env.Clone()
+
+if os.path.isdir('../texture_packer'):
+    module_env.Append(CPPDEFINES=['TEXTURE_PACKER_PRESENT'])
+
+if os.path.isdir('../props'):
+    module_env.Append(CPPDEFINES=['PROPS_PRESENT'])
+
+if os.path.isdir('../props_2d'):
+    module_env.Append(CPPDEFINES=['PROPS_2D_PRESENT'])
+
+if os.path.isdir('../mesh_utils'):
+    module_env.Append(CPPDEFINES=['MESH_UTILS_PRESENT'])
+
+module_env.add_source_files(env.modules_sources,"register_types.cpp")
+
+module_env.add_source_files(env.modules_sources,"mesh_data_resource.cpp")
+module_env.add_source_files(env.modules_sources,"mesh_data_resource_collection.cpp")
+
+module_env.add_source_files(env.modules_sources,"plugin/mdr_import_plugin_base.cpp")
+
+if 'TOOLS_ENABLED' in env["CPPDEFINES"]:
+    module_env.add_source_files(env.modules_sources,"plugin_collada/editor_import_collada_mdr.cpp")
+    module_env.add_source_files(env.modules_sources,"plugin_collada/editor_plugin_collada_mdr.cpp")
+
+    module_env.add_source_files(env.modules_sources,"plugin_gltf/editor_import_gltf_mdr.cpp")
+    module_env.add_source_files(env.modules_sources,"plugin_gltf/editor_plugin_gltf_mdr.cpp")
+
+module_env.add_source_files(env.modules_sources,"nodes/mesh_data_instance.cpp")
+module_env.add_source_files(env.modules_sources,"nodes/mesh_data_instance_2d.cpp")
+
+if os.path.isdir('../props'):
+    module_env.add_source_files(env.modules_sources,"props/prop_data_mesh_data.cpp")
+
+if os.path.isdir('../props_2d'):
+    module_env.add_source_files(env.modules_sources,"props_2d/prop_2d_data_mesh_data.cpp")

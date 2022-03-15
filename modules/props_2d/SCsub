@@ -1,0 +1,85 @@
+import os
+
+Import('env')
+
+module_env = env.Clone()
+
+import version
+
+if os.path.isdir('../mesh_data_resource'):
+    module_env.Append(CPPDEFINES=['MESH_DATA_RESOURCE_PRESENT'])
+
+has_texture_packer = False
+
+if os.path.isdir('../texture_packer'):
+    has_texture_packer = True
+    module_env.Append(CPPDEFINES=['TEXTURE_PACKER_PRESENT'])
+
+if os.path.isdir('../terraman_2d'):
+    module_env.Append(CPPDEFINES=['TERRAMAN_2D_PRESENT'])
+
+if os.path.isdir('../mesh_utils'):
+    module_env.Append(CPPDEFINES=['MESH_UTILS_PRESENT'])
+
+
+if os.path.isdir('../thread_pool'):
+    module_env.Append(CPPDEFINES=['THREAD_POOL_PRESENT'])
+
+sources = [
+
+    "register_types.cpp",
+
+    "lights/prop_2d_light.cpp",
+
+    "tiled_wall/tiled_wall_2d.cpp",
+    "tiled_wall/tiled_wall_2d_data.cpp",
+
+    "props/prop_2d_data.cpp",
+    "props/prop_2d_data_entry.cpp",
+    "props/prop_2d_data_scene.cpp",
+    "props/prop_2d_data_light.cpp",
+    "props/prop_2d_data_prop.cpp",
+    "props/prop_2d_data_tiled_wall_2d.cpp",
+    "props/prop_2d_data_sprite.cpp",
+
+    "clutter/ground_clutter_2d.cpp",
+    "clutter/ground_clutter_2d_foliage.cpp",
+
+    "prop_2d_instance.cpp",
+    "prop_2d_instance_merger.cpp",
+    "prop_2d_ess_entity.cpp",
+    "prop_2d_instance_job.cpp",
+    "prop_2d_instance_prop_job.cpp",
+
+    "prop_2d_scene_instance.cpp",
+
+    "singleton/prop_2d_utils.cpp",
+    "singleton/prop_2d_cache.cpp",
+
+    "editor/prop_2d_editor_plugin.cpp",
+
+    "prop_2d_mesher.cpp",
+
+    "jobs/prop_2d_texture_job.cpp",
+    
+    "material_cache/prop_2d_material_cache.cpp"
+]
+
+if version.minor >= 4:
+    sources.append("props/prop_2d_data_portal.cpp")
+
+if has_texture_packer:
+    sources.append("material_cache/prop_2d_material_cache_pcm.cpp")
+
+if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
+    # Shared lib compilation
+    module_env.Append(CCFLAGS=['-fPIC'])
+    module_env['LIBS'] = []
+    shared_lib = module_env.SharedLibrary(target='#bin/props_2d', source=sources)
+    shared_lib_shim = shared_lib[0].name.rsplit('.', 1)[0]
+    env.Append(LIBS=[shared_lib_shim])
+    env.Append(LIBPATH=['#bin'])
+else:
+    # Static compilation
+    module_env.add_source_files(env.modules_sources, sources)
+

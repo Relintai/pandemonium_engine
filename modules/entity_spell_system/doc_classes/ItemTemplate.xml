@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ItemTemplate" inherits="Resource" version="3.5">
+	<brief_description>
+		Contains item information.
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_create_item_instance" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_description" qualifiers="virtual">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="create_item_instance">
+			<return type="ItemInstance" />
+			<description>
+			</description>
+		</method>
+		<method name="get_animator_weapon_type">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_aura">
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_description">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_grants_spell">
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_num_auras" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_num_grants_spells" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_num_required_skills" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_num_teaches_spells" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_required_skill">
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_teaches_spell">
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_aura">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="aura" type="Spell" />
+			<description>
+			</description>
+		</method>
+		<method name="set_grants_spell">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="spell" type="Spell" />
+			<description>
+			</description>
+		</method>
+		<method name="set_num_auras">
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_num_grants_spells">
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_num_teaches_spells">
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_required_skill">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="aura" type="Spell" />
+			<description>
+			</description>
+		</method>
+		<method name="set_teaches_spell">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="spell" type="Spell" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_get_max_base_mod" qualifiers="const">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_get_max_bonus_mod" qualifiers="const">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_get_max_percent_mod" qualifiers="const">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_get_min_base_mod" qualifiers="const">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_get_min_bonus_mod" qualifiers="const">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_get_min_percent_mod" qualifiers="const">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_get_scaling_factor" qualifiers="const">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_get_stat_id" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_set_max_base_mod">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_set_max_bonus_mod">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_set_max_percent_mod">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_set_min_base_mod">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_set_min_bonus_mod">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_set_min_percent_mod">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_set_scaling_factor">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_set_stat_id">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="armor_type" type="int" setter="set_armor_type" getter="get_armor_type" enum="ItemEnums.ArmorType" default="0">
+		</member>
+		<member name="auras" type="Array" setter="set_auras" getter="get_auras" default="[  ]">
+		</member>
+		<member name="bag_size" type="int" setter="set_bag_size" getter="get_bag_size" default="0">
+		</member>
+		<member name="charges" type="int" setter="set_charges" getter="get_charges" default="-1">
+		</member>
+		<member name="consumed" type="bool" setter="set_consumed" getter="get_consumed" default="false">
+		</member>
+		<member name="equip_slot" type="int" setter="set_equip_slot" getter="get_equip_slot" default="14">
+		</member>
+		<member name="grants_spells" type="Array" setter="set_grants_spells" getter="get_grants_spells" default="[  ]">
+		</member>
+		<member name="icon" type="Texture" setter="set_icon" getter="get_icon">
+		</member>
+		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+		</member>
+		<member name="item_sub_sub_type" type="int" setter="set_item_sub_sub_type" getter="get_item_sub_sub_type" enum="ItemEnums.ItemSubSubtype" default="0">
+		</member>
+		<member name="item_sub_type" type="int" setter="set_item_sub_type" getter="get_item_sub_type" enum="ItemEnums.ItemSubtype" default="0">
+		</member>
+		<member name="item_type" type="int" setter="set_item_type" getter="get_item_type" enum="ItemEnums.ItemType" default="0">
+		</member>
+		<member name="model_visual" type="ModelVisual" setter="set_model_visual" getter="get_model_visual">
+		</member>
+		<member name="price" type="int" setter="set_price" getter="get_price" default="0">
+		</member>
+		<member name="rarity" type="int" setter="set_rarity" getter="get_rarity" enum="ItemEnums.ItemRarity" default="0">
+		</member>
+		<member name="required_skills" type="Array" setter="set_required_skills" getter="get_required_skills" default="[  ]">
+		</member>
+		<member name="scale_x" type="float" setter="set_scale_x" getter="get_scale_x" default="0.0">
+		</member>
+		<member name="scale_y" type="float" setter="set_scale_y" getter="get_scale_y" default="0.0">
+		</member>
+		<member name="scale_z" type="float" setter="set_scale_z" getter="get_scale_z" default="0.0">
+		</member>
+		<member name="stack_size" type="int" setter="set_stack_size" getter="get_stack_size" default="1">
+		</member>
+		<member name="stat_modifier_count" type="int" setter="stat_modifier_set_count" getter="stat_modifier_get_count" default="0">
+		</member>
+		<member name="teaches_spells" type="Array" setter="set_teaches_spells" getter="get_teaches_spells" default="[  ]">
+		</member>
+		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+		</member>
+		<member name="text_translation_key" type="String" setter="set_text_translation_key" getter="get_text_translation_key" default="&quot;&quot;">
+		</member>
+		<member name="use_spell" type="Spell" setter="set_use_spell" getter="get_use_spell">
+		</member>
+	</members>
+	<constants>
+		<constant name="MAX_ITEM_STAT_MOD" value="6">
+		</constant>
+	</constants>
+</class>

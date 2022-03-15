@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="TexturePacker" inherits="Reference" version="3.5">
+	<brief_description>
+		A class, that can merge textures.
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_texture">
+			<return type="AtlasTexture" />
+			<argument index="0" name="texture" type="Texture" />
+			<description>
+			</description>
+		</method>
+		<method name="clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_generated_texture">
+			<return type="ImageTexture" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_generated_texture_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_original_texture">
+			<return type="Texture" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_texture">
+			<return type="AtlasTexture" />
+			<argument index="0" name="texture" type="Texture" />
+			<description>
+			</description>
+		</method>
+		<method name="get_texture_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_texture_index">
+			<return type="AtlasTexture" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="merge">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_texture">
+			<return type="void" />
+			<argument index="0" name="texture" type="Texture" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_texture_index">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="unref_texture">
+			<return type="bool" />
+			<argument index="0" name="texture" type="Texture" />
+			<description>
+			</description>
+		</method>
+		<method name="unref_texture_index">
+			<return type="bool" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="background_color" type="Color" setter="set_background_color" getter="get_background_color" default="Color( 0, 0, 0, 1 )">
+		</member>
+		<member name="keep_original_atlases" type="bool" setter="set_keep_original_atlases" getter="get_keep_original_atlases" default="false">
+		</member>
+		<member name="margin" type="int" setter="set_margin" getter="get_margin" default="0">
+		</member>
+		<member name="max_atlas_size" type="int" setter="set_max_atlas_size" getter="get_max_atlas_size" default="1024">
+		</member>
+		<member name="texture_flags" type="int" setter="set_texture_flags" getter="get_texture_flags" default="5">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

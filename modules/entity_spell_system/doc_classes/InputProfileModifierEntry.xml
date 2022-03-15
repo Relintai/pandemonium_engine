@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="InputProfileModifierEntry" inherits="Reference" version="3.5">
+	<brief_description>
+		One key entry for a key.
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="action" type="String" setter="set_action" getter="get_action" default="&quot;&quot;">
+		</member>
+		<member name="translate_to" type="String" setter="set_translate_to" getter="get_translate_to" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

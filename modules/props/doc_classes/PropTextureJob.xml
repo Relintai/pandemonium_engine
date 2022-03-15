@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PropTextureJob" inherits="ThreadPoolJob" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="merger" type="TexturePacker" setter="set_merger" getter="get_merger">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

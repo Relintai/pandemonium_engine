@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="Terrain2DLibrarySimple" inherits="Terrain2DLibrary" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="atlas_columns" type="int" setter="set_atlas_columns" getter="get_atlas_columns" default="8">
+		</member>
+		<member name="atlas_rows" type="int" setter="set_atlas_rows" getter="get_atlas_rows" default="8">
+		</member>
+		<member name="terra_surfaces" type="Array" setter="set_terra_surfaces" getter="get_terra_surfaces" default="[  ]">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MeshDataResource" inherits="Resource" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_collision_shape">
+			<return type="void" />
+			<argument index="0" name="shape" type="Transform" />
+			<argument index="1" name="arg1" type="Shape" />
+			<description>
+			</description>
+		</method>
+		<method name="get_collision_shape">
+			<return type="Shape" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_collision_shape_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="recompute_aabb">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="aabb" type="AABB" setter="set_aabb" getter="get_aabb" default="AABB( 0, 0, 0, 0, 0, 0 )">
+		</member>
+		<member name="array" type="Array" setter="set_array" getter="get_array" default="[  ]">
+		</member>
+		<member name="collision_shapes" type="Array" setter="set_collision_shapes" getter="get_collision_shapes" default="[  ]">
+		</member>
+		<member name="seams" type="PoolIntArray" setter="set_seams" getter="get_seams" default="PoolIntArray(  )">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

@@ -1,0 +1,33 @@
+import os
+
+Import('env')
+
+module_env = env.Clone()
+
+if os.path.isdir('../voxelman'):
+    module_env.Append(CPPDEFINES=['VOXELMAN_PRESENT'])
+
+if os.path.isdir('../terraman'):
+    module_env.Append(CPPDEFINES=['TERRAMAN_PRESENT'])
+
+sources = [
+
+    "register_types.cpp",
+
+    "biome_terrarin_generator.cpp",
+    "t_mesh_instance.cpp"
+
+]
+
+if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
+    # Shared lib compilation
+    module_env.Append(CCFLAGS=['-fPIC'])
+    module_env['LIBS'] = []
+    shared_lib = module_env.SharedLibrary(target='#bin/broken_seals_module', source=sources)
+    shared_lib_shim = shared_lib[0].name.rsplit('.', 1)[0]
+    env.Append(LIBS=[shared_lib_shim])
+    env.Append(LIBPATH=['#bin'])
+else:
+    # Static compilation
+    module_env.add_source_files(env.modules_sources, sources)
+

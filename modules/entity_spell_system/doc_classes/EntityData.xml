@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="EntityData" inherits="Resource" version="3.5">
+	<brief_description>
+		Contains all data for a given [Entity]. Think of this as all the data for a mob, or a player.
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_cans_interact" qualifiers="virtual">
+			<return type="bool" />
+			<argument index="0" name="entity" type="Entity" />
+			<description>
+			</description>
+		</method>
+		<method name="_generate_name" qualifiers="virtual">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_ai_instance" qualifiers="virtual">
+			<return type="EntityAI" />
+			<description>
+			</description>
+		</method>
+		<method name="_sinteract" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="entity" type="Entity" />
+			<description>
+			</description>
+		</method>
+		<method name="cans_interact">
+			<return type="bool" />
+			<argument index="0" name="entity" type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="generate_name">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_ai_instance">
+			<return type="EntityAI" />
+			<description>
+			</description>
+		</method>
+		<method name="sinteract">
+			<return type="void" />
+			<argument index="0" name="entity" type="Node" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="ai" type="EntityAI" setter="set_ai" getter="get_ai">
+		</member>
+		<member name="bag_size" type="int" setter="set_bag_size" getter="get_bag_size" default="0">
+		</member>
+		<member name="entity_class_data" type="EntityClassData" setter="set_entity_class_data" getter="get_entity_class_data">
+		</member>
+		<member name="entity_flags" type="int" setter="set_entity_flags" getter="get_entity_flags" default="0">
+		</member>
+		<member name="entity_interaction_type" type="int" setter="set_entity_interaction_type" getter="get_entity_interaction_type" enum="EntityEnums.EntityInteractionType" default="0">
+		</member>
+		<member name="entity_species_data" type="EntitySpeciesData" setter="set_entity_species_data" getter="get_entity_species_data">
+		</member>
+		<member name="equipment_data" type="EquipmentData" setter="set_equipment_data" getter="get_equipment_data">
+		</member>
+		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+		</member>
+		<member name="immunity_flags" type="int" setter="set_immunity_flags" getter="get_immunity_flags" default="0">
+		</member>
+		<member name="is_playable" type="bool" setter="set_is_playable" getter="get_is_playable" default="false">
+		</member>
+		<member name="loot_db" type="LootDataBase" setter="set_loot_db" getter="get_loot_db">
+		</member>
+		<member name="money" type="int" setter="set_money" getter="get_money" default="0">
+		</member>
+		<member name="species_instance" type="SpeciesInstance" setter="set_species_instance" getter="get_species_instance">
+		</member>
+		<member name="text_description" type="String" setter="set_text_description" getter="get_text_description" default="&quot;&quot;">
+		</member>
+		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

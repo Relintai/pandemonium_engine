@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PackerImageResource" inherits="Texture" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="data" type="Image" setter="set_data" getter="get_data">
+		</member>
+		<member name="flags" type="int" setter="set_flags" getter="get_flags" overrides="Texture" default="0" />
+	</members>
+	<constants>
+	</constants>
+</class>

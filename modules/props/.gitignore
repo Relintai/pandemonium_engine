@@ -1,0 +1,8 @@
+.import
+*.d
+*.o
+*.meta
+*.obj
+*.pyc
+*.bc
+*.os

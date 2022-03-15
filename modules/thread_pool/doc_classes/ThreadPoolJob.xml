@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ThreadPoolJob" inherits="Reference" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_execute" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="execute">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_current_execution_time">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="reset_stages">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="should_do">
+			<return type="bool" />
+			<argument index="0" name="just_check" type="bool" default="false" />
+			<description>
+			</description>
+		</method>
+		<method name="should_return">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="cancelled" type="bool" setter="set_cancelled" getter="get_cancelled" default="false">
+		</member>
+		<member name="complete" type="bool" setter="set_complete" getter="get_complete" default="true">
+		</member>
+		<member name="current_run_stage" type="int" setter="set_current_run_stage" getter="get_current_run_stage" default="0">
+		</member>
+		<member name="max_allocated_time" type="float" setter="set_max_allocated_time" getter="get_max_allocated_time" default="0.0">
+		</member>
+		<member name="stage" type="int" setter="set_stage" getter="get_stage" default="0">
+		</member>
+		<member name="start_time" type="int" setter="set_start_time" getter="get_start_time" default="0">
+		</member>
+	</members>
+	<signals>
+		<signal name="completed">
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+	</constants>
+</class>

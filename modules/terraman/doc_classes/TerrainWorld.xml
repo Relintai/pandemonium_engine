@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="TerrainWorld" inherits="Navigation" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_chunk_added" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</method>
+		<method name="_create_chunk" qualifiers="virtual">
+			<return type="TerrainChunk" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="z" type="int" />
+			<argument index="2" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</method>
+		<method name="_generate_chunk" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</method>
+		<method name="_generation_finished" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_channel_index_info" qualifiers="virtual">
+			<return type="int" />
+			<argument index="0" name="channel_type" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_prepare_chunk_for_generation" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</method>
+		<method name="_set_voxel_with_tool" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="mode_add" type="bool" />
+			<argument index="1" name="hit_position" type="Vector3" />
+			<argument index="2" name="hit_normal" type="Vector3" />
+			<argument index="3" name="selected_voxel" type="int" />
+			<argument index="4" name="isolevel" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="can_chunk_do_build_step">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="chunk_add">
+			<return type="void" />
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<argument index="1" name="x" type="int" />
+			<argument index="2" name="z" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="chunk_create">
+			<return type="TerrainChunk" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="z" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="chunk_get">
+			<return type="TerrainChunk" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="z" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="chunk_get_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="chunk_get_index">
+			<return type="TerrainChunk" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="chunk_get_or_create">
+			<return type="TerrainChunk" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="z" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="chunk_has" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="z" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="chunk_remove">
+			<return type="TerrainChunk" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="z" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="chunk_remove_index">
+			<return type="TerrainChunk" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="chunk_setup">
+			<return type="void" />
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</method>
+		<method name="chunks_clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="generation_add_to">
+			<return type="void" />
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</method>
+		<method name="generation_get_index">
+			<return type="TerrainChunk" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="generation_get_size" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="generation_queue_add_to">
+			<return type="void" />
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</method>
+		<method name="generation_queue_get_index">
+			<return type="TerrainChunk" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="generation_queue_get_size" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="generation_queue_remove_index">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="generation_remove_index">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_channel_index_info">
+			<return type="int" />
+			<argument index="0" name="channel_type" type="int" enum="TerrainWorld.ChannelTypeInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="get_chunk_at_world_position">
+			<return type="TerrainChunk" />
+			<argument index="0" name="world_position" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="get_or_create_chunk_at_world_position">
+			<return type="TerrainChunk" />
+			<argument index="0" name="world_position" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="get_voxel_at_world_position">
+			<return type="int" />
+			<argument index="0" name="world_position" type="Vector3" />
+			<argument index="1" name="channel_index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="is_position_walkable">
+			<return type="bool" />
+			<argument index="0" name="position" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="light_add">
+			<return type="void" />
+			<argument index="0" name="light" type="TerrainLight" />
+			<description>
+			</description>
+		</method>
+		<method name="light_get">
+			<return type="TerrainLight" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="light_get_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="light_remove">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="lights_clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="lights_get">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="lights_set">
+			<return type="void" />
+			<argument index="0" name="chunks" type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="on_chunk_mesh_generation_finished">
+			<return type="void" />
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</method>
+		<method name="prop_add">
+			<return type="void" />
+			<argument index="0" name="transform" type="Transform" />
+			<argument index="1" name="prop" type="PropData" />
+			<argument index="2" name="apply_voxel_scale" type="bool" default="true" />
+			<description>
+			</description>
+		</method>
+		<method name="set_voxel_at_world_position">
+			<return type="void" />
+			<argument index="0" name="world_position" type="Vector3" />
+			<argument index="1" name="data" type="int" />
+			<argument index="2" name="channel_index" type="int" />
+			<argument index="3" name="rebuild" type="bool" default="true" />
+			<description>
+			</description>
+		</method>
+		<method name="set_voxel_with_tool">
+			<return type="void" />
+			<argument index="0" name="mode_add" type="bool" />
+			<argument index="1" name="hit_position" type="Vector3" />
+			<argument index="2" name="hit_normal" type="Vector3" />
+			<argument index="3" name="selected_voxel" type="int" />
+			<argument index="4" name="isolevel" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="voxel_structure_add">
+			<return type="void" />
+			<argument index="0" name="structure" type="TerrainStructure" />
+			<description>
+			</description>
+		</method>
+		<method name="voxel_structure_add_at_position">
+			<return type="void" />
+			<argument index="0" name="structure" type="TerrainStructure" />
+			<argument index="1" name="world_position" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="voxel_structure_get" qualifiers="const">
+			<return type="TerrainStructure" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="voxel_structure_get_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="voxel_structure_remove">
+			<return type="void" />
+			<argument index="0" name="structure" type="TerrainStructure" />
+			<description>
+			</description>
+		</method>
+		<method name="voxel_structure_remove_index">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="voxel_structures_clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="world_area_add">
+			<return type="void" />
+			<argument index="0" name="area" type="TerrainWorldArea" />
+			<description>
+			</description>
+		</method>
+		<method name="world_area_get" qualifiers="const">
+			<return type="TerrainWorldArea" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="world_area_get_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="world_area_remove">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="world_areas_clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="active" type="bool" setter="set_active" getter="get_active" default="true">
+		</member>
+		<member name="chunk_size_x" type="int" setter="set_chunk_size_x" getter="get_chunk_size_x" default="16">
+		</member>
+		<member name="chunk_size_z" type="int" setter="set_chunk_size_z" getter="get_chunk_size_z" default="16">
+		</member>
+		<member name="chunk_spawn_range" type="int" setter="set_chunk_spawn_range" getter="get_chunk_spawn_range" default="4">
+		</member>
+		<member name="chunks" type="Array" setter="chunks_set" getter="chunks_get" default="[  ]">
+		</member>
+		<member name="current_seed" type="int" setter="set_current_seed" getter="get_current_seed" default="0">
+		</member>
+		<member name="data_margin_end" type="int" setter="set_data_margin_end" getter="get_data_margin_end" default="0">
+		</member>
+		<member name="data_margin_start" type="int" setter="set_data_margin_start" getter="get_data_margin_start" default="0">
+		</member>
+		<member name="editable" type="bool" setter="set_editable" getter="get_editable" default="false">
+		</member>
+		<member name="level_generator" type="TerrainLevelGenerator" setter="set_level_generator" getter="get_level_generator">
+		</member>
+		<member name="library" type="TerrainLibrary" setter="set_library" getter="get_library">
+		</member>
+		<member name="max_concurrent_generations" type="int" setter="set_max_concurrent_generations" getter="get_max_concurrent_generations" default="3">
+		</member>
+		<member name="player" type="Spatial" setter="set_player" getter="get_player">
+		</member>
+		<member name="player_path" type="NodePath" setter="set_player_path" getter="get_player_path" default="NodePath(&quot;&quot;)">
+		</member>
+		<member name="voxel_scale" type="float" setter="set_voxel_scale" getter="get_voxel_scale" default="1.0">
+		</member>
+		<member name="voxel_structures" type="Array" setter="voxel_structures_set" getter="voxel_structures_get" default="[  ]">
+		</member>
+		<member name="world_height" type="float" setter="set_world_height" getter="get_world_height" default="256.0">
+		</member>
+	</members>
+	<signals>
+		<signal name="chunk_added">
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</signal>
+		<signal name="chunk_mesh_generation_finished">
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</signal>
+		<signal name="chunk_removed">
+			<argument index="0" name="chunk" type="TerrainChunk" />
+			<description>
+			</description>
+		</signal>
+		<signal name="generation_finished">
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+		<constant name="CHANNEL_TYPE_INFO_TYPE" value="0" enum="ChannelTypeInfo">
+		</constant>
+		<constant name="CHANNEL_TYPE_INFO_ISOLEVEL" value="1" enum="ChannelTypeInfo">
+		</constant>
+		<constant name="CHANNEL_TYPE_INFO_LIQUID_FLOW" value="2" enum="ChannelTypeInfo">
+		</constant>
+		<constant name="NOTIFICATION_ACTIVE_STATE_CHANGED" value="9000">
+		</constant>
+	</constants>
+</class>

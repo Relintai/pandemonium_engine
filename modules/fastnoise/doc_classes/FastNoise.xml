@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="FastNoise" inherits="Reference" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_cellular_distance_2_indices" qualifiers="const">
+			<return type="PoolIntArray" />
+			<description>
+			</description>
+		</method>
+		<method name="get_cellular_distance_function" qualifiers="const">
+			<return type="int" enum="FastNoise.CellularDistanceFunction" />
+			<description>
+			</description>
+		</method>
+		<method name="get_cellular_jitter" qualifiers="const">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_cellular_noise_lookup" qualifiers="const">
+			<return type="FastNoise" />
+			<description>
+			</description>
+		</method>
+		<method name="get_cellular_return_type" qualifiers="const">
+			<return type="int" enum="FastNoise.CellularReturnType" />
+			<description>
+			</description>
+		</method>
+		<method name="get_fractal_gain" qualifiers="const">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_fractal_lacunarity" qualifiers="const">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_fractal_octaves" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_fractal_type" qualifiers="const">
+			<return type="int" enum="FastNoise.FractalType" />
+			<description>
+			</description>
+		</method>
+		<method name="get_frequency" qualifiers="const">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_gradient_perturbation_amplitude" qualifiers="const">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_interpolation" qualifiers="const">
+			<return type="int" enum="FastNoise.Interpolation" />
+			<description>
+			</description>
+		</method>
+		<method name="get_noise_2d">
+			<return type="float" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="y" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_noise_2dv">
+			<return type="float" />
+			<argument index="0" name="pos" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="get_noise_3d">
+			<return type="float" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="y" type="float" />
+			<argument index="2" name="z" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_noise_3dv">
+			<return type="float" />
+			<argument index="0" name="pos" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="get_noise_type" qualifiers="const">
+			<return type="int" enum="FastNoise.Type" />
+			<description>
+			</description>
+		</method>
+		<method name="get_seed" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_simplex_4d">
+			<return type="float" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="y" type="float" />
+			<argument index="2" name="z" type="float" />
+			<argument index="3" name="w" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_white_noise_4d">
+			<return type="float" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="y" type="float" />
+			<argument index="2" name="z" type="float" />
+			<argument index="3" name="w" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_cellular_distance_2_indices">
+			<return type="void" />
+			<argument index="0" name="i0" type="int" />
+			<argument index="1" name="i1" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_cellular_distance_function">
+			<return type="void" />
+			<argument index="0" name="func" type="int" enum="FastNoise.CellularDistanceFunction" />
+			<description>
+			</description>
+		</method>
+		<method name="set_cellular_jitter">
+			<return type="void" />
+			<argument index="0" name="jitter" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_cellular_noise_lookup">
+			<return type="void" />
+			<argument index="0" name="other_noise" type="FastNoise" />
+			<description>
+			</description>
+		</method>
+		<method name="set_cellular_return_type">
+			<return type="void" />
+			<argument index="0" name="ret" type="int" enum="FastNoise.CellularReturnType" />
+			<description>
+			</description>
+		</method>
+		<method name="set_fractal_gain">
+			<return type="void" />
+			<argument index="0" name="gain" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_fractal_lacunarity">
+			<return type="void" />
+			<argument index="0" name="lacunarity" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_fractal_octaves">
+			<return type="void" />
+			<argument index="0" name="octave_count" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_fractal_type">
+			<return type="void" />
+			<argument index="0" name="type" type="int" enum="FastNoise.FractalType" />
+			<description>
+			</description>
+		</method>
+		<method name="set_frequency">
+			<return type="void" />
+			<argument index="0" name="freq" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_gradient_perturbation_amplitude">
+			<return type="void" />
+			<argument index="0" name="amp" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_interpolation">
+			<return type="void" />
+			<argument index="0" name="interp" type="int" enum="FastNoise.Interpolation" />
+			<description>
+			</description>
+		</method>
+		<method name="set_noise_type">
+			<return type="void" />
+			<argument index="0" name="type" type="int" enum="FastNoise.Type" />
+			<description>
+			</description>
+		</method>
+		<method name="set_seed">
+			<return type="void" />
+			<argument index="0" name="seed" type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+		<constant name="TYPE_VALUE" value="0" enum="Type">
+		</constant>
+		<constant name="TYPE_VALUE_FRACTAL" value="1" enum="Type">
+		</constant>
+		<constant name="TYPE_PERLIN" value="2" enum="Type">
+		</constant>
+		<constant name="TYPE_PERLIN_FRACTAL" value="3" enum="Type">
+		</constant>
+		<constant name="TYPE_SIMPLEX" value="4" enum="Type">
+		</constant>
+		<constant name="TYPE_SIMPLEX_FRACTAL" value="5" enum="Type">
+		</constant>
+		<constant name="TYPE_CELLULAR" value="6" enum="Type">
+		</constant>
+		<constant name="TYPE_WHITE_NOISE" value="7" enum="Type">
+		</constant>
+		<constant name="TYPE_CUBIC" value="8" enum="Type">
+		</constant>
+		<constant name="TYPE_CUBIC_FRACTAL" value="9" enum="Type">
+		</constant>
+		<constant name="INTERP_LINEAR" value="0" enum="Interpolation">
+		</constant>
+		<constant name="INTERP_QUINTIC" value="2" enum="Interpolation">
+		</constant>
+		<constant name="INTERP_HERMITE" value="1" enum="Interpolation">
+		</constant>
+		<constant name="FRACTAL_FBM" value="0" enum="FractalType">
+		</constant>
+		<constant name="FRACTAL_BILLOW" value="1" enum="FractalType">
+		</constant>
+		<constant name="FRACTAL_RIGID_MULTI" value="2" enum="FractalType">
+		</constant>
+		<constant name="DISTANCE_EUCLIDEAN" value="0" enum="CellularDistanceFunction">
+		</constant>
+		<constant name="DISTANCE_MANHATTAN" value="1" enum="CellularDistanceFunction">
+		</constant>
+		<constant name="DISTANCE_NATURAL" value="2" enum="CellularDistanceFunction">
+		</constant>
+		<constant name="RETURN_CELL_VALUE" value="0" enum="CellularReturnType">
+		</constant>
+		<constant name="RETURN_NOISE_LOOKUP" value="1" enum="CellularReturnType">
+		</constant>
+		<constant name="RETURN_DISTANCE" value="2" enum="CellularReturnType">
+		</constant>
+		<constant name="RETURN_DISTANCE_2" value="3" enum="CellularReturnType">
+		</constant>
+		<constant name="RETURN_DISTANCE_2_ADD" value="4" enum="CellularReturnType">
+		</constant>
+		<constant name="RETURN_DISTANCE_2_SUB" value="5" enum="CellularReturnType">
+		</constant>
+		<constant name="RETURN_DISTANCE_2_MUL" value="6" enum="CellularReturnType">
+		</constant>
+		<constant name="RETURN_DISTANCE_2_DIV" value="7" enum="CellularReturnType">
+		</constant>
+	</constants>
+</class>

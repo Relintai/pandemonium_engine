@@ -1,0 +1,86 @@
+import os
+
+Import('env')
+
+module_env = env.Clone()
+
+import version
+
+if os.path.isdir('../mesh_data_resource'):
+    module_env.Append(CPPDEFINES=['MESH_DATA_RESOURCE_PRESENT'])
+
+has_texture_packer = False
+
+if os.path.isdir('../texture_packer'):
+    has_texture_packer = True
+    module_env.Append(CPPDEFINES=['TEXTURE_PACKER_PRESENT'])
+
+if os.path.isdir('../terraman'):
+    module_env.Append(CPPDEFINES=['TERRAMAN_PRESENT'])
+
+if os.path.isdir('../mesh_utils'):
+    module_env.Append(CPPDEFINES=['MESH_UTILS_PRESENT'])
+
+
+if os.path.isdir('../thread_pool'):
+    module_env.Append(CPPDEFINES=['THREAD_POOL_PRESENT'])
+
+sources = [
+
+    "register_types.cpp",
+
+    "lights/prop_light.cpp",
+
+    "tiled_wall/tiled_wall.cpp",
+    "tiled_wall/tiled_wall_data.cpp",
+
+    "props/prop_data.cpp",
+    "props/prop_data_entry.cpp",
+    "props/prop_data_scene.cpp",
+    "props/prop_data_light.cpp",
+    "props/prop_data_prop.cpp",
+    "props/prop_data_tiled_wall.cpp",
+
+    "clutter/ground_clutter.cpp",
+    "clutter/ground_clutter_foliage.cpp",
+
+    "prop_instance.cpp",
+    "prop_instance_merger.cpp",
+    "prop_ess_entity.cpp",
+    "prop_instance_job.cpp",
+    "prop_instance_prop_job.cpp",
+
+    "prop_scene_instance.cpp",
+
+    "singleton/prop_utils.cpp",
+    "singleton/prop_cache.cpp",
+
+    "editor/prop_editor_plugin.cpp",
+
+    "prop_mesher.cpp",
+
+    "jobs/prop_texture_job.cpp",
+
+    "jobs/prop_mesher_job_step.cpp",
+
+    "material_cache/prop_material_cache.cpp"
+]
+
+if version.minor >= 4:
+    sources.append("props/prop_data_portal.cpp")
+
+if has_texture_packer:
+    sources.append("material_cache/prop_material_cache_pcm.cpp")
+
+if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
+    # Shared lib compilation
+    module_env.Append(CCFLAGS=['-fPIC'])
+    module_env['LIBS'] = []
+    shared_lib = module_env.SharedLibrary(target='#bin/props', source=sources)
+    shared_lib_shim = shared_lib[0].name.rsplit('.', 1)[0]
+    env.Append(LIBS=[shared_lib_shim])
+    env.Append(LIBPATH=['#bin'])
+else:
+    # Static compilation
+    module_env.add_source_files(env.modules_sources, sources)
+

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ActionBarProfile" inherits="Reference" version="3.5">
+	<brief_description>
+		Stores all actionbar-related data for a class. Also see [ProfileManager].
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_action_bar">
+			<return type="void" />
+			<argument index="0" name="actionbar" type="ActionBarEntry" />
+			<description>
+			</description>
+		</method>
+		<method name="clear_action_bars">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="emit_change">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="from_actionbar_profile">
+			<return type="void" />
+			<argument index="0" name="other" type="ActionBarProfile" />
+			<description>
+			</description>
+		</method>
+		<method name="from_dict">
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="get_action_bar">
+			<return type="ActionBarEntry" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_action_bar_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_owner">
+			<return type="ClassProfile" />
+			<description>
+			</description>
+		</method>
+		<method name="load_defaults">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_action_bar">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="to_dict" qualifiers="const">
+			<return type="Dictionary" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="action_bar_profile_name" type="String" setter="set_action_bar_profile_name" getter="get_action_bar_profile_name" default="&quot;&quot;">
+		</member>
+	</members>
+	<signals>
+		<signal name="changed">
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+	</constants>
+</class>

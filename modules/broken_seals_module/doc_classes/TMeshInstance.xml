@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="TMeshInstance" inherits="MeshInstance" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="initialize_skinning">
+			<return type="void" />
+			<argument index="0" name="force_reset" type="bool" default="false" />
+			<argument index="1" name="call_attach_skeleton" type="bool" default="true" />
+			<description>
+			</description>
+		</method>
+		<method name="is_software_skinning_enabled">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

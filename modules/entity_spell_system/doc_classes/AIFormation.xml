@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="AIFormation" inherits="Resource" version="3.5">
+	<brief_description>
+		Class for scriptable AI formations. Not yet used. Needs pet support.
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_get_position" qualifiers="virtual">
+			<return type="Vector3" />
+			<argument index="0" name="slot_index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_on_set_owner" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_position">
+			<return type="Vector3" />
+			<argument index="0" name="slot_index" type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="owner" type="Entity" setter="set_owner" getter="get_owner">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

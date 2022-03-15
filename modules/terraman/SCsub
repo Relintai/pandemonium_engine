@@ -1,0 +1,89 @@
+import os
+
+Import('env')
+
+module_env = env.Clone()
+
+has_texture_packer = False
+if os.path.isdir('../texture_packer'):
+    module_env.Append(CPPDEFINES=['TEXTURE_PACKER_PRESENT'])
+    has_texture_packer = True
+
+if os.path.isdir('../thread_pool'):
+    module_env.Append(CPPDEFINES=['THREAD_POOL_PRESENT'])
+
+if os.path.isdir('../mesh_data_resource'):
+    module_env.Append(CPPDEFINES=['MESH_DATA_RESOURCE_PRESENT'])
+
+if os.path.isdir('../props'):
+    module_env.Append(CPPDEFINES=['PROPS_PRESENT'])
+
+if os.path.isdir('../mesh_utils'):
+    module_env.Append(CPPDEFINES=['MESH_UTILS_PRESENT'])
+
+sources = [
+
+    "register_types.cpp",
+
+    "library/terrain_library.cpp",
+    "library/terrain_library_simple.cpp",
+    "library/terrain_material_cache.cpp",
+    
+    "nodes/terrain_light_node.cpp",
+
+    "library/terrain_surface.cpp",
+    "library/terrain_surface_simple.cpp",
+
+    "data/terrain_light.cpp",
+
+    "meshers/terrain_mesher.cpp",
+
+    "meshers/blocky/terrain_mesher_blocky.cpp",
+    "meshers/default/terrain_mesher_default.cpp",
+
+    "world/terrain_world.cpp",
+    "world/terrain_chunk.cpp",
+    "world/terrain_structure.cpp",
+    "world/block_terrain_structure.cpp",
+    "world/terrain_environment_data.cpp",
+
+    "world/blocky/terrain_chunk_blocky.cpp",
+    "world/blocky/terrain_world_blocky.cpp",
+
+    "world/default/terrain_world_default.cpp",
+    "world/default/terrain_chunk_default.cpp",
+
+    "level_generator/terrain_level_generator.cpp",
+    "level_generator/terrain_level_generator_flat.cpp",
+
+    "areas/terrain_world_area.cpp",
+
+    "world/terrain_world_editor.cpp",
+    
+    "thirdparty/lz4/lz4.c",
+
+    "world/jobs/terrain_job.cpp",
+    "world/jobs/terrain_terrain_job.cpp",
+    "world/jobs/terrain_mesher_job_step.cpp",
+    "world/jobs/terrain_light_job.cpp",
+    "world/jobs/terrain_prop_job.cpp",
+]
+
+if has_texture_packer:
+    sources.append("library/terrain_library_merger.cpp")
+    sources.append("library/terrain_library_merger_pcm.cpp")
+    sources.append("library/terrain_surface_merger.cpp")
+    sources.append("library/terrain_material_cache_pcm.cpp")
+
+if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
+    # Shared lib compilation
+    module_env.Append(CCFLAGS=['-fPIC'])
+    module_env['LIBS'] = []
+    shared_lib = module_env.SharedLibrary(target='#bin/terraman', source=sources)
+    shared_lib_shim = shared_lib[0].name.rsplit('.', 1)[0]
+    env.Append(LIBS=[shared_lib_shim])
+    env.Append(LIBPATH=['#bin'])
+else:
+    # Static compilation
+    module_env.add_source_files(env.modules_sources, sources)
+
