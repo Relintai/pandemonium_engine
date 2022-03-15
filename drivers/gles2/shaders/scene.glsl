@@ -143,7 +143,7 @@ varying vec4 color_interp;
 varying vec2 uv_interp;
 #endif
 
-#if defined(ENABLE_UV2_INTERP) || defined(USE_LIGHTMAP)
+#if defined(ENABLE_UV2_INTERP)
 varying vec2 uv2_interp;
 #endif
 
@@ -304,9 +304,7 @@ uniform highp mat4 refprobe1_local_matrix;
 varying mediump vec4 refprobe1_reflection_normal_blend;
 uniform highp vec3 refprobe1_box_extents;
 
-#ifndef USE_LIGHTMAP
 varying mediump vec3 refprobe1_ambient_normal;
-#endif
 
 #endif //reflection probe1
 
@@ -316,9 +314,7 @@ uniform highp mat4 refprobe2_local_matrix;
 varying mediump vec4 refprobe2_reflection_normal_blend;
 uniform highp vec3 refprobe2_box_extents;
 
-#ifndef USE_LIGHTMAP
 varying mediump vec3 refprobe2_ambient_normal;
-#endif
 
 #endif //reflection probe2
 
@@ -651,10 +647,9 @@ VERTEX_SHADER_CODE
 			refprobe1_reflection_normal_blend.xyz = local_ref_vec;
 			refprobe1_reflection_normal_blend.a = blend;
 		}
-#ifndef USE_LIGHTMAP
 
 		refprobe1_ambient_normal = (refprobe1_local_matrix * vec4(normal_interp, 0.0)).xyz;
-#endif
+
 	}
 
 #endif //USE_REFLECTION_PROBE1
@@ -671,10 +666,9 @@ VERTEX_SHADER_CODE
 			refprobe2_reflection_normal_blend.xyz = local_ref_vec;
 			refprobe2_reflection_normal_blend.a = blend;
 		}
-#ifndef USE_LIGHTMAP
 
 		refprobe2_ambient_normal = (refprobe2_local_matrix * vec4(normal_interp, 0.0)).xyz;
-#endif
+
 	}
 
 #endif //USE_REFLECTION_PROBE2
@@ -797,9 +791,9 @@ uniform highp sampler2D depth_texture; //texunit:-4
 #ifdef USE_VERTEX_LIGHTING
 
 varying mediump vec4 refprobe1_reflection_normal_blend;
-#ifndef USE_LIGHTMAP
+
 varying mediump vec3 refprobe1_ambient_normal;
-#endif
+
 
 #else
 
@@ -824,9 +818,9 @@ uniform vec4 refprobe1_ambient;
 #ifdef USE_VERTEX_LIGHTING
 
 varying mediump vec4 refprobe2_reflection_normal_blend;
-#ifndef USE_LIGHTMAP
+
 varying mediump vec3 refprobe2_ambient_normal;
-#endif
+
 
 #else
 
@@ -853,9 +847,7 @@ uniform vec4 refprobe2_ambient;
 void reflection_process(samplerCube reflection_map,
 #ifdef USE_VERTEX_LIGHTING
 		vec3 ref_normal,
-#ifndef USE_LIGHTMAP
 		vec3 amb_normal,
-#endif
 		float ref_blend,
 
 #else //no vertex lighting
@@ -918,8 +910,6 @@ void reflection_process(samplerCube reflection_map,
 
 	reflection_accum += reflection;
 
-#ifndef USE_LIGHTMAP
-
 	vec4 ambient_out;
 #ifndef USE_VERTEX_LIGHTING
 
@@ -936,7 +926,6 @@ void reflection_process(samplerCube reflection_map,
 	ambient_out.rgb *= blend;
 	ambient_accum += ambient_out;
 
-#endif
 }
 
 #endif //use refprobe 1 or 2
@@ -1655,7 +1644,6 @@ FRAGMENT_SHADER_CODE
 
 	specular_light = textureCubeLod(radiance_map, ref_vec, roughness * RADIANCE_MAX_LOD).xyz * bg_energy;
 	specular_light *= horizon * horizon;
-#ifndef USE_LIGHTMAP
 	{
 		vec3 ambient_dir = normalize((radiance_inverse_xform * vec4(normal, 0.0)).xyz);
 		vec3 env_ambient = textureCubeLod(radiance_map, ambient_dir, 4.0).xyz * bg_energy;
@@ -1663,7 +1651,6 @@ FRAGMENT_SHADER_CODE
 
 		ambient_light = mix(ambient_color.rgb, env_ambient, ambient_sky_contribution);
 	}
-#endif
 
 #else
 
@@ -1684,9 +1671,7 @@ FRAGMENT_SHADER_CODE
 	reflection_process(reflection_probe1,
 #ifdef USE_VERTEX_LIGHTING
 			refprobe1_reflection_normal_blend.rgb,
-#ifndef USE_LIGHTMAP
 			refprobe1_ambient_normal,
-#endif
 			refprobe1_reflection_normal_blend.a,
 #else
 			normal, vertex_interp, refprobe1_local_matrix,
@@ -1702,9 +1687,7 @@ FRAGMENT_SHADER_CODE
 	reflection_process(reflection_probe2,
 #ifdef USE_VERTEX_LIGHTING
 			refprobe2_reflection_normal_blend.rgb,
-#ifndef USE_LIGHTMAP
 			refprobe2_ambient_normal,
-#endif
 			refprobe2_reflection_normal_blend.a,
 #else
 			normal, vertex_interp, refprobe2_local_matrix,
@@ -1719,11 +1702,9 @@ FRAGMENT_SHADER_CODE
 		specular_light = reflection_accum.rgb / reflection_accum.a;
 	}
 
-#ifndef USE_LIGHTMAP
 	if (ambient_accum.a > 0.0) {
 		ambient_light = ambient_accum.rgb / ambient_accum.a;
 	}
-#endif
 
 #endif // defined(USE_REFLECTION_PROBE1) || defined(USE_REFLECTION_PROBE2)
 

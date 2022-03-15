@@ -43,7 +43,6 @@ class Mesh : public Resource {
 
 	mutable Ref<TriangleMesh> triangle_mesh; //cached
 	mutable Vector<Vector3> debug_lines;
-	Size2 lightmap_size_hint;
 
 protected:
 	static void _bind_methods();
@@ -229,9 +228,6 @@ public:
 	virtual RID get_rid() const;
 
 	void regen_normalmaps();
-
-	Error lightmap_unwrap(const Transform &p_base_transform = Transform(), float p_texel_size = 0.05);
-	Error lightmap_unwrap_cached(int *&r_cache_data, unsigned int &r_cache_size, bool &r_used_cache, const Transform &p_base_transform = Transform(), float p_texel_size = 0.05);
 
 	virtual void reload_from_file();
 
