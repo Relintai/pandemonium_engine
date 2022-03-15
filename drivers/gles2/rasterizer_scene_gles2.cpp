@@ -1215,13 +1215,7 @@ void RasterizerSceneGLES2::_add_geometry_with_material(RasterizerStorageGLES2::G
 				copy = true;
 			}
 
-			if (e->instance->lightmap.is_valid()) {
-				e->light_mode = LIGHTMODE_LIGHTMAP;
-			} else if (!e->instance->lightmap_capture_data.empty()) {
-				e->light_mode = LIGHTMODE_LIGHTMAP_CAPTURE;
-			} else {
-				e->light_mode = LIGHTMODE_NORMAL;
-			}
+			e->light_mode = LIGHTMODE_NORMAL;
 		}
 	}
 
@@ -2292,10 +2286,6 @@ void RasterizerSceneGLES2::_render_render_list(RenderList::Element **p_elements,
 		using_fog = true;
 	}
 
-	RasterizerStorageGLES2::Texture *prev_lightmap = nullptr;
-	float lightmap_energy = 1.0;
-	bool prev_use_lightmap_capture = false;
-
 	storage->info.render.draw_call_count += p_element_count;
 
 	for (int i = 0; i < p_element_count; i++) {
@@ -2309,11 +2299,8 @@ void RasterizerSceneGLES2::_render_render_list(RenderList::Element **p_elements,
 		LightInstance *light = nullptr;
 		ReflectionProbeInstance *refprobe_1 = nullptr;
 		ReflectionProbeInstance *refprobe_2 = nullptr;
-		RasterizerStorageGLES2::Texture *lightmap = nullptr;
-		bool use_lightmap_capture = false;
 		bool rebind_light = false;
 		bool rebind_reflection = false;
-		bool rebind_lightmap = false;
 
 		if (!p_shadow && material->shader) {
 			bool unshaded = material->shader->spatial.unshaded;
@@ -2437,34 +2424,6 @@ void RasterizerSceneGLES2::_render_render_list(RenderList::Element **p_elements,
 				rebind = true;
 				rebind_reflection = true;
 			}
-
-			use_lightmap_capture = !unshaded && !accum_pass && !e->instance->lightmap_capture_data.empty();
-
-			if (use_lightmap_capture != prev_use_lightmap_capture) {
-				state.scene_shader.set_conditional(SceneShaderGLES2::USE_LIGHTMAP_CAPTURE, use_lightmap_capture);
-				rebind = true;
-			}
-
-			if (!unshaded && !accum_pass && e->instance->lightmap.is_valid()) {
-				lightmap = storage->texture_owner.getornull(e->instance->lightmap);
-				lightmap_energy = 1.0;
-				if (lightmap) {
-					RasterizerStorageGLES2::LightmapCapture *capture = storage->lightmap_capture_data_owner.getornull(e->instance->lightmap_capture->base);
-					if (capture) {
-						lightmap_energy = capture->energy;
-					}
-				}
-			}
-
-			if (lightmap != prev_lightmap) {
-				state.scene_shader.set_conditional(SceneShaderGLES2::USE_LIGHTMAP, lightmap != nullptr);
-				if (lightmap != nullptr) {
-					glActiveTexture(GL_TEXTURE0 + storage->config.max_texture_image_units - 4);
-					glBindTexture(GL_TEXTURE_2D, lightmap->tex_id);
-				}
-				rebind = true;
-				rebind_lightmap = true;
-			}
 		}
 
 		bool depth_prepass = false;
@@ -2566,7 +2525,6 @@ void RasterizerSceneGLES2::_render_render_list(RenderList::Element **p_elements,
 				//rebind all these
 				rebind_light = true;
 				rebind_reflection = true;
-				rebind_lightmap = true;
 
 				if (using_fog) {
 					state.scene_shader.set_uniform(SceneShaderGLES2::FOG_COLOR_BASE, p_env->fog_color);
@@ -2613,18 +2571,7 @@ void RasterizerSceneGLES2::_render_render_list(RenderList::Element **p_elements,
 			_setup_refprobes(refprobe_1, refprobe_2, p_view_transform, p_env);
 		}
 
-		if (rebind_lightmap && lightmap) {
-			state.scene_shader.set_uniform(SceneShaderGLES2::LIGHTMAP_ENERGY, lightmap_energy);
-			if (storage->config.use_lightmap_filter_bicubic) {
-				state.scene_shader.set_uniform(SceneShaderGLES2::LIGHTMAP_TEXTURE_SIZE, Vector2(lightmap->width, lightmap->height));
-			}
-		}
-
 		state.scene_shader.set_uniform(SceneShaderGLES2::WORLD_TRANSFORM, e->instance->transform);
-
-		if (use_lightmap_capture) { //this is per instance, must be set always if present
-			glUniform4fv(state.scene_shader.get_uniform_location(SceneShaderGLES2::LIGHTMAP_CAPTURES), 12, (const GLfloat *)e->instance->lightmap_capture_data.ptr());
-		}
 
 		_render_geometry(e);
 
@@ -2637,8 +2584,6 @@ void RasterizerSceneGLES2::_render_render_list(RenderList::Element **p_elements,
 		prev_light = light;
 		prev_refprobe_1 = refprobe_1;
 		prev_refprobe_2 = refprobe_2;
-		prev_lightmap = lightmap;
-		prev_use_lightmap_capture = use_lightmap_capture;
 	}
 
 	_setup_light_type(nullptr, nullptr); //clear light stuff
@@ -2654,8 +2599,6 @@ void RasterizerSceneGLES2::_render_render_list(RenderList::Element **p_elements,
 	state.scene_shader.set_conditional(SceneShaderGLES2::USE_VERTEX_LIGHTING, false);
 	state.scene_shader.set_conditional(SceneShaderGLES2::USE_REFLECTION_PROBE1, false);
 	state.scene_shader.set_conditional(SceneShaderGLES2::USE_REFLECTION_PROBE2, false);
-	state.scene_shader.set_conditional(SceneShaderGLES2::USE_LIGHTMAP, false);
-	state.scene_shader.set_conditional(SceneShaderGLES2::USE_LIGHTMAP_CAPTURE, false);
 	state.scene_shader.set_conditional(SceneShaderGLES2::FOG_DEPTH_ENABLED, false);
 	state.scene_shader.set_conditional(SceneShaderGLES2::FOG_HEIGHT_ENABLED, false);
 	state.scene_shader.set_conditional(SceneShaderGLES2::USE_DEPTH_PREPASS, false);
@@ -4075,10 +4018,6 @@ void RasterizerSceneGLES2::initialize() {
 	}
 
 	directional_shadow_create();
-
-	if (storage->config.use_lightmap_filter_bicubic) {
-		state.scene_shader.add_custom_define("#define USE_LIGHTMAP_FILTER_BICUBIC\n");
-	}
 
 	shadow_filter_mode = SHADOW_FILTER_NEAREST;
 

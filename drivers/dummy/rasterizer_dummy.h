@@ -552,71 +552,6 @@ public:
 	void instance_add_dependency(RID p_base, RasterizerScene::InstanceBase *p_instance) {}
 	void instance_remove_dependency(RID p_base, RasterizerScene::InstanceBase *p_instance) {}
 
-	/* LIGHTMAP CAPTURE */
-	struct Instantiable : public RID_Data {
-		SelfList<RasterizerScene::InstanceBase>::List instance_list;
-
-		_FORCE_INLINE_ void instance_change_notify(bool p_aabb = true, bool p_materials = true) {
-			SelfList<RasterizerScene::InstanceBase> *instances = instance_list.first();
-			while (instances) {
-				instances->self()->base_changed(p_aabb, p_materials);
-				instances = instances->next();
-			}
-		}
-
-		_FORCE_INLINE_ void instance_remove_deps() {
-			SelfList<RasterizerScene::InstanceBase> *instances = instance_list.first();
-			while (instances) {
-				SelfList<RasterizerScene::InstanceBase> *next = instances->next();
-				instances->self()->base_removed();
-				instances = next;
-			}
-		}
-
-		Instantiable() {}
-		virtual ~Instantiable() {
-		}
-	};
-
-	struct LightmapCapture : public Instantiable {
-		PoolVector<LightmapCaptureOctree> octree;
-		AABB bounds;
-		Transform cell_xform;
-		int cell_subdiv;
-		float energy;
-		LightmapCapture() {
-			energy = 1.0;
-			cell_subdiv = 1;
-		}
-	};
-
-	mutable RID_Owner<LightmapCapture> lightmap_capture_data_owner;
-	void lightmap_capture_set_bounds(RID p_capture, const AABB &p_bounds) {}
-	AABB lightmap_capture_get_bounds(RID p_capture) const { return AABB(); }
-	void lightmap_capture_set_octree(RID p_capture, const PoolVector<uint8_t> &p_octree) {}
-	RID lightmap_capture_create() {
-		LightmapCapture *capture = memnew(LightmapCapture);
-		return lightmap_capture_data_owner.make_rid(capture);
-	}
-	PoolVector<uint8_t> lightmap_capture_get_octree(RID p_capture) const {
-		const LightmapCapture *capture = lightmap_capture_data_owner.getornull(p_capture);
-		ERR_FAIL_COND_V(!capture, PoolVector<uint8_t>());
-		return PoolVector<uint8_t>();
-	}
-	void lightmap_capture_set_octree_cell_transform(RID p_capture, const Transform &p_xform) {}
-	Transform lightmap_capture_get_octree_cell_transform(RID p_capture) const { return Transform(); }
-	void lightmap_capture_set_octree_cell_subdiv(RID p_capture, int p_subdiv) {}
-	int lightmap_capture_get_octree_cell_subdiv(RID p_capture) const { return 0; }
-	void lightmap_capture_set_energy(RID p_capture, float p_energy) {}
-	float lightmap_capture_get_energy(RID p_capture) const { return 0.0; }
-	void lightmap_capture_set_interior(RID p_capture, bool p_interior) {}
-	bool lightmap_capture_is_interior(RID p_capture) const { return false; }
-	const PoolVector<LightmapCaptureOctree> *lightmap_capture_get_octree_ptr(RID p_capture) const {
-		const LightmapCapture *capture = lightmap_capture_data_owner.getornull(p_capture);
-		ERR_FAIL_COND_V(!capture, NULL);
-		return &capture->octree;
-	}
-
 	/* PARTICLES */
 
 	RID particles_create() { return RID(); }
@@ -681,8 +616,6 @@ public:
 	VS::InstanceType get_base_type(RID p_rid) const {
 		if (mesh_owner.owns(p_rid)) {
 			return VS::INSTANCE_MESH;
-		} else if (lightmap_capture_data_owner.owns(p_rid)) {
-			return VS::INSTANCE_LIGHTMAP_CAPTURE;
 		}
 
 		return VS::INSTANCE_NONE;
@@ -699,11 +632,6 @@ public:
 			DummyMesh *mesh = mesh_owner.getornull(p_rid);
 			mesh_owner.free(p_rid);
 			memdelete(mesh);
-		} else if (lightmap_capture_data_owner.owns(p_rid)) {
-			// delete the lightmap
-			LightmapCapture *lightmap_capture = lightmap_capture_data_owner.getornull(p_rid);
-			lightmap_capture_data_owner.free(p_rid);
-			memdelete(lightmap_capture);
 		} else {
 			return false;
 		}

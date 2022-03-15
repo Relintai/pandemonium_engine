@@ -433,20 +433,8 @@ Ref<Mesh> Mesh::create_outline(float p_margin) const {
 	return newmesh;
 }
 
-void Mesh::set_lightmap_size_hint(const Vector2 &p_size) {
-	lightmap_size_hint = p_size;
-}
-
-Size2 Mesh::get_lightmap_size_hint() const {
-	return lightmap_size_hint;
-}
-
 void Mesh::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("set_lightmap_size_hint", "size"), &Mesh::set_lightmap_size_hint);
-	ClassDB::bind_method(D_METHOD("get_lightmap_size_hint"), &Mesh::get_lightmap_size_hint);
 	ClassDB::bind_method(D_METHOD("get_aabb"), &Mesh::get_aabb);
-
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "lightmap_size_hint"), "set_lightmap_size_hint", "get_lightmap_size_hint");
 
 	ClassDB::bind_method(D_METHOD("get_surface_count"), &Mesh::get_surface_count);
 	ClassDB::bind_method(D_METHOD("surface_get_arrays", "surf_idx"), &Mesh::surface_get_arrays);
@@ -1362,7 +1350,7 @@ Error ArrayMesh::lightmap_unwrap_cached(int *&r_cache_data, unsigned int &r_cach
 		surfaces_tools[i]->commit(Ref<ArrayMesh>((ArrayMesh *)this), lightmap_surfaces[i].format);
 	}
 
-	set_lightmap_size_hint(Size2(size_x, size_y));
+	//set_lightmap_size_hint(Size2(size_x, size_y));
 
 	if (!cached) {
 		//free stuff

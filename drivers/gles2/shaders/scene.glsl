@@ -53,7 +53,7 @@ attribute vec4 color_attrib; // attrib:3
 attribute vec2 uv_attrib; // attrib:4
 #endif
 
-#if defined(ENABLE_UV2_INTERP) || defined(USE_LIGHTMAP)
+#if defined(ENABLE_UV2_INTERP) 
 attribute vec2 uv2_attrib; // attrib:5
 #endif
 
@@ -395,7 +395,7 @@ void main() {
 	uv_interp = uv_attrib;
 #endif
 
-#if defined(ENABLE_UV2_INTERP) || defined(USE_LIGHTMAP)
+#if defined(ENABLE_UV2_INTERP) 
 	uv2_interp = uv2_attrib;
 #endif
 
@@ -941,78 +941,6 @@ void reflection_process(samplerCube reflection_map,
 
 #endif //use refprobe 1 or 2
 
-#ifdef USE_LIGHTMAP
-uniform mediump sampler2D lightmap; //texunit:-4
-uniform mediump float lightmap_energy;
-
-#if defined(USE_LIGHTMAP_FILTER_BICUBIC)
-uniform mediump vec2 lightmap_texture_size;
-
-// w0, w1, w2, and w3 are the four cubic B-spline basis functions
-float w0(float a) {
-	return (1.0 / 6.0) * (a * (a * (-a + 3.0) - 3.0) + 1.0);
-}
-
-float w1(float a) {
-	return (1.0 / 6.0) * (a * a * (3.0 * a - 6.0) + 4.0);
-}
-
-float w2(float a) {
-	return (1.0 / 6.0) * (a * (a * (-3.0 * a + 3.0) + 3.0) + 1.0);
-}
-
-float w3(float a) {
-	return (1.0 / 6.0) * (a * a * a);
-}
-
-// g0 and g1 are the two amplitude functions
-float g0(float a) {
-	return w0(a) + w1(a);
-}
-
-float g1(float a) {
-	return w2(a) + w3(a);
-}
-
-// h0 and h1 are the two offset functions
-float h0(float a) {
-	return -1.0 + w1(a) / (w0(a) + w1(a));
-}
-
-float h1(float a) {
-	return 1.0 + w3(a) / (w2(a) + w3(a));
-}
-
-vec4 texture2D_bicubic(sampler2D tex, vec2 uv) {
-	vec2 texel_size = vec2(1.0) / lightmap_texture_size;
-
-	uv = uv * lightmap_texture_size + vec2(0.5);
-
-	vec2 iuv = floor(uv);
-	vec2 fuv = fract(uv);
-
-	float g0x = g0(fuv.x);
-	float g1x = g1(fuv.x);
-	float h0x = h0(fuv.x);
-	float h1x = h1(fuv.x);
-	float h0y = h0(fuv.y);
-	float h1y = h1(fuv.y);
-
-	vec2 p0 = (vec2(iuv.x + h0x, iuv.y + h0y) - vec2(0.5)) * texel_size;
-	vec2 p1 = (vec2(iuv.x + h1x, iuv.y + h0y) - vec2(0.5)) * texel_size;
-	vec2 p2 = (vec2(iuv.x + h0x, iuv.y + h1y) - vec2(0.5)) * texel_size;
-	vec2 p3 = (vec2(iuv.x + h1x, iuv.y + h1y) - vec2(0.5)) * texel_size;
-
-	return (g0(fuv.y) * (g0x * texture2D(tex, p0) + g1x * texture2D(tex, p1))) +
-			(g1(fuv.y) * (g0x * texture2D(tex, p2) + g1x * texture2D(tex, p3)));
-}
-#endif //USE_LIGHTMAP_FILTER_BICUBIC
-#endif
-
-#ifdef USE_LIGHTMAP_CAPTURE
-uniform mediump vec4 lightmap_captures[12];
-#endif
-
 #ifdef USE_RADIANCE_MAP
 
 uniform samplerCube radiance_map; // texunit:-2
@@ -1121,7 +1049,7 @@ varying vec4 color_interp;
 varying vec2 uv_interp;
 #endif
 
-#if defined(ENABLE_UV2_INTERP) || defined(USE_LIGHTMAP)
+#if defined(ENABLE_UV2_INTERP)
 varying vec2 uv2_interp;
 #endif
 
@@ -1818,51 +1746,6 @@ FRAGMENT_SHADER_CODE
 
 #endif
 	}
-
-#ifdef USE_LIGHTMAP
-//ambient light will come entirely from lightmap is lightmap is used
-#if defined(USE_LIGHTMAP_FILTER_BICUBIC)
-	ambient_light = texture2D_bicubic(lightmap, uv2_interp).rgb * lightmap_energy;
-#else
-	ambient_light = texture2D(lightmap, uv2_interp).rgb * lightmap_energy;
-#endif
-#endif
-
-#ifdef USE_LIGHTMAP_CAPTURE
-	{
-		vec3 cone_dirs[12];
-		cone_dirs[0] = vec3(0.0, 0.0, 1.0);
-		cone_dirs[1] = vec3(0.866025, 0.0, 0.5);
-		cone_dirs[2] = vec3(0.267617, 0.823639, 0.5);
-		cone_dirs[3] = vec3(-0.700629, 0.509037, 0.5);
-		cone_dirs[4] = vec3(-0.700629, -0.509037, 0.5);
-		cone_dirs[5] = vec3(0.267617, -0.823639, 0.5);
-		cone_dirs[6] = vec3(0.0, 0.0, -1.0);
-		cone_dirs[7] = vec3(0.866025, 0.0, -0.5);
-		cone_dirs[8] = vec3(0.267617, 0.823639, -0.5);
-		cone_dirs[9] = vec3(-0.700629, 0.509037, -0.5);
-		cone_dirs[10] = vec3(-0.700629, -0.509037, -0.5);
-		cone_dirs[11] = vec3(0.267617, -0.823639, -0.5);
-
-		vec3 local_normal = normalize(camera_matrix * vec4(normal, 0.0)).xyz;
-		vec4 captured = vec4(0.0);
-		float sum = 0.0;
-		for (int i = 0; i < 12; i++) {
-			float amount = max(0.0, dot(local_normal, cone_dirs[i])); //not correct, but creates a nice wrap around effect
-			captured += lightmap_captures[i] * amount;
-			sum += amount;
-		}
-
-		captured /= sum;
-
-		// Alpha channel is used to indicate if dynamic objects keep the environment lighting
-		if (lightmap_captures[0].a > 0.5) {
-			ambient_light += captured.rgb;
-		} else {
-			ambient_light = captured.rgb;
-		}
-	}
-#endif
 
 #endif //BASE PASS
 

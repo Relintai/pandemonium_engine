@@ -144,8 +144,6 @@ public:
 
 	virtual AABB get_aabb() const = 0;
 
-	void set_lightmap_size_hint(const Vector2 &p_size);
-	Size2 get_lightmap_size_hint() const;
 	void clear_cache() const;
 
 	typedef Vector<PoolVector<Vector3>> (*ConvexDecompositionFunc)(const real_t *p_vertices, int p_vertex_count, const uint32_t *p_triangles, int p_triangle_count, int p_max_convex_hulls, Vector<PoolVector<uint32_t>> *r_convex_indices);
