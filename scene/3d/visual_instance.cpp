@@ -114,7 +114,6 @@ void VisualInstance::_notification(int p_what) {
 		case NOTIFICATION_EXIT_WORLD: {
 			VisualServer::get_singleton()->instance_set_scenario(instance, RID());
 			VisualServer::get_singleton()->instance_attach_skeleton(instance, RID());
-			//VS::get_singleton()->instance_geometry_set_baked_light_sampler(instance, RID() );
 
 			// the vi visible flag is always set to invisible when outside the tree,
 			// so it can detect re-entering the tree and becoming visible, and send
@@ -344,7 +343,6 @@ void GeometryInstance::_bind_methods() {
 	BIND_ENUM_CONSTANT(SHADOW_CASTING_SETTING_DOUBLE_SIDED);
 	BIND_ENUM_CONSTANT(SHADOW_CASTING_SETTING_SHADOWS_ONLY);
 
-	BIND_ENUM_CONSTANT(FLAG_USE_BAKED_LIGHT);
 	BIND_ENUM_CONSTANT(FLAG_DRAW_NEXT_FRAME_IF_VISIBLE);
 	BIND_ENUM_CONSTANT(FLAG_MAX);
 }
@@ -361,5 +359,4 @@ GeometryInstance::GeometryInstance() {
 
 	shadow_casting_setting = SHADOW_CASTING_SETTING_ON;
 	extra_cull_margin = 0;
-	//VS::get_singleton()->instance_geometry_set_baked_light_texture_index(get_instance(),0);
 }

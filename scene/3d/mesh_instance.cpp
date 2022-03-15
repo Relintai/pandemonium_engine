@@ -875,9 +875,6 @@ bool MeshInstance::_is_mergeable_with(const MeshInstance &p_other) const {
 	if (get_cast_shadows_setting() != p_other.get_cast_shadows_setting()) {
 		return false;
 	}
-	if (get_flag(FLAG_USE_BAKED_LIGHT) != p_other.get_flag(FLAG_USE_BAKED_LIGHT)) {
-		return false;
-	}
 	if (is_visible() != p_other.is_visible()) {
 		return false;
 	}
@@ -1265,7 +1262,6 @@ bool MeshInstance::merge_meshes(Vector<MeshInstance *> p_list, bool p_use_global
 	set_material_overlay(first->get_material_overlay());
 	set_material_override(first->get_material_override());
 	set_cast_shadows_setting(first->get_cast_shadows_setting());
-	set_flag(FLAG_USE_BAKED_LIGHT, first->get_flag(FLAG_USE_BAKED_LIGHT));
 
 	return true;
 }

@@ -118,7 +118,6 @@ public:
 		bool mirror : 1;
 		bool receive_shadows : 1;
 		bool visible : 1;
-		bool baked_light : 1; //this flag is only to know if it actually did use baked light
 		bool redraw_if_visible : 1;
 
 		bool on_interpolate_list : 1;
@@ -145,7 +144,6 @@ public:
 			visible = true;
 			depth_layer = 0;
 			layer_mask = 1;
-			baked_light = false;
 			redraw_if_visible = false;
 			on_interpolate_list = false;
 			on_interpolate_transform_list = false;
@@ -450,8 +448,6 @@ public:
 	virtual void light_set_negative(RID p_light, bool p_enable) = 0;
 	virtual void light_set_cull_mask(RID p_light, uint32_t p_mask) = 0;
 	virtual void light_set_reverse_cull_face_mode(RID p_light, bool p_enabled) = 0;
-	virtual void light_set_use_gi(RID p_light, bool p_enable) = 0;
-	virtual void light_set_bake_mode(RID p_light, VS::LightBakeMode p_bake_mode) = 0;
 
 	virtual void light_omni_set_shadow_mode(RID p_light, VS::LightOmniShadowMode p_mode) = 0;
 	virtual void light_omni_set_shadow_detail(RID p_light, VS::LightOmniShadowDetail p_detail) = 0;
@@ -471,8 +467,6 @@ public:
 	virtual AABB light_get_aabb(RID p_light) const = 0;
 	virtual float light_get_param(RID p_light, VS::LightParam p_param) = 0;
 	virtual Color light_get_color(RID p_light) = 0;
-	virtual bool light_get_use_gi(RID p_light) = 0;
-	virtual VS::LightBakeMode light_get_bake_mode(RID p_light) = 0;
 	virtual uint64_t light_get_version(RID p_light) const = 0;
 
 	/* PROBE API */
