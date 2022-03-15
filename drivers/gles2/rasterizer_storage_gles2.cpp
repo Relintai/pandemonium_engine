@@ -4555,97 +4555,6 @@ int RasterizerStorageGLES2::reflection_probe_get_resolution(RID p_probe) const {
 	return reflection_probe->resolution;
 }
 
-RID RasterizerStorageGLES2::gi_probe_create() {
-	return RID();
-}
-
-void RasterizerStorageGLES2::gi_probe_set_bounds(RID p_probe, const AABB &p_bounds) {
-}
-
-AABB RasterizerStorageGLES2::gi_probe_get_bounds(RID p_probe) const {
-	return AABB();
-}
-
-void RasterizerStorageGLES2::gi_probe_set_cell_size(RID p_probe, float p_size) {
-}
-
-float RasterizerStorageGLES2::gi_probe_get_cell_size(RID p_probe) const {
-	return 0.0;
-}
-
-void RasterizerStorageGLES2::gi_probe_set_to_cell_xform(RID p_probe, const Transform &p_xform) {
-}
-
-Transform RasterizerStorageGLES2::gi_probe_get_to_cell_xform(RID p_probe) const {
-	return Transform();
-}
-
-void RasterizerStorageGLES2::gi_probe_set_dynamic_data(RID p_probe, const PoolVector<int> &p_data) {
-}
-
-PoolVector<int> RasterizerStorageGLES2::gi_probe_get_dynamic_data(RID p_probe) const {
-	return PoolVector<int>();
-}
-
-void RasterizerStorageGLES2::gi_probe_set_dynamic_range(RID p_probe, int p_range) {
-}
-
-int RasterizerStorageGLES2::gi_probe_get_dynamic_range(RID p_probe) const {
-	return 0;
-}
-
-void RasterizerStorageGLES2::gi_probe_set_energy(RID p_probe, float p_range) {
-}
-
-void RasterizerStorageGLES2::gi_probe_set_bias(RID p_probe, float p_range) {
-}
-
-void RasterizerStorageGLES2::gi_probe_set_normal_bias(RID p_probe, float p_range) {
-}
-
-void RasterizerStorageGLES2::gi_probe_set_propagation(RID p_probe, float p_range) {
-}
-
-void RasterizerStorageGLES2::gi_probe_set_interior(RID p_probe, bool p_enable) {
-}
-
-bool RasterizerStorageGLES2::gi_probe_is_interior(RID p_probe) const {
-	return false;
-}
-
-void RasterizerStorageGLES2::gi_probe_set_compress(RID p_probe, bool p_enable) {
-}
-
-bool RasterizerStorageGLES2::gi_probe_is_compressed(RID p_probe) const {
-	return false;
-}
-float RasterizerStorageGLES2::gi_probe_get_energy(RID p_probe) const {
-	return 0;
-}
-
-float RasterizerStorageGLES2::gi_probe_get_bias(RID p_probe) const {
-	return 0;
-}
-
-float RasterizerStorageGLES2::gi_probe_get_normal_bias(RID p_probe) const {
-	return 0;
-}
-
-float RasterizerStorageGLES2::gi_probe_get_propagation(RID p_probe) const {
-	return 0;
-}
-
-uint32_t RasterizerStorageGLES2::gi_probe_get_version(RID p_probe) {
-	return 0;
-}
-
-RID RasterizerStorageGLES2::gi_probe_dynamic_data_create(int p_width, int p_height, int p_depth, GIProbeCompression p_compression) {
-	return RID();
-}
-
-void RasterizerStorageGLES2::gi_probe_dynamic_data_update(RID p_gi_probe_data, int p_depth_slice, int p_slice_count, int p_mipmap, const void *p_data) {
-}
-
 ///////
 
 RID RasterizerStorageGLES2::lightmap_capture_create() {
@@ -4900,10 +4809,6 @@ void RasterizerStorageGLES2::instance_add_dependency(RID p_base, RasterizerScene
 			inst = light_owner.getornull(p_base);
 			ERR_FAIL_COND(!inst);
 		} break;
-		/*case VS::INSTANCE_GI_PROBE: {
-			inst = gi_probe_owner.getornull(p_base);
-			ERR_FAIL_COND(!inst);
-		} break;*/
 		case VS::INSTANCE_LIGHTMAP_CAPTURE: {
 			inst = lightmap_capture_data_owner.getornull(p_base);
 			ERR_FAIL_COND(!inst);
@@ -4944,10 +4849,6 @@ void RasterizerStorageGLES2::instance_remove_dependency(RID p_base, RasterizerSc
 			inst = light_owner.getornull(p_base);
 			ERR_FAIL_COND(!inst);
 		} break;
-		/*case VS::INSTANCE_GI_PROBE: {
-			inst = gi_probe_owner.getornull(p_base);
-			ERR_FAIL_COND(!inst);
-		} break; */
 		case VS::INSTANCE_LIGHTMAP_CAPTURE: {
 			inst = lightmap_capture_data_owner.getornull(p_base);
 			ERR_FAIL_COND(!inst);

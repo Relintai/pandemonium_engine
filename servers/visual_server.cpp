@@ -1990,30 +1990,6 @@ void VisualServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("reflection_probe_set_enable_shadows", "probe", "enable"), &VisualServer::reflection_probe_set_enable_shadows);
 	ClassDB::bind_method(D_METHOD("reflection_probe_set_cull_mask", "probe", "layers"), &VisualServer::reflection_probe_set_cull_mask);
 
-	ClassDB::bind_method(D_METHOD("gi_probe_create"), &VisualServer::gi_probe_create);
-	ClassDB::bind_method(D_METHOD("gi_probe_set_bounds", "probe", "bounds"), &VisualServer::gi_probe_set_bounds);
-	ClassDB::bind_method(D_METHOD("gi_probe_get_bounds", "probe"), &VisualServer::gi_probe_get_bounds);
-	ClassDB::bind_method(D_METHOD("gi_probe_set_cell_size", "probe", "range"), &VisualServer::gi_probe_set_cell_size);
-	ClassDB::bind_method(D_METHOD("gi_probe_get_cell_size", "probe"), &VisualServer::gi_probe_get_cell_size);
-	ClassDB::bind_method(D_METHOD("gi_probe_set_to_cell_xform", "probe", "xform"), &VisualServer::gi_probe_set_to_cell_xform);
-	ClassDB::bind_method(D_METHOD("gi_probe_get_to_cell_xform", "probe"), &VisualServer::gi_probe_get_to_cell_xform);
-	ClassDB::bind_method(D_METHOD("gi_probe_set_dynamic_data", "probe", "data"), &VisualServer::gi_probe_set_dynamic_data);
-	ClassDB::bind_method(D_METHOD("gi_probe_get_dynamic_data", "probe"), &VisualServer::gi_probe_get_dynamic_data);
-	ClassDB::bind_method(D_METHOD("gi_probe_set_dynamic_range", "probe", "range"), &VisualServer::gi_probe_set_dynamic_range);
-	ClassDB::bind_method(D_METHOD("gi_probe_get_dynamic_range", "probe"), &VisualServer::gi_probe_get_dynamic_range);
-	ClassDB::bind_method(D_METHOD("gi_probe_set_energy", "probe", "energy"), &VisualServer::gi_probe_set_energy);
-	ClassDB::bind_method(D_METHOD("gi_probe_get_energy", "probe"), &VisualServer::gi_probe_get_energy);
-	ClassDB::bind_method(D_METHOD("gi_probe_set_bias", "probe", "bias"), &VisualServer::gi_probe_set_bias);
-	ClassDB::bind_method(D_METHOD("gi_probe_get_bias", "probe"), &VisualServer::gi_probe_get_bias);
-	ClassDB::bind_method(D_METHOD("gi_probe_set_normal_bias", "probe", "bias"), &VisualServer::gi_probe_set_normal_bias);
-	ClassDB::bind_method(D_METHOD("gi_probe_get_normal_bias", "probe"), &VisualServer::gi_probe_get_normal_bias);
-	ClassDB::bind_method(D_METHOD("gi_probe_set_propagation", "probe", "propagation"), &VisualServer::gi_probe_set_propagation);
-	ClassDB::bind_method(D_METHOD("gi_probe_get_propagation", "probe"), &VisualServer::gi_probe_get_propagation);
-	ClassDB::bind_method(D_METHOD("gi_probe_set_interior", "probe", "enable"), &VisualServer::gi_probe_set_interior);
-	ClassDB::bind_method(D_METHOD("gi_probe_is_interior", "probe"), &VisualServer::gi_probe_is_interior);
-	ClassDB::bind_method(D_METHOD("gi_probe_set_compress", "probe", "enable"), &VisualServer::gi_probe_set_compress);
-	ClassDB::bind_method(D_METHOD("gi_probe_is_compressed", "probe"), &VisualServer::gi_probe_is_compressed);
-
 	ClassDB::bind_method(D_METHOD("lightmap_capture_create"), &VisualServer::lightmap_capture_create);
 	ClassDB::bind_method(D_METHOD("lightmap_capture_set_bounds", "capture", "bounds"), &VisualServer::lightmap_capture_set_bounds);
 	ClassDB::bind_method(D_METHOD("lightmap_capture_get_bounds", "capture"), &VisualServer::lightmap_capture_get_bounds);
@@ -2424,7 +2400,6 @@ void VisualServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(INSTANCE_PARTICLES);
 	BIND_ENUM_CONSTANT(INSTANCE_LIGHT);
 	BIND_ENUM_CONSTANT(INSTANCE_REFLECTION_PROBE);
-	BIND_ENUM_CONSTANT(INSTANCE_GI_PROBE);
 	BIND_ENUM_CONSTANT(INSTANCE_LIGHTMAP_CAPTURE);
 	BIND_ENUM_CONSTANT(INSTANCE_MAX);
 	BIND_ENUM_CONSTANT(INSTANCE_GEOMETRY_MASK);

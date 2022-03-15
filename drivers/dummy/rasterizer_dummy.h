@@ -101,11 +101,6 @@ public:
 	bool reflection_probe_instance_begin_render(RID p_instance, RID p_reflection_atlas) { return false; }
 	bool reflection_probe_instance_postprocess_step(RID p_instance) { return true; }
 
-	RID gi_probe_instance_create() { return RID(); }
-	void gi_probe_instance_set_light_data(RID p_probe, RID p_base, RID p_data) {}
-	void gi_probe_instance_set_transform_to_data(RID p_probe, const Transform &p_xform) {}
-	void gi_probe_instance_set_bounds(RID p_probe, const Vector3 &p_bounds) {}
-
 	void render_scene(const Transform &p_cam_transform, const CameraMatrix &p_cam_projection, const int p_eye, bool p_cam_ortogonal, InstanceBase **p_cull_result, int p_cull_count, RID *p_light_cull_result, int p_light_cull_count, RID *p_reflection_probe_cull_result, int p_reflection_probe_cull_count, RID p_environment, RID p_shadow_atlas, RID p_reflection_atlas, RID p_reflection_probe, int p_reflection_probe_pass) {}
 	void render_shadow(RID p_light, RID p_shadow_atlas, int p_pass, InstanceBase **p_cull_result, int p_cull_count) {}
 
@@ -556,51 +551,6 @@ public:
 
 	void instance_add_dependency(RID p_base, RasterizerScene::InstanceBase *p_instance) {}
 	void instance_remove_dependency(RID p_base, RasterizerScene::InstanceBase *p_instance) {}
-
-	/* GI PROBE API */
-
-	RID gi_probe_create() { return RID(); }
-
-	void gi_probe_set_bounds(RID p_probe, const AABB &p_bounds) {}
-	AABB gi_probe_get_bounds(RID p_probe) const { return AABB(); }
-
-	void gi_probe_set_cell_size(RID p_probe, float p_range) {}
-	float gi_probe_get_cell_size(RID p_probe) const { return 0.0; }
-
-	void gi_probe_set_to_cell_xform(RID p_probe, const Transform &p_xform) {}
-	Transform gi_probe_get_to_cell_xform(RID p_probe) const { return Transform(); }
-
-	void gi_probe_set_dynamic_data(RID p_probe, const PoolVector<int> &p_data) {}
-	PoolVector<int> gi_probe_get_dynamic_data(RID p_probe) const {
-		PoolVector<int> p;
-		return p;
-	}
-
-	void gi_probe_set_dynamic_range(RID p_probe, int p_range) {}
-	int gi_probe_get_dynamic_range(RID p_probe) const { return 0; }
-
-	void gi_probe_set_energy(RID p_probe, float p_range) {}
-	float gi_probe_get_energy(RID p_probe) const { return 0.0; }
-
-	void gi_probe_set_bias(RID p_probe, float p_range) {}
-	float gi_probe_get_bias(RID p_probe) const { return 0.0; }
-
-	void gi_probe_set_normal_bias(RID p_probe, float p_range) {}
-	float gi_probe_get_normal_bias(RID p_probe) const { return 0.0; }
-
-	void gi_probe_set_propagation(RID p_probe, float p_range) {}
-	float gi_probe_get_propagation(RID p_probe) const { return 0.0; }
-
-	void gi_probe_set_interior(RID p_probe, bool p_enable) {}
-	bool gi_probe_is_interior(RID p_probe) const { return false; }
-
-	void gi_probe_set_compress(RID p_probe, bool p_enable) {}
-	bool gi_probe_is_compressed(RID p_probe) const { return false; }
-
-	uint32_t gi_probe_get_version(RID p_probe) { return 0; }
-
-	RID gi_probe_dynamic_data_create(int p_width, int p_height, int p_depth, GIProbeCompression p_compression) { return RID(); }
-	void gi_probe_dynamic_data_update(RID p_gi_probe_data, int p_depth_slice, int p_slice_count, int p_mipmap, const void *p_data) {}
 
 	/* LIGHTMAP CAPTURE */
 	struct Instantiable : public RID_Data {

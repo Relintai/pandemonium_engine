@@ -982,20 +982,6 @@ void RasterizerSceneGLES2::light_instance_mark_visible(RID p_light_instance) {
 	light_instance->last_scene_pass = scene_pass;
 }
 
-//////////////////////
-
-RID RasterizerSceneGLES2::gi_probe_instance_create() {
-	return RID();
-}
-
-void RasterizerSceneGLES2::gi_probe_instance_set_light_data(RID p_probe, RID p_base, RID p_data) {
-}
-void RasterizerSceneGLES2::gi_probe_instance_set_transform_to_data(RID p_probe, const Transform &p_xform) {
-}
-
-void RasterizerSceneGLES2::gi_probe_instance_set_bounds(RID p_probe, const Vector3 &p_bounds) {
-}
-
 ////////////////////////////
 ////////////////////////////
 ////////////////////////////

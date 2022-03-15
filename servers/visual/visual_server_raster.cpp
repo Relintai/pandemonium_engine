@@ -114,7 +114,6 @@ void VisualServerRaster::draw(bool p_swap_buffers, double frame_step) {
 	VSG::scene->update_dirty_instances(); //update scene stuff
 
 	VSG::viewport->draw_viewports();
-	VSG::scene->render_probes();
 	_draw_margins();
 	VSG::rasterizer->end_frame(p_swap_buffers);
 

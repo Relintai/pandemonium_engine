@@ -356,43 +356,6 @@ public:
 	BIND2(reflection_probe_set_cull_mask, RID, uint32_t)
 	BIND2(reflection_probe_set_resolution, RID, int)
 
-	/* BAKED LIGHT API */
-
-	BIND0R(RID, gi_probe_create)
-
-	BIND2(gi_probe_set_bounds, RID, const AABB &)
-	BIND1RC(AABB, gi_probe_get_bounds, RID)
-
-	BIND2(gi_probe_set_cell_size, RID, float)
-	BIND1RC(float, gi_probe_get_cell_size, RID)
-
-	BIND2(gi_probe_set_to_cell_xform, RID, const Transform &)
-	BIND1RC(Transform, gi_probe_get_to_cell_xform, RID)
-
-	BIND2(gi_probe_set_dynamic_range, RID, int)
-	BIND1RC(int, gi_probe_get_dynamic_range, RID)
-
-	BIND2(gi_probe_set_energy, RID, float)
-	BIND1RC(float, gi_probe_get_energy, RID)
-
-	BIND2(gi_probe_set_bias, RID, float)
-	BIND1RC(float, gi_probe_get_bias, RID)
-
-	BIND2(gi_probe_set_normal_bias, RID, float)
-	BIND1RC(float, gi_probe_get_normal_bias, RID)
-
-	BIND2(gi_probe_set_propagation, RID, float)
-	BIND1RC(float, gi_probe_get_propagation, RID)
-
-	BIND2(gi_probe_set_interior, RID, bool)
-	BIND1RC(bool, gi_probe_is_interior, RID)
-
-	BIND2(gi_probe_set_compress, RID, bool)
-	BIND1RC(bool, gi_probe_is_compressed, RID)
-
-	BIND2(gi_probe_set_dynamic_data, RID, const PoolVector<int> &)
-	BIND1RC(PoolVector<int>, gi_probe_get_dynamic_data, RID)
-
 	/* LIGHTMAP CAPTURE */
 
 	BIND0R(RID, lightmap_capture_create)

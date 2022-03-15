@@ -286,43 +286,6 @@ public:
 	FUNC2(reflection_probe_set_cull_mask, RID, uint32_t)
 	FUNC2(reflection_probe_set_resolution, RID, int)
 
-	/* BAKED LIGHT API */
-
-	FUNCRID(gi_probe)
-
-	FUNC2(gi_probe_set_bounds, RID, const AABB &)
-	FUNC1RC(AABB, gi_probe_get_bounds, RID)
-
-	FUNC2(gi_probe_set_cell_size, RID, float)
-	FUNC1RC(float, gi_probe_get_cell_size, RID)
-
-	FUNC2(gi_probe_set_to_cell_xform, RID, const Transform &)
-	FUNC1RC(Transform, gi_probe_get_to_cell_xform, RID)
-
-	FUNC2(gi_probe_set_dynamic_range, RID, int)
-	FUNC1RC(int, gi_probe_get_dynamic_range, RID)
-
-	FUNC2(gi_probe_set_energy, RID, float)
-	FUNC1RC(float, gi_probe_get_energy, RID)
-
-	FUNC2(gi_probe_set_bias, RID, float)
-	FUNC1RC(float, gi_probe_get_bias, RID)
-
-	FUNC2(gi_probe_set_normal_bias, RID, float)
-	FUNC1RC(float, gi_probe_get_normal_bias, RID)
-
-	FUNC2(gi_probe_set_propagation, RID, float)
-	FUNC1RC(float, gi_probe_get_propagation, RID)
-
-	FUNC2(gi_probe_set_interior, RID, bool)
-	FUNC1RC(bool, gi_probe_is_interior, RID)
-
-	FUNC2(gi_probe_set_compress, RID, bool)
-	FUNC1RC(bool, gi_probe_is_compressed, RID)
-
-	FUNC2(gi_probe_set_dynamic_data, RID, const PoolVector<int> &)
-	FUNC1RC(PoolVector<int>, gi_probe_get_dynamic_data, RID)
-
 	/* LIGHTMAP CAPTURE */
 
 	FUNCRID(lightmap_capture)

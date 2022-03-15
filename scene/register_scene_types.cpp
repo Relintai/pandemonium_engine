@@ -185,7 +185,6 @@
 #include "scene/3d/collision_polygon.h"
 #include "scene/3d/collision_shape.h"
 #include "scene/3d/cpu_particles.h"
-#include "scene/3d/gi_probe.h"
 #include "scene/3d/immediate_geometry.h"
 #include "scene/3d/interpolated_camera.h"
 #include "scene/3d/light.h"
@@ -438,8 +437,6 @@ void register_scene_types() {
 	ClassDB::register_class<OmniLight>();
 	ClassDB::register_class<SpotLight>();
 	ClassDB::register_class<ReflectionProbe>();
-	ClassDB::register_class<GIProbe>();
-	ClassDB::register_class<GIProbeData>();
 	ClassDB::register_class<Particles>();
 	ClassDB::register_class<CPUParticles>();
 	ClassDB::register_class<Position3D>();
