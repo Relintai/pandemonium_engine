@@ -2329,15 +2329,9 @@ void ProjectManager::_bind_methods() {
 	ClassDB::bind_method("_unhandled_input", &ProjectManager::_unhandled_input);
 	ClassDB::bind_method("_install_project", &ProjectManager::_install_project);
 	ClassDB::bind_method("_files_dropped", &ProjectManager::_files_dropped);
-	ClassDB::bind_method("_open_asset_library", &ProjectManager::_open_asset_library);
 	ClassDB::bind_method("_confirm_update_settings", &ProjectManager::_confirm_update_settings);
 	ClassDB::bind_method("_update_project_buttons", &ProjectManager::_update_project_buttons);
 	ClassDB::bind_method(D_METHOD("_scan_multiple_folders", "files"), &ProjectManager::_scan_multiple_folders);
-}
-
-void ProjectManager::_open_asset_library() {
-	asset_library->disable_community_support();
-	tabs->set_current_tab(1);
 }
 
 void ProjectManager::_version_button_pressed() {
@@ -2561,15 +2555,6 @@ ProjectManager::ProjectManager() {
 	about_btn->connect("pressed", this, "_show_about");
 	tree_vb->add_child(about_btn);
 
-	if (StreamPeerSSL::is_available()) {
-		asset_library = memnew(EditorAssetLibrary(true));
-		asset_library->set_name(TTR("Asset Library Projects"));
-		tabs->add_child(asset_library);
-		asset_library->connect("install_asset", this, "_install_project");
-	} else {
-		WARN_PRINT("Asset Library not available, as it requires SSL to work.");
-	}
-
 	HBoxContainer *settings_hb = memnew(HBoxContainer);
 	settings_hb->set_alignment(BoxContainer::ALIGN_END);
 	settings_hb->set_h_grow_direction(Control::GROW_DIRECTION_BEGIN);
@@ -2720,9 +2705,7 @@ ProjectManager::ProjectManager() {
 	gui_base->add_child(dialog_error);
 
 	open_templates = memnew(ConfirmationDialog);
-	open_templates->set_text(TTR("You currently don't have any projects.\nWould you like to explore official example projects in the Asset Library?"));
-	open_templates->get_ok()->set_text(TTR("Open Asset Library"));
-	open_templates->connect("confirmed", this, "_open_asset_library");
+	open_templates->set_text(TTR("You currently don't have any projects."));
 	add_child(open_templates);
 
 	about = memnew(EditorAbout);

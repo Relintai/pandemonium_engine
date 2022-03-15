@@ -32,12 +32,12 @@
 #define PROJECT_MANAGER_H
 
 #include "editor/editor_about.h"
-#include "editor/plugins/asset_library_editor_plugin.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/file_dialog.h"
 #include "scene/gui/scroll_container.h"
 #include "scene/gui/tool_button.h"
 #include "scene/gui/tree.h"
+#include "scene/gui/check_box.h"
 
 class ProjectDialog;
 class ProjectList;
@@ -52,8 +52,6 @@ class ProjectManager : public Control {
 	Button *rename_btn;
 	Button *run_btn;
 	Button *about_btn;
-
-	EditorAssetLibrary *asset_library;
 
 	ProjectListFilter *project_filter;
 	ProjectListFilter *project_order_filter;
@@ -87,7 +85,6 @@ class ProjectManager : public Control {
 
 	bool importing;
 
-	void _open_asset_library();
 	void _scan_projects();
 	void _run_project();
 	void _run_project_confirm();
