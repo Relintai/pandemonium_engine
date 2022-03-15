@@ -30,7 +30,6 @@
 
 #include "spatial_editor_gizmos.h"
 
-#include "editor/plugins/skeleton_editor_plugin.h"
 #include "scene/resources/surface_tool.h"
 
 ModuleSkeletonSpatialGizmoPlugin::ModuleSkeletonSpatialGizmoPlugin() {

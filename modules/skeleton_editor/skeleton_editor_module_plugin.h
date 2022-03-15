@@ -26,10 +26,8 @@ SOFTWARE.
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 
-#include "skeleton_editor_plugin_remover.h"
-
-class SkeletonEditorModulePlugin : public SkeletonEditorPluginRemover {
-	GDCLASS(SkeletonEditorModulePlugin, SkeletonEditorPluginRemover);
+class SkeletonEditorModulePlugin : public EditorPlugin {
+	GDCLASS(SkeletonEditorModulePlugin, EditorPlugin);
 
 public:
 	bool has_main_screen() const { return false; }

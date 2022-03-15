@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "spatial_editor_gizmos.h"
 
-SkeletonEditorModulePlugin::SkeletonEditorModulePlugin(EditorNode *p_node) : SkeletonEditorPluginRemover(p_node) {
+SkeletonEditorModulePlugin::SkeletonEditorModulePlugin(EditorNode *p_node) {
 }
 
 void SkeletonEditorModulePlugin::_notification(int p_what) {

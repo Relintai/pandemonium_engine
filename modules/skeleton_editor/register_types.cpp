@@ -23,7 +23,6 @@ SOFTWARE.
 #include "register_types.h"
 
 #ifdef TOOLS_ENABLED
-#include "skeleton_editor_plugin_remover.h"
 #include "skeleton_editor_plugin.h"
 #include "spatial_editor_gizmos.h"
 #include "skeleton_editor_module_plugin.h"
@@ -31,7 +30,6 @@ SOFTWARE.
 
 void register_skeleton_editor_types() {
 #ifdef TOOLS_ENABLED
-	//EditorPlugins::add_by_type<SkeletonEditorPluginRemover>();
 	EditorPlugins::add_by_type<SkeletonEditorModulePlugin>();
 
 	EditorPlugins::add_by_type<ModuleSkeletonEditorPlugin>();
