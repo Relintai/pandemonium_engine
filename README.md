@@ -1,10 +1,18 @@
-# Godot Engine
+# Pandemonium Engine
 
-<p align="center">
-  <a href="https://godotengine.org">
-    <img src="logo_outlined.svg" width="400" alt="Godot Engine logo">
-  </a>
-</p>
+A 3.x godot engine fork where I hack and slash and cause mayhem and destruction to all things good and godot.
+
+Similar idea to godot 4.0, but taken in a completely different direction:
+
+- I'm planning to remove all (or almost all) engine modules that I don't use.
+- I'm planning to remove all (or almost all) drivers (like for more obscure formats) that I don't use.
+- I'm planning to simplify things as much as I can.
+- I'll probably import some unfinished prs from godot's repo.
+- This fork will have all modules thet I created and actually use.
+- I'll also try to strip most features that I don't use and I think is not needed for my projects. (AssetLib, TileMap - I have terraman2D -, GridMap (I have Terraman, Voxelman), Gles3, Lightmaps, GIProbes, VisualScript, GDNative etc.)
+- I might create simpler physics engine that can only do collision detection, stuff like this.
+- I'll try to simplify things to get better compile times.
+- Might even try to go full C.
 
 ## 2D and 3D cross-platform game engine
 
@@ -30,8 +38,6 @@ Before being open sourced in [February 2014](https://github.com/godotengine/godo
 Godot had been developed by [Juan Linietsky](https://github.com/reduz) and
 [Ariel Manzur](https://github.com/punto-) (both still maintaining the project) for several
 years as an in-house engine, used to publish several work-for-hire titles.
-
-![Screenshot of a 3D scene in the Godot Engine editor](https://raw.githubusercontent.com/godotengine/godot-design/master/screenshots/editor_tps_demo_1920x1080.jpg)
 
 ## Getting the engine
 
