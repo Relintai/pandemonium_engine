@@ -96,7 +96,6 @@
 #include "editor/import/resource_importer_csv_translation.h"
 #include "editor/import/resource_importer_image.h"
 #include "editor/import/resource_importer_layered_texture.h"
-#include "editor/import/resource_importer_obj.h"
 #include "editor/import/resource_importer_scene.h"
 #include "editor/import/resource_importer_texture.h"
 #include "editor/import/resource_importer_texture_atlas.h"
@@ -5890,19 +5889,11 @@ EditorNode::EditorNode() {
 		import_wav.instance();
 		ResourceFormatImporter::get_singleton()->add_importer(import_wav);
 
-		Ref<ResourceImporterOBJ> import_obj;
-		import_obj.instance();
-		ResourceFormatImporter::get_singleton()->add_importer(import_obj);
-
 		Ref<ResourceImporterScene> import_scene;
 		import_scene.instance();
 		ResourceFormatImporter::get_singleton()->add_importer(import_scene);
 
 		{
-			Ref<EditorOBJImporter> import_obj2;
-			import_obj2.instance();
-			import_scene->add_importer(import_obj2);
-
 			Ref<EditorSceneImporterESCN> import_escn;
 			import_escn.instance();
 			import_scene->add_importer(import_escn);
