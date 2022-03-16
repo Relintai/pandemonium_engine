@@ -583,7 +583,16 @@ void EditorHelp::_update_doc() {
 				class_desc->pop();
 
 				class_desc->push_color(value_color);
-				_add_text(_fix_constant(cd.properties[i].default_value));
+
+				String default_text = _fix_constant(cd.properties[i].default_value);
+
+				//limit length to a reasonable value, as too much text breaks formatting.
+				if (default_text.size() > 30) {
+					default_text.resize(30);
+					default_text += "... ";
+				}
+
+				_add_text(default_text);
 				class_desc->pop();
 
 				class_desc->push_color(symbol_color);
