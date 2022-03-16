@@ -1404,7 +1404,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 	//EntityPlayerType not needed
 	sets_immunity_flags(dict.get("immunity_flags", 0));
 	sets_entity_flags(dict.get("entity_flags", 0));
-	
+
 	//EntityEnums::EntityController contr = static_cast<EntityEnums::EntityController>(static_cast<int>(dict.get("entity_controller", 0)));
 
 	//sets_original_entity_controller(contr);
@@ -6371,36 +6371,36 @@ void Entity::_notification_sdeath() {
 	/*
 	if dead:
 		return
-	
+
 	if starget == null:
 		queue_free()
 		return
-		
+
 	#warning-ignore:unused_variable
 	for i in range(aura_gets_count()):
 		aura_removes(aura_gets(0))
-	
+
 	dead = true
-	
+
 	var ldiff : float = slevel - starget.slevel + 10.0
-	
+
 	if ldiff < 0:
 		ldiff = 0
-		
+
 	if ldiff > 15:
 		ldiff = 15
-		
+
 	ldiff /= 10.0
-	
+
 	starget.xp_adds(int(5.0 * slevel * ldiff))
-		
+
 	starget = null
-	
+
 	sentity_interaction_type = EntityEnums.ENITIY_INTERACTION_TYPE_LOOT
 	ai_state = EntityEnums.AI_STATE_OFF
-	
+
 	anim_node_state_machine.travel("dead")
-	
+
 #	set_process(false)
 	set_physics_process(false)
 	*/

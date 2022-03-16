@@ -52,7 +52,7 @@ For example lod level 5 will try to get material index 5, but if you only have 3
 The simplest library, just assign a material with a texture, and using the atlas_rows and atlas_culomns properties to tell the system
 how the UVs should be divided.
 
-This is the basic Minecraft-style lib rary. Use this if you just have one texture atlas. 
+This is the basic Minecraft-style lib rary. Use this if you just have one texture atlas.
 
 ### TerraLibraryMerger
 
@@ -95,7 +95,7 @@ You can write your own algorithm by implementing the ``` void _generate_chunk(ch
 ## TerraJobs
 
 Producing just a terrain mesh for a chunk is not that hard by itself. However when you start adding layers/features
-like lod generation, collision meshes (especially since manipulating the physics server is not threadsafe), 
+like lod generation, collision meshes (especially since manipulating the physics server is not threadsafe),
 vertex lights, props, snapping props, props with vertex lights, etc
 chunk mesh generation can quicly become a serious mess.
 
@@ -140,10 +140,10 @@ Since properly initializing a chunk usually takes quite a few steps that you pro
 parameter was added. This means you can just call the super `_create_chunk` methods, and you won't need to worry about your chunk
 getting overridden. Like:
 
-Note that `_create_chunk` is also responsible for initializing chunks if you have them stored inside a scene. 
+Note that `_create_chunk` is also responsible for initializing chunks if you have them stored inside a scene.
 This is done by `setup_chunk(shunk)` in `TerraWorld`.
 
-``` 
+```
     func _create_chunk(x : int, y : int, z : int, chunk : TerraChunk) -> TerraChunk:
         if !chunk:
             chunk = MyChunk.new()

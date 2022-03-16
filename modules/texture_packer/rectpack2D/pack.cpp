@@ -46,7 +46,7 @@ int discard_step = 128;
 For every sorting function, algorithm will perform packing attempts beginning with a bin with width and height equal to max_side,
 and decreasing its dimensions if it finds out that rectangles did actually fit, increasing otherwise.
 Although, it's doing that in sort of binary search manner, so for every comparing function it will perform at most log2(max_side) packing attempts looking for the smallest possible bin size.
-discard_step = 128 means that the algorithm will break of the searching loop if the rectangles fit but "it may be possible to fit them in a bin smaller by 128"  
+discard_step = 128 means that the algorithm will break of the searching loop if the rectangles fit but "it may be possible to fit them in a bin smaller by 128"
 the bigger the value, the sooner the algorithm will finish but the rectangles will be packed less tightly.
 use discard_step = 1 for maximum tightness.
 

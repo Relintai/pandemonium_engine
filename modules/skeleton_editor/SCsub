@@ -6,4 +6,4 @@ if env["tools"]:
     env.add_source_files(env.modules_sources, "skeleton_editor_plugin.cpp")
     env.add_source_files(env.modules_sources, "spatial_editor_gizmos.cpp")
     env.add_source_files(env.modules_sources, "skeleton_editor_module_plugin.cpp")
-    
+

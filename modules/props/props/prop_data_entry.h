@@ -29,7 +29,7 @@ SOFTWARE.
 #include "core/io/resource.h"
 #include "core/math/transform_3d.h"
 
-#ifndef Transform 
+#ifndef Transform
 #define Transform Transform3D
 #endif
 #else
@@ -61,7 +61,7 @@ public:
 	virtual void _processor_process(Ref<PropData> prop_data, Node *node, const Transform &transform);
 	virtual Node *_processor_get_node_for(const Transform &transform);
 	virtual bool _processor_evaluate_children();
-	
+
 	PropDataEntry();
 	~PropDataEntry();
 

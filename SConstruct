@@ -647,7 +647,7 @@ if selected_platform in platform_list:
     if not env["verbose"]:
         methods.no_verbose(sys, env)
 
-    if not env["platform"] == "server": 
+    if not env["platform"] == "server":
         env.Append(
             BUILDERS={
                 "GLES2_GLSL": env.Builder(

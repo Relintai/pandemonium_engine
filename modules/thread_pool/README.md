@@ -2,22 +2,22 @@
 
 A c++ Godot engine module, that will help you with threading.
 
-It can also work if threads are not available (like on the javascript backend), in this case it runs jobs on the 
-main thread. Jobs themselves can also distribute their work onto multiple frames, and you can set how much time 
+It can also work if threads are not available (like on the javascript backend), in this case it runs jobs on the
+main thread. Jobs themselves can also distribute their work onto multiple frames, and you can set how much time
 is allocated per frame.
 
 You can access it's setting from the `Project->Project Settings...` menu, in the `ThreadPool` category.
 
 # Pre-built binaries
 
-You can grab a pre-built editor binary from the [Broken Seals](https://github.com/Relintai/broken_seals/releases) 
+You can grab a pre-built editor binary from the [Broken Seals](https://github.com/Relintai/broken_seals/releases)
 repo, should you want to. It contains all my modules.
 
 # ThreadPoolJob
 
 Contains a job that can run on different threads.
 
-A job is only considered finished, if you set the 'complete' property to 'true'. If multiple threads are available, 
+A job is only considered finished, if you set the 'complete' property to 'true'. If multiple threads are available,
 the system will not check for this though, because there is no need.
 
 If you want to support envioronments that doesn't have threading, you can use:
@@ -69,7 +69,7 @@ func _execute():
 
         #The heavy calculation finished, increment counters
         should_do()
-    
+
     if should_return():
         return
 

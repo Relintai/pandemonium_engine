@@ -7,4 +7,4 @@ env.add_source_files(env.modules_sources,"tile_set.cpp")
 if env["tools"]:
     env.add_source_files(env.modules_sources, "tile_map_editor_plugin.cpp")
     env.add_source_files(env.modules_sources, "tile_set_editor_plugin.cpp")
-    
+

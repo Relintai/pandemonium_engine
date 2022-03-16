@@ -11,7 +11,7 @@ The module also comes with importers (gltf, and collada for now), you can import
 
 ## Pre-built binaries
 
-You can grab a pre-built editor binary from the [Broken Seals](https://github.com/Relintai/broken_seals/releases) 
+You can grab a pre-built editor binary from the [Broken Seals](https://github.com/Relintai/broken_seals/releases)
 repo, should you want to. It contains all my modules.
 
 ## MeshDataResource
@@ -24,7 +24,7 @@ Holds a list of MeshDataResources.
 
 ## MeshDataInstance
 
-You can easily put MeshDataResources into the scene with these. They are equivalent to MeshInstances, except they work 
+You can easily put MeshDataResources into the scene with these. They are equivalent to MeshInstances, except they work
 with MeshDataResources.
 
 ## Importers

@@ -3,7 +3,7 @@
 This is a c++ engine module for the Godot engine that contains a modularized version of TokageItLab's pr's 3.2 version from the godot engine repository, until it gets merged.
 
 The original pr is here: https://github.com/godotengine/godot/pull/45699
-Tht 3.x version (linked in the pr itself) is here  (This is the base for this module): https://github.com/TokageItLab/godot/tree/pose-edit-mode 
+Tht 3.x version (linked in the pr itself) is here  (This is the base for this module): https://github.com/TokageItLab/godot/tree/pose-edit-mode
 
 I'm developing this for godot 3.x, it will probably work on earlier versions though. 4.0 is not supported.
 

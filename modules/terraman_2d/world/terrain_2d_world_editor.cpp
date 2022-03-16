@@ -373,7 +373,7 @@ void Terrain2DWorldEditorPlugin::_notification(int p_what) {
 			case 1: { // Right.
 				SpatialEditor::get_singleton()->get_palette_split()->move_child(voxel_world_editor, 1);
 			} break;
-#else 
+#else
 			case 0: { // Left.
 				SpatialEditor::get_singleton()->move_control_to_left_panel(voxel_world_editor);
 			} break;

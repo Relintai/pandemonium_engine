@@ -500,7 +500,7 @@ static float square(float f) {
 /** Return the next power of two.
 * @see http://graphics.stanford.edu/~seander/bithacks.html
 * @warning Behaviour for 0 is undefined.
-* @note isPowerOfTwo(x) == true -> nextPowerOfTwo(x) == x
+* @note isPowerOfTwo(x) -> nextPowerOfTwo(x) == x
 * @note nextPowerOfTwo(x) = 2 << log2(x-1)
 */
 static uint32_t nextPowerOfTwo(uint32_t x) {

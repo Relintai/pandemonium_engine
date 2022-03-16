@@ -4,12 +4,12 @@ This is a c++ engine module for the Godot Engine.
 
 It gives you props, and editor utilities to convert scenes to props.
 
-It supports both godot 3.2 and 4.0 (master [last tested commit](https://github.com/godotengine/godot/commit/b7e10141197fdd9b0dbc4cfa7890329510d36540)). Note that since 4.0 is still in very early stages I only 
+It supports both godot 3.2 and 4.0 (master [last tested commit](https://github.com/godotengine/godot/commit/b7e10141197fdd9b0dbc4cfa7890329510d36540)). Note that since 4.0 is still in very early stages I only
 check whether it works from time to time.
 
 # Pre-built binaries
 
-You can grab a pre-built editor binary from the [Broken Seals](https://github.com/Relintai/broken_seals/releases) 
+You can grab a pre-built editor binary from the [Broken Seals](https://github.com/Relintai/broken_seals/releases)
 repo, should you want to. It contains all my modules.
 
 # Optional Dependencies
@@ -22,7 +22,7 @@ repo, should you want to. It contains all my modules.
 
 Props are basicly 3D scenes in a simple format, so other things can easily process them without instancing.
 
-For example if you create a building from MeshDataInstances, and then convert that scene to a prop, Voxelman 
+For example if you create a building from MeshDataInstances, and then convert that scene to a prop, Voxelman
 can spawn it, merge it's meshes, and create lods without any scene instancing.
 
 PropData is the main class you'll use, it's main purpose it to store a list of PropDataEntries.
@@ -65,7 +65,7 @@ You can register new PropDataEntries as processors, should you need to.
 
 # Scene conversion
 
-You can either click the new "To Prop" button on the menubar of the 3D scene for a quick conversion, 
+You can either click the new "To Prop" button on the menubar of the 3D scene for a quick conversion,
 or look into Project->Tools.
 
 # Building

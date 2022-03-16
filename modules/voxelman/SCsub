@@ -27,7 +27,7 @@ sources = [
 
     "library/voxel_library.cpp",
     "library/voxel_library_simple.cpp",
-    
+
     "nodes/voxel_light_node.cpp",
 
     "library/voxel_surface.cpp",
@@ -73,7 +73,7 @@ sources = [
     "areas/world_area.cpp",
 
     "world/voxel_world_editor.cpp",
-    
+
     "thirdparty/lz4/lz4.c",
 
     "world/jobs/voxel_job.cpp",

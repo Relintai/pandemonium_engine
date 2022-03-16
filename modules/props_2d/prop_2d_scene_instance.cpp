@@ -63,6 +63,6 @@ void Prop2DSceneInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_scene"), &Prop2DSceneInstance::get_scene);
 	ClassDB::bind_method(D_METHOD("set_scene", "value"), &Prop2DSceneInstance::set_scene);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "scene", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_scene", "get_scene");
-	
+
 	ClassDB::bind_method(D_METHOD("build"), &Prop2DSceneInstance::build);
 }

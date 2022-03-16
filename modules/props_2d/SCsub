@@ -61,7 +61,7 @@ sources = [
     "prop_2d_mesher.cpp",
 
     "jobs/prop_2d_texture_job.cpp",
-    
+
     "material_cache/prop_2d_material_cache.cpp"
 ]
 

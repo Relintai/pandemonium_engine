@@ -37,7 +37,7 @@ const String FastNoise::BINDING_STRING_CELLULAR_DISTANCE_FUNCTION = "Euclidean,M
 const String FastNoise::BINDING_STRING_CELLULAR_RETURN_TYPE = "Cell Value,Noise lookup,Distance,Distance 2,Distance 2 Add,Distance 2 Sub,Distance 2 Mul,Distance 2 Div";
 
 FastNoise::FastNoise() : Reference() {
-    
+
 }
 
 void FastNoise::set_cellular_noise_lookup(Ref<FastNoise> other_noise) {
@@ -64,7 +64,7 @@ PoolIntArray FastNoise::get_cellular_distance_2_indices() const {
 }
 
 void FastNoise::_bind_methods() {
-    
+
 	ClassDB::bind_method(D_METHOD("set_seed", "seed"), &FastNoise::set_seed);
 	ClassDB::bind_method(D_METHOD("get_seed"), &FastNoise::get_seed);
 

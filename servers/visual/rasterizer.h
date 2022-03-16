@@ -777,7 +777,7 @@ public:
 			RID normal_map;
 			CommandMultiMesh() { type = TYPE_MULTIMESH; }
 		};
-		
+
 		struct CommandCircle : public Command {
 			Point2 pos;
 			float radius;

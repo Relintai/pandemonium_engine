@@ -28,7 +28,7 @@ sources = [
     "library/terrain_library.cpp",
     "library/terrain_library_simple.cpp",
     "library/terrain_material_cache.cpp",
-    
+
     "nodes/terrain_light_node.cpp",
 
     "library/terrain_surface.cpp",
@@ -59,7 +59,7 @@ sources = [
     "areas/terrain_world_area.cpp",
 
     "world/terrain_world_editor.cpp",
-    
+
     "thirdparty/lz4/lz4.c",
 
     "world/jobs/terrain_job.cpp",

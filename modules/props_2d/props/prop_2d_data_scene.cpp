@@ -52,7 +52,7 @@ void Prop2DDataScene::_processor_process(Ref<Prop2DData> prop_data, Node *node, 
 	}
 
 	l->set_scene(i->get_scene());
-	
+
 	Prop2DDataEntry::_processor_process(prop_data, node, transform, l);
 }
 

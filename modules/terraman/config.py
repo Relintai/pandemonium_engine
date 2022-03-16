@@ -51,7 +51,7 @@ def get_doc_classes():
 
         "TerrainWorldMarchingCubes",
         "TerrainChunkMarchingCubes",
-    
+
         "TerrainMesherCubic",
         "TerrainWorldCubic",
         "TerrainChunkCubic",
@@ -66,7 +66,7 @@ def get_doc_classes():
 
         "TerrainEnvironmentData",
         "TerrainMesherJobStep",
-        
+
     ]
 
 

@@ -3280,7 +3280,7 @@ void Viewport::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_own_world_changed"), &Viewport::_own_world_changed);
 
 	ClassDB::bind_method(D_METHOD("_process_picking", "ignore_paused"), &Viewport::_process_picking);
-	
+
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "size"), "set_size", "get_size");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "size_override_stretch"), "set_size_override_stretch", "is_size_override_stretch_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "own_world"), "set_use_own_world", "is_using_own_world");

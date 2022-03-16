@@ -582,7 +582,7 @@ void VisualServerScene::instance_set_base(RID p_instance, RID p_base) {
 
 				reflection_probe->instance = VSG::scene_render->reflection_probe_instance_create(p_base);
 			} break;
-			
+
 			default: {
 			}
 		}
@@ -2001,7 +2001,7 @@ void VisualServerScene::_update_dirty_instance(Instance *p_instance) {
 					if (mat.is_valid() && VSG::storage->material_is_animated(mat)) {
 						is_animated = true;
 					}
-				} 
+				}
 			}
 
 			if (p_instance->material_overlay.is_valid()) {

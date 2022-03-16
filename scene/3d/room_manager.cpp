@@ -1723,7 +1723,7 @@ bool RoomManager::_bound_findpoints_geom_instance(GeometryInstance *p_gi, Vector
 	// it can fail once mesh min is larger than FLT_MAX / 2.
 	r_aabb.position = Vector3(FLT_MAX / 2, FLT_MAX / 2, FLT_MAX / 2);
 	r_aabb.size = Vector3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
-	
+
 	// multimesh
 	MultiMeshInstance *mmi = Object::cast_to<MultiMeshInstance>(p_gi);
 	if (mmi) {

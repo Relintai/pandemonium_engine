@@ -5,7 +5,7 @@
 	</brief_description>
 	<description>
 		Gives easy access to entity and spell related data, providing easy lookups.
-		Make sure that you add everything both server and clientside before use, because the system uses ids (get_id()) for server clinet communications. This also means that ids should be unique per resources for every ESS-related resources. 
+		Make sure that you add everything both server and clientside before use, because the system uses ids (get_id()) for server clinet communications. This also means that ids should be unique per resources for every ESS-related resources.
 		For example you shouldn't register 2 spells with id 1 (you will get an error), but you can register a [Spell] with id1 and an [Aura] with an id 1.
 		Also grants access easy to ESS-related project settings.
 	</description>

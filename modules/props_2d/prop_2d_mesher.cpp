@@ -789,7 +789,7 @@ Rect2 Prop2DMesher::calculate_rect() {
 
 	if (size == 0) {
 		return Rect2();
-	} 
+	}
 
 	Rect2 rect;
 

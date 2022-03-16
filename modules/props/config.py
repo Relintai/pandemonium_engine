@@ -17,7 +17,7 @@ def get_doc_classes():
         "PropDataPortal",
         "PropDataTiledWall",
         "PropData",
-        
+
         "TiledWall",
         "TiledWallData",
 

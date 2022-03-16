@@ -55,7 +55,7 @@ public:
 	I_____I/
 
 
-	    I y 
+	    I y
 	    I        I
 	    O----- x I B
 	  /  I F  I /

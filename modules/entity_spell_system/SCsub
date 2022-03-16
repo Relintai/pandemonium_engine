@@ -59,7 +59,7 @@ sources = [
     "entities/skills/entity_skill_data.cpp",
 
     "entities/data/character_spec.cpp",
-    
+
     "skeleton/character_bones.cpp",
 
     "entities/stats/stat_data.cpp",

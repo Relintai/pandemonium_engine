@@ -53,7 +53,7 @@ attribute vec4 color_attrib; // attrib:3
 attribute vec2 uv_attrib; // attrib:4
 #endif
 
-#if defined(ENABLE_UV2_INTERP) 
+#if defined(ENABLE_UV2_INTERP)
 attribute vec2 uv2_attrib; // attrib:5
 #endif
 
@@ -391,7 +391,7 @@ void main() {
 	uv_interp = uv_attrib;
 #endif
 
-#if defined(ENABLE_UV2_INTERP) 
+#if defined(ENABLE_UV2_INTERP)
 	uv2_interp = uv2_attrib;
 #endif
 

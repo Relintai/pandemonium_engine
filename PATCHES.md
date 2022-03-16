@@ -34,7 +34,7 @@ Patches that I'm considering
 - https://github.com/godotengine/godot/pull/39362 - Fix PlaneShape in Godot physics
 - https://github.com/godotengine/godot/pull/37680 - Editor Debugger: auto scrolling is activated at every log start.
 
-- https://github.com/godotengine/godot/pull/36776 - [WIP] Editor Android Port 
+- https://github.com/godotengine/godot/pull/36776 - [WIP] Editor Android Port
 -- 3.x version - https://github.com/thebestnom/godot/commits/android_editor_3.2
 
 - The full 4.0 TileMap + TileMap Editor rework. (Like the skeleton editor it would become a module)

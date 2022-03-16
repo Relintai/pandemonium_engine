@@ -76,7 +76,7 @@ public:
 		RETURN_DISTANCE_2_MUL = _FastNoise::Distance2Mul,
 		RETURN_DISTANCE_2_DIV = _FastNoise::Distance2Div
     };
-    
+
     FastNoise();
 
     // Methods (Godot-style mappings to FastNoise)

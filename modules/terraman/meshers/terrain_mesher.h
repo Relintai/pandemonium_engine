@@ -135,7 +135,7 @@ public:
 
 	bool get_is_liquid_mesher() const;
 	void set_is_liquid_mesher(const bool value);
-	
+
 	void reset();
 
 	void add_chunk(Ref<TerrainChunk> chunk);

@@ -8,12 +8,12 @@ It uses the legacy version of [rectpack2D](https://github.com/TeamHypersomnia/re
 
 It should work on all platforms.
 
-It supports both godot 3.2 and 4.0 (master [last tested commit](https://github.com/godotengine/godot/commit/b7e10141197fdd9b0dbc4cfa7890329510d36540)). Note that since 4.0 is still in very early stages I only 
+It supports both godot 3.2 and 4.0 (master [last tested commit](https://github.com/godotengine/godot/commit/b7e10141197fdd9b0dbc4cfa7890329510d36540)). Note that since 4.0 is still in very early stages I only
 check whether it works from time to time.
 
 # Pre-built binaries
 
-You can grab a pre-built editor binary from the [Broken Seals](https://github.com/Relintai/broken_seals/releases) 
+You can grab a pre-built editor binary from the [Broken Seals](https://github.com/Relintai/broken_seals/releases)
 repo, should you want to. It contains all my modules.
 
 # Building
@@ -53,14 +53,14 @@ Supports filters, custom background color, margins.
 
 ### The keep_original_atlases option:
 
-If you set this to true, and then add AtlasTextures, TexturePacker will change these ones (the ones you actually added) 
+If you set this to true, and then add AtlasTextures, TexturePacker will change these ones (the ones you actually added)
 after the bake.
 
 You can use this to bake gui textures together, without changing the resources everywhere at runtime.
 Think of rpgs, when you have a huge number of potential icons that the player can put on his or her actionbars.
 You can take look at Tales of Maj'Eyal or pretty much every actually complex MMORPGs as an example.
 
-Note: Doing something like this in only recommended, if you can't pre-make the atlases (or it's really unfeasible), you are better off 
+Note: Doing something like this in only recommended, if you can't pre-make the atlases (or it's really unfeasible), you are better off
 making the atlases yourself during development.
 
 ## TextureMerger
@@ -92,7 +92,7 @@ change to the first added texture's size.
 
 add_texture looks like this:
 
-``` 
+```
 void add_texture(Ref<Texture> p_texture, Color p_color = Color(1, 1, 1, 1), Vector2 p_position = Vector2(), Rect2 p_rect = Rect2());
 ```
 
@@ -101,5 +101,5 @@ With the position parameter you can offset your texture (in the resulted texture
 
 There are setters to manipulate the added data later.
 
-After the merge, you can either use `get_result_as_texture()` (it creates an ImageTexture on the fly), or the `data` property to 
+After the merge, you can either use `get_result_as_texture()` (it creates an ImageTexture on the fly), or the `data` property to
 grab the resulting Image.
