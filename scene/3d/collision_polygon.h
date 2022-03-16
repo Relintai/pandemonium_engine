@@ -32,9 +32,11 @@
 #define COLLISION_POLYGON_H
 
 #include "scene/3d/spatial.h"
-#include "scene/resources/shape.h"
+#include "core/reference.h"
 
 class CollisionObject;
+class Shape;
+
 class CollisionPolygon : public Spatial {
 	GDCLASS(CollisionPolygon, Spatial);
 	real_t margin = 0.04;

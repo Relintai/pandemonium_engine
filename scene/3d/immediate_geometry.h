@@ -32,7 +32,10 @@
 #define IMMEDIATE_GEOMETRY_H
 
 #include "scene/3d/visual_instance.h"
+
 #include "scene/resources/mesh.h"
+
+class Texture;
 
 class ImmediateGeometry : public GeometryInstance {
 	GDCLASS(ImmediateGeometry, GeometryInstance);

@@ -32,7 +32,6 @@
 #define LIGHT_H
 
 #include "scene/3d/visual_instance.h"
-#include "scene/resources/texture.h"
 #include "servers/visual_server.h"
 
 class Light : public VisualInstance {
