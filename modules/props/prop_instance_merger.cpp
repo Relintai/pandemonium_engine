@@ -52,6 +52,7 @@ typedef class RenderingServer VS;
 #include "lights/prop_light.h"
 #include "material_cache/prop_material_cache.h"
 #include "scene/3d/camera.h"
+#include "scene/main/viewport.h"
 
 #if TEXTURE_PACKER_PRESENT
 #include "./singleton/prop_cache.h"

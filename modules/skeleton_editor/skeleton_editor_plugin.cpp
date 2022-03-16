@@ -42,6 +42,7 @@
 #include "scene/3d/physics_joint.h"
 #include "scene/resources/capsule_shape.h"
 #include "scene/resources/sphere_shape.h"
+#include "scene/main/viewport.h"
 
 #define DISTANCE_DEFAULT 4
 

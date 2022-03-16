@@ -213,6 +213,7 @@
 #include "scene/resources/environment.h"
 #include "scene/resources/occluder_shape.h"
 #include "scene/resources/occluder_shape_polygon.h"
+#include "scene/3d/spatial_velocity_tracker.h"
 #endif
 
 #include "modules/modules_enabled.gen.h" // For freetype.

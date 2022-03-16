@@ -32,9 +32,11 @@
 #define CAMERA_H
 
 #include "scene/3d/spatial.h"
-#include "scene/3d/spatial_velocity_tracker.h"
-#include "scene/main/viewport.h"
-#include "scene/resources/environment.h"
+#include "core/reference.h"
+
+class SpatialVelocityTracker;
+class Viewport;
+class Environment;
 
 class Camera : public Spatial {
 	GDCLASS(Camera, Spatial);

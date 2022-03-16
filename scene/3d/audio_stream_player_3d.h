@@ -33,12 +33,13 @@
 
 #include "core/safe_refcount.h"
 #include "scene/3d/spatial.h"
-#include "scene/3d/spatial_velocity_tracker.h"
 #include "servers/audio/audio_filter_sw.h"
-#include "servers/audio/audio_stream.h"
 #include "servers/audio_server.h"
 
 class Camera;
+class AudioStreamPlayback;
+class SpatialVelocityTracker;
+
 class AudioStreamPlayer3D : public Spatial {
 	GDCLASS(AudioStreamPlayer3D, Spatial);
 

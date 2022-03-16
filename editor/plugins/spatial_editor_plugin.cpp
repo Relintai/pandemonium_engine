@@ -52,6 +52,7 @@
 #include "scene/gui/viewport_container.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/surface_tool.h"
+#include "scene/main/viewport.h"
 
 #define DISTANCE_DEFAULT 4
 

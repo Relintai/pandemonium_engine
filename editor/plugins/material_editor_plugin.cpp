@@ -33,6 +33,7 @@
 #include "editor/editor_scale.h"
 #include "scene/gui/viewport_container.h"
 #include "scene/resources/particles_material.h"
+#include "scene/main/viewport.h"
 
 void MaterialEditor::_notification(int p_what) {
 	if (p_what == NOTIFICATION_READY) {

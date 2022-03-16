@@ -34,6 +34,7 @@
 #include "scene/3d/camera.h"
 #include "scene/resources/particles_material.h"
 #include "servers/visual_server.h"
+#include "scene/main/viewport.h"
 
 AABB CPUParticles::get_aabb() const {
 	return AABB();
