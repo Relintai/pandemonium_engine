@@ -105,7 +105,7 @@ void ProfileManager::_save() {
 	FileAccess *f = FileAccess::open(_save_file, FileAccess::WRITE, &err);
 
 	if (!f) {
-		ERR_FAIL_MSG("Couldn't open file: " + err);
+		ERR_FAIL_MSG("Couldn't open file: " + String::num(err));
 	}
 
 	f->store_line(JSON::print(to_dict()));
@@ -121,7 +121,7 @@ void ProfileManager::_load() {
 
 		if (err) {
 			load_defaults();
-			ERR_FAIL_MSG("Couldn't open file: " + err);
+			ERR_FAIL_MSG("Couldn't open file: " + String::num(err));
 		}
 
 		String err_txt;
@@ -131,7 +131,7 @@ void ProfileManager::_load() {
 
 		if (err) {
 			load_defaults();
-			ERR_FAIL_MSG("Error parsing profile: " + err);
+			ERR_FAIL_MSG("Couldn't open file: " + String::num(err));
 		}
 
 		Dictionary d = v;
