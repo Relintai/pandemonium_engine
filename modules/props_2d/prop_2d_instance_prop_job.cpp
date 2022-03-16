@@ -294,7 +294,7 @@ void Prop2DInstanceProp2DJob::phase_prop() {
 
 			Ref<Prop2DDataTiledWall2D> pdtw = e.data;
 			//Transform t = pdtw->get_transform();
-			Transform2D t = e.base_transform;
+			//Transform2D t = e.base_transform;
 
 			//_prop_mesher->add_tiled_wall_simple(pdtw->get_width(), pdtw->get_heigth(), t, pdtw->get_data(), _material_cache);
 		}

@@ -4873,6 +4873,8 @@ void RasterizerStorageGLES2::_render_target_allocate(RenderTarget *rt) {
 
 			while (true) {
 				RenderTarget::MipMaps::Size mm;
+				mm.fbo = 0;
+				mm.color = 0;
 				mm.width = w;
 				mm.height = h;
 				rt->mip_maps[i].sizes.push_back(mm);

@@ -236,7 +236,7 @@ void Prop2DInstanceMerger::debug_mesh_send() {
 	if (_debug_mesh_array.size() == 0)
 		return;
 
-	SceneTree *st = SceneTree::get_singleton();
+	//SceneTree *st = SceneTree::get_singleton();
 
 	Array arr;
 	arr.resize(VisualServer::ARRAY_MAX);

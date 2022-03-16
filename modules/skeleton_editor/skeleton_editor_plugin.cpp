@@ -1276,7 +1276,7 @@ bool ModuleSkeletonEditor::forward_spatial_gui_input(int p_index, Camera *p_came
 				case SpatialEditorViewport::TRANSFORM_SCALE: {
 					Vector3 motion_mask;
 					Plane plane;
-					bool plane_mv = false;
+					//bool plane_mv = false;
 
 					switch (_edit.plane) {
 						case SpatialEditorViewport::TRANSFORM_VIEW:
@@ -1298,17 +1298,17 @@ bool ModuleSkeletonEditor::forward_spatial_gui_input(int p_index, Camera *p_came
 						case SpatialEditorViewport::TRANSFORM_YZ:
 							motion_mask = se->get_gizmo_transform().basis.get_axis(2) + se->get_gizmo_transform().basis.get_axis(1);
 							plane = Plane(_edit.center, se->get_gizmo_transform().basis.get_axis(0));
-							plane_mv = true;
+							//plane_mv = true;
 							break;
 						case SpatialEditorViewport::TRANSFORM_XZ:
 							motion_mask = se->get_gizmo_transform().basis.get_axis(2) + se->get_gizmo_transform().basis.get_axis(0);
 							plane = Plane(_edit.center, se->get_gizmo_transform().basis.get_axis(1));
-							plane_mv = true;
+							//plane_mv = true;
 							break;
 						case SpatialEditorViewport::TRANSFORM_XY:
 							motion_mask = se->get_gizmo_transform().basis.get_axis(0) + se->get_gizmo_transform().basis.get_axis(1);
 							plane = Plane(_edit.center, se->get_gizmo_transform().basis.get_axis(2));
-							plane_mv = true;
+							//plane_mv = true;
 							break;
 					}
 

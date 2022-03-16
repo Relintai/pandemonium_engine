@@ -652,7 +652,7 @@ void Terrain2DChunkDefault::draw_debug_mdr_colliders() {
 		if (!shape.is_valid())
 			continue;
 
-		Transform2D t = collider_get_transform(i);
+		//Transform2D t = collider_get_transform(i);
 
 		//shape->add_vertices_to_array(_debug_mesh_array, t);
 		//draw
