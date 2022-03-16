@@ -32,10 +32,10 @@
 #define NAVIGATION_MESH_INSTANCE_H
 
 #include "scene/3d/spatial.h"
-#include "scene/resources/mesh.h"
-#include "scene/resources/navigation_mesh.h"
 
+class Mesh;
 class Navigation;
+class NavigationMesh;
 
 class NavigationMeshInstance : public Spatial {
 	GDCLASS(NavigationMeshInstance, Spatial);

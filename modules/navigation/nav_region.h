@@ -36,6 +36,7 @@
 #include "nav_utils.h"
 #include "scene/3d/navigation.h"
 #include <vector>
+#include "scene/resources/navigation_mesh.h"
 
 /**
 	@author AndreaCatania

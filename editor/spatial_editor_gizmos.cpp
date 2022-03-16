@@ -65,6 +65,7 @@
 #include "scene/resources/ray_shape.h"
 #include "scene/resources/sphere_shape.h"
 #include "scene/resources/surface_tool.h"
+#include "scene/resources/navigation_mesh.h"
 
 #define HANDLE_HALF_SIZE 9.5
 

@@ -34,6 +34,8 @@
 #include "nav_region.h"
 #include "rvo_agent.h"
 #include <algorithm>
+#include "scene/resources/mesh.h"
+#include "scene/resources/navigation_mesh.h"
 
 /**
 	@author AndreaCatania

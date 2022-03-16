@@ -45,6 +45,7 @@
 #include "scene/resources/ray_shape.h"
 #include "scene/resources/resource_format_text.h"
 #include "scene/resources/sphere_shape.h"
+#include "scene/resources/navigation_mesh.h"
 
 uint32_t EditorSceneImporter::get_import_flags() const {
 	if (get_script_instance()) {

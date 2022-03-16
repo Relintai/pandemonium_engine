@@ -50,6 +50,7 @@
 #include "servers/physics_2d_server.h"
 #include "servers/physics_server.h"
 #include "viewport.h"
+#include "scene/3d/spatial.h"
 
 #include "modules/modules_enabled.gen.h" // For freetype.
 

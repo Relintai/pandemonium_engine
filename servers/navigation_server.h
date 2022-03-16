@@ -37,7 +37,10 @@
 
 #include "core/object.h"
 #include "core/rid.h"
-#include "scene/3d/navigation_mesh_instance.h"
+
+#include "core/reference.h"
+
+class NavigationMesh;
 
 /// This server uses the concept of internal mutability.
 /// All the constant functions can be called in multithread because internally

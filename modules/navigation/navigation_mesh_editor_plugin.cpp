@@ -36,6 +36,8 @@
 #include "navigation_mesh_generator.h"
 #include "scene/3d/mesh_instance.h"
 #include "scene/gui/box_container.h"
+#include "scene/resources/mesh.h"
+#include "scene/resources/navigation_mesh.h"
 
 void NavigationMeshEditor::_node_removed(Node *p_node) {
 	if (p_node == node) {

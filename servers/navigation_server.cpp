@@ -34,6 +34,9 @@
 
 #include "navigation_server.h"
 
+#include "scene/3d/navigation_mesh_instance.h"
+#include "scene/resources/navigation_mesh.h"
+
 NavigationServer *NavigationServer::singleton = nullptr;
 
 void NavigationServer::_bind_methods() {

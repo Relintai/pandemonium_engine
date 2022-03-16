@@ -34,6 +34,8 @@
 #include "mesh_instance.h"
 #include "navigation.h"
 #include "servers/navigation_server.h"
+#include "scene/resources/mesh.h"
+#include "scene/resources/navigation_mesh.h"
 
 void NavigationMeshInstance::set_enabled(bool p_enabled) {
 	if (enabled == p_enabled) {
