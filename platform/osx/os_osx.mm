@@ -38,6 +38,7 @@
 #include "drivers/gles2/rasterizer_gles2.h"
 #include "main/main.h"
 #include "servers/visual/visual_server_raster.h"
+#include "scene/resources/texture.h"
 
 #include <mach-o/dyld.h>
 #include <os/log.h>
@@ -1731,7 +1732,7 @@ Error OS_OSX::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 	bool gl_initialization_error = false;
 
 	while (true) {
-		if (gles3) {
+		if (gles2) {
 			if (RasterizerGLES2::is_viable() == OK) {
 				RasterizerGLES2::register_config();
 				RasterizerGLES2::make_current();
