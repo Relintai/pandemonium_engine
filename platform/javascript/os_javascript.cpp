@@ -39,6 +39,7 @@
 #ifndef NO_THREADS
 #include "servers/visual/visual_server_wrap_mt.h"
 #endif
+#include "scene/resources/texture.h"
 
 #include <dlfcn.h>
 #include <emscripten.h>
