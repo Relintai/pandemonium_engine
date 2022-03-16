@@ -231,9 +231,9 @@
 		</constant>
 		<constant name="DEFAULT_CHANNEL_ISOLEVEL" value="1" enum="DefaultChannels">
 		</constant>
-		<constant name="DEFAULT_CHANNEL_ALT_TYPE" value="2" enum="DefaultChannels">
+		<constant name="DEFAULT_CHANNEL_LIQUID_TYPE" value="2" enum="DefaultChannels">
 		</constant>
-		<constant name="DEFAULT_CHANNEL_ALT_ISOLEVEL" value="3" enum="DefaultChannels">
+		<constant name="DEFAULT_CHANNEL_LIQUID_ISOLEVEL" value="3" enum="DefaultChannels">
 		</constant>
 		<constant name="DEFAULT_CHANNEL_LIGHT_COLOR_R" value="4" enum="DefaultChannels">
 		</constant>
@@ -245,9 +245,7 @@
 		</constant>
 		<constant name="DEFAULT_CHANNEL_RANDOM_AO" value="8" enum="DefaultChannels">
 		</constant>
-		<constant name="DEFAULT_CHANNEL_LIQUID_FLOW" value="9" enum="DefaultChannels">
-		</constant>
-		<constant name="MAX_DEFAULT_CHANNELS" value="10" enum="DefaultChannels">
+		<constant name="MAX_DEFAULT_CHANNELS" value="9" enum="DefaultChannels">
 		</constant>
 		<constant name="MESH_INDEX_TERRAIN" value="0">
 		</constant>

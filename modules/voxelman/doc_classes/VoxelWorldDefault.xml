@@ -30,13 +30,15 @@
 	<members>
 		<member name="build_flags" type="int" setter="set_build_flags" getter="get_build_flags" default="384">
 		</member>
-		<member name="chunk_lod_falloff" type="int" setter="set_chunk_lod_falloff" getter="get_chunk_lod_falloff" default="2">
+		<member name="chunk_lod_falloff" type="int" setter="set_chunk_lod_falloff" getter="get_chunk_lod_falloff" default="4">
 		</member>
 		<member name="data_margin_end" type="int" setter="set_data_margin_end" getter="get_data_margin_end" overrides="VoxelWorld" default="1" />
 		<member name="data_margin_start" type="int" setter="set_data_margin_start" getter="get_data_margin_start" overrides="VoxelWorld" default="1" />
 		<member name="lod_update_interval" type="float" setter="set_lod_update_interval" getter="get_lod_update_interval" default="0.5">
 		</member>
-		<member name="num_lods" type="int" setter="set_num_lods" getter="get_num_lods" default="4">
+		<member name="num_lods" type="int" setter="set_num_lods" getter="get_num_lods" default="0">
+		</member>
+		<member name="use_default_lod_update" type="bool" setter="set_use_default_lod_update" getter="get_use_default_lod_update" default="true">
 		</member>
 	</members>
 	<constants>

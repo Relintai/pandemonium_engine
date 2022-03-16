@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="Prop2DDataEntry" inherits="Resource" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_add_textures_into" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="texture_packer" type="TexturePacker" />
+			<description>
+			</description>
+		</method>
+		<method name="_processor_evaluate_children" qualifiers="virtual">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="_processor_get_node_for" qualifiers="virtual">
+			<return type="Node" />
+			<argument index="0" name="transform" type="Transform" />
+			<argument index="1" name="node" type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="_processor_handles" qualifiers="virtual">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="_processor_process" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="prop_data" type="Prop2DData" />
+			<argument index="1" name="node" type="Node" />
+			<argument index="2" name="transform" type="Transform" />
+			<argument index="3" name="entry" type="Prop2DDataEntry" />
+			<description>
+			</description>
+		</method>
+		<method name="add_textures_into">
+			<return type="void" />
+			<argument index="0" name="texture_packer" type="TexturePacker" />
+			<description>
+			</description>
+		</method>
+		<method name="processor_evaluate_children">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="processor_get_node_for">
+			<return type="Node" />
+			<argument index="0" name="prop_data" type="Transform2D" />
+			<description>
+			</description>
+		</method>
+		<method name="processor_handles">
+			<return type="bool" />
+			<argument index="0" name="node" type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="processor_process">
+			<return type="void" />
+			<argument index="0" name="prop_data" type="Prop2DData" />
+			<argument index="1" name="node" type="Node" />
+			<argument index="2" name="transform" type="Transform2D" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="light_mask" type="int" setter="set_light_mask" getter="get_light_mask" default="1">
+		</member>
+		<member name="material" type="Material" setter="set_material" getter="get_material">
+		</member>
+		<member name="modulate" type="Color" setter="set_modulate" getter="get_modulate" default="Color( 1, 1, 1, 1 )">
+		</member>
+		<member name="self_modulate" type="Color" setter="set_self_modulate" getter="get_self_modulate" default="Color( 1, 1, 1, 1 )">
+		</member>
+		<member name="show_behind_parent" type="bool" setter="set_show_behind_parent" getter="get_show_behind_parent" default="false">
+		</member>
+		<member name="transform" type="Transform" setter="set_transform" getter="get_transform" default="Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )">
+		</member>
+		<member name="transform_2d" type="Transform2D" setter="set_transform_2d" getter="get_transform_2d" default="Transform2D( 1, 0, 0, 1, 0, 0 )">
+		</member>
+		<member name="use_parent_material" type="bool" setter="set_use_parent_material" getter="get_use_parent_material" default="false">
+		</member>
+		<member name="visible" type="bool" setter="set_visible" getter="get_visible" default="true">
+		</member>
+		<member name="z_as_relative" type="bool" setter="set_z_as_relative" getter="get_z_as_relative" default="true">
+		</member>
+		<member name="z_index" type="int" setter="set_z_index" getter="get_z_index" default="0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

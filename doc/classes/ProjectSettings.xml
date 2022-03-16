@@ -423,9 +423,6 @@
 		<member name="debug/settings/stdout/verbose_stdout" type="bool" setter="" getter="" default="false">
 			Print more information to standard output when running. It displays information such as memory leaks, which scenes and resources are being loaded, etc.
 		</member>
-		<member name="debug/settings/visual_script/max_call_stack" type="int" setter="" getter="" default="1024">
-			Maximum call stack in visual scripting, to avoid infinite recursion.
-		</member>
 		<member name="debug/shapes/collision/contact_color" type="Color" setter="" getter="" default="Color( 1, 0.2, 0.1, 0.8 )">
 			Color of the contact points between collision shapes, visible when "Visible Collision Shapes" is enabled in the Debug menu.
 		</member>
@@ -534,6 +531,72 @@
 		</member>
 		<member name="editor/version_control/plugin_name" type="String" setter="" getter="" default="&quot;&quot;">
 			Last loaded VCS plugin name. Used to autoload the plugin when the editor starts up.
+		</member>
+		<member name="ess/data/automatic_load" type="bool" setter="" getter="" default="false">
+		</member>
+		<member name="ess/data/ess_resource_db_path" type="String" setter="" getter="" default="&quot;&quot;">
+		</member>
+		<member name="ess/enums/dminishing_return_categories" type="String" setter="" getter="" default="&quot;Stun,Sleep,Disorient&quot;">
+		</member>
+		<member name="ess/enums/dminishing_return_length" type="float" setter="" getter="" default="15.0">
+		</member>
+		<member name="ess/enums/dminishing_return_steps" type="int" setter="" getter="" default="4">
+		</member>
+		<member name="ess/enums/entity_types" type="String" setter="" getter="" default="&quot;None,Creature,Totem,Idol,Humanoid,Mechanical,Beast,Dragonkin,Elemental,Ghost,Energy,Anomaly,Demon,Object&quot;">
+		</member>
+		<member name="ess/enums/equip_slots" type="String" setter="" getter="" default="&quot;Head,Neck,Shoulder,Chest,Gloves,Belt,Legs,Feet,Ring_1,Ring_2,Trinket_1,Trinket_2,Main_Hand,Off_Hand&quot;">
+		</member>
+		<member name="ess/enums/main_stat_count" type="int" setter="" getter="" default="5">
+		</member>
+		<member name="ess/enums/model_visual_groups" type="String" setter="" getter="" default="&quot;None,Bodypart,Alt Bodypart,Attachment&quot;">
+		</member>
+		<member name="ess/enums/skeletons_bone_attachment_points" type="PoolStringArray" setter="" getter="" default="PoolStringArray(  )">
+		</member>
+		<member name="ess/enums/skeletons_bones" type="PoolStringArray" setter="" getter="" default="PoolStringArray(  )">
+		</member>
+		<member name="ess/enums/stats" type="String" setter="" getter="" default="&quot;Agility,Strength,Stamina,Intellect,Spirit,Health,Speed,Global Cooldown,Haste&quot;">
+		</member>
+		<member name="ess/enums/texture_layers" type="String" setter="" getter="" default="&quot;None,Skin,Underwear,Shirt,Clothes Base,Clothes 1,Clothes 2,Clothes 3,Clothes 4,Clothes 5,Belt,Tabard,Overlay&quot;">
+		</member>
+		<member name="ess/level/auto_learn_spells" type="bool" setter="" getter="" default="true">
+		</member>
+		<member name="ess/level/automatic_class_levelups" type="bool" setter="" getter="" default="false">
+		</member>
+		<member name="ess/level/use_class_xp" type="bool" setter="" getter="" default="false">
+		</member>
+		<member name="ess/level/use_global_class_level" type="bool" setter="" getter="" default="false">
+		</member>
+		<member name="ess/material_cache/background_color" type="Color" setter="" getter="" default="Color( 0, 0, 0, 1 )">
+		</member>
+		<member name="ess/material_cache/default_ess_material_cache_class" type="String" setter="" getter="" default="&quot;ESSMaterialCachePCM&quot;">
+		</member>
+		<member name="ess/material_cache/keep_original_atlases" type="bool" setter="" getter="" default="false">
+		</member>
+		<member name="ess/material_cache/margin" type="int" setter="" getter="" default="0">
+		</member>
+		<member name="ess/material_cache/material_paths" type="PoolStringArray" setter="" getter="" default="PoolStringArray(  )">
+		</member>
+		<member name="ess/material_cache/max_atlas_size" type="int" setter="" getter="" default="1024">
+		</member>
+		<member name="ess/material_cache/texture_flags" type="int" setter="" getter="" default="5">
+		</member>
+		<member name="ess/profiles/automatic_load" type="bool" setter="" getter="" default="false">
+		</member>
+		<member name="ess/profiles/automatic_save" type="bool" setter="" getter="" default="false">
+		</member>
+		<member name="ess/profiles/save_file" type="String" setter="" getter="" default="&quot;user://profile.save&quot;">
+		</member>
+		<member name="ess/spells/allow_class_recipe_learning" type="bool" setter="" getter="" default="false">
+		</member>
+		<member name="ess/spells/allow_class_spell_learning" type="bool" setter="" getter="" default="false">
+		</member>
+		<member name="ess/spells/scale_spells_by_default" type="bool" setter="" getter="" default="false">
+		</member>
+		<member name="ess/spells/use_spell_points" type="bool" setter="" getter="" default="false">
+		</member>
+		<member name="ess/xp/character_xps" type="PoolIntArray" setter="" getter="" default="PoolIntArray(  )">
+		</member>
+		<member name="ess/xp/class_xps" type="PoolIntArray" setter="" getter="" default="PoolIntArray(  )">
 		</member>
 		<member name="gui/common/default_scroll_deadzone" type="int" setter="" getter="" default="0">
 			Default value for [member ScrollContainer.scroll_deadzone], which will be used for all [ScrollContainer]s unless overridden.
@@ -1169,6 +1232,36 @@
 			[b]Note:[/b] Jitter fix is automatically disabled at runtime when [member physics/common/physics_interpolation] is enabled.
 			[b]Note:[/b] This property is only read when the project starts. To change the value at runtime, set [member Engine.physics_jitter_fix] instead.
 		</member>
+		<member name="props/background_color" type="Color" setter="" getter="" default="Color( 0, 0, 0, 1 )">
+		</member>
+		<member name="props/default_prop_material_cache_class" type="String" setter="" getter="" default="&quot;PropMaterialCachePCM&quot;">
+		</member>
+		<member name="props/keep_original_atlases" type="bool" setter="" getter="" default="false">
+		</member>
+		<member name="props/margin" type="int" setter="" getter="" default="0">
+		</member>
+		<member name="props/material_paths" type="PoolStringArray" setter="" getter="" default="PoolStringArray(  )">
+		</member>
+		<member name="props/max_atlas_size" type="int" setter="" getter="" default="1024">
+		</member>
+		<member name="props/texture_flags" type="int" setter="" getter="" default="5">
+		</member>
+		<member name="props_2d/background_color" type="Color" setter="" getter="" default="Color( 0, 0, 0, 1 )">
+		</member>
+		<member name="props_2d/default_pixels_per_unit" type="int" setter="" getter="" default="64">
+		</member>
+		<member name="props_2d/default_prop_material_cache_class" type="String" setter="" getter="" default="&quot;Prop2DMaterialCachePCM&quot;">
+		</member>
+		<member name="props_2d/keep_original_atlases" type="bool" setter="" getter="" default="false">
+		</member>
+		<member name="props_2d/margin" type="int" setter="" getter="" default="0">
+		</member>
+		<member name="props_2d/material_path" type="String" setter="" getter="" default="&quot;&quot;">
+		</member>
+		<member name="props_2d/max_atlas_size" type="int" setter="" getter="" default="1024">
+		</member>
+		<member name="props_2d/texture_flags" type="int" setter="" getter="" default="5">
+		</member>
 		<member name="rendering/2d/opengl/batching_send_null" type="int" setter="" getter="" default="0">
 			[b]Experimental.[/b] Calls [code]glBufferData[/code] with NULL data prior to uploading batching data. This may not be necessary but can be used for safety.
 			[b]Note:[/b] Use with care. You are advised to leave this as default for exports. A non-default setting that works better on your machine may adversely affect performance for end users.
@@ -1245,18 +1338,6 @@
 			The amount of UV contraction. This figure is divided by 1000000, and is a proportion of the total texture dimensions, where the width and height are both ranged from 0.0 to 1.0.
 			Use the default unless correcting for a problem on particular hardware.
 		</member>
-		<member name="rendering/cpu_lightmapper/quality/high_quality_ray_count" type="int" setter="" getter="" default="512">
-			Amount of light samples taken when using [constant BakedLightmap.BAKE_QUALITY_HIGH].
-		</member>
-		<member name="rendering/cpu_lightmapper/quality/low_quality_ray_count" type="int" setter="" getter="" default="64">
-			Amount of light samples taken when using [constant BakedLightmap.BAKE_QUALITY_LOW].
-		</member>
-		<member name="rendering/cpu_lightmapper/quality/medium_quality_ray_count" type="int" setter="" getter="" default="256">
-			Amount of light samples taken when using [constant BakedLightmap.BAKE_QUALITY_MEDIUM].
-		</member>
-		<member name="rendering/cpu_lightmapper/quality/ultra_quality_ray_count" type="int" setter="" getter="" default="1024">
-			Amount of light samples taken when using [constant BakedLightmap.BAKE_QUALITY_ULTRA].
-		</member>
 		<member name="rendering/environment/default_clear_color" type="Color" setter="" getter="" default="Color( 0.3, 0.3, 0.3, 1 )">
 			Default background clear color. Overridable per [Viewport] using its [Environment]. See [member Environment.background_mode] and [member Environment.background_color] in particular. To change this default color programmatically, use [method VisualServer.set_default_clear_color].
 		</member>
@@ -1310,9 +1391,6 @@
 			An override for [code]rendering/gles3/shaders/shader_compilation_mode[/code], so asynchronous compilation can be disabled for mobile.
 			You may want to do that since mobile GPUs generally won't support ubershaders due to their complexity.
 		</member>
-		<member name="rendering/limits/buffers/blend_shape_max_buffer_size_kb" type="int" setter="" getter="" default="4096">
-			Max buffer size for blend shapes. Any blend shape bigger than this will not work.
-		</member>
 		<member name="rendering/limits/buffers/canvas_polygon_buffer_size_kb" type="int" setter="" getter="" default="128">
 			Max buffer size for drawing polygons. Any polygon bigger than this will not work.
 		</member>
@@ -1321,18 +1399,6 @@
 		</member>
 		<member name="rendering/limits/buffers/immediate_buffer_size_kb" type="int" setter="" getter="" default="2048">
 			Max buffer size for drawing immediate objects (ImmediateGeometry nodes). Nodes using more than this size will not work.
-		</member>
-		<member name="rendering/limits/rendering/max_lights_per_object" type="int" setter="" getter="" default="32">
-			Max number of lights renderable per object. This is further limited by hardware support. Most devices only support 409 lights, while many devices (especially mobile) only support 102. Setting this low will slightly reduce memory usage and may decrease shader compile times.
-		</member>
-		<member name="rendering/limits/rendering/max_renderable_elements" type="int" setter="" getter="" default="65536">
-			Max amount of elements renderable in a frame. If more elements than this are visible per frame, they will not be drawn. Keep in mind elements refer to mesh surfaces and not meshes themselves. Setting this low will slightly reduce memory usage and may decrease shader compile times, particularly on web. For most uses, the default value is suitable, but consider lowering as much as possible on web export.
-		</member>
-		<member name="rendering/limits/rendering/max_renderable_lights" type="int" setter="" getter="" default="4096">
-			Max number of lights renderable in a frame. If more lights than this number are used, they will be ignored. Setting this low will slightly reduce memory usage and may decrease shader compile times, particularly on web. For most uses, the default value is suitable, but consider lowering as much as possible on web export.
-		</member>
-		<member name="rendering/limits/rendering/max_renderable_reflections" type="int" setter="" getter="" default="1024">
-			Max number of reflection probes renderable in a frame. If more reflection probes than this number are used, they will be ignored. Setting this low will slightly reduce memory usage and may decrease shader compile times, particularly on web. For most uses, the default value is suitable, but consider lowering as much as possible on web export.
 		</member>
 		<member name="rendering/limits/time/time_rollover_secs" type="float" setter="" getter="" default="3600">
 			Shaders have a time variable that constantly increases. At some point, it needs to be rolled back to zero to avoid precision errors on shader animations. This setting specifies when (in seconds).
@@ -1404,7 +1470,7 @@
 		<member name="rendering/quality/directional_shadow/size.mobile" type="int" setter="" getter="" default="2048">
 			Lower-end override for [member rendering/quality/directional_shadow/size] on mobile devices, due to performance concerns or driver support.
 		</member>
-		<member name="rendering/quality/driver/driver_name" type="String" setter="" getter="" default="&quot;GLES3&quot;">
+		<member name="rendering/quality/driver/driver_name" type="String" setter="" getter="" default="&quot;GLES2&quot;">
 			The video driver to use ("GLES2" or "GLES3").
 			[b]Note:[/b] The backend in use can be overridden at runtime via the [code]--video-driver[/code] command line argument, or by the [member rendering/quality/driver/fallback_to_gles2] option if the target system does not support GLES3 and falls back to GLES2. In such cases, this property is not updated, so use [method OS.get_current_video_driver] to query it at run-time.
 		</member>
@@ -1438,12 +1504,6 @@
 		</member>
 		<member name="rendering/quality/intended_usage/framebuffer_allocation.mobile" type="int" setter="" getter="" default="3">
 			Lower-end override for [member rendering/quality/intended_usage/framebuffer_allocation] on mobile devices, due to performance concerns or driver support.
-		</member>
-		<member name="rendering/quality/lightmapping/use_bicubic_sampling" type="bool" setter="" getter="" default="true">
-			Enable usage of bicubic sampling in baked lightmaps. This results in smoother looking lighting at the expense of more bandwidth usage. On GLES2, changes to this setting will only be applied upon restarting the application.
-		</member>
-		<member name="rendering/quality/lightmapping/use_bicubic_sampling.mobile" type="bool" setter="" getter="" default="false">
-			Lower-end override for [member rendering/quality/lightmapping/use_bicubic_sampling] on mobile devices, in order to reduce bandwidth usage.
 		</member>
 		<member name="rendering/quality/reflections/atlas_size" type="int" setter="" getter="" default="2048">
 			Size of the atlas used by reflection probes. A larger size can result in higher visual quality, while a smaller size will be faster and take up less memory.
@@ -1540,21 +1600,6 @@
 		<member name="rendering/quality/spatial_partitioning/use_bvh" type="bool" setter="" getter="" default="true">
 			Enables the use of bounding volume hierarchy instead of octree for rendering spatial partitioning. This may give better performance.
 		</member>
-		<member name="rendering/quality/subsurface_scattering/follow_surface" type="bool" setter="" getter="" default="false">
-			Improves quality of subsurface scattering, but cost significantly increases.
-		</member>
-		<member name="rendering/quality/subsurface_scattering/quality" type="int" setter="" getter="" default="1">
-			Quality setting for subsurface scattering (samples taken).
-		</member>
-		<member name="rendering/quality/subsurface_scattering/scale" type="int" setter="" getter="" default="1.0">
-			Max radius used for subsurface scattering samples.
-		</member>
-		<member name="rendering/quality/subsurface_scattering/weight_samples" type="bool" setter="" getter="" default="true">
-			Weight subsurface scattering samples. Helps to avoid reading samples from unrelated parts of the screen.
-		</member>
-		<member name="rendering/quality/voxel_cone_tracing/high_quality" type="bool" setter="" getter="" default="false">
-			Use high-quality voxel cone tracing. This results in better-looking reflections, but is much more expensive on the GPU.
-		</member>
 		<member name="rendering/threads/thread_model" type="int" setter="" getter="" default="1">
 			Thread model for rendering. Rendering on a thread can vastly improve performance, but synchronizing to the main thread can cause a bit more jitter.
 		</member>
@@ -1581,6 +1626,18 @@
 		<member name="rendering/vram_compression/import_s3tc" type="bool" setter="" getter="" default="true">
 			If [code]true[/code], the texture importer will import VRAM-compressed textures using the S3 Texture Compression algorithm. This algorithm is only supported on desktop platforms and consoles.
 			[b]Note:[/b] Changing this setting does [i]not[/i] impact textures that were already imported before. To make this setting apply to textures that were already imported, exit the editor, remove the [code].import/[/code] folder located inside the project folder then restart the editor (see [member application/config/use_hidden_project_data_directory]).
+		</member>
+		<member name="thread_pool/max_work_per_frame_percent" type="int" setter="" getter="" default="25">
+		</member>
+		<member name="thread_pool/queue_grow_size" type="int" setter="" getter="" default="10">
+		</member>
+		<member name="thread_pool/queue_start_size" type="int" setter="" getter="" default="20">
+		</member>
+		<member name="thread_pool/thread_count" type="int" setter="" getter="" default="-1">
+		</member>
+		<member name="thread_pool/thread_fallback_count" type="int" setter="" getter="" default="4">
+		</member>
+		<member name="thread_pool/use_threads" type="bool" setter="" getter="" default="true">
 		</member>
 		<member name="world/2d/cell_size" type="int" setter="" getter="" default="100">
 			Cell size used for the 2D hash grid that [VisibilityNotifier2D] uses (in pixels).

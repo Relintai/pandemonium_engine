@@ -7,6 +7,11 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="_create_job" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
 		<method name="apply_lod_level">
 			<return type="void" />
 			<description>

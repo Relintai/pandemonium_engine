@@ -11,13 +11,6 @@
 	<tutorials>
 	</tutorials>
 	<methods>
-		<method name="convert_from_particles">
-			<return type="void" />
-			<argument index="0" name="particles" type="Node" />
-			<description>
-				Sets this node's properties to match a given [Particles] node with an assigned [ParticlesMaterial].
-			</description>
-		</method>
 		<method name="get_param" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="param" type="int" enum="CPUParticles.Parameter" />
@@ -256,6 +249,7 @@
 		<member name="orbit_velocity_random" type="float" setter="set_param_randomness" getter="get_param_randomness">
 			Orbital velocity randomness ratio.
 		</member>
+		<member name="portal_mode" type="int" setter="set_portal_mode" getter="get_portal_mode" overrides="CullInstance" enum="CullInstance.PortalMode" default="0" />
 		<member name="preprocess" type="float" setter="set_pre_process_time" getter="get_pre_process_time" default="0.0">
 			Particle system starts as if it had already run for this many seconds.
 		</member>

@@ -7,6 +7,12 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="add_jobs_step">
+			<return type="void" />
+			<argument index="0" name="mesher" type="VoxelMesherJobStep" />
+			<description>
+			</description>
+		</method>
 		<method name="add_liquid_mesher">
 			<return type="void" />
 			<argument index="0" name="mesher" type="VoxelMesher" />
@@ -16,6 +22,17 @@
 		<method name="add_mesher">
 			<return type="void" />
 			<argument index="0" name="mesher" type="VoxelMesher" />
+			<description>
+			</description>
+		</method>
+		<method name="get_jobs_step" qualifiers="const">
+			<return type="VoxelMesherJobStep" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_jobs_step_count" qualifiers="const">
+			<return type="int" />
 			<description>
 			</description>
 		</method>
@@ -41,6 +58,12 @@
 			<description>
 			</description>
 		</method>
+		<method name="remove_jobs_step">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="remove_liquid_mesher">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
@@ -50,6 +73,13 @@
 		<method name="remove_mesher">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_jobs_step">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="mesher" type="VoxelMesherJobStep" />
 			<description>
 			</description>
 		</method>

@@ -149,6 +149,12 @@
 			<description>
 			</description>
 		</method>
+		<method name="remove_bone">
+			<return type="void" />
+			<argument index="0" name="bone_idx" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="set_bone_custom_pose">
 			<return type="void" />
 			<argument index="0" name="bone_idx" type="int" />

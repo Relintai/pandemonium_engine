@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="Prop2DCache" inherits="Object" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="ensure_material_loaded">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="load_resource">
+			<return type="Resource" />
+			<argument index="0" name="path" type="String" />
+			<argument index="1" name="type_hint" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="material_cache_custom_key_get">
+			<return type="Prop2DMaterialCache" />
+			<argument index="0" name="key" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="material_cache_custom_key_unref">
+			<return type="void" />
+			<argument index="0" name="key" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="material_cache_get">
+			<return type="Prop2DMaterialCache" />
+			<argument index="0" name="prop" type="Prop2DData" />
+			<description>
+			</description>
+		</method>
+		<method name="material_cache_unref">
+			<return type="void" />
+			<argument index="0" name="prop" type="Prop2DData" />
+			<description>
+			</description>
+		</method>
+		<method name="material_load">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="tiled_wall_material_cache_get">
+			<return type="Prop2DMaterialCache" />
+			<argument index="0" name="twd" type="TiledWall2DData" />
+			<description>
+			</description>
+		</method>
+		<method name="tiled_wall_material_cache_unref">
+			<return type="void" />
+			<argument index="0" name="twd" type="TiledWall2DData" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="background_color" type="Color" setter="set_background_color" getter="get_background_color" default="Color( 0, 0, 0, 1 )">
+		</member>
+		<member name="default_pixels_per_unit" type="float" setter="set_default_pixels_per_unit" getter="get_default_pixels_per_unit" default="64.0">
+		</member>
+		<member name="default_prop_material_cache_class" type="String" setter="set_default_prop_material_cache_class" getter="get_default_prop_material_cache_class" default="&quot;Prop2DMaterialCachePCM&quot;">
+		</member>
+		<member name="keep_original_atlases" type="bool" setter="set_keep_original_atlases" getter="get_keep_original_atlases" default="false">
+		</member>
+		<member name="margin" type="int" setter="set_margin" getter="get_margin" default="0">
+		</member>
+		<member name="material" type="Material" setter="material_set" getter="material_get">
+		</member>
+		<member name="material_path" type="String" setter="material_path_set" getter="material_path_get" default="&quot;&quot;">
+		</member>
+		<member name="max_atlas_size" type="int" setter="set_max_atlas_size" getter="get_max_atlas_size" default="1024">
+		</member>
+		<member name="texture_flags" type="int" setter="set_texture_flags" getter="get_texture_flags" default="5">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

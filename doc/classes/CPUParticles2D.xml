@@ -12,13 +12,6 @@
 		<link>$DOCS_URL/tutorials/2d/particle_systems_2d.html</link>
 	</tutorials>
 	<methods>
-		<method name="convert_from_particles">
-			<return type="void" />
-			<argument index="0" name="particles" type="Node" />
-			<description>
-				Sets this node's properties to match a given [Particles2D] node with an assigned [ParticlesMaterial].
-			</description>
-		</method>
 		<method name="get_param" qualifiers="const">
 			<return type="float" />
 			<argument index="0" name="param" type="int" enum="CPUParticles2D.Parameter" />

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="Prop2DInstanceMerger" inherits="Prop2DInstance" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_create_job" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="collider_add">
+			<return type="int" />
+			<argument index="0" name="local_transform" type="Transform2D" />
+			<argument index="1" name="shape" type="Shape2D" />
+			<argument index="2" name="shape_rid" type="RID" />
+			<argument index="3" name="body" type="RID" />
+			<argument index="4" name="arg4" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="collider_body_get">
+			<return type="RID" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="collider_get_num" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="collider_local_transform_get">
+			<return type="Transform2D" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="collider_shape_get">
+			<return type="Shape2D" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="collider_shape_rid_get">
+			<return type="RID" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="colliders_clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="debug_mesh_add_vertices_to">
+			<return type="void" />
+			<argument index="0" name="arr" type="PoolVector2Array" />
+			<description>
+			</description>
+		</method>
+		<method name="debug_mesh_allocate">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="debug_mesh_array_clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="debug_mesh_clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="debug_mesh_free">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="debug_mesh_has">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="debug_mesh_send">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="draw_debug_mdr_colliders">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="free_colliders">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="free_meshes">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="mesh_add">
+			<return type="void" />
+			<argument index="0" name="mesh" type="RID" />
+			<description>
+			</description>
+		</method>
+		<method name="mesh_get">
+			<return type="RID" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="mesh_get_num" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="meshes_clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="meshes_create">
+			<return type="void" />
+			<argument index="0" name="num" type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="job" type="Prop2DInstanceJob" setter="set_job" getter="get_job">
+		</member>
+		<member name="meshes" type="Array" setter="meshes_set" getter="meshes_get">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

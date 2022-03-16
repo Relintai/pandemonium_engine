@@ -80,9 +80,6 @@
 		<member name="auto_exposure_speed" type="float" setter="set_tonemap_auto_exposure_speed" getter="get_tonemap_auto_exposure_speed" default="0.5">
 			The speed of the auto exposure effect. Affects the time needed for the camera to perform auto exposure.
 		</member>
-		<member name="background_camera_feed_id" type="int" setter="set_camera_feed_id" getter="get_camera_feed_id" default="1">
-			The ID of the camera feed to show in the background.
-		</member>
 		<member name="background_canvas_max_layer" type="int" setter="set_canvas_max_layer" getter="get_canvas_max_layer" default="0">
 			The maximum layer ID to display. Only effective when using the [constant BG_CANVAS] background mode.
 		</member>

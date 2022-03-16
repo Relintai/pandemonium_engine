@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="Terrain2DSurfaceSimple" inherits="Terrain2DSurface" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="atlas_x" type="int" setter="set_atlas_x" getter="get_atlas_x" default="0">
+		</member>
+		<member name="atlas_y" type="int" setter="set_atlas_y" getter="get_atlas_y" default="0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

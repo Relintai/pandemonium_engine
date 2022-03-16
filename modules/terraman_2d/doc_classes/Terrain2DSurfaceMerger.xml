@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="Terrain2DSurfaceMerger" inherits="Terrain2DSurface" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="region" type="AtlasTexture" setter="set_region" getter="get_region">
+		</member>
+		<member name="texture" type="Texture" setter="set_texture" getter="get_texture">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

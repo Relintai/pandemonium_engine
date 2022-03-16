@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="TiledWall2D" inherits="Node2D" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="clear_mesh">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="free_mesh">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="generate_mesh">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="refresh">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="data" type="TiledWall2DData" setter="set_data" getter="get_data">
+		</member>
+		<member name="heigth" type="int" setter="set_heigth" getter="get_heigth" default="1">
+		</member>
+		<member name="mesh_transform" type="Transform2D" setter="set_mesh_transform" getter="get_mesh_transform" default="Transform2D( 1, 0, 0, 1, 0, 0 )">
+		</member>
+		<member name="width" type="int" setter="set_width" getter="get_width" default="1">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

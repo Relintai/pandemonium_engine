@@ -188,9 +188,6 @@
 		</method>
 	</methods>
 	<members>
-		<member name="arvr" type="bool" setter="set_use_arvr" getter="use_arvr" default="false">
-			If [code]true[/code], the viewport will be used in AR/VR process.
-		</member>
 		<member name="audio_listener_enable_2d" type="bool" setter="set_as_audio_listener_2d" getter="is_audio_listener_2d" default="false">
 			If [code]true[/code], the viewport will process 2D audio streams.
 		</member>

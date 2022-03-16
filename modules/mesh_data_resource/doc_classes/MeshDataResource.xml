@@ -14,6 +14,12 @@
 			<description>
 			</description>
 		</method>
+		<method name="append_arrays">
+			<return type="void" />
+			<argument index="0" name="array" type="Array" />
+			<description>
+			</description>
+		</method>
 		<method name="get_collision_shape">
 			<return type="Shape" />
 			<argument index="0" name="index" type="int" />

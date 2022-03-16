@@ -12,17 +12,13 @@
 	<methods>
 	</methods>
 	<members>
-		<member name="ARVRServer" type="ARVRServer" setter="" getter="">
-			The [ARVRServer] singleton.
-		</member>
 		<member name="AudioServer" type="AudioServer" setter="" getter="">
 			The [AudioServer] singleton.
 		</member>
-		<member name="CameraServer" type="CameraServer" setter="" getter="">
-			The [CameraServer] singleton.
-		</member>
 		<member name="ClassDB" type="ClassDB" setter="" getter="">
 			The [ClassDB] singleton.
+		</member>
+		<member name="ESS" type="ESS" setter="" getter="">
 		</member>
 		<member name="Engine" type="Engine" setter="" getter="">
 			The [Engine] singleton.
@@ -53,6 +49,8 @@
 		<member name="Marshalls" type="Marshalls" setter="" getter="">
 			The [Marshalls] singleton.
 		</member>
+		<member name="MeshUtils" type="MeshUtils" setter="" getter="">
+		</member>
 		<member name="Navigation2DServer" type="Navigation2DServer" setter="" getter="">
 			The [Navigation2DServer] singleton.
 		</member>
@@ -74,8 +72,18 @@
 		<member name="PhysicsServer" type="PhysicsServer" setter="" getter="">
 			The [PhysicsServer] singleton.
 		</member>
+		<member name="ProfileManager" type="ProfileManager" setter="" getter="">
+		</member>
 		<member name="ProjectSettings" type="ProjectSettings" setter="" getter="">
 			The [ProjectSettings] singleton.
+		</member>
+		<member name="Prop2DCache" type="Prop2DCache" setter="" getter="">
+		</member>
+		<member name="Prop2DUtils" type="Prop2DUtils" setter="" getter="">
+		</member>
+		<member name="PropCache" type="PropCache" setter="" getter="">
+		</member>
+		<member name="PropUtils" type="PropUtils" setter="" getter="">
 		</member>
 		<member name="ResourceLoader" type="ResourceLoader" setter="" getter="">
 			The [ResourceLoader] singleton.
@@ -83,14 +91,13 @@
 		<member name="ResourceSaver" type="ResourceSaver" setter="" getter="">
 			The [ResourceSaver] singleton.
 		</member>
+		<member name="ThreadPool" type="ThreadPool" setter="" getter="">
+		</member>
 		<member name="Time" type="Time" setter="" getter="">
 			The [Time] singleton.
 		</member>
 		<member name="TranslationServer" type="TranslationServer" setter="" getter="">
 			The [TranslationServer] singleton.
-		</member>
-		<member name="VisualScriptEditor" type="VisualScriptEditor" setter="" getter="">
-			The [VisualScriptEditor] singleton.
 		</member>
 		<member name="VisualServer" type="VisualServer" setter="" getter="">
 			The [VisualServer] singleton.

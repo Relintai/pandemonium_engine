@@ -7,6 +7,13 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="generate_simple_terrarin">
+			<return type="void" />
+			<argument index="0" name="chunk" type="VoxelChunk" />
+			<argument index="1" name="spawn_mobs" type="bool" />
+			<description>
+			</description>
+		</method>
 	</methods>
 	<members>
 		<member name="current_seed" type="int" setter="set_current_seed" getter="get_current_seed" default="0">

@@ -30,9 +30,9 @@
 		</member>
 		<member name="props" type="Array" setter="set_props" getter="get_props" default="[  ]">
 		</member>
-		<member name="texture_flags" type="int" setter="set_texture_flags" getter="get_texture_flags" default="5">
-		</member>
 		<member name="terra_surfaces" type="Array" setter="set_terra_surfaces" getter="get_terra_surfaces" default="[  ]">
+		</member>
+		<member name="texture_flags" type="int" setter="set_texture_flags" getter="get_texture_flags" default="5">
 		</member>
 	</members>
 	<constants>

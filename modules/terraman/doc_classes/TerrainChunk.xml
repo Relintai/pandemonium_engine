@@ -117,6 +117,11 @@
 			<description>
 			</description>
 		</method>
+		<method name="cancel_build">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
 		<method name="channel_allocate">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
@@ -352,7 +357,17 @@
 			<description>
 			</description>
 		</method>
+		<method name="is_build_aborted" qualifiers="const">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
 		<method name="is_in_tree" qualifiers="const">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="is_safe_to_delete">
 			<return type="bool" />
 			<description>
 			</description>

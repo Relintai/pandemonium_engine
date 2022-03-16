@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="Prop2DData" inherits="Resource" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_prop">
+			<return type="void" />
+			<argument index="0" name="prop" type="Prop2DDataEntry" />
+			<description>
+			</description>
+		</method>
+		<method name="add_textures_into">
+			<return type="void" />
+			<argument index="0" name="texture_packer" type="TexturePacker" />
+			<description>
+			</description>
+		</method>
+		<method name="copy_from">
+			<return type="void" />
+			<argument index="0" name="prop_data" type="Prop2DData" />
+			<description>
+			</description>
+		</method>
+		<method name="get_prop" qualifiers="const">
+			<return type="Prop2DDataEntry" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_prop_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_prop">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_prop">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="spell" type="Prop2DDataEntry" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="is_room" type="bool" setter="set_is_room" getter="get_is_room" default="false">
+		</member>
+		<member name="props" type="Array" setter="set_props" getter="get_props" default="[  ]">
+		</member>
+		<member name="room_bounds" type="PoolVector3Array" setter="set_room_bounds" getter="get_room_bounds" default="PoolVector3Array(  )">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

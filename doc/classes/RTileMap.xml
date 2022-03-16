@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="RTileMap" inherits="Node2D" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="fix_invalid_tiles">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_cell" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="y" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_cell_autotile_coord" qualifiers="const">
+			<return type="Vector2" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="y" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_cellv" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="position" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="get_collision_layer_bit" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="bit" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_collision_mask_bit" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="bit" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_used_cells" qualifiers="const">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="get_used_cells_by_id" qualifiers="const">
+			<return type="Array" />
+			<argument index="0" name="id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_used_rect">
+			<return type="Rect2" />
+			<description>
+			</description>
+		</method>
+		<method name="is_cell_transposed" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="y" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="is_cell_x_flipped" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="y" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="is_cell_y_flipped" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="y" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="map_to_world" qualifiers="const">
+			<return type="Vector2" />
+			<argument index="0" name="map_position" type="Vector2" />
+			<argument index="1" name="ignore_half_ofs" type="bool" default="false" />
+			<description>
+			</description>
+		</method>
+		<method name="set_cell">
+			<return type="void" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="y" type="int" />
+			<argument index="2" name="tile" type="int" />
+			<argument index="3" name="flip_x" type="bool" default="false" />
+			<argument index="4" name="flip_y" type="bool" default="false" />
+			<argument index="5" name="transpose" type="bool" default="false" />
+			<argument index="6" name="autotile_coord" type="Vector2" default="Vector2( 0, 0 )" />
+			<description>
+			</description>
+		</method>
+		<method name="set_cellv">
+			<return type="void" />
+			<argument index="0" name="position" type="Vector2" />
+			<argument index="1" name="tile" type="int" />
+			<argument index="2" name="flip_x" type="bool" default="false" />
+			<argument index="3" name="flip_y" type="bool" default="false" />
+			<argument index="4" name="transpose" type="bool" default="false" />
+			<description>
+			</description>
+		</method>
+		<method name="set_collision_layer_bit">
+			<return type="void" />
+			<argument index="0" name="bit" type="int" />
+			<argument index="1" name="value" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="set_collision_mask_bit">
+			<return type="void" />
+			<argument index="0" name="bit" type="int" />
+			<argument index="1" name="value" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="update_bitmask_area">
+			<return type="void" />
+			<argument index="0" name="position" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="update_bitmask_region">
+			<return type="void" />
+			<argument index="0" name="start" type="Vector2" default="Vector2( 0, 0 )" />
+			<argument index="1" name="end" type="Vector2" default="Vector2( 0, 0 )" />
+			<description>
+			</description>
+		</method>
+		<method name="update_dirty_quadrants">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="world_to_map" qualifiers="const">
+			<return type="Vector2" />
+			<argument index="0" name="world_position" type="Vector2" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="cell_clip_uv" type="bool" setter="set_clip_uv" getter="get_clip_uv" default="false">
+		</member>
+		<member name="cell_custom_transform" type="Transform2D" setter="set_custom_transform" getter="get_custom_transform" default="Transform2D( 64, 0, 0, 64, 0, 0 )">
+		</member>
+		<member name="cell_half_offset" type="int" setter="set_half_offset" getter="get_half_offset" enum="RTileMap.HalfOffset" default="2">
+		</member>
+		<member name="cell_quadrant_size" type="int" setter="set_quadrant_size" getter="get_quadrant_size" default="16">
+		</member>
+		<member name="cell_size" type="Vector2" setter="set_cell_size" getter="get_cell_size" default="Vector2( 64, 64 )">
+		</member>
+		<member name="cell_tile_origin" type="int" setter="set_tile_origin" getter="get_tile_origin" enum="RTileMap.TileOrigin" default="0">
+		</member>
+		<member name="cell_y_sort" type="bool" setter="set_y_sort_mode" getter="is_y_sort_mode_enabled" default="false">
+		</member>
+		<member name="centered_textures" type="bool" setter="set_centered_textures" getter="is_centered_textures_enabled" default="false">
+		</member>
+		<member name="collision_bounce" type="float" setter="set_collision_bounce" getter="get_collision_bounce" default="0.0">
+		</member>
+		<member name="collision_friction" type="float" setter="set_collision_friction" getter="get_collision_friction" default="1.0">
+		</member>
+		<member name="collision_layer" type="int" setter="set_collision_layer" getter="get_collision_layer" default="1">
+		</member>
+		<member name="collision_mask" type="int" setter="set_collision_mask" getter="get_collision_mask" default="1">
+		</member>
+		<member name="collision_use_kinematic" type="bool" setter="set_collision_use_kinematic" getter="get_collision_use_kinematic" default="false">
+		</member>
+		<member name="collision_use_parent" type="bool" setter="set_collision_use_parent" getter="get_collision_use_parent" default="false">
+		</member>
+		<member name="compatibility_mode" type="bool" setter="set_compatibility_mode" getter="is_compatibility_mode_enabled" default="false">
+		</member>
+		<member name="mode" type="int" setter="set_mode" getter="get_mode" enum="RTileMap.Mode" default="0">
+		</member>
+		<member name="occluder_light_mask" type="int" setter="set_occluder_light_mask" getter="get_occluder_light_mask" default="1">
+		</member>
+		<member name="show_collision" type="bool" setter="set_show_collision" getter="is_show_collision_enabled" default="false">
+		</member>
+		<member name="tile_set" type="RTileSet" setter="set_tileset" getter="get_tileset">
+		</member>
+		<member name="use_rao" type="bool" setter="set_use_rao" getter="get_use_rao" default="true">
+		</member>
+	</members>
+	<signals>
+		<signal name="settings_changed">
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+		<constant name="INVALID_CELL" value="-1">
+		</constant>
+		<constant name="MODE_SQUARE" value="0" enum="Mode">
+		</constant>
+		<constant name="MODE_ISOMETRIC" value="1" enum="Mode">
+		</constant>
+		<constant name="MODE_CUSTOM" value="2" enum="Mode">
+		</constant>
+		<constant name="HALF_OFFSET_X" value="0" enum="HalfOffset">
+		</constant>
+		<constant name="HALF_OFFSET_Y" value="1" enum="HalfOffset">
+		</constant>
+		<constant name="HALF_OFFSET_DISABLED" value="2" enum="HalfOffset">
+		</constant>
+		<constant name="HALF_OFFSET_NEGATIVE_X" value="3" enum="HalfOffset">
+		</constant>
+		<constant name="HALF_OFFSET_NEGATIVE_Y" value="4" enum="HalfOffset">
+		</constant>
+		<constant name="TILE_ORIGIN_TOP_LEFT" value="0" enum="TileOrigin">
+		</constant>
+		<constant name="TILE_ORIGIN_CENTER" value="1" enum="TileOrigin">
+		</constant>
+		<constant name="TILE_ORIGIN_BOTTOM_LEFT" value="2" enum="TileOrigin">
+		</constant>
+	</constants>
+</class>

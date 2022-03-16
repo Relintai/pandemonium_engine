@@ -293,6 +293,8 @@
 		</member>
 		<member name="library" type="VoxelLibrary" setter="set_library" getter="get_library">
 		</member>
+		<member name="lod_index" type="int" setter="set_lod_index" getter="get_lod_index" default="0">
+		</member>
 		<member name="material" type="Material" setter="set_material" getter="get_material">
 		</member>
 		<member name="mesher_index" type="int" setter="set_mesher_index" getter="get_mesher_index" default="0">

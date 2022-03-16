@@ -7,6 +7,36 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="add_jobs_step">
+			<return type="void" />
+			<argument index="0" name="mesher" type="VoxelMesherJobStep" />
+			<description>
+			</description>
+		</method>
+		<method name="get_jobs_step" qualifiers="const">
+			<return type="VoxelMesherJobStep" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_jobs_step_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_jobs_step">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_jobs_step">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="mesher" type="VoxelMesherJobStep" />
+			<description>
+			</description>
+		</method>
 	</methods>
 	<members>
 		<member name="build_phase_type" type="int" setter="set_build_phase_type" getter="get_build_phase_type" overrides="VoxelJob" enum="VoxelJob.ActiveBuildPhaseType" default="2" />

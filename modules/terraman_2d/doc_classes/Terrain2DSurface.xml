@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="Terrain2DSurface" inherits="Resource" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_rect" qualifiers="const">
+			<return type="Rect2" />
+			<description>
+			</description>
+		</method>
+		<method name="refresh_rects">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="set_rect">
+			<return type="void" />
+			<argument index="0" name="rect" type="Rect2" />
+			<description>
+			</description>
+		</method>
+		<method name="transform_uv" qualifiers="const">
+			<return type="Vector2" />
+			<argument index="0" name="uv" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="transform_uv_scaled" qualifiers="const">
+			<return type="Vector2" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="p_current_x" type="int" />
+			<argument index="2" name="p_current_y" type="int" />
+			<argument index="3" name="max" type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+		</member>
+		<member name="voxel_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

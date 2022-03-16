@@ -291,6 +291,8 @@
 		</member>
 		<member name="format" type="int" setter="set_format" getter="get_format" default="0">
 		</member>
+		<member name="is_liquid_mesher" type="bool" setter="set_is_liquid_mesher" getter="get_is_liquid_mesher" default="false">
+		</member>
 		<member name="library" type="TerrainLibrary" setter="set_library" getter="get_library">
 		</member>
 		<member name="lod_index" type="int" setter="set_lod_index" getter="get_lod_index" default="0">

@@ -87,6 +87,9 @@
 			</description>
 		</method>
 	</methods>
+	<members>
+		<member name="portal_mode" type="int" setter="set_portal_mode" getter="get_portal_mode" overrides="CullInstance" enum="CullInstance.PortalMode" default="0" />
+	</members>
 	<constants>
 	</constants>
 </class>

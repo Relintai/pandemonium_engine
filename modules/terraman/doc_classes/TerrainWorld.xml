@@ -188,6 +188,11 @@
 			<description>
 			</description>
 		</method>
+		<method name="get_editor_camera">
+			<return type="Spatial" />
+			<description>
+			</description>
+		</method>
 		<method name="get_or_create_chunk_at_world_position">
 			<return type="TerrainChunk" />
 			<argument index="0" name="world_position" type="Vector3" />

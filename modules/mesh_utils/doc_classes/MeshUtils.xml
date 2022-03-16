@@ -15,6 +15,12 @@
 			<description>
 			</description>
 		</method>
+		<method name="delaunay3d_tetrahedralize">
+			<return type="PoolIntArray" />
+			<argument index="0" name="points" type="PoolVector3Array" />
+			<description>
+			</description>
+		</method>
 		<method name="merge_mesh_array" qualifiers="const">
 			<return type="Array" />
 			<argument index="0" name="arr" type="Array" />

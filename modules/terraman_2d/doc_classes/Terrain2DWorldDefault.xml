@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="Terrain2DWorldDefault" inherits="Terrain2DWorld" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_vertex_colors">
+			<return type="PoolColorArray" />
+			<argument index="0" name="transform" type="Transform2D" />
+			<argument index="1" name="vertices" type="PoolVector2Array" />
+			<argument index="2" name="base_light_value" type="float" default="0.45" />
+			<argument index="3" name="ao_strength" type="float" default="0.2" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="build_flags" type="int" setter="set_build_flags" getter="get_build_flags" default="64">
+		</member>
+		<member name="data_margin_end" type="int" setter="set_data_margin_end" getter="get_data_margin_end" overrides="Terrain2DWorld" default="1" />
+		<member name="data_margin_start" type="int" setter="set_data_margin_start" getter="get_data_margin_start" overrides="Terrain2DWorld" default="1" />
+	</members>
+	<constants>
+	</constants>
+</class>
