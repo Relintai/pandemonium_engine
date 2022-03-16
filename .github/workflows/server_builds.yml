@@ -4,7 +4,7 @@ on: [push, pull_request]
 # Global Settings
 env:
   GODOT_BASE_BRANCH: 3.x
-  SCONSFLAGS: verbose=yes warnings=all werror=yes debug_symbols=no module_mono_enabled=yes mono_static=yes mono_glue=no
+  SCONSFLAGS: verbose=yes warnings=all werror=yes debug_symbols=no
 
 concurrency:
   group: ci-${{github.actor}}-${{github.head_ref || github.run_number}}-${{github.ref}}-server
@@ -18,13 +18,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: Linux Headless w/ Mono (target=release_debug, tools=yes)
-            cache-name: server-editor-mono
+          - name: Linux Headless (target=release_debug, tools=yes)
+            cache-name: server-editor
             target: release_debug
             tools: true
 
-          - name: Linux Server w/ Mono (target=release, tools=no)
-            cache-name: server-template-mono
+          - name: Linux Server (target=release, tools=no)
+            cache-name: server-template
             target: release
             tools: false
 
