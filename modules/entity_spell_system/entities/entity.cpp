@@ -150,7 +150,7 @@ SOFTWARE.
                                                                                        \
 	emit_signal(signal, what, __VA_ARGS__);
 
-#define NOTIFICATION_AURA_DIFF_IMPLS(func, aura_func, signal, what, ...)                               \
+#define NOTIFICATION_AURA_DIFF_IMPLS(func, aura_func, signal, what, ...)               \
 	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai.is_valid()) \
 		_s_ai->func(what, __VA_ARGS__);                                                \
                                                                                        \
@@ -159,7 +159,7 @@ SOFTWARE.
                                                                                        \
 	for (int i = 0; i < _s_auras.size(); ++i) {                                        \
 		Ref<AuraData> ad = _s_auras.get(i);                                            \
-		ad->get_aura()->aura_func(what, ad, __VA_ARGS__);                                   \
+		ad->get_aura()->aura_func(what, ad, __VA_ARGS__);                              \
 	}                                                                                  \
                                                                                        \
 	emit_signal(signal, what, __VA_ARGS__);
@@ -5974,7 +5974,11 @@ Entity::Entity() {
 	//_action_bar_profile.instance();
 	_actionbar_locked = false;
 
-	_stats.resize(ESS::get_singleton()->stat_get_count());
+	ESS* ess_singleton = ESS::get_singleton();
+
+	if (ess_singleton) {
+		_stats.resize(ess_singleton->stat_get_count());
+	}
 
 	_sai_state = EntityEnums::AI_STATE_OFF;
 	_sai_state_stored = EntityEnums::AI_STATE_OFF;
@@ -5988,8 +5992,10 @@ Entity::Entity() {
 	_s_pet_formation_index = 0;
 	_s_pet_ai_state = EntityEnums::AI_STATE_OFF;
 
-	_s_equipment.resize(ESS::get_singleton()->equip_slot_get_count());
-	_c_equipment.resize(ESS::get_singleton()->equip_slot_get_count());
+	if (ess_singleton) {
+		_s_equipment.resize(ess_singleton->equip_slot_get_count());
+		_c_equipment.resize(ess_singleton->equip_slot_get_count());
+	}
 
 	SET_RPC_REMOTE("csend_request_rank_increase");
 	SET_RPC_REMOTE("csend_request_rank_decrease");
