@@ -195,7 +195,7 @@ const FN_DECIMAL CELL_3D_Z[] =
 
 static int FastFloor(FN_DECIMAL f) { return (f >= 0 ? (int)f : (int)f - 1); }
 static int FastRound(FN_DECIMAL f) { return (f >= 0) ? (int)(f + FN_DECIMAL(0.5)) : (int)(f - FN_DECIMAL(0.5)); }
-static int FastAbs(int i) { return abs(i); }
+//static int FastAbs(int i) { return abs(i); }
 static FN_DECIMAL FastAbs(FN_DECIMAL f) { return fabs(f); }
 static FN_DECIMAL Lerp(FN_DECIMAL a, FN_DECIMAL b, FN_DECIMAL t) { return a + t * (b - a); }
 static FN_DECIMAL InterpHermiteFunc(FN_DECIMAL t) { return t*t*(3 - 2 * t); }
