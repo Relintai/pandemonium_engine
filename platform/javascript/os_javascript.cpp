@@ -700,7 +700,7 @@ Error OS_JavaScript::initialize(const VideoMode &p_desired, int p_video_driver, 
 	bool gl_initialization_error = false;
 
 	while (true) {
-		if (gles3) {
+		if (gles2) {
 			if (godot_js_display_has_webgl(1) && RasterizerGLES2::is_viable() == OK) {
 				attributes.majorVersion = 1;
 				RasterizerGLES2::register_config();
