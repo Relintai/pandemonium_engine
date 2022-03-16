@@ -37,7 +37,7 @@ Ref<Texture> Prop2DDataSprite::get_normal_map() const {
 	return _normal_map;
 }
 void Prop2DDataSprite::set_normal_map(const Ref<Texture> &value) {
-	_normal_map = _normal_map;
+	_normal_map = value;
 }
 
 bool Prop2DDataSprite::get_centered() const {
