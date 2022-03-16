@@ -152,11 +152,11 @@ Error OSIPhone::initialize(const VideoMode &p_desired, int p_video_driver, int p
 	//visual_server->cursor_set_visible(false, 0);
 
 	// reset this to what it should be, it will have been set to 0 after visual_server->init() is called
-	if (use_gl3) {
-		RasterizerStorageGLES3::system_fbo = gl_view_base_fb;
-	} else {
-		RasterizerStorageGLES2::system_fbo = gl_view_base_fb;
-	}
+	//if (use_gl3) {
+	//	RasterizerStorageGLES3::system_fbo = gl_view_base_fb;
+	//} else {
+	RasterizerStorageGLES2::system_fbo = gl_view_base_fb;
+	//}
 
 	AudioDriverManager::initialize(p_audio_driver);
 
@@ -427,7 +427,8 @@ bool OSIPhone::can_draw() const {
 
 int OSIPhone::set_base_framebuffer(int p_fb) {
 	// gl_view_base_fb has not been updated yet
-	RasterizerStorageGLES3::system_fbo = p_fb;
+	//RasterizerStorageGLES3::system_fbo = p_fb;
+	RasterizerStorageGLES2::system_fbo = p_fb;
 
 	return 0;
 }
