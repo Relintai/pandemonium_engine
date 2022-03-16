@@ -73,6 +73,10 @@ using PoolVector = Vector<N>;
 #include "../../mesh_utils/mesh_utils.h"
 #endif
 
+#ifndef M_PI_2
+#define M_PI_2 1.57079632679489661923 /* pi/2 */
+#endif
+
 const String MDRImportPluginBase::BINDING_MDR_IMPORT_TYPE = "Single,Multiple";
 const String MDRImportPluginBase::BINDING_MDR_SURFACE_HANDLING_TYPE = "Only Use First,Create Separate MDRs,Merge";
 const String MDRImportPluginBase::BINDING_MDR_OPTIMIZATION_TYPE = "Off"
