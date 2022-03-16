@@ -6399,6 +6399,10 @@ EditorNode::EditorNode() {
 
 	_update_video_driver_color();
 
+	if (video_drivers.get_slice_count(",") < 2) {
+		video_driver->hide();
+	}
+
 	video_restart_dialog = memnew(ConfirmationDialog);
 	video_restart_dialog->set_text(TTR("Changing the video driver requires restarting the editor."));
 	video_restart_dialog->get_ok()->set_text(TTR("Save & Restart"));
