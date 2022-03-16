@@ -309,8 +309,8 @@ Ref<Theme> create_editor_theme(const Ref<Theme> p_theme) {
 	// Please, use alphabet order if you've added new theme here(After "Default" and "Custom")
 
 	if (preset == "Default") {
-		preset_accent_color = Color(0.22, 0.47, 0.62);
-		preset_base_color = Color(0.15, 0.19, 0.23);
+		preset_accent_color = Color(0.16, 0.52, 0.73);
+		preset_base_color = Color(0.25, 0.24, 0.24);
 		preset_contrast = default_contrast;
 	} else if (preset == "Godot 3") {
 		preset_accent_color = Color(0.41, 0.61, 0.91);
