@@ -18,13 +18,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: Editor w/ Mono (target=release_debug, tools=yes)
-            cache-name: linux-editor-mono
+          - name: Editor (target=release_debug, tools=yes)
+            cache-name: linux-editor
             target: release_debug
             tools: true
-            sconsflags: module_mono_enabled=yes mono_static=yes mono_glue=no
-            bin: "./bin/godot.x11.opt.tools.64.mono"
-            build-mono: true
+            bin: "./bin/godot.x11.opt.tools.64"
             artifact: true
 
           - name: Editor and sanitizers (target=debug, tools=yes, use_asan=yes, use_ubsan=yes)
@@ -38,12 +36,11 @@ jobs:
             # Skip 2GiB artifact speeding up action.
             artifact: false
 
-          - name: Template w/ Mono (target=release, tools=no)
-            cache-name: linux-template-mono
+          - name: Template (target=release, tools=no)
+            cache-name: linux-template
             target: release
             tools: false
-            sconsflags: module_mono_enabled=yes mono_static=yes mono_glue=no debug_symbols=no
-            build-mono: false
+            sconsflags: debug_symbols=no
             artifact: true
 
     steps:
@@ -78,27 +75,11 @@ jobs:
           target: ${{ matrix.target }}
           tools: ${{ matrix.tools }}
 
-      # Generate mono glue
-      - name: Generate Mono glue code
-        if: ${{ matrix.build-mono }}
-        run: |
-          DRI_PRIME=0 xvfb-run ${{ matrix.bin }} --generate-mono-glue modules/mono/glue || true
-
-      # Rebuild with mono
-      - name: Compilation (mono_glue=yes)
-        uses: ./.github/actions/godot-build
-        if: ${{ matrix.build-mono }}
-        with:
-          sconsflags: ${{ env.SCONSFLAGS }} ${{ matrix.sconsflags }} mono_glue=yes
-          platform: linuxbsd
-          target: ${{ matrix.target }}
-          tools: ${{ matrix.tools }}
-
       # Download and extract zip archive with project, folder is renamed to be able to easy change used project
       - name: Download test project
         if: ${{ matrix.test }}
         run: |
-          wget https://github.com/godotengine/regression-test-project/archive/3.x.zip
+          wget https://github.com/Relintai/regression-test-project/archive/3.x.zip
           unzip 3.x.zip
           mv "regression-test-project-3.x" "test_project"
 
@@ -113,7 +94,7 @@ jobs:
       - name: Run project
         if: ${{ matrix.test }}
         run: |
-          DRI_PRIME=0 xvfb-run ${{ matrix.bin }} 30 --video-driver GLES3 --audio-driver Dummy --path test_project 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 xvfb-run ${{ matrix.bin }} 30 --audio-driver Dummy --path test_project 2>&1 | tee sanitizers_log.txt || true
           misc/scripts/check_ci_log.py sanitizers_log.txt
 
       # Check class reference
