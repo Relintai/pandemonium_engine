@@ -36,9 +36,9 @@
 #include "drivers/gles2/rasterizer_gles2.h"
 #include "key_mapping_x11.h"
 #include "main/main.h"
+#include "scene/resources/texture.h"
 #include "servers/visual/visual_server_raster.h"
 #include "servers/visual/visual_server_wrap_mt.h"
-#include "scene/resources/texture.h"
 
 #ifdef HAVE_MNTENT
 #include <mntent.h>
@@ -308,7 +308,8 @@ Error OS_X11::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 	//	opengl_api_type = ContextGL_X11::GLES_2_0_COMPATIBLE;
 	//}
 
-	bool editor = Engine::get_singleton()->is_editor_hint();
+	//bool editor = Engine::get_singleton()->is_editor_hint();
+	//p_video_driver = VIDEO_DRIVER_GLES2;
 	bool gl_initialization_error = false;
 
 	context_gl = nullptr;
@@ -319,18 +320,8 @@ Error OS_X11::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 			memdelete(context_gl);
 			context_gl = nullptr;
 
-			if (GLOBAL_GET("rendering/quality/driver/fallback_to_gles2") || editor) {
-				if (p_video_driver == VIDEO_DRIVER_GLES2) {
-					gl_initialization_error = true;
-					break;
-				}
-
-				p_video_driver = VIDEO_DRIVER_GLES2;
-				opengl_api_type = ContextGL_X11::GLES_2_0_COMPATIBLE;
-			} else {
-				gl_initialization_error = true;
-				break;
-			}
+			gl_initialization_error = true;
+			break;
 		}
 	}
 
