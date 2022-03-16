@@ -127,9 +127,6 @@ static bool show_help = false;
 static bool auto_quit = false;
 static OS::ProcessID allow_focus_steal_pid = 0;
 static bool delta_sync_after_draw = false;
-#ifdef TOOLS_ENABLED
-static bool auto_build_solutions = false;
-#endif
 
 // Display
 
@@ -333,7 +330,6 @@ void Main::print_help(const char *p_binary) {
 	OS::get_singleton()->print("  --export-pack <preset> <path>    Same as --export, but only export the game pack for the given preset. The <path> extension determines whether it will be in PCK or ZIP format.\n");
 	OS::get_singleton()->print("  --doctool [<path>]               Dump the engine API reference to the given <path> (defaults to current dir) in XML format, merging if existing files are found.\n");
 	OS::get_singleton()->print("  --no-docbase                     Disallow dumping the base types (used with --doctool).\n");
-	OS::get_singleton()->print("  --build-solutions                Build the scripting solutions (e.g. for C# projects). Implies --editor and requires a valid project to edit.\n");
 #ifdef DEBUG_METHODS_ENABLED
 	OS::get_singleton()->print("  --gdnative-generate-json-api     Generate JSON dump of the Godot API for GDNative bindings.\n");
 #endif
@@ -729,20 +725,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 		} else if (I->get() == "-p" || I->get() == "--project-manager") { // starts project manager
 
 			project_manager = true;
-		} else if (I->get() == "--build-solutions") { // Build the scripting solution such C#
-
-			auto_build_solutions = true;
-			editor = true;
-#ifdef DEBUG_METHODS_ENABLED
-		} else if (I->get() == "--gdnative-generate-json-api") {
-			// Register as an editor instance to use the GLES2 fallback automatically on hardware that doesn't support the GLES3 backend
-			editor = true;
-
-			// We still pass it to the main arguments since the argument handling itself is not done in this function
-			main_args.push_back(I->get());
-#endif
 		} else if (I->get() == "--export" || I->get() == "--export-debug" || I->get() == "--export-pack") { // Export project
-
 			editor = true;
 			main_args.push_back(I->get());
 #endif
@@ -2346,19 +2329,6 @@ bool Main::iteration() {
 	}
 
 	OS::get_singleton()->add_frame_delay(OS::get_singleton()->can_draw());
-
-#ifdef TOOLS_ENABLED
-	if (auto_build_solutions) {
-		auto_build_solutions = false;
-		// Only relevant when running the editor.
-		if (!editor) {
-			ERR_FAIL_V_MSG(true, "Command line option --build-solutions was passed, but no project is being edited. Aborting.");
-		}
-		if (!EditorNode::get_singleton()->call_build()) {
-			ERR_FAIL_V_MSG(true, "Command line option --build-solutions was passed, but the build callback failed. Aborting.");
-		}
-	}
-#endif
 
 	return exit || auto_quit;
 }

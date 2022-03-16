@@ -75,7 +75,6 @@ _complete_godot_options() {
 --export-pack
 --doctool
 --no-docbase
---build-solutions
 --gdnative-generate-json-api
 --test
 " -- "$1"))
