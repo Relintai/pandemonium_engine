@@ -63,7 +63,6 @@
 #include "scene/2d/remote_transform_2d.h"
 #include "scene/2d/skeleton_2d.h"
 #include "scene/2d/sprite.h"
-#include "scene/2d/tile_map.h"
 #include "scene/2d/touch_screen_button.h"
 #include "scene/2d/visibility_notifier_2d.h"
 #include "scene/2d/y_sort.h"
@@ -167,7 +166,6 @@
 #include "scene/resources/surface_tool.h"
 #include "scene/resources/text_file.h"
 #include "scene/resources/texture.h"
-#include "scene/resources/tile_set.h"
 #include "scene/resources/video_stream.h"
 #include "scene/resources/world.h"
 #include "scene/resources/world_2d.h"
@@ -545,8 +543,6 @@ void register_scene_types() {
 	ClassDB::register_class<PinJoint2D>();
 	ClassDB::register_class<GrooveJoint2D>();
 	ClassDB::register_class<DampedSpringJoint2D>();
-	ClassDB::register_class<TileSet>();
-	ClassDB::register_class<TileMap>();
 	ClassDB::register_class<ParallaxBackground>();
 	ClassDB::register_class<ParallaxLayer>();
 	ClassDB::register_class<TouchScreenButton>();
