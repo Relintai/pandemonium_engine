@@ -36,7 +36,7 @@ class BSInputEventKey : public InputEventKey {
 
 public:
 	void from_input_event_key(const Ref<InputEventKey> p_event);
-	virtual bool action_match(const Ref<InputEvent> &p_event, bool *p_pressed, float *p_strength, float p_deadzone) const;
+	virtual bool action_match(const Ref<InputEvent> &p_event, bool p_exact_match, bool *p_pressed, float *p_strength, float *p_raw_strength, float p_deadzone) const;
 
 	BSInputEventKey();
 

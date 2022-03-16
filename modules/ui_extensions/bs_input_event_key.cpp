@@ -51,8 +51,7 @@ void BSInputEventKey::from_input_event_key(const Ref<InputEventKey> event) {
 	set_echo(event->is_echo());
 }
 
-bool BSInputEventKey::action_match(const Ref<InputEvent> &p_event, bool *p_pressed, float *p_strength, float p_deadzone) const {
-
+bool BSInputEventKey::action_match(const Ref<InputEvent> &p_event, bool p_exact_match, bool *p_pressed, float *p_strength, float *p_raw_strength, float p_deadzone) const {
 	Ref<InputEventKey> key = p_event;
 	if (key.is_null())
 		return false;
