@@ -510,7 +510,7 @@ FN_DECIMAL FastNoise::GetWhiteNoise(FN_DECIMAL x, FN_DECIMAL y, FN_DECIMAL z) co
 	int32_t* xx = reinterpret_cast<int32_t*>(&x);
 	int32_t* yy = reinterpret_cast<int32_t*>(&y);
 	int32_t* zz = reinterpret_cast<int32_t*>(&z);
-	
+
 	return ValCoord3D(m_seed,
 		*xx ^ (*xx >> 16),
 		*yy ^ (*yy >> 16),
