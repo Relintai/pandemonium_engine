@@ -32,9 +32,6 @@
 #include "core/engine.h"
 #include "core/project_settings.h"
 
-#include "arvr/arvr_interface.h"
-#include "arvr/arvr_positional_tracker.h"
-#include "arvr_server.h"
 #include "audio/audio_effect.h"
 #include "audio/audio_stream.h"
 #include "audio/effects/audio_effect_amplify.h"
@@ -114,12 +111,8 @@ void register_server_types() {
 	ClassDB::register_virtual_class<Physics2DServer>();
 	ClassDB::register_virtual_class<NavigationServer>();
 	ClassDB::register_virtual_class<Navigation2DServer>();
-	ClassDB::register_class<ARVRServer>();
 
 	shader_types = memnew(ShaderTypes);
-
-	ClassDB::register_virtual_class<ARVRInterface>();
-	ClassDB::register_class<ARVRPositionalTracker>();
 
 	ClassDB::register_virtual_class<AudioStream>();
 	ClassDB::register_virtual_class<AudioStreamPlayback>();
@@ -210,5 +203,4 @@ void register_server_singletons() {
 	Engine::get_singleton()->add_singleton(Engine::Singleton("Physics2DServer", Physics2DServer::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("NavigationServer", NavigationServer::get_singleton_mut()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("Navigation2DServer", Navigation2DServer::get_singleton_mut()));
-	Engine::get_singleton()->add_singleton(Engine::Singleton("ARVRServer", ARVRServer::get_singleton()));
 }

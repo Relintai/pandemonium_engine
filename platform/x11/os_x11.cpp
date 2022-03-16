@@ -38,6 +38,7 @@
 #include "main/main.h"
 #include "servers/visual/visual_server_raster.h"
 #include "servers/visual/visual_server_wrap_mt.h"
+#include "scene/resources/texture.h"
 
 #ifdef HAVE_MNTENT
 #include <mntent.h>

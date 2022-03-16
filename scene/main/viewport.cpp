@@ -690,16 +690,6 @@ RID Viewport::get_viewport_rid() const {
 	return viewport;
 }
 
-void Viewport::set_use_arvr(bool p_use_arvr) {
-	arvr = p_use_arvr;
-
-	VS::get_singleton()->viewport_set_use_arvr(viewport, arvr);
-}
-
-bool Viewport::use_arvr() {
-	return arvr;
-}
-
 void Viewport::update_canvas_items() {
 	if (!is_inside_tree()) {
 		return;
@@ -3158,9 +3148,6 @@ void Viewport::_validate_property(PropertyInfo &property) const {
 }
 
 void Viewport::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("set_use_arvr", "use"), &Viewport::set_use_arvr);
-	ClassDB::bind_method(D_METHOD("use_arvr"), &Viewport::use_arvr);
-
 	ClassDB::bind_method(D_METHOD("set_size", "size"), &Viewport::set_size);
 	ClassDB::bind_method(D_METHOD("get_size"), &Viewport::get_size);
 	ClassDB::bind_method(D_METHOD("set_world_2d", "world_2d"), &Viewport::set_world_2d);
@@ -3293,9 +3280,7 @@ void Viewport::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_own_world_changed"), &Viewport::_own_world_changed);
 
 	ClassDB::bind_method(D_METHOD("_process_picking", "ignore_paused"), &Viewport::_process_picking);
-
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "arvr"), "set_use_arvr", "use_arvr");
-
+	
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "size"), "set_size", "get_size");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "size_override_stretch"), "set_size_override_stretch", "is_size_override_stretch_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "own_world"), "set_use_own_world", "is_using_own_world");

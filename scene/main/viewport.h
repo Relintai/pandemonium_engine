@@ -438,9 +438,6 @@ public:
 	void set_camera_override_perspective(float p_fovy_degrees, float p_z_near, float p_z_far);
 	void set_camera_override_orthogonal(float p_size, float p_z_near, float p_z_far);
 
-	void set_use_arvr(bool p_use_arvr);
-	bool use_arvr();
-
 	void set_as_audio_listener(bool p_enable);
 	bool is_audio_listener() const;
 
