@@ -72,7 +72,6 @@
 #include "editor/editor_about.h"
 #include "editor/editor_audio_buses.h"
 #include "editor/editor_export.h"
-#include "editor/editor_feature_profile.h"
 #include "editor/editor_file_system.h"
 #include "editor/editor_help.h"
 #include "editor/editor_inspector.h"
@@ -492,8 +491,6 @@ void EditorNode::_notification(int p_what) {
 			VisualServer::get_singleton()->viewport_set_hide_scenario(get_scene_root()->get_viewport_rid(), true);
 			VisualServer::get_singleton()->viewport_set_hide_canvas(get_scene_root()->get_viewport_rid(), true);
 			VisualServer::get_singleton()->viewport_set_disable_environment(get_viewport()->get_viewport_rid(), true);
-
-			feature_profile_manager->notify_changed();
 
 			if (!main_editor_buttons[EDITOR_3D]->is_visible()) { //may be hidden due to feature profile
 				_editor_select(EDITOR_2D);
@@ -1350,10 +1347,7 @@ void EditorNode::_save_scene_with_preview(String p_file, int p_idx) {
 			// The 3D editor may be disabled as a feature, but scenes can still be opened.
 			// This check prevents the preview from regenerating in case those scenes are then saved.
 			// The preview will be generated if no feature profile is set (as the 3D editor is enabled by default).
-			Ref<EditorFeatureProfile> profile = feature_profile_manager->get_current_profile();
-			if (!profile.is_valid() || !profile->is_feature_disabled(EditorFeatureProfile::FEATURE_3D)) {
-				img = SpatialEditor::get_singleton()->get_editor_viewport(0)->get_viewport_node()->get_texture()->get_data();
-			}
+			img = SpatialEditor::get_singleton()->get_editor_viewport(0)->get_viewport_node()->get_texture()->get_data();
 		}
 
 		if (img.is_valid() && img->get_width() > 0 && img->get_height() > 0) {
@@ -1853,10 +1847,6 @@ void EditorNode::_dialog_action(String p_file) {
 }
 
 bool EditorNode::item_has_editor(Object *p_object) {
-	if (_is_class_editor_disabled_by_feature_profile(p_object->get_class())) {
-		return false;
-	}
-
 	return editor_data.get_subeditors(p_object).size() > 0;
 }
 
@@ -1864,34 +1854,10 @@ void EditorNode::edit_item_resource(RES p_resource) {
 	edit_item(p_resource.ptr());
 }
 
-bool EditorNode::_is_class_editor_disabled_by_feature_profile(const StringName &p_class) {
-	Ref<EditorFeatureProfile> profile = EditorFeatureProfileManager::get_singleton()->get_current_profile();
-	if (profile.is_null()) {
-		return false;
-	}
-
-	StringName class_name = p_class;
-
-	while (class_name != StringName()) {
-		if (profile->is_class_disabled(class_name)) {
-			return true;
-		}
-		if (profile->is_class_editor_disabled(class_name)) {
-			return true;
-		}
-		class_name = ClassDB::get_parent_class(class_name);
-	}
-
-	return false;
-}
-
 void EditorNode::edit_item(Object *p_object) {
 	Vector<EditorPlugin *> sub_plugins;
 
 	if (p_object) {
-		if (_is_class_editor_disabled_by_feature_profile(p_object->get_class())) {
-			return;
-		}
 		sub_plugins = editor_data.get_subeditors(p_object);
 	}
 
@@ -2140,9 +2106,7 @@ void EditorNode::_edit_current(bool p_skip_foreign) {
 
 		Vector<EditorPlugin *> sub_plugins;
 
-		if (!_is_class_editor_disabled_by_feature_profile(current_obj->get_class())) {
-			sub_plugins = editor_data.get_subeditors(current_obj);
-		}
+		sub_plugins = editor_data.get_subeditors(current_obj);
 
 		if (!sub_plugins.empty()) {
 			_display_top_editors(false);
@@ -2821,9 +2785,6 @@ void EditorNode::_menu_option_confirm(int p_option, bool p_confirmed) {
 		case SETTINGS_INSTALL_ANDROID_BUILD_TEMPLATE: {
 			custom_build_manage_templates->hide();
 			file_android_build_source->popup_centered_ratio();
-		} break;
-		case SETTINGS_MANAGE_FEATURE_PROFILES: {
-			feature_profile_manager->popup_centered_clamped(Size2(900, 800) * EDSCALE, 0.8);
 		} break;
 		case SETTINGS_TOGGLE_FULLSCREEN: {
 			OS::get_singleton()->set_window_fullscreen(!OS::get_singleton()->is_window_fullscreen());
@@ -3859,7 +3820,6 @@ void EditorNode::register_editor_types() {
 	ClassDB::register_class<EditorProperty>();
 	ClassDB::register_class<AnimationTrackEditPlugin>();
 	ClassDB::register_class<ScriptCreateDialog>();
-	ClassDB::register_class<EditorFeatureProfile>();
 	ClassDB::register_class<EditorSpinSlider>();
 	ClassDB::register_class<EditorResourcePicker>();
 	ClassDB::register_class<EditorScriptPicker>();
@@ -5551,39 +5511,6 @@ void EditorNode::_resource_loaded(RES p_resource, const String &p_path) {
 	singleton->editor_folding.load_resource_folding(p_resource, p_path);
 }
 
-void EditorNode::_feature_profile_changed() {
-	Ref<EditorFeatureProfile> profile = feature_profile_manager->get_current_profile();
-	TabContainer *import_tabs = cast_to<TabContainer>(import_dock->get_parent());
-	TabContainer *node_tabs = cast_to<TabContainer>(node_dock->get_parent());
-	TabContainer *fs_tabs = cast_to<TabContainer>(filesystem_dock->get_parent());
-	if (profile.is_valid()) {
-		node_tabs->set_tab_hidden(node_dock->get_index(), profile->is_feature_disabled(EditorFeatureProfile::FEATURE_NODE_DOCK));
-		// The Import dock is useless without the FileSystem dock. Ensure the configuration is valid.
-		bool fs_dock_disabled = profile->is_feature_disabled(EditorFeatureProfile::FEATURE_FILESYSTEM_DOCK);
-		fs_tabs->set_tab_hidden(filesystem_dock->get_index(), fs_dock_disabled);
-		import_tabs->set_tab_hidden(import_dock->get_index(), fs_dock_disabled || profile->is_feature_disabled(EditorFeatureProfile::FEATURE_IMPORT_DOCK));
-
-		main_editor_buttons[EDITOR_3D]->set_visible(!profile->is_feature_disabled(EditorFeatureProfile::FEATURE_3D));
-		main_editor_buttons[EDITOR_SCRIPT]->set_visible(!profile->is_feature_disabled(EditorFeatureProfile::FEATURE_SCRIPT));
-
-		if ((profile->is_feature_disabled(EditorFeatureProfile::FEATURE_3D) && singleton->main_editor_buttons[EDITOR_3D]->is_pressed()) ||
-				(profile->is_feature_disabled(EditorFeatureProfile::FEATURE_SCRIPT) && singleton->main_editor_buttons[EDITOR_SCRIPT]->is_pressed())) {
-			_editor_select(EDITOR_2D);
-		}
-	} else {
-		import_tabs->set_tab_hidden(import_dock->get_index(), false);
-		node_tabs->set_tab_hidden(node_dock->get_index(), false);
-		fs_tabs->set_tab_hidden(filesystem_dock->get_index(), false);
-		import_dock->set_visible(true);
-		node_dock->set_visible(true);
-		filesystem_dock->set_visible(true);
-		main_editor_buttons[EDITOR_3D]->set_visible(true);
-		main_editor_buttons[EDITOR_SCRIPT]->set_visible(true);
-	}
-
-	_update_dock_slots_visibility();
-}
-
 void EditorNode::_bind_methods() {
 	GLOBAL_DEF("editor/scene/scene_naming", SCENE_NAME_CASING_AUTO);
 	ProjectSettings::get_singleton()->set_custom_property_info("editor/scene/scene_naming", PropertyInfo(Variant::INT, "editor/scene/scene_naming", PROPERTY_HINT_ENUM, "Auto,PascalCase,snake_case"));
@@ -5676,7 +5603,6 @@ void EditorNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_reload_modified_scenes"), &EditorNode::_reload_modified_scenes);
 	ClassDB::bind_method(D_METHOD("_reload_project_settings"), &EditorNode::_reload_project_settings);
 	ClassDB::bind_method(D_METHOD("_resave_scenes"), &EditorNode::_resave_scenes);
-	ClassDB::bind_method(D_METHOD("_feature_profile_changed"), &EditorNode::_feature_profile_changed);
 
 	ClassDB::bind_method("_screenshot", &EditorNode::_screenshot);
 	ClassDB::bind_method("_request_screenshot", &EditorNode::_request_screenshot);
@@ -6249,12 +6175,6 @@ EditorNode::EditorNode() {
 	export_template_manager = memnew(ExportTemplateManager);
 	gui_base->add_child(export_template_manager);
 
-	feature_profile_manager = memnew(EditorFeatureProfileManager);
-	gui_base->add_child(feature_profile_manager);
-	about = memnew(EditorAbout);
-	gui_base->add_child(about);
-	feature_profile_manager->connect("current_feature_profile_changed", this, "_feature_profile_changed");
-
 	warning = memnew(AcceptDialog);
 	warning->add_button(TTR("Copy Text"), true, "copy");
 	gui_base->add_child(warning);
@@ -6464,7 +6384,6 @@ EditorNode::EditorNode() {
 	}
 	p->add_separator();
 
-	p->add_item(TTR("Manage Editor Features..."), SETTINGS_MANAGE_FEATURE_PROFILES);
 	p->add_item(TTR("Manage Export Templates..."), SETTINGS_MANAGE_EXPORT_TEMPLATES);
 
 	// Help Menu

@@ -339,10 +339,6 @@ class EditorInspector : public ScrollContainer {
 
 	void _vscroll_changed(double);
 
-	void _feature_profile_changed();
-
-	bool _is_property_disabled_by_feature_profile(const StringName &p_property);
-
 	void _update_inspector_bg();
 
 protected:

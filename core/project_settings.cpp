@@ -196,26 +196,6 @@ bool ProjectSettings::_set(const StringName &p_name, const Variant &p_value) {
 			return true;
 		}
 
-		if (!disable_feature_overrides) {
-			int dot = p_name.operator String().find(".");
-			if (dot != -1) {
-				Vector<String> s = p_name.operator String().split(".");
-
-				bool override_valid = false;
-				for (int i = 1; i < s.size(); i++) {
-					String feature = s[i].strip_edges();
-					if (OS::get_singleton()->has_feature(feature) || custom_features.has(feature)) {
-						override_valid = true;
-						break;
-					}
-				}
-
-				if (override_valid) {
-					feature_overrides[s[0]] = p_name;
-				}
-			}
-		}
-
 		if (props.has(p_name)) {
 			if (!props[p_name].overridden) {
 				props[p_name].variant = p_value;
@@ -232,9 +212,7 @@ bool ProjectSettings::_get(const StringName &p_name, Variant &r_ret) const {
 	_THREAD_SAFE_METHOD_
 
 	StringName name = p_name;
-	if (!disable_feature_overrides && feature_overrides.has(name)) {
-		name = feature_overrides[name];
-	}
+
 	if (!props.has(name)) {
 		WARN_PRINT("Property not found: " + String(name));
 		return false;
@@ -986,10 +964,6 @@ const Map<StringName, PropertyInfo> &ProjectSettings::get_custom_property_info()
 	return custom_prop_info;
 }
 
-void ProjectSettings::set_disable_feature_overrides(bool p_disable) {
-	disable_feature_overrides = p_disable;
-}
-
 bool ProjectSettings::is_using_datapack() const {
 	return using_datapack;
 }
@@ -1050,7 +1024,6 @@ ProjectSettings::ProjectSettings() {
 	singleton = this;
 	last_order = NO_BUILTIN_ORDER_BASE;
 	last_builtin_order = 0;
-	disable_feature_overrides = false;
 	registering_order = true;
 
 	Array events;

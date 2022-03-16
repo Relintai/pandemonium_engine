@@ -54,7 +54,6 @@ class DependencyEditor;
 class DependencyErrorDialog;
 class EditorAbout;
 class EditorExport;
-class EditorFeatureProfileManager;
 class EditorFileServer;
 class EditorInspector;
 class EditorLayoutsDialog;
@@ -188,7 +187,6 @@ private:
 		SETTINGS_EDITOR_DATA_FOLDER,
 		SETTINGS_EDITOR_CONFIG_FOLDER,
 		SETTINGS_MANAGE_EXPORT_TEMPLATES,
-		SETTINGS_MANAGE_FEATURE_PROFILES,
 		SETTINGS_INSTALL_ANDROID_BUILD_TEMPLATE,
 		SETTINGS_PICK_MAIN_SCENE,
 		SETTINGS_TOGGLE_FULLSCREEN,
@@ -337,7 +335,6 @@ private:
 	PopupMenu *vcs_actions_menu;
 	EditorFileDialog *file;
 	ExportTemplateManager *export_template_manager;
-	EditorFeatureProfileManager *feature_profile_manager;
 	EditorFileDialog *file_templates;
 	EditorFileDialog *file_export_lib;
 	EditorFileDialog *file_script;
@@ -663,8 +660,6 @@ private:
 	void _reload_project_settings();
 	void _resave_scenes(String p_str);
 
-	void _feature_profile_changed();
-	bool _is_class_editor_disabled_by_feature_profile(const StringName &p_class);
 	Ref<ImageTexture> _load_custom_class_icon(const String &p_path) const;
 
 	static String _to_absolute_plugin_path(const String &p_path);

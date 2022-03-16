@@ -34,7 +34,6 @@
 #include "core/os/input.h"
 #include "core/os/keyboard.h"
 #include "dictionary_property_edit.h"
-#include "editor_feature_profile.h"
 #include "editor_node.h"
 #include "editor_property_name_processor.h"
 #include "editor_scale.h"
@@ -1352,28 +1351,6 @@ void EditorInspector::_parse_added_editors(VBoxContainer *current_vbox, Ref<Edit
 	ped->added_editors.clear();
 }
 
-bool EditorInspector::_is_property_disabled_by_feature_profile(const StringName &p_property) {
-	Ref<EditorFeatureProfile> profile = EditorFeatureProfileManager::get_singleton()->get_current_profile();
-	if (profile.is_null()) {
-		return false;
-	}
-
-	StringName class_name = object->get_class();
-
-	while (class_name != StringName()) {
-		if (profile->is_class_property_disabled(class_name, p_property)) {
-			return true;
-		}
-		if (profile->is_class_disabled(class_name)) {
-			//won't see properties of a disabled class
-			return true;
-		}
-		class_name = ClassDB::get_parent_class(class_name);
-	}
-
-	return false;
-}
-
 void EditorInspector::update_tree() {
 	//to update properly if all is refreshed
 	StringName current_selected = property_selected;
@@ -1517,7 +1494,7 @@ void EditorInspector::update_tree() {
 
 			continue;
 
-		} else if (!(p.usage & PROPERTY_USAGE_EDITOR) || _is_property_disabled_by_feature_profile(p.name)) {
+		} else if (!(p.usage & PROPERTY_USAGE_EDITOR)) {
 			continue;
 		}
 
@@ -2196,7 +2173,6 @@ void EditorInspector::_node_removed(Node *p_node) {
 
 void EditorInspector::_notification(int p_what) {
 	if (p_what == NOTIFICATION_READY) {
-		EditorFeatureProfileManager::get_singleton()->connect("current_feature_profile_changed", this, "_feature_profile_changed");
 		_update_inspector_bg();
 	}
 
@@ -2293,10 +2269,6 @@ String EditorInspector::get_object_class() const {
 	return object_class;
 }
 
-void EditorInspector::_feature_profile_changed() {
-	update_tree();
-}
-
 void EditorInspector::_bind_methods() {
 	ClassDB::bind_method("_property_changed", &EditorInspector::_property_changed, DEFVAL(""), DEFVAL(false));
 	ClassDB::bind_method("_multiple_properties_changed", &EditorInspector::_multiple_properties_changed);
@@ -2313,7 +2285,6 @@ void EditorInspector::_bind_methods() {
 	ClassDB::bind_method("_resource_selected", &EditorInspector::_resource_selected);
 	ClassDB::bind_method("_object_id_selected", &EditorInspector::_object_id_selected);
 	ClassDB::bind_method("_vscroll_changed", &EditorInspector::_vscroll_changed);
-	ClassDB::bind_method("_feature_profile_changed", &EditorInspector::_feature_profile_changed);
 
 	ClassDB::bind_method("refresh", &EditorInspector::refresh);
 

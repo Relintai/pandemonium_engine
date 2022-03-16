@@ -249,8 +249,6 @@ class SceneTreeDock : public VBoxContainer {
 	void _update_create_root_dialog();
 	void _favorite_root_selected(const String &p_class);
 
-	void _feature_profile_changed();
-
 	void _clear_clipboard();
 	void _create_remap_for_node(Node *p_node, Map<RES, RES> &r_remap);
 	void _create_remap_for_resource(RES p_resource, Map<RES, RES> &r_remap);

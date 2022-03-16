@@ -112,12 +112,10 @@ protected:
 	Map<StringName, VariantContainer> props;
 	String resource_path;
 	Map<StringName, PropertyInfo> custom_prop_info;
-	bool disable_feature_overrides;
 	bool using_datapack;
 	List<String> input_presets;
 
 	Set<String> custom_features;
-	Map<StringName, StringName> feature_overrides;
 
 	String project_data_dir_name;
 
@@ -186,8 +184,6 @@ public:
 	Vector<String> get_optimizer_presets() const;
 
 	List<String> get_input_presets() const { return input_presets; }
-
-	void set_disable_feature_overrides(bool p_disable);
 
 	bool is_using_datapack() const;
 

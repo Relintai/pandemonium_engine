@@ -33,7 +33,6 @@
 #include "core/class_db.h"
 #include "core/os/keyboard.h"
 #include "core/print_string.h"
-#include "editor_feature_profile.h"
 #include "editor_help.h"
 #include "editor_node.h"
 #include "editor_scale.h"
@@ -58,7 +57,7 @@ void CreateDialog::popup_create(bool p_dont_clear, bool p_replace_mode, const St
 		while (!f->eof_reached()) {
 			String l = f->get_line().strip_edges();
 			String name = l.split(" ")[0];
-			if ((ClassDB::class_exists(name) || ScriptServer::is_global_class(name)) && !_is_class_disabled_by_feature_profile(name)) {
+			if ((ClassDB::class_exists(name) || ScriptServer::is_global_class(name))) {
 				TreeItem *ti = recent->create_item(root);
 				ti->set_text(0, l);
 				ti->set_icon(0, EditorNode::get_singleton()->get_class_icon(name, icon_fallback));
@@ -263,15 +262,6 @@ bool CreateDialog::_is_type_prefered(const String &type) {
 	return ed.script_class_is_parent(type, preferred_search_result_type);
 }
 
-bool CreateDialog::_is_class_disabled_by_feature_profile(const StringName &p_class) {
-	Ref<EditorFeatureProfile> profile = EditorFeatureProfileManager::get_singleton()->get_current_profile();
-	if (profile.is_null()) {
-		return false;
-	}
-
-	return profile->is_class_disabled(p_class);
-}
-
 void CreateDialog::select_type(const String &p_type) {
 	TreeItem *to_select;
 	if (search_options_types.has(p_type)) {
@@ -314,9 +304,6 @@ void CreateDialog::_update_search() {
 	for (List<StringName>::Element *I = type_list.front(); I; I = I->next()) {
 		String type = I->get();
 
-		if (_is_class_disabled_by_feature_profile(type)) {
-			continue;
-		}
 		bool cpp_type = ClassDB::class_exists(type);
 
 		if (base_type == "Node" && type.begins_with("Editor")) {
@@ -612,7 +599,7 @@ void CreateDialog::_update_favorite_list() {
 	for (int i = 0; i < favorite_list.size(); i++) {
 		String l = favorite_list[i];
 		String name = l.split(" ")[0];
-		if (!((ClassDB::class_exists(name) || ScriptServer::is_global_class(name)) && !_is_class_disabled_by_feature_profile(name))) {
+		if (!((ClassDB::class_exists(name) || ScriptServer::is_global_class(name)))) {
 			continue;
 		}
 

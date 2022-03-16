@@ -34,7 +34,6 @@
 #include "core/os/input.h"
 #include "core/os/keyboard.h"
 #include "core/project_settings.h"
-#include "editor/editor_feature_profile.h"
 #include "editor/editor_node.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
@@ -1222,8 +1221,6 @@ void SceneTreeDock::_notification(int p_what) {
 				break;
 			}
 			first_enter = false;
-
-			EditorFeatureProfileManager::get_singleton()->connect("current_feature_profile_changed", this, "_feature_profile_changed");
 
 			CanvasItemEditorPlugin *canvas_item_plugin = Object::cast_to<CanvasItemEditorPlugin>(editor_data->get_editor("2D"));
 			if (canvas_item_plugin) {
@@ -3077,31 +3074,6 @@ void SceneTreeDock::_favorite_root_selected(const String &p_class) {
 	_tool_selected(TOOL_CREATE_FAVORITE, false);
 }
 
-void SceneTreeDock::_feature_profile_changed() {
-	Ref<EditorFeatureProfile> profile = EditorFeatureProfileManager::get_singleton()->get_current_profile();
-
-	if (profile.is_valid()) {
-		profile_allow_editing = !profile->is_feature_disabled(EditorFeatureProfile::FEATURE_SCENE_TREE);
-		profile_allow_script_editing = !profile->is_feature_disabled(EditorFeatureProfile::FEATURE_SCRIPT);
-		bool profile_allow_3d = !profile->is_feature_disabled(EditorFeatureProfile::FEATURE_3D);
-
-		button_3d->set_visible(profile_allow_3d);
-		button_add->set_visible(profile_allow_editing);
-		button_instance->set_visible(profile_allow_editing);
-		scene_tree->set_can_rename(profile_allow_editing);
-
-	} else {
-		button_3d->set_visible(true);
-		button_add->set_visible(true);
-		button_instance->set_visible(true);
-		scene_tree->set_can_rename(true);
-		profile_allow_editing = true;
-		profile_allow_script_editing = true;
-	}
-
-	_update_script_button();
-}
-
 void SceneTreeDock::_clear_clipboard() {
 	for (List<Node *>::Element *E = node_clipboard.front(); E; E = E->next()) {
 		memdelete(E->get());
@@ -3207,7 +3179,6 @@ void SceneTreeDock::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_update_script_button"), &SceneTreeDock::_update_script_button);
 	ClassDB::bind_method(D_METHOD("_favorite_root_selected"), &SceneTreeDock::_favorite_root_selected);
 	ClassDB::bind_method(D_METHOD("_update_create_root_dialog"), &SceneTreeDock::_update_create_root_dialog);
-	ClassDB::bind_method(D_METHOD("_feature_profile_changed"), &SceneTreeDock::_feature_profile_changed);
 
 	ClassDB::bind_method(D_METHOD("instance"), &SceneTreeDock::instance);
 	ClassDB::bind_method(D_METHOD("get_tree_editor"), &SceneTreeDock::get_tree_editor);
