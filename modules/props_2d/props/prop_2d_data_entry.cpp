@@ -274,6 +274,6 @@ void Prop2DDataEntry::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_processor_handles", "node"), &Prop2DDataEntry::_processor_handles);
 	ClassDB::bind_method(D_METHOD("_processor_process", "prop_data", "node", "transform", "entry"), &Prop2DDataEntry::_processor_process, Ref<Prop2DDataEntry>());
-	ClassDB::bind_method(D_METHOD("_processor_get_node_for", "transform", "node"), &Prop2DDataEntry::_processor_get_node_for, NULL);
+	ClassDB::bind_method(D_METHOD("_processor_get_node_for", "transform", "node"), &Prop2DDataEntry::_processor_get_node_for, Variant());
 	ClassDB::bind_method(D_METHOD("_processor_evaluate_children"), &Prop2DDataEntry::_processor_evaluate_children);
 }
