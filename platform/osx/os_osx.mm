@@ -1728,7 +1728,7 @@ Error OS_OSX::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 	//	gles3 = false;
 	//}
 
-	bool editor = Engine::get_singleton()->is_editor_hint();
+	//bool editor = Engine::get_singleton()->is_editor_hint();
 	bool gl_initialization_error = false;
 
 	while (true) {
