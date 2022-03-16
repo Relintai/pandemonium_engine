@@ -58,6 +58,7 @@
 #include "scene/animation/animation_player.h"
 #include "scene/main/node.h"
 #include "scene/resources/surface_tool.h"
+#include "scene/resources/multimesh.h"
 
 #include "modules/modules_enabled.gen.h" // For csg, gridmap, regex.
 

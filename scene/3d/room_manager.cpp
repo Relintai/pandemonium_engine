@@ -43,6 +43,7 @@
 #include "scene/3d/light.h"
 #include "scene/3d/sprite_3d.h"
 #include "visibility_notifier.h"
+#include "scene/resources/multimesh.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/plugins/spatial_editor_plugin.h"

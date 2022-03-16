@@ -48,6 +48,7 @@
 #include "scene/resources/primitive_meshes.h"
 #include "scene/resources/shape.h"
 #include "scene/resources/sphere_shape.h"
+#include "scene/resources/multimesh.h"
 
 #include "modules/modules_enabled.gen.h" // For csg, gridmap.
 

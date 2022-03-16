@@ -186,6 +186,7 @@
 #include "scene/3d/listener.h"
 #include "scene/3d/mesh_instance.h"
 #include "scene/3d/multimesh_instance.h"
+#include "scene/resources/multimesh.h"
 #include "scene/3d/navigation.h"
 #include "scene/3d/navigation_agent.h"
 #include "scene/3d/navigation_mesh_instance.h"

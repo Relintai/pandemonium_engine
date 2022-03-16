@@ -30,6 +30,8 @@
 
 #include "multimesh_instance.h"
 
+#include "scene/resources/multimesh.h"
+
 void MultiMeshInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_multimesh", "multimesh"), &MultiMeshInstance::set_multimesh);
 	ClassDB::bind_method(D_METHOD("get_multimesh"), &MultiMeshInstance::get_multimesh);

@@ -32,7 +32,10 @@
 #define MULTIMESH_INSTANCE_H
 
 #include "scene/3d/visual_instance.h"
-#include "scene/resources/multimesh.h"
+
+#include "core/reference.h"
+
+class MultiMesh;
 
 class MultiMeshInstance : public GeometryInstance {
 	GDCLASS(MultiMeshInstance, GeometryInstance);

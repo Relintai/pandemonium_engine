@@ -31,12 +31,16 @@
 #ifndef MESH_INSTANCE_H
 #define MESH_INSTANCE_H
 
-#include "scene/3d/skeleton.h"
-#include "scene/3d/visual_instance.h"
-#include "scene/resources/mesh.h"
-#include "scene/resources/skin.h"
 
+#include "scene/3d/visual_instance.h"
+
+#include "core/reference.h"
 #include "core/local_vector.h"
+
+class Mesh;
+class Skin;
+class SkinReference;
+class NodePath;
 
 class MeshInstance : public GeometryInstance {
 	GDCLASS(MeshInstance, GeometryInstance);
