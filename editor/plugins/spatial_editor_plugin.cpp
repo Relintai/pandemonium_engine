@@ -6997,6 +6997,7 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 	update_portal_tools();
 
 	tool_button[TOOL_MODE_EXTERNAL] = memnew(ToolButton);
+	hbc_menu->add_child(tool_button[TOOL_MODE_EXTERNAL]);
 	button_binds.write[0] = MENU_TOOL_EXTERNAL;
 	tool_button[TOOL_MODE_EXTERNAL]->connect("pressed", this, "_menu_item_pressed", button_binds);
 }
