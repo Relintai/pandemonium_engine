@@ -213,7 +213,6 @@
 #include "scene/3d/visibility_notifier.h"
 #include "scene/animation/skeleton_ik.h"
 #include "scene/resources/environment.h"
-#include "scene/resources/mesh_library.h"
 #include "scene/resources/occluder_shape.h"
 #include "scene/resources/occluder_shape_polygon.h"
 #endif
@@ -582,8 +581,6 @@ void register_scene_types() {
 	ClassDB::register_class<SpatialMaterial>();
 	SceneTree::add_idle_callback(SpatialMaterial::flush_changes);
 	SpatialMaterial::init_shaders();
-
-	ClassDB::register_class<MeshLibrary>();
 
 	OS::get_singleton()->yield(); //may take time to init
 

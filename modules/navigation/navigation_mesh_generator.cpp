@@ -56,13 +56,6 @@
 #include "editor/editor_settings.h"
 #endif
 
-#ifdef MODULE_CSG_ENABLED
-#include "modules/csg/csg_shape.h"
-#endif
-#ifdef MODULE_GRIDMAP_ENABLED
-#include "modules/gridmap/grid_map.h"
-#endif
-
 NavigationMeshGenerator *NavigationMeshGenerator::singleton = NULL;
 
 void NavigationMeshGenerator::_add_vertex(const Vector3 &p_vec3, Vector<float> &p_vertices) {
@@ -165,19 +158,6 @@ void NavigationMeshGenerator::_parse_geometry(const Transform &p_navmesh_xform, 
 		}
 	}
 
-#ifdef MODULE_CSG_ENABLED
-	if (Object::cast_to<CSGShape>(p_node) && p_generate_from != NavigationMesh::PARSED_GEOMETRY_STATIC_COLLIDERS) {
-		CSGShape *csg_shape = Object::cast_to<CSGShape>(p_node);
-		Array meshes = csg_shape->get_meshes();
-		if (!meshes.empty()) {
-			Ref<Mesh> mesh = meshes[1];
-			if (mesh.is_valid()) {
-				_add_mesh(mesh, p_navmesh_xform * csg_shape->get_global_transform(), p_vertices, p_indices);
-			}
-		}
-	}
-#endif
-
 	if (Object::cast_to<StaticBody>(p_node) && p_generate_from != NavigationMesh::PARSED_GEOMETRY_MESH_INSTANCES) {
 		StaticBody *static_body = Object::cast_to<StaticBody>(p_node);
 
@@ -264,106 +244,6 @@ void NavigationMeshGenerator::_parse_geometry(const Transform &p_navmesh_xform, 
 			}
 		}
 	}
-
-#ifdef MODULE_GRIDMAP_ENABLED
-	GridMap *gridmap = Object::cast_to<GridMap>(p_node);
-
-	if (gridmap) {
-		if (p_generate_from != NavigationMesh::PARSED_GEOMETRY_STATIC_COLLIDERS) {
-			Array meshes = gridmap->get_meshes();
-			Transform xform = gridmap->get_global_transform();
-			for (int i = 0; i < meshes.size(); i += 2) {
-				Ref<Mesh> mesh = meshes[i + 1];
-				if (mesh.is_valid()) {
-					Transform mesh_xform = meshes[i];
-					_add_mesh(mesh, p_navmesh_xform * xform * mesh_xform, p_vertices, p_indices);
-				}
-			}
-		}
-
-		if (p_generate_from != NavigationMesh::PARSED_GEOMETRY_MESH_INSTANCES && (gridmap->get_collision_layer() & p_collision_mask)) {
-			Array shapes = gridmap->get_collision_shapes();
-			for (int i = 0; i < shapes.size(); i += 2) {
-				RID shape = shapes[i + 1];
-				PhysicsServer::ShapeType type = PhysicsServer::get_singleton()->shape_get_type(shape);
-				Variant data = PhysicsServer::get_singleton()->shape_get_data(shape);
-				Ref<Mesh> mesh;
-
-				switch (type) {
-					case PhysicsServer::SHAPE_SPHERE: {
-						real_t radius = data;
-						Ref<SphereMesh> sphere_mesh;
-						sphere_mesh.instance();
-						sphere_mesh->set_radius(radius);
-						sphere_mesh->set_height(radius * 2.0);
-						mesh = sphere_mesh;
-					} break;
-					case PhysicsServer::SHAPE_BOX: {
-						Vector3 extents = data;
-						Ref<CubeMesh> box_mesh;
-						box_mesh.instance();
-						box_mesh->set_size(2.0 * extents);
-						mesh = box_mesh;
-					} break;
-					case PhysicsServer::SHAPE_CAPSULE: {
-						Dictionary dict = data;
-						real_t radius = dict["radius"];
-						real_t height = dict["height"];
-						Ref<CapsuleMesh> capsule_mesh;
-						capsule_mesh.instance();
-						capsule_mesh->set_radius(radius);
-						capsule_mesh->set_mid_height(0.5 * height);
-						mesh = capsule_mesh;
-					} break;
-					case PhysicsServer::SHAPE_CYLINDER: {
-						Dictionary dict = data;
-						real_t radius = dict["radius"];
-						real_t height = dict["height"];
-						Ref<CylinderMesh> cylinder_mesh;
-						cylinder_mesh.instance();
-						cylinder_mesh->set_height(height);
-						cylinder_mesh->set_bottom_radius(radius);
-						cylinder_mesh->set_top_radius(radius);
-						mesh = cylinder_mesh;
-					} break;
-					case PhysicsServer::SHAPE_CONVEX_POLYGON: {
-						PoolVector3Array vertices = data;
-						Geometry::MeshData md;
-
-						Error err = ConvexHullComputer::convex_hull(vertices, md);
-
-						if (err == OK) {
-							PoolVector3Array faces;
-
-							for (int j = 0; j < md.faces.size(); ++j) {
-								Geometry::MeshData::Face face = md.faces[j];
-
-								for (int k = 2; k < face.indices.size(); ++k) {
-									faces.push_back(md.vertices[face.indices[0]]);
-									faces.push_back(md.vertices[face.indices[k - 1]]);
-									faces.push_back(md.vertices[face.indices[k]]);
-								}
-							}
-
-							_add_faces(faces, shapes[i], p_vertices, p_indices);
-						}
-					} break;
-					case PhysicsServer::SHAPE_CONCAVE_POLYGON: {
-						PoolVector3Array faces = data;
-						_add_faces(faces, shapes[i], p_vertices, p_indices);
-					} break;
-					default: {
-						WARN_PRINT("Unsupported collision shape type.");
-					} break;
-				}
-
-				if (mesh.is_valid()) {
-					_add_mesh(mesh, shapes[i], p_vertices, p_indices);
-				}
-			}
-		}
-	}
-#endif
 
 	if (p_recurse_children) {
 		for (int i = 0; i < p_node->get_child_count(); i++) {

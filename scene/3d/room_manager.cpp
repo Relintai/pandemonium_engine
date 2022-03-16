@@ -49,9 +49,6 @@
 #endif
 
 #include "modules/modules_enabled.gen.h" // For csg.
-#ifdef MODULE_CSG_ENABLED
-#include "modules/csg/csg_shape.h"
-#endif
 
 // #define GODOT_PORTALS_USE_BULLET_CONVEX_HULL
 
@@ -1726,56 +1723,7 @@ bool RoomManager::_bound_findpoints_geom_instance(GeometryInstance *p_gi, Vector
 	// it can fail once mesh min is larger than FLT_MAX / 2.
 	r_aabb.position = Vector3(FLT_MAX / 2, FLT_MAX / 2, FLT_MAX / 2);
 	r_aabb.size = Vector3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
-
-#ifdef MODULE_CSG_ENABLED
-	CSGShape *shape = Object::cast_to<CSGShape>(p_gi);
-	if (shape) {
-		// Shapes will not be up to date on the first frame due to a quirk
-		// of CSG - it defers updates to the next frame. So we need to explicitly
-		// force an update to make sure the CSG is correct on level load.
-		shape->force_update_shape();
-
-		Array arr = shape->get_meshes();
-		if (!arr.size()) {
-			return false;
-		}
-
-		Ref<ArrayMesh> arr_mesh = arr[1];
-		if (!arr_mesh.is_valid()) {
-			return false;
-		}
-
-		if (arr_mesh->get_surface_count() == 0) {
-			return false;
-		}
-
-		// for converting meshes to world space
-		Transform trans = p_gi->get_global_transform();
-
-		for (int surf = 0; surf < arr_mesh->get_surface_count(); surf++) {
-			Array arrays = arr_mesh->surface_get_arrays(surf);
-
-			if (!arrays.size()) {
-				continue;
-			}
-
-			PoolVector<Vector3> vertices = arrays[VS::ARRAY_VERTEX];
-
-			// convert to world space
-			for (int n = 0; n < vertices.size(); n++) {
-				Vector3 pt_world = trans.xform(vertices[n]);
-				r_room_pts.push_back(pt_world);
-
-				// keep the bound up to date
-				r_aabb.expand_to(pt_world);
-			}
-
-		} // for through the surfaces
-
-		return true;
-	} // if csg shape
-#endif
-
+	
 	// multimesh
 	MultiMeshInstance *mmi = Object::cast_to<MultiMeshInstance>(p_gi);
 	if (mmi) {

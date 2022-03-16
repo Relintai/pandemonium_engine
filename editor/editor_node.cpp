@@ -128,7 +128,6 @@
 #include "editor/plugins/material_editor_plugin.h"
 #include "editor/plugins/mesh_editor_plugin.h"
 #include "editor/plugins/mesh_instance_editor_plugin.h"
-#include "editor/plugins/mesh_library_editor_plugin.h"
 #include "editor/plugins/multimesh_editor_plugin.h"
 #include "editor/plugins/navigation_polygon_editor_plugin.h"
 #include "editor/plugins/path_2d_editor_plugin.h"
@@ -1720,30 +1719,6 @@ void EditorNode::_dialog_action(String p_file) {
 			}
 		} break;
 
-		case FILE_EXPORT_MESH_LIBRARY: {
-			Ref<MeshLibrary> ml;
-			if (file_export_lib_merge->is_pressed() && FileAccess::exists(p_file)) {
-				ml = ResourceLoader::load(p_file, "MeshLibrary");
-
-				if (ml.is_null()) {
-					show_accept(TTR("Can't load MeshLibrary for merging!"), TTR("OK"));
-					return;
-				}
-			}
-
-			if (ml.is_null()) {
-				ml = Ref<MeshLibrary>(memnew(MeshLibrary));
-			}
-
-			MeshLibraryEditor::update_library_file(editor_data.get_edited_scene_root(), ml, true, file_export_lib_apply_xforms->is_pressed());
-
-			Error err = ResourceSaver::save(p_file, ml);
-			if (err) {
-				show_accept(TTR("Error saving MeshLibrary!"), TTR("OK"));
-				return;
-			}
-
-		} break;
 		case FILE_EXPORT_TILESET: {
 			Ref<TileSet> tileset;
 			if (FileAccess::exists(p_file) && file_export_lib_merge->is_pressed()) {
@@ -2427,24 +2402,6 @@ void EditorNode::_menu_option_confirm(int p_option, bool p_confirmed) {
 			project_export->popup_export();
 		} break;
 
-		case FILE_EXPORT_MESH_LIBRARY: {
-			if (!editor_data.get_edited_scene_root()) {
-				show_accept(TTR("This operation can't be done without a scene."), TTR("OK"));
-				break;
-			}
-
-			List<String> extensions;
-			Ref<MeshLibrary> ml(memnew(MeshLibrary));
-			ResourceSaver::get_recognized_extensions(ml, &extensions);
-			file_export_lib->clear_filters();
-			for (List<String>::Element *E = extensions.front(); E; E = E->next()) {
-				file_export_lib->add_filter("*." + E->get());
-			}
-
-			file_export_lib->popup_centered_ratio();
-			file_export_lib->set_title(TTR("Export Mesh Library"));
-
-		} break;
 		case FILE_EXPORT_TILESET: {
 			//Make sure that the scene has a root before trying to convert to tileset
 			if (!editor_data.get_edited_scene_root()) {
@@ -5878,7 +5835,7 @@ EditorNode::EditorNode() {
 	EDITOR_DEF("interface/inspector/horizontal_vector2_editing", false);
 	EDITOR_DEF("interface/inspector/horizontal_vector_types_editing", true);
 	EDITOR_DEF("interface/inspector/open_resources_in_current_inspector", true);
-	EDITOR_DEF("interface/inspector/resources_to_open_in_new_inspector", "Script,MeshLibrary,TileSet");
+	EDITOR_DEF("interface/inspector/resources_to_open_in_new_inspector", "Script,TileSet");
 	EDITOR_DEF("interface/inspector/default_color_picker_mode", 0);
 	EditorSettings::get_singleton()->add_property_hint(PropertyInfo(Variant::INT, "interface/inspector/default_color_picker_mode", PROPERTY_HINT_ENUM, "RGB,HSV,RAW", PROPERTY_USAGE_DEFAULT));
 	EDITOR_DEF("run/auto_save/save_before_running", true);
@@ -6210,7 +6167,6 @@ EditorNode::EditorNode() {
 	pm_export->set_name("Export");
 	p->add_child(pm_export);
 	p->add_submenu_item(TTR("Convert To..."), "Export");
-	pm_export->add_shortcut(ED_SHORTCUT("editor/convert_to_MeshLibrary", TTR("MeshLibrary...")), FILE_EXPORT_MESH_LIBRARY);
 	pm_export->add_shortcut(ED_SHORTCUT("editor/convert_to_TileSet", TTR("TileSet...")), FILE_EXPORT_TILESET);
 	pm_export->connect("id_pressed", this, "_menu_option");
 
@@ -6811,7 +6767,6 @@ EditorNode::EditorNode() {
 	add_editor_plugin(memnew(MeshInstanceEditorPlugin(this)));
 	add_editor_plugin(memnew(AnimationTreeEditorPlugin(this)));
 	add_editor_plugin(memnew(AnimationTreePlayerEditorPlugin(this)));
-	add_editor_plugin(memnew(MeshLibraryEditorPlugin(this)));
 	add_editor_plugin(memnew(StyleBoxEditorPlugin(this)));
 	add_editor_plugin(memnew(SpriteEditorPlugin(this)));
 	add_editor_plugin(memnew(Skeleton2DEditorPlugin(this)));
