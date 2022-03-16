@@ -2492,6 +2492,17 @@ List<Control *>::Element *Viewport::_gui_add_root_control(Control *p_control) {
 	return gui.roots.push_back(p_control);
 }
 
+void Viewport::_gui_cleanup_internal_state(Ref<InputEvent> p_event) {
+	ERR_FAIL_COND(p_event.is_null());
+
+	Ref<InputEventMouseButton> mb = p_event;
+	if (mb.is_valid()) {
+		if (!mb->is_pressed()) {
+			gui.mouse_focus_mask &= ~(1 << (mb->get_button_index() - 1)); // Remove from mask.
+		}
+	}
+}
+
 List<Control *>::Element *Viewport::_gui_add_subwindow_control(Control *p_control) {
 	p_control->connect("visibility_changed", this, "_subwindow_visibility_changed");
 
@@ -2835,7 +2846,10 @@ void Viewport::input(const Ref<InputEvent> &p_event) {
 
 	if (!is_input_handled()) {
 		_gui_input_event(p_event);
+	} else {
+		_gui_cleanup_internal_state(p_event);
 	}
+
 	//get_tree()->call_group(SceneTree::GROUP_CALL_REVERSE|SceneTree::GROUP_CALL_REALTIME|SceneTree::GROUP_CALL_MULIILEVEL,gui_input_group,"_gui_input",p_event); //special one for GUI, as controls use their own process check
 }
 
