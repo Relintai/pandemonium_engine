@@ -66,6 +66,7 @@
 #include "scene/2d/touch_screen_button.h"
 #include "scene/2d/visibility_notifier_2d.h"
 #include "scene/2d/y_sort.h"
+#include "scene/2d/navigation_polygon.h"
 #include "scene/3d/spatial.h"
 #include "scene/3d/world_environment.h"
 #include "scene/animation/animation_blend_space_1d.h"

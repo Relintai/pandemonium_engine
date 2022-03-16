@@ -32,7 +32,6 @@
 #define LISTENER_2D_H
 
 #include "scene/2d/node_2d.h"
-#include "scene/main/viewport.h"
 
 class Listener2D : public Node2D {
 	GDCLASS(Listener2D, Node2D);

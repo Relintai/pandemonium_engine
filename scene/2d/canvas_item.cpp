@@ -42,6 +42,11 @@
 #include "servers/visual/visual_server_raster.h"
 #include "servers/visual_server.h"
 
+#include "scene/main/scene_tree.h"
+#include "scene/resources/multimesh.h"
+#include "scene/resources/shader.h"
+#include "scene/resources/texture.h"
+
 Mutex CanvasItemMaterial::material_mutex;
 SelfList<CanvasItemMaterial>::List *CanvasItemMaterial::dirty_materials = nullptr;
 Map<CanvasItemMaterial::MaterialKey, CanvasItemMaterial::ShaderData> CanvasItemMaterial::shader_map;

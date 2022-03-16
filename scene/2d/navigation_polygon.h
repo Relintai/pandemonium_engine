@@ -31,8 +31,10 @@
 #ifndef NAVIGATION_POLYGON_H
 #define NAVIGATION_POLYGON_H
 
+#include "core/resource.h"
 #include "scene/2d/node_2d.h"
-#include "scene/resources/navigation_mesh.h"
+
+class NavigationMesh;
 
 class NavigationPolygon : public Resource {
 	GDCLASS(NavigationPolygon, Resource);

@@ -31,6 +31,8 @@
 #ifndef SCRIPT_TEXT_EDITOR_H
 #define SCRIPT_TEXT_EDITOR_H
 
+#include "core/vector.h"
+#include "core/reference.h"
 #include "scene/gui/color_picker.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/tree.h"

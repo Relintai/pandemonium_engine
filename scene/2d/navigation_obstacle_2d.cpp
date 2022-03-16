@@ -34,6 +34,7 @@
 #include "scene/2d/navigation_2d.h"
 #include "scene/2d/physics_body_2d.h"
 #include "servers/navigation_2d_server.h"
+#include "scene/2d/node_2d.h"
 
 void NavigationObstacle2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_navigation", "navigation"), &NavigationObstacle2D::set_navigation_node);

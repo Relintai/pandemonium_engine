@@ -32,9 +32,12 @@
 #define TOUCH_SCREEN_BUTTON_H
 
 #include "scene/2d/node_2d.h"
-#include "scene/resources/bit_map.h"
-#include "scene/resources/rectangle_shape_2d.h"
-#include "scene/resources/texture.h"
+#include "core/reference.h"
+
+class Texture;
+class BitMap;
+class Shape2D;
+class RectangleShape2D;
 
 class TouchScreenButton : public Node2D {
 	GDCLASS(TouchScreenButton, Node2D);

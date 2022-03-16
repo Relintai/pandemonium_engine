@@ -32,7 +32,7 @@
 #define SPRITE_H
 
 #include "scene/2d/node_2d.h"
-#include "scene/resources/texture.h"
+#include "core/reference.h"
 
 class Sprite : public Node2D {
 	GDCLASS(Sprite, Node2D);

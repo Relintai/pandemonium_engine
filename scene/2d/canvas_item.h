@@ -31,17 +31,13 @@
 #ifndef CANVAS_ITEM_H
 #define CANVAS_ITEM_H
 
-#include "scene/main/node.h"
-#include "scene/main/scene_tree.h"
 #include "scene/resources/material.h"
-#include "scene/resources/multimesh.h"
-#include "scene/resources/shader.h"
-#include "scene/resources/texture.h"
+#include "scene/main/node.h"
 
 class CanvasLayer;
 class Viewport;
 class Font;
-
+class MultiMesh;
 class StyleBox;
 
 class CanvasItemMaterial : public Material {

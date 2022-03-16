@@ -33,9 +33,8 @@
 
 #include "core/vset.h"
 #include "scene/2d/collision_object_2d.h"
-#include "scene/resources/physics_material.h"
-#include "servers/physics_2d_server.h"
 
+class PhysicsMaterial;
 class KinematicCollision2D;
 
 class PhysicsBody2D : public CollisionObject2D {

@@ -31,9 +31,10 @@
 #ifndef CPU_PARTICLES_2D_H
 #define CPU_PARTICLES_2D_H
 
-#include "core/rid.h"
 #include "scene/2d/node_2d.h"
-#include "scene/resources/texture.h"
+
+class RID;
+class Texture;
 
 class CPUParticles2D : public Node2D {
 private:

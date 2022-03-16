@@ -35,6 +35,7 @@
 #include "core/os/mutex.h"
 #include "navigation_2d.h"
 #include "servers/navigation_2d_server.h"
+#include "scene/resources/navigation_mesh.h"
 
 #include "thirdparty/misc/triangulator.h"
 

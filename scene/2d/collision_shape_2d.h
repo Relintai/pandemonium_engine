@@ -32,8 +32,9 @@
 #define COLLISION_SHAPE_2D_H
 
 #include "scene/2d/node_2d.h"
-#include "scene/resources/shape_2d.h"
+#include "core/reference.h"
 
+class Shape2D;
 class CollisionObject2D;
 
 class CollisionShape2D : public Node2D {

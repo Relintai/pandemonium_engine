@@ -38,6 +38,8 @@
 #include "core/object.h"
 #include "core/rid.h"
 #include "scene/scene_string_names.h"
+#include "scene/resources/physics_material.h"
+#include "servers/physics_2d_server.h"
 
 void PhysicsBody2D::_notification(int p_what) {
 }

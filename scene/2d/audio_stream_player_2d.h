@@ -31,10 +31,13 @@
 #ifndef AUDIO_STREAM_PLAYER_2D_H
 #define AUDIO_STREAM_PLAYER_2D_H
 
-#include "core/safe_refcount.h"
 #include "scene/2d/node_2d.h"
-#include "servers/audio/audio_stream.h"
-#include "servers/audio_server.h"
+#include "core/safe_refcount.h"
+#include "core/reference.h"
+#include "core/math/audio_frame.h"
+
+class AudioStreamPlayback;
+class AudioStream;
 
 class AudioStreamPlayer2D : public Node2D {
 	GDCLASS(AudioStreamPlayer2D, Node2D);

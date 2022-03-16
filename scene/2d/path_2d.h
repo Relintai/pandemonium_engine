@@ -32,7 +32,8 @@
 #define PATH_2D_H
 
 #include "scene/2d/node_2d.h"
-#include "scene/resources/curve.h"
+
+class Curve2D;
 
 class Path2D : public Node2D {
 	GDCLASS(Path2D, Node2D);
