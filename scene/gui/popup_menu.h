@@ -33,6 +33,8 @@
 
 #include "scene/gui/popup.h"
 
+class ShortCut;
+
 class PopupMenu : public Popup {
 	GDCLASS(PopupMenu, Popup);
 
@@ -61,19 +63,8 @@ class PopupMenu : public Popup {
 		bool shortcut_is_global;
 		bool shortcut_is_disabled;
 
-		Item() {
-			checked = false;
-			checkable_type = CHECKABLE_TYPE_NONE;
-			separator = false;
-			max_states = 0;
-			state = 0;
-			accel = 0;
-			disabled = false;
-			_ofs_cache = 0;
-			h_ofs = 0;
-			shortcut_is_global = false;
-			shortcut_is_disabled = false;
-		}
+		Item();
+		~Item();
 	};
 
 	Timer *submenu_timer;

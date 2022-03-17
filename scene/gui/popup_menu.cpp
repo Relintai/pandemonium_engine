@@ -37,6 +37,23 @@
 #include "scene/gui/shortcut.h"
 #include "scene/main/timer.h"
 
+PopupMenu::Item::Item() {
+	checked = false;
+	checkable_type = CHECKABLE_TYPE_NONE;
+	separator = false;
+	max_states = 0;
+	state = 0;
+	accel = 0;
+	disabled = false;
+	_ofs_cache = 0;
+	h_ofs = 0;
+	shortcut_is_global = false;
+	shortcut_is_disabled = false;
+}
+
+PopupMenu::Item::~Item() {
+}
+
 String PopupMenu::_get_accel_text(int p_item) const {
 	ERR_FAIL_INDEX_V(p_item, items.size(), String());
 
