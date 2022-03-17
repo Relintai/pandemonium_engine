@@ -53,6 +53,7 @@
 #include "scene/resources/mesh.h"
 #include "scene/scene_string_names.h"
 #include "servers/physics_2d_server.h"
+#include "scene/gui/shortcut.h"
 
 void ViewportTexture::setup_local_to_scene() {
 	Node *local_scene = get_local_scene();

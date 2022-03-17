@@ -33,6 +33,7 @@
 #include "core/os/keyboard.h"
 #include "scene/main/viewport.h"
 #include "scene/scene_string_names.h"
+#include "scene/gui/shortcut.h"
 
 void BaseButton::_unpress_group() {
 	if (!button_group.is_valid()) {

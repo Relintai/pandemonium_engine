@@ -33,6 +33,7 @@
 #include "core/os/os.h"
 #include "editor_scale.h"
 #include "editor_settings.h"
+#include "scene/main/timer.h"
 
 void EditorNetworkProfiler::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_update_frame"), &EditorNetworkProfiler::_update_frame);

@@ -171,6 +171,7 @@
 #include "scene/resources/world.h"
 #include "scene/resources/world_2d.h"
 #include "scene/resources/skin.h"
+#include "scene/gui/shortcut.h"
 #include "scene/scene_string_names.h"
 
 #ifndef _3D_DISABLED

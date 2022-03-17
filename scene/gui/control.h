@@ -34,14 +34,18 @@
 #include "core/math/transform_2d.h"
 #include "core/rid.h"
 #include "scene/2d/canvas_item.h"
-#include "scene/gui/shortcut.h"
-#include "scene/main/node.h"
-#include "scene/main/timer.h"
 #include "scene/resources/theme.h"
 
 class Viewport;
 class Label;
 class Panel;
+class Texture;
+class Shader;
+class StyleBox;
+class Font;
+class Node;
+class ShortCut;
+class Timer;
 
 class Control : public CanvasItem {
 	GDCLASS(Control, CanvasItem);

@@ -25,6 +25,7 @@ SOFTWARE.
 #include "bs_input_event_key.h"
 #include "input_map_editor.h"
 #include "touch_button.h"
+#include "scene/gui/shortcut.h"
 
 void register_ui_extensions_types() {
 	ClassDB::register_class<TouchButton>();

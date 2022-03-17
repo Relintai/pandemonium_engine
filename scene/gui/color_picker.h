@@ -31,18 +31,21 @@
 #ifndef COLOR_PICKER_H
 #define COLOR_PICKER_H
 
-#include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
-#include "scene/gui/check_button.h"
-#include "scene/gui/grid_container.h"
-#include "scene/gui/label.h"
-#include "scene/gui/line_edit.h"
-#include "scene/gui/popup.h"
-#include "scene/gui/separator.h"
-#include "scene/gui/slider.h"
-#include "scene/gui/spin_box.h"
-#include "scene/gui/texture_rect.h"
-#include "scene/gui/tool_button.h"
+#include "scene/gui/box_container.h"
+
+class Control;
+class TextureRect;
+class GridContainer;
+class HSeparator;
+class ToolButton;
+class CheckButton;
+class HSlider;
+class SpinBox;
+class Label;
+class LineEdit;
+class PopupPanel;
+class GridContainer;
 
 class ColorPresetButton : public BaseButton {
 	GDCLASS(ColorPresetButton, BaseButton);
@@ -69,7 +72,7 @@ private:
 	Control *uv_edit;
 	Control *w_edit;
 	TextureRect *sample;
-	GridContainer *preset_container = memnew(GridContainer);
+	GridContainer *preset_container;
 	HSeparator *preset_separator;
 	Button *btn_add_preset;
 	ToolButton *btn_pick;

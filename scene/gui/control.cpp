@@ -41,6 +41,9 @@
 #include "scene/main/viewport.h"
 #include "scene/scene_string_names.h"
 #include "servers/visual_server.h"
+#include "scene/gui/shortcut.h"
+#include "scene/main/node.h"
+#include "scene/main/timer.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_settings.h"

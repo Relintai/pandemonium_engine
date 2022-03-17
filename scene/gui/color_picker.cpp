@@ -34,6 +34,17 @@
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
 
+#include "scene/gui/check_button.h"
+#include "scene/gui/grid_container.h"
+#include "scene/gui/label.h"
+#include "scene/gui/line_edit.h"
+#include "scene/gui/popup.h"
+#include "scene/gui/separator.h"
+#include "scene/gui/slider.h"
+#include "scene/gui/spin_box.h"
+#include "scene/gui/texture_rect.h"
+#include "scene/gui/tool_button.h"
+
 #ifdef TOOLS_ENABLED
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
@@ -790,6 +801,8 @@ void ColorPicker::_bind_methods() {
 
 ColorPicker::ColorPicker() :
 		BoxContainer(true) {
+	preset_container = memnew(GridContainer);
+
 	updating = true;
 	edit_alpha = true;
 	text_is_constructor = false;

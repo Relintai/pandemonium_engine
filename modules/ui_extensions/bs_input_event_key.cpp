@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "bs_input_event_key.h"
 
+#include "scene/gui/shortcut.h"
+
 void BSInputEventKey::from_input_event_key(const Ref<InputEventKey> event) {
 	set_device(event->get_device());
 

@@ -31,6 +31,7 @@
 #include "quick_open.h"
 
 #include "core/os/keyboard.h"
+#include "scene/gui/shortcut.h"
 
 void EditorQuickOpen::popup_dialog(const StringName &p_base, bool p_enable_multi, bool p_dontclear) {
 	base_type = p_base;

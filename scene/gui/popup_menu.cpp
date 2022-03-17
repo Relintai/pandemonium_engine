@@ -34,6 +34,8 @@
 #include "core/os/os.h"
 #include "core/print_string.h"
 #include "core/translation.h"
+#include "scene/gui/shortcut.h"
+#include "scene/main/timer.h"
 
 String PopupMenu::_get_accel_text(int p_item) const {
 	ERR_FAIL_INDEX_V(p_item, items.size(), String());

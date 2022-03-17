@@ -34,6 +34,7 @@
 #include "core/os/input.h"
 #include "core/os/keyboard.h"
 #include "scene/gui/box_container.h"
+#include "scene/gui/shortcut.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_scale.h"

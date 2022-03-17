@@ -32,6 +32,7 @@
 
 #include "editor_property_name_processor.h"
 #include "editor_scale.h"
+#include "scene/gui/shortcut.h"
 
 class SectionedInspectorFilter : public Object {
 	GDCLASS(SectionedInspectorFilter, Object);
