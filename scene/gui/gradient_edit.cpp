@@ -31,6 +31,10 @@
 #include "gradient_edit.h"
 
 #include "core/os/keyboard.h"
+#include "scene/gui/color_picker.h"
+#include "scene/gui/popup.h"
+#include "scene/resources/default_theme/theme_data.h"
+
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_scale.h"

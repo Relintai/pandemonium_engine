@@ -42,6 +42,7 @@
 #include "scene/gui/progress_bar.h"
 #include "scene/main/viewport.h"
 #include "scene/3d/skeleton.h"
+#include "scene/gui/graph_node.h"
 
 void AnimationNodeBlendTreeEditor::add_custom_type(const String &p_name, const Ref<Script> &p_script) {
 	for (int i = 0; i < add_options.size(); i++) {

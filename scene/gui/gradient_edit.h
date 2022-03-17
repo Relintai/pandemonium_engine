@@ -31,10 +31,13 @@
 #ifndef GRADIENT_EDIT_H
 #define GRADIENT_EDIT_H
 
-#include "scene/gui/color_picker.h"
-#include "scene/gui/popup.h"
-#include "scene/resources/default_theme/theme_data.h"
+#include "scene/gui/control.h"
+
 #include "scene/resources/gradient.h"
+
+class PopupPanel;
+class ColorPicker;
+class ImageTexture;
 
 class GradientEdit : public Control {
 	GDCLASS(GradientEdit, Control);

@@ -31,16 +31,18 @@
 #ifndef GRAPH_EDIT_H
 #define GRAPH_EDIT_H
 
-#include "scene/gui/box_container.h"
-#include "scene/gui/graph_node.h"
-#include "scene/gui/label.h"
-#include "scene/gui/scroll_bar.h"
-#include "scene/gui/slider.h"
-#include "scene/gui/spin_box.h"
-#include "scene/gui/texture_rect.h"
-#include "scene/gui/tool_button.h"
+#include "scene/gui/control.h"
 
 class GraphEdit;
+class GraphEditMinimap;
+class GraphNode;
+class Label;
+class ToolButton;
+class SpinBox;
+class Button;
+class HScrollBar;
+class VScrollBar;
+class HBoxContainer;
 
 class GraphEditFilter : public Control {
 	GDCLASS(GraphEditFilter, Control);

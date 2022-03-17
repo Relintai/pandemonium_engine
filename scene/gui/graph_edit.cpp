@@ -35,6 +35,14 @@
 #include "core/os/keyboard.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/shortcut.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/graph_node.h"
+#include "scene/gui/label.h"
+#include "scene/gui/scroll_bar.h"
+#include "scene/gui/slider.h"
+#include "scene/gui/spin_box.h"
+#include "scene/gui/texture_rect.h"
+#include "scene/gui/tool_button.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_scale.h"
