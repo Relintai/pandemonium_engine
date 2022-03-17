@@ -33,6 +33,7 @@
 #include "editor/editor_node.h"
 #include "editor/editor_settings.h"
 #include "editor/plugins/animation_player_editor_plugin.h"
+#include "scene/3d/spatial.h"
 
 void InspectorDock::_menu_option(int p_option) {
 	switch (p_option) {

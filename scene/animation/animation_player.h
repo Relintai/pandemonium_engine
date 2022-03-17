@@ -34,11 +34,6 @@
 #include "core/reference.h"
 #include "scene/main/node.h"
 
-#include "scene/2d/node_2d.h"
-#include "scene/3d/skeleton.h"
-#include "scene/3d/spatial.h"
-#include "scene/resources/animation.h"
-
 class Resource;
 class Spatial;
 class Node2D;

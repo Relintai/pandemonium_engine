@@ -46,6 +46,7 @@
 #include "scene/main/viewport.h"
 #include "scene/property_utils.h"
 #include "scene/resources/packed_scene.h"
+#include "scene/2d/node_2d.h"
 
 #include "modules/modules_enabled.gen.h" // For regex.
 

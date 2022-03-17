@@ -34,6 +34,10 @@
 #include "core/message_queue.h"
 #include "scene/scene_string_names.h"
 #include "servers/audio/audio_stream.h"
+#include "scene/2d/node_2d.h"
+#include "scene/3d/skeleton.h"
+#include "scene/3d/spatial.h"
+#include "scene/resources/animation.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_node.h"

@@ -48,11 +48,13 @@
 #include "scene/3d/mesh_instance.h"
 #include "scene/3d/physics_body.h"
 #include "scene/3d/room_manager.h"
+#include "scene/3d/skeleton.h"
 #include "scene/3d/visual_instance.h"
 #include "scene/gui/viewport_container.h"
-#include "scene/resources/packed_scene.h"
-#include "scene/resources/surface_tool.h"
 #include "scene/main/viewport.h"
+#include "scene/resources/packed_scene.h"
+#include "scene/resources/skin.h"
+#include "scene/resources/surface_tool.h"
 
 #define DISTANCE_DEFAULT 4
 

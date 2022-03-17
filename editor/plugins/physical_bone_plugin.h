@@ -33,6 +33,8 @@
 
 #include "editor/editor_node.h"
 
+class PhysicalBone;
+
 class PhysicalBoneEditor : public Object {
 	GDCLASS(PhysicalBoneEditor, Object);
 

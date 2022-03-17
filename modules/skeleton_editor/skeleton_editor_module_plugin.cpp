@@ -22,6 +22,7 @@ SOFTWARE.
 
 #include "skeleton_editor_module_plugin.h"
 
+#include "scene/3d/skeleton.h"
 #include "spatial_editor_gizmos.h"
 
 SkeletonEditorModulePlugin::SkeletonEditorModulePlugin(EditorNode *p_node) {

@@ -32,6 +32,7 @@
 
 #include "scene/resources/surface_tool.h"
 #include "scene/resources/skin.h"
+#include "scene/3d/skeleton.h"
 
 ModuleSkeletonSpatialGizmoPlugin::ModuleSkeletonSpatialGizmoPlugin() {
 

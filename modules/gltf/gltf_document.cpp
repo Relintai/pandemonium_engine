@@ -60,6 +60,7 @@
 #include "scene/resources/surface_tool.h"
 #include "scene/resources/multimesh.h"
 #include "scene/resources/skin.h"
+#include "scene/resources/animation.h"
 
 #include "modules/modules_enabled.gen.h" // For csg, gridmap, regex.
 

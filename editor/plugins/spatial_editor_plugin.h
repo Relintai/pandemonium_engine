@@ -38,6 +38,7 @@
 #include "scene/3d/light.h"
 #include "scene/3d/visual_instance.h"
 #include "scene/gui/panel_container.h"
+#include "scene/3d/skeleton.h"
 
 class Camera;
 class SpatialEditor;
@@ -65,12 +66,9 @@ public:
 		bool unscaled;
 		bool can_intersect;
 		bool extra_margin;
-		Instance() {
-			billboard = false;
-			unscaled = false;
-			can_intersect = false;
-			extra_margin = false;
-		}
+
+		Instance();
+		~Instance();
 
 		void create_instance(Spatial *p_base, bool p_hidden = false);
 	};

@@ -42,6 +42,7 @@
 #include "scene/3d/navigation_mesh_instance.h"
 #include "scene/3d/occluder.h"
 #include "scene/3d/physics_joint.h"
+#include "scene/3d/physics_body.h"
 #include "scene/3d/portal.h"
 #include "scene/3d/position_3d.h"
 #include "scene/3d/ray_cast.h"
@@ -68,6 +69,7 @@
 #include "scene/resources/navigation_mesh.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/skin.h"
+#include "scene/3d/skeleton.h"
 
 #define HANDLE_HALF_SIZE 9.5
 
@@ -164,6 +166,16 @@ void EditorSpatialGizmo::commit_handle(int p_idx, const Variant &p_restore, bool
 void EditorSpatialGizmo::set_spatial_node(Spatial *p_node) {
 	ERR_FAIL_NULL(p_node);
 	spatial_node = p_node;
+}
+
+EditorSpatialGizmo::Instance::Instance() {
+	billboard = false;
+	unscaled = false;
+	can_intersect = false;
+	extra_margin = false;
+}
+
+EditorSpatialGizmo::Instance::~Instance() {
 }
 
 void EditorSpatialGizmo::Instance::create_instance(Spatial *p_base, bool p_hidden) {
