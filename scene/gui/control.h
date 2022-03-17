@@ -44,7 +44,6 @@ class Shader;
 class StyleBox;
 class Font;
 class Node;
-class ShortCut;
 class Timer;
 
 class Control : public CanvasItem {

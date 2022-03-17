@@ -33,6 +33,7 @@
 
 #include "scene/gui/control.h"
 
+class ShortCut;
 class ButtonGroup;
 
 class BaseButton : public Control {
