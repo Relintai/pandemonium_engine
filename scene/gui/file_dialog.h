@@ -32,19 +32,10 @@
 #define FILE_DIALOG_H
 
 #include "scene/gui/dialogs.h"
-
-#include "box_container.h"
-#include "core/os/dir_access.h"
-#include "scene/gui/line_edit.h"
-#include "scene/gui/option_button.h"
-#include "scene/gui/tool_button.h"
-#include "scene/gui/tree.h"
-
+#include "scene/gui/box_container.h"
 
 class Button;
-class VBoxContainer;
 class LineEdit;
-class HBoxContainer;
 class OptionButton;
 class Tree;
 class AcceptDialog;

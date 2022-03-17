@@ -40,6 +40,7 @@
 #include "editor_scale.h"
 #include "progress_dialog.h"
 #include "scene/gui/link_button.h"
+#include "scene/gui/box_container.h"
 
 void ExportTemplateManager::_update_template_status() {
 	// Fetch installed templates from the file system.

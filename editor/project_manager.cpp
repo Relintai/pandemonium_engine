@@ -54,6 +54,7 @@
 #include "scene/gui/label.h"
 #include "scene/gui/texture_button.h"
 #include "scene/gui/panel.h"
+#include "scene/gui/option_button.h"
 
 static inline String get_project_key_from_path(const String &dir) {
 	return dir.replace("/", "::");

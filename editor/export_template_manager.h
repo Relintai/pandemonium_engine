@@ -40,6 +40,7 @@
 #include "scene/main/http_request.h"
 
 class ExportTemplateVersion;
+class HBoxContainer;
 
 class ExportTemplateManager : public AcceptDialog {
 	GDCLASS(ExportTemplateManager, AcceptDialog);
