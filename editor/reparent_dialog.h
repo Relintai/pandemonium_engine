@@ -1,3 +1,5 @@
+#ifndef REPARENT_DIALOG_H
+#define REPARENT_DIALOG_H
 /*************************************************************************/
 /*  reparent_dialog.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef REPARENT_DIALOG_H
-#define REPARENT_DIALOG_H
+
+
 
 #include "editor/scene_tree_editor.h"
 #include "scene/gui/button.h"

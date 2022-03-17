@@ -1,3 +1,5 @@
+#ifndef ITEM_LIST_EDITOR_PLUGIN_H
+#define ITEM_LIST_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  item_list_editor_plugin.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ITEM_LIST_EDITOR_PLUGIN_H
-#define ITEM_LIST_EDITOR_PLUGIN_H
+
+
 
 #include "canvas_item_editor_plugin.h"
 #include "editor/editor_inspector.h"

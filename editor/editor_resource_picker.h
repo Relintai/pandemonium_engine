@@ -1,3 +1,5 @@
+#ifndef EDITOR_RESOURCE_PICKER_H
+#define EDITOR_RESOURCE_PICKER_H
 /*************************************************************************/
 /*  editor_resource_picker.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_RESOURCE_PICKER_H
-#define EDITOR_RESOURCE_PICKER_H
+
+
 
 #include "editor_file_dialog.h"
 #include "quick_open.h"

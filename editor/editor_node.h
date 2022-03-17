@@ -1,3 +1,5 @@
+#ifndef EDITOR_NODE_H
+#define EDITOR_NODE_H
 /*************************************************************************/
 /*  editor_node.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_NODE_H
-#define EDITOR_NODE_H
+
+
 
 #include "core/safe_refcount.h"
 #include "editor/editor_data.h"

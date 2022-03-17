@@ -1,3 +1,5 @@
+#ifndef RESOURCE_IMPORTER_TEXTURE_ATLAS_H
+#define RESOURCE_IMPORTER_TEXTURE_ATLAS_H
 /*************************************************************************/
 /*  resource_importer_texture_atlas.h                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RESOURCE_IMPORTER_TEXTURE_ATLAS_H
-#define RESOURCE_IMPORTER_TEXTURE_ATLAS_H
+
+
 
 #include "core/image.h"
 #include "core/io/resource_importer.h"

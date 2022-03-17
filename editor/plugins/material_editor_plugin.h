@@ -1,3 +1,5 @@
+#ifndef MATERIAL_EDITOR_PLUGIN_H
+#define MATERIAL_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  material_editor_plugin.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MATERIAL_EDITOR_PLUGIN_H
-#define MATERIAL_EDITOR_PLUGIN_H
+
+
 
 #include "editor/property_editor.h"
 #include "scene/resources/primitive_meshes.h"

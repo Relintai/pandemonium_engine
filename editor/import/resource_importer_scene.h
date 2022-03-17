@@ -1,3 +1,5 @@
+#ifndef RESOURCEIMPORTERSCENE_H
+#define RESOURCEIMPORTERSCENE_H
 /*************************************************************************/
 /*  resource_importer_scene.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RESOURCEIMPORTERSCENE_H
-#define RESOURCEIMPORTERSCENE_H
+
+
 
 #include "core/io/resource_importer.h"
 #include "scene/resources/animation.h"

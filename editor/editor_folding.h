@@ -1,3 +1,5 @@
+#ifndef EDITOR_FOLDING_H
+#define EDITOR_FOLDING_H
 /*************************************************************************/
 /*  editor_folding.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_FOLDING_H
-#define EDITOR_FOLDING_H
+
+
 
 #include "scene/main/node.h"
 

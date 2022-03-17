@@ -1,3 +1,5 @@
+#ifndef EDITOR_PROPERTIES_ARRAY_DICT_H
+#define EDITOR_PROPERTIES_ARRAY_DICT_H
 /*************************************************************************/
 /*  editor_properties_array_dict.h                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_PROPERTIES_ARRAY_DICT_H
-#define EDITOR_PROPERTIES_ARRAY_DICT_H
+
+
 
 #include "editor/editor_inspector.h"
 #include "editor/editor_spin_slider.h"

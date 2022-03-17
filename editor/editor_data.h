@@ -1,3 +1,5 @@
+#ifndef EDITOR_DATA_H
+#define EDITOR_DATA_H
 /*************************************************************************/
 /*  editor_data.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_DATA_H
-#define EDITOR_DATA_H
+
+
 
 #include "core/list.h"
 #include "core/pair.h"

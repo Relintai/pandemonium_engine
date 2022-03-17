@@ -1,3 +1,5 @@
+#ifndef GROUPS_EDITOR_H
+#define GROUPS_EDITOR_H
 /*************************************************************************/
 /*  groups_editor.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GROUPS_EDITOR_H
-#define GROUPS_EDITOR_H
+
+
 
 #include "core/undo_redo.h"
 #include "editor/scene_tree_editor.h"

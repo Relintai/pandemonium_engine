@@ -1,3 +1,5 @@
+#ifndef DEPENDENCY_EDITOR_H
+#define DEPENDENCY_EDITOR_H
 /*************************************************************************/
 /*  dependency_editor.h                                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef DEPENDENCY_EDITOR_H
-#define DEPENDENCY_EDITOR_H
+
+
 
 #include "editor_file_dialog.h"
 #include "scene/gui/dialogs.h"

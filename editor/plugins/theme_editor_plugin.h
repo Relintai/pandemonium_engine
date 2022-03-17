@@ -1,3 +1,5 @@
+#ifndef THEME_EDITOR_PLUGIN_H
+#define THEME_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  theme_editor_plugin.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef THEME_EDITOR_PLUGIN_H
-#define THEME_EDITOR_PLUGIN_H
+
+
 
 #include "scene/gui/dialogs.h"
 #include "scene/gui/margin_container.h"

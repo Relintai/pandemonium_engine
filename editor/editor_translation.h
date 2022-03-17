@@ -1,3 +1,5 @@
+#ifndef EDITOR_TRANSLATION_H
+#define EDITOR_TRANSLATION_H
 /*************************************************************************/
 /*  editor_translation.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_TRANSLATION_H
-#define EDITOR_TRANSLATION_H
+
+
 
 #include "core/ustring.h"
 #include "core/vector.h"

@@ -1,3 +1,5 @@
+#ifndef ANIMATION_BLEND_SPACE_1D_EDITOR_H
+#define ANIMATION_BLEND_SPACE_1D_EDITOR_H
 /*************************************************************************/
 /*  animation_blend_space_1d_editor.h                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ANIMATION_BLEND_SPACE_1D_EDITOR_H
-#define ANIMATION_BLEND_SPACE_1D_EDITOR_H
+
+
 
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"

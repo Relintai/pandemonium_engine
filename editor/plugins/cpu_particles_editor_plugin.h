@@ -1,3 +1,5 @@
+#ifndef CPU_PARTICLES_EDITOR_PLUGIN_H
+#define CPU_PARTICLES_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  cpu_particles_editor_plugin.h                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CPU_PARTICLES_EDITOR_PLUGIN_H
-#define CPU_PARTICLES_EDITOR_PLUGIN_H
+
+
 
 #include "editor/plugins/particles_editor_plugin.h"
 #include "scene/3d/cpu_particles.h"

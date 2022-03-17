@@ -1,3 +1,5 @@
+#ifndef POLYGON_2D_EDITOR_PLUGIN_H
+#define POLYGON_2D_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  polygon_2d_editor_plugin.h                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef POLYGON_2D_EDITOR_PLUGIN_H
-#define POLYGON_2D_EDITOR_PLUGIN_H
+
+
 
 #include "editor/plugins/abstract_polygon_2d_editor.h"
 #include "scene/gui/scroll_container.h"

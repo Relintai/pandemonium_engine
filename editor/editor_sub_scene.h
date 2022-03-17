@@ -1,3 +1,5 @@
+#ifndef EDITOR_SUB_SCENE_H
+#define EDITOR_SUB_SCENE_H
 /*************************************************************************/
 /*  editor_sub_scene.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_SUB_SCENE_H
-#define EDITOR_SUB_SCENE_H
+
+
 
 #include "editor/editor_file_dialog.h"
 #include "scene/gui/dialogs.h"

@@ -1,3 +1,5 @@
+#ifndef SKELETON_IK_EDITOR_PLUGIN_H
+#define SKELETON_IK_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  skeleton_ik_editor_plugin.h                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SKELETON_IK_EDITOR_PLUGIN_H
-#define SKELETON_IK_EDITOR_PLUGIN_H
+
+
 
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"

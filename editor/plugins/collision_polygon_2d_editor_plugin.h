@@ -1,3 +1,5 @@
+#ifndef COLLISION_POLYGON_2D_EDITOR_PLUGIN_H
+#define COLLISION_POLYGON_2D_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  collision_polygon_2d_editor_plugin.h                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef COLLISION_POLYGON_2D_EDITOR_PLUGIN_H
-#define COLLISION_POLYGON_2D_EDITOR_PLUGIN_H
+
+
 
 #include "editor/plugins/abstract_polygon_2d_editor.h"
 #include "scene/2d/collision_polygon_2d.h"

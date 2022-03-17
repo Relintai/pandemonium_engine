@@ -1,3 +1,5 @@
+#ifndef SCRIPT_EDITOR_DEBUGGER_H
+#define SCRIPT_EDITOR_DEBUGGER_H
 /*************************************************************************/
 /*  script_editor_debugger.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SCRIPT_EDITOR_DEBUGGER_H
-#define SCRIPT_EDITOR_DEBUGGER_H
+
+
 
 #include "core/io/packet_peer.h"
 #include "core/io/tcp_server.h"

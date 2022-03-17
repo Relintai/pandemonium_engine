@@ -1,3 +1,5 @@
+#ifndef EXPORT_TEMPLATE_MANAGER_H
+#define EXPORT_TEMPLATE_MANAGER_H
 /*************************************************************************/
 /*  export_template_manager.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EXPORT_TEMPLATE_MANAGER_H
-#define EXPORT_TEMPLATE_MANAGER_H
+
+
 
 #include "editor/editor_settings.h"
 #include "scene/gui/dialogs.h"

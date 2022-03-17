@@ -1,3 +1,5 @@
+#ifndef ROOT_MOTION_EDITOR_PLUGIN_H
+#define ROOT_MOTION_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  root_motion_editor_plugin.h                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ROOT_MOTION_EDITOR_PLUGIN_H
-#define ROOT_MOTION_EDITOR_PLUGIN_H
+
+
 
 #include "editor/editor_inspector.h"
 #include "editor/editor_spin_slider.h"

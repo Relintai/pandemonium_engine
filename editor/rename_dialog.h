@@ -1,3 +1,5 @@
+#ifndef RENAME_DIALOG_H
+#define RENAME_DIALOG_H
 /*************************************************************************/
 /*  rename_dialog.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RENAME_DIALOG_H
-#define RENAME_DIALOG_H
+
+
 
 #include "modules/modules_enabled.gen.h" // For regex.
 #ifdef MODULE_REGEX_ENABLED

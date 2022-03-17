@@ -1,3 +1,5 @@
+#ifndef EDITOR_FILE_SYSTEM_H
+#define EDITOR_FILE_SYSTEM_H
 /*************************************************************************/
 /*  editor_file_system.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_FILE_SYSTEM_H
-#define EDITOR_FILE_SYSTEM_H
+
+
 
 #include "core/os/dir_access.h"
 #include "core/os/thread.h"

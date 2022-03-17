@@ -1,3 +1,5 @@
+#ifndef EDITOR_ATLAS_PACKER_H
+#define EDITOR_ATLAS_PACKER_H
 /*************************************************************************/
 /*  editor_atlas_packer.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_ATLAS_PACKER_H
-#define EDITOR_ATLAS_PACKER_H
+
+
 
 #include "core/math/vector2.h"
 

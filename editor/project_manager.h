@@ -1,3 +1,5 @@
+#ifndef PROJECT_MANAGER_H
+#define PROJECT_MANAGER_H
 /*************************************************************************/
 /*  project_manager.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PROJECT_MANAGER_H
-#define PROJECT_MANAGER_H
+
+
 
 #include "editor/editor_about.h"
 #include "scene/gui/dialogs.h"

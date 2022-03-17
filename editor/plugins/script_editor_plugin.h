@@ -1,3 +1,5 @@
+#ifndef SCRIPT_EDITOR_PLUGIN_H
+#define SCRIPT_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  script_editor_plugin.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SCRIPT_EDITOR_PLUGIN_H
-#define SCRIPT_EDITOR_PLUGIN_H
+
+
 
 #include "core/script_language.h"
 #include "editor/code_editor.h"

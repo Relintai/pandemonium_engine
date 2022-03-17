@@ -1,3 +1,5 @@
+#ifndef ANIMATION_TRACK_EDITOR_PLUGINS_H
+#define ANIMATION_TRACK_EDITOR_PLUGINS_H
 /*************************************************************************/
 /*  animation_track_editor_plugins.h                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ANIMATION_TRACK_EDITOR_PLUGINS_H
-#define ANIMATION_TRACK_EDITOR_PLUGINS_H
+
+
 
 #include "editor/animation_track_editor.h"
 

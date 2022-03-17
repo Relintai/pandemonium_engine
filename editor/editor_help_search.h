@@ -1,3 +1,5 @@
+#ifndef EDITOR_HELP_SEARCH_H
+#define EDITOR_HELP_SEARCH_H
 /*************************************************************************/
 /*  editor_help_search.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_HELP_SEARCH_H
-#define EDITOR_HELP_SEARCH_H
+
+
 
 #include "core/ordered_hash_map.h"
 #include "editor/code_editor.h"

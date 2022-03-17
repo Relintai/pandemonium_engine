@@ -1,3 +1,5 @@
+#ifndef ABSTRACT_POLYGON_2D_EDITOR_H
+#define ABSTRACT_POLYGON_2D_EDITOR_H
 /*************************************************************************/
 /*  abstract_polygon_2d_editor.h                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ABSTRACT_POLYGON_2D_EDITOR_H
-#define ABSTRACT_POLYGON_2D_EDITOR_H
+
+
 
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"

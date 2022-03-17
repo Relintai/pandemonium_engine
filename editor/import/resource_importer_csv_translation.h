@@ -1,3 +1,5 @@
+#ifndef RESOURCEIMPORTERCSVTRANSLATION_H
+#define RESOURCEIMPORTERCSVTRANSLATION_H
 /*************************************************************************/
 /*  resource_importer_csv_translation.h                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RESOURCEIMPORTERCSVTRANSLATION_H
-#define RESOURCEIMPORTERCSVTRANSLATION_H
+
+
 
 #include "core/io/resource_importer.h"
 

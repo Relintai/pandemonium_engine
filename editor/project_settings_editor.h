@@ -1,3 +1,5 @@
+#ifndef PROJECT_SETTINGS_H
+#define PROJECT_SETTINGS_H
 /*************************************************************************/
 /*  project_settings_editor.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PROJECT_SETTINGS_H
-#define PROJECT_SETTINGS_H
+
+
 
 #include "core/undo_redo.h"
 #include "editor/editor_autoload_settings.h"

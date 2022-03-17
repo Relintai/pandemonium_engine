@@ -1,3 +1,5 @@
+#ifndef CONNECTIONS_DIALOG_H
+#define CONNECTIONS_DIALOG_H
 /*************************************************************************/
 /*  connections_dialog.h                                                 */
 /*************************************************************************/
@@ -32,8 +34,8 @@
 @author Juan Linietsky <reduzio@gmail.com>
 */
 
-#ifndef CONNECTIONS_DIALOG_H
-#define CONNECTIONS_DIALOG_H
+
+
 
 #include "core/undo_redo.h"
 #include "editor/editor_inspector.h"

@@ -1,3 +1,5 @@
+#ifndef EDITOR_PATH_H
+#define EDITOR_PATH_H
 /*************************************************************************/
 /*  editor_path.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_PATH_H
-#define EDITOR_PATH_H
+
+
 
 #include "editor_data.h"
 #include "scene/gui/box_container.h"

@@ -1,3 +1,5 @@
+#ifndef EDITOR_IMPORT_PLUGIN_H
+#define EDITOR_IMPORT_PLUGIN_H
 /*************************************************************************/
 /*  editor_import_plugin.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_IMPORT_PLUGIN_H
-#define EDITOR_IMPORT_PLUGIN_H
+
+
 
 #include "core/io/resource_importer.h"
 

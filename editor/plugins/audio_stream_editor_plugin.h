@@ -1,3 +1,5 @@
+#ifndef AUDIO_STREAM_EDITOR_PLUGIN_H
+#define AUDIO_STREAM_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  audio_stream_editor_plugin.h                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIO_STREAM_EDITOR_PLUGIN_H
-#define AUDIO_STREAM_EDITOR_PLUGIN_H
+
+
 
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"

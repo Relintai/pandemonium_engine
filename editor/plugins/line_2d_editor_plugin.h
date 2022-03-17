@@ -1,3 +1,5 @@
+#ifndef LINE_2D_EDITOR_PLUGIN_H
+#define LINE_2D_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  line_2d_editor_plugin.h                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef LINE_2D_EDITOR_PLUGIN_H
-#define LINE_2D_EDITOR_PLUGIN_H
+
+
 
 #include "editor/plugins/abstract_polygon_2d_editor.h"
 #include "scene/2d/line_2d.h"

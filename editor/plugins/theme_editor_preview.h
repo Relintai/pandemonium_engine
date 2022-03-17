@@ -1,3 +1,5 @@
+#ifndef THEME_EDITOR_PREVIEW_H
+#define THEME_EDITOR_PREVIEW_H
 /*************************************************************************/
 /*  theme_editor_preview.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef THEME_EDITOR_PREVIEW_H
-#define THEME_EDITOR_PREVIEW_H
+
+
 
 #include "scene/gui/box_container.h"
 #include "scene/gui/check_box.h"

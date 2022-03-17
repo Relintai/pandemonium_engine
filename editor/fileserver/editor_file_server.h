@@ -1,3 +1,5 @@
+#ifndef EDITOR_FILE_SERVER_H
+#define EDITOR_FILE_SERVER_H
 /*************************************************************************/
 /*  editor_file_server.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_FILE_SERVER_H
-#define EDITOR_FILE_SERVER_H
+
+
 
 #include "core/io/file_access_network.h"
 #include "core/io/packet_peer.h"

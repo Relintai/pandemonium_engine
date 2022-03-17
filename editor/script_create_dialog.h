@@ -1,3 +1,5 @@
+#ifndef SCRIPT_CREATE_DIALOG_H
+#define SCRIPT_CREATE_DIALOG_H
 /*************************************************************************/
 /*  script_create_dialog.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SCRIPT_CREATE_DIALOG_H
-#define SCRIPT_CREATE_DIALOG_H
+
+
 
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_settings.h"

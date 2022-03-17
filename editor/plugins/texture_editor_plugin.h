@@ -1,3 +1,5 @@
+#ifndef TEXTURE_EDITOR_PLUGIN_H
+#define TEXTURE_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  texture_editor_plugin.h                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEXTURE_EDITOR_PLUGIN_H
-#define TEXTURE_EDITOR_PLUGIN_H
+
+
 
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"

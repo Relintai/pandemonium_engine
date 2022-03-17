@@ -1,3 +1,5 @@
+#ifndef EDITOR_LOG_H
+#define EDITOR_LOG_H
 /*************************************************************************/
 /*  editor_log.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_LOG_H
-#define EDITOR_LOG_H
+
+
 
 #include "scene/gui/control.h"
 #include "scene/gui/label.h"

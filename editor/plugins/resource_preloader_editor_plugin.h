@@ -1,3 +1,5 @@
+#ifndef RESOURCE_PRELOADER_EDITOR_PLUGIN_H
+#define RESOURCE_PRELOADER_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  resource_preloader_editor_plugin.h                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RESOURCE_PRELOADER_EDITOR_PLUGIN_H
-#define RESOURCE_PRELOADER_EDITOR_PLUGIN_H
+
+
 
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"

@@ -1,3 +1,5 @@
+#ifndef EDITOR_SPIN_SLIDER_H
+#define EDITOR_SPIN_SLIDER_H
 /*************************************************************************/
 /*  editor_spin_slider.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_SPIN_SLIDER_H
-#define EDITOR_SPIN_SLIDER_H
+
+
 
 #include "scene/gui/line_edit.h"
 #include "scene/gui/range.h"

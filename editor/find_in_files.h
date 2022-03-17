@@ -1,3 +1,5 @@
+#ifndef FIND_IN_FILES_H
+#define FIND_IN_FILES_H
 /*************************************************************************/
 /*  find_in_files.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef FIND_IN_FILES_H
-#define FIND_IN_FILES_H
+
+
 
 #include "core/hash_map.h"
 #include "scene/gui/dialogs.h"

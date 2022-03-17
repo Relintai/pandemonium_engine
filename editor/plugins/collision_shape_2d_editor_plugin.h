@@ -1,3 +1,5 @@
+#ifndef COLLISION_SHAPE_2D_EDITOR_PLUGIN_H
+#define COLLISION_SHAPE_2D_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  collision_shape_2d_editor_plugin.h                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef COLLISION_SHAPE_2D_EDITOR_PLUGIN_H
-#define COLLISION_SHAPE_2D_EDITOR_PLUGIN_H
+
+
 
 #include "core/os/input.h"
 #include "core/os/keyboard.h"

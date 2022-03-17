@@ -1,3 +1,5 @@
+#ifndef IMPORTDOCK_H
+#define IMPORTDOCK_H
 /*************************************************************************/
 /*  import_dock.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef IMPORTDOCK_H
-#define IMPORTDOCK_H
+
+
 
 #include "core/io/config_file.h"
 #include "core/io/resource_importer.h"

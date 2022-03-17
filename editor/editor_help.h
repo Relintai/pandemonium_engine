@@ -1,3 +1,5 @@
+#ifndef EDITOR_HELP_H
+#define EDITOR_HELP_H
 /*************************************************************************/
 /*  editor_help.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_HELP_H
-#define EDITOR_HELP_H
+
+
 
 #include "editor/code_editor.h"
 #include "editor/doc/doc_data.h"

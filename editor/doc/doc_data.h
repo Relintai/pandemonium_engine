@@ -1,3 +1,5 @@
+#ifndef DOC_DATA_H
+#define DOC_DATA_H
 /*************************************************************************/
 /*  doc_data.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef DOC_DATA_H
-#define DOC_DATA_H
+
+
 
 #include "core/io/xml_parser.h"
 #include "core/map.h"

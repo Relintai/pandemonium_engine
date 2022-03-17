@@ -1,3 +1,5 @@
+#ifndef EDITOR_DIR_DIALOG_H
+#define EDITOR_DIR_DIALOG_H
 /*************************************************************************/
 /*  editor_dir_dialog.h                                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_DIR_DIALOG_H
-#define EDITOR_DIR_DIALOG_H
+
+
 
 #include "core/os/dir_access.h"
 #include "editor/editor_file_system.h"

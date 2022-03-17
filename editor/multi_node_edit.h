@@ -1,3 +1,5 @@
+#ifndef MULTI_NODE_EDIT_H
+#define MULTI_NODE_EDIT_H
 /*************************************************************************/
 /*  multi_node_edit.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MULTI_NODE_EDIT_H
-#define MULTI_NODE_EDIT_H
+
+
 
 #include "scene/main/node.h"
 

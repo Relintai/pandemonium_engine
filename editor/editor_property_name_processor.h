@@ -1,3 +1,5 @@
+#ifndef EDITOR_PROPERTY_NAME_PROCESSOR_H
+#define EDITOR_PROPERTY_NAME_PROCESSOR_H
 /*************************************************************************/
 /*  editor_property_name_processor.h                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_PROPERTY_NAME_PROCESSOR_H
-#define EDITOR_PROPERTY_NAME_PROCESSOR_H
+
+
 
 #include "scene/main/node.h"
 

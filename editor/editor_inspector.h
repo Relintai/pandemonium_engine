@@ -1,3 +1,5 @@
+#ifndef EDITOR_INSPECTOR_H
+#define EDITOR_INSPECTOR_H
 /*************************************************************************/
 /*  editor_inspector.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_INSPECTOR_H
-#define EDITOR_INSPECTOR_H
+
+
 
 #include "scene/gui/box_container.h"
 #include "scene/gui/line_edit.h"

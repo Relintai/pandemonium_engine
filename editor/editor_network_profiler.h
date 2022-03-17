@@ -1,3 +1,5 @@
+#ifndef EDITORNETWORKPROFILER_H
+#define EDITORNETWORKPROFILER_H
 /*************************************************************************/
 /*  editor_network_profiler.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITORNETWORKPROFILER_H
-#define EDITORNETWORKPROFILER_H
+
+
 
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"

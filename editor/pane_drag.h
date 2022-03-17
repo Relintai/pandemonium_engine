@@ -1,3 +1,5 @@
+#ifndef PANE_DRAG_H
+#define PANE_DRAG_H
 /*************************************************************************/
 /*  pane_drag.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PANE_DRAG_H
-#define PANE_DRAG_H
+
+
 
 #include "scene/gui/control.h"
 

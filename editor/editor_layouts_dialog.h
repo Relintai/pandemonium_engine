@@ -1,3 +1,5 @@
+#ifndef EDITOR_LAYOUTS_DIALOG_H
+#define EDITOR_LAYOUTS_DIALOG_H
 /*************************************************************************/
 /*  editor_layouts_dialog.h                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_LAYOUTS_DIALOG_H
-#define EDITOR_LAYOUTS_DIALOG_H
+
+
 
 #include "scene/gui/dialogs.h"
 

@@ -1,3 +1,5 @@
+#ifndef EDITOR_QUICK_OPEN_H
+#define EDITOR_QUICK_OPEN_H
 /*************************************************************************/
 /*  quick_open.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_QUICK_OPEN_H
-#define EDITOR_QUICK_OPEN_H
+
+
 
 #include "core/pair.h"
 #include "editor_file_system.h"

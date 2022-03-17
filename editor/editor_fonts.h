@@ -1,3 +1,5 @@
+#ifndef EDITOR_FONTS_H
+#define EDITOR_FONTS_H
 /*************************************************************************/
 /*  editor_fonts.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_FONTS_H
-#define EDITOR_FONTS_H
+
+
 
 #include "scene/resources/theme.h"
 

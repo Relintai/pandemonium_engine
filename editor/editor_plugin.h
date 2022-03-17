@@ -1,3 +1,5 @@
+#ifndef EDITOR_PLUGIN_H
+#define EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  editor_plugin.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_PLUGIN_H
-#define EDITOR_PLUGIN_H
+
+
 
 #include "core/io/config_file.h"
 #include "core/undo_redo.h"

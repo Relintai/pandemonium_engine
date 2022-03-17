@@ -1,3 +1,5 @@
+#ifndef CODE_EDITOR_H
+#define CODE_EDITOR_H
 /*************************************************************************/
 /*  code_editor.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CODE_EDITOR_H
-#define CODE_EDITOR_H
+
+
 
 #include "editor/editor_plugin.h"
 #include "scene/gui/check_box.h"

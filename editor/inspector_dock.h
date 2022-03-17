@@ -1,3 +1,5 @@
+#ifndef INSPECTOR_DOCK_H
+#define INSPECTOR_DOCK_H
 /*************************************************************************/
 /*  inspector_dock.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef INSPECTOR_DOCK_H
-#define INSPECTOR_DOCK_H
+
+
 
 #include "editor/animation_track_editor.h"
 #include "editor/connections_dialog.h"

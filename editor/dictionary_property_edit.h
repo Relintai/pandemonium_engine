@@ -1,3 +1,5 @@
+#ifndef DICTIONARY_PROPERTY_EDIT_H
+#define DICTIONARY_PROPERTY_EDIT_H
 /*************************************************************************/
 /*  dictionary_property_edit.h                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef DICTIONARY_PROPERTY_EDIT_H
-#define DICTIONARY_PROPERTY_EDIT_H
+
+
 
 #include "scene/main/node.h"
 

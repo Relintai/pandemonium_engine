@@ -1,3 +1,5 @@
+#ifndef PARTICLES_EDITOR_PLUGIN_H
+#define PARTICLES_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  particles_editor_plugin.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PARTICLES_EDITOR_PLUGIN_H
-#define PARTICLES_EDITOR_PLUGIN_H
+
+
 
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"

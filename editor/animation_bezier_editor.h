@@ -1,3 +1,5 @@
+#ifndef ANIMATION_BEZIER_EDITOR_H
+#define ANIMATION_BEZIER_EDITOR_H
 /*************************************************************************/
 /*  animation_bezier_editor.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ANIMATION_BEZIER_EDITOR_H
-#define ANIMATION_BEZIER_EDITOR_H
+
+
 
 #include "animation_track_editor.h"
 

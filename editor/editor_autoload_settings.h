@@ -1,3 +1,5 @@
+#ifndef EDITOR_AUTOLOAD_SETTINGS_H
+#define EDITOR_AUTOLOAD_SETTINGS_H
 /*************************************************************************/
 /*  editor_autoload_settings.h                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_AUTOLOAD_SETTINGS_H
-#define EDITOR_AUTOLOAD_SETTINGS_H
+
+
 
 #include "scene/gui/tree.h"
 

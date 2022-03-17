@@ -1,3 +1,5 @@
+#ifndef EDITOR_PROPERTIES_H
+#define EDITOR_PROPERTIES_H
 /*************************************************************************/
 /*  editor_properties.h                                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_PROPERTIES_H
-#define EDITOR_PROPERTIES_H
+
+
 
 #include "editor/create_dialog.h"
 #include "editor/editor_inspector.h"

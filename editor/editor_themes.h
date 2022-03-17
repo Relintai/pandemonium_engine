@@ -1,3 +1,5 @@
+#ifndef EDITOR_THEMES_H
+#define EDITOR_THEMES_H
 /*************************************************************************/
 /*  editor_themes.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_THEMES_H
-#define EDITOR_THEMES_H
+
+
 
 #include "scene/resources/texture.h"
 #include "scene/resources/theme.h"

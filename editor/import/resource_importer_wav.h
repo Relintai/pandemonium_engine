@@ -1,3 +1,5 @@
+#ifndef RESOURCEIMPORTWAV_H
+#define RESOURCEIMPORTWAV_H
 /*************************************************************************/
 /*  resource_importer_wav.h                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RESOURCEIMPORTWAV_H
-#define RESOURCEIMPORTWAV_H
+
+
 
 #include "core/io/resource_importer.h"
 

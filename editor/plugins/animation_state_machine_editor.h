@@ -1,3 +1,5 @@
+#ifndef ANIMATION_STATE_MACHINE_EDITOR_H
+#define ANIMATION_STATE_MACHINE_EDITOR_H
 /*************************************************************************/
 /*  animation_state_machine_editor.h                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ANIMATION_STATE_MACHINE_EDITOR_H
-#define ANIMATION_STATE_MACHINE_EDITOR_H
+
+
 
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"

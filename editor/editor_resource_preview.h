@@ -1,3 +1,5 @@
+#ifndef EDITORRESOURCEPREVIEW_H
+#define EDITORRESOURCEPREVIEW_H
 /*************************************************************************/
 /*  editor_resource_preview.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITORRESOURCEPREVIEW_H
-#define EDITORRESOURCEPREVIEW_H
+
+
 
 #include "core/os/semaphore.h"
 #include "core/os/thread.h"

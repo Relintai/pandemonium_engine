@@ -1,3 +1,5 @@
+#ifndef EDITORFILEDIALOG_H
+#define EDITORFILEDIALOG_H
 /*************************************************************************/
 /*  editor_file_dialog.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITORFILEDIALOG_H
-#define EDITORFILEDIALOG_H
+
+
 
 #include "core/os/dir_access.h"
 #include "scene/gui/box_container.h"

@@ -1,3 +1,5 @@
+#ifndef PLUGIN_CONFIG_DIALOG_H
+#define PLUGIN_CONFIG_DIALOG_H
 /*************************************************************************/
 /*  plugin_config_dialog.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PLUGIN_CONFIG_DIALOG_H
-#define PLUGIN_CONFIG_DIALOG_H
+
+
 
 #include "scene/gui/check_box.h"
 #include "scene/gui/dialogs.h"

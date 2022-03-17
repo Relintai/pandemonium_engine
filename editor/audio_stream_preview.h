@@ -1,3 +1,5 @@
+#ifndef AUDIO_STREAM_PREVIEW_H
+#define AUDIO_STREAM_PREVIEW_H
 /*************************************************************************/
 /*  audio_stream_preview.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIO_STREAM_PREVIEW_H
-#define AUDIO_STREAM_PREVIEW_H
+
+
 
 #include "core/os/thread.h"
 #include "core/safe_refcount.h"

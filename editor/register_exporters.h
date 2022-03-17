@@ -1,3 +1,5 @@
+#ifndef REGISTER_EXPORTERS_H
+#define REGISTER_EXPORTERS_H
 /*************************************************************************/
 /*  register_exporters.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef REGISTER_EXPORTERS_H
-#define REGISTER_EXPORTERS_H
+
+
 
 void register_exporters();
 

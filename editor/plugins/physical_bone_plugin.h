@@ -1,3 +1,5 @@
+#ifndef PHYSICAL_BONE_PLUGIN_H
+#define PHYSICAL_BONE_PLUGIN_H
 /*************************************************************************/
 /*  physical_bone_plugin.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PHYSICAL_BONE_PLUGIN_H
-#define PHYSICAL_BONE_PLUGIN_H
+
+
 
 #include "editor/editor_node.h"
 

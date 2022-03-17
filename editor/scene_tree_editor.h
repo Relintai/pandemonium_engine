@@ -1,3 +1,5 @@
+#ifndef SCENE_TREE_EDITOR_H
+#define SCENE_TREE_EDITOR_H
 /*************************************************************************/
 /*  scene_tree_editor.h                                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SCENE_TREE_EDITOR_H
-#define SCENE_TREE_EDITOR_H
+
+
 
 #include "core/undo_redo.h"
 #include "editor_data.h"

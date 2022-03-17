@@ -1,3 +1,5 @@
+#ifndef FILESYSTEM_DOCK_H
+#define FILESYSTEM_DOCK_H
 /*************************************************************************/
 /*  filesystem_dock.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef FILESYSTEM_DOCK_H
-#define FILESYSTEM_DOCK_H
+
+
 
 #include "scene/gui/box_container.h"
 #include "scene/gui/control.h"

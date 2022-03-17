@@ -1,3 +1,5 @@
+#ifndef PROPERTY_EDITOR_H
+#define PROPERTY_EDITOR_H
 /*************************************************************************/
 /*  property_editor.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PROPERTY_EDITOR_H
-#define PROPERTY_EDITOR_H
+
+
 
 #include "editor/editor_file_dialog.h"
 #include "editor/scene_tree_editor.h"

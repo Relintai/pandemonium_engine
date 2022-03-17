@@ -1,3 +1,5 @@
+#ifndef PROPERTYSELECTOR_H
+#define PROPERTYSELECTOR_H
 /*************************************************************************/
 /*  property_selector.h                                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PROPERTYSELECTOR_H
-#define PROPERTYSELECTOR_H
+
+
 
 #include "editor/property_editor.h"
 #include "editor_help.h"

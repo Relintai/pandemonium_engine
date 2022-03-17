@@ -1,3 +1,5 @@
+#ifndef EDITORAUDIOBUSES_H
+#define EDITORAUDIOBUSES_H
 /*************************************************************************/
 /*  editor_audio_buses.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITORAUDIOBUSES_H
-#define EDITORAUDIOBUSES_H
+
+
 
 #include "editor/editor_file_dialog.h"
 #include "editor_plugin.h"

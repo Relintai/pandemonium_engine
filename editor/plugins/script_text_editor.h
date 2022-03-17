@@ -1,3 +1,5 @@
+#ifndef SCRIPT_TEXT_EDITOR_H
+#define SCRIPT_TEXT_EDITOR_H
 /*************************************************************************/
 /*  script_text_editor.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SCRIPT_TEXT_EDITOR_H
-#define SCRIPT_TEXT_EDITOR_H
+
+
 
 #include "core/vector.h"
 #include "core/reference.h"

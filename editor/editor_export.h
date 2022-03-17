@@ -1,3 +1,5 @@
+#ifndef EDITOR_EXPORT_H
+#define EDITOR_EXPORT_H
 /*************************************************************************/
 /*  editor_export.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_EXPORT_H
-#define EDITOR_EXPORT_H
+
+
 
 #include "core/os/dir_access.h"
 #include "core/resource.h"

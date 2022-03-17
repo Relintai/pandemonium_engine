@@ -1,3 +1,5 @@
+#ifndef EDITOR_RUN_SCRIPT_H
+#define EDITOR_RUN_SCRIPT_H
 /*************************************************************************/
 /*  editor_run_script.h                                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_RUN_SCRIPT_H
-#define EDITOR_RUN_SCRIPT_H
+
+
 
 #include "core/reference.h"
 #include "editor_plugin.h"

@@ -1,3 +1,5 @@
+#ifndef IMPORT_DEFAULTS_EDITOR_H
+#define IMPORT_DEFAULTS_EDITOR_H
 /*************************************************************************/
 /*  import_defaults_editor.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef IMPORT_DEFAULTS_EDITOR_H
-#define IMPORT_DEFAULTS_EDITOR_H
+
+
 
 #include "core/undo_redo.h"
 #include "editor/editor_data.h"

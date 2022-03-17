@@ -1,3 +1,5 @@
+#ifndef VIEWPORT_PREVIEW_EDITOR_PLUGIN_H
+#define VIEWPORT_PREVIEW_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  viewport_preview_editor_plugin.h                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VIEWPORT_PREVIEW_EDITOR_PLUGIN_H
-#define VIEWPORT_PREVIEW_EDITOR_PLUGIN_H
+
+
 
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"

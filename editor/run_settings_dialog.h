@@ -1,3 +1,5 @@
+#ifndef RUN_SETTINGS_DIALOG_H
+#define RUN_SETTINGS_DIALOG_H
 /*************************************************************************/
 /*  run_settings_dialog.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RUN_SETTINGS_DIALOG_H
-#define RUN_SETTINGS_DIALOG_H
+
+
 
 #include "scene/gui/check_button.h"
 #include "scene/gui/dialogs.h"

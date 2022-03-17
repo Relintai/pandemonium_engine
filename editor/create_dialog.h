@@ -1,3 +1,5 @@
+#ifndef CREATE_DIALOG_H
+#define CREATE_DIALOG_H
 /*************************************************************************/
 /*  create_dialog.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CREATE_DIALOG_H
-#define CREATE_DIALOG_H
+
+
 
 #include "editor_help.h"
 #include "scene/gui/button.h"

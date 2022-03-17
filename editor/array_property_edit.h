@@ -1,3 +1,5 @@
+#ifndef ARRAY_PROPERTY_EDIT_H
+#define ARRAY_PROPERTY_EDIT_H
 /*************************************************************************/
 /*  array_property_edit.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ARRAY_PROPERTY_EDIT_H
-#define ARRAY_PROPERTY_EDIT_H
+
+
 
 #include "scene/main/node.h"
 

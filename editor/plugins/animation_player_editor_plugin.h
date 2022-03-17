@@ -1,3 +1,5 @@
+#ifndef ANIMATION_PLAYER_EDITOR_PLUGIN_H
+#define ANIMATION_PLAYER_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  animation_player_editor_plugin.h                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ANIMATION_PLAYER_EDITOR_PLUGIN_H
-#define ANIMATION_PLAYER_EDITOR_PLUGIN_H
+
+
 
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"

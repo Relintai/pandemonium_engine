@@ -1,3 +1,5 @@
+#ifndef EDITORPREVIEWPLUGINS_H
+#define EDITORPREVIEWPLUGINS_H
 /*************************************************************************/
 /*  editor_preview_plugins.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITORPREVIEWPLUGINS_H
-#define EDITORPREVIEWPLUGINS_H
+
+
 
 #include "editor/editor_resource_preview.h"
 

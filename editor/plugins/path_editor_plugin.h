@@ -1,3 +1,5 @@
+#ifndef PATH_EDITOR_PLUGIN_H
+#define PATH_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  path_editor_plugin.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PATH_EDITOR_PLUGIN_H
-#define PATH_EDITOR_PLUGIN_H
+
+
 
 #include "editor/spatial_editor_gizmos.h"
 #include "scene/3d/path.h"

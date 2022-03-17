@@ -1,3 +1,5 @@
+#ifndef SCENE_TREE_DOCK_H
+#define SCENE_TREE_DOCK_H
 /*************************************************************************/
 /*  scene_tree_dock.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SCENE_TREE_DOCK_H
-#define SCENE_TREE_DOCK_H
+
+
 
 #include "editor/connections_dialog.h"
 #include "editor/create_dialog.h"

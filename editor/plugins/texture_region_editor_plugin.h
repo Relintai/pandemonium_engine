@@ -1,3 +1,5 @@
+#ifndef TEXTURE_REGION_EDITOR_PLUGIN_H
+#define TEXTURE_REGION_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  texture_region_editor_plugin.h                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEXTURE_REGION_EDITOR_PLUGIN_H
-#define TEXTURE_REGION_EDITOR_PLUGIN_H
+
+
 
 #include "canvas_item_editor_plugin.h"
 #include "editor/editor_node.h"
