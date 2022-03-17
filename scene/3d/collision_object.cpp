@@ -34,7 +34,6 @@
 #include "mesh_instance.h"
 #include "scene/scene_string_names.h"
 #include "servers/physics_server.h"
-#include "scene/resources/shape.h"
 #include "scene/resources/world.h"
 #include "scene/resources/mesh.h"
 
