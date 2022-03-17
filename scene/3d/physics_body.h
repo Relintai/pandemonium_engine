@@ -49,6 +49,7 @@ protected:
 	static void _bind_methods();
 	void _notification(int p_what);
 	PhysicsBody(PhysicsServer::BodyMode p_mode);
+	~PhysicsBody();
 
 public:
 	virtual Vector3 get_linear_velocity() const;
@@ -379,6 +380,7 @@ public:
 	Variant get_collider_metadata() const;
 
 	KinematicCollision();
+	~KinematicCollision();
 };
 
 class PhysicalBone : public PhysicsBody {

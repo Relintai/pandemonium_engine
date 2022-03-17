@@ -105,6 +105,10 @@ PhysicsBody::PhysicsBody(PhysicsServer::BodyMode p_mode) :
 		CollisionObject(RID_PRIME(PhysicsServer::get_singleton()->body_create(p_mode)), false) {
 }
 
+PhysicsBody::~PhysicsBody() {
+
+}
+
 #ifndef DISABLE_DEPRECATED
 void StaticBody::set_friction(real_t p_friction) {
 	if (p_friction == 1.0 && physics_material_override.is_null()) { // default value, don't create an override for that
@@ -1610,6 +1614,10 @@ KinematicCollision::KinematicCollision() {
 	collision.collider_shape = 0;
 	collision.local_shape = 0;
 	owner = nullptr;
+}
+
+KinematicCollision::~KinematicCollision() {
+
 }
 
 ///////////////////////////////////////
