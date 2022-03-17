@@ -36,6 +36,8 @@
 
 #ifndef _3D_DISABLED
 
+#include "scene/3d/skeleton.h"
+
 FabrikInverseKinematic::ChainItem *FabrikInverseKinematic::ChainItem::find_child(const BoneId p_bone_id) {
 	for (int i = children.size() - 1; 0 <= i; --i) {
 		if (p_bone_id == children[i].bone) {

@@ -38,7 +38,11 @@
  */
 
 #include "core/math/transform.h"
-#include "scene/3d/skeleton.h"
+#include "scene/main/node.h"
+
+class Skeleton;
+
+typedef int BoneId;
 
 class FabrikInverseKinematic {
 	struct EndEffector {
