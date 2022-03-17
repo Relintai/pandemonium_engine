@@ -31,12 +31,22 @@
 #ifndef ANIMATION_PLAYER_H
 #define ANIMATION_PLAYER_H
 
+#include "core/reference.h"
+#include "scene/main/node.h"
+
 #include "scene/2d/node_2d.h"
 #include "scene/3d/skeleton.h"
 #include "scene/3d/spatial.h"
 #include "scene/resources/animation.h"
 
+class Resource;
+class Spatial;
+class Node2D;
+class Skeleton;
+class Animation;
+
 #ifdef TOOLS_ENABLED
+
 class AnimatedValuesBackup : public Reference {
 	GDCLASS(AnimatedValuesBackup, Reference);
 
@@ -92,7 +102,7 @@ private:
 	struct TrackNodeCache {
 		NodePath path;
 		uint32_t id;
-		RES resource;
+		Ref<Resource> resource;
 		Node *node;
 		Spatial *spatial;
 		Node2D *node_2d;

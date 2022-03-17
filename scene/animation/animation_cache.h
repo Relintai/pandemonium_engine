@@ -31,14 +31,20 @@
 #ifndef ANIMATION_CACHE_H
 #define ANIMATION_CACHE_H
 
-#include "scene/3d/skeleton.h"
-#include "scene/resources/animation.h"
+#include "core/object.h"
+#include "core/reference.h"
+
+class Node;
+class Spatial;
+class Resource;
+class Skeleton;
+class Animation;
 
 class AnimationCache : public Object {
 	GDCLASS(AnimationCache, Object);
 
 	struct Path {
-		RES resource;
+		Ref<Resource> resource;
 		Object *object;
 		Skeleton *skeleton; // haxor
 		Node *node;

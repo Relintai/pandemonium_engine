@@ -34,7 +34,9 @@
 #include "core/math/face3.h"
 #include "core/rid.h"
 #include "scene/3d/cull_instance.h"
-#include "scene/resources/material.h"
+#include "core/reference.h"
+
+class Material;
 
 class VisualInstance : public CullInstance {
 	GDCLASS(VisualInstance, CullInstance);

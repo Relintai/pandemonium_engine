@@ -33,6 +33,7 @@
 #include "scene/scene_string_names.h"
 #include "servers/visual_server.h"
 #include "skeleton.h"
+#include "scene/resources/material.h"
 
 AABB VisualInstance::get_transformed_aabb() const {
 	return get_global_transform().xform(get_aabb());

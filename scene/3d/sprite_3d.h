@@ -31,8 +31,10 @@
 #ifndef SPRITE_3D_H
 #define SPRITE_3D_H
 
-#include "scene/2d/animated_sprite.h"
 #include "scene/3d/visual_instance.h"
+#include "core/reference.h"
+
+class SpriteFrames;
 
 class SpriteBase3D : public GeometryInstance {
 	GDCLASS(SpriteBase3D, GeometryInstance);

@@ -30,6 +30,9 @@
 
 #include "animation_cache.h"
 
+#include "scene/3d/skeleton.h"
+#include "scene/resources/animation.h"
+
 void AnimationCache::_node_exit_tree(Node *p_node) {
 	//it is one shot, so it disconnects upon arrival
 
