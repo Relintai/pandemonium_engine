@@ -31,10 +31,12 @@
 #ifndef ANIMATION_TREE_PLAYER_H
 #define ANIMATION_TREE_PLAYER_H
 
-#include "animation_player.h"
-#include "scene/3d/skeleton.h"
-#include "scene/3d/spatial.h"
+#include "scene/main/node.h"
 #include "scene/resources/animation.h"
+
+class Spatial;
+class Skeleton;
+class Animation;
 
 class AnimationTreePlayer : public Node {
 	GDCLASS(AnimationTreePlayer, Node);

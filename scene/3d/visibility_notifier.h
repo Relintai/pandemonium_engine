@@ -35,6 +35,7 @@
 
 class World;
 class Camera;
+
 class VisibilityNotifier : public CullInstance {
 	GDCLASS(VisibilityNotifier, CullInstance);
 

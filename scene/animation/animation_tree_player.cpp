@@ -34,6 +34,10 @@
 #include "core/os/os.h"
 #include "scene/scene_string_names.h"
 
+#include "scene/3d/skeleton.h"
+#include "scene/3d/spatial.h"
+#include "scene/resources/animation.h"
+
 void AnimationTreePlayer::set_animation_process_mode(AnimationProcessMode p_mode) {
 	if (animation_process_mode == p_mode) {
 		return;

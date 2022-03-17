@@ -38,6 +38,8 @@
 #include "scene/gui/menu_button.h"
 #include "scene/gui/panel.h"
 #include "scene/main/viewport.h"
+#include "scene/animation/animation_player.h"
+#include "scene/3d/skeleton.h"
 
 void AnimationTreePlayerEditor::edit(AnimationTreePlayer *p_anim_tree) {
 	anim_tree = p_anim_tree;
