@@ -1668,7 +1668,10 @@ Spell::Spell() {
 
 	_level = 1;
 	_rank = 0;
-	_scale_with_level = ESS::get_singleton()->get_scale_spells_by_default();
+
+	if (ESS::get_singleton()) {
+		_scale_with_level = ESS::get_singleton()->get_scale_spells_by_default();
+	}
 
 	_global_cooldown_enabled = true;
 	_is_local_spell = false;
@@ -1726,7 +1729,9 @@ Spell::Spell() {
 	_aura_is_debuff = false;
 	_aura_hide = false;
 
-	_aura_scale_with_level = ESS::get_singleton()->get_scale_spells_by_default();
+	if (ESS::get_singleton()) {
+		_aura_scale_with_level = ESS::get_singleton()->get_scale_spells_by_default();
+	}
 
 	_aura_damage_enabled = false;
 	_aura_damage_type = 0;
