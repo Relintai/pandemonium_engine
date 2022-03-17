@@ -25,9 +25,9 @@ SOFTWARE.
 #include "lights/prop_2d_light.h"
 #include "modules/opensimplex/open_simplex_noise.h"
 
+#include "./singleton/prop_2d_cache.h"
 #include "material_cache/prop_2d_material_cache.h"
 #include "tiled_wall/tiled_wall_2d_data.h"
-#include "./singleton/prop_2d_cache.h"
 
 const String Prop2DMesher::BINDING_STRING_BUILD_FLAGS = "Use Lighting,Use AO,Use RAO,Bake Lights";
 
@@ -1123,7 +1123,14 @@ Prop2DMesher::Prop2DMesher() {
 	_uv_margin = Rect2(0, 0, 1, 1);
 	_format = 0;
 	_texture_scale = 1;
-	_pixels_per_unit = Prop2DCache::get_singleton()->get_default_pixels_per_unit();
+
+	if (Prop2DCache::get_singleton()) {
+		_pixels_per_unit = Prop2DCache::get_singleton()->get_default_pixels_per_unit();
+	} else {
+		//Just fall back to the default.
+		//Note that this will be removed when I get to it, as it can be calculated.
+		_pixels_per_unit = 64;
+	}
 
 	_build_flags = 0;
 
