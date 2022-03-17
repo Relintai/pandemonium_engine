@@ -41,6 +41,7 @@
 #include "scene/gui/option_button.h"
 #include "scene/gui/tool_button.h"
 #include "scene/gui/tree.h"
+#include "scene/gui/scroll_bar.h"
 
 FileDialog::GetIconFunc FileDialog::get_icon_func = nullptr;
 FileDialog::GetIconFunc FileDialog::get_large_icon_func = nullptr;

@@ -61,6 +61,7 @@ public:
 	UnderlineMode get_underline_mode() const;
 
 	LinkButton();
+	~LinkButton();
 };
 
 VARIANT_ENUM_CAST(LinkButton::UnderlineMode);

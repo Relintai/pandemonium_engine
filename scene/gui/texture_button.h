@@ -32,7 +32,10 @@
 #define TEXTURE_BUTTON_H
 
 #include "scene/gui/base_button.h"
-#include "scene/resources/bit_map.h"
+#include "core/reference.h"
+
+class BitMap;
+
 class TextureButton : public BaseButton {
 	GDCLASS(TextureButton, BaseButton);
 

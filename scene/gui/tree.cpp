@@ -39,6 +39,10 @@
 #include "scene/main/viewport.h"
 #include "scene/main/timer.h"
 #include "scene/gui/shortcut.h"
+#include "scene/gui/line_edit.h"
+#include "scene/gui/popup_menu.h"
+#include "scene/gui/scroll_bar.h"
+#include "scene/gui/slider.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_scale.h"

@@ -147,3 +147,7 @@ LinkButton::LinkButton() {
 	set_focus_mode(FOCUS_NONE);
 	set_default_cursor_shape(CURSOR_POINTING_HAND);
 }
+
+
+LinkButton::~LinkButton() {
+}

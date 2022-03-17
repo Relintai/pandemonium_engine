@@ -31,13 +31,15 @@
 #ifndef TREE_H
 #define TREE_H
 
+#include "core/object.h"
 #include "scene/gui/control.h"
-#include "scene/gui/line_edit.h"
-#include "scene/gui/popup_menu.h"
-#include "scene/gui/scroll_bar.h"
-#include "scene/gui/slider.h"
 
 class Tree;
+class HScrollBar;
+class VScrollBar;
+class LineEdit;
+class HSlider;
+class PopupMenu;
 
 class TreeItem : public Object {
 	GDCLASS(TreeItem, Object);

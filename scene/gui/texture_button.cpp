@@ -31,6 +31,7 @@
 #include "texture_button.h"
 #include "core/typedefs.h"
 #include <stdlib.h>
+#include "scene/resources/bit_map.h"
 
 Size2 TextureButton::get_minimum_size() const {
 	Size2 rscale = Control::get_minimum_size();

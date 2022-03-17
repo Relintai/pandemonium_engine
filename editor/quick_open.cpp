@@ -34,6 +34,7 @@
 #include "scene/gui/shortcut.h"
 #include "scene/gui/button.h"
 #include "scene/gui/box_container.h"
+#include "scene/gui/line_edit.h"
 
 void EditorQuickOpen::popup_dialog(const StringName &p_base, bool p_enable_multi, bool p_dontclear) {
 	base_type = p_base;
