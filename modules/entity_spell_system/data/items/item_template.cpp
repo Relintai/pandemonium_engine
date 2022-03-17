@@ -400,7 +400,11 @@ ItemTemplate::ItemTemplate() {
 	_item_sub_sub_type = ItemEnums::ITEM_SUB_SUB_TYPE_NONE;
 	_rarity = ItemEnums::ITEM_RARITY_NONE;
 	_armor_type = ItemEnums::ARMOR_TYPE_NONE;
-	_equip_slot = ESS::get_singleton()->equip_slot_get_count();
+	if (ESS::get_singleton()) {
+		_equip_slot = ESS::get_singleton()->equip_slot_get_count();
+	} else {
+		_equip_slot = 0;
+	}
 	_price = 0;
 
 	_scale_x = 0;
