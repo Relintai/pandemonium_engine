@@ -1,3 +1,5 @@
+#ifndef JAVASCRIPT_TOOLS_EDITOR_PLUGIN_H
+#define JAVASCRIPT_TOOLS_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  javascript_tools_editor_plugin.h                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef JAVASCRIPT_TOOLS_EDITOR_PLUGIN_H
-#define JAVASCRIPT_TOOLS_EDITOR_PLUGIN_H
+
+
 
 #if defined(TOOLS_ENABLED) && defined(JAVASCRIPT_ENABLED)
 #include "core/io/zip_io.h"

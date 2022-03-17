@@ -1,3 +1,5 @@
+#ifndef OS_WINDOWS_H
+#define OS_WINDOWS_H
 /*************************************************************************/
 /*  os_windows.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef OS_WINDOWS_H
-#define OS_WINDOWS_H
+
+
 
 #include "context_gl_windows.h"
 #include "core/os/input.h"

@@ -1,3 +1,5 @@
+#ifndef CONTEXT_GL_X11_H
+#define CONTEXT_GL_X11_H
 /*************************************************************************/
 /*  context_gl_x11.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CONTEXT_GL_X11_H
-#define CONTEXT_GL_X11_H
+
+
 
 #ifdef X11_ENABLED
 

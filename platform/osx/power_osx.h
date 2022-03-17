@@ -1,3 +1,5 @@
+#ifndef POWER_OSX_H
+#define POWER_OSX_H
 /*************************************************************************/
 /*  power_osx.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef POWER_OSX_H
-#define POWER_OSX_H
+
+
 
 #include "core/os/file_access.h"
 #include "core/os/os.h"

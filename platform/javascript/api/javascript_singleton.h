@@ -1,3 +1,5 @@
+#ifndef JAVASCRIPT_SINGLETON_H
+#define JAVASCRIPT_SINGLETON_H
 /*************************************************************************/
 /*  javascript_singleton.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef JAVASCRIPT_SINGLETON_H
-#define JAVASCRIPT_SINGLETON_H
+
+
 
 #include "core/object.h"
 #include "core/reference.h"

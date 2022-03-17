@@ -1,3 +1,5 @@
+#ifndef NET_SOCKET_ANDROID_H
+#define NET_SOCKET_ANDROID_H
 /*************************************************************************/
 /*  net_socket_android.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef NET_SOCKET_ANDROID_H
-#define NET_SOCKET_ANDROID_H
+
+
 
 #include "drivers/unix/net_socket_posix.h"
 

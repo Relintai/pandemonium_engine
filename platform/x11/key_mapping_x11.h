@@ -1,3 +1,5 @@
+#ifndef KEY_MAPPING_X11_H
+#define KEY_MAPPING_X11_H
 /*************************************************************************/
 /*  key_mapping_x11.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef KEY_MAPPING_X11_H
-#define KEY_MAPPING_X11_H
+
+
 
 #include <X11/XF86keysym.h>
 #include <X11/Xlib.h>

@@ -1,3 +1,5 @@
+#ifndef OS_OSX_H
+#define OS_OSX_H
 /*************************************************************************/
 /*  os_osx.h                                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef OS_OSX_H
-#define OS_OSX_H
+
+
 
 #define BitMap _QDBitMap // Suppress deprecated QuickDraw definition.
 

@@ -1,3 +1,5 @@
+#ifndef JNI_UTILS_H
+#define JNI_UTILS_H
 /*************************************************************************/
 /*  jni_utils.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef JNI_UTILS_H
-#define JNI_UTILS_H
+
+
 
 #include "string_android.h"
 #include <core/engine.h>

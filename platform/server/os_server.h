@@ -1,3 +1,5 @@
+#ifndef OS_SERVER_H
+#define OS_SERVER_H
 /*************************************************************************/
 /*  os_server.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef OS_SERVER_H
-#define OS_SERVER_H
+
+
 
 #include "drivers/dummy/texture_loader_dummy.h"
 #include "drivers/unix/os_unix.h"

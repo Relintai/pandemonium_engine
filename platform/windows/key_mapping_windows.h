@@ -1,3 +1,5 @@
+#ifndef KEY_MAPPING_WINDOWS_H
+#define KEY_MAPPING_WINDOWS_H
 /*************************************************************************/
 /*  key_mapping_windows.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef KEY_MAPPING_WINDOWS_H
-#define KEY_MAPPING_WINDOWS_H
+
+
 
 #include "core/os/keyboard.h"
 

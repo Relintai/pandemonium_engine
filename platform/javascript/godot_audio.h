@@ -1,3 +1,5 @@
+#ifndef GODOT_AUDIO_H
+#define GODOT_AUDIO_H
 /*************************************************************************/
 /*  godot_audio.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GODOT_AUDIO_H
-#define GODOT_AUDIO_H
+
+
 
 #ifdef __cplusplus
 extern "C" {

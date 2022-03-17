@@ -1,3 +1,5 @@
+#ifndef OS_JAVASCRIPT_H
+#define OS_JAVASCRIPT_H
 /*************************************************************************/
 /*  os_javascript.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef OS_JAVASCRIPT_H
-#define OS_JAVASCRIPT_H
+
+
 
 #include "audio_driver_javascript.h"
 #include "drivers/unix/os_unix.h"

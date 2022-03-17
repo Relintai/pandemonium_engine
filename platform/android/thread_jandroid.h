@@ -1,3 +1,5 @@
+#ifndef THREAD_JANDROID_H
+#define THREAD_JANDROID_H
 /*************************************************************************/
 /*  thread_jandroid.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef THREAD_JANDROID_H
-#define THREAD_JANDROID_H
+
+
 
 #include <jni.h>
 

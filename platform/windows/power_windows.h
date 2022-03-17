@@ -1,3 +1,5 @@
+#ifndef POWER_WINDOWS_H
+#define POWER_WINDOWS_H
 /*************************************************************************/
 /*  power_windows.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef POWER_WINDOWS_H
-#define POWER_WINDOWS_H
+
+
 
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"

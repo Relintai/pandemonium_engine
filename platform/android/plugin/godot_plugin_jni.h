@@ -1,3 +1,5 @@
+#ifndef GODOT_PLUGIN_JNI_H
+#define GODOT_PLUGIN_JNI_H
 /*************************************************************************/
 /*  godot_plugin_jni.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GODOT_PLUGIN_JNI_H
-#define GODOT_PLUGIN_JNI_H
+
+
 
 #include <android/log.h>
 #include <jni.h>

@@ -1,3 +1,5 @@
+#ifndef FILE_ACCESS_ANDROID_H
+#define FILE_ACCESS_ANDROID_H
 /*************************************************************************/
 /*  file_access_android.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef FILE_ACCESS_ANDROID_H
-#define FILE_ACCESS_ANDROID_H
+
+
 
 #include "core/os/file_access.h"
 #include <android/asset_manager.h>

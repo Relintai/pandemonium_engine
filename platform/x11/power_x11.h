@@ -1,3 +1,5 @@
+#ifndef POWER_X11_H
+#define POWER_X11_H
 /*************************************************************************/
 /*  power_x11.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef POWER_X11_H
-#define POWER_X11_H
+
+
 
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"

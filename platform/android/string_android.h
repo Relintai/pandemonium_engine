@@ -1,3 +1,5 @@
+#ifndef STRING_ANDROID_H
+#define STRING_ANDROID_H
 /*************************************************************************/
 /*  string_android.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef STRING_ANDROID_H
-#define STRING_ANDROID_H
+
+
 #include "core/ustring.h"
 #include "thread_jandroid.h"
 #include <jni.h>

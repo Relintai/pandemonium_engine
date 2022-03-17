@@ -1,3 +1,5 @@
+#ifndef JOYPAD_WINDOWS_H
+#define JOYPAD_WINDOWS_H
 /*************************************************************************/
 /*  joypad_windows.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef JOYPAD_WINDOWS_H
-#define JOYPAD_WINDOWS_H
+
+
 
 #include "os_windows.h"
 

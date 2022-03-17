@@ -1,3 +1,5 @@
+#ifndef GODOT_JS_H
+#define GODOT_JS_H
 /*************************************************************************/
 /*  godot_js.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GODOT_JS_H
-#define GODOT_JS_H
+
+
 
 #ifdef __cplusplus
 extern "C" {

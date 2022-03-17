@@ -1,3 +1,5 @@
+#ifndef OS_ANDROID_H
+#define OS_ANDROID_H
 /*************************************************************************/
 /*  os_android.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef OS_ANDROID_H
-#define OS_ANDROID_H
+
+
 
 #include "audio_driver_opensl.h"
 #include "core/os/main_loop.h"

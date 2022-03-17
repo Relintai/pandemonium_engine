@@ -1,3 +1,5 @@
+#ifndef JAVA_CLASS_WRAPPER_H
+#define JAVA_CLASS_WRAPPER_H
 /*************************************************************************/
 /*  java_class_wrapper.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef JAVA_CLASS_WRAPPER_H
-#define JAVA_CLASS_WRAPPER_H
+
+
 
 #include "core/reference.h"
 

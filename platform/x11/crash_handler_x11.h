@@ -1,3 +1,5 @@
+#ifndef CRASH_HANDLER_X11_H
+#define CRASH_HANDLER_X11_H
 /*************************************************************************/
 /*  crash_handler_x11.h                                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CRASH_HANDLER_X11_H
-#define CRASH_HANDLER_X11_H
+
+
 
 class CrashHandler {
 	bool disabled;

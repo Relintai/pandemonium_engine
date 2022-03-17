@@ -1,3 +1,5 @@
+#ifndef LANG_TABLE_H
+#define LANG_TABLE_H
 /*************************************************************************/
 /*  lang_table.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef LANG_TABLE_H
-#define LANG_TABLE_H
+
+
 
 //#include <windows.h>
 

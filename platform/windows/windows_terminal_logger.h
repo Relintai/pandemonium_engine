@@ -1,3 +1,5 @@
+#ifndef WINDOWS_TERMINAL_LOGGER_H
+#define WINDOWS_TERMINAL_LOGGER_H
 /*************************************************************************/
 /*  windows_terminal_logger.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef WINDOWS_TERMINAL_LOGGER_H
-#define WINDOWS_TERMINAL_LOGGER_H
+
+
 
 #ifdef WINDOWS_ENABLED
 

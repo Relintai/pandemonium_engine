@@ -1,3 +1,5 @@
+#ifndef POWER_ANDROID_H
+#define POWER_ANDROID_H
 /*************************************************************************/
 /*  power_android.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef POWER_ANDROID_H
-#define POWER_ANDROID_H
+
+
 
 #include "core/os/os.h"
 

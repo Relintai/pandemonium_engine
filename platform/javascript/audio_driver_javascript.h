@@ -1,3 +1,5 @@
+#ifndef AUDIO_DRIVER_JAVASCRIPT_H
+#define AUDIO_DRIVER_JAVASCRIPT_H
 /*************************************************************************/
 /*  audio_driver_javascript.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIO_DRIVER_JAVASCRIPT_H
-#define AUDIO_DRIVER_JAVASCRIPT_H
+
+
 
 #include "core/os/mutex.h"
 #include "core/os/thread.h"

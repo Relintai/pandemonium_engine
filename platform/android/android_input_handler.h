@@ -1,3 +1,5 @@
+#ifndef ANDROID_INPUT_HANDLER_H
+#define ANDROID_INPUT_HANDLER_H
 /*************************************************************************/
 /*  android_input_handler.h                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ANDROID_INPUT_HANDLER_H
-#define ANDROID_INPUT_HANDLER_H
+
+
 
 #include "main/input_default.h"
 

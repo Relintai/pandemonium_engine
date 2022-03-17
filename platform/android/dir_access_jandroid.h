@@ -1,3 +1,5 @@
+#ifndef DIR_ACCESS_JANDROID_H
+#define DIR_ACCESS_JANDROID_H
 /*************************************************************************/
 /*  dir_access_jandroid.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef DIR_ACCESS_JANDROID_H
-#define DIR_ACCESS_JANDROID_H
+
+
 
 #include "core/os/dir_access.h"
 #include "java_godot_lib_jni.h"

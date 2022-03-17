@@ -1,3 +1,5 @@
+#ifndef IPHONE_API_H
+#define IPHONE_API_H
 /*************************************************************************/
 /*  api.h                                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef IPHONE_API_H
-#define IPHONE_API_H
+
+
 
 #if defined(IPHONE_ENABLED)
 extern void godot_ios_plugins_initialize();

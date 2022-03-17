@@ -1,3 +1,5 @@
+#ifndef JAVA_GODOT_LIB_JNI_H
+#define JAVA_GODOT_LIB_JNI_H
 /*************************************************************************/
 /*  java_godot_lib_jni.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef JAVA_GODOT_LIB_JNI_H
-#define JAVA_GODOT_LIB_JNI_H
+
+
 
 #include <android/log.h>
 #include <jni.h>

@@ -1,3 +1,5 @@
+#ifndef GODOT_PLUGIN_CONFIG_H
+#define GODOT_PLUGIN_CONFIG_H
 /*************************************************************************/
 /*  godot_plugin_config.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GODOT_PLUGIN_CONFIG_H
-#define GODOT_PLUGIN_CONFIG_H
+
+
 
 #include "core/error_list.h"
 #include "core/io/config_file.h"

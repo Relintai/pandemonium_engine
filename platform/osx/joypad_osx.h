@@ -1,3 +1,5 @@
+#ifndef JOYPADOSX_H
+#define JOYPADOSX_H
 /*************************************************************************/
 /*  joypad_osx.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef JOYPADOSX_H
-#define JOYPADOSX_H
+
+
 
 #ifdef MACOS_10_0_4
 #include <IOKit/hidsystem/IOHIDUsageTables.h>

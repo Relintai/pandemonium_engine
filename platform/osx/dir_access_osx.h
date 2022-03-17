@@ -1,3 +1,5 @@
+#ifndef DIR_ACCESS_OSX_H
+#define DIR_ACCESS_OSX_H
 /*************************************************************************/
 /*  dir_access_osx.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef DIR_ACCESS_OSX_H
-#define DIR_ACCESS_OSX_H
+
+
 
 #if defined(UNIX_ENABLED) || defined(LIBC_FILEIO_ENABLED)
 

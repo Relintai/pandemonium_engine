@@ -1,3 +1,5 @@
+#ifndef ANDROID_KEYS_UTILS_H
+#define ANDROID_KEYS_UTILS_H
 /*************************************************************************/
 /*  android_keys_utils.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ANDROID_KEYS_UTILS_H
-#define ANDROID_KEYS_UTILS_H
+
+
 
 #include <android/input.h>
 #include <core/os/keyboard.h>

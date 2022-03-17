@@ -1,3 +1,5 @@
+#ifndef JAVA_GODOT_WRAPPER_H
+#define JAVA_GODOT_WRAPPER_H
 /*************************************************************************/
 /*  java_godot_wrapper.h                                                 */
 /*************************************************************************/
@@ -31,8 +33,8 @@
 // note, swapped java and godot around in the file name so all the java
 // wrappers are together
 
-#ifndef JAVA_GODOT_WRAPPER_H
-#define JAVA_GODOT_WRAPPER_H
+
+
 
 #include <android/log.h>
 #include <jni.h>

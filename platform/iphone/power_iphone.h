@@ -1,3 +1,5 @@
+#ifndef POWER_IPHONE_H
+#define POWER_IPHONE_H
 /*************************************************************************/
 /*  power_iphone.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef POWER_IPHONE_H
-#define POWER_IPHONE_H
+
+
 
 #include <os/os.h>
 
