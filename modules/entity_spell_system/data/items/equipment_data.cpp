@@ -50,7 +50,9 @@ Ref<ItemInstance> EquipmentData::get_item(int index) {
 }
 
 EquipmentData::EquipmentData() {
-	_entries.resize(ESS::get_singleton()->equip_slot_get_count());
+	if (ESS::get_singleton()) {
+		_entries.resize(ESS::get_singleton()->equip_slot_get_count());
+	}
 }
 
 EquipmentData::~EquipmentData() {
