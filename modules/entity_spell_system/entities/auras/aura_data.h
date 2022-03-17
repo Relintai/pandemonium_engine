@@ -22,20 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-#include "core/variant/array.h"
-#include "core/variant/dictionary.h"
-#else
-#include "core/resource.h"
 #include "core/array.h"
 #include "core/dictionary.h"
-#endif
+#include "core/resource.h"
 
 #include "../../spell_enums.h"
 

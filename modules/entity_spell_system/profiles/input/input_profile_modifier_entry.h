@@ -27,13 +27,8 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/object/reference.h"
-#include "core/string/ustring.h"
-#else
 #include "core/reference.h"
 #include "core/ustring.h"
-#endif
 
 class InputProfileModifierEntry : public Reference {
 	GDCLASS(InputProfileModifierEntry, Reference);

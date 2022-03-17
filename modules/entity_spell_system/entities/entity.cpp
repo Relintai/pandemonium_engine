@@ -43,11 +43,7 @@ SOFTWARE.
 #include "./skills/entity_skill.h"
 #include "scene/2d/node_2d.h"
 
-#if VERSION_MAJOR > 3
-#include "core/object/script_language.h"
-#else
 #include "core/script_language.h"
-#endif
 
 #include "core/version.h"
 
@@ -650,22 +646,14 @@ void Entity::setup(Ref<EntityCreateInfo> info) {
 		sets_entity_name(info->get_entity_name());
 	}
 
-#if VERSION_MAJOR > 3
-	if (!info->get_serialized_data().is_empty()) {
-#else
 	if (!info->get_serialized_data().empty()) {
-#endif
 		from_dict(info->get_serialized_data());
 	} else {
 		sets_entity_data(info->get_entity_data());
 	}
 
 	if (has_method("_setup")) {
-#if GODOT4
-		call("_setup");
-#else
 		call_multilevel("_setup");
-#endif
 	}
 }
 
@@ -1081,11 +1069,7 @@ void Entity::pet_removec_index(int index) {
 
 	_c_pets.remove(index);
 
-	//#if VERSION_MAJOR < 4
 	//ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
-	//#else
-	//ERR_FAIL_COND(entity == NULL);
-	//#endif
 
 	//full callback stack spet_added
 }
@@ -1359,11 +1343,7 @@ Dictionary Entity::_to_dict() {
 	return dict;
 }
 void Entity::_from_dict(const Dictionary &dict) {
-#if VERSION_MAJOR > 3
-	ERR_FAIL_COND(dict.is_empty());
-#else
 	ERR_FAIL_COND(dict.empty());
-#endif
 
 	////    Transforms    ////
 
@@ -1658,11 +1638,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	Dictionary bagd = dict.get("bag", Dictionary());
 
-#if VERSION_MAJOR > 3
-	if (!bagd.is_empty()) {
-#else
 	if (!bagd.empty()) {
-#endif
 		if (!_s_bag.is_valid()) {
 			Ref<Bag> bag;
 			bag.instance();
@@ -1801,16 +1777,10 @@ PoolIntArray Entity::states_gets() const {
 	PoolIntArray arr;
 	arr.resize(EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX);
 
-#if !GODOT4
 	PoolIntArray::Write w = arr.write();
-#endif
 
 	for (int i = 0; i < EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX; ++i) {
-#if !GODOT4
 		w[i] = _s_states[i];
-#else
-		arr.write[i] = _s_states[i];
-#endif
 	}
 
 	return arr;
@@ -4943,16 +4913,10 @@ PoolIntArray Entity::sclass_talents_get() {
 	PoolIntArray arr;
 	arr.resize(_s_class_talents.size());
 
-#if !GODOT4
 	PoolIntArray::Write w = arr.write();
-#endif
 
 	for (int i = 0; i < _s_class_talents.size(); ++i) {
-#if !GODOT4
 		w[i] = _s_class_talents[i];
-#else
-		arr.write[i] = _s_class_talents[i];
-#endif
 	}
 
 	return arr;
@@ -5190,16 +5154,10 @@ PoolIntArray Entity::scharacter_talents_get() {
 	PoolIntArray arr;
 	arr.resize(_s_character_talents.size());
 
-#if !GODOT4
 	PoolIntArray::Write w = arr.write();
-#endif
 
 	for (int i = 0; i < _s_character_talents.size(); ++i) {
-#if !GODOT4
 		w[i] = _s_character_talents[i];
-#else
-		arr.write[i] = _s_character_talents[i];
-#endif
 	}
 
 	return arr;
@@ -5810,28 +5768,16 @@ void Entity::vrpc(const StringName &p_method, VARIANT_ARG_DECLARE) {
 		rpcp(get_network_master(), false, p_method, argptr, argc);
 }
 
-#if VERSION_MAJOR < 4
 Variant Entity::_vrpc_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
-#else
-Variant Entity::_vrpc_bind(const Variant **p_args, int p_argcount, Callable::CallError &r_error) {
-#endif
 	if (p_argcount < 1) {
-#if VERSION_MAJOR < 4
 		r_error.error = Variant::CallError::CALL_ERROR_TOO_FEW_ARGUMENTS;
-#else
-		r_error.error = Callable::CallError::CALL_ERROR_TOO_FEW_ARGUMENTS;
-#endif
 
 		r_error.argument = 1;
 		return Variant();
 	}
 
 	if (p_args[0]->get_type() != Variant::STRING) {
-#if VERSION_MAJOR < 4
 		r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
-#else
-		r_error.error = Callable::CallError::CALL_ERROR_INVALID_ARGUMENT;
-#endif
 
 		r_error.argument = 0;
 		r_error.expected = Variant::STRING;
@@ -5843,12 +5789,7 @@ Variant Entity::_vrpc_bind(const Variant **p_args, int p_argcount, Callable::Cal
 	for (int i = 0; i < _s_seen_by.size(); ++i) {
 		Entity *e = _s_seen_by.get(i);
 
-#if VERSION_MAJOR < 4
 		if (unlikely(!ObjectDB::instance_validate(e))) {
-#else
-		if (unlikely(e == NULL)) {
-#endif
-
 			_s_seen_by.remove(i);
 			--i;
 			continue;
@@ -5862,11 +5803,7 @@ Variant Entity::_vrpc_bind(const Variant **p_args, int p_argcount, Callable::Cal
 
 	//call(method, &p_args[1], p_argcount - 1);
 
-#if VERSION_MAJOR < 4
 	r_error.error = Variant::CallError::CALL_OK;
-#else
-	r_error.error = Callable::CallError::CALL_OK;
-#endif
 
 	return Variant();
 }

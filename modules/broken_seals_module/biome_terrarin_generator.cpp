@@ -24,11 +24,7 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/config/engine.h"
-#else
 #include "core/engine.h"
-#endif
 
 #include "core/math/math_funcs.h"
 

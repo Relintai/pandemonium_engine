@@ -27,13 +27,8 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/object/object.h"
-#include "core/templates/vector.h"
-#else
 #include "core/object.h"
 #include "core/vector.h"
-#endif
 
 #include "../profiles/player_profile.h"
 

@@ -22,20 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-#include "core/templates/vector.h"
-#include "core/string/ustring.h"
-#else
 #include "core/resource.h"
-#include "core/vector.h"
 #include "core/ustring.h"
-#endif
+#include "core/vector.h"
 
 class Spell;
 
@@ -74,7 +63,7 @@ protected:
 
 private:
 	int _id;
-	Vector<Vector<Vector<Ref<Spell> > > > _rows;
+	Vector<Vector<Vector<Ref<Spell>>>> _rows;
 };
 
 #endif

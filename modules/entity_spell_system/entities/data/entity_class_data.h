@@ -22,20 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-#include "core/templates/vector.h"
-#include "core/string/ustring.h"
-#else
 #include "core/resource.h"
-#include "core/vector.h"
 #include "core/ustring.h"
-#endif
+#include "core/vector.h"
 
 #include "core/math/math_funcs.h"
 #include "scene/resources/texture.h"
@@ -190,18 +179,18 @@ private:
 
 	Ref<StatData> _stat_data;
 
-	Vector<Ref<EntityResource> > _entity_resources;
-	Vector<Ref<CharacterSpec> > _specs;
-	Vector<Ref<Spell> > _spells;
-	Vector<Ref<Spell> > _start_spells;
-	Vector<Ref<Spell> > _auras;
+	Vector<Ref<EntityResource>> _entity_resources;
+	Vector<Ref<CharacterSpec>> _specs;
+	Vector<Ref<Spell>> _spells;
+	Vector<Ref<Spell>> _start_spells;
+	Vector<Ref<Spell>> _auras;
 
 	Ref<VendorItemData> _vendor_item_data;
 	Ref<VendorItemData> _spell_train_data;
 	Ref<ItemContainerData> _item_container_data;
-	Vector<Ref<CraftRecipe> > _craft_recipes;
+	Vector<Ref<CraftRecipe>> _craft_recipes;
 
-	Vector<Ref<EntityAI> > _ais;
+	Vector<Ref<EntityAI>> _ais;
 };
 
 #endif

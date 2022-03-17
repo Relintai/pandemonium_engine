@@ -22,30 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #include "ess_resource_db.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/variant/variant.h"
-#include "core/templates/vector.h"
-#include "core/templates/hash_map.h"
-#include "core/string/ustring.h"
-#include "core/config/engine.h"
-#include "core/variant/array.h"
-#include "core/core_bind.h"
-#else
-#include "core/variant.h"
-#include "core/vector.h"
-#include "core/hash_map.h"
-#include "core/ustring.h"
-#include "core/engine.h"
 #include "core/array.h"
 #include "core/bind/core_bind.h"
-#endif
+#include "core/engine.h"
+#include "core/hash_map.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "core/vector.h"
 
 #include "scene/main/node.h"
 
@@ -123,26 +108,26 @@ protected:
 	static void _bind_methods();
 
 private:
-	Vector<Ref<EntityResource> > _entity_resources;
-	HashMap<int, Ref<EntityResource> > _entity_resource_map;
+	Vector<Ref<EntityResource>> _entity_resources;
+	HashMap<int, Ref<EntityResource>> _entity_resource_map;
 
-	Vector<Ref<EntitySkillData> > _entity_skills;
-	HashMap<int, Ref<EntitySkillData> > _entity_skill_map;
+	Vector<Ref<EntitySkillData>> _entity_skills;
+	HashMap<int, Ref<EntitySkillData>> _entity_skill_map;
 
-	Vector<Ref<EntityData> > _entity_datas;
-	HashMap<int, Ref<EntityData> > _entity_data_map;
+	Vector<Ref<EntityData>> _entity_datas;
+	HashMap<int, Ref<EntityData>> _entity_data_map;
 
-	Vector<Ref<Spell> > _spells;
-	HashMap<int, Ref<Spell> > _spell_map;
+	Vector<Ref<Spell>> _spells;
+	HashMap<int, Ref<Spell>> _spell_map;
 
-	Vector<Ref<CraftRecipe> > _craft_recipes;
-	HashMap<int, Ref<CraftRecipe> > _craft_recipe_map;
+	Vector<Ref<CraftRecipe>> _craft_recipes;
+	HashMap<int, Ref<CraftRecipe>> _craft_recipe_map;
 
-	Vector<Ref<ItemTemplate> > _item_templates;
-	HashMap<int, Ref<ItemTemplate> > _item_template_map;
+	Vector<Ref<ItemTemplate>> _item_templates;
+	HashMap<int, Ref<ItemTemplate>> _item_template_map;
 
-	Vector<Ref<EntitySpeciesData> > _entity_species_datas;
-	HashMap<int, Ref<EntitySpeciesData> > _entity_species_data_map;
+	Vector<Ref<EntitySpeciesData>> _entity_species_datas;
+	HashMap<int, Ref<EntitySpeciesData>> _entity_species_data_map;
 };
 
 #endif

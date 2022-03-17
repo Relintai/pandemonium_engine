@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "aura_data.h"
 
-#include "core/version.h"
-
 #include "../../data/spells/spell.h"
 #include "../../database/ess_resource_db.h"
 #include "../../singletons/ess.h"
@@ -308,11 +306,7 @@ Dictionary AuraData::_to_dict() {
 	return dict;
 }
 void AuraData::_from_dict(const Dictionary &dict) {
-#if VERSION_MAJOR > 3
-	ERR_FAIL_COND(dict.is_empty());
-#else
 	ERR_FAIL_COND(dict.empty());
-#endif
 	ERR_FAIL_COND(!ESS::get_singleton()->get_resource_db().is_valid());
 
 	_aura_id = dict.get("aura_id", 0);

@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "../../defines.h"
 
-#include spatial_h_path
+#include "scene/3d/spatial.h"
 
 class SpellCastInfo;
 

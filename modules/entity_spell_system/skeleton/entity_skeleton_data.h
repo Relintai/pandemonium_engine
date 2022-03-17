@@ -27,13 +27,10 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-#include "core/string/ustring.h"
-#else
 #include "core/resource.h"
 #include "core/ustring.h"
-#endif
+
+class CharacterSkeletonVisualEntry;
 
 class EntitySkeletonData : public Resource {
 	GDCLASS(EntitySkeletonData, Resource);

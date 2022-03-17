@@ -22,22 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-#include "core/templates/vector.h"
-#include "core/string/ustring.h"
-#include "core/math/color.h"
-#else
-#include "core/resource.h"
-#include "core/vector.h"
-#include "core/ustring.h"
 #include "core/color.h"
-#endif
+#include "core/resource.h"
+#include "core/ustring.h"
+#include "core/vector.h"
 
 #include "scene/resources/packed_scene.h"
 
@@ -134,9 +122,9 @@ private:
 	String _customizable_slots_string;
 	String _customizable_color_slots_string;
 
-	Vector<Ref<ModelVisualEntry> > _visuals;
+	Vector<Ref<ModelVisualEntry>> _visuals;
 
-	Vector<Vector<Ref<ModelVisualEntry> > > _customizable_slots;
+	Vector<Vector<Ref<ModelVisualEntry>>> _customizable_slots;
 	Vector<ColorSlotData> _customizable_color_slots;
 };
 

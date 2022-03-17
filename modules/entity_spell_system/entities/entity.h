@@ -23,19 +23,9 @@ SOFTWARE.
 */
 
 
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/object/object.h"
-#include "core/string/ustring.h"
-#include "core/templates/vector.h"
-#else
 #include "core/object.h"
 #include "core/ustring.h"
 #include "core/vector.h"
-#endif
 
 #include "core/io/networked_multiplayer_peer.h"
 
@@ -69,7 +59,7 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include spatial_h_path
+#include "scene/3d/spatial.h"
 
 class EntityData;
 class AuraData;
@@ -1090,11 +1080,7 @@ public:
 	int seen_by_gets_count();
 
 	void vrpc(const StringName &p_method, VARIANT_ARG_LIST);
-#if VERSION_MAJOR < 4
 	Variant _vrpc_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error);
-#else
-	Variant _vrpc_bind(const Variant **p_args, int p_argcount, Callable::CallError &r_error);
-#endif
 
 	Dictionary data_as_dict(String &data);
 

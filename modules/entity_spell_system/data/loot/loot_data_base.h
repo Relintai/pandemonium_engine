@@ -22,18 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/templates/vector.h"
-#include "core/variant/array.h"
-#else
 #include "core/vector.h"
 #include "core/array.h"
-#endif
 
 #include "../items/item_template.h"
 

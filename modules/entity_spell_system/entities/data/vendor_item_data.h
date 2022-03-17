@@ -22,16 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-#else
 #include "core/resource.h"
-#endif
 
 #include "vendor_item_data_entry.h"
 
@@ -55,7 +46,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	Vector<Ref<VendorItemDataEntry> > _vendor_datas;
+	Vector<Ref<VendorItemDataEntry>> _vendor_datas;
 };
 
 #endif

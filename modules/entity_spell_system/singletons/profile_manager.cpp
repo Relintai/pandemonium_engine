@@ -26,13 +26,8 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/config/engine.h"
-#include "core/config/project_settings.h"
-#else
 #include "core/engine.h"
 #include "core/project_settings.h"
-#endif
 
 #include "../defines.h"
 

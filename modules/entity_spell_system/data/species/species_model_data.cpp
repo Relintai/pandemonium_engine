@@ -22,16 +22,10 @@ SOFTWARE.
 
 #include "species_model_data.h"
 
-#include "core/version.h"
-
 #include "../../defines.h"
 #include "../../singletons/ess.h"
 
-#if VERSION_MAJOR > 3
-#include "core/string/ustring.h"
-#else
 #include "core/ustring.h"
-#endif
 
 
 int SpeciesModelData::get_id() {

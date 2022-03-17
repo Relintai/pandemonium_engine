@@ -22,16 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/templates/hash_map.h"
-#else
 #include "core/hash_map.h"
-#endif
 
 #include "ess_resource_db.h"
 
@@ -122,13 +113,13 @@ protected:
 private:
 	bool _remap_ids;
 
-	Vector<Ref<EntityResource> > _entity_resources;
-	Vector<Ref<EntitySkillData> > _entity_skills;
-	Vector<Ref<EntityData> > _entity_datas;
-	Vector<Ref<Spell> > _spells;
-	Vector<Ref<CraftRecipe> > _craft_recipes;
-	Vector<Ref<ItemTemplate> > _item_templates;
-	Vector<Ref<EntitySpeciesData> > _entity_species_datas;
+	Vector<Ref<EntityResource>> _entity_resources;
+	Vector<Ref<EntitySkillData>> _entity_skills;
+	Vector<Ref<EntityData>> _entity_datas;
+	Vector<Ref<Spell>> _spells;
+	Vector<Ref<CraftRecipe>> _craft_recipes;
+	Vector<Ref<ItemTemplate>> _item_templates;
+	Vector<Ref<EntitySpeciesData>> _entity_species_datas;
 };
 
 #endif

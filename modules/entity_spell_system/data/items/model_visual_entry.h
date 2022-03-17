@@ -22,20 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-#include "core/string/ustring.h"
-#include "core/math/color.h"
-#else
+#include "core/color.h"
 #include "core/resource.h"
 #include "core/ustring.h"
-#include "core/color.h"
-#endif
 
 #include "scene/resources/texture.h"
 
