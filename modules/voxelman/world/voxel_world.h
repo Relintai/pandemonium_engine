@@ -22,18 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/templates/hash_map.h"
-#include "core/config/engine.h"
-#else
-#include "core/hash_map.h"
 #include "core/engine.h"
-#endif
+#include "core/hash_map.h"
 
 #include "../defines.h"
 
@@ -193,20 +183,6 @@ public:
 
 	int get_channel_index_info(const ChannelTypeInfo channel_type);
 
-#if VERSION_MAJOR >= 4
-	GDVIRTUAL1(_chunk_added, Ref<VoxelChunk>);
-
-	GDVIRTUAL0(_generation_finished);
-
-	GDVIRTUAL4R(Ref<VoxelChunk>, _create_chunk, int, int, int, Ref<VoxelChunk>);
-	GDVIRTUAL1(_prepare_chunk_for_generation, Ref<VoxelChunk>);
-	GDVIRTUAL1(_generate_chunk, Ref<VoxelChunk>);
-
-	GDVIRTUAL1R(int, _get_channel_index_info, int);
-
-	GDVIRTUAL5(_set_voxel_with_tool, bool, Vector3, Vector3, int, int);
-#endif
-
 	VoxelWorld();
 	~VoxelWorld();
 
@@ -270,23 +246,23 @@ private:
 	int _chunk_spawn_range;
 
 	HashMap<IntPos, Ref<VoxelChunk>, IntPosHasher> _chunks;
-	Vector<Ref<VoxelChunk> > _chunks_vector;
+	Vector<Ref<VoxelChunk>> _chunks_vector;
 
-	Vector<Ref<WorldArea> > _world_areas;
+	Vector<Ref<WorldArea>> _world_areas;
 
-	Vector<Ref<VoxelStructure> > _voxel_structures;
+	Vector<Ref<VoxelStructure>> _voxel_structures;
 
 	NodePath _player_path;
 	Spatial *_player;
 
 	bool _use_threads;
 	int _max_concurrent_generations;
-	Vector<Ref<VoxelChunk> > _generation_queue;
-	Vector<Ref<VoxelChunk> > _generating;
+	Vector<Ref<VoxelChunk>> _generation_queue;
+	Vector<Ref<VoxelChunk>> _generating;
 	int _max_frame_chunk_build_steps;
 	int _num_frame_chunk_build_steps;
 
-	Vector<Ref<VoxelLight> > _lights;
+	Vector<Ref<VoxelLight>> _lights;
 };
 
 _FORCE_INLINE_ bool operator==(const VoxelWorld::IntPos &a, const VoxelWorld::IntPos &b) {
