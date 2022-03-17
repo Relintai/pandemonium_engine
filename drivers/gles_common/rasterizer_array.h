@@ -1,3 +1,5 @@
+#ifndef RASTERIZER_ARRAY_H
+#define RASTERIZER_ARRAY_H
 /*************************************************************************/
 /*  rasterizer_array.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RASTERIZER_ARRAY_H
-#define RASTERIZER_ARRAY_H
+
+
 
 /**
  * Fast single-threaded growable array for POD types.

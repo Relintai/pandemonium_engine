@@ -1,3 +1,5 @@
+#ifndef RESOURCE_SAVER_PNG_H
+#define RESOURCE_SAVER_PNG_H
 /*************************************************************************/
 /*  resource_saver_png.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RESOURCE_SAVER_PNG_H
-#define RESOURCE_SAVER_PNG_H
+
+
 
 #include "core/image.h"
 #include "core/io/resource_saver.h"

@@ -1,3 +1,5 @@
+#ifndef RASTERIZERSCENEGLES2_H
+#define RASTERIZERSCENEGLES2_H
 /*************************************************************************/
 /*  rasterizer_scene_gles2.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RASTERIZERSCENEGLES2_H
-#define RASTERIZERSCENEGLES2_H
+
+
 
 /* Must come before shaders or the Windows build fails... */
 #include "rasterizer_storage_gles2.h"

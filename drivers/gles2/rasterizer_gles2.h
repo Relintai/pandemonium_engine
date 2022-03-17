@@ -1,3 +1,5 @@
+#ifndef RASTERIZERGLES2_H
+#define RASTERIZERGLES2_H
 /*************************************************************************/
 /*  rasterizer_gles2.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RASTERIZERGLES2_H
-#define RASTERIZERGLES2_H
+
+
 
 #include "rasterizer_canvas_gles2.h"
 #include "rasterizer_scene_gles2.h"

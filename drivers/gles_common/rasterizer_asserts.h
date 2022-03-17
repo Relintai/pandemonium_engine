@@ -1,3 +1,5 @@
+#ifndef RASTERIZER_ASSERTS_H
+#define RASTERIZER_ASSERTS_H
 /*************************************************************************/
 /*  rasterizer_asserts.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RASTERIZER_ASSERTS_H
-#define RASTERIZER_ASSERTS_H
+
+
 
 // For flow control checking, we want an easy way to apply asserts that occur in debug development builds only.
 // This is enforced by outputting a warning which will fail CI checks if the define is set in a PR.

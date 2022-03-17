@@ -1,3 +1,5 @@
+#ifndef REGISTER_DRIVER_TYPES_H
+#define REGISTER_DRIVER_TYPES_H
 /*************************************************************************/
 /*  register_driver_types.h                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef REGISTER_DRIVER_TYPES_H
-#define REGISTER_DRIVER_TYPES_H
+
+
 
 void register_core_driver_types();
 void unregister_core_driver_types();

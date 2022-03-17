@@ -1,3 +1,5 @@
+#ifndef FILE_ACCESS_WINDOWS_H
+#define FILE_ACCESS_WINDOWS_H
 /*************************************************************************/
 /*  file_access_windows.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef FILE_ACCESS_WINDOWS_H
-#define FILE_ACCESS_WINDOWS_H
+
+
 
 #ifdef WINDOWS_ENABLED
 

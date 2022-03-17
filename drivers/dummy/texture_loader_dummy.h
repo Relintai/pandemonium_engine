@@ -1,3 +1,5 @@
+#ifndef TEXTURE_LOADER_DUMMY_H
+#define TEXTURE_LOADER_DUMMY_H
 /*************************************************************************/
 /*  texture_loader_dummy.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEXTURE_LOADER_DUMMY_H
-#define TEXTURE_LOADER_DUMMY_H
+
+
 
 #include "core/io/resource_loader.h"
 #include "scene/resources/texture.h"

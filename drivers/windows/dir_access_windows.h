@@ -1,3 +1,5 @@
+#ifndef DIR_ACCESS_WINDOWS_H
+#define DIR_ACCESS_WINDOWS_H
 /*************************************************************************/
 /*  dir_access_windows.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef DIR_ACCESS_WINDOWS_H
-#define DIR_ACCESS_WINDOWS_H
+
+
 
 #ifdef WINDOWS_ENABLED
 

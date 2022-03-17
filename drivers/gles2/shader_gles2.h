@@ -1,3 +1,5 @@
+#ifndef SHADER_GLES2_H
+#define SHADER_GLES2_H
 /*************************************************************************/
 /*  shader_gles2.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SHADER_GLES2_H
-#define SHADER_GLES2_H
+
+
 
 // This must come first to avoid windows.h mess
 #include "platform_config.h"

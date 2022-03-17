@@ -1,3 +1,5 @@
+#ifndef MIDI_DRIVER_ALSAMIDI_H
+#define MIDI_DRIVER_ALSAMIDI_H
 /*************************************************************************/
 /*  midi_driver_alsamidi.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MIDI_DRIVER_ALSAMIDI_H
-#define MIDI_DRIVER_ALSAMIDI_H
+
+
 
 #ifdef ALSAMIDI_ENABLED
 

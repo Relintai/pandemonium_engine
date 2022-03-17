@@ -1,3 +1,5 @@
+#ifndef MIDI_DRIVER_WINMIDI_H
+#define MIDI_DRIVER_WINMIDI_H
 /*************************************************************************/
 /*  midi_driver_winmidi.h                                                */
 /*************************************************************************/
@@ -30,8 +32,8 @@
 
 #ifdef WINMIDI_ENABLED
 
-#ifndef MIDI_DRIVER_WINMIDI_H
-#define MIDI_DRIVER_WINMIDI_H
+
+
 
 #include "core/os/midi_driver.h"
 #include "core/vector.h"

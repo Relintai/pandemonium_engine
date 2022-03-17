@@ -1,3 +1,5 @@
+#ifndef RASTERIZER_CANVAS_BATCHER_H
+#define RASTERIZER_CANVAS_BATCHER_H
 /*************************************************************************/
 /*  rasterizer_canvas_batcher.h                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RASTERIZER_CANVAS_BATCHER_H
-#define RASTERIZER_CANVAS_BATCHER_H
+
+
 
 #include "core/os/os.h"
 #include "core/project_settings.h"

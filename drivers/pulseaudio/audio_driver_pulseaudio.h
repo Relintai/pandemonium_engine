@@ -1,3 +1,5 @@
+#ifndef AUDIO_DRIVER_PULSEAUDIO_H
+#define AUDIO_DRIVER_PULSEAUDIO_H
 /*************************************************************************/
 /*  audio_driver_pulseaudio.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIO_DRIVER_PULSEAUDIO_H
-#define AUDIO_DRIVER_PULSEAUDIO_H
+
+
 
 #ifdef PULSEAUDIO_ENABLED
 

@@ -1,3 +1,5 @@
+#ifndef SHADERCOMPILERGLES2_H
+#define SHADERCOMPILERGLES2_H
 /*************************************************************************/
 /*  shader_compiler_gles2.h                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SHADERCOMPILERGLES2_H
-#define SHADERCOMPILERGLES2_H
+
+
 
 #include "core/pair.h"
 #include "core/string_builder.h"

@@ -1,3 +1,5 @@
+#ifndef RASTERIZERCANVASGLES2_H
+#define RASTERIZERCANVASGLES2_H
 /*************************************************************************/
 /*  rasterizer_canvas_gles2.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RASTERIZERCANVASGLES2_H
-#define RASTERIZERCANVASGLES2_H
+
+
 
 #include "drivers/gles_common/rasterizer_canvas_batcher.h"
 #include "rasterizer_canvas_base_gles2.h"

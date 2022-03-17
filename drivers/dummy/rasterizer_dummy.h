@@ -1,3 +1,5 @@
+#ifndef RASTERIZER_DUMMY_H
+#define RASTERIZER_DUMMY_H
 /*************************************************************************/
 /*  rasterizer_dummy.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RASTERIZER_DUMMY_H
-#define RASTERIZER_DUMMY_H
+
+
 
 #include "core/math/camera_matrix.h"
 #include "core/self_list.h"

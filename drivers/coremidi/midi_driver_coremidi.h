@@ -1,3 +1,5 @@
+#ifndef MIDI_DRIVER_COREMIDI_H
+#define MIDI_DRIVER_COREMIDI_H
 /*************************************************************************/
 /*  midi_driver_coremidi.h                                               */
 /*************************************************************************/
@@ -30,8 +32,8 @@
 
 #ifdef COREMIDI_ENABLED
 
-#ifndef MIDI_DRIVER_COREMIDI_H
-#define MIDI_DRIVER_COREMIDI_H
+
+
 
 #include "core/os/midi_driver.h"
 #include "core/vector.h"

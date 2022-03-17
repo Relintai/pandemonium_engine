@@ -1,3 +1,5 @@
+#ifndef PNG_DRIVER_COMMON_H
+#define PNG_DRIVER_COMMON_H
 /*************************************************************************/
 /*  png_driver_common.h                                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PNG_DRIVER_COMMON_H
-#define PNG_DRIVER_COMMON_H
+
+
 
 #include "core/image.h"
 #include "core/pool_vector.h"

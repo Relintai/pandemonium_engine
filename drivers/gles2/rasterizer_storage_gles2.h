@@ -1,3 +1,5 @@
+#ifndef RASTERIZERSTORAGEGLES2_H
+#define RASTERIZERSTORAGEGLES2_H
 /*************************************************************************/
 /*  rasterizer_storage_gles2.h                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RASTERIZERSTORAGEGLES2_H
-#define RASTERIZERSTORAGEGLES2_H
+
+
 
 #include "core/pool_vector.h"
 #include "core/self_list.h"

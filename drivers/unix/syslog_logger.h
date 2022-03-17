@@ -1,3 +1,5 @@
+#ifndef SYSLOG_LOGGER_H
+#define SYSLOG_LOGGER_H
 /*************************************************************************/
 /*  syslog_logger.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SYSLOG_LOGGER_H
-#define SYSLOG_LOGGER_H
+
+
 
 #ifdef UNIX_ENABLED
 
