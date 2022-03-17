@@ -97,6 +97,8 @@ Ref<ActionBarEntry> ActionBarProfile::get_action_bar(int index) {
 }
 
 void ActionBarProfile::remove_action_bar(const int index) {
+	ERR_FAIL_INDEX(index, _action_bars.size());
+
 	_action_bars.get(index)->set_owner(NULL);
 
 	_action_bars.remove(index);
