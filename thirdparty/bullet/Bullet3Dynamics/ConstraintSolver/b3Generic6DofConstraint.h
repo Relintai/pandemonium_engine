@@ -1,3 +1,5 @@
+#ifndef B3_GENERIC_6DOF_CONSTRAINT_H
+#define B3_GENERIC_6DOF_CONSTRAINT_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2006 Erwin Coumans  https://bulletphysics.org
@@ -23,8 +25,8 @@ email: projectileman@yahoo.com
 http://gimpact.sf.net
 */
 
-#ifndef B3_GENERIC_6DOF_CONSTRAINT_H
-#define B3_GENERIC_6DOF_CONSTRAINT_H
+
+
 
 #include "Bullet3Common/b3Vector3.h"
 #include "b3JacobianEntry.h"

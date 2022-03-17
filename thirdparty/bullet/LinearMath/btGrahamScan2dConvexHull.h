@@ -1,3 +1,5 @@
+#ifndef GRAHAM_SCAN_2D_CONVEX_HULL_H
+#define GRAHAM_SCAN_2D_CONVEX_HULL_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2011 Advanced Micro Devices, Inc.  http://bulletphysics.org
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef GRAHAM_SCAN_2D_CONVEX_HULL_H
-#define GRAHAM_SCAN_2D_CONVEX_HULL_H
+
+
 
 #include "btVector3.h"
 #include "btAlignedObjectArray.h"

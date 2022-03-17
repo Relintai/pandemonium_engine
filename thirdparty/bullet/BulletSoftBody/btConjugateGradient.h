@@ -1,3 +1,5 @@
+#ifndef BT_CONJUGATE_GRADIENT_H
+#define BT_CONJUGATE_GRADIENT_H
 /*
  Written by Xuchen Han <xuchenhan2015@u.northwestern.edu>
  
@@ -13,8 +15,8 @@
  3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef BT_CONJUGATE_GRADIENT_H
-#define BT_CONJUGATE_GRADIENT_H
+
+
 #include "btKrylovSolver.h"
 template <class MatrixX>
 class btConjugateGradient : public btKrylovSolver<MatrixX>

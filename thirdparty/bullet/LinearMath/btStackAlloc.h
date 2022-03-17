@@ -1,3 +1,5 @@
+#ifndef BT_STACK_ALLOC
+#define BT_STACK_ALLOC
 /*
 Copyright (c) 2003-2006 Gino van den Bergen / Erwin Coumans  https://bulletphysics.org
 
@@ -17,8 +19,8 @@ StackAlloc extracted from GJK-EPA collision solver by Nathanael Presson
 Nov.2006
 */
 
-#ifndef BT_STACK_ALLOC
-#define BT_STACK_ALLOC
+
+
 
 #include "btScalar.h"  //for btAssert
 #include "btAlignedAllocator.h"

@@ -1,3 +1,5 @@
+#ifndef B3_TRIANGLE_INDEX_VERTEX_ARRAY_H
+#define B3_TRIANGLE_INDEX_VERTEX_ARRAY_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2009 Erwin Coumans  http://bulletphysics.org
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef B3_TRIANGLE_INDEX_VERTEX_ARRAY_H
-#define B3_TRIANGLE_INDEX_VERTEX_ARRAY_H
+
+
 
 #include "b3StridingMeshInterface.h"
 #include "Bullet3Common/b3AlignedObjectArray.h"

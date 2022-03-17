@@ -1,3 +1,5 @@
+#ifndef __ADL_SOLVER_H
+#define __ADL_SOLVER_H
 /*
 Copyright (c) 2012 Advanced Micro Devices, Inc.  
 
@@ -13,8 +15,8 @@ subject to the following restrictions:
 */
 //Originally written by Takahiro Harada
 
-#ifndef __ADL_SOLVER_H
-#define __ADL_SOLVER_H
+
+
 
 #include "Bullet3OpenCL/ParallelPrimitives/b3OpenCLArray.h"
 #include "b3GpuConstraint4.h"

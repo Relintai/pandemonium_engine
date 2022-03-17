@@ -1,3 +1,5 @@
+#ifndef B3_TYPED_CONSTRAINT_H
+#define B3_TYPED_CONSTRAINT_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2010 Erwin Coumans  https://bulletphysics.org
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef B3_TYPED_CONSTRAINT_H
-#define B3_TYPED_CONSTRAINT_H
+
+
 
 #include "Bullet3Common/b3Scalar.h"
 #include "b3SolverConstraint.h"

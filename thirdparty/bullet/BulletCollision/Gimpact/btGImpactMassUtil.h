@@ -1,3 +1,5 @@
+#ifndef GIMPACT_MASS_UTIL_H
+#define GIMPACT_MASS_UTIL_H
 /*! \file btGImpactMassUtil.h
 \author Francisco Leon Najera
 */
@@ -21,8 +23,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef GIMPACT_MASS_UTIL_H
-#define GIMPACT_MASS_UTIL_H
+
+
 
 #include "LinearMath/btTransform.h"
 

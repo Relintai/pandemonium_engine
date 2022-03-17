@@ -1,3 +1,5 @@
+#ifndef BT_POLYHEDRAL_CONTACT_CLIPPING_H
+#define BT_POLYHEDRAL_CONTACT_CLIPPING_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2011 Advanced Micro Devices, Inc.  http://bulletphysics.org
@@ -15,8 +17,8 @@ subject to the following restrictions:
 
 ///This file was written by Erwin Coumans
 
-#ifndef BT_POLYHEDRAL_CONTACT_CLIPPING_H
-#define BT_POLYHEDRAL_CONTACT_CLIPPING_H
+
+
 
 #include "LinearMath/btAlignedObjectArray.h"
 #include "LinearMath/btTransform.h"

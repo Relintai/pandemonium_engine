@@ -1,3 +1,5 @@
+#ifndef _BT_POLYHEDRAL_FEATURES_H
+#define _BT_POLYHEDRAL_FEATURES_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2011 Advanced Micro Devices, Inc.  http://bulletphysics.org
@@ -15,8 +17,8 @@ subject to the following restrictions:
 
 ///This file was written by Erwin Coumans
 
-#ifndef _BT_POLYHEDRAL_FEATURES_H
-#define _BT_POLYHEDRAL_FEATURES_H
+
+
 
 #include "LinearMath/btTransform.h"
 #include "LinearMath/btAlignedObjectArray.h"

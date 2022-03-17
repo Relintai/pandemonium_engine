@@ -1,3 +1,5 @@
+#ifndef B3_CONTACT4_H
+#define B3_CONTACT4_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2013 Erwin Coumans  http://bulletphysics.org
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef B3_CONTACT4_H
-#define B3_CONTACT4_H
+
+
 
 #include "Bullet3Common/b3Vector3.h"
 #include "Bullet3Collision/NarrowPhaseCollision/shared/b3Contact4Data.h"

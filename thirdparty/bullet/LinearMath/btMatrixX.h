@@ -1,3 +1,5 @@
+#ifndef BT_MATRIX_X_H
+#define BT_MATRIX_X_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2013 Erwin Coumans  http://bulletphysics.org
@@ -14,8 +16,8 @@ subject to the following restrictions:
 */
 ///original version written by Erwin Coumans, October 2013
 
-#ifndef BT_MATRIX_X_H
-#define BT_MATRIX_X_H
+
+
 
 #include "LinearMath/btQuickprof.h"
 #include "LinearMath/btAlignedObjectArray.h"

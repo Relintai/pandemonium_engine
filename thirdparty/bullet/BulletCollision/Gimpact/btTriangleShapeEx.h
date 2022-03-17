@@ -1,3 +1,5 @@
+#ifndef GIMPACT_TRIANGLE_SHAPE_EX_H
+#define GIMPACT_TRIANGLE_SHAPE_EX_H
 /*! \file btGImpactShape.h
 \author Francisco Leon Najera
 */
@@ -21,8 +23,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef GIMPACT_TRIANGLE_SHAPE_EX_H
-#define GIMPACT_TRIANGLE_SHAPE_EX_H
+
+
 
 #include "BulletCollision/CollisionShapes/btCollisionShape.h"
 #include "BulletCollision/CollisionShapes/btTriangleShape.h"

@@ -1,3 +1,5 @@
+#ifndef BT_NEOHOOKEAN_H
+#define BT_NEOHOOKEAN_H
 /*
 Written by Xuchen Han <xuchenhan2015@u.northwestern.edu>
 
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_NEOHOOKEAN_H
-#define BT_NEOHOOKEAN_H
+
+
 
 #include "btDeformableLagrangianForce.h"
 #include "LinearMath/btQuickprof.h"

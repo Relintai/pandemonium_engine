@@ -1,3 +1,5 @@
+#ifndef BT_GEAR_CONSTRAINT_H
+#define BT_GEAR_CONSTRAINT_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2012 Advanced Micro Devices, Inc.  http://bulletphysics.org
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_GEAR_CONSTRAINT_H
-#define BT_GEAR_CONSTRAINT_H
+
+
 
 #include "BulletDynamics/ConstraintSolver/btTypedConstraint.h"
 

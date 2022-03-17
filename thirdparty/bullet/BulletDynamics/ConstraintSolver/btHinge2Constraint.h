@@ -1,3 +1,5 @@
+#ifndef BT_HINGE2_CONSTRAINT_H
+#define BT_HINGE2_CONSTRAINT_H
 /*
 Bullet Continuous Collision Detection and Physics Library, http://bulletphysics.org
 Copyright (C) 2006, 2007 Sony Computer Entertainment Inc. 
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_HINGE2_CONSTRAINT_H
-#define BT_HINGE2_CONSTRAINT_H
+
+
 
 #include "LinearMath/btVector3.h"
 #include "btTypedConstraint.h"

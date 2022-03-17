@@ -1,3 +1,5 @@
+#ifndef _BT_POOL_ALLOCATOR_H
+#define _BT_POOL_ALLOCATOR_H
 /*
 Copyright (c) 2003-2013 Gino van den Bergen / Erwin Coumans  http://bulletphysics.org
 
@@ -12,8 +14,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef _BT_POOL_ALLOCATOR_H
-#define _BT_POOL_ALLOCATOR_H
+
+
 
 #include "b3Scalar.h"
 #include "b3AlignedAllocator.h"

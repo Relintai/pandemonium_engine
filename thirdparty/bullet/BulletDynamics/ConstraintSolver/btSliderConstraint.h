@@ -1,3 +1,5 @@
+#ifndef BT_SLIDER_CONSTRAINT_H
+#define BT_SLIDER_CONSTRAINT_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2006 Erwin Coumans  https://bulletphysics.org
@@ -22,8 +24,8 @@ TODO:
  - add conversion for ODE constraint solver
 */
 
-#ifndef BT_SLIDER_CONSTRAINT_H
-#define BT_SLIDER_CONSTRAINT_H
+
+
 
 #include "LinearMath/btScalar.h"  //for BT_USE_DOUBLE_PRECISION
 

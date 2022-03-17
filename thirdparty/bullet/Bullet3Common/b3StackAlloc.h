@@ -1,3 +1,5 @@
+#ifndef B3_STACK_ALLOC
+#define B3_STACK_ALLOC
 /*
 Copyright (c) 2003-2013 Gino van den Bergen / Erwin Coumans  http://bulletphysics.org
 
@@ -17,8 +19,8 @@ StackAlloc extracted from GJK-EPA collision solver by Nathanael Presson
 Nov.2006
 */
 
-#ifndef B3_STACK_ALLOC
-#define B3_STACK_ALLOC
+
+
 
 #include "b3Scalar.h"  //for b3Assert
 #include "b3AlignedAllocator.h"

@@ -1,3 +1,5 @@
+#ifndef BT_GJK_EPA_PENETATION_CONVEX_COLLISION_H
+#define BT_GJK_EPA_PENETATION_CONVEX_COLLISION_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2014 Erwin Coumans http://bulletphysics.org
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_GJK_EPA_PENETATION_CONVEX_COLLISION_H
-#define BT_GJK_EPA_PENETATION_CONVEX_COLLISION_H
+
+
 
 #include "LinearMath/btTransform.h"  // Note that btVector3 might be double precision...
 #include "btGjkEpa3.h"

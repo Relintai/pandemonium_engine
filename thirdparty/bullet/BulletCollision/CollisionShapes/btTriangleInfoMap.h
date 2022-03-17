@@ -1,3 +1,5 @@
+#ifndef _BT_TRIANGLE_INFO_MAP_H
+#define _BT_TRIANGLE_INFO_MAP_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2010 Erwin Coumans  http://bulletphysics.org
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef _BT_TRIANGLE_INFO_MAP_H
-#define _BT_TRIANGLE_INFO_MAP_H
+
+
 
 #include "LinearMath/btHashMap.h"
 #include "LinearMath/btSerializer.h"

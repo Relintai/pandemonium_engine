@@ -1,3 +1,5 @@
+#ifndef _BT_SOFT_BODY_INTERNALS_H
+#define _BT_SOFT_BODY_INTERNALS_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2006 Erwin Coumans  https://bulletphysics.org
@@ -14,8 +16,8 @@ subject to the following restrictions:
 */
 ///btSoftBody implementation by Nathanael Presson
 
-#ifndef _BT_SOFT_BODY_INTERNALS_H
-#define _BT_SOFT_BODY_INTERNALS_H
+
+
 
 #include "btSoftBody.h"
 #include "LinearMath/btQuickprof.h"

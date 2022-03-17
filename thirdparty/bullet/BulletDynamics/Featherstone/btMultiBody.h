@@ -1,3 +1,5 @@
+#ifndef BT_MULTIBODY_H
+#define BT_MULTIBODY_H
 /*
  * PURPOSE:
  *   Class representing an articulated rigid body. Stores the body's
@@ -21,8 +23,8 @@
  
  */
 
-#ifndef BT_MULTIBODY_H
-#define BT_MULTIBODY_H
+
+
 
 #include "LinearMath/btScalar.h"
 #include "LinearMath/btVector3.h"

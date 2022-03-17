@@ -1,3 +1,5 @@
+#ifndef DeformableBodyInplaceSolverIslandCallback_h
+#define DeformableBodyInplaceSolverIslandCallback_h
 //
 //  DeformableBodyInplaceSolverIslandCallback.h
 //  BulletSoftBody
@@ -5,8 +7,8 @@
 //  Created by Xuchen Han on 12/16/19.
 //
 
-#ifndef DeformableBodyInplaceSolverIslandCallback_h
-#define DeformableBodyInplaceSolverIslandCallback_h
+
+
 
 struct DeformableBodyInplaceSolverIslandCallback : public MultiBodyInplaceSolverIslandCallback
 {

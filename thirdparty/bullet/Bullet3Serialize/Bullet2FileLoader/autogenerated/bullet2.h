@@ -1,3 +1,5 @@
+#ifndef __BULLET2_H__
+#define __BULLET2_H__
 /* Copyright (C) 2011 Erwin Coumans & Charlie C
 *
 * This software is provided 'as-is', without any express or implied
@@ -17,8 +19,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 // Auto generated from Bullet/Extras/HeaderGenerator/bulletGenerate.py
-#ifndef __BULLET2_H__
-#define __BULLET2_H__
+
+
 namespace Bullet3SerializeBullet2
 {
 // put an empty struct in the case

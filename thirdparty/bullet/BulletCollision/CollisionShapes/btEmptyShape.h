@@ -1,3 +1,5 @@
+#ifndef BT_EMPTY_SHAPE_H
+#define BT_EMPTY_SHAPE_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2009 Erwin Coumans  http://bulletphysics.org
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_EMPTY_SHAPE_H
-#define BT_EMPTY_SHAPE_H
+
+
 
 #include "btConcaveShape.h"
 

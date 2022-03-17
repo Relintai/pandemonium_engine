@@ -1,3 +1,5 @@
+#ifndef B3_GPU_SOLVER_BODY_H
+#define B3_GPU_SOLVER_BODY_H
 /*
 Copyright (c) 2013 Advanced Micro Devices, Inc.  
 
@@ -13,8 +15,8 @@ subject to the following restrictions:
 */
 //Originally written by Erwin Coumans
 
-#ifndef B3_GPU_SOLVER_BODY_H
-#define B3_GPU_SOLVER_BODY_H
+
+
 
 #include "Bullet3Common/b3Vector3.h"
 #include "Bullet3Common/b3Matrix3x3.h"

@@ -1,3 +1,5 @@
+#ifndef B3_RIGID_BODY_CL
+#define B3_RIGID_BODY_CL
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2013 Erwin Coumans  http://bulletphysics.org
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef B3_RIGID_BODY_CL
-#define B3_RIGID_BODY_CL
+
+
 
 #include "Bullet3Common/b3Scalar.h"
 #include "Bullet3Common/b3Matrix3x3.h"

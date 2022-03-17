@@ -1,3 +1,5 @@
+#ifndef B3_CPU_RIGIDBODY_PIPELINE_H
+#define B3_CPU_RIGIDBODY_PIPELINE_H
 /*
 Copyright (c) 2013 Advanced Micro Devices, Inc.  
 
@@ -13,8 +15,8 @@ subject to the following restrictions:
 */
 //Originally written by Erwin Coumans
 
-#ifndef B3_CPU_RIGIDBODY_PIPELINE_H
-#define B3_CPU_RIGIDBODY_PIPELINE_H
+
+
 
 #include "Bullet3Common/b3AlignedObjectArray.h"
 #include "Bullet3Collision/NarrowPhaseCollision/b3RaycastInfo.h"

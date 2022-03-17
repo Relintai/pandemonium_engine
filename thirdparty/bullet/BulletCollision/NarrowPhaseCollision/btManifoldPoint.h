@@ -1,3 +1,5 @@
+#ifndef BT_MANIFOLD_CONTACT_POINT_H
+#define BT_MANIFOLD_CONTACT_POINT_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2006 Erwin Coumans  https://bulletphysics.org
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_MANIFOLD_CONTACT_POINT_H
-#define BT_MANIFOLD_CONTACT_POINT_H
+
+
 
 #include "LinearMath/btVector3.h"
 #include "LinearMath/btTransformUtil.h"

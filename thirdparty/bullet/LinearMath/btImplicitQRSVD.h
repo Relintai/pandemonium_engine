@@ -1,3 +1,5 @@
+#ifndef btImplicitQRSVD_h
+#define btImplicitQRSVD_h
 /**
  Bullet Continuous Collision Detection and Physics Library
  Copyright (c) 2019 Google Inc. http://bulletphysics.org
@@ -39,8 +41,8 @@
  SOFTWARE.
 **/
 
-#ifndef btImplicitQRSVD_h
-#define btImplicitQRSVD_h
+
+
 #include <limits>
 #include "btMatrix3x3.h"
 class btMatrix2x2

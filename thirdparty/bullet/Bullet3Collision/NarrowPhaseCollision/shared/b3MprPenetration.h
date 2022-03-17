@@ -1,3 +1,5 @@
+#ifndef B3_MPR_PENETRATION_H
+#define B3_MPR_PENETRATION_H
 
 /***
  * ---------------------------------
@@ -15,8 +17,8 @@
  *  See the License for more information.
  */
 
-#ifndef B3_MPR_PENETRATION_H
-#define B3_MPR_PENETRATION_H
+
+
 
 #include "Bullet3Common/shared/b3PlatformDefinitions.h"
 #include "Bullet3Common/shared/b3Float4.h"

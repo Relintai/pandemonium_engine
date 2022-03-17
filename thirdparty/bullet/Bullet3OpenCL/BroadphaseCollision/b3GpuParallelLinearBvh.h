@@ -1,3 +1,5 @@
+#ifndef B3_GPU_PARALLEL_LINEAR_BVH_H
+#define B3_GPU_PARALLEL_LINEAR_BVH_H
 /*
 This software is provided 'as-is', without any express or implied warranty.
 In no event will the authors be held liable for any damages arising from the use of this software.
@@ -11,8 +13,8 @@ subject to the following restrictions:
 */
 //Initial Author Jackson Lee, 2014
 
-#ifndef B3_GPU_PARALLEL_LINEAR_BVH_H
-#define B3_GPU_PARALLEL_LINEAR_BVH_H
+
+
 
 //#include "Bullet3Collision/BroadPhaseCollision/shared/b3Aabb.h"
 #include "Bullet3OpenCL/BroadphaseCollision/b3SapAabb.h"

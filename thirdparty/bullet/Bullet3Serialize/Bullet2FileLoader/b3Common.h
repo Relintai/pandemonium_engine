@@ -1,3 +1,5 @@
+#ifndef __BCOMMON_H__
+#define __BCOMMON_H__
 /*
 bParse
 Copyright (c) 2006-2009 Charlie C & Erwin Coumans  http://gamekit.googlecode.com
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef __BCOMMON_H__
-#define __BCOMMON_H__
+
+
 
 #include <assert.h>
 //#include "bLog.h"

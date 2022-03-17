@@ -1,3 +1,5 @@
+#ifndef BT_NUMERICS_LEMKE_ALGORITHM_H_
+#define BT_NUMERICS_LEMKE_ALGORITHM_H_
 /* Copyright (C) 2004-2013 MBSim Development Team
 
 Code was converted for the Bullet Continuous Collision Detection and Physics Library
@@ -19,8 +21,8 @@ subject to the following restrictions:
 //Math library was replaced from fmatvec to a the file src/LinearMath/btMatrixX.h
 //STL/std::vector replaced by btAlignedObjectArray
 
-#ifndef BT_NUMERICS_LEMKE_ALGORITHM_H_
-#define BT_NUMERICS_LEMKE_ALGORITHM_H_
+
+
 
 #include "LinearMath/btMatrixX.h"
 

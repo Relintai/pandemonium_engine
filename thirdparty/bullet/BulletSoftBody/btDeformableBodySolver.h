@@ -1,3 +1,5 @@
+#ifndef BT_DEFORMABLE_BODY_SOLVERS_H
+#define BT_DEFORMABLE_BODY_SOLVERS_H
 /*
  Written by Xuchen Han <xuchenhan2015@u.northwestern.edu>
  
@@ -13,8 +15,8 @@
  3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef BT_DEFORMABLE_BODY_SOLVERS_H
-#define BT_DEFORMABLE_BODY_SOLVERS_H
+
+
 
 #include "btSoftBodySolvers.h"
 #include "btDeformableBackwardEulerObjective.h"

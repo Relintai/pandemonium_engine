@@ -1,3 +1,5 @@
+#ifndef BT_MULTIBODY_FIXED_CONSTRAINT_H
+#define BT_MULTIBODY_FIXED_CONSTRAINT_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2013 Erwin Coumans  http://bulletphysics.org
@@ -15,8 +17,8 @@ subject to the following restrictions:
 
 ///This file was written by Erwin Coumans
 
-#ifndef BT_MULTIBODY_FIXED_CONSTRAINT_H
-#define BT_MULTIBODY_FIXED_CONSTRAINT_H
+
+
 
 #include "btMultiBodyConstraint.h"
 

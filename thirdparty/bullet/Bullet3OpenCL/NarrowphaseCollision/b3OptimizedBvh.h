@@ -1,3 +1,5 @@
+#ifndef B3_OPTIMIZED_BVH_H
+#define B3_OPTIMIZED_BVH_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2009 Erwin Coumans  http://bulletphysics.org
@@ -15,8 +17,8 @@ subject to the following restrictions:
 
 ///Contains contributions from Disney Studio's
 
-#ifndef B3_OPTIMIZED_BVH_H
-#define B3_OPTIMIZED_BVH_H
+
+
 
 #include "b3QuantizedBvh.h"
 

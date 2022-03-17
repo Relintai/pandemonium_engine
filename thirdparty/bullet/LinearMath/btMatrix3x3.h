@@ -1,3 +1,5 @@
+#ifndef BT_MATRIX3x3_H
+#define BT_MATRIX3x3_H
 /*
 Copyright (c) 2003-2006 Gino van den Bergen / Erwin Coumans  https://bulletphysics.org
 
@@ -12,8 +14,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_MATRIX3x3_H
-#define BT_MATRIX3x3_H
+
+
 
 #include "btVector3.h"
 #include "btQuaternion.h"

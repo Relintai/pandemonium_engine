@@ -1,3 +1,5 @@
+#ifndef BT_GJK_EPA3_H
+#define BT_GJK_EPA3_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2014 Erwin Coumans  https://bulletphysics.org
@@ -23,8 +25,8 @@ misrepresented as being the original software.
 Initial GJK-EPA collision solver by Nathanael Presson, 2008
 Improvements and refactoring by Erwin Coumans, 2008-2014
 */
-#ifndef BT_GJK_EPA3_H
-#define BT_GJK_EPA3_H
+
+
 
 #include "LinearMath/btTransform.h"
 #include "btGjkCollisionDescription.h"

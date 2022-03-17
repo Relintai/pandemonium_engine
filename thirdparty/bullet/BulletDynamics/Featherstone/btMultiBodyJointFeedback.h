@@ -1,3 +1,5 @@
+#ifndef BT_MULTIBODY_JOINT_FEEDBACK_H
+#define BT_MULTIBODY_JOINT_FEEDBACK_H
 /*
 Copyright (c) 2015 Google Inc.
 
@@ -12,8 +14,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_MULTIBODY_JOINT_FEEDBACK_H
-#define BT_MULTIBODY_JOINT_FEEDBACK_H
+
+
 
 #include "LinearMath/btSpatialAlgebra.h"
 

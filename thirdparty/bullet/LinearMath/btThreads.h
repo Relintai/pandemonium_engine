@@ -1,3 +1,5 @@
+#ifndef BT_THREADS_H
+#define BT_THREADS_H
 /*
 Copyright (c) 2003-2014 Erwin Coumans  http://bullet.googlecode.com
 
@@ -12,8 +14,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_THREADS_H
-#define BT_THREADS_H
+
+
 
 #include "btScalar.h"  // has definitions like SIMD_FORCE_INLINE
 

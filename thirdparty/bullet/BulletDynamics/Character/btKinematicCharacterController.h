@@ -1,3 +1,5 @@
+#ifndef BT_KINEMATIC_CHARACTER_CONTROLLER_H
+#define BT_KINEMATIC_CHARACTER_CONTROLLER_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2008 Erwin Coumans  http://bulletphysics.com
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_KINEMATIC_CHARACTER_CONTROLLER_H
-#define BT_KINEMATIC_CHARACTER_CONTROLLER_H
+
+
 
 #include "LinearMath/btVector3.h"
 

@@ -1,3 +1,5 @@
+#ifndef BT_GENERIC_POOL_ALLOCATOR_H
+#define BT_GENERIC_POOL_ALLOCATOR_H
 /*! \file btGenericPoolAllocator.h
 \author Francisco Leon Najera. email projectileman@yahoo.com
 
@@ -18,8 +20,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_GENERIC_POOL_ALLOCATOR_H
-#define BT_GENERIC_POOL_ALLOCATOR_H
+
+
 
 #include <limits.h>
 #include <stdio.h>

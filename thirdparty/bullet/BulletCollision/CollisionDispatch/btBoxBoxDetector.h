@@ -1,3 +1,5 @@
+#ifndef BT_BOX_BOX_DETECTOR_H
+#define BT_BOX_BOX_DETECTOR_H
 /*
  * Box-Box collision detection re-distributed under the ZLib license with permission from Russell L. Smith
  * Original version is from Open Dynamics Engine, Copyright (C) 2001,2002 Russell L. Smith.
@@ -16,8 +18,8 @@ subject to the following restrictions:
 2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef BT_BOX_BOX_DETECTOR_H
-#define BT_BOX_BOX_DETECTOR_H
+
+
 
 class btBoxShape;
 #include "BulletCollision/NarrowPhaseCollision/btDiscreteCollisionDetectorInterface.h"

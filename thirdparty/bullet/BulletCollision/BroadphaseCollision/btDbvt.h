@@ -1,3 +1,5 @@
+#ifndef BT_DYNAMIC_BOUNDING_VOLUME_TREE_H
+#define BT_DYNAMIC_BOUNDING_VOLUME_TREE_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2007 Erwin Coumans  https://bulletphysics.org
@@ -14,8 +16,8 @@ subject to the following restrictions:
 */
 ///btDbvt implementation by Nathanael Presson
 
-#ifndef BT_DYNAMIC_BOUNDING_VOLUME_TREE_H
-#define BT_DYNAMIC_BOUNDING_VOLUME_TREE_H
+
+
 
 #include "LinearMath/btAlignedObjectArray.h"
 #include "LinearMath/btVector3.h"

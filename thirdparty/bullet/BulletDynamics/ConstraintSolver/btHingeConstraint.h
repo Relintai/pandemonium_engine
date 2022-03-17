@@ -1,3 +1,5 @@
+#ifndef BT_HINGECONSTRAINT_H
+#define BT_HINGECONSTRAINT_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2006 Erwin Coumans  https://bulletphysics.org
@@ -15,8 +17,8 @@ subject to the following restrictions:
 
 /* Hinge Constraint by Dirk Gregorius. Limits added by Marcus Hennix at Starbreeze Studios */
 
-#ifndef BT_HINGECONSTRAINT_H
-#define BT_HINGECONSTRAINT_H
+
+
 
 #define _BT_USE_CENTER_LIMIT_ 1
 

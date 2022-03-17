@@ -1,3 +1,5 @@
+#ifndef BT_GENERIC_6DOF_CONSTRAINT2_H
+#define BT_GENERIC_6DOF_CONSTRAINT2_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2006 Erwin Coumans  https://bulletphysics.org
@@ -37,8 +39,8 @@ email: projectileman@yahoo.com
 http://gimpact.sf.net
 */
 
-#ifndef BT_GENERIC_6DOF_CONSTRAINT2_H
-#define BT_GENERIC_6DOF_CONSTRAINT2_H
+
+
 
 #include "LinearMath/btVector3.h"
 #include "btJacobianEntry.h"

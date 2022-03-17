@@ -1,3 +1,5 @@
+#ifndef _BT_CONVEX_UTILITY_H
+#define _BT_CONVEX_UTILITY_H
 
 /*
 Copyright (c) 2012 Advanced Micro Devices, Inc.  
@@ -14,8 +16,8 @@ subject to the following restrictions:
 */
 //Originally written by Erwin Coumans
 
-#ifndef _BT_CONVEX_UTILITY_H
-#define _BT_CONVEX_UTILITY_H
+
+
 
 #include "Bullet3Common/b3AlignedObjectArray.h"
 #include "Bullet3Common/b3Transform.h"

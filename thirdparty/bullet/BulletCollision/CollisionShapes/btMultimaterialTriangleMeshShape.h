@@ -1,3 +1,5 @@
+#ifndef BT_BVH_TRIANGLE_MATERIAL_MESH_SHAPE_H
+#define BT_BVH_TRIANGLE_MATERIAL_MESH_SHAPE_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2009 Erwin Coumans  http://bulletphysics.org
@@ -15,8 +17,8 @@ subject to the following restrictions:
 
 /// This file was created by Alex Silverman
 
-#ifndef BT_BVH_TRIANGLE_MATERIAL_MESH_SHAPE_H
-#define BT_BVH_TRIANGLE_MATERIAL_MESH_SHAPE_H
+
+
 
 #include "btBvhTriangleMeshShape.h"
 #include "btMaterial.h"

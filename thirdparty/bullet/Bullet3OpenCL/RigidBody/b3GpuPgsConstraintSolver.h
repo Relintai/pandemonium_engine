@@ -1,3 +1,5 @@
+#ifndef B3_GPU_PGS_CONSTRAINT_SOLVER_H
+#define B3_GPU_PGS_CONSTRAINT_SOLVER_H
 /*
 Copyright (c) 2013 Advanced Micro Devices, Inc.  
 
@@ -13,8 +15,8 @@ subject to the following restrictions:
 */
 //Originally written by Erwin Coumans
 
-#ifndef B3_GPU_PGS_CONSTRAINT_SOLVER_H
-#define B3_GPU_PGS_CONSTRAINT_SOLVER_H
+
+
 
 struct b3Contact4;
 struct b3ContactPoint;

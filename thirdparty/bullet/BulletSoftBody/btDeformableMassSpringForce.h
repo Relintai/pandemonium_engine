@@ -1,3 +1,5 @@
+#ifndef BT_MASS_SPRING_H
+#define BT_MASS_SPRING_H
 /*
  Written by Xuchen Han <xuchenhan2015@u.northwestern.edu>
  
@@ -13,8 +15,8 @@
  3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef BT_MASS_SPRING_H
-#define BT_MASS_SPRING_H
+
+
 
 #include "btDeformableLagrangianForce.h"
 

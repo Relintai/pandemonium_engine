@@ -1,3 +1,5 @@
+#ifndef BT_MPR_PENETRATION_H
+#define BT_MPR_PENETRATION_H
 
 /***
  * ---------------------------------
@@ -18,8 +20,8 @@
 
 ///2014 Oct, Erwin Coumans, Use templates to avoid void* casts
 
-#ifndef BT_MPR_PENETRATION_H
-#define BT_MPR_PENETRATION_H
+
+
 
 #define BT_DEBUG_MPR1
 

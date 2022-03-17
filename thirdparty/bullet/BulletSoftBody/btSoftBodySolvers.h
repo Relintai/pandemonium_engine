@@ -1,3 +1,5 @@
+#ifndef BT_SOFT_BODY_SOLVERS_H
+#define BT_SOFT_BODY_SOLVERS_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2006 Erwin Coumans  https://bulletphysics.org
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_SOFT_BODY_SOLVERS_H
-#define BT_SOFT_BODY_SOLVERS_H
+
+
 
 #include "BulletCollision/CollisionShapes/btTriangleIndexVertexArray.h"
 

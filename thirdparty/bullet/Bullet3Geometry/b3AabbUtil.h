@@ -1,3 +1,5 @@
+#ifndef B3_AABB_UTIL2
+#define B3_AABB_UTIL2
 /*
 Copyright (c) 2003-2006 Gino van den Bergen / Erwin Coumans  https://bulletphysics.org
 
@@ -12,8 +14,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef B3_AABB_UTIL2
-#define B3_AABB_UTIL2
+
+
 
 #include "Bullet3Common/b3Transform.h"
 #include "Bullet3Common/b3Vector3.h"

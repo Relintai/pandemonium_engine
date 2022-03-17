@@ -1,3 +1,5 @@
+#ifndef B3_GPU_SOLVER_CONSTRAINT_H
+#define B3_GPU_SOLVER_CONSTRAINT_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2013 Erwin Coumans http://github.com/erwincoumans/bullet3
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef B3_GPU_SOLVER_CONSTRAINT_H
-#define B3_GPU_SOLVER_CONSTRAINT_H
+
+
 
 #include "Bullet3Common/b3Vector3.h"
 #include "Bullet3Common/b3Matrix3x3.h"

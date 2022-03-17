@@ -1,3 +1,5 @@
+#ifndef BT_THREAD_SUPPORT_INTERFACE_H
+#define BT_THREAD_SUPPORT_INTERFACE_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2018 Erwin Coumans  http://bulletphysics.com
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_THREAD_SUPPORT_INTERFACE_H
-#define BT_THREAD_SUPPORT_INTERFACE_H
+
+
 
 class btCriticalSection
 {

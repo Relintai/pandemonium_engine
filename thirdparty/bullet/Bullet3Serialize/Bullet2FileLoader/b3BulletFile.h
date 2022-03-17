@@ -1,3 +1,5 @@
+#ifndef B3_BULLET_FILE_H
+#define B3_BULLET_FILE_H
 /*
 bParse
 Copyright (c) 2006-2010 Charlie C & Erwin Coumans  http://gamekit.googlecode.com
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef B3_BULLET_FILE_H
-#define B3_BULLET_FILE_H
+
+
 
 #include "b3File.h"
 #include "Bullet3Common/b3AlignedObjectArray.h"

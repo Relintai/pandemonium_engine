@@ -1,3 +1,5 @@
+#ifndef __BDNA_H__
+#define __BDNA_H__
 /*
 bParse
 Copyright (c) 2006-2009 Charlie C & Erwin Coumans  http://gamekit.googlecode.com
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef __BDNA_H__
-#define __BDNA_H__
+
+
 
 #include "b3Common.h"
 

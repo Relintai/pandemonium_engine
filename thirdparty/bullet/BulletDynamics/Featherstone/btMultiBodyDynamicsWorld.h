@@ -1,3 +1,5 @@
+#ifndef BT_MULTIBODY_DYNAMICS_WORLD_H
+#define BT_MULTIBODY_DYNAMICS_WORLD_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2013 Erwin Coumans  http://bulletphysics.org
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_MULTIBODY_DYNAMICS_WORLD_H
-#define BT_MULTIBODY_DYNAMICS_WORLD_H
+
+
 
 #include "BulletDynamics/Dynamics/btDiscreteDynamicsWorld.h"
 #include "BulletDynamics/Featherstone/btMultiBodyInplaceSolverIslandCallback.h"

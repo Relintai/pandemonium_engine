@@ -1,3 +1,5 @@
+#ifndef BT_DEFORMABLE_CONTACT_CONSTRAINT_H
+#define BT_DEFORMABLE_CONTACT_CONSTRAINT_H
 /*
  Written by Xuchen Han <xuchenhan2015@u.northwestern.edu>
  
@@ -13,8 +15,8 @@
  3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef BT_DEFORMABLE_CONTACT_CONSTRAINT_H
-#define BT_DEFORMABLE_CONTACT_CONSTRAINT_H
+
+
 #include "btSoftBody.h"
 
 // btDeformableContactConstraint is an abstract class specifying the method that each type of contact constraint needs to implement

@@ -1,3 +1,5 @@
+#ifndef __BCHUNK_H__
+#define __BCHUNK_H__
 /*
 bParse
 Copyright (c) 2006-2009 Charlie C & Erwin Coumans  http://gamekit.googlecode.com
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef __BCHUNK_H__
-#define __BCHUNK_H__
+
+
 
 #if defined(_WIN32) && !defined(__MINGW32__)
 #define b3Long64 __int64

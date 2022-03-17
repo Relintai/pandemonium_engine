@@ -1,3 +1,5 @@
+#ifndef BT_SCALAR_H
+#define BT_SCALAR_H
 /*
 Copyright (c) 2003-2009 Erwin Coumans  http://bullet.googlecode.com
 
@@ -12,8 +14,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_SCALAR_H
-#define BT_SCALAR_H
+
+
 
 #ifdef BT_MANAGED_CODE
 //Aligned data types not supported in managed code

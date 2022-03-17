@@ -1,3 +1,5 @@
+#ifndef btModifiedGramSchmidt_h
+#define btModifiedGramSchmidt_h
 //
 //  btModifiedGramSchmidt.h
 //  LinearMath
@@ -5,8 +7,8 @@
 //  Created by Xuchen Han on 4/4/20.
 //
 
-#ifndef btModifiedGramSchmidt_h
-#define btModifiedGramSchmidt_h
+
+
 
 #include "btReducedVector.h"
 #include "btAlignedObjectArray.h"

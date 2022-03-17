@@ -1,3 +1,5 @@
+#ifndef BT_COROTATED_H
+#define BT_COROTATED_H
 /*
  Written by Xuchen Han <xuchenhan2015@u.northwestern.edu>
  
@@ -13,8 +15,8 @@
  3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef BT_COROTATED_H
-#define BT_COROTATED_H
+
+
 
 #include "btDeformableLagrangianForce.h"
 #include "LinearMath/btPolarDecomposition.h"

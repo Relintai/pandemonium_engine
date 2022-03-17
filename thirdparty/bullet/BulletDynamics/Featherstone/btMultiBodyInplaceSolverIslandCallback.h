@@ -1,3 +1,5 @@
+#ifndef BT_MULTIBODY_INPLACE_SOLVER_ISLAND_CALLBACK_H
+#define BT_MULTIBODY_INPLACE_SOLVER_ISLAND_CALLBACK_H
 /*
  Bullet Continuous Collision Detection and Physics Library
  Copyright (c) 2019 Google Inc. http://bulletphysics.org
@@ -11,8 +13,8 @@
  3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef BT_MULTIBODY_INPLACE_SOLVER_ISLAND_CALLBACK_H
-#define BT_MULTIBODY_INPLACE_SOLVER_ISLAND_CALLBACK_H
+
+
 
 #include "BulletDynamics/Featherstone/btMultiBodyConstraintSolver.h"
 #include "BulletCollision/CollisionDispatch/btSimulationIslandManager.h"

@@ -1,3 +1,5 @@
+#ifndef B3_OPENCL_INCLUDE_H
+#define B3_OPENCL_INCLUDE_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2011 Advanced Micro Devices, Inc.  http://bulletphysics.org
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef B3_OPENCL_INCLUDE_H
-#define B3_OPENCL_INCLUDE_H
+
+
 
 #ifdef B3_USE_CLEW
 #include "clew/clew.h"

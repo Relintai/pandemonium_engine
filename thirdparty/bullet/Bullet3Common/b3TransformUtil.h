@@ -1,3 +1,5 @@
+#ifndef B3_TRANSFORM_UTIL_H
+#define B3_TRANSFORM_UTIL_H
 /*
 Copyright (c) 2003-2013 Gino van den Bergen / Erwin Coumans  http://bulletphysics.org
 
@@ -12,8 +14,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef B3_TRANSFORM_UTIL_H
-#define B3_TRANSFORM_UTIL_H
+
+
 
 #include "b3Transform.h"
 #define B3_ANGULAR_MOTION_THRESHOLD b3Scalar(0.5) * B3_HALF_PI

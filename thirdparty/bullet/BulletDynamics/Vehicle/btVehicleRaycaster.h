@@ -1,3 +1,5 @@
+#ifndef BT_VEHICLE_RAYCASTER_H
+#define BT_VEHICLE_RAYCASTER_H
 /*
  * Copyright (c) 2005 Erwin Coumans http://bulletphysics.org
  *
@@ -8,8 +10,8 @@
  * of this software for any purpose.  
  * It is provided "as is" without express or implied warranty.
 */
-#ifndef BT_VEHICLE_RAYCASTER_H
-#define BT_VEHICLE_RAYCASTER_H
+
+
 
 #include "LinearMath/btVector3.h"
 

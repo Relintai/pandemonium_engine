@@ -1,9 +1,11 @@
+#ifndef POLY_34
+#define POLY_34
 // poly34.h : solution of cubic and quartic equation
 // (c) Khashin S.I. http://math.ivanovo.ac.ru/dalgebra/Khashin/index.html
 // khash2 (at) gmail.com
 
-#ifndef POLY_34
-#define POLY_34
+
+
 #include "LinearMath/btScalar.h"
 // x - array of size 2
 // return 2: 2 real roots x[0], x[1]

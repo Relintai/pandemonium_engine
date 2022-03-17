@@ -1,3 +1,5 @@
+#ifndef GJK_COLLISION_DESCRIPTION_H
+#define GJK_COLLISION_DESCRIPTION_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2014 Erwin Coumans http://bulletphysics.org
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef GJK_COLLISION_DESCRIPTION_H
-#define GJK_COLLISION_DESCRIPTION_H
+
+
 
 #include "LinearMath/btVector3.h"
 

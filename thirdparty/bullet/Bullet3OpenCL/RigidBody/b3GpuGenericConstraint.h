@@ -1,3 +1,5 @@
+#ifndef B3_GPU_GENERIC_CONSTRAINT_H
+#define B3_GPU_GENERIC_CONSTRAINT_H
 /*
 Copyright (c) 2013 Advanced Micro Devices, Inc.  
 
@@ -13,8 +15,8 @@ subject to the following restrictions:
 */
 //Originally written by Erwin Coumans
 
-#ifndef B3_GPU_GENERIC_CONSTRAINT_H
-#define B3_GPU_GENERIC_CONSTRAINT_H
+
+
 
 #include "Bullet3Common/b3Quaternion.h"
 struct b3RigidBodyData;

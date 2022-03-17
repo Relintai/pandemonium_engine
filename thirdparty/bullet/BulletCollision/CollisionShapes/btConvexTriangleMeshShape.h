@@ -1,3 +1,5 @@
+#ifndef BT_CONVEX_TRIANGLEMESH_SHAPE_H
+#define BT_CONVEX_TRIANGLEMESH_SHAPE_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2009 Erwin Coumans  http://bulletphysics.org
@@ -12,8 +14,8 @@ subject to the following restrictions:
 2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef BT_CONVEX_TRIANGLEMESH_SHAPE_H
-#define BT_CONVEX_TRIANGLEMESH_SHAPE_H
+
+
 
 #include "btPolyhedralConvexShape.h"
 #include "BulletCollision/BroadphaseCollision/btBroadphaseProxy.h"  // for the types

@@ -1,3 +1,5 @@
+#ifndef BT_MULTIMATERIAL_TRIANGLE_INDEX_VERTEX_ARRAY_H
+#define BT_MULTIMATERIAL_TRIANGLE_INDEX_VERTEX_ARRAY_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2009 Erwin Coumans  http://bulletphysics.org
@@ -15,8 +17,8 @@ subject to the following restrictions:
 
 ///This file was created by Alex Silverman
 
-#ifndef BT_MULTIMATERIAL_TRIANGLE_INDEX_VERTEX_ARRAY_H
-#define BT_MULTIMATERIAL_TRIANGLE_INDEX_VERTEX_ARRAY_H
+
+
 
 #include "btTriangleIndexVertexArray.h"
 

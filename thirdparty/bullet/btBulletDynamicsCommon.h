@@ -1,3 +1,5 @@
+#ifndef BULLET_DYNAMICS_COMMON_H
+#define BULLET_DYNAMICS_COMMON_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2006 Erwin Coumans  https://bulletphysics.org
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BULLET_DYNAMICS_COMMON_H
-#define BULLET_DYNAMICS_COMMON_H
+
+
 
 ///Common headerfile includes for Bullet Dynamics, including Collision Detection
 #include "btBulletCollisionCommon.h"

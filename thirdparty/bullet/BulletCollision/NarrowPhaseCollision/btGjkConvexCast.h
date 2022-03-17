@@ -1,3 +1,5 @@
+#ifndef BT_GJK_CONVEX_CAST_H
+#define BT_GJK_CONVEX_CAST_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2006 Erwin Coumans  https://bulletphysics.org
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_GJK_CONVEX_CAST_H
-#define BT_GJK_CONVEX_CAST_H
+
+
 
 #include "BulletCollision/CollisionShapes/btCollisionMargin.h"
 

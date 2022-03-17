@@ -1,3 +1,5 @@
+#ifndef B3_GJK_EPA2_H
+#define B3_GJK_EPA2_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2008 Erwin Coumans  https://bulletphysics.org
@@ -22,8 +24,8 @@ misrepresented as being the original software.
 /*
 GJK-EPA collision solver by Nathanael Presson, 2008
 */
-#ifndef B3_GJK_EPA2_H
-#define B3_GJK_EPA2_H
+
+
 
 #include "Bullet3Common/b3AlignedObjectArray.h"
 #include "Bullet3Common/b3Transform.h"

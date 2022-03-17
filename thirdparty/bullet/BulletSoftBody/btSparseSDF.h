@@ -1,3 +1,5 @@
+#ifndef BT_SPARSE_SDF_H
+#define BT_SPARSE_SDF_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2006 Erwin Coumans  https://bulletphysics.org
@@ -14,8 +16,8 @@ subject to the following restrictions:
 */
 ///btSparseSdf implementation by Nathanael Presson
 
-#ifndef BT_SPARSE_SDF_H
-#define BT_SPARSE_SDF_H
+
+
 
 #include "BulletCollision/CollisionDispatch/btCollisionObject.h"
 #include "BulletCollision/NarrowPhaseCollision/btGjkEpa2.h"

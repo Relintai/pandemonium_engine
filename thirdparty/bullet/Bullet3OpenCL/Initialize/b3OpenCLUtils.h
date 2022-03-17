@@ -1,3 +1,5 @@
+#ifndef B3_OPENCL_UTILS_H
+#define B3_OPENCL_UTILS_H
 /*
 Bullet Continuous Collision Detection and Physics Library, http://bulletphysics.org
 Copyright (C) 2006 - 2011 Sony Computer Entertainment Inc. 
@@ -16,8 +18,8 @@ subject to the following restrictions:
 //original author: Roman Ponomarev
 //cleanup by Erwin Coumans
 
-#ifndef B3_OPENCL_UTILS_H
-#define B3_OPENCL_UTILS_H
+
+
 
 #include "b3OpenCLInclude.h"
 

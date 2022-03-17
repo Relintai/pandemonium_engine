@@ -1,3 +1,5 @@
+#ifndef BT_GJP_EPA_PENETRATION_DEPTH_H
+#define BT_GJP_EPA_PENETRATION_DEPTH_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2006 Erwin Coumans  https://bulletphysics.org
@@ -14,8 +16,8 @@ subject to the following restrictions:
 2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef BT_GJP_EPA_PENETRATION_DEPTH_H
-#define BT_GJP_EPA_PENETRATION_DEPTH_H
+
+
 
 #include "btConvexPenetrationDepthSolver.h"
 

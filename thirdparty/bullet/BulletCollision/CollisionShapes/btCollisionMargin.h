@@ -1,3 +1,5 @@
+#ifndef BT_COLLISION_MARGIN_H
+#define BT_COLLISION_MARGIN_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2009 Erwin Coumans  http://bulletphysics.org
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_COLLISION_MARGIN_H
-#define BT_COLLISION_MARGIN_H
+
+
 
 ///The CONVEX_DISTANCE_MARGIN is a default collision margin for convex collision shapes derived from btConvexInternalShape.
 ///This collision margin is used by Gjk and some other algorithms

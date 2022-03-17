@@ -1,3 +1,5 @@
+#ifndef BT_CD_HULL_H
+#define BT_CD_HULL_H
 
 /*
 Stan Melax Convex Hull Computation
@@ -16,8 +18,8 @@ subject to the following restrictions:
 
 ///includes modifications/improvements by John Ratcliff, see BringOutYourDead below.
 
-#ifndef BT_CD_HULL_H
-#define BT_CD_HULL_H
+
+
 
 #include "btVector3.h"
 #include "btAlignedObjectArray.h"

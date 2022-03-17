@@ -1,3 +1,5 @@
+#ifndef BT_SHAPE_HULL_H
+#define BT_SHAPE_HULL_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2009 Erwin Coumans  http://bulletphysics.org
@@ -15,8 +17,8 @@ subject to the following restrictions:
 
 ///btShapeHull implemented by John McCutchan.
 
-#ifndef BT_SHAPE_HULL_H
-#define BT_SHAPE_HULL_H
+
+
 
 #include "LinearMath/btAlignedObjectArray.h"
 #include "BulletCollision/CollisionShapes/btConvexShape.h"

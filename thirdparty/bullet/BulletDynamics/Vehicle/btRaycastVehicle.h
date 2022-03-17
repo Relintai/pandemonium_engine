@@ -1,3 +1,5 @@
+#ifndef BT_RAYCASTVEHICLE_H
+#define BT_RAYCASTVEHICLE_H
 /*
  * Copyright (c) 2005 Erwin Coumans https://bulletphysics.org
  *
@@ -8,8 +10,8 @@
  * of this software for any purpose.  
  * It is provided "as is" without express or implied warranty.
 */
-#ifndef BT_RAYCASTVEHICLE_H
-#define BT_RAYCASTVEHICLE_H
+
+
 
 #include "BulletDynamics/Dynamics/btRigidBody.h"
 #include "BulletDynamics/ConstraintSolver/btTypedConstraint.h"

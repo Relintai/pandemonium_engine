@@ -1,3 +1,5 @@
+#ifndef BT_GHOST_OBJECT_H
+#define BT_GHOST_OBJECT_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2008 Erwin Coumans  http://bulletphysics.com
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_GHOST_OBJECT_H
-#define BT_GHOST_OBJECT_H
+
+
 
 #include "btCollisionObject.h"
 #include "BulletCollision/BroadphaseCollision/btOverlappingPairCallback.h"

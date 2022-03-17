@@ -1,3 +1,5 @@
+#ifndef BT_COLLISION_CREATE_FUNC
+#define BT_COLLISION_CREATE_FUNC
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2006 Erwin Coumans  https://bulletphysics.org
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_COLLISION_CREATE_FUNC
-#define BT_COLLISION_CREATE_FUNC
+
+
 
 #include "LinearMath/btAlignedObjectArray.h"
 class btCollisionAlgorithm;

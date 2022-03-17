@@ -1,3 +1,5 @@
+#ifndef BT_COLLISION_WORLD_H
+#define BT_COLLISION_WORLD_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2013 Erwin Coumans  http://bulletphysics.org
@@ -66,8 +68,8 @@ subject to the following restrictions:
  * 
  */
 
-#ifndef BT_COLLISION_WORLD_H
-#define BT_COLLISION_WORLD_H
+
+
 
 class btCollisionShape;
 class btConvexShape;

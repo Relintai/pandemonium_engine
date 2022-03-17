@@ -1,3 +1,5 @@
+#ifndef BT_TRANSFORM_H
+#define BT_TRANSFORM_H
 /*
 Copyright (c) 2003-2006 Gino van den Bergen / Erwin Coumans  https://bulletphysics.org
 
@@ -12,8 +14,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_TRANSFORM_H
-#define BT_TRANSFORM_H
+
+
 
 #include "btMatrix3x3.h"
 

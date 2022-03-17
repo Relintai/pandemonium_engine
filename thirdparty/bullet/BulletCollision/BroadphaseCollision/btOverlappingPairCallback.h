@@ -1,3 +1,5 @@
+#ifndef OVERLAPPING_PAIR_CALLBACK_H
+#define OVERLAPPING_PAIR_CALLBACK_H
 
 /*
 Bullet Continuous Collision Detection and Physics Library
@@ -14,8 +16,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef OVERLAPPING_PAIR_CALLBACK_H
-#define OVERLAPPING_PAIR_CALLBACK_H
+
+
 
 class btDispatcher;
 struct btBroadphasePair;

@@ -1,3 +1,5 @@
+#ifndef BT_MATERIAL_H
+#define BT_MATERIAL_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2009 Erwin Coumans  http://bulletphysics.org
@@ -15,8 +17,8 @@ subject to the following restrictions:
 
 /// This file was created by Alex Silverman
 
-#ifndef BT_MATERIAL_H
-#define BT_MATERIAL_H
+
+
 
 // Material class to be used by btMultimaterialTriangleMeshShape to store triangle properties
 class btMaterial

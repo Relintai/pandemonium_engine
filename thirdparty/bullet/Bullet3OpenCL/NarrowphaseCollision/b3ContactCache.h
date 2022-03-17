@@ -1,3 +1,5 @@
+#ifndef B3_CONTACT_CACHE_H
+#define B3_CONTACT_CACHE_H
 
 /*
 Bullet Continuous Collision Detection and Physics Library
@@ -14,8 +16,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef B3_CONTACT_CACHE_H
-#define B3_CONTACT_CACHE_H
+
+
 
 #include "Bullet3Common/b3Vector3.h"
 #include "Bullet3Common/b3Transform.h"

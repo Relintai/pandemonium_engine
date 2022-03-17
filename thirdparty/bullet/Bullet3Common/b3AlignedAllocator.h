@@ -1,3 +1,5 @@
+#ifndef B3_ALIGNED_ALLOCATOR
+#define B3_ALIGNED_ALLOCATOR
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2013 Erwin Coumans  http://bulletphysics.org
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef B3_ALIGNED_ALLOCATOR
-#define B3_ALIGNED_ALLOCATOR
+
+
 
 ///we probably replace this with our own aligned memory allocator
 ///so we replace _aligned_malloc and _aligned_free with our own

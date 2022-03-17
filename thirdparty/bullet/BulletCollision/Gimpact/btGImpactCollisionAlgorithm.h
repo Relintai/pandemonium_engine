@@ -1,3 +1,5 @@
+#ifndef BT_GIMPACT_BVH_CONCAVE_COLLISION_ALGORITHM_H
+#define BT_GIMPACT_BVH_CONCAVE_COLLISION_ALGORITHM_H
 /*! \file btGImpactShape.h
 \author Francisco Leon Najera
 */
@@ -21,8 +23,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_GIMPACT_BVH_CONCAVE_COLLISION_ALGORITHM_H
-#define BT_GIMPACT_BVH_CONCAVE_COLLISION_ALGORITHM_H
+
+
 
 #include "BulletCollision/CollisionDispatch/btActivatingCollisionAlgorithm.h"
 #include "BulletCollision/BroadphaseCollision/btDispatcher.h"

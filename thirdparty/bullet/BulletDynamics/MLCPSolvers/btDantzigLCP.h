@@ -1,3 +1,5 @@
+#ifndef _BT_LCP_H_
+#define _BT_LCP_H_
 /*************************************************************************
  *                                                                       *
  * Open Dynamics Engine, Copyright (C) 2001,2002 Russell L. Smith.       *
@@ -41,8 +43,8 @@ to be implemented. the first `nub' variables are assumed to have findex < 0.
 
 */
 
-#ifndef _BT_LCP_H_
-#define _BT_LCP_H_
+
+
 
 #include <stdlib.h>
 #include <stdio.h>

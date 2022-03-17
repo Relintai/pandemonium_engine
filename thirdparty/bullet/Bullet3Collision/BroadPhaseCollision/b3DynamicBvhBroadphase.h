@@ -1,3 +1,5 @@
+#ifndef B3_DBVT_BROADPHASE_H
+#define B3_DBVT_BROADPHASE_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2013 Erwin Coumans  http://bulletphysics.org
@@ -14,8 +16,8 @@ subject to the following restrictions:
 */
 
 ///b3DynamicBvhBroadphase implementation by Nathanael Presson
-#ifndef B3_DBVT_BROADPHASE_H
-#define B3_DBVT_BROADPHASE_H
+
+
 
 #include "Bullet3Collision/BroadPhaseCollision/b3DynamicBvh.h"
 #include "Bullet3Collision/BroadPhaseCollision/b3OverlappingPairCache.h"

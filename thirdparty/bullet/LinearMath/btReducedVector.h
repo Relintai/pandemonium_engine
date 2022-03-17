@@ -1,11 +1,13 @@
+#ifndef btReducedVectors_h
+#define btReducedVectors_h
 //
 //  btReducedVectors.h
 //  BulletLinearMath
 //
 //  Created by Xuchen Han on 4/4/20.
 //
-#ifndef btReducedVectors_h
-#define btReducedVectors_h
+
+
 #include "btVector3.h"
 #include "btMatrix3x3.h"
 #include "btAlignedObjectArray.h"

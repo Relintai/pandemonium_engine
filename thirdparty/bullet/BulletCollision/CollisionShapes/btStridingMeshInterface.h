@@ -1,3 +1,5 @@
+#ifndef BT_STRIDING_MESHINTERFACE_H
+#define BT_STRIDING_MESHINTERFACE_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2009 Erwin Coumans  http://bulletphysics.org
@@ -13,8 +15,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_STRIDING_MESHINTERFACE_H
-#define BT_STRIDING_MESHINTERFACE_H
+
+
 
 #include "LinearMath/btVector3.h"
 #include "btTriangleCallback.h"

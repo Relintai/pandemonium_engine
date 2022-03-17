@@ -1,3 +1,5 @@
+#ifndef __B_DEFINES_H__
+#define __B_DEFINES_H__
 /* Copyright (C) 2006-2009 Charlie C & Erwin Coumans http://gamekit.googlecode.com
 *
 * This software is provided 'as-is', without any express or implied
@@ -16,8 +18,8 @@
 *    misrepresented as being the original software.
 * 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef __B_DEFINES_H__
-#define __B_DEFINES_H__
+
+
 
 // MISC defines, see BKE_global.h, BKE_utildefines.h
 #define B3_SIZEOFBLENDERHEADER 12

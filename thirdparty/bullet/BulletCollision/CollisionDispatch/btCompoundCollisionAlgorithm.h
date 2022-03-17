@@ -1,3 +1,5 @@
+#ifndef BT_COMPOUND_COLLISION_ALGORITHM_H
+#define BT_COMPOUND_COLLISION_ALGORITHM_H
 /*
 Bullet Continuous Collision Detection and Physics Library
 Copyright (c) 2003-2006 Erwin Coumans  https://bulletphysics.org
@@ -14,8 +16,8 @@ subject to the following restrictions:
 
 */
 
-#ifndef BT_COMPOUND_COLLISION_ALGORITHM_H
-#define BT_COMPOUND_COLLISION_ALGORITHM_H
+
+
 
 #include "btActivatingCollisionAlgorithm.h"
 #include "BulletCollision/BroadphaseCollision/btDispatcher.h"

@@ -1,3 +1,5 @@
+#ifndef BT_SPATIAL_ALGEBRA_H
+#define BT_SPATIAL_ALGEBRA_H
 /*
 Copyright (c) 2003-2015 Erwin Coumans, Jakub Stepien
 
@@ -15,8 +17,8 @@ subject to the following restrictions:
 ///These spatial algebra classes are used for btMultiBody,
 ///see BulletDynamics/Featherstone
 
-#ifndef BT_SPATIAL_ALGEBRA_H
-#define BT_SPATIAL_ALGEBRA_H
+
+
 
 #include "btMatrix3x3.h"
 

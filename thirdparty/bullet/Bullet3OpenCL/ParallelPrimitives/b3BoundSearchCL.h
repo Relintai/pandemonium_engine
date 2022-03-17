@@ -1,3 +1,5 @@
+#ifndef B3_BOUNDSEARCH_H
+#define B3_BOUNDSEARCH_H
 /*
 Copyright (c) 2012 Advanced Micro Devices, Inc.  
 
@@ -13,8 +15,8 @@ subject to the following restrictions:
 */
 //Originally written by Takahiro Harada
 
-#ifndef B3_BOUNDSEARCH_H
-#define B3_BOUNDSEARCH_H
+
+
 
 #pragma once
 
