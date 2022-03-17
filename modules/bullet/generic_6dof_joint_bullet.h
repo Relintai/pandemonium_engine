@@ -1,3 +1,5 @@
+#ifndef GENERIC_6DOF_JOINT_BULLET_H
+#define GENERIC_6DOF_JOINT_BULLET_H
 /*************************************************************************/
 /*  generic_6dof_joint_bullet.h                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GENERIC_6DOF_JOINT_BULLET_H
-#define GENERIC_6DOF_JOINT_BULLET_H
+
+
 
 #include "joint_bullet.h"
 

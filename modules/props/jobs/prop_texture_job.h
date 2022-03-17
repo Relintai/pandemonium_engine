@@ -1,3 +1,5 @@
+#ifndef PROP_TEXTURE_JOB
+#define PROP_TEXTURE_JOB
 /*
 Copyright (c) 2019-2022 Péter Magyar
 
@@ -20,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef PROP_TEXTURE_JOB
-#define PROP_TEXTURE_JOB
+
+
 
 #include "scene/resources/texture.h"
 

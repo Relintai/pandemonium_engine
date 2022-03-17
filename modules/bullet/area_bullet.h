@@ -1,3 +1,5 @@
+#ifndef AREABULLET_H
+#define AREABULLET_H
 /*************************************************************************/
 /*  area_bullet.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AREABULLET_H
-#define AREABULLET_H
+
+
 
 #include "collision_object_bullet.h"
 #include "core/vector.h"

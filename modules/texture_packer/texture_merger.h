@@ -1,3 +1,5 @@
+#ifndef TEXTURE_MERGER_H
+#define TEXTURE_MERGER_H
 /*
 Copyright (c) 2019-2022 Péter Magyar
 
@@ -20,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef TEXTURE_MERGER_H
-#define TEXTURE_MERGER_H
+
+
 
 #include "core/version.h"
 

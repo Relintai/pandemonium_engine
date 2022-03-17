@@ -1,3 +1,5 @@
+#ifndef MODULE_SPATIAL_EDITOR_GIZMOS_H
+#define MODULE_SPATIAL_EDITOR_GIZMOS_H
 /*************************************************************************/
 /*  spatial_editor_gizmos.h                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MODULE_SPATIAL_EDITOR_GIZMOS_H
-#define MODULE_SPATIAL_EDITOR_GIZMOS_H
+
+
 
 #include "editor/plugins/spatial_editor_plugin.h"
 #include "scene/3d/camera.h"

@@ -1,3 +1,5 @@
+#ifndef SOFT_BODY_BULLET_H
+#define SOFT_BODY_BULLET_H
 /*************************************************************************/
 /*  soft_body_bullet.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SOFT_BODY_BULLET_H
-#define SOFT_BODY_BULLET_H
+
+
 
 #include "collision_object_bullet.h"
 #include "scene/resources/material.h" // TODO remove this please

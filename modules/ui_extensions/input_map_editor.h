@@ -1,3 +1,5 @@
+#ifndef INPUT_MAP_EDITOR_H
+#define INPUT_MAP_EDITOR_H
 /*************************************************************************/
 /*  originally project_settings_editor.h                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef INPUT_MAP_EDITOR_H
-#define INPUT_MAP_EDITOR_H
+
+
 
 #include "bs_input_event_key.h"
 #include "scene/gui/dialogs.h"

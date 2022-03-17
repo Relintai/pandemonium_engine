@@ -1,3 +1,5 @@
+#ifndef GODOT_JSON_RPC_H
+#define GODOT_JSON_RPC_H
 /*************************************************************************/
 /*  jsonrpc.h                                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GODOT_JSON_RPC_H
-#define GODOT_JSON_RPC_H
+
+
 
 #include "core/object.h"
 #include "core/variant.h"

@@ -1,3 +1,5 @@
+#ifndef XATLAS_MU_H
+#define XATLAS_MU_H
 /*
 MIT License
 
@@ -32,8 +34,8 @@ Copyright NVIDIA Corporation 2006 -- Ignacio Castano <icastano@nvidia.com>
 //This is a modified version of godot's xatlas library!
 
 #pragma once
-#ifndef XATLAS_MU_H
-#define XATLAS_MU_H
+
+
 #include <stddef.h>
 #include <stdint.h>
 

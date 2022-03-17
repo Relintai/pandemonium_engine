@@ -1,3 +1,5 @@
+#ifndef RESOURCEIMPORTEROGGVORBIS_H
+#define RESOURCEIMPORTEROGGVORBIS_H
 /*************************************************************************/
 /*  resource_importer_ogg_vorbis.h                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RESOURCEIMPORTEROGGVORBIS_H
-#define RESOURCEIMPORTEROGGVORBIS_H
+
+
 
 #include "audio_stream_ogg_vorbis.h"
 #include "core/io/resource_importer.h"

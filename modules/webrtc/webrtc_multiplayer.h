@@ -1,3 +1,5 @@
+#ifndef WEBRTC_MULTIPLAYER_H
+#define WEBRTC_MULTIPLAYER_H
 /*************************************************************************/
 /*  webrtc_multiplayer.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef WEBRTC_MULTIPLAYER_H
-#define WEBRTC_MULTIPLAYER_H
+
+
 
 #include "core/io/networked_multiplayer_peer.h"
 #include "webrtc_peer_connection.h"

@@ -1,3 +1,5 @@
+#ifndef GLTF_DOCUMENT_H
+#define GLTF_DOCUMENT_H
 /*************************************************************************/
 /*  gltf_document.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GLTF_DOCUMENT_H
-#define GLTF_DOCUMENT_H
+
+
 
 #include "scene/3d/bone_attachment.h"
 #include "scene/3d/camera.h"

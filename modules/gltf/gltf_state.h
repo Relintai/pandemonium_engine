@@ -1,3 +1,5 @@
+#ifndef GLTF_STATE_H
+#define GLTF_STATE_H
 /*************************************************************************/
 /*  gltf_state.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GLTF_STATE_H
-#define GLTF_STATE_H
+
+
 
 #include "core/map.h"
 #include "core/resource.h"

@@ -1,3 +1,5 @@
+#ifndef PROFILE_MANAGER_H
+#define PROFILE_MANAGER_H
 /*
 Copyright (c) 2019-2022 Péter Magyar
 
@@ -20,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef PROFILE_MANAGER_H
-#define PROFILE_MANAGER_H
+
+
 
 #include "core/version.h"
 

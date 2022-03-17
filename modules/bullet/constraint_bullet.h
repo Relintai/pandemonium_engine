@@ -1,3 +1,5 @@
+#ifndef CONSTRAINT_BULLET_H
+#define CONSTRAINT_BULLET_H
 /*************************************************************************/
 /*  constraint_bullet.h                                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CONSTRAINT_BULLET_H
-#define CONSTRAINT_BULLET_H
+
+
 
 #include "bullet_utilities.h"
 #include "rid_bullet.h"

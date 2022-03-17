@@ -1,3 +1,5 @@
+#ifndef LZ4_H_2983827168210
+#define LZ4_H_2983827168210
 /*
  *  LZ4 - Fast LZ compression algorithm
  *  Header File
@@ -36,8 +38,8 @@
 extern "C" {
 #endif
 
-#ifndef LZ4_H_2983827168210
-#define LZ4_H_2983827168210
+
+
 
 /* --- Dependency --- */
 #include <stddef.h>   /* size_t */

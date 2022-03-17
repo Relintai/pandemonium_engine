@@ -1,3 +1,5 @@
+#ifndef MODULE_SKELETON_EDITOR_PLUGIN_H
+#define MODULE_SKELETON_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  skeleton_editor_plugin.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MODULE_SKELETON_EDITOR_PLUGIN_H
-#define MODULE_SKELETON_EDITOR_PLUGIN_H
+
+
 
 #include "core/os/input_event.h"
 #include "editor/editor_node.h"

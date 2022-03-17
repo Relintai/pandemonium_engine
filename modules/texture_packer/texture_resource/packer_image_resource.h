@@ -1,3 +1,5 @@
+#ifndef PACKER_IMAGE_REOURCE_H
+#define PACKER_IMAGE_REOURCE_H
 /*
 Copyright (c) 2019-2022 Péter Magyar
 
@@ -20,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef PACKER_IMAGE_REOURCE_H
-#define PACKER_IMAGE_REOURCE_H
+
+
 
 #include "core/version.h"
 

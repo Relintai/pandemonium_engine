@@ -1,3 +1,5 @@
+#ifndef VIDEO_STREAM_WEBM_H
+#define VIDEO_STREAM_WEBM_H
 /*************************************************************************/
 /*  video_stream_webm.h                                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VIDEO_STREAM_WEBM_H
-#define VIDEO_STREAM_WEBM_H
+
+
 
 #include "core/io/resource_loader.h"
 #include "scene/resources/video_stream.h"

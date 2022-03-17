@@ -1,3 +1,5 @@
+#ifndef AUDIO_STREAM_MP3_H
+#define AUDIO_STREAM_MP3_H
 /*************************************************************************/
 /*  audio_stream_mp3.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIO_STREAM_MP3_H
-#define AUDIO_STREAM_MP3_H
+
+
 
 #include "core/io/resource_loader.h"
 #include "servers/audio/audio_stream.h"

@@ -1,3 +1,5 @@
+#ifndef EDITOR_SCENE_EXPORTER_GLTF_PLUGIN_H
+#define EDITOR_SCENE_EXPORTER_GLTF_PLUGIN_H
 /*************************************************************************/
 /*  editor_scene_exporter_gltf_plugin.h                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EDITOR_SCENE_EXPORTER_GLTF_PLUGIN_H
-#define EDITOR_SCENE_EXPORTER_GLTF_PLUGIN_H
+
+
 
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_plugin.h"

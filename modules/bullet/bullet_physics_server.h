@@ -1,3 +1,5 @@
+#ifndef BULLET_PHYSICS_SERVER_H
+#define BULLET_PHYSICS_SERVER_H
 /*************************************************************************/
 /*  bullet_physics_server.h                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BULLET_PHYSICS_SERVER_H
-#define BULLET_PHYSICS_SERVER_H
+
+
 
 #include "area_bullet.h"
 #include "core/rid.h"

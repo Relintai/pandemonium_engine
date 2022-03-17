@@ -1,3 +1,5 @@
+#ifndef PACKET_PEER_MBED_DTLS_H
+#define PACKET_PEER_MBED_DTLS_H
 /*************************************************************************/
 /*  packet_peer_mbed_dtls.h                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PACKET_PEER_MBED_DTLS_H
-#define PACKET_PEER_MBED_DTLS_H
+
+
 
 #include "core/io/packet_peer_dtls.h"
 #include "ssl_context_mbedtls.h"

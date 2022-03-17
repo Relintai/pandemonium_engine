@@ -1,3 +1,5 @@
+#ifndef OPEN_SIMPLEX_NOISE_H
+#define OPEN_SIMPLEX_NOISE_H
 /*************************************************************************/
 /*  open_simplex_noise.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef OPEN_SIMPLEX_NOISE_H
-#define OPEN_SIMPLEX_NOISE_H
+
+
 
 #include "core/image.h"
 #include "core/reference.h"

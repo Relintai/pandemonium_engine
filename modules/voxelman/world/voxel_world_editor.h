@@ -1,3 +1,5 @@
+#ifndef VOXEL_WORLD_EDITOR_PLUGIN_H
+#define VOXEL_WORLD_EDITOR_PLUGIN_H
 /*
 Copyright (c) 2020 Péter Magyar
 
@@ -20,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef VOXEL_WORLD_EDITOR_PLUGIN_H
-#define VOXEL_WORLD_EDITOR_PLUGIN_H
+
+
 
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"

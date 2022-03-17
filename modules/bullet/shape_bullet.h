@@ -1,3 +1,5 @@
+#ifndef SHAPE_BULLET_H
+#define SHAPE_BULLET_H
 /*************************************************************************/
 /*  shape_bullet.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SHAPE_BULLET_H
-#define SHAPE_BULLET_H
+
+
 
 #include "core/math/geometry.h"
 #include "core/variant.h"

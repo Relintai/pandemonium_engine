@@ -1,3 +1,5 @@
+#ifndef GLTF_BUFFER_VIEW_H
+#define GLTF_BUFFER_VIEW_H
 /*************************************************************************/
 /*  gltf_buffer_view.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GLTF_BUFFER_VIEW_H
-#define GLTF_BUFFER_VIEW_H
+
+
 
 #include "core/resource.h"
 

@@ -1,3 +1,5 @@
+#ifndef BMP_REGISTER_TYPES_H
+#define BMP_REGISTER_TYPES_H
 /*************************************************************************/
 /*  register_types.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BMP_REGISTER_TYPES_H
-#define BMP_REGISTER_TYPES_H
+
+
 
 void register_bmp_types();
 void unregister_bmp_types();

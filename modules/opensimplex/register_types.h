@@ -1,3 +1,5 @@
+#ifndef OPENSIMPLEX_REGISTER_TYPES_H
+#define OPENSIMPLEX_REGISTER_TYPES_H
 /*************************************************************************/
 /*  register_types.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef OPENSIMPLEX_REGISTER_TYPES_H
-#define OPENSIMPLEX_REGISTER_TYPES_H
+
+
 
 void register_opensimplex_types();
 void unregister_opensimplex_types();

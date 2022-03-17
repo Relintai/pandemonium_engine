@@ -1,3 +1,5 @@
+#ifndef GDSCRIPT_LANGUAGE_SERVER_H
+#define GDSCRIPT_LANGUAGE_SERVER_H
 /*************************************************************************/
 /*  gdscript_language_server.h                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GDSCRIPT_LANGUAGE_SERVER_H
-#define GDSCRIPT_LANGUAGE_SERVER_H
+
+
 
 #include "../gdscript_parser.h"
 #include "editor/editor_plugin.h"

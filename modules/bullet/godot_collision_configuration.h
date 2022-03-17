@@ -1,3 +1,5 @@
+#ifndef GODOT_COLLISION_CONFIGURATION_H
+#define GODOT_COLLISION_CONFIGURATION_H
 /*************************************************************************/
 /*  godot_collision_configuration.h                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GODOT_COLLISION_CONFIGURATION_H
-#define GODOT_COLLISION_CONFIGURATION_H
+
+
 
 #include <BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h>
 #include <BulletSoftBody/btSoftBodyRigidBodyCollisionConfiguration.h>

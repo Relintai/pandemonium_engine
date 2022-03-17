@@ -1,3 +1,5 @@
+#ifndef GODOT_COLLISION_DISPATCHER_H
+#define GODOT_COLLISION_DISPATCHER_H
 /*************************************************************************/
 /*  godot_collision_dispatcher.h                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GODOT_COLLISION_DISPATCHER_H
-#define GODOT_COLLISION_DISPATCHER_H
+
+
 
 #include "core/int_types.h"
 

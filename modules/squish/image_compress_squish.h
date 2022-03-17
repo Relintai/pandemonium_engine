@@ -1,3 +1,5 @@
+#ifndef IMAGE_COMPRESS_SQUISH_H
+#define IMAGE_COMPRESS_SQUISH_H
 /*************************************************************************/
 /*  image_compress_squish.h                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef IMAGE_COMPRESS_SQUISH_H
-#define IMAGE_COMPRESS_SQUISH_H
+
+
 
 #include "core/image.h"
 

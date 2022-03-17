@@ -1,3 +1,5 @@
+#ifndef MDR_IMPORT_PLUGIN_BASE
+#define MDR_IMPORT_PLUGIN_BASE
 /*
 Copyright (c) 2019-2022 Péter Magyar
 
@@ -20,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef MDR_IMPORT_PLUGIN_BASE
-#define MDR_IMPORT_PLUGIN_BASE
+
+
 
 #include "core/version.h"
 

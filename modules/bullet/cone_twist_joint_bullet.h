@@ -1,3 +1,5 @@
+#ifndef CONE_TWIST_JOINT_BULLET_H
+#define CONE_TWIST_JOINT_BULLET_H
 /*************************************************************************/
 /*  cone_twist_joint_bullet.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CONE_TWIST_JOINT_BULLET_H
-#define CONE_TWIST_JOINT_BULLET_H
+
+
 
 #include "joint_bullet.h"
 

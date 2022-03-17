@@ -1,3 +1,5 @@
+#ifndef WEBSOCKET_H
+#define WEBSOCKET_H
 /*************************************************************************/
 /*  websocket_server.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef WEBSOCKET_H
-#define WEBSOCKET_H
+
+
 
 #include "core/crypto/crypto.h"
 #include "core/reference.h"

@@ -1,3 +1,5 @@
+#ifndef GDSCRIPT_COMPILER_H
+#define GDSCRIPT_COMPILER_H
 /*************************************************************************/
 /*  gdscript_compiler.h                                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GDSCRIPT_COMPILER_H
-#define GDSCRIPT_COMPILER_H
+
+
 
 #include "core/set.h"
 #include "gdscript.h"

@@ -1,3 +1,5 @@
+#ifndef WEBRTC_DATA_CHANNEL_H
+#define WEBRTC_DATA_CHANNEL_H
 /*************************************************************************/
 /*  webrtc_data_channel.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef WEBRTC_DATA_CHANNEL_H
-#define WEBRTC_DATA_CHANNEL_H
+
+
 
 #include "core/io/packet_peer.h"
 

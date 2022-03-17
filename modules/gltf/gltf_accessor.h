@@ -1,3 +1,5 @@
+#ifndef GLTF_ACCESSOR_H
+#define GLTF_ACCESSOR_H
 /*************************************************************************/
 /*  gltf_accessor.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GLTF_ACCESSOR_H
-#define GLTF_ACCESSOR_H
+
+
 
 #include "core/resource.h"
 

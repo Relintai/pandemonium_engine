@@ -1,3 +1,5 @@
+#ifndef RTILE_MAP_H
+#define RTILE_MAP_H
 /*************************************************************************/
 /*  tile_map.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RTILE_MAP_H
-#define RTILE_MAP_H
+
+
 
 #include "core/self_list.h"
 #include "core/vset.h"

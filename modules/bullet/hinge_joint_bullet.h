@@ -1,3 +1,5 @@
+#ifndef HINGE_JOINT_BULLET_H
+#define HINGE_JOINT_BULLET_H
 /*************************************************************************/
 /*  hinge_joint_bullet.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef HINGE_JOINT_BULLET_H
-#define HINGE_JOINT_BULLET_H
+
+
 
 #include "joint_bullet.h"
 

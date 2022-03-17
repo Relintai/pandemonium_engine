@@ -1,3 +1,5 @@
+#ifndef NAVIGATION_MESH_EDITOR_PLUGIN_H
+#define NAVIGATION_MESH_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  navigation_mesh_editor_plugin.h                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef NAVIGATION_MESH_EDITOR_PLUGIN_H
-#define NAVIGATION_MESH_EDITOR_PLUGIN_H
+
+
 
 #ifdef TOOLS_ENABLED
 

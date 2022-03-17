@@ -1,3 +1,5 @@
+#ifndef PIN_JOINT_BULLET_H
+#define PIN_JOINT_BULLET_H
 /*************************************************************************/
 /*  pin_joint_bullet.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PIN_JOINT_BULLET_H
-#define PIN_JOINT_BULLET_H
+
+
 
 #include "joint_bullet.h"
 

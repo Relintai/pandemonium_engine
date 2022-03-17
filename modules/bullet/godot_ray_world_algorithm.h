@@ -1,3 +1,5 @@
+#ifndef GODOT_RAY_WORLD_ALGORITHM_H
+#define GODOT_RAY_WORLD_ALGORITHM_H
 /*************************************************************************/
 /*  godot_ray_world_algorithm.h                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GODOT_RAY_WORLD_ALGORITHM_H
-#define GODOT_RAY_WORLD_ALGORITHM_H
+
+
 
 #include <BulletCollision/CollisionDispatch/btActivatingCollisionAlgorithm.h>
 #include <BulletCollision/CollisionDispatch/btCollisionCreateFunc.h>

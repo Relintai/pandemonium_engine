@@ -1,3 +1,5 @@
+#ifndef MARCHING_CUBES_TABLES_H
+#define MARCHING_CUBES_TABLES_H
 //Please note, that these tables were modified to get support for uv-mapping!
 
 //================================================================================
@@ -32,8 +34,8 @@
 //
 //================================================================================
 
-#ifndef MARCHING_CUBES_TABLES_H
-#define MARCHING_CUBES_TABLES_H
+
+
 
 #include "core/math/vector3.h"
 

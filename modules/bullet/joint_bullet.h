@@ -1,3 +1,5 @@
+#ifndef JOINT_BULLET_H
+#define JOINT_BULLET_H
 /*************************************************************************/
 /*  joint_bullet.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef JOINT_BULLET_H
-#define JOINT_BULLET_H
+
+
 
 #include "constraint_bullet.h"
 #include "servers/physics_server.h"

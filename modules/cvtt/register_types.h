@@ -1,3 +1,5 @@
+#ifndef CVTT_REGISTER_TYPES_H
+#define CVTT_REGISTER_TYPES_H
 /*************************************************************************/
 /*  register_types.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CVTT_REGISTER_TYPES_H
-#define CVTT_REGISTER_TYPES_H
+
+
 
 #ifdef TOOLS_ENABLED
 

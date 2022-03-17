@@ -1,3 +1,5 @@
+#ifndef TILED_WALL_2D_H
+#define TILED_WALL_2D_H
 /*
 Copyright (c) 2020-2022 Péter Magyar
 
@@ -20,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef TILED_WALL_2D_H
-#define TILED_WALL_2D_H
+
+
 
 #include "core/version.h"
 #include "scene/resources/texture.h"

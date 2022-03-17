@@ -1,3 +1,5 @@
+#ifndef PROP_MATERIAL_CACHE_PCM_H
+#define PROP_MATERIAL_CACHE_PCM_H
 /*
 Copyright (c) 2019-2022 Péter Magyar
 
@@ -20,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef PROP_MATERIAL_CACHE_PCM_H
-#define PROP_MATERIAL_CACHE_PCM_H
+
+
 
 #include "prop_material_cache.h"
 

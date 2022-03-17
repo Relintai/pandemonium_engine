@@ -1,3 +1,5 @@
+#ifndef TERRAIN_2D_WORLD_DEFAULT_H
+#define TERRAIN_2D_WORLD_DEFAULT_H
 /*
 Copyright (c) 2019-2022 Péter Magyar
 
@@ -20,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef TERRAIN_2D_WORLD_DEFAULT_H
-#define TERRAIN_2D_WORLD_DEFAULT_H
+
+
 
 #include "../terrain_2d_world.h"
 

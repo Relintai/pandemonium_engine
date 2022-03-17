@@ -1,3 +1,5 @@
+#ifndef GODOT_MOTION_STATE_H
+#define GODOT_MOTION_STATE_H
 /*************************************************************************/
 /*  godot_motion_state.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GODOT_MOTION_STATE_H
-#define GODOT_MOTION_STATE_H
+
+
 
 #include "rigid_body_bullet.h"
 

@@ -1,3 +1,5 @@
+#ifndef EMWSCLIENT_H
+#define EMWSCLIENT_H
 /*************************************************************************/
 /*  emws_client.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EMWSCLIENT_H
-#define EMWSCLIENT_H
+
+
 
 #ifdef JAVASCRIPT_ENABLED
 

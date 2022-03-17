@@ -1,3 +1,5 @@
+#ifndef SPELL_HEAL_INFO_H
+#define SPELL_HEAL_INFO_H
 /*
 Copyright (c) 2019-2022 Péter Magyar
 
@@ -20,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef SPELL_HEAL_INFO_H
-#define SPELL_HEAL_INFO_H
+
+
 
 #include "core/version.h"
 

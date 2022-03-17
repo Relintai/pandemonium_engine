@@ -1,3 +1,5 @@
+#ifndef IMAGE_COMPRESS_CVTT_H
+#define IMAGE_COMPRESS_CVTT_H
 /*************************************************************************/
 /*  image_compress_cvtt.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef IMAGE_COMPRESS_CVTT_H
-#define IMAGE_COMPRESS_CVTT_H
+
+
 
 #include "core/image.h"
 

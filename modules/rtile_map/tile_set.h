@@ -1,3 +1,5 @@
+#ifndef RTILE_SET_H
+#define RTILE_SET_H
 /*************************************************************************/
 /*  tile_set.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RTILE_SET_H
-#define RTILE_SET_H
+
+
 
 #include "core/array.h"
 #include "core/resource.h"

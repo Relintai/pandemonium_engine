@@ -1,3 +1,5 @@
+#ifndef GODOT_NAVIGATION_SERVER_H
+#define GODOT_NAVIGATION_SERVER_H
 /*************************************************************************/
 /*  godot_navigation_server.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GODOT_NAVIGATION_SERVER_H
-#define GODOT_NAVIGATION_SERVER_H
+
+
 
 #include "servers/navigation_server.h"
 

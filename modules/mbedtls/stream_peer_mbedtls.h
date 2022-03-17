@@ -1,3 +1,5 @@
+#ifndef STREAM_PEER_OPEN_SSL_H
+#define STREAM_PEER_OPEN_SSL_H
 /*************************************************************************/
 /*  stream_peer_mbedtls.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef STREAM_PEER_OPEN_SSL_H
-#define STREAM_PEER_OPEN_SSL_H
+
+
 
 #include "core/io/stream_peer_ssl.h"
 #include "ssl_context_mbedtls.h"

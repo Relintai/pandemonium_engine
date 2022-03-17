@@ -1,3 +1,5 @@
+#ifndef NAV_REGION_H
+#define NAV_REGION_H
 /*************************************************************************/
 /*  nav_region.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef NAV_REGION_H
-#define NAV_REGION_H
+
+
 
 #include "nav_rid.h"
 

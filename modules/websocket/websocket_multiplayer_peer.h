@@ -1,3 +1,5 @@
+#ifndef WEBSOCKET_MULTIPLAYER_PEER_H
+#define WEBSOCKET_MULTIPLAYER_PEER_H
 /*************************************************************************/
 /*  websocket_multiplayer_peer.h                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef WEBSOCKET_MULTIPLAYER_PEER_H
-#define WEBSOCKET_MULTIPLAYER_PEER_H
+
+
 
 #include "core/error_list.h"
 #include "core/io/networked_multiplayer_peer.h"

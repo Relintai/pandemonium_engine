@@ -1,3 +1,5 @@
+#ifndef PROP_ESS_ENTITY_H
+#define PROP_ESS_ENTITY_H
 /*
 Copyright (c) 2020-2022 Péter Magyar
 
@@ -20,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef PROP_ESS_ENTITY_H
-#define PROP_ESS_ENTITY_H
+
+
 
 #include "core/version.h"
 

@@ -1,3 +1,5 @@
+#ifndef WEBRTC_DATA_CHANNEL_JS_H
+#define WEBRTC_DATA_CHANNEL_JS_H
 /*************************************************************************/
 /*  webrtc_data_channel_js.h                                             */
 /*************************************************************************/
@@ -30,8 +32,8 @@
 
 #ifdef JAVASCRIPT_ENABLED
 
-#ifndef WEBRTC_DATA_CHANNEL_JS_H
-#define WEBRTC_DATA_CHANNEL_JS_H
+
+
 
 #include "webrtc_data_channel.h"
 

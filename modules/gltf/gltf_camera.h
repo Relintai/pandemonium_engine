@@ -1,3 +1,5 @@
+#ifndef GLTF_CAMERA_H
+#define GLTF_CAMERA_H
 /*************************************************************************/
 /*  gltf_camera.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GLTF_CAMERA_H
-#define GLTF_CAMERA_H
+
+
 
 #include "core/resource.h"
 

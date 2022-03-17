@@ -1,3 +1,5 @@
+#ifndef VIDEO_STREAM_THEORA_H
+#define VIDEO_STREAM_THEORA_H
 /*************************************************************************/
 /*  video_stream_theora.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VIDEO_STREAM_THEORA_H
-#define VIDEO_STREAM_THEORA_H
+
+
 
 #include "core/io/resource_loader.h"
 #include "core/os/file_access.h"

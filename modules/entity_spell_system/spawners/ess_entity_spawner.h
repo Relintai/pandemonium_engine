@@ -1,3 +1,5 @@
+#ifndef ESS_ENTITY_SPAWNER_H
+#define ESS_ENTITY_SPAWNER_H
 /*
 Copyright (c) 2019-2022 Péter Magyar
 
@@ -20,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef ESS_ENTITY_SPAWNER_H
-#define ESS_ENTITY_SPAWNER_H
+
+
 
 #include "scene/main/node.h"
 

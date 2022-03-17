@@ -1,3 +1,5 @@
+#ifndef IMAGE_COMPRESS_ETC_H
+#define IMAGE_COMPRESS_ETC_H
 /*************************************************************************/
 /*  image_compress_etc.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef IMAGE_COMPRESS_ETC_H
-#define IMAGE_COMPRESS_ETC_H
+
+
 
 void _register_etc_compress_func();
 

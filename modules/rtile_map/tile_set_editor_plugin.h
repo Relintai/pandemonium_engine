@@ -1,3 +1,5 @@
+#ifndef RTILE_SET_EDITOR_PLUGIN_H
+#define RTILE_SET_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  tile_set_editor_plugin.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RTILE_SET_EDITOR_PLUGIN_H
-#define RTILE_SET_EDITOR_PLUGIN_H
+
+
 
 #include "editor/editor_node.h"
 #include "scene/2d/sprite.h"

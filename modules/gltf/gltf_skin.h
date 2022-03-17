@@ -1,3 +1,5 @@
+#ifndef GLTF_SKIN_H
+#define GLTF_SKIN_H
 /*************************************************************************/
 /*  gltf_skin.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GLTF_SKIN_H
-#define GLTF_SKIN_H
+
+
 
 #include "core/resource.h"
 

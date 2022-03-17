@@ -1,3 +1,5 @@
+#ifndef NETWORKED_MULTIPLAYER_ENET_H
+#define NETWORKED_MULTIPLAYER_ENET_H
 /*************************************************************************/
 /*  networked_multiplayer_enet.h                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef NETWORKED_MULTIPLAYER_ENET_H
-#define NETWORKED_MULTIPLAYER_ENET_H
+
+
 
 #include "core/crypto/crypto.h"
 #include "core/io/compression.h"

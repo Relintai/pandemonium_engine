@@ -1,3 +1,5 @@
+#ifndef DELAUNAY_3D_H
+#define DELAUNAY_3D_H
 /*************************************************************************/
 /*  delaunay_3d.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef DELAUNAY_3D_H
-#define DELAUNAY_3D_H
+
+
 
 #include "core/math/aabb.h"
 #include "core/math/camera_matrix.h"

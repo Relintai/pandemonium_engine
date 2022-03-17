@@ -1,3 +1,5 @@
+#ifndef PACKED_SCENE_GLTF_H
+#define PACKED_SCENE_GLTF_H
 /*************************************************************************/
 /*  packed_scene_gltf.h                                                  */
 /*************************************************************************/
@@ -30,8 +32,8 @@
 
 #ifdef TOOLS_ENABLED
 
-#ifndef PACKED_SCENE_GLTF_H
-#define PACKED_SCENE_GLTF_H
+
+
 
 #include "scene/main/node.h"
 #include "scene/resources/packed_scene.h"

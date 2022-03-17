@@ -1,3 +1,5 @@
+#ifndef TERRAIN_CHUNK_BLOCKY_H
+#define TERRAIN_CHUNK_BLOCKY_H
 /*
 Copyright (c) 2019-2022 Péter Magyar
 
@@ -20,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef TERRAIN_CHUNK_BLOCKY_H
-#define TERRAIN_CHUNK_BLOCKY_H
+
+
 
 #include "../default/terrain_chunk_default.h"
 

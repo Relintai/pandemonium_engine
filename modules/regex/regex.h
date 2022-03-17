@@ -1,3 +1,5 @@
+#ifndef REGEX_H
+#define REGEX_H
 /*************************************************************************/
 /*  regex.h                                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef REGEX_H
-#define REGEX_H
+
+
 
 #include "core/array.h"
 #include "core/dictionary.h"

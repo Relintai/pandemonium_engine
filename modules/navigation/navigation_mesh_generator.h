@@ -1,3 +1,5 @@
+#ifndef NAVIGATION_MESH_GENERATOR_H
+#define NAVIGATION_MESH_GENERATOR_H
 /*************************************************************************/
 /*  navigation_mesh_generator.h                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef NAVIGATION_MESH_GENERATOR_H
-#define NAVIGATION_MESH_GENERATOR_H
+
+
 
 #ifndef _3D_DISABLED
 

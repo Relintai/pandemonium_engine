@@ -1,3 +1,5 @@
+#ifndef SVG_REGISTER_TYPES_H
+#define SVG_REGISTER_TYPES_H
 /*************************************************************************/
 /*  register_types.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SVG_REGISTER_TYPES_H
-#define SVG_REGISTER_TYPES_H
+
+
 
 void register_svg_types();
 void unregister_svg_types();

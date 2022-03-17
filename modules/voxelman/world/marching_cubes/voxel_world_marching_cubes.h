@@ -1,3 +1,5 @@
+#ifndef VOXEL_WORLD_MARCHING_CUBES_H
+#define VOXEL_WORLD_MARCHING_CUBES_H
 /*
 Copyright (c) 2019-2020 Péter Magyar
 
@@ -20,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef VOXEL_WORLD_MARCHING_CUBES_H
-#define VOXEL_WORLD_MARCHING_CUBES_H
+
+
 
 #include "../default/voxel_world_default.h"
 

@@ -1,3 +1,5 @@
+#ifndef EDITOR_IMPORT_GLTF_MDR
+#define EDITOR_IMPORT_GLTF_MDR
 /*
 Copyright (c) 2019-2022 Péter Magyar
 
@@ -20,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef EDITOR_IMPORT_GLTF_MDR
-#define EDITOR_IMPORT_GLTF_MDR
+
+
 
 #include "core/version.h"
 

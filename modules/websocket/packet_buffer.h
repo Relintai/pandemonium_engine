@@ -1,3 +1,5 @@
+#ifndef PACKET_BUFFER_H
+#define PACKET_BUFFER_H
 /*************************************************************************/
 /*  packet_buffer.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PACKET_BUFFER_H
-#define PACKET_BUFFER_H
+
+
 
 #include "core/ring_buffer.h"
 

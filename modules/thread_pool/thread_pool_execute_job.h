@@ -1,3 +1,5 @@
+#ifndef THREAD_POOL_EXECUTE_JOB_H
+#define THREAD_POOL_EXECUTE_JOB_H
 /*
 Copyright (c) 2019-2022 Péter Magyar
 
@@ -20,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef THREAD_POOL_EXECUTE_JOB_H
-#define THREAD_POOL_EXECUTE_JOB_H
+
+
 
 #include "thread_pool_job.h"
 

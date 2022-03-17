@@ -1,3 +1,5 @@
+#ifndef WSLSERVER_H
+#define WSLSERVER_H
 /*************************************************************************/
 /*  wsl_server.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef WSLSERVER_H
-#define WSLSERVER_H
+
+
 
 #ifndef JAVASCRIPT_ENABLED
 

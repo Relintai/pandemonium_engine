@@ -1,3 +1,5 @@
+#ifndef WEBSOCKET_CLIENT_H
+#define WEBSOCKET_CLIENT_H
 /*************************************************************************/
 /*  websocket_client.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef WEBSOCKET_CLIENT_H
-#define WEBSOCKET_CLIENT_H
+
+
 
 #include "core/crypto/crypto.h"
 #include "core/error_list.h"

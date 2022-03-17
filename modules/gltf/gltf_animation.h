@@ -1,3 +1,5 @@
+#ifndef GLTF_ANIMATION_H
+#define GLTF_ANIMATION_H
 /*************************************************************************/
 /*  gltf_animation.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GLTF_ANIMATION_H
-#define GLTF_ANIMATION_H
+
+
 
 #include "core/resource.h"
 

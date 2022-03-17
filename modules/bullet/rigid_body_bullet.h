@@ -1,3 +1,5 @@
+#ifndef BODYBULLET_H
+#define BODYBULLET_H
 /*************************************************************************/
 /*  rigid_body_bullet.h                                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BODYBULLET_H
-#define BODYBULLET_H
+
+
 
 #include "collision_object_bullet.h"
 #include "space_bullet.h"

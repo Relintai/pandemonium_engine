@@ -1,3 +1,5 @@
+#ifndef RVO_SPACE_H
+#define RVO_SPACE_H
 /*************************************************************************/
 /*  nav_map.h                                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RVO_SPACE_H
-#define RVO_SPACE_H
+
+
 
 #include "nav_rid.h"
 

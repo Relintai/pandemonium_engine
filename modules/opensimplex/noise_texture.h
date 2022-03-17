@@ -1,3 +1,5 @@
+#ifndef NOISE_TEXTURE_H
+#define NOISE_TEXTURE_H
 /*************************************************************************/
 /*  noise_texture.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef NOISE_TEXTURE_H
-#define NOISE_TEXTURE_H
+
+
 
 #include "open_simplex_noise.h"
 

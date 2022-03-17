@@ -1,3 +1,5 @@
+#ifndef FASTNOISE_H
+#define FASTNOISE_H
 // FastNoise.h
 //
 // MIT License
@@ -28,8 +30,8 @@
 
 // VERSION: 0.4.1
 
-#ifndef FASTNOISE_H
-#define FASTNOISE_H
+
+
 
 // Uncomment the line below to use doubles throughout FastNoise instead of floats
 //#define FN_USE_DOUBLES

@@ -1,3 +1,5 @@
+#ifndef RID_BULLET_H
+#define RID_BULLET_H
 /*************************************************************************/
 /*  rid_bullet.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RID_BULLET_H
-#define RID_BULLET_H
+
+
 
 #include "core/rid.h"
 

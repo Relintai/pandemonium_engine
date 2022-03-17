@@ -1,3 +1,5 @@
+#ifndef ENVIRONMENT_DATA_H
+#define ENVIRONMENT_DATA_H
 /*
 Copyright (c) 2019-2020 Péter Magyar
 
@@ -20,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef ENVIRONMENT_DATA_H
-#define ENVIRONMENT_DATA_H
+
+
 
 #include "core/version.h"
 

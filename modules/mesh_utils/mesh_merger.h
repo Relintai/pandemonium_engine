@@ -1,3 +1,5 @@
+#ifndef MESH_MERGER_H
+#define MESH_MERGER_H
 /*
 
 Copyright (c) 2020-2022 Péter Magyar
@@ -22,8 +24,8 @@ SOFTWARE.
 
 */
 
-#ifndef MESH_MERGER_H
-#define MESH_MERGER_H
+
+
 
 #include "core/version.h"
 

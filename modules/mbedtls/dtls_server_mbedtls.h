@@ -1,3 +1,5 @@
+#ifndef MBED_DTLS_SERVER_H
+#define MBED_DTLS_SERVER_H
 /*************************************************************************/
 /*  dtls_server_mbedtls.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MBED_DTLS_SERVER_H
-#define MBED_DTLS_SERVER_H
+
+
 
 #include "core/io/dtls_server.h"
 #include "ssl_context_mbedtls.h"

@@ -1,3 +1,5 @@
+#ifndef GDSCRIPT_HIGHLIGHTER_H
+#define GDSCRIPT_HIGHLIGHTER_H
 /*************************************************************************/
 /*  gdscript_highlighter.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GDSCRIPT_HIGHLIGHTER_H
-#define GDSCRIPT_HIGHLIGHTER_H
+
+
 
 #include "scene/gui/text_edit.h"
 

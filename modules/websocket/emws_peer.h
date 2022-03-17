@@ -1,3 +1,5 @@
+#ifndef EMWSPEER_H
+#define EMWSPEER_H
 /*************************************************************************/
 /*  emws_peer.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EMWSPEER_H
-#define EMWSPEER_H
+
+
 
 #ifdef JAVASCRIPT_ENABLED
 

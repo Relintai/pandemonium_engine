@@ -1,3 +1,5 @@
+#ifndef GLTF_SKELETON_H
+#define GLTF_SKELETON_H
 /*************************************************************************/
 /*  gltf_skeleton.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GLTF_SKELETON_H
-#define GLTF_SKELETON_H
+
+
 
 #include "core/resource.h"
 

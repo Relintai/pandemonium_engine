@@ -1,3 +1,5 @@
+#ifndef GLTF_LIGHT_H
+#define GLTF_LIGHT_H
 /*************************************************************************/
 /*  gltf_light.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GLTF_LIGHT_H
-#define GLTF_LIGHT_H
+
+
 
 #include "core/resource.h"
 

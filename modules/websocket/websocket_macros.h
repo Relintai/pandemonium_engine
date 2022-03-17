@@ -1,3 +1,5 @@
+#ifndef WEBSOCKETMACTOS_H
+#define WEBSOCKETMACTOS_H
 /*************************************************************************/
 /*  websocket_macros.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef WEBSOCKETMACTOS_H
-#define WEBSOCKETMACTOS_H
+
+
 
 #define WSC_IN_BUF "network/limits/websocket_client/max_in_buffer_kb"
 #define WSC_IN_PKT "network/limits/websocket_client/max_in_packets"

@@ -1,3 +1,5 @@
+#ifndef GLTF_NODE_H
+#define GLTF_NODE_H
 /*************************************************************************/
 /*  gltf_node.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GLTF_NODE_H
-#define GLTF_NODE_H
+
+
 
 #include "core/resource.h"
 

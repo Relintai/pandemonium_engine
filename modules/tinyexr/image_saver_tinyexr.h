@@ -1,3 +1,5 @@
+#ifndef IMAGE_SAVER_TINYEXR_H
+#define IMAGE_SAVER_TINYEXR_H
 /*************************************************************************/
 /*  image_saver_tinyexr.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef IMAGE_SAVER_TINYEXR_H
-#define IMAGE_SAVER_TINYEXR_H
+
+
 
 #include "core/os/os.h"
 

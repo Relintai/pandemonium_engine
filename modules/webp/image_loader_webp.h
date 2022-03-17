@@ -1,3 +1,5 @@
+#ifndef IMAGE_LOADER_WEBP_H
+#define IMAGE_LOADER_WEBP_H
 /*************************************************************************/
 /*  image_loader_webp.h                                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef IMAGE_LOADER_WEBP_H
-#define IMAGE_LOADER_WEBP_H
+
+
 
 #include "core/io/image_loader.h"
 

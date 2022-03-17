@@ -1,3 +1,5 @@
+#ifndef WSLCLIENT_H
+#define WSLCLIENT_H
 /*************************************************************************/
 /*  wsl_client.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef WSLCLIENT_H
-#define WSLCLIENT_H
+
+
 
 #ifndef JAVASCRIPT_ENABLED
 

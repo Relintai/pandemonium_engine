@@ -1,3 +1,5 @@
+#ifndef GODOT_UPNP_DEVICE_H
+#define GODOT_UPNP_DEVICE_H
 /*************************************************************************/
 /*  upnp_device.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GODOT_UPNP_DEVICE_H
-#define GODOT_UPNP_DEVICE_H
+
+
 
 #include "core/reference.h"
 

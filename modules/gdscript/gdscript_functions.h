@@ -1,3 +1,5 @@
+#ifndef GDSCRIPT_FUNCTIONS_H
+#define GDSCRIPT_FUNCTIONS_H
 /*************************************************************************/
 /*  gdscript_functions.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GDSCRIPT_FUNCTIONS_H
-#define GDSCRIPT_FUNCTIONS_H
+
+
 
 #include "core/variant.h"
 

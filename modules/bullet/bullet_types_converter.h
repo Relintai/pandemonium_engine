@@ -1,3 +1,5 @@
+#ifndef BULLET_TYPES_CONVERTER_H
+#define BULLET_TYPES_CONVERTER_H
 /*************************************************************************/
 /*  bullet_types_converter.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BULLET_TYPES_CONVERTER_H
-#define BULLET_TYPES_CONVERTER_H
+
+
 
 #include "core/math/basis.h"
 #include "core/math/transform.h"

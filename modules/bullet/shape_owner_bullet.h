@@ -1,3 +1,5 @@
+#ifndef SHAPE_OWNER_BULLET_H
+#define SHAPE_OWNER_BULLET_H
 /*************************************************************************/
 /*  shape_owner_bullet.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SHAPE_OWNER_BULLET_H
-#define SHAPE_OWNER_BULLET_H
+
+
 
 #include "rid_bullet.h"
 

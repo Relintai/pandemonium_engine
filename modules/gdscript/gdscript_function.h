@@ -1,3 +1,5 @@
+#ifndef GDSCRIPT_FUNCTION_H
+#define GDSCRIPT_FUNCTION_H
 /*************************************************************************/
 /*  gdscript_function.h                                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GDSCRIPT_FUNCTION_H
-#define GDSCRIPT_FUNCTION_H
+
+
 
 #include "core/os/thread.h"
 #include "core/pair.h"

@@ -1,3 +1,5 @@
+#ifndef GDSCRIPT_TEXT_DOCUMENT_H
+#define GDSCRIPT_TEXT_DOCUMENT_H
 /*************************************************************************/
 /*  gdscript_text_document.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GDSCRIPT_TEXT_DOCUMENT_H
-#define GDSCRIPT_TEXT_DOCUMENT_H
+
+
 
 #include "core/os/file_access.h"
 #include "core/reference.h"

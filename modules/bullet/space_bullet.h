@@ -1,3 +1,5 @@
+#ifndef SPACE_BULLET_H
+#define SPACE_BULLET_H
 /*************************************************************************/
 /*  space_bullet.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SPACE_BULLET_H
-#define SPACE_BULLET_H
+
+
 
 #include "core/variant.h"
 #include "core/vector.h"

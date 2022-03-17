@@ -1,3 +1,5 @@
+#ifndef GLTF_SPEC_GLOSS_H
+#define GLTF_SPEC_GLOSS_H
 /*************************************************************************/
 /*  gltf_spec_gloss.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GLTF_SPEC_GLOSS_H
-#define GLTF_SPEC_GLOSS_H
+
+
 
 #include "core/image.h"
 #include "core/resource.h"

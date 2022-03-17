@@ -1,3 +1,5 @@
+#ifndef GDSCRIPT_PROTOCAL_SERVER_H
+#define GDSCRIPT_PROTOCAL_SERVER_H
 /*************************************************************************/
 /*  gdscript_language_protocol.h                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GDSCRIPT_PROTOCAL_SERVER_H
-#define GDSCRIPT_PROTOCAL_SERVER_H
+
+
 
 #include "core/io/stream_peer.h"
 #include "core/io/stream_peer_tcp.h"

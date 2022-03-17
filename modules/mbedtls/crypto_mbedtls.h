@@ -1,3 +1,5 @@
+#ifndef CRYPTO_MBEDTLS_H
+#define CRYPTO_MBEDTLS_H
 /*************************************************************************/
 /*  crypto_mbedtls.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CRYPTO_MBEDTLS_H
-#define CRYPTO_MBEDTLS_H
+
+
 
 #include "core/crypto/crypto.h"
 #include "core/resource.h"

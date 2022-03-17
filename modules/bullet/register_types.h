@@ -1,3 +1,5 @@
+#ifndef REGISTER_BULLET_TYPES_H
+#define REGISTER_BULLET_TYPES_H
 /*************************************************************************/
 /*  register_types.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef REGISTER_BULLET_TYPES_H
-#define REGISTER_BULLET_TYPES_H
+
+
 
 /**
 	@author AndreaCatania

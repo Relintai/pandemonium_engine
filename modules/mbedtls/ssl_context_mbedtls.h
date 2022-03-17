@@ -1,3 +1,5 @@
+#ifndef SSL_CONTEXT_MBED_TLS_H
+#define SSL_CONTEXT_MBED_TLS_H
 /*************************************************************************/
 /*  ssl_context_mbedtls.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SSL_CONTEXT_MBED_TLS_H
-#define SSL_CONTEXT_MBED_TLS_H
+
+
 
 #include "crypto_mbedtls.h"
 

@@ -1,3 +1,5 @@
+#ifndef GLTF_MESH_H
+#define GLTF_MESH_H
 /*************************************************************************/
 /*  gltf_mesh.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GLTF_MESH_H
-#define GLTF_MESH_H
+
+
 
 #include "core/resource.h"
 #include "scene/resources/mesh.h"

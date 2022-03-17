@@ -1,3 +1,5 @@
+#ifndef WEBSOCKETPEER_H
+#define WEBSOCKETPEER_H
 /*************************************************************************/
 /*  websocket_peer.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef WEBSOCKETPEER_H
-#define WEBSOCKETPEER_H
+
+
 
 #include "core/error_list.h"
 #include "core/io/packet_peer.h"

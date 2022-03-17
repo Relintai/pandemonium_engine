@@ -1,3 +1,5 @@
+#ifndef IMAGE_COMPRESS_PVRTC_H
+#define IMAGE_COMPRESS_PVRTC_H
 /*************************************************************************/
 /*  image_compress_pvrtc.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef IMAGE_COMPRESS_PVRTC_H
-#define IMAGE_COMPRESS_PVRTC_H
+
+
 
 void _register_pvrtc_compress_func();
 

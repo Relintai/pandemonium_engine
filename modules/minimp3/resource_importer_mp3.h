@@ -1,3 +1,5 @@
+#ifndef RESOURCE_IMPORTER_MP3_H
+#define RESOURCE_IMPORTER_MP3_H
 /*************************************************************************/
 /*  resource_importer_mp3.h                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RESOURCE_IMPORTER_MP3_H
-#define RESOURCE_IMPORTER_MP3_H
+
+
 
 #include "audio_stream_mp3.h"
 #include "core/io/resource_importer.h"

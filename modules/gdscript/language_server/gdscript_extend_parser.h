@@ -1,3 +1,5 @@
+#ifndef GDSCRIPT_EXTEND_PARSER_H
+#define GDSCRIPT_EXTEND_PARSER_H
 /*************************************************************************/
 /*  gdscript_extend_parser.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GDSCRIPT_EXTEND_PARSER_H
-#define GDSCRIPT_EXTEND_PARSER_H
+
+
 
 #include "../gdscript_parser.h"
 #include "core/variant.h"

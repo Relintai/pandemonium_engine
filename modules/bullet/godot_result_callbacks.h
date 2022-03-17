@@ -1,3 +1,5 @@
+#ifndef GODOT_RESULT_CALLBACKS_H
+#define GODOT_RESULT_CALLBACKS_H
 /*************************************************************************/
 /*  godot_result_callbacks.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GODOT_RESULT_CALLBACKS_H
-#define GODOT_RESULT_CALLBACKS_H
+
+
 
 #include "servers/physics_server.h"
 

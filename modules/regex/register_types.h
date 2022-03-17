@@ -1,3 +1,5 @@
+#ifndef REGEX_REGISTER_TYPES_H
+#define REGEX_REGISTER_TYPES_H
 /*************************************************************************/
 /*  register_types.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef REGEX_REGISTER_TYPES_H
-#define REGEX_REGISTER_TYPES_H
+
+
 
 void register_regex_types();
 void unregister_regex_types();

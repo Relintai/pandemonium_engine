@@ -1,3 +1,5 @@
+#ifndef BULLET_UTILITIES_H
+#define BULLET_UTILITIES_H
 /*************************************************************************/
 /*  bullet_utilities.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BULLET_UTILITIES_H
-#define BULLET_UTILITIES_H
+
+
 
 /**
 	@author AndreaCatania

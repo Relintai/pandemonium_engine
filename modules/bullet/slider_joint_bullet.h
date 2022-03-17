@@ -1,3 +1,5 @@
+#ifndef SLIDER_JOINT_BULLET_H
+#define SLIDER_JOINT_BULLET_H
 /*************************************************************************/
 /*  slider_joint_bullet.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SLIDER_JOINT_BULLET_H
-#define SLIDER_JOINT_BULLET_H
+
+
 
 #include "joint_bullet.h"
 

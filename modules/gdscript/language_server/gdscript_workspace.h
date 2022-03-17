@@ -1,3 +1,5 @@
+#ifndef GDSCRIPT_WORKSPACE_H
+#define GDSCRIPT_WORKSPACE_H
 /*************************************************************************/
 /*  gdscript_workspace.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GDSCRIPT_WORKSPACE_H
-#define GDSCRIPT_WORKSPACE_H
+
+
 
 #include "../gdscript_parser.h"
 #include "core/variant.h"

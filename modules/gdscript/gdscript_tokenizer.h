@@ -1,3 +1,5 @@
+#ifndef GDSCRIPT_TOKENIZER_H
+#define GDSCRIPT_TOKENIZER_H
 /*************************************************************************/
 /*  gdscript_tokenizer.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GDSCRIPT_TOKENIZER_H
-#define GDSCRIPT_TOKENIZER_H
+
+
 
 #include "core/pair.h"
 #include "core/string_name.h"

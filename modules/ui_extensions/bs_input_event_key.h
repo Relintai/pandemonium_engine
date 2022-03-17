@@ -1,3 +1,5 @@
+#ifndef BS_INPUT_EVENT_KEY_H
+#define BS_INPUT_EVENT_KEY_H
 /*
 Copyright (c) 2019-2022 Péter Magyar
 
@@ -20,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef BS_INPUT_EVENT_KEY_H
-#define BS_INPUT_EVENT_KEY_H
+
+
 
 #include "core/version.h"
 

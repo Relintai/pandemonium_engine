@@ -1,3 +1,5 @@
+#ifndef STB_VORBIS_REGISTER_TYPES_H
+#define STB_VORBIS_REGISTER_TYPES_H
 /*************************************************************************/
 /*  register_types.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef STB_VORBIS_REGISTER_TYPES_H
-#define STB_VORBIS_REGISTER_TYPES_H
+
+
 
 void register_stb_vorbis_types();
 void unregister_stb_vorbis_types();

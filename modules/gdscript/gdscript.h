@@ -1,3 +1,5 @@
+#ifndef GDSCRIPT_H
+#define GDSCRIPT_H
 /*************************************************************************/
 /*  gdscript.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GDSCRIPT_H
-#define GDSCRIPT_H
+
+
 
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"

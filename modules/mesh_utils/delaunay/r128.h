@@ -1,3 +1,5 @@
+#ifndef H_R128_H
+#define H_R128_H
 /*
 r128.h: 128-bit (64.64) signed fixed-point arithmetic. Version 1.4.4
 
@@ -58,8 +60,8 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef H_R128_H
-#define H_R128_H
+
+
 
 #include <stddef.h>
 

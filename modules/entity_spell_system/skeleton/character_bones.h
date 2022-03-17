@@ -1,3 +1,5 @@
+#ifndef CHARACTER_BONES_H
+#define CHARACTER_BONES_H
 /*
 Copyright (c) 2019-2022 Péter Magyar
 
@@ -20,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef CHARACTER_BONES_H
-#define CHARACTER_BONES_H
+
+
 
 #include "scene/2d/node_2d.h"
 

@@ -1,3 +1,5 @@
+#ifndef COLLISION_OBJECT_BULLET_H
+#define COLLISION_OBJECT_BULLET_H
 /*************************************************************************/
 /*  collision_object_bullet.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef COLLISION_OBJECT_BULLET_H
-#define COLLISION_OBJECT_BULLET_H
+
+
 
 #include "core/math/transform.h"
 #include "core/math/vector3.h"

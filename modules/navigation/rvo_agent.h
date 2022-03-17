@@ -1,3 +1,5 @@
+#ifndef RVO_AGENT_H
+#define RVO_AGENT_H
 /*************************************************************************/
 /*  rvo_agent.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RVO_AGENT_H
-#define RVO_AGENT_H
+
+
 
 #include "core/object.h"
 #include "nav_rid.h"
