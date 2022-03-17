@@ -32,7 +32,9 @@
 #define OCCLUDER_H
 
 #include "scene/3d/spatial.h"
-#include "scene/resources/occluder_shape.h"
+#include "core/reference.h"
+
+class OccluderShape;
 
 class Occluder : public Spatial {
 	GDCLASS(Occluder, Spatial);

@@ -32,6 +32,7 @@
 
 #include "core/engine.h"
 #include "scene/scene_string_names.h"
+#include "scene/resources/curve.h"
 
 void Path::_notification(int p_what) {
 }

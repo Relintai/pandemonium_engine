@@ -32,7 +32,8 @@
 #define LISTENER_H
 
 #include "scene/3d/spatial.h"
-#include "scene/main/viewport.h"
+
+class Viewport;
 
 class Listener : public Spatial {
 	GDCLASS(Listener, Spatial);

@@ -32,7 +32,9 @@
 #define PATH_H
 
 #include "scene/3d/spatial.h"
-#include "scene/resources/curve.h"
+#include "core/reference.h"
+
+class Curve3D;
 
 class Path : public Spatial {
 	GDCLASS(Path, Spatial);

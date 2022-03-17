@@ -31,6 +31,7 @@
 #include "navigation.h"
 
 #include "servers/navigation_server.h"
+#include "scene/3d/navigation_mesh_instance.h"
 
 Vector<Vector3> Navigation::get_simple_path(const Vector3 &p_start, const Vector3 &p_end, bool p_optimize) const {
 	return NavigationServer::get_singleton()->map_get_path(map, p_start, p_end, p_optimize);

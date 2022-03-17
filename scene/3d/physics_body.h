@@ -33,9 +33,11 @@
 
 #include "core/vset.h"
 #include "scene/3d/collision_object.h"
-#include "scene/resources/physics_material.h"
+#include "core/reference.h"
 #include "servers/physics_server.h"
-#include "skeleton.h"
+
+class PhysicsMaterial;
+class Skeleton;
 
 class PhysicsBody : public CollisionObject {
 	GDCLASS(PhysicsBody, CollisionObject);

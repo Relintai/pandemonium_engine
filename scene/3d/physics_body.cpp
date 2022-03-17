@@ -37,6 +37,8 @@
 #include "core/object.h"
 #include "core/rid.h"
 #include "scene/scene_string_names.h"
+#include "scene/resources/physics_material.h"
+#include "skeleton.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/plugins/spatial_editor_plugin.h"

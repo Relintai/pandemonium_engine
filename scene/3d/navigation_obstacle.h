@@ -31,10 +31,10 @@
 #ifndef NAVIGATION_OBSTACLE_H
 #define NAVIGATION_OBSTACLE_H
 
-#include "scene/3d/spatial.h"
 #include "scene/main/node.h"
 
 class Navigation;
+class Spatial;
 
 class NavigationObstacle : public Node {
 	GDCLASS(NavigationObstacle, Node);
