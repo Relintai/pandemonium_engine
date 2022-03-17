@@ -1,3 +1,5 @@
+#ifndef MESSAGE_QUEUE_H
+#define MESSAGE_QUEUE_H
 /*************************************************************************/
 /*  message_queue.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MESSAGE_QUEUE_H
-#define MESSAGE_QUEUE_H
+
+
 
 #include "core/object.h"
 #include "core/os/thread_safe.h"

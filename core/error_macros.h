@@ -1,3 +1,5 @@
+#ifndef ERROR_MACROS_H
+#define ERROR_MACROS_H
 /*************************************************************************/
 /*  error_macros.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ERROR_MACROS_H
-#define ERROR_MACROS_H
+
+
 
 #include "core/safe_refcount.h"
 #include "core/typedefs.h"

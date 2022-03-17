@@ -1,3 +1,5 @@
+#ifndef MEMORY_H
+#define MEMORY_H
 /*************************************************************************/
 /*  memory.h                                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MEMORY_H
-#define MEMORY_H
+
+
 
 #include "core/error_macros.h"
 #include "core/safe_refcount.h"

@@ -1,3 +1,5 @@
+#ifndef DISJOINT_SET_H
+#define DISJOINT_SET_H
 /*************************************************************************/
 /*  disjoint_set.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef DISJOINT_SET_H
-#define DISJOINT_SET_H
+
+
 
 #include "core/map.h"
 #include "core/vector.h"

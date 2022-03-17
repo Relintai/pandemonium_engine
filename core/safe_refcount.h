@@ -1,3 +1,5 @@
+#ifndef SAFE_REFCOUNT_H
+#define SAFE_REFCOUNT_H
 /*************************************************************************/
 /*  safe_refcount.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SAFE_REFCOUNT_H
-#define SAFE_REFCOUNT_H
+
+
 
 #include "core/typedefs.h"
 

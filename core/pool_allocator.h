@@ -1,3 +1,5 @@
+#ifndef POOL_ALLOCATOR_H
+#define POOL_ALLOCATOR_H
 /*************************************************************************/
 /*  pool_allocator.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef POOL_ALLOCATOR_H
-#define POOL_ALLOCATOR_H
+
+
 
 #include "core/typedefs.h"
 

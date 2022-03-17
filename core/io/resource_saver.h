@@ -1,3 +1,5 @@
+#ifndef RESOURCE_SAVER_H
+#define RESOURCE_SAVER_H
 /*************************************************************************/
 /*  resource_saver.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RESOURCE_SAVER_H
-#define RESOURCE_SAVER_H
+
+
 
 #include "core/resource.h"
 

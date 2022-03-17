@@ -1,3 +1,5 @@
+#ifndef PACKET_PEER_H
+#define PACKET_PEER_H
 /*************************************************************************/
 /*  packet_peer.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PACKET_PEER_H
-#define PACKET_PEER_H
+
+
 
 #include "core/io/stream_peer.h"
 #include "core/object.h"

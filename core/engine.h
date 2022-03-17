@@ -1,3 +1,5 @@
+#ifndef ENGINE_H
+#define ENGINE_H
 /*************************************************************************/
 /*  engine.h                                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ENGINE_H
-#define ENGINE_H
+
+
 
 #include "core/list.h"
 #include "core/os/main_loop.h"

@@ -1,3 +1,5 @@
+#ifndef CORE_STRING_NAMES_H
+#define CORE_STRING_NAMES_H
 /*************************************************************************/
 /*  core_string_names.h                                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CORE_STRING_NAMES_H
-#define CORE_STRING_NAMES_H
+
+
 
 #include "core/string_name.h"
 

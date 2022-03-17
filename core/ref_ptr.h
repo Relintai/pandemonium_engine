@@ -1,3 +1,5 @@
+#ifndef REF_PTR_H
+#define REF_PTR_H
 /*************************************************************************/
 /*  ref_ptr.h                                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef REF_PTR_H
-#define REF_PTR_H
+
+
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
  * This class exists to workaround a limitation in C++ but keep the design OK.

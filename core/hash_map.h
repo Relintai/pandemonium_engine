@@ -1,3 +1,5 @@
+#ifndef HASH_MAP_H
+#define HASH_MAP_H
 /*************************************************************************/
 /*  hash_map.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef HASH_MAP_H
-#define HASH_MAP_H
+
+
 
 #include "core/error_macros.h"
 #include "core/hashfuncs.h"

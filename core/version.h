@@ -1,3 +1,5 @@
+#ifndef GODOT_VERSION_H
+#define GODOT_VERSION_H
 /*************************************************************************/
 /*  version.h                                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GODOT_VERSION_H
-#define GODOT_VERSION_H
+
+
 
 #include "core/version_generated.gen.h"
 

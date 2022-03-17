@@ -1,3 +1,5 @@
+#ifndef STRING_BUFFER_H
+#define STRING_BUFFER_H
 /*************************************************************************/
 /*  string_buffer.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef STRING_BUFFER_H
-#define STRING_BUFFER_H
+
+
 
 #include "core/ustring.h"
 

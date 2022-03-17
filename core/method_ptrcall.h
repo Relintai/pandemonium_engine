@@ -1,3 +1,5 @@
+#ifndef METHOD_PTRCALL_H
+#define METHOD_PTRCALL_H
 /*************************************************************************/
 /*  method_ptrcall.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef METHOD_PTRCALL_H
-#define METHOD_PTRCALL_H
+
+
 
 #include "core/math/transform_2d.h"
 #include "core/typedefs.h"

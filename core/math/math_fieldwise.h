@@ -1,3 +1,5 @@
+#ifndef MATH_FIELDWISE_H
+#define MATH_FIELDWISE_H
 /*************************************************************************/
 /*  math_fieldwise.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MATH_FIELDWISE_H
-#define MATH_FIELDWISE_H
+
+
 
 #ifdef TOOLS_ENABLED
 

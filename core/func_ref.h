@@ -1,3 +1,5 @@
+#ifndef FUNC_REF_H
+#define FUNC_REF_H
 /*************************************************************************/
 /*  func_ref.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef FUNC_REF_H
-#define FUNC_REF_H
+
+
 
 #include "core/reference.h"
 

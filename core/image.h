@@ -1,3 +1,5 @@
+#ifndef IMAGE_H
+#define IMAGE_H
 /*************************************************************************/
 /*  image.h                                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef IMAGE_H
-#define IMAGE_H
+
+
 
 #include "core/color.h"
 #include "core/math/rect2.h"

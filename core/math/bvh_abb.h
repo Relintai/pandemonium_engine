@@ -1,3 +1,5 @@
+#ifndef BVH_ABB_H
+#define BVH_ABB_H
 /*************************************************************************/
 /*  bvh_abb.h                                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BVH_ABB_H
-#define BVH_ABB_H
+
+
 
 // special optimized version of axis aligned bounding box
 template <class BOUNDS = AABB, class POINT = Vector3>

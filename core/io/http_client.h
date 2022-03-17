@@ -1,3 +1,5 @@
+#ifndef HTTP_CLIENT_H
+#define HTTP_CLIENT_H
 /*************************************************************************/
 /*  http_client.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef HTTP_CLIENT_H
-#define HTTP_CLIENT_H
+
+
 
 #include "core/io/ip.h"
 #include "core/io/stream_peer.h"

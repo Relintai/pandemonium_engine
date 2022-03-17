@@ -1,3 +1,5 @@
+#ifndef VSET_H
+#define VSET_H
 /*************************************************************************/
 /*  vset.h                                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VSET_H
-#define VSET_H
+
+
 
 #include "core/typedefs.h"
 #include "core/vector.h"

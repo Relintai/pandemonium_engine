@@ -1,3 +1,5 @@
+#ifndef PCK_PACKER_H
+#define PCK_PACKER_H
 /*************************************************************************/
 /*  pck_packer.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PCK_PACKER_H
-#define PCK_PACKER_H
+
+
 
 #include "core/reference.h"
 

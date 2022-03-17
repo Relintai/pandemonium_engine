@@ -1,3 +1,5 @@
+#ifndef MULTIPLAYER_PROTOCOL_H
+#define MULTIPLAYER_PROTOCOL_H
 /*************************************************************************/
 /*  multiplayer_api.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MULTIPLAYER_PROTOCOL_H
-#define MULTIPLAYER_PROTOCOL_H
+
+
 
 #include "core/io/networked_multiplayer_peer.h"
 #include "core/reference.h"

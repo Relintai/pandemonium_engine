@@ -1,3 +1,5 @@
+#ifndef COMPRESSED_TRANSLATION_H
+#define COMPRESSED_TRANSLATION_H
 /*************************************************************************/
 /*  compressed_translation.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef COMPRESSED_TRANSLATION_H
-#define COMPRESSED_TRANSLATION_H
+
+
 
 #include "core/translation.h"
 

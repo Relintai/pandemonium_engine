@@ -1,3 +1,5 @@
+#ifndef FACE3_H
+#define FACE3_H
 /*************************************************************************/
 /*  face3.h                                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef FACE3_H
-#define FACE3_H
+
+
 
 #include "core/math/aabb.h"
 #include "core/math/plane.h"

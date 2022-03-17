@@ -1,3 +1,5 @@
+#ifndef OCTREE_H
+#define OCTREE_H
 /*************************************************************************/
 /*  octree.h                                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef OCTREE_H
-#define OCTREE_H
+
+
 
 #define OCTREE_ELEMENT_INVALID_ID 0
 #define OCTREE_SIZE_LIMIT 1e15

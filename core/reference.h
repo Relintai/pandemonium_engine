@@ -1,3 +1,5 @@
+#ifndef REFERENCE_H
+#define REFERENCE_H
 /*************************************************************************/
 /*  reference.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef REFERENCE_H
-#define REFERENCE_H
+
+
 
 #include "core/class_db.h"
 #include "core/object.h"

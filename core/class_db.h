@@ -1,3 +1,5 @@
+#ifndef CLASS_DB_H
+#define CLASS_DB_H
 /*************************************************************************/
 /*  class_db.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CLASS_DB_H
-#define CLASS_DB_H
+
+
 
 #include "core/method_bind.h"
 #include "core/object.h"

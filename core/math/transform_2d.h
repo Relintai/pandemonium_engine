@@ -1,3 +1,5 @@
+#ifndef TRANSFORM_2D_H
+#define TRANSFORM_2D_H
 /*************************************************************************/
 /*  transform_2d.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TRANSFORM_2D_H
-#define TRANSFORM_2D_H
+
+
 
 #include "core/math/rect2.h" // also includes vector2, math_funcs, and ustring
 #include "core/pool_vector.h"

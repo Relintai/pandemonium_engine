@@ -1,3 +1,5 @@
+#ifndef TRANSFORM_H
+#define TRANSFORM_H
 /*************************************************************************/
 /*  transform.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TRANSFORM_H
-#define TRANSFORM_H
+
+
 
 #include "core/math/aabb.h"
 #include "core/math/basis.h"

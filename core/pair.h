@@ -1,3 +1,5 @@
+#ifndef PAIR_H
+#define PAIR_H
 /*************************************************************************/
 /*  pair.h                                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PAIR_H
-#define PAIR_H
+
+
 
 template <class F, class S>
 struct Pair {

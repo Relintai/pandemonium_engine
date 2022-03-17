@@ -1,3 +1,5 @@
+#ifndef MUTEX_H
+#define MUTEX_H
 /*************************************************************************/
 /*  mutex.h                                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MUTEX_H
-#define MUTEX_H
+
+
 
 #include "core/error_list.h"
 #include "core/typedefs.h"

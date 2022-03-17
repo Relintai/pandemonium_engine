@@ -1,3 +1,5 @@
+#ifndef GLOBAL_CONSTANTS_H
+#define GLOBAL_CONSTANTS_H
 /*************************************************************************/
 /*  global_constants.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GLOBAL_CONSTANTS_H
-#define GLOBAL_CONSTANTS_H
+
+
 
 #include "core/string_name.h"
 

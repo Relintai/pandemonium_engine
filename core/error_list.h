@@ -1,3 +1,5 @@
+#ifndef ERROR_LIST_H
+#define ERROR_LIST_H
 /*************************************************************************/
 /*  error_list.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ERROR_LIST_H
-#define ERROR_LIST_H
+
+
 
 /** Error List. Please never compare an error against FAILED
  * Either do result != OK , or !result. This way, Error fail

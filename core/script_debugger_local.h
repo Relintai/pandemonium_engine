@@ -1,3 +1,5 @@
+#ifndef SCRIPT_DEBUGGER_LOCAL_H
+#define SCRIPT_DEBUGGER_LOCAL_H
 /*************************************************************************/
 /*  script_debugger_local.h                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SCRIPT_DEBUGGER_LOCAL_H
-#define SCRIPT_DEBUGGER_LOCAL_H
+
+
 
 #include "core/list.h"
 #include "core/script_language.h"

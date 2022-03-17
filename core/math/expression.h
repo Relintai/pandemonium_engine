@@ -1,3 +1,5 @@
+#ifndef EXPRESSION_H
+#define EXPRESSION_H
 /*************************************************************************/
 /*  expression.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef EXPRESSION_H
-#define EXPRESSION_H
+
+
 
 #include "core/reference.h"
 

@@ -1,3 +1,5 @@
+#ifndef RINGBUFFER_H
+#define RINGBUFFER_H
 /*************************************************************************/
 /*  ring_buffer.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RINGBUFFER_H
-#define RINGBUFFER_H
+
+
 
 #include "core/vector.h"
 

@@ -1,3 +1,5 @@
+#ifndef ASTAR_H
+#define ASTAR_H
 /*************************************************************************/
 /*  a_star.h                                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ASTAR_H
-#define ASTAR_H
+
+
 
 #include "core/oa_hash_map.h"
 #include "core/reference.h"

@@ -1,3 +1,5 @@
+#ifndef CONFIG_FILE_H
+#define CONFIG_FILE_H
 /*************************************************************************/
 /*  config_file.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CONFIG_FILE_H
-#define CONFIG_FILE_H
+
+
 
 #include "core/ordered_hash_map.h"
 #include "core/os/file_access.h"

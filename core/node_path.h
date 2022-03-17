@@ -1,3 +1,5 @@
+#ifndef NODE_PATH_H
+#define NODE_PATH_H
 /*************************************************************************/
 /*  node_path.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef NODE_PATH_H
-#define NODE_PATH_H
+
+
 
 #include "core/string_name.h"
 #include "core/ustring.h"

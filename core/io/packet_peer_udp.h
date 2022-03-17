@@ -1,3 +1,5 @@
+#ifndef PACKET_PEER_UDP_H
+#define PACKET_PEER_UDP_H
 /*************************************************************************/
 /*  packet_peer_udp.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PACKET_PEER_UDP_H
-#define PACKET_PEER_UDP_H
+
+
 
 #include "core/io/ip.h"
 #include "core/io/net_socket.h"

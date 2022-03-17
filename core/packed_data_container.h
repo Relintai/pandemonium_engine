@@ -1,3 +1,5 @@
+#ifndef PACKED_DATA_CONTAINER_H
+#define PACKED_DATA_CONTAINER_H
 /*************************************************************************/
 /*  packed_data_container.h                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PACKED_DATA_CONTAINER_H
-#define PACKED_DATA_CONTAINER_H
+
+
 
 #include "core/resource.h"
 

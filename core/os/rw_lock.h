@@ -1,3 +1,5 @@
+#ifndef RWLOCK_H
+#define RWLOCK_H
 /*************************************************************************/
 /*  rw_lock.h                                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RWLOCK_H
-#define RWLOCK_H
+
+
 
 #include "core/error_list.h"
 

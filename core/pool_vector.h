@@ -1,3 +1,5 @@
+#ifndef POOL_VECTOR_H
+#define POOL_VECTOR_H
 /*************************************************************************/
 /*  pool_vector.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef POOL_VECTOR_H
-#define POOL_VECTOR_H
+
+
 
 #include "core/os/memory.h"
 #include "core/os/mutex.h"

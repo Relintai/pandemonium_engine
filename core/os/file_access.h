@@ -1,3 +1,5 @@
+#ifndef FILE_ACCESS_H
+#define FILE_ACCESS_H
 /*************************************************************************/
 /*  file_access.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef FILE_ACCESS_H
-#define FILE_ACCESS_H
+
+
 
 #include "core/math/math_defs.h"
 #include "core/os/memory.h"

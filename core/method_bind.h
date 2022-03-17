@@ -1,3 +1,5 @@
+#ifndef METHOD_BIND_H
+#define METHOD_BIND_H
 /*************************************************************************/
 /*  method_bind.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef METHOD_BIND_H
-#define METHOD_BIND_H
+
+
 
 #include "core/list.h"
 #include "core/method_ptrcall.h"

@@ -1,3 +1,5 @@
+#ifndef REGISTER_CORE_TYPES_H
+#define REGISTER_CORE_TYPES_H
 /*************************************************************************/
 /*  register_core_types.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef REGISTER_CORE_TYPES_H
-#define REGISTER_CORE_TYPES_H
+
+
 
 void register_core_types();
 void register_core_settings();

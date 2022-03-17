@@ -1,3 +1,5 @@
+#ifndef CRYPTO_H
+#define CRYPTO_H
 /*************************************************************************/
 /*  crypto.h                                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CRYPTO_H
-#define CRYPTO_H
+
+
 
 #include "core/crypto/hashing_context.h"
 #include "core/reference.h"

@@ -1,3 +1,5 @@
+#ifndef TRIANGULATE_H
+#define TRIANGULATE_H
 /*************************************************************************/
 /*  triangulate.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TRIANGULATE_H
-#define TRIANGULATE_H
+
+
 
 #include "core/math/vector2.h"
 

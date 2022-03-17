@@ -1,3 +1,5 @@
+#ifndef MARSHALLS_H
+#define MARSHALLS_H
 /*************************************************************************/
 /*  marshalls.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MARSHALLS_H
-#define MARSHALLS_H
+
+
 
 #include "core/reference.h"
 #include "core/typedefs.h"

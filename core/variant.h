@@ -1,3 +1,5 @@
+#ifndef VARIANT_H
+#define VARIANT_H
 /*************************************************************************/
 /*  variant.h                                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VARIANT_H
-#define VARIANT_H
+
+
 
 #include "core/array.h"
 #include "core/color.h"

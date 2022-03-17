@@ -1,3 +1,5 @@
+#ifndef BITFIELD_DYNAMIC_H
+#define BITFIELD_DYNAMIC_H
 /*************************************************************************/
 /*  bitfield_dynamic.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BITFIELD_DYNAMIC_H
-#define BITFIELD_DYNAMIC_H
+
+
 
 #include "core/error_macros.h"
 

@@ -1,3 +1,5 @@
+#ifndef GEOMETRY_H
+#define GEOMETRY_H
 /*************************************************************************/
 /*  geometry.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GEOMETRY_H
-#define GEOMETRY_H
+
+
 
 #include "core/math/delaunay.h"
 #include "core/math/face3.h"

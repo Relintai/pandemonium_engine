@@ -1,3 +1,5 @@
+#ifndef KEYBOARD_H
+#define KEYBOARD_H
 /*************************************************************************/
 /*  keyboard.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef KEYBOARD_H
-#define KEYBOARD_H
+
+
 
 #include "core/ustring.h"
 

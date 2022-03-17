@@ -1,3 +1,5 @@
+#ifndef RECT2_H
+#define RECT2_H
 /*************************************************************************/
 /*  rect2.h                                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RECT2_H
-#define RECT2_H
+
+
 
 #include "core/math/vector2.h" // also includes math_funcs and ustring
 

@@ -1,3 +1,5 @@
+#ifndef VARIANT_PARSER_H
+#define VARIANT_PARSER_H
 /*************************************************************************/
 /*  variant_parser.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VARIANT_PARSER_H
-#define VARIANT_PARSER_H
+
+
 
 #include "core/os/file_access.h"
 #include "core/resource.h"

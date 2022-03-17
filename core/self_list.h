@@ -1,3 +1,5 @@
+#ifndef SELF_LIST_H
+#define SELF_LIST_H
 /*************************************************************************/
 /*  self_list.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SELF_LIST_H
-#define SELF_LIST_H
+
+
 
 #include "core/error_macros.h"
 #include "core/typedefs.h"

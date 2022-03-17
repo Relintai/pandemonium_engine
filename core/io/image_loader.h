@@ -1,3 +1,5 @@
+#ifndef IMAGE_LOADER_H
+#define IMAGE_LOADER_H
 /*************************************************************************/
 /*  image_loader.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef IMAGE_LOADER_H
-#define IMAGE_LOADER_H
+
+
 
 #include "core/image.h"
 #include "core/io/resource_loader.h"

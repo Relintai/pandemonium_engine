@@ -1,3 +1,5 @@
+#ifndef THREAD_H
+#define THREAD_H
 /*************************************************************************/
 /*  thread.h                                                             */
 /*************************************************************************/
@@ -34,8 +36,8 @@
 #ifdef PLATFORM_THREAD_OVERRIDE
 #include "platform_thread.h"
 #else
-#ifndef THREAD_H
-#define THREAD_H
+
+
 
 #include "core/typedefs.h"
 

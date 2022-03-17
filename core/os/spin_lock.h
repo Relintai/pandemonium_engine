@@ -1,3 +1,5 @@
+#ifndef SPIN_LOCK_H
+#define SPIN_LOCK_H
 /*************************************************************************/
 /*  spin_lock.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SPIN_LOCK_H
-#define SPIN_LOCK_H
+
+
 
 #include "core/typedefs.h"
 

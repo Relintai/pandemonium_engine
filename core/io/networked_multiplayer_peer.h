@@ -1,3 +1,5 @@
+#ifndef NETWORKED_MULTIPLAYER_PEER_H
+#define NETWORKED_MULTIPLAYER_PEER_H
 /*************************************************************************/
 /*  networked_multiplayer_peer.h                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef NETWORKED_MULTIPLAYER_PEER_H
-#define NETWORKED_MULTIPLAYER_PEER_H
+
+
 
 #include "core/io/packet_peer.h"
 

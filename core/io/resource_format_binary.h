@@ -1,3 +1,5 @@
+#ifndef RESOURCE_FORMAT_BINARY_H
+#define RESOURCE_FORMAT_BINARY_H
 /*************************************************************************/
 /*  resource_format_binary.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RESOURCE_FORMAT_BINARY_H
-#define RESOURCE_FORMAT_BINARY_H
+
+
 
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"

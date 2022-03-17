@@ -1,3 +1,5 @@
+#ifndef DICTIONARY_H
+#define DICTIONARY_H
 /*************************************************************************/
 /*  dictionary.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef DICTIONARY_H
-#define DICTIONARY_H
+
+
 
 #include "core/array.h"
 #include "core/list.h"

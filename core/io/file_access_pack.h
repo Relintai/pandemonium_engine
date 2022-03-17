@@ -1,3 +1,5 @@
+#ifndef FILE_ACCESS_PACK_H
+#define FILE_ACCESS_PACK_H
 /*************************************************************************/
 /*  file_access_pack.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef FILE_ACCESS_PACK_H
-#define FILE_ACCESS_PACK_H
+
+
 
 #include "core/list.h"
 #include "core/map.h"

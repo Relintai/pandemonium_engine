@@ -1,3 +1,5 @@
+#ifndef XML_PARSER_H
+#define XML_PARSER_H
 /*************************************************************************/
 /*  xml_parser.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef XML_PARSER_H
-#define XML_PARSER_H
+
+
 
 #include "core/os/file_access.h"
 #include "core/reference.h"

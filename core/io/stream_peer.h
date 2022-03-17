@@ -1,3 +1,5 @@
+#ifndef STREAM_PEER_H
+#define STREAM_PEER_H
 /*************************************************************************/
 /*  stream_peer.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef STREAM_PEER_H
-#define STREAM_PEER_H
+
+
 
 #include "core/reference.h"
 

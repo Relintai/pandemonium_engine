@@ -1,3 +1,5 @@
+#ifndef SCRIPT_LANGUAGE_H
+#define SCRIPT_LANGUAGE_H
 /*************************************************************************/
 /*  script_language.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SCRIPT_LANGUAGE_H
-#define SCRIPT_LANGUAGE_H
+
+
 
 #include "core/io/multiplayer_api.h"
 #include "core/map.h"

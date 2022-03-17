@@ -1,3 +1,5 @@
+#ifndef COLOR_H
+#define COLOR_H
 /*************************************************************************/
 /*  color.h                                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef COLOR_H
-#define COLOR_H
+
+
 
 #include "core/math/math_funcs.h"
 #include "core/ustring.h"

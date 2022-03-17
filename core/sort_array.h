@@ -1,3 +1,5 @@
+#ifndef SORT_ARRAY_H
+#define SORT_ARRAY_H
 /*************************************************************************/
 /*  sort_array.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SORT_ARRAY_H
-#define SORT_ARRAY_H
+
+
 
 #include "core/error_macros.h"
 #include "core/typedefs.h"

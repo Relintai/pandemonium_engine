@@ -1,3 +1,5 @@
+#ifndef RID_H
+#define RID_H
 /*************************************************************************/
 /*  rid.h                                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RID_H
-#define RID_H
+
+
 
 #include "core/list.h"
 #include "core/os/memory.h"

@@ -1,3 +1,5 @@
+#ifndef RANDOM_PCG_H
+#define RANDOM_PCG_H
 /*************************************************************************/
 /*  random_pcg.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RANDOM_PCG_H
-#define RANDOM_PCG_H
+
+
 
 #include <math.h>
 

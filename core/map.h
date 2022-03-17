@@ -1,3 +1,5 @@
+#ifndef MAP_H
+#define MAP_H
 /*************************************************************************/
 /*  map.h                                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MAP_H
-#define MAP_H
+
+
 
 #include "core/error_macros.h"
 #include "core/os/memory.h"

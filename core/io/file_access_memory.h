@@ -1,3 +1,5 @@
+#ifndef FILE_ACCESS_MEMORY_H
+#define FILE_ACCESS_MEMORY_H
 /*************************************************************************/
 /*  file_access_memory.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef FILE_ACCESS_MEMORY_H
-#define FILE_ACCESS_MEMORY_H
+
+
 
 #include "core/os/file_access.h"
 

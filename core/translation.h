@@ -1,3 +1,5 @@
+#ifndef TRANSLATION_H
+#define TRANSLATION_H
 /*************************************************************************/
 /*  translation.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TRANSLATION_H
-#define TRANSLATION_H
+
+
 
 #include "core/resource.h"
 

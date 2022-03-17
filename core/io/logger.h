@@ -1,3 +1,5 @@
+#ifndef LOGGER_H
+#define LOGGER_H
 /*************************************************************************/
 /*  logger.h                                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef LOGGER_H
-#define LOGGER_H
+
+
 
 #include "core/os/file_access.h"
 #include "core/ustring.h"

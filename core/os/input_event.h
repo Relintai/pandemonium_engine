@@ -1,3 +1,5 @@
+#ifndef INPUT_EVENT_H
+#define INPUT_EVENT_H
 /*************************************************************************/
 /*  input_event.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef INPUT_EVENT_H
-#define INPUT_EVENT_H
+
+
 
 #include "core/math/transform_2d.h"
 #include "core/resource.h"

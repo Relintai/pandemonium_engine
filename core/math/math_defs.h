@@ -1,3 +1,5 @@
+#ifndef MATH_DEFS_H
+#define MATH_DEFS_H
 /*************************************************************************/
 /*  math_defs.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MATH_DEFS_H
-#define MATH_DEFS_H
+
+
 
 #define CMP_EPSILON 0.00001
 #define CMP_EPSILON2 (CMP_EPSILON * CMP_EPSILON)

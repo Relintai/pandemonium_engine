@@ -1,3 +1,5 @@
+#ifndef THREADED_CALLABLE_QUEUE_H
+#define THREADED_CALLABLE_QUEUE_H
 /*************************************************************************/
 /*  threaded_callable_queue.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef THREADED_CALLABLE_QUEUE_H
-#define THREADED_CALLABLE_QUEUE_H
+
+
 
 #include "core/local_vector.h"
 #include "core/ordered_hash_map.h"

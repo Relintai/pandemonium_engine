@@ -1,3 +1,5 @@
+#ifndef PRINT_STRING_H
+#define PRINT_STRING_H
 /*************************************************************************/
 /*  print_string.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PRINT_STRING_H
-#define PRINT_STRING_H
+
+
 
 #include "core/ustring.h"
 

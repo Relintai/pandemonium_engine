@@ -1,3 +1,5 @@
+#ifndef SEMAPHORE_H
+#define SEMAPHORE_H
 /*************************************************************************/
 /*  semaphore.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SEMAPHORE_H
-#define SEMAPHORE_H
+
+
 
 #include "core/error_list.h"
 #include "core/typedefs.h"

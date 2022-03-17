@@ -1,3 +1,5 @@
+#ifndef THREADED_ARRAY_PROCESSOR_H
+#define THREADED_ARRAY_PROCESSOR_H
 /*************************************************************************/
 /*  threaded_array_processor.h                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef THREADED_ARRAY_PROCESSOR_H
-#define THREADED_ARRAY_PROCESSOR_H
+
+
 
 #include "core/os/mutex.h"
 #include "core/os/os.h"

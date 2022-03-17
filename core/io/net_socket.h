@@ -1,3 +1,5 @@
+#ifndef NET_SOCKET_H
+#define NET_SOCKET_H
 /*************************************************************************/
 /*  net_socket.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef NET_SOCKET_H
-#define NET_SOCKET_H
+
+
 
 #include "core/io/ip.h"
 #include "core/reference.h"

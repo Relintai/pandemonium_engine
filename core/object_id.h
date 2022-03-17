@@ -1,3 +1,5 @@
+#ifndef OBJECTID_H
+#define OBJECTID_H
 /*************************************************************************/
 /*  object_id.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef OBJECTID_H
-#define OBJECTID_H
+
+
 
 #include "core/int_types.h"
 

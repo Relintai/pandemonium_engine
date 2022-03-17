@@ -1,3 +1,5 @@
+#ifndef MAIN_LOOP_H
+#define MAIN_LOOP_H
 /*************************************************************************/
 /*  main_loop.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MAIN_LOOP_H
-#define MAIN_LOOP_H
+
+
 
 #include "core/os/input_event.h"
 #include "core/reference.h"

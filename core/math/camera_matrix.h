@@ -1,3 +1,5 @@
+#ifndef CAMERA_MATRIX_H
+#define CAMERA_MATRIX_H
 /*************************************************************************/
 /*  camera_matrix.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CAMERA_MATRIX_H
-#define CAMERA_MATRIX_H
+
+
 
 #include "core/math/rect2.h"
 #include "core/math/transform.h"

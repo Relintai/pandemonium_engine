@@ -1,3 +1,5 @@
+#ifndef PAGED_ALLOCATOR_H
+#define PAGED_ALLOCATOR_H
 /*************************************************************************/
 /*  paged_allocator.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PAGED_ALLOCATOR_H
-#define PAGED_ALLOCATOR_H
+
+
 
 #include "core/os/memory.h"
 #include "core/os/spin_lock.h"

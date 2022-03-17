@@ -1,3 +1,5 @@
+#ifndef STRING_NAME_H
+#define STRING_NAME_H
 /*************************************************************************/
 /*  string_name.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef STRING_NAME_H
-#define STRING_NAME_H
+
+
 
 #include "core/os/mutex.h"
 #include "core/safe_refcount.h"

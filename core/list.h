@@ -1,3 +1,5 @@
+#ifndef GLOBALS_LIST_H
+#define GLOBALS_LIST_H
 /*************************************************************************/
 /*  list.h                                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GLOBALS_LIST_H
-#define GLOBALS_LIST_H
+
+
 
 #include "core/error_macros.h"
 #include "core/os/memory.h"

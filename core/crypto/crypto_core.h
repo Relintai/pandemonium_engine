@@ -1,3 +1,5 @@
+#ifndef CRYPTO_CORE_H
+#define CRYPTO_CORE_H
 /*************************************************************************/
 /*  crypto_core.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CRYPTO_CORE_H
-#define CRYPTO_CORE_H
+
+
 
 #include "core/reference.h"
 

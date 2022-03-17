@@ -1,3 +1,5 @@
+#ifndef IP_ADDRESS_H
+#define IP_ADDRESS_H
 /*************************************************************************/
 /*  ip_address.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef IP_ADDRESS_H
-#define IP_ADDRESS_H
+
+
 
 #include "core/ustring.h"
 

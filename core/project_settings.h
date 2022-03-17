@@ -1,3 +1,5 @@
+#ifndef GLOBAL_CONFIG_H
+#define GLOBAL_CONFIG_H
 /*************************************************************************/
 /*  project_settings.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GLOBAL_CONFIG_H
-#define GLOBAL_CONFIG_H
+
+
 
 #include "core/object.h"
 #include "core/os/thread_safe.h"

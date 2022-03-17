@@ -1,3 +1,5 @@
+#ifndef HASHING_CONTEXT_H
+#define HASHING_CONTEXT_H
 /*************************************************************************/
 /*  hashing_context.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef HASHING_CONTEXT_H
-#define HASHING_CONTEXT_H
+
+
 
 #include "core/reference.h"
 

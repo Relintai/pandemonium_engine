@@ -1,3 +1,5 @@
+#ifndef RESOURCE_H
+#define RESOURCE_H
 /*************************************************************************/
 /*  resource.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RESOURCE_H
-#define RESOURCE_H
+
+
 
 #include "core/class_db.h"
 #include "core/object.h"

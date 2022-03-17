@@ -1,3 +1,5 @@
+#ifndef TYPEDEFS_H
+#define TYPEDEFS_H
 /*************************************************************************/
 /*  typedefs.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TYPEDEFS_H
-#define TYPEDEFS_H
+
+
 
 #include <stddef.h>
 

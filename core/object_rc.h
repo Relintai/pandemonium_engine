@@ -1,3 +1,5 @@
+#ifndef OBJECTRC_H
+#define OBJECTRC_H
 /*************************************************************************/
 /*  object_rc.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef OBJECTRC_H
-#define OBJECTRC_H
+
+
 
 #include "core/os/memory.h"
 #include "core/typedefs.h"

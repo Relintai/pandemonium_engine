@@ -1,3 +1,5 @@
+#ifndef RID_HANDLE_H
+#define RID_HANDLE_H
 /*************************************************************************/
 /*  rid_handle.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RID_HANDLE_H
-#define RID_HANDLE_H
+
+
 
 #include "core/list.h"
 #include "core/os/mutex.h"

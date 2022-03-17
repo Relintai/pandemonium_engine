@@ -1,3 +1,5 @@
+#ifndef STREAM_PEER_TCP_H
+#define STREAM_PEER_TCP_H
 /*************************************************************************/
 /*  stream_peer_tcp.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef STREAM_PEER_TCP_H
-#define STREAM_PEER_TCP_H
+
+
 
 #include "core/io/ip.h"
 #include "core/io/ip_address.h"

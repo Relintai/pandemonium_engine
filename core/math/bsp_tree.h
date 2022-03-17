@@ -1,3 +1,5 @@
+#ifndef BSP_TREE_H
+#define BSP_TREE_H
 /*************************************************************************/
 /*  bsp_tree.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BSP_TREE_H
-#define BSP_TREE_H
+
+
 
 #include "core/math/aabb.h"
 #include "core/math/face3.h"

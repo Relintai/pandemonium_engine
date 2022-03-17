@@ -1,3 +1,5 @@
+#ifndef THREAD_SAFE_H
+#define THREAD_SAFE_H
 /*************************************************************************/
 /*  thread_safe.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef THREAD_SAFE_H
-#define THREAD_SAFE_H
+
+
 
 #include "core/os/mutex.h"
 

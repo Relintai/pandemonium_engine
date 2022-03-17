@@ -1,3 +1,5 @@
+#ifndef RESOURCE_LOADER_H
+#define RESOURCE_LOADER_H
 /*************************************************************************/
 /*  resource_loader.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RESOURCE_LOADER_H
-#define RESOURCE_LOADER_H
+
+
 
 #include "core/os/thread.h"
 #include "core/resource.h"

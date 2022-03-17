@@ -1,3 +1,5 @@
+#ifndef STRING_BUILDER_H
+#define STRING_BUILDER_H
 /*************************************************************************/
 /*  string_builder.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef STRING_BUILDER_H
-#define STRING_BUILDER_H
+
+
 
 #include "core/ustring.h"
 

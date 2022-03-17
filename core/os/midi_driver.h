@@ -1,3 +1,5 @@
+#ifndef MIDI_DRIVER_H
+#define MIDI_DRIVER_H
 /*************************************************************************/
 /*  midi_driver.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MIDI_DRIVER_H
-#define MIDI_DRIVER_H
+
+
 
 #include "core/typedefs.h"
 #include "core/variant.h"

@@ -1,3 +1,5 @@
+#ifndef UNDO_REDO_H
+#define UNDO_REDO_H
 /*************************************************************************/
 /*  undo_redo.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef UNDO_REDO_H
-#define UNDO_REDO_H
+
+
 
 #include "core/reference.h"
 

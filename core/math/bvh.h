@@ -1,3 +1,5 @@
+#ifndef BVH_H
+#define BVH_H
 /*************************************************************************/
 /*  bvh.h                                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BVH_H
-#define BVH_H
+
+
 
 // BVH
 // This class provides a wrapper around BVH tree, which contains most of the functionality

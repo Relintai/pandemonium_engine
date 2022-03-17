@@ -1,3 +1,5 @@
+#ifndef COWDATA_H_
+#define COWDATA_H_
 /*************************************************************************/
 /*  cowdata.h                                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef COWDATA_H_
-#define COWDATA_H_
+
+
 
 #include <string.h>
 

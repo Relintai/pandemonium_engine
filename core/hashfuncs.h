@@ -1,3 +1,5 @@
+#ifndef HASHFUNCS_H
+#define HASHFUNCS_H
 /*************************************************************************/
 /*  hashfuncs.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef HASHFUNCS_H
-#define HASHFUNCS_H
+
+
 
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"

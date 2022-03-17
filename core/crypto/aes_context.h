@@ -1,3 +1,5 @@
+#ifndef AES_CONTEXT_H
+#define AES_CONTEXT_H
 /*************************************************************************/
 /*  aes_context.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AES_CONTEXT_H
-#define AES_CONTEXT_H
+
+
 
 #include "core/crypto/crypto_core.h"
 #include "core/reference.h"

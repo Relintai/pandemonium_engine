@@ -1,3 +1,5 @@
+#ifndef LOCAL_VECTOR_H
+#define LOCAL_VECTOR_H
 /*************************************************************************/
 /*  local_vector.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef LOCAL_VECTOR_H
-#define LOCAL_VECTOR_H
+
+
 
 #include "core/error_macros.h"
 #include "core/os/memory.h"

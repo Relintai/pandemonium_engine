@@ -1,3 +1,5 @@
+#ifndef QUAT_H
+#define QUAT_H
 /*************************************************************************/
 /*  quat.h                                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef QUAT_H
-#define QUAT_H
+
+
 
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"

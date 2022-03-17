@@ -1,3 +1,5 @@
+#ifndef INPUT_H
+#define INPUT_H
 /*************************************************************************/
 /*  input.h                                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef INPUT_H
-#define INPUT_H
+
+
 
 #include "core/object.h"
 #include "core/os/main_loop.h"

@@ -1,3 +1,5 @@
+#ifndef TRANSFORM_INTERPOLATOR_H
+#define TRANSFORM_INTERPOLATOR_H
 /*************************************************************************/
 /*  transform_interpolator.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TRANSFORM_INTERPOLATOR_H
-#define TRANSFORM_INTERPOLATOR_H
+
+
 
 #include "core/math/math_defs.h"
 #include "core/math/quat.h"

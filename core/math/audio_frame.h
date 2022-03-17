@@ -1,3 +1,5 @@
+#ifndef AUDIOFRAME_H
+#define AUDIOFRAME_H
 /*************************************************************************/
 /*  audio_frame.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIOFRAME_H
-#define AUDIOFRAME_H
+
+
 
 #include "core/math/vector2.h"
 #include "core/typedefs.h"

@@ -1,3 +1,5 @@
+#ifndef USTRING_H
+#define USTRING_H
 /*************************************************************************/
 /*  ustring.h                                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef USTRING_H
-#define USTRING_H
+
+
 
 #include "core/array.h"
 #include "core/cowdata.h"

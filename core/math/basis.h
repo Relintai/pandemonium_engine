@@ -1,3 +1,5 @@
+#ifndef BASIS_H
+#define BASIS_H
 /*************************************************************************/
 /*  basis.h                                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BASIS_H
-#define BASIS_H
+
+
 
 #include "core/math/quat.h"
 #include "core/math/vector3.h"

@@ -1,3 +1,5 @@
+#ifndef FILE_ACCESS_ZIP_H
+#define FILE_ACCESS_ZIP_H
 /*************************************************************************/
 /*  file_access_zip.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef FILE_ACCESS_ZIP_H
-#define FILE_ACCESS_ZIP_H
+
+
 
 #ifdef MINIZIP_ENABLED
 

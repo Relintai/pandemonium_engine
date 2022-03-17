@@ -1,3 +1,5 @@
+#ifndef ORDERED_HASH_MAP_H
+#define ORDERED_HASH_MAP_H
 /*************************************************************************/
 /*  ordered_hash_map.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ORDERED_HASH_MAP_H
-#define ORDERED_HASH_MAP_H
+
+
 
 #include "core/hash_map.h"
 #include "core/list.h"

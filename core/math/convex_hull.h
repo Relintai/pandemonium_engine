@@ -1,3 +1,5 @@
+#ifndef CONVEX_HULL_H
+#define CONVEX_HULL_H
 /*************************************************************************/
 /*  convex_hull.h                                                        */
 /*************************************************************************/
@@ -42,8 +44,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef CONVEX_HULL_H
-#define CONVEX_HULL_H
+
+
 
 #include "core/local_vector.h"
 #include "core/math/geometry.h"

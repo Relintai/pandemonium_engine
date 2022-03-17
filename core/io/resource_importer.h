@@ -1,3 +1,5 @@
+#ifndef RESOURCE_IMPORTER_H
+#define RESOURCE_IMPORTER_H
 /*************************************************************************/
 /*  resource_importer.h                                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RESOURCE_IMPORTER_H
-#define RESOURCE_IMPORTER_H
+
+
 
 #include "core/io/resource_loader.h"
 

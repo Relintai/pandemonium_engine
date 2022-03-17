@@ -1,3 +1,5 @@
+#ifndef COMMAND_QUEUE_MT_H
+#define COMMAND_QUEUE_MT_H
 /*************************************************************************/
 /*  command_queue_mt.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef COMMAND_QUEUE_MT_H
-#define COMMAND_QUEUE_MT_H
+
+
 
 #include "core/os/memory.h"
 #include "core/os/mutex.h"

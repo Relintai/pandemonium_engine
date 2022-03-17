@@ -1,3 +1,5 @@
+#ifndef DIR_ACCESS_H
+#define DIR_ACCESS_H
 /*************************************************************************/
 /*  dir_access.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef DIR_ACCESS_H
-#define DIR_ACCESS_H
+
+
 
 #include "core/typedefs.h"
 #include "core/ustring.h"

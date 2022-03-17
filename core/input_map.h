@@ -1,3 +1,5 @@
+#ifndef INPUT_MAP_H
+#define INPUT_MAP_H
 /*************************************************************************/
 /*  input_map.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef INPUT_MAP_H
-#define INPUT_MAP_H
+
+
 
 #include "core/object.h"
 #include "core/os/input_event.h"

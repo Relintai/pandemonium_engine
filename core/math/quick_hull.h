@@ -1,3 +1,5 @@
+#ifndef QUICK_HULL_H
+#define QUICK_HULL_H
 /*************************************************************************/
 /*  quick_hull.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef QUICK_HULL_H
-#define QUICK_HULL_H
+
+
 
 #include "core/list.h"
 #include "core/math/aabb.h"

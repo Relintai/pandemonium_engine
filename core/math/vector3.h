@@ -1,3 +1,5 @@
+#ifndef VECTOR3_H
+#define VECTOR3_H
 /*************************************************************************/
 /*  vector3.h                                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VECTOR3_H
-#define VECTOR3_H
+
+
 
 #include "core/math/math_funcs.h"
 #include "core/ustring.h"

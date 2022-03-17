@@ -1,3 +1,5 @@
+#ifndef UCAPS_H
+#define UCAPS_H
 /*************************************************************************/
 /*  ucaps.h                                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef UCAPS_H
-#define UCAPS_H
+
+
 
 //satan invented unicode?
 #define CAPS_LEN 666

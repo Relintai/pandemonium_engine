@@ -1,3 +1,5 @@
+#ifndef GET_TYPE_INFO_H
+#define GET_TYPE_INFO_H
 /*************************************************************************/
 /*  type_info.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GET_TYPE_INFO_H
-#define GET_TYPE_INFO_H
+
+
 
 #ifdef DEBUG_METHODS_ENABLED
 

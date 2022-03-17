@@ -1,3 +1,5 @@
+#ifndef TCP_SERVER_H
+#define TCP_SERVER_H
 /*************************************************************************/
 /*  tcp_server.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TCP_SERVER_H
-#define TCP_SERVER_H
+
+
 
 #include "core/io/ip.h"
 #include "core/io/net_socket.h"

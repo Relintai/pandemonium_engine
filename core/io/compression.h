@@ -1,3 +1,5 @@
+#ifndef COMPRESSION_H
+#define COMPRESSION_H
 /*************************************************************************/
 /*  compression.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef COMPRESSION_H
-#define COMPRESSION_H
+
+
 
 #include "core/pool_vector.h"
 #include "core/typedefs.h"

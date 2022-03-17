@@ -1,3 +1,5 @@
+#ifndef SET_H
+#define SET_H
 /*************************************************************************/
 /*  set.h                                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SET_H
-#define SET_H
+
+
 
 #include "core/os/memory.h"
 #include "core/typedefs.h"

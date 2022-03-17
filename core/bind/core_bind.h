@@ -1,3 +1,5 @@
+#ifndef CORE_BIND_H
+#define CORE_BIND_H
 /*************************************************************************/
 /*  core_bind.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CORE_BIND_H
-#define CORE_BIND_H
+
+
 
 #include "core/image.h"
 #include "core/io/compression.h"
