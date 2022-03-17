@@ -32,11 +32,12 @@
 #define TEXT_EDIT_H
 
 #include "scene/gui/control.h"
-#include "scene/gui/popup_menu.h"
-#include "scene/gui/scroll_bar.h"
-#include "scene/main/timer.h"
 
 class SyntaxHighlighter;
+class PopupMenu;
+class Timer;
+class HScrollBar;
+class VScrollBar;
 
 class TextEdit : public Control {
 	GDCLASS(TextEdit, Control);

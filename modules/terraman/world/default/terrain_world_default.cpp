@@ -30,6 +30,7 @@ SOFTWARE.
 #include "../jobs/terrain_light_job.h"
 #include "../jobs/terrain_prop_job.h"
 #include "../jobs/terrain_terrain_job.h"
+#include "servers/physics_server.h"
 
 _FORCE_INLINE_ int TerrainWorldDefault::get_build_flags() const {
 	return _build_flags;

@@ -30,6 +30,7 @@ SOFTWARE.
 #include "../../meshers/terrain_mesher.h"
 
 #include "../default/terrain_chunk_default.h"
+#include "servers/physics_server.h"
 
 #ifdef MESH_UTILS_PRESENT
 #include "../../../mesh_utils/fast_quadratic_mesh_simplifier.h"

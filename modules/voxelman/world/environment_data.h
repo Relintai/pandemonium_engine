@@ -37,8 +37,12 @@ SOFTWARE.
 
 #include light_h
 
+#include "core/reference.h"
+
 #include "scene/3d/world_environment.h"
 #include "scene/main/node.h"
+
+class Environment;
 
 class EnvironmentData : public Resource {
 	GDCLASS(EnvironmentData, Resource);

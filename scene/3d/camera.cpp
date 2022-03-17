@@ -38,7 +38,7 @@
 #include "scene/3d/spatial_velocity_tracker.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/environment.h"
-
+#include "scene/resources/world.h"
 
 void Camera::_update_audio_listener_state() {
 }

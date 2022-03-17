@@ -40,6 +40,7 @@
 #include "scene/gui/center_container.h"
 #include "scene/gui/margin_container.h"
 #include "scene/gui/panel_container.h"
+#include "scene/resources/world.h"
 
 void SpriteFramesEditor::_gui_input(Ref<InputEvent> p_event) {
 }

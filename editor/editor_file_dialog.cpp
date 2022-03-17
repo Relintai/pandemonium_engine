@@ -44,6 +44,9 @@
 #include "scene/gui/margin_container.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/scroll_bar.h"
+#include "scene/resources/world.h"
+
+#include "core/project_settings.h"
 
 EditorFileDialog::GetIconFunc EditorFileDialog::get_icon_func = nullptr;
 EditorFileDialog::GetIconFunc EditorFileDialog::get_large_icon_func = nullptr;

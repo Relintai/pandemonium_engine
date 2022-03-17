@@ -51,6 +51,7 @@
 #include "scene/resources/multimesh.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/navigation_mesh.h"
+#include "scene/resources/shape.h"
 
 #include "modules/modules_enabled.gen.h" // For csg, gridmap.
 

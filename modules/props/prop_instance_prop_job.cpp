@@ -38,6 +38,8 @@ SOFTWARE.
 #include "prop_mesher.h"
 #include "scene/resources/shape.h"
 #include "singleton/prop_cache.h"
+#include "servers/physics_server.h"
+#include "scene/resources/world.h"
 
 #ifdef MESH_DATA_RESOURCE_PRESENT
 #include "../mesh_data_resource/mesh_data_resource.h"

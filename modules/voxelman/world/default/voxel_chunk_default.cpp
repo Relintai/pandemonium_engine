@@ -38,6 +38,7 @@ SOFTWARE.
 #include "../jobs/voxel_light_job.h"
 #include "../jobs/voxel_prop_job.h"
 #include "../jobs/voxel_terrain_job.h"
+#include "scene/resources/world.h"
 
 const String VoxelChunkDefault::BINDING_STRING_BUILD_FLAGS = "Use Isolevel,Use Lighting,Use AO,Use RAO,Generate AO,Generate RAO,Bake Lights,Create Collider,Create Lods";
 

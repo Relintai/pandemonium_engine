@@ -32,6 +32,8 @@ SOFTWARE.
 
 #include "../../library/voxel_material_cache.h"
 #include "../default/voxel_chunk_default.h"
+#include "servers/physics_server.h"
+#include "scene/resources/world.h"
 
 #ifdef MESH_DATA_RESOURCE_PRESENT
 #include "../../../mesh_data_resource/mesh_data_resource.h"

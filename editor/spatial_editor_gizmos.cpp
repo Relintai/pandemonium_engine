@@ -70,6 +70,8 @@
 #include "scene/main/viewport.h"
 #include "scene/resources/skin.h"
 #include "scene/3d/skeleton.h"
+#include "servers/physics_server.h"
+#include "scene/resources/world.h"
 
 #define HANDLE_HALF_SIZE 9.5
 

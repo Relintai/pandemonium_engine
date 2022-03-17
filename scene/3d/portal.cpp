@@ -37,6 +37,8 @@
 #include "room_manager.h"
 #include "scene/main/viewport.h"
 #include "servers/visual_server.h"
+#include "scene/resources/world.h"
+#include "scene/resources/mesh.h"
 
 bool Portal::_portal_plane_convention = false;
 bool Portal::_settings_gizmo_show_margins = true;

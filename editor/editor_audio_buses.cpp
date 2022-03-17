@@ -39,6 +39,8 @@
 #include "scene/resources/font.h"
 #include "servers/audio_server.h"
 
+#include "core/project_settings.h"
+
 void EditorAudioBus::_update_visible_channels() {
 	int i = 0;
 	for (; i < cc; i++) {

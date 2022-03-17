@@ -34,6 +34,7 @@
 #include "core/local_vector.h"
 #include "core/rid.h"
 #include "spatial.h"
+#include "core/math/geometry.h"
 
 class Portal;
 

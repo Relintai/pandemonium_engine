@@ -39,12 +39,14 @@
 #include "scene/3d/visual_instance.h"
 #include "scene/gui/panel_container.h"
 #include "scene/3d/skeleton.h"
+#include "core/reference.h"
 
 class Camera;
 class SpatialEditor;
 class EditorSpatialGizmoPlugin;
 class ViewportContainer;
 class SpatialEditorViewport;
+class Environment;
 
 class EditorSpatialGizmo : public SpatialGizmo {
 	GDCLASS(EditorSpatialGizmo, SpatialGizmo);
@@ -823,7 +825,7 @@ public:
 	Dictionary get_state() const;
 	void set_state(const Dictionary &p_state);
 
-	Ref<Environment> get_viewport_environment() { return viewport_environment; }
+	Ref<Environment> get_viewport_environment();
 
 	UndoRedo *get_undo_redo() { return undo_redo; }
 

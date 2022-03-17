@@ -42,6 +42,8 @@
 #include "scene/resources/mesh.h"
 #include "servers/audio/audio_stream.h"
 
+#include "core/project_settings.h"
+
 void post_process_preview(Ref<Image> p_image) {
 	if (p_image->get_format() != Image::FORMAT_RGBA8) {
 		p_image->convert(Image::FORMAT_RGBA8);

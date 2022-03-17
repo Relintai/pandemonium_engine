@@ -32,6 +32,7 @@
 
 #include "editor/spatial_editor_gizmos.h"
 #include "scene/resources/occluder_shape.h"
+#include "scene/resources/world.h"
 
 void RoomManagerEditorPlugin::_flip_portals() {
 	if (_room_manager) {

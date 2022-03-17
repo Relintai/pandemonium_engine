@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "environment_data.h"
 
+#include "scene/resources/environment.h"
+
 Ref<Environment> EnvironmentData::get_environment() {
 	return _environment;
 }

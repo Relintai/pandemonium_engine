@@ -38,6 +38,7 @@
 #include "editor/editor_settings.h"
 #include "scene/2d/skeleton_2d.h"
 #include "scene/gui/panel.h"
+#include "scene/resources/world.h"
 
 Node2D *Polygon2DEditor::_get_node() const {
 	return node;

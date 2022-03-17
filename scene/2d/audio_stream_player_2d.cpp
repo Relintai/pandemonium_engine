@@ -36,6 +36,8 @@
 #include "scene/main/viewport.h"
 #include "servers/audio_server.h"
 #include "servers/audio/audio_stream.h"
+#include "servers/physics_2d_server.h"
+#include "scene/resources/world_2d.h"
 
 void AudioStreamPlayer2D::_mix_audio() {
 	if (!stream_playback.is_valid() || !active.is_set() ||

@@ -30,6 +30,7 @@ SOFTWARE.
 
 #include "../../library/voxel_material_cache.h"
 #include "../default/voxel_chunk_default.h"
+#include "servers/physics_server.h"
 
 #ifdef MESH_UTILS_PRESENT
 #include "../../../mesh_utils/fast_quadratic_mesh_simplifier.h"

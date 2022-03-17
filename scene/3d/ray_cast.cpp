@@ -34,6 +34,9 @@
 #include "core/engine.h"
 #include "mesh_instance.h"
 #include "servers/physics_server.h"
+#include "scene/resources/material.h"
+#include "scene/resources/world.h"
+#include "scene/resources/mesh.h"
 
 void RayCast::set_cast_to(const Vector3 &p_point) {
 	cast_to = p_point;
@@ -514,4 +517,7 @@ RayCast::RayCast() {
 	exclude_parent_body = true;
 	collide_with_areas = false;
 	collide_with_bodies = true;
+}
+
+RayCast::~RayCast() {
 }

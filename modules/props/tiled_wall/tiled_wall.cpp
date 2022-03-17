@@ -24,6 +24,8 @@
 
 #include "core/core_string_names.h"
 #include "tiled_wall_data.h"
+#include "servers/physics_server.h"
+#include "scene/resources/world.h"
 
 int TiledWall::get_width() const {
 	return _width;

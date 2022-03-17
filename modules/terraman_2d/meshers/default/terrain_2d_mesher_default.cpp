@@ -30,6 +30,9 @@ SOFTWARE.
 #include visual_server_h
 #include mesh_instance_h
 
+#include "servers/physics_2d_server.h"
+#include "scene/resources/world_2d.h"
+
 _FORCE_INLINE_ int Terrain2DMesherDefault::get_build_flags() const {
 	return _build_flags;
 }

@@ -159,6 +159,8 @@
 #include "editor/run_settings_dialog.h"
 #include "editor/script_editor_debugger.h"
 #include "editor/settings_config_dialog.h"
+#include "scene/resources/environment.h"
+#include "scene/resources/world.h"
 
 #include <stdio.h>
 #include <stdlib.h>

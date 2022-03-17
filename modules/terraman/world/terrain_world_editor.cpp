@@ -35,6 +35,8 @@ SOFTWARE.
 
 #include "../library/terrain_surface.h"
 #include "../library/terrain_library.h"
+#include "servers/physics_server.h"
+#include "scene/resources/world.h"
 
 #include "../defines.h"
 

@@ -36,6 +36,7 @@
 #include "editor_properties_array_dict.h"
 #include "editor_scale.h"
 #include "scene/main/viewport.h"
+#include "core/project_settings.h"
 
 ///////////////////// NULL /////////////////////////
 

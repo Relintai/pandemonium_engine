@@ -41,6 +41,8 @@
 #include "platform/javascript/logo.gen.h"
 #include "platform/javascript/run_icon.gen.h"
 
+#include "core/project_settings.h"
+
 class EditorHTTPServer : public Reference {
 private:
 	Ref<TCP_Server> server;

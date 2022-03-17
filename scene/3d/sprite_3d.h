@@ -33,7 +33,9 @@
 
 #include "scene/3d/visual_instance.h"
 #include "core/reference.h"
+#include "scene/resources/material.h"
 
+class TriangleMesh;
 class SpriteFrames;
 
 class SpriteBase3D : public GeometryInstance {

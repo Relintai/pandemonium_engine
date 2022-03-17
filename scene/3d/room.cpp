@@ -34,6 +34,7 @@
 #include "room_group.h"
 #include "room_manager.h"
 #include "servers/visual_server.h"
+#include "scene/resources/world.h"
 
 void Room::SimplifyInfo::set_simplify(real_t p_value, real_t p_room_size) {
 	_plane_simplify = CLAMP(p_value, 0.0, 1.0);

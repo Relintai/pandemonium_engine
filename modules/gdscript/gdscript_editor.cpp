@@ -34,6 +34,7 @@
 #include "core/global_constants.h"
 #include "core/os/file_access.h"
 #include "gdscript_compiler.h"
+#include "core/project_settings.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_file_system.h"

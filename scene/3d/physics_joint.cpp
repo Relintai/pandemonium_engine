@@ -32,6 +32,7 @@
 
 #include "scene/scene_string_names.h"
 #include "scene/3d/physics_body.h"
+#include "scene/resources/shape.h"
 
 void Joint::_disconnect_signals() {
 	Node *node_a = get_node_or_null(a);

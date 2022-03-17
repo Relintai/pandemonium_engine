@@ -35,6 +35,9 @@
 #include "scene/resources/particles_material.h"
 #include "scene/main/viewport.h"
 #include "scene/gui/texture_button.h"
+#include "scene/resources/sky.h"
+#include "scene/resources/environment.h"
+#include "scene/resources/world.h"
 
 void MaterialEditor::_notification(int p_what) {
 	if (p_what == NOTIFICATION_READY) {

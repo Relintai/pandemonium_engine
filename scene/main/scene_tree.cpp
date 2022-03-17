@@ -53,6 +53,9 @@
 #include "scene/3d/spatial.h"
 
 #include "modules/modules_enabled.gen.h" // For freetype.
+#include "scene/resources/world.h"
+#include "scene/resources/world_2d.h"
+#include "scene/resources/mesh.h"
 
 #include <stdio.h>
 #include <stdlib.h>

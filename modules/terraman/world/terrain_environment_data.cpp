@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "terrain_environment_data.h"
 
+#include "scene/resources/environment.h"
+
 Ref<Environment> TerrainEnvironmentData::get_environment() {
 	return _environment;
 }

@@ -33,6 +33,7 @@
 #include "core/math/math_funcs.h"
 #include "core/os/input.h"
 #include "scene/resources/packed_scene.h"
+#include "core/project_settings.h"
 
 #include "editor/editor_scale.h"
 

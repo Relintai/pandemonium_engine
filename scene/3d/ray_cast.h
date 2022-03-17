@@ -33,6 +33,8 @@
 
 #include "scene/3d/spatial.h"
 
+class SpatialMaterial;
+
 class RayCast : public Spatial {
 	GDCLASS(RayCast, Spatial);
 
@@ -117,6 +119,7 @@ public:
 	void clear_exceptions();
 
 	RayCast();
+	~RayCast();
 };
 
 #endif // RAY_CAST_H

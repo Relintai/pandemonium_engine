@@ -32,6 +32,7 @@
 #define PHYSICS_JOINT_H
 
 #include "scene/3d/spatial.h"
+#include "servers/physics_server.h"
 
 class PhysicsBody;
 

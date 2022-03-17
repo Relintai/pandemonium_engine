@@ -34,6 +34,7 @@
 #include "editor/plugins/spatial_editor_plugin.h"
 #include "scene/3d/cpu_particles.h"
 #include "scene/resources/particles_material.h"
+#include "scene/resources/world.h"
 
 bool ParticlesEditorBase::_generate(PoolVector<Vector3> &points, PoolVector<Vector3> &normals) {
 	bool use_normals = emission_fill->get_selected() == 1;

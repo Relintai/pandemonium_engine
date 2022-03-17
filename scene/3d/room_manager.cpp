@@ -44,6 +44,9 @@
 #include "scene/3d/sprite_3d.h"
 #include "visibility_notifier.h"
 #include "scene/resources/multimesh.h"
+#include "core/math/geometry.h"
+#include "scene/resources/world.h"
+#include "core/project_settings.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/plugins/spatial_editor_plugin.h"

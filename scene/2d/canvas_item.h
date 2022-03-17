@@ -39,6 +39,7 @@ class Viewport;
 class Font;
 class MultiMesh;
 class StyleBox;
+class World2D;
 
 class CanvasItemMaterial : public Material {
 	GDCLASS(CanvasItemMaterial, Material);

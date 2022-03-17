@@ -30,6 +30,8 @@
 
 #include "import_defaults_editor.h"
 
+#include "core/project_settings.h"
+
 class ImportDefaultsEditorSettings : public Object {
 	GDCLASS(ImportDefaultsEditorSettings, Object)
 	friend class ImportDefaultsEditor;

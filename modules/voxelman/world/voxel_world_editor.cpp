@@ -35,6 +35,8 @@ SOFTWARE.
 
 #include "../library/voxel_surface.h"
 #include "../library/voxel_library.h"
+#include "servers/physics_server.h"
+#include "scene/resources/world.h"
 
 #include "../defines.h"
 

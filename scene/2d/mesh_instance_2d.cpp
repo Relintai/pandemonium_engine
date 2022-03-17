@@ -30,6 +30,8 @@
 
 #include "mesh_instance_2d.h"
 
+#include "scene/resources/mesh.h"
+
 void MeshInstance2D::_notification(int p_what) {
 	if (p_what == NOTIFICATION_DRAW) {
 		if (mesh.is_valid()) {

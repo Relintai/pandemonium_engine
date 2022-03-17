@@ -31,6 +31,7 @@ SOFTWARE.
 #include "core/message_queue.h"
 #include "jobs/terrain_job.h"
 #include "terrain_structure.h"
+#include "servers/physics_server.h"
 
 #if THREAD_POOL_PRESENT
 #include "../../thread_pool/thread_pool.h"

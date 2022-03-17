@@ -5,6 +5,8 @@
 //#include "../thread_pool/thread_pool.h"
 
 #include "core/version.h"
+#include "servers/visual_server.h"
+#include "scene/resources/world.h"
 
 #if VERSION_MAJOR > 3
 #include "core/config/engine.h"

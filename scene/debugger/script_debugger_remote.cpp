@@ -41,6 +41,8 @@
 #include "scene/main/viewport.h"
 #include "scene/resources/packed_scene.h"
 #include "servers/visual_server.h"
+#include "core/io/resource_loader.h"
+#include "core/io/resource_saver.h"
 
 void ScriptDebuggerRemote::_send_video_memory() {
 	List<ResourceUsage> usage;

@@ -33,6 +33,7 @@
 #include "core/os/keyboard.h"
 #include "scene/resources/curve.h"
 #include "spatial_editor_plugin.h"
+#include "scene/resources/world.h"
 
 String PathSpatialGizmo::get_handle_name(int p_idx) const {
 	Ref<Curve3D> c = path->get_curve();

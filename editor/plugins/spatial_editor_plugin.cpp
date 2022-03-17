@@ -52,9 +52,11 @@
 #include "scene/3d/visual_instance.h"
 #include "scene/gui/viewport_container.h"
 #include "scene/main/viewport.h"
+#include "scene/resources/environment.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/skin.h"
 #include "scene/resources/surface_tool.h"
+#include "scene/resources/world.h"
 
 #define DISTANCE_DEFAULT 4
 
@@ -4973,6 +4975,10 @@ void SpatialEditor::set_state(const Dictionary &p_state) {
 		}
 		_update_gizmos_menu();
 	}
+}
+
+Ref<Environment> SpatialEditor::get_viewport_environment() {
+	return viewport_environment;
 }
 
 void SpatialEditor::edit(Spatial *p_spatial) {

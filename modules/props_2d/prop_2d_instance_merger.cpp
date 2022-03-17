@@ -3,7 +3,8 @@
 #include "../mesh_data_resource/nodes/mesh_data_instance.h"
 
 //#include "../thread_pool/thread_pool.h"
-
+#include "servers/physics_server.h"
+#include "scene/resources/world_2d.h"
 #include "core/version.h"
 
 #if VERSION_MAJOR > 3

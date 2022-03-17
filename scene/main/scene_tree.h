@@ -35,9 +35,6 @@
 #include "core/os/main_loop.h"
 #include "core/os/thread_safe.h"
 #include "core/self_list.h"
-#include "scene/resources/mesh.h"
-#include "scene/resources/world.h"
-#include "scene/resources/world_2d.h"
 
 class PackedScene;
 class Node;
@@ -45,6 +42,7 @@ class Spatial;
 class Viewport;
 class Material;
 class Mesh;
+class ArrayMesh;
 
 class SceneTreeTimer : public Reference {
 	GDCLASS(SceneTreeTimer, Reference);

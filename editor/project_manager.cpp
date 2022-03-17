@@ -55,6 +55,9 @@
 #include "scene/gui/texture_button.h"
 #include "scene/gui/panel.h"
 #include "scene/gui/option_button.h"
+#include "core/project_settings.h"
+#include "servers/physics_2d_server.h"
+#include "servers/physics_server.h"
 
 static inline String get_project_key_from_path(const String &dir) {
 	return dir.replace("/", "::");

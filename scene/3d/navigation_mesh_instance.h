@@ -32,6 +32,7 @@
 #define NAVIGATION_MESH_INSTANCE_H
 
 #include "scene/3d/spatial.h"
+#include "core/os/thread.h"
 
 class Mesh;
 class Navigation;

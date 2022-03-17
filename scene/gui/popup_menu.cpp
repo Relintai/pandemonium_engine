@@ -36,6 +36,7 @@
 #include "core/translation.h"
 #include "scene/gui/shortcut.h"
 #include "scene/main/timer.h"
+#include "core/project_settings.h"
 
 PopupMenu::Item::Item() {
 	checked = false;

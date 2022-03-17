@@ -33,6 +33,7 @@
 #include "core/engine.h"
 #include "scene/3d/navigation.h"
 #include "servers/navigation_server.h"
+#include "core/math/geometry.h"
 
 void NavigationAgent::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_rid"), &NavigationAgent::get_rid);

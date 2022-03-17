@@ -37,6 +37,7 @@
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 #include "editor/script_editor_debugger.h"
+#include "core/project_settings.h"
 
 void ConnectionInfoDialog::ok_pressed() {
 }

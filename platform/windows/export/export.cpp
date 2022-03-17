@@ -37,6 +37,8 @@
 #include "editor/editor_settings.h"
 #include "platform/windows/logo.gen.h"
 
+#include "core/project_settings.h"
+
 static Error fixup_embedded_pck(const String &p_path, int64_t p_embedded_start, int64_t p_embedded_size);
 
 class EditorExportPlatformWindows : public EditorExportPlatformPC {

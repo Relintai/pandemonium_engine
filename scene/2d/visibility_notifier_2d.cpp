@@ -36,6 +36,8 @@
 #include "scene/animation/animation_player.h"
 #include "scene/main/viewport.h"
 #include "scene/scene_string_names.h"
+#include "scene/resources/world_2d.h"
+
 
 #ifdef TOOLS_ENABLED
 Rect2 VisibilityNotifier2D::_edit_get_rect() const {

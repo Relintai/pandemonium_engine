@@ -30,6 +30,10 @@
 
 #include "world_environment.h"
 #include "scene/main/viewport.h"
+#include "scene/3d/spatial.h"
+
+#include "scene/resources/environment.h"
+#include "scene/resources/world.h"
 
 void WorldEnvironment::_notification(int p_what) {
 	if (p_what == Spatial::NOTIFICATION_ENTER_WORLD || p_what == Spatial::NOTIFICATION_ENTER_TREE) {

@@ -30,6 +30,7 @@
 
 #include "animation_blend_space_2d.h"
 #include "core/math/delaunay.h"
+#include "core/math/geometry.h"
 
 void AnimationNodeBlendSpace2D::get_parameter_list(List<PropertyInfo> *r_list) const {
 	r_list->push_back(PropertyInfo(Variant::VECTOR2, blend_position));

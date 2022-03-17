@@ -30,6 +30,8 @@
 
 #include "vehicle_body.h"
 
+#include "scene/resources/shape.h"
+
 #define ROLLING_INFLUENCE_FIX
 
 class btVehicleJacobianEntry {

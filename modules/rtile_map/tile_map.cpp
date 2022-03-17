@@ -36,6 +36,7 @@
 #include "scene/2d/area_2d.h"
 #include "scene/2d/collision_object_2d.h"
 #include "servers/physics_2d_server.h"
+#include "scene/resources/world_2d.h"
 
 #if VERSION_MINOR >= 5
 #include "servers/navigation_2d_server.h"

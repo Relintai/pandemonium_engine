@@ -35,7 +35,7 @@
 #include "core/reference.h"
 
 class CollisionObject;
-class shape;
+class Shape;
 
 class CollisionShape : public Spatial {
 	GDCLASS(CollisionShape, Spatial);

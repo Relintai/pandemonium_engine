@@ -30,7 +30,6 @@
 
 #include "navigation_mesh_instance.h"
 
-#include "core/os/thread.h"
 #include "mesh_instance.h"
 #include "navigation.h"
 #include "servers/navigation_server.h"

@@ -37,6 +37,7 @@
 #include "scene/main/viewport.h"
 #include "scene/scene_string_names.h"
 #include "servers/visual_server_callbacks.h"
+#include "scene/resources/world.h"
 
 /*
 

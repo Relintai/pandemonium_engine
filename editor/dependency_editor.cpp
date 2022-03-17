@@ -36,6 +36,8 @@
 #include "editor_scale.h"
 #include "scene/gui/margin_container.h"
 
+#include "core/project_settings.h"
+
 void DependencyEditor::_searched(const String &p_path) {
 	Map<String, String> dep_rename;
 	dep_rename[replacing] = p_path;

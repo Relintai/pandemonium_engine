@@ -34,6 +34,7 @@
 #include "scene/2d/mesh_instance_2d.h"
 #include "scene/gui/box_container.h"
 #include "thirdparty/misc/clipper.hpp"
+#include "scene/resources/world.h"
 
 void Skeleton2DEditor::_node_removed(Node *p_node) {
 	if (p_node == node) {
