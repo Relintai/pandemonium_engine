@@ -1,3 +1,5 @@
+#ifndef TEXTURE_H
+#define TEXTURE_H
 /*************************************************************************/
 /*  texture.h                                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEXTURE_H
-#define TEXTURE_H
+
+
 
 #include "core/io/resource_loader.h"
 #include "core/math/rect2.h"

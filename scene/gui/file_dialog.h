@@ -1,3 +1,5 @@
+#ifndef FILE_DIALOG_H
+#define FILE_DIALOG_H
 /*************************************************************************/
 /*  file_dialog.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef FILE_DIALOG_H
-#define FILE_DIALOG_H
+
+
 
 #include "scene/gui/dialogs.h"
 #include "scene/gui/box_container.h"

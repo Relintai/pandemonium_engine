@@ -1,3 +1,5 @@
+#ifndef SCENE_STRING_NAMES_H
+#define SCENE_STRING_NAMES_H
 /*************************************************************************/
 /*  scene_string_names.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SCENE_STRING_NAMES_H
-#define SCENE_STRING_NAMES_H
+
+
 
 #include "core/node_path.h"
 #include "core/string_name.h"

@@ -1,3 +1,5 @@
+#ifndef CANVASMODULATE_H
+#define CANVASMODULATE_H
 /*************************************************************************/
 /*  canvas_modulate.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CANVASMODULATE_H
-#define CANVASMODULATE_H
+
+
 
 #include "scene/2d/node_2d.h"
 

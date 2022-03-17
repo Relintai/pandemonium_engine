@@ -1,3 +1,5 @@
+#ifndef VEHICLE_BODY_H
+#define VEHICLE_BODY_H
 /*************************************************************************/
 /*  vehicle_body.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VEHICLE_BODY_H
-#define VEHICLE_BODY_H
+
+
 
 #include "scene/3d/physics_body.h"
 

@@ -1,3 +1,5 @@
+#ifndef REMOTETRANSFORM_H
+#define REMOTETRANSFORM_H
 /*************************************************************************/
 /*  remote_transform.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef REMOTETRANSFORM_H
-#define REMOTETRANSFORM_H
+
+
 
 #include "scene/3d/spatial.h"
 

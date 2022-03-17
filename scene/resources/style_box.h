@@ -1,3 +1,5 @@
+#ifndef STYLE_BOX_H
+#define STYLE_BOX_H
 /*************************************************************************/
 /*  style_box.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef STYLE_BOX_H
-#define STYLE_BOX_H
+
+
 
 #include "core/resource.h"
 #include "scene/resources/texture.h"

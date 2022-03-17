@@ -1,3 +1,5 @@
+#ifndef NAVIGATION_2D_H
+#define NAVIGATION_2D_H
 /*************************************************************************/
 /*  navigation_2d.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef NAVIGATION_2D_H
-#define NAVIGATION_2D_H
+
+
 
 #include "scene/2d/node_2d.h"
 

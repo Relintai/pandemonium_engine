@@ -1,3 +1,5 @@
+#ifndef SCENE_MAIN_LOOP_H
+#define SCENE_MAIN_LOOP_H
 /*************************************************************************/
 /*  scene_tree.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SCENE_MAIN_LOOP_H
-#define SCENE_MAIN_LOOP_H
+
+
 
 #include "core/io/multiplayer_api.h"
 #include "core/os/main_loop.h"

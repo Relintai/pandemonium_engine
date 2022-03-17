@@ -1,3 +1,5 @@
+#ifndef CENTER_CONTAINER_H
+#define CENTER_CONTAINER_H
 /*************************************************************************/
 /*  center_container.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CENTER_CONTAINER_H
-#define CENTER_CONTAINER_H
+
+
 
 #include "scene/gui/container.h"
 

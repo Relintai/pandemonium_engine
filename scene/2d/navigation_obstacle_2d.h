@@ -1,3 +1,5 @@
+#ifndef NAVIGATION_OBSTACLE_2D_H
+#define NAVIGATION_OBSTACLE_2D_H
 /*************************************************************************/
 /*  navigation_obstacle_2d.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef NAVIGATION_OBSTACLE_2D_H
-#define NAVIGATION_OBSTACLE_2D_H
+
+
 
 #include "scene/main/node.h"
 

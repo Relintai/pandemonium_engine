@@ -1,3 +1,5 @@
+#ifndef REFLECTIONPROBE_H
+#define REFLECTIONPROBE_H
 /*************************************************************************/
 /*  reflection_probe.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef REFLECTIONPROBE_H
-#define REFLECTIONPROBE_H
+
+
 
 #include "scene/3d/visual_instance.h"
 

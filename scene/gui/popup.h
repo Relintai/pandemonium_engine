@@ -1,3 +1,5 @@
+#ifndef POPUP_H
+#define POPUP_H
 /*************************************************************************/
 /*  popup.h                                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef POPUP_H
-#define POPUP_H
+
+
 
 #include "scene/gui/control.h"
 

@@ -1,3 +1,5 @@
+#ifndef SURFACE_TOOL_H
+#define SURFACE_TOOL_H
 /*************************************************************************/
 /*  surface_tool.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SURFACE_TOOL_H
-#define SURFACE_TOOL_H
+
+
 
 #include "scene/resources/mesh.h"
 

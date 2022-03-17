@@ -1,3 +1,5 @@
+#ifndef CPU_PARTICLES_2D_H
+#define CPU_PARTICLES_2D_H
 /*************************************************************************/
 /*  cpu_particles_2d.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CPU_PARTICLES_2D_H
-#define CPU_PARTICLES_2D_H
+
+
 
 #include "scene/2d/node_2d.h"
 

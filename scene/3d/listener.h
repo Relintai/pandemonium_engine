@@ -1,3 +1,5 @@
+#ifndef LISTENER_H
+#define LISTENER_H
 /*************************************************************************/
 /*  listener.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef LISTENER_H
-#define LISTENER_H
+
+
 
 #include "scene/3d/spatial.h"
 

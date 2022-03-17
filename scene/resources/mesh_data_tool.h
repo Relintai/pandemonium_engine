@@ -1,3 +1,5 @@
+#ifndef MESH_DATA_TOOL_H
+#define MESH_DATA_TOOL_H
 /*************************************************************************/
 /*  mesh_data_tool.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MESH_DATA_TOOL_H
-#define MESH_DATA_TOOL_H
+
+
 
 #include "scene/resources/mesh.h"
 

@@ -1,3 +1,5 @@
+#ifndef NAVIGATION_POLYGON_H
+#define NAVIGATION_POLYGON_H
 /*************************************************************************/
 /*  navigation_polygon.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef NAVIGATION_POLYGON_H
-#define NAVIGATION_POLYGON_H
+
+
 
 #include "core/resource.h"
 #include "scene/2d/node_2d.h"

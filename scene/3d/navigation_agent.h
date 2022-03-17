@@ -1,3 +1,5 @@
+#ifndef NAVIGATION_AGENT_H
+#define NAVIGATION_AGENT_H
 /*************************************************************************/
 /*  navigation_agent.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef NAVIGATION_AGENT_H
-#define NAVIGATION_AGENT_H
+
+
 
 #include "core/vector.h"
 #include "scene/main/node.h"

@@ -1,3 +1,5 @@
+#ifndef DIALOGS_H
+#define DIALOGS_H
 /*************************************************************************/
 /*  dialogs.h                                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef DIALOGS_H
-#define DIALOGS_H
+
+
 
 #include "scene/gui/popup.h"
 

@@ -1,3 +1,5 @@
+#ifndef HTTPREQUEST_H
+#define HTTPREQUEST_H
 /*************************************************************************/
 /*  http_request.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef HTTPREQUEST_H
-#define HTTPREQUEST_H
+
+
 
 #include "node.h"
 #include "core/io/http_client.h"

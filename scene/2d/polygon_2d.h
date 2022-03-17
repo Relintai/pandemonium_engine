@@ -1,3 +1,5 @@
+#ifndef POLYGON_2D_H
+#define POLYGON_2D_H
 /*************************************************************************/
 /*  polygon_2d.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef POLYGON_2D_H
-#define POLYGON_2D_H
+
+
 
 #include "scene/2d/node_2d.h"
 

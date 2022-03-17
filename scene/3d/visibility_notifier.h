@@ -1,3 +1,5 @@
+#ifndef VISIBILITY_NOTIFIER_H
+#define VISIBILITY_NOTIFIER_H
 /*************************************************************************/
 /*  visibility_notifier.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VISIBILITY_NOTIFIER_H
-#define VISIBILITY_NOTIFIER_H
+
+
 
 #include "scene/3d/cull_instance.h"
 

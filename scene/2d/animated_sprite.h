@@ -1,3 +1,5 @@
+#ifndef ANIMATED_SPRITE_H
+#define ANIMATED_SPRITE_H
 /*************************************************************************/
 /*  animated_sprite.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ANIMATED_SPRITE_H
-#define ANIMATED_SPRITE_H
+
+
 
 #include "scene/2d/node_2d.h"
 

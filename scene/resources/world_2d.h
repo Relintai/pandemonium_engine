@@ -1,3 +1,5 @@
+#ifndef WORLD_2D_H
+#define WORLD_2D_H
 /*************************************************************************/
 /*  world_2d.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef WORLD_2D_H
-#define WORLD_2D_H
+
+
 
 #include "core/project_settings.h"
 #include "core/resource.h"

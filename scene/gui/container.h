@@ -1,3 +1,5 @@
+#ifndef CONTAINER_H
+#define CONTAINER_H
 /*************************************************************************/
 /*  container.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CONTAINER_H
-#define CONTAINER_H
+
+
 
 #include "scene/gui/control.h"
 

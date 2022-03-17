@@ -1,3 +1,5 @@
+#ifndef ASPECT_RATIO_CONTAINER_H
+#define ASPECT_RATIO_CONTAINER_H
 /*************************************************************************/
 /*  aspect_ratio_container.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ASPECT_RATIO_CONTAINER_H
-#define ASPECT_RATIO_CONTAINER_H
+
+
 
 #include "scene/gui/container.h"
 

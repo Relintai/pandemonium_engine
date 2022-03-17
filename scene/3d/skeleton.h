@@ -1,3 +1,5 @@
+#ifndef SKELETON_H
+#define SKELETON_H
 /*************************************************************************/
 /*  skeleton.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SKELETON_H
-#define SKELETON_H
+
+
 
 #include "core/rid.h"
 #include "scene/3d/spatial.h"

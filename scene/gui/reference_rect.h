@@ -1,3 +1,5 @@
+#ifndef REFERENCE_RECT_H
+#define REFERENCE_RECT_H
 /*************************************************************************/
 /*  reference_rect.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef REFERENCE_RECT_H
-#define REFERENCE_RECT_H
+
+
 
 #include "scene/gui/control.h"
 

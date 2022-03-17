@@ -1,3 +1,5 @@
+#ifndef GRADIENT_H
+#define GRADIENT_H
 /*************************************************************************/
 /*  gradient.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GRADIENT_H
-#define GRADIENT_H
+
+
 
 #include "core/resource.h"
 

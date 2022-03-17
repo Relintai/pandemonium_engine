@@ -1,3 +1,5 @@
+#ifndef PARALLAX_BACKGROUND_H
+#define PARALLAX_BACKGROUND_H
 /*************************************************************************/
 /*  parallax_background.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PARALLAX_BACKGROUND_H
-#define PARALLAX_BACKGROUND_H
+
+
 
 #include "scene/main/canvas_layer.h"
 

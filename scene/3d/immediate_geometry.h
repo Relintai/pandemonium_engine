@@ -1,3 +1,5 @@
+#ifndef IMMEDIATE_GEOMETRY_H
+#define IMMEDIATE_GEOMETRY_H
 /*************************************************************************/
 /*  immediate_geometry.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef IMMEDIATE_GEOMETRY_H
-#define IMMEDIATE_GEOMETRY_H
+
+
 
 #include "scene/3d/visual_instance.h"
 

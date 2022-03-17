@@ -1,3 +1,5 @@
+#ifndef PARALLAX_LAYER_H
+#define PARALLAX_LAYER_H
 /*************************************************************************/
 /*  parallax_layer.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PARALLAX_LAYER_H
-#define PARALLAX_LAYER_H
+
+
 
 #include "scene/2d/node_2d.h"
 

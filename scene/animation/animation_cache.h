@@ -1,3 +1,5 @@
+#ifndef ANIMATION_CACHE_H
+#define ANIMATION_CACHE_H
 /*************************************************************************/
 /*  animation_cache.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ANIMATION_CACHE_H
-#define ANIMATION_CACHE_H
+
+
 
 #include "core/object.h"
 #include "core/reference.h"

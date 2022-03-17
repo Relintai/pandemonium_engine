@@ -1,3 +1,5 @@
+#ifndef SLIDER_H
+#define SLIDER_H
 /*************************************************************************/
 /*  slider.h                                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SLIDER_H
-#define SLIDER_H
+
+
 
 #include "scene/gui/range.h"
 

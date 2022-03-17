@@ -1,3 +1,5 @@
+#ifndef AUDIO_STREAM_SAMPLE_H
+#define AUDIO_STREAM_SAMPLE_H
 /*************************************************************************/
 /*  audio_stream_sample.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIO_STREAM_SAMPLE_H
-#define AUDIO_STREAM_SAMPLE_H
+
+
 
 #include "servers/audio/audio_stream.h"
 

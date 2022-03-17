@@ -1,3 +1,5 @@
+#ifndef SKY_H
+#define SKY_H
 /*************************************************************************/
 /*  sky.h                                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SKY_H
-#define SKY_H
+
+
 
 #include "core/os/thread.h"
 #include "scene/resources/texture.h"

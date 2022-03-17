@@ -1,3 +1,5 @@
+#ifndef SHAPE_H
+#define SHAPE_H
 /*************************************************************************/
 /*  shape.h                                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SHAPE_H
-#define SHAPE_H
+
+
 
 #include "core/resource.h"
 class ArrayMesh;

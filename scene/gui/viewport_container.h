@@ -1,3 +1,5 @@
+#ifndef VIEWPORTCONTAINER_H
+#define VIEWPORTCONTAINER_H
 /*************************************************************************/
 /*  viewport_container.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VIEWPORTCONTAINER_H
-#define VIEWPORTCONTAINER_H
+
+
 
 #include "scene/gui/container.h"
 

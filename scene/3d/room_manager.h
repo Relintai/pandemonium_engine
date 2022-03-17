@@ -1,3 +1,5 @@
+#ifndef ROOM_MANAGER_H
+#define ROOM_MANAGER_H
 /*************************************************************************/
 /*  room_manager.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ROOM_MANAGER_H
-#define ROOM_MANAGER_H
+
+
 
 #include "core/local_vector.h"
 #include "room.h"

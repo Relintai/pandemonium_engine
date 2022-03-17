@@ -1,3 +1,5 @@
+#ifndef PROXIMITY_GROUP_H
+#define PROXIMITY_GROUP_H
 /*************************************************************************/
 /*  proximity_group.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PROXIMITY_GROUP_H
-#define PROXIMITY_GROUP_H
+
+
 
 #include "spatial.h"
 

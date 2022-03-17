@@ -1,3 +1,5 @@
+#ifndef PARTICLES_MATERIAL_H
+#define PARTICLES_MATERIAL_H
 /*************************************************************************/
 /*  particles_material.h                                                 */
 /*************************************************************************/
@@ -31,8 +33,8 @@
 #include "core/rid.h"
 #include "scene/resources/material.h"
 
-#ifndef PARTICLES_MATERIAL_H
-#define PARTICLES_MATERIAL_H
+
+
 
 class ParticlesMaterial : public Material {
 	GDCLASS(ParticlesMaterial, Material);

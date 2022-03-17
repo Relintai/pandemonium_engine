@@ -1,3 +1,5 @@
+#ifndef RECTANGLE_SHAPE_2D_H
+#define RECTANGLE_SHAPE_2D_H
 /*************************************************************************/
 /*  rectangle_shape_2d.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RECTANGLE_SHAPE_2D_H
-#define RECTANGLE_SHAPE_2D_H
+
+
 
 #include "scene/resources/shape_2d.h"
 

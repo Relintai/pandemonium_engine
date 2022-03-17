@@ -1,3 +1,5 @@
+#ifndef ITEMLIST_H
+#define ITEMLIST_H
 /*************************************************************************/
 /*  item_list.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ITEMLIST_H
-#define ITEMLIST_H
+
+
 
 #include "scene/gui/control.h"
 

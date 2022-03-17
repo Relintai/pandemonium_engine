@@ -1,3 +1,5 @@
+#ifndef MENU_BUTTON_H
+#define MENU_BUTTON_H
 /*************************************************************************/
 /*  menu_button.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MENU_BUTTON_H
-#define MENU_BUTTON_H
+
+
 
 #include "scene/gui/button.h"
 

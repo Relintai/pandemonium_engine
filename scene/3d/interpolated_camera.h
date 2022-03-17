@@ -1,3 +1,5 @@
+#ifndef INTERPOLATED_CAMERA_H
+#define INTERPOLATED_CAMERA_H
 /*************************************************************************/
 /*  interpolated_camera.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef INTERPOLATED_CAMERA_H
-#define INTERPOLATED_CAMERA_H
+
+
 
 #include "scene/3d/camera.h"
 

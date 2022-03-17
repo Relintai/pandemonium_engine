@@ -1,3 +1,5 @@
+#ifndef PLANE_SHAPE_H
+#define PLANE_SHAPE_H
 /*************************************************************************/
 /*  plane_shape.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PLANE_SHAPE_H
-#define PLANE_SHAPE_H
+
+
 
 #include "scene/resources/shape.h"
 

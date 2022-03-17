@@ -1,3 +1,5 @@
+#ifndef CONCAVE_POLYGON_SHAPE_H
+#define CONCAVE_POLYGON_SHAPE_H
 /*************************************************************************/
 /*  concave_polygon_shape.h                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CONCAVE_POLYGON_SHAPE_H
-#define CONCAVE_POLYGON_SHAPE_H
+
+
 
 #include "scene/resources/shape.h"
 

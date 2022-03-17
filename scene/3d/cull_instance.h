@@ -1,3 +1,5 @@
+#ifndef CULL_INSTANCE_H
+#define CULL_INSTANCE_H
 /*************************************************************************/
 /*  cull_instance.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CULL_INSTANCE_H
-#define CULL_INSTANCE_H
+
+
 
 #include "scene/3d/spatial.h"
 

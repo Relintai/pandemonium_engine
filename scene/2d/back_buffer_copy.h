@@ -1,3 +1,5 @@
+#ifndef BACKBUFFERCOPY_H
+#define BACKBUFFERCOPY_H
 /*************************************************************************/
 /*  back_buffer_copy.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BACKBUFFERCOPY_H
-#define BACKBUFFERCOPY_H
+
+
 
 #include "scene/2d/node_2d.h"
 

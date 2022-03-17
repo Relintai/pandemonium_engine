@@ -1,3 +1,5 @@
+#ifndef PORTAL_H
+#define PORTAL_H
 /*************************************************************************/
 /*  portal.h                                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PORTAL_H
-#define PORTAL_H
+
+
 
 #include "core/local_vector.h"
 #include "core/rid.h"

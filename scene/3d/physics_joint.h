@@ -1,3 +1,5 @@
+#ifndef PHYSICS_JOINT_H
+#define PHYSICS_JOINT_H
 /*************************************************************************/
 /*  physics_joint.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PHYSICS_JOINT_H
-#define PHYSICS_JOINT_H
+
+
 
 #include "scene/3d/spatial.h"
 #include "servers/physics_server.h"

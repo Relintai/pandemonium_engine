@@ -1,3 +1,5 @@
+#ifndef PRIMITIVE_MESHES_H
+#define PRIMITIVE_MESHES_H
 /*************************************************************************/
 /*  primitive_meshes.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PRIMITIVE_MESHES_H
-#define PRIMITIVE_MESHES_H
+
+
 
 #include "scene/resources/mesh.h"
 

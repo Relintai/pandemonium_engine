@@ -1,3 +1,5 @@
+#ifndef MESH_INSTANCE_H
+#define MESH_INSTANCE_H
 /*************************************************************************/
 /*  mesh_instance.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MESH_INSTANCE_H
-#define MESH_INSTANCE_H
+
+
 
 
 #include "scene/3d/visual_instance.h"

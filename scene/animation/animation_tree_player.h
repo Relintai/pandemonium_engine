@@ -1,3 +1,5 @@
+#ifndef ANIMATION_TREE_PLAYER_H
+#define ANIMATION_TREE_PLAYER_H
 /*************************************************************************/
 /*  animation_tree_player.h                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ANIMATION_TREE_PLAYER_H
-#define ANIMATION_TREE_PLAYER_H
+
+
 
 #include "scene/main/node.h"
 #include "scene/resources/animation.h"

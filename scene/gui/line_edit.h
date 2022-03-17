@@ -1,3 +1,5 @@
+#ifndef LINE_EDIT_H
+#define LINE_EDIT_H
 /*************************************************************************/
 /*  line_edit.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef LINE_EDIT_H
-#define LINE_EDIT_H
+
+
 
 #include "scene/gui/control.h"
 

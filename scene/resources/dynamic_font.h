@@ -1,3 +1,5 @@
+#ifndef DYNAMIC_FONT_H
+#define DYNAMIC_FONT_H
 /*************************************************************************/
 /*  dynamic_font.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef DYNAMIC_FONT_H
-#define DYNAMIC_FONT_H
+
+
 
 #include "modules/modules_enabled.gen.h" // For freetype.
 #ifdef MODULE_FREETYPE_ENABLED

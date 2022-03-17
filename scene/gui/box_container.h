@@ -1,3 +1,5 @@
+#ifndef BOX_CONTAINER_H
+#define BOX_CONTAINER_H
 /*************************************************************************/
 /*  box_container.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BOX_CONTAINER_H
-#define BOX_CONTAINER_H
+
+
 
 #include "scene/gui/container.h"
 

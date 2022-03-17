@@ -1,3 +1,5 @@
+#ifndef MARGIN_CONTAINER_H
+#define MARGIN_CONTAINER_H
 /*************************************************************************/
 /*  margin_container.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MARGIN_CONTAINER_H
-#define MARGIN_CONTAINER_H
+
+
 
 #include "scene/gui/container.h"
 

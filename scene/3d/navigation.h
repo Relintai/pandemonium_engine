@@ -1,3 +1,5 @@
+#ifndef NAVIGATION_H
+#define NAVIGATION_H
 /*************************************************************************/
 /*  navigation.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef NAVIGATION_H
-#define NAVIGATION_H
+
+
 
 #include "scene/3d/spatial.h"
 

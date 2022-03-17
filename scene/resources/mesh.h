@@ -1,3 +1,5 @@
+#ifndef MESH_H
+#define MESH_H
 /*************************************************************************/
 /*  mesh.h                                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MESH_H
-#define MESH_H
+
+
 
 #include "core/math/face3.h"
 #include "core/math/triangle_mesh.h"

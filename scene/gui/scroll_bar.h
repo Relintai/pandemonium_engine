@@ -1,3 +1,5 @@
+#ifndef SCROLL_BAR_H
+#define SCROLL_BAR_H
 /*************************************************************************/
 /*  scroll_bar.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SCROLL_BAR_H
-#define SCROLL_BAR_H
+
+
 
 #include "scene/gui/range.h"
 

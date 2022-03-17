@@ -1,3 +1,5 @@
+#ifndef NAVIGATION_MESH_INSTANCE_H
+#define NAVIGATION_MESH_INSTANCE_H
 /*************************************************************************/
 /*  navigation_mesh_instance.h                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef NAVIGATION_MESH_INSTANCE_H
-#define NAVIGATION_MESH_INSTANCE_H
+
+
 
 #include "scene/3d/spatial.h"
 #include "core/os/thread.h"

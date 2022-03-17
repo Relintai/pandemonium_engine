@@ -1,3 +1,5 @@
+#ifndef AUDIO_STREAM_PLAYER_H
+#define AUDIO_STREAM_PLAYER_H
 /*************************************************************************/
 /*  audio_stream_player.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIO_STREAM_PLAYER_H
-#define AUDIO_STREAM_PLAYER_H
+
+
 
 #include "core/safe_refcount.h"
 #include "scene/main/node.h"

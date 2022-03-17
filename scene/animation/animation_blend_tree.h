@@ -1,3 +1,5 @@
+#ifndef ANIMATION_BLEND_TREE_H
+#define ANIMATION_BLEND_TREE_H
 /*************************************************************************/
 /*  animation_blend_tree.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ANIMATION_BLEND_TREE_H
-#define ANIMATION_BLEND_TREE_H
+
+
 
 #include "scene/animation/animation_tree.h"
 

@@ -1,3 +1,5 @@
+#ifndef MULTIMESH_INSTANCE_2D_H
+#define MULTIMESH_INSTANCE_2D_H
 /*************************************************************************/
 /*  multimesh_instance_2d.h                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MULTIMESH_INSTANCE_2D_H
-#define MULTIMESH_INSTANCE_2D_H
+
+
 
 #include "scene/2d/node_2d.h"
 

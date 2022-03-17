@@ -1,3 +1,5 @@
+#ifndef LABEL_H
+#define LABEL_H
 /*************************************************************************/
 /*  label.h                                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef LABEL_H
-#define LABEL_H
+
+
 
 #include "scene/gui/control.h"
 

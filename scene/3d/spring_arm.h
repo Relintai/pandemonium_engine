@@ -1,3 +1,5 @@
+#ifndef SPRING_ARM_H
+#define SPRING_ARM_H
 /*************************************************************************/
 /*  spring_arm.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SPRING_ARM_H
-#define SPRING_ARM_H
+
+
 
 #include "scene/3d/spatial.h"
 #include "core/reference.h"

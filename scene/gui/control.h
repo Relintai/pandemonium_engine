@@ -1,3 +1,5 @@
+#ifndef CONTROL_H
+#define CONTROL_H
 /*************************************************************************/
 /*  control.h                                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CONTROL_H
-#define CONTROL_H
+
+
 
 #include "core/math/transform_2d.h"
 #include "core/rid.h"

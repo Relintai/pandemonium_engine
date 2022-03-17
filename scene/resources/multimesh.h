@@ -1,3 +1,5 @@
+#ifndef MULTIMESH_H
+#define MULTIMESH_H
 /*************************************************************************/
 /*  multimesh.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MULTIMESH_H
-#define MULTIMESH_H
+
+
 
 #include "scene/resources/mesh.h"
 #include "servers/visual_server.h"

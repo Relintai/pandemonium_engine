@@ -1,3 +1,5 @@
+#ifndef TEXTFILE_H
+#define TEXTFILE_H
 /*************************************************************************/
 /*  text_file.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEXTFILE_H
-#define TEXTFILE_H
+
+
 
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"

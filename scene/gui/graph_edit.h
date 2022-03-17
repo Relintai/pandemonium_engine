@@ -1,3 +1,5 @@
+#ifndef GRAPH_EDIT_H
+#define GRAPH_EDIT_H
 /*************************************************************************/
 /*  graph_edit.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GRAPH_EDIT_H
-#define GRAPH_EDIT_H
+
+
 
 #include "scene/gui/control.h"
 

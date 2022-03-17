@@ -1,3 +1,5 @@
+#ifndef SEPARATOR_H
+#define SEPARATOR_H
 /*************************************************************************/
 /*  separator.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SEPARATOR_H
-#define SEPARATOR_H
+
+
 
 #include "scene/gui/control.h"
 class Separator : public Control {

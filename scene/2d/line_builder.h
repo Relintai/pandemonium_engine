@@ -1,3 +1,5 @@
+#ifndef LINE_BUILDER_H
+#define LINE_BUILDER_H
 /*************************************************************************/
 /*  line_builder.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef LINE_BUILDER_H
-#define LINE_BUILDER_H
+
+
 
 #include "line_2d.h"
 

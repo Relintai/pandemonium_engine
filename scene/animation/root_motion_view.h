@@ -1,3 +1,5 @@
+#ifndef ROOT_MOTION_VIEW_H
+#define ROOT_MOTION_VIEW_H
 /*************************************************************************/
 /*  root_motion_view.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ROOT_MOTION_VIEW_H
-#define ROOT_MOTION_VIEW_H
+
+
 
 #include "scene/3d/visual_instance.h"
 

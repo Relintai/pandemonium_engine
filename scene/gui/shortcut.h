@@ -1,3 +1,5 @@
+#ifndef SHORTCUT_H
+#define SHORTCUT_H
 /*************************************************************************/
 /*  shortcut.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SHORTCUT_H
-#define SHORTCUT_H
+
+
 
 #include "core/resource.h"
 

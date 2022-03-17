@@ -1,3 +1,5 @@
+#ifndef SPIN_BOX_H
+#define SPIN_BOX_H
 /*************************************************************************/
 /*  spin_box.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SPIN_BOX_H
-#define SPIN_BOX_H
+
+
 
 #include "scene/gui/range.h"
 #include "scene/gui/line_edit.h"

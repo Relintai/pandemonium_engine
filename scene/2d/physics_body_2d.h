@@ -1,3 +1,5 @@
+#ifndef PHYSICS_BODY_2D_H
+#define PHYSICS_BODY_2D_H
 /*************************************************************************/
 /*  physics_body_2d.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PHYSICS_BODY_2D_H
-#define PHYSICS_BODY_2D_H
+
+
 
 #include "core/vset.h"
 #include "scene/2d/collision_object_2d.h"

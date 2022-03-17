@@ -1,3 +1,5 @@
+#ifndef ANIMATION_PLAYER_H
+#define ANIMATION_PLAYER_H
 /*************************************************************************/
 /*  animation_player.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ANIMATION_PLAYER_H
-#define ANIMATION_PLAYER_H
+
+
 
 #include "core/reference.h"
 #include "scene/main/node.h"

@@ -1,3 +1,5 @@
+#ifndef COLLISION_OBJECT_2D_H
+#define COLLISION_OBJECT_2D_H
 /*************************************************************************/
 /*  collision_object_2d.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef COLLISION_OBJECT_2D_H
-#define COLLISION_OBJECT_2D_H
+
+
 
 #include "scene/2d/node_2d.h"
 #include "scene/resources/shape_2d.h"

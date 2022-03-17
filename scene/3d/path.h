@@ -1,3 +1,5 @@
+#ifndef PATH_H
+#define PATH_H
 /*************************************************************************/
 /*  path.h                                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PATH_H
-#define PATH_H
+
+
 
 #include "scene/3d/spatial.h"
 #include "core/reference.h"

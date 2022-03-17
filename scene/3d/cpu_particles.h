@@ -1,3 +1,5 @@
+#ifndef CPU_PARTICLES_H
+#define CPU_PARTICLES_H
 /*************************************************************************/
 /*  cpu_particles.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CPU_PARTICLES_H
-#define CPU_PARTICLES_H
+
+
 
 #include "core/rid.h"
 #include "core/safe_refcount.h"

@@ -1,3 +1,5 @@
+#ifndef RAY_SHAPE_H
+#define RAY_SHAPE_H
 /*************************************************************************/
 /*  ray_shape.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RAY_SHAPE_H
-#define RAY_SHAPE_H
+
+
 #include "scene/resources/shape.h"
 
 class RayShape : public Shape {

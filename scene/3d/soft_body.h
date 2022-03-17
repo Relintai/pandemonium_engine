@@ -1,3 +1,5 @@
+#ifndef SOFT_PHYSICS_BODY_H
+#define SOFT_PHYSICS_BODY_H
 /*************************************************************************/
 /*  soft_body.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SOFT_PHYSICS_BODY_H
-#define SOFT_PHYSICS_BODY_H
+
+
 
 #include "scene/3d/mesh_instance.h"
 

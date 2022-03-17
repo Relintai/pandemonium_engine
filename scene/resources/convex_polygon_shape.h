@@ -1,3 +1,5 @@
+#ifndef CONVEX_POLYGON_SHAPE_H
+#define CONVEX_POLYGON_SHAPE_H
 /*************************************************************************/
 /*  convex_polygon_shape.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CONVEX_POLYGON_SHAPE_H
-#define CONVEX_POLYGON_SHAPE_H
+
+
 
 #include "scene/resources/shape.h"
 

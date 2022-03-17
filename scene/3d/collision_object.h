@@ -1,3 +1,5 @@
+#ifndef COLLISION_OBJECT_H
+#define COLLISION_OBJECT_H
 /*************************************************************************/
 /*  collision_object.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef COLLISION_OBJECT_H
-#define COLLISION_OBJECT_H
+
+
 
 #include "scene/3d/spatial.h"
 #include "core/reference.h"

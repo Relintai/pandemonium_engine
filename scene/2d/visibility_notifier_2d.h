@@ -1,3 +1,5 @@
+#ifndef VISIBILITY_NOTIFIER_2D_H
+#define VISIBILITY_NOTIFIER_2D_H
 /*************************************************************************/
 /*  visibility_notifier_2d.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VISIBILITY_NOTIFIER_2D_H
-#define VISIBILITY_NOTIFIER_2D_H
+
+
 
 #include "scene/2d/node_2d.h"
 

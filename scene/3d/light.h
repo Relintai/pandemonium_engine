@@ -1,3 +1,5 @@
+#ifndef LIGHT_H
+#define LIGHT_H
 /*************************************************************************/
 /*  light.h                                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef LIGHT_H
-#define LIGHT_H
+
+
 
 #include "scene/3d/visual_instance.h"
 #include "servers/visual_server.h"

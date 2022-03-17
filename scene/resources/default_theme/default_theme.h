@@ -1,3 +1,5 @@
+#ifndef DEFAULT_THEME_H
+#define DEFAULT_THEME_H
 /*************************************************************************/
 /*  default_theme.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef DEFAULT_THEME_H
-#define DEFAULT_THEME_H
+
+
 
 #include "scene/resources/theme.h"
 

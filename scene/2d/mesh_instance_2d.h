@@ -1,3 +1,5 @@
+#ifndef MESH_INSTANCE_2D_H
+#define MESH_INSTANCE_2D_H
 /*************************************************************************/
 /*  mesh_instance_2d.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MESH_INSTANCE_2D_H
-#define MESH_INSTANCE_2D_H
+
+
 
 #include "scene/2d/node_2d.h"
 

@@ -1,3 +1,5 @@
+#ifndef OPTION_BUTTON_H
+#define OPTION_BUTTON_H
 /*************************************************************************/
 /*  option_button.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef OPTION_BUTTON_H
-#define OPTION_BUTTON_H
+
+
 
 #include "scene/gui/button.h"
 

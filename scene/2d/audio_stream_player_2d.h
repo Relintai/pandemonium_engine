@@ -1,3 +1,5 @@
+#ifndef AUDIO_STREAM_PLAYER_2D_H
+#define AUDIO_STREAM_PLAYER_2D_H
 /*************************************************************************/
 /*  audio_stream_player_2d.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIO_STREAM_PLAYER_2D_H
-#define AUDIO_STREAM_PLAYER_2D_H
+
+
 
 #include "scene/2d/node_2d.h"
 #include "core/safe_refcount.h"

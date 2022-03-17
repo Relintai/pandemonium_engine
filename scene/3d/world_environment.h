@@ -1,3 +1,5 @@
+#ifndef SCENARIO_FX_H
+#define SCENARIO_FX_H
 /*************************************************************************/
 /*  world_environment.h                                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SCENARIO_FX_H
-#define SCENARIO_FX_H
+
+
 
 #include "scene/main/node.h"
 #include "core/reference.h"

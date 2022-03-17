@@ -1,3 +1,5 @@
+#ifndef SPATIAL_H
+#define SPATIAL_H
 /*************************************************************************/
 /*  spatial.h                                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SPATIAL_H
-#define SPATIAL_H
+
+
 
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"

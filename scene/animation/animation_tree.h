@@ -1,3 +1,5 @@
+#ifndef ANIMATION_GRAPH_PLAYER_H
+#define ANIMATION_GRAPH_PLAYER_H
 /*************************************************************************/
 /*  animation_tree.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ANIMATION_GRAPH_PLAYER_H
-#define ANIMATION_GRAPH_PLAYER_H
+
+
 
 #include "scene/main/node.h"
 #include "core/resource.h"

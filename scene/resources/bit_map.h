@@ -1,3 +1,5 @@
+#ifndef BIT_MAP_H
+#define BIT_MAP_H
 /*************************************************************************/
 /*  bit_map.h                                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BIT_MAP_H
-#define BIT_MAP_H
+
+
 
 #include "core/image.h"
 #include "core/io/resource_loader.h"

@@ -1,3 +1,5 @@
+#ifndef TOUCH_SCREEN_BUTTON_H
+#define TOUCH_SCREEN_BUTTON_H
 /*************************************************************************/
 /*  touch_screen_button.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TOUCH_SCREEN_BUTTON_H
-#define TOUCH_SCREEN_BUTTON_H
+
+
 
 #include "scene/2d/node_2d.h"
 #include "core/reference.h"

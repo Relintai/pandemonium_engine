@@ -1,3 +1,5 @@
+#ifndef NINE_PATCH_RECT_H
+#define NINE_PATCH_RECT_H
 /*************************************************************************/
 /*  nine_patch_rect.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef NINE_PATCH_RECT_H
-#define NINE_PATCH_RECT_H
+
+
 
 #include "scene/gui/control.h"
 

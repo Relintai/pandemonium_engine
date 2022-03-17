@@ -1,3 +1,5 @@
+#ifndef ANIMATION_NODE_STATE_MACHINE_H
+#define ANIMATION_NODE_STATE_MACHINE_H
 /*************************************************************************/
 /*  animation_node_state_machine.h                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ANIMATION_NODE_STATE_MACHINE_H
-#define ANIMATION_NODE_STATE_MACHINE_H
+
+
 
 #include "scene/animation/animation_tree.h"
 

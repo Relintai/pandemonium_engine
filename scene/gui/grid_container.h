@@ -1,3 +1,5 @@
+#ifndef GRID_CONTAINER_H
+#define GRID_CONTAINER_H
 /*************************************************************************/
 /*  grid_container.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GRID_CONTAINER_H
-#define GRID_CONTAINER_H
+
+
 
 #include "scene/gui/container.h"
 

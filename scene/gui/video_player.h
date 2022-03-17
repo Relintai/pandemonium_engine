@@ -1,3 +1,5 @@
+#ifndef VIDEO_PLAYER_H
+#define VIDEO_PLAYER_H
 /*************************************************************************/
 /*  video_player.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VIDEO_PLAYER_H
-#define VIDEO_PLAYER_H
+
+
 
 #include "scene/gui/control.h"
 #include "servers/audio/audio_rb_resampler.h"

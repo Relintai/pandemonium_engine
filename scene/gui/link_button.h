@@ -1,3 +1,5 @@
+#ifndef LINKBUTTON_H
+#define LINKBUTTON_H
 /*************************************************************************/
 /*  link_button.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef LINKBUTTON_H
-#define LINKBUTTON_H
+
+
 
 #include "scene/gui/base_button.h"
 

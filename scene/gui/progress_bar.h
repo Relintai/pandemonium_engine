@@ -1,3 +1,5 @@
+#ifndef PROGRESS_BAR_H
+#define PROGRESS_BAR_H
 /*************************************************************************/
 /*  progress_bar.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PROGRESS_BAR_H
-#define PROGRESS_BAR_H
+
+
 
 #include "scene/gui/range.h"
 

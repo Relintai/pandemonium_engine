@@ -1,3 +1,5 @@
+#ifndef COLOR_RECT_H
+#define COLOR_RECT_H
 /*************************************************************************/
 /*  color_rect.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef COLOR_RECT_H
-#define COLOR_RECT_H
+
+
 
 #include "scene/gui/control.h"
 

@@ -1,3 +1,5 @@
+#ifndef CANVAS_ITEM_H
+#define CANVAS_ITEM_H
 /*************************************************************************/
 /*  canvas_item.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CANVAS_ITEM_H
-#define CANVAS_ITEM_H
+
+
 
 #include "scene/resources/material.h"
 #include "scene/main/node.h"

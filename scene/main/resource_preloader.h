@@ -1,3 +1,5 @@
+#ifndef RESOURCE_PRELOADER_H
+#define RESOURCE_PRELOADER_H
 /*************************************************************************/
 /*  resource_preloader.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RESOURCE_PRELOADER_H
-#define RESOURCE_PRELOADER_H
+
+
 
 #include "scene/main/node.h"
 

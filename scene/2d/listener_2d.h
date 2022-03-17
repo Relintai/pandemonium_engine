@@ -1,3 +1,5 @@
+#ifndef LISTENER_2D_H
+#define LISTENER_2D_H
 /*************************************************************************/
 /*  listener_2d.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef LISTENER_2D_H
-#define LISTENER_2D_H
+
+
 
 #include "scene/2d/node_2d.h"
 

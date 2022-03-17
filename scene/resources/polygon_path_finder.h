@@ -1,3 +1,5 @@
+#ifndef POLYGON_PATH_FINDER_H
+#define POLYGON_PATH_FINDER_H
 /*************************************************************************/
 /*  polygon_path_finder.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef POLYGON_PATH_FINDER_H
-#define POLYGON_PATH_FINDER_H
+
+
 
 #include "core/resource.h"
 

@@ -1,3 +1,5 @@
+#ifndef WORLD_H
+#define WORLD_H
 /*************************************************************************/
 /*  world.h                                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef WORLD_H
-#define WORLD_H
+
+
 
 #include "core/resource.h"
 #include "scene/resources/environment.h"

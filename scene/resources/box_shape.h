@@ -1,3 +1,5 @@
+#ifndef BOX_SHAPE_H
+#define BOX_SHAPE_H
 /*************************************************************************/
 /*  box_shape.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BOX_SHAPE_H
-#define BOX_SHAPE_H
+
+
 
 #include "scene/resources/shape.h"
 

@@ -1,3 +1,5 @@
+#ifndef SCROLL_CONTAINER_H
+#define SCROLL_CONTAINER_H
 /*************************************************************************/
 /*  scroll_container.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SCROLL_CONTAINER_H
-#define SCROLL_CONTAINER_H
+
+
 
 #include "container.h"
 

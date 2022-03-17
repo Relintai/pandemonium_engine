@@ -1,3 +1,5 @@
+#ifndef PACKED_SCENE_H
+#define PACKED_SCENE_H
 /*************************************************************************/
 /*  packed_scene.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PACKED_SCENE_H
-#define PACKED_SCENE_H
+
+
 
 #include "core/resource.h"
 #include "scene/main/node.h"

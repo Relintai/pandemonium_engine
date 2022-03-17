@@ -1,3 +1,5 @@
+#ifndef LIGHTOCCLUDER2D_H
+#define LIGHTOCCLUDER2D_H
 /*************************************************************************/
 /*  light_occluder_2d.h                                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef LIGHTOCCLUDER2D_H
-#define LIGHTOCCLUDER2D_H
+
+
 
 #include "scene/2d/node_2d.h"
 

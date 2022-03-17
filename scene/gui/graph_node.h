@@ -1,3 +1,5 @@
+#ifndef GRAPH_NODE_H
+#define GRAPH_NODE_H
 /*************************************************************************/
 /*  graph_node.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GRAPH_NODE_H
-#define GRAPH_NODE_H
+
+
 
 #include "scene/gui/container.h"
 

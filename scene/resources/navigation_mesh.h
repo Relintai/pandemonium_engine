@@ -1,3 +1,5 @@
+#ifndef NAVIGATION_MESH_H
+#define NAVIGATION_MESH_H
 /*************************************************************************/
 /*  navigation_mesh.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef NAVIGATION_MESH_H
-#define NAVIGATION_MESH_H
+
+
 
 #include "scene/resources/mesh.h"
 

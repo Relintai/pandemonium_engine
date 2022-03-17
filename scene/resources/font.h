@@ -1,3 +1,5 @@
+#ifndef FONT_H
+#define FONT_H
 /*************************************************************************/
 /*  font.h                                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef FONT_H
-#define FONT_H
+
+
 
 #include "core/map.h"
 #include "core/resource.h"

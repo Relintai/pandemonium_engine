@@ -1,3 +1,5 @@
+#ifndef CAMERA_H
+#define CAMERA_H
 /*************************************************************************/
 /*  camera.h                                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CAMERA_H
-#define CAMERA_H
+
+
 
 #include "scene/3d/spatial.h"
 #include "core/reference.h"

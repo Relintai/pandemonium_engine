@@ -1,3 +1,5 @@
+#ifndef AUDIO_STREAM_PLAYER_3D_H
+#define AUDIO_STREAM_PLAYER_3D_H
 /*************************************************************************/
 /*  audio_stream_player_3d.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIO_STREAM_PLAYER_3D_H
-#define AUDIO_STREAM_PLAYER_3D_H
+
+
 
 #include "core/safe_refcount.h"
 #include "scene/3d/spatial.h"

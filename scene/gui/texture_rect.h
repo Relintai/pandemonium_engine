@@ -1,3 +1,5 @@
+#ifndef TEXTURE_FRAME_H
+#define TEXTURE_FRAME_H
 /*************************************************************************/
 /*  texture_rect.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEXTURE_FRAME_H
-#define TEXTURE_FRAME_H
+
+
 
 #include "scene/gui/control.h"
 

@@ -1,3 +1,5 @@
+#ifndef CYLINDER_SHAPE_H
+#define CYLINDER_SHAPE_H
 /*************************************************************************/
 /*  cylinder_shape.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CYLINDER_SHAPE_H
-#define CYLINDER_SHAPE_H
+
+
 
 #include "scene/resources/shape.h"
 

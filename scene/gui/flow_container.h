@@ -1,3 +1,5 @@
+#ifndef FLOW_CONTAINER_H
+#define FLOW_CONTAINER_H
 /*************************************************************************/
 /*  flow_container.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef FLOW_CONTAINER_H
-#define FLOW_CONTAINER_H
+
+
 
 #include "scene/gui/container.h"
 

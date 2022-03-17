@@ -1,3 +1,5 @@
+#ifndef RANGE_H
+#define RANGE_H
 /*************************************************************************/
 /*  range.h                                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RANGE_H
-#define RANGE_H
+
+
 
 #include "scene/gui/control.h"
 

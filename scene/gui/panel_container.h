@@ -1,3 +1,5 @@
+#ifndef PANEL_CONTAINER_H
+#define PANEL_CONTAINER_H
 /*************************************************************************/
 /*  panel_container.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PANEL_CONTAINER_H
-#define PANEL_CONTAINER_H
+
+
 
 #include "scene/gui/container.h"
 

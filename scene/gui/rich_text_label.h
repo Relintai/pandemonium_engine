@@ -1,3 +1,5 @@
+#ifndef RICH_TEXT_LABEL_H
+#define RICH_TEXT_LABEL_H
 /*************************************************************************/
 /*  rich_text_label.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RICH_TEXT_LABEL_H
-#define RICH_TEXT_LABEL_H
+
+
 
 #include "scene/gui/control.h"
 

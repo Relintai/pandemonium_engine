@@ -1,3 +1,5 @@
+#ifndef RICH_TEXT_EFFECT_H
+#define RICH_TEXT_EFFECT_H
 /*************************************************************************/
 /*  rich_text_effect.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RICH_TEXT_EFFECT_H
-#define RICH_TEXT_EFFECT_H
+
+
 
 #include "core/resource.h"
 

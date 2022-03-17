@@ -1,3 +1,5 @@
+#ifndef SPRITE_H
+#define SPRITE_H
 /*************************************************************************/
 /*  sprite.h                                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SPRITE_H
-#define SPRITE_H
+
+
 
 #include "scene/2d/node_2d.h"
 #include "core/reference.h"

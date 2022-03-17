@@ -1,3 +1,5 @@
+#ifndef SPATIAL_VELOCITY_TRACKER_H
+#define SPATIAL_VELOCITY_TRACKER_H
 /*************************************************************************/
 /*  spatial_velocity_tracker.h                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SPATIAL_VELOCITY_TRACKER_H
-#define SPATIAL_VELOCITY_TRACKER_H
+
+
 
 #include "scene/3d/spatial.h"
 

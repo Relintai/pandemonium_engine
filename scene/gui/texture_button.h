@@ -1,3 +1,5 @@
+#ifndef TEXTURE_BUTTON_H
+#define TEXTURE_BUTTON_H
 /*************************************************************************/
 /*  texture_button.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEXTURE_BUTTON_H
-#define TEXTURE_BUTTON_H
+
+
 
 #include "scene/gui/base_button.h"
 #include "core/reference.h"

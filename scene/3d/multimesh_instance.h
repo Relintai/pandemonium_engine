@@ -1,3 +1,5 @@
+#ifndef MULTIMESH_INSTANCE_H
+#define MULTIMESH_INSTANCE_H
 /*************************************************************************/
 /*  multimesh_instance.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MULTIMESH_INSTANCE_H
-#define MULTIMESH_INSTANCE_H
+
+
 
 #include "scene/3d/visual_instance.h"
 

@@ -1,3 +1,5 @@
+#ifndef MATERIAL_H
+#define MATERIAL_H
 /*************************************************************************/
 /*  material.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MATERIAL_H
-#define MATERIAL_H
+
+
 
 #include "core/resource.h"
 #include "core/self_list.h"

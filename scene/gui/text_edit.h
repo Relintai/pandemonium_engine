@@ -1,3 +1,5 @@
+#ifndef TEXT_EDIT_H
+#define TEXT_EDIT_H
 /*************************************************************************/
 /*  text_edit.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEXT_EDIT_H
-#define TEXT_EDIT_H
+
+
 
 #include "scene/gui/control.h"
 

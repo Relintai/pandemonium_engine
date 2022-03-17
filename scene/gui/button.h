@@ -1,3 +1,5 @@
+#ifndef BUTTON_H
+#define BUTTON_H
 /*************************************************************************/
 /*  button.h                                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BUTTON_H
-#define BUTTON_H
+
+
 
 #include "scene/gui/base_button.h"
 

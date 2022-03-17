@@ -1,3 +1,5 @@
+#ifndef TREE_H
+#define TREE_H
 /*************************************************************************/
 /*  tree.h                                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TREE_H
-#define TREE_H
+
+
 
 #include "core/object.h"
 #include "scene/gui/control.h"

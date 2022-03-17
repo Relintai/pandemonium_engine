@@ -1,3 +1,5 @@
+#ifndef ROOM_GROUP_H
+#define ROOM_GROUP_H
 /*************************************************************************/
 /*  room_group.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ROOM_GROUP_H
-#define ROOM_GROUP_H
+
+
 
 #include "core/rid.h"
 #include "spatial.h"

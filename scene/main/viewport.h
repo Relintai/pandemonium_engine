@@ -1,3 +1,5 @@
+#ifndef VIEWPORT_H
+#define VIEWPORT_H
 /*************************************************************************/
 /*  viewport.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VIEWPORT_H
-#define VIEWPORT_H
+
+
 
 #include "core/math/transform_2d.h"
 #include "scene/main/node.h"

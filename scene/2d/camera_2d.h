@@ -1,3 +1,5 @@
+#ifndef CAMERA_2D_H
+#define CAMERA_2D_H
 /*************************************************************************/
 /*  camera_2d.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CAMERA_2D_H
-#define CAMERA_2D_H
+
+
 
 #include "scene/2d/node_2d.h"
 

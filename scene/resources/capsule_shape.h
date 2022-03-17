@@ -1,3 +1,5 @@
+#ifndef CAPSULE_SHAPE_H
+#define CAPSULE_SHAPE_H
 /*************************************************************************/
 /*  capsule_shape.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CAPSULE_SHAPE_H
-#define CAPSULE_SHAPE_H
+
+
 
 #include "scene/resources/shape.h"
 

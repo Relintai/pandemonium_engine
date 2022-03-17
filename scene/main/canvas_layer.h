@@ -1,3 +1,5 @@
+#ifndef CANVAS_LAYER_H
+#define CANVAS_LAYER_H
 /*************************************************************************/
 /*  canvas_layer.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CANVAS_LAYER_H
-#define CANVAS_LAYER_H
+
+
 
 #include "scene/main/node.h"
 

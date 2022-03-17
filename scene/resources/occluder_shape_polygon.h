@@ -1,3 +1,5 @@
+#ifndef OCCLUDER_SHAPE_POLYGON_H
+#define OCCLUDER_SHAPE_POLYGON_H
 /*************************************************************************/
 /*  occluder_shape_polygon.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef OCCLUDER_SHAPE_POLYGON_H
-#define OCCLUDER_SHAPE_POLYGON_H
+
+
 
 #include "occluder_shape.h"
 

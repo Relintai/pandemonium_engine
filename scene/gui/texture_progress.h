@@ -1,3 +1,5 @@
+#ifndef TEXTURE_PROGRESS_H
+#define TEXTURE_PROGRESS_H
 /*************************************************************************/
 /*  texture_progress.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEXTURE_PROGRESS_H
-#define TEXTURE_PROGRESS_H
+
+
 
 #include "scene/gui/range.h"
 

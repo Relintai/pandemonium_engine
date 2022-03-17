@@ -1,3 +1,5 @@
+#ifndef OCCLUDER_SHAPE_H
+#define OCCLUDER_SHAPE_H
 /*************************************************************************/
 /*  occluder_shape.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef OCCLUDER_SHAPE_H
-#define OCCLUDER_SHAPE_H
+
+
 
 #include "core/math/plane.h"
 #include "core/resource.h"

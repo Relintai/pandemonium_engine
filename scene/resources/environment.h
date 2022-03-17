@@ -1,3 +1,5 @@
+#ifndef ENVIRONMENT_H
+#define ENVIRONMENT_H
 /*************************************************************************/
 /*  environment.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ENVIRONMENT_H
-#define ENVIRONMENT_H
+
+
 
 #include "core/resource.h"
 #include "scene/resources/sky.h"

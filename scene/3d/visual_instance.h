@@ -1,3 +1,5 @@
+#ifndef VISUAL_INSTANCE_H
+#define VISUAL_INSTANCE_H
 /*************************************************************************/
 /*  visual_instance.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VISUAL_INSTANCE_H
-#define VISUAL_INSTANCE_H
+
+
 
 #include "core/math/face3.h"
 #include "core/rid.h"

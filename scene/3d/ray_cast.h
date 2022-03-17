@@ -1,3 +1,5 @@
+#ifndef RAY_CAST_H
+#define RAY_CAST_H
 /*************************************************************************/
 /*  ray_cast.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RAY_CAST_H
-#define RAY_CAST_H
+
+
 
 #include "scene/3d/spatial.h"
 

@@ -1,3 +1,5 @@
+#ifndef PANEL_H
+#define PANEL_H
 /*************************************************************************/
 /*  panel.h                                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PANEL_H
-#define PANEL_H
+
+
 
 #include "scene/gui/control.h"
 

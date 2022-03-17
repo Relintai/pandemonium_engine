@@ -1,3 +1,5 @@
+#ifndef SPLIT_CONTAINER_H
+#define SPLIT_CONTAINER_H
 /*************************************************************************/
 /*  split_container.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SPLIT_CONTAINER_H
-#define SPLIT_CONTAINER_H
+
+
 
 #include "scene/gui/container.h"
 

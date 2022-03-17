@@ -1,3 +1,5 @@
+#ifndef INSTANCE_PLACEHOLDER_H
+#define INSTANCE_PLACEHOLDER_H
 /*************************************************************************/
 /*  instance_placeholder.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef INSTANCE_PLACEHOLDER_H
-#define INSTANCE_PLACEHOLDER_H
+
+
 
 #include "scene/main/node.h"
 

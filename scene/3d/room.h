@@ -1,3 +1,5 @@
+#ifndef ROOM_H
+#define ROOM_H
 /*************************************************************************/
 /*  room.h                                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ROOM_H
-#define ROOM_H
+
+
 
 #include "core/local_vector.h"
 #include "core/rid.h"

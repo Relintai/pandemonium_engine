@@ -1,3 +1,5 @@
+#ifndef AREA_H
+#define AREA_H
 /*************************************************************************/
 /*  area.h                                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AREA_H
-#define AREA_H
+
+
 
 #include "core/vset.h"
 #include "scene/3d/collision_object.h"

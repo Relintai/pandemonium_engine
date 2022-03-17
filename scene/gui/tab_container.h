@@ -1,3 +1,5 @@
+#ifndef TAB_CONTAINER_H
+#define TAB_CONTAINER_H
 /*************************************************************************/
 /*  tab_container.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TAB_CONTAINER_H
-#define TAB_CONTAINER_H
+
+
 
 #include "scene/gui/container.h"
 

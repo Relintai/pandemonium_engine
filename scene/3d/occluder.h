@@ -1,3 +1,5 @@
+#ifndef OCCLUDER_H
+#define OCCLUDER_H
 /*************************************************************************/
 /*  occluder.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef OCCLUDER_H
-#define OCCLUDER_H
+
+
 
 #include "scene/3d/spatial.h"
 #include "core/reference.h"

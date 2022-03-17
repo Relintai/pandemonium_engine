@@ -1,3 +1,5 @@
+#ifndef ANIMATION_H
+#define ANIMATION_H
 /*************************************************************************/
 /*  animation.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef ANIMATION_H
-#define ANIMATION_H
+
+
 
 #include "core/resource.h"
 

@@ -1,3 +1,5 @@
+#ifndef SPRITE_3D_H
+#define SPRITE_3D_H
 /*************************************************************************/
 /*  sprite_3d.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SPRITE_3D_H
-#define SPRITE_3D_H
+
+
 
 #include "scene/3d/visual_instance.h"
 #include "core/reference.h"

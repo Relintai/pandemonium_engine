@@ -1,3 +1,5 @@
+#ifndef SPHERE_SHAPE_H
+#define SPHERE_SHAPE_H
 /*************************************************************************/
 /*  sphere_shape.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SPHERE_SHAPE_H
-#define SPHERE_SHAPE_H
+
+
 
 #include "scene/resources/shape.h"
 

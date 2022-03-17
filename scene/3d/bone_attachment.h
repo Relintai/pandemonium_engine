@@ -1,3 +1,5 @@
+#ifndef BONE_ATTACHMENT_H
+#define BONE_ATTACHMENT_H
 /*************************************************************************/
 /*  bone_attachment.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BONE_ATTACHMENT_H
-#define BONE_ATTACHMENT_H
+
+
 
 #include "scene/3d/skeleton.h"
 

@@ -1,3 +1,5 @@
+#ifndef PROPERTY_UTILS_H
+#define PROPERTY_UTILS_H
 /*************************************************************************/
 /*  property_utils.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PROPERTY_UTILS_H
-#define PROPERTY_UTILS_H
+
+
 
 #include "scene/main/node.h"
 #include "scene/resources/packed_scene.h"
