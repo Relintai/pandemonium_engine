@@ -32,6 +32,8 @@
 #include "core/math/expression.h"
 #include "core/os/input.h"
 #include "scene/gui/shortcut.h"
+#include "scene/main/timer.h"
+#include "scene/gui/popup_menu.h"
 
 Size2 SpinBox::get_minimum_size() const {
 	Size2 ms = line_edit->get_combined_minimum_size();

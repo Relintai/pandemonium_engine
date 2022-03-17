@@ -31,8 +31,11 @@
 #ifndef RICH_TEXT_LABEL_H
 #define RICH_TEXT_LABEL_H
 
+#include "scene/gui/control.h"
+
 #include "rich_text_effect.h"
-#include "scene/gui/scroll_bar.h"
+
+class VScrollBar;
 
 class RichTextLabel : public Control {
 	GDCLASS(RichTextLabel, Control);

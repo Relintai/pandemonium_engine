@@ -38,6 +38,7 @@
 #include "scene/2d/polygon_2d.h"
 #include "scene/gui/box_container.h"
 #include "thirdparty/misc/clipper.hpp"
+#include "scene/resources/bit_map.h"
 
 void SpriteEditor::_node_removed(Node *p_node) {
 	if (p_node == node) {

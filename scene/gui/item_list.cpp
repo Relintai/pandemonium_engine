@@ -31,6 +31,7 @@
 #include "item_list.h"
 #include "core/os/os.h"
 #include "core/project_settings.h"
+#include "scene/gui/scroll_bar.h"
 
 void ItemList::add_item(const String &p_item, const Ref<Texture> &p_texture, bool p_selectable) {
 	Item item;

@@ -31,8 +31,9 @@
 #ifndef SHORTCUT_H
 #define SHORTCUT_H
 
-#include "core/os/input_event.h"
 #include "core/resource.h"
+
+class InputEvent;
 
 class ShortCut : public Resource {
 	GDCLASS(ShortCut, Resource);
@@ -51,6 +52,7 @@ public:
 	String get_as_text() const;
 
 	ShortCut();
+	~ShortCut();
 };
 
 #endif // SHORTCUT_H

@@ -32,7 +32,8 @@
 #define MENU_BUTTON_H
 
 #include "scene/gui/button.h"
-#include "scene/gui/popup_menu.h"
+
+class PopupMenu;
 
 class MenuButton : public Button {
 	GDCLASS(MenuButton, Button);

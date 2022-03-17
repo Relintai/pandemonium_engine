@@ -34,6 +34,7 @@
 #include "scene/gui/box_container.h"
 #include "scene/gui/label.h"
 #include "scene/gui/texture_rect.h"
+#include "scene/gui/popup.h"
 
 int TabContainer::_get_top_margin() const {
 	if (!tabs_visible) {

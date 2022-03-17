@@ -33,7 +33,8 @@
 
 #include "container.h"
 
-#include "scroll_bar.h"
+class HScrollBar;
+class VScrollBar;
 
 class ScrollContainer : public Container {
 	GDCLASS(ScrollContainer, Container);

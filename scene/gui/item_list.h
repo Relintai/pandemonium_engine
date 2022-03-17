@@ -32,7 +32,8 @@
 #define ITEMLIST_H
 
 #include "scene/gui/control.h"
-#include "scene/gui/scroll_bar.h"
+
+class VScrollBar;
 
 class ItemList : public Control {
 	GDCLASS(ItemList, Control);

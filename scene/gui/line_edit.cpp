@@ -37,6 +37,7 @@
 #include "core/translation.h"
 #include "label.h"
 #include "scene/main/timer.h"
+#include "scene/gui/popup_menu.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_scale.h"
