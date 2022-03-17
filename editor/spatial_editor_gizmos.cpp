@@ -67,6 +67,7 @@
 #include "scene/resources/surface_tool.h"
 #include "scene/resources/navigation_mesh.h"
 #include "scene/main/viewport.h"
+#include "scene/resources/skin.h"
 
 #define HANDLE_HALF_SIZE 9.5
 

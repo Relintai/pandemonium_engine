@@ -32,6 +32,7 @@
 
 #include "editor_scene_importer_gltf.h"
 #include "scene/resources/animation.h"
+#include "scene/resources/skin.h"
 
 #include "gltf_state.h"
 #include "packed_scene_gltf.h"

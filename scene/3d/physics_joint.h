@@ -31,8 +31,9 @@
 #ifndef PHYSICS_JOINT_H
 #define PHYSICS_JOINT_H
 
-#include "scene/3d/physics_body.h"
 #include "scene/3d/spatial.h"
+
+class PhysicsBody;
 
 class Joint : public Spatial {
 	GDCLASS(Joint, Spatial);

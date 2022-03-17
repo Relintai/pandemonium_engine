@@ -31,6 +31,7 @@
 #include "spatial_editor_gizmos.h"
 
 #include "scene/resources/surface_tool.h"
+#include "scene/resources/skin.h"
 
 ModuleSkeletonSpatialGizmoPlugin::ModuleSkeletonSpatialGizmoPlugin() {
 

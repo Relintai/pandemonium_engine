@@ -30,6 +30,8 @@
 
 #include "gltf_skin.h"
 
+#include "scene/resources/skin.h"
+
 void GLTFSkin::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_skin_root"), &GLTFSkin::get_skin_root);
 	ClassDB::bind_method(D_METHOD("set_skin_root", "skin_root"), &GLTFSkin::set_skin_root);
@@ -152,4 +154,12 @@ Ref<Skin> GLTFSkin::get_godot_skin() {
 
 void GLTFSkin::set_godot_skin(Ref<Skin> p_godot_skin) {
 	godot_skin = p_godot_skin;
+}
+
+GLTFSkin::GLTFSkin() {
+
+}
+
+GLTFSkin::~GLTFSkin() {
+
 }

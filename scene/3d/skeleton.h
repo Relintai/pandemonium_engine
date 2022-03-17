@@ -33,7 +33,7 @@
 
 #include "core/rid.h"
 #include "scene/3d/spatial.h"
-#include "scene/resources/skin.h"
+#include "core/reference.h"
 
 #ifndef _3D_DISABLED
 typedef int BoneId;
@@ -42,6 +42,7 @@ class PhysicalBone;
 #endif // _3D_DISABLED
 
 class Skeleton;
+class Skin;
 
 class SkinReference : public Reference {
 	GDCLASS(SkinReference, Reference)

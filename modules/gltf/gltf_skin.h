@@ -35,6 +35,8 @@
 
 #include "gltf_document.h"
 
+class Skin;
+
 class GLTFSkin : public Resource {
 	GDCLASS(GLTFSkin, Resource);
 	friend class GLTFDocument;
@@ -106,6 +108,9 @@ public:
 
 	Ref<Skin> get_godot_skin();
 	void set_godot_skin(Ref<Skin> p_godot_skin);
+
+	GLTFSkin();
+	~GLTFSkin();
 };
 
 #endif // GLTF_SKIN_H

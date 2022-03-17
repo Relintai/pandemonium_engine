@@ -35,6 +35,7 @@
 #include "core/project_settings.h"
 #include "scene/3d/physics_body.h"
 #include "scene/resources/surface_tool.h"
+#include "scene/resources/skin.h"
 
 void SkinReference::_skin_changed() {
 	if (skeleton_node) {
