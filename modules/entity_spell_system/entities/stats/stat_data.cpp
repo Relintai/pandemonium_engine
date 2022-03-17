@@ -90,7 +90,9 @@ void StatData::set_mod_stat_multiplier(int index, float value) {
 
 StatData::StatData() {
 	//TODO remove? let properties handle this?
-	_entries.resize(ESS::get_singleton()->stat_get_count());
+	if (ESS::get_singleton()) {
+		_entries.resize(ESS::get_singleton()->stat_get_count());
+	}
 
 	for (int i = 0; i < _entries.size(); ++i) {
 		_entries.set(i, 0);

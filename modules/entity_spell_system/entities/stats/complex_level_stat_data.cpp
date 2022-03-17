@@ -48,15 +48,17 @@ int ComplexLevelStatData::_get_stat_diff(int main_stat, int old_level, int new_l
 }
 
 ComplexLevelStatData::ComplexLevelStatData() {
-	_stat_per_level.resize(ESS::get_singleton()->get_max_character_level());
+	if (ESS::get_singleton()->get_max_character_level()) {
+		_stat_per_level.resize(ESS::get_singleton()->get_max_character_level());
 
-	int msc = ESS::get_singleton()->stat_get_main_stat_count();
+		int msc = ESS::get_singleton()->stat_get_main_stat_count();
 
-	for (int i = 0; i < ESS::get_singleton()->get_max_character_level(); ++i) {
-		_stat_per_level.write[i].resize(msc);
+		for (int i = 0; i < ESS::get_singleton()->get_max_character_level(); ++i) {
+			_stat_per_level.write[i].resize(msc);
 
-		for (int j = 0; j < msc; ++j) {
-			_stat_per_level.write[i].set(j, 0);
+			for (int j = 0; j < msc; ++j) {
+				_stat_per_level.write[i].set(j, 0);
+			}
 		}
 	}
 }

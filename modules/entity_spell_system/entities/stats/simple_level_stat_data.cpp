@@ -46,7 +46,9 @@ int SimpleLevelStatData::_get_stat_diff(int main_stat, int old_level, int new_le
 }
 
 SimpleLevelStatData::SimpleLevelStatData() {
-	_stat_per_level.resize(ESS::get_singleton()->stat_get_main_stat_count());
+	if (ESS::get_singleton()) {
+		_stat_per_level.resize(ESS::get_singleton()->stat_get_main_stat_count());
+	}
 
 	for (int i = 0; i < _stat_per_level.size(); ++i) {
 		_stat_per_level.set(i, 0);
