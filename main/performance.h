@@ -1,3 +1,5 @@
+#ifndef PERFORMANCE_H
+#define PERFORMANCE_H
 /*************************************************************************/
 /*  performance.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PERFORMANCE_H
-#define PERFORMANCE_H
+
+
 
 #include "core/object.h"
 

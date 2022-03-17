@@ -1,3 +1,5 @@
+#ifndef INPUT_DEFAULT_H
+#define INPUT_DEFAULT_H
 /*************************************************************************/
 /*  input_default.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef INPUT_DEFAULT_H
-#define INPUT_DEFAULT_H
+
+
 
 #include "core/os/input.h"
 

@@ -1,3 +1,5 @@
+#ifndef MAIN_H
+#define MAIN_H
 /*************************************************************************/
 /*  main.h                                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MAIN_H
-#define MAIN_H
+
+
 
 #include "core/error_list.h"
 #include "core/os/thread.h"

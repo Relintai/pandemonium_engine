@@ -1,3 +1,5 @@
+#ifndef TEST_STRING_H
+#define TEST_STRING_H
 /*************************************************************************/
 /*  test_string.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEST_STRING_H
-#define TEST_STRING_H
+
+
 
 #include "core/os/main_loop.h"
 #include "core/ustring.h"

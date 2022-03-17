@@ -1,3 +1,5 @@
+#ifndef TEST_TRANSFORM_H
+#define TEST_TRANSFORM_H
 /*************************************************************************/
 /*  test_transform.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEST_TRANSFORM_H
-#define TEST_TRANSFORM_H
+
+
 
 #include "core/os/main_loop.h"
 

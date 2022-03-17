@@ -1,3 +1,5 @@
+#ifndef TEST_ASTAR_H
+#define TEST_ASTAR_H
 /*************************************************************************/
 /*  test_astar.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEST_ASTAR_H
-#define TEST_ASTAR_H
+
+
 
 #include "core/os/main_loop.h"
 

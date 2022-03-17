@@ -1,3 +1,5 @@
+#ifndef TEST_SHADER_LANG_H
+#define TEST_SHADER_LANG_H
 /*************************************************************************/
 /*  test_shader_lang.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEST_SHADER_LANG_H
-#define TEST_SHADER_LANG_H
+
+
 
 #include "core/os/main_loop.h"
 

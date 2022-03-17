@@ -1,3 +1,5 @@
+#ifndef TEST_XML_PARSER_H
+#define TEST_XML_PARSER_H
 /*************************************************************************/
 /*  test_xml_parser.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEST_XML_PARSER_H
-#define TEST_XML_PARSER_H
+
+
 
 #include <inttypes.h>
 

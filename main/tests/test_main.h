@@ -1,3 +1,5 @@
+#ifndef TEST_MAIN_H
+#define TEST_MAIN_H
 /*************************************************************************/
 /*  test_main.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEST_MAIN_H
-#define TEST_MAIN_H
+
+
 
 #include "core/list.h"
 #include "core/os/main_loop.h"

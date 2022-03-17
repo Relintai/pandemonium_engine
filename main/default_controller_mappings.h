@@ -1,3 +1,5 @@
+#ifndef DEFAULT_CONTROLLER_MAPPINGS_H
+#define DEFAULT_CONTROLLER_MAPPINGS_H
 /*************************************************************************/
 /*  default_controller_mappings.h                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef DEFAULT_CONTROLLER_MAPPINGS_H
-#define DEFAULT_CONTROLLER_MAPPINGS_H
+
+
 
 class DefaultControllerMappings {
 public:

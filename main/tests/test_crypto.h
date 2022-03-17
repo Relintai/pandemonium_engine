@@ -1,3 +1,5 @@
+#ifndef TEST_CRYPTO_H
+#define TEST_CRYPTO_H
 /*************************************************************************/
 /*  test_crypto.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEST_CRYPTO_H
-#define TEST_CRYPTO_H
+
+
 
 #include "core/os/main_loop.h"
 

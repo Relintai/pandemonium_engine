@@ -1,3 +1,5 @@
+#ifndef TEST_ORDERED_HASH_MAP_H
+#define TEST_ORDERED_HASH_MAP_H
 /*************************************************************************/
 /*  test_ordered_hash_map.h                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEST_ORDERED_HASH_MAP_H
-#define TEST_ORDERED_HASH_MAP_H
+
+
 
 #include "core/os/main_loop.h"
 

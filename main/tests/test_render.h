@@ -1,3 +1,5 @@
+#ifndef TEST_RENDER_H
+#define TEST_RENDER_H
 /*************************************************************************/
 /*  test_render.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEST_RENDER_H
-#define TEST_RENDER_H
+
+
 
 #include "core/os/main_loop.h"
 

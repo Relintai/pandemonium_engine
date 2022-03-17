@@ -1,3 +1,5 @@
+#ifndef TEST_PHYSICS_2D_H
+#define TEST_PHYSICS_2D_H
 /*************************************************************************/
 /*  test_physics_2d.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEST_PHYSICS_2D_H
-#define TEST_PHYSICS_2D_H
+
+
 
 #include "core/os/main_loop.h"
 

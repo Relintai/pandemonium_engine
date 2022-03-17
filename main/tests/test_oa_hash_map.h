@@ -1,3 +1,5 @@
+#ifndef TEST_OA_HASH_MAP_H
+#define TEST_OA_HASH_MAP_H
 /*************************************************************************/
 /*  test_oa_hash_map.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEST_OA_HASH_MAP_H
-#define TEST_OA_HASH_MAP_H
+
+
 
 #include "core/os/main_loop.h"
 

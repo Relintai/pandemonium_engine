@@ -1,3 +1,5 @@
+#ifndef TEST_GDSCRIPT_H
+#define TEST_GDSCRIPT_H
 /*************************************************************************/
 /*  test_gdscript.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEST_GDSCRIPT_H
-#define TEST_GDSCRIPT_H
+
+
 
 #include "core/os/main_loop.h"
 

@@ -1,3 +1,5 @@
+#ifndef TEST_MATH_H
+#define TEST_MATH_H
 /*************************************************************************/
 /*  test_math.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef TEST_MATH_H
-#define TEST_MATH_H
+
+
 
 #include "core/os/main_loop.h"
 

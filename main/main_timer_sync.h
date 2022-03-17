@@ -1,3 +1,5 @@
+#ifndef MAIN_TIMER_SYNC_H
+#define MAIN_TIMER_SYNC_H
 /*************************************************************************/
 /*  main_timer_sync.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MAIN_TIMER_SYNC_H
-#define MAIN_TIMER_SYNC_H
+
+
 
 #include "core/engine.h"
 
