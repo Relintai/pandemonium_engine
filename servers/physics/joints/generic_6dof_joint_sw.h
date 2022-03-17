@@ -1,3 +1,5 @@
+#ifndef GENERIC_6DOF_JOINT_SW_H
+#define GENERIC_6DOF_JOINT_SW_H
 /*************************************************************************/
 /*  generic_6dof_joint_sw.h                                              */
 /*************************************************************************/
@@ -32,8 +34,8 @@
 Adapted to Godot from the Bullet library.
 */
 
-#ifndef GENERIC_6DOF_JOINT_SW_H
-#define GENERIC_6DOF_JOINT_SW_H
+
+
 
 #include "servers/physics/joints/jacobian_entry_sw.h"
 #include "servers/physics/joints_sw.h"

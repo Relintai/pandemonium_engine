@@ -1,3 +1,5 @@
+#ifndef VISUALSERVERVIEWPORT_H
+#define VISUALSERVERVIEWPORT_H
 /*************************************************************************/
 /*  visual_server_viewport.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VISUALSERVERVIEWPORT_H
-#define VISUALSERVERVIEWPORT_H
+
+
 
 #include "core/self_list.h"
 #include "rasterizer.h"

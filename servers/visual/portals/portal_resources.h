@@ -1,3 +1,5 @@
+#ifndef PORTAL_RESOURCES_H
+#define PORTAL_RESOURCES_H
 /*************************************************************************/
 /*  portal_resources.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PORTAL_RESOURCES_H
-#define PORTAL_RESOURCES_H
+
+
 
 #include "core/math/geometry.h"
 #include "portal_types.h"

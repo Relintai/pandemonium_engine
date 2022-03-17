@@ -1,3 +1,5 @@
+#ifndef AUDIOEFFECTDELAY_H
+#define AUDIOEFFECTDELAY_H
 /*************************************************************************/
 /*  audio_effect_delay.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIOEFFECTDELAY_H
-#define AUDIOEFFECTDELAY_H
+
+
 
 #include "servers/audio/audio_effect.h"
 

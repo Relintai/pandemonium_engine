@@ -1,3 +1,5 @@
+#ifndef GJK_EPA_H
+#define GJK_EPA_H
 /*************************************************************************/
 /*  gjk_epa.h                                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GJK_EPA_H
-#define GJK_EPA_H
+
+
 
 #include "collision_solver_sw.h"
 #include "shape_sw.h"

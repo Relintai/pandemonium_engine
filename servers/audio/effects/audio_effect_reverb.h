@@ -1,3 +1,5 @@
+#ifndef AUDIOEFFECTREVERB_H
+#define AUDIOEFFECTREVERB_H
 /*************************************************************************/
 /*  audio_effect_reverb.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIOEFFECTREVERB_H
-#define AUDIOEFFECTREVERB_H
+
+
 
 #include "servers/audio/audio_effect.h"
 #include "servers/audio/effects/reverb.h"

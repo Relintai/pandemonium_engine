@@ -1,3 +1,5 @@
+#ifndef JACOBIAN_ENTRY_SW_H
+#define JACOBIAN_ENTRY_SW_H
 /*************************************************************************/
 /*  jacobian_entry_sw.h                                                  */
 /*************************************************************************/
@@ -32,8 +34,8 @@
 Adapted to Godot from the Bullet library.
 */
 
-#ifndef JACOBIAN_ENTRY_SW_H
-#define JACOBIAN_ENTRY_SW_H
+
+
 
 /*
 Bullet Continuous Collision Detection and Physics Library

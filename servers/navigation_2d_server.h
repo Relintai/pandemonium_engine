@@ -1,3 +1,5 @@
+#ifndef NAVIGATION_2D_SERVER_H
+#define NAVIGATION_2D_SERVER_H
 /*************************************************************************/
 /*  navigation_2d_server.h                                               */
 /*************************************************************************/
@@ -32,8 +34,8 @@
 	@author AndreaCatania
 */
 
-#ifndef NAVIGATION_2D_SERVER_H
-#define NAVIGATION_2D_SERVER_H
+
+
 
 #include "core/object.h"
 #include "core/rid.h"

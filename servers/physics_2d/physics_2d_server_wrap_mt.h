@@ -1,3 +1,5 @@
+#ifndef PHYSICS2DSERVERWRAPMT_H
+#define PHYSICS2DSERVERWRAPMT_H
 /*************************************************************************/
 /*  physics_2d_server_wrap_mt.h                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PHYSICS2DSERVERWRAPMT_H
-#define PHYSICS2DSERVERWRAPMT_H
+
+
 
 #include "core/command_queue_mt.h"
 #include "core/os/thread.h"

@@ -1,3 +1,5 @@
+#ifndef PHYSICS_2D_SERVER_SW
+#define PHYSICS_2D_SERVER_SW
 /*************************************************************************/
 /*  physics_2d_server_sw.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PHYSICS_2D_SERVER_SW
-#define PHYSICS_2D_SERVER_SW
+
+
 
 #include "joints_2d_sw.h"
 #include "servers/physics_2d_server.h"

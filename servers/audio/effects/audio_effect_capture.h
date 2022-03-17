@@ -1,3 +1,5 @@
+#ifndef AUDIO_EFFECT_CAPTURE_H
+#define AUDIO_EFFECT_CAPTURE_H
 /*************************************************************************/
 /*  audio_effect_capture.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIO_EFFECT_CAPTURE_H
-#define AUDIO_EFFECT_CAPTURE_H
+
+
 
 #include "core/engine.h"
 #include "core/math/audio_frame.h"

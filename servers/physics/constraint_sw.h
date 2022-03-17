@@ -1,3 +1,5 @@
+#ifndef CONSTRAINT_SW_H
+#define CONSTRAINT_SW_H
 /*************************************************************************/
 /*  constraint_sw.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef CONSTRAINT_SW_H
-#define CONSTRAINT_SW_H
+
+
 
 #include "body_sw.h"
 

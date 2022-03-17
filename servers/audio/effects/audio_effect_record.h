@@ -1,3 +1,5 @@
+#ifndef AUDIOEFFECTRECORD_H
+#define AUDIOEFFECTRECORD_H
 /*************************************************************************/
 /*  audio_effect_record.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIOEFFECTRECORD_H
-#define AUDIOEFFECTRECORD_H
+
+
 
 #include "core/io/marshalls.h"
 #include "core/os/file_access.h"

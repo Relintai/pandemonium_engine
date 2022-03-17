@@ -1,3 +1,5 @@
+#ifndef VISUAL_SERVER_H
+#define VISUAL_SERVER_H
 /*************************************************************************/
 /*  visual_server.h                                                      */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VISUAL_SERVER_H
-#define VISUAL_SERVER_H
+
+
 
 #include "core/image.h"
 #include "core/math/bsp_tree.h"

@@ -1,3 +1,5 @@
+#ifndef SHADERTYPES_H
+#define SHADERTYPES_H
 /*************************************************************************/
 /*  shader_types.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SHADERTYPES_H
-#define SHADERTYPES_H
+
+
 
 #include "core/ordered_hash_map.h"
 #include "servers/visual_server.h"

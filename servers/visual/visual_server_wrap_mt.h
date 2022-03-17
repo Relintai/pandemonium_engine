@@ -1,3 +1,5 @@
+#ifndef VISUAL_SERVER_WRAP_MT_H
+#define VISUAL_SERVER_WRAP_MT_H
 /*************************************************************************/
 /*  visual_server_wrap_mt.h                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VISUAL_SERVER_WRAP_MT_H
-#define VISUAL_SERVER_WRAP_MT_H
+
+
 
 #include "core/command_queue_mt.h"
 #include "core/os/thread.h"

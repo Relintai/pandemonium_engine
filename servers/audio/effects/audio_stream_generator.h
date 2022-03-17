@@ -1,3 +1,5 @@
+#ifndef AUDIO_STREAM_GENERATOR_H
+#define AUDIO_STREAM_GENERATOR_H
 /*************************************************************************/
 /*  audio_stream_generator.h                                             */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIO_STREAM_GENERATOR_H
-#define AUDIO_STREAM_GENERATOR_H
+
+
 
 #include "core/ring_buffer.h"
 #include "servers/audio/audio_stream.h"

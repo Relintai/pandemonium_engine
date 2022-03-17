@@ -1,3 +1,5 @@
+#ifndef PORTAL_RENDERER_H
+#define PORTAL_RENDERER_H
 /*************************************************************************/
 /*  portal_renderer.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PORTAL_RENDERER_H
-#define PORTAL_RENDERER_H
+
+
 
 #include "core/math/camera_matrix.h"
 #include "core/math/geometry.h"

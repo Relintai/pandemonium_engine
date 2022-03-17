@@ -1,3 +1,5 @@
+#ifndef BROAD_PHASE_2D_BASIC_H
+#define BROAD_PHASE_2D_BASIC_H
 /*************************************************************************/
 /*  broad_phase_2d_basic.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BROAD_PHASE_2D_BASIC_H
-#define BROAD_PHASE_2D_BASIC_H
+
+
 
 #include "core/map.h"
 #include "space_2d_sw.h"

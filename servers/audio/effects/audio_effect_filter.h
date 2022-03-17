@@ -1,3 +1,5 @@
+#ifndef AUDIOEFFECTFILTER_H
+#define AUDIOEFFECTFILTER_H
 /*************************************************************************/
 /*  audio_effect_filter.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIOEFFECTFILTER_H
-#define AUDIOEFFECTFILTER_H
+
+
 
 #include "servers/audio/audio_effect.h"
 #include "servers/audio/audio_filter_sw.h"

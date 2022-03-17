@@ -1,3 +1,5 @@
+#ifndef VISUAL_SERVER_CALLBACKS_H
+#define VISUAL_SERVER_CALLBACKS_H
 /*************************************************************************/
 /*  visual_server_callbacks.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VISUAL_SERVER_CALLBACKS_H
-#define VISUAL_SERVER_CALLBACKS_H
+
+
 
 #include "core/local_vector.h"
 #include "core/object_id.h"

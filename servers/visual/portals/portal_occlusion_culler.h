@@ -1,3 +1,5 @@
+#ifndef PORTAL_OCCLUSION_CULLER_H
+#define PORTAL_OCCLUSION_CULLER_H
 /*************************************************************************/
 /*  portal_occlusion_culler.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PORTAL_OCCLUSION_CULLER_H
-#define PORTAL_OCCLUSION_CULLER_H
+
+
 
 class PortalRenderer;
 #include "core/math/camera_matrix.h"

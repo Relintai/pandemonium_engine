@@ -1,3 +1,5 @@
+#ifndef SLIDER_JOINT_SW_H
+#define SLIDER_JOINT_SW_H
 /*************************************************************************/
 /*  slider_joint_sw.h                                                    */
 /*************************************************************************/
@@ -32,8 +34,8 @@
 Adapted to Godot from the Bullet library.
 */
 
-#ifndef SLIDER_JOINT_SW_H
-#define SLIDER_JOINT_SW_H
+
+
 
 #include "servers/physics/joints/jacobian_entry_sw.h"
 #include "servers/physics/joints_sw.h"

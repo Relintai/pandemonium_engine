@@ -1,3 +1,5 @@
+#ifndef PORTAL_ROOMS_BSP_H
+#define PORTAL_ROOMS_BSP_H
 /*************************************************************************/
 /*  portal_rooms_bsp.h                                                   */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PORTAL_ROOMS_BSP_H
-#define PORTAL_ROOMS_BSP_H
+
+
 
 #include "core/local_vector.h"
 #include "core/math/aabb.h"

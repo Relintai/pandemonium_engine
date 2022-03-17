@@ -1,3 +1,5 @@
+#ifndef PORTAL_GAMEPLAY_MONITOR_H
+#define PORTAL_GAMEPLAY_MONITOR_H
 /*************************************************************************/
 /*  portal_gameplay_monitor.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PORTAL_GAMEPLAY_MONITOR_H
-#define PORTAL_GAMEPLAY_MONITOR_H
+
+
 
 #include "core/local_vector.h"
 #include "servers/visual_server_callbacks.h"

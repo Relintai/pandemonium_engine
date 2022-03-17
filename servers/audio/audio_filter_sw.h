@@ -1,3 +1,5 @@
+#ifndef AUDIO_FILTER_SW_H
+#define AUDIO_FILTER_SW_H
 /*************************************************************************/
 /*  audio_filter_sw.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIO_FILTER_SW_H
-#define AUDIO_FILTER_SW_H
+
+
 
 #include "core/math/math_funcs.h"
 

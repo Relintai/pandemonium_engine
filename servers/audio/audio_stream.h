@@ -1,3 +1,5 @@
+#ifndef AUDIO_STREAM_H
+#define AUDIO_STREAM_H
 /*************************************************************************/
 /*  audio_stream.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIO_STREAM_H
-#define AUDIO_STREAM_H
+
+
 
 #include "core/image.h"
 #include "core/resource.h"

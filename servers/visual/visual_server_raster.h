@@ -1,3 +1,5 @@
+#ifndef VISUAL_SERVER_RASTER_H
+#define VISUAL_SERVER_RASTER_H
 /*************************************************************************/
 /*  visual_server_raster.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VISUAL_SERVER_RASTER_H
-#define VISUAL_SERVER_RASTER_H
+
+
 
 #include "core/math/octree.h"
 #include "servers/visual/rasterizer.h"

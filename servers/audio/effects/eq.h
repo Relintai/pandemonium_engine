@@ -1,3 +1,5 @@
+#ifndef EQ_FILTER_H
+#define EQ_FILTER_H
 /*************************************************************************/
 /*  eq.h                                                                 */
 /*************************************************************************/
@@ -30,8 +32,8 @@
 
 // Author: reduzio@gmail.com (C) 2006
 
-#ifndef EQ_FILTER_H
-#define EQ_FILTER_H
+
+
 
 #include "core/typedefs.h"
 #include "core/vector.h"

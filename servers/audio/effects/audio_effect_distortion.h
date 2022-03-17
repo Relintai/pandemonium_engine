@@ -1,3 +1,5 @@
+#ifndef AUDIOEFFECTDISTORTION_H
+#define AUDIOEFFECTDISTORTION_H
 /*************************************************************************/
 /*  audio_effect_distortion.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIOEFFECTDISTORTION_H
-#define AUDIOEFFECTDISTORTION_H
+
+
 
 #include "servers/audio/audio_effect.h"
 

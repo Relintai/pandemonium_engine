@@ -1,3 +1,5 @@
+#ifndef RASTERIZER_H
+#define RASTERIZER_H
 /*************************************************************************/
 /*  rasterizer.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef RASTERIZER_H
-#define RASTERIZER_H
+
+
 
 #include "core/math/camera_matrix.h"
 #include "core/math/transform_interpolator.h"

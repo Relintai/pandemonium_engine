@@ -1,3 +1,5 @@
+#ifndef AUDIO_DRIVER_DUMMY_H
+#define AUDIO_DRIVER_DUMMY_H
 /*************************************************************************/
 /*  audio_driver_dummy.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIO_DRIVER_DUMMY_H
-#define AUDIO_DRIVER_DUMMY_H
+
+
 
 #include "servers/audio_server.h"
 

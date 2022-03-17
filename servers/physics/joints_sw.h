@@ -1,3 +1,5 @@
+#ifndef JOINTS_SW_H
+#define JOINTS_SW_H
 /*************************************************************************/
 /*  joints_sw.h                                                          */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef JOINTS_SW_H
-#define JOINTS_SW_H
+
+
 
 #include "body_sw.h"
 #include "constraint_sw.h"

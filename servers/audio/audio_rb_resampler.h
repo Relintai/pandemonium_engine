@@ -1,3 +1,5 @@
+#ifndef AUDIO_RB_RESAMPLER_H
+#define AUDIO_RB_RESAMPLER_H
 /*************************************************************************/
 /*  audio_rb_resampler.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIO_RB_RESAMPLER_H
-#define AUDIO_RB_RESAMPLER_H
+
+
 
 #include "core/os/memory.h"
 #include "core/safe_refcount.h"

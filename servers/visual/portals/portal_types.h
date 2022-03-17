@@ -1,3 +1,5 @@
+#ifndef PORTAL_TYPES_H
+#define PORTAL_TYPES_H
 /*************************************************************************/
 /*  portal_types.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PORTAL_TYPES_H
-#define PORTAL_TYPES_H
+
+
 
 #include "core/local_vector.h"
 #include "core/math/aabb.h"

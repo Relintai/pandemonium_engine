@@ -1,3 +1,5 @@
+#ifndef AUDIOEFFECTPANNER_H
+#define AUDIOEFFECTPANNER_H
 /*************************************************************************/
 /*  audio_effect_panner.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIOEFFECTPANNER_H
-#define AUDIOEFFECTPANNER_H
+
+
 
 #include "servers/audio/audio_effect.h"
 

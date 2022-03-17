@@ -1,3 +1,5 @@
+#ifndef AREA_SW_H
+#define AREA_SW_H
 /*************************************************************************/
 /*  area_sw.h                                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AREA_SW_H
-#define AREA_SW_H
+
+
 
 #include "collision_object_sw.h"
 #include "core/self_list.h"

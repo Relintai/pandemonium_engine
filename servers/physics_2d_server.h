@@ -1,3 +1,5 @@
+#ifndef PHYSICS_2D_SERVER_H
+#define PHYSICS_2D_SERVER_H
 /*************************************************************************/
 /*  physics_2d_server.h                                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PHYSICS_2D_SERVER_H
-#define PHYSICS_2D_SERVER_H
+
+
 
 #include "core/object.h"
 #include "core/reference.h"

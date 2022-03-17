@@ -1,3 +1,5 @@
+#ifndef BROAD_PHASE_2D_HASH_GRID_H
+#define BROAD_PHASE_2D_HASH_GRID_H
 /*************************************************************************/
 /*  broad_phase_2d_hash_grid.h                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BROAD_PHASE_2D_HASH_GRID_H
-#define BROAD_PHASE_2D_HASH_GRID_H
+
+
 
 #include "broad_phase_2d_sw.h"
 #include "core/map.h"

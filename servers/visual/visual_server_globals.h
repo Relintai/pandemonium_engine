@@ -1,3 +1,5 @@
+#ifndef VISUAL_SERVER_GLOBALS_H
+#define VISUAL_SERVER_GLOBALS_H
 /*************************************************************************/
 /*  visual_server_globals.h                                              */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VISUAL_SERVER_GLOBALS_H
-#define VISUAL_SERVER_GLOBALS_H
+
+
 
 #include "rasterizer.h"
 

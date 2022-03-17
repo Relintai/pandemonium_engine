@@ -1,3 +1,5 @@
+#ifndef COLLISION_OBJECT_SW_H
+#define COLLISION_OBJECT_SW_H
 /*************************************************************************/
 /*  collision_object_sw.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef COLLISION_OBJECT_SW_H
-#define COLLISION_OBJECT_SW_H
+
+
 
 #include "broad_phase_sw.h"
 #include "core/self_list.h"

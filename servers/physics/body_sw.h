@@ -1,3 +1,5 @@
+#ifndef BODY_SW_H
+#define BODY_SW_H
 /*************************************************************************/
 /*  body_sw.h                                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BODY_SW_H
-#define BODY_SW_H
+
+
 
 #include "area_sw.h"
 #include "collision_object_sw.h"

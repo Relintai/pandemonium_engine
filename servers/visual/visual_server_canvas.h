@@ -1,3 +1,5 @@
+#ifndef VISUALSERVERCANVAS_H
+#define VISUALSERVERCANVAS_H
 /*************************************************************************/
 /*  visual_server_canvas.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VISUALSERVERCANVAS_H
-#define VISUALSERVERCANVAS_H
+
+
 
 #include "rasterizer.h"
 #include "visual_server_viewport.h"

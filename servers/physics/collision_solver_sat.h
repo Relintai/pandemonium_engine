@@ -1,3 +1,5 @@
+#ifndef COLLISION_SOLVER_SAT_H
+#define COLLISION_SOLVER_SAT_H
 /*************************************************************************/
 /*  collision_solver_sat.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef COLLISION_SOLVER_SAT_H
-#define COLLISION_SOLVER_SAT_H
+
+
 
 #include "collision_solver_sw.h"
 

@@ -1,3 +1,5 @@
+#ifndef AUDIO_EFFECT_PHASER_H
+#define AUDIO_EFFECT_PHASER_H
 /*************************************************************************/
 /*  audio_effect_phaser.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIO_EFFECT_PHASER_H
-#define AUDIO_EFFECT_PHASER_H
+
+
 
 #include "servers/audio/audio_effect.h"
 

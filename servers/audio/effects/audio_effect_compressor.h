@@ -1,3 +1,5 @@
+#ifndef AUDIOEFFECTCOMPRESSOR_H
+#define AUDIOEFFECTCOMPRESSOR_H
 /*************************************************************************/
 /*  audio_effect_compressor.h                                            */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIOEFFECTCOMPRESSOR_H
-#define AUDIOEFFECTCOMPRESSOR_H
+
+
 
 #include "servers/audio/audio_effect.h"
 

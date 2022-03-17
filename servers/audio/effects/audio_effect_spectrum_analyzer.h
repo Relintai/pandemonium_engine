@@ -1,3 +1,5 @@
+#ifndef AUDIO_EFFECT_SPECTRUM_ANALYZER_H
+#define AUDIO_EFFECT_SPECTRUM_ANALYZER_H
 /*************************************************************************/
 /*  audio_effect_spectrum_analyzer.h                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIO_EFFECT_SPECTRUM_ANALYZER_H
-#define AUDIO_EFFECT_SPECTRUM_ANALYZER_H
+
+
 
 #include "servers/audio/audio_effect.h"
 

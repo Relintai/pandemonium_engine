@@ -1,3 +1,5 @@
+#ifndef BROAD_PHASE_SW_H
+#define BROAD_PHASE_SW_H
 /*************************************************************************/
 /*  broad_phase_sw.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BROAD_PHASE_SW_H
-#define BROAD_PHASE_SW_H
+
+
 
 #include "core/math/aabb.h"
 #include "core/math/math_funcs.h"

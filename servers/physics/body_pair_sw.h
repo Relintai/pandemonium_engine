@@ -1,3 +1,5 @@
+#ifndef BODY_PAIR_SW_H
+#define BODY_PAIR_SW_H
 /*************************************************************************/
 /*  body_pair_sw.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BODY_PAIR_SW_H
-#define BODY_PAIR_SW_H
+
+
 
 #include "body_sw.h"
 #include "constraint_sw.h"

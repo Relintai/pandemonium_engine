@@ -1,3 +1,5 @@
+#ifndef SHADER_LANGUAGE_H
+#define SHADER_LANGUAGE_H
 /*************************************************************************/
 /*  shader_language.h                                                    */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SHADER_LANGUAGE_H
-#define SHADER_LANGUAGE_H
+
+
 
 #include "core/list.h"
 #include "core/map.h"

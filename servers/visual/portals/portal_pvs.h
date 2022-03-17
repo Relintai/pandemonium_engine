@@ -1,3 +1,5 @@
+#ifndef PORTAL_PVS_H
+#define PORTAL_PVS_H
 /*************************************************************************/
 /*  portal_pvs.h                                                         */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PORTAL_PVS_H
-#define PORTAL_PVS_H
+
+
 
 #include "core/local_vector.h"
 

@@ -1,3 +1,5 @@
+#ifndef VISUALSERVERSCENE_H
+#define VISUALSERVERSCENE_H
 /*************************************************************************/
 /*  visual_server_scene.h                                                */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef VISUALSERVERSCENE_H
-#define VISUALSERVERSCENE_H
+
+
 
 #include "servers/visual/rasterizer.h"
 

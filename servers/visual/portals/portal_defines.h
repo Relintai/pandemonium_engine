@@ -1,3 +1,5 @@
+#ifndef PORTAL_DEFINES_H
+#define PORTAL_DEFINES_H
 /*************************************************************************/
 /*  portal_defines.h                                                     */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PORTAL_DEFINES_H
-#define PORTAL_DEFINES_H
+
+
 
 // This file is to allow constants etc to be accessible from outside the visual server,
 // while keeping the dependencies to an absolute minimum.

@@ -1,3 +1,5 @@
+#ifndef PORTAL_PVS_BUILDER_H
+#define PORTAL_PVS_BUILDER_H
 /*************************************************************************/
 /*  portal_pvs_builder.h                                                 */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PORTAL_PVS_BUILDER_H
-#define PORTAL_PVS_BUILDER_H
+
+
 
 #include "core/bitfield_dynamic.h"
 #include "core/local_vector.h"

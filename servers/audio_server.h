@@ -1,3 +1,5 @@
+#ifndef AUDIO_SERVER_H
+#define AUDIO_SERVER_H
 /*************************************************************************/
 /*  audio_server.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIO_SERVER_H
-#define AUDIO_SERVER_H
+
+
 
 #include "core/math/audio_frame.h"
 #include "core/object.h"

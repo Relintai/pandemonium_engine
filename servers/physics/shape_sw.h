@@ -1,3 +1,5 @@
+#ifndef SHAPE_SW_H
+#define SHAPE_SW_H
 /*************************************************************************/
 /*  shape_sw.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SHAPE_SW_H
-#define SHAPE_SW_H
+
+
 
 #include "core/local_vector.h"
 #include "core/math/bsp_tree.h"

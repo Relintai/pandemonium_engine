@@ -1,3 +1,5 @@
+#ifndef SHAPE_2D_2DSW_H
+#define SHAPE_2D_2DSW_H
 /*************************************************************************/
 /*  shape_2d_sw.h                                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SHAPE_2D_2DSW_H
-#define SHAPE_2D_2DSW_H
+
+
 
 #include "servers/physics_2d_server.h"
 #define _SEGMENT_IS_VALID_SUPPORT_THRESHOLD 0.99998

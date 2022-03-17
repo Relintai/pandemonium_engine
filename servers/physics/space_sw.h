@@ -1,3 +1,5 @@
+#ifndef SPACE_SW_H
+#define SPACE_SW_H
 /*************************************************************************/
 /*  space_sw.h                                                           */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SPACE_SW_H
-#define SPACE_SW_H
+
+
 
 #include "area_pair_sw.h"
 #include "area_sw.h"

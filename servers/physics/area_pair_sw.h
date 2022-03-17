@@ -1,3 +1,5 @@
+#ifndef AREA_PAIR_SW_H
+#define AREA_PAIR_SW_H
 /*************************************************************************/
 /*  area_pair_sw.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AREA_PAIR_SW_H
-#define AREA_PAIR_SW_H
+
+
 
 #include "area_sw.h"
 #include "body_sw.h"

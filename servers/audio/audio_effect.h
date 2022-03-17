@@ -1,3 +1,5 @@
+#ifndef AUDIOEFFECT_H
+#define AUDIOEFFECT_H
 /*************************************************************************/
 /*  audio_effect.h                                                       */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIOEFFECT_H
-#define AUDIOEFFECT_H
+
+
 
 #include "core/math/audio_frame.h"
 #include "core/resource.h"

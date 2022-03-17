@@ -1,3 +1,5 @@
+#ifndef REVERB_H
+#define REVERB_H
 /*************************************************************************/
 /*  reverb.h                                                             */
 /*************************************************************************/
@@ -30,8 +32,8 @@
 
 // Author: Juan Linietsky <reduzio@gmail.com>, (C) 2006
 
-#ifndef REVERB_H
-#define REVERB_H
+
+
 
 #include "core/math/audio_frame.h"
 #include "core/os/memory.h"

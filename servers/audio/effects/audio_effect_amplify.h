@@ -1,3 +1,5 @@
+#ifndef AUDIOEFFECTAMPLIFY_H
+#define AUDIOEFFECTAMPLIFY_H
 /*************************************************************************/
 /*  audio_effect_amplify.h                                               */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIOEFFECTAMPLIFY_H
-#define AUDIOEFFECTAMPLIFY_H
+
+
 
 #include "servers/audio/audio_effect.h"
 

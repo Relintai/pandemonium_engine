@@ -1,3 +1,5 @@
+#ifndef AUDIOEFFECTSTEREOENHANCE_H
+#define AUDIOEFFECTSTEREOENHANCE_H
 /*************************************************************************/
 /*  audio_effect_stereo_enhance.h                                        */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef AUDIOEFFECTSTEREOENHANCE_H
-#define AUDIOEFFECTSTEREOENHANCE_H
+
+
 
 #include "servers/audio/audio_effect.h"
 

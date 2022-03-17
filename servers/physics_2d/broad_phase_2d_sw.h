@@ -1,3 +1,5 @@
+#ifndef BROAD_PHASE_2D_SW_H
+#define BROAD_PHASE_2D_SW_H
 /*************************************************************************/
 /*  broad_phase_2d_sw.h                                                  */
 /*************************************************************************/
@@ -28,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef BROAD_PHASE_2D_SW_H
-#define BROAD_PHASE_2D_SW_H
+
+
 
 #include "core/math/math_funcs.h"
 #include "core/math/rect2.h"
