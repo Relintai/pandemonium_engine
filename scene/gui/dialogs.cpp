@@ -33,6 +33,12 @@
 #include "core/translation.h"
 #include "line_edit.h"
 
+#include "box_container.h"
+#include "scene/gui/button.h"
+#include "scene/gui/label.h"
+#include "scene/gui/panel.h"
+#include "scene/gui/texture_button.h"
+
 #ifdef TOOLS_ENABLED
 #include "editor/editor_node.h"
 #include "editor/editor_scale.h"

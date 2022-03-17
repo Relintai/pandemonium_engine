@@ -35,6 +35,9 @@
 #include "editor/editor_file_system.h"
 #include "editor/editor_settings.h"
 #include "editor_scale.h"
+#include "scene/gui/button.h"
+#include "scene/gui/box_container.h"
+
 void EditorDirDialog::_update_dir(TreeItem *p_item, EditorFileSystemDirectory *p_dir, const String &p_select_path) {
 	updating = true;
 

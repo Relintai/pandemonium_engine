@@ -35,6 +35,7 @@
 #include "core/os/keyboard.h"
 #include "editor/editor_scale.h"
 #include "scene/gui/check_box.h"
+#include "scene/gui/panel.h"
 
 /**
 	@author Mariano Suligoy

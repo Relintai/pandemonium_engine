@@ -34,6 +34,14 @@
 #include "core/print_string.h"
 #include "scene/gui/label.h"
 #include "scene/gui/shortcut.h"
+/*
+#include "box_container.h"
+#include "core/os/dir_access.h"
+#include "scene/gui/line_edit.h"
+#include "scene/gui/option_button.h"
+#include "scene/gui/tool_button.h"
+#include "scene/gui/tree.h"
+*/
 
 FileDialog::GetIconFunc FileDialog::get_icon_func = nullptr;
 FileDialog::GetIconFunc FileDialog::get_large_icon_func = nullptr;

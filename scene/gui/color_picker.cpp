@@ -44,6 +44,7 @@
 #include "scene/gui/spin_box.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tool_button.h"
+#include "scene/gui/shortcut.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_scale.h"

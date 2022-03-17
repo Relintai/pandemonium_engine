@@ -30,6 +30,8 @@
 
 #include "color_rect.h"
 
+#include "scene/gui/shortcut.h"
+
 void ColorRect::set_frame_color(const Color &p_color) {
 	color = p_color;
 	update();

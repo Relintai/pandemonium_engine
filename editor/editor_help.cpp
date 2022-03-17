@@ -38,6 +38,7 @@
 #include "editor_node.h"
 #include "editor_scale.h"
 #include "editor_settings.h"
+#include "scene/gui/texture_button.h"
 
 #define CONTRIBUTE_URL vformat("%s/community/contributing/updating_the_class_reference.html", VERSION_DOCS_URL)
 
