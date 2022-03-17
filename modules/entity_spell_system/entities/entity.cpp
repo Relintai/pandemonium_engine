@@ -5630,12 +5630,14 @@ void Entity::update(float delta) {
 			}
 		}
 
+		if (ESS::get_singleton()) {
 		for (int i = 0; i < ESS::get_singleton()->stat_get_count(); ++i) {
 			if (stat_get_dirty(i)) {
 				ssend_stat(i, stat_gets_current(i));
 
 				stat_set_dirty(i, false);
 			}
+		}
 		}
 
 		if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai.is_valid() && _s_ai->get_enabled()) {
