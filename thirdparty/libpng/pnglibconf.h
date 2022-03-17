@@ -1,3 +1,5 @@
+#ifndef PNGLCONF_H
+#define PNGLCONF_H
 /* pnglibconf.h - library build configuration */
 
 /* libpng version 1.6.37 */
@@ -12,8 +14,8 @@
 /* pnglibconf.h */
 /* Machine generated file: DO NOT EDIT */
 /* Derived from: scripts/pnglibconf.dfa */
-#ifndef PNGLCONF_H
-#define PNGLCONF_H
+
+
 /* options */
 #define PNG_16BIT_SUPPORTED
 #define PNG_ALIGNED_MEMORY_SUPPORTED

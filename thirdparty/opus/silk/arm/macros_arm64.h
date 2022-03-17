@@ -1,3 +1,5 @@
+#ifndef SILK_MACROS_ARM64_H
+#define SILK_MACROS_ARM64_H
 /***********************************************************************
 Copyright (C) 2015 Vidyo
 Redistribution and use in source and binary forms, with or without
@@ -25,8 +27,8 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ***********************************************************************/
 
-#ifndef SILK_MACROS_ARM64_H
-#define SILK_MACROS_ARM64_H
+
+
 
 #include <arm_neon.h>
 

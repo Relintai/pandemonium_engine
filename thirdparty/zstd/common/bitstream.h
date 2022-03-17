@@ -1,3 +1,5 @@
+#ifndef BITSTREAM_H_MODULE
+#define BITSTREAM_H_MODULE
 /* ******************************************************************
  * bitstream
  * Part of FSE library
@@ -11,8 +13,8 @@
  * in the COPYING file in the root directory of this source tree).
  * You may select, at your option, one of the above-listed licenses.
 ****************************************************************** */
-#ifndef BITSTREAM_H_MODULE
-#define BITSTREAM_H_MODULE
+
+
 
 #if defined (__cplusplus)
 extern "C" {

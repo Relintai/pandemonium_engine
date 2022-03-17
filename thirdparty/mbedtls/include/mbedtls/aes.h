@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_AES_H
+#define MBEDTLS_AES_H
 /**
  * \file aes.h
  *
@@ -37,8 +39,8 @@
  *  limitations under the License.
  */
 
-#ifndef MBEDTLS_AES_H
-#define MBEDTLS_AES_H
+
+
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

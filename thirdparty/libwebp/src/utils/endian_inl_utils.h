@@ -1,3 +1,5 @@
+#ifndef WEBP_UTILS_ENDIAN_INL_UTILS_H_
+#define WEBP_UTILS_ENDIAN_INL_UTILS_H_
 // Copyright 2014 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -9,8 +11,8 @@
 //
 // Endian related functions.
 
-#ifndef WEBP_UTILS_ENDIAN_INL_UTILS_H_
-#define WEBP_UTILS_ENDIAN_INL_UTILS_H_
+
+
 
 #ifdef HAVE_CONFIG_H
 #include "src/webp/config.h"

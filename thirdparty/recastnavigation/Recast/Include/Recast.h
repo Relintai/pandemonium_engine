@@ -1,3 +1,5 @@
+#ifndef RECAST_H
+#define RECAST_H
 //
 // Copyright (c) 2009-2010 Mikko Mononen memon@inside.org
 //
@@ -16,8 +18,8 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
  
-#ifndef RECAST_H
-#define RECAST_H
+
+
 
 /// The value of PI used by Recast.
 static const float RC_PI = 3.14159265f;

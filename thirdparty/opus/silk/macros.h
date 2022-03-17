@@ -1,3 +1,5 @@
+#ifndef SILK_MACROS_H
+#define SILK_MACROS_H
 /***********************************************************************
 Copyright (c) 2006-2011, Skype Limited. All rights reserved.
 Redistribution and use in source and binary forms, with or without
@@ -25,8 +27,8 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ***********************************************************************/
 
-#ifndef SILK_MACROS_H
-#define SILK_MACROS_H
+
+
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

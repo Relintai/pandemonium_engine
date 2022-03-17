@@ -1,9 +1,11 @@
+#ifndef __ENET_TYPES_H__
+#define __ENET_TYPES_H__
 /** 
  @file  types.h
  @brief type definitions for ENet
 */
-#ifndef __ENET_TYPES_H__
-#define __ENET_TYPES_H__
+
+
 
 typedef unsigned char enet_uint8;       /**< unsigned 8-bit type  */
 typedef unsigned short enet_uint16;     /**< unsigned 16-bit type */

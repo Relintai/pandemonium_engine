@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_MPS_MBEDTLS_MPS_TRACE_H
+#define MBEDTLS_MPS_MBEDTLS_MPS_TRACE_H
 /*
  *  Copyright The Mbed TLS Contributors
  *  SPDX-License-Identifier: Apache-2.0
@@ -23,8 +25,8 @@
  * \brief Tracing module for MPS
  */
 
-#ifndef MBEDTLS_MPS_MBEDTLS_MPS_TRACE_H
-#define MBEDTLS_MPS_MBEDTLS_MPS_TRACE_H
+
+
 
 #include "common.h"
 #include "mps_common.h"

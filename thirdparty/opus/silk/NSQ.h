@@ -1,3 +1,5 @@
+#ifndef SILK_NSQ_H
+#define SILK_NSQ_H
 /***********************************************************************
 Copyright (c) 2014 Vidyo.
 Copyright (c) 2006-2011, Skype Limited. All rights reserved.
@@ -25,8 +27,8 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ***********************************************************************/
-#ifndef SILK_NSQ_H
-#define SILK_NSQ_H
+
+
 
 #include "SigProc_FIX.h"
 

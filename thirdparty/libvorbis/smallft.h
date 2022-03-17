@@ -1,3 +1,5 @@
+#ifndef _V_SMFT_H_
+#define _V_SMFT_H_
 /********************************************************************
  *                                                                  *
  * THIS FILE IS PART OF THE OggVorbis SOFTWARE CODEC SOURCE CODE.   *
@@ -14,8 +16,8 @@
 
  ********************************************************************/
 
-#ifndef _V_SMFT_H_
-#define _V_SMFT_H_
+
+
 
 #include "vorbis/codec.h"
 

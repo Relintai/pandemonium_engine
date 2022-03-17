@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_HMAC_DRBG_H
+#define MBEDTLS_HMAC_DRBG_H
 /**
  * \file hmac_drbg.h
  *
@@ -23,8 +25,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-#ifndef MBEDTLS_HMAC_DRBG_H
-#define MBEDTLS_HMAC_DRBG_H
+
+
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

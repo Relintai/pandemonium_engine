@@ -1,3 +1,5 @@
+#ifndef SQUISH_H
+#define SQUISH_H
 /* -----------------------------------------------------------------------------
 
     Copyright (c) 2006 Simon Brown                          si@sjbrown.co.uk
@@ -23,8 +25,8 @@
 
    -------------------------------------------------------------------------- */
 
-#ifndef SQUISH_H
-#define SQUISH_H
+
+
 
 //! All squish API functions live in this namespace.
 namespace squish {

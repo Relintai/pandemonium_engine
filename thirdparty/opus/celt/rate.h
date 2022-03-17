@@ -1,3 +1,5 @@
+#ifndef RATE_H
+#define RATE_H
 /* Copyright (c) 2007-2008 CSIRO
    Copyright (c) 2007-2009 Xiph.Org Foundation
    Written by Jean-Marc Valin */
@@ -26,8 +28,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef RATE_H
-#define RATE_H
+
+
 
 #define MAX_PSEUDO 40
 #define LOG_MAX_PSEUDO 6

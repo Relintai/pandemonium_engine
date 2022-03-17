@@ -1,3 +1,5 @@
+#ifndef YUV2RGB_H
+#define YUV2RGB_H
 /* Thirdparty code presumably from http://wss.co.uk/pinknoise/yuv2rgb/ */
 
 /*
@@ -32,8 +34,8 @@ ship it.
  * 4. Removing unused 'dither' parameter
  */
 
-#ifndef YUV2RGB_H
-#define YUV2RGB_H
+
+
 
 #include "core/typedefs.h"
 

@@ -1,3 +1,5 @@
+#ifndef _V_WINDOW_
+#define _V_WINDOW_
 /********************************************************************
  *                                                                  *
  * THIS FILE IS PART OF THE OggVorbis SOFTWARE CODEC SOURCE CODE.   *
@@ -14,8 +16,8 @@
 
  ********************************************************************/
 
-#ifndef _V_WINDOW_
-#define _V_WINDOW_
+
+
 
 extern const float *_vorbis_window_get(int n);
 extern void _vorbis_apply_window(float *d,int *winno,long *blocksizes,

@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_CHECK_CRYPTO_CONFIG_H
+#define MBEDTLS_CHECK_CRYPTO_CONFIG_H
 /**
  * \file check_crypto_config.h
  *
@@ -25,8 +27,8 @@
  * in order to catch dependency issues early.
  */
 
-#ifndef MBEDTLS_CHECK_CRYPTO_CONFIG_H
-#define MBEDTLS_CHECK_CRYPTO_CONFIG_H
+
+
 
 #if defined(PSA_WANT_ALG_CCM) && \
     !( defined(PSA_WANT_KEY_TYPE_AES) || \

@@ -1,3 +1,5 @@
+#ifndef VP8_COMMON_FILTER_H_
+#define VP8_COMMON_FILTER_H_
 /*
  *  Copyright (c) 2011 The WebM project authors. All Rights Reserved.
  *
@@ -9,8 +11,8 @@
  */
 
 
-#ifndef VP8_COMMON_FILTER_H_
-#define VP8_COMMON_FILTER_H_
+
+
 
 #include "vpx_ports/mem.h"
 

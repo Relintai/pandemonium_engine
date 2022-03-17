@@ -1,3 +1,5 @@
+#ifndef _vorbis_codec_h_
+#define _vorbis_codec_h_
 /********************************************************************
  *                                                                  *
  * THIS FILE IS PART OF THE OggVorbis SOFTWARE CODEC SOURCE CODE.   *
@@ -14,8 +16,8 @@
 
  ********************************************************************/
 
-#ifndef _vorbis_codec_h_
-#define _vorbis_codec_h_
+
+
 
 #ifdef __cplusplus
 extern "C"

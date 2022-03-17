@@ -1,3 +1,5 @@
+#ifndef SQUISH_MATHS_H
+#define SQUISH_MATHS_H
 /* -----------------------------------------------------------------------------
 
     Copyright (c) 2006 Simon Brown                          si@sjbrown.co.uk
@@ -23,8 +25,8 @@
 
    -------------------------------------------------------------------------- */
 
-#ifndef SQUISH_MATHS_H
-#define SQUISH_MATHS_H
+
+
 
 #include <cmath>
 #include <algorithm>

@@ -1,3 +1,5 @@
+#ifndef PNGPRIV_H
+#define PNGPRIV_H
 
 /* pngpriv.h - private declarations for use inside libpng
  *
@@ -20,8 +22,8 @@
  * they should be well aware of the issues that may arise from doing so.
  */
 
-#ifndef PNGPRIV_H
-#define PNGPRIV_H
+
+
 
 /* Feature Test Macros.  The following are defined here to ensure that correctly
  * implemented libraries reveal the APIs libpng needs to build and hide those

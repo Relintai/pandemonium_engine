@@ -1,3 +1,5 @@
+#ifndef _vorbis_backend_h_
+#define _vorbis_backend_h_
 /********************************************************************
  *                                                                  *
  * THIS FILE IS PART OF THE OggVorbis SOFTWARE CODEC SOURCE CODE.   *
@@ -19,8 +21,8 @@
    Lookups for each backend aren't exposed because there's no reason
    to do so */
 
-#ifndef _vorbis_backend_h_
-#define _vorbis_backend_h_
+
+
 
 #include "codec_internal.h"
 

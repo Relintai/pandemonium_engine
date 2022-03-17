@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_RIPEMD160_H
+#define MBEDTLS_RIPEMD160_H
 /**
  * \file ripemd160.h
  *
@@ -19,8 +21,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-#ifndef MBEDTLS_RIPEMD160_H
-#define MBEDTLS_RIPEMD160_H
+
+
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

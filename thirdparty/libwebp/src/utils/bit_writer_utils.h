@@ -1,3 +1,5 @@
+#ifndef WEBP_UTILS_BIT_WRITER_UTILS_H_
+#define WEBP_UTILS_BIT_WRITER_UTILS_H_
 // Copyright 2011 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -11,8 +13,8 @@
 //
 // Author: Skal (pascal.massimino@gmail.com)
 
-#ifndef WEBP_UTILS_BIT_WRITER_UTILS_H_
-#define WEBP_UTILS_BIT_WRITER_UTILS_H_
+
+
 
 #include "src/webp/types.h"
 

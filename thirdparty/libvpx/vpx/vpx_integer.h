@@ -1,3 +1,5 @@
+#ifndef VPX_VPX_INTEGER_H_
+#define VPX_VPX_INTEGER_H_
 /*
  *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.
  *
@@ -9,8 +11,8 @@
  */
 
 
-#ifndef VPX_VPX_INTEGER_H_
-#define VPX_VPX_INTEGER_H_
+
+
 
 /* get ptrdiff_t, size_t, wchar_t, NULL */
 #include <stddef.h>

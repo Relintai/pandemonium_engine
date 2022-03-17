@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_CCM_H
+#define MBEDTLS_CCM_H
 /**
  * \file ccm.h
  *
@@ -44,8 +46,8 @@
  *  limitations under the License.
  */
 
-#ifndef MBEDTLS_CCM_H
-#define MBEDTLS_CCM_H
+
+
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

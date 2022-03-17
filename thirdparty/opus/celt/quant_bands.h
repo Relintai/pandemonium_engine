@@ -1,3 +1,5 @@
+#ifndef QUANT_BANDS
+#define QUANT_BANDS
 /* Copyright (c) 2007-2008 CSIRO
    Copyright (c) 2007-2009 Xiph.Org Foundation
    Written by Jean-Marc Valin */
@@ -26,8 +28,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef QUANT_BANDS
-#define QUANT_BANDS
+
+
 
 #include "arch.h"
 #include "modes.h"

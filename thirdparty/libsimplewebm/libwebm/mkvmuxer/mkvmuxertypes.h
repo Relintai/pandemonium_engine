@@ -1,3 +1,5 @@
+#ifndef MKVMUXER_MKVMUXERTYPES_H_
+#define MKVMUXER_MKVMUXERTYPES_H_
 // Copyright (c) 2012 The WebM project authors. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -6,8 +8,8 @@
 // in the file PATENTS.  All contributing project authors may
 // be found in the AUTHORS file in the root of the source tree.
 
-#ifndef MKVMUXER_MKVMUXERTYPES_H_
-#define MKVMUXER_MKVMUXERTYPES_H_
+
+
 
 namespace mkvmuxer {
 typedef unsigned char uint8;

@@ -1,3 +1,5 @@
+#ifndef _V_REG_H_
+#define _V_REG_H_
 /********************************************************************
  *                                                                  *
  * THIS FILE IS PART OF THE OggVorbis SOFTWARE CODEC SOURCE CODE.   *
@@ -14,8 +16,8 @@
 
  ********************************************************************/
 
-#ifndef _V_REG_H_
-#define _V_REG_H_
+
+
 
 #define VI_TRANSFORMB 1
 #define VI_WINDOWB 1

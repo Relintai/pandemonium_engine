@@ -1,3 +1,5 @@
+#ifndef HUF_H_298734234
+#define HUF_H_298734234
 /* ******************************************************************
  * huff0 huffman codec,
  * part of Finite State Entropy library
@@ -16,8 +18,8 @@
 extern "C" {
 #endif
 
-#ifndef HUF_H_298734234
-#define HUF_H_298734234
+
+
 
 /* *** Dependencies *** */
 #include "zstd_deps.h"    /* size_t */

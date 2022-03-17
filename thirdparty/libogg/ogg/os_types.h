@@ -1,3 +1,5 @@
+#ifndef _OS_TYPES_H
+#define _OS_TYPES_H
 /********************************************************************
  *                                                                  *
  * THIS FILE IS PART OF THE OggVorbis SOFTWARE CODEC SOURCE CODE.   *
@@ -13,8 +15,8 @@
  function: Define a consistent set of types on each platform.
 
  ********************************************************************/
-#ifndef _OS_TYPES_H
-#define _OS_TYPES_H
+
+
 
 /* make it easy on the folks that want to compile the libs with a
    different malloc than stdlib */

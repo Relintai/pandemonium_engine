@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_CMAC_H
+#define MBEDTLS_CMAC_H
 /**
  * \file cmac.h
  *
@@ -23,8 +25,8 @@
  *  limitations under the License.
  */
 
-#ifndef MBEDTLS_CMAC_H
-#define MBEDTLS_CMAC_H
+
+
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

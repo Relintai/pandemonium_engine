@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_CHACHAPOLY_H
+#define MBEDTLS_CHACHAPOLY_H
 /**
  * \file chachapoly.h
  *
@@ -29,8 +31,8 @@
  *  limitations under the License.
  */
 
-#ifndef MBEDTLS_CHACHAPOLY_H
-#define MBEDTLS_CHACHAPOLY_H
+
+
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

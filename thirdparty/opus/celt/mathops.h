@@ -1,3 +1,5 @@
+#ifndef MATHOPS_H
+#define MATHOPS_H
 /* Copyright (c) 2002-2008 Jean-Marc Valin
    Copyright (c) 2007-2008 CSIRO
    Copyright (c) 2007-2009 Xiph.Org Foundation
@@ -31,8 +33,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef MATHOPS_H
-#define MATHOPS_H
+
+
 
 #include "arch.h"
 #include "entcode.h"

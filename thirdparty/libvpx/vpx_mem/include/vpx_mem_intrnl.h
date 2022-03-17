@@ -1,3 +1,5 @@
+#ifndef VPX_MEM_INCLUDE_VPX_MEM_INTRNL_H_
+#define VPX_MEM_INCLUDE_VPX_MEM_INTRNL_H_
 /*
  *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.
  *
@@ -9,8 +11,8 @@
  */
 
 
-#ifndef VPX_MEM_INCLUDE_VPX_MEM_INTRNL_H_
-#define VPX_MEM_INCLUDE_VPX_MEM_INTRNL_H_
+
+
 #include "./vpx_config.h"
 
 #define ADDRESS_STORAGE_SIZE      sizeof(size_t)

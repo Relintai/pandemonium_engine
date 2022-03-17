@@ -1,3 +1,5 @@
+#ifndef KISS_FFT_H
+#define KISS_FFT_H
 /*Copyright (c) 2003-2004, Mark Borgerding
   Lots of modifications by Jean-Marc Valin
   Copyright (c) 2005-2007, Xiph.Org Foundation
@@ -26,8 +28,8 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE.*/
 
-#ifndef KISS_FFT_H
-#define KISS_FFT_H
+
+
 
 #include <stdlib.h>
 #include <math.h>

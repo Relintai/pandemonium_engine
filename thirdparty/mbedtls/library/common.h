@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_LIBRARY_COMMON_H
+#define MBEDTLS_LIBRARY_COMMON_H
 /**
  * \file common.h
  *
@@ -20,8 +22,8 @@
  *  limitations under the License.
  */
 
-#ifndef MBEDTLS_LIBRARY_COMMON_H
-#define MBEDTLS_LIBRARY_COMMON_H
+
+
 
 #if defined(MBEDTLS_CONFIG_FILE)
 #include MBEDTLS_CONFIG_FILE

@@ -1,9 +1,11 @@
+#ifndef __ENET_ENET_H__
+#define __ENET_ENET_H__
 /** 
  @file  enet.h
  @brief ENet public header file
 */
-#ifndef __ENET_ENET_H__
-#define __ENET_ENET_H__
+
+
 
 #ifdef __cplusplus
 extern "C"

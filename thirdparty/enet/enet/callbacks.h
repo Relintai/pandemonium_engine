@@ -1,9 +1,11 @@
+#ifndef __ENET_CALLBACKS_H__
+#define __ENET_CALLBACKS_H__
 /** 
  @file  callbacks.h
  @brief ENet callbacks
 */
-#ifndef __ENET_CALLBACKS_H__
-#define __ENET_CALLBACKS_H__
+
+
 
 #include <stdlib.h>
 

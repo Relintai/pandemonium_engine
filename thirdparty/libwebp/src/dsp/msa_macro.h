@@ -1,3 +1,5 @@
+#ifndef WEBP_DSP_MSA_MACRO_H_
+#define WEBP_DSP_MSA_MACRO_H_
 // Copyright 2016 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -11,8 +13,8 @@
 //
 // Author(s):  Prashant Patil   (prashant.patil@imgtec.com)
 
-#ifndef WEBP_DSP_MSA_MACRO_H_
-#define WEBP_DSP_MSA_MACRO_H_
+
+
 
 #include "src/dsp/dsp.h"
 

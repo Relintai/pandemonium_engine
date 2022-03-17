@@ -1,3 +1,5 @@
+#ifndef FSE_H
+#define FSE_H
 /* ******************************************************************
  * FSE : Finite State Entropy codec
  * Public Prototypes declaration
@@ -16,8 +18,8 @@
 extern "C" {
 #endif
 
-#ifndef FSE_H
-#define FSE_H
+
+
 
 
 /*-*****************************************

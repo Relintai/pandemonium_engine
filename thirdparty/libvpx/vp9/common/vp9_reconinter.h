@@ -1,3 +1,5 @@
+#ifndef VP9_COMMON_VP9_RECONINTER_H_
+#define VP9_COMMON_VP9_RECONINTER_H_
 /*
  *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.
  *
@@ -8,8 +10,8 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#ifndef VP9_COMMON_VP9_RECONINTER_H_
-#define VP9_COMMON_VP9_RECONINTER_H_
+
+
 
 #include "vp9/common/vp9_filter.h"
 #include "vp9/common/vp9_onyxc_int.h"

@@ -1,3 +1,5 @@
+#ifndef VPX_INTERNAL_VPX_PSNR_H_
+#define VPX_INTERNAL_VPX_PSNR_H_
 /*
  *  Copyright (c) 2014 The WebM project authors. All Rights Reserved.
  *
@@ -8,8 +10,8 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#ifndef VPX_INTERNAL_VPX_PSNR_H_
-#define VPX_INTERNAL_VPX_PSNR_H_
+
+
 
 #ifdef __cplusplus
 extern "C" {

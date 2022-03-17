@@ -1,3 +1,5 @@
+#ifndef WEBP_UTILS_COLOR_CACHE_UTILS_H_
+#define WEBP_UTILS_COLOR_CACHE_UTILS_H_
 // Copyright 2012 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -12,8 +14,8 @@
 // Authors: Jyrki Alakuijala (jyrki@google.com)
 //          Urvang Joshi (urvang@google.com)
 
-#ifndef WEBP_UTILS_COLOR_CACHE_UTILS_H_
-#define WEBP_UTILS_COLOR_CACHE_UTILS_H_
+
+
 
 #include <assert.h>
 

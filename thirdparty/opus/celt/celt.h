@@ -1,3 +1,5 @@
+#ifndef CELT_H
+#define CELT_H
 /* Copyright (c) 2007-2008 CSIRO
    Copyright (c) 2007-2009 Xiph.Org Foundation
    Copyright (c) 2008 Gregory Maxwell
@@ -32,8 +34,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef CELT_H
-#define CELT_H
+
+
 
 #include "opus_types.h"
 #include "opus_defines.h"

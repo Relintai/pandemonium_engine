@@ -1,3 +1,5 @@
+#ifndef WEBP_WEBP_MUX_H_
+#define WEBP_WEBP_MUX_H_
 // Copyright 2011 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -12,8 +14,8 @@
 // Authors: Urvang (urvang@google.com)
 //          Vikas (vikasa@google.com)
 
-#ifndef WEBP_WEBP_MUX_H_
-#define WEBP_WEBP_MUX_H_
+
+
 
 #include "./mux_types.h"
 

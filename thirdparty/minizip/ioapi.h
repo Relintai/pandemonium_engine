@@ -1,3 +1,5 @@
+#ifndef _ZLIBIOAPI64_H
+#define _ZLIBIOAPI64_H
 /* ioapi.h -- IO base function header for compress/uncompress .zip
    part of the MiniZip project - ( http://www.winimage.com/zLibDll/minizip.html )
 
@@ -18,8 +20,8 @@
 
 */
 
-#ifndef _ZLIBIOAPI64_H
-#define _ZLIBIOAPI64_H
+
+
 
 #if (!defined(_WIN32)) && (!defined(WIN32)) && (!defined(__APPLE__))
 

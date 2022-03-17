@@ -1,8 +1,10 @@
+#ifndef JPEG_DECODER_H
+#define JPEG_DECODER_H
 // jpgd.h - C++ class for JPEG decompression.
 // Richard Geldreich <richgel99@gmail.com>
 // See jpgd.cpp for license (Public Domain or Apache 2.0).
-#ifndef JPEG_DECODER_H
-#define JPEG_DECODER_H
+
+
 
 #include <stdlib.h>
 #include <stdio.h>

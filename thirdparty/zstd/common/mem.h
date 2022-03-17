@@ -1,3 +1,5 @@
+#ifndef MEM_H_MODULE
+#define MEM_H_MODULE
 /*
  * Copyright (c) Yann Collet, Facebook, Inc.
  * All rights reserved.
@@ -8,8 +10,8 @@
  * You may select, at your option, one of the above-listed licenses.
  */
 
-#ifndef MEM_H_MODULE
-#define MEM_H_MODULE
+
+
 
 #if defined (__cplusplus)
 extern "C" {

@@ -1,3 +1,5 @@
+#ifndef VP8_COMMON_INVTRANS_H_
+#define VP8_COMMON_INVTRANS_H_
 /*
  *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.
  *
@@ -9,8 +11,8 @@
  */
 
 
-#ifndef VP8_COMMON_INVTRANS_H_
-#define VP8_COMMON_INVTRANS_H_
+
+
 
 #include "./vpx_config.h"
 #include "vp8_rtcd.h"

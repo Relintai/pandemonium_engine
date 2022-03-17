@@ -1,3 +1,5 @@
+#ifndef VP9_COMMON_VP9_THREAD_COMMON_H_
+#define VP9_COMMON_VP9_THREAD_COMMON_H_
 /*
  *  Copyright (c) 2014 The WebM project authors. All Rights Reserved.
  *
@@ -8,8 +10,8 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#ifndef VP9_COMMON_VP9_THREAD_COMMON_H_
-#define VP9_COMMON_VP9_THREAD_COMMON_H_
+
+
 #include "./vpx_config.h"
 #include "vp9/common/vp9_loopfilter.h"
 #include "vpx_util/vpx_thread.h"

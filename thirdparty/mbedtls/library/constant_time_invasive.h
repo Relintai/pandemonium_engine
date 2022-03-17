@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_CONSTANT_TIME_INVASIVE_H
+#define MBEDTLS_CONSTANT_TIME_INVASIVE_H
 /**
  * \file constant_time_invasive.h
  *
@@ -24,8 +26,8 @@
  *  limitations under the License.
  */
 
-#ifndef MBEDTLS_CONSTANT_TIME_INVASIVE_H
-#define MBEDTLS_CONSTANT_TIME_INVASIVE_H
+
+
 
 #include "common.h"
 

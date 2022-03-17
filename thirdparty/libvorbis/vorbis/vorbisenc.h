@@ -1,3 +1,5 @@
+#ifndef _OV_ENC_H_
+#define _OV_ENC_H_
 /********************************************************************
  *                                                                  *
  * THIS FILE IS PART OF THE OggVorbis SOFTWARE CODEC SOURCE CODE.   *
@@ -20,8 +22,8 @@
  * actions needed to set up the encoder properly.
  */
 
-#ifndef _OV_ENC_H_
-#define _OV_ENC_H_
+
+
 
 #ifdef __cplusplus
 extern "C"

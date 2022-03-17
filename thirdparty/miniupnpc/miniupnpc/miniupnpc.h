@@ -1,3 +1,5 @@
+#ifndef MINIUPNPC_H_INCLUDED
+#define MINIUPNPC_H_INCLUDED
 /* $Id: miniupnpc.h,v 1.58 2021/03/02 23:49:52 nanard Exp $ */
 /* vim: tabstop=4 shiftwidth=4 noexpandtab
  * Project: miniupnp
@@ -6,8 +8,8 @@
  * Copyright (c) 2005-2021 Thomas Bernard
  * This software is subjects to the conditions detailed
  * in the LICENCE file provided within this distribution */
-#ifndef MINIUPNPC_H_INCLUDED
-#define MINIUPNPC_H_INCLUDED
+
+
 
 #include "miniupnpc_declspec.h"
 #include "igd_desc_parse.h"

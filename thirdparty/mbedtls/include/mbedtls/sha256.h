@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_SHA256_H
+#define MBEDTLS_SHA256_H
 /**
  * \file sha256.h
  *
@@ -22,8 +24,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-#ifndef MBEDTLS_SHA256_H
-#define MBEDTLS_SHA256_H
+
+
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

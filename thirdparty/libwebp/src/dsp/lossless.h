@@ -1,3 +1,5 @@
+#ifndef WEBP_DSP_LOSSLESS_H_
+#define WEBP_DSP_LOSSLESS_H_
 // Copyright 2012 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -12,8 +14,8 @@
 // Authors: Vikas Arora (vikaas.arora@gmail.com)
 //          Jyrki Alakuijala (jyrki@google.com)
 
-#ifndef WEBP_DSP_LOSSLESS_H_
-#define WEBP_DSP_LOSSLESS_H_
+
+
 
 #include "src/webp/types.h"
 #include "src/webp/decode.h"

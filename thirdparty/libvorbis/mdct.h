@@ -1,3 +1,5 @@
+#ifndef _OGG_mdct_H_
+#define _OGG_mdct_H_
 /********************************************************************
  *                                                                  *
  * THIS FILE IS PART OF THE OggVorbis SOFTWARE CODEC SOURCE CODE.   *
@@ -14,8 +16,8 @@
 
  ********************************************************************/
 
-#ifndef _OGG_mdct_H_
-#define _OGG_mdct_H_
+
+
 
 #include "vorbis/codec.h"
 

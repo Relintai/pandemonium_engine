@@ -1,3 +1,5 @@
+#ifndef MINIXML_H_INCLUDED
+#define MINIXML_H_INCLUDED
 /* $Id: minixml.h,v 1.6 2006/11/30 11:47:21 nanard Exp $ */
 /* minimal xml parser
  *
@@ -8,8 +10,8 @@
  * This software is subject to the conditions detailed in the
  * LICENCE file provided in this distribution.
  * */
-#ifndef MINIXML_H_INCLUDED
-#define MINIXML_H_INCLUDED
+
+
 #define IS_WHITE_SPACE(c) ((c)==' ' || (c)=='\t' || (c)=='\r' || (c)=='\n')
 
 /* if a callback function pointer is set to NULL,

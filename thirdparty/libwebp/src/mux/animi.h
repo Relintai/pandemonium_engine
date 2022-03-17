@@ -1,3 +1,5 @@
+#ifndef WEBP_MUX_ANIMI_H_
+#define WEBP_MUX_ANIMI_H_
 // Copyright 2016 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -11,8 +13,8 @@
 //
 // Author: Hui Su (huisu@google.com)
 
-#ifndef WEBP_MUX_ANIMI_H_
-#define WEBP_MUX_ANIMI_H_
+
+
 
 #include "src/webp/mux.h"
 

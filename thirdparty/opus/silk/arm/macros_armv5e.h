@@ -1,3 +1,5 @@
+#ifndef SILK_MACROS_ARMv5E_H
+#define SILK_MACROS_ARMv5E_H
 /***********************************************************************
 Copyright (c) 2006-2011, Skype Limited. All rights reserved.
 Copyright (c) 2013       Parrot
@@ -26,8 +28,8 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ***********************************************************************/
 
-#ifndef SILK_MACROS_ARMv5E_H
-#define SILK_MACROS_ARMv5E_H
+
+
 
 /* (a32 * (opus_int32)((opus_int16)(b32))) >> 16 output have to be 32bit int */
 #undef silk_SMULWB

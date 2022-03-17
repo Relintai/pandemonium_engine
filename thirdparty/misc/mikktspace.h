@@ -1,3 +1,5 @@
+#ifndef __MIKKTSPACE_H__
+#define __MIKKTSPACE_H__
 /** \file mikktspace/mikktspace.h
  *  \ingroup mikktspace
  */
@@ -21,8 +23,8 @@
  *  3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef __MIKKTSPACE_H__
-#define __MIKKTSPACE_H__
+
+
 
 
 #ifdef __cplusplus

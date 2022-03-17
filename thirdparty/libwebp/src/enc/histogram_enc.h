@@ -1,3 +1,5 @@
+#ifndef WEBP_ENC_HISTOGRAM_ENC_H_
+#define WEBP_ENC_HISTOGRAM_ENC_H_
 // Copyright 2012 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -11,8 +13,8 @@
 //
 // Models the histograms of literal and distance codes.
 
-#ifndef WEBP_ENC_HISTOGRAM_ENC_H_
-#define WEBP_ENC_HISTOGRAM_ENC_H_
+
+
 
 #include <string.h>
 

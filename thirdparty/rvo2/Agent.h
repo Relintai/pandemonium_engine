@@ -1,3 +1,5 @@
+#ifndef RVO_AGENT_H_
+#define RVO_AGENT_H_
 /*
  * Agent.h
  * RVO2-3D Library
@@ -34,8 +36,8 @@
  * \file    Agent.h
  * \brief   Contains the Agent class.
  */
-#ifndef RVO_AGENT_H_
-#define RVO_AGENT_H_
+
+
 
 #include "API.h"
 

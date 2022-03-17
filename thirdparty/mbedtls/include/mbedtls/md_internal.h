@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_MD_WRAP_H
+#define MBEDTLS_MD_WRAP_H
 /**
  * \file md_internal.h
  *
@@ -23,8 +25,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-#ifndef MBEDTLS_MD_WRAP_H
-#define MBEDTLS_MD_WRAP_H
+
+
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

@@ -1,3 +1,5 @@
+#ifndef UPNPDEV_H_INCLUDED
+#define UPNPDEV_H_INCLUDED
 /* $Id: upnpdev.h,v 1.3 2020/05/29 15:57:42 nanard Exp $ */
 /* Project : miniupnp
  * Web : http://miniupnp.free.fr/ or https://miniupnp.tuxfamily.org/
@@ -5,8 +7,8 @@
  * copyright (c) 2005-2020 Thomas Bernard
  * This software is subjet to the conditions detailed in the
  * provided LICENSE file. */
-#ifndef UPNPDEV_H_INCLUDED
-#define UPNPDEV_H_INCLUDED
+
+
 
 #include "miniupnpc_declspec.h"
 

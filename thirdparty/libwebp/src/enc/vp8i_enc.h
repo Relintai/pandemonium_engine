@@ -1,3 +1,5 @@
+#ifndef WEBP_ENC_VP8I_ENC_H_
+#define WEBP_ENC_VP8I_ENC_H_
 // Copyright 2011 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -11,8 +13,8 @@
 //
 // Author: Skal (pascal.massimino@gmail.com)
 
-#ifndef WEBP_ENC_VP8I_ENC_H_
-#define WEBP_ENC_VP8I_ENC_H_
+
+
 
 #include <string.h>     // for memcpy()
 #include "src/dec/common_dec.h"

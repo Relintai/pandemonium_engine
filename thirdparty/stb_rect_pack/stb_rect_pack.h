@@ -1,3 +1,5 @@
+#ifndef STB_INCLUDE_STB_RECT_PACK_H
+#define STB_INCLUDE_STB_RECT_PACK_H
 // stb_rect_pack.h - v1.01 - public domain - rectangle packing
 // Sean Barrett 2014
 //
@@ -63,8 +65,8 @@
 //       INCLUDE SECTION
 //
 
-#ifndef STB_INCLUDE_STB_RECT_PACK_H
-#define STB_INCLUDE_STB_RECT_PACK_H
+
+
 
 #define STB_RECT_PACK_VERSION  1
 

@@ -1,3 +1,5 @@
+#ifndef VPX_VPX_IMAGE_H_
+#define VPX_VPX_IMAGE_H_
 /*
  *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.
  *
@@ -13,8 +15,8 @@
  * \brief Describes the vpx image descriptor and associated operations
  *
  */
-#ifndef VPX_VPX_IMAGE_H_
-#define VPX_VPX_IMAGE_H_
+
+
 
 #ifdef __cplusplus
 extern "C" {

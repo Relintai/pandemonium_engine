@@ -1,3 +1,5 @@
+#ifndef FIXED_DEBUG_H
+#define FIXED_DEBUG_H
 /* Copyright (C) 2003-2008 Jean-Marc Valin
    Copyright (C) 2007-2012 Xiph.Org Foundation */
 /**
@@ -29,8 +31,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef FIXED_DEBUG_H
-#define FIXED_DEBUG_H
+
+
 
 #include <stdio.h>
 #include "opus_defines.h"

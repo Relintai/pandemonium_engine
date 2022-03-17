@@ -1,3 +1,5 @@
+#ifndef ANALYSIS_H
+#define ANALYSIS_H
 /* Copyright (c) 2011 Xiph.Org Foundation
    Written by Jean-Marc Valin */
 /*
@@ -25,8 +27,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef ANALYSIS_H
-#define ANALYSIS_H
+
+
 
 #include "celt.h"
 #include "opus_private.h"

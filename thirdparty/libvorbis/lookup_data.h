@@ -1,3 +1,5 @@
+#ifndef _V_LOOKUP_DATA_H_
+#define COS_LOOKUP_SZ 128
 /********************************************************************
  *                                                                  *
  * THIS FILE IS PART OF THE OggVorbis SOFTWARE CODEC SOURCE CODE.   *
@@ -14,10 +16,10 @@
 
  ********************************************************************/
 
-#ifndef _V_LOOKUP_DATA_H_
+
 
 #ifdef FLOAT_LOOKUP
-#define COS_LOOKUP_SZ 128
+
 static const float COS_LOOKUP[COS_LOOKUP_SZ+1]={
         +1.0000000000000f,+0.9996988186962f,+0.9987954562052f,+0.9972904566787f,
         +0.9951847266722f,+0.9924795345987f,+0.9891765099648f,+0.9852776423889f,

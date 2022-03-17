@@ -1,3 +1,5 @@
+#ifndef VPX_DSP_X86_INV_TXFM_SSE2_H_
+#define VPX_DSP_X86_INV_TXFM_SSE2_H_
 /*
  *  Copyright (c) 2015 The WebM project authors. All Rights Reserved.
  *
@@ -8,8 +10,8 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#ifndef VPX_DSP_X86_INV_TXFM_SSE2_H_
-#define VPX_DSP_X86_INV_TXFM_SSE2_H_
+
+
 
 #include <emmintrin.h>  // SSE2
 #include "./vpx_config.h"

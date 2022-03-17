@@ -1,3 +1,5 @@
+#ifndef ZSTD_TRACE_H
+#define ZSTD_TRACE_H
 /*
  * Copyright (c) Facebook, Inc.
  * All rights reserved.
@@ -8,8 +10,8 @@
  * You may select, at your option, one of the above-listed licenses.
  */
 
-#ifndef ZSTD_TRACE_H
-#define ZSTD_TRACE_H
+
+
 
 #if defined (__cplusplus)
 extern "C" {

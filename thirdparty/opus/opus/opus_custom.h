@@ -1,3 +1,5 @@
+#ifndef OPUS_CUSTOM_H
+#define OPUS_CUSTOM_H
 /* Copyright (c) 2007-2008 CSIRO
    Copyright (c) 2007-2009 Xiph.Org Foundation
    Copyright (c) 2008-2012 Gregory Maxwell
@@ -32,8 +34,8 @@
   @brief Opus-Custom reference implementation API
  */
 
-#ifndef OPUS_CUSTOM_H
-#define OPUS_CUSTOM_H
+
+
 
 #include "opus_defines.h"
 

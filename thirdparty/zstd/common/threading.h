@@ -1,3 +1,5 @@
+#ifndef THREADING_H_938743
+#define THREADING_H_938743
 /**
  * Copyright (c) 2016 Tino Reichardt
  * All rights reserved.
@@ -11,8 +13,8 @@
  * You may select, at your option, one of the above-listed licenses.
  */
 
-#ifndef THREADING_H_938743
-#define THREADING_H_938743
+
+
 
 #include "debug.h"
 

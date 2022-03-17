@@ -1,3 +1,5 @@
+#ifndef POOL_H
+#define POOL_H
 /*
  * Copyright (c) Yann Collet, Facebook, Inc.
  * All rights reserved.
@@ -8,8 +10,8 @@
  * You may select, at your option, one of the above-listed licenses.
  */
 
-#ifndef POOL_H
-#define POOL_H
+
+
 
 #if defined (__cplusplus)
 extern "C" {

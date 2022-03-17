@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_BIGNUM_H
+#define MBEDTLS_BIGNUM_H
 /**
  * \file bignum.h
  *
@@ -19,8 +21,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-#ifndef MBEDTLS_BIGNUM_H
-#define MBEDTLS_BIGNUM_H
+
+
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

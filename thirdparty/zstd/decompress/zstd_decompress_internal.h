@@ -1,3 +1,5 @@
+ #ifndef ZSTD_DECOMPRESS_INTERNAL_H
+ #define ZSTD_DECOMPRESS_INTERNAL_H
 /*
  * Copyright (c) Yann Collet, Facebook, Inc.
  * All rights reserved.
@@ -12,8 +14,8 @@
 /* zstd_decompress_internal:
  * objects and definitions shared within lib/decompress modules */
 
- #ifndef ZSTD_DECOMPRESS_INTERNAL_H
- #define ZSTD_DECOMPRESS_INTERNAL_H
+
+
 
 
 /*-*******************************************************

@@ -1,3 +1,5 @@
+#ifndef CELT_FIXED_GENERIC_MIPSR1_H
+#define CELT_FIXED_GENERIC_MIPSR1_H
 /* Copyright (C) 2007-2009 Xiph.Org Foundation
    Copyright (C) 2003-2008 Jean-Marc Valin
    Copyright (C) 2007-2008 CSIRO */
@@ -30,8 +32,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef CELT_FIXED_GENERIC_MIPSR1_H
-#define CELT_FIXED_GENERIC_MIPSR1_H
+
+
 
 #undef MULT16_32_Q15_ADD
 static inline int MULT16_32_Q15_ADD(int a, int b, int c, int d) {

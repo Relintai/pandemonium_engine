@@ -1,3 +1,5 @@
+#ifndef OPUS_H
+#define OPUS_H
 /* Copyright (c) 2010-2011 Xiph.Org Foundation, Skype Limited
    Written by Jean-Marc Valin and Koen Vos */
 /*
@@ -30,8 +32,8 @@
  * @brief Opus reference implementation API
  */
 
-#ifndef OPUS_H
-#define OPUS_H
+
+
 
 #include "opus_types.h"
 #include "opus_defines.h"

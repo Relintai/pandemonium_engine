@@ -1,3 +1,5 @@
+#ifndef TALK_BASE_IFADDRS_ANDROID_H_
+#define TALK_BASE_IFADDRS_ANDROID_H_
 /*
  * libjingle
  * Copyright 2013, Google Inc.
@@ -24,8 +26,8 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef TALK_BASE_IFADDRS_ANDROID_H_
-#define TALK_BASE_IFADDRS_ANDROID_H_
+
+
 #include <stdio.h>
 #include <sys/socket.h>
 // Implementation of getifaddrs for Android.

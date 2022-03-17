@@ -1,3 +1,5 @@
+#ifndef NANOSVGRAST_H
+#define NANOSVGRAST_H
 /*
  * Copyright (c) 2013-14 Mikko Mononen memon@inside.org
  *
@@ -22,8 +24,8 @@
  *
  */
 
-#ifndef NANOSVGRAST_H
-#define NANOSVGRAST_H
+
+
 
 #ifndef NANOSVGRAST_CPLUSPLUS
 #ifdef __cplusplus

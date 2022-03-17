@@ -1,3 +1,5 @@
+#ifndef WEBP_WEBP_MUX_TYPES_H_
+#define WEBP_WEBP_MUX_TYPES_H_
 // Copyright 2012 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -11,8 +13,8 @@
 //
 // Author: Urvang (urvang@google.com)
 
-#ifndef WEBP_WEBP_MUX_TYPES_H_
-#define WEBP_WEBP_MUX_TYPES_H_
+
+
 
 #include <string.h>  // memset()
 #include "./types.h"

@@ -1,3 +1,5 @@
+#ifndef STACK_ALLOC_H
+#define STACK_ALLOC_H
 /* Copyright (C) 2002-2003 Jean-Marc Valin
    Copyright (C) 2007-2009 Xiph.Org Foundation */
 /**
@@ -29,8 +31,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef STACK_ALLOC_H
-#define STACK_ALLOC_H
+
+
 
 #include "opus_types.h"
 #include "opus_defines.h"

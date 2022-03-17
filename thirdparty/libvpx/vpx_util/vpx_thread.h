@@ -1,3 +1,5 @@
+#ifndef VPX_THREAD_H_
+#define VPX_THREAD_H_
 // Copyright 2013 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -13,8 +15,8 @@
 //  http://git.chromium.org/webm/libwebp.git
 //  100644 blob 7bd451b124ae3b81596abfbcc823e3cb129d3a38  src/utils/thread.h
 
-#ifndef VPX_THREAD_H_
-#define VPX_THREAD_H_
+
+
 
 #include "./vpx_config.h"
 

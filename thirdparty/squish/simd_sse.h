@@ -1,3 +1,5 @@
+#ifndef SQUISH_SIMD_SSE_H
+#define SQUISH_SIMD_SSE_H
 /* -----------------------------------------------------------------------------
 
     Copyright (c) 2006 Simon Brown                          si@sjbrown.co.uk
@@ -23,8 +25,8 @@
 
    -------------------------------------------------------------------------- */
 
-#ifndef SQUISH_SIMD_SSE_H
-#define SQUISH_SIMD_SSE_H
+
+
 
 #include <xmmintrin.h>
 #if ( SQUISH_USE_SSE > 1 )

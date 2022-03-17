@@ -1,3 +1,5 @@
+#ifndef SILK_FIX_INLINES_H
+#define SILK_FIX_INLINES_H
 /***********************************************************************
 Copyright (c) 2006-2011, Skype Limited. All rights reserved.
 Redistribution and use in source and binary forms, with or without
@@ -29,8 +31,8 @@ POSSIBILITY OF SUCH DAMAGE.
  *  \brief silk_Inlines.h defines OPUS_INLINE signal processing functions.
  */
 
-#ifndef SILK_FIX_INLINES_H
-#define SILK_FIX_INLINES_H
+
+
 
 #ifdef  __cplusplus
 extern "C"

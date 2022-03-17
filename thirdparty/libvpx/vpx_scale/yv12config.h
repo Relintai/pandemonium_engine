@@ -1,3 +1,5 @@
+#ifndef VPX_SCALE_YV12CONFIG_H_
+#define VPX_SCALE_YV12CONFIG_H_
 /*
  *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.
  *
@@ -8,8 +10,8 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#ifndef VPX_SCALE_YV12CONFIG_H_
-#define VPX_SCALE_YV12CONFIG_H_
+
+
 
 #ifdef __cplusplus
 extern "C" {

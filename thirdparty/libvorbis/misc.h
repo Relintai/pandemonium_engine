@@ -1,3 +1,5 @@
+#ifndef _V_RANDOM_H_
+#define _V_RANDOM_H_
 /********************************************************************
  *                                                                  *
  * THIS FILE IS PART OF THE OggVorbis SOFTWARE CODEC SOURCE CODE.   *
@@ -14,8 +16,8 @@
 
  ********************************************************************/
 
-#ifndef _V_RANDOM_H_
-#define _V_RANDOM_H_
+
+
 #include "vorbis/codec.h"
 
 extern void *_vorbis_block_alloc(vorbis_block *vb,long bytes);

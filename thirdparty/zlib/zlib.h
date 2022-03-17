@@ -1,3 +1,5 @@
+#ifndef ZLIB_H
+#define ZLIB_H
 /* zlib.h -- interface of the 'zlib' general purpose compression library
   version 1.2.11, January 15th, 2017
 
@@ -28,8 +30,8 @@
   (zlib format), rfc1951 (deflate format) and rfc1952 (gzip format).
 */
 
-#ifndef ZLIB_H
-#define ZLIB_H
+
+
 
 #include "zconf.h"
 

@@ -1,3 +1,5 @@
+#ifndef WEBP_ENC_VP8LI_ENC_H_
+#define WEBP_ENC_VP8LI_ENC_H_
 // Copyright 2012 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -11,8 +13,8 @@
 //
 // Author: Vikas Arora (vikaas.arora@gmail.com)
 
-#ifndef WEBP_ENC_VP8LI_ENC_H_
-#define WEBP_ENC_VP8LI_ENC_H_
+
+
 
 #ifdef HAVE_CONFIG_H
 #include "src/webp/config.h"

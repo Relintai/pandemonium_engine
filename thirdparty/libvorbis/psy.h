@@ -1,3 +1,5 @@
+#ifndef _V_PSY_H_
+#define _V_PSY_H_
 /********************************************************************
  *                                                                  *
  * THIS FILE IS PART OF THE OggVorbis SOFTWARE CODEC SOURCE CODE.   *
@@ -14,8 +16,8 @@
 
  ********************************************************************/
 
-#ifndef _V_PSY_H_
-#define _V_PSY_H_
+
+
 #include "smallft.h"
 
 #include "backends.h"

@@ -1,3 +1,5 @@
+#ifndef _zip12_H
+#define _zip12_H
 /* zip.h -- IO on .zip files using zlib
    Version 1.1, February 14h, 2010
    part of the MiniZip project - ( http://www.winimage.com/zLibDll/minizip.html )
@@ -37,8 +39,8 @@
 
 */
 
-#ifndef _zip12_H
-#define _zip12_H
+
+
 
 #ifdef __cplusplus
 extern "C" {

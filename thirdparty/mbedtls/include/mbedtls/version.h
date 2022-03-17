@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_VERSION_H
+#define MBEDTLS_VERSION_H
 /**
  * \file version.h
  *
@@ -23,8 +25,8 @@
  * This set of compile-time defines and run-time variables can be used to
  * determine the version number of the mbed TLS library used.
  */
-#ifndef MBEDTLS_VERSION_H
-#define MBEDTLS_VERSION_H
+
+
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

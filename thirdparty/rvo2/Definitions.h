@@ -1,3 +1,5 @@
+#ifndef RVO_DEFINITIONS_H_
+#define RVO_DEFINITIONS_H_
 /*
  * Definitions.h
  * RVO2-3D Library
@@ -35,8 +37,8 @@
  * \brief  Contains functions and constants used in multiple classes.
  */
 
-#ifndef RVO_DEFINITIONS_H_
-#define RVO_DEFINITIONS_H_
+
+
 
 #include "API.h"
 

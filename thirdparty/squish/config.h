@@ -1,3 +1,5 @@
+#ifndef SQUISH_CONFIG_H
+#define SQUISH_CONFIG_H
 /* -----------------------------------------------------------------------------
 
     Copyright (c) 2006 Simon Brown                          si@sjbrown.co.uk
@@ -23,8 +25,8 @@
 
    -------------------------------------------------------------------------- */
 
-#ifndef SQUISH_CONFIG_H
-#define SQUISH_CONFIG_H
+
+
 
 // Set to 1 when building squish to use Altivec instructions.
 #ifndef SQUISH_USE_ALTIVEC

@@ -1,3 +1,5 @@
+#ifndef WEBP_DEC_COMMON_DEC_H_
+#define WEBP_DEC_COMMON_DEC_H_
 // Copyright 2015 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -11,8 +13,8 @@
 //
 // Author: Skal (pascal.massimino@gmail.com)
 
-#ifndef WEBP_DEC_COMMON_DEC_H_
-#define WEBP_DEC_COMMON_DEC_H_
+
+
 
 // intra prediction modes
 enum { B_DC_PRED = 0,   // 4x4 modes

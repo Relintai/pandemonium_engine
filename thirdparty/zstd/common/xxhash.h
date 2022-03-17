@@ -1,3 +1,5 @@
+#ifndef XXHASH_H_5627135585666179
+#define XXHASH_H_5627135585666179 1
 /*
  * xxHash - Extremely Fast Hash algorithm
  * Header File
@@ -48,8 +50,8 @@ XXH32        6.8 GB/s            6.0 GB/s
 extern "C" {
 #endif
 
-#ifndef XXHASH_H_5627135585666179
-#define XXHASH_H_5627135585666179 1
+
+
 
 
 /* ****************************

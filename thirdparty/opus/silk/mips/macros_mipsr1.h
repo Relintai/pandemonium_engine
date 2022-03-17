@@ -1,3 +1,5 @@
+#ifndef __SILK_MACROS_MIPSR1_H__
+#define __SILK_MACROS_MIPSR1_H__
 /***********************************************************************
 Copyright (c) 2006-2011, Skype Limited. All rights reserved.
 Redistribution and use in source and binary forms, with or without
@@ -26,8 +28,8 @@ POSSIBILITY OF SUCH DAMAGE.
 ***********************************************************************/
 
 
-#ifndef __SILK_MACROS_MIPSR1_H__
-#define __SILK_MACROS_MIPSR1_H__
+
+
 
 #define mips_clz(x) __builtin_clz(x)
 

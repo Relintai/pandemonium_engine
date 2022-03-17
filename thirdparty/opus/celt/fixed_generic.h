@@ -1,3 +1,5 @@
+#ifndef FIXED_GENERIC_H
+#define FIXED_GENERIC_H
 /* Copyright (C) 2007-2009 Xiph.Org Foundation
    Copyright (C) 2003-2008 Jean-Marc Valin
    Copyright (C) 2007-2008 CSIRO */
@@ -30,8 +32,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef FIXED_GENERIC_H
-#define FIXED_GENERIC_H
+
+
 
 /** Multiply a 16-bit signed value by a 16-bit unsigned value. The result is a 32-bit signed value */
 #define MULT16_16SU(a,b) ((opus_val32)(opus_val16)(a)*(opus_val32)(opus_uint16)(b))

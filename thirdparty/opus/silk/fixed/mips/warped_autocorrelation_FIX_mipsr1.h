@@ -1,3 +1,5 @@
+#ifndef __WARPED_AUTOCORRELATION_FIX_MIPSR1_H__
+#define __WARPED_AUTOCORRELATION_FIX_MIPSR1_H__
 /***********************************************************************
 Copyright (c) 2006-2011, Skype Limited. All rights reserved.
 Redistribution and use in source and binary forms, with or without
@@ -25,8 +27,8 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ***********************************************************************/
 
-#ifndef __WARPED_AUTOCORRELATION_FIX_MIPSR1_H__
-#define __WARPED_AUTOCORRELATION_FIX_MIPSR1_H__
+
+
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

@@ -1,3 +1,5 @@
+#ifndef WEBP_MUX_MUXI_H_
+#define WEBP_MUX_MUXI_H_
 // Copyright 2011 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -11,8 +13,8 @@
 //
 // Author: Urvang (urvang@google.com)
 
-#ifndef WEBP_MUX_MUXI_H_
-#define WEBP_MUX_MUXI_H_
+
+
 
 #include <assert.h>
 #include <stdlib.h>

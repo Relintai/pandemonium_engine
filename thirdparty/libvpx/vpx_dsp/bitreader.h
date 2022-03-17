@@ -1,3 +1,5 @@
+#ifndef VPX_DSP_BITREADER_H_
+#define VPX_DSP_BITREADER_H_
 /*
  *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.
  *
@@ -8,8 +10,8 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#ifndef VPX_DSP_BITREADER_H_
-#define VPX_DSP_BITREADER_H_
+
+
 
 #include <stddef.h>
 #include <limits.h>

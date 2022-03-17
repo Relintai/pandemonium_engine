@@ -1,3 +1,5 @@
+#ifndef __CVTT_CONVECTION_KERNELS__
+#define __CVTT_CONVECTION_KERNELS__
 /*
 Convection Texture Tools
 Copyright (c) 2018 Eric Lasota
@@ -22,8 +24,8 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 #pragma once
-#ifndef __CVTT_CONVECTION_KERNELS__
-#define __CVTT_CONVECTION_KERNELS__
+
+
 
 #include <stdint.h>
 

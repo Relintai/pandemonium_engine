@@ -1,3 +1,5 @@
+#ifndef ZSTD_OPT_H
+#define ZSTD_OPT_H
 /*
  * Copyright (c) Yann Collet, Facebook, Inc.
  * All rights reserved.
@@ -8,8 +10,8 @@
  * You may select, at your option, one of the above-listed licenses.
  */
 
-#ifndef ZSTD_OPT_H
-#define ZSTD_OPT_H
+
+
 
 #if defined (__cplusplus)
 extern "C" {

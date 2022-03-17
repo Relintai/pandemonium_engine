@@ -1,3 +1,5 @@
+#ifndef VP9_DECODER_VP9_DECODEFRAME_H_
+#define VP9_DECODER_VP9_DECODEFRAME_H_
 /*
  *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.
  *
@@ -9,8 +11,8 @@
  */
 
 
-#ifndef VP9_DECODER_VP9_DECODEFRAME_H_
-#define VP9_DECODER_VP9_DECODEFRAME_H_
+
+
 
 #ifdef __cplusplus
 extern "C" {

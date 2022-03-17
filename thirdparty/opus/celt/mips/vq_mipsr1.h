@@ -1,3 +1,5 @@
+#ifndef __VQ_MIPSR1_H__
+#define __VQ_MIPSR1_H__
 /* Copyright (c) 2007-2008 CSIRO
    Copyright (c) 2007-2009 Xiph.Org Foundation
    Written by Jean-Marc Valin */
@@ -26,8 +28,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __VQ_MIPSR1_H__
-#define __VQ_MIPSR1_H__
+
+
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

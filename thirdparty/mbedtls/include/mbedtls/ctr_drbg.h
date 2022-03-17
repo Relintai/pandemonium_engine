@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_CTR_DRBG_H
+#define MBEDTLS_CTR_DRBG_H
 /**
  * \file ctr_drbg.h
  *
@@ -38,8 +40,8 @@
  *  limitations under the License.
  */
 
-#ifndef MBEDTLS_CTR_DRBG_H
-#define MBEDTLS_CTR_DRBG_H
+
+
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

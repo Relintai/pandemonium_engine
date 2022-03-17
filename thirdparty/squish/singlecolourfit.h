@@ -1,3 +1,5 @@
+#ifndef SQUISH_SINGLECOLOURFIT_H
+#define SQUISH_SINGLECOLOURFIT_H
 /* -----------------------------------------------------------------------------
 
     Copyright (c) 2006 Simon Brown                          si@sjbrown.co.uk
@@ -23,8 +25,8 @@
 
    -------------------------------------------------------------------------- */
 
-#ifndef SQUISH_SINGLECOLOURFIT_H
-#define SQUISH_SINGLECOLOURFIT_H
+
+
 
 #include "squish.h"
 #include "colourfit.h"

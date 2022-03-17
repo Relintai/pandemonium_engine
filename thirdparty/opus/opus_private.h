@@ -1,3 +1,5 @@
+#ifndef OPUS_PRIVATE_H
+#define OPUS_PRIVATE_H
 /* Copyright (c) 2012 Xiph.Org Foundation
    Written by Jean-Marc Valin */
 /*
@@ -26,8 +28,8 @@
 */
 
 
-#ifndef OPUS_PRIVATE_H
-#define OPUS_PRIVATE_H
+
+
 
 #include "arch.h"
 #include "opus.h"

@@ -1,3 +1,5 @@
+#ifndef WEBP_UTILS_HUFFMAN_UTILS_H_
+#define WEBP_UTILS_HUFFMAN_UTILS_H_
 // Copyright 2012 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -11,8 +13,8 @@
 //
 // Author: Urvang Joshi (urvang@google.com)
 
-#ifndef WEBP_UTILS_HUFFMAN_UTILS_H_
-#define WEBP_UTILS_HUFFMAN_UTILS_H_
+
+
 
 #include <assert.h>
 #include "src/webp/format_constants.h"

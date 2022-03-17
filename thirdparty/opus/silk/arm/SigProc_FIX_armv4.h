@@ -1,3 +1,5 @@
+#ifndef SILK_SIGPROC_FIX_ARMv4_H
+#define SILK_SIGPROC_FIX_ARMv4_H
 /***********************************************************************
 Copyright (C) 2013 Xiph.Org Foundation and contributors
 Copyright (c) 2013       Parrot
@@ -26,8 +28,8 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ***********************************************************************/
 
-#ifndef SILK_SIGPROC_FIX_ARMv4_H
-#define SILK_SIGPROC_FIX_ARMv4_H
+
+
 
 #undef silk_MLA
 static OPUS_INLINE opus_int32 silk_MLA_armv4(opus_int32 a, opus_int32 b,

@@ -1,3 +1,5 @@
+#ifndef PNGSTRUCT_H
+#define PNGSTRUCT_H
 
 /* pngstruct.h - header file for PNG reference library
  *
@@ -17,8 +19,8 @@
  * It should NOT be accessed directly by an application.
  */
 
-#ifndef PNGSTRUCT_H
-#define PNGSTRUCT_H
+
+
 /* zlib.h defines the structure z_stream, an instance of which is included
  * in this structure and is required for decompressing the LZ compressed
  * data in PNG files.

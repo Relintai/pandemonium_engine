@@ -1,3 +1,5 @@
+#ifndef WEBP_DSP_YUV_H_
+#define WEBP_DSP_YUV_H_
 // Copyright 2010 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -32,8 +34,8 @@
 
 // Author: Skal (pascal.massimino@gmail.com)
 
-#ifndef WEBP_DSP_YUV_H_
-#define WEBP_DSP_YUV_H_
+
+
 
 #include "src/dsp/dsp.h"
 #include "src/dec/vp8_dec.h"

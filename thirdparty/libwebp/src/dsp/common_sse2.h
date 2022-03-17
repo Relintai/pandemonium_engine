@@ -1,3 +1,5 @@
+#ifndef WEBP_DSP_COMMON_SSE2_H_
+#define WEBP_DSP_COMMON_SSE2_H_
 // Copyright 2016 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -11,8 +13,8 @@
 //
 // Author: Vincent Rabaud (vrabaud@google.com)
 
-#ifndef WEBP_DSP_COMMON_SSE2_H_
-#define WEBP_DSP_COMMON_SSE2_H_
+
+
 
 #ifdef __cplusplus
 extern "C" {

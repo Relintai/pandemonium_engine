@@ -1,3 +1,5 @@
+#ifndef RVO_API_H_
+#define RVO_API_H_
 /*
  * API.h
  * RVO2-3D Library
@@ -35,8 +37,8 @@
  * \brief   Contains definitions related to Microsoft Windows.
  */
 
-#ifndef RVO_API_H_
-#define RVO_API_H_
+
+
 
 // -- GODOT start --
 #define RVO_API

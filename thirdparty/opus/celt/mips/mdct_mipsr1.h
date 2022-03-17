@@ -1,3 +1,5 @@
+#ifndef __MDCT_MIPSR1_H__
+#define __MDCT_MIPSR1_H__
 /* Copyright (c) 2007-2008 CSIRO
    Copyright (c) 2007-2008 Xiph.Org Foundation
    Written by Jean-Marc Valin */
@@ -38,8 +40,8 @@
    MDCT implementation in FFMPEG, but has differences in signs, ordering
    and scaling in many places.
 */
-#ifndef __MDCT_MIPSR1_H__
-#define __MDCT_MIPSR1_H__
+
+
 
 #ifndef SKIP_CONFIG_H
 #ifdef HAVE_CONFIG_H

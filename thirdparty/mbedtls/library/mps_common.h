@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_MPS_COMMON_H
+#define MBEDTLS_MPS_COMMON_H
 /*
  *  Copyright The Mbed TLS Contributors
  *  SPDX-License-Identifier: Apache-2.0
@@ -23,8 +25,8 @@
  * \brief Common functions and macros used by MPS
  */
 
-#ifndef MBEDTLS_MPS_COMMON_H
-#define MBEDTLS_MPS_COMMON_H
+
+
 
 #include "mps_error.h"
 

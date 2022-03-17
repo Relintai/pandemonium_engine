@@ -1,3 +1,5 @@
+#ifndef _V_LSP_H_
+#define _V_LSP_H_
 /********************************************************************
  *                                                                  *
  * THIS FILE IS PART OF THE OggVorbis SOFTWARE CODEC SOURCE CODE.   *
@@ -15,8 +17,8 @@
  ********************************************************************/
 
 
-#ifndef _V_LSP_H_
-#define _V_LSP_H_
+
+
 
 extern int vorbis_lpc_to_lsp(float *lpc,float *lsp,int m);
 

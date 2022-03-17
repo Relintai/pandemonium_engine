@@ -1,3 +1,5 @@
+#ifndef VPX_SCALE_VPX_SCALE_H_
+#define VPX_SCALE_VPX_SCALE_H_
 /*
  *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.
  *
@@ -9,8 +11,8 @@
  */
 
 
-#ifndef VPX_SCALE_VPX_SCALE_H_
-#define VPX_SCALE_VPX_SCALE_H_
+
+
 
 #include "vpx_scale/yv12config.h"
 

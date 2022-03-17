@@ -1,3 +1,5 @@
+#ifndef ZUTIL_H
+#define ZUTIL_H
 /* zutil.h -- internal interface and configuration of the compression library
  * Copyright (C) 1995-2016 Jean-loup Gailly, Mark Adler
  * For conditions of distribution and use, see copyright notice in zlib.h
@@ -10,8 +12,8 @@
 
 /* @(#) $Id$ */
 
-#ifndef ZUTIL_H
-#define ZUTIL_H
+
+
 
 #ifdef HAVE_HIDDEN
 #  define ZLIB_INTERNAL __attribute__((visibility ("hidden")))

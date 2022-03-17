@@ -1,3 +1,5 @@
+#ifndef __ENET_GODOT_H__
+#define __ENET_GODOT_H__
 /*************************************************************************/
 /*  godot.h                                                              */
 /*************************************************************************/
@@ -32,8 +34,8 @@
  @brief ENet Godot header
 */
 
-#ifndef __ENET_GODOT_H__
-#define __ENET_GODOT_H__
+
+
 
 #ifdef WINDOWS_ENABLED
 #include <stdint.h>

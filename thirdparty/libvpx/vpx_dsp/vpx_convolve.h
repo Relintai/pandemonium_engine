@@ -1,3 +1,5 @@
+#ifndef VPX_DSP_VPX_CONVOLVE_H_
+#define VPX_DSP_VPX_CONVOLVE_H_
 /*
  *  Copyright (c) 2013 The WebM project authors. All Rights Reserved.
  *
@@ -7,8 +9,8 @@
  *  in the file PATENTS.  All contributing project authors may
  *  be found in the AUTHORS file in the root of the source tree.
  */
-#ifndef VPX_DSP_VPX_CONVOLVE_H_
-#define VPX_DSP_VPX_CONVOLVE_H_
+
+
 
 #include "./vpx_config.h"
 #include "vpx/vpx_integer.h"

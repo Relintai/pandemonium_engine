@@ -1,3 +1,5 @@
+#ifndef VPX_UTIL_ENDIAN_INL_H_
+#define VPX_UTIL_ENDIAN_INL_H_
 // Copyright 2014 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -9,8 +11,8 @@
 //
 // Endian related functions.
 
-#ifndef VPX_UTIL_ENDIAN_INL_H_
-#define VPX_UTIL_ENDIAN_INL_H_
+
+
 
 #include <stdlib.h>
 #include "./vpx_config.h"

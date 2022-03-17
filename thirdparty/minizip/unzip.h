@@ -1,3 +1,5 @@
+#ifndef _unz64_H
+#define _unz64_H
 /* unzip.h -- IO for uncompress .zip files using zlib
    Version 1.1, February 14h, 2010
    part of the MiniZip project - ( http://www.winimage.com/zLibDll/minizip.html )
@@ -40,8 +42,8 @@
 
 */
 
-#ifndef _unz64_H
-#define _unz64_H
+
+
 
 #ifdef __cplusplus
 extern "C" {

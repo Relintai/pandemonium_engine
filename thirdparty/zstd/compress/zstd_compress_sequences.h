@@ -1,3 +1,5 @@
+#ifndef ZSTD_COMPRESS_SEQUENCES_H
+#define ZSTD_COMPRESS_SEQUENCES_H
 /*
  * Copyright (c) Yann Collet, Facebook, Inc.
  * All rights reserved.
@@ -8,8 +10,8 @@
  * You may select, at your option, one of the above-listed licenses.
  */
 
-#ifndef ZSTD_COMPRESS_SEQUENCES_H
-#define ZSTD_COMPRESS_SEQUENCES_H
+
+
 
 #include "../common/fse.h" /* FSE_repeat, FSE_CTable */
 #include "../common/zstd_internal.h" /* symbolEncodingType_e, ZSTD_strategy */

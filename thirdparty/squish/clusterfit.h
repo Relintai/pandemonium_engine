@@ -1,3 +1,5 @@
+#ifndef SQUISH_CLUSTERFIT_H
+#define SQUISH_CLUSTERFIT_H
 /* -----------------------------------------------------------------------------
 
     Copyright (c) 2006 Simon Brown                          si@sjbrown.co.uk
@@ -24,8 +26,8 @@
 
    -------------------------------------------------------------------------- */
 
-#ifndef SQUISH_CLUSTERFIT_H
-#define SQUISH_CLUSTERFIT_H
+
+
 
 #include "squish.h"
 #include "maths.h"

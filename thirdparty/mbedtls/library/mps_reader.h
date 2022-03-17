@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_READER_H
+#define MBEDTLS_READER_H
 /*
  *  Copyright The Mbed TLS Contributors
  *  SPDX-License-Identifier: Apache-2.0
@@ -119,8 +121,8 @@
  *
  */
 
-#ifndef MBEDTLS_READER_H
-#define MBEDTLS_READER_H
+
+
 
 #include <stdio.h>
 

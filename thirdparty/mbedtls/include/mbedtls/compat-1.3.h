@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_COMPAT13_H
+#define MBEDTLS_COMPAT13_H
 /**
  * \file compat-1.3.h
  *
@@ -35,8 +37,8 @@
 #warning "Including compat-1.3.h is deprecated"
 #endif
 
-#ifndef MBEDTLS_COMPAT13_H
-#define MBEDTLS_COMPAT13_H
+
+
 
 /*
  * config.h options

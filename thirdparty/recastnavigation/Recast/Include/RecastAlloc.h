@@ -1,3 +1,5 @@
+#ifndef RECASTALLOC_H
+#define RECASTALLOC_H
 //
 // Copyright (c) 2009-2010 Mikko Mononen memon@inside.org
 //
@@ -16,8 +18,8 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-#ifndef RECASTALLOC_H
-#define RECASTALLOC_H
+
+
 
 #include <stddef.h>
 #include <stdint.h>

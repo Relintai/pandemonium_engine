@@ -1,3 +1,5 @@
+ #ifndef ZSTDMT_COMPRESS_H
+ #define ZSTDMT_COMPRESS_H
 /*
  * Copyright (c) Yann Collet, Facebook, Inc.
  * All rights reserved.
@@ -8,8 +10,8 @@
  * You may select, at your option, one of the above-listed licenses.
  */
 
- #ifndef ZSTDMT_COMPRESS_H
- #define ZSTDMT_COMPRESS_H
+
+
 
  #if defined (__cplusplus)
  extern "C" {

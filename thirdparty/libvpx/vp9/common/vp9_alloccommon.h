@@ -1,3 +1,5 @@
+#ifndef VP9_COMMON_VP9_ALLOCCOMMON_H_
+#define VP9_COMMON_VP9_ALLOCCOMMON_H_
 /*
  *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.
  *
@@ -9,8 +11,8 @@
  */
 
 
-#ifndef VP9_COMMON_VP9_ALLOCCOMMON_H_
-#define VP9_COMMON_VP9_ALLOCCOMMON_H_
+
+
 
 #define INVALID_IDX -1  // Invalid buffer index.
 

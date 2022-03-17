@@ -1,3 +1,5 @@
+#ifndef SIGPROC_FIX_SSE_H
+#define SIGPROC_FIX_SSE_H
 /* Copyright (c) 2014, Cisco Systems, INC
    Written by XiangMingZhu WeiZhou MinPeng YanWang
 
@@ -25,8 +27,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef SIGPROC_FIX_SSE_H
-#define SIGPROC_FIX_SSE_H
+
+
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

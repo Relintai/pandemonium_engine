@@ -1,3 +1,5 @@
+#ifndef VHACD_MUTEX_H
+#define VHACD_MUTEX_H
 /*!
 **
 ** Copyright (c) 2009 by John W. Ratcliff mailto:jratcliffscarab@gmail.com
@@ -47,8 +49,8 @@
 */
 
 #pragma once
-#ifndef VHACD_MUTEX_H
-#define VHACD_MUTEX_H
+
+
 
 #if defined(WIN32)
 

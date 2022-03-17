@@ -1,3 +1,5 @@
+#ifndef VPX_VP8_H_
+#define VPX_VP8_H_
 /*
  *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.
  *
@@ -27,8 +29,8 @@
 /*!\file
  * \brief Provides controls common to both the VP8 encoder and decoder.
  */
-#ifndef VPX_VP8_H_
-#define VPX_VP8_H_
+
+
 
 #include "./vpx_codec.h"
 #include "./vpx_image.h"

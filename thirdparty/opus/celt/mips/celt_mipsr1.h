@@ -1,3 +1,5 @@
+#ifndef __CELT_MIPSR1_H__
+#define __CELT_MIPSR1_H__
 /* Copyright (c) 2007-2008 CSIRO
    Copyright (c) 2007-2010 Xiph.Org Foundation
    Copyright (c) 2008 Gregory Maxwell
@@ -27,8 +29,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __CELT_MIPSR1_H__
-#define __CELT_MIPSR1_H__
+
+
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

@@ -1,3 +1,5 @@
+#ifndef ZSTD_H_235446
+#define ZSTD_H_235446
 /*
  * Copyright (c) Yann Collet, Facebook, Inc.
  * All rights reserved.
@@ -11,8 +13,8 @@
 extern "C" {
 #endif
 
-#ifndef ZSTD_H_235446
-#define ZSTD_H_235446
+
+
 
 /* ======   Dependency   ======*/
 #include <limits.h>   /* INT_MAX */

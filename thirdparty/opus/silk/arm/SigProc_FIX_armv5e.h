@@ -1,3 +1,5 @@
+#ifndef SILK_SIGPROC_FIX_ARMv5E_H
+#define SILK_SIGPROC_FIX_ARMv5E_H
 /***********************************************************************
 Copyright (c) 2006-2011, Skype Limited. All rights reserved.
 Copyright (c) 2013       Parrot
@@ -26,8 +28,8 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ***********************************************************************/
 
-#ifndef SILK_SIGPROC_FIX_ARMv5E_H
-#define SILK_SIGPROC_FIX_ARMv5E_H
+
+
 
 #undef silk_SMULTT
 static OPUS_INLINE opus_int32 silk_SMULTT_armv5e(opus_int32 a, opus_int32 b)

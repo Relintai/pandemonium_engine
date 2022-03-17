@@ -1,3 +1,5 @@
+#ifndef WEBP_UTILS_RANDOM_UTILS_H_
+#define WEBP_UTILS_RANDOM_UTILS_H_
 // Copyright 2013 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -11,8 +13,8 @@
 //
 // Author: Skal (pascal.massimino@gmail.com)
 
-#ifndef WEBP_UTILS_RANDOM_UTILS_H_
-#define WEBP_UTILS_RANDOM_UTILS_H_
+
+
 
 #include <assert.h>
 #include "src/webp/types.h"

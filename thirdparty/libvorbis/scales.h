@@ -1,3 +1,5 @@
+#ifndef _V_SCALES_H_
+#define _V_SCALES_H_
 /********************************************************************
  *                                                                  *
  * THIS FILE IS PART OF THE OggVorbis SOFTWARE CODEC SOURCE CODE.   *
@@ -14,8 +16,8 @@
 
  ********************************************************************/
 
-#ifndef _V_SCALES_H_
-#define _V_SCALES_H_
+
+
 
 #include <math.h>
 #include "os.h"

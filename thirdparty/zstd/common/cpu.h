@@ -1,3 +1,5 @@
+#ifndef ZSTD_COMMON_CPU_H
+#define ZSTD_COMMON_CPU_H
 /*
  * Copyright (c) Facebook, Inc.
  * All rights reserved.
@@ -8,8 +10,8 @@
  * You may select, at your option, one of the above-listed licenses.
  */
 
-#ifndef ZSTD_COMMON_CPU_H
-#define ZSTD_COMMON_CPU_H
+
+
 
 /**
  * Implementation taken from folly/CpuId.h

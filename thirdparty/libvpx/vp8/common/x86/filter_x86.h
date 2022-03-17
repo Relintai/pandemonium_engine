@@ -1,3 +1,5 @@
+#ifndef VP8_COMMON_X86_FILTER_X86_H_
+#define VP8_COMMON_X86_FILTER_X86_H_
 /*
  *  Copyright (c) 2011 The WebM project authors. All Rights Reserved.
  *
@@ -8,8 +10,8 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#ifndef VP8_COMMON_X86_FILTER_X86_H_
-#define VP8_COMMON_X86_FILTER_X86_H_
+
+
 
 #include "vpx_ports/mem.h"
 

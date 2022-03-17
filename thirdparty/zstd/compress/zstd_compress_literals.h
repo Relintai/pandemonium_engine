@@ -1,3 +1,5 @@
+#ifndef ZSTD_COMPRESS_LITERALS_H
+#define ZSTD_COMPRESS_LITERALS_H
 /*
  * Copyright (c) Yann Collet, Facebook, Inc.
  * All rights reserved.
@@ -8,8 +10,8 @@
  * You may select, at your option, one of the above-listed licenses.
  */
 
-#ifndef ZSTD_COMPRESS_LITERALS_H
-#define ZSTD_COMPRESS_LITERALS_H
+
+
 
 #include "zstd_compress_internal.h" /* ZSTD_hufCTables_t, ZSTD_minGain() */
 

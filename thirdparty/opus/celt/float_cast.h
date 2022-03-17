@@ -1,3 +1,5 @@
+#ifndef FLOAT_CAST_H
+#define FLOAT_CAST_H
 /* Copyright (C) 2001 Erik de Castro Lopo <erikd AT mega-nerd DOT com> */
 /*
    Redistribution and use in source and binary forms, with or without
@@ -26,8 +28,8 @@
 
 /* Version 1.1 */
 
-#ifndef FLOAT_CAST_H
-#define FLOAT_CAST_H
+
+
 
 
 #include "arch.h"

@@ -1,3 +1,5 @@
+#ifndef KISS_FFT_GUTS_H
+#define KISS_FFT_GUTS_H
 /*Copyright (c) 2003-2004, Mark Borgerding
 
   All rights reserved.
@@ -23,8 +25,8 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE.*/
 
-#ifndef KISS_FFT_GUTS_H
-#define KISS_FFT_GUTS_H
+
+
 
 #define MIN(a,b) ((a)<(b) ? (a):(b))
 #define MAX(a,b) ((a)>(b) ? (a):(b))

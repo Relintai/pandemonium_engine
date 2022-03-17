@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_DEBUG_H
+#define MBEDTLS_DEBUG_H
 /**
  * \file debug.h
  *
@@ -19,8 +21,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-#ifndef MBEDTLS_DEBUG_H
-#define MBEDTLS_DEBUG_H
+
+
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

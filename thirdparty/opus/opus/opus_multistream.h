@@ -1,3 +1,5 @@
+#ifndef OPUS_MULTISTREAM_H
+#define OPUS_MULTISTREAM_H
 /* Copyright (c) 2011 Xiph.Org Foundation
    Written by Jean-Marc Valin */
 /*
@@ -30,8 +32,8 @@
  * @brief Opus reference implementation multistream API
  */
 
-#ifndef OPUS_MULTISTREAM_H
-#define OPUS_MULTISTREAM_H
+
+
 
 #include "opus.h"
 

@@ -1,3 +1,5 @@
+#ifndef ZSTD_COMPRESS_H
+#define ZSTD_COMPRESS_H
 /*
  * Copyright (c) Yann Collet, Facebook, Inc.
  * All rights reserved.
@@ -12,8 +14,8 @@
  * that shall **only** be used by modules within lib/compress.
  */
 
-#ifndef ZSTD_COMPRESS_H
-#define ZSTD_COMPRESS_H
+
+
 
 /*-*************************************
 *  Dependencies

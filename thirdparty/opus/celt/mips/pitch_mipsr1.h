@@ -1,3 +1,5 @@
+#ifndef PITCH_MIPSR1_H
+#define PITCH_MIPSR1_H
 /* Copyright (c) 2007-2008 CSIRO
    Copyright (c) 2007-2009 Xiph.Org Foundation
    Written by Jean-Marc Valin */
@@ -31,8 +33,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef PITCH_MIPSR1_H
-#define PITCH_MIPSR1_H
+
+
 
 #define OVERRIDE_DUAL_INNER_PROD
 static inline void dual_inner_prod(const opus_val16 *x, const opus_val16 *y01, const opus_val16 *y02,

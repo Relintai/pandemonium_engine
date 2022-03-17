@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_ECP_H
+#define MBEDTLS_ECP_H
 /**
  * \file ecp.h
  *
@@ -31,8 +33,8 @@
  *  limitations under the License.
  */
 
-#ifndef MBEDTLS_ECP_H
-#define MBEDTLS_ECP_H
+
+
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

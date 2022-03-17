@@ -1,3 +1,5 @@
+#ifndef _V_ENVELOPE_
+#define _V_ENVELOPE_
 /********************************************************************
  *                                                                  *
  * THIS FILE IS PART OF THE OggVorbis SOFTWARE CODEC SOURCE CODE.   *
@@ -14,8 +16,8 @@
 
  ********************************************************************/
 
-#ifndef _V_ENVELOPE_
-#define _V_ENVELOPE_
+
+
 
 #include "mdct.h"
 

@@ -1,3 +1,5 @@
+#ifndef FIXED_ARM64_H
+#define FIXED_ARM64_H
 /* Copyright (C) 2015 Vidyo */
 /*
    Redistribution and use in source and binary forms, with or without
@@ -24,8 +26,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef FIXED_ARM64_H
-#define FIXED_ARM64_H
+
+
 
 #include <arm_neon.h>
 

@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_MD2_H
+#define MBEDTLS_MD2_H
 /**
  * \file md2.h
  *
@@ -24,8 +26,8 @@
  *  limitations under the License.
  *
  */
-#ifndef MBEDTLS_MD2_H
-#define MBEDTLS_MD2_H
+
+
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

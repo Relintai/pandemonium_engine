@@ -1,3 +1,5 @@
+#ifndef ZSTD_LDM_GEARTAB_H
+#define ZSTD_LDM_GEARTAB_H
 /*
  * Copyright (c) Yann Collet, Facebook, Inc.
  * All rights reserved.
@@ -8,8 +10,8 @@
  * You may select, at your option, one of the above-listed licenses.
  */
 
-#ifndef ZSTD_LDM_GEARTAB_H
-#define ZSTD_LDM_GEARTAB_H
+
+
 
 static U64 ZSTD_ldm_gearTab[256] = {
     0xf5b8f72c5f77775c, 0x84935f266b7ac412, 0xb647ada9ca730ccc,

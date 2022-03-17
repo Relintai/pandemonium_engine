@@ -1,3 +1,5 @@
+#ifndef RVO_KD_TREE_H_
+#define RVO_KD_TREE_H_
 /*
  * KdTree.h
  * RVO2-3D Library
@@ -33,8 +35,8 @@
  * \file    KdTree.h
  * \brief   Contains the KdTree class.
  */
-#ifndef RVO_KD_TREE_H_
-#define RVO_KD_TREE_H_
+
+
 
 #include "API.h"
 

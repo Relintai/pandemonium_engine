@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_CHACHA20_H
+#define MBEDTLS_CHACHA20_H
 /**
  * \file chacha20.h
  *
@@ -29,8 +31,8 @@
  *  limitations under the License.
  */
 
-#ifndef MBEDTLS_CHACHA20_H
-#define MBEDTLS_CHACHA20_H
+
+
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

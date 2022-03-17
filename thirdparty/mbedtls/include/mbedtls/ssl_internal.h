@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_SSL_INTERNAL_H
+#define MBEDTLS_SSL_INTERNAL_H
 /**
  * \file ssl_internal.h
  *
@@ -19,8 +21,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-#ifndef MBEDTLS_SSL_INTERNAL_H
-#define MBEDTLS_SSL_INTERNAL_H
+
+
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

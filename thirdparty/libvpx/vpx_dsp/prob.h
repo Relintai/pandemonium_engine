@@ -1,3 +1,5 @@
+#ifndef VPX_DSP_PROB_H_
+#define VPX_DSP_PROB_H_
 /*
  *  Copyright (c) 2013 The WebM project authors. All Rights Reserved.
  *
@@ -8,8 +10,8 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#ifndef VPX_DSP_PROB_H_
-#define VPX_DSP_PROB_H_
+
+
 
 #include "./vpx_config.h"
 #include "./vpx_dsp_common.h"

@@ -1,3 +1,5 @@
+#ifndef ZSTD_CCOMMON_H_MODULE
+#define ZSTD_CCOMMON_H_MODULE
 /*
  * Copyright (c) Yann Collet, Facebook, Inc.
  * All rights reserved.
@@ -8,8 +10,8 @@
  * You may select, at your option, one of the above-listed licenses.
  */
 
-#ifndef ZSTD_CCOMMON_H_MODULE
-#define ZSTD_CCOMMON_H_MODULE
+
+
 
 /* this module contains definitions which must be identical
  * across compression, decompression and dictBuilder.

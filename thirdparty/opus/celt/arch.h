@@ -1,3 +1,5 @@
+#ifndef ARCH_H
+#define ARCH_H
 /* Copyright (c) 2003-2008 Jean-Marc Valin
    Copyright (c) 2007-2008 CSIRO
    Copyright (c) 2007-2009 Xiph.Org Foundation
@@ -31,8 +33,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef ARCH_H
-#define ARCH_H
+
+
 
 #include "opus_types.h"
 #include "opus_defines.h"

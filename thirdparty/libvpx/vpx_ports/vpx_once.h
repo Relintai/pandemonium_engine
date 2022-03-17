@@ -1,3 +1,5 @@
+#ifndef VPX_PORTS_VPX_ONCE_H_
+#define VPX_PORTS_VPX_ONCE_H_
 /*
  *  Copyright (c) 2015 The WebM project authors. All Rights Reserved.
  *
@@ -8,8 +10,8 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#ifndef VPX_PORTS_VPX_ONCE_H_
-#define VPX_PORTS_VPX_ONCE_H_
+
+
 
 #include "vpx_config.h"
 

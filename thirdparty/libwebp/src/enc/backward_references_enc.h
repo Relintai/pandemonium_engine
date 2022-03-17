@@ -1,3 +1,5 @@
+#ifndef WEBP_ENC_BACKWARD_REFERENCES_ENC_H_
+#define WEBP_ENC_BACKWARD_REFERENCES_ENC_H_
 // Copyright 2012 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -10,8 +12,8 @@
 // Author: Jyrki Alakuijala (jyrki@google.com)
 //
 
-#ifndef WEBP_ENC_BACKWARD_REFERENCES_ENC_H_
-#define WEBP_ENC_BACKWARD_REFERENCES_ENC_H_
+
+
 
 #include <assert.h>
 #include <stdlib.h>

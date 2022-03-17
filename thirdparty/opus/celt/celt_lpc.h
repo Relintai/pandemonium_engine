@@ -1,3 +1,5 @@
+#ifndef PLC_H
+#define PLC_H
 /* Copyright (c) 2009-2010 Xiph.Org Foundation
    Written by Jean-Marc Valin */
 /*
@@ -25,8 +27,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef PLC_H
-#define PLC_H
+
+
 
 #include "arch.h"
 #include "cpu_support.h"

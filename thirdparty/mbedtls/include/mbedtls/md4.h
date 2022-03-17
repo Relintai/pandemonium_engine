@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_MD4_H
+#define MBEDTLS_MD4_H
 /**
  * \file md4.h
  *
@@ -24,8 +26,8 @@
  *  limitations under the License.
  *
  */
-#ifndef MBEDTLS_MD4_H
-#define MBEDTLS_MD4_H
+
+
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

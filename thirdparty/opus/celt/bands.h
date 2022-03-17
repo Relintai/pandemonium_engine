@@ -1,3 +1,5 @@
+#ifndef BANDS_H
+#define BANDS_H
 /* Copyright (c) 2007-2008 CSIRO
    Copyright (c) 2007-2009 Xiph.Org Foundation
    Copyright (c) 2008-2009 Gregory Maxwell
@@ -27,8 +29,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef BANDS_H
-#define BANDS_H
+
+
 
 #include "arch.h"
 #include "modes.h"

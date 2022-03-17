@@ -1,3 +1,5 @@
+#ifndef RVO_VECTOR3_H_
+#define RVO_VECTOR3_H_
 /*
  * Vector3.h
  * RVO2-3D Library
@@ -34,8 +36,8 @@
  * \file    Vector3.h
  * \brief   Contains the Vector3 class.
  */
-#ifndef RVO_VECTOR3_H_
-#define RVO_VECTOR3_H_
+
+
 
 #include "API.h"
 

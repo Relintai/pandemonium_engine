@@ -1,3 +1,5 @@
+#ifndef MACRO_DEBUG_H
+#define MACRO_DEBUG_H
 /***********************************************************************
 Copyright (c) 2006-2011, Skype Limited. All rights reserved.
 Copyright (C) 2012 Xiph.Org Foundation
@@ -26,8 +28,8 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ***********************************************************************/
 
-#ifndef MACRO_DEBUG_H
-#define MACRO_DEBUG_H
+
+
 
 /* Redefine macro functions with extensive assertion in DEBUG mode.
    As functions can't be undefined, this file can't work with SigProcFIX_MacroCount.h */

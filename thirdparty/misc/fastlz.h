@@ -1,3 +1,5 @@
+#ifndef FASTLZ_H
+#define FASTLZ_H
 /*
   FastLZ - Byte-aligned LZ77 compression library
   Copyright (C) 2005-2020 Ariya Hidayat <ariya.hidayat@gmail.com>
@@ -21,8 +23,8 @@
   THE SOFTWARE.
 */
 
-#ifndef FASTLZ_H
-#define FASTLZ_H
+
+
 
 #define FASTLZ_VERSION 0x000500
 

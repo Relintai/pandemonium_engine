@@ -1,3 +1,5 @@
+#ifndef OS_SUPPORT_H
+#define OS_SUPPORT_H
 /* Copyright (C) 2007 Jean-Marc Valin
 
    File: os_support.h
@@ -28,8 +30,8 @@
    POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef OS_SUPPORT_H
-#define OS_SUPPORT_H
+
+
 
 #ifdef CUSTOM_SUPPORT
 #  include "custom_support.h"

@@ -1,3 +1,5 @@
+#ifndef DEBUG_H_12987983217
+#define DEBUG_H_12987983217
 /* ******************************************************************
  * debug
  * Part of FSE library
@@ -29,8 +31,8 @@
  * and is a global variable, not multi-thread protected (use with care)
  */
 
-#ifndef DEBUG_H_12987983217
-#define DEBUG_H_12987983217
+
+
 
 #if defined (__cplusplus)
 extern "C" {

@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_CHECK_CONFIG_H
+#define MBEDTLS_CHECK_CONFIG_H
 /**
  * \file check_config.h
  *
@@ -25,8 +27,8 @@
  * in order to catch dependency issues early.
  */
 
-#ifndef MBEDTLS_CHECK_CONFIG_H
-#define MBEDTLS_CHECK_CONFIG_H
+
+
 
 /*
  * We assume CHAR_BIT is 8 in many places. In practice, this is true on our

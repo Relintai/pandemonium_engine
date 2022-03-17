@@ -1,3 +1,5 @@
+#ifndef SILK_NSQ_NEON_H
+#define SILK_NSQ_NEON_H
 /***********************************************************************
 Copyright (C) 2014 Vidyo
 Redistribution and use in source and binary forms, with or without
@@ -24,8 +26,8 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ***********************************************************************/
-#ifndef SILK_NSQ_NEON_H
-#define SILK_NSQ_NEON_H
+
+
 
 #include "cpu_support.h"
 

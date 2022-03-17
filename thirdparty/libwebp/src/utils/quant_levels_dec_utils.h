@@ -1,3 +1,5 @@
+#ifndef WEBP_UTILS_QUANT_LEVELS_DEC_UTILS_H_
+#define WEBP_UTILS_QUANT_LEVELS_DEC_UTILS_H_
 // Copyright 2013 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -11,8 +13,8 @@
 //
 // Author:  Vikas Arora (vikasa@google.com)
 
-#ifndef WEBP_UTILS_QUANT_LEVELS_DEC_UTILS_H_
-#define WEBP_UTILS_QUANT_LEVELS_DEC_UTILS_H_
+
+
 
 #include "src/webp/types.h"
 

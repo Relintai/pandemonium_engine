@@ -1,3 +1,5 @@
+#ifndef WEBP_DEC_ALPHAI_DEC_H_
+#define WEBP_DEC_ALPHAI_DEC_H_
 // Copyright 2013 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -11,8 +13,8 @@
 //
 // Author: Urvang (urvang@google.com)
 
-#ifndef WEBP_DEC_ALPHAI_DEC_H_
-#define WEBP_DEC_ALPHAI_DEC_H_
+
+
 
 #include "src/dec/webpi_dec.h"
 #include "src/utils/filters_utils.h"

@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_ECJPAKE_H
+#define MBEDTLS_ECJPAKE_H
 /**
  * \file ecjpake.h
  *
@@ -19,8 +21,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-#ifndef MBEDTLS_ECJPAKE_H
-#define MBEDTLS_ECJPAKE_H
+
+
 
 /*
  * J-PAKE is a password-authenticated key exchange that allows deriving a

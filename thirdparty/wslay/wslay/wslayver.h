@@ -1,3 +1,5 @@
+#ifndef WSLAYVER_H
+#define WSLAYVER_H
 /*
  * Wslay - The WebSocket Library
  *
@@ -22,8 +24,8 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#ifndef WSLAYVER_H
-#define WSLAYVER_H
+
+
 
 /* Version number of wslay release */
 #define WSLAY_VERSION "1.1.1"

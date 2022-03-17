@@ -1,3 +1,5 @@
+#ifndef ERROR_H_MODULE
+#define ERROR_H_MODULE
 /*
  * Copyright (c) Yann Collet, Facebook, Inc.
  * All rights reserved.
@@ -10,8 +12,8 @@
 
 /* Note : this module is expected to remain private, do not expose it */
 
-#ifndef ERROR_H_MODULE
-#define ERROR_H_MODULE
+
+
 
 #if defined (__cplusplus)
 extern "C" {

@@ -1,3 +1,5 @@
+#ifndef CPU_SUPPORT_H
+#define CPU_SUPPORT_H
 /* Copyright (c) 2010 Xiph.Org Foundation
  * Copyright (c) 2013 Parrot */
 /*
@@ -25,8 +27,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef CPU_SUPPORT_H
-#define CPU_SUPPORT_H
+
+
 
 #include "opus_types.h"
 #include "opus_defines.h"

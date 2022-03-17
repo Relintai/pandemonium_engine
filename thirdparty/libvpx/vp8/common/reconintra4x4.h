@@ -1,3 +1,5 @@
+#ifndef VP8_COMMON_RECONINTRA4X4_H_
+#define VP8_COMMON_RECONINTRA4X4_H_
 /*
  *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.
  *
@@ -9,8 +11,8 @@
  */
 
 
-#ifndef VP8_COMMON_RECONINTRA4X4_H_
-#define VP8_COMMON_RECONINTRA4X4_H_
+
+
 #include "vp8/common/blockd.h"
 
 #ifdef __cplusplus

@@ -1,3 +1,5 @@
+#ifndef VPX_VPX_CODEC_H_
+#define VPX_VPX_CODEC_H_
 /*
  *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.
  *
@@ -36,8 +38,8 @@
  * Once initialized, the instance is manged using other functions from
  * the vpx_codec_* family.
  */
-#ifndef VPX_VPX_CODEC_H_
-#define VPX_VPX_CODEC_H_
+
+
 
 #ifdef __cplusplus
 extern "C" {

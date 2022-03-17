@@ -1,3 +1,5 @@
+#ifndef WSLAY_FRAME_H
+#define WSLAY_FRAME_H
 /*
  * Wslay - The WebSocket Library
  *
@@ -22,8 +24,8 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#ifndef WSLAY_FRAME_H
-#define WSLAY_FRAME_H
+
+
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>

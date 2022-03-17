@@ -1,3 +1,5 @@
+#ifndef _MLP_H_
+#define _MLP_H_
 /* Copyright (c) 2008-2011 Octasic Inc.
    Written by Jean-Marc Valin */
 /*
@@ -25,8 +27,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef _MLP_H_
-#define _MLP_H_
+
+
 
 #include "arch.h"
 

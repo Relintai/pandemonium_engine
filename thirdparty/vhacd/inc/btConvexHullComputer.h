@@ -1,3 +1,5 @@
+#ifndef BT_CONVEX_HULL_COMPUTER_H
+#define BT_CONVEX_HULL_COMPUTER_H
 /*
 Copyright (c) 2011 Ole Kniemeyer, MAXON, www.maxon.net
 
@@ -12,8 +14,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_CONVEX_HULL_COMPUTER_H
-#define BT_CONVEX_HULL_COMPUTER_H
+
+
 
 #include "btAlignedObjectArray.h"
 #include "btVector3.h"

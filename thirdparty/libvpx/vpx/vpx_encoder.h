@@ -1,3 +1,5 @@
+#ifndef VPX_VPX_ENCODER_H_
+#define VPX_VPX_ENCODER_H_
 /*
  *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.
  *
@@ -7,8 +9,8 @@
  *  in the file PATENTS.  All contributing project authors may
  *  be found in the AUTHORS file in the root of the source tree.
  */
-#ifndef VPX_VPX_ENCODER_H_
-#define VPX_VPX_ENCODER_H_
+
+
 
 /*!\defgroup encoder Encoder Algorithm Interface
  * \ingroup codec

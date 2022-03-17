@@ -1,3 +1,5 @@
+#ifndef CWRS_H
+#define CWRS_H
 /* Copyright (c) 2007-2008 CSIRO
    Copyright (c) 2007-2009 Xiph.Org Foundation
    Copyright (c) 2007-2009 Timothy B. Terriberry
@@ -27,8 +29,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef CWRS_H
-#define CWRS_H
+
+
 
 #include "arch.h"
 #include "stack_alloc.h"

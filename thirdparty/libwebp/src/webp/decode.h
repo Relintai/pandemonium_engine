@@ -1,3 +1,5 @@
+#ifndef WEBP_WEBP_DECODE_H_
+#define WEBP_WEBP_DECODE_H_
 // Copyright 2010 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -11,8 +13,8 @@
 //
 // Author: Skal (pascal.massimino@gmail.com)
 
-#ifndef WEBP_WEBP_DECODE_H_
-#define WEBP_WEBP_DECODE_H_
+
+
 
 #include "./types.h"
 

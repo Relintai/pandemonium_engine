@@ -1,3 +1,5 @@
+#ifndef TRIANGULATOR_H
+#define TRIANGULATOR_H
 //Copyright (C) 2011 by Ivan Fratric
 //
 //Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,8 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //THE SOFTWARE.
 
-#ifndef TRIANGULATOR_H
-#define TRIANGULATOR_H
+
+
 
 #include "core/list.h"
 #include "core/math/vector2.h"

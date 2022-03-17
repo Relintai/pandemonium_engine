@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_SHA512_H
+#define MBEDTLS_SHA512_H
 /**
  * \file sha512.h
  * \brief This file contains SHA-384 and SHA-512 definitions and functions.
@@ -21,8 +23,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-#ifndef MBEDTLS_SHA512_H
-#define MBEDTLS_SHA512_H
+
+
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

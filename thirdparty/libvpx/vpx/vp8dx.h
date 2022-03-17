@@ -1,3 +1,5 @@
+#ifndef VPX_VP8DX_H_
+#define VPX_VP8DX_H_
 /*
  *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.
  *
@@ -18,8 +20,8 @@
  * \brief Provides definitions for using VP8 or VP9 within the vpx Decoder
  *        interface.
  */
-#ifndef VPX_VP8DX_H_
-#define VPX_VP8DX_H_
+
+
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,3 +1,5 @@
+#ifndef MKVPARSER_MKVPARSER_H_
+#define MKVPARSER_MKVPARSER_H_
 // Copyright (c) 2012 The WebM project authors. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -5,8 +7,8 @@
 // tree. An additional intellectual property rights grant can be found
 // in the file PATENTS.  All contributing project authors may
 // be found in the AUTHORS file in the root of the source tree.
-#ifndef MKVPARSER_MKVPARSER_H_
-#define MKVPARSER_MKVPARSER_H_
+
+
 
 #include <cstddef>
 

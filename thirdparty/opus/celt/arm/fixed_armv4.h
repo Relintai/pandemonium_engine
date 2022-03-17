@@ -1,3 +1,5 @@
+#ifndef FIXED_ARMv4_H
+#define FIXED_ARMv4_H
 /* Copyright (C) 2013 Xiph.Org Foundation and contributors */
 /*
    Redistribution and use in source and binary forms, with or without
@@ -24,8 +26,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef FIXED_ARMv4_H
-#define FIXED_ARMv4_H
+
+
 
 /** 16x32 multiplication, followed by a 16-bit shift right. Results fits in 32 bits */
 #undef MULT16_32_Q16

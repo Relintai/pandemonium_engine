@@ -1,3 +1,5 @@
+#ifndef WEBP_DSP_NEON_H_
+#define WEBP_DSP_NEON_H_
 // Copyright 2014 Google Inc. All Rights Reserved.
 //
 // Use of this source code is governed by a BSD-style license
@@ -9,8 +11,8 @@
 //
 //  NEON common code.
 
-#ifndef WEBP_DSP_NEON_H_
-#define WEBP_DSP_NEON_H_
+
+
 
 #include "src/dsp/dsp.h"
 

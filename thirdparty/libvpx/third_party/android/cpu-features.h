@@ -1,3 +1,5 @@
+#ifndef CPU_FEATURES_H
+#define CPU_FEATURES_H
 /*
  * Copyright (C) 2010 The Android Open Source Project
  * All rights reserved.
@@ -25,8 +27,8 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-#ifndef CPU_FEATURES_H
-#define CPU_FEATURES_H
+
+
 
 #include <sys/cdefs.h>
 #include <stdint.h>

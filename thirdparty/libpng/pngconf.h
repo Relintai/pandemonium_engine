@@ -1,3 +1,5 @@
+#ifndef PNGCONF_H
+#define PNGCONF_H
 
 /* pngconf.h - machine-configurable file for libpng
  *
@@ -18,8 +20,8 @@
  * and png_info.
  */
 
-#ifndef PNGCONF_H
-#define PNGCONF_H
+
+
 
 #ifndef PNG_BUILDING_SYMBOL_TABLE /* else includes may cause problems */
 

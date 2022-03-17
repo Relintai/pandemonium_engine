@@ -1,3 +1,5 @@
+#ifndef __PREFILTER_FIX_MIPSR1_H__
+#define __PREFILTER_FIX_MIPSR1_H__
 /***********************************************************************
 Copyright (c) 2006-2011, Skype Limited. All rights reserved.
 Redistribution and use in source and binary forms, with or without
@@ -24,8 +26,8 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ***********************************************************************/
-#ifndef __PREFILTER_FIX_MIPSR1_H__
-#define __PREFILTER_FIX_MIPSR1_H__
+
+
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

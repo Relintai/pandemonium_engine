@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_ECP_INVASIVE_H
+#define MBEDTLS_ECP_INVASIVE_H
 /**
  * \file ecp_invasive.h
  *
@@ -23,8 +25,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-#ifndef MBEDTLS_ECP_INVASIVE_H
-#define MBEDTLS_ECP_INVASIVE_H
+
+
 
 #include "common.h"
 #include "mbedtls/bignum.h"

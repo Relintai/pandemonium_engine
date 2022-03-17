@@ -1,3 +1,5 @@
+#ifndef RECASTASSERT_H
+#define RECASTASSERT_H
 //
 // Copyright (c) 2009-2010 Mikko Mononen memon@inside.org
 //
@@ -16,8 +18,8 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-#ifndef RECASTASSERT_H
-#define RECASTASSERT_H
+
+
 
 // Note: This header file's only purpose is to include define assert.
 // Feel free to change the file and include your own implementation instead.

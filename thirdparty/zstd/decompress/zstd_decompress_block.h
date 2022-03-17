@@ -1,3 +1,5 @@
+#ifndef ZSTD_DEC_BLOCK_H
+#define ZSTD_DEC_BLOCK_H
 /*
  * Copyright (c) Yann Collet, Facebook, Inc.
  * All rights reserved.
@@ -9,8 +11,8 @@
  */
 
 
-#ifndef ZSTD_DEC_BLOCK_H
-#define ZSTD_DEC_BLOCK_H
+
+
 
 /*-*******************************************************
  *  Dependencies

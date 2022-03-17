@@ -1,3 +1,5 @@
+#ifndef VP8_COMMON_ONYXD_H_
+#define VP8_COMMON_ONYXD_H_
 /*
  *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.
  *
@@ -9,8 +11,8 @@
  */
 
 
-#ifndef VP8_COMMON_ONYXD_H_
-#define VP8_COMMON_ONYXD_H_
+
+
 
 
 /* Create/destroy static data structures. */

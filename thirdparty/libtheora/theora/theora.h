@@ -1,3 +1,5 @@
+#ifndef _O_THEORA_H_
+#define _O_THEORA_H_
 /********************************************************************
  *                                                                  *
  * THIS FILE IS PART OF THE OggTheora SOFTWARE CODEC SOURCE CODE.   *
@@ -15,8 +17,8 @@
 
  ********************************************************************/
 
-#ifndef _O_THEORA_H_
-#define _O_THEORA_H_
+
+
 
 #ifdef __cplusplus
 extern "C"

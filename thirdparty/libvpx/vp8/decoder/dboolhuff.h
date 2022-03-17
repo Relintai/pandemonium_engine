@@ -1,3 +1,5 @@
+#ifndef VP8_DECODER_DBOOLHUFF_H_
+#define VP8_DECODER_DBOOLHUFF_H_
 /*
  *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.
  *
@@ -9,8 +11,8 @@
  */
 
 
-#ifndef VP8_DECODER_DBOOLHUFF_H_
-#define VP8_DECODER_DBOOLHUFF_H_
+
+
 
 #include <stddef.h>
 #include <limits.h>

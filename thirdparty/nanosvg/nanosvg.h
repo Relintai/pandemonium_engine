@@ -1,3 +1,5 @@
+#ifndef NANOSVG_H
+#define NANOSVG_H
 /*
  * Copyright (c) 2013-14 Mikko Mononen memon@inside.org
  *
@@ -26,8 +28,8 @@
  *
  */
 
-#ifndef NANOSVG_H
-#define NANOSVG_H
+
+
 
 #ifndef NANOSVG_CPLUSPLUS
 #ifdef __cplusplus

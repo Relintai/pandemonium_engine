@@ -1,3 +1,5 @@
+#ifndef MDCT_H
+#define MDCT_H
 /* Copyright (c) 2007-2008 CSIRO
    Copyright (c) 2007-2008 Xiph.Org Foundation
    Written by Jean-Marc Valin */
@@ -39,8 +41,8 @@
    and scaling in many places.
 */
 
-#ifndef MDCT_H
-#define MDCT_H
+
+
 
 #include "opus_defines.h"
 #include "kiss_fft.h"

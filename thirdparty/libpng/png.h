@@ -1,3 +1,5 @@
+#ifndef PNG_H
+#define PNG_H
 
 /* png.h - header file for PNG reference library
  *
@@ -263,8 +265,8 @@
  * <https://www.w3.org/TR/2003/REC-PNG-20031110/>
  */
 
-#ifndef PNG_H
-#define PNG_H
+
+
 
 /* This is not the place to learn how to use libpng. The file libpng-manual.txt
  * describes how to use libpng, and the file example.c summarizes it

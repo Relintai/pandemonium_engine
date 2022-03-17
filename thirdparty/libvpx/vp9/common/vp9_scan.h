@@ -1,3 +1,5 @@
+#ifndef VP9_COMMON_VP9_SCAN_H_
+#define VP9_COMMON_VP9_SCAN_H_
 /*
  *  Copyright (c) 2013 The WebM project authors. All Rights Reserved.
  *
@@ -8,8 +10,8 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#ifndef VP9_COMMON_VP9_SCAN_H_
-#define VP9_COMMON_VP9_SCAN_H_
+
+
 
 #include "vpx/vpx_integer.h"
 #include "vpx_ports/mem.h"

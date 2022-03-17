@@ -1,3 +1,5 @@
+#ifndef PITCH_H
+#define PITCH_H
 /* Copyright (c) 2007-2008 CSIRO
    Copyright (c) 2007-2009 Xiph.Org Foundation
    Written by Jean-Marc Valin */
@@ -31,8 +33,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef PITCH_H
-#define PITCH_H
+
+
 
 #include "modes.h"
 #include "cpu_support.h"

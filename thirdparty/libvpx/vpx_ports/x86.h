@@ -1,3 +1,5 @@
+#ifndef VPX_PORTS_X86_H_
+#define VPX_PORTS_X86_H_
 /*
  *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.
  *
@@ -9,8 +11,8 @@
  */
 
 
-#ifndef VPX_PORTS_X86_H_
-#define VPX_PORTS_X86_H_
+
+
 #include <stdlib.h>
 
 #if defined(_MSC_VER)

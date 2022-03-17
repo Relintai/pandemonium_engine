@@ -1,3 +1,5 @@
+#ifndef _V_CODECI_H_
+#define _V_CODECI_H_
 /********************************************************************
  *                                                                  *
  * THIS FILE IS PART OF THE OggVorbis SOFTWARE CODEC SOURCE CODE.   *
@@ -14,8 +16,8 @@
 
  ********************************************************************/
 
-#ifndef _V_CODECI_H_
-#define _V_CODECI_H_
+
+
 
 #include "envelope.h"
 #include "codebook.h"

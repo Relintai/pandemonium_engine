@@ -1,3 +1,5 @@
+#ifndef PITCH_SSE_H
+#define PITCH_SSE_H
 /* Copyright (c) 2013 Jean-Marc Valin and John Ridges
    Copyright (c) 2014, Cisco Systems, INC MingXiang WeiZhou MinPeng YanWang*/
 /**
@@ -30,8 +32,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef PITCH_SSE_H
-#define PITCH_SSE_H
+
+
 
 #if defined(HAVE_CONFIG_H)
 #include "config.h"

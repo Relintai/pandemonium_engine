@@ -1,3 +1,5 @@
+#ifndef _OGG_H
+#define _OGG_H
 /********************************************************************
  *                                                                  *
  * THIS FILE IS PART OF THE OggVorbis SOFTWARE CODEC SOURCE CODE.   *
@@ -13,8 +15,8 @@
  function: toplevel libogg include
 
  ********************************************************************/
-#ifndef _OGG_H
-#define _OGG_H
+
+
 
 #ifdef __cplusplus
 extern "C" {

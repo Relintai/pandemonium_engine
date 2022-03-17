@@ -1,3 +1,5 @@
+#ifndef _V_MASKING_H_
+#define _V_MASKING_H_
 /********************************************************************
  *                                                                  *
  * THIS FILE IS PART OF THE OggVorbis SOFTWARE CODEC SOURCE CODE.   *
@@ -14,8 +16,8 @@
 
  ********************************************************************/
 
-#ifndef _V_MASKING_H_
-#define _V_MASKING_H_
+
+
 
 /* more detailed ATH; the bass if flat to save stressing the floor
    overly for only a bin or two of savings. */

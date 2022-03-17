@@ -1,3 +1,5 @@
+#ifndef WIN32_SNPRINTF_H
+#define WIN32_SNPRINTF_H
 /* vim: tabstop=4 shiftwidth=4 noexpandtab
  * MiniUPnP project
  * http://miniupnp.free.fr/ or https://miniupnp.tuxfamily.org/
@@ -5,8 +7,8 @@
  * This software is subject to the conditions detailed
  * in the LICENCE file provided within the distribution */
 
-#ifndef WIN32_SNPRINTF_H
-#define WIN32_SNPRINTF_H
+
+
 
 #ifdef _WIN32
 

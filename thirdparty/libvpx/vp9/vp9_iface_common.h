@@ -1,3 +1,5 @@
+#ifndef VP9_VP9_IFACE_COMMON_H_
+#define VP9_VP9_IFACE_COMMON_H_
 /*
  *  Copyright (c) 2013 The WebM project authors. All Rights Reserved.
  *
@@ -7,8 +9,8 @@
  *  in the file PATENTS.  All contributing project authors may
  *  be found in the AUTHORS file in the root of the source tree.
  */
-#ifndef VP9_VP9_IFACE_COMMON_H_
-#define VP9_VP9_IFACE_COMMON_H_
+
+
 
 #include "vpx_ports/mem.h"
 

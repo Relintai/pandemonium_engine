@@ -1,3 +1,5 @@
+#ifndef MBEDTLS_ARIA_H
+#define MBEDTLS_ARIA_H
 /**
  * \file aria.h
  *
@@ -26,8 +28,8 @@
  *  limitations under the License.
  */
 
-#ifndef MBEDTLS_ARIA_H
-#define MBEDTLS_ARIA_H
+
+
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"
