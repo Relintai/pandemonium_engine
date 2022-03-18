@@ -49,7 +49,7 @@ void VoxelTerrainJob::set_mesher(int index, const Ref<VoxelMesher> &mesher) {
 void VoxelTerrainJob::remove_mesher(const int index) {
 	ERR_FAIL_INDEX(index, _meshers.size());
 
-	_meshers.VREMOVE(index);
+	_meshers.remove(index);
 }
 void VoxelTerrainJob::add_mesher(const Ref<VoxelMesher> &mesher) {
 	_meshers.push_back(mesher);
@@ -71,7 +71,7 @@ void VoxelTerrainJob::set_liquid_mesher(int index, const Ref<VoxelMesher> &meshe
 void VoxelTerrainJob::remove_liquid_mesher(const int index) {
 	ERR_FAIL_INDEX(index, _liquid_meshers.size());
 
-	_liquid_meshers.VREMOVE(index);
+	_liquid_meshers.remove(index);
 }
 void VoxelTerrainJob::add_liquid_mesher(const Ref<VoxelMesher> &mesher) {
 	_liquid_meshers.push_back(mesher);

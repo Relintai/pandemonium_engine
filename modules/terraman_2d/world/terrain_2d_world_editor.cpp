@@ -36,9 +36,9 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include core_input_h
-#include spatial_editor_plugin_h
-#include camera_h
+#include "core/os/input.h"
+#include "editor/plugins/spatial_editor_plugin.h"
+#include "scene/3d/camera.h"
 
 bool Terrain2DWorldEditor::forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) {
 	if (!_world || !_world->get_editable()) {

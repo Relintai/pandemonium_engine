@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include mesh_instance_h
+#include "scene/3d/mesh_instance.h"
 
 #include "../world/default/terrain_chunk_default.h"
 #include "../world/terrain_chunk.h"
@@ -334,7 +334,7 @@ void TerrainMesher::remove_doubles() {
 		for (int j = 0; j < indices.size(); ++j) {
 			int index = indices[j];
 
-			_vertices.VREMOVE(index);
+			_vertices.remove(index);
 
 			//make all indices that were bigger than the one we replaced one lower
 			for (int k = 0; k < _indices.size(); ++k) {
@@ -386,8 +386,8 @@ void TerrainMesher::remove_doubles_hashed() {
 		for (int j = 0; j < indices.size(); ++j) {
 			int index = indices[j];
 
-			hashes.VREMOVE(index);
-			_vertices.VREMOVE(index);
+			hashes.remove(index);
+			_vertices.remove(index);
 
 			//make all indices that were bigger than the one we replaced one lower
 			for (int k = 0; k < _indices.size(); ++k) {
@@ -730,7 +730,7 @@ Vector3 TerrainMesher::get_vertex(const int idx) const {
 }
 
 void TerrainMesher::remove_vertex(const int idx) {
-	_vertices.VREMOVE(idx);
+	_vertices.remove(idx);
 }
 
 PoolVector<Vector3> TerrainMesher::get_normals() const {
@@ -878,7 +878,7 @@ int TerrainMesher::get_index(const int idx) const {
 }
 
 void TerrainMesher::remove_index(const int idx) {
-	_indices.VREMOVE(idx);
+	_indices.remove(idx);
 }
 
 TerrainMesher::TerrainMesher(const Ref<TerrainLibrary> &library) {

@@ -30,9 +30,8 @@ SOFTWARE.
 
 #include "defines.h"
 
-#include pool_vector_h
-include_pool_vector
-#include mesh_instance_h
+#include "core/pool_vector.h"
+#include "scene/3d/mesh_instance.h"
 
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
@@ -45,7 +44,7 @@ include_pool_vector
 #include "../mesh_data_resource/mesh_data_resource.h"
 #endif
 
-		class MeshMerger : public Reference {
+class MeshMerger : public Reference {
 	GDCLASS(MeshMerger, Reference);
 
 public:

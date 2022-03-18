@@ -28,11 +28,9 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include pool_vector_h
-include_pool_vector
+#include "core/pool_vector.h"
 
 #include "voxel_chunk.h"
-		;
 
 class BlockVoxelStructure : public VoxelStructure {
 	GDCLASS(BlockVoxelStructure, VoxelStructure);

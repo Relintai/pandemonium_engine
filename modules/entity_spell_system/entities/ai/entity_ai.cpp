@@ -108,26 +108,26 @@ String EntityAI::get_editor_description() const {
 }
 
 void EntityAI::update(float delta) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(_owner));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(_owner));
 
 	if (has_method("_update"))
 		call("_update", delta);
 }
 void EntityAI::pet_update(float delta) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(_owner));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(_owner));
 
 	if (has_method("_pet_update"))
 		call("_pet_update", delta);
 }
 
 void EntityAI::move(float delta) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(_owner));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(_owner));
 
 	if (has_method("_move"))
 		call("_move", delta);
 }
 void EntityAI::pet_move(float delta) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(_owner));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(_owner));
 
 	if (has_method("_pet_move"))
 		call("_pet_move", delta);
@@ -231,7 +231,7 @@ void EntityAI::notification_sxp_gained(Entity *entity, int value) {
 		call("_notification_sxp_gained", entity, value);
 }
 void EntityAI::notification_sxp_gained_bind(Node *entity, int value) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
@@ -245,7 +245,7 @@ void EntityAI::notification_slevel_up(Entity *entity, int value) {
 		call("_notification_slevel_up", entity);
 }
 void EntityAI::notification_slevel_up_bind(Node *entity, int value) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
@@ -274,7 +274,7 @@ bool EntityAI::equip_should_deny(Entity *entity, int equip_slot, Ref<ItemInstanc
 	return false;
 }
 bool EntityAI::equip_should_deny_bind(Node *entity, int equip_slot, Ref<ItemInstance> item) {
-	ERR_FAIL_COND_V(!INSTANCE_VALIDATE(entity), false);
+	ERR_FAIL_COND_V(!ObjectDB::instance_validate(entity), false);
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
@@ -288,7 +288,7 @@ void EntityAI::equip_son_success(Entity *entity, int equip_slot, Ref<ItemInstanc
 		call("_equip_son_success", entity, equip_slot, item, old_item, bag_slot);
 }
 void EntityAI::equip_son_success_bind(Node *entity, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
@@ -302,7 +302,7 @@ void EntityAI::equip_son_fail(Entity *entity, int equip_slot, Ref<ItemInstance> 
 		call("_equip_son_fail", entity, equip_slot, item, old_item, bag_slot);
 }
 void EntityAI::equip_son_fail_bind(Node *entity, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
@@ -316,7 +316,7 @@ void EntityAI::equip_con_success(Entity *entity, int equip_slot, Ref<ItemInstanc
 		call("_equip_con_success", entity, equip_slot, item, old_item, bag_slot);
 }
 void EntityAI::equip_con_success_bind(Node *entity, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
@@ -330,7 +330,7 @@ void EntityAI::equip_con_fail(Entity *entity, int equip_slot, Ref<ItemInstance> 
 		call("_equip_con_fail", entity, equip_slot, item, old_item, bag_slot);
 }
 void EntityAI::equip_con_fail_bind(Node *entity, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	Entity *e = Object::cast_to<Entity>(entity);
 

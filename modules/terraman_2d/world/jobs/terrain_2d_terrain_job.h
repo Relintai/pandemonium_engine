@@ -26,11 +26,9 @@ SOFTWARE.
 
 #include "../../defines.h"
 
-#include pool_vector_h
+#include "core/pool_vector.h"
 
-include_pool_vector
-
-		class Terrain2DMesher;
+class Terrain2DMesher;
 
 class Terrain2DTerrain2DJob : public Terrain2DJob {
 	GDCLASS(Terrain2DTerrain2DJob, Terrain2DJob);

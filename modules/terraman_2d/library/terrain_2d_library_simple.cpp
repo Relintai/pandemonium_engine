@@ -77,7 +77,7 @@ void Terrain2DLibrarySimple::terra_surface_set(const int index, Ref<Terrain2DSur
 }
 
 void Terrain2DLibrarySimple::terra_surface_remove(const int index) {
-	_terra_surfaces.VREMOVE(index);
+	_terra_surfaces.remove(index);
 }
 
 int Terrain2DLibrarySimple::terra_surface_get_num() const {

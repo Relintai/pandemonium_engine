@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include pool_vector_h
+#include "core/pool_vector.h"
 
 #include "core/math/aabb.h"
 #include "terrain_chunk.h"

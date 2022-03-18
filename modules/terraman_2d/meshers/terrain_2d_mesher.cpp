@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include mesh_instance_h
+#include "scene/3d/mesh_instance.h"
 
 #include "../world/default/terrain_2d_chunk_default.h"
 #include "../world/terrain_2d_chunk.h"
@@ -244,7 +244,7 @@ void Terrain2DMesher::remove_doubles() {
 		for (int j = 0; j < indices.size(); ++j) {
 			int index = indices[j];
 
-			_vertices.VREMOVE(index);
+			_vertices.remove(index);
 
 			//make all indices that were bigger than the one we replaced one lower
 			for (int k = 0; k < _indices.size(); ++k) {
@@ -296,8 +296,8 @@ void Terrain2DMesher::remove_doubles_hashed() {
 		for (int j = 0; j < indices.size(); ++j) {
 			int index = indices[j];
 
-			hashes.VREMOVE(index);
-			_vertices.VREMOVE(index);
+			hashes.remove(index);
+			_vertices.remove(index);
 
 			//make all indices that were bigger than the one we replaced one lower
 			for (int k = 0; k < _indices.size(); ++k) {
@@ -752,7 +752,7 @@ Vector2 Terrain2DMesher::get_vertex(const int idx) const {
 }
 
 void Terrain2DMesher::remove_vertex(const int idx) {
-	_vertices.VREMOVE(idx);
+	_vertices.remove(idx);
 }
 
 PoolVector<Color> Terrain2DMesher::get_colors() const {
@@ -838,7 +838,7 @@ int Terrain2DMesher::get_index(const int idx) const {
 }
 
 void Terrain2DMesher::remove_index(const int idx) {
-	_indices.VREMOVE(idx);
+	_indices.remove(idx);
 }
 
 Terrain2DMesher::Terrain2DMesher(const Ref<Terrain2DLibrary> &library) {

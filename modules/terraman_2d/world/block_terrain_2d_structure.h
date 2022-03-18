@@ -28,11 +28,9 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include pool_vector_h
-include_pool_vector
+#include "core/pool_vector.h"
 
 #include "terrain_2d_chunk.h"
-		;
 
 class BlockTerrain2DStructure : public Terrain2DStructure {
 	GDCLASS(BlockTerrain2DStructure, Terrain2DStructure);

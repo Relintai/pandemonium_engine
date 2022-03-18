@@ -966,7 +966,7 @@ void Spell::aura_stat_attribute_set_percent_mod(int index, float value) {
 ////    Spell System    ////
 
 void Spell::cast_starts_simple(Entity *caster, float spell_scale) {
-	ERR_FAIL_COND(!caster || !INSTANCE_VALIDATE(caster));
+	ERR_FAIL_COND(!caster || !ObjectDB::instance_validate(caster));
 
 	Ref<SpellCastInfo> info = Ref<SpellCastInfo>(memnew(SpellCastInfo()));
 
@@ -981,7 +981,7 @@ void Spell::cast_starts_simple(Entity *caster, float spell_scale) {
 }
 
 void Spell::cast_interrupts_simple(Entity *caster) {
-	ERR_FAIL_COND(!caster || !INSTANCE_VALIDATE(caster));
+	ERR_FAIL_COND(!caster || !ObjectDB::instance_validate(caster));
 
 	Ref<SpellCastInfo> info(memnew(SpellCastInfo()));
 
@@ -992,7 +992,7 @@ void Spell::cast_interrupts_simple(Entity *caster) {
 }
 
 void Spell::cast_starts_triggered_simple(Entity *caster) {
-	ERR_FAIL_COND(!caster || !INSTANCE_VALIDATE(caster));
+	ERR_FAIL_COND(!caster || !ObjectDB::instance_validate(caster));
 
 	Ref<SpellCastInfo> info(memnew(SpellCastInfo()));
 
@@ -1834,7 +1834,7 @@ void Spell::_cast_finishs(Ref<SpellCastInfo> info) {
 	info->caster_get()->notification_scast(SpellEnums::NOTIFICATION_CAST_FINISHED, info);
 	info->caster_get()->cast_spell_successs(info);
 
-	if (INSTANCE_VALIDATE(info->target_get())) {
+	if (ObjectDB::instance_validate(info->target_get())) {
 		info->target_get()->notification_scast(SpellEnums::NOTIFICATION_CAST_FINISHED_TARGET, info);
 	}
 
@@ -1887,7 +1887,7 @@ void Spell::_handle_projectile(Ref<SpellCastInfo> info) {
 
 		Node *p = info->caster_get()->get_parent();
 
-		ERR_FAIL_COND(!INSTANCE_VALIDATE(p));
+		ERR_FAIL_COND(!ObjectDB::instance_validate(p));
 
 		p->add_child(projectile);
 
@@ -1913,7 +1913,7 @@ void Spell::_handle_effect(Ref<SpellCastInfo> info) {
 #			return
 			*/
 
-	bool has_target = INSTANCE_VALIDATE(info->target_get());
+	bool has_target = ObjectDB::instance_validate(info->target_get());
 
 	if (_target_type == SPELL_TARGET_TYPE_TARGET) {
 		if (!has_target)
@@ -2121,7 +2121,7 @@ void Spell::_aura_supdate(Ref<AuraData> aura, float delta) {
 }
 
 void Spell::_setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(info->caster_get()));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(info->caster_get()));
 
 	data->set_aura(Ref<Spell>(this));
 	data->set_aura_id(get_id());
@@ -2167,7 +2167,7 @@ void Spell::_aura_calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraAppl
 }
 
 void Spell::_handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> info) {
-	if (info->dealer_get() && !INSTANCE_VALIDATE(info->dealer_get())) {
+	if (info->dealer_get() && !ObjectDB::instance_validate(info->dealer_get())) {
 		info->dealer_set(NULL);
 	}
 
@@ -2204,7 +2204,7 @@ void Spell::_aura_calculate_initial_heal(Ref<AuraData> aura_data, Ref<AuraApplyI
 }
 
 void Spell::_handle_aura_heal(Ref<AuraData> aura_data, Ref<SpellHealInfo> info) {
-	if (info->dealer_get() && !INSTANCE_VALIDATE(info->dealer_get())) {
+	if (info->dealer_get() && !ObjectDB::instance_validate(info->dealer_get())) {
 		info->dealer_set(NULL);
 	}
 

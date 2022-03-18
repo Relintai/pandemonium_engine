@@ -297,7 +297,7 @@ void Terrain2DChunk::job_set(int index, const Ref<Terrain2DJob> &job) {
 void Terrain2DChunk::job_remove(const int index) {
 	ERR_FAIL_INDEX(index, _jobs.size());
 
-	_jobs.VREMOVE(index);
+	_jobs.remove(index);
 }
 void Terrain2DChunk::job_add(const Ref<Terrain2DJob> &job) {
 	_jobs.push_back(job);
@@ -647,12 +647,12 @@ void Terrain2DChunk::voxel_structure_remove(const Ref<Terrain2DStructure> &struc
 	int index = _voxel_structures.find(structure);
 
 	if (index != -1)
-		_voxel_structures.VREMOVE(index);
+		_voxel_structures.remove(index);
 }
 void Terrain2DChunk::voxel_structure_remove_index(const int index) {
 	ERR_FAIL_INDEX(index, _voxel_structures.size());
 
-	_voxel_structures.VREMOVE(index);
+	_voxel_structures.remove(index);
 }
 void Terrain2DChunk::voxel_structure_clear() {
 	_voxel_structures.clear();
@@ -683,7 +683,7 @@ void Terrain2DChunk::voxel_structures_set(const Vector<Variant> &structures) {
 }
 
 void Terrain2DChunk::build() {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(get_voxel_world()));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(get_voxel_world()));
 	ERR_FAIL_COND(!get_voxel_world()->is_inside_tree());
 	ERR_FAIL_COND(!is_in_tree());
 
@@ -771,7 +771,7 @@ int Terrain2DChunk::prop_get_count() const {
 void Terrain2DChunk::prop_remove(const int index) {
 	ERR_FAIL_INDEX(index, _props.size());
 
-	_props.VREMOVE(index);
+	_props.remove(index);
 }
 void Terrain2DChunk::props_clear() {
 	_props.clear();
@@ -942,7 +942,7 @@ int Terrain2DChunk::mesh_data_resource_get_count() const {
 void Terrain2DChunk::mesh_data_resource_remove(const int index) {
 	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
 
-	_mesh_data_resources.VREMOVE(index);
+	_mesh_data_resources.remove(index);
 }
 void Terrain2DChunk::mesh_data_resource_clear() {
 	_mesh_data_resources.clear();
@@ -1017,7 +1017,7 @@ int Terrain2DChunk::collider_get_count() const {
 void Terrain2DChunk::collider_remove(const int index) {
 	ERR_FAIL_INDEX(index, _colliders.size());
 
-	_colliders.VREMOVE(index);
+	_colliders.remove(index);
 }
 void Terrain2DChunk::colliders_clear() {
 	_colliders.clear();

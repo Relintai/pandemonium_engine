@@ -4,7 +4,7 @@
 
 #include "core/image.h"
 
-#define GET_WORLD get_world
+
 
 #if TEXTURE_PACKER_PRESENT
 #include "../../texture_packer/texture_resource/packer_image_resource.h"

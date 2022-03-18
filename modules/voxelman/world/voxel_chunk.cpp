@@ -655,7 +655,7 @@ void VoxelChunk::voxel_structures_set(const Vector<Variant> &structures) {
 }
 
 void VoxelChunk::build() {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(get_voxel_world()));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(get_voxel_world()));
 	ERR_FAIL_COND(!get_voxel_world()->is_inside_tree());
 	ERR_FAIL_COND(!is_in_tree());
 

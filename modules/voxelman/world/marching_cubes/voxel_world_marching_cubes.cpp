@@ -40,10 +40,10 @@ Ref<VoxelChunk> VoxelWorldMarchingCubes::_create_chunk(int x, int y, int z, Ref<
 
 	if (chunk->job_get_count() == 0) {
 		Ref<VoxelLightJob> lj;
-		lj.INSTANCE();
+		lj.instance();
 
 		Ref<VoxelTerrainJob> tj;
-		tj.INSTANCE();
+		tj.instance();
 
 		Ref<VoxelMesherJobStep> s;
 		s.instance();
@@ -82,7 +82,7 @@ Ref<VoxelChunk> VoxelWorldMarchingCubes::_create_chunk(int x, int y, int z, Ref<
 		//add_liquid_mesher(Ref<VoxelMesher>(memnew(VoxelMesherLiquidMarchingCubes())));
 
 		Ref<VoxelPropJob> pj;
-		pj.INSTANCE();
+		pj.instance();
 		pj->set_prop_mesher(Ref<VoxelMesher>(memnew(VoxelMesherMarchingCubes)));
 
 		s.instance();

@@ -265,7 +265,7 @@ void AuraData::set_slow(float value) {
 }
 
 void AuraData::resolve_references(Node *owner) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(owner));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(owner));
 
 	ERR_FAIL_COND(!owner->is_inside_tree());
 

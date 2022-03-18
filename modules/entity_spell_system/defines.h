@@ -16,8 +16,6 @@
 		arr_into.push_back(e);                 \
 	}
 
-
-#define INSTANCE_VALIDATE(var) ObjectDB::instance_validate(var)
 #define CONNECT(sig, obj, target_method_class, method) connect(sig, obj, #method)
 #define DISCONNECT(sig, obj, target_method_class, method) disconnect(sig, obj, #method)
 

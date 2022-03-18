@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include navigation_h
+#include "scene/3d/navigation.h"
 
 #include "../areas/world_area.h"
 #include "../level_generator/voxel_level_generator.h"

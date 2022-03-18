@@ -24,8 +24,8 @@ SOFTWARE.
 
 #include "../../defines.h"
 
-#include visual_server_h
-#include physics_server_h
+#include "servers/visual_server.h"
+#include "servers/physics_server.h"
 
 #include "../../../opensimplex/open_simplex_noise.h"
 #include "../../meshers/default/terrain_mesher_default.h"
@@ -302,8 +302,8 @@ void TerrainChunkDefault::meshes_create(const int mesh_index, const int mesh_cou
 	for (int i = 0; i < mesh_count; ++i) {
 		RID mesh_instance_rid = VS::get_singleton()->instance_create();
 
-		if (get_voxel_world()->GET_WORLD().is_valid())
-			VS::get_singleton()->instance_set_scenario(mesh_instance_rid, get_voxel_world()->GET_WORLD()->get_scenario());
+		if (get_voxel_world()->get_world().is_valid())
+			VS::get_singleton()->instance_set_scenario(mesh_instance_rid, get_voxel_world()->get_world()->get_scenario());
 
 		RID mesh_rid = VS::get_singleton()->mesh_create();
 
@@ -382,7 +382,7 @@ void TerrainChunkDefault::colliders_create(const int mesh_index, const int layer
 	PhysicsServer::get_singleton()->body_set_state(body_rid, PhysicsServer::BODY_STATE_TRANSFORM, get_transform());
 
 	if (get_voxel_world()->is_inside_tree() && get_voxel_world()->is_inside_world()) {
-		Ref<World> world = get_voxel_world()->GET_WORLD();
+		Ref<World> world = get_voxel_world()->get_world();
 
 		if (world.is_valid() && world->get_space() != RID())
 			PhysicsServer::get_singleton()->body_set_space(body_rid, world->get_space());
@@ -420,7 +420,7 @@ void TerrainChunkDefault::colliders_create_area(const int mesh_index, const int 
 	PhysicsServer::get_singleton()->area_set_collision_mask(area_rid, layer_mask);
 
 	if (get_voxel_world()->is_inside_tree() && get_voxel_world()->is_inside_world()) {
-		Ref<World> world = get_voxel_world()->GET_WORLD();
+		Ref<World> world = get_voxel_world()->get_world();
 
 		if (world.is_valid() && world->get_space() != RID())
 			PhysicsServer::get_singleton()->area_set_space(area_rid, world->get_space());
@@ -533,8 +533,8 @@ void TerrainChunkDefault::debug_mesh_allocate() {
 	if (_debug_mesh_instance == RID()) {
 		_debug_mesh_instance = VisualServer::get_singleton()->instance_create();
 
-		if (get_voxel_world()->GET_WORLD().is_valid())
-			VS::get_singleton()->instance_set_scenario(_debug_mesh_instance, get_voxel_world()->GET_WORLD()->get_scenario());
+		if (get_voxel_world()->get_world().is_valid())
+			VS::get_singleton()->instance_set_scenario(_debug_mesh_instance, get_voxel_world()->get_world()->get_scenario());
 
 		VS::get_singleton()->instance_set_base(_debug_mesh_instance, _debug_mesh_rid);
 		VS::get_singleton()->instance_set_transform(_debug_mesh_instance, get_transform());

@@ -108,7 +108,7 @@ void VoxelPropJob::phase_physics_process() {
 			PhysicsServer::get_singleton()->body_set_collision_mask(body, 1);
 
 			if (chunk->get_voxel_world()->is_inside_tree() && chunk->get_voxel_world()->is_inside_world()) {
-				Ref<World> world = chunk->get_voxel_world()->GET_WORLD();
+				Ref<World> world = chunk->get_voxel_world()->get_world();
 
 				if (world.is_valid() && world->get_space() != RID()) {
 					PhysicsServer::get_singleton()->body_set_space(body, world->get_space());

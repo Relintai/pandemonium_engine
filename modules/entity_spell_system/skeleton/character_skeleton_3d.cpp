@@ -89,7 +89,7 @@ void CharacterSkeleton3D::common_attach_point_add(const EntityEnums::CommonChara
 
 	Node *n = _attach_point_nodes[index].node;
 
-	if (INSTANCE_VALIDATE(n) && n->has_method("add")) {
+	if (ObjectDB::instance_validate(n) && n->has_method("add")) {
 		n->call("add", scene);
 	}
 }
@@ -100,7 +100,7 @@ void CharacterSkeleton3D::common_attach_point_add_timed(const EntityEnums::Commo
 
 	Node *n = _attach_point_nodes[index].node;
 
-	if (INSTANCE_VALIDATE(n) && n->has_method("add_timed")) {
+	if (ObjectDB::instance_validate(n) && n->has_method("add_timed")) {
 		n->call("add_timed", scene, time);
 	}
 }
@@ -111,7 +111,7 @@ void CharacterSkeleton3D::common_attach_point_remove(const EntityEnums::CommonCh
 
 	Node *n = _attach_point_nodes[index].node;
 
-	if (INSTANCE_VALIDATE(n) && n->has_method("remove")) {
+	if (ObjectDB::instance_validate(n) && n->has_method("remove")) {
 		n->call("remove", scene);
 	}
 }

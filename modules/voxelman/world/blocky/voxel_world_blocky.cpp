@@ -42,10 +42,10 @@ Ref<VoxelChunk> VoxelWorldBlocky::_create_chunk(int x, int y, int z, Ref<VoxelCh
 
 	if (chunk->job_get_count() == 0) {
 		Ref<VoxelLightJob> lj;
-		lj.INSTANCE();
+		lj.instance();
 
 		Ref<VoxelTerrainJob> tj;
-		tj.INSTANCE();
+		tj.instance();
 
 		Ref<VoxelMesherJobStep> s;
 		s.instance();
@@ -80,7 +80,7 @@ Ref<VoxelChunk> VoxelWorldBlocky::_create_chunk(int x, int y, int z, Ref<VoxelCh
 		tj->add_liquid_mesher(Ref<VoxelMesher>(memnew(VoxelMesherLiquidBlocky())));
 
 		Ref<VoxelPropJob> pj;
-		pj.INSTANCE();
+		pj.instance();
 		pj->set_prop_mesher(Ref<VoxelMesher>(memnew(VoxelMesherBlocky)));
 
 		s.instance();

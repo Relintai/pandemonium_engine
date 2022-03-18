@@ -24,8 +24,8 @@ SOFTWARE.
 
 #include "../../defines.h"
 
-#include visual_server_h
-#include physics_server_h
+#include "servers/visual_server.h"
+#include "servers/physics_server.h"
 
 #include "../../../opensimplex/open_simplex_noise.h"
 #include "../../meshers/default/terrain_2d_mesher_default.h"
@@ -493,8 +493,8 @@ void Terrain2DChunkDefault::debug_mesh_allocate() {
 	if (_debug_mesh_instance == RID()) {
 		_debug_mesh_instance = VisualServer::get_singleton()->instance_create();
 
-		//if (get_voxel_world()->GET_WORLD().is_valid())
-		//	VS::get_singleton()->instance_set_scenario(_debug_mesh_instance, get_voxel_world()->GET_WORLD()->get_scenario());
+		//if (get_voxel_world()->get_world().is_valid())
+		//	VS::get_singleton()->instance_set_scenario(_debug_mesh_instance, get_voxel_world()->get_world()->get_scenario());
 
 		VS::get_singleton()->instance_set_base(_debug_mesh_instance, _debug_mesh_rid);
 		//VS::get_singleton()->instance_set_transform(_debug_mesh_instance, get_transform());

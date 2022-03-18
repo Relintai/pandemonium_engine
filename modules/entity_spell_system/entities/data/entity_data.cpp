@@ -191,7 +191,7 @@ String EntityData::generate_name() {
 ////    SETUP    ////
 
 void EntityData::setup_resources(Entity *entity) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	if (_entity_class_data.is_valid())
 		_entity_class_data->setup_resources(entity);
@@ -201,7 +201,7 @@ void EntityData::setup_resources(Entity *entity) {
 }
 
 bool EntityData::cans_interact(Entity *entity) {
-	ERR_FAIL_COND_V(!INSTANCE_VALIDATE(entity), false);
+	ERR_FAIL_COND_V(!ObjectDB::instance_validate(entity), false);
 
 	if (has_method("_cans_interact"))
 		return call("_cans_interact", entity);
@@ -210,7 +210,7 @@ bool EntityData::cans_interact(Entity *entity) {
 }
 
 bool EntityData::cans_interact_bind(Node *entity) {
-	ERR_FAIL_COND_V(!INSTANCE_VALIDATE(entity), false);
+	ERR_FAIL_COND_V(!ObjectDB::instance_validate(entity), false);
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
@@ -220,14 +220,14 @@ bool EntityData::cans_interact_bind(Node *entity) {
 }
 
 void EntityData::sinteract(Entity *entity) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	if (has_method("_sinteract"))
 		call("_sinteract", entity);
 }
 
 void EntityData::sinteract_bind(Node *entity) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	Entity *e = Object::cast_to<Entity>(entity);
 

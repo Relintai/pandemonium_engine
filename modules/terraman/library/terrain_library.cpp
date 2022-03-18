@@ -101,7 +101,7 @@ void TerrainLibrary::material_set(const int index, const Ref<Material> &value) {
 }
 
 void TerrainLibrary::material_remove(const int index) {
-	_materials.VREMOVE(index);
+	_materials.remove(index);
 }
 
 int TerrainLibrary::material_get_num() const {
@@ -181,7 +181,7 @@ void TerrainLibrary::liquid_material_set(const int index, const Ref<Material> &v
 }
 
 void TerrainLibrary::liquid_material_remove(const int index) {
-	_liquid_materials.VREMOVE(index);
+	_liquid_materials.remove(index);
 }
 
 int TerrainLibrary::liquid_material_get_num() const {
@@ -261,7 +261,7 @@ void TerrainLibrary::prop_material_set(const int index, const Ref<Material> &val
 }
 
 void TerrainLibrary::prop_material_remove(const int index) {
-	_prop_materials.VREMOVE(index);
+	_prop_materials.remove(index);
 }
 
 int TerrainLibrary::prop_material_get_num() const {

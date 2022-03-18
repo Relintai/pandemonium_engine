@@ -28,10 +28,8 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include pool_vector_h
-include_pool_vector
-
-#include mesh_instance_h
+#include "core/pool_vector.h"
+#include "scene/3d/mesh_instance.h"
 
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
@@ -48,7 +46,7 @@ include_pool_vector
 
 #include "../library/terrain_2d_library.h"
 
-		class Terrain2DLibrary;
+class Terrain2DLibrary;
 class Terrain2DChunk;
 
 class Terrain2DMesher : public Reference {

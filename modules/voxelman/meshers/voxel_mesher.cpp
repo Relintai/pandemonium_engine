@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include mesh_instance_h
+#include "scene/3d/mesh_instance.h"
 
 #include "../world/default/voxel_chunk_default.h"
 #include "../world/voxel_chunk.h"

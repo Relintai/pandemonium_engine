@@ -162,7 +162,7 @@ void SpellDamageInfo::reset() {
 }
 
 void SpellDamageInfo::resolve_references(Node *owner) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(owner));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(owner));
 	ERR_FAIL_COND(!owner->is_inside_tree());
 
 	_dealer = Object::cast_to<Entity>(owner->get_node_or_null(_dealer_path));
@@ -178,10 +178,10 @@ void SpellDamageInfo::resolve_references(Node *owner) {
 Dictionary SpellDamageInfo::to_dict() {
 	Dictionary dict;
 
-	if (INSTANCE_VALIDATE(_dealer))
+	if (ObjectDB::instance_validate(_dealer))
 		dict["dealer_path"] = _dealer->get_path();
 
-	if (INSTANCE_VALIDATE(_receiver))
+	if (ObjectDB::instance_validate(_receiver))
 		dict["receiver_path"] = _receiver->get_path();
 
 	dict["immune"] = _immune;

@@ -28,11 +28,9 @@ SOFTWARE.
 
 #include "voxel_mesher_job_step.h"
 
-#include pool_vector_h
+#include "core/pool_vector.h"
 
-include_pool_vector
-
-		class VoxelMesher;
+class VoxelMesher;
 
 class VoxelTerrainJob : public VoxelJob {
 	GDCLASS(VoxelTerrainJob, VoxelJob);

@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include light_h
+#include "scene/3d/light.h"
 
 #include "scene/3d/world_environment.h"
 #include "scene/main/node.h"

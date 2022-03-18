@@ -150,7 +150,7 @@ PoolColorArray VoxelWorldDefault::get_vertex_colors(const Transform &transform, 
 }
 
 void VoxelWorldDefault::_update_lods() {
-	if (!get_player() || !INSTANCE_VALIDATE(get_player())) {
+	if (!get_player() || !ObjectDB::instance_validate(get_player())) {
 		return;
 	}
 
@@ -319,7 +319,7 @@ void VoxelWorldDefault::_notification(int p_what) {
 				return;
 			}
 
-			if (!INSTANCE_VALIDATE(get_player())) {
+			if (!ObjectDB::instance_validate(get_player())) {
 				set_player(NULL);
 				return;
 			}

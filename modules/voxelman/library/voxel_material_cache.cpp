@@ -87,7 +87,7 @@ void VoxelMaterialCache::material_set(const int index, const Ref<Material> &valu
 }
 
 void VoxelMaterialCache::material_remove(const int index) {
-	_materials.VREMOVE(index);
+	_materials.remove(index);
 }
 
 int VoxelMaterialCache::material_get_num() const {
@@ -148,7 +148,7 @@ void VoxelMaterialCache::surface_set(int index, Ref<VoxelSurface> value) {
 	_surfaces.set(index, value);
 }
 void VoxelMaterialCache::surface_remove(const int index) {
-	_surfaces.VREMOVE(index);
+	_surfaces.remove(index);
 }
 int VoxelMaterialCache::surface_get_num() const {
 	return _surfaces.size();
@@ -163,7 +163,7 @@ void VoxelMaterialCache::additional_texture_add(const Ref<Texture> &texture) {
 void VoxelMaterialCache::additional_texture_remove(const Ref<Texture> &texture) {
 	for (int i = 0; i < _additional_textures.size(); ++i) {
 		if (_additional_textures[i] == texture) {
-			_additional_textures.VREMOVE(i);
+			_additional_textures.remove(i);
 			return;
 		}
 	}
@@ -171,7 +171,7 @@ void VoxelMaterialCache::additional_texture_remove(const Ref<Texture> &texture) 
 void VoxelMaterialCache::additional_texture_remove_index(const int index) {
 	ERR_FAIL_INDEX(index, _additional_textures.size());
 
-	_additional_textures.VREMOVE(index);
+	_additional_textures.remove(index);
 }
 void VoxelMaterialCache::additional_textures_clear() {
 	_additional_textures.clear();

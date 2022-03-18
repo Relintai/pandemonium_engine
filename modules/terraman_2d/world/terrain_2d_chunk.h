@@ -29,8 +29,7 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include pool_vector_h
-include_pool_vector
+#include "core/pool_vector.h"
 
 #include "core/os/mutex.h"
 #include "core/os/thread.h"
@@ -52,7 +51,6 @@ include_pool_vector
 
 #include "../library/terrain_2d_library.h"
 #include "../library/terrain_2d_surface.h"
-		; //hackfix for a clang format issue
 
 //debug meshes update
 //light ppu -> max(cell_size.x, cell_zise.y)

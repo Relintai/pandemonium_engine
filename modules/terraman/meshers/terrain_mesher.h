@@ -28,9 +28,9 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include pool_vector_h
+#include "core/pool_vector.h"
 
-#include mesh_instance_h
+#include "scene/3d/mesh_instance.h"
 
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"

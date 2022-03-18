@@ -29,7 +29,7 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include pool_vector_h
+#include "core/pool_vector.h"
 
 #include "core/os/mutex.h"
 #include "core/os/thread.h"

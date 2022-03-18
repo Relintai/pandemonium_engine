@@ -27,12 +27,11 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include pool_vector_h
-include_pool_vector
+#include "core/pool_vector.h"
 #include "core/math/rect2.h"
 #include "terrain_2d_chunk.h"
 
-		class Terrain2DStructure : public Resource {
+class Terrain2DStructure : public Resource {
 	GDCLASS(Terrain2DStructure, Resource);
 
 public:

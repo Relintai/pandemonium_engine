@@ -187,7 +187,7 @@ void TerrainWorld::world_area_add(const Ref<TerrainWorldArea> &area) {
 void TerrainWorld::world_area_remove(const int index) {
 	ERR_FAIL_INDEX(index, _world_areas.size());
 
-	_world_areas.VREMOVE(index);
+	_world_areas.remove(index);
 }
 void TerrainWorld::world_areas_clear() {
 	_world_areas.clear();
@@ -213,12 +213,12 @@ void TerrainWorld::voxel_structure_remove(const Ref<TerrainStructure> &structure
 	int index = _voxel_structures.find(structure);
 
 	if (index != -1)
-		_voxel_structures.VREMOVE(index);
+		_voxel_structures.remove(index);
 }
 void TerrainWorld::voxel_structure_remove_index(const int index) {
 	ERR_FAIL_INDEX(index, _voxel_structures.size());
 
-	_voxel_structures.VREMOVE(index);
+	_voxel_structures.remove(index);
 }
 void TerrainWorld::voxel_structures_clear() {
 	_voxel_structures.clear();
@@ -300,7 +300,7 @@ Ref<TerrainChunk> TerrainWorld::chunk_remove(const int x, const int z) {
 
 	for (int i = 0; i < _chunks_vector.size(); ++i) {
 		if (_chunks_vector.get(i) == chunk) {
-			_chunks_vector.VREMOVE(i);
+			_chunks_vector.remove(i);
 			break;
 		}
 	}
@@ -326,7 +326,7 @@ Ref<TerrainChunk> TerrainWorld::chunk_remove_index(const int index) {
 	Ref<TerrainChunk> chunk = _chunks_vector.get(index);
 	chunk->exit_tree();
 
-	_chunks_vector.VREMOVE(index);
+	_chunks_vector.remove(index);
 	_chunks.erase(IntPos(chunk->get_position_x(), chunk->get_position_z()));
 	_generation_queue.erase(chunk);
 
@@ -403,7 +403,7 @@ void TerrainWorld::chunk_setup(Ref<TerrainChunk> chunk) {
 
 Ref<TerrainChunk> TerrainWorld::_create_chunk(const int x, const int z, Ref<TerrainChunk> chunk) {
 	if (!chunk.is_valid()) {
-		chunk.INSTANCE();
+		chunk.instance();
 	}
 
 	//no meshers here
@@ -554,7 +554,7 @@ Ref<TerrainChunk> TerrainWorld::generation_queue_get_index(int index) {
 void TerrainWorld::generation_queue_remove_index(int index) {
 	ERR_FAIL_INDEX(index, _generation_queue.size());
 
-	_generation_queue.VREMOVE(index);
+	_generation_queue.remove(index);
 }
 int TerrainWorld::generation_queue_get_size() const {
 	return _generation_queue.size();
@@ -573,7 +573,7 @@ Ref<TerrainChunk> TerrainWorld::generation_get_index(const int index) {
 void TerrainWorld::generation_remove_index(const int index) {
 	ERR_FAIL_INDEX(index, _generating.size());
 
-	_generating.VREMOVE(index);
+	_generating.remove(index);
 }
 int TerrainWorld::generation_get_size() const {
 	return _generating.size();
@@ -626,7 +626,7 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 			if (!sc.is_valid())
 				continue;
 
-			Node *n = sc->INSTANCE();
+			Node *n = sc->instance();
 			add_child(n);
 			n->set_owner(this);
 
@@ -643,7 +643,7 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 
 		if (light_data.is_valid()) {
 			Ref<TerrainLight> light;
-			light.INSTANCE();
+			light.instance();
 
 			light->set_world_position(wp.x / get_voxel_scale(), wp.y / get_voxel_scale(), wp.z / get_voxel_scale());
 			light->set_color(light_data->get_light_color());
@@ -990,19 +990,19 @@ void TerrainWorld::_notification(int p_what) {
 				Ref<TerrainChunk> chunk = _generating.get(i);
 
 				if (!chunk.is_valid()) {
-					_generating.VREMOVE(i);
+					_generating.remove(i);
 					--i;
 					continue;
 				}
 
 				if (!chunk->get_is_generating()) {
-					_generating.VREMOVE(i);
+					_generating.remove(i);
 					--i;
 					continue;
 				}
 
 				if (chunk->is_build_aborted() && chunk->is_safe_to_delete()) {
-					_generating.VREMOVE(i);
+					_generating.remove(i);
 					--i;
 					continue;
 				}
@@ -1016,7 +1016,7 @@ void TerrainWorld::_notification(int p_what) {
 
 			while (_generating.size() < _max_concurrent_generations && _generation_queue.size() != 0) {
 				Ref<TerrainChunk> chunk = _generation_queue.get(0);
-				_generation_queue.VREMOVE(0);
+				_generation_queue.remove(0);
 
 				ERR_FAIL_COND(!chunk.is_valid());
 

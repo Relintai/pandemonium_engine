@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "defines.h"
 
-#include mesh_instance_h
+#include "scene/3d/mesh_instance.h"
 
 bool MeshMerger::Vertex::operator==(const Vertex &p_vertex) const {
 	if (vertex != p_vertex.vertex)

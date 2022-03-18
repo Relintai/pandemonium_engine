@@ -177,7 +177,7 @@ void Entity::set_body_path(NodePath value) {
 
 	set_body(get_node_or_null(_body_path));
 
-	if (INSTANCE_VALIDATE(_body))
+	if (ObjectDB::instance_validate(_body))
 		_body->set_owner(this);
 }
 Node *Entity::get_body() {
@@ -233,7 +233,7 @@ Node *Entity::get_character_skeleton() {
 void Entity::set_character_skeleton(Node *skeleton) {
 	_character_skeleton = skeleton;
 
-	if (INSTANCE_VALIDATE(_character_skeleton) && _character_skeleton->has_method("add_model_visual")) {
+	if (ObjectDB::instance_validate(_character_skeleton) && _character_skeleton->has_method("add_model_visual")) {
 		for (int i = 0; i < _c_equipment.size(); ++i) {
 			Ref<ItemInstance> ii = _c_equipment[i];
 
@@ -265,7 +265,7 @@ void Entity::setc_guid(int value) {
 //Transforms
 Transform Entity::get_transform_3d(bool only_stored) const {
 	if (!only_stored && _body_3d) {
-		ERR_FAIL_COND_V(!INSTANCE_VALIDATE(_body_3d), _transform);
+		ERR_FAIL_COND_V(!ObjectDB::instance_validate(_body_3d), _transform);
 
 		return _body_3d->get_transform();
 	}
@@ -274,7 +274,7 @@ Transform Entity::get_transform_3d(bool only_stored) const {
 }
 void Entity::set_transform_3d(const Transform &transform, bool only_stored) {
 	if (!only_stored && _body_3d) {
-		ERR_FAIL_COND(!INSTANCE_VALIDATE(_body_3d));
+		ERR_FAIL_COND(!ObjectDB::instance_validate(_body_3d));
 
 		return _body_3d->set_transform(transform);
 	}
@@ -284,7 +284,7 @@ void Entity::set_transform_3d(const Transform &transform, bool only_stored) {
 
 Transform2D Entity::get_transform_2d(bool only_stored) const {
 	if (!only_stored && _body_2d) {
-		ERR_FAIL_COND_V(!INSTANCE_VALIDATE(_body_2d), _transform_2d);
+		ERR_FAIL_COND_V(!ObjectDB::instance_validate(_body_2d), _transform_2d);
 
 		return _body_2d->get_transform();
 	}
@@ -293,7 +293,7 @@ Transform2D Entity::get_transform_2d(bool only_stored) const {
 }
 void Entity::set_transform_2d(const Transform2D &transform, bool only_stored) {
 	if (!only_stored && _body_2d) {
-		ERR_FAIL_COND(!INSTANCE_VALIDATE(_body_2d));
+		ERR_FAIL_COND(!ObjectDB::instance_validate(_body_2d));
 
 		return _body_2d->set_transform(_transform_2d);
 	}
@@ -339,12 +339,12 @@ void Entity::setc_entity_type(int value) {
 EntityEnums::EntityRelationType Entity::gets_relation_to_bind(Node *to) {
 	Entity *e = Object::cast_to<Entity>(to);
 
-	ERR_FAIL_COND_V(!INSTANCE_VALIDATE(e), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
+	ERR_FAIL_COND_V(!ObjectDB::instance_validate(e), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
 
 	return gets_relation_to(e);
 }
 EntityEnums::EntityRelationType Entity::gets_relation_to(Entity *to) {
-	ERR_FAIL_COND_V(!INSTANCE_VALIDATE(to), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
+	ERR_FAIL_COND_V(!ObjectDB::instance_validate(to), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
 
 	return static_cast<EntityEnums::EntityRelationType>(static_cast<int>(call("_gets_relation_to", to)));
 }
@@ -359,12 +359,12 @@ EntityEnums::EntityRelationType Entity::_gets_relation_to(Node *to) {
 EntityEnums::EntityRelationType Entity::getc_relation_to_bind(Node *to) {
 	Entity *e = Object::cast_to<Entity>(to);
 
-	ERR_FAIL_COND_V(!INSTANCE_VALIDATE(e), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
+	ERR_FAIL_COND_V(!ObjectDB::instance_validate(e), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
 
 	return getc_relation_to(e);
 }
 EntityEnums::EntityRelationType Entity::getc_relation_to(Entity *to) {
-	ERR_FAIL_COND_V(!INSTANCE_VALIDATE(to), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
+	ERR_FAIL_COND_V(!ObjectDB::instance_validate(to), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
 
 	return static_cast<EntityEnums::EntityRelationType>(static_cast<int>(call("_getc_relation_to", to)));
 }
@@ -451,7 +451,7 @@ int Entity::getc_model_index() {
 void Entity::setc_model_index(int value) {
 	_c_model_index = value;
 
-	if (INSTANCE_VALIDATE(_character_skeleton)) {
+	if (ObjectDB::instance_validate(_character_skeleton)) {
 		if (_character_skeleton->has_method("set_model_index"))
 			_character_skeleton->call("set_model_index", _c_model_index);
 	}
@@ -956,7 +956,7 @@ void Entity::sets_ai(Ref<EntityAI> value) {
 ////    Pets    ////
 
 void Entity::pet_adds(Entity *entity) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	//the owner always want to see his pet, and you pet will always want to see the owner
 	sees_adds(entity);
@@ -998,12 +998,12 @@ void Entity::pet_removes_index(int index) {
 	for (int i = 0; i < _s_pets.size(); ++i) {
 		Entity *pet = _s_pets.get(index);
 
-		ERR_CONTINUE(!INSTANCE_VALIDATE(pet));
+		ERR_CONTINUE(!ObjectDB::instance_validate(pet));
 
 		_s_pets.get(i)->pet_sets_formation_index(i);
 	}
 
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	entity->pet_sets_owner(NULL);
 
@@ -1036,13 +1036,13 @@ void Entity::pet_addc_path(NodePath path) {
 
 	Entity *entity = Object::cast_to<Entity>(n);
 
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	pet_addc(entity);
 }
 
 void Entity::pet_addc(Entity *entity) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	_c_pets.push_back(entity);
 
@@ -2436,7 +2436,7 @@ void Entity::_equip_applyc_item(Ref<ItemInstance> item) {
 
 	ERR_FAIL_COND(!it.is_valid());
 
-	if (it->get_model_visual().is_valid() && INSTANCE_VALIDATE(_character_skeleton)) {
+	if (it->get_model_visual().is_valid() && ObjectDB::instance_validate(_character_skeleton)) {
 		if (_character_skeleton->has_method("add_model_visual"))
 			_character_skeleton->call("add_model_visual", it->get_model_visual());
 	}
@@ -2448,7 +2448,7 @@ void Entity::_equip_deapplyc_item(Ref<ItemInstance> item) {
 
 	ERR_FAIL_COND(!it.is_valid());
 
-	if (it->get_model_visual().is_valid() && INSTANCE_VALIDATE(_character_skeleton)) {
+	if (it->get_model_visual().is_valid() && ObjectDB::instance_validate(_character_skeleton)) {
 		if (_character_skeleton->has_method("remove_model_visual"))
 			_character_skeleton->call("remove_model_visual", it->get_model_visual());
 	}
@@ -2857,7 +2857,7 @@ bool Entity::canc_interact() {
 		return call("_canc_interact");
 	}
 
-	if (!INSTANCE_VALIDATE(_c_target)) {
+	if (!ObjectDB::instance_validate(_c_target)) {
 		return false;
 	}
 
@@ -3558,7 +3558,7 @@ Ref<AuraData> Entity::aura_gets_with_group_by(Entity *caster, Ref<AuraGroup> aur
 	return Ref<AuraData>();
 }
 Ref<AuraData> Entity::aura_gets_with_group_by_bind(Node *caster, Ref<AuraGroup> aura_group) {
-	if (!INSTANCE_VALIDATE(caster)) {
+	if (!ObjectDB::instance_validate(caster)) {
 		return Ref<AuraData>();
 	}
 
@@ -4596,7 +4596,7 @@ Entity *Entity::gets_target() {
 void Entity::sets_target(Node *p_target) {
 	Entity *original_target = _s_target;
 
-	if (!INSTANCE_VALIDATE(original_target)) {
+	if (!ObjectDB::instance_validate(original_target)) {
 		original_target = NULL;
 		_s_target = NULL;
 	}
@@ -4646,7 +4646,7 @@ Entity *Entity::getc_target() {
 void Entity::setc_target(Node *p_target) {
 	Entity *original_target = _c_target;
 
-	if (!INSTANCE_VALIDATE(original_target)) {
+	if (!ObjectDB::instance_validate(original_target)) {
 		original_target = NULL;
 		_c_target = NULL;
 	}
@@ -5648,7 +5648,7 @@ Entity *Entity::sees_gets(int index) {
 void Entity::sees_removes_index(int index) {
 	Entity *e = _s_sees.get(index);
 
-	if (unlikely(!INSTANCE_VALIDATE(e))) {
+	if (unlikely(!ObjectDB::instance_validate(e))) {
 		_s_sees.remove(index);
 		return;
 	}
@@ -5658,7 +5658,7 @@ void Entity::sees_removes_index(int index) {
 	_s_sees.remove(index);
 }
 void Entity::sees_removes(Entity *entity) {
-	if (unlikely(!INSTANCE_VALIDATE(entity))) {
+	if (unlikely(!ObjectDB::instance_validate(entity))) {
 		_s_sees.erase(entity);
 		return;
 	}
@@ -5675,7 +5675,7 @@ void Entity::sees_removes_bind(Node *entity) {
 	sees_removes(e);
 }
 void Entity::sees_adds(Entity *entity) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	entity->seen_by_adds(this);
 
@@ -5716,7 +5716,7 @@ void Entity::seen_by_removes_bind(Node *entity) {
 	seen_by_removes(e);
 }
 void Entity::seen_by_adds(Entity *entity) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	for (int i = 0; i < _s_seen_by.size(); ++i) {
 		if (_s_seen_by.get(i) == entity)
@@ -5750,7 +5750,7 @@ void Entity::vrpc(const StringName &p_method, VARIANT_ARG_DECLARE) {
 	for (int i = 0; i < _s_seen_by.size(); ++i) {
 		Entity *e = _s_seen_by.get(i);
 
-		if (unlikely(!INSTANCE_VALIDATE(e))) {
+		if (unlikely(!ObjectDB::instance_validate(e))) {
 			_s_seen_by.remove(i);
 			--i;
 			continue;
@@ -6298,10 +6298,10 @@ void Entity::_con_target_changed(Node *p_entity, Node *p_old_target) {
 	//Entity *entity = Object::cast_to<Entity>(p_entity);
 	Entity *old_target = Object::cast_to<Entity>(p_old_target);
 
-	if (INSTANCE_VALIDATE(old_target))
+	if (ObjectDB::instance_validate(old_target))
 		old_target->notification_cuntargeted();
 
-	if (INSTANCE_VALIDATE(getc_target())) {
+	if (ObjectDB::instance_validate(getc_target())) {
 		getc_target()->notification_ctargeted();
 
 		if (canc_interact())
@@ -6513,7 +6513,7 @@ void Entity::_notification(int p_what) {
 		case NOTIFICATION_INSTANCED: {
 			set_body(get_node_or_null(_body_path));
 
-			if (INSTANCE_VALIDATE(_body))
+			if (ObjectDB::instance_validate(_body))
 				_body->set_owner(this);
 
 			_character_skeleton = get_node_or_null(_character_skeleton_path);
@@ -6530,7 +6530,7 @@ void Entity::_notification(int p_what) {
 			if (!_body) {
 				set_body(get_node_or_null(_body_path));
 
-				if (INSTANCE_VALIDATE(_body))
+				if (ObjectDB::instance_validate(_body))
 					_body->set_owner(this);
 			}
 
@@ -6554,7 +6554,7 @@ void Entity::_notification(int p_what) {
 			for (int i = 0; i < _s_seen_by.size(); ++i) {
 				Entity *e = _s_seen_by.get(i);
 
-				if (INSTANCE_VALIDATE(e))
+				if (ObjectDB::instance_validate(e))
 					e->sees_removes(this);
 			}
 		} break;

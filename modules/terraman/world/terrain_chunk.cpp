@@ -261,7 +261,7 @@ void TerrainChunk::job_set(int index, const Ref<TerrainJob> &job) {
 void TerrainChunk::job_remove(const int index) {
 	ERR_FAIL_INDEX(index, _jobs.size());
 
-	_jobs.VREMOVE(index);
+	_jobs.remove(index);
 }
 void TerrainChunk::job_add(const Ref<TerrainJob> &job) {
 	_jobs.push_back(job);
@@ -610,12 +610,12 @@ void TerrainChunk::voxel_structure_remove(const Ref<TerrainStructure> &structure
 	int index = _voxel_structures.find(structure);
 
 	if (index != -1)
-		_voxel_structures.VREMOVE(index);
+		_voxel_structures.remove(index);
 }
 void TerrainChunk::voxel_structure_remove_index(const int index) {
 	ERR_FAIL_INDEX(index, _voxel_structures.size());
 
-	_voxel_structures.VREMOVE(index);
+	_voxel_structures.remove(index);
 }
 void TerrainChunk::voxel_structure_clear() {
 	_voxel_structures.clear();
@@ -647,7 +647,7 @@ void TerrainChunk::voxel_structures_set(const Vector<Variant> &structures) {
 }
 
 void TerrainChunk::build() {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(get_voxel_world()));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(get_voxel_world()));
 	ERR_FAIL_COND(!get_voxel_world()->is_inside_tree());
 	ERR_FAIL_COND(!is_in_tree());
 
@@ -735,7 +735,7 @@ int TerrainChunk::prop_get_count() const {
 void TerrainChunk::prop_remove(const int index) {
 	ERR_FAIL_INDEX(index, _props.size());
 
-	_props.VREMOVE(index);
+	_props.remove(index);
 }
 void TerrainChunk::props_clear() {
 	_props.clear();
@@ -893,7 +893,7 @@ int TerrainChunk::mesh_data_resource_get_count() const {
 void TerrainChunk::mesh_data_resource_remove(const int index) {
 	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
 
-	_mesh_data_resources.VREMOVE(index);
+	_mesh_data_resources.remove(index);
 }
 void TerrainChunk::mesh_data_resource_clear() {
 	_mesh_data_resources.clear();
@@ -968,7 +968,7 @@ int TerrainChunk::collider_get_count() const {
 void TerrainChunk::collider_remove(const int index) {
 	ERR_FAIL_INDEX(index, _colliders.size());
 
-	_colliders.VREMOVE(index);
+	_colliders.remove(index);
 }
 void TerrainChunk::colliders_clear() {
 	_colliders.clear();

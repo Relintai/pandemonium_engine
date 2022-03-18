@@ -34,7 +34,7 @@ SOFTWARE.
 ////    SpellCastInfo    ////
 
 Entity *SpellCastInfo::caster_get() {
-	if (_caster && !INSTANCE_VALIDATE(_caster)) {
+	if (_caster && !ObjectDB::instance_validate(_caster)) {
 		_caster = NULL;
 	}
 
@@ -58,7 +58,7 @@ void SpellCastInfo::caster_set_bind(Node *caster) {
 }
 
 Entity *SpellCastInfo::target_get() {
-	if (_target && !INSTANCE_VALIDATE(_target)) {
+	if (_target && !ObjectDB::instance_validate(_target)) {
 		_target = NULL;
 	}
 
@@ -163,7 +163,7 @@ void SpellCastInfo::physics_process(float delta) {
 }
 
 void SpellCastInfo::resolve_references(Node *owner) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(owner));
+	ERR_FAIL_COND(!ObjectDB::instance_validate(owner));
 
 	ERR_FAIL_COND(!owner->is_inside_tree());
 
@@ -183,10 +183,10 @@ void SpellCastInfo::resolve_references(Node *owner) {
 Dictionary SpellCastInfo::to_dict() {
 	Dictionary dict;
 
-	if (INSTANCE_VALIDATE(_caster))
+	if (ObjectDB::instance_validate(_caster))
 		dict["caster"] = _caster->get_path();
 
-	if (INSTANCE_VALIDATE(_target))
+	if (ObjectDB::instance_validate(_target))
 		dict["target"] = _target->get_path();
 
 	dict["has_cast_time"] = _has_cast_time;

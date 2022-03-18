@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include navigation_h
+#include "scene/3d/navigation.h"
 
 #include "../areas/terrain_world_area.h"
 #include "../level_generator/terrain_level_generator.h"

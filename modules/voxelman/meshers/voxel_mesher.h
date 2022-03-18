@@ -28,10 +28,8 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include pool_vector_h
-include_pool_vector
-
-#include mesh_instance_h
+#include "core/pool_vector.h"
+#include "scene/3d/mesh_instance.h"
 
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
@@ -46,7 +44,7 @@ include_pool_vector
 
 #include "../library/voxel_library.h"
 
-		const double PI_2 = 3.141592653589793238463 / 2;
+const double PI_2 = 3.141592653589793238463 / 2;
 const double PI = 3.141592653589793238463;
 
 class VoxelLibrary;

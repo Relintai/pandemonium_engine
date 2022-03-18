@@ -62,7 +62,7 @@ String AIFormation::get_editor_description() const {
 }
 
 Vector3 AIFormation::get_position(int slot_index) {
-	ERR_FAIL_COND_V(!INSTANCE_VALIDATE(_owner), Vector3());
+	ERR_FAIL_COND_V(!ObjectDB::instance_validate(_owner), Vector3());
 
 	if (has_method("_get_position"))
 		return call("_get_position", slot_index);

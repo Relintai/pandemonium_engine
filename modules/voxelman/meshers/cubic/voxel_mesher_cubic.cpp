@@ -26,7 +26,7 @@ SOFTWARE.
 
 #include "../../defines.h"
 
-#include visual_server_h
+#include "servers/visual_server.h"
 
 void VoxelMesherCubic::_add_chunk(Ref<VoxelChunk> p_chunk) {
 	Ref<VoxelChunkDefault> chunk = p_chunk;
@@ -49,7 +49,7 @@ void VoxelMesherCubic::_add_chunk(Ref<VoxelChunk> p_chunk) {
 	float voxel_scale = get_voxel_scale();
 
 	Ref<VoxelCubePoints> cube_points;
-	cube_points.INSTANCE();
+	cube_points.instance();
 	cube_points->set_channel_index_type(_channel_index_type);
 	cube_points->set_channel_index_isolevel(_channel_index_isolevel);
 

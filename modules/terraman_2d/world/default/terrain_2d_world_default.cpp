@@ -202,7 +202,7 @@ void Terrain2DWorldDefault::_notification(int p_what) {
 				return;
 			}
 
-			if (!INSTANCE_VALIDATE(get_player())) {
+			if (!ObjectDB::instance_validate(get_player())) {
 				set_player(NULL);
 				return;
 			}

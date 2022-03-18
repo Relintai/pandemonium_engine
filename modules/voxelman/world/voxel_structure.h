@@ -22,18 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
 #include "core/hash_map.h"
 #include "core/resource.h"
 
 #include "../defines.h"
 
-#include pool_vector_h
-include_pool_vector
+#include "core/pool_vector.h"
 #include "core/math/aabb.h"
 #include "voxel_chunk.h"
 
-		class VoxelStructure : public Resource {
+class VoxelStructure : public Resource {
 	GDCLASS(VoxelStructure, Resource);
 
 public:

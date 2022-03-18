@@ -98,7 +98,7 @@ void Terrain2DMaterialCache::surface_set(int index, Ref<Terrain2DSurface> value)
 	_surfaces.set(index, value);
 }
 void Terrain2DMaterialCache::surface_remove(const int index) {
-	_surfaces.VREMOVE(index);
+	_surfaces.remove(index);
 }
 int Terrain2DMaterialCache::surface_get_num() const {
 	return _surfaces.size();
@@ -113,7 +113,7 @@ void Terrain2DMaterialCache::additional_texture_add(const Ref<Texture> &texture)
 void Terrain2DMaterialCache::additional_texture_remove(const Ref<Texture> &texture) {
 	for (int i = 0; i < _additional_textures.size(); ++i) {
 		if (_additional_textures[i] == texture) {
-			_additional_textures.VREMOVE(i);
+			_additional_textures.remove(i);
 			return;
 		}
 	}
@@ -121,7 +121,7 @@ void Terrain2DMaterialCache::additional_texture_remove(const Ref<Texture> &textu
 void Terrain2DMaterialCache::additional_texture_remove_index(const int index) {
 	ERR_FAIL_INDEX(index, _additional_textures.size());
 
-	_additional_textures.VREMOVE(index);
+	_additional_textures.remove(index);
 }
 void Terrain2DMaterialCache::additional_textures_clear() {
 	_additional_textures.clear();

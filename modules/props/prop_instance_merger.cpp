@@ -18,7 +18,7 @@
 
 #include "servers/visual_server.h"
 
-#define GET_WORLD get_world
+
 
 #if MESH_DATA_RESOURCE_PRESENT
 //define PROPS_PRESENT, so things compile. That module's scsub will define this too while compiling,
@@ -183,8 +183,8 @@ void PropInstanceMerger::meshes_create(const int num) {
 	for (int i = 0; i < num; ++i) {
 		RID mesh_instance_rid = VS::get_singleton()->instance_create();
 
-		if (GET_WORLD().is_valid())
-			VS::get_singleton()->instance_set_scenario(mesh_instance_rid, GET_WORLD()->get_scenario());
+		if (get_world().is_valid())
+			VS::get_singleton()->instance_set_scenario(mesh_instance_rid, get_world()->get_scenario());
 
 		RID mesh_rid = VS::get_singleton()->mesh_create();
 
@@ -373,8 +373,8 @@ void PropInstanceMerger::debug_mesh_allocate() {
 	if (_debug_mesh_instance == RID()) {
 		_debug_mesh_instance = VisualServer::get_singleton()->instance_create();
 
-		if (GET_WORLD().is_valid())
-			VS::get_singleton()->instance_set_scenario(_debug_mesh_instance, GET_WORLD()->get_scenario());
+		if (get_world().is_valid())
+			VS::get_singleton()->instance_set_scenario(_debug_mesh_instance, get_world()->get_scenario());
 
 		VS::get_singleton()->instance_set_base(_debug_mesh_instance, _debug_mesh_rid);
 		VS::get_singleton()->instance_set_transform(_debug_mesh_instance, get_transform());

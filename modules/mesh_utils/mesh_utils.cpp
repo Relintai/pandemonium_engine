@@ -25,7 +25,7 @@ SOFTWARE.
 #include "core/variant.h"
 #include "scene/resources/mesh.h"
 
-#include visual_server_h
+#include "servers/visual_server.h"
 
 #include "xatlas/xatlas.h"
 

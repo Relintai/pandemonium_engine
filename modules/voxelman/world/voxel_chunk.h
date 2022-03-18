@@ -29,8 +29,7 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include pool_vector_h
-include_pool_vector
+#include "core/pool_vector.h"
 
 #include "core/os/mutex.h"
 #include "core/os/thread.h"
@@ -50,7 +49,6 @@ include_pool_vector
 
 #include "../library/voxel_library.h"
 #include "../library/voxel_surface.h"
-; //hackfix for a clang format issue
 
 class VoxelJob;
 class VoxelWorld;

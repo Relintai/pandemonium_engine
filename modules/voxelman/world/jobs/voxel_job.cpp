@@ -163,7 +163,7 @@ void VoxelJob::generate_random_ao(int seed, int octaves, int period, float persi
 	int position_z = _chunk->get_position_z();
 
 	Ref<OpenSimplexNoise> noise;
-	noise.INSTANCE();
+	noise.instance();
 
 	noise->set_seed(seed);
 	noise->set_octaves(octaves);
@@ -218,14 +218,14 @@ Array VoxelJob::merge_mesh_array(Array arr) const {
 			int rem = equals[k];
 			int remk = rem - k;
 
-			verts.VREMOVE(remk);
+			verts.remove(remk);
 
 			if (has_normals)
-				normals.VREMOVE(remk);
+				normals.remove(remk);
 			if (has_uvs)
-				uvs.VREMOVE(remk);
+				uvs.remove(remk);
 			if (has_colors)
-				colors.VREMOVE(remk);
+				colors.remove(remk);
 
 			for (int j = 0; j < indices.size(); ++j) {
 				int indx = indices[j];

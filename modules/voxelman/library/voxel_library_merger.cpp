@@ -112,7 +112,7 @@ void VoxelLibraryMerger::voxel_surface_set(const int index, Ref<VoxelSurface> va
 }
 
 void VoxelLibraryMerger::voxel_surface_remove(const int index) {
-	_voxel_surfaces.VREMOVE(index);
+	_voxel_surfaces.remove(index);
 }
 
 int VoxelLibraryMerger::voxel_surface_get_num() const {
@@ -171,7 +171,7 @@ void VoxelLibraryMerger::set_prop(const int index, const Ref<PropData> &value) {
 void VoxelLibraryMerger::remove_prop(const int index) {
 	ERR_FAIL_INDEX(index, _props.size());
 
-	_props.VREMOVE(index);
+	_props.remove(index);
 }
 int VoxelLibraryMerger::get_num_props() const {
 	return _props.size();
@@ -365,7 +365,7 @@ void VoxelLibraryMerger::_setup_material_albedo(const int material_index, const 
 }
 
 VoxelLibraryMerger::VoxelLibraryMerger() {
-	_packer.INSTANCE();
+	_packer.instance();
 
 	_packer->set_texture_flags(Texture::FLAG_MIPMAPS | Texture::FLAG_FILTER);
 
@@ -373,7 +373,7 @@ VoxelLibraryMerger::VoxelLibraryMerger() {
 	_packer->set_keep_original_atlases(false);
 	_packer->set_margin(0);
 
-	_prop_packer.INSTANCE();
+	_prop_packer.instance();
 
 	_prop_packer->set_texture_flags(Texture::FLAG_MIPMAPS | Texture::FLAG_FILTER);
 
