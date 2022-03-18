@@ -22,13 +22,7 @@ SOFTWARE.
 
 #include "prop_instance_prop_job.h"
 
-#include "core/version.h"
-
-#if VERSION_MAYOR > 3
-#define GET_WORLD get_world_3d
-#else
 #define GET_WORLD get_world
-#endif
 
 #include "jobs/prop_mesher_job_step.h"
 #include "lights/prop_light.h"

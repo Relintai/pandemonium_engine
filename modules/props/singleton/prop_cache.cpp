@@ -27,13 +27,8 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/config/engine.h"
-#include "core/config/project_settings.h"
-#else
 #include "core/engine.h"
 #include "core/project_settings.h"
-#endif
 
 #include "../jobs/prop_texture_job.h"
 
@@ -46,25 +41,12 @@ SOFTWARE.
 
 #include "core/hashfuncs.h"
 
-#if VERSION_MAJOR > 3
-
-#define VARIANT_ARRAY_GET(arr)             \
-	Vector<Variant> r;                     \
-	for (int i = 0; i < arr.size(); i++) { \
-		r.push_back(arr[i]);               \
-	}                                      \
-	return r;
-
-#else
-
 #define VARIANT_ARRAY_GET(arr)             \
 	Vector<Variant> r;                     \
 	for (int i = 0; i < arr.size(); i++) { \
 		r.push_back(arr[i].get_ref_ptr()); \
 	}                                      \
 	return r;
-
-#endif
 
 PropCache *PropCache::_instance;
 
@@ -352,7 +334,6 @@ void PropCache::material_cache_custom_key_unref(const uint64_t key) {
 Ref<Resource> PropCache::load_resource(const String &path, const String &type_hint) {
 	_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-#if VERSION_MAJOR < 4
 	Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, type_hint);
 
 	ERR_FAIL_COND_V(!resl.is_valid(), Ref<Resource>());
@@ -360,9 +341,6 @@ Ref<Resource> PropCache::load_resource(const String &path, const String &type_hi
 	resl->wait();
 
 	return resl->get_resource();
-#else
-	return rl->load(path, type_hint);
-#endif
 }
 
 PropCache::PropCache() {
@@ -375,11 +353,7 @@ PropCache::PropCache() {
 #endif
 
 #ifdef TEXTURE_PACKER_PRESENT
-#if VERSION_MAJOR < 4
 	_texture_flags = GLOBAL_DEF("props/texture_flags", Texture::FLAG_MIPMAPS | Texture::FLAG_FILTER);
-#else
-	_texture_flags = GLOBAL_DEF("props/texture_flags", 0);
-#endif
 
 	_max_atlas_size = GLOBAL_DEF("props/max_atlas_size", 1024);
 	_keep_original_atlases = GLOBAL_DEF("props/keep_original_atlases", false);

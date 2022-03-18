@@ -22,26 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/core_bind.h"
-#include "core/math/color.h"
-#include "core/object/object.h"
-#include "core/object/reference.h"
-#include "core/templates/hash_map.h"
-#include "core/templates/vector.h"
-#else
 #include "core/bind/core_bind.h"
 #include "core/color.h"
 #include "core/hash_map.h"
 #include "core/object.h"
 #include "core/reference.h"
 #include "core/vector.h"
-#endif
 
 #include "scene/resources/material.h"
 

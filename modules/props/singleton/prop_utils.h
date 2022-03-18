@@ -22,31 +22,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/object/object.h"
-#include "core/object/reference.h"
-#include "core/templates/vector.h"
-#include "scene/3d/node_3d.h"
-#else
 #include "core/object.h"
 #include "core/reference.h"
 #include "core/vector.h"
 #include "scene/3d/spatial.h"
-#endif
 
 #include "scene/main/node.h"
 
 class PropData;
 class PropDataEntry;
 
-#if VERSION_MINOR >= 4
 class Room;
-#endif
 
 class PropUtils : public Object {
 	GDCLASS(PropUtils, Object);
@@ -57,12 +43,10 @@ public:
 	Ref<PropData> convert_tree(Node *root);
 	void _convert_tree(Ref<PropData> prop_data, Node *node, const Transform &transform);
 
-#if VERSION_MINOR >= 4
 	bool generate_room_points_node(Node *node);
 	void generate_room_points(Room *room);
 	void get_mesh_arrays(Node *node, Vector<PoolVector<Vector3>> *arrs);
 	bool is_plane_unique(const PoolVector<Plane> &planes, const Plane &p);
-#endif
 
 	static int add_processor(const Ref<PropDataEntry> &processor);
 	static Ref<PropDataEntry> get_processor(const int index);

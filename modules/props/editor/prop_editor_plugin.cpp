@@ -26,20 +26,10 @@ SOFTWARE.
 #include "../singleton/prop_utils.h"
 #include "core/os/keyboard.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR < 4
 #include "core/os/input.h"
 
 #define CONNECT(sig, obj, target_method_class, method) connect(sig, obj, #method)
 #define DISCONNECT(sig, obj, target_method_class, method) disconnect(sig, obj, #method)
-
-#else
-#include "core/input/input.h"
-
-#define CONNECT(sig, obj, target_method_class, method) connect(sig, callable_mp(obj, &target_method_class::method))
-#define DISCONNECT(sig, obj, target_method_class, method) disconnect(sig, callable_mp(obj, &target_method_class::method))
-#endif
 
 void PropEditorPlugin::convert_active_scene_to_prop_data() {
 	SceneTree *st = SceneTree::get_singleton();
@@ -109,14 +99,9 @@ void PropEditorPlugin::_convert_selected_scene_to_prop_data(Variant param) {
 PropEditorPlugin::PropEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
-#if VERSION_MAJOR < 4
 	editor->add_tool_menu_item("Convert active scene to PropData", this, "convert_active_scene_to_prop_data");
 	editor->add_tool_menu_item("Convert selected scene(s) to PropData", this, "convert_selected_scene_to_prop_data");
-#if VERSION_MINOR >= 4
 	editor->add_tool_menu_item("(Prop) Find room points.", this, "find_room_points");
-#endif
-#else
-#endif
 
 	HBoxContainer *container = memnew(HBoxContainer);
 

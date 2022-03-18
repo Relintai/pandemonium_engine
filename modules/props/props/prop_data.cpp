@@ -26,13 +26,7 @@ SOFTWARE.
 #include "prop_data_light.h"
 #include "prop_data_prop.h"
 
-#if VERSION_MAJOR < 4
 #include "servers/physics_server.h"
-#else
-#include "servers/physics_server_3d.h"
-
-#define Shape Shape3D
-#endif
 
 int PropData::get_id() const {
 	return _id;
@@ -81,11 +75,7 @@ int PropData::get_prop_count() const {
 Vector<Variant> PropData::get_props() {
 	Vector<Variant> r;
 	for (int i = 0; i < _props.size(); i++) {
-#if VERSION_MAJOR < 4
 		r.push_back(_props[i].get_ref_ptr());
-#else
-		r.push_back(_props[i]);
-#endif
 	}
 	return r;
 }

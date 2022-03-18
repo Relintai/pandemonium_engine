@@ -26,17 +26,11 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR < 4
 #include "scene/3d/spatial.h"
-#else
-#include "scene/3d/node_3d.h"
-#define Spatial Node3D
-#endif
 
 #if TEXTURE_PACKER_PRESENT
 #include "../../texture_packer/texture_packer.h"
 #endif
-
 
 #include "../prop_mesher.h"
 
@@ -115,5 +109,4 @@ void PropDataEntry::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_processor_process", "prop_data", "node", "transform"), &PropDataEntry::_processor_process);
 	ClassDB::bind_method(D_METHOD("_processor_get_node_for", "transform"), &PropDataEntry::_processor_get_node_for);
 	ClassDB::bind_method(D_METHOD("_processor_evaluate_children"), &PropDataEntry::_processor_evaluate_children);
-
 }

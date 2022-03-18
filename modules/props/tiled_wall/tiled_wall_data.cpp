@@ -22,15 +22,7 @@ SOFTWARE.
 
 #include "tiled_wall_data.h"
 
-#if VERSION_MAJOR < 4
 #include "servers/physics_server.h"
-#else
-#include "servers/physics_server_3d.h"
-
-#define Shape Shape3D
-#endif
-
-#if VERSION_MAJOR <= 3
 
 #define VARIANT_ARRAY_GET(arr)             \
 	Vector<Variant> r;                     \
@@ -38,17 +30,6 @@ SOFTWARE.
 		r.push_back(arr[i]);               \
 	}                                      \
 	return r;
-
-#else
-
-#define VARIANT_ARRAY_GET(arr)             \
-	Vector<Variant> r;                     \
-	for (int i = 0; i < arr.size(); i++) { \
-		r.push_back(arr[i].get_ref_ptr()); \
-	}                                      \
-	return r;
-
-#endif
 
 #define VARIANT_ARRAY_SET(arr, arr_into, type) \
 	arr_into.clear();                          \
@@ -100,11 +81,7 @@ int TiledWallData::get_texture_count() const {
 Vector<Variant> TiledWallData::get_textures() {
 	Vector<Variant> r;
 	for (int i = 0; i < _textures.size(); i++) {
-#if VERSION_MAJOR < 4
 		r.push_back(_textures[i].get_ref_ptr());
-#else
-		r.push_back(_textures[i]);
-#endif
 	}
 	return r;
 }
@@ -148,11 +125,7 @@ int TiledWallData::get_flavour_texture_count() const {
 Vector<Variant> TiledWallData::get_flavour_textures() {
 	Vector<Variant> r;
 	for (int i = 0; i < _flavour_textures.size(); i++) {
-#if VERSION_MAJOR < 4
 		r.push_back(_flavour_textures[i].get_ref_ptr());
-#else
-		r.push_back(_flavour_textures[i]);
-#endif
 	}
 	return r;
 }

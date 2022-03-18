@@ -22,16 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/templates/vector.h"
-#else
 #include "core/vector.h"
-#endif
 
 #include "ground_clutter.h"
 
@@ -53,7 +46,7 @@ private:
 	static void _bind_methods();
 
 private:
-	Vector<Ref<Texture> > _textures;
+	Vector<Ref<Texture>> _textures;
 };
 
 #endif

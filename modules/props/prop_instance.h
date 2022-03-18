@@ -22,18 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR < 4
 #include "scene/3d/spatial.h"
-#else
-#include "scene/3d/node_3d.h"
-
-#define Spatial Node3D
-#endif
 
 #include "scene/resources/material.h"
 

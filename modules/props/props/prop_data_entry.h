@@ -22,22 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-#include "core/math/transform_3d.h"
-
-#ifndef Transform
-#define Transform Transform3D
-#endif
-#else
-#include "core/resource.h"
 #include "core/math/transform.h"
-#endif
+#include "core/resource.h"
 
 class PropData;
 class PropMesher;

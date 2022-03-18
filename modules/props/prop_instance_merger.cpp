@@ -4,26 +4,9 @@
 
 //#include "../thread_pool/thread_pool.h"
 
-#include "core/version.h"
-#include "servers/visual_server.h"
 #include "scene/resources/world.h"
+#include "servers/visual_server.h"
 
-#if VERSION_MAJOR > 3
-#include "core/config/engine.h"
-
-#define VARIANT_ARRAY_GET(arr)             \
-	Vector<Variant> r;                     \
-	for (int i = 0; i < arr.size(); i++) { \
-		r.push_back(arr[i]);               \
-	}                                      \
-	return r;
-
-#include "servers/rendering_server.h"
-typedef class RenderingServer VS;
-
-#define GET_WORLD get_world_3d
-
-#else
 #include "core/engine.h"
 
 #define VARIANT_ARRAY_GET(arr)             \
@@ -36,8 +19,6 @@ typedef class RenderingServer VS;
 #include "servers/visual_server.h"
 
 #define GET_WORLD get_world
-
-#endif
 
 #if MESH_DATA_RESOURCE_PRESENT
 //define PROPS_PRESENT, so things compile. That module's scsub will define this too while compiling,

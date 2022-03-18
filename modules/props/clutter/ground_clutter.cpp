@@ -52,7 +52,6 @@ GroundClutter::~GroundClutter() {
 }
 
 void GroundClutter::_bind_methods() {
-
 #ifdef TEXTURE_PACKER_PRESENT
 	BIND_VMETHOD(MethodInfo("_add_textures_to", PropertyInfo(Variant::OBJECT, "packer", PROPERTY_HINT_RESOURCE_TYPE, "TexturePacker")));
 

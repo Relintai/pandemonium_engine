@@ -25,14 +25,10 @@ SOFTWARE.
 #include "../props/prop_data.h"
 #include "../props/prop_data_entry.h"
 
-#include "core/version.h"
-
-#if VERSION_MINOR >= 4
 #include "core/math/quick_hull.h"
 #include "scene/3d/portal.h"
 #include "scene/3d/room.h"
 #include "scene/3d/room_manager.h"
-#endif
 
 #include "scene/3d/mesh_instance.h"
 
@@ -40,23 +36,17 @@ SOFTWARE.
 #include "../../mesh_data_resource/nodes/mesh_data_instance.h"
 #endif
 
-#if VERSION_MAJOR > 3
-#include "core/config/engine.h"
-#else
 #include "core/engine.h"
-#endif
 
 PropUtils *PropUtils::_instance;
-Vector<Ref<PropDataEntry> > PropUtils::_processors;
+Vector<Ref<PropDataEntry>> PropUtils::_processors;
 
 PropUtils *PropUtils::get_singleton() {
 	return _instance;
 }
 
 Ref<PropData> PropUtils::convert_tree(Node *root) {
-#if VERSION_MAJOR < 4
 	ERR_FAIL_COND_V(!ObjectDB::instance_validate(root), Ref<PropData>());
-#endif
 
 	Ref<PropData> data;
 	data.instance();
@@ -68,9 +58,7 @@ Ref<PropData> PropUtils::convert_tree(Node *root) {
 }
 
 void PropUtils::_convert_tree(Ref<PropData> prop_data, Node *node, const Transform &transform) {
-#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(node));
-#endif
 
 	for (int i = 0; i < PropUtils::_processors.size(); ++i) {
 		Ref<PropDataEntry> proc = PropUtils::_processors.get(i);
@@ -161,7 +149,7 @@ bool PropUtils::generate_room_points_node(Node *node) {
 void PropUtils::generate_room_points(Room *room) {
 	ERR_FAIL_COND(!ObjectDB::instance_validate(room));
 
-	Vector<PoolVector<Vector3> > mesh_arrays;
+	Vector<PoolVector<Vector3>> mesh_arrays;
 
 	get_mesh_arrays(room, &mesh_arrays);
 
@@ -306,7 +294,7 @@ bool PropUtils::is_plane_unique(const PoolVector<Plane> &planes, const Plane &p)
 	return true;
 }
 
-void PropUtils::get_mesh_arrays(Node *node, Vector<PoolVector<Vector3> > *arrs) {
+void PropUtils::get_mesh_arrays(Node *node, Vector<PoolVector<Vector3>> *arrs) {
 	ERR_FAIL_COND(!ObjectDB::instance_validate(node));
 
 	for (int i = 0; i < node->get_child_count(); ++i) {

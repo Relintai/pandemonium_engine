@@ -22,23 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #include "scene/resources/texture.h"
 
 #if THREAD_POOL_PRESENT
 #include "../../thread_pool/thread_pool_job.h"
 #endif
 
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/object/reference.h"
-#define Texture Texture2D
-#else
 #include "core/reference.h"
-#endif
 
 #if TEXTURE_PACKER_PRESENT
 class TexturePacker;

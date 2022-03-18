@@ -25,7 +25,7 @@ SOFTWARE.
 Vector3 PropLight::get_position() {
 	return _position;
 }
-void PropLight::set_position(const Vector3 &pos)  {
+void PropLight::set_position(const Vector3 &pos) {
 	_position = pos;
 }
 
