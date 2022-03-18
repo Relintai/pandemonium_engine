@@ -33,8 +33,8 @@ SOFTWARE.
 
 #include "terrain_2d_chunk.h"
 
-#include "../library/terrain_2d_surface.h"
 #include "../library/terrain_2d_library.h"
+#include "../library/terrain_2d_surface.h"
 
 #include "../defines.h"
 
@@ -42,7 +42,6 @@ SOFTWARE.
 #include spatial_editor_plugin_h
 #include camera_h
 
-#if VERSION_MAJOR < 4
 bool Terrain2DWorldEditor::forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) {
 	if (!_world || !_world->get_editable()) {
 		return false;
@@ -69,39 +68,6 @@ bool Terrain2DWorldEditor::forward_spatial_input_event(Camera *p_camera, const R
 
 	return false;
 }
-#else
-EditorPlugin::AfterGUIInput Terrain2DWorldEditor::forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) {
-	if (!_world || !_world->get_editable()) {
-		return EditorPlugin::AFTER_GUI_INPUT_PASS;
-	}
-
-	Ref<InputEventMouseButton> mb = p_event;
-
-	if (mb.is_valid()) {
-		if (mb->is_pressed()) {
-			Ref<Terrain2DLibrary> lib = _world->get_library();
-
-			if (!lib.is_valid())
-				return EditorPlugin::AFTER_GUI_INPUT_PASS;
-
-			if (mb->get_button_index() == MouseButton::LEFT) {
-				if (do_input_action(p_camera, Point2(mb->get_position().x, mb->get_position().y), true)) {
-					return EditorPlugin::AFTER_GUI_INPUT_STOP;
-				} else {
-					return EditorPlugin::AFTER_GUI_INPUT_PASS;
-				}
-			} else {
-				return EditorPlugin::AFTER_GUI_INPUT_PASS;
-			}
-
-			//return do_input_action(p_camera, Point2(mb->get_position().x, mb->get_position().y), true);
-		}
-	}
-
-	return EditorPlugin::AFTER_GUI_INPUT_PASS;
-}
-
-#endif
 
 bool Terrain2DWorldEditor::do_input_action(Camera *p_camera, const Point2 &p_point, bool p_click) {
 	/*
@@ -343,14 +309,14 @@ void Terrain2DWorldEditor::_on_insert_block_at_camera_button_pressed() {
 	Vector3 pos = cam->get_transform().origin;
 	selected_voxel = _selected_type + 1;
 	*/
-/*
-	if (_channel_isolevel == -1) {
-		_world->set_voxel_at_world_position(pos, selected_voxel, channel);
-	} else {
-		_world->set_voxel_at_world_position(pos, selected_voxel, channel, false);
-		_world->set_voxel_at_world_position(pos, _current_isolevel, _channel_isolevel);
-	}
-	*/
+	/*
+		if (_channel_isolevel == -1) {
+			_world->set_voxel_at_world_position(pos, selected_voxel, channel);
+		} else {
+			_world->set_voxel_at_world_position(pos, selected_voxel, channel, false);
+			_world->set_voxel_at_world_position(pos, _current_isolevel, _channel_isolevel);
+		}
+		*/
 }
 
 void Terrain2DWorldEditor::_on_isolevel_slider_value_changed(float value) {
@@ -368,21 +334,12 @@ void Terrain2DWorldEditor::_bind_methods() {
 void Terrain2DWorldEditorPlugin::_notification(int p_what) {
 	if (p_what == EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED) {
 		switch ((int)EditorSettings::get_singleton()->get("editors/voxelman/editor_side")) {
-#if VERSION_MAJOR <= 3 && VERSION_MINOR < 5
-			case 0: { // Left.
-				SpatialEditor::get_singleton()->get_palette_split()->move_child(voxel_world_editor, 0);
-			} break;
-			case 1: { // Right.
-				SpatialEditor::get_singleton()->get_palette_split()->move_child(voxel_world_editor, 1);
-			} break;
-#else
 			case 0: { // Left.
 				SpatialEditor::get_singleton()->move_control_to_left_panel(voxel_world_editor);
 			} break;
 			case 1: { // Right.
 				SpatialEditor::get_singleton()->move_control_to_right_panel(voxel_world_editor);
 			} break;
-#endif
 		}
 	}
 }

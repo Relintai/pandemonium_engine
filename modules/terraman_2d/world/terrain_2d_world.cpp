@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "terrain_2d_world.h"
 
-#include "core/version.h"
-
 #include "core/message_queue.h"
 #include "terrain_2d_chunk.h"
 #include "terrain_2d_structure.h"
@@ -449,12 +447,7 @@ Ref<Terrain2DChunk> Terrain2DWorld::chunk_create(const int x, const int z) {
 void Terrain2DWorld::chunk_setup(Ref<Terrain2DChunk> chunk) {
 	ERR_FAIL_COND(!chunk.is_valid());
 
-#if VERSION_MAJOR < 4
 	call("_create_chunk", chunk->get_position_x(), chunk->get_position_y(), chunk);
-#else
-	Ref<Terrain2DChunk> c;
-	GDVIRTUAL_CALL(_create_chunk, chunk->get_position_x(), chunk->get_position_y(), chunk, c);
-#endif
 }
 
 Ref<Terrain2DChunk> Terrain2DWorld::_create_chunk(const int x, const int y, Ref<Terrain2DChunk> chunk) {
@@ -1039,11 +1032,7 @@ void Terrain2DWorld::_notification(int p_what) {
 				}
 			}
 
-#if VERSION_MAJOR > 3
-			if (_is_priority_generation && _generation_queue.is_empty() && _generating.is_empty()) {
-#else
 			if (_is_priority_generation && _generation_queue.empty() && _generating.empty()) {
-#endif
 				_is_priority_generation = false;
 
 				CALL(_generation_finished);
@@ -1249,11 +1238,7 @@ void Terrain2DWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("voxel_structures_set"), &Terrain2DWorld::voxel_structures_set);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "voxel_structures", PROPERTY_HINT_NONE, "17/17:Terrain2DStructure", PROPERTY_USAGE_DEFAULT, "Terrain2DStructure"), "voxel_structures_set", "voxel_structures_get");
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_chunk_added", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "Terrain2DChunk")));
-#else
-	GDVIRTUAL_BIND(_chunk_added, "chunk");
-#endif
 
 	ClassDB::bind_method(D_METHOD("chunk_add", "chunk", "x", "y"), &Terrain2DWorld::chunk_add);
 	ClassDB::bind_method(D_METHOD("chunk_has", "x", "y"), &Terrain2DWorld::chunk_has);
@@ -1282,18 +1267,11 @@ void Terrain2DWorld::_bind_methods() {
 
 	ADD_SIGNAL(MethodInfo("generation_finished"));
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_generation_finished"));
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "Terrain2DChunk"), "_create_chunk", PropertyInfo(Variant::INT, "x"), PropertyInfo(Variant::INT, "y"), PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "Terrain2DChunk")));
 	BIND_VMETHOD(MethodInfo("_prepare_chunk_for_generation", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "Terrain2DChunk")));
 	BIND_VMETHOD(MethodInfo("_generate_chunk", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "Terrain2DChunk")));
-#else
-	GDVIRTUAL_BIND(_generation_finished);
-	GDVIRTUAL_BIND(_create_chunk, "chunk", "x", "y", "chunk", "ret");
-	GDVIRTUAL_BIND(_prepare_chunk_for_generation, "chunk");
-	GDVIRTUAL_BIND(_generate_chunk, "chunk");
-#endif
 
 	ClassDB::bind_method(D_METHOD("chunk_get_or_create", "x", "y"), &Terrain2DWorld::chunk_get_or_create);
 	ClassDB::bind_method(D_METHOD("chunk_create", "x", "y"), &Terrain2DWorld::chunk_create);
@@ -1325,24 +1303,16 @@ void Terrain2DWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_chunk_at_world_position", "world_position"), &Terrain2DWorld::get_chunk_at_world_position);
 	ClassDB::bind_method(D_METHOD("get_or_create_chunk_at_world_position", "world_position"), &Terrain2DWorld::get_or_create_chunk_at_world_position);
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "ret"), "_get_channel_index_info", PropertyInfo(Variant::INT, "channel_type", PROPERTY_HINT_ENUM, BINDING_STRING_CHANNEL_TYPE_INFO)));
-#else
-	GDVIRTUAL_BIND(_get_channel_index_info, "channel_type", "ret");
-#endif
 
 	ClassDB::bind_method(D_METHOD("get_channel_index_info", "channel_type"), &Terrain2DWorld::get_channel_index_info);
 	ClassDB::bind_method(D_METHOD("_get_channel_index_info", "channel_type"), &Terrain2DWorld::_get_channel_index_info);
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_set_voxel_with_tool",
 			PropertyInfo(Variant::BOOL, "mode_add"),
 			PropertyInfo(Variant::VECTOR2, "hit_position"),
 			PropertyInfo(Variant::INT, "selected_voxel"),
 			PropertyInfo(Variant::INT, "isolevel")));
-#else
-	GDVIRTUAL_BIND(_set_voxel_with_tool, "mode_add", "hit_position", "selected_voxel", "isolevel");
-#endif
 
 	ClassDB::bind_method(D_METHOD("set_voxel_with_tool", "mode_add", "hit_position", "selected_voxel", "isolevel"), &Terrain2DWorld::set_voxel_with_tool);
 	ClassDB::bind_method(D_METHOD("_set_voxel_with_tool", "mode_add", "hit_position", "selected_voxel", "isolevel"), &Terrain2DWorld::_set_voxel_with_tool);

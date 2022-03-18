@@ -22,18 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-#include "core/templates/hash_map.h"
-#else
 #include "core/hash_map.h"
 #include "core/resource.h"
-#endif
 
 #include "../defines.h"
 
@@ -61,10 +51,6 @@ public:
 	void set_position(const int x, const int y);
 
 	void write_to_chunk(Ref<Terrain2DChunk> chunk);
-
-#if VERSION_MAJOR >= 4
-	GDVIRTUAL1(_write_to_chunk, Ref<Terrain2DChunk>);
-#endif
 
 	Terrain2DStructure();
 	~Terrain2DStructure();

@@ -22,9 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #include "terrain_2d_surface.h"
 
 class Terrain2DSurfaceSimple : public Terrain2DSurface {

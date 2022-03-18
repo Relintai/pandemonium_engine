@@ -22,16 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-#else
 #include "core/resource.h"
-#endif
 
 #include "terrain_2d_library.h"
 
@@ -72,7 +63,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	Vector<Ref<Terrain2DSurfaceSimple> > _terra_surfaces;
+	Vector<Ref<Terrain2DSurfaceSimple>> _terra_surfaces;
 
 	//atlas
 	int _atlas_columns;

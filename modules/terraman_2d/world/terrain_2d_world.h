@@ -22,18 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/config/engine.h"
-#include "core/templates/hash_map.h"
-#else
 #include "core/engine.h"
 #include "core/hash_map.h"
-#endif
 
 #include "../defines.h"
 
@@ -208,20 +198,6 @@ public:
 	void set_voxel_with_tool(const bool mode_add, const Vector2 hit_position, const int selected_voxel, const int isolevel);
 
 	int get_channel_index_info(const ChannelTypeInfo channel_type);
-
-#if VERSION_MAJOR >= 4
-	GDVIRTUAL1(_chunk_added, Ref<Terrain2DChunk>);
-
-	GDVIRTUAL0(_generation_finished);
-
-	GDVIRTUAL3R(Ref<Terrain2DChunk>, _create_chunk, int, int, Ref<Terrain2DChunk>);
-	GDVIRTUAL1(_prepare_chunk_for_generation, Ref<Terrain2DChunk>);
-	GDVIRTUAL1(_generate_chunk, Ref<Terrain2DChunk>);
-
-	GDVIRTUAL1R(int, _get_channel_index_info, int);
-
-	GDVIRTUAL5(_set_voxel_with_tool, bool, Vector3, Vector3, int, int);
-#endif
 
 	Terrain2DWorld();
 	~Terrain2DWorld();

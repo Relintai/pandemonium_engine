@@ -26,10 +26,6 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#if GODOT4
-#define Texture Texture2D
-#endif
-
 Ref<AtlasTexture> Terrain2DSurfaceMerger::get_region() {
 	return _region;
 }

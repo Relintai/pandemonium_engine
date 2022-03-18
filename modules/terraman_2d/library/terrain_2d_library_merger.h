@@ -22,18 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-#include "core/templates/map.h"
-#else
-#include "core/resource.h"
 #include "core/map.h"
-#endif
+#include "core/resource.h"
 
 #include "terrain_2d_library.h"
 
@@ -106,9 +96,9 @@ protected:
 
 	static void _bind_methods();
 
-	Vector<Ref<Terrain2DSurfaceMerger> > _terra_surfaces;
+	Vector<Ref<Terrain2DSurfaceMerger>> _terra_surfaces;
 #ifdef PROPS_2D_PRESENT
-	Vector<Ref<Prop2DData> > _props;
+	Vector<Ref<Prop2DData>> _props;
 #endif
 
 	Ref<TexturePacker> _packer;

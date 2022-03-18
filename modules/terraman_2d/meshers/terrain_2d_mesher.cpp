@@ -155,21 +155,13 @@ Array Terrain2DMesher::build_mesh() {
 	{
 		PoolVector<Vector2> array;
 		array.resize(_vertices.size());
-#if !GODOT4
 		PoolVector<Vector2>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = _vertices[i].vertex;
-#else
-			array.set(i, _vertices[i].vertex);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
 
 		a[VisualServer::ARRAY_VERTEX] = array;
 	}
@@ -177,42 +169,27 @@ Array Terrain2DMesher::build_mesh() {
 	if ((_format & VisualServer::ARRAY_FORMAT_COLOR) != 0) {
 		PoolVector<Color> array;
 		array.resize(_vertices.size());
-#if !GODOT4
 		PoolVector<Color>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = _vertices[i].color;
-#else
-			array.set(i, _vertices[i].color);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
 		a[VisualServer::ARRAY_COLOR] = array;
 	}
 
 	if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV) != 0) {
 		PoolVector<Vector2> array;
 		array.resize(_vertices.size());
-#if !GODOT4
+
 		PoolVector<Vector2>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = _vertices[i].uv;
-#else
-			array.set(i, _vertices[i].uv);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
 
 		a[VisualServer::ARRAY_TEX_UV] = array;
 	}
@@ -220,21 +197,13 @@ Array Terrain2DMesher::build_mesh() {
 	if (_indices.size() > 0) {
 		PoolVector<int> array;
 		array.resize(_indices.size());
-#if !GODOT4
 		PoolVector<int>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _indices.size(); ++i) {
-#if !GODOT4
 			w[i] = _indices[i];
-#else
-			array.set(i, _indices[i]);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
 		a[VisualServer::ARRAY_INDEX] = array;
 	}
 
@@ -387,21 +356,14 @@ Array Terrain2DMesher::build_stored_mesh(const int index) {
 	{
 		PoolVector<Vector2> array;
 		array.resize(md.vertices.size());
-#if !GODOT4
+
 		PoolVector<Vector2>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < md.vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = md.vertices[i].vertex;
-#else
-			array.set(i, md.vertices[i].vertex);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
 
 		a[VisualServer::ARRAY_VERTEX] = array;
 	}
@@ -409,64 +371,40 @@ Array Terrain2DMesher::build_stored_mesh(const int index) {
 	if ((_format & VisualServer::ARRAY_FORMAT_COLOR) != 0) {
 		PoolVector<Color> array;
 		array.resize(md.vertices.size());
-#if !GODOT4
 		PoolVector<Color>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < md.vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = md.vertices[i].color;
-#else
-			array.set(i, md.vertices[i].color);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
 		a[VisualServer::ARRAY_COLOR] = array;
 	}
 
 	if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV) != 0) {
 		PoolVector<Vector2> array;
 		array.resize(md.vertices.size());
-#if !GODOT4
 		PoolVector<Vector2>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < md.vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = md.vertices[i].uv;
-#else
 			array.set(i, md.vertices[i].uv);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
-
 		a[VisualServer::ARRAY_TEX_UV] = array;
 	}
 
 	if (md.indices.size() > 0) {
 		PoolVector<int> array;
 		array.resize(md.indices.size());
-#if !GODOT4
 		PoolVector<int>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < md.indices.size(); ++i) {
-#if !GODOT4
 			w[i] = md.indices[i];
-#else
-			array.set(i, md.indices[i]);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
 		a[VisualServer::ARRAY_INDEX] = array;
 	}
 
@@ -935,15 +873,9 @@ Terrain2DMesher::~Terrain2DMesher() {
 }
 
 void Terrain2DMesher::_bind_methods() {
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_add_chunk", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "Terrain2DChunk")));
 	BIND_VMETHOD(MethodInfo("_bake_colors", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "Terrain2DChunk")));
 	BIND_VMETHOD(MethodInfo("_bake_liquid_colors", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "Terrain2DChunk")));
-#else
-	GDVIRTUAL_BIND(_add_chunk, "chunk");
-	GDVIRTUAL_BIND(_bake_colors, "chunk");
-	GDVIRTUAL_BIND(_bake_liquid_colors, "chunk");
-#endif
 
 	ClassDB::bind_method(D_METHOD("get_channel_index_type"), &Terrain2DMesher::get_channel_index_type);
 	ClassDB::bind_method(D_METHOD("set_channel_index_type", "value"), &Terrain2DMesher::set_channel_index_type);
@@ -997,11 +929,7 @@ void Terrain2DMesher::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_mesh_data_resource_transform_colored", "mesh", "transform", "colors", "uv_rect"), &Terrain2DMesher::add_mesh_data_resource_transform_colored, DEFVAL(Rect2(0, 0, 1, 1)));
 #endif
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_add_mesher", PropertyInfo(Variant::OBJECT, "mesher", PROPERTY_HINT_RESOURCE_TYPE, "Terrain2DMesher")));
-#else
-	GDVIRTUAL_BIND(_add_mesher, "mesher");
-#endif
 	ClassDB::bind_method(D_METHOD("add_mesher", "mesher"), &Terrain2DMesher::add_mesher);
 	ClassDB::bind_method(D_METHOD("_add_mesher", "mesher"), &Terrain2DMesher::_add_mesher);
 

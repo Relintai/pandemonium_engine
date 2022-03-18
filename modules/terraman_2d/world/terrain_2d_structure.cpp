@@ -73,11 +73,7 @@ Terrain2DStructure::~Terrain2DStructure() {
 }
 
 void Terrain2DStructure::_bind_methods() {
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_write_to_chunk", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "Terrain2DChunk")));
-#else
-	GDVIRTUAL_BIND(_write_to_chunk, "chunk");
-#endif
 
 	ClassDB::bind_method(D_METHOD("get_use_rect"), &Terrain2DStructure::get_use_rect);
 	ClassDB::bind_method(D_METHOD("set_use_rect", "value"), &Terrain2DStructure::set_use_rect);

@@ -22,22 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/config/engine.h"
-#include "core/io/resource.h"
-#include "core/string/ustring.h"
-#include "core/variant/array.h"
-#else
 #include "core/array.h"
 #include "core/engine.h"
 #include "core/resource.h"
 #include "core/ustring.h"
-#endif
 
 #include "../defines.h"
 
@@ -58,12 +46,6 @@ include_pool_vector
 
 #if PROPS_2D_PRESENT
 #include "../../props_2d/props/prop_2d_data.h"
-#endif
-
-#include "core/version.h"
-
-#if VERSION_MAJOR >= 4
-#define Texture Texture2D
 #endif
 
 #include "scene/resources/shape_2d.h"

@@ -72,7 +72,6 @@ void Terrain2DJob::_reset() {
 }
 
 void Terrain2DJob::_execute() {
-
 	ActiveBuildPhaseType origpt = _build_phase_type;
 
 	while (!get_cancelled() && _in_tree && !_build_done && origpt == _build_phase_type && !should_return()) {
@@ -259,7 +258,6 @@ Array Terrain2DJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const float 
 }
 
 void Terrain2DJob::chunk_exit_tree() {
-
 	_in_tree = false;
 
 	if (get_complete()) {

@@ -43,7 +43,6 @@ int BlockTerrain2DStructure::get_voxel_type(int p_x, int p_y) const {
 	return 0;
 }
 
-
 void BlockTerrain2DStructure::set_voxel(int p_x, int p_y, int p_type, int p_isolevel) {
 	DataEntry p;
 	p.x = p_x;

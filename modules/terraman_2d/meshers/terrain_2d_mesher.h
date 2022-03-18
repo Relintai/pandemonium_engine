@@ -22,23 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/object/ref_counted.h"
-#ifndef Reference
-#define Reference RefCounted
-#endif
-#include "core/math/color.h"
-#include "core/templates/vector.h"
-#else
 #include "core/color.h"
 #include "core/reference.h"
 #include "core/vector.h"
-#endif
 
 #include "../defines.h"
 
@@ -189,13 +175,6 @@ public:
 	int get_index(const int idx) const;
 	void remove_index(const int idx);
 	void add_indices(const int index);
-
-#if VERSION_MAJOR >= 4
-	GDVIRTUAL1(_add_chunk, Ref<Terrain2DChunk>);
-	GDVIRTUAL1(_bake_colors, Ref<Terrain2DChunk>);
-	GDVIRTUAL1(_bake_liquid_colors, Ref<Terrain2DChunk>);
-	GDVIRTUAL1(_add_mesher, Ref<Terrain2DChunk>);
-#endif
 
 	Terrain2DMesher(const Ref<Terrain2DLibrary> &library);
 	Terrain2DMesher();

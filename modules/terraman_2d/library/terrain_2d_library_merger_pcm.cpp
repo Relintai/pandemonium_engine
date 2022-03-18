@@ -696,11 +696,7 @@ void Terrain2DLibraryMergerPCM::_setup_material_albedo(const int material_index,
 Terrain2DLibraryMergerPCM::Terrain2DLibraryMergerPCM() {
 	_packer.instance();
 
-#if GODOT4
-#warning implement
-#else
 	_packer->set_texture_flags(Texture::FLAG_MIPMAPS | Texture::FLAG_FILTER);
-#endif
 
 	_packer->set_max_atlas_size(1024);
 	_packer->set_keep_original_atlases(false);
@@ -708,11 +704,7 @@ Terrain2DLibraryMergerPCM::Terrain2DLibraryMergerPCM() {
 
 	_prop_packer.instance();
 
-#if GODOT4
-#warning implement
-#else
 	_prop_packer->set_texture_flags(Texture::FLAG_MIPMAPS | Texture::FLAG_FILTER);
-#endif
 
 	_prop_packer->set_max_atlas_size(1024);
 	_prop_packer->set_keep_original_atlases(false);
