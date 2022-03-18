@@ -543,15 +543,11 @@ PoolByteArray TerrainChunk::channel_get_compressed(const int channel_index) cons
 	int bound = LZ4_compressBound(size);
 	arr.resize(bound);
 
-#if !GODOT4
 	PoolByteArray::Write w = arr.write();
 
 	int ns = LZ4_compress_default(reinterpret_cast<char *>(ch), reinterpret_cast<char *>(w.ptr()), size, bound);
 
 	w.release();
-#else
-	int ns = LZ4_compress_default(reinterpret_cast<char *>(ch), reinterpret_cast<char *>(arr.ptrw()), size, bound);
-#endif
 	arr.resize(ns);
 
 	return arr;
@@ -577,19 +573,12 @@ void TerrainChunk::channel_set_compressed(const int channel_index, const PoolByt
 
 	int ds = data.size();
 
-#if !GODOT4
 	PoolByteArray::Read r = data.read();
 
 	//We are not going to write to it
 	uint8_t *data_arr = const_cast<uint8_t *>(r.ptr());
 
 	LZ4_decompress_safe(reinterpret_cast<char *>(data_arr), reinterpret_cast<char *>(ch), ds, size);
-#else
-	//We are not going to write to it
-	uint8_t *data_arr = const_cast<uint8_t *>(data.ptr());
-
-	LZ4_decompress_safe(reinterpret_cast<char *>(data_arr), reinterpret_cast<char *>(ch), ds, size);
-#endif
 }
 
 _FORCE_INLINE_ int TerrainChunk::get_index(const int x, const int z) const {

@@ -22,47 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-
-// These are needed here to use incomplete classes as vmethod arguments (godot4)
-
-#define TMHGDVIRTUAL1(m_name, m_type1)                                       \
-	StringName _gdvirtual_##m_name##_sn = #m_name;                           \
-	mutable bool _gdvirtual_##m_name##_initialized = false;                  \
-	mutable GDNativeExtensionClassCallVirtual _gdvirtual_##m_name = nullptr; \
-	bool _gdvirtual_##m_name##_call(m_type1 arg1);                           \
-	bool _gdvirtual_##m_name##_overridden() const;                           \
-	static MethodInfo _gdvirtual_##m_name##_get_method_info();
-
-#define TMHGDVIRTUAL1R(m_ret, m_name, m_type1)                               \
-	StringName _gdvirtual_##m_name##_sn = #m_name;                           \
-	mutable bool _gdvirtual_##m_name##_initialized = false;                  \
-	mutable GDNativeExtensionClassCallVirtual _gdvirtual_##m_name = nullptr; \
-	bool _gdvirtual_##m_name##_call(m_type1 arg1, m_ret &r_ret);             \
-	bool _gdvirtual_##m_name##_overridden() const;                           \
-	static MethodInfo _gdvirtual_##m_name##_get_method_info();
-
-#else
 #include "core/resource.h"
-#endif
 
 #include "core/math/rect2.h"
 #include "scene/resources/material.h"
 
 #include "../data/terrain_light.h"
 #include "terrain_surface.h"
-
-#include "../defines.h"
-
-#if GODOT4
-#define Texture Texture2D
-#endif
 
 class TerrainMaterialCache;
 class TerrainSurface;
@@ -176,24 +142,6 @@ public:
 	virtual void refresh_rects();
 
 	void setup_material_albedo(int material_index, Ref<Texture> texture);
-
-#if VERSION_MAJOR >= 4
-	GDVIRTUAL0R(bool, _supports_caching);
-
-	GDVIRTUAL2(_setup_material_albedo, int, Ref<Texture>);
-
-	TMHGDVIRTUAL1(_material_cache_get_key, Ref<TerrainChunk>);
-	TMHGDVIRTUAL1R(Ref<TerrainMaterialCache>, _material_cache_get, int);
-	TMHGDVIRTUAL1(_material_cache_unref, int);
-
-	TMHGDVIRTUAL1(_liquid_material_cache_get_key, Ref<TerrainChunk>);
-	TMHGDVIRTUAL1R(Ref<TerrainMaterialCache>, _liquid_material_cache_get, int);
-	TMHGDVIRTUAL1(_liquid_material_cache_unref, int);
-
-	TMHGDVIRTUAL1(_prop_material_cache_get_key, Ref<TerrainChunk>);
-	TMHGDVIRTUAL1R(Ref<TerrainMaterialCache>, _prop_material_cache_get, int);
-	TMHGDVIRTUAL1(_prop_material_cache_unref, int);
-#endif
 
 	TerrainLibrary();
 	~TerrainLibrary();

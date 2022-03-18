@@ -82,11 +82,7 @@ TerrainStructure::~TerrainStructure() {
 }
 
 void TerrainStructure::_bind_methods() {
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_write_to_chunk", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "TerrainChunk")));
-#else
-	GDVIRTUAL_BIND(_write_to_chunk, "chunk");
-#endif
 
 	ClassDB::bind_method(D_METHOD("get_use_aabb"), &TerrainStructure::get_use_aabb);
 	ClassDB::bind_method(D_METHOD("set_use_aabb", "value"), &TerrainStructure::set_use_aabb);

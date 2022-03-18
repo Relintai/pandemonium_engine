@@ -22,30 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #include "scene/resources/texture.h"
 
 #if THREAD_POOL_PRESENT
 #include "../../../thread_pool/thread_pool_job.h"
 #else
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/object/reference.h"
-#else
 #include "core/reference.h"
 #endif
 
-#endif
-
 #include "../../defines.h"
-
-#if GODOT4
-#define Texture Texture2D
-#endif
 
 class TerrainChunk;
 

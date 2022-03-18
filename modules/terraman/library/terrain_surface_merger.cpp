@@ -24,12 +24,6 @@ SOFTWARE.
 
 #include "terrain_library_merger.h"
 
-#include "../defines.h"
-
-#if GODOT4
-#define Texture Texture2D
-#endif
-
 Ref<AtlasTexture> TerrainSurfaceMerger::get_region(const TerrainSurfaceSides side) {
 	return _regions[side];
 }

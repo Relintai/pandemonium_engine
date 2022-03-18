@@ -32,119 +32,6 @@ SOFTWARE.
 
 #include "scene/resources/packed_scene.h"
 
-#include "../defines.h"
-
-#if VERSION_MAJOR > 3
-
-#define TMCGDVIRTUAL1(m_class, m_name, m_type1)                                                                                                                                                                 \
-	bool m_class::_gdvirtual_##m_name##_call(m_type1 arg1) {                                                                                                                                                    \
-		ScriptInstance *script_instance = ((Object *)(this))->get_script_instance();                                                                                                                            \
-		if (script_instance) {                                                                                                                                                                                  \
-			Callable::CallError ce;                                                                                                                                                                             \
-			Variant vargs[1] = { Variant(arg1) };                                                                                                                                                               \
-			const Variant *vargptrs[1] = { &vargs[0] };                                                                                                                                                         \
-                                                                                                                                                                                                                \
-			script_instance->call(_gdvirtual_##m_name##_sn, (const Variant **)vargptrs, 1, ce);                                                                                                                 \
-			if (ce.error == Callable::CallError::CALL_OK) {                                                                                                                                                     \
-				return true;                                                                                                                                                                                    \
-			}                                                                                                                                                                                                   \
-		}                                                                                                                                                                                                       \
-		if (unlikely(_get_extension() && !_gdvirtual_##m_name##_initialized)) {                                                                                                                                 \
-			_gdvirtual_##m_name = (_get_extension() && _get_extension()->get_virtual) ? _get_extension()->get_virtual(_get_extension()->class_userdata, #m_name) : (GDNativeExtensionClassCallVirtual) nullptr; \
-			_gdvirtual_##m_name##_initialized = true;                                                                                                                                                           \
-		}                                                                                                                                                                                                       \
-		if (_gdvirtual_##m_name) {                                                                                                                                                                              \
-			PtrToArg<m_type1>::EncodeT argval1 = arg1;                                                                                                                                                          \
-			const GDNativeTypePtr argptrs[1] = { &argval1 };                                                                                                                                                    \
-                                                                                                                                                                                                                \
-			_gdvirtual_##m_name(_get_extension_instance(), (const GDNativeTypePtr *)argptrs, nullptr);                                                                                                          \
-                                                                                                                                                                                                                \
-			return true;                                                                                                                                                                                        \
-		}                                                                                                                                                                                                       \
-                                                                                                                                                                                                                \
-		return false;                                                                                                                                                                                           \
-	}                                                                                                                                                                                                           \
-	bool m_class::_gdvirtual_##m_name##_overridden() const {                                                                                                                                                    \
-		ScriptInstance *script_instance = ((Object *)(this))->get_script_instance();                                                                                                                            \
-		if (script_instance) {                                                                                                                                                                                  \
-			return script_instance->has_method(_gdvirtual_##m_name##_sn);                                                                                                                                       \
-		}                                                                                                                                                                                                       \
-		if (unlikely(_get_extension() && !_gdvirtual_##m_name##_initialized)) {                                                                                                                                 \
-			_gdvirtual_##m_name = (_get_extension() && _get_extension()->get_virtual) ? _get_extension()->get_virtual(_get_extension()->class_userdata, #m_name) : (GDNativeExtensionClassCallVirtual) nullptr; \
-			_gdvirtual_##m_name##_initialized = true;                                                                                                                                                           \
-		}                                                                                                                                                                                                       \
-		if (_gdvirtual_##m_name) {                                                                                                                                                                              \
-			return true;                                                                                                                                                                                        \
-		}                                                                                                                                                                                                       \
-		return false;                                                                                                                                                                                           \
-	}                                                                                                                                                                                                           \
-                                                                                                                                                                                                                \
-	MethodInfo m_class::_gdvirtual_##m_name##_get_method_info() {                                                                                                                                               \
-		MethodInfo method_info;                                                                                                                                                                                 \
-		method_info.name = #m_name;                                                                                                                                                                             \
-		method_info.flags = METHOD_FLAG_VIRTUAL;                                                                                                                                                                \
-		method_info.arguments.push_back(GetTypeInfo<m_type1>::get_class_info());                                                                                                                                \
-                                                                                                                                                                                                                \
-		return method_info;                                                                                                                                                                                     \
-	}
-
-#define TMCGDVIRTUAL1R(m_class, m_ret, m_name, m_type1)                                                                                                                                                         \
-	bool m_class::_gdvirtual_##m_name##_call(m_type1 arg1, m_ret &r_ret) {                                                                                                                                      \
-		ScriptInstance *script_instance = ((Object *)(this))->get_script_instance();                                                                                                                            \
-		if (script_instance) {                                                                                                                                                                                  \
-			Callable::CallError ce;                                                                                                                                                                             \
-			Variant vargs[1] = { Variant(arg1) };                                                                                                                                                               \
-			const Variant *vargptrs[1] = { &vargs[0] };                                                                                                                                                         \
-                                                                                                                                                                                                                \
-			Variant ret = script_instance->call(_gdvirtual_##m_name##_sn, (const Variant **)vargptrs, 1, ce);                                                                                                   \
-			if (ce.error == Callable::CallError::CALL_OK) {                                                                                                                                                     \
-				r_ret = VariantCaster<m_ret>::cast(ret);                                                                                                                                                        \
-				return true;                                                                                                                                                                                    \
-			}                                                                                                                                                                                                   \
-		}                                                                                                                                                                                                       \
-		if (unlikely(_get_extension() && !_gdvirtual_##m_name##_initialized)) {                                                                                                                                 \
-			_gdvirtual_##m_name = (_get_extension() && _get_extension()->get_virtual) ? _get_extension()->get_virtual(_get_extension()->class_userdata, #m_name) : (GDNativeExtensionClassCallVirtual) nullptr; \
-			_gdvirtual_##m_name##_initialized = true;                                                                                                                                                           \
-		}                                                                                                                                                                                                       \
-		if (_gdvirtual_##m_name) {                                                                                                                                                                              \
-			PtrToArg<m_type1>::EncodeT argval1 = arg1;                                                                                                                                                          \
-			const GDNativeTypePtr argptrs[1] = { &argval1 };                                                                                                                                                    \
-                                                                                                                                                                                                                \
-			PtrToArg<m_ret>::EncodeT ret;                                                                                                                                                                       \
-			_gdvirtual_##m_name(_get_extension_instance(), (const GDNativeTypePtr *)argptrs, &ret);                                                                                                             \
-			r_ret = (m_ret)ret;                                                                                                                                                                                 \
-			return true;                                                                                                                                                                                        \
-		}                                                                                                                                                                                                       \
-                                                                                                                                                                                                                \
-		return false;                                                                                                                                                                                           \
-	}                                                                                                                                                                                                           \
-	bool m_class::_gdvirtual_##m_name##_overridden() const {                                                                                                                                                    \
-		ScriptInstance *script_instance = ((Object *)(this))->get_script_instance();                                                                                                                            \
-		if (script_instance) {                                                                                                                                                                                  \
-			return script_instance->has_method(_gdvirtual_##m_name##_sn);                                                                                                                                       \
-		}                                                                                                                                                                                                       \
-		if (unlikely(_get_extension() && !_gdvirtual_##m_name##_initialized)) {                                                                                                                                 \
-			_gdvirtual_##m_name = (_get_extension() && _get_extension()->get_virtual) ? _get_extension()->get_virtual(_get_extension()->class_userdata, #m_name) : (GDNativeExtensionClassCallVirtual) nullptr; \
-			_gdvirtual_##m_name##_initialized = true;                                                                                                                                                           \
-		}                                                                                                                                                                                                       \
-		if (_gdvirtual_##m_name) {                                                                                                                                                                              \
-			return true;                                                                                                                                                                                        \
-		}                                                                                                                                                                                                       \
-		return false;                                                                                                                                                                                           \
-	}                                                                                                                                                                                                           \
-                                                                                                                                                                                                                \
-	MethodInfo m_class::_gdvirtual_##m_name##_get_method_info() {                                                                                                                                               \
-		MethodInfo method_info;                                                                                                                                                                                 \
-		method_info.name = #m_name;                                                                                                                                                                             \
-		method_info.flags = METHOD_FLAG_VIRTUAL;                                                                                                                                                                \
-		method_info.return_val = GetTypeInfo<m_ret>::get_class_info();                                                                                                                                          \
-		method_info.arguments.push_back(GetTypeInfo<m_type1>::get_class_info());                                                                                                                                \
-                                                                                                                                                                                                                \
-		return method_info;                                                                                                                                                                                     \
-	}
-
-#endif
-
 bool TerrainLibrary::get_initialized() const {
 	return _initialized;
 }
@@ -469,49 +356,21 @@ TerrainLibrary::~TerrainLibrary() {
 	_prop_materials.clear();
 }
 
-#if VERSION_MAJOR >= 4
-TMCGDVIRTUAL1(TerrainLibrary, _material_cache_get_key, Ref<TerrainChunk>);
-TMCGDVIRTUAL1R(TerrainLibrary, Ref<TerrainMaterialCache>, _material_cache_get, int);
-TMCGDVIRTUAL1(TerrainLibrary, _material_cache_unref, int);
-
-TMCGDVIRTUAL1(TerrainLibrary, _liquid_material_cache_get_key, Ref<TerrainChunk>);
-TMCGDVIRTUAL1R(TerrainLibrary, Ref<TerrainMaterialCache>, _liquid_material_cache_get, int);
-TMCGDVIRTUAL1(TerrainLibrary, _liquid_material_cache_unref, int);
-
-TMCGDVIRTUAL1(TerrainLibrary, _prop_material_cache_get_key, Ref<TerrainChunk>);
-TMCGDVIRTUAL1R(TerrainLibrary, Ref<TerrainMaterialCache>, _prop_material_cache_get, int);
-TMCGDVIRTUAL1(TerrainLibrary, _prop_material_cache_unref, int);
-#endif
-
 void TerrainLibrary::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_initialized"), &TerrainLibrary::get_initialized);
 	ClassDB::bind_method(D_METHOD("set_initialized", "value"), &TerrainLibrary::set_initialized);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "initialized", PROPERTY_HINT_NONE, "", 0), "set_initialized", "get_initialized");
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_supports_caching"));
-#else
-	GDVIRTUAL_BIND(_supports_caching);
-#endif
 
 	ClassDB::bind_method(D_METHOD("_supports_caching"), &TerrainLibrary::_supports_caching);
 	ClassDB::bind_method(D_METHOD("supports_caching"), &TerrainLibrary::supports_caching);
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_setup_material_albedo", PropertyInfo(Variant::INT, "material_index"), PropertyInfo(Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture")));
-#else
-	GDVIRTUAL_BIND(_setup_material_albedo, "material_index", "texture");
-#endif
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_material_cache_get_key", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "TerrainChunk")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "TerrainMaterialCache"), "_material_cache_get", PropertyInfo(Variant::INT, "key")));
 	BIND_VMETHOD(MethodInfo("_material_cache_unref", PropertyInfo(Variant::INT, "key")));
-#else
-	GDVIRTUAL_BIND(_material_cache_get_key, "chunk", "texture");
-	GDVIRTUAL_BIND(_material_cache_get, "key");
-	GDVIRTUAL_BIND(_material_cache_unref, "key");
-#endif
 
 	ClassDB::bind_method(D_METHOD("material_get", "index"), &TerrainLibrary::material_get);
 	ClassDB::bind_method(D_METHOD("material_lod_get", "index"), &TerrainLibrary::material_lod_get);
@@ -533,15 +392,9 @@ void TerrainLibrary::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("materials_set"), &TerrainLibrary::materials_set);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "17/17:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_liquid_material_cache_get_key", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "TerrainChunk")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "TerrainMaterialCache"), "_liquid_material_cache_get", PropertyInfo(Variant::INT, "key")));
 	BIND_VMETHOD(MethodInfo("_liquid_material_cache_unref", PropertyInfo(Variant::INT, "key")));
-#else
-	GDVIRTUAL_BIND(_liquid_material_cache_get_key, "chunk", "texture");
-	GDVIRTUAL_BIND(_liquid_material_cache_get, "key");
-	GDVIRTUAL_BIND(_liquid_material_cache_unref, "key");
-#endif
 
 	ClassDB::bind_method(D_METHOD("liquid_material_get", "index"), &TerrainLibrary::liquid_material_get);
 	ClassDB::bind_method(D_METHOD("liquid_material_lod_get", "index"), &TerrainLibrary::liquid_material_lod_get);
@@ -563,15 +416,9 @@ void TerrainLibrary::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("liquid_materials_set"), &TerrainLibrary::liquid_materials_set);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "liquid_materials", PROPERTY_HINT_NONE, "17/17:Material", PROPERTY_USAGE_DEFAULT, "Material"), "liquid_materials_set", "liquid_materials_get");
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_prop_material_cache_get_key", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "TerrainChunk")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "TerrainMaterialCache"), "_prop_material_cache_get", PropertyInfo(Variant::INT, "key")));
 	BIND_VMETHOD(MethodInfo("_prop_material_cache_unref", PropertyInfo(Variant::INT, "key")));
-#else
-	GDVIRTUAL_BIND(_prop_material_cache_get_key, "chunk", "texture");
-	GDVIRTUAL_BIND(_prop_material_cache_get, "key");
-	GDVIRTUAL_BIND(_prop_material_cache_unref, "key");
-#endif
 
 	ClassDB::bind_method(D_METHOD("prop_material_get", "index"), &TerrainLibrary::prop_material_get);
 	ClassDB::bind_method(D_METHOD("prop_material_lod_get", "index"), &TerrainLibrary::prop_material_lod_get);

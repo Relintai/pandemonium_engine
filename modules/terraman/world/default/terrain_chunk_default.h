@@ -22,21 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/string/ustring.h"
-#include "core/config/engine.h"
-#include "core/variant/array.h"
-#else
-#include "core/ustring.h"
-#include "core/engine.h"
 #include "core/array.h"
-#endif
-
+#include "core/engine.h"
+#include "core/ustring.h"
 
 #include "../terrain_chunk.h"
 
@@ -46,12 +34,12 @@ SOFTWARE.
 #include "core/os/thread.h"
 #include "core/os/thread_safe.h"
 
-#include "scene/resources/packed_scene.h"
-#include "../terrain_world.h"
 #include "../../data/terrain_light.h"
-#include "../../meshers/terrain_mesher.h"
-#include "../../library/terrain_surface.h"
 #include "../../library/terrain_library.h"
+#include "../../library/terrain_surface.h"
+#include "../../meshers/terrain_mesher.h"
+#include "../terrain_world.h"
+#include "scene/resources/packed_scene.h"
 
 class TerrainWorld;
 class TerrainJob;
@@ -224,7 +212,7 @@ protected:
 	RID _debug_mesh_instance;
 	PoolVector3Array _debug_mesh_array;
 
-	Vector<Ref<TerrainLight> > _lights;
+	Vector<Ref<TerrainLight>> _lights;
 };
 
 VARIANT_ENUM_CAST(TerrainChunkDefault::DefaultChannels);

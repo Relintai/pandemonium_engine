@@ -22,9 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #include "../default/terrain_chunk_default.h"
 
 class TerrainChunkBlocky : public TerrainChunkDefault {

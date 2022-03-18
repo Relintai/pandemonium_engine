@@ -22,9 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #include "terrain_job.h"
 
 #include "terrain_mesher_job_step.h"
@@ -33,9 +30,7 @@ SOFTWARE.
 
 #include pool_vector_h
 
-include_pool_vector
-
-		class TerrainMesher;
+class TerrainMesher;
 
 class TerrainTerrainJob : public TerrainJob {
 	GDCLASS(TerrainTerrainJob, TerrainJob);
@@ -82,7 +77,7 @@ protected:
 	Ref<TerrainMesher> _mesher;
 	Ref<TerrainMesher> _liquid_mesher;
 
-	Vector<Ref<TerrainMesherJobStep> > _job_steps;
+	Vector<Ref<TerrainMesherJobStep>> _job_steps;
 	int _current_job_step;
 	int _current_mesh;
 

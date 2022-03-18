@@ -22,9 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #include "../default/terrain_world_default.h"
 
 class TerrainWorldBlocky : public TerrainWorldDefault {

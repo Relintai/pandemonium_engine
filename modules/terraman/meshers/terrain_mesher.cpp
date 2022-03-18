@@ -180,21 +180,13 @@ Array TerrainMesher::build_mesh() {
 	{
 		PoolVector<Vector3> array;
 		array.resize(_vertices.size());
-#if !GODOT4
 		PoolVector<Vector3>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = _vertices[i].vertex;
-#else
-			array.set(i, _vertices[i].vertex);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
 
 		a[VisualServer::ARRAY_VERTEX] = array;
 	}
@@ -206,63 +198,39 @@ Array TerrainMesher::build_mesh() {
 	{
 		PoolVector<Vector3> array;
 		array.resize(_vertices.size());
-#if !GODOT4
 		PoolVector<Vector3>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = _vertices[i].normal;
-#else
-			array.set(i, _vertices[i].normal);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
 		a[VisualServer::ARRAY_NORMAL] = array;
 	}
 
 	if ((_format & VisualServer::ARRAY_FORMAT_COLOR) != 0) {
 		PoolVector<Color> array;
 		array.resize(_vertices.size());
-#if !GODOT4
 		PoolVector<Color>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = _vertices[i].color;
-#else
-			array.set(i, _vertices[i].color);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
 		a[VisualServer::ARRAY_COLOR] = array;
 	}
 
 	if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV) != 0) {
 		PoolVector<Vector2> array;
 		array.resize(_vertices.size());
-#if !GODOT4
 		PoolVector<Vector2>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = _vertices[i].uv;
-#else
-			array.set(i, _vertices[i].uv);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
 
 		a[VisualServer::ARRAY_TEX_UV] = array;
 	}
@@ -270,42 +238,27 @@ Array TerrainMesher::build_mesh() {
 	if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV2) != 0) {
 		PoolVector<Vector2> array;
 		array.resize(_vertices.size());
-#if !GODOT4
 		PoolVector<Vector2>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = _vertices[i].uv2;
-#else
-			array.set(i, _vertices[i].uv2);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
 		a[VisualServer::ARRAY_TEX_UV2] = array;
 	}
 
 	if (_indices.size() > 0) {
 		PoolVector<int> array;
 		array.resize(_indices.size());
-#if !GODOT4
+
 		PoolVector<int>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _indices.size(); ++i) {
-#if !GODOT4
 			w[i] = _indices[i];
-#else
-			array.set(i, _indices[i]);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
 		a[VisualServer::ARRAY_INDEX] = array;
 	}
 
@@ -965,15 +918,9 @@ TerrainMesher::~TerrainMesher() {
 }
 
 void TerrainMesher::_bind_methods() {
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_add_chunk", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "TerrainChunk")));
 	BIND_VMETHOD(MethodInfo("_bake_colors", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "TerrainChunk")));
 	BIND_VMETHOD(MethodInfo("_bake_liquid_colors", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "TerrainChunk")));
-#else
-	GDVIRTUAL_BIND(_add_chunk, "chunk");
-	GDVIRTUAL_BIND(_bake_colors, "chunk");
-	GDVIRTUAL_BIND(_bake_liquid_colors, "chunk");
-#endif
 
 	ClassDB::bind_method(D_METHOD("get_channel_index_type"), &TerrainMesher::get_channel_index_type);
 	ClassDB::bind_method(D_METHOD("set_channel_index_type", "value"), &TerrainMesher::set_channel_index_type);
@@ -1035,11 +982,7 @@ void TerrainMesher::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_mesh_data_resource_transform_colored", "mesh", "transform", "colors", "uv_rect"), &TerrainMesher::add_mesh_data_resource_transform_colored, DEFVAL(Rect2(0, 0, 1, 1)));
 #endif
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_add_mesher", PropertyInfo(Variant::OBJECT, "mesher", PROPERTY_HINT_RESOURCE_TYPE, "TerrainMesher")));
-#else
-	GDVIRTUAL_BIND(_add_mesher, "mesher");
-#endif
 	ClassDB::bind_method(D_METHOD("add_mesher", "mesher"), &TerrainMesher::add_mesher);
 	ClassDB::bind_method(D_METHOD("_add_mesher", "mesher"), &TerrainMesher::_add_mesher);
 

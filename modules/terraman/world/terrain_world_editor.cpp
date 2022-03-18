@@ -33,10 +33,10 @@ SOFTWARE.
 
 #include "terrain_chunk.h"
 
-#include "../library/terrain_surface.h"
 #include "../library/terrain_library.h"
-#include "servers/physics_server.h"
+#include "../library/terrain_surface.h"
 #include "scene/resources/world.h"
+#include "servers/physics_server.h"
 
 #include "../defines.h"
 
@@ -44,7 +44,6 @@ SOFTWARE.
 #include spatial_editor_plugin_h
 #include camera_h
 
-#if VERSION_MAJOR < 4
 bool TerrainWorldEditor::forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) {
 	if (!_world || !_world->get_editable()) {
 		return false;
@@ -71,39 +70,6 @@ bool TerrainWorldEditor::forward_spatial_input_event(Camera *p_camera, const Ref
 
 	return false;
 }
-#else
-EditorPlugin::AfterGUIInput TerrainWorldEditor::forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) {
-	if (!_world || !_world->get_editable()) {
-		return EditorPlugin::AFTER_GUI_INPUT_PASS;
-	}
-
-	Ref<InputEventMouseButton> mb = p_event;
-
-	if (mb.is_valid()) {
-		if (mb->is_pressed()) {
-			Ref<TerrainLibrary> lib = _world->get_library();
-
-			if (!lib.is_valid())
-				return EditorPlugin::AFTER_GUI_INPUT_PASS;
-
-			if (mb->get_button_index() == MouseButton::LEFT) {
-				if (do_input_action(p_camera, Point2(mb->get_position().x, mb->get_position().y), true)) {
-					return EditorPlugin::AFTER_GUI_INPUT_STOP;
-				} else {
-					return EditorPlugin::AFTER_GUI_INPUT_PASS;
-				}
-			} else {
-				return EditorPlugin::AFTER_GUI_INPUT_PASS;
-			}
-
-			//return do_input_action(p_camera, Point2(mb->get_position().x, mb->get_position().y), true);
-		}
-	}
-
-	return EditorPlugin::AFTER_GUI_INPUT_PASS;
-}
-
-#endif
 
 bool TerrainWorldEditor::do_input_action(Camera *p_camera, const Point2 &p_point, bool p_click) {
 	if (!spatial_editor || !_world || !_world->is_inside_world())
@@ -366,21 +332,12 @@ void TerrainWorldEditor::_bind_methods() {
 void TerrainWorldEditorPlugin::_notification(int p_what) {
 	if (p_what == EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED) {
 		switch ((int)EditorSettings::get_singleton()->get("editors/voxelman/editor_side")) {
-#if VERSION_MAJOR <= 3 && VERSION_MINOR < 5
-			case 0: { // Left.
-				SpatialEditor::get_singleton()->get_palette_split()->move_child(voxel_world_editor, 0);
-			} break;
-			case 1: { // Right.
-				SpatialEditor::get_singleton()->get_palette_split()->move_child(voxel_world_editor, 1);
-			} break;
-#else
 			case 0: { // Left.
 				SpatialEditor::get_singleton()->move_control_to_left_panel(voxel_world_editor);
 			} break;
 			case 1: { // Right.
 				SpatialEditor::get_singleton()->move_control_to_right_panel(voxel_world_editor);
 			} break;
-#endif
 		}
 	}
 }

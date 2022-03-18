@@ -22,26 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/templates/vector.h"
-#else
 #include "core/vector.h"
-#endif
 
 #include "terrain_structure.h"
 
 #include "../defines.h"
 
 #include pool_vector_h
-include_pool_vector
 
 #include "terrain_chunk.h"
-		;
 
 class BlockTerrainStructure : public TerrainStructure {
 	GDCLASS(BlockTerrainStructure, TerrainStructure);

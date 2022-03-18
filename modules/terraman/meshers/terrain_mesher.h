@@ -22,28 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/object/ref_counted.h"
-#ifndef Reference
-#define Reference RefCounted
-#endif
-#include "core/templates/vector.h"
-#include "core/math/color.h"
-#else
+#include "core/color.h"
 #include "core/reference.h"
 #include "core/vector.h"
-#include "core/color.h"
-#endif
 
 #include "../defines.h"
 
 #include pool_vector_h
-include_pool_vector
 
 #include mesh_instance_h
 
@@ -60,7 +45,7 @@ include_pool_vector
 
 #include "../library/terrain_library.h"
 
-		class TerrainLibrary;
+class TerrainLibrary;
 class TerrainChunk;
 
 class TerrainMesher : public Reference {
@@ -198,13 +183,6 @@ public:
 	int get_index(const int idx) const;
 	void remove_index(const int idx);
 	void add_indices(const int index);
-
-#if VERSION_MAJOR >= 4
-	GDVIRTUAL1(_add_chunk, Ref<TerrainChunk>);
-	GDVIRTUAL1(_bake_colors, Ref<TerrainChunk>);
-	GDVIRTUAL1(_bake_liquid_colors, Ref<TerrainChunk>);
-	GDVIRTUAL1(_add_mesher, Ref<TerrainChunk>);
-#endif
 
 	TerrainMesher(const Ref<TerrainLibrary> &library);
 	TerrainMesher();

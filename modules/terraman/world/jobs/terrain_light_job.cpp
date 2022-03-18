@@ -24,8 +24,8 @@ SOFTWARE.
 
 #include "../../defines.h"
 
-#include "../../library/terrain_surface.h"
 #include "../../library/terrain_library.h"
+#include "../../library/terrain_surface.h"
 
 #include "../../meshers/terrain_mesher.h"
 #include "../default/terrain_chunk_default.h"

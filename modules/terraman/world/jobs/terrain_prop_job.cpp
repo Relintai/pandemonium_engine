@@ -24,15 +24,15 @@ SOFTWARE.
 
 #include "../../defines.h"
 
+#include "../../library/terrain_library.h"
 #include "../../library/terrain_material_cache.h"
 #include "../../library/terrain_surface.h"
-#include "../../library/terrain_library.h"
 
 #include "../../meshers/default/terrain_mesher_default.h"
 #include "../../meshers/terrain_mesher.h"
 #include "../default/terrain_chunk_default.h"
-#include "servers/physics_server.h"
 #include "scene/resources/world.h"
+#include "servers/physics_server.h"
 
 #ifdef MESH_DATA_RESOURCE_PRESENT
 #include "../../../mesh_data_resource/mesh_data_resource.h"
@@ -302,7 +302,7 @@ void TerrainPropJob::phase_setup() {
 
 #if MESH_DATA_RESOURCE_PRESENT
 		for (int i = 0; i < _chunk->mesh_data_resource_get_count(); ++i) {
-			Ref<Texture> tex  = _chunk->mesh_data_resource_get_texture(i);
+			Ref<Texture> tex = _chunk->mesh_data_resource_get_texture(i);
 
 			if (!tex.is_valid())
 				continue;
@@ -391,11 +391,7 @@ void TerrainPropJob::phase_steps() {
 				mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_PROP, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, i);
 
 				if (VS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
-#if !GODOT4
 					VS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
-#else
-					VS::get_singleton()->mesh_clear(mesh_rid);
-#endif
 			}
 		}
 	}

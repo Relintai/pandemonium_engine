@@ -72,7 +72,6 @@ void TerrainJob::_reset() {
 }
 
 void TerrainJob::_execute() {
-
 	ActiveBuildPhaseType origpt = _build_phase_type;
 
 	while (!get_cancelled() && _in_tree && !_build_done && origpt == _build_phase_type && !should_return()) {
@@ -162,7 +161,6 @@ void TerrainJob::generate_random_ao(int seed, int octaves, int period, float per
 
 	for (int x = -margin_start; x < size_x + margin_end; ++x) {
 		for (int z = -margin_start; z < size_z + margin_end; ++z) {
-
 			float val = noise->get_noise_3d(x + (position_x * size_x), 0, z + (position_z * size_z));
 
 			val *= scale_factor;
@@ -258,9 +256,7 @@ Array TerrainJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const float mu
 	if (colors.size() < uvs.size())
 		colors.resize(uvs.size());
 
-#if !GODOT4
 	img->lock();
-#endif
 
 	for (int i = 0; i < uvs.size(); ++i) {
 		Vector2 uv = uvs[i];
@@ -274,9 +270,7 @@ Array TerrainJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const float mu
 		colors.set(i, colors[i] * c * mul_color);
 	}
 
-#if !GODOT4
 	img->unlock();
-#endif
 
 	arr[VisualServer::ARRAY_COLOR] = colors;
 
@@ -284,7 +278,6 @@ Array TerrainJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const float mu
 }
 
 void TerrainJob::chunk_exit_tree() {
-
 	_in_tree = false;
 
 	if (get_complete()) {

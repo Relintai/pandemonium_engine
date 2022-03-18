@@ -22,18 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-#include "core/math/color.h"
-#else
 #include "core/color.h"
 #include "core/resource.h"
-#endif
 
 #include "../defines.h"
 
@@ -58,10 +48,6 @@ public:
 
 	void setup(WorldEnvironment *world_environment, DirectionalLight *primary_light, DirectionalLight *secondary_light);
 	void setup_bind(Node *world_environment, Node *primary_light, Node *secondary_light);
-
-#if VERSION_MAJOR >= 4
-	GDVIRTUAL3(_setup, WorldEnvironment *, DirectionalLight *, DirectionalLight *);
-#endif
 
 	TerrainEnvironmentData();
 	~TerrainEnvironmentData();

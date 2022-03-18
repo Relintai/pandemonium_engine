@@ -22,22 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/math/color.h"
-#else
 #include "core/color.h"
-#endif
 
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
 
-#include "../default/terrain_mesher_default.h"
 #include "../../world/default/terrain_chunk_default.h"
+#include "../default/terrain_mesher_default.h"
 
 class TerrainMesherBlocky : public TerrainMesherDefault {
 	GDCLASS(TerrainMesherBlocky, TerrainMesherDefault);

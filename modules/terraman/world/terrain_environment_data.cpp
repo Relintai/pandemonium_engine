@@ -87,11 +87,7 @@ TerrainEnvironmentData::~TerrainEnvironmentData() {
 }
 
 void TerrainEnvironmentData::_bind_methods() {
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_setup", PropertyInfo(Variant::OBJECT, "world_environment", PROPERTY_HINT_RESOURCE_TYPE, "WorldEnvironment"), PropertyInfo(Variant::OBJECT, "primary_light", PROPERTY_HINT_RESOURCE_TYPE, "DirectionalLight"), PropertyInfo(Variant::OBJECT, "secondary_light", PROPERTY_HINT_RESOURCE_TYPE, "DirectionalLight")));
-#else
-	GDVIRTUAL_BIND(_setup, "world_environment", "primary_light", "secondary_light");
-#endif
 
 	ClassDB::bind_method(D_METHOD("get_environment"), &TerrainEnvironmentData::get_environment);
 	ClassDB::bind_method(D_METHOD("set_environment", "value"), &TerrainEnvironmentData::set_environment);

@@ -22,27 +22,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-#include "core/templates/hash_map.h"
-#else
 #include "core/hash_map.h"
 #include "core/resource.h"
-#endif
 
 #include "../defines.h"
 
 #include pool_vector_h
-include_pool_vector
+
 #include "core/math/aabb.h"
 #include "terrain_chunk.h"
 
-		class TerrainStructure : public Resource {
+class TerrainStructure : public Resource {
 	GDCLASS(TerrainStructure, Resource);
 
 public:
@@ -64,10 +54,6 @@ public:
 	void set_position(const int x, const int y, const int z);
 
 	void write_to_chunk(Ref<TerrainChunk> chunk);
-
-#if VERSION_MAJOR >= 4
-	GDVIRTUAL1(_write_to_chunk, Ref<TerrainChunk>);
-#endif
 
 	TerrainStructure();
 	~TerrainStructure();

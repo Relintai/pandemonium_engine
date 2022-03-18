@@ -28,13 +28,6 @@ SOFTWARE.
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 
-#include "../defines.h"
-
-#if VERSION_MAJOR > 3
-#include "core/math/transform_3d.h"
-typedef class Transform3D Transform;
-#endif
-
 class TerrainWorld;
 class SpatialEditorPlugin;
 
@@ -48,11 +41,7 @@ public:
 	};
 
 public:
-#if VERSION_MAJOR < 4
 	bool forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event);
-#else
-	EditorPlugin::AfterGUIInput forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event);
-#endif
 
 	void edit(TerrainWorld *p_world);
 	bool do_input_action(Camera *p_camera, const Point2 &p_point, bool p_click);
@@ -102,13 +91,8 @@ protected:
 	void _notification(int p_what);
 
 public:
-#if VERSION_MAJOR < 4
 	bool forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) { return voxel_world_editor->forward_spatial_input_event(p_camera, p_event); }
 	virtual bool forward_spatial_gui_input(int p_index, Camera *p_camera, const Ref<InputEvent> &p_event) { return voxel_world_editor->forward_spatial_input_event(p_camera, p_event); }
-#else
-	EditorPlugin::AfterGUIInput forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) { return voxel_world_editor->forward_spatial_input_event(p_camera, p_event); }
-	virtual EditorPlugin::AfterGUIInput forward_spatial_gui_input(int p_index, Camera *p_camera, const Ref<InputEvent> &p_event) { return voxel_world_editor->forward_spatial_input_event(p_camera, p_event); }
-#endif
 	virtual String get_name() const { return "TerrainWorldEditor"; }
 	bool has_main_screen() const { return false; }
 	virtual void edit(Object *p_object);

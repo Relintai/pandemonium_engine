@@ -22,27 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/config/engine.h"
-#include "core/io/resource.h"
-#include "core/string/ustring.h"
-#include "core/variant/array.h"
-#else
 #include "core/array.h"
 #include "core/engine.h"
 #include "core/resource.h"
 #include "core/ustring.h"
-#endif
 
 #include "../defines.h"
 
 #include pool_vector_h
-include_pool_vector
 
 #include "core/os/mutex.h"
 #include "core/os/thread.h"
@@ -62,13 +49,8 @@ include_pool_vector
 
 #include "core/version.h"
 
-#if VERSION_MAJOR >= 4
-#define Texture Texture2D
-#endif
-
-#include "../library/terrain_surface.h"
 #include "../library/terrain_library.h"
-		; //hackfix for a clang format issue
+#include "../library/terrain_surface.h"
 
 class TerrainJob;
 class TerrainWorld;

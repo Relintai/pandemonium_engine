@@ -22,18 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/config/engine.h"
-#include "core/templates/hash_map.h"
-#else
 #include "core/engine.h"
 #include "core/hash_map.h"
-#endif
 
 #include "../defines.h"
 
@@ -195,20 +185,6 @@ public:
 	int get_channel_index_info(const ChannelTypeInfo channel_type);
 
 	Spatial *get_editor_camera();
-
-#if VERSION_MAJOR >= 4
-	GDVIRTUAL1(_chunk_added, Ref<TerrainChunk>);
-
-	GDVIRTUAL0(_generation_finished);
-
-	GDVIRTUAL3R(Ref<TerrainChunk>, _create_chunk, int, int, Ref<TerrainChunk>);
-	GDVIRTUAL1(_prepare_chunk_for_generation, Ref<TerrainChunk>);
-	GDVIRTUAL1(_generate_chunk, Ref<TerrainChunk>);
-
-	GDVIRTUAL1R(int, _get_channel_index_info, int);
-
-	GDVIRTUAL5(_set_voxel_with_tool, bool, Vector3, Vector3, int, int);
-#endif
 
 	TerrainWorld();
 	~TerrainWorld();
