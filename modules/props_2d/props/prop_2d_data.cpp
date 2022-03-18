@@ -26,13 +26,7 @@ SOFTWARE.
 #include "prop_2d_data_light.h"
 #include "prop_2d_data_prop.h"
 
-#if VERSION_MAJOR < 4
 #include "servers/physics_server.h"
-#else
-#include "servers/physics_server_3d.h"
-
-#define Shape Shape3D
-#endif
 
 int Prop2DData::get_id() const {
 	return _id;
@@ -40,7 +34,6 @@ int Prop2DData::get_id() const {
 void Prop2DData::set_id(const int value) {
 	_id = value;
 }
-
 
 Ref<Prop2DDataEntry> Prop2DData::get_prop(const int index) const {
 	ERR_FAIL_INDEX_V(index, _props.size(), Ref<Prop2DDataEntry>());
@@ -68,11 +61,7 @@ int Prop2DData::get_prop_count() const {
 Vector<Variant> Prop2DData::get_props() {
 	Vector<Variant> r;
 	for (int i = 0; i < _props.size(); i++) {
-#if VERSION_MAJOR < 4
 		r.push_back(_props[i].get_ref_ptr());
-#else
-		r.push_back(_props[i]);
-#endif
 	}
 	return r;
 }

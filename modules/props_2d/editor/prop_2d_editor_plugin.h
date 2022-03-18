@@ -22,16 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 
 #include "core/version.h"
 
 class Prop2DEditorPlugin : public EditorPlugin {
-
 	GDCLASS(Prop2DEditorPlugin, EditorPlugin);
 	EditorNode *editor;
 

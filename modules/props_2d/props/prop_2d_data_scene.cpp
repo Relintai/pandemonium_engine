@@ -65,7 +65,6 @@ Node *Prop2DDataScene::_processor_get_node_for(const Transform2D &transform, Nod
 		i = Object::cast_to<Prop2DSceneInstance>(node);
 	}
 
-
 	i->set_scene(get_scene());
 
 	return Prop2DDataEntry::_processor_get_node_for(transform, i);

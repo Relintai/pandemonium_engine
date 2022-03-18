@@ -25,14 +25,10 @@ SOFTWARE.
 #include "../props/prop_2d_data.h"
 #include "../props/prop_2d_data_entry.h"
 
-#include "core/version.h"
-
-#if VERSION_MINOR >= 4
 #include "core/math/quick_hull.h"
 #include "scene/3d/portal.h"
 #include "scene/3d/room.h"
 #include "scene/3d/room_manager.h"
-#endif
 
 #include "scene/3d/mesh_instance.h"
 
@@ -40,25 +36,19 @@ SOFTWARE.
 #include "../../mesh_data_resource/nodes/mesh_data_instance.h"
 #endif
 
-#if VERSION_MAJOR > 3
-#include "core/config/engine.h"
-#else
 #include "core/engine.h"
-#endif
 
 #include "scene/2d/node_2d.h"
 
 Prop2DUtils *Prop2DUtils::_instance;
-Vector<Ref<Prop2DDataEntry> > Prop2DUtils::_processors;
+Vector<Ref<Prop2DDataEntry>> Prop2DUtils::_processors;
 
 Prop2DUtils *Prop2DUtils::get_singleton() {
 	return _instance;
 }
 
 Ref<Prop2DData> Prop2DUtils::convert_tree(Node *root) {
-#if VERSION_MAJOR < 4
 	ERR_FAIL_COND_V(!ObjectDB::instance_validate(root), Ref<Prop2DData>());
-#endif
 
 	Ref<Prop2DData> data;
 	data.instance();
@@ -70,9 +60,7 @@ Ref<Prop2DData> Prop2DUtils::convert_tree(Node *root) {
 }
 
 void Prop2DUtils::_convert_tree(Ref<Prop2DData> prop_data, Node *node, const Transform2D &transform) {
-#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(node));
-#endif
 
 	for (int i = 0; i < Prop2DUtils::_processors.size(); ++i) {
 		Ref<Prop2DDataEntry> proc = Prop2DUtils::_processors.get(i);
@@ -109,7 +97,6 @@ void Prop2DUtils::_convert_tree(Ref<Prop2DData> prop_data, Node *node, const Tra
 			}
 		}
 	} else {
-
 		for (int i = 0; i < node->get_child_count(); ++i) {
 			Node *child = node->get_child(i);
 

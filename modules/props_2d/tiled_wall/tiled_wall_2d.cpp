@@ -1,18 +1,10 @@
 #include "tiled_wall_2d.h"
 
-#include "core/version.h"
-
 #include "scene/resources/texture.h"
 
-#if VERSION_MAJOR < 4
 #include "core/image.h"
 
 #define GET_WORLD get_world
-#else
-#include "core/io/image.h"
-
-#define GET_WORLD get_world_3d
-#endif
 
 #if TEXTURE_PACKER_PRESENT
 #include "../../texture_packer/texture_resource/packer_image_resource.h"
@@ -240,11 +232,7 @@ void TiledWall2D::clear_mesh() {
 
 	if (_mesh_rid != RID()) {
 		if (VS::get_singleton()->mesh_get_surface_count(_mesh_rid) > 0)
-#if VERSION_MAJOR < 4
 			VS::get_singleton()->mesh_remove_surface(_mesh_rid, 0);
-#else
-			VS::get_singleton()->mesh_clear(_mesh_rid);
-#endif
 	}
 }
 

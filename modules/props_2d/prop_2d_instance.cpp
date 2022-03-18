@@ -2,15 +2,7 @@
 
 #include "../mesh_data_resource/nodes/mesh_data_instance.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR < 4
 #include "scene/3d/light.h"
-#else
-#include "scene/3d/light_3d.h"
-#define OmniLight OmniLight3D
-#define Light Light3D
-#endif
 
 #if MESH_DATA_RESOURCE_PRESENT
 //define PROPS_PRESENT, so things compile. That module's scsub will define this too while compiling,

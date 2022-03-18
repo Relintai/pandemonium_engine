@@ -22,30 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/math/color.h"
-#include "core/object/reference.h"
-#include "core/templates/vector.h"
-
-template <class N>
-class Vector;
-template <class N>
-using PoolVector = Vector<N>;
-
-#include "scene/3d/mesh_instance_3d.h"
-
-#else
 #include "core/color.h"
 #include "core/pool_vector.h"
 #include "core/reference.h"
 #include "core/vector.h"
 #include "scene/3d/mesh_instance.h"
-#endif
 
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"

@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "prop_2d_instance_prop_job.h"
 
-#include "core/version.h"
-
 #include "lights/prop_2d_light.h"
 #include "material_cache/prop_2d_material_cache.h"
 #include "prop_2d_instance.h"
@@ -188,35 +186,35 @@ void Prop2DInstanceProp2DJob::phase_physics_process() {
 
 	_prop_instace->free_colliders();
 	_prop_instace->colliders_clear();
-/*
-	for (int i = 0; i < _collision_shapes.size(); ++i) {
-		CollisionShapeEntry &e = _collision_shapes.write[i];
+	/*
+		for (int i = 0; i < _collision_shapes.size(); ++i) {
+			CollisionShapeEntry &e = _collision_shapes.write[i];
 
-		if (!e.shape.is_valid()) {
-			continue;
-		}
-
-		RID body = PhysicsServer::get_singleton()->body_create(PhysicsServer::BODY_MODE_STATIC);
-
-		PhysicsServer::get_singleton()->body_add_shape(body, e.shape->get_rid());
-
-		//TODO store the layer mask somewhere
-		PhysicsServer::get_singleton()->body_set_collision_layer(body, _prop_instace->get_collision_layer());
-		PhysicsServer::get_singleton()->body_set_collision_mask(body, _prop_instace->get_collision_mask());
-
-		if (_prop_instace->is_inside_tree() && _prop_instace->is_inside_world()) {
-			Ref<World2D> world = _prop_instace->get_world_2d();
-
-			if (world.is_valid() && world->get_space() != RID()) {
-				PhysicsServer::get_singleton()->body_set_space(body, world->get_space());
+			if (!e.shape.is_valid()) {
+				continue;
 			}
+
+			RID body = PhysicsServer::get_singleton()->body_create(PhysicsServer::BODY_MODE_STATIC);
+
+			PhysicsServer::get_singleton()->body_add_shape(body, e.shape->get_rid());
+
+			//TODO store the layer mask somewhere
+			PhysicsServer::get_singleton()->body_set_collision_layer(body, _prop_instace->get_collision_layer());
+			PhysicsServer::get_singleton()->body_set_collision_mask(body, _prop_instace->get_collision_mask());
+
+			if (_prop_instace->is_inside_tree() && _prop_instace->is_inside_world()) {
+				Ref<World2D> world = _prop_instace->get_world_2d();
+
+				if (world.is_valid() && world->get_space() != RID()) {
+					PhysicsServer::get_singleton()->body_set_space(body, world->get_space());
+				}
+			}
+
+			//PhysicsServer::get_singleton()->body_set_state(body, PhysicsServer::BODY_STATE_TRANSFORM, e.transform);
+
+			_prop_instace->collider_add(e.transform, e.shape, e.shape->get_rid(), body, e.owns_shape);
 		}
-
-		//PhysicsServer::get_singleton()->body_set_state(body, PhysicsServer::BODY_STATE_TRANSFORM, e.transform);
-
-		_prop_instace->collider_add(e.transform, e.shape, e.shape->get_rid(), body, e.owns_shape);
-	}
-*/
+	*/
 
 #if TOOLS_ENABLED
 /*
@@ -355,11 +353,7 @@ void Prop2DInstanceProp2DJob::phase_steps() {
 				RID mesh_rid = _prop_instace->mesh_get(i);
 
 				if (VS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
-#if !GODOT4
 					VS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
-#else
-					VS::get_singleton()->mesh_clear(mesh_rid);
-#endif
 			}
 		}
 	}
@@ -468,9 +462,7 @@ Array Prop2DInstanceProp2DJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, c
 	if (colors.size() < uvs.size())
 		colors.resize(uvs.size());
 
-#if !GODOT4
 	img->lock();
-#endif
 
 	for (int i = 0; i < uvs.size(); ++i) {
 		Vector2 uv = uvs[i];
@@ -484,9 +476,7 @@ Array Prop2DInstanceProp2DJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, c
 		colors.set(i, colors[i] * c * mul_color);
 	}
 
-#if !GODOT4
 	img->unlock();
-#endif
 
 	arr[VisualServer::ARRAY_COLOR] = colors;
 
@@ -506,11 +496,7 @@ void Prop2DInstanceProp2DJob::reset_meshes() {
 			RID mesh_rid = _prop_instace->mesh_get(i);
 
 			if (VS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
-#if !GODOT4
 				VS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
-#else
-				VS::get_singleton()->mesh_clear(mesh_rid);
-#endif
 		}
 	}
 }

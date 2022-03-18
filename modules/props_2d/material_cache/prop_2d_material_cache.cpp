@@ -35,25 +35,12 @@ SOFTWARE.
 #include "../../mesh_data_resource/props_2d/prop_2d_data_mesh_data.h"
 #endif
 
-#if VERSION_MAJOR > 3
-
-#define VARIANT_ARRAY_GET(arr)             \
-	Vector<Variant> r;                     \
-	for (int i = 0; i < arr.size(); i++) { \
-		r.push_back(arr[i]);               \
-	}                                      \
-	return r;
-
-#else
-
 #define VARIANT_ARRAY_GET(arr)             \
 	Vector<Variant> r;                     \
 	for (int i = 0; i < arr.size(); i++) { \
 		r.push_back(arr[i].get_ref_ptr()); \
 	}                                      \
 	return r;
-
-#endif
 
 bool Prop2DMaterialCache::get_initialized() {
 	return _initialized;

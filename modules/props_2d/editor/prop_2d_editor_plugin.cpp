@@ -26,20 +26,10 @@ SOFTWARE.
 #include "../singleton/prop_2d_utils.h"
 #include "core/os/keyboard.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR < 4
 #include "core/os/input.h"
 
 #define CONNECT(sig, obj, target_method_class, method) connect(sig, obj, #method)
 #define DISCONNECT(sig, obj, target_method_class, method) disconnect(sig, obj, #method)
-
-#else
-#include "core/input/input.h"
-
-#define CONNECT(sig, obj, target_method_class, method) connect(sig, callable_mp(obj, &target_method_class::method))
-#define DISCONNECT(sig, obj, target_method_class, method) disconnect(sig, callable_mp(obj, &target_method_class::method))
-#endif
 
 void Prop2DEditorPlugin::convert_active_scene_to_prop_data() {
 	SceneTree *st = SceneTree::get_singleton();
@@ -109,14 +99,9 @@ void Prop2DEditorPlugin::_convert_selected_scene_to_prop_data(Variant param) {
 Prop2DEditorPlugin::Prop2DEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
-#if VERSION_MAJOR < 4
 	editor->add_tool_menu_item("Convert active scene to Prop2DData", this, "convert_active_scene_to_prop_data");
 	editor->add_tool_menu_item("Convert selected scene(s) to Prop2DData", this, "convert_selected_scene_to_prop_data");
-#if VERSION_MINOR >= 4
 	editor->add_tool_menu_item("(Prop2D) Find room points.", this, "find_room_points");
-#endif
-#else
-#endif
 
 	Button *b = memnew(Button);
 

@@ -22,31 +22,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/object/object.h"
-#include "core/object/reference.h"
-#include "core/templates/vector.h"
-#include "scene/3d/node_3d.h"
-#else
 #include "core/object.h"
 #include "core/reference.h"
 #include "core/vector.h"
 #include "scene/3d/spatial.h"
-#endif
 
 #include "scene/main/node.h"
 
 class Prop2DData;
 class Prop2DDataEntry;
 
-#if VERSION_MINOR >= 4
 class Room;
-#endif
 
 class Prop2DUtils : public Object {
 	GDCLASS(Prop2DUtils, Object);

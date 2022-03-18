@@ -22,20 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/object/reference.h"
-#include "core/templates/vector.h"
-#include "core/math/color.h"
-#else
+#include "core/color.h"
 #include "core/reference.h"
 #include "core/vector.h"
-#include "core/color.h"
-#endif
 
 class Prop2DLight : public Reference {
 	GDCLASS(Prop2DLight, Reference);

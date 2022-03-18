@@ -1,12 +1,6 @@
 #include "prop_2d_scene_instance.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/config/engine.h"
-#else
 #include "core/engine.h"
-#endif
 
 Ref<PackedScene> Prop2DSceneInstance::get_scene() {
 	return _scene;

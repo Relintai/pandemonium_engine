@@ -22,13 +22,7 @@ SOFTWARE.
 
 #include "register_types.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/config/engine.h"
-#else
 #include "core/engine.h"
-#endif
 
 #include "tiled_wall/tiled_wall_2d.h"
 #include "tiled_wall/tiled_wall_2d_data.h"
@@ -41,9 +35,7 @@ SOFTWARE.
 #include "props/prop_2d_data_sprite.h"
 #include "props/prop_2d_data_tiled_wall_2d.h"
 
-#if VERSION_MINOR >= 4
 #include "props/prop_2d_data_portal.h"
-#endif
 
 #include "clutter/ground_clutter_2d.h"
 #include "clutter/ground_clutter_2d_foliage.h"
@@ -91,9 +83,7 @@ void register_props_2d_types() {
 	ClassDB::register_class<Prop2DDataTiledWall2D>();
 	ClassDB::register_class<Prop2DDataSprite>();
 
-#if VERSION_MINOR >= 4
 	ClassDB::register_class<Prop2DDataPortal>();
-#endif
 
 	ClassDB::register_class<GroundClutter2D>();
 	ClassDB::register_class<GroundClutter2DFoliage>();
@@ -135,10 +125,8 @@ void register_props_2d_types() {
 	Ref<Prop2DDataScene> scene_processor = Ref<Prop2DDataScene>(memnew(Prop2DDataScene));
 	Prop2DUtils::add_processor(scene_processor);
 
-#if VERSION_MINOR >= 4
 	Ref<Prop2DDataPortal> portal_processor = Ref<Prop2DDataPortal>(memnew(Prop2DDataPortal));
 	Prop2DUtils::add_processor(portal_processor);
-#endif
 
 	Ref<Prop2DDataTiledWall2D> tiled_wall_processor = Ref<Prop2DDataTiledWall2D>(memnew(Prop2DDataTiledWall2D));
 	Prop2DUtils::add_processor(tiled_wall_processor);

@@ -22,15 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
 #include "scene/resources/texture.h"
-
-#if VERSION_MAJOR >= 4
-#define Texture Texture2D
-#endif
 
 #include "scene/2d/node_2d.h"
 

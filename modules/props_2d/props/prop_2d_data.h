@@ -22,23 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/object/ref_counted.h"
-#ifndef Reference
-#define Reference RefCounted
-#endif
-#include "core/math/transform_3d.h"
-#include "core/templates/vector.h"
-#else
+#include "core/math/transform.h"
 #include "core/reference.h"
 #include "core/vector.h"
-#include "core/math/transform.h"
-#endif
 
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
