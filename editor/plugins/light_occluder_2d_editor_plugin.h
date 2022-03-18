@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "editor/plugins/abstract_polygon_2d_editor.h"
-#include "scene/2d/light_occluder_2d.h"
+
 #include "core/object.h"
 #include "core/reference.h"
 #include "core/variant.h"

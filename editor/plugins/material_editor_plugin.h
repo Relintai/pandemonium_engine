@@ -30,19 +30,17 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "editor/editor_inspector.h"
+#include "scene/gui/control.h"
 #include "editor/property_editor.h"
+
 #include "scene/resources/primitive_meshes.h"
-#include "editor/editor_node.h"
-#include "editor/editor_plugin.h"
-#include "scene/3d/camera.h"
-#include "scene/3d/light.h"
-#include "scene/3d/mesh_instance.h"
+
 #include "scene/resources/material.h"
 #include "core/object.h"
 #include "core/reference.h"
 #include "core/ustring.h"
-#include "editor/editor_inspector.h"
-#include "scene/gui/control.h"
+
 #include "scene/resources/environment.h"
 
 class ViewportContainer;
@@ -88,6 +86,7 @@ protected:
 public:
 	void edit(Ref<Material> p_material, const Ref<Environment> &p_env);
 	MaterialEditor();
+	~MaterialEditor();
 };
 
 class EditorInspectorPluginMaterial : public EditorInspectorPlugin {

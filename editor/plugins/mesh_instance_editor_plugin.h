@@ -30,15 +30,14 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_node.h"
+#include "scene/gui/control.h"
 #include "editor/editor_plugin.h"
-#include "scene/3d/mesh_instance.h"
-#include "scene/gui/spin_box.h"
+
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/ustring.h"
 #include "core/vector.h"
-#include "scene/gui/control.h"
+
 
 class AcceptDialog;
 class ConfirmationDialog;

@@ -30,22 +30,14 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/script_language.h"
-#include "editor/code_editor.h"
-#include "editor/editor_help.h"
-#include "editor/editor_help_search.h"
 #include "editor/editor_plugin.h"
-#include "editor/script_create_dialog.h"
-#include "scene/gui/item_list.h"
-#include "scene/gui/line_edit.h"
-#include "scene/gui/menu_button.h"
-#include "scene/gui/split_container.h"
-#include "scene/gui/tab_container.h"
-#include "scene/gui/text_edit.h"
-#include "scene/gui/tool_button.h"
-#include "scene/gui/tree.h"
-#include "scene/main/timer.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/dialogs.h"
+#include "scene/gui/panel_container.h"
+
 #include "scene/resources/text_file.h"
+
+#include "core/script_language.h"
 #include "core/array.h"
 #include "core/error_list.h"
 #include "core/list.h"
@@ -58,9 +50,6 @@
 #include "core/ustring.h"
 #include "core/variant.h"
 #include "core/vector.h"
-#include "scene/gui/box_container.h"
-#include "scene/gui/dialogs.h"
-#include "scene/gui/panel_container.h"
 
 class Button;
 class ConfigFile;

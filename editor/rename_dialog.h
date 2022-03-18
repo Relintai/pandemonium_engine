@@ -41,6 +41,8 @@
 #include "core/undo_redo.h"
 #include "editor/scene_tree_editor.h"
 
+class CheckButton;
+
 /**
 @author Blazej Floch
 */

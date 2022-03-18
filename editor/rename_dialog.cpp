@@ -43,6 +43,7 @@
 #include "scene/gui/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/tab_container.h"
+#include "scene/gui/check_button.h"
 
 RenameDialog::RenameDialog(SceneTreeEditor *p_scene_tree_editor, UndoRedo *p_undo_redo) {
 	scene_tree_editor = p_scene_tree_editor;

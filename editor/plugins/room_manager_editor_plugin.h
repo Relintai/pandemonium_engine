@@ -30,12 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
-#include "scene/3d/occluder.h"
-#include "scene/3d/portal.h"
-#include "scene/3d/room.h"
-#include "scene/3d/room_manager.h"
+
 #include "scene/resources/material.h"
 #include "core/object.h"
 #include "core/ustring.h"

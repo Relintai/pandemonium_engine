@@ -31,9 +31,7 @@
 /*************************************************************************/
 
 #include "editor/editor_inspector.h"
-#include "editor/editor_spin_slider.h"
-#include "editor/property_selector.h"
-#include "scene/animation/animation_tree.h"
+
 #include "core/node_path.h"
 #include "core/object.h"
 #include "core/ustring.h"

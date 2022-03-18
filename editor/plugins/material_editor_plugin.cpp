@@ -230,6 +230,10 @@ MaterialEditor::MaterialEditor() {
 	}
 }
 
+MaterialEditor::~MaterialEditor() {
+
+}
+
 ///////////////////////
 
 bool EditorInspectorPluginMaterial::can_handle(Object *p_object) {

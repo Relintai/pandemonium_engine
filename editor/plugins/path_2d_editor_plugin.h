@@ -30,15 +30,14 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_node.h"
+#include "scene/gui/box_container.h"
 #include "editor/editor_plugin.h"
-#include "scene/2d/path_2d.h"
-#include "scene/gui/tool_button.h"
+
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/reference.h"
 #include "core/ustring.h"
-#include "scene/gui/box_container.h"
+
 
 class CanvasItemEditor;
 class Control;

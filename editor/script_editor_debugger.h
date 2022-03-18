@@ -36,6 +36,7 @@
 #include "editor/property_editor.h"
 #include "scene/3d/camera.h"
 #include "scene/gui/box_container.h"
+#include "scene/gui/margin_container.h"
 #include "scene/gui/button.h"
 
 class Tree;

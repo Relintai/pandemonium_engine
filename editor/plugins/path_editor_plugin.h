@@ -31,15 +31,15 @@
 /*************************************************************************/
 
 #include "editor/spatial_editor_gizmos.h"
-#include "scene/3d/path.h"
+#include "editor/plugins/spatial_editor_plugin.h"
+#include "editor/editor_plugin.h"
+
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
 #include "core/object.h"
 #include "core/reference.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "editor/editor_plugin.h"
-#include "editor/plugins/spatial_editor_plugin.h"
 
 class Camera;
 class EditorNode;

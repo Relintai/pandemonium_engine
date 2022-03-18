@@ -30,18 +30,16 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_node.h"
+#include "scene/gui/panel_container.h"
 #include "editor/editor_plugin.h"
-#include "scene/gui/dialogs.h"
-#include "scene/gui/file_dialog.h"
-#include "scene/gui/tree.h"
+
 #include "scene/main/resource_preloader.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/reference.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "scene/gui/panel_container.h"
+
 
 class AcceptDialog;
 class Button;

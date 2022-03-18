@@ -30,14 +30,14 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_node.h"
+#include "scene/gui/control.h"
 #include "editor/editor_plugin.h"
-#include "scene/gui/spin_box.h"
+
 #include "core/math/face3.h"
 #include "core/node_path.h"
 #include "core/object.h"
 #include "core/pool_vector.h"
-#include "scene/gui/control.h"
+
 
 class ConfirmationDialog;
 class EditorFileDialog;
