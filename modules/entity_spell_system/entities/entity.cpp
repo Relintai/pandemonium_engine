@@ -4363,8 +4363,8 @@ void Entity::skill_adds(Ref<EntitySkill> skill) {
 	if (skill_hass(skill))
 		return;
 
-	skill->CONNECT("current_changed", this, Entity, skill_scurrent_changed);
-	skill->CONNECT("max_changed", this, Entity, skill_smax_changed);
+	skill->connect("current_changed", this, "skill_scurrent_changed");
+	skill->connect("max_changed", this, "skill_smax_changed");
 
 	_s_skills.push_back(skill);
 
@@ -5175,23 +5175,23 @@ Ref<Bag> Entity::gets_bag() const {
 }
 void Entity::sets_bag(const Ref<Bag> bag) {
 	if (_s_bag.is_valid()) {
-		_s_bag->DISCONNECT("item_added", this, Entity, notification_item_sadded);
-		_s_bag->DISCONNECT("item_removed", this, Entity, notification_item_sremoved);
-		_s_bag->DISCONNECT("item_swapped", this, Entity, notification_items_sswapped);
-		_s_bag->DISCONNECT("item_count_changed", this, Entity, notification_item_sscount_changed);
-		_s_bag->DISCONNECT("overburdened", this, Entity, notification_soverburdened);
-		_s_bag->DISCONNECT("overburden_removed", this, Entity, notification_soverburden_removed);
+		_s_bag->disconnect("item_added", this, "notification_item_sadded");
+		_s_bag->disconnect("item_removed", this, "notification_item_sremoved");
+		_s_bag->disconnect("item_swapped", this, "notification_items_sswapped");
+		_s_bag->disconnect("item_count_changed", this, "notification_item_sscount_changed");
+		_s_bag->disconnect("overburdened", this, "notification_soverburdened");
+		_s_bag->disconnect("overburden_removed", this, "notification_soverburden_removed");
 	}
 
 	_s_bag = bag;
 
 	if (_s_bag.is_valid()) {
-		_s_bag->CONNECT("item_added", this, Entity, notification_item_sadded);
-		_s_bag->CONNECT("item_removed", this, Entity, notification_item_sremoved);
-		_s_bag->CONNECT("item_swapped", this, Entity, notification_items_sswapped);
-		_s_bag->CONNECT("item_count_changed", this, Entity, notification_item_sscount_changed);
-		_s_bag->CONNECT("overburdened", this, Entity, notification_soverburdened);
-		_s_bag->CONNECT("overburden_removed", this, Entity, notification_soverburden_removed);
+		_s_bag->connect("item_added", this, "notification_item_sadded");
+		_s_bag->connect("item_removed", this, "notification_item_sremoved");
+		_s_bag->connect("item_swapped", this, "notification_items_sswapped");
+		_s_bag->connect("item_count_changed", this, "notification_item_sscount_changed");
+		_s_bag->connect("overburdened", this, "notification_soverburdened");
+		_s_bag->connect("overburden_removed", this, "notification_soverburden_removed");
 	}
 
 	emit_signal("sbag_changed", this, _s_bag);
@@ -5217,19 +5217,19 @@ Ref<Bag> Entity::gets_target_bag() const {
 }
 void Entity::sets_target_bag(const Ref<Bag> bag) {
 	if (_s_target_bag.is_valid()) {
-		_s_target_bag->DISCONNECT("item_added", this, Entity, notification_target_item_sadded);
-		_s_target_bag->DISCONNECT("item_removed", this, Entity, notification_target_item_sremoved);
-		_s_target_bag->DISCONNECT("item_swapped", this, Entity, notification_target_items_sswapped);
-		_s_target_bag->DISCONNECT("item_count_changed", this, Entity, notification_target_item_sscount_changed);
+		_s_target_bag->disconnect("item_added", this, "notification_target_item_sadded");
+		_s_target_bag->disconnect("item_removed", this, "notification_target_item_sremoved");
+		_s_target_bag->disconnect("item_swapped", this, "notification_target_items_sswapped");
+		_s_target_bag->disconnect("item_count_changed", this, "notification_target_item_sscount_changed");
 	}
 
 	_s_target_bag = bag;
 
 	if (_s_target_bag.is_valid()) {
-		_s_target_bag->CONNECT("item_added", this, Entity, notification_target_item_sadded);
-		_s_target_bag->CONNECT("item_removed", this, Entity, notification_target_item_sremoved);
-		_s_target_bag->CONNECT("item_swapped", this, Entity, notification_target_items_sswapped);
-		_s_target_bag->CONNECT("item_count_changed", this, Entity, notification_target_item_sscount_changed);
+		_s_target_bag->connect("item_added", this, "notification_target_item_sadded");
+		_s_target_bag->connect("item_removed", this, "notification_target_item_sremoved");
+		_s_target_bag->connect("item_swapped", this, "notification_target_items_sswapped");
+		_s_target_bag->connect("item_count_changed", this, "notification_target_item_sscount_changed");
 	}
 
 	emit_signal("starget_bag_changed", this, _s_target_bag);

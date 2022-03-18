@@ -28,9 +28,6 @@ SOFTWARE.
 
 #include "core/os/input.h"
 
-#define CONNECT(sig, obj, target_method_class, method) connect(sig, obj, #method)
-#define DISCONNECT(sig, obj, target_method_class, method) disconnect(sig, obj, #method)
-
 void Prop2DEditorPlugin::convert_active_scene_to_prop_data() {
 	SceneTree *st = SceneTree::get_singleton();
 
@@ -103,7 +100,7 @@ Prop2DEditorPlugin::Prop2DEditorPlugin(EditorNode *p_node) {
 
 	Button *b = memnew(Button);
 
-	b->CONNECT("pressed", this, Prop2DEditorPlugin, _quick_convert_button_pressed);
+	b->connect("pressed", this, "_quick_convert_button_pressed");
 	b->set_text("To Prop2D");
 	b->set_shortcut(ED_SHORTCUT("spatial_editor/quick_prop_convert", "Quick convert scene to Prop2DData.", KEY_MASK_ALT + KEY_U));
 

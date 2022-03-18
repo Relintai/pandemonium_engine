@@ -42,7 +42,6 @@
 #include "scene/gui/margin_container.h"
 
 #include "core/input_map.h"
-#define CONNECT(sig, obj, target_method_class, method) connect(sig, obj, #method)
 
 static const char *_button_names[JOY_BUTTON_MAX] = {
 	"DualShock Cross, Xbox A, Nintendo B",
@@ -914,15 +913,15 @@ InputMapEditor::InputMapEditor() {
 	input_editor->set_column_expand(2, false);
 	input_editor->set_column_min_width(2, 50);
 
-	input_editor->CONNECT("item_edited", this, InputMapEditor, _action_edited);
-	input_editor->CONNECT("item_activated", this, InputMapEditor, _action_activated);
-	input_editor->CONNECT("cell_selected", this, InputMapEditor, _action_selected);
-	input_editor->CONNECT("button_pressed", this, InputMapEditor, _action_button_pressed);
+	input_editor->connect("item_edited", this, "_action_edited");
+	input_editor->connect("item_activated", this, "_action_activated");
+	input_editor->connect("cell_selected", this, "_action_selected");
+	input_editor->connect("button_pressed", this, "_action_button_pressed");
 	input_editor->set_drag_forwarding(this);
 
 	popup_add = memnew(PopupMenu);
 	add_child(popup_add);
-	popup_add->CONNECT("id_pressed", this, InputMapEditor, _add_item);
+	popup_add->connect("id_pressed", this, "_add_item");
 
 	press_a_key = memnew(ConfirmationDialog);
 	press_a_key->set_focus_mode(FOCUS_ALL);
@@ -941,15 +940,15 @@ InputMapEditor::InputMapEditor() {
 
 	press_a_key_label = l;
 	press_a_key->add_child(l);
-	press_a_key->CONNECT("gui_input", this, InputMapEditor, _wait_for_key);
-	press_a_key->CONNECT("confirmed", this, InputMapEditor, _press_a_key_confirm);
+	press_a_key->connect("gui_input", this, "_wait_for_key");
+	press_a_key->connect("confirmed", this, "_press_a_key_confirm");
 
 	device_input = memnew(ConfirmationDialog);
 	add_child(device_input);
 
 	device_input->get_ok()->set_text("Add");
 
-	device_input->CONNECT("confirmed", this, InputMapEditor, _device_input_add);
+	device_input->connect("confirmed", this, "_device_input_add");
 
 	HBoxContainer *hbc = memnew(HBoxContainer);
 	device_input->add_child(hbc);
@@ -985,7 +984,7 @@ InputMapEditor::InputMapEditor() {
 
 	timer = memnew(Timer);
 	timer->set_wait_time(1.5);
-	timer->CONNECT("timeout", ProjectSettings::get_singleton(), ProjectSettings, save);
+	timer->connect("timeout", ProjectSettings::get_singleton(), "save");
 	timer->set_one_shot(true);
 	add_child(timer);
 }

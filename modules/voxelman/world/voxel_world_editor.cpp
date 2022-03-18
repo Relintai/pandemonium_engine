@@ -164,7 +164,7 @@ void VoxelWorldEditor::edit(VoxelWorld *p_world) {
 		button->set_button_group(_surfaces_button_group);
 		button->set_h_size_flags(SIZE_EXPAND_FILL);
 
-		button->CONNECT("button_up", this, VoxelWorldEditor, _on_surface_button_pressed);
+		button->connect("button_up", this, "_on_surface_button_pressed");
 
 		_surfaces_vbox_container->add_child(button);
 
@@ -208,7 +208,7 @@ VoxelWorldEditor::VoxelWorldEditor(EditorNode *p_editor) {
 	add_button->set_button_group(_tool_button_group);
 	add_button->set_meta("tool_mode", TOOL_MODE_ADD);
 
-	add_button->CONNECT("button_up", this, VoxelWorldEditor, _on_tool_button_pressed);
+	add_button->connect("button_up", this, "_on_tool_button_pressed");
 
 	add_button->set_shortcut(ED_SHORTCUT("voxel_world_editor/add_mode", "Add Mode", KEY_A));
 
@@ -220,7 +220,7 @@ VoxelWorldEditor::VoxelWorldEditor(EditorNode *p_editor) {
 	remove_button->set_button_group(_tool_button_group);
 	remove_button->set_meta("tool_mode", TOOL_MODE_REMOVE);
 
-	remove_button->CONNECT("button_up", this, VoxelWorldEditor, _on_tool_button_pressed);
+	remove_button->connect("button_up", this, "_on_tool_button_pressed");
 
 	remove_button->set_shortcut(ED_SHORTCUT("voxel_world_editor/remove_mode", "Remove Mode", KEY_S));
 
@@ -229,7 +229,7 @@ VoxelWorldEditor::VoxelWorldEditor(EditorNode *p_editor) {
 	ToolButton *insert_buton = memnew(ToolButton);
 	insert_buton->set_text("Insert");
 
-	insert_buton->CONNECT("button_up", this, VoxelWorldEditor, _on_insert_block_at_camera_button_pressed);
+	insert_buton->connect("button_up", this, "_on_insert_block_at_camera_button_pressed");
 
 	insert_buton->set_shortcut(ED_SHORTCUT("voxel_world_editor/instert_block_at_camera", "Insert at camera", KEY_B));
 
@@ -245,7 +245,7 @@ VoxelWorldEditor::VoxelWorldEditor(EditorNode *p_editor) {
 	_isolevel_slider->set_v_size_flags(SIZE_EXPAND_FILL);
 	spatial_editor_hb->add_child(_isolevel_slider);
 
-	_isolevel_slider->CONNECT("value_changed", this, VoxelWorldEditor, _on_isolevel_slider_value_changed);
+	_isolevel_slider->connect("value_changed", this, "_on_isolevel_slider_value_changed");
 
 	_isolevel_slider->hide();
 

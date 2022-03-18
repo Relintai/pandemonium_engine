@@ -16,9 +16,6 @@
 		arr_into.push_back(e);                 \
 	}
 
-#define CONNECT(sig, obj, target_method_class, method) connect(sig, obj, #method)
-#define DISCONNECT(sig, obj, target_method_class, method) disconnect(sig, obj, #method)
-
 #define CALL(func, ...) \
 	call(#func, ##__VA_ARGS__);
 

@@ -61,7 +61,7 @@ Ref<ClassProfile> PlayerProfile::get_class_profile_index(const int index) {
 }
 
 void PlayerProfile::add_class_profile(Ref<ClassProfile> profile) {
-	profile->CONNECT("changed", this, PlayerProfile, _on_class_profile_changed);
+	profile->connect("changed", this, "_on_class_profile_changed");
 
 	_class_profiles.push_back(profile);
 
@@ -70,7 +70,7 @@ void PlayerProfile::add_class_profile(Ref<ClassProfile> profile) {
 
 void PlayerProfile::clear_class_profiles() {
 	for (int i = 0; i < _class_profiles.size(); ++i) {
-		_class_profiles.get(i)->DISCONNECT("changed", this, PlayerProfile, _on_class_profile_changed);
+		_class_profiles.get(i)->disconnect("changed", this, "_on_class_profile_changed");
 	}
 
 	_class_profiles.clear();
@@ -79,7 +79,7 @@ void PlayerProfile::clear_class_profiles() {
 }
 
 void PlayerProfile::remove_class_profile(const int index) {
-	_class_profiles.get(index)->DISCONNECT("changed", this, PlayerProfile, _on_class_profile_changed);
+	_class_profiles.get(index)->disconnect("changed", this, "_on_class_profile_changed");
 
 	_class_profiles.remove(index);
 
@@ -101,7 +101,7 @@ Ref<ClassProfile> PlayerProfile::get_class_profile(const StringName &class_path)
 
 	class_profile->load_defaults();
 
-	class_profile->CONNECT("changed", this, PlayerProfile, _on_class_profile_changed);
+	class_profile->connect("changed", this, "_on_class_profile_changed");
 
 	_class_profiles.push_back(Ref<ClassProfile>(class_profile));
 
@@ -159,7 +159,7 @@ void PlayerProfile::from_dict(const Dictionary &dict) {
 
 		c->from_dict(arr.get(i));
 
-		c->CONNECT("changed", this, PlayerProfile, _on_class_profile_changed);
+		c->connect("changed", this, "_on_class_profile_changed");
 
 		_class_profiles.push_back(c);
 	}
@@ -187,7 +187,7 @@ void PlayerProfile::load_defaults() {
 	for (int i = 0; i < _class_profiles.size(); ++i) {
 		_class_profiles.get(i)->load_defaults();
 
-		_class_profiles.get(i)->CONNECT("changed", this, PlayerProfile, _on_class_profile_changed);
+		_class_profiles.get(i)->connect("changed", this, "_on_class_profile_changed");
 	}
 
 	emit_change();

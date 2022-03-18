@@ -30,9 +30,6 @@ SOFTWARE.
 #include "core/os/os.h"
 #include "scene/main/scene_tree.h"
 
-#define CONNECT(sig, obj, target_method_class, method) connect(sig, obj, #method)
-#define DISCONNECT(sig, obj, target_method_class, method) disconnect(sig, obj, #method)
-
 ThreadPool *ThreadPool::_instance;
 
 ThreadPool *ThreadPool::get_singleton() {
@@ -241,7 +238,7 @@ void ThreadPool::_worker_thread_func(void *user_data) {
 }
 
 void ThreadPool::register_update() {
-	SceneTree::get_singleton()->CONNECT("idle_frame", this, ThreadPool, update);
+	SceneTree::get_singleton()->connect("idle_frame", this, "update");
 }
 
 void ThreadPool::update() {
