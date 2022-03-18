@@ -34,11 +34,13 @@ int CharacterSkeleton3D::get_entity_type() const {
 void CharacterSkeleton3D::set_entity_type(const int value) {
 	_entity_type = value;
 
-	int bones_size = ESS::get_singleton()->skeletons_bones_index_get(_entity_type).get_slice_count(",");
-	int attachment_size = ESS::get_singleton()->skeletons_bone_attachment_index_get(_entity_type).get_slice_count(",");
+	if (ESS::get_singleton()) {
+		int bones_size = ESS::get_singleton()->skeletons_bones_index_get(_entity_type).get_slice_count(",");
+		int attachment_size = ESS::get_singleton()->skeletons_bone_attachment_index_get(_entity_type).get_slice_count(",");
 
-	_attach_point_nodes.resize(attachment_size);
-	_entries.resize(bones_size);
+		_attach_point_nodes.resize(attachment_size);
+		_entries.resize(bones_size);
+	}
 }
 
 int CharacterSkeleton3D::get_model_index() {

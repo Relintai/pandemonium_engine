@@ -34,11 +34,13 @@ int CharacterSkeleton2D::get_entity_type() const {
 void CharacterSkeleton2D::set_entity_type(const int value) {
 	_entity_type = value;
 
-	int bones_size = ESS::get_singleton()->skeletons_bones_index_get(_entity_type).get_slice_count(",");
-	int attachment_size = ESS::get_singleton()->skeletons_bone_attachment_index_get(_entity_type).get_slice_count(",");
+	if (ESS::get_singleton()) {
+		int bones_size = ESS::get_singleton()->skeletons_bones_index_get(_entity_type).get_slice_count(",");
+		int attachment_size = ESS::get_singleton()->skeletons_bone_attachment_index_get(_entity_type).get_slice_count(",");
 
-	_attach_point_nodes.resize(attachment_size);
-	_entries.resize(bones_size);
+		_attach_point_nodes.resize(attachment_size);
+		_entries.resize(bones_size);
+	}
 }
 
 int CharacterSkeleton2D::get_model_index() {
@@ -256,7 +258,7 @@ void CharacterSkeleton2D::add_model_visual_entry(Ref<ModelVisual> vis, Ref<Model
 
 	int target_bone_idx = ive->get_bone();
 
-	Vector<Ref<SkeletonModelEntry> > &entries = _entries.write[target_bone_idx];
+	Vector<Ref<SkeletonModelEntry>> &entries = _entries.write[target_bone_idx];
 
 	for (int i = 0; i < entries.size(); ++i) {
 		Ref<SkeletonModelEntry> e = entries.get(i);
@@ -298,7 +300,7 @@ void CharacterSkeleton2D::remove_model_visual_entry(Ref<ModelVisual> vis, Ref<Mo
 
 	int target_bone_idx = ive->get_bone();
 
-	Vector<Ref<SkeletonModelEntry> > &entries = _entries.write[target_bone_idx];
+	Vector<Ref<SkeletonModelEntry>> &entries = _entries.write[target_bone_idx];
 
 	for (int i = 0; i < entries.size(); ++i) {
 		Ref<SkeletonModelEntry> e = entries.get(i);
@@ -332,7 +334,7 @@ int CharacterSkeleton2D::get_model_entry_count(const int bone_index) {
 
 void CharacterSkeleton2D::sort_layers() {
 	for (int i = 0; i < _entries.size(); ++i) {
-		Vector<Ref<SkeletonModelEntry> > &entries = _entries.write[i];
+		Vector<Ref<SkeletonModelEntry>> &entries = _entries.write[i];
 
 		entries.sort_custom<_ModelEntryComparator>();
 	}
