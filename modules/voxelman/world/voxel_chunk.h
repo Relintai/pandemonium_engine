@@ -48,8 +48,6 @@ include_pool_vector
 #include "../../props/props/prop_data.h"
 #endif
 
-#include "core/version.h"
-
 #include "../library/voxel_library.h"
 #include "../library/voxel_surface.h"
 ; //hackfix for a clang format issue

@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "action_bar_entry.h"
 
-#include "core/version.h"
-
 #include "action_bar_profile.h"
 
 #include "../../defines.h"

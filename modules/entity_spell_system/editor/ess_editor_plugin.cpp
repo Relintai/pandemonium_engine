@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "ess_editor_plugin.h"
 
-#include "core/version.h"
-
 void ESSEditorPlugin::fix_ids(Variant param) {
 }
 

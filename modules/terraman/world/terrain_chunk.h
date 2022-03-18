@@ -47,8 +47,6 @@ SOFTWARE.
 #include "../../props/props/prop_data.h"
 #endif
 
-#include "core/version.h"
-
 #include "../library/terrain_library.h"
 #include "../library/terrain_surface.h"
 

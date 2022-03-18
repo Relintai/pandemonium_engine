@@ -30,8 +30,6 @@ SOFTWARE.
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
 
-#include "core/version.h"
-
 #include "prop_2d_data_entry.h"
 
 #if TEXTURE_PACKER_PRESENT

@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "spell_damage_info.h"
 
-#include "core/version.h"
-
 #include "../data/spells/spell.h"
 #include "../database/ess_resource_db.h"
 #include "../entities/entity.h"

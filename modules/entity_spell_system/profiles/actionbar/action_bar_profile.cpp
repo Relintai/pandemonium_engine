@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "action_bar_profile.h"
 
-#include "core/version.h"
-
 #include "../class_profile.h"
 
 Ref<ClassProfile> ActionBarProfile::get_owner() {

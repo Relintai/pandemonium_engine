@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "mesh_data_resource_collection.h"
 
-#include "core/version.h"
-
 void MeshDataResourceCollection::add_mdr(Ref<MeshDataResource> mdr) {
 	_mdrs.push_back(mdr);
 }

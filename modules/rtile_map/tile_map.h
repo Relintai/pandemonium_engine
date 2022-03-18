@@ -31,7 +31,6 @@
 /*************************************************************************/
 
 #include "core/self_list.h"
-#include "core/version.h"
 #include "core/vset.h"
 #include "scene/2d/navigation_2d.h"
 #include "scene/2d/node_2d.h"

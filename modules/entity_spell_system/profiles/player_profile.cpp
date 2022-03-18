@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "player_profile.h"
 
-#include "core/version.h"
-
 #include "../defines.h"
 
 const String PlayerProfile::DEFAULT_PROFILE_FILE_NAME = "default.profile";

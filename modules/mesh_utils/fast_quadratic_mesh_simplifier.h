@@ -25,8 +25,6 @@ SOFTWARE.
 
 */
 
-#include "core/version.h"
-
 #include "core/array.h"
 #include "core/reference.h"
 

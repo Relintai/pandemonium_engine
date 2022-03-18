@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "class_profile.h"
 
-#include "core/version.h"
-
 StringName ClassProfile::get_class_path() const {
 	return _class_path;
 }

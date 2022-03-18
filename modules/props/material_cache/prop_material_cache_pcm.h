@@ -24,8 +24,6 @@ SOFTWARE.
 
 #include "prop_material_cache.h"
 
-#include "core/version.h"
-
 #include "core/color.h"
 #include "core/resource.h"
 #include "core/vector.h"

@@ -22,14 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
+#include "core/dictionary.h"
 #include "core/reference.h"
 #include "core/ustring.h"
-#include "core/dictionary.h"
 
 #include "class_profile.h"
 
@@ -54,7 +49,7 @@ public:
 	void clear_class_profiles();
 	void remove_class_profile(const int index);
 
-	Vector<Ref<ClassProfile> > &get_class_profiles();
+	Vector<Ref<ClassProfile>> &get_class_profiles();
 	Ref<ClassProfile> get_class_profile(const StringName &class_path);
 
 	Dictionary get_custom_data();
@@ -82,7 +77,7 @@ private:
 
 	Dictionary _custom_data;
 
-	Vector<Ref<ClassProfile> > _class_profiles;
+	Vector<Ref<ClassProfile>> _class_profiles;
 };
 
 #endif

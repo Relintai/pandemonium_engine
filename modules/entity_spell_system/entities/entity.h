@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
 #include "core/object.h"
 #include "core/ustring.h"
 #include "core/vector.h"
@@ -54,8 +53,6 @@ SOFTWARE.
 #include "./ai/entity_ai.h"
 
 #include "../data/auras/aura_group.h"
-
-#include "core/version.h"
 
 #include "../defines.h"
 

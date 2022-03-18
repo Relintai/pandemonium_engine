@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "spell_cast_info.h"
 
-#include "core/version.h"
-
 #include "../data/items/item_instance.h"
 #include "../data/items/item_template.h"
 #include "../data/spells/spell.h"

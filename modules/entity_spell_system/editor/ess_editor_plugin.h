@@ -25,8 +25,6 @@ SOFTWARE.
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 
-#include "core/version.h"
-
 class ESSEditorPlugin : public EditorPlugin {
 	GDCLASS(ESSEditorPlugin, EditorPlugin);
 	EditorNode *editor;

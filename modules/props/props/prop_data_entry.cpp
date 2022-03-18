@@ -24,8 +24,6 @@ SOFTWARE.
 
 #include "prop_data.h"
 
-#include "core/version.h"
-
 #include "scene/3d/spatial.h"
 
 #if TEXTURE_PACKER_PRESENT

@@ -45,8 +45,6 @@ SOFTWARE.
 
 #include "core/script_language.h"
 
-#include "core/version.h"
-
 #include "../defines.h"
 
 #define PROPERTY_DEBUG false

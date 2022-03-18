@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "action_bar_button_entry.h"
 
-#include "core/version.h"
-
 #include "action_bar_entry.h"
 
 const String ActionBarButtonEntry::BINDING_STRING_ACTIONBAR_BUTTON_ENTRY_TYPE = "None,Spell,Item";

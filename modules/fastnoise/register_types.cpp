@@ -1,7 +1,5 @@
 #include "register_types.h"
 
-#include "core/version.h"
-
 #include "core/class_db.h"
 
 #include "fastnoise_noise_params.h"

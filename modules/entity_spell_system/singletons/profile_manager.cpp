@@ -24,8 +24,6 @@ SOFTWARE.
 #include "core/io/json.h"
 #include "core/os/file_access.h"
 
-#include "core/version.h"
-
 #include "core/engine.h"
 #include "core/project_settings.h"
 

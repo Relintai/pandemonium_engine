@@ -22,15 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#include "core/reference.h"
-#include "core/vector.h"
 #include "core/array.h"
 #include "core/dictionary.h"
+#include "core/reference.h"
+#include "core/vector.h"
 
 #include "action_bar_button_entry.h"
 
@@ -71,7 +66,7 @@ protected:
 private:
 	int _action_bar_id;
 	int _slot_num;
-	Vector<Ref<ActionBarButtonEntry> > _button_entries;
+	Vector<Ref<ActionBarButtonEntry>> _button_entries;
 
 	float _size;
 

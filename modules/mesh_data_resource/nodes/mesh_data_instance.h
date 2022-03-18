@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/version.h"
 #include "scene/resources/texture.h"
 
 #include "scene/3d/visual_instance.h"

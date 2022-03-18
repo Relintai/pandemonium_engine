@@ -22,10 +22,8 @@ SOFTWARE.
 
 #include "input_profile.h"
 
-#include "core/version.h"
-
-#include "core/ustring.h"
 #include "core/project_settings.h"
+#include "core/ustring.h"
 
 #include "../class_profile.h"
 

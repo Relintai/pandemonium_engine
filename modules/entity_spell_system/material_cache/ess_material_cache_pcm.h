@@ -22,12 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #include "ess_material_cache.h"
-
-#include "core/version.h"
 
 #include "core/color.h"
 #include "core/resource.h"

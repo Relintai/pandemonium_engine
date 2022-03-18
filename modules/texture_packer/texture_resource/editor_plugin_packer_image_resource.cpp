@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "editor_plugin_packer_image_resource.h"
 
-#include "core/version.h"
-
 void EditorPluginPackerImageResource::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE:

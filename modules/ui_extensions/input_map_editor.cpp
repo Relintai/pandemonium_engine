@@ -41,8 +41,6 @@
 #include "editor/editor_scale.h"
 #include "scene/gui/margin_container.h"
 
-#include "core/version.h"
-
 #include "core/input_map.h"
 #define CONNECT(sig, obj, target_method_class, method) connect(sig, obj, #method)
 

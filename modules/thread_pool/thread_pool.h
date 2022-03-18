@@ -31,7 +31,6 @@ SOFTWARE.
 #include "core/os/semaphore.h"
 #include "core/os/thread.h"
 #include "core/os/thread_safe.h"
-#include "core/version.h"
 #include "thread_pool_execute_job.h"
 #include "thread_pool_job.h"
 

@@ -25,8 +25,6 @@ SOFTWARE.
 #include "../props/prop_data.h"
 #include "../props/prop_data_entry.h"
 
-#include "core/version.h"
-
 #include "core/engine.h"
 #include "core/project_settings.h"
 

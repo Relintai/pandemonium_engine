@@ -1,8 +1,5 @@
 #include "mesh_data_instance_2d.h"
 
-#include "core/version.h"
-
-#include "core/version.h"
 #include "scene/resources/texture.h"
 
 #include "core/image.h"

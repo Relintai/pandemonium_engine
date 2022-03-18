@@ -24,8 +24,6 @@ SOFTWARE.
 
 */
 
-#include "core/version.h"
-
 #include "core/engine.h"
 
 #include "thread_pool.h"

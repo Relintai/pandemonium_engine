@@ -22,14 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
 #include "core/reference.h"
-#include "core/vector.h"
 #include "core/ustring.h"
+#include "core/vector.h"
 
 #include "input_profile_modifier_entry.h"
 
@@ -59,7 +54,7 @@ protected:
 
 private:
 	Vector<String> *_modifier_actions;
-	Vector<Ref<InputProfileModifierEntry> > *_entries;
+	Vector<Ref<InputProfileModifierEntry>> *_entries;
 };
 
 #endif

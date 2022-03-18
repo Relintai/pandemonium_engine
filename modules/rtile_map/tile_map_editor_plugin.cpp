@@ -33,7 +33,6 @@
 #include "core/math/math_funcs.h"
 #include "core/os/input.h"
 #include "core/os/keyboard.h"
-#include "core/version.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 #include "editor/plugins/canvas_item_editor_plugin.h"

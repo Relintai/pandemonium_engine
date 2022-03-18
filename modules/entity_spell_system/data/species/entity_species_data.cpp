@@ -26,8 +26,6 @@ SOFTWARE.
 
 #include "../../singletons/ess.h"
 
-#include "core/version.h"
-
 int EntitySpeciesData::get_id() const {
 	return _id;
 }

@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "packer_image_resource.h"
 
-#include "core/version.h"
-
 int PackerImageResource::get_width() const {
 	if (_image.is_valid()) {
 		return _image->get_width();

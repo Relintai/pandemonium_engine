@@ -30,8 +30,6 @@ SOFTWARE.
 
 #include "../../world/jobs/voxel_job.h"
 
-#include "core/version.h"
-
 #include "servers/visual_server.h"
 
 void VoxelMesherMarchingCubes::get_voxel_type_array(int *arr, Ref<VoxelChunk> chunk, const int x, const int y, const int z, const int size) {

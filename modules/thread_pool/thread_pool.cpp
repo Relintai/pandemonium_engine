@@ -30,8 +30,6 @@ SOFTWARE.
 #include "core/os/os.h"
 #include "scene/main/scene_tree.h"
 
-#include "core/version.h"
-
 #define CONNECT(sig, obj, target_method_class, method) connect(sig, obj, #method)
 #define DISCONNECT(sig, obj, target_method_class, method) disconnect(sig, obj, #method)
 

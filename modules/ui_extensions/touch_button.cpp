@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "touch_button.h"
 
-#include "core/version.h"
-
 void TouchButton::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {

@@ -34,8 +34,6 @@
 #include <algorithm>
 #include <random>
 
-#include "core/version.h"
-
 namespace fastnoise {
 
 const FN_DECIMAL GRAD_X[] = {

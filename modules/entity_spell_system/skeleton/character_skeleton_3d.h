@@ -22,14 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#include "core/vector.h"
-#include "core/ustring.h"
 #include "core/node_path.h"
+#include "core/ustring.h"
+#include "core/vector.h"
 
 #include "scene/main/node.h"
 
@@ -175,8 +170,8 @@ private:
 	Vector<BoneModelAdditionalMeshTransforms> _bone_model_additional_mesh_transforms;
 
 	bool _model_dirty;
-	Vector<Ref<ModelVisual> > _model_visuals;
-	Vector<Vector<Ref<SkeletonModelEntry> > > _entries;
+	Vector<Ref<ModelVisual>> _model_visuals;
+	Vector<Vector<Ref<SkeletonModelEntry>>> _entries;
 };
 
 #endif

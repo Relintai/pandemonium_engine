@@ -22,14 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#include "core/vector.h"
-#include "core/ustring.h"
 #include "core/node_path.h"
+#include "core/ustring.h"
+#include "core/vector.h"
 
 #include "scene/2d/node_2d.h"
 
@@ -152,8 +147,8 @@ private:
 	Vector<AttachPointNode> _attach_point_nodes;
 
 	bool _model_dirty;
-	Vector<Ref<ModelVisual> > _model_visuals;
-	Vector<Vector<Ref<SkeletonModelEntry> > > _entries;
+	Vector<Ref<ModelVisual>> _model_visuals;
+	Vector<Vector<Ref<SkeletonModelEntry>>> _entries;
 };
 
 #endif

@@ -22,11 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
 #include "core/object.h"
 #include "core/vector.h"
 
@@ -86,7 +81,7 @@ private:
 
 	String _save_file;
 
-	Vector<Ref<PlayerProfile> > _s_player_profiles;
+	Vector<Ref<PlayerProfile>> _s_player_profiles;
 	Ref<PlayerProfile> _c_player_profile;
 };
 

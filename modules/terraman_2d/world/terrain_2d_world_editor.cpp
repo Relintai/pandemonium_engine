@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "terrain_2d_world_editor.h"
 
-#include "core/version.h"
-
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 

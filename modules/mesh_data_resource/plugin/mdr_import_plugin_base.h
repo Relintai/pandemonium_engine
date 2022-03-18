@@ -22,11 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
 #include "core/array.h"
 #include "core/ustring.h"
 
@@ -41,8 +36,6 @@ SOFTWARE.
 #include "../mesh_data_resource.h"
 
 #include "core/math/transform.h"
-
-#include "core/version.h"
 
 #include "scene/3d/mesh_instance.h"
 

@@ -24,8 +24,6 @@ SOFTWARE.
 
 #include "prop_2d_data.h"
 
-#include "core/version.h"
-
 #include "scene/2d/node_2d.h"
 
 #if TEXTURE_PACKER_PRESENT

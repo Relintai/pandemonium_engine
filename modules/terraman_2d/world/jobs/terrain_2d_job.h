@@ -27,10 +27,7 @@ SOFTWARE.
 #if THREAD_POOL_PRESENT
 #include "../../../thread_pool/thread_pool_job.h"
 #else
-
-#include "core/version.h"
 #include "core/reference.h"
-
 #endif
 
 #include "../../defines.h"

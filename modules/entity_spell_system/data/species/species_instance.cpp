@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "species_instance.h"
 
-#include "core/version.h"
-
 #include "../../database/ess_resource_db.h"
 #include "../../singletons/ess.h"
 

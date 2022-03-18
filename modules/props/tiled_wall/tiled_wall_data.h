@@ -30,8 +30,6 @@ SOFTWARE.
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
 
-#include "core/version.h"
-
 #include "scene/resources/material.h"
 #include "scene/resources/texture.h"
 

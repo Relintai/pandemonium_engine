@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "entity_data_container.h"
 
-#include "core/version.h"
-
 Dictionary EntityDataContainer::to_dict() {
 	return call("_to_dict");
 }

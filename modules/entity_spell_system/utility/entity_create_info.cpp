@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "entity_create_info.h"
 
-#include "core/version.h"
-
 #include "../data/species/species_instance.h"
 #include "../entities/data/entity_data.h"
 #include "../entities/entity.h"

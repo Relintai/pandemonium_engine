@@ -22,8 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/version.h"
-
 #include "core/math/transform.h"
 #include "core/reference.h"
 #include "core/vector.h"
@@ -31,8 +29,6 @@ SOFTWARE.
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
-
-#include "core/version.h"
 
 #include "prop_data_entry.h"
 

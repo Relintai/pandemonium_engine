@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "voxel_level_generator.h"
 
-#include "core/version.h"
-
 #include "../world/voxel_chunk.h"
 
 void VoxelLevelGenerator::generate_chunk(Ref<VoxelChunk> chunk) {

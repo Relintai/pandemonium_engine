@@ -22,16 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#include "core/reference.h"
-#include "core/vector.h"
-#include "core/ustring.h"
 #include "core/array.h"
 #include "core/dictionary.h"
+#include "core/reference.h"
+#include "core/ustring.h"
+#include "core/vector.h"
 
 #include "action_bar_entry.h"
 
@@ -46,7 +41,7 @@ public:
 
 	String get_action_bar_profile_name();
 	void set_action_bar_profile_name(const String &value);
-	Vector<Ref<ActionBarEntry> > &get_action_bars();
+	Vector<Ref<ActionBarEntry>> &get_action_bars();
 	void load_defaults();
 
 	int get_action_bar_count() const;
@@ -70,7 +65,7 @@ protected:
 
 private:
 	String _name;
-	Vector<Ref<ActionBarEntry> > _action_bars;
+	Vector<Ref<ActionBarEntry>> _action_bars;
 
 	ClassProfile *_owner;
 };

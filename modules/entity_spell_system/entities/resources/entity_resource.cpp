@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "entity_resource.h"
 
-#include "core/version.h"
-
 #include "../../database/ess_resource_db.h"
 #include "../../singletons/ess.h"
 #include "../entity.h"
