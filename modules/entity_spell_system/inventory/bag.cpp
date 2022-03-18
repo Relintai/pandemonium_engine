@@ -35,6 +35,7 @@ void Bag::set_allowed_item_types(const int value) {
 
 bool Bag::add_item(Ref<ItemInstance> item) {
 	ERR_FAIL_COND_V(!item.is_valid(), false);
+	ERR_FAIL_COND_V(!item->get_item_template().is_valid(), false);
 
 	if (has_method("_add_item")) {
 		return call("_add_item", item);
