@@ -201,7 +201,6 @@ protected:
 public:
 	struct IntPos {
 		int x;
-		int y;
 		int z;
 
 		IntPos() {
