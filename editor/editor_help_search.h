@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/ordered_hash_map.h"
 #include "editor/code_editor.h"
 #include "editor/editor_help.h"

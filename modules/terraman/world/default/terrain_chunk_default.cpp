@@ -24,8 +24,8 @@ SOFTWARE.
 
 #include "../../defines.h"
 
-#include "servers/visual_server.h"
 #include "servers/physics_server.h"
+#include "servers/visual_server.h"
 
 #include "../../../opensimplex/open_simplex_noise.h"
 #include "../../meshers/default/terrain_mesher_default.h"
@@ -636,23 +636,23 @@ void TerrainChunkDefault::draw_debug_voxels(int max, Color color) {
 	int64_t sx = static_cast<int64_t>(_size_x);
 	int64_t sz = static_cast<int64_t>(_size_z);
 
-		for (int z = 0; z < sz; ++z) {
-			for (int x = 0; x < sx; ++x) {
-				int type = get_voxel(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_TYPE);
+	for (int z = 0; z < sz; ++z) {
+		for (int x = 0; x < sx; ++x) {
+			int type = get_voxel(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_TYPE);
 
-				if (type == 0) {
-					continue;
-				}
+			if (type == 0) {
+				continue;
+			}
 
-				draw_cross_voxels_fill(Vector3(x, get_voxel(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL), z), get_voxel(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL) / 255.0 * get_voxel_scale() * 2.0);
+			draw_cross_voxels_fill(Vector3(x, get_voxel(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL), z), get_voxel(x, z, TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL) / 255.0 * get_voxel_scale() * 2.0);
 
-				++a;
+			++a;
 
-				if (a > max) {
-					break;
-				}
+			if (a > max) {
+				break;
 			}
 		}
+	}
 
 	debug_mesh_send();
 }

@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #if defined(TOOLS_ENABLED) && defined(JAVASCRIPT_ENABLED)
 #include "core/io/zip_io.h"
 #include "editor/editor_plugin.h"

@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/vector.h"
 #include "core/array.h"
+#include "core/vector.h"
 
 #include "../items/item_template.h"
 

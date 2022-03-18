@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/io/packet_peer_dtls.h"
 #include "ssl_context_mbedtls.h"
 

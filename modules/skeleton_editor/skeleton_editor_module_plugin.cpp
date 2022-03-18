@@ -32,8 +32,8 @@ void SkeletonEditorModulePlugin::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE) {
 		add_spatial_gizmo_plugin(Ref<ModuleSkeletonSpatialGizmoPlugin>(memnew(ModuleSkeletonSpatialGizmoPlugin)));
 	} else if (p_what == NOTIFICATION_POST_ENTER_TREE) {
-        //Removing the built in SkeletonSpatialGizmoPlugin
-        //it is allocated in SpatialEditor's NOTIFICATION_ENTER_TREE, that's why we are in NOTIFICATION_POST_ENTER_TREE
+		//Removing the built in SkeletonSpatialGizmoPlugin
+		//it is allocated in SpatialEditor's NOTIFICATION_ENTER_TREE, that's why we are in NOTIFICATION_POST_ENTER_TREE
 		Ref<EditorSpatialGizmoPlugin> original_plugin = SpatialEditor::get_singleton()->get_gizmo_plugin("Skeleton");
 
 		if (original_plugin.is_valid()) {

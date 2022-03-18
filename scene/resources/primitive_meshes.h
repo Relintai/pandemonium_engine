@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "scene/resources/mesh.h"
 
 ///@TODO probably should change a few integers to unsigned integers...

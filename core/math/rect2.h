@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/math/vector2.h" // also includes math_funcs and ustring
 
 struct Transform2D;

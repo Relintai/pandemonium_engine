@@ -33,9 +33,9 @@
 #include "scene/3d/collision_shape.h"
 #include "scene/3d/navigation.h"
 #include "scene/3d/physics_body.h"
-#include "servers/navigation_server.h"
 #include "scene/3d/spatial.h"
 #include "scene/resources/shape.h"
+#include "servers/navigation_server.h"
 
 void NavigationObstacle::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_navigation", "navigation"), &NavigationObstacle::set_navigation_node);

@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "editor_file_dialog.h"
 #include "quick_open.h"
 #include "scene/gui/box_container.h"

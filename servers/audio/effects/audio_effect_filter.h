@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "servers/audio/audio_effect.h"
 #include "servers/audio/audio_filter_sw.h"
 

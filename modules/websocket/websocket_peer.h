@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/error_list.h"
 #include "core/io/packet_peer.h"
 #include "websocket_macros.h"

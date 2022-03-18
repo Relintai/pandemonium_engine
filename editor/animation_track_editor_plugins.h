@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "editor/animation_track_editor.h"
 
 class AnimationTrackEditBool : public AnimationTrackEdit {

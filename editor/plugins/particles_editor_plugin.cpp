@@ -238,4 +238,3 @@ ParticlesEditorBase::ParticlesEditorBase() {
 
 	emission_file_dialog->set_mode(EditorFileDialog::MODE_OPEN_FILE);
 }
-

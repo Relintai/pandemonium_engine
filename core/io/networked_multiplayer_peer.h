@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/io/packet_peer.h"
 
 class NetworkedMultiplayerPeer : public PacketPeer {

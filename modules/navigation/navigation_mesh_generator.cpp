@@ -44,14 +44,13 @@
 #include "scene/resources/concave_polygon_shape.h"
 #include "scene/resources/convex_polygon_shape.h"
 #include "scene/resources/cylinder_shape.h"
+#include "scene/resources/mesh.h"
+#include "scene/resources/multimesh.h"
+#include "scene/resources/navigation_mesh.h"
 #include "scene/resources/plane_shape.h"
 #include "scene/resources/primitive_meshes.h"
 #include "scene/resources/shape.h"
 #include "scene/resources/sphere_shape.h"
-#include "scene/resources/multimesh.h"
-#include "scene/resources/mesh.h"
-#include "scene/resources/navigation_mesh.h"
-#include "scene/resources/shape.h"
 
 #include "modules/modules_enabled.gen.h" // For csg, gridmap.
 

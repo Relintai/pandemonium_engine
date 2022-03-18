@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/crypto/crypto.h"
 #include "core/io/compression.h"
 #include "core/io/networked_multiplayer_peer.h"

@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "main/input_default.h"
 
 // This class encapsulates all the handling of input events that come from the Android UI thread.

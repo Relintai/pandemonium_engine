@@ -33,9 +33,6 @@
 // note, swapped java and godot around in the file name so all the java
 // wrappers are together
 
-
-
-
 #include <android/log.h>
 #include <jni.h>
 

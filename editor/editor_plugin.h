@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/io/config_file.h"
 #include "core/undo_redo.h"
 #include "editor/editor_inspector.h"

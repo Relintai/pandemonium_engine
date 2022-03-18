@@ -95,7 +95,6 @@ SpellEffectVisualSimple::~SpellEffectVisualSimple() {
 }
 
 void SpellEffectVisualSimple::_bind_methods() {
-
 	ADD_GROUP("Effect", "spell_effect");
 	ClassDB::bind_method(D_METHOD("has_spell_effect_visual"), &SpellEffectVisualSimple::has_spell_effect_visual);
 

@@ -210,7 +210,6 @@ void VoxelMesherMarchingCubes::_add_chunk(Ref<VoxelChunk> p_chunk) {
 
 		for (int z = 0; z < z_size; z += lod_size) {
 			for (int x = 0; x < x_size; x += lod_size) {
-
 				get_voxel_type_array(type_arr, chunk, x, y, z, lod_size);
 				int case_code = get_case_code_from_arr(type_arr);
 
@@ -536,7 +535,6 @@ VoxelMesherMarchingCubes::~VoxelMesherMarchingCubes() {
 }
 
 void VoxelMesherMarchingCubes::_bind_methods() {
-
 	ClassDB::bind_method(D_METHOD("_add_chunk", "chunk"), &VoxelMesherMarchingCubes::_add_chunk);
 
 	ClassDB::bind_method(D_METHOD("corner_id_to_vertex", "index1"), &VoxelMesherMarchingCubes::corner_id_to_vertex);

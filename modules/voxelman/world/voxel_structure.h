@@ -27,8 +27,8 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include "core/pool_vector.h"
 #include "core/math/aabb.h"
+#include "core/pool_vector.h"
 #include "voxel_chunk.h"
 
 class VoxelStructure : public Resource {

@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "editor/plugins/particles_editor_plugin.h"
 #include "scene/3d/cpu_particles.h"
 

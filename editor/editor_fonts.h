@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "scene/resources/theme.h"
 
 void editor_register_fonts(Ref<Theme> p_theme);

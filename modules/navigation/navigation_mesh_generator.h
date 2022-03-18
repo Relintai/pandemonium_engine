@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #ifndef _3D_DISABLED
 
 #include "scene/3d/navigation_mesh_instance.h"

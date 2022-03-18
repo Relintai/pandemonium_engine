@@ -23,8 +23,8 @@ SOFTWARE.
 */
 
 #include "core/resource.h"
-#include "core/vector.h"
 #include "core/ustring.h"
+#include "core/vector.h"
 
 #include "item_template.h"
 

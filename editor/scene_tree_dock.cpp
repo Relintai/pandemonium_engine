@@ -43,10 +43,10 @@
 #include "editor/plugins/script_editor_plugin.h"
 #include "editor/plugins/spatial_editor_plugin.h"
 #include "editor/script_editor_debugger.h"
+#include "scene/2d/node_2d.h"
 #include "scene/main/viewport.h"
 #include "scene/property_utils.h"
 #include "scene/resources/packed_scene.h"
-#include "scene/2d/node_2d.h"
 
 #include "modules/modules_enabled.gen.h" // For regex.
 

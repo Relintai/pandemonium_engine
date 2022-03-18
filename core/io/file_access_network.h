@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/io/stream_peer_tcp.h"
 #include "core/os/file_access.h"
 #include "core/os/semaphore.h"

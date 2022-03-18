@@ -30,11 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
-#include "scene/main/node.h"
 #include "core/resource.h"
+#include "scene/main/node.h"
 #include "scene/resources/animation.h"
 
 class Spatial;

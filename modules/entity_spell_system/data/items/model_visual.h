@@ -55,7 +55,7 @@ protected:
 private:
 	int _layer;
 
-	Vector<Ref<ModelVisualEntry> > _visual_entries;
+	Vector<Ref<ModelVisualEntry>> _visual_entries;
 };
 
 #endif

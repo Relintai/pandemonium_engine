@@ -33,12 +33,12 @@
 #include "scene/3d/area.h"
 #include "scene/3d/camera.h"
 #include "scene/3d/listener.h"
-#include "scene/main/viewport.h"
 #include "scene/3d/spatial_velocity_tracker.h"
+#include "scene/main/viewport.h"
+#include "scene/resources/shape.h"
+#include "scene/resources/world.h"
 #include "servers/audio/audio_stream.h"
 #include "servers/physics_server.h"
-#include "scene/resources/world.h"
-#include "scene/resources/shape.h"
 
 // Based on "A Novel Multichannel Panning Method for Standard and Arbitrary Loudspeaker Configurations" by Ramy Sadek and Chris Kyriakakis (2004)
 // Speaker-Placement Correction Amplitude Panning (SPCAP)

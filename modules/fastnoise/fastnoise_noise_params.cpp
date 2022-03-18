@@ -29,7 +29,6 @@ FastnoiseNoiseParams::FastnoiseNoiseParams() {
 	_amp = 1;
 }
 FastnoiseNoiseParams::~FastnoiseNoiseParams() {
-
 }
 
 void FastnoiseNoiseParams::_bind_methods() {

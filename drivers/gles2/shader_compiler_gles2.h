@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/pair.h"
 #include "core/string_builder.h"
 #include "servers/visual/shader_language.h"

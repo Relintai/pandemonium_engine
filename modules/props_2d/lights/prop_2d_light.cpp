@@ -25,7 +25,7 @@ SOFTWARE.
 Vector2 Prop2DLight::get_position() {
 	return _position;
 }
-void Prop2DLight::set_position(const Vector2 &pos)  {
+void Prop2DLight::set_position(const Vector2 &pos) {
 	_position = pos;
 }
 

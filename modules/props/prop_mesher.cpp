@@ -258,7 +258,7 @@ Array PropMesher::build_mesh() {
 		}
 
 		w.release();
-		
+
 		a[VisualServer::ARRAY_INDEX] = array;
 	}
 
@@ -791,13 +791,13 @@ Color PropMesher::get_light_color_at(const Vector3 &position, const Vector3 &nor
 		v_lightDiffuse += value;
 
 		/*
-                    float dist2 = Mathf.Clamp(Vector3.Distance(transformedLights[i], vertices), 0f, 15f);
-                    dist2 /= 35f;
+					float dist2 = Mathf.Clamp(Vector3.Distance(transformedLights[i], vertices), 0f, 15f);
+					dist2 /= 35f;
 
-                    Vector3 value = Vector3.one;
-                    value *= ((float) lights[i].Strength) / 255f;
-                    value *= (1 - dist2);
-                    v_lightDiffuse += value;*/
+					Vector3 value = Vector3.one;
+					value *= ((float) lights[i].Strength) / 255f;
+					value *= (1 - dist2);
+					v_lightDiffuse += value;*/
 	}
 
 	return Color(v_lightDiffuse.x, v_lightDiffuse.y, v_lightDiffuse.z);
@@ -1003,13 +1003,13 @@ void PropMesher::bake_lights(MeshInstance *node, Vector<Ref<TerrainLight>> &ligh
 			v_lightDiffuse += value;
 
 			/*
-                    float dist2 = Mathf.Clamp(Vector3.Distance(transformedLights[i], vertices), 0f, 15f);
-                    dist2 /= 35f;
+					float dist2 = Mathf.Clamp(Vector3.Distance(transformedLights[i], vertices), 0f, 15f);
+					dist2 /= 35f;
 
-                    Vector3 value = Vector3.one;
-                    value *= ((float) lights[i].Strength) / 255f;
-                    value *= (1 - dist2);
-                    v_lightDiffuse += value;*/
+					Vector3 value = Vector3.one;
+					value *= ((float) lights[i].Strength) / 255f;
+					value *= (1 - dist2);
+					v_lightDiffuse += value;*/
 		}
 
 		Color f = vertexv.color;

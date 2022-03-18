@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #if defined(IPHONE_ENABLED)
 extern void godot_ios_plugins_initialize();
 extern void godot_ios_plugins_deinitialize();

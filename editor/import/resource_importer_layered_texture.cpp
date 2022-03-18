@@ -34,10 +34,10 @@
 
 #include "core/io/config_file.h"
 #include "core/io/image_loader.h"
+#include "core/project_settings.h"
 #include "editor/editor_file_system.h"
 #include "editor/editor_node.h"
 #include "scene/resources/texture.h"
-#include "core/project_settings.h"
 
 String ResourceImporterLayeredTexture::get_importer_name() const {
 	return is_3d ? "texture_3d" : "texture_array";

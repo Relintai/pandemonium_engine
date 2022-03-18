@@ -23,9 +23,9 @@ SOFTWARE.
 #include "register_types.h"
 
 #ifdef TOOLS_ENABLED
+#include "skeleton_editor_module_plugin.h"
 #include "skeleton_editor_plugin.h"
 #include "spatial_editor_gizmos.h"
-#include "skeleton_editor_module_plugin.h"
 #endif
 
 void register_skeleton_editor_types() {

@@ -30,11 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
-#include "scene/3d/visual_instance.h"
 #include "core/reference.h"
+#include "scene/3d/visual_instance.h"
 #include "scene/resources/material.h"
 
 class TriangleMesh;

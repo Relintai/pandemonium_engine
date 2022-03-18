@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/undo_redo.h"
 #include "editor/editor_autoload_settings.h"
 #include "editor/editor_data.h"

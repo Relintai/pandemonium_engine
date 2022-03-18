@@ -30,8 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
 #include "core/ustring.h"
 #include "thread_jandroid.h"
 #include <jni.h>

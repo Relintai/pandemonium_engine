@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "collision_object_bullet.h"
 #include "core/vector.h"
 #include "servers/physics_server.h"

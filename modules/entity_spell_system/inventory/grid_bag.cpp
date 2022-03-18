@@ -46,7 +46,6 @@ bool GridBag::add_item(Ref<ItemInstance> item) {
 	for (int x = 0; x < _size_x - _item_size_x; ++x) {
 		for (int y = 0; y < _size_y - _item_size_y; ++y) {
 			if (_space_map[x * _size_x + y] == 0) {
-
 				bool found = true;
 				for (int xx = x; xx < _item_size_x; ++xx) {
 					for (int yy = y; yy < _item_size_y; ++yy) {

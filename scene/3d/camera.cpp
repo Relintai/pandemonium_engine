@@ -33,11 +33,11 @@
 #include "collision_object.h"
 #include "core/engine.h"
 #include "core/math/camera_matrix.h"
-#include "scene/resources/material.h"
-#include "scene/resources/surface_tool.h"
 #include "scene/3d/spatial_velocity_tracker.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/environment.h"
+#include "scene/resources/material.h"
+#include "scene/resources/surface_tool.h"
 #include "scene/resources/world.h"
 
 void Camera::_update_audio_listener_state() {

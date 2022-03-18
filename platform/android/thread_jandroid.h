@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include <jni.h>
 
 void init_thread_jandroid(JavaVM *p_jvm, JNIEnv *p_env);

@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #define OCTREE_ELEMENT_INVALID_ID 0
 #define OCTREE_SIZE_LIMIT 1e15
 #define OCTREE_DEFAULT_OCTANT_LIMIT 0

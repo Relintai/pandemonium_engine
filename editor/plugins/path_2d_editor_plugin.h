@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 #include "scene/2d/path_2d.h"

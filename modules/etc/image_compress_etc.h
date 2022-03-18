@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 void _register_etc_compress_func();
 
 #endif // IMAGE_COMPRESS_ETC_H

@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "area_2d_sw.h"
 #include "area_pair_2d_sw.h"
 #include "body_2d_sw.h"

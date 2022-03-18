@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/math/math_defs.h"
 #include "core/math/random_pcg.h"
 #include "core/typedefs.h"

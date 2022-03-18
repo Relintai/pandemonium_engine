@@ -649,7 +649,6 @@ VERTEX_SHADER_CODE
 		}
 
 		refprobe1_ambient_normal = (refprobe1_local_matrix * vec4(normal_interp, 0.0)).xyz;
-
 	}
 
 #endif //USE_REFLECTION_PROBE1
@@ -668,7 +667,6 @@ VERTEX_SHADER_CODE
 		}
 
 		refprobe2_ambient_normal = (refprobe2_local_matrix * vec4(normal_interp, 0.0)).xyz;
-
 	}
 
 #endif //USE_REFLECTION_PROBE2
@@ -794,7 +792,6 @@ varying mediump vec4 refprobe1_reflection_normal_blend;
 
 varying mediump vec3 refprobe1_ambient_normal;
 
-
 #else
 
 uniform bool refprobe1_use_box_project;
@@ -820,7 +817,6 @@ uniform vec4 refprobe1_ambient;
 varying mediump vec4 refprobe2_reflection_normal_blend;
 
 varying mediump vec3 refprobe2_ambient_normal;
-
 
 #else
 
@@ -925,7 +921,6 @@ void reflection_process(samplerCube reflection_map,
 	ambient_out.a = blend;
 	ambient_out.rgb *= blend;
 	ambient_accum += ambient_out;
-
 }
 
 #endif //use refprobe 1 or 2

@@ -27,7 +27,6 @@ SOFTWARE.
 
 #include "core/ustring.h"
 
-
 int SpeciesModelData::get_id() {
 	return _id;
 }

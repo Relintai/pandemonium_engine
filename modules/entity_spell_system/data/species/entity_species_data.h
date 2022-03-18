@@ -23,8 +23,8 @@ SOFTWARE.
 */
 
 #include "core/resource.h"
-#include "core/vector.h"
 #include "core/ustring.h"
+#include "core/vector.h"
 
 #include "../../entity_enums.h"
 
@@ -92,9 +92,9 @@ private:
 	int _type;
 	String _text_description;
 
-	Vector<Ref<SpeciesModelData> > _model_datas;
-	Vector<Ref<Spell> > _spells;
-	Vector<Ref<Spell> > _auras;
+	Vector<Ref<SpeciesModelData>> _model_datas;
+	Vector<Ref<Spell>> _spells;
+	Vector<Ref<Spell>> _auras;
 };
 
 #endif

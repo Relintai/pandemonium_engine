@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/os/dir_access.h"
 #include "editor/editor_file_system.h"
 #include "scene/gui/dialogs.h"

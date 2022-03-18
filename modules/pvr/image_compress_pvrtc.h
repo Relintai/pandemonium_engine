@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 void _register_pvrtc_compress_func();
 
 #endif // IMAGE_COMPRESS_PVRTC_H

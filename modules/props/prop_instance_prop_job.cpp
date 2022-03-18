@@ -22,8 +22,6 @@ SOFTWARE.
 
 #include "prop_instance_prop_job.h"
 
-
-
 #include "jobs/prop_mesher_job_step.h"
 #include "lights/prop_light.h"
 #include "material_cache/prop_material_cache.h"
@@ -31,9 +29,9 @@ SOFTWARE.
 #include "prop_instance_merger.h"
 #include "prop_mesher.h"
 #include "scene/resources/shape.h"
-#include "singleton/prop_cache.h"
-#include "servers/physics_server.h"
 #include "scene/resources/world.h"
+#include "servers/physics_server.h"
+#include "singleton/prop_cache.h"
 
 #ifdef MESH_DATA_RESOURCE_PRESENT
 #include "../mesh_data_resource/mesh_data_resource.h"

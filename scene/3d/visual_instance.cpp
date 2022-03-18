@@ -30,12 +30,11 @@
 
 #include "visual_instance.h"
 
+#include "scene/resources/material.h"
+#include "scene/resources/world.h"
 #include "scene/scene_string_names.h"
 #include "servers/visual_server.h"
 #include "skeleton.h"
-#include "scene/resources/material.h"
-#include "servers/visual_server.h"
-#include "scene/resources/world.h"
 
 AABB VisualInstance::get_transformed_aabb() const {
 	return get_global_transform().xform(get_aabb());

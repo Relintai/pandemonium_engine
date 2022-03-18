@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
 #include "core/resource.h"
 #include "core/vector.h"
 
@@ -78,7 +77,7 @@ protected:
 private:
 	int _allowed_item_types;
 	int _bag_size;
-	Vector<Ref<ItemInstance> > _items;
+	Vector<Ref<ItemInstance>> _items;
 };
 
 #endif

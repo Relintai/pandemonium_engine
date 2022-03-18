@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/resource.h"
 #include "core/color.h"
+#include "core/resource.h"
 
 #include "../defines.h"
 

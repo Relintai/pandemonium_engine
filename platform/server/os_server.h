@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "drivers/dummy/texture_loader_dummy.h"
 #include "drivers/unix/os_unix.h"
 #include "main/input_default.h"

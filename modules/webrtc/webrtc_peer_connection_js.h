@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #ifdef JAVASCRIPT_ENABLED
 
 #include "webrtc_peer_connection.h"

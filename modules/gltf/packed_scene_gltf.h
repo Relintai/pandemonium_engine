@@ -32,9 +32,6 @@
 
 #ifdef TOOLS_ENABLED
 
-
-
-
 #include "scene/main/node.h"
 #include "scene/resources/packed_scene.h"
 

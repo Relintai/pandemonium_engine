@@ -33,9 +33,9 @@
 #include "core/os/threaded_array_processor.h"
 #include "nav_region.h"
 #include "rvo_agent.h"
-#include <algorithm>
 #include "scene/resources/mesh.h"
 #include "scene/resources/navigation_mesh.h"
+#include <algorithm>
 
 /**
 	@author AndreaCatania

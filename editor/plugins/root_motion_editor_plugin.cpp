@@ -30,8 +30,8 @@
 
 #include "root_motion_editor_plugin.h"
 #include "editor/editor_node.h"
-#include "scene/main/viewport.h"
 #include "scene/3d/skeleton.h"
+#include "scene/main/viewport.h"
 
 void EditorPropertyRootMotion::_confirmed() {
 	TreeItem *ti = filters->get_selected();

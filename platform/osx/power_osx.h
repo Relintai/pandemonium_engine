@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/os/file_access.h"
 #include "core/os/os.h"
 #include "dir_access_osx.h"

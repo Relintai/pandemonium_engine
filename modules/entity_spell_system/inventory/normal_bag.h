@@ -62,7 +62,7 @@ protected:
 private:
 	int _allowed_item_types;
 	int _item_count;
-	Vector<Ref<ItemInstance> > _items;
+	Vector<Ref<ItemInstance>> _items;
 };
 
 #endif

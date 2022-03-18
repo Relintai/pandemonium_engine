@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 /* Must come before shaders or the Windows build fails... */
 #include "rasterizer_storage_gles2.h"
 

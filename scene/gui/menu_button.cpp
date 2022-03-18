@@ -31,9 +31,9 @@
 #include "menu_button.h"
 #include "core/os/input.h"
 #include "core/os/keyboard.h"
-#include "scene/main/viewport.h"
-#include "scene/gui/shortcut.h"
 #include "scene/gui/popup_menu.h"
+#include "scene/gui/shortcut.h"
+#include "scene/main/viewport.h"
 
 void MenuButton::_unhandled_key_input(Ref<InputEvent> p_event) {
 	ERR_FAIL_COND(p_event.is_null());

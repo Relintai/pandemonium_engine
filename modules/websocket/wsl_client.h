@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #ifndef JAVASCRIPT_ENABLED
 
 #include "core/error_list.h"

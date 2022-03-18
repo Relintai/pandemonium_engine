@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/math/rect2.h" // also includes vector2, math_funcs, and ustring
 #include "core/pool_vector.h"
 

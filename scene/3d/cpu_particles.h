@@ -30,13 +30,10 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
+#include "core/reference.h"
 #include "core/rid.h"
 #include "core/safe_refcount.h"
 #include "scene/3d/visual_instance.h"
-#include "core/reference.h"
 
 class Curve;
 class Gradient;

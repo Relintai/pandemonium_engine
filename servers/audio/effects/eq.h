@@ -32,9 +32,6 @@
 
 // Author: reduzio@gmail.com (C) 2006
 
-
-
-
 #include "core/typedefs.h"
 #include "core/vector.h"
 

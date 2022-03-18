@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/math/camera_matrix.h"
 #include "core/math/transform_interpolator.h"
 #include "servers/visual_server.h"

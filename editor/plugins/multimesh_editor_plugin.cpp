@@ -32,8 +32,8 @@
 
 #include "scene/3d/mesh_instance.h"
 #include "scene/gui/box_container.h"
-#include "spatial_editor_plugin.h"
 #include "scene/resources/multimesh.h"
+#include "spatial_editor_plugin.h"
 
 void MultiMeshEditor::_node_removed(Node *p_node) {
 	if (p_node == node) {

@@ -30,8 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
  * This class exists to workaround a limitation in C++ but keep the design OK.

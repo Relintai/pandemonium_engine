@@ -29,10 +29,10 @@
 /*************************************************************************/
 
 #include "area_2d.h"
+#include "scene/resources/world.h"
 #include "scene/scene_string_names.h"
 #include "servers/audio_server.h"
 #include "servers/physics_2d_server.h"
-#include "scene/resources/world.h"
 
 void Area2D::set_space_override_mode(SpaceOverride p_mode) {
 	space_override = p_mode;

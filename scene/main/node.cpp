@@ -39,9 +39,9 @@
 #include "scene/scene_string_names.h"
 #include "viewport.h"
 
+#include "core/class_db.h"
 #include "core/project_settings.h"
 #include "core/script_language.h"
-#include "core/class_db.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_settings.h"

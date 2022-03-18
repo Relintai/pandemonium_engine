@@ -30,9 +30,9 @@
 
 #include "scroll_container.h"
 #include "core/os/os.h"
+#include "core/project_settings.h"
 #include "scene/main/viewport.h"
 #include "scroll_bar.h"
-#include "core/project_settings.h"
 
 bool ScrollContainer::clips_input() const {
 	return true;

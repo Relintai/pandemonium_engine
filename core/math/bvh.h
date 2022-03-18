@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 // BVH
 // This class provides a wrapper around BVH tree, which contains most of the functionality
 // for a dynamic BVH with templated leaf size.

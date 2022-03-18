@@ -35,7 +35,6 @@ SOFTWARE.
 namespace FQMS {
 
 struct Vertex {
-
 	Vector3 vertex;
 	Color color;
 	Vector3 normal; // normal, binormal, tangent
@@ -47,7 +46,6 @@ struct Vertex {
 	Vector<float> weights;
 
 	bool operator==(const Vertex &p_vertex) const {
-
 		if (vertex != p_vertex.vertex)
 			return false;
 
@@ -87,7 +85,6 @@ struct Vertex {
 
 struct VertexHasher {
 	static _FORCE_INLINE_ uint32_t hash(const Vertex &p_vtx) {
-
 		uint32_t h = hash_djb2_buffer((const uint8_t *)&p_vtx.vertex, sizeof(real_t) * 3);
 		h = hash_djb2_buffer((const uint8_t *)&p_vtx.normal, sizeof(real_t) * 3, h);
 		h = hash_djb2_buffer((const uint8_t *)&p_vtx.binormal, sizeof(real_t) * 3, h);

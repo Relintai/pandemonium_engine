@@ -32,9 +32,6 @@
 
 #ifdef JAVASCRIPT_ENABLED
 
-
-
-
 #include "webrtc_data_channel.h"
 
 class WebRTCDataChannelJS : public WebRTCDataChannel {

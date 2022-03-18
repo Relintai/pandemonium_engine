@@ -30,18 +30,15 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 
-#include "tile_map.h"
 #include "scene/gui/check_box.h"
 #include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/menu_button.h"
 #include "scene/gui/tool_button.h"
+#include "tile_map.h"
 
 class RTileMapEditor : public VBoxContainer {
 	GDCLASS(RTileMapEditor, VBoxContainer);

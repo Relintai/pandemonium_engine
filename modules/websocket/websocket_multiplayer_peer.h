@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/error_list.h"
 #include "core/io/networked_multiplayer_peer.h"
 #include "core/list.h"

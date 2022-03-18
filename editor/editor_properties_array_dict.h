@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "editor/editor_inspector.h"
 #include "editor/editor_spin_slider.h"
 #include "editor/filesystem_dock.h"

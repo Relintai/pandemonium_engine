@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "scene/gui/text_edit.h"
 
 class GDScriptSyntaxHighlighter : public SyntaxHighlighter {

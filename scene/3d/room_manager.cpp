@@ -32,8 +32,10 @@
 
 #include "core/bitfield_dynamic.h"
 #include "core/engine.h"
+#include "core/math/geometry.h"
 #include "core/math/quick_hull.h"
 #include "core/os/os.h"
+#include "core/project_settings.h"
 #include "editor/editor_node.h"
 #include "mesh_instance.h"
 #include "multimesh_instance.h"
@@ -42,11 +44,9 @@
 #include "scene/3d/camera.h"
 #include "scene/3d/light.h"
 #include "scene/3d/sprite_3d.h"
-#include "visibility_notifier.h"
 #include "scene/resources/multimesh.h"
-#include "core/math/geometry.h"
 #include "scene/resources/world.h"
-#include "core/project_settings.h"
+#include "visibility_notifier.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/plugins/spatial_editor_plugin.h"

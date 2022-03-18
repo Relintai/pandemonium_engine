@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/io/packet_peer.h"
 
 #define WRTC_IN_BUF "network/limits/webrtc/max_channel_in_buffer_kb"

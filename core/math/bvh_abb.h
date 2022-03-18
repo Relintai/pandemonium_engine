@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 // special optimized version of axis aligned bounding box
 template <class BOUNDS = AABB, class POINT = Vector3>
 struct BVH_ABB {

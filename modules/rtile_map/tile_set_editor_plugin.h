@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "editor/editor_node.h"
 #include "scene/2d/sprite.h"
 #include "scene/resources/concave_polygon_shape_2d.h"

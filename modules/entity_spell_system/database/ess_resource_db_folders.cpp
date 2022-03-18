@@ -70,7 +70,6 @@ void ESSResourceDBFolders::load_folder(const String &folder) {
 	bool ew = folder.ends_with("/");
 
 	if (dir.open(folder) == OK) {
-
 		dir.list_dir_begin();
 
 		String filename;

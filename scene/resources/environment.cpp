@@ -31,11 +31,10 @@
 #include "environment.h"
 
 #include "core/project_settings.h"
-#include "servers/visual_server.h"
-#include "texture.h"
 #include "scene/resources/sky.h"
 #include "scene/resources/texture.h"
 #include "servers/visual_server.h"
+#include "texture.h"
 
 RID Environment::get_rid() const {
 	return environment;

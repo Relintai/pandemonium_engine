@@ -25,15 +25,15 @@ SOFTWARE.
 #include "library/terrain_surface.h"
 #include "library/terrain_surface_simple.h"
 
-#include "library/terrain_material_cache.h"
 #include "library/terrain_library.h"
 #include "library/terrain_library_simple.h"
+#include "library/terrain_material_cache.h"
 
 #ifdef TEXTURE_PACKER_PRESENT
-#include "library/terrain_surface_merger.h"
 #include "library/terrain_library_merger.h"
 #include "library/terrain_library_merger_pcm.h"
 #include "library/terrain_material_cache_pcm.h"
+#include "library/terrain_surface_merger.h"
 #endif
 
 #include "data/terrain_light.h"

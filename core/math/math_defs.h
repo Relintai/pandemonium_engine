@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #define CMP_EPSILON 0.00001
 #define CMP_EPSILON2 (CMP_EPSILON * CMP_EPSILON)
 

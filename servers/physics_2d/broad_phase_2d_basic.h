@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/map.h"
 #include "space_2d_sw.h"
 class BroadPhase2DBasic : public BroadPhase2DSW {

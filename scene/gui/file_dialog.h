@@ -30,11 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
-#include "scene/gui/dialogs.h"
 #include "scene/gui/box_container.h"
+#include "scene/gui/dialogs.h"
 
 class Button;
 class LineEdit;

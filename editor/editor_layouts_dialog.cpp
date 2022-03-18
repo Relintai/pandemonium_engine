@@ -33,9 +33,9 @@
 #include "core/io/config_file.h"
 #include "core/os/keyboard.h"
 #include "editor/editor_settings.h"
+#include "scene/gui/box_container.h"
 #include "scene/gui/item_list.h"
 #include "scene/gui/line_edit.h"
-#include "scene/gui/box_container.h"
 
 void EditorLayoutsDialog::_line_gui_input(const Ref<InputEvent> &p_event) {
 	Ref<InputEventKey> k = p_event;

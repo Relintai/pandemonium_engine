@@ -33,11 +33,11 @@
 #include "core/math/expression.h"
 #include "core/os/input.h"
 #include "core/os/keyboard.h"
+#include "core/project_settings.h"
 #include "editor/editor_node.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 #include "editor/script_editor_debugger.h"
-#include "core/project_settings.h"
 
 void ConnectionInfoDialog::ok_pressed() {
 }

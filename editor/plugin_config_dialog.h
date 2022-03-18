@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "scene/gui/check_box.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/line_edit.h"

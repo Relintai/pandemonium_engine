@@ -40,9 +40,9 @@
 #include "scene/3d/mesh_instance.h"
 #include "scene/3d/physics_body.h"
 #include "scene/3d/physics_joint.h"
+#include "scene/main/viewport.h"
 #include "scene/resources/capsule_shape.h"
 #include "scene/resources/sphere_shape.h"
-#include "scene/main/viewport.h"
 
 #define DISTANCE_DEFAULT 4
 

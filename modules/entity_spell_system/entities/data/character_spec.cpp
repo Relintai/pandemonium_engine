@@ -223,7 +223,6 @@ bool CharacterSpec::_get(const StringName &p_name, Variant &r_ret) const {
 
 				return true;
 			} else {
-
 				int entry_id = eprop.get_slicec('_', 1).to_int();
 
 				if (entry_id >= _rows[row_id][col_id].size()) {

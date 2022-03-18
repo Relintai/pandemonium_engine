@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "editor/plugins/abstract_polygon_2d_editor.h"
 #include "scene/2d/line_2d.h"
 

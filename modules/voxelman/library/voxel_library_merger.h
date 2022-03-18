@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/resource.h"
 #include "core/map.h"
+#include "core/resource.h"
 
 #include "voxel_library.h"
 
@@ -96,9 +96,9 @@ protected:
 
 	static void _bind_methods();
 
-	Vector<Ref<VoxelSurfaceMerger> > _voxel_surfaces;
+	Vector<Ref<VoxelSurfaceMerger>> _voxel_surfaces;
 #ifdef PROPS_PRESENT
-	Vector<Ref<PropData> > _props;
+	Vector<Ref<PropData>> _props;
 #endif
 
 	Ref<TexturePacker> _packer;

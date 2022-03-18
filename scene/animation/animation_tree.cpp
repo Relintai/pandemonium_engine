@@ -30,12 +30,12 @@
 
 #include "animation_tree.h"
 
-#include "animation_player.h"
-#include "scene/3d/skeleton.h"
-#include "scene/3d/spatial.h"
 #include "animation_blend_tree.h"
+#include "animation_player.h"
 #include "core/engine.h"
 #include "core/method_bind_ext.gen.inc"
+#include "scene/3d/skeleton.h"
+#include "scene/3d/spatial.h"
 #include "scene/scene_string_names.h"
 #include "servers/audio/audio_stream.h"
 

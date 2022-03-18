@@ -44,9 +44,6 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-
-
-
 #include "core/local_vector.h"
 #include "core/math/geometry.h"
 #include "core/math/vector3.h"

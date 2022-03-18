@@ -30,12 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
+#include "core/reference.h"
 #include "core/rid.h"
 #include "scene/3d/spatial.h"
-#include "core/reference.h"
 
 #ifndef _3D_DISABLED
 typedef int BoneId;

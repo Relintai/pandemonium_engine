@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "editor/code_editor.h"
 #include "editor/doc/doc_data.h"
 #include "editor/editor_plugin.h"

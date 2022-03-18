@@ -30,11 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
-#include "scene/3d/spatial.h"
 #include "core/reference.h"
+#include "scene/3d/spatial.h"
 #include "scene/resources/shape.h"
 
 class CollisionObject : public Spatial {

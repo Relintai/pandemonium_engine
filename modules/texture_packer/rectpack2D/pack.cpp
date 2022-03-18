@@ -87,17 +87,24 @@ struct node {
 
 	node *insert(rect_xywhf &img, bool allowFlip) {
 		if (c[0].pn && c[0].fill) {
-			if (auto newn = c[0].pn->insert(img, allowFlip)) return newn;
+			if (auto newn = c[0].pn->insert(img, allowFlip))
+				return newn;
 			return c[1].pn->insert(img, allowFlip);
 		}
 
-		if (id) return 0;
+		if (id)
+			return 0;
 		int f = img.fits(rect_xywh(rc), allowFlip);
 
 		switch (f) {
-			case 0: return 0;
-			case 1: img.flipped = false; break;
-			case 2: img.flipped = true; break;
+			case 0:
+				return 0;
+			case 1:
+				img.flipped = false;
+				break;
+			case 2:
+				img.flipped = true;
+				break;
 			case 3:
 				id = true;
 				img.flipped = false;
@@ -133,8 +140,10 @@ struct node {
 	}
 
 	~node() {
-		if (c[0].pn) delete c[0].pn;
-		if (c[1].pn) delete c[1].pn;
+		if (c[0].pn)
+			delete c[0].pn;
+		if (c[1].pn)
+			delete c[1].pn;
 	}
 };
 
@@ -163,7 +172,8 @@ rect_wh _rect2D(rect_xywhf *const *v, int n, int max_s, bool allowFlip, vector<r
 
 		while (true) {
 			if (root.rc.w() > min_bin.w) {
-				if (min_func > -1) break;
+				if (min_func > -1)
+					break;
 				_area = 0;
 
 				root.reset(min_bin);
@@ -242,7 +252,8 @@ bool pack(rect_xywhf *const *v, int n, int max_s, bool allowFlip, vector<bin> &b
 	rect_wh _rect(max_s, max_s);
 
 	for (int i = 0; i < n; ++i)
-		if (!v[i]->fits(_rect, allowFlip)) return false;
+		if (!v[i]->fits(_rect, allowFlip))
+			return false;
 
 	vector<rect_xywhf *> vec[2], *p[2] = { vec, vec + 1 };
 	vec[0].resize(n);
@@ -258,7 +269,8 @@ bool pack(rect_xywhf *const *v, int n, int max_s, bool allowFlip, vector<bin> &b
 		b->size = _rect2D(&((*p[0])[0]), static_cast<int>(p[0]->size()), max_s, allowFlip, b->rects, *p[1]);
 		p[0]->clear();
 
-		if (!p[1]->size()) break;
+		if (!p[1]->size())
+			break;
 
 		std::swap(p[0], p[1]);
 	}
@@ -277,10 +289,14 @@ rect_wh::rect_wh(int w, int h) :
 		h(h) {}
 
 int rect_wh::fits(const rect_wh &r, bool allowFlip) const {
-	if (w == r.w && h == r.h) return 3;
-	if (allowFlip && h == r.w && w == r.h) return 4;
-	if (w <= r.w && h <= r.h) return 1;
-	if (allowFlip && h <= r.w && w <= r.h) return 2;
+	if (w == r.w && h == r.h)
+		return 3;
+	if (allowFlip && h == r.w && w == r.h)
+		return 4;
+	if (w <= r.w && h <= r.h)
+		return 1;
+	if (allowFlip && h <= r.w && w <= r.h)
+		return 2;
 	return 0;
 }
 

@@ -37,12 +37,12 @@
 #include "scene/resources/capsule_shape.h"
 #include "scene/resources/concave_polygon_shape.h"
 #include "scene/resources/convex_polygon_shape.h"
+#include "scene/resources/mesh.h"
 #include "scene/resources/plane_shape.h"
 #include "scene/resources/ray_shape.h"
+#include "scene/resources/shape.h"
 #include "scene/resources/sphere_shape.h"
 #include "servers/visual_server.h"
-#include "scene/resources/shape.h"
-#include "scene/resources/mesh.h"
 
 void CollisionShape::make_convex_from_brothers() {
 	Node *p = get_parent();

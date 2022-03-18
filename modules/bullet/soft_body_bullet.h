@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "collision_object_bullet.h"
 #include "scene/resources/material.h" // TODO remove this please
 

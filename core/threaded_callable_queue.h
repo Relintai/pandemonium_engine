@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/local_vector.h"
 #include "core/ordered_hash_map.h"
 #include "core/os/mutex.h"

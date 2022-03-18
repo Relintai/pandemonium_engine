@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 /** Error List. Please never compare an error against FAILED
  * Either do result != OK , or !result. This way, Error fail
  * values can be more detailed in the future.

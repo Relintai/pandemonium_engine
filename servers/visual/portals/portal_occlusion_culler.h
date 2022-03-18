@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 class PortalRenderer;
 #include "core/math/camera_matrix.h"
 #include "core/math/geometry.h"

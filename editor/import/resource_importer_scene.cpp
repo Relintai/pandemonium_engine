@@ -35,18 +35,18 @@
 #include "scene/3d/collision_shape.h"
 #include "scene/3d/mesh_instance.h"
 #include "scene/3d/navigation.h"
+#include "scene/3d/navigation_mesh_instance.h"
 #include "scene/3d/physics_body.h"
 #include "scene/3d/vehicle_body.h"
 #include "scene/animation/animation_player.h"
 #include "scene/resources/animation.h"
 #include "scene/resources/box_shape.h"
+#include "scene/resources/navigation_mesh.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/plane_shape.h"
 #include "scene/resources/ray_shape.h"
 #include "scene/resources/resource_format_text.h"
 #include "scene/resources/sphere_shape.h"
-#include "scene/resources/navigation_mesh.h"
-#include "scene/3d/navigation_mesh_instance.h"
 
 uint32_t EditorSceneImporter::get_import_flags() const {
 	if (get_script_instance()) {

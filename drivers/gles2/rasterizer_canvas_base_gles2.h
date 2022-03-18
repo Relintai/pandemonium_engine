@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "drivers/gles_common/rasterizer_array.h"
 #include "rasterizer_storage_gles2.h"
 #include "servers/visual/rasterizer.h"

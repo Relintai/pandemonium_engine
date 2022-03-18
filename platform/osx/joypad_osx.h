@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #ifdef MACOS_10_0_4
 #include <IOKit/hidsystem/IOHIDUsageTables.h>
 #else

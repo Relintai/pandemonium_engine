@@ -33,6 +33,8 @@
 #include "core/engine.h"
 #include "core/io/ip.h"
 #include "core/io/marshalls.h"
+#include "core/io/resource_loader.h"
+#include "core/io/resource_saver.h"
 #include "core/os/input.h"
 #include "core/os/os.h"
 #include "core/project_settings.h"
@@ -41,8 +43,6 @@
 #include "scene/main/viewport.h"
 #include "scene/resources/packed_scene.h"
 #include "servers/visual_server.h"
-#include "core/io/resource_loader.h"
-#include "core/io/resource_saver.h"
 
 void ScriptDebuggerRemote::_send_video_memory() {
 	List<ResourceUsage> usage;

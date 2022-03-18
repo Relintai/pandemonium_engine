@@ -34,9 +34,6 @@
 @author Juan Linietsky <reduzio@gmail.com>
 */
 
-
-
-
 #include "core/undo_redo.h"
 #include "editor/editor_inspector.h"
 #include "editor/scene_tree_editor.h"

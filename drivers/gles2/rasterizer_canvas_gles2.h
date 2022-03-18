@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "drivers/gles_common/rasterizer_canvas_batcher.h"
 #include "rasterizer_canvas_base_gles2.h"
 

@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 // This must come first to avoid windows.h mess
 #include "platform_config.h"
 #ifndef GLES2_INCLUDE_H

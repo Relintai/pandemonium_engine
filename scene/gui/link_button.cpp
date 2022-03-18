@@ -148,6 +148,5 @@ LinkButton::LinkButton() {
 	set_default_cursor_shape(CURSOR_POINTING_HAND);
 }
 
-
 LinkButton::~LinkButton() {
 }

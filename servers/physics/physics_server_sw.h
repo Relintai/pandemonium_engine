@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "joints_sw.h"
 #include "servers/physics_server.h"
 #include "shape_sw.h"

@@ -30,12 +30,11 @@
 
 #include "spatial_editor_gizmos.h"
 
-#include "scene/resources/surface_tool.h"
-#include "scene/resources/skin.h"
 #include "scene/3d/skeleton.h"
+#include "scene/resources/skin.h"
+#include "scene/resources/surface_tool.h"
 
 ModuleSkeletonSpatialGizmoPlugin::ModuleSkeletonSpatialGizmoPlugin() {
-
 	skeleton_color = EDITOR_DEF("editors/3d_gizmos/gizmo_colors/skeleton", Color(1, 0.8, 0.4));
 	selected_bone_color = EDITOR_DEF("editors/3d_gizmos/gizmo_colors/selected_bone", Color(1, 0, 0));
 	bone_axis_length = EDITOR_DEF("editors/3d_gizmos/gizmo_settings/bone_axis_length", (float)0.015);
@@ -80,7 +79,6 @@ int ModuleSkeletonSpatialGizmoPlugin::get_priority() const {
 }
 
 void ModuleSkeletonSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
-
 	Skeleton *skel = Object::cast_to<Skeleton>(p_gizmo->get_spatial_node());
 
 	p_gizmo->clear();
@@ -148,11 +146,10 @@ void ModuleSkeletonSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 			Vector3 points[4];
 			int pointidx = 0;
 			Color axis_color[3];
-			axis_color[0] = Color(1,0,0);
-			axis_color[1] = Color(0,1,0);
-			axis_color[2] = Color(0,0,1);
+			axis_color[0] = Color(1, 0, 0);
+			axis_color[1] = Color(0, 1, 0);
+			axis_color[2] = Color(0, 0, 1);
 			for (int j = 0; j < 3; j++) {
-
 				if (p_gizmo->is_selected()) {
 					bones.write[0] = i;
 					surface_tool->add_bones(bones);
@@ -187,7 +184,6 @@ void ModuleSkeletonSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 				}
 
 				for (int k = 0; k < 2; k++) {
-
 					if (k == 1)
 						axis = -axis;
 					Vector3 point = v0 + d * dist * 0.2;
@@ -219,7 +215,6 @@ void ModuleSkeletonSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 
 			SWAP(points[1], points[2]);
 			for (int j = 0; j < 4; j++) {
-
 				bones.write[0] = parent;
 				surface_tool->add_bones(bones);
 				surface_tool->add_weights(weights);
@@ -244,17 +239,15 @@ void ModuleSkeletonSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 			surface_tool->add_vertex(v1);
 */
 		} else {
-
 			grests.write[i] = skel->get_bone_rest(i);
 			bones.write[0] = i;
 
 			Vector3 v1 = grests[i].origin;
 			Color axis_color[3];
-			axis_color[0] = Color(1,0,0);
-			axis_color[1] = Color(0,1,0);
-			axis_color[2] = Color(0,0,1);
+			axis_color[0] = Color(1, 0, 0);
+			axis_color[1] = Color(0, 1, 0);
+			axis_color[2] = Color(0, 0, 1);
 			for (int j = 0; j < 3; j++) {
-
 				if (p_gizmo->is_selected()) {
 					bones.write[0] = i;
 					surface_tool->add_bones(bones);
@@ -277,7 +270,6 @@ void ModuleSkeletonSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 					surface_tool->add_vertex(v1 + (grests[i].basis.inverse())[j].normalized() * bone_axis_length * 0.5);
 				}
 			}
-
 		}
 		/*
 		Transform  t = grests[i];

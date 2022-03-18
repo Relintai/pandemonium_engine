@@ -81,7 +81,6 @@ void VoxelMesherLiquidBlocky::_add_chunk(Ref<VoxelChunk> p_chunk) {
 	for (int y = chunk->get_margin_start(); y < y_size + chunk->get_margin_start(); ++y) {
 		for (int z = chunk->get_margin_start(); z < z_size + chunk->get_margin_start(); ++z) {
 			for (int x = chunk->get_margin_start(); x < x_size + chunk->get_margin_start(); ++x) {
-
 				int index = chunk->get_data_index(x, y, z);
 				int indexxp = chunk->get_data_index(x + 1, y, z);
 				int indexxn = chunk->get_data_index(x - 1, y, z);

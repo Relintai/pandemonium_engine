@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include <core/engine.h>
 #include <core/variant.h>
 #ifdef ANDROID_ENABLED

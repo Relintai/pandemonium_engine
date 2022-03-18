@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/io/image_loader.h"
 
 class ImageLoaderTinyEXR : public ImageFormatLoader {

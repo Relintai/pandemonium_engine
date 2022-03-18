@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 /**
  * Fast single-threaded growable array for POD types.
  * For use in render drivers, not for general use.

@@ -40,7 +40,6 @@
 #include "editor/editor_scale.h"
 #include "scene/gui/margin_container.h"
 #include "scene/gui/tab_container.h"
-#include "core/project_settings.h"
 
 ProjectSettingsEditor *ProjectSettingsEditor::singleton = nullptr;
 

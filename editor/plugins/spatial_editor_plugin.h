@@ -30,18 +30,15 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
+#include "core/reference.h"
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 #include "editor/editor_scale.h"
 #include "scene/3d/immediate_geometry.h"
 #include "scene/3d/light.h"
+#include "scene/3d/skeleton.h"
 #include "scene/3d/visual_instance.h"
 #include "scene/gui/panel_container.h"
-#include "scene/3d/skeleton.h"
-#include "core/reference.h"
 
 class Camera;
 class SpatialEditor;

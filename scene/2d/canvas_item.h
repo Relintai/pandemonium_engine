@@ -30,11 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
-#include "scene/resources/material.h"
 #include "scene/main/node.h"
+#include "scene/resources/material.h"
 
 class CanvasLayer;
 class Viewport;

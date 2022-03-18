@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/project_settings.h"
 #include "core/resource.h"
 #include "servers/physics_2d_server.h"

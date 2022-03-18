@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "collision_object_sw.h"
 #include "core/self_list.h"
 #include "servers/physics_server.h"

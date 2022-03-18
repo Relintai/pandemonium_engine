@@ -47,12 +47,12 @@
 #include "scene/gui/progress_bar.h"
 #include "scene/gui/rich_text_label.h"
 #include "scene/gui/scroll_bar.h"
+#include "scene/gui/shortcut.h"
 #include "scene/gui/spin_box.h"
 #include "scene/gui/tab_container.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tree.h"
 #include "scene/main/scene_tree.h"
-#include "scene/gui/shortcut.h"
 
 #include "scene/3d/camera.h"
 #include "scene/main/viewport.h"

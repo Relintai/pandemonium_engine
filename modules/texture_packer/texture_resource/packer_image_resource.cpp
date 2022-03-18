@@ -71,7 +71,7 @@ Ref<Image> PackerImageResource::get_data() const {
 
 void PackerImageResource::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_data", "image"), &PackerImageResource::set_data);
-	
+
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "Image", PROPERTY_USAGE_DEFAULT), "set_data", "get_data");
 }
 

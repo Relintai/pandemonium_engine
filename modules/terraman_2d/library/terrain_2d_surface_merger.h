@@ -30,7 +30,6 @@ SOFTWARE.
 
 #include "../defines.h"
 
-
 class Terrain2DSurfaceMerger : public Terrain2DSurface {
 	GDCLASS(Terrain2DSurfaceMerger, Terrain2DSurface)
 

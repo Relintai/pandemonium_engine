@@ -33,9 +33,6 @@
 #include "core/rid.h"
 #include "scene/resources/material.h"
 
-
-
-
 class ParticlesMaterial : public Material {
 	GDCLASS(ParticlesMaterial, Material);
 

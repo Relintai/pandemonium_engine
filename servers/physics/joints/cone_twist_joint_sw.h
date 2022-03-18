@@ -51,9 +51,6 @@ subject to the following restrictions:
 Written by: Marcus Hennix
 */
 
-
-
-
 #include "servers/physics/joints/jacobian_entry_sw.h"
 #include "servers/physics/joints_sw.h"
 

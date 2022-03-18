@@ -36,9 +36,9 @@
 #include "core/print_string.h"
 #include "core/translation.h"
 #include "label.h"
-#include "scene/main/timer.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/shortcut.h"
+#include "scene/main/timer.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_scale.h"

@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/io/resource_loader.h"
 #include "core/math/rect2.h"
 #include "core/os/mutex.h"

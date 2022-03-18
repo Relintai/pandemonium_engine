@@ -30,9 +30,9 @@
 
 #include "sprite_3d.h"
 #include "core/core_string_names.h"
-#include "scene/scene_string_names.h"
-#include "scene/2d/animated_sprite.h"
 #include "core/math/triangle_mesh.h"
+#include "scene/2d/animated_sprite.h"
+#include "scene/scene_string_names.h"
 
 Color SpriteBase3D::_get_color_accum() {
 	if (!color_dirty) {

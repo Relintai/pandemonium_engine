@@ -24,8 +24,8 @@ SOFTWARE.
 
 #include "../../defines.h"
 
-#include "servers/visual_server.h"
 #include "servers/physics_server.h"
+#include "servers/visual_server.h"
 
 #include "../../../opensimplex/open_simplex_noise.h"
 #include "../../meshers/default/terrain_2d_mesher_default.h"

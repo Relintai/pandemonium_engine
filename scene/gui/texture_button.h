@@ -30,11 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
-#include "scene/gui/base_button.h"
 #include "core/reference.h"
+#include "scene/gui/base_button.h"
 
 class BitMap;
 

@@ -30,16 +30,12 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "editor/plugins/spatial_editor_plugin.h"
 #include "scene/3d/camera.h"
 
 class Camera;
 
 class ModuleSkeletonSpatialGizmoPlugin : public EditorSpatialGizmoPlugin {
-
 	GDCLASS(ModuleSkeletonSpatialGizmoPlugin, EditorSpatialGizmoPlugin);
 	Color skeleton_color = Color(1, 0.8, 0.4);
 	Color selected_bone_color = Color(1, 0, 0);

@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 // BVH Tree
 // This is an implementation of a dynamic BVH with templated leaf size.
 // This differs from most dynamic BVH in that it can handle more than 1 object

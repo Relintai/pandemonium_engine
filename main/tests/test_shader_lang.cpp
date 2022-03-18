@@ -36,10 +36,10 @@
 
 #include "core/print_string.h"
 #include "scene/gui/control.h"
+#include "scene/gui/shortcut.h"
 #include "scene/gui/text_edit.h"
 #include "servers/visual/shader_language.h"
 #include "servers/visual/shader_types.h"
-#include "scene/gui/shortcut.h"
 
 typedef ShaderLanguage SL;
 

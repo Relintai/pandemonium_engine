@@ -628,4 +628,3 @@ void MeshUtils::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("delaunay3d_tetrahedralize", "points"), &MeshUtils::delaunay3d_tetrahedralize);
 }
-

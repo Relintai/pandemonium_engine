@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "servers/physics_2d_server.h"
 #define _SEGMENT_IS_VALID_SUPPORT_THRESHOLD 0.99998
 

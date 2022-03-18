@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "editor/create_dialog.h"
 #include "editor/editor_inspector.h"
 #include "editor/editor_resource_picker.h"

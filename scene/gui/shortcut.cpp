@@ -30,8 +30,8 @@
 
 #include "shortcut.h"
 
-#include "core/os/keyboard.h"
 #include "core/os/input_event.h"
+#include "core/os/keyboard.h"
 
 void ShortCut::set_shortcut(const Ref<InputEvent> &p_shortcut) {
 	shortcut = p_shortcut;

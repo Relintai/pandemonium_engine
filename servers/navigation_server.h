@@ -34,9 +34,6 @@
 	@author AndreaCatania
 */
 
-
-
-
 #include "core/object.h"
 #include "core/rid.h"
 

@@ -32,8 +32,6 @@
 
 //author: Andreas Haas <hondres,  liugam3@gmail.com>
 
-
-
 #ifdef JOYDEV_ENABLED
 #include "core/os/mutex.h"
 #include "core/os/thread.h"

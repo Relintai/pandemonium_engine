@@ -24,8 +24,8 @@ SOFTWARE.
 
 #include "../../defines.h"
 
-#include "../../library/voxel_surface.h"
 #include "../../library/voxel_library.h"
+#include "../../library/voxel_surface.h"
 
 #include "../../meshers/voxel_mesher.h"
 #include "../default/voxel_chunk_default.h"

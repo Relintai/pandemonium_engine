@@ -100,7 +100,7 @@ private:
 
 	Vector<ThreadPoolContext *> _threads;
 
-	Vector<Ref<ThreadPoolJob> > _queue;
+	Vector<Ref<ThreadPoolJob>> _queue;
 	int _current_queue_head;
 	int _current_queue_tail;
 

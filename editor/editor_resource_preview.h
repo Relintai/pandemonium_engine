@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/os/semaphore.h"
 #include "core/os/thread.h"
 #include "core/safe_refcount.h"

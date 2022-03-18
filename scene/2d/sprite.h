@@ -30,11 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
-#include "scene/2d/node_2d.h"
 #include "core/reference.h"
+#include "scene/2d/node_2d.h"
 
 class Sprite : public Node2D {
 	GDCLASS(Sprite, Node2D);

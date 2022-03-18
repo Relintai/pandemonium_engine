@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "editor/editor_sectioned_inspector.h"
 #include "editor_inspector.h"
 #include "scene/gui/dialogs.h"

@@ -58,7 +58,6 @@ void VoxelMesherCubic::_add_chunk(Ref<VoxelChunk> p_chunk) {
 	for (int y = 0; y < y_size; ++y) {
 		for (int z = 0; z < z_size; ++z) {
 			for (int x = 0; x < x_size; ++x) {
-
 				cube_points->setup(chunk, x, y, z, 1);
 
 				if (!cube_points->has_points())

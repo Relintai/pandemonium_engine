@@ -37,8 +37,8 @@
 #include "scene/gui/button.h"
 #include "scene/gui/label.h"
 #include "scene/gui/panel.h"
-#include "scene/gui/texture_button.h"
 #include "scene/gui/shortcut.h"
+#include "scene/gui/texture_button.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_node.h"

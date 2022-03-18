@@ -38,9 +38,9 @@
 #include "scene/2d/node_2d.h"
 #include "scene/3d/spatial.h"
 #include "scene/gui/control.h"
+#include "scene/gui/shortcut.h"
 #include "scene/main/instance_placeholder.h"
 #include "scene/property_utils.h"
-#include "scene/gui/shortcut.h"
 
 #define PACKED_SCENE_VERSION 2
 

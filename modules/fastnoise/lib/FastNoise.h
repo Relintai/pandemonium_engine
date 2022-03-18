@@ -30,9 +30,6 @@
 
 // VERSION: 0.4.1
 
-
-
-
 // Uncomment the line below to use doubles throughout FastNoise instead of floats
 //#define FN_USE_DOUBLES
 
@@ -46,16 +43,40 @@ typedef double FN_DECIMAL;
 typedef float FN_DECIMAL;
 #endif
 
-class FastNoise
-{
+class FastNoise {
 public:
-	explicit FastNoise(int seed = 1337) { SetSeed(seed); CalculateFractalBounding(); }
+	explicit FastNoise(int seed = 1337) {
+		SetSeed(seed);
+		CalculateFractalBounding();
+	}
 
-	enum NoiseType { Value, ValueFractal, Perlin, PerlinFractal, Simplex, SimplexFractal, Cellular, WhiteNoise, Cubic, CubicFractal };
-	enum Interp { Linear, Hermite, Quintic };
-	enum FractalType { FBM, Billow, RigidMulti };
-	enum CellularDistanceFunction { Euclidean, Manhattan, Natural };
-	enum CellularReturnType { CellValue, NoiseLookup, Distance, Distance2, Distance2Add, Distance2Sub, Distance2Mul, Distance2Div };
+	enum NoiseType { Value,
+		ValueFractal,
+		Perlin,
+		PerlinFractal,
+		Simplex,
+		SimplexFractal,
+		Cellular,
+		WhiteNoise,
+		Cubic,
+		CubicFractal };
+	enum Interp { Linear,
+		Hermite,
+		Quintic };
+	enum FractalType { FBM,
+		Billow,
+		RigidMulti };
+	enum CellularDistanceFunction { Euclidean,
+		Manhattan,
+		Natural };
+	enum CellularReturnType { CellValue,
+		NoiseLookup,
+		Distance,
+		Distance2,
+		Distance2Add,
+		Distance2Sub,
+		Distance2Mul,
+		Distance2Div };
 
 	// Sets seed used for all noise types
 	// Default: 1337
@@ -92,7 +113,10 @@ public:
 
 	// Sets octave count for all fractal noise types
 	// Default: 3
-	void SetFractalOctaves(int octaves) { m_octaves = octaves; CalculateFractalBounding(); }
+	void SetFractalOctaves(int octaves) {
+		m_octaves = octaves;
+		CalculateFractalBounding();
+	}
 
 	// Returns octave count for all fractal noise types
 	int GetFractalOctaves() const { return m_octaves; }
@@ -106,7 +130,10 @@ public:
 
 	// Sets octave gain for all fractal noise types
 	// Default: 0.5
-	void SetFractalGain(FN_DECIMAL gain) { m_gain = gain; CalculateFractalBounding(); }
+	void SetFractalGain(FN_DECIMAL gain) {
+		m_gain = gain;
+		CalculateFractalBounding();
+	}
 
 	// Returns octave gain for all fractal noise types
 	FN_DECIMAL GetFractalGain() const { return m_gain; }
@@ -117,7 +144,6 @@ public:
 
 	// Returns method for combining octaves in all fractal noise types
 	FractalType GetFractalType() const { return m_fractalType; }
-
 
 	// Sets distance function used in cellular noise calculations
 	// Default: Euclidean
@@ -136,10 +162,10 @@ public:
 
 	// Noise used to calculate a cell value if cellular return type is NoiseLookup
 	// The lookup value is acquired through GetNoise() so ensure you SetNoiseType() on the noise lookup, value, Perlin or simplex is recommended
-	void SetCellularNoiseLookup(FastNoise* noise) { m_cellularNoiseLookup = noise; }
+	void SetCellularNoiseLookup(FastNoise *noise) { m_cellularNoiseLookup = noise; }
 
 	// Returns the noise used to calculate a cell value if the cellular return type is NoiseLookup
-	FastNoise* GetCellularNoiseLookup() const { return m_cellularNoiseLookup; }
+	FastNoise *GetCellularNoiseLookup() const { return m_cellularNoiseLookup; }
 
 	// Sets the 2 distance indices used for distance2 return types
 	// Default: 0, 1
@@ -148,7 +174,7 @@ public:
 	void SetCellularDistance2Indices(int cellularDistanceIndex0, int cellularDistanceIndex1);
 
 	// Returns the 2 distance indices used for distance2 return types
-	void GetCellularDistance2Indices(int& cellularDistanceIndex0, int& cellularDistanceIndex1) const;
+	void GetCellularDistance2Indices(int &cellularDistanceIndex0, int &cellularDistanceIndex1) const;
 
 	// Sets the maximum distance a cellular point can move from its grid position
 	// Setting this high will make artifacts more common
@@ -185,8 +211,8 @@ public:
 
 	FN_DECIMAL GetNoise(FN_DECIMAL x, FN_DECIMAL y) const;
 
-	void GradientPerturb(FN_DECIMAL& x, FN_DECIMAL& y) const;
-	void GradientPerturbFractal(FN_DECIMAL& x, FN_DECIMAL& y) const;
+	void GradientPerturb(FN_DECIMAL &x, FN_DECIMAL &y) const;
+	void GradientPerturbFractal(FN_DECIMAL &x, FN_DECIMAL &y) const;
 
 	//3D
 	FN_DECIMAL GetValue(FN_DECIMAL x, FN_DECIMAL y, FN_DECIMAL z) const;
@@ -208,8 +234,8 @@ public:
 
 	FN_DECIMAL GetNoise(FN_DECIMAL x, FN_DECIMAL y, FN_DECIMAL z) const;
 
-	void GradientPerturb(FN_DECIMAL& x, FN_DECIMAL& y, FN_DECIMAL& z) const;
-	void GradientPerturbFractal(FN_DECIMAL& x, FN_DECIMAL& y, FN_DECIMAL& z) const;
+	void GradientPerturb(FN_DECIMAL &x, FN_DECIMAL &y, FN_DECIMAL &z) const;
+	void GradientPerturbFractal(FN_DECIMAL &x, FN_DECIMAL &y, FN_DECIMAL &z) const;
 
 	//4D
 	FN_DECIMAL GetSimplex(FN_DECIMAL x, FN_DECIMAL y, FN_DECIMAL z, FN_DECIMAL w) const;
@@ -234,7 +260,7 @@ private:
 
 	CellularDistanceFunction m_cellularDistanceFunction = Euclidean;
 	CellularReturnType m_cellularReturnType = CellValue;
-	FastNoise* m_cellularNoiseLookup = nullptr;
+	FastNoise *m_cellularNoiseLookup = nullptr;
 	int m_cellularDistanceIndex0 = 0;
 	int m_cellularDistanceIndex1 = 1;
 	FN_DECIMAL m_cellularJitter = FN_DECIMAL(0.45);
@@ -268,7 +294,7 @@ private:
 	FN_DECIMAL SingleCellular(FN_DECIMAL x, FN_DECIMAL y) const;
 	FN_DECIMAL SingleCellular2Edge(FN_DECIMAL x, FN_DECIMAL y) const;
 
-	void SingleGradientPerturb(unsigned char offset, FN_DECIMAL warpAmp, FN_DECIMAL frequency, FN_DECIMAL& x, FN_DECIMAL& y) const;
+	void SingleGradientPerturb(unsigned char offset, FN_DECIMAL warpAmp, FN_DECIMAL frequency, FN_DECIMAL &x, FN_DECIMAL &y) const;
 
 	//3D
 	FN_DECIMAL SingleValueFractalFBM(FN_DECIMAL x, FN_DECIMAL y, FN_DECIMAL z) const;
@@ -294,7 +320,7 @@ private:
 	FN_DECIMAL SingleCellular(FN_DECIMAL x, FN_DECIMAL y, FN_DECIMAL z) const;
 	FN_DECIMAL SingleCellular2Edge(FN_DECIMAL x, FN_DECIMAL y, FN_DECIMAL z) const;
 
-	void SingleGradientPerturb(unsigned char offset, FN_DECIMAL warpAmp, FN_DECIMAL frequency, FN_DECIMAL& x, FN_DECIMAL& y, FN_DECIMAL& z) const;
+	void SingleGradientPerturb(unsigned char offset, FN_DECIMAL warpAmp, FN_DECIMAL frequency, FN_DECIMAL &x, FN_DECIMAL &y, FN_DECIMAL &z) const;
 
 	//4D
 	FN_DECIMAL SingleSimplex(unsigned char offset, FN_DECIMAL x, FN_DECIMAL y, FN_DECIMAL z, FN_DECIMAL w) const;

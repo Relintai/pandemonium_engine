@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "scene/gui/box_container.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/scroll_container.h"

@@ -36,11 +36,11 @@
 #include "core/os/os.h"
 #include "core/project_settings.h"
 #include "core/script_language.h"
-#include "scene/main/viewport.h"
-#include "scene/gui/shortcut.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/scroll_bar.h"
+#include "scene/gui/shortcut.h"
 #include "scene/main/timer.h"
+#include "scene/main/viewport.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_scale.h"

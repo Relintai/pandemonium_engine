@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/safe_refcount.h"
 #include "scene/main/node.h"
 #include "servers/audio/audio_stream.h"

@@ -72,7 +72,7 @@ void InputProfileModifier::remove_entry(int index) {
 
 InputProfileModifier::InputProfileModifier() {
 	_modifier_actions = memnew(Vector<String>());
-	_entries = memnew(Vector<Ref<InputProfileModifierEntry> >());
+	_entries = memnew(Vector<Ref<InputProfileModifierEntry>>());
 }
 
 InputProfileModifier::~InputProfileModifier() {

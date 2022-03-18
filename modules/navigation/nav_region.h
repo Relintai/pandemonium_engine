@@ -30,15 +30,12 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "nav_rid.h"
 
 #include "nav_utils.h"
 #include "scene/3d/navigation.h"
-#include <vector>
 #include "scene/resources/navigation_mesh.h"
+#include <vector>
 
 /**
 	@author AndreaCatania

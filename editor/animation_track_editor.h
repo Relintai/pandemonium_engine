@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "editor/editor_data.h"
 #include "editor/editor_spin_slider.h"
 #include "editor/property_editor.h"

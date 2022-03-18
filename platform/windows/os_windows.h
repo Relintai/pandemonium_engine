@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "context_gl_windows.h"
 #include "core/os/input.h"
 #include "core/os/os.h"

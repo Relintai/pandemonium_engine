@@ -27,11 +27,11 @@ SOFTWARE.
 
 #include "../../defines.h"
 
-#include "servers/visual_server.h"
 #include "scene/3d/mesh_instance.h"
+#include "servers/visual_server.h"
 
-#include "servers/physics_2d_server.h"
 #include "scene/resources/world_2d.h"
+#include "servers/physics_2d_server.h"
 
 _FORCE_INLINE_ int Terrain2DMesherDefault::get_build_flags() const {
 	return _build_flags;

@@ -32,6 +32,7 @@
 
 #include "core/os/dir_access.h"
 #include "core/os/os.h"
+#include "core/project_settings.h"
 #include "editor_node.h"
 #include "editor_scale.h"
 #include "scene/gui/box_container.h"
@@ -43,7 +44,6 @@
 #include "scene/gui/line_edit.h"
 #include "scene/gui/progress_bar.h"
 #include "scene/gui/tree.h"
-#include "core/project_settings.h"
 
 const char *FindInFiles::SIGNAL_RESULT_FOUND = "result_found";
 const char *FindInFiles::SIGNAL_FINISHED = "finished";

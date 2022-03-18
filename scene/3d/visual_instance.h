@@ -30,13 +30,10 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/math/face3.h"
+#include "core/reference.h"
 #include "core/rid.h"
 #include "scene/3d/cull_instance.h"
-#include "core/reference.h"
 #include "servers/visual_server.h"
 
 class Material;

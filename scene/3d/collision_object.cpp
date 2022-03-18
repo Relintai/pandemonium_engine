@@ -32,10 +32,10 @@
 
 #include "core/engine.h"
 #include "mesh_instance.h"
+#include "scene/resources/mesh.h"
+#include "scene/resources/world.h"
 #include "scene/scene_string_names.h"
 #include "servers/physics_server.h"
-#include "scene/resources/world.h"
-#include "scene/resources/mesh.h"
 
 void CollisionObject::_notification(int p_what) {
 	switch (p_what) {

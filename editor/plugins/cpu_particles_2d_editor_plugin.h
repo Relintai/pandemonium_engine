@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 #include "scene/2d/collision_polygon_2d.h"

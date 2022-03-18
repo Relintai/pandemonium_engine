@@ -3,8 +3,8 @@
 #include "../mesh_data_resource/nodes/mesh_data_instance.h"
 
 //#include "../thread_pool/thread_pool.h"
-#include "servers/physics_server.h"
 #include "scene/resources/world_2d.h"
+#include "servers/physics_server.h"
 
 #include "core/engine.h"
 
@@ -55,7 +55,6 @@ void Prop2DInstanceMerger::set_building(const bool value) {
 	set_physics_process_internal(_building);
 	set_process_internal(_building);
 }
-
 
 Ref<Prop2DInstanceJob> Prop2DInstanceMerger::get_job() {
 	return _job;
@@ -471,11 +470,11 @@ void Prop2DInstanceMerger::_prop_preprocess(Transform2D transform, const Ref<Pro
 				continue;
 
 			_job->add_mesh(mesh_data, t);
-/*
-			for (int j = 0; j < mdr->get_collision_shape_count(); ++j) {
-				_job->add_collision_shape(mdr->get_collision_shape(j), t * mdr->get_collision_shape_offset(j));
-			}
-			*/
+			/*
+						for (int j = 0; j < mdr->get_collision_shape_count(); ++j) {
+							_job->add_collision_shape(mdr->get_collision_shape(j), t * mdr->get_collision_shape_offset(j));
+						}
+						*/
 		}
 #endif
 	}
@@ -606,15 +605,15 @@ void Prop2DInstanceMerger::_notification(int p_what) {
 			//}
 
 			_last_transform = new_transform;
-/*
-			for (int i = 0; i < _colliders.size(); ++i) {
-				const ColliderBody &c = _colliders[i];
+			/*
+						for (int i = 0; i < _colliders.size(); ++i) {
+							const ColliderBody &c = _colliders[i];
 
-				if (c.body != RID()) {
-					PhysicsServer::get_singleton()->body_set_shape_transform(c.body, 0, new_transform * c.transform);
-				}
-			}
-*/
+							if (c.body != RID()) {
+								PhysicsServer::get_singleton()->body_set_shape_transform(c.body, 0, new_transform * c.transform);
+							}
+						}
+			*/
 			break;
 		}
 		case NOTIFICATION_DRAW: {

@@ -34,9 +34,6 @@
 Adapted to Godot from the Bullet library.
 */
 
-
-
-
 #include "servers/physics/joints/jacobian_entry_sw.h"
 #include "servers/physics/joints_sw.h"
 

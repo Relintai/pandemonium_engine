@@ -83,13 +83,13 @@ Copyright (c) 2012 Brandon Pelfrey
 #endif
 
 #ifndef XA_PRINT
-#define XA_PRINT(...)                                                  \
+#define XA_PRINT(...)                                                        \
 	if (xatlas_mu::internal::s_print && xatlas_mu::internal::s_printVerbose) \
 		xatlas_mu::internal::s_print(__VA_ARGS__);
 #endif
 
 #ifndef XA_PRINT_WARNING
-#define XA_PRINT_WARNING(...)      \
+#define XA_PRINT_WARNING(...)         \
 	if (xatlas_mu::internal::s_print) \
 		xatlas_mu::internal::s_print(__VA_ARGS__);
 #endif
@@ -498,11 +498,11 @@ static float square(float f) {
 }
 
 /** Return the next power of two.
-* @see http://graphics.stanford.edu/~seander/bithacks.html
-* @warning Behaviour for 0 is undefined.
-* @note isPowerOfTwo(x) -> nextPowerOfTwo(x) == x
-* @note nextPowerOfTwo(x) = 2 << log2(x-1)
-*/
+ * @see http://graphics.stanford.edu/~seander/bithacks.html
+ * @warning Behaviour for 0 is undefined.
+ * @note isPowerOfTwo(x) -> nextPowerOfTwo(x) == x
+ * @note nextPowerOfTwo(x) = 2 << log2(x-1)
+ */
 static uint32_t nextPowerOfTwo(uint32_t x) {
 	XA_DEBUG_ASSERT(x != 0);
 	// On modern CPUs this is supposed to be as fast as using the bsr instruction.
@@ -2938,7 +2938,6 @@ template <typename T>
 class ThreadLocal {
 public:
 	ThreadLocal() {
-
 		const uint32_t n = 1;
 
 		m_array = XA_ALLOC_ARRAY(MemTag::Default, T, n);
@@ -2947,7 +2946,6 @@ public:
 	}
 
 	~ThreadLocal() {
-
 		const uint32_t n = 1;
 
 		for (uint32_t i = 0; i < n; i++)
@@ -3832,7 +3830,7 @@ static void dscal(int n, double a, double *x) {
  *  This version is completely abstract, the same code can be used for
  * CPU/GPU, dense matrix / sparse matrix etc...
  *  Abstraction is realized through:
-  *   - Abstract matrix interface (NLMatrix), that can implement different
+ *   - Abstract matrix interface (NLMatrix), that can implement different
  *     versions of matrix x vector product (CPU/GPU, sparse/dense ...)
  */
 
@@ -4440,7 +4438,7 @@ struct AtlasData {
 
 		faceAreas.resize(faceCount);
 		//if (options.useInputMeshUvs)
-			faceUvAreas.resize(faceCount);
+		faceUvAreas.resize(faceCount);
 
 		faceNormals.resize(faceCount);
 		isFaceInChart.resize(faceCount);
@@ -4549,14 +4547,12 @@ private:
 					//if ((m_data.faceUvAreas[face] < 0.0f) != isFaceAreaNegative)
 					//	continue; // Face winding is opposite of the first chart face.
 
-
 					//const Vector2 &uv0 = m_data.mesh->texcoord(edgeIt.vertex0());
 					//const Vector2 &uv1 = m_data.mesh->texcoord(edgeIt.vertex1());
 					//const Vector2 &ouv0 = m_data.mesh->texcoord(m_data.mesh->vertexAt(meshEdgeIndex0(edgeIt.oppositeEdge())));
 					//const Vector2 &ouv1 = m_data.mesh->texcoord(m_data.mesh->vertexAt(meshEdgeIndex1(edgeIt.oppositeEdge())));
 					//if (!equal(uv0, ouv1, m_data.mesh->epsilon()) || !equal(uv1, ouv0, m_data.mesh->epsilon()))
 					//	continue; // UVs must match exactly.
-
 
 					m_chartFaces.push_back(face);
 					chart.faceCount++;
@@ -4652,9 +4648,9 @@ struct Atlas {
 	}
 
 	void compute() {
-			XA_PROFILE_START(originalUvCharts)
-			m_originalUvCharts.compute();
-			XA_PROFILE_END(originalUvCharts)
+		XA_PROFILE_START(originalUvCharts)
+		m_originalUvCharts.compute();
+		XA_PROFILE_END(originalUvCharts)
 	}
 
 private:
@@ -5530,7 +5526,7 @@ struct Quality {
 			const float a = dot(Ss, Ss); // E
 			const float b = dot(Ss, St); // F
 			const float c = dot(St, St); // G
-					// Compute eigen-values of the first fundamental form:
+										 // Compute eigen-values of the first fundamental form:
 			const float sigma1 = sqrtf(0.5f * max(0.0f, a + c - sqrtf(square(a - c) + 4 * square(b)))); // gamma uppercase, min eigenvalue.
 			const float sigma2 = sqrtf(0.5f * max(0.0f, a + c + sqrtf(square(a - c) + 4 * square(b)))); // gamma lowercase, max eigenvalue.
 			XA_ASSERT(sigma2 > sigma1 || equal(sigma1, sigma2, kEpsilon));
@@ -8288,7 +8284,7 @@ const char *StringForEnum(ProgressCategory category) {
 	return "";
 }
 
-} // namespace xatlas
+} //namespace xatlas_mu
 
 #if XATLAS_C_API
 static_assert(sizeof(xatlas_mu::Chart) == sizeof(xatlasChart), "xatlasChart size mismatch");

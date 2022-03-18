@@ -30,11 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
-#include "core/vector.h"
 #include "core/reference.h"
+#include "core/vector.h"
 #include "scene/gui/color_picker.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/tree.h"

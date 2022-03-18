@@ -40,11 +40,11 @@
 #include "joypad_windows.h"
 #include "lang_table.h"
 #include "main/main.h"
+#include "scene/resources/texture.h"
 #include "servers/audio_server.h"
 #include "servers/visual/visual_server_raster.h"
 #include "servers/visual/visual_server_wrap_mt.h"
 #include "windows_terminal_logger.h"
-#include "scene/resources/texture.h"
 
 #include <avrt.h>
 #include <direct.h>

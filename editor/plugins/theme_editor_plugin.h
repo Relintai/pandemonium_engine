@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "scene/gui/dialogs.h"
 #include "scene/gui/margin_container.h"
 #include "scene/gui/option_button.h"

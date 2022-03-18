@@ -37,8 +37,6 @@
 #include "platform_thread.h"
 #else
 
-
-
 #include "core/typedefs.h"
 
 #if !defined(NO_THREADS)

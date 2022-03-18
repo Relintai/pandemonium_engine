@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/os/mutex.h"
 
 #define _THREAD_SAFE_CLASS_ mutable Mutex _thread_safe_;

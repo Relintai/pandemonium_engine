@@ -31,8 +31,8 @@
 #include "animated_sprite.h"
 
 #include "core/os/os.h"
-#include "scene/scene_string_names.h"
 #include "scene/resources/texture.h"
+#include "scene/scene_string_names.h"
 
 #define NORMAL_SUFFIX "_normal"
 

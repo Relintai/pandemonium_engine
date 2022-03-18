@@ -37,10 +37,10 @@
 #include "editor/plugins/animation_player_editor_plugin.h"
 #include "editor_node.h"
 #include "editor_scale.h"
+#include "scene/3d/spatial.h"
+#include "scene/main/node.h"
 #include "scene/main/viewport.h"
 #include "servers/audio/audio_stream.h"
-#include "scene/main/node.h"
-#include "scene/3d/spatial.h"
 
 class AnimationTrackKeyEdit : public Object {
 	GDCLASS(AnimationTrackKeyEdit, Object);

@@ -22,9 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #if PROPS_2D_PRESENT
 
 #include "../../props_2d/props/prop_2d_data_entry.h"

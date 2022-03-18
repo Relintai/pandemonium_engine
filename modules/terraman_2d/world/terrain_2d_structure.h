@@ -27,8 +27,8 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include "core/pool_vector.h"
 #include "core/math/rect2.h"
+#include "core/pool_vector.h"
 #include "terrain_2d_chunk.h"
 
 class Terrain2DStructure : public Resource {

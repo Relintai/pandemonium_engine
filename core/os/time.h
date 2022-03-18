@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/class_db.h"
 
 // This Time class conforms with as many of the ISO 8601 standards as possible.

@@ -30,9 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
+#include "../fastnoise/fastnoise_noise_params.h"
+#include "../fastnoise/noise.h"
 #include "core/array.h"
 #include "core/resource.h"
 #include "scene/2d/light_occluder_2d.h"
@@ -40,8 +39,6 @@
 #include "scene/resources/convex_polygon_shape_2d.h"
 #include "scene/resources/shape_2d.h"
 #include "scene/resources/texture.h"
-#include "../fastnoise/noise.h"
-#include "../fastnoise/fastnoise_noise_params.h"
 
 class RTileSet : public Resource {
 	GDCLASS(RTileSet, Resource);

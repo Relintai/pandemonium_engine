@@ -207,31 +207,31 @@ void VoxelLibraryMergerPCM::_material_cache_unref(const int key) {
 void VoxelLibraryMergerPCM::_prop_material_cache_get_key(Ref<VoxelChunk> chunk) {
 	Vector<uint64_t> props;
 
-/*
-#ifdef PROPS_PRESENT
-	for (int i = 0; i < chunk->prop_get_count(); ++i) {
-		Ref<PropData> prop = chunk->prop_get(i);
+	/*
+	#ifdef PROPS_PRESENT
+		for (int i = 0; i < chunk->prop_get_count(); ++i) {
+			Ref<PropData> prop = chunk->prop_get(i);
 
-		ERR_CONTINUE(!prop.is_valid());
+			ERR_CONTINUE(!prop.is_valid());
 
-		//get pointer's value as uint64
-		uint64_t v = make_uint64_t<PropData *>(*prop);
+			//get pointer's value as uint64
+			uint64_t v = make_uint64_t<PropData *>(*prop);
 
-		int psize = props.size();
-		bool found = false;
-		for (int j = 0; j < psize; ++j) {
-			if (props[j] == v) {
-				found = true;
-				break;
+			int psize = props.size();
+			bool found = false;
+			for (int j = 0; j < psize; ++j) {
+				if (props[j] == v) {
+					found = true;
+					break;
+				}
+			}
+
+			if (!found) {
+				props.push_back(v);
 			}
 		}
-
-		if (!found) {
-			props.push_back(v);
-		}
-	}
-#endif
-*/
+	#endif
+	*/
 
 #if MESH_DATA_RESOURCE_PRESENT
 	for (int i = 0; i < chunk->mesh_data_resource_get_count(); ++i) {
@@ -316,17 +316,17 @@ void VoxelLibraryMergerPCM::_prop_material_cache_get_key(Ref<VoxelChunk> chunk) 
 		cache->material_add(nm);
 	}
 
-/*
-#ifdef PROPS_PRESENT
-	for (int i = 0; i < chunk->prop_get_count(); ++i) {
-		Ref<PropData> prop = chunk->prop_get(i);
+	/*
+	#ifdef PROPS_PRESENT
+		for (int i = 0; i < chunk->prop_get_count(); ++i) {
+			Ref<PropData> prop = chunk->prop_get(i);
 
-		ERR_CONTINUE(!prop.is_valid());
+			ERR_CONTINUE(!prop.is_valid());
 
-		cache->prop_add_textures(prop);
-	}
-#endif
-*/
+			cache->prop_add_textures(prop);
+		}
+	#endif
+	*/
 
 #if MESH_DATA_RESOURCE_PRESENT
 	for (int i = 0; i < chunk->mesh_data_resource_get_count(); ++i) {

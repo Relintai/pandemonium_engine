@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/object.h"
 #include "core/os/main_loop.h"
 #include "core/os/thread_safe.h"

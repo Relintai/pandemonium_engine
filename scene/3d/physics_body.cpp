@@ -35,11 +35,11 @@
 #include "core/list.h"
 #include "core/method_bind_ext.gen.inc"
 #include "core/object.h"
-#include "core/rid.h"
-#include "scene/scene_string_names.h"
-#include "scene/resources/physics_material.h"
-#include "skeleton.h"
 #include "core/project_settings.h"
+#include "core/rid.h"
+#include "scene/resources/physics_material.h"
+#include "scene/scene_string_names.h"
+#include "skeleton.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/plugins/spatial_editor_plugin.h"
@@ -106,7 +106,6 @@ PhysicsBody::PhysicsBody(PhysicsServer::BodyMode p_mode) :
 }
 
 PhysicsBody::~PhysicsBody() {
-
 }
 
 #ifndef DISABLE_DEPRECATED
@@ -1617,7 +1616,6 @@ KinematicCollision::KinematicCollision() {
 }
 
 KinematicCollision::~KinematicCollision() {
-
 }
 
 ///////////////////////////////////////

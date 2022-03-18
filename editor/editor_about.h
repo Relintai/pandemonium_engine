@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "scene/gui/control.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/item_list.h"

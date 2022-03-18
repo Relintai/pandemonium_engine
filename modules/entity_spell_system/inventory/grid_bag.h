@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
 #include "core/resource.h"
 #include "core/vector.h"
 
@@ -76,7 +75,7 @@ private:
 	int _size_x;
 	int _size_y;
 
-	Vector<Ref<ItemInstance> > _items;
+	Vector<Ref<ItemInstance>> _items;
 	Vector<int> _space_map;
 };
 

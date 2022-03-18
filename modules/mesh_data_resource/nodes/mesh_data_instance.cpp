@@ -4,8 +4,6 @@
 
 #include "core/image.h"
 
-
-
 #if TEXTURE_PACKER_PRESENT
 #include "../../texture_packer/texture_resource/packer_image_resource.h"
 #endif

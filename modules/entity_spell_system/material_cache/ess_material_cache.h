@@ -22,14 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
 #include "core/color.h"
 #include "core/resource.h"
 #include "core/vector.h"
 
 #include "core/math/rect2.h"
-#include "scene/resources/material.h"
 #include "core/os/mutex.h"
+#include "scene/resources/material.h"
 
 class PropData;
 

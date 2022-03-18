@@ -32,8 +32,8 @@
 #include "core/core_string_names.h"
 #include "core/os/os.h"
 #include "scene/main/viewport.h"
-#include "scene/scene_string_names.h"
 #include "scene/resources/texture.h"
+#include "scene/scene_string_names.h"
 
 #ifdef TOOLS_ENABLED
 Dictionary Sprite::_edit_get_state() const {

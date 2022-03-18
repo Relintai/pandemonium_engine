@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/math/octree.h"
 #include "servers/visual/rasterizer.h"
 #include "servers/visual_server.h"

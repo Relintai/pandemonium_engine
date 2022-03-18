@@ -44,7 +44,6 @@
 #include "editor/editor_settings.h"
 #include "modules/modules_enabled.gen.h" // For regex.
 #include "platform/osx/logo.gen.h"
-#include "editor/editor_settings.h"
 
 #include <sys/stat.h>
 

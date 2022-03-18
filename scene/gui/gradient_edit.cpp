@@ -35,7 +35,6 @@
 #include "scene/gui/popup.h"
 #include "scene/resources/default_theme/theme_data.h"
 
-
 #ifdef TOOLS_ENABLED
 #include "editor/editor_scale.h"
 #define SPACING (3 * EDSCALE)

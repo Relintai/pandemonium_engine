@@ -157,9 +157,7 @@ void GLTFSkin::set_godot_skin(Ref<Skin> p_godot_skin) {
 }
 
 GLTFSkin::GLTFSkin() {
-
 }
 
 GLTFSkin::~GLTFSkin() {
-
 }

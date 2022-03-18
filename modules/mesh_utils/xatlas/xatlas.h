@@ -35,7 +35,6 @@ Copyright NVIDIA Corporation 2006 -- Ignacio Castano <icastano@nvidia.com>
 
 #pragma once
 
-
 #include <stddef.h>
 #include <stdint.h>
 
@@ -256,6 +255,6 @@ void SetPrint(PrintFunc print, bool verbose);
 const char *StringForEnum(AddMeshError error);
 const char *StringForEnum(ProgressCategory category);
 
-} // namespace xatlas
+} //namespace xatlas_mu
 
 #endif // XATLAS_H

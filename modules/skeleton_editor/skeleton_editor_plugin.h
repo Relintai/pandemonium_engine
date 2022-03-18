@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/os/input_event.h"
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
@@ -129,7 +126,6 @@ public:
 };
 
 class ModuleSkeletonEditor : public VBoxContainer {
-
 	GDCLASS(ModuleSkeletonEditor, VBoxContainer);
 
 	friend class ModuleSkeletonEditorPlugin;
@@ -284,10 +280,11 @@ class ModuleEditorInspectorPluginSkeleton : public EditorInspectorPlugin {
 	EditorNode *editor;
 	UndoRedo *undo_redo;
 
-	void set_rest_mode_toggled (const bool p_pressed);
+	void set_rest_mode_toggled(const bool p_pressed);
 
 protected:
 	static void _bind_methods();
+
 public:
 	virtual bool forward_spatial_gui_input(int p_index, Camera *p_camera, const Ref<InputEvent> &p_event) { return skel_editor->forward_spatial_gui_input(p_index, p_camera, p_event); }
 	virtual bool can_handle(Object *p_object);

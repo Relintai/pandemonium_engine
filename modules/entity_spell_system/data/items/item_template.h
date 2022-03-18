@@ -242,10 +242,10 @@ private:
 
 	String _text_translation_key;
 
-	Vector<Ref<Spell> > _teaches_spells;
-	Vector<Ref<Spell> > _grants_spells;
-	Vector<Ref<Spell> > _auras;
-	Vector<Ref<Spell> > _required_skills;
+	Vector<Ref<Spell>> _teaches_spells;
+	Vector<Ref<Spell>> _grants_spells;
+	Vector<Ref<Spell>> _auras;
+	Vector<Ref<Spell>> _required_skills;
 	Ref<Spell> _use_spell;
 	int _charges;
 	bool _consumed;

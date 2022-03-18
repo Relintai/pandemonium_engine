@@ -39,13 +39,13 @@
 #include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/popup.h"
+#include "scene/gui/popup_menu.h"
 #include "scene/gui/separator.h"
+#include "scene/gui/shortcut.h"
 #include "scene/gui/slider.h"
 #include "scene/gui/spin_box.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tool_button.h"
-#include "scene/gui/shortcut.h"
-#include "scene/gui/popup_menu.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_scale.h"

@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/image.h"
 
 void image_compress_cvtt(Image *p_image, float p_lossy_quality, Image::CompressSource p_source);

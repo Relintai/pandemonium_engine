@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/ordered_hash_map.h"
 #include "servers/visual_server.h"
 #include "shader_language.h"

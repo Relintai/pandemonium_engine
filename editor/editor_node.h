@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/safe_refcount.h"
 #include "editor/editor_data.h"
 #include "editor/editor_folding.h"

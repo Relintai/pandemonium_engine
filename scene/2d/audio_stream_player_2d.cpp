@@ -34,10 +34,10 @@
 #include "scene/2d/area_2d.h"
 #include "scene/2d/listener_2d.h"
 #include "scene/main/viewport.h"
-#include "servers/audio_server.h"
-#include "servers/audio/audio_stream.h"
-#include "servers/physics_2d_server.h"
 #include "scene/resources/world_2d.h"
+#include "servers/audio/audio_stream.h"
+#include "servers/audio_server.h"
+#include "servers/physics_2d_server.h"
 
 void AudioStreamPlayer2D::_mix_audio() {
 	if (!stream_playback.is_valid() || !active.is_set() ||

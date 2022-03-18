@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include <BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h>
 #include <BulletSoftBody/btSoftBodyRigidBodyCollisionConfiguration.h>
 

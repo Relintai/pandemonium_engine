@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "audio_driver_opensl.h"
 #include "core/os/main_loop.h"
 #include "drivers/unix/os_unix.h"

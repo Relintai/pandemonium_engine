@@ -37,8 +37,8 @@
 #include "dir_access_osx.h"
 #include "drivers/gles2/rasterizer_gles2.h"
 #include "main/main.h"
-#include "servers/visual/visual_server_raster.h"
 #include "scene/resources/texture.h"
+#include "servers/visual/visual_server_raster.h"
 
 #include <mach-o/dyld.h>
 #include <os/log.h>

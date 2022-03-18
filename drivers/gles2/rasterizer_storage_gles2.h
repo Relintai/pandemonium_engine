@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/pool_vector.h"
 #include "core/self_list.h"
 #include "drivers/gles_common/rasterizer_asserts.h"

@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "editor_data.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"

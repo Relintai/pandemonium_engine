@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/command_queue_mt.h"
 #include "core/os/thread.h"
 #include "core/project_settings.h"

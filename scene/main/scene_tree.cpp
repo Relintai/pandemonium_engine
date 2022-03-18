@@ -40,6 +40,7 @@
 #include "core/project_settings.h"
 #include "main/input_default.h"
 #include "node.h"
+#include "scene/3d/spatial.h"
 #include "scene/debugger/script_debugger_remote.h"
 #include "scene/resources/dynamic_font.h"
 #include "scene/resources/material.h"
@@ -50,12 +51,11 @@
 #include "servers/physics_2d_server.h"
 #include "servers/physics_server.h"
 #include "viewport.h"
-#include "scene/3d/spatial.h"
 
 #include "modules/modules_enabled.gen.h" // For freetype.
+#include "scene/resources/mesh.h"
 #include "scene/resources/world.h"
 #include "scene/resources/world_2d.h"
-#include "scene/resources/mesh.h"
 
 #include <stdio.h>
 #include <stdlib.h>

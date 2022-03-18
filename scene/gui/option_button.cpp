@@ -31,8 +31,8 @@
 #include "option_button.h"
 #include "core/os/input.h"
 #include "core/print_string.h"
-#include "scene/gui/shortcut.h"
 #include "scene/gui/popup_menu.h"
+#include "scene/gui/shortcut.h"
 
 Size2 OptionButton::get_minimum_size() const {
 	Size2 minsize = Button::get_minimum_size();

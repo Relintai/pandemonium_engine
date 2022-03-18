@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "editor/property_editor.h"
 #include "editor_help.h"
 #include "scene/gui/rich_text_label.h"

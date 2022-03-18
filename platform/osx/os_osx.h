@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #define BitMap _QDBitMap // Suppress deprecated QuickDraw definition.
 
 #include "core/os/input.h"

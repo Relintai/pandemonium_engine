@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "rasterizer_canvas_gles2.h"
 #include "rasterizer_scene_gles2.h"
 #include "rasterizer_storage_gles2.h"

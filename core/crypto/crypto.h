@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/crypto/hashing_context.h"
 #include "core/reference.h"
 #include "core/resource.h"

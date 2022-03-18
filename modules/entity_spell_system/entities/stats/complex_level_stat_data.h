@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
 #include "core/resource.h"
 
 #include "../../entity_enums.h"
@@ -47,7 +46,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	Vector<Vector<int> > _stat_per_level;
+	Vector<Vector<int>> _stat_per_level;
 };
 
 #endif
