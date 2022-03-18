@@ -30,12 +30,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "core/map.h"
 #include "core/resource.h"
-#include "scene/resources/texture.h"
+#include "core/io/resource_loader.h"
+
+class Texture;
 
 class Font : public Resource {
 	GDCLASS(Font, Resource);

@@ -30,15 +30,12 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
-#include "core/resource.h"
 #include "core/self_list.h"
-#include "scene/resources/shader.h"
-#include "scene/resources/texture.h"
-#include "servers/visual/shader_language.h"
+#include "core/resource.h"
 #include "servers/visual_server.h"
+#include "scene/resources/shader.h"
+
+class Texture;
 
 class Material : public Resource {
 	GDCLASS(Material, Resource);

@@ -30,13 +30,10 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
-#include "node.h"
 #include "core/io/http_client.h"
-#include "core/safe_refcount.h"
 #include "core/os/thread.h"
+#include "core/safe_refcount.h"
+#include "node.h"
 
 class Timer;
 

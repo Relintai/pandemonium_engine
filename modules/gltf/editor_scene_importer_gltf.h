@@ -32,9 +32,6 @@
 
 #ifdef TOOLS_ENABLED
 
-
-
-
 #include "editor/import/resource_importer_scene.h"
 
 #include "gltf_document.h"

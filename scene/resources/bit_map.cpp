@@ -31,6 +31,7 @@
 #include "bit_map.h"
 
 #include "core/io/image_loader.h"
+#include "core/io/resource_loader.h"
 
 void BitMap::create(const Size2 &p_size) {
 	ERR_FAIL_COND(p_size.width < 1);

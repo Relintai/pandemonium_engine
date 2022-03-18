@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "scene/resources/shape_2d.h"
 
 class ConcavePolygonShape2D : public Shape2D {

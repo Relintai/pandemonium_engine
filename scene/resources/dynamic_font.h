@@ -30,9 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-
-
-
 #include "modules/modules_enabled.gen.h" // For freetype.
 #ifdef MODULE_FREETYPE_ENABLED
 
@@ -41,6 +38,7 @@
 #include "core/os/thread_safe.h"
 #include "core/pair.h"
 #include "scene/resources/font.h"
+#include "scene/resources/texture.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H

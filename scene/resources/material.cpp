@@ -33,6 +33,8 @@
 #include "core/engine.h"
 #include "core/project_settings.h"
 #include "core/version.h"
+#include "scene/resources/texture.h"
+#include "servers/visual/shader_language.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_settings.h"
