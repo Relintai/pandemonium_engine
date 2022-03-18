@@ -181,11 +181,7 @@ void VoxelMaterialCachePCM::_setup_material_albedo(Ref<Texture> texture) {
 VoxelMaterialCachePCM::VoxelMaterialCachePCM() {
 	_packer.instance();
 
-#if GODOT4
-#warning implement
-#else
 	_packer->set_texture_flags(Texture::FLAG_MIPMAPS | Texture::FLAG_FILTER);
-#endif
 
 	_packer->set_max_atlas_size(1024);
 	_packer->set_keep_original_atlases(false);

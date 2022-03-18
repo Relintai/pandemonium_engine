@@ -232,9 +232,7 @@ Array Terrain2DJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const float 
 	if (colors.size() < uvs.size())
 		colors.resize(uvs.size());
 
-#if !GODOT4
 	img->lock();
-#endif
 
 	for (int i = 0; i < uvs.size(); ++i) {
 		Vector2 uv = uvs[i];
@@ -248,9 +246,7 @@ Array Terrain2DJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const float 
 		colors.set(i, colors[i] * c * mul_color);
 	}
 
-#if !GODOT4
 	img->unlock();
-#endif
 
 	arr[VisualServer::ARRAY_COLOR] = colors;
 

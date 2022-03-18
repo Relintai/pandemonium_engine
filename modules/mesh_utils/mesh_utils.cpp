@@ -29,13 +29,7 @@ SOFTWARE.
 
 #include "xatlas/xatlas.h"
 
-#if GODOT4
-#define Texture Texture2D
-
-#include "core/math/delaunay_3d.h"
-#else
 #include "delaunay/delaunay_3d.h"
-#endif
 
 MeshUtils *MeshUtils::_instance;
 
@@ -143,9 +137,7 @@ Array MeshUtils::bake_mesh_array_uv(Array arr, Ref<Texture> tex, float mul_color
 	PoolVector2Array uvs = arr[VisualServer::ARRAY_TEX_UV];
 	PoolColorArray colors = arr[VisualServer::ARRAY_COLOR];
 
-#if !GODOT4
 	img->lock();
-#endif
 
 	for (int i = 0; i < uvs.size(); ++i) {
 		Vector2 uv = uvs[i];
@@ -156,9 +148,7 @@ Array MeshUtils::bake_mesh_array_uv(Array arr, Ref<Texture> tex, float mul_color
 		colors.set(i, colors[i] * c * mul_color);
 	}
 
-#if !GODOT4
 	img->unlock();
-#endif
 
 	arr[VisualServer::ARRAY_COLOR] = colors;
 
@@ -639,6 +629,3 @@ void MeshUtils::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("delaunay3d_tetrahedralize", "points"), &MeshUtils::delaunay3d_tetrahedralize);
 }
 
-#if GODOT4
-#undef Texture
-#endif

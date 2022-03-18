@@ -142,21 +142,13 @@ Array MeshMerger::build_mesh() {
 	{
 		PoolVector<Vector3> array;
 		array.resize(_vertices.size());
-#if !GODOT4
 		PoolVector<Vector3>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = _vertices[i].vertex;
-#else
-			array.set(i, _vertices[i].vertex);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
 
 		a[VisualServer::ARRAY_VERTEX] = array;
 	}
@@ -164,63 +156,41 @@ Array MeshMerger::build_mesh() {
 	if ((_format & VisualServer::ARRAY_FORMAT_NORMAL) != 0) {
 		PoolVector<Vector3> array;
 		array.resize(_vertices.size());
-#if !GODOT4
 		PoolVector<Vector3>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = _vertices[i].normal;
-#else
-			array.set(i, _vertices[i].normal);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
+
 		a[VisualServer::ARRAY_NORMAL] = array;
 	}
 
 	if ((_format & VisualServer::ARRAY_FORMAT_COLOR) != 0) {
 		PoolVector<Color> array;
 		array.resize(_vertices.size());
-#if !GODOT4
 		PoolVector<Color>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = _vertices[i].color;
-#else
-			array.set(i, _vertices[i].color);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
+
 		a[VisualServer::ARRAY_COLOR] = array;
 	}
 
 	if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV) != 0) {
 		PoolVector<Vector2> array;
 		array.resize(_vertices.size());
-#if !GODOT4
 		PoolVector<Vector2>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = _vertices[i].uv;
-#else
-			array.set(i, _vertices[i].uv);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
 
 		a[VisualServer::ARRAY_TEX_UV] = array;
 	}
@@ -228,21 +198,14 @@ Array MeshMerger::build_mesh() {
 	if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV2) != 0) {
 		PoolVector<Vector2> array;
 		array.resize(_vertices.size());
-#if !GODOT4
 		PoolVector<Vector2>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = _vertices[i].uv2;
-#else
-			array.set(i, _vertices[i].uv2);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
+
 		a[VisualServer::ARRAY_TEX_UV2] = array;
 	}
 
@@ -252,26 +215,19 @@ Array MeshMerger::build_mesh() {
 		PoolVector<int> bone_array;
 		bone_array.resize(size);
 
-#if !GODOT4
 		PoolVector<int>::Write wb = bone_array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
 			const Vertex &vertex = _vertices[i];
 			int curr = i * 4;
 
 			for (int j = 0; j < vertex.bones.size(); ++j) {
-#if !GODOT4
 				wb[curr + j] = vertex.bones[j];
-#else
-				bone_array.write[curr + j] = vertex.bones[j];
-#endif
 			}
 		}
 
-#if !GODOT4
 		wb.release();
-#endif
+
 		a[VisualServer::ARRAY_BONES] = bone_array;
 	}
 
@@ -280,47 +236,35 @@ Array MeshMerger::build_mesh() {
 
 		PoolVector<float> bone_weights_array;
 		bone_weights_array.resize(size);
-#if !GODOT4
+
 		PoolVector<float>::Write wbw = bone_weights_array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
 			const Vertex &vertex = _vertices[i];
 			int curr = i * 4;
 
 			for (int j = 0; j < vertex.bones.size(); ++j) {
-#if !GODOT4
 				wbw[curr + j] = vertex.weights[j];
-#else
-				bone_weights_array.write[curr + j] = vertex.weights[j];
-#endif
 			}
 		}
 
-#if !GODOT4
 		wbw.release();
-#endif
+
 		a[VisualServer::ARRAY_WEIGHTS] = bone_weights_array;
 	}
 
 	if (_indices.size() > 0) {
 		PoolVector<int> array;
 		array.resize(_indices.size());
-#if !GODOT4
+
 		PoolVector<int>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _indices.size(); ++i) {
-#if !GODOT4
 			w[i] = _indices[i];
-#else
-			array.set(i, _indices[i]);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
+
 		a[VisualServer::ARRAY_INDEX] = array;
 	}
 

@@ -333,11 +333,7 @@ void Terrain2DProp2DJob::phase_steps() {
 			mesh_rid = chunk->mesh_rid_get(Terrain2DChunkDefault::MESH_INDEX_PROP, Terrain2DChunkDefault::MESH_TYPE_INDEX_MESH);
 
 			if (VS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
-#if !GODOT4
 				VS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
-#else
-				VS::get_singleton()->mesh_clear(mesh_rid);
-#endif
 		}
 	}
 

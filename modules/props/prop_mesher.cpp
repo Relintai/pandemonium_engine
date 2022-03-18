@@ -173,21 +173,13 @@ Array PropMesher::build_mesh() {
 	{
 		PoolVector<Vector3> array;
 		array.resize(_vertices.size());
-#if !GODOT4
 		PoolVector<Vector3>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = _vertices[i].vertex;
-#else
-			array.set(i, _vertices[i].vertex);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
 
 		a[VisualServer::ARRAY_VERTEX] = array;
 	}
@@ -199,63 +191,43 @@ Array PropMesher::build_mesh() {
 	{
 		PoolVector<Vector3> array;
 		array.resize(_vertices.size());
-#if !GODOT4
 		PoolVector<Vector3>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = _vertices[i].normal;
-#else
-			array.set(i, _vertices[i].normal);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
+
 		a[VisualServer::ARRAY_NORMAL] = array;
 	}
 
 	if ((_format & VisualServer::ARRAY_FORMAT_COLOR) != 0) {
 		PoolVector<Color> array;
 		array.resize(_vertices.size());
-#if !GODOT4
+
 		PoolVector<Color>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = _vertices[i].color;
-#else
-			array.set(i, _vertices[i].color);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
+
 		a[VisualServer::ARRAY_COLOR] = array;
 	}
 
 	if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV) != 0) {
 		PoolVector<Vector2> array;
 		array.resize(_vertices.size());
-#if !GODOT4
+
 		PoolVector<Vector2>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = _vertices[i].uv;
-#else
-			array.set(i, _vertices[i].uv);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
 
 		a[VisualServer::ARRAY_TEX_UV] = array;
 	}
@@ -263,42 +235,30 @@ Array PropMesher::build_mesh() {
 	if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV2) != 0) {
 		PoolVector<Vector2> array;
 		array.resize(_vertices.size());
-#if !GODOT4
+
 		PoolVector<Vector2>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
-#if !GODOT4
 			w[i] = _vertices[i].uv2;
-#else
-			array.set(i, _vertices[i].uv2);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
+
 		a[VisualServer::ARRAY_TEX_UV2] = array;
 	}
 
 	if (_indices.size() > 0) {
 		PoolVector<int> array;
 		array.resize(_indices.size());
-#if !GODOT4
+
 		PoolVector<int>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _indices.size(); ++i) {
-#if !GODOT4
 			w[i] = _indices[i];
-#else
-			array.set(i, _indices[i]);
-#endif
 		}
 
-#if !GODOT4
 		w.release();
-#endif
+		
 		a[VisualServer::ARRAY_INDEX] = array;
 	}
 

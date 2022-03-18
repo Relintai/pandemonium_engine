@@ -278,11 +278,7 @@ void Terrain2DTerrain2DJob::phase_terrain_mesh() {
 				mesh_rid = chunk->mesh_rid_get_index(Terrain2DChunkDefault::MESH_INDEX_TERRAIN, Terrain2DChunkDefault::MESH_TYPE_INDEX_MESH, i);
 
 				if (VS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
-#if !GODOT4
 					VS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
-#else
-					VS::get_singleton()->mesh_clear(mesh_rid);
-#endif
 
 				chunk->_mesh_transforms.write[i] = Transform2D();
 			}
@@ -310,11 +306,7 @@ void Terrain2DTerrain2DJob::phase_terrain_mesh() {
 			}
 
 			if (VS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
-#if !GODOT4
 				VS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
-#else
-				VS::get_singleton()->mesh_clear(mesh_rid);
-#endif
 
 			if (should_return()) {
 				return;

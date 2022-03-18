@@ -425,11 +425,7 @@ void PropInstancePropJob::phase_steps() {
 				RID mesh_rid = _prop_instace->mesh_get(i);
 
 				if (VS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
-#if !GODOT4
 					VS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
-#else
-					VS::get_singleton()->mesh_clear(mesh_rid);
-#endif
 			}
 		}
 	}
@@ -672,9 +668,7 @@ Array PropInstancePropJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const
 	if (colors.size() < uvs.size())
 		colors.resize(uvs.size());
 
-#if !GODOT4
 	img->lock();
-#endif
 
 	for (int i = 0; i < uvs.size(); ++i) {
 		Vector2 uv = uvs[i];
@@ -688,9 +682,7 @@ Array PropInstancePropJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const
 		colors.set(i, colors[i] * c * mul_color);
 	}
 
-#if !GODOT4
 	img->unlock();
-#endif
 
 	arr[VisualServer::ARRAY_COLOR] = colors;
 
@@ -710,11 +702,7 @@ void PropInstancePropJob::reset_meshes() {
 			RID mesh_rid = _prop_instace->mesh_get(i);
 
 			if (VS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
-#if !GODOT4
 				VS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
-#else
-				VS::get_singleton()->mesh_clear(mesh_rid);
-#endif
 		}
 	}
 }

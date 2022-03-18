@@ -173,17 +173,13 @@ Array VoxelMesher::build_mesh() {
 	{
 		PoolVector<Vector3> array;
 		array.resize(_vertices.size());
-#if !GODOT4
 		PoolVector<Vector3>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
 			array.set(i, _vertices[i].vertex);
 		}
 
-#if !GODOT4
 		w.release();
-#endif
 
 		a[VisualServer::ARRAY_VERTEX] = array;
 	}
@@ -195,51 +191,41 @@ Array VoxelMesher::build_mesh() {
 	{
 		PoolVector<Vector3> array;
 		array.resize(_vertices.size());
-#if !GODOT4
 		PoolVector<Vector3>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
 			array.set(i, _vertices[i].normal);
 		}
 
-#if !GODOT4
 		w.release();
-#endif
+
 		a[VisualServer::ARRAY_NORMAL] = array;
 	}
 
 	if ((_format & VisualServer::ARRAY_FORMAT_COLOR) != 0) {
 		PoolVector<Color> array;
 		array.resize(_vertices.size());
-#if !GODOT4
 		PoolVector<Color>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
 			array.set(i, _vertices[i].color);
 		}
 
-#if !GODOT4
 		w.release();
-#endif
+
 		a[VisualServer::ARRAY_COLOR] = array;
 	}
 
 	if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV) != 0) {
 		PoolVector<Vector2> array;
 		array.resize(_vertices.size());
-#if !GODOT4
 		PoolVector<Vector2>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
 			array.set(i, _vertices[i].uv);
 		}
 
-#if !GODOT4
 		w.release();
-#endif
 
 		a[VisualServer::ARRAY_TEX_UV] = array;
 	}
@@ -247,34 +233,28 @@ Array VoxelMesher::build_mesh() {
 	if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV2) != 0) {
 		PoolVector<Vector2> array;
 		array.resize(_vertices.size());
-#if !GODOT4
 		PoolVector<Vector2>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _vertices.size(); ++i) {
 			array.set(i, _vertices[i].uv2);
 		}
 
-#if !GODOT4
 		w.release();
-#endif
+
 		a[VisualServer::ARRAY_TEX_UV2] = array;
 	}
 
 	if (_indices.size() > 0) {
 		PoolVector<int> array;
 		array.resize(_indices.size());
-#if !GODOT4
 		PoolVector<int>::Write w = array.write();
-#endif
 
 		for (int i = 0; i < _indices.size(); ++i) {
 			array.set(i, _indices[i]);
 		}
 
-#if !GODOT4
 		w.release();
-#endif
+
 		a[VisualServer::ARRAY_INDEX] = array;
 	}
 

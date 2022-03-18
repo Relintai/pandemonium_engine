@@ -296,7 +296,7 @@ void CharacterSkeleton3D::add_model_visual_entry(Ref<ModelVisual> vis, Ref<Model
 
 	int target_bone_idx = ive->get_bone();
 
-	Vector<Ref<SkeletonModelEntry> > &entries = _entries.write[target_bone_idx];
+	Vector<Ref<SkeletonModelEntry>> &entries = _entries.write[target_bone_idx];
 
 	for (int i = 0; i < entries.size(); ++i) {
 		Ref<SkeletonModelEntry> e = entries.get(i);
@@ -338,7 +338,7 @@ void CharacterSkeleton3D::remove_model_visual_entry(Ref<ModelVisual> vis, Ref<Mo
 
 	int target_bone_idx = ive->get_bone();
 
-	Vector<Ref<SkeletonModelEntry> > &entries = _entries.write[target_bone_idx];
+	Vector<Ref<SkeletonModelEntry>> &entries = _entries.write[target_bone_idx];
 
 	for (int i = 0; i < entries.size(); ++i) {
 		Ref<SkeletonModelEntry> e = entries.get(i);
@@ -372,7 +372,7 @@ int CharacterSkeleton3D::get_model_entry_count(const int bone_index) {
 
 void CharacterSkeleton3D::sort_layers() {
 	for (int i = 0; i < _entries.size(); ++i) {
-		Vector<Ref<SkeletonModelEntry> > &entries = _entries.write[i];
+		Vector<Ref<SkeletonModelEntry>> &entries = _entries.write[i];
 
 		entries.sort_custom<_ModelEntryComparator>();
 	}
@@ -460,9 +460,7 @@ Array CharacterSkeleton3D::bake_mesh_array_uv(Array arr, Ref<Texture> tex, float
 	PoolVector2Array uvs = arr[VisualServer::ARRAY_TEX_UV];
 	PoolColorArray colors = arr[VisualServer::ARRAY_COLOR];
 
-#if !GODOT4
 	img->lock();
-#endif
 
 	for (int i = 0; i < uvs.size(); ++i) {
 		Vector2 uv = uvs[i];
@@ -473,9 +471,7 @@ Array CharacterSkeleton3D::bake_mesh_array_uv(Array arr, Ref<Texture> tex, float
 		colors.set(i, colors[i] * c * mul_color);
 	}
 
-#if !GODOT4
 	img->unlock();
-#endif
 
 	arr[VisualServer::ARRAY_COLOR] = colors;
 

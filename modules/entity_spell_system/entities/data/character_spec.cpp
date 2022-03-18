@@ -72,11 +72,7 @@ Vector<Variant> CharacterSpec::get_talents() {
 			Vector<Variant> entries;
 
 			for (int k = 0; k < _rows[j].size(); k++) {
-#if GODOT4
-				entries.push_back(_rows[i][j][k]);
-#else
 				entries.push_back(_rows[i][j][k].get_ref_ptr());
-#endif
 			}
 
 			col.push_back(entries);
