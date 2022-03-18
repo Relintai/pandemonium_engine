@@ -75,6 +75,10 @@ class EditorScriptCodeCompletionCache : public ScriptCodeCompletionCache {
 	struct Cache {
 		uint64_t time_loaded;
 		RES cache;
+
+		Cache() {
+			time_loaded = 0;
+		}
 	};
 
 	Map<String, Cache> cached;
