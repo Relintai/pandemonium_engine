@@ -30,13 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
-#include "scene/animation/animation_player.h"
-#include "scene/gui/dialogs.h"
-#include "scene/gui/slider.h"
-#include "scene/gui/spin_box.h"
-#include "scene/gui/texture_button.h"
+#include "scene/gui/box_container.h"
+
 #include "core/dictionary.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
@@ -44,10 +40,6 @@
 #include "core/rid.h"
 #include "core/ustring.h"
 #include "core/vector.h"
-#include "scene/gui/box_container.h"
-#include "scene/gui/tool_button.h"
-#include "scene/resources/material.h"
-#include "scene/resources/shader.h"
 
 class AnimationTrackEditor;
 class AnimationPlayerEditorPlugin;

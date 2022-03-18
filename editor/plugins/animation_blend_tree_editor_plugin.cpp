@@ -68,6 +68,7 @@
 #include "scene/main/node.h"
 #include "scene/resources/animation.h"
 #include "scene/resources/style_box.h"
+#include "scene/animation/animation_blend_tree.h"
 
 void AnimationNodeBlendTreeEditor::add_custom_type(const String &p_name, const Ref<Script> &p_script) {
 	for (int i = 0; i < add_options.size(); i++) {

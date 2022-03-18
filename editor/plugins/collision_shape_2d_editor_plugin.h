@@ -30,11 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/os/input.h"
-#include "core/os/keyboard.h"
-#include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
-#include "scene/2d/collision_shape_2d.h"
+#include "scene/gui/control.h"
+
 #include "core/math/transform_2d.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
@@ -42,7 +40,6 @@
 #include "core/ustring.h"
 #include "core/variant.h"
 #include "core/vector.h"
-#include "scene/gui/control.h"
 
 class CanvasItemEditor;
 class CollisionShape2D;

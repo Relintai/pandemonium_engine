@@ -30,12 +30,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_node.h"
+#include "scene/gui/control.h"
 #include "editor/editor_plugin.h"
-#include "scene/3d/camera.h"
+
 #include "core/object.h"
 #include "core/ustring.h"
-#include "scene/gui/control.h"
 
 class Button;
 class EditorNode;

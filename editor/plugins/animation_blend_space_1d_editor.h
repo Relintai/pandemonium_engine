@@ -30,22 +30,14 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_node.h"
-#include "editor/editor_plugin.h"
 #include "editor/plugins/animation_tree_editor_plugin.h"
-#include "editor/property_editor.h"
-#include "scene/animation/animation_blend_space_1d.h"
-#include "scene/gui/button.h"
-#include "scene/gui/graph_edit.h"
-#include "scene/gui/popup.h"
-#include "scene/gui/tree.h"
+
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/reference.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
 #include "core/vector.h"
-#include "scene/animation/animation_tree.h"
 
 class Button;
 class Control;
@@ -60,6 +52,7 @@ class SpinBox;
 class ToolButton;
 class UndoRedo;
 class VSeparator;
+class AnimationNodeBlendSpace1D;
 
 class AnimationNodeBlendSpace1DEditor : public AnimationTreeNodeEditorPlugin {
 	GDCLASS(AnimationNodeBlendSpace1DEditor, AnimationTreeNodeEditorPlugin);
@@ -150,6 +143,7 @@ public:
 	virtual bool can_edit(const Ref<AnimationNode> &p_node);
 	virtual void edit(const Ref<AnimationNode> &p_node);
 	AnimationNodeBlendSpace1DEditor();
+	~AnimationNodeBlendSpace1DEditor();
 };
 
 #endif // ANIMATION_BLEND_SPACE_1D_EDITOR_H

@@ -30,13 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
-#include "editor/property_editor.h"
-#include "scene/animation/animation_tree_player.h"
-#include "scene/gui/button.h"
-#include "scene/gui/popup.h"
-#include "scene/gui/tree.h"
+#include "scene/gui/control.h"
+
 #include "core/list.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
@@ -44,7 +40,6 @@
 #include "core/set.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
-#include "scene/gui/control.h"
 
 class AcceptDialog;
 class AnimationTreePlayer;

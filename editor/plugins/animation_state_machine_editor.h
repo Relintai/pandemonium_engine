@@ -30,15 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_node.h"
-#include "editor/editor_plugin.h"
 #include "editor/plugins/animation_tree_editor_plugin.h"
-#include "editor/property_editor.h"
 #include "scene/animation/animation_node_state_machine.h"
-#include "scene/gui/button.h"
-#include "scene/gui/graph_edit.h"
-#include "scene/gui/popup.h"
-#include "scene/gui/tree.h"
+
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
@@ -46,8 +40,6 @@
 #include "core/string_name.h"
 #include "core/ustring.h"
 #include "core/vector.h"
-#include "scene/animation/animation_tree.h"
-#include "scene/gui/control.h"
 
 class EditorFileDialog;
 class HBoxContainer;

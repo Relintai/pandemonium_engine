@@ -30,16 +30,16 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_node.h"
+#include "editor/editor_inspector.h"
 #include "editor/editor_plugin.h"
 #include "scene/gui/gradient_edit.h"
+
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/reference.h"
 #include "core/ustring.h"
-#include "editor/editor_inspector.h"
-#include "scene/resources/gradient.h"
 
+class Gradient;
 class EditorNode;
 
 class GradientEditor : public GradientEdit {
@@ -58,6 +58,7 @@ public:
 	virtual Size2 get_minimum_size() const;
 	void set_gradient(const Ref<Gradient> &p_gradient);
 	GradientEditor();
+	~GradientEditor();
 };
 
 class EditorInspectorPluginGradient : public EditorInspectorPlugin {

@@ -30,14 +30,13 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 #include "editor/editor_resource_preview.h"
-#include "scene/resources/curve.h"
+
 #include "core/array.h"
 #include "core/math/transform_2d.h"
 #include "core/math/vector2.h"
-#include "core/object.h"
+
 #include "core/reference.h"
 #include "core/ustring.h"
 #include "editor/editor_inspector.h"

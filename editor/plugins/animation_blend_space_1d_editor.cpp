@@ -64,6 +64,7 @@
 #include "scene/main/node.h"
 #include "scene/resources/font.h"
 #include "scene/resources/texture.h"
+#include "scene/animation/animation_blend_space_1d.h"
 
 StringName AnimationNodeBlendSpace1DEditor::get_blend_position_path() const {
 	StringName path = AnimationTreeEditor::get_singleton()->get_base_path() + "blend_position";
@@ -784,4 +785,8 @@ AnimationNodeBlendSpace1DEditor::AnimationNodeBlendSpace1DEditor() {
 	dragging_selected_attempt = false;
 
 	set_custom_minimum_size(Size2(0, 150 * EDSCALE));
+}
+
+AnimationNodeBlendSpace1DEditor::~AnimationNodeBlendSpace1DEditor() {
+
 }

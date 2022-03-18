@@ -31,10 +31,8 @@
 /*************************************************************************/
 
 #include "editor/plugins/particles_editor_plugin.h"
-#include "scene/3d/cpu_particles.h"
-#include "core/object.h"
+
 #include "core/ustring.h"
-#include "editor/editor_plugin.h"
 
 class CPUParticles;
 class EditorNode;

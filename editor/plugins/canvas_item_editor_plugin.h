@@ -30,14 +30,10 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_node.h"
+#include "scene/gui/control.h"
 #include "editor/editor_plugin.h"
-#include "scene/2d/canvas_item.h"
 #include "scene/gui/box_container.h"
-#include "scene/gui/check_box.h"
-#include "scene/gui/label.h"
-#include "scene/gui/panel_container.h"
-#include "scene/gui/spin_box.h"
+
 #include "core/dictionary.h"
 #include "core/list.h"
 #include "core/map.h"
@@ -52,10 +48,6 @@
 #include "core/ustring.h"
 #include "core/variant.h"
 #include "core/vector.h"
-#include "scene/gui/control.h"
-#include "scene/gui/shortcut.h"
-#include "scene/resources/style_box.h"
-#include "scene/resources/texture.h"
 
 class CanvasItemEditorViewport;
 class AcceptDialog;

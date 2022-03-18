@@ -30,18 +30,16 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
-#include "scene/audio/audio_stream_player.h"
 #include "scene/gui/color_rect.h"
-#include "scene/resources/texture.h"
+
 #include "core/math/math_defs.h"
 #include "core/object.h"
 #include "core/object_id.h"
 #include "core/reference.h"
 #include "core/ustring.h"
-#include "servers/audio/audio_stream.h"
 
+class AudioStream;
 class AudioStreamPlayer;
 class Control;
 class EditorNode;

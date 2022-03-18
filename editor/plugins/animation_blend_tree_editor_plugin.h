@@ -30,15 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_node.h"
-#include "editor/editor_plugin.h"
 #include "editor/plugins/animation_tree_editor_plugin.h"
-#include "editor/property_editor.h"
-#include "scene/animation/animation_blend_tree.h"
-#include "scene/gui/button.h"
-#include "scene/gui/graph_edit.h"
-#include "scene/gui/popup.h"
-#include "scene/gui/tree.h"
+
 #include "core/map.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
@@ -48,7 +41,6 @@
 #include "core/ustring.h"
 #include "core/variant.h"
 #include "core/vector.h"
-#include "scene/animation/animation_tree.h"
 
 class ProgressBar;
 class AcceptDialog;
@@ -63,6 +55,7 @@ class Node;
 class PanelContainer;
 class Tree;
 class UndoRedo;
+class AnimationNodeBlendTree;
 
 class AnimationNodeBlendTreeEditor : public AnimationTreeNodeEditorPlugin {
 	GDCLASS(AnimationNodeBlendTreeEditor, AnimationTreeNodeEditorPlugin);

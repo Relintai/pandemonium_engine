@@ -30,22 +30,18 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "canvas_item_editor_plugin.h"
-#include "editor/editor_inspector.h"
-#include "editor/editor_node.h"
+#include "core/object.h"
+#include "scene/gui/box_container.h"
 #include "editor/editor_plugin.h"
-#include "scene/gui/menu_button.h"
-#include "scene/gui/option_button.h"
+
 #include "scene/gui/popup_menu.h"
 #include "core/list.h"
-#include "core/object.h"
 #include "core/reference.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
 #include "core/variant.h"
 #include "core/vector.h"
-#include "scene/gui/box_container.h"
-#include "scene/gui/item_list.h"
+
 #include "scene/resources/texture.h"
 
 class AcceptDialog;

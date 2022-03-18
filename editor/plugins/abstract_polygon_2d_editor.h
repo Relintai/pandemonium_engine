@@ -30,10 +30,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_node.h"
-
-#include "scene/2d/polygon_2d.h"
-#include "scene/gui/tool_button.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/reference.h"

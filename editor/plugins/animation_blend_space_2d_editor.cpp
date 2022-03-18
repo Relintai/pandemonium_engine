@@ -30,6 +30,7 @@
 
 #include "animation_blend_space_2d_editor.h"
 
+#include "scene/animation/animation_blend_space_2d.h"
 #include "core/io/resource_loader.h"
 #include "core/math/delaunay.h"
 #include "core/os/keyboard.h"
