@@ -93,12 +93,6 @@ def configure(env):
         if env["initial_memory"] < 64:
             print('Note: Forcing "initial_memory=64" as it is required for the web editor.')
             env["initial_memory"] = 64
-    else:
-        # Disable exceptions and rtti on non-tools (template) builds
-        # These flags help keep the file size down.
-        env.Append(CCFLAGS=["-fno-exceptions", "-fno-rtti"])
-        # Don't use dynamic_cast, necessary with no-rtti.
-        env.Append(CPPDEFINES=["NO_SAFE_CAST"])
 
     env.Append(LINKFLAGS=["-s", "INITIAL_MEMORY=%sMB" % env["initial_memory"]])
 

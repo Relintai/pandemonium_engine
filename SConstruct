@@ -122,6 +122,8 @@ opts.Add(EnumVariable("bits", "Target platform bits", "default", ("default", "32
 opts.Add(EnumVariable("optimize", "Optimization type", "speed", ("speed", "size", "none")))
 opts.Add(BoolVariable("production", "Set defaults to build Godot for use in production", False))
 opts.Add(BoolVariable("use_lto", "Use link-time optimization", False))
+opts.Add(BoolVariable("use_rtti", "Use RTTI", False))
+opts.Add(BoolVariable("use_exceptions", "Use exceptions", False))
 
 # Components
 opts.Add(BoolVariable("deprecated", "Enable deprecated features", True))
@@ -197,6 +199,16 @@ opts.Add("LINKFLAGS", "Custom flags for the linker")
 # Update the environment to have all above options defined
 # in following code (especially platform and custom_modules).
 opts.Update(env_base)
+
+if env_base["use_rtti"]:
+    env_base.Append(CXXFLAGS=["-frtti"])
+else:
+    env_base.Append(CXXFLAGS=["-fno-rtti"])
+    # Don't use dynamic_cast, necessary with no-rtti.
+    env_base.Append(CPPDEFINES=["NO_SAFE_CAST"])
+
+if not env_base["use_exceptions"]:
+    env_base.Append(CXXFLAGS=["-fno-exceptions"])
 
 # Platform selection: validate input, and add options.
 
