@@ -34,6 +34,18 @@
 #include "editor_file_system.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/tree.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/string_name.h"
+#include "core/ustring.h"
+#include "core/vector.h"
+
+class EditorFileSystemDirectory;
+class InputEvent;
+class LineEdit;
+class Texture;
+class Tree;
+template <class F, class S> struct Pair;
 
 class EditorQuickOpen : public ConfirmationDialog {
 	GDCLASS(EditorQuickOpen, ConfirmationDialog);

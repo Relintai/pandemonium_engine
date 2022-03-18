@@ -33,6 +33,9 @@
 #include "core/map.h"
 #include "core/variant.h"
 #include "core/reference.h"
+#include "core/error_list.h"
+#include "core/ustring.h"
+#include "core/vector.h"
 
 class XMLParser;
 

@@ -37,10 +37,30 @@
 #include "scene/gui/scroll_container.h"
 #include "scene/gui/tool_button.h"
 #include "scene/gui/tree.h"
+#include "core/list.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/control.h"
 
 class ProjectDialog;
 class ProjectList;
 class ProjectListFilter;
+class AcceptDialog;
+class Button;
+class CheckBox;
+class ConfirmationDialog;
+class EditorAbout;
+class FileDialog;
+class InputEvent;
+class Label;
+class LineEdit;
+class LinkButton;
+class OptionButton;
+class TabContainer;
+template <class T> class Vector;
 
 class ProjectManager : public Control {
 	GDCLASS(ProjectManager, Control);

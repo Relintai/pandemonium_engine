@@ -31,10 +31,13 @@
 /*************************************************************************/
 
 #include "scene/gui/dialogs.h"
+#include "core/object.h"
+#include "core/reference.h"
 
 class LineEdit;
 class ItemList;
 class VBoxContainer;
+class InputEvent;
 
 class EditorLayoutsDialog : public ConfirmationDialog {
 	GDCLASS(EditorLayoutsDialog, ConfirmationDialog);

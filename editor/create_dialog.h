@@ -37,6 +37,25 @@
 #include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/tree.h"
+#include "core/hash_map.h"
+#include "core/list.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/resource.h"
+#include "core/set.h"
+#include "core/string_name.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "core/vector.h"
+
+class Button;
+class Control;
+class EditorHelpBit;
+class InputEvent;
+class LineEdit;
+class Tree;
+class TreeItem;
 
 class CreateDialog : public ConfirmationDialog {
 	GDCLASS(CreateDialog, ConfirmationDialog);

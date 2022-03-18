@@ -31,6 +31,27 @@
 /*************************************************************************/
 
 #include "animation_track_editor.h"
+#include "core/map.h"
+#include "core/math/rect2.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/set.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "core/vector.h"
+#include "scene/gui/control.h"
+#include "scene/resources/animation.h"
+#include "scene/resources/texture.h"
+
+class AnimationTimelineEdit;
+class AnimationTrackEditor;
+class InputEvent;
+class Node;
+class OptionButton;
+class PopupMenu;
+class UndoRedo;
+struct Color;
 
 class AnimationBezierTrackEdit : public Control {
 	GDCLASS(AnimationBezierTrackEdit, Control);

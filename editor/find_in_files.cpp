@@ -44,6 +44,22 @@
 #include "scene/gui/line_edit.h"
 #include "scene/gui/progress_bar.h"
 #include "scene/gui/tree.h"
+#include "core/array.h"
+#include "core/class_db.h"
+#include "core/color.h"
+#include "core/error_list.h"
+#include "core/error_macros.h"
+#include "core/math/math_defs.h"
+#include "core/math/rect2.h"
+#include "core/math/vector2.h"
+#include "core/os/file_access.h"
+#include "core/os/memory.h"
+#include "core/pool_vector.h"
+#include "core/print_string.h"
+#include "core/reference.h"
+#include "core/typedefs.h"
+#include "scene/2d/canvas_item.h"
+#include "scene/resources/font.h"
 
 const char *FindInFiles::SIGNAL_RESULT_FOUND = "result_found";
 const char *FindInFiles::SIGNAL_FINISHED = "finished";

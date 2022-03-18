@@ -41,8 +41,16 @@
 #include "scene/gui/tab_container.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tree.h"
-
 #include "editor_scale.h"
+#include "core/list.h"
+#include "core/object.h"
+#include "core/ustring.h"
+
+class LinkButton;
+class RichTextLabel;
+class ScrollContainer;
+class TextureRect;
+class Tree;
 
 /**
  * NOTE: Do not assume the EditorNode singleton to be available in this class' methods.

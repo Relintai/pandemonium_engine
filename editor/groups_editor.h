@@ -39,6 +39,19 @@
 #include "scene/gui/popup.h"
 #include "scene/gui/tool_button.h"
 #include "scene/gui/tree.h"
+#include "core/object.h"
+#include "core/ustring.h"
+#include "scene/gui/box_container.h"
+
+class Button;
+class Label;
+class LineEdit;
+class Node;
+class SceneTree;
+class ToolButton;
+class Tree;
+class TreeItem;
+class UndoRedo;
 
 class GroupDialog : public WindowDialog {
 	GDCLASS(GroupDialog, WindowDialog);

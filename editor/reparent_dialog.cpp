@@ -30,9 +30,17 @@
 
 #include "reparent_dialog.h"
 
-#include "core/print_string.h"
 #include "scene/gui/box_container.h"
-#include "scene/gui/label.h"
+#include "core/class_db.h"
+#include "core/os/memory.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "editor/scene_tree_editor.h"
+#include "scene/2d/canvas_item.h"
+#include "scene/gui/button.h"
+#include "scene/gui/check_box.h"
+#include "scene/gui/tree.h"
+#include "scene/main/node.h"
 
 void ReparentDialog::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE) {

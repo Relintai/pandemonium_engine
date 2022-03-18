@@ -35,6 +35,14 @@
 #include "scene/gui/label.h"
 #include "scene/gui/popup.h"
 #include "scene/gui/progress_bar.h"
+#include "core/map.h"
+#include "core/object.h"
+#include "core/os/thread_safe.h"
+#include "core/ustring.h"
+
+class Button;
+class Label;
+class ProgressBar;
 
 class BackgroundProgress : public HBoxContainer {
 	GDCLASS(BackgroundProgress, HBoxContainer);

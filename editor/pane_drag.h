@@ -31,6 +31,11 @@
 /*************************************************************************/
 
 #include "scene/gui/control.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/reference.h"
+
+class InputEvent;
 
 class PaneDrag : public Control {
 	GDCLASS(PaneDrag, Control);

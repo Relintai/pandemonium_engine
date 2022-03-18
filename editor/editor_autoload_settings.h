@@ -31,8 +31,21 @@
 /*************************************************************************/
 
 #include "scene/gui/tree.h"
-
 #include "editor_file_dialog.h"
+#include "core/list.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "scene/gui/box_container.h"
+
+class Button;
+class Control;
+class EditorLineEditFileChooser;
+class Label;
+class LineEdit;
+class Node;
+class Tree;
 
 class EditorAutoloadSettings : public VBoxContainer {
 	GDCLASS(EditorAutoloadSettings, VBoxContainer);

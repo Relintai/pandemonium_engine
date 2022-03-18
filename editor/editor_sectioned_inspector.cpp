@@ -32,7 +32,19 @@
 
 #include "editor_property_name_processor.h"
 #include "editor_scale.h"
-#include "scene/gui/shortcut.h"
+#include "core/class_db.h"
+#include "core/list.h"
+#include "core/math/vector2.h"
+#include "core/os/memory.h"
+#include "core/string_name.h"
+#include "core/typedefs.h"
+#include "core/variant.h"
+#include "core/vector.h"
+#include "editor/editor_inspector.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/control.h"
+#include "scene/gui/line_edit.h"
+#include "scene/gui/tree.h"
 
 class SectionedInspectorFilter : public Object {
 	GDCLASS(SectionedInspectorFilter, Object);

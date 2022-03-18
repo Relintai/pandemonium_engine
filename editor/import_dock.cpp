@@ -29,10 +29,33 @@
 /*************************************************************************/
 
 #include "import_dock.h"
+
 #include "core/project_settings.h"
 #include "editor_node.h"
 #include "editor_resource_preview.h"
 #include "editor_scale.h"
+#include "core/class_db.h"
+#include "core/dictionary.h"
+#include "core/error_list.h"
+#include "core/error_macros.h"
+#include "core/io/resource_importer.h"
+#include "core/math/vector2.h"
+#include "core/os/memory.h"
+#include "core/pair.h"
+#include "core/set.h"
+#include "core/typedefs.h"
+#include "core/vector.h"
+#include "editor/editor_file_system.h"
+#include "editor/editor_inspector.h"
+#include "editor/editor_settings.h"
+#include "scene/gui/button.h"
+#include "scene/gui/control.h"
+#include "scene/gui/dialogs.h"
+#include "scene/gui/label.h"
+#include "scene/gui/menu_button.h"
+#include "scene/gui/option_button.h"
+#include "scene/gui/popup_menu.h"
+#include "scene/main/node.h"
 
 class ImportDockParameters : public Object {
 	GDCLASS(ImportDockParameters, Object);

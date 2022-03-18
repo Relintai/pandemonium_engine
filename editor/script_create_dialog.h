@@ -38,8 +38,21 @@
 #include "scene/gui/line_edit.h"
 #include "scene/gui/option_button.h"
 #include "scene/gui/panel_container.h"
+#include "core/map.h"
+#include "core/object.h"
+#include "core/ustring.h"
+#include "core/vector.h"
 
 class CreateDialog;
+class Button;
+class CheckBox;
+class Control;
+class EditorFileDialog;
+class Label;
+class LineEdit;
+class OptionButton;
+class PanelContainer;
+class VBoxContainer;
 
 class ScriptCreateDialog : public ConfirmationDialog {
 	GDCLASS(ScriptCreateDialog, ConfirmationDialog);

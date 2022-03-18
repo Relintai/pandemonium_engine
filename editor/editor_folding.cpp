@@ -33,6 +33,16 @@
 #include "core/os/file_access.h"
 #include "editor_inspector.h"
 #include "editor_settings.h"
+#include "core/array.h"
+#include "core/error_list.h"
+#include "core/error_macros.h"
+#include "core/io/config_file.h"
+#include "core/list.h"
+#include "core/node_path.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/variant.h"
+#include "scene/main/node.h"
 
 PoolVector<String> EditorFolding::_get_unfolds(const Object *p_object) {
 	PoolVector<String> sections;

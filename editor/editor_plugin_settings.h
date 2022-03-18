@@ -35,6 +35,14 @@
 #include "editor_data.h"
 #include "property_editor.h"
 #include "scene/gui/dialogs.h"
+#include "core/object.h"
+#include "core/ustring.h"
+#include "core/vector.h"
+#include "scene/gui/box_container.h"
+
+class Button;
+class PluginConfigDialog;
+class Tree;
 
 class EditorPluginSettings : public VBoxContainer {
 	GDCLASS(EditorPluginSettings, VBoxContainer);

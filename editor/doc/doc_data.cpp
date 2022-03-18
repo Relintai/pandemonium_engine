@@ -33,7 +33,6 @@
 #include "core/engine.h"
 #include "core/global_constants.h"
 #include "core/io/compression.h"
-#include "core/io/marshalls.h"
 #include "core/os/dir_access.h"
 #include "core/project_settings.h"
 #include "core/script_language.h"
@@ -41,6 +40,19 @@
 #include "core/version.h"
 #include "scene/resources/theme.h"
 #include "core/io/xml_parser.h"
+#include "core/class_db.h"
+#include "core/error_macros.h"
+#include "core/list.h"
+#include "core/method_bind.h"
+#include "core/object.h"
+#include "core/os/file_access.h"
+#include "core/os/memory.h"
+#include "core/pair.h"
+#include "core/print_string.h"
+#include "core/set.h"
+#include "core/string_name.h"
+#include "core/typedefs.h"
+#include "core/variant.h"
 
 static String _get_indent(const String &p_text) {
 	String indent;

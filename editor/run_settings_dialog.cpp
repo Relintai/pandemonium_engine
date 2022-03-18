@@ -31,7 +31,12 @@
 #include "run_settings_dialog.h"
 
 #include "scene/gui/option_button.h"
-#include "scene/gui/shortcut.h"
+#include "core/class_db.h"
+#include "core/math/vector2.h"
+#include "core/os/memory.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/button.h"
+#include "scene/gui/line_edit.h"
 
 void RunSettingsDialog::popup_run_settings() {
 	popup_centered(Size2(300, 150));

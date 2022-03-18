@@ -35,6 +35,13 @@
 #include "scene/gui/line_edit.h"
 #include "scene/gui/option_button.h"
 #include "scene/gui/text_edit.h"
+#include "core/object.h"
+#include "core/ustring.h"
+
+class CheckBox;
+class LineEdit;
+class OptionButton;
+class TextEdit;
 
 class PluginConfigDialog : public ConfirmationDialog {
 	GDCLASS(PluginConfigDialog, ConfirmationDialog);

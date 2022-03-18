@@ -33,6 +33,18 @@
 #include "editor_export.h"
 #include "editor_node.h"
 #include "editor_scale.h"
+#include "core/class_db.h"
+#include "core/error_macros.h"
+#include "core/image.h"
+#include "core/os/memory.h"
+#include "core/reference.h"
+#include "core/typedefs.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "scene/gui/menu_button.h"
+#include "scene/gui/popup_menu.h"
+#include "scene/main/node.h"
+#include "scene/resources/texture.h"
 
 void EditorRunNative::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE) {

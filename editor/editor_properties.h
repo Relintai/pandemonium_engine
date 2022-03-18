@@ -38,6 +38,37 @@
 #include "editor/scene_tree_editor.h"
 #include "scene/gui/color_picker.h"
 #include "scene/gui/line_edit.h"
+#include "core/color.h"
+#include "core/math/vector2.h"
+#include "core/node_path.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/resource.h"
+#include "core/string_name.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "core/vector.h"
+
+class AcceptDialog;
+class Button;
+class CheckBox;
+class ColorPickerButton;
+class Control;
+class CreateDialog;
+class Dictionary;
+class EditorFileDialog;
+class EditorResourcePicker;
+class EditorSpinSlider;
+class HBoxContainer;
+class InputEvent;
+class Label;
+class LineEdit;
+class OptionButton;
+class PopupMenu;
+class PropertySelector;
+class SceneTreeDialog;
+class TextEdit;
+class VBoxContainer;
 
 class EditorPropertyNil : public EditorProperty {
 	GDCLASS(EditorPropertyNil, EditorProperty);

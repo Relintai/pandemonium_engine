@@ -31,6 +31,13 @@
 /*************************************************************************/
 
 #include "scene/main/node.h"
+#include "core/list.h"
+#include "core/node_path.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/string_name.h"
+#include "core/ustring.h"
+#include "core/variant.h"
 
 class MultiNodeEdit : public Reference {
 	GDCLASS(MultiNodeEdit, Reference);

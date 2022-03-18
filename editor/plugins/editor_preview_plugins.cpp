@@ -30,8 +30,6 @@
 
 #include "editor_preview_plugins.h"
 
-#include <stdint.h>
-
 #include "core/io/resource_loader.h"
 #include "core/os/os.h"
 #include "editor/editor_settings.h"

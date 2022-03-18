@@ -38,6 +38,36 @@
 #include "editor/import_defaults_editor.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/tab_container.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/os/input_event.h"
+#include "core/reference.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "core/vector.h"
+
+class Button;
+class Control;
+class EditorAutoloadSettings;
+class EditorData;
+class EditorFileDialog;
+class EditorPluginSettings;
+class HBoxContainer;
+class ImportDefaultsEditor;
+class Label;
+class LineEdit;
+class MenuButton;
+class OptionButton;
+class PanelContainer;
+class PopupMenu;
+class SectionedInspector;
+class TabContainer;
+class TextureRect;
+class Timer;
+class ToolButton;
+class Tree;
+class TreeItem;
+class UndoRedo;
 
 class ProjectSettingsEditor : public AcceptDialog {
 	GDCLASS(ProjectSettingsEditor, AcceptDialog);

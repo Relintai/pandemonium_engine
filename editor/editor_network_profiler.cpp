@@ -30,11 +30,21 @@
 
 #include "editor_network_profiler.h"
 
-#include "core/os/os.h"
 #include "editor_scale.h"
-#include "editor_settings.h"
 #include "scene/gui/line_edit.h"
 #include "scene/main/timer.h"
+#include "core/class_db.h"
+#include "core/color.h"
+#include "core/math/vector2.h"
+#include "core/os/memory.h"
+#include "core/typedefs.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "scene/gui/button.h"
+#include "scene/gui/control.h"
+#include "scene/gui/label.h"
+#include "scene/gui/tree.h"
+#include "scene/main/node.h"
 
 void EditorNetworkProfiler::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_update_frame"), &EditorNetworkProfiler::_update_frame);

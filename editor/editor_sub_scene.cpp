@@ -31,8 +31,22 @@
 #include "editor_sub_scene.h"
 
 #include "editor/editor_node.h"
-#include "scene/gui/margin_container.h"
 #include "scene/resources/packed_scene.h"
+#include "core/class_db.h"
+#include "core/error_macros.h"
+#include "core/io/resource_loader.h"
+#include "core/os/memory.h"
+#include "core/reference.h"
+#include "core/string_name.h"
+#include "core/variant.h"
+#include "editor/editor_file_dialog.h"
+#include "scene/2d/canvas_item.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/button.h"
+#include "scene/gui/control.h"
+#include "scene/gui/line_edit.h"
+#include "scene/gui/tree.h"
+#include "scene/main/node.h"
 
 void EditorSubScene::_path_selected(const String &p_path) {
 	path->set_text(p_path);

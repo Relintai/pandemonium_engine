@@ -34,8 +34,22 @@
 #include "core/version.h"
 #include "editor_node.h"
 #include "editor_scale.h"
-#include "scene/gui/center_container.h"
 #include "scene/resources/dynamic_font.h"
+#include "core/class_db.h"
+#include "core/color.h"
+#include "core/math/vector2.h"
+#include "core/os/memory.h"
+#include "core/os/os.h"
+#include "core/reference.h"
+#include "core/undo_redo.h"
+#include "editor/editor_settings.h"
+#include "scene/gui/button.h"
+#include "scene/gui/control.h"
+#include "scene/gui/label.h"
+#include "scene/gui/rich_text_label.h"
+#include "scene/gui/tool_button.h"
+#include "scene/main/node.h"
+#include "scene/resources/texture.h"
 
 void EditorLog::_error_handler(void *p_self, const char *p_func, const char *p_file, int p_line, const char *p_error, const char *p_errorexp, ErrorHandlerType p_type) {
 	EditorLog *self = (EditorLog *)p_self;

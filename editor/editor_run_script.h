@@ -32,7 +32,12 @@
 
 #include "core/reference.h"
 #include "editor_plugin.h"
+#include "core/object.h"
+
 class EditorNode;
+class EditorInterface;
+class Node;
+
 class EditorScript : public Reference {
 	GDCLASS(EditorScript, Reference);
 

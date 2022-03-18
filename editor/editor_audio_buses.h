@@ -46,8 +46,30 @@
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tool_button.h"
 #include "scene/gui/tree.h"
+#include "core/color.h"
+#include "core/list.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/typedefs.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "scene/resources/texture.h"
 
 class EditorAudioBuses;
+class Button;
+class EditorFileDialog;
+class InputEvent;
+class Label;
+class MenuButton;
+class OptionButton;
+class Panel;
+class PopupMenu;
+class ScrollContainer;
+class TextureProgress;
+class Timer;
+class Tree;
+class VSlider;
 
 class EditorAudioBus : public PanelContainer {
 	GDCLASS(EditorAudioBus, PanelContainer);

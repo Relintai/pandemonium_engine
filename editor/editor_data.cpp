@@ -31,12 +31,20 @@
 #include "editor_data.h"
 
 #include "core/io/resource_loader.h"
-#include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 #include "core/project_settings.h"
 #include "editor_node.h"
-#include "editor_settings.h"
 #include "scene/resources/packed_scene.h"
+#include "core/class_db.h"
+#include "core/error_list.h"
+#include "core/error_macros.h"
+#include "core/io/config_file.h"
+#include "core/os/memory.h"
+#include "editor/editor_plugin.h"
+#include "editor/plugins/script_editor_plugin.h"
+#include "scene/main/node.h"
+
+class Resource;
 
 void EditorHistory::cleanup_history() {
 	for (int i = 0; i < history.size(); i++) {

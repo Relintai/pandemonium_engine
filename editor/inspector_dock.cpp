@@ -34,6 +34,36 @@
 #include "editor/editor_settings.h"
 #include "editor/plugins/animation_player_editor_plugin.h"
 #include "scene/3d/spatial.h"
+#include "core/class_db.h"
+#include "core/error_macros.h"
+#include "core/io/resource_loader.h"
+#include "core/list.h"
+#include "core/map.h"
+#include "core/method_bind.h"
+#include "core/object_id.h"
+#include "core/os/memory.h"
+#include "core/set.h"
+#include "core/string_name.h"
+#include "core/typedefs.h"
+#include "core/undo_redo.h"
+#include "editor/animation_track_editor.h"
+#include "editor/create_dialog.h"
+#include "editor/editor_data.h"
+#include "editor/editor_file_dialog.h"
+#include "editor/editor_inspector.h"
+#include "editor/editor_path.h"
+#include "scene/gui/button.h"
+#include "scene/gui/control.h"
+#include "scene/gui/dialogs.h"
+#include "scene/gui/line_edit.h"
+#include "scene/gui/menu_button.h"
+#include "scene/gui/popup_menu.h"
+#include "scene/gui/tool_button.h"
+#include "scene/main/node.h"
+#include "scene/resources/texture.h"
+
+class Container;
+class Transform;
 
 void InspectorDock::_menu_option(int p_option) {
 	switch (p_option) {

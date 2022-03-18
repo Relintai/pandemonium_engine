@@ -34,10 +34,23 @@
 #include "scene/gui/dialogs.h"
 #include "scene/gui/tab_container.h"
 #include "scene/gui/tree.h"
+#include "core/hash_map.h"
+#include "core/list.h"
+#include "core/map.h"
+#include "core/object.h"
+#include "core/ustring.h"
+#include "core/vector.h"
 
 class EditorFileDialog;
 class EditorFileSystemDirectory;
 class EditorNode;
+class Button;
+class ItemList;
+class Label;
+class PopupMenu;
+class Tree;
+class TreeItem;
+struct Vector2;
 
 class DependencyEditor : public AcceptDialog {
 	GDCLASS(DependencyEditor, AcceptDialog);

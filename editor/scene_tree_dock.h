@@ -48,10 +48,47 @@
 #include "scene/gui/tool_button.h"
 #include "scene/gui/tree.h"
 #include "scene_tree_editor.h"
-
 #include "modules/modules_enabled.gen.h" // For regex.
+#include "core/hash_map.h"
+#include "core/list.h"
+#include "core/map.h"
+#include "core/node_path.h"
+#include "core/object.h"
+#include "core/object_id.h"
+#include "core/reference.h"
+#include "core/resource.h"
+#include "core/set.h"
+#include "core/ustring.h"
+#include "core/vector.h"
 
 class EditorNode;
+class AcceptDialog;
+class Animation;
+class Array;
+class Button;
+class ConfirmationDialog;
+class Control;
+class CreateDialog;
+class EditorData;
+class EditorFileDialog;
+class EditorQuickOpen;
+class EditorSelection;
+class EditorSubScene;
+class InputEvent;
+class LineEdit;
+class Node;
+class PopupMenu;
+class RenameDialog;
+class ReparentDialog;
+class SceneTreeEditor;
+class Script;
+class ScriptCreateDialog;
+class StringName;
+class TextureRect;
+class ToolButton;
+class TreeItem;
+class Variant;
+struct Vector2;
 
 class SceneTreeDock : public VBoxContainer {
 	GDCLASS(SceneTreeDock, VBoxContainer);

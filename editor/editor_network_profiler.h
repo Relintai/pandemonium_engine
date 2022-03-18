@@ -35,6 +35,15 @@
 #include "scene/gui/label.h"
 #include "scene/gui/split_container.h"
 #include "scene/gui/tree.h"
+#include "core/io/multiplayer_api.h"
+#include "core/map.h"
+#include "core/object.h"
+#include "core/object_id.h"
+
+class Button;
+class LineEdit;
+class Timer;
+class Tree;
 
 class EditorNetworkProfiler : public VBoxContainer {
 	GDCLASS(EditorNetworkProfiler, VBoxContainer)

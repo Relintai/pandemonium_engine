@@ -34,7 +34,6 @@
 #include "core/io/config_file.h"
 #include "core/io/file_access_pack.h" // PACK_HEADER_MAGIC, PACK_FORMAT_VERSION
 #include "core/io/resource_loader.h"
-#include "core/io/resource_saver.h"
 #include "core/io/zip_io.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
@@ -46,6 +45,16 @@
 #include "editor_node.h"
 #include "editor_settings.h"
 #include "scene/resources/resource_format_text.h"
+#include "core/class_db.h"
+#include "core/error_macros.h"
+#include "core/os/memory.h"
+#include "core/os/os.h"
+#include "core/version_generated.gen.h"
+#include "scene/main/timer.h"
+#include "scene/resources/theme.h"
+#include "thirdparty/minizip/ioapi.h"
+#include "thirdparty/minizip/zip.h"
+#include "zlib.h"
 
 static int _get_pad(int p_alignment, int p_n) {
 	int rest = p_n % p_alignment;

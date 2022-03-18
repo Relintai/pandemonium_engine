@@ -32,7 +32,27 @@
 
 #include "core/os/keyboard.h"
 #include "editor/editor_node.h"
-#include "editor_scale.h"
+#include "core/class_db.h"
+#include "core/color.h"
+#include "core/error_macros.h"
+#include "core/list.h"
+#include "core/map.h"
+#include "core/method_bind.h"
+#include "core/os/input_event.h"
+#include "core/os/memory.h"
+#include "core/script_language.h"
+#include "core/string_name.h"
+#include "core/typedefs.h"
+#include "editor/doc/doc_data.h"
+#include "editor/editor_help.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/button.h"
+#include "scene/gui/control.h"
+#include "scene/gui/line_edit.h"
+#include "scene/gui/rich_text_label.h"
+#include "scene/gui/tree.h"
+#include "scene/main/node.h"
+#include "scene/resources/texture.h"
 
 void PropertySelector::_text_changed(const String &p_newtext) {
 	_update_search();

@@ -32,6 +32,26 @@
 
 #include "editor_node.h"
 #include "editor_scale.h"
+#include "core/class_db.h"
+#include "core/error_macros.h"
+#include "core/list.h"
+#include "core/math/rect2.h"
+#include "core/math/vector2.h"
+#include "core/os/memory.h"
+#include "core/reference.h"
+#include "core/resource.h"
+#include "core/string_name.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "editor/editor_data.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/control.h"
+#include "scene/gui/label.h"
+#include "scene/gui/margin_container.h"
+#include "scene/gui/popup_menu.h"
+#include "scene/gui/texture_rect.h"
+#include "scene/main/node.h"
+#include "scene/resources/texture.h"
 
 void EditorPath::_add_children_to_popup(Object *p_obj, int p_depth) {
 	if (p_depth > 8) {

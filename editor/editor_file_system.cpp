@@ -40,6 +40,20 @@
 #include "editor_node.h"
 #include "editor_resource_preview.h"
 #include "editor_settings.h"
+#include "core/array.h"
+#include "core/class_db.h"
+#include "core/dictionary.h"
+#include "core/error_macros.h"
+#include "core/io/config_file.h"
+#include "core/os/dir_access.h"
+#include "core/os/memory.h"
+#include "core/print_string.h"
+#include "core/reference.h"
+#include "core/resource.h"
+#include "core/script_language.h"
+#include "core/typedefs.h"
+#include "core/variant.h"
+#include "editor/editor_data.h"
 
 EditorFileSystem *EditorFileSystem::singleton = nullptr;
 //the name is the version, to keep compatibility with different versions of Godot

@@ -38,6 +38,23 @@
 #include "scene/gui/tab_container.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tool_button.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/ustring.h"
+
+class Control;
+class InputEvent;
+class InputEventKey;
+class Label;
+class LineEdit;
+class PanelContainer;
+class SectionedInspector;
+class TabContainer;
+class TextureRect;
+class Timer;
+class ToolButton;
+class Tree;
+class UndoRedo;
 
 class EditorSettingsDialog : public AcceptDialog {
 	GDCLASS(EditorSettingsDialog, AcceptDialog);

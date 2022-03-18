@@ -38,6 +38,21 @@
 #include "scene/gui/box_container.h"
 #include "scene/gui/margin_container.h"
 #include "scene/gui/button.h"
+#include "core/array.h"
+#include "core/hash_map.h"
+#include "core/list.h"
+#include "core/map.h"
+#include "core/math/vector2.h"
+#include "core/node_path.h"
+#include "core/object.h"
+#include "core/object_id.h"
+#include "core/reference.h"
+#include "core/resource.h"
+#include "core/set.h"
+#include "core/string_name.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "core/vector.h"
 
 class Tree;
 class EditorNode;
@@ -52,8 +67,18 @@ class HSplitContainer;
 class ItemList;
 class EditorProfiler;
 class EditorNetworkProfiler;
-
 class ScriptEditorDebuggerInspectedObject;
+class Button;
+class Control;
+class EditorFileDialog;
+class EditorInspector;
+class Label;
+class PacketPeerStream;
+class PopupMenu;
+class Script;
+class StreamPeerTCP;
+class TCP_Server;
+class VBoxContainer;
 
 class ScriptEditorDebugger : public MarginContainer {
 	GDCLASS(ScriptEditorDebugger, MarginContainer);

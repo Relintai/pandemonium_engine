@@ -42,18 +42,45 @@
 #include "scene/gui/tool_button.h"
 #include "scene/gui/tree.h"
 #include "scene/main/timer.h"
-
 #include "core/os/dir_access.h"
 #include "core/os/thread.h"
-
 #include "create_dialog.h"
-
 #include "dependency_editor.h"
 #include "editor_dir_dialog.h"
 #include "editor_file_system.h"
 #include "script_create_dialog.h"
+#include "core/list.h"
+#include "core/map.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/set.h"
+#include "core/string_name.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "core/vector.h"
 
 class EditorNode;
+class Button;
+class ConfirmationDialog;
+class Control;
+class CreateDialog;
+class DependencyEditor;
+class DependencyEditorOwners;
+class DependencyRemoveDialog;
+class EditorDirDialog;
+class EditorFileSystemDirectory;
+class InputEvent;
+class ItemList;
+class LineEdit;
+class MenuButton;
+class PopupMenu;
+class ProgressBar;
+class ScriptCreateDialog;
+class Texture;
+class TextureRect;
+class Tree;
+class TreeItem;
 
 class FileSystemDock : public VBoxContainer {
 	GDCLASS(FileSystemDock, VBoxContainer);

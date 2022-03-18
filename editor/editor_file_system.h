@@ -36,10 +36,19 @@
 #include "core/safe_refcount.h"
 #include "core/set.h"
 #include "scene/main/node.h"
+#include "core/error_list.h"
+#include "core/hash_map.h"
+#include "core/list.h"
+#include "core/map.h"
+#include "core/object.h"
+#include "core/string_name.h"
+#include "core/ustring.h"
+#include "core/vector.h"
 
 class FileAccess;
-
 struct EditorProgressBG;
+class DirAccess;
+
 class EditorFileSystemDirectory : public Object {
 	GDCLASS(EditorFileSystemDirectory, Object);
 

@@ -31,6 +31,15 @@
 /*************************************************************************/
 
 #include "scene/main/node.h"
+#include "core/list.h"
+#include "core/object.h"
+#include "core/object_id.h"
+#include "core/reference.h"
+#include "core/string_name.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+
+class Node;
 
 class ArrayPropertyEdit : public Reference {
 	GDCLASS(ArrayPropertyEdit, Reference);

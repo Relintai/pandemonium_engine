@@ -29,7 +29,13 @@
 /*************************************************************************/
 
 #include "dictionary_property_edit.h"
+
 #include "editor_node.h"
+#include "core/array.h"
+#include "core/class_db.h"
+#include "core/dictionary.h"
+#include "core/undo_redo.h"
+#include "scene/main/node.h"
 
 void DictionaryPropertyEdit::_notif_change() {
 	_change_notify();

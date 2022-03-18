@@ -41,6 +41,23 @@
 #include "scene/gui/tab_container.h"
 #include "scene/gui/text_edit.h"
 #include "scene/main/timer.h"
+#include "core/color.h"
+#include "core/error_list.h"
+#include "core/map.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/ustring.h"
+#include "core/vector.h"
+#include "scene/gui/box_container.h"
+
+class ConfirmationDialog;
+class HSplitContainer;
+class InputEvent;
+class Label;
+class LineEdit;
+class TextureButton;
+class ToolButton;
+template <class F, class S> struct Pair;
 
 class FindBar : public HBoxContainer {
 	GDCLASS(FindBar, HBoxContainer);

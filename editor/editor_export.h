@@ -35,11 +35,25 @@
 #include "scene/main/node.h"
 #include "scene/main/timer.h"
 #include "scene/resources/texture.h"
+#include "core/error_list.h"
+#include "core/list.h"
+#include "core/map.h"
+#include "core/object.h"
+#include "core/pool_vector.h"
+#include "core/reference.h"
+#include "core/set.h"
+#include "core/string_name.h"
+#include "core/typedefs.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "core/vector.h"
 
 class FileAccess;
 class EditorExportPlatform;
 class EditorFileSystemDirectory;
 struct EditorProgress;
+class DirAccess;
+class Timer;
 
 class EditorExportPreset : public Reference {
 	GDCLASS(EditorExportPreset, Reference);

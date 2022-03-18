@@ -40,6 +40,16 @@
 #include "editor_node.h"
 #include "editor_scale.h"
 #include "editor_settings.h"
+#include "core/error_list.h"
+#include "core/error_macros.h"
+#include "core/image.h"
+
+#include "core/os/memory.h"
+#include "core/os/os.h"
+#include "core/script_language.h"
+#include "core/typedefs.h"
+#include "scene/gui/control.h"
+#include "servers/visual_server.h"
 
 bool EditorResourcePreviewGenerator::handles(const String &p_type) const {
 	if (get_script_instance() && get_script_instance()->has_method("handles")) {

@@ -31,6 +31,8 @@
 #include "editor_property_name_processor.h"
 
 #include "editor_settings.h"
+#include "core/error_macros.h"
+#include "core/typedefs.h"
 
 EditorPropertyNameProcessor *EditorPropertyNameProcessor::singleton = nullptr;
 

@@ -34,8 +34,12 @@
 #include "core/os/dir_access.h"
 #include "editor_scale.h"
 #include "editor_settings.h"
-#include "scene/resources/default_theme/default_theme.h"
 #include "scene/resources/dynamic_font.h"
+#include "core/os/memory.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "scene/resources/font.h"
+#include "scene/resources/theme.h"
 
 #define MAKE_FALLBACKS(m_name)          \
 	m_name->add_fallback(FontArabic);   \

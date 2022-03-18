@@ -37,9 +37,23 @@
 #include "scene/gui/progress_bar.h"
 #include "scene/gui/scroll_container.h"
 #include "scene/main/http_request.h"
+#include "core/error_list.h"
+#include "core/object.h"
+#include "core/ustring.h"
+#include "core/variant.h"
 
 class ExportTemplateVersion;
 class HBoxContainer;
+class Button;
+class FileDialog;
+class HTTPRequest;
+class Label;
+class LineEdit;
+class MenuButton;
+class OptionButton;
+class ProgressBar;
+class Tree;
+class VBoxContainer;
 
 class ExportTemplateManager : public AcceptDialog {
 	GDCLASS(ExportTemplateManager, AcceptDialog);

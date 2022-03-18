@@ -39,6 +39,18 @@
 #include "scene/gui/tool_button.h"
 #include "scene/main/node.h"
 #include "scene/resources/texture.h"
+#include "core/array.h"
+#include "core/dictionary.h"
+#include "core/error_list.h"
+#include "core/error_macros.h"
+#include "core/list.h"
+#include "core/method_bind.h"
+#include "core/object.h"
+#include "core/os/memory.h"
+#include "core/reference.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "core/vector.h"
 
 class EditorNode;
 class Spatial;
@@ -54,6 +66,20 @@ class EditorFileSystem;
 class EditorToolAddons;
 class FileSystemDock;
 class ScriptEditor;
+class ConfigFile;
+class Control;
+class EditorInspector;
+class EditorInspectorPlugin;
+class EditorSceneImporter;
+class InputEvent;
+class Mesh;
+class Resource;
+class Script;
+class ScriptCreateDialog;
+class Texture;
+class ToolButton;
+class Transform;
+class UndoRedo;
 
 class EditorInterface : public Node {
 	GDCLASS(EditorInterface, Node);

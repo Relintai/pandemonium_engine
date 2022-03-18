@@ -34,6 +34,11 @@
 #include "scene/gui/dialogs.h"
 #include "scene/gui/file_dialog.h"
 #include "scene/gui/line_edit.h"
+#include "core/object.h"
+#include "core/ustring.h"
+
+class LineEdit;
+class OptionButton;
 
 class RunSettingsDialog : public AcceptDialog {
 	GDCLASS(RunSettingsDialog, AcceptDialog);

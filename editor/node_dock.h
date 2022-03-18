@@ -32,6 +32,14 @@
 
 #include "connections_dialog.h"
 #include "groups_editor.h"
+#include "core/object.h"
+#include "scene/gui/box_container.h"
+
+class ConnectionsDock;
+class GroupsEditor;
+class Label;
+class Node;
+class ToolButton;
 
 class NodeDock : public VBoxContainer {
 	GDCLASS(NodeDock, VBoxContainer);

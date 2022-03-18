@@ -41,6 +41,14 @@
 #include "scene/gui/panel_container.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tool_button.h"
+#include "core/error_macros.h"
+#include "core/object.h"
+#include "core/ustring.h"
+
+class Button;
+class Label;
+class RichTextLabel;
+class ToolButton;
 
 class EditorLog : public VBoxContainer {
 	GDCLASS(EditorLog, VBoxContainer);

@@ -29,12 +29,32 @@
 /*************************************************************************/
 
 #include "groups_editor.h"
+
 #include "editor/scene_tree_editor.h"
 #include "editor_node.h"
 #include "editor_scale.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/label.h"
 #include "scene/resources/packed_scene.h"
+#include "core/class_db.h"
+#include "core/list.h"
+#include "core/math/vector2.h"
+#include "core/node_path.h"
+#include "core/os/memory.h"
+#include "core/os/os.h"
+#include "core/reference.h"
+#include "core/string_name.h"
+#include "core/undo_redo.h"
+#include "core/variant.h"
+#include "editor/scene_tree_dock.h"
+#include "scene/gui/button.h"
+#include "scene/gui/control.h"
+#include "scene/gui/line_edit.h"
+#include "scene/gui/tool_button.h"
+#include "scene/gui/tree.h"
+#include "scene/main/node.h"
+#include "scene/main/scene_tree.h"
+#include "scene/resources/texture.h"
 
 void GroupDialog::_group_selected() {
 	nodes_to_add->clear();

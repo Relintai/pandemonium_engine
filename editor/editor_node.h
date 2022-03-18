@@ -38,6 +38,54 @@
 #include "editor/property_editor.h"
 #include "editor/scene_tree_dock.h"
 #include "scene/gui/link_button.h"
+#include "core/dictionary.h"
+#include "core/error_list.h"
+#include "core/list.h"
+#include "core/map.h"
+#include "core/math/rect2.h"
+#include "core/node_path.h"
+#include "core/object.h"
+#include "core/os/mutex.h"
+#include "core/os/os.h"
+#include "core/os/thread.h"
+#include "core/print_string.h"
+#include "core/reference.h"
+#include "core/resource.h"
+#include "core/set.h"
+#include "core/string_name.h"
+#include "core/typedefs.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "core/vector.h"
+#include "scene/gui/control.h"
+#include "scene/main/node.h"
+#include "scene/resources/texture.h"
+#include "scene/resources/theme.h"
+
+class Button;
+class Camera;
+class CheckBox;
+class ConfigFile;
+class Container;
+class EditorFileDialog;
+class EditorInterface;
+class EditorResourceConversionPlugin;
+class FileDialog;
+class HBoxContainer;
+class InputEvent;
+class LinkButton;
+class OptionButton;
+class PopupMenu;
+class PopupPanel;
+class RichTextLabel;
+class Script;
+class TextureRect;
+class Timer;
+class Tree;
+class UndoRedo;
+class VBoxContainer;
+class Viewport;
+template <class T> class PoolVector;
 
 typedef void (*EditorNodeInitCallback)();
 typedef void (*EditorPluginInitializeCallback)();

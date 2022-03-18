@@ -32,6 +32,16 @@
 
 #include "editor_node.h"
 #include "editor_scale.h"
+#include "core/class_db.h"
+#include "core/math/vector2.h"
+#include "core/os/memory.h"
+#include "core/ustring.h"
+#include "editor/connections_dialog.h"
+#include "editor/groups_editor.h"
+#include "scene/gui/control.h"
+#include "scene/gui/label.h"
+#include "scene/gui/tool_button.h"
+#include "scene/main/node.h"
 
 void NodeDock::show_groups() {
 	groups_button->set_pressed(true);

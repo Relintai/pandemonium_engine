@@ -34,7 +34,16 @@
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/line_edit.h"
-#include "scene/gui/shortcut.h"
+#include "core/class_db.h"
+#include "core/os/input_event.h"
+#include "core/os/memory.h"
+#include "core/pair.h"
+#include "core/typedefs.h"
+#include "editor/editor_file_system.h"
+#include "scene/gui/control.h"
+#include "scene/gui/tree.h"
+#include "scene/main/node.h"
+#include "scene/resources/texture.h"
 
 void EditorQuickOpen::popup_dialog(const StringName &p_base, bool p_enable_multi, bool p_dontclear) {
 	base_type = p_base;

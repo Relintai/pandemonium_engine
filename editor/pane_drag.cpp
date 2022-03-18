@@ -30,6 +30,12 @@
 
 #include "pane_drag.h"
 
+#include "core/class_db.h"
+#include "core/os/input_event.h"
+#include "core/variant.h"
+#include "scene/2d/canvas_item.h"
+#include "scene/resources/texture.h"
+
 void PaneDrag::_gui_input(const Ref<InputEvent> &p_input) {
 	Ref<InputEventMouseMotion> mm = p_input;
 	if (mm.is_valid() && mm->get_button_mask() & BUTTON_MASK_LEFT) {

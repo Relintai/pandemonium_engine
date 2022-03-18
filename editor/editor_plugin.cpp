@@ -42,6 +42,41 @@
 #include "scene/3d/camera.h"
 #include "scene/gui/popup_menu.h"
 #include "servers/visual_server.h"
+#include "core/class_db.h"
+#include "core/color.h"
+#include "core/image.h"
+#include "core/io/resource_importer.h"
+#include "core/math/aabb.h"
+#include "core/math/basis.h"
+#include "core/math/math_defs.h"
+#include "core/math/transform.h"
+#include "core/math/vector3.h"
+#include "core/os/input_event.h"
+#include "core/pool_vector.h"
+#include "core/resource.h"
+#include "core/rid.h"
+#include "core/rid_handle.h"
+#include "core/script_language.h"
+#include "core/typedefs.h"
+#include "editor/editor_autoload_settings.h"
+#include "editor/editor_data.h"
+#include "editor/editor_file_system.h"
+#include "editor/editor_inspector.h"
+#include "editor/editor_scale.h"
+#include "editor/import/editor_import_plugin.h"
+#include "editor/import/resource_importer_scene.h"
+#include "editor/plugins/script_editor_plugin.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/container.h"
+#include "scene/gui/control.h"
+#include "scene/gui/split_container.h"
+#include "scene/gui/tab_container.h"
+#include "scene/resources/mesh.h"
+#include "scene/resources/texture.h"
+
+class ConfigFile;
+class ScriptCreateDialog;
+class ToolButton;
 
 Array EditorInterface::_make_mesh_previews(const Array &p_meshes, int p_preview_size) {
 	Vector<Ref<Mesh>> meshes;

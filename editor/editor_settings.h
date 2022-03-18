@@ -31,14 +31,23 @@
 /*************************************************************************/
 
 #include "core/object.h"
-
 #include "core/io/config_file.h"
 #include "core/os/thread_safe.h"
 #include "core/resource.h"
 #include "core/translation.h"
 #include "scene/gui/shortcut.h"
+#include "core/hash_map.h"
+#include "core/list.h"
+#include "core/map.h"
+#include "core/reference.h"
+#include "core/string_name.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "core/vector.h"
 
 class EditorPlugin;
+class Dictionary;
+class InputEvent;
 
 class EditorSettings : public Resource {
 	GDCLASS(EditorSettings, Resource);

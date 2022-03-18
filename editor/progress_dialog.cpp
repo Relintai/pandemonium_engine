@@ -34,6 +34,20 @@
 #include "core/os/os.h"
 #include "editor_scale.h"
 #include "main/main.h"
+#include "core/class_db.h"
+#include "core/error_macros.h"
+#include "core/math/math_defs.h"
+#include "core/math/rect2.h"
+#include "core/math/vector2.h"
+#include "core/os/memory.h"
+#include "core/reference.h"
+#include "core/typedefs.h"
+#include "scene/2d/canvas_item.h"
+#include "scene/gui/button.h"
+#include "scene/gui/control.h"
+#include "scene/gui/label.h"
+#include "scene/gui/progress_bar.h"
+#include "scene/resources/style_box.h"
 
 void BackgroundProgress::_add_task(const String &p_task, const String &p_label, int p_steps) {
 	_THREAD_SAFE_METHOD_

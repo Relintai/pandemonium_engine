@@ -30,6 +30,16 @@
 
 #include "audio_stream_preview.h"
 
+#include "core/class_db.h"
+#include "core/error_macros.h"
+#include "core/list.h"
+#include "core/math/audio_frame.h"
+#include "core/os/memory.h"
+#include "core/os/thread.h"
+#include "core/typedefs.h"
+#include "core/variant.h"
+#include "servers/audio_server.h"
+
 /////////////////////
 
 float AudioStreamPreview::get_length() const {

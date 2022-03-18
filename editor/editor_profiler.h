@@ -38,6 +38,26 @@
 #include "scene/gui/split_container.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tree.h"
+#include "core/color.h"
+#include "core/map.h"
+#include "core/object.h"
+#include "core/pool_vector.h"
+#include "core/reference.h"
+#include "core/set.h"
+#include "core/string_name.h"
+#include "core/typedefs.h"
+#include "core/ustring.h"
+#include "core/vector.h"
+#include "scene/resources/texture.h"
+
+class Button;
+class HSplitContainer;
+class InputEvent;
+class OptionButton;
+class SpinBox;
+class TextureRect;
+class Timer;
+class Tree;
 
 class EditorProfiler : public VBoxContainer {
 	GDCLASS(EditorProfiler, VBoxContainer);

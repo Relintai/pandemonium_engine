@@ -31,6 +31,14 @@
 /*************************************************************************/
 
 #include "scene/main/node.h"
+#include "core/pool_vector.h"
+#include "core/resource.h"
+#include "core/set.h"
+#include "core/ustring.h"
+
+class Array;
+class Node;
+class Object;
 
 class EditorFolding {
 	PoolVector<String> _get_unfolds(const Object *p_object);

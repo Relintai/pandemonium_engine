@@ -42,8 +42,25 @@
 #include "scene/gui/label.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/tool_button.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/resource.h"
+#include "core/ustring.h"
+#include "core/variant.h"
 
 class EditorNode;
+class AcceptDialog;
+class Button;
+class Container;
+class CreateDialog;
+class EditorData;
+class EditorFileDialog;
+class EditorInspector;
+class EditorPath;
+class LineEdit;
+class MenuButton;
+class ToolButton;
+class Transform;
 
 class InspectorDock : public VBoxContainer {
 	GDCLASS(InspectorDock, VBoxContainer);

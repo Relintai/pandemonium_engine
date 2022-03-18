@@ -34,6 +34,13 @@
 #include "core/safe_refcount.h"
 #include "scene/main/node.h"
 #include "servers/audio/audio_stream.h"
+#include "core/map.h"
+#include "core/object.h"
+#include "core/object_id.h"
+#include "core/reference.h"
+#include "core/vector.h"
+
+class Thread;
 
 class AudioStreamPreview : public Reference {
 	GDCLASS(AudioStreamPreview, Reference);

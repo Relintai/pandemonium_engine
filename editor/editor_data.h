@@ -36,6 +36,26 @@
 #include "editor/editor_plugin.h"
 #include "editor/plugins/script_editor_plugin.h"
 #include "scene/resources/texture.h"
+#include "core/array.h"
+#include "core/dictionary.h"
+#include "core/hash_map.h"
+#include "core/map.h"
+#include "core/node_path.h"
+#include "core/object.h"
+#include "core/object_id.h"
+#include "core/reference.h"
+#include "core/script_language.h"
+#include "core/set.h"
+#include "core/string_name.h"
+#include "core/typedefs.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "core/vector.h"
+
+class ConfigFile;
+class EditorPlugin;
+class Node;
+class Resource;
 
 class EditorHistory {
 	enum {

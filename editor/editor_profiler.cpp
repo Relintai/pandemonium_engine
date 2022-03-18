@@ -30,10 +30,26 @@
 
 #include "editor_profiler.h"
 
-#include "core/os/os.h"
 #include "editor_scale.h"
 #include "editor_settings.h"
 #include "scene/main/timer.h"
+#include "core/class_db.h"
+#include "core/error_macros.h"
+#include "core/image.h"
+#include "core/math/math_funcs.h"
+#include "core/math/vector2.h"
+#include "core/os/input_event.h"
+#include "core/os/memory.h"
+#include "core/variant.h"
+#include "scene/gui/button.h"
+#include "scene/gui/control.h"
+#include "scene/gui/label.h"
+#include "scene/gui/option_button.h"
+#include "scene/gui/spin_box.h"
+#include "scene/gui/split_container.h"
+#include "scene/gui/texture_rect.h"
+#include "scene/gui/tree.h"
+#include "scene/main/node.h"
 
 void EditorProfiler::_make_metric_ptrs(Metric &m) {
 	for (int i = 0; i < m.categories.size(); i++) {

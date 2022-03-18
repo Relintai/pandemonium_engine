@@ -44,9 +44,30 @@
 #include "scene/gui/menu_button.h"
 #include "scene/gui/popup.h"
 #include "scene/gui/tree.h"
+#include "core/map.h"
+#include "core/node_path.h"
+#include "core/object.h"
+#include "core/string_name.h"
+#include "core/ustring.h"
+#include "core/vector.h"
+#include "scene/gui/box_container.h"
 
 class PopupMenu;
 class ConnectDialogBinds;
+class Button;
+class CheckBox;
+class CheckButton;
+class Control;
+class EditorInspector;
+class EditorNode;
+class Label;
+class LineEdit;
+class Node;
+class OptionButton;
+class SceneTreeEditor;
+class UndoRedo;
+class Variant;
+struct Vector2;
 
 class ConnectDialog : public ConfirmationDialog {
 	GDCLASS(ConnectDialog, ConfirmationDialog);

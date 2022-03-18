@@ -38,6 +38,25 @@
 #include "scene/gui/text_edit.h"
 #include "scene/gui/tool_button.h"
 #include "scene/main/timer.h"
+#include "core/list.h"
+#include "core/math/math_defs.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "scene/gui/box_container.h"
+
+class Button;
+class CheckBox;
+class InputEvent;
+class Label;
+class LineEdit;
+class TextEdit;
+class Texture;
+class TextureButton;
+class Timer;
+class ToolButton;
+struct ScriptCodeCompletionOption;
 
 class GotoLineDialog : public ConfirmationDialog {
 	GDCLASS(GotoLineDialog, ConfirmationDialog);

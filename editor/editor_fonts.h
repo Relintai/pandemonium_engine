@@ -31,6 +31,9 @@
 /*************************************************************************/
 
 #include "scene/resources/theme.h"
+#include "core/reference.h"
+
+class Theme;
 
 void editor_register_fonts(Ref<Theme> p_theme);
 

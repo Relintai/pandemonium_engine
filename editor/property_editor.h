@@ -44,10 +44,39 @@
 #include "scene/gui/text_edit.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tree.h"
+#include "core/list.h"
+#include "core/math/math_defs.h"
+#include "core/node_path.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "core/vector.h"
+#include "scene/gui/popup.h"
 
 class PropertyValueEvaluator;
 class CreateDialog;
 class PropertySelector;
+class Button;
+class CheckBox;
+class ColorPicker;
+class ConfirmationDialog;
+class Control;
+class EditorFileDialog;
+class GridContainer;
+class HScrollBar;
+class HSlider;
+class InputEvent;
+class Label;
+class LineEdit;
+class MenuButton;
+class PopupMenu;
+class Resource;
+class SceneTreeDialog;
+class SpinBox;
+class TextEdit;
+class TextureRect;
+struct Color;
 
 class EditorResourceConversionPlugin : public Reference {
 	GDCLASS(EditorResourceConversionPlugin, Reference);

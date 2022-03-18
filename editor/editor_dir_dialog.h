@@ -34,6 +34,15 @@
 #include "editor/editor_file_system.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/tree.h"
+#include "core/object.h"
+#include "core/set.h"
+#include "core/ustring.h"
+
+class Button;
+class EditorFileSystemDirectory;
+class LineEdit;
+class Tree;
+class TreeItem;
 
 class EditorDirDialog : public ConfirmationDialog {
 	GDCLASS(EditorDirDialog, ConfirmationDialog);

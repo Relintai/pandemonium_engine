@@ -29,6 +29,7 @@
 /*************************************************************************/
 
 #include "editor_layouts_dialog.h"
+
 #include "core/class_db.h"
 #include "core/io/config_file.h"
 #include "core/os/keyboard.h"
@@ -36,6 +37,15 @@
 #include "scene/gui/box_container.h"
 #include "scene/gui/item_list.h"
 #include "scene/gui/line_edit.h"
+#include "core/error_list.h"
+#include "core/list.h"
+#include "core/math/math_defs.h"
+#include "core/os/input_event.h"
+#include "core/os/memory.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "core/vector.h"
+#include "scene/gui/control.h"
 
 void EditorLayoutsDialog::_line_gui_input(const Ref<InputEvent> &p_event) {
 	Ref<InputEventKey> k = p_event;

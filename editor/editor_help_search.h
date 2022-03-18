@@ -36,6 +36,23 @@
 #include "editor/editor_plugin.h"
 #include "scene/gui/option_button.h"
 #include "scene/gui/tree.h"
+#include "core/color.h"
+#include "core/map.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/ustring.h"
+#include "core/vector.h"
+#include "editor/doc/doc_data.h"
+#include "scene/gui/dialogs.h"
+#include "scene/resources/texture.h"
+
+class Control;
+class InputEvent;
+class LineEdit;
+class OptionButton;
+class ToolButton;
+class Tree;
+class TreeItem;
 
 class EditorHelpSearch : public ConfirmationDialog {
 	GDCLASS(EditorHelpSearch, ConfirmationDialog);
@@ -61,6 +78,7 @@ class EditorHelpSearch : public ConfirmationDialog {
 	String old_term;
 
 	class Runner;
+
 	Ref<Runner> search;
 
 	void _update_icons();

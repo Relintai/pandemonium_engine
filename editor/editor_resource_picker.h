@@ -36,6 +36,29 @@
 #include "scene/gui/button.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/texture_rect.h"
+#include "core/hash_map.h"
+#include "core/list.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/object_id.h"
+#include "core/reference.h"
+#include "core/resource.h"
+#include "core/set.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "core/vector.h"
+
+class Button;
+class Control;
+class Dictionary;
+class EditorFileDialog;
+class EditorQuickOpen;
+class InputEvent;
+class Node;
+class PopupMenu;
+class StringName;
+class Texture;
+class TextureRect;
 
 class EditorResourcePicker : public HBoxContainer {
 	GDCLASS(EditorResourcePicker, HBoxContainer);
