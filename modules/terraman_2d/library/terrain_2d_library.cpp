@@ -42,7 +42,7 @@ void Terrain2DLibrary::set_initialized(const bool value) {
 }
 
 bool Terrain2DLibrary::supports_caching() {
-	RETURN_CALLD(bool, false, _supports_caching);
+	return call("_supports_caching");
 }
 bool Terrain2DLibrary::_supports_caching() {
 	return false;
@@ -74,14 +74,14 @@ void Terrain2DLibrary::prop_texture_set(const Ref<Texture> &value) {
 //Materials
 
 void Terrain2DLibrary::material_cache_get_key(Ref<Terrain2DChunk> chunk) {
-	CALL(_material_cache_get_key, chunk);
+	call("_material_cache_get_key", chunk);
 }
 
 void Terrain2DLibrary::_material_cache_get_key(Ref<Terrain2DChunk> chunk) {
 }
 
 Ref<Terrain2DMaterialCache> Terrain2DLibrary::material_cache_get(const int key) {
-	RETURN_CALLP(Ref<Terrain2DMaterialCache>, _material_cache_get, key);
+	return call("_material_cache_get", key);
 }
 
 Ref<Terrain2DMaterialCache> Terrain2DLibrary::_material_cache_get(const int key) {
@@ -89,7 +89,7 @@ Ref<Terrain2DMaterialCache> Terrain2DLibrary::_material_cache_get(const int key)
 }
 
 void Terrain2DLibrary::material_cache_unref(const int key) {
-	CALL(_material_cache_unref, key);
+	call("_material_cache_unref", key);
 }
 void Terrain2DLibrary::_material_cache_unref(const int key) {
 }
@@ -104,14 +104,14 @@ void Terrain2DLibrary::material_set(const Ref<Material> &value) {
 
 //Liquid Materials
 void Terrain2DLibrary::liquid_material_cache_get_key(Ref<Terrain2DChunk> chunk) {
-	CALL(_liquid_material_cache_get_key, chunk);
+	call("_liquid_material_cache_get_key", chunk);
 }
 
 void Terrain2DLibrary::_liquid_material_cache_get_key(Ref<Terrain2DChunk> chunk) {
 }
 
 Ref<Terrain2DMaterialCache> Terrain2DLibrary::liquid_material_cache_get(const int key) {
-	RETURN_CALLP(Ref<Terrain2DMaterialCache>, _liquid_material_cache_get, key);
+	return call("_liquid_material_cache_get", key);
 }
 
 Ref<Terrain2DMaterialCache> Terrain2DLibrary::_liquid_material_cache_get(const int key) {
@@ -119,7 +119,7 @@ Ref<Terrain2DMaterialCache> Terrain2DLibrary::_liquid_material_cache_get(const i
 }
 
 void Terrain2DLibrary::liquid_material_cache_unref(const int key) {
-	CALL(_liquid_material_cache_unref, key);
+	call("_liquid_material_cache_unref", key);
 }
 void Terrain2DLibrary::_liquid_material_cache_unref(const int key) {
 }
@@ -135,14 +135,14 @@ void Terrain2DLibrary::liquid_material_set(const Ref<Material> &value) {
 //Prop2D Materials
 
 void Terrain2DLibrary::prop_material_cache_get_key(Ref<Terrain2DChunk> chunk) {
-	CALL(_prop_material_cache_get_key, chunk);
+	call("_prop_material_cache_get_key", chunk);
 }
 
 void Terrain2DLibrary::_prop_material_cache_get_key(Ref<Terrain2DChunk> chunk) {
 }
 
 Ref<Terrain2DMaterialCache> Terrain2DLibrary::prop_material_cache_get(const int key) {
-	RETURN_CALLP(Ref<Terrain2DMaterialCache>, _prop_material_cache_get, key);
+	return call("_prop_material_cache_get", key);
 }
 
 Ref<Terrain2DMaterialCache> Terrain2DLibrary::_prop_material_cache_get(const int key) {
@@ -150,7 +150,7 @@ Ref<Terrain2DMaterialCache> Terrain2DLibrary::_prop_material_cache_get(const int
 }
 
 void Terrain2DLibrary::prop_material_cache_unref(const int key) {
-	CALL(_prop_material_cache_unref, key);
+	call("_prop_material_cache_unref", key);
 }
 void Terrain2DLibrary::_prop_material_cache_unref(const int key) {
 }
@@ -225,7 +225,7 @@ void Terrain2DLibrary::refresh_rects() {
 
 void Terrain2DLibrary::setup_material_albedo(int material_index, Ref<Texture> texture) {
 	if (has_method("_setup_material_albedo")) {
-		CALL(_setup_material_albedo, material_index, texture);
+		call("_setup_material_albedo", material_index, texture);
 	}
 }
 

@@ -16,31 +16,4 @@
 		arr_into.push_back(e);                 \
 	}
 
-#define CALL(func, ...) \
-	call(#func, ##__VA_ARGS__);
-
-#define RETURN_CALL(ret_type, func) \
-	return call(#func);
-
-#define RETURN_CALLP(ret_type, func, ...) \
-	return call(#func, ##__VA_ARGS__);
-
-#define GET_CALL(ret_type, ret_var, func) \
-	ret_var = call(#func);
-
-#define GET_CALLP(ret_type, ret_var, func, ...) \
-	ret_var = call(#func, ##__VA_ARGS__);
-
-#define RETURN_CALLD(ret_type, def_val, func) \
-	return call(#func);
-
-#define RETURN_CALLPD(ret_type, def_val, func, ...) \
-	return call(#func, ##__VA_ARGS__);
-
-#define GET_CALLD(ret_type, def_val, ret_var, func) \
-	ret_var = call(#func);
-
-#define GET_CALLPD(ret_type, def_val, ret_var, func, ...) \
-	return call(#func, ##__VA_ARGS__);
-
 #endif

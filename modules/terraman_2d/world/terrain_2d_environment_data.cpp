@@ -64,7 +64,7 @@ void Terrain2DEnvironmentData::set_indirect_energy(const int index, const float 
 
 void Terrain2DEnvironmentData::setup(WorldEnvironment *world_environment, DirectionalLight *primary_light, DirectionalLight *secondary_light) {
 	if (has_method("_setup")) {
-		CALL(_setup, world_environment, primary_light, secondary_light);
+		call("_setup", world_environment, primary_light, secondary_light);
 	}
 }
 void Terrain2DEnvironmentData::setup_bind(Node *world_environment, Node *primary_light, Node *secondary_light) {

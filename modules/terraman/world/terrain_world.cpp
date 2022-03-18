@@ -271,7 +271,7 @@ void TerrainWorld::chunk_add(Ref<TerrainChunk> chunk, const int x, const int z) 
 		chunk->enter_tree();
 
 	if (has_method("_chunk_added")) {
-		CALL(_chunk_added, chunk);
+		call("_chunk_added", chunk);
 	}
 
 	emit_signal("chunk_added", chunk);
@@ -388,7 +388,7 @@ Ref<TerrainChunk> TerrainWorld::chunk_get_or_create(int x, int z) {
 
 Ref<TerrainChunk> TerrainWorld::chunk_create(const int x, const int z) {
 	Ref<TerrainChunk> c;
-	GET_CALLP(Ref<TerrainChunk>, c, _create_chunk, x, z, Ref<TerrainChunk>());
+	c = call("_create_chunk", x, z, Ref<TerrainChunk>());
 
 	generation_queue_add_to(c);
 
@@ -434,10 +434,10 @@ void TerrainWorld::chunk_generate(Ref<TerrainChunk> chunk) {
 	ERR_FAIL_COND(!chunk.is_valid());
 
 	if (has_method("_prepare_chunk_for_generation")) {
-		CALL(_prepare_chunk_for_generation, chunk);
+		call("_prepare_chunk_for_generation", chunk);
 	}
 
-	CALL(_generate_chunk, chunk);
+	call("_generate_chunk", chunk);
 
 	chunk->build();
 }
@@ -848,11 +848,11 @@ Ref<TerrainChunk> TerrainWorld::get_or_create_chunk_at_world_position(const Vect
 }
 
 void TerrainWorld::set_voxel_with_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal, const int selected_voxel, const int isolevel) {
-	CALL(_set_voxel_with_tool, mode_add, hit_position, hit_normal, selected_voxel, isolevel);
+	call("_set_voxel_with_tool", mode_add, hit_position, hit_normal, selected_voxel, isolevel);
 }
 
 int TerrainWorld::get_channel_index_info(const TerrainWorld::ChannelTypeInfo channel_type) {
-	RETURN_CALLP(int, _get_channel_index_info, channel_type);
+	return call("_get_channel_index_info", channel_type);
 }
 
 Spatial *TerrainWorld::get_editor_camera() {
@@ -979,7 +979,7 @@ void TerrainWorld::_notification(int p_what) {
 			if (_is_priority_generation && _generation_queue.empty() && _generating.empty()) {
 				_is_priority_generation = false;
 
-				CALL(_generation_finished);
+				call("_generation_finished");
 
 				emit_signal("generation_finished");
 

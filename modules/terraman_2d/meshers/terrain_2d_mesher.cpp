@@ -479,7 +479,7 @@ void Terrain2DMesher::add_chunk(Ref<Terrain2DChunk> chunk) {
 	ERR_FAIL_COND(!has_method("_add_chunk"));
 	ERR_FAIL_COND(!chunk.is_valid());
 
-	CALL(_add_chunk, chunk);
+	call("_add_chunk", chunk);
 }
 
 #ifdef MESH_DATA_RESOURCE_PRESENT
@@ -570,7 +570,7 @@ void Terrain2DMesher::add_mesh_data_resource_transform_colored(Ref<MeshDataResou
 #endif
 
 void Terrain2DMesher::add_mesher(const Ref<Terrain2DMesher> &mesher) {
-	CALL(_add_mesher, mesher);
+	call("_add_mesher", mesher);
 }
 void Terrain2DMesher::_add_mesher(const Ref<Terrain2DMesher> &mesher) {
 	int orig_size = _vertices.size();
@@ -594,7 +594,7 @@ void Terrain2DMesher::bake_colors(Ref<Terrain2DChunk> chunk) {
 	ERR_FAIL_COND(!chunk.is_valid());
 
 	if (has_method("_bake_colors")) {
-		CALL(_bake_colors, chunk);
+		call("_bake_colors", chunk);
 	}
 }
 
@@ -602,7 +602,7 @@ void Terrain2DMesher::bake_liquid_colors(Ref<Terrain2DChunk> chunk) {
 	ERR_FAIL_COND(!chunk.is_valid());
 
 	if (has_method("_bake_liquid_colors")) {
-		CALL(_bake_liquid_colors, chunk);
+		call("_bake_liquid_colors", chunk);
 	}
 }
 

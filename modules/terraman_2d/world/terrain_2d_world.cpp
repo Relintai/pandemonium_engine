@@ -314,7 +314,7 @@ void Terrain2DWorld::chunk_add(Ref<Terrain2DChunk> chunk, const int x, const int
 		chunk->enter_tree();
 
 	if (has_method("_chunk_added")) {
-		CALL(_chunk_added, chunk);
+		call("_chunk_added", chunk);
 	}
 
 	emit_signal("chunk_added", chunk);
@@ -437,7 +437,7 @@ Ref<Terrain2DChunk> Terrain2DWorld::chunk_get_or_create(int x, int z) {
 
 Ref<Terrain2DChunk> Terrain2DWorld::chunk_create(const int x, const int z) {
 	Ref<Terrain2DChunk> c;
-	GET_CALLP(Ref<Terrain2DChunk>, c, _create_chunk, x, z, Ref<Terrain2DChunk>());
+	c = call("_create_chunk", x, z, Ref<Terrain2DChunk>());
 
 	generation_queue_add_to(c);
 
@@ -491,10 +491,10 @@ void Terrain2DWorld::chunk_generate(Ref<Terrain2DChunk> chunk) {
 	ERR_FAIL_COND(!chunk.is_valid());
 
 	if (has_method("_prepare_chunk_for_generation")) {
-		CALL(_prepare_chunk_for_generation, chunk);
+		call("_prepare_chunk_for_generation", chunk);
 	}
 
-	CALL(_generate_chunk, chunk);
+	call("_generate_chunk", chunk);
 
 	chunk->build();
 }
@@ -913,11 +913,11 @@ Ref<Terrain2DChunk> Terrain2DWorld::get_or_create_chunk_at_world_position(const 
 }
 
 void Terrain2DWorld::set_voxel_with_tool(const bool mode_add, const Vector2 hit_position, const int selected_voxel, const int isolevel) {
-	CALL(_set_voxel_with_tool, mode_add, hit_position, selected_voxel, isolevel);
+	call("_set_voxel_with_tool", mode_add, hit_position, selected_voxel, isolevel);
 }
 
 int Terrain2DWorld::get_channel_index_info(const Terrain2DWorld::ChannelTypeInfo channel_type) {
-	RETURN_CALLP(int, _get_channel_index_info, channel_type);
+	return call("_get_channel_index_info", channel_type);
 }
 
 Terrain2DWorld::Terrain2DWorld() {
@@ -1035,7 +1035,7 @@ void Terrain2DWorld::_notification(int p_what) {
 			if (_is_priority_generation && _generation_queue.empty() && _generating.empty()) {
 				_is_priority_generation = false;
 
-				CALL(_generation_finished);
+				call("_generation_finished");
 
 				emit_signal("generation_finished");
 				update();

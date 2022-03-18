@@ -40,7 +40,7 @@ void TerrainLibrary::set_initialized(const bool value) {
 }
 
 bool TerrainLibrary::supports_caching() {
-	RETURN_CALLD(bool, false, _supports_caching);
+	return call("_supports_caching");
 }
 bool TerrainLibrary::_supports_caching() {
 	return false;
@@ -68,14 +68,14 @@ Ref<Material> TerrainLibrary::material_lod_get(const int index) {
 }
 
 void TerrainLibrary::material_cache_get_key(Ref<TerrainChunk> chunk) {
-	CALL(_material_cache_get_key, chunk);
+	call("_material_cache_get_key", chunk);
 }
 
 void TerrainLibrary::_material_cache_get_key(Ref<TerrainChunk> chunk) {
 }
 
 Ref<TerrainMaterialCache> TerrainLibrary::material_cache_get(const int key) {
-	RETURN_CALLP(Ref<TerrainMaterialCache>, _material_cache_get, key);
+	return call("_material_cache_get", key);
 }
 
 Ref<TerrainMaterialCache> TerrainLibrary::_material_cache_get(const int key) {
@@ -83,7 +83,7 @@ Ref<TerrainMaterialCache> TerrainLibrary::_material_cache_get(const int key) {
 }
 
 void TerrainLibrary::material_cache_unref(const int key) {
-	CALL(_material_cache_unref, key);
+	call("_material_cache_unref", key);
 }
 void TerrainLibrary::_material_cache_unref(const int key) {
 }
@@ -148,14 +148,14 @@ Ref<Material> TerrainLibrary::liquid_material_lod_get(const int index) {
 }
 
 void TerrainLibrary::liquid_material_cache_get_key(Ref<TerrainChunk> chunk) {
-	CALL(_liquid_material_cache_get_key, chunk);
+	call("_liquid_material_cache_get_key", chunk);
 }
 
 void TerrainLibrary::_liquid_material_cache_get_key(Ref<TerrainChunk> chunk) {
 }
 
 Ref<TerrainMaterialCache> TerrainLibrary::liquid_material_cache_get(const int key) {
-	RETURN_CALLP(Ref<TerrainMaterialCache>, _liquid_material_cache_get, key);
+	return call("_liquid_material_cache_get", key);
 }
 
 Ref<TerrainMaterialCache> TerrainLibrary::_liquid_material_cache_get(const int key) {
@@ -163,7 +163,7 @@ Ref<TerrainMaterialCache> TerrainLibrary::_liquid_material_cache_get(const int k
 }
 
 void TerrainLibrary::liquid_material_cache_unref(const int key) {
-	CALL(_liquid_material_cache_unref, key);
+	call("_liquid_material_cache_unref", key);
 }
 void TerrainLibrary::_liquid_material_cache_unref(const int key) {
 }
@@ -228,14 +228,14 @@ Ref<Material> TerrainLibrary::prop_material_lod_get(const int index) {
 }
 
 void TerrainLibrary::prop_material_cache_get_key(Ref<TerrainChunk> chunk) {
-	CALL(_prop_material_cache_get_key, chunk);
+	call("_prop_material_cache_get_key", chunk);
 }
 
 void TerrainLibrary::_prop_material_cache_get_key(Ref<TerrainChunk> chunk) {
 }
 
 Ref<TerrainMaterialCache> TerrainLibrary::prop_material_cache_get(const int key) {
-	RETURN_CALLP(Ref<TerrainMaterialCache>, _prop_material_cache_get, key);
+	return call("_prop_material_cache_get", key);
 }
 
 Ref<TerrainMaterialCache> TerrainLibrary::_prop_material_cache_get(const int key) {
@@ -243,7 +243,7 @@ Ref<TerrainMaterialCache> TerrainLibrary::_prop_material_cache_get(const int key
 }
 
 void TerrainLibrary::prop_material_cache_unref(const int key) {
-	CALL(_prop_material_cache_unref, key);
+	call("_prop_material_cache_unref", key);
 }
 void TerrainLibrary::_prop_material_cache_unref(const int key) {
 }
@@ -342,7 +342,7 @@ void TerrainLibrary::refresh_rects() {
 
 void TerrainLibrary::setup_material_albedo(int material_index, Ref<Texture> texture) {
 	if (has_method("_setup_material_albedo")) {
-		CALL(_setup_material_albedo, material_index, texture);
+		call("_setup_material_albedo", material_index, texture);
 	}
 }
 

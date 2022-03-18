@@ -59,7 +59,7 @@ void Terrain2DStructure::write_to_chunk(Ref<Terrain2DChunk> chunk) {
 	ERR_FAIL_COND(!chunk.is_valid());
 
 	if (has_method("_write_to_chunk")) {
-		CALL(_write_to_chunk, chunk);
+		call("_write_to_chunk", chunk);
 	}
 }
 

@@ -67,7 +67,7 @@ void TerrainStructure::write_to_chunk(Ref<TerrainChunk> chunk) {
 	ERR_FAIL_COND(!chunk.is_valid());
 
 	if (has_method("_write_to_chunk")) {
-		CALL(_write_to_chunk, chunk);
+		call("_write_to_chunk", chunk);
 	}
 }
 
