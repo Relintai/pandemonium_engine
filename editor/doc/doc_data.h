@@ -30,9 +30,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/io/xml_parser.h"
 #include "core/map.h"
 #include "core/variant.h"
+#include "core/reference.h"
+
+class XMLParser;
 
 class DocData {
 public:

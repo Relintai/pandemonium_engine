@@ -40,6 +40,7 @@
 #include "core/translation.h"
 #include "core/version.h"
 #include "scene/resources/theme.h"
+#include "core/io/xml_parser.h"
 
 static String _get_indent(const String &p_text) {
 	String indent;

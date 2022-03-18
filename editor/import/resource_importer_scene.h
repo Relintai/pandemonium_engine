@@ -33,11 +33,14 @@
 #include "core/pair.h"
 
 #include "core/io/resource_importer.h"
-#include "scene/resources/animation.h"
-#include "scene/resources/mesh.h"
-#include "scene/resources/shape.h"
+#include "scene/main/node.h"
 
 class Material;
+class Shape;
+class Animation;
+class Mesh;
+class ArrayMesh;
+
 class EditorSceneImporter : public Reference {
 	GDCLASS(EditorSceneImporter, Reference);
 

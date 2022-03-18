@@ -34,6 +34,7 @@
 #include "scene/gui/texture_button.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/world.h"
+#include "scene/resources/mesh.h"
 
 void MeshEditor::_gui_input(Ref<InputEvent> p_event) {
 	Ref<InputEventMouseMotion> mm = p_event;

@@ -36,6 +36,7 @@
 #include "editor/editor_node.h"
 #include "scene/resources/bit_map.h"
 #include "scene/resources/texture.h"
+#include "core/image.h"
 
 String ResourceImporterBitMap::get_importer_name() const {
 	return "bitmap";
