@@ -5,15 +5,9 @@
 #include "core/version.h"
 #include "scene/resources/texture.h"
 
-#if VERSION_MAJOR < 4
 #include "core/image.h"
 
 #define GET_WORLD get_world
-#else
-#include "core/io/image.h"
-
-#define GET_WORLD get_world_3d
-#endif
 
 #if TEXTURE_PACKER_PRESENT
 #include "../../texture_packer/texture_resource/packer_image_resource.h"
@@ -184,11 +178,7 @@ void MeshDataInstance::setup_material_texture() {
 
 			Ref<ImageTexture> tex;
 			tex.instance();
-#if VERSION_MAJOR < 4
 			tex->create_from_image(i, 0);
-#else
-			tex->create_from_image(i);
-#endif
 
 			if (sm.is_valid()) {
 				sm->set_texture(SpatialMaterial::TEXTURE_ALBEDO, tex);
@@ -214,9 +204,7 @@ MeshDataInstance::MeshDataInstance() {
 	_snap_to_mesh = false;
 	_snap_axis = Vector3(0, -1, 0);
 
-#if VERSION_MINOR >= 4
 	set_portal_mode(PORTAL_MODE_GLOBAL);
-#endif
 
 	//set_notify_transform(true);
 }

@@ -26,11 +26,7 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/config/engine.h"
-#else
 #include "core/engine.h"
-#endif
 
 #include "thread_pool.h"
 #include "thread_pool_execute_job.h"
@@ -39,7 +35,6 @@ SOFTWARE.
 static ThreadPool *thread_pool = NULL;
 
 void register_thread_pool_types() {
-
 	ClassDB::register_class<ThreadPoolJob>();
 	ClassDB::register_class<ThreadPoolExecuteJob>();
 

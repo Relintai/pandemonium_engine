@@ -30,16 +30,10 @@
 
 #include "input_map_editor.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/string/ustring.h"
-#else
 #include "core/global_constants.h"
 #include "core/project_settings.h"
 #include "core/translation.h"
 #include "core/ustring.h"
-#endif
 
 #include "core/os/keyboard.h"
 #include "editor/editor_export.h"
@@ -49,19 +43,10 @@
 
 #include "core/version.h"
 
-#if VERSION_MAJOR < 4
 #include "core/input_map.h"
 #define CONNECT(sig, obj, target_method_class, method) connect(sig, obj, #method)
-#else
-#include "core/input/input_map.h"
-#define CONNECT(sig, obj, target_method_class, method) connect(sig, callable_mp(obj, &target_method_class::method))
-#endif
 
-#if VERSION_MAJOR < 4
 static const char *_button_names[JOY_BUTTON_MAX] = {
-#else
-static const char *_button_names[static_cast<int>(JoyButton::MAX)] = {
-#endif
 	"DualShock Cross, Xbox A, Nintendo B",
 	"DualShock Circle, Xbox B, Nintendo A",
 	"DualShock Square, Xbox X, Nintendo Y",
@@ -80,11 +65,7 @@ static const char *_button_names[static_cast<int>(JoyButton::MAX)] = {
 	"D-Pad Right"
 };
 
-#if VERSION_MAJOR < 4
 static const char *_axis_names[JOY_AXIS_MAX * 2] = {
-#else
-static const char *_axis_names[static_cast<int>(JoyAxis::MAX) * 2] = {
-#endif
 	" (Left Stick Left)",
 	" (Left Stick Right)",
 	" (Left Stick Up)",
@@ -112,11 +93,7 @@ void InputMapEditor::_notification(int p_what) {
 }
 
 static bool _validate_action_name(const String &p_name) {
-#if VERSION_MAJOR < 4
 	const CharType *cstr = p_name.c_str();
-#else
-	const char32_t *cstr = p_name.get_data();
-#endif
 
 	for (int i = 0; cstr[i]; i++)
 		if (cstr[i] == '/' || cstr[i] == ':' || cstr[i] == '"' ||
@@ -202,13 +179,8 @@ void InputMapEditor::_device_input_add() {
 	switch (add_type) {
 		case INPUT_MOUSE_BUTTON: {
 			Ref<InputEventMouseButton> mb;
-#if VERSION_MAJOR < 4
 			mb.instance();
 			mb->set_button_index(device_index->get_selected() + 1);
-#else
-			mb.instantiate();
-			mb->set_button_index(static_cast<MouseButton>(device_index->get_selected() + 1));
-#endif
 			mb->set_device(_get_current_device());
 
 			for (int i = 0; i < events.size(); i++) {
@@ -225,13 +197,8 @@ void InputMapEditor::_device_input_add() {
 		} break;
 		case INPUT_JOY_MOTION: {
 			Ref<InputEventJoypadMotion> jm;
-#if VERSION_MAJOR < 4
 			jm.instance();
 			jm->set_axis(device_index->get_selected() >> 1);
-#else
-			jm.instantiate();
-			jm->set_axis(static_cast<JoyAxis>(device_index->get_selected() >> 1));
-#endif
 			jm->set_axis_value((device_index->get_selected() & 1) ? 1 : -1);
 			jm->set_device(_get_current_device());
 
@@ -250,13 +217,8 @@ void InputMapEditor::_device_input_add() {
 		} break;
 		case INPUT_JOY_BUTTON: {
 			Ref<InputEventJoypadButton> jb;
-#if VERSION_MAJOR < 4
 			jb.instance();
 			jb->set_button_index(device_index->get_selected());
-#else
-			jb.instantiate();
-			jb->set_button_index(static_cast<JoyButton>(device_index->get_selected()));
-#endif
 			jb->set_device(_get_current_device());
 
 			for (int i = 0; i < events.size(); i++) {
@@ -309,21 +271,12 @@ void InputMapEditor::_press_a_key_confirm() {
 
 	Ref<BSInputEventKey> ie;
 
-#if VERSION_MAJOR < 4
 	ie.instance();
 	ie->set_scancode(last_wait_for_key->get_scancode());
 	ie->set_shift(last_wait_for_key->get_shift());
 	ie->set_alt(last_wait_for_key->get_alt());
 	ie->set_control(last_wait_for_key->get_control());
 	ie->set_metakey(last_wait_for_key->get_metakey());
-#else
-	ie.instantiate();
-	ie->set_keycode(last_wait_for_key->get_keycode());
-	ie->set_shift_pressed(last_wait_for_key->is_shift_pressed());
-	ie->set_alt_pressed(last_wait_for_key->is_alt_pressed());
-	ie->set_ctrl_pressed(last_wait_for_key->is_ctrl_pressed());
-	ie->set_meta_pressed(last_wait_for_key->is_meta_pressed());
-#endif
 
 	String name = add_at;
 	int idx = edit_idx;
@@ -337,15 +290,9 @@ void InputMapEditor::_press_a_key_confirm() {
 		if (aie.is_null())
 			continue;
 
-#if VERSION_MAJOR < 4
 		if (aie->get_scancode_with_modifiers() == ie->get_scancode_with_modifiers()) {
 			return;
 		}
-#else
-		if (aie->get_keycode_with_modifiers() == ie->get_keycode_with_modifiers()) {
-			return;
-		}
-#endif
 	}
 
 	if (idx < 0 || idx >= events.size()) {
@@ -370,11 +317,7 @@ void InputMapEditor::_show_last_added(const Ref<InputEvent> &p_event, const Stri
 	if (!r)
 		return;
 
-#if VERSION_MAJOR < 4
 	r = r->get_children();
-#else
-	r = r->get_first_child();
-#endif
 
 	if (!r)
 		return;
@@ -385,11 +328,7 @@ void InputMapEditor::_show_last_added(const Ref<InputEvent> &p_event, const Stri
 			continue;
 		}
 
-#if VERSION_MAJOR < 4
 		TreeItem *child = r->get_children();
-#else
-		TreeItem *child = r->get_first_child();
-#endif
 
 		while (child) {
 			Variant input = child->get_meta("__input");
@@ -413,33 +352,14 @@ void InputMapEditor::_show_last_added(const Ref<InputEvent> &p_event, const Stri
 void InputMapEditor::_wait_for_key(const Ref<InputEvent> &p_event) {
 	Ref<InputEventKey> k = p_event;
 
-#if VERSION_MAJOR < 4
 	if (k.is_valid() && k->is_pressed() && k->get_scancode() != 0) {
-#else
-	if (k.is_valid() && k->is_pressed() && k->get_keycode() != Key::NONE) {
-#endif
-
 		last_wait_for_key = p_event;
 
-#if VERSION_MAJOR < 4
 		const String str = keycode_get_string(k->get_scancode_with_modifiers());
-#else
-		const String str = keycode_get_string(k->get_keycode_with_modifiers());
-#endif
 
 		press_a_key_label->set_text(str);
-
-#if VERSION_MAJOR < 4
 		press_a_key->get_ok()->set_disabled(false);
-#else
-		press_a_key->get_ok_button()->set_disabled(false);
-#endif
-
-#if VERSION_MAJOR < 4
 		press_a_key->accept_event();
-#else
-		press_a_key->set_input_as_handled();
-#endif
 	}
 }
 
@@ -450,11 +370,7 @@ void InputMapEditor::_add_item(int p_item, Ref<InputEvent> p_exiting_event) {
 		case INPUT_KEY: {
 			press_a_key_label->set_text(("Press a Key..."));
 
-#if VERSION_MAJOR < 4
 			press_a_key->get_ok()->set_disabled(true);
-#else
-			press_a_key->get_ok_button()->set_disabled(true);
-#endif
 
 			last_wait_for_key = Ref<InputEvent>();
 			press_a_key->popup_centered(Size2(250, 80));
@@ -474,36 +390,18 @@ void InputMapEditor::_add_item(int p_item, Ref<InputEvent> p_exiting_event) {
 			device_index->add_item(("X Button 1"));
 			device_index->add_item(("X Button 2"));
 
-#if VERSION_MAJOR < 4
 			device_input->popup_centered_minsize(Size2(350, 95));
-#else
-			device_input->popup_centered(Size2(350, 95));
-#endif
 
 			Ref<InputEventMouseButton> mb = p_exiting_event;
 			if (mb.is_valid()) {
-#if VERSION_MAJOR < 4
 				device_index->select(mb->get_button_index() - 1);
-#else
-				device_index->select(static_cast<int>(mb->get_button_index()) - 1);
-#endif
-
 				_set_current_device(mb->get_device());
-
-#if VERSION_MAJOR < 4
 				device_input->get_ok()->set_text("Change");
-#else
-				device_input->get_ok_button()->set_text("Change");
-#endif
 
 			} else {
 				_set_current_device(0);
 
-#if VERSION_MAJOR < 4
 				device_input->get_ok()->set_text("Add");
-#else
-				device_input->get_ok_button()->set_text("Add");
-#endif
 			}
 
 		} break;
@@ -511,45 +409,24 @@ void InputMapEditor::_add_item(int p_item, Ref<InputEvent> p_exiting_event) {
 			device_index_label->set_text("Joypad Axis Index:");
 			device_index->clear();
 
-#if VERSION_MAJOR < 4
 			for (int i = 0; i < JOY_AXIS_MAX * 2; i++) {
-#else
-			for (int i = 0; i < static_cast<int>(JoyAxis::MAX) * 2; i++) {
-#endif
 				String desc = _axis_names[i];
 				device_index->add_item("Axis " + itos(i / 2) + " " + ((i & 1) ? "+" : "-") + desc);
 			}
 
-#if VERSION_MAJOR < 4
 			device_input->popup_centered_minsize(Size2(350, 95));
-#else
-			device_input->popup_centered(Size2(350, 95));
-#endif
 
 			Ref<InputEventJoypadMotion> jm = p_exiting_event;
 			if (jm.is_valid()) {
-#if VERSION_MAJOR < 4
 				device_index->select(jm->get_axis() * 2 + (jm->get_axis_value() > 0 ? 1 : 0));
-#else
-				device_index->select(static_cast<int>(jm->get_axis()) * 2 + (jm->get_axis_value() > 0 ? 1 : 0));
-#endif
 
 				_set_current_device(jm->get_device());
 
-#if VERSION_MAJOR < 4
 				device_input->get_ok()->set_text("Change");
-#else
-				device_input->get_ok_button()->set_text("Change");
-#endif
-
 			} else {
 				_set_current_device(0);
 
-#if VERSION_MAJOR < 4
 				device_input->get_ok()->set_text("Add");
-#else
-				device_input->get_ok_button()->set_text("Add");
-#endif
 			}
 
 		} break;
@@ -557,42 +434,22 @@ void InputMapEditor::_add_item(int p_item, Ref<InputEvent> p_exiting_event) {
 			device_index_label->set_text("Joypad Button Index:");
 			device_index->clear();
 
-#if VERSION_MAJOR < 4
 			for (int i = 0; i < JOY_BUTTON_MAX; i++) {
-#else
-			for (int i = 0; i < static_cast<int>(JoyButton::MAX); i++) {
-#endif
 				device_index->add_item(itos(i) + ": " + String(_button_names[i]));
 			}
 
-#if VERSION_MAJOR < 4
 			device_input->popup_centered_minsize(Size2(350, 95));
-#else
-			device_input->popup_centered(Size2(350, 95));
-#endif
 
 			Ref<InputEventJoypadButton> jb = p_exiting_event;
 			if (jb.is_valid()) {
-#if VERSION_MAJOR < 4
 				device_index->select(jb->get_button_index());
-#else
-				device_index->select(static_cast<int>(jb->get_button_index()));
-#endif
 				_set_current_device(jb->get_device());
 
-#if VERSION_MAJOR < 4
 				device_input->get_ok()->set_text("Change");
-#else
-				device_input->get_ok_button()->set_text("Change");
-#endif
 			} else {
 				_set_current_device(0);
 
-#if VERSION_MAJOR < 4
 				device_input->get_ok()->set_text("Add");
-#else
-				device_input->get_ok_button()->set_text("Add");
-#endif
 			}
 
 		} break;
@@ -682,11 +539,7 @@ void InputMapEditor::_action_button_pressed(Object *p_obj, int p_column, int p_i
 
 			Array events = action["events"];
 			ERR_FAIL_INDEX(idx, events.size());
-#if VERSION_MAJOR < 4
 			events.remove(idx);
-#else
-			events.remove_at(idx);
-#endif
 			action["events"] = events;
 
 			ProjectSettings::get_singleton()->set(name, action);
@@ -729,13 +582,8 @@ void InputMapEditor::_update_actions() {
 
 	Map<String, bool> collapsed;
 
-#if VERSION_MAJOR < 4
 	if (input_editor->get_root() && input_editor->get_root()->get_children()) {
 		for (TreeItem *item = input_editor->get_root()->get_children(); item; item = item->get_next()) {
-#else
-	if (input_editor->get_root() && input_editor->get_root()->get_first_child()) {
-		for (TreeItem *item = input_editor->get_root()->get_first_child(); item; item = item->get_next()) {
-#endif
 			collapsed[item->get_text(0)] = item->is_collapsed();
 		}
 	}
@@ -762,11 +610,7 @@ void InputMapEditor::_update_actions() {
 		TreeItem *item = input_editor->create_item(root);
 		item->set_text(0, name);
 
-#if VERSION_MAJOR < 4
 		item->set_custom_bg_color(0, get_color("prop_subsection", "Editor"));
-#else
-		item->set_custom_bg_color(0, input_editor->get_theme_color("prop_subsection", "Editor"));
-#endif
 
 		if (collapsed.has(name))
 			item->set_collapsed(collapsed[name]);
@@ -776,11 +620,7 @@ void InputMapEditor::_update_actions() {
 		item->set_range_config(1, 0.0, 1.0, 0.01);
 		item->set_range(1, action["deadzone"]);
 
-#if VERSION_MAJOR < 4
 		item->set_custom_bg_color(1, get_color("prop_subsection", "Editor"));
-#else
-		item->set_custom_bg_color(1, input_editor->get_theme_color("prop_subsection", "Editor"));
-#endif
 
 		item->add_button(2, _add_texture, 1, false, "Add Event");
 
@@ -793,11 +633,7 @@ void InputMapEditor::_update_actions() {
 
 			Ref<InputEventKey> k = event;
 			if (k.is_valid()) {
-#if VERSION_MAJOR < 4
 				const String str = keycode_get_string(k->get_scancode_with_modifiers());
-#else
-				const String str = keycode_get_string(k->get_keycode_with_modifiers());
-#endif
 
 				action2->set_text(0, str);
 				action2->set_icon(0, _keyboard_texture);
@@ -807,11 +643,7 @@ void InputMapEditor::_update_actions() {
 
 			if (jb.is_valid()) {
 				String str = _get_device_string(jb->get_device()) + ", Button " + itos(static_cast<int>(jb->get_button_index()));
-#if VERSION_MAJOR < 4
 				if (jb->get_button_index() >= 0 && jb->get_button_index() < JOY_BUTTON_MAX)
-#else
-				if (static_cast<int>(jb->get_button_index()) >= 0 && static_cast<int>(jb->get_button_index()) < static_cast<int>(JoyButton::MAX))
-#endif
 					str += String() + " (" + _button_names[static_cast<int>(jb->get_button_index())] + ").";
 				else
 					str += ".";
@@ -822,7 +654,6 @@ void InputMapEditor::_update_actions() {
 
 			Ref<InputEventMouseButton> mb = event;
 
-#if VERSION_MAJOR < 4
 			if (mb.is_valid()) {
 				String str = _get_device_string(mb->get_device()) + ", ";
 				switch (mb->get_button_index()) {
@@ -844,29 +675,6 @@ void InputMapEditor::_update_actions() {
 					default:
 						str += "Button " + itos(mb->get_button_index()) + ".";
 				}
-#else
-			if (mb.is_valid()) {
-				String str = _get_device_string(mb->get_device()) + ", ";
-				switch (mb->get_button_index()) {
-					case MouseButton::LEFT:
-						str += "Left Button.";
-						break;
-					case MouseButton::RIGHT:
-						str += "Right Button.";
-						break;
-					case MouseButton::MIDDLE:
-						str += "Middle Button.";
-						break;
-					case MouseButton::WHEEL_UP:
-						str += "Wheel Up.";
-						break;
-					case MouseButton::WHEEL_DOWN:
-						str += "Wheel Down.";
-						break;
-					default:
-						str += "Button " + itos(static_cast<int>(mb->get_button_index())) + ".";
-				}
-#endif
 
 				action2->set_text(0, str);
 				action2->set_icon(0, _mouse_texture);
@@ -1103,18 +911,11 @@ InputMapEditor::InputMapEditor() {
 	input_editor->set_column_title(0, "Action");
 	input_editor->set_column_title(1, "Deadzone");
 	input_editor->set_column_expand(1, false);
-#if VERSION_MAJOR < 4
 	input_editor->set_column_min_width(1, 80);
-#else
-	input_editor->set_column_custom_minimum_width(1, 80);
-#endif
 
 	input_editor->set_column_expand(2, false);
-#if VERSION_MAJOR < 4
 	input_editor->set_column_min_width(2, 50);
-#else
-	input_editor->set_column_custom_minimum_width(2, 50);
-#endif
+
 	input_editor->CONNECT("item_edited", this, InputMapEditor, _action_edited);
 	input_editor->CONNECT("item_activated", this, InputMapEditor, _action_activated);
 	input_editor->CONNECT("cell_selected", this, InputMapEditor, _action_selected);
@@ -1126,28 +927,19 @@ InputMapEditor::InputMapEditor() {
 	popup_add->CONNECT("id_pressed", this, InputMapEditor, _add_item);
 
 	press_a_key = memnew(ConfirmationDialog);
-#if VERSION_MAJOR < 4
 	press_a_key->set_focus_mode(FOCUS_ALL);
-#endif
+
 	add_child(press_a_key);
 
 	Label *l = memnew(Label);
 	l->set_text("Press a Key...");
 
-	#if VERSION_MAJOR < 4
 	l->set_align(Label::ALIGN_CENTER);
-#else
-	l->set_vertical_alignment(VerticalAlignment::VERTICAL_ALIGNMENT_CENTER);
-#endif
 
-#if VERSION_MAJOR < 4
 	l->set_anchors_and_margins_preset(Control::PRESET_WIDE);
 	l->set_margin(MARGIN_TOP, 20);
 	l->set_anchor_and_margin(MARGIN_BOTTOM, ANCHOR_BEGIN, 30);
 	press_a_key->get_ok()->set_disabled(true);
-#else
-	press_a_key->get_ok_button()->set_disabled(true);
-#endif
 
 	press_a_key_label = l;
 	press_a_key->add_child(l);
@@ -1157,11 +949,7 @@ InputMapEditor::InputMapEditor() {
 	device_input = memnew(ConfirmationDialog);
 	add_child(device_input);
 
-#if VERSION_MAJOR < 4
 	device_input->get_ok()->set_text("Add");
-#else
-	device_input->get_ok_button()->set_text("Add");
-#endif
 
 	device_input->CONNECT("confirmed", this, InputMapEditor, _device_input_add);
 

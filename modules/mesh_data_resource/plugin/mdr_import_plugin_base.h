@@ -27,13 +27,8 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/string/ustring.h"
-#include "core/variant/array.h"
-#else
 #include "core/array.h"
 #include "core/ustring.h"
-#endif
 
 #include "../mesh_data_resource_collection.h"
 #include "core/io/resource_saver.h"
@@ -49,21 +44,9 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR < 4
 #include "scene/3d/mesh_instance.h"
 
-#if VERSION_MINOR < 4
-#include "editor/import/editor_scene_importer_gltf.h"
-#else
 #include "../../gltf/editor_scene_importer_gltf.h"
-#endif
-
-#else
-#include "../../gltf/editor_scene_importer_gltf.h"
-#include "scene/3d/mesh_instance_3d.h"
-
-#define MeshInstance MeshInstance3D
-#endif
 
 class MDRImportPluginBase : public EditorImportPlugin {
 	GDCLASS(MDRImportPluginBase, EditorImportPlugin);

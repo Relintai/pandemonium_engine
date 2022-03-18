@@ -31,11 +31,7 @@ void MeshDataResourceCollection::add_mdr(Ref<MeshDataResource> mdr) {
 Vector<Variant> MeshDataResourceCollection::get_mdrs() {
 	Vector<Variant> r;
 	for (int i = 0; i < _mdrs.size(); i++) {
-#if VERSION_MAJOR < 4
 		r.push_back(_mdrs[i].get_ref_ptr());
-#else
-		r.push_back(_mdrs[i]);
-#endif
 	}
 	return r;
 }

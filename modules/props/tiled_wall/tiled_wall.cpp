@@ -279,10 +279,8 @@ TiledWall::TiledWall() {
 
 	_physics_body_rid = PhysicsServer::get_singleton()->body_create(PhysicsServer::BODY_MODE_STATIC);
 
-#if VERSION_MINOR >= 4
 	//temporary
 	set_portal_mode(PORTAL_MODE_GLOBAL);
-#endif
 
 	_mesher.instance();
 }

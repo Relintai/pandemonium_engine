@@ -1,25 +1,12 @@
 #ifndef FASTNOISE_NOISE_H
 #define FASTNOISE_NOISE_H
 
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/object/reference.h"
-#include "core/string/ustring.h"
-#else
 #include "core/reference.h"
 #include "core/ustring.h"
-#endif
 
 #include "lib/FastNoise.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR < 4
 #include "core/pool_vector.h"
-#else
-typedef PackedInt64Array PoolIntArray;
-#endif
 
 typedef fastnoise::FastNoise _FastNoise;
 
@@ -33,9 +20,9 @@ public:
 	static const String BINDING_STRING_CELLULAR_DISTANCE_FUNCTION;
 	static const String BINDING_STRING_CELLULAR_RETURN_TYPE;
 
-    // Enums Godot-style (same values)
+	// Enums Godot-style (same values)
 
-    enum Type {
+	enum Type {
 		TYPE_VALUE = _FastNoise::Value,
 		TYPE_VALUE_FRACTAL = _FastNoise::ValueFractal,
 		TYPE_PERLIN = _FastNoise::Perlin,
@@ -46,45 +33,45 @@ public:
 		TYPE_WHITE_NOISE = _FastNoise::WhiteNoise,
 		TYPE_CUBIC = _FastNoise::Cubic,
 		TYPE_CUBIC_FRACTAL = _FastNoise::CubicFractal
-    };
+	};
 
-    enum Interpolation {
+	enum Interpolation {
 		INTERP_LINEAR = _FastNoise::Linear,
 		INTERP_QUINTIC = _FastNoise::Quintic,
 		INTERP_HERMITE = _FastNoise::Hermite
-    };
+	};
 
-    enum FractalType {
-        FRACTAL_FBM = _FastNoise::FBM,
-        FRACTAL_BILLOW = _FastNoise::Billow,
-        FRACTAL_RIGID_MULTI = _FastNoise::RigidMulti
-    };
+	enum FractalType {
+		FRACTAL_FBM = _FastNoise::FBM,
+		FRACTAL_BILLOW = _FastNoise::Billow,
+		FRACTAL_RIGID_MULTI = _FastNoise::RigidMulti
+	};
 
-    enum CellularDistanceFunction {
-        DISTANCE_EUCLIDEAN = _FastNoise::Euclidean,
-        DISTANCE_MANHATTAN = _FastNoise::Manhattan,
-        DISTANCE_NATURAL = _FastNoise::Natural
-    };
+	enum CellularDistanceFunction {
+		DISTANCE_EUCLIDEAN = _FastNoise::Euclidean,
+		DISTANCE_MANHATTAN = _FastNoise::Manhattan,
+		DISTANCE_NATURAL = _FastNoise::Natural
+	};
 
-    enum CellularReturnType {
-        RETURN_CELL_VALUE = _FastNoise::CellValue,
-        RETURN_NOISE_LOOKUP = _FastNoise::NoiseLookup,
+	enum CellularReturnType {
+		RETURN_CELL_VALUE = _FastNoise::CellValue,
+		RETURN_NOISE_LOOKUP = _FastNoise::NoiseLookup,
 		RETURN_DISTANCE = _FastNoise::Distance,
 		RETURN_DISTANCE_2 = _FastNoise::Distance2,
 		RETURN_DISTANCE_2_ADD = _FastNoise::Distance2Add,
 		RETURN_DISTANCE_2_SUB = _FastNoise::Distance2Sub,
 		RETURN_DISTANCE_2_MUL = _FastNoise::Distance2Mul,
 		RETURN_DISTANCE_2_DIV = _FastNoise::Distance2Div
-    };
+	};
 
-    FastNoise();
+	FastNoise();
 
-    // Methods (Godot-style mappings to FastNoise)
+	// Methods (Godot-style mappings to FastNoise)
 
 	int get_seed() const { return _noise.GetSeed(); }
-    void set_seed(int seed) { _noise.SetSeed(seed); }
+	void set_seed(int seed) { _noise.SetSeed(seed); }
 
-    void set_noise_type(Type noise_type) { _noise.SetNoiseType((_FastNoise::NoiseType)noise_type); }
+	void set_noise_type(Type noise_type) { _noise.SetNoiseType((_FastNoise::NoiseType)noise_type); }
 	Type get_noise_type() const { return (Type)_noise.GetNoiseType(); }
 
 	void set_interpolation(Interpolation interp) { _noise.SetInterp((_FastNoise::Interp)interp); }
@@ -111,7 +98,7 @@ public:
 	void set_cellular_return_type(CellularReturnType ret) { _noise.SetCellularReturnType((_FastNoise::CellularReturnType)ret); }
 	CellularReturnType get_cellular_return_type() const { return (CellularReturnType)_noise.GetCellularReturnType(); }
 
-    void set_cellular_noise_lookup(Ref<FastNoise> other_noise);
+	void set_cellular_noise_lookup(Ref<FastNoise> other_noise);
 	Ref<FastNoise> get_cellular_noise_lookup() const { return _cellular_lookup_ref; }
 
 	void set_cellular_distance_2_indices(int index0, int index1);
@@ -123,46 +110,44 @@ public:
 	void set_gradient_perturbation_amplitude(real_t amp) { _noise.SetGradientPerturbAmp(amp); }
 	real_t get_gradient_perturbation_amplitude() const { return _noise.GetGradientPerturbAmp(); }
 
-    // 2D
+	// 2D
 
-    float get_noise_2d(float x, float y) { return _noise.GetNoise(x, y); }
+	float get_noise_2d(float x, float y) { return _noise.GetNoise(x, y); }
 
-    //float get_gradient_2d(float x, float y) { return _noise.GetGradient(x, y); }
-    //float get_simplex_2d(float x, float y) { return _noise.GetSimplex(x, y); }
-    //float get_cellular_2d(float x, float y) { return _noise.GetCellular(x, y); }
-    //float get_cellular_hq_2d(float x, float y) { return _noise.GetCellularHQ(x, y); }
-    //float get_white_noise_2d(float x, float y) { return _noise.GetWhiteNoise(x, y); }
-    //float get_value_2d(float x, float y) { return _noise.GetValue(x, y); }
+	//float get_gradient_2d(float x, float y) { return _noise.GetGradient(x, y); }
+	//float get_simplex_2d(float x, float y) { return _noise.GetSimplex(x, y); }
+	//float get_cellular_2d(float x, float y) { return _noise.GetCellular(x, y); }
+	//float get_cellular_hq_2d(float x, float y) { return _noise.GetCellularHQ(x, y); }
+	//float get_white_noise_2d(float x, float y) { return _noise.GetWhiteNoise(x, y); }
+	//float get_value_2d(float x, float y) { return _noise.GetValue(x, y); }
 
-    // 3D
+	// 3D
 
-    float get_noise_3d(float x, float y, float z) { return _noise.GetNoise(x, y, z); }
+	float get_noise_3d(float x, float y, float z) { return _noise.GetNoise(x, y, z); }
 
-    //float get_gradient_3d(float x, float y, float z) { return _noise.GetGradient(x, y, z); }
-    //float get_simplex_3d(float x, float y, float z) { return _noise.GetSimplex(x, y, z); }
-    //float get_cellular_3d(float x, float y, float z) { return _noise.GetCellular(x, y, z); }
-    //float get_cellular_hq_3d(float x, float y, float z) { return _noise.GetCellularHQ(x, y, z); }
-    //float get_white_noise_3d(float x, float y, float z) { return _noise.GetWhiteNoise(x, y, z); }
-    //float get_value_2d(float x, float y, float z) { return _noise.GetValue(x, y, z); }
+	//float get_gradient_3d(float x, float y, float z) { return _noise.GetGradient(x, y, z); }
+	//float get_simplex_3d(float x, float y, float z) { return _noise.GetSimplex(x, y, z); }
+	//float get_cellular_3d(float x, float y, float z) { return _noise.GetCellular(x, y, z); }
+	//float get_cellular_hq_3d(float x, float y, float z) { return _noise.GetCellularHQ(x, y, z); }
+	//float get_white_noise_3d(float x, float y, float z) { return _noise.GetWhiteNoise(x, y, z); }
+	//float get_value_2d(float x, float y, float z) { return _noise.GetValue(x, y, z); }
 
-    // 4D
+	// 4D
 
-    float get_simplex_4d(float x, float y, float z, float w) { return _noise.GetSimplex(x, y, z, w); }
-    float get_white_noise_4d(float x, float y, float z, float w) { return _noise.GetWhiteNoise(x, y, z, w); }
+	float get_simplex_4d(float x, float y, float z, float w) { return _noise.GetSimplex(x, y, z, w); }
+	float get_white_noise_4d(float x, float y, float z, float w) { return _noise.GetWhiteNoise(x, y, z, w); }
 
-    // Convenience
+	// Convenience
 
-    float get_noise_2dv(Vector2 pos) { return _noise.GetNoise(pos.x, pos.y); }
-    float get_noise_3dv(Vector3 pos) { return _noise.GetNoise(pos.x, pos.y, pos.z); }
-
+	float get_noise_2dv(Vector2 pos) { return _noise.GetNoise(pos.x, pos.y); }
+	float get_noise_3dv(Vector3 pos) { return _noise.GetNoise(pos.x, pos.y, pos.z); }
 
 protected:
-    static void _bind_methods();
+	static void _bind_methods();
 
 private:
-    _FastNoise _noise;
-    Ref<FastNoise> _cellular_lookup_ref;
-
+	_FastNoise _noise;
+	Ref<FastNoise> _cellular_lookup_ref;
 };
 
 // Make Variant happy with custom enums
@@ -172,6 +157,4 @@ VARIANT_ENUM_CAST(FastNoise::Interpolation)
 VARIANT_ENUM_CAST(FastNoise::CellularDistanceFunction)
 VARIANT_ENUM_CAST(FastNoise::CellularReturnType)
 
-
 #endif // FASTNOISE_NOISE_H
-

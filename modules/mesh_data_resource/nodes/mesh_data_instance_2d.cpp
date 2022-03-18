@@ -5,11 +5,7 @@
 #include "core/version.h"
 #include "scene/resources/texture.h"
 
-#if VERSION_MAJOR < 4
 #include "core/image.h"
-#else
-#include "core/io/image.h"
-#endif
 
 #if TEXTURE_PACKER_PRESENT
 #include "../../texture_packer/texture_resource/packer_image_resource.h"

@@ -72,7 +72,6 @@ void PropEditorPlugin::convert_scene(Node *root, const String &path) {
 }
 
 void PropEditorPlugin::find_room_points(Variant param) {
-#if VERSION_MINOR >= 4
 	SceneTree *st = SceneTree::get_singleton();
 
 	if (st) {
@@ -82,7 +81,6 @@ void PropEditorPlugin::find_room_points(Variant param) {
 			PropUtils::get_singleton()->generate_room_points_node(scene);
 		}
 	}
-#endif
 }
 
 void PropEditorPlugin::_quick_convert_button_pressed() {

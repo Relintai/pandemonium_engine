@@ -35,12 +35,10 @@
 #include "core/os/os.h"
 #include "scene/2d/area_2d.h"
 #include "scene/2d/collision_object_2d.h"
-#include "servers/physics_2d_server.h"
 #include "scene/resources/world_2d.h"
+#include "servers/physics_2d_server.h"
 
-#if VERSION_MINOR >= 5
 #include "servers/navigation_2d_server.h"
-#endif
 
 int RTileMap::_get_quadrant_size() const {
 	if (y_sort_mode) {
@@ -84,11 +82,7 @@ void RTileMap::_notification(int p_what) {
 				Quadrant &q = E->get();
 				if (navigation) {
 					for (Map<PosKey, Quadrant::NavPoly>::Element *F = q.navpoly_ids.front(); F; F = F->next()) {
-#if VERSION_MINOR < 5
-						navigation->navpoly_remove(F->get().id);
-#else
 						Navigation2DServer::get_singleton()->region_set_map(F->get().region, RID());
-#endif
 					}
 					q.navpoly_ids.clear();
 				}
@@ -172,11 +166,7 @@ void RTileMap::_update_quadrant_transform() {
 
 		if (navigation) {
 			for (Map<PosKey, Quadrant::NavPoly>::Element *F = q.navpoly_ids.front(); F; F = F->next()) {
-#if VERSION_MINOR < 5
-				navigation->navpoly_set_transform(F->get().id, nav_rel * F->get().xform);
-#else
 				Navigation2DServer::get_singleton()->region_set_transform(F->get().region, nav_rel * F->get().xform);
-#endif
 			}
 		}
 
@@ -403,11 +393,7 @@ void RTileMap::update_dirty_quadrants() {
 
 		if (navigation) {
 			for (Map<PosKey, Quadrant::NavPoly>::Element *E = q.navpoly_ids.front(); E; E = E->next()) {
-#if VERSION_MINOR < 5
-				navigation->navpoly_remove(E->get().id);
-#else
 				Navigation2DServer::get_singleton()->region_set_map(E->get().region, RID());
-#endif
 			}
 			q.navpoly_ids.clear();
 		}
@@ -654,20 +640,12 @@ void RTileMap::update_dirty_quadrants() {
 					xform.set_origin(offset.floor() + q.pos);
 					_fix_cell_transform(xform, c, npoly_ofs, s);
 
-#if VERSION_MINOR < 5
-					int pid = navigation->navpoly_add(navpoly, nav_rel * xform);
-#else
 					RID region = Navigation2DServer::get_singleton()->region_create();
 					Navigation2DServer::get_singleton()->region_set_map(region, navigation->get_rid());
 					Navigation2DServer::get_singleton()->region_set_transform(region, nav_rel * xform);
 					Navigation2DServer::get_singleton()->region_set_navpoly(region, navpoly);
-#endif
 					Quadrant::NavPoly np;
-#if VERSION_MINOR < 5
-					np.id = pid;
-#else
 					np.region = region;
-#endif
 					np.xform = xform;
 					q.navpoly_ids[E->key()] = np;
 
@@ -861,11 +839,7 @@ void RTileMap::_erase_quadrant(Map<PosKey, Quadrant>::Element *Q) {
 
 	if (navigation) {
 		for (Map<PosKey, Quadrant::NavPoly>::Element *E = q.navpoly_ids.front(); E; E = E->next()) {
-#if VERSION_MINOR < 5
-			navigation->navpoly_remove(E->get().id);
-#else
 			Navigation2DServer::get_singleton()->region_set_map(E->get().region, RID());
-#endif
 		}
 		q.navpoly_ids.clear();
 	}

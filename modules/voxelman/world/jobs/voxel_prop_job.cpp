@@ -32,8 +32,8 @@ SOFTWARE.
 
 #include "../../library/voxel_material_cache.h"
 #include "../default/voxel_chunk_default.h"
-#include "servers/physics_server.h"
 #include "scene/resources/world.h"
+#include "servers/physics_server.h"
 
 #ifdef MESH_DATA_RESOURCE_PRESENT
 #include "../../../mesh_data_resource/mesh_data_resource.h"
@@ -96,12 +96,7 @@ void VoxelPropJob::phase_physics_process() {
 				continue;
 			}
 
-#if VERSION_MAJOR < 4
 			RID body = PhysicsServer::get_singleton()->body_create(PhysicsServer::BODY_MODE_STATIC);
-#else
-			RID body = PhysicsServer::get_singleton()->body_create();
-			PhysicsServer::get_singleton()->body_set_mode(body, PhysicsServer::BODY_MODE_STATIC);
-#endif
 
 			Transform transform = chunk->mesh_data_resource_get_transform(i);
 			transform *= offset;

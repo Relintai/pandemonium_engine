@@ -39,11 +39,7 @@ Dictionary EntityDataContainer::_to_dict() {
 	return dict;
 }
 void EntityDataContainer::_from_dict(const Dictionary &dict) {
-#if VERSION_MAJOR > 3
-	ERR_FAIL_COND(dict.is_empty());
-#else
 	ERR_FAIL_COND(dict.empty());
-#endif
 }
 
 EntityDataContainer::EntityDataContainer() {

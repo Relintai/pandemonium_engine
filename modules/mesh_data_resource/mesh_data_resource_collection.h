@@ -22,18 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-#include "core/templates/vector.h"
-#else
 #include "core/resource.h"
 #include "core/vector.h"
-#endif
 
 #include "mesh_data_resource.h"
 
@@ -53,7 +45,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	Vector<Ref<MeshDataResource> > _mdrs;
+	Vector<Ref<MeshDataResource>> _mdrs;
 };
 
 #endif

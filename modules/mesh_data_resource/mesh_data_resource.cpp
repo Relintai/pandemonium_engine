@@ -22,16 +22,7 @@ SOFTWARE.
 
 #include "mesh_data_resource.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR >= 4
-#include "core/variant/variant.h"
-
-#define PoolVector Vector
-#define POOL_INT_ARRAY PACKED_INT_ARRAY
-#else
 #include "core/variant.h"
-#endif
 
 const String MeshDataResource::BINDING_STRING_COLLIDER_TYPE = "None,Trimesh Collision Shape,Single Convex Collision Shape,Multiple Convex Collision Shapes,Approximated Box,Approximated Capsule,Approximated Cylinder,Approximated Sphere";
 
@@ -85,13 +76,8 @@ int MeshDataResource::get_collision_shape_count() const {
 Vector<Variant> MeshDataResource::get_collision_shapes() {
 	Vector<Variant> r;
 	for (int i = 0; i < _collision_shapes.size(); i++) {
-#if VERSION_MAJOR < 4
 		r.push_back(_collision_shapes[i].transform);
 		r.push_back(_collision_shapes[i].shape.get_ref_ptr());
-#else
-		r.push_back(_collision_shapes[i].transform);
-		r.push_back(_collision_shapes[i].shape);
-#endif
 	}
 	return r;
 }
@@ -296,12 +282,9 @@ void MeshDataResource::recompute_aabb() {
 	if (vertices_2d.size() > 0) {
 		AABB aabb;
 
-#if VERSION_MAJOR < 4
 		PoolVector<Vector2>::Read r = vertices_2d.read();
 		const Vector2 *vtx = r.ptr();
-#else
-		const Vector2 *vtx = vertices.ptr();
-#endif
+
 		int len = vertices_2d.size();
 		aabb.position = Vector3(vtx[0].x, vtx[0].y, 0);
 
@@ -320,12 +303,8 @@ void MeshDataResource::recompute_aabb() {
 		return;
 	}
 
-#if VERSION_MAJOR < 4
 	PoolVector<Vector3>::Read r = vertices.read();
 	const Vector3 *vtx = r.ptr();
-#else
-	const Vector3 *vtx = vertices.ptr();
-#endif
 
 	AABB aabb;
 	for (int i = 0; i < len; i++) {

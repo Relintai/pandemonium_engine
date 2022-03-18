@@ -64,24 +64,14 @@ void TouchButton::_input(Ref<InputEvent> p_event) {
 		get_viewport()->set_input_as_handled();
 
 		Ref<InputEventMouseButton> ev;
-#if VERSION_MAJOR < 4
 		ev.instance();
-#else
-		ev.instantiate();
-#endif
 
-#if VERSION_MAJOR < 4
 		ev->set_button_index(BUTTON_LEFT);
-#else
-		ev->set_button_index(MouseButton::LEFT);
-#endif
 		ev->set_pressed(b->is_pressed());
 		ev->set_position(b->get_position());
 		ev->set_global_position(b->get_position());
 
-#if VERSION_MAJOR <= 3
 		BaseButton::_gui_input(ev);
-#endif
 		update();
 	}
 	/*
@@ -107,9 +97,7 @@ void TouchButton::_gui_input(Ref<InputEvent> p_event) {
 		return;
 	}
 
-#if VERSION_MAJOR <= 3
 	BaseButton::_gui_input(p_event);
-#endif
 }
 
 void TouchButton::_unhandled_input(Ref<InputEvent> p_event) {
@@ -118,9 +106,7 @@ void TouchButton::_unhandled_input(Ref<InputEvent> p_event) {
 		return;
 	}
 
-#if VERSION_MAJOR <= 3
 	Button::_unhandled_input(p_event);
-#endif
 }
 
 void TouchButton::_bind_methods() {

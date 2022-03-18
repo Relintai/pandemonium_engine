@@ -27,11 +27,7 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR < 4
 #include "core/os/input_event.h"
-#else
-#include "core/input/input_event.h"
-#endif
 
 class BSInputEventKey : public InputEventKey {
 	GDCLASS(BSInputEventKey, InputEventKey);

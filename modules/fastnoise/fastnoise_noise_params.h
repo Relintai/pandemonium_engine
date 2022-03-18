@@ -1,13 +1,7 @@
 #ifndef FASTNOISE_NOISE_PARAMS_H
 #define FASTNOISE_NOISE_PARAMS_H
 
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-#else
 #include "core/resource.h"
-#endif
 
 #include "noise.h"
 

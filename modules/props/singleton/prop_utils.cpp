@@ -95,7 +95,6 @@ void PropUtils::_convert_tree(Ref<PropData> prop_data, Node *node, const Transfo
 			}
 		}
 	} else {
-#if VERSION_MINOR >= 4
 		//only handle the first encountered room per prop
 		if (!prop_data->get_is_room()) {
 			Room *r = Object::cast_to<Room>(sp);
@@ -108,7 +107,6 @@ void PropUtils::_convert_tree(Ref<PropData> prop_data, Node *node, const Transfo
 				prop_data->set_room_bounds(points);
 			}
 		}
-#endif
 
 		for (int i = 0; i < node->get_child_count(); ++i) {
 			Node *child = node->get_child(i);
@@ -125,7 +123,6 @@ void PropUtils::_convert_tree(Ref<PropData> prop_data, Node *node, const Transfo
 	}
 }
 
-#if VERSION_MINOR >= 4
 bool PropUtils::generate_room_points_node(Node *node) {
 	ERR_FAIL_COND_V(!ObjectDB::instance_validate(node), false);
 
@@ -447,8 +444,6 @@ void PropUtils::get_mesh_arrays(Node *node, Vector<PoolVector<Vector3>> *arrs) {
 		}
 	}
 }
-
-#endif
 
 int PropUtils::add_processor(const Ref<PropDataEntry> &processor) {
 	ERR_FAIL_COND_V(!processor.is_valid(), 0);

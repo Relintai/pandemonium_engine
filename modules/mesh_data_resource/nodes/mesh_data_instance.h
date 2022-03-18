@@ -22,21 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #include "core/version.h"
 #include "scene/resources/texture.h"
 
-#if VERSION_MAJOR < 4
 #include "scene/3d/visual_instance.h"
-#else
-#include "scene/3d/node_3d.h"
-
-#define SpatialMaterial StandardMaterial3D
-#define Spatial Node3D
-#define Texture Texture2D
-#endif
 
 #include "core/math/vector3.h"
 

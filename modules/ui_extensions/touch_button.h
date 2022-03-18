@@ -22,16 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/config/engine.h"
-#else
 #include "core/engine.h"
-#endif
 
 #include "core/os/os.h"
 #include "scene/gui/button.h"

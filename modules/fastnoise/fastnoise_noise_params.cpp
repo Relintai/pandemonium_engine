@@ -1,11 +1,5 @@
 #include "fastnoise_noise_params.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR >= 4
-#define REAL FLOAT
-#endif
-
 void FastnoiseNoiseParams::setup_noise(Ref<FastNoise> noise) {
 	noise->set_seed(_seed);
 	noise->set_noise_type(_noise_type);

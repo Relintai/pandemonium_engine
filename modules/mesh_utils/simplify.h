@@ -16,13 +16,8 @@
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/string/ustring.h"
-#include "core/variant/array.h"
-#else
-#include "core/ustring.h"
 #include "core/array.h"
-#endif
+#include "core/ustring.h"
 
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
@@ -34,18 +29,7 @@
 #include <map>
 #include <vector>
 
-#include "core/version.h"
-
-#if VERSION_MAJOR < 4
 #include "servers/visual_server.h"
-#else
-#include "servers/rendering_server.h"
-
-typedef class RenderingServer VisualServer;
-typedef class RenderingServer VS;
-
-#define PoolVector Vector
-#endif
 
 namespace Simplify {
 
@@ -116,10 +100,13 @@ struct vec3f {
 		vec3f a = v, b = *this;
 		double dot = v.x * x + v.y * y + v.z * z;
 		double len = a.length() * b.length();
-		if (len == 0) len = 0.00001f;
+		if (len == 0)
+			len = 0.00001f;
 		double input = dot / len;
-		if (input < -1) input = -1;
-		if (input > 1) input = 1;
+		if (input < -1)
+			input = -1;
+		if (input > 1)
+			input = 1;
 		return (double)acos(input);
 	}
 
@@ -127,7 +114,8 @@ struct vec3f {
 		vec3f a = v, b = *this;
 		double dot = a.x * b.x + a.y * b.y + a.z * b.z;
 		double len = a.length() * b.length();
-		if (len == 0) len = 1;
+		if (len == 0)
+			len = 1;
 
 		vec3f plane;
 		plane.cross(b, w);
@@ -153,12 +141,18 @@ struct vec3f {
 		return *this;
 	}
 	inline void clamp(double min, double max) {
-		if (x < min) x = min;
-		if (y < min) y = min;
-		if (z < min) z = min;
-		if (x > max) x = max;
-		if (y > max) y = max;
-		if (z > max) z = max;
+		if (x < min)
+			x = min;
+		if (y < min)
+			y = min;
+		if (z < min)
+			z = min;
+		if (x > max)
+			x = max;
+		if (y > max)
+			y = max;
+		if (z > max)
+			z = max;
 	}
 	inline vec3f rot_z(double a) {
 		double yy = cos(a) * y + sin(a) * x;
@@ -258,7 +252,6 @@ static double min(double v1, double v2) {
 }
 
 class SymetricMatrix {
-
 public:
 	// Constructor
 
@@ -344,7 +337,6 @@ static bool compare_border_vertex(const BorderVertex &i1, const BorderVertex &i2
 }
 
 class FQMS {
-
 public:
 	struct Triangle {
 		int v[3];
@@ -408,7 +400,8 @@ public:
 		int triangle_count = triangles.size();
 
 		for (int iteration = 0; iteration < _max_iteration_count; iteration++) {
-			if (triangle_count - deleted_triangles <= target_count) break;
+			if (triangle_count - deleted_triangles <= target_count)
+				break;
 
 			// update mesh once in a while
 			if (iteration % 5 == 0) {
@@ -448,7 +441,6 @@ public:
 
 				for (int j = 0; j < 3; ++j) {
 					if (t.err[j] < threshold) {
-
 						int i0 = t.v[j];
 						Vertex &v0 = vertices[i0];
 						int i1 = t.v[(j + 1) % 3];
@@ -496,7 +488,8 @@ public:
 
 						if (tcount <= v0.tcount) {
 							// save ram
-							if (tcount) memcpy(&refs[v0.tstart], &refs[tstart], tcount * sizeof(Ref));
+							if (tcount)
+								memcpy(&refs[v0.tstart], &refs[tstart], tcount * sizeof(Ref));
 						} else {
 							// append
 							v0.tstart = tstart;
@@ -508,7 +501,8 @@ public:
 				}
 
 				// done?
-				if (triangle_count - deleted_triangles <= target_count) break;
+				if (triangle_count - deleted_triangles <= target_count)
+					break;
 			}
 		}
 		// clean up mesh
@@ -604,7 +598,8 @@ public:
 
 						if (tcount <= v0.tcount) {
 							// save ram
-							if (tcount) memcpy(&refs[v0.tstart], &refs[tstart], tcount * sizeof(Ref));
+							if (tcount)
+								memcpy(&refs[v0.tstart], &refs[tstart], tcount * sizeof(Ref));
 						} else {
 							// append
 							v0.tstart = tstart;
@@ -628,7 +623,6 @@ public:
 	// Check if a triangle flips when this edge is removed
 
 	bool flipped(vec3f p, int i0, int i1, Vertex &v0, Vertex &v1, std::vector<int> &deleted) {
-
 		for (int k = 0; k < v0.tcount; ++k) {
 			Triangle &t = triangles[refs[v0.tstart + k].tid];
 
@@ -648,12 +642,14 @@ public:
 			d1.normalize();
 			vec3f d2 = vertices[id2].p - p;
 			d2.normalize();
-			if (fabs(d1.dot(d2)) > 0.999) return true;
+			if (fabs(d1.dot(d2)) > 0.999)
+				return true;
 			vec3f n;
 			n.cross(d1, d2);
 			n.normalize();
 			deleted[k] = 0;
-			if (n.dot(t.n) < 0.2) return true;
+			if (n.dot(t.n) < 0.2)
+				return true;
 		}
 		return false;
 	}
@@ -1018,7 +1014,6 @@ public:
 		double error = 0;
 		double det = q.det(0, 1, 2, 1, 4, 5, 2, 5, 7);
 		if (det != 0 && !border) {
-
 			// q_delta is invertible
 			p_result.x = -1 / det * (q.det(1, 2, 3, 4, 5, 6, 5, 7, 8)); // vx = A41/det(q_delta)
 			p_result.y = 1 / det * (q.det(0, 2, 3, 1, 5, 6, 2, 7, 8)); // vy = A42/det(q_delta)
@@ -1034,9 +1029,12 @@ public:
 			double error2 = vertex_error(q, p2.x, p2.y, p2.z);
 			double error3 = vertex_error(q, p3.x, p3.y, p3.z);
 			error = min(error1, min(error2, error3));
-			if (error1 == error) p_result = p1;
-			if (error2 == error) p_result = p2;
-			if (error3 == error) p_result = p3;
+			if (error1 == error)
+				p_result = p1;
+			if (error2 == error)
+				p_result = p2;
+			if (error3 == error)
+				p_result = p3;
 		}
 		return error;
 	}

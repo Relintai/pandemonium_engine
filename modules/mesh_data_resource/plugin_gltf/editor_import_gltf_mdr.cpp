@@ -60,11 +60,7 @@ Error EditorImportGLTFMdr::import(const String &p_source_file, const String &p_s
 
 	Error erri;
 
-	#if VERSION_MAJOR  == 3 && VERSION_MINOR > 4
 	Node *n = _importer->import_scene(p_source_file, 0, 15, 0, nullptr, &erri);
-	#else
-	Node *n = _importer->import_scene(p_source_file, 0, 15, nullptr, &erri);
-	#endif
 
 	ERR_FAIL_COND_V(!n, Error::ERR_PARSE_ERROR);
 

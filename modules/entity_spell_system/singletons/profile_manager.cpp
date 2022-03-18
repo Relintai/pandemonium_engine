@@ -165,11 +165,7 @@ Dictionary ProfileManager::to_dict() const {
 	return dict;
 }
 void ProfileManager::from_dict(const Dictionary &dict) {
-#if VERSION_MAJOR > 3
-	ERR_FAIL_COND(dict.is_empty());
-#else
 	ERR_FAIL_COND(dict.empty());
-#endif
 
 	clears_player_profiles();
 

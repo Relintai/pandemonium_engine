@@ -663,7 +663,6 @@ void ESS::material_cache_unref(const uint64_t key) {
 Ref<Resource> ESS::load_resource(const String &path, const String &type_hint) {
 	_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-#if VERSION_MAJOR < 4
 	Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, type_hint);
 
 	ERR_FAIL_COND_V(!resl.is_valid(), Ref<Resource>());
@@ -671,9 +670,6 @@ Ref<Resource> ESS::load_resource(const String &path, const String &type_hint) {
 	resl->wait();
 
 	return resl->get_resource();
-#else
-	return rl->load(path, type_hint);
-#endif
 }
 
 void ESS::_bind_methods() {
@@ -910,11 +906,7 @@ ESS::ESS() {
 #endif
 
 #ifdef TEXTURE_PACKER_PRESENT
-#if VERSION_MAJOR < 4
 	_texture_flags = GLOBAL_DEF("ess/material_cache/texture_flags", Texture::FLAG_MIPMAPS | Texture::FLAG_FILTER);
-#else
-	_texture_flags = GLOBAL_DEF("ess/material_cache/texture_flags", 0);
-#endif
 
 	_max_atlas_size = GLOBAL_DEF("ess/material_cache/max_atlas_size", 1024);
 	_keep_original_atlases = GLOBAL_DEF("ess/material_cache/keep_original_atlases", false);

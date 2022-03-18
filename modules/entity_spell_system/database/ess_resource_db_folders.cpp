@@ -124,7 +124,6 @@ void ESSResourceDBFolders::add_resource(const Ref<Resource> &resource) {
 Ref<Resource> ESSResourceDBFolders::load_resource(const String &path, const String &type_hint) {
 	_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-#if VERSION_MAJOR < 4
 	Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, type_hint);
 
 	ERR_FAIL_COND_V(!resl.is_valid(), Ref<Resource>());
@@ -132,9 +131,6 @@ Ref<Resource> ESSResourceDBFolders::load_resource(const String &path, const Stri
 	resl->wait();
 
 	return resl->get_resource();
-#else
-	return rl->load(path, type_hint);
-#endif
 }
 
 ESSResourceDBFolders::ESSResourceDBFolders() {

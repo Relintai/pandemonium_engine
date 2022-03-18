@@ -26,11 +26,7 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/config/engine.h"
-#else
 #include "core/engine.h"
-#endif
 
 #include "fast_quadratic_mesh_simplifier.h"
 #include "mesh_merger.h"

@@ -27,27 +27,15 @@ SOFTWARE.
 void BSInputEventKey::from_input_event_key(const Ref<InputEventKey> event) {
 	set_device(event->get_device());
 
-#if VERSION_MAJOR < 4
 	set_shift(event->get_shift());
 	set_alt(event->get_alt());
 	set_control(event->get_control());
 	set_metakey(event->get_metakey());
 	set_command(event->get_command());
-#else
-	set_shift_pressed(event->is_shift_pressed());
-	set_alt_pressed(event->is_alt_pressed());
-	set_ctrl_pressed(event->is_ctrl_pressed());
-	set_meta_pressed(event->is_meta_pressed());
-	set_command_pressed(event->is_command_pressed());
-#endif
 
 	set_pressed(event->is_pressed());
 
-#if VERSION_MAJOR < 4
 	set_scancode(event->get_scancode());
-#else
-	set_keycode(event->get_keycode());
-#endif
 
 	set_unicode(event->get_unicode());
 	set_echo(event->is_echo());
@@ -58,13 +46,8 @@ bool BSInputEventKey::action_match(const Ref<InputEvent> &p_event, bool p_exact_
 	if (key.is_null())
 		return false;
 
-#if VERSION_MAJOR < 4
 	uint32_t code = get_scancode_with_modifiers();
 	uint32_t event_code = key->get_scancode_with_modifiers();
-#else
-	Key code = get_keycode_with_modifiers();
-	Key event_code = key->get_keycode_with_modifiers();
-#endif
 
 	bool match = (code == event_code);
 	if (match) {

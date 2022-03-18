@@ -77,11 +77,7 @@ void VoxelLibrarySimple::voxel_surface_set(const int index, Ref<VoxelSurface> va
 }
 
 void VoxelLibrarySimple::voxel_surface_remove(const int index) {
-#if VERSION_MAJOR <= 3
 	_voxel_surfaces.remove(index);
-#else
-	_voxel_surfaces.remove_at(index);
-#endif
 }
 
 int VoxelLibrarySimple::voxel_surface_get_num() const {

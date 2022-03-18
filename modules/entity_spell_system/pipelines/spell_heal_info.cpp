@@ -202,11 +202,7 @@ Dictionary SpellHealInfo::to_dict() {
 	return dict;
 }
 void SpellHealInfo::from_dict(const Dictionary &dict) {
-#if VERSION_MAJOR > 3
-	ERR_FAIL_COND(dict.is_empty());
-#else
 	ERR_FAIL_COND(dict.empty());
-#endif
 
 	_immune = dict.get("immune", true);
 	_heal = dict.get("heal", 0);
@@ -237,7 +233,6 @@ SpellHealInfo::~SpellHealInfo() {
 }
 
 void SpellHealInfo::_bind_methods() {
-
 	ClassDB::bind_method(D_METHOD("get_immune"), &SpellHealInfo::get_immune);
 	ClassDB::bind_method(D_METHOD("set_immune", "value"), &SpellHealInfo::set_immune);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "immune"), "set_immune", "get_immune");

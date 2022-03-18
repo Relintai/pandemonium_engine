@@ -22,10 +22,6 @@ SOFTWARE.
 
 #include "mdr_import_plugin_base.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR < 4
-
 #include "scene/resources/box_shape.h"
 #include "scene/resources/capsule_shape.h"
 #include "scene/resources/concave_polygon_shape.h"
@@ -33,41 +29,6 @@ SOFTWARE.
 #include "scene/resources/cylinder_shape.h"
 #include "scene/resources/shape.h"
 #include "scene/resources/sphere_shape.h"
-
-#else
-
-#include "scene/resources/box_shape_3d.h"
-#include "scene/resources/capsule_shape_3d.h"
-#include "scene/resources/concave_polygon_shape_3d.h"
-#include "scene/resources/convex_polygon_shape_3d.h"
-#include "scene/resources/cylinder_shape_3d.h"
-#include "scene/resources/shape_3d.h"
-#include "scene/resources/sphere_shape_3d.h"
-
-#define BoxShape BoxShape3D
-#define CapsuleShape CapsuleShape3D
-#define ConcavePolygonShape ConcavePolygonShape3D
-#define ConvexPolygonShape ConvexPolygonShape3D
-#define CylinderShape CylinderShape3D
-#define Shape Shape3D
-#define SphereShape SphereShape3D
-
-#define PoolVector3Array PackedVector3Array
-#define PoolVector2Array PackedVector2Array
-#define PoolColorArray PackedColorArray
-#define PoolIntArray PackedInt64Array
-#define PoolRealArray PackedFloat32Array
-#define PoolByteArray PackedByteArray
-
-typedef class RenderingServer VisualServer;
-typedef class RenderingServer VS;
-
-template <class N>
-class Vector;
-template <class N>
-using PoolVector = Vector<N>;
-
-#endif
 
 #if MESH_UTILS_PRESENT
 #include "../../mesh_utils/mesh_utils.h"
@@ -517,11 +478,7 @@ void MDRImportPluginBase::add_colliders(Ref<MeshDataResource> mdr, Ref<ArrayMesh
 		AABB aabb = m->get_aabb();
 		Vector3 size = aabb.get_size();
 
-#if VERSION_MAJOR > 3
-		shape->set_size(size * 0.5);
-#else
 		shape->set_extents(size * 0.5);
-#endif
 
 		Vector3 pos = aabb.position;
 		pos += size / 2.0;
@@ -825,11 +782,7 @@ Ref<Shape> MDRImportPluginBase::scale_shape(Ref<Shape> shape, const Vector3 &sca
 	if (Object::cast_to<BoxShape>(*shape)) {
 		Ref<BoxShape> bs = shape;
 
-#if VERSION_MAJOR > 3
-		bs->set_size(bs->get_size() * scale);
-#else
 		bs->set_extents(bs->get_extents() * scale);
-#endif
 	}
 
 	if (Object::cast_to<CapsuleShape>(*shape)) {

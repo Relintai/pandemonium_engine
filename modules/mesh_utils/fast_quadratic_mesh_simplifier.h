@@ -27,16 +27,8 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/object/ref_counted.h"
-#ifndef Reference
-#define Reference RefCounted
-#endif
-#include "core/variant/array.h"
-#else
-#include "core/reference.h"
 #include "core/array.h"
-#endif
+#include "core/reference.h"
 
 #include "simplify.h"
 

@@ -22,39 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-#include "core/variant/array.h"
-#include "core/variant/variant.h"
-
-#include "core/math/transform_3d.h"
-typedef class Transform3D Transform;
-
-#define PoolIntArray PackedInt64Array
-
-#else
-#include "core/resource.h"
 #include "core/array.h"
-#include "core/variant.h"
 #include "core/pool_vector.h"
-#endif
+#include "core/resource.h"
+#include "core/variant.h"
 
 #include "core/version.h"
 #include "scene/resources/mesh.h"
 
-#if VERSION_MAJOR < 4
 #include "scene/resources/shape.h"
-#else
-#include "scene/resources/shape_3d.h"
-
-#define Shape Shape3D
-#endif
 
 class MeshDataResource : public Resource {
 	GDCLASS(MeshDataResource, Resource);

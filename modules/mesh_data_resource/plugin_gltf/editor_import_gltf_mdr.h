@@ -22,18 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/string/ustring.h"
-#include "core/variant/array.h"
-#else
-#include "core/ustring.h"
 #include "core/array.h"
-#endif
+#include "core/ustring.h"
 
 #include "../plugin/mdr_import_plugin_base.h"
 
@@ -47,26 +37,10 @@ SOFTWARE.
 
 #include "core/math/transform.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR < 4
-
-#if VERSION_MINOR < 4
-#include "editor/import/editor_scene_importer_gltf.h"
-#else
 #include "../../gltf/editor_scene_importer_gltf.h"
-#endif
-
 #include "scene/3d/mesh_instance.h"
-#else
-#include "../../gltf/editor_scene_importer_gltf.h"
-#include "scene/3d/mesh_instance_3d.h"
-
-#define MeshInstance MeshInstance3D
-#endif
 
 class EditorImportGLTFMdr : public MDRImportPluginBase {
-
 	GDCLASS(EditorImportGLTFMdr, MDRImportPluginBase);
 
 public:
