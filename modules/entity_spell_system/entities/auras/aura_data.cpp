@@ -284,14 +284,18 @@ void AuraData::from_dict(const Dictionary &dict) {
 Dictionary AuraData::_to_dict() {
 	Dictionary dict;
 
-	dict["aura_id"] = _aura_id;
+	if (_aura.is_valid()) {
+		dict["aura_id"] = _aura->get_id();
+	} else {
+		dict["aura_id"] = _aura_id;
+	}
+
 	dict["aura_path"] = _aura_path;
 	dict["remaining_time"] = _remaining_time;
 	dict["caster_path"] = _caster_path;
 
 	dict["spell_scale"] = _spell_scale;
 	dict["aura_group"] = _aura_group;
-	dict["aura_id"] = _aura->get_id();
 
 	dict["is_timed"] = _is_timed;
 	dict["damage"] = _damage;
