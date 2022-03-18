@@ -31,10 +31,30 @@
 #include "resource_preloader_editor_plugin.h"
 
 #include "core/io/resource_loader.h"
-#include "core/project_settings.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
-#include "scene/resources/world.h"
+#include "core/class_db.h"
+#include "core/dictionary.h"
+#include "core/error_macros.h"
+#include "core/list.h"
+#include "core/os/memory.h"
+#include "core/resource.h"
+#include "core/string_name.h"
+#include "core/undo_redo.h"
+#include "core/vector.h"
+#include "editor/editor_file_dialog.h"
+#include "editor/editor_node.h"
+#include "scene/2d/canvas_item.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/button.h"
+#include "scene/gui/control.h"
+#include "scene/gui/dialogs.h"
+#include "scene/gui/tool_button.h"
+#include "scene/gui/tree.h"
+#include "scene/main/node.h"
+#include "scene/main/resource_preloader.h"
+
+class InputEvent;
 
 void ResourcePreloaderEditor::_gui_input(Ref<InputEvent> p_event) {
 }

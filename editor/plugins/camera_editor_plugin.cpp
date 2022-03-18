@@ -31,6 +31,14 @@
 #include "camera_editor_plugin.h"
 
 #include "spatial_editor_plugin.h"
+#include "core/class_db.h"
+#include "core/math/math_defs.h"
+#include "core/os/memory.h"
+#include "scene/3d/camera.h"
+#include "scene/gui/button.h"
+
+class EditorNode;
+class Node;
 
 void CameraEditor::_node_removed(Node *p_node) {
 	if (p_node == node) {

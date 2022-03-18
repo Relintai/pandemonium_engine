@@ -33,6 +33,14 @@
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 #include "scene/gui/gradient_edit.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/ustring.h"
+#include "editor/editor_inspector.h"
+#include "scene/resources/gradient.h"
+
+class EditorNode;
 
 class GradientEditor : public GradientEdit {
 	GDCLASS(GradientEditor, GradientEdit);

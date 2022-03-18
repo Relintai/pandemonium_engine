@@ -39,6 +39,19 @@
 #include "scene/main/timer.h"
 #include "scene/resources/shader.h"
 #include "servers/visual/shader_language.h"
+#include "core/list.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/ustring.h"
+
+class Button;
+class ConfirmationDialog;
+class EditorNode;
+class InputEvent;
+class MenuButton;
+class PopupMenu;
+struct ScriptCodeCompletionOption;
 
 class ShaderTextEditor : public CodeTextEditor {
 	GDCLASS(ShaderTextEditor, CodeTextEditor);

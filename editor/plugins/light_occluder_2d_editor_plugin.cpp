@@ -30,6 +30,18 @@
 
 #include "light_occluder_2d_editor_plugin.h"
 
+#include "core/math/vector2.h"
+#include "core/os/memory.h"
+#include "core/pool_vector.h"
+#include "core/undo_redo.h"
+#include "core/ustring.h"
+#include "core/vector.h"
+#include "scene/2d/light_occluder_2d.h"
+#include "scene/main/node.h"
+
+class EditorNode;
+class Node2D;
+
 Ref<OccluderPolygon2D> LightOccluder2DEditor::_ensure_occluder() const {
 	Ref<OccluderPolygon2D> occluder = node->get_occluder_polygon();
 	if (!occluder.is_valid()) {

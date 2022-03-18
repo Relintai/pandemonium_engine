@@ -33,6 +33,16 @@
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 #include "scene/resources/texture.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/ustring.h"
+#include "editor/editor_inspector.h"
+#include "scene/gui/margin_container.h"
+
+class EditorNode;
+class Label;
+class Texture;
+class TextureRect;
 
 class TexturePreview : public MarginContainer {
 	GDCLASS(TexturePreview, MarginContainer);

@@ -34,6 +34,19 @@
 #include "editor/editor_plugin.h"
 #include "scene/3d/mesh_instance.h"
 #include "scene/gui/spin_box.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/ustring.h"
+#include "core/vector.h"
+#include "scene/gui/control.h"
+
+class AcceptDialog;
+class ConfirmationDialog;
+class EditorNode;
+class MenuButton;
+class MeshInstance;
+class Node;
+class SpinBox;
 
 class MeshInstanceEditor : public Control {
 	GDCLASS(MeshInstanceEditor, Control);

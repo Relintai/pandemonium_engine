@@ -31,8 +31,17 @@
 /*************************************************************************/
 
 #include "editor/editor_resource_preview.h"
-
 #include "core/safe_refcount.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/resource.h"
+#include "core/rid.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+
+class Image;
+class Texture;
 
 void post_process_preview(Ref<Image> p_image);
 

@@ -32,6 +32,11 @@
 
 #include "scene/3d/skeleton.h"
 #include "scene/animation/skeleton_ik.h"
+#include "core/class_db.h"
+#include "core/os/memory.h"
+#include "editor/editor_node.h"
+#include "scene/gui/button.h"
+#include "scene/gui/control.h"
 
 void SkeletonIKEditorPlugin::_play() {
 	if (!skeleton_ik) {

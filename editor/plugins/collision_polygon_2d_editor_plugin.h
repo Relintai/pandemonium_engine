@@ -32,6 +32,12 @@
 
 #include "editor/plugins/abstract_polygon_2d_editor.h"
 #include "scene/2d/collision_polygon_2d.h"
+#include "core/object.h"
+
+class CollisionPolygon2D;
+class EditorNode;
+class Node2D;
+class Node;
 
 class CollisionPolygon2DEditor : public AbstractPolygon2DEditor {
 	GDCLASS(CollisionPolygon2DEditor, AbstractPolygon2DEditor);

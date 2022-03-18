@@ -34,6 +34,15 @@
 #include "editor/editor_plugin.h"
 #include "scene/2d/skeleton_2d.h"
 #include "scene/gui/spin_box.h"
+#include "core/object.h"
+#include "core/ustring.h"
+#include "scene/gui/control.h"
+
+class AcceptDialog;
+class EditorNode;
+class MenuButton;
+class Node;
+class Skeleton2D;
 
 class Skeleton2DEditor : public Control {
 	GDCLASS(Skeleton2DEditor, Control);

@@ -37,6 +37,24 @@
 #include "scene/gui/menu_button.h"
 #include "scene/gui/option_button.h"
 #include "scene/gui/popup_menu.h"
+#include "core/list.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/string_name.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "core/vector.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/item_list.h"
+#include "scene/resources/texture.h"
+
+class AcceptDialog;
+class Button;
+class EditorInspector;
+class EditorNode;
+class Node;
+class ToolButton;
+class Tree;
 
 class ItemListPlugin : public Object {
 	GDCLASS(ItemListPlugin, Object);

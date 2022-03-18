@@ -33,6 +33,22 @@
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 #include "scene/gui/spin_box.h"
+#include "core/math/face3.h"
+#include "core/node_path.h"
+#include "core/object.h"
+#include "core/pool_vector.h"
+#include "scene/gui/control.h"
+
+class ConfirmationDialog;
+class EditorFileDialog;
+class HBoxContainer;
+class MenuButton;
+class OptionButton;
+class Panel;
+class SceneTreeDialog;
+class Spatial;
+class SpinBox;
+struct Vector3;
 
 class ParticlesEditorBase : public Control {
 	GDCLASS(ParticlesEditorBase, Control);

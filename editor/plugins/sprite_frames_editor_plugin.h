@@ -38,6 +38,31 @@
 #include "scene/gui/split_container.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tree.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/set.h"
+#include "core/string_name.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+
+class AcceptDialog;
+class Button;
+class CheckButton;
+class ConfirmationDialog;
+class Control;
+class EditorFileDialog;
+class EditorNode;
+class InputEvent;
+class ItemList;
+class ScrollContainer;
+class SpinBox;
+class SpriteFrames;
+class TextureRect;
+class ToolButton;
+class Tree;
+class UndoRedo;
+template <class T> class PoolVector;
 
 class SpriteFramesEditor : public HSplitContainer {
 	GDCLASS(SpriteFramesEditor, HSplitContainer);

@@ -32,6 +32,33 @@
 
 #include "editor/plugins/abstract_polygon_2d_editor.h"
 #include "scene/gui/scroll_container.h"
+#include "core/array.h"
+#include "core/color.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/pool_vector.h"
+#include "core/reference.h"
+#include "core/vector.h"
+#include "scene/gui/base_button.h"
+
+class AcceptDialog;
+class Button;
+class EditorNode;
+class HScrollBar;
+class HSlider;
+class InputEvent;
+class Label;
+class MenuButton;
+class Node2D;
+class Node;
+class Panel;
+class Polygon2D;
+class ScrollContainer;
+class SpinBox;
+class TextureRect;
+class ToolButton;
+class VBoxContainer;
+class VScrollBar;
 
 class Polygon2DEditor : public AbstractPolygon2DEditor {
 	GDCLASS(Polygon2DEditor, AbstractPolygon2DEditor);

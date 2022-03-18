@@ -32,7 +32,27 @@
 
 #include "editor/spatial_editor_gizmos.h"
 #include "scene/resources/occluder_shape.h"
-#include "scene/resources/world.h"
+#include "core/class_db.h"
+#include "core/engine.h"
+#include "core/local_vector.h"
+#include "core/math/math_defs.h"
+#include "core/math/transform.h"
+#include "core/math/vector3.h"
+#include "core/os/memory.h"
+#include "core/pool_vector.h"
+#include "core/reference.h"
+#include "core/string_name.h"
+#include "core/undo_redo.h"
+#include "editor/editor_node.h"
+#include "editor/plugins/spatial_editor_plugin.h"
+#include "scene/3d/occluder.h"
+#include "scene/3d/portal.h"
+#include "scene/3d/room.h"
+#include "scene/3d/room_manager.h"
+#include "scene/3d/spatial.h"
+#include "scene/gui/control.h"
+#include "scene/gui/tool_button.h"
+#include "scene/main/node.h"
 
 void RoomManagerEditorPlugin::_flip_portals() {
 	if (_room_manager) {

@@ -39,6 +39,27 @@
 #include "scene/gui/graph_edit.h"
 #include "scene/gui/popup.h"
 #include "scene/gui/tree.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/string_name.h"
+#include "core/ustring.h"
+#include "core/vector.h"
+#include "scene/animation/animation_tree.h"
+
+class Button;
+class Control;
+class EditorFileDialog;
+class HBoxContainer;
+class InputEvent;
+class Label;
+class LineEdit;
+class PanelContainer;
+class PopupMenu;
+class SpinBox;
+class ToolButton;
+class UndoRedo;
+class VSeparator;
 
 class AnimationNodeBlendSpace1DEditor : public AnimationTreeNodeEditorPlugin {
 	GDCLASS(AnimationNodeBlendSpace1DEditor, AnimationTreeNodeEditorPlugin);

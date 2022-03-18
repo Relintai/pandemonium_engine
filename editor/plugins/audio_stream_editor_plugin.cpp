@@ -30,12 +30,29 @@
 
 #include "audio_stream_editor_plugin.h"
 
-#include "core/io/resource_loader.h"
 #include "core/os/keyboard.h"
-#include "core/project_settings.h"
 #include "editor/audio_stream_preview.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
+#include "core/class_db.h"
+#include "core/color.h"
+#include "core/math/math_funcs.h"
+#include "core/math/rect2.h"
+#include "core/math/vector2.h"
+#include "core/os/input_event.h"
+#include "core/os/memory.h"
+#include "core/typedefs.h"
+#include "core/vector.h"
+#include "editor/editor_node.h"
+#include "scene/2d/canvas_item.h"
+#include "scene/audio/audio_stream_player.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/control.h"
+#include "scene/gui/label.h"
+#include "scene/gui/tool_button.h"
+#include "scene/main/node.h"
+#include "scene/resources/texture.h"
+#include "servers/visual_server.h"
 
 void AudioStreamEditor::_notification(int p_what) {
 	if (p_what == NOTIFICATION_READY) {

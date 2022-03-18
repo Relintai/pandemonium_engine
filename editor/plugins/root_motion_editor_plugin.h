@@ -34,6 +34,14 @@
 #include "editor/editor_spin_slider.h"
 #include "editor/property_selector.h"
 #include "scene/animation/animation_tree.h"
+#include "core/node_path.h"
+#include "core/object.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+
+class Button;
+class ConfirmationDialog;
+class Tree;
 
 class EditorPropertyRootMotion : public EditorProperty {
 	GDCLASS(EditorPropertyRootMotion, EditorProperty);

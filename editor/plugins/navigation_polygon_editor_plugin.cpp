@@ -30,6 +30,17 @@
 
 #include "navigation_polygon_editor_plugin.h"
 
+#include "core/math/vector2.h"
+#include "core/os/memory.h"
+#include "core/undo_redo.h"
+#include "core/ustring.h"
+#include "core/vector.h"
+#include "scene/2d/navigation_polygon.h"
+#include "scene/main/node.h"
+
+class EditorNode;
+class Node2D;
+
 Ref<NavigationPolygon> NavigationPolygonEditor::_ensure_navpoly() const {
 	Ref<NavigationPolygon> navpoly = node->get_navigation_polygon();
 	if (!navpoly.is_valid()) {

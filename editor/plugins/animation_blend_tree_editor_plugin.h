@@ -39,8 +39,30 @@
 #include "scene/gui/graph_edit.h"
 #include "scene/gui/popup.h"
 #include "scene/gui/tree.h"
+#include "core/map.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/script_language.h"
+#include "core/string_name.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "core/vector.h"
+#include "scene/animation/animation_tree.h"
 
 class ProgressBar;
+class AcceptDialog;
+class Array;
+class CheckBox;
+class EditorFileDialog;
+class EditorProperty;
+class GraphEdit;
+class Label;
+class MenuButton;
+class Node;
+class PanelContainer;
+class Tree;
+class UndoRedo;
 
 class AnimationNodeBlendTreeEditor : public AnimationTreeNodeEditorPlugin {
 	GDCLASS(AnimationNodeBlendTreeEditor, AnimationTreeNodeEditorPlugin);

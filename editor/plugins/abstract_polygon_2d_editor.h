@@ -31,11 +31,29 @@
 /*************************************************************************/
 
 #include "editor/editor_node.h"
-#include "editor/editor_plugin.h"
+
 #include "scene/2d/polygon_2d.h"
 #include "scene/gui/tool_button.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "core/vector.h"
+
+#include "editor/editor_plugin.h"
+#include "scene/gui/box_container.h"
 
 class CanvasItemEditor;
+class ConfirmationDialog;
+class Control;
+class EditorNode;
+class InputEvent;
+class Node2D;
+class Node;
+class Panel;
+class ToolButton;
+class UndoRedo;
 
 class AbstractPolygon2DEditor : public HBoxContainer {
 	GDCLASS(AbstractPolygon2DEditor, HBoxContainer);

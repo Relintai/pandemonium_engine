@@ -38,8 +38,42 @@
 #include "scene/gui/texture_rect.h"
 #include "scene/resources/theme.h"
 #include "theme_editor_preview.h"
-
 #include "editor/editor_node.h"
+#include "core/list.h"
+#include "core/map.h"
+#include "core/object.h"
+#include "core/ordered_hash_map.h"
+#include "core/reference.h"
+#include "core/resource.h"
+#include "core/string_name.h"
+#include "core/ustring.h"
+#include "core/vector.h"
+#include "editor/editor_plugin.h"
+#include "scene/gui/box_container.h"
+#include "scene/resources/style_box.h"
+
+class Button;
+class CheckButton;
+class Control;
+class EditorFileDialog;
+class EditorNode;
+class Font;
+class InputEvent;
+class ItemList;
+class Label;
+class LineEdit;
+class Node;
+class OptionButton;
+class PanelContainer;
+class TabContainer;
+class Tabs;
+class Texture;
+class TextureRect;
+class ThemeEditorPreview;
+class Timer;
+class Tree;
+class TreeItem;
+struct Color;
 
 class ThemeItemImportTree : public VBoxContainer {
 	GDCLASS(ThemeItemImportTree, VBoxContainer);

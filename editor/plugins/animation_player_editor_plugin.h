@@ -37,9 +37,38 @@
 #include "scene/gui/slider.h"
 #include "scene/gui/spin_box.h"
 #include "scene/gui/texture_button.h"
+#include "core/dictionary.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/rid.h"
+#include "core/ustring.h"
+#include "core/vector.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/tool_button.h"
+#include "scene/resources/material.h"
+#include "scene/resources/shader.h"
 
 class AnimationTrackEditor;
 class AnimationPlayerEditorPlugin;
+class AcceptDialog;
+class AnimationPlayer;
+class Button;
+class ConfirmationDialog;
+class Control;
+class EditorFileDialog;
+class EditorNode;
+class InputEvent;
+class Label;
+class LineEdit;
+class MenuButton;
+class Node;
+class OptionButton;
+class Resource;
+class SpinBox;
+class Texture;
+class Tree;
+class UndoRedo;
 
 class AnimationPlayerEditor : public VBoxContainer {
 	GDCLASS(AnimationPlayerEditor, VBoxContainer);

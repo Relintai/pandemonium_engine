@@ -36,8 +36,27 @@
 #include "scene/3d/immediate_geometry.h"
 #include "scene/3d/mesh_instance.h"
 #include "scene/gui/tool_button.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/ustring.h"
+#include "core/vector.h"
+#include "scene/gui/box_container.h"
 
 class CanvasItemEditor;
+class ArrayMesh;
+class Camera;
+class EditorNode;
+class ImmediateGeometry;
+class InputEvent;
+class MenuButton;
+class MeshInstance;
+class Node;
+class Panel;
+class Spatial;
+class SpatialMaterial;
+class ToolButton;
+class UndoRedo;
 
 class Polygon3DEditor : public HBoxContainer {
 	GDCLASS(Polygon3DEditor, HBoxContainer);

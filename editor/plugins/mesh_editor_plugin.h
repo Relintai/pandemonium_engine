@@ -37,6 +37,21 @@
 #include "scene/3d/mesh_instance.h"
 #include "scene/gui/viewport_container.h"
 #include "scene/resources/material.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/ustring.h"
+#include "editor/editor_inspector.h"
+#include "scene/resources/mesh.h"
+
+class Camera;
+class DirectionalLight;
+class EditorNode;
+class InputEvent;
+class MeshInstance;
+class Node;
+class Spatial;
+class TextureButton;
+class Viewport;
 
 class MeshEditor : public ViewportContainer {
 	GDCLASS(MeshEditor, ViewportContainer);

@@ -37,6 +37,34 @@
 #include "scene/gui/button.h"
 #include "scene/gui/popup.h"
 #include "scene/gui/tree.h"
+#include "core/list.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/set.h"
+#include "core/string_name.h"
+#include "core/ustring.h"
+#include "scene/gui/control.h"
+
+class AcceptDialog;
+class AnimationTreePlayer;
+class Button;
+class CheckButton;
+class CustomPropertyEditor;
+class EditorFileDialog;
+class EditorNode;
+class HScrollBar;
+class HSlider;
+class InputEvent;
+class Label;
+class LineEdit;
+class MenuButton;
+class OptionButton;
+class Popup;
+class PopupMenu;
+class Tree;
+class VScrollBar;
+struct Color;
 
 class AnimationTreePlayerEditor : public Control {
 	GDCLASS(AnimationTreePlayerEditor, Control);

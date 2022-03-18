@@ -34,6 +34,20 @@
 #include "editor/editor_plugin.h"
 #include "editor/editor_resource_preview.h"
 #include "scene/resources/curve.h"
+#include "core/array.h"
+#include "core/math/transform_2d.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/ustring.h"
+#include "editor/editor_inspector.h"
+#include "scene/gui/control.h"
+
+class EditorNode;
+class InputEvent;
+class PopupMenu;
+class Resource;
+class Texture;
 
 // Edits a y(x) curve
 class CurveEditor : public Control {

@@ -48,8 +48,23 @@
 #include "scene/gui/text_edit.h"
 #include "scene/gui/tree.h"
 #include "scene/resources/theme.h"
-
 #include "editor/editor_node.h"
+#include "core/color.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/ustring.h"
+#include "scene/resources/font.h"
+#include "scene/resources/packed_scene.h"
+#include "scene/resources/style_box.h"
+
+class Button;
+class ColorRect;
+class Control;
+class InputEvent;
+class MarginContainer;
+class ScrollContainer;
+class Theme;
+struct Vector2;
 
 class ThemeEditorPreview : public VBoxContainer {
 	GDCLASS(ThemeEditorPreview, VBoxContainer);

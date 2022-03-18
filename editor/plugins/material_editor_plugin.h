@@ -32,15 +32,28 @@
 
 #include "editor/property_editor.h"
 #include "scene/resources/primitive_meshes.h"
-
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 #include "scene/3d/camera.h"
 #include "scene/3d/light.h"
 #include "scene/3d/mesh_instance.h"
 #include "scene/resources/material.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/ustring.h"
+#include "editor/editor_inspector.h"
+#include "scene/gui/control.h"
+#include "scene/resources/environment.h"
 
 class ViewportContainer;
+class Camera;
+class DirectionalLight;
+class EditorNode;
+class MeshInstance;
+class Node;
+class Resource;
+class TextureButton;
+class Viewport;
 
 class MaterialEditor : public Control {
 	GDCLASS(MaterialEditor, Control);

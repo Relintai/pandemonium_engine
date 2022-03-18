@@ -31,8 +31,14 @@
 /*************************************************************************/
 
 #include "editor/editor_node.h"
+#include "core/object.h"
+#include "core/ustring.h"
+#include "editor/editor_plugin.h"
 
 class PhysicalBone;
+class EditorNode;
+class HBoxContainer;
+class ToolButton;
 
 class PhysicalBoneEditor : public Object {
 	GDCLASS(PhysicalBoneEditor, Object);

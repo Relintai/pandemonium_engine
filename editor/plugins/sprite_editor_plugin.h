@@ -34,6 +34,20 @@
 #include "editor/editor_plugin.h"
 #include "scene/2d/sprite.h"
 #include "scene/gui/spin_box.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/ustring.h"
+#include "core/vector.h"
+#include "scene/gui/control.h"
+
+class AcceptDialog;
+class Button;
+class ConfirmationDialog;
+class EditorNode;
+class MenuButton;
+class Node;
+class SpinBox;
+class Sprite;
 
 class SpriteEditor : public Control {
 	GDCLASS(SpriteEditor, Control);

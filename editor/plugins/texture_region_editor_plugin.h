@@ -38,6 +38,30 @@
 #include "scene/gui/nine_patch_rect.h"
 #include "scene/resources/style_box.h"
 #include "scene/resources/texture.h"
+#include "core/dictionary.h"
+#include "core/list.h"
+#include "core/map.h"
+#include "core/math/rect2.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/rid.h"
+#include "core/ustring.h"
+#include "scene/gui/box_container.h"
+
+class Button;
+class EditorNode;
+class HScrollBar;
+class InputEvent;
+class NinePatchRect;
+class OptionButton;
+class Panel;
+class SpinBox;
+class Sprite3D;
+class Sprite;
+class ToolButton;
+class UndoRedo;
+class VScrollBar;
 
 /**
 	@author Mariano Suligoy

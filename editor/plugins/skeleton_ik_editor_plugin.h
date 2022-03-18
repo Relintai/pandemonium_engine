@@ -32,8 +32,12 @@
 
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
+#include "core/object.h"
+#include "core/ustring.h"
 
 class SkeletonIK;
+class Button;
+class EditorNode;
 
 class SkeletonIKEditorPlugin : public EditorPlugin {
 	GDCLASS(SkeletonIKEditorPlugin, EditorPlugin);

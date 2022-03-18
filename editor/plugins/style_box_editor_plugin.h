@@ -35,6 +35,15 @@
 #include "scene/gui/option_button.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/resources/style_box.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "editor/editor_plugin.h"
+#include "scene/gui/box_container.h"
+
+class Control;
+class EditorNode;
 
 class StyleBoxPreview : public VBoxContainer {
 	GDCLASS(StyleBoxPreview, VBoxContainer);

@@ -38,6 +38,32 @@
 #include "scene/resources/particles_material.h"
 #include "scene/resources/sky.h"
 #include "scene/resources/world.h"
+#include "core/class_db.h"
+#include "core/color.h"
+#include "core/error_macros.h"
+#include "core/list.h"
+#include "core/math/basis.h"
+#include "core/math/math_funcs.h"
+#include "core/math/rect2.h"
+#include "core/math/transform.h"
+#include "core/math/vector2.h"
+#include "core/math/vector3.h"
+#include "core/os/memory.h"
+#include "core/resource.h"
+#include "core/variant.h"
+#include "editor/editor_settings.h"
+#include "scene/2d/canvas_item.h"
+#include "scene/3d/camera.h"
+#include "scene/3d/light.h"
+#include "scene/3d/mesh_instance.h"
+#include "scene/gui/box_container.h"
+#include "scene/main/node.h"
+#include "scene/resources/mesh.h"
+#include "scene/resources/shader.h"
+#include "scene/resources/texture.h"
+#include "servers/visual_server.h"
+
+class EditorNode;
 
 void MaterialEditor::_notification(int p_what) {
 	if (p_what == NOTIFICATION_READY) {

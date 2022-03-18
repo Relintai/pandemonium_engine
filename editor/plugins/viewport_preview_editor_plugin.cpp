@@ -30,6 +30,15 @@
 
 #include "viewport_preview_editor_plugin.h"
 
+#include "core/os/memory.h"
+#include "core/reference.h"
+#include "editor/editor_inspector.h"
+#include "scene/gui/texture_rect.h"
+#include "scene/main/viewport.h"
+#include "scene/resources/texture.h"
+
+class EditorNode;
+
 bool EditorInspectorPluginViewportPreview::can_handle(Object *p_object) {
 	return Object::cast_to<Viewport>(p_object) != nullptr;
 }

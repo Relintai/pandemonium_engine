@@ -32,6 +32,15 @@
 
 #include "editor/plugins/abstract_polygon_2d_editor.h"
 #include "scene/2d/navigation_polygon.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/variant.h"
+
+class EditorNode;
+class NavigationPolygon;
+class NavigationPolygonInstance;
+class Node2D;
+class Node;
 
 class NavigationPolygonEditor : public AbstractPolygon2DEditor {
 	GDCLASS(NavigationPolygonEditor, AbstractPolygon2DEditor);

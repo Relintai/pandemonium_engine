@@ -35,6 +35,27 @@
 #include "scene/main/viewport.h"
 #include "scene/resources/world.h"
 #include "scene/resources/mesh.h"
+#include "core/class_db.h"
+#include "core/color.h"
+#include "core/math/aabb.h"
+#include "core/math/basis.h"
+#include "core/math/math_defs.h"
+#include "core/math/math_funcs.h"
+#include "core/math/transform.h"
+#include "core/math/vector2.h"
+#include "core/math/vector3.h"
+#include "core/os/input_event.h"
+#include "core/os/memory.h"
+#include "core/variant.h"
+#include "scene/3d/camera.h"
+#include "scene/3d/light.h"
+#include "scene/3d/mesh_instance.h"
+#include "scene/3d/spatial.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/control.h"
+#include "scene/main/node.h"
+
+class EditorNode;
 
 void MeshEditor::_gui_input(Ref<InputEvent> p_event) {
 	Ref<InputEventMouseMotion> mm = p_event;

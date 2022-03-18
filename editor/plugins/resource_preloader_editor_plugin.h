@@ -36,6 +36,23 @@
 #include "scene/gui/file_dialog.h"
 #include "scene/gui/tree.h"
 #include "scene/main/resource_preloader.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "scene/gui/panel_container.h"
+
+class AcceptDialog;
+class Button;
+class Control;
+class EditorFileDialog;
+class EditorNode;
+class InputEvent;
+class ResourcePreloader;
+class Tree;
+class UndoRedo;
+template <class T> class Vector;
 
 class ResourcePreloaderEditor : public PanelContainer {
 	GDCLASS(ResourcePreloaderEditor, PanelContainer);

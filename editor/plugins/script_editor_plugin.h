@@ -46,6 +46,46 @@
 #include "scene/gui/tree.h"
 #include "scene/main/timer.h"
 #include "scene/resources/text_file.h"
+#include "core/array.h"
+#include "core/error_list.h"
+#include "core/list.h"
+#include "core/math/vector2.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/resource.h"
+#include "core/set.h"
+#include "core/typedefs.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "core/vector.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/dialogs.h"
+#include "scene/gui/panel_container.h"
+
+class Button;
+class ConfigFile;
+class Control;
+class EditorFileDialog;
+class EditorHelpSearch;
+class EditorNode;
+class HSplitContainer;
+class InputEvent;
+class ItemList;
+class Label;
+class LineEdit;
+class MenuButton;
+class Node;
+class PopupMenu;
+class ScriptCreateDialog;
+class SyntaxHighlighter;
+class TabContainer;
+class TextFile;
+class Texture;
+class TextureRect;
+class Timer;
+class ToolButton;
+class Tree;
+class VSplitContainer;
 
 class ScriptEditorQuickOpen : public ConfirmationDialog {
 	GDCLASS(ScriptEditorQuickOpen, ConfirmationDialog);

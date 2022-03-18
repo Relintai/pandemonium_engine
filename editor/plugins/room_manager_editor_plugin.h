@@ -37,6 +37,16 @@
 #include "scene/3d/room.h"
 #include "scene/3d/room_manager.h"
 #include "scene/resources/material.h"
+#include "core/object.h"
+#include "core/ustring.h"
+
+class EditorNode;
+class Occluder;
+class Portal;
+class Room;
+class RoomManager;
+class ToolButton;
+class UndoRedo;
 
 class RoomManagerEditorPlugin : public EditorPlugin {
 	GDCLASS(RoomManagerEditorPlugin, EditorPlugin);

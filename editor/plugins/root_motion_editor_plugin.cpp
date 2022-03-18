@@ -29,9 +29,30 @@
 /*************************************************************************/
 
 #include "root_motion_editor_plugin.h"
+
 #include "editor/editor_node.h"
 #include "scene/3d/skeleton.h"
 #include "scene/main/viewport.h"
+#include "core/class_db.h"
+#include "core/error_macros.h"
+#include "core/list.h"
+#include "core/map.h"
+#include "core/os/memory.h"
+#include "core/reference.h"
+#include "core/set.h"
+#include "core/string_name.h"
+#include "core/typedefs.h"
+#include "scene/animation/animation_player.h"
+#include "scene/animation/animation_tree.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/button.h"
+#include "scene/gui/control.h"
+#include "scene/gui/dialogs.h"
+#include "scene/gui/tree.h"
+#include "scene/main/node.h"
+#include "scene/main/scene_tree.h"
+#include "scene/resources/animation.h"
+#include "scene/resources/texture.h"
 
 void EditorPropertyRootMotion::_confirmed() {
 	TreeItem *ti = filters->get_selected();

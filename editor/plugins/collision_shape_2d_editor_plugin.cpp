@@ -38,6 +38,20 @@
 #include "scene/resources/line_shape_2d.h"
 #include "scene/resources/rectangle_shape_2d.h"
 #include "scene/resources/segment_shape_2d.h"
+#include "core/class_db.h"
+#include "core/math/math_defs.h"
+#include "core/math/math_funcs.h"
+#include "core/os/input.h"
+#include "core/os/input_event.h"
+#include "core/os/keyboard.h"
+#include "core/os/memory.h"
+#include "core/undo_redo.h"
+#include "editor/editor_node.h"
+#include "scene/2d/collision_shape_2d.h"
+#include "scene/main/node.h"
+#include "scene/main/scene_tree.h"
+#include "scene/resources/shape_2d.h"
+#include "scene/resources/texture.h"
 
 void CollisionShape2DEditor::_node_removed(Node *p_node) {
 	if (p_node == node) {

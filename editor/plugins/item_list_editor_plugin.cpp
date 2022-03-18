@@ -30,8 +30,20 @@
 
 #include "item_list_editor_plugin.h"
 
-#include "core/io/resource_loader.h"
 #include "editor/editor_scale.h"
+#include "core/class_db.h"
+#include "core/math/vector2.h"
+#include "core/os/memory.h"
+#include "editor/editor_inspector.h"
+#include "editor/editor_node.h"
+#include "editor/plugins/canvas_item_editor_plugin.h"
+#include "scene/gui/button.h"
+#include "scene/gui/control.h"
+#include "scene/gui/dialogs.h"
+#include "scene/gui/menu_button.h"
+#include "scene/gui/tool_button.h"
+#include "scene/main/node.h"
+#include "scene/main/scene_tree.h"
 
 bool ItemListPlugin::_set(const StringName &p_name, const Variant &p_value) {
 	String name = p_name;

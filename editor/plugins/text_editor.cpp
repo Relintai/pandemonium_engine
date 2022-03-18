@@ -32,6 +32,24 @@
 
 #include "core/os/keyboard.h"
 #include "editor/editor_node.h"
+#include "core/array.h"
+#include "core/class_db.h"
+#include "core/dictionary.h"
+#include "core/error_macros.h"
+#include "core/math/transform_2d.h"
+#include "core/math/vector2.h"
+#include "core/os/input_event.h"
+#include "core/os/memory.h"
+#include "core/typedefs.h"
+#include "editor/editor_settings.h"
+#include "editor/plugins/script_editor_plugin.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/control.h"
+#include "scene/gui/menu_button.h"
+#include "scene/gui/popup_menu.h"
+#include "scene/gui/text_edit.h"
+#include "scene/resources/text_file.h"
+#include "scene/resources/texture.h"
 
 void TextEditor::add_syntax_highlighter(SyntaxHighlighter *p_highlighter) {
 	highlighters[p_highlighter->get_name()] = p_highlighter;

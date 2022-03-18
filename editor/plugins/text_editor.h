@@ -31,6 +31,26 @@
 /*************************************************************************/
 
 #include "script_editor_plugin.h"
+#include "core/color.h"
+#include "core/list.h"
+#include "core/map.h"
+#include "core/object.h"
+#include "core/reference.h"
+#include "core/resource.h"
+#include "core/ustring.h"
+#include "core/variant.h"
+#include "core/vector.h"
+#include "editor/code_editor.h"
+
+class Control;
+class HBoxContainer;
+class InputEvent;
+class MenuButton;
+class PopupMenu;
+class SyntaxHighlighter;
+class TextFile;
+class Texture;
+struct Vector2;
 
 class TextEditor : public ScriptEditorBase {
 	GDCLASS(TextEditor, ScriptEditorBase);
