@@ -298,6 +298,8 @@ void CharacterSkeleton3D::add_model_visual_entry(Ref<ModelVisual> vis, Ref<Model
 
 	int target_bone_idx = ive->get_bone();
 
+	ERR_FAIL_INDEX(target_bone_idx, _entries.size());
+
 	Vector<Ref<SkeletonModelEntry>> &entries = _entries.write[target_bone_idx];
 
 	for (int i = 0; i < entries.size(); ++i) {
