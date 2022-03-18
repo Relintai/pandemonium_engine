@@ -22,13 +22,7 @@ SOFTWARE.
 
 #include "thread_pool_execute_job.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/variant/variant.h"
-#else
 #include "core/variant.h"
-#endif
 
 #include "core/os/os.h"
 
@@ -50,11 +44,7 @@ void ThreadPoolExecuteJob::_execute() {
 	ERR_FAIL_COND(!_object);
 	ERR_FAIL_COND(!_object->has_method(_method));
 
-#if VERSION_MAJOR < 4
 	Variant::CallError error;
-#else
-	Callable::CallError error;
-#endif
 
 	_object->call(_method, const_cast<const Variant **>(&_argptr), _argcount, error);
 }
@@ -86,28 +76,16 @@ void ThreadPoolExecuteJob::setup(const Variant &obj, const StringName &p_method,
 	}
 }
 
-#if VERSION_MAJOR < 4
 Variant ThreadPoolExecuteJob::_setup_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
-#else
-Variant ThreadPoolExecuteJob::_setup_bind(const Variant **p_args, int p_argcount, Callable::CallError &r_error) {
-#endif
 	if (p_argcount < 2) {
-#if VERSION_MAJOR < 4
 		r_error.error = Variant::CallError::CALL_ERROR_TOO_FEW_ARGUMENTS;
-#else
-		r_error.error = Callable::CallError::CALL_ERROR_TOO_FEW_ARGUMENTS;
-#endif
 
 		r_error.argument = 1;
 		return Variant();
 	}
 
 	if (p_args[0]->get_type() != Variant::OBJECT) {
-#if VERSION_MAJOR < 4
 		r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
-#else
-		r_error.error = Callable::CallError::CALL_ERROR_INVALID_ARGUMENT;
-#endif
 
 		r_error.argument = 0;
 		r_error.expected = Variant::OBJECT;
@@ -115,11 +93,7 @@ Variant ThreadPoolExecuteJob::_setup_bind(const Variant **p_args, int p_argcount
 	}
 
 	if (p_args[1]->get_type() != Variant::STRING) {
-#if VERSION_MAJOR < 4
 		r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
-#else
-		r_error.error = Callable::CallError::CALL_ERROR_INVALID_ARGUMENT;
-#endif
 
 		r_error.argument = 1;
 		r_error.expected = Variant::STRING;
@@ -161,11 +135,7 @@ Variant ThreadPoolExecuteJob::_setup_bind(const Variant **p_args, int p_argcount
 		set_complete(true);
 	}
 
-#if VERSION_MAJOR < 4
 	r_error.error = Variant::CallError::CALL_OK;
-#else
-	r_error.error = Callable::CallError::CALL_OK;
-#endif
 
 	return Variant();
 }

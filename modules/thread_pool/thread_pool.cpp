@@ -24,30 +24,16 @@ SOFTWARE.
 
 */
 
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/config/engine.h"
-#include "core/config/project_settings.h"
-#else
 #include "core/engine.h"
 #include "core/project_settings.h"
-#endif
 
 #include "core/os/os.h"
 #include "scene/main/scene_tree.h"
 
 #include "core/version.h"
 
-#if VERSION_MAJOR >= 4
-#define CONNECT(sig, obj, target_method_class, method) connect(sig, callable_mp(obj, &target_method_class::method))
-#define DISCONNECT(sig, obj, target_method_class, method) disconnect(sig, callable_mp(obj, &target_method_class::method))
-
-#define REAL FLOAT
-#else
 #define CONNECT(sig, obj, target_method_class, method) connect(sig, obj, #method)
 #define DISCONNECT(sig, obj, target_method_class, method) disconnect(sig, obj, #method)
-#endif
 
 ThreadPool *ThreadPool::_instance;
 

@@ -22,18 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/templates/vector.h"
-#include "core/config/engine.h"
-#else
-#include "core/vector.h"
 #include "core/engine.h"
-#endif
+#include "core/vector.h"
 
 #include "scene/main/node.h"
 
@@ -89,12 +79,6 @@ public:
 
 	void merge();
 
-#if VERSION_MAJOR >= 4
-	GDVIRTUAL0(_texture_merged);
-	GDVIRTUAL1(_texture_added, Ref<AtlasTexture>);
-	GDVIRTUAL0(_texture_removed);
-#endif
-
 	TextureMerger();
 	~TextureMerger();
 
@@ -107,7 +91,7 @@ private:
 	bool _dirty;
 
 	Ref<TexturePacker> _packer;
-	Vector<Ref<Texture> > _textures;
+	Vector<Ref<Texture>> _textures;
 };
 
 #endif

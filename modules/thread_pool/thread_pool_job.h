@@ -22,21 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/object/ref_counted.h"
-#ifndef Reference
-#define Reference RefCounted
-#endif
-#include "core/object/gdvirtual.gen.inc"
-#include "core/object/script_language.h"
-#else
 #include "core/reference.h"
-#endif
 
 class ThreadPoolJob : public Reference {
 	GDCLASS(ThreadPoolJob, Reference);
@@ -77,10 +63,6 @@ public:
 	bool should_return();
 
 	void execute();
-
-#if VERSION_MAJOR >= 4
-	GDVIRTUAL0(_execute);
-#endif
 
 	ThreadPoolJob();
 	~ThreadPoolJob();

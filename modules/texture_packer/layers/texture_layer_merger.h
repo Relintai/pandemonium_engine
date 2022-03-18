@@ -22,36 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/object/ref_counted.h"
-#ifndef Reference
-#define Reference RefCounted
-#endif
-#include "core/templates/vector.h"
-#include "core/io/image.h"
-#else
+#include "core/image.h"
 #include "core/reference.h"
 #include "core/vector.h"
-#include "core/image.h"
-#endif
 
 #include "core/math/rect2.h"
 #include "scene/resources/texture.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR >= 4
-#define PoolVector Vector
-#define Texture Texture2D
-#endif
-
 class TextureLayerMerger : public Reference {
-
 	GDCLASS(TextureLayerMerger, Reference);
 
 public:

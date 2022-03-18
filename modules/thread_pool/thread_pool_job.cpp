@@ -22,13 +22,7 @@ SOFTWARE.
 
 #include "thread_pool_job.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/variant/variant.h"
-#else
 #include "core/variant.h"
-#endif
 
 #include "core/os/os.h"
 
@@ -94,11 +88,7 @@ void ThreadPoolJob::set_method(const StringName &value) {
 }
 
 float ThreadPoolJob::get_current_execution_time() {
-#if VERSION_MAJOR < 4
 	return (OS::get_singleton()->get_system_time_msecs() - _start_time) / 1000.0;
-#else
-	return (OS::get_singleton()->get_ticks_msec() - _start_time) / 1000.0;
-#endif
 }
 
 bool ThreadPoolJob::should_do(const bool just_check) {
@@ -131,17 +121,9 @@ void ThreadPoolJob::execute() {
 
 	_current_run_stage = 0;
 
-#if VERSION_MAJOR < 4
 	_start_time = OS::get_singleton()->get_system_time_msecs();
-#else
-	_start_time = OS::get_singleton()->get_ticks_msec();
-#endif
 
-#if VERSION_MAJOR < 4
 	call("_execute");
-#else
-	GDVIRTUAL_CALL(_execute);
-#endif
 }
 
 ThreadPoolJob::ThreadPoolJob() {
@@ -175,11 +157,7 @@ void ThreadPoolJob::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_max_allocated_time"), &ThreadPoolJob::get_max_allocated_time);
 	ClassDB::bind_method(D_METHOD("set_max_allocated_time", "value"), &ThreadPoolJob::set_max_allocated_time);
-#if VERSION_MAJOR < 4
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "max_allocated_time"), "set_max_allocated_time", "get_max_allocated_time");
-#else
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "max_allocated_time"), "set_max_allocated_time", "get_max_allocated_time");
-#endif
 
 	ClassDB::bind_method(D_METHOD("get_start_time"), &ThreadPoolJob::get_start_time);
 	ClassDB::bind_method(D_METHOD("set_start_time", "value"), &ThreadPoolJob::set_start_time);
@@ -200,11 +178,7 @@ void ThreadPoolJob::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("should_do", "just_check"), &ThreadPoolJob::should_do, DEFVAL(false));
 	ClassDB::bind_method(D_METHOD("should_return"), &ThreadPoolJob::should_return);
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_execute"));
-#else
-	GDVIRTUAL_BIND(_execute);
-#endif
 
 	ClassDB::bind_method(D_METHOD("execute"), &ThreadPoolJob::execute);
 

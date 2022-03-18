@@ -22,18 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/string/ustring.h"
-#include "core/io/image.h"
-#else
-#include "core/ustring.h"
 #include "core/image.h"
-#endif
+#include "core/ustring.h"
 
 #include "core/io/resource_saver.h"
 #include "editor/import/editor_import_plugin.h"
@@ -43,7 +33,6 @@ SOFTWARE.
 #include "packer_image_resource.h"
 
 class PackerImageResourceImporter : public EditorImportPlugin {
-
 	GDCLASS(PackerImageResourceImporter, EditorImportPlugin);
 
 public:

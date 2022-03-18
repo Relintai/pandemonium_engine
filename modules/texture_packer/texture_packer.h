@@ -22,40 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/io/image.h"
-#include "core/object/ref_counted.h"
-#ifndef Reference
-#define Reference RefCounted
-#endif
-#include "core/templates/vector.h"
-#include "core/string/ustring.h"
-#include "core/math/color.h"
-#else
+#include "core/color.h"
 #include "core/image.h"
 #include "core/reference.h"
-#include "core/vector.h"
 #include "core/ustring.h"
-#include "core/color.h"
-#endif
+#include "core/vector.h"
 
 #include "scene/resources/texture.h"
 #include <vector>
 
 #include "rectpack2D/pack.h"
-
-#if VERSION_MAJOR >= 4
-#define PoolVector Vector
-#define Texture Texture2D
-#define PoolByteArray PackedByteArray
-
-#define REAL FLOAT
-#endif
 
 class TexturePacker : public Reference {
 	GDCLASS(TexturePacker, Reference);
@@ -114,7 +90,7 @@ private:
 	int _margin;
 
 	Vector<rect_xywhf *> _rects;
-	Vector<Ref<ImageTexture> > _generated_textures;
+	Vector<Ref<ImageTexture>> _generated_textures;
 };
 
 #endif

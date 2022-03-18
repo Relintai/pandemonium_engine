@@ -87,11 +87,7 @@ void TextureMerger::set_packer(const Ref<TexturePacker> &packer) {
 Vector<Variant> TextureMerger::get_textures() {
 	Vector<Variant> r;
 	for (int i = 0; i < _textures.size(); i++) {
-#if VERSION_MAJOR < 4
 		r.push_back(_textures[i].get_ref_ptr());
-#else
-		r.push_back(_textures[i]);
-#endif
 	}
 	return r;
 }
@@ -140,13 +136,9 @@ Ref<AtlasTexture> TextureMerger::add_texture(const Ref<Texture> &texture) {
 	Ref<AtlasTexture> tex = _packer->add_texture(texture);
 
 	if (!contains) {
-#if VERSION_MAJOR < 4
 		if (has_method("_texture_added")) {
 			call("_texture_added", tex);
 		}
-#else
-		GDVIRTUAL_CALL(_texture_added, tex);
-#endif
 
 		emit_signal("texture_added", tex);
 
@@ -174,13 +166,9 @@ Ref<AtlasTexture> TextureMerger::get_texture_index(const int index) {
 
 bool TextureMerger::unref_texture_index(const int index) {
 	if (_packer->unref_texture_index(index)) {
-#if VERSION_MAJOR < 4
 		if (has_method("_texture_removed")) {
 			call("_texture_removed");
 		}
-#else
-		GDVIRTUAL_CALL(_texture_removed);
-#endif
 
 		emit_signal("texture_removed");
 
@@ -194,13 +182,9 @@ bool TextureMerger::unref_texture_index(const int index) {
 
 bool TextureMerger::unref_texture(const Ref<Texture> &texture) {
 	if (_packer->unref_texture(texture)) {
-#if VERSION_MAJOR < 4
 		if (has_method("_texture_removed")) {
 			call("_texture_removed");
 		}
-#else
-		GDVIRTUAL_CALL(_texture_removed);
-#endif
 
 		emit_signal("texture_removed");
 
@@ -215,13 +199,9 @@ bool TextureMerger::unref_texture(const Ref<Texture> &texture) {
 void TextureMerger::remove_texture_index(const int index) {
 	_packer->remove_texture_index(index);
 
-#if VERSION_MAJOR < 4
 	if (has_method("_texture_removed")) {
 		call("_texture_removed");
 	}
-#else
-	GDVIRTUAL_CALL(_texture_removed);
-#endif
 
 	emit_signal("texture_removed");
 
@@ -231,13 +211,9 @@ void TextureMerger::remove_texture_index(const int index) {
 void TextureMerger::remove_texture(const Ref<Texture> &texture) {
 	_packer->remove_texture(texture);
 
-#if VERSION_MAJOR < 4
 	if (has_method("_texture_removed")) {
 		call("_texture_removed");
 	}
-#else
-	GDVIRTUAL_CALL(_texture_removed);
-#endif
 
 	emit_signal("texture_removed");
 
@@ -262,13 +238,9 @@ int TextureMerger::get_generated_texture_count() {
 void TextureMerger::merge() {
 	_packer->merge();
 
-#if VERSION_MAJOR < 4
 	if (has_method("_texture_merged")) {
 		call("_texture_merged");
 	}
-#else
-	GDVIRTUAL_CALL(_texture_merged);
-#endif
 
 	emit_signal("texture_merged");
 }
@@ -276,11 +248,7 @@ void TextureMerger::merge() {
 TextureMerger::TextureMerger() {
 	_automatic_merge = false;
 
-#if VERSION_MAJOR < 4
 	_packer.instance();
-#else
-	_packer.instantiate();
-#endif
 
 	_packer->set_keep_original_atlases(false);
 }
@@ -313,15 +281,9 @@ void TextureMerger::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("texture_added", PropertyInfo(Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, "AtlasTexture")));
 	ADD_SIGNAL(MethodInfo("texture_removed"));
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_texture_merged"));
 	BIND_VMETHOD(MethodInfo("_texture_added", PropertyInfo(Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, "AtlasTexture")));
 	BIND_VMETHOD(MethodInfo("_texture_removed"));
-#else
-	GDVIRTUAL_BIND(_texture_merged);
-	GDVIRTUAL_BIND(_texture_added, "texture");
-	GDVIRTUAL_BIND(_texture_removed);
-#endif
 
 	ClassDB::bind_method(D_METHOD("get_dirty"), &TextureMerger::get_dirty);
 	ClassDB::bind_method(D_METHOD("set_dirty", "value"), &TextureMerger::set_dirty);

@@ -22,9 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #include "thread_pool_job.h"
 
 class ThreadPoolExecuteJob : public ThreadPoolJob {
@@ -39,11 +36,7 @@ public:
 
 	void _execute();
 	void setup(const Variant &obj, const StringName &p_method, VARIANT_ARG_LIST);
-#if VERSION_MAJOR < 4
 	Variant _setup_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error);
-#else
-	Variant _setup_bind(const Variant **p_args, int p_argcount, Callable::CallError &r_error);
-#endif
 
 	ThreadPoolExecuteJob();
 	~ThreadPoolExecuteJob();

@@ -83,11 +83,7 @@ Ref<AtlasTexture> TexturePacker::add_texture(const Ref<Texture> &texture) {
 		}
 
 		Ref<AtlasTexture> tex;
-#if VERSION_MAJOR < 4
 		tex.instance();
-#else
-		tex.instantiate();
-#endif
 
 		tex->set_atlas(atlas_text->get_atlas());
 		tex->set_region(atlas_text->get_region());
@@ -124,11 +120,7 @@ Ref<AtlasTexture> TexturePacker::add_texture(const Ref<Texture> &texture) {
 	}
 
 	Ref<AtlasTexture> tex;
-#if VERSION_MAJOR < 4
 	tex.instance();
-#else
-	tex.instantiate();
-#endif
 
 	//Temp setup, so the texture is usable even while the atlases are generating.
 	tex->set_atlas(texture);
@@ -208,11 +200,7 @@ bool TexturePacker::unref_texture_index(const int index) {
 	int rc = --(r->refcount);
 
 	if (rc <= 0) {
-#if VERSION_MAJOR < 4
 		_rects.remove(index);
-#else
-		_rects.remove_at(index);
-#endif
 
 		r->original_texture.unref();
 		r->atlas_texture.unref();
@@ -241,11 +229,7 @@ bool TexturePacker::unref_texture(const Ref<Texture> &texture) {
 			int rc = --(r->refcount);
 
 			if (rc <= 0) {
-#if VERSION_MAJOR < 4
 				_rects.remove(i);
-#else
-				_rects.remove_at(i);
-#endif
 
 				r->original_texture.unref();
 				r->atlas_texture.unref();
@@ -286,11 +270,7 @@ void TexturePacker::remove_texture(const Ref<Texture> &texture) {
 			t = r->original_texture;
 
 		if (t == texture) {
-#if VERSION_MAJOR < 4
 			_rects.remove(i);
-#else
-			_rects.remove_at(i);
-#endif
 
 			r->original_texture.unref();
 			r->atlas_texture.unref();
@@ -382,11 +362,7 @@ void TexturePacker::merge() {
 
 				ERR_CONTINUE(!otext.is_valid());
 
-#if VERSION_MAJOR < 4
 				Ref<Image> img = otext->get_data();
-#else
-				Ref<Image> img = otext->get_image();
-#endif
 
 				ERR_CONTINUE(!img.is_valid());
 
@@ -413,25 +389,13 @@ void TexturePacker::merge() {
 			}
 
 			Ref<Image> image;
-#if VERSION_MAJOR < 4
 			image.instance();
-#else
-			image.instantiate();
-#endif
 			image->create(b.size.w, b.size.h, false, Image::FORMAT_RGBA8, data);
 
 			Ref<ImageTexture> texture;
-#if VERSION_MAJOR < 4
 			texture.instance();
-#else
-			texture.instantiate();
-#endif
 
-#if VERSION_MAJOR < 4
 			texture->create_from_image(image, _texture_flags);
-#else
-			texture->create_from_image(image);
-#endif
 
 			_generated_textures.set(i, texture);
 
@@ -476,12 +440,10 @@ int TexturePacker::get_offset_for_format(const Image::Format format) {
 		case Image::FORMAT_BPTC_RGBA:
 		case Image::FORMAT_BPTC_RGBF:
 		case Image::FORMAT_BPTC_RGBFU:
-#if VERSION_MAJOR <= 3
 		case Image::FORMAT_PVRTC2:
 		case Image::FORMAT_PVRTC2A:
 		case Image::FORMAT_PVRTC4:
 		case Image::FORMAT_PVRTC4A:
-#endif
 		case Image::FORMAT_ETC:
 		case Image::FORMAT_ETC2_R11:
 		case Image::FORMAT_ETC2_R11S:
@@ -490,13 +452,7 @@ int TexturePacker::get_offset_for_format(const Image::Format format) {
 		case Image::FORMAT_ETC2_RGB8:
 		case Image::FORMAT_ETC2_RGBA8:
 		case Image::FORMAT_ETC2_RGB8A1:
-#if VERSION_MAJOR >= 4
-		case Image::FORMAT_RGB565:
-		case Image::FORMAT_ETC2_RA_AS_RG:
-		case Image::FORMAT_DXT5_RA_AS_RG:
-#else
 		case Image::FORMAT_RGBA5551:
-#endif
 		case Image::FORMAT_MAX:
 			return 0;
 	}
@@ -505,11 +461,7 @@ int TexturePacker::get_offset_for_format(const Image::Format format) {
 }
 
 TexturePacker::TexturePacker() {
-#if VERSION_MAJOR < 4
 	_texture_flags = Texture::FLAG_MIPMAPS | Texture::FLAG_FILTER;
-#else
-	_texture_flags = 0;
-#endif
 
 	_max_atlas_size = 1024;
 	_keep_original_atlases = false;
