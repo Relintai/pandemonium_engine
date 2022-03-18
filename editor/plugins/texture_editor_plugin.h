@@ -30,14 +30,14 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_node.h"
+#include "scene/gui/margin_container.h"
+#include "editor/editor_inspector.h"
 #include "editor/editor_plugin.h"
+
 #include "scene/resources/texture.h"
 #include "core/object.h"
 #include "core/reference.h"
 #include "core/ustring.h"
-#include "editor/editor_inspector.h"
-#include "scene/gui/margin_container.h"
 
 class EditorNode;
 class Label;

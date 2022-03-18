@@ -31,6 +31,7 @@
 /*************************************************************************/
 
 #include "script_editor_plugin.h"
+
 #include "core/color.h"
 #include "core/list.h"
 #include "core/map.h"

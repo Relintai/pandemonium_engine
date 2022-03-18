@@ -30,14 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_node.h"
-#include "editor/editor_plugin.h"
-#include "scene/2d/animated_sprite.h"
-#include "scene/gui/dialogs.h"
-#include "scene/gui/file_dialog.h"
 #include "scene/gui/split_container.h"
-#include "scene/gui/texture_rect.h"
-#include "scene/gui/tree.h"
+#include "editor/editor_plugin.h"
+
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/reference.h"

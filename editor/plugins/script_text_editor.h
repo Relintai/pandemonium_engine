@@ -30,12 +30,12 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "scene/gui/dialogs.h"
+#include "script_editor_plugin.h"
+
 #include "core/reference.h"
 #include "core/vector.h"
-#include "scene/gui/color_picker.h"
-#include "scene/gui/dialogs.h"
-#include "scene/gui/tree.h"
-#include "script_editor_plugin.h"
+
 #include "core/color.h"
 #include "core/list.h"
 #include "core/map.h"

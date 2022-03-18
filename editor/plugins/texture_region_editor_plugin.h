@@ -30,14 +30,12 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "canvas_item_editor_plugin.h"
-#include "editor/editor_node.h"
+#include "scene/gui/box_container.h"
 #include "editor/editor_plugin.h"
-#include "scene/2d/sprite.h"
-#include "scene/3d/sprite_3d.h"
-#include "scene/gui/nine_patch_rect.h"
+
 #include "scene/resources/style_box.h"
 #include "scene/resources/texture.h"
+
 #include "core/dictionary.h"
 #include "core/list.h"
 #include "core/map.h"
@@ -47,7 +45,7 @@
 #include "core/reference.h"
 #include "core/rid.h"
 #include "core/ustring.h"
-#include "scene/gui/box_container.h"
+
 
 class Button;
 class EditorNode;

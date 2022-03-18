@@ -72,6 +72,7 @@
 #include "scene/resources/surface_tool.h"
 #include "scene/resources/world.h"
 #include "servers/physics_server.h"
+#include "editor/editor_node.h"
 
 #define HANDLE_HALF_SIZE 9.5
 

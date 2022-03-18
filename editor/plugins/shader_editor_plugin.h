@@ -32,13 +32,10 @@
 
 #include "editor/code_editor.h"
 #include "editor/editor_plugin.h"
-#include "scene/gui/menu_button.h"
 #include "scene/gui/panel_container.h"
-#include "scene/gui/tab_container.h"
-#include "scene/gui/text_edit.h"
-#include "scene/main/timer.h"
+
 #include "scene/resources/shader.h"
-#include "servers/visual/shader_language.h"
+
 #include "core/list.h"
 #include "core/math/vector2.h"
 #include "core/object.h"

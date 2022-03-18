@@ -30,15 +30,14 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "scene/gui/box_container.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/margin_container.h"
-#include "scene/gui/option_button.h"
-#include "scene/gui/scroll_container.h"
-#include "scene/gui/tabs.h"
-#include "scene/gui/texture_rect.h"
+#include "editor/editor_plugin.h"
+
 #include "scene/resources/theme.h"
-#include "theme_editor_preview.h"
-#include "editor/editor_node.h"
+#include "scene/resources/style_box.h"
+
 #include "core/list.h"
 #include "core/map.h"
 #include "core/object.h"
@@ -48,9 +47,6 @@
 #include "core/string_name.h"
 #include "core/ustring.h"
 #include "core/vector.h"
-#include "editor/editor_plugin.h"
-#include "scene/gui/box_container.h"
-#include "scene/resources/style_box.h"
 
 class Button;
 class CheckButton;

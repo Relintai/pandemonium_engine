@@ -30,15 +30,16 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/reference.h"
-#include "editor/editor_node.h"
+#include "scene/gui/control.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/container.h"
+#include "scene/3d/spatial.h"
 #include "editor/editor_plugin.h"
-#include "editor/editor_scale.h"
-#include "scene/3d/immediate_geometry.h"
-#include "scene/3d/light.h"
+
 #include "scene/3d/skeleton.h"
-#include "scene/3d/visual_instance.h"
-#include "scene/gui/panel_container.h"
+#include "scene/gui/spin_box.h"
+
+#include "core/reference.h"
 #include "core/color.h"
 #include "core/dictionary.h"
 #include "core/error_macros.h"
@@ -57,17 +58,11 @@
 #include "core/ustring.h"
 #include "core/variant.h"
 #include "core/vector.h"
-#include "scene/3d/spatial.h"
-#include "scene/gui/box_container.h"
-#include "scene/gui/button.h"
-#include "scene/gui/container.h"
-#include "scene/gui/control.h"
-#include "scene/gui/spin_box.h"
-#include "scene/main/node.h"
+#include "editor/editor_scale.h"
+
 #include "scene/resources/material.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/texture.h"
-#include "servers/visual_server.h"
 
 class Camera;
 class SpatialEditor;
@@ -99,6 +94,7 @@ class TriangleMesh;
 class UndoRedo;
 class VSplitContainer;
 class Viewport;
+class SpinBox;
 
 class EditorSpatialGizmo : public SpatialGizmo {
 	GDCLASS(EditorSpatialGizmo, SpatialGizmo);

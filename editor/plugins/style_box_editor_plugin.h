@@ -30,17 +30,14 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "scene/gui/box_container.h"
+#include "editor/editor_plugin.h"
 #include "editor/editor_inspector.h"
-#include "editor/editor_node.h"
-#include "scene/gui/option_button.h"
-#include "scene/gui/texture_rect.h"
-#include "scene/resources/style_box.h"
+
 #include "core/object.h"
 #include "core/reference.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "editor/editor_plugin.h"
-#include "scene/gui/box_container.h"
 
 class Control;
 class EditorNode;

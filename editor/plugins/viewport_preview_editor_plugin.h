@@ -30,10 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 #include "editor/plugins/texture_editor_plugin.h"
-#include "scene/main/viewport.h"
+
 #include "core/object.h"
 #include "core/ustring.h"
 
