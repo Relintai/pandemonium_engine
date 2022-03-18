@@ -48,11 +48,6 @@ Ref<ResourceFormatSaverGDScript> resource_saver_gd;
 #include "editor/editor_settings.h"
 #include "editor/gdscript_highlighter.h"
 
-#ifndef GDSCRIPT_NO_LSP
-#include "core/engine.h"
-#include "language_server/gdscript_language_server.h"
-#endif // !GDSCRIPT_NO_LSP
-
 class EditorExportGDScript : public EditorExportPlugin {
 	GDCLASS(EditorExportGDScript, EditorExportPlugin);
 
@@ -137,13 +132,6 @@ static void _editor_init() {
 	Ref<EditorExportGDScript> gd_export;
 	gd_export.instance();
 	EditorExport::get_singleton()->add_export_plugin(gd_export);
-
-#ifndef GDSCRIPT_NO_LSP
-	register_lsp_types();
-	GDScriptLanguageServer *lsp_plugin = memnew(GDScriptLanguageServer);
-	EditorNode::get_singleton()->add_editor_plugin(lsp_plugin);
-	Engine::get_singleton()->add_singleton(Engine::Singleton("GDScriptLanguageProtocol", GDScriptLanguageProtocol::get_singleton()));
-#endif // !GDSCRIPT_NO_LSP
 }
 
 #endif // TOOLS_ENABLED
