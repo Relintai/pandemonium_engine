@@ -22,20 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #include "voxel_surface.h"
 
 #include "scene/resources/texture.h"
 
 #include "../../texture_packer/texture_packer.h"
-
-#include "../defines.h"
-
-#if GODOT4
-#define Texture Texture2D
-#endif
 
 class VoxelSurfaceMerger : public VoxelSurface {
 	GDCLASS(VoxelSurfaceMerger, VoxelSurface)

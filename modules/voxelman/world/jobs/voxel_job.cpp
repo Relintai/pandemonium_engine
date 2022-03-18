@@ -64,11 +64,7 @@ void VoxelJob::next_job() {
 }
 
 void VoxelJob::reset() {
-#if VERSION_MAJOR < 4
 	call("_reset");
-#else
-	GDVIRTUAL_CALL(_reset);
-#endif
 }
 void VoxelJob::_reset() {
 	_build_done = false;
@@ -88,11 +84,7 @@ void VoxelJob::_execute() {
 }
 
 void VoxelJob::execute_phase() {
-#if VERSION_MAJOR < 4
 	call("_execute_phase");
-#else
-	GDVIRTUAL_CALL(_execute_phase);
-#endif
 }
 
 void VoxelJob::_execute_phase() {
@@ -100,22 +92,14 @@ void VoxelJob::_execute_phase() {
 }
 
 void VoxelJob::process(const float delta) {
-#if VERSION_MAJOR < 4
 	if (has_method("_process")) {
 		call("_process", delta);
 	}
-#else
-	GDVIRTUAL_CALL(_process, delta);
-#endif
 }
 void VoxelJob::physics_process(const float delta) {
-#if VERSION_MAJOR < 4
 	if (has_method("_physics_process")) {
 		call("_physics_process", delta);
 	}
-#else
-	GDVIRTUAL_CALL(_physics_process, delta);
-#endif
 }
 
 //Data Management functions
@@ -273,11 +257,7 @@ Array VoxelJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const float mul_
 	ERR_FAIL_COND_V(arr.size() != VisualServer::ARRAY_MAX, arr);
 	ERR_FAIL_COND_V(!tex.is_valid(), arr);
 
-#if VERSION_MAJOR < 4
 	Ref<Image> img = tex->get_data();
-#else
-	Ref<Image> img = tex->get_image();
-#endif
 
 	ERR_FAIL_COND_V(!img.is_valid(), arr);
 
@@ -289,9 +269,7 @@ Array VoxelJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const float mul_
 	if (colors.size() < uvs.size())
 		colors.resize(uvs.size());
 
-#if !GODOT4
 	img->lock();
-#endif
 
 	for (int i = 0; i < uvs.size(); ++i) {
 		Vector2 uv = uvs[i];
@@ -305,9 +283,7 @@ Array VoxelJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const float mul_
 		colors.set(i, colors[i] * c * mul_color);
 	}
 
-#if !GODOT4
 	img->unlock();
-#endif
 
 	arr[VisualServer::ARRAY_COLOR] = colors;
 
@@ -348,13 +324,8 @@ VoxelJob::~VoxelJob() {
 }
 
 void VoxelJob::_bind_methods() {
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_process", PropertyInfo(Variant::REAL, "delta")));
 	BIND_VMETHOD(MethodInfo("_physics_process", PropertyInfo(Variant::REAL, "delta")));
-#else
-	GDVIRTUAL_BIND(_process, "delta");
-	GDVIRTUAL_BIND(_physics_process, "delta");
-#endif
 
 	ClassDB::bind_method(D_METHOD("get_build_phase_type"), &VoxelJob::get_build_phase_type);
 	ClassDB::bind_method(D_METHOD("set_build_phase_type", "value"), &VoxelJob::set_build_phase_type);
@@ -371,22 +342,14 @@ void VoxelJob::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("next_job"), &VoxelJob::next_job);
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_reset"));
-#else
-	GDVIRTUAL_BIND(_reset);
-#endif
 
 	ClassDB::bind_method(D_METHOD("reset"), &VoxelJob::reset);
 	ClassDB::bind_method(D_METHOD("_reset"), &VoxelJob::_reset);
 
 	ClassDB::bind_method(D_METHOD("_execute"), &VoxelJob::_execute);
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_execute_phase"));
-#else
-	GDVIRTUAL_BIND(_execute_phase);
-#endif
 
 	ClassDB::bind_method(D_METHOD("execute_phase"), &VoxelJob::execute_phase);
 	ClassDB::bind_method(D_METHOD("_execute_phase"), &VoxelJob::_execute_phase);
@@ -418,11 +381,7 @@ void VoxelJob::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("should_do", "just_check"), &VoxelJob::should_do, DEFVAL(false));
 	ClassDB::bind_method(D_METHOD("should_return"), &VoxelJob::should_return);
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_execute"));
-#else
-	GDVIRTUAL_BIND(_execute);
-#endif
 
 	ClassDB::bind_method(D_METHOD("execute"), &VoxelJob::execute);
 
@@ -495,11 +454,7 @@ bool VoxelJob::should_return() {
 void VoxelJob::execute() {
 	ERR_FAIL_COND(!has_method("_execute"));
 
-#if VERSION_MAJOR < 4
 	call("_execute");
-#else
-	GDVIRTUAL_CALL(_execute);
-#endif
 }
 
 #endif

@@ -350,11 +350,7 @@ void VoxelMesher::remove_doubles() {
 		for (int j = 0; j < indices.size(); ++j) {
 			int index = indices[j];
 
-#if VERSION_MAJOR < 4
 			_vertices.remove(index);
-#else
-			_vertices.remove_at(index);
-#endif
 
 			//make all indices that were bigger than the one we replaced one lower
 			for (int k = 0; k < _indices.size(); ++k) {
@@ -406,13 +402,8 @@ void VoxelMesher::remove_doubles_hashed() {
 		for (int j = 0; j < indices.size(); ++j) {
 			int index = indices[j];
 
-#if VERSION_MAJOR < 4
 			hashes.remove(index);
 			_vertices.remove(index);
-#else
-			hashes.remove_at(index);
-			_vertices.remove_at(index);
-#endif
 
 			//make all indices that were bigger than the one we replaced one lower
 			for (int k = 0; k < _indices.size(); ++k) {
@@ -753,11 +744,7 @@ Vector3 VoxelMesher::get_vertex(const int idx) const {
 }
 
 void VoxelMesher::remove_vertex(const int idx) {
-#if VERSION_MAJOR < 4
 	_vertices.remove(idx);
-#else
-	_vertices.remove_at(idx);
-#endif
 }
 
 PoolVector<Vector3> VoxelMesher::get_normals() const {
@@ -905,11 +892,7 @@ int VoxelMesher::get_index(const int idx) const {
 }
 
 void VoxelMesher::remove_index(const int idx) {
-#if VERSION_MAJOR < 4
 	_indices.remove(idx);
-#else
-	_indices.remove_at(idx);
-#endif
 }
 
 VoxelMesher::VoxelMesher(const Ref<VoxelLibrary> &library) {
@@ -948,15 +931,9 @@ VoxelMesher::~VoxelMesher() {
 }
 
 void VoxelMesher::_bind_methods() {
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_add_chunk", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
 	BIND_VMETHOD(MethodInfo("_bake_colors", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
 	BIND_VMETHOD(MethodInfo("_bake_liquid_colors", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
-#else
-	GDVIRTUAL_BIND(_add_chunk, "chunk");
-	GDVIRTUAL_BIND(_bake_colors, "chunk");
-	GDVIRTUAL_BIND(_bake_liquid_colors, "chunk");
-#endif
 
 	ClassDB::bind_method(D_METHOD("get_channel_index_type"), &VoxelMesher::get_channel_index_type);
 	ClassDB::bind_method(D_METHOD("set_channel_index_type", "value"), &VoxelMesher::set_channel_index_type);
@@ -1014,11 +991,7 @@ void VoxelMesher::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_mesh_data_resource_transform_colored", "mesh", "transform", "colors", "uv_rect"), &VoxelMesher::add_mesh_data_resource_transform_colored, DEFVAL(Rect2(0, 0, 1, 1)));
 #endif
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_add_mesher", PropertyInfo(Variant::OBJECT, "mesher", PROPERTY_HINT_RESOURCE_TYPE, "VoxelMesher")));
-#else
-	GDVIRTUAL_BIND(_add_mesher, "mesher");
-#endif
 
 	ClassDB::bind_method(D_METHOD("add_mesher", "mesher"), &VoxelMesher::add_mesher);
 	ClassDB::bind_method(D_METHOD("_add_mesher", "mesher"), &VoxelMesher::_add_mesher);

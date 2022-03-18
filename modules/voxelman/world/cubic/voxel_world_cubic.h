@@ -22,9 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #include "../default/voxel_world_default.h"
 
 class VoxelWorldCubic : public VoxelWorldDefault {

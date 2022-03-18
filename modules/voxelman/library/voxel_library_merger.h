@@ -22,18 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-#include "core/templates/map.h"
-#else
 #include "core/resource.h"
 #include "core/map.h"
-#endif
 
 #include "voxel_library.h"
 

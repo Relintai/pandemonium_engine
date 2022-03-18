@@ -22,21 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/string/ustring.h"
-#include "core/config/engine.h"
-#include "core/variant/array.h"
-#else
-#include "core/ustring.h"
-#include "core/engine.h"
 #include "core/array.h"
-#endif
-
+#include "core/engine.h"
+#include "core/ustring.h"
 
 #include "../voxel_chunk.h"
 
@@ -46,12 +34,12 @@ SOFTWARE.
 #include "core/os/thread.h"
 #include "core/os/thread_safe.h"
 
-#include "scene/resources/packed_scene.h"
-#include "../voxel_world.h"
 #include "../../data/voxel_light.h"
-#include "../../meshers/voxel_mesher.h"
-#include "../../library/voxel_surface.h"
 #include "../../library/voxel_library.h"
+#include "../../library/voxel_surface.h"
+#include "../../meshers/voxel_mesher.h"
+#include "../voxel_world.h"
+#include "scene/resources/packed_scene.h"
 
 class VoxelWorld;
 class VoxelJob;
@@ -224,7 +212,7 @@ protected:
 	RID _debug_mesh_instance;
 	PoolVector3Array _debug_mesh_array;
 
-	Vector<Ref<VoxelLight> > _lights;
+	Vector<Ref<VoxelLight>> _lights;
 };
 
 VARIANT_ENUM_CAST(VoxelChunkDefault::DefaultChannels);

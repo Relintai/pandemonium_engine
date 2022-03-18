@@ -256,13 +256,9 @@ void VoxelMaterialCache::refresh_rects() {
 }
 
 void VoxelMaterialCache::setup_material_albedo(Ref<Texture> texture) {
-#if VERSION_MAJOR < 4
 	if (has_method("_setup_material_albedo")) {
 		call("_setup_material_albedo", texture);
 	}
-#else
-	GDVIRTUAL_CALL(_setup_material_albedo, texture);
-#endif
 }
 
 VoxelMaterialCache::VoxelMaterialCache() {
@@ -286,11 +282,7 @@ void VoxelMaterialCache::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("inc_ref_count"), &VoxelMaterialCache::inc_ref_count);
 	ClassDB::bind_method(D_METHOD("dec_ref_count"), &VoxelMaterialCache::dec_ref_count);
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_setup_material_albedo", PropertyInfo(Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture")));
-#else
-	GDVIRTUAL_BIND(_setup_material_albedo, "texture");
-#endif
 
 	ClassDB::bind_method(D_METHOD("material_get", "index"), &VoxelMaterialCache::material_get);
 	ClassDB::bind_method(D_METHOD("material_lod_get", "index"), &VoxelMaterialCache::material_lod_get);

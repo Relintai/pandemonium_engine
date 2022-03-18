@@ -24,12 +24,6 @@ SOFTWARE.
 
 #include "voxel_library_merger.h"
 
-#include "../defines.h"
-
-#if GODOT4
-#define Texture Texture2D
-#endif
-
 Ref<AtlasTexture> VoxelSurfaceMerger::get_region(const VoxelSurfaceSides side) {
 	return _regions[side];
 }

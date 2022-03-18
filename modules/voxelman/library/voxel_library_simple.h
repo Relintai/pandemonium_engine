@@ -22,19 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/object/ref_counted.h"
-#ifndef Reference
-#define Reference RefCounted
-#endif
-#else
 #include "core/resource.h"
-#endif
 
 #include "voxel_library.h"
 
@@ -74,7 +62,7 @@ public:
 protected:
 	static void _bind_methods();
 
-	Vector<Ref<VoxelSurfaceSimple> > _voxel_surfaces;
+	Vector<Ref<VoxelSurfaceSimple>> _voxel_surfaces;
 
 	//atlas
 	int _atlas_columns;

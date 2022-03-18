@@ -22,19 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/object/ref_counted.h"
-#ifndef Reference
-#define Reference RefCounted
-#endif
-#else
 #include "core/reference.h"
-#endif
 
 #ifdef MESH_UTILS_PRESENT
 #include "../../../mesh_utils/fast_quadratic_mesh_simplifier.h"
@@ -66,19 +56,19 @@ public:
 	int get_lod_index() const;
 	void set_lod_index(const int value);
 
-	#ifdef MESH_UTILS_PRESENT
-		Ref<FastQuadraticMeshSimplifier> get_fqms();
-		void set_fqms(const Ref<FastQuadraticMeshSimplifier> &val);
+#ifdef MESH_UTILS_PRESENT
+	Ref<FastQuadraticMeshSimplifier> get_fqms();
+	void set_fqms(const Ref<FastQuadraticMeshSimplifier> &val);
 
-		float get_simplification_step_ratio() const;
-		void set_simplification_step_ratio(const float value);
+	float get_simplification_step_ratio() const;
+	void set_simplification_step_ratio(const float value);
 
-		int get_simplification_steps() const;
-		void set_simplification_steps(const int value);
+	int get_simplification_steps() const;
+	void set_simplification_steps(const int value);
 
-		float get_simplification_agressiveness() const;
-		void set_simplification_agressiveness(const float value);
-	#endif
+	float get_simplification_agressiveness() const;
+	void set_simplification_agressiveness(const float value);
+#endif
 
 	VoxelMesherJobStep();
 	~VoxelMesherJobStep();
@@ -89,12 +79,12 @@ protected:
 	VoxelMesherJobStepType _job_type;
 	int _lod_index;
 
-	#ifdef MESH_UTILS_PRESENT
-		Ref<FastQuadraticMeshSimplifier> _fqms;
-		float _simplification_step_ratio;
-		int _simplification_steps;
-		float _simplification_agressiveness;
-	#endif
+#ifdef MESH_UTILS_PRESENT
+	Ref<FastQuadraticMeshSimplifier> _fqms;
+	float _simplification_step_ratio;
+	int _simplification_steps;
+	float _simplification_agressiveness;
+#endif
 };
 
 VARIANT_ENUM_CAST(VoxelMesherJobStep::VoxelMesherJobStepType);

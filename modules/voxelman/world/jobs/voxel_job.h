@@ -22,33 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #include "scene/resources/texture.h"
 
 #if THREAD_POOL_PRESENT
 #include "../../../thread_pool/thread_pool_job.h"
 #else
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/object/ref_counted.h"
-#ifndef Reference
-#define Reference RefCounted
-#endif
-#else
 #include "core/reference.h"
 #endif
 
-#endif
-
 #include "../../defines.h"
-
-#if GODOT4
-#define Texture Texture2D
-#endif
 
 class VoxelChunk;
 
@@ -102,14 +84,6 @@ public:
 
 	void chunk_exit_tree();
 
-#if VERSION_MAJOR >= 4
-	GDVIRTUAL1(_process, float);
-	GDVIRTUAL1(_physics_process, float);
-
-	GDVIRTUAL0(_reset);
-	GDVIRTUAL0(_execute_phase);
-#endif
-
 	VoxelJob();
 	~VoxelJob();
 
@@ -150,10 +124,6 @@ public:
 	bool should_return();
 
 	void execute();
-
-#if VERSION_MAJOR >= 4
-	GDVIRTUAL0(_execute);
-#endif
 
 private:
 	bool _complete;

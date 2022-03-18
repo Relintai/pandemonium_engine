@@ -22,21 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-#include "core/templates/vector.h"
-#include "core/math/color.h"
-#else
+#include "core/color.h"
 #include "core/resource.h"
 #include "core/vector.h"
-#include "core/color.h"
-#endif
 
 #include "core/math/rect2.h"
 #include "scene/resources/material.h"
@@ -57,9 +45,9 @@ public:
 	I_____I/
 
 
-	    I y
-	    I        I
-	    O----- x I B
+		I y
+		I        I
+		O----- x I B
 	  /  I F  I /
 	/ z+ I ---I/
 	*/

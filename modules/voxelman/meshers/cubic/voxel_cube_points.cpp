@@ -815,7 +815,6 @@ VoxelCubePoints::~VoxelCubePoints() {
 }
 
 void VoxelCubePoints::_bind_methods() {
-
 	ClassDB::bind_method(D_METHOD("get_x"), &VoxelCubePoints::get_x);
 	ClassDB::bind_method(D_METHOD("set_x", "value"), &VoxelCubePoints::set_x);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "x"), "set_x", "get_x");

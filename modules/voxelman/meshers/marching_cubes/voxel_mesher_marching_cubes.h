@@ -22,19 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/object/ref_counted.h"
-#ifndef Reference
-#define Reference RefCounted
-#endif
-#else
 #include "core/reference.h"
-#endif
 
 #include "../default/voxel_mesher_default.h"
 #include "marching_cubes_cell_data.h"

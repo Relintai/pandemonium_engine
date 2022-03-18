@@ -207,11 +207,7 @@ Rect2 VoxelLibraryMerger::get_prop_uv_rect(const Ref<Texture> &texture) {
 		return Rect2(0, 0, 1, 1);
 	}
 
-#if VERSION_MAJOR < 4
 	Ref<Image> image = tex->get_data();
-#else
-	Ref<Image> image = tex->get_image();
-#endif
 
 	if (!image.is_valid()) {
 		return Rect2(0, 0, 1, 1);
@@ -371,11 +367,7 @@ void VoxelLibraryMerger::_setup_material_albedo(const int material_index, const 
 VoxelLibraryMerger::VoxelLibraryMerger() {
 	_packer.INSTANCE();
 
-#if GODOT4
-#warning implement
-#else
 	_packer->set_texture_flags(Texture::FLAG_MIPMAPS | Texture::FLAG_FILTER);
-#endif
 
 	_packer->set_max_atlas_size(1024);
 	_packer->set_keep_original_atlases(false);
@@ -383,11 +375,7 @@ VoxelLibraryMerger::VoxelLibraryMerger() {
 
 	_prop_packer.INSTANCE();
 
-#if GODOT4
-#warning implement
-#else
 	_prop_packer->set_texture_flags(Texture::FLAG_MIPMAPS | Texture::FLAG_FILTER);
-#endif
 
 	_prop_packer->set_max_atlas_size(1024);
 	_prop_packer->set_keep_original_atlases(false);

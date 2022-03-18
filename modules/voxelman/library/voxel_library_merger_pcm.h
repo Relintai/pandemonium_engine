@@ -22,18 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-#include "core/templates/map.h"
-#else
-#include "core/resource.h"
 #include "core/map.h"
-#endif
+#include "core/resource.h"
 
 #include "voxel_library.h"
 
@@ -123,12 +113,12 @@ protected:
 
 	static void _bind_methods();
 
-	Map<int, Ref<VoxelMaterialCachePCM> > _material_cache;
-	Map<int, Ref<VoxelMaterialCachePCM> > _prop_material_cache;
+	Map<int, Ref<VoxelMaterialCachePCM>> _material_cache;
+	Map<int, Ref<VoxelMaterialCachePCM>> _prop_material_cache;
 
-	Vector<Ref<VoxelSurfaceMerger> > _voxel_surfaces;
+	Vector<Ref<VoxelSurfaceMerger>> _voxel_surfaces;
 #ifdef PROPS_PRESENT
-	Vector<Ref<PropData> > _props;
+	Vector<Ref<PropData>> _props;
 #endif
 
 	//todo remove these

@@ -123,13 +123,8 @@ RID VoxelChunkDefault::mesh_rid_get(const int mesh_index, const int mesh_type_in
 
 	Variant v = m[mesh_type_index];
 
-#if VERSION_MAJOR > 3
-	if (v.get_type() != Variant::RID)
-		return RID();
-#else
 	if (v.get_type() != Variant::_RID)
 		return RID();
-#endif
 
 	return v;
 }
@@ -147,11 +142,7 @@ void VoxelChunkDefault::mesh_rid_set(const int mesh_index, const int mesh_type_i
 
 	Variant v = m[mesh_type_index];
 
-#if VERSION_MAJOR > 3
-	ERR_FAIL_COND(v.get_type() != Variant::RID);
-#else
 	ERR_FAIL_COND(v.get_type() != Variant::_RID);
-#endif
 
 	m[mesh_type_index] = value;
 	_rids[mesh_index] = m;
@@ -379,12 +370,7 @@ void VoxelChunkDefault::colliders_create(const int mesh_index, const int layer_m
 	ERR_FAIL_COND(m.has(MESH_TYPE_INDEX_SHAPE));
 
 	RID shape_rid = PhysicsServer::get_singleton()->shape_create(PhysicsServer::SHAPE_CONCAVE_POLYGON);
-#if VERSION_MAJOR < 4
 	RID body_rid = PhysicsServer::get_singleton()->body_create(PhysicsServer::BODY_MODE_STATIC);
-#else
-	RID body_rid = PhysicsServer::get_singleton()->body_create();
-	PhysicsServer::get_singleton()->body_set_mode(body_rid, PhysicsServer::BODY_MODE_STATIC);
-#endif
 
 	PhysicsServer::get_singleton()->body_set_collision_layer(body_rid, layer_mask);
 	PhysicsServer::get_singleton()->body_set_collision_mask(body_rid, layer_mask);
@@ -839,11 +825,7 @@ void VoxelChunkDefault::_world_light_removed(const Ref<VoxelLight> &light) {
 	int index = _lights.find(light);
 
 	if (index != -1) {
-#if VERSION_MAJOR < 4
 		_lights.remove(index);
-#else
-		_lights.remove_at(index);
-#endif
 
 		set_lights_dirty(true);
 	}

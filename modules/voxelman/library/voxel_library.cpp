@@ -47,7 +47,6 @@ bool VoxelLibrary::_supports_caching() {
 	return false;
 }
 
-
 //Materials
 Ref<Material> VoxelLibrary::material_get(const int index) {
 	ERR_FAIL_INDEX_V(index, _materials.size(), Ref<Material>());
@@ -103,11 +102,7 @@ void VoxelLibrary::material_set(const int index, const Ref<Material> &value) {
 }
 
 void VoxelLibrary::material_remove(const int index) {
-#if VERSION_MAJOR <= 3
 	_materials.remove(index);
-#else
-	_materials.remove_at(index);
-#endif
 }
 
 int VoxelLibrary::material_get_num() const {
@@ -174,7 +169,6 @@ void VoxelLibrary::liquid_material_cache_unref(const int key) {
 void VoxelLibrary::_liquid_material_cache_unref(const int key) {
 }
 
-
 void VoxelLibrary::liquid_material_add(const Ref<Material> &value) {
 	ERR_FAIL_COND(!value.is_valid());
 
@@ -188,11 +182,7 @@ void VoxelLibrary::liquid_material_set(const int index, const Ref<Material> &val
 }
 
 void VoxelLibrary::liquid_material_remove(const int index) {
-#if VERSION_MAJOR <= 3
 	_liquid_materials.remove(index);
-#else
-	_liquid_materials.remove_at(index);
-#endif
 }
 
 int VoxelLibrary::liquid_material_get_num() const {
@@ -259,7 +249,6 @@ void VoxelLibrary::prop_material_cache_unref(const int key) {
 void VoxelLibrary::_prop_material_cache_unref(const int key) {
 }
 
-
 void VoxelLibrary::prop_material_add(const Ref<Material> &value) {
 	ERR_FAIL_COND(!value.is_valid());
 
@@ -273,11 +262,7 @@ void VoxelLibrary::prop_material_set(const int index, const Ref<Material> &value
 }
 
 void VoxelLibrary::prop_material_remove(const int index) {
-#if VERSION_MAJOR <= 3
 	_prop_materials.remove(index);
-#else
-	_prop_materials.remove_at(index);
-#endif
 }
 
 int VoxelLibrary::prop_material_get_num() const {
@@ -357,13 +342,9 @@ void VoxelLibrary::refresh_rects() {
 }
 
 void VoxelLibrary::setup_material_albedo(int material_index, Ref<Texture> texture) {
-#if VERSION_MAJOR < 4
 	if (has_method("_setup_material_albedo")) {
 		call("_setup_material_albedo", material_index, texture);
 	}
-#else
-	GDVIRTUAL_CALL(_setup_material_albedo, material_index, texture);
-#endif
 }
 
 VoxelLibrary::VoxelLibrary() {
@@ -381,30 +362,16 @@ void VoxelLibrary::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_initialized", "value"), &VoxelLibrary::set_initialized);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "initialized", PROPERTY_HINT_NONE, "", 0), "set_initialized", "get_initialized");
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_supports_caching"));
-#else
-	GDVIRTUAL_BIND(_supports_caching);
-#endif
 
 	ClassDB::bind_method(D_METHOD("_supports_caching"), &VoxelLibrary::_supports_caching);
 	ClassDB::bind_method(D_METHOD("supports_caching"), &VoxelLibrary::supports_caching);
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_setup_material_albedo", PropertyInfo(Variant::INT, "material_index"), PropertyInfo(Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture")));
-#else
-	GDVIRTUAL_BIND(_setup_material_albedo, "material_index", "texture");
-#endif
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_material_cache_get_key", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "TerrainMaterialCache"), "_material_cache_get", PropertyInfo(Variant::INT, "key")));
 	BIND_VMETHOD(MethodInfo("_material_cache_unref", PropertyInfo(Variant::INT, "key")));
-#else
-	GDVIRTUAL_BIND(_material_cache_get_key, "chunk", "texture");
-	GDVIRTUAL_BIND(_material_cache_get, "key");
-	GDVIRTUAL_BIND(_material_cache_unref, "key");
-#endif
 
 	ClassDB::bind_method(D_METHOD("material_get", "index"), &VoxelLibrary::material_get);
 	ClassDB::bind_method(D_METHOD("material_lod_get", "index"), &VoxelLibrary::material_lod_get);
@@ -426,15 +393,9 @@ void VoxelLibrary::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("materials_set"), &VoxelLibrary::materials_set);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "17/17:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_liquid_material_cache_get_key", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "TerrainMaterialCache"), "_liquid_material_cache_get", PropertyInfo(Variant::INT, "key")));
 	BIND_VMETHOD(MethodInfo("_liquid_material_cache_unref", PropertyInfo(Variant::INT, "key")));
-#else
-	GDVIRTUAL_BIND(_liquid_material_cache_get_key, "chunk", "texture");
-	GDVIRTUAL_BIND(_liquid_material_cache_get, "key");
-	GDVIRTUAL_BIND(_liquid_material_cache_unref, "key");
-#endif
 
 	ClassDB::bind_method(D_METHOD("liquid_material_get", "index"), &VoxelLibrary::liquid_material_get);
 	ClassDB::bind_method(D_METHOD("liquid_material_lod_get", "index"), &VoxelLibrary::liquid_material_lod_get);
@@ -456,15 +417,9 @@ void VoxelLibrary::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("liquid_materials_set"), &VoxelLibrary::liquid_materials_set);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "liquid_materials", PROPERTY_HINT_NONE, "17/17:Material", PROPERTY_USAGE_DEFAULT, "Material"), "liquid_materials_set", "liquid_materials_get");
 
-#if VERSION_MAJOR < 4
 	BIND_VMETHOD(MethodInfo("_prop_material_cache_get_key", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "TerrainMaterialCache"), "_prop_material_cache_get", PropertyInfo(Variant::INT, "key")));
 	BIND_VMETHOD(MethodInfo("_prop_material_cache_unref", PropertyInfo(Variant::INT, "key")));
-#else
-	GDVIRTUAL_BIND(_prop_material_cache_get_key, "chunk", "texture");
-	GDVIRTUAL_BIND(_prop_material_cache_get, "key");
-	GDVIRTUAL_BIND(_prop_material_cache_unref, "key");
-#endif
 
 	ClassDB::bind_method(D_METHOD("prop_material_get", "index"), &VoxelLibrary::prop_material_get);
 	ClassDB::bind_method(D_METHOD("prop_material_lod_get", "index"), &VoxelLibrary::prop_material_lod_get);

@@ -22,16 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-
-
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/io/resource.h"
-#else
 #include "core/resource.h"
-#endif
 
 #include "core/math/rect2.h"
 #include "scene/resources/material.h"
@@ -40,10 +31,6 @@ SOFTWARE.
 #include "voxel_surface.h"
 
 #include "../defines.h"
-
-#if GODOT4
-#define Texture Texture2D
-#endif
 
 class VoxelMaterialCache;
 class VoxelChunk;
@@ -158,11 +145,6 @@ public:
 
 	void setup_material_albedo(int material_index, Ref<Texture> texture);
 
-
-#if VERSION_MAJOR >= 4
-	GDVIRTUAL2(_setup_material_albedo, int, Ref<Texture>);
-#endif
-
 	VoxelLibrary();
 	~VoxelLibrary();
 
@@ -170,9 +152,9 @@ protected:
 	static void _bind_methods();
 
 	bool _initialized;
-	Vector<Ref<Material> > _materials;
-	Vector<Ref<Material> > _liquid_materials;
-	Vector<Ref<Material> > _prop_materials;
+	Vector<Ref<Material>> _materials;
+	Vector<Ref<Material>> _liquid_materials;
+	Vector<Ref<Material>> _prop_materials;
 };
 
 #endif // VOXEL_LIBRARY_H

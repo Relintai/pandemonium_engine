@@ -20,15 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/version.h"
-
-#if VERSION_MAJOR > 3
-#include "core/variant/array.h"
-#include "core/variant/dictionary.h"
-#else
 #include "core/array.h"
 #include "core/dictionary.h"
-#endif
 
 #include "voxel_mesher_marching_cubes.h"
 
@@ -39,13 +32,7 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR < 4
 #include "servers/visual_server.h"
-#else
-#include "servers/rendering_server.h"
-
-typedef class RenderingServer VisualServer;
-#endif
 
 void VoxelMesherMarchingCubes::get_voxel_type_array(int *arr, Ref<VoxelChunk> chunk, const int x, const int y, const int z, const int size) {
 	uint8_t *channel_type = chunk->channel_get(_channel_index_type);
