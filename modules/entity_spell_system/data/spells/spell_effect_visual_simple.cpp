@@ -89,6 +89,9 @@ void SpellEffectVisualSimple::set_aura_effect_visual(Ref<PackedScene> value) {
 }
 
 SpellEffectVisualSimple::SpellEffectVisualSimple() {
+	_effect_visual_point = EntityEnums::COMMON_SKELETON_POINT_ROOT;
+	_spell_cast_finish_effect_point = EntityEnums::COMMON_SKELETON_POINT_ROOT;
+	_aura_effect_visual_point = EntityEnums::COMMON_SKELETON_POINT_ROOT;
 }
 
 SpellEffectVisualSimple::~SpellEffectVisualSimple() {

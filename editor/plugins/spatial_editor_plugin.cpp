@@ -30,44 +30,25 @@
 
 #include "spatial_editor_plugin.h"
 
-#include "core/math/camera_matrix.h"
-#include "core/os/input.h"
-#include "core/os/keyboard.h"
-#include "core/project_settings.h"
-#include "editor/editor_node.h"
-#include "editor/editor_scale.h"
-#include "editor/editor_settings.h"
-#include "editor/plugins/animation_player_editor_plugin.h"
-#include "editor/plugins/script_editor_plugin.h"
-#include "editor/script_editor_debugger.h"
-#include "editor/spatial_editor_gizmos.h"
-#include "scene/3d/camera.h"
-#include "scene/3d/collision_shape.h"
-#include "scene/3d/mesh_instance.h"
-#include "scene/3d/physics_body.h"
-#include "scene/3d/room_manager.h"
-#include "scene/3d/visual_instance.h"
-#include "scene/gui/viewport_container.h"
-#include "scene/main/viewport.h"
-#include "scene/resources/environment.h"
-#include "scene/resources/packed_scene.h"
-#include "scene/resources/surface_tool.h"
-#include "scene/resources/world.h"
 #include "core/array.h"
 #include "core/class_db.h"
 #include "core/engine.h"
 #include "core/io/resource_loader.h"
 #include "core/map.h"
 #include "core/math/basis.h"
+#include "core/math/camera_matrix.h"
 #include "core/math/geometry.h"
 #include "core/math/math_funcs.h"
 #include "core/math/plane.h"
 #include "core/math/rect2.h"
 #include "core/node_path.h"
+#include "core/os/input.h"
 #include "core/os/input_event.h"
+#include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"
 #include "core/pool_vector.h"
+#include "core/project_settings.h"
 #include "core/rid_handle.h"
 #include "core/script_language.h"
 #include "core/set.h"
@@ -75,10 +56,23 @@
 #include "core/undo_redo.h"
 #include "editor/animation_track_editor.h"
 #include "editor/editor_data.h"
+#include "editor/editor_node.h"
+#include "editor/editor_scale.h"
+#include "editor/editor_settings.h"
 #include "editor/inspector_dock.h"
+#include "editor/plugins/animation_player_editor_plugin.h"
+#include "editor/plugins/script_editor_plugin.h"
 #include "editor/scene_tree_dock.h"
 #include "editor/scene_tree_editor.h"
+#include "editor/script_editor_debugger.h"
+#include "editor/spatial_editor_gizmos.h"
 #include "scene/2d/canvas_item.h"
+#include "scene/3d/camera.h"
+#include "scene/3d/collision_shape.h"
+#include "scene/3d/mesh_instance.h"
+#include "scene/3d/physics_body.h"
+#include "scene/3d/room_manager.h"
+#include "scene/3d/visual_instance.h"
 #include "scene/gui/check_box.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/label.h"
@@ -91,12 +85,18 @@
 #include "scene/gui/shortcut.h"
 #include "scene/gui/split_container.h"
 #include "scene/gui/tool_button.h"
+#include "scene/gui/viewport_container.h"
 #include "scene/main/scene_tree.h"
+#include "scene/main/viewport.h"
+#include "scene/resources/environment.h"
 #include "scene/resources/font.h"
 #include "scene/resources/gradient.h"
+#include "scene/resources/packed_scene.h"
 #include "scene/resources/shader.h"
 #include "scene/resources/shape.h"
 #include "scene/resources/style_box.h"
+#include "scene/resources/surface_tool.h"
+#include "scene/resources/world.h"
 #include "servers/physics_server.h"
 
 #define DISTANCE_DEFAULT 4
@@ -326,7 +326,12 @@ void SpatialEditorViewport::_update_camera(float p_interp_delta) {
 			// We interpolate a different point here, because in freelook mode the focus point (cursor.pos) orbits around eye_pos
 			camera_cursor.eye_pos = old_camera_cursor.eye_pos.linear_interpolate(cursor.eye_pos, CLAMP(factor, 0, 1));
 
-			const float orbit_inertia = EDITOR_GET("editors/3d/navigation_feel/orbit_inertia");
+			float orbit_inertia = EDITOR_GET("editors/3d/navigation_feel/orbit_inertia");
+
+			if (orbit_inertia == 0) {
+				orbit_inertia = 0.000001;
+			}
+
 			camera_cursor.x_rot = Math::lerp(old_camera_cursor.x_rot, cursor.x_rot, MIN(1.f, p_interp_delta * (1 / orbit_inertia)));
 			camera_cursor.y_rot = Math::lerp(old_camera_cursor.y_rot, cursor.y_rot, MIN(1.f, p_interp_delta * (1 / orbit_inertia)));
 
@@ -341,9 +346,13 @@ void SpatialEditorViewport::_update_camera(float p_interp_delta) {
 			camera_cursor.pos = camera_cursor.eye_pos + forward * camera_cursor.distance;
 
 		} else {
-			const float orbit_inertia = EDITOR_GET("editors/3d/navigation_feel/orbit_inertia");
+			float orbit_inertia = EDITOR_GET("editors/3d/navigation_feel/orbit_inertia");
 			const float translation_inertia = EDITOR_GET("editors/3d/navigation_feel/translation_inertia");
 			const float zoom_inertia = EDITOR_GET("editors/3d/navigation_feel/zoom_inertia");
+
+			if (orbit_inertia == 0) {
+				orbit_inertia = 0.000001;
+			}
 
 			camera_cursor.x_rot = Math::lerp(old_camera_cursor.x_rot, cursor.x_rot, MIN(1.f, p_interp_delta * (1 / orbit_inertia)));
 			camera_cursor.y_rot = Math::lerp(old_camera_cursor.y_rot, cursor.y_rot, MIN(1.f, p_interp_delta * (1 / orbit_inertia)));
