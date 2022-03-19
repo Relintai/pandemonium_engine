@@ -38,6 +38,7 @@
 
 #define WORKSPACE_MARGIN Vector2(10, 10)
 class RTilesetEditorContext;
+class ScrollContainer;
 
 class RTileSetEditor : public HSplitContainer {
 	friend class RTileSetEditorPlugin;

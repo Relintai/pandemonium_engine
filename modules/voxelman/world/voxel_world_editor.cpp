@@ -41,6 +41,8 @@ SOFTWARE.
 #include "core/os/input.h"
 #include "editor/plugins/spatial_editor_plugin.h"
 #include "scene/3d/camera.h"
+#include "scene/gui/slider.h"
+#include "scene/gui/scroll_container.h"
 
 bool VoxelWorldEditor::forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) {
 	if (!_world || !_world->get_editable()) {

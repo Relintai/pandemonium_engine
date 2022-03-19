@@ -36,6 +36,8 @@
 #include "editor/plugins/canvas_item_editor_plugin.h"
 #include "scene/2d/physics_body_2d.h"
 #include "scene/2d/sprite.h"
+#include "scene/gui/scroll_container.h"
+#include "editor/editor_inspector.h"
 
 void RTileSetEditor::edit(const Ref<RTileSet> &p_tileset) {
 	tileset = p_tileset;

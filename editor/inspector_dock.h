@@ -32,18 +32,6 @@
 
 #include "scene/gui/box_container.h"
 
-#include "editor/animation_track_editor.h"
-#include "editor/connections_dialog.h"
-#include "editor/create_dialog.h"
-#include "editor/editor_data.h"
-#include "editor/editor_inspector.h"
-#include "editor/editor_path.h"
-#include "scene/gui/button.h"
-#include "scene/gui/control.h"
-#include "scene/gui/label.h"
-#include "scene/gui/popup_menu.h"
-#include "scene/gui/tool_button.h"
-
 #include "core/object.h"
 #include "core/reference.h"
 #include "core/resource.h"

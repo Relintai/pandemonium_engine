@@ -43,6 +43,11 @@
 #include "scene/main/viewport.h"
 #include "scene/resources/capsule_shape.h"
 #include "scene/resources/sphere_shape.h"
+#include "editor/editor_spin_slider.h"
+#include "scene/gui/texture_rect.h"
+#include "editor/editor_inspector.h"
+#include "editor/editor_spin_slider.h"
+#include "editor/animation_track_editor.h"
 
 #define DISTANCE_DEFAULT 4
 

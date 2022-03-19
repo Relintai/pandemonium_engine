@@ -37,6 +37,7 @@
 #include "scene/3d/camera.h"
 #include "scene/3d/mesh_instance.h"
 #include "scene/3d/skeleton.h"
+#include "editor/editor_inspector.h"
 
 class ModuleEditorInspectorPluginSkeleton;
 class Joint;
@@ -44,6 +45,8 @@ class PhysicalBone;
 class ModuleSkeletonEditorPlugin;
 class Button;
 class CheckBox;
+class EditorSpinSlider;
+class EditorInspectorSection;
 
 class ModuleBoneTransformEditor : public VBoxContainer {
 	GDCLASS(ModuleBoneTransformEditor, VBoxContainer);

@@ -32,22 +32,7 @@
 
 #include "scene/gui/box_container.h"
 
-#include "scene/gui/control.h"
-#include "scene/gui/dialogs.h"
-#include "scene/gui/item_list.h"
-#include "scene/gui/label.h"
-#include "scene/gui/menu_button.h"
-#include "scene/gui/option_button.h"
-#include "scene/gui/progress_bar.h"
 #include "scene/gui/split_container.h"
-#include "scene/gui/tool_button.h"
-#include "scene/gui/tree.h"
-#include "scene/main/timer.h"
-#include "create_dialog.h"
-#include "dependency_editor.h"
-#include "editor_dir_dialog.h"
-#include "editor_file_system.h"
-#include "script_create_dialog.h"
 
 #include "core/os/dir_access.h"
 #include "core/os/thread.h"

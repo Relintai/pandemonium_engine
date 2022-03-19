@@ -32,8 +32,6 @@
 
 #include "scene/gui/box_container.h"
 
-#include "scene/gui/menu_button.h"
-
 #include "core/map.h"
 #include "core/object.h"
 

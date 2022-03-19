@@ -33,18 +33,8 @@
 #include "scene/gui/box_container.h"
 #include "scene/gui/dialogs.h"
 
-#include "core/undo_redo.h"
-#include "editor/scene_tree_editor.h"
-#include "scene/gui/button.h"
-#include "scene/gui/item_list.h"
-#include "scene/gui/line_edit.h"
-#include "scene/gui/popup.h"
-#include "scene/gui/tool_button.h"
-#include "scene/gui/tree.h"
-
 #include "core/object.h"
 #include "core/ustring.h"
-
 
 class Button;
 class Label;

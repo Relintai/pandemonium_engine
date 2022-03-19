@@ -32,8 +32,6 @@
 
 #include "core/reference.h"
 
-#include "editor_plugin.h"
-
 #include "core/object.h"
 
 class EditorNode;
