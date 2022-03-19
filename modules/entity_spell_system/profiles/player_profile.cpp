@@ -57,6 +57,8 @@ int PlayerProfile::get_class_profile_count() const {
 }
 
 Ref<ClassProfile> PlayerProfile::get_class_profile_index(const int index) {
+	ERR_FAIL_INDEX_V(index, _class_profiles.size(), Ref<ClassProfile>());
+
 	return _class_profiles.get(index);
 }
 
@@ -79,6 +81,8 @@ void PlayerProfile::clear_class_profiles() {
 }
 
 void PlayerProfile::remove_class_profile(const int index) {
+	ERR_FAIL_INDEX(index, _class_profiles.size());
+
 	_class_profiles.get(index)->disconnect("changed", this, "_on_class_profile_changed");
 
 	_class_profiles.remove(index);

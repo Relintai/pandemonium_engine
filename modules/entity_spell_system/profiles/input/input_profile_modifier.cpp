@@ -35,14 +35,20 @@ void InputProfileModifier::add_modifier(String modifier) {
 }
 
 String InputProfileModifier::get_modifier(int index) {
+	ERR_FAIL_INDEX_V(index, _modifier_actions->size(), "");
+
 	return _modifier_actions->get(index);
 }
 
 void InputProfileModifier::set_modifier(int index, String value) {
+	ERR_FAIL_INDEX(index, _modifier_actions->size());
+
 	_modifier_actions->set(index, value);
 }
 
 void InputProfileModifier::remove_modifier(int index) {
+	ERR_FAIL_INDEX(index, _modifier_actions->size());
+
 	_modifier_actions->remove(index);
 }
 
@@ -59,14 +65,20 @@ void InputProfileModifier::add_entry(Ref<InputProfileModifierEntry> modifier) {
 }
 
 Ref<InputProfileModifierEntry> InputProfileModifier::get_entry(int index) {
+	ERR_FAIL_INDEX_V(index, _entries->size(), Ref<InputProfileModifierEntry>());
+
 	return _entries->get(index);
 }
 
 void InputProfileModifier::set_entry(int index, Ref<InputProfileModifierEntry> value) {
+	ERR_FAIL_INDEX(index, _entries->size());
+
 	_entries->set(index, Ref<InputProfileModifierEntry>(value));
 }
 
 void InputProfileModifier::remove_entry(int index) {
+	ERR_FAIL_INDEX(index, _entries->size());
+	
 	_entries->remove(index);
 }
 

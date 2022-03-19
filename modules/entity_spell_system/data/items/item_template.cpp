@@ -291,66 +291,98 @@ void ItemTemplate::stat_modifier_set_count(int value) {
 }
 
 int ItemTemplate::stat_modifier_get_stat_id(const int index) const {
+	ERR_FAIL_INDEX_V(index, MAX_ITEM_STAT_MOD, 0);
+
 	return _modifiers[index].stat_id;
 }
 
 void ItemTemplate::stat_modifier_set_stat_id(const int index, const int value) {
+	ERR_FAIL_INDEX(index, MAX_ITEM_STAT_MOD);
+
 	_modifiers[index].stat_id = value;
 }
 
 float ItemTemplate::stat_modifier_get_min_base_mod(const int index) const {
+	ERR_FAIL_INDEX_V(index, MAX_ITEM_STAT_MOD, 0);
+
 	return _modifiers[index].min_base_mod;
 }
 
 void ItemTemplate::stat_modifier_set_min_base_mod(const int index, const float value) {
+	ERR_FAIL_INDEX(index, MAX_ITEM_STAT_MOD);
+
 	_modifiers[index].min_base_mod = value;
 }
 
 float ItemTemplate::stat_modifier_get_max_base_mod(const int index) const {
+	ERR_FAIL_INDEX_V(index, MAX_ITEM_STAT_MOD, 0);
+
 	return _modifiers[index].max_base_mod;
 }
 
 void ItemTemplate::stat_modifier_set_max_base_mod(const int index, const float value) {
+	ERR_FAIL_INDEX(index, MAX_ITEM_STAT_MOD);
+
 	_modifiers[index].max_base_mod = value;
 }
 
 float ItemTemplate::stat_modifier_get_min_bonus_mod(const int index) const {
+	ERR_FAIL_INDEX_V(index, MAX_ITEM_STAT_MOD, 0);
+
 	return _modifiers[index].min_bonus_mod;
 }
 
 void ItemTemplate::stat_modifier_set_min_bonus_mod(const int index, const float value) {
+	ERR_FAIL_INDEX(index, MAX_ITEM_STAT_MOD);
+
 	_modifiers[index].min_bonus_mod = value;
 }
 
 float ItemTemplate::stat_modifier_get_max_bonus_mod(const int index) const {
+	ERR_FAIL_INDEX_V(index, MAX_ITEM_STAT_MOD, 0);
+
 	return _modifiers[index].max_bonus_mod;
 }
 
 void ItemTemplate::stat_modifier_set_max_bonus_mod(const int index, const float value) {
+	ERR_FAIL_INDEX(index, MAX_ITEM_STAT_MOD);
+
 	_modifiers[index].max_bonus_mod = value;
 }
 
 float ItemTemplate::stat_modifier_get_min_percent_mod(const int index) const {
+	ERR_FAIL_INDEX_V(index, MAX_ITEM_STAT_MOD, 0);
+
 	return _modifiers[index].min_percent_mod;
 }
 
 void ItemTemplate::stat_modifier_set_min_percent_mod(const int index, const float value) {
+	ERR_FAIL_INDEX(index, MAX_ITEM_STAT_MOD);
+
 	_modifiers[index].min_percent_mod = value;
 }
 
 float ItemTemplate::stat_modifier_get_max_percent_mod(const int index) const {
+	ERR_FAIL_INDEX_V(index, MAX_ITEM_STAT_MOD, 0);
+
 	return _modifiers[index].max_percent_mod;
 }
 
 void ItemTemplate::stat_modifier_set_max_percent_mod(const int index, const float value) {
+	ERR_FAIL_INDEX(index, MAX_ITEM_STAT_MOD);
+
 	_modifiers[index].max_percent_mod = value;
 }
 
 float ItemTemplate::stat_modifier_get_scaling_factor(const int index) const {
+	ERR_FAIL_INDEX_V(index, MAX_ITEM_STAT_MOD, 0);
+
 	return _modifiers[index].scaling_factor;
 }
 
 void ItemTemplate::stat_modifier_set_scaling_factor(const int index, const float value) {
+	ERR_FAIL_INDEX(index, MAX_ITEM_STAT_MOD);
+	
 	_modifiers[index].scaling_factor = value;
 }
 

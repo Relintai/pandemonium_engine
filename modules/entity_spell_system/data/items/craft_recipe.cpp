@@ -48,10 +48,14 @@ void CraftRecipe::set_sub_category(const CraftSubCategories value) {
 }
 
 Ref<CraftRecipeHelper> CraftRecipe::get_required_tool(const int index) {
+	ERR_FAIL_INDEX_V(index, MAX_REQUIRED_TOOLS, Ref<CraftRecipeHelper>());
+
 	return _required_tools[index];
 }
 
 void CraftRecipe::set_required_tool(const int index, const Ref<CraftRecipeHelper> &value) {
+	ERR_FAIL_INDEX(index, MAX_REQUIRED_TOOLS);
+
 	_required_tools[index] = value;
 }
 
@@ -64,10 +68,14 @@ void CraftRecipe::set_required_tools_count(const int value) {
 }
 
 void CraftRecipe::set_required_material(const int index, const Ref<CraftRecipeHelper> &value) {
+	ERR_FAIL_INDEX(index, MAX_REQUIRED_MATERIALS);
+
 	_required_materials[index] = value;
 }
 
 Ref<CraftRecipeHelper> CraftRecipe::get_required_material(int index) {
+	ERR_FAIL_INDEX_V(index, MAX_REQUIRED_MATERIALS, Ref<CraftRecipeHelper>());
+
 	return _required_materials[index];
 }
 

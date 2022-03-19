@@ -172,7 +172,9 @@ void ItemInstance::from_dict(const Dictionary &dict) {
 Dictionary ItemInstance::_to_dict() {
 	Dictionary dict;
 
-	dict["item_path"] = _item_template->get_path();
+	if (_item_template.is_valid()) {
+		dict["item_path"] = _item_template->get_path();
+	}
 
 	dict["stack_size"] = _stack_size;
 

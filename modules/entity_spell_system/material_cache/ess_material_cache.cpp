@@ -279,6 +279,8 @@ void ESSMaterialCache::initial_setup_default() {
 
 	ESS *ess = ESS::get_singleton();
 
+	ERR_FAIL_COND(!ess);
+
 	ess->ensure_materials_loaded();
 
 	int matc = ess->material_get_num();

@@ -253,6 +253,8 @@ void EntityResource::from_dict(const Dictionary &dict) {
 Dictionary EntityResource::_to_dict() {
 	Dictionary dict;
 
+	ERR_FAIL_COND_V(!ESS::get_singleton(), dict);
+
 	dict["data_path"] = ESS::get_singleton()->get_resource_db()->get_entity_resource(_id)->get_path();
 
 	dict["dirty"] = _dirty;

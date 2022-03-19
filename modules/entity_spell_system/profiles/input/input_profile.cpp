@@ -42,6 +42,8 @@ void InputProfile::set_data(const Array &data) {
 }
 
 void InputProfile::load_to_projectsettings() {
+	ERR_FAIL_COND(!ProjectSettings::get_singleton());
+
 	for (int i = 0; i < _data.size(); ++i) {
 		Array arr = _data[i];
 
@@ -98,6 +100,7 @@ void InputProfile::from_dict(const Dictionary &dict) {
 }
 
 InputProfile::InputProfile() {
+	_owner = nullptr;
 }
 
 void InputProfile::_bind_methods() {

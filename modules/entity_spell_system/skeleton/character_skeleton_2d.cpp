@@ -302,6 +302,8 @@ void CharacterSkeleton2D::remove_model_visual_entry(Ref<ModelVisual> vis, Ref<Mo
 
 	int target_bone_idx = ive->get_bone();
 
+	ERR_FAIL_INDEX(target_bone_idx, _entries.size());
+
 	Vector<Ref<SkeletonModelEntry>> &entries = _entries.write[target_bone_idx];
 
 	for (int i = 0; i < entries.size(); ++i) {

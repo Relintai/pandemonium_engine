@@ -656,6 +656,8 @@ void Entity::setup(Ref<EntityCreateInfo> info) {
 }
 
 void Entity::_setup() {
+	ERR_FAIL_COND(!ESS::get_singleton());
+
 	if (!_s_entity_data.is_valid())
 		return;
 
@@ -712,11 +714,11 @@ void Entity::_setup() {
 
 	ERR_FAIL_COND(!stat_data.is_valid());
 
-	for (int i = 0; i < ESS::get_singleton()->stat_get_count(); ++i) {
+	for (int i = 0; i < _stats.size(); ++i) {
 		stat_set_base(i, stat_data->get_base(i));
 	}
 
-	for (int i = 0; i < ESS::get_singleton()->stat_get_count(); ++i) {
+	for (int i = 0; i < _stats.size(); ++i) {
 		stat_setc_current(i, stat_gets_current(i));
 		stat_set_dirty(i, false);
 	}
@@ -768,7 +770,7 @@ void Entity::_setup() {
 	if (_s_entity_data->get_equipment_data().is_valid()) {
 		Ref<EquipmentData> eqd = _s_entity_data->get_equipment_data();
 
-		for (int i = 0; i < ESS::get_singleton()->equip_slot_get_count(); ++i) {
+		for (int i = 0; i < _s_equipment.size(); ++i) {
 			Ref<ItemInstance> ii = eqd->get_item(i);
 
 			if (ii.is_valid())
@@ -1093,6 +1095,8 @@ int Entity::pet_getc_count() {
 ////    Profiles    ////
 
 Ref<ClassProfile> Entity::get_class_profile() {
+	ERR_FAIL_COND_V(!ProfileManager::get_singleton(), Ref<ClassProfile>());
+
 	return ProfileManager::get_singleton()->getc_player_profile()->get_class_profile(_s_entity_data->get_path());
 }
 
@@ -1159,7 +1163,7 @@ Dictionary Entity::_to_dict() {
 
 	Dictionary sd;
 
-	for (int i = 0; i < ESS::get_singleton()->stat_get_count(); ++i) {
+	for (int i = 0; i < _stats.size(); ++i) {
 		Dictionary sdict;
 
 		sdict["base"] = stat_get_base(i);
@@ -1177,7 +1181,7 @@ Dictionary Entity::_to_dict() {
 
 	Dictionary equipment;
 
-	for (int i = 0; i < ESS::get_singleton()->equip_slot_get_count(); ++i) {
+	for (int i = 0; i < _s_equipment.size(); ++i) {
 		Ref<ItemInstance> ii = _s_equipment[i];
 
 		if (ii.is_valid())
@@ -1292,7 +1296,7 @@ Dictionary Entity::_to_dict() {
 
 	////    Known Spells    ////
 
-	if (ESS::get_singleton()->get_use_spell_points())
+	if (ESS::get_singleton() && ESS::get_singleton()->get_use_spell_points())
 		dict["free_spell_points"] = _s_free_spell_points;
 
 	Dictionary known_spells;
@@ -1341,8 +1345,6 @@ Dictionary Entity::_to_dict() {
 	return dict;
 }
 void Entity::_from_dict(const Dictionary &dict) {
-	ERR_FAIL_COND(dict.empty());
-
 	////    Transforms    ////
 
 	//Not needed for now
@@ -1392,7 +1394,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	Dictionary stats = dict.get("stats", Dictionary());
 
-	for (int i = 0; i < ESS::get_singleton()->stat_get_count(); ++i) {
+	for (int i = 0; i < _stats.size(); ++i) {
 		Dictionary sd = stats.get(String::num(i), Dictionary());
 
 		stat_set_base(i, sd.get("base", 0));
@@ -1411,7 +1413,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	Dictionary equipment = dict.get("equipment", Dictionary());
 
-	for (int i = 0; i < ESS::get_singleton()->equip_slot_get_count(); ++i) {
+	for (int i = 0; i < _s_equipment.size(); ++i) {
 		if (equipment.has(String::num(i))) {
 			Ref<ItemInstance> ii = _s_equipment[i];
 
@@ -1600,8 +1602,9 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	////    Known Spells    ////
 
-	if (ESS::get_singleton()->get_use_spell_points())
+	if (ESS::get_singleton() && ESS::get_singleton()->get_use_spell_points()) {
 		sets_free_spell_points(dict.get("free_spell_points", 0));
+	}
 
 	Dictionary known_spells = dict.get("known_spells", Dictionary());
 
@@ -2013,42 +2016,42 @@ void Entity::scraft_recipes_set(const Vector<Variant> &resources) {
 ////    Stat System    ////
 
 EntityStat Entity::get_stat(const int stat_id) const {
-	ERR_FAIL_INDEX_V(stat_id, ESS::get_singleton()->stat_get_count(), EntityStat());
+	ERR_FAIL_INDEX_V(stat_id, _stats.size(), EntityStat());
 
 	return _stats[stat_id];
 }
 
 void Entity::set_stat(const int stat_id, const EntityStat &entry) {
-	ERR_FAIL_INDEX(stat_id, ESS::get_singleton()->stat_get_count());
+	ERR_FAIL_INDEX(stat_id, _stats.size());
 
 	_stats.set(stat_id, entry);
 }
 
 bool Entity::stat_get_dirty(const int stat_id) const {
-	ERR_FAIL_INDEX_V(stat_id, ESS::get_singleton()->stat_get_count(), false);
+	ERR_FAIL_INDEX_V(stat_id, _stats.size(), false);
 
 	return _stats[stat_id].dirty;
 }
 void Entity::stat_set_dirty(const int stat_id, const bool value) {
-	ERR_FAIL_INDEX(stat_id, ESS::get_singleton()->stat_get_count());
+	ERR_FAIL_INDEX(stat_id, _stats.size());
 
 	_stats.write[stat_id].dirty = value;
 }
 
 float Entity::stat_get_base(const int stat_id) const {
-	ERR_FAIL_INDEX_V(stat_id, ESS::get_singleton()->stat_get_count(), 0);
+	ERR_FAIL_INDEX_V(stat_id, _stats.size(), 0);
 
 	return _stats[stat_id].base;
 }
 void Entity::stat_set_base(const int stat_id, const float value) {
-	ERR_FAIL_INDEX(stat_id, ESS::get_singleton()->stat_get_count());
+	ERR_FAIL_INDEX(stat_id, _stats.size());
 
 	_stats.write[stat_id].base = value;
 
 	stat_recalculate(stat_id);
 }
 void Entity::stat_mod_base(const int stat_id, const float value) {
-	ERR_FAIL_INDEX(stat_id, ESS::get_singleton()->stat_get_count());
+	ERR_FAIL_INDEX(stat_id, _stats.size());
 
 	_stats.write[stat_id].base += value;
 
@@ -2056,12 +2059,12 @@ void Entity::stat_mod_base(const int stat_id, const float value) {
 }
 
 float Entity::stat_get_base_calculated(const int stat_id) const {
-	ERR_FAIL_INDEX_V(stat_id, ESS::get_singleton()->stat_get_count(), 0);
+	ERR_FAIL_INDEX_V(stat_id, _stats.size(), 0);
 
 	return _stats[stat_id].base_calculated;
 }
 void Entity::stat_set_base_calculated(const int stat_id, const float value) {
-	ERR_FAIL_INDEX(stat_id, ESS::get_singleton()->stat_get_count());
+	ERR_FAIL_INDEX(stat_id, _stats.size());
 
 	_stats.write[stat_id].base_calculated = value;
 
@@ -2069,19 +2072,19 @@ void Entity::stat_set_base_calculated(const int stat_id, const float value) {
 }
 
 float Entity::stat_get_bonus(const int stat_id) const {
-	ERR_FAIL_INDEX_V(stat_id, ESS::get_singleton()->stat_get_count(), 0);
+	ERR_FAIL_INDEX_V(stat_id, _stats.size(), 0);
 
 	return _stats[stat_id].bonus;
 }
 void Entity::stat_set_bonus(const int stat_id, const float value) {
-	ERR_FAIL_INDEX(stat_id, ESS::get_singleton()->stat_get_count());
+	ERR_FAIL_INDEX(stat_id, _stats.size());
 
 	_stats.write[stat_id].bonus = value;
 
 	stat_recalculate(stat_id);
 }
 void Entity::stat_mod_bonus(const int stat_id, const float value) {
-	ERR_FAIL_INDEX(stat_id, ESS::get_singleton()->stat_get_count());
+	ERR_FAIL_INDEX(stat_id, _stats.size());
 
 	_stats.write[stat_id].bonus += value;
 
@@ -2089,19 +2092,19 @@ void Entity::stat_mod_bonus(const int stat_id, const float value) {
 }
 
 float Entity::stat_get_percent(const int stat_id) const {
-	ERR_FAIL_INDEX_V(stat_id, ESS::get_singleton()->stat_get_count(), 0);
+	ERR_FAIL_INDEX_V(stat_id, _stats.size(), 0);
 
 	return _stats[stat_id].percent;
 }
 void Entity::stat_set_percent(const int stat_id, const float value) {
-	ERR_FAIL_INDEX(stat_id, ESS::get_singleton()->stat_get_count());
+	ERR_FAIL_INDEX(stat_id, _stats.size());
 
 	_stats.write[stat_id].percent = value;
 
 	stat_recalculate(stat_id);
 }
 void Entity::stat_mod_percent(const int stat_id, const float value) {
-	ERR_FAIL_INDEX(stat_id, ESS::get_singleton()->stat_get_count());
+	ERR_FAIL_INDEX(stat_id, _stats.size());
 
 	_stats.write[stat_id].percent += value;
 
@@ -2109,7 +2112,7 @@ void Entity::stat_mod_percent(const int stat_id, const float value) {
 }
 
 void Entity::stat_mod(const int stat_id, const float base, const float bonus, const float percent) {
-	ERR_FAIL_INDEX(stat_id, ESS::get_singleton()->stat_get_count());
+	ERR_FAIL_INDEX(stat_id, _stats.size());
 
 	_stats.write[stat_id].base += base;
 	_stats.write[stat_id].bonus += bonus;
@@ -2119,23 +2122,23 @@ void Entity::stat_mod(const int stat_id, const float base, const float bonus, co
 }
 
 float Entity::stat_gets_current(const int stat_id) const {
-	ERR_FAIL_INDEX_V(stat_id, ESS::get_singleton()->stat_get_count(), 0);
+	ERR_FAIL_INDEX_V(stat_id, _stats.size(), 0);
 
 	return _stats[stat_id].scurrent;
 }
 void Entity::stat_sets_current(const int stat_id, const float value) {
-	ERR_FAIL_INDEX(stat_id, ESS::get_singleton()->stat_get_count());
+	ERR_FAIL_INDEX(stat_id, _stats.size());
 
 	_stats.write[stat_id].scurrent = value;
 }
 
 float Entity::stat_getc_current(const int stat_id) const {
-	ERR_FAIL_INDEX_V(stat_id, ESS::get_singleton()->stat_get_count(), 0);
+	ERR_FAIL_INDEX_V(stat_id, _stats.size(), 0);
 
 	return _stats[stat_id].ccurrent;
 }
 void Entity::stat_setc_current(const int stat_id, const float value) {
-	ERR_FAIL_INDEX(stat_id, ESS::get_singleton()->stat_get_count());
+	ERR_FAIL_INDEX(stat_id, _stats.size());
 
 	_stats.write[stat_id].ccurrent = value;
 
@@ -2143,7 +2146,7 @@ void Entity::stat_setc_current(const int stat_id, const float value) {
 }
 
 void Entity::stat_recalculate(const int stat_id) {
-	ERR_FAIL_INDEX(stat_id, ESS::get_singleton()->stat_get_count());
+	ERR_FAIL_INDEX(stat_id, _stats.size());
 
 	stat_sets_current(stat_id, (stat_get_base(stat_id) + stat_get_base_calculated(stat_id) + stat_get_bonus(stat_id)) * (stat_get_percent(stat_id) / 100.0));
 
@@ -2180,14 +2183,14 @@ void Entity::notification_cstat_changed(const int statid, const float current) {
 }
 
 void Entity::ssend_stat(int id, int ccurrent) {
-	ERR_FAIL_INDEX(id, ESS::get_singleton()->stat_get_count());
+	ERR_FAIL_INDEX(id, _stats.size());
 
 	//Only the owner needs access to stats
 	ORPC(creceive_stat, id, ccurrent);
 }
 
 void Entity::creceive_stat(int id, int ccurrent) {
-	ERR_FAIL_INDEX(id, ESS::get_singleton()->stat_get_count());
+	ERR_FAIL_INDEX(id, _stats.size());
 
 	stat_setc_current(id, ccurrent);
 }
@@ -2289,7 +2292,7 @@ void Entity::equips(int equip_slot, int bag_slot) {
 	call("_equips", equip_slot, bag_slot);
 }
 void Entity::_equips(int equip_slot, int bag_slot) {
-	ERR_FAIL_INDEX(equip_slot, ESS::get_singleton()->equip_slot_get_count());
+	ERR_FAIL_INDEX(equip_slot, _s_equipment.size());
 	ERR_FAIL_COND(!_s_bag.is_valid());
 
 	Ref<ItemInstance> bag_item = _s_bag->get_item(bag_slot);
@@ -2320,7 +2323,7 @@ void Entity::_equips(int equip_slot, int bag_slot) {
 	ORPC(equip_csuccess, equip_slot, bag_slot);
 }
 void Entity::equip_csuccess(int equip_slot, int bag_slot) {
-	ERR_FAIL_INDEX(equip_slot, ESS::get_singleton()->equip_slot_get_count());
+	ERR_FAIL_INDEX(equip_slot, _c_equipment.size());
 	ERR_FAIL_COND(!_c_bag.is_valid());
 
 	Ref<ItemInstance> old_bag_item = _c_bag->get_item(bag_slot);
@@ -2338,7 +2341,7 @@ void Entity::equip_csuccess(int equip_slot, int bag_slot) {
 	equip_con_success(equip_slot, old_bag_item, old_equipped_item, bag_slot);
 }
 void Entity::equip_cfail(int equip_slot, int bag_slot) {
-	ERR_FAIL_INDEX(equip_slot, ESS::get_singleton()->equip_slot_get_count());
+	ERR_FAIL_INDEX(equip_slot, _c_equipment.size());
 	ERR_FAIL_COND(!_c_bag.is_valid());
 
 	Ref<ItemInstance> bag_item = _c_bag->get_item(bag_slot);
@@ -2348,23 +2351,23 @@ void Entity::equip_cfail(int equip_slot, int bag_slot) {
 }
 
 Ref<ItemInstance> Entity::equip_gets_slot(int index) {
-	ERR_FAIL_INDEX_V(index, ESS::get_singleton()->equip_slot_get_count(), Ref<ItemInstance>());
+	ERR_FAIL_INDEX_V(index, _s_equipment.size(), Ref<ItemInstance>());
 
 	return _s_equipment[index];
 }
 void Entity::equip_sets_slot(int index, Ref<ItemInstance> item) {
-	ERR_FAIL_INDEX(index, ESS::get_singleton()->equip_slot_get_count());
+	ERR_FAIL_INDEX(index, _s_equipment.size());
 
 	_s_equipment.write[index] = item;
 }
 
 Ref<ItemInstance> Entity::equip_getc_slot(int index) {
-	ERR_FAIL_INDEX_V(index, ESS::get_singleton()->equip_slot_get_count(), Ref<ItemInstance>());
+	ERR_FAIL_INDEX_V(index, _c_equipment.size(), Ref<ItemInstance>());
 
 	return _c_equipment[index];
 }
 void Entity::equip_setc_slot(int index, Ref<ItemInstance> item) {
-	ERR_FAIL_INDEX(index, ESS::get_singleton()->equip_slot_get_count());
+	ERR_FAIL_INDEX(index, _c_equipment.size());
 
 	_c_equipment.write[index] = item;
 }
@@ -2503,6 +2506,8 @@ void Entity::resource_clears() {
 }
 
 void Entity::resource_addc_rpc(int index, String data) {
+	ERR_FAIL_COND(!ESS::get_singleton());
+
 	//Ref<EntityResource> res;
 
 	Dictionary dict = data_as_dict(data);
@@ -2713,6 +2718,7 @@ void Entity::stake_damage(Ref<SpellDamageInfo> info) {
 
 void Entity::sdeal_damage_to(Ref<SpellDamageInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
+	ERR_FAIL_COND(!info->receiver_get());
 
 	//serverside
 
@@ -2733,6 +2739,7 @@ void Entity::sdeal_damage_to(Ref<SpellDamageInfo> info) {
 
 void Entity::stake_heal(Ref<SpellHealInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
+	ERR_FAIL_COND(!info->receiver_get());
 
 	//serverside
 
@@ -2774,7 +2781,7 @@ void Entity::stake_heal(Ref<SpellHealInfo> info) {
 
 void Entity::sdeal_heal_to(Ref<SpellHealInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
-	ERR_FAIL_COND(info->receiver_get() == NULL);
+	ERR_FAIL_COND(!info->receiver_get());
 
 	//serverside
 
@@ -2972,6 +2979,8 @@ void Entity::levelups(int value) {
 	if (value <= 0)
 		return;
 
+	ERR_FAIL_COND(!ESS::get_singleton());
+
 	if (_s_level == ESS::get_singleton()->get_max_character_level())
 		return;
 
@@ -3017,6 +3026,8 @@ void Entity::item_crequest_use(int item_id) {
 	RPCS(item_uses, item_id);
 }
 void Entity::_item_uses(int item_id) {
+	ERR_FAIL_COND(!ESS::get_singleton());
+
 	Ref<ItemTemplate> it = ESS::get_singleton()->get_resource_db()->get_item_template(item_id);
 
 	ERR_FAIL_COND(!it.is_valid());
@@ -3133,6 +3144,9 @@ void Entity::notification_saura(int what, Ref<AuraData> data) {
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
+		ERR_CONTINUE(!ad.is_valid());
+		ERR_CONTINUE(!ad->get_aura().is_valid());
+
 		ad->get_aura()->notification_saura(what, data);
 	}
 
@@ -3150,6 +3164,9 @@ void Entity::notification_sheal(int what, Ref<SpellHealInfo> info) {
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
+
+		ERR_CONTINUE(!ad.is_valid());
+		ERR_CONTINUE(!ad->get_aura().is_valid());
 
 		ad->get_aura()->notification_sheal(what, ad, info);
 	}
@@ -3172,6 +3189,9 @@ void Entity::notification_sdamage(int what, Ref<SpellDamageInfo> info) {
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
+		ERR_CONTINUE(!ad.is_valid());
+		ERR_CONTINUE(!ad->get_aura().is_valid());
+
 		ad->get_aura()->notification_sdamage(what, ad, info);
 	}
 }
@@ -3183,6 +3203,9 @@ void Entity::notification_sdeath() {
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
+
+		ERR_CONTINUE(!ad.is_valid());
+		ERR_CONTINUE(!ad->get_aura().is_valid());
 
 		ad->get_aura()->notification_sdeath(ad);
 	}
@@ -3267,8 +3290,10 @@ void Entity::aura_adds(Ref<AuraData> aura) {
 
 	notification_saura(SpellEnums::NOTIFICATION_AURA_ADDED, aura);
 
-	if (!aura->get_aura()->aura_get_hide())
+	ERR_FAIL_COND(!aura->get_aura().is_valid());
+	if (!aura->get_aura()->aura_get_hide()) {
 		VRPCOBJ(aura_addc_rpc, JSON::print(aura->to_dict()), aura_addc, aura);
+	}
 }
 
 void Entity::aura_removes(Ref<AuraData> aura) {
@@ -3291,9 +3316,11 @@ void Entity::aura_removes(Ref<AuraData> aura) {
 
 	if (removed) {
 		notification_saura(SpellEnums::NOTIFICATION_AURA_REMOVED, a);
-
-		if (!aura->get_aura()->aura_get_hide())
+		
+		ERR_FAIL_COND(!aura->get_aura().is_valid());
+		if (!aura->get_aura()->aura_get_hide()) {
 			VRPCOBJ(aura_removec_rpc, JSON::print(aura->to_dict()), aura_removec, aura);
+		}
 	}
 }
 
@@ -3314,8 +3341,10 @@ void Entity::aura_removes_exact(Ref<AuraData> aura) {
 
 	notification_saura(SpellEnums::NOTIFICATION_AURA_REMOVED, aura);
 
-	if (!aura->get_aura()->aura_get_hide())
+	ERR_FAIL_COND(!aura->get_aura().is_valid());
+	if (!aura->get_aura()->aura_get_hide()) {
 		VRPCOBJ(aura_removec_rpc, JSON::print(aura->to_dict()), aura_removec, aura);
+	}
 }
 
 void Entity::aura_removes_expired(Ref<AuraData> aura) {
@@ -3335,8 +3364,10 @@ void Entity::aura_removes_expired(Ref<AuraData> aura) {
 
 	notification_saura(SpellEnums::NOTIFICATION_AURA_REMOVED, aura);
 
-	if (!aura->get_aura()->aura_get_hide())
+	ERR_FAIL_COND(!aura->get_aura().is_valid());
+	if (!aura->get_aura()->aura_get_hide()) {
 		VRPCOBJ(aura_removec_rpc, JSON::print(aura->to_dict()), aura_removec, aura);
+	}
 }
 
 void Entity::aura_removes_dispelled(Ref<AuraData> aura) {
@@ -3356,8 +3387,10 @@ void Entity::aura_removes_dispelled(Ref<AuraData> aura) {
 
 	notification_saura(SpellEnums::NOTIFICATION_AURA_REMOVED, aura);
 
-	if (!aura->get_aura()->aura_get_hide())
+	ERR_FAIL_COND(!aura->get_aura().is_valid());
+	if (!aura->get_aura()->aura_get_hide()) {
 		VRPCOBJ(aura_removec_rpc, JSON::print(aura->to_dict()), aura_removec, aura);
+	}
 }
 
 void Entity::aura_refresheds(Ref<AuraData> aura) {
@@ -3368,8 +3401,10 @@ void Entity::aura_refresheds(Ref<AuraData> aura) {
 
 	notification_saura(SpellEnums::NOTIFICATION_AURA_REFRESHED, aura);
 
-	if (!aura->get_aura()->aura_get_hide())
+	ERR_FAIL_COND(!aura->get_aura().is_valid());
+	if (!aura->get_aura()->aura_get_hide()) {
 		VRPCOBJ(aura_refreshedc_rpc, JSON::print(aura->to_dict()), aura_refreshedc, aura);
+	}
 }
 
 void Entity::aura_addc_rpc(String data) {
@@ -3627,6 +3662,8 @@ void Entity::notification_caura(int what, Ref<AuraData> data) {
 	for (int i = 0; i < _c_auras.size(); ++i) {
 		Ref<AuraData> ad = _c_auras.get(i);
 
+		ERR_CONTINUE(!ad->get_aura().is_valid());
+
 		ad->get_aura()->notification_caura(what, data);
 	}
 
@@ -3641,6 +3678,8 @@ void Entity::notification_cheal(int what, Ref<SpellHealInfo> info) {
 	for (int i = 0; i < _c_auras.size(); ++i) {
 		Ref<AuraData> ad = _c_auras.get(i);
 
+		ERR_CONTINUE(!ad->get_aura().is_valid());
+
 		ad->get_aura()->notification_cheal(what, ad, info);
 	}
 
@@ -3652,11 +3691,14 @@ void Entity::notification_cheal(int what, Ref<SpellHealInfo> info) {
 }
 void Entity::notification_ccast(int what, Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
+	ERR_FAIL_COND(!info->get_spell().is_valid());
 
 	info->get_spell()->notification_ccast(what, info);
 
 	for (int i = 0; i < _c_auras.size(); ++i) {
 		Ref<AuraData> ad = _c_auras.get(i);
+
+		ERR_CONTINUE(!ad->get_aura().is_valid());
 
 		ad->get_aura()->notification_aura_ccast(what, ad, info);
 	}
@@ -3671,6 +3713,8 @@ void Entity::notification_cdamage(int what, Ref<SpellDamageInfo> info) {
 
 	for (int i = 0; i < _c_auras.size(); ++i) {
 		Ref<AuraData> ad = _c_auras.get(i);
+
+		ERR_CONTINUE(!ad->get_aura().is_valid());
 
 		ad->get_aura()->notification_cdamage(what, ad, info);
 	}
@@ -3723,6 +3767,8 @@ void Entity::cast_starts(Ref<SpellCastInfo> info) {
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
+		ERR_CONTINUE(!ad->get_aura().is_valid());
+
 		ad->get_aura()->notification_aura_scast(SpellEnums::NOTIFICATION_CAST_STARTED, ad, info);
 	}
 
@@ -3748,6 +3794,9 @@ void Entity::cast_delays() {
 }
 
 void Entity::cast_finishs() {
+	ERR_FAIL_COND(!_s_spell_cast_info.is_valid());
+	ERR_FAIL_COND(!_s_spell_cast_info->get_spell().is_valid());
+
 	_s_spell_cast_info->get_spell()->cast_finishs(_s_spell_cast_info);
 
 	notification_scast(SpellEnums::NOTIFICATION_CAST_FINISHED, _s_spell_cast_info);
@@ -3758,6 +3807,8 @@ void Entity::cast_finishs() {
 }
 
 void Entity::cast_interrupts() {
+	ERR_FAIL_COND(!_s_spell_cast_info.is_valid());
+
 	notification_scast(SpellEnums::NOTIFICATION_CAST_INTERRUPTED, _s_spell_cast_info);
 
 	_s_spell_cast_info.unref();
@@ -3781,24 +3832,31 @@ void Entity::cast_startc(Ref<SpellCastInfo> info) {
 }
 
 void Entity::cast_failc() {
+	ERR_FAIL_COND(!_c_spell_cast_info.is_valid());
+
 	notification_ccast(SpellEnums::NOTIFICATION_CAST_FAILED, _c_spell_cast_info);
 
 	_c_spell_cast_info.unref();
 }
 
 void Entity::cast_delayc() {
+	ERR_FAIL_COND(!_c_spell_cast_info.is_valid());
 	//c_on_cast_
 
 	notification_scast(SpellEnums::NOTIFICATION_CAST_DELAYED, _c_spell_cast_info);
 }
 
 void Entity::cast_finishc() {
+	ERR_FAIL_COND(!_c_spell_cast_info.is_valid());
+
 	notification_ccast(SpellEnums::NOTIFICATION_CAST_FINISHED, _c_spell_cast_info);
 
 	_c_spell_cast_info.unref();
 }
 
 void Entity::cast_interruptc() {
+	ERR_FAIL_COND(!_c_spell_cast_info.is_valid());
+
 	notification_ccast(SpellEnums::NOTIFICATION_CAST_INTERRUPTED, _c_spell_cast_info);
 
 	_c_spell_cast_info.unref();
@@ -4202,6 +4260,8 @@ bool Entity::spell_hass_id(int id) {
 	return false;
 }
 void Entity::spell_adds(Ref<Spell> spell) {
+	ERR_FAIL_COND(!ESS::get_singleton());
+
 	if (spell_hass(spell))
 		return;
 
@@ -4241,6 +4301,8 @@ void Entity::spell_adds(Ref<Spell> spell) {
 	ORPCOBJ(spell_addc_rpc, spell->get_id(), spell_addc, spell);
 }
 void Entity::spell_adds_id(int id) {
+	ERR_FAIL_COND(!ESS::get_singleton());
+
 	Ref<Spell> spell = ESS::get_singleton()->get_resource_db()->get_spell(id);
 
 	ERR_FAIL_COND(!spell.is_valid());
@@ -5491,6 +5553,8 @@ void Entity::set_actionbar_locked(bool value) {
 }
 
 Ref<ActionBarProfile> Entity::get_action_bar_profile() {
+	ERR_FAIL_COND_V(!ProfileManager::get_singleton(), Ref<ActionBarProfile>());
+
 	if (_action_bar_profile.is_valid())
 		return _action_bar_profile;
 
@@ -5586,13 +5650,11 @@ void Entity::update(float delta) {
 			}
 		}
 
-		if (ESS::get_singleton()) {
-			for (int i = 0; i < ESS::get_singleton()->stat_get_count(); ++i) {
-				if (stat_get_dirty(i)) {
-					ssend_stat(i, stat_gets_current(i));
+		for (int i = 0; i < _stats.size(); ++i) {
+			if (stat_get_dirty(i)) {
+				ssend_stat(i, stat_gets_current(i));
 
-					stat_set_dirty(i, false);
-				}
+				stat_set_dirty(i, false);
 			}
 		}
 
@@ -5646,6 +5708,8 @@ Entity *Entity::sees_gets(int index) {
 	return _s_sees.get(index);
 }
 void Entity::sees_removes_index(int index) {
+	ERR_FAIL_INDEX(index, _s_sees.size());
+
 	Entity *e = _s_sees.get(index);
 
 	if (unlikely(!ObjectDB::instance_validate(e))) {
@@ -5703,6 +5767,8 @@ Entity *Entity::seen_by_gets(int index) {
 	return _s_seen_by.get(index);
 }
 void Entity::seen_by_removes_index(int index) {
+	ERR_FAIL_INDEX(index, _s_sees.size());
+	
 	_s_seen_by.remove(index);
 }
 void Entity::seen_by_removes(Entity *entity) {
@@ -5828,9 +5894,10 @@ Entity::Entity() {
 	_maunal_process = false;
 	_deserialized = false;
 
-	_body = NULL;
-	_body_3d = NULL;
-	_body_2d = NULL;
+	_character_skeleton = nullptr;
+	_body = nullptr;
+	_body_3d = nullptr;
+	_body_2d = nullptr;
 
 	_s_guid = 0;
 	_c_guid = 0;
@@ -6219,6 +6286,8 @@ void Entity::_crafts(int id) {
 }
 
 void Entity::_notification_sxp_gained(int value) {
+	ERR_FAIL_COND(!ESS::get_singleton());
+
 	/*
 	if (ESS::get_singleton()->get_use_class_xp() && ESS::get_singleton()->get_automatic_class_levelups()) {
 		if (ESS::get_singleton()->get_resource_db()->get_xp_data()->can_class_level_up(gets_class_level())) {
@@ -6243,6 +6312,8 @@ void Entity::_notification_sxp_gained(int value) {
 }
 
 void Entity::_notification_slevel_up(int level) {
+	ERR_FAIL_COND(!ESS::get_singleton());
+
 	if (!gets_entity_data().is_valid())
 		return;
 
@@ -6350,6 +6421,8 @@ void Entity::_notification_sdeath() {
 }
 
 void Entity::_spell_learns(int id) {
+	ERR_FAIL_COND(!ESS::get_singleton());
+
 	if (ESS::get_singleton()->get_use_spell_points()) {
 		ERR_FAIL_COND(gets_free_spell_points() <= 0);
 	}
@@ -6654,13 +6727,13 @@ void Entity::_get_property_list(List<PropertyInfo> *p_list) const {
 	int property_usange = PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL;
 #endif
 
-	for (int i = 0; i < ESS::get_singleton()->stat_get_count(); ++i) {
+	for (int i = 0; i < _stats.size(); ++i) {
 		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/base", PROPERTY_HINT_NONE, "", property_usange));
 		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/percent", PROPERTY_HINT_NONE, "", property_usange));
 		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/scurrent", PROPERTY_HINT_NONE, "", property_usange));
 	}
 
-	for (int i = 0; i < ESS::get_singleton()->equip_slot_get_count(); ++i) {
+	for (int i = 0; i < _s_equipment.size(); ++i) {
 		p_list->push_back(PropertyInfo(Variant::OBJECT, "sequipment/" + itos(i), PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", property_usange));
 	}
 }

@@ -166,6 +166,8 @@ Node *Prop2DDataEntry::_processor_get_node_for(const Transform2D &transform, Nod
 		n = memnew(Node2D());
 	}
 
+	ERR_FAIL_COND_V(!n, nullptr);
+
 	n->set_transform(transform * get_transform_2d());
 
 	n->set_z_index(get_z_index());

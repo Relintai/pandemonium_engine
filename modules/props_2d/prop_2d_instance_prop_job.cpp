@@ -124,8 +124,9 @@ void Prop2DInstanceProp2DJob::clear_lights() {
 }
 
 void Prop2DInstanceProp2DJob::_physics_process(float delta) {
-	if (_phase == 0)
+	if (_phase == 0) {
 		phase_physics_process();
+	}
 }
 
 void Prop2DInstanceProp2DJob::_execute_phase() {
@@ -179,6 +180,8 @@ void Prop2DInstanceProp2DJob::_reset() {
 }
 
 void Prop2DInstanceProp2DJob::phase_physics_process() {
+	ERR_FAIL_COND(!_prop_instace);
+
 	//TODO this should only update the differences
 	//for (int i = 0; i < _prop_instace->collider_get_num(); ++i) {
 	//	PhysicsServer::get_singleton()->free(_prop_instace->collider_body_get(i));

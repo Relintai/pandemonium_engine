@@ -32,6 +32,8 @@ void EntityResourceHealth::_init() {
 	stamina_stat_id = 0;
 	health_stat_id = 0;
 
+	ERR_FAIL_COND(!ESS::get_singleton());
+
 	if (ESS::get_singleton()->stat_is_property("Stamina")) {
 		stamina_stat_id = ESS::get_singleton()->stat_get_id("Stamina");
 	}

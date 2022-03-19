@@ -25,12 +25,14 @@ SOFTWARE.
 #include "../../singletons/ess.h"
 
 int ComplexLevelStatData::get_stat_for_level(int main_stat, int level) {
+	ERR_FAIL_COND_V(!ESS::get_singleton(), 0);
 	ERR_FAIL_INDEX_V(level, ESS::get_singleton()->get_max_character_level(), 0);
 	ERR_FAIL_INDEX_V(main_stat, ESS::get_singleton()->stat_get_main_stat_count(), 0);
 
 	return _stat_per_level[level][main_stat];
 }
 void ComplexLevelStatData::set_stat_for_level(int main_stat, int level, int value) {
+	ERR_FAIL_COND(!ESS::get_singleton());
 	ERR_FAIL_INDEX(level, ESS::get_singleton()->get_max_character_level());
 	ERR_FAIL_INDEX(main_stat, ESS::get_singleton()->stat_get_main_stat_count());
 
@@ -48,6 +50,8 @@ int ComplexLevelStatData::_get_stat_diff(int main_stat, int old_level, int new_l
 }
 
 ComplexLevelStatData::ComplexLevelStatData() {
+	ERR_FAIL_COND(!ESS::get_singleton());
+
 	if (ESS::get_singleton()->get_max_character_level()) {
 		_stat_per_level.resize(ESS::get_singleton()->get_max_character_level());
 
@@ -64,12 +68,14 @@ ComplexLevelStatData::ComplexLevelStatData() {
 }
 
 ComplexLevelStatData::~ComplexLevelStatData() {
-	for (int i = 0; i < ESS::get_singleton()->get_max_character_level(); ++i) {
+	for (int i = 0; i < _stat_per_level.size(); ++i) {
 		_stat_per_level.write[i].clear();
 	}
 }
 
 bool ComplexLevelStatData::_set(const StringName &p_name, const Variant &p_value) {
+	ERR_FAIL_COND_V(!ESS::get_singleton(), false);
+
 	String prop_name = p_name;
 
 	if (prop_name.begins_with("level_")) {
@@ -100,6 +106,8 @@ bool ComplexLevelStatData::_set(const StringName &p_name, const Variant &p_value
 }
 
 bool ComplexLevelStatData::_get(const StringName &p_name, Variant &r_ret) const {
+	ERR_FAIL_COND_V(!ESS::get_singleton(), false);
+
 	String prop_name = p_name;
 
 	if (prop_name.begins_with("level_")) {
@@ -130,6 +138,8 @@ bool ComplexLevelStatData::_get(const StringName &p_name, Variant &r_ret) const 
 }
 
 void ComplexLevelStatData::_get_property_list(List<PropertyInfo> *p_list) const {
+	ERR_FAIL_COND(!ESS::get_singleton());
+
 	//int property_usange = PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL;
 	int property_usange = PROPERTY_USAGE_DEFAULT;
 
