@@ -1796,6 +1796,9 @@ Spell::~Spell() {
 }
 
 void Spell::_cast_starts(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+	ERR_FAIL_COND(!info->caster_get());
+
 	if (info->caster_get()->cast_is_castings()) {
 		return;
 	}
@@ -1831,6 +1834,9 @@ void Spell::_cast_starts(Ref<SpellCastInfo> info) {
 }
 
 void Spell::_cast_finishs(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+	ERR_FAIL_COND(!info->caster_get());
+
 	info->caster_get()->notification_scast(SpellEnums::NOTIFICATION_CAST_FINISHED, info);
 	info->caster_get()->cast_spell_successs(info);
 
@@ -1848,40 +1854,55 @@ void Spell::_cast_finishs(Ref<SpellCastInfo> info) {
 }
 
 void Spell::_son_cast_player_moved(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+	ERR_FAIL_COND(!info->caster_get());
+
 	if (get_can_move_while_casting()) {
 		info->caster_get()->cast_fails();
 	}
 }
 
 void Spell::_son_spell_hit(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	handle_effect(info);
 }
 
 void Spell::_calculate_initial_damage(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	Math::randomize();
 
 	data->damage_set(damage_get_min() + (damage_get_max() - damage_get_min()) * Math::randf());
 }
 
 void Spell::_handle_spell_damage(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	calculate_initial_damage(data);
 
 	data->dealer_get()->sdeal_damage_to(data);
 }
 
 void Spell::_calculate_initial_heal(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	Math::randomize();
 
 	data->heal_set(heal_get_min() + (heal_get_max() - heal_get_min()) * Math::randf());
 }
 
 void Spell::_handle_spell_heal(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	calculate_initial_heal(data);
 
 	data->dealer_get()->sdeal_heal_to(data);
 }
 
 void Spell::_handle_projectile(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	if (_projectile_scene.is_valid()) {
 		Node *projectile = _projectile_scene->instance();
 
@@ -1897,6 +1918,8 @@ void Spell::_handle_projectile(Ref<SpellCastInfo> info) {
 }
 
 void Spell::_handle_effect(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	/*
 #		var ok : bool = false
 
@@ -2001,6 +2024,7 @@ void Spell::_handle_effect(Ref<SpellCastInfo> info) {
 }
 
 void Spell::_aura_sapply(Ref<AuraApplyInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
 	ERR_FAIL_COND(info->target_get() == NULL || info->caster_get() == NULL || !info->get_aura().is_valid());
 
 	Ref<AuraData> ad = info->target_get()->aura_gets_by(info->caster_get(), _id);
@@ -2033,6 +2057,7 @@ void Spell::_aura_sapply(Ref<AuraApplyInfo> info) {
 }
 
 void Spell::_aura_sdeapply(Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
 	ERR_FAIL_COND(data->get_owner() == NULL || data->caster_get() == NULL || !data->get_aura().is_valid());
 
 	Entity *owner = data->get_owner();
@@ -2053,6 +2078,7 @@ void Spell::_aura_sdeapply(Ref<AuraData> data) {
 }
 
 void Spell::_aura_sadd(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
 	ERR_FAIL_COND(aura->get_owner() == NULL);
 
 	//sapply(aura);
@@ -2062,6 +2088,7 @@ void Spell::_aura_sadd(Ref<AuraData> aura) {
 }
 
 void Spell::_aura_sremove(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
 	ERR_FAIL_COND(aura->get_owner() == NULL);
 
 	aura_sdeapply(aura);
@@ -2070,6 +2097,7 @@ void Spell::_aura_sremove(Ref<AuraData> aura) {
 }
 
 void Spell::_aura_removes_expired(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
 	ERR_FAIL_COND(aura->get_owner() == NULL);
 
 	aura_sdeapply(aura);
@@ -2078,6 +2106,7 @@ void Spell::_aura_removes_expired(Ref<AuraData> aura) {
 }
 
 void Spell::_aura_removes_dispell(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
 	ERR_FAIL_COND(aura->get_owner() == NULL);
 
 	aura_sdeapply(aura);
@@ -2086,6 +2115,8 @@ void Spell::_aura_removes_dispell(Ref<AuraData> aura) {
 }
 
 void Spell::_aura_supdate(Ref<AuraData> aura, float delta) {
+	ERR_FAIL_COND(!aura.is_valid());
+
 	bool remove = false;
 
 	remove = aura->update(delta);
@@ -2121,6 +2152,8 @@ void Spell::_aura_supdate(Ref<AuraData> aura, float delta) {
 }
 
 void Spell::_setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
+	ERR_FAIL_COND(!data.is_valid());
+	ERR_FAIL_COND(!info.is_valid());
 	ERR_FAIL_COND(!ObjectDB::instance_validate(info->caster_get()));
 
 	data->set_aura(Ref<Spell>(this));
@@ -2153,20 +2186,32 @@ void Spell::_aura_sapply_passives_damage_deal(Ref<SpellDamageInfo> info) {
 }
 
 void Spell::_aura_calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info) {
+	ERR_FAIL_COND(!aura_data.is_valid());
+	ERR_FAIL_COND(!info.is_valid());
+
 	int min_damage = aura_damage_get_min();
 	int max_damage = aura_damage_get_max();
+	int mmm = (max_damage - min_damage);
 
-	Math::randomize();
-	int damage = min_damage + Math::rand() % (max_damage - min_damage);
+	int damage = min_damage;
 
-	if (aura_get_scale_with_level()) {
-		damage = static_cast<int>(damage * static_cast<float>(info->caster_get()->gets_level()) / static_cast<float>(ESS::get_singleton()->get_max_character_level()));
+	if (mmm > 0) {
+		Math::randomize();
+		damage = min_damage + (Math::rand() % mmm);
+
+		if (aura_get_scale_with_level()) {
+			damage = static_cast<int>(damage * static_cast<float>(info->caster_get()->gets_level()) / static_cast<float>(ESS::get_singleton()->get_max_character_level()));
+		}
 	}
 
 	aura_data->damage_set(damage);
 }
 
 void Spell::_handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> info) {
+	ERR_FAIL_COND(!aura_data.is_valid());
+	ERR_FAIL_COND(!info.is_valid());
+	ERR_FAIL_COND(!info->receiver_get());
+
 	if (info->dealer_get() && !ObjectDB::instance_validate(info->dealer_get())) {
 		info->dealer_set(NULL);
 	}
@@ -2190,20 +2235,32 @@ void Spell::_aura_sapply_passives_heal_deal(Ref<SpellHealInfo> data) {
 }
 
 void Spell::_aura_calculate_initial_heal(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info) {
+	ERR_FAIL_COND(!aura_data.is_valid());
+	ERR_FAIL_COND(!info.is_valid());
+
 	int min_heal = aura_heal_get_min();
 	int max_heal = aura_heal_get_max();
+	int mmm = (max_heal - min_heal);
 
-	Math::randomize();
-	int heal = min_heal + Math::rand() % (max_heal - min_heal);
+	int heal = min_heal;
 
-	if (aura_get_scale_with_level()) {
-		heal = static_cast<int>(heal * static_cast<float>(info->caster_get()->gets_level()) / static_cast<float>(ESS::get_singleton()->get_max_character_level()));
+	if (mmm > 0) {
+		Math::randomize();
+		heal = min_heal + (Math::rand() % mmm);
+
+		if (aura_get_scale_with_level()) {
+			heal = static_cast<int>(heal * static_cast<float>(info->caster_get()->gets_level()) / static_cast<float>(ESS::get_singleton()->get_max_character_level()));
+		}
 	}
 
 	aura_data->heal_set(heal);
 }
 
 void Spell::_handle_aura_heal(Ref<AuraData> aura_data, Ref<SpellHealInfo> info) {
+	ERR_FAIL_COND(!aura_data.is_valid());
+	ERR_FAIL_COND(!info.is_valid());
+	ERR_FAIL_COND(!info->receiver_get());
+
 	if (info->dealer_get() && !ObjectDB::instance_validate(info->dealer_get())) {
 		info->dealer_set(NULL);
 	}

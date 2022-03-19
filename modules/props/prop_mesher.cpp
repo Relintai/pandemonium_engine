@@ -1093,10 +1093,14 @@ void PropMesher::add_vertex(const Vector3 &vertex) {
 }
 
 Vector3 PropMesher::get_vertex(const int idx) const {
+	ERR_FAIL_INDEX_V(idx, _vertices.size(), Vector3());
+	
 	return _vertices.get(idx).vertex;
 }
 
 void PropMesher::remove_vertex(const int idx) {
+	ERR_FAIL_INDEX(idx, _vertices.size());
+
 	_vertices.remove(idx);
 }
 
@@ -1128,6 +1132,8 @@ void PropMesher::add_normal(const Vector3 &normal) {
 }
 
 Vector3 PropMesher::get_normal(int idx) const {
+	ERR_FAIL_INDEX_V(idx, _vertices.size(), Vector3());
+
 	return _vertices.get(idx).normal;
 }
 
@@ -1159,6 +1165,8 @@ void PropMesher::add_color(const Color &color) {
 }
 
 Color PropMesher::get_color(const int idx) const {
+	ERR_FAIL_INDEX_V(idx, _vertices.size(), Color());
+
 	return _vertices.get(idx).color;
 }
 
@@ -1190,6 +1198,8 @@ void PropMesher::add_uv(const Vector2 &uv) {
 }
 
 Vector2 PropMesher::get_uv(const int idx) const {
+	ERR_FAIL_INDEX_V(idx, _vertices.size(), Vector2());
+
 	return _vertices.get(idx).uv;
 }
 
@@ -1221,6 +1231,8 @@ void PropMesher::add_uv2(const Vector2 &uv) {
 }
 
 Vector2 PropMesher::get_uv2(const int idx) const {
+	ERR_FAIL_INDEX_V(idx, _vertices.size(), Vector2());
+
 	return _vertices.get(idx).uv2;
 }
 
@@ -1241,10 +1253,14 @@ void PropMesher::add_indices(const int index) {
 }
 
 int PropMesher::get_index(const int idx) const {
+	ERR_FAIL_INDEX_V(idx, _indices.size(), 0);
+
 	return _indices.get(idx);
 }
 
 void PropMesher::remove_index(const int idx) {
+	ERR_FAIL_INDEX(idx, _vertices.size());
+
 	_indices.remove(idx);
 }
 

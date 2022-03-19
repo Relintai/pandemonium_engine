@@ -208,6 +208,8 @@ void PropInstancePropJob::_reset() {
 }
 
 void PropInstancePropJob::phase_physics_process() {
+	ERR_FAIL_COND(!_prop_instace);
+
 	//TODO this should only update the differences
 	//for (int i = 0; i < _prop_instace->collider_get_num(); ++i) {
 	//	PhysicsServer::get_singleton()->free(_prop_instace->collider_body_get(i));
