@@ -32,8 +32,6 @@
 
 #include "editor/plugins/spatial_editor_plugin.h"
 
-#include "scene/3d/camera.h"
-
 #include "core/color.h"
 #include "core/math/basis.h"
 #include "core/math/math_defs.h"

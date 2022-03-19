@@ -32,14 +32,6 @@
 
 #include "scene/gui/margin_container.h"
 
-#include "core/io/packet_peer.h"
-#include "core/io/tcp_server.h"
-#include "editor/editor_inspector.h"
-#include "editor/property_editor.h"
-#include "scene/3d/camera.h"
-#include "scene/gui/box_container.h"
-#include "scene/gui/button.h"
-
 #include "core/array.h"
 #include "core/hash_map.h"
 #include "core/list.h"

@@ -48,6 +48,13 @@
 #include "editor/editor_inspector.h"
 #include "editor/editor_spin_slider.h"
 #include "editor/animation_track_editor.h"
+#include "scene/gui/grid_container.h"
+#include "scene/gui/tree.h"
+#include "scene/gui/label.h"
+#include "scene/gui/popup_menu.h"
+#include "scene/gui/check_box.h"
+#include "editor/editor_settings.h"
+#include "scene/gui/separator.h"
 
 #define DISTANCE_DEFAULT 4
 

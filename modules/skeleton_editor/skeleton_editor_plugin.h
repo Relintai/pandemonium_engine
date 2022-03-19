@@ -47,6 +47,12 @@ class Button;
 class CheckBox;
 class EditorSpinSlider;
 class EditorInspectorSection;
+class GridContainer;
+class Tree;
+class Label;
+class PopupMenu;
+class CheckBox;
+class VSeparator;
 
 class ModuleBoneTransformEditor : public VBoxContainer {
 	GDCLASS(ModuleBoneTransformEditor, VBoxContainer);

@@ -38,6 +38,15 @@
 #include "scene/2d/sprite.h"
 #include "scene/gui/scroll_container.h"
 #include "editor/editor_inspector.h"
+#include "editor/editor_file_system.h"
+#include "scene/gui/spin_box.h"
+#include "scene/gui/item_list.h"
+#include "scene/gui/label.h"
+#include "scene/gui/separator.h"
+#include "editor/editor_file_dialog.h"
+#include "scene/gui/dialogs.h"
+#include "editor/editor_settings.h"
+#include "scene/gui/popup_menu.h"
 
 void RTileSetEditor::edit(const Ref<RTileSet> &p_tileset) {
 	tileset = p_tileset;

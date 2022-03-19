@@ -39,6 +39,8 @@
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/tree.h"
 
+class Label;
+
 class InputMapEditor : public MarginContainer {
 	GDCLASS(InputMapEditor, MarginContainer);
 

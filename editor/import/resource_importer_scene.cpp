@@ -50,6 +50,7 @@
 #include "scene/resources/animation.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/shape.h"
+#include "core/os/dir_access.h"
 
 uint32_t EditorSceneImporter::get_import_flags() const {
 	if (get_script_instance()) {

@@ -38,6 +38,9 @@
 #include "editor/plugins/canvas_item_editor_plugin.h"
 #include "scene/gui/split_container.h"
 #include "scene/gui/slider.h"
+#include "scene/gui/popup_menu.h"
+#include "scene/gui/item_list.h"
+#include "scene/gui/separator.h"
 
 void RTileMapEditor::_node_removed(Node *p_node) {
 	if (p_node == node) {

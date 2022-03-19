@@ -33,13 +33,6 @@
 #include "scene/gui/control.h"
 #include "scene/gui/dialogs.h"
 
-#include "core/undo_redo.h"
-#include "editor_data.h"
-#include "editor_settings.h"
-#include "scene/gui/button.h"
-#include "scene/gui/tree.h"
-#include "core/object.h"
-
 #include "core/list.h"
 #include "core/math/vector2.h"
 #include "core/node_path.h"

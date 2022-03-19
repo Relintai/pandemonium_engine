@@ -40,6 +40,11 @@
 #include "scene/gui/tool_button.h"
 #include "tile_map.h"
 
+class HSlider;
+class PopupMenu;
+class ItemList;
+class VSeparator;
+
 class RTileMapEditor : public VBoxContainer {
 	GDCLASS(RTileMapEditor, VBoxContainer);
 

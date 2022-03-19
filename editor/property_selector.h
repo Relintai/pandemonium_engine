@@ -32,11 +32,6 @@
 
 #include "scene/gui/dialogs.h"
 
-#include "editor/property_editor.h"
-#include "editor_help.h"
-#include "scene/gui/rich_text_label.h"
-#include "core/object.h"
-
 #include "core/object_id.h"
 #include "core/reference.h"
 #include "core/ustring.h"

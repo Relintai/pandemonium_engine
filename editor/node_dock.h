@@ -32,10 +32,6 @@
 
 #include "scene/gui/box_container.h"
 
-#include "connections_dialog.h"
-#include "groups_editor.h"
-#include "core/object.h"
-
 class ConnectionsDock;
 class GroupsEditor;
 class Label;

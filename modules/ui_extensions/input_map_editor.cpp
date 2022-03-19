@@ -41,6 +41,7 @@
 #include "editor/editor_scale.h"
 #include "scene/gui/margin_container.h"
 
+#include "scene/gui/label.h"
 #include "core/input_map.h"
 
 static const char *_button_names[JOY_BUTTON_MAX] = {

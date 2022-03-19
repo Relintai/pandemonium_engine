@@ -32,13 +32,6 @@
 
 #include "scene/gui/dialogs.h"
 
-#include "editor/scene_tree_editor.h"
-#include "scene/gui/button.h"
-#include "scene/gui/check_box.h"
-#include "scene/gui/check_button.h"
-#include "scene/gui/line_edit.h"
-#include "core/object.h"
-
 #include "core/set.h"
 
 class CheckBox;

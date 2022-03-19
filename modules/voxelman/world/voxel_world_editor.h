@@ -29,6 +29,7 @@ SOFTWARE.
 
 class VoxelWorld;
 class SpatialEditorPlugin;
+class HSlider;
 
 class VoxelWorldEditor : public PanelContainer {
 	GDCLASS(VoxelWorldEditor, PanelContainer);

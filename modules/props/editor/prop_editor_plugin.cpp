@@ -28,6 +28,9 @@ SOFTWARE.
 
 #include "core/os/input.h"
 
+#include "scene/gui/separator.h"
+#include "editor/editor_settings.h"
+
 void PropEditorPlugin::convert_active_scene_to_prop_data() {
 	SceneTree *st = SceneTree::get_singleton();
 

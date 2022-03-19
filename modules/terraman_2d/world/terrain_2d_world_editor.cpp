@@ -41,6 +41,7 @@ SOFTWARE.
 #include "scene/3d/camera.h"
 #include "scene/gui/slider.h"
 #include "scene/gui/scroll_container.h"
+#include "scene/gui/slider.h"
 
 bool Terrain2DWorldEditor::forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) {
 	if (!_world || !_world->get_editable()) {

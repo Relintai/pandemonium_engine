@@ -37,8 +37,18 @@
 #include "tile_set.h"
 
 #define WORKSPACE_MARGIN Vector2(10, 10)
+
 class RTilesetEditorContext;
 class ScrollContainer;
+class SpinBox;
+class Label;
+class HSeparator;
+class VSeparator;
+class ConfirmationDialog;
+class AcceptDialog;
+class EditorFileDialog;
+class ItemList;
+class PopupMenu;
 
 class RTileSetEditor : public HSplitContainer {
 	friend class RTileSetEditorPlugin;

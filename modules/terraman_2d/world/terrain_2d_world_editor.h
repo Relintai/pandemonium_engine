@@ -29,6 +29,7 @@ SOFTWARE.
 
 class Terrain2DWorld;
 class SpatialEditorPlugin;
+class HSlider;
 
 class Terrain2DWorldEditor : public PanelContainer {
 	GDCLASS(Terrain2DWorldEditor, PanelContainer);

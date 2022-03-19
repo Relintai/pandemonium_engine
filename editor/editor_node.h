@@ -41,6 +41,7 @@
 #include "scene/gui/split_container.h"
 #include "scene/gui/menu_button.h"
 
+#include "editor/editor_data.h"
 #include "core/dictionary.h"
 #include "core/error_list.h"
 #include "core/list.h"

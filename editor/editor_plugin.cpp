@@ -73,6 +73,7 @@
 #include "scene/gui/tab_container.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/texture.h"
+#include "editor/script_create_dialog.h"
 
 class ConfigFile;
 class ScriptCreateDialog;
