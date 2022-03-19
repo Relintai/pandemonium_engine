@@ -30,14 +30,16 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/create_dialog.h"
 #include "editor/editor_inspector.h"
+
+#include "editor/create_dialog.h"
 #include "editor/editor_resource_picker.h"
 #include "editor/editor_spin_slider.h"
 #include "editor/property_selector.h"
 #include "editor/scene_tree_editor.h"
 #include "scene/gui/color_picker.h"
 #include "scene/gui/line_edit.h"
+
 #include "core/color.h"
 #include "core/math/vector2.h"
 #include "core/node_path.h"

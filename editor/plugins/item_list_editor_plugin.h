@@ -34,6 +34,9 @@
 #include "scene/gui/box_container.h"
 #include "editor/editor_plugin.h"
 
+#include "scene/gui/option_button.h"
+#include "scene/gui/item_list.h"
+
 #include "scene/gui/popup_menu.h"
 #include "core/list.h"
 #include "core/reference.h"

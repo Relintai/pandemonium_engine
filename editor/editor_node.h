@@ -30,21 +30,24 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/safe_refcount.h"
-#include "editor/editor_data.h"
-#include "editor/editor_folding.h"
-#include "editor/editor_run.h"
+#include "core/object.h"
+#include "scene/main/node.h"
+
 #include "editor/inspector_dock.h"
-#include "editor/property_editor.h"
 #include "editor/scene_tree_dock.h"
-#include "scene/gui/link_button.h"
+#include "editor/editor_run.h"
+#include "editor/editor_folding.h"
+
+#include "scene/gui/split_container.h"
+#include "scene/gui/menu_button.h"
+
 #include "core/dictionary.h"
 #include "core/error_list.h"
 #include "core/list.h"
 #include "core/map.h"
 #include "core/math/rect2.h"
 #include "core/node_path.h"
-#include "core/object.h"
+#include "core/safe_refcount.h"
 #include "core/os/mutex.h"
 #include "core/os/os.h"
 #include "core/os/thread.h"
@@ -58,7 +61,7 @@
 #include "core/variant.h"
 #include "core/vector.h"
 #include "scene/gui/control.h"
-#include "scene/main/node.h"
+
 #include "scene/resources/texture.h"
 #include "scene/resources/theme.h"
 

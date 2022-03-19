@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "scene/gui/dialogs.h"
-#include "core/object.h"
+
 #include "core/reference.h"
 
 class LineEdit;

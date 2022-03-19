@@ -30,6 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "scene/gui/box_container.h"
+
 #include "core/undo_redo.h"
 #include "editor/editor_data.h"
 #include "editor/editor_plugin_settings.h"
@@ -37,8 +39,9 @@
 #include "editor_autoload_settings.h"
 #include "scene/gui/center_container.h"
 #include "scene/gui/option_button.h"
+
 #include "core/object.h"
-#include "scene/gui/box_container.h"
+
 
 class ImportDefaultsEditorSettings;
 class Button;

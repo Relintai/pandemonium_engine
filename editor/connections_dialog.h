@@ -34,23 +34,17 @@
 @author Juan Linietsky <reduzio@gmail.com>
 */
 
-#include "core/undo_redo.h"
-#include "editor/editor_inspector.h"
-#include "editor/scene_tree_editor.h"
-#include "scene/gui/button.h"
-#include "scene/gui/check_button.h"
-#include "scene/gui/dialogs.h"
-#include "scene/gui/line_edit.h"
-#include "scene/gui/menu_button.h"
-#include "scene/gui/popup.h"
 #include "scene/gui/tree.h"
+#include "scene/gui/dialogs.h"
+#include "scene/gui/box_container.h"
+
+#include "core/undo_redo.h"
 #include "core/map.h"
 #include "core/node_path.h"
 #include "core/object.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
 #include "core/vector.h"
-#include "scene/gui/box_container.h"
 
 class PopupMenu;
 class ConnectDialogBinds;

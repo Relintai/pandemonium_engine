@@ -30,12 +30,14 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "scene/gui/box_container.h"
+
 #include "editor_file_dialog.h"
 #include "quick_open.h"
-#include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/texture_rect.h"
+
 #include "core/hash_map.h"
 #include "core/list.h"
 #include "core/math/vector2.h"

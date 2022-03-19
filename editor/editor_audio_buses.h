@@ -30,22 +30,13 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_file_dialog.h"
 #include "editor_plugin.h"
-#include "scene/gui/box_container.h"
-#include "scene/gui/button.h"
 #include "scene/gui/control.h"
-#include "scene/gui/line_edit.h"
-#include "scene/gui/menu_button.h"
-#include "scene/gui/option_button.h"
-#include "scene/gui/panel.h"
 #include "scene/gui/panel_container.h"
-#include "scene/gui/scroll_container.h"
-#include "scene/gui/slider.h"
-#include "scene/gui/texture_progress.h"
-#include "scene/gui/texture_rect.h"
-#include "scene/gui/tool_button.h"
-#include "scene/gui/tree.h"
+#include "scene/gui/box_container.h"
+
+#include "scene/gui/line_edit.h"
+
 #include "core/color.h"
 #include "core/list.h"
 #include "core/math/vector2.h"
@@ -70,6 +61,7 @@ class TextureProgress;
 class Timer;
 class Tree;
 class VSlider;
+class LineEdit;
 
 class EditorAudioBus : public PanelContainer {
 	GDCLASS(EditorAudioBus, PanelContainer);

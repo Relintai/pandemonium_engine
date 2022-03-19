@@ -30,6 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "scene/gui/box_container.h"
+
 #include "editor/connections_dialog.h"
 #include "editor/create_dialog.h"
 #include "editor/editor_data.h"
@@ -40,7 +42,6 @@
 #include "editor/reparent_dialog.h"
 #include "editor/script_create_dialog.h"
 #include "scene/animation/animation_player.h"
-#include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/control.h"
 #include "scene/gui/label.h"
@@ -48,18 +49,20 @@
 #include "scene/gui/tool_button.h"
 #include "scene/gui/tree.h"
 #include "scene_tree_editor.h"
-#include "modules/modules_enabled.gen.h" // For regex.
+#include "core/object.h"
+
 #include "core/hash_map.h"
 #include "core/list.h"
 #include "core/map.h"
 #include "core/node_path.h"
-#include "core/object.h"
 #include "core/object_id.h"
 #include "core/reference.h"
 #include "core/resource.h"
 #include "core/set.h"
 #include "core/ustring.h"
 #include "core/vector.h"
+
+#include "modules/modules_enabled.gen.h" // For regex.
 
 class EditorNode;
 class AcceptDialog;

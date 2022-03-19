@@ -30,18 +30,19 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/object.h"
+
+#include "editor/plugins/script_editor_plugin.h"
+#include "scene/resources/texture.h"
+
 #include "core/list.h"
 #include "core/pair.h"
 #include "core/undo_redo.h"
-#include "editor/editor_plugin.h"
-#include "editor/plugins/script_editor_plugin.h"
-#include "scene/resources/texture.h"
 #include "core/array.h"
 #include "core/dictionary.h"
 #include "core/hash_map.h"
 #include "core/map.h"
 #include "core/node_path.h"
-#include "core/object.h"
 #include "core/object_id.h"
 #include "core/reference.h"
 #include "core/script_language.h"

@@ -30,17 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/gui/control.h"
-#include "scene/gui/label.h"
-#include "scene/gui/rich_text_label.h"
-#include "scene/gui/texture_button.h"
-//#include "scene/gui/empty_control.h"
-#include "core/os/thread.h"
-#include "pane_drag.h"
 #include "scene/gui/box_container.h"
-#include "scene/gui/panel_container.h"
-#include "scene/gui/texture_rect.h"
-#include "scene/gui/tool_button.h"
+
+#include "core/os/thread.h"
 #include "core/error_macros.h"
 #include "core/object.h"
 #include "core/ustring.h"

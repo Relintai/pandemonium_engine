@@ -30,22 +30,15 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_data.h"
-#include "editor/editor_spin_slider.h"
-#include "editor/property_editor.h"
-#include "editor/property_selector.h"
-#include "scene/animation/animation_cache.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/range.h"
 #include "scene/gui/control.h"
-#include "scene/gui/file_dialog.h"
-#include "scene/gui/menu_button.h"
-#include "scene/gui/scroll_bar.h"
+#include "core/reference.h"
+
 #include "scene/gui/slider.h"
-#include "scene/gui/spin_box.h"
-#include "scene/gui/tab_container.h"
-#include "scene/gui/texture_rect.h"
-#include "scene/gui/tool_button.h"
+
+#include "scene/resources/texture.h"
 #include "scene/resources/animation.h"
-#include "scene_tree_editor.h"
 #include "core/dictionary.h"
 #include "core/list.h"
 #include "core/map.h"
@@ -53,13 +46,9 @@
 #include "core/math/vector2.h"
 #include "core/node_path.h"
 #include "core/object.h"
-#include "core/reference.h"
 #include "core/ustring.h"
 #include "core/variant.h"
 #include "core/vector.h"
-#include "scene/gui/box_container.h"
-#include "scene/gui/range.h"
-#include "scene/resources/texture.h"
 
 class AnimationTrackEdit;
 class Button;

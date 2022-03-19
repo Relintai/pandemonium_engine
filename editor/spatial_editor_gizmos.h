@@ -31,7 +31,9 @@
 /*************************************************************************/
 
 #include "editor/plugins/spatial_editor_plugin.h"
+
 #include "scene/3d/camera.h"
+
 #include "core/color.h"
 #include "core/math/basis.h"
 #include "core/math/math_defs.h"
@@ -42,6 +44,7 @@
 #include "core/ustring.h"
 #include "core/variant.h"
 #include "core/vector.h"
+
 #include "scene/resources/mesh.h"
 
 class Camera;

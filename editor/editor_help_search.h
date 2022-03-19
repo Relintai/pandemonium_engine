@@ -30,20 +30,17 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/ordered_hash_map.h"
-#include "editor/code_editor.h"
-#include "editor/editor_help.h"
-#include "editor/editor_plugin.h"
-#include "scene/gui/option_button.h"
-#include "scene/gui/tree.h"
+#include "core/reference.h"
+#include "scene/gui/dialogs.h"
+
 #include "core/color.h"
 #include "core/map.h"
 #include "core/object.h"
-#include "core/reference.h"
 #include "core/ustring.h"
 #include "core/vector.h"
+#include "core/ordered_hash_map.h"
+
 #include "editor/doc/doc_data.h"
-#include "scene/gui/dialogs.h"
 #include "scene/resources/texture.h"
 
 class Control;

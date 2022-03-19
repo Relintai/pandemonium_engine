@@ -30,10 +30,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "scene/gui/box_container.h"
+
 #include "connections_dialog.h"
 #include "groups_editor.h"
 #include "core/object.h"
-#include "scene/gui/box_container.h"
 
 class ConnectionsDock;
 class GroupsEditor;

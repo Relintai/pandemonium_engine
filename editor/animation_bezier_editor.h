@@ -30,7 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "animation_track_editor.h"
+#include "scene/gui/control.h"
+
 #include "core/map.h"
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
@@ -40,7 +41,7 @@
 #include "core/ustring.h"
 #include "core/variant.h"
 #include "core/vector.h"
-#include "scene/gui/control.h"
+
 #include "scene/resources/animation.h"
 #include "scene/resources/texture.h"
 

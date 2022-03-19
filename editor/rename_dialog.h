@@ -31,6 +31,9 @@
 /*************************************************************************/
 
 #include "modules/modules_enabled.gen.h" // For regex.
+
+#ifdef MODULE_REGEX_ENABLED
+
 #include "core/error_macros.h"
 #include "core/list.h"
 #include "core/node_path.h"
@@ -38,6 +41,15 @@
 #include "core/pair.h"
 #include "core/ustring.h"
 
+#include "scene/gui/dialogs.h"
+
+#include "scene/gui/check_box.h"
+#include "scene/gui/option_button.h"
+#include "scene/gui/spin_box.h"
+#include "core/undo_redo.h"
+#include "editor/scene_tree_editor.h"
+
+class CheckButton;
 class Array;
 class Button;
 class CheckBox;
@@ -49,16 +61,7 @@ class SceneTreeEditor;
 class SpinBox;
 class TabContainer;
 class UndoRedo;
-#ifdef MODULE_REGEX_ENABLED
 
-#include "scene/gui/check_box.h"
-#include "scene/gui/dialogs.h"
-#include "scene/gui/option_button.h"
-#include "scene/gui/spin_box.h"
-#include "core/undo_redo.h"
-#include "editor/scene_tree_editor.h"
-
-class CheckButton;
 
 /**
 @author Blazej Floch

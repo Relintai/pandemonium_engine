@@ -30,15 +30,12 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/io/config_file.h"
-#include "core/undo_redo.h"
-#include "editor/editor_inspector.h"
-#include "editor/import/editor_import_plugin.h"
-#include "editor/import/resource_importer_scene.h"
-#include "editor/script_create_dialog.h"
-#include "scene/gui/tool_button.h"
 #include "scene/main/node.h"
+
+#include "scene/gui/tool_button.h"
+
 #include "scene/resources/texture.h"
+
 #include "core/array.h"
 #include "core/dictionary.h"
 #include "core/error_list.h"
@@ -51,6 +48,8 @@
 #include "core/ustring.h"
 #include "core/variant.h"
 #include "core/vector.h"
+#include "core/io/config_file.h"
+#include "core/undo_redo.h"
 
 class EditorNode;
 class Spatial;

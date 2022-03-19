@@ -30,9 +30,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/gui/box_container.h"
-#include "scene/gui/line_edit.h"
+#include "core/reference.h"
 #include "scene/gui/scroll_container.h"
+#include "scene/gui/container.h"
+#include "scene/gui/control.h"
+
 #include "core/color.h"
 #include "core/list.h"
 #include "core/map.h"
@@ -40,15 +42,14 @@
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/object_id.h"
-#include "core/reference.h"
+
 #include "core/resource.h"
 #include "core/set.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
 #include "core/variant.h"
 #include "core/vector.h"
-#include "scene/gui/container.h"
-#include "scene/gui/control.h"
+
 #include "scene/resources/texture.h"
 
 class UndoRedo;

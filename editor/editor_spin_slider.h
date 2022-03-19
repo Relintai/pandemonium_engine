@@ -30,9 +30,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/gui/line_edit.h"
 #include "scene/gui/range.h"
+
+#include "scene/gui/line_edit.h"
 #include "scene/gui/texture_rect.h"
+
 #include "core/color.h"
 #include "core/math/vector2.h"
 #include "core/object.h"

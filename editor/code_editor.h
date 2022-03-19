@@ -30,21 +30,15 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_plugin.h"
-#include "scene/gui/check_box.h"
-#include "scene/gui/check_button.h"
 #include "scene/gui/dialogs.h"
-#include "scene/gui/line_edit.h"
-#include "scene/gui/text_edit.h"
-#include "scene/gui/tool_button.h"
-#include "scene/main/timer.h"
+#include "scene/gui/box_container.h"
+
 #include "core/list.h"
 #include "core/math/math_defs.h"
 #include "core/object.h"
 #include "core/reference.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "scene/gui/box_container.h"
 
 class Button;
 class CheckBox;

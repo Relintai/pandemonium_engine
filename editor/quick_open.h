@@ -30,11 +30,13 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/pair.h"
-#include "editor_file_system.h"
 #include "scene/gui/dialogs.h"
+
+#include "editor_file_system.h"
 #include "scene/gui/tree.h"
 #include "core/object.h"
+
+#include "core/pair.h"
 #include "core/reference.h"
 #include "core/string_name.h"
 #include "core/ustring.h"

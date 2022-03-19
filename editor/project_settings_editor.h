@@ -30,16 +30,18 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "scene/gui/dialogs.h"
+
 #include "core/undo_redo.h"
 #include "editor/editor_autoload_settings.h"
 #include "editor/editor_data.h"
 #include "editor/editor_plugin_settings.h"
 #include "editor/editor_sectioned_inspector.h"
 #include "editor/import_defaults_editor.h"
-#include "scene/gui/dialogs.h"
 #include "scene/gui/tab_container.h"
-#include "core/math/vector2.h"
 #include "core/object.h"
+
+#include "core/math/vector2.h"
 #include "core/os/input_event.h"
 #include "core/reference.h"
 #include "core/ustring.h"

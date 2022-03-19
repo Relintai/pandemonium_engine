@@ -30,16 +30,17 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/hash_map.h"
 #include "scene/gui/dialogs.h"
+#include "scene/gui/control.h"
+#include "scene/main/node.h"
+
+#include "core/hash_map.h"
 #include "core/map.h"
 #include "core/object.h"
 #include "core/set.h"
 #include "core/ustring.h"
 #include "core/variant.h"
 #include "core/vector.h"
-#include "scene/gui/control.h"
-#include "scene/main/node.h"
 
 class Button;
 class Label;

@@ -30,14 +30,13 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/gui/tree.h"
-#include "editor_file_dialog.h"
+#include "scene/gui/box_container.h"
+
 #include "core/list.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "scene/gui/box_container.h"
 
 class Button;
 class Control;

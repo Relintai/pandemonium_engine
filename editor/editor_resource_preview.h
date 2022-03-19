@@ -30,23 +30,25 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "scene/main/node.h"
+#include "core/reference.h"
+
 #include "core/os/semaphore.h"
 #include "core/os/thread.h"
 #include "core/safe_refcount.h"
-#include "scene/main/node.h"
-#include "scene/resources/texture.h"
 #include "core/list.h"
 #include "core/map.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/object_id.h"
 #include "core/os/mutex.h"
-#include "core/reference.h"
 #include "core/resource.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
 #include "core/variant.h"
 #include "core/vector.h"
+
+#include "scene/resources/texture.h"
 
 class EditorResourcePreviewGenerator : public Reference {
 	GDCLASS(EditorResourcePreviewGenerator, Reference);

@@ -30,14 +30,16 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "scene/gui/dialogs.h"
+
 #include "editor/editor_sectioned_inspector.h"
 #include "editor_inspector.h"
-#include "scene/gui/dialogs.h"
 #include "scene/gui/panel_container.h"
 #include "scene/gui/rich_text_label.h"
 #include "scene/gui/tab_container.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tool_button.h"
+
 #include "core/object.h"
 #include "core/reference.h"
 #include "core/ustring.h"

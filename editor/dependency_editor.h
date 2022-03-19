@@ -30,10 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor_file_dialog.h"
 #include "scene/gui/dialogs.h"
-#include "scene/gui/tab_container.h"
-#include "scene/gui/tree.h"
+
 #include "core/hash_map.h"
 #include "core/list.h"
 #include "core/map.h"

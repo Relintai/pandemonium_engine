@@ -30,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/os/dir_access.h"
-#include "core/os/thread.h"
+#include "scene/gui/dialogs.h"
+
 #include "editor/editor_export.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_file_system.h"
@@ -40,7 +40,6 @@
 #include "scene/gui/button.h"
 #include "scene/gui/check_button.h"
 #include "scene/gui/control.h"
-#include "scene/gui/dialogs.h"
 #include "scene/gui/file_dialog.h"
 #include "scene/gui/label.h"
 #include "scene/gui/link_button.h"
@@ -51,8 +50,11 @@
 #include "scene/gui/tab_container.h"
 #include "scene/gui/tree.h"
 #include "scene/main/timer.h"
-#include "core/math/vector2.h"
 #include "core/object.h"
+
+#include "core/os/dir_access.h"
+#include "core/os/thread.h"
+#include "core/math/vector2.h"
 #include "core/reference.h"
 #include "core/string_name.h"
 #include "core/ustring.h"

@@ -33,6 +33,7 @@
 #include "scene/3d/skeleton.h"
 #include "scene/resources/skin.h"
 #include "scene/resources/surface_tool.h"
+#include "editor/editor_settings.h"
 
 ModuleSkeletonSpatialGizmoPlugin::ModuleSkeletonSpatialGizmoPlugin() {
 	skeleton_color = EDITOR_DEF("editors/3d_gizmos/gizmo_colors/skeleton", Color(1, 0.8, 0.4));

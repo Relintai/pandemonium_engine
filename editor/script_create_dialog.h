@@ -30,14 +30,16 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "scene/gui/dialogs.h"
+
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_settings.h"
 #include "scene/gui/check_box.h"
-#include "scene/gui/dialogs.h"
 #include "scene/gui/grid_container.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/option_button.h"
 #include "scene/gui/panel_container.h"
+
 #include "core/map.h"
 #include "core/object.h"
 #include "core/ustring.h"

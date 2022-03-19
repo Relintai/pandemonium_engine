@@ -31,6 +31,7 @@
 /*************************************************************************/
 
 #include "editor/animation_track_editor.h"
+
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
@@ -38,7 +39,7 @@
 #include "core/reference.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "scene/gui/control.h"
+
 #include "scene/resources/texture.h"
 
 class InputEvent;

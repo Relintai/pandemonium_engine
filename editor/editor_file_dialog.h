@@ -30,16 +30,13 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/os/dir_access.h"
-#include "scene/gui/box_container.h"
 #include "scene/gui/dialogs.h"
-#include "scene/gui/item_list.h"
-#include "scene/gui/line_edit.h"
-#include "scene/gui/option_button.h"
+#include "scene/gui/box_container.h"
+
 #include "scene/gui/separator.h"
-#include "scene/gui/split_container.h"
-#include "scene/gui/texture_rect.h"
-#include "scene/gui/tool_button.h"
+#include "scene/gui/item_list.h"
+
+#include "core/os/dir_access.h"
 #include "core/method_bind.h"
 #include "core/object.h"
 #include "core/reference.h"

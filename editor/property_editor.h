@@ -30,13 +30,16 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/reference.h"
+#include "scene/gui/popup.h"
+
+#include "scene/gui/dialogs.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/scene_tree_editor.h"
 #include "scene/gui/button.h"
 #include "scene/gui/check_box.h"
 #include "scene/gui/check_button.h"
 #include "scene/gui/color_picker.h"
-#include "scene/gui/dialogs.h"
 #include "scene/gui/grid_container.h"
 #include "scene/gui/label.h"
 #include "scene/gui/menu_button.h"
@@ -44,15 +47,14 @@
 #include "scene/gui/text_edit.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tree.h"
+
 #include "core/list.h"
 #include "core/math/math_defs.h"
 #include "core/node_path.h"
-#include "core/object.h"
-#include "core/reference.h"
 #include "core/ustring.h"
 #include "core/variant.h"
 #include "core/vector.h"
-#include "scene/gui/popup.h"
+
 
 class PropertyValueEvaluator;
 class CreateDialog;

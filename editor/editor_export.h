@@ -30,17 +30,19 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/os/dir_access.h"
+#include "core/reference.h"
 #include "core/resource.h"
 #include "scene/main/node.h"
+
 #include "scene/main/timer.h"
 #include "scene/resources/texture.h"
+
+#include "core/os/dir_access.h"
 #include "core/error_list.h"
 #include "core/list.h"
 #include "core/map.h"
 #include "core/object.h"
 #include "core/pool_vector.h"
-#include "core/reference.h"
 #include "core/set.h"
 #include "core/string_name.h"
 #include "core/typedefs.h"

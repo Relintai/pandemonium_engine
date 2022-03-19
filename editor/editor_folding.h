@@ -31,6 +31,7 @@
 /*************************************************************************/
 
 #include "scene/main/node.h"
+
 #include "core/pool_vector.h"
 #include "core/resource.h"
 #include "core/set.h"

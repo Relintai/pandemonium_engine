@@ -30,17 +30,12 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/code_editor.h"
-#include "editor/doc/doc_data.h"
-#include "editor/editor_plugin.h"
-#include "scene/gui/margin_container.h"
-#include "scene/gui/menu_button.h"
+#include "scene/gui/box_container.h"
 #include "scene/gui/panel_container.h"
+
+#include "editor/doc/doc_data.h"
 #include "scene/gui/rich_text_label.h"
-#include "scene/gui/split_container.h"
-#include "scene/gui/tab_container.h"
-#include "scene/gui/text_edit.h"
-#include "scene/main/timer.h"
+
 #include "core/color.h"
 #include "core/error_list.h"
 #include "core/map.h"
@@ -48,7 +43,7 @@
 #include "core/reference.h"
 #include "core/ustring.h"
 #include "core/vector.h"
-#include "scene/gui/box_container.h"
+
 
 class ConfirmationDialog;
 class HSplitContainer;

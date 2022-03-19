@@ -30,13 +30,15 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_settings.h"
 #include "scene/gui/dialogs.h"
+
+#include "editor/editor_settings.h"
 #include "scene/gui/file_dialog.h"
 #include "scene/gui/menu_button.h"
 #include "scene/gui/progress_bar.h"
 #include "scene/gui/scroll_container.h"
 #include "scene/main/http_request.h"
+
 #include "core/error_list.h"
 #include "core/object.h"
 #include "core/ustring.h"

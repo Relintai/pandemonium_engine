@@ -30,12 +30,14 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/resource.h"
+
+#include "scene/gui/shortcut.h"
+
 #include "core/object.h"
 #include "core/io/config_file.h"
 #include "core/os/thread_safe.h"
-#include "core/resource.h"
 #include "core/translation.h"
-#include "scene/gui/shortcut.h"
 #include "core/hash_map.h"
 #include "core/list.h"
 #include "core/map.h"

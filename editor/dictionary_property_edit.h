@@ -31,6 +31,7 @@
 /*************************************************************************/
 
 #include "scene/main/node.h"
+
 #include "core/list.h"
 #include "core/object.h"
 #include "core/object_id.h"

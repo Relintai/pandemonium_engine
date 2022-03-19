@@ -31,6 +31,7 @@
 /*************************************************************************/
 
 #include "editor/editor_plugin.h"
+#include "editor/editor_inspector.h"
 #include "scene/gui/viewport_container.h"
 
 #include "core/object.h"

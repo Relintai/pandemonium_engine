@@ -32,8 +32,10 @@
 
 #include "core/os/thread.h"
 #include "core/safe_refcount.h"
+
 #include "scene/main/node.h"
 #include "servers/audio/audio_stream.h"
+
 #include "core/map.h"
 #include "core/object.h"
 #include "core/object_id.h"

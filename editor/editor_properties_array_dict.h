@@ -31,14 +31,16 @@
 /*************************************************************************/
 
 #include "editor/editor_inspector.h"
+#include "core/reference.h"
+
 #include "editor/editor_spin_slider.h"
 #include "editor/filesystem_dock.h"
 #include "scene/gui/button.h"
+
 #include "core/dictionary.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/object_id.h"
-#include "core/reference.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
 #include "core/variant.h"
