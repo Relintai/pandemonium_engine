@@ -97,7 +97,6 @@ class SConsPrintHelpException(Exception):
 display = SCons.Util.display
 progress_display = SCons.Util.DisplayEngine()
 
-
 class Progressor:
     prev = ''
     count = 0
