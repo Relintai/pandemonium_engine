@@ -48,7 +48,6 @@ import SCons.Node.FS
 import SCons.Scanner
 import SCons.Scanner.C
 import SCons.Scanner.Prog
-import SCons.Scanner.SWIG
 from SCons.Tool.linkCommon import LibSymlinksActionFunction, LibSymlinksStrFun
 
 DefaultToolpath = []
@@ -56,7 +55,6 @@ DefaultToolpath = []
 CScanner = SCons.Scanner.C.CScanner()
 ProgramScanner = SCons.Scanner.Prog.ProgramScanner()
 SourceFileScanner = SCons.Scanner.ScannerBase({}, name='SourceFileScanner')
-SWIGScanner = SCons.Scanner.SWIG.SWIGScanner()
 
 CSuffixes = [".c", ".C", ".cxx", ".cpp", ".c++", ".cc",
              ".h", ".H", ".hxx", ".hpp", ".hh",
@@ -66,13 +64,8 @@ CSuffixes = [".c", ".C", ".cxx", ".cpp", ".c++", ".cc",
 
 IDLSuffixes = [".idl", ".IDL"]
 
-SWIGSuffixes = ['.i']
-
 for suffix in CSuffixes:
     SourceFileScanner.add_scanner(suffix, CScanner)
-
-for suffix in SWIGSuffixes:
-    SourceFileScanner.add_scanner(suffix, SWIGScanner)
 
 # Tool aliases are needed for those tools whose module names also
 # occur in the python standard library (This causes module shadowing and
@@ -763,9 +756,6 @@ def tool_list(platform, env):
         assembler = FindTool(assemblers, env) or assemblers[0]
         ar = FindTool(ars, env) or ars[0]
 
-    d_compilers = ['dmd', 'ldc', 'gdc']
-    d_compiler = FindTool(d_compilers, env) or d_compilers[0]
-
     other_tools = FindAllTools(other_plat_tools + [
         # TODO: merge 'install' into 'filesystem' and
         # make 'filesystem' the default
@@ -784,7 +774,6 @@ def tool_list(platform, env):
         cxx_compiler,
         assembler,
         ar,
-        d_compiler,
     ] + other_tools
 
     return [x for x in tools if x]
