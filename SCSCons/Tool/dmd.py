@@ -76,7 +76,6 @@ LIBS
 import SCons.Action
 import SCons.Builder
 import SCons.Defaults
-import SCons.Scanner.D
 import SCons.Tool
 
 import SCons.Tool.DCommon as DCommon

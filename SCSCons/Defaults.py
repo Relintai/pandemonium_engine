@@ -123,7 +123,6 @@ SharedCheck = SCons.Action.Action(SharedFlagChecker, None)
 # SConscript files until we've given them some fair warning and a
 # transition period.
 CScan = SCons.Tool.CScanner
-DScan = SCons.Tool.DScanner
 LaTeXScan = SCons.Tool.LaTeXScanner
 ObjSourceScan = SCons.Tool.SourceFileScanner
 ProgScan = SCons.Tool.ProgramScanner
@@ -610,7 +609,6 @@ ConstructionEnvironment = {
     'CONFIGUREDIR': '#/.sconf_temp',
     'CONFIGURELOG': '#/config.log',
     'CPPSUFFIXES': SCons.Tool.CSuffixes,
-    'DSUFFIXES': SCons.Tool.DSuffixes,
     'ENV': {},
     'IDLSUFFIXES': SCons.Tool.IDLSuffixes,
     '_concat': _concat,

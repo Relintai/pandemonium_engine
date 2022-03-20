@@ -47,7 +47,6 @@ import SCons.Errors
 import SCons.Node.FS
 import SCons.Scanner
 import SCons.Scanner.C
-import SCons.Scanner.D
 import SCons.Scanner.LaTeX
 import SCons.Scanner.Prog
 import SCons.Scanner.SWIG
@@ -56,7 +55,6 @@ from SCons.Tool.linkCommon import LibSymlinksActionFunction, LibSymlinksStrFun
 DefaultToolpath = []
 
 CScanner = SCons.Scanner.C.CScanner()
-DScanner = SCons.Scanner.D.DScanner()
 LaTeXScanner = SCons.Scanner.LaTeX.LaTeXScanner()
 PDFLaTeXScanner = SCons.Scanner.LaTeX.PDFLaTeXScanner()
 ProgramScanner = SCons.Scanner.Prog.ProgramScanner()
@@ -69,8 +67,6 @@ CSuffixes = [".c", ".C", ".cxx", ".cpp", ".c++", ".cc",
              ".m", ".mm",
              ".S", ".spp", ".SPP", ".sx"]
 
-DSuffixes = ['.d']
-
 IDLSuffixes = [".idl", ".IDL"]
 
 LaTeXSuffixes = [".tex", ".ltx", ".latex"]
@@ -79,9 +75,6 @@ SWIGSuffixes = ['.i']
 
 for suffix in CSuffixes:
     SourceFileScanner.add_scanner(suffix, CScanner)
-
-for suffix in DSuffixes:
-    SourceFileScanner.add_scanner(suffix, DScanner)
 
 for suffix in SWIGSuffixes:
     SourceFileScanner.add_scanner(suffix, SWIGScanner)
