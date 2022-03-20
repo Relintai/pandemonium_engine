@@ -774,8 +774,6 @@ def tool_list(platform, env):
         'lex', 'yacc',
         # Foreign function interface
         'rpcgen', 'swig',
-        # Java
-        'jar', 'javac', 'javah', 'rmic',
         # Archivers
         'tar', 'zip',
         # File builders (text)
