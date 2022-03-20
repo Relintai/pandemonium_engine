@@ -47,7 +47,6 @@ import SCons.Errors
 import SCons.Node.FS
 import SCons.Scanner
 import SCons.Scanner.C
-import SCons.Scanner.LaTeX
 import SCons.Scanner.Prog
 import SCons.Scanner.SWIG
 from SCons.Tool.linkCommon import LibSymlinksActionFunction, LibSymlinksStrFun
@@ -55,8 +54,6 @@ from SCons.Tool.linkCommon import LibSymlinksActionFunction, LibSymlinksStrFun
 DefaultToolpath = []
 
 CScanner = SCons.Scanner.C.CScanner()
-LaTeXScanner = SCons.Scanner.LaTeX.LaTeXScanner()
-PDFLaTeXScanner = SCons.Scanner.LaTeX.PDFLaTeXScanner()
 ProgramScanner = SCons.Scanner.Prog.ProgramScanner()
 SourceFileScanner = SCons.Scanner.ScannerBase({}, name='SourceFileScanner')
 SWIGScanner = SCons.Scanner.SWIG.SWIGScanner()
@@ -69,8 +66,6 @@ CSuffixes = [".c", ".C", ".cxx", ".cpp", ".c++", ".cc",
 
 IDLSuffixes = [".idl", ".IDL"]
 
-LaTeXSuffixes = [".tex", ".ltx", ".latex"]
-
 SWIGSuffixes = ['.i']
 
 for suffix in CSuffixes:
@@ -78,14 +73,6 @@ for suffix in CSuffixes:
 
 for suffix in SWIGSuffixes:
     SourceFileScanner.add_scanner(suffix, SWIGScanner)
-
-# FIXME: what should be done here? Two scanners scan the same extensions,
-# but look for different files, e.g., "picture.eps" vs. "picture.pdf".
-# The builders for DVI and PDF explicitly reference their scanners
-# I think that means this is not needed???
-for suffix in LaTeXSuffixes:
-    SourceFileScanner.add_scanner(suffix, LaTeXScanner)
-    SourceFileScanner.add_scanner(suffix, PDFLaTeXScanner)
 
 # Tool aliases are needed for those tools whose module names also
 # occur in the python standard library (This causes module shadowing and
@@ -789,9 +776,6 @@ def tool_list(platform, env):
         'rpcgen', 'swig',
         # Java
         'jar', 'javac', 'javah', 'rmic',
-        # TeX
-        'dvipdf', 'dvips', 'gs',
-        'tex', 'latex', 'pdflatex', 'pdftex',
         # Archivers
         'tar', 'zip',
         # File builders (text)
