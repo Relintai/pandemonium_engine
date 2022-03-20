@@ -59,6 +59,8 @@ void Terrain2DJob::set_build_done(const bool val) {
 }
 
 void Terrain2DJob::next_job() {
+	ERR_FAIL_COND(!_chunk.is_valid());
+
 	_chunk->job_next();
 	set_build_done(true);
 }

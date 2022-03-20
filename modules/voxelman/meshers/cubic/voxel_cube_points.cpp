@@ -568,6 +568,8 @@ bool VoxelCubePoints::is_sub_voxel_point(int x, int y, int z) {
 }
 
 void VoxelCubePoints::set_point(int point, int x, int y, int z) {
+	ERR_FAIL_INDEX(point, POINT_COUNT);
+	
 	_points[point] = Vector3(x, y, z);
 }
 

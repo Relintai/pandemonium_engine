@@ -74,6 +74,8 @@ int TerrainPropJob::get_jobs_step_count() const {
 }
 
 void TerrainPropJob::phase_physics_process() {
+	ERR_FAIL_COND(!_chunk.is_valid());
+
 	Ref<TerrainChunkDefault> chunk = _chunk;
 
 	//TODO this should only update the differences

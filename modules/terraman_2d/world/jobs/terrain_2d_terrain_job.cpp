@@ -199,6 +199,8 @@ void Terrain2DTerrain2DJob::phase_collider() {
 }
 
 void Terrain2DTerrain2DJob::phase_physics_process() {
+	ERR_FAIL_COND(!_chunk.is_valid());
+	
 	Ref<Terrain2DChunkDefault> chunk = _chunk;
 
 	if (temp_arr_collider.size() != 0) {

@@ -720,10 +720,14 @@ void VoxelMesher::add_vertex(const Vector3 &vertex) {
 }
 
 Vector3 VoxelMesher::get_vertex(const int idx) const {
+	ERR_FAIL_INDEX_V(idx, _vertices.size(), Vector3());
+
 	return _vertices.get(idx).vertex;
 }
 
 void VoxelMesher::remove_vertex(const int idx) {
+	ERR_FAIL_INDEX(idx, _vertices.size());
+
 	_vertices.remove(idx);
 }
 
@@ -755,6 +759,8 @@ void VoxelMesher::add_normal(const Vector3 &normal) {
 }
 
 Vector3 VoxelMesher::get_normal(int idx) const {
+	ERR_FAIL_INDEX_V(idx, _vertices.size(), Vector3());
+
 	return _vertices.get(idx).normal;
 }
 
@@ -786,6 +792,8 @@ void VoxelMesher::add_color(const Color &color) {
 }
 
 Color VoxelMesher::get_color(const int idx) const {
+	ERR_FAIL_INDEX_V(idx, _vertices.size(), Color());
+
 	return _vertices.get(idx).color;
 }
 
@@ -817,6 +825,8 @@ void VoxelMesher::add_uv(const Vector2 &uv) {
 }
 
 Vector2 VoxelMesher::get_uv(const int idx) const {
+	ERR_FAIL_INDEX_V(idx, _vertices.size(), Vector2());
+
 	return _vertices.get(idx).uv;
 }
 
@@ -848,6 +858,8 @@ void VoxelMesher::add_uv2(const Vector2 &uv) {
 }
 
 Vector2 VoxelMesher::get_uv2(const int idx) const {
+	ERR_FAIL_INDEX_V(idx, _vertices.size(), Vector2());
+	
 	return _vertices.get(idx).uv2;
 }
 
@@ -868,10 +880,14 @@ void VoxelMesher::add_indices(const int index) {
 }
 
 int VoxelMesher::get_index(const int idx) const {
+	ERR_FAIL_INDEX_V(idx, _vertices.size(), 0);
+
 	return _indices.get(idx);
 }
 
 void VoxelMesher::remove_index(const int idx) {
+	ERR_FAIL_INDEX(idx, _vertices.size());
+
 	_indices.remove(idx);
 }
 

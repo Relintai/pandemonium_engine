@@ -75,6 +75,8 @@ int VoxelPropJob::get_jobs_step_count() const {
 }
 
 void VoxelPropJob::phase_physics_process() {
+	ERR_FAIL_COND(!_chunk.is_valid());
+	
 	Ref<VoxelChunkDefault> chunk = _chunk;
 
 	//TODO this should only update the differences

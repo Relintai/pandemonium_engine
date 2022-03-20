@@ -50,6 +50,8 @@ void Terrain2DProp2DJob::set_prop_mesher(const Ref<Terrain2DMesher> &mesher) {
 }
 
 void Terrain2DProp2DJob::phase_physics_process() {
+	ERR_FAIL_COND(!_chunk.is_valid());
+	
 	/*
 	Ref<Terrain2DChunkDefault> chunk = _chunk;
 

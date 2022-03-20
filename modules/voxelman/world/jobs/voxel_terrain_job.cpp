@@ -282,6 +282,8 @@ void VoxelTerrainJob::phase_collider() {
 }
 
 void VoxelTerrainJob::phase_physics_process() {
+	ERR_FAIL_COND(!_chunk.is_valid());
+	
 	Ref<VoxelChunkDefault> chunk = _chunk;
 
 	if (temp_arr_collider.size() != 0) {

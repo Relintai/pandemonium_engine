@@ -196,7 +196,11 @@ Dictionary SpellCastInfo::to_dict() {
 	dict["num_pushbacks"] = _num_pushbacks;
 	dict["is_casting"] = _is_casting;
 
-	dict["spell_id"] = _spell->get_id();
+	if (_spell.is_valid()) {
+		dict["spell_id"] = _spell->get_id();
+	} else {
+		dict["spell_id"] = _spell_id;
+	}
 
 	//item serialization not needed
 

@@ -371,8 +371,9 @@ void PropInstanceMerger::debug_mesh_allocate() {
 	if (_debug_mesh_instance == RID()) {
 		_debug_mesh_instance = VisualServer::get_singleton()->instance_create();
 
-		if (get_world().is_valid())
+		if (get_world().is_valid()) {
 			VS::get_singleton()->instance_set_scenario(_debug_mesh_instance, get_world()->get_scenario());
+		}
 
 		VS::get_singleton()->instance_set_base(_debug_mesh_instance, _debug_mesh_rid);
 		VS::get_singleton()->instance_set_transform(_debug_mesh_instance, get_transform());

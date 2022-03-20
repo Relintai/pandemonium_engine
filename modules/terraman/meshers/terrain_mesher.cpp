@@ -726,10 +726,14 @@ void TerrainMesher::add_vertex(const Vector3 &vertex) {
 }
 
 Vector3 TerrainMesher::get_vertex(const int idx) const {
+	ERR_FAIL_INDEX_V(idx, _vertices.size(), Vector3());
+
 	return _vertices.get(idx).vertex;
 }
 
 void TerrainMesher::remove_vertex(const int idx) {
+	ERR_FAIL_INDEX(idx, _vertices.size());
+
 	_vertices.remove(idx);
 }
 
@@ -761,6 +765,8 @@ void TerrainMesher::add_normal(const Vector3 &normal) {
 }
 
 Vector3 TerrainMesher::get_normal(int idx) const {
+	ERR_FAIL_INDEX_V(idx, _vertices.size(), Vector3());
+
 	return _vertices.get(idx).normal;
 }
 
@@ -792,6 +798,8 @@ void TerrainMesher::add_color(const Color &color) {
 }
 
 Color TerrainMesher::get_color(const int idx) const {
+	ERR_FAIL_INDEX_V(idx, _vertices.size(), Color());
+
 	return _vertices.get(idx).color;
 }
 
@@ -823,6 +831,8 @@ void TerrainMesher::add_uv(const Vector2 &uv) {
 }
 
 Vector2 TerrainMesher::get_uv(const int idx) const {
+	ERR_FAIL_INDEX_V(idx, _vertices.size(), Vector2());
+
 	return _vertices.get(idx).uv;
 }
 
@@ -854,6 +864,8 @@ void TerrainMesher::add_uv2(const Vector2 &uv) {
 }
 
 Vector2 TerrainMesher::get_uv2(const int idx) const {
+	ERR_FAIL_INDEX_V(idx, _vertices.size(), Vector2());
+
 	return _vertices.get(idx).uv2;
 }
 
@@ -874,10 +886,14 @@ void TerrainMesher::add_indices(const int index) {
 }
 
 int TerrainMesher::get_index(const int idx) const {
+	ERR_FAIL_INDEX_V(idx, _vertices.size(), 0);
+
 	return _indices.get(idx);
 }
 
 void TerrainMesher::remove_index(const int idx) {
+	ERR_FAIL_INDEX(idx, _vertices.size());
+
 	_indices.remove(idx);
 }
 

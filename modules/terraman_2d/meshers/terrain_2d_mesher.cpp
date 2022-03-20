@@ -748,10 +748,14 @@ void Terrain2DMesher::add_vertex(const Vector2 &vertex) {
 }
 
 Vector2 Terrain2DMesher::get_vertex(const int idx) const {
+	ERR_FAIL_INDEX_V(idx, _vertices.size(), Vector2());
+
 	return _vertices.get(idx).vertex;
 }
 
 void Terrain2DMesher::remove_vertex(const int idx) {
+	ERR_FAIL_INDEX(idx, _vertices.size());
+
 	_vertices.remove(idx);
 }
 
@@ -783,6 +787,8 @@ void Terrain2DMesher::add_color(const Color &color) {
 }
 
 Color Terrain2DMesher::get_color(const int idx) const {
+	ERR_FAIL_INDEX_V(idx, _vertices.size(), Color());
+
 	return _vertices.get(idx).color;
 }
 
@@ -814,6 +820,8 @@ void Terrain2DMesher::add_uv(const Vector2 &uv) {
 }
 
 Vector2 Terrain2DMesher::get_uv(const int idx) const {
+	ERR_FAIL_INDEX_V(idx, _vertices.size(), Vector2());
+
 	return _vertices.get(idx).uv;
 }
 
@@ -834,10 +842,14 @@ void Terrain2DMesher::add_indices(const int index) {
 }
 
 int Terrain2DMesher::get_index(const int idx) const {
+	ERR_FAIL_INDEX_V(idx, _indices.size(), 0);
+
 	return _indices.get(idx);
 }
 
 void Terrain2DMesher::remove_index(const int idx) {
+	ERR_FAIL_INDEX(idx, _indices.size());
+
 	_indices.remove(idx);
 }
 
