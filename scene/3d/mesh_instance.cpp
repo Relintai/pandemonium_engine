@@ -144,7 +144,7 @@ void MeshInstance::set_mesh(const Ref<Mesh> &p_mesh) {
 		mesh->connect(CoreStringNames::get_singleton()->changed, this, SceneStringNames::get_singleton()->_mesh_changed);
 		materials.resize(mesh->get_surface_count());
 
-		_initialize_skinning(false, false);
+		_initialize_skinning(false, true);
 	} else {
 		set_base(RID());
 	}
