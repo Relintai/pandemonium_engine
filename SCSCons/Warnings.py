@@ -93,9 +93,6 @@ class VisualVersionMismatch(WarningOnByDefault):
 class VisualStudioMissingWarning(SConsWarning):
     pass
 
-class FortranCxxMixWarning(LinkWarning):
-    pass
-
 
 # Deprecation warnings
 

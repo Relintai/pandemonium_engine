@@ -129,27 +129,18 @@ def _call_env_subst(env, string, *args, **kw):
 
 def smart_link(source, target, env, for_signature):
     import SCons.Tool.cxx
-    import SCons.Tool.FortranCommon
 
     has_cplusplus = SCons.Tool.cxx.iscplusplus(source)
-    has_fortran = SCons.Tool.FortranCommon.isfortran(env, source)
     has_d = isD(env, source)
-    if has_cplusplus and has_fortran and not has_d:
+    if has_cplusplus and not has_d:
         global issued_mixed_link_warning
         if not issued_mixed_link_warning:
-            msg = "Using $CXX to link Fortran and C++ code together.\n\t" + \
-                  "This may generate a buggy executable if the '%s'\n\t" + \
-                  "compiler does not know how to deal with Fortran runtimes."
-            SCons.Warnings.warn(SCons.Warnings.FortranCxxMixWarning,
-                                msg % env.subst('$CXX'))
             issued_mixed_link_warning = True
         return '$CXX'
     elif has_d:
         env['LINKCOM'] = env['DLINKCOM']
         env['SHLINKCOM'] = env['SHDLINKCOM']
         return '$DC'
-    elif has_fortran:
-        return '$FORTRAN'
     elif has_cplusplus:
         return '$CXX'
     return '$CC'

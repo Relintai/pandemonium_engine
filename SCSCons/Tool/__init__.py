@@ -700,7 +700,6 @@ def tool_list(platform, env):
         c_compilers = ['msvc', 'mingw', 'gcc', 'intelc', 'icl', 'icc', 'cc', 'bcc32']
         cxx_compilers = ['msvc', 'intelc', 'icc', 'g++', 'cxx', 'bcc32']
         assemblers = ['masm', 'nasm', 'gas', '386asm']
-        fortran_compilers = ['gfortran', 'g77', 'ifl', 'cvf', 'f95', 'f90', 'fortran']
         ars = ['mslib', 'ar', 'tlib']
         other_plat_tools = ['msvs', 'midl', 'wix']
     elif str(platform) == 'os2':
@@ -709,7 +708,6 @@ def tool_list(platform, env):
         c_compilers = ['icc', 'gcc', ]  # 'msvc', 'cc']
         cxx_compilers = ['icc', 'g++', ]  # 'msvc', 'cxx']
         assemblers = ['nasm', ]  # 'masm', 'gas']
-        fortran_compilers = ['ifl', 'g77']
         ars = ['ar', ]  # 'mslib']
     elif str(platform) == 'irix':
         "prefer MIPSPro on IRIX"
@@ -717,7 +715,6 @@ def tool_list(platform, env):
         c_compilers = ['sgicc', 'gcc', 'cc']
         cxx_compilers = ['sgicxx', 'g++', 'cxx']
         assemblers = ['as', 'gas']
-        fortran_compilers = ['f95', 'f90', 'f77', 'g77', 'fortran']
         ars = ['sgiar']
     elif str(platform) == 'sunos':
         "prefer Forte tools on SunOS"
@@ -725,8 +722,6 @@ def tool_list(platform, env):
         c_compilers = ['suncc', 'gcc', 'cc']
         cxx_compilers = ['suncxx', 'g++', 'cxx']
         assemblers = ['as', 'gas']
-        fortran_compilers = ['sunf95', 'sunf90', 'sunf77', 'f95', 'f90', 'f77',
-                             'gfortran', 'g77', 'fortran']
         ars = ['sunar']
     elif str(platform) == 'hpux':
         "prefer aCC tools on HP-UX"
@@ -734,7 +729,6 @@ def tool_list(platform, env):
         c_compilers = ['hpcc', 'gcc', 'cc']
         cxx_compilers = ['hpcxx', 'g++', 'cxx']
         assemblers = ['as', 'gas']
-        fortran_compilers = ['f95', 'f90', 'f77', 'g77', 'fortran']
         ars = ['ar']
     elif str(platform) == 'aix':
         "prefer AIX Visual Age tools on AIX"
@@ -742,7 +736,6 @@ def tool_list(platform, env):
         c_compilers = ['aixcc', 'gcc', 'cc']
         cxx_compilers = ['aixcxx', 'g++', 'cxx']
         assemblers = ['as', 'gas']
-        fortran_compilers = ['f95', 'f90', 'aixf77', 'g77', 'fortran']
         ars = ['ar']
     elif str(platform) == 'darwin':
         "prefer GNU tools on Mac OS X, except for some linkers and IBM tools"
@@ -750,7 +743,6 @@ def tool_list(platform, env):
         c_compilers = ['gcc', 'cc']
         cxx_compilers = ['g++', 'cxx']
         assemblers = ['as']
-        fortran_compilers = ['gfortran', 'f95', 'f90', 'g77']
         ars = ['ar']
     elif str(platform) == 'cygwin':
         "prefer GNU tools on Cygwin, except for a platform-specific linker"
@@ -758,7 +750,6 @@ def tool_list(platform, env):
         c_compilers = ['gcc', 'msvc', 'intelc', 'icc', 'cc']
         cxx_compilers = ['g++', 'msvc', 'intelc', 'icc', 'cxx']
         assemblers = ['gas', 'nasm', 'masm']
-        fortran_compilers = ['gfortran', 'g77', 'ifort', 'ifl', 'f95', 'f90', 'f77']
         ars = ['ar', 'mslib']
     else:
         "prefer GNU tools on all other platforms"
@@ -766,7 +757,6 @@ def tool_list(platform, env):
         c_compilers = ['gcc', 'intelc', 'icc', 'cc']
         cxx_compilers = ['g++', 'intelc', 'icc', 'cxx']
         assemblers = ['gas', 'nasm', 'masm']
-        fortran_compilers = ['gfortran', 'g77', 'ifort', 'ifl', 'f95', 'f90', 'f77']
         ars = ['ar', ]
 
     if not str(platform) == 'win32':
@@ -782,7 +772,6 @@ def tool_list(platform, env):
         cxx_compiler = None
         linker = None
         assembler = None
-        fortran_compiler = None
         ar = None
     else:
         # Don't use g++ if the C compiler has built-in C++ support:
@@ -792,7 +781,6 @@ def tool_list(platform, env):
             cxx_compiler = FindTool(cxx_compilers, env) or cxx_compilers[0]
         linker = FindTool(linkers, env) or linkers[0]
         assembler = FindTool(assemblers, env) or assemblers[0]
-        fortran_compiler = FindTool(fortran_compilers, env) or fortran_compilers[0]
         ar = FindTool(ars, env) or ars[0]
 
     d_compilers = ['dmd', 'ldc', 'gdc']
@@ -821,7 +809,6 @@ def tool_list(platform, env):
         linker,
         c_compiler,
         cxx_compiler,
-        fortran_compiler,
         assembler,
         ar,
         d_compiler,
