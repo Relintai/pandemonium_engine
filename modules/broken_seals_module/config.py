@@ -10,7 +10,6 @@ def configure(env):
 def get_doc_classes():
     return [
       "BiomeTerrarinGenerator",
-      "TMeshInstance"
     ]
 
 def get_doc_path():

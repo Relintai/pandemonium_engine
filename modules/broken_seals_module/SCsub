@@ -15,8 +15,6 @@ sources = [
     "register_types.cpp",
 
     "biome_terrarin_generator.cpp",
-    "t_mesh_instance.cpp"
-
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
