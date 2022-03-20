@@ -162,6 +162,10 @@ void OptionButton::set_item_disabled(int p_idx, bool p_disabled) {
 	popup->set_item_disabled(p_idx, p_disabled);
 }
 
+void OptionButton::set_item_tooltip(int p_idx, const String &p_tooltip) {
+	popup->set_item_tooltip(p_idx, p_tooltip);
+}
+
 String OptionButton::get_item_text(int p_idx) const {
 	return popup->get_item_text(p_idx);
 }
@@ -184,6 +188,10 @@ Variant OptionButton::get_item_metadata(int p_idx) const {
 
 bool OptionButton::is_item_disabled(int p_idx) const {
 	return popup->is_item_disabled(p_idx);
+}
+
+String OptionButton::get_item_tooltip(int p_idx) const {
+	return popup->get_item_tooltip(p_idx);
 }
 
 int OptionButton::get_item_count() const {
@@ -305,6 +313,8 @@ void OptionButton::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_item_text", "idx", "text"), &OptionButton::set_item_text);
 	ClassDB::bind_method(D_METHOD("set_item_icon", "idx", "texture"), &OptionButton::set_item_icon);
 	ClassDB::bind_method(D_METHOD("set_item_disabled", "idx", "disabled"), &OptionButton::set_item_disabled);
+	ClassDB::bind_method(D_METHOD("get_item_tooltip", "idx"), &OptionButton::get_item_tooltip);
+	ClassDB::bind_method(D_METHOD("set_item_tooltip", "idx", "tooltip"), &OptionButton::set_item_tooltip);
 	ClassDB::bind_method(D_METHOD("set_item_id", "idx", "id"), &OptionButton::set_item_id);
 	ClassDB::bind_method(D_METHOD("set_item_metadata", "idx", "metadata"), &OptionButton::set_item_metadata);
 	ClassDB::bind_method(D_METHOD("get_item_text", "idx"), &OptionButton::get_item_text);
