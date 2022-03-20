@@ -3,7 +3,7 @@ on: [push, pull_request]
 
 # Global Settings
 env:
-  GODOT_BASE_BRANCH: 3.x
+  PANDEMONIUM_BASE_BRANCH: master
   SCONSFLAGS: verbose=yes warnings=all werror=yes debug_symbols=no
 
 concurrency:

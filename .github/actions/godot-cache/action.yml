@@ -15,8 +15,8 @@ runs:
       uses: actions/cache@v2
       with:
         path: ${{inputs.scons-cache}}
-        key: ${{inputs.cache-name}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}-${{github.sha}}
+        key: ${{inputs.cache-name}}-${{env.PANDEMONIUM_BASE_BRANCH}}-${{github.ref}}-${{github.sha}}
         restore-keys: |
-          ${{inputs.cache-name}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}-${{github.sha}}
-          ${{inputs.cache-name}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}
-          ${{inputs.cache-name}}-${{env.GODOT_BASE_BRANCH}}
+          ${{inputs.cache-name}}-${{env.PANDEMONIUM_BASE_BRANCH}}-${{github.ref}}-${{github.sha}}
+          ${{inputs.cache-name}}-${{env.PANDEMONIUM_BASE_BRANCH}}-${{github.ref}}
+          ${{inputs.cache-name}}-${{env.PANDEMONIUM_BASE_BRANCH}}
