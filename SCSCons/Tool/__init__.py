@@ -772,8 +772,6 @@ def tool_list(platform, env):
         'filesystem',
         # Parser generators
         'lex', 'yacc',
-        # Foreign function interface
-        'rpcgen', 'swig',
         # Archivers
         'tar', 'zip',
         # File builders (text)
