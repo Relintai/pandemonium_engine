@@ -48,7 +48,9 @@ for compilation instructions for every supported platform.
 
 ## Documentation and demos
 
-For basic usage see the official Godot documentation. It is hosted on [ReadTheDocs](https://docs.godotengine.org), and
+The documantation is available in this repo under the doc/engine folder. [[Here]](https://github.com/Relintai/pandemonium_engine/tree/master/doc/engine).
+
+You can also look at the official Godot documentation. It is hosted on [ReadTheDocs](https://docs.godotengine.org), and
 is maintained by the Godot community in its own [GitHub repository](https://github.com/godotengine/godot-docs).
 
 The class docs are accessible from the editor.
