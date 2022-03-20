@@ -49,6 +49,8 @@ void register_webrtc_types() {
 
 #ifdef JAVASCRIPT_ENABLED
 	WebRTCPeerConnectionJS::make_default();
+#else
+	WebRTCPeerConnection::make_default();
 #endif
 
 	ClassDB::register_custom_instance_class<WebRTCPeerConnection>();

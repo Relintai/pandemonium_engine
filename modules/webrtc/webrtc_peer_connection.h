@@ -50,17 +50,21 @@ protected:
 	static void _bind_methods();
 	static WebRTCPeerConnection *(*_create)();
 
-public:
-	virtual ConnectionState get_connection_state() const = 0;
+	static WebRTCPeerConnection *_create_func();
 
-	virtual Error initialize(Dictionary p_config = Dictionary()) = 0;
-	virtual Ref<WebRTCDataChannel> create_data_channel(String p_label, Dictionary p_options = Dictionary()) = 0;
-	virtual Error create_offer() = 0;
-	virtual Error set_remote_description(String type, String sdp) = 0;
-	virtual Error set_local_description(String type, String sdp) = 0;
-	virtual Error add_ice_candidate(String sdpMidName, int sdpMlineIndexName, String sdpName) = 0;
-	virtual Error poll() = 0;
-	virtual void close() = 0;
+public:
+	static void make_default() { WebRTCPeerConnection::_create = WebRTCPeerConnection::_create_func; }
+
+	virtual ConnectionState get_connection_state() const;
+
+	virtual Error initialize(Dictionary p_config = Dictionary());
+	virtual Ref<WebRTCDataChannel> create_data_channel(String p_label, Dictionary p_options = Dictionary());
+	virtual Error create_offer();
+	virtual Error set_remote_description(String type, String sdp);
+	virtual Error set_local_description(String type, String sdp);
+	virtual Error add_ice_candidate(String sdpMidName, int sdpMlineIndexName, String sdpName);
+	virtual Error poll();
+	virtual void close();
 
 	static Ref<WebRTCPeerConnection> create_ref();
 	static WebRTCPeerConnection *create();

@@ -43,6 +43,38 @@ WebRTCPeerConnection *WebRTCPeerConnection::create() {
 	return _create();
 }
 
+WebRTCPeerConnection *WebRTCPeerConnection::_create_func() {
+	return memnew(WebRTCPeerConnection);
+}
+
+WebRTCPeerConnection::ConnectionState WebRTCPeerConnection::get_connection_state() const {
+	return WebRTCPeerConnection::STATE_FAILED;
+}
+Error WebRTCPeerConnection::initialize(Dictionary p_config) {
+	ERR_FAIL_V(ERR_UNAVAILABLE);
+}
+Ref<WebRTCDataChannel> WebRTCPeerConnection::create_data_channel(String p_label, Dictionary p_options) {
+	ERR_FAIL_V(Ref<WebRTCDataChannel>());
+}
+Error WebRTCPeerConnection::create_offer() {
+	ERR_FAIL_V(ERR_UNAVAILABLE);
+}
+Error WebRTCPeerConnection::set_remote_description(String type, String sdp) {
+	ERR_FAIL_V(ERR_UNAVAILABLE);
+}
+Error WebRTCPeerConnection::set_local_description(String type, String sdp) {
+	ERR_FAIL_V(ERR_UNAVAILABLE);
+}
+Error WebRTCPeerConnection::add_ice_candidate(String sdpMidName, int sdpMlineIndexName, String sdpName) {
+	ERR_FAIL_V(ERR_UNAVAILABLE);
+}
+Error WebRTCPeerConnection::poll() {
+	ERR_FAIL_V(ERR_UNAVAILABLE);
+}
+void WebRTCPeerConnection::close() {
+	ERR_FAIL();
+}
+
 void WebRTCPeerConnection::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("initialize", "configuration"), &WebRTCPeerConnection::initialize, DEFVAL(Dictionary()));
 	ClassDB::bind_method(D_METHOD("create_data_channel", "label", "options"), &WebRTCPeerConnection::create_data_channel, DEFVAL(Dictionary()));
