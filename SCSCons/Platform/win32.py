@@ -36,8 +36,6 @@ import tempfile
 
 from SCons.Platform.posix import exitvalmap
 from SCons.Platform import TempFileMunge
-from SCons.Platform.virtualenv import ImportVirtualenv
-from SCons.Platform.virtualenv import ignore_virtualenv, enable_virtualenv
 import SCons.Util
 
 CHOCO_DEFAULT_PATH = [
@@ -417,9 +415,6 @@ def generate(env):
 
     env['HOST_OS']        = 'win32'
     env['HOST_ARCH']      = get_architecture().arch
-
-    if enable_virtualenv and not ignore_virtualenv:
-        ImportVirtualenv(env)
 
 
 # Local Variables:

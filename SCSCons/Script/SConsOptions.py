@@ -29,7 +29,6 @@ import sys
 import textwrap
 
 import SCons.Node.FS
-import SCons.Platform.virtualenv
 import SCons.Warnings
 from . import Main
 
@@ -742,12 +741,6 @@ def Parser(version):
                   action="callback", callback=opt_duplicate,
                   help=opt_duplicate_help)
 
-    if not SCons.Platform.virtualenv.virtualenv_enabled_by_default:
-        op.add_option('--enable-virtualenv',
-                      dest="enable_virtualenv",
-                      action="store_true",
-                      help="Import certain virtualenv variables to SCons")
-
     def experimental_callback(option, opt, value, parser):
         experimental = getattr(parser.values, option.dest)
 
@@ -828,12 +821,7 @@ def Parser(version):
                   action="append",
                   help="Search DIR for imported Python modules",
                   metavar="DIR")
-
-    op.add_option('--ignore-virtualenv',
-                  dest="ignore_virtualenv",
-                  action="store_true",
-                  help="Do not import virtualenv variables to SCons")
-
+                  
     op.add_option('--implicit-cache',
                   dest='implicit_cache', default=False,
                   action="store_true",

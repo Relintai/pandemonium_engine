@@ -73,7 +73,6 @@ import SCons.Builder
 import SCons.Environment
 import SCons.Node.FS
 import SCons.Platform
-import SCons.Platform.virtualenv
 import SCons.Scanner
 import SCons.SConf
 import SCons.Subst
@@ -140,7 +139,6 @@ Environment             = SCons.Environment.Environment
 #OptParser               = SCons.SConsOptions.OptParser
 FindPathDirs            = SCons.Scanner.FindPathDirs
 Platform                = SCons.Platform.Platform
-Virtualenv              = SCons.Platform.virtualenv.Virtualenv
 Return                  = _SConscript.Return
 Scanner                 = SCons.Scanner.ScannerBase
 Tool                    = SCons.Tool.Tool

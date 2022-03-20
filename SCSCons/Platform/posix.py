@@ -32,8 +32,6 @@ import platform
 import subprocess
 
 from SCons.Platform import TempFileMunge
-from SCons.Platform.virtualenv import ImportVirtualenv
-from SCons.Platform.virtualenv import ignore_virtualenv, enable_virtualenv
 
 exitvalmap = {
     2 : 127,
@@ -114,8 +112,6 @@ def generate(env):
     # Must be able to have GCC and DMD work in the same build, so:
     env['__DRPATH'] = '$_DRPATH'
 
-    if enable_virtualenv and not ignore_virtualenv:
-        ImportVirtualenv(env)
 
 # Local Variables:
 # tab-width:4
