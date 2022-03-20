@@ -51,7 +51,7 @@ for compilation instructions for every supported platform.
 For basic usage see the official Godot documentation. It is hosted on [ReadTheDocs](https://docs.godotengine.org), and
 is maintained by the Godot community in its own [GitHub repository](https://github.com/godotengine/godot-docs).
 
-The is accessible from the editor.
+The class docs are accessible from the editor.
 
 You can also look at the official godot demos in their own [GitHub repository](https://github.com/godotengine/godot-demo-projects)
 as well as a list of [awesome Godot community resources](https://github.com/godotengine/awesome-godot).
