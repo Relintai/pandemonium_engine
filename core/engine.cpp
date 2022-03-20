@@ -128,10 +128,11 @@ static Array array_from_info_count(const char *const *info_list, int info_count)
 Dictionary Engine::get_author_info() const {
 	Dictionary dict;
 
-	dict["lead_developers"] = array_from_info(AUTHORS_LEAD_DEVELOPERS);
-	dict["project_managers"] = array_from_info(AUTHORS_PROJECT_MANAGERS);
-	dict["founders"] = array_from_info(AUTHORS_FOUNDERS);
-	dict["developers"] = array_from_info(AUTHORS_DEVELOPERS);
+	dict["pandemonium_founders"] = array_from_info(PANDEMONIUM_AUTHORS_FOUNDERS);
+	dict["godot_lead_developers"] = array_from_info(GODOT_AUTHORS_LEAD_DEVELOPERS);
+	dict["godot_project_managers"] = array_from_info(GODOT_AUTHORS_PROJECT_MANAGERS);
+	dict["godot_founders"] = array_from_info(GODOT_AUTHORS_FOUNDERS);
+	dict["godot_developers"] = array_from_info(GODOT_AUTHORS_DEVELOPERS);
 
 	return dict;
 }

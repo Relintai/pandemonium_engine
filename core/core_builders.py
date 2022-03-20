@@ -42,8 +42,8 @@ def make_certs_header(target, source, env):
 
 
 def make_authors_header(target, source, env):
-    sections = ["Project Founders", "Lead Developer", "Project Manager", "Developers"]
-    sections_id = ["AUTHORS_FOUNDERS", "AUTHORS_LEAD_DEVELOPERS", "AUTHORS_PROJECT_MANAGERS", "AUTHORS_DEVELOPERS"]
+    sections = ["Pandemonium Project Founder", "Godot Project Founders", "Godot Lead Developer", "Godot Project Manager", "Godot Developers"]
+    sections_id = ["PANDEMONIUM_AUTHORS_FOUNDERS", "GODOT_AUTHORS_FOUNDERS", "GODOT_AUTHORS_LEAD_DEVELOPERS", "GODOT_AUTHORS_PROJECT_MANAGERS", "GODOT_AUTHORS_DEVELOPERS"]
 
     src = source[0]
     dst = target[0]

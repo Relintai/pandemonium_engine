@@ -133,7 +133,7 @@ ScrollContainer *EditorAbout::_populate_list(const String &p_name, const List<St
 }
 
 EditorAbout::EditorAbout() {
-	set_title(TTR("Thanks from the Godot community!"));
+	set_title(TTR("About Pandemonium"));
 	set_hide_on_ok(true);
 	set_resizable(true);
 
@@ -169,7 +169,7 @@ EditorAbout::EditorAbout() {
 
 	Label *about_text = memnew(Label);
 	about_text->set_v_size_flags(Control::SIZE_SHRINK_CENTER);
-	about_text->set_text(String::utf8("\xc2\xa9 2007-2022 Juan Linietsky, Ariel Manzur.\n\xc2\xa9 2014-2022 ") +
+	about_text->set_text(String::utf8("\xc2\xa9 2022 Péter Magyar.\n\xc2\xa9 2007-2022 Juan Linietsky, Ariel Manzur.\n\xc2\xa9 2014-2022 ") +
 			TTR("Godot Engine contributors") + "\n");
 	version_info_vbc->add_child(about_text);
 
@@ -183,15 +183,16 @@ EditorAbout::EditorAbout() {
 	// Authors
 
 	List<String> dev_sections;
-	dev_sections.push_back(TTR("Project Founders"));
-	dev_sections.push_back(TTR("Lead Developer"));
+	dev_sections.push_back(TTR("Pandemonium Founder / Lead Developer"));
+	dev_sections.push_back(TTR("Godot Project Founders"));
+	dev_sections.push_back(TTR("Godot Lead Developer"));
 	// TRANSLATORS: This refers to a job title.
 	// The trailing space is used to distinguish with the project list application,
 	// you do not have to keep it in your translation.
-	dev_sections.push_back(TTR("Project Manager "));
-	dev_sections.push_back(TTR("Developers"));
-	const char *const *dev_src[] = { AUTHORS_FOUNDERS, AUTHORS_LEAD_DEVELOPERS,
-		AUTHORS_PROJECT_MANAGERS, AUTHORS_DEVELOPERS };
+	dev_sections.push_back(TTR("Godot Project Manager "));
+	dev_sections.push_back(TTR("Godot Developers"));
+	const char *const *dev_src[] = { PANDEMONIUM_AUTHORS_FOUNDERS, GODOT_AUTHORS_FOUNDERS, GODOT_AUTHORS_LEAD_DEVELOPERS,
+		GODOT_AUTHORS_PROJECT_MANAGERS, GODOT_AUTHORS_DEVELOPERS };
 	tc->add_child(_populate_list(TTR("Authors"), dev_sections, dev_src, 1));
 
 	// Donors
@@ -229,7 +230,7 @@ EditorAbout::EditorAbout() {
 	Label *tpl_label = memnew(Label);
 	tpl_label->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	tpl_label->set_autowrap(true);
-	tpl_label->set_text(TTR("Godot Engine relies on a number of third-party free and open source libraries, all compatible with the terms of its MIT license. The following is an exhaustive list of all such third-party components with their respective copyright statements and license terms."));
+	tpl_label->set_text(TTR("Pandemonium Engine relies on a number of third-party free and open source libraries, all compatible with the terms of its MIT license. The following is an exhaustive list of all such third-party components with their respective copyright statements and license terms."));
 	tpl_label->set_size(Size2(630, 1) * EDSCALE);
 	license_thirdparty->add_child(tpl_label);
 

@@ -42,8 +42,9 @@ Upstream-Contact: Rémi Verschelde <contact@godotengine.org>
 Source: https://github.com/godotengine/godot
 
 Files: *
-Comment: Godot Engine
-Copyright: 2007-2022, Juan Linietsky, Ariel Manzur.
+Comment: Pandemonium Engine
+Copyright: Copyright (c) 2022 Péter Magyar.
+ 2007-2022, Juan Linietsky, Ariel Manzur.
  2014-2022, Godot Engine contributors.
 License: Expat
 

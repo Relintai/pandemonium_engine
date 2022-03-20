@@ -1,3 +1,4 @@
+Copyright (c) 2022 Péter Magyar.
 Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.
 Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).
 
