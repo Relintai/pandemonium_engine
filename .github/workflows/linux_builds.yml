@@ -25,17 +25,6 @@ jobs:
             bin: "./bin/godot.x11.opt.tools.64"
             artifact: true
 
-          - name: Editor and sanitizers (target=debug, tools=yes, use_asan=yes, use_ubsan=yes)
-            cache-name: linux-editor-sanitizers
-            target: debug
-            tools: true
-            sconsflags: use_asan=yes use_ubsan=yes
-            test: true
-            bin: "./bin/godot.x11.tools.64s"
-            build-mono: false
-            # Skip 2GiB artifact speeding up action.
-            artifact: false
-
           - name: Template (target=release, tools=no)
             cache-name: linux-template
             target: release
@@ -74,37 +63,6 @@ jobs:
           platform: linuxbsd
           target: ${{ matrix.target }}
           tools: ${{ matrix.tools }}
-
-      # Download and extract zip archive with project, folder is renamed to be able to easy change used project
-      - name: Download test project
-        if: ${{ matrix.test }}
-        run: |
-          wget https://github.com/Relintai/regression-test-project/archive/3.x.zip
-          unzip 3.x.zip
-          mv "regression-test-project-3.x" "test_project"
-
-      # Editor is quite complicated piece of software, so it is easy to introduce bug here
-      - name: Open and close editor
-        if: ${{ matrix.test }}
-        run: |
-          DRI_PRIME=0 xvfb-run ${{ matrix.bin }} --audio-driver Dummy -e -q --path test_project 2>&1 | tee sanitizers_log.txt || true
-          misc/scripts/check_ci_log.py sanitizers_log.txt
-
-      # Run test project
-      - name: Run project
-        if: ${{ matrix.test }}
-        run: |
-          DRI_PRIME=0 xvfb-run ${{ matrix.bin }} 30 --audio-driver Dummy --path test_project 2>&1 | tee sanitizers_log.txt || true
-          misc/scripts/check_ci_log.py sanitizers_log.txt
-
-      # Check class reference
-      - name: Check for class reference updates
-        if: ${{ matrix.test }}
-        run: |
-          echo "Running --doctool to see if this changes the public API without updating the documentation."
-          echo -e "If a diff is shown, it means that your code/doc changes are incomplete and you should update the class reference with --doctool.\n\n"
-          DRI_PRIME=0 xvfb-run ${{ matrix.bin }} --doctool . 2>&1 > /dev/null || true
-          git diff --color --exit-code && ! git ls-files --others --exclude-standard | sed -e 's/^/New doc file missing in PR: /' | grep 'xml$'
 
       - name: Prepare artifact
         if: ${{ matrix.artifact }}
