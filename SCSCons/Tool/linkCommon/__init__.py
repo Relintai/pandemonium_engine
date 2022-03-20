@@ -27,7 +27,6 @@ Common link/shared library logic
 
 import SCons.Util
 import SCons.Warnings
-from SCons.Tool.DCommon import isD
 from SCons.Util import is_List
 
 issued_mixed_link_warning = False
@@ -131,17 +130,8 @@ def smart_link(source, target, env, for_signature):
     import SCons.Tool.cxx
 
     has_cplusplus = SCons.Tool.cxx.iscplusplus(source)
-    has_d = isD(env, source)
-    if has_cplusplus and not has_d:
-        global issued_mixed_link_warning
-        if not issued_mixed_link_warning:
-            issued_mixed_link_warning = True
-        return '$CXX'
-    elif has_d:
-        env['LINKCOM'] = env['DLINKCOM']
-        env['SHLINKCOM'] = env['SHDLINKCOM']
-        return '$DC'
-    elif has_cplusplus:
+
+    if has_cplusplus:
         return '$CXX'
     return '$CC'
 
