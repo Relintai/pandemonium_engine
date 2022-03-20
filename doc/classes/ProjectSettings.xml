@@ -1061,9 +1061,6 @@
 		<member name="network/limits/tcp/connect_timeout_seconds" type="int" setter="" getter="" default="30">
 			Timeout (in seconds) for connection attempts using TCP.
 		</member>
-		<member name="network/limits/webrtc/max_channel_in_buffer_kb" type="int" setter="" getter="" default="64">
-			Maximum size (in kiB) for the [WebRTCDataChannel] input buffer.
-		</member>
 		<member name="network/limits/websocket_client/max_in_buffer_kb" type="int" setter="" getter="" default="64">
 			Maximum size (in kiB) for the [WebSocketClient] input buffer.
 		</member>
