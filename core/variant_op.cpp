@@ -2115,6 +2115,19 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 					v->y = p_value;
 					return;
 				}
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
+				//scalar name
+
+				Vector2 *v = reinterpret_cast<Vector2 *>(_data._mem);
+				if (p_index == CoreStringNames::singleton->x) {
+					valid = true;
+					v->x = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->y) {
+					valid = true;
+					v->y = p_value;
+					return;
+				}
 			}
 
 		} break; // 5
@@ -2150,6 +2163,19 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 					v->y = p_value;
 					return;
 				}
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
+				//scalar name
+
+				Vector2i *v = reinterpret_cast<Vector2i *>(_data._mem);
+				if (p_index == CoreStringNames::singleton->x) {
+					valid = true;
+					v->x = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->y) {
+					valid = true;
+					v->y = p_value;
+					return;
+				}
 			}
 
 		} break; //6
@@ -2169,6 +2195,23 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 						v->size = p_value;
 						return;
 					} else if (*str == "end") {
+						valid = true;
+						v->size = Vector2(p_value) - v->position;
+						return;
+					}
+				} else if (p_index.get_type() == Variant::STRING_NAME) {
+					//scalar name
+
+					Rect2 *v = reinterpret_cast<Rect2 *>(_data._mem);
+					if (p_index == CoreStringNames::singleton->position) {
+						valid = true;
+						v->position = p_value;
+						return;
+					} else if (p_index == CoreStringNames::singleton->size) {
+						valid = true;
+						v->size = p_value;
+						return;
+					} else if (p_index == CoreStringNames::singleton->end) {
 						valid = true;
 						v->size = Vector2(p_value) - v->position;
 						return;
@@ -2199,13 +2242,30 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 						v->size = Vector2i(Vector2(p_value)) - v->position;
 						return;
 					}
+				} else if (p_index.get_type() == Variant::STRING_NAME) {
+					//scalar name
+
+					Rect2i *v = reinterpret_cast<Rect2i *>(_data._mem);
+					if (p_index == CoreStringNames::singleton->position) {
+						valid = true;
+						v->position = p_value;
+						return;
+					} else if (p_index == CoreStringNames::singleton->size) {
+						valid = true;
+						v->size = p_value;
+						return;
+					} else if (p_index == CoreStringNames::singleton->end) {
+						valid = true;
+						v->size = Vector2(p_value) - v->position;
+						return;
+					}
 				}
 			} else {
 				return;
 			}
 		} break;
 		case TRANSFORM2D: {
-			if (p_value.type != Variant::VECTOR2) {
+			if (p_value.type != Variant::VECTOR2 || p_value.get_type() != Variant::VECTOR2I) {
 				return;
 			}
 
@@ -2222,7 +2282,7 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 					v->elements[index] = p_value;
 					return;
 				}
-			} else if (p_index.get_type() == Variant::STRING && (p_value.get_type() == Variant::VECTOR2 || p_value.get_type() == Variant::VECTOR2I)) {
+			} else if (p_index.get_type() == Variant::STRING) {
 				//scalar name
 				const String *str = reinterpret_cast<const String *>(p_index._data._mem);
 				Transform2D *v = _data._transform2d;
@@ -2235,6 +2295,23 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 					v->elements[1] = p_value;
 					return;
 				} else if (*str == "origin") {
+					valid = true;
+					v->elements[2] = p_value;
+					return;
+				}
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
+				//scalar name
+
+				Transform2D *v = _data._transform2d;
+				if (p_index == CoreStringNames::singleton->x) {
+					valid = true;
+					v->elements[0] = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->y) {
+					valid = true;
+					v->elements[1] = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->origin) {
 					valid = true;
 					v->elements[2] = p_value;
 					return;
@@ -2276,6 +2353,23 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 					v->z = p_value;
 					return;
 				}
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
+				//scalar name
+
+				Vector3 *v = reinterpret_cast<Vector3 *>(_data._mem);
+				if (p_index == CoreStringNames::singleton->x) {
+					valid = true;
+					v->x = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->y) {
+					valid = true;
+					v->y = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->z) {
+					valid = true;
+					v->z = p_value;
+					return;
+				}
 			}
 
 		} break;
@@ -2309,6 +2403,23 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 					v->y = p_value;
 					return;
 				} else if (*str == "z") {
+					valid = true;
+					v->z = p_value;
+					return;
+				}
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
+				//scalar name
+
+				Vector3i *v = reinterpret_cast<Vector3i *>(_data._mem);
+				if (p_index == CoreStringNames::singleton->x) {
+					valid = true;
+					v->x = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->y) {
+					valid = true;
+					v->y = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->z) {
 					valid = true;
 					v->z = p_value;
 					return;
@@ -2358,6 +2469,47 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 					v->d = p_value;
 					return;
 				}
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
+				//scalar name
+
+				Plane *v = reinterpret_cast<Plane *>(_data._mem);
+				if (p_index == CoreStringNames::singleton->x) {
+					if (p_value.type != Variant::INT && p_value.type != Variant::REAL) {
+						return;
+					}
+
+					valid = true;
+					v->normal.x = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->y) {
+					if (p_value.type != Variant::INT && p_value.type != Variant::REAL) {
+						return;
+					}
+
+					valid = true;
+					v->normal.y = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->z) {
+					if (p_value.type != Variant::INT && p_value.type != Variant::REAL) {
+						return;
+					}
+
+					valid = true;
+					v->normal.z = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->normal) {
+					if (p_value.type != Variant::VECTOR3) {
+						return;
+					}
+
+					valid = true;
+					v->normal = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->d) {
+					valid = true;
+					v->d = p_value;
+					return;
+				}
 			}
 
 		} break;
@@ -2386,6 +2538,25 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 					v->w = p_value;
 					return;
 				}
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
+				Quat *v = reinterpret_cast<Quat *>(_data._mem);
+				if (p_index == CoreStringNames::singleton->x) {
+					valid = true;
+					v->x = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->y) {
+					valid = true;
+					v->y = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->z) {
+					valid = true;
+					v->z = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->w) {
+					valid = true;
+					v->w = p_value;
+					return;
+				}
 			}
 
 		} break; // 10
@@ -2408,6 +2579,23 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 					v->size = p_value;
 					return;
 				} else if (*str == "end") {
+					valid = true;
+					v->size = Vector3(p_value) - v->position;
+					return;
+				}
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
+				//scalar name
+
+				::AABB *v = _data._aabb;
+				if (p_index == CoreStringNames::singleton->position) {
+					valid = true;
+					v->position = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->size) {
+					valid = true;
+					v->size = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->end) {
 					valid = true;
 					v->size = Vector3(p_value) - v->position;
 					return;
@@ -2449,6 +2637,22 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 					v->set_axis(2, p_value);
 					return;
 				}
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
+				Basis *v = _data._basis;
+
+				if (p_index == CoreStringNames::singleton->x) {
+					valid = true;
+					v->set_axis(0, p_value);
+					return;
+				} else if (p_index == CoreStringNames::singleton->y) {
+					valid = true;
+					v->set_axis(1, p_value);
+					return;
+				} else if (p_index == CoreStringNames::singleton->z) {
+					valid = true;
+					v->set_axis(2, p_value);
+					return;
+				}
 			}
 
 		} break;
@@ -2486,6 +2690,25 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 					return;
 				}
 				if (*str == "origin") {
+					if (p_value.type != Variant::VECTOR3) {
+						return;
+					}
+					valid = true;
+					v->origin = p_value;
+					return;
+				}
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
+				Transform *v = _data._transform;
+
+				if (p_index == CoreStringNames::singleton->basis) {
+					if (p_value.type != Variant::BASIS) {
+						return;
+					}
+					valid = true;
+					v->basis = p_value;
+					return;
+				}
+				if (p_index == CoreStringNames::singleton->origin) {
 					if (p_value.type != Variant::VECTOR3) {
 						return;
 					}
@@ -2558,6 +2781,54 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 					Color *v = reinterpret_cast<Color *>(_data._mem);
 					(*v)[idx] = p_value;
 					valid = true;
+				}
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
+
+				Color *v = reinterpret_cast<Color *>(_data._mem);
+				if (p_index == CoreStringNames::singleton->r) {
+					valid = true;
+					v->r = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->g) {
+					valid = true;
+					v->g = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->b) {
+					valid = true;
+					v->b = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->a) {
+					valid = true;
+					v->a = p_value;
+					return;
+				} else if (p_index == CoreStringNames::singleton->h) {
+					valid = true;
+					v->set_hsv(p_value, v->get_s(), v->get_v(), v->a);
+					return;
+				} else if (p_index == CoreStringNames::singleton->s) {
+					valid = true;
+					v->set_hsv(v->get_h(), p_value, v->get_v(), v->a);
+					return;
+				} else if (p_index == CoreStringNames::singleton->v) {
+					valid = true;
+					v->set_hsv(v->get_h(), v->get_s(), p_value, v->a);
+					return;
+				} else if (p_index == CoreStringNames::singleton->r8) {
+					valid = true;
+					v->r = float(p_value) / 255.0;
+					return;
+				} else if (p_index == CoreStringNames::singleton->g8) {
+					valid = true;
+					v->g = float(p_value) / 255.0;
+					return;
+				} else if (p_index == CoreStringNames::singleton->b8) {
+					valid = true;
+					v->b = float(p_value) / 255.0;
+					return;
+				} else if (p_index == CoreStringNames::singleton->a8) {
+					valid = true;
+					v->a = float(p_value) / 255.0;
+					return;
 				}
 			}
 
@@ -2667,6 +2938,17 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					valid = true;
 					return v->y;
 				}
+			}else if (p_index.get_type() == Variant::STRING_NAME) {
+				//scalar name
+
+				const Vector2 *v = reinterpret_cast<const Vector2 *>(_data._mem);
+				if (p_index == CoreStringNames::singleton->x) {
+					valid = true;
+					return v->x;
+				} else if (p_index == CoreStringNames::singleton->y) {
+					valid = true;
+					return v->y;
+				}
 			}
 
 		} break; // 5
@@ -2694,6 +2976,17 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					valid = true;
 					return v->y;
 				}
+			}else if (p_index.get_type() == Variant::STRING_NAME) {
+				//scalar name
+
+				const Vector2i *v = reinterpret_cast<const Vector2i *>(_data._mem);
+				if (p_index == CoreStringNames::singleton->x) {
+					valid = true;
+					return v->x;
+				} else if (p_index == CoreStringNames::singleton->y) {
+					valid = true;
+					return v->y;
+				}
 			}
 
 		} break; // 6
@@ -2713,6 +3006,20 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					valid = true;
 					return v->size + v->position;
 				}
+			} else  if (p_index.get_type() == Variant::STRING_NAME) {
+				//scalar name
+
+				const Rect2 *v = reinterpret_cast<const Rect2 *>(_data._mem);
+				if (p_index == CoreStringNames::singleton->position) {
+					valid = true;
+					return v->position;
+				} else if (p_index == CoreStringNames::singleton->size) {
+					valid = true;
+					return v->size;
+				} else if (p_index == CoreStringNames::singleton->end) {
+					valid = true;
+					return v->size + v->position;
+				}
 			}
 		} break;
 		case RECT2I: {
@@ -2728,6 +3035,20 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					valid = true;
 					return v->size;
 				} else if (*str == "end") {
+					valid = true;
+					return v->size + v->position;
+				}
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
+				//scalar name
+
+				const Rect2i *v = reinterpret_cast<const Rect2i *>(_data._mem);
+				if (p_index == CoreStringNames::singleton->position) {
+					valid = true;
+					return v->position;
+				} else if (p_index == CoreStringNames::singleton->size) {
+					valid = true;
+					return v->size;
+				} else if (p_index == CoreStringNames::singleton->end) {
 					valid = true;
 					return v->size + v->position;
 				}
@@ -2759,6 +3080,20 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					valid = true;
 					return v->z;
 				}
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
+				//scalar name
+
+				const Vector3 *v = reinterpret_cast<const Vector3 *>(_data._mem);
+				if (p_index == CoreStringNames::singleton->x) {
+					valid = true;
+					return v->x;
+				} else if (p_index == CoreStringNames::singleton->y) {
+					valid = true;
+					return v->y;
+				} else if (p_index == CoreStringNames::singleton->z) {
+					valid = true;
+					return v->z;
+				}
 			}
 
 		} break;
@@ -2785,6 +3120,20 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					valid = true;
 					return v->y;
 				} else if (*str == "z") {
+					valid = true;
+					return v->z;
+				}
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
+				//scalar name
+
+				const Vector3i *v = reinterpret_cast<const Vector3i *>(_data._mem);
+				if (p_index == CoreStringNames::singleton->x) {
+					valid = true;
+					return v->x;
+				} else if (p_index == CoreStringNames::singleton->y) {
+					valid = true;
+					return v->y;
+				} else if (p_index == CoreStringNames::singleton->z) {
 					valid = true;
 					return v->z;
 				}
@@ -2818,6 +3167,20 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					valid = true;
 					return v->elements[2];
 				}
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
+				//scalar name
+
+				const Transform2D *v = _data._transform2d;
+				if (p_index == CoreStringNames::singleton->x) {
+					valid = true;
+					return v->elements[0];
+				} else if (p_index == CoreStringNames::singleton->y) {
+					valid = true;
+					return v->elements[1];
+				} else if (p_index == CoreStringNames::singleton->origin) {
+					valid = true;
+					return v->elements[2];
+				}
 			}
 
 		} break;
@@ -2842,6 +3205,26 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					valid = true;
 					return v->d;
 				}
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
+				//scalar name
+
+				const Plane *v = reinterpret_cast<const Plane *>(_data._mem);
+				if (p_index == CoreStringNames::singleton->x) {
+					valid = true;
+					return v->normal.x;
+				} else if (p_index == CoreStringNames::singleton->y) {
+					valid = true;
+					return v->normal.y;
+				} else if (p_index == CoreStringNames::singleton->z) {
+					valid = true;
+					return v->normal.z;
+				} else if (p_index == CoreStringNames::singleton->normal) {
+					valid = true;
+					return v->normal;
+				} else if (p_index == CoreStringNames::singleton->d) {
+					valid = true;
+					return v->d;
+				}
 			}
 
 		} break;
@@ -2862,6 +3245,22 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					valid = true;
 					return v->w;
 				}
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
+
+				const Quat *v = reinterpret_cast<const Quat *>(_data._mem);
+				if (p_index == CoreStringNames::singleton->x) {
+					valid = true;
+					return v->x;
+				} else if (p_index == CoreStringNames::singleton->y) {
+					valid = true;
+					return v->y;
+				} else if (p_index == CoreStringNames::singleton->z) {
+					valid = true;
+					return v->z;
+				} else if (p_index == CoreStringNames::singleton->w) {
+					valid = true;
+					return v->w;
+				}
 			}
 
 		} break; // 10
@@ -2878,6 +3277,20 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					valid = true;
 					return v->size;
 				} else if (*str == "end") {
+					valid = true;
+					return v->size + v->position;
+				}
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
+				//scalar name
+
+				const ::AABB *v = _data._aabb;
+				if (p_index == CoreStringNames::singleton->position) {
+					valid = true;
+					return v->position;
+				} else if (p_index == CoreStringNames::singleton->size) {
+					valid = true;
+					return v->size;
+				} else if (p_index == CoreStringNames::singleton->end) {
 					valid = true;
 					return v->size + v->position;
 				}
@@ -2909,6 +3322,20 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					valid = true;
 					return v->get_axis(2);
 				}
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
+
+				const Basis *v = _data._basis;
+
+				if (p_index == CoreStringNames::singleton->x) {
+					valid = true;
+					return v->get_axis(0);
+				} else if (p_index == CoreStringNames::singleton->y) {
+					valid = true;
+					return v->get_axis(1);
+				} else if (p_index == CoreStringNames::singleton->z) {
+					valid = true;
+					return v->get_axis(2);
+				}
 			}
 
 		} break;
@@ -2932,6 +3359,17 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					return v->basis;
 				}
 				if (*str == "origin") {
+					valid = true;
+					return v->origin;
+				}
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
+				const Transform *v = _data._transform;
+
+				if (p_index == CoreStringNames::singleton->basis) {
+					valid = true;
+					return v->basis;
+				}
+				if (p_index == CoreStringNames::singleton->origin) {
 					valid = true;
 					return v->origin;
 				}
@@ -2986,6 +3424,43 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					valid = true;
 					return (*v)[idx];
 				}
+			} else if (p_index.get_type() == Variant::STRING) {
+
+				const Color *v = reinterpret_cast<const Color *>(_data._mem);
+				if (p_index == CoreStringNames::singleton->r) {
+					valid = true;
+					return v->r;
+				} else if (p_index == CoreStringNames::singleton->g) {
+					valid = true;
+					return v->g;
+				} else if (p_index == CoreStringNames::singleton->b) {
+					valid = true;
+					return v->b;
+				} else if (p_index == CoreStringNames::singleton->a) {
+					valid = true;
+					return v->a;
+				} else if (p_index == CoreStringNames::singleton->h) {
+					valid = true;
+					return v->get_h();
+				} else if (p_index == CoreStringNames::singleton->s) {
+					valid = true;
+					return v->get_s();
+				} else if (p_index == CoreStringNames::singleton->v) {
+					valid = true;
+					return v->get_v();
+				} else if (p_index == CoreStringNames::singleton->r8) {
+					valid = true;
+					return (int)Math::round(v->r * 255.0);
+				} else if (p_index == CoreStringNames::singleton->g8) {
+					valid = true;
+					return (int)Math::round(v->g * 255.0);
+				} else if (p_index == CoreStringNames::singleton->b8) {
+					valid = true;
+					return (int)Math::round(v->b * 255.0);
+				} else if (p_index == CoreStringNames::singleton->a8) {
+					valid = true;
+					return (int)Math::round(v->a * 255.0);
+				}
 			}
 
 		} break;
@@ -3005,7 +3480,7 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 				return Variant();
 			}
 
-			if (p_index.get_type() != Variant::STRING) {
+			if (p_index.get_type() != Variant::STRING && p_index.get_type() != Variant::STRING_NAME) {
 				return obj->getvar(p_index, r_valid);
 			} else {
 				return obj->get(p_index, r_valid);
@@ -3070,7 +3545,7 @@ bool Variant::in(const Variant &p_index, bool *r_valid) const {
 			}
 
 			bool result;
-			if (p_index.get_type() != Variant::STRING) {
+			if (p_index.get_type() != Variant::STRING && p_index.get_type() != Variant::STRING_NAME) {
 				obj->getvar(p_index, &result);
 			} else {
 				obj->get(p_index, &result);
