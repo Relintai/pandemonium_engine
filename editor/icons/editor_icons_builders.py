@@ -50,7 +50,13 @@ def make_editor_icons_action(target, source, env):
 
         fname = str(f)
 
-        icon_name = os.path.basename(fname)[5:-4].title().replace("_", "")
+        icon_name = os.path.basename(fname)[5:-4].title()
+
+        #hack
+        icon_name = icon_name.replace("Vector2I", "Vector2i")
+        icon_name = icon_name.replace("Vector3I", "Vector3i")
+
+        icon_name = icon_name.replace("_", "")
         # some special cases
         if icon_name in ["Int", "Bool", "Float"]:
             icon_name = icon_name.lower()
