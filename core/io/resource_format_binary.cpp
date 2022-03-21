@@ -78,6 +78,7 @@ enum {
 	VARIANT_VECTOR3I = 44,
 	VARIANT_VECTOR3I_ARRAY = 45,
 	VARIANT_VECTOR2I_ARRAY = 46,
+	VARIANT_STRING_NAME = 47,
 #ifndef DISABLE_DEPRECATED
 	VARIANT_IMAGE = 21, // - no longer variant type
 	IMAGE_ENCODING_EMPTY = 0,
@@ -375,6 +376,9 @@ Error ResourceInteractiveLoaderBinary::parse_variant(Variant &r_v) {
 				} break;
 			}
 
+		} break;
+		case VARIANT_STRING_NAME: {
+			r_v = StringName(get_unicode_string());
 		} break;
 		case VARIANT_DICTIONARY: {
 			uint32_t len = f->get_32();

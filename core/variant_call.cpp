@@ -1386,6 +1386,8 @@ Variant Variant::construct(const Variant::Type p_type, const Variant **p_args, i
 				return RID();
 			case OBJECT:
 				return (Object *)nullptr;
+			case STRING_NAME:
+				return StringName();
 			case DICTIONARY:
 				return Dictionary();
 			case ARRAY:
@@ -1471,6 +1473,8 @@ Variant Variant::construct(const Variant::Type p_type, const Variant **p_args, i
 				return (RID(*p_args[0]));
 			case OBJECT:
 				return ((Object *)(p_args[0]->operator Object *()));
+			case STRING_NAME:
+				return (StringName(p_args[0]->operator StringName()));
 			case DICTIONARY:
 				return p_args[0]->operator Dictionary();
 			case ARRAY:

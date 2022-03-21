@@ -113,6 +113,7 @@ MAKE_PTRARGCONV(float, double);
 MAKE_PTRARG(double);
 
 MAKE_PTRARG(String);
+MAKE_PTRARG(StringName);
 MAKE_PTRARG(Vector2);
 MAKE_PTRARG(Vector2i);
 MAKE_PTRARG(Rect2);
@@ -257,6 +258,7 @@ struct PtrToArg<const T *> {
 		}                                                                                        \
 	}
 MAKE_VECARG(String);
+MAKE_VECARG(StringName);
 MAKE_VECARG(uint8_t);
 MAKE_VECARG(int);
 MAKE_VECARG(float);
@@ -398,7 +400,7 @@ MAKE_DVECARR(Plane);
 		}                                                                     \
 	}
 
-MAKE_STRINGCONV(StringName);
+//MAKE_STRINGCONV(StringName);
 MAKE_STRINGCONV_BY_REFERENCE(IP_Address);
 
 template <>

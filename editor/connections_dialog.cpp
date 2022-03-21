@@ -30,12 +30,6 @@
 
 #include "connections_dialog.h"
 
-#include "editor_node.h"
-#include "editor_scale.h"
-#include "editor_settings.h"
-#include "plugins/script_editor_plugin.h"
-#include "scene/gui/label.h"
-#include "scene/gui/popup_menu.h"
 #include "core/class_db.h"
 #include "core/color.h"
 #include "core/dictionary.h"
@@ -61,13 +55,19 @@
 #include "editor/editor_inspector.h"
 #include "editor/scene_tree_dock.h"
 #include "editor/scene_tree_editor.h"
+#include "editor_node.h"
+#include "editor_scale.h"
+#include "editor_settings.h"
+#include "plugins/script_editor_plugin.h"
 #include "scene/gui/button.h"
 #include "scene/gui/check_box.h"
 #include "scene/gui/check_button.h"
 #include "scene/gui/control.h"
+#include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/margin_container.h"
 #include "scene/gui/option_button.h"
+#include "scene/gui/popup_menu.h"
 #include "scene/gui/rich_text_label.h"
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
@@ -212,6 +212,9 @@ void ConnectDialog::_add_bind() {
 			value = 0.0;
 			break;
 		case Variant::STRING:
+			value = "";
+			break;
+		case Variant::STRING_NAME:
 			value = "";
 			break;
 		case Variant::VECTOR2:
@@ -465,6 +468,7 @@ ConnectDialog::ConnectDialog() {
 	type_list->add_item("int", Variant::INT);
 	type_list->add_item("real", Variant::REAL);
 	type_list->add_item("String", Variant::STRING);
+	type_list->add_item("StringName", Variant::STRING_NAME);
 	type_list->add_item("Vector2", Variant::VECTOR2);
 	type_list->add_item("Rect2", Variant::RECT2);
 	type_list->add_item("Vector3", Variant::VECTOR3);

@@ -1027,6 +1027,12 @@ void EditorPropertyDictionary::update_property() {
 					}
 
 				} break;
+				case Variant::STRING_NAME: {
+					EditorPropertyText *ept = memnew(EditorPropertyText);
+					ept->set_string_name(true);
+					prop = ept;
+
+				} break;
 				case Variant::DICTIONARY: {
 					prop = memnew(EditorPropertyDictionary);
 

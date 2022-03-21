@@ -163,7 +163,7 @@ MAKE_TYPE_INFO(PoolVector3Array, Variant::POOL_VECTOR3_ARRAY)
 MAKE_TYPE_INFO(PoolVector3iArray, Variant::POOL_VECTOR3I_ARRAY)
 MAKE_TYPE_INFO(PoolColorArray, Variant::POOL_COLOR_ARRAY)
 
-MAKE_TYPE_INFO(StringName, Variant::STRING)
+MAKE_TYPE_INFO(StringName, Variant::STRING_NAME)
 MAKE_TYPE_INFO(IP_Address, Variant::STRING)
 
 class BSP_Tree;

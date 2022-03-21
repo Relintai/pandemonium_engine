@@ -78,6 +78,7 @@ class EditorPropertyText : public EditorProperty {
 	LineEdit *text;
 
 	bool updating;
+	bool string_name;
 	void _text_changed(const String &p_string);
 	void _text_entered(const String &p_string);
 
@@ -85,6 +86,7 @@ protected:
 	static void _bind_methods();
 
 public:
+	void set_string_name(bool p_enabled);
 	virtual void update_property();
 	void set_placeholder(const String &p_string);
 	EditorPropertyText();
@@ -129,6 +131,7 @@ class EditorPropertyTextEnum : public EditorProperty {
 
 	void _emit_changed_value(String p_string);
 	void _option_selected(int p_which);
+	bool string_name;
 
 	void _edit_custom_value();
 	void _custom_value_submitted(String p_value);
@@ -140,7 +143,7 @@ protected:
 	void _notification(int p_what);
 
 public:
-	void setup(const Vector<String> &p_options, bool p_loose_mode = false);
+	void setup(const Vector<String> &p_options, bool p_loose_mode = false, bool p_string_name = false);
 	virtual void update_property();
 	EditorPropertyTextEnum();
 };

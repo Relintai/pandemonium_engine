@@ -239,6 +239,7 @@ uint32_t PackedDataContainer::_pack(const Variant &p_data, Vector<uint8_t> &tmpd
 		case Variant::POOL_VECTOR2_ARRAY:
 		case Variant::POOL_VECTOR3_ARRAY:
 		case Variant::POOL_COLOR_ARRAY:
+		case Variant::STRING_NAME:
 		case Variant::NODE_PATH: {
 			uint32_t pos = tmpdata.size();
 			int len;

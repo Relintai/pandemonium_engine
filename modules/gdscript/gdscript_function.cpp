@@ -590,6 +590,7 @@ Variant GDScriptFunction::call(GDScriptInstance *p_instance, const Variant **p_a
 						v = "of type '" + _get_var_type(index) + "'";
 					}
 					err_text = "Invalid get index " + v + " (on base: '" + _get_var_type(src) + "').";
+
 					OPCODE_BREAK;
 				}
 				*dst = ret;

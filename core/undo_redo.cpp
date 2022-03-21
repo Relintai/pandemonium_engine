@@ -100,7 +100,7 @@ void UndoRedo::create_action(const String &p_name, MergeMode p_mode) {
 	action_level++;
 }
 
-void UndoRedo::add_do_method(Object *p_object, const String &p_method, VARIANT_ARG_DECLARE) {
+void UndoRedo::add_do_method(Object *p_object, const StringName &p_method, VARIANT_ARG_DECLARE) {
 	VARIANT_ARGPTRS
 	ERR_FAIL_COND(p_object == nullptr);
 	ERR_FAIL_COND(action_level <= 0);
@@ -120,7 +120,7 @@ void UndoRedo::add_do_method(Object *p_object, const String &p_method, VARIANT_A
 	actions.write[current_action + 1].do_ops.push_back(do_op);
 }
 
-void UndoRedo::add_undo_method(Object *p_object, const String &p_method, VARIANT_ARG_DECLARE) {
+void UndoRedo::add_undo_method(Object *p_object, const StringName &p_method, VARIANT_ARG_DECLARE) {
 	VARIANT_ARGPTRS
 	ERR_FAIL_COND(p_object == nullptr);
 	ERR_FAIL_COND(action_level <= 0);
@@ -145,7 +145,7 @@ void UndoRedo::add_undo_method(Object *p_object, const String &p_method, VARIANT
 	}
 	actions.write[current_action + 1].undo_ops.push_back(undo_op);
 }
-void UndoRedo::add_do_property(Object *p_object, const String &p_property, const Variant &p_value) {
+void UndoRedo::add_do_property(Object *p_object, const StringName &p_property, const Variant &p_value) {
 	ERR_FAIL_COND(p_object == nullptr);
 	ERR_FAIL_COND(action_level <= 0);
 	ERR_FAIL_COND((current_action + 1) >= actions.size());
@@ -160,7 +160,7 @@ void UndoRedo::add_do_property(Object *p_object, const String &p_property, const
 	do_op.args[0] = p_value;
 	actions.write[current_action + 1].do_ops.push_back(do_op);
 }
-void UndoRedo::add_undo_property(Object *p_object, const String &p_property, const Variant &p_value) {
+void UndoRedo::add_undo_property(Object *p_object, const StringName &p_property, const Variant &p_value) {
 	ERR_FAIL_COND(p_object == nullptr);
 	ERR_FAIL_COND(action_level <= 0);
 	ERR_FAIL_COND((current_action + 1) >= actions.size());
@@ -427,17 +427,17 @@ Variant UndoRedo::_add_do_method(const Variant **p_args, int p_argcount, Variant
 		return Variant();
 	}
 
-	if (p_args[1]->get_type() != Variant::STRING) {
+	if (p_args[1]->get_type() != Variant::STRING_NAME && p_args[1]->get_type() != Variant::STRING) {
 		r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
 		r_error.argument = 1;
-		r_error.expected = Variant::STRING;
+		r_error.expected = Variant::STRING_NAME;
 		return Variant();
 	}
 
 	r_error.error = Variant::CallError::CALL_OK;
 
 	Object *object = *p_args[0];
-	String method = *p_args[1];
+	StringName method = *p_args[1];
 
 	Variant v[VARIANT_ARG_MAX];
 
@@ -464,17 +464,17 @@ Variant UndoRedo::_add_undo_method(const Variant **p_args, int p_argcount, Varia
 		return Variant();
 	}
 
-	if (p_args[1]->get_type() != Variant::STRING) {
+	if (p_args[1]->get_type() != Variant::STRING_NAME && p_args[1]->get_type() != Variant::STRING) {
 		r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
 		r_error.argument = 1;
-		r_error.expected = Variant::STRING;
+		r_error.expected = Variant::STRING_NAME;
 		return Variant();
 	}
 
 	r_error.error = Variant::CallError::CALL_OK;
 
 	Object *object = *p_args[0];
-	String method = *p_args[1];
+	StringName method = *p_args[1];
 
 	Variant v[VARIANT_ARG_MAX];
 
@@ -506,7 +506,7 @@ void UndoRedo::_bind_methods() {
 		MethodInfo mi;
 		mi.name = "add_undo_method";
 		mi.arguments.push_back(PropertyInfo(Variant::OBJECT, "object"));
-		mi.arguments.push_back(PropertyInfo(Variant::STRING, "method"));
+		mi.arguments.push_back(PropertyInfo(Variant::STRING_NAME, "method"));
 
 		ClassDB::bind_vararg_method(METHOD_FLAGS_DEFAULT, "add_undo_method", &UndoRedo::_add_undo_method, mi, varray(), false);
 	}

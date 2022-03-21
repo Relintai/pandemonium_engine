@@ -2280,9 +2280,9 @@ void PhysicalBone::_get_property_list(List<PropertyInfo> *p_list) const {
 			names += parent->get_bone_name(i);
 		}
 
-		p_list->push_back(PropertyInfo(Variant::STRING, "bone_name", PROPERTY_HINT_ENUM, names));
+		p_list->push_back(PropertyInfo(Variant::STRING_NAME, "bone_name", PROPERTY_HINT_ENUM, names));
 	} else {
-		p_list->push_back(PropertyInfo(Variant::STRING, "bone_name"));
+		p_list->push_back(PropertyInfo(Variant::STRING_NAME, "bone_name"));
 	}
 
 	if (joint_data) {

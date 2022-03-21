@@ -120,6 +120,9 @@ String Variant::get_type_name(Variant::Type p_type) {
 		case OBJECT: {
 			return "Object";
 		} break;
+		case STRING_NAME: {
+			return "StringName";
+		} break;
 		case NODE_PATH: {
 			return "NodePath";
 
@@ -351,6 +354,14 @@ bool Variant::can_convert(Variant::Type p_type_from, Variant::Type p_type_to) {
 
 			valid_types = valid;
 		} break;
+		case STRING_NAME: {
+			static const Type valid[] = {
+				STRING,
+				NIL
+			};
+
+			valid_types = valid;
+		} break;
 		case NODE_PATH: {
 			static const Type valid[] = {
 				STRING,
@@ -525,6 +536,7 @@ bool Variant::can_convert_strict(Variant::Type p_type_from, Variant::Type p_type
 		case STRING: {
 			static const Type valid[] = {
 				NODE_PATH,
+				STRING_NAME,
 				NIL
 			};
 
@@ -644,6 +656,14 @@ bool Variant::can_convert_strict(Variant::Type p_type_from, Variant::Type p_type
 		} break;
 		case OBJECT: {
 			static const Type valid[] = {
+				NIL
+			};
+
+			valid_types = valid;
+		} break;
+		case STRING_NAME: {
+			static const Type valid[] = {
+				STRING,
 				NIL
 			};
 
@@ -911,6 +931,10 @@ bool Variant::is_zero() const {
 		case OBJECT: {
 			return _UNSAFE_OBJ_PROXY_PTR(*this) == nullptr;
 		} break;
+		case STRING_NAME: {
+			return *reinterpret_cast<const StringName *>(_data._mem) != StringName();
+
+		} break;
 		case NODE_PATH: {
 			return reinterpret_cast<const NodePath *>(_data._mem)->is_empty();
 
@@ -1130,6 +1154,10 @@ void Variant::reference(const Variant &p_variant) {
 				_get_obj().rc->increment();
 			}
 		} break;
+		case STRING_NAME: {
+			memnew_placement(_data._mem, StringName(*reinterpret_cast<const StringName *>(p_variant._data._mem)));
+
+		} break;
 		case NODE_PATH: {
 			memnew_placement(_data._mem, NodePath(*reinterpret_cast<const NodePath *>(p_variant._data._mem)));
 
@@ -1273,6 +1301,9 @@ void Variant::clear() {
 			} else {
 				_get_obj().ref.unref();
 			}
+		} break;
+		case STRING_NAME: {
+			reinterpret_cast<StringName *>(_data._mem)->~StringName();
 		} break;
 		case _RID: {
 			// not much need probably
@@ -1561,9 +1592,12 @@ Variant::operator double() const {
 }
 
 Variant::operator StringName() const {
-	if (type == NODE_PATH) {
+	if (type == STRING_NAME) {
+		return *reinterpret_cast<const StringName *>(_data._mem);
+	} else if (type == NODE_PATH) {
 		return reinterpret_cast<const NodePath *>(_data._mem)->get_sname();
 	}
+
 	return StringName(operator String());
 }
 
@@ -1745,6 +1779,8 @@ String Variant::stringify(List<const void *> &stack) const {
 				return "[Object:null]";
 			}
 		} break;
+		case STRING_NAME:
+			return operator StringName();
 		default: {
 			return "[" + get_type_name(type) + "]";
 		}
@@ -1812,7 +1848,7 @@ Variant::operator Vector3() const {
 		return Vector3();
 	}
 }
-Variant::operator Vector3i() const  {
+Variant::operator Vector3i() const {
 	if (type == VECTOR3I) {
 		return *reinterpret_cast<const Vector3i *>(_data._mem);
 	} else if (type == VECTOR3) {
@@ -2411,8 +2447,8 @@ Variant::Variant(double p_double) {
 }
 
 Variant::Variant(const StringName &p_string) {
-	type = STRING;
-	memnew_placement(_data._mem, String(p_string.operator String()));
+	type = STRING_NAME;
+	memnew_placement(_data._mem, StringName(p_string));
 }
 Variant::Variant(const String &p_string) {
 	type = STRING;
@@ -2848,6 +2884,9 @@ void Variant::operator=(const Variant &p_variant) {
 				_get_obj().rc->increment();
 			}
 		} break;
+		case STRING_NAME: {
+			*reinterpret_cast<StringName *>(_data._mem) = *reinterpret_cast<const StringName *>(p_variant._data._mem);
+		} break;
 		case NODE_PATH: {
 			*reinterpret_cast<NodePath *>(_data._mem) = *reinterpret_cast<const NodePath *>(p_variant._data._mem);
 		} break;
@@ -3018,7 +3057,9 @@ uint32_t Variant::hash() const {
 			return hash;
 
 		} break;
-
+		case STRING_NAME: {
+			return reinterpret_cast<const StringName *>(_data._mem)->hash();
+		} break;
 		// misc types
 		case COLOR: {
 			uint32_t hash = hash_djb2_one_float(reinterpret_cast<const Color *>(_data._mem)->r);
@@ -3192,8 +3233,8 @@ uint32_t Variant::hash() const {
 	(hash_compare_scalar((p_lhs).x, (p_rhs).x)) && \
 			(hash_compare_scalar((p_lhs).y, (p_rhs).y))
 
-#define hash_compare_vector2i(p_lhs, p_rhs)        \
-	(((p_lhs).x == (p_rhs).x)) && \
+#define hash_compare_vector2i(p_lhs, p_rhs) \
+	(((p_lhs).x == (p_rhs).x)) &&           \
 			(((p_lhs).y == (p_rhs).y))
 
 #define hash_compare_vector3(p_lhs, p_rhs)                 \
@@ -3201,9 +3242,9 @@ uint32_t Variant::hash() const {
 			(hash_compare_scalar((p_lhs).y, (p_rhs).y)) && \
 			(hash_compare_scalar((p_lhs).z, (p_rhs).z))
 
-#define hash_compare_vector3i(p_lhs, p_rhs)                \
-	(((p_lhs).x == (p_rhs).x)) &&         \
-			(((p_lhs).y == (p_rhs).y)) && \
+#define hash_compare_vector3i(p_lhs, p_rhs) \
+	(((p_lhs).x == (p_rhs).x)) &&           \
+			(((p_lhs).y == (p_rhs).y)) &&   \
 			(((p_lhs).z == (p_rhs).z))
 
 #define hash_compare_quat(p_lhs, p_rhs)                    \

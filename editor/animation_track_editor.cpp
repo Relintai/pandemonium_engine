@@ -606,7 +606,7 @@ public:
 
 			} break;
 			case Animation::TYPE_METHOD: {
-				p_list->push_back(PropertyInfo(Variant::STRING, "name"));
+				p_list->push_back(PropertyInfo(Variant::STRING_NAME, "name"));
 				static_assert(VARIANT_ARG_MAX == 8, "PROPERTY_HINT_RANGE needs to be updated if VARIANT_ARG_MAX != 8");
 				p_list->push_back(PropertyInfo(Variant::INT, "arg_count", PROPERTY_HINT_RANGE, "0,8,1"));
 
@@ -664,7 +664,7 @@ public:
 				}
 				animations += "[stop]";
 
-				p_list->push_back(PropertyInfo(Variant::STRING, "animation", PROPERTY_HINT_ENUM, animations));
+				p_list->push_back(PropertyInfo(Variant::STRING_NAME, "animation", PROPERTY_HINT_ENUM, animations));
 
 			} break;
 		}
