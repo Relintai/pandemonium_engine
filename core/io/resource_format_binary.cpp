@@ -73,6 +73,11 @@ enum {
 	VARIANT_VECTOR2_ARRAY = 37,
 	VARIANT_INT64 = 40,
 	VARIANT_DOUBLE = 41,
+	VARIANT_VECTOR2I = 42,
+	VARIANT_RECT2I = 43,
+	VARIANT_VECTOR3I = 44,
+	VARIANT_VECTOR3I_ARRAY = 45,
+	VARIANT_VECTOR2I_ARRAY = 46,
 #ifndef DISABLE_DEPRECATED
 	VARIANT_IMAGE = 21, // - no longer variant type
 	IMAGE_ENCODING_EMPTY = 0,
@@ -153,6 +158,13 @@ Error ResourceInteractiveLoaderBinary::parse_variant(Variant &r_v) {
 			r_v = v;
 
 		} break;
+		case VARIANT_VECTOR2I: {
+			Vector2i v;
+			v.x = f->get_32();
+			v.y = f->get_32();
+			r_v = v;
+
+		} break;
 		case VARIANT_RECT2: {
 			Rect2 v;
 			v.position.x = f->get_real();
@@ -162,11 +174,27 @@ Error ResourceInteractiveLoaderBinary::parse_variant(Variant &r_v) {
 			r_v = v;
 
 		} break;
+		case VARIANT_RECT2I: {
+			Rect2i v;
+			v.position.x = f->get_32();
+			v.position.y = f->get_32();
+			v.size.x = f->get_32();
+			v.size.y = f->get_32();
+			r_v = v;
+
+		} break;
 		case VARIANT_VECTOR3: {
 			Vector3 v;
 			v.x = f->get_real();
 			v.y = f->get_real();
 			v.z = f->get_real();
+			r_v = v;
+		} break;
+		case VARIANT_VECTOR3I: {
+			Vector3i v;
+			v.x = f->get_32();
+			v.y = f->get_32();
+			v.z = f->get_32();
 			r_v = v;
 		} break;
 		case VARIANT_PLANE: {
@@ -465,6 +493,30 @@ Error ResourceInteractiveLoaderBinary::parse_variant(Variant &r_v) {
 			r_v = array;
 
 		} break;
+		case VARIANT_VECTOR2I_ARRAY: {
+			uint32_t len = f->get_32();
+
+			PoolVector<Vector2i> array;
+			array.resize(len);
+			PoolVector<Vector2i>::Write w = array.write();
+			if (sizeof(Vector2i) == 8) {
+				f->get_buffer((uint8_t *)w.ptr(), len * sizeof(uint32_t) * 2);
+#ifdef BIG_ENDIAN_ENABLED
+				{
+					uint32_t *ptr = (uint32_t *)w.ptr();
+					for (int i = 0; i < len * 2; i++) {
+						ptr[i] = BSWAP32(ptr[i]);
+					}
+				}
+
+#endif
+			} else {
+				ERR_FAIL_V_MSG(ERR_UNAVAILABLE, "Vector2i size is NOT 8!");
+			}
+			w.release();
+			r_v = array;
+
+		} break;
 		case VARIANT_VECTOR3_ARRAY: {
 			uint32_t len = f->get_32();
 
@@ -485,6 +537,31 @@ Error ResourceInteractiveLoaderBinary::parse_variant(Variant &r_v) {
 
 			} else {
 				ERR_FAIL_V_MSG(ERR_UNAVAILABLE, "Vector3 size is NOT 12!");
+			}
+			w.release();
+			r_v = array;
+
+		} break;
+		case VARIANT_VECTOR3I_ARRAY: {
+			uint32_t len = f->get_32();
+
+			PoolVector<Vector3i> array;
+			array.resize(len);
+			PoolVector<Vector3i>::Write w = array.write();
+			if (sizeof(Vector3i) == 12) {
+				f->get_buffer((uint8_t *)w.ptr(), len * sizeof(uint32_t) * 3);
+#ifdef BIG_ENDIAN_ENABLED
+				{
+					uint32_t *ptr = (uint32_t *)w.ptr();
+					for (int i = 0; i < len * 3; i++) {
+						ptr[i] = BSWAP32(ptr[i]);
+					}
+				}
+
+#endif
+
+			} else {
+				ERR_FAIL_V_MSG(ERR_UNAVAILABLE, "Vector3i size is NOT 12!");
 			}
 			w.release();
 			r_v = array;
