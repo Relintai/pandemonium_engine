@@ -31,6 +31,7 @@
 /*************************************************************************/
 
 #include "core/math/vector2.h" // also includes math_funcs and ustring
+#include "core/math/vector2i.h"
 
 struct Transform2D;
 

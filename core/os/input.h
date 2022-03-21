@@ -33,6 +33,7 @@
 #include "core/object.h"
 #include "core/os/main_loop.h"
 #include "core/os/thread_safe.h"
+#include "core/math/vector2i.h"
 
 class Input : public Object {
 	GDCLASS(Input, Object);

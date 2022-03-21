@@ -1,5 +1,6 @@
 #ifndef VECTOR2_H
 #define VECTOR2_H
+
 /*************************************************************************/
 /*  vector2.h                                                            */
 /*************************************************************************/
@@ -32,8 +33,6 @@
 
 #include "core/math/math_funcs.h"
 #include "core/ustring.h"
-
-struct Vector2i;
 
 struct _NO_DISCARD_CLASS_ Vector2 {
 	static const int AXIS_COUNT = 2;
@@ -267,81 +266,5 @@ Vector2 Vector2::linear_interpolate(const Vector2 &p_a, const Vector2 &p_b, real
 
 typedef Vector2 Size2;
 typedef Vector2 Point2;
-
-/* INTEGER STUFF */
-
-struct _NO_DISCARD_CLASS_ Vector2i {
-	enum Axis {
-		AXIS_X,
-		AXIS_Y,
-	};
-
-	union {
-		struct {
-			union {
-				int x;
-				int width;
-			};
-			union {
-				int y;
-				int height;
-			};
-		};
-
-		int coord[2];
-	};
-
-	_FORCE_INLINE_ int &operator[](int p_idx) {
-		DEV_ASSERT((unsigned int)p_idx < 2);
-		return coord[p_idx];
-	}
-	_FORCE_INLINE_ const int &operator[](int p_idx) const {
-		DEV_ASSERT((unsigned int)p_idx < 2);
-		return coord[p_idx];
-	}
-
-	Vector2i operator+(const Vector2i &p_v) const;
-	void operator+=(const Vector2i &p_v);
-	Vector2i operator-(const Vector2i &p_v) const;
-	void operator-=(const Vector2i &p_v);
-	Vector2i operator*(const Vector2i &p_v1) const;
-
-	Vector2i operator*(const int &rvalue) const;
-	void operator*=(const int &rvalue);
-
-	Vector2i operator/(const Vector2i &p_v1) const;
-
-	Vector2i operator/(const int &rvalue) const;
-
-	void operator/=(const int &rvalue);
-
-	Vector2i operator-() const;
-	bool operator<(const Vector2i &p_vec2) const { return (x == p_vec2.x) ? (y < p_vec2.y) : (x < p_vec2.x); }
-	bool operator>(const Vector2i &p_vec2) const { return (x == p_vec2.x) ? (y > p_vec2.y) : (x > p_vec2.x); }
-
-	bool operator==(const Vector2i &p_vec2) const;
-	bool operator!=(const Vector2i &p_vec2) const;
-
-	real_t get_aspect() const { return width / (real_t)height; }
-
-	operator String() const { return String::num(x) + ", " + String::num(y); }
-
-	operator Vector2() const { return Vector2(x, y); }
-	inline Vector2i(const Vector2 &p_vec2) {
-		x = (int)p_vec2.x;
-		y = (int)p_vec2.y;
-	}
-	inline Vector2i(int p_x, int p_y) {
-		x = p_x;
-		y = p_y;
-	}
-	inline Vector2i() {
-		x = 0;
-		y = 0;
-	}
-};
-
-typedef Vector2i Size2i;
-typedef Vector2i Point2i;
 
 #endif // VECTOR2_H
