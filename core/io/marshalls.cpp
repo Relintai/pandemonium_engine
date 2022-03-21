@@ -188,6 +188,18 @@ Error decode_variant(Variant &r_variant, const uint8_t *p_buffer, int p_len, int
 			}
 
 		} break; // 5
+		case Variant::VECTOR2I: {
+			ERR_FAIL_COND_V(len < 4 * 2, ERR_INVALID_DATA);
+			Vector2i val;
+			val.x = decode_uint32(&buf[0]);
+			val.y = decode_uint32(&buf[4]);
+			r_variant = val;
+
+			if (r_len) {
+				(*r_len) += 4 * 2;
+			}
+
+		} break;
 		case Variant::RECT2: {
 			ERR_FAIL_COND_V(len < 4 * 4, ERR_INVALID_DATA);
 			Rect2 val;
@@ -202,12 +214,39 @@ Error decode_variant(Variant &r_variant, const uint8_t *p_buffer, int p_len, int
 			}
 
 		} break;
+		case Variant::RECT2I: {
+			ERR_FAIL_COND_V(len < 4 * 4, ERR_INVALID_DATA);
+			Rect2i val;
+			val.position.x = decode_uint32(&buf[0]);
+			val.position.y = decode_uint32(&buf[4]);
+			val.size.x = decode_uint32(&buf[8]);
+			val.size.y = decode_uint32(&buf[12]);
+			r_variant = val;
+
+			if (r_len) {
+				(*r_len) += 4 * 4;
+			}
+
+		} break;
 		case Variant::VECTOR3: {
 			ERR_FAIL_COND_V(len < 4 * 3, ERR_INVALID_DATA);
 			Vector3 val;
 			val.x = decode_float(&buf[0]);
 			val.y = decode_float(&buf[4]);
 			val.z = decode_float(&buf[8]);
+			r_variant = val;
+
+			if (r_len) {
+				(*r_len) += 4 * 3;
+			}
+
+		} break;
+		case Variant::VECTOR3I: {
+			ERR_FAIL_COND_V(len < 4 * 3, ERR_INVALID_DATA);
+			Vector3i val;
+			val.x = decode_uint32(&buf[0]);
+			val.y = decode_uint32(&buf[4]);
+			val.z = decode_uint32(&buf[8]);
 			r_variant = val;
 
 			if (r_len) {
@@ -666,6 +705,39 @@ Error decode_variant(Variant &r_variant, const uint8_t *p_buffer, int p_len, int
 			r_variant = varray;
 
 		} break;
+		case Variant::POOL_VECTOR2I_ARRAY: {
+			ERR_FAIL_COND_V(len < 4, ERR_INVALID_DATA);
+			int32_t count = decode_uint32(buf);
+			buf += 4;
+			len -= 4;
+
+			ERR_FAIL_MUL_OF(count, 4 * 2, ERR_INVALID_DATA);
+			ERR_FAIL_COND_V(count < 0 || count * 4 * 2 > len, ERR_INVALID_DATA);
+			PoolVector<Vector2i> varray;
+
+			if (r_len) {
+				(*r_len) += 4;
+			}
+
+			if (count) {
+				varray.resize(count);
+				PoolVector<Vector2i>::Write w = varray.write();
+
+				for (int32_t i = 0; i < count; i++) {
+					w[i].x = decode_uint32(buf + i * 4 * 2 + 4 * 0);
+					w[i].y = decode_uint32(buf + i * 4 * 2 + 4 * 1);
+				}
+
+				int adv = 4 * 2 * count;
+
+				if (r_len) {
+					(*r_len) += adv;
+				}
+			}
+
+			r_variant = varray;
+
+		} break;
 		case Variant::POOL_VECTOR3_ARRAY: {
 			ERR_FAIL_COND_V(len < 4, ERR_INVALID_DATA);
 			int32_t count = decode_uint32(buf);
@@ -689,6 +761,41 @@ Error decode_variant(Variant &r_variant, const uint8_t *p_buffer, int p_len, int
 					w[i].x = decode_float(buf + i * 4 * 3 + 4 * 0);
 					w[i].y = decode_float(buf + i * 4 * 3 + 4 * 1);
 					w[i].z = decode_float(buf + i * 4 * 3 + 4 * 2);
+				}
+
+				int adv = 4 * 3 * count;
+
+				if (r_len) {
+					(*r_len) += adv;
+				}
+			}
+
+			r_variant = varray;
+
+		} break;
+		case Variant::POOL_VECTOR3I_ARRAY: {
+			ERR_FAIL_COND_V(len < 4, ERR_INVALID_DATA);
+			int32_t count = decode_uint32(buf);
+			buf += 4;
+			len -= 4;
+
+			ERR_FAIL_MUL_OF(count, 4 * 3, ERR_INVALID_DATA);
+			ERR_FAIL_COND_V(count < 0 || count * 4 * 3 > len, ERR_INVALID_DATA);
+
+			PoolVector<Vector3i> varray;
+
+			if (r_len) {
+				(*r_len) += 4;
+			}
+
+			if (count) {
+				varray.resize(count);
+				PoolVector<Vector3i>::Write w = varray.write();
+
+				for (int32_t i = 0; i < count; i++) {
+					w[i].x = decode_uint32(buf + i * 4 * 3 + 4 * 0);
+					w[i].y = decode_uint32(buf + i * 4 * 3 + 4 * 1);
+					w[i].z = decode_uint32(buf + i * 4 * 3 + 4 * 2);
 				}
 
 				int adv = 4 * 3 * count;
@@ -919,6 +1026,16 @@ Error encode_variant(const Variant &p_variant, uint8_t *r_buffer, int &r_len, bo
 			r_len += 2 * 4;
 
 		} break; // 5
+		case Variant::VECTOR2I: {
+			if (buf) {
+				Vector2i v2 = p_variant;
+				encode_uint32(v2.x, &buf[0]);
+				encode_uint32(v2.y, &buf[4]);
+			}
+
+			r_len += 2 * 4;
+
+		} break;
 		case Variant::RECT2: {
 			if (buf) {
 				Rect2 r2 = p_variant;
@@ -930,12 +1047,34 @@ Error encode_variant(const Variant &p_variant, uint8_t *r_buffer, int &r_len, bo
 			r_len += 4 * 4;
 
 		} break;
+		case Variant::RECT2I: {
+			if (buf) {
+				Rect2i r2 = p_variant;
+				encode_uint32(r2.position.x, &buf[0]);
+				encode_uint32(r2.position.y, &buf[4]);
+				encode_uint32(r2.size.x, &buf[8]);
+				encode_uint32(r2.size.y, &buf[12]);
+			}
+			r_len += 4 * 4;
+
+		} break;
 		case Variant::VECTOR3: {
 			if (buf) {
 				Vector3 v3 = p_variant;
 				encode_float(v3.x, &buf[0]);
 				encode_float(v3.y, &buf[4]);
 				encode_float(v3.z, &buf[8]);
+			}
+
+			r_len += 3 * 4;
+
+		} break;
+		case Variant::VECTOR3I: {
+			if (buf) {
+				Vector3i v3 = p_variant;
+				encode_uint32(v3.x, &buf[0]);
+				encode_uint32(v3.y, &buf[4]);
+				encode_uint32(v3.z, &buf[8]);
 			}
 
 			r_len += 3 * 4;
@@ -1279,6 +1418,30 @@ Error encode_variant(const Variant &p_variant, uint8_t *r_buffer, int &r_len, bo
 			r_len += 4 * 2 * len;
 
 		} break;
+		case Variant::POOL_VECTOR2I_ARRAY: {
+			PoolVector<Vector2i> data = p_variant;
+			int len = data.size();
+
+			if (buf) {
+				encode_uint32(len, buf);
+				buf += 4;
+			}
+
+			r_len += 4;
+
+			if (buf) {
+				for (int i = 0; i < len; i++) {
+					Vector2i v = data.get(i);
+
+					encode_uint32(v.x, &buf[0]);
+					encode_uint32(v.y, &buf[4]);
+					buf += 4 * 2;
+				}
+			}
+
+			r_len += 4 * 2 * len;
+
+		} break;
 		case Variant::POOL_VECTOR3_ARRAY: {
 			PoolVector<Vector3> data = p_variant;
 			int len = data.size();
@@ -1297,6 +1460,31 @@ Error encode_variant(const Variant &p_variant, uint8_t *r_buffer, int &r_len, bo
 					encode_float(v.x, &buf[0]);
 					encode_float(v.y, &buf[4]);
 					encode_float(v.z, &buf[8]);
+					buf += 4 * 3;
+				}
+			}
+
+			r_len += 4 * 3 * len;
+
+		} break;
+		case Variant::POOL_VECTOR3I_ARRAY: {
+			PoolVector<Vector3i> data = p_variant;
+			int len = data.size();
+
+			if (buf) {
+				encode_uint32(len, buf);
+				buf += 4;
+			}
+
+			r_len += 4;
+
+			if (buf) {
+				for (int i = 0; i < len; i++) {
+					Vector3i v = data.get(i);
+
+					encode_uint32(v.x, &buf[0]);
+					encode_uint32(v.y, &buf[4]);
+					encode_uint32(v.z, &buf[8]);
 					buf += 4 * 3;
 				}
 			}
