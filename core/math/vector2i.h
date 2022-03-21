@@ -66,6 +66,9 @@ struct _NO_DISCARD_CLASS_ Vector2i {
 		return coord[p_idx];
 	}
 
+	_FORCE_INLINE_ static Vector2i linear_interpolate(const Vector2i &p_a, const Vector2i &p_b, real_t p_weight);
+	_FORCE_INLINE_ Vector2i linear_interpolate(const Vector2i &p_to, real_t p_weight) const;
+
 	Vector2i operator+(const Vector2i &p_v) const;
 	void operator+=(const Vector2i &p_v);
 	Vector2i operator-(const Vector2i &p_v) const;
@@ -84,6 +87,8 @@ struct _NO_DISCARD_CLASS_ Vector2i {
 	Vector2i operator-() const;
 	bool operator<(const Vector2i &p_vec2) const { return (x == p_vec2.x) ? (y < p_vec2.y) : (x < p_vec2.x); }
 	bool operator>(const Vector2i &p_vec2) const { return (x == p_vec2.x) ? (y > p_vec2.y) : (x > p_vec2.x); }
+	bool operator<=(const Vector2 &p_vec2) const { return x == p_vec2.x ? (y <= p_vec2.y) : (x < p_vec2.x); }
+	bool operator>=(const Vector2 &p_vec2) const { return x == p_vec2.x ? (y >= p_vec2.y) : (x > p_vec2.x); }
 
 	bool operator==(const Vector2i &p_vec2) const;
 	bool operator!=(const Vector2i &p_vec2) const;
@@ -108,6 +113,24 @@ struct _NO_DISCARD_CLASS_ Vector2i {
 		y = 0;
 	}
 };
+
+Vector2i Vector2i::linear_interpolate(const Vector2i &p_a, const Vector2i &p_b, real_t p_weight) {
+	Vector2i res = p_a;
+
+	res.x += (p_weight * (p_b.x - p_a.x));
+	res.y += (p_weight * (p_b.y - p_a.y));
+
+	return res;
+}
+
+Vector2i Vector2i::linear_interpolate(const Vector2i &p_to, real_t p_weight) const {
+	Vector2 res = *this;
+
+	res.x += (p_weight * (p_to.x - x));
+	res.y += (p_weight * (p_to.y - y));
+
+	return res;
+}
 
 typedef Vector2i Size2i;
 typedef Vector2i Point2i;

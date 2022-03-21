@@ -34,6 +34,7 @@
 #include "core/math/basis.h"
 #include "core/math/plane.h"
 #include "core/pool_vector.h"
+#include "core/math/vector3i.h"
 
 class _NO_DISCARD_CLASS_ Transform {
 public:
@@ -75,15 +76,19 @@ public:
 	bool operator!=(const Transform &p_transform) const;
 
 	_FORCE_INLINE_ Vector3 xform(const Vector3 &p_vector) const;
+	_FORCE_INLINE_ Vector3i xform(const Vector3i &p_vector) const;
 	_FORCE_INLINE_ AABB xform(const AABB &p_aabb) const;
 	_FORCE_INLINE_ PoolVector<Vector3> xform(const PoolVector<Vector3> &p_array) const;
+	_FORCE_INLINE_ PoolVector<Vector3i> xform(const PoolVector<Vector3i> &p_array) const;
 
 	// NOTE: These are UNSAFE with non-uniform scaling, and will produce incorrect results.
 	// They use the transpose.
 	// For safe inverse transforms, xform by the affine_inverse.
 	_FORCE_INLINE_ Vector3 xform_inv(const Vector3 &p_vector) const;
+	_FORCE_INLINE_ Vector3i xform_inv(const Vector3i &p_vector) const;
 	_FORCE_INLINE_ AABB xform_inv(const AABB &p_aabb) const;
 	_FORCE_INLINE_ PoolVector<Vector3> xform_inv(const PoolVector<Vector3> &p_array) const;
+	_FORCE_INLINE_ PoolVector<Vector3i> xform_inv(const PoolVector<Vector3i> &p_array) const;
 
 	// Safe with non-uniform scaling (uses affine_inverse).
 	_FORCE_INLINE_ Plane xform(const Plane &p_plane) const;
@@ -130,6 +135,25 @@ _FORCE_INLINE_ Vector3 Transform::xform_inv(const Vector3 &p_vector) const {
 	Vector3 v = p_vector - origin;
 
 	return Vector3(
+			(basis.elements[0][0] * v.x) + (basis.elements[1][0] * v.y) + (basis.elements[2][0] * v.z),
+			(basis.elements[0][1] * v.x) + (basis.elements[1][1] * v.y) + (basis.elements[2][1] * v.z),
+			(basis.elements[0][2] * v.x) + (basis.elements[1][2] * v.y) + (basis.elements[2][2] * v.z));
+}
+
+_FORCE_INLINE_ Vector3i Transform::xform(const Vector3i &p_vector) const {
+	return Vector3i(
+			basis[0].dot(p_vector) + origin.x,
+			basis[1].dot(p_vector) + origin.y,
+			basis[2].dot(p_vector) + origin.z);
+}
+
+_FORCE_INLINE_ Vector3i Transform::xform_inv(const Vector3i &p_vector) const {
+	Vector3i v = p_vector;
+	v.x -= origin.x;
+	v.y -= origin.y;
+	v.z -= origin.z;
+
+	return Vector3i(
 			(basis.elements[0][0] * v.x) + (basis.elements[1][0] * v.y) + (basis.elements[2][0] * v.z),
 			(basis.elements[0][1] * v.x) + (basis.elements[1][1] * v.y) + (basis.elements[2][1] * v.z),
 			(basis.elements[0][2] * v.x) + (basis.elements[1][2] * v.y) + (basis.elements[2][2] * v.z));
@@ -213,12 +237,38 @@ PoolVector<Vector3> Transform::xform(const PoolVector<Vector3> &p_array) const {
 	return array;
 }
 
+PoolVector<Vector3i> Transform::xform(const PoolVector<Vector3i> &p_array) const {
+	PoolVector<Vector3i> array;
+	array.resize(p_array.size());
+
+	PoolVector<Vector3i>::Read r = p_array.read();
+	PoolVector<Vector3i>::Write w = array.write();
+
+	for (int i = 0; i < p_array.size(); ++i) {
+		w[i] = xform(r[i]);
+	}
+	return array;
+}
+
 PoolVector<Vector3> Transform::xform_inv(const PoolVector<Vector3> &p_array) const {
 	PoolVector<Vector3> array;
 	array.resize(p_array.size());
 
 	PoolVector<Vector3>::Read r = p_array.read();
 	PoolVector<Vector3>::Write w = array.write();
+
+	for (int i = 0; i < p_array.size(); ++i) {
+		w[i] = xform_inv(r[i]);
+	}
+	return array;
+}
+
+PoolVector<Vector3i> Transform::xform_inv(const PoolVector<Vector3i> &p_array) const {
+	PoolVector<Vector3i> array;
+	array.resize(p_array.size());
+
+	PoolVector<Vector3i>::Read r = p_array.read();
+	PoolVector<Vector3i>::Write w = array.write();
 
 	for (int i = 0; i < p_array.size(); ++i) {
 		w[i] = xform_inv(r[i]);

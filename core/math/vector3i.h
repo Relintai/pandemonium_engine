@@ -79,6 +79,8 @@ struct _NO_DISCARD_CLASS_ Vector3i {
 	_FORCE_INLINE_ Vector3i sign() const;
 	Vector3i clamp(const Vector3i &p_min, const Vector3i &p_max) const;
 
+	_FORCE_INLINE_ Vector3i linear_interpolate(const Vector3i &p_to, real_t p_weight) const;
+
 	/* Operators */
 
 	_FORCE_INLINE_ Vector3i &operator+=(const Vector3i &p_v);
@@ -133,6 +135,13 @@ Vector3i Vector3i::abs() const {
 
 Vector3i Vector3i::sign() const {
 	return Vector3i(SGN(x), SGN(y), SGN(z));
+}
+
+Vector3i Vector3i::linear_interpolate(const Vector3i &p_to, real_t p_weight) const {
+	return Vector3i(
+			x + (p_weight * (p_to.x - x)),
+			y + (p_weight * (p_to.y - y)),
+			z + (p_weight * (p_to.z - z)));
 }
 
 /* Operators */

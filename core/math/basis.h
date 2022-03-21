@@ -32,6 +32,7 @@
 
 #include "core/math/quat.h"
 #include "core/math/vector3.h"
+#include "core/math/vector3i.h"
 
 class _NO_DISCARD_CLASS_ Basis {
 public:
@@ -151,6 +152,10 @@ public:
 
 	_FORCE_INLINE_ Vector3 xform(const Vector3 &p_vector) const;
 	_FORCE_INLINE_ Vector3 xform_inv(const Vector3 &p_vector) const;
+
+	_FORCE_INLINE_ Vector3i xform(const Vector3i &p_vector) const;
+	_FORCE_INLINE_ Vector3i xform_inv(const Vector3i &p_vector) const;
+
 	_FORCE_INLINE_ void operator*=(const Basis &p_matrix);
 	_FORCE_INLINE_ Basis operator*(const Basis &p_matrix) const;
 	_FORCE_INLINE_ void operator+=(const Basis &p_matrix);
@@ -323,6 +328,20 @@ _FORCE_INLINE_ Basis Basis::operator*(real_t p_val) const {
 
 Vector3 Basis::xform(const Vector3 &p_vector) const {
 	return Vector3(
+			elements[0].dot(p_vector),
+			elements[1].dot(p_vector),
+			elements[2].dot(p_vector));
+}
+
+Vector3i Basis::xform_inv(const Vector3i &p_vector) const {
+	return Vector3i(
+			(elements[0][0] * p_vector.x) + (elements[1][0] * p_vector.y) + (elements[2][0] * p_vector.z),
+			(elements[0][1] * p_vector.x) + (elements[1][1] * p_vector.y) + (elements[2][1] * p_vector.z),
+			(elements[0][2] * p_vector.x) + (elements[1][2] * p_vector.y) + (elements[2][2] * p_vector.z));
+}
+
+Vector3i Basis::xform(const Vector3i &p_vector) const {
+	return Vector3i(
 			elements[0].dot(p_vector),
 			elements[1].dot(p_vector),
 			elements[2].dot(p_vector));

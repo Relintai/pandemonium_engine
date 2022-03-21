@@ -528,6 +528,19 @@ Error VariantParser::parse_value(Token &token, Variant &value, Stream *p_stream,
 			}
 
 			value = Vector2(args[0], args[1]);
+		} else if (id == "Vector2i") {
+			Vector<int> args;
+			Error err = _parse_construct<int>(p_stream, args, line, r_err_str);
+			if (err) {
+				return err;
+			}
+
+			if (args.size() != 2) {
+				r_err_str = "Expected 2 arguments for constructor";
+				return ERR_PARSE_ERROR;
+			}
+
+			value = Vector2i(args[0], args[1]);
 		} else if (id == "Rect2") {
 			Vector<float> args;
 			Error err = _parse_construct<float>(p_stream, args, line, r_err_str);
@@ -541,6 +554,19 @@ Error VariantParser::parse_value(Token &token, Variant &value, Stream *p_stream,
 			}
 
 			value = Rect2(args[0], args[1], args[2], args[3]);
+		} else if (id == "Rect2i") {
+			Vector<int> args;
+			Error err = _parse_construct<int>(p_stream, args, line, r_err_str);
+			if (err) {
+				return err;
+			}
+
+			if (args.size() != 4) {
+				r_err_str = "Expected 4 arguments for constructor";
+				return ERR_PARSE_ERROR;
+			}
+
+			value = Rect2i(args[0], args[1], args[2], args[3]);
 		} else if (id == "Vector3") {
 			Vector<float> args;
 			Error err = _parse_construct<float>(p_stream, args, line, r_err_str);
@@ -554,6 +580,19 @@ Error VariantParser::parse_value(Token &token, Variant &value, Stream *p_stream,
 			}
 
 			value = Vector3(args[0], args[1], args[2]);
+		} else if (id == "Vector3i") {
+			Vector<int> args;
+			Error err = _parse_construct<int>(p_stream, args, line, r_err_str);
+			if (err) {
+				return err;
+			}
+
+			if (args.size() != 3) {
+				r_err_str = "Expected 3 arguments for constructor";
+				return ERR_PARSE_ERROR;
+			}
+
+			value = Vector3i(args[0], args[1], args[2]);
 		} else if (id == "Transform2D" || id == "Matrix32") { //compatibility
 			Vector<float> args;
 			Error err = _parse_construct<float>(p_stream, args, line, r_err_str);
@@ -1144,6 +1183,25 @@ Error VariantParser::parse_value(Token &token, Variant &value, Stream *p_stream,
 
 			value = arr;
 
+		} else if (id == "PoolVector2iArray" || id == "Vector2iArray") {
+			Vector<int> args;
+			Error err = _parse_construct<int>(p_stream, args, line, r_err_str);
+			if (err) {
+				return err;
+			}
+
+			PoolVector<Vector2i> arr;
+			{
+				int len = args.size() / 2;
+				arr.resize(len);
+				PoolVector<Vector2i>::Write w = arr.write();
+				for (int i = 0; i < len; i++) {
+					w[i] = Vector2i(args[i * 2 + 0], args[i * 2 + 1]);
+				}
+			}
+
+			value = arr;
+
 		} else if (id == "PoolVector3Array" || id == "Vector3Array") {
 			Vector<float> args;
 			Error err = _parse_construct<float>(p_stream, args, line, r_err_str);
@@ -1158,6 +1216,25 @@ Error VariantParser::parse_value(Token &token, Variant &value, Stream *p_stream,
 				PoolVector<Vector3>::Write w = arr.write();
 				for (int i = 0; i < len; i++) {
 					w[i] = Vector3(args[i * 3 + 0], args[i * 3 + 1], args[i * 3 + 2]);
+				}
+			}
+
+			value = arr;
+
+		} else if (id == "PoolVector3iArray" || id == "Vector3iArray") {
+			Vector<int> args;
+			Error err = _parse_construct<int>(p_stream, args, line, r_err_str);
+			if (err) {
+				return err;
+			}
+
+			PoolVector<Vector3i> arr;
+			{
+				int len = args.size() / 3;
+				arr.resize(len);
+				PoolVector<Vector3i>::Write w = arr.write();
+				for (int i = 0; i < len; i++) {
+					w[i] = Vector3i(args[i * 3 + 0], args[i * 3 + 1], args[i * 3 + 2]);
 				}
 			}
 
@@ -1566,14 +1643,27 @@ Error VariantWriter::write(const Variant &p_variant, StoreStringFunc p_store_str
 			Vector2 v = p_variant;
 			p_store_string_func(p_store_string_ud, "Vector2( " + rtos_fix(v.x) + ", " + rtos_fix(v.y) + " )");
 		} break;
+		case Variant::VECTOR2I: {
+			Vector2i v = p_variant;
+			p_store_string_func(p_store_string_ud, "Vector2i( " + rtos_fix(v.x) + ", " + rtos_fix(v.y) + " )");
+		} break;
 		case Variant::RECT2: {
 			Rect2 aabb = p_variant;
 			p_store_string_func(p_store_string_ud, "Rect2( " + rtos_fix(aabb.position.x) + ", " + rtos_fix(aabb.position.y) + ", " + rtos_fix(aabb.size.x) + ", " + rtos_fix(aabb.size.y) + " )");
 
 		} break;
+		case Variant::RECT2I: {
+			Rect2i aabb = p_variant;
+			p_store_string_func(p_store_string_ud, "Rect2i( " + rtos_fix(aabb.position.x) + ", " + rtos_fix(aabb.position.y) + ", " + rtos_fix(aabb.size.x) + ", " + rtos_fix(aabb.size.y) + " )");
+
+		} break;
 		case Variant::VECTOR3: {
 			Vector3 v = p_variant;
 			p_store_string_func(p_store_string_ud, "Vector3( " + rtos_fix(v.x) + ", " + rtos_fix(v.y) + ", " + rtos_fix(v.z) + " )");
+		} break;
+		case Variant::VECTOR3I: {
+			Vector3i v = p_variant;
+			p_store_string_func(p_store_string_ud, "Vector3i( " + rtos_fix(v.x) + ", " + rtos_fix(v.y) + ", " + rtos_fix(v.z) + " )");
 		} break;
 		case Variant::PLANE: {
 			Plane p = p_variant;
@@ -1840,12 +1930,46 @@ Error VariantWriter::write(const Variant &p_variant, StoreStringFunc p_store_str
 			p_store_string_func(p_store_string_ud, " )");
 
 		} break;
+		case Variant::POOL_VECTOR2I_ARRAY: {
+			p_store_string_func(p_store_string_ud, "PoolVector2iArray( ");
+			PoolVector<Vector2i> data = p_variant;
+			int len = data.size();
+			PoolVector<Vector2i>::Read r = data.read();
+			const Vector2i *ptr = r.ptr();
+
+			for (int i = 0; i < len; i++) {
+				if (i > 0) {
+					p_store_string_func(p_store_string_ud, ", ");
+				}
+				p_store_string_func(p_store_string_ud, rtos_fix(ptr[i].x) + ", " + rtos_fix(ptr[i].y));
+			}
+
+			p_store_string_func(p_store_string_ud, " )");
+
+		} break;
 		case Variant::POOL_VECTOR3_ARRAY: {
 			p_store_string_func(p_store_string_ud, "PoolVector3Array( ");
 			PoolVector<Vector3> data = p_variant;
 			int len = data.size();
 			PoolVector<Vector3>::Read r = data.read();
 			const Vector3 *ptr = r.ptr();
+
+			for (int i = 0; i < len; i++) {
+				if (i > 0) {
+					p_store_string_func(p_store_string_ud, ", ");
+				}
+				p_store_string_func(p_store_string_ud, rtos_fix(ptr[i].x) + ", " + rtos_fix(ptr[i].y) + ", " + rtos_fix(ptr[i].z));
+			}
+
+			p_store_string_func(p_store_string_ud, " )");
+
+		} break;
+		case Variant::POOL_VECTOR3I_ARRAY: {
+			p_store_string_func(p_store_string_ud, "PoolVector3iArray( ");
+			PoolVector<Vector3i> data = p_variant;
+			int len = data.size();
+			PoolVector<Vector3i>::Read r = data.read();
+			const Vector3i *ptr = r.ptr();
 
 			for (int i = 0; i < len; i++) {
 				if (i > 0) {

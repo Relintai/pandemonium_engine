@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/math/rect2.h" // also includes vector2, math_funcs, and ustring
-#include "core/math/rect2i.h" // also includes vector2, math_funcs, and ustring
+#include "core/math/rect2i.h" // also includes vector2i, math_funcs, and ustring
 #include "core/pool_vector.h"
 
 struct _NO_DISCARD_CLASS_ Transform2D {
@@ -110,10 +110,19 @@ struct _NO_DISCARD_CLASS_ Transform2D {
 	_FORCE_INLINE_ Vector2 basis_xform_inv(const Vector2 &p_vec) const;
 	_FORCE_INLINE_ Vector2 xform(const Vector2 &p_vec) const;
 	_FORCE_INLINE_ Vector2 xform_inv(const Vector2 &p_vec) const;
+
 	_FORCE_INLINE_ Rect2 xform(const Rect2 &p_rect) const;
 	_FORCE_INLINE_ Rect2 xform_inv(const Rect2 &p_rect) const;
+
+	_FORCE_INLINE_ Vector2i basis_xform(const Vector2i &p_vec) const;
+	_FORCE_INLINE_ Vector2i basis_xform_inv(const Vector2i &p_vec) const;
+	_FORCE_INLINE_ Vector2i xform(const Vector2i &p_vec) const;
+	_FORCE_INLINE_ Vector2i xform_inv(const Vector2i &p_vec) const;
+
 	_FORCE_INLINE_ PoolVector<Vector2> xform(const PoolVector<Vector2> &p_array) const;
 	_FORCE_INLINE_ PoolVector<Vector2> xform_inv(const PoolVector<Vector2> &p_array) const;
+	_FORCE_INLINE_ PoolVector<Vector2i> xform(const PoolVector<Vector2i> &p_array) const;
+	_FORCE_INLINE_ PoolVector<Vector2i> xform_inv(const PoolVector<Vector2i> &p_array) const;
 
 	operator String() const;
 
@@ -195,6 +204,32 @@ Rect2 Transform2D::xform_inv(const Rect2 &p_rect) const {
 	return new_rect;
 }
 
+Vector2i Transform2D::basis_xform(const Vector2i &p_vec) const {
+	return Vector2i(
+			tdotx(p_vec),
+			tdoty(p_vec));
+}
+
+Vector2i Transform2D::basis_xform_inv(const Vector2i &p_vec) const {
+	return Vector2i(
+			elements[0].dot(p_vec),
+			elements[1].dot(p_vec));
+}
+
+Vector2i Transform2D::xform(const Vector2i &p_vec) const {
+	return Vector2i(
+				   tdotx(p_vec),
+				   tdoty(p_vec)) +
+			elements[2];
+}
+Vector2i Transform2D::xform_inv(const Vector2i &p_vec) const {
+	Vector2i v = p_vec - elements[2];
+
+	return Vector2i(
+			elements[0].dot(v),
+			elements[1].dot(v));
+}
+
 PoolVector<Vector2> Transform2D::xform(const PoolVector<Vector2> &p_array) const {
 	PoolVector<Vector2> array;
 	array.resize(p_array.size());
@@ -214,6 +249,32 @@ PoolVector<Vector2> Transform2D::xform_inv(const PoolVector<Vector2> &p_array) c
 
 	PoolVector<Vector2>::Read r = p_array.read();
 	PoolVector<Vector2>::Write w = array.write();
+
+	for (int i = 0; i < p_array.size(); ++i) {
+		w[i] = xform_inv(r[i]);
+	}
+	return array;
+}
+
+PoolVector<Vector2i> Transform2D::xform(const PoolVector<Vector2i> &p_array) const {
+	PoolVector<Vector2i> array;
+	array.resize(p_array.size());
+
+	PoolVector<Vector2i>::Read r = p_array.read();
+	PoolVector<Vector2i>::Write w = array.write();
+
+	for (int i = 0; i < p_array.size(); ++i) {
+		w[i] = xform(r[i]);
+	}
+	return array;
+}
+
+PoolVector<Vector2i> Transform2D::xform_inv(const PoolVector<Vector2i> &p_array) const {
+	PoolVector<Vector2i> array;
+	array.resize(p_array.size());
+
+	PoolVector<Vector2i>::Read r = p_array.read();
+	PoolVector<Vector2i>::Write w = array.write();
 
 	for (int i = 0; i < p_array.size(); ++i) {
 		w[i] = xform_inv(r[i]);
