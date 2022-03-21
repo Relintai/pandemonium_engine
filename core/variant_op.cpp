@@ -2001,8 +2001,28 @@ Variant Variant::get_named(const StringName &p_index, bool *r_valid) const {
 			return obj->get(p_index, r_valid);
 
 		} break;
+		case DICTIONARY: {
+			const Dictionary *dic = reinterpret_cast<const Dictionary *>(_data._mem);
+			const Variant *res = dic->getptr(p_index);
+			if (!res) {
+				// Backwards compatibility for before variants supported stringnames.
+				const Variant *res2 = dic->getptr(p_index.operator String());
+
+				if (res2) {
+					if (r_valid) {
+						*r_valid = true;
+					}
+					return *res2;
+				}
+			} else {
+				if (r_valid) {
+					*r_valid = true;
+				}
+				return *res;
+			}
+		} break;
 		default: {
-			return get(p_index, r_valid);
+			return get(p_index.operator String(), r_valid);
 		}
 	}
 
@@ -2783,7 +2803,6 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 					valid = true;
 				}
 			} else if (p_index.get_type() == Variant::STRING_NAME) {
-
 				Color *v = reinterpret_cast<Color *>(_data._mem);
 				if (p_index == CoreStringNames::singleton->r) {
 					valid = true;
@@ -2938,7 +2957,7 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					valid = true;
 					return v->y;
 				}
-			}else if (p_index.get_type() == Variant::STRING_NAME) {
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
 				//scalar name
 
 				const Vector2 *v = reinterpret_cast<const Vector2 *>(_data._mem);
@@ -2976,7 +2995,7 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					valid = true;
 					return v->y;
 				}
-			}else if (p_index.get_type() == Variant::STRING_NAME) {
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
 				//scalar name
 
 				const Vector2i *v = reinterpret_cast<const Vector2i *>(_data._mem);
@@ -3006,7 +3025,7 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					valid = true;
 					return v->size + v->position;
 				}
-			} else  if (p_index.get_type() == Variant::STRING_NAME) {
+			} else if (p_index.get_type() == Variant::STRING_NAME) {
 				//scalar name
 
 				const Rect2 *v = reinterpret_cast<const Rect2 *>(_data._mem);
@@ -3246,7 +3265,6 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					return v->w;
 				}
 			} else if (p_index.get_type() == Variant::STRING_NAME) {
-
 				const Quat *v = reinterpret_cast<const Quat *>(_data._mem);
 				if (p_index == CoreStringNames::singleton->x) {
 					valid = true;
@@ -3323,7 +3341,6 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					return v->get_axis(2);
 				}
 			} else if (p_index.get_type() == Variant::STRING_NAME) {
-
 				const Basis *v = _data._basis;
 
 				if (p_index == CoreStringNames::singleton->x) {
@@ -3425,7 +3442,6 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					return (*v)[idx];
 				}
 			} else if (p_index.get_type() == Variant::STRING) {
-
 				const Color *v = reinterpret_cast<const Color *>(_data._mem);
 				if (p_index == CoreStringNames::singleton->r) {
 					valid = true;
