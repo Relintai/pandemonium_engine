@@ -6725,13 +6725,16 @@ GDScriptParser::DataType GDScriptParser::_reduce_node_type(Node *p_node) {
 									case Variant::POOL_REAL_ARRAY:
 									case Variant::POOL_STRING_ARRAY:
 									case Variant::POOL_VECTOR2_ARRAY:
+									case Variant::POOL_VECTOR2I_ARRAY:
 									case Variant::POOL_VECTOR3_ARRAY:
+									case Variant::POOL_VECTOR3I_ARRAY:
 									case Variant::ARRAY:
 									case Variant::STRING: {
 										error = index_type.builtin_type != Variant::INT && index_type.builtin_type != Variant::REAL;
 									} break;
 									// Expect String only
 									case Variant::RECT2:
+									case Variant::RECT2I:
 									case Variant::PLANE:
 									case Variant::QUAT:
 									case Variant::AABB:
@@ -6740,7 +6743,9 @@ GDScriptParser::DataType GDScriptParser::_reduce_node_type(Node *p_node) {
 									} break;
 									// Expect String or number
 									case Variant::VECTOR2:
+									case Variant::VECTOR2I:
 									case Variant::VECTOR3:
+									case Variant::VECTOR3I:
 									case Variant::TRANSFORM2D:
 									case Variant::BASIS:
 									case Variant::TRANSFORM: {
