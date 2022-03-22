@@ -3515,9 +3515,19 @@ bool EditorInspectorDefaultPlugin::parse_property(Object *p_object, Variant::Typ
 			editor->setup(Variant::POOL_VECTOR2_ARRAY);
 			add_property_editor(p_path, editor);
 		} break;
+		case Variant::POOL_VECTOR2I_ARRAY: {
+			EditorPropertyArray *editor = memnew(EditorPropertyArray);
+			editor->setup(Variant::POOL_VECTOR2I_ARRAY);
+			add_property_editor(p_path, editor);
+		} break;
 		case Variant::POOL_VECTOR3_ARRAY: {
 			EditorPropertyArray *editor = memnew(EditorPropertyArray);
 			editor->setup(Variant::POOL_VECTOR3_ARRAY);
+			add_property_editor(p_path, editor);
+		} break; // 25
+		case Variant::POOL_VECTOR3I_ARRAY: {
+			EditorPropertyArray *editor = memnew(EditorPropertyArray);
+			editor->setup(Variant::POOL_VECTOR3I_ARRAY);
 			add_property_editor(p_path, editor);
 		} break; // 25
 		case Variant::POOL_COLOR_ARRAY: {

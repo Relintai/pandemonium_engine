@@ -257,8 +257,15 @@ void EditorPropertyArray::update_property() {
 		case Variant::POOL_VECTOR2_ARRAY: {
 			arrtype = "PoolVector2Array";
 		} break;
+		case Variant::POOL_VECTOR2I_ARRAY: {
+			arrtype = "PoolVector2iArray";
+		} break;
 		case Variant::POOL_VECTOR3_ARRAY: {
 			arrtype = "PoolVector3Array";
+
+		} break;
+		case Variant::POOL_VECTOR3I_ARRAY: {
+			arrtype = "PoolVector3iArray";
 
 		} break;
 		case Variant::POOL_COLOR_ARRAY: {
@@ -952,15 +959,33 @@ void EditorPropertyDictionary::update_property() {
 					prop = editor;
 
 				} break;
+				case Variant::VECTOR2I: {
+					EditorPropertyVector2i *editor = memnew(EditorPropertyVector2i);
+					editor->setup(-100000, 100000, true);
+					prop = editor;
+
+				} break;
 				case Variant::RECT2: {
 					EditorPropertyRect2 *editor = memnew(EditorPropertyRect2);
 					editor->setup(-100000, 100000, 0.001, true);
 					prop = editor;
 
 				} break;
+				case Variant::RECT2I: {
+					EditorPropertyRect2i *editor = memnew(EditorPropertyRect2i);
+					editor->setup(-100000, 100000, true);
+					prop = editor;
+
+				} break;
 				case Variant::VECTOR3: {
 					EditorPropertyVector3 *editor = memnew(EditorPropertyVector3);
 					editor->setup(-100000, 100000, 0.001, true);
+					prop = editor;
+
+				} break;
+				case Variant::VECTOR3I: {
+					EditorPropertyVector3i *editor = memnew(EditorPropertyVector3i);
+					editor->setup(-100000, 100000, true);
 					prop = editor;
 
 				} break;
@@ -1069,9 +1094,19 @@ void EditorPropertyDictionary::update_property() {
 					editor->setup(Variant::POOL_VECTOR2_ARRAY);
 					prop = editor;
 				} break;
+				case Variant::POOL_VECTOR2I_ARRAY: {
+					EditorPropertyArray *editor = memnew(EditorPropertyArray);
+					editor->setup(Variant::POOL_VECTOR2I_ARRAY);
+					prop = editor;
+				} break;
 				case Variant::POOL_VECTOR3_ARRAY: {
 					EditorPropertyArray *editor = memnew(EditorPropertyArray);
 					editor->setup(Variant::POOL_VECTOR3_ARRAY);
+					prop = editor;
+				} break;
+				case Variant::POOL_VECTOR3I_ARRAY: {
+					EditorPropertyArray *editor = memnew(EditorPropertyArray);
+					editor->setup(Variant::POOL_VECTOR3I_ARRAY);
 					prop = editor;
 				} break;
 				case Variant::POOL_COLOR_ARRAY: {
