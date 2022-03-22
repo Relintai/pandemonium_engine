@@ -479,6 +479,10 @@ void EditorNode::_notification(int p_what) {
 			get_tree()->get_root()->set_as_audio_listener(false);
 			get_tree()->get_root()->set_as_audio_listener_2d(false);
 			get_tree()->set_auto_accept_quit(false);
+			//Note that this class will only compile if tools is enabled
+#ifdef ANDROID_ENABLED
+			get_tree()->set_quit_on_go_back(false);
+#endif
 			get_tree()->connect("files_dropped", this, "_dropped_files");
 			get_tree()->connect("global_menu_action", this, "_global_menu_action");
 
