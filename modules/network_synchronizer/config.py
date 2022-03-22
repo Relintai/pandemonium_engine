@@ -1,5 +1,5 @@
 def can_build(env, platform):
-    return False
+    return True
 
 
 def configure(env):
@@ -7,12 +7,14 @@ def configure(env):
 
 
 def get_doc_classes():
-    return []
+    return [
+        #"BitArray",
+    ]
 
 
 def get_doc_path():
-    return ""
+    return "doc_classes"
 
 
 def is_enabled():
-    return False
+    return True

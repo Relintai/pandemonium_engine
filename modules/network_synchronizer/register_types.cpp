@@ -34,21 +34,24 @@
 
 #include "register_types.h"
 
+/*
 #include "data_buffer.h"
 #include "interpolator.h"
 #include "networked_controller.h"
 #include "scene_diff.h"
 #include "scene_synchronizer.h"
+*/
 
 void register_network_synchronizer_types() {
+	/*
 	GDREGISTER_CLASS(DataBuffer);
 	GDREGISTER_CLASS(SceneDiff);
 	GDREGISTER_CLASS(Interpolator);
 	GDREGISTER_CLASS(NetworkedController);
 	GDREGISTER_CLASS(SceneSynchronizer);
-
-	GLOBAL_DEF("NetworkSynchronizer/debug_server_speedup", false);
-	GLOBAL_DEF("NetworkSynchronizer/debug_doll_speedup", false);
+*/
+//	GLOBAL_DEF("NetworkSynchronizer/debug_server_speedup", false);
+//	GLOBAL_DEF("NetworkSynchronizer/debug_doll_speedup", false);
 }
 
 void unregister_network_synchronizer_types() {

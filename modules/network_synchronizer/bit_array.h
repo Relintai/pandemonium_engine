@@ -1,3 +1,6 @@
+#ifndef BITARRAY_H
+#define BITARRAY_H
+
 /*************************************************************************/
 /*  bit_array.h                                                          */
 /*************************************************************************/
@@ -32,24 +35,21 @@
 	@author AndreaCatania
 */
 
-#include "core/vector.h"
-
-#ifndef BITARRAY_H
-#define BITARRAY_H
+#include "core/variant.h"
 
 class BitArray {
-	Vector<uint8_t> bytes;
+	PoolByteArray bytes;
 
 public:
 	BitArray() = default;
 	BitArray(uint32_t p_initial_size_in_bit);
-	BitArray(const Vector<uint8_t> &p_bytes);
+	BitArray(const PoolByteArray &p_bytes);
 
-	const Vector<uint8_t> &get_bytes() const {
+	const PoolByteArray &get_bytes() const {
 		return bytes;
 	}
 
-	Vector<uint8_t> &get_bytes_mut() {
+	PoolByteArray &get_bytes_mut() {
 		return bytes;
 	}
 

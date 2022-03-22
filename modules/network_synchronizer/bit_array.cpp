@@ -35,13 +35,13 @@
 #include "bit_array.h"
 
 #include "core/math/math_funcs.h"
-#include "core/string/ustring.h"
+#include "core/ustring.h"
 
 BitArray::BitArray(uint32_t p_initial_size_in_bit) {
 	resize_in_bits(p_initial_size_in_bit);
 }
 
-BitArray::BitArray(const Vector<uint8_t> &p_bytes) :
+BitArray::BitArray(const PoolByteArray &p_bytes) :
 		bytes(p_bytes) {
 }
 
@@ -73,6 +73,8 @@ void BitArray::store_bits(int p_bit_offset, uint64_t p_value, int p_bits) {
 	int bit_offset = p_bit_offset;
 	uint64_t val = p_value;
 
+	PoolByteArray::Write w = bytes.write();
+
 	while (bits > 0) {
 		const int bits_to_write = MIN(bits, 8 - bit_offset % 8);
 		const int bits_to_jump = bit_offset % 8;
@@ -84,16 +86,18 @@ void BitArray::store_bits(int p_bit_offset, uint64_t p_value, int p_bits) {
 		uint8_t byte_clear = 0xFF >> bits_to_jump;
 		byte_clear = byte_clear << (bits_to_jump + bits_to_skip);
 		byte_clear = ~(byte_clear >> bits_to_skip);
-		bytes.write[byte_offset] &= byte_clear;
+		w[byte_offset] &= byte_clear;
 
 		// Now we can continue to write bits
-		bytes.write[byte_offset] |= (val & 0xFF) << bits_to_jump;
+		w[byte_offset] |= (val & 0xFF) << bits_to_jump;
 
 		bits -= bits_to_write;
 		bit_offset += bits_to_write;
 
 		val >>= bits_to_write;
 	}
+
+	w.release();
 }
 
 uint64_t BitArray::read_bits(int p_bit_offset, int p_bits) const {
@@ -104,7 +108,8 @@ uint64_t BitArray::read_bits(int p_bit_offset, int p_bits) const {
 	int bit_offset = p_bit_offset;
 	uint64_t val = 0;
 
-	const uint8_t *bytes_ptr = bytes.ptr();
+	PoolByteArray::Read r = bytes.read();
+	const uint8_t *bytes_ptr = r.ptr();
 
 	int val_bits_to_jump = 0;
 	while (bits > 0) {
@@ -124,11 +129,15 @@ uint64_t BitArray::read_bits(int p_bit_offset, int p_bits) const {
 		val_bits_to_jump += bits_to_read;
 	}
 
+	r.release();
+
 	return val;
 }
 
 void BitArray::zero() {
 	if (bytes.size() > 0) {
-		memset(bytes.ptrw(), 0, sizeof(uint8_t) * bytes.size());
+		PoolByteArray::Write w = bytes.write();
+		memset(w.ptr(), 0, sizeof(uint8_t) * bytes.size());
+		w.release();
 	}
 }
