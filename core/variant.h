@@ -182,6 +182,7 @@ public:
 	bool is_ref() const;
 	_FORCE_INLINE_ bool is_num() const { return type == INT || type == REAL; };
 	_FORCE_INLINE_ bool is_array() const { return type >= ARRAY; };
+	_FORCE_INLINE_ bool is_null() const { return type == NIL; };
 	bool is_shared() const;
 	bool is_zero() const;
 	bool is_one() const;
