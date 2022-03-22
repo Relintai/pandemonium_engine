@@ -408,6 +408,22 @@ public:
 	EditorPropertyVector2();
 };
 
+class EditorPropertyVector2i : public EditorProperty {
+	GDCLASS(EditorPropertyVector2i, EditorProperty);
+	EditorSpinSlider *spin[2];
+	bool setting;
+	void _value_changed(double p_val, const String &p_name);
+
+protected:
+	void _notification(int p_what);
+	static void _bind_methods();
+
+public:
+	virtual void update_property();
+	void setup(int p_min, int p_max, bool p_no_slider);
+	EditorPropertyVector2i();
+};
+
 class EditorPropertyRect2 : public EditorProperty {
 	GDCLASS(EditorPropertyRect2, EditorProperty);
 	EditorSpinSlider *spin[4];
@@ -424,6 +440,22 @@ public:
 	EditorPropertyRect2();
 };
 
+class EditorPropertyRect2i : public EditorProperty {
+	GDCLASS(EditorPropertyRect2i, EditorProperty);
+	EditorSpinSlider *spin[4];
+	bool setting;
+	void _value_changed(double p_val, const String &p_name);
+
+protected:
+	void _notification(int p_what);
+	static void _bind_methods();
+
+public:
+	virtual void update_property();
+	void setup(int p_min, int p_max, bool p_no_slider);
+	EditorPropertyRect2i();
+};
+
 class EditorPropertyVector3 : public EditorProperty {
 	GDCLASS(EditorPropertyVector3, EditorProperty);
 	EditorSpinSlider *spin[3];
@@ -438,6 +470,22 @@ public:
 	virtual void update_property();
 	void setup(double p_min, double p_max, double p_step, bool p_no_slider);
 	EditorPropertyVector3();
+};
+
+class EditorPropertyVector3i : public EditorProperty {
+	GDCLASS(EditorPropertyVector3i, EditorProperty);
+	EditorSpinSlider *spin[3];
+	bool setting;
+	void _value_changed(double p_val, const String &p_name);
+
+protected:
+	void _notification(int p_what);
+	static void _bind_methods();
+
+public:
+	virtual void update_property();
+	void setup(int p_min, int p_max, bool p_no_slider);
+	EditorPropertyVector3i();
 };
 
 class EditorPropertyPlane : public EditorProperty {
