@@ -30,19 +30,19 @@
 
 #include "editor_data.h"
 
-#include "core/io/resource_loader.h"
-#include "core/os/file_access.h"
-#include "core/project_settings.h"
-#include "editor_node.h"
-#include "scene/resources/packed_scene.h"
 #include "core/class_db.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"
 #include "core/io/config_file.h"
+#include "core/io/resource_loader.h"
+#include "core/os/file_access.h"
 #include "core/os/memory.h"
+#include "core/project_settings.h"
 #include "editor/editor_plugin.h"
 #include "editor/plugins/script_editor_plugin.h"
+#include "editor_node.h"
 #include "scene/main/node.h"
+#include "scene/resources/packed_scene.h"
 
 class Resource;
 
@@ -937,13 +937,20 @@ String EditorData::script_class_get_icon_path(const String &p_class) const {
 		return String();
 	}
 
-	String current = p_class;
-	String ret = _script_class_icon_paths[current];
+	StringName current = p_class;
+	String ret = "";
+
+	if (_script_class_icon_paths.has(current)) {
+		ret = _script_class_icon_paths[current];
+	}
+
 	while (ret.empty()) {
 		current = script_class_get_base(current);
+
 		if (!ScriptServer::is_global_class(current)) {
 			return String();
 		}
+
 		ret = _script_class_icon_paths.has(current) ? _script_class_icon_paths[current] : String();
 	}
 
@@ -964,8 +971,14 @@ void EditorData::script_class_save_icon_paths() {
 
 	Dictionary d;
 	for (List<StringName>::Element *E = keys.front(); E; E = E->next()) {
+		Variant v = _script_class_icon_paths[E->get()];
+
+		if (v.is_null()) {
+			continue;
+		}
+
 		if (ScriptServer::is_global_class(E->get())) {
-			d[E->get()] = _script_class_icon_paths[E->get()];
+			d[E->get()] = String(v);
 		}
 	}
 
@@ -996,7 +1009,13 @@ void EditorData::script_class_load_icon_paths() {
 		d.get_key_list(&keys);
 
 		for (List<Variant>::Element *E = keys.front(); E; E = E->next()) {
-			String name = E->get().operator String();
+			Variant name = E->get();
+
+			if (name.is_null()) {
+				continue;
+			}
+
+			//String name = E->get().operator String();
 			_script_class_icon_paths[name] = d[name];
 
 			String path = ScriptServer::get_global_class_path(name);
