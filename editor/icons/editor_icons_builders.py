@@ -55,6 +55,7 @@ def make_editor_icons_action(target, source, env):
         #hack
         icon_name = icon_name.replace("Vector2I", "Vector2i")
         icon_name = icon_name.replace("Vector3I", "Vector3i")
+        icon_name = icon_name.replace("Rect2I", "Rect2i")
 
         icon_name = icon_name.replace("_", "")
         # some special cases
