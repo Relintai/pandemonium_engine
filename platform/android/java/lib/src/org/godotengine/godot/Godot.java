@@ -38,7 +38,6 @@ import org.godotengine.godot.plugin.GodotPlugin;
 import org.godotengine.godot.plugin.GodotPluginRegistry;
 import org.godotengine.godot.utils.GodotNetUtils;
 import org.godotengine.godot.utils.PermissionsUtil;
-import org.godotengine.godot.xr.XRMode;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -125,7 +124,6 @@ public class Godot extends Fragment implements SensorEventListener, IDownloaderC
 	private Button mPauseButton;
 	private Button mWiFiSettingsButton;
 
-	private XRMode xrMode = XRMode.REGULAR;
 	private boolean use_immersive = false;
 	private boolean use_debug_opengl = false;
 	private boolean translucent = false;
@@ -356,7 +354,7 @@ public class Godot extends Fragment implements SensorEventListener, IDownloaderC
 		// ...add to FrameLayout
 		containerLayout.addView(edittext);
 
-		mView = new GodotView(activity, this, xrMode, use_gl3, use_debug_opengl, translucent);
+		mView = new GodotView(activity, this, use_gl3, use_debug_opengl, translucent);
 		containerLayout.addView(mView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		edittext.setView(mView);
 		io.setEdit(edittext);
@@ -546,7 +544,7 @@ public class Godot extends Fragment implements SensorEventListener, IDownloaderC
 	 */
 	@Keep
 	private String getInputFallbackMapping() {
-		return xrMode.inputFallbackMapping;
+		return "Default Android Gamepad";
 	}
 
 	String expansion_pack_path;
@@ -617,13 +615,7 @@ public class Godot extends Fragment implements SensorEventListener, IDownloaderC
 
 		for (int i = 0; i < command_line.length; i++) {
 			boolean has_extra = i < command_line.length - 1;
-			if (command_line[i].equals(XRMode.REGULAR.cmdLineArg)) {
-				xrMode = XRMode.REGULAR;
-			} else if (command_line[i].equals(XRMode.OVR.cmdLineArg)) {
-				xrMode = XRMode.OVR;
-			} else if (command_line[i].equals(XRMode.OPENXR.cmdLineArg)) {
-				xrMode = XRMode.OPENXR;
-			} else if (command_line[i].equals("--debug_opengl")) {
+			if (command_line[i].equals("--debug_opengl")) {
 				use_debug_opengl = true;
 			} else if (command_line[i].equals("--translucent")) {
 				translucent = true;

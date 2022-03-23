@@ -33,13 +33,9 @@ package org.godotengine.godot;
 import org.godotengine.godot.input.GodotGestureHandler;
 import org.godotengine.godot.input.GodotInputHandler;
 import org.godotengine.godot.utils.GLUtils;
-import org.godotengine.godot.xr.XRMode;
-import org.godotengine.godot.xr.ovr.OvrConfigChooser;
-import org.godotengine.godot.xr.ovr.OvrContextFactory;
-import org.godotengine.godot.xr.ovr.OvrWindowSurfaceFactory;
-import org.godotengine.godot.xr.regular.RegularConfigChooser;
-import org.godotengine.godot.xr.regular.RegularContextFactory;
-import org.godotengine.godot.xr.regular.RegularFallbackConfigChooser;
+import org.godotengine.godot.config.RegularConfigChooser;
+import org.godotengine.godot.config.RegularContextFactory;
+import org.godotengine.godot.config.RegularFallbackConfigChooser;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -83,7 +79,7 @@ public class GodotView extends GLSurfaceView {
 	private EGLContextFactory eglContextFactory;
 	private EGLContext eglSecondaryContext;
 
-	public GodotView(Context context, Godot godot, XRMode xrMode, boolean p_use_gl3, boolean p_use_debug_opengl, boolean p_translucent) {
+	public GodotView(Context context, Godot godot, boolean p_use_gl3, boolean p_use_debug_opengl, boolean p_translucent) {
 		super(context);
 		GLUtils.use_gl3 = p_use_gl3;
 		GLUtils.use_debug_opengl = p_use_debug_opengl;
@@ -93,7 +89,7 @@ public class GodotView extends GLSurfaceView {
 		this.detector = new GestureDetector(context, new GodotGestureHandler(this));
 		this.godotRenderer = new GodotRenderer();
 
-		init(xrMode, p_translucent);
+		init(p_translucent);
 	}
 
 	public void initInputDevices() {
@@ -123,53 +119,38 @@ public class GodotView extends GLSurfaceView {
 		return inputHandler.onGenericMotionEvent(event) || super.onGenericMotionEvent(event);
 	}
 
-	private void init(XRMode xrMode, boolean translucent) {
+	private void init(boolean translucent) {
 		setPreserveEGLContextOnPause(true);
 		setFocusableInTouchMode(true);
-		switch (xrMode) {
-			case OVR:
-			case OPENXR:
-				// Replace the default egl config chooser.
-				eglConfigChooser = new OvrConfigChooser();
 
-				// Replace the default context factory.
-				eglContextFactory = new OvrContextFactory();
-
-				// Replace the default window surface factory.
-				setEGLWindowSurfaceFactory(new OvrWindowSurfaceFactory());
-				break;
-
-			case REGULAR:
-			default:
-				/* By default, GLSurfaceView() creates a RGB_565 opaque surface.
-				 * If we want a translucent one, we should change the surface's
-				 * format here, using PixelFormat.TRANSLUCENT for GL Surfaces
-				 * is interpreted as any 32-bit surface with alpha by SurfaceFlinger.
-				 */
-				if (translucent) {
-					this.setZOrderOnTop(true);
-					this.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-				}
-
-				/* Setup the context factory for 2.0 rendering.
-				 * See ContextFactory class definition below
-				 */
-				eglContextFactory = new RegularContextFactory();
-
-				/* We need to choose an EGLConfig that matches the format of
-				 * our surface exactly. This is going to be done in our
-				 * custom config chooser. See ConfigChooser class definition
-				 * below.
-				 */
-
-				eglConfigChooser =
-						new RegularFallbackConfigChooser(8, 8, 8, 8, 24, 0,
-								new RegularFallbackConfigChooser(8, 8, 8, 8, 16, 0,
-										// Let such a desperate fallback be used if under some circumstances that's the best we can get
-										// (the translucency flag would be ignored, but that's better than not running at all)
-										new RegularConfigChooser(5, 6, 5, 0, 16, 0)));
-				break;
+		/* By default, GLSurfaceView() creates a RGB_565 opaque surface.
+		 * If we want a translucent one, we should change the surface's
+		 * format here, using PixelFormat.TRANSLUCENT for GL Surfaces
+		 * is interpreted as any 32-bit surface with alpha by SurfaceFlinger.
+		 */
+		if (translucent) {
+			this.setZOrderOnTop(true);
+			this.getHolder().setFormat(PixelFormat.TRANSLUCENT);
 		}
+
+		/* Setup the context factory for 2.0 rendering.
+		 * See ContextFactory class definition below
+		 */
+		eglContextFactory = new RegularContextFactory();
+
+		/* We need to choose an EGLConfig that matches the format of
+		 * our surface exactly. This is going to be done in our
+		 * custom config chooser. See ConfigChooser class definition
+		 * below.
+		 */
+
+		eglConfigChooser =
+				new RegularFallbackConfigChooser(8, 8, 8, 8, 24, 0,
+						new RegularFallbackConfigChooser(8, 8, 8, 8, 16, 0,
+								// Let such a desperate fallback be used if under some circumstances that's the best we can get
+								// (the translucency flag would be ignored, but that's better than not running at all)
+								new RegularConfigChooser(5, 6, 5, 0, 16, 0)));
+
 		setEGLConfigChooser(eglConfigChooser);
 		setEGLContextFactory(eglContextFactory);
 

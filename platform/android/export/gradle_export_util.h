@@ -44,26 +44,6 @@ const String godot_project_name_xml_string = R"(<?xml version="1.0" encoding="ut
 </resources>
 )";
 
-// Supported XR modes.
-// This should match the entries in 'platform/android/java/lib/src/org/godotengine/godot/xr/XRMode.java'
-static const int XR_MODE_REGULAR = 0;
-static const int XR_MODE_OVR = 1;
-static const int XR_MODE_OPENXR = 2;
-
-// Supported XR hand tracking modes.
-static const int XR_HAND_TRACKING_NONE = 0;
-static const int XR_HAND_TRACKING_OPTIONAL = 1;
-static const int XR_HAND_TRACKING_REQUIRED = 2;
-
-// Supported XR hand tracking frequencies.
-static const int XR_HAND_TRACKING_FREQUENCY_LOW = 0;
-static const int XR_HAND_TRACKING_FREQUENCY_HIGH = 1;
-
-// Supported XR passthrough modes.
-static const int XR_PASSTHROUGH_NONE = 0;
-static const int XR_PASSTHROUGH_OPTIONAL = 1;
-static const int XR_PASSTHROUGH_REQUIRED = 2;
-
 struct CustomExportData {
 	String assets_directory;
 	bool debug;
@@ -100,8 +80,6 @@ String bool_to_string(bool v);
 String _get_gles_tag();
 
 String _get_screen_sizes_tag(const Ref<EditorExportPreset> &p_preset);
-
-String _get_xr_features_tag(const Ref<EditorExportPreset> &p_preset);
 
 String _get_instrumentation_tag(const Ref<EditorExportPreset> &p_preset);
 

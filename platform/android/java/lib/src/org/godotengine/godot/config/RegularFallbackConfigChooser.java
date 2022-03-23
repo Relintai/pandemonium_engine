@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-package org.godotengine.godot.xr.regular;
+package org.godotengine.godot.config;
 
 import org.godotengine.godot.utils.GLUtils;
 
