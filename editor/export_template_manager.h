@@ -54,11 +54,6 @@ class ExportTemplateManager : public AcceptDialog {
 	GDCLASS(ExportTemplateManager, AcceptDialog);
 
 	bool current_version_exists = false;
-	bool downloads_available = true;
-	bool mirrors_available = false;
-	bool is_refreshing_mirrors = false;
-	bool is_downloading_templates = false;
-	float update_countdown = 0;
 
 	Label *current_value;
 	Label *current_missing_label;
@@ -70,20 +65,9 @@ class ExportTemplateManager : public AcceptDialog {
 	Button *current_uninstall_button;
 
 	VBoxContainer *install_options_vb;
-	OptionButton *mirrors_list;
 
-	enum MirrorAction {
-		VISIT_WEB_MIRROR,
-		COPY_MIRROR_URL,
-	};
-
-	MenuButton *mirror_options_button;
-	HBoxContainer *download_progress_hb;
-	ProgressBar *download_progress_bar;
-	Label *download_progress_label;
 	HTTPRequest *download_templates;
 	Button *install_file_button;
-	HTTPRequest *request_mirrors;
 
 	enum TemplatesAction {
 		OPEN_TEMPLATE_FOLDER,
@@ -95,20 +79,8 @@ class ExportTemplateManager : public AcceptDialog {
 	ConfirmationDialog *uninstall_confirm;
 	String uninstall_version;
 	FileDialog *install_file_dialog;
-	AcceptDialog *hide_dialog_accept;
 
 	void _update_template_status();
-
-	void _download_current();
-	void _download_template(const String &p_url, bool p_skip_check = false);
-	void _download_template_completed(int p_status, int p_code, const PoolStringArray &headers, const PoolByteArray &p_data);
-	void _cancel_template_download();
-	void _refresh_mirrors();
-	void _refresh_mirrors_completed(int p_status, int p_code, const PoolStringArray &headers, const PoolByteArray &p_data);
-
-	bool _humanize_http_status(HTTPRequest *p_request, String *r_status, int *r_downloaded_bytes, int *r_total_bytes);
-	void _set_current_progress_status(const String &p_status, bool p_error = false);
-	void _set_current_progress_value(float p_value, const String &p_status);
 
 	void _install_file();
 	bool _install_file_selected(const String &p_file, bool p_skip_progress = false);
@@ -116,8 +88,6 @@ class ExportTemplateManager : public AcceptDialog {
 	void _uninstall_template(const String &p_version);
 	void _uninstall_template_confirmed();
 
-	String _get_selected_mirror() const;
-	void _mirror_options_button_cbk(int p_id);
 	void _installed_table_button_cbk(Object *p_item, int p_column, int p_id);
 
 	void _open_template_folder(const String &p_version);

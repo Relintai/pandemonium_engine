@@ -30,29 +30,29 @@
 
 #include "export_template_manager.h"
 
-#include "core/io/json.h"
-#include "core/io/zip_io.h"
-#include "core/os/dir_access.h"
-#include "core/version.h"
-#include "editor_node.h"
-#include "editor_scale.h"
-#include "progress_dialog.h"
-#include "scene/gui/box_container.h"
 #include "core/array.h"
 #include "core/class_db.h"
 #include "core/dictionary.h"
 #include "core/error_macros.h"
 #include "core/io/http_client.h"
+#include "core/io/json.h"
+#include "core/io/zip_io.h"
 #include "core/math/vector2.h"
+#include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"
 #include "core/pool_vector.h"
 #include "core/set.h"
 #include "core/vector.h"
+#include "core/version.h"
 #include "core/version_generated.gen.h"
 #include "editor/editor_settings.h"
+#include "editor_node.h"
+#include "editor_scale.h"
+#include "progress_dialog.h"
 #include "scene/2d/canvas_item.h"
+#include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/control.h"
 #include "scene/gui/file_dialog.h"
@@ -109,16 +109,10 @@ void ExportTemplateManager::_update_template_status() {
 		current_version_exists = false;
 	}
 
-	if (is_downloading_templates) {
-		install_options_vb->hide();
-		download_progress_hb->show();
-	} else {
-		download_progress_hb->hide();
-		install_options_vb->show();
+	install_options_vb->show();
 
-		if (templates.has(current_version)) {
-			current_installed_path->set_text(templates_dir.plus_file(current_version));
-		}
+	if (templates.has(current_version)) {
+		current_installed_path->set_text(templates_dir.plus_file(current_version));
 	}
 
 	// Update the list of other installed versions.
@@ -140,269 +134,6 @@ void ExportTemplateManager::_update_template_status() {
 
 	minimum_size_changed();
 	update();
-}
-
-void ExportTemplateManager::_download_current() {
-	if (is_downloading_templates) {
-		return;
-	}
-	is_downloading_templates = true;
-
-	install_options_vb->hide();
-	download_progress_hb->show();
-
-	if (mirrors_available) {
-		String mirror_url = _get_selected_mirror();
-		if (mirror_url.empty()) {
-			_set_current_progress_status(TTR("There are no mirrors available."), true);
-			return;
-		}
-
-		_download_template(mirror_url, true);
-	} else if (!mirrors_available && !is_refreshing_mirrors) {
-		_set_current_progress_status(TTR("Retrieving the mirror list..."));
-		_refresh_mirrors();
-	}
-}
-
-void ExportTemplateManager::_download_template(const String &p_url, bool p_skip_check) {
-	if (!p_skip_check && is_downloading_templates) {
-		return;
-	}
-	is_downloading_templates = true;
-
-	install_options_vb->hide();
-	download_progress_hb->show();
-	_set_current_progress_status(TTR("Starting the download..."));
-
-	download_templates->set_download_file(EditorSettings::get_singleton()->get_cache_dir().plus_file("tmp_templates.tpz"));
-	download_templates->set_use_threads(true);
-
-	const String proxy_host = EDITOR_DEF("network/http_proxy/host", "");
-	const int proxy_port = EDITOR_DEF("network/http_proxy/port", -1);
-	download_templates->set_http_proxy(proxy_host, proxy_port);
-	download_templates->set_https_proxy(proxy_host, proxy_port);
-
-	Error err = download_templates->request(p_url);
-	if (err != OK) {
-		_set_current_progress_status(TTR("Error requesting URL:") + " " + p_url, true);
-		return;
-	}
-
-	set_process(true);
-	_set_current_progress_status(TTR("Connecting to the mirror..."));
-}
-
-void ExportTemplateManager::_download_template_completed(int p_status, int p_code, const PoolStringArray &headers, const PoolByteArray &p_data) {
-	switch (p_status) {
-		case HTTPRequest::RESULT_CANT_RESOLVE: {
-			_set_current_progress_status(TTR("Can't resolve the requested address."), true);
-		} break;
-		case HTTPRequest::RESULT_BODY_SIZE_LIMIT_EXCEEDED:
-		case HTTPRequest::RESULT_CONNECTION_ERROR:
-		case HTTPRequest::RESULT_CHUNKED_BODY_SIZE_MISMATCH:
-		case HTTPRequest::RESULT_SSL_HANDSHAKE_ERROR:
-		case HTTPRequest::RESULT_CANT_CONNECT: {
-			_set_current_progress_status(TTR("Can't connect to the mirror."), true);
-		} break;
-		case HTTPRequest::RESULT_NO_RESPONSE: {
-			_set_current_progress_status(TTR("No response from the mirror."), true);
-		} break;
-		case HTTPRequest::RESULT_REQUEST_FAILED: {
-			_set_current_progress_status(TTR("Request failed."), true);
-		} break;
-		case HTTPRequest::RESULT_REDIRECT_LIMIT_REACHED: {
-			_set_current_progress_status(TTR("Request ended up in a redirect loop."), true);
-		} break;
-		default: {
-			if (p_code != 200) {
-				_set_current_progress_status(TTR("Request failed:") + " " + itos(p_code), true);
-			} else {
-				_set_current_progress_status(TTR("Download complete; extracting templates..."));
-				String path = download_templates->get_download_file();
-
-				is_downloading_templates = false;
-				bool ret = _install_file_selected(path, true);
-				if (ret) {
-					// Clean up downloaded file.
-					DirAccessRef da = DirAccess::create(DirAccess::ACCESS_FILESYSTEM);
-					Error err = da->remove(path);
-					if (err != OK) {
-						EditorNode::get_singleton()->add_io_error(TTR("Cannot remove temporary file:") + "\n" + path + "\n");
-					}
-				} else {
-					EditorNode::get_singleton()->add_io_error(vformat(TTR("Templates installation failed.\nThe problematic templates archives can be found at '%s'."), path));
-				}
-			}
-		} break;
-	}
-
-	set_process(false);
-}
-
-void ExportTemplateManager::_cancel_template_download() {
-	if (!is_downloading_templates) {
-		return;
-	}
-
-	download_templates->cancel_request();
-	download_progress_hb->hide();
-	install_options_vb->show();
-	is_downloading_templates = false;
-}
-
-void ExportTemplateManager::_refresh_mirrors() {
-	if (is_refreshing_mirrors) {
-		return;
-	}
-	is_refreshing_mirrors = true;
-
-	String current_version = VERSION_FULL_CONFIG;
-	const String mirrors_metadata_url = "https://godotengine.org/mirrorlist/" + current_version + ".json";
-	request_mirrors->request(mirrors_metadata_url);
-}
-
-void ExportTemplateManager::_refresh_mirrors_completed(int p_status, int p_code, const PoolStringArray &headers, const PoolByteArray &p_data) {
-	if (p_status != HTTPRequest::RESULT_SUCCESS || p_code != 200) {
-		EditorNode::get_singleton()->show_warning(TTR("Error getting the list of mirrors."));
-		is_refreshing_mirrors = false;
-		if (is_downloading_templates) {
-			_cancel_template_download();
-		}
-		return;
-	}
-
-	String response_json;
-	{
-		PoolByteArray::Read r = p_data.read();
-		response_json.parse_utf8((const char *)r.ptr(), p_data.size());
-	}
-
-	Variant json;
-	String errs;
-	int errline;
-	Error err = JSON::parse(response_json, json, errs, errline);
-	if (err != OK) {
-		EditorNode::get_singleton()->show_warning(TTR("Error parsing JSON with the list of mirrors. Please report this issue!"));
-		is_refreshing_mirrors = false;
-		if (is_downloading_templates) {
-			_cancel_template_download();
-		}
-		return;
-	}
-
-	mirrors_list->clear();
-	mirrors_list->add_item(TTR("Best available mirror"), 0);
-
-	mirrors_available = false;
-
-	Dictionary data = json;
-	if (data.has("mirrors")) {
-		Array mirrors = data["mirrors"];
-
-		for (int i = 0; i < mirrors.size(); i++) {
-			Dictionary m = mirrors[i];
-			ERR_CONTINUE(!m.has("url") || !m.has("name"));
-
-			mirrors_list->add_item(m["name"]);
-			mirrors_list->set_item_metadata(i + 1, m["url"]);
-
-			mirrors_available = true;
-		}
-	}
-	if (!mirrors_available) {
-		EditorNode::get_singleton()->show_warning(TTR("No download links found for this version. Direct download is only available for official releases."));
-		if (is_downloading_templates) {
-			_cancel_template_download();
-		}
-	}
-
-	is_refreshing_mirrors = false;
-
-	if (is_downloading_templates) {
-		String mirror_url = _get_selected_mirror();
-		if (mirror_url.empty()) {
-			_set_current_progress_status(TTR("There are no mirrors available."), true);
-			return;
-		}
-
-		_download_template(mirror_url, true);
-	}
-}
-
-bool ExportTemplateManager::_humanize_http_status(HTTPRequest *p_request, String *r_status, int *r_downloaded_bytes, int *r_total_bytes) {
-	*r_status = "";
-	*r_downloaded_bytes = -1;
-	*r_total_bytes = -1;
-	bool success = true;
-
-	switch (p_request->get_http_client_status()) {
-		case HTTPClient::STATUS_DISCONNECTED:
-			*r_status = TTR("Disconnected");
-			success = false;
-			break;
-		case HTTPClient::STATUS_RESOLVING:
-			*r_status = TTR("Resolving");
-			break;
-		case HTTPClient::STATUS_CANT_RESOLVE:
-			*r_status = TTR("Can't Resolve");
-			success = false;
-			break;
-		case HTTPClient::STATUS_CONNECTING:
-			*r_status = TTR("Connecting...");
-			break;
-		case HTTPClient::STATUS_CANT_CONNECT:
-			*r_status = TTR("Can't Connect");
-			success = false;
-			break;
-		case HTTPClient::STATUS_CONNECTED:
-			*r_status = TTR("Connected");
-			break;
-		case HTTPClient::STATUS_REQUESTING:
-			*r_status = TTR("Requesting...");
-			break;
-		case HTTPClient::STATUS_BODY:
-			*r_status = TTR("Downloading");
-			*r_downloaded_bytes = p_request->get_downloaded_bytes();
-			*r_total_bytes = p_request->get_body_size();
-
-			if (p_request->get_body_size() > 0) {
-				*r_status += " " + String::humanize_size(p_request->get_downloaded_bytes()) + "/" + String::humanize_size(p_request->get_body_size());
-			} else {
-				*r_status += " " + String::humanize_size(p_request->get_downloaded_bytes());
-			}
-			break;
-		case HTTPClient::STATUS_CONNECTION_ERROR:
-			*r_status = TTR("Connection Error");
-			success = false;
-			break;
-		case HTTPClient::STATUS_SSL_HANDSHAKE_ERROR:
-			*r_status = TTR("SSL Handshake Error");
-			success = false;
-			break;
-	}
-
-	return success;
-}
-
-void ExportTemplateManager::_set_current_progress_status(const String &p_status, bool p_error) {
-	download_progress_bar->hide();
-	download_progress_label->set_text(p_status);
-
-	if (p_error) {
-		download_progress_label->add_color_override("font_color", get_color("error_color", "Editor"));
-	} else {
-		download_progress_label->add_color_override("font_color", get_color("font_color", "Label"));
-	}
-}
-
-void ExportTemplateManager::_set_current_progress_value(float p_value, const String &p_status) {
-	download_progress_bar->show();
-	download_progress_bar->set_value(p_value);
-	download_progress_label->set_text(p_status);
-
-	// Progress cannot be happening with an error, so make sure that the color is correct.
-	download_progress_label->add_color_override("font_color", get_color("font_color", "Label"));
 }
 
 void ExportTemplateManager::_install_file() {
@@ -584,44 +315,6 @@ void ExportTemplateManager::_uninstall_template_confirmed() {
 	_update_template_status();
 }
 
-String ExportTemplateManager::_get_selected_mirror() const {
-	if (mirrors_list->get_item_count() == 1) {
-		return "";
-	}
-
-	int selected = mirrors_list->get_selected_id();
-	if (selected == 0) {
-		// This is a special "best available" value; so pick the first available mirror from the rest of the list.
-		selected = 1;
-	}
-
-	return mirrors_list->get_item_metadata(selected);
-}
-
-void ExportTemplateManager::_mirror_options_button_cbk(int p_id) {
-	switch (p_id) {
-		case VISIT_WEB_MIRROR: {
-			String mirror_url = _get_selected_mirror();
-			if (mirror_url.empty()) {
-				EditorNode::get_singleton()->show_warning(TTR("There are no mirrors available."));
-				return;
-			}
-
-			OS::get_singleton()->shell_open(mirror_url);
-		} break;
-
-		case COPY_MIRROR_URL: {
-			String mirror_url = _get_selected_mirror();
-			if (mirror_url.empty()) {
-				EditorNode::get_singleton()->show_warning(TTR("There are no mirrors available."));
-				return;
-			}
-
-			OS::get_singleton()->set_clipboard(mirror_url);
-		} break;
-	}
-}
-
 void ExportTemplateManager::_installed_table_button_cbk(Object *p_item, int p_column, int p_id) {
 	TreeItem *ti = Object::cast_to<TreeItem>(p_item);
 	if (!ti) {
@@ -648,17 +341,11 @@ void ExportTemplateManager::_open_template_folder(const String &p_version) {
 
 void ExportTemplateManager::popup_manager() {
 	_update_template_status();
-	_refresh_mirrors();
 	popup_centered(Size2(720, 280) * EDSCALE);
 }
 
 void ExportTemplateManager::ok_pressed() {
-	if (!is_downloading_templates) {
-		hide();
-		return;
-	}
-
-	hide_dialog_accept->popup_centered();
+	hide();
 }
 
 void ExportTemplateManager::cancel_pressed() {
@@ -788,43 +475,6 @@ void ExportTemplateManager::_notification(int p_what) {
 			current_value->add_font_override("font", get_font("bold", "EditorFonts"));
 			current_missing_label->add_color_override("font_color", get_color("error_color", "Editor"));
 			current_installed_label->add_color_override("font_color", get_color("disabled_font_color", "Editor"));
-
-			mirror_options_button->set_icon(get_icon("GuiTabMenuHl", "EditorIcons"));
-		} break;
-
-		case NOTIFICATION_VISIBILITY_CHANGED: {
-			if (!is_visible()) {
-				set_process(false);
-			} else if (is_visible() && is_downloading_templates) {
-				set_process(true);
-			}
-		} break;
-
-		case NOTIFICATION_PROCESS: {
-			update_countdown -= get_process_delta_time();
-			if (update_countdown > 0) {
-				return;
-			}
-			update_countdown = 0.5;
-
-			String status;
-			int downloaded_bytes;
-			int total_bytes;
-			bool success = _humanize_http_status(download_templates, &status, &downloaded_bytes, &total_bytes);
-
-			if (downloaded_bytes >= 0) {
-				if (total_bytes > 0) {
-					_set_current_progress_value(float(downloaded_bytes) / total_bytes, status);
-				} else {
-					_set_current_progress_value(0, status);
-				}
-			} else {
-				_set_current_progress_status(status);
-			}
-
-			if (!success) {
-				set_process(false);
-			}
 		} break;
 	}
 }
@@ -832,14 +482,6 @@ void ExportTemplateManager::_notification(int p_what) {
 void ExportTemplateManager::_bind_methods() {
 	ClassDB::bind_method("_hide_dialog", &ExportTemplateManager::_hide_dialog);
 	ClassDB::bind_method("_open_template_folder", &ExportTemplateManager::_open_template_folder);
-
-	ClassDB::bind_method("_refresh_mirrors_completed", &ExportTemplateManager::_refresh_mirrors_completed);
-	ClassDB::bind_method("_mirror_options_button_cbk", &ExportTemplateManager::_mirror_options_button_cbk);
-
-	ClassDB::bind_method("_download_template", &ExportTemplateManager::_download_template);
-	ClassDB::bind_method("_download_current", &ExportTemplateManager::_download_current);
-	ClassDB::bind_method("_cancel_template_download", &ExportTemplateManager::_cancel_template_download);
-	ClassDB::bind_method("_download_template_completed", &ExportTemplateManager::_download_template_completed);
 
 	ClassDB::bind_method("_uninstall_template", &ExportTemplateManager::_uninstall_template);
 	ClassDB::bind_method("_uninstall_template_confirmed", &ExportTemplateManager::_uninstall_template_confirmed);
@@ -853,16 +495,6 @@ ExportTemplateManager::ExportTemplateManager() {
 	set_title(TTR("Export Template Manager"));
 	set_hide_on_ok(false);
 	get_ok()->set_text(TTR("Close"));
-
-	// Downloadable export templates are only available for stable and official alpha/beta/RC builds
-	// (which always have a number following their status, e.g. "alpha1").
-	// Therefore, don't display download-related features when using a development version
-	// (whose builds aren't numbered).
-	downloads_available =
-			String(VERSION_STATUS) != String("dev") &&
-			String(VERSION_STATUS) != String("alpha") &&
-			String(VERSION_STATUS) != String("beta") &&
-			String(VERSION_STATUS) != String("rc");
 
 	VBoxContainer *main_vb = memnew(VBoxContainer);
 	add_child(main_vb);
@@ -896,7 +528,7 @@ ExportTemplateManager::ExportTemplateManager() {
 
 	// Currently installed template.
 	current_installed_hb = memnew(HBoxContainer);
-	main_vb->add_child(current_installed_hb);
+	current_hb->add_child(current_installed_hb);
 
 	current_installed_path = memnew(LineEdit);
 	current_installed_path->set_editable(false);
@@ -915,52 +547,14 @@ ExportTemplateManager::ExportTemplateManager() {
 	current_installed_hb->add_child(current_uninstall_button);
 	current_uninstall_button->connect("pressed", this, "_uninstall_template", varray(VERSION_FULL_CONFIG));
 
-	main_vb->add_child(memnew(HSeparator));
-
 	// Download and install section.
 	HBoxContainer *install_templates_hb = memnew(HBoxContainer);
-	main_vb->add_child(install_templates_hb);
+	current_hb->add_child(install_templates_hb);
 
 	// Download and install buttons are available.
 	install_options_vb = memnew(VBoxContainer);
 	install_options_vb->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	install_templates_hb->add_child(install_options_vb);
-
-	HBoxContainer *download_install_hb = memnew(HBoxContainer);
-	install_options_vb->add_child(download_install_hb);
-
-	Label *mirrors_label = memnew(Label);
-	mirrors_label->set_text(TTR("Download from:"));
-	download_install_hb->add_child(mirrors_label);
-
-	mirrors_list = memnew(OptionButton);
-	mirrors_list->set_custom_minimum_size(Size2(280, 0) * EDSCALE);
-	download_install_hb->add_child(mirrors_list);
-	mirrors_list->add_item(TTR("Best available mirror"), 0);
-
-	request_mirrors = memnew(HTTPRequest);
-	mirrors_list->add_child(request_mirrors);
-	request_mirrors->connect("request_completed", this, "_refresh_mirrors_completed");
-
-	mirror_options_button = memnew(MenuButton);
-	mirror_options_button->get_popup()->add_item(TTR("Open in Web Browser"), VISIT_WEB_MIRROR);
-	mirror_options_button->get_popup()->add_item(TTR("Copy Mirror URL"), COPY_MIRROR_URL);
-	download_install_hb->add_child(mirror_options_button);
-	mirror_options_button->get_popup()->connect("id_pressed", this, "_mirror_options_button_cbk");
-
-	download_install_hb->add_spacer();
-
-	Button *download_current_button = memnew(Button);
-	download_current_button->set_text(TTR("Download and Install"));
-	download_current_button->set_tooltip(TTR("Download and install templates for the current version from the best possible mirror."));
-	download_install_hb->add_child(download_current_button);
-	download_current_button->connect("pressed", this, "_download_current");
-
-	// Update downloads buttons to prevent unsupported downloads.
-	if (!downloads_available) {
-		download_current_button->set_disabled(true);
-		download_current_button->set_tooltip(TTR("Official export templates aren't available for development builds."));
-	}
 
 	HBoxContainer *install_file_hb = memnew(HBoxContainer);
 	install_file_hb->set_alignment(BoxContainer::ALIGN_END);
@@ -971,36 +565,6 @@ ExportTemplateManager::ExportTemplateManager() {
 	install_file_button->set_tooltip(TTR("Install templates from a local file."));
 	install_file_hb->add_child(install_file_button);
 	install_file_button->connect("pressed", this, "_install_file");
-
-	// Templates are being downloaded; buttons unavailable.
-	download_progress_hb = memnew(HBoxContainer);
-	download_progress_hb->set_h_size_flags(Control::SIZE_EXPAND_FILL);
-	install_templates_hb->add_child(download_progress_hb);
-	download_progress_hb->hide();
-
-	download_progress_bar = memnew(ProgressBar);
-	download_progress_bar->set_h_size_flags(Control::SIZE_EXPAND_FILL);
-	download_progress_bar->set_v_size_flags(Control::SIZE_SHRINK_CENTER);
-	download_progress_bar->set_min(0);
-	download_progress_bar->set_max(1);
-	download_progress_bar->set_value(0);
-	download_progress_bar->set_step(0.01);
-	download_progress_hb->add_child(download_progress_bar);
-
-	download_progress_label = memnew(Label);
-	download_progress_label->set_h_size_flags(Control::SIZE_EXPAND_FILL);
-	download_progress_label->set_clip_text(true);
-	download_progress_hb->add_child(download_progress_label);
-
-	Button *download_cancel_button = memnew(Button);
-	download_cancel_button->set_text(TTR("Cancel"));
-	download_cancel_button->set_tooltip(TTR("Cancel the download of the templates."));
-	download_progress_hb->add_child(download_cancel_button);
-	download_cancel_button->connect("pressed", this, "_cancel_template_download");
-
-	download_templates = memnew(HTTPRequest);
-	install_templates_hb->add_child(download_templates);
-	download_templates->connect("request_completed", this, "_download_template_completed");
 
 	main_vb->add_child(memnew(HSeparator));
 
@@ -1031,9 +595,4 @@ ExportTemplateManager::ExportTemplateManager() {
 	install_file_dialog->add_filter("*.tpz ; " + TTR("Pandemonium Export Templates"));
 	install_file_dialog->connect("file_selected", this, "_install_file_selected", varray(false));
 	add_child(install_file_dialog);
-
-	hide_dialog_accept = memnew(AcceptDialog);
-	hide_dialog_accept->set_text(TTR("The templates will continue to download.\nYou may experience a short editor freeze when they finish."));
-	add_child(hide_dialog_accept);
-	hide_dialog_accept->connect("confirmed", this, "_hide_dialog");
 }
