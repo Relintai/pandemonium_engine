@@ -1036,18 +1036,18 @@ Error EditorExportPlatformOSX::export_project(const Ref<EditorExportPreset> &p_p
 				ent_f->store_line("<plist version=\"1.0\">");
 				ent_f->store_line("<dict>");
 
-					if ((bool)p_preset->get("codesign/entitlements/allow_jit_code_execution")) {
-						ent_f->store_line("<key>com.apple.security.cs.allow-jit</key>");
-						ent_f->store_line("<true/>");
-					}
-					if ((bool)p_preset->get("codesign/entitlements/allow_unsigned_executable_memory")) {
-						ent_f->store_line("<key>com.apple.security.cs.allow-unsigned-executable-memory</key>");
-						ent_f->store_line("<true/>");
-					}
-					if ((bool)p_preset->get("codesign/entitlements/allow_dyld_environment_variables")) {
-						ent_f->store_line("<key>com.apple.security.cs.allow-dyld-environment-variables</key>");
-						ent_f->store_line("<true/>");
-					}
+				if ((bool)p_preset->get("codesign/entitlements/allow_jit_code_execution")) {
+					ent_f->store_line("<key>com.apple.security.cs.allow-jit</key>");
+					ent_f->store_line("<true/>");
+				}
+				if ((bool)p_preset->get("codesign/entitlements/allow_unsigned_executable_memory")) {
+					ent_f->store_line("<key>com.apple.security.cs.allow-unsigned-executable-memory</key>");
+					ent_f->store_line("<true/>");
+				}
+				if ((bool)p_preset->get("codesign/entitlements/allow_dyld_environment_variables")) {
+					ent_f->store_line("<key>com.apple.security.cs.allow-dyld-environment-variables</key>");
+					ent_f->store_line("<true/>");
+				}
 
 				if ((bool)p_preset->get("codesign/entitlements/disable_library_validation")) {
 					ent_f->store_line("<key>com.apple.security.cs.disable-library-validation</key>");
