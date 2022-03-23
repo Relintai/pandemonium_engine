@@ -392,7 +392,7 @@ public:
 		}
 	}
 
-	PoolVector<T> subarray(int p_from, int p_to) {
+	PoolVector<T> subarray(int p_from, int p_to) const {
 		if (p_from < 0) {
 			p_from = size() + p_from;
 		}
