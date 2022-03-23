@@ -1,3 +1,6 @@
+#ifndef NETWORKED_CONTROLLER_H
+#define NETWORKED_CONTROLLER_H
+
 /*************************************************************************/
 /*  networked_controller.h                                               */
 /*************************************************************************/
@@ -38,9 +41,6 @@
 #include "interpolator.h"
 #include "net_utilities.h"
 #include <deque>
-
-#ifndef NETWORKED_CONTROLLER_H
-#define NETWORKED_CONTROLLER_H
 
 class SceneSynchronizer;
 struct Controller;
@@ -320,14 +320,14 @@ public:
 	bool has_scene_synchronizer() const;
 
 	/* On server rpc functions. */
-	void _rpc_server_send_inputs(const Vector<uint8_t> &p_data);
+	void _rpc_server_send_inputs(const PoolVector<uint8_t> &p_data);
 
 	/* On client rpc functions. */
-	void _rpc_send_tick_additional_speed(const Vector<uint8_t> &p_data);
+	void _rpc_send_tick_additional_speed(const PoolVector<uint8_t> &p_data);
 
 	/* On puppet rpc functions. */
 	void _rpc_doll_notify_sync_pause(uint32_t p_epoch);
-	void _rpc_doll_send_epoch_batch(const Vector<uint8_t> &p_data);
+	void _rpc_doll_send_epoch_batch(const PoolVector<uint8_t> &p_data);
 
 	void process(real_t p_delta);
 
@@ -378,7 +378,7 @@ struct ServerController : public Controller {
 		real_t update_rate_factor = 1.0;
 		int collect_timer = 0; // In frames
 		int collect_threshold = 0; // In frames
-		LocalVector<Vector<uint8_t>> epoch_batch;
+		LocalVector<PoolVector<uint8_t>> epoch_batch;
 		uint32_t batch_size = 0;
 	};
 
@@ -415,7 +415,7 @@ struct ServerController : public Controller {
 	virtual void activate_peer(int p_peer) override;
 	virtual void deactivate_peer(int p_peer) override;
 
-	void receive_inputs(const Vector<uint8_t> &p_data);
+	void receive_inputs(const PoolVector<uint8_t> &p_data);
 	int get_inputs_count() const;
 
 	/// Fetch the next inputs, returns true if the input is new.
@@ -504,8 +504,8 @@ struct DollController : public Controller {
 	// TODO consider make this non virtual
 	virtual uint32_t get_current_input_id() const override;
 
-	void receive_batch(const Vector<uint8_t> &p_data);
-	uint32_t receive_epoch(const Vector<uint8_t> &p_data);
+	void receive_batch(const PoolVector<uint8_t> &p_data);
+	uint32_t receive_epoch(const PoolVector<uint8_t> &p_data);
 
 	uint32_t next_epoch();
 	void pause(uint32_t p_epoch);

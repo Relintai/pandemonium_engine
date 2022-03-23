@@ -1,3 +1,6 @@
+#ifndef NET_UTILITIES_H
+#define NET_UTILITIES_H
+
 /*************************************************************************/
 /*  net_utilities.h                                                      */
 /*************************************************************************/
@@ -32,12 +35,9 @@
 	@author AndreaCatania
 */
 
-#ifndef NET_UTILITIES_H
-#define NET_UTILITIES_H
-
 #include "core/math/math_funcs.h"
-#include "core/templates/local_vector.h"
-#include "core/variant/variant.h"
+#include "core/local_vector.h"
+#include "core/variant.h"
 
 #ifdef DEBUG_ENABLED
 #define NET_DEBUG_PRINT(msg) \

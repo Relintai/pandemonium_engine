@@ -1,3 +1,6 @@
+#ifndef INTERPOLATOR_H
+#define INTERPOLATOR_H
+
 /*************************************************************************/
 /*  interpolator.h                                                       */
 /*************************************************************************/
@@ -31,9 +34,6 @@
 /**
 	@author AndreaCatania
 */
-
-#ifndef INTERPOLATOR_H
-#define INTERPOLATOR_H
 
 #include "core/class_db.h"
 #include "core/vector.h"

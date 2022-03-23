@@ -34,10 +34,12 @@
 
 #include "networked_controller.h"
 
-#include "core/config/engine.h"
+#include "core/engine.h"
 #include "core/io/marshalls.h"
 #include "scene_synchronizer.h"
 #include <algorithm>
+#include "core/project_settings.h"
+#include "core/os/os.h"
 
 #define METADATA_SIZE 1
 
@@ -117,30 +119,30 @@ void NetworkedController::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("__on_sync_paused"), &NetworkedController::__on_sync_paused);
 
-	BIND_VMETHOD(MethodInfo("_collect_inputs", PropertyInfo(Variant::FLOAT, "delta"), PropertyInfo(Variant::OBJECT, "buffer", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer")));
-	BIND_VMETHOD(MethodInfo("_controller_process", PropertyInfo(Variant::FLOAT, "delta"), PropertyInfo(Variant::OBJECT, "buffer", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer")));
+	BIND_VMETHOD(MethodInfo("_collect_inputs", PropertyInfo(Variant::REAL, "delta"), PropertyInfo(Variant::OBJECT, "buffer", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer")));
+	BIND_VMETHOD(MethodInfo("_controller_process", PropertyInfo(Variant::REAL, "delta"), PropertyInfo(Variant::OBJECT, "buffer", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer")));
 	BIND_VMETHOD(MethodInfo(Variant::BOOL, "_are_inputs_different", PropertyInfo(Variant::OBJECT, "inputs_A", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer"), PropertyInfo(Variant::OBJECT, "inputs_B", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer")));
 	BIND_VMETHOD(MethodInfo(Variant::INT, "_count_input_size", PropertyInfo(Variant::OBJECT, "inputs", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer")));
 	BIND_VMETHOD(MethodInfo("_collect_epoch_data", PropertyInfo(Variant::OBJECT, "buffer", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer")));
 	BIND_VMETHOD(MethodInfo("_setup_interpolator", PropertyInfo(Variant::OBJECT, "interpolator", PROPERTY_HINT_RESOURCE_TYPE, "Interpolator")));
 	BIND_VMETHOD(MethodInfo("_parse_epoch_data", PropertyInfo(Variant::OBJECT, "interpolator", PROPERTY_HINT_RESOURCE_TYPE, "Interpolator"), PropertyInfo(Variant::OBJECT, "buffer", PROPERTY_HINT_RESOURCE_TYPE, "DataBuffer")));
-	BIND_VMETHOD(MethodInfo("_apply_epoch", PropertyInfo(Variant::FLOAT, "delta"), PropertyInfo(Variant::ARRAY, "interpolated_data")));
+	BIND_VMETHOD(MethodInfo("_apply_epoch", PropertyInfo(Variant::REAL, "delta"), PropertyInfo(Variant::ARRAY, "interpolated_data")));
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "input_storage_size", PROPERTY_HINT_RANGE, "5,2000,1"), "set_player_input_storage_size", "get_player_input_storage_size");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_redundant_inputs", PROPERTY_HINT_RANGE, "0,1000,1"), "set_max_redundant_inputs", "get_max_redundant_inputs");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "tick_speedup_notification_delay", PROPERTY_HINT_RANGE, "0.001,2.0,0.001"), "set_tick_speedup_notification_delay", "get_tick_speedup_notification_delay");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "tick_speedup_notification_delay", PROPERTY_HINT_RANGE, "0.001,2.0,0.001"), "set_tick_speedup_notification_delay", "get_tick_speedup_notification_delay");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "network_traced_frames", PROPERTY_HINT_RANGE, "1,1000,1"), "set_network_traced_frames", "get_network_traced_frames");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "min_frames_delay", PROPERTY_HINT_RANGE, "0,100,1"), "set_min_frames_delay", "get_min_frames_delay");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_frames_delay", PROPERTY_HINT_RANGE, "0,100,1"), "set_max_frames_delay", "get_max_frames_delay");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "net_sensitivity", PROPERTY_HINT_RANGE, "0,2,0.01"), "set_net_sensitivity", "get_net_sensitivity");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "tick_acceleration", PROPERTY_HINT_RANGE, "0.1,20.0,0.01"), "set_tick_acceleration", "get_tick_acceleration");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "net_sensitivity", PROPERTY_HINT_RANGE, "0,2,0.01"), "set_net_sensitivity", "get_net_sensitivity");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "tick_acceleration", PROPERTY_HINT_RANGE, "0.1,20.0,0.01"), "set_tick_acceleration", "get_tick_acceleration");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "doll_epoch_collect_rate", PROPERTY_HINT_RANGE, "1,100,1"), "set_doll_epoch_collect_rate", "get_doll_epoch_collect_rate");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "doll_epoch_batch_sync_rate", PROPERTY_HINT_RANGE, "0.01,5.0,0.01"), "set_doll_epoch_batch_sync_rate", "get_doll_epoch_batch_sync_rate");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "doll_epoch_batch_sync_rate", PROPERTY_HINT_RANGE, "0.01,5.0,0.01"), "set_doll_epoch_batch_sync_rate", "get_doll_epoch_batch_sync_rate");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "doll_min_frames_delay", PROPERTY_HINT_RANGE, "0,10,1"), "set_doll_min_frames_delay", "get_doll_min_frames_delay");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "doll_max_frames_delay", PROPERTY_HINT_RANGE, "0,10,1"), "set_doll_max_frames_delay", "get_doll_max_frames_delay");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "doll_interpolation_max_speedup", PROPERTY_HINT_RANGE, "0.01,5.0,0.01"), "set_doll_interpolation_max_speedup", "get_doll_interpolation_max_speedup");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "doll_interpolation_max_speedup", PROPERTY_HINT_RANGE, "0.01,5.0,0.01"), "set_doll_interpolation_max_speedup", "get_doll_interpolation_max_speedup");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "doll_connection_stats_frame_span", PROPERTY_HINT_RANGE, "0,1000,1"), "set_doll_connection_stats_frame_span", "get_doll_connection_stats_frame_span");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "doll_net_sensitivity", PROPERTY_HINT_RANGE, "0,1,0.01"), "set_doll_net_sensitivity", "get_doll_net_sensitivity");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "doll_net_sensitivity", PROPERTY_HINT_RANGE, "0,1,0.01"), "set_doll_net_sensitivity", "get_doll_net_sensitivity");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "doll_max_delay", PROPERTY_HINT_RANGE, "1,1000,1"), "set_doll_max_delay", "get_doll_max_delay");
 
 	ADD_SIGNAL(MethodInfo("doll_sync_started"));
@@ -148,10 +150,10 @@ void NetworkedController::_bind_methods() {
 }
 
 NetworkedController::NetworkedController() {
-	rpc_config(SNAME("_rpc_server_send_inputs"), MultiplayerAPI::RPC_MODE_REMOTE, MultiplayerPeer::TRANSFER_MODE_UNRELIABLE);
-	rpc_config(SNAME("_rpc_send_tick_additional_speed"), MultiplayerAPI::RPC_MODE_REMOTE, MultiplayerPeer::TRANSFER_MODE_UNRELIABLE);
-	rpc_config(SNAME("_rpc_doll_notify_sync_pause"), MultiplayerAPI::RPC_MODE_REMOTE, MultiplayerPeer::TRANSFER_MODE_RELIABLE);
-	rpc_config(SNAME("_rpc_doll_send_epoch_batch"), MultiplayerAPI::RPC_MODE_REMOTE, MultiplayerPeer::TRANSFER_MODE_UNRELIABLE);
+	rpc_config("_rpc_server_send_inputs", MultiplayerAPI::RPC_MODE_REMOTE);
+	rpc_config("_rpc_send_tick_additional_speed", MultiplayerAPI::RPC_MODE_REMOTE);
+	rpc_config("_rpc_doll_notify_sync_pause", MultiplayerAPI::RPC_MODE_REMOTE);
+	rpc_config("_rpc_doll_send_epoch_batch", MultiplayerAPI::RPC_MODE_REMOTE);
 }
 
 void NetworkedController::set_player_input_storage_size(int p_size) {
@@ -329,7 +331,7 @@ void NetworkedController::set_doll_peer_active(int p_peer_id, bool p_active) {
 	if (p_active == false) {
 		// Notify the doll only for deactivations. The activations are automatically
 		// handled when the first epoch is received.
-		rpc_id(p_peer_id, SNAME("_rpc_doll_notify_sync_pause"), server_controller->epoch);
+		rpc_id(p_peer_id, "_rpc_doll_notify_sync_pause", server_controller->epoch);
 	}
 }
 
@@ -341,7 +343,7 @@ void NetworkedController::pause_notify_dolls() {
 	for (uint32_t i = 0; i < server_controller->peers.size(); i += 1) {
 		if (server_controller->peers[i].active) {
 			// Notify this actor is no more active.
-			rpc_id(server_controller->peers[i].peer, SNAME("_rpc_doll_notify_sync_pause"), server_controller->epoch);
+			rpc_id(server_controller->peers[i].peer, "_rpc_doll_notify_sync_pause", server_controller->epoch);
 		}
 	}
 }
@@ -414,13 +416,13 @@ void NetworkedController::set_inputs_buffer(const BitArray &p_new_buffer, uint32
 
 void NetworkedController::set_scene_synchronizer(SceneSynchronizer *p_synchronizer) {
 	if (scene_synchronizer) {
-		scene_synchronizer->disconnect(SNAME("sync_paused"), Callable(this, SNAME("__on_sync_paused")));
+		scene_synchronizer->disconnect("sync_paused", this, "__on_sync_paused");
 	}
 
 	scene_synchronizer = p_synchronizer;
 
 	if (scene_synchronizer) {
-		scene_synchronizer->connect(SNAME("sync_paused"), Callable(this, SNAME("__on_sync_paused")));
+		scene_synchronizer->connect("sync_paused", this, "__on_sync_paused");
 	}
 }
 
@@ -432,12 +434,12 @@ bool NetworkedController::has_scene_synchronizer() const {
 	return scene_synchronizer;
 }
 
-void NetworkedController::_rpc_server_send_inputs(const Vector<uint8_t> &p_data) {
+void NetworkedController::_rpc_server_send_inputs(const PoolVector<uint8_t> &p_data) {
 	ERR_FAIL_COND(is_server_controller() == false);
 	static_cast<ServerController *>(controller)->receive_inputs(p_data);
 }
 
-void NetworkedController::_rpc_send_tick_additional_speed(const Vector<uint8_t> &p_data) {
+void NetworkedController::_rpc_send_tick_additional_speed(const PoolVector<uint8_t> &p_data) {
 	ERR_FAIL_COND(is_player_controller() == false);
 	ERR_FAIL_COND(p_data.size() != 1);
 
@@ -454,7 +456,7 @@ void NetworkedController::_rpc_doll_notify_sync_pause(uint32_t p_epoch) {
 	static_cast<DollController *>(controller)->pause(p_epoch);
 }
 
-void NetworkedController::_rpc_doll_send_epoch_batch(const Vector<uint8_t> &p_data) {
+void NetworkedController::_rpc_doll_send_epoch_batch(const PoolVector<uint8_t> &p_data) {
 	ERR_FAIL_COND_MSG(is_doll_controller() == false, "Only dolls are supposed to receive this function call.");
 	ERR_FAIL_COND_MSG(p_data.size() <= 0, "It's not supposed to receive a 0 size data.");
 
@@ -533,7 +535,7 @@ void ServerController::process(real_t p_delta) {
 	node->get_inputs_buffer_mut().begin_read();
 	node->get_inputs_buffer_mut().seek(METADATA_SIZE);
 	node->call(
-			SNAME("_controller_process"),
+			"_controller_process",
 			p_delta,
 			&node->get_inputs_buffer_mut());
 
@@ -613,7 +615,7 @@ void ServerController::deactivate_peer(int p_peer) {
 	}
 }
 
-void ServerController::receive_inputs(const Vector<uint8_t> &p_data) {
+void ServerController::receive_inputs(const PoolVector<uint8_t> &p_data) {
 	// The packet is composed as follow:
 	// |- The following four bytes for the first input ID.
 	// \- Array of inputs:
@@ -632,7 +634,7 @@ void ServerController::receive_inputs(const Vector<uint8_t> &p_data) {
 	int ofs = 0;
 
 	ERR_FAIL_COND(data_len < 4);
-	const uint32_t first_input_id = decode_uint32(p_data.ptr() + ofs);
+	const uint32_t first_input_id = decode_uint32(p_data.read().ptr() + ofs);
 	ofs += 4;
 
 	uint32_t inserted_input_count = 0;
@@ -659,7 +661,7 @@ void ServerController::receive_inputs(const Vector<uint8_t> &p_data) {
 		// Read metadata
 		const bool has_data = pir.read_bool();
 
-		const int input_size_in_bits = (has_data ? int(node->call(SNAME("_count_input_size"), &pir)) : 0) + METADATA_SIZE;
+		const int input_size_in_bits = (has_data ? int(node->call("_count_input_size", &pir)) : 0) + METADATA_SIZE;
 		// Pad to 8 bits.
 		const int input_size_padded =
 				Math::ceil((static_cast<float>(input_size_in_bits)) / 8.0);
@@ -688,8 +690,8 @@ void ServerController::receive_inputs(const Vector<uint8_t> &p_data) {
 				rfs.buffer_size_bit = input_size_in_bits;
 				rfs.inputs_buffer.get_bytes_mut().resize(input_size_padded);
 				memcpy(
-						rfs.inputs_buffer.get_bytes_mut().ptrw(),
-						p_data.ptr() + ofs,
+						rfs.inputs_buffer.get_bytes_mut().write().ptr(),
+						p_data.read().ptr() + ofs,
 						input_size_padded);
 
 				snapshots.push_back(rfs);
@@ -842,7 +844,7 @@ bool ServerController::fetch_next_input() {
 						pir_B.begin_read();
 						pir_B.seek(METADATA_SIZE);
 
-						const bool is_meaningful = node->call(SNAME("_are_inputs_different"), &pir_A, &pir_B);
+						const bool is_meaningful = node->call("_are_inputs_different", &pir_A, &pir_B);
 						if (is_meaningful) {
 							break;
 						}
@@ -910,7 +912,7 @@ void ServerController::doll_sync(real_t p_delta) {
 			if (epoch_state_collected == false) {
 				epoch_state_data_cache.begin_write(0);
 				epoch_state_data_cache.add_int(epoch, DataBuffer::COMPRESSION_LEVEL_1);
-				node->call(SNAME("_collect_epoch_data"), &epoch_state_data_cache);
+				node->call("_collect_epoch_data", &epoch_state_data_cache);
 				epoch_state_data_cache.dry();
 				epoch_state_collected = true;
 			}
@@ -972,7 +974,7 @@ void ServerController::doll_sync(real_t p_delta) {
 				// Send the data
 				node->rpc_id(
 						peers[i].peer,
-						SNAME("_rpc_doll_send_epoch_batch"),
+						"_rpc_doll_send_epoch_batch",
 						data);
 			}
 		}
@@ -1039,7 +1041,7 @@ void ServerController::adjust_player_tick_rate(real_t p_delta) {
 
 		node->rpc_id(
 				node->get_network_master(),
-				SNAME("_rpc_send_tick_additional_speed"),
+				"_rpc_send_tick_additional_speed",
 				packet_data);
 	}
 }
@@ -1074,7 +1076,7 @@ void PlayerController::process(real_t p_delta) {
 		node->get_inputs_buffer_mut().begin_write(METADATA_SIZE);
 
 		node->get_inputs_buffer_mut().seek(1);
-		node->call(SNAME("_collect_inputs"), p_delta, &node->get_inputs_buffer_mut());
+		node->call("_collect_inputs", p_delta, &node->get_inputs_buffer_mut());
 
 		// Set metadata data.
 		node->get_inputs_buffer_mut().seek(0);
@@ -1094,7 +1096,7 @@ void PlayerController::process(real_t p_delta) {
 
 	// The physics process is always emitted, because we still need to simulate
 	// the character motion even if we don't store the player inputs.
-	node->call(SNAME("_controller_process"), p_delta, &node->get_inputs_buffer());
+	node->call("_controller_process", p_delta, &node->get_inputs_buffer());
 
 	node->player_set_has_new_input(false);
 	if (accept_new_inputs) {
@@ -1179,7 +1181,7 @@ bool PlayerController::process_instant(int p_i, real_t p_delta) {
 		ib.shrink_to(METADATA_SIZE, frames_snapshot[i].buffer_size_bit - METADATA_SIZE);
 		ib.begin_read();
 		ib.seek(METADATA_SIZE);
-		node->call(SNAME("_controller_process"), p_delta, &ib);
+		node->call("_controller_process", p_delta, &ib);
 		return (i + 1) < frames_snapshot.size();
 	} else {
 		return false;
@@ -1254,7 +1256,7 @@ void PlayerController::send_frame_input_buffer_to_server() {
 					pir_B.begin_read();
 					pir_B.seek(METADATA_SIZE);
 
-					const bool are_different = node->call(SNAME("_are_inputs_different"), &pir_A, &pir_B);
+					const bool are_different = node->call("_are_inputs_different", &pir_A, &pir_B);
 					is_similar = are_different == false;
 
 				} else if (frames_snapshot[i].similarity == previous_input_similarity) {
@@ -1301,7 +1303,7 @@ void PlayerController::send_frame_input_buffer_to_server() {
 			MAKE_ROOM(buffer_size);
 			memcpy(
 					cached_packet_data.ptr() + ofs,
-					frames_snapshot[i].inputs_buffer.get_bytes().ptr(),
+					frames_snapshot[i].inputs_buffer.get_bytes().read().ptr(),
 					buffer_size);
 			ofs += buffer_size;
 
@@ -1330,7 +1332,7 @@ void PlayerController::send_frame_input_buffer_to_server() {
 	const int server_peer_id = 1;
 	node->rpc_id(
 			server_peer_id,
-			SNAME("_rpc_server_send_inputs"),
+			"_rpc_server_send_inputs",
 			packet_data);
 }
 
@@ -1346,7 +1348,7 @@ DollController::DollController(NetworkedController *p_node) :
 void DollController::ready() {
 	interpolator.reset();
 	node->call(
-			SNAME("_setup_interpolator"),
+			"_setup_interpolator",
 			&interpolator);
 	interpolator.terminate_init();
 }
@@ -1361,7 +1363,7 @@ void DollController::process(real_t p_delta) {
 
 	const real_t fractional_part = advancing_epoch;
 	node->call(
-			SNAME("_apply_epoch"),
+			"_apply_epoch",
 			p_delta,
 			interpolator.pop_epoch(frame_epoch, fractional_part));
 }
@@ -1370,7 +1372,7 @@ uint32_t DollController::get_current_input_id() const {
 	return current_epoch;
 }
 
-void DollController::receive_batch(const Vector<uint8_t> &p_data) {
+void DollController::receive_batch(const PoolVector<uint8_t> &p_data) {
 	if (unlikely(node->get_scene_synchronizer()->is_enabled() == false)) {
 		// The sync is disabled, nothing to do.
 		return;
@@ -1397,7 +1399,7 @@ void DollController::receive_batch(const Vector<uint8_t> &p_data) {
 
 	while (buffer_start_position < p_data.size()) {
 		const int buffer_size = p_data[buffer_start_position];
-		const Vector<uint8_t> buffer = p_data.subarray(
+		const PoolVector<uint8_t> buffer = p_data.subarray(
 				buffer_start_position + 1,
 				buffer_start_position + 1 + buffer_size - 1);
 
@@ -1439,7 +1441,7 @@ void DollController::receive_batch(const Vector<uint8_t> &p_data) {
 			net_poorness);
 
 	// TODO cache this?
-	const double frames_per_batch = node->get_doll_epoch_batch_sync_rate() * real_t(Engine::get_singleton()->get_physics_ticks_per_second());
+	const double frames_per_batch = node->get_doll_epoch_batch_sync_rate() * real_t(Engine::get_singleton()->get_iterations_per_second());
 	const double next_batch_arrives_in = Math::ceil(double(next_collect_rate) / frames_per_batch) * frames_per_batch;
 
 	const real_t doll_interpolation_max_speedup = node->get_doll_interpolation_max_speedup();
@@ -1454,7 +1456,7 @@ void DollController::receive_batch(const Vector<uint8_t> &p_data) {
 #endif
 }
 
-uint32_t DollController::receive_epoch(const Vector<uint8_t> &p_data) {
+uint32_t DollController::receive_epoch(const PoolVector<uint8_t> &p_data) {
 	DataBuffer buffer(p_data);
 	buffer.begin_read();
 	const uint32_t epoch = buffer.read_int(DataBuffer::COMPRESSION_LEVEL_1);
@@ -1466,7 +1468,7 @@ uint32_t DollController::receive_epoch(const Vector<uint8_t> &p_data) {
 	}
 
 	interpolator.begin_write(epoch);
-	node->call(SNAME("_parse_epoch_data"), &interpolator, &buffer);
+	node->call("_parse_epoch_data", &interpolator, &buffer);
 	interpolator.end_write();
 
 	return epoch;
@@ -1559,10 +1561,10 @@ NoNetController::NoNetController(NetworkedController *p_node) :
 
 void NoNetController::process(real_t p_delta) {
 	node->get_inputs_buffer_mut().begin_write(0); // No need of meta in this case.
-	node->call(SNAME("_collect_inputs"), p_delta, &node->get_inputs_buffer_mut());
+	node->call("_collect_inputs", p_delta, &node->get_inputs_buffer_mut());
 	node->get_inputs_buffer_mut().dry();
 	node->get_inputs_buffer_mut().begin_read();
-	node->call(SNAME("_controller_process"), p_delta, &node->get_inputs_buffer_mut());
+	node->call("_controller_process", p_delta, &node->get_inputs_buffer_mut());
 	frame_id += 1;
 }
 

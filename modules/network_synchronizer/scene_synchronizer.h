@@ -1,3 +1,6 @@
+#ifndef SCENE_SYNCHRONIZER_H
+#define SCENE_SYNCHRONIZER_H
+
 /*************************************************************************/
 /*  scene_synchronizer.h                                                 */
 /*************************************************************************/
@@ -34,13 +37,10 @@
 
 #include "scene/main/node.h"
 
-#include "core/templates/local_vector.h"
-#include "core/templates/oa_hash_map.h"
+#include "core/local_vector.h"
+#include "core/oa_hash_map.h"
 #include "net_utilities.h"
 #include <deque>
-
-#ifndef SCENE_SYNCHRONIZER_H
-#define SCENE_SYNCHRONIZER_H
 
 class Synchronizer;
 class NetworkedController;

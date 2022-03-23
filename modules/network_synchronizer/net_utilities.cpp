@@ -64,7 +64,7 @@ void NetUtility::NodeData::process(const real_t p_delta) const {
 	const Variant var_delta = p_delta;
 	const Variant *fake_array_vars = &var_delta;
 
-	Callable::CallError e;
+	Variant::CallError e;
 	for (uint32_t i = 0; i < functions.size(); i += 1) {
 		node->call(functions[i], &fake_array_vars, 1, e);
 	}
