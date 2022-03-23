@@ -1047,9 +1047,6 @@ ProjectSettings::ProjectSettings() {
 
 	PoolStringArray extensions = PoolStringArray();
 	extensions.push_back("gd");
-	if (Engine::get_singleton()->has_singleton("PandemoniumSharp")) {
-		extensions.push_back("cs");
-	}
 	extensions.push_back("gdshader");
 	extensions.push_back("shader");
 

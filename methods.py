@@ -790,19 +790,6 @@ def generate_vs_project(env, num_jobs):
             env.vs_incs.append(str(header))
 
         module_configs = ModuleConfigs()
-        import modules.mono.build_scripts.mono_reg_utils as mono_reg
-
-        if env.get("module_mono_enabled"):
-            mono_root = env.get("mono_prefix") or mono_reg.find_mono_root_dir(env["bits"])
-            if mono_root:
-                module_configs.add_mode(
-                    "mono",
-                    includes=os.path.join(mono_root, "include", "mono-2.0"),
-                    cli_args="module_mono_enabled=yes mono_glue=yes",
-                    defines=[("MONO_GLUE_ENABLED",)],
-                )
-            else:
-                print("Mono installation directory not found. Generated project will not have build variants for Mono.")
 
         env["MSVSBUILDCOM"] = module_configs.build_commandline("scons")
         env["MSVSREBUILDCOM"] = module_configs.build_commandline("scons vsproj=yes")

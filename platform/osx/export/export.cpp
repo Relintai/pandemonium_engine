@@ -157,12 +157,6 @@ bool EditorExportPlatformOSX::get_option_visibility(const String &p_option, cons
 		}
 	}
 
-	// These entitlements are required to run managed code, and are always enabled in Mono builds.
-	if (Engine::get_singleton()->has_singleton("PandemoniumSharp")) {
-		if (p_option == "codesign/entitlements/allow_jit_code_execution" || p_option == "codesign/entitlements/allow_unsigned_executable_memory" || p_option == "codesign/entitlements/allow_dyld_environment_variables") {
-			return false;
-		}
-	}
 	return true;
 }
 
@@ -981,21 +975,6 @@ Error EditorExportPlatformOSX::export_project(const Ref<EditorExportPreset> &p_p
 		}
 
 		if (data.size() > 0) {
-			if (file.find("/data.mono.osx.64.release_debug/") != -1) {
-				if (!p_debug) {
-					ret = unzGoToNextFile(src_pkg_zip);
-					continue; // skip
-				}
-				file = file.replace("/data.mono.osx.64.release_debug/", "/PandemoniumSharp/");
-			}
-			if (file.find("/data.mono.osx.64.release/") != -1) {
-				if (p_debug) {
-					ret = unzGoToNextFile(src_pkg_zip);
-					continue; // skip
-				}
-				file = file.replace("/data.mono.osx.64.release/", "/PandemoniumSharp/");
-			}
-
 			if (file.ends_with(".dylib")) {
 				dylibs_found.push_back(file);
 			}
@@ -1056,15 +1035,7 @@ Error EditorExportPlatformOSX::export_project(const Ref<EditorExportPreset> &p_p
 				ent_f->store_line("<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">");
 				ent_f->store_line("<plist version=\"1.0\">");
 				ent_f->store_line("<dict>");
-				if (Engine::get_singleton()->has_singleton("PandemoniumSharp")) {
-					// These entitlements are required to run managed code, and are always enabled in Mono builds.
-					ent_f->store_line("<key>com.apple.security.cs.allow-jit</key>");
-					ent_f->store_line("<true/>");
-					ent_f->store_line("<key>com.apple.security.cs.allow-unsigned-executable-memory</key>");
-					ent_f->store_line("<true/>");
-					ent_f->store_line("<key>com.apple.security.cs.allow-dyld-environment-variables</key>");
-					ent_f->store_line("<true/>");
-				} else {
+
 					if ((bool)p_preset->get("codesign/entitlements/allow_jit_code_execution")) {
 						ent_f->store_line("<key>com.apple.security.cs.allow-jit</key>");
 						ent_f->store_line("<true/>");
@@ -1077,7 +1048,6 @@ Error EditorExportPlatformOSX::export_project(const Ref<EditorExportPreset> &p_p
 						ent_f->store_line("<key>com.apple.security.cs.allow-dyld-environment-variables</key>");
 						ent_f->store_line("<true/>");
 					}
-				}
 
 				if ((bool)p_preset->get("codesign/entitlements/disable_library_validation")) {
 					ent_f->store_line("<key>com.apple.security.cs.disable-library-validation</key>");

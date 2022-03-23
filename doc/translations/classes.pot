@@ -18199,23 +18199,6 @@ msgid ""
 "have a flat shaded look."
 msgstr ""
 
-#: modules/mono/doc_classes/CSharpScript.xml
-msgid ""
-"A script implemented in the C# programming language (Mono-enabled builds "
-"only)."
-msgstr ""
-
-#: modules/mono/doc_classes/CSharpScript.xml
-msgid ""
-"This class represents a C# script. It is the C# equivalent of the [GDScript] "
-"class and is only available in Mono-enabled Pandemonium builds.\n"
-"See also [PandemoniumSharp]."
-msgstr ""
-
-#: modules/mono/doc_classes/CSharpScript.xml
-#: modules/gdnative/doc_classes/PluginScript.xml
-msgid "Returns a new instance of the script."
-msgstr ""
 
 #: doc/classes/CubeMap.xml
 msgid "A CubeMap is a 6-sided 3D texture."
@@ -25558,67 +25541,6 @@ msgid ""
 "The type of the light. The values accepted by Pandemonium are \"point\", \"spot\", "
 "and \"directional\", which correspond to Pandemonium's [OmniLight], [SpotLight], "
 "and [DirectionalLight] respectively."
-msgstr ""
-
-#: modules/mono/doc_classes/PandemoniumSharp.xml
-msgid "Bridge between Pandemonium and the Mono runtime (Mono-enabled builds only)."
-msgstr ""
-
-#: modules/mono/doc_classes/PandemoniumSharp.xml
-msgid ""
-"This class is a bridge between Pandemonium and the Mono runtime. It exposes "
-"several low-level operations and is only available in Mono-enabled Pandemonium "
-"builds.\n"
-"See also [CSharpScript]."
-msgstr ""
-
-#: modules/mono/doc_classes/PandemoniumSharp.xml
-msgid "Attaches the current thread to the Mono runtime."
-msgstr ""
-
-#: modules/mono/doc_classes/PandemoniumSharp.xml
-msgid "Detaches the current thread from the Mono runtime."
-msgstr ""
-
-#: modules/mono/doc_classes/PandemoniumSharp.xml
-msgid ""
-"Returns the current MonoDomain ID.\n"
-"[b]Note:[/b] The Mono runtime must be initialized for this method to work "
-"(use [method is_runtime_initialized] to check). If the Mono runtime isn't "
-"initialized at the time this method is called, the engine will crash."
-msgstr ""
-
-#: modules/mono/doc_classes/PandemoniumSharp.xml
-msgid ""
-"Returns the scripts MonoDomain's ID. This will be the same MonoDomain ID as "
-"[method get_domain_id], unless the scripts domain isn't loaded.\n"
-"[b]Note:[/b] The Mono runtime must be initialized for this method to work "
-"(use [method is_runtime_initialized] to check). If the Mono runtime isn't "
-"initialized at the time this method is called, the engine will crash."
-msgstr ""
-
-#: modules/mono/doc_classes/PandemoniumSharp.xml
-msgid ""
-"Returns [code]true[/code] if the domain is being finalized, [code]false[/"
-"code] otherwise."
-msgstr ""
-
-#: modules/mono/doc_classes/PandemoniumSharp.xml
-msgid ""
-"Returns [code]true[/code] if the Mono runtime is initialized, [code]false[/"
-"code] otherwise."
-msgstr ""
-
-#: modules/mono/doc_classes/PandemoniumSharp.xml
-msgid ""
-"Returns [code]true[/code] if the Mono runtime is shutting down, [code]false[/"
-"code] otherwise."
-msgstr ""
-
-#: modules/mono/doc_classes/PandemoniumSharp.xml
-msgid ""
-"Returns [code]true[/code] if the scripts domain is loaded, [code]false[/"
-"code] otherwise."
 msgstr ""
 
 #: doc/classes/Gradient.xml

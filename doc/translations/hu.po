@@ -18224,24 +18224,6 @@ msgid ""
 "have a flat shaded look."
 msgstr ""
 
-#: modules/mono/doc_classes/CSharpScript.xml
-msgid ""
-"A script implemented in the C# programming language (Mono-enabled builds "
-"only)."
-msgstr ""
-
-#: modules/mono/doc_classes/CSharpScript.xml
-msgid ""
-"This class represents a C# script. It is the C# equivalent of the [GDScript] "
-"class and is only available in Mono-enabled Godot builds.\n"
-"See also [GodotSharp]."
-msgstr ""
-
-#: modules/mono/doc_classes/CSharpScript.xml
-#: modules/gdnative/doc_classes/PluginScript.xml
-msgid "Returns a new instance of the script."
-msgstr ""
-
 #: doc/classes/CubeMap.xml
 msgid "A CubeMap is a 6-sided 3D texture."
 msgstr ""

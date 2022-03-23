@@ -13007,15 +13007,6 @@ msgstr "Utófeldolgozás"
 msgid "Plotting lightmaps"
 msgstr "Fénytérképek Ábrázolása"
 
-#: modules/mono/csharp_script.cpp
-msgid "Class name can't be a reserved keyword"
-msgstr ""
-
-#: modules/mono/csharp_script.cpp
-#, fuzzy
-msgid "Build Solution"
-msgstr "Kijelölés kitöltése"
-
 #: modules/mono/mono_gd/gd_mono_utils.cpp
 msgid "End of inner exception stack trace"
 msgstr ""
