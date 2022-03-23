@@ -280,6 +280,9 @@ void OS_Android::set_keep_screen_on(bool p_enabled) {
 void OS_Android::set_low_processor_usage_mode(bool p_enabled) {
 #ifdef TOOLS_ENABLED
 	// Disabled as it causes flickers. We also expect the devices running Godot in editor mode to be high end.
+	// The actual reason for this is that android swaps framebuffers by itself after the end of GodotRenderer.onDrawFrame()
+	// However GodotRenderer.onDrawFrame() steps godot's mainloop, which processes input, and then it decides whether to draw frames or not
+	// (if in low processor mode)
 	OS_Unix::set_low_processor_usage_mode(false);
 #else
 	OS_Unix::set_low_processor_usage_mode(p_enabled);
