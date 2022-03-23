@@ -190,7 +190,6 @@ class ScriptEditor : public PanelContainer {
 		SEARCH_IN_FILES,
 		REPLACE_IN_FILES,
 		SEARCH_HELP,
-		SEARCH_WEBSITE,
 		HELP_SEARCH_FIND,
 		HELP_SEARCH_FIND_NEXT,
 		HELP_SEARCH_FIND_PREVIOUS,
@@ -234,7 +233,6 @@ class ScriptEditor : public PanelContainer {
 	PopupMenu *theme_submenu;
 
 	Button *help_search;
-	Button *site_search;
 	EditorHelpSearch *help_search_dialog;
 
 	ItemList *script_list;

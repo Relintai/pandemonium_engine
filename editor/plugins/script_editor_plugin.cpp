@@ -1113,9 +1113,6 @@ void ScriptEditor::_menu_option(int p_option) {
 		case SEARCH_HELP: {
 			help_search_dialog->popup_dialog();
 		} break;
-		case SEARCH_WEBSITE: {
-			OS::get_singleton()->shell_open(VERSION_DOCS_URL "/");
-		} break;
 		case WINDOW_NEXT: {
 			_history_forward();
 		} break;
@@ -1475,7 +1472,6 @@ void ScriptEditor::_notification(int p_what) {
 		}
 		case NOTIFICATION_THEME_CHANGED: {
 			help_search->set_icon(get_icon("HelpSearch", "EditorIcons"));
-			site_search->set_icon(get_icon("Instance", "EditorIcons"));
 
 			script_forward->set_icon(get_icon("Forward", "EditorIcons"));
 			script_back->set_icon(get_icon("Back", "EditorIcons"));
@@ -3488,12 +3484,6 @@ ScriptEditor::ScriptEditor(EditorNode *p_editor) {
 	script_name_label->hide();
 
 	menu_hb->add_spacer();
-
-	site_search = memnew(ToolButton);
-	site_search->set_text(TTR("Online Docs"));
-	site_search->connect("pressed", this, "_menu_option", varray(SEARCH_WEBSITE));
-	menu_hb->add_child(site_search);
-	site_search->set_tooltip(TTR("Open Pandemonium online documentation."));
 
 	help_search = memnew(ToolButton);
 	help_search->set_text(TTR("Search Help"));
