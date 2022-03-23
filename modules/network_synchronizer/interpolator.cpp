@@ -179,7 +179,7 @@ Vector<Variant> Interpolator::pop_epoch(uint32_t p_epoch, real_t p_fraction) {
 		}
 	}
 
-	ObjectID cache_object_id;
+	ObjectID cache_object_id = 0;
 	Object *cache_object = nullptr;
 
 	Vector<Variant> data;
