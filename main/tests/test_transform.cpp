@@ -2,7 +2,7 @@
 /*  test_transform.cpp                                                   */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -36,7 +36,7 @@
 #include "core/os/os.h"
 #include "core/ustring.h"
 
-// #define GODOT_TEST_TRANSFORM_NON_UNIFORM_SCALE_TESTS_ENABLED
+// #define PANDEMONIUM_TEST_TRANSFORM_NON_UNIFORM_SCALE_TESTS_ENABLED
 
 namespace TestTransform {
 
@@ -147,7 +147,7 @@ bool test_aabb() {
 		pass = false;
 	}
 
-#ifdef GODOT_TEST_TRANSFORM_NON_UNIFORM_SCALE_TESTS_ENABLED
+#ifdef PANDEMONIUM_TEST_TRANSFORM_NON_UNIFORM_SCALE_TESTS_ENABLED
 	if (!test_aabb_non_uniform_scale()) {
 		pass = false;
 	}
@@ -232,7 +232,7 @@ bool test_vector3() {
 		pass = false;
 	}
 
-#ifdef GODOT_TEST_TRANSFORM_NON_UNIFORM_SCALE_TESTS_ENABLED
+#ifdef PANDEMONIUM_TEST_TRANSFORM_NON_UNIFORM_SCALE_TESTS_ENABLED
 	if (!test_vector3_non_uniform_scale()) {
 		pass = false;
 	}

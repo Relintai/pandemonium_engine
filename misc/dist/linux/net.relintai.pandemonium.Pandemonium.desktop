@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Pandemonium Engine
+GenericName=Libre game engine
+Comment=Multi-platform 2D and 3D game engine with a feature-rich editor
+Exec=pandemonium %f
+Icon=pandemonium
+Terminal=false
+PrefersNonDefaultGPU=true
+Type=Application
+MimeType=application/x-pandemonium-project;
+Categories=Development;IDE;

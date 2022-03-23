@@ -1,13 +1,13 @@
 ---
 name: Bug report
-about: Report a bug in Godot
+about: Report a bug in Pandemonium
 title: ''
 labels: ''
 assignees: ''
 
 ---
 
-**Godot version:**
+**Pandemonium version:**
 
 **OS/device including version:**
 

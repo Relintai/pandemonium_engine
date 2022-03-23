@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.godotengine.godot"
+    package="net.relintai.pandemonium.pandemonium"
     android:versionCode="1"
     android:versionName="1.0">
 
@@ -9,19 +9,19 @@
 
     <application>
 
-        <!-- Records the version of the Godot library -->
+        <!-- Records the version of the Pandemonium library -->
         <meta-data
-            android:name="org.godotengine.library.version"
-            android:value="${godotLibraryVersion}" />
+            android:name="net.relintai.pandemonium.library.version"
+            android:value="${pandemoniumLibraryVersion}" />
 
-        <service android:name=".GodotDownloaderService" />
+        <service android:name=".PandemoniumDownloaderService" />
 
     </application>
 
     <instrumentation
-        android:name=".GodotInstrumentation"
+        android:name=".PandemoniumInstrumentation"
         android:icon="@mipmap/icon"
-        android:label="@string/godot_project_name_string"
-        android:targetPackage="org.godotengine.godot" />
+        android:label="@string/pandemonium_project_name_string"
+        android:targetPackage="net.relintai.pandemonium.pandemonium" />
 
 </manifest>

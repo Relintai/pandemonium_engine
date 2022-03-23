@@ -45,9 +45,9 @@ public:
 		return m_numSamples;
 	}
 	bool getPCMS16(WebMFrame &frame, short *buffer, int &numOutSamples);
-// -- GODOT begin --
+// -- PANDEMONIUM begin --
 	bool getPCMF(WebMFrame &frame, float *buffer, int &numOutSamples);
-// -- GODOT end --
+// -- PANDEMONIUM end --
 
 private:
 	bool openVorbis(const WebMDemuxer &demuxer);

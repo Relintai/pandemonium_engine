@@ -6,9 +6,9 @@ diff -u orig/open-simplex-noise.c misc/open-simplex-noise.c
   *   will be the same when ported to other languages.
   */
 +
-+// -- GODOT start --
++// -- PANDEMONIUM start --
 +// Modified to work without allocating memory, also removed some unused function. 
-+// -- GODOT end --
++// -- PANDEMONIUM end --
 +
  #include <math.h>
  #include <stdlib.h>
@@ -18,14 +18,14 @@ diff -u orig/open-simplex-noise.c misc/open-simplex-noise.c
  #define DEFAULT_SEED (0LL)
  
 -struct osn_context {
-+// -- GODOT start --
++// -- PANDEMONIUM start --
 +/*struct osn_context {
  	int16_t *perm;
  	int16_t *permGradIndex3D;
 -};
 -
 +};*/
-+// -- GODOT end --
++// -- PANDEMONIUM end --
  #define ARRAYSIZE(x) (sizeof((x)) / sizeof((x)[0]))
  
  /* 
@@ -35,7 +35,7 @@ diff -u orig/open-simplex-noise.c misc/open-simplex-noise.c
  }
 -	
 +
-+// -- GODOT start --
++// -- PANDEMONIUM start --
 +/*
  static int allocate_perm(struct osn_context *ctx, int nperm, int ngrad)
  {
@@ -51,7 +51,7 @@ diff -u orig/open-simplex-noise.c misc/open-simplex-noise.c
  	return 0;
  }
 +*/
-+// -- GODOT end --
++// -- PANDEMONIUM end --
  
  /*	
   * Initializes using a permutation array generated from a 64-bit seed.
@@ -59,7 +59,7 @@ diff -u orig/open-simplex-noise.c misc/open-simplex-noise.c
   * swaps on a base array).  Uses a simple 64-bit LCG.
   */
 -int open_simplex_noise(int64_t seed, struct osn_context **ctx)
-+// -- GODOT start --
++// -- PANDEMONIUM start --
 +int open_simplex_noise(int64_t seed, struct osn_context *ctx)
  {
  	int rc;
@@ -84,7 +84,7 @@ diff -u orig/open-simplex-noise.c misc/open-simplex-noise.c
 -	permGradIndex3D = (*ctx)->permGradIndex3D;
 +	perm = ctx->perm;
 +	permGradIndex3D = ctx->permGradIndex3D;
-+// -- GODOT end --
++// -- PANDEMONIUM end --
  
  	for (i = 0; i < 256; i++)
  		source[i] = (int16_t) i;
@@ -92,7 +92,7 @@ diff -u orig/open-simplex-noise.c misc/open-simplex-noise.c
  	return 0;
  }
  
-+// -- GODOT start --
++// -- PANDEMONIUM start --
 +/*
  void open_simplex_noise_free(struct osn_context *ctx)
  {
@@ -102,7 +102,7 @@ diff -u orig/open-simplex-noise.c misc/open-simplex-noise.c
  	free(ctx);
  }
 +*/
-+// -- GODOT end --
++// -- PANDEMONIUM end --
  	
  /* 2D OpenSimplex (Simplectic) Noise. */
  double open_simplex_noise2(struct osn_context *ctx, double x, double y) 
@@ -114,7 +114,7 @@ diff -u orig/open-simplex-noise.h misc/open-simplex-noise.h
  #endif
  
 -struct osn_context;
-+// -- GODOT start --
++// -- PANDEMONIUM start --
 +// Modified to work without allocating memory, also removed some unused function. 
  
 -int open_simplex_noise(int64_t seed, struct osn_context **ctx);
@@ -125,7 +125,7 @@ diff -u orig/open-simplex-noise.h misc/open-simplex-noise.h
 +
 +int open_simplex_noise(int64_t seed, struct osn_context *ctx);
 +//int open_simplex_noise_init_perm(struct osn_context *ctx, int16_t p[], int nelements);
-+// -- GODOT end --
++// -- PANDEMONIUM end --
  void open_simplex_noise_free(struct osn_context *ctx);
 -int open_simplex_noise_init_perm(struct osn_context *ctx, int16_t p[], int nelements);
  double open_simplex_noise2(struct osn_context *ctx, double x, double y);

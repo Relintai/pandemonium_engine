@@ -42,7 +42,7 @@
 		</method>
 	</methods>
 	<members>
-		<member name="godot_skin" type="Skin" setter="set_godot_skin" getter="get_godot_skin">
+		<member name="pandemonium_skin" type="Skin" setter="set_pandemonium_skin" getter="get_pandemonium_skin">
 		</member>
 		<member name="joints" type="PoolIntArray" setter="set_joints" getter="get_joints" default="PoolIntArray(  )">
 		</member>

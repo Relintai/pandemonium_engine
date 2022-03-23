@@ -62,7 +62,7 @@ struct TypeInherits {
 			!TypesAreSame<B volatile const, void volatile const>::value;
 };
 
-namespace GodotTypeInfo {
+namespace PandemoniumTypeInfo {
 enum Metadata {
 	METADATA_NONE,
 	METADATA_INT_IS_INT8,
@@ -90,7 +90,7 @@ struct GetTypeInfo;
 	template <>                                                                       \
 	struct GetTypeInfo<m_type> {                                                      \
 		static const Variant::Type VARIANT_TYPE = m_var_type;                         \
-		static const GodotTypeInfo::Metadata METADATA = GodotTypeInfo::METADATA_NONE; \
+		static const PandemoniumTypeInfo::Metadata METADATA = PandemoniumTypeInfo::METADATA_NONE; \
 		static inline PropertyInfo get_class_info() {                                 \
 			return PropertyInfo(VARIANT_TYPE, String());                              \
 		}                                                                             \
@@ -98,7 +98,7 @@ struct GetTypeInfo;
 	template <>                                                                       \
 	struct GetTypeInfo<const m_type &> {                                              \
 		static const Variant::Type VARIANT_TYPE = m_var_type;                         \
-		static const GodotTypeInfo::Metadata METADATA = GodotTypeInfo::METADATA_NONE; \
+		static const PandemoniumTypeInfo::Metadata METADATA = PandemoniumTypeInfo::METADATA_NONE; \
 		static inline PropertyInfo get_class_info() {                                 \
 			return PropertyInfo(VARIANT_TYPE, String());                              \
 		}                                                                             \
@@ -108,7 +108,7 @@ struct GetTypeInfo;
 	template <>                                                     \
 	struct GetTypeInfo<m_type> {                                    \
 		static const Variant::Type VARIANT_TYPE = m_var_type;       \
-		static const GodotTypeInfo::Metadata METADATA = m_metadata; \
+		static const PandemoniumTypeInfo::Metadata METADATA = m_metadata; \
 		static inline PropertyInfo get_class_info() {               \
 			return PropertyInfo(VARIANT_TYPE, String());            \
 		}                                                           \
@@ -116,24 +116,24 @@ struct GetTypeInfo;
 	template <>                                                     \
 	struct GetTypeInfo<const m_type &> {                            \
 		static const Variant::Type VARIANT_TYPE = m_var_type;       \
-		static const GodotTypeInfo::Metadata METADATA = m_metadata; \
+		static const PandemoniumTypeInfo::Metadata METADATA = m_metadata; \
 		static inline PropertyInfo get_class_info() {               \
 			return PropertyInfo(VARIANT_TYPE, String());            \
 		}                                                           \
 	};
 
 MAKE_TYPE_INFO(bool, Variant::BOOL)
-MAKE_TYPE_INFO_WITH_META(uint8_t, Variant::INT, GodotTypeInfo::METADATA_INT_IS_UINT8)
-MAKE_TYPE_INFO_WITH_META(int8_t, Variant::INT, GodotTypeInfo::METADATA_INT_IS_INT8)
-MAKE_TYPE_INFO_WITH_META(uint16_t, Variant::INT, GodotTypeInfo::METADATA_INT_IS_UINT16)
-MAKE_TYPE_INFO_WITH_META(int16_t, Variant::INT, GodotTypeInfo::METADATA_INT_IS_INT16)
-MAKE_TYPE_INFO_WITH_META(uint32_t, Variant::INT, GodotTypeInfo::METADATA_INT_IS_UINT32)
-MAKE_TYPE_INFO_WITH_META(int32_t, Variant::INT, GodotTypeInfo::METADATA_INT_IS_INT32)
-MAKE_TYPE_INFO_WITH_META(uint64_t, Variant::INT, GodotTypeInfo::METADATA_INT_IS_UINT64)
-MAKE_TYPE_INFO_WITH_META(int64_t, Variant::INT, GodotTypeInfo::METADATA_INT_IS_INT64)
+MAKE_TYPE_INFO_WITH_META(uint8_t, Variant::INT, PandemoniumTypeInfo::METADATA_INT_IS_UINT8)
+MAKE_TYPE_INFO_WITH_META(int8_t, Variant::INT, PandemoniumTypeInfo::METADATA_INT_IS_INT8)
+MAKE_TYPE_INFO_WITH_META(uint16_t, Variant::INT, PandemoniumTypeInfo::METADATA_INT_IS_UINT16)
+MAKE_TYPE_INFO_WITH_META(int16_t, Variant::INT, PandemoniumTypeInfo::METADATA_INT_IS_INT16)
+MAKE_TYPE_INFO_WITH_META(uint32_t, Variant::INT, PandemoniumTypeInfo::METADATA_INT_IS_UINT32)
+MAKE_TYPE_INFO_WITH_META(int32_t, Variant::INT, PandemoniumTypeInfo::METADATA_INT_IS_INT32)
+MAKE_TYPE_INFO_WITH_META(uint64_t, Variant::INT, PandemoniumTypeInfo::METADATA_INT_IS_UINT64)
+MAKE_TYPE_INFO_WITH_META(int64_t, Variant::INT, PandemoniumTypeInfo::METADATA_INT_IS_INT64)
 MAKE_TYPE_INFO(wchar_t, Variant::INT)
-MAKE_TYPE_INFO_WITH_META(float, Variant::REAL, GodotTypeInfo::METADATA_REAL_IS_FLOAT)
-MAKE_TYPE_INFO_WITH_META(double, Variant::REAL, GodotTypeInfo::METADATA_REAL_IS_DOUBLE)
+MAKE_TYPE_INFO_WITH_META(float, Variant::REAL, PandemoniumTypeInfo::METADATA_REAL_IS_FLOAT)
+MAKE_TYPE_INFO_WITH_META(double, Variant::REAL, PandemoniumTypeInfo::METADATA_REAL_IS_DOUBLE)
 
 MAKE_TYPE_INFO(String, Variant::STRING)
 MAKE_TYPE_INFO(Vector2, Variant::VECTOR2)
@@ -173,7 +173,7 @@ MAKE_TYPE_INFO(BSP_Tree, Variant::DICTIONARY)
 template <>
 struct GetTypeInfo<RefPtr> {
 	static const Variant::Type VARIANT_TYPE = Variant::OBJECT;
-	static const GodotTypeInfo::Metadata METADATA = GodotTypeInfo::METADATA_NONE;
+	static const PandemoniumTypeInfo::Metadata METADATA = PandemoniumTypeInfo::METADATA_NONE;
 	static inline PropertyInfo get_class_info() {
 		return PropertyInfo(Variant::OBJECT, String(), PROPERTY_HINT_RESOURCE_TYPE, "Reference");
 	}
@@ -181,7 +181,7 @@ struct GetTypeInfo<RefPtr> {
 template <>
 struct GetTypeInfo<const RefPtr &> {
 	static const Variant::Type VARIANT_TYPE = Variant::OBJECT;
-	static const GodotTypeInfo::Metadata METADATA = GodotTypeInfo::METADATA_NONE;
+	static const PandemoniumTypeInfo::Metadata METADATA = PandemoniumTypeInfo::METADATA_NONE;
 	static inline PropertyInfo get_class_info() {
 		return PropertyInfo(Variant::OBJECT, String(), PROPERTY_HINT_RESOURCE_TYPE, "Reference");
 	}
@@ -191,7 +191,7 @@ struct GetTypeInfo<const RefPtr &> {
 template <>
 struct GetTypeInfo<Variant> {
 	static const Variant::Type VARIANT_TYPE = Variant::NIL;
-	static const GodotTypeInfo::Metadata METADATA = GodotTypeInfo::METADATA_NONE;
+	static const PandemoniumTypeInfo::Metadata METADATA = PandemoniumTypeInfo::METADATA_NONE;
 	static inline PropertyInfo get_class_info() {
 		return PropertyInfo(Variant::NIL, String(), PROPERTY_HINT_NONE, String(), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_NIL_IS_VARIANT);
 	}
@@ -200,7 +200,7 @@ struct GetTypeInfo<Variant> {
 template <>
 struct GetTypeInfo<const Variant &> {
 	static const Variant::Type VARIANT_TYPE = Variant::NIL;
-	static const GodotTypeInfo::Metadata METADATA = GodotTypeInfo::METADATA_NONE;
+	static const PandemoniumTypeInfo::Metadata METADATA = PandemoniumTypeInfo::METADATA_NONE;
 	static inline PropertyInfo get_class_info() {
 		return PropertyInfo(Variant::NIL, String(), PROPERTY_HINT_NONE, String(), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_NIL_IS_VARIANT);
 	}
@@ -210,7 +210,7 @@ struct GetTypeInfo<const Variant &> {
 	template <>                                                                       \
 	struct GetTypeInfo<m_template<m_type>> {                                          \
 		static const Variant::Type VARIANT_TYPE = m_var_type;                         \
-		static const GodotTypeInfo::Metadata METADATA = GodotTypeInfo::METADATA_NONE; \
+		static const PandemoniumTypeInfo::Metadata METADATA = PandemoniumTypeInfo::METADATA_NONE; \
 		static inline PropertyInfo get_class_info() {                                 \
 			return PropertyInfo(VARIANT_TYPE, String());                              \
 		}                                                                             \
@@ -218,7 +218,7 @@ struct GetTypeInfo<const Variant &> {
 	template <>                                                                       \
 	struct GetTypeInfo<const m_template<m_type> &> {                                  \
 		static const Variant::Type VARIANT_TYPE = m_var_type;                         \
-		static const GodotTypeInfo::Metadata METADATA = GodotTypeInfo::METADATA_NONE; \
+		static const PandemoniumTypeInfo::Metadata METADATA = PandemoniumTypeInfo::METADATA_NONE; \
 		static inline PropertyInfo get_class_info() {                                 \
 			return PropertyInfo(VARIANT_TYPE, String());                              \
 		}                                                                             \
@@ -245,7 +245,7 @@ MAKE_TEMPLATE_TYPE_INFO(PoolVector, Face3, Variant::POOL_VECTOR3_ARRAY)
 template <typename T>
 struct GetTypeInfo<T *, typename EnableIf<TypeInherits<Object, T>::value>::type> {
 	static const Variant::Type VARIANT_TYPE = Variant::OBJECT;
-	static const GodotTypeInfo::Metadata METADATA = GodotTypeInfo::METADATA_NONE;
+	static const PandemoniumTypeInfo::Metadata METADATA = PandemoniumTypeInfo::METADATA_NONE;
 	static inline PropertyInfo get_class_info() {
 		return PropertyInfo(StringName(T::get_class_static()));
 	}
@@ -254,7 +254,7 @@ struct GetTypeInfo<T *, typename EnableIf<TypeInherits<Object, T>::value>::type>
 template <typename T>
 struct GetTypeInfo<const T *, typename EnableIf<TypeInherits<Object, T>::value>::type> {
 	static const Variant::Type VARIANT_TYPE = Variant::OBJECT;
-	static const GodotTypeInfo::Metadata METADATA = GodotTypeInfo::METADATA_NONE;
+	static const PandemoniumTypeInfo::Metadata METADATA = PandemoniumTypeInfo::METADATA_NONE;
 	static inline PropertyInfo get_class_info() {
 		return PropertyInfo(StringName(T::get_class_static()));
 	}
@@ -264,7 +264,7 @@ struct GetTypeInfo<const T *, typename EnableIf<TypeInherits<Object, T>::value>:
 	template <>                                                                                                                                                                   \
 	struct GetTypeInfo<m_impl> {                                                                                                                                                  \
 		static const Variant::Type VARIANT_TYPE = Variant::INT;                                                                                                                   \
-		static const GodotTypeInfo::Metadata METADATA = GodotTypeInfo::METADATA_NONE;                                                                                             \
+		static const PandemoniumTypeInfo::Metadata METADATA = PandemoniumTypeInfo::METADATA_NONE;                                                                                             \
 		static inline PropertyInfo get_class_info() {                                                                                                                             \
 			return PropertyInfo(Variant::INT, String(), PROPERTY_HINT_NONE, String(), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_CLASS_IS_ENUM, String(#m_enum).replace("::", ".")); \
 		}                                                                                                                                                                         \

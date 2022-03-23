@@ -4,7 +4,7 @@
 /*  room_manager.h                                                       */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -40,7 +40,7 @@ class MeshInstance;
 class GeometryInstance;
 class VisualInstance;
 
-#define GODOT_PORTAL_WILDCARD ('*')
+#define PANDEMONIUM_PORTAL_WILDCARD ('*')
 
 class RoomManager : public Spatial {
 	GDCLASS(RoomManager, Spatial);
@@ -261,12 +261,12 @@ private:
 	real_t _settings_roaming_expansion_margin = 1.0;
 
 	// debug override camera
-	ObjectID _godot_preview_camera_ID = -1;
-	// local version of the godot camera frustum,
+	ObjectID _pandemonium_preview_camera_ID = -1;
+	// local version of the pandemonium camera frustum,
 	// to prevent updating the visual server (and causing
 	// a screen refresh) where not necessary.
-	Vector3 _godot_camera_pos;
-	Vector<Plane> _godot_camera_planes;
+	Vector3 _pandemonium_camera_pos;
+	Vector<Plane> _pandemonium_camera_planes;
 
 protected:
 	static void _bind_methods();

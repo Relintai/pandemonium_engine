@@ -14,9 +14,9 @@
  *   will be the same when ported to other languages.
  */
 
-// -- GODOT start --
+// -- PANDEMONIUM start --
 // Modified to work without allocating memory, also removed some unused function. 
-// -- GODOT end --
+// -- PANDEMONIUM end --
 
 #include <math.h>
 #include <stdlib.h>
@@ -39,12 +39,12 @@
 	
 #define DEFAULT_SEED (0LL)
 
-// -- GODOT start --
+// -- PANDEMONIUM start --
 /*struct osn_context {
 	int16_t *perm;
 	int16_t *permGradIndex3D;
 };*/
-// -- GODOT end --
+// -- PANDEMONIUM end --
 #define ARRAYSIZE(x) (sizeof((x)) / sizeof((x)[0]))
 
 /* 
@@ -133,7 +133,7 @@ static INLINE int fastFloor(double x) {
 	return x < xi ? xi - 1 : xi;
 }
 
-// -- GODOT start --
+// -- PANDEMONIUM start --
 /*
 static int allocate_perm(struct osn_context *ctx, int nperm, int ngrad)
 {
@@ -168,14 +168,14 @@ int open_simplex_noise_init_perm(struct osn_context *ctx, int16_t p[], int nelem
 	return 0;
 }
 */
-// -- GODOT end --
+// -- PANDEMONIUM end --
 
 /*	
  * Initializes using a permutation array generated from a 64-bit seed.
  * Generates a proper permutation (i.e. doesn't merely perform N successive pair
  * swaps on a base array).  Uses a simple 64-bit LCG.
  */
-// -- GODOT start --
+// -- PANDEMONIUM start --
 int open_simplex_noise(int64_t seed, struct osn_context *ctx)
 {
 	int rc;
@@ -187,7 +187,7 @@ int open_simplex_noise(int64_t seed, struct osn_context *ctx)
 
 	perm = ctx->perm;
 	permGradIndex3D = ctx->permGradIndex3D;
-// -- GODOT end --
+// -- PANDEMONIUM end --
 
 	uint64_t seedU = seed;
 	for (i = 0; i < 256; i++)
@@ -207,7 +207,7 @@ int open_simplex_noise(int64_t seed, struct osn_context *ctx)
 	return 0;
 }
 
-// -- GODOT start --
+// -- PANDEMONIUM start --
 /*
 void open_simplex_noise_free(struct osn_context *ctx)
 {
@@ -224,7 +224,7 @@ void open_simplex_noise_free(struct osn_context *ctx)
 	free(ctx);
 }
 */
-// -- GODOT end --
+// -- PANDEMONIUM end --
 	
 /* 2D OpenSimplex (Simplectic) Noise. */
 double open_simplex_noise2(const struct osn_context *ctx, double x, double y)

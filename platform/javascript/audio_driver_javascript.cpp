@@ -37,7 +37,7 @@
 AudioDriverJavaScript::AudioContext AudioDriverJavaScript::audio_context;
 
 bool AudioDriverJavaScript::is_available() {
-	return godot_audio_is_available() != 0;
+	return pandemonium_audio_is_available() != 0;
 }
 
 void AudioDriverJavaScript::_state_change_callback(int p_state) {
@@ -104,7 +104,7 @@ Error AudioDriverJavaScript::init() {
 	int latency = GLOBAL_GET("audio/output_latency");
 	if (!audio_context.inited) {
 		audio_context.mix_rate = GLOBAL_GET("audio/mix_rate");
-		audio_context.channel_count = godot_audio_init(&audio_context.mix_rate, latency, &_state_change_callback, &_latency_update_callback);
+		audio_context.channel_count = pandemonium_audio_init(&audio_context.mix_rate, latency, &_state_change_callback, &_latency_update_callback);
 		audio_context.inited = true;
 	}
 	mix_rate = audio_context.mix_rate;
@@ -137,7 +137,7 @@ void AudioDriverJavaScript::start() {
 
 void AudioDriverJavaScript::resume() {
 	if (audio_context.state == 0) { // 'suspended'
-		godot_audio_resume();
+		pandemonium_audio_resume();
 	}
 }
 
@@ -169,14 +169,14 @@ Error AudioDriverJavaScript::capture_start() {
 	lock();
 	input_buffer_init(buffer_length);
 	unlock();
-	if (godot_audio_capture_start()) {
+	if (pandemonium_audio_capture_start()) {
 		return FAILED;
 	}
 	return OK;
 }
 
 Error AudioDriverJavaScript::capture_stop() {
-	godot_audio_capture_stop();
+	pandemonium_audio_capture_stop();
 	lock();
 	input_buffer.clear();
 	unlock();
@@ -193,29 +193,29 @@ void AudioDriverScriptProcessor::_process_callback() {
 }
 
 Error AudioDriverScriptProcessor::create(int &p_buffer_samples, int p_channels) {
-	if (!godot_audio_has_script_processor()) {
+	if (!pandemonium_audio_has_script_processor()) {
 		return ERR_UNAVAILABLE;
 	}
-	return (Error)godot_audio_script_create(&p_buffer_samples, p_channels);
+	return (Error)pandemonium_audio_script_create(&p_buffer_samples, p_channels);
 }
 
 void AudioDriverScriptProcessor::start(float *p_out_buf, int p_out_buf_size, float *p_in_buf, int p_in_buf_size) {
-	godot_audio_script_start(p_in_buf, p_in_buf_size, p_out_buf, p_out_buf_size, &_process_callback);
+	pandemonium_audio_script_start(p_in_buf, p_in_buf_size, p_out_buf, p_out_buf_size, &_process_callback);
 }
 
 /// AudioWorkletNode implementation (no threads)
 AudioDriverWorklet *AudioDriverWorklet::singleton = nullptr;
 
 Error AudioDriverWorklet::create(int &p_buffer_size, int p_channels) {
-	if (!godot_audio_has_worklet()) {
+	if (!pandemonium_audio_has_worklet()) {
 		return ERR_UNAVAILABLE;
 	}
-	return (Error)godot_audio_worklet_create(p_channels);
+	return (Error)pandemonium_audio_worklet_create(p_channels);
 }
 
 void AudioDriverWorklet::start(float *p_out_buf, int p_out_buf_size, float *p_in_buf, int p_in_buf_size) {
 	_audio_driver_process();
-	godot_audio_worklet_start_no_threads(p_out_buf, p_out_buf_size, &_process_callback, p_in_buf, p_in_buf_size, &_capture_callback);
+	pandemonium_audio_worklet_start_no_threads(p_out_buf, p_out_buf_size, &_process_callback, p_in_buf, p_in_buf_size, &_capture_callback);
 }
 
 void AudioDriverWorklet::_process_callback(int p_pos, int p_samples) {
@@ -242,7 +242,7 @@ void AudioDriverWorklet::_audio_thread_func(void *p_data) {
 		if (to_read) {
 			driver->lock();
 			driver->_audio_driver_capture(rpos, to_read);
-			godot_audio_worklet_state_add(driver->state, STATE_SAMPLES_IN, -to_read);
+			pandemonium_audio_worklet_state_add(driver->state, STATE_SAMPLES_IN, -to_read);
 			driver->unlock();
 			rpos += to_read;
 			if (rpos >= in_samples) {
@@ -252,28 +252,28 @@ void AudioDriverWorklet::_audio_thread_func(void *p_data) {
 		if (to_write) {
 			driver->lock();
 			driver->_audio_driver_process(wpos, to_write);
-			godot_audio_worklet_state_add(driver->state, STATE_SAMPLES_OUT, to_write);
+			pandemonium_audio_worklet_state_add(driver->state, STATE_SAMPLES_OUT, to_write);
 			driver->unlock();
 			wpos += to_write;
 			if (wpos >= out_samples) {
 				wpos -= out_samples;
 			}
 		}
-		step = godot_audio_worklet_state_wait(driver->state, STATE_PROCESS, step, 1);
-		to_write = out_samples - godot_audio_worklet_state_get(driver->state, STATE_SAMPLES_OUT);
-		to_read = godot_audio_worklet_state_get(driver->state, STATE_SAMPLES_IN);
+		step = pandemonium_audio_worklet_state_wait(driver->state, STATE_PROCESS, step, 1);
+		to_write = out_samples - pandemonium_audio_worklet_state_get(driver->state, STATE_SAMPLES_OUT);
+		to_read = pandemonium_audio_worklet_state_get(driver->state, STATE_SAMPLES_IN);
 	}
 }
 
 Error AudioDriverWorklet::create(int &p_buffer_size, int p_channels) {
-	if (!godot_audio_has_worklet()) {
+	if (!pandemonium_audio_has_worklet()) {
 		return ERR_UNAVAILABLE;
 	}
-	return (Error)godot_audio_worklet_create(p_channels);
+	return (Error)pandemonium_audio_worklet_create(p_channels);
 }
 
 void AudioDriverWorklet::start(float *p_out_buf, int p_out_buf_size, float *p_in_buf, int p_in_buf_size) {
-	godot_audio_worklet_start(p_in_buf, p_in_buf_size, p_out_buf, p_out_buf_size, state);
+	pandemonium_audio_worklet_start(p_in_buf, p_in_buf_size, p_out_buf, p_out_buf_size, state);
 	thread.start(_audio_thread_func, this);
 }
 

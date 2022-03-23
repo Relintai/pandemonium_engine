@@ -10,7 +10,7 @@ env.main_sources = []
 env.add_source_files(env.main_sources, "*.cpp")
 
 # Order matters here. Higher index controller database files write on top of lower index database files.
-controller_databases = ["gamecontrollerdb.txt", "godotcontrollerdb.txt"]
+controller_databases = ["gamecontrollerdb.txt", "pandemoniumcontrollerdb.txt"]
 
 gensource = env.CommandNoCache(
     "default_controller_mappings.gen.cpp",

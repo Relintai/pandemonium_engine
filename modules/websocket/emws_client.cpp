@@ -65,7 +65,7 @@ void EMWSClient::_esws_on_close(void *obj, int code, const char *reason, int was
 
 Error EMWSClient::connect_to_host(String p_host, String p_path, uint16_t p_port, bool p_ssl, const Vector<String> p_protocols, const Vector<String> p_custom_headers) {
 	if (_js_id) {
-		godot_js_websocket_destroy(_js_id);
+		pandemonium_js_websocket_destroy(_js_id);
 		_js_id = 0;
 	}
 
@@ -90,7 +90,7 @@ Error EMWSClient::connect_to_host(String p_host, String p_path, uint16_t p_port,
 	str += p_host + ":" + itos(p_port) + p_path;
 	_is_connecting = true;
 
-	_js_id = godot_js_websocket_create(this, str.utf8().get_data(), proto_string.utf8().get_data(), &_esws_on_connect, &_esws_on_message, &_esws_on_error, &_esws_on_close);
+	_js_id = pandemonium_js_websocket_create(this, str.utf8().get_data(), proto_string.utf8().get_data(), &_esws_on_connect, &_esws_on_message, &_esws_on_error, &_esws_on_close);
 	if (!_js_id) {
 		return FAILED;
 	}
@@ -153,7 +153,7 @@ EMWSClient::~EMWSClient() {
 	disconnect_from_host();
 	_peer = Ref<EMWSPeer>();
 	if (_js_id) {
-		godot_js_websocket_destroy(_js_id);
+		pandemonium_js_websocket_destroy(_js_id);
 	}
 }
 

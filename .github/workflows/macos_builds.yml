@@ -24,7 +24,7 @@ jobs:
             cache-name: macos-editor
             target: release_debug
             tools: true
-            bin: "./bin/godot.osx.opt.tools.64"
+            bin: "./bin/pandemonium.osx.opt.tools.64"
 
           - name: Template (target=release, tools=no)
             cache-name: macos-template
@@ -34,17 +34,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup Godot build cache
-        uses: ./.github/actions/godot-cache
+      - name: Setup Pandemonium build cache
+        uses: ./.github/actions/pandemonium-cache
         with:
           cache-name: ${{ matrix.cache-name }}
         continue-on-error: true
 
       - name: Setup python and scons
-        uses: ./.github/actions/godot-deps
+        uses: ./.github/actions/pandemonium-deps
 
       - name: Compilation
-        uses: ./.github/actions/godot-build
+        uses: ./.github/actions/pandemonium-build
         with:
           sconsflags: ${{ env.SCONSFLAGS }}
           platform: osx

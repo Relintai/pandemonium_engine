@@ -338,10 +338,10 @@ cscope.files
 cscope.out
 cscope.in.out
 cscope.po.out
-godot.creator.*
+pandemonium.creator.*
 
 projects/
-platform/windows/godot_res.res
+platform/windows/pandemonium_res.res
 
 # Visual Studio 2017 and Visual Studio Code workspace folder
 /.vs

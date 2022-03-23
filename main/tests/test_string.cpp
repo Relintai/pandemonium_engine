@@ -971,7 +971,7 @@ bool test_31() {
 		state = false;
 	}
 
-	String b = "Godot";
+	String b = "Pandemonium";
 	success = b[b.size()] == 0;
 	OS::get_singleton()->print("Is 0 String[size()]:, %s\n", success ? "OK" : "FAIL");
 	if (!success) {
@@ -985,7 +985,7 @@ bool test_31() {
 		state = false;
 	}
 
-	const String d = "Godot";
+	const String d = "Pandemonium";
 	success = d[d.size()] == 0;
 	OS::get_singleton()->print("Is 0 const String[size()]:, %s\n", success ? "OK" : "FAIL");
 	if (!success) {
@@ -1112,7 +1112,7 @@ bool test_35() {
 	COUNT_TEST(String("Testa").count("Test") == 1);
 	COUNT_TEST(String("TestTestTest").count("Test") == 3);
 	COUNT_TEST(String("TestTestTest").count("TestTest") == 1);
-	COUNT_TEST(String("TestGodotTestGodotTestGodot").count("Test") == 3);
+	COUNT_TEST(String("TestPandemoniumTestPandemoniumTestPandemonium").count("Test") == 3);
 
 	COUNT_TEST(String("TestTestTestTest").count("Test", 4, 8) == 1);
 	COUNT_TEST(String("TestTestTestTest").count("Test", 4, 12) == 2);

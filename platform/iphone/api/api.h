@@ -31,8 +31,8 @@
 /*************************************************************************/
 
 #if defined(IPHONE_ENABLED)
-extern void godot_ios_plugins_initialize();
-extern void godot_ios_plugins_deinitialize();
+extern void pandemonium_ios_plugins_initialize();
+extern void pandemonium_ios_plugins_deinitialize();
 #endif
 
 void register_iphone_api();

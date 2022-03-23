@@ -56,7 +56,7 @@ if env["builtin_libvorbis"]:
     env.modules_sources += thirdparty_obj
 
 
-# Godot source files
+# Pandemonium source files
 
 module_obj = []
 

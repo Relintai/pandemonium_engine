@@ -65,19 +65,19 @@ String StringBuilder::as_string() const {
 
 	int current_position = 0;
 
-	int godot_string_elem = 0;
+	int pandemonium_string_elem = 0;
 	int c_string_elem = 0;
 
 	for (int i = 0; i < appended_strings.size(); i++) {
 		if (appended_strings[i] == -1) {
-			// Godot string
-			const String &s = strings[godot_string_elem];
+			// Pandemonium string
+			const String &s = strings[pandemonium_string_elem];
 
 			memcpy(buffer + current_position, s.ptr(), s.length() * sizeof(CharType));
 
 			current_position += s.length();
 
-			godot_string_elem++;
+			pandemonium_string_elem++;
 		} else {
 			const char *s = c_strings[c_string_elem];
 

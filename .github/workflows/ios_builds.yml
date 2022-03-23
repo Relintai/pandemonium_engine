@@ -20,15 +20,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup Godot build cache
-        uses: ./.github/actions/godot-cache
+      - name: Setup Pandemonium build cache
+        uses: ./.github/actions/pandemonium-cache
         continue-on-error: true
 
       - name: Setup python and scons
-        uses: ./.github/actions/godot-deps
+        uses: ./.github/actions/pandemonium-deps
 
       - name: Compilation (armv7)
-        uses: ./.github/actions/godot-build
+        uses: ./.github/actions/pandemonium-build
         with:
           sconsflags: ${{ env.SCONSFLAGS }}
           platform: iphone

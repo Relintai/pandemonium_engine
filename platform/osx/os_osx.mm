@@ -126,10 +126,10 @@ static NSCursor *cursorFromSelector(SEL selector, SEL fallback = nil) {
 	return [NSCursor arrowCursor];
 }
 
-@interface GodotApplication : NSApplication
+@interface PandemoniumApplication : NSApplication
 @end
 
-@implementation GodotApplication
+@implementation PandemoniumApplication
 
 - (void)sendEvent:(NSEvent *)event {
 	// special case handling of command-period, which is traditionally a special
@@ -160,13 +160,13 @@ static NSCursor *cursorFromSelector(SEL selector, SEL fallback = nil) {
 
 @end
 
-@interface GodotApplicationDelegate : NSObject
+@interface PandemoniumApplicationDelegate : NSObject
 - (void)forceUnbundledWindowActivationHackStep1;
 - (void)forceUnbundledWindowActivationHackStep2;
 - (void)forceUnbundledWindowActivationHackStep3;
 @end
 
-@implementation GodotApplicationDelegate
+@implementation PandemoniumApplicationDelegate
 
 - (void)forceUnbundledWindowActivationHackStep1 {
 	// Step 1: Switch focus to macOS SystemUIServer process.
@@ -256,25 +256,25 @@ static NSCursor *cursorFromSelector(SEL selector, SEL fallback = nil) {
 
 - (void)applicationDidHide:(NSNotification *)notification {
 	/*
-	_Godotwindow* window;
-	for (window = _Godot.windowListHead;  window;  window = window->next)
-		_GodotInputWindowVisibility(window, GL_FALSE);
+	_Pandemoniumwindow* window;
+	for (window = _Pandemonium.windowListHead;  window;  window = window->next)
+		_PandemoniumInputWindowVisibility(window, GL_FALSE);
 */
 }
 
 - (void)applicationDidUnhide:(NSNotification *)notification {
 	/*
-	_Godotwindow* window;
+	_Pandemoniumwindow* window;
 
-	for (window = _Godot.windowListHead;  window;  window = window->next) {
+	for (window = _Pandemonium.windowListHead;  window;  window = window->next) {
 		if ([window_object isVisible])
-			_GodotInputWindowVisibility(window, GL_TRUE);
+			_PandemoniumInputWindowVisibility(window, GL_TRUE);
 	}
 */
 }
 
 - (void)applicationDidChangeScreenParameters:(NSNotification *)notification {
-	//_GodotInputMonitorChange();
+	//_PandemoniumInputMonitorChange();
 }
 
 - (void)showAbout:(id)sender {
@@ -284,16 +284,16 @@ static NSCursor *cursorFromSelector(SEL selector, SEL fallback = nil) {
 
 @end
 
-@interface GodotWindowDelegate : NSObject {
-	//_Godotwindow* window;
+@interface PandemoniumWindowDelegate : NSObject {
+	//_Pandemoniumwindow* window;
 }
 
 @end
 
-@implementation GodotWindowDelegate
+@implementation PandemoniumWindowDelegate
 
 - (BOOL)windowShouldClose:(id)sender {
-	//_GodotInputWindowCloseRequest(window);
+	//_PandemoniumInputWindowCloseRequest(window);
 	if (OS_OSX::singleton->get_main_loop())
 		OS_OSX::singleton->get_main_loop()->notification(MainLoop::NOTIFICATION_WM_QUIT_REQUEST);
 
@@ -397,11 +397,11 @@ static NSCursor *cursorFromSelector(SEL selector, SEL fallback = nil) {
 	}
 
 	/*
-	_GodotInputFramebufferSize(window, fbRect.size.width, fbRect.size.height);
-	_GodotInputWindowSize(window, contentRect.size.width, contentRect.size.height);
-	_GodotInputWindowDamage(window);
+	_PandemoniumInputFramebufferSize(window, fbRect.size.width, fbRect.size.height);
+	_PandemoniumInputWindowSize(window, contentRect.size.width, contentRect.size.height);
+	_PandemoniumInputWindowDamage(window);
 
-	if (window->cursorMode == Godot_CURSOR_DISABLED)
+	if (window->cursorMode == Pandemonium_CURSOR_DISABLED)
 		centerCursor(window);
 */
 }
@@ -415,10 +415,10 @@ static NSCursor *cursorFromSelector(SEL selector, SEL fallback = nil) {
 	[window->nsgl.context update];
 
 	int x, y;
-	_GodotPlatformGetWindowPos(window, &x, &y);
-	_GodotInputWindowPos(window, x, y);
+	_PandemoniumPlatformGetWindowPos(window, &x, &y);
+	_PandemoniumInputWindowPos(window, x, y);
 
-	if (window->cursorMode == Godot_CURSOR_DISABLED)
+	if (window->cursorMode == Pandemonium_CURSOR_DISABLED)
 		centerCursor(window);
 */
 }
@@ -459,7 +459,7 @@ static NSCursor *cursorFromSelector(SEL selector, SEL fallback = nil) {
 
 @end
 
-@interface GodotContentView : NSOpenGLView <NSTextInputClient> {
+@interface PandemoniumContentView : NSOpenGLView <NSTextInputClient> {
 	NSTrackingArea *trackingArea;
 	NSMutableAttributedString *markedText;
 	bool imeInputEventInProgress;
@@ -469,10 +469,10 @@ static NSCursor *cursorFromSelector(SEL selector, SEL fallback = nil) {
 - (void)updateLayer;
 @end
 
-@implementation GodotContentView
+@implementation PandemoniumContentView
 
 + (void)initialize {
-	if (self == [GodotContentView class]) {
+	if (self == [PandemoniumContentView class]) {
 		// nothing left to do here at the moment..
 	}
 }
@@ -939,7 +939,7 @@ static bool isNumpadKey(unsigned int key) {
 }
 
 // Keyboard symbol translation table
-static const unsigned int _osx_to_godot_table[128] = {
+static const unsigned int _osx_to_pandemonium_table[128] = {
 	/* 00 */ KEY_A,
 	/* 01 */ KEY_S,
 	/* 02 */ KEY_D,
@@ -1070,18 +1070,18 @@ static const unsigned int _osx_to_godot_table[128] = {
 	/* 7f */ KEY_UNKNOWN,
 };
 
-// Translates a OS X keycode to a Godot keycode
+// Translates a OS X keycode to a Pandemonium keycode
 static int translateKey(unsigned int key) {
 	if (key >= 128)
 		return KEY_UNKNOWN;
 
-	return _osx_to_godot_table[key];
+	return _osx_to_pandemonium_table[key];
 }
 
-// Translates a Godot keycode back to a OSX keycode
+// Translates a Pandemonium keycode back to a OSX keycode
 static unsigned int unmapKey(int key) {
 	for (int i = 0; i <= 126; i++) {
-		if (_osx_to_godot_table[i] == key) {
+		if (_osx_to_pandemonium_table[i] == key) {
 			return i;
 		}
 	}
@@ -1399,11 +1399,11 @@ inline void sendPanEvent(double dx, double dy, int modifierFlags) {
 
 @end
 
-@interface GodotWindow : NSWindow {
+@interface PandemoniumWindow : NSWindow {
 }
 @end
 
-@implementation GodotWindow
+@implementation PandemoniumWindow
 
 - (BOOL)canBecomeKeyWindow {
 	// Required for NSBorderlessWindowMask windows
@@ -1572,7 +1572,7 @@ Error OS_OSX::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 	// Register to be notified on displays arrangement changes
 	CGDisplayRegisterReconfigurationCallback(displays_arrangement_changed, NULL);
 
-	window_delegate = [[GodotWindowDelegate alloc] init];
+	window_delegate = [[PandemoniumWindowDelegate alloc] init];
 
 	// Don't use accumulation buffer support; it's not accelerated
 	// Aux buffers probably aren't accelerated either
@@ -1588,7 +1588,7 @@ Error OS_OSX::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 
 	float displayScale = get_screen_max_scale();
 
-	window_object = [[GodotWindow alloc]
+	window_object = [[PandemoniumWindow alloc]
 			initWithContentRect:NSMakeRect(0, 0, p_desired.width / displayScale, p_desired.height / displayScale)
 					  styleMask:styleMask
 						backing:NSBackingStoreBuffered
@@ -1596,7 +1596,7 @@ Error OS_OSX::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 
 	ERR_FAIL_COND_V(window_object == nil, ERR_UNAVAILABLE);
 
-	window_view = [[GodotContentView alloc] init];
+	window_view = [[PandemoniumContentView alloc] init];
 	if (NSAppKitVersionNumber >= NSAppKitVersionNumber10_14) {
 		[window_view setWantsLayer:TRUE];
 	}
@@ -1612,7 +1612,7 @@ Error OS_OSX::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 		[window_view setWantsBestResolutionOpenGLSurface:NO];
 	}
 
-	//[window_object setTitle:[NSString stringWithUTF8String:"GodotEnginies"]];
+	//[window_object setTitle:[NSString stringWithUTF8String:"PandemoniumEnginies"]];
 	[window_object setContentView:window_view];
 	[window_object setDelegate:window_delegate];
 	if (!is_no_window_mode_enabled()) {
@@ -2314,7 +2314,7 @@ String OS_OSX::get_bundle_icon_path() const {
 }
 
 // Get properly capitalized engine name for system paths
-String OS_OSX::get_godot_dir_name() const {
+String OS_OSX::get_pandemonium_dir_name() const {
 	return String(VERSION_SHORT_NAME).capitalize();
 }
 
@@ -2460,7 +2460,7 @@ int OS_OSX::get_screen_count() const {
 // Returns the native top-left screen coordinate of the smallest rectangle
 // that encompasses all screens. Needed in get_screen_position(),
 // get_window_position, and set_window_position()
-// to convert between OS X native screen coordinates and the ones expected by Godot
+// to convert between OS X native screen coordinates and the ones expected by Pandemonium
 Point2 OS_OSX::get_screens_origin() const {
 	static Point2 origin;
 
@@ -2524,7 +2524,7 @@ Point2 OS_OSX::get_native_screen_position(int p_screen) const {
 Point2 OS_OSX::get_screen_position(int p_screen) const {
 	Point2 position = get_native_screen_position(p_screen) - get_screens_origin();
 	// OS X native y-coordinate relative to get_screens_origin() is negative,
-	// Godot expects a positive value
+	// Pandemonium expects a positive value
 	position.y *= -1;
 	return position;
 }
@@ -2656,7 +2656,7 @@ Point2 OS_OSX::get_native_window_position() const {
 Point2 OS_OSX::get_window_position() const {
 	Point2 position = get_native_window_position() - get_screens_origin();
 	// OS X native y-coordinate relative to get_screens_origin() is negative,
-	// Godot expects a positive value
+	// Pandemonium expects a positive value
 	position.y *= -1;
 	return position;
 }
@@ -2684,7 +2684,7 @@ void OS_OSX::set_window_position(const Point2 &p_position) {
 
 	Point2 position = p_position;
 	// OS X native y-coordinate relative to get_screens_origin() is negative,
-	// Godot passes a positive value
+	// Pandemonium passes a positive value
 	position.y *= -1;
 	set_native_window_position(get_screens_origin() + position);
 
@@ -3498,8 +3498,8 @@ OS_OSX::OS_OSX() {
 	CGEventSourceSetLocalEventsSuppressionInterval(eventSource, 0.0);
 
 	/*
-	if (pthread_key_create(&_Godot.nsgl.current, NULL) != 0) {
-		_GodotInputError(Godot_PLATFORM_ERROR, "NSGL: Failed to create context TLS");
+	if (pthread_key_create(&_Pandemonium.nsgl.current, NULL) != 0) {
+		_PandemoniumInputError(Pandemonium_PLATFORM_ERROR, "NSGL: Failed to create context TLS");
 		return GL_FALSE;
 	}
 */
@@ -3508,7 +3508,7 @@ OS_OSX::OS_OSX() {
 	ERR_FAIL_COND(!framework);
 
 	// Implicitly create shared NSApplication instance
-	[GodotApplication sharedApplication];
+	[PandemoniumApplication sharedApplication];
 
 	// Menu bar setup must go between sharedApplication above and
 	// finishLaunching below, in order to properly emulate the behavior
@@ -3559,7 +3559,7 @@ OS_OSX::OS_OSX() {
 
 	[NSApp finishLaunching];
 
-	delegate = [[GodotApplicationDelegate alloc] init];
+	delegate = [[PandemoniumApplicationDelegate alloc] init];
 	ERR_FAIL_COND(!delegate);
 	[NSApp setDelegate:delegate];
 

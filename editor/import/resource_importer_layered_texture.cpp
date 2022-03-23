@@ -95,7 +95,7 @@ void ResourceImporterLayeredTexture::_save_tex(const Vector<Ref<Image>> &p_image
 	} else {
 		f->store_8('A');
 	}
-	f->store_8('T'); //godot streamable texture
+	f->store_8('T'); //pandemonium streamable texture
 
 	f->store_32(p_images[0]->get_width());
 	f->store_32(p_images[0]->get_height());

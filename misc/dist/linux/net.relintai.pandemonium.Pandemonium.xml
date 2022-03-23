@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-pandemonium-project">
+    <comment>Pandemonium Engine project</comment>
+    <sub-class-of type="text/plain"/>
+    <icon name="x-pandemonium-project"/>
+    <glob pattern="project.pandemonium"/>
+  </mime-type>
+
+  <mime-type type="application/x-pandemonium-resource">
+    <comment>Pandemonium Engine resource</comment>
+    <icon name="x-pandemonium-resource"/>
+    <glob pattern="*.res"/>
+    <glob pattern="*.tres"/>
+  </mime-type>
+
+  <mime-type type="application/x-pandemonium-scene">
+    <comment>Pandemonium Engine scene</comment>
+    <icon name="x-pandemonium-scene"/>
+    <glob pattern="*.scn"/>
+    <glob pattern="*.tscn"/>
+    <glob pattern="*.escn"/>
+  </mime-type>
+
+  <mime-type type="application/x-pandemonium-shader">
+    <comment>Pandemonium Engine shader</comment>
+    <sub-class-of type="text/plain"/>
+    <icon name="x-pandemonium-shader"/>
+    <glob pattern="*.gdshader"/>
+  </mime-type>
+
+  <mime-type type="application/x-gdscript">
+    <comment>GDScript script</comment>
+    <sub-class-of type="text/plain"/>
+    <icon name="x-gdscript"/>
+    <glob pattern="*.gd"/>
+  </mime-type>
+</mime-info>

@@ -48,7 +48,7 @@
 
 #include "api/javascript_singleton.h"
 #include "dom_keys.inc"
-#include "godot_js.h"
+#include "pandemonium_js.h"
 
 #define DOM_BUTTON_LEFT 0
 #define DOM_BUTTON_MIDDLE 1
@@ -94,7 +94,7 @@ void OS_JavaScript::send_notification_callback(int p_notification) {
 // Window (canvas)
 
 bool OS_JavaScript::check_size_force_redraw() {
-	return godot_js_display_size_update() != 0;
+	return pandemonium_js_display_size_update() != 0;
 }
 
 void OS_JavaScript::fullscreen_change_callback(int p_fullscreen) {
@@ -116,7 +116,7 @@ OS::VideoMode OS_JavaScript::get_video_mode(int p_screen) const {
 
 Size2 OS_JavaScript::get_screen_size(int p_screen) const {
 	int size[2];
-	godot_js_display_screen_size_get(size, size + 1);
+	pandemonium_js_display_screen_size_get(size, size + 1);
 	return Size2(size[0], size[1]);
 }
 
@@ -124,12 +124,12 @@ void OS_JavaScript::set_window_size(const Size2 p_size) {
 	if (video_mode.fullscreen) {
 		set_window_fullscreen(false);
 	}
-	godot_js_display_desired_size_set(p_size.x, p_size.y);
+	pandemonium_js_display_desired_size_set(p_size.x, p_size.y);
 }
 
 Size2 OS_JavaScript::get_window_size() const {
 	int size[2];
-	godot_js_display_window_size_get(size, size + 1);
+	pandemonium_js_display_window_size_get(size, size + 1);
 	return Size2(size[0], size[1]);
 }
 
@@ -149,11 +149,11 @@ void OS_JavaScript::set_window_fullscreen(bool p_enabled) {
 	// Just request changes here, if successful, logic continues in
 	// fullscreen_change_callback.
 	if (p_enabled) {
-		int result = godot_js_display_fullscreen_request();
+		int result = pandemonium_js_display_fullscreen_request();
 		ERR_FAIL_COND_MSG(result, "The request was denied. Remember that enabling fullscreen is only possible from an input callback for the HTML5 platform.");
 	} else {
 		// No logic allowed here, since exiting w/ ESC key won't use this function.
-		ERR_FAIL_COND(godot_js_display_fullscreen_exit());
+		ERR_FAIL_COND(pandemonium_js_display_fullscreen_exit());
 	}
 }
 
@@ -182,7 +182,7 @@ void OS_JavaScript::set_window_per_pixel_transparency_enabled(bool p_enabled) {
 
 // Keys
 
-static void dom2godot_mod(Ref<InputEventWithModifiers> ev, int p_mod) {
+static void dom2pandemonium_mod(Ref<InputEventWithModifiers> ev, int p_mod) {
 	ev->set_shift(p_mod & 1);
 	ev->set_alt(p_mod & 2);
 	ev->set_control(p_mod & 4);
@@ -198,10 +198,10 @@ void OS_JavaScript::key_callback(int p_pressed, int p_repeat, int p_modifiers) {
 	Ref<InputEventKey> ev;
 	ev.instance();
 	ev->set_echo(p_repeat);
-	ev->set_scancode(dom_code2godot_scancode(key_event.code, key_event.key, false));
-	ev->set_physical_scancode(dom_code2godot_scancode(key_event.code, key_event.key, true));
+	ev->set_scancode(dom_code2pandemonium_scancode(key_event.code, key_event.key, false));
+	ev->set_physical_scancode(dom_code2pandemonium_scancode(key_event.code, key_event.key, true));
 	ev->set_pressed(p_pressed);
-	dom2godot_mod(ev, p_modifiers);
+	dom2pandemonium_mod(ev, p_modifiers);
 
 	String unicode = String::utf8(key_event.key);
 	if (unicode.length() == 1) {
@@ -232,7 +232,7 @@ int OS_JavaScript::mouse_button_callback(int p_pressed, int p_button, double p_x
 	ev->set_position(Point2(p_x, p_y));
 	ev->set_global_position(ev->get_position());
 	ev->set_pressed(p_pressed);
-	dom2godot_mod(ev, p_modifiers);
+	dom2pandemonium_mod(ev, p_modifiers);
 
 	switch (p_button) {
 		case DOM_BUTTON_LEFT:
@@ -310,7 +310,7 @@ void OS_JavaScript::mouse_move_callback(double p_x, double p_y, double p_rel_x, 
 
 	Ref<InputEventMouseMotion> ev;
 	ev.instance();
-	dom2godot_mod(ev, p_modifiers);
+	dom2pandemonium_mod(ev, p_modifiers);
 	ev->set_button_mask(input_mask);
 
 	ev->set_position(Point2(p_x, p_y));
@@ -322,7 +322,7 @@ void OS_JavaScript::mouse_move_callback(double p_x, double p_y, double p_rel_x, 
 	os->input->parse_input_event(ev);
 }
 
-static const char *godot2dom_cursor(OS::CursorShape p_shape) {
+static const char *pandemonium2dom_cursor(OS::CursorShape p_shape) {
 	switch (p_shape) {
 		case OS::CURSOR_ARROW:
 		default:
@@ -368,7 +368,7 @@ void OS_JavaScript::set_cursor_shape(CursorShape p_shape) {
 		return;
 	}
 	cursor_shape = p_shape;
-	godot_js_display_cursor_set_shape(godot2dom_cursor(cursor_shape));
+	pandemonium_js_display_cursor_set_shape(pandemonium2dom_cursor(cursor_shape));
 }
 
 void OS_JavaScript::set_custom_mouse_cursor(const RES &p_cursor, CursorShape p_shape, const Vector2 &p_hotspot) {
@@ -441,11 +441,11 @@ void OS_JavaScript::set_custom_mouse_cursor(const RES &p_cursor, CursorShape p_s
 		w = PoolByteArray::Write();
 
 		r = png.read();
-		godot_js_display_cursor_set_custom_shape(godot2dom_cursor(p_shape), r.ptr(), len, p_hotspot.x, p_hotspot.y);
+		pandemonium_js_display_cursor_set_custom_shape(pandemonium2dom_cursor(p_shape), r.ptr(), len, p_hotspot.x, p_hotspot.y);
 		r = PoolByteArray::Read();
 
 	} else {
-		godot_js_display_cursor_set_custom_shape(godot2dom_cursor(p_shape), NULL, 0, 0, 0);
+		pandemonium_js_display_cursor_set_custom_shape(pandemonium2dom_cursor(p_shape), NULL, 0, 0, 0);
 	}
 }
 
@@ -455,24 +455,24 @@ void OS_JavaScript::set_mouse_mode(OS::MouseMode p_mode) {
 		return;
 
 	if (p_mode == MOUSE_MODE_VISIBLE) {
-		godot_js_display_cursor_set_visible(1);
-		godot_js_display_cursor_lock_set(false);
+		pandemonium_js_display_cursor_set_visible(1);
+		pandemonium_js_display_cursor_lock_set(false);
 
 	} else if (p_mode == MOUSE_MODE_HIDDEN) {
-		godot_js_display_cursor_set_visible(0);
-		godot_js_display_cursor_lock_set(false);
+		pandemonium_js_display_cursor_set_visible(0);
+		pandemonium_js_display_cursor_lock_set(false);
 
 	} else if (p_mode == MOUSE_MODE_CAPTURED) {
-		godot_js_display_cursor_set_visible(1);
-		godot_js_display_cursor_lock_set(true);
+		pandemonium_js_display_cursor_set_visible(1);
+		pandemonium_js_display_cursor_lock_set(true);
 	}
 }
 
 OS::MouseMode OS_JavaScript::get_mouse_mode() const {
-	if (godot_js_display_cursor_is_hidden()) {
+	if (pandemonium_js_display_cursor_is_hidden()) {
 		return MOUSE_MODE_HIDDEN;
 	}
-	if (godot_js_display_cursor_is_locked()) {
+	if (pandemonium_js_display_cursor_is_locked()) {
 		return MOUSE_MODE_CAPTURED;
 	}
 	return MOUSE_MODE_VISIBLE;
@@ -483,9 +483,9 @@ OS::MouseMode OS_JavaScript::get_mouse_mode() const {
 int OS_JavaScript::mouse_wheel_callback(double p_delta_x, double p_delta_y) {
 	OS_JavaScript *os = get_singleton();
 
-	if (!godot_js_display_canvas_is_focused()) {
+	if (!pandemonium_js_display_canvas_is_focused()) {
 		if (os->cursor_inside_canvas) {
-			godot_js_display_canvas_focus();
+			pandemonium_js_display_canvas_focus();
 		} else {
 			return false;
 		}
@@ -534,7 +534,7 @@ int OS_JavaScript::mouse_wheel_callback(double p_delta_x, double p_delta_y) {
 // Touch
 
 bool OS_JavaScript::has_touchscreen_ui_hint() const {
-	return godot_js_display_touchscreen_is_available();
+	return pandemonium_js_display_touchscreen_is_available();
 }
 
 void OS_JavaScript::touch_callback(int p_type, int p_count) {
@@ -585,20 +585,20 @@ void OS_JavaScript::gamepad_callback(int p_index, int p_connected, const char *p
 }
 
 void OS_JavaScript::process_joypads() {
-	int32_t pads = godot_js_input_gamepad_sample_count();
+	int32_t pads = pandemonium_js_input_gamepad_sample_count();
 	int32_t s_btns_num = 0;
 	int32_t s_axes_num = 0;
 	int32_t s_standard = 0;
 	float s_btns[16];
 	float s_axes[10];
 	for (int idx = 0; idx < pads; idx++) {
-		int err = godot_js_input_gamepad_sample_get(idx, s_btns, &s_btns_num, s_axes, &s_axes_num, &s_standard);
+		int err = pandemonium_js_input_gamepad_sample_get(idx, s_btns, &s_btns_num, s_axes, &s_axes_num, &s_standard);
 		if (err) {
 			continue;
 		}
 		for (int b = 0; b < s_btns_num; b++) {
 			// Buttons 6 and 7 in the standard mapping need to be
-			// axis to be handled as JOY_ANALOG by Godot.
+			// axis to be handled as JOY_ANALOG by Pandemonium.
 			if (s_standard && (b == 6 || b == 7)) {
 				input->joy_axis(idx, b, s_btns[b]);
 			} else {
@@ -654,12 +654,12 @@ void OS_JavaScript::update_clipboard_callback(const char *p_text) {
 
 void OS_JavaScript::set_clipboard(const String &p_text) {
 	OS::set_clipboard(p_text);
-	int err = godot_js_display_clipboard_set(p_text.utf8().get_data());
+	int err = pandemonium_js_display_clipboard_set(p_text.utf8().get_data());
 	ERR_FAIL_COND_MSG(err, "Clipboard API is not supported.");
 }
 
 String OS_JavaScript::get_clipboard() const {
-	godot_js_display_clipboard_get(update_clipboard_callback);
+	pandemonium_js_display_clipboard_get(update_clipboard_callback);
 	return this->OS::get_clipboard();
 }
 
@@ -677,9 +677,9 @@ Error OS_JavaScript::initialize(const VideoMode &p_desired, int p_video_driver, 
 	// fullscreen_change_callback will correct this if the request is successful.
 	video_mode.fullscreen = false;
 	// Handle contextmenu, webglcontextlost, initial canvas setup.
-	godot_js_display_setup_canvas(video_mode.width, video_mode.height, video_mode.fullscreen, is_hidpi_allowed() ? 1 : 0);
+	pandemonium_js_display_setup_canvas(video_mode.width, video_mode.height, video_mode.fullscreen, is_hidpi_allowed() ? 1 : 0);
 
-	swap_ok_cancel = godot_js_display_is_swap_ok_cancel() == 1;
+	swap_ok_cancel = pandemonium_js_display_is_swap_ok_cancel() == 1;
 
 	EmscriptenWebGLContextAttributes attributes;
 	emscripten_webgl_init_context_attributes(&attributes);
@@ -701,7 +701,7 @@ Error OS_JavaScript::initialize(const VideoMode &p_desired, int p_video_driver, 
 
 	while (true) {
 		if (gles2) {
-			if (godot_js_display_has_webgl(1) && RasterizerGLES2::is_viable() == OK) {
+			if (pandemonium_js_display_has_webgl(1) && RasterizerGLES2::is_viable() == OK) {
 				attributes.majorVersion = 1;
 				RasterizerGLES2::register_config();
 				RasterizerGLES2::make_current();
@@ -736,25 +736,25 @@ Error OS_JavaScript::initialize(const VideoMode &p_desired, int p_video_driver, 
 #endif
 	input = memnew(InputDefault);
 
-	// JS Input interface (js/libs/library_godot_input.js)
-	godot_js_input_mouse_button_cb(&OS_JavaScript::mouse_button_callback);
-	godot_js_input_mouse_move_cb(&OS_JavaScript::mouse_move_callback);
-	godot_js_input_mouse_wheel_cb(&OS_JavaScript::mouse_wheel_callback);
-	godot_js_input_touch_cb(&OS_JavaScript::touch_callback, touch_event.identifier, touch_event.coords);
-	godot_js_input_key_cb(&OS_JavaScript::key_callback, key_event.code, key_event.key);
-	godot_js_input_gamepad_cb(&OS_JavaScript::gamepad_callback);
-	godot_js_input_paste_cb(&OS_JavaScript::update_clipboard_callback);
-	godot_js_input_drop_files_cb(&OS_JavaScript::drop_files_callback);
+	// JS Input interface (js/libs/library_pandemonium_input.js)
+	pandemonium_js_input_mouse_button_cb(&OS_JavaScript::mouse_button_callback);
+	pandemonium_js_input_mouse_move_cb(&OS_JavaScript::mouse_move_callback);
+	pandemonium_js_input_mouse_wheel_cb(&OS_JavaScript::mouse_wheel_callback);
+	pandemonium_js_input_touch_cb(&OS_JavaScript::touch_callback, touch_event.identifier, touch_event.coords);
+	pandemonium_js_input_key_cb(&OS_JavaScript::key_callback, key_event.code, key_event.key);
+	pandemonium_js_input_gamepad_cb(&OS_JavaScript::gamepad_callback);
+	pandemonium_js_input_paste_cb(&OS_JavaScript::update_clipboard_callback);
+	pandemonium_js_input_drop_files_cb(&OS_JavaScript::drop_files_callback);
 
-	// JS Display interface (js/libs/library_godot_display.js)
-	godot_js_display_fullscreen_cb(&OS_JavaScript::fullscreen_change_callback);
-	godot_js_display_window_blur_cb(&window_blur_callback);
-	godot_js_display_notification_cb(&OS_JavaScript::send_notification_callback,
+	// JS Display interface (js/libs/library_pandemonium_display.js)
+	pandemonium_js_display_fullscreen_cb(&OS_JavaScript::fullscreen_change_callback);
+	pandemonium_js_display_window_blur_cb(&window_blur_callback);
+	pandemonium_js_display_notification_cb(&OS_JavaScript::send_notification_callback,
 			MainLoop::NOTIFICATION_WM_MOUSE_ENTER,
 			MainLoop::NOTIFICATION_WM_MOUSE_EXIT,
 			MainLoop::NOTIFICATION_WM_FOCUS_IN,
 			MainLoop::NOTIFICATION_WM_FOCUS_OUT);
-	godot_js_display_vk_cb(&input_text_callback);
+	pandemonium_js_display_vk_cb(&input_text_callback);
 
 	visual_server->init();
 
@@ -783,15 +783,15 @@ void OS_JavaScript::input_text_callback(const char *p_text, int p_cursor) {
 }
 
 bool OS_JavaScript::has_virtual_keyboard() const {
-	return godot_js_display_vk_available() != 0;
+	return pandemonium_js_display_vk_available() != 0;
 }
 
 void OS_JavaScript::show_virtual_keyboard(const String &p_existing_text, const Rect2 &p_screen_rect, bool p_multiline, int p_max_input_length, int p_cursor_start, int p_cursor_end) {
-	godot_js_display_vk_show(p_existing_text.utf8().get_data(), p_multiline, p_cursor_start, p_cursor_end);
+	pandemonium_js_display_vk_show(p_existing_text.utf8().get_data(), p_multiline, p_cursor_start, p_cursor_end);
 }
 
 void OS_JavaScript::hide_virtual_keyboard() {
-	godot_js_display_vk_hide();
+	pandemonium_js_display_vk_hide();
 }
 
 bool OS_JavaScript::get_swap_ok_cancel() {
@@ -823,12 +823,12 @@ bool OS_JavaScript::main_loop_iterate() {
 	if (is_userfs_persistent() && idb_needs_sync && !idb_is_syncing) {
 		idb_is_syncing = true;
 		idb_needs_sync = false;
-		godot_js_os_fs_sync(&OS_JavaScript::fs_sync_callback);
+		pandemonium_js_os_fs_sync(&OS_JavaScript::fs_sync_callback);
 	}
 
 	input->flush_buffered_events();
 
-	if (godot_js_input_gamepad_sample() == OK) {
+	if (pandemonium_js_input_gamepad_sample() == OK) {
 		process_joypads();
 	}
 
@@ -836,11 +836,11 @@ bool OS_JavaScript::main_loop_iterate() {
 }
 
 int OS_JavaScript::get_screen_dpi(int p_screen) const {
-	return godot_js_display_screen_dpi_get();
+	return pandemonium_js_display_screen_dpi_get();
 }
 
 float OS_JavaScript::get_screen_scale(int p_screen) const {
-	return godot_js_display_pixel_ratio_get();
+	return pandemonium_js_display_pixel_ratio_get();
 }
 
 float OS_JavaScript::get_screen_max_scale() const {
@@ -872,7 +872,7 @@ Error OS_JavaScript::execute(const String &p_path, const List<String> &p_argumen
 		args.push_back(E->get());
 	}
 	String json_args = JSON::print(args);
-	int failed = godot_js_os_execute(json_args.utf8().get_data());
+	int failed = pandemonium_js_os_execute(json_args.utf8().get_data());
 	ERR_FAIL_COND_V_MSG(failed, ERR_UNAVAILABLE, "OS::execute() must be implemented in Javascript via 'engine.setOnExecute' if required.");
 	return OK;
 }
@@ -886,7 +886,7 @@ int OS_JavaScript::get_process_id() const {
 }
 
 int OS_JavaScript::get_processor_count() const {
-	return godot_js_os_hw_concurrency_get();
+	return pandemonium_js_os_hw_concurrency_get();
 }
 
 bool OS_JavaScript::_check_internal_feature_support(const String &p_feature) {
@@ -914,11 +914,11 @@ bool OS_JavaScript::_check_internal_feature_support(const String &p_feature) {
 }
 
 void OS_JavaScript::alert(const String &p_alert, const String &p_title) {
-	godot_js_display_alert(p_alert.utf8().get_data());
+	pandemonium_js_display_alert(p_alert.utf8().get_data());
 }
 
 void OS_JavaScript::set_window_title(const String &p_title) {
-	godot_js_display_window_title_set(p_title.utf8().get_data());
+	pandemonium_js_display_window_title_set(p_title.utf8().get_data());
 }
 
 void OS_JavaScript::set_icon(const Ref<Image> &p_icon) {
@@ -952,7 +952,7 @@ void OS_JavaScript::set_icon(const Ref<Image> &p_icon) {
 	w = PoolByteArray::Write();
 
 	r = png.read();
-	godot_js_display_window_icon_set(r.ptr(), len);
+	pandemonium_js_display_window_icon_set(r.ptr(), len);
 }
 
 String OS_JavaScript::get_executable_path() const {
@@ -961,7 +961,7 @@ String OS_JavaScript::get_executable_path() const {
 
 Error OS_JavaScript::shell_open(String p_uri) {
 	// Open URI in a new tab, browser will deal with it by protocol.
-	godot_js_os_shell_open(p_uri.utf8().get_data());
+	pandemonium_js_os_shell_open(p_uri.utf8().get_data());
 	return OK;
 }
 
@@ -1030,7 +1030,7 @@ void OS_JavaScript::update_pwa_state_callback() {
 }
 
 Error OS_JavaScript::pwa_update() {
-	return godot_js_pwa_update() ? FAILED : OK;
+	return pandemonium_js_pwa_update() ? FAILED : OK;
 }
 
 bool OS_JavaScript::is_userfs_persistent() const {
@@ -1050,9 +1050,9 @@ OS_JavaScript *OS_JavaScript::get_singleton() {
 
 OS_JavaScript::OS_JavaScript() {
 	// Expose method for requesting quit.
-	godot_js_os_request_quit_cb(&request_quit_callback);
+	pandemonium_js_os_request_quit_cb(&request_quit_callback);
 	// Set canvas ID
-	godot_js_config_canvas_id_get(canvas_id, sizeof(canvas_id));
+	pandemonium_js_config_canvas_id_get(canvas_id, sizeof(canvas_id));
 
 	cursor_inside_canvas = true;
 	cursor_shape = OS::CURSOR_ARROW;
@@ -1067,11 +1067,11 @@ OS_JavaScript::OS_JavaScript() {
 	visual_server = NULL;
 
 	swap_ok_cancel = false;
-	idb_available = godot_js_os_fs_is_persistent() != 0;
+	idb_available = pandemonium_js_os_fs_is_persistent() != 0;
 	idb_needs_sync = false;
 	idb_is_syncing = false;
 	pwa_is_waiting = false;
-	godot_js_pwa_cb(&OS_JavaScript::update_pwa_state_callback);
+	pandemonium_js_pwa_cb(&OS_JavaScript::update_pwa_state_callback);
 
 	if (AudioDriverJavaScript::is_available()) {
 #ifdef NO_THREADS

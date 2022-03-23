@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ ! -e "version.py" ]; then
-  echo "This script should be ran from the root folder of the Godot repository."
+  echo "This script should be ran from the root folder of the Pandemonium repository."
   exit 1
 fi
 
@@ -10,8 +10,8 @@ while getopts "h?sv:g:" opt; do
   h|\?)
     echo "Usage: $0 [OPTIONS...]"
     echo
-    echo "  -s script friendly file name (godot.tar.gz)"
-    echo "  -v godot version for file name (e.g. 4.0-stable)"
+    echo "  -s script friendly file name (pandemonium.tar.gz)"
+    echo "  -v pandemonium version for file name (e.g. 4.0-stable)"
     echo "  -g git treeish to archive (e.g. master)"
     echo
     exit 1
@@ -20,7 +20,7 @@ while getopts "h?sv:g:" opt; do
     script_friendly_name=1
     ;;
   v)
-    godot_version=$OPTARG
+    pandemonium_version=$OPTARG
     ;;
   g)
     git_treeish=$OPTARG
@@ -35,17 +35,17 @@ else
 fi
 
 if [ ! -z "$script_friendly_name" ]; then
-  NAME=godot
+  NAME=pandemonium
 else
-  if [ ! -z "$godot_version" ]; then
-    NAME=godot-$godot_version
+  if [ ! -z "$pandemonium_version" ]; then
+    NAME=pandemonium-$pandemonium_version
   else
-    NAME=godot-$HEAD
+    NAME=pandemonium-$HEAD
   fi
 fi
 
 CURDIR=$(pwd)
-TMPDIR=$(mktemp -d -t godot-XXXXXX)
+TMPDIR=$(mktemp -d -t pandemonium-XXXXXX)
 
 echo "Generating tarball for revision $HEAD with folder name '$NAME'."
 echo

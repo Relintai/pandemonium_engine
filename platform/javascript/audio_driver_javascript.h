@@ -34,7 +34,7 @@
 #include "core/os/thread.h"
 #include "servers/audio_server.h"
 
-#include "godot_audio.h"
+#include "pandemonium_audio.h"
 
 class AudioDriverJavaScript : public AudioDriver {
 private:

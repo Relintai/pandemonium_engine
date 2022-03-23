@@ -1,2 +1,2 @@
-// This is the root directory of the Godot custom build.
+// This is the root directory of the Pandemonium custom build.
 include ':assetPacks:installTime'

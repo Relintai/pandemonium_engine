@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="org.godotengine.editor"
+    package="net.relintai.pandemonium.editor"
     android:installLocation="auto">
 
     <supports-screens
@@ -21,19 +21,19 @@
     <application
         android:allowBackup="false"
         android:icon="@mipmap/icon"
-        android:label="@string/godot_editor_name_string"
+        android:label="@string/pandemonium_editor_name_string"
         tools:ignore="GoogleAppIndexingWarning"
         android:requestLegacyExternalStorage="true">
 
         <activity
-            android:name=".GodotProjectManager"
+            android:name=".PandemoniumProjectManager"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|density|keyboard|navigation|screenLayout|uiMode"
             android:launchMode="singleTask"
             android:resizeableActivity="false"
             android:screenOrientation="landscape"
             android:exported="true"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
-            android:process=":GodotProjectManager">
+            android:process=":PandemoniumProjectManager">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,9 +42,9 @@
         </activity>
 
         <activity
-            android:name=".GodotEditor"
+            android:name=".PandemoniumEditor"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|density|keyboard|navigation|screenLayout|uiMode"
-            android:process=":GodotEditor"
+            android:process=":PandemoniumEditor"
             android:launchMode="singleTask"
             android:resizeableActivity="false"
             android:screenOrientation="landscape"
@@ -52,10 +52,10 @@
         </activity>
 
         <activity
-            android:name=".GodotGame"
+            android:name=".PandemoniumGame"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|density|keyboard|navigation|screenLayout|uiMode"
-            android:label="@string/godot_project_name_string"
-            android:process=":GodotGame"
+            android:label="@string/pandemonium_project_name_string"
+            android:process=":PandemoniumGame"
             android:launchMode="singleTask"
             android:resizeableActivity="false"
             android:screenOrientation="landscape"

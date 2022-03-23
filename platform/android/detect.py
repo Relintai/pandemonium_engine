@@ -319,7 +319,7 @@ def configure(env):
     if env["android_arch"] == "armv7":
         env.Append(LINKFLAGS="-Wl,--fix-cortex-a8".split())
     env.Append(LINKFLAGS="-Wl,--no-undefined -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now".split())
-    env.Append(LINKFLAGS="-Wl,-soname,libgodot_android.so -Wl,--gc-sections".split())
+    env.Append(LINKFLAGS="-Wl,-soname,libpandemonium_android.so -Wl,--gc-sections".split())
 
     env.Append(LINKFLAGS=target_opts)
     env.Append(LINKFLAGS=common_opts)

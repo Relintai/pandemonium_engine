@@ -2,7 +2,7 @@
 /*  room_manager.cpp                                                     */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -54,9 +54,9 @@
 
 #include "modules/modules_enabled.gen.h" // For csg.
 
-// #define GODOT_PORTALS_USE_BULLET_CONVEX_HULL
+// #define PANDEMONIUM_PORTALS_USE_BULLET_CONVEX_HULL
 
-#ifdef GODOT_PORTALS_USE_BULLET_CONVEX_HULL
+#ifdef PANDEMONIUM_PORTALS_USE_BULLET_CONVEX_HULL
 #include "core/math/convex_hull.h"
 #endif
 
@@ -151,10 +151,10 @@ void RoomManager::_preview_camera_update() {
 	Ref<World> world = get_world();
 	RID scenario = world->get_scenario();
 
-	if (_godot_preview_camera_ID != (ObjectID)-1) {
-		Camera *cam = Object::cast_to<Camera>(ObjectDB::get_instance(_godot_preview_camera_ID));
+	if (_pandemonium_preview_camera_ID != (ObjectID)-1) {
+		Camera *cam = Object::cast_to<Camera>(ObjectDB::get_instance(_pandemonium_preview_camera_ID));
 		if (!cam) {
-			_godot_preview_camera_ID = (ObjectID)-1;
+			_pandemonium_preview_camera_ID = (ObjectID)-1;
 		} else {
 			// get camera position and direction
 			Vector3 camera_pos = cam->get_global_transform().origin;
@@ -164,12 +164,12 @@ void RoomManager::_preview_camera_update() {
 			// this is kinda silly, but the other way would be keeping track of the override camera in visual server
 			// and tracking the camera deletes, which might be more error prone for a debug feature...
 			bool changed = false;
-			if (camera_pos != _godot_camera_pos) {
+			if (camera_pos != _pandemonium_camera_pos) {
 				changed = true;
 			}
 			// check planes
 			if (!changed) {
-				if (planes.size() != _godot_camera_planes.size()) {
+				if (planes.size() != _pandemonium_camera_planes.size()) {
 					changed = true;
 				}
 			}
@@ -177,7 +177,7 @@ void RoomManager::_preview_camera_update() {
 			if (!changed) {
 				// num of planes must be identical
 				for (int n = 0; n < planes.size(); n++) {
-					if (planes[n] != _godot_camera_planes[n]) {
+					if (planes[n] != _pandemonium_camera_planes[n]) {
 						changed = true;
 						break;
 					}
@@ -185,8 +185,8 @@ void RoomManager::_preview_camera_update() {
 			}
 
 			if (changed) {
-				_godot_camera_pos = camera_pos;
-				_godot_camera_planes = planes;
+				_pandemonium_camera_pos = camera_pos;
+				_pandemonium_camera_planes = planes;
 				VisualServer::get_singleton()->rooms_override_camera(scenario, true, camera_pos, &planes);
 			}
 		}
@@ -197,7 +197,7 @@ void RoomManager::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
 			if (Engine::get_singleton()->is_editor_hint()) {
-				set_process_internal(_godot_preview_camera_ID != (ObjectID)-1);
+				set_process_internal(_pandemonium_preview_camera_ID != (ObjectID)-1);
 #ifdef TOOLS_ENABLED
 				// note this mechanism may fail to work correctly if the user creates two room managers,
 				// but should not create major problems as it is just used to auto update when portals etc
@@ -347,11 +347,11 @@ void RoomManager::set_preview_camera_path(const NodePath &p_path) {
 
 	resolve_preview_camera_path();
 
-	bool camera_on = _godot_preview_camera_ID != (ObjectID)-1;
+	bool camera_on = _pandemonium_preview_camera_ID != (ObjectID)-1;
 
 	// make sure the cached camera planes are invalid, this will
 	// force an update to the visual server on the next internal_process
-	_godot_camera_planes.clear();
+	_pandemonium_camera_planes.clear();
 
 	// if in the editor, turn processing on or off
 	// according to whether the camera is overridden
@@ -1827,7 +1827,7 @@ bool RoomManager::_bound_findpoints_mesh_instance(MeshInstance *p_mi, Vector<Vec
 	r_aabb.position = Vector3(FLT_MAX / 2, FLT_MAX / 2, FLT_MAX / 2);
 	r_aabb.size = Vector3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 
-	// some godot jiggery pokery to get the mesh verts in local space
+	// some pandemonium jiggery pokery to get the mesh verts in local space
 	Ref<Mesh> rmesh = p_mi->get_mesh();
 
 	ERR_FAIL_COND_V(!rmesh.is_valid(), false);
@@ -1889,10 +1889,10 @@ bool RoomManager::resolve_preview_camera_path() {
 	Camera *camera = _resolve_path<Camera>(_settings_path_preview_camera);
 
 	if (camera) {
-		_godot_preview_camera_ID = camera->get_instance_id();
+		_pandemonium_preview_camera_ID = camera->get_instance_id();
 		return true;
 	}
-	_godot_preview_camera_ID = -1;
+	_pandemonium_preview_camera_ID = -1;
 	return false;
 }
 
@@ -1975,7 +1975,7 @@ void RoomManager::_update_gizmos_recursive(Node *p_node) {
 }
 
 Error RoomManager::_build_convex_hull(const Vector<Vector3> &p_points, Geometry::MeshData &r_mesh, real_t p_epsilon) {
-#ifdef GODOT_PORTALS_USE_BULLET_CONVEX_HULL
+#ifdef PANDEMONIUM_PORTALS_USE_BULLET_CONVEX_HULL
 	return ConvexHullComputer::convex_hull(p_points, r_mesh);
 #if 0
 	// test comparison of methods
@@ -2075,11 +2075,11 @@ String RoomManager::_find_name_before(Node *p_node, String p_postfix, bool p_all
 		}
 	}
 
-	// because godot doesn't support multiple nodes with the same name, we will strip e.g. a number
+	// because pandemonium doesn't support multiple nodes with the same name, we will strip e.g. a number
 	// after an * on the end of the name...
 	// e.g. kitchen*2-portal
 	for (int c = 0; c < name.length(); c++) {
-		if (name[c] == GODOT_PORTAL_WILDCARD) {
+		if (name[c] == PANDEMONIUM_PORTAL_WILDCARD) {
 			// remove everything after and including this character
 			name = name.substr(0, c);
 			break;

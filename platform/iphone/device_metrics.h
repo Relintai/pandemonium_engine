@@ -30,7 +30,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface GodotDeviceMetrics : NSObject
+@interface PandemoniumDeviceMetrics : NSObject
 
 @property(nonatomic, class, readonly, strong) NSDictionary<NSArray *, NSNumber *> *dpiList;
 

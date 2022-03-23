@@ -47,13 +47,13 @@
 
 #include "Vector3.h"
 
-// Note: Slightly modified to work better in Godot.
+// Note: Slightly modified to work better in Pandemonium.
 // - The agent can be created by anyone.
 // - The simulator pointer is removed.
 // - The update function is removed.
 // - The compute velocity function now need the timeStep.
 // - Moved the `Plane` class here.
-// - Added a new parameter `ignore_y_` in the `Agent`. This parameter is used to control a godot feature that allows to avoid collisions by moving on the horizontal plane.
+// - Added a new parameter `ignore_y_` in the `Agent`. This parameter is used to control a pandemonium feature that allows to avoid collisions by moving on the horizontal plane.
 namespace RVO {
 /**
      * \brief   Defines a plane.
@@ -112,7 +112,7 @@ public:
     float timeHorizon_;
     std::vector<std::pair<float, const Agent *> > agentNeighbors_;
     std::vector<Plane> orcaPlanes_;
-    /// This is a godot feature that allows the Agent to avoid collision by mooving
+    /// This is a pandemonium feature that allows the Agent to avoid collision by mooving
     /// on the horizontal plane.
     bool ignore_y_;
 

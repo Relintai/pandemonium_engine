@@ -854,11 +854,11 @@ extern zipFile ZEXPORT zipOpen3 (const void *pathname, int append, zipcharpc* gl
 
     ziinit.z_filefunc.zseek32_file = NULL;
     ziinit.z_filefunc.ztell32_file = NULL;
-    /* GODOT start */
+    /* PANDEMONIUM start */
     if (pzlib_filefunc64_32_def==NULL) {
         //fill_fopen64_filefunc(&ziinit.z_filefunc.zfile_func64);
     } else
-    /* GODOT end */
+    /* PANDEMONIUM end */
         ziinit.z_filefunc = *pzlib_filefunc64_32_def;
 
     ziinit.filestream = ZOPEN64(ziinit.z_filefunc,
@@ -1213,10 +1213,10 @@ extern int ZEXPORT zipOpenNewFileInZip4_64 (zipFile file, const char* filename, 
     {
         if(zi->ci.method == Z_DEFLATED)
         {
-          /* GODOT start */
+          /* PANDEMONIUM start */
           zi->ci.stream.zalloc = zi->z_filefunc.zfile_func64.alloc_mem;
           zi->ci.stream.zfree = zi->z_filefunc.zfile_func64.free_mem;
-          /* GODOT end */
+          /* PANDEMONIUM end */
           zi->ci.stream.opaque = (voidpf)0;
 
           if (windowBits>0)

@@ -252,7 +252,7 @@ void RasterizerGLES2::initialize() {
 		}
 
 		if (callback) {
-			print_line("godot: ENABLING GL DEBUG");
+			print_line("pandemonium: ENABLING GL DEBUG");
 			glEnable(_EXT_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
 			callback(_gl_debug_print, NULL);
 			glEnable(_EXT_DEBUG_OUTPUT);

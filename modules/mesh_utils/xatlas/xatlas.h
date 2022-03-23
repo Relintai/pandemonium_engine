@@ -31,7 +31,7 @@ Copyright (c) 2013 Thekla, Inc
 Copyright NVIDIA Corporation 2006 -- Ignacio Castano <icastano@nvidia.com>
 */
 
-//This is a modified version of godot's xatlas library!
+//This is a modified version of pandemonium's xatlas library!
 
 #pragma once
 

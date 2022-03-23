@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/os/dir_access.h"
-#include "java_godot_lib_jni.h"
+#include "java_pandemonium_lib_jni.h"
 #include <stdio.h>
 
 class DirAccessJAndroid : public DirAccess {

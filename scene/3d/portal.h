@@ -160,13 +160,13 @@ private:
 	// during conversion, we need to know
 	// whether this portal is being imported from a mesh
 	// and is using an explicitly named link room with prefix.
-	// If this is not the case, and it is already a Godot Portal node,
+	// If this is not the case, and it is already a Pandemonium Portal node,
 	// we will either use the assigned nodepath, or autolink.
 	bool _importing_portal = false;
 
 	// for editing
 #ifdef TOOLS_ENABLED
-	ObjectID _room_manager_godot_ID;
+	ObjectID _room_manager_pandemonium_ID;
 
 	// warnings
 	bool _warning_outside_room_aabb = false;

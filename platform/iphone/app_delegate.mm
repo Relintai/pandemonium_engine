@@ -32,7 +32,7 @@
 
 #include "core/project_settings.h"
 #include "drivers/coreaudio/audio_driver_coreaudio.h"
-#import "godot_view.h"
+#import "pandemonium_view.h"
 #include "main/main.h"
 #include "os_iphone.h"
 #import "view_controller.h"
@@ -74,13 +74,13 @@ static ViewController *mainViewController = nil;
 		return FALSE;
 	}
 
-	// WARNING: We must *always* create the GodotView after we have constructed the
-	// OS with iphone_main. This allows the GodotView to access project settings so
+	// WARNING: We must *always* create the PandemoniumView after we have constructed the
+	// OS with iphone_main. This allows the PandemoniumView to access project settings so
 	// it can properly initialize the OpenGL context
 
 	ViewController *viewController = [[ViewController alloc] init];
-	viewController.godotView.useCADisplayLink = bool(GLOBAL_DEF("display.iOS/use_cadisplaylink", true)) ? YES : NO;
-	viewController.godotView.renderingInterval = 1.0 / kRenderingFrequency;
+	viewController.pandemoniumView.useCADisplayLink = bool(GLOBAL_DEF("display.iOS/use_cadisplaylink", true)) ? YES : NO;
+	viewController.pandemoniumView.renderingInterval = 1.0 / kRenderingFrequency;
 
 	self.window.rootViewController = viewController;
 

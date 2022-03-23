@@ -79,11 +79,11 @@ def update_version(module_version_string=""):
     f.write("#define VERSION_PATCH " + str(version.patch) + "\n")
     # For dev snapshots (alpha, beta, RC, etc.) we do not commit status change to Git,
     # so this define provides a way to override it without having to modify the source.
-    godot_status = str(version.status)
-    if os.getenv("GODOT_VERSION_STATUS") != None:
-        godot_status = str(os.getenv("GODOT_VERSION_STATUS"))
-        print("Using version status '{}', overriding the original '{}'.".format(godot_status, str(version.status)))
-    f.write('#define VERSION_STATUS "' + godot_status + '"\n')
+    pandemonium_status = str(version.status)
+    if os.getenv("PANDEMONIUM_VERSION_STATUS") != None:
+        pandemonium_status = str(os.getenv("PANDEMONIUM_VERSION_STATUS"))
+        print("Using version status '{}', overriding the original '{}'.".format(pandemonium_status, str(version.status)))
+    f.write('#define VERSION_STATUS "' + pandemonium_status + '"\n')
     f.write('#define VERSION_BUILD "' + str(build_name) + '"\n')
     f.write('#define VERSION_MODULE_CONFIG "' + str(version.module_config) + module_version_string + '"\n')
     f.write("#define VERSION_YEAR " + str(version.year) + "\n")
@@ -186,11 +186,11 @@ def detect_modules(search_path, recursive=False):
 
     def is_engine(path):
         # Prevent recursively detecting modules in self and other
-        # Godot sources when using `custom_modules` build option.
+        # Pandemonium sources when using `custom_modules` build option.
         version_path = os.path.join(path, "version.py")
         if os.path.exists(version_path):
             with open(version_path) as f:
-                if 'short_name = "godot"' in f.read():
+                if 'short_name = "pandemonium"' in f.read():
                     return True
         return False
 
@@ -541,7 +541,7 @@ def detect_visual_c_compiler_version(tools_env):
     # "x86"           Native 32 bit compiler
     # "x86_amd64"     32 bit Cross Compiler for 64 bit
 
-    # There are other architectures, but Godot does not support them currently, so this function does not detect arm/amd64_arm
+    # There are other architectures, but Pandemonium does not support them currently, so this function does not detect arm/amd64_arm
     # and similar architectures/compilers
 
     # Set chosen compiler to "not detected"
@@ -722,7 +722,7 @@ def generate_vs_project(env, num_jobs):
                     for platform in ModuleConfigs.PLATFORMS
                 ]
                 self.arg_dict["runfile"] += [
-                    f'bin\\godot.windows.{config_id}.{plat_id}{f".{name}" if name else ""}.exe'
+                    f'bin\\pandemonium.windows.{config_id}.{plat_id}{f".{name}" if name else ""}.exe'
                     for config_id in ModuleConfigs.CONFIGURATION_IDS
                     for plat_id in ModuleConfigs.PLATFORM_IDS
                 ]
@@ -811,7 +811,7 @@ def generate_vs_project(env, num_jobs):
             env["MSVS"]["PROJECTSUFFIX"] = ".vcxproj"
             env["MSVS"]["SOLUTIONSUFFIX"] = ".sln"
         env.MSVSProject(
-            target=["#godot" + env["MSVSPROJECTSUFFIX"]],
+            target=["#pandemonium" + env["MSVSPROJECTSUFFIX"]],
             incs=env.vs_incs,
             srcs=env.vs_srcs,
             auto_build_solution=1,

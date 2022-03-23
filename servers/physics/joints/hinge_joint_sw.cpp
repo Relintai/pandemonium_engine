@@ -29,7 +29,7 @@
 /*************************************************************************/
 
 /*
-Adapted to Godot from the Bullet library.
+Adapted to Pandemonium from the Bullet library.
 */
 
 /*

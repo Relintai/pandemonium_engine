@@ -9,7 +9,7 @@ thirdparty_obj = []
 
 if env["platform"] == "javascript":
     # Our JavaScript/C++ interface.
-    env.AddJSLibraries(["library_godot_websocket.js"])
+    env.AddJSLibraries(["library_pandemonium_websocket.js"])
 
 elif env["builtin_wslay"]:
     # Thirdparty source files
@@ -36,7 +36,7 @@ elif env["builtin_wslay"]:
     env.modules_sources += thirdparty_obj
 
 
-# Godot source files
+# Pandemonium source files
 
 module_obj = []
 

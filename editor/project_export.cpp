@@ -1171,7 +1171,7 @@ ProjectExportDialog::ProjectExportDialog() {
 
 	export_pck_zip = memnew(EditorFileDialog);
 	export_pck_zip->add_filter("*.zip ; " + TTR("ZIP File"));
-	export_pck_zip->add_filter("*.pck ; " + TTR("Godot Game Pack"));
+	export_pck_zip->add_filter("*.pck ; " + TTR("Pandemonium Game Pack"));
 	export_pck_zip->set_access(EditorFileDialog::ACCESS_FILESYSTEM);
 	export_pck_zip->set_mode(EditorFileDialog::MODE_SAVE_FILE);
 	add_child(export_pck_zip);

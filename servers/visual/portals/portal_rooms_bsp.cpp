@@ -2,7 +2,7 @@
 /*  portal_rooms_bsp.cpp                                                 */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -36,10 +36,10 @@
 #include "core/variant.h"
 #include "portal_renderer.h"
 
-// #define GODOT_VERBOSE_PORTAL_ROOMS_BSP
+// #define PANDEMONIUM_VERBOSE_PORTAL_ROOMS_BSP
 
 void PortalRoomsBSP::_log(String p_string) {
-#ifdef GODOT_VERBOSE_PORTAL_ROOMS_BSP
+#ifdef PANDEMONIUM_VERBOSE_PORTAL_ROOMS_BSP
 	print_line(p_string);
 #endif
 }
@@ -217,7 +217,7 @@ void PortalRoomsBSP::create(PortalRenderer &r_portal_renderer) {
 
 	build(0, room_ids);
 
-#ifdef GODOT_VERBOSE_PORTAL_ROOMS_BSP
+#ifdef PANDEMONIUM_VERBOSE_PORTAL_ROOMS_BSP
 	debug_print_tree();
 #endif
 	_log("PortalRoomsBSP " + itos(_nodes.size()) + " nodes.");
@@ -536,13 +536,13 @@ int PortalRoomsBSP::evaluate_plane(const VSPortal *p_portal, const Plane &p_plan
 		DEV_ASSERT(!r_room_ids_front->size());
 	}
 
-#define GODOT_BSP_PUSH_FRONT              \
+#define PANDEMONIUM_BSP_PUSH_FRONT              \
 	rooms_front++;                        \
 	if (r_room_ids_front) {               \
 		r_room_ids_front->push_back(rid); \
 	}
 
-#define GODOT_BSP_PUSH_BACK              \
+#define PANDEMONIUM_BSP_PUSH_BACK              \
 	rooms_back++;                        \
 	if (r_room_ids_back) {               \
 		r_room_ids_back->push_back(rid); \
@@ -557,11 +557,11 @@ int PortalRoomsBSP::evaluate_plane(const VSPortal *p_portal, const Plane &p_plan
 		room._aabb.project_range_in_plane(p_plane, r_min, r_max);
 
 		if ((r_min <= 0.0) && (r_max <= 0.0)) {
-			GODOT_BSP_PUSH_BACK
+			PANDEMONIUM_BSP_PUSH_BACK
 			continue;
 		}
 		if ((r_min >= 0.0) && (r_max >= 0.0)) {
-			GODOT_BSP_PUSH_FRONT
+			PANDEMONIUM_BSP_PUSH_FRONT
 			continue;
 		}
 
@@ -570,12 +570,12 @@ int PortalRoomsBSP::evaluate_plane(const VSPortal *p_portal, const Plane &p_plan
 		// so we can only deal with non internal portals here with this cheap test.
 		if (p_portal && !p_portal->_internal) {
 			if (p_portal->_linkedroom_ID[0] == rid) {
-				GODOT_BSP_PUSH_BACK
+				PANDEMONIUM_BSP_PUSH_BACK
 				continue;
 			}
 
 			if (p_portal->_linkedroom_ID[1] == rid) {
-				GODOT_BSP_PUSH_FRONT
+				PANDEMONIUM_BSP_PUSH_FRONT
 				continue;
 			}
 		}
@@ -606,12 +606,12 @@ int PortalRoomsBSP::evaluate_plane(const VSPortal *p_portal, const Plane &p_plan
 
 		// if all points are in front
 		if (!points_back) {
-			GODOT_BSP_PUSH_FRONT
+			PANDEMONIUM_BSP_PUSH_FRONT
 			continue;
 		}
 		// if all points are behind
 		if (!points_front) {
-			GODOT_BSP_PUSH_BACK
+			PANDEMONIUM_BSP_PUSH_BACK
 			continue;
 		}
 
@@ -626,8 +626,8 @@ int PortalRoomsBSP::evaluate_plane(const VSPortal *p_portal, const Plane &p_plan
 		rooms_split++;
 	}
 
-#undef GODOT_BSP_PUSH_BACK
-#undef GODOT_BSP_PUSH_FRONT
+#undef PANDEMONIUM_BSP_PUSH_BACK
+#undef PANDEMONIUM_BSP_PUSH_FRONT
 
 	// we want the split that splits the most front and back rooms
 	return rooms_front * rooms_back;

@@ -91,7 +91,7 @@ bool ContextGL_Windows::should_vsync_via_compositor() {
 		return false;
 	}
 
-	// Note: All Windows versions supported by Godot have a compositor.
+	// Note: All Windows versions supported by Pandemonium have a compositor.
 	// It can be disabled on earlier Windows versions.
 	BOOL dwm_enabled;
 

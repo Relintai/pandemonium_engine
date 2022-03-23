@@ -33,15 +33,15 @@ jobs:
         with:
           java-version: 11
 
-      - name: Setup Godot build cache
-        uses: ./.github/actions/godot-cache
+      - name: Setup Pandemonium build cache
+        uses: ./.github/actions/pandemonium-cache
         continue-on-error: true
 
       - name: Setup python and scons
-        uses: ./.github/actions/godot-deps
+        uses: ./.github/actions/pandemonium-deps
 
       - name: Compilation (armv7)
-        uses: ./.github/actions/godot-build
+        uses: ./.github/actions/pandemonium-build
         with:
           sconsflags: ${{ env.SCONSFLAGS }} android_arch=armv7
           platform: android
@@ -49,17 +49,17 @@ jobs:
           tools: false
 
       - name: Compilation (arm64v8)
-        uses: ./.github/actions/godot-build
+        uses: ./.github/actions/pandemonium-build
         with:
           sconsflags: ${{ env.SCONSFLAGS }} android_arch=arm64v8
           platform: android
           target: release
           tools: false
 
-      - name: Generate Godot templates
+      - name: Generate Pandemonium templates
         run: |
           cd platform/android/java
-          ./gradlew generateGodotTemplates
+          ./gradlew generatePandemoniumTemplates
           cd ../../..
           ls -l bin/
 

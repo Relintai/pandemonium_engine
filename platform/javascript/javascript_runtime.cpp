@@ -28,8 +28,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-extern int godot_js_main(int argc, char *argv[]);
+extern int pandemonium_js_main(int argc, char *argv[]);
 
 int main(int argc, char *argv[]) {
-	return godot_js_main(argc, argv);
+	return pandemonium_js_main(argc, argv);
 }

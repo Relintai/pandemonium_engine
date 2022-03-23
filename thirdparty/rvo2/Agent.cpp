@@ -128,7 +128,7 @@ void Agent::computeNewVelocity(float timeStep) {
         Vector3 relativeVelocity = velocity_ - other->velocity_;
         const float combinedRadius = radius_ + other->radius_;
 
-        // This is a Godot feature that allow the agents to avoid the collision
+        // This is a Pandemonium feature that allow the agents to avoid the collision
         // by moving only on the horizontal plane relative to the player velocity.
         if (ignore_y_) {
             // Skip if these are in two different heights

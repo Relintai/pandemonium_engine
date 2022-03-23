@@ -146,7 +146,7 @@ KeepEmptyLinesAtTheStartOfBlocks: false
 # SpacesInConditionalStatement: false
 # SpacesInContainerLiterals: true
 # SpacesInCStyleCastParentheses: false
-## Godot TODO: We'll want to use a min of 1, but we need to see how to fix
+## Pandemonium TODO: We'll want to use a min of 1, but we need to see how to fix
 ## our comment capitalization at the same time.
 SpacesInLineCommentPrefix:
   Minimum:         0
@@ -185,5 +185,5 @@ ObjCBlockIndentWidth: 4
 ### Java specific config ###
 Language:        Java
 # BreakAfterJavaFieldAnnotations: false
-JavaImportGroups: ['org.godotengine', 'android', 'androidx', 'com.android', 'com.google', 'java', 'javax']
+JavaImportGroups: ['net.relintai.pandemonium', 'android', 'androidx', 'com.android', 'com.google', 'java', 'javax']
 ...

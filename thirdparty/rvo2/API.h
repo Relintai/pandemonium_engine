@@ -40,8 +40,8 @@
 
 
 
-// -- GODOT start --
+// -- PANDEMONIUM start --
 #define RVO_API
-// -- GODOT end --
+// -- PANDEMONIUM end --
 
 #endif /* RVO_API_H_ */

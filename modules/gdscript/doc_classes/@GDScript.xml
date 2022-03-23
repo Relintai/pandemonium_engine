@@ -224,7 +224,7 @@
 			<argument index="1" name="amount" type="float" />
 			<argument index="2" name="step" type="float" />
 			<description>
-				[b]Note:[/b] [code]dectime[/code] has been deprecated and will be removed in Godot 4.0, please use [method move_toward] instead.
+				[b]Note:[/b] [code]dectime[/code] has been deprecated and will be removed in Pandemonium 4.0, please use [method move_toward] instead.
 				Returns the result of [code]value[/code] decreased by [code]step[/code] * [code]amount[/code].
 				[codeblock]
 				a = dectime(60, 10, 0.1)) # a is 59.0
@@ -637,7 +637,7 @@
 			<description>
 				Parse JSON text to a Variant. (Use [method typeof] to check if the Variant's type is what you expect.)
 				[b]Note:[/b] The JSON specification does not define integer or float types, but only a [i]number[/i] type. Therefore, parsing a JSON text will convert all numerical values to [float] types.
-				[b]Note:[/b] JSON objects do not preserve key order like Godot dictionaries, thus, you should not rely on keys being in a certain order if a dictionary is constructed from JSON. In contrast, JSON arrays retain the order of their elements:
+				[b]Note:[/b] JSON objects do not preserve key order like Pandemonium dictionaries, thus, you should not rely on keys being in a certain order if a dictionary is constructed from JSON. In contrast, JSON arrays retain the order of their elements:
 				[codeblock]
 				var p = JSON.parse('["hello", "world", "!"]')
 				if typeof(p.result) == TYPE_ARRAY:
@@ -746,7 +746,7 @@
 				printraw("B")
 				# Prints AB
 				[/codeblock]
-				[b]Note:[/b] Due to limitations with Godot's built-in console, this only prints to the terminal. If you need to print in the editor, use another method, such as [method print].
+				[b]Note:[/b] Due to limitations with Pandemonium's built-in console, this only prints to the terminal. If you need to print in the editor, use another method, such as [method print].
 			</description>
 		</method>
 		<method name="prints" qualifiers="vararg">
@@ -771,7 +771,7 @@
 			<return type="void" />
 			<argument index="0" name="message" type="String" />
 			<description>
-				Pushes an error message to Godot's built-in debugger and to the OS terminal.
+				Pushes an error message to Pandemonium's built-in debugger and to the OS terminal.
 				[codeblock]
 				push_error("test error") # Prints "test error" to debugger and terminal as error call
 				[/codeblock]
@@ -782,7 +782,7 @@
 			<return type="void" />
 			<argument index="0" name="message" type="String" />
 			<description>
-				Pushes a warning message to Godot's built-in debugger and to the OS terminal.
+				Pushes a warning message to Pandemonium's built-in debugger and to the OS terminal.
 				[codeblock]
 				push_warning("test warning") # Prints "test warning" to debugger and terminal as warning call
 				[/codeblock]
@@ -912,7 +912,7 @@
 			<description>
 				Sets seed for the random number generator.
 				[codeblock]
-				my_seed = "Godot Rocks"
+				my_seed = "Pandemonium Rocks"
 				seed(my_seed.hash())
 				[/codeblock]
 			</description>

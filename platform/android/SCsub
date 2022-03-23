@@ -10,13 +10,13 @@ android_files = [
     "dir_access_jandroid.cpp",
     "thread_jandroid.cpp",
     "net_socket_android.cpp",
-    "java_godot_lib_jni.cpp",
+    "java_pandemonium_lib_jni.cpp",
     "java_class_wrapper.cpp",
-    "java_godot_wrapper.cpp",
-    "java_godot_io_wrapper.cpp",
+    "java_pandemonium_wrapper.cpp",
+    "java_pandemonium_io_wrapper.cpp",
     "jni_utils.cpp",
     "android_keys_utils.cpp",
-    "plugin/godot_plugin_jni.cpp",
+    "plugin/pandemonium_plugin_jni.cpp",
 ]
 
 env_android = env.Clone()
@@ -30,7 +30,7 @@ env_thirdparty.disable_warnings()
 thirdparty_obj = env_thirdparty.SharedObject("#thirdparty/misc/ifaddrs-android.cc")
 android_objects.append(thirdparty_obj)
 
-lib = env_android.add_shared_library("#bin/libgodot", [android_objects], SHLIBSUFFIX=env["SHLIBSUFFIX"])
+lib = env_android.add_shared_library("#bin/libpandemonium", [android_objects], SHLIBSUFFIX=env["SHLIBSUFFIX"])
 
 # Needed to force rebuilding the platform files when the thirdparty code is updated.
 env.Depends(lib, thirdparty_obj)
@@ -62,7 +62,7 @@ if lib_arch_dir != "":
 
     out_dir = "#platform/android/java/lib/libs/" + lib_tools_dir + lib_type_dir + "/" + lib_arch_dir
     env_android.Command(
-        out_dir + "/libgodot_android.so", "#bin/libgodot" + env["SHLIBSUFFIX"], Move("$TARGET", "$SOURCE")
+        out_dir + "/libpandemonium_android.so", "#bin/libpandemonium" + env["SHLIBSUFFIX"], Move("$TARGET", "$SOURCE")
     )
 
     stl_lib_path = (

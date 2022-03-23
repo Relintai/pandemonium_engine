@@ -37,9 +37,9 @@ void WriteColourBlock3( Vec3::Arg start, Vec3::Arg end, u8 const* indices, void*
 void WriteColourBlock4( Vec3::Arg start, Vec3::Arg end, u8 const* indices, void* block );
 
 void DecompressColour( u8* rgba, void const* block, bool isDxt1 );
-// -- GODOT start --
+// -- PANDEMONIUM start --
 void DecompressColourBc5( u8* rgba, void const* block );
-// -- GODOT end --
+// -- PANDEMONIUM end --
 
 } // namespace squish
 

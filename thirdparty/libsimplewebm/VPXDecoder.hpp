@@ -37,14 +37,14 @@ public:
 	class Image
 	{
 	public:
-// -- GODOT begin --
+// -- PANDEMONIUM begin --
 #if 0
-// -- GODOT end --
+// -- PANDEMONIUM end --
 		int getWidth(int plane) const;
 		int getHeight(int plane) const;
-// -- GODOT begin --
+// -- PANDEMONIUM begin --
 #endif
-// -- GODOT end --
+// -- PANDEMONIUM end --
 
 		int w, h;
 		int cs;

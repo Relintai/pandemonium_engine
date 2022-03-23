@@ -56,7 +56,7 @@
 #include "editor/editor_data.h"
 
 EditorFileSystem *EditorFileSystem::singleton = nullptr;
-//the name is the version, to keep compatibility with different versions of Godot
+//the name is the version, to keep compatibility with different versions of Pandemonium
 #define CACHE_FILE_NAME "filesystem_cache6"
 
 void EditorFileSystemDirectory::sort_files() {
@@ -2013,7 +2013,7 @@ bool EditorFileSystem::_should_skip_directory(const String &p_path) {
 		return true;
 	}
 
-	if (FileAccess::exists(p_path.plus_file("project.godot"))) { // skip if another project inside this
+	if (FileAccess::exists(p_path.plus_file("project.pandemonium"))) { // skip if another project inside this
 		return true;
 	}
 

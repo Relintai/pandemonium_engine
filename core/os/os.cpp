@@ -317,7 +317,7 @@ String OS::get_safe_dir_name(const String &p_dir_name, bool p_allow_dir_separato
 // Path to data, config, cache, etc. OS-specific folders
 
 // Get properly capitalized engine name for system paths
-String OS::get_godot_dir_name() const {
+String OS::get_pandemonium_dir_name() const {
 	// Default to lowercase, so only override when different case is needed
 	return String(VERSION_SHORT_NAME).to_lower();
 }
@@ -838,7 +838,7 @@ OS::OS() {
 
 	restart_on_exit = false;
 	singleton = this;
-	_keep_screen_on = true; // set default value to true, because this had been true before godot 2.0.
+	_keep_screen_on = true; // set default value to true, because this had been true before pandemonium 2.0.
 	low_processor_usage_mode = false;
 	low_processor_usage_mode_sleep_usec = 10000;
 	_update_vital_only = false;

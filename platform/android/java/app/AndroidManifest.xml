@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.godot.game"
+    package="com.pandemonium.game"
     android:versionCode="1"
     android:versionName="1.0"
     android:installLocation="auto" >
@@ -28,20 +28,20 @@
     <!-- If you want to add tags manually, do before it. -->
     <!-- WARNING: This should stay on a single line until the parsing code is improved. See GH-32414. -->
     <!-- TODO: Remove the 'requestLegacyExternalStorage' attribute when https://github.com/godotengine/godot/issues/38913 is resolved -->
-    <application android:label="@string/godot_project_name_string" android:allowBackup="false" android:isGame="true" android:hasFragileUserData="false" android:requestLegacyExternalStorage="false" tools:ignore="GoogleAppIndexingWarning" android:icon="@mipmap/icon" >
+    <application android:label="@string/pandemonium_project_name_string" android:allowBackup="false" android:isGame="true" android:hasFragileUserData="false" android:requestLegacyExternalStorage="false" tools:ignore="GoogleAppIndexingWarning" android:icon="@mipmap/icon" >
 
-        <!-- Records the version of the Godot editor used for building -->
+        <!-- Records the version of the Pandemonium editor used for building -->
         <meta-data
-            android:name="org.godotengine.editor.version"
-            android:value="${godotEditorVersion}" />
+            android:name="net.relintai.pandemonium.editor.version"
+            android:value="${pandemoniumEditorVersion}" />
 
-        <!-- The following metadata values are replaced when Godot exports, modifying them here has no effect. -->
+        <!-- The following metadata values are replaced when Pandemonium exports, modifying them here has no effect. -->
         <!-- Do these changes in the export preset. Adding new ones is fine. -->
 
         <activity
-            android:name=".GodotApp"
-            android:label="@string/godot_project_name_string"
-            android:theme="@style/GodotAppSplashTheme"
+            android:name=".PandemoniumApp"
+            android:label="@string/pandemonium_project_name_string"
+            android:theme="@style/PandemoniumAppSplashTheme"
             android:launchMode="singleTask"
             android:excludeFromRecents="false"
             android:screenOrientation="landscape"

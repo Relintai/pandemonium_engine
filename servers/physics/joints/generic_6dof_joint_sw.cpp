@@ -29,7 +29,7 @@
 /*************************************************************************/
 
 /*
-Adapted to Godot from the Bullet library.
+Adapted to Pandemonium from the Bullet library.
 */
 
 /*
@@ -492,28 +492,28 @@ void Generic6DOFJointSW::set_param(Vector3::Axis p_axis, PhysicsServer::G6DOFJoi
 
 		} break;
 		case PhysicsServer::G6DOF_JOINT_LINEAR_MOTOR_TARGET_VELOCITY: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_LINEAR_MOTOR_FORCE_LIMIT: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_LINEAR_SPRING_STIFFNESS: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_LINEAR_SPRING_DAMPING: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_LINEAR_SPRING_EQUILIBRIUM_POINT: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_ANGULAR_SPRING_STIFFNESS: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_ANGULAR_SPRING_DAMPING: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_ANGULAR_SPRING_EQUILIBRIUM_POINT: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_MAX:
 			break; // Can't happen, but silences warning
@@ -579,28 +579,28 @@ real_t Generic6DOFJointSW::get_param(Vector3::Axis p_axis, PhysicsServer::G6DOFJ
 
 		} break;
 		case PhysicsServer::G6DOF_JOINT_LINEAR_MOTOR_TARGET_VELOCITY: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_LINEAR_MOTOR_FORCE_LIMIT: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_LINEAR_SPRING_STIFFNESS: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_LINEAR_SPRING_DAMPING: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_LINEAR_SPRING_EQUILIBRIUM_POINT: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_ANGULAR_SPRING_STIFFNESS: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_ANGULAR_SPRING_DAMPING: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_ANGULAR_SPRING_EQUILIBRIUM_POINT: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_MAX:
 			break; // Can't happen, but silences warning
@@ -622,13 +622,13 @@ void Generic6DOFJointSW::set_flag(Vector3::Axis p_axis, PhysicsServer::G6DOFJoin
 			m_angularLimits[p_axis].m_enableMotor = p_value;
 		} break;
 		case PhysicsServer::G6DOF_JOINT_FLAG_ENABLE_LINEAR_MOTOR: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_FLAG_ENABLE_LINEAR_SPRING: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_FLAG_ENABLE_ANGULAR_SPRING: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_FLAG_MAX:
 			break; // Can't happen, but silences warning
@@ -647,13 +647,13 @@ bool Generic6DOFJointSW::get_flag(Vector3::Axis p_axis, PhysicsServer::G6DOFJoin
 			return m_angularLimits[p_axis].m_enableMotor;
 		} break;
 		case PhysicsServer::G6DOF_JOINT_FLAG_ENABLE_LINEAR_MOTOR: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_FLAG_ENABLE_LINEAR_SPRING: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_FLAG_ENABLE_ANGULAR_SPRING: {
-			// Not implemented in GodotPhysics backend
+			// Not implemented in PandemoniumPhysics backend
 		} break;
 		case PhysicsServer::G6DOF_JOINT_FLAG_MAX:
 			break; // Can't happen, but silences warning

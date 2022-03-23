@@ -46,7 +46,7 @@ void MIDIDriverCoreMidi::read(const MIDIPacketList *packet_list, void *read_proc
 }
 
 Error MIDIDriverCoreMidi::open() {
-	CFStringRef name = CFStringCreateWithCString(NULL, "Godot", kCFStringEncodingASCII);
+	CFStringRef name = CFStringCreateWithCString(NULL, "Pandemonium", kCFStringEncodingASCII);
 	OSStatus result = MIDIClientCreate(name, NULL, NULL, &client);
 	CFRelease(name);
 	if (result != noErr) {
@@ -54,7 +54,7 @@ Error MIDIDriverCoreMidi::open() {
 		return ERR_CANT_OPEN;
 	}
 
-	result = MIDIInputPortCreate(client, CFSTR("Godot Input"), MIDIDriverCoreMidi::read, (void *)this, &port_in);
+	result = MIDIInputPortCreate(client, CFSTR("Pandemonium Input"), MIDIDriverCoreMidi::read, (void *)this, &port_in);
 	if (result != noErr) {
 		ERR_PRINT("MIDIInputPortCreate failed, code: " + itos(result));
 		return ERR_CANT_OPEN;

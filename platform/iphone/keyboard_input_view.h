@@ -30,7 +30,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GodotKeyboardInputView : UITextView
+@interface PandemoniumKeyboardInputView : UITextView
 
 - (BOOL)becomeFirstResponderWithString:(NSString *)existingString multiline:(BOOL)flag cursorStart:(NSInteger)start cursorEnd:(NSInteger)end;
 

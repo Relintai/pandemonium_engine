@@ -3016,7 +3016,7 @@ Error GLTFDocument::_parse_images(Ref<GLTFState> state, const String &p_base_pat
 		//  - a URI with embedded base64-encoded data, or
 		//  - a reference to a bufferView; in that case mimeType must be defined."
 		// Since mimeType is optional for external files and base64 data, we'll have to
-		// fall back on letting Godot parse the data to figure out if it's PNG or JPEG.
+		// fall back on letting Pandemonium parse the data to figure out if it's PNG or JPEG.
 
 		// We'll assume that we use either URI or bufferView, so let's warn the user
 		// if their image somehow uses both. And fail if it has neither.
@@ -3064,7 +3064,7 @@ Error GLTFDocument::_parse_images(Ref<GLTFState> state, const String &p_base_pat
 				// ResourceLoader will rely on the file extension to use the relevant loader.
 				// The spec says that if mimeType is defined, it should take precedence (e.g.
 				// there could be a `.png` image which is actually JPEG), but there's no easy
-				// API for that in Godot, so we'd have to load as a buffer (i.e. embedded in
+				// API for that in Pandemonium, so we'd have to load as a buffer (i.e. embedded in
 				// the material), so we do this only as fallback.
 				Ref<Texture> texture = ResourceLoader::load(uri);
 				if (texture.is_valid()) {
@@ -3849,7 +3849,7 @@ void GLTFDocument::_capture_nodes_for_multirooted_skin(Ref<GLTFState> state, Ref
 	}
 
 	// Go up the tree till all of the multiple roots of the skin are at the same hierarchy level.
-	// This sucks, but 99% of all game engines (not just Godot) would have this same issue.
+	// This sucks, but 99% of all game engines (not just Pandemonium) would have this same issue.
 	for (int i = 0; i < roots.size(); ++i) {
 		GLTFNodeIndex current_node = roots[i];
 		while (state->nodes[current_node]->height > maxHeight) {
@@ -4306,7 +4306,7 @@ Error GLTFDocument::_create_skeletons(Ref<GLTFState> state) {
 		Ref<GLTFSkeleton> gltf_skeleton = state->skeletons.write[skel_i];
 
 		Skeleton *skeleton = memnew(Skeleton);
-		gltf_skeleton->godot_skeleton = skeleton;
+		gltf_skeleton->pandemonium_skeleton = skeleton;
 		state->skeleton3d_to_gltf_skeleton[skeleton->get_instance_id()] = skel_i;
 
 		// Make a unique name, no gltf node represents this skeleton
@@ -4381,7 +4381,7 @@ Error GLTFDocument::_map_skin_joints_indices_to_skeleton_bone_indices(Ref<GLTFSt
 			const GLTFNodeIndex node_i = skin->joints_original[joint_index];
 			const Ref<GLTFNode> node = state->nodes[node_i];
 
-			const int bone_index = skeleton->godot_skeleton->find_bone(node->get_name());
+			const int bone_index = skeleton->pandemonium_skeleton->find_bone(node->get_name());
 			ERR_FAIL_COND_V(bone_index < 0, FAILED);
 
 			skin->joint_i_to_bone_i.insert(joint_index, bone_index);
@@ -4437,7 +4437,7 @@ Error GLTFDocument::_create_skins(Ref<GLTFState> state) {
 			}
 		}
 
-		gltf_skin->godot_skin = skin;
+		gltf_skin->pandemonium_skin = skin;
 	}
 
 	// Purge the duplicates!
@@ -4445,7 +4445,7 @@ Error GLTFDocument::_create_skins(Ref<GLTFState> state) {
 
 	// Create unique names now, after removing duplicates
 	for (GLTFSkinIndex skin_i = 0; skin_i < state->skins.size(); ++skin_i) {
-		Ref<Skin> skin = state->skins.write[skin_i]->godot_skin;
+		Ref<Skin> skin = state->skins.write[skin_i]->pandemonium_skin;
 		if (skin->get_name().empty()) {
 			// Make a unique name, no gltf node represents this skin
 			skin->set_name(_gen_unique_name(state, "Skin"));
@@ -4482,12 +4482,12 @@ bool GLTFDocument::_skins_are_same(const Ref<Skin> skin_a, const Ref<Skin> skin_
 void GLTFDocument::_remove_duplicate_skins(Ref<GLTFState> state) {
 	for (int i = 0; i < state->skins.size(); ++i) {
 		for (int j = i + 1; j < state->skins.size(); ++j) {
-			const Ref<Skin> skin_i = state->skins[i]->godot_skin;
-			const Ref<Skin> skin_j = state->skins[j]->godot_skin;
+			const Ref<Skin> skin_i = state->skins[i]->pandemonium_skin;
+			const Ref<Skin> skin_j = state->skins[j]->pandemonium_skin;
 
 			if (_skins_are_same(skin_i, skin_j)) {
 				// replace it and delete the old
-				state->skins.write[j]->godot_skin = skin_i;
+				state->skins.write[j]->pandemonium_skin = skin_i;
 			}
 		}
 	}
@@ -4557,7 +4557,7 @@ Error GLTFDocument::_serialize_cameras(Ref<GLTFState> state) {
 			d["type"] = "orthographic";
 		} else if (camera->get_perspective()) {
 			Dictionary ppt;
-			// GLTF spec is in radians, Godot's camera is in degrees.
+			// GLTF spec is in radians, Pandemonium's camera is in degrees.
 			ppt["yfov"] = Math::deg2rad(camera->get_fov_size());
 			ppt["zfar"] = camera->get_zfar();
 			ppt["znear"] = camera->get_znear();
@@ -4649,7 +4649,7 @@ Error GLTFDocument::_parse_cameras(Ref<GLTFState> state) {
 			camera->set_perspective(false);
 			if (d.has("orthographic")) {
 				const Dictionary &og = d["orthographic"];
-				// GLTF spec is in radians, Godot's camera is in degrees.
+				// GLTF spec is in radians, Pandemonium's camera is in degrees.
 				camera->set_fov_size(Math::rad2deg(real_t(og["ymag"])));
 				camera->set_zfar(og["zfar"]);
 				camera->set_znear(og["znear"]);
@@ -4660,7 +4660,7 @@ Error GLTFDocument::_parse_cameras(Ref<GLTFState> state) {
 			camera->set_perspective(true);
 			if (d.has("perspective")) {
 				const Dictionary &ppt = d["perspective"];
-				// GLTF spec is in radians, Godot's camera is in degrees.
+				// GLTF spec is in radians, Pandemonium's camera is in degrees.
 				camera->set_fov_size(Math::rad2deg(real_t(ppt["yfov"])));
 				camera->set_zfar(ppt["zfar"]);
 				camera->set_znear(ppt["znear"]);
@@ -5069,21 +5069,21 @@ GLTFMeshIndex GLTFDocument::_convert_mesh_to_gltf(Ref<GLTFState> state, MeshInst
 	}
 	Ref<ArrayMesh> import_mesh;
 	import_mesh.instance();
-	Ref<Mesh> godot_mesh = p_mesh_instance->get_mesh();
-	if (godot_mesh.is_null()) {
+	Ref<Mesh> pandemonium_mesh = p_mesh_instance->get_mesh();
+	if (pandemonium_mesh.is_null()) {
 		return -1;
 	}
-	int32_t blend_count = godot_mesh->get_blend_shape_count();
+	int32_t blend_count = pandemonium_mesh->get_blend_shape_count();
 	Vector<float> blend_weights;
 	blend_weights.resize(blend_count);
-	Ref<ArrayMesh> am = godot_mesh;
+	Ref<ArrayMesh> am = pandemonium_mesh;
 	if (am != nullptr) {
 		import_mesh = am;
 	} else {
-		for (int32_t surface_i = 0; surface_i < godot_mesh->get_surface_count(); surface_i++) {
-			Mesh::PrimitiveType primitive_type = godot_mesh->surface_get_primitive_type(surface_i);
-			Array arrays = godot_mesh->surface_get_arrays(surface_i);
-			Ref<Material> mat = godot_mesh->surface_get_material(surface_i);
+		for (int32_t surface_i = 0; surface_i < pandemonium_mesh->get_surface_count(); surface_i++) {
+			Mesh::PrimitiveType primitive_type = pandemonium_mesh->surface_get_primitive_type(surface_i);
+			Array arrays = pandemonium_mesh->surface_get_arrays(surface_i);
+			Ref<Material> mat = pandemonium_mesh->surface_get_material(surface_i);
 			if (p_mesh_instance->get_surface_material(surface_i).is_valid()) {
 				mat = p_mesh_instance->get_surface_material(surface_i);
 			}
@@ -5243,7 +5243,7 @@ GLTFLightIndex GLTFDocument::_convert_light(Ref<GLTFState> state, Light *p_light
 		l->type = "directional";
 		DirectionalLight *light = cast_to<DirectionalLight>(p_light);
 		l->intensity = light->get_param(DirectionalLight::PARAM_ENERGY);
-		l->range = FLT_MAX; // Range for directional lights is infinite in Godot.
+		l->range = FLT_MAX; // Range for directional lights is infinite in Pandemonium.
 	} else if (cast_to<OmniLight>(p_light)) {
 		l->type = "point";
 		OmniLight *light = cast_to<OmniLight>(p_light);
@@ -5307,7 +5307,7 @@ void GLTFDocument::_convert_scene_node(Ref<GLTFState> state, Node *p_current, co
 	} else if (cast_to<Skeleton>(p_current)) {
 		Skeleton *skel = cast_to<Skeleton>(p_current);
 		_convert_skeleton_to_gltf(skel, state, p_gltf_parent, p_gltf_root, gltf_node);
-		// We ignore the Godot Engine node that is the skeleton.
+		// We ignore the Pandemonium Engine node that is the skeleton.
 		return;
 	} else if (cast_to<MultiMeshInstance>(p_current)) {
 		MultiMeshInstance *multi = cast_to<MultiMeshInstance>(p_current);
@@ -5434,7 +5434,7 @@ void GLTFDocument::_convert_skeleton_to_gltf(Skeleton *p_skeleton3d, Ref<GLTFSta
 	gltf_skeleton.instance();
 	// GLTFSkeleton is only used to hold internal state data. It will not be written to the document.
 	//
-	gltf_skeleton->godot_skeleton = skeleton;
+	gltf_skeleton->pandemonium_skeleton = skeleton;
 	GLTFSkeletonIndex skeleton_i = state->skeletons.size();
 	state->skeleton3d_to_gltf_skeleton[skeleton->get_instance_id()] = skeleton_i;
 	state->skeletons.push_back(gltf_skeleton);
@@ -5459,10 +5459,10 @@ void GLTFDocument::_convert_skeleton_to_gltf(Skeleton *p_skeleton3d, Ref<GLTFSta
 		if (skeleton->get_bone_parent(bone_i) == -1) {
 			gltf_skeleton->roots.push_back(current_node_i);
 		}
-		gltf_skeleton->godot_bone_node.insert(bone_i, current_node_i);
+		gltf_skeleton->pandemonium_bone_node.insert(bone_i, current_node_i);
 	}
 	for (BoneId bone_i = 0; bone_i < bone_count; bone_i++) {
-		GLTFNodeIndex current_node_i = gltf_skeleton->godot_bone_node[bone_i];
+		GLTFNodeIndex current_node_i = gltf_skeleton->pandemonium_bone_node[bone_i];
 		BoneId parent_bone_id = skeleton->get_bone_parent(bone_i);
 		if (parent_bone_id == -1) {
 			if (p_parent_node_index != -1) {
@@ -5470,7 +5470,7 @@ void GLTFDocument::_convert_skeleton_to_gltf(Skeleton *p_skeleton3d, Ref<GLTFSta
 				state->nodes.write[p_parent_node_index]->children.push_back(current_node_i);
 			}
 		} else {
-			GLTFNodeIndex parent_node_i = gltf_skeleton->godot_bone_node[parent_bone_id];
+			GLTFNodeIndex parent_node_i = gltf_skeleton->pandemonium_bone_node[parent_bone_id];
 			state->nodes.write[current_node_i]->parent = parent_node_i;
 			state->nodes.write[parent_node_i]->children.push_back(current_node_i);
 		}
@@ -5575,7 +5575,7 @@ void GLTFDocument::_generate_skeleton_bone_node(Ref<GLTFState> state, Node *scen
 
 	Spatial *current_node = nullptr;
 
-	Skeleton *skeleton = state->skeletons[gltf_node->skeleton]->godot_skeleton;
+	Skeleton *skeleton = state->skeletons[gltf_node->skeleton]->pandemonium_skeleton;
 	// In this case, this node is already a bone in skeleton.
 	const bool is_skinned_mesh = (gltf_node->skin >= 0 && gltf_node->mesh >= 0);
 	const bool requires_extra_node = (gltf_node->mesh >= 0 || gltf_node->camera >= 0 || gltf_node->light >= 0);
@@ -5811,7 +5811,7 @@ void GLTFDocument::_import_animation(Ref<GLTFState> state, AnimationPlayer *ap, 
 		node_path = root->get_path_to(node_element->get());
 
 		if (gltf_node->skeleton >= 0) {
-			const Skeleton *sk = state->skeletons[gltf_node->skeleton]->godot_skeleton;
+			const Skeleton *sk = state->skeletons[gltf_node->skeleton]->pandemonium_skeleton;
 			ERR_FAIL_COND(sk == nullptr);
 
 			const String path = ap->get_parent()->get_path_to(sk);
@@ -5888,7 +5888,7 @@ void GLTFDocument::_import_animation(Ref<GLTFState> state, AnimationPlayer *ap, 
 					xform.basis.set_quat_scale(rot, scale);
 					xform.origin = pos;
 
-					const Skeleton *skeleton = state->skeletons[gltf_node->skeleton]->godot_skeleton;
+					const Skeleton *skeleton = state->skeletons[gltf_node->skeleton]->pandemonium_skeleton;
 					const int bone_idx = skeleton->find_bone(gltf_node->get_name());
 					xform = skeleton->get_bone_rest(bone_idx).affine_inverse() * xform;
 
@@ -5924,7 +5924,7 @@ void GLTFDocument::_import_animation(Ref<GLTFState> state, AnimationPlayer *ap, 
 			animation->add_track(Animation::TYPE_VALUE);
 			animation->track_set_path(track_idx, blend_path);
 
-			// Only LINEAR and STEP (NEAREST) can be supported out of the box by Godot's Animation,
+			// Only LINEAR and STEP (NEAREST) can be supported out of the box by Pandemonium's Animation,
 			// the other modes have to be baked.
 			GLTFAnimation::Interpolation gltf_interp = track.weight_tracks[i].interpolation;
 			if (gltf_interp == GLTFAnimation::INTERP_LINEAR || gltf_interp == GLTFAnimation::INTERP_STEP) {
@@ -5991,13 +5991,13 @@ void GLTFDocument::_convert_mesh_instances(Ref<GLTFState> state) {
 
 		NodePath skeleton_path = mi->get_skeleton_path();
 		Node *skel_node = mi->get_node_or_null(skeleton_path);
-		Skeleton *godot_skeleton = nullptr;
+		Skeleton *pandemonium_skeleton = nullptr;
 		if (skel_node != nullptr) {
-			godot_skeleton = cast_to<Skeleton>(skel_node);
+			pandemonium_skeleton = cast_to<Skeleton>(skel_node);
 		}
-		if (godot_skeleton != nullptr && state->skeleton3d_to_gltf_skeleton.has(godot_skeleton->get_instance_id())) {
+		if (pandemonium_skeleton != nullptr && state->skeleton3d_to_gltf_skeleton.has(pandemonium_skeleton->get_instance_id())) {
 			// This is a skinned mesh. If the mesh has no ARRAY_WEIGHTS or ARRAY_BONES, it will be invisible.
-			const GLTFSkeletonIndex skeleton_gltf_i = state->skeleton3d_to_gltf_skeleton[godot_skeleton->get_instance_id()];
+			const GLTFSkeletonIndex skeleton_gltf_i = state->skeleton3d_to_gltf_skeleton[pandemonium_skeleton->get_instance_id()];
 			Ref<GLTFSkeleton> gltf_skeleton = state->skeletons[skeleton_gltf_i];
 			int bone_cnt = skeleton->get_bone_count();
 			ERR_FAIL_COND(bone_cnt != gltf_skeleton->joints.size());
@@ -6006,7 +6006,7 @@ void GLTFDocument::_convert_mesh_instances(Ref<GLTFState> state) {
 			if (skin.is_valid()) {
 				gltf_skin_key = skin->get_instance_id();
 			}
-			ObjectID gltf_skel_key = godot_skeleton->get_instance_id();
+			ObjectID gltf_skel_key = pandemonium_skeleton->get_instance_id();
 			GLTFSkinIndex skin_gltf_i = -1;
 			GLTFNodeIndex root_gltf_i = -1;
 			if (!gltf_skeleton->roots.empty()) {
@@ -6020,11 +6020,11 @@ void GLTFDocument::_convert_mesh_instances(Ref<GLTFState> state) {
 					skin = skeleton->register_skin(nullptr)->get_skin();
 				}
 				gltf_skin.instance();
-				gltf_skin->godot_skin = skin;
+				gltf_skin->pandemonium_skin = skin;
 				gltf_skin->set_name(skin->get_name());
 				gltf_skin->skeleton = skeleton_gltf_i;
 				gltf_skin->skin_root = root_gltf_i;
-				//gltf_state->godot_to_gltf_node[skel_node]
+				//gltf_state->pandemonium_to_gltf_node[skel_node]
 				HashMap<StringName, int> bone_name_to_idx;
 				for (int bone_i = 0; bone_i < bone_cnt; bone_i++) {
 					bone_name_to_idx[skeleton->get_bone_name(bone_i)] = bone_i;
@@ -6106,14 +6106,14 @@ void GLTFDocument::_process_mesh_instances(Ref<GLTFState> state, Node *scene_roo
 
 			const GLTFSkeletonIndex skel_i = state->skins.write[node->skin]->skeleton;
 			Ref<GLTFSkeleton> gltf_skeleton = state->skeletons.write[skel_i];
-			Skeleton *skeleton = gltf_skeleton->godot_skeleton;
+			Skeleton *skeleton = gltf_skeleton->pandemonium_skeleton;
 			ERR_CONTINUE_MSG(skeleton == nullptr, vformat("Unable to find Skeleton for node %d skin %d", node_i, skin_i));
 
 			mi->get_parent()->remove_child(mi);
 			skeleton->add_child(mi);
 			mi->set_owner(skeleton->get_owner());
 
-			mi->set_skin(state->skins.write[skin_i]->godot_skin);
+			mi->set_skin(state->skins.write[skin_i]->pandemonium_skin);
 			mi->set_skeleton_path(mi->get_path_to(skeleton));
 			mi->set_transform(Transform());
 		}
@@ -6438,22 +6438,22 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 			const String node = node_suffix[0];
 			const NodePath node_path = node;
 			const String suffix = node_suffix[1];
-			Node *godot_node = ap->get_parent()->get_node_or_null(node_path);
+			Node *pandemonium_node = ap->get_parent()->get_node_or_null(node_path);
 			Skeleton *skeleton = nullptr;
 			GLTFSkeletonIndex skeleton_gltf_i = -1;
 			for (GLTFSkeletonIndex skeleton_i = 0; skeleton_i < state->skeletons.size(); skeleton_i++) {
-				if (state->skeletons[skeleton_i]->godot_skeleton == cast_to<Skeleton>(godot_node)) {
-					skeleton = state->skeletons[skeleton_i]->godot_skeleton;
+				if (state->skeletons[skeleton_i]->pandemonium_skeleton == cast_to<Skeleton>(pandemonium_node)) {
+					skeleton = state->skeletons[skeleton_i]->pandemonium_skeleton;
 					skeleton_gltf_i = skeleton_i;
 					ERR_CONTINUE(!skeleton);
 					Ref<GLTFSkeleton> skeleton_gltf = state->skeletons[skeleton_gltf_i];
 					int32_t bone = skeleton->find_bone(suffix);
 					ERR_CONTINUE(bone == -1);
 					Transform xform = skeleton->get_bone_rest(bone);
-					if (!skeleton_gltf->godot_bone_node.has(bone)) {
+					if (!skeleton_gltf->pandemonium_bone_node.has(bone)) {
 						continue;
 					}
-					GLTFNodeIndex node_i = skeleton_gltf->godot_bone_node[bone];
+					GLTFNodeIndex node_i = skeleton_gltf->pandemonium_bone_node[bone];
 					Map<int, GLTFAnimation::Track>::Element *property_track_i = gltf_animation->get_tracks().find(node_i);
 					GLTFAnimation::Track track;
 					if (property_track_i) {
@@ -6650,7 +6650,7 @@ Dictionary GLTFDocument::_serialize_texture_transform_uv2(Ref<SpatialMaterial> p
 		scale[0] = mat->get_uv2_scale().x;
 		scale[1] = mat->get_uv2_scale().y;
 		texture_transform["scale"] = scale;
-		// Godot doesn't support texture rotation
+		// Pandemonium doesn't support texture rotation
 		extension["KHR_texture_transform"] = texture_transform;
 	}
 	return extension;
@@ -6670,7 +6670,7 @@ Dictionary GLTFDocument::_serialize_texture_transform_uv1(Ref<SpatialMaterial> p
 		scale[0] = p_material->get_uv1_scale().x;
 		scale[1] = p_material->get_uv1_scale().y;
 		texture_transform["scale"] = scale;
-		// Godot doesn't support texture rotation
+		// Pandemonium doesn't support texture rotation
 		extension["KHR_texture_transform"] = texture_transform;
 	}
 	return extension;

@@ -1095,7 +1095,7 @@ void InputDefault::_get_mapped_hat_events(const JoyDeviceMapping &mapping, int p
 	}
 }
 
-// string names of the SDL buttons in the same order as input_event.h godot buttons
+// string names of the SDL buttons in the same order as input_event.h pandemonium buttons
 static const char *_joy_buttons[] = { "a", "b", "x", "y", "leftshoulder", "rightshoulder", "lefttrigger", "righttrigger", "leftstick", "rightstick", "back", "start", "dpup", "dpdown", "dpleft", "dpright", "guide", "misc1", "paddle1", "paddle2", "paddle3", "paddle4", "touchpad", nullptr };
 static const char *_joy_axes[] = { "leftx", "lefty", "rightx", "righty", nullptr };
 

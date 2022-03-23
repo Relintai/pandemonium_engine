@@ -2,7 +2,7 @@
 /*  joypad_osx.cpp                                                       */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -32,7 +32,7 @@
 
 #include <machine/endian.h>
 
-#define GODOT_JOY_LOOP_RUN_MODE CFSTR("GodotJoypad")
+#define PANDEMONIUM_JOY_LOOP_RUN_MODE CFSTR("PandemoniumJoypad")
 
 static JoypadOSX *self = NULL;
 
@@ -61,7 +61,7 @@ joypad::joypad() {
 
 void joypad::free() {
 	if (device_ref) {
-		IOHIDDeviceUnscheduleFromRunLoop(device_ref, CFRunLoopGetCurrent(), GODOT_JOY_LOOP_RUN_MODE);
+		IOHIDDeviceUnscheduleFromRunLoop(device_ref, CFRunLoopGetCurrent(), PANDEMONIUM_JOY_LOOP_RUN_MODE);
 	}
 	if (ff_device) {
 		FFDeviceReleaseEffect(ff_device, ff_object);
@@ -262,7 +262,7 @@ void JoypadOSX::_device_added(IOReturn p_res, IOHIDDeviceRef p_device) {
 #endif
 		device_list.push_back(new_joypad);
 	}
-	IOHIDDeviceScheduleWithRunLoop(p_device, CFRunLoopGetCurrent(), GODOT_JOY_LOOP_RUN_MODE);
+	IOHIDDeviceScheduleWithRunLoop(p_device, CFRunLoopGetCurrent(), PANDEMONIUM_JOY_LOOP_RUN_MODE);
 }
 
 void JoypadOSX::_device_removed(IOReturn p_res, IOHIDDeviceRef p_device) {
@@ -451,7 +451,7 @@ static int process_hat_value(int p_min, int p_max, int p_value, bool p_offset_ha
 }
 
 void JoypadOSX::poll_joypads() const {
-	while (CFRunLoopRunInMode(GODOT_JOY_LOOP_RUN_MODE, 0, TRUE) == kCFRunLoopRunHandledSource) {
+	while (CFRunLoopRunInMode(PANDEMONIUM_JOY_LOOP_RUN_MODE, 0, TRUE) == kCFRunLoopRunHandledSource) {
 		/* no-op. Pending callbacks will fire. */
 	}
 }
@@ -572,9 +572,9 @@ void JoypadOSX::config_hid_manager(CFArrayRef p_matching_array) const {
 	IOHIDManagerSetDeviceMatchingMultiple(hid_manager, p_matching_array);
 	IOHIDManagerRegisterDeviceMatchingCallback(hid_manager, joypad_added_callback, NULL);
 	IOHIDManagerRegisterDeviceRemovalCallback(hid_manager, joypad_removed_callback, NULL);
-	IOHIDManagerScheduleWithRunLoop(hid_manager, runloop, GODOT_JOY_LOOP_RUN_MODE);
+	IOHIDManagerScheduleWithRunLoop(hid_manager, runloop, PANDEMONIUM_JOY_LOOP_RUN_MODE);
 
-	while (CFRunLoopRunInMode(GODOT_JOY_LOOP_RUN_MODE, 0, TRUE) == kCFRunLoopRunHandledSource) {
+	while (CFRunLoopRunInMode(PANDEMONIUM_JOY_LOOP_RUN_MODE, 0, TRUE) == kCFRunLoopRunHandledSource) {
 		/* no-op. Callback fires once per existing device. */
 	}
 }
@@ -612,7 +612,7 @@ JoypadOSX::~JoypadOSX() {
 		device_list.write[i].free();
 	}
 
-	IOHIDManagerUnscheduleFromRunLoop(hid_manager, CFRunLoopGetCurrent(), GODOT_JOY_LOOP_RUN_MODE);
+	IOHIDManagerUnscheduleFromRunLoop(hid_manager, CFRunLoopGetCurrent(), PANDEMONIUM_JOY_LOOP_RUN_MODE);
 	IOHIDManagerClose(hid_manager, kIOHIDOptionsTypeNone);
 	CFRelease(hid_manager);
 	hid_manager = NULL;

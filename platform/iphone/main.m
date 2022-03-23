@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#import "godot_app_delegate.h"
+#import "pandemonium_app_delegate.h"
 
 #import <UIKit/UIKit.h>
 #include <stdio.h>
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
 
 	printf("running app main\n");
 	@autoreleasepool {
-		NSString *className = NSStringFromClass([GodotApplicalitionDelegate class]);
+		NSString *className = NSStringFromClass([PandemoniumApplicalitionDelegate class]);
 		UIApplicationMain(argc, argv, nil, className);
 	}
 	printf("main done\n");

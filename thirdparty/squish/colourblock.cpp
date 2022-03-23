@@ -24,9 +24,9 @@
    -------------------------------------------------------------------------- */
 
 #include "colourblock.h"
-// -- Godot start --
+// -- Pandemonium start --
 #include "alpha.h"
-// -- Godot end --
+// -- Pandemonium end --
 
 namespace squish {
 
@@ -214,7 +214,7 @@ void DecompressColour( u8* rgba, void const* block, bool isDxt1 )
     }
 }
 
-// -- Godot start --
+// -- Pandemonium start --
 void DecompressColourBc5( u8* rgba, void const* block)
 {
     void const* rblock = block;
@@ -230,7 +230,7 @@ void DecompressColourBc5( u8* rgba, void const* block)
         rgba[i*4 + 3] = 255;
     }
 }
-// -- GODOT end --
+// -- PANDEMONIUM end --
 
 
 } // namespace squish

@@ -39,7 +39,7 @@
 // instead of Querying all the strings every frame just in case of changes,
 // there is a signal "project_settings_changed" which objects can subscribe to.
 
-// E.g. (from another Godot object)
+// E.g. (from another Pandemonium object)
 // // Call your user written object function to Query the project settings once at creation,
 // perhaps in an ENTER_TREE notification:
 // _project_settings_changed()
@@ -55,7 +55,7 @@
 // before ProjectSettings:
 // ProjectSettings::get_singleton()->disconnect("project_settings_changed", this, "_project_settings_changed");
 
-// Additionally, for objects that are not regular Godot objects capable of subscribing to signals (e.g. Rasterizers),
+// Additionally, for objects that are not regular Pandemonium objects capable of subscribing to signals (e.g. Rasterizers),
 // you can also query the function "has_changes()" each frame,
 // and update your local settings whenever this is set.
 

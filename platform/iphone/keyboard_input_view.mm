@@ -33,20 +33,20 @@
 #include "core/os/keyboard.h"
 #include "os_iphone.h"
 
-@interface GodotKeyboardInputView () <UITextViewDelegate>
+@interface PandemoniumKeyboardInputView () <UITextViewDelegate>
 
 @property(nonatomic, copy) NSString *previousText;
 @property(nonatomic, assign) NSRange previousSelectedRange;
 
 @end
 
-@implementation GodotKeyboardInputView
+@implementation PandemoniumKeyboardInputView
 
 - (instancetype)initWithCoder:(NSCoder *)coder {
 	self = [super initWithCoder:coder];
 
 	if (self) {
-		[self godot_commonInit];
+		[self pandemonium_commonInit];
 	}
 
 	return self;
@@ -56,13 +56,13 @@
 	self = [super initWithFrame:frame textContainer:textContainer];
 
 	if (self) {
-		[self godot_commonInit];
+		[self pandemonium_commonInit];
 	}
 
 	return self;
 }
 
-- (void)godot_commonInit {
+- (void)pandemonium_commonInit {
 	self.hidden = YES;
 	self.delegate = self;
 

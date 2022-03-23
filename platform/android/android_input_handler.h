@@ -76,7 +76,7 @@ private:
 
 	static int _button_index_from_mask(int button_mask);
 
-	static int _android_button_mask_to_godot_button_mask(int android_button_mask);
+	static int _android_button_mask_to_pandemonium_button_mask(int android_button_mask);
 
 	void _wheel_button_click(int event_buttons_mask, const Ref<InputEventMouseButton> &ev, int wheel_button, float factor);
 

@@ -4,7 +4,7 @@
 /*  spatial_editor_plugin.h                                              */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -278,7 +278,7 @@ public:
 	};
 
 	enum NavigationScheme {
-		NAVIGATION_GODOT,
+		NAVIGATION_PANDEMONIUM,
 		NAVIGATION_MAYA,
 		NAVIGATION_MODO,
 	};

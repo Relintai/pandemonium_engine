@@ -107,7 +107,7 @@ if env["builtin_freetype"]:
         env.Append(LIBS=[lib])
 
 
-# Godot source files
+# Pandemonium source files
 
 module_obj = []
 

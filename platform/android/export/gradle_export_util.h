@@ -2,7 +2,7 @@
 /*  gradle_export_util.h                                                 */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -28,8 +28,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GODOT_GRADLE_EXPORT_UTIL_H
-#define GODOT_GRADLE_EXPORT_UTIL_H
+#ifndef PANDEMONIUM_GRADLE_EXPORT_UTIL_H
+#define PANDEMONIUM_GRADLE_EXPORT_UTIL_H
 
 #include "core/io/zip_io.h"
 #include "core/os/dir_access.h"
@@ -37,10 +37,10 @@
 #include "core/os/os.h"
 #include "editor/editor_export.h"
 
-const String godot_project_name_xml_string = R"(<?xml version="1.0" encoding="utf-8"?>
+const String pandemonium_project_name_xml_string = R"(<?xml version="1.0" encoding="utf-8"?>
 <!--WARNING: THIS FILE WILL BE OVERWRITTEN AT BUILD TIME-->
 <resources>
-	<string name="godot_project_name_string">%s</string>
+	<string name="pandemonium_project_name_string">%s</string>
 </resources>
 )";
 
@@ -87,4 +87,4 @@ String _get_activity_tag(const Ref<EditorExportPreset> &p_preset);
 
 String _get_application_tag(const Ref<EditorExportPreset> &p_preset, bool p_has_storage_permission);
 
-#endif //GODOT_GRADLE_EXPORT_UTIL_H
+#endif //PANDEMONIUM_GRADLE_EXPORT_UTIL_H

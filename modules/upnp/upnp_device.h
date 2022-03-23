@@ -1,10 +1,10 @@
-#ifndef GODOT_UPNP_DEVICE_H
-#define GODOT_UPNP_DEVICE_H
+#ifndef PANDEMONIUM_UPNP_DEVICE_H
+#define PANDEMONIUM_UPNP_DEVICE_H
 /*************************************************************************/
 /*  upnp_device.h                                                        */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -90,4 +90,4 @@ private:
 
 VARIANT_ENUM_CAST(UPNPDevice::IGDStatus)
 
-#endif // GODOT_UPNP_DEVICE_H
+#endif // PANDEMONIUM_UPNP_DEVICE_H

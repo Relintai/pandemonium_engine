@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 /*
-Adapted to Godot from the Bullet library.
+Adapted to Pandemonium from the Bullet library.
 */
 
 #include "servers/physics/joints/jacobian_entry_sw.h"

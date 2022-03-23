@@ -1425,7 +1425,7 @@ PhysicsServerSW *PhysicsServerSW::singleton = nullptr;
 PhysicsServerSW::PhysicsServerSW() {
 	singleton = this;
 
-	bool use_bvh_or_octree = GLOBAL_GET("physics/3d/godot_physics/use_bvh");
+	bool use_bvh_or_octree = GLOBAL_GET("physics/3d/pandemonium_physics/use_bvh");
 
 	if (use_bvh_or_octree) {
 		BroadPhaseSW::create_func = BroadPhaseBVH::_create;

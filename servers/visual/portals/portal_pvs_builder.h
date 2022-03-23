@@ -4,7 +4,7 @@
 /*  portal_pvs_builder.h                                                 */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -34,7 +34,7 @@
 #include "core/local_vector.h"
 #include "core/math/plane.h"
 
-//#define GODOT_PVS_SUPPORT_SAVE_FILE
+//#define PANDEMONIUM_PVS_SUPPORT_SAVE_FILE
 
 class PortalRenderer;
 class PVS;
@@ -48,7 +48,7 @@ public:
 	void calculate_pvs(PortalRenderer &p_portal_renderer, String p_filename, int p_depth_limit, bool p_use_simple_pvs, bool p_log_pvs_generation);
 
 private:
-#ifdef GODOT_PVS_SUPPORT_SAVE_FILE
+#ifdef PANDEMONIUM_PVS_SUPPORT_SAVE_FILE
 	bool load_pvs(String p_filename);
 	void save_pvs(String p_filename);
 #endif

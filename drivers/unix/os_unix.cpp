@@ -2,7 +2,7 @@
 /*  os_unix.cpp                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -76,13 +76,13 @@ static void _setup_clock() {
 }
 #else
 #if defined(CLOCK_MONOTONIC_RAW) && !defined(JAVASCRIPT_ENABLED) // This is a better clock on Linux.
-#define GODOT_CLOCK CLOCK_MONOTONIC_RAW
+#define PANDEMONIUM_CLOCK CLOCK_MONOTONIC_RAW
 #else
-#define GODOT_CLOCK CLOCK_MONOTONIC
+#define PANDEMONIUM_CLOCK CLOCK_MONOTONIC
 #endif
 static void _setup_clock() {
 	struct timespec tv_now = { 0, 0 };
-	ERR_FAIL_COND_MSG(clock_gettime(GODOT_CLOCK, &tv_now) != 0, "OS CLOCK IS NOT WORKING!");
+	ERR_FAIL_COND_MSG(clock_gettime(PANDEMONIUM_CLOCK, &tv_now) != 0, "OS CLOCK IS NOT WORKING!");
 	_clock_start = ((uint64_t)tv_now.tv_nsec / 1000L) + (uint64_t)tv_now.tv_sec * 1000000L;
 }
 #endif
@@ -252,7 +252,7 @@ uint64_t OS_Unix::get_ticks_usec() const {
 	// Unchecked return. Static analyzers might complain.
 	// If _setup_clock() succeeded, we assume clock_gettime() works.
 	struct timespec tv_now = { 0, 0 };
-	clock_gettime(GODOT_CLOCK, &tv_now);
+	clock_gettime(PANDEMONIUM_CLOCK, &tv_now);
 	uint64_t longtime = ((uint64_t)tv_now.tv_nsec / 1000L) + (uint64_t)tv_now.tv_sec * 1000000L;
 #endif
 	longtime -= _clock_start;
@@ -460,11 +460,11 @@ String OS_Unix::get_user_data_dir() const {
 			}
 			return get_data_path().plus_file(custom_dir);
 		} else {
-			return get_data_path().plus_file(get_godot_dir_name()).plus_file("app_userdata").plus_file(appname);
+			return get_data_path().plus_file(get_pandemonium_dir_name()).plus_file("app_userdata").plus_file(appname);
 		}
 	}
 
-	return get_data_path().plus_file(get_godot_dir_name()).plus_file("app_userdata").plus_file("[unnamed project]");
+	return get_data_path().plus_file(get_pandemonium_dir_name()).plus_file("app_userdata").plus_file("[unnamed project]");
 }
 
 String OS_Unix::get_executable_path() const {
@@ -532,7 +532,7 @@ void UnixTerminalLogger::log_error(const char *p_function, const char *p_file, i
 	}
 
 	// Disable color codes if stdout is not a TTY.
-	// This prevents Godot from writing ANSI escape codes when redirecting
+	// This prevents Pandemonium from writing ANSI escape codes when redirecting
 	// stdout and stderr to a file.
 	const bool tty = isatty(fileno(stdout));
 	const char *gray = tty ? "\E[0;90m" : "";

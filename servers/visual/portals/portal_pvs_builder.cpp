@@ -2,7 +2,7 @@
 /*  portal_pvs_builder.cpp                                               */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -105,7 +105,7 @@ void PVSBuilder::create_secondary_pvs(int p_room_id, const LocalVector<Neighbour
 	} // go through each room in the primary pvs
 }
 
-#ifdef GODOT_PVS_SUPPORT_SAVE_FILE
+#ifdef PANDEMONIUM_PVS_SUPPORT_SAVE_FILE
 
 bool PVSBuilder::load_pvs(String p_filename) {
 	if (p_filename == "") {
@@ -241,7 +241,7 @@ void PVSBuilder::calculate_pvs(PortalRenderer &p_portal_renderer, String p_filen
 	_log_active = p_log_pvs_generation;
 
 	// attempt to load from file rather than create each time
-#ifdef GODOT_PVS_SUPPORT_SAVE_FILE
+#ifdef PANDEMONIUM_PVS_SUPPORT_SAVE_FILE
 	if (load_pvs(p_filename)) {
 		print_line("loaded pvs successfully from file " + p_filename);
 		_pvs->set_loaded(true);
@@ -309,7 +309,7 @@ void PVSBuilder::calculate_pvs(PortalRenderer &p_portal_renderer, String p_filen
 
 	print_verbose("calculated PVS in " + itos(time_after - time_before) + " ms.");
 
-#ifdef GODOT_PVS_SUPPORT_SAVE_FILE
+#ifdef PANDEMONIUM_PVS_SUPPORT_SAVE_FILE
 	save_pvs(p_filename);
 #endif
 }
@@ -491,8 +491,8 @@ void PVSBuilder::trace_rooms_recursive(int p_depth, int p_source_room_id, int p_
 			const VSPortal &first_portal = _portal_renderer->get_portal(p_first_portal_id);
 			portal.add_pvs_planes(first_portal, p_first_portal_outgoing, planes, outgoing != 0);
 
-//#define GODOT_PVS_EXTRA_REJECT_TEST
-#ifdef GODOT_PVS_EXTRA_REJECT_TEST
+//#define PANDEMONIUM_PVS_EXTRA_REJECT_TEST
+#ifdef PANDEMONIUM_PVS_EXTRA_REJECT_TEST
 			// extra reject test for pvs - was the previous portal points outside the planes formed by the new portal?
 			// not fully tested and not yet found a situation where needed, but will leave in in case testers find
 			// such a situation.
@@ -628,7 +628,7 @@ void PVSBuilder::trace_rooms_recursive_simple(int p_depth, int p_source_room_id,
 			const VSPortal &first_portal = _portal_renderer->get_portal(p_first_portal_id);
 			portal.add_pvs_planes(first_portal, p_first_portal_outgoing, planes, outgoing != 0);
 
-#ifdef GODOT_PVS_EXTRA_REJECT_TEST
+#ifdef PANDEMONIUM_PVS_EXTRA_REJECT_TEST
 			// extra reject test for pvs - was the previous portal points outside the planes formed by the new portal?
 			// not fully tested and not yet found a situation where needed, but will leave in in case testers find
 			// such a situation.

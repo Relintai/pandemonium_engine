@@ -44,7 +44,7 @@ with open("editor/editor_property_name_processor.cpp") as f:
 unique_str = []
 unique_loc = {}
 main_po = """
-# LANGUAGE translation of the Godot Engine editor.
+# LANGUAGE translation of the Pandemonium Engine editor.
 # Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.
 # Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).
 # This file is distributed under the same license as the Godot source code.
@@ -54,8 +54,8 @@ main_po = """
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Godot Engine editor\\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\\n"
+"Project-Id-Version: Pandemonium Engine editor\\n"
+"Report-Msgid-Bugs-To: https://github.com/Relintai/pandemonium_engine\\n"
 "MIME-Version: 1.0\\n"
 "Content-Type: text/plain; charset=UTF-8\\n"
 "Content-Transfer-Encoding: 8-bit\\n"\n

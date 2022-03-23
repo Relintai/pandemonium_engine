@@ -1,4 +1,4 @@
-# LANGUAGE translation of the Godot Engine editor.
+# LANGUAGE translation of the Pandemonium Engine editor.
 # Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.
 # Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).
 # This file is distributed under the same license as the Godot source code.
@@ -8,8 +8,8 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Godot Engine editor\n"
-"Report-Msgid-Bugs-To: https://github.com/godotengine/godot\n"
+"Project-Id-Version: Pandemonium Engine editor\n"
+"Report-Msgid-Bugs-To: https://github.com/Relintai/pandemonium_engine\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
@@ -1118,7 +1118,7 @@ msgid "Change Dictionary Value"
 msgstr ""
 
 #: editor/editor_about.cpp
-msgid "Thanks from the Godot community!"
+msgid "Thanks from the Pandemonium community!"
 msgstr ""
 
 #: editor/editor_about.cpp editor/editor_node.cpp editor/project_manager.cpp
@@ -1126,7 +1126,7 @@ msgid "Click to copy."
 msgstr ""
 
 #: editor/editor_about.cpp
-msgid "Godot Engine contributors"
+msgid "Pandemonium Engine contributors"
 msgstr ""
 
 #: editor/editor_about.cpp
@@ -1198,7 +1198,7 @@ msgstr ""
 
 #: editor/editor_about.cpp
 msgid ""
-"Godot Engine relies on a number of third-party free and open source "
+"Pandemonium Engine relies on a number of third-party free and open source "
 "libraries, all compatible with the terms of its MIT license. The following "
 "is an exhaustive list of all such third-party components with their "
 "respective copyright statements and license terms."
@@ -1834,7 +1834,7 @@ msgid "New profile name:"
 msgstr ""
 
 #: editor/editor_feature_profile.cpp
-msgid "Godot Feature Profile"
+msgid "Pandemonium Feature Profile"
 msgstr ""
 
 #: editor/editor_feature_profile.cpp
@@ -3072,11 +3072,11 @@ msgid "Community"
 msgstr ""
 
 #: editor/editor_node.cpp
-msgid "About Godot"
+msgid "About Pandemonium"
 msgstr ""
 
 #: editor/editor_node.cpp
-msgid "Support Godot Development"
+msgid "Support Pandemonium Development"
 msgstr ""
 
 #: editor/editor_node.cpp
@@ -3797,7 +3797,7 @@ msgid "Select Template File"
 msgstr ""
 
 #: editor/export_template_manager.cpp
-msgid "Godot Export Templates"
+msgid "Pandemonium Export Templates"
 msgstr ""
 
 #: editor/export_template_manager.cpp
@@ -5419,7 +5419,7 @@ msgstr ""
 
 #: editor/plugins/baked_lightmap_editor_plugin.cpp
 msgid ""
-"Godot editor was built without ray tracing support, lightmaps can't be baked."
+"Pandemonium editor was built without ray tracing support, lightmaps can't be baked."
 msgstr ""
 
 #: editor/plugins/baked_lightmap_editor_plugin.cpp
@@ -7312,7 +7312,7 @@ msgid "Online Docs"
 msgstr ""
 
 #: editor/plugins/script_editor_plugin.cpp
-msgid "Open Godot online documentation."
+msgid "Open Pandemonium online documentation."
 msgstr ""
 
 #: editor/plugins/script_editor_plugin.cpp
@@ -10319,7 +10319,7 @@ msgstr ""
 
 #: editor/plugins/visual_shader_editor_plugin.cpp
 msgid ""
-"Custom Godot Shader Language expression, with custom amount of input and "
+"Custom Pandemonium Shader Language expression, with custom amount of input and "
 "output ports. This is a direct injection of code into the vertex/fragment/"
 "light function, do not use it to write the function declarations inside."
 msgstr ""
@@ -10332,7 +10332,7 @@ msgstr ""
 
 #: editor/plugins/visual_shader_editor_plugin.cpp
 msgid ""
-"Custom Godot Shader Language expression, which is placed on top of the "
+"Custom Pandemonium Shader Language expression, which is placed on top of the "
 "resulted shader. You can place various function definitions inside and call "
 "it later in the Expressions. You can also declare varyings, uniforms and "
 "constants."
@@ -10550,7 +10550,7 @@ msgid "ZIP File"
 msgstr ""
 
 #: editor/project_export.cpp
-msgid "Godot Game Pack"
+msgid "Pandemonium Game Pack"
 msgstr ""
 
 #: editor/project_export.cpp
@@ -10575,7 +10575,7 @@ msgstr ""
 
 #: editor/project_manager.cpp
 msgid ""
-"Invalid \".zip\" project file; it doesn't contain a \"project.godot\" file."
+"Invalid \".zip\" project file; it doesn't contain a \"project.pandemonium\" file."
 msgstr ""
 
 #: editor/project_manager.cpp
@@ -10583,11 +10583,11 @@ msgid "Please choose an empty folder."
 msgstr ""
 
 #: editor/project_manager.cpp
-msgid "Please choose a \"project.godot\" or \".zip\" file."
+msgid "Please choose a \"project.pandemonium\" or \".zip\" file."
 msgstr ""
 
 #: editor/project_manager.cpp
-msgid "This directory already contains a Godot project."
+msgid "This directory already contains a Pandemonium project."
 msgstr ""
 
 #: editor/project_manager.cpp
@@ -10620,16 +10620,16 @@ msgstr ""
 
 #: editor/project_manager.cpp
 msgid ""
-"Couldn't load project.godot in project path (error %d). It may be missing or "
+"Couldn't load project.pandemonium in project path (error %d). It may be missing or "
 "corrupted."
 msgstr ""
 
 #: editor/project_manager.cpp
-msgid "Couldn't edit project.godot in project path."
+msgid "Couldn't edit project.pandemonium in project path."
 msgstr ""
 
 #: editor/project_manager.cpp
-msgid "Couldn't create project.godot in project path."
+msgid "Couldn't create project.pandemonium in project path."
 msgstr ""
 
 #: editor/project_manager.cpp
@@ -10742,12 +10742,12 @@ msgstr ""
 
 #: editor/project_manager.cpp
 msgid ""
-"The following project settings file does not specify the version of Godot "
+"The following project settings file does not specify the version of Pandemonium "
 "through which it was created.\n"
 "\n"
 "%s\n"
 "\n"
-"If you proceed with opening it, it will be converted to Godot's current "
+"If you proceed with opening it, it will be converted to Pandemonium's current "
 "configuration file format.\n"
 "Warning: You won't be able to open the project with previous versions of the "
 "engine anymore."
@@ -10810,11 +10810,11 @@ msgstr ""
 
 #: editor/project_manager.cpp
 msgid ""
-"Are you sure to scan %s folders for existing Godot projects?\n"
+"Are you sure to scan %s folders for existing Pandemonium projects?\n"
 "This could take a while."
 msgstr ""
 
-#. TRANSLATORS: This refers to the application where users manage their Godot projects.
+#. TRANSLATORS: This refers to the application where users manage their Pandemonium projects.
 #: editor/project_manager.cpp
 msgid "Project Manager"
 msgstr ""
@@ -11137,7 +11137,7 @@ msgid "Changed Locale Filter Mode"
 msgstr ""
 
 #: editor/project_settings_editor.cpp
-msgid "Project Settings (project.godot)"
+msgid "Project Settings (project.pandemonium)"
 msgstr ""
 
 #: editor/project_settings_editor.cpp editor/settings_config_dialog.cpp
@@ -13338,11 +13338,11 @@ msgstr ""
 
 #: platform/android/export/export_plugin.cpp
 msgid ""
-"Invalid \"GodotPaymentV3\" module included in the \"android/modules\" "
-"project setting (changed in Godot 3.2.2).\n"
-"Replace it with the first-party \"GodotGooglePlayBilling\" plugin.\n"
-"Note that the singleton was also renamed from \"GodotPayments\" to "
-"\"GodotGooglePlayBilling\"."
+"Invalid \"PandemoniumPaymentV3\" module included in the \"android/modules\" "
+"project setting (changed in Pandemonium 3.2.2).\n"
+"Replace it with the first-party \"PandemoniumGooglePlayBilling\" plugin.\n"
+"Note that the singleton was also renamed from \"PandemoniumPayments\" to "
+"\"PandemoniumGooglePlayBilling\"."
 msgstr ""
 
 #: platform/android/export/export_plugin.cpp
@@ -13440,7 +13440,7 @@ msgstr ""
 msgid ""
 "Android build version mismatch:\n"
 "   Template installed: %s\n"
-"   Godot Version: %s\n"
+"   Pandemonium Version: %s\n"
 "Please reinstall Android build template from 'Project' menu."
 msgstr ""
 

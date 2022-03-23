@@ -167,7 +167,7 @@ void TransformInterpolator::interpolate_basis_linear(const Basis &p_prev, const 
 	r_result = p_prev.lerp(p_curr, p_fraction);
 
 	// It turns out we need to guard against zero scale basis.
-	// This is kind of silly, as we should probably fix the bugs elsewhere in Godot that can't deal with
+	// This is kind of silly, as we should probably fix the bugs elsewhere in Pandemonium that can't deal with
 	// zero scale, but until that time...
 	for (int n = 0; n < 3; n++) {
 		Vector3 &axis = r_result[n];
@@ -279,7 +279,7 @@ TransformInterpolator::Method TransformInterpolator::_test_basis(Basis p_basis, 
 		r_needed_normalize = true;
 	}
 
-	// Apply less stringent tests than the built in slerp, the standard Godot slerp
+	// Apply less stringent tests than the built in slerp, the standard Pandemonium slerp
 	// is too susceptible to float error to be useful
 	real_t det = p_basis.determinant();
 	if (!Math::is_equal_approx(det, 1, (real_t)0.01f)) {
@@ -334,7 +334,7 @@ bool TransformInterpolator::_basis_is_orthogonal(const Basis &p_basis, real_t p_
 	Basis identity;
 	Basis m = p_basis * p_basis.transposed();
 
-	// Less stringent tests than the standard Godot slerp
+	// Less stringent tests than the standard Pandemonium slerp
 	if (!m[0].is_equal_approx(identity[0], p_epsilon) || !m[1].is_equal_approx(identity[1], p_epsilon) || !m[2].is_equal_approx(identity[2], p_epsilon)) {
 		return false;
 	}

@@ -119,7 +119,7 @@ MainLoop *test() {
 
 		map.set("Hello", 1);
 		map.set("World", 2);
-		map.set("Godot rocks", 42);
+		map.set("Pandemonium rocks", 42);
 
 		for (OAHashMap<String, int>::Iterator it = map.iter(); it.valid; it = map.next_iter(it)) {
 			OS::get_singleton()->print("map[\"%s\"] = %d\n", it.key->utf8().get_data(), *it.value);

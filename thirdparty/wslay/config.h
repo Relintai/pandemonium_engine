@@ -1,10 +1,10 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-// -- GODOT start --
+// -- PANDEMONIUM start --
 #ifdef BIG_ENDIAN_ENABLED
 #define WORDS_BIGENDIAN
 #endif
-// -- GODOT end --
+// -- PANDEMONIUM end --
 
 #endif /* CONFIG_H */

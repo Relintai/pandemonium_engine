@@ -18,12 +18,12 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_godot_bone_node">
+		<method name="get_pandemonium_bone_node">
 			<return type="Dictionary" />
 			<description>
 			</description>
 		</method>
-		<method name="get_godot_skeleton">
+		<method name="get_pandemonium_skeleton">
 			<return type="Skeleton" />
 			<description>
 			</description>
@@ -33,9 +33,9 @@
 			<description>
 			</description>
 		</method>
-		<method name="set_godot_bone_node">
+		<method name="set_pandemonium_bone_node">
 			<return type="void" />
-			<argument index="0" name="godot_bone_node" type="Dictionary" />
+			<argument index="0" name="pandemonium_bone_node" type="Dictionary" />
 			<description>
 			</description>
 		</method>

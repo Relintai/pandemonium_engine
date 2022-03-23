@@ -63,7 +63,7 @@ Portal::Portal() {
 	_portal_rid = RID_PRIME(VisualServer::get_singleton()->portal_create());
 
 #ifdef TOOLS_ENABLED
-	_room_manager_godot_ID = 0;
+	_room_manager_pandemonium_ID = 0;
 #endif
 
 	// portals are defined COUNTER clockwise,

@@ -1,4 +1,4 @@
-// Gradle build config for Godot Engine's Android port.
+// Gradle build config for Pandemonium Engine's Android port.
 //
 // Do not remove/modify comments ending with BEGIN/END, they are used to inject
 // addon-specific configuration.
@@ -30,8 +30,8 @@ allprojects {
 //CHUNK_ALLPROJECTS_REPOSITORIES_BEGIN
 //CHUNK_ALLPROJECTS_REPOSITORIES_END
 
-        // Godot user plugins custom maven repos
-        String[] mavenRepos = getGodotPluginsMavenRepos()
+        // Pandemonium user plugins custom maven repos
+        String[] mavenRepos = getPandemoniumPluginsMavenRepos()
         if (mavenRepos != null && mavenRepos.size() > 0) {
             for (String repoUrl : mavenRepos) {
                 maven {
@@ -53,26 +53,26 @@ dependencies {
 
     if (rootProject.findProject(":lib")) {
         implementation project(":lib")
-    } else if (rootProject.findProject(":godot:lib")) {
-        implementation project(":godot:lib")
+    } else if (rootProject.findProject(":pandemonium:lib")) {
+        implementation project(":pandemonium:lib")
     } else {
-        // Custom build mode. In this scenario this project is the only one around and the Godot
-        // library is available through the pre-generated godot-lib.*.aar android archive files.
+        // Custom build mode. In this scenario this project is the only one around and the Pandemonium
+        // library is available through the pre-generated pandemonium-lib.*.aar android archive files.
         debugImplementation fileTree(dir: 'libs/debug', include: ['*.jar', '*.aar'])
         devImplementation fileTree(dir: 'libs/dev', include: ['*.jar', '*.aar'])
         releaseImplementation fileTree(dir: 'libs/release', include: ['*.jar', '*.aar'])
     }
 
-    // Godot user plugins remote dependencies
-    String[] remoteDeps = getGodotPluginsRemoteBinaries()
+    // Pandemonium user plugins remote dependencies
+    String[] remoteDeps = getPandemoniumPluginsRemoteBinaries()
     if (remoteDeps != null && remoteDeps.size() > 0) {
         for (String dep : remoteDeps) {
             implementation dep
         }
     }
 
-    // Godot user plugins local dependencies
-    String[] pluginsBinaries = getGodotPluginsLocalBinaries()
+    // Pandemonium user plugins local dependencies
+    String[] pluginsBinaries = getPandemoniumPluginsLocalBinaries()
     if (pluginsBinaries != null && pluginsBinaries.size() > 0) {
         implementation files(pluginsBinaries)
     }
@@ -94,7 +94,7 @@ android {
     assetPacks = [":assetPacks:installTime"]
 
     defaultConfig {
-        // The default ignore pattern for the 'assets' directory includes hidden files and directories which are used by Godot projects.
+        // The default ignore pattern for the 'assets' directory includes hidden files and directories which are used by Pandemonium projects.
         aaptOptions {
             ignoreAssetsPattern "!.svn:!.git:!.gitignore:!.ds_store:!*.scc:<dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"
         }
@@ -104,7 +104,7 @@ android {
             abiFilters export_abi_list
         }
 
-        manifestPlaceholders = [godotEditorVersion: getGodotEditorVersion()]
+        manifestPlaceholders = [pandemoniumEditorVersion: getPandemoniumEditorVersion()]
 
         // Feel free to modify the application id to your own.
         applicationId getExportPackageName()

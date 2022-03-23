@@ -625,7 +625,7 @@ void EditorNode::_notification(int p_what) {
 			p->set_item_icon(p->get_item_index(HELP_PANDEMONIUM_DOCS), gui_base->get_icon("Instance", "EditorIcons"));
 			p->set_item_icon(p->get_item_index(HELP_GODOT_DOCS), gui_base->get_icon("Instance", "EditorIcons"));
 			p->set_item_icon(p->get_item_index(HELP_REPORT_A_BUG), gui_base->get_icon("Instance", "EditorIcons"));
-			p->set_item_icon(p->get_item_index(HELP_ABOUT), gui_base->get_icon("Godot", "EditorIcons"));
+			p->set_item_icon(p->get_item_index(HELP_ABOUT), gui_base->get_icon("Pandemonium", "EditorIcons"));
 			p->set_item_icon(p->get_item_index(HELP_SUPPORT_PANDEMONIUM_DEVELOPMENT), gui_base->get_icon("Heart", "EditorIcons"));
 
 			_update_update_spinner();
@@ -896,10 +896,10 @@ void EditorNode::_scan_external_changes() {
 		}
 	}
 
-	String project_settings_path = ProjectSettings::get_singleton()->get_resource_path().plus_file("project.godot");
+	String project_settings_path = ProjectSettings::get_singleton()->get_resource_path().plus_file("project.pandemonium");
 	if (FileAccess::get_modified_time(project_settings_path) > ProjectSettings::get_singleton()->get_last_saved_time()) {
 		TreeItem *ti = disk_changed_list->create_item(r);
-		ti->set_text(0, "project.godot");
+		ti->set_text(0, "project.pandemonium");
 		need_reload = true;
 	}
 
@@ -5335,7 +5335,7 @@ bool EditorNode::call_build() {
 
 	for (int i = 0; i < build_callback_count && builds_successful; i++) {
 		if (!build_callbacks[i]()) {
-			ERR_PRINT("A Godot Engine build callback failed.");
+			ERR_PRINT("A Pandemonium Engine build callback failed.");
 			builds_successful = false;
 		}
 	}
@@ -6317,10 +6317,10 @@ EditorNode::EditorNode() {
 #endif
 	p->add_separator();
 	p->add_icon_shortcut(gui_base->get_icon("Instance", "EditorIcons"), ED_SHORTCUT("editor/online_docs", TTR("Online Documentation")), HELP_PANDEMONIUM_DOCS);
-	p->add_icon_shortcut(gui_base->get_icon("Instance", "EditorIcons"), ED_SHORTCUT("editor/godot_online_docs", TTR("Godot Online Documentation")), HELP_GODOT_DOCS);
+	p->add_icon_shortcut(gui_base->get_icon("Instance", "EditorIcons"), ED_SHORTCUT("editor/pandemonium_online_docs", TTR("Pandemonium Online Documentation")), HELP_GODOT_DOCS);
 	p->add_icon_shortcut(gui_base->get_icon("Instance", "EditorIcons"), ED_SHORTCUT("editor/report_a_bug", TTR("Report a Bug")), HELP_REPORT_A_BUG);
 	p->add_separator();
-	p->add_icon_shortcut(gui_base->get_icon("Godot", "EditorIcons"), ED_SHORTCUT("editor/about", TTR("About Pandemonium")), HELP_ABOUT);
+	p->add_icon_shortcut(gui_base->get_icon("Pandemonium", "EditorIcons"), ED_SHORTCUT("editor/about", TTR("About Pandemonium")), HELP_ABOUT);
 	p->add_icon_shortcut(gui_base->get_icon("Heart", "EditorIcons"), ED_SHORTCUT("editor/support_development", TTR("Support Pandemonium Development")), HELP_SUPPORT_PANDEMONIUM_DEVELOPMENT);
 
 	HBoxContainer *play_hb = memnew(HBoxContainer);

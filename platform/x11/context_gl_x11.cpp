@@ -86,8 +86,8 @@ static void set_class_hint(Display *p_display, Window p_window) {
 	/* set the name and class hints for the window manager to use */
 	classHint = XAllocClassHint();
 	if (classHint) {
-		classHint->res_name = (char *)"Godot_Engine";
-		classHint->res_class = (char *)"Godot";
+		classHint->res_name = (char *)"Pandemonium_Engine";
+		classHint->res_class = (char *)"Pandemonium";
 	}
 	XSetClassHint(p_display, p_window, classHint);
 	XFree(classHint);
@@ -200,7 +200,7 @@ Error ContextGL_X11::initialize() {
 
 	swa.colormap = XCreateColormap(x11_display, RootWindow(x11_display, vi->screen), vi->visual, AllocNone);
 	x11_window = XCreateWindow(x11_display, RootWindow(x11_display, vi->screen), 0, 0, OS::get_singleton()->get_video_mode().width, OS::get_singleton()->get_video_mode().height, 0, vi->depth, InputOutput, vi->visual, valuemask, &swa);
-	XStoreName(x11_display, x11_window, "Godot Engine");
+	XStoreName(x11_display, x11_window, "Pandemonium Engine");
 
 	ERR_FAIL_COND_V(!x11_window, ERR_UNCONFIGURED);
 	set_class_hint(x11_display, x11_window);

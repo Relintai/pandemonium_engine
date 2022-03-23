@@ -30,7 +30,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GodotNativeVideoView : UIView
+@interface PandemoniumNativeVideoView : UIView
 
 - (BOOL)playVideoAtPath:(NSString *)filePath volume:(float)videoVolume audio:(NSString *)audioTrack subtitle:(NSString *)subtitleTrack;
 - (BOOL)isVideoPlaying;

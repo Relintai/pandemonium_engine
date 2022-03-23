@@ -51,8 +51,8 @@ void GLTFSkin::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_joint_i_to_bone_i", "joint_i_to_bone_i"), &GLTFSkin::set_joint_i_to_bone_i);
 	ClassDB::bind_method(D_METHOD("get_joint_i_to_name"), &GLTFSkin::get_joint_i_to_name);
 	ClassDB::bind_method(D_METHOD("set_joint_i_to_name", "joint_i_to_name"), &GLTFSkin::set_joint_i_to_name);
-	ClassDB::bind_method(D_METHOD("get_godot_skin"), &GLTFSkin::get_godot_skin);
-	ClassDB::bind_method(D_METHOD("set_godot_skin", "godot_skin"), &GLTFSkin::set_godot_skin);
+	ClassDB::bind_method(D_METHOD("get_pandemonium_skin"), &GLTFSkin::get_pandemonium_skin);
+	ClassDB::bind_method(D_METHOD("set_pandemonium_skin", "pandemonium_skin"), &GLTFSkin::set_pandemonium_skin);
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "skin_root"), "set_skin_root", "get_skin_root"); // GLTFNodeIndex
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "joints_original"), "set_joints_original", "get_joints_original"); // Vector<GLTFNodeIndex>
@@ -63,7 +63,7 @@ void GLTFSkin::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "skeleton"), "set_skeleton", "get_skeleton"); // int
 	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "joint_i_to_bone_i", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL), "set_joint_i_to_bone_i", "get_joint_i_to_bone_i"); // Map<int,
 	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "joint_i_to_name", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL), "set_joint_i_to_name", "get_joint_i_to_name"); // Map<int,
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "godot_skin"), "set_godot_skin", "get_godot_skin"); // Ref<Skin>
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "pandemonium_skin"), "set_pandemonium_skin", "get_pandemonium_skin"); // Ref<Skin>
 }
 
 GLTFNodeIndex GLTFSkin::get_skin_root() {
@@ -148,12 +148,12 @@ void GLTFSkin::set_joint_i_to_name(Dictionary p_joint_i_to_name) {
 	}
 }
 
-Ref<Skin> GLTFSkin::get_godot_skin() {
-	return godot_skin;
+Ref<Skin> GLTFSkin::get_pandemonium_skin() {
+	return pandemonium_skin;
 }
 
-void GLTFSkin::set_godot_skin(Ref<Skin> p_godot_skin) {
-	godot_skin = p_godot_skin;
+void GLTFSkin::set_pandemonium_skin(Ref<Skin> p_pandemonium_skin) {
+	pandemonium_skin = p_pandemonium_skin;
 }
 
 GLTFSkin::GLTFSkin() {

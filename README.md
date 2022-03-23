@@ -39,7 +39,7 @@ years as an in-house engine, used to publish several work-for-hire titles.
 
 ### Binary downloads
 
-I don't have anything (lik an official webpage) set up at the moment, but temporarily you can download binaries from the github actions tab [[here]](https://github.com/Relintai/pandemonium_engine/actions).
+I don't have anything (lik an official webpage) set up at the moment, but temporarily you can download binaries from the github actions tab [[here]](https://github.com/Relintai/pandemonium_engine).
 
 ### Compiling from source
 

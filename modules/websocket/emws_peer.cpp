@@ -54,11 +54,11 @@ Error EMWSPeer::read_msg(const uint8_t *p_data, uint32_t p_size, bool p_is_strin
 }
 
 Error EMWSPeer::put_packet(const uint8_t *p_buffer, int p_buffer_size) {
-	ERR_FAIL_COND_V(_out_buf_size && ((uint64_t)godot_js_websocket_buffered_amount(peer_sock) + p_buffer_size >= (1ULL << _out_buf_size)), ERR_OUT_OF_MEMORY);
+	ERR_FAIL_COND_V(_out_buf_size && ((uint64_t)pandemonium_js_websocket_buffered_amount(peer_sock) + p_buffer_size >= (1ULL << _out_buf_size)), ERR_OUT_OF_MEMORY);
 
 	int is_bin = write_mode == WebSocketPeer::WRITE_MODE_BINARY ? 1 : 0;
 
-	if (godot_js_websocket_send(peer_sock, p_buffer, p_buffer_size, is_bin) != 0) {
+	if (pandemonium_js_websocket_send(peer_sock, p_buffer, p_buffer_size, is_bin) != 0) {
 		return FAILED;
 	}
 
@@ -86,7 +86,7 @@ int EMWSPeer::get_available_packet_count() const {
 
 int EMWSPeer::get_current_outbound_buffered_amount() const {
 	if (peer_sock != -1) {
-		return godot_js_websocket_buffered_amount(peer_sock);
+		return pandemonium_js_websocket_buffered_amount(peer_sock);
 	}
 	return 0;
 }
@@ -101,7 +101,7 @@ bool EMWSPeer::is_connected_to_host() const {
 
 void EMWSPeer::close(int p_code, String p_reason) {
 	if (peer_sock != -1) {
-		godot_js_websocket_close(peer_sock, p_code, p_reason.utf8().get_data());
+		pandemonium_js_websocket_close(peer_sock, p_code, p_reason.utf8().get_data());
 	}
 	_is_string = 0;
 	_in_buffer.clear();

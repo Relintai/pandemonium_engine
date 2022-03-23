@@ -273,7 +273,7 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 		String host_lang = OS::get_singleton()->get_locale();
 		host_lang = TranslationServer::standardize_locale(host_lang);
 
-		// Some locales are not properly supported currently in Godot due to lack of font shaping
+		// Some locales are not properly supported currently in Pandemonium due to lack of font shaping
 		// (e.g. Arabic or Hindi), so even though we have work in progress translations for them,
 		// we skip them as they don't render properly. (GH-28577)
 		const Vector<String> locales_to_skip = String("ar,bn,fa,he,hi,ml,si,ta,te,ur").split(",");
@@ -359,7 +359,7 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 
 	// Theme
 	_initial_set("interface/theme/preset", "Default");
-	hints["interface/theme/preset"] = PropertyInfo(Variant::STRING, "interface/theme/preset", PROPERTY_HINT_ENUM, "Default,Godot 3,Alien,Arc,Godot 2,Grey,Light,Solarized (Dark),Solarized (Light),Custom", PROPERTY_USAGE_DEFAULT);
+	hints["interface/theme/preset"] = PropertyInfo(Variant::STRING, "interface/theme/preset", PROPERTY_HINT_ENUM, "Default,Pandemonium 3,Alien,Arc,Pandemonium 2,Grey,Light,Solarized (Dark),Solarized (Light),Custom", PROPERTY_USAGE_DEFAULT);
 	_initial_set("interface/theme/icon_and_font_color", 0);
 	hints["interface/theme/icon_and_font_color"] = PropertyInfo(Variant::INT, "interface/theme/icon_and_font_color", PROPERTY_HINT_ENUM, "Auto,Dark,Light", PROPERTY_USAGE_DEFAULT);
 	_initial_set("interface/theme/base_color", Color(0.2, 0.23, 0.31));
@@ -558,7 +558,7 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	_initial_set("editors/3d/navigation/navigation_scheme", 0);
 	_initial_set("editors/3d/navigation/invert_y_axis", false);
 	_initial_set("editors/3d/navigation/invert_x_axis", false);
-	hints["editors/3d/navigation/navigation_scheme"] = PropertyInfo(Variant::INT, "editors/3d/navigation/navigation_scheme", PROPERTY_HINT_ENUM, "Godot,Maya,Modo");
+	hints["editors/3d/navigation/navigation_scheme"] = PropertyInfo(Variant::INT, "editors/3d/navigation/navigation_scheme", PROPERTY_HINT_ENUM, "Pandemonium,Maya,Modo");
 	_initial_set("editors/3d/navigation/zoom_style", 0);
 	hints["editors/3d/navigation/zoom_style"] = PropertyInfo(Variant::INT, "editors/3d/navigation/zoom_style", PROPERTY_HINT_ENUM, "Vertical, Horizontal");
 
@@ -848,16 +848,16 @@ void EditorSettings::create() {
 	} else {
 		// Typically XDG_DATA_HOME or %APPDATA%
 		data_path = OS::get_singleton()->get_data_path();
-		data_dir = data_path.plus_file(OS::get_singleton()->get_godot_dir_name());
+		data_dir = data_path.plus_file(OS::get_singleton()->get_pandemonium_dir_name());
 		// Can be different from data_path e.g. on Linux or macOS
 		config_path = OS::get_singleton()->get_config_path();
-		config_dir = config_path.plus_file(OS::get_singleton()->get_godot_dir_name());
+		config_dir = config_path.plus_file(OS::get_singleton()->get_pandemonium_dir_name());
 		// Can be different from above paths, otherwise a subfolder of data_dir
 		cache_path = OS::get_singleton()->get_cache_path();
 		if (cache_path == data_path) {
 			cache_dir = data_dir.plus_file("cache");
 		} else {
-			cache_dir = cache_path.plus_file(OS::get_singleton()->get_godot_dir_name());
+			cache_dir = cache_path.plus_file(OS::get_singleton()->get_pandemonium_dir_name());
 		}
 	}
 

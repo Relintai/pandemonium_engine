@@ -1533,7 +1533,7 @@ void main() {
 	float anisotropy = 0.0;
 	vec2 anisotropy_flow = vec2(1.0, 0.0);
 	float sss_strength = 0.0; //unused
-	// gl_FragDepth is not available in GLES2, so writing to DEPTH is not converted to gl_FragDepth by Godot compiler resulting in a
+	// gl_FragDepth is not available in GLES2, so writing to DEPTH is not converted to gl_FragDepth by Pandemonium compiler resulting in a
 	// compile error because DEPTH is not a variable.
 	float m_DEPTH = 0.0;
 

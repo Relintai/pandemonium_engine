@@ -2,7 +2,7 @@
 /*  spatial_editor_plugin.cpp                                            */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -1966,7 +1966,7 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 
 		} else if (m->get_button_mask() & BUTTON_MASK_MIDDLE) {
 			const int mod = _get_key_modifier(m);
-			if (nav_scheme == NAVIGATION_GODOT) {
+			if (nav_scheme == NAVIGATION_PANDEMONIUM) {
 				if (mod == _get_key_modifier_setting("editors/3d/navigation/pan_modifier")) {
 					nav_mode = NAVIGATION_PAN;
 				} else if (mod == _get_key_modifier_setting("editors/3d/navigation/zoom_modifier")) {
@@ -2038,7 +2038,7 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 		NavigationScheme nav_scheme = (NavigationScheme)EditorSettings::get_singleton()->get("editors/3d/navigation/navigation_scheme").operator int();
 		NavigationMode nav_mode = NAVIGATION_NONE;
 
-		if (nav_scheme == NAVIGATION_GODOT) {
+		if (nav_scheme == NAVIGATION_PANDEMONIUM) {
 			const int mod = _get_key_modifier(pan_gesture);
 
 			if (mod == _get_key_modifier_setting("editors/3d/navigation/pan_modifier")) {

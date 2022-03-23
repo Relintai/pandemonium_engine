@@ -237,7 +237,7 @@ void AndroidInputHandler::process_hover(int p_type, Point2 p_pos) {
 }
 
 void AndroidInputHandler::process_mouse_event(int event_action, int event_android_buttons_mask, Point2 event_pos, float event_vertical_factor, float event_horizontal_factor) {
-	int event_buttons_mask = _android_button_mask_to_godot_button_mask(event_android_buttons_mask);
+	int event_buttons_mask = _android_button_mask_to_pandemonium_button_mask(event_android_buttons_mask);
 	switch (event_action) {
 		case AMOTION_EVENT_ACTION_BUTTON_PRESS:
 		case AMOTION_EVENT_ACTION_BUTTON_RELEASE: {
@@ -303,7 +303,7 @@ void AndroidInputHandler::_wheel_button_click(int event_buttons_mask, const Ref<
 }
 
 void AndroidInputHandler::process_double_tap(int event_android_button_mask, Point2 p_pos) {
-	int event_button_mask = _android_button_mask_to_godot_button_mask(event_android_button_mask);
+	int event_button_mask = _android_button_mask_to_pandemonium_button_mask(event_android_button_mask);
 	Ref<InputEventMouseButton> ev;
 	ev.instance();
 	_set_key_modifier_state(ev);
@@ -343,25 +343,25 @@ int AndroidInputHandler::_button_index_from_mask(int button_mask) {
 	}
 }
 
-int AndroidInputHandler::_android_button_mask_to_godot_button_mask(int android_button_mask) {
-	int godot_button_mask = 0;
+int AndroidInputHandler::_android_button_mask_to_pandemonium_button_mask(int android_button_mask) {
+	int pandemonium_button_mask = 0;
 	if (android_button_mask & AMOTION_EVENT_BUTTON_PRIMARY) {
-		godot_button_mask |= BUTTON_MASK_LEFT;
+		pandemonium_button_mask |= BUTTON_MASK_LEFT;
 	}
 	if (android_button_mask & AMOTION_EVENT_BUTTON_SECONDARY) {
-		godot_button_mask |= BUTTON_MASK_RIGHT;
+		pandemonium_button_mask |= BUTTON_MASK_RIGHT;
 	}
 	if (android_button_mask & AMOTION_EVENT_BUTTON_TERTIARY) {
-		godot_button_mask |= BUTTON_MASK_MIDDLE;
+		pandemonium_button_mask |= BUTTON_MASK_MIDDLE;
 	}
 	if (android_button_mask & AMOTION_EVENT_BUTTON_BACK) {
-		godot_button_mask |= BUTTON_MASK_XBUTTON1;
+		pandemonium_button_mask |= BUTTON_MASK_XBUTTON1;
 	}
 	if (android_button_mask & AMOTION_EVENT_BUTTON_FORWARD) {
-		godot_button_mask |= BUTTON_MASK_XBUTTON2;
+		pandemonium_button_mask |= BUTTON_MASK_XBUTTON2;
 	}
 
-	return godot_button_mask;
+	return pandemonium_button_mask;
 }
 
 void AndroidInputHandler::joy_connection_changed(int p_device, bool p_connected, String p_name) {

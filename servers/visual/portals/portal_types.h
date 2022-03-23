@@ -230,7 +230,7 @@ struct VSRoomGroup {
 	// used for calculating gameplay notifications
 	uint32_t last_room_tick_hit = 0;
 
-	ObjectID _godot_instance_ID = 0;
+	ObjectID _pandemonium_instance_ID = 0;
 
 	LocalVector<uint32_t, int32_t> _room_ids;
 };
@@ -339,7 +339,7 @@ struct VSRoom {
 	AABB _aabb;
 
 	int32_t _room_ID = -1;
-	ObjectID _godot_instance_ID = 0;
+	ObjectID _pandemonium_instance_ID = 0;
 
 	// rooms with a higher priority are internal rooms ..
 	// rooms within a room. These will be chosen in preference

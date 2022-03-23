@@ -8,13 +8,13 @@ import platform_osx_builders
 files = [
     "crash_handler_osx.mm",
     "os_osx.mm",
-    "godot_main_osx.mm",
+    "pandemonium_main_osx.mm",
     "dir_access_osx.mm",
     "joypad_osx.cpp",
     "power_osx.cpp",
 ]
 
-prog = env.add_program("#bin/godot", files)
+prog = env.add_program("#bin/pandemonium", files)
 
 if env["debug_symbols"] and env["separate_debug_symbols"]:
     env.AddPostAction(prog, run_in_subprocess(platform_osx_builders.make_debug_osx))

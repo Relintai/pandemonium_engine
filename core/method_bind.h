@@ -262,7 +262,7 @@ public:
 	void set_argument_names(const Vector<StringName> &p_names); //set by class, db, can't be inferred otherwise
 	Vector<StringName> get_argument_names() const;
 
-	virtual GodotTypeInfo::Metadata get_argument_meta(int p_arg) const = 0;
+	virtual PandemoniumTypeInfo::Metadata get_argument_meta(int p_arg) const = 0;
 
 #endif
 	void set_hint_flags(uint32_t p_hint) { hint_flags = p_hint; }
@@ -319,8 +319,8 @@ public:
 		return _gen_argument_type_info(p_arg).type;
 	}
 
-	virtual GodotTypeInfo::Metadata get_argument_meta(int) const {
-		return GodotTypeInfo::METADATA_NONE;
+	virtual PandemoniumTypeInfo::Metadata get_argument_meta(int) const {
+		return PandemoniumTypeInfo::METADATA_NONE;
 	}
 
 #else

@@ -47,7 +47,7 @@
 #include "platform/android/logo.gen.h"
 #include "platform/android/run_icon.gen.h"
 
-#include "godot_plugin_config.h"
+#include "pandemonium_plugin_config.h"
 #include "gradle_export_util.h"
 
 #include <string.h>

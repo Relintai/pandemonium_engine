@@ -228,9 +228,9 @@ int FilterTwoPass( RGBCOLOR *pSrcImage, int srcWidth, int srcHeight,
     pTempImage = (RGBCOLOR *)malloc( destWidth * srcHeight * sizeof(RGBCOLOR) );
     if ( pTempImage == NULL )
     {
-        // -- GODOT start --
+        // -- PANDEMONIUM start --
         free( contrib );
-        // -- GODOT end --
+        // -- PANDEMONIUM end --
         return 0;
     }
 

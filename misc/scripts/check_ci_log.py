@@ -26,10 +26,10 @@ if (
     or file_contents.find("Dumping the backtrace") != -1
     or file_contents.find("Segmentation fault (core dumped)") != -1
 ):
-    print("FATAL ERROR: Godot has been crashed.")
+    print("FATAL ERROR: Pandemonium has been crashed.")
     sys.exit(1)
 
-# Finding memory leaks in Godot is quite difficult, because we need to take into
+# Finding memory leaks in Pandemonium is quite difficult, because we need to take into
 # account leaks also in external libraries. They are usually provided without
 # debugging symbols, so the leak report from it usually has only 2/3 lines,
 # so searching for 5 element - "#4 0x" - should correctly detect the vast
@@ -40,7 +40,7 @@ if file_contents.find("ERROR: LeakSanitizer:") != -1:
         print("ERROR: Memory leak was found")
         sys.exit(1)
 
-# It may happen that Godot detects leaking nodes/resources and removes them, so
+# It may happen that Pandemonium detects leaking nodes/resources and removes them, so
 # this possibility should also be handled as a potential error, even if
 # LeakSanitizer doesn't report anything
 

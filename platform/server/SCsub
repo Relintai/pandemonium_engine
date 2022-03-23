@@ -15,4 +15,4 @@ else:
     common_server.append("#platform/x11/crash_handler_x11.cpp")
     common_server.append("#platform/x11/power_x11.cpp")
 
-prog = env.add_program("#bin/godot_server", ["godot_server.cpp"] + common_server)
+prog = env.add_program("#bin/pandemonium_server", ["pandemonium_server.cpp"] + common_server)

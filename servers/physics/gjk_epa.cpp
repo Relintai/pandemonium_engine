@@ -2,7 +2,7 @@
 /*  gjk_epa.cpp                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -75,10 +75,10 @@ GJK-EPA collision solver by Nathanael Presson, 2008
 #define EPA_MAX_VERTICES	128
 #define EPA_MAX_FACES		(EPA_MAX_VERTICES*2)
 #define EPA_MAX_ITERATIONS	255
-// -- GODOT start --
+// -- PANDEMONIUM start --
 //#define EPA_ACCURACY		((real_t)0.0001)
 #define EPA_ACCURACY		((real_t)0.00001)
-// -- GODOT end --
+// -- PANDEMONIUM end --
 #define EPA_FALLBACK		(10*EPA_ACCURACY)
 #define EPA_PLANE_EPS		((real_t)0.00001)
 #define EPA_INSIDE_EPS		((real_t)0.01)
@@ -813,10 +813,10 @@ struct	GJK
 					append(m_stock,face);
 					return(nullptr);
 				}
-				// -- GODOT start --
+				// -- PANDEMONIUM start --
 				//m_status=m_stock.root?eStatus::OutOfVertices:eStatus::OutOfFaces;
 				m_status=eStatus::OutOfFaces;
-				// -- GODOT end --
+				// -- PANDEMONIUM end --
 				return(nullptr);
 			}
 			sFace*				findbest()

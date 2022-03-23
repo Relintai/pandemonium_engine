@@ -122,7 +122,7 @@ bool OpusVorbisDecoder::getPCMS16(WebMFrame &frame, short *buffer, int &numOutSa
 	return false;
 }
 
-// -- GODOT begin --
+// -- PANDEMONIUM begin --
 bool OpusVorbisDecoder::getPCMF(WebMFrame &frame, float *buffer, int &numOutSamples) {
 	if (m_vorbis) {
 		m_vorbis->op.packet = frame.buffer;
@@ -159,7 +159,7 @@ bool OpusVorbisDecoder::getPCMF(WebMFrame &frame, float *buffer, int &numOutSamp
 	}
 	return false;
 }
-// -- GODOT end --
+// -- PANDEMONIUM end --
 
 bool OpusVorbisDecoder::openVorbis(const WebMDemuxer &demuxer)
 {

@@ -646,7 +646,7 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 		}
 
 		//Will create a Terralight node, and prop
-		//PropDataLight could use standard godot light nodes
+		//PropDataLight could use standard pandemonium light nodes
 		Ref<PropDataLight> light_data = e;
 
 		if (light_data.is_valid()) {

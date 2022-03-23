@@ -2,7 +2,7 @@
 /*  http_client_javascript.cpp                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -37,20 +37,20 @@ extern "C" {
 #include "stddef.h"
 
 typedef enum {
-	GODOT_JS_FETCH_STATE_REQUESTING = 0,
-	GODOT_JS_FETCH_STATE_BODY = 1,
-	GODOT_JS_FETCH_STATE_DONE = 2,
-	GODOT_JS_FETCH_STATE_ERROR = -1,
-} godot_js_fetch_state_t;
+	PANDEMONIUM_JS_FETCH_STATE_REQUESTING = 0,
+	PANDEMONIUM_JS_FETCH_STATE_BODY = 1,
+	PANDEMONIUM_JS_FETCH_STATE_DONE = 2,
+	PANDEMONIUM_JS_FETCH_STATE_ERROR = -1,
+} pandemonium_js_fetch_state_t;
 
-extern int godot_js_fetch_create(const char *p_method, const char *p_url, const char **p_headers, int p_headers_len, const uint8_t *p_body, int p_body_len);
-extern int godot_js_fetch_read_headers(int p_id, void (*parse_callback)(int p_size, const char **p_headers, void *p_ref), void *p_ref);
-extern int godot_js_fetch_read_chunk(int p_id, uint8_t *p_buf, int p_buf_size);
-extern void godot_js_fetch_free(int p_id);
-extern godot_js_fetch_state_t godot_js_fetch_state_get(int p_id);
-extern int godot_js_fetch_body_length_get(int p_id);
-extern int godot_js_fetch_http_status_get(int p_id);
-extern int godot_js_fetch_is_chunked(int p_id);
+extern int pandemonium_js_fetch_create(const char *p_method, const char *p_url, const char **p_headers, int p_headers_len, const uint8_t *p_body, int p_body_len);
+extern int pandemonium_js_fetch_read_headers(int p_id, void (*parse_callback)(int p_size, const char **p_headers, void *p_ref), void *p_ref);
+extern int pandemonium_js_fetch_read_chunk(int p_id, uint8_t *p_buf, int p_buf_size);
+extern void pandemonium_js_fetch_free(int p_id);
+extern pandemonium_js_fetch_state_t pandemonium_js_fetch_state_get(int p_id);
+extern int pandemonium_js_fetch_body_length_get(int p_id);
+extern int pandemonium_js_fetch_http_status_get(int p_id);
+extern int pandemonium_js_fetch_is_chunked(int p_id);
 
 #ifdef __cplusplus
 }
@@ -121,9 +121,9 @@ Error HTTPClient::make_request(Method p_method, const String &p_url, const Vecto
 		c_strings.push_back(keeper[i].get_data());
 	}
 	if (js_id) {
-		godot_js_fetch_free(js_id);
+		pandemonium_js_fetch_free(js_id);
 	}
-	js_id = godot_js_fetch_create(_methods[p_method], url.utf8().get_data(), c_strings.ptrw(), c_strings.size(), p_body, p_body_len);
+	js_id = pandemonium_js_fetch_create(_methods[p_method], url.utf8().get_data(), c_strings.ptrw(), c_strings.size(), p_body, p_body_len);
 	status = STATUS_REQUESTING;
 	return OK;
 }
@@ -153,7 +153,7 @@ void HTTPClient::close() {
 	response_headers.resize(0);
 	response_buffer.resize(0);
 	if (js_id) {
-		godot_js_fetch_free(js_id);
+		pandemonium_js_fetch_free(js_id);
 		js_id = 0;
 	}
 }
@@ -167,7 +167,7 @@ bool HTTPClient::has_response() const {
 }
 
 bool HTTPClient::is_response_chunked() const {
-	return godot_js_fetch_is_chunked(js_id);
+	return pandemonium_js_fetch_is_chunked(js_id);
 }
 
 int HTTPClient::get_response_code() const {
@@ -186,7 +186,7 @@ Error HTTPClient::get_response_headers(List<String> *r_response) {
 }
 
 int64_t HTTPClient::get_response_body_length() const {
-	return godot_js_fetch_body_length_get(js_id);
+	return pandemonium_js_fetch_body_length_get(js_id);
 }
 
 PoolByteArray HTTPClient::read_response_body_chunk() {
@@ -195,13 +195,13 @@ PoolByteArray HTTPClient::read_response_body_chunk() {
 	if (response_buffer.size() != read_limit) {
 		response_buffer.resize(read_limit);
 	}
-	int read = godot_js_fetch_read_chunk(js_id, response_buffer.ptrw(), read_limit);
+	int read = pandemonium_js_fetch_read_chunk(js_id, response_buffer.ptrw(), read_limit);
 
 	// Check if the stream is over.
-	godot_js_fetch_state_t state = godot_js_fetch_state_get(js_id);
-	if (state == GODOT_JS_FETCH_STATE_DONE) {
+	pandemonium_js_fetch_state_t state = pandemonium_js_fetch_state_get(js_id);
+	if (state == PANDEMONIUM_JS_FETCH_STATE_DONE) {
 		status = STATUS_DISCONNECTED;
-	} else if (state != GODOT_JS_FETCH_STATE_BODY) {
+	} else if (state != PANDEMONIUM_JS_FETCH_STATE_BODY) {
 		status = STATUS_CONNECTION_ERROR;
 	}
 
@@ -248,10 +248,10 @@ Error HTTPClient::poll() {
 			return OK;
 
 		case STATUS_BODY: {
-			godot_js_fetch_state_t state = godot_js_fetch_state_get(js_id);
-			if (state == GODOT_JS_FETCH_STATE_DONE) {
+			pandemonium_js_fetch_state_t state = pandemonium_js_fetch_state_get(js_id);
+			if (state == PANDEMONIUM_JS_FETCH_STATE_DONE) {
 				status = STATUS_DISCONNECTED;
-			} else if (state != GODOT_JS_FETCH_STATE_BODY) {
+			} else if (state != PANDEMONIUM_JS_FETCH_STATE_BODY) {
 				status = STATUS_CONNECTION_ERROR;
 				return ERR_CONNECTION_ERROR;
 			}
@@ -272,16 +272,16 @@ Error HTTPClient::poll() {
 			last_polling_frame = Engine::get_singleton()->get_idle_frames();
 #endif
 
-			polled_response_code = godot_js_fetch_http_status_get(js_id);
-			godot_js_fetch_state_t js_state = godot_js_fetch_state_get(js_id);
-			if (js_state == GODOT_JS_FETCH_STATE_REQUESTING) {
+			polled_response_code = pandemonium_js_fetch_http_status_get(js_id);
+			pandemonium_js_fetch_state_t js_state = pandemonium_js_fetch_state_get(js_id);
+			if (js_state == PANDEMONIUM_JS_FETCH_STATE_REQUESTING) {
 				return OK;
-			} else if (js_state == GODOT_JS_FETCH_STATE_ERROR) {
+			} else if (js_state == PANDEMONIUM_JS_FETCH_STATE_ERROR) {
 				// Fetch is in error state.
 				status = STATUS_CONNECTION_ERROR;
 				return ERR_CONNECTION_ERROR;
 			}
-			if (godot_js_fetch_read_headers(js_id, &_parse_headers, this)) {
+			if (pandemonium_js_fetch_read_headers(js_id, &_parse_headers, this)) {
 				// Failed to parse headers.
 				status = STATUS_CONNECTION_ERROR;
 				return ERR_CONNECTION_ERROR;

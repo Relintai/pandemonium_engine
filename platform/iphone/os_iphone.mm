@@ -46,7 +46,7 @@
 
 #import "app_delegate.h"
 #import "device_metrics.h"
-#import "godot_view.h"
+#import "pandemonium_view.h"
 #import "keyboard_input_view.h"
 #import "native_video_view.h"
 #import "view_controller.h"
@@ -520,7 +520,7 @@ int OSIPhone::get_screen_dpi(int p_screen) const {
 
 	NSString *string = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
 
-	NSDictionary *iOSModelToDPI = [GodotDeviceMetrics dpiList];
+	NSDictionary *iOSModelToDPI = [PandemoniumDeviceMetrics dpiList];
 
 	for (NSArray *keyArray in iOSModelToDPI) {
 		if ([keyArray containsObject:string]) {
@@ -558,7 +558,7 @@ float OSIPhone::get_screen_refresh_rate(int p_screen) const {
 Rect2 OSIPhone::get_window_safe_area() const {
 	if (@available(iOS 11, *)) {
 		UIEdgeInsets insets = UIEdgeInsetsZero;
-		UIView *view = AppDelegate.viewController.godotView;
+		UIView *view = AppDelegate.viewController.pandemoniumView;
 
 		if ([view respondsToSelector:@selector(safeAreaInsets)]) {
 			insets = [view safeAreaInsets];
@@ -728,7 +728,7 @@ void OSIPhone::on_focus_out() {
 			get_main_loop()->notification(MainLoop::NOTIFICATION_WM_FOCUS_OUT);
 		}
 
-		[AppDelegate.viewController.godotView stopRendering];
+		[AppDelegate.viewController.pandemoniumView stopRendering];
 
 		if (native_video_is_playing()) {
 			native_video_focus_out();
@@ -746,7 +746,7 @@ void OSIPhone::on_focus_in() {
 			get_main_loop()->notification(MainLoop::NOTIFICATION_WM_FOCUS_IN);
 		}
 
-		[AppDelegate.viewController.godotView startRendering];
+		[AppDelegate.viewController.pandemoniumView startRendering];
 
 		if (native_video_is_playing()) {
 			native_video_unpause();

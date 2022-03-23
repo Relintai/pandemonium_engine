@@ -2,7 +2,7 @@
 /*  os_x11.cpp                                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -245,7 +245,7 @@ Error OS_X11::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 	}
 
 /*
-	char* windowid = getenv("GODOT_WINDOWID");
+	char* windowid = getenv("PANDEMONIUM_WINDOWID");
 	if (windowid) {
 
 		//freopen("/home/punto/stdout", "w", stdout);
@@ -298,7 +298,7 @@ Error OS_X11::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 
 		if (use_prime) {
 			print_line("Found discrete GPU, setting DRI_PRIME=1 to use it.");
-			print_line("Note: Set DRI_PRIME=0 in the environment to disable Godot from using the discrete GPU.");
+			print_line("Note: Set DRI_PRIME=0 in the environment to disable Pandemonium from using the discrete GPU.");
 			setenv("DRI_PRIME", "1", 1);
 		}
 	}
@@ -343,7 +343,7 @@ Error OS_X11::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 		OS::get_singleton()->alert("Your video card driver does not support any of the supported OpenGL versions.\n"
 								   "Please update your drivers or if you have a very old or integrated GPU, upgrade it.\n"
 								   "If you have updated your graphics drivers recently, try rebooting.\n"
-								   "Alternatively, you can force software rendering by running Godot with the `LIBGL_ALWAYS_SOFTWARE=1`\n"
+								   "Alternatively, you can force software rendering by running Pandemonium with the `LIBGL_ALWAYS_SOFTWARE=1`\n"
 								   "environment variable set, but this will be very slow.",
 				"Unable to initialize Video driver");
 		return ERR_UNAVAILABLE;
@@ -460,7 +460,7 @@ Error OS_X11::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 	XISelectEvents(x11_display, DefaultRootWindow(x11_display), &xi.all_master_event_mask, 1);
 
 	/* set the titlebar name */
-	XStoreName(x11_display, x11_window, "Godot");
+	XStoreName(x11_display, x11_window, "Pandemonium");
 
 	wm_delete = XInternAtom(x11_display, "WM_DELETE_WINDOW", true);
 	XSetWMProtocols(x11_display, x11_window, &wm_delete, 1);
@@ -2578,7 +2578,7 @@ void OS_X11::process_xevents() {
 							xi.state[index] = pos;
 							if (xi.state.size() == 1) {
 								// X11 may send a motion event when a touch gesture begins, that would result
-								// in a spurious mouse motion event being sent to Godot; remember it to be able to filter it out
+								// in a spurious mouse motion event being sent to Pandemonium; remember it to be able to filter it out
 								xi.mouse_pos_to_filter = pos;
 							}
 							input->parse_input_event(st);
@@ -3803,13 +3803,13 @@ void OS_X11::set_context(int p_context) {
 		CharString name_str;
 		switch (p_context) {
 			case CONTEXT_EDITOR:
-				name_str = "Godot_Editor";
+				name_str = "Pandemonium_Editor";
 				break;
 			case CONTEXT_PROJECTMAN:
-				name_str = "Godot_ProjectList";
+				name_str = "Pandemonium_ProjectList";
 				break;
 			case CONTEXT_ENGINE:
-				name_str = "Godot_Engine";
+				name_str = "Pandemonium_Engine";
 				break;
 		}
 
@@ -3817,12 +3817,12 @@ void OS_X11::set_context(int p_context) {
 		if (p_context == CONTEXT_ENGINE) {
 			String config_name = GLOBAL_GET("application/config/name");
 			if (config_name.length() == 0) {
-				class_str = "Godot_Engine";
+				class_str = "Pandemonium_Engine";
 			} else {
 				class_str = config_name.utf8();
 			}
 		} else {
-			class_str = "Godot";
+			class_str = "Pandemonium";
 		}
 
 		classHint->res_class = class_str.ptrw();

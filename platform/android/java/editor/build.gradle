@@ -1,4 +1,4 @@
-// Gradle build config for Godot Engine's Android port.
+// Gradle build config for Pandemonium Engine's Android port.
 apply plugin: 'com.android.application'
 
 dependencies {
@@ -13,12 +13,12 @@ android {
     ndkVersion versions.ndkVersion
 
     defaultConfig {
-        // The 'applicationId' suffix allows to install Godot 3.x(v3) and 4.x(v4) on the same device
-        applicationId "org.godotengine.editor.v3"
-        versionCode getGodotLibraryVersionCode()
-        versionName getGodotLibraryVersionName()
+        // The 'applicationId' suffix allows to install Pandemonium 3.x(v3) and 4.x(v4) on the same device
+        applicationId "net.relintai.pandemonium.editor.v3"
+        versionCode getPandemoniumLibraryVersionCode()
+        versionName getPandemoniumLibraryVersionName()
         minSdkVersion versions.minSdk
-        //noinspection ExpiredTargetSdkVersion - Restrict to version 29 until https://github.com/godotengine/godot/pull/51815 is submitted
+        //noinspection ExpiredTargetSdkVersion - Restrict to version 29 until https://github.com/pandemoniumengine/pandemonium/pull/51815 is submitted
         targetSdkVersion 29 // versions.targetSdk
         missingDimensionStrategy 'products', 'editor'
     }

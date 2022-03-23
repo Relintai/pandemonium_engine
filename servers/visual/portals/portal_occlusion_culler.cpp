@@ -2,7 +2,7 @@
 /*  portal_occlusion_culler.cpp                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -543,8 +543,8 @@ void PortalOcclusionCuller::precalc_poly_edge_planes(const Vector3 &p_pt_camera)
 }
 
 void PortalOcclusionCuller::whittle_polys() {
-//#define GODOT_OCCLUSION_FLASH_POLYS
-#ifdef GODOT_OCCLUSION_FLASH_POLYS
+//#define PANDEMONIUM_OCCLUSION_FLASH_POLYS
+#ifdef PANDEMONIUM_OCCLUSION_FLASH_POLYS
 	if (((Engine::get_singleton()->get_frames_drawn() / 4) % 2) == 0) {
 		return;
 	}

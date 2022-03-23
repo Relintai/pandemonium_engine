@@ -399,7 +399,7 @@ void Label::regenerate_word_cache() {
 
 		// ranges taken from https://en.wikipedia.org/wiki/Plane_(Unicode)
 		// if your language is not well supported, consider helping improve
-		// the unicode support in Godot.
+		// the unicode support in Pandemonium.
 		bool separatable = (current >= 0x2E08 && current <= 0x9FFF) || // CJK scripts and symbols.
 				(current >= 0xAC00 && current <= 0xD7FF) || // Hangul Syllables and Hangul Jamo Extended-B.
 				(current >= 0xF900 && current <= 0xFAFF) || // CJK Compatibility Ideographs.

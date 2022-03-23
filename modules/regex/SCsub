@@ -64,7 +64,7 @@ if env["builtin_pcre2"]:
     pcre2_builtin("32")
 
 
-# Godot source files
+# Pandemonium source files
 
 module_obj = []
 

@@ -72,8 +72,8 @@ header_done = False
 while line.strip() == "":  # Skip empty lines at the top
     line = fileread.readline()
 
-if line.find("/**********") == -1:  # Godot header starts this way
-    # Maybe starting with a non-Godot comment, abort header magic
+if line.find("/**********") == -1:  # Pandemonium header starts this way
+    # Maybe starting with a non-Pandemonium comment, abort header magic
     header_done = True
 
 while not header_done:  # Handle header now

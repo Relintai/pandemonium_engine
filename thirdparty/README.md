@@ -72,7 +72,7 @@ Files extracted from upstream source:
 - README.md, LICENSE, AUTHORS
 
 Important: Some files have Godot-made changes.
-They are marked with `// -- GODOT start --` and `// -- GODOT end --`
+They are marked with `// -- PANDEMONIUM start --` and `// -- PANDEMONIUM end --`
 comments.
 
 
@@ -172,7 +172,7 @@ Files extracted from upstream source:
 - LICENSE
 
 Important: Some files have Godot-made changes.
-They are marked with `// -- GODOT start --` and `// -- GODOT end --`
+They are marked with `// -- PANDEMONIUM start --` and `// -- PANDEMONIUM end --`
 comments.
 
 
@@ -216,7 +216,7 @@ Files extracted from upstream source:
 TODO.
 
 Important: File `libvpx/vpx_dsp/x86/vpx_subpixel_8t_intrin_avx2.c` has
-Godot-made change marked with `// -- GODOT --` comments.
+Godot-made change marked with `// -- PANDEMONIUM --` comments.
 
 The files `libvpx/third_party/android/cpu-features.{c,h}` were copied
 from the Android NDK r18.
@@ -296,7 +296,7 @@ Files extracted from the upstream source:
 - contrib/minizip/{crypt.h,ioapi.{c,h},zip.{c,h},unzip.{c,h}}
 
 Important: Some files have Godot-made changes for use in core/io.
-They are marked with `/* GODOT start */` and `/* GODOT end */`
+They are marked with `/* PANDEMONIUM start */` and `/* PANDEMONIUM end */`
 comments and a patch is provided in the minizip/ folder.
 
 
@@ -389,7 +389,7 @@ weights/rtlightmap_hdr.tza
 scripts/resource_to_cpp.py
 
 Modified files:
-Modifications are marked with `// -- GODOT start --` and `// -- GODOT end --`.
+Modifications are marked with `// -- PANDEMONIUM start --` and `// -- PANDEMONIUM end --`.
 Patch files are provided in `oidn/patches/`.
 
 core/autoencoder.cpp
@@ -487,7 +487,7 @@ Files extracted from upstream source:
 - all .cpp, .h and .inl files
 
 Important: Some files have Godot-made changes.
-They are marked with `// -- GODOT start --` and `// -- GODOT end --`
+They are marked with `// -- PANDEMONIUM start --` and `// -- PANDEMONIUM end --`
 comments and a patch is provided in the squish/ folder.
 
 
@@ -517,7 +517,7 @@ Files extracted from upstream source:
 - `LICENSE`
 
 Some downstream changes have been made and are identified by
-`// -- GODOT start --` and `// -- GODOT end --` comments.
+`// -- PANDEMONIUM start --` and `// -- PANDEMONIUM end --` comments.
 They can be reapplied using the patches included in the `vhacd`
 folder.
 

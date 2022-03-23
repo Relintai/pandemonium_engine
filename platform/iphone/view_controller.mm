@@ -31,33 +31,33 @@
 #import "view_controller.h"
 
 #include "core/project_settings.h"
-#import "godot_view.h"
-#import "godot_view_renderer.h"
+#import "pandemonium_view.h"
+#import "pandemonium_view_renderer.h"
 #import "keyboard_input_view.h"
 #import "native_video_view.h"
 #include "os_iphone.h"
 
-@interface ViewController () <GodotViewDelegate>
+@interface ViewController () <PandemoniumViewDelegate>
 
-@property(strong, nonatomic) GodotViewRenderer *renderer;
-@property(strong, nonatomic) GodotNativeVideoView *videoView;
-@property(strong, nonatomic) GodotKeyboardInputView *keyboardView;
+@property(strong, nonatomic) PandemoniumViewRenderer *renderer;
+@property(strong, nonatomic) PandemoniumNativeVideoView *videoView;
+@property(strong, nonatomic) PandemoniumKeyboardInputView *keyboardView;
 
-@property(strong, nonatomic) UIView *godotLoadingOverlay;
+@property(strong, nonatomic) UIView *pandemoniumLoadingOverlay;
 
 @end
 
 @implementation ViewController
 
-- (GodotView *)godotView {
-	return (GodotView *)self.view;
+- (PandemoniumView *)pandemoniumView {
+	return (PandemoniumView *)self.view;
 }
 
 - (void)loadView {
-	GodotView *view = [[GodotView alloc] init];
+	PandemoniumView *view = [[PandemoniumView alloc] init];
 	[view initializeRendering];
 
-	GodotViewRenderer *renderer = [[GodotViewRenderer alloc] init];
+	PandemoniumViewRenderer *renderer = [[PandemoniumViewRenderer alloc] init];
 
 	self.renderer = renderer;
 	self.view = view;
@@ -70,7 +70,7 @@
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 
 	if (self) {
-		[self godot_commonInit];
+		[self pandemonium_commonInit];
 	}
 
 	return self;
@@ -80,13 +80,13 @@
 	self = [super initWithCoder:coder];
 
 	if (self) {
-		[self godot_commonInit];
+		[self pandemonium_commonInit];
 	}
 
 	return self;
 }
 
-- (void)godot_commonInit {
+- (void)pandemonium_commonInit {
 	// Initialize view controller values.
 }
 
@@ -108,7 +108,7 @@
 
 - (void)observeKeyboard {
 	printf("******** setting up keyboard input view\n");
-	self.keyboardView = [GodotKeyboardInputView new];
+	self.keyboardView = [PandemoniumKeyboardInputView new];
 	[self.view addSubview:self.keyboardView];
 
 	printf("******** adding observer for keyboard show/hide\n");
@@ -135,16 +135,16 @@
 	UIStoryboard *launchStoryboard = [UIStoryboard storyboardWithName:storyboardName bundle:bundle];
 
 	UIViewController *controller = [launchStoryboard instantiateInitialViewController];
-	self.godotLoadingOverlay = controller.view;
-	self.godotLoadingOverlay.frame = self.view.bounds;
-	self.godotLoadingOverlay.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+	self.pandemoniumLoadingOverlay = controller.view;
+	self.pandemoniumLoadingOverlay.frame = self.view.bounds;
+	self.pandemoniumLoadingOverlay.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
-	[self.view addSubview:self.godotLoadingOverlay];
+	[self.view addSubview:self.pandemoniumLoadingOverlay];
 }
 
-- (BOOL)godotViewFinishedSetup:(GodotView *)view {
-	[self.godotLoadingOverlay removeFromSuperview];
-	self.godotLoadingOverlay = nil;
+- (BOOL)pandemoniumViewFinishedSetup:(PandemoniumView *)view {
+	[self.pandemoniumLoadingOverlay removeFromSuperview];
+	self.pandemoniumLoadingOverlay = nil;
 
 	return YES;
 }
@@ -157,9 +157,9 @@
 
 	self.renderer = nil;
 
-	if (self.godotLoadingOverlay) {
-		[self.godotLoadingOverlay removeFromSuperview];
-		self.godotLoadingOverlay = nil;
+	if (self.pandemoniumLoadingOverlay) {
+		[self.pandemoniumLoadingOverlay removeFromSuperview];
+		self.pandemoniumLoadingOverlay = nil;
 	}
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -249,7 +249,7 @@
 		return [self.videoView playVideoAtPath:filePath volume:videoVolume audio:audioTrack subtitle:subtitleTrack];
 	} else {
 		// Create autoresizing view for video playback.
-		GodotNativeVideoView *videoView = [[GodotNativeVideoView alloc] initWithFrame:self.view.bounds];
+		PandemoniumNativeVideoView *videoView = [[PandemoniumNativeVideoView alloc] initWithFrame:self.view.bounds];
 		videoView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		[self.view addSubview:videoView];
 

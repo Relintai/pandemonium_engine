@@ -40,6 +40,6 @@
 
 @end
 
-@interface GodotOpenGLLayer : CAEAGLLayer <DisplayLayer>
+@interface PandemoniumOpenGLLayer : CAEAGLLayer <DisplayLayer>
 
 @end

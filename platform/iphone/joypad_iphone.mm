@@ -32,7 +32,7 @@
 
 #include "core/project_settings.h"
 #include "drivers/coreaudio/audio_driver_coreaudio.h"
-#import "godot_view.h"
+#import "pandemonium_view.h"
 #include "main/main.h"
 #include "os_iphone.h"
 
@@ -69,13 +69,13 @@ void JoypadIPhone::start_processing() {
 	self = [super init];
 
 	if (self) {
-		[self godot_commonInit];
+		[self pandemonium_commonInit];
 	}
 
 	return self;
 }
 
-- (void)godot_commonInit {
+- (void)pandemonium_commonInit {
 	self.isObserving = NO;
 	self.isProcessing = NO;
 }
@@ -157,7 +157,7 @@ void JoypadIPhone::start_processing() {
 		controller.playerIndex = [self getFreePlayerIndex];
 	};
 
-	// tell Godot about our new controller
+	// tell Pandemonium about our new controller
 	OSIPhone::get_singleton()->joy_connection_changed(joy_id, true, String::utf8([controller.vendorName UTF8String]));
 
 	// add it to our dictionary, this will retain our controllers
@@ -195,7 +195,7 @@ void JoypadIPhone::start_processing() {
 
 	NSArray *keys = [self.connectedJoypads allKeysForObject:controller];
 	for (NSNumber *key in keys) {
-		// tell Godot this joystick is no longer there
+		// tell Pandemonium this joystick is no longer there
 		int joy_id = [key intValue];
 		OSIPhone::get_singleton()->joy_connection_changed(joy_id, false, "");
 

@@ -73,9 +73,9 @@
 #include <pthread.h>
 #endif
 
-// -- GODOT start --
+// -- PANDEMONIUM start --
 #if defined(__APPLE__) || !defined(__GLIBC__)
-// -- GODOT end --
+// -- PANDEMONIUM end --
 #define PTHREAD_MUTEX_RECURSIVE_NP PTHREAD_MUTEX_RECURSIVE
 #endif
 

@@ -2,7 +2,7 @@
 /*  networked_multiplayer_enet.cpp                                       */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -76,7 +76,7 @@ Error NetworkedMultiplayerENet::create_server(int p_port, int p_max_clients, int
 	ENetAddress address;
 	memset(&address, 0, sizeof(address));
 
-#ifdef GODOT_ENET
+#ifdef PANDEMONIUM_ENET
 	if (bind_ip.is_wildcard()) {
 		address.wildcard = 1;
 	} else {
@@ -99,7 +99,7 @@ Error NetworkedMultiplayerENet::create_server(int p_port, int p_max_clients, int
 			p_out_bandwidth /* limit outgoing bandwidth if > 0 */);
 
 	ERR_FAIL_COND_V_MSG(!host, ERR_CANT_CREATE, "Couldn't create an ENet multiplayer server.");
-#ifdef GODOT_ENET
+#ifdef PANDEMONIUM_ENET
 	if (dtls_enabled) {
 		enet_host_dtls_server_setup(host, dtls_key.ptr(), dtls_cert.ptr());
 	}
@@ -124,7 +124,7 @@ Error NetworkedMultiplayerENet::create_client(const String &p_address, int p_por
 	if (p_client_port != 0) {
 		ENetAddress c_client;
 
-#ifdef GODOT_ENET
+#ifdef PANDEMONIUM_ENET
 		if (bind_ip.is_wildcard()) {
 			c_client.wildcard = 1;
 		} else {
@@ -155,7 +155,7 @@ Error NetworkedMultiplayerENet::create_client(const String &p_address, int p_por
 	}
 
 	ERR_FAIL_COND_V_MSG(!host, ERR_CANT_CREATE, "Couldn't create the ENet client host.");
-#ifdef GODOT_ENET
+#ifdef PANDEMONIUM_ENET
 	if (dtls_enabled) {
 		enet_host_dtls_client_setup(host, dtls_cert.ptr(), dtls_verify, dtls_hostname.empty() ? p_address.utf8().get_data() : dtls_hostname.utf8().get_data());
 	}
@@ -168,7 +168,7 @@ Error NetworkedMultiplayerENet::create_client(const String &p_address, int p_por
 	if (p_address.is_valid_ip_address()) {
 		ip = p_address;
 	} else {
-#ifdef GODOT_ENET
+#ifdef PANDEMONIUM_ENET
 		ip = IP::get_singleton()->resolve_hostname(p_address);
 #else
 		ip = IP::get_singleton()->resolve_hostname(p_address, IP::TYPE_IPV4);
@@ -181,12 +181,12 @@ Error NetworkedMultiplayerENet::create_client(const String &p_address, int p_por
 	}
 
 	ENetAddress address;
-#ifdef GODOT_ENET
+#ifdef PANDEMONIUM_ENET
 	enet_address_set_ip(&address, ip.get_ipv6(), 16);
 #else
 	if (!ip.is_ipv4()) {
 		enet_host_destroy(host);
-		ERR_FAIL_V_MSG(ERR_INVALID_PARAMETER, "Connecting to an IPv6 server isn't supported when using vanilla ENet. Recompile Godot with the bundled ENet library.");
+		ERR_FAIL_V_MSG(ERR_INVALID_PARAMETER, "Connecting to an IPv6 server isn't supported when using vanilla ENet. Recompile Pandemonium with the bundled ENet library.");
 	}
 	address.host = *(uint32_t *)ip.get_ipv4();
 #endif
@@ -661,7 +661,7 @@ int NetworkedMultiplayerENet::get_unique_id() const {
 
 void NetworkedMultiplayerENet::set_refuse_new_connections(bool p_enable) {
 	refuse_connections = p_enable;
-#ifdef GODOT_ENET
+#ifdef PANDEMONIUM_ENET
 	if (active) {
 		enet_host_refuse_new_connections(host, p_enable);
 	}
@@ -783,7 +783,7 @@ IP_Address NetworkedMultiplayerENet::get_peer_address(int p_peer_id) const {
 	ERR_FAIL_COND_V_MSG(peer_map[p_peer_id] == NULL, IP_Address(), vformat("Peer ID %d found in the list of peers, but is null.", p_peer_id));
 
 	IP_Address out;
-#ifdef GODOT_ENET
+#ifdef PANDEMONIUM_ENET
 	out.set_ipv6((uint8_t *)&(peer_map[p_peer_id]->address.host));
 #else
 	out.set_ipv4((uint8_t *)&(peer_map[p_peer_id]->address.host));
@@ -796,7 +796,7 @@ int NetworkedMultiplayerENet::get_peer_port(int p_peer_id) const {
 	ERR_FAIL_COND_V_MSG(!peer_map.has(p_peer_id), 0, vformat("Peer ID %d not found in the list of peers.", p_peer_id));
 	ERR_FAIL_COND_V_MSG(!is_server() && p_peer_id != 1, 0, "Can't get the address of peers other than the server (ID -1) when acting as a client.");
 	ERR_FAIL_COND_V_MSG(peer_map[p_peer_id] == NULL, 0, vformat("Peer ID %d found in the list of peers, but is null.", p_peer_id));
-#ifdef GODOT_ENET
+#ifdef PANDEMONIUM_ENET
 	return peer_map[p_peer_id]->address.port;
 #else
 	return peer_map[p_peer_id]->address.port;

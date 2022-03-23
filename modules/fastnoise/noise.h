@@ -20,7 +20,7 @@ public:
 	static const String BINDING_STRING_CELLULAR_DISTANCE_FUNCTION;
 	static const String BINDING_STRING_CELLULAR_RETURN_TYPE;
 
-	// Enums Godot-style (same values)
+	// Enums Pandemonium-style (same values)
 
 	enum Type {
 		TYPE_VALUE = _FastNoise::Value,
@@ -66,7 +66,7 @@ public:
 
 	FastNoise();
 
-	// Methods (Godot-style mappings to FastNoise)
+	// Methods (Pandemonium-style mappings to FastNoise)
 
 	int get_seed() const { return _noise.GetSeed(); }
 	void set_seed(int seed) { _noise.SetSeed(seed); }

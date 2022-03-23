@@ -31,7 +31,7 @@
 #include "register_types.h"
 
 #include "core/engine.h"
-#include "godot_navigation_server.h"
+#include "pandemonium_navigation_server.h"
 #include "servers/navigation_server.h"
 
 #ifndef _3D_DISABLED
@@ -51,7 +51,7 @@ NavigationMeshGenerator *_nav_mesh_generator = nullptr;
 #endif
 
 NavigationServer *new_server() {
-	return memnew(GodotNavigationServer);
+	return memnew(PandemoniumNavigationServer);
 }
 
 void register_navigation_types() {

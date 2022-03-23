@@ -112,7 +112,7 @@ void PortalGameplayMonitor::unload(PortalRenderer &p_portal_renderer) {
 		room.last_room_tick_hit = 0;
 
 		VisualServerCallbacks::Message msg;
-		msg.object_id = room._godot_instance_ID;
+		msg.object_id = room._pandemonium_instance_ID;
 		msg.type = _exit_callback_type;
 		callbacks->push_message(msg);
 	}
@@ -124,7 +124,7 @@ void PortalGameplayMonitor::unload(PortalRenderer &p_portal_renderer) {
 		roomgroup.last_room_tick_hit = 0;
 
 		VisualServerCallbacks::Message msg;
-		msg.object_id = roomgroup._godot_instance_ID;
+		msg.object_id = roomgroup._pandemonium_instance_ID;
 		msg.type = _exit_callback_type;
 		callbacks->push_message(msg);
 	}
@@ -254,7 +254,7 @@ void PortalGameplayMonitor::update_gameplay(PortalRenderer &p_portal_renderer, c
 			// gone out of view
 			if (room.last_room_tick_hit != _room_tick) {
 				VisualServerCallbacks::Message msg;
-				msg.object_id = room._godot_instance_ID;
+				msg.object_id = room._pandemonium_instance_ID;
 				msg.type = _exit_callback_type;
 
 				callbacks->push_message(msg);
@@ -269,7 +269,7 @@ void PortalGameplayMonitor::update_gameplay(PortalRenderer &p_portal_renderer, c
 			// gone out of view
 			if (roomgroup.last_room_tick_hit != _room_tick) {
 				VisualServerCallbacks::Message msg;
-				msg.object_id = roomgroup._godot_instance_ID;
+				msg.object_id = roomgroup._pandemonium_instance_ID;
 				msg.type = _exit_callback_type;
 
 				callbacks->push_message(msg);
@@ -379,7 +379,7 @@ void PortalGameplayMonitor::_update_gameplay_room(PortalRenderer &p_portal_rende
 		// if wasn't present in the tick before, add the notification to enter
 		if (room.last_room_tick_hit != (_room_tick - 1)) {
 			VisualServerCallbacks::Message msg;
-			msg.object_id = room._godot_instance_ID;
+			msg.object_id = room._pandemonium_instance_ID;
 			msg.type = _enter_callback_type;
 
 			callbacks->push_message(msg);
@@ -408,7 +408,7 @@ void PortalGameplayMonitor::_update_gameplay_room(PortalRenderer &p_portal_rende
 			// if wasn't present in the tick before, add the notification to enter
 			if (roomgroup.last_room_tick_hit != (_room_tick - 1)) {
 				VisualServerCallbacks::Message msg;
-				msg.object_id = roomgroup._godot_instance_ID;
+				msg.object_id = roomgroup._pandemonium_instance_ID;
 				msg.type = _enter_callback_type;
 
 				callbacks->push_message(msg);

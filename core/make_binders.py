@@ -9,11 +9,11 @@ public:
 	$ifret R$ $ifnoret void$ (T::*method)($arg, P@$) $ifconst const$;
 #ifdef DEBUG_METHODS_ENABLED
 	virtual Variant::Type _gen_argument_type(int p_arg) const { return _get_argument_type(p_arg); }
-	virtual GodotTypeInfo::Metadata get_argument_meta(int p_arg) const {
+	virtual PandemoniumTypeInfo::Metadata get_argument_meta(int p_arg) const {
 		$ifret if (p_arg==-1) return GetTypeInfo<R>::METADATA;$
 		$arg if (p_arg==(@-1)) return GetTypeInfo<P@>::METADATA;
 		$
-		return GodotTypeInfo::METADATA_NONE;
+		return PandemoniumTypeInfo::METADATA_NONE;
 	}
 	Variant::Type _get_argument_type(int p_argument) const {
 		$ifret if (p_argument==-1) return (Variant::Type)GetTypeInfo<R>::VARIANT_TYPE;$
@@ -100,11 +100,11 @@ public:
 
 #ifdef DEBUG_METHODS_ENABLED
 	virtual Variant::Type _gen_argument_type(int p_arg) const { return _get_argument_type(p_arg); }
-	virtual GodotTypeInfo::Metadata get_argument_meta(int p_arg) const {
+	virtual PandemoniumTypeInfo::Metadata get_argument_meta(int p_arg) const {
 		$ifret if (p_arg==-1) return GetTypeInfo<R>::METADATA;$
 		$arg if (p_arg==(@-1)) return GetTypeInfo<P@>::METADATA;
 		$
-		return GodotTypeInfo::METADATA_NONE;
+		return PandemoniumTypeInfo::METADATA_NONE;
 	}
 
 	Variant::Type _get_argument_type(int p_argument) const {
@@ -200,11 +200,11 @@ public:
 	$ifret R$ $ifnoret void$ (*method) ($ifconst const$ T *$ifargs , $$arg, P@$);
 #ifdef DEBUG_METHODS_ENABLED
 	virtual Variant::Type _gen_argument_type(int p_arg) const { return _get_argument_type(p_arg); }
-	virtual GodotTypeInfo::Metadata get_argument_meta(int p_arg) const {
+	virtual PandemoniumTypeInfo::Metadata get_argument_meta(int p_arg) const {
 		$ifret if (p_arg==-1) return GetTypeInfo<R>::METADATA;$
 		$arg if (p_arg==(@-1)) return GetTypeInfo<P@>::METADATA;
 		$
-		return GodotTypeInfo::METADATA_NONE;
+		return PandemoniumTypeInfo::METADATA_NONE;
 	}
 	Variant::Type _get_argument_type(int p_argument) const {
 		$ifret if (p_argument==-1) return (Variant::Type)GetTypeInfo<R>::VARIANT_TYPE;$

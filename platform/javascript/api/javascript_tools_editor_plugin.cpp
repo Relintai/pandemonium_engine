@@ -39,9 +39,9 @@
 
 #include <emscripten/emscripten.h>
 
-// JavaScript functions defined in library_godot_editor_tools.js
+// JavaScript functions defined in library_pandemonium_editor_tools.js
 extern "C" {
-extern void godot_js_os_download_buffer(const uint8_t *p_buf, int p_buf_size, const char *p_name, const char *p_mime);
+extern void pandemonium_js_os_download_buffer(const uint8_t *p_buf, int p_buf_size, const char *p_name, const char *p_mime);
 }
 
 static void _javascript_editor_init_callback() {
@@ -75,7 +75,7 @@ void JavaScriptToolsEditorPlugin::_download_zip(Variant p_v) {
 	Vector<uint8_t> buf;
 	buf.resize(f->get_len());
 	f->get_buffer(buf.ptrw(), buf.size());
-	godot_js_os_download_buffer(buf.ptr(), buf.size(), "project.zip", "application/zip");
+	pandemonium_js_os_download_buffer(buf.ptr(), buf.size(), "project.zip", "application/zip");
 }
 
 void JavaScriptToolsEditorPlugin::_bind_methods() {

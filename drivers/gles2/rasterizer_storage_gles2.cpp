@@ -5204,7 +5204,7 @@ void RasterizerStorageGLES2::render_target_set_external_texture(RID p_render_tar
 			if (rt->external.depth == 0) {
 				rt->external.depth_owned = true;
 
-				// create a multisample depth buffer, we're not reusing Godots because Godot's didn't get created..
+				// create a multisample depth buffer, we're not reusing Pandemoniums because Pandemonium's didn't get created..
 				glGenRenderbuffers(1, &rt->external.depth);
 				glBindRenderbuffer(GL_RENDERBUFFER, rt->external.depth);
 				glRenderbufferStorageMultisample(GL_RENDERBUFFER, msaa, config.depth_buffer_internalformat, rt->width, rt->height);

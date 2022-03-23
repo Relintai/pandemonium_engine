@@ -47,8 +47,8 @@
 #include <core/os/keyboard.h>
 #include <dlfcn.h>
 
-#include "java_godot_io_wrapper.h"
-#include "java_godot_wrapper.h"
+#include "java_pandemonium_io_wrapper.h"
+#include "java_pandemonium_wrapper.h"
 
 const char *OS_Android::ANDROID_EXEC_PATH = "apk";
 
@@ -72,7 +72,7 @@ String _remove_symlink(const String &dir) {
 class AndroidLogger : public Logger {
 public:
 	virtual void logv(const char *p_format, va_list p_list, bool p_err) {
-		__android_log_vprint(p_err ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "godot", p_format, p_list);
+		__android_log_vprint(p_err ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "pandemonium", p_format, p_list);
 	}
 
 	virtual ~AndroidLogger() {}
@@ -138,7 +138,7 @@ int OS_Android::get_current_video_driver() const {
 }
 
 Error OS_Android::initialize(const VideoMode &p_desired, int p_video_driver, int p_audio_driver) {
-	//bool use_gl3 = godot_java->get_gles_version_code() >= 0x00030000;
+	//bool use_gl3 = pandemonium_java->get_gles_version_code() >= 0x00030000;
 	//use_gl3 = use_gl3 && (GLOBAL_GET("rendering/quality/driver/driver_name") == "GLES3");
 	bool use_gl2 = (GLOBAL_GET("rendering/quality/driver/driver_name") == "GLES2");
 	bool gl_initialization_error = false;
@@ -146,7 +146,7 @@ Error OS_Android::initialize(const VideoMode &p_desired, int p_video_driver, int
 	while (true) {
 		if (use_gl2) {
 			if (RasterizerGLES2::is_viable() == OK) {
-				godot_java->gfx_init(true);
+				pandemonium_java->gfx_init(true);
 				RasterizerGLES2::register_config();
 				RasterizerGLES2::make_current();
 				break;
@@ -181,7 +181,7 @@ Error OS_Android::initialize(const VideoMode &p_desired, int p_video_driver, int
 
 	input = memnew(InputDefault);
 	input->set_use_input_buffering(true); // Needed because events will come directly from the UI thread
-	input->set_fallback_mapping(godot_java->get_input_fallback_mapping());
+	input->set_fallback_mapping(pandemonium_java->get_input_fallback_mapping());
 
 	//power_manager = memnew(PowerAndroid);
 
@@ -201,29 +201,29 @@ void OS_Android::finalize() {
 	memdelete(input);
 }
 
-GodotJavaWrapper *OS_Android::get_godot_java() {
-	return godot_java;
+PandemoniumJavaWrapper *OS_Android::get_pandemonium_java() {
+	return pandemonium_java;
 }
 
-GodotIOJavaWrapper *OS_Android::get_godot_io_java() {
-	return godot_io_java;
+PandemoniumIOJavaWrapper *OS_Android::get_pandemonium_io_java() {
+	return pandemonium_io_java;
 }
 
 void OS_Android::alert(const String &p_alert, const String &p_title) {
 	//print("ALERT: %s\n", p_alert.utf8().get_data());
-	godot_java->alert(p_alert, p_title);
+	pandemonium_java->alert(p_alert, p_title);
 }
 
 bool OS_Android::request_permission(const String &p_name) {
-	return godot_java->request_permission(p_name);
+	return pandemonium_java->request_permission(p_name);
 }
 
 bool OS_Android::request_permissions() {
-	return godot_java->request_permissions();
+	return pandemonium_java->request_permissions();
 }
 
 Vector<String> OS_Android::get_granted_permissions() const {
-	return godot_java->get_granted_permissions();
+	return pandemonium_java->get_granted_permissions();
 }
 
 Error OS_Android::open_dynamic_library(const String p_path, void *&p_library_handle, bool p_also_set_library_path) {
@@ -257,7 +257,7 @@ void OS_Android::set_window_title(const String &p_title) {
 	//This queries/updates the currently connected devices/joypads
 	//Set_window_title is called when initializing the main loop (main.cpp)
 	//therefore this place is found to be suitable (I found no better).
-	godot_java->init_input_devices();
+	pandemonium_java->init_input_devices();
 }
 
 void OS_Android::set_video_mode(const VideoMode &p_video_mode, int p_screen) {
@@ -274,14 +274,14 @@ void OS_Android::get_fullscreen_mode_list(List<VideoMode> *p_list, int p_screen)
 void OS_Android::set_keep_screen_on(bool p_enabled) {
 	OS::set_keep_screen_on(p_enabled);
 
-	godot_java->set_keep_screen_on(p_enabled);
+	pandemonium_java->set_keep_screen_on(p_enabled);
 }
 
 void OS_Android::set_low_processor_usage_mode(bool p_enabled) {
 #ifdef TOOLS_ENABLED
-	// Disabled as it causes flickers. We also expect the devices running Godot in editor mode to be high end.
-	// The actual reason for this is that android swaps framebuffers by itself after the end of GodotRenderer.onDrawFrame()
-	// However GodotRenderer.onDrawFrame() steps godot's mainloop, which processes input, and then it decides whether to draw frames or not
+	// Disabled as it causes flickers. We also expect the devices running Pandemonium in editor mode to be high end.
+	// The actual reason for this is that android swaps framebuffers by itself after the end of PandemoniumRenderer.onDrawFrame()
+	// However PandemoniumRenderer.onDrawFrame() steps pandemonium's mainloop, which processes input, and then it decides whether to draw frames or not
 	// (if in low processor mode)
 	OS_Unix::set_low_processor_usage_mode(false);
 #else
@@ -295,7 +295,7 @@ Size2 OS_Android::get_window_size() const {
 
 Rect2 OS_Android::get_window_safe_area() const {
 	int xywh[4];
-	godot_io_java->get_window_safe_area(xywh);
+	pandemonium_io_java->get_window_safe_area(xywh);
 	return Rect2(xywh[0], xywh[1], xywh[2], xywh[3]);
 }
 
@@ -371,23 +371,23 @@ bool OS_Android::has_virtual_keyboard() const {
 }
 
 int OS_Android::get_virtual_keyboard_height() const {
-	return godot_io_java->get_vk_height();
+	return pandemonium_io_java->get_vk_height();
 
 	// ERR_PRINT("Cannot obtain virtual keyboard height.");
 	// return 0;
 }
 
 void OS_Android::show_virtual_keyboard(const String &p_existing_text, const Rect2 &p_screen_rect, bool p_multiline, int p_max_input_length, int p_cursor_start, int p_cursor_end) {
-	if (godot_io_java->has_vk()) {
-		godot_io_java->show_vk(p_existing_text, p_multiline, p_max_input_length, p_cursor_start, p_cursor_end);
+	if (pandemonium_io_java->has_vk()) {
+		pandemonium_io_java->show_vk(p_existing_text, p_multiline, p_max_input_length, p_cursor_start, p_cursor_end);
 	} else {
 		ERR_PRINT("Virtual keyboard not available");
 	};
 }
 
 void OS_Android::hide_virtual_keyboard() {
-	if (godot_io_java->has_vk()) {
-		godot_io_java->hide_vk();
+	if (pandemonium_io_java->has_vk()) {
+		pandemonium_io_java->hide_vk();
 	} else {
 		ERR_PRINT("Virtual keyboard not available");
 	};
@@ -406,7 +406,7 @@ void OS_Android::set_display_size(Size2 p_size) {
 }
 
 Error OS_Android::shell_open(String p_uri) {
-	return godot_io_java->open_uri(p_uri);
+	return pandemonium_io_java->open_uri(p_uri);
 }
 
 String OS_Android::get_resource_dir() const {
@@ -418,7 +418,7 @@ String OS_Android::get_resource_dir() const {
 }
 
 String OS_Android::get_locale() const {
-	String locale = godot_io_java->get_locale();
+	String locale = pandemonium_io_java->get_locale();
 	if (locale != "") {
 		return locale;
 	}
@@ -428,8 +428,8 @@ String OS_Android::get_locale() const {
 
 void OS_Android::set_clipboard(const String &p_text) {
 	// DO we really need the fallback to OS_Unix here?!
-	if (godot_java->has_set_clipboard()) {
-		godot_java->set_clipboard(p_text);
+	if (pandemonium_java->has_set_clipboard()) {
+		pandemonium_java->set_clipboard(p_text);
 	} else {
 		OS_Unix::set_clipboard(p_text);
 	}
@@ -437,8 +437,8 @@ void OS_Android::set_clipboard(const String &p_text) {
 
 String OS_Android::get_clipboard() const {
 	// DO we really need the fallback to OS_Unix here?!
-	if (godot_java->has_get_clipboard()) {
-		return godot_java->get_clipboard();
+	if (pandemonium_java->has_get_clipboard()) {
+		return pandemonium_java->get_clipboard();
 	}
 
 	return OS_Unix::get_clipboard();
@@ -446,15 +446,15 @@ String OS_Android::get_clipboard() const {
 
 bool OS_Android::has_clipboard() const {
 	// DO we really need the fallback to OS_Unix here?!
-	if (godot_java->has_has_clipboard()) {
-		return godot_java->has_clipboard();
+	if (pandemonium_java->has_has_clipboard()) {
+		return pandemonium_java->has_clipboard();
 	}
 
 	return OS_Unix::has_clipboard();
 }
 
 String OS_Android::get_model_name() const {
-	String model = godot_io_java->get_model();
+	String model = pandemonium_io_java->get_model();
 	if (model != "")
 		return model;
 
@@ -462,11 +462,11 @@ String OS_Android::get_model_name() const {
 }
 
 int OS_Android::get_screen_dpi(int p_screen) const {
-	return godot_io_java->get_screen_dpi();
+	return pandemonium_io_java->get_screen_dpi();
 }
 
 float OS_Android::get_screen_refresh_rate(int p_screen) const {
-	return godot_io_java->get_screen_refresh_rate(OS::get_singleton()->SCREEN_REFRESH_RATE_FALLBACK);
+	return pandemonium_io_java->get_screen_refresh_rate(OS::get_singleton()->SCREEN_REFRESH_RATE_FALLBACK);
 }
 
 String OS_Android::get_data_path() const {
@@ -485,7 +485,7 @@ String OS_Android::get_user_data_dir() const {
 	if (data_dir_cache != String())
 		return data_dir_cache;
 
-	String data_dir = godot_io_java->get_user_data_dir();
+	String data_dir = pandemonium_io_java->get_user_data_dir();
 	if (data_dir != "") {
 		data_dir_cache = _remove_symlink(data_dir);
 		return data_dir_cache;
@@ -497,7 +497,7 @@ String OS_Android::get_cache_path() const {
 	if (cache_dir_cache != String())
 		return cache_dir_cache;
 
-	String cache_dir = godot_io_java->get_cache_dir();
+	String cache_dir = pandemonium_io_java->get_cache_dir();
 	if (cache_dir != "") {
 		cache_dir_cache = _remove_symlink(cache_dir);
 		return cache_dir_cache;
@@ -506,17 +506,17 @@ String OS_Android::get_cache_path() const {
 }
 
 void OS_Android::set_screen_orientation(ScreenOrientation p_orientation) {
-	godot_io_java->set_screen_orientation(p_orientation);
+	pandemonium_io_java->set_screen_orientation(p_orientation);
 }
 
 OS::ScreenOrientation OS_Android::get_screen_orientation() const {
-	const int orientation = godot_io_java->get_screen_orientation();
+	const int orientation = pandemonium_io_java->get_screen_orientation();
 	ERR_FAIL_INDEX_V_MSG(orientation, 7, OS::ScreenOrientation(0), "Unrecognized screen orientation.");
 	return OS::ScreenOrientation(orientation);
 }
 
 String OS_Android::get_unique_id() const {
-	String unique_id = godot_io_java->get_unique_id();
+	String unique_id = pandemonium_io_java->get_unique_id();
 	if (unique_id != "")
 		return unique_id;
 
@@ -524,7 +524,7 @@ String OS_Android::get_unique_id() const {
 }
 
 String OS_Android::get_system_dir(SystemDir p_dir, bool p_shared_storage) const {
-	return godot_io_java->get_system_dir(p_dir, p_shared_storage);
+	return pandemonium_io_java->get_system_dir(p_dir, p_shared_storage);
 }
 
 void OS_Android::set_offscreen_gl_available(bool p_available) {
@@ -537,7 +537,7 @@ bool OS_Android::is_offscreen_gl_available() const {
 
 void OS_Android::set_offscreen_gl_current(bool p_current) {
 	if (secondary_gl_available) {
-		godot_java->set_offscreen_gl_current(nullptr, p_current);
+		pandemonium_java->set_offscreen_gl_current(nullptr, p_current);
 	}
 }
 
@@ -550,7 +550,7 @@ String OS_Android::get_joy_guid(int p_device) const {
 }
 
 void OS_Android::vibrate_handheld(int p_duration_ms) {
-	godot_java->vibrate(p_duration_ms);
+	pandemonium_java->vibrate(p_duration_ms);
 }
 
 String OS_Android::get_config_path() const {
@@ -578,7 +578,7 @@ bool OS_Android::_check_internal_feature_support(const String &p_feature) {
 	return false;
 }
 
-OS_Android::OS_Android(GodotJavaWrapper *p_godot_java, GodotIOJavaWrapper *p_godot_io_java, bool p_use_apk_expansion) {
+OS_Android::OS_Android(PandemoniumJavaWrapper *p_pandemonium_java, PandemoniumIOJavaWrapper *p_pandemonium_io_java, bool p_use_apk_expansion) {
 	use_apk_expansion = p_use_apk_expansion;
 	default_videomode.width = 800;
 	default_videomode.height = 600;
@@ -590,8 +590,8 @@ OS_Android::OS_Android(GodotJavaWrapper *p_godot_java, GodotIOJavaWrapper *p_god
 	//rasterizer = NULL;
 	use_gl2 = false;
 
-	godot_java = p_godot_java;
-	godot_io_java = p_godot_io_java;
+	pandemonium_java = p_pandemonium_java;
+	pandemonium_io_java = p_pandemonium_io_java;
 
 	Vector<Logger *> loggers;
 	loggers.push_back(memnew(AndroidLogger));
@@ -609,7 +609,7 @@ Error OS_Android::execute(const String &p_path, const List<String> &p_arguments,
 }
 
 Error OS_Android::create_instance(const List<String> &p_arguments, ProcessID *r_child_id) {
-	godot_java->create_new_godot_instance(p_arguments);
+	pandemonium_java->create_new_pandemonium_instance(p_arguments);
 	return OK;
 }
 

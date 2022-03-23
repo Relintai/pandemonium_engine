@@ -2,7 +2,7 @@
 /*  os_windows.cpp                                                       */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -105,7 +105,7 @@ static String format_error_message(DWORD id) {
 	return msg;
 }
 
-extern HINSTANCE godot_hinstance;
+extern HINSTANCE pandemonium_hinstance;
 
 void RedirectStream(const char *p_file_name, const char *p_mode, FILE *p_cpp_stream, const DWORD p_std_handle) {
 	const HANDLE h_existing = GetStdHandle(p_std_handle);
@@ -193,7 +193,7 @@ void OS_Windows::initialize_core() {
 
 	process_map = memnew((Map<ProcessID, ProcessInfo>));
 
-	// Add current Godot PID to the list of known PIDs
+	// Add current Pandemonium PID to the list of known PIDs
 	ProcessInfo current_pi = {};
 	PROCESS_INFORMATION current_pi_pi = {};
 	current_pi.pi = current_pi_pi;
@@ -1316,7 +1316,7 @@ Error OS_Windows::initialize(const VideoMode &p_desired, int p_video_driver, int
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	//wc.hInstance = hInstance;
-	wc.hInstance = godot_hinstance ? godot_hinstance : GetModuleHandle(NULL);
+	wc.hInstance = pandemonium_hinstance ? pandemonium_hinstance : GetModuleHandle(NULL);
 	wc.hIcon = LoadIcon(NULL, IDI_WINLOGO);
 	wc.hCursor = NULL; //LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = NULL;
@@ -1403,10 +1403,10 @@ Error OS_Windows::initialize(const VideoMode &p_desired, int p_video_driver, int
 
 	char *windowid;
 #ifdef MINGW_ENABLED
-	windowid = getenv("GODOT_WINDOWID");
+	windowid = getenv("PANDEMONIUM_WINDOWID");
 #else
 	size_t len;
-	_dupenv_s(&windowid, &len, "GODOT_WINDOWID");
+	_dupenv_s(&windowid, &len, "PANDEMONIUM_WINDOWID");
 #endif
 
 	if (windowid) {
@@ -3316,7 +3316,7 @@ uint32_t OS_Windows::keyboard_get_scancode_from_physical(uint32_t p_scancode) co
 	// Unlike a similar Linux/BSD check which matches full Latin-1 range,
 	// we limit these to ASCII to fix some layouts, including Arabic ones
 	if (char_code >= 32 && char_code <= 127) {
-		// Godot uses 'braces' instead of 'brackets'
+		// Pandemonium uses 'braces' instead of 'brackets'
 		if (char_code == KEY_BRACKETLEFT || char_code == KEY_BRACKETRIGHT) {
 			char_code += 32;
 		}
@@ -3459,7 +3459,7 @@ String OS_Windows::get_cache_path() const {
 }
 
 // Get properly capitalized engine name for system paths
-String OS_Windows::get_godot_dir_name() const {
+String OS_Windows::get_pandemonium_dir_name() const {
 	return String(VERSION_SHORT_NAME).capitalize();
 }
 
@@ -3512,11 +3512,11 @@ String OS_Windows::get_user_data_dir() const {
 			}
 			return get_data_path().plus_file(custom_dir).replace("\\", "/");
 		} else {
-			return get_data_path().plus_file(get_godot_dir_name()).plus_file("app_userdata").plus_file(appname).replace("\\", "/");
+			return get_data_path().plus_file(get_pandemonium_dir_name()).plus_file("app_userdata").plus_file(appname).replace("\\", "/");
 		}
 	}
 
-	return get_data_path().plus_file(get_godot_dir_name()).plus_file("app_userdata").plus_file("[unnamed project]");
+	return get_data_path().plus_file(get_pandemonium_dir_name()).plus_file("app_userdata").plus_file("[unnamed project]");
 }
 
 String OS_Windows::get_unique_id() const {

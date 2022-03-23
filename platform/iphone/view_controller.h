@@ -30,15 +30,15 @@
 
 #import <UIKit/UIKit.h>
 
-@class GodotView;
-@class GodotNativeVideoView;
-@class GodotKeyboardInputView;
+@class PandemoniumView;
+@class PandemoniumNativeVideoView;
+@class PandemoniumKeyboardInputView;
 
 @interface ViewController : UIViewController
 
-@property(nonatomic, readonly, strong) GodotView *godotView;
-@property(nonatomic, readonly, strong) GodotNativeVideoView *videoView;
-@property(nonatomic, readonly, strong) GodotKeyboardInputView *keyboardView;
+@property(nonatomic, readonly, strong) PandemoniumView *pandemoniumView;
+@property(nonatomic, readonly, strong) PandemoniumNativeVideoView *videoView;
+@property(nonatomic, readonly, strong) PandemoniumKeyboardInputView *keyboardView;
 
 // MARK: Native Video Player
 

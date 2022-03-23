@@ -312,7 +312,7 @@ MainLoop *test() {
 
 	if (cmdlargs.empty()) {
 		//try editor!
-		print_line("usage: godot -test shaderlang <shader>");
+		print_line("usage: pandemonium -test shaderlang <shader>");
 		return nullptr;
 	}
 

@@ -37,8 +37,8 @@
 #include "servers/audio_server.h"
 #include "servers/visual/rasterizer.h"
 
-class GodotJavaWrapper;
-class GodotIOJavaWrapper;
+class PandemoniumJavaWrapper;
+class PandemoniumIOJavaWrapper;
 
 class OS_Android : public OS_Unix {
 	bool use_gl2;
@@ -59,8 +59,8 @@ class OS_Android : public OS_Unix {
 	VideoMode default_videomode;
 	MainLoop *main_loop;
 
-	GodotJavaWrapper *godot_java;
-	GodotIOJavaWrapper *godot_io_java;
+	PandemoniumJavaWrapper *pandemonium_java;
+	PandemoniumIOJavaWrapper *pandemonium_io_java;
 
 	//PowerAndroid *power_manager_func;
 
@@ -90,8 +90,8 @@ public:
 
 	typedef int64_t ProcessID;
 
-	GodotJavaWrapper *get_godot_java();
-	GodotIOJavaWrapper *get_godot_io_java();
+	PandemoniumJavaWrapper *get_pandemonium_java();
+	PandemoniumIOJavaWrapper *get_pandemonium_io_java();
 
 	virtual void alert(const String &p_alert, const String &p_title = "ALERT!");
 	virtual bool request_permission(const String &p_name);
@@ -180,7 +180,7 @@ public:
 	virtual Error execute(const String &p_path, const List<String> &p_arguments, bool p_blocking = true, ProcessID *r_child_id = nullptr, String *r_pipe = nullptr, int *r_exitcode = nullptr, bool read_stderr = false, Mutex *p_pipe_mutex = nullptr, bool p_open_console = false);
 
 	virtual bool _check_internal_feature_support(const String &p_feature);
-	OS_Android(GodotJavaWrapper *p_godot_java, GodotIOJavaWrapper *p_godot_io_java, bool p_use_apk_expansion);
+	OS_Android(PandemoniumJavaWrapper *p_pandemonium_java, PandemoniumIOJavaWrapper *p_pandemonium_io_java, bool p_use_apk_expansion);
 	~OS_Android();
 
 private:

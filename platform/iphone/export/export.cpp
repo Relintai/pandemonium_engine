@@ -43,7 +43,7 @@
 #include "editor/editor_settings.h"
 #include "main/splash.gen.h"
 #include "platform/iphone/logo.gen.h"
-#include "platform/iphone/plugin/godot_plugin_config.h"
+#include "platform/iphone/plugin/pandemonium_plugin_config.h"
 #include "string.h"
 
 #include <sys/stat.h>
@@ -360,7 +360,7 @@ void EditorExportPlatformIOS::get_export_options(List<ExportOption> *r_options) 
 	r_options->push_back(ExportOption(PropertyInfo(Variant::INT, "application/targeted_device_family", PROPERTY_HINT_ENUM, "iPhone,iPad,iPhone & iPad"), 2));
 
 	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "application/name", PROPERTY_HINT_PLACEHOLDER_TEXT, "Game Name"), ""));
-	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "application/info"), "Made with Godot Engine"));
+	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "application/info"), "Made with Pandemonium Engine"));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "application/identifier", PROPERTY_HINT_PLACEHOLDER_TEXT, "com.example.game"), ""));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "application/signature"), ""));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "application/short_version"), "1.0"));
@@ -511,8 +511,8 @@ void EditorExportPlatformIOS::_fix_config_file(const Ref<EditorExportPreset> &p_
 			strnew += lines[i].replace("$code_sign_identity_release", rel_sign_id) + "\n";
 		} else if (lines[i].find("$additional_plist_content") != -1) {
 			strnew += lines[i].replace("$additional_plist_content", p_config.plist_content) + "\n";
-		} else if (lines[i].find("$godot_archs") != -1) {
-			strnew += lines[i].replace("$godot_archs", p_config.architectures) + "\n";
+		} else if (lines[i].find("$pandemonium_archs") != -1) {
+			strnew += lines[i].replace("$pandemonium_archs", p_config.architectures) + "\n";
 		} else if (lines[i].find("$linker_flags") != -1) {
 			strnew += lines[i].replace("$linker_flags", p_config.linker_flags) + "\n";
 		} else if (lines[i].find("$targeted_device_family") != -1) {
@@ -634,7 +634,7 @@ void EditorExportPlatformIOS::_fix_config_file(const Ref<EditorExportPreset> &p_
 				case 0: {
 					String logo_path = ProjectSettings::get_singleton()->get("application/boot_splash/image");
 					bool is_on = ProjectSettings::get_singleton()->get("application/boot_splash/fullsize");
-					// If custom logo is not specified, Godot does not scale default one, so we should do the same.
+					// If custom logo is not specified, Pandemonium does not scale default one, so we should do the same.
 					value = (is_on && logo_path.length() > 0) ? "scaleAspectFit" : "center";
 				} break;
 				default: {
@@ -928,7 +928,7 @@ Error EditorExportPlatformIOS::_export_loading_screen_file(const Ref<EditorExpor
 		}
 
 		// Using same image for both @2x and @3x
-		// because Godot's own boot logo uses single image for all resolutions.
+		// because Pandemonium's own boot logo uses single image for all resolutions.
 		// Also not using @1x image, because devices using this image variant
 		// are not supported by iOS 9, which is minimal target.
 		const String splash_png_path_2x = p_dest_dir.plus_file("splash@2x.png");
@@ -1150,7 +1150,7 @@ struct ExportLibsData {
 };
 
 void EditorExportPlatformIOS::_add_assets_to_project(const Ref<EditorExportPreset> &p_preset, Vector<uint8_t> &p_project_data, const Vector<IOSExportAsset> &p_additional_assets) {
-	// that is just a random number, we just need Godot IDs not to clash with
+	// that is just a random number, we just need Pandemonium IDs not to clash with
 	// existing IDs in the project.
 	PbxId current_id = { 0x58938401, 0, 0 };
 	String pbx_files;
@@ -1625,16 +1625,16 @@ Error EditorExportPlatformIOS::_export_ios_plugins(const Ref<EditorExportPreset>
 		plugin_format["initialization"] = plugin_initialization_cpp_code;
 		plugin_format["deinitialization"] = plugin_deinitialization_cpp_code;
 
-		String plugin_cpp_code = "\n// Godot Plugins\n"
-								 "void godot_ios_plugins_initialize();\n"
-								 "void godot_ios_plugins_deinitialize();\n"
+		String plugin_cpp_code = "\n// Pandemonium Plugins\n"
+								 "void pandemonium_ios_plugins_initialize();\n"
+								 "void pandemonium_ios_plugins_deinitialize();\n"
 								 "// Exported Plugins\n\n"
 								 "$definition"
 								 "// Use Plugins\n"
-								 "void godot_ios_plugins_initialize() {\n"
+								 "void pandemonium_ios_plugins_initialize() {\n"
 								 "$initialization"
 								 "}\n\n"
-								 "void godot_ios_plugins_deinitialize() {\n"
+								 "void pandemonium_ios_plugins_deinitialize() {\n"
 								 "$deinitialization"
 								 "}\n";
 
@@ -1734,7 +1734,7 @@ Error EditorExportPlatformIOS::export_project(const Ref<EditorExportPreset> &p_p
 		return ERR_SKIP;
 	}
 
-	String library_to_use = "libgodot.iphone." + String(p_debug ? "debug" : "release") + ".xcframework";
+	String library_to_use = "libpandemonium.iphone." + String(p_debug ? "debug" : "release") + ".xcframework";
 
 	print_line("Static framework: " + library_to_use);
 	String pkg_name;
@@ -1748,16 +1748,16 @@ Error EditorExportPlatformIOS::export_project(const Ref<EditorExportPreset> &p_p
 
 	bool found_library = false;
 
-	const String project_file = "godot_ios.xcodeproj/project.pbxproj";
+	const String project_file = "pandemonium_ios.xcodeproj/project.pbxproj";
 	Set<String> files_to_parse;
-	files_to_parse.insert("godot_ios/godot_ios-Info.plist");
+	files_to_parse.insert("pandemonium_ios/pandemonium_ios-Info.plist");
 	files_to_parse.insert(project_file);
-	files_to_parse.insert("godot_ios/export_options.plist");
-	files_to_parse.insert("godot_ios/dummy.cpp");
-	files_to_parse.insert("godot_ios.xcodeproj/project.xcworkspace/contents.xcworkspacedata");
-	files_to_parse.insert("godot_ios.xcodeproj/xcshareddata/xcschemes/godot_ios.xcscheme");
-	files_to_parse.insert("godot_ios/godot_ios.entitlements");
-	files_to_parse.insert("godot_ios/Launch Screen.storyboard");
+	files_to_parse.insert("pandemonium_ios/export_options.plist");
+	files_to_parse.insert("pandemonium_ios/dummy.cpp");
+	files_to_parse.insert("pandemonium_ios.xcodeproj/project.xcworkspace/contents.xcworkspacedata");
+	files_to_parse.insert("pandemonium_ios.xcodeproj/xcshareddata/xcschemes/pandemonium_ios.xcscheme");
+	files_to_parse.insert("pandemonium_ios/pandemonium_ios.entitlements");
+	files_to_parse.insert("pandemonium_ios/Launch Screen.storyboard");
 
 	IOSConfigData config_data = {
 		pkg_name,
@@ -1820,7 +1820,7 @@ Error EditorExportPlatformIOS::export_project(const Ref<EditorExportPreset> &p_p
 
 		if (files_to_parse.has(file)) {
 			_fix_config_file(p_preset, data, config_data, p_debug);
-		} else if (file.begins_with("libgodot.iphone")) {
+		} else if (file.begins_with("libpandemonium.iphone")) {
 			if (!file.begins_with(library_to_use) || file.ends_with(String("/empty"))) {
 				ret = unzGoToNextFile(src_pkg_zip);
 				continue; //ignore!
@@ -1839,7 +1839,7 @@ Error EditorExportPlatformIOS::export_project(const Ref<EditorExportPreset> &p_p
 		///@TODO need to parse logo files
 
 		if (data.size() > 0) {
-			file = file.replace("godot_ios", binary_name);
+			file = file.replace("pandemonium_ios", binary_name);
 
 			print_line("ADDING: " + file + " size: " + itos(data.size()));
 

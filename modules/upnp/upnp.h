@@ -1,10 +1,10 @@
-#ifndef GODOT_UPNP_H
-#define GODOT_UPNP_H
+#ifndef PANDEMONIUM_UPNP_H
+#define PANDEMONIUM_UPNP_H
 /*************************************************************************/
 /*  upnp.h                                                               */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -121,4 +121,4 @@ public:
 
 VARIANT_ENUM_CAST(UPNP::UPNPResult)
 
-#endif // GODOT_UPNP_H
+#endif // PANDEMONIUM_UPNP_H

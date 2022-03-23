@@ -50,8 +50,8 @@ Error ImageLoaderTinyEXR::load_image(Ref<Image> p_image, FileAccess *f, bool p_f
 
 	f->close();
 
-	// Re-implementation of tinyexr's LoadEXRFromMemory using Godot types to store the Image data
-	// and Godot's error codes.
+	// Re-implementation of tinyexr's LoadEXRFromMemory using Pandemonium types to store the Image data
+	// and Pandemonium's error codes.
 	// When debugging after updating the thirdparty library, check that we're still in sync with
 	// their API usage in LoadEXRFromMemory.
 
@@ -114,7 +114,7 @@ Error ImageLoaderTinyEXR::load_image(Ref<Image> p_image, FileAccess *f, bool p_f
 		}
 	}
 
-	// EXR image data loaded, now parse it into Godot-friendly image data
+	// EXR image data loaded, now parse it into Pandemonium-friendly image data
 
 	PoolVector<uint8_t> imgdata;
 	Image::Format format;

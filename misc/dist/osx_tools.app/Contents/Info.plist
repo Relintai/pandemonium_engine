@@ -5,15 +5,15 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>Godot</string>
+	<string>Pandemonium</string>
 	<key>CFBundleName</key>
-	<string>Godot</string>
+	<string>Pandemonium</string>
 	<key>CFBundleGetInfoString</key>
-	<string>(c) 2007-2022 Juan Linietsky, Ariel Manzur &amp; Godot Engine contributors</string>
+	<string>(c) 2007-2022 Juan Linietsky, Ariel Manzur &amp; Pandemonium Engine contributors</string>
 	<key>CFBundleIconFile</key>
-	<string>Godot.icns</string>
+	<string>Pandemonium.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.godotengine.godot</string>
+	<string>net.relintai.pandemonium.pandemonium</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -21,7 +21,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>3.5</string>
 	<key>CFBundleSignature</key>
-	<string>godot</string>
+	<string>pandemonium</string>
 	<key>CFBundleVersion</key>
 	<string>3.5</string>
 	<key>NSMicrophoneUsageDescription</key>
@@ -31,7 +31,7 @@
 	<key>NSRequiresAquaSystemAppearance</key>
 	<false />
 	<key>NSHumanReadableCopyright</key>
-	<string>© 2007-2022 Juan Linietsky, Ariel Manzur &amp; Godot Engine contributors</string>
+	<string>© 2007-2022 Juan Linietsky, Ariel Manzur &amp; Pandemonium Engine contributors</string>
 	<key>CFBundleSupportedPlatforms</key>
 	<array>
 		<string>MacOSX</string>
@@ -68,11 +68,11 @@
 			<string>Editor</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>public.godot</string>
+				<string>public.pandemonium</string>
 			</array>
 			<key>NSExportableTypes</key>
 			<array>
-				<string>public.godot</string>
+				<string>public.pandemonium</string>
 			</array>
 		</dict>
 	</array>
@@ -84,7 +84,7 @@
 			<key>UTTypeReferenceURL</key>
 			<string></string>
 			<key>UTTypeDescription</key>
-			<string>Godot Scene</string>
+			<string>Pandemonium Scene</string>
 			<key>UTTypeIconFile</key>
 			<string>Scene.icns</string>
 			<key>UTTypeConformsTo</key>
@@ -99,7 +99,7 @@
 					<string>tscn</string>
 				</array>
 				<key>public.mime-type</key>
-				<string>application/x-godot-scene</string>
+				<string>application/x-pandemonium-scene</string>
 			</dict>
 		</dict>
 		<dict>
@@ -108,7 +108,7 @@
 			<key>UTTypeReferenceURL</key>
 			<string></string>
 			<key>UTTypeDescription</key>
-			<string>Godot Script</string>
+			<string>Pandemonium Script</string>
 			<key>UTTypeIconFile</key>
 			<string>GDScript.icns</string>
 			<key>UTTypeConformsTo</key>
@@ -131,7 +131,7 @@
 			<key>UTTypeReferenceURL</key>
 			<string></string>
 			<key>UTTypeDescription</key>
-			<string>Godot Resource</string>
+			<string>Pandemonium Resource</string>
 			<key>UTTypeIconFile</key>
 			<string>Resource.icns</string>
 			<key>UTTypeConformsTo</key>
@@ -146,16 +146,16 @@
 					<string>tres</string>
 				</array>
 				<key>public.mime-type</key>
-				<string>application/x-godot-resource</string>
+				<string>application/x-pandemonium-resource</string>
 			</dict>
 		</dict>
 		<dict>
 			<key>UTTypeIdentifier</key>
-			<string>public.godot</string>
+			<string>public.pandemonium</string>
 			<key>UTTypeReferenceURL</key>
 			<string></string>
 			<key>UTTypeDescription</key>
-			<string>Godot Project</string>
+			<string>Pandemonium Project</string>
 			<key>UTTypeIconFile</key>
 			<string>Project.icns</string>
 			<key>UTTypeConformsTo</key>
@@ -166,10 +166,10 @@
 			<dict>
 				<key>public.filename-extension</key>
 				<array>
-					<string>godot</string>
+					<string>pandemonium</string>
 				</array>
 				<key>public.mime-type</key>
-				<string>text/x-godot-project</string>
+				<string>text/x-pandemonium-project</string>
 			</dict>
 		</dict>
 	</array>

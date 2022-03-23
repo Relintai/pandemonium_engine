@@ -4,7 +4,7 @@
 /*  main_timer_sync.h                                                    */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -33,7 +33,7 @@
 #include "core/engine.h"
 
 // define these to get more debugging logs for the delta smoothing
-//#define GODOT_DEBUG_DELTA_SMOOTHER
+//#define PANDEMONIUM_DEBUG_DELTA_SMOOTHER
 
 struct MainFrameTime {
 	float idle_step; // time to advance idles for (argument to process())
@@ -97,7 +97,7 @@ class MainTimerSync {
 
 			_estimate_complete = false;
 
-#ifdef GODOT_DEBUG_DELTA_SMOOTHER
+#ifdef PANDEMONIUM_DEBUG_DELTA_SMOOTHER
 			print_line("estimated fps " + itos(_estimated_fps));
 #endif
 		}

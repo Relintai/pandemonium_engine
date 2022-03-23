@@ -100,7 +100,7 @@ jvalret _variant_to_jvalue(JNIEnv *env, Variant::Type p_type, const Variant *p_a
 
 		case Variant::DICTIONARY: {
 			Dictionary dict = *p_arg;
-			jclass dclass = env->FindClass("org/godotengine/godot/Dictionary");
+			jclass dclass = env->FindClass("org/pandemoniumengine/pandemonium/Dictionary");
 			jmethodID ctor = env->GetMethodID(dclass, "<init>", "()V");
 			jobject jdict = env->NewObject(dclass, ctor);
 
@@ -308,7 +308,7 @@ Variant _jobject_to_variant(JNIEnv *env, jobject obj) {
 		return varr;
 	};
 
-	if (name == "java.util.HashMap" || name == "org.godotengine.godot.Dictionary") {
+	if (name == "java.util.HashMap" || name == "net.relintai.pandemonium.pandemonium.Dictionary") {
 		Dictionary ret;
 		jclass oclass = c;
 		jmethodID get_keys = env->GetMethodID(oclass, "get_keys", "()[Ljava/lang/String;");
@@ -350,7 +350,7 @@ Variant::Type get_jni_type(const String &p_type) {
 		{ "[B", Variant::POOL_BYTE_ARRAY },
 		{ "[F", Variant::POOL_REAL_ARRAY },
 		{ "[Ljava.lang.String;", Variant::POOL_STRING_ARRAY },
-		{ "org.godotengine.godot.Dictionary", Variant::DICTIONARY },
+		{ "net.relintai.pandemonium.pandemonium.Dictionary", Variant::DICTIONARY },
 		{ NULL, Variant::NIL }
 	};
 
@@ -377,7 +377,7 @@ const char *get_jni_sig(const String &p_type) {
 		{ "float", "F" },
 		{ "double", "D" },
 		{ "java.lang.String", "Ljava/lang/String;" },
-		{ "org.godotengine.godot.Dictionary", "Lorg/godotengine/godot/Dictionary;" },
+		{ "net.relintai.pandemonium.pandemonium.Dictionary", "Lorg/pandemoniumengine/pandemonium/Dictionary;" },
 		{ "[I", "[I" },
 		{ "[B", "[B" },
 		{ "[F", "[F" },

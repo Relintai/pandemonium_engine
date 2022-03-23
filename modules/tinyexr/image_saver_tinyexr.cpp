@@ -160,7 +160,7 @@ Error save_exr(const String &p_path, const Ref<Image> &p_img, bool p_grayscale) 
 
 	const int max_channels = 4;
 
-	// Godot does not support more than 4 channels,
+	// Pandemonium does not support more than 4 channels,
 	// so we can preallocate header infos on the stack and use only the subset we need
 	PoolByteArray channels[max_channels];
 	unsigned char *channels_ptrs[max_channels];

@@ -3493,7 +3493,7 @@ ScriptEditor::ScriptEditor(EditorNode *p_editor) {
 	site_search->set_text(TTR("Online Docs"));
 	site_search->connect("pressed", this, "_menu_option", varray(SEARCH_WEBSITE));
 	menu_hb->add_child(site_search);
-	site_search->set_tooltip(TTR("Open Godot online documentation."));
+	site_search->set_tooltip(TTR("Open Pandemonium online documentation."));
 
 	help_search = memnew(ToolButton);
 	help_search->set_text(TTR("Search Help"));

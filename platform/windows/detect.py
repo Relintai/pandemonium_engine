@@ -16,7 +16,7 @@ def get_name():
 def can_build():
     if os.name == "nt":
         # Building natively on Windows
-        # If VCINSTALLDIR is set in the OS environ, use traditional Godot logic to set up MSVC
+        # If VCINSTALLDIR is set in the OS environ, use traditional Pandemonium logic to set up MSVC
         if os.getenv("VCINSTALLDIR"):  # MSVC, manual setup
             return True
 

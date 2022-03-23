@@ -2,7 +2,7 @@
 /*  dom_keys.inc                                                         */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -31,44 +31,44 @@
 #include "core/os/keyboard.h"
 
 // See https://w3c.github.io/uievents-code/#code-value-tables
-int dom_code2godot_scancode(EM_UTF8 const p_code[32], EM_UTF8 const p_key[32], bool p_physical) {
-#define DOM2GODOT(p_str, p_godot_code)                                         \
+int dom_code2pandemonium_scancode(EM_UTF8 const p_code[32], EM_UTF8 const p_key[32], bool p_physical) {
+#define DOM2PANDEMONIUM(p_str, p_pandemonium_code)                                         \
 	if (memcmp((const void *)p_str, (void *)p_code, strlen(p_str) + 1) == 0) { \
-		return KEY_##p_godot_code;                                             \
+		return KEY_##p_pandemonium_code;                                             \
 	}
 
 	// Numpad section.
-	DOM2GODOT("NumLock", NUMLOCK);
-	DOM2GODOT("Numpad0", KP_0);
-	DOM2GODOT("Numpad1", KP_1);
-	DOM2GODOT("Numpad2", KP_2);
-	DOM2GODOT("Numpad3", KP_3);
-	DOM2GODOT("Numpad4", KP_4);
-	DOM2GODOT("Numpad5", KP_5);
-	DOM2GODOT("Numpad6", KP_6);
-	DOM2GODOT("Numpad7", KP_7);
-	DOM2GODOT("Numpad8", KP_8);
-	DOM2GODOT("Numpad9", KP_9);
-	DOM2GODOT("NumpadAdd", KP_ADD);
-	DOM2GODOT("NumpadBackspace", BACKSPACE);
-	DOM2GODOT("NumpadClear", CLEAR);
-	DOM2GODOT("NumpadClearEntry", CLEAR);
-	//DOM2GODOT("NumpadComma", UNKNOWN);
-	DOM2GODOT("NumpadDecimal", KP_PERIOD);
-	DOM2GODOT("NumpadDivide", KP_DIVIDE);
-	DOM2GODOT("NumpadEnter", KP_ENTER);
-	DOM2GODOT("NumpadEqual", EQUAL);
-	//DOM2GODOT("NumpadHash", UNKNOWN);
-	//DOM2GODOT("NumpadMemoryAdd", UNKNOWN);
-	//DOM2GODOT("NumpadMemoryClear", UNKNOWN);
-	//DOM2GODOT("NumpadMemoryRecall", UNKNOWN);
-	//DOM2GODOT("NumpadMemoryStore", UNKNOWN);
-	//DOM2GODOT("NumpadMemorySubtract", UNKNOWN);
-	DOM2GODOT("NumpadMultiply", KP_MULTIPLY);
-	DOM2GODOT("NumpadParenLeft", PARENLEFT);
-	DOM2GODOT("NumpadParenRight", PARENRIGHT);
-	DOM2GODOT("NumpadStar", KP_MULTIPLY); // or ASTERISK ?
-	DOM2GODOT("NumpadSubtract", KP_SUBTRACT);
+	DOM2PANDEMONIUM("NumLock", NUMLOCK);
+	DOM2PANDEMONIUM("Numpad0", KP_0);
+	DOM2PANDEMONIUM("Numpad1", KP_1);
+	DOM2PANDEMONIUM("Numpad2", KP_2);
+	DOM2PANDEMONIUM("Numpad3", KP_3);
+	DOM2PANDEMONIUM("Numpad4", KP_4);
+	DOM2PANDEMONIUM("Numpad5", KP_5);
+	DOM2PANDEMONIUM("Numpad6", KP_6);
+	DOM2PANDEMONIUM("Numpad7", KP_7);
+	DOM2PANDEMONIUM("Numpad8", KP_8);
+	DOM2PANDEMONIUM("Numpad9", KP_9);
+	DOM2PANDEMONIUM("NumpadAdd", KP_ADD);
+	DOM2PANDEMONIUM("NumpadBackspace", BACKSPACE);
+	DOM2PANDEMONIUM("NumpadClear", CLEAR);
+	DOM2PANDEMONIUM("NumpadClearEntry", CLEAR);
+	//DOM2PANDEMONIUM("NumpadComma", UNKNOWN);
+	DOM2PANDEMONIUM("NumpadDecimal", KP_PERIOD);
+	DOM2PANDEMONIUM("NumpadDivide", KP_DIVIDE);
+	DOM2PANDEMONIUM("NumpadEnter", KP_ENTER);
+	DOM2PANDEMONIUM("NumpadEqual", EQUAL);
+	//DOM2PANDEMONIUM("NumpadHash", UNKNOWN);
+	//DOM2PANDEMONIUM("NumpadMemoryAdd", UNKNOWN);
+	//DOM2PANDEMONIUM("NumpadMemoryClear", UNKNOWN);
+	//DOM2PANDEMONIUM("NumpadMemoryRecall", UNKNOWN);
+	//DOM2PANDEMONIUM("NumpadMemoryStore", UNKNOWN);
+	//DOM2PANDEMONIUM("NumpadMemorySubtract", UNKNOWN);
+	DOM2PANDEMONIUM("NumpadMultiply", KP_MULTIPLY);
+	DOM2PANDEMONIUM("NumpadParenLeft", PARENLEFT);
+	DOM2PANDEMONIUM("NumpadParenRight", PARENRIGHT);
+	DOM2PANDEMONIUM("NumpadStar", KP_MULTIPLY); // or ASTERISK ?
+	DOM2PANDEMONIUM("NumpadSubtract", KP_SUBTRACT);
 
 	// Printable ASCII.
 	if (!p_physical) {
@@ -100,133 +100,133 @@ int dom_code2godot_scancode(EM_UTF8 const p_code[32], EM_UTF8 const p_key[32], b
 	}
 
 	// Alphanumeric section.
-	DOM2GODOT("Backquote", QUOTELEFT);
-	DOM2GODOT("Backslash", BACKSLASH);
-	DOM2GODOT("BracketLeft", BRACKETLEFT);
-	DOM2GODOT("BracketRight", BRACKETRIGHT);
-	DOM2GODOT("Comma", COMMA);
-	DOM2GODOT("Digit0", 0);
-	DOM2GODOT("Digit1", 1);
-	DOM2GODOT("Digit2", 2);
-	DOM2GODOT("Digit3", 3);
-	DOM2GODOT("Digit4", 4);
-	DOM2GODOT("Digit5", 5);
-	DOM2GODOT("Digit6", 6);
-	DOM2GODOT("Digit7", 7);
-	DOM2GODOT("Digit8", 8);
-	DOM2GODOT("Digit9", 9);
-	DOM2GODOT("Equal", EQUAL);
-	DOM2GODOT("IntlBackslash", BACKSLASH);
-	//DOM2GODOT("IntlRo", UNKNOWN);
-	DOM2GODOT("IntlYen", YEN);
+	DOM2PANDEMONIUM("Backquote", QUOTELEFT);
+	DOM2PANDEMONIUM("Backslash", BACKSLASH);
+	DOM2PANDEMONIUM("BracketLeft", BRACKETLEFT);
+	DOM2PANDEMONIUM("BracketRight", BRACKETRIGHT);
+	DOM2PANDEMONIUM("Comma", COMMA);
+	DOM2PANDEMONIUM("Digit0", 0);
+	DOM2PANDEMONIUM("Digit1", 1);
+	DOM2PANDEMONIUM("Digit2", 2);
+	DOM2PANDEMONIUM("Digit3", 3);
+	DOM2PANDEMONIUM("Digit4", 4);
+	DOM2PANDEMONIUM("Digit5", 5);
+	DOM2PANDEMONIUM("Digit6", 6);
+	DOM2PANDEMONIUM("Digit7", 7);
+	DOM2PANDEMONIUM("Digit8", 8);
+	DOM2PANDEMONIUM("Digit9", 9);
+	DOM2PANDEMONIUM("Equal", EQUAL);
+	DOM2PANDEMONIUM("IntlBackslash", BACKSLASH);
+	//DOM2PANDEMONIUM("IntlRo", UNKNOWN);
+	DOM2PANDEMONIUM("IntlYen", YEN);
 
-	DOM2GODOT("KeyA", A);
-	DOM2GODOT("KeyB", B);
-	DOM2GODOT("KeyC", C);
-	DOM2GODOT("KeyD", D);
-	DOM2GODOT("KeyE", E);
-	DOM2GODOT("KeyF", F);
-	DOM2GODOT("KeyG", G);
-	DOM2GODOT("KeyH", H);
-	DOM2GODOT("KeyI", I);
-	DOM2GODOT("KeyJ", J);
-	DOM2GODOT("KeyK", K);
-	DOM2GODOT("KeyL", L);
-	DOM2GODOT("KeyM", M);
-	DOM2GODOT("KeyN", N);
-	DOM2GODOT("KeyO", O);
-	DOM2GODOT("KeyP", P);
-	DOM2GODOT("KeyQ", Q);
-	DOM2GODOT("KeyR", R);
-	DOM2GODOT("KeyS", S);
-	DOM2GODOT("KeyT", T);
-	DOM2GODOT("KeyU", U);
-	DOM2GODOT("KeyV", V);
-	DOM2GODOT("KeyW", W);
-	DOM2GODOT("KeyX", X);
-	DOM2GODOT("KeyY", Y);
-	DOM2GODOT("KeyZ", Z);
+	DOM2PANDEMONIUM("KeyA", A);
+	DOM2PANDEMONIUM("KeyB", B);
+	DOM2PANDEMONIUM("KeyC", C);
+	DOM2PANDEMONIUM("KeyD", D);
+	DOM2PANDEMONIUM("KeyE", E);
+	DOM2PANDEMONIUM("KeyF", F);
+	DOM2PANDEMONIUM("KeyG", G);
+	DOM2PANDEMONIUM("KeyH", H);
+	DOM2PANDEMONIUM("KeyI", I);
+	DOM2PANDEMONIUM("KeyJ", J);
+	DOM2PANDEMONIUM("KeyK", K);
+	DOM2PANDEMONIUM("KeyL", L);
+	DOM2PANDEMONIUM("KeyM", M);
+	DOM2PANDEMONIUM("KeyN", N);
+	DOM2PANDEMONIUM("KeyO", O);
+	DOM2PANDEMONIUM("KeyP", P);
+	DOM2PANDEMONIUM("KeyQ", Q);
+	DOM2PANDEMONIUM("KeyR", R);
+	DOM2PANDEMONIUM("KeyS", S);
+	DOM2PANDEMONIUM("KeyT", T);
+	DOM2PANDEMONIUM("KeyU", U);
+	DOM2PANDEMONIUM("KeyV", V);
+	DOM2PANDEMONIUM("KeyW", W);
+	DOM2PANDEMONIUM("KeyX", X);
+	DOM2PANDEMONIUM("KeyY", Y);
+	DOM2PANDEMONIUM("KeyZ", Z);
 
-	DOM2GODOT("Minus", MINUS);
-	DOM2GODOT("Period", PERIOD);
-	DOM2GODOT("Quote", APOSTROPHE);
-	DOM2GODOT("Semicolon", SEMICOLON);
-	DOM2GODOT("Slash", SLASH);
+	DOM2PANDEMONIUM("Minus", MINUS);
+	DOM2PANDEMONIUM("Period", PERIOD);
+	DOM2PANDEMONIUM("Quote", APOSTROPHE);
+	DOM2PANDEMONIUM("Semicolon", SEMICOLON);
+	DOM2PANDEMONIUM("Slash", SLASH);
 
 	// Functional keys in the Alphanumeric section.
-	DOM2GODOT("AltLeft", ALT);
-	DOM2GODOT("AltRight", ALT);
-	DOM2GODOT("Backspace", BACKSPACE);
-	DOM2GODOT("CapsLock", CAPSLOCK);
-	DOM2GODOT("ContextMenu", MENU);
-	DOM2GODOT("ControlLeft", CONTROL);
-	DOM2GODOT("ControlRight", CONTROL);
-	DOM2GODOT("Enter", ENTER);
-	DOM2GODOT("MetaLeft", SUPER_L);
-	DOM2GODOT("MetaRight", SUPER_R);
-	DOM2GODOT("ShiftLeft", SHIFT);
-	DOM2GODOT("ShiftRight", SHIFT);
-	DOM2GODOT("Space", SPACE);
-	DOM2GODOT("Tab", TAB);
+	DOM2PANDEMONIUM("AltLeft", ALT);
+	DOM2PANDEMONIUM("AltRight", ALT);
+	DOM2PANDEMONIUM("Backspace", BACKSPACE);
+	DOM2PANDEMONIUM("CapsLock", CAPSLOCK);
+	DOM2PANDEMONIUM("ContextMenu", MENU);
+	DOM2PANDEMONIUM("ControlLeft", CONTROL);
+	DOM2PANDEMONIUM("ControlRight", CONTROL);
+	DOM2PANDEMONIUM("Enter", ENTER);
+	DOM2PANDEMONIUM("MetaLeft", SUPER_L);
+	DOM2PANDEMONIUM("MetaRight", SUPER_R);
+	DOM2PANDEMONIUM("ShiftLeft", SHIFT);
+	DOM2PANDEMONIUM("ShiftRight", SHIFT);
+	DOM2PANDEMONIUM("Space", SPACE);
+	DOM2PANDEMONIUM("Tab", TAB);
 
 	// ControlPad section.
-	DOM2GODOT("Delete", DELETE);
-	DOM2GODOT("End", END);
-	DOM2GODOT("Help", HELP);
-	DOM2GODOT("Home", HOME);
-	DOM2GODOT("Insert", INSERT);
-	DOM2GODOT("PageDown", PAGEDOWN);
-	DOM2GODOT("PageUp", PAGEUP);
+	DOM2PANDEMONIUM("Delete", DELETE);
+	DOM2PANDEMONIUM("End", END);
+	DOM2PANDEMONIUM("Help", HELP);
+	DOM2PANDEMONIUM("Home", HOME);
+	DOM2PANDEMONIUM("Insert", INSERT);
+	DOM2PANDEMONIUM("PageDown", PAGEDOWN);
+	DOM2PANDEMONIUM("PageUp", PAGEUP);
 
 	// ArrowPad section.
-	DOM2GODOT("ArrowDown", DOWN);
-	DOM2GODOT("ArrowLeft", LEFT);
-	DOM2GODOT("ArrowRight", RIGHT);
-	DOM2GODOT("ArrowUp", UP);
+	DOM2PANDEMONIUM("ArrowDown", DOWN);
+	DOM2PANDEMONIUM("ArrowLeft", LEFT);
+	DOM2PANDEMONIUM("ArrowRight", RIGHT);
+	DOM2PANDEMONIUM("ArrowUp", UP);
 
 	// Function section.
-	DOM2GODOT("Escape", ESCAPE);
-	DOM2GODOT("F1", F1);
-	DOM2GODOT("F2", F2);
-	DOM2GODOT("F3", F3);
-	DOM2GODOT("F4", F4);
-	DOM2GODOT("F5", F5);
-	DOM2GODOT("F6", F6);
-	DOM2GODOT("F7", F7);
-	DOM2GODOT("F8", F8);
-	DOM2GODOT("F9", F9);
-	DOM2GODOT("F10", F10);
-	DOM2GODOT("F11", F11);
-	DOM2GODOT("F12", F12);
-	//DOM2GODOT("Fn", UNKNOWN); // never actually fired, but included in the standard draft.
-	//DOM2GODOT("FnLock", UNKNOWN);
-	DOM2GODOT("PrintScreen", PRINT);
-	DOM2GODOT("ScrollLock", SCROLLLOCK);
-	DOM2GODOT("Pause", PAUSE);
+	DOM2PANDEMONIUM("Escape", ESCAPE);
+	DOM2PANDEMONIUM("F1", F1);
+	DOM2PANDEMONIUM("F2", F2);
+	DOM2PANDEMONIUM("F3", F3);
+	DOM2PANDEMONIUM("F4", F4);
+	DOM2PANDEMONIUM("F5", F5);
+	DOM2PANDEMONIUM("F6", F6);
+	DOM2PANDEMONIUM("F7", F7);
+	DOM2PANDEMONIUM("F8", F8);
+	DOM2PANDEMONIUM("F9", F9);
+	DOM2PANDEMONIUM("F10", F10);
+	DOM2PANDEMONIUM("F11", F11);
+	DOM2PANDEMONIUM("F12", F12);
+	//DOM2PANDEMONIUM("Fn", UNKNOWN); // never actually fired, but included in the standard draft.
+	//DOM2PANDEMONIUM("FnLock", UNKNOWN);
+	DOM2PANDEMONIUM("PrintScreen", PRINT);
+	DOM2PANDEMONIUM("ScrollLock", SCROLLLOCK);
+	DOM2PANDEMONIUM("Pause", PAUSE);
 
 	// Media keys section.
-	DOM2GODOT("BrowserBack", BACK);
-	DOM2GODOT("BrowserFavorites", FAVORITES);
-	DOM2GODOT("BrowserForward", FORWARD);
-	DOM2GODOT("BrowserHome", OPENURL);
-	DOM2GODOT("BrowserRefresh", REFRESH);
-	DOM2GODOT("BrowserSearch", SEARCH);
-	DOM2GODOT("BrowserStop", STOP);
-	//DOM2GODOT("Eject", UNKNOWN);
-	DOM2GODOT("LaunchApp1", LAUNCH0);
-	DOM2GODOT("LaunchApp2", LAUNCH1);
-	DOM2GODOT("LaunchMail", LAUNCHMAIL);
-	DOM2GODOT("MediaPlayPause", MEDIAPLAY);
-	DOM2GODOT("MediaSelect", LAUNCHMEDIA);
-	DOM2GODOT("MediaStop", MEDIASTOP);
-	DOM2GODOT("MediaTrackNext", MEDIANEXT);
-	DOM2GODOT("MediaTrackPrevious", MEDIAPREVIOUS);
-	//DOM2GODOT("Power", UNKNOWN);
-	//DOM2GODOT("Sleep", UNKNOWN);
-	DOM2GODOT("AudioVolumeDown", VOLUMEDOWN);
-	DOM2GODOT("AudioVolumeMute", VOLUMEMUTE);
-	DOM2GODOT("AudioVolumeUp", VOLUMEUP);
-	//DOM2GODOT("WakeUp", UNKNOWN);
+	DOM2PANDEMONIUM("BrowserBack", BACK);
+	DOM2PANDEMONIUM("BrowserFavorites", FAVORITES);
+	DOM2PANDEMONIUM("BrowserForward", FORWARD);
+	DOM2PANDEMONIUM("BrowserHome", OPENURL);
+	DOM2PANDEMONIUM("BrowserRefresh", REFRESH);
+	DOM2PANDEMONIUM("BrowserSearch", SEARCH);
+	DOM2PANDEMONIUM("BrowserStop", STOP);
+	//DOM2PANDEMONIUM("Eject", UNKNOWN);
+	DOM2PANDEMONIUM("LaunchApp1", LAUNCH0);
+	DOM2PANDEMONIUM("LaunchApp2", LAUNCH1);
+	DOM2PANDEMONIUM("LaunchMail", LAUNCHMAIL);
+	DOM2PANDEMONIUM("MediaPlayPause", MEDIAPLAY);
+	DOM2PANDEMONIUM("MediaSelect", LAUNCHMEDIA);
+	DOM2PANDEMONIUM("MediaStop", MEDIASTOP);
+	DOM2PANDEMONIUM("MediaTrackNext", MEDIANEXT);
+	DOM2PANDEMONIUM("MediaTrackPrevious", MEDIAPREVIOUS);
+	//DOM2PANDEMONIUM("Power", UNKNOWN);
+	//DOM2PANDEMONIUM("Sleep", UNKNOWN);
+	DOM2PANDEMONIUM("AudioVolumeDown", VOLUMEDOWN);
+	DOM2PANDEMONIUM("AudioVolumeMute", VOLUMEMUTE);
+	DOM2PANDEMONIUM("AudioVolumeUp", VOLUMEUP);
+	//DOM2PANDEMONIUM("WakeUp", UNKNOWN);
 	return KEY_UNKNOWN;
-#undef DOM2GODOT
+#undef DOM2PANDEMONIUM
 }

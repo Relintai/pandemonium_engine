@@ -458,7 +458,7 @@ public:
 	String get_locale_language() const;
 
 	String get_safe_dir_name(const String &p_dir_name, bool p_allow_dir_separator = false) const;
-	virtual String get_godot_dir_name() const;
+	virtual String get_pandemonium_dir_name() const;
 
 	virtual String get_data_path() const;
 	virtual String get_config_path() const;

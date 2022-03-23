@@ -32,7 +32,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 
-@interface GodotNativeVideoView ()
+@interface PandemoniumNativeVideoView ()
 
 @property(strong, nonatomic) AVAsset *avAsset;
 @property(strong, nonatomic) AVPlayerItem *avPlayerItem;
@@ -43,13 +43,13 @@
 
 @end
 
-@implementation GodotNativeVideoView
+@implementation PandemoniumNativeVideoView
 
 - (instancetype)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 
 	if (self) {
-		[self godot_commonInit];
+		[self pandemonium_commonInit];
 	}
 
 	return self;
@@ -59,13 +59,13 @@
 	self = [super initWithCoder:coder];
 
 	if (self) {
-		[self godot_commonInit];
+		[self pandemonium_commonInit];
 	}
 
 	return self;
 }
 
-- (void)godot_commonInit {
+- (void)pandemonium_commonInit {
 	self.isVideoCurrentlyPlaying = NO;
 	self.videoCurrentTime = kCMTimeZero;
 

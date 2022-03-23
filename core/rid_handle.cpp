@@ -223,7 +223,7 @@ RID_Data *RID_Database::handle_getptr(const RID &p_rid) {
 }
 
 // Note, no locks used in the getters.
-// Godot 4.x does use locks in the getters, but it is arguably overkill because even though
+// Pandemonium 4.x does use locks in the getters, but it is arguably overkill because even though
 // the pointer returned will be correct (i.e. it has not been replaced during this call),
 // it can be invalidated during the client code use. (There may also be an internal reason why
 // locks are needed in 4.x, as the database is different.)

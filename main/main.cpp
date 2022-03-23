@@ -2,7 +2,7 @@
 /*  main.cpp                                                             */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           GODOT ENGINE                                */
+/*                           PANDEMONIUM ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -179,9 +179,9 @@ static String get_full_version_string() {
 void initialize_physics() {
 	// This must be defined BEFORE the 3d physics server is created,
 	// otherwise it won't always show up in the project settings page.
-	GLOBAL_DEF("physics/3d/godot_physics/use_bvh", true);
-	GLOBAL_DEF("physics/3d/godot_physics/bvh_collision_margin", 0.1);
-	ProjectSettings::get_singleton()->set_custom_property_info("physics/3d/godot_physics/bvh_collision_margin", PropertyInfo(Variant::REAL, "physics/3d/godot_physics/bvh_collision_margin", PROPERTY_HINT_RANGE, "0.0,2.0,0.01"));
+	GLOBAL_DEF("physics/3d/pandemonium_physics/use_bvh", true);
+	GLOBAL_DEF("physics/3d/pandemonium_physics/bvh_collision_margin", 0.1);
+	ProjectSettings::get_singleton()->set_custom_property_info("physics/3d/pandemonium_physics/bvh_collision_margin", PropertyInfo(Variant::REAL, "physics/3d/pandemonium_physics/bvh_collision_margin", PROPERTY_HINT_RANGE, "0.0,2.0,0.01"));
 
 	/// 3D Physics Server
 	physics_server = PhysicsServerManager::new_server(ProjectSettings::get_singleton()->get(PhysicsServerManager::setting_property_name));
@@ -234,9 +234,9 @@ void Main::print_help(const char *p_binary) {
 	print_line(String(VERSION_NAME) + " v" + get_full_version_string() + " - " + String(VERSION_WEBSITE));
 	OS::get_singleton()->print("Free and open source software under the terms of the MIT license.\n");
 	OS::get_singleton()->print("(c) 2007-2022 Juan Linietsky, Ariel Manzur.\n");
-	OS::get_singleton()->print("(c) 2014-2022 Godot Engine contributors.\n");
+	OS::get_singleton()->print("(c) 2014-2022 Pandemonium Engine contributors.\n");
 	OS::get_singleton()->print("\n");
-	OS::get_singleton()->print("Usage: %s [options] [path to scene or 'project.godot' file]\n", p_binary);
+	OS::get_singleton()->print("Usage: %s [options] [path to scene or 'project.pandemonium' file]\n", p_binary);
 	OS::get_singleton()->print("\n");
 
 	OS::get_singleton()->print("General options:\n");
@@ -253,8 +253,8 @@ void Main::print_help(const char *p_binary) {
 #endif
 	OS::get_singleton()->print("  -q, --quit                       Quit after the first iteration.\n");
 	OS::get_singleton()->print("  -l, --language <locale>          Use a specific locale (<locale> being a two-letter code).\n");
-	OS::get_singleton()->print("  --path <directory>               Path to a project (<directory> must contain a 'project.godot' file).\n");
-	OS::get_singleton()->print("  -u, --upwards                    Scan folders upwards for project.godot file.\n");
+	OS::get_singleton()->print("  --path <directory>               Path to a project (<directory> must contain a 'project.pandemonium' file).\n");
+	OS::get_singleton()->print("  -u, --upwards                    Scan folders upwards for project.pandemonium file.\n");
 	OS::get_singleton()->print("  --main-pack <file>               Path to a pack (.pck) file to load.\n");
 	OS::get_singleton()->print("  --render-thread <mode>           Render thread mode ('unsafe', 'safe', 'separate').\n");
 	OS::get_singleton()->print("  --remote-fs <address>            Remote filesystem (<host/IP>[:<port>] address).\n");
@@ -331,7 +331,7 @@ void Main::print_help(const char *p_binary) {
 	OS::get_singleton()->print("  --doctool [<path>]               Dump the engine API reference to the given <path> (defaults to current dir) in XML format, merging if existing files are found.\n");
 	OS::get_singleton()->print("  --no-docbase                     Disallow dumping the base types (used with --doctool).\n");
 #ifdef DEBUG_METHODS_ENABLED
-	OS::get_singleton()->print("  --gdnative-generate-json-api     Generate JSON dump of the Godot API for GDNative bindings.\n");
+	OS::get_singleton()->print("  --gdnative-generate-json-api     Generate JSON dump of the Pandemonium API for GDNative bindings.\n");
 #endif
 	OS::get_singleton()->print("  --test <test>                    Run a unit test (");
 	const char **test_names = tests_get_names();
@@ -400,7 +400,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 	ClassDB::register_class<Performance>();
 	engine->add_singleton(Engine::Singleton("Performance", performance));
 
-	GLOBAL_DEF("debug/settings/crash_handler/message", String("Please include this when reporting the bug on https://github.com/godotengine/godot/issues"));
+	GLOBAL_DEF("debug/settings/crash_handler/message", String("Please include this when reporting the bug on https://github.com/Relintai/pandemonium_engine/issues"));
 
 	MAIN_PRINT("Main: Parse CMDLine");
 
@@ -468,7 +468,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 	while (I) {
 #ifdef OSX_ENABLED
 		// Ignore the process serial number argument passed by macOS Gatekeeper.
-		// Otherwise, Godot would try to open a non-existent project on the first start and abort.
+		// Otherwise, Pandemonium would try to open a non-existent project on the first start and abort.
 		if (I->get().begins_with("-psn_")) {
 			I = I->next();
 			continue;
@@ -747,7 +747,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 			upwards = true;
 		} else if (I->get() == "-q" || I->get() == "--quit") { // Auto quit at the end of the first main loop iteration
 			auto_quit = true;
-		} else if (I->get().ends_with("project.godot")) {
+		} else if (I->get().ends_with("project.pandemonium")) {
 			String path;
 			String file = I->get();
 			int sep = MAX(file.rfind("/"), file.rfind("\\"));
@@ -867,7 +867,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 #endif
 
 	// Network file system needs to be configured before globals, since globals are based on the
-	// 'project.godot' file which will only be available through the network if this is enabled
+	// 'project.pandemonium' file which will only be available through the network if this is enabled
 	FileAccessNetwork::configure();
 	if (remotefs != "") {
 		file_access_network_client = memnew(FileAccessNetworkClient);
@@ -986,7 +986,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 	// This also prevents logs from being created for the editor instance, as feature tags
 	// are disabled while in the editor (even if they should logically apply).
 	GLOBAL_DEF("logging/file_logging/enable_file_logging.pc", true);
-	GLOBAL_DEF("logging/file_logging/log_path", "user://logs/godot.log");
+	GLOBAL_DEF("logging/file_logging/log_path", "user://logs/pandemonium.log");
 	GLOBAL_DEF("logging/file_logging/max_log_files", 5);
 	ProjectSettings::get_singleton()->set_custom_property_info("logging/file_logging/max_log_files", PropertyInfo(Variant::INT, "logging/file_logging/max_log_files", PROPERTY_HINT_RANGE, "0,20,1,or_greater")); //no negative numbers
 	if (!project_manager && !editor && FileAccess::get_create_func(FileAccess::ACCESS_USERDATA) && GLOBAL_GET("logging/file_logging/enable_file_logging")) {
@@ -1097,7 +1097,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 
 	OS::get_singleton()->_vsync_via_compositor = video_mode.vsync_via_compositor;
 
-	if (tablet_driver == "") { // specified in project.godot
+	if (tablet_driver == "") { // specified in project.pandemonium
 		tablet_driver = GLOBAL_DEF_RST_NOVAL("display/window/tablet_driver", OS::get_singleton()->get_tablet_driver_name(0));
 	}
 
@@ -1156,7 +1156,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 		video_driver_idx = 0;
 	}
 
-	if (audio_driver == "") { // specified in project.godot
+	if (audio_driver == "") { // specified in project.pandemonium
 		audio_driver = GLOBAL_DEF_RST_NOVAL("audio/driver", OS::get_singleton()->get_audio_driver_name(0));
 	}
 
@@ -1324,8 +1324,8 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 
 #ifdef UNIX_ENABLED
 	// Print warning before initializing audio.
-	if (OS::get_singleton()->get_environment("USER") == "root" && !OS::get_singleton()->has_environment("GODOT_SILENCE_ROOT_WARNING")) {
-		WARN_PRINT("Started the engine as `root`/superuser. This is a security risk, and subsystems like audio may not work correctly.\nSet the environment variable `GODOT_SILENCE_ROOT_WARNING` to 1 to silence this warning.");
+	if (OS::get_singleton()->get_environment("USER") == "root" && !OS::get_singleton()->has_environment("PANDEMONIUM_SILENCE_ROOT_WARNING")) {
+		WARN_PRINT("Started the engine as `root`/superuser. This is a security risk, and subsystems like audio may not work correctly.\nSet the environment variable `PANDEMONIUM_SILENCE_ROOT_WARNING` to 1 to silence this warning.");
 	}
 #endif
 
@@ -1585,7 +1585,7 @@ bool Main::start() {
 					args[i].ends_with(".res") ||
 					args[i].ends_with(".tres")) {
 				// Only consider the positional argument to be a scene path if it ends with
-				// a file extension associated with Godot scenes. This makes it possible
+				// a file extension associated with Pandemonium scenes. This makes it possible
 				// for projects to parse command-line arguments for custom CLI arguments
 				// or other file extensions without trouble. This can be used to implement
 				// "drag-and-drop onto executable" logic, which can prove helpful

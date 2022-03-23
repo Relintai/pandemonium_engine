@@ -84,11 +84,11 @@ static void _debugger_get_resource_usage(List<ScriptDebuggerRemote::ResourceUsag
 
 ShaderTypes *shader_types = nullptr;
 
-PhysicsServer *_createGodotPhysicsCallback() {
+PhysicsServer *_createPandemoniumPhysicsCallback() {
 	return memnew(PhysicsServerSW);
 }
 
-Physics2DServer *_createGodotPhysics2DCallback() {
+Physics2DServer *_createPandemoniumPhysics2DCallback() {
 	return Physics2DServerWrapMT::init_server<Physics2DServerSW>();
 }
 
@@ -181,15 +181,15 @@ void register_server_types() {
 	GLOBAL_DEF(Physics2DServerManager::setting_property_name, "DEFAULT");
 	ProjectSettings::get_singleton()->set_custom_property_info(Physics2DServerManager::setting_property_name, PropertyInfo(Variant::STRING, Physics2DServerManager::setting_property_name, PROPERTY_HINT_ENUM, "DEFAULT"));
 
-	Physics2DServerManager::register_server("GodotPhysics", &_createGodotPhysics2DCallback);
-	Physics2DServerManager::set_default_server("GodotPhysics");
+	Physics2DServerManager::register_server("PandemoniumPhysics", &_createPandemoniumPhysics2DCallback);
+	Physics2DServerManager::set_default_server("PandemoniumPhysics");
 
 	// Physics 3D
 	GLOBAL_DEF(PhysicsServerManager::setting_property_name, "DEFAULT");
 	ProjectSettings::get_singleton()->set_custom_property_info(PhysicsServerManager::setting_property_name, PropertyInfo(Variant::STRING, PhysicsServerManager::setting_property_name, PROPERTY_HINT_ENUM, "DEFAULT"));
 
-	PhysicsServerManager::register_server("GodotPhysics", &_createGodotPhysicsCallback);
-	PhysicsServerManager::set_default_server("GodotPhysics");
+	PhysicsServerManager::register_server("PandemoniumPhysics", &_createPandemoniumPhysicsCallback);
+	PhysicsServerManager::set_default_server("PandemoniumPhysics");
 }
 
 void unregister_server_types() {

@@ -32,7 +32,7 @@
 #include "main/main.h"
 #include "platform/javascript/os_javascript.h"
 
-#include "godot_js.h"
+#include "pandemonium_js.h"
 
 #include <emscripten/emscripten.h>
 #include <stdlib.h>
@@ -75,14 +75,14 @@ void main_loop_callback() {
 	if (os->main_loop_iterate()) {
 		emscripten_cancel_main_loop(); // Cancel current loop and wait for finalize_async.
 		os->get_main_loop()->finish();
-		godot_js_os_finish_async(cleanup_after_sync);
+		pandemonium_js_os_finish_async(cleanup_after_sync);
 	}
 }
 
-extern EMSCRIPTEN_KEEPALIVE int godot_js_main(int argc, char *argv[]) {
+extern EMSCRIPTEN_KEEPALIVE int pandemonium_js_main(int argc, char *argv[]) {
 	// Set locale
 	char locale_ptr[16];
-	godot_js_config_locale_get(locale_ptr, sizeof(locale_ptr));
+	pandemonium_js_config_locale_get(locale_ptr, sizeof(locale_ptr));
 	setenv("LANG", locale_ptr, true);
 
 	os = new OS_JavaScript();
