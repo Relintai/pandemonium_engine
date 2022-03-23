@@ -579,7 +579,7 @@ Variant DataBuffer::add_variant(const Variant &p_input) {
 
 	const Error write_err = encode_variant(
 			p_input,
-			buffer.get_bytes_mut().ptrw() + (bit_offset / 8),
+			buffer.get_bytes_mut().write().ptr() + (bit_offset / 8),
 			len,
 			false);
 
@@ -610,7 +610,7 @@ Variant DataBuffer::read_variant() {
 
 	const Error read_err = decode_variant(
 			ret,
-			buffer.get_bytes().ptr() + (bit_offset / 8),
+			buffer.get_bytes_mut().write().ptr() + (bit_offset / 8),
 			buffer.size_in_bytes() - (bit_offset / 8),
 			&len,
 			false);
@@ -766,7 +766,7 @@ int DataBuffer::read_variant_size() {
 
 	const Error read_err = decode_variant(
 			ret,
-			buffer.get_bytes().ptr() + (bit_offset / 8),
+			buffer.get_bytes_mut().write().ptr() + (bit_offset / 8),
 			buffer.size_in_bytes() - (bit_offset / 8),
 			&len,
 			false);

@@ -8,5 +8,6 @@ env_network_synchronizer = env_modules.Clone()
 #env_network_synchronizer.add_source_files(env.modules_sources, "*.cpp")
 
 env_network_synchronizer.add_source_files(env.modules_sources, "bit_array.cpp")
+env_network_synchronizer.add_source_files(env.modules_sources, "data_buffer.cpp")
 
 env_network_synchronizer.add_source_files(env.modules_sources, "register_types.cpp")
