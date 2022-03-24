@@ -40,22 +40,20 @@
 		</method>
 		<method name="connect_node">
 			<return type="int" enum="Error" />
-			<argument index="0" name="from" type="String" />
+			<argument index="0" name="from" type="StringName" />
 			<argument index="1" name="from_port" type="int" />
-			<argument index="2" name="to" type="String" />
+			<argument index="2" name="to" type="StringName" />
 			<argument index="3" name="to_port" type="int" />
 			<description>
-				Create a connection between the [code]from_port[/code] slot of the [code]from[/code] GraphNode and the [code]to_port[/code] slot of the [code]to[/code] GraphNode. If the connection already exists, no connection is created.
 			</description>
 		</method>
 		<method name="disconnect_node">
 			<return type="void" />
-			<argument index="0" name="from" type="String" />
+			<argument index="0" name="from" type="StringName" />
 			<argument index="1" name="from_port" type="int" />
-			<argument index="2" name="to" type="String" />
+			<argument index="2" name="to" type="StringName" />
 			<argument index="3" name="to_port" type="int" />
 			<description>
-				Removes the connection between the [code]from_port[/code] slot of the [code]from[/code] GraphNode and the [code]to_port[/code] slot of the [code]to[/code] GraphNode. If the connection does not exist, no connection is removed.
 			</description>
 		</method>
 		<method name="get_connection_list" qualifiers="const">
@@ -73,12 +71,11 @@
 		</method>
 		<method name="is_node_connected">
 			<return type="bool" />
-			<argument index="0" name="from" type="String" />
+			<argument index="0" name="from" type="StringName" />
 			<argument index="1" name="from_port" type="int" />
-			<argument index="2" name="to" type="String" />
+			<argument index="2" name="to" type="StringName" />
 			<argument index="3" name="to_port" type="int" />
 			<description>
-				Returns [code]true[/code] if the [code]from_port[/code] slot of the [code]from[/code] GraphNode is connected to the [code]to_port[/code] slot of the [code]to[/code] GraphNode.
 			</description>
 		</method>
 		<method name="is_valid_connection_type" qualifiers="const">
@@ -113,13 +110,12 @@
 		</method>
 		<method name="set_connection_activity">
 			<return type="void" />
-			<argument index="0" name="from" type="String" />
+			<argument index="0" name="from" type="StringName" />
 			<argument index="1" name="from_port" type="int" />
-			<argument index="2" name="to" type="String" />
+			<argument index="2" name="to" type="StringName" />
 			<argument index="3" name="to_port" type="int" />
 			<argument index="4" name="amount" type="float" />
 			<description>
-				Sets the coloration of the connection between [code]from[/code]'s [code]from_port[/code] and [code]to[/code]'s [code]to_port[/code] with the color provided in the [code]activity[/code] theme property.
 			</description>
 		</method>
 		<method name="set_selected">
@@ -182,7 +178,7 @@
 			</description>
 		</signal>
 		<signal name="connection_from_empty">
-			<argument index="0" name="to" type="String" />
+			<argument index="0" name="to" type="StringName" />
 			<argument index="1" name="to_slot" type="int" />
 			<argument index="2" name="release_position" type="Vector2" />
 			<description>
@@ -190,7 +186,7 @@
 			</description>
 		</signal>
 		<signal name="connection_request">
-			<argument index="0" name="from" type="String" />
+			<argument index="0" name="from" type="StringName" />
 			<argument index="1" name="from_slot" type="int" />
 			<argument index="2" name="to" type="String" />
 			<argument index="3" name="to_slot" type="int" />
@@ -199,7 +195,7 @@
 			</description>
 		</signal>
 		<signal name="connection_to_empty">
-			<argument index="0" name="from" type="String" />
+			<argument index="0" name="from" type="StringName" />
 			<argument index="1" name="from_slot" type="int" />
 			<argument index="2" name="release_position" type="Vector2" />
 			<description>
@@ -217,7 +213,7 @@
 			</description>
 		</signal>
 		<signal name="disconnection_request">
-			<argument index="0" name="from" type="String" />
+			<argument index="0" name="from" type="StringName" />
 			<argument index="1" name="from_slot" type="int" />
 			<argument index="2" name="to" type="String" />
 			<argument index="3" name="to_slot" type="int" />

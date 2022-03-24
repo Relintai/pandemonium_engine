@@ -31,9 +31,8 @@
 	<methods>
 		<method name="add_blend_shape">
 			<return type="void" />
-			<argument index="0" name="name" type="String" />
+			<argument index="0" name="name" type="StringName" />
 			<description>
-				Adds name for a blend shape that will be added with [method add_surface_from_arrays]. Must be called before surface is added.
 			</description>
 		</method>
 		<method name="add_surface_from_arrays">
@@ -67,7 +66,7 @@
 			</description>
 		</method>
 		<method name="get_blend_shape_name" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="index" type="int" />
 			<description>
 				Returns the name of the blend shape at this index.
@@ -82,7 +81,7 @@
 		<method name="set_blend_shape_name">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
-			<argument index="1" name="name" type="String" />
+			<argument index="1" name="name" type="StringName" />
 			<description>
 			</description>
 		</method>

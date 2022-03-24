@@ -36,10 +36,8 @@
 		</method>
 		<method name="handles_type" qualifiers="virtual">
 			<return type="bool" />
-			<argument index="0" name="typename" type="String" />
+			<argument index="0" name="typename" type="StringName" />
 			<description>
-				Tells which resource class this loader can load.
-				[b]Note:[/b] Custom resource types defined by scripts aren't known by the [ClassDB], so you might just handle [code]"Resource"[/code] for them.
 			</description>
 		</method>
 		<method name="load" qualifiers="virtual">

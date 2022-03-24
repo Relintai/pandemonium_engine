@@ -14,10 +14,9 @@
 	<methods>
 		<method name="play">
 			<return type="void" />
-			<argument index="0" name="anim" type="String" default="&quot;&quot;" />
+			<argument index="0" name="anim" type="StringName" default="@&quot;&quot;" />
 			<argument index="1" name="backwards" type="bool" default="false" />
 			<description>
-				Plays the animation named [code]anim[/code]. If no [code]anim[/code] is provided, the current animation is played. If [code]backwards[/code] is [code]true[/code], the animation will be played in reverse.
 			</description>
 		</method>
 		<method name="stop">
@@ -28,7 +27,7 @@
 		</method>
 	</methods>
 	<members>
-		<member name="animation" type="String" setter="set_animation" getter="get_animation" default="&quot;default&quot;">
+		<member name="animation" type="StringName" setter="set_animation" getter="get_animation" default="@&quot;default&quot;">
 			The current animation from the [code]frames[/code] resource. If this value changes, the [code]frame[/code] counter is reset.
 		</member>
 		<member name="centered" type="bool" setter="set_centered" getter="is_centered" default="true">

@@ -31,7 +31,7 @@
 			</description>
 		</method>
 		<method name="get_bind_name" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="bind_index" type="int" />
 			<description>
 			</description>
@@ -58,7 +58,7 @@
 		<method name="set_bind_name">
 			<return type="void" />
 			<argument index="0" name="bind_index" type="int" />
-			<argument index="1" name="name" type="String" />
+			<argument index="1" name="name" type="StringName" />
 			<description>
 			</description>
 		</method>

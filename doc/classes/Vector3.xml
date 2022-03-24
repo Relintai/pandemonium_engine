@@ -18,6 +18,12 @@
 	<methods>
 		<method name="Vector3">
 			<return type="Vector3" />
+			<argument index="0" name="from" type="Vector3i" />
+			<description>
+			</description>
+		</method>
+		<method name="Vector3">
+			<return type="Vector3" />
 			<argument index="0" name="x" type="float" />
 			<argument index="1" name="y" type="float" />
 			<argument index="2" name="z" type="float" />

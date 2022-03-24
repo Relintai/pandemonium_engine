@@ -99,7 +99,7 @@
 	<members>
 		<member name="background_color" type="Color" setter="set_background_color" getter="get_background_color" default="Color( 0, 0, 0, 1 )">
 		</member>
-		<member name="default_prop_material_cache_class" type="String" setter="set_default_prop_material_cache_class" getter="get_default_prop_material_cache_class" default="&quot;PropMaterialCachePCM&quot;">
+		<member name="default_prop_material_cache_class" type="StringName" setter="set_default_prop_material_cache_class" getter="get_default_prop_material_cache_class" default="@&quot;PropMaterialCachePCM&quot;">
 		</member>
 		<member name="keep_original_atlases" type="bool" setter="set_keep_original_atlases" getter="get_keep_original_atlases" default="false">
 		</member>

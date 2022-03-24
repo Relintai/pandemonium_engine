@@ -65,7 +65,7 @@
 			</description>
 		</method>
 		<method name="get_file_type" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="idx" type="int" />
 			<description>
 				Returns the resource type of the file at index [code]idx[/code]. This returns a string such as [code]"Resource"[/code] or [code]"GDScript"[/code], [i]not[/i] a file extension such as [code]".gd"[/code].

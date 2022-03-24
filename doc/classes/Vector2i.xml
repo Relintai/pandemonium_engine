@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="Vector2i" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="Vector2i">
+			<return type="Vector2i" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="y" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="Vector2i">
+			<return type="Vector2i" />
+			<argument index="0" name="from" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="linear_interpolate">
+			<return type="Vector2i" />
+			<argument index="0" name="to" type="Vector2" />
+			<argument index="1" name="weight" type="float" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="x" type="int" setter="" getter="" default="0">
+		</member>
+		<member name="y" type="int" setter="" getter="" default="0">
+		</member>
+	</members>
+	<constants>
+		<constant name="AXIS_X" value="0">
+		</constant>
+		<constant name="AXIS_Y" value="1">
+		</constant>
+		<constant name="ZERO" value="Vector2i( 0, 0 )">
+		</constant>
+		<constant name="ONE" value="Vector2i( 1, 1 )">
+		</constant>
+		<constant name="LEFT" value="Vector2i( -1, 0 )">
+		</constant>
+		<constant name="RIGHT" value="Vector2i( 1, 0 )">
+		</constant>
+		<constant name="UP" value="Vector2i( 0, -1 )">
+		</constant>
+		<constant name="DOWN" value="Vector2i( 0, 1 )">
+		</constant>
+	</constants>
+</class>

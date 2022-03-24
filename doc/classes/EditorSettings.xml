@@ -123,11 +123,10 @@
 		</method>
 		<method name="set_initial_value">
 			<return type="void" />
-			<argument index="0" name="name" type="String" />
+			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="value" type="Variant" />
 			<argument index="2" name="update_current" type="bool" />
 			<description>
-				Sets the initial value of the setting specified by [code]name[/code] to [code]value[/code]. This is used to provide a value for the Revert button in the Editor Settings. If [code]update_current[/code] is true, the current value of the setting will be set to [code]value[/code] as well.
 			</description>
 		</method>
 		<method name="set_project_metadata">

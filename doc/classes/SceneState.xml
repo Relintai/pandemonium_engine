@@ -32,14 +32,14 @@
 			</description>
 		</method>
 		<method name="get_connection_method" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="idx" type="int" />
 			<description>
 				Returns the method connected to the signal at [code]idx[/code].
 			</description>
 		</method>
 		<method name="get_connection_signal" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="idx" type="int" />
 			<description>
 				Returns the name of the signal at [code]idx[/code].
@@ -95,7 +95,7 @@
 			</description>
 		</method>
 		<method name="get_node_name" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="idx" type="int" />
 			<description>
 				Returns the name of the node at [code]idx[/code].
@@ -126,7 +126,7 @@
 			</description>
 		</method>
 		<method name="get_node_property_name" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="idx" type="int" />
 			<argument index="1" name="prop_idx" type="int" />
 			<description>
@@ -142,7 +142,7 @@
 			</description>
 		</method>
 		<method name="get_node_type" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="idx" type="int" />
 			<description>
 				Returns the type of the node at [code]idx[/code].

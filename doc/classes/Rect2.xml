@@ -16,10 +16,8 @@
 	<methods>
 		<method name="Rect2">
 			<return type="Rect2" />
-			<argument index="0" name="position" type="Vector2" />
-			<argument index="1" name="size" type="Vector2" />
+			<argument index="0" name="from" type="Rect2i" />
 			<description>
-				Constructs a [Rect2] by position and size.
 			</description>
 		</method>
 		<method name="Rect2">
@@ -30,6 +28,14 @@
 			<argument index="3" name="height" type="float" />
 			<description>
 				Constructs a [Rect2] by x, y, width, and height.
+			</description>
+		</method>
+		<method name="Rect2">
+			<return type="Rect2" />
+			<argument index="0" name="position" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<description>
+				Constructs a [Rect2] by position and size.
 			</description>
 		</method>
 		<method name="abs">

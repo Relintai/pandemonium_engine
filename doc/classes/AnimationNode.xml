@@ -20,13 +20,12 @@
 		</method>
 		<method name="blend_animation">
 			<return type="void" />
-			<argument index="0" name="animation" type="String" />
+			<argument index="0" name="animation" type="StringName" />
 			<argument index="1" name="time" type="float" />
 			<argument index="2" name="delta" type="float" />
 			<argument index="3" name="seeked" type="bool" />
 			<argument index="4" name="blend" type="float" />
 			<description>
-				Blend an animation by [code]blend[/code] amount (name must be valid in the linked [AnimationPlayer]). A [code]time[/code] and [code]delta[/code] may be passed, as well as whether [code]seek[/code] happened.
 			</description>
 		</method>
 		<method name="blend_input">
@@ -43,7 +42,7 @@
 		</method>
 		<method name="blend_node">
 			<return type="float" />
-			<argument index="0" name="name" type="String" />
+			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="node" type="AnimationNode" />
 			<argument index="2" name="time" type="float" />
 			<argument index="3" name="seek" type="bool" />
@@ -51,7 +50,6 @@
 			<argument index="5" name="filter" type="int" enum="AnimationNode.FilterAction" default="0" />
 			<argument index="6" name="optimize" type="bool" default="true" />
 			<description>
-				Blend another animation node (in case this node contains children animation nodes). This function is only useful if you inherit from [AnimationRootNode] instead, else editors will not display your node for addition.
 			</description>
 		</method>
 		<method name="get_caption" qualifiers="virtual">
@@ -88,9 +86,8 @@
 		</method>
 		<method name="get_parameter" qualifiers="const">
 			<return type="Variant" />
-			<argument index="0" name="name" type="String" />
+			<argument index="0" name="name" type="StringName" />
 			<description>
-				Gets the value of a parameter. Parameters are custom local memory used for your nodes, given a resource can be reused in multiple trees.
 			</description>
 		</method>
 		<method name="get_parameter_default_value" qualifiers="virtual">
@@ -146,10 +143,9 @@
 		</method>
 		<method name="set_parameter">
 			<return type="void" />
-			<argument index="0" name="name" type="String" />
+			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="value" type="Variant" />
 			<description>
-				Sets a custom parameter. These are used as local memory, because resources can be reused across the tree or scenes.
 			</description>
 		</method>
 	</methods>

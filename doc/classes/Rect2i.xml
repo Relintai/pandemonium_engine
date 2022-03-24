@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="Rect2i" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="Rect2i">
+			<return type="Rect2i" />
+			<argument index="0" name="from" type="Rect2" />
+			<description>
+			</description>
+		</method>
+		<method name="clip">
+			<return type="Rect2i" />
+			<argument index="0" name="b" type="Rect2i" />
+			<description>
+			</description>
+		</method>
+		<method name="encloses">
+			<return type="bool" />
+			<argument index="0" name="b" type="Rect2i" />
+			<description>
+			</description>
+		</method>
+		<method name="expand">
+			<return type="Rect2i" />
+			<argument index="0" name="to" type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="get_area">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_center">
+			<return type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="grow">
+			<return type="Rect2i" />
+			<argument index="0" name="by" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="grow_individual">
+			<return type="Rect2i" />
+			<argument index="0" name="left" type="int" />
+			<argument index="1" name="top" type="int" />
+			<argument index="2" name="right" type="int" />
+			<argument index="3" name=" bottom" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="grow_margin">
+			<return type="Rect2i" />
+			<argument index="0" name="margin" type="int" />
+			<argument index="1" name="by" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="has_no_area">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="has_point">
+			<return type="bool" />
+			<argument index="0" name="point" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="intersects">
+			<return type="bool" />
+			<argument index="0" name="b" type="Rect2i" />
+			<description>
+			</description>
+		</method>
+		<method name="merge">
+			<return type="Rect2i" />
+			<argument index="0" name="b" type="Rect2i" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="end" type="Vector2i" setter="" getter="" default="Vector2i( 0, 0 )">
+		</member>
+		<member name="position" type="Vector2i" setter="" getter="" default="Vector2i( 0, 0 )">
+		</member>
+		<member name="size" type="Vector2i" setter="" getter="" default="Vector2i( 0, 0 )">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

@@ -40,6 +40,12 @@
 		</method>
 		<method name="String">
 			<return type="String" />
+			<argument index="0" name="from" type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="String">
+			<return type="String" />
 			<argument index="0" name="from" type="Rect2" />
 			<description>
 				Constructs a new String from the given [Rect2].
@@ -47,9 +53,21 @@
 		</method>
 		<method name="String">
 			<return type="String" />
+			<argument index="0" name="from" type="Rect2i" />
+			<description>
+			</description>
+		</method>
+		<method name="String">
+			<return type="String" />
 			<argument index="0" name="from" type="Vector3" />
 			<description>
 				Constructs a new String from the given [Vector3].
+			</description>
+		</method>
+		<method name="String">
+			<return type="String" />
+			<argument index="0" name="from" type="Vector3i" />
+			<description>
 			</description>
 		</method>
 		<method name="String">
@@ -117,6 +135,12 @@
 		</method>
 		<method name="String">
 			<return type="String" />
+			<argument index="0" name="from" type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="String">
+			<return type="String" />
 			<argument index="0" name="from" type="Dictionary" />
 			<description>
 				Constructs a new String from the given [Dictionary].
@@ -166,9 +190,21 @@
 		</method>
 		<method name="String">
 			<return type="String" />
+			<argument index="0" name="from" type="PoolVector2iArray" />
+			<description>
+			</description>
+		</method>
+		<method name="String">
+			<return type="String" />
 			<argument index="0" name="from" type="PoolVector3Array" />
 			<description>
 				Constructs a new String from the given [PoolVector3Array].
+			</description>
+		</method>
+		<method name="String">
+			<return type="String" />
+			<argument index="0" name="from" type="PoolVector3iArray" />
+			<description>
 			</description>
 		</method>
 		<method name="String">

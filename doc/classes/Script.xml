@@ -24,16 +24,15 @@
 			</description>
 		</method>
 		<method name="get_instance_base_type" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<description>
 				Returns the script's base type.
 			</description>
 		</method>
 		<method name="get_property_default_value">
 			<return type="Variant" />
-			<argument index="0" name="property" type="String" />
+			<argument index="0" name="property" type="StringName" />
 			<description>
-				Returns the default value of the specified property.
 			</description>
 		</method>
 		<method name="get_script_constant_map">
@@ -62,9 +61,8 @@
 		</method>
 		<method name="has_script_signal" qualifiers="const">
 			<return type="bool" />
-			<argument index="0" name="signal_name" type="String" />
+			<argument index="0" name="signal_name" type="StringName" />
 			<description>
-				Returns [code]true[/code] if the script, or a base class, defines a signal with the given name.
 			</description>
 		</method>
 		<method name="has_source_code" qualifiers="const">

@@ -31,10 +31,9 @@
 			<return type="void" />
 			<argument index="0" name="agent" type="RID" />
 			<argument index="1" name="receiver" type="Object" />
-			<argument index="2" name="method" type="String" />
+			<argument index="2" name="method" type="StringName" />
 			<argument index="3" name="userdata" type="Variant" default="null" />
 			<description>
-				Callback called at the end of the RVO process.
 			</description>
 		</method>
 		<method name="agent_set_map" qualifiers="const">

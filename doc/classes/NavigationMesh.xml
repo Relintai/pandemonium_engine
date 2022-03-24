@@ -127,7 +127,7 @@
 		<member name="geometry/source_geometry_mode" type="int" setter="set_source_geometry_mode" getter="get_source_geometry_mode" enum="NavigationMesh.SourceGeometryMode" default="0">
 			The source of the geometry used when baking. See [enum SourceGeometryMode] for possible values.
 		</member>
-		<member name="geometry/source_group_name" type="String" setter="set_source_group_name" getter="get_source_group_name">
+		<member name="geometry/source_group_name" type="StringName" setter="set_source_group_name" getter="get_source_group_name">
 			The name of the group to scan for geometry.
 			Only used when [member geometry/source_geometry_mode] is [constant SOURCE_GEOMETRY_GROUPS_WITH_CHILDREN] or [constant SOURCE_GEOMETRY_GROUPS_EXPLICIT].
 		</member>

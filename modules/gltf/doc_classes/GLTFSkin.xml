@@ -42,13 +42,13 @@
 		</method>
 	</methods>
 	<members>
-		<member name="pandemonium_skin" type="Skin" setter="set_pandemonium_skin" getter="get_pandemonium_skin">
-		</member>
 		<member name="joints" type="PoolIntArray" setter="set_joints" getter="get_joints" default="PoolIntArray(  )">
 		</member>
 		<member name="joints_original" type="PoolIntArray" setter="set_joints_original" getter="get_joints_original" default="PoolIntArray(  )">
 		</member>
 		<member name="non_joints" type="PoolIntArray" setter="set_non_joints" getter="get_non_joints" default="PoolIntArray(  )">
+		</member>
+		<member name="pandemonium_skin" type="Skin" setter="set_pandemonium_skin" getter="get_pandemonium_skin">
 		</member>
 		<member name="roots" type="PoolIntArray" setter="set_roots" getter="get_roots" default="PoolIntArray(  )">
 		</member>

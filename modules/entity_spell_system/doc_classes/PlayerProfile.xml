@@ -32,7 +32,7 @@
 		</method>
 		<method name="get_class_profile">
 			<return type="ClassProfile" />
-			<argument index="0" name="class_id" type="String" />
+			<argument index="0" name="class_id" type="StringName" />
 			<description>
 			</description>
 		</method>

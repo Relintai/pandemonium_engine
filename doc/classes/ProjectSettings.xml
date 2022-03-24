@@ -168,6 +168,10 @@
 		</method>
 	</methods>
 	<members>
+		<member name="NetworkSynchronizer/debug_doll_speedup" type="bool" setter="" getter="" default="false">
+		</member>
+		<member name="NetworkSynchronizer/debug_server_speedup" type="bool" setter="" getter="" default="false">
+		</member>
 		<member name="android/modules" type="String" setter="" getter="" default="&quot;&quot;">
 			Comma-separated list of custom Android modules (which must have been built in the Android export templates) using their Java package path, e.g. [code]"org/godotengine/godot/MyCustomSingleton,com/example/foo/FrenchFriesFactory"[/code].
 			[b]Note:[/b] Since Godot 3.2.2, the [code]org/godotengine/godot/GodotPaymentV3[/code] module was deprecated and replaced by the [code]GodotPayment[/code] plugin which should be enabled in the Android export preset under [code]Plugins[/code] section. The singleton to access in code was also renamed to [code]GodotPayment[/code].
@@ -402,7 +406,7 @@
 		<member name="debug/gdscript/warnings/void_assignment" type="bool" setter="" getter="" default="true">
 			If [code]true[/code], enables warnings when assigning the result of a function that returns [code]void[/code] to a variable.
 		</member>
-		<member name="debug/settings/crash_handler/message" type="String" setter="" getter="" default="&quot;Please include this when reporting the bug on https://github.com/godotengine/godot/issues&quot;">
+		<member name="debug/settings/crash_handler/message" type="String" setter="" getter="" default="&quot;Please include this when reporting the bug on https://github.com/Relintai/pandemonium_engine/issues&quot;">
 			Message to be displayed before the backtrace when the engine crashes.
 		</member>
 		<member name="debug/settings/fps/force_fps" type="int" setter="" getter="" default="0">
@@ -1015,7 +1019,7 @@
 		<member name="logging/file_logging/enable_file_logging.pc" type="bool" setter="" getter="" default="true">
 			Desktop override for [member logging/file_logging/enable_file_logging], as log files are not readily accessible on mobile/Web platforms.
 		</member>
-		<member name="logging/file_logging/log_path" type="String" setter="" getter="" default="&quot;user://logs/godot.log&quot;">
+		<member name="logging/file_logging/log_path" type="String" setter="" getter="" default="&quot;user://logs/pandemonium.log&quot;">
 			Path to logs within the project. Using an [code]user://[/code] path is recommended.
 		</member>
 		<member name="logging/file_logging/max_log_files" type="int" setter="" getter="" default="5">
@@ -1029,7 +1033,6 @@
 		<member name="memory/limits/multithreaded_server/rid_pool_prealloc" type="int" setter="" getter="" default="60">
 			This is used by servers when used in multi-threading mode (servers and visual). RIDs are preallocated to avoid stalling the server requesting them on threads. If servers get stalled too often when loading resources in a thread, increase this number.
 		</member>
-
 		<member name="network/limits/debugger_stdout/max_chars_per_second" type="int" setter="" getter="" default="2048">
 			Maximum amount of characters allowed to send as output from the debugger. Over this value, content is dropped. This helps not to stall the debugger connection.
 		</member>
@@ -1149,9 +1152,6 @@
 		<member name="physics/2d/use_bvh" type="bool" setter="" getter="" default="true">
 			Enables the use of bounding volume hierarchy instead of hash grid for 2D physics spatial partitioning. This may give better performance.
 		</member>
-		<member name="physics/3d/active_soft_world" type="bool" setter="" getter="" default="true">
-			Sets whether the 3D physics world will be created with support for [SoftBody] physics. Only applies to the Bullet physics engine.
-		</member>
 		<member name="physics/3d/default_angular_damp" type="float" setter="" getter="" default="0.1">
 			The default angular damp in 3D.
 			[b]Note:[/b] Good values are in the range [code]0[/code] to [code]1[/code]. At value [code]0[/code] objects will keep moving with the same velocity. Values greater than [code]1[/code] will aim to reduce the velocity to [code]0[/code] in less than a second e.g. a value of [code]2[/code] will aim to reduce the velocity to [code]0[/code] in half a second. A value equal to or greater than the physics frame rate ([member ProjectSettings.physics/common/physics_fps], [code]60[/code] by default) will bring the object to a stop in one iteration.
@@ -1176,21 +1176,23 @@
 			The default linear damp in 3D.
 			[b]Note:[/b] Good values are in the range [code]0[/code] to [code]1[/code]. At value [code]0[/code] objects will keep moving with the same velocity. Values greater than [code]1[/code] will aim to reduce the velocity to [code]0[/code] in less than a second e.g. a value of [code]2[/code] will aim to reduce the velocity to [code]0[/code] in half a second. A value equal to or greater than the physics frame rate ([member ProjectSettings.physics/common/physics_fps], [code]60[/code] by default) will bring the object to a stop in one iteration.
 		</member>
-		<member name="physics/3d/godot_physics/bvh_collision_margin" type="float" setter="" getter="" default="0.1">
-			Additional expansion applied to object bounds in the 3D physics bounding volume hierarchy. This can reduce BVH processing at the cost of a slightly coarser broadphase, which can stress the physics more in some situations.
-			The default value will work well in most situations. A value of 0.0 will turn this optimization off, and larger values may work better for larger, faster moving objects.
-			[b]Note:[/b] Used only if [member ProjectSettings.physics/3d/godot_physics/use_bvh] is enabled.
+		<member name="physics/3d/pandemonium_physics/bvh_collision_margin" type="float" setter="" getter="" default="0.1">
 		</member>
-		<member name="physics/3d/godot_physics/use_bvh" type="bool" setter="" getter="" default="true">
-			Enables the use of bounding volume hierarchy instead of octree for 3D physics spatial partitioning. This may give better performance.
+		<member name="physics/3d/pandemonium_physics/use_bvh" type="bool" setter="" getter="" default="true">
 		</member>
 		<member name="physics/3d/physics_engine" type="String" setter="" getter="" default="&quot;DEFAULT&quot;">
 			Sets which physics engine to use for 3D physics.
 			"DEFAULT" is currently the [url=https://bulletphysics.org]Bullet[/url] physics engine. The "GodotPhysics" engine is still supported as an alternative.
 		</member>
+		<member name="physics/3d/sleep_threshold_angular" type="float" setter="" getter="" default="0.139626">
+		</member>
+		<member name="physics/3d/sleep_threshold_linear" type="float" setter="" getter="" default="0.1">
+		</member>
 		<member name="physics/3d/smooth_trimesh_collision" type="bool" setter="" getter="" default="false">
 			If [code]true[/code], smooths out collision with trimesh shapes ([ConcavePolygonShape]) by telling the Bullet physics engine to generate internal edge information for every trimesh shape created.
 			[b]Note:[/b] Only effective if [member physics/3d/physics_engine] is set to [code]DEFAULT[/code] or [code]Bullet[/code], [i]not[/i] [code]GodotPhysics[/code].
+		</member>
+		<member name="physics/3d/time_before_sleep" type="float" setter="" getter="" default="0.5">
 		</member>
 		<member name="physics/common/enable_object_picking" type="bool" setter="" getter="" default="true">
 			Enables [member Viewport.physics_object_picking] on the root viewport.

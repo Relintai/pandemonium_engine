@@ -38,7 +38,7 @@
 		</method>
 	</methods>
 	<members>
-		<member name="function" type="String" setter="set_function" getter="get_function" default="&quot;&quot;">
+		<member name="function" type="StringName" setter="set_function" getter="get_function" default="@&quot;&quot;">
 			The name of the referenced function.
 		</member>
 	</members>

@@ -1443,17 +1443,15 @@
 		<method name="material_get_param" qualifiers="const">
 			<return type="Variant" />
 			<argument index="0" name="material" type="RID" />
-			<argument index="1" name="parameter" type="String" />
+			<argument index="1" name="parameter" type="StringName" />
 			<description>
-				Returns the value of a certain material's parameter.
 			</description>
 		</method>
 		<method name="material_get_param_default" qualifiers="const">
 			<return type="Variant" />
 			<argument index="0" name="material" type="RID" />
-			<argument index="1" name="parameter" type="String" />
+			<argument index="1" name="parameter" type="StringName" />
 			<description>
-				Returns the default value for the param if available. Otherwise returns an empty [Variant].
 			</description>
 		</method>
 		<method name="material_get_shader" qualifiers="const">
@@ -1482,10 +1480,9 @@
 		<method name="material_set_param">
 			<return type="void" />
 			<argument index="0" name="material" type="RID" />
-			<argument index="1" name="parameter" type="String" />
+			<argument index="1" name="parameter" type="StringName" />
 			<argument index="2" name="value" type="Variant" />
 			<description>
-				Sets a material's parameter.
 			</description>
 		</method>
 		<method name="material_set_render_priority">
@@ -1974,11 +1971,9 @@
 		<method name="request_frame_drawn_callback">
 			<return type="void" />
 			<argument index="0" name="where" type="Object" />
-			<argument index="1" name="method" type="String" />
+			<argument index="1" name="method" type="StringName" />
 			<argument index="2" name="userdata" type="Variant" />
 			<description>
-				Schedules a callback to the corresponding named [code]method[/code] on [code]where[/code] after a frame has been drawn.
-				The callback method must use only 1 argument which will be called with [code]userdata[/code].
 			</description>
 		</method>
 		<method name="scenario_create">
@@ -2087,9 +2082,8 @@
 		<method name="shader_get_default_texture_param" qualifiers="const">
 			<return type="RID" />
 			<argument index="0" name="shader" type="RID" />
-			<argument index="1" name="name" type="String" />
+			<argument index="1" name="name" type="StringName" />
 			<description>
-				Returns a default texture from a shader searched by name.
 			</description>
 		</method>
 		<method name="shader_get_param_list" qualifiers="const">
@@ -2110,10 +2104,9 @@
 		<method name="shader_set_default_texture_param">
 			<return type="void" />
 			<argument index="0" name="shader" type="RID" />
-			<argument index="1" name="name" type="String" />
+			<argument index="1" name="name" type="StringName" />
 			<argument index="2" name="texture" type="RID" />
 			<description>
-				Sets a shader's default texture. Overwrites the texture given by name.
 			</description>
 		</method>
 		<method name="skeleton_allocate">

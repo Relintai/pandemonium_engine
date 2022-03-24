@@ -60,10 +60,9 @@
 			</description>
 		</method>
 		<method name="translate" qualifiers="const">
-			<return type="String" />
-			<argument index="0" name="message" type="String" />
+			<return type="StringName" />
+			<argument index="0" name="message" type="StringName" />
 			<description>
-				Returns the current locale's translation for the given message (key).
 			</description>
 		</method>
 	</methods>

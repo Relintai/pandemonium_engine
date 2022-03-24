@@ -36,31 +36,31 @@
 		</method>
 		<method name="equip_slot_get_id" qualifiers="const">
 			<return type="int" />
-			<argument index="0" name="name" type="String" />
+			<argument index="0" name="name" type="StringName" />
 			<description>
 			</description>
 		</method>
 		<method name="equip_slot_get_name" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="id" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="equip_slot_get_property_id" qualifiers="const">
 			<return type="int" />
-			<argument index="0" name="name" type="String" />
+			<argument index="0" name="name" type="StringName" />
 			<description>
 			</description>
 		</method>
 		<method name="equip_slot_get_property_name" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="id" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="equip_slot_is_property" qualifiers="const">
 			<return type="bool" />
-			<argument index="0" name="name" type="String" />
+			<argument index="0" name="name" type="StringName" />
 			<description>
 			</description>
 		</method>
@@ -200,31 +200,31 @@
 		</method>
 		<method name="stat_get_id" qualifiers="const">
 			<return type="int" />
-			<argument index="0" name="name" type="String" />
+			<argument index="0" name="name" type="StringName" />
 			<description>
 			</description>
 		</method>
 		<method name="stat_get_name" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="id" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="stat_get_property_id" qualifiers="const">
 			<return type="int" />
-			<argument index="0" name="name" type="String" />
+			<argument index="0" name="name" type="StringName" />
 			<description>
 			</description>
 		</method>
 		<method name="stat_get_property_name" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="id" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="stat_is_property" qualifiers="const">
 			<return type="bool" />
-			<argument index="0" name="name" type="String" />
+			<argument index="0" name="name" type="StringName" />
 			<description>
 			</description>
 		</method>
@@ -244,7 +244,7 @@
 		</member>
 		<member name="class_xp_data" type="PoolIntArray" setter="set_class_xp_data" getter="get_class_xp_data" default="PoolIntArray(  )">
 		</member>
-		<member name="default_ess_material_cache_class" type="String" setter="set_default_ess_material_cache_class" getter="get_default_ess_material_cache_class" default="&quot;ESSMaterialCachePCM&quot;">
+		<member name="default_ess_material_cache_class" type="StringName" setter="set_default_ess_material_cache_class" getter="get_default_ess_material_cache_class" default="@&quot;ESSMaterialCachePCM&quot;">
 		</member>
 		<member name="entity_spawner" type="ESSEntitySpawner" setter="set_entity_spawner" getter="get_entity_spawner">
 		</member>

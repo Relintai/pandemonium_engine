@@ -66,62 +66,62 @@
 			</description>
 		</method>
 		<method name="craft_recipe_id_to_path" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="id" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="craft_recipe_path_to_id" qualifiers="const">
 			<return type="int" />
-			<argument index="0" name="path" type="String" />
+			<argument index="0" name="path" type="StringName" />
 			<description>
 			</description>
 		</method>
 		<method name="entity_data_id_to_path" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="id" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="entity_data_path_to_id" qualifiers="const">
 			<return type="int" />
-			<argument index="0" name="path" type="String" />
+			<argument index="0" name="path" type="StringName" />
 			<description>
 			</description>
 		</method>
 		<method name="entity_resource_id_to_path" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="id" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="entity_resource_path_to_id" qualifiers="const">
 			<return type="int" />
-			<argument index="0" name="path" type="String" />
+			<argument index="0" name="path" type="StringName" />
 			<description>
 			</description>
 		</method>
 		<method name="entity_skill_id_to_path" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="id" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="entity_skill_path_to_id" qualifiers="const">
 			<return type="int" />
-			<argument index="0" name="path" type="String" />
+			<argument index="0" name="path" type="StringName" />
 			<description>
 			</description>
 		</method>
 		<method name="entity_species_id_to_path" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="id" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="entity_species_path_to_id" qualifiers="const">
 			<return type="int" />
-			<argument index="0" name="path" type="String" />
+			<argument index="0" name="path" type="StringName" />
 			<description>
 			</description>
 		</method>
@@ -144,7 +144,7 @@
 		</method>
 		<method name="get_craft_recipe_path">
 			<return type="CraftRecipe" />
-			<argument index="0" name="path" type="String" />
+			<argument index="0" name="path" type="StringName" />
 			<description>
 			</description>
 		</method>
@@ -172,7 +172,7 @@
 		</method>
 		<method name="get_entity_data_path">
 			<return type="EntityData" />
-			<argument index="0" name="path" type="String" />
+			<argument index="0" name="path" type="StringName" />
 			<description>
 			</description>
 		</method>
@@ -200,7 +200,7 @@
 		</method>
 		<method name="get_entity_resource_path">
 			<return type="EntityResource" />
-			<argument index="0" name="path" type="String" />
+			<argument index="0" name="path" type="StringName" />
 			<description>
 			</description>
 		</method>
@@ -228,7 +228,7 @@
 		</method>
 		<method name="get_entity_skill_path">
 			<return type="EntitySkillData" />
-			<argument index="0" name="path" type="String" />
+			<argument index="0" name="path" type="StringName" />
 			<description>
 			</description>
 		</method>
@@ -256,7 +256,7 @@
 		</method>
 		<method name="get_entity_species_data_path">
 			<return type="EntitySpeciesData" />
-			<argument index="0" name="path" type="String" />
+			<argument index="0" name="path" type="StringName" />
 			<description>
 			</description>
 		</method>
@@ -284,7 +284,7 @@
 		</method>
 		<method name="get_item_template_path">
 			<return type="ItemTemplate" />
-			<argument index="0" name="path" type="String" />
+			<argument index="0" name="path" type="StringName" />
 			<description>
 			</description>
 		</method>
@@ -318,7 +318,7 @@
 		</method>
 		<method name="get_spell_path">
 			<return type="Spell" />
-			<argument index="0" name="path" type="String" />
+			<argument index="0" name="path" type="StringName" />
 			<description>
 			</description>
 		</method>
@@ -333,14 +333,14 @@
 			</description>
 		</method>
 		<method name="item_template_id_to_path" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="id" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="item_template_path_to_id" qualifiers="const">
 			<return type="int" />
-			<argument index="0" name="path" type="String" />
+			<argument index="0" name="path" type="StringName" />
 			<description>
 			</description>
 		</method>
@@ -394,14 +394,14 @@
 			</description>
 		</method>
 		<method name="spell_id_to_path" qualifiers="const">
-			<return type="String" />
+			<return type="StringName" />
 			<argument index="0" name="id" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="spell_path_to_id" qualifiers="const">
 			<return type="int" />
-			<argument index="0" name="path" type="String" />
+			<argument index="0" name="path" type="StringName" />
 			<description>
 			</description>
 		</method>

@@ -71,7 +71,7 @@
 		<member name="override_tip_basis" type="bool" setter="set_override_tip_basis" getter="is_override_tip_basis" default="true">
 			If [code]true[/code] overwrites the rotation of the tip bone with the rotation of the [member target] (or [member target_node] if defined).
 		</member>
-		<member name="root_bone" type="String" setter="set_root_bone" getter="get_root_bone" default="&quot;&quot;">
+		<member name="root_bone" type="StringName" setter="set_root_bone" getter="get_root_bone" default="@&quot;&quot;">
 			The name of the current root bone, the first bone in the IK chain.
 		</member>
 		<member name="target" type="Transform" setter="set_target_transform" getter="get_target_transform" default="Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )">
@@ -80,7 +80,7 @@
 		<member name="target_node" type="NodePath" setter="set_target_node" getter="get_target_node" default="NodePath(&quot;&quot;)">
 			Target node [NodePath] for the IK chain. If available, the node's current [Transform] is used instead of the [member target] property.
 		</member>
-		<member name="tip_bone" type="String" setter="set_tip_bone" getter="get_tip_bone" default="&quot;&quot;">
+		<member name="tip_bone" type="StringName" setter="set_tip_bone" getter="get_tip_bone" default="@&quot;&quot;">
 			The name of the current tip bone, the last bone in the IK chain placed at the [member target] transform (or [member target_node] if defined).
 		</member>
 		<member name="use_magnet" type="bool" setter="set_use_magnet" getter="is_using_magnet" default="false">

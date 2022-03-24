@@ -70,7 +70,7 @@
 		</method>
 		<method name="on_keybinds_changed">
 			<return type="void" />
-			<argument index="0" name="class_path" type="String" />
+			<argument index="0" name="class_path" type="StringName" />
 			<description>
 			</description>
 		</method>
