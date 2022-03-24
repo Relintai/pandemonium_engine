@@ -4,7 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Master] 
 
-Currently contains changes up to 825755c5d4f7c33945ccfb0368b48e7fc0d2e495
+- Nothing since the last changeset.
+
+## [Changes up to 825755c5d4f7c33945ccfb0368b48e7fc0d2e495] 
 
 ### Added
 
@@ -24,12 +26,23 @@ Currently contains changes up to 825755c5d4f7c33945ccfb0368b48e7fc0d2e495
 - [[UI Extensions]](https://github.com/Relintai/ui_extensions) - Small extensions engine module for GODOT.
 - [[Skeleton Editor]](https://github.com/Relintai/skeleton_editor) - Godot engine module version of TokageItLab's skeleton editor pr, that got deprecated, but [[my godot fork]](https://github.com/Relintai/godot/tree/3.x) has it fully implemented.
 - [[rtile_map]](https://github.com/Relintai/rtile_map) - Godot's tilemap, with a few additional features.
+- Ported NetworkedController & SceneRewinder (https://github.com/godotengine/godot/pull/37200).
+
+#### Engine
+
+- Added Vector2i, Vector3i, Rect2i, PoolVector2i, PoolVector3i, and StringName as core classes.
+- Added an is_null() helper method to Variant.
+- Backported the 3.x android editor port pr by m4gr3d and thebestnom. (https://github.com/godotengine/godot/pull/57747)
+- Added most of the build tools from the broken seasl repo, and cleaned them up a bit.
 
 ### Changed
 
 #### Engine
 
 - Added options for disabling RTTI and exceptions for every platform, and by default I disabled them.
+- Reworked the help menu.
+- Replaced the godot icon.
+- Mass replaced the word godot to pandemonium.
 
 #### Modules
 
@@ -65,6 +78,7 @@ Currently contains changes up to 825755c5d4f7c33945ccfb0368b48e7fc0d2e495
 - movile_vr
 - jsonrpc
 - webrtc
+- bullet
 
 #### Core classes
 
@@ -96,8 +110,23 @@ Currently contains changes up to 825755c5d4f7c33945ccfb0368b48e7fc0d2e495
 - Removed the Camera singleton.
 - Removed the editor asset installer.
 - Removed the gdscript language server.
+- Removed the downloader from the export templates manager.
+- Removed the translations, except for hungarian, as I won't be able to keep them updated.
+- Removed the online docs link from the top of the script editor.
+
+#### module: ui_extensions
+
+- Removed TMeshInstance, and changed the core MeshInstance to wrok the way I need it instead.
+
+#### other
+
+- Removed the github issue tamplates.
 
 ### Fixed
+
+#### Editor Docs
+
+- Fixed all warnings.
 
 #### Editor Docs
 
@@ -108,6 +137,7 @@ Currently contains changes up to 825755c5d4f7c33945ccfb0368b48e7fc0d2e495
 - Github actions have been simplifed and fixed.
 - Godot's regression test tool have been updated / fixed.
 - Fixed all crashed the regression test tool found by throwing invalid / unexpected arguments at methods.
+- Cleanups to the docs.
 
 ### Backports
 
@@ -117,4 +147,17 @@ Currently contains changes up to 825755c5d4f7c33945ccfb0368b48e7fc0d2e495
 - https://github.com/godotengine/godot/commit/fd968157a4b9145b245e3d749e1ee7e12ae9ae8b
 - https://github.com/godotengine/godot/commit/c0bd05762e0398589f78f2f0c4a5f4efdce786f0
 - https://github.com/godotengine/godot/commit/72837b8ecd52e1734360a83ebb129ee477cc413a
-
+- https://github.com/godotengine/godot/commit/88c723c33c219113ec0e533942363ceccf422229
+- https://github.com/godotengine/godot/commit/d76c9f8d92fe3533244fdf74679c67475bec2983
+- https://github.com/godotengine/godot/commit/658877c350dc3062d633902aac06050e1c3352e0
+- https://github.com/godotengine/godot/commit/d537a88299ee1faa79ea81d6acd0774e59c3a288
+- https://github.com/godotengine/godot/commit/b33eed23aef39db58dac563dc14d7110f16eca50
+- https://github.com/godotengine/godot/commit/797321fec45df71f1f7d4fcca4e9af30d11853b9
+- https://github.com/godotengine/godot/commit/c77b71003532237aeef466ce46c12ff01948bc2e
+- https://github.com/godotengine/godot/commit/bb257543d873ed05931fc8d46f7b5321598f32ee
+- https://github.com/godotengine/godot/commit/cf1b3fdd55989fe7b2d8ef665ce5fefec4db4cb7
+- https://github.com/godotengine/godot/commit/480543f681b50c3037f161bd0ecd531e78b87912
+- https://github.com/godotengine/godot/commit/09e4672f0d1e56b7cbd70c479192a1d5a5c1a6de
+- https://github.com/godotengine/godot/commit/e822145be2f7a95c5bac9986a534dccde482afbe
+- https://github.com/godotengine/godot/commit/3fe37f963595cb1887110f9070275d72c54ff0a6
+- https://github.com/godotengine/godot/commit/937c1a716c87e48ba0d1c097747e0438dc076f67
