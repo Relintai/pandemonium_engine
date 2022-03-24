@@ -51,7 +51,7 @@ $podman run -v ${project_root}:/root/project -w /root/project pandemonium-androi
 rm -f modules/modules_enabled.gen.h
 
 cd platform/android/java/
-./gradlew generateGodotTemplates
+./gradlew generatePandemoniumTemplates
 cd ../../..
 
 $podman run -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=android android_arch=armv7 -j4 . 2>&1 | tee logs/bar.log
@@ -62,7 +62,7 @@ $podman run -v ${project_root}:/root/project -w /root/project pandemonium-androi
 rm -f modules/modules_enabled.gen.h
 
 cd platform/android/java/
-./gradlew generateGodotTemplates
+./gradlew generatePandemoniumTemplates
 cd ../../..
 
 $podman run -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=android android_arch=armv7 -j4 . 2>&1 | tee logs/bae.log
@@ -73,7 +73,7 @@ $podman run -v ${project_root}:/root/project -w /root/project pandemonium-androi
 rm -f modules/modules_enabled.gen.h
 
 cd platform/android/java/
-./gradlew generateGodotEditor
+./gradlew generatePandemoniumEditor
 cd ../../..
 
 #osx
