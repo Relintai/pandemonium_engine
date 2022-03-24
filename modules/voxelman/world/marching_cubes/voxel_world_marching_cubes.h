@@ -33,7 +33,7 @@ public:
 
 protected:
 	Ref<VoxelChunk> _create_chunk(int x, int y, int z, Ref<VoxelChunk> p_chunk);
-	void _set_voxel_with_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal, const int selected_voxel, const int isolevel) override;
+	void _set_voxel_with_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal, const int selected_voxel, const int isolevel);
 
 	static void _bind_methods();
 };
