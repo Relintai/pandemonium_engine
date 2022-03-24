@@ -2003,7 +2003,7 @@ void ClientSynchronizer::process() {
 	}
 
 	const real_t delta = scene_synchronizer->get_physics_process_delta_time();
-	const real_t physics_ticks_per_second = Engine::get_singleton()->get_iterations_per_second();
+	const real_t physics_ticks_per_second = Engine::get_singleton()->get_physics_ticks_per_second();
 
 #ifdef DEBUG_ENABLED
 	if (unlikely(Engine::get_singleton()->get_frames_per_second() < physics_ticks_per_second)) {

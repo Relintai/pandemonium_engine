@@ -92,7 +92,7 @@
 		</method>
 		<method name="player_get_pretended_delta" qualifiers="const">
 			<return type="float" />
-			<argument index="0" name="iterations_per_seconds" type="int" />
+			<argument index="0" name="physics_ticks_per_seconds" type="int" />
 			<description>
 			</description>
 		</method>

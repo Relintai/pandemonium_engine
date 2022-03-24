@@ -99,7 +99,7 @@ void NetworkedController::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_current_input_id"), &NetworkedController::get_current_input_id);
 
-	ClassDB::bind_method(D_METHOD("player_get_pretended_delta", "iterations_per_seconds"), &NetworkedController::player_get_pretended_delta);
+	ClassDB::bind_method(D_METHOD("player_get_pretended_delta", "physics_ticks_per_seconds"), &NetworkedController::player_get_pretended_delta);
 
 	ClassDB::bind_method(D_METHOD("mark_epoch_as_important"), &NetworkedController::mark_epoch_as_important);
 
@@ -289,9 +289,9 @@ uint32_t NetworkedController::get_current_input_id() const {
 	return controller->get_current_input_id();
 }
 
-real_t NetworkedController::player_get_pretended_delta(uint32_t p_iterations_per_seconds) const {
-	ERR_FAIL_COND_V_MSG(is_player_controller() == false, 1.0 / real_t(p_iterations_per_seconds), "This function can be called only on client.");
-	return get_player_controller()->get_pretended_delta(p_iterations_per_seconds);
+real_t NetworkedController::player_get_pretended_delta(uint32_t p_physics_ticks_per_seconds) const {
+	ERR_FAIL_COND_V_MSG(is_player_controller() == false, 1.0 / real_t(p_physics_ticks_per_seconds), "This function can be called only on client.");
+	return get_player_controller()->get_pretended_delta(p_physics_ticks_per_seconds);
 }
 
 void NetworkedController::mark_epoch_as_important() {
@@ -1441,7 +1441,7 @@ void DollController::receive_batch(const PoolVector<uint8_t> &p_data) {
 			net_poorness);
 
 	// TODO cache this?
-	const double frames_per_batch = node->get_doll_epoch_batch_sync_rate() * real_t(Engine::get_singleton()->get_iterations_per_second());
+	const double frames_per_batch = node->get_doll_epoch_batch_sync_rate() * real_t(Engine::get_singleton()->get_physics_ticks_per_second());
 	const double next_batch_arrives_in = Math::ceil(double(next_collect_rate) / frames_per_batch) * frames_per_batch;
 
 	const real_t doll_interpolation_max_speedup = node->get_doll_interpolation_max_speedup();

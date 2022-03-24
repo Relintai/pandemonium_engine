@@ -284,7 +284,7 @@ public:
 	}
 
 	/// Returns the pretended delta used by the player.
-	real_t player_get_pretended_delta(uint32_t p_iterations_per_seconds) const;
+	real_t player_get_pretended_delta(uint32_t p_physics_ticks_per_seconds) const;
 
 	void mark_epoch_as_important();
 

@@ -3019,11 +3019,11 @@ _ClassDB::~_ClassDB() {
 }
 ///////////////////////////////
 
-void _Engine::set_iterations_per_second(int p_ips) {
-	Engine::get_singleton()->set_iterations_per_second(p_ips);
+void _Engine::set_physics_ticks_per_second(int p_ips) {
+	Engine::get_singleton()->set_physics_ticks_per_second(p_ips);
 }
-int _Engine::get_iterations_per_second() const {
-	return Engine::get_singleton()->get_iterations_per_second();
+int _Engine::get_physics_ticks_per_second() const {
+	return Engine::get_singleton()->get_physics_ticks_per_second();
 }
 
 void _Engine::set_physics_jitter_fix(float p_threshold) {
@@ -3128,8 +3128,8 @@ bool _Engine::is_printing_error_messages() const {
 }
 
 void _Engine::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("set_iterations_per_second", "iterations_per_second"), &_Engine::set_iterations_per_second);
-	ClassDB::bind_method(D_METHOD("get_iterations_per_second"), &_Engine::get_iterations_per_second);
+	ClassDB::bind_method(D_METHOD("set_physics_ticks_per_second", "physics_ticks_per_second"), &_Engine::set_physics_ticks_per_second);
+	ClassDB::bind_method(D_METHOD("get_physics_ticks_per_second"), &_Engine::get_physics_ticks_per_second);
 	ClassDB::bind_method(D_METHOD("set_physics_jitter_fix", "physics_jitter_fix"), &_Engine::set_physics_jitter_fix);
 	ClassDB::bind_method(D_METHOD("get_physics_jitter_fix"), &_Engine::get_physics_jitter_fix);
 	ClassDB::bind_method(D_METHOD("get_physics_interpolation_fraction"), &_Engine::get_physics_interpolation_fraction);
@@ -3166,7 +3166,7 @@ void _Engine::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "editor_hint"), "set_editor_hint", "is_editor_hint");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "print_error_messages"), "set_print_error_messages", "is_printing_error_messages");
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "iterations_per_second"), "set_iterations_per_second", "get_iterations_per_second");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "physics_ticks_per_second"), "set_physics_ticks_per_second", "get_physics_ticks_per_second");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "target_fps"), "set_target_fps", "get_target_fps");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "time_scale"), "set_time_scale", "get_time_scale");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "physics_jitter_fix"), "set_physics_jitter_fix", "get_physics_jitter_fix");

@@ -68,7 +68,7 @@ Vector3 SpatialVelocityTracker::get_tracked_linear_velocity() const {
 	if (position_history_len) {
 		if (physics_step) {
 			uint64_t base = Engine::get_singleton()->get_physics_frames();
-			base_time = float(base - position_history[0].frame) / Engine::get_singleton()->get_iterations_per_second();
+			base_time = float(base - position_history[0].frame) / Engine::get_singleton()->get_physics_ticks_per_second();
 		} else {
 			uint64_t base = Engine::get_singleton()->get_idle_frame_ticks();
 			base_time = double(base - position_history[0].frame) / 1000000.0;
@@ -81,7 +81,7 @@ Vector3 SpatialVelocityTracker::get_tracked_linear_velocity() const {
 		Vector3 distance = position_history[i].position - position_history[i + 1].position;
 
 		if (physics_step) {
-			delta = float(diff) / Engine::get_singleton()->get_iterations_per_second();
+			delta = float(diff) / Engine::get_singleton()->get_physics_ticks_per_second();
 		} else {
 			delta = double(diff) / 1000000.0;
 		}

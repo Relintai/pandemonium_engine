@@ -35,11 +35,11 @@
 #include "core/license.gen.h"
 #include "core/version.h"
 
-void Engine::set_iterations_per_second(int p_ips) {
+void Engine::set_physics_ticks_per_second(int p_ips) {
 	ERR_FAIL_COND_MSG(p_ips <= 0, "Engine iterations per second must be greater than 0.");
 	ips = p_ips;
 }
-int Engine::get_iterations_per_second() const {
+int Engine::get_physics_ticks_per_second() const {
 	return ips;
 }
 

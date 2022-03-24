@@ -632,7 +632,7 @@ void CPUParticles::_particles_process(float p_delta) {
 	}
 
 	float system_phase = time / lifetime;
-	real_t physics_tick_delta = 1.0 / Engine::get_singleton()->get_iterations_per_second();
+	real_t physics_tick_delta = 1.0 / Engine::get_singleton()->get_physics_ticks_per_second();
 
 	// Streaky particles can "prime" started particles by placing them back in time
 	// from the current physics tick, to place them in the position they would have reached
