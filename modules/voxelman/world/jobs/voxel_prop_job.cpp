@@ -551,14 +551,6 @@ void VoxelPropJob::step_type_bake_texture() {
 
 		VisualServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
-		Ref<Material> lmat;
-
-		if (chunk->prop_material_cache_key_has()) {
-			lmat = chunk->get_library()->prop_material_cache_get(_chunk->prop_material_cache_key_get())->material_lod_get(_current_mesh);
-		} else {
-			lmat = chunk->get_library()->prop_material_lod_get(_current_mesh);
-		}
-
 		if (lmat.is_valid()) {
 			VisualServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
 		}
