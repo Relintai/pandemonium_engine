@@ -87,7 +87,7 @@ $podman run -v ${project_root}:/root/project -w /root/project pandemonium-osx:${
 rm -f modules/modules_enabled.gen.h
 
 #lipo
-$podman run -v ${project_root}:/root/project -w /root/project/tools/osx pandemonium-osx:${img_version} bash -c ./lipo.sh
+$podman run -v ${project_root}:/root/project -w /root/project/misc/osx pandemonium-osx:${img_version} bash -c ./lipo.sh
 
 #ios
 #$podman run -v ${project_root}:/root/project -w /root/project pandemonium-ios:${img_version} scons bir_strip -j4 . 2>&1 | tee logs/bir.log
