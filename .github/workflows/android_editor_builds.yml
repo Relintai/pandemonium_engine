@@ -56,7 +56,7 @@ jobs:
           target: release_debug
           tools: true
 
-      - name: Generate Pandemonium templates
+      - name: Generate Pandemonium Editor APK
         run: |
           cd platform/android/java
           ./gradlew generatePandemoniumEditor
