@@ -50,9 +50,7 @@ rm -f modules/modules_enabled.gen.h
 $podman run -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=android android_arch=x86 -j4 . 2>&1 | tee logs/ba.log
 rm -f modules/modules_enabled.gen.h
 
-cd platform/android/java/
-./gradlew generatePandemoniumTemplates
-cd ../../..
+$podman run -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} bash -c 'cd platform/android/java/;./gradlew generatePandemoniumTemplates' . 2>&1 | tee logs/ba_gen_temp.log
 
 $podman run -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=android android_arch=armv7 -j4 . 2>&1 | tee logs/bar.log
 rm -f modules/modules_enabled.gen.h
@@ -61,9 +59,7 @@ rm -f modules/modules_enabled.gen.h
 $podman run -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=android android_arch=x86 -j4 . 2>&1 | tee logs/bar.log
 rm -f modules/modules_enabled.gen.h
 
-cd platform/android/java/
-./gradlew generatePandemoniumTemplates
-cd ../../..
+$podman run -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} bash -c 'cd platform/android/java/;./gradlew generatePandemoniumTemplates' . 2>&1 | tee logs/bar_gen_temp.log
 
 $podman run -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=android android_arch=armv7 -j4 . 2>&1 | tee logs/bae.log
 rm -f modules/modules_enabled.gen.h
@@ -72,9 +68,7 @@ rm -f modules/modules_enabled.gen.h
 $podman run -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=android android_arch=x86 -j4 . 2>&1 | tee logs/bae.log
 rm -f modules/modules_enabled.gen.h
 
-cd platform/android/java/
-./gradlew generatePandemoniumEditor
-cd ../../..
+$podman run -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} bash -c 'cd platform/android/java/;./gradlew generatePandemoniumEditor' . 2>&1 | tee logs/bae_gen_temp.log
 
 #osx
 $podman run -v ${project_root}:/root/project -w /root/project pandemonium-osx:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=osx arch=x86_64 -j4 osxcross_sdk=darwin20.4 . 2>&1 | tee logs/bex_x86_64.log
