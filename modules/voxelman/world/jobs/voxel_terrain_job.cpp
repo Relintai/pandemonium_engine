@@ -283,7 +283,7 @@ void VoxelTerrainJob::phase_collider() {
 
 void VoxelTerrainJob::phase_physics_process() {
 	ERR_FAIL_COND(!_chunk.is_valid());
-	
+
 	Ref<VoxelChunkDefault> chunk = _chunk;
 
 	if (temp_arr_collider.size() != 0) {
@@ -806,8 +806,16 @@ void VoxelTerrainJob::step_type_merge_verts() {
 void VoxelTerrainJob::step_type_bake_texture() {
 	Ref<VoxelChunkDefault> chunk = _chunk;
 
-	Ref<ShaderMaterial> mat = chunk->get_library()->material_lod_get(0);
-	Ref<SpatialMaterial> spmat = chunk->get_library()->material_lod_get(0);
+	Ref<Material> lmat;
+
+	if (chunk->material_cache_key_has()) {
+		lmat = chunk->get_library()->material_cache_get(_chunk->material_cache_key_get())->material_lod_get(_current_mesh);
+	} else {
+		lmat = chunk->get_library()->material_lod_get(_current_mesh);
+	}
+
+	Ref<ShaderMaterial> mat = lmat;
+	Ref<SpatialMaterial> spmat = lmat;
 	Ref<Texture> tex;
 
 	if (mat.is_valid()) {

@@ -598,8 +598,16 @@ void TerrainTerrainJob::step_type_merge_verts() {
 void TerrainTerrainJob::step_type_bake_texture() {
 	Ref<TerrainChunkDefault> chunk = _chunk;
 
-	Ref<ShaderMaterial> mat = chunk->get_library()->material_lod_get(0);
-	Ref<SpatialMaterial> spmat = chunk->get_library()->material_lod_get(0);
+	Ref<Material> lmat;
+
+	if (chunk->material_cache_key_has()) {
+		lmat = chunk->get_library()->material_cache_get(_chunk->material_cache_key_get())->material_lod_get(_current_mesh);
+	} else {
+		lmat = chunk->get_library()->material_lod_get(_current_mesh);
+	}
+
+	Ref<ShaderMaterial> mat = lmat;
+	Ref<SpatialMaterial> spmat = lmat;
 	Ref<Texture> tex;
 
 	if (mat.is_valid()) {
