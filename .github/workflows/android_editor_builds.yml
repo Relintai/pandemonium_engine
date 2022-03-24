@@ -1,0 +1,67 @@
+name: 🤖 Android Editor Builds
+on: [push, pull_request]
+
+# Global Settings
+# disable werrors for now
+# werror=yes 
+env:
+  PANDEMONIUM_BASE_BRANCH: master
+  SCONSFLAGS: verbose=yes warnings=all debug_symbols=no
+
+concurrency:
+  group: ci-${{github.actor}}-${{github.head_ref || github.run_number}}-${{github.ref}}-android
+  cancel-in-progress: true
+
+jobs:
+  android-template:
+    runs-on: "ubuntu-20.04"
+
+    name: Android Editor (target=release_debug, tools=yes)
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Azure repositories are not reliable, we need to prevent azure giving us packages.
+      - name: Make apt sources.list use the default Ubuntu repositories
+        run: |
+          sudo rm -f /etc/apt/sources.list.d/*
+          sudo cp -f misc/ci/sources.list /etc/apt/sources.list
+          sudo apt-get update
+
+      - name: Set up Java 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Setup Pandemonium build cache
+        uses: ./.github/actions/pandemonium-cache
+        continue-on-error: true
+
+      - name: Setup python and scons
+        uses: ./.github/actions/pandemonium-deps
+
+      - name: Compilation (armv7)
+        uses: ./.github/actions/pandemonium-build
+        with:
+          sconsflags: ${{ env.SCONSFLAGS }} android_arch=armv7
+          platform: android
+          target: release_debug
+          tools: true
+
+      - name: Compilation (arm64v8)
+        uses: ./.github/actions/pandemonium-build
+        with:
+          sconsflags: ${{ env.SCONSFLAGS }} android_arch=arm64v8
+          platform: android
+          target: release_debug
+          tools: true
+
+      - name: Generate Pandemonium templates
+        run: |
+          cd platform/android/java
+          ./gradlew generatePandemoniumEditor
+          cd ../../..
+          ls -l bin/
+
+      - name: Upload artifact
+        uses: ./.github/actions/upload-artifact
