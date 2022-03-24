@@ -8,7 +8,11 @@ def configure(env):
 
 def get_doc_classes():
     return [
-        #"BitArray",
+        "DataBuffer",
+        "SceneDiff",
+        "Interpolator",
+        "NetworkedController",
+        "SceneSynchronizer",
     ]
 
 
