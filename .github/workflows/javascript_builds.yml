@@ -2,11 +2,9 @@ name: 🌐 JavaScript Builds
 on: [push, pull_request]
 
 # Global Settings
-# disable werrors for now
-# werror=yes 
 env:
   PANDEMONIUM_BASE_BRANCH: master
-  SCONSFLAGS: verbose=yes warnings=all debug_symbols=no
+  SCONSFLAGS: verbose=yes warnings=all debug_symbols=no werror=yes 
   EM_VERSION: 2.0.25
   EM_CACHE_FOLDER: "emsdk-cache"
 
