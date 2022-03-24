@@ -91,7 +91,7 @@ static void _initialize_java_modules() {
 			String m = mods[i];
 
 			// Deprecated in Pandemonium 3.2.2, it's now a plugin to enable in export preset.
-			if (m == "org/pandemoniumengine/pandemonium/PandemoniumPaymentV3") {
+			if (m == "java/src/net/relintai/pandemonium/pandemonium/PandemoniumPaymentV3") {
 				WARN_PRINT("PandemoniumPaymentV3 is deprecated and is replaced by the 'PandemoniumPayment' plugin, which should be enabled in the Android export preset.");
 				print_line("Skipping Android module: " + m);
 				continue;
@@ -102,7 +102,7 @@ static void _initialize_java_modules() {
 			jclass singletonClass = (jclass)env->CallObjectMethod(cls, findClass, strClassName);
 			ERR_CONTINUE_MSG(!singletonClass, "Couldn't find singleton for class: " + m + ".");
 
-			jmethodID initialize = env->GetStaticMethodID(singletonClass, "initialize", "(Landroid/app/Activity;)Lorg/pandemoniumengine/pandemonium/Pandemonium$SingletonBase;");
+			jmethodID initialize = env->GetStaticMethodID(singletonClass, "initialize", "(Landroid/app/Activity;)Ljava/src/net/relintai/pandemonium/pandemonium/Pandemonium$SingletonBase;");
 			ERR_CONTINUE_MSG(!initialize, "Couldn't find proper initialize function 'public static Pandemonium.SingletonBase Class::initialize(Activity p_activity)' initializer for singleton class: " + m + ".");
 
 			jobject obj = env->CallStaticObjectMethod(singletonClass, initialize, pandemonium_java->get_activity());
@@ -127,7 +127,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 
 	// create our wrapper classes
 	pandemonium_java = new PandemoniumJavaWrapper(env, activity, pandemonium_instance);
-	pandemonium_io_java = new PandemoniumIOJavaWrapper(env, pandemonium_java->get_member_object("io", "Lorg/pandemoniumengine/pandemonium/PandemoniumIO;", env));
+	pandemonium_io_java = new PandemoniumIOJavaWrapper(env, pandemonium_java->get_member_object("io", "Lnet/relintai/pandemonium/pandemonium/PandemoniumIO;", env));
 
 	init_thread_jandroid(jvm, env);
 
@@ -136,7 +136,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 	FileAccessAndroid::asset_manager = AAssetManager_fromJava(env, amgr);
 
 	DirAccessJAndroid::setup(pandemonium_io_java->get_instance());
-	NetSocketAndroid::setup(pandemonium_java->get_member_object("netUtils", "Lorg/pandemoniumengine/pandemonium/utils/PandemoniumNetUtils;", env));
+	NetSocketAndroid::setup(pandemonium_java->get_member_object("netUtils", "Lnet/relintai/pandemonium/pandemonium/utils/PandemoniumNetUtils;", env));
 
 	os_android = new OS_Android(pandemonium_java, pandemonium_io_java, p_use_apk_expansion);
 

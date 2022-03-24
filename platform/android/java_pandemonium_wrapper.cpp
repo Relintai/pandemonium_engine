@@ -42,7 +42,7 @@ PandemoniumJavaWrapper::PandemoniumJavaWrapper(JNIEnv *p_env, jobject p_activity
 	activity = p_env->NewGlobalRef(p_activity);
 
 	// get info about our Pandemonium class so we can get pointers and stuff...
-	pandemonium_class = p_env->FindClass("org/pandemoniumengine/pandemonium/Pandemonium");
+	pandemonium_class = p_env->FindClass("net/relintai/pandemonium/pandemonium/Pandemonium");
 	if (pandemonium_class) {
 		pandemonium_class = (jclass)p_env->NewGlobalRef(pandemonium_class);
 	} else {
