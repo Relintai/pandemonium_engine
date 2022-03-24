@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 - Nothing since the last changeset.
 
-## [Changes up to 825755c5d4f7c33945ccfb0368b48e7fc0d2e495] 
+## [Changes up to 57ffe2211b850bc0d93a2092fac8c1b01061f1da] 
 
 ### Added
 
@@ -123,6 +123,10 @@ All notable changes to this project will be documented in this file.
 - Removed the github issue tamplates.
 
 ### Fixed
+
+#### Modules
+
+- Added material cache support for Voxelman, and Terraman's bake texture mesher step type.
 
 #### Editor Docs
 
