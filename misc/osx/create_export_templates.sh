@@ -8,5 +8,3 @@ cp pandemonium.osx.opt.universal osx_template.app/Contents/MacOS/pandemonium_osx
 cp pandemonium.osx.opt.debug.universal osx_template.app/Contents/MacOS/pandemonium_osx_debug.64
 chmod +x osx_template.app/Contents/MacOS/pandemonium_osx*
 zip -q -9 -r osx.zip osx_template.app
-
-cd ../../tools/osx

@@ -1,12 +1,11 @@
 cd ../../bin/
 
-rm -Rf Godot.app
-rm -f Godot.app.zip
+rm -Rf Pandemonium.app
+rm -f Pandemonium.app.zip
 
-cp -r ../misc/dist/osx_tools.app Godot.app
-mkdir -p Godot.app/Contents/MacOS
-cp pandemonium.osx.opt.tools.universal Godot.app/Contents/MacOS/Godot
-chmod +x Godot.app/Contents/MacOS/Godot
+cp -r ../misc/dist/osx_tools.app Pandemonium.app
+mkdir -p Pandemonium.app/Contents/MacOS
+cp pandemonium.osx.opt.tools.universal Pandemonium.app/Contents/MacOS/Pandemonium
+chmod +x Pandemonium.app/Contents/MacOS/Pandemonium
 
-zip -q -r Godot.app.zip  Godot.app/*
-cd ../../tools/osx/
+zip -q -r Pandemonium.app.zip  Pandemonium.app/*
