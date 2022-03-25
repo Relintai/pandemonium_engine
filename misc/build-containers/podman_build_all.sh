@@ -15,11 +15,13 @@ img_version=pe
 
 mkdir -p logs
 
-# Windows editor (release debug)
 rm -f modules/modules_enabled.gen.h
-$podman run -v ${project_root}:/root/project -w /root/project pandemonium-windows:${img_version} scons tools=yes target=release_debug debug_symbols=no platform=windows -j4 . 2>&1 | tee logs/bew.log
+
+# Windows editor (release debug) 64 bit
+$podman run -v ${project_root}:/root/project -w /root/project pandemonium-windows:${img_version} scons tools=yes target=release_debug debug_symbols=no platform=windows bits=64 -j4 . 2>&1 | tee logs/bew.log
 rm -f modules/modules_enabled.gen.h
-#$podman run -v ${project_root}:/root/project -w /root/project pandemonium-windows:${img_version} scons tools=yes target=debug custom_modules_shared=no debug_symbols=no platform=windows -j4 . 2>&1 | tee logs/bewd.log
+# Windows editor (release debug) 32 bit
+$podman run -v ${project_root}:/root/project -w /root/project pandemonium-windows:${img_version} scons tools=yes target=release_debug debug_symbols=no platform=windows bits=32 -j4 . 2>&1 | tee logs/bew.log
 rm -f modules/modules_enabled.gen.h
 
 # Windows templates 64 bit
@@ -34,10 +36,11 @@ rm -f modules/modules_enabled.gen.h
 $podman run -v ${project_root}:/root/project -w /root/project pandemonium-windows:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=windows bits=32 -j4 . 2>&1 | tee logs/bwr.log
 rm -f modules/modules_enabled.gen.h
 
-# Linux editor
-$podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 -j4 . 2>&1 | tee logs/bel.log
+# Linux editor 64 bit
+$podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=64 -j4 . 2>&1 | tee logs/bel.log
 rm -f modules/modules_enabled.gen.h
-#$podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=yes target=debug custom_modules_shared=no debug_symbols=no platform=x11 -j4 . 2>&1 | tee logs/beld.log
+# Linux editor 32 bit
+$podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=32 -j4 . 2>&1 | tee logs/bel.log
 rm -f modules/modules_enabled.gen.h
 
 # Linux templates 64 bit
@@ -50,6 +53,16 @@ rm -f modules/modules_enabled.gen.h
 $podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=32 -j4 . 2>&1 | tee logs/bl.log
 rm -f modules/modules_enabled.gen.h
 $podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 bits=32 -j4 . 2>&1 | tee logs/blr.log
+rm -f modules/modules_enabled.gen.h
+
+# Linux headless (editor) 64bit
+$podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=64 -j4 . 2>&1 | tee logs/bl.log
+rm -f modules/modules_enabled.gen.h
+
+# Linux server (templates) 64bit
+$podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=64 -j4 . 2>&1 | tee logs/bl.log
+rm -f modules/modules_enabled.gen.h
+$podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 bits=64 -j4 . 2>&1 | tee logs/blr.log
 rm -f modules/modules_enabled.gen.h
 
 # Javascript editor
@@ -145,6 +158,7 @@ files=(
   "pandemonium.windows.opt.debug.32.exe"
 
   "pandemonium.windows.opt.tools.64.exe"
+  "pandemonium.windows.opt.tools.32.exe"
 
   # Linux
   "pandemonium.x11.opt.64"
@@ -154,6 +168,15 @@ files=(
   "pandemonium.x11.opt.debug.32"
 
   "pandemonium.x11.opt.tools.64"
+  "pandemonium.x11.opt.tools.32"
+
+  # Server (Linux) - template
+  "pandemonium.server.opt.64"
+  "pandemonium.server.opt.debug.64"
+
+  # Headless (Linux) - editor
+
+  "pandemonium.server.opt.tools.64"
 
   # JS
   "pandemonium.javascript.opt.zip"
@@ -169,6 +192,7 @@ files=(
   "android_debug.apk"
   "android_release.apk"
   "android_editor.apk"
+  "pandemonium-lib.release.aar"
 
   # OSX
   "pandemonium.osx.opt.arm64"
