@@ -40,8 +40,8 @@ rm -f modules/modules_enabled.gen.h
 $podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=64 -j4 . 2>&1 | tee logs/linux_ed_64.log
 rm -f modules/modules_enabled.gen.h
 # Linux editor 32 bit
-$podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=32 -j4 . 2>&1 | tee logs/linux_ed_32.log
-rm -f modules/modules_enabled.gen.h
+#$podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=32 -j4 . 2>&1 | tee logs/linux_ed_32.log
+#rm -f modules/modules_enabled.gen.h
 
 # Linux templates 64 bit
 $podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=64 -j4 . 2>&1 | tee logs/linux_template_rd_64.log
@@ -50,10 +50,10 @@ $podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:
 rm -f modules/modules_enabled.gen.h
 
 # Linux templates 32 bit
-$podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=32 -j4 . 2>&1 | tee logs/linux_template_rd_32.log
-rm -f modules/modules_enabled.gen.h
-$podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 bits=32 -j4 . 2>&1 | tee logs/linux_template_r_32.log
-rm -f modules/modules_enabled.gen.h
+#$podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=32 -j4 . 2>&1 | tee logs/linux_template_rd_32.log
+#rm -f modules/modules_enabled.gen.h
+#$podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 bits=32 -j4 . 2>&1 | tee logs/linux_template_r_32.log
+#rm -f modules/modules_enabled.gen.h
 
 # Linux headless (editor) 64bit
 $podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=server bits=64 -j4 . 2>&1 | tee logs/headless.log

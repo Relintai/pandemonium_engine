@@ -17,6 +17,8 @@ export podman_build="$podman build --build-arg img_version=${img_version}"
 
 $podman build -v ${files_root}:/root/files -t pandemonium-fedora:${img_version} -f Dockerfile.base . 2>&1 | tee logs/base.log
 $podman_build -t pandemonium-linux:${img_version} -f Dockerfile.linux . 2>&1 | tee logs/linux.log
+#Todo, fedora has some issues installing libstdc++;.i686 right now
+#$podman_build -t pandemonium-linux32:${img_version} -f Dockerfile.linux32 . 2>&1 | tee logs/linux32.log
 $podman_build -t pandemonium-windows:${img_version} -f Dockerfile.windows --ulimit nofile=65536 . 2>&1 | tee logs/windows.log
 $podman_build -t pandemonium-javascript:${img_version} -f Dockerfile.javascript . 2>&1 | tee logs/javascript.log
 $podman_build -t pandemonium-android:${img_version} -f Dockerfile.android . 2>&1 | tee logs/android.log
