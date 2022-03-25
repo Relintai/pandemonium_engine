@@ -40,17 +40,17 @@ rm -f modules/modules_enabled.gen.h
 $podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=64 -j4 . 2>&1 | tee logs/linux_ed_64.log
 rm -f modules/modules_enabled.gen.h
 # Linux editor 32 bit
-$podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=32 -j4 . 2>&1 | tee logs/linux_ed_64.log
+$podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=32 -j4 . 2>&1 | tee logs/linux_ed_32.log
 rm -f modules/modules_enabled.gen.h
 
 # Linux templates 64 bit
 $podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=64 -j4 . 2>&1 | tee logs/linux_template_rd_64.log
 rm -f modules/modules_enabled.gen.h
-$podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 bits=64 -j4 . 2>&1 | tee logs/linux_template_r_32.log
+$podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 bits=64 -j4 . 2>&1 | tee logs/linux_template_r_64.log
 rm -f modules/modules_enabled.gen.h
 
 # Linux templates 32 bit
-$podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=32 -j4 . 2>&1 | tee logs/linux_template_rd_64.log
+$podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 bits=32 -j4 . 2>&1 | tee logs/linux_template_rd_32.log
 rm -f modules/modules_enabled.gen.h
 $podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 bits=32 -j4 . 2>&1 | tee logs/linux_template_r_32.log
 rm -f modules/modules_enabled.gen.h
@@ -171,12 +171,12 @@ files=(
   "pandemonium.x11.opt.tools.32"
 
   # Server (Linux) - template
-  "pandemonium.server.opt.64"
-  "pandemonium.server.opt.debug.64"
+  "pandemonium_server.opt.64"
+  "pandemonium_server.opt.debug.64"
 
   # Headless (Linux) - editor
 
-  "pandemonium.server.opt.tools.64"
+  "pandemonium_server.opt.tools.64"
 
   # JS
   "pandemonium.javascript.opt.zip"
