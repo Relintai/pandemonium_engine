@@ -1203,11 +1203,6 @@
 			- During pause, picking only considers collision objects immune to pause, sending input events and enter/exit callbacks to them as expected.
 			If disabled, the legacy behavior is used, which consists in queuing the picking input events during pause (so nodes won't get them) and flushing that queue on resume, against the state of the 2D/3D world at that point.
 		</member>
-		<member name="physics/common/physics_ticks_per_second" type="int" setter="" getter="" default="60">
-			The number of fixed iterations per second. This controls how often physics simulation and [method Node._physics_process] methods are run. See also [member debug/settings/fps/force_fps].
-			[b]Note:[/b] This property is only read when the project starts. To change the physics FPS at runtime, set [member Engine.physics_ticks_per_second] instead.
-			[b]Note:[/b] Only 8 physics ticks may be simulated per rendered frame at most. If more than 8 physics ticks have to be simulated per rendered frame to keep up with rendering, the game will appear to slow down (even if [code]delta[/code] is used consistently in physics calculations). Therefore, it is recommended not to increase [member physics/common/physics_ticks_per_second] above 240. Otherwise, the game will slow down when the rendering framerate goes below 30 FPS.
-		</member>
 		<member name="physics/common/physics_interpolation" type="bool" setter="" getter="" default="false">
 			If [code]true[/code], the renderer will interpolate the transforms of physics objects between the last two transforms, such that smooth motion is seen when physics ticks do not coincide with rendered frames.
 			[b]Note:[/b] When moving objects to new positions (rather than the usual physics motion) you may want to temporarily turn off interpolation to prevent a visible glitch. You can do this using the [method Node.reset_physics_interpolation] function.
@@ -1217,6 +1212,11 @@
 			[b]Note:[/b] For best results, when using a custom physics interpolation solution, the physics jitter fix should be disabled by setting [member physics/common/physics_jitter_fix] to [code]0[/code].
 			[b]Note:[/b] Jitter fix is automatically disabled at runtime when [member physics/common/physics_interpolation] is enabled.
 			[b]Note:[/b] This property is only read when the project starts. To change the value at runtime, set [member Engine.physics_jitter_fix] instead.
+		</member>
+		<member name="physics/common/physics_ticks_per_second" type="int" setter="" getter="" default="60">
+			The number of fixed iterations per second. This controls how often physics simulation and [method Node._physics_process] methods are run. See also [member debug/settings/fps/force_fps].
+			[b]Note:[/b] This property is only read when the project starts. To change the physics FPS at runtime, set [member Engine.physics_ticks_per_second] instead.
+			[b]Note:[/b] Only 8 physics ticks may be simulated per rendered frame at most. If more than 8 physics ticks have to be simulated per rendered frame to keep up with rendering, the game will appear to slow down (even if [code]delta[/code] is used consistently in physics calculations). Therefore, it is recommended not to increase [member physics/common/physics_ticks_per_second] above 240. Otherwise, the game will slow down when the rendering framerate goes below 30 FPS.
 		</member>
 		<member name="props/background_color" type="Color" setter="" getter="" default="Color( 0, 0, 0, 1 )">
 		</member>
