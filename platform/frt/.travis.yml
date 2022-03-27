@@ -1,0 +1,20 @@
+dist: trusty
+sudo: false
+language: cpp
+os:
+  - linux
+addons:
+  apt:
+    packages:
+      - build-essential
+      - scons
+      - pkg-config
+      - libx11-dev
+      - libgles2-mesa-dev
+      - libasound2-dev
+      - libfreetype6-dev
+      - libudev-dev
+      - libpng12-dev
+      - zlib1g-dev
+script:
+  - make ci

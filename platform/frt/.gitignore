@@ -1,0 +1,8 @@
+*.o
+*.swp
+*.pyc
+*.bin
+a.out
+logo.h
+*.gen.*
+private/
