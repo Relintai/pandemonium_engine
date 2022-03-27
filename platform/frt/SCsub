@@ -21,27 +21,18 @@ env.Append(BUILDERS={'DLCPP': env.Builder(action=procdl.build_cc_action, suffix=
 for dl in Glob('dl/*.dl'):
 	env.DLH(str(dl))
 	env.DLCPP(str(dl))
-for libname in ['gles2', 'gles3']:
-	env.Depends('platform_config.h', 'dl/' + libname + '.gen.h')
+
+env.Depends('platform_config.h', 'dl/gles2.gen.h')
+env.Depends('platform_config.h', 'dl/gles2.gen.cc')
 
 frt_env = env.Clone()
 frt_env.ParseConfig(env['FRT_PKG_CONFIG'] + ' sdl2 --cflags --libs')
 
-common_sources = [ 'frt_exe.cc', 'frt.cc' ]
-
-import version
-if version.major == 2:
-	version_sources = ['frt_godot2.cc', 'dl/gles2.gen.cc']
-elif version.major == 3:
-	version_sources = ['frt_godot3.cc', 'dl/gles2.gen.cc', 'dl/gles3.gen.cc']
+common_sources = [ 'frt_exe.cc', 'frt.cc', 'frt_godot3.cc', 'dl/gles2.gen.cc' ]
 
 std = env['frt_std']
-if std == 'auto':
-	std = {
-		2: 'c++98',
-		3: 'c++14',
-	}[version.major]
-if std != 'no':
-	frt_env.Append(CCFLAGS=['-std=' + std])
 
-prog = frt_env.add_program('#bin/godot', common_sources + version_sources)
+if std != 'no':
+	frt_env.Append(CCFLAGS=['-std=c++14'])
+
+prog = frt_env.add_program('#bin/pandemonium', common_sources)
