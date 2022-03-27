@@ -1,0 +1,5 @@
+FROM crossbuild:base
+RUN dpkg --add-architecture armhf && apt-get update && apt-get install -y -q \
+ crossbuild-essential-armhf
+RUN apt-get install -y -q \
+ libstdc++-8-dev:armhf libsdl2-dev:armhf libgbm-dev:armhf libsamplerate0-dev:armhf

@@ -1,0 +1,7 @@
+https://github.com/efornara/crossbuild - 0e6be47aa48d4f1dbd47410d64027b67ac091f38
+
+patreon: efornaralabs
+
+Docker files to cross-compile SDL2-based projects for single board computers.
+
+Very permissive license (http://unlicense.org/).

@@ -1,0 +1,31 @@
+#! /bin/sh
+set -e
+
+script=$(readlink -f "$0")
+script_path=$(dirname "$script")
+. $script_path/detect
+
+if [ -z "$SDL2_SRC" ] ; then
+	echo "SDL2_SRC not set"
+	exit 1
+fi
+toplevel=`git rev-parse --show-toplevel`
+obj="$toplevel/build/obj/$tag-sdl2"
+
+mkdir -p $obj
+cd $obj
+
+if [ ! -f $obj/Makefile -o "x$1" = "xconfig" ] ; then
+	export CFLAGS="$archflags"
+	export CXXFLAGS="$archflags"
+	"$SDL2_SRC/configure" \
+	 --prefix="$toplevel/build/bin/$tag-sdl2" \
+	 --host=$host \
+	 --disable-render \
+	 --enable-video-kmsdrm \
+	 --disable-video-vulkan \
+	#
+fi
+
+nice make -j 2
+make install

@@ -1,0 +1,48 @@
+# Detect Build Environment
+
+#
+# Example of platform override:
+#
+#    platform=arm8 ./build_hello
+#
+
+if [ -z "$platform" ] ; then
+	if [ -x /usr/bin/arm-linux-gnueabihf-gcc ] ; then
+		if [ -x /usr/bin/x86_64-linux-gnu-gcc ] ; then
+			platform=arm7
+		else
+			# if not cross-compiling on x86_64, assume raspbian
+			platform=arm6
+		fi
+	elif [ -x /usr/bin/aarch64-linux-gnu-gcc ] ; then
+		platform=arm8
+	else
+		platform=pc
+	fi
+fi
+
+if [ "$platform" = arm6 ] ; then
+	host=arm-linux-gnueabihf
+	tag=linux-arm32v6
+	archflags="-march=armv6 -mfpu=vfp -mfloat-abi=hard"
+elif [ "$platform" = arm7 ] ; then
+	host=arm-linux-gnueabihf
+	tag=linux-arm32v7
+	archflags="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard"
+elif [ "$platform" = arm8 ] ; then
+	host=aarch64-linux-gnu
+	tag=linux-arm64v8
+	archflags="-march=armv8-a"
+elif [ "$platform" = pc ] ; then
+	host=x86_64-linux-gnu
+	tag=linux-x86_64
+	archflags=""
+else
+	echo "detect: unknown platform: '$platform'"
+	exit 1
+fi
+
+echo "detect:"
+echo "  host: $host"
+echo "  tag: $tag"
+echo "  archflags: $archflags"

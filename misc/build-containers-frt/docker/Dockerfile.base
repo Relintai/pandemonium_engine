@@ -1,0 +1,10 @@
+FROM debian:buster-backports
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && apt-get upgrade -y && \
+apt-get install --no-install-recommends -y -q \
+ git-core vim-nox wget less nvi tmux lynx
+RUN apt-get install -y -q \
+ build-essential clang llvm lld python3-pip
+RUN apt-get install -y -q \
+ -t buster-backports cmake ninja-build
+RUN python3 -m pip install scons meson

@@ -1,0 +1,11 @@
+FROM debian:bullseye
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && apt-get upgrade -y && \
+apt-get install --no-install-recommends -y -q \
+ git-core vim-nox wget less nvi tmux lynx
+RUN apt-get install -y -q \
+ scons cmake ninja-build
+RUN apt-get install -y -q \
+ unzip curl openjdk-11-jdk-headless
+RUN apt-get install -y -q \
+ python3-protobuf

@@ -1,0 +1,4 @@
+*.o
+*.bin
+build/
+.clang-format

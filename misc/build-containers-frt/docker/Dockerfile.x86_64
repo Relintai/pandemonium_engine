@@ -1,0 +1,3 @@
+FROM crossbuild:base
+RUN apt-get install -y -q \
+ libstdc++-8-dev libsdl2-dev libgbm-dev libsamplerate0-dev
