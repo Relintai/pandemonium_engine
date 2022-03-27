@@ -86,7 +86,7 @@ def configure_target(env):
 		env.Append(CCFLAGS=['-g2'])
 
 def configure_misc(env):
-	env.Append(CPPPATH=['#platform/frt'])
+	env.Append(CPPPATH=['#platform/frt_sdl'])
 	env.Append(CPPFLAGS=['-DUNIX_ENABLED', '-DGLES2_ENABLED', '-DGLES_ENABLED', '-DJOYDEV_ENABLED'])
 	env.Append(CPPFLAGS=['-DFRT_ENABLED'])
 	env.Append(CFLAGS=['-std=gnu11']) # for libwebp (maybe more in the future)
@@ -108,7 +108,7 @@ def configure(env):
 	configure_misc(env)
 
 def get_name():
-	return "FRT"
+	return "FRT_SDL"
 
 def is_active():
 	return True
