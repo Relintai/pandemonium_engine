@@ -26,7 +26,7 @@
 #ifndef FRT_H
 #define FRT_H
 
-#define FRT_WINDOW_TITLE "Godot / FRT"
+#define FRT_WINDOW_TITLE "Pandemonium / FRT"
 #define FRT_VERSION "1.1.0"
 
 #include <stdint.h>
@@ -238,8 +238,7 @@ struct InputModifierState {
 #ifdef FRT_TEST
 #define FRT_GLES_VERSION 2
 #else
-#include "core/version.h"
-#define FRT_GLES_VERSION VERSION_MAJOR
+#define FRT_GLES_VERSION 2
 #endif // FRT_TEST
 
 #endif // FRT_H

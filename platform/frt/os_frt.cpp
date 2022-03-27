@@ -47,146 +47,11 @@
 #include "core/print_string.h"
 
 #define VIDEO_DRIVER_GLES2 0
-#define VIDEO_DRIVER_GLES3 1
-
-#if VERSION_MAJOR == 2
-
 #define VIDEO_DRIVER_COUNT 1
-#include "platform/x11/joystick_linux.h"
-#include "servers/visual/visual_server_wrap_mt.h"
-#include "servers/audio/audio_server_sw.h"
-#include "servers/audio/sample_manager_sw.h"
-#include "servers/spatial_sound/spatial_sound_server_sw.h"
-#include "servers/spatial_sound_2d/spatial_sound_2d_server_sw.h"
-#include "servers/physics_server.h"
-#include "servers/physics/physics_server_sw.h"
-#include "servers/physics_2d/physics_2d_server_sw.h"
-#include "servers/physics_2d/physics_2d_server_wrap_mt.h"
-#include "drivers/gles2/rasterizer_gles2.h"
 
-static int event_id = 0;
-
-class InputModifierStateSetter {
-private:
-	InputModifierState &mod;
-
-public:
-	InputModifierStateSetter(InputModifierState &m)
-		: mod(m) {}
-	void set_shift(bool v) { mod.shift = v; }
-	void set_control(bool v) { mod.control = v; }
-	void set_alt(bool v) { mod.alt = v; }
-	void set_metakey(bool v) { mod.meta = v; }
-};
-
-class InputEventKeySetter : public InputModifierStateSetter {
-private:
-	InputEvent &event;
-
-public:
-	InputEventKeySetter(InputEvent &ev)
-		: InputModifierStateSetter(ev.key.mod), event(ev) {
-		event.type = InputEvent::KEY;
-		event.device = 0;
-	}
-	void set_pressed(bool v) { event.key.pressed = v; }
-	void set_scancode(uint32_t v) { event.key.scancode = v; }
-	void set_unicode(uint32_t v) { event.key.unicode = v; }
-	void set_echo(bool v) { event.key.echo = v; }
-};
-
-class InputEventMouseMotionSetter : public InputModifierStateSetter {
-private:
-	InputEvent &event;
-
-public:
-	InputEventMouseMotionSetter(InputEvent &ev)
-		: InputModifierStateSetter(ev.mouse_motion.mod), event(ev) {
-		event.type = InputEvent::MOUSE_MOTION;
-		event.device = 0;
-	}
-	void set_button_mask(int v) { event.mouse_motion.button_mask = v; }
-	void set_position(const Vector2 &v) {
-		event.mouse_motion.x = v.x;
-		event.mouse_motion.y = v.y;
-	}
-	void set_global_position(const Vector2 &v) {
-		event.mouse_motion.global_x = v.x;
-		event.mouse_motion.global_y = v.y;
-	}
-	void set_speed(const Vector2 &v) {
-		event.mouse_motion.speed_x = v.x;
-		event.mouse_motion.speed_y = v.y;
-	}
-	void set_relative(const Vector2 &v) {
-		event.mouse_motion.relative_x = v.x;
-		event.mouse_motion.relative_y = v.y;
-	}
-};
-
-class InputEventMouseButtonSetter : public InputModifierStateSetter {
-private:
-	InputEvent &event;
-
-public:
-	InputEventMouseButtonSetter(InputEvent &ev)
-		: InputModifierStateSetter(ev.mouse_button.mod), event(ev) {
-		event.type = InputEvent::MOUSE_BUTTON;
-		event.device = 0;
-	}
-	void set_button_mask(int v) { event.mouse_button.button_mask = v; }
-	void set_position(const Vector2 &v) {
-		event.mouse_button.x = v.x;
-		event.mouse_button.y = v.y;
-	}
-	void set_global_position(const Vector2 &v) {
-		event.mouse_button.global_x = v.x;
-		event.mouse_button.global_y = v.y;
-	}
-	void set_pressed(bool v) { event.mouse_button.pressed = v; }
-	void set_button_index(int v) { event.mouse_button.button_index = v; }
-	void set_doubleclick(bool v) { event.mouse_button.doubleclick = v; }
-};
-
-class InputModifierRef {
-private:
-	InputModifierStateSetter setter;
-
-public:
-	InputModifierRef(InputModifierStateSetter &s)
-		: setter(s) {}
-	InputModifierStateSetter *operator->() { return &setter; }
-};
-
-template <typename T>
-class InputEventRef {
-private:
-	InputEvent event;
-	T setter;
-	InputModifierRef mod;
-
-public:
-	InputEventRef()
-		: setter(event), mod(setter) { event.ID = ++event_id; };
-	void instance() {}
-	operator InputEvent() { return event; }
-	operator InputModifierRef() { return mod; }
-	T *operator->() { return &setter; }
-};
-
-#define INPUT_MODIFIER_REF InputModifierRef
-#define INPUT_EVENT_REF(t) InputEventRef<t##Setter>
-
-#include "core/globals.h"
-#define PROJECT_SETTINGS \
-	Globals *project_settings = Globals::get_singleton();
-
-#elif VERSION_MAJOR == 3
-
-#define VIDEO_DRIVER_COUNT 2
 #include "platform/x11/joypad_linux.h"
-#include "drivers/gles3/rasterizer_gles3.h"
-#define FRT_DL_SKIP
+
+//#define FRT_DL_SKIP
 #include "drivers/gles2/rasterizer_gles2.h"
 typedef AudioDriverManager AudioDriverManagerSW;
 typedef AudioDriver AudioDriverSW;
@@ -202,10 +67,6 @@ typedef AudioDriver AudioDriverSW;
 #include "core/project_settings.h"
 #define PROJECT_SETTINGS \
 	ProjectSettings *project_settings = ProjectSettings::get_singleton();
-
-#else
-#error "unhandled godot version"
-#endif
 
 #include "frt.h"
 #include "bits/mouse_virtual.h"
@@ -290,15 +151,6 @@ private:
 	MouseMode mouse_mode;
 	int mouse_state;
 	bool grab;
-#if VERSION_MAJOR == 2
-	PhysicsServer *physics_server;
-	Physics2DServer *physics_2d_server;
-	Rasterizer *rasterizer;
-	AudioServerSW *audio_server;
-	SampleManagerMallocSW *sample_manager;
-	SpatialSoundServerSW *spatial_sound_server;
-	SpatialSound2DServerSW *spatial_sound_2d_server;
-#endif
 	int event_id;
 	InputDefault *input;
 #ifdef JOYDEV_ENABLED
@@ -311,10 +163,7 @@ public:
 	int get_video_driver_count() const { return VIDEO_DRIVER_COUNT; }
 	int get_current_video_driver() const { return current_video_driver; }
 	const char *get_video_driver_name(int driver) const {
-		if (driver == VIDEO_DRIVER_GLES3)
-			return "GLES3";
-		else
-			return "GLES2";
+		return "GLES2";
 	}
 	OS::VideoMode get_default_video_mode() const {
 		return OS::VideoMode(screen_size.x, screen_size.y, true, false, true);
@@ -328,11 +177,9 @@ public:
 		return driver_->get_name();
 	}
 	bool _check_internal_feature_support(const String &feature) {
-		if (current_video_driver == VIDEO_DRIVER_GLES3 && feature == "etc2")
-			return true;
 		return feature == "pc" || feature == "etc";
 	}
-#if VERSION_MAJOR >= 3
+
 	String get_config_path() const {
 		if (has_environment("XDG_CONFIG_HOME"))
 			return get_environment("XDG_CONFIG_HOME");
@@ -354,7 +201,7 @@ public:
 			return get_environment("HOME").plus_file(".cache");
 		return get_config_path();
 	}
-#endif
+
 	void extract_resource_fatal(const char *msg) {
 		fatal("failed extracting resource '%s': %s.",
 			   extract_resource_name, msg);
@@ -428,39 +275,24 @@ public:
 	bool exit_on_shiftenter() {
 		return exit_on_shiftenter_param->value.u.b;
 	}
-#if VERSION_MAJOR == 2
-	void
-#else
-	Error
-#endif
-	initialize(const VideoMode &desired, int video_driver, int audio_driver) {
+
+	Error initialize(const VideoMode &desired, int video_driver, int audio_driver) {
 		get_project_frt_params();
 		extract_resource_if_requested();
 		args = OS::get_singleton()->get_cmdline_args();
 		current_videomode = desired;
 		main_loop = 0;
 		Vec2 view(current_videomode.width, current_videomode.height);
-		int gl_version = video_driver == VIDEO_DRIVER_GLES3 ? 3 : 2;
+		int gl_version = video_driver == 2;
 		context_gl = env->video->create_the_gl_context(gl_version, view);
 		context_gl->initialize();
-#if VERSION_MAJOR == 2
-		rasterizer = memnew(RasterizerGLES2);
-		visual_server = memnew(VisualServerRaster(rasterizer));
-		if (get_render_thread_mode() != RENDER_THREAD_UNSAFE)
-			visual_server = memnew(VisualServerWrapMT(
-					visual_server, get_render_thread_mode() == RENDER_SEPARATE_THREAD));
-#else
-		if (video_driver == VIDEO_DRIVER_GLES3) {
-			RasterizerGLES3::register_config();
-			RasterizerGLES3::make_current();
-			current_video_driver = VIDEO_DRIVER_GLES3;
-		} else {
-			RasterizerGLES2::register_config();
-			RasterizerGLES2::make_current();
-			current_video_driver = VIDEO_DRIVER_GLES2;
-		}
+
+		RasterizerGLES2::register_config();
+		RasterizerGLES2::make_current();
+		current_video_driver = VIDEO_DRIVER_GLES2;
+
 		visual_server = memnew(VisualServerRaster);
-#endif
+
 		// TODO: Audio Module
 		AudioDriverManagerSW::get_driver(audio_driver)->set_singleton();
 		audio_driver_index = audio_driver;
@@ -476,65 +308,31 @@ public:
 				}
 			}
 		}
-#if VERSION_MAJOR == 2
-		sample_manager = memnew(SampleManagerMallocSW);
-		audio_server = memnew(AudioServerSW(sample_manager));
-		audio_server->init();
-		spatial_sound_server = memnew(SpatialSoundServerSW);
-		spatial_sound_server->init();
-		spatial_sound_2d_server = memnew(SpatialSound2DServerSW);
-		spatial_sound_2d_server->init();
-		ERR_FAIL_COND(!visual_server);
-#else
+
 		if (!visual_server)
 			return FAILED;
-#endif
+
 		visual_server->init();
-#if VERSION_MAJOR == 2
-		physics_server = memnew(PhysicsServerSW);
-		physics_server->init();
-		physics_2d_server = memnew(Physics2DServerSW);
-		physics_2d_server->init();
-#endif
+
 		input = memnew(InputDefault);
+
 #ifdef JOYDEV_ENABLED
 		joystick = memnew(joystick_linux(input));
 #endif
 		last_click = 0;
-#if VERSION_MAJOR == 2
-		_ensure_data_dir();
-#else
-#if VERSION_MINOR < 3
-		_ensure_user_data_dir();
-#endif
+
 		return OK;
-#endif
 	}
 	void finalize() {
 		if (main_loop)
 			memdelete(main_loop);
 		main_loop = NULL;
-#if VERSION_MAJOR == 2
-		spatial_sound_server->finish();
-		memdelete(spatial_sound_server);
-		spatial_sound_2d_server->finish();
-		memdelete(spatial_sound_2d_server);
-		memdelete(sample_manager);
-		audio_server->finish();
-		memdelete(audio_server);
-		visual_server->finish();
-#else // VERSION_MAJOR == 3
+
 		for (int i = 0; i < get_audio_driver_count(); i++)
 			AudioDriverManager::get_driver(i)->finish();
-#endif
+
 		memdelete(visual_server);
-#if VERSION_MAJOR == 2
-		memdelete(rasterizer);
-		physics_server->finish();
-		memdelete(physics_server);
-		physics_2d_server->finish();
-		memdelete(physics_2d_server);
-#endif
+
 #ifdef JOYDEV_ENABLED
 		memdelete(joystick);
 #endif
@@ -570,17 +368,14 @@ public:
 		input->set_main_loop(main_loop);
 	}
 	bool can_draw() const { return true; };
-	String get_name()
-#if (VERSION_MAJOR == 3) && (VERSION_MINOR >= 2)
-	const
-#endif
-	{ return "FRT"; }
+	String get_name() const { return "FRT"; }
 	void move_window_to_foreground() {}
 	void set_cursor_shape(CursorShape shape) {}
 	void set_custom_mouse_cursor(const RES&, OS::CursorShape, const Vector2&) {}
 	void release_rendering_thread() { context_gl->release_current(); }
 	void make_rendering_thread() { context_gl->make_current(); }
 	void swap_buffers() { context_gl->swap_buffers(); }
+
 	uint32_t unicode_fallback(int gd_code, bool pressed,
 							  const InputModifierState &st) {
 		if (st.alt || st.control || st.meta || !pressed)
@@ -591,6 +386,7 @@ public:
 			return gd_code;
 		return 0;
 	}
+
 	void get_key_modifier_state(INPUT_MODIFIER_REF mod,
 								InputModifierState *st = 0) {
 		InputModifierState state;
@@ -609,6 +405,7 @@ public:
 		if (st)
 			*st = state;
 	}
+
 	void process_keyboard_event(int key, bool pressed, uint32_t unicode, bool echo) {
 		INPUT_EVENT_REF(InputEventKey) k;
 		k.instance();
@@ -759,11 +556,7 @@ public:
 		while (app->is_running()) {
 			app->dispatch_events();
 #ifdef JOYDEV_ENABLED
-#if VERSION_MAJOR == 2
-			event_id = joystick->process_joysticks(event_id);
-#else
 			joystick->process_joypads();
-#endif
 #endif
 			if (Main::iteration() == true)
 				break;

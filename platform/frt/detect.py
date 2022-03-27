@@ -82,6 +82,7 @@ def configure(env):
 			env['CC'] = 'clang'
 			env['CXX'] = 'clang++'
 			env['LD'] = 'clang++'
+
 		env.Append(CPPFLAGS=['-DTYPED_METHOD_BIND'])
 		env.extra_suffix += '.llvm'
 
@@ -94,6 +95,7 @@ def configure(env):
 		else:
 			env.Append(CCFLAGS=['-flto'])
 			env.Append(LINKFLAGS=['-flto'])
+
 		env.extra_suffix += '.lto'
 
 	if env['frt_cross'] != 'no':
@@ -154,15 +156,6 @@ def configure(env):
 	else:
 		print('libudev development libraries not found, disabling udev support')
 
-	if version.major == 2:
-		if version.minor == 1 and version.patch >=4:
-			gen_suffix = 'glsl.gen.h'
-		else:
-			gen_suffix = 'glsl.h'
-		env.Append(BUILDERS={'GLSL120': env.Builder(action=methods.build_legacygl_headers, suffix=gen_suffix, src_suffix='.glsl')})
-		env.Append(BUILDERS={'GLSL': env.Builder(action=methods.build_glsl_headers, suffix=gen_suffix, src_suffix='.glsl')})
-		env.Append(BUILDERS={'GLSL120GLES': env.Builder(action=methods.build_gles2_headers, suffix=gen_suffix, src_suffix='.glsl')})
-
 	if env['target'] == 'release':
 		env.Append(CCFLAGS=['-O3', '-fomit-frame-pointer'])
 	elif env['target'] == 'release_debug':
@@ -192,16 +185,15 @@ def configure(env):
 	env.Append(FRT_MODULES=['envprobe.cpp'])
 	env.Append(FRT_MODULES=['video_fbdev.cpp', 'keyboard_linux_input.cpp', 'mouse_linux_input.cpp'])
 	env.Append(FRT_MODULES=['video_x11.cpp', 'keyboard_x11.cpp', 'mouse_x11.cpp'])
-	if version.major >= 3:
-		env.Append(FRT_MODULES=['import/key_mapping_x11_3.cpp'])
-	else:
-		env.Append(FRT_MODULES=['import/key_mapping_x11_2.cpp'])
+
+	env.Append(FRT_MODULES=['import/key_mapping_x11_3.cpp'])
+
 	env.Append(FRT_MODULES=['dl/x11.gen.cpp', 'dl/egl.gen.cpp'])
 	if os.path.isfile('/opt/vc/include/bcm_host.h'):
 		env.Append(FRT_MODULES=['video_bcm.cpp', 'dl/bcm.gen.cpp'])
 	if os.path.isfile('/usr/include/gbm.h'):
 		env.Append(FRT_MODULES=['video_kmsdrm.cpp', 'dl/gbm.gen.cpp', 'dl/drm.gen.cpp'])
+
 	env.Append(FRT_MODULES=['dl/gles2.gen.cpp'])
-	if version.major >= 3:
-		env.Append(FRT_MODULES=['dl/gles3.gen.cpp'])
+
 	env.Append(LIBS=['dl'])
