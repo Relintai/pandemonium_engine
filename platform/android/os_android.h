@@ -179,6 +179,8 @@ public:
 	virtual String get_config_path() const;
 	virtual Error execute(const String &p_path, const List<String> &p_arguments, bool p_blocking = true, ProcessID *r_child_id = nullptr, String *r_pipe = nullptr, int *r_exitcode = nullptr, bool read_stderr = false, Mutex *p_pipe_mutex = nullptr, bool p_open_console = false);
 
+	void swap_buffers();
+
 	virtual bool _check_internal_feature_support(const String &p_feature);
 	OS_Android(PandemoniumJavaWrapper *p_pandemonium_java, PandemoniumIOJavaWrapper *p_pandemonium_io_java, bool p_use_apk_expansion);
 	~OS_Android();

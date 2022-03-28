@@ -81,6 +81,7 @@ PandemoniumJavaWrapper::PandemoniumJavaWrapper(JNIEnv *p_env, jobject p_activity
 	_on_pandemonium_setup_completed = p_env->GetMethodID(pandemonium_class, "onPandemoniumSetupCompleted", "()V");
 	_on_pandemonium_main_loop_started = p_env->GetMethodID(pandemonium_class, "onPandemoniumMainLoopStarted", "()V");
 	_create_new_pandemonium_instance = p_env->GetMethodID(pandemonium_class, "createNewPandemoniumInstance", "([Ljava/lang/String;)V");
+	_request_framebuffer_swap = p_env->GetMethodID(pandemonium_class, "requestFramebufferSwap", "()V");
 
 	// get some Activity method pointers...
 	_get_class_loader = p_env->GetMethodID(activity_class, "getClassLoader", "()Ljava/lang/ClassLoader;");
@@ -381,5 +382,14 @@ void PandemoniumJavaWrapper::create_new_pandemonium_instance(List<String> args) 
 			env->SetObjectArrayElement(jargs, i, env->NewStringUTF(args[i].utf8().get_data()));
 		}
 		env->CallVoidMethod(pandemonium_instance, _create_new_pandemonium_instance, jargs);
+	}
+}
+
+void PandemoniumJavaWrapper::request_framebuffer_swap() {
+	if (_request_framebuffer_swap) {
+		JNIEnv *env = get_jni_env();
+		ERR_FAIL_COND(env == nullptr);
+
+		env->CallVoidMethod(pandemonium_instance, _request_framebuffer_swap);
 	}
 }

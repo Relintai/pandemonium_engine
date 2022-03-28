@@ -31,8 +31,7 @@
 package net.relintai.pandemonium.pandemonium.config;
 
 import net.relintai.pandemonium.pandemonium.utils.GLUtils;
-
-import android.opengl.GLSurfaceView;
+import net.relintai.pandemonium.pandemonium.gl.PandemoniumGLSurfaceView;
 
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
@@ -41,7 +40,7 @@ import javax.microedition.khronos.egl.EGLDisplay;
 /**
  * Used to select the egl config for pancake games.
  */
-public class RegularConfigChooser implements GLSurfaceView.EGLConfigChooser {
+public class RegularConfigChooser implements PandemoniumGLSurfaceView.EGLConfigChooser {
 	private static final String TAG = RegularConfigChooser.class.getSimpleName();
 
 	private int[] mValue = new int[1];

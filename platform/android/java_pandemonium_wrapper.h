@@ -71,6 +71,7 @@ private:
 	jmethodID _on_pandemonium_main_loop_started = 0;
 	jmethodID _get_class_loader = 0;
 	jmethodID _create_new_pandemonium_instance = 0;
+	jmethodID _request_framebuffer_swap = 0;
 
 public:
 	PandemoniumJavaWrapper(JNIEnv *p_env, jobject p_activity, jobject p_pandemonium_instance);
@@ -108,6 +109,7 @@ public:
 	void vibrate(int p_duration_ms);
 	String get_input_fallback_mapping();
 	void create_new_pandemonium_instance(List<String> args);
+	void request_framebuffer_swap();
 };
 
 #endif /* !JAVA_PANDEMONIUM_WRAPPER_H */

@@ -32,8 +32,8 @@ package net.relintai.pandemonium.pandemonium.config;
 
 import net.relintai.pandemonium.pandemonium.PandemoniumLib;
 import net.relintai.pandemonium.pandemonium.utils.GLUtils;
+import net.relintai.pandemonium.pandemonium.gl.PandemoniumGLSurfaceView;
 
-import android.opengl.GLSurfaceView;
 import android.util.Log;
 
 import javax.microedition.khronos.egl.EGL10;
@@ -44,7 +44,7 @@ import javax.microedition.khronos.egl.EGLDisplay;
 /**
  * Factory used to setup the opengl context for pancake games.
  */
-public class RegularContextFactory implements GLSurfaceView.EGLContextFactory {
+public class RegularContextFactory implements PandemoniumGLSurfaceView.EGLContextFactory {
 	private static final String TAG = RegularContextFactory.class.getSimpleName();
 
 	private static final int _EGL_CONTEXT_FLAGS_KHR = 0x30FC;

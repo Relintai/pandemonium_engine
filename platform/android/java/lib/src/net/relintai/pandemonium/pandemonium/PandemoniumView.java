@@ -30,6 +30,8 @@
 
 package net.relintai.pandemonium.pandemonium;
 
+import net.relintai.pandemonium.pandemonium.gl.PandemoniumGLSurfaceView;
+
 import net.relintai.pandemonium.pandemonium.input.PandemoniumGestureHandler;
 import net.relintai.pandemonium.pandemonium.input.PandemoniumInputHandler;
 import net.relintai.pandemonium.pandemonium.utils.GLUtils;
@@ -40,7 +42,6 @@ import net.relintai.pandemonium.pandemonium.config.RegularFallbackConfigChooser;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PixelFormat;
-import android.opengl.GLSurfaceView;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -67,7 +68,7 @@ import javax.microedition.khronos.egl.EGLContext;
  *   that matches it exactly (with regards to red/green/blue/alpha channels
  *   bit depths). Failure to do so would result in an EGL_BAD_MATCH error.
  */
-public class PandemoniumView extends GLSurfaceView {
+public class PandemoniumView extends PandemoniumGLSurfaceView {
 	private static String TAG = PandemoniumView.class.getSimpleName();
 
 	private final Pandemonium pandemonium;

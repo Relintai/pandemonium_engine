@@ -445,6 +445,14 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 		}
 	}
 
+	/**
+	 * Used by the native code (java_pandemonium_wrapper.h) to swap framebuffers.
+	 */
+	@Keep
+	public void requestFramebufferSwap() {
+        mView.requestFramebufferSwap();
+    }
+
 	public void restart() {
 		runOnUiThread(() -> {
 			if (pandemoniumHost != null) {

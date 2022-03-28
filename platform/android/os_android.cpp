@@ -278,15 +278,7 @@ void OS_Android::set_keep_screen_on(bool p_enabled) {
 }
 
 void OS_Android::set_low_processor_usage_mode(bool p_enabled) {
-#ifdef TOOLS_ENABLED
-	// Disabled as it causes flickers. We also expect the devices running Pandemonium in editor mode to be high end.
-	// The actual reason for this is that android swaps framebuffers by itself after the end of PandemoniumRenderer.onDrawFrame()
-	// However PandemoniumRenderer.onDrawFrame() steps pandemonium's mainloop, which processes input, and then it decides whether to draw frames or not
-	// (if in low processor mode)
-	OS_Unix::set_low_processor_usage_mode(false);
-#else
 	OS_Unix::set_low_processor_usage_mode(p_enabled);
-#endif
 }
 
 Size2 OS_Android::get_window_size() const {
@@ -606,6 +598,10 @@ Error OS_Android::execute(const String &p_path, const List<String> &p_arguments,
 	} else {
 		return OS_Unix::execute(p_path, p_arguments, p_blocking, r_child_id, r_pipe, r_exitcode, read_stderr, p_pipe_mutex, p_open_console);
 	}
+}
+
+void OS_Android::swap_buffers() {
+	pandemonium_java->request_framebuffer_swap();
 }
 
 Error OS_Android::create_instance(const List<String> &p_arguments, ProcessID *r_child_id) {
