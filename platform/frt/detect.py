@@ -176,7 +176,7 @@ def configure(env):
 		env.Append(CCFLAGS=['-march=armv8-a'])
 		env.extra_suffix += '.arm64v8'
 
-	env.Append(CFLAGS=['-std=gnu11']) # for libwebp (maybe more in the future)
+	#env.Append(CFLAGS=['-std=gnu11']) # for libwebp (maybe more in the future)
 	env.Append(CPPFLAGS=['-DFRT_ENABLED', '-DUNIX_ENABLED', '-DGLES2_ENABLED', '-DGLES_ENABLED'])
 	env.Append(LIBS=['pthread'])
 	if env['frt_arch'] == 'arm32v6' and version.major == 3 and version.minor >= 4: # TODO find out exact combination

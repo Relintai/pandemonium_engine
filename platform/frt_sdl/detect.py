@@ -89,7 +89,7 @@ def configure_misc(env):
 	env.Append(CPPPATH=['#platform/frt_sdl'])
 	env.Append(CPPFLAGS=['-DUNIX_ENABLED', '-DGLES2_ENABLED', '-DGLES_ENABLED', '-DJOYDEV_ENABLED'])
 	env.Append(CPPFLAGS=['-DFRT_ENABLED'])
-	env.Append(CFLAGS=['-std=gnu11']) # for libwebp (maybe more in the future)
+	#env.Append(CFLAGS=['-std=gnu11']) # for libwebp (maybe more in the future)
 	env.Append(LIBS=['pthread', 'z', 'dl'])
 	if env['frt_arch'] == 'arm32v6' and version.minor >= 4: # TODO find out exact combination
 		env.Append(LIBS=['atomic'])

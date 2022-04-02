@@ -509,18 +509,6 @@ File extracted from upstream release tarball:
 - `COPYING`
 
 
-## xatlas
-
-- Upstream: https://github.com/jpcy/xatlas
-- Version: git (ec707faeac3b95e6b416076a9509718cce105b6a, 2021)
-- License: MIT
-
-Files extracted from upstream source:
-
-- `source/xatlas/xatlas.{cpp,h}`
-- `LICENSE`
-
-
 ## zlib
 
 - Upstream: http://www.zlib.net
