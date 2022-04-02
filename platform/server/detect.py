@@ -234,7 +234,8 @@ def configure(env):
         if env["use_static_cpp"]:
             env.Append(LINKFLAGS=["-static-libgcc", "-static-libstdc++"])
             if env["use_llvm"] and platform.system() != "FreeBSD":
-                env["LINKCOM"] = env["LINKCOM"] + " -l:libatomic.a"
+                #env["LINKCOM"] = env["LINKCOM"] + " -l:libatomic.a"
+                env["LINKCOM"] = env["LINKCOM"] + " -latomic"
         else:
             if env["use_llvm"] and platform.system() != "FreeBSD":
                 env.Append(LIBS=["atomic"])
