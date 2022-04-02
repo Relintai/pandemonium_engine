@@ -220,22 +220,6 @@ Comment: OggVorbis
 Copyright: 2002-2015, Xiph.org Foundation
 License: BSD-3-clause
 
-Files: ./thirdparty/libvpx/
-Comment: The WebM Project
-Copyright: 2010, The WebM Project authors.
-License: BSD-3-clause
-
-Files: ./thirdparty/libvpx/third_party/android/cpu-features.c
- ./thirdparty/libvpx/third_party/android/cpu-features.h
-Comment: The Android Open Source Project
-Copyright: 2010, The Android Open Source Project
-License: BSD-2-clause
-
-Files: ./thirdparty/libwebp/
-Comment: WebP codec
-Copyright: 2010, Google Inc.
-License: BSD-3-clause
-
 Files: ./thirdparty/mbedtls/
 Comment: Mbed TLS
 Copyright: The Mbed TLS Contributors

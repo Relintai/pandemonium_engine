@@ -178,9 +178,6 @@ def configure(env):
         if any(platform.machine() in s for s in list_of_x86):
             env["x86_libtheora_opt_gcc"] = True
 
-    if not env["builtin_libvpx"]:
-        env.ParseConfig("pkg-config vpx --cflags --libs")
-
     if not env["builtin_libvorbis"]:
         env["builtin_libogg"] = False  # Needed to link against system libvorbis
         env.ParseConfig("pkg-config vorbis vorbisfile --cflags --libs")
@@ -191,9 +188,6 @@ def configure(env):
 
     if not env["builtin_libogg"]:
         env.ParseConfig("pkg-config ogg --cflags --libs")
-
-    if not env["builtin_libwebp"]:
-        env.ParseConfig("pkg-config libwebp --cflags --libs")
 
     if not env["builtin_mbedtls"]:
         # mbedTLS does not provide a pkgconfig config yet. See https://github.com/ARMmbed/mbedtls/issues/228

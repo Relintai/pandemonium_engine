@@ -204,36 +204,6 @@ Files extracted from upstream source:
 - `include/vorbis/*.h` as `vorbis/`
 - `COPYING`
 
-
-## libvpx
-
-- Upstream: https://chromium.googlesource.com/webm/libvpx/
-- Version: 1.6.0 (2016)
-- License: BSD-3-Clause
-
-Files extracted from upstream source:
-
-TODO.
-
-Important: File `libvpx/vpx_dsp/x86/vpx_subpixel_8t_intrin_avx2.c` has
-Godot-made change marked with `// -- PANDEMONIUM --` comments.
-
-The files `libvpx/third_party/android/cpu-features.{c,h}` were copied
-from the Android NDK r18.
-
-
-## libwebp
-
-- Upstream: https://chromium.googlesource.com/webm/libwebp/
-- Version: 1.2.2 (b0a860891dcd4c0c2d7c6149e5cccb6eb881cc21, 2022)
-- License: BSD-3-Clause
-
-Files extracted from upstream source:
-
-- `src/*` except from: `.am`, `.rc` and `.in` files
-- `AUTHORS`, `COPYING`, `PATENTS`
-
-
 ## mbedtls
 
 - Upstream: https://tls.mbed.org/
