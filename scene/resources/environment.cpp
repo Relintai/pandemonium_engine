@@ -150,6 +150,7 @@ float Environment::get_ambient_light_sky_contribution() const {
 void Environment::set_tonemapper(ToneMapper p_tone_mapper) {
 	tone_mapper = p_tone_mapper;
 	VS::get_singleton()->environment_set_tonemap(environment, VS::EnvironmentToneMapper(tone_mapper), tonemap_exposure, tonemap_white, tonemap_auto_exposure, tonemap_auto_exposure_min, tonemap_auto_exposure_max, tonemap_auto_exposure_speed, tonemap_auto_exposure_grey);
+	_change_notify();
 }
 
 Environment::ToneMapper Environment::get_tonemapper() const {
@@ -271,6 +272,12 @@ void Environment::_validate_property(PropertyInfo &property) const {
 
 	if (property.name == "background_canvas_max_layer") {
 		if (bg_mode != BG_CANVAS) {
+			property.usage = PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL;
+		}
+	}
+
+	if (property.name == "tonemap_white") {
+		if (tone_mapper == TONE_MAPPER_LINEAR) {
 			property.usage = PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL;
 		}
 	}
