@@ -1,0 +1,81 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/world_generator/ui/ResourcePropertyList.gd" type="Script" id=1]
+
+[node name="ResourcePropertyList" type="ScrollContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 100, 0 )
+scroll_horizontal_enabled = false
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MainContainer" type="VBoxContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 90.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MainContainer"]
+margin_right = 1024.0
+margin_bottom = 14.0
+text = "Properties"
+align = 1
+valign = 1
+
+[node name="HSeparator" type="HSeparator" parent="MainContainer"]
+margin_top = 18.0
+margin_right = 1024.0
+margin_bottom = 22.0
+
+[node name="Content" type="VBoxContainer" parent="MainContainer"]
+margin_top = 26.0
+margin_right = 1024.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+
+[node name="HSeparator2" type="HSeparator" parent="MainContainer"]
+margin_top = 30.0
+margin_right = 1024.0
+margin_bottom = 34.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer"]
+margin_top = 38.0
+margin_right = 1024.0
+margin_bottom = 62.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MainContainer/HBoxContainer"]
+margin_top = 5.0
+margin_right = 37.0
+margin_bottom = 19.0
+text = "Class "
+valign = 1
+
+[node name="ClassLE" type="LineEdit" parent="MainContainer/HBoxContainer"]
+margin_left = 41.0
+margin_right = 1024.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+editable = false
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainContainer"]
+margin_top = 66.0
+margin_right = 1024.0
+margin_bottom = 90.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MainContainer/HBoxContainer2"]
+margin_top = 5.0
+margin_right = 36.0
+margin_bottom = 19.0
+text = "Script"
+valign = 1
+
+[node name="ScriptLE" type="LineEdit" parent="MainContainer/HBoxContainer2"]
+margin_left = 40.0
+margin_right = 1024.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+editable = false
