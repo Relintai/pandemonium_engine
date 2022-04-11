@@ -1,3 +1,405 @@
+/*
+Copyright (c) 2019-2022 Péter Magyar
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+#include "mdi_ed.h"
+
+void MDIEd::_enter_tree() {
+	/*
+	uv_preview = get_node(uv_preview_path)
+	uv_editor = get_node(uv_editor_path)
+
+	if _plugin && uv_editor:
+		uv_editor.set_plugin(_plugin)
+	*/
+}
+void MDIEd::set_plugin(EditorPlugin *plugin) {
+	/*
+	_plugin = plugin
+
+	if uv_editor:
+		uv_editor.set_plugin(plugin)
+	*/
+}
+void MDIEd::set_mesh_data_resource(Ref<MeshDataResource> a) {
+	/*
+	if uv_preview:
+		uv_preview.set_mesh_data_resource(a)
+
+	if uv_editor:
+		uv_editor.set_mesh_data_resource(a)
+	*/
+}
+void MDIEd::set_mesh_data_instance(MeshDataInstance *a) {
+	/*
+	if uv_preview:
+		uv_preview.set_mesh_data_instance(a)
+
+	if uv_editor:
+		uv_editor.set_mesh_data_instance(a)
+	*/
+}
+void MDIEd::_unhandled_key_input(Ref<InputEventKey> event) {
+	/*
+	if event.echo:
+		return
+
+	if event.alt || event.shift || event.control || event.meta || event.command:
+		return
+
+	if event.scancode == KEY_G:
+		set_edit_mode_translate()
+	elif event.scancode == KEY_H:
+		set_edit_mode_rotate()
+	elif event.scancode == KEY_J:
+		set_edit_mode_scale()
+
+	elif event.scancode == KEY_V:
+		set_axis_x(!get_axis_x())
+	elif event.scancode == KEY_B:
+		set_axis_y(!get_axis_y())
+	elif event.scancode == KEY_N:
+		set_axis_z(!get_axis_z())
+
+	elif event.scancode == KEY_K:
+		set_selection_mode_vertex()
+	elif event.scancode == KEY_L:
+		set_selection_mode_edge()
+	elif event.scancode == KEY_SEMICOLON:
+		set_selection_mode_face()
+
+	*/
+}
+
+//Edit modes
+void MDIEd::set_edit_mode_translate() {
+	/*
+	$VBoxContainer/Actions/Actions/VBoxContainer2/HBoxContainer/Translate.pressed = true
+	*/
+}
+void MDIEd::set_edit_mode_rotate() {
+	/*
+	$VBoxContainer/Actions/Actions/VBoxContainer2/HBoxContainer/Rotate.pressed = true
+	*/
+}
+void MDIEd::set_edit_mode_scale() {
+	/*
+	$VBoxContainer/Actions/Actions/VBoxContainer2/HBoxContainer/Scale.pressed = true
+	*/
+}
+
+void MDIEd::on_edit_mode_translate_toggled(bool on) {
+	/*
+	if on:
+		if _plugin:
+			_plugin.set_translate()
+	*/
+}
+void MDIEd::on_edit_mode_rotate_toggled(bool on) {
+	/*
+	if on:
+		if _plugin:
+			_plugin.set_rotate()
+	*/
+}
+void MDIEd::on_edit_mode_scale_toggled(bool on) {
+	/*
+	if on:
+		if _plugin:
+			_plugin.set_scale()
+	*/
+}
+
+//axis locks
+bool MDIEd::get_axis_x() {
+	/*
+	return $VBoxContainer/Actions/Actions/VBoxContainer2/HBoxContainer2/AxisX.pressed
+	*/
+}
+bool MDIEd::get_axis_y() {
+	/*
+	return $VBoxContainer/Actions/Actions/VBoxContainer2/HBoxContainer2/AxisY.pressed
+	*/
+}
+bool MDIEd::get_axis_z() {
+	/*
+	return $VBoxContainer/Actions/Actions/VBoxContainer2/HBoxContainer2/AxisZ.pressed
+	*/
+}
+void MDIEd::set_axis_x(bool on) {
+	/*
+	$VBoxContainer/Actions/Actions/VBoxContainer2/HBoxContainer2/AxisX.pressed = on
+	*/
+}
+void MDIEd::set_axis_y(bool on) {
+	/*
+	$VBoxContainer/Actions/Actions/VBoxContainer2/HBoxContainer2/AxisY.pressed = on
+	*/
+}
+void MDIEd::set_axis_z(bool on) {
+	/*
+	$VBoxContainer/Actions/Actions/VBoxContainer2/HBoxContainer2/AxisZ.pressed = on
+	*/
+}
+
+void MDIEd::on_axis_x_toggled(bool on) {
+	/*
+	if _plugin:
+		_plugin.set_axis_x(on)
+	*/
+}
+void MDIEd::on_axis_y_toggled(bool on) {
+	/*
+	if _plugin:
+		_plugin.set_axis_y(on)
+	*/
+}
+void MDIEd::on_axis_z_toggled(bool on) {
+	/*
+	if _plugin:
+		_plugin.set_axis_z(on)
+	*/
+}
+
+//selection modes
+void MDIEd::on_selection_mode_vertex_toggled(bool on) {
+	/*
+	if on:
+		if _plugin:
+			_plugin.set_selection_mode_vertex()
+	*/
+}
+void MDIEd::on_selection_mode_edge_toggled(bool on) {
+	/*
+	if on:
+		if _plugin:
+			_plugin.set_selection_mode_edge()
+	*/
+}
+void MDIEd::on_selection_mode_face_toggled(bool on) {
+	/*
+	if on:
+		if _plugin:
+			_plugin.set_selection_mode_face()
+	*/
+}
+
+void MDIEd::set_selection_mode_vertex() {
+	/*
+	$VBoxContainer/Actions/Actions/VBoxContainer2/HBoxContainer3/Vertex.pressed = true
+	*/
+}
+void MDIEd::set_selection_mode_edge() {
+	/*
+	$VBoxContainer/Actions/Actions/VBoxContainer2/HBoxContainer3/Edge.pressed = true
+	*/
+}
+void MDIEd::set_selection_mode_face() {
+	/*
+	$VBoxContainer/Actions/Actions/VBoxContainer2/HBoxContainer3/Face.pressed = true
+	*/
+}
+
+void MDIEd::_on_Extrude_pressed() {
+	/*
+	_plugin.extrude()
+	*/
+}
+void MDIEd::_on_AddBox_pressed() {
+	/*
+	_plugin.add_box()
+	*/
+}
+void MDIEd::_on_UnwrapButton_pressed() {
+	/*
+	_plugin.uv_unwrap()
+	*/
+}
+void MDIEd::_on_add_triangle_pressed() {
+	/*
+	_plugin.add_triangle()
+	*/
+}
+void MDIEd::_on_add_quad_pressed() {
+	/*
+	_plugin.add_quad()
+	*/
+}
+void MDIEd::_on_split_pressed() {
+	/*
+	_plugin.split()
+	*/
+}
+void MDIEd::_on_connect_to_first_selected_pressed() {
+	/*
+	_plugin.connect_to_first_selected()
+	*/
+}
+void MDIEd::_on_connect_to_avg_pressed() {
+	/*
+	_plugin.connect_to_avg()
+	*/
+}
+void MDIEd::_on_connect_to_last_selected_pressed() {
+	/*
+	_plugin.connect_to_last_selected()
+	*/
+}
+void MDIEd::_on_disconnect_pressed() {
+	/*
+	_plugin.disconnect_action()
+	*/
+}
+void MDIEd::_on_add_triangle_at_pressed() {
+	/*
+	_plugin.add_triangle_at()
+	*/
+}
+void MDIEd::_on_add_auad_at_pressed() {
+	/*
+	_plugin.add_quad_at()
+	*/
+}
+void MDIEd::_oncreate_face_pressed() {
+	/*
+	_plugin.create_face()
+	*/
+}
+void MDIEd::_on_delete_pressed() {
+	/*
+	_plugin.delete_selected()
+	*/
+}
+void MDIEd::_on_GenNormals_pressed() {
+	/*
+	_plugin.generate_normals()
+	*/
+}
+void MDIEd::_on_RemDoubles_pressed() {
+	/*
+	_plugin.remove_doubles()
+	*/
+}
+void MDIEd::_on_MergeOptimize_pressed() {
+	/*
+	_plugin.merge_optimize()
+	*/
+}
+void MDIEd::_on_GenTangents_pressed() {
+	/*
+	_plugin.generate_tangents()
+	*/
+}
+void MDIEd::_on_mark_seam_pressed() {
+	/*
+	_plugin.mark_seam()
+	*/
+}
+void MDIEd::_on_unmark_seam_pressed() {
+	/*
+	_plugin.unmark_seam()
+	*/
+}
+void MDIEd::_on_apply_seams_pressed() {
+	/*
+	_plugin.apply_seam()
+	*/
+}
+void MDIEd::_on_uv_edit_pressed() {
+	/*
+	$Popups/UVEditorPopup.popup_centered()
+	*/
+}
+
+void MDIEd::on_pivot_average_toggled(bool on) {
+	/*
+	if on:
+		_plugin.set_pivot_averaged()
+	*/
+}
+void MDIEd::on_pivot_mdi_origin_toggled(bool on) {
+	/*
+	if on:
+		_plugin.set_pivot_mdi_origin()
+	*/
+}
+void MDIEd::on_pivot_world_origin_toggled(bool on) {
+	/*
+	if on:
+		_plugin.set_pivot_world_origin()
+	*/
+}
+void MDIEd::on_visual_indicator_outline_toggled(bool on) {
+	/*
+	_plugin.visual_indicator_outline_set(on)
+	*/
+}
+void MDIEd::on_visual_indicator_seam_toggled(bool on) {
+	/*
+	_plugin.visual_indicator_seam_set(on)
+	*/
+}
+void MDIEd::on_visual_indicator_handle_toggled(bool on) {
+	/*
+	_plugin.visual_indicator_handle_set(on)
+	*/
+}
+void MDIEd::_on_select_all_pressed() {
+	/*
+	_plugin.select_all()
+	*/
+}
+
+void MDIEd::onhandle_selection_type_front_toggled(bool on) {
+	/*
+	if on:
+		_plugin.handle_selection_type_front()
+	*/
+}
+void MDIEd::onhandle_selection_type_back_toggled(bool on) {
+	/*
+	if on:
+		_plugin.handle_selection_type_back()
+	*/
+}
+void MDIEd::onhandle_selection_type_all_toggled(bool on) {
+	/*
+	if on:
+		_plugin.handle_selection_type_all()
+	*/
+}
+
+void MDIEd::_on_clean_mesh_pressed() {
+	/*
+	_plugin.clean_mesh()
+	*/
+}
+void MDIEd::_on_flip_face_pressed() {
+	/*
+	_plugin.flip_selected_faces()
+	*/
+}
+
+MDIEd::MDIEd() {
+	/*
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://addons/mesh_data_resource_editor/MDIEd.gd" type="Script" id=1]
@@ -238,7 +640,7 @@ margin_left = 343.0
 margin_right = 668.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 25, 20 )
-hint_tooltip = "Only select handles that face away 
+hint_tooltip = "Only select handles that face away
 the camera."
 size_flags_horizontal = 3
 toggle_mode = true
@@ -767,3 +1169,13 @@ size_flags_vertical = 3
 [connection signal="pressed" from="VBoxContainer/ScrollContainer/VBoxContainer2/Add/Add/AddBox" to="." method="_on_AddBox_pressed"]
 [connection signal="pressed" from="VBoxContainer/ScrollContainer/VBoxContainer2/Add/Add/AddTriangle" to="." method="_on_add_triangle_pressed"]
 [connection signal="pressed" from="VBoxContainer/ScrollContainer/VBoxContainer2/Add/Add/AddQuad" to="." method="_on_add_quad_pressed"]
+
+
+	*/
+}
+
+MDIEd::~MDIEd() {
+}
+
+void MDIEd::_bind_methods() {
+}
