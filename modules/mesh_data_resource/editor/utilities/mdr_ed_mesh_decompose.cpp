@@ -117,8 +117,8 @@ Array MDREDMeshDecompose::get_handle_edge_to_vertex_map(const Array &arrays) {
 			PoolIntArray::Read r = etm.read();
 
 			bool found = false;
-			for (int i = 0; i < etm.size(); ++i) {
-				if (etm[i] == ei1) {
+			for (int ii = 0; ii < etm.size(); ++ii) {
+				if (etm[ii] == ei1) {
 					found = true;
 					break;
 				}
