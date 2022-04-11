@@ -55,6 +55,9 @@ public:
 	PoolVector3Array _vertices;
 	PoolVector3Array _normals;
 	PoolIntArray _indices;
+
+protected:
+	static void _bind_methods();
 };
 
 #endif
