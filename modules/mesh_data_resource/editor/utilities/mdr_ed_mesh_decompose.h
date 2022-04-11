@@ -33,19 +33,19 @@ class MeshDataResource;
 class MDREDMeshDecompose {
 public:
 	//you can use MeshUtils.merge_mesh_array(arr) to get optimalized handle points. Just get the vertices from it.
-	static Array get_handle_vertex_to_vertex_map(Array arrays, PoolVector3Array handle_points);
+	static Array get_handle_vertex_to_vertex_map(const Array &arrays, const PoolVector3Array &handle_points);
 
 	//returns an array:
 	//index 0 is the handle_points
 	//index 1 is the handle_to_vertex_map
-	static Array get_handle_edge_to_vertex_map(Array arrays);
+	static Array get_handle_edge_to_vertex_map(const Array &arrays);
 
 	//returns an array:
 	//index 0 is the handle_points
 	//index 1 is the handle_to_vertex_map
-	static Array get_handle_face_to_vertex_map(Array arrays);
+	static Array get_handle_face_to_vertex_map(const Array &arrays);
 	static PoolVector3Array calculate_map_midpoints(Array mesh, Array vertex_map);
-	static bool pool_int_arr_contains(PoolIntArray arr, int val);
+	static bool pool_int_arr_contains(const PoolIntArray &arr, const int val);
 	static Array partition_mesh(Ref<MeshDataResource> mdr);
 };
 
