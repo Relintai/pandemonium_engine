@@ -72,7 +72,7 @@ bool MDREDMeshUtils::SeamTriangleHelper::is_side_index_cut(int i) const {
 	}
 }
 
-bool MDREDMeshUtils::SeamTriangleHelper::is_the_same(SeamTriangleHelper h) const {
+bool MDREDMeshUtils::SeamTriangleHelper::is_the_same(const SeamTriangleHelper &h) const {
 	return is_triangle(h.i0, h.i1, h.i2);
 }
 
@@ -109,7 +109,7 @@ bool MDREDMeshUtils::SeamTriangleHelper::both_sides_need_cut() const {
 	return side_index_1_cut && side_index_2_cut;
 }
 
-void MDREDMeshUtils::SeamTriangleHelper::setup(int pi0, int pi1, int pi2, int porig_ind, int pindex_index, PoolIntArray seams) {
+void MDREDMeshUtils::SeamTriangleHelper::setup(int pi0, int pi1, int pi2, int porig_ind, int pindex_index, const PoolIntArray &seams) {
 	processed = false;
 	i0 = pi0;
 	i1 = pi1;
@@ -131,7 +131,7 @@ void MDREDMeshUtils::SeamTriangleHelper::setup(int pi0, int pi1, int pi2, int po
 	determine_cuts(seams);
 }
 
-void MDREDMeshUtils::SeamTriangleHelper::determine_cuts(PoolIntArray seams) {
+void MDREDMeshUtils::SeamTriangleHelper::determine_cuts(const PoolIntArray &seams) {
 	if (orig_index < side_index_1) {
 		side_index_1_cut = check_cut(orig_index, side_index_1, seams);
 	} else {
@@ -144,7 +144,7 @@ void MDREDMeshUtils::SeamTriangleHelper::determine_cuts(PoolIntArray seams) {
 		side_index_2_cut = check_cut(side_index_2, orig_index, seams);
 	}
 }
-bool MDREDMeshUtils::SeamTriangleHelper::check_cut(int ind0, int ind1, PoolIntArray seams) {
+bool MDREDMeshUtils::SeamTriangleHelper::check_cut(int ind0, int ind1, const PoolIntArray &seams) {
 	for (int stind = 0; stind < seams.size(); stind += 2) {
 		int si0 = seams[stind];
 		int si1 = seams[stind + 1];
@@ -176,7 +176,7 @@ MDREDMeshUtils::SeamTriangleHelper::SeamTriangleHelper() {
 	processed = false;
 }
 
-void MDREDMeshUtils::remove_triangle(Ref<MeshDataResource> mdr, int triangle_index) {
+void MDREDMeshUtils::remove_triangle(Ref<MeshDataResource> mdr, const int triangle_index) {
 	if (triangle_index < 0) {
 		return;
 	}
@@ -213,7 +213,7 @@ void MDREDMeshUtils::remove_triangle(Ref<MeshDataResource> mdr, int triangle_ind
 	mdr->set_array(arrays);
 }
 
-bool MDREDMeshUtils::add_triangulated_mesh_from_points_delaunay(Ref<MeshDataResource> mdr, PoolVector3Array selected_points, Vector3 last_known_camera_facing) {
+bool MDREDMeshUtils::add_triangulated_mesh_from_points_delaunay(Ref<MeshDataResource> mdr, const PoolVector3Array &selected_points, const Vector3 &last_known_camera_facing) {
 	if (selected_points.size() < 3) {
 		return false;
 	}
@@ -307,7 +307,7 @@ bool MDREDMeshUtils::add_triangulated_mesh_from_points_delaunay(Ref<MeshDataReso
 	return true;
 }
 
-void MDREDMeshUtils::add_triangulated_mesh_from_points(Ref<MeshDataResource> mdr, PoolVector3Array selected_points, Vector3 last_known_camera_facing) {
+void MDREDMeshUtils::add_triangulated_mesh_from_points(Ref<MeshDataResource> mdr, const PoolVector3Array &selected_points, const Vector3 &last_known_camera_facing) {
 	if (selected_points.size() < 3) {
 		return;
 	}
@@ -354,13 +354,13 @@ void MDREDMeshUtils::add_triangulated_mesh_from_points(Ref<MeshDataResource> mdr
 }
 
 // Appends a triangle to the mesh. It's created from miroring v2 to the ev0, and ev1 edge
-void MDREDMeshUtils::append_triangle_to_tri_edge(Ref<MeshDataResource> mdr, Vector3 ev0, Vector3 ev1, Vector3 v2) {
+void MDREDMeshUtils::append_triangle_to_tri_edge(Ref<MeshDataResource> mdr, const Vector3 &ev0, const Vector3 &ev1, const Vector3 &v2) {
 	Vector3 vref = reflect_vertex(ev0, ev1, v2);
 
 	add_triangle_at(mdr, ev1, ev0, vref, false);
 }
 
-void MDREDMeshUtils::add_triangle_at(Ref<MeshDataResource> mdr, Vector3 v0, Vector3 v1, Vector3 v2, bool flip) {
+void MDREDMeshUtils::add_triangle_at(Ref<MeshDataResource> mdr, const Vector3 &v0, const Vector3 &v1, const Vector3 &v2, const bool flip) {
 	Ref<SurfaceTool> st;
 	st.instance();
 
@@ -417,7 +417,7 @@ void MDREDMeshUtils::add_triangle(Ref<MeshDataResource> mdr) {
 }
 
 // Appends a quad to the mesh. It's created to the opposite side of v2 to the ev0, and ev1 edge
-void MDREDMeshUtils::append_quad_to_tri_edge(Ref<MeshDataResource> mdr, Vector3 ev0, Vector3 ev1, Vector3 v2) {
+void MDREDMeshUtils::append_quad_to_tri_edge(Ref<MeshDataResource> mdr, const Vector3 &ev0, const Vector3 &ev1, const Vector3 &v2) {
 	Vector3 vref = reflect_vertex(ev0, ev1, v2);
 	Vector3 vproj = (vref - ev0).project(ev1 - ev0);
 	Vector3 eoffs = (vref - ev0) - vproj;
@@ -430,7 +430,7 @@ void MDREDMeshUtils::append_quad_to_tri_edge(Ref<MeshDataResource> mdr, Vector3 
 	add_quad_at(mdr, qv0, qv1, qv2, qv3, false);
 }
 
-void MDREDMeshUtils::add_quad_at(Ref<MeshDataResource> mdr, Vector3 v0, Vector3 v1, Vector3 v2, Vector3 v3, bool flip) {
+void MDREDMeshUtils::add_quad_at(Ref<MeshDataResource> mdr, const Vector3 &v0, const Vector3 &v1, const Vector3 &v2, const Vector3 &v3, const bool flip) {
 	Ref<SurfaceTool> st;
 	st.instance();
 
@@ -598,7 +598,7 @@ void MDREDMeshUtils::add_box(Ref<MeshDataResource> mdr) {
 	merge_in_surface_tool(mdr, st);
 }
 
-void MDREDMeshUtils::merge_in_surface_tool(Ref<MeshDataResource> mdr, Ref<SurfaceTool> st, bool generate_normals_if_needed, bool generate_tangents_if_needed) {
+void MDREDMeshUtils::merge_in_surface_tool(Ref<MeshDataResource> mdr, Ref<SurfaceTool> st, const bool generate_normals_if_needed, const bool generate_tangents_if_needed) {
 	Array arrays = get_arrays_prepared(mdr);
 
 	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
@@ -616,7 +616,7 @@ void MDREDMeshUtils::merge_in_surface_tool(Ref<MeshDataResource> mdr, Ref<Surfac
 
 	merge_in_arrays(mdr, st->commit_to_arrays());
 }
-void MDREDMeshUtils::merge_in_arrays(Ref<MeshDataResource> mdr, Array merge) {
+void MDREDMeshUtils::merge_in_arrays(Ref<MeshDataResource> mdr, const Array &merge) {
 	Array arrays = mdr->get_array();
 
 	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
@@ -857,27 +857,27 @@ Array MDREDMeshUtils::get_arrays_prepared(Ref<MeshDataResource> mdr) {
 }
 
 // There are probably better ways to do this
-bool MDREDMeshUtils::should_flip_reflected_triangle(Vector3 v0, Vector3 v1, Vector3 v2) {
+bool MDREDMeshUtils::should_flip_reflected_triangle(const Vector3 &v0, const Vector3 &v1, const Vector3 &v2) {
 	Vector3 reflected = reflect_vertex(v0, v1, v2);
 	Vector3 nn = get_face_normal(v0, v1, v2);
 
 	return should_triangle_flip(v0, v1, reflected, nn);
 }
-Vector3 MDREDMeshUtils::reflect_vertex(Vector3 v0, Vector3 v1, Vector3 v2) {
+Vector3 MDREDMeshUtils::reflect_vertex(const Vector3 &v0, const Vector3 &v1, const Vector3 &v2) {
 	return (v2 - v0).reflect((v1 - v0).normalized()) + v0;
 }
 
-Vector3 MDREDMeshUtils::get_face_normal_arr_ti(PoolVector3Array verts, PoolIntArray indices, int triangle_index, bool flipped) {
+Vector3 MDREDMeshUtils::get_face_normal_arr_ti(const PoolVector3Array &verts, const PoolIntArray &indices, const int triangle_index, const bool flipped) {
 	return get_face_normal_arr(verts, indices, triangle_index * 3, flipped);
 }
-Vector3 MDREDMeshUtils::get_face_normal_arr(PoolVector3Array verts, PoolIntArray indices, int index, bool flipped) {
+Vector3 MDREDMeshUtils::get_face_normal_arr(const PoolVector3Array &verts, const PoolIntArray &indices, const int index, const bool flipped) {
 	Vector3 v0 = verts[indices[index]];
 	Vector3 v1 = verts[indices[index + 1]];
 	Vector3 v2 = verts[indices[index + 2]];
 
 	return get_face_normal(v0, v1, v2, flipped);
 }
-Vector3 MDREDMeshUtils::get_face_normal(Vector3 v0, Vector3 v1, Vector3 v2, bool flipped) {
+Vector3 MDREDMeshUtils::get_face_normal(const Vector3 &v0, const Vector3 &v1, const Vector3 &v2, const bool flipped) {
 	if (!flipped) {
 		return Plane(v0, v1, v2).normal;
 	} else {
@@ -885,7 +885,7 @@ Vector3 MDREDMeshUtils::get_face_normal(Vector3 v0, Vector3 v1, Vector3 v2, bool
 	}
 }
 
-bool MDREDMeshUtils::should_triangle_flip(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 similar_dir_normal) {
+bool MDREDMeshUtils::should_triangle_flip(const Vector3 &v0, const Vector3 &v1, const Vector3 &v2, const Vector3 &similar_dir_normal) {
 	Vector3 normal = get_face_normal(v0, v1, v2);
 
 	float ndns = normal.dot(similar_dir_normal);
@@ -893,22 +893,22 @@ bool MDREDMeshUtils::should_triangle_flip(Vector3 v0, Vector3 v1, Vector3 v2, Ve
 	return ndns < 0;
 }
 
-bool MDREDMeshUtils::is_normal_similar(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 similar_dir_normal) {
+bool MDREDMeshUtils::is_normal_similar(const Vector3 &v0, const Vector3 &v1, const Vector3 &v2, const Vector3 &similar_dir_normal) {
 	Vector3 normal = get_face_normal(v0, v1, v2);
 
 	float ndns = normal.dot(similar_dir_normal);
 
 	return ndns >= 0;
 }
-bool MDREDMeshUtils::is_direction_similar(Vector3 d0, Vector3 d1) {
+bool MDREDMeshUtils::is_direction_similar(const Vector3 &d0, const Vector3 &d1) {
 	float ndns = d0.dot(d1);
 	return ndns >= 0;
 }
 
-void MDREDMeshUtils::flip_triangle_ti(Ref<MeshDataResource> mdr, int triangle_index) {
+void MDREDMeshUtils::flip_triangle_ti(Ref<MeshDataResource> mdr, const int triangle_index) {
 	flip_triangle(mdr, triangle_index * 3);
 }
-void MDREDMeshUtils::flip_triangle(Ref<MeshDataResource> mdr, int index) {
+void MDREDMeshUtils::flip_triangle(Ref<MeshDataResource> mdr, const int index) {
 	Array arrays = mdr->get_array();
 
 	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
@@ -1253,7 +1253,7 @@ Array MDREDMeshUtils::remove_used_vertices(Array arrays) {
 	return arrays;
 }
 
-Array MDREDMeshUtils::remove_vertices(Array arrays, PoolIntArray indices) {
+Array MDREDMeshUtils::remove_vertices(Array arrays, const PoolIntArray &indices) {
 	if (indices.size() == 0) {
 		return arrays;
 	}
@@ -1293,10 +1293,6 @@ Array MDREDMeshUtils::remove_vertices(Array arrays, PoolIntArray indices) {
 
 	if (!arrays[ArrayMesh::ARRAY_WEIGHTS].is_null()) {
 		weights = arrays[ArrayMesh::ARRAY_WEIGHTS];
-	}
-
-	if (!arrays[ArrayMesh::ARRAY_INDEX].is_null()) {
-		indices = arrays[ArrayMesh::ARRAY_INDEX];
 	}
 
 	for (int i = 0; i < indices.size(); ++i) {
@@ -1401,7 +1397,7 @@ Array MDREDMeshUtils::remove_vertices(Array arrays, PoolIntArray indices) {
 	return arrays;
 }
 
-int MDREDMeshUtils::find_max(PoolIntArray arr) {
+int MDREDMeshUtils::find_max(const PoolIntArray &arr) {
 	if (arr.size() == 0) {
 		return 0;
 	}
@@ -1422,7 +1418,7 @@ int MDREDMeshUtils::find_max(PoolIntArray arr) {
 
 	return m;
 }
-int MDREDMeshUtils::find_max_capped(PoolIntArray arr, int last) {
+int MDREDMeshUtils::find_max_capped(const PoolIntArray &arr, const int last) {
 	if (arr.size() == 0) {
 		return 0;
 	}
@@ -1452,7 +1448,7 @@ int MDREDMeshUtils::find_max_capped(PoolIntArray arr, int last) {
 	return m;
 }
 
-PoolIntArray MDREDMeshUtils::order_seam_indices(PoolIntArray arr) {
+PoolIntArray MDREDMeshUtils::order_seam_indices(const PoolIntArray &arr) {
 	PoolIntArray ret;
 
 	if (arr.size() == 0) {
@@ -1476,14 +1472,14 @@ PoolIntArray MDREDMeshUtils::order_seam_indices(PoolIntArray arr) {
 	return ret;
 }
 
-void MDREDMeshUtils::add_seam_not_ordered(Ref<MeshDataResource> mdr, int index0, int index1) {
+void MDREDMeshUtils::add_seam_not_ordered(Ref<MeshDataResource> mdr, const int index0, const int index1) {
 	if (index0 > index1) {
 		add_seam(mdr, index1, index0);
 	} else {
 		add_seam(mdr, index0, index1);
 	}
 }
-void MDREDMeshUtils::remove_seam_not_ordered(Ref<MeshDataResource> mdr, int index0, int index1) {
+void MDREDMeshUtils::remove_seam_not_ordered(Ref<MeshDataResource> mdr, const int index0, const int index1) {
 	if (index0 > index1) {
 		remove_seam(mdr, index1, index0);
 	} else {
@@ -1491,7 +1487,7 @@ void MDREDMeshUtils::remove_seam_not_ordered(Ref<MeshDataResource> mdr, int inde
 	}
 }
 
-bool MDREDMeshUtils::has_seam(Ref<MeshDataResource> mdr, int index0, int index1) {
+bool MDREDMeshUtils::has_seam(Ref<MeshDataResource> mdr, const int index0, const int index1) {
 	PoolIntArray seams = mdr->get_seams();
 
 	for (int i = 0; i < seams.size(); i += 2) {
@@ -1502,7 +1498,7 @@ bool MDREDMeshUtils::has_seam(Ref<MeshDataResource> mdr, int index0, int index1)
 
 	return false;
 }
-void MDREDMeshUtils::add_seam(Ref<MeshDataResource> mdr, int index0, int index1) {
+void MDREDMeshUtils::add_seam(Ref<MeshDataResource> mdr, const int index0, const int index1) {
 	if (has_seam(mdr, index0, index1)) {
 		return;
 	}
@@ -1512,7 +1508,7 @@ void MDREDMeshUtils::add_seam(Ref<MeshDataResource> mdr, int index0, int index1)
 	seams.push_back(index1);
 	mdr->set_seams(seams);
 }
-void MDREDMeshUtils::remove_seam(Ref<MeshDataResource> mdr, int index0, int index1) {
+void MDREDMeshUtils::remove_seam(Ref<MeshDataResource> mdr, const int index0, const int index1) {
 	if (!has_seam(mdr, index0, index1)) {
 		return;
 	}
@@ -1529,11 +1525,11 @@ void MDREDMeshUtils::remove_seam(Ref<MeshDataResource> mdr, int index0, int inde
 	}
 }
 
-bool MDREDMeshUtils::is_verts_equal(Vector3 v0, Vector3 v1) {
+bool MDREDMeshUtils::is_verts_equal(const Vector3 &v0, const Vector3 &v1) {
 	return Math::is_equal_approx(v0.x, v1.x) && Math::is_equal_approx(v0.y, v1.y) && Math::is_equal_approx(v0.z, v1.z);
 }
 
-void MDREDMeshUtils::points_to_seams(Ref<MeshDataResource> mdr, PoolVector3Array points) {
+void MDREDMeshUtils::points_to_seams(Ref<MeshDataResource> mdr, const PoolVector3Array &points) {
 	Array arrays = mdr->get_array();
 
 	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
@@ -1633,7 +1629,7 @@ PoolVector3Array MDREDMeshUtils::seams_to_points(Ref<MeshDataResource> mdr) {
 	return points;
 }
 
-bool MDREDMeshUtils::is_matching_seam(int i0, int i1, int si0, int si1) {
+bool MDREDMeshUtils::is_matching_seam(int i0, int i1, const int si0, const int si1) {
 	if (i0 > i1) {
 		int t = i0;
 		i0 = i1;
@@ -1643,7 +1639,7 @@ bool MDREDMeshUtils::is_matching_seam(int i0, int i1, int si0, int si1) {
 	return (i0 == si0) && (i1 == si1);
 }
 
-bool MDREDMeshUtils::pool_int_arr_contains(PoolIntArray arr, int val) {
+bool MDREDMeshUtils::pool_int_arr_contains(const PoolIntArray &arr, const int val) {
 	PoolIntArray::Read ar = arr.read();
 
 	for (int i = 0; i < arr.size(); ++i) {
@@ -1908,7 +1904,7 @@ void MDREDMeshUtils::apply_seam_old(Ref<MeshDataResource> mdr) {
 }
 
 // This will not touch the indices!
-Array MDREDMeshUtils::seam_apply_duplicate_vertices(Array arrays, PoolIntArray duplicate_verts_indices) {
+Array MDREDMeshUtils::seam_apply_duplicate_vertices(Array arrays, const PoolIntArray &duplicate_verts_indices) {
 	if (duplicate_verts_indices.size() == 0) {
 		return arrays;
 	}
