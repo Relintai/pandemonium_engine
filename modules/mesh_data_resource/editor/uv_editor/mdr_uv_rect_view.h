@@ -36,6 +36,7 @@ class UndoRedo;
 class Button;
 class EditorZoomWidget;
 class SpinBox;
+class MDRUVRectViewNode;
 
 class MDRUVRectView : public Control {
 	GDCLASS(MDRUVRectView, Control);
@@ -44,7 +45,7 @@ public:
 	void set_plugin(EditorPlugin *plugin);
 	void set_mesh_data_resource(Ref<MeshDataResource> a);
 	void set_mesh_data_instance(MeshDataInstance *a);
-	void set_selected(Control *node);
+	void set_selected(MDRUVRectViewNode *node);
 
 	void store_uvs();
 	PoolVector2Array get_uvs(Ref<MeshDataResource> mdr);
@@ -104,7 +105,7 @@ public:
 	EditorPlugin *_plugin;
 	UndoRedo *_undo_redo;
 
-	Control *selected_rect;
+	MDRUVRectViewNode *selected_rect;
 
 	float rotation_amount;
 };

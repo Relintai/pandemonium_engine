@@ -46,7 +46,7 @@ public:
 	static Array get_handle_face_to_vertex_map(const Array &arrays);
 	static PoolVector3Array calculate_map_midpoints(Array mesh, Array vertex_map);
 	static bool pool_int_arr_contains(const PoolIntArray &arr, const int val);
-	static Array partition_mesh(Ref<MeshDataResource> mdr);
+	static Vector<PoolIntArray> partition_mesh(Ref<MeshDataResource> mdr);
 };
 
 #endif

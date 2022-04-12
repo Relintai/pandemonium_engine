@@ -321,8 +321,8 @@ bool MDREDMeshDecompose::pool_int_arr_contains(const PoolIntArray &arr, const in
 	return false;
 }
 
-Array MDREDMeshDecompose::partition_mesh(Ref<MeshDataResource> mdr) {
-	Array partitions;
+Vector<PoolIntArray> MDREDMeshDecompose::partition_mesh(Ref<MeshDataResource> mdr) {
+	Vector<PoolIntArray> partitions;
 
 	Array arrays = mdr->get_array();
 
@@ -386,7 +386,7 @@ Array MDREDMeshDecompose::partition_mesh(Ref<MeshDataResource> mdr) {
 			}
 		}
 
-		partitions.append(partition);
+		partitions.push_back(partition);
 	}
 
 	return partitions;

@@ -26,9 +26,9 @@ SOFTWARE.
 #include "../../mesh_data_resource.h"
 #include "../../nodes/mesh_data_instance.h"
 
-void MDRUVRectEditor::set_plugin(EditorPlugin *plugin) {
+//void MDRUVRectEditor::set_plugin(EditorPlugin *plugin) {
 	//$ScrollContainer/MarginContainer/RectView.set_plugin(plugin)
-}
+//}
 
 void MDRUVRectEditor::set_mesh_data_resource(Ref<MeshDataResource> a) {
 	//$ScrollContainer/MarginContainer/RectView.set_mesh_data_resource(a)

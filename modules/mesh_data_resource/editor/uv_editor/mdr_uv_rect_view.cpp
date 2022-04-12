@@ -22,265 +22,253 @@ SOFTWARE.
 
 #include "mdr_uv_rect_view.h"
 
+#include "../../nodes/mesh_data_instance.h"
+#include "../utilities/mdr_ed_mesh_decompose.h"
+#include "editor/editor_node.h"
+#include "editor/editor_plugin.h"
+#include "mdr_uv_rect_view_node.h"
 #include "scene/gui/control.h"
 
 void MDRUVRectView::set_plugin(EditorPlugin *plugin) {
-	/*
-	_plugin = plugin
+	_plugin = plugin;
 
-	_undo_redo = _plugin.get_undo_redo()
-	*/
+	_undo_redo = EditorNode::get_undo_redo();
 }
 void MDRUVRectView::set_mesh_data_resource(Ref<MeshDataResource> a) {
-	/*
-_mdr = a
-	*/
+	_mdr = a;
 }
 void MDRUVRectView::set_mesh_data_instance(MeshDataInstance *a) {
-	/*
-_background_texture = null
+	_background_texture.unref();
 
-	if a:
-		_background_texture = a.texture
-	*/
+	if (a) {
+		_background_texture = a->get_texture();
+	}
 }
-void MDRUVRectView::set_selected(Control *node) {
-	/*
-if selected_rect && is_instance_valid(selected_rect):
-		selected_rect.set_selected(false)
+void MDRUVRectView::set_selected(MDRUVRectViewNode *node) {
+	if (selected_rect && ObjectDB::instance_validate(selected_rect)) {
+		selected_rect->set_selected(false);
+	}
 
-	selected_rect = node
+	selected_rect = node;
 
-	if selected_rect:
-		selected_rect.set_selected(true)
-	*/
+	if (selected_rect) {
+		selected_rect->set_selected(true);
+	}
 }
 
 void MDRUVRectView::store_uvs() {
-	/*
-_stored_uvs.resize(0)
+	_stored_uvs.resize(0);
 
-	if !_mdr:
-		return
+	if (!_mdr.is_valid()) {
+		return;
+	}
 
-	var arrays : Array = _mdr.get_array()
+	Array arrays = _mdr->get_array();
 
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		return
+	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
+		return;
+	}
 
-	if arrays[ArrayMesh.ARRAY_TEX_UV] == null:
-		return
+	if (arrays[ArrayMesh::ARRAY_TEX_UV].is_null()) {
+		return;
+	}
 
-	# Make sure it gets copied
-	_stored_uvs.append_array(arrays[ArrayMesh.ARRAY_TEX_UV])
-	*/
+	// Make sure it gets copied
+	_stored_uvs.append_array(arrays[ArrayMesh::ARRAY_TEX_UV]);
 }
 PoolVector2Array MDRUVRectView::get_uvs(Ref<MeshDataResource> mdr) {
-	/*
-if !_mdr:
-		return PoolVector2Array()
+	if (!_mdr.is_valid()) {
+		return PoolVector2Array();
+	}
 
-	var arrays : Array = _mdr.get_array()
+	Array arrays = _mdr->get_array();
 
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		return PoolVector2Array()
+	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
+		return PoolVector2Array();
+	}
 
-	if arrays[ArrayMesh.ARRAY_TEX_UV] == null:
-		return PoolVector2Array()
+	if (arrays[ArrayMesh::ARRAY_TEX_UV].is_null()) {
+		return PoolVector2Array();
+	}
 
-	return arrays[ArrayMesh.ARRAY_TEX_UV]
-	*/
+	return arrays[ArrayMesh::ARRAY_TEX_UV];
 }
 void MDRUVRectView::apply_uvs(Ref<MeshDataResource> mdr, PoolVector2Array stored_uvs) {
-	/*
-if !_mdr:
-		return
+	if (!_mdr.is_valid()) {
+		return;
+	}
 
-	var arrays : Array = _mdr.get_array()
+	Array arrays = _mdr->get_array();
 
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		return
+	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
+		return;
+	}
 
-	if arrays[ArrayMesh.ARRAY_TEX_UV] == null:
-		return
+	if (arrays[ArrayMesh::ARRAY_TEX_UV].is_null()) {
+		return;
+	}
 
-	arrays[ArrayMesh.ARRAY_TEX_UV] = stored_uvs
+	arrays[ArrayMesh::ARRAY_TEX_UV] = stored_uvs;
 
-	_mdr.array = arrays
-	*/
+	_mdr->set_array(arrays);
 }
 
 void MDRUVRectView::refresh() {
-	/*
-clear()
+	clear();
 
-	var rect : Rect2 = base_rect
-	edited_resource_current_size = rect.size
-	rect.position = rect.position * _rect_scale
-	rect.size = rect.size * _rect_scale
-	set_custom_minimum_size(rect.size)
+	Rect2 rect = base_rect;
+	edited_resource_current_size = rect.size;
+	rect.position = rect.position * _rect_scale;
+	rect.size = rect.size * _rect_scale;
+	set_custom_minimum_size(rect.size);
 
-	apply_zoom()
+	apply_zoom();
 
-	refresh_rects()
-	*/
+	refresh_rects();
 }
 void MDRUVRectView::clear() {
 }
 void MDRUVRectView::refresh_rects() {
-	/*
-clear_rects()
+	clear_rects();
 
-	if !_mdr:
-		return
+	if (!_mdr.is_valid()) {
+		return;
+	}
 
-	var partitions : Array = MeshDecompose.partition_mesh(_mdr)
+	Vector<PoolIntArray> partitions = MDREDMeshDecompose::partition_mesh(_mdr);
 
-	for p in partitions:
-		var s : Node = rect_editor_node_scene.instance()
+	for (int i = 0; i < partitions.size(); ++i) {
+		PoolIntArray p = partitions[i];
 
-		add_child(s)
-		s.set_editor_rect_scale(_rect_scale)
-		s.edited_resource_parent_size = edited_resource_current_size
-		s.set_edited_resource(_mdr, p)
+		MDRUVRectViewNode *s = memnew(MDRUVRectViewNode);
 
-	*/
+		add_child(s);
+		s->set_editor_rect_scale(_rect_scale);
+		s->edited_resource_parent_size = edited_resource_current_size;
+		s->set_edited_resource(_mdr, p);
+	}
 }
 void MDRUVRectView::clear_rects() {
-	/*
-for c in get_children():
-		c.queue_free()
-		remove_child(c)
-	*/
+	while (get_child_count() > 0) {
+		Node *c = get_child(0);
+		c->queue_delete();
+		remove_child(c);
+	}
+
+	selected_rect = nullptr;
 }
 
 void MDRUVRectView::_enter_tree() {
-	/*
-
-	*/
 }
 void MDRUVRectView::_draw() {
-	/*
-draw_rect(Rect2(Vector2(), get_size()), Color(0.2, 0.2, 0.2, 1))
+	draw_rect(Rect2(Vector2(), get_size()), Color(0.2, 0.2, 0.2, 1));
 
-	if _background_texture:
-		draw_texture_rect_region(_background_texture, Rect2(Vector2(), get_size()), Rect2(Vector2(), _background_texture.get_size()))
-	*/
+	if (_background_texture.is_valid()) {
+		draw_texture_rect_region(_background_texture, Rect2(Vector2(), get_size()), Rect2(Vector2(), _background_texture->get_size()));
+	}
 }
 
 void MDRUVRectView::on_mirror_horizontal_button_pressed() {
-	/*
-	if selected_rect && is_instance_valid(selected_rect) {
-		selected_rect.mirror_horizontal();
-	}*/
+	if (selected_rect && ObjectDB::instance_validate(selected_rect)) {
+		selected_rect->mirror_horizontal();
+	}
 }
 void MDRUVRectView::on_mirror_vertical_button_pressed() {
-	/*
-		if selected_rect && is_instance_valid(selected_rect):
-			selected_rect.mirror_vertical()
-	*/
+	if (selected_rect && ObjectDB::instance_validate(selected_rect)) {
+		selected_rect->mirror_vertical();
+	}
 }
 void MDRUVRectView::on_rotate_left_button_button_pressed() {
-	/*
-		if selected_rect && is_instance_valid(selected_rect):
-			selected_rect.rotate_uvs(-rotation_amount)
-	*/
+	if (selected_rect && ObjectDB::instance_validate(selected_rect)) {
+		selected_rect->rotate_uvs(-rotation_amount);
+	}
 }
 
 void MDRUVRectView::on_rotate_amount_spinbox_changed(float val) {
-	/*
-	rotation_amount = val
-*/
+	rotation_amount = val;
 }
 void MDRUVRectView::on_rotate_right_button_button_pressed() {
-	/*
-	if selected_rect && is_instance_valid(selected_rect):
-		selected_rect.rotate_uvs(rotation_amount)
-*/
+	if (selected_rect && ObjectDB::instance_validate(selected_rect)) {
+		selected_rect->rotate_uvs(rotation_amount);
+	}
 }
 void MDRUVRectView::on_edited_resource_changed() {
-	/*
-	call_deferred("refresh")
-*/
+	call_deferred("refresh");
 }
 
 void MDRUVRectView::on_zoom_changed(float zoom) {
-	/*
-	_rect_scale = zoom
-	apply_zoom()
-*/
+	_rect_scale = zoom;
+	apply_zoom();
 }
 
 void MDRUVRectView::on_visibility_changed() {
-	/*
-	if is_visible_in_tree():
-		store_uvs()
-		call_deferred("refresh")
-*/
+	if (is_visible_in_tree()) {
+		store_uvs();
+		call_deferred("refresh");
+	}
 }
 
 void MDRUVRectView::ok_pressed() {
-	/*
-	_undo_redo.create_action("UV Editor Accept")
-	_undo_redo.add_do_method(self, "apply_uvs", _mdr, get_uvs(_mdr))
-	_undo_redo.add_undo_method(self, "apply_uvs", _mdr, _stored_uvs)
-	_undo_redo.commit_action()
-*/
+	_undo_redo->create_action("UV Editor Accept");
+	_undo_redo->add_do_method(this, "apply_uvs", _mdr, get_uvs(_mdr));
+	_undo_redo->add_undo_method(this, "apply_uvs", _mdr, _stored_uvs);
+	_undo_redo->commit_action();
 }
 void MDRUVRectView::cancel_pressed() {
-	/*
-	if !_mdr:
-		return
+	if (!_mdr.is_valid()) {
+		return;
+	}
 
-	var arrays : Array = _mdr.get_array()
+	Array arrays = _mdr->get_array();
 
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		return
+	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
+		return;
+	}
 
-	# Make sure it gets copied
-	var uvs : PoolVector2Array = PoolVector2Array()
-	uvs.append_array(_stored_uvs)
+	// Make sure it gets copied
+	PoolVector2Array uvs;
+	uvs.append_array(_stored_uvs);
 
-	_undo_redo.create_action("UV Editor Cancel")
-	_undo_redo.add_do_method(self, "apply_uvs", _mdr, uvs)
-	_undo_redo.add_undo_method(self, "apply_uvs", _mdr, get_uvs(_mdr))
-	_undo_redo.commit_action()
+	_undo_redo->create_action("UV Editor Cancel");
+	_undo_redo->add_do_method(this, "apply_uvs", _mdr, uvs);
+	_undo_redo->add_undo_method(this, "apply_uvs", _mdr, get_uvs(_mdr));
+	_undo_redo->commit_action();
 
-	_stored_uvs.resize(0)
-*/
+	_stored_uvs.resize(0);
 }
 
 void MDRUVRectView::apply_zoom() {
-	/*
-	var rect : Rect2 = base_rect
-	edited_resource_current_size = rect.size
-	rect.position = rect.position * _rect_scale
-	rect.size = rect.size * _rect_scale
-	set_custom_minimum_size(rect.size)
+	Rect2 rect = base_rect;
+	edited_resource_current_size = rect.size;
+	rect.position = rect.position * _rect_scale;
+	rect.size = rect.size * _rect_scale;
+	set_custom_minimum_size(rect.size);
 
-	var p : MarginContainer = get_parent() as MarginContainer
+	MarginContainer *p = Object::cast_to<MarginContainer>(get_parent());
 
-	p.add_constant_override("margin_left", min(rect.size.x / 4.0, 50 * _rect_scale))
-	p.add_constant_override("margin_right", min(rect.size.x / 4.0, 50 * _rect_scale))
-	p.add_constant_override("margin_top", min(rect.size.y / 4.0, 50 * _rect_scale))
-	p.add_constant_override("margin_bottom", min(rect.size.y / 4.0, 50 * _rect_scale))
+	p->add_constant_override("margin_left", MIN(rect.size.x / 4.0, 50 * _rect_scale));
+	p->add_constant_override("margin_right", MIN(rect.size.x / 4.0, 50 * _rect_scale));
+	p->add_constant_override("margin_top", MIN(rect.size.y / 4.0, 50 * _rect_scale));
+	p->add_constant_override("margin_bottom", MIN(rect.size.y / 4.0, 50 * _rect_scale));
 
-	for c in get_children():
-		c.set_editor_rect_scale(_rect_scale)
-*/
+	for (int i = 0; i < get_child_count(); ++i) {
+		MDRUVRectViewNode *c = Object::cast_to<MDRUVRectViewNode>(get_child(i));
+
+		if (c) {
+			c->set_editor_rect_scale(_rect_scale);
+		}
+	}
 }
 
 MDRUVRectView::MDRUVRectView() {
-	float _rect_scale = 1;
+	_rect_scale = 1;
 
-	Rect2 base_rect = Rect2(0, 0, 600, 600);
+	base_rect = Rect2(0, 0, 600, 600);
 
-	PoolVector2Array _stored_uvs;
+	_plugin = nullptr;
+	_undo_redo = nullptr;
 
-	EditorPlugin *_plugin = nullptr;
-	UndoRedo *_undo_redo = nullptr;
-
-	Control *selected_rect = nullptr;
+	selected_rect = nullptr;
 
 	rotation_amount = 45;
 
@@ -321,4 +309,5 @@ MDRUVRectView::~MDRUVRectView() {
 }
 
 void MDRUVRectView::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("refresh"), &MDRUVRectView::refresh);
 }
