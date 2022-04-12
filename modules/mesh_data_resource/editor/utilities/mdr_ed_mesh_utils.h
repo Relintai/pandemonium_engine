@@ -48,21 +48,21 @@ public:
 
 		bool processed;
 
-		int get_other_side_index(int index);
+		int get_other_side_index(int index) const;
 
-		int get_side_index(int i);
-		int get_side_index_cut();
-		int get_opposite_side_index_cut();
-		bool is_side_index_cut(int i);
+		int get_side_index(int i) const;
+		int get_side_index_cut() const;
+		int get_opposite_side_index_cut() const;
+		bool is_side_index_cut(int i) const;
 
-		bool is_the_same(SeamTriangleHelper h);
+		bool is_the_same(SeamTriangleHelper h) const;
 
-		bool is_triangle(int pi0, int pi1, int pi2);
-		bool is_neighbour_to(int index);
+		bool is_triangle(int pi0, int pi1, int pi2) const;
+		bool is_neighbour_to(int index) const;
 
-		bool needs_to_be_cut_near(int index);
-		bool has_cut();
-		bool both_sides_need_cut();
+		bool needs_to_be_cut_near(int index) const;
+		bool has_cut() const;
+		bool both_sides_need_cut() const;
 
 		void setup(int pi0, int pi1, int pi2, int porig_ind, int pindex_index, PoolIntArray seams);
 

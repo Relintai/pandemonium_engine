@@ -22,153 +22,143 @@ SOFTWARE.
 
 #include "mdr_ed_mesh_utils.h"
 
-int MDREDMeshUtils::SeamTriangleHelper::get_other_side_index(int index) {
-	/*
-		if side_index_1 == index:
-			return side_index_2
-		else:
-			return side_index_1
-	*/
+#include "../../mesh_data_resource.h"
+#include "modules/mesh_utils/mesh_utils.h"
+#include "scene/resources/mesh.h"
+#include "scene/resources/surface_tool.h"
+
+int MDREDMeshUtils::SeamTriangleHelper::get_other_side_index(int index) const {
+	if (side_index_1 == index) {
+		return side_index_2;
+	} else {
+		return side_index_1;
+	}
 }
 
-int MDREDMeshUtils::SeamTriangleHelper::get_side_index(int i) {
-	/*
-		if i == 1:
-			return side_index_1
-		else:
-			return side_index_2
-	*/
+int MDREDMeshUtils::SeamTriangleHelper::get_side_index(int i) const {
+	if (i == 1) {
+		return side_index_1;
+	} else {
+		return side_index_2;
+	}
 }
-int MDREDMeshUtils::SeamTriangleHelper::get_side_index_cut() {
-	/*
-		if side_index_1_cut && side_index_2_cut:
-			return 3
-		elif side_index_1_cut:
-			return 1
-		elif side_index_2_cut:
-			return 2
-		else:
-			return 0
-	*/
+int MDREDMeshUtils::SeamTriangleHelper::get_side_index_cut() const {
+	if (side_index_1_cut && side_index_2_cut) {
+		return 3;
+	} else if (side_index_1_cut) {
+		return 1;
+	} else if (side_index_2_cut) {
+		return 2;
+	} else {
+		return 0;
+	}
 }
-int MDREDMeshUtils::SeamTriangleHelper::get_opposite_side_index_cut() {
-	/*
-		if side_index_1_cut && side_index_2_cut:
-			return 3
-		elif side_index_1_cut:
-			return 2
-		elif side_index_2_cut:
-			return 1
-		else:
-			return 0
-	*/
+int MDREDMeshUtils::SeamTriangleHelper::get_opposite_side_index_cut() const {
+	if (side_index_1_cut && side_index_2_cut) {
+		return 3;
+	} else if (side_index_1_cut) {
+		return 2;
+	} else if (side_index_2_cut) {
+		return 1;
+	} else {
+		return 0;
+	}
 }
-bool MDREDMeshUtils::SeamTriangleHelper::is_side_index_cut(int i) {
-	/*
-		if i == 1:
-			return side_index_1_cut
-		else:
-			return side_index_2_cut
-	*/
+bool MDREDMeshUtils::SeamTriangleHelper::is_side_index_cut(int i) const {
+	if (i == 1) {
+		return side_index_1_cut;
+	} else {
+		return side_index_2_cut;
+	}
 }
 
-bool MDREDMeshUtils::SeamTriangleHelper::is_the_same(SeamTriangleHelper h) {
-	/*
-		return is_triangle(h.i0, h.i1, h.i2)
-	*/
+bool MDREDMeshUtils::SeamTriangleHelper::is_the_same(SeamTriangleHelper h) const {
+	return is_triangle(h.i0, h.i1, h.i2);
 }
 
-bool MDREDMeshUtils::SeamTriangleHelper::is_triangle(int pi0, int pi1, int pi2) {
-	/*
-		if pi0 == i0 || pi0 == i1 || pi0 == i2:
-			if pi1 == i0 || pi1 == i1 || pi1 == i2:
-				if pi2 == i0 || pi2 == i1 || pi2 == i2:
-					return true
+bool MDREDMeshUtils::SeamTriangleHelper::is_triangle(int pi0, int pi1, int pi2) const {
+	if (pi0 == i0 || pi0 == i1 || pi0 == i2) {
+		if (pi1 == i0 || pi1 == i1 || pi1 == i2) {
+			if (pi2 == i0 || pi2 == i1 || pi2 == i2) {
+				return true;
+			}
+		}
+	}
 
-		return false
-	*/
+	return false;
 }
-bool MDREDMeshUtils::SeamTriangleHelper::is_neighbour_to(int index) {
-	/*
-		return (side_index_1 == index) || (side_index_2 == index)
-	*/
+bool MDREDMeshUtils::SeamTriangleHelper::is_neighbour_to(int index) const {
+	return (side_index_1 == index) || (side_index_2 == index);
 }
 
-bool MDREDMeshUtils::SeamTriangleHelper::needs_to_be_cut_near(int index) {
-	/*
-		if (side_index_1 == index):
-			return side_index_1_cut
+bool MDREDMeshUtils::SeamTriangleHelper::needs_to_be_cut_near(int index) const {
+	if (side_index_1 == index) {
+		return side_index_1_cut;
+	}
 
-		if (side_index_2 == index):
-			return side_index_2_cut
+	if (side_index_2 == index) {
+		return side_index_2_cut;
+	}
 
-		return false
-	*/
+	return false;
 }
-bool MDREDMeshUtils::SeamTriangleHelper::has_cut() {
-	/*
-		return side_index_1_cut || side_index_2_cut
-	*/
+bool MDREDMeshUtils::SeamTriangleHelper::has_cut() const {
+	return side_index_1_cut || side_index_2_cut;
 }
-bool MDREDMeshUtils::SeamTriangleHelper::both_sides_need_cut() {
-	/*
-		return side_index_1_cut && side_index_2_cut
-	*/
+bool MDREDMeshUtils::SeamTriangleHelper::both_sides_need_cut() const {
+	return side_index_1_cut && side_index_2_cut;
 }
 
 void MDREDMeshUtils::SeamTriangleHelper::setup(int pi0, int pi1, int pi2, int porig_ind, int pindex_index, PoolIntArray seams) {
-	/*
-		processed = false
-		i0 = pi0
-		i1 = pi1
-		i2 = pi2
-		orig_index = porig_ind
-		index_index = pindex_index
+	processed = false;
+	i0 = pi0;
+	i1 = pi1;
+	i2 = pi2;
+	orig_index = porig_ind;
+	index_index = pindex_index;
 
-		if porig_ind == pi0:
-			side_index_1 = pi1
-			side_index_2 = pi2
-		elif porig_ind == pi1:
-			side_index_1 = pi0
-			side_index_2 = pi2
-		elif porig_ind == pi2:
-			side_index_1 = pi1
-			side_index_2 = pi0
+	if (porig_ind == pi0) {
+		side_index_1 = pi1;
+		side_index_2 = pi2;
+	} else if (porig_ind == pi1) {
+		side_index_1 = pi0;
+		side_index_2 = pi2;
+	} else if (porig_ind == pi2) {
+		side_index_1 = pi1;
+		side_index_2 = pi0;
+	}
 
-		determine_cuts(seams)
-	*/
+	determine_cuts(seams);
 }
 
 void MDREDMeshUtils::SeamTriangleHelper::determine_cuts(PoolIntArray seams) {
-	/*
-		if orig_index < side_index_1:
-			side_index_1_cut = check_cut(orig_index, side_index_1, seams)
-		else:
-			side_index_1_cut = check_cut(side_index_1, orig_index, seams)
+	if (orig_index < side_index_1) {
+		side_index_1_cut = check_cut(orig_index, side_index_1, seams);
+	} else {
+		side_index_1_cut = check_cut(side_index_1, orig_index, seams);
+	}
 
-		if orig_index < side_index_2:
-			side_index_2_cut = check_cut(orig_index, side_index_2, seams)
-		else:
-			side_index_2_cut = check_cut(side_index_2, orig_index, seams)
-	*/
+	if (orig_index < side_index_2) {
+		side_index_2_cut = check_cut(orig_index, side_index_2, seams);
+	} else {
+		side_index_2_cut = check_cut(side_index_2, orig_index, seams);
+	}
 }
 bool MDREDMeshUtils::SeamTriangleHelper::check_cut(int ind0, int ind1, PoolIntArray seams) {
-	/*
-		for stind in range(0, seams.size(), 2):
-			var si0 : int = seams[stind]
-			var si1 : int = seams[stind + 1]
+	for (int stind = 0; stind < seams.size(); stind += 2) {
+		int si0 = seams[stind];
+		int si1 = seams[stind + 1];
 
-			if (si0 == ind0) && (si1 == ind1):
-				return true
+		if ((si0 == ind0) && (si1 == ind1)) {
+			return true;
+		}
+	}
 
-		return false
-	*/
+	return false;
 }
 
 String MDREDMeshUtils::SeamTriangleHelper::_to_string() {
-	/*
-		return "[ TRI: " + str(i0) + ", " + str(i1) + ", " + str(i2) + " ]"
-	*/
+	return "[ TRI: " + itos(i0) + ", " + itos(i1) + ", " + itos(i2) + " ]";
 }
 
 MDREDMeshUtils::SeamTriangleHelper::SeamTriangleHelper() {
@@ -187,1630 +177,1858 @@ MDREDMeshUtils::SeamTriangleHelper::SeamTriangleHelper() {
 }
 
 void MDREDMeshUtils::remove_triangle(Ref<MeshDataResource> mdr, int triangle_index) {
-	/*
-	if triangle_index < 0:
-		return
+	if (triangle_index < 0) {
+		return;
+	}
 
-	var arrays : Array = mdr.get_array()
+	Array arrays = mdr->get_array();
 
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		arrays.resize(ArrayMesh.ARRAY_MAX)
+	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
+		arrays.resize(ArrayMesh::ARRAY_MAX);
+	}
 
-	if arrays[ArrayMesh.ARRAY_INDEX] == null:
-		return
+	if (arrays[ArrayMesh::ARRAY_INDEX].is_null()) {
+		return;
+	}
 
-	var indices : PoolIntArray = arrays[ArrayMesh.ARRAY_INDEX]
+	PoolIntArray indices = arrays[ArrayMesh::ARRAY_INDEX];
 
-	# Just remove that triangle
-	var i : int = triangle_index * 3
+	// Just remove that triangle
+	int i = triangle_index * 3;
 
-	var i0 : int = indices[i]
-	var i1 : int = indices[i + 1]
-	var i2 : int = indices[i + 2]
+	int i0 = indices[i];
+	int i1 = indices[i + 1];
+	int i2 = indices[i + 2];
 
-	remove_seam_not_ordered(mdr, i0, i1)
-	remove_seam_not_ordered(mdr, i1, i2)
-	remove_seam_not_ordered(mdr, i2, i0)
+	remove_seam_not_ordered(mdr, i0, i1);
+	remove_seam_not_ordered(mdr, i1, i2);
+	remove_seam_not_ordered(mdr, i2, i0);
 
-	indices.remove(i)
-	indices.remove(i)
-	indices.remove(i)
+	indices.remove(i);
+	indices.remove(i);
+	indices.remove(i);
 
-	arrays[ArrayMesh.ARRAY_INDEX] = indices
+	arrays[ArrayMesh::ARRAY_INDEX] = indices;
 
-	mdr.set_array(arrays)
-	*/
+	mdr->set_array(arrays);
 }
+
 bool MDREDMeshUtils::add_triangulated_mesh_from_points_delaunay(Ref<MeshDataResource> mdr, PoolVector3Array selected_points, Vector3 last_known_camera_facing) {
-	/*
-	if selected_points.size() < 3:
-		return false
+	if (selected_points.size() < 3) {
+		return false;
+	}
 
-	var tetrahedrons : PoolIntArray = MeshUtils.delaunay3d_tetrahedralize(selected_points)
+	Vector<Vector3> spv;
+	spv.resize(selected_points.size());
 
-	if tetrahedrons.size() == 0:
-		# try randomly displacing the points a bit, it can help
-		var rnd_selected_points : PoolVector3Array = PoolVector3Array()
-		rnd_selected_points.append_array(selected_points)
+	PoolVector3Array::Read r = selected_points.read();
 
-		for i in range(rnd_selected_points.size()):
-			rnd_selected_points[i] = rnd_selected_points[i] + (Vector3(randf(),randf(), randf()) * 0.1)
+	for (int i = 0; i < selected_points.size(); ++i) {
+		spv.write[i] = r[i];
+	}
 
-		tetrahedrons = MeshUtils.delaunay3d_tetrahedralize(rnd_selected_points)
+	r.release();
 
-		if tetrahedrons.size() == 0:
-			print("add_triangulated_mesh_from_points_delaunay: tetrahedrons.size() == 0!")
-			return false
+	PoolIntArray tetrahedrons = MeshUtils::get_singleton()->delaunay3d_tetrahedralize(spv);
 
-	var st : SurfaceTool = SurfaceTool.new()
+	if (tetrahedrons.size() == 0) {
+		// try randomly displacing the points a bit, it can help
+		Vector<Vector3> rnd_selected_points;
+		rnd_selected_points.append_array(spv);
 
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+		for (int i = 0; i < rnd_selected_points.size(); ++i) {
+			rnd_selected_points.write[i] = rnd_selected_points[i] + (Vector3(Math::randf(), Math::randf(), Math::randf()) * 0.1);
+		}
 
-	for i in range(0, tetrahedrons.size(), 4):
-		var i0 : int = tetrahedrons[i]
-		var i1 : int = tetrahedrons[i + 1]
-		var i2 : int = tetrahedrons[i + 2]
-		var i3 : int = tetrahedrons[i + 3]
+		tetrahedrons = MeshUtils::get_singleton()->delaunay3d_tetrahedralize(rnd_selected_points);
 
-		var v0 : Vector3 = selected_points[i0]
-		var v1 : Vector3 = selected_points[i1]
-		var v2 : Vector3 = selected_points[i2]
-		var v3 : Vector3 = selected_points[i3]
+		if (tetrahedrons.size() == 0) {
+			print_error("add_triangulated_mesh_from_points_delaunay: tetrahedrons.size() == 0!");
+			return false;
+		}
+	}
 
-		var flip : bool = is_normal_similar(v0, v1, v2, last_known_camera_facing)
+	Ref<SurfaceTool> st;
+	st.instance();
 
-		var normal : Vector3 = get_face_normal(v0, v1, v2, flip)
+	st->begin(Mesh::PRIMITIVE_TRIANGLES);
 
-		st.add_uv(Vector2(0, 1))
-		st.add_normal(normal)
-		st.add_vertex(v0)
-		st.add_uv(Vector2(0.5, 0))
-		st.add_normal(normal)
-		st.add_vertex(v1)
-		st.add_uv(Vector2(1, 1))
-		st.add_normal(normal)
-		st.add_vertex(v2)
-		st.add_uv(Vector2(1, 1))
-		st.add_normal(normal)
-		st.add_vertex(v3)
+	for (int i = 0; i < tetrahedrons.size(); i += 4) {
+		int i0 = tetrahedrons[i];
+		int i1 = tetrahedrons[i + 1];
+		int i2 = tetrahedrons[i + 2];
+		int i3 = tetrahedrons[i + 3];
 
-		var im3 : int = i
+		Vector3 v0 = selected_points[i0];
+		Vector3 v1 = selected_points[i1];
+		Vector3 v2 = selected_points[i2];
+		Vector3 v3 = selected_points[i3];
 
-		if !flip:
-			st.add_index(im3 + 0)
-			st.add_index(im3 + 1)
-			st.add_index(im3 + 2)
+		bool flip = is_normal_similar(v0, v1, v2, last_known_camera_facing);
 
-			st.add_index(im3 + 0)
-			st.add_index(im3 + 2)
-			st.add_index(im3 + 3)
-		else:
-			st.add_index(im3 + 3)
-			st.add_index(im3 + 2)
-			st.add_index(im3 + 0)
+		Vector3 normal = get_face_normal(v0, v1, v2, flip);
 
-			st.add_index(im3 + 2)
-			st.add_index(im3 + 1)
-			st.add_index(im3 + 0)
+		st->add_uv(Vector2(0, 1));
+		st->add_normal(normal);
+		st->add_vertex(v0);
+		st->add_uv(Vector2(0.5, 0));
+		st->add_normal(normal);
+		st->add_vertex(v1);
+		st->add_uv(Vector2(1, 1));
+		st->add_normal(normal);
+		st->add_vertex(v2);
+		st->add_uv(Vector2(1, 1));
+		st->add_normal(normal);
+		st->add_vertex(v3);
 
-	merge_in_surface_tool(mdr, st)
+		int im3 = i;
 
-	return true
-	*/
+		if (!flip) {
+			st->add_index(im3 + 0);
+			st->add_index(im3 + 1);
+			st->add_index(im3 + 2);
+
+			st->add_index(im3 + 0);
+			st->add_index(im3 + 2);
+			st->add_index(im3 + 3);
+		} else {
+			st->add_index(im3 + 3);
+			st->add_index(im3 + 2);
+			st->add_index(im3 + 0);
+
+			st->add_index(im3 + 2);
+			st->add_index(im3 + 1);
+			st->add_index(im3 + 0);
+		}
+	}
+
+	merge_in_surface_tool(mdr, st);
+
+	return true;
 }
+
 void MDREDMeshUtils::add_triangulated_mesh_from_points(Ref<MeshDataResource> mdr, PoolVector3Array selected_points, Vector3 last_known_camera_facing) {
-	/*
-	if selected_points.size() < 3:
-		return
+	if (selected_points.size() < 3) {
+		return;
+	}
 
-	var st : SurfaceTool = SurfaceTool.new()
+	Ref<SurfaceTool> st;
+	st.instance();
 
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	st->begin(Mesh::PRIMITIVE_TRIANGLES);
 
-	var v0 : Vector3 = selected_points[0]
-	var v1 : Vector3 = selected_points[1]
+	Vector3 v0 = selected_points[0];
+	Vector3 v1 = selected_points[1];
 
-	for i in range(2, selected_points.size()):
-		var v2 : Vector3 = selected_points[i]
+	for (int i = 2; i < selected_points.size(); ++i) {
+		Vector3 v2 = selected_points[i];
 
-		var flip : bool = is_normal_similar(v0, v1, v2, last_known_camera_facing)
+		bool flip = is_normal_similar(v0, v1, v2, last_known_camera_facing);
 
-		var normal : Vector3 = get_face_normal(v0, v1, v2, flip)
+		Vector3 normal = get_face_normal(v0, v1, v2, flip);
 
-		st.add_uv(Vector2(0, 1))
-		st.add_normal(normal)
-		st.add_vertex(v0)
-		st.add_uv(Vector2(0.5, 0))
-		st.add_normal(normal)
-		st.add_vertex(v1)
-		st.add_uv(Vector2(1, 1))
-		st.add_normal(normal)
-		st.add_vertex(v2)
+		st->add_uv(Vector2(0, 1));
+		st->add_normal(normal);
+		st->add_vertex(v0);
+		st->add_uv(Vector2(0.5, 0));
+		st->add_normal(normal);
+		st->add_vertex(v1);
+		st->add_uv(Vector2(1, 1));
+		st->add_normal(normal);
+		st->add_vertex(v2);
 
-		var im3 : int = (i - 2) * 3
+		int im3 = (i - 2) * 3;
 
-		if !flip:
-			st.add_index(im3)
-			st.add_index(im3 + 1)
-			st.add_index(im3 + 2)
-		else:
-			st.add_index(im3 + 2)
-			st.add_index(im3 + 1)
-			st.add_index(im3)
+		if (!flip) {
+			st->add_index(im3);
+			st->add_index(im3 + 1);
+			st->add_index(im3 + 2);
+		} else {
+			st->add_index(im3 + 2);
+			st->add_index(im3 + 1);
+			st->add_index(im3);
+		}
+	}
 
-	merge_in_surface_tool(mdr, st)
-	*/
+	merge_in_surface_tool(mdr, st);
 }
 
 // Appends a triangle to the mesh. It's created from miroring v2 to the ev0, and ev1 edge
 void MDREDMeshUtils::append_triangle_to_tri_edge(Ref<MeshDataResource> mdr, Vector3 ev0, Vector3 ev1, Vector3 v2) {
- /*
-	var vref : Vector3 = reflect_vertex(ev0, ev1, v2)
+	Vector3 vref = reflect_vertex(ev0, ev1, v2);
 
-	add_triangle_at(mdr, ev1, ev0, vref, false)
- */
+	add_triangle_at(mdr, ev1, ev0, vref, false);
 }
 
-void MDREDMeshUtils::add_triangle_at(Ref<MeshDataResource> mdr, Vector3 v0, Vector3 v1, Vector3 v2, bool flip = false) {
-	/*
-	var st : SurfaceTool = SurfaceTool.new()
+void MDREDMeshUtils::add_triangle_at(Ref<MeshDataResource> mdr, Vector3 v0, Vector3 v1, Vector3 v2, bool flip) {
+	Ref<SurfaceTool> st;
+	st.instance();
 
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	st->begin(Mesh::PRIMITIVE_TRIANGLES);
 
-	var normal : Vector3 = get_face_normal(v0, v1, v2, flip)
+	Vector3 normal = get_face_normal(v0, v1, v2, flip);
 
-	st.add_uv(Vector2(0, 1))
-	st.add_normal(normal)
-	st.add_vertex(v0)
-	st.add_uv(Vector2(0.5, 0))
-	st.add_normal(normal)
-	st.add_vertex(v1)
-	st.add_uv(Vector2(1, 1))
-	st.add_normal(normal)
-	st.add_vertex(v2)
+	st->add_uv(Vector2(0, 1));
+	st->add_normal(normal);
+	st->add_vertex(v0);
+	st->add_uv(Vector2(0.5, 0));
+	st->add_normal(normal);
+	st->add_vertex(v1);
+	st->add_uv(Vector2(1, 1));
+	st->add_normal(normal);
+	st->add_vertex(v2);
 
-	if !flip:
-		st.add_index(0)
-		st.add_index(1)
-		st.add_index(2)
-	else:
-		st.add_index(2)
-		st.add_index(1)
-		st.add_index(0)
+	if (!flip) {
+		st->add_index(0);
+		st->add_index(1);
+		st->add_index(2);
+	} else {
+		st->add_index(2);
+		st->add_index(1);
+		st->add_index(0);
+	}
 
-	merge_in_surface_tool(mdr, st)
-
-	*/
+	merge_in_surface_tool(mdr, st);
 }
 
 void MDREDMeshUtils::add_triangle(Ref<MeshDataResource> mdr) {
-	/*
-	var st : SurfaceTool = SurfaceTool.new()
+	Ref<SurfaceTool> st;
+	st.instance();
 
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	st->begin(Mesh::PRIMITIVE_TRIANGLES);
 
-	var normal : Vector3 = get_face_normal(Vector3(-0.5, -0.5, 0), Vector3(0, 0.5, 0), Vector3(0.5, -0.5, 0))
+	Vector3 normal = get_face_normal(Vector3(-0.5, -0.5, 0), Vector3(0, 0.5, 0), Vector3(0.5, -0.5, 0));
 
-	st.add_uv(Vector2(0, 1))
-	st.add_normal(normal)
-	st.add_vertex(Vector3(-0.5, -0.5, 0))
-	st.add_uv(Vector2(0.5, 0))
-	st.add_normal(normal)
-	st.add_vertex(Vector3(0, 0.5, 0))
-	st.add_uv(Vector2(1, 1))
-	st.add_normal(normal)
-	st.add_vertex(Vector3(0.5, -0.5, 0))
+	st->add_uv(Vector2(0, 1));
+	st->add_normal(normal);
+	st->add_vertex(Vector3(-0.5, -0.5, 0));
+	st->add_uv(Vector2(0.5, 0));
+	st->add_normal(normal);
+	st->add_vertex(Vector3(0, 0.5, 0));
+	st->add_uv(Vector2(1, 1));
+	st->add_normal(normal);
+	st->add_vertex(Vector3(0.5, -0.5, 0));
 
-	st.add_index(0)
-	st.add_index(1)
-	st.add_index(2)
+	st->add_index(0);
+	st->add_index(1);
+	st->add_index(2);
 
-	merge_in_surface_tool(mdr, st)
-	*/
+	merge_in_surface_tool(mdr, st);
 }
 
 // Appends a quad to the mesh. It's created to the opposite side of v2 to the ev0, and ev1 edge
 void MDREDMeshUtils::append_quad_to_tri_edge(Ref<MeshDataResource> mdr, Vector3 ev0, Vector3 ev1, Vector3 v2) {
-	/*
-	var vref : Vector3 = reflect_vertex(ev0, ev1, v2)
-	var vproj : Vector3 = (vref - ev0).project(ev1 - ev0)
-	var eoffs : Vector3 = (vref - ev0) - vproj
+	Vector3 vref = reflect_vertex(ev0, ev1, v2);
+	Vector3 vproj = (vref - ev0).project(ev1 - ev0);
+	Vector3 eoffs = (vref - ev0) - vproj;
 
-	var qv0 : Vector3 = ev0
-	var qv1 : Vector3 = ev0 + eoffs
-	var qv2 : Vector3 = ev1 + eoffs
-	var qv3 : Vector3 = ev1
+	Vector3 qv0 = ev0;
+	Vector3 qv1 = ev0 + eoffs;
+	Vector3 qv2 = ev1 + eoffs;
+	Vector3 qv3 = ev1;
 
-	add_quad_at(mdr, qv0, qv1, qv2, qv3, false)
-	*/
+	add_quad_at(mdr, qv0, qv1, qv2, qv3, false);
 }
-void MDREDMeshUtils::add_quad_at(Ref<MeshDataResource> mdr, Vector3 v0, Vector3 v1, Vector3 v2, Vector3 v3, bool flip = false) {
-	/*
-	var st : SurfaceTool = SurfaceTool.new()
 
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+void MDREDMeshUtils::add_quad_at(Ref<MeshDataResource> mdr, Vector3 v0, Vector3 v1, Vector3 v2, Vector3 v3, bool flip) {
+	Ref<SurfaceTool> st;
+	st.instance();
 
-	var normal : Vector3 = get_face_normal(v0, v1, v2, flip)
+	st->begin(Mesh::PRIMITIVE_TRIANGLES);
 
-	st.add_uv(Vector2(0, 1))
-	st.add_normal(normal)
-	st.add_vertex(v0)
-	st.add_uv(Vector2(0, 0))
-	st.add_normal(normal)
-	st.add_vertex(v1)
-	st.add_uv(Vector2(1, 0))
-	st.add_normal(normal)
-	st.add_vertex(v2)
-	st.add_uv(Vector2(1, 1))
-	st.add_normal(normal)
-	st.add_vertex(v3)
+	Vector3 normal = get_face_normal(v0, v1, v2, flip);
 
+	st->add_uv(Vector2(0, 1));
+	st->add_normal(normal);
+	st->add_vertex(v0);
+	st->add_uv(Vector2(0, 0));
+	st->add_normal(normal);
+	st->add_vertex(v1);
+	st->add_uv(Vector2(1, 0));
+	st->add_normal(normal);
+	st->add_vertex(v2);
+	st->add_uv(Vector2(1, 1));
+	st->add_normal(normal);
+	st->add_vertex(v3);
 
-	if !flip:
-		st.add_index(0)
-		st.add_index(1)
-		st.add_index(2)
+	if (!flip) {
+		st->add_index(0);
+		st->add_index(1);
+		st->add_index(2);
 
-		st.add_index(0)
-		st.add_index(2)
-		st.add_index(3)
-	else:
-		st.add_index(2)
-		st.add_index(1)
-		st.add_index(0)
+		st->add_index(0);
+		st->add_index(2);
+		st->add_index(3);
+	} else {
+		st->add_index(2);
+		st->add_index(1);
+		st->add_index(0);
 
-		st.add_index(3)
-		st.add_index(2)
-		st.add_index(0)
+		st->add_index(3);
+		st->add_index(2);
+		st->add_index(0);
+	}
 
-	merge_in_surface_tool(mdr, st)
-
-	*/
+	merge_in_surface_tool(mdr, st);
 }
+
 void MDREDMeshUtils::add_quad(Ref<MeshDataResource> mdr) {
-	/*
-	var st : SurfaceTool = SurfaceTool.new()
+	Ref<SurfaceTool> st;
+	st.instance();
 
-	var normal : Vector3 = get_face_normal(Vector3(-0.5, -0.5, 0), Vector3(-0.5, 0.5, 0), Vector3(0.5, 0.5, 0))
+	Vector3 normal = get_face_normal(Vector3(-0.5, -0.5, 0), Vector3(-0.5, 0.5, 0), Vector3(0.5, 0.5, 0));
 
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	st->begin(Mesh::PRIMITIVE_TRIANGLES);
 
-	st.add_uv(Vector2(0, 1))
-	st.add_normal(normal)
-	st.add_vertex(Vector3(-0.5, -0.5, 0))
-	st.add_uv(Vector2(0, 0))
-	st.add_normal(normal)
-	st.add_vertex(Vector3(-0.5, 0.5, 0))
-	st.add_uv(Vector2(1, 0))
-	st.add_normal(normal)
-	st.add_vertex(Vector3(0.5, 0.5, 0))
-	st.add_uv(Vector2(1, 1))
-	st.add_normal(normal)
-	st.add_vertex(Vector3(0.5, -0.5, 0))
+	st->add_uv(Vector2(0, 1));
+	st->add_normal(normal);
+	st->add_vertex(Vector3(-0.5, -0.5, 0));
+	st->add_uv(Vector2(0, 0));
+	st->add_normal(normal);
+	st->add_vertex(Vector3(-0.5, 0.5, 0));
+	st->add_uv(Vector2(1, 0));
+	st->add_normal(normal);
+	st->add_vertex(Vector3(0.5, 0.5, 0));
+	st->add_uv(Vector2(1, 1));
+	st->add_normal(normal);
+	st->add_vertex(Vector3(0.5, -0.5, 0));
 
-	st.add_index(0)
-	st.add_index(1)
-	st.add_index(2)
-	st.add_index(2)
-	st.add_index(3)
-	st.add_index(0)
+	st->add_index(0);
+	st->add_index(1);
+	st->add_index(2);
+	st->add_index(2);
+	st->add_index(3);
+	st->add_index(0);
 
-	merge_in_surface_tool(mdr, st)
-	*/
+	merge_in_surface_tool(mdr, st);
 }
+
 void MDREDMeshUtils::add_box(Ref<MeshDataResource> mdr) {
-	/*
-	var st : SurfaceTool = SurfaceTool.new()
+	Ref<SurfaceTool> st;
+	st.instance();
 
-	var normal : Vector3 = Vector3()
+	Vector3 normal = Vector3();
 
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	st->begin(Mesh::PRIMITIVE_TRIANGLES);
 
-	var sgn : float = 1
+	float sgn = 1;
 
-	#z
-	for i in range(2):
-		normal = get_face_normal(Vector3(-0.5, -0.5, sgn * 0.5), Vector3(-0.5, 0.5, sgn * 0.5), Vector3(0.5, 0.5, sgn * 0.5), sgn < 0)
+	//z
+	for (int i = 0; i < 2; ++i) {
+		normal = get_face_normal(Vector3(-0.5, -0.5, sgn * 0.5), Vector3(-0.5, 0.5, sgn * 0.5), Vector3(0.5, 0.5, sgn * 0.5), sgn < 0);
 
-		st.add_uv(Vector2(0, 1))
-		st.add_normal(normal)
-		st.add_vertex(Vector3(-0.5, -0.5, sgn * 0.5))
-		st.add_uv(Vector2(0, 0))
-		st.add_normal(normal)
-		st.add_vertex(Vector3(-0.5, 0.5, sgn * 0.5))
-		st.add_uv(Vector2(1, 0))
-		st.add_normal(normal)
-		st.add_vertex(Vector3(0.5, 0.5, sgn * 0.5))
-		st.add_uv(Vector2(1, 1))
-		st.add_normal(normal)
-		st.add_vertex(Vector3(0.5, -0.5, sgn * 0.5))
+		st->add_uv(Vector2(0, 1));
+		st->add_normal(normal);
+		st->add_vertex(Vector3(-0.5, -0.5, sgn * 0.5));
+		st->add_uv(Vector2(0, 0));
+		st->add_normal(normal);
+		st->add_vertex(Vector3(-0.5, 0.5, sgn * 0.5));
+		st->add_uv(Vector2(1, 0));
+		st->add_normal(normal);
+		st->add_vertex(Vector3(0.5, 0.5, sgn * 0.5));
+		st->add_uv(Vector2(1, 1));
+		st->add_normal(normal);
+		st->add_vertex(Vector3(0.5, -0.5, sgn * 0.5));
 
-		sgn *= -1
+		sgn *= -1;
+	}
 
-	#x
-	for i in range(2):
-		normal = get_face_normal(Vector3(sgn * 0.5, -0.5, 0.5), Vector3(sgn * 0.5, 0.5, 0.5), Vector3(sgn * 0.5, 0.5, -0.5), sgn < 0)
+	//x
+	for (int i = 0; i < 2; ++i) {
+		normal = get_face_normal(Vector3(sgn * 0.5, -0.5, 0.5), Vector3(sgn * 0.5, 0.5, 0.5), Vector3(sgn * 0.5, 0.5, -0.5), sgn < 0);
 
-		st.add_uv(Vector2(0, 1))
-		st.add_normal(normal)
-		st.add_vertex(Vector3(sgn * 0.5, -0.5, 0.5))
-		st.add_uv(Vector2(0, 0))
-		st.add_normal(normal)
-		st.add_vertex(Vector3(sgn * 0.5, 0.5, 0.5))
-		st.add_uv(Vector2(1, 0))
-		st.add_normal(normal)
-		st.add_vertex(Vector3(sgn * 0.5, 0.5, -0.5))
-		st.add_uv(Vector2(1, 1))
-		st.add_normal(normal)
-		st.add_vertex(Vector3(sgn * 0.5, -0.5, -0.5))
+		st->add_uv(Vector2(0, 1));
+		st->add_normal(normal);
+		st->add_vertex(Vector3(sgn * 0.5, -0.5, 0.5));
+		st->add_uv(Vector2(0, 0));
+		st->add_normal(normal);
+		st->add_vertex(Vector3(sgn * 0.5, 0.5, 0.5));
+		st->add_uv(Vector2(1, 0));
+		st->add_normal(normal);
+		st->add_vertex(Vector3(sgn * 0.5, 0.5, -0.5));
+		st->add_uv(Vector2(1, 1));
+		st->add_normal(normal);
+		st->add_vertex(Vector3(sgn * 0.5, -0.5, -0.5));
 
-		sgn *= -1
+		sgn *= -1;
+	}
 
-	#y
-	for i in range(2):
-		normal = get_face_normal(Vector3(-0.5, sgn * 0.5, 0.5), Vector3(-0.5, sgn * 0.5, -0.5), Vector3(0.5, sgn * 0.5, -0.5), sgn < 0)
+	//y
+	for (int i = 0; i < 2; ++i) {
+		normal = get_face_normal(Vector3(-0.5, sgn * 0.5, 0.5), Vector3(-0.5, sgn * 0.5, -0.5), Vector3(0.5, sgn * 0.5, -0.5), sgn < 0);
 
-		st.add_uv(Vector2(0, 1))
-		st.add_normal(normal)
-		st.add_vertex(Vector3(-0.5, sgn * 0.5, 0.5))
-		st.add_uv(Vector2(0, 0))
-		st.add_normal(normal)
-		st.add_vertex(Vector3(-0.5, sgn * 0.5, -0.5))
-		st.add_uv(Vector2(1, 0))
-		st.add_normal(normal)
-		st.add_vertex(Vector3(0.5, sgn * 0.5, -0.5))
-		st.add_uv(Vector2(1, 1))
-		st.add_normal(normal)
-		st.add_vertex(Vector3(0.5, sgn * 0.5, 0.5))
+		st->add_uv(Vector2(0, 1));
+		st->add_normal(normal);
+		st->add_vertex(Vector3(-0.5, sgn * 0.5, 0.5));
+		st->add_uv(Vector2(0, 0));
+		st->add_normal(normal);
+		st->add_vertex(Vector3(-0.5, sgn * 0.5, -0.5));
+		st->add_uv(Vector2(1, 0));
+		st->add_normal(normal);
+		st->add_vertex(Vector3(0.5, sgn * 0.5, -0.5));
+		st->add_uv(Vector2(1, 1));
+		st->add_normal(normal);
+		st->add_vertex(Vector3(0.5, sgn * 0.5, 0.5));
 
+		sgn *= -1;
+	}
 
-		sgn *= -1
+	int ind = 0;
 
-	var ind : int = 0
+	for (int i = 0; i < 3; ++i) {
+		st->add_index(ind + 0);
+		st->add_index(ind + 1);
+		st->add_index(ind + 2);
+		st->add_index(ind + 2);
+		st->add_index(ind + 3);
+		st->add_index(ind + 0);
 
-	for i in range(3):
-		st.add_index(ind + 0)
-		st.add_index(ind + 1)
-		st.add_index(ind + 2)
-		st.add_index(ind + 2)
-		st.add_index(ind + 3)
-		st.add_index(ind + 0)
+		ind += 4;
 
-		ind += 4
+		st->add_index(ind + 0);
+		st->add_index(ind + 2);
+		st->add_index(ind + 1);
+		st->add_index(ind + 0);
+		st->add_index(ind + 3);
+		st->add_index(ind + 2);
 
-		st.add_index(ind + 0)
-		st.add_index(ind + 2)
-		st.add_index(ind + 1)
-		st.add_index(ind + 0)
-		st.add_index(ind + 3)
-		st.add_index(ind + 2)
+		ind += 4;
+	}
 
-		ind += 4
-
-	merge_in_surface_tool(mdr, st)
-	*/
+	merge_in_surface_tool(mdr, st);
 }
-void MDREDMeshUtils::merge_in_surface_tool(Ref<MeshDataResource> mdr, Ref<SurfaceTool> st, bool generate_normals_if_needed = true, bool generate_tangents_if_needed = true) {
-	/*
-	var arrays : Array = get_arrays_prepared(mdr)
 
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		arrays.resize(ArrayMesh.ARRAY_MAX)
+void MDREDMeshUtils::merge_in_surface_tool(Ref<MeshDataResource> mdr, Ref<SurfaceTool> st, bool generate_normals_if_needed, bool generate_tangents_if_needed) {
+	Array arrays = get_arrays_prepared(mdr);
 
-	if generate_normals_if_needed && arrays[ArrayMesh.ARRAY_NORMAL] == null:
-		#st.generate_normals()
-		generate_normals_mdr(mdr)
+	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
+		arrays.resize(ArrayMesh::ARRAY_MAX);
+	}
 
-	if generate_tangents_if_needed && arrays[ArrayMesh.ARRAY_TANGENT] == null:
-		st.generate_tangents()
+	if (generate_normals_if_needed && arrays[ArrayMesh::ARRAY_NORMAL].is_null()) {
+		//st->generate_normals();
+		generate_normals_mdr(mdr);
+	}
 
-	merge_in_arrays(mdr, st.commit_to_arrays())
-	*/
+	if (generate_tangents_if_needed && arrays[ArrayMesh::ARRAY_TANGENT].is_null()) {
+		st->generate_tangents();
+	}
+
+	merge_in_arrays(mdr, st->commit_to_arrays());
 }
 void MDREDMeshUtils::merge_in_arrays(Ref<MeshDataResource> mdr, Array merge) {
-	/*
-	var arrays : Array = mdr.get_array()
+	Array arrays = mdr->get_array();
 
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		arrays.resize(ArrayMesh.ARRAY_MAX)
+	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
+		arrays.resize(ArrayMesh::ARRAY_MAX);
+	}
 
-	var vertices : PoolVector3Array
-	var normals : PoolVector3Array
-	var tangents : PoolRealArray
-	var colors : PoolColorArray
-	var uv : PoolVector2Array
-	var uv2 : PoolVector2Array
-	var bones : PoolRealArray
-	var weights : PoolRealArray
-	var indices : PoolIntArray
+	PoolVector3Array vertices;
+	PoolVector3Array normals;
+	PoolRealArray tangents;
+	PoolColorArray colors;
+	PoolVector2Array uv;
+	PoolVector2Array uv2;
+	PoolRealArray bones;
+	PoolRealArray weights;
+	PoolIntArray indices;
 
-	if arrays[ArrayMesh.ARRAY_VERTEX] != null:
-		vertices = arrays[ArrayMesh.ARRAY_VERTEX]
+	if (!arrays[ArrayMesh::ARRAY_VERTEX].is_null()) {
+		vertices = arrays[ArrayMesh::ARRAY_VERTEX];
+	}
 
-	if arrays[ArrayMesh.ARRAY_NORMAL] != null:
-		normals = arrays[ArrayMesh.ARRAY_NORMAL]
+	if (!arrays[ArrayMesh::ARRAY_NORMAL].is_null()) {
+		normals = arrays[ArrayMesh::ARRAY_NORMAL];
+	}
 
-	if arrays[ArrayMesh.ARRAY_TANGENT] != null:
-		tangents = arrays[ArrayMesh.ARRAY_TANGENT]
+	if (!arrays[ArrayMesh::ARRAY_TANGENT].is_null()) {
+		tangents = arrays[ArrayMesh::ARRAY_TANGENT];
+	}
 
-	if arrays[ArrayMesh.ARRAY_COLOR] != null:
-		colors = arrays[ArrayMesh.ARRAY_COLOR]
+	if (!arrays[ArrayMesh::ARRAY_COLOR].is_null()) {
+		colors = arrays[ArrayMesh::ARRAY_COLOR];
+	}
 
-	if arrays[ArrayMesh.ARRAY_TEX_UV] != null:
-		uv = arrays[ArrayMesh.ARRAY_TEX_UV]
+	if (!arrays[ArrayMesh::ARRAY_TEX_UV].is_null()) {
+		uv = arrays[ArrayMesh::ARRAY_TEX_UV];
+	}
 
-	if arrays[ArrayMesh.ARRAY_TEX_UV2] != null:
-		uv2 = arrays[ArrayMesh.ARRAY_TEX_UV2]
+	if (!arrays[ArrayMesh::ARRAY_TEX_UV2].is_null()) {
+		uv2 = arrays[ArrayMesh::ARRAY_TEX_UV2];
+	}
 
-	if arrays[ArrayMesh.ARRAY_BONES] != null:
-		bones = arrays[ArrayMesh.ARRAY_BONES]
+	if (!arrays[ArrayMesh::ARRAY_BONES].is_null()) {
+		bones = arrays[ArrayMesh::ARRAY_BONES];
+	}
 
-	if arrays[ArrayMesh.ARRAY_WEIGHTS] != null:
-		weights = arrays[ArrayMesh.ARRAY_WEIGHTS]
+	if (!arrays[ArrayMesh::ARRAY_WEIGHTS].is_null()) {
+		weights = arrays[ArrayMesh::ARRAY_WEIGHTS];
+	}
 
-	if arrays[ArrayMesh.ARRAY_INDEX] != null:
-		indices = arrays[ArrayMesh.ARRAY_INDEX]
+	if (!arrays[ArrayMesh::ARRAY_INDEX].is_null()) {
+		indices = arrays[ArrayMesh::ARRAY_INDEX];
+	}
 
-	var merge_vertices : PoolVector3Array
-	var merge_normals : PoolVector3Array
-	var merge_tangents : PoolRealArray
-	var merge_colors : PoolColorArray
-	var merge_uv : PoolVector2Array
-	var merge_uv2 : PoolVector2Array
-	var merge_bones : PoolRealArray
-	var merge_weights : PoolRealArray
-	var merge_indices : PoolIntArray
+	PoolVector3Array merge_vertices;
+	PoolVector3Array merge_normals;
+	PoolRealArray merge_tangents;
+	PoolColorArray merge_colors;
+	PoolVector2Array merge_uv;
+	PoolVector2Array merge_uv2;
+	PoolRealArray merge_bones;
+	PoolRealArray merge_weights;
+	PoolIntArray merge_indices;
 
-	if merge[ArrayMesh.ARRAY_VERTEX] != null:
-		merge_vertices = merge[ArrayMesh.ARRAY_VERTEX]
+	if (!merge[ArrayMesh::ARRAY_VERTEX].is_null()) {
+		merge_vertices = merge[ArrayMesh::ARRAY_VERTEX];
+	}
 
-	if merge[ArrayMesh.ARRAY_NORMAL] != null:
-		merge_normals = merge[ArrayMesh.ARRAY_NORMAL]
+	if (!merge[ArrayMesh::ARRAY_NORMAL].is_null()) {
+		merge_normals = merge[ArrayMesh::ARRAY_NORMAL];
+	}
 
-	if merge[ArrayMesh.ARRAY_TANGENT] != null:
-		merge_tangents = merge[ArrayMesh.ARRAY_TANGENT]
+	if (!merge[ArrayMesh::ARRAY_TANGENT].is_null()) {
+		merge_tangents = merge[ArrayMesh::ARRAY_TANGENT];
+	}
 
-	if merge[ArrayMesh.ARRAY_COLOR] != null:
-		merge_colors = merge[ArrayMesh.ARRAY_COLOR]
+	if (!merge[ArrayMesh::ARRAY_COLOR].is_null()) {
+		merge_colors = merge[ArrayMesh::ARRAY_COLOR];
+	}
 
-	if merge[ArrayMesh.ARRAY_TEX_UV] != null:
-		merge_uv = merge[ArrayMesh.ARRAY_TEX_UV]
+	if (!merge[ArrayMesh::ARRAY_TEX_UV].is_null()) {
+		merge_uv = merge[ArrayMesh::ARRAY_TEX_UV];
+	}
 
-	if merge[ArrayMesh.ARRAY_TEX_UV2] != null:
-		merge_uv2 = merge[ArrayMesh.ARRAY_TEX_UV2]
+	if (!merge[ArrayMesh::ARRAY_TEX_UV2].is_null()) {
+		merge_uv2 = merge[ArrayMesh::ARRAY_TEX_UV2];
+	}
 
-	if merge[ArrayMesh.ARRAY_BONES] != null:
-		merge_bones = merge[ArrayMesh.ARRAY_BONES]
+	if (!merge[ArrayMesh::ARRAY_BONES].is_null()) {
+		merge_bones = merge[ArrayMesh::ARRAY_BONES];
+	}
 
-	if merge[ArrayMesh.ARRAY_WEIGHTS] != null:
-		merge_weights = merge[ArrayMesh.ARRAY_WEIGHTS]
+	if (!merge[ArrayMesh::ARRAY_WEIGHTS].is_null()) {
+		merge_weights = merge[ArrayMesh::ARRAY_WEIGHTS];
+	}
 
-	if merge[ArrayMesh.ARRAY_INDEX] != null:
-		merge_indices = merge[ArrayMesh.ARRAY_INDEX]
+	if (!merge[ArrayMesh::ARRAY_INDEX].is_null()) {
+		merge_indices = merge[ArrayMesh::ARRAY_INDEX];
+	}
 
-	#merge
-	var ovc : int = vertices.size()
-	vertices.append_array(merge_vertices)
+	//merge
+	int ovc = vertices.size();
+	vertices.append_array(merge_vertices);
 
-	if arrays[ArrayMesh.ARRAY_NORMAL] != null:
-		if merge_vertices.size() != merge_normals.size():
-			for i in range(merge_vertices.size()):
-				normals.append(Vector3())
-		else:
-			normals.append_array(merge_normals)
+	if (!arrays[ArrayMesh::ARRAY_NORMAL].is_null()) {
+		if (merge_vertices.size() != merge_normals.size()) {
+			for (int i = 0; i < merge_vertices.size(); ++i) {
+				normals.append(Vector3());
+			}
+		} else {
+			normals.append_array(merge_normals);
+		}
+	}
 
-	if arrays[ArrayMesh.ARRAY_TANGENT] != null:
-		if merge_vertices.size() != merge_tangents.size() * 4:
-			for i in range(merge_vertices.size()):
-				merge_tangents.append(0)
-				merge_tangents.append(0)
-				merge_tangents.append(0)
-				merge_tangents.append(0)
-		else:
-			tangents.append_array(merge_tangents)
+	if (!arrays[ArrayMesh::ARRAY_TANGENT].is_null()) {
+		if (merge_vertices.size() != merge_tangents.size() * 4) {
+			for (int i = 0; i < merge_vertices.size(); ++i) {
+				merge_tangents.append(0);
+				merge_tangents.append(0);
+				merge_tangents.append(0);
+				merge_tangents.append(0);
+			}
+		} else {
+			tangents.append_array(merge_tangents);
+		}
+	}
 
-	if arrays[ArrayMesh.ARRAY_COLOR] != null:
-		if merge_vertices.size() != merge_colors.size():
-			for i in range(merge_vertices.size()):
-				colors.append(Color())
-		else:
-			colors.append_array(merge_colors)
+	if (!arrays[ArrayMesh::ARRAY_COLOR].is_null()) {
+		if (merge_vertices.size() != merge_colors.size()) {
+			for (int i = 0; i < merge_vertices.size(); ++i) {
+				colors.append(Color());
+			}
+		} else {
+			colors.append_array(merge_colors);
+		}
+	}
 
-	if arrays[ArrayMesh.ARRAY_TEX_UV] != null:
-		if merge_vertices.size() != merge_uv.size():
-			for i in range(merge_vertices.size()):
-				uv.append(Vector2())
-		else:
-			uv.append_array(merge_uv)
+	if (!arrays[ArrayMesh::ARRAY_TEX_UV].is_null()) {
+		if (merge_vertices.size() != merge_uv.size()) {
+			for (int i = 0; i < merge_vertices.size(); ++i) {
+				uv.append(Vector2());
+			}
+		} else {
+			uv.append_array(merge_uv);
+		}
+	}
 
-	if arrays[ArrayMesh.ARRAY_TEX_UV2] != null:
-		if merge_vertices.size() != merge_uv2.size():
-			for i in range(merge_vertices.size()):
-				uv2.append(Vector2())
-		else:
-			uv2.append_array(merge_uv2)
+	if (!arrays[ArrayMesh::ARRAY_TEX_UV2].is_null()) {
+		if (merge_vertices.size() != merge_uv2.size()) {
+			for (int i = 0; i < merge_vertices.size(); ++i) {
+				uv2.append(Vector2());
+			}
+		} else {
+			uv2.append_array(merge_uv2);
+		}
+	}
 
-	if arrays[ArrayMesh.ARRAY_BONES] != null:
-		if merge_vertices.size() != merge_bones.size() * 4:
-			for i in range(merge_vertices.size()):
-				bones.append(0)
-				bones.append(0)
-				bones.append(0)
-				bones.append(0)
-		else:
-			bones.append_array(merge_bones)
+	if (!arrays[ArrayMesh::ARRAY_BONES].is_null()) {
+		if (merge_vertices.size() != merge_bones.size() * 4) {
+			for (int i = 0; i < merge_vertices.size(); ++i) {
+				bones.append(0);
+				bones.append(0);
+				bones.append(0);
+				bones.append(0);
+			}
+		} else {
+			bones.append_array(merge_bones);
+		}
+	}
 
-	if arrays[ArrayMesh.ARRAY_WEIGHTS] != null:
-		if merge_vertices.size() != merge_weights.size() * 4:
-			for i in range(merge_vertices.size()):
-				weights.append(0)
-				weights.append(0)
-				weights.append(0)
-				weights.append(0)
-		else:
-			weights.append_array(merge_weights)
+	if (!arrays[ArrayMesh::ARRAY_WEIGHTS].is_null()) {
+		if (merge_vertices.size() != merge_weights.size() * 4) {
+			for (int i = 0; i < merge_vertices.size(); ++i) {
+				weights.append(0);
+				weights.append(0);
+				weights.append(0);
+				weights.append(0);
+			}
+		} else {
+			weights.append_array(merge_weights);
+		}
+	}
 
-	for i in range(merge_indices.size()):
-		merge_indices[i] += ovc
+	for (int i = 0; i < merge_indices.size(); ++i) {
+		merge_indices.set(i, merge_indices[i] + ovc);
+	}
 
-	indices.append_array(merge_indices)
+	indices.append_array(merge_indices);
 
-	#write back
+	//write back
 
-	arrays[ArrayMesh.ARRAY_VERTEX] = vertices
+	arrays[ArrayMesh::ARRAY_VERTEX] = vertices;
 
-	if arrays[ArrayMesh.ARRAY_NORMAL] != null:
-		arrays[ArrayMesh.ARRAY_NORMAL] = normals
+	if (!arrays[ArrayMesh::ARRAY_NORMAL].is_null()) {
+		arrays[ArrayMesh::ARRAY_NORMAL] = normals;
+	}
 
-	if arrays[ArrayMesh.ARRAY_TANGENT] != null:
-		arrays[ArrayMesh.ARRAY_TANGENT] = tangents
+	if (!arrays[ArrayMesh::ARRAY_TANGENT].is_null()) {
+		arrays[ArrayMesh::ARRAY_TANGENT] = tangents;
+	}
 
-	if arrays[ArrayMesh.ARRAY_COLOR] != null:
-		arrays[ArrayMesh.ARRAY_COLOR] = colors
+	if (!arrays[ArrayMesh::ARRAY_COLOR].is_null()) {
+		arrays[ArrayMesh::ARRAY_COLOR] = colors;
+	}
 
-	if arrays[ArrayMesh.ARRAY_TEX_UV] != null:
-		arrays[ArrayMesh.ARRAY_TEX_UV] = uv
+	if (!arrays[ArrayMesh::ARRAY_TEX_UV].is_null()) {
+		arrays[ArrayMesh::ARRAY_TEX_UV] = uv;
+	}
 
-	if arrays[ArrayMesh.ARRAY_TEX_UV2] != null:
-		arrays[ArrayMesh.ARRAY_TEX_UV2] = uv2
+	if (!arrays[ArrayMesh::ARRAY_TEX_UV2].is_null()) {
+		arrays[ArrayMesh::ARRAY_TEX_UV2] = uv2;
+	}
 
-	if arrays[ArrayMesh.ARRAY_BONES] != null:
-		arrays[ArrayMesh.ARRAY_BONES] = bones
+	if (!arrays[ArrayMesh::ARRAY_BONES].is_null()) {
+		arrays[ArrayMesh::ARRAY_BONES] = bones;
+	}
 
-	if arrays[ArrayMesh.ARRAY_WEIGHTS] != null:
-		arrays[ArrayMesh.ARRAY_WEIGHTS] = weights
+	if (!arrays[ArrayMesh::ARRAY_WEIGHTS].is_null()) {
+		arrays[ArrayMesh::ARRAY_WEIGHTS] = weights;
+	}
 
-	arrays[ArrayMesh.ARRAY_INDEX] = indices
+	arrays[ArrayMesh::ARRAY_INDEX] = indices;
 
-	mdr.set_array(arrays)
-	*/
+	mdr->set_array(arrays);
 }
+
 Array MDREDMeshUtils::get_arrays_prepared(Ref<MeshDataResource> mdr) {
-	/*
-	var arrays : Array = mdr.get_array()
+	Array arrays = mdr->get_array();
 
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		arrays.resize(ArrayMesh.ARRAY_MAX)
+	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
+		arrays.resize(ArrayMesh::ARRAY_MAX);
 
-		arrays[ArrayMesh.ARRAY_VERTEX] = PoolVector3Array()
-		arrays[ArrayMesh.ARRAY_NORMAL] = PoolVector3Array()
-		arrays[ArrayMesh.ARRAY_TEX_UV] = PoolVector2Array()
-		arrays[ArrayMesh.ARRAY_INDEX] = PoolIntArray()
+		arrays[ArrayMesh::ARRAY_VERTEX] = PoolVector3Array();
+		arrays[ArrayMesh::ARRAY_NORMAL] = PoolVector3Array();
+		arrays[ArrayMesh::ARRAY_TEX_UV] = PoolVector2Array();
+		arrays[ArrayMesh::ARRAY_INDEX] = PoolIntArray();
+	}
 
-	return arrays
-	*/
+	return arrays;
 }
 
 // There are probably better ways to do this
 bool MDREDMeshUtils::should_flip_reflected_triangle(Vector3 v0, Vector3 v1, Vector3 v2) {
-	/*
-	var reflected : Vector3 = reflect_vertex(v0, v1, v2)
-	var nn : Vector3 = get_face_normal(v0, v1, v2)
+	Vector3 reflected = reflect_vertex(v0, v1, v2);
+	Vector3 nn = get_face_normal(v0, v1, v2);
 
-	return should_triangle_flip(v0, v1, reflected, nn)
-	*/
+	return should_triangle_flip(v0, v1, reflected, nn);
 }
 Vector3 MDREDMeshUtils::reflect_vertex(Vector3 v0, Vector3 v1, Vector3 v2) {
-	/*
-	return (v2 - v0).reflect((v1 - v0).normalized()) + v0
-	*/
+	return (v2 - v0).reflect((v1 - v0).normalized()) + v0;
 }
 
-Vector3 MDREDMeshUtils::get_face_normal_arr_ti(PoolVector3Array verts, PoolIntArray indices, int triangle_index, bool flipped = false) {
-	/*
-	return get_face_normal_arr(verts, indices, triangle_index * 3, flipped)
-	*/
+Vector3 MDREDMeshUtils::get_face_normal_arr_ti(PoolVector3Array verts, PoolIntArray indices, int triangle_index, bool flipped) {
+	return get_face_normal_arr(verts, indices, triangle_index * 3, flipped);
 }
-Vector3 MDREDMeshUtils::get_face_normal_arr(PoolVector3Array verts, PoolIntArray indices, int index, bool flipped = false) {
-	/*
-	var v0 : Vector3 = verts[indices[index]]
-	var v1 : Vector3 = verts[indices[index + 1]]
-	var v2 : Vector3 = verts[indices[index + 2]]
+Vector3 MDREDMeshUtils::get_face_normal_arr(PoolVector3Array verts, PoolIntArray indices, int index, bool flipped) {
+	Vector3 v0 = verts[indices[index]];
+	Vector3 v1 = verts[indices[index + 1]];
+	Vector3 v2 = verts[indices[index + 2]];
 
-	return get_face_normal(v0, v1, v2, flipped)
-	*/
+	return get_face_normal(v0, v1, v2, flipped);
 }
-Vector3 MDREDMeshUtils::get_face_normal(Vector3 v0, Vector3 v1, Vector3 v2, bool flipped = false) {
-	/*
-	if !flipped:
-		return Plane(v0, v1, v2).normal
-	else:
-		return Plane(v2, v1, v0).normal
-	*/
+Vector3 MDREDMeshUtils::get_face_normal(Vector3 v0, Vector3 v1, Vector3 v2, bool flipped) {
+	if (!flipped) {
+		return Plane(v0, v1, v2).normal;
+	} else {
+		return Plane(v2, v1, v0).normal;
+	}
 }
 
 bool MDREDMeshUtils::should_triangle_flip(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 similar_dir_normal) {
-	/*
-	var normal : Vector3 = get_face_normal(v0, v1, v2)
+	Vector3 normal = get_face_normal(v0, v1, v2);
 
-	var ndns : float = normal.dot(similar_dir_normal)
+	float ndns = normal.dot(similar_dir_normal);
 
-	return ndns < 0
-	*/
+	return ndns < 0;
 }
 
 bool MDREDMeshUtils::is_normal_similar(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 similar_dir_normal) {
-	/*
-	var normal : Vector3  = get_face_normal(v0, v1, v2)
+	Vector3 normal = get_face_normal(v0, v1, v2);
 
-	var ndns : float = normal.dot(similar_dir_normal)
+	float ndns = normal.dot(similar_dir_normal);
 
-	return ndns >= 0
-	*/
+	return ndns >= 0;
 }
 bool MDREDMeshUtils::is_direction_similar(Vector3 d0, Vector3 d1) {
-	/*
-	var ndns : float = d0.dot(d1)
-	return ndns >= 0
-	*/
+	float ndns = d0.dot(d1);
+	return ndns >= 0;
 }
 
 void MDREDMeshUtils::flip_triangle_ti(Ref<MeshDataResource> mdr, int triangle_index) {
-	/*
-	flip_triangle(mdr, triangle_index * 3)
-	*/
+	flip_triangle(mdr, triangle_index * 3);
 }
 void MDREDMeshUtils::flip_triangle(Ref<MeshDataResource> mdr, int index) {
-	/*
-	var arrays : Array = mdr.get_array()
+	Array arrays = mdr->get_array();
 
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		arrays.resize(ArrayMesh.ARRAY_MAX)
+	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
+		arrays.resize(ArrayMesh::ARRAY_MAX);
+	}
 
-	if arrays[ArrayMesh.ARRAY_INDEX] == null:
-		return
+	if (arrays[ArrayMesh::ARRAY_INDEX].is_null()) {
+		return;
+	}
 
-	var indices : PoolIntArray = arrays[ArrayMesh.ARRAY_INDEX]
+	PoolIntArray indices = arrays[ArrayMesh::ARRAY_INDEX];
 
-	var i0 : int = indices[index]
-	var i2 : int = indices[index + 2]
+	int i0 = indices[index];
+	int i2 = indices[index + 2];
 
-	indices[index] = i2
-	indices[index + 2] = i0
+	PoolIntArray::Write w = indices.write();
 
-	arrays[ArrayMesh.ARRAY_INDEX] = indices
+	w[index] = i2;
+	w[index + 2] = i0;
 
-	mdr.set_array(arrays)
-	*/
+	w.release();
+
+	arrays[ArrayMesh::ARRAY_INDEX] = indices;
+
+	mdr->set_array(arrays);
 }
 void MDREDMeshUtils::add_into_surface_tool(Ref<MeshDataResource> mdr, Ref<SurfaceTool> st) {
-	/*
-	var arrays : Array = mdr.get_array()
+	Array arrays = mdr->get_array();
 
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		arrays.resize(ArrayMesh.ARRAY_MAX)
+	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
+		arrays.resize(ArrayMesh::ARRAY_MAX);
+	}
 
-	var vertices : PoolVector3Array
-	var normals : PoolVector3Array
-	var tangents : PoolRealArray
-	var colors : PoolColorArray
-	var uv : PoolVector2Array
-	var uv2 : PoolVector2Array
-	var bones : PoolRealArray
-	var weights : PoolRealArray
-	var indices : PoolIntArray
+	PoolVector3Array vertices;
+	PoolVector3Array normals;
+	PoolRealArray tangents;
+	PoolColorArray colors;
+	PoolVector2Array uv;
+	PoolVector2Array uv2;
+	PoolRealArray bones;
+	PoolRealArray weights;
+	PoolIntArray indices;
 
-	if arrays[ArrayMesh.ARRAY_VERTEX] != null:
-		vertices = arrays[ArrayMesh.ARRAY_VERTEX]
+	if (!arrays[ArrayMesh::ARRAY_VERTEX].is_null()) {
+		vertices = arrays[ArrayMesh::ARRAY_VERTEX];
+	}
 
-	if arrays[ArrayMesh.ARRAY_NORMAL] != null:
-		normals = arrays[ArrayMesh.ARRAY_NORMAL]
+	if (!arrays[ArrayMesh::ARRAY_NORMAL].is_null()) {
+		normals = arrays[ArrayMesh::ARRAY_NORMAL];
+	}
 
-	if arrays[ArrayMesh.ARRAY_TANGENT] != null:
-		tangents = arrays[ArrayMesh.ARRAY_TANGENT]
+	if (!arrays[ArrayMesh::ARRAY_TANGENT].is_null()) {
+		tangents = arrays[ArrayMesh::ARRAY_TANGENT];
+	}
 
-	if arrays[ArrayMesh.ARRAY_COLOR] != null:
-		colors = arrays[ArrayMesh.ARRAY_COLOR]
+	if (!arrays[ArrayMesh::ARRAY_COLOR].is_null()) {
+		colors = arrays[ArrayMesh::ARRAY_COLOR];
+	}
 
-	if arrays[ArrayMesh.ARRAY_TEX_UV] != null:
-		uv = arrays[ArrayMesh.ARRAY_TEX_UV]
+	if (!arrays[ArrayMesh::ARRAY_TEX_UV].is_null()) {
+		uv = arrays[ArrayMesh::ARRAY_TEX_UV];
+	}
 
-	if arrays[ArrayMesh.ARRAY_TEX_UV2] != null:
-		uv2 = arrays[ArrayMesh.ARRAY_TEX_UV2]
+	if (!arrays[ArrayMesh::ARRAY_TEX_UV2].is_null()) {
+		uv2 = arrays[ArrayMesh::ARRAY_TEX_UV2];
+	}
 
-	if arrays[ArrayMesh.ARRAY_BONES] != null:
-		bones = arrays[ArrayMesh.ARRAY_BONES]
+	if (!arrays[ArrayMesh::ARRAY_BONES].is_null()) {
+		bones = arrays[ArrayMesh::ARRAY_BONES];
+	}
 
-	if arrays[ArrayMesh.ARRAY_WEIGHTS] != null:
-		weights = arrays[ArrayMesh.ARRAY_WEIGHTS]
+	if (!arrays[ArrayMesh::ARRAY_WEIGHTS].is_null()) {
+		weights = arrays[ArrayMesh::ARRAY_WEIGHTS];
+	}
 
-	if arrays[ArrayMesh.ARRAY_INDEX] != null:
-		indices = arrays[ArrayMesh.ARRAY_INDEX]
+	if (!arrays[ArrayMesh::ARRAY_INDEX].is_null()) {
+		indices = arrays[ArrayMesh::ARRAY_INDEX];
+	}
 
-	for i in range(vertices.size()):
-		if normals.size() > 0:
-			st.add_normal(normals[i])
+	for (int i = 0; i < vertices.size(); ++i) {
+		if (normals.size() > 0) {
+			st->add_normal(normals[i]);
+		}
 
-		if tangents.size() > 0:
-			var ti : int = i * 4
-			st.add_tangent(Plane(tangents[ti], tangents[ti + 1], tangents[ti + 2], tangents[ti + 3]))
+		if (tangents.size() > 0) {
+			int ti = i * 4;
+			st->add_tangent(Plane(tangents[ti], tangents[ti + 1], tangents[ti + 2], tangents[ti + 3]));
+		}
 
-		if colors.size() > 0:
-			st.add_color(colors[i])
+		if (colors.size() > 0) {
+			st->add_color(colors[i]);
+		}
 
-		if uv.size() > 0:
-			st.add_uv(uv[i])
+		if (uv.size() > 0) {
+			st->add_uv(uv[i]);
+		}
 
-		if uv2.size() > 0:
-			st.add_uv2(uv2[i])
+		if (uv2.size() > 0) {
+			st->add_uv2(uv2[i]);
+		}
 
-		if bones.size() > 0:
-			var bi : int = i * 4
+		if (bones.size() > 0) {
+			int bi = i * 4;
+			Vector<int> pia;
 
-			var pia : PoolIntArray = PoolIntArray()
+			pia.push_back(bones[bi]);
+			pia.push_back(bones[bi + 1]);
+			pia.push_back(bones[bi + 1]);
+			pia.push_back(bones[bi + 1]);
 
-			pia.append(bones[bi])
-			pia.append(bones[bi + 1])
-			pia.append(bones[bi + 1])
-			pia.append(bones[bi + 1])
+			st->add_bones(pia);
+		}
 
-			st.add_bones(pia)
+		if (weights.size() > 0) {
+			int bi = i * 4;
+			Vector<float> pia;
 
-		if weights.size() > 0:
-			var bi : int = i * 4
+			pia.push_back(bones[bi]);
+			pia.push_back(bones[bi + 1]);
+			pia.push_back(bones[bi + 2]);
+			pia.push_back(bones[bi + 3]);
 
-			var pia : PoolIntArray = PoolIntArray()
+			st->add_weights(pia);
+		}
 
-			pia.append(bones[bi])
-			pia.append(bones[bi + 1])
-			pia.append(bones[bi + 2])
-			pia.append(bones[bi + 3])
+		st->add_vertex(vertices[i]);
+	}
 
-			st.add_weight(pia)
+	PoolIntArray::Read r = indices.read();
 
-		st.add_vertex(vertices[i])
+	for (int i = 0; i < indices.size(); ++i) {
+		st->add_index(r[i]);
+	}
 
-	for ind in indices:
-		st.add_index(ind)
-	*/
+	r.release();
 }
 
 Array MDREDMeshUtils::generate_normals_arrs(Array arrays) {
-	/*
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		arrays.resize(ArrayMesh.ARRAY_MAX)
+	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
+		arrays.resize(ArrayMesh::ARRAY_MAX);
+	}
 
-	if arrays[ArrayMesh.ARRAY_INDEX] == null:
-		return arrays
+	if (arrays[ArrayMesh::ARRAY_INDEX].is_null()) {
+		return arrays;
+	}
 
+	PoolVector3Array vertices = arrays[ArrayMesh::ARRAY_VERTEX];
+	PoolIntArray indices = arrays[ArrayMesh::ARRAY_INDEX];
+	PoolVector3Array normals;
+	normals.resize(vertices.size());
+	PoolIntArray nc;
+	nc.resize(vertices.size());
 
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		arrays.resize(ArrayMesh.ARRAY_MAX)
+	PoolIntArray::Write ncw = nc.write();
 
-	var vertices : PoolVector3Array = arrays[ArrayMesh.ARRAY_VERTEX]
-	var indices : PoolIntArray = arrays[ArrayMesh.ARRAY_INDEX]
-	var normals : PoolVector3Array = PoolVector3Array()
-	normals.resize(vertices.size())
-	var nc : PoolIntArray = PoolIntArray()
-	nc.resize(vertices.size())
+	for (int i = 0; i < vertices.size(); ++i) {
+		ncw[i] = 0;
+	}
 
-	for i in range(vertices.size()):
-		nc[i] = 0
+	ncw.release();
 
-	for i in range(0, indices.size(), 3):
-		var i0 : int = indices[i]
-		var i1 : int = indices[i + 1]
-		var i2 : int = indices[i + 2]
+	for (int i = 0; i < indices.size(); i += 3) {
+		int i0 = indices[i];
+		int i1 = indices[i + 1];
+		int i2 = indices[i + 2];
 
-		var v0 : Vector3 = vertices[i0]
-		var v1 : Vector3 = vertices[i1]
-		var v2 : Vector3 = vertices[i2]
+		Vector3 v0 = vertices[i0];
+		Vector3 v1 = vertices[i1];
+		Vector3 v2 = vertices[i2];
 
-		var n = Plane(v0, v1, v2).normal
+		Vector3 n = Plane(v0, v1, v2).normal;
 
-		if n.is_equal_approx(Vector3()):
-			print("Warning face's normal is zero! " + str(Vector3(i0, i1, i2)))
-			n = Vector3(0, 0, 1)
+		if (n.is_equal_approx(Vector3())) {
+			ERR_PRINT("Warning face's normal is zero! " + String(Vector3(i0, i1, i2)));
+			n = Vector3(0, 0, 1);
+		}
 
-		if nc[i0] == 0:
-			nc[i0] = 1
-			normals[i0] = n
-		else:
-			normals[i0] = lerp(normals[i0], n, 0.5).normalized()
+		if (nc[i0] == 0) {
+			nc.set(i0, 1);
+			normals[i0] = n;
+		} else {
+			normals[i0] = normals[i0].linear_interpolate(n, 0.5).normalized();
+		}
 
-		if nc[i1] == 0:
-			nc[i1] = 1
-			normals[i1] = n
-		else:
-			normals[i1] = lerp(normals[i1], n, 0.5).normalized()
+		if (nc[i1] == 0) {
+			nc.set(i1, 1);
+			normals[i1] = n;
+		} else {
+			normals[i1] = normals[i1].linear_interpolate(n, 0.5).normalized();
+		}
 
-		if nc[i2] == 0:
-			nc[i2] = 1
-			normals[i2] = n
-		else:
-			normals[i2] = lerp(normals[i2], n, 0.5).normalized()
+		if (nc[i2] == 0) {
+			nc.set(i2, 1);
+			normals[i2] = n;
+		} else {
+			normals[i2] = normals[i2].linear_interpolate(n, 0.5).normalized();
+		}
+	}
 
-	arrays[ArrayMesh.ARRAY_NORMAL] = normals
+	arrays[ArrayMesh::ARRAY_NORMAL] = normals;
 
-	return arrays
-	*/
+	return arrays;
 }
+
 void MDREDMeshUtils::generate_normals_mdr(Ref<MeshDataResource> mdr) {
-	/*
-	var arrays : Array = mdr.get_array()
+	Array arrays = mdr->get_array();
 
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		arrays.resize(ArrayMesh.ARRAY_MAX)
+	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
+		arrays.resize(ArrayMesh::ARRAY_MAX);
+	}
 
-	if arrays[ArrayMesh.ARRAY_INDEX] == null:
-		return
+	if (arrays[ArrayMesh::ARRAY_INDEX].is_null()) {
+		return;
+	}
 
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		arrays.resize(ArrayMesh.ARRAY_MAX)
+	PoolVector3Array vertices = arrays[ArrayMesh::ARRAY_VERTEX];
+	PoolIntArray indices = arrays[ArrayMesh::ARRAY_INDEX];
+	PoolVector3Array normals;
+	normals.resize(vertices.size());
+	PoolIntArray nc;
+	nc.resize(vertices.size());
 
-	var vertices : PoolVector3Array = arrays[ArrayMesh.ARRAY_VERTEX]
-	var indices : PoolIntArray = arrays[ArrayMesh.ARRAY_INDEX]
-	var normals : PoolVector3Array = PoolVector3Array()
-	normals.resize(vertices.size())
-	var nc : PoolIntArray = PoolIntArray()
-	nc.resize(vertices.size())
+	PoolIntArray::Write ncw = nc.write();
 
-	for i in range(vertices.size()):
-		nc[i] = 0
+	for (int i = 0; i < vertices.size(); ++i) {
+		ncw[i] = 0;
+	}
 
-	for i in range(0, indices.size(), 3):
-		var i0 : int = indices[i]
-		var i1 : int = indices[i + 1]
-		var i2 : int = indices[i + 2]
+	ncw.release();
 
-		var v0 : Vector3 = vertices[i0]
-		var v1 : Vector3 = vertices[i1]
-		var v2 : Vector3 = vertices[i2]
+	for (int i = 0; i < indices.size(); i += 3) {
+		int i0 = indices[i];
+		int i1 = indices[i + 1];
+		int i2 = indices[i + 2];
 
-		var n = Plane(v0, v1, v2).normal
+		Vector3 v0 = vertices[i0];
+		Vector3 v1 = vertices[i1];
+		Vector3 v2 = vertices[i2];
 
-		if n.is_equal_approx(Vector3()):
-			print("Warning face's normal is zero! " + str(Vector3(i0, i1, i2)))
-			n = Vector3(0, 0, 1)
+		Vector3 n = Plane(v0, v1, v2).normal;
 
-		if nc[i0] == 0:
-			nc[i0] = 1
-			normals[i0] = n
-		else:
-			normals[i0] = lerp(normals[i0], n, 0.5).normalized()
+		if (n.is_equal_approx(Vector3())) {
+			ERR_PRINT("Warning face's normal is zero! " + String(Vector3(i0, i1, i2)));
+			n = Vector3(0, 0, 1);
+		}
 
-		if nc[i1] == 0:
-			nc[i1] = 1
-			normals[i1] = n
-		else:
-			normals[i1] = lerp(normals[i1], n, 0.5).normalized()
+		if (nc[i0] == 0) {
+			nc.set(i0, 1);
+			normals[i0] = n;
+		} else {
+			normals[i0] = normals[i0].linear_interpolate(n, 0.5).normalized();
+		}
 
-		if nc[i2] == 0:
-			nc[i2] = 1
-			normals[i2] = n
-		else:
-			normals[i2] = lerp(normals[i2], n, 0.5).normalized()
+		if (nc[i1] == 0) {
+			nc.set(i1, 1);
+			normals[i1] = n;
+		} else {
+			normals[i1] = normals[i1].linear_interpolate(n, 0.5).normalized();
+		}
 
-	arrays[ArrayMesh.ARRAY_NORMAL] = normals
-	mdr.array = arrays
+		if (nc[i2] == 0) {
+			nc.set(i2, 1);
+			normals[i2] = n;
+		} else {
+			normals[i2] = normals[i2].linear_interpolate(n, 0.5).normalized();
+		}
+	}
 
-	*/
+	arrays[ArrayMesh::ARRAY_NORMAL] = normals;
+
+	mdr->set_array(arrays);
 }
 
 // Apparently surfacetool adds more verts during normal generation
 // Keeping this here for now
 void MDREDMeshUtils::generate_normals_surface_tool(Ref<MeshDataResource> mdr) {
-	/*
-	var arrays : Array = mdr.get_array()
+	Array arrays = mdr->get_array();
 
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		arrays.resize(ArrayMesh.ARRAY_MAX)
+	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
+		arrays.resize(ArrayMesh::ARRAY_MAX);
+	}
 
-	if arrays[ArrayMesh.ARRAY_INDEX] == null:
-		return
+	if (arrays[ArrayMesh::ARRAY_INDEX].is_null()) {
+		return;
+	}
 
-	var st : SurfaceTool = SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	Ref<SurfaceTool> st;
+	st.instance();
+	st->begin(Mesh::PRIMITIVE_TRIANGLES);
 
-	add_into_surface_tool(mdr, st)
+	add_into_surface_tool(mdr, st);
 
-	st.generate_normals()
+	st->generate_normals();
 
-	mdr.array = st.commit_to_arrays()
-	*/
+	mdr->set_array(st->commit_to_arrays());
 }
+
 void MDREDMeshUtils::generate_tangents(Ref<MeshDataResource> mdr) {
-	/*
-	var arrays : Array = mdr.get_array()
+	Array arrays = mdr->get_array();
 
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		arrays.resize(ArrayMesh.ARRAY_MAX)
+	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
+		arrays.resize(ArrayMesh::ARRAY_MAX);
+	}
 
-	if arrays[ArrayMesh.ARRAY_INDEX] == null:
-		return
+	if (arrays[ArrayMesh::ARRAY_INDEX].is_null()) {
+		return;
+	}
 
-	var st : SurfaceTool = SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	Ref<SurfaceTool> st;
+	st.instance();
+	st->begin(Mesh::PRIMITIVE_TRIANGLES);
 
-	add_into_surface_tool(mdr, st)
+	add_into_surface_tool(mdr, st);
 
-	st.generate_tangents()
+	st->generate_tangents();
 
-	mdr.array = st.commit_to_arrays()
-	*/
+	mdr->set_array(st->commit_to_arrays());
 }
 
 Array MDREDMeshUtils::remove_used_vertices(Array arrays) {
-	/*
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		return arrays
+	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
+		return arrays;
+	}
 
-	if arrays[ArrayMesh.ARRAY_VERTEX] == null || arrays[ArrayMesh.ARRAY_INDEX] == null:
-		return arrays
+	if (arrays[ArrayMesh::ARRAY_VERTEX].is_null() || arrays[ArrayMesh::ARRAY_INDEX].is_null()) {
+		return arrays;
+	}
 
-	var vert_size : int = arrays[ArrayMesh.ARRAY_VERTEX].size()
-	var indices : PoolIntArray = arrays[ArrayMesh.ARRAY_INDEX]
-	var unused_indices : PoolIntArray = PoolIntArray()
+	PoolVector3Array vertices = arrays[ArrayMesh::ARRAY_VERTEX];
+	int vert_size = vertices.size();
+	PoolIntArray indices = arrays[ArrayMesh::ARRAY_INDEX];
+	PoolIntArray unused_indices;
 
-	for i in range(vert_size):
-		if !pool_int_arr_contains(indices, i):
-			unused_indices.append(i)
+	for (int i = 0; i < vert_size; ++i) {
+		if (!pool_int_arr_contains(indices, i)) {
+			unused_indices.append(i);
+		}
+	}
 
-	remove_vertices(arrays, unused_indices)
+	remove_vertices(arrays, unused_indices);
 
-	return arrays
-	*/
+	return arrays;
 }
 
 Array MDREDMeshUtils::remove_vertices(Array arrays, PoolIntArray indices) {
-	/*
-	if indices.size() == 0:
-		return arrays
+	if (indices.size() == 0) {
+		return arrays;
+	}
 
-	var vertices : PoolVector3Array = arrays[ArrayMesh.ARRAY_VERTEX]
+	PoolVector3Array vertices = arrays[ArrayMesh::ARRAY_VERTEX];
+	PoolVector3Array normals;
+	PoolRealArray tangents;
+	PoolColorArray colors;
+	PoolVector2Array uv;
+	PoolVector2Array uv2;
+	PoolRealArray bones;
+	PoolRealArray weights;
 
-	var normals : PoolVector3Array
-	var tangents : PoolRealArray
-	var colors : PoolColorArray
-	var uv : PoolVector2Array
-	var uv2 : PoolVector2Array
-	var bones : PoolRealArray
-	var weights : PoolRealArray
+	if (!arrays[ArrayMesh::ARRAY_NORMAL].is_null()) {
+		normals = arrays[ArrayMesh::ARRAY_NORMAL];
+	}
 
-	if arrays[ArrayMesh.ARRAY_NORMAL] != null:
-		normals = arrays[ArrayMesh.ARRAY_NORMAL]
+	if (!arrays[ArrayMesh::ARRAY_TANGENT].is_null()) {
+		tangents = arrays[ArrayMesh::ARRAY_TANGENT];
+	}
 
-	if arrays[ArrayMesh.ARRAY_TANGENT] != null:
-		tangents = arrays[ArrayMesh.ARRAY_TANGENT]
+	if (!arrays[ArrayMesh::ARRAY_COLOR].is_null()) {
+		colors = arrays[ArrayMesh::ARRAY_COLOR];
+	}
 
-	if arrays[ArrayMesh.ARRAY_COLOR] != null:
-		colors = arrays[ArrayMesh.ARRAY_COLOR]
+	if (!arrays[ArrayMesh::ARRAY_TEX_UV].is_null()) {
+		uv = arrays[ArrayMesh::ARRAY_TEX_UV];
+	}
 
-	if arrays[ArrayMesh.ARRAY_TEX_UV] != null:
-		uv = arrays[ArrayMesh.ARRAY_TEX_UV]
+	if (!arrays[ArrayMesh::ARRAY_TEX_UV2].is_null()) {
+		uv2 = arrays[ArrayMesh::ARRAY_TEX_UV2];
+	}
 
-	if arrays[ArrayMesh.ARRAY_TEX_UV2] != null:
-		uv2 = arrays[ArrayMesh.ARRAY_TEX_UV2]
+	if (!arrays[ArrayMesh::ARRAY_BONES].is_null()) {
+		bones = arrays[ArrayMesh::ARRAY_BONES];
+	}
 
-	if arrays[ArrayMesh.ARRAY_BONES] != null:
-		bones = arrays[ArrayMesh.ARRAY_BONES]
+	if (!arrays[ArrayMesh::ARRAY_WEIGHTS].is_null()) {
+		weights = arrays[ArrayMesh::ARRAY_WEIGHTS];
+	}
 
-	if arrays[ArrayMesh.ARRAY_WEIGHTS] != null:
-		weights = arrays[ArrayMesh.ARRAY_WEIGHTS]
+	if (!arrays[ArrayMesh::ARRAY_INDEX].is_null()) {
+		indices = arrays[ArrayMesh::ARRAY_INDEX];
+	}
 
-	for index in indices:
-		vertices.remove(index)
+	for (int i = 0; i < indices.size(); ++i) {
+		int index = indices[i];
 
-		if arrays[ArrayMesh.ARRAY_NORMAL] != null:
-			normals.remove(index)
+		vertices.remove(index);
 
-		if arrays[ArrayMesh.ARRAY_TANGENT] != null:
-			var tindex : int = index * 4
+		if (!arrays[ArrayMesh::ARRAY_NORMAL].is_null()) {
+			normals.remove(index);
+		}
 
-			tangents.remove(tindex)
-			tangents.remove(tindex)
-			tangents.remove(tindex)
-			tangents.remove(tindex)
+		if (!arrays[ArrayMesh::ARRAY_TANGENT].is_null()) {
+			int tindex = index * 4;
 
-		if arrays[ArrayMesh.ARRAY_COLOR] != null:
-			colors.remove(index)
+			tangents.remove(tindex);
+			tangents.remove(tindex);
+			tangents.remove(tindex);
+			tangents.remove(tindex);
+		}
 
-		if arrays[ArrayMesh.ARRAY_TEX_UV] != null:
-			uv.remove(index)
+		if (!arrays[ArrayMesh::ARRAY_COLOR].is_null()) {
+			colors.remove(index);
+		}
 
-		if arrays[ArrayMesh.ARRAY_TEX_UV2] != null:
-			uv2.remove(index)
+		if (!arrays[ArrayMesh::ARRAY_TEX_UV].is_null()) {
+			uv.remove(index);
+		}
 
-		if arrays[ArrayMesh.ARRAY_BONES] != null:
-			bones.remove(index)
-			bones.remove(index)
-			bones.remove(index)
-			bones.remove(index)
+		if (!arrays[ArrayMesh::ARRAY_TEX_UV2].is_null()) {
+			uv2.remove(index);
+		}
 
-		if arrays[ArrayMesh.ARRAY_WEIGHTS] != null:
-			weights.remove(index)
-			weights.remove(index)
-			weights.remove(index)
-			weights.remove(index)
+		if (!arrays[ArrayMesh::ARRAY_BONES].is_null()) {
+			bones.remove(index);
+			bones.remove(index);
+			bones.remove(index);
+			bones.remove(index);
+		}
 
-	#write back
-	arrays[ArrayMesh.ARRAY_VERTEX] = vertices
+		if (!arrays[ArrayMesh::ARRAY_WEIGHTS].is_null()) {
+			weights.remove(index);
+			weights.remove(index);
+			weights.remove(index);
+			weights.remove(index);
+		}
+	}
 
-	if arrays[ArrayMesh.ARRAY_NORMAL] != null:
-		arrays[ArrayMesh.ARRAY_NORMAL] = normals
+	//write back
+	arrays[ArrayMesh::ARRAY_VERTEX] = vertices;
 
-	if arrays[ArrayMesh.ARRAY_TANGENT] != null:
-		arrays[ArrayMesh.ARRAY_TANGENT] = tangents
+	if (!arrays[ArrayMesh::ARRAY_NORMAL].is_null()) {
+		arrays[ArrayMesh::ARRAY_NORMAL] = normals;
+	}
 
-	if arrays[ArrayMesh.ARRAY_COLOR] != null:
-		arrays[ArrayMesh.ARRAY_COLOR] = colors
+	if (!arrays[ArrayMesh::ARRAY_TANGENT].is_null()) {
+		arrays[ArrayMesh::ARRAY_TANGENT] = tangents;
+	}
 
-	if arrays[ArrayMesh.ARRAY_TEX_UV] != null:
-		arrays[ArrayMesh.ARRAY_TEX_UV] = uv
+	if (!arrays[ArrayMesh::ARRAY_COLOR].is_null()) {
+		arrays[ArrayMesh::ARRAY_COLOR] = colors;
+	}
 
-	if arrays[ArrayMesh.ARRAY_TEX_UV2] != null:
-		arrays[ArrayMesh.ARRAY_TEX_UV2] = uv2
+	if (!arrays[ArrayMesh::ARRAY_TEX_UV].is_null()) {
+		arrays[ArrayMesh::ARRAY_TEX_UV] = uv;
+	}
 
-	if arrays[ArrayMesh.ARRAY_BONES] != null:
-		arrays[ArrayMesh.ARRAY_BONES] = bones
+	if (!arrays[ArrayMesh::ARRAY_TEX_UV2].is_null()) {
+		arrays[ArrayMesh::ARRAY_TEX_UV2] = uv2;
+	}
 
-	if arrays[ArrayMesh.ARRAY_WEIGHTS] != null:
-		arrays[ArrayMesh.ARRAY_WEIGHTS] = weights
+	if (!arrays[ArrayMesh::ARRAY_BONES].is_null()) {
+		arrays[ArrayMesh::ARRAY_BONES] = bones;
+	}
 
-	if arrays[ArrayMesh.ARRAY_INDEX] == null:
-		return arrays
+	if (!arrays[ArrayMesh::ARRAY_WEIGHTS].is_null()) {
+		arrays[ArrayMesh::ARRAY_WEIGHTS] = weights;
+	}
 
-	#udpate indices
-	var arr_indices : PoolIntArray = arrays[ArrayMesh.ARRAY_INDEX]
+	if (arrays[ArrayMesh::ARRAY_INDEX].is_null()) {
+		return arrays;
+	}
 
-	var max_index : int = find_max(indices)
+	//udpate indices
+	PoolIntArray arr_indices = arrays[ArrayMesh::ARRAY_INDEX];
 
-	for k in range(indices.size()):
-		for i in range(arr_indices.size()):
-			var ai : int = arr_indices[i]
+	int max_index = find_max(indices);
 
-			if ai >= max_index:
-				arr_indices[i] = ai - 1
+	for (int k = 0; k < indices.size(); ++k) {
+		for (int i = 0; i < arr_indices.size(); ++i) {
+			int ai = arr_indices[i];
 
-		max_index = find_max_capped(indices, max_index)
+			if (ai >= max_index) {
+				arr_indices.set(i, ai - 1);
+			}
+		}
 
-	arrays[ArrayMesh.ARRAY_INDEX] = arr_indices
+		max_index = find_max_capped(indices, max_index);
+	}
 
-	return arrays
-	*/
+	arrays[ArrayMesh::ARRAY_INDEX] = arr_indices;
+
+	return arrays;
 }
 
 int MDREDMeshUtils::find_max(PoolIntArray arr) {
-	/*
-	var m : int = arr[0]
+	if (arr.size() == 0) {
+		return 0;
+	}
 
-	for v in arr:
-		if v > m:
-			m = v
+	PoolIntArray::Read r = arr.read();
 
-	return m
-	*/
+	int m = r[0];
+
+	for (int i = 1; i < arr.size(); ++i) {
+		int v = r[i];
+
+		if (v > m) {
+			m = v;
+		}
+	}
+
+	r.release();
+
+	return m;
 }
 int MDREDMeshUtils::find_max_capped(PoolIntArray arr, int last) {
-	/*
-	var m : int = 0
+	if (arr.size() == 0) {
+		return 0;
+	}
 
-	for v in arr:
-		if v < last:
-			m = v
-			break
+	PoolIntArray::Read r = arr.read();
 
-	for v in arr:
-		if v > m && v < last:
-			m = v
+	int m = 0;
 
-	return m
-	*/
+	int i = 0;
+
+	for (; i < arr.size(); ++i) {
+		int v = r[i];
+
+		if (v < last) {
+			m = v;
+			break;
+		}
+	}
+
+	for (; i < arr.size(); ++i) {
+		int v = r[i];
+		if (v > m && v < last) {
+			m = v;
+		}
+	}
+
+	return m;
 }
 
 PoolIntArray MDREDMeshUtils::order_seam_indices(PoolIntArray arr) {
-	/*
-	var ret : PoolIntArray = PoolIntArray()
+	PoolIntArray ret;
 
-	if arr.size() == 0:
-		return ret
+	if (arr.size() == 0) {
+		return ret;
+	}
 
-	for i in range(0, arr.size(), 2):
-		var index0 : int = arr[i]
-		var index1 : int = arr[i + 1]
+	for (int i = 0; i < arr.size(); i += 2) {
+		int index0 = arr[i];
+		int index1 = arr[i + 1];
 
-		if index0 > index1:
-			var t : int = index1
-			index1 = index0
-			index0 = t
+		if (index0 > index1) {
+			int t = index1;
+			index1 = index0;
+			index0 = t;
+		}
 
-		ret.push_back(index0)
-		ret.push_back(index1)
+		ret.push_back(index0);
+		ret.push_back(index1);
+	}
 
-	return ret
-	*/
+	return ret;
 }
 
 void MDREDMeshUtils::add_seam_not_ordered(Ref<MeshDataResource> mdr, int index0, int index1) {
-	/*
-	if index0 > index1:
-		add_seam(mdr, index1, index0)
-	else:
-		add_seam(mdr, index0, index1)
-	*/
+	if (index0 > index1) {
+		add_seam(mdr, index1, index0);
+	} else {
+		add_seam(mdr, index0, index1);
+	}
 }
 void MDREDMeshUtils::remove_seam_not_ordered(Ref<MeshDataResource> mdr, int index0, int index1) {
-	/*
-	if index0 > index1:
-		remove_seam(mdr, index1, index0)
-	else:
-		remove_seam(mdr, index0, index1)
-	*/
+	if (index0 > index1) {
+		remove_seam(mdr, index1, index0);
+	} else {
+		remove_seam(mdr, index0, index1);
+	}
 }
 
 bool MDREDMeshUtils::has_seam(Ref<MeshDataResource> mdr, int index0, int index1) {
-	/*
-	var seams : PoolIntArray = mdr.seams
+	PoolIntArray seams = mdr->get_seams();
 
-	for i in range(0, seams.size(), 2):
-		if seams[i] == index0 && seams[i + 1] == index1:
-			return true
+	for (int i = 0; i < seams.size(); i += 2) {
+		if (seams[i] == index0 && seams[i + 1] == index1) {
+			return true;
+		}
+	}
 
-	return false
-	*/
+	return false;
 }
 void MDREDMeshUtils::add_seam(Ref<MeshDataResource> mdr, int index0, int index1) {
-	/*
-	if has_seam(mdr, index0, index1):
-		return
+	if (has_seam(mdr, index0, index1)) {
+		return;
+	}
 
-	var seams : PoolIntArray = mdr.seams
-	seams.push_back(index0)
-	seams.push_back(index1)
-	mdr.seams = seams
-	*/
+	PoolIntArray seams = mdr->get_seams();
+	seams.push_back(index0);
+	seams.push_back(index1);
+	mdr->set_seams(seams);
 }
 void MDREDMeshUtils::remove_seam(Ref<MeshDataResource> mdr, int index0, int index1) {
-	/*
-	if !has_seam(mdr, index0, index1):
-		return
+	if (!has_seam(mdr, index0, index1)) {
+		return;
+	}
 
-	var seams : PoolIntArray = mdr.seams
+	PoolIntArray seams = mdr->get_seams();
 
-	for i in range(0, seams.size(), 2):
-		if seams[i] == index0 && seams[i + 1] == index1:
-			seams.remove(i)
-			seams.remove(i)
-			mdr.seams = seams
-			return
-	*/
+	for (int i = 0; i < seams.size(); i += 2) {
+		if (seams[i] == index0 && seams[i + 1] == index1) {
+			seams.remove(i);
+			seams.remove(i);
+			mdr->set_seams(seams);
+			return;
+		}
+	}
 }
 
 bool MDREDMeshUtils::is_verts_equal(Vector3 v0, Vector3 v1) {
-	/*
-	return is_equal_approx(v0.x, v1.x) && is_equal_approx(v0.y, v1.y) && is_equal_approx(v0.z, v1.z)
-	*/
+	return Math::is_equal_approx(v0.x, v1.x) && Math::is_equal_approx(v0.y, v1.y) && Math::is_equal_approx(v0.z, v1.z);
 }
 
 void MDREDMeshUtils::points_to_seams(Ref<MeshDataResource> mdr, PoolVector3Array points) {
-	/*
-	var arrays : Array = mdr.get_array()
+	Array arrays = mdr->get_array();
 
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		return
+	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
+		return;
+	}
 
-	if arrays[ArrayMesh.ARRAY_VERTEX] == null:
-		return
+	if (arrays[ArrayMesh::ARRAY_VERTEX].is_null()) {
+		return;
+	}
 
-	var vertices : PoolVector3Array = arrays[ArrayMesh.ARRAY_VERTEX]
-	var indices : PoolIntArray = arrays[ArrayMesh.ARRAY_INDEX]
-	var seams : PoolIntArray = PoolIntArray()
+	PoolVector3Array vertices = arrays[ArrayMesh::ARRAY_VERTEX];
+	PoolIntArray indices = arrays[ArrayMesh::ARRAY_INDEX];
+	PoolIntArray seams;
 
-	for i in range(0, points.size(), 2):
-		var p0 : Vector3 = points[i]
-		var p1 : Vector3 = points[i + 1]
+	for (int i = 0; i < points.size(); i += 2) {
+		Vector3 p0 = points[i];
+		Vector3 p1 = points[i + 1];
 
-		for j in range(0, indices.size(), 3):
-			var v0 : Vector3 = vertices[indices[j]]
-			var v1 : Vector3 = vertices[indices[j + 1]]
-			var v2 : Vector3 = vertices[indices[j + 2]]
+		for (int j = 0; j < indices.size(); j += 3) {
+			Vector3 v0 = vertices[indices[j]];
+			Vector3 v1 = vertices[indices[j + 1]];
+			Vector3 v2 = vertices[indices[j + 2]];
 
-			var p0_index : int = -1
+			int p0_index = -1;
 
-			if is_verts_equal(p0, v0):
-				p0_index = indices[j]
-			elif is_verts_equal(p0, v1):
-				p0_index = indices[j + 1]
-			elif is_verts_equal(p0, v2):
-				p0_index = indices[j + 2]
+			if (is_verts_equal(p0, v0)) {
+				p0_index = indices[j];
+			} else if (is_verts_equal(p0, v1)) {
+				p0_index = indices[j + 1];
+			} else if (is_verts_equal(p0, v2)) {
+				p0_index = indices[j + 2];
+			}
 
-			if p0_index == -1:
-				continue
+			if (p0_index == -1) {
+				continue;
+			}
 
-			var p1_index : int = -1
+			int p1_index = -1;
 
-			if is_verts_equal(p1, v0):
-				p1_index = indices[j]
-			elif is_verts_equal(p1, v1):
-				p1_index = indices[j + 1]
-			elif is_verts_equal(p1, v2):
-				p1_index = indices[j + 2]
+			if (is_verts_equal(p1, v0)) {
+				p1_index = indices[j];
+			} else if (is_verts_equal(p1, v1)) {
+				p1_index = indices[j + 1];
+			} else if (is_verts_equal(p1, v2)) {
+				p1_index = indices[j + 2];
+			}
 
-			if p1_index == -1:
-				continue
+			if (p1_index == -1) {
+				continue;
+			}
 
-			if p0_index == p1_index:
-				continue
+			if (p0_index == p1_index) {
+				continue;
+			}
 
-			if p0_index > p1_index:
-				var t : int = p0_index
-				p0_index = p1_index
-				p1_index = t
+			if (p0_index > p1_index) {
+				int t = p0_index;
+				p0_index = p1_index;
+				p1_index = t;
+			}
 
-			seams.push_back(p0_index)
-			seams.push_back(p1_index)
-			break
+			seams.push_back(p0_index);
+			seams.push_back(p1_index);
+			break;
+		}
+	}
 
-	mdr.seams = seams
-	*/
+	mdr->set_seams(seams);
 }
+
 PoolVector3Array MDREDMeshUtils::seams_to_points(Ref<MeshDataResource> mdr) {
-	/*
-	var points : PoolVector3Array = PoolVector3Array()
+	PoolVector3Array points;
 
-	var arrays : Array = mdr.get_array()
+	Array arrays = mdr->get_array();
 
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		return points
+	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
+		return points;
+	}
 
-	if arrays[ArrayMesh.ARRAY_VERTEX] == null:
-		return points
+	if (arrays[ArrayMesh::ARRAY_VERTEX].is_null()) {
+		return points;
+	}
 
-	var vertices : PoolVector3Array = arrays[ArrayMesh.ARRAY_VERTEX]
-	var seams : PoolIntArray = mdr.seams
+	PoolVector3Array vertices = arrays[ArrayMesh::ARRAY_VERTEX];
+	PoolIntArray seams = mdr->get_seams();
 
-	for s in seams:
-		points.push_back(vertices[s])
+	PoolVector3Array::Read vr = vertices.read();
+	PoolIntArray::Read sr = seams.read();
 
-	return points
-	*/
+	for (int i = 0; i < seams.size(); ++i) {
+		points.push_back(vr[sr[i]]);
+	}
+
+	vr.release();
+	sr.release();
+
+	return points;
 }
-bool MDREDMeshUtils::is_matching_seam(int i0, int i1, int si0, int si1) {
-	/*
-	if i0 > i1:
-		var t : int = i0
-		i0 = i1
-		i1 = t
 
-	return (i0 == si0) && (i1 == si1)
-	*/
+bool MDREDMeshUtils::is_matching_seam(int i0, int i1, int si0, int si1) {
+	if (i0 > i1) {
+		int t = i0;
+		i0 = i1;
+		i1 = t;
+	}
+
+	return (i0 == si0) && (i1 == si1);
 }
 
 bool MDREDMeshUtils::pool_int_arr_contains(PoolIntArray arr, int val) {
-	/*
-	for a in arr:
-		if a == val:
-			return true
+	PoolIntArray::Read ar = arr.read();
 
-	return false
-	*/
+	for (int i = 0; i < arr.size(); ++i) {
+		if (ar[i] == val) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void MDREDMeshUtils::apply_seam(Ref<MeshDataResource> mdr) {
-	/*
-	var points : PoolVector3Array = PoolVector3Array()
+	PoolVector3Array points;
 
-	var arrays : Array = mdr.get_array()
+	Array arrays = mdr->get_array();
 
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		return
+	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
+		return;
+	}
 
-	if arrays[ArrayMesh.ARRAY_VERTEX] == null:
-		return
+	if (arrays[ArrayMesh::ARRAY_VERTEX].is_null()) {
+		return;
+	}
 
-	var vertices : PoolVector3Array = arrays[ArrayMesh.ARRAY_VERTEX]
-	var indices : PoolIntArray = arrays[ArrayMesh.ARRAY_INDEX]
-	var new_indices : PoolIntArray = PoolIntArray()
-	new_indices.append_array(indices)
+	PoolVector3Array vertices = arrays[ArrayMesh::ARRAY_VERTEX];
+	PoolIntArray indices = arrays[ArrayMesh::ARRAY_INDEX];
+	PoolIntArray new_indices;
+	new_indices.append_array(indices);
+	PoolIntArray seams = mdr->get_seams();
 
-	var seams : PoolIntArray = mdr.seams
+	// Duplication happens later, as it requires lots of logic
+	PoolIntArray duplicate_verts_indices;
+	int new_vert_size = vertices.size();
 
-	# Duplication happens later, as it requires lots of logic
-	var duplicate_verts_indices : PoolIntArray = PoolIntArray()
-	var new_vert_size : int = vertices.size()
+	for (int i = 0; i < vertices.size(); ++i) {
+		// first check if vertex is a part of at least 2 edge seams
+		int test_seam_count = 0;
+		PoolIntArray::Read seams_read = seams.read();
+		for (int si = 0; si < seams.size(); ++si) {
+			int s = seams_read[si];
 
-	for i in range(vertices.size()):
-		# first check if vertex is a part of at least 2 edge seams
-		var test_seam_count : int = 0
-		for s in seams:
-			if s == i:
-				test_seam_count += 1
+			if (s == i) {
+				test_seam_count += 1;
 
-				if test_seam_count >= 2:
-					break
+				if (test_seam_count >= 2) {
+					break;
+				}
+			}
+		}
 
-		if test_seam_count < 2:
-			continue
+		seams_read.release();
 
-		# Collect all triangles that use this vertex as SeamTriangleHelpers
-		var triangles : Array = Array()
-		for j in range(indices.size()):
-			var i0 : int = indices[j]
+		if (test_seam_count < 2) {
+			continue;
+		}
 
-			if i0 != i:
-				continue
+		// Collect all triangles that use this vertex as SeamTriangleHelpers
+		Vector<SeamTriangleHelper> triangles;
+		PoolIntArray::Read indices_read = indices.read();
+		for (int j = 0; j < indices.size(); ++j) {
+			int i0 = indices_read[j];
 
-			var tri_j_offset : int = j % 3
-			var tri_start_index : int = j - tri_j_offset
+			if (i0 != i) {
+				continue;
+			}
 
-			var i1 : int = indices[tri_start_index + ((tri_j_offset + 1) % 3)]
-			var i2 : int = indices[tri_start_index + ((tri_j_offset + 2) % 3)]
+			int tri_j_offset = j % 3;
+			int tri_start_index = j - tri_j_offset;
 
-			var s : SeamTriangleHelper = SeamTriangleHelper.new()
-			s.setup(i0, i1, i2, i0, j, seams)
-			triangles.push_back(s)
+			int i1 = indices_read[tri_start_index + ((tri_j_offset + 1) % 3)];
+			int i2 = indices_read[tri_start_index + ((tri_j_offset + 2) % 3)];
 
-		var triangle_arrays : Array = Array()
-		while true:
-			# First find a triangle that needs to be cut
-			var tri : SeamTriangleHelper = null
-			var tri_index : int = -1
-			for it in range(triangles.size()):
-				tri = triangles[it]
+			SeamTriangleHelper s;
+			s.setup(i0, i1, i2, i0, j, seams);
+			triangles.push_back(s);
+		}
+		indices_read.release();
 
-				if tri.has_cut() && !tri.processed:
-					tri_index = it
-					break
+		Vector<Vector<SeamTriangleHelper>> triangle_arrays;
+		while (true) {
+			// First find a triangle that needs to be cut
+			SeamTriangleHelper tri;
+			int tri_index = -1;
+			for (int it = 0; it < triangles.size(); ++it) {
+				tri = triangles[it];
 
-			if tri_index == -1:
-				#done
-				break
+				if (tri.has_cut() && !tri.processed) {
+					tri_index = it;
+					break;
+				}
+			}
 
-			tri.processed = true
+			if (tri_index == -1) {
+				//done
+				break;
+			}
 
-			if tri.both_sides_need_cut():
-				triangle_arrays.push_back([ tri ])
-				continue
+			tri.processed = true;
+			triangles.write[tri_index].processed = true;
 
-			var collected_triangles : Array = Array()
-			collected_triangles.push_back(tri)
+			if (tri.both_sides_need_cut()) {
+				Vector<SeamTriangleHelper> trih;
+				trih.push_back(tri);
+				triangle_arrays.push_back(trih);
+				continue;
+			}
 
-			# Find all neighbours and set them to processed + update the index for them
-			#var side_index : int = tri.get_side_index_cut()
-			var neighbour_tri : SeamTriangleHelper = tri
-			var find_neighbour_for_edge_index : int = tri.get_opposite_side_index_cut()
-			var find_neighbour_for_edge : int = neighbour_tri.get_side_index(find_neighbour_for_edge_index)
-			var tri_found : bool = true
-			while tri_found:
-				tri_found = false
+			Vector<SeamTriangleHelper> collected_triangles;
+			collected_triangles.push_back(tri);
 
-				for ntri in triangles:
-					if ntri.processed:
-						continue
+			// Find all neighbours and set them to processed + update the index for them
+			//var side_index : int = tri.get_side_index_cut()
+			SeamTriangleHelper neighbour_tri = tri;
+			int find_neighbour_for_edge_index = tri.get_opposite_side_index_cut();
+			int find_neighbour_for_edge = neighbour_tri.get_side_index(find_neighbour_for_edge_index);
+			bool tri_found = true;
+			while (tri_found) {
+				tri_found = false;
 
-					if ntri.is_the_same(neighbour_tri):
-						continue
+				for (int ntriindx = 0; ntriindx < triangles.size(); ++ntriindx) {
+					const SeamTriangleHelper &ntri = triangles[ntriindx];
+					if (ntri.processed) {
+						continue;
+					}
 
-					if ntri.is_neighbour_to(find_neighbour_for_edge):
-						neighbour_tri = ntri
-						find_neighbour_for_edge = neighbour_tri.get_other_side_index(find_neighbour_for_edge)
+					if (ntri.is_the_same(neighbour_tri)) {
+						continue;
+					}
 
-						neighbour_tri.processed = true
-						tri_found = true
-						collected_triangles.push_back(neighbour_tri)
+					if (ntri.is_neighbour_to(find_neighbour_for_edge)) {
+						neighbour_tri = ntri;
+						find_neighbour_for_edge = neighbour_tri.get_other_side_index(find_neighbour_for_edge);
 
-						if neighbour_tri.has_cut():
-							# Done with this "strip"
-							tri_found = false
+						neighbour_tri.processed = true;
+						tri_found = true;
+						collected_triangles.push_back(neighbour_tri);
 
-						break
+						if (neighbour_tri.has_cut()) {
+							// Done with this "strip"
+							tri_found = false;
+						}
 
-			triangle_arrays.push_back(collected_triangles)
+						break;
+					}
+				}
+			}
 
-		# triangle_arrays is guaranteed to have at least 2 entries
-		# Skip processing the first strip, so we don't create unused verts
-		for tind in range(1, triangle_arrays.size()):
-			var tris : Array = triangle_arrays[tind]
+			triangle_arrays.push_back(collected_triangles);
+		}
 
-			duplicate_verts_indices.push_back(tris[0].orig_index)
+		// triangle_arrays is guaranteed to have at least 2 entries
+		// Skip processing the first strip, so we don't create unused verts
+		PoolIntArray::Write new_indices_write = new_indices.write();
+		for (int tind = 1; tind < triangle_arrays.size(); ++tind) {
+			const Vector<SeamTriangleHelper> &tris = triangle_arrays[tind];
 
-			for tri in tris:
-				new_indices[tri.index_index] = new_vert_size
+			duplicate_verts_indices.push_back(tris[0].orig_index);
 
-			new_vert_size += 1
+			for (int triindx = 0; triindx < tris.size(); ++triindx) {
+				const SeamTriangleHelper &tri = tris[i];
 
-	arrays[ArrayMesh.ARRAY_INDEX] = new_indices
+				new_indices_write[tri.index_index] = new_vert_size;
+			}
 
-	mdr.array = seam_apply_duplicate_vertices(arrays, duplicate_verts_indices)
-	*/
+			new_vert_size += 1;
+		}
+		new_indices_write.release();
+	}
+
+	arrays[ArrayMesh::ARRAY_INDEX] = new_indices;
+
+	mdr->set_array(seam_apply_duplicate_vertices(arrays, duplicate_verts_indices));
 }
 void MDREDMeshUtils::apply_seam_old(Ref<MeshDataResource> mdr) {
-	/*
-	var points : PoolVector3Array = PoolVector3Array()
+	PoolVector3Array points;
 
-	var arrays : Array = mdr.get_array()
+	Array arrays = mdr->get_array();
 
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
-		return
+	if (arrays.size() != ArrayMesh::ARRAY_MAX) {
+		return;
+	}
 
-	if arrays[ArrayMesh.ARRAY_VERTEX] == null:
-		return
+	if (arrays[ArrayMesh::ARRAY_VERTEX].is_null()) {
+		return;
+	}
 
-	var vertices : PoolVector3Array = arrays[ArrayMesh.ARRAY_VERTEX]
-	var indices : PoolIntArray = arrays[ArrayMesh.ARRAY_INDEX]
+	PoolVector3Array vertices = arrays[ArrayMesh::ARRAY_VERTEX];
+	PoolIntArray indices = arrays[ArrayMesh::ARRAY_INDEX];
 
-	var seams : PoolIntArray = mdr.seams
+	PoolIntArray seams = mdr->get_seams();
 
-	# Duplication happens later, as it requires lots of logic
-	var duplicate_verts_indices : PoolIntArray = PoolIntArray()
-	var new_vert_size : int = vertices.size()
+	// Duplication happens later, as it requires lots of logic
+	PoolIntArray duplicate_verts_indices;
+	int new_vert_size = vertices.size();
 
-	for i in range(0, seams.size(), 2):
-		var si0 : int = seams[i]
-		var si1 : int = seams[i + 1]
+	for (int i = 0; i < seams.size(); i += 2) {
+		int si0 = seams[i];
+		int si1 = seams[i + 1];
 
-		var first : bool = true
-		for j in range(0, indices.size(), 3):
-			var i0 : int = indices[j]
-			var i1 : int = indices[j + 1]
-			var i2 : int = indices[j + 2]
+		bool first = true;
+		for (int j = 0; j < indices.size(); j += 3) {
+			int i0 = indices[j];
+			int i1 = indices[j + 1];
+			int i2 = indices[j + 2];
 
-			var edge_int_tri_index : int = -1
+			int edge_int_tri_index = -1;
 
-			if is_matching_seam(i0, i1, si0, si1):
-				edge_int_tri_index = 0
-			elif is_matching_seam(i1, i2, si0, si1):
-				edge_int_tri_index = 1
-			elif is_matching_seam(i2, i0, si0, si1):
-				edge_int_tri_index = 2
+			if (is_matching_seam(i0, i1, si0, si1)) {
+				edge_int_tri_index = 0;
+			} else if (is_matching_seam(i1, i2, si0, si1)) {
+				edge_int_tri_index = 1;
+			} else if (is_matching_seam(i2, i0, si0, si1)) {
+				edge_int_tri_index = 2;
+			}
 
-			if edge_int_tri_index == -1:
-				continue
+			if (edge_int_tri_index == -1) {
+				continue;
+			}
 
-			if first:
-				# Only split away the subsequent tris
-				first = false
-				continue
+			if (first) {
+				// Only split away the subsequent tris
+				first = false;
+				continue;
+			}
 
-			if edge_int_tri_index == 0:
-				duplicate_verts_indices.push_back(i0)
-				duplicate_verts_indices.push_back(i1)
+			if (edge_int_tri_index == 0) {
+				duplicate_verts_indices.push_back(i0);
+				duplicate_verts_indices.push_back(i1);
 
-				indices.push_back(new_vert_size)
-				indices.push_back(new_vert_size + 1)
-				indices.push_back(i2)
-			elif edge_int_tri_index == 1:
-				duplicate_verts_indices.push_back(i1)
-				duplicate_verts_indices.push_back(i2)
+				indices.push_back(new_vert_size);
+				indices.push_back(new_vert_size + 1);
+				indices.push_back(i2);
+			} else if ( edge_int_tri_index == 1) {
+				duplicate_verts_indices.push_back(i1);
+				duplicate_verts_indices.push_back(i2);
 
-				indices.push_back(i0)
-				indices.push_back(new_vert_size)
-				indices.push_back(new_vert_size + 1)
-			elif edge_int_tri_index == 2:
-				duplicate_verts_indices.push_back(i0)
-				duplicate_verts_indices.push_back(i2)
+				indices.push_back(i0);
+				indices.push_back(new_vert_size);
+				indices.push_back(new_vert_size + 1);
+			} else if ( edge_int_tri_index == 2) {
+				duplicate_verts_indices.push_back(i0);
+				duplicate_verts_indices.push_back(i2);
 
-				indices.push_back(new_vert_size)
-				indices.push_back(i1)
-				indices.push_back(new_vert_size + 1)
+				indices.push_back(new_vert_size);
+				indices.push_back(i1);
+				indices.push_back(new_vert_size + 1);
+			}
 
-			indices.remove(j)
-			indices.remove(j)
-			indices.remove(j)
-			j -= 3
+			indices.remove(j);
+			indices.remove(j);
+			indices.remove(j);
+			j -= 3;
 
-			new_vert_size += 2
+			new_vert_size += 2;
+		}
+	}
 
-	arrays[ArrayMesh.ARRAY_INDEX] = indices
-	#mdr.array = arrays
+	arrays[ArrayMesh::ARRAY_INDEX] = indices;
+	//mdr.array = arrays
 
-	mdr.array = seam_apply_duplicate_vertices(arrays, duplicate_verts_indices)
-	*/
+	mdr->set_array(seam_apply_duplicate_vertices(arrays, duplicate_verts_indices));
 }
 
 // This will not touch the indices!
 Array MDREDMeshUtils::seam_apply_duplicate_vertices(Array arrays, PoolIntArray duplicate_verts_indices) {
-	/*
-	var vertices : PoolVector3Array = arrays[ArrayMesh.ARRAY_VERTEX]
+	if (duplicate_verts_indices.size() == 0) {
+		return arrays;
+	}
 
-	var normals : PoolVector3Array
-	var tangents : PoolRealArray
-	var colors : PoolColorArray
-	var uv : PoolVector2Array
-	var uv2 : PoolVector2Array
-	var bones : PoolRealArray
-	var weights : PoolRealArray
+	PoolVector3Array vertices = arrays[ArrayMesh::ARRAY_VERTEX];
 
-	if arrays[ArrayMesh.ARRAY_NORMAL] != null:
-		normals = arrays[ArrayMesh.ARRAY_NORMAL]
+	PoolVector3Array normals;
+	PoolRealArray tangents;
+	PoolColorArray colors;
+	PoolVector2Array uv;
+	PoolVector2Array uv2;
+	PoolRealArray bones;
+	PoolRealArray weights;
 
-	if arrays[ArrayMesh.ARRAY_TANGENT] != null:
-		tangents = arrays[ArrayMesh.ARRAY_TANGENT]
+	if (!arrays[ArrayMesh::ARRAY_NORMAL].is_null()) {
+		normals = arrays[ArrayMesh::ARRAY_NORMAL];
+	}
 
-	if arrays[ArrayMesh.ARRAY_COLOR] != null:
-		colors = arrays[ArrayMesh.ARRAY_COLOR]
+	if (!arrays[ArrayMesh::ARRAY_TANGENT].is_null()) {
+		tangents = arrays[ArrayMesh::ARRAY_TANGENT];
+	}
 
-	if arrays[ArrayMesh.ARRAY_TEX_UV] != null:
-		uv = arrays[ArrayMesh.ARRAY_TEX_UV]
+	if (!arrays[ArrayMesh::ARRAY_COLOR].is_null()) {
+		colors = arrays[ArrayMesh::ARRAY_COLOR];
+	}
 
-	if arrays[ArrayMesh.ARRAY_TEX_UV2] != null:
-		uv2 = arrays[ArrayMesh.ARRAY_TEX_UV2]
+	if (!arrays[ArrayMesh::ARRAY_TEX_UV].is_null()) {
+		uv = arrays[ArrayMesh::ARRAY_TEX_UV];
+	}
 
-	if arrays[ArrayMesh.ARRAY_BONES] != null:
-		bones = arrays[ArrayMesh.ARRAY_BONES]
+	if (!arrays[ArrayMesh::ARRAY_TEX_UV2].is_null()) {
+		uv2 = arrays[ArrayMesh::ARRAY_TEX_UV2];
+	}
 
-	if arrays[ArrayMesh.ARRAY_WEIGHTS] != null:
-		weights = arrays[ArrayMesh.ARRAY_WEIGHTS]
+	if (!arrays[ArrayMesh::ARRAY_BONES].is_null()) {
+		bones = arrays[ArrayMesh::ARRAY_BONES];
+	}
+
+	if (!arrays[ArrayMesh::ARRAY_WEIGHTS].is_null()) {
+		weights = arrays[ArrayMesh::ARRAY_WEIGHTS];
+	}
 
 
-	for index in duplicate_verts_indices:
-		vertices.push_back(vertices[index])
+	PoolIntArray::Read dvir = duplicate_verts_indices.read();
+	for (int i = 0; i < duplicate_verts_indices.size(); ++i) {
+		int index = dvir[i];
 
-		if arrays[ArrayMesh.ARRAY_NORMAL] != null:
-			normals.push_back(normals[index])
+		vertices.push_back(vertices[index]);
 
-		if arrays[ArrayMesh.ARRAY_TANGENT] != null:
-			tangents.push_back(tangents[index])
-			tangents.push_back(tangents[index + 1])
-			tangents.push_back(tangents[index + 2])
-			tangents.push_back(tangents[index + 3])
+		if (!arrays[ArrayMesh::ARRAY_NORMAL].is_null()) {
+			normals.push_back(normals[index]);
+		}
 
-		if arrays[ArrayMesh.ARRAY_COLOR] != null:
-			colors.push_back(colors[index])
+		if (!arrays[ArrayMesh::ARRAY_TANGENT].is_null()) {
+			tangents.push_back(tangents[index]);
+			tangents.push_back(tangents[index + 1]);
+			tangents.push_back(tangents[index + 2]);
+			tangents.push_back(tangents[index + 3]);
+		}
 
-		if arrays[ArrayMesh.ARRAY_TEX_UV] != null:
-			uv.push_back(uv[index])
+		if (!arrays[ArrayMesh::ARRAY_COLOR].is_null()) {
+			colors.push_back(colors[index]);
+		}
 
-		if arrays[ArrayMesh.ARRAY_TEX_UV2] != null:
-			uv2.push_back(uv2[index])
+		if (!arrays[ArrayMesh::ARRAY_TEX_UV].is_null()) {
+			uv.push_back(uv[index]);
+		}
 
-		if arrays[ArrayMesh.ARRAY_BONES] != null:
-			bones.push_back(bones[index])
-			bones.push_back(bones[index + 1])
-			bones.push_back(bones[index + 2])
-			bones.push_back(bones[index + 3])
+		if (!arrays[ArrayMesh::ARRAY_TEX_UV2].is_null()) {
+			uv2.push_back(uv2[index]);
+		}
 
-		if arrays[ArrayMesh.ARRAY_WEIGHTS] != null:
-			weights.push_back(weights[index])
-			weights.push_back(weights[index + 1])
-			weights.push_back(weights[index + 2])
-			weights.push_back(weights[index + 3])
+		if (!arrays[ArrayMesh::ARRAY_BONES].is_null()) {
+			bones.push_back(bones[index]);
+			bones.push_back(bones[index + 1]);
+			bones.push_back(bones[index + 2]);
+			bones.push_back(bones[index + 3]);
+		}
 
-	#write back
+		if (!arrays[ArrayMesh::ARRAY_WEIGHTS].is_null()) {
+			weights.push_back(weights[index]);
+			weights.push_back(weights[index + 1]);
+			weights.push_back(weights[index + 2]);
+			weights.push_back(weights[index + 3]);
+		}
+	}
 
-	arrays[ArrayMesh.ARRAY_VERTEX] = vertices
+	dvir.release();
 
-	if arrays[ArrayMesh.ARRAY_NORMAL] != null:
-		arrays[ArrayMesh.ARRAY_NORMAL] = normals
+	//write back
 
-	if arrays[ArrayMesh.ARRAY_TANGENT] != null:
-		arrays[ArrayMesh.ARRAY_TANGENT] = tangents
+	arrays[ArrayMesh::ARRAY_VERTEX] = vertices;
 
-	if arrays[ArrayMesh.ARRAY_COLOR] != null:
-		arrays[ArrayMesh.ARRAY_COLOR] = colors
+	if (!arrays[ArrayMesh::ARRAY_NORMAL].is_null()) {
+		arrays[ArrayMesh::ARRAY_NORMAL] = normals;
+	}
 
-	if arrays[ArrayMesh.ARRAY_TEX_UV] != null:
-		arrays[ArrayMesh.ARRAY_TEX_UV] = uv
+	if (!arrays[ArrayMesh::ARRAY_TANGENT].is_null()) {
+		arrays[ArrayMesh::ARRAY_TANGENT] = tangents;
+	}
 
-	if arrays[ArrayMesh.ARRAY_TEX_UV2] != null:
-		arrays[ArrayMesh.ARRAY_TEX_UV2] = uv2
+	if (!arrays[ArrayMesh::ARRAY_COLOR].is_null()) {
+		arrays[ArrayMesh::ARRAY_COLOR] = colors;
+	}
 
-	if arrays[ArrayMesh.ARRAY_BONES] != null:
-		arrays[ArrayMesh.ARRAY_BONES] = bones
+	if (!arrays[ArrayMesh::ARRAY_TEX_UV].is_null()) {
+		arrays[ArrayMesh::ARRAY_TEX_UV] = uv;
+	}
 
-	if arrays[ArrayMesh.ARRAY_WEIGHTS] != null:
-		arrays[ArrayMesh.ARRAY_WEIGHTS] = weights
+	if (!arrays[ArrayMesh::ARRAY_TEX_UV2].is_null()) {
+		arrays[ArrayMesh::ARRAY_TEX_UV2] = uv2;
+	}
 
-	return arrays
-	*/
+	if (!arrays[ArrayMesh::ARRAY_BONES].is_null()) {
+		arrays[ArrayMesh::ARRAY_BONES] = bones;
+	}
+
+	if (!arrays[ArrayMesh::ARRAY_WEIGHTS].is_null()) {
+		arrays[ArrayMesh::ARRAY_WEIGHTS] = weights;
+	}
+
+	return arrays;
 }

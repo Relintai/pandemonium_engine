@@ -29,7 +29,7 @@ if 'TOOLS_ENABLED' in env["CPPDEFINES"]:
 
     module_env.add_source_files(env.modules_sources,"editor/utilities/mdr_ed_mesh_decompose.cpp")
     module_env.add_source_files(env.modules_sources,"editor/utilities/mdr_ed_mesh_outline.cpp")
-    #module_env.add_source_files(env.modules_sources,"editor/utilities/mdr_ed_mesh_utils.cpp")
+    module_env.add_source_files(env.modules_sources,"editor/utilities/mdr_ed_mesh_utils.cpp")
 
 module_env.add_source_files(env.modules_sources,"nodes/mesh_data_instance.cpp")
 module_env.add_source_files(env.modules_sources,"nodes/mesh_data_instance_2d.cpp")
