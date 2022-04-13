@@ -109,4 +109,5 @@ MDREdUVPreviewer::~MDREdUVPreviewer() {
 }
 
 void MDREdUVPreviewer::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("on_mdr_changed"), &MDREdUVPreviewer::on_mdr_changed);
 }

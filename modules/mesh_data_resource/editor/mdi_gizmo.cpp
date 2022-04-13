@@ -2209,4 +2209,10 @@ MDIGizmo::~MDIGizmo() {
 }
 
 void MDIGizmo::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("on_mdr_changed"), &MDIGizmo::on_mdr_changed);
+	ClassDB::bind_method(D_METHOD("on_mesh_data_resource_changed"), &MDIGizmo::on_mesh_data_resource_changed);
+
+	ClassDB::bind_method(D_METHOD("apply_mesh_change"), &MDIGizmo::apply_mesh_change);
+	ClassDB::bind_method(D_METHOD("set_seam"), &MDIGizmo::set_seam);
+	ClassDB::bind_method(D_METHOD("apply_vertex_array"), &MDIGizmo::apply_vertex_array);
 }
