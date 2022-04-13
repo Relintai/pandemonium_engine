@@ -25,6 +25,11 @@ SOFTWARE.
 
 #include "scene/gui/control.h"
 
+class EditorPlugin;
+class MeshDataResource;
+class MeshDataInstance;
+class MDIEdPlugin;
+
 class MDIEd : public Control {
 	GDCLASS(MDIEd, Control);
 
@@ -106,7 +111,7 @@ public:
 	MDIEd();
 	~MDIEd();
 
-	EditorPlugin *_plugin;
+	MDIEdPlugin *_plugin;
 
 	//export var uv_preview_path : NodePath
 	//export var uv_editor_path : NodePath

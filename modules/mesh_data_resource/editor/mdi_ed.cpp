@@ -22,6 +22,9 @@ SOFTWARE.
 
 #include "mdi_ed.h"
 
+#include "core/os/keyboard.h"
+#include "mdi_ed_plugin.h"
+
 void MDIEd::_enter_tree() {
 	/*
 	uv_preview = get_node(uv_preview_path)
@@ -58,35 +61,35 @@ void MDIEd::set_mesh_data_instance(MeshDataInstance *a) {
 	*/
 }
 void MDIEd::_unhandled_key_input(Ref<InputEventKey> event) {
-	/*
-	if event.echo:
-		return
+	if (event->is_echo()) {
+		return;
+	}
 
-	if event.alt || event.shift || event.control || event.meta || event.command:
-		return
+	if (event->get_alt() || event->get_shift() || event->get_control() || event->get_metakey() || event->get_command()) {
+		return;
+	}
 
-	if event.scancode == KEY_G:
-		set_edit_mode_translate()
-	elif event.scancode == KEY_H:
-		set_edit_mode_rotate()
-	elif event.scancode == KEY_J:
-		set_edit_mode_scale()
+	uint32_t scancode = event->get_scancode();
 
-	elif event.scancode == KEY_V:
-		set_axis_x(!get_axis_x())
-	elif event.scancode == KEY_B:
-		set_axis_y(!get_axis_y())
-	elif event.scancode == KEY_N:
-		set_axis_z(!get_axis_z())
-
-	elif event.scancode == KEY_K:
-		set_selection_mode_vertex()
-	elif event.scancode == KEY_L:
-		set_selection_mode_edge()
-	elif event.scancode == KEY_SEMICOLON:
-		set_selection_mode_face()
-
-	*/
+	if (scancode == KEY_G) {
+		set_edit_mode_translate();
+	} else if (scancode == KEY_H) {
+		set_edit_mode_rotate();
+	} else if (scancode == KEY_J) {
+		set_edit_mode_scale();
+	} else if (scancode == KEY_V) {
+		set_axis_x(!get_axis_x());
+	} else if (scancode == KEY_B) {
+		set_axis_y(!get_axis_y());
+	} else if (scancode == KEY_N) {
+		set_axis_z(!get_axis_z());
+	} else if (scancode == KEY_K) {
+		set_selection_mode_vertex();
+	} else if (scancode == KEY_L) {
+		set_selection_mode_edge();
+	} else if (scancode == KEY_SEMICOLON) {
+		set_selection_mode_face();
+	}
 }
 
 //Edit modes
@@ -107,25 +110,25 @@ void MDIEd::set_edit_mode_scale() {
 }
 
 void MDIEd::on_edit_mode_translate_toggled(bool on) {
-	/*
-	if on:
-		if _plugin:
-			_plugin.set_translate()
-	*/
+	if (on) {
+		if (_plugin) {
+			_plugin->set_translate();
+		}
+	}
 }
 void MDIEd::on_edit_mode_rotate_toggled(bool on) {
-	/*
-	if on:
-		if _plugin:
-			_plugin.set_rotate()
-	*/
+	if (on) {
+		if (_plugin) {
+			_plugin->set_rotate();
+		}
+	}
 }
 void MDIEd::on_edit_mode_scale_toggled(bool on) {
-	/*
-	if on:
-		if _plugin:
-			_plugin.set_scale()
-	*/
+	if (on) {
+		if (_plugin) {
+			_plugin->set_scale();
+		}
+	}
 }
 
 //axis locks
@@ -161,45 +164,48 @@ void MDIEd::set_axis_z(bool on) {
 }
 
 void MDIEd::on_axis_x_toggled(bool on) {
-	/*
-	if _plugin:
-		_plugin.set_axis_x(on)
-	*/
+	if (on) {
+		if (_plugin) {
+			_plugin->set_axis_x(on);
+		}
+	}
 }
 void MDIEd::on_axis_y_toggled(bool on) {
-	/*
-	if _plugin:
-		_plugin.set_axis_y(on)
-	*/
+	if (on) {
+		if (_plugin) {
+			_plugin->set_axis_y(on);
+		}
+	}
 }
 void MDIEd::on_axis_z_toggled(bool on) {
-	/*
-	if _plugin:
-		_plugin.set_axis_z(on)
-	*/
+	if (on) {
+		if (_plugin) {
+			_plugin->set_axis_z(on);
+		}
+	}
 }
 
 //selection modes
 void MDIEd::on_selection_mode_vertex_toggled(bool on) {
-	/*
-	if on:
-		if _plugin:
-			_plugin.set_selection_mode_vertex()
-	*/
+	if (on) {
+		if (_plugin) {
+			_plugin->set_selection_mode_vertex();
+		}
+	}
 }
 void MDIEd::on_selection_mode_edge_toggled(bool on) {
-	/*
-	if on:
-		if _plugin:
-			_plugin.set_selection_mode_edge()
-	*/
+	if (on) {
+		if (_plugin) {
+			_plugin->set_selection_mode_edge();
+		}
+	}
 }
 void MDIEd::on_selection_mode_face_toggled(bool on) {
-	/*
-	if on:
-		if _plugin:
-			_plugin.set_selection_mode_face()
-	*/
+	if (on) {
+		if (_plugin) {
+			_plugin->set_selection_mode_face();
+		}
+	}
 }
 
 void MDIEd::set_selection_mode_vertex() {
@@ -219,109 +225,67 @@ void MDIEd::set_selection_mode_face() {
 }
 
 void MDIEd::_on_Extrude_pressed() {
-	/*
-	_plugin.extrude()
-	*/
+	_plugin->extrude();
 }
 void MDIEd::_on_AddBox_pressed() {
-	/*
-	_plugin.add_box()
-	*/
+	_plugin->add_box();
 }
 void MDIEd::_on_UnwrapButton_pressed() {
-	/*
-	_plugin.uv_unwrap()
-	*/
+	_plugin->uv_unwrap();
 }
 void MDIEd::_on_add_triangle_pressed() {
-	/*
-	_plugin.add_triangle()
-	*/
+	_plugin->add_triangle();
 }
 void MDIEd::_on_add_quad_pressed() {
-	/*
-	_plugin.add_quad()
-	*/
+	_plugin->add_quad();
 }
 void MDIEd::_on_split_pressed() {
-	/*
-	_plugin.split()
-	*/
+	_plugin->split();
 }
 void MDIEd::_on_connect_to_first_selected_pressed() {
-	/*
-	_plugin.connect_to_first_selected()
-	*/
+	_plugin->connect_to_first_selected();
 }
 void MDIEd::_on_connect_to_avg_pressed() {
-	/*
-	_plugin.connect_to_avg()
-	*/
+	_plugin->connect_to_avg();
 }
 void MDIEd::_on_connect_to_last_selected_pressed() {
-	/*
-	_plugin.connect_to_last_selected()
-	*/
+	_plugin->connect_to_last_selected();
 }
 void MDIEd::_on_disconnect_pressed() {
-	/*
-	_plugin.disconnect_action()
-	*/
+	_plugin->disconnect_action();
 }
 void MDIEd::_on_add_triangle_at_pressed() {
-	/*
-	_plugin.add_triangle_at()
-	*/
+	_plugin->add_triangle_at();
 }
 void MDIEd::_on_add_auad_at_pressed() {
-	/*
-	_plugin.add_quad_at()
-	*/
+	_plugin->add_quad_at();
 }
 void MDIEd::_oncreate_face_pressed() {
-	/*
-	_plugin.create_face()
-	*/
+	_plugin->create_face();
 }
 void MDIEd::_on_delete_pressed() {
-	/*
-	_plugin.delete_selected()
-	*/
+	_plugin->delete_selected();
 }
 void MDIEd::_on_GenNormals_pressed() {
-	/*
-	_plugin.generate_normals()
-	*/
+	_plugin->generate_normals();
 }
 void MDIEd::_on_RemDoubles_pressed() {
-	/*
-	_plugin.remove_doubles()
-	*/
+	_plugin->remove_doubles();
 }
 void MDIEd::_on_MergeOptimize_pressed() {
-	/*
-	_plugin.merge_optimize()
-	*/
+	_plugin->merge_optimize();
 }
 void MDIEd::_on_GenTangents_pressed() {
-	/*
-	_plugin.generate_tangents()
-	*/
+	_plugin->generate_tangents();
 }
 void MDIEd::_on_mark_seam_pressed() {
-	/*
-	_plugin.mark_seam()
-	*/
+	_plugin->mark_seam();
 }
 void MDIEd::_on_unmark_seam_pressed() {
-	/*
-	_plugin.unmark_seam()
-	*/
+	_plugin->unmark_seam();
 }
 void MDIEd::_on_apply_seams_pressed() {
-	/*
-	_plugin.apply_seam()
-	*/
+	_plugin->apply_seam();
 }
 void MDIEd::_on_uv_edit_pressed() {
 	/*
@@ -330,72 +294,52 @@ void MDIEd::_on_uv_edit_pressed() {
 }
 
 void MDIEd::on_pivot_average_toggled(bool on) {
-	/*
-	if on:
-		_plugin.set_pivot_averaged()
-	*/
+	if (on) {
+		_plugin->set_pivot_averaged();
+	}
 }
 void MDIEd::on_pivot_mdi_origin_toggled(bool on) {
-	/*
-	if on:
-		_plugin.set_pivot_mdi_origin()
-	*/
+	if (on) {
+		_plugin->set_pivot_mdi_origin();
+	}
 }
 void MDIEd::on_pivot_world_origin_toggled(bool on) {
+	if (on) {
+		_plugin->set_pivot_world_origin();
+	}
 	/*
 	if on:
 		_plugin.set_pivot_world_origin()
 	*/
 }
 void MDIEd::on_visual_indicator_outline_toggled(bool on) {
-	/*
-	_plugin.visual_indicator_outline_set(on)
-	*/
+	_plugin->visual_indicator_outline_set(on);
 }
 void MDIEd::on_visual_indicator_seam_toggled(bool on) {
-	/*
-	_plugin.visual_indicator_seam_set(on)
-	*/
+	_plugin->visual_indicator_seam_set(on);
 }
 void MDIEd::on_visual_indicator_handle_toggled(bool on) {
-	/*
-	_plugin.visual_indicator_handle_set(on)
-	*/
+	_plugin->visual_indicator_handle_set(on);
 }
 void MDIEd::_on_select_all_pressed() {
-	/*
-	_plugin.select_all()
-	*/
+	_plugin->select_all();
 }
 
 void MDIEd::onhandle_selection_type_front_toggled(bool on) {
-	/*
-	if on:
-		_plugin.handle_selection_type_front()
-	*/
+	_plugin->handle_selection_type_front();
 }
 void MDIEd::onhandle_selection_type_back_toggled(bool on) {
-	/*
-	if on:
-		_plugin.handle_selection_type_back()
-	*/
+	_plugin->handle_selection_type_back();
 }
 void MDIEd::onhandle_selection_type_all_toggled(bool on) {
-	/*
-	if on:
-		_plugin.handle_selection_type_all()
-	*/
+	_plugin->handle_selection_type_all();
 }
 
 void MDIEd::_on_clean_mesh_pressed() {
-	/*
-	_plugin.clean_mesh()
-	*/
+	_plugin->clean_mesh();
 }
 void MDIEd::_on_flip_face_pressed() {
-	/*
-	_plugin.flip_selected_faces()
-	*/
+	_plugin->flip_selected_faces();
 }
 
 MDIEd::MDIEd() {

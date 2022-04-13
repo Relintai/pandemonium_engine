@@ -27,27 +27,29 @@ SOFTWARE.
 
 #include "core/os/input_event.h"
 
+//TODO:
+//Remove gizmo registration, it's not needed anymore
+
 class Camera;
 class MDIGizmo;
 class MeshDataResource;
-class MdiGizmoPlugin;
+class MDIGizmoPlugin;
 class MeshDataInstance;
+class MDIEd;
 
 class MDIEdPlugin : public EditorPlugin {
-	GDCLASS(MDIEdPlugin, EditorPlugin);
-
 public:
 	void _enter_tree();
 	void _exit_tree();
 
-	bool handles(Object *object);
+	bool handles(Object *object) const;
 	void edit(Object *object);
 	void make_visible(bool visible);
 
-	void get_plugin_name();
+	String get_name() const;
 
-	void register_gizmo(MDIGizmo *gizmo);
-	void unregister_gizmo(MDIGizmo *gizmo);
+	void register_gizmo(Ref<MDIGizmo> gizmo);
+	void unregister_gizmo(Ref<MDIGizmo> gizmo);
 
 	void set_translate();
 	void set_scale();
@@ -74,7 +76,6 @@ public:
 
 	void split();
 
-	void connect_action();
 	void disconnect_action();
 
 	void create_face();
@@ -117,12 +118,12 @@ public:
 	MDIEdPlugin();
 	~MDIEdPlugin();
 
-	MdiGizmoPlugin *gizmo_plugin;
-	Control mdi_ed_gui;
+	MDIGizmoPlugin *gizmo_plugin;
+	MDIEd mdi_ed_gui;
 
-	Array active_gizmos;
+	Vector<Ref<MDIGizmo>> active_gizmos;
 
-	Ref<MeshDataInstance> current_mesh_data_instance;
+	MeshDataInstance *current_mesh_data_instance;
 
 protected:
 	static void _bind_methods();

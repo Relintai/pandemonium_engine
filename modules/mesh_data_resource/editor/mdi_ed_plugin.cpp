@@ -22,391 +22,384 @@ SOFTWARE.
 
 #include "mdi_ed_plugin.h"
 
+#include "../nodes/mesh_data_instance.h"
+#include "mdi_ed.h"
+#include "mdi_gizmo.h"
+#include "mdi_gizmo_plugin.h"
 
 void MDIEdPlugin::_enter_tree() {
-	/*
-	gizmo_plugin = MdiGizmoPlugin.new()
-	mdi_ed_gui = MDIEdGui.instance()
-	mdi_ed_gui.set_plugin(self)
-	active_gizmos = []
+	gizmo_plugin = memnew(MDIGizmoPlugin);
+	mdi_ed_gui = memnew(MDIEd);
+	mdi_ed_gui->set_plugin(this);
+	active_gizmos.clear();
 
-	gizmo_plugin.plugin = self
+	gizmo_plugin->plugin = this;
 
-	add_control_to_container(EditorPlugin.CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT, mdi_ed_gui)
-	mdi_ed_gui.hide()
+	add_control_to_container(EditorPlugin::CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT, mdi_ed_gui);
+	mdi_ed_gui->hide();
 
-	add_spatial_gizmo_plugin(gizmo_plugin)
+	add_spatial_gizmo_plugin(gizmo_plugin);
 
-	set_input_event_forwarding_always_enabled()
-	*/
+	set_input_event_forwarding_always_enabled();
 }
 void MDIEdPlugin::_exit_tree() {
-	/*
-	#print("_exit_tree")
+	//print("_exit_tree")
 
-	remove_spatial_gizmo_plugin(gizmo_plugin)
-	#remove_control_from_container(EditorPlugin.CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT, mdi_ed_gui)
-	mdi_ed_gui.queue_free()
-	pass
-	*/
+	remove_spatial_gizmo_plugin(gizmo_plugin);
+	//remove_control_from_container(EditorPlugin.CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT, mdi_ed_gui)
+	mdi_ed_gui->queue_delete();
 }
 
-bool MDIEdPlugin::handles(Object *object) {
-	/*
-	#print("disable_plugin")
+bool MDIEdPlugin::handles(Object *object) const {
+	//print("disable_plugin")
 
-	if object is MeshDataInstance:
-		return true
+	if (object->is_class("MeshDataInstance")) {
+		return true;
+	}
 
-	return false
-	*/
+	return false;
 }
 void MDIEdPlugin::edit(Object *object) {
-	/*
-	var mdi : MeshDataInstance = object as MeshDataInstance
+	MeshDataInstance *mdi = Object::cast_to<MeshDataInstance>(object);
 
-	if mdi:
-		if current_mesh_data_instance && mdi.gizmo && current_mesh_data_instance.gizmo:
-			mdi.gizmo.transfer_state_from(current_mesh_data_instance.gizmo)
+	if (mdi) {
+		if (current_mesh_data_instance) {
+			Ref<MDIGizmo> g = mdi->get_gizmo();
+			Ref<MDIGizmo> c = current_mesh_data_instance->get_gizmo();
 
-		mdi_ed_gui.set_mesh_data_resource(mdi.mesh_data)
-		mdi_ed_gui.set_mesh_data_instance(mdi)
+			if (g.is_valid() && c.is_valid()) {
+				g->transfer_state_from(c);
+			}
+		}
 
-	current_mesh_data_instance = mdi
-	*/
+		mdi_ed_gui->set_mesh_data_resource(mdi->get_mesh_data());
+		mdi_ed_gui->set_mesh_data_instance(mdi);
+	}
+
+	current_mesh_data_instance = mdi;
 }
 void MDIEdPlugin::make_visible(bool visible) {
-	/*
-	#print("make_visible")
+	if (visible) {
+		mdi_ed_gui->show();
+	}
 
-	if visible:
-		mdi_ed_gui.show()
-	else:
-		#mdi_ed_gui.hide()
-		#figure out how to hide it when something else gets selected, don't hide on unselect
-		pass
-	*/
+	//else:
+	//	#mdi_ed_gui.hide()
+	//	#figure out how to hide it when something else gets selected, don't hide on unselect
+	//	pass
 }
 
-void MDIEdPlugin::get_plugin_name() {
-	/*
-	return "mesh_data_resource_editor"
-	*/
+String MDIEdPlugin::get_name() const {
+	return "MeshDataResourceEditor";
 }
 
-void MDIEdPlugin::register_gizmo(MDIGizmo *gizmo) {
-	/*
-active_gizmos.append(gizmo)
-	*/
+void MDIEdPlugin::register_gizmo(Ref<MDIGizmo> gizmo) {
+	active_gizmos.push_back(gizmo);
 }
-void MDIEdPlugin::unregister_gizmo(MDIGizmo *gizmo) {
-	/*
-	for i in range(active_gizmos.size()):
-		if active_gizmos[i] == gizmo:
-			active_gizmos.remove(i)
-			return
-	*/
+void MDIEdPlugin::unregister_gizmo(Ref<MDIGizmo> gizmo) {
+	for (int i = 0; i < active_gizmos.size(); ++i) {
+		if (active_gizmos[i] == gizmo) {
+			active_gizmos.remove(i);
+			return;
+		}
+	}
 }
 
 void MDIEdPlugin::set_translate() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.set_translate()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->set_translate();
+	}
 }
 void MDIEdPlugin::set_scale() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.set_scale()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->set_scale();
+	}
 }
 void MDIEdPlugin::set_rotate() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.set_rotate()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->set_rotate();
+	}
 }
 
 void MDIEdPlugin::set_axis_x(bool on) {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.set_axis_x(on)
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->set_axis_x(on);
+	}
 }
 void MDIEdPlugin::set_axis_y(bool on) {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.set_axis_y(on)
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->set_axis_y(on);
+	}
 }
 void MDIEdPlugin::set_axis_z(bool on) {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.set_axis_z(on)
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->set_axis_z(on);
+	}
 }
 
 void MDIEdPlugin::set_selection_mode_vertex() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.set_selection_mode_vertex()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->set_selection_mode_vertex();
+	}
 }
 void MDIEdPlugin::set_selection_mode_edge() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.set_selection_mode_edge()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->set_selection_mode_edge();
+	}
 }
 void MDIEdPlugin::set_selection_mode_face() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.set_selection_mode_face()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->set_selection_mode_face();
+	}
 }
 
 Ref<MeshDataResource> MDIEdPlugin::get_mdr() {
-	/*
-	if current_mesh_data_instance:
-		return current_mesh_data_instance.mesh_data
+	if (current_mesh_data_instance) {
+		return current_mesh_data_instance->get_mesh_data();
+	}
 
-	return null
-	*/
+	return Ref<MeshDataResource>();
 }
 
 bool MDIEdPlugin::forward_spatial_gui_input(int index, Camera *camera, const Ref<InputEvent> &p_event) {
-	/*
-	if (!is_instance_valid(current_mesh_data_instance)):
-		current_mesh_data_instance = null
+	if (!ObjectDB::instance_validate(current_mesh_data_instance)) {
+		current_mesh_data_instance = nullptr;
+	}
 
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		if current_mesh_data_instance.gizmo.forward_spatial_gui_input(index, camera, event):
-			return true
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		if (g.is_valid() && g->forward_spatial_gui_input(index, camera, p_event)) {
+			return true;
+		}
+	}
 
-	return false
-	*/
+	return false;
 }
 
 void MDIEdPlugin::add_box() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.add_box()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->add_box();
+	}
 }
 void MDIEdPlugin::add_triangle() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.add_triangle()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->add_triangle();
+	}
 }
 void MDIEdPlugin::add_quad() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.add_quad()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->add_quad();
+	}
 }
 
 void MDIEdPlugin::add_triangle_at() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.add_triangle_at()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->add_triangle_at();
+	}
 }
 void MDIEdPlugin::add_quad_at() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.add_quad_at()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->add_quad_at();
+	}
 }
 
 void MDIEdPlugin::split() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.split()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->split();
+	}
 }
 
-void MDIEdPlugin::connect_action() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.connect_action()
-	*/
-}
 void MDIEdPlugin::disconnect_action() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.disconnect_action()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->disconnect_action();
+	}
 }
 
 void MDIEdPlugin::create_face() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.create_face()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->create_face();
+	}
 }
 void MDIEdPlugin::delete_selected() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.delete_selected()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->delete_selected();
+	}
 }
 
 void MDIEdPlugin::generate_normals() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.generate_normals()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->generate_normals();
+	}
 }
 void MDIEdPlugin::remove_doubles() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.remove_doubles()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->remove_doubles();
+	}
 }
 void MDIEdPlugin::merge_optimize() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.merge_optimize()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->merge_optimize();
+	}
 }
 void MDIEdPlugin::generate_tangents() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.generate_tangents()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->generate_tangents();
+	}
 }
 
 void MDIEdPlugin::connect_to_first_selected() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.connect_to_first_selected()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->connect_to_first_selected();
+	}
 }
 void MDIEdPlugin::connect_to_avg() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.connect_to_avg()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->connect_to_avg();
+	}
 }
 void MDIEdPlugin::connect_to_last_selected() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.connect_to_last_selected()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->connect_to_last_selected();
+	}
 }
 
 void MDIEdPlugin::mark_seam() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.mark_seam()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->mark_seam();
+	}
 }
 void MDIEdPlugin::unmark_seam() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.unmark_seam()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->unmark_seam();
+	}
 }
 void MDIEdPlugin::apply_seam() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.apply_seam()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->apply_seam();
+	}
 }
 
 void MDIEdPlugin::uv_unwrap() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.uv_unwrap()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->uv_unwrap();
+	}
 }
 
 void MDIEdPlugin::set_pivot_averaged() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.set_pivot_averaged()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->set_pivot_averaged();
+	}
 }
 void MDIEdPlugin::set_pivot_mdi_origin() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.set_pivot_mdi_origin()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->set_translate();
+	}
 }
 void MDIEdPlugin::set_pivot_world_origin() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.set_pivot_world_origin()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->set_pivot_world_origin();
+	}
 }
 
 void MDIEdPlugin::visual_indicator_outline_set(bool on) {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.visual_indicator_outline_set(on)
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->visual_indicator_outline_set(on);
+	}
 }
 void MDIEdPlugin::visual_indicator_seam_set(bool on) {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.visual_indicator_seam_set(on)
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->visual_indicator_seam_set(on);
+	}
 }
 void MDIEdPlugin::visual_indicator_handle_set(bool on) {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.visual_indicator_handle_set(on)
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->visual_indicator_handle_set(on);
+	}
 }
 
 void MDIEdPlugin::select_all() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.select_all()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->select_all();
+	}
 }
 
 void MDIEdPlugin::handle_selection_type_front() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.handle_selection_type_front()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->handle_selection_type_front();
+	}
 }
 void MDIEdPlugin::handle_selection_type_back() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.handle_selection_type_back()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->handle_selection_type_back();
+	}
 }
 void MDIEdPlugin::handle_selection_type_all() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.handle_selection_type_all()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->handle_selection_type_all();
+	}
 }
 
 void MDIEdPlugin::extrude() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.extrude()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->extrude();
+	}
 }
 void MDIEdPlugin::clean_mesh() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.clean_mesh()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->clean_mesh();
+	}
 }
 
 void MDIEdPlugin::flip_selected_faces() {
-	/*
-	if current_mesh_data_instance && current_mesh_data_instance.gizmo:
-		current_mesh_data_instance.gizmo.flip_selected_faces()
-	*/
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = current_mesh_data_instance->get_gizmo();
+		g->flip_selected_faces();
+	}
 }
 
 MDIEdPlugin::MDIEdPlugin() {
+	current_mesh_data_instance = nullptr;
 	/*
 
 	const MDRMeshUtils = preload("res://addons/mesh_data_resource_editor/utilities/mdred_mesh_utils.gd")

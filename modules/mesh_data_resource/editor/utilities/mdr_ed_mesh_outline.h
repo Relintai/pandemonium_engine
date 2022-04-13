@@ -49,8 +49,8 @@ public:
 
 	Ref<MeshDataResource> _mdr;
 
-	PoolVector3Array lines;
-	PoolVector3Array seam_lines;
+	Vector<Vector3> lines;
+	Vector<Vector3> seam_lines;
 
 	PoolVector3Array _vertices;
 	PoolVector3Array _normals;

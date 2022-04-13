@@ -34,7 +34,7 @@ SOFTWARE.
 
 class Camera;
 class MeshDataResource;
-class MeshOutlineGenerator;
+class MDREDMeshOutline;
 class InputEvent;
 class EditorPlugin;
 class UndoRedo;
@@ -83,14 +83,14 @@ public:
 
 	void select_all();
 
-	bool selection_click(int index, Camera *camera, const Ref<InputEvent> &event);
+	bool selection_click(int index, Camera *camera, const Ref<InputEventMouse> &event);
 	bool is_point_visible(Vector3 point_orig, Vector3 camera_pos, Transform gt);
 
-	void selection_click_select_front_or_back(int index, Camera *camera, const Ref<InputEvent> &event);
-	void selection_click_select_through(int index, Camera *camera, const Ref<InputEvent> &event);
-	void selection_drag(int index, Camera *camera, const Ref<InputEvent> &event);
-	void selection_drag_rect_select_front_back(int index, Camera *camera, const Ref<InputEvent> &event);
-	void selection_drag_rect_select_through(int index, Camera *camera, const Ref<InputEvent> &event);
+	bool selection_click_select_front_or_back(int index, Camera *camera, const Ref<InputEventMouse> &event);
+	bool selection_click_select_through(int index, Camera *camera, const Ref<InputEventMouse> &event);
+	void selection_drag(int index, Camera *camera, const Ref<InputEventMouse> &event);
+	void selection_drag_rect_select_front_back(int index, Camera *camera, const Ref<InputEventMouse> &event);
+	void selection_drag_rect_select_through(int index, Camera *camera, const Ref<InputEventMouse> &event);
 	bool forward_spatial_gui_input(int index, Camera *camera, const Ref<InputEvent> &event);
 	void add_to_all_selected(Vector3 ofs);
 
@@ -185,7 +185,7 @@ public:
 	void set_pivot_mdi_origin();
 	void set_pivot_world_origin();
 
-	void transfer_state_from(EditorSpatialGizmo *other);
+	void transfer_state_from(const Ref<MDIGizmo> &other);
 
 	void visual_indicator_outline_set(bool on);
 	void visual_indicator_seam_set(bool on);
@@ -224,7 +224,7 @@ public:
 	Array _handle_to_vertex_map;
 	PoolIntArray _selected_points;
 
-	Ref<MeshOutlineGenerator> _mesh_outline_generator;
+	Ref<MDREDMeshOutline> _mesh_outline_generator;
 
 	bool _handle_drag_op;
 	PoolVector3Array _drag_op_orig_verices;

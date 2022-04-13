@@ -22,425 +22,493 @@ SOFTWARE.
 
 #include "mdi_gizmo.h"
 
+#include "../mesh_data_resource.h"
+#include "../nodes/mesh_data_instance.h"
+#include "./utilities/mdr_ed_mesh_decompose.h"
+#include "./utilities/mdr_ed_mesh_outline.h"
+#include "./utilities/mdr_ed_mesh_utils.h"
+#include "core/math/geometry.h"
+#include "editor/editor_node.h"
+#include "modules/mesh_utils/mesh_utils.h"
+#include "scene/3d/camera.h"
+
 void MDIGizmo::setup() {
-	/*
-	get_spatial_node().connect("mesh_data_resource_changed", self, "on_mesh_data_resource_changed")
-	on_mesh_data_resource_changed(get_spatial_node().mesh_data)
-	*/
+	MeshDataInstance *mdi = Object::cast_to<MeshDataInstance>(get_spatial_node());
+
+	ERR_FAIL_COND(!mdi);
+
+	mdi->connect("mesh_data_resource_changed", this, "on_mesh_data_resource_changed");
+
+	on_mesh_data_resource_changed(mdi->get_mesh_data());
 }
 void MDIGizmo::set_editor_plugin(EditorPlugin *editor_plugin) {
-	/*
-	_editor_plugin = editor_plugin
+	_editor_plugin = editor_plugin;
 
-	_undo_redo = _editor_plugin.get_undo_redo()
-	*/
+	_undo_redo = EditorNode::get_undo_redo();
 }
 
 void MDIGizmo::set_handle(int index, Camera *camera, Vector2 point) {
-	/*
-	var relative : Vector2 = point - previous_point
+	Vector2 relative = point - previous_point;
 
-	if !_handle_drag_op:
-		relative = Vector2()
-		_handle_drag_op = true
+	if (!_handle_drag_op) {
+		relative = Vector2();
+		_handle_drag_op = true;
 
-		if edit_mode == EditMode.EDIT_MODE_SCALE:
-			_drag_op_accumulator = Vector3(1, 1, 1)
-		else:
-			_drag_op_accumulator = Vector3()
+		if (edit_mode == EditMode::EDIT_MODE_SCALE) {
+			_drag_op_accumulator = Vector3(1, 1, 1);
+		} else {
+			_drag_op_accumulator = Vector3();
+		}
 
-		_drag_op_accumulator_quat = Quat()
+		_drag_op_accumulator_quat = Quat();
 
-		_drag_op_orig_verices = copy_mdr_verts_array()
-		setup_op_drag_indices()
-		_drag_op_pivot = get_drag_op_pivot()
+		_drag_op_orig_verices = copy_mdr_verts_array();
+		setup_op_drag_indices();
+		_drag_op_pivot = get_drag_op_pivot();
+	}
 
-	if edit_mode == EditMode.EDIT_MODE_NONE:
-		return
-	elif edit_mode == EditMode.EDIT_MODE_TRANSLATE:
-		var ofs : Vector3 = Vector3()
+	if (edit_mode == EditMode::EDIT_MODE_NONE) {
+		return;
+	} else if (edit_mode == EditMode::EDIT_MODE_TRANSLATE) {
+		Vector3 ofs;
 
-		ofs = camera.get_global_transform().basis.x
+		ofs = camera->get_global_transform().basis.get_axis(0);
 
-		if (axis_constraint & AxisConstraint.X) != 0:
-			ofs.x *= relative.x * 0.01
-		else:
-			ofs.x = 0
+		if ((axis_constraint & AXIS_CONSTRAINT_X) != 0) {
+			ofs.x *= relative.x * 0.01;
+		} else {
+			ofs.x = 0;
+		}
 
-		if (axis_constraint & AxisConstraint.Y) != 0:
-			ofs.y = relative.y * -0.01
-		else:
-			ofs.y = 0
+		if ((axis_constraint & AXIS_CONSTRAINT_Y) != 0) {
+			ofs.y = relative.y * -0.01;
+		} else {
+			ofs.y = 0;
+		}
 
-		if (axis_constraint & AxisConstraint.Z) != 0:
-			ofs.z *= relative.x * 0.01
-		else:
-			ofs.z = 0
+		if ((axis_constraint & AXIS_CONSTRAINT_Z) != 0) {
+			ofs.z *= relative.x * 0.01;
+		} else {
+			ofs.z = 0;
+		}
 
-		_drag_op_accumulator += ofs
+		_drag_op_accumulator += ofs;
 
-		add_to_all_selected(_drag_op_accumulator)
+		add_to_all_selected(_drag_op_accumulator);
 
-		apply()
-		redraw()
-	elif edit_mode == EditMode.EDIT_MODE_SCALE:
-		var r : float = ((relative.x + relative.y) * 0.05)
+		apply();
+		redraw();
+	} else if (edit_mode == EditMode::EDIT_MODE_SCALE) {
+		float r = ((relative.x + relative.y) * 0.05);
 
-		var vs : Vector3 = Vector3()
+		Vector3 vs;
 
-		if (axis_constraint & AxisConstraint.X) != 0:
-			vs.x = r
+		if ((axis_constraint & AXIS_CONSTRAINT_X) != 0) {
+			vs.x = r;
+		}
 
-		if (axis_constraint & AxisConstraint.Y) != 0:
-			vs.y = r
+		if ((axis_constraint & AXIS_CONSTRAINT_Y) != 0) {
+			vs.y = r;
+		}
 
-		if (axis_constraint & AxisConstraint.Z) != 0:
-			vs.z = r
+		if ((axis_constraint & AXIS_CONSTRAINT_Z) != 0) {
+			vs.z = r;
+		}
 
-		_drag_op_accumulator += vs
+		_drag_op_accumulator += vs;
 
-		var b : Basis = Basis().scaled(_drag_op_accumulator)
-		var t : Transform = Transform(Basis(), _drag_op_pivot)
-		t *= Transform(b, Vector3())
-		t *= Transform(Basis(), _drag_op_pivot).inverse()
+		Basis b = Basis().scaled(_drag_op_accumulator);
+		Transform t = Transform(Basis(), _drag_op_pivot);
+		t *= Transform(b, Vector3());
+		t *= Transform(Basis(), _drag_op_pivot).inverse();
 
-		mul_all_selected_with_transform(t)
+		mul_all_selected_with_transform(t);
 
-		apply()
-		redraw()
-	elif edit_mode == EditMode.EDIT_MODE_ROTATE:
-		var yrot : Quat = Quat(Vector3(0, 1, 0), relative.x * 0.01)
-		var xrot : Quat = Quat(camera.get_global_transform().basis.x, relative.y * 0.01)
+		apply();
+		redraw();
+	} else if (edit_mode == EditMode::EDIT_MODE_ROTATE) {
+		Quat yrot = Quat(Vector3(0, 1, 0), relative.x * 0.01);
+		Quat xrot = Quat(camera->get_global_transform().basis.get_axis(0), relative.y * 0.01);
 
-		_drag_op_accumulator_quat *= yrot
-		_drag_op_accumulator_quat *= xrot
-		_drag_op_accumulator_quat = _drag_op_accumulator_quat.normalized()
+		_drag_op_accumulator_quat *= yrot;
+		_drag_op_accumulator_quat *= xrot;
+		_drag_op_accumulator_quat = _drag_op_accumulator_quat.normalized();
 
-		var b : Basis = Basis(_drag_op_accumulator_quat)
-		var t : Transform = Transform(Basis(), _drag_op_pivot)
-		t *= Transform(b, Vector3())
-		t *= Transform(Basis(), _drag_op_pivot).inverse()
+		Basis b = Basis(_drag_op_accumulator_quat);
+		Transform t = Transform(Basis(), _drag_op_pivot);
+		t *= Transform(b, Vector3());
+		t *= Transform(Basis(), _drag_op_pivot).inverse();
 
-		mul_all_selected_with_transform(t)
+		mul_all_selected_with_transform(t);
 
-		apply()
-		redraw()
+		apply();
+		redraw();
+	}
 
-	previous_point = point
-	*/
+	previous_point = point;
 }
+
 void MDIGizmo::redraw() {
-	/*
-	clear()
+	clear();
 
-	if !_mdr:
-		return
+	if (!_mdr.is_valid()) {
+		return;
+	}
 
-	if _mdr.array.size() != ArrayMesh.ARRAY_MAX:
-		return
+	Array array = _mdr->get_array();
 
-	if !get_plugin():
-		return
+	if (array.size() != ArrayMesh::ARRAY_MAX) {
+		return;
+	}
 
-	var handles_material : SpatialMaterial = get_plugin().get_material("handles", self)
-	var material = get_plugin().get_material("main", self)
-	var seam_material = get_plugin().get_material("seam", self)
+	if (!get_plugin().is_valid()) {
+		return;
+	}
 
-	_mesh_outline_generator.setup(_mdr)
+	Ref<SpatialMaterial> handles_material = get_plugin()->get_material("handles", Ref<EditorSpatialGizmo>(this));
+	Ref<SpatialMaterial> material = get_plugin()->get_material("main", Ref<EditorSpatialGizmo>(this));
+	Ref<SpatialMaterial> seam_material = get_plugin()->get_material("seam", Ref<EditorSpatialGizmo>(this));
 
-	if selection_mode == SelectionMode.SELECTION_MODE_EDGE:
-		_mesh_outline_generator.generate_mark_edges(visual_indicator_outline, visual_indicator_handle)
-	elif selection_mode == SelectionMode.SELECTION_MODE_FACE:
-		_mesh_outline_generator.generate_mark_faces(visual_indicator_outline, visual_indicator_handle)
-	else:
-		_mesh_outline_generator.generate(visual_indicator_outline, visual_indicator_handle)
+	_mesh_outline_generator->setup(_mdr);
 
-	if visual_indicator_outline || visual_indicator_handle:
-		add_lines(_mesh_outline_generator.lines, material, false)
+	if (selection_mode == SELECTION_MODE_EDGE) {
+		_mesh_outline_generator->generate_mark_edges(visual_indicator_outline, visual_indicator_handle);
+	} else if (selection_mode == SELECTION_MODE_FACE) {
+		_mesh_outline_generator->generate_mark_faces(visual_indicator_outline, visual_indicator_handle);
+	} else {
+		_mesh_outline_generator->generate(visual_indicator_outline, visual_indicator_handle);
+	}
 
-	if visual_indicator_seam:
-		add_lines(_mesh_outline_generator.seam_lines, seam_material, false)
+	if (visual_indicator_outline || visual_indicator_handle) {
+		add_lines(_mesh_outline_generator->lines, material, false);
+	}
 
-	if _selected_points.size() > 0:
-		var vs : PoolVector3Array = PoolVector3Array()
+	if (visual_indicator_seam) {
+		add_lines(_mesh_outline_generator->seam_lines, seam_material, false);
+	}
 
-		for i in _selected_points:
-			vs.append(_handle_points[i])
+	if (_selected_points.size() > 0) {
+		Vector<Vector3> vs;
 
-		add_handles(vs, handles_material)
-	*/
+		for (int i = 0; i < _selected_points.size(); ++i) {
+			vs.push_back(_handle_points[_selected_points[i]]);
+		}
+
+		add_handles(vs, handles_material);
+	}
 }
 void MDIGizmo::apply() {
-	/*
-	if !_mdr:
-		return
+	if (!_mdr.is_valid()) {
+		return;
+	}
 
-	disable_change_event()
+	disable_change_event();
 
-	var arrs : Array = _mdr.array
-	arrs[ArrayMesh.ARRAY_VERTEX] = _vertices
-	arrs[ArrayMesh.ARRAY_INDEX] = _indices
-	_mdr.array = arrs
+	Array arrs = _mdr->get_array();
+	arrs[ArrayMesh::ARRAY_VERTEX] = _vertices;
+	arrs[ArrayMesh::ARRAY_INDEX] = _indices;
+	_mdr->set_array(arrs);
 
-	enable_change_event()
-	*/
+	enable_change_event();
 }
 
 void MDIGizmo::select_all() {
-	/*
-	if _selected_points.size() == _handle_points.size():
-		return
+	if (_selected_points.size() == _handle_points.size()) {
+		return;
+	}
 
-	_selected_points.resize(_handle_points.size())
+	_selected_points.resize(_handle_points.size());
 
-	for i in range(_selected_points.size()):
-		_selected_points[i] = i
+	PoolIntArray::Write w = _selected_points.write();
 
-	redraw()
-	*/
+	for (int i = 0; i < _selected_points.size(); ++i) {
+		w[i] = i;
+	}
+
+	redraw();
 }
 
-bool MDIGizmo::selection_click(int index, Camera *camera, const Ref<InputEvent> &event) {
-	/*
-	if handle_selection_type == HandleSelectionType.HANDLE_SELECTION_TYPE_FRONT:
-		return selection_click_select_front_or_back(index, camera, event)
-	elif handle_selection_type == HandleSelectionType.HANDLE_SELECTION_TYPE_BACK:
-		return selection_click_select_front_or_back(index, camera, event)
-	else:
-		return selection_click_select_through(index, camera, event)
+bool MDIGizmo::selection_click(int index, Camera *camera, const Ref<InputEventMouse> &event) {
+	if (handle_selection_type == HANDLE_SELECTION_TYPE_FRONT) {
+		return selection_click_select_front_or_back(index, camera, event);
+	} else if (handle_selection_type == HANDLE_SELECTION_TYPE_BACK) {
+		return selection_click_select_front_or_back(index, camera, event);
+	} else {
+		return selection_click_select_through(index, camera, event);
+	}
 
-	return false
-	*/
+	return false;
 }
 bool MDIGizmo::is_point_visible(Vector3 point_orig, Vector3 camera_pos, Transform gt) {
-	/*
-	var point : Vector3 = gt.xform(point_orig)
+	Vector3 point = gt.xform(point_orig);
 
-	# go from the given point to the origin (camera_pos -> camera)
-	var dir : Vector3 = camera_pos - point
-	dir = dir.normalized()
-	# Might need to reduce z fighting
-	#point += dir * 0.5
+	// go from the given point to the origin (camera_pos -> camera)
+	Vector3 dir = camera_pos - point;
+	dir = dir.normalized();
+	// Might need to reduce z fighting
+	//point += dir * 0.5
 
-	for i in range(0, _indices.size(), 3):
-		var i0 : int = _indices[i]
-		var i1 : int = _indices[i + 1]
-		var i2 : int = _indices[i + 2]
+	for (int i = 0; i < _indices.size(); i += 3) {
+		int i0 = _indices[i];
+		int i1 = _indices[i + 1];
+		int i2 = _indices[i + 2];
 
-		var v0 : Vector3 = _vertices[i0]
-		var v1 : Vector3 = _vertices[i1]
-		var v2 : Vector3 = _vertices[i2]
+		Vector3 v0 = _vertices[i0];
+		Vector3 v1 = _vertices[i1];
+		Vector3 v2 = _vertices[i2];
 
-		v0 = gt.xform(v0)
-		v1 = gt.xform(v1)
-		v2 = gt.xform(v2)
+		v0 = gt.xform(v0);
+		v1 = gt.xform(v1);
+		v2 = gt.xform(v2);
 
-		var res = Geometry.ray_intersects_triangle(point, dir, v0, v1, v2)
+		bool intersects = Geometry::ray_intersects_triangle(point, dir, v0, v1, v2);
 
-		if res is Vector3:
-			return false
+		if (intersects) {
+			return false;
+		}
+	}
 
-	return true
-
-	*/
+	return true;
 }
 
-void MDIGizmo::selection_click_select_front_or_back(int index, Camera *camera, const Ref<InputEvent> &event) {
-	/*
-		var gt : Transform = get_spatial_node().global_transform
-		var ray_from : Vector3 = camera.global_transform.origin
-		var gpoint : Vector2 = event.get_position()
-		var grab_threshold : float = 8
+bool MDIGizmo::selection_click_select_front_or_back(int index, Camera *camera, const Ref<InputEventMouse> &event) {
+	Transform gt = get_spatial_node()->get_global_transform();
+	Vector3 ray_from = camera->get_global_transform().origin;
+	Vector2 gpoint = event->get_position();
+	float grab_threshold = 8;
 
-		# select vertex
-		var closest_idx : int = -1
-		var closest_dist : float = 1e10
+	// select vertex
+	int closest_idx = -1;
+	float closest_dist = 1e10;
 
-		for i in range(_handle_points.size()):
-			var vert_pos_3d : Vector3 = gt.xform(_handle_points[i])
-			var vert_pos_2d : Vector2 = camera.unproject_position(vert_pos_3d)
-			var dist_3d : float = ray_from.distance_to(vert_pos_3d)
-			var dist_2d : float = gpoint.distance_to(vert_pos_2d)
+	for (int i = 0; i < _handle_points.size(); ++i) {
+		Vector3 vert_pos_3d = gt.xform(_handle_points[i]);
+		Vector2 vert_pos_2d = camera->unproject_position(vert_pos_3d);
+		float dist_3d = ray_from.distance_to(vert_pos_3d);
+		float dist_2d = gpoint.distance_to(vert_pos_2d);
 
-			if (dist_2d < grab_threshold && dist_3d < closest_dist):
-				var point_visible : bool = is_point_visible(_handle_points[i], ray_from, gt)
+		if (dist_2d < grab_threshold && dist_3d < closest_dist) {
+			bool point_visible = is_point_visible(_handle_points[i], ray_from, gt);
 
-				if handle_selection_type == HandleSelectionType.HANDLE_SELECTION_TYPE_FRONT:
-					if !point_visible:
-						continue
-				elif handle_selection_type == HandleSelectionType.HANDLE_SELECTION_TYPE_BACK:
-					if point_visible:
-						continue
+			if (handle_selection_type == HANDLE_SELECTION_TYPE_FRONT) {
+				if (!point_visible) {
+					continue;
+				}
+			} else if (handle_selection_type == HANDLE_SELECTION_TYPE_BACK) {
+				if (point_visible) {
+					continue;
+				}
+			}
 
-				closest_dist = dist_3d
-				closest_idx = i
+			closest_dist = dist_3d;
+			closest_idx = i;
+		}
+	}
 
-		if (closest_idx >= 0):
-			for si in range(_selected_points.size()):
-				if _selected_points[si] == closest_idx:
-					if event.alt || event.control:
-						_selected_points.remove(si)
-						return true
+	if (closest_idx >= 0) {
+		for (int si = 0; si < _selected_points.size(); ++si) {
+			if (_selected_points[si] == closest_idx) {
+				if (event->get_alt() || event->get_control()) {
+					_selected_points.remove(si);
+					return true;
+				}
 
-					return false
+				return false;
+			}
+		}
 
-			if event.alt || event.control:
-				return false
+		if (event->get_alt() || event->get_control()) {
+			return false;
+		}
 
-			if event.shift:
-				_selected_points.append(closest_idx)
-			else:
-				# Select new point only
-				_selected_points.resize(0)
-				_selected_points.append(closest_idx)
+		if (event->get_shift()) {
+			_selected_points.append(closest_idx);
+		} else {
+			// Select new point only
+			_selected_points.resize(0);
+			_selected_points.append(closest_idx);
+		}
 
-			apply()
-			redraw()
-		else:
-			# Don't unselect all if either control or shift is held down
-			if event.shift || event.control || event.alt:
-				return false
+		apply();
+		redraw();
+	} else {
+		// Don't unselect all if either control or shift is held down
+		if (event->get_shift() || event->get_control() || event->get_alt()) {
+			return false;
+		}
 
-			if _selected_points.size() == 0:
-				return false
+		if (_selected_points.size() == 0) {
+			return false;
+		}
 
-			#Unselect all
-			_selected_points.resize(0)
+		//Unselect all
+		_selected_points.resize(0);
 
-			redraw()
-	*/
+		redraw();
+	}
 }
-void MDIGizmo::selection_click_select_through(int index, Camera *camera, const Ref<InputEvent> &event) {
-	/*
-		var gt : Transform = get_spatial_node().global_transform
-		var ray_from : Vector3 = camera.global_transform.origin
-		var gpoint : Vector2 = event.get_position()
-		var grab_threshold : float = 8
+bool MDIGizmo::selection_click_select_through(int index, Camera *camera, const Ref<InputEventMouse> &event) {
+	Transform gt = get_spatial_node()->get_global_transform();
+	Vector3 ray_from = camera->get_global_transform().origin;
+	Vector2 gpoint = event->get_position();
+	float grab_threshold = 8;
 
-		# select vertex
-		var closest_idx : int = -1
-		var closest_dist : float = 1e10
+	// select vertex
+	int closest_idx = -1;
+	float closest_dist = 1e10;
 
-		for i in range(_handle_points.size()):
-			var vert_pos_3d : Vector3 = gt.xform(_handle_points[i])
-			var vert_pos_2d : Vector2 = camera.unproject_position(vert_pos_3d)
-			var dist_3d : float = ray_from.distance_to(vert_pos_3d)
-			var dist_2d : float = gpoint.distance_to(vert_pos_2d)
+	for (int i = 0; i < _handle_points.size(); ++i) {
+		Vector3 vert_pos_3d = gt.xform(_handle_points[i]);
+		Vector2 vert_pos_2d = camera->unproject_position(vert_pos_3d);
+		float dist_3d = ray_from.distance_to(vert_pos_3d);
+		float dist_2d = gpoint.distance_to(vert_pos_2d);
 
-			if (dist_2d < grab_threshold && dist_3d < closest_dist):
-				closest_dist = dist_3d
-				closest_idx = i
+		if (dist_2d < grab_threshold && dist_3d < closest_dist) {
+			closest_dist = dist_3d;
+			closest_idx = i;
+		}
+	}
 
-		if (closest_idx >= 0):
-			for si in range(_selected_points.size()):
+	if (closest_idx >= 0) {
+		for (int si = 0; si < _selected_points.size(); ++si) {
+			if (_selected_points[si] == closest_idx) {
+				if (event->get_alt() || event->get_control()) {
+					_selected_points.remove(si);
+					return true;
+				}
 
-				if _selected_points[si] == closest_idx:
-					if event.alt || event.control:
-						_selected_points.remove(si)
-						return true
+				return false;
+			}
+		}
 
-					return false
+		if (event->get_alt() || event->get_control()) {
+			return false;
+		}
 
-			if event.alt || event.control:
-				return false
+		if (event->get_shift()) {
+			_selected_points.append(closest_idx);
+		} else {
+			// Select new point only
+			_selected_points.resize(0);
+			_selected_points.append(closest_idx);
+		}
 
-			if event.shift:
-				_selected_points.append(closest_idx)
-			else:
-				# Select new point only
-				_selected_points.resize(0)
-				_selected_points.append(closest_idx)
+		apply();
+		redraw();
+	} else {
+		// Don't unselect all if either control or shift is held down
+		if (event->get_shift() || event->get_control() || event->get_alt()) {
+			return false;
+		}
 
-			apply()
-			redraw()
-		else:
-			# Don't unselect all if either control or shift is held down
-			if event.shift || event.control || event.alt:
-				return false
+		if (_selected_points.size() == 0) {
+			return false;
+		}
 
-			if _selected_points.size() == 0:
-				return false
+		//Unselect all
+		_selected_points.resize(0);
 
-			#Unselect all
-			_selected_points.resize(0)
-
-			redraw()
-	*/
+		redraw();
+	}
 }
-void MDIGizmo::selection_drag(int index, Camera *camera, const Ref<InputEvent> &event) {
-	/*
-	if handle_selection_type == HandleSelectionType.HANDLE_SELECTION_TYPE_FRONT:
-		selection_drag_rect_select_front_back(index, camera, event)
-	elif handle_selection_type == HandleSelectionType.HANDLE_SELECTION_TYPE_BACK:
-		selection_drag_rect_select_front_back(index, camera, event)
-	else:
-		selection_drag_rect_select_through(index, camera, event)
-	*/
+void MDIGizmo::selection_drag(int index, Camera *camera, const Ref<InputEventMouse> &event) {
+	if (handle_selection_type == HANDLE_SELECTION_TYPE_FRONT) {
+		selection_drag_rect_select_front_back(index, camera, event);
+	} else if (handle_selection_type == HANDLE_SELECTION_TYPE_BACK) {
+		selection_drag_rect_select_front_back(index, camera, event);
+	} else {
+		selection_drag_rect_select_through(index, camera, event);
+	}
 }
-void MDIGizmo::selection_drag_rect_select_front_back(int index, Camera *camera, const Ref<InputEvent> &event) {
-	/*
-	var gt : Transform = get_spatial_node().global_transform
-	var ray_from : Vector3 = camera.global_transform.origin
+void MDIGizmo::selection_drag_rect_select_front_back(int index, Camera *camera, const Ref<InputEventMouse> &event) {
+	Transform gt = get_spatial_node()->get_global_transform();
+	Vector3 ray_from = camera->get_global_transform().origin;
 
-	var mouse_pos : Vector2 = event.get_position()
-	var rect_size : Vector2 = _rect_drag_start_point - mouse_pos
-	rect_size.x = abs(rect_size.x)
-	rect_size.y = abs(rect_size.y)
+	Vector2 mouse_pos = event->get_position();
+	Vector2 rect_size = _rect_drag_start_point - mouse_pos;
+	rect_size.x = ABS(rect_size.x);
+	rect_size.y = ABS(rect_size.y);
 
-	var rect : Rect2 = Rect2(_rect_drag_start_point, rect_size)
+	Rect2 rect = Rect2(_rect_drag_start_point, rect_size);
 
-	# This is needed so selection works even when you drag from bottom to top, and from right to left
-	var rect_ofs : Vector2 = _rect_drag_start_point - mouse_pos
+	// This is needed so selection works even when you drag from bottom to top, and from right to left
+	Vector2 rect_ofs = _rect_drag_start_point - mouse_pos;
 
-	if rect_ofs.x > 0:
-		rect.position.x -= rect_ofs.x
+	if (rect_ofs.x > 0) {
+		rect.position.x -= rect_ofs.x;
+	}
 
-	if rect_ofs.y > 0:
-		rect.position.y -= rect_ofs.y
+	if (rect_ofs.y > 0) {
+		rect.position.y -= rect_ofs.y;
+	}
 
-	var selected : PoolIntArray = PoolIntArray()
+	PoolIntArray selected;
 
-	for i in range(_handle_points.size()):
-		var vert_pos_3d : Vector3 = gt.xform(_handle_points[i])
-		var vert_pos_2d : Vector2 = camera.unproject_position(vert_pos_3d)
+	for (int i = 0; i < _handle_points.size(); ++i) {
+		Vector3 vert_pos_3d = gt.xform(_handle_points[i]);
+		Vector2 vert_pos_2d = camera->unproject_position(vert_pos_3d);
 
-		if rect.has_point(vert_pos_2d):
-			var point_visible : bool = is_point_visible(_handle_points[i], ray_from, gt)
+		if (rect.has_point(vert_pos_2d)) {
+			bool point_visible = is_point_visible(_handle_points[i], ray_from, gt);
 
-			if handle_selection_type == HandleSelectionType.HANDLE_SELECTION_TYPE_FRONT:
-				if !point_visible:
-					continue
-			elif handle_selection_type == HandleSelectionType.HANDLE_SELECTION_TYPE_BACK:
-				if point_visible:
-					continue
+			if (handle_selection_type == HANDLE_SELECTION_TYPE_FRONT) {
+				if (!point_visible) {
+					continue;
+				}
+			} else if (handle_selection_type == HANDLE_SELECTION_TYPE_BACK) {
+				if (point_visible) {
+					continue;
+				}
+			}
 
-			selected.push_back(i)
+			selected.push_back(i);
+		}
+	}
 
-	if event.alt || event.control:
-		for isel in selected:
-			for i in range(_selected_points.size()):
-				if _selected_points[i] == isel:
-					_selected_points.remove(i)
-					break
-		redraw()
+	if (event->get_alt() || event->get_control()) {
+		PoolIntArray::Read r = selected.read();
 
-		return
+		for (int is = 0; is < selected.size(); ++is) {
+			int isel = r[is];
 
-	if event.shift:
-		for isel in selected:
-			if !pool_int_arr_contains(_selected_points, isel):
-				_selected_points.push_back(isel)
+			for (int i = 0; i < _selected_points.size(); ++i) {
+				if (_selected_points[i] == isel) {
+					_selected_points.remove(i);
+					break;
+				}
+			}
+		}
 
-		redraw()
-		return
+		r.release();
 
-	_selected_points.resize(0)
-	_selected_points.append_array(selected)
+		redraw();
 
-	redraw()
-	*/
+		return;
+	}
+
+	if (event->get_shift()) {
+		PoolIntArray::Read r = selected.read();
+
+		for (int is = 0; is < selected.size(); ++is) {
+			int isel = r[is];
+
+			if (!pool_int_arr_contains(_selected_points, isel)) {
+				_selected_points.push_back(isel);
+			}
+		}
+
+		r.release();
+
+		redraw();
+		return;
+	}
+
+	_selected_points.resize(0);
+	_selected_points.append_array(selected);
+
+	redraw();
 }
-void MDIGizmo::selection_drag_rect_select_through(int index, Camera *camera, const Ref<InputEvent> &event) {
+void MDIGizmo::selection_drag_rect_select_through(int index, Camera *camera, const Ref<InputEventMouse> &event) {
 	/*
 	var gt : Transform = get_spatial_node().global_transform
 
@@ -504,9 +572,9 @@ bool MDIGizmo::forward_spatial_gui_input(int index, Camera *camera, const Ref<In
 					_handle_drag_op = false
 
 					# If a handle was being dragged only run these
-					if _mdr && _mdr.array.size() == ArrayMesh.ARRAY_MAX && _mdr.array[ArrayMesh.ARRAY_VERTEX] != null && _mdr.array[ArrayMesh.ARRAY_VERTEX].size() == _drag_op_orig_verices.size():
+					if _mdr && _mdr.array.size() == ArrayMesh::ARRAY_MAX && _mdr.array[ArrayMesh::ARRAY_VERTEX] != null && _mdr.array[ArrayMesh::ARRAY_VERTEX].size() == _drag_op_orig_verices.size():
 						_undo_redo.create_action("Drag")
-						_undo_redo.add_do_method(self, "apply_vertex_array", _mdr, _mdr.array[ArrayMesh.ARRAY_VERTEX])
+						_undo_redo.add_do_method(self, "apply_vertex_array", _mdr, _mdr.array[ArrayMesh::ARRAY_VERTEX])
 						_undo_redo.add_undo_method(self, "apply_vertex_array", _mdr, _drag_op_orig_verices)
 						_undo_redo.commit_action()
 
@@ -595,94 +663,82 @@ void MDIGizmo::mul_all_selected_with_transform_acc(Transform t) {
 }
 
 void MDIGizmo::set_translate() {
-	/*
-	edit_mode = EditMode.EDIT_MODE_TRANSLATE
-	*/
+	edit_mode = EDIT_MODE_TRANSLATE;
 }
 void MDIGizmo::set_scale() {
-	/*
-	edit_mode = EditMode.EDIT_MODE_SCALE
-	*/
+	edit_mode = EDIT_MODE_SCALE;
 }
 void MDIGizmo::set_rotate() {
-	/*
-	edit_mode = EditMode.EDIT_MODE_ROTATE
-	*/
+	edit_mode = EDIT_MODE_ROTATE;
 }
 void MDIGizmo::set_edit_mode(int em) {
-	/*
-	edit_mode = em
-	*/
+	edit_mode = em;
 }
 
 void MDIGizmo::set_axis_x(bool on) {
-	/*
-	if on:
-		axis_constraint |= AxisConstraint.X
-	else:
-		if (axis_constraint & AxisConstraint.X) != 0:
-			axis_constraint ^= AxisConstraint.X
-	*/
+	if (on) {
+		axis_constraint |= AXIS_CONSTRAINT_X;
+	} else {
+		if ((axis_constraint & AXIS_CONSTRAINT_X) != 0) {
+			axis_constraint ^= AXIS_CONSTRAINT_X;
+		}
+	}
 }
 void MDIGizmo::set_axis_y(bool on) {
-	/*
-	if on:
-		axis_constraint |= AxisConstraint.Y
-	else:
-		if (axis_constraint & AxisConstraint.Y) != 0:
-			axis_constraint ^= AxisConstraint.Y
-	*/
+	if (on) {
+		axis_constraint |= AXIS_CONSTRAINT_Y;
+	} else {
+		if ((axis_constraint & AXIS_CONSTRAINT_Y) != 0) {
+			axis_constraint ^= AXIS_CONSTRAINT_Y;
+		}
+	}
 }
 void MDIGizmo::set_axis_z(bool on) {
-	/*
-	if on:
-		axis_constraint |= AxisConstraint.Z
-	else:
-		if (axis_constraint & AxisConstraint.Z) != 0:
-			axis_constraint ^= AxisConstraint.Z
-	*/
+	if (on) {
+		axis_constraint |= AXIS_CONSTRAINT_Z;
+	} else {
+		if ((axis_constraint & AXIS_CONSTRAINT_Z) != 0) {
+			axis_constraint ^= AXIS_CONSTRAINT_Z;
+		}
+	}
 }
 
 void MDIGizmo::set_selection_mode_vertex() {
-	/*
-	if selection_mode == SelectionMode.SELECTION_MODE_VERTEX:
-		return
+	if (selection_mode == SELECTION_MODE_VERTEX) {
+		return;
+	}
 
-	selection_mode = SelectionMode.SELECTION_MODE_VERTEX
-	_selected_points.resize(0)
-	recalculate_handle_points()
-	redraw()
-	*/
+	selection_mode = SELECTION_MODE_VERTEX;
+	_selected_points.resize(0);
+	recalculate_handle_points();
+	redraw();
 }
 void MDIGizmo::set_selection_mode_edge() {
-	/*
-	if selection_mode == SelectionMode.SELECTION_MODE_EDGE:
-		return
-
-	selection_mode = SelectionMode.SELECTION_MODE_EDGE
-	_selected_points.resize(0)
-	recalculate_handle_points()
-	redraw()
-	*/
+	if (selection_mode == SELECTION_MODE_EDGE) {
+		return;
+	}
+	selection_mode = SELECTION_MODE_EDGE;
+	_selected_points.resize(0);
+	recalculate_handle_points();
+	redraw();
 }
 void MDIGizmo::set_selection_mode_face() {
-	/*
-	if selection_mode == SelectionMode.SELECTION_MODE_FACE:
-		return
-
-	selection_mode = SelectionMode.SELECTION_MODE_FACE
-	_selected_points.resize(0)
-	recalculate_handle_points()
-	redraw()
-	*/
+	if (selection_mode == SELECTION_MODE_FACE) {
+		return;
+	}
+	selection_mode = SELECTION_MODE_FACE;
+	_selected_points.resize(0);
+	recalculate_handle_points();
+	redraw();
 }
 
 void MDIGizmo::_notification(int what) {
 	/*
-	if what == NOTIFICATION_PREDELETE:
-		if self != null && get_plugin():
-			get_plugin().unregister_gizmo(self)
-	*/
+	if (what == NOTIFICATION_PREDELETE) {
+		if (this != nullptr && get_plugin().is_valid()) {
+			get_plugin()->unregister_gizmo(this);
+		}
+	}*/
 }
 
 void MDIGizmo::recalculate_handle_points() {
@@ -694,26 +750,26 @@ void MDIGizmo::recalculate_handle_points() {
 
 	var mdr_arr : Array = _mdr.array
 
-	if mdr_arr.size() != ArrayMesh.ARRAY_MAX || mdr_arr[ArrayMesh.ARRAY_VERTEX] == null || mdr_arr[ArrayMesh.ARRAY_VERTEX].size() == 0:
+	if mdr_arr.size() != ArrayMesh::ARRAY_MAX || mdr_arr[ArrayMesh::ARRAY_VERTEX] == null || mdr_arr[ArrayMesh::ARRAY_VERTEX].size() == 0:
 		_handle_points.resize(0)
 		_handle_to_vertex_map.resize(0)
 		return
 
 	var arr : Array = Array()
-	arr.resize(ArrayMesh.ARRAY_MAX)
-	arr[ArrayMesh.ARRAY_VERTEX] = mdr_arr[ArrayMesh.ARRAY_VERTEX]
-	arr[ArrayMesh.ARRAY_INDEX] = mdr_arr[ArrayMesh.ARRAY_INDEX]
+	arr.resize(ArrayMesh::ARRAY_MAX)
+	arr[ArrayMesh::ARRAY_VERTEX] = mdr_arr[ArrayMesh::ARRAY_VERTEX]
+	arr[ArrayMesh::ARRAY_INDEX] = mdr_arr[ArrayMesh::ARRAY_INDEX]
 
-	if selection_mode == SelectionMode.SELECTION_MODE_VERTEX:
-		var merged_arrays : Array = MeshUtils.merge_mesh_array(arr)
-		_handle_points = merged_arrays[ArrayMesh.ARRAY_VERTEX]
+	if selection_mode == SELECTION_MODE_VERTEX:
+		var merged_arrays : Array = MeshUtils::merge_mesh_array(arr)
+		_handle_points = merged_arrays[ArrayMesh::ARRAY_VERTEX]
 		_handle_to_vertex_map = MeshDecompose.get_handle_vertex_to_vertex_map(mdr_arr, _handle_points)
-	elif selection_mode == SelectionMode.SELECTION_MODE_EDGE:
+	elif selection_mode == SELECTION_MODE_EDGE:
 		var result : Array = MeshDecompose.get_handle_edge_to_vertex_map(arr)
 
 		_handle_points = result[0]
 		_handle_to_vertex_map = result[1]
-	elif selection_mode == SelectionMode.SELECTION_MODE_FACE:
+	elif selection_mode == SELECTION_MODE_FACE:
 		var result : Array = MeshDecompose.get_handle_face_to_vertex_map(arr)
 
 		_handle_points = result[0]
@@ -727,9 +783,9 @@ void MDIGizmo::on_mesh_data_resource_changed(Ref<MeshDataResource> mdr) {
 
 	_mdr = mdr
 
-	if _mdr && _mdr.array.size() == ArrayMesh.ARRAY_MAX && _mdr.array[ArrayMesh.ARRAY_VERTEX] != null:
-		_vertices = _mdr.array[ArrayMesh.ARRAY_VERTEX]
-		_indices = _mdr.array[ArrayMesh.ARRAY_INDEX]
+	if _mdr && _mdr.array.size() == ArrayMesh::ARRAY_MAX && _mdr.array[ArrayMesh::ARRAY_VERTEX] != null:
+		_vertices = _mdr.array[ArrayMesh::ARRAY_VERTEX]
+		_indices = _mdr.array[ArrayMesh::ARRAY_INDEX]
 	else:
 		_vertices.resize(0)
 		_indices.resize(0)
@@ -742,100 +798,108 @@ void MDIGizmo::on_mesh_data_resource_changed(Ref<MeshDataResource> mdr) {
 	*/
 }
 void MDIGizmo::on_mdr_changed() {
-	/*
-	if _mdr && _mdr.array.size() == ArrayMesh.ARRAY_MAX && _mdr.array[ArrayMesh.ARRAY_VERTEX] != null:
-		_vertices = _mdr.array[ArrayMesh.ARRAY_VERTEX]
-		_indices = _mdr.array[ArrayMesh.ARRAY_INDEX]
-	else:
-		_vertices.resize(0)
-		_indices.resize(0)
+	if (!_mdr.is_valid()) {
+		_vertices.resize(0);
+		_indices.resize(0);
+		recalculate_handle_points();
+		redraw();
+	}
 
-	recalculate_handle_points()
-	redraw()
-	*/
+	Array arr = _mdr->get_array();
+
+	if (arr.size() == ArrayMesh::ARRAY_MAX && !arr[ArrayMesh::ARRAY_VERTEX].is_null()) {
+		_vertices = arr[ArrayMesh::ARRAY_VERTEX];
+		_indices = arr[ArrayMesh::ARRAY_INDEX];
+	} else {
+		_vertices.resize(0);
+		_indices.resize(0);
+	}
+
+	recalculate_handle_points();
+	redraw();
 }
 void MDIGizmo::disable_change_event() {
-	/*
-	_mdr.disconnect("changed", self, "on_mdr_changed")
-	*/
+	_mdr->disconnect("changed", this, "on_mdr_changed");
 }
 void MDIGizmo::enable_change_event(bool update = true) {
-	/*
-	_mdr.connect("changed", self, "on_mdr_changed")
+	_mdr->connect("changed", this, "on_mdr_changed");
 
-	if update:
-		on_mdr_changed()
-	*/
+	if (update) {
+		on_mdr_changed();
+	}
 }
 void MDIGizmo::add_triangle() {
-	/*
-	if _mdr:
-		var orig_arr = copy_arrays(_mdr.array)
-		MDRMeshUtils.add_triangle(_mdr)
-		add_mesh_change_undo_redo(orig_arr, _mdr.array, "Add Triangle")
-	*/
+	if (_mdr.is_valid()) {
+		Array orig_arr = copy_arrays(_mdr->get_array());
+		MDREDMeshUtils::add_triangle(_mdr);
+		add_mesh_change_undo_redo(orig_arr, _mdr->get_array(), "Add Triangle");
+	}
 }
 void MDIGizmo::add_quad() {
-	/*
-	if _mdr:
-		var orig_arr = copy_arrays(_mdr.array)
-		MDRMeshUtils.add_quad(_mdr)
-		add_mesh_change_undo_redo(orig_arr, _mdr.array, "Add Quad")
-	*/
+	if (_mdr.is_valid()) {
+		Array orig_arr = copy_arrays(_mdr->get_array());
+		MDREDMeshUtils::add_quad(_mdr);
+		add_mesh_change_undo_redo(orig_arr, _mdr->get_array(), "Add Quad");
+	}
 }
 
 bool MDIGizmo::is_verts_equal(Vector3 v0, Vector3 v1) {
-	/*
-	return is_equal_approx(v0.x, v1.x) && is_equal_approx(v0.y, v1.y) && is_equal_approx(v0.z, v1.z)
-	*/
+	return Math::is_equal_approx(v0.x, v1.x) && Math::is_equal_approx(v0.y, v1.y) && Math::is_equal_approx(v0.z, v1.z);
 }
-Vector3 find_other_vertex_for_edge(int edge, Vector3 v0) {
-	/*
-	var ps : PoolIntArray = _handle_to_vertex_map[edge]
+Vector3 MDIGizmo::find_other_vertex_for_edge(int edge, Vector3 v0) {
+	PoolIntArray ps = _handle_to_vertex_map[edge];
 
-	var vert : Vector3 = Vector3()
+	Vector3 vert;
 
-	for i in range(ps.size()):
-		vert = _vertices[ps[i]]
+	for (int i = 0; i < ps.size(); ++i) {
+		vert = _vertices[ps[i]];
 
-		if !is_verts_equal(v0, vert):
-			return vert
+		if (!is_verts_equal(v0, vert)) {
+			return vert;
+		}
+	}
 
-	return v0
-	*/
+	return v0;
 }
-Array MDIGizmo::MDIGizmo::split_edge_indices(int edge) {
-	/*
-	var ps : PoolIntArray = _handle_to_vertex_map[edge]
+Array MDIGizmo::split_edge_indices(int edge) {
+	PoolIntArray ps = _handle_to_vertex_map[edge];
 
-	if ps.size() == 0:
-		return [  ]
+	if (ps.size() == 0) {
+		return Array();
+	}
 
-	var v0 : Vector3 = _vertices[ps[0]]
+	Vector3 v0 = _vertices[ps[0]];
 
-	var v0ei : PoolIntArray = PoolIntArray()
-	v0ei.append(ps[0])
-	var v1ei : PoolIntArray = PoolIntArray()
+	PoolIntArray v0ei;
+	v0ei.append(ps[0]);
+	PoolIntArray v1ei;
 
-	for i in range(1, ps.size()):
-		var vert : Vector3 = _vertices[ps[i]]
+	for (int i = 1; i < ps.size(); ++i) {
+		Vector3 vert = _vertices[ps[i]];
 
-		if is_verts_equal(v0, vert):
-			v0ei.append(ps[i])
-		else:
-			v1ei.append(ps[i])
+		if (is_verts_equal(v0, vert)) {
+			v0ei.append(ps[i]);
+		} else {
+			v1ei.append(ps[i]);
+		}
+	}
 
-	return [ v0ei, v1ei ]
-	*/
+	Array arr;
+	arr.push_back(v0ei);
+	arr.push_back(v1ei);
+
+	return arr;
 }
 bool MDIGizmo::pool_int_arr_contains(PoolIntArray arr, int val) {
-	/*
-	for a in arr:
-		if a == val:
-			return true
+	PoolIntArray::Read r = arr.read();
 
-	return false
-	*/
+	for (int i = 0; i < arr.size(); ++i) {
+		if (r[i] == val) {
+			return true;
+		}
+	}
+
+	return false;
 }
 PoolIntArray MDIGizmo::find_triangles_for_edge(int edge) {
 	/*
@@ -920,15 +984,15 @@ void MDIGizmo::add_triangle_to_edge(int edge) {
 		ei1 = ti1
 		erefind = ti2
 
-	var fo : Vector3 = MDRMeshUtils.get_face_normal(_vertices[ti0], _vertices[ti1], _vertices[ti2])
-	var fn : Vector3 = MDRMeshUtils.get_face_normal(_vertices[ei0], _vertices[ei1], _vertices[erefind])
+	var fo : Vector3 = MDREDMeshUtils::get_face_normal(_vertices[ti0], _vertices[ti1], _vertices[ti2])
+	var fn : Vector3 = MDREDMeshUtils::get_face_normal(_vertices[ei0], _vertices[ei1], _vertices[erefind])
 
 	if fo.dot(fn) < 0:
 		var t : int = ei0
 		ei0 = ei1
 		ei1 = t
 
-	MDRMeshUtils.append_triangle_to_tri_edge(_mdr, _vertices[ei0], _vertices[ei1], _vertices[erefind])
+	MDREDMeshUtils::append_triangle_to_tri_edge(_mdr, _vertices[ei0], _vertices[ei1], _vertices[erefind])
 
 	*/
 }
@@ -964,15 +1028,15 @@ void MDIGizmo::add_quad_to_edge(int edge) {
 		ei1 = ti1
 		erefind = ti2
 
-	var fo : Vector3 = MDRMeshUtils.get_face_normal(_vertices[ti0], _vertices[ti1], _vertices[ti2])
-	var fn : Vector3 = MDRMeshUtils.get_face_normal(_vertices[ei0], _vertices[ei1], _vertices[erefind])
+	var fo : Vector3 = MDREDMeshUtils::get_face_normal(_vertices[ti0], _vertices[ti1], _vertices[ti2])
+	var fn : Vector3 = MDREDMeshUtils::get_face_normal(_vertices[ei0], _vertices[ei1], _vertices[erefind])
 
 	if fo.dot(fn) < 0:
 		var t : int = ei0
 		ei0 = ei1
 		ei1 = t
 
-	MDRMeshUtils.append_quad_to_tri_edge(_mdr, _vertices[ei0], _vertices[ei1], _vertices[erefind])
+	MDREDMeshUtils::append_quad_to_tri_edge(_mdr, _vertices[ei0], _vertices[ei1], _vertices[erefind])
 	*/
 }
 void MDIGizmo::add_triangle_at() {
@@ -980,10 +1044,10 @@ void MDIGizmo::add_triangle_at() {
 	if !_mdr:
 		return
 
-	if selection_mode == SelectionMode.SELECTION_MODE_VERTEX:
+	if selection_mode == SELECTION_MODE_VERTEX:
 		#todo
 		pass
-	elif selection_mode == SelectionMode.SELECTION_MODE_EDGE:
+	elif selection_mode == SELECTION_MODE_EDGE:
 		disable_change_event()
 		var orig_arr = copy_arrays(_mdr.array)
 
@@ -1002,10 +1066,10 @@ void MDIGizmo::add_quad_at() {
 	if !_mdr:
 		return
 
-	if selection_mode == SelectionMode.SELECTION_MODE_VERTEX:
+	if selection_mode == SELECTION_MODE_VERTEX:
 		#todo
 		pass
-	elif selection_mode == SelectionMode.SELECTION_MODE_EDGE:
+	elif selection_mode == SELECTION_MODE_EDGE:
 		disable_change_event()
 		var orig_arr = copy_arrays(_mdr.array)
 
@@ -1025,15 +1089,15 @@ void MDIGizmo::extrude() {
 	if !_mdr:
 		return
 
-	if _mdr.array.size() != ArrayMesh.ARRAY_MAX || _mdr.array[ArrayMesh.ARRAY_VERTEX] == null:
+	if _mdr.array.size() != ArrayMesh::ARRAY_MAX || _mdr.array[ArrayMesh::ARRAY_VERTEX] == null:
 		return
 
-	if selection_mode == SelectionMode.SELECTION_MODE_VERTEX:
+	if selection_mode == SELECTION_MODE_VERTEX:
 		pass
-	elif selection_mode == SelectionMode.SELECTION_MODE_EDGE:
+	elif selection_mode == SELECTION_MODE_EDGE:
 		disable_change_event()
 		var orig_arr = copy_arrays(_mdr.array)
-		var original_size : int = orig_arr[ArrayMesh.ARRAY_VERTEX].size()
+		var original_size : int = orig_arr[ArrayMesh::ARRAY_VERTEX].size()
 
 		for sp in _selected_points:
 			add_quad_to_edge(sp)
@@ -1041,7 +1105,7 @@ void MDIGizmo::extrude() {
 		var arr : Array = _mdr.array
 
 		# Note: This algorithm depends heavily depends on the inner workings of add_quad_to_edge!
-		var new_verts : PoolVector3Array = arr[ArrayMesh.ARRAY_VERTEX]
+		var new_verts : PoolVector3Array = arr[ArrayMesh::ARRAY_VERTEX]
 
 		# every 4 vertex is a quad
 		# 1 ---- 2
@@ -1088,7 +1152,7 @@ void MDIGizmo::extrude() {
 			for ind in found_verts:
 				new_verts[ind] = vavg
 
-		arr[ArrayMesh.ARRAY_VERTEX] = new_verts
+		arr[ArrayMesh::ARRAY_VERTEX] = new_verts
 		_mdr.array = arr
 
 		_selected_points.resize(0)
@@ -1113,7 +1177,7 @@ void MDIGizmo::add_box() {
 	/*
 	if _mdr:
 		var orig_arr = copy_arrays(_mdr.array)
-		MDRMeshUtils.add_box(_mdr)
+		MDREDMeshUtils::add_box(_mdr)
 		add_mesh_change_undo_redo(orig_arr, _mdr.array, "Add Box")
 	*/
 }
@@ -1139,7 +1203,7 @@ void MDIGizmo::create_face() {
 	if _selected_points.size() <= 2:
 		return
 
-	if selection_mode == SelectionMode.SELECTION_MODE_VERTEX:
+	if selection_mode == SELECTION_MODE_VERTEX:
 		disable_change_event()
 
 		var orig_arr = copy_arrays(_mdr.array)
@@ -1160,8 +1224,8 @@ void MDIGizmo::create_face() {
 
 			var tfn : Vector3 = Vector3()
 
-			if orig_arr[ArrayMesh.ARRAY_NORMAL] != null && orig_arr[ArrayMesh.ARRAY_NORMAL].size() == orig_arr[ArrayMesh.ARRAY_VERTEX].size():
-				var normals : PoolVector3Array = orig_arr[ArrayMesh.ARRAY_NORMAL]
+			if orig_arr[ArrayMesh::ARRAY_NORMAL] != null && orig_arr[ArrayMesh::ARRAY_NORMAL].size() == orig_arr[ArrayMesh::ARRAY_VERTEX].size():
+				var normals : PoolVector3Array = orig_arr[ArrayMesh::ARRAY_NORMAL]
 
 				tfn += normals[i0]
 				tfn += normals[i1]
@@ -1169,16 +1233,16 @@ void MDIGizmo::create_face() {
 				tfn /= 3
 				tfn = tfn.normalized()
 			else:
-				tfn = MDRMeshUtils.get_face_normal(_vertices[i0], _vertices[i1], _vertices[i2])
+				tfn = MDREDMeshUtils::get_face_normal(_vertices[i0], _vertices[i1], _vertices[i2])
 
-			var flip : bool = !MDRMeshUtils.should_triangle_flip(v0, v1, v2, tfn)
+			var flip : bool = !MDREDMeshUtils::should_triangle_flip(v0, v1, v2, tfn)
 
-			MDRMeshUtils.add_triangle_at(_mdr, v0, v1, v2, flip)
+			MDREDMeshUtils::add_triangle_at(_mdr, v0, v1, v2, flip)
 			add_mesh_change_undo_redo(orig_arr, _mdr.array, "Create Face")
 			enable_change_event()
 			return
 
-		if !MDRMeshUtils.add_triangulated_mesh_from_points_delaunay(_mdr, points, _last_known_camera_facing):
+		if !MDREDMeshUtils::add_triangulated_mesh_from_points_delaunay(_mdr, points, _last_known_camera_facing):
 			enable_change_event()
 			return
 
@@ -1186,9 +1250,9 @@ void MDIGizmo::create_face() {
 
 		#_selected_points.resize(0)
 		enable_change_event()
-	elif selection_mode == SelectionMode.SELECTION_MODE_EDGE:
+	elif selection_mode == SELECTION_MODE_EDGE:
 		pass
-	elif selection_mode == SelectionMode.SELECTION_MODE_FACE:
+	elif selection_mode == SELECTION_MODE_FACE:
 		pass
 	*/
 }
@@ -1262,13 +1326,13 @@ void MDIGizmo::delete_selected() {
 	if _selected_points.size() == 0:
 		return
 
-	if selection_mode == SelectionMode.SELECTION_MODE_VERTEX:
+	if selection_mode == SELECTION_MODE_VERTEX:
 		#todo
 		pass
-	elif selection_mode == SelectionMode.SELECTION_MODE_EDGE:
+	elif selection_mode == SELECTION_MODE_EDGE:
 		#todo
 		pass
-	elif selection_mode == SelectionMode.SELECTION_MODE_FACE:
+	elif selection_mode == SELECTION_MODE_FACE:
 		disable_change_event()
 
 		var orig_arr = copy_arrays(_mdr.array)
@@ -1283,7 +1347,7 @@ void MDIGizmo::delete_selected() {
 
 		for i in range(triangle_indexes.size() - 1, -1, -1):
 			var triangle_index : int = triangle_indexes[i]
-			MDRMeshUtils.remove_triangle(_mdr, triangle_index)
+			MDREDMeshUtils::remove_triangle(_mdr, triangle_index)
 
 		add_mesh_change_undo_redo(orig_arr, _mdr.array, "Delete")
 
@@ -1298,16 +1362,16 @@ void MDIGizmo::generate_normals() {
 
 	var mdr_arr : Array = _mdr.array
 
-	if mdr_arr.size() != ArrayMesh.ARRAY_MAX || mdr_arr[ArrayMesh.ARRAY_VERTEX] == null || mdr_arr[ArrayMesh.ARRAY_VERTEX].size() == 0:
+	if mdr_arr.size() != ArrayMesh::ARRAY_MAX || mdr_arr[ArrayMesh::ARRAY_VERTEX] == null || mdr_arr[ArrayMesh::ARRAY_VERTEX].size() == 0:
 		return
 
 	disable_change_event()
 	var orig_arr = copy_arrays(_mdr.array)
 	var orig_seams = copy_pool_int_array(_mdr.seams)
 
-	var seam_points : PoolVector3Array = MDRMeshUtils.seams_to_points(_mdr)
-	MDRMeshUtils.generate_normals_mdr(_mdr)
-	MDRMeshUtils.points_to_seams(_mdr, seam_points)
+	var seam_points : PoolVector3Array = MDREDMeshUtils::seams_to_points(_mdr)
+	MDREDMeshUtils::generate_normals_mdr(_mdr)
+	MDREDMeshUtils::points_to_seams(_mdr, seam_points)
 
 	add_mesh_seam_change_undo_redo(orig_arr, orig_seams, _mdr.array, _mdr.seams, "Generate Normals")
 	enable_change_event()
@@ -1320,16 +1384,16 @@ void MDIGizmo::generate_tangents() {
 
 	var mdr_arr : Array = _mdr.array
 
-	if mdr_arr.size() != ArrayMesh.ARRAY_MAX || mdr_arr[ArrayMesh.ARRAY_VERTEX] == null || mdr_arr[ArrayMesh.ARRAY_VERTEX].size() == 0:
+	if mdr_arr.size() != ArrayMesh::ARRAY_MAX || mdr_arr[ArrayMesh::ARRAY_VERTEX] == null || mdr_arr[ArrayMesh::ARRAY_VERTEX].size() == 0:
 		return
 
 	disable_change_event()
 	var orig_arr = copy_arrays(_mdr.array)
 	var orig_seams = copy_pool_int_array(_mdr.seams)
 
-	var seam_points : PoolVector3Array = MDRMeshUtils.seams_to_points(_mdr)
-	MDRMeshUtils.generate_tangents(_mdr)
-	MDRMeshUtils.points_to_seams(_mdr, seam_points)
+	var seam_points : PoolVector3Array = MDREDMeshUtils::seams_to_points(_mdr)
+	MDREDMeshUtils::generate_tangents(_mdr)
+	MDREDMeshUtils::points_to_seams(_mdr, seam_points)
 
 	add_mesh_seam_change_undo_redo(orig_arr, orig_seams, _mdr.array, _mdr.seams, "Generate Tangents")
 	enable_change_event()
@@ -1342,18 +1406,18 @@ void MDIGizmo::remove_doubles() {
 
 	var mdr_arr : Array = _mdr.array
 
-	if mdr_arr.size() != ArrayMesh.ARRAY_MAX || mdr_arr[ArrayMesh.ARRAY_VERTEX] == null || mdr_arr[ArrayMesh.ARRAY_VERTEX].size() == 0:
+	if mdr_arr.size() != ArrayMesh::ARRAY_MAX || mdr_arr[ArrayMesh::ARRAY_VERTEX] == null || mdr_arr[ArrayMesh::ARRAY_VERTEX].size() == 0:
 		return
 
 	disable_change_event()
 	var orig_arr = copy_arrays(_mdr.array)
 	var orig_seams = copy_pool_int_array(_mdr.seams)
 
-	var seam_points : PoolVector3Array = MDRMeshUtils.seams_to_points(_mdr)
+	var seam_points : PoolVector3Array = MDREDMeshUtils::seams_to_points(_mdr)
 
-	var merged_arrays : Array = MeshUtils.remove_doubles(mdr_arr)
+	var merged_arrays : Array = MeshUtils::remove_doubles(mdr_arr)
 	_mdr.array = merged_arrays
-	MDRMeshUtils.points_to_seams(_mdr, seam_points)
+	MDREDMeshUtils::points_to_seams(_mdr, seam_points)
 
 	add_mesh_seam_change_undo_redo(orig_arr, orig_seams, _mdr.array, _mdr.seams, "Remove Doubles")
 	enable_change_event()
@@ -1366,18 +1430,18 @@ void MDIGizmo::merge_optimize() {
 
 	var mdr_arr : Array = _mdr.array
 
-	if mdr_arr.size() != ArrayMesh.ARRAY_MAX || mdr_arr[ArrayMesh.ARRAY_VERTEX] == null || mdr_arr[ArrayMesh.ARRAY_VERTEX].size() == 0:
+	if mdr_arr.size() != ArrayMesh::ARRAY_MAX || mdr_arr[ArrayMesh::ARRAY_VERTEX] == null || mdr_arr[ArrayMesh::ARRAY_VERTEX].size() == 0:
 		return
 
 	disable_change_event()
 	var orig_arr = copy_arrays(_mdr.array)
 	var orig_seams = copy_pool_int_array(_mdr.seams)
 
-	var seam_points : PoolVector3Array = MDRMeshUtils.seams_to_points(_mdr)
+	var seam_points : PoolVector3Array = MDREDMeshUtils::seams_to_points(_mdr)
 
-	var merged_arrays : Array = MeshUtils.merge_mesh_array(mdr_arr)
+	var merged_arrays : Array = MeshUtils::merge_mesh_array(mdr_arr)
 	_mdr.array = merged_arrays
-	MDRMeshUtils.points_to_seams(_mdr, seam_points)
+	MDREDMeshUtils::points_to_seams(_mdr, seam_points)
 
 	add_mesh_seam_change_undo_redo(orig_arr, orig_seams, _mdr.array, _mdr.seams, "Merge Optimize")
 	enable_change_event()
@@ -1395,16 +1459,16 @@ void MDIGizmo::connect_to_first_selected() {
 
 	var mdr_arr : Array = _mdr.array
 
-	if mdr_arr.size() != ArrayMesh.ARRAY_MAX || mdr_arr[ArrayMesh.ARRAY_VERTEX] == null || mdr_arr[ArrayMesh.ARRAY_VERTEX].size() == 0:
+	if mdr_arr.size() != ArrayMesh::ARRAY_MAX || mdr_arr[ArrayMesh::ARRAY_VERTEX] == null || mdr_arr[ArrayMesh::ARRAY_VERTEX].size() == 0:
 		return
 
 	disable_change_event()
 
 	var orig_arr = copy_arrays(_mdr.array)
 
-	var vertices : PoolVector3Array = mdr_arr[ArrayMesh.ARRAY_VERTEX]
+	var vertices : PoolVector3Array = mdr_arr[ArrayMesh::ARRAY_VERTEX]
 
-	if selection_mode == SelectionMode.SELECTION_MODE_VERTEX:
+	if selection_mode == SELECTION_MODE_VERTEX:
 		var mpos : Vector3 = _handle_points[_selected_points[0]]
 
 		for i in range(1, _selected_points.size()):
@@ -1415,14 +1479,14 @@ void MDIGizmo::connect_to_first_selected() {
 
 		_selected_points.resize(0)
 
-		mdr_arr[ArrayMesh.ARRAY_VERTEX] = vertices
+		mdr_arr[ArrayMesh::ARRAY_VERTEX] = vertices
 		_mdr.array = mdr_arr
 
 		add_mesh_change_undo_redo(orig_arr, _mdr.array, "Connect to first selected")
 		enable_change_event()
-	elif selection_mode == SelectionMode.SELECTION_MODE_EDGE:
+	elif selection_mode == SELECTION_MODE_EDGE:
 		pass
-	elif selection_mode == SelectionMode.SELECTION_MODE_FACE:
+	elif selection_mode == SELECTION_MODE_FACE:
 		pass
 	*/
 }
@@ -1436,15 +1500,15 @@ void MDIGizmo::connect_to_avg() {
 
 	var mdr_arr : Array = _mdr.array
 
-	if mdr_arr.size() != ArrayMesh.ARRAY_MAX || mdr_arr[ArrayMesh.ARRAY_VERTEX] == null || mdr_arr[ArrayMesh.ARRAY_VERTEX].size() == 0:
+	if mdr_arr.size() != ArrayMesh::ARRAY_MAX || mdr_arr[ArrayMesh::ARRAY_VERTEX] == null || mdr_arr[ArrayMesh::ARRAY_VERTEX].size() == 0:
 		return
 
 	disable_change_event()
 	var orig_arr = copy_arrays(_mdr.array)
 
-	var vertices : PoolVector3Array = mdr_arr[ArrayMesh.ARRAY_VERTEX]
+	var vertices : PoolVector3Array = mdr_arr[ArrayMesh::ARRAY_VERTEX]
 
-	if selection_mode == SelectionMode.SELECTION_MODE_VERTEX:
+	if selection_mode == SELECTION_MODE_VERTEX:
 		var mpos : Vector3 = Vector3()
 
 		for sp in _selected_points:
@@ -1460,15 +1524,15 @@ void MDIGizmo::connect_to_avg() {
 
 		_selected_points.resize(0)
 
-		mdr_arr[ArrayMesh.ARRAY_VERTEX] = vertices
+		mdr_arr[ArrayMesh::ARRAY_VERTEX] = vertices
 		_mdr.array = mdr_arr
 
 		add_mesh_change_undo_redo(orig_arr, _mdr.array, "Connect to average")
 		enable_change_event()
 
-	elif selection_mode == SelectionMode.SELECTION_MODE_EDGE:
+	elif selection_mode == SELECTION_MODE_EDGE:
 		pass
-	elif selection_mode == SelectionMode.SELECTION_MODE_FACE:
+	elif selection_mode == SELECTION_MODE_FACE:
 		pass
 	*/
 }
@@ -1484,14 +1548,14 @@ void MDIGizmo::connect_to_last_selected() {
 
 	var mdr_arr : Array = _mdr.array
 
-	if mdr_arr.size() != ArrayMesh.ARRAY_MAX || mdr_arr[ArrayMesh.ARRAY_VERTEX] == null || mdr_arr[ArrayMesh.ARRAY_VERTEX].size() == 0:
+	if mdr_arr.size() != ArrayMesh::ARRAY_MAX || mdr_arr[ArrayMesh::ARRAY_VERTEX] == null || mdr_arr[ArrayMesh::ARRAY_VERTEX].size() == 0:
 		return
 
 	disable_change_event()
 
-	var vertices : PoolVector3Array = mdr_arr[ArrayMesh.ARRAY_VERTEX]
+	var vertices : PoolVector3Array = mdr_arr[ArrayMesh::ARRAY_VERTEX]
 
-	if selection_mode == SelectionMode.SELECTION_MODE_VERTEX:
+	if selection_mode == SELECTION_MODE_VERTEX:
 		var mpos : Vector3 = _handle_points[_selected_points[_selected_points.size() - 1]]
 
 		for i in range(0, _selected_points.size() - 1):
@@ -1502,14 +1566,14 @@ void MDIGizmo::connect_to_last_selected() {
 
 		_selected_points.resize(0)
 
-		mdr_arr[ArrayMesh.ARRAY_VERTEX] = vertices
+		mdr_arr[ArrayMesh::ARRAY_VERTEX] = vertices
 		_mdr.array = mdr_arr
 
 		add_mesh_change_undo_redo(orig_arr, _mdr.array, "Connect to last selected")
 		enable_change_event()
-	elif selection_mode == SelectionMode.SELECTION_MODE_EDGE:
+	elif selection_mode == SELECTION_MODE_EDGE:
 		pass
-	elif selection_mode == SelectionMode.SELECTION_MODE_FACE:
+	elif selection_mode == SELECTION_MODE_FACE:
 		pass
 	*/
 }
@@ -1605,20 +1669,20 @@ void MDIGizmo::mark_seam() {
 	if _selected_points.size() == 0:
 		return
 
-	if selection_mode == SelectionMode.SELECTION_MODE_VERTEX:
+	if selection_mode == SELECTION_MODE_VERTEX:
 		pass
-	elif selection_mode == SelectionMode.SELECTION_MODE_EDGE:
+	elif selection_mode == SELECTION_MODE_EDGE:
 		disable_change_event()
 
 		var prev_seams : PoolIntArray = copy_pool_int_array(_mdr.seams)
 
 		for se in _selected_points:
-			var eis : PoolIntArray = MDRMeshUtils.order_seam_indices(get_first_index_pair_for_edge(se))
+			var eis : PoolIntArray = MDREDMeshUtils::order_seam_indices(get_first_index_pair_for_edge(se))
 
 			if eis.size() == 0:
 				continue
 
-			MDRMeshUtils.add_seam(_mdr, eis[0], eis[1])
+			MDREDMeshUtils::add_seam(_mdr, eis[0], eis[1])
 
 		_undo_redo.create_action("mark_seam")
 		_undo_redo.add_do_method(self, "set_seam", _mdr, copy_pool_int_array(_mdr.seams))
@@ -1626,7 +1690,7 @@ void MDIGizmo::mark_seam() {
 		_undo_redo.commit_action()
 
 		enable_change_event()
-	elif selection_mode == SelectionMode.SELECTION_MODE_FACE:
+	elif selection_mode == SELECTION_MODE_FACE:
 		pass
 	*/
 }
@@ -1638,20 +1702,20 @@ void MDIGizmo::unmark_seam() {
 	if _selected_points.size() == 0:
 		return
 
-	if selection_mode == SelectionMode.SELECTION_MODE_VERTEX:
+	if selection_mode == SELECTION_MODE_VERTEX:
 		pass
-	elif selection_mode == SelectionMode.SELECTION_MODE_EDGE:
+	elif selection_mode == SELECTION_MODE_EDGE:
 		disable_change_event()
 
 		var prev_seams : PoolIntArray = copy_pool_int_array(_mdr.seams)
 
 		for se in _selected_points:
-			var eis : PoolIntArray = MDRMeshUtils.order_seam_indices(get_all_index_pairs_for_edge(se))
+			var eis : PoolIntArray = MDREDMeshUtils::order_seam_indices(get_all_index_pairs_for_edge(se))
 
 			if eis.size() == 0:
 				continue
 
-			MDRMeshUtils.remove_seam(_mdr, eis[0], eis[1])
+			MDREDMeshUtils::remove_seam(_mdr, eis[0], eis[1])
 
 		_undo_redo.create_action("unmark_seam")
 		_undo_redo.add_do_method(self, "set_seam", _mdr, copy_pool_int_array(_mdr.seams))
@@ -1659,7 +1723,7 @@ void MDIGizmo::unmark_seam() {
 		_undo_redo.commit_action()
 
 		enable_change_event()
-	elif selection_mode == SelectionMode.SELECTION_MODE_FACE:
+	elif selection_mode == SELECTION_MODE_FACE:
 		pass
 	*/
 }
@@ -1676,7 +1740,7 @@ void MDIGizmo::apply_seam() {
 	disable_change_event()
 
 	var orig_arr : Array = copy_arrays(_mdr.array)
-	MDRMeshUtils.apply_seam(_mdr)
+	MDREDMeshUtils::apply_seam(_mdr)
 	add_mesh_change_undo_redo(orig_arr, _mdr.array, "apply_seam")
 
 	enable_change_event()
@@ -1690,19 +1754,19 @@ void MDIGizmo::clean_mesh() {
 
 	var arrays : Array = _mdr.array
 
-	if arrays.size() != ArrayMesh.ARRAY_MAX:
+	if arrays.size() != ArrayMesh::ARRAY_MAX:
 		return arrays
 
-	if arrays[ArrayMesh.ARRAY_VERTEX] == null || arrays[ArrayMesh.ARRAY_INDEX] == null:
+	if arrays[ArrayMesh::ARRAY_VERTEX] == null || arrays[ArrayMesh::ARRAY_INDEX] == null:
 		return arrays
 
-	var old_vert_size : int = arrays[ArrayMesh.ARRAY_VERTEX].size()
+	var old_vert_size : int = arrays[ArrayMesh::ARRAY_VERTEX].size()
 
 	disable_change_event()
 
 	var orig_arr : Array = copy_arrays(arrays)
-	arrays = MDRMeshUtils.remove_used_vertices(arrays)
-	var new_vert_size : int = arrays[ArrayMesh.ARRAY_VERTEX].size()
+	arrays = MDREDMeshUtils::remove_used_vertices(arrays)
+	var new_vert_size : int = arrays[ArrayMesh::ARRAY_VERTEX].size()
 	add_mesh_change_undo_redo(orig_arr, arrays, "clean_mesh")
 
 	enable_change_event()
@@ -1714,252 +1778,263 @@ void MDIGizmo::clean_mesh() {
 }
 
 void MDIGizmo::uv_unwrap() {
-	/*
-	if !_mdr:
-		return
+	if (!_mdr.is_valid()) {
+		return;
+	}
 
-	var mdr_arr : Array = _mdr.array
+	Array mdr_arr = _mdr->get_array();
 
-	if mdr_arr.size() != ArrayMesh.ARRAY_MAX || mdr_arr[ArrayMesh.ARRAY_VERTEX] == null || mdr_arr[ArrayMesh.ARRAY_VERTEX].size() == 0:
-		return
+	if (mdr_arr.size() != ArrayMesh::ARRAY_MAX || mdr_arr[ArrayMesh::ARRAY_VERTEX].is_null()) {
+		return;
+	}
 
-	disable_change_event()
+	PoolVector3Array verts = mdr_arr[ArrayMesh::ARRAY_VERTEX];
 
-	var uvs : PoolVector2Array = MeshUtils.uv_unwrap(mdr_arr)
+	if (verts.size() == 0) {
+		return;
+	}
 
-	if uvs.size() != mdr_arr[ArrayMesh.ARRAY_VERTEX].size():
-		print("Error: Could not unwrap mesh!")
-		enable_change_event(false)
-		return
+	disable_change_event();
 
-	var orig_arr : Array = copy_arrays(mdr_arr)
+	PoolVector2Array uvs = MeshUtils::get_singleton()->uv_unwrap(mdr_arr);
 
-	mdr_arr[ArrayMesh.ARRAY_TEX_UV] = uvs
+	if (uvs.size() != verts.size()) {
+		ERR_PRINT("Error: Could not unwrap mesh!");
+		enable_change_event(false);
+		return;
+	}
 
-	add_mesh_change_undo_redo(orig_arr, mdr_arr, "uv_unwrap")
-	enable_change_event()
-	*/
+	Array orig_arr = copy_arrays(mdr_arr);
+
+	mdr_arr[ArrayMesh::ARRAY_TEX_UV] = uvs;
+
+	add_mesh_change_undo_redo(orig_arr, mdr_arr, "uv_unwrap");
+	enable_change_event();
 }
 void MDIGizmo::flip_selected_faces() {
-	/*
-	if !_mdr:
-		return
+	if (!_mdr.is_valid()) {
+		return;
+	}
 
-	if _selected_points.size() == 0:
-		return
+	if (_selected_points.size() == 0) {
+		return;
+	}
 
-	if selection_mode == SelectionMode.SELECTION_MODE_VERTEX:
-		pass
-	elif selection_mode == SelectionMode.SELECTION_MODE_EDGE:
-		pass
-	elif selection_mode == SelectionMode.SELECTION_MODE_FACE:
-		disable_change_event()
+	if (selection_mode == SELECTION_MODE_VERTEX) {
+	} else if (selection_mode == SELECTION_MODE_EDGE) {
+	} else if (selection_mode == SELECTION_MODE_FACE) {
+		disable_change_event();
 
-		var orig_arr = copy_arrays(_mdr.array)
+		Array orig_arr = copy_arrays(_mdr->get_array());
 
-		for sp in _selected_points:
-			var triangle_index : int = find_first_triangle_index_for_face(sp)
+		PoolIntArray::Read r = _selected_points.read();
 
-			MDRMeshUtils.flip_triangle_ti(_mdr, triangle_index)
+		for (int i = 0; i < _selected_points.size(); ++i) {
+			int sp = r[i];
 
-		add_mesh_change_undo_redo(orig_arr, _mdr.array, "Flip Faces")
+			int triangle_index = find_first_triangle_index_for_face(sp);
 
-		enable_change_event()
-	*/
+			MDREDMeshUtils::flip_triangle_ti(_mdr, triangle_index);
+		}
+
+		add_mesh_change_undo_redo(orig_arr, _mdr->get_array(), "Flip Faces");
+
+		enable_change_event();
+	}
 }
 
 void MDIGizmo::add_mesh_change_undo_redo(Array orig_arr, Array new_arr, String action_name) {
-	/*
-	_undo_redo.create_action(action_name)
-	var nac : Array = copy_arrays(new_arr)
-	_undo_redo.add_do_method(self, "apply_mesh_change", _mdr, nac)
-	_undo_redo.add_undo_method(self, "apply_mesh_change", _mdr, orig_arr)
-	_undo_redo.commit_action()
-	*/
+	_undo_redo->create_action(action_name);
+	Array nac = copy_arrays(new_arr);
+	_undo_redo->add_do_method(this, "apply_mesh_change", _mdr, nac);
+	_undo_redo->add_undo_method(this, "apply_mesh_change", _mdr, orig_arr);
+	_undo_redo->commit_action();
 }
 void MDIGizmo::add_mesh_seam_change_undo_redo(Array orig_arr, PoolIntArray orig_seams, Array new_arr, PoolIntArray new_seams, String action_name) {
-	/*
-	_undo_redo.create_action(action_name)
-	var nac : Array = copy_arrays(new_arr)
+	_undo_redo->create_action(action_name);
+	Array nac = copy_arrays(new_arr);
 
-	_undo_redo.add_do_method(self, "apply_mesh_change", _mdr, nac)
-	_undo_redo.add_undo_method(self, "apply_mesh_change", _mdr, orig_arr)
+	_undo_redo->add_do_method(this, "apply_mesh_change", _mdr, nac);
+	_undo_redo->add_undo_method(this, "apply_mesh_change", _mdr, orig_arr);
 
-	_undo_redo.add_do_method(self, "set_seam", _mdr, copy_pool_int_array(new_seams))
-	_undo_redo.add_undo_method(self, "set_seam", _mdr, orig_seams)
+	_undo_redo->add_do_method(this, "set_seam", _mdr, copy_pool_int_array(new_seams));
+	_undo_redo->add_undo_method(this, "set_seam", _mdr, orig_seams);
 
-	_undo_redo.commit_action()
-	*/
+	_undo_redo->commit_action();
 }
 
 void MDIGizmo::apply_mesh_change(Ref<MeshDataResource> mdr, Array arr) {
-	/*
-	if !mdr:
-		return
+	if (!mdr.is_valid()) {
+		return;
+	}
 
-	mdr.array = copy_arrays(arr)
-	*/
+	mdr->set_array(copy_arrays(arr));
 }
 void MDIGizmo::apply_vertex_array(Ref<MeshDataResource> mdr, PoolVector3Array verts) {
-	/*
-	if !mdr:
-		return
+	if (!mdr.is_valid()) {
+		return;
+	}
 
-	var mdr_arr : Array = mdr.array
+	Array mdr_arr = mdr->get_array();
 
-	if mdr_arr.size() != ArrayMesh.ARRAY_MAX:
-		return
+	if (mdr_arr.size() != ArrayMesh::ARRAY_MAX) {
+		return;
+	}
 
-	mdr_arr[ArrayMesh.ARRAY_VERTEX] = verts
-	mdr.array = mdr_arr
-	*/
+	mdr_arr[ArrayMesh::ARRAY_VERTEX] = verts;
+	mdr->set_array(mdr_arr);
 }
 
 Array MDIGizmo::copy_arrays(Array arr) {
-	/*
-	return arr.duplicate(true)
-	*/
+	return arr.duplicate(true);
 }
 PoolIntArray MDIGizmo::copy_pool_int_array(PoolIntArray pia) {
-	/*
-	var ret : PoolIntArray = PoolIntArray()
-	ret.resize(pia.size())
+	PoolIntArray ret;
+	ret.resize(pia.size());
 
-	for i in range(pia.size()):
-		ret[i] = pia[i]
+	PoolIntArray::Read r = pia.read();
+	PoolIntArray::Write w = ret.write();
 
-	return ret
-	*/
+	for (int i = 0; i < pia.size(); ++i) {
+		w[i] = r[i];
+	}
+
+	r.release();
+	w.release();
+
+	return ret;
 }
 PoolVector3Array MDIGizmo::copy_mdr_verts_array() {
-	/*
-	var ret : PoolVector3Array = PoolVector3Array()
+	PoolVector3Array ret;
 
-	if !_mdr:
-		return ret
+	if (!_mdr.is_valid()) {
+		return ret;
+	}
 
-	var mdr_arr : Array = _mdr.array
+	Array mdr_arr = _mdr->get_array();
 
-	if mdr_arr.size() != ArrayMesh.ARRAY_MAX || mdr_arr[ArrayMesh.ARRAY_VERTEX] == null || mdr_arr[ArrayMesh.ARRAY_VERTEX].size() == 0:
-		return ret
+	if (mdr_arr.size() != ArrayMesh::ARRAY_MAX || mdr_arr[ArrayMesh::ARRAY_VERTEX].is_null()) {
+		return ret;
+	}
 
-	var vertices : PoolVector3Array = mdr_arr[ArrayMesh.ARRAY_VERTEX]
-	ret.append_array(vertices)
+	PoolVector3Array vertices = mdr_arr[ArrayMesh::ARRAY_VERTEX];
+	ret.append_array(vertices);
 
-	return ret
-	*/
+	return ret;
 }
 
 void MDIGizmo::setup_op_drag_indices() {
-	/*
-	_drag_op_indices.resize(0)
+	_drag_op_indices.resize(0);
 
-	for sp in _selected_points:
-		var pi : PoolIntArray = _handle_to_vertex_map[sp]
+	PoolIntArray::Read r = _selected_points.read();
 
-		for indx in pi:
-			if !pool_int_arr_contains(_drag_op_indices, indx):
-				_drag_op_indices.append(indx)
-	*/
+	for (int i = 0; i < _selected_points.size(); ++i) {
+		int sp = r[i];
+		PoolIntArray pi = _handle_to_vertex_map[sp];
+
+		PoolIntArray::Read pir = pi.read();
+
+		for (int j = 0; j < pi.size(); ++j) {
+			int indx = pir[j];
+			if (!pool_int_arr_contains(_drag_op_indices, indx)) {
+				_drag_op_indices.append(indx);
+			}
+		}
+
+		pir.release();
+	}
 }
 Vector3 MDIGizmo::get_drag_op_pivot() {
-	/*
-	if pivot_type == PivotTypes.PIVOT_TYPE_AVERAGED:
-		var avg : Vector3 = Vector3()
+	if (pivot_type == PIVOT_TYPE_AVERAGED) {
+		Vector3 avg = Vector3();
 
-		for indx in _drag_op_indices:
-			avg += _vertices[indx]
+		PoolIntArray::Read r = _drag_op_indices.read();
 
-		avg /= _drag_op_indices.size()
+		for (int i = 0; i < _drag_op_indices.size(); ++i) {
+			avg += _vertices[r[i]];
+		}
 
-		return avg
-	elif pivot_type == PivotTypes.PIVOT_TYPE_MDI_ORIGIN:
-		return Vector3()
-	elif pivot_type == PivotTypes.PIVOT_TYPE_WORLD_ORIGIN:
-		return get_spatial_node().to_local(Vector3())
+		r.release();
 
-	return Vector3()
-	*/
+		avg /= _drag_op_indices.size();
+
+		return avg;
+	} else if (pivot_type == PIVOT_TYPE_MDI_ORIGIN) {
+		return Vector3();
+	} else if (pivot_type == PIVOT_TYPE_WORLD_ORIGIN) {
+		return get_spatial_node()->to_local(Vector3());
+	}
+
+	return Vector3();
 }
 
 void MDIGizmo::select_handle_points(PoolVector3Array points) {
-	/*
-	_selected_points.resize(0)
+	_selected_points.resize(0);
 
-	for p in points:
-		for i in range(_handle_points.size()):
-			if is_verts_equal(p, _handle_points[i]):
-				if !pool_int_arr_contains(_selected_points, i):
-					_selected_points.push_back(i)
+	PoolVector3Array::Read r = points.read();
 
-	redraw()
-	*/
+	for (int ip = 0; ip < points.size(); ++ip) {
+		Vector3 p = r[ip];
+
+		PoolVector3Array::Read hpr = _handle_points.read();
+
+		for (int i = 0; i < _handle_points.size(); ++i) {
+			if (is_verts_equal(p, hpr[i])) {
+				if (!pool_int_arr_contains(_selected_points, i)) {
+					_selected_points.push_back(i);
+				}
+			}
+		}
+
+		hpr.release();
+	}
+
+	redraw();
 }
 
 void MDIGizmo::set_pivot_averaged() {
-	/*
-	pivot_type = PivotTypes.PIVOT_TYPE_AVERAGED
-	*/
+	pivot_type = PIVOT_TYPE_AVERAGED;
 }
 void MDIGizmo::set_pivot_mdi_origin() {
-	/*
-	pivot_type = PivotTypes.PIVOT_TYPE_MDI_ORIGIN
-	*/
+	pivot_type = PIVOT_TYPE_MDI_ORIGIN;
 }
 void MDIGizmo::set_pivot_world_origin() {
-	/*
-	pivot_type = PivotTypes.PIVOT_TYPE_WORLD_ORIGIN
-	*/
+	pivot_type = PIVOT_TYPE_WORLD_ORIGIN;
 }
 
-void MDIGizmo::transfer_state_from(EditorSpatialGizmo *other) {
-	/*
-	edit_mode = other.edit_mode
-	pivot_type = other.pivot_type
-	axis_constraint = other.axis_constraint
-	selection_mode = other.selection_mode
-	handle_selection_type = other.handle_selection_type
+void MDIGizmo::transfer_state_from(const Ref<MDIGizmo> &other) {
+	edit_mode = other->edit_mode;
+	pivot_type = other->pivot_type;
+	axis_constraint = other->axis_constraint;
+	selection_mode = other->selection_mode;
+	handle_selection_type = other->handle_selection_type;
 
-	visual_indicator_outline = other.visual_indicator_outline
-	visual_indicator_seam = other.visual_indicator_seam
-	visual_indicator_handle = other.visual_indicator_handle
-	*/
+	visual_indicator_outline = other->visual_indicator_outline;
+	visual_indicator_seam = other->visual_indicator_seam;
+	visual_indicator_handle = other->visual_indicator_handle;
 }
 
 void MDIGizmo::visual_indicator_outline_set(bool on) {
-	/*
-	visual_indicator_outline = on
-	redraw()
-	*/
+	visual_indicator_outline = on;
+	redraw();
 }
 void MDIGizmo::visual_indicator_seam_set(bool on) {
-	/*
-	visual_indicator_seam = on
-	redraw()
-	*/
+	visual_indicator_seam = on;
+	redraw();
 }
 void MDIGizmo::visual_indicator_handle_set(bool on) {
-	/*
-	visual_indicator_handle = on
-	redraw()
-
-	*/
+	visual_indicator_handle = on;
+	redraw();
 }
 
 void MDIGizmo::handle_selection_type_front() {
-	/*
-	handle_selection_type = HandleSelectionType.HANDLE_SELECTION_TYPE_FRONT
-	*/
+	handle_selection_type = HANDLE_SELECTION_TYPE_FRONT;
 }
 void MDIGizmo::handle_selection_type_back() {
-	/*
-	handle_selection_type = HandleSelectionType.HANDLE_SELECTION_TYPE_BACK
-	*/
+	handle_selection_type = HANDLE_SELECTION_TYPE_BACK;
 }
 void MDIGizmo::handle_selection_type_all() {
-	/*
-	handle_selection_type = HandleSelectionType.HANDLE_SELECTION_TYPE_ALL
-	*/
+	handle_selection_type = HANDLE_SELECTION_TYPE_ALL;
 }
 
 MDIGizmo::MDIGizmo() {

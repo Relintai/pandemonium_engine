@@ -37,6 +37,11 @@ if 'TOOLS_ENABLED' in env["CPPDEFINES"]:
     module_env.add_source_files(env.modules_sources,"editor/uv_editor/mdr_uv_rect_view_popup.cpp")
     module_env.add_source_files(env.modules_sources,"editor/uv_editor/mdr_uv_rect_view.cpp")
 
+    #module_env.add_source_files(env.modules_sources,"editor/mdi_ed_plugin.cpp")
+    #module_env.add_source_files(env.modules_sources,"editor/mdi_ed.cpp")
+    #module_env.add_source_files(env.modules_sources,"editor/mdi_gizmo_plugin.cpp")
+    #module_env.add_source_files(env.modules_sources,"editor/mdi_gizmo.cpp")
+
 module_env.add_source_files(env.modules_sources,"nodes/mesh_data_instance.cpp")
 module_env.add_source_files(env.modules_sources,"nodes/mesh_data_instance_2d.cpp")
 

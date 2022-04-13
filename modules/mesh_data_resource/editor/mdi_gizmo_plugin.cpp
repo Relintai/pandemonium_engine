@@ -22,6 +22,10 @@ SOFTWARE.
 
 #include "mdi_gizmo_plugin.h"
 
+#include "../nodes/mesh_data_instance.h"
+#include "mdi_gizmo.h"
+#include "mdi_ed_plugin.h"
+
 String MDIGizmoPlugin::get_name() const {
 	return "MDIGizmo";
 }
@@ -33,19 +37,21 @@ bool MDIGizmoPlugin::is_handle_highlighted(const EditorSpatialGizmo *p_gizmo, in
 }
 
 Ref<EditorSpatialGizmo> MDIGizmoPlugin::create_gizmo(Spatial *p_spatial) {
-	/*
-	if spatial is MeshDataInstance:
-		var gizmo = MDIGizmo.new()
+	MeshDataInstance* mdi = Object::cast_to<MeshDataInstance>(p_spatial);
 
-		gizmo.set_editor_plugin(plugin)
-		gizmo.set_spatial_node(spatial)
-		gizmo.setup()
-		plugin.register_gizmo(gizmo)
+	if (mdi) {
+		Ref<MDIGizmo> gizmo;
+		gizmo.instance();
 
-		return gizmo
-	else:
-		return null
-	*/
+		gizmo->set_editor_plugin(plugin);
+		gizmo->set_spatial_node(p_spatial);
+		gizmo->setup();
+		plugin->register_gizmo(gizmo);
+
+		return gizmo;
+	} else {
+		return Ref<EditorSpatialGizmo>();
+	}
 }
 
 MDIGizmoPlugin::MDIGizmoPlugin() {

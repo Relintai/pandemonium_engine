@@ -90,8 +90,8 @@ void MDREDMeshOutline::generate(bool mark_outline, bool mark_handles) {
 	if (mark_outline) {
 		for (int i = 0; i < _indices.size(); i += 3) {
 			for (int j = 0; j < 4; ++j) {
-				lines.append(get_vertex(_indices[i + j]));
-				lines.append(get_vertex(_indices[i + ((j + 1) % 3)]));
+				lines.push_back(get_vertex(_indices[i + j]));
+				lines.push_back(get_vertex(_indices[i + ((j + 1) % 3)]));
 			}
 		}
 	}
@@ -102,20 +102,20 @@ void MDREDMeshOutline::generate(bool mark_outline, bool mark_handles) {
 
 			float l = marker_size;
 
-			lines.append(v + Vector3(l, 0, 0));
-			lines.append(v + Vector3(-l, 0, 0));
-			lines.append(v + Vector3(0, 0, l));
-			lines.append(v + Vector3(0, 0, -l));
-			lines.append(v + Vector3(0, l, 0));
-			lines.append(v + Vector3(0, -l, 0));
+			lines.push_back(v + Vector3(l, 0, 0));
+			lines.push_back(v + Vector3(-l, 0, 0));
+			lines.push_back(v + Vector3(0, 0, l));
+			lines.push_back(v + Vector3(0, 0, -l));
+			lines.push_back(v + Vector3(0, l, 0));
+			lines.push_back(v + Vector3(0, -l, 0));
 		}
 	}
 
 	PoolIntArray seams = _mdr->get_seams();
 
 	for (int i = 0; i < seams.size(); i += 2) {
-		seam_lines.append(get_vertex(seams[i]));
-		seam_lines.append(get_vertex(seams[i + 1]));
+		seam_lines.push_back(get_vertex(seams[i]));
+		seam_lines.push_back(get_vertex(seams[i + 1]));
 	}
 }
 
@@ -135,20 +135,20 @@ void MDREDMeshOutline::generate_mark_edges(bool mark_outline, bool mark_handles)
 			Vector3 v1 = get_vertex(i1);
 
 			if (mark_outline) {
-				lines.append(v0);
-				lines.append(v1);
+				lines.push_back(v0);
+				lines.push_back(v1);
 			}
 
 			if (mark_handles) {
 				Vector3 pmid = v0.linear_interpolate(v1, 0.5);
 				float l = marker_size;
 
-				lines.append(pmid + Vector3(l, 0, 0));
-				lines.append(pmid + Vector3(-l, 0, 0));
-				lines.append(pmid + Vector3(0, 0, l));
-				lines.append(pmid + Vector3(0, 0, -l));
-				lines.append(pmid + Vector3(0, l, 0));
-				lines.append(pmid + Vector3(0, -l, 0));
+				lines.push_back(pmid + Vector3(l, 0, 0));
+				lines.push_back(pmid + Vector3(-l, 0, 0));
+				lines.push_back(pmid + Vector3(0, 0, l));
+				lines.push_back(pmid + Vector3(0, 0, -l));
+				lines.push_back(pmid + Vector3(0, l, 0));
+				lines.push_back(pmid + Vector3(0, -l, 0));
 			}
 		}
 	}
@@ -156,8 +156,8 @@ void MDREDMeshOutline::generate_mark_edges(bool mark_outline, bool mark_handles)
 	PoolIntArray seams = _mdr->get_seams();
 
 	for (int i = 0; i < seams.size(); i += 2) {
-		seam_lines.append(get_vertex(seams[i]));
-		seam_lines.append(get_vertex(seams[i + 1]));
+		seam_lines.push_back(get_vertex(seams[i]));
+		seam_lines.push_back(get_vertex(seams[i + 1]));
 	}
 }
 void MDREDMeshOutline::generate_mark_faces(bool mark_outline, bool mark_handles) {
@@ -170,8 +170,8 @@ void MDREDMeshOutline::generate_mark_faces(bool mark_outline, bool mark_handles)
 	if (mark_outline) {
 		for (int i = 0; i < _indices.size(); i += 3) {
 			for (int j = 0; j < 3; ++j) {
-				lines.append(get_vertex(_indices[i + j]));
-				lines.append(get_vertex(_indices[i + ((j + 1) % 3)]));
+				lines.push_back(get_vertex(_indices[i + j]));
+				lines.push_back(get_vertex(_indices[i + ((j + 1) % 3)]));
 			}
 		}
 	}
@@ -190,20 +190,20 @@ void MDREDMeshOutline::generate_mark_faces(bool mark_outline, bool mark_handles)
 			pmid /= 3;
 			float l = marker_size;
 
-			lines.append(pmid + Vector3(l, 0, 0));
-			lines.append(pmid + Vector3(-l, 0, 0));
-			lines.append(pmid + Vector3(0, 0, l));
-			lines.append(pmid + Vector3(0, 0, -l));
-			lines.append(pmid + Vector3(0, l, 0));
-			lines.append(pmid + Vector3(0, -l, 0));
+			lines.push_back(pmid + Vector3(l, 0, 0));
+			lines.push_back(pmid + Vector3(-l, 0, 0));
+			lines.push_back(pmid + Vector3(0, 0, l));
+			lines.push_back(pmid + Vector3(0, 0, -l));
+			lines.push_back(pmid + Vector3(0, l, 0));
+			lines.push_back(pmid + Vector3(0, -l, 0));
 		}
 	}
 
 	PoolIntArray seams = _mdr->get_seams();
 
 	for (int i = 0; i < seams.size(); i += 2) {
-		seam_lines.append(get_vertex(seams[i]));
-		seam_lines.append(get_vertex(seams[i + 1]));
+		seam_lines.push_back(get_vertex(seams[i]));
+		seam_lines.push_back(get_vertex(seams[i + 1]));
 	}
 }
 
