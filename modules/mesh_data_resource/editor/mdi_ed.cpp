@@ -136,16 +136,19 @@ bool MDIEd::get_axis_x() {
 	/*
 	return $VBoxContainer/Actions/Actions/VBoxContainer2/HBoxContainer2/AxisX.pressed
 	*/
+	return false;
 }
 bool MDIEd::get_axis_y() {
 	/*
 	return $VBoxContainer/Actions/Actions/VBoxContainer2/HBoxContainer2/AxisY.pressed
 	*/
+	return false;
 }
 bool MDIEd::get_axis_z() {
 	/*
 	return $VBoxContainer/Actions/Actions/VBoxContainer2/HBoxContainer2/AxisZ.pressed
 	*/
+	return false;
 }
 void MDIEd::set_axis_x(bool on) {
 	/*

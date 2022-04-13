@@ -23,8 +23,8 @@ SOFTWARE.
 #include "mdi_gizmo_plugin.h"
 
 #include "../nodes/mesh_data_instance.h"
-#include "mdi_gizmo.h"
 #include "mdi_ed_plugin.h"
+#include "mdi_gizmo.h"
 
 String MDIGizmoPlugin::get_name() const {
 	return "MDIGizmo";
@@ -37,7 +37,7 @@ bool MDIGizmoPlugin::is_handle_highlighted(const EditorSpatialGizmo *p_gizmo, in
 }
 
 Ref<EditorSpatialGizmo> MDIGizmoPlugin::create_gizmo(Spatial *p_spatial) {
-	MeshDataInstance* mdi = Object::cast_to<MeshDataInstance>(p_spatial);
+	MeshDataInstance *mdi = Object::cast_to<MeshDataInstance>(p_spatial);
 
 	if (mdi) {
 		Ref<MDIGizmo> gizmo;

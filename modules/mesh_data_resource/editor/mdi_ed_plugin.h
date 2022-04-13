@@ -119,7 +119,7 @@ public:
 	~MDIEdPlugin();
 
 	MDIGizmoPlugin *gizmo_plugin;
-	MDIEd mdi_ed_gui;
+	MDIEd *mdi_ed_gui;
 
 	Vector<Ref<MDIGizmo>> active_gizmos;
 

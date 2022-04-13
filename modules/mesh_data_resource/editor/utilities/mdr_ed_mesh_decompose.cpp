@@ -22,13 +22,13 @@ SOFTWARE.
 
 #include "mdr_ed_mesh_decompose.h"
 
+#include "../../mesh_data_resource.h"
 #include "modules/mesh_utils/mesh_utils.h"
 #include "scene/resources/mesh.h"
-#include "../../mesh_data_resource.h"
 
 //you can use MeshUtils.merge_mesh_array(arr) to get optimalized handle points. Just get the vertices from it.
-Array MDREDMeshDecompose::get_handle_vertex_to_vertex_map(const Array &arrays, const PoolVector3Array &handle_points) {
-	Array handle_to_vertex_map;
+Vector<PoolIntArray> MDREDMeshDecompose::get_handle_vertex_to_vertex_map(const Array &arrays, const PoolVector3Array &handle_points) {
+	Vector<PoolIntArray> handle_to_vertex_map;
 	handle_to_vertex_map.resize(handle_points.size());
 
 	if (handle_points.size() == 0) {
@@ -58,7 +58,7 @@ Array MDREDMeshDecompose::get_handle_vertex_to_vertex_map(const Array &arrays, c
 			}
 		}
 
-		handle_to_vertex_map[i] = iarr;
+		handle_to_vertex_map.write[i] = iarr;
 	}
 
 	return handle_to_vertex_map;
@@ -67,23 +67,16 @@ Array MDREDMeshDecompose::get_handle_vertex_to_vertex_map(const Array &arrays, c
 //returns an array:
 //index 0 is the handle_points
 //index 1 is the handle_to_vertex_map
-Array MDREDMeshDecompose::get_handle_edge_to_vertex_map(const Array &arrays) {
-	Array handle_to_vertex_map;
-	PoolVector3Array handle_points;
-
-	Array ret;
+MDREDMeshDecompose::HandleVertexMapResult MDREDMeshDecompose::get_handle_edge_to_vertex_map(const Array &arrays) {
+	HandleVertexMapResult ret;
 
 	if (arrays.size() != ArrayMesh::ARRAY_MAX || arrays[ArrayMesh::ARRAY_INDEX].is_null()) {
-		ret.append(handle_points);
-		ret.append(handle_to_vertex_map);
 		return ret;
 	}
 
 	PoolVector3Array vertices = arrays[ArrayMesh::ARRAY_VERTEX];
 
 	if (vertices.size() == 0) {
-		ret.append(handle_points);
-		ret.append(handle_to_vertex_map);
 		return ret;
 	}
 
@@ -96,7 +89,7 @@ Array MDREDMeshDecompose::get_handle_edge_to_vertex_map(const Array &arrays) {
 	PoolVector3Array optimized_verts = optimized_arrays[ArrayMesh::ARRAY_VERTEX];
 	PoolIntArray optimized_indices = optimized_arrays[ArrayMesh::ARRAY_INDEX];
 
-	Array vert_to_optimized_vert_map = get_handle_vertex_to_vertex_map(arrays, optimized_verts);
+	Vector<PoolIntArray> vert_to_optimized_vert_map = get_handle_vertex_to_vertex_map(arrays, optimized_verts);
 
 	Dictionary edge_map;
 
@@ -150,7 +143,7 @@ Array MDREDMeshDecompose::get_handle_edge_to_vertex_map(const Array &arrays) {
 			Vector3 v1 = optimized_verts[ei1];
 
 			Vector3 emid = v0.linear_interpolate(v1, 0.5);
-			handle_points.append(emid);
+			ret.handle_points.append(emid);
 			//int hindx = handle_points.size() - 1;
 
 			PoolIntArray vm0 = vert_to_optimized_vert_map[ei0];
@@ -184,35 +177,26 @@ Array MDREDMeshDecompose::get_handle_edge_to_vertex_map(const Array &arrays) {
 
 			vm1r.release();
 
-			handle_to_vertex_map.append(vm);
+			ret.handle_to_vertex_map.push_back(vm);
 		}
 	}
 
-	ret.append(handle_points);
-	ret.append(handle_to_vertex_map);
 	return ret;
 }
 
 //returns an array:
 //index 0 is the handle_points
 //index 1 is the handle_to_vertex_map
-Array MDREDMeshDecompose::get_handle_face_to_vertex_map(const Array &arrays) {
-	Array handle_to_vertex_map;
-	PoolVector3Array handle_points;
-
-	Array ret;
+MDREDMeshDecompose::HandleVertexMapResult MDREDMeshDecompose::get_handle_face_to_vertex_map(const Array &arrays) {
+	HandleVertexMapResult ret;
 
 	if (arrays.size() != ArrayMesh::ARRAY_MAX || arrays[ArrayMesh::ARRAY_INDEX].is_null()) {
-		ret.append(handle_points);
-		ret.append(handle_to_vertex_map);
 		return ret;
 	}
 
 	PoolVector3Array vertices = arrays[ArrayMesh::ARRAY_VERTEX];
 
 	if (vertices.size() == 0) {
-		ret.append(handle_points);
-		ret.append(handle_to_vertex_map);
 		return ret;
 	}
 
@@ -225,7 +209,7 @@ Array MDREDMeshDecompose::get_handle_face_to_vertex_map(const Array &arrays) {
 	PoolVector3Array optimized_verts = optimized_arrays[ArrayMesh::ARRAY_VERTEX];
 	PoolIntArray optimized_indices = optimized_arrays[ArrayMesh::ARRAY_INDEX];
 
-	Array vert_to_optimized_vert_map = get_handle_vertex_to_vertex_map(arrays, optimized_verts);
+	Vector<PoolIntArray> vert_to_optimized_vert_map = get_handle_vertex_to_vertex_map(arrays, optimized_verts);
 
 	for (int i = 0; i < optimized_indices.size(); i += 3) {
 		int i0 = optimized_indices[i + 0];
@@ -238,7 +222,7 @@ Array MDREDMeshDecompose::get_handle_face_to_vertex_map(const Array &arrays) {
 
 		Vector3 pmid = v0 + v1 + v2;
 		pmid /= 3;
-		handle_points.append(pmid);
+		ret.handle_points.append(pmid);
 
 		PoolIntArray vm0 = vert_to_optimized_vert_map[i0];
 		PoolIntArray vm1 = vert_to_optimized_vert_map[i1];
@@ -297,11 +281,9 @@ Array MDREDMeshDecompose::get_handle_face_to_vertex_map(const Array &arrays) {
 
 		vm2r.release();
 
-		handle_to_vertex_map.append(vm);
+		ret.handle_to_vertex_map.push_back(vm);
 	}
 
-	ret.append(handle_points);
-	ret.append(handle_to_vertex_map);
 	return ret;
 }
 

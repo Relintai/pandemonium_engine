@@ -25,12 +25,12 @@ SOFTWARE.
 
 #include "editor/plugins/spatial_editor_plugin.h"
 
-#include "core/pool_vector.h"
-#include "core/variant.h"
-#include "core/math/vector3.h"
-#include "core/reference.h"
 #include "core/math/basis.h"
 #include "core/math/transform.h"
+#include "core/math/vector3.h"
+#include "core/pool_vector.h"
+#include "core/reference.h"
+#include "core/variant.h"
 
 class Camera;
 class MeshDataResource;
@@ -77,7 +77,7 @@ public:
 	void setup();
 	void set_editor_plugin(EditorPlugin *editor_plugin);
 
-	void set_handle(int index, Camera *camera, Vector2 point);
+	void set_handle(int index, Camera *camera, const Point2 &point);
 	void redraw();
 	void apply();
 
@@ -123,7 +123,7 @@ public:
 
 	bool is_verts_equal(Vector3 v0, Vector3 v1);
 	Vector3 find_other_vertex_for_edge(int edge, Vector3 v0);
-	Array split_edge_indices(int edge);
+	Vector<PoolIntArray> split_edge_indices(int edge);
 	bool pool_int_arr_contains(PoolIntArray arr, int val);
 	PoolIntArray find_triangles_for_edge(int edge);
 	int find_first_triangle_for_edge(int edge);
@@ -140,7 +140,7 @@ public:
 
 	void create_face();
 
-	Array split_face_indices(int face);
+	Vector<PoolIntArray> split_face_indices(int face);
 	int find_first_triangle_index_for_face(int face);
 
 	void delete_selected();
@@ -221,7 +221,7 @@ public:
 	PoolVector3Array _vertices;
 	PoolIntArray _indices;
 	PoolVector3Array _handle_points;
-	Array _handle_to_vertex_map;
+	Vector<PoolIntArray> _handle_to_vertex_map;
 	PoolIntArray _selected_points;
 
 	Ref<MDREDMeshOutline> _mesh_outline_generator;
