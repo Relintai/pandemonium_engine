@@ -63,7 +63,7 @@ public:
 	void refresh();
 
 	void _draw();
-	void _gui_input(Ref<InputEvent> p_event);
+	void _gui_input(const Ref<InputEvent> &p_event);
 	int _drag_hit_test(Vector2 pos);
 
 	MDRUVRectViewNode();

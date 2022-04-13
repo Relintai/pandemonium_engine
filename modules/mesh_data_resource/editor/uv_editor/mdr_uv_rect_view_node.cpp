@@ -367,7 +367,7 @@ void MDRUVRectViewNode::_draw() {
 }
 
 //based on / ported from engine/scene/gui/dialogs.h and .cpp
-void MDRUVRectViewNode::_gui_input(Ref<InputEvent> p_event) {
+void MDRUVRectViewNode::_gui_input(const Ref<InputEvent> &p_event) {
 	Ref<InputEventMouseButton> mb = p_event;
 
 	if ((mb.is_valid()) && (mb->get_button_index() == BUTTON_LEFT)) {
@@ -503,13 +503,18 @@ int MDRUVRectViewNode::_drag_hit_test(Vector2 pos) {
 
 //based on / ported from engine/scene/gui/dialogs.h and .cpp
 void MDRUVRectViewNode::_notification(int p_what) {
-	if (p_what == NOTIFICATION_MOUSE_EXIT) {
-		// Reset the mouse cursor when leaving the resizable window border.
-		if (_mdr.is_valid() && !drag_type) {
-			if (get_default_cursor_shape() != CURSOR_ARROW) {
-				set_default_cursor_shape(CURSOR_ARROW);
+	switch(p_what) {
+		case NOTIFICATION_MOUSE_EXIT: {
+			// Reset the mouse cursor when leaving the resizable window border.
+			if (_mdr.is_valid() && !drag_type) {
+				if (get_default_cursor_shape() != CURSOR_ARROW) {
+					set_default_cursor_shape(CURSOR_ARROW);
+				}
 			}
-		}
+		} break;
+		case NOTIFICATION_DRAW: {
+			_draw();
+		} break;
 	}
 }
 
@@ -536,4 +541,5 @@ MDRUVRectViewNode::~MDRUVRectViewNode() {
 }
 
 void MDRUVRectViewNode::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_gui_input"), &MDRUVRectViewNode::_gui_input);
 }
