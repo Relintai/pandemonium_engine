@@ -23,15 +23,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "scene/gui/control.h"
+#include "scene/gui/panel_container.h"
 
 class EditorPlugin;
 class MeshDataResource;
 class MeshDataInstance;
 class MDIEdPlugin;
+class MDREdUVPreviewer;
+class MDRUVRectEditorPopup;
 
-class MDIEd : public Control {
-	GDCLASS(MDIEd, Control);
+class MDIEd : public PanelContainer {
+	GDCLASS(MDIEd, PanelContainer);
 
 public:
 	void _enter_tree();
@@ -113,11 +115,8 @@ public:
 
 	MDIEdPlugin *_plugin;
 
-	//export var uv_preview_path : NodePath
-	//export var uv_editor_path : NodePath
-
-	Node *uv_preview;
-	Node *uv_editor;
+	MDREdUVPreviewer *uv_preview;
+	MDRUVRectEditorPopup *uv_editor;
 
 protected:
 	static void _bind_methods();

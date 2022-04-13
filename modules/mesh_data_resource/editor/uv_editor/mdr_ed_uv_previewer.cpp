@@ -20,13 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "mdi_ed_uv_previewer.h"
+#include "mdr_ed_uv_previewer.h"
 
 #include "../../mesh_data_resource.h"
 #include "../../nodes/mesh_data_instance.h"
 #include "scene/resources/texture.h"
 
-void MDIEdUVPreviewer::set_mesh_data_resource(Ref<MeshDataResource> a) {
+void MDREdUVPreviewer::set_mesh_data_resource(Ref<MeshDataResource> a) {
 	if (mesh_data_resource.is_valid()) {
 		mesh_data_resource->disconnect("changed", this, "on_mdr_changed");
 	}
@@ -40,7 +40,7 @@ void MDIEdUVPreviewer::set_mesh_data_resource(Ref<MeshDataResource> a) {
 	update();
 }
 
-void MDIEdUVPreviewer::set_mesh_data_instance(MeshDataInstance *a) {
+void MDREdUVPreviewer::set_mesh_data_instance(MeshDataInstance *a) {
 	if (!a) {
 		background_texture.unref();
 		return;
@@ -49,11 +49,11 @@ void MDIEdUVPreviewer::set_mesh_data_instance(MeshDataInstance *a) {
 	background_texture = a->get_texture();
 }
 
-void MDIEdUVPreviewer::on_mdr_changed() {
+void MDREdUVPreviewer::on_mdr_changed() {
 	update();
 }
 
-void MDIEdUVPreviewer::_draw() {
+void MDREdUVPreviewer::_draw() {
 	if (background_texture.is_valid()) {
 		draw_texture_rect_region(background_texture, Rect2(Vector2(), get_size()), Rect2(Vector2(), background_texture->get_size()));
 	}
@@ -102,11 +102,11 @@ void MDIEdUVPreviewer::_draw() {
 	}
 }
 
-MDIEdUVPreviewer::MDIEdUVPreviewer() {
+MDREdUVPreviewer::MDREdUVPreviewer() {
 }
 
-MDIEdUVPreviewer::~MDIEdUVPreviewer() {
+MDREdUVPreviewer::~MDREdUVPreviewer() {
 }
 
-void MDIEdUVPreviewer::_bind_methods() {
+void MDREdUVPreviewer::_bind_methods() {
 }

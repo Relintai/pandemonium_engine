@@ -34,7 +34,8 @@ void MDRUVRectEditorPopup::on_cancel_pressed() {
 
 MDRUVRectEditorPopup::MDRUVRectEditorPopup() {
 	_editor = memnew(MDRUVRectEditor);
-
+	_editor->set_h_size_flags(SIZE_EXPAND_FILL);
+	_editor->set_v_size_flags(SIZE_EXPAND_FILL);
 	add_child(_editor);
 
 	connect("confirmed", this, "on_ok_pressed");
