@@ -111,7 +111,7 @@ MDREDMeshDecompose::HandleVertexMapResult MDREDMeshDecompose::get_handle_edge_to
 
 			bool found = false;
 			for (int ii = 0; ii < etm.size(); ++ii) {
-				if (etm[ii] == ei1) {
+				if (r[ii] == ei1) {
 					found = true;
 					break;
 				}
@@ -134,7 +134,7 @@ MDREDMeshDecompose::HandleVertexMapResult MDREDMeshDecompose::get_handle_edge_to
 
 		PoolIntArray::Read r = indices.read();
 
-		for (int i = 0; i < keys.size(); ++i) {
+		for (int i = 0; i < indices.size(); ++i) {
 			int indx = r[i];
 			int ei0 = key;
 			int ei1 = indx;
@@ -149,7 +149,7 @@ MDREDMeshDecompose::HandleVertexMapResult MDREDMeshDecompose::get_handle_edge_to
 			PoolIntArray vm0 = vert_to_optimized_vert_map[ei0];
 			PoolIntArray vm1 = vert_to_optimized_vert_map[ei1];
 
-			PoolIntArray vm = PoolIntArray();
+			PoolIntArray vm;
 			vm.append_array(vm0);
 
 			PoolIntArray::Read vm1r = vm1.read();
@@ -179,6 +179,8 @@ MDREDMeshDecompose::HandleVertexMapResult MDREDMeshDecompose::get_handle_edge_to
 
 			ret.handle_to_vertex_map.push_back(vm);
 		}
+
+		r.release();
 	}
 
 	return ret;
