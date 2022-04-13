@@ -91,23 +91,17 @@ void MDIEd::set_edit_mode_scale() {
 
 void MDIEd::on_edit_mode_translate_toggled(bool on) {
 	if (on) {
-		if (_plugin) {
-			_plugin->set_translate();
-		}
+		_plugin->set_translate();
 	}
 }
 void MDIEd::on_edit_mode_rotate_toggled(bool on) {
 	if (on) {
-		if (_plugin) {
-			_plugin->set_rotate();
-		}
+		_plugin->set_rotate();
 	}
 }
 void MDIEd::on_edit_mode_scale_toggled(bool on) {
 	if (on) {
-		if (_plugin) {
-			_plugin->set_scale();
-		}
+		_plugin->set_scale();
 	}
 }
 
@@ -132,33 +126,19 @@ void MDIEd::set_axis_z(bool on) {
 }
 
 void MDIEd::on_axis_x_toggled(bool on) {
-	if (on) {
-		if (_plugin) {
-			_plugin->set_axis_x(on);
-		}
-	}
+	_plugin->set_axis_x(on);
 }
 void MDIEd::on_axis_y_toggled(bool on) {
-	if (on) {
-		if (_plugin) {
-			_plugin->set_axis_y(on);
-		}
-	}
+	_plugin->set_axis_y(on);
 }
 void MDIEd::on_axis_z_toggled(bool on) {
-	if (on) {
-		if (_plugin) {
-			_plugin->set_axis_z(on);
-		}
-	}
+	_plugin->set_axis_z(on);
 }
 
 //selection modes
 void MDIEd::on_selection_mode_vertex_toggled(bool on) {
 	if (on) {
-		if (_plugin) {
-			_plugin->set_selection_mode_vertex();
-		}
+		_plugin->set_selection_mode_vertex();
 
 		vertex_operations_container->show();
 		edge_operations_container->hide();
@@ -167,9 +147,7 @@ void MDIEd::on_selection_mode_vertex_toggled(bool on) {
 }
 void MDIEd::on_selection_mode_edge_toggled(bool on) {
 	if (on) {
-		if (_plugin) {
-			_plugin->set_selection_mode_edge();
-		}
+		_plugin->set_selection_mode_edge();
 
 		vertex_operations_container->hide();
 		edge_operations_container->show();
@@ -178,9 +156,7 @@ void MDIEd::on_selection_mode_edge_toggled(bool on) {
 }
 void MDIEd::on_selection_mode_face_toggled(bool on) {
 	if (on) {
-		if (_plugin) {
-			_plugin->set_selection_mode_face();
-		}
+		_plugin->set_selection_mode_face();
 
 		vertex_operations_container->hide();
 		edge_operations_container->hide();
@@ -199,13 +175,19 @@ void MDIEd::set_selection_mode_face() {
 }
 
 void MDIEd::on_handle_selection_type_front_toggled(bool on) {
-	_plugin->handle_selection_type_front();
+	if (on) {
+		_plugin->handle_selection_type_front();
+	}
 }
 void MDIEd::on_handle_selection_type_back_toggled(bool on) {
-	_plugin->handle_selection_type_back();
+	if (on) {
+		_plugin->handle_selection_type_back();
+	}
 }
 void MDIEd::on_handle_selection_type_all_toggled(bool on) {
-	_plugin->handle_selection_type_all();
+	if (on) {
+		_plugin->handle_selection_type_all();
+	}
 }
 
 void MDIEd::on_select_all_pressed() {
