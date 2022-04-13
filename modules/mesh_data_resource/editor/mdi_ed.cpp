@@ -558,6 +558,8 @@ MDIEd::MDIEd() {
 	action_label->set_v_size_flags(SIZE_EXPAND_FILL | SIZE_SHRINK_CENTER);
 	action_buttons_container->add_child(action_label);
 
+	action_button_group.instance();
+
 	action_button = memnew(Button);
 	action_button->set_text("A");
 	action_button->set_toggle_mode(true);
