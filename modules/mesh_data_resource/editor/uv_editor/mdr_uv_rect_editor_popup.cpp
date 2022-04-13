@@ -41,13 +41,19 @@ void MDRUVRectEditorPopup::set_plugin(MDIEdPlugin *plugin) {
 	_editor->set_plugin(plugin);
 }
 
+void MDRUVRectEditorPopup::_notification(int p_what) {
+	if (p_what == NOTIFICATION_POSTINITIALIZE) {
+		connect("confirmed", this, "on_ok_pressed");
+	}
+}
+
 MDRUVRectEditorPopup::MDRUVRectEditorPopup() {
 	_editor = memnew(MDRUVRectEditor);
 	_editor->set_h_size_flags(SIZE_EXPAND_FILL);
 	_editor->set_v_size_flags(SIZE_EXPAND_FILL);
 	add_child(_editor);
 
-	connect("confirmed", this, "on_ok_pressed");
+	
 	get_cancel()->connect("pressed", this, "on_cancel_pressed");
 
 	set_size(Vector2(700, 500));
