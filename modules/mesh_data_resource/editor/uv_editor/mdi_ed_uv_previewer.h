@@ -1,5 +1,5 @@
-#ifndef MDI_ED_UV_EDITOR_H
-#define MDI_ED_UV_EDITOR_H
+#ifndef MDI_ED_UV_PREVIEWER_H
+#define MDI_ED_UV_PREVIEWER_H
 
 /*
 Copyright (c) 2019-2022 Péter Magyar
@@ -31,8 +31,8 @@ class MeshDataResource;
 class MeshDataInstance;
 class Texture;
 
-class MDIEdUVEditor : public Control {
-	GDCLASS(MDIEdUVEditor, Control);
+class MDIEdUVPreviewer : public Control {
+	GDCLASS(MDIEdUVPreviewer, Control);
 
 public:
 	void set_mesh_data_resource(Ref<MeshDataResource> a);
@@ -40,8 +40,8 @@ public:
 	void on_mdr_changed();
 	void _draw();
 
-	MDIEdUVEditor();
-	~MDIEdUVEditor();
+	MDIEdUVPreviewer();
+	~MDIEdUVPreviewer();
 
 protected:
 	static void _bind_methods();
