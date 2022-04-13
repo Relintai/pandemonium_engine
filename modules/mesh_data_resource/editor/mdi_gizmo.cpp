@@ -841,10 +841,6 @@ void MDIGizmo::on_mesh_data_resource_changed(Ref<MeshDataResource> mdr) {
 		_indices.resize(0);
 	}
 
-	if (_mdr.is_valid()) {
-		_mdr->connect("changed", this, "on_mdr_changed");
-	}
-
 	recalculate_handle_points();
 	redraw();
 }

@@ -53,7 +53,6 @@ MDRUVRectEditorPopup::MDRUVRectEditorPopup() {
 	_editor->set_v_size_flags(SIZE_EXPAND_FILL);
 	add_child(_editor);
 
-	
 	get_cancel()->connect("pressed", this, "on_cancel_pressed");
 
 	set_size(Vector2(700, 500));
