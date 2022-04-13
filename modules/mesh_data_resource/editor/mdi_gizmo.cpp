@@ -770,15 +770,6 @@ void MDIGizmo::set_selection_mode_face() {
 	redraw();
 }
 
-void MDIGizmo::_notification(int what) {
-	/*
-	if (what == NOTIFICATION_PREDELETE) {
-		if (this != nullptr && get_plugin().is_valid()) {
-			get_plugin()->unregister_gizmo(this);
-		}
-	}*/
-}
-
 void MDIGizmo::recalculate_handle_points() {
 	if (!_mdr.is_valid()) {
 		_handle_points.resize(0);

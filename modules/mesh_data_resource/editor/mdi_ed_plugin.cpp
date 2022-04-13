@@ -27,32 +27,7 @@ SOFTWARE.
 #include "mdi_gizmo.h"
 #include "mdi_gizmo_plugin.h"
 
-void MDIEdPlugin::_enter_tree() {
-	gizmo_plugin = memnew(MDIGizmoPlugin);
-	mdi_ed_gui = memnew(MDIEd);
-	mdi_ed_gui->set_plugin(this);
-	active_gizmos.clear();
-
-	gizmo_plugin->plugin = this;
-
-	add_control_to_container(EditorPlugin::CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT, mdi_ed_gui);
-	mdi_ed_gui->hide();
-
-	add_spatial_gizmo_plugin(gizmo_plugin);
-
-	set_input_event_forwarding_always_enabled();
-}
-void MDIEdPlugin::_exit_tree() {
-	//print("_exit_tree")
-
-	remove_spatial_gizmo_plugin(gizmo_plugin);
-	//remove_control_from_container(EditorPlugin.CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT, mdi_ed_gui)
-	mdi_ed_gui->queue_delete();
-}
-
 bool MDIEdPlugin::handles(Object *object) const {
-	//print("disable_plugin")
-
 	if (object->is_class("MeshDataInstance")) {
 		return true;
 	}
@@ -82,27 +57,13 @@ void MDIEdPlugin::make_visible(bool visible) {
 	if (visible) {
 		mdi_ed_gui->show();
 	}
-
-	//else:
-	//	#mdi_ed_gui.hide()
-	//	#figure out how to hide it when something else gets selected, don't hide on unselect
-	//	pass
+	//else
+	//mdi_ed_gui.hide()
+	//figure out how to hide it when something else gets selected, don't hide on unselect
 }
 
 String MDIEdPlugin::get_name() const {
 	return "MeshDataResourceEditor";
-}
-
-void MDIEdPlugin::register_gizmo(Ref<MDIGizmo> gizmo) {
-	active_gizmos.push_back(gizmo);
-}
-void MDIEdPlugin::unregister_gizmo(Ref<MDIGizmo> gizmo) {
-	for (int i = 0; i < active_gizmos.size(); ++i) {
-		if (active_gizmos[i] == gizmo) {
-			active_gizmos.remove(i);
-			return;
-		}
-	}
 }
 
 void MDIEdPlugin::set_translate() {
@@ -398,23 +359,19 @@ void MDIEdPlugin::flip_selected_faces() {
 	}
 }
 
-MDIEdPlugin::MDIEdPlugin() {
+MDIEdPlugin::MDIEdPlugin(EditorNode *p_node) {
+	editor = p_node;
+
 	current_mesh_data_instance = nullptr;
-	/*
 
-	const MDRMeshUtils = preload("res://addons/mesh_data_resource_editor/utilities/mdred_mesh_utils.gd")
+	mdi_ed_gui = memnew(MDIEd);
+	mdi_ed_gui->set_plugin(this);
+	add_control_to_container(EditorPlugin::CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT, mdi_ed_gui);
+	mdi_ed_gui->hide();
 
-	const MdiGizmoPlugin = preload("res://addons/mesh_data_resource_editor/MDIGizmoPlugin.gd")
-	const MDIEdGui = preload("res://addons/mesh_data_resource_editor/MDIEd.tscn")
-
-	var gizmo_plugin = MdiGizmoPlugin.new()
-	var mdi_ed_gui : Control
-
-	var active_gizmos : Array
-
-	var current_mesh_data_instance : MeshDataInstance = null
-
-	*/
+	gizmo_plugin.instance();
+	gizmo_plugin->plugin = this;
+	add_spatial_gizmo_plugin(gizmo_plugin);
 }
 
 MDIEdPlugin::~MDIEdPlugin() {

@@ -44,6 +44,7 @@ public:
 	void generate_mark_faces(bool mark_outline, bool mark_handles);
 
 	MDREDMeshOutline();
+	~MDREDMeshOutline();
 
 	float marker_size;
 

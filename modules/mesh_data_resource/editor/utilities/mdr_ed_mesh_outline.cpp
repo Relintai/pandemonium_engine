@@ -89,7 +89,7 @@ void MDREDMeshOutline::generate(bool mark_outline, bool mark_handles) {
 
 	if (mark_outline) {
 		for (int i = 0; i < _indices.size(); i += 3) {
-			for (int j = 0; j < 4; ++j) {
+			for (int j = 0; j < 3; ++j) {
 				lines.push_back(get_vertex(_indices[i + j]));
 				lines.push_back(get_vertex(_indices[i + ((j + 1) % 3)]));
 			}
@@ -209,6 +209,9 @@ void MDREDMeshOutline::generate_mark_faces(bool mark_outline, bool mark_handles)
 
 MDREDMeshOutline::MDREDMeshOutline() {
 	marker_size = 0.05;
+}
+
+MDREDMeshOutline::~MDREDMeshOutline() {
 }
 
 void MDREDMeshOutline::_bind_methods() {

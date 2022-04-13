@@ -110,9 +110,7 @@ public:
 	void set_selection_mode_vertex();
 	void set_selection_mode_edge();
 	void set_selection_mode_face();
-
-	void _notification(int what);
-
+	
 	void recalculate_handle_points();
 	void on_mesh_data_resource_changed(Ref<MeshDataResource> mdr);
 	void on_mdr_changed();

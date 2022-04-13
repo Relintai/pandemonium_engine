@@ -38,18 +38,14 @@ class MeshDataInstance;
 class MDIEd;
 
 class MDIEdPlugin : public EditorPlugin {
-public:
-	void _enter_tree();
-	void _exit_tree();
+	GDCLASS(MDIEdPlugin, EditorPlugin);
 
+public:
 	bool handles(Object *object) const;
 	void edit(Object *object);
 	void make_visible(bool visible);
 
 	String get_name() const;
-
-	void register_gizmo(Ref<MDIGizmo> gizmo);
-	void unregister_gizmo(Ref<MDIGizmo> gizmo);
 
 	void set_translate();
 	void set_scale();
@@ -115,15 +111,15 @@ public:
 
 	void flip_selected_faces();
 
-	MDIEdPlugin();
+	MDIEdPlugin(EditorNode *p_node);
 	~MDIEdPlugin();
 
-	MDIGizmoPlugin *gizmo_plugin;
+	Ref<MDIGizmoPlugin> gizmo_plugin;
 	MDIEd *mdi_ed_gui;
 
-	Vector<Ref<MDIGizmo>> active_gizmos;
-
 	MeshDataInstance *current_mesh_data_instance;
+
+	EditorNode *editor;
 
 protected:
 	static void _bind_methods();

@@ -46,7 +46,6 @@ Ref<EditorSpatialGizmo> MDIGizmoPlugin::create_gizmo(Spatial *p_spatial) {
 		gizmo->set_editor_plugin(plugin);
 		gizmo->set_spatial_node(p_spatial);
 		gizmo->setup();
-		plugin->register_gizmo(gizmo);
 
 		return gizmo;
 	} else {

@@ -31,6 +31,8 @@ SOFTWARE.
 #include "editor/editor_plugin.h"
 
 #include "plugin_gltf/editor_plugin_gltf_mdr.h"
+
+#include "./editor/mdi_ed_plugin.h"
 #endif
 
 #if PROPS_PRESENT
@@ -64,6 +66,7 @@ void register_mesh_data_resource_types() {
 
 #ifdef TOOLS_ENABLED
 	EditorPlugins::add_by_type<EditorPluginGLTFMdr>();
+	EditorPlugins::add_by_type<MDIEdPlugin>();
 #endif
 }
 
