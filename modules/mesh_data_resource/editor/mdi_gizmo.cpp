@@ -1210,15 +1210,15 @@ void MDIGizmo::extrude() {
 
 			// Calculate avg
 			Vector3 vavg;
-			for (int i = 0; i < found_verts.size(); ++i) {
-				vavg += new_verts[found_verts[i]];
+			for (int ic = 0; ic < found_verts.size(); ++ic) {
+				vavg += new_verts[found_verts[ic]];
 			}
 
 			vavg /= found_verts.size();
 
 			// set back
-			for (int i = 0; i < found_verts.size(); ++i) {
-				new_verts[found_verts[i]] = vavg;
+			for (int ic = 0; ic < found_verts.size(); ++ic) {
+				new_verts[found_verts[ic]] = vavg;
 			}
 		}
 
