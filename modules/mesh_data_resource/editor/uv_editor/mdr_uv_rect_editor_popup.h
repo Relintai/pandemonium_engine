@@ -26,6 +26,7 @@ SOFTWARE.
 #include "scene/gui/dialogs.h"
 
 class MDRUVRectEditor;
+class MDIEdPlugin;
 
 class MDRUVRectEditorPopup : public ConfirmationDialog {
 	GDCLASS(MDRUVRectEditorPopup, ConfirmationDialog);
@@ -35,6 +36,8 @@ public:
 	void on_cancel_pressed();
 
 	MDRUVRectEditor *get_editor();
+
+	void set_plugin(MDIEdPlugin *plugin);
 
 	MDRUVRectEditorPopup();
 	~MDRUVRectEditorPopup();

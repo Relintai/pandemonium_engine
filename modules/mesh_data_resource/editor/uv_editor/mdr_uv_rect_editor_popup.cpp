@@ -22,6 +22,7 @@ SOFTWARE.
 
 #include "mdr_uv_rect_editor_popup.h"
 
+#include "../mdi_ed_plugin.h"
 #include "mdr_uv_rect_editor.h"
 #include "scene/gui/button.h"
 
@@ -30,6 +31,14 @@ void MDRUVRectEditorPopup::on_ok_pressed() {
 }
 void MDRUVRectEditorPopup::on_cancel_pressed() {
 	_editor->cancel_pressed();
+}
+
+MDRUVRectEditor *MDRUVRectEditorPopup::get_editor() {
+	return _editor;
+}
+
+void MDRUVRectEditorPopup::set_plugin(MDIEdPlugin *plugin) {
+	_editor->set_plugin(plugin);
 }
 
 MDRUVRectEditorPopup::MDRUVRectEditorPopup() {

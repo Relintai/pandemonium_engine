@@ -29,12 +29,13 @@ SOFTWARE.
 class EditorPlugin;
 class MeshDataResource;
 class MeshDataInstance;
+class MDIEdPlugin;
 
 class MDRUVRectEditor : public PanelContainer {
 	GDCLASS(MDRUVRectEditor, PanelContainer);
 
 public:
-	//void set_plugin(EditorPlugin *plugin);
+	void set_plugin(MDIEdPlugin *plugin);
 	void set_mesh_data_resource(Ref<MeshDataResource> a);
 	void set_mesh_data_instance(MeshDataInstance *a);
 	void ok_pressed();

@@ -25,10 +25,11 @@ SOFTWARE.
 #include "editor/editor_plugin.h"
 #include "../../mesh_data_resource.h"
 #include "../../nodes/mesh_data_instance.h"
+#include "../mdi_ed_plugin.h"
 
-//void MDRUVRectEditor::set_plugin(EditorPlugin *plugin) {
+void MDRUVRectEditor::set_plugin(MDIEdPlugin *plugin) {
 	//$ScrollContainer/MarginContainer/RectView.set_plugin(plugin)
-//}
+}
 
 void MDRUVRectEditor::set_mesh_data_resource(Ref<MeshDataResource> a) {
 	//$ScrollContainer/MarginContainer/RectView.set_mesh_data_resource(a)
