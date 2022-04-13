@@ -20,16 +20,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "mdr_uv_rect_view_popup.h"
+#include "mdr_uv_rect_editor_popup.h"
 
-void MDRUVRectViewPopup::on_ok_pressed() {
+void MDRUVRectEditorPopup::on_ok_pressed() {
 	//$UVEditor.ok_pressed()
 }
-void MDRUVRectViewPopup::on_cancel_pressed() {
+void MDRUVRectEditorPopup::on_cancel_pressed() {
 	//$UVEditor.cancel_pressed()
 }
 
-void MDRUVRectViewPopup::_notification(int p_what) {
+void MDRUVRectEditorPopup::_notification(int p_what) {
 	/*
 	func _enter_tree():
 		if !is_connected("confirmed", self, "on_ok_pressed"):
@@ -41,11 +41,11 @@ void MDRUVRectViewPopup::_notification(int p_what) {
 	*/
 }
 
-MDRUVRectViewPopup::MDRUVRectViewPopup() {
+MDRUVRectEditorPopup::MDRUVRectEditorPopup() {
 }
 
-MDRUVRectViewPopup::~MDRUVRectViewPopup() {
+MDRUVRectEditorPopup::~MDRUVRectEditorPopup() {
 }
 
-void MDRUVRectViewPopup::_bind_methods() {
+void MDRUVRectEditorPopup::_bind_methods() {
 }

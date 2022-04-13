@@ -1,5 +1,5 @@
-#ifndef MDR_UV_RECT_VIEW_POPUP_H
-#define MDR_UV_RECT_VIEW_POPUP_H
+#ifndef MDR_UV_RECT_EDITOR_POPUP_H
+#define MDR_UV_RECT_EDITOR_POPUP_H
 
 /*
 Copyright (c) 2019-2022 Péter Magyar
@@ -25,15 +25,15 @@ SOFTWARE.
 
 #include "scene/gui/dialogs.h"
 
-class MDRUVRectViewPopup : public ConfirmationDialog {
-	GDCLASS(MDRUVRectViewPopup, ConfirmationDialog);
+class MDRUVRectEditorPopup : public ConfirmationDialog {
+	GDCLASS(MDRUVRectEditorPopup, ConfirmationDialog);
 
 public:
 	void on_ok_pressed();
 	void on_cancel_pressed();
 
-	MDRUVRectViewPopup();
-	~MDRUVRectViewPopup();
+	MDRUVRectEditorPopup();
+	~MDRUVRectEditorPopup();
 
 protected:
 	void _notification(int p_what);
