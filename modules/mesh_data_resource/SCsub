@@ -34,7 +34,7 @@ if 'TOOLS_ENABLED' in env["CPPDEFINES"]:
     module_env.add_source_files(env.modules_sources,"editor/uv_editor/mdi_ed_uv_previewer.cpp")
     module_env.add_source_files(env.modules_sources,"editor/uv_editor/mdr_uv_rect_editor.cpp")
     module_env.add_source_files(env.modules_sources,"editor/uv_editor/mdr_uv_rect_view_node.cpp")
-    module_env.add_source_files(env.modules_sources,"editor/uv_editor/mdr_uv_rect_view_popup.cpp")
+    module_env.add_source_files(env.modules_sources,"editor/uv_editor/mdr_uv_rect_editor_popup.cpp")
     module_env.add_source_files(env.modules_sources,"editor/uv_editor/mdr_uv_rect_view.cpp")
 
     module_env.add_source_files(env.modules_sources,"editor/mdi_ed_plugin.cpp")
