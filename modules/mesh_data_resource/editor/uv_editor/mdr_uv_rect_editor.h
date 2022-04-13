@@ -30,6 +30,8 @@ class EditorPlugin;
 class MeshDataResource;
 class MeshDataInstance;
 class MDIEdPlugin;
+class MDRUVRectView;
+class Button;
 
 class MDRUVRectEditor : public PanelContainer {
 	GDCLASS(MDRUVRectEditor, PanelContainer);
@@ -44,7 +46,15 @@ public:
 	MDRUVRectEditor();
 	~MDRUVRectEditor();
 
+	MDRUVRectView *uv_rect_view;
+
+	Button *horizontal_mirror_button;
+	Button *vertical_mirror_button;
+	Button *rotate_left_button;
+	Button *rotate_right_button;
+
 protected:
+	void _notification(int p_what);
 	static void _bind_methods();
 };
 

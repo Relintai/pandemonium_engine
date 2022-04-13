@@ -260,6 +260,17 @@ void MDRUVRectView::apply_zoom() {
 	}
 }
 
+void MDRUVRectView::_notification(int p_what) {
+	switch (p_what) {
+		case NOTIFICATION_POSTINITIALIZE: {
+			connect("visibility_changed", this, "on_visibility_changed");
+		} break;
+		case NOTIFICATION_DRAW: {
+			_draw();
+		} break;
+	}
+}
+
 MDRUVRectView::MDRUVRectView() {
 	_rect_scale = 1;
 
@@ -271,38 +282,6 @@ MDRUVRectView::MDRUVRectView() {
 	selected_rect = nullptr;
 
 	rotation_amount = 45;
-
-	/*	var zoom_widget : Node = get_node_or_null(zoom_widget_path)
-
-	if zoom_widget && !zoom_widget.is_connected("zoom_changed", self, "on_zoom_changed"):
-		zoom_widget.connect("zoom_changed", self, "on_zoom_changed")
-
-	var mirror_horizontal_button : Button = get_node_or_null(mirror_horizontal_button_path)
-	if mirror_horizontal_button && !mirror_horizontal_button.is_connected("pressed", self, "on_mirror_horizontal_button_pressed"):
-		mirror_horizontal_button.connect("pressed", self, "on_mirror_horizontal_button_pressed")
-
-	var mirror_vertical_button : Button = get_node_or_null(mirror_vertical_button_path)
-	if mirror_vertical_button && !mirror_vertical_button.is_connected("pressed", self, "on_mirror_vertical_button_pressed"):
-		mirror_vertical_button.connect("pressed", self, "on_mirror_vertical_button_pressed")
-
-	var rotate_left_button : Button = get_node_or_null(rotate_left_button_path)
-	if rotate_left_button && !rotate_left_button.is_connected("pressed", self, "on_rotate_left_button_button_pressed"):
-		rotate_left_button.connect("pressed", self, "on_rotate_left_button_button_pressed")
-
-	var rotate_amount_spinbox : SpinBox = get_node_or_null(rotate_amount_spinbox_path)
-	if rotate_amount_spinbox:
-		rotation_amount = rotate_amount_spinbox.value
-		if !rotate_amount_spinbox.is_connected("value_changed", self, "on_rotate_amount_spinbox_changed"):
-			rotate_amount_spinbox.connect("value_changed", self, "on_rotate_amount_spinbox_changed")
-
-	var rotate_right_button : Button = get_node_or_null(rotate_right_button_path)
-	if rotate_right_button && !rotate_right_button.is_connected("pressed", self, "on_rotate_right_button_button_pressed"):
-		rotate_right_button.connect("pressed", self, "on_rotate_right_button_button_pressed")
-
-	if !is_connected("visibility_changed", self, "on_visibility_changed"):
-		connect("visibility_changed", self, "on_visibility_changed")
-
-*/
 }
 
 MDRUVRectView::~MDRUVRectView() {
@@ -310,4 +289,21 @@ MDRUVRectView::~MDRUVRectView() {
 
 void MDRUVRectView::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("refresh"), &MDRUVRectView::refresh);
+
+	ClassDB::bind_method(D_METHOD("apply_uvs"), &MDRUVRectView::apply_uvs);
+
+	ClassDB::bind_method(D_METHOD("on_mirror_horizontal_button_pressed"), &MDRUVRectView::on_mirror_horizontal_button_pressed);
+	ClassDB::bind_method(D_METHOD("on_mirror_vertical_button_pressed"), &MDRUVRectView::on_mirror_vertical_button_pressed);
+	ClassDB::bind_method(D_METHOD("on_rotate_left_button_button_pressed"), &MDRUVRectView::on_rotate_left_button_button_pressed);
+
+	ClassDB::bind_method(D_METHOD("on_rotate_amount_spinbox_changed"), &MDRUVRectView::on_rotate_amount_spinbox_changed);
+	ClassDB::bind_method(D_METHOD("on_rotate_right_button_button_pressed"), &MDRUVRectView::on_rotate_right_button_button_pressed);
+	ClassDB::bind_method(D_METHOD("on_edited_resource_changed"), &MDRUVRectView::on_edited_resource_changed);
+
+	ClassDB::bind_method(D_METHOD("on_zoom_changed", "zoom"), &MDRUVRectView::on_zoom_changed);
+
+	ClassDB::bind_method(D_METHOD("on_visibility_changed"), &MDRUVRectView::on_visibility_changed);
+
+	ClassDB::bind_method(D_METHOD("ok_pressed"), &MDRUVRectView::ok_pressed);
+	ClassDB::bind_method(D_METHOD("cancel_pressed"), &MDRUVRectView::cancel_pressed);
 }

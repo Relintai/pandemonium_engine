@@ -22,158 +22,112 @@ SOFTWARE.
 
 #include "mdr_uv_rect_editor.h"
 
-#include "editor/editor_plugin.h"
 #include "../../mesh_data_resource.h"
 #include "../../nodes/mesh_data_instance.h"
 #include "../mdi_ed_plugin.h"
+#include "editor/editor_plugin.h"
+#include "editor/editor_zoom_widget.h"
+#include "mdr_uv_rect_view.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/button.h"
+#include "scene/gui/margin_container.h"
+#include "scene/gui/scroll_container.h"
+#include "scene/gui/separator.h"
+#include "scene/gui/spin_box.h"
 
 void MDRUVRectEditor::set_plugin(MDIEdPlugin *plugin) {
-	//$ScrollContainer/MarginContainer/RectView.set_plugin(plugin)
+	uv_rect_view->set_plugin(plugin);
 }
 
 void MDRUVRectEditor::set_mesh_data_resource(Ref<MeshDataResource> a) {
-	//$ScrollContainer/MarginContainer/RectView.set_mesh_data_resource(a)
+	uv_rect_view->set_mesh_data_resource(a);
 }
 void MDRUVRectEditor::set_mesh_data_instance(MeshDataInstance *a) {
-	//$ScrollContainer/MarginContainer/RectView.set_mesh_data_instance(a)
+	uv_rect_view->set_mesh_data_instance(a);
 }
 void MDRUVRectEditor::ok_pressed() {
-	//$ScrollContainer/MarginContainer/RectView.ok_pressed()
+	uv_rect_view->ok_pressed();
 }
 void MDRUVRectEditor::cancel_pressed() {
-	//$ScrollContainer/MarginContainer/RectView.cancel_pressed()
+	uv_rect_view->cancel_pressed();
 }
 
 MDRUVRectEditor::MDRUVRectEditor() {
-	/*
+	// -- Main ScrollContainer
+	ScrollContainer *main_scroll_container = memnew(ScrollContainer);
+	add_child(main_scroll_container);
 
-[gd_scene load_steps=8 format=2]
+	MarginContainer *main_margin_container = memnew(MarginContainer);
+	main_margin_container->set_size(Size2(700, 700));
+	main_scroll_container->add_child(main_margin_container);
 
-[ext_resource path="res://addons/mesh_data_resource_editor/uv_editor/RectEditor.gd" type="Script" id=1]
-[ext_resource path="res://addons/mesh_data_resource_editor/widgets/EditorZoomWidget.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/mesh_data_resource_editor/uv_editor/RectView.gd" type="Script" id=3]
-[ext_resource path="res://addons/mesh_data_resource_editor/icons/icon_v_mirror.png" type="Texture" id=4]
-[ext_resource path="res://addons/mesh_data_resource_editor/icons/icon_h_mirror.png" type="Texture" id=5]
-[ext_resource path="res://addons/mesh_data_resource_editor/icons/icon_rot_right.png" type="Texture" id=6]
-[ext_resource path="res://addons/mesh_data_resource_editor/icons/icon_rot_left.png" type="Texture" id=7]
+	uv_rect_view = memnew(MDRUVRectView);
+	main_margin_container->set_custom_minimum_size(Size2(600, 600));
+	main_margin_container->add_child(uv_rect_view);
 
-[node name="UVEditor" type="PanelContainer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+	// -- Main Buttons
+	VBoxContainer *main_control_container = memnew(VBoxContainer);
+	main_control_container->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
+	main_control_container->set_h_size_flags(SIZE_EXPAND_FILL);
+	main_control_container->set_v_size_flags(SIZE_EXPAND_FILL);
+	add_child(main_control_container);
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 1017.0
-margin_bottom = 593.0
+	HBoxContainer *control_container = memnew(HBoxContainer);
+	control_container->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
+	control_container->set_h_size_flags(SIZE_EXPAND_FILL);
+	main_control_container->add_child(control_container);
 
-[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer"]
-margin_right = 700.0
-margin_bottom = 700.0
-custom_constants/margin_right = 50
-custom_constants/margin_top = 50
-custom_constants/margin_left = 50
-custom_constants/margin_bottom = 50
+	EditorZoomWidget *ezw = memnew(EditorZoomWidget);
+	ezw->connect("zoom_changed", uv_rect_view, "on_zoom_changed");
+	control_container->add_child(ezw);
 
-[node name="RectView" type="Control" parent="ScrollContainer/MarginContainer"]
-margin_left = 50.0
-margin_top = 50.0
-margin_right = 650.0
-margin_bottom = 650.0
-rect_min_size = Vector2( 600, 600 )
-script = ExtResource( 3 )
-zoom_widget_path = NodePath("../../../Control/HBoxContainer/EditorZoomWidget")
-mirror_horizontal_button_path = NodePath("../../../Control/HBoxContainer/HorizontalMirror")
-mirror_vertical_button_path = NodePath("../../../Control/HBoxContainer/VerticalMirror")
-rotate_left_button_path = NodePath("../../../Control/HBoxContainer/RotLeft")
-rotate_amount_spinbox_path = NodePath("../../../Control/HBoxContainer/SpinBox")
-rotate_right_button_path = NodePath("../../../Control/HBoxContainer/RotRight")
+	control_container->add_child(memnew(VSeparator));
 
-[node name="Control" type="VBoxContainer" parent="."]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 1017.0
-margin_bottom = 593.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+	horizontal_mirror_button = memnew(Button);
+	horizontal_mirror_button->set_tooltip("Mirror the selected island horizontally.");
+	horizontal_mirror_button->connect("pressed", uv_rect_view, "on_mirror_horizontal_button_pressed");
+	control_container->add_child(horizontal_mirror_button);
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
-margin_right = 1010.0
-margin_bottom = 24.0
-mouse_filter = 2
-size_flags_horizontal = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
+	vertical_mirror_button = memnew(Button);
+	vertical_mirror_button->set_tooltip("Mirror the selected island vertically.");
+	vertical_mirror_button->connect("pressed", uv_rect_view, "on_mirror_vertical_button_pressed");
+	control_container->add_child(vertical_mirror_button);
 
-[node name="EditorZoomWidget" parent="Control/HBoxContainer" instance=ExtResource( 2 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 115.0
-margin_bottom = 24.0
-custom_constants/separation = -8
-__meta__ = {
-"_edit_use_anchors_": false
-}
+	control_container->add_child(memnew(VSeparator));
 
-[node name="VSeparator2" type="VSeparator" parent="Control/HBoxContainer"]
-margin_left = 119.0
-margin_right = 123.0
-margin_bottom = 24.0
+	rotate_left_button = memnew(Button);
+	rotate_left_button->set_tooltip("Rotate left.");
+	rotate_left_button->connect("pressed", uv_rect_view, "on_rotate_left_button_button_pressed");
+	control_container->add_child(rotate_left_button);
 
-[node name="HorizontalMirror" type="Button" parent="Control/HBoxContainer"]
-margin_left = 127.0
-margin_right = 155.0
-margin_bottom = 24.0
-hint_tooltip = "Mirror the selected island horizontally.."
-icon = ExtResource( 5 )
+	SpinBox *sb = memnew(SpinBox);
+	sb->set_tooltip("Rotate amount in degrees.");
+	sb->set_value(45);
+	sb->set_max(360);
+	sb->set_allow_lesser(true);
+	sb->set_allow_greater(true);
+	sb->connect("value_changed", uv_rect_view, "on_rotate_amount_spinbox_changed");
+	control_container->add_child(sb);
 
-[node name="VerticalMirror" type="Button" parent="Control/HBoxContainer"]
-margin_left = 159.0
-margin_right = 187.0
-margin_bottom = 24.0
-hint_tooltip = "Mirror the selected island vertically."
-icon = ExtResource( 4 )
-
-[node name="VSeparator" type="VSeparator" parent="Control/HBoxContainer"]
-margin_left = 191.0
-margin_right = 195.0
-margin_bottom = 24.0
-
-[node name="RotLeft" type="Button" parent="Control/HBoxContainer"]
-margin_left = 199.0
-margin_right = 227.0
-margin_bottom = 24.0
-hint_tooltip = "Rotate left."
-icon = ExtResource( 7 )
-
-[node name="SpinBox" type="SpinBox" parent="Control/HBoxContainer"]
-margin_left = 231.0
-margin_right = 305.0
-margin_bottom = 24.0
-hint_tooltip = "Rotate amount in degrees."
-max_value = 360.0
-value = 45.0
-allow_greater = true
-allow_lesser = true
-
-[node name="RotRight" type="Button" parent="Control/HBoxContainer"]
-margin_left = 309.0
-margin_right = 337.0
-margin_bottom = 24.0
-hint_tooltip = "Rotate right."
-icon = ExtResource( 6 )
-
-
-	*/
+	rotate_right_button = memnew(Button);
+	rotate_right_button->set_tooltip("Rotate right.");
+	rotate_right_button->connect("pressed", uv_rect_view, "on_rotate_right_button_button_pressed");
+	control_container->add_child(rotate_right_button);
 }
 
 MDRUVRectEditor::~MDRUVRectEditor() {
+}
+
+void MDRUVRectEditor::_notification(int p_what) {
+	switch (p_what) {
+		case NOTIFICATION_ENTER_TREE:
+		case NOTIFICATION_THEME_CHANGED: {
+			horizontal_mirror_button->set_icon(get_icon("MirrorX", "EditorIcons"));
+			vertical_mirror_button->set_icon(get_icon("MirrorY", "EditorIcons"));
+			rotate_left_button->set_icon(get_icon("RotateLeft", "EditorIcons"));
+			rotate_right_button->set_icon(get_icon("RotateRight", "EditorIcons"));
+		} break;
+	}
 }
 
 void MDRUVRectEditor::_bind_methods() {
