@@ -102,6 +102,12 @@ void MDREdUVPreviewer::_draw() {
 	}
 }
 
+void MDREdUVPreviewer::_notification(int p_what) {
+	if (p_what == NOTIFICATION_DRAW) {
+		_draw();
+	}
+}
+
 MDREdUVPreviewer::MDREdUVPreviewer() {
 }
 

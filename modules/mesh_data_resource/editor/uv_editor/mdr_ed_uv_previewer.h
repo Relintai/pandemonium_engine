@@ -44,6 +44,7 @@ public:
 	~MDREdUVPreviewer();
 
 protected:
+	void _notification(int p_what);
 	static void _bind_methods();
 
 	Ref<MeshDataResource> mesh_data_resource;
