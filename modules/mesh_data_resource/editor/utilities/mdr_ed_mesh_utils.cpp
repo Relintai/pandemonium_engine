@@ -1774,6 +1774,7 @@ void MDREDMeshUtils::apply_seam(Ref<MeshDataResource> mdr) {
 						find_neighbour_for_edge = neighbour_tri.get_other_side_index(find_neighbour_for_edge);
 
 						neighbour_tri.processed = true;
+						triangles.write[ntriindx].processed = true;
 						tri_found = true;
 						collected_triangles.push_back(neighbour_tri);
 
@@ -1799,7 +1800,7 @@ void MDREDMeshUtils::apply_seam(Ref<MeshDataResource> mdr) {
 			duplicate_verts_indices.push_back(tris[0].orig_index);
 
 			for (int triindx = 0; triindx < tris.size(); ++triindx) {
-				const SeamTriangleHelper &tri = tris[i];
+				const SeamTriangleHelper &tri = tris[triindx];
 
 				new_indices_write[tri.index_index] = new_vert_size;
 			}
