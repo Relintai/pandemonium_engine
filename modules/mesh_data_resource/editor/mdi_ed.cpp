@@ -268,7 +268,7 @@ void MDIEd::on_generate_tangents_pressed() {
 }
 
 void MDIEd::on_remove_doubles_pressed() {
-	_plugin->generate_tangents();
+	_plugin->remove_doubles();
 }
 void MDIEd::on_merge_optimize_pressed() {
 	_plugin->merge_optimize();
