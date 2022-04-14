@@ -39,7 +39,7 @@ void MDRUVRectEditor::set_plugin(MDIEdPlugin *plugin) {
 	uv_rect_view->set_plugin(plugin);
 }
 
-void MDRUVRectEditor::set_mesh_data_resource(Ref<MeshDataResource> a) {
+void MDRUVRectEditor::set_mesh_data_resource(const Ref<MeshDataResource> &a) {
 	uv_rect_view->set_mesh_data_resource(a);
 }
 void MDRUVRectEditor::set_mesh_data_instance(MeshDataInstance *a) {

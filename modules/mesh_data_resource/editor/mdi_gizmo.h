@@ -84,7 +84,7 @@ public:
 	void select_all();
 
 	bool selection_click(int index, Camera *camera, const Ref<InputEventMouse> &event);
-	bool is_point_visible(Vector3 point_orig, Vector3 camera_pos, Transform gt);
+	bool is_point_visible(const Vector3 &point_orig, const Vector3 &camera_pos, const Transform &gt);
 
 	bool selection_click_select_front_or_back(int index, Camera *camera, const Ref<InputEventMouse> &event);
 	bool selection_click_select_through(int index, Camera *camera, const Ref<InputEventMouse> &event);
@@ -92,20 +92,20 @@ public:
 	void selection_drag_rect_select_front_back(int index, Camera *camera, const Ref<InputEventMouse> &event);
 	void selection_drag_rect_select_through(int index, Camera *camera, const Ref<InputEventMouse> &event);
 	bool forward_spatial_gui_input(int index, Camera *camera, const Ref<InputEvent> &event);
-	void add_to_all_selected(Vector3 ofs);
+	void add_to_all_selected(const Vector3 &ofs);
 
-	void mul_all_selected_with_basis(Basis b);
-	void mul_all_selected_with_transform(Transform t);
-	void mul_all_selected_with_transform_acc(Transform t);
+	void mul_all_selected_with_basis(const Basis &b);
+	void mul_all_selected_with_transform(const Transform &t);
+	void mul_all_selected_with_transform_acc(const Transform &t);
 
 	void set_translate();
 	void set_scale();
 	void set_rotate();
-	void set_edit_mode(int em);
+	void set_edit_mode(const int em);
 
-	void set_axis_x(bool on);
-	void set_axis_y(bool on);
-	void set_axis_z(bool on);
+	void set_axis_x(const bool on);
+	void set_axis_y(const bool on);
+	void set_axis_z(const bool on);
 
 	void set_selection_mode_vertex();
 	void set_selection_mode_edge();
@@ -115,18 +115,18 @@ public:
 	void on_mesh_data_resource_changed(Ref<MeshDataResource> mdr);
 	void on_mdr_changed();
 	void disable_change_event();
-	void enable_change_event(bool update = true);
+	void enable_change_event(const bool update = true);
 	void add_triangle();
 	void add_quad();
 
-	bool is_verts_equal(Vector3 v0, Vector3 v1);
-	Vector3 find_other_vertex_for_edge(int edge, Vector3 v0);
-	Vector<PoolIntArray> split_edge_indices(int edge);
-	bool pool_int_arr_contains(PoolIntArray arr, int val);
-	PoolIntArray find_triangles_for_edge(int edge);
-	int find_first_triangle_for_edge(int edge);
-	void add_triangle_to_edge(int edge);
-	void add_quad_to_edge(int edge);
+	bool is_verts_equal(const Vector3 &v0, const Vector3 &v1);
+	Vector3 find_other_vertex_for_edge(const int edge, const Vector3 &v0);
+	Vector<PoolIntArray> split_edge_indices(const int edge);
+	bool pool_int_arr_contains(const PoolIntArray &arr, const int val);
+	PoolIntArray find_triangles_for_edge(const int edge);
+	int find_first_triangle_for_edge(const int edge);
+	void add_triangle_to_edge(const int edge);
+	void add_quad_to_edge(const int edge);
 	void add_triangle_at();
 	void add_quad_at();
 
@@ -134,12 +134,12 @@ public:
 	void add_box();
 	void split();
 	void disconnect_action();
-	int get_first_triangle_index_for_vertex(int indx);
+	int get_first_triangle_index_for_vertex(const int indx);
 
 	void create_face();
 
-	Vector<PoolIntArray> split_face_indices(int face);
-	int find_first_triangle_index_for_face(int face);
+	Vector<PoolIntArray> split_face_indices(const int face);
+	int find_first_triangle_index_for_face(const int face);
 
 	void delete_selected();
 	void generate_normals();
@@ -151,8 +151,8 @@ public:
 	void connect_to_avg();
 	void connect_to_last_selected();
 
-	PoolIntArray get_first_index_pair_for_edge(int edge);
-	PoolIntArray get_all_index_pairs_for_edge(int edge);
+	PoolIntArray get_first_index_pair_for_edge(const int edge);
+	PoolIntArray get_all_index_pairs_for_edge(const int edge);
 
 	void mark_seam();
 	void unmark_seam();
@@ -164,20 +164,20 @@ public:
 	void uv_unwrap();
 	void flip_selected_faces();
 
-	void add_mesh_change_undo_redo(Array orig_arr, Array new_arr, String action_name);
-	void add_mesh_seam_change_undo_redo(Array orig_arr, PoolIntArray orig_seams, Array new_arr, PoolIntArray new_seams, String action_name);
+	void add_mesh_change_undo_redo(const Array &orig_arr, const Array &new_arr, const String &action_name);
+	void add_mesh_seam_change_undo_redo(const Array &orig_arr, const PoolIntArray &orig_seams, const Array &new_arr, const PoolIntArray &new_seams, const String &action_name);
 
-	void apply_mesh_change(Ref<MeshDataResource> mdr, Array arr);
-	void apply_vertex_array(Ref<MeshDataResource> mdr, PoolVector3Array verts);
+	void apply_mesh_change(Ref<MeshDataResource> mdr, const Array &arr);
+	void apply_vertex_array(Ref<MeshDataResource> mdr, const PoolVector3Array &verts);
 
-	Array copy_arrays(Array arr);
-	PoolIntArray copy_pool_int_array(PoolIntArray pia);
+	Array copy_arrays(const Array &arr);
+	PoolIntArray copy_pool_int_array(const PoolIntArray &pia);
 	PoolVector3Array copy_mdr_verts_array();
 
 	void setup_op_drag_indices();
 	Vector3 get_drag_op_pivot();
 
-	void select_handle_points(PoolVector3Array points);
+	void select_handle_points(const PoolVector3Array &points);
 
 	void set_pivot_averaged();
 	void set_pivot_mdi_origin();
@@ -185,9 +185,9 @@ public:
 
 	void transfer_state_from(const Ref<MDIGizmo> &other);
 
-	void visual_indicator_outline_set(bool on);
-	void visual_indicator_seam_set(bool on);
-	void visual_indicator_handle_set(bool on);
+	void visual_indicator_outline_set(const bool on);
+	void visual_indicator_seam_set(const bool on);
+	void visual_indicator_handle_set(const bool on);
 
 	void handle_selection_type_front();
 	void handle_selection_type_back();

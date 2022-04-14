@@ -43,13 +43,13 @@ class MDRUVRectView : public Control {
 
 public:
 	void set_plugin(EditorPlugin *plugin);
-	void set_mesh_data_resource(Ref<MeshDataResource> a);
+	void set_mesh_data_resource(const Ref<MeshDataResource> &a);
 	void set_mesh_data_instance(MeshDataInstance *a);
 	void set_selected(MDRUVRectViewNode *node);
 
 	void store_uvs();
-	PoolVector2Array get_uvs(Ref<MeshDataResource> mdr);
-	void apply_uvs(Ref<MeshDataResource> mdr, PoolVector2Array stored_uvs);
+	PoolVector2Array get_uvs(const Ref<MeshDataResource> &mdr);
+	void apply_uvs(Ref<MeshDataResource> mdr, const PoolVector2Array &stored_uvs);
 
 	void refresh();
 	void clear();

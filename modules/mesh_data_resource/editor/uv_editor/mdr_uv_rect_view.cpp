@@ -34,7 +34,7 @@ void MDRUVRectView::set_plugin(EditorPlugin *plugin) {
 
 	_undo_redo = EditorNode::get_undo_redo();
 }
-void MDRUVRectView::set_mesh_data_resource(Ref<MeshDataResource> a) {
+void MDRUVRectView::set_mesh_data_resource(const Ref<MeshDataResource> &a) {
 	_mdr = a;
 }
 void MDRUVRectView::set_mesh_data_instance(MeshDataInstance *a) {
@@ -76,7 +76,7 @@ void MDRUVRectView::store_uvs() {
 	// Make sure it gets copied
 	_stored_uvs.append_array(arrays[ArrayMesh::ARRAY_TEX_UV]);
 }
-PoolVector2Array MDRUVRectView::get_uvs(Ref<MeshDataResource> mdr) {
+PoolVector2Array MDRUVRectView::get_uvs(const Ref<MeshDataResource> &mdr) {
 	if (!_mdr.is_valid()) {
 		return PoolVector2Array();
 	}
@@ -93,7 +93,7 @@ PoolVector2Array MDRUVRectView::get_uvs(Ref<MeshDataResource> mdr) {
 
 	return arrays[ArrayMesh::ARRAY_TEX_UV];
 }
-void MDRUVRectView::apply_uvs(Ref<MeshDataResource> mdr, PoolVector2Array stored_uvs) {
+void MDRUVRectView::apply_uvs(Ref<MeshDataResource> mdr, const PoolVector2Array &stored_uvs) {
 	if (!_mdr.is_valid()) {
 		return;
 	}

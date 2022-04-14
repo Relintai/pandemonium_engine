@@ -35,7 +35,7 @@ class MDREdUVPreviewer : public Control {
 	GDCLASS(MDREdUVPreviewer, Control);
 
 public:
-	void set_mesh_data_resource(Ref<MeshDataResource> a);
+	void set_mesh_data_resource(const Ref<MeshDataResource> &a);
 	void set_mesh_data_instance(MeshDataInstance *a);
 	void on_mdr_changed();
 	void _draw();

@@ -239,7 +239,7 @@ bool MDIGizmo::selection_click(int index, Camera *camera, const Ref<InputEventMo
 
 	return false;
 }
-bool MDIGizmo::is_point_visible(Vector3 point_orig, Vector3 camera_pos, Transform gt) {
+bool MDIGizmo::is_point_visible(const Vector3 &point_orig, const Vector3 &camera_pos, const Transform &gt) {
 	Vector3 point = gt.xform(point_orig);
 
 	// go from the given point to the origin (camera_pos -> camera)
@@ -638,7 +638,7 @@ bool MDIGizmo::forward_spatial_gui_input(int index, Camera *camera, const Ref<In
 
 	return false;
 }
-void MDIGizmo::add_to_all_selected(Vector3 ofs) {
+void MDIGizmo::add_to_all_selected(const Vector3 &ofs) {
 	for (int i = 0; i < _selected_points.size(); ++i) {
 		int indx = _selected_points[i];
 		Vector3 v = _handle_points[indx];
@@ -654,7 +654,7 @@ void MDIGizmo::add_to_all_selected(Vector3 ofs) {
 	}
 }
 
-void MDIGizmo::mul_all_selected_with_basis(Basis b) {
+void MDIGizmo::mul_all_selected_with_basis(const Basis &b) {
 	for (int i = 0; i < _selected_points.size(); ++i) {
 		int indx = _selected_points[i];
 		Vector3 v = _handle_points[indx];
@@ -669,7 +669,7 @@ void MDIGizmo::mul_all_selected_with_basis(Basis b) {
 		_vertices.set(indx, v);
 	}
 }
-void MDIGizmo::mul_all_selected_with_transform(Transform t) {
+void MDIGizmo::mul_all_selected_with_transform(const Transform &t) {
 	for (int i = 0; i < _selected_points.size(); ++i) {
 		int indx = _selected_points[i];
 		Vector3 v = _handle_points[indx];
@@ -684,7 +684,7 @@ void MDIGizmo::mul_all_selected_with_transform(Transform t) {
 		_vertices.set(indx, v);
 	}
 }
-void MDIGizmo::mul_all_selected_with_transform_acc(Transform t) {
+void MDIGizmo::mul_all_selected_with_transform_acc(const Transform &t) {
 	for (int i = 0; i < _selected_points.size(); ++i) {
 		int indx = _selected_points[i];
 		Vector3 v = _handle_points[indx];
@@ -890,10 +890,10 @@ void MDIGizmo::add_quad() {
 	}
 }
 
-bool MDIGizmo::is_verts_equal(Vector3 v0, Vector3 v1) {
+bool MDIGizmo::is_verts_equal(const Vector3 &v0, const Vector3 &v1) {
 	return Math::is_equal_approx(v0.x, v1.x) && Math::is_equal_approx(v0.y, v1.y) && Math::is_equal_approx(v0.z, v1.z);
 }
-Vector3 MDIGizmo::find_other_vertex_for_edge(int edge, Vector3 v0) {
+Vector3 MDIGizmo::find_other_vertex_for_edge(const int edge, const Vector3 &v0) {
 	PoolIntArray ps = _handle_to_vertex_map[edge];
 
 	Vector3 vert;
@@ -908,7 +908,7 @@ Vector3 MDIGizmo::find_other_vertex_for_edge(int edge, Vector3 v0) {
 
 	return v0;
 }
-Vector<PoolIntArray> MDIGizmo::split_edge_indices(int edge) {
+Vector<PoolIntArray> MDIGizmo::split_edge_indices(const int edge) {
 	PoolIntArray ps = _handle_to_vertex_map[edge];
 
 	if (ps.size() == 0) {
@@ -937,7 +937,7 @@ Vector<PoolIntArray> MDIGizmo::split_edge_indices(int edge) {
 
 	return arr;
 }
-bool MDIGizmo::pool_int_arr_contains(PoolIntArray arr, int val) {
+bool MDIGizmo::pool_int_arr_contains(const PoolIntArray &arr, const int val) {
 	PoolIntArray::Read r = arr.read();
 
 	for (int i = 0; i < arr.size(); ++i) {
@@ -1982,14 +1982,14 @@ void MDIGizmo::flip_selected_faces() {
 	}
 }
 
-void MDIGizmo::add_mesh_change_undo_redo(Array orig_arr, Array new_arr, String action_name) {
+void MDIGizmo::add_mesh_change_undo_redo(const Array &orig_arr, const Array &new_arr, const String &action_name) {
 	_undo_redo->create_action(action_name);
 	Array nac = copy_arrays(new_arr);
 	_undo_redo->add_do_method(this, "apply_mesh_change", _mdr, nac);
 	_undo_redo->add_undo_method(this, "apply_mesh_change", _mdr, orig_arr);
 	_undo_redo->commit_action();
 }
-void MDIGizmo::add_mesh_seam_change_undo_redo(Array orig_arr, PoolIntArray orig_seams, Array new_arr, PoolIntArray new_seams, String action_name) {
+void MDIGizmo::add_mesh_seam_change_undo_redo(const Array &orig_arr, const PoolIntArray &orig_seams, const Array &new_arr, const PoolIntArray &new_seams, const String &action_name) {
 	_undo_redo->create_action(action_name);
 	Array nac = copy_arrays(new_arr);
 
@@ -2002,14 +2002,14 @@ void MDIGizmo::add_mesh_seam_change_undo_redo(Array orig_arr, PoolIntArray orig_
 	_undo_redo->commit_action();
 }
 
-void MDIGizmo::apply_mesh_change(Ref<MeshDataResource> mdr, Array arr) {
+void MDIGizmo::apply_mesh_change(Ref<MeshDataResource> mdr, const Array &arr) {
 	if (!mdr.is_valid()) {
 		return;
 	}
 
 	mdr->set_array(copy_arrays(arr));
 }
-void MDIGizmo::apply_vertex_array(Ref<MeshDataResource> mdr, PoolVector3Array verts) {
+void MDIGizmo::apply_vertex_array(Ref<MeshDataResource> mdr, const PoolVector3Array &verts) {
 	if (!mdr.is_valid()) {
 		return;
 	}
@@ -2024,10 +2024,10 @@ void MDIGizmo::apply_vertex_array(Ref<MeshDataResource> mdr, PoolVector3Array ve
 	mdr->set_array(mdr_arr);
 }
 
-Array MDIGizmo::copy_arrays(Array arr) {
+Array MDIGizmo::copy_arrays(const Array &arr) {
 	return arr.duplicate(true);
 }
-PoolIntArray MDIGizmo::copy_pool_int_array(PoolIntArray pia) {
+PoolIntArray MDIGizmo::copy_pool_int_array(const PoolIntArray &pia) {
 	PoolIntArray ret;
 	ret.resize(pia.size());
 
@@ -2107,7 +2107,7 @@ Vector3 MDIGizmo::get_drag_op_pivot() {
 	return Vector3();
 }
 
-void MDIGizmo::select_handle_points(PoolVector3Array points) {
+void MDIGizmo::select_handle_points(const PoolVector3Array &points) {
 	_selected_points.resize(0);
 
 	PoolVector3Array::Read r = points.read();

@@ -45,7 +45,7 @@ public:
 		DRAG_RESIZE_LEFT = 1 << 4
 	};
 
-	void set_edited_resource(Ref<MeshDataResource> mdr, PoolIntArray indices);
+	void set_edited_resource(const Ref<MeshDataResource> &mdr, const PoolIntArray &indices);
 
 	void mirror_horizontal();
 	void mirror_vertical();
@@ -64,7 +64,7 @@ public:
 
 	void _draw();
 	void _gui_input(const Ref<InputEvent> &p_event);
-	int _drag_hit_test(Vector2 pos);
+	int _drag_hit_test(const Vector2 &pos);
 
 	MDRUVRectViewNode();
 	~MDRUVRectViewNode();

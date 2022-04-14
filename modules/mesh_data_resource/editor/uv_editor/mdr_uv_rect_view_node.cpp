@@ -26,7 +26,7 @@ SOFTWARE.
 #include "mdr_uv_rect_view.h"
 #include "scene/resources/mesh.h"
 
-void MDRUVRectViewNode::set_edited_resource(Ref<MeshDataResource> mdr, PoolIntArray indices) {
+void MDRUVRectViewNode::set_edited_resource(const Ref<MeshDataResource> &mdr, const PoolIntArray &indices) {
 	_mdr = mdr;
 	_indices = indices;
 	_uvs.resize(0);
@@ -481,7 +481,7 @@ void MDRUVRectViewNode::_gui_input(const Ref<InputEvent> &p_event) {
 }
 
 //based on / ported from engine/scene/gui/dialogs.h and .cpp
-int MDRUVRectViewNode::_drag_hit_test(Vector2 pos) {
+int MDRUVRectViewNode::_drag_hit_test(const Vector2 &pos) {
 	int drag_type = DragType::DRAG_NONE;
 
 	int scaleborder_size = get_constant("scaleborder_size", "WindowDialog");

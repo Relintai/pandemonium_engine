@@ -26,7 +26,7 @@ SOFTWARE.
 #include "../../nodes/mesh_data_instance.h"
 #include "scene/resources/texture.h"
 
-void MDREdUVPreviewer::set_mesh_data_resource(Ref<MeshDataResource> a) {
+void MDREdUVPreviewer::set_mesh_data_resource(const Ref<MeshDataResource> &a) {
 	if (mesh_data_resource.is_valid()) {
 		mesh_data_resource->disconnect("changed", this, "on_mdr_changed");
 	}

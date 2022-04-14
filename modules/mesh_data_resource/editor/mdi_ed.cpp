@@ -38,7 +38,7 @@ void MDIEd::set_plugin(MDIEdPlugin *plugin) {
 	_plugin = plugin;
 	uv_editor->set_plugin(plugin);
 }
-void MDIEd::set_mesh_data_resource(Ref<MeshDataResource> a) {
+void MDIEd::set_mesh_data_resource(const Ref<MeshDataResource> &a) {
 	uv_preview->set_mesh_data_resource(a);
 	uv_editor->get_editor()->set_mesh_data_resource(a);
 }
@@ -46,7 +46,7 @@ void MDIEd::set_mesh_data_instance(MeshDataInstance *a) {
 	uv_preview->set_mesh_data_instance(a);
 	uv_editor->get_editor()->set_mesh_data_instance(a);
 }
-void MDIEd::_unhandled_key_input(Ref<InputEventKey> event) {
+void MDIEd::_unhandled_key_input(const Ref<InputEventKey> &event) {
 	if (event->is_echo()) {
 		return;
 	}
