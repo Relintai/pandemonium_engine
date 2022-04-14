@@ -63,7 +63,7 @@ void MDRUVRectViewNode::mirror_horizontal() {
 		int index = r[ii];
 		bool found = false;
 
-		PoolIntArray::Read pr = _indices.read();
+		PoolIntArray::Read pr = pia.read();
 
 		for (int i = 0; i < pia.size(); ++i) {
 			if (pr[i] == index) {
@@ -85,6 +85,8 @@ void MDRUVRectViewNode::mirror_horizontal() {
 		_uvs.set(index, uv);
 	}
 
+	r.release();
+
 	apply_uv();
 	update();
 }
@@ -97,7 +99,7 @@ void MDRUVRectViewNode::mirror_vertical() {
 		int index = r[ii];
 		bool found = false;
 
-		PoolIntArray::Read pr = _indices.read();
+		PoolIntArray::Read pr = pia.read();
 
 		for (int i = 0; i < pia.size(); ++i) {
 			if (pr[i] == index) {
@@ -119,6 +121,8 @@ void MDRUVRectViewNode::mirror_vertical() {
 		_uvs.set(index, uv);
 	}
 
+	r.release();
+
 	apply_uv();
 	update();
 }
@@ -133,7 +137,7 @@ void MDRUVRectViewNode::rotate_uvs(float amount) {
 		int index = r[ii];
 		bool found = false;
 
-		PoolIntArray::Read pr = _indices.read();
+		PoolIntArray::Read pr = pia.read();
 
 		for (int i = 0; i < pia.size(); ++i) {
 			if (pr[i] == index) {
@@ -154,6 +158,8 @@ void MDRUVRectViewNode::rotate_uvs(float amount) {
 		uv = t.xform(uv);
 		_uvs.set(index, uv);
 	}
+
+	r.release();
 
 	re_normalize_uvs();
 	apply_uv();
@@ -260,7 +266,7 @@ void MDRUVRectViewNode::re_normalize_uvs() {
 		uv.y -= vmin.y;
 		uv.y /= ymm;
 
-		_uvs[i] = uv;
+		_uvs.set(i, uv);
 	}
 }
 void MDRUVRectViewNode::normalize_uvs() {
@@ -284,7 +290,7 @@ void MDRUVRectViewNode::normalize_uvs() {
 		uv.y -= _uv_min.y;
 		uv.y /= ymm;
 
-		_uvs[i] = uv;
+		_uvs.set(i, uv);
 	}
 }
 void MDRUVRectViewNode::apply_uv() {
@@ -312,14 +318,14 @@ void MDRUVRectViewNode::apply_uv() {
 
 	PoolVector2Array uvs = arrays[ArrayMesh::ARRAY_TEX_UV];
 
-	for (int i = 0; i < _uvs.size(); ++i) {
+	for (int i = 0; i < _indices.size(); ++i) {
 		int index = _indices[i];
 
 		Vector2 uv = _uvs[index];
 
 		uv = uv * rect.size + rect.position;
 
-		uvs[index] = uv;
+		uvs.set(index, uv);
 	}
 
 	_uv_min = rect.position;
