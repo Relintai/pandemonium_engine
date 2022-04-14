@@ -1218,7 +1218,7 @@ void MDIGizmo::extrude() {
 
 			// set back
 			for (int ic = 0; ic < found_verts.size(); ++ic) {
-				new_verts[found_verts[ic]] = vavg;
+				new_verts.set(found_verts[ic], vavg);
 			}
 		}
 

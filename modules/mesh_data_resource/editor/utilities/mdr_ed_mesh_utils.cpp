@@ -1088,23 +1088,23 @@ Array MDREDMeshUtils::generate_normals_arrs(Array arrays) {
 
 		if (nc[i0] == 0) {
 			nc.set(i0, 1);
-			normals[i0] = n;
+			normals.set(i0, n);
 		} else {
-			normals[i0] = normals[i0].linear_interpolate(n, 0.5).normalized();
+			normals.set(i0, normals[i0].linear_interpolate(n, 0.5).normalized());
 		}
 
 		if (nc[i1] == 0) {
 			nc.set(i1, 1);
-			normals[i1] = n;
+			normals.set(i1, n);
 		} else {
-			normals[i1] = normals[i1].linear_interpolate(n, 0.5).normalized();
+			normals.set(i1, normals[i1].linear_interpolate(n, 0.5).normalized());
 		}
 
 		if (nc[i2] == 0) {
 			nc.set(i2, 1);
-			normals[i2] = n;
+			normals.set(i2, n);
 		} else {
-			normals[i2] = normals[i2].linear_interpolate(n, 0.5).normalized();
+			normals.set(i2, normals[i2].linear_interpolate(n, 0.5).normalized());
 		}
 	}
 
@@ -1157,23 +1157,23 @@ void MDREDMeshUtils::generate_normals_mdr(Ref<MeshDataResource> mdr) {
 
 		if (nc[i0] == 0) {
 			nc.set(i0, 1);
-			normals[i0] = n;
+			normals.set(i0, n);
 		} else {
-			normals[i0] = normals[i0].linear_interpolate(n, 0.5).normalized();
+			normals.set(i0, normals[i0].linear_interpolate(n, 0.5).normalized());
 		}
 
 		if (nc[i1] == 0) {
 			nc.set(i1, 1);
-			normals[i1] = n;
+			normals.set(i1, n);
 		} else {
-			normals[i1] = normals[i1].linear_interpolate(n, 0.5).normalized();
+			normals.set(i1, normals[i1].linear_interpolate(n, 0.5).normalized());
 		}
 
 		if (nc[i2] == 0) {
 			nc.set(i2, 1);
-			normals[i2] = n;
+			normals.set(i2, n);
 		} else {
-			normals[i2] = normals[i2].linear_interpolate(n, 0.5).normalized();
+			normals.set(i2, normals[i2].linear_interpolate(n, 0.5).normalized());
 		}
 	}
 
@@ -1873,14 +1873,14 @@ void MDREDMeshUtils::apply_seam_old(Ref<MeshDataResource> mdr) {
 				indices.push_back(new_vert_size);
 				indices.push_back(new_vert_size + 1);
 				indices.push_back(i2);
-			} else if ( edge_int_tri_index == 1) {
+			} else if (edge_int_tri_index == 1) {
 				duplicate_verts_indices.push_back(i1);
 				duplicate_verts_indices.push_back(i2);
 
 				indices.push_back(i0);
 				indices.push_back(new_vert_size);
 				indices.push_back(new_vert_size + 1);
-			} else if ( edge_int_tri_index == 2) {
+			} else if (edge_int_tri_index == 2) {
 				duplicate_verts_indices.push_back(i0);
 				duplicate_verts_indices.push_back(i2);
 
@@ -1947,7 +1947,6 @@ Array MDREDMeshUtils::seam_apply_duplicate_vertices(Array arrays, const PoolIntA
 	if (!arrays[ArrayMesh::ARRAY_WEIGHTS].is_null()) {
 		weights = arrays[ArrayMesh::ARRAY_WEIGHTS];
 	}
-
 
 	PoolIntArray::Read dvir = duplicate_verts_indices.read();
 	for (int i = 0; i < duplicate_verts_indices.size(); ++i) {
