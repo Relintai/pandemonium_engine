@@ -1595,7 +1595,7 @@ void MDIGizmo::connect_to_first_selected() {
 			PoolIntArray ps = _handle_to_vertex_map[_selected_points[i]];
 
 			for (int j = 0; j < ps.size(); ++j) {
-				vertices[ps[j]] = mpos;
+				vertices.set(ps[j], mpos);
 			}
 		}
 
@@ -1648,7 +1648,7 @@ void MDIGizmo::connect_to_avg() {
 			PoolIntArray ps = _handle_to_vertex_map[_selected_points[i]];
 
 			for (int j = 0; j < ps.size(); ++j) {
-				vertices[ps[j]] = mpos;
+				vertices.set(ps[j], mpos);
 			}
 		}
 
@@ -1695,7 +1695,7 @@ void MDIGizmo::connect_to_last_selected() {
 			PoolIntArray ps = _handle_to_vertex_map[_selected_points[i]];
 
 			for (int j = 0; j < ps.size(); ++j) {
-				vertices[ps[j]] = mpos;
+				vertices.set(ps[j], mpos);
 			}
 		}
 
