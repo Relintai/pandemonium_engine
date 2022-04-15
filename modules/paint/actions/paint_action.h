@@ -1,5 +1,5 @@
-#ifndef PAINT_NAVBAR_H
-#define PAINT_NAVBAR_H
+#ifndef PAINT_ACTIONS_H
+#define PAINT_ACTIONS_H
 
 /*
 Copyright (c) 2019 Flairieve
@@ -25,35 +25,40 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "scene/gui/control.h"
+#include "core/reference.h"
 
-class PaintNavbar : public Control {
-	GDCLASS(PaintNavbar, Control);
+#include "core/pool_vector.h"
+#include "core/variant.h"
+#include "core/array.h"
+#include "core/math/vector2i.h"
+
+class PaintCanvas;
+
+//extends Node  (this should probably not be a node)
+//class_name GEAction
+class PaintAction : public Reference {
+	GDCLASS(PaintAction, Reference);
 
 public:
-	void _ready();
-	void button_pressed(String button_name, Node *button_item, int id);
+	virtual void do_action(PaintCanvas *canvas, Array data);
+	virtual void commit_action(PaintCanvas *canvas);
 
-	void handle_file_menu(String pressed_item, int id);
-	void handle_edit_menu(String pressed_item, int id);
-	void handle_canvas_menu(String pressed_item, int id);
-	void handle_layer_menu(String pressed_item, int id);
-	void handle_grid_menu(String pressed_item, int id);
+	virtual void undo_action(PaintCanvas *canvas);
+	virtual void redo_action(PaintCanvas *canvas);
+	virtual bool can_commit();
 
-	void handle_magic_menu(String pressed_item, int id);
-	void handle_editor_menu(String pressed_item, int id);
-	bool is_any_menu_open();
+	virtual Array get_x_sym_points(int canvas_width, Vector2i pixel);
+	virtual Array get_y_sym_points(int canvas_height, Vector2i pixel);
+	virtual Array get_xy_sym_points(int canvas_width, int canvas_height, Vector2i pixel);
+	virtual Array get_points(PaintCanvas *canvas, Vector2i pixel);
 
-	PaintNavbar();
-	~PaintNavbar();
+	PaintAction();
+	~PaintAction();
+
+	//var action_data = {}
 
 protected:
 	static void _bind_methods();
-
-	/*
-	var editor
-	var paint_canvas
-	*/
 };
 
 #endif

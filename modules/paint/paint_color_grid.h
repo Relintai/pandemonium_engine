@@ -25,12 +25,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "scene/gui/control.h"
+#include "scene/gui/grid_container.h"
 
-class PaintColorGrid : public Control {
-	GDCLASS(PaintColorGrid, Control);
+class PaintColorGrid : public GridContainer {
+	GDCLASS(PaintColorGrid, GridContainer);
 
 public:
+	void _enter_tree();
+	void change_color_to(Color color);
+	void add_color_prefab(Color color);
+
 	PaintColorGrid();
 	~PaintColorGrid();
 

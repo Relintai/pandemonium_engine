@@ -24,7 +24,32 @@ SOFTWARE.
 
 #include "paint_selection_box.h"
 
+void PaintSelectionBox::_process(float delta) {
+	/*
+	update()
+	*/
+}
+void PaintSelectionBox::_draw() {
+	/*
+if not rect_size == Vector2():
+		draw_outline_box(rect_size, Color.gray, outline_size)
+	*/
+}
+void PaintSelectionBox::draw_outline_box(Vector2 size, Color color, int width) {
+	/*
+		#Top line
+		draw_line(Vector2(0 + 1, 0), Vector2(size.x, 0), color, width)
+		#Left line
+		draw_line(Vector2(0 + 1, 0), Vector2(0, size.y), color, width)
+		#Bottom line
+		draw_line(Vector2(0 + 1, size.y), Vector2(size.x, size.y), color, width)
+		#Right line
+		draw_line(Vector2(size.x, 0), Vector2(size.x, size.y), color, width)
+	*/
+}
+
 PaintSelectionBox::PaintSelectionBox() {
+	////export var outline_size = 3
 }
 
 PaintSelectionBox::~PaintSelectionBox() {

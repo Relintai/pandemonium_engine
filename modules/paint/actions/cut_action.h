@@ -1,5 +1,5 @@
-#ifndef PAINT_NAVBAR_H
-#define PAINT_NAVBAR_H
+#ifndef CUT_ACTION_H
+#define CUT_ACTION_H
 
 /*
 Copyright (c) 2019 Flairieve
@@ -25,35 +25,31 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "scene/gui/control.h"
+#include "paint_action.h"
 
-class PaintNavbar : public Control {
-	GDCLASS(PaintNavbar, Control);
+class PaintCanvas;
+
+class CutAction : public PaintAction {
+	GDCLASS(CutAction, PaintAction);
 
 public:
-	void _ready();
-	void button_pressed(String button_name, Node *button_item, int id);
+	bool can_commit();
 
-	void handle_file_menu(String pressed_item, int id);
-	void handle_edit_menu(String pressed_item, int id);
-	void handle_canvas_menu(String pressed_item, int id);
-	void handle_layer_menu(String pressed_item, int id);
-	void handle_grid_menu(String pressed_item, int id);
+	void do_action(PaintCanvas *canvas, Array data);
+	void commit_action(PaintCanvas *canvas);
 
-	void handle_magic_menu(String pressed_item, int id);
-	void handle_editor_menu(String pressed_item, int id);
-	bool is_any_menu_open();
+	void undo_action(PaintCanvas *canvas);
+	void redo_action(PaintCanvas *canvas);
 
-	PaintNavbar();
-	~PaintNavbar();
+	CutAction();
+	~CutAction();
+
+	//const selection_color = Color(0.8, 0.8, 0.8, 0.5)
+	//var mouse_start_pos = null
+	//var mouse_end_pos = null
 
 protected:
 	static void _bind_methods();
-
-	/*
-	var editor
-	var paint_canvas
-	*/
 };
 
 #endif

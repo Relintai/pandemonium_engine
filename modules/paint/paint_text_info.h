@@ -31,11 +31,16 @@ class PaintTextInfo : public Control {
 	GDCLASS(PaintTextInfo, Control);
 
 public:
+	void add_text_info(String text_name, Node *custom_node = nullptr);
+	void update_text_info(String text_name, Node *text_value = nullptr, Node *node = nullptr, Node *node_target_value = nullptr, Node *node_value = nullptr);
+
 	PaintTextInfo();
 	~PaintTextInfo();
 
 protected:
 	static void _bind_methods();
+
+	//var size = 240
 };
 
 #endif

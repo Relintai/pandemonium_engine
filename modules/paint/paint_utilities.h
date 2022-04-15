@@ -25,12 +25,30 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "scene/gui/control.h"
+#include "core/object.h"
 
-class PaintUtilities : public Control {
-	GDCLASS(PaintUtilities, Control);
+#include "core/pool_vector.h"
+#include "core/variant.h"
+
+//class_name GEUtils
+class PaintUtilities : public Object {
+	GDCLASS(PaintUtilities, Object);
 
 public:
+	static Array get_pixels_in_line(Vector2 from, Vector2 to);
+
+	static int to_1D_v(Vector2 p, float w);
+	static int to_1D(float x, float y, float w);
+	static Vector2 to_2D(int idx, float w);
+
+	static Color color_from_array(PoolRealArray color_array);
+	static Color random_color();
+	static Color random_color_alt();
+
+	static String get_line_string(String file, int number);
+
+	static void printv(Variant variable);
+
 	PaintUtilities();
 	~PaintUtilities();
 

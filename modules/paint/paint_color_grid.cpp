@@ -24,6 +24,36 @@ SOFTWARE.
 
 #include "paint_color_grid.h"
 
+void PaintColorGrid::_enter_tree() {
+	/*
+	for child in get_children():
+		child.set("custom_styles/normal", StyleBoxFlat.new())
+		child.get("custom_styles/normal").set("bg_color", Color(randf(), randf(), randf()))
+	for child in get_children():
+		if child.is_connected("pressed", self, "change_color_to"):
+			return
+		child.connect("pressed", self, "change_color_to", [child.get("custom_styles/normal").bg_color])
+	*/
+}
+void PaintColorGrid::change_color_to(Color color) {
+	/*
+	emit_signal("color_change_request", color)
+	*/
+}
+void PaintColorGrid::add_color_prefab(Color color) {
+	/*
+	var dup = get_child(0).duplicate()
+	add_child(dup)
+	move_child(dup, 0)
+	dup.set("custom_styles/normal", StyleBoxFlat.new())
+	dup.get("custom_styles/normal").set("bg_color", color)
+	for child in get_children():
+		if child.is_connected("pressed", self, "change_color_to"):
+			return
+		child.connect("pressed", self, "change_color_to", [child.get("custom_styles/normal").bg_color])
+	*/
+}
+
 PaintColorGrid::PaintColorGrid() {
 }
 
@@ -31,4 +61,5 @@ PaintColorGrid::~PaintColorGrid() {
 }
 
 void PaintColorGrid::_bind_methods() {
+	//signal color_change_request
 }

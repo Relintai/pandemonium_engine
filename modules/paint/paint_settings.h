@@ -1,5 +1,5 @@
-#ifndef PAINT_NAVBAR_H
-#define PAINT_NAVBAR_H
+#ifndef PAINT_SETTINGS_H
+#define PAINT_SETTINGS_H
 
 /*
 Copyright (c) 2019 Flairieve
@@ -27,32 +27,28 @@ SOFTWARE.
 
 #include "scene/gui/control.h"
 
-class PaintNavbar : public Control {
-	GDCLASS(PaintNavbar, Control);
+class PaintTextInfo : public Control {
+	GDCLASS(PaintTextInfo, Control);
 
 public:
-	void _ready();
-	void button_pressed(String button_name, Node *button_item, int id);
+	void _enter_tree();
+	void _on_ColorPickerButton_color_changed(Color color);
+	void _on_CheckButton_toggled(bool button_pressed);
+	void _on_Ok_pressed();
 
-	void handle_file_menu(String pressed_item, int id);
-	void handle_edit_menu(String pressed_item, int id);
-	void handle_canvas_menu(String pressed_item, int id);
-	void handle_layer_menu(String pressed_item, int id);
-	void handle_grid_menu(String pressed_item, int id);
-
-	void handle_magic_menu(String pressed_item, int id);
-	void handle_editor_menu(String pressed_item, int id);
-	bool is_any_menu_open();
-
-	PaintNavbar();
-	~PaintNavbar();
+	PaintTextInfo();
+	~PaintTextInfo();
 
 protected:
 	static void _bind_methods();
 
 	/*
+
 	var editor
-	var paint_canvas
+	var canvas_outline
+	var start_time
+	var end_time
+
 	*/
 };
 

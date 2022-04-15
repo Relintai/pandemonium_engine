@@ -1,5 +1,5 @@
-#ifndef PAINT_NAVBAR_H
-#define PAINT_NAVBAR_H
+#ifndef PAINT_CANVAS_LAYER_H
+#define PAINT_CANVAS_LAYER_H
 
 /*
 Copyright (c) 2019 Flairieve
@@ -25,34 +25,44 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "scene/gui/control.h"
+#include "core/reference.h"
 
-class PaintNavbar : public Control {
-	GDCLASS(PaintNavbar, Control);
+class Node;
+
+//class_name GELayer
+class PaintCanvasLayer : public Reference {
+	GDCLASS(PaintCanvasLayer, Reference);
 
 public:
-	void _ready();
-	void button_pressed(String button_name, Node *button_item, int id);
+	void _init();
+	void create(Node *texture_rect_ref, int width, int height);
 
-	void handle_file_menu(String pressed_item, int id);
-	void handle_edit_menu(String pressed_item, int id);
-	void handle_canvas_menu(String pressed_item, int id);
-	void handle_layer_menu(String pressed_item, int id);
-	void handle_grid_menu(String pressed_item, int id);
+	void resize(int width, int height);
+	void set_pixel(int x, int y, Color color);
+	Color get_pixel(int x, int y);
+	void clear();
+	void update_texture();
+	void set_visible(bool vis);
+	void toggle_lock();
+	void toggle_alpha_locked();
 
-	void handle_magic_menu(String pressed_item, int id);
-	void handle_editor_menu(String pressed_item, int id);
-	bool is_any_menu_open();
-
-	PaintNavbar();
-	~PaintNavbar();
+	PaintCanvasLayer();
+	~PaintCanvasLayer();
 
 protected:
 	static void _bind_methods();
 
 	/*
-	var editor
-	var paint_canvas
+	var name
+	var layer_width
+	var layer_height
+	var visible = true setget set_visible
+	var locked = false
+	var alpha_locked = false
+
+	var texture: ImageTexture
+	var image: Image
+	var texture_rect_ref
 	*/
 };
 

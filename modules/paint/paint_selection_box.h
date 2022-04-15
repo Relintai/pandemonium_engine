@@ -31,11 +31,17 @@ class PaintSelectionBox : public Control {
 	GDCLASS(PaintSelectionBox, Control);
 
 public:
+	void _process(float delta);
+	void _draw();
+	void draw_outline_box(Vector2 size, Color color, int width);
+
 	PaintSelectionBox();
 	~PaintSelectionBox();
 
 protected:
 	static void _bind_methods();
+
+	//export var outline_size = 3
 };
 
 #endif

@@ -1,5 +1,5 @@
-#ifndef PAINT_NAVBAR_H
-#define PAINT_NAVBAR_H
+#ifndef PAINT_SAVE_FILE_DIALOG_H
+#define PAINT_SAVE_FILE_DIALOG_H
 
 /*
 Copyright (c) 2019 Flairieve
@@ -25,35 +25,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "scene/gui/control.h"
+#include "scene/gui/file_dialog.h"
 
-class PaintNavbar : public Control {
-	GDCLASS(PaintNavbar, Control);
+class PaintSaveFileDialog : public FileDialog {
+	GDCLASS(PaintSaveFileDialog, FileDialog);
 
 public:
 	void _ready();
-	void button_pressed(String button_name, Node *button_item, int id);
+	void _on_SaveFileDialog_file_selected(String path);
+	void save_file();
+	void _on_SaveFileDialog_about_to_show();
+	void _on_SaveFileDialog_visibility_changed();
 
-	void handle_file_menu(String pressed_item, int id);
-	void handle_edit_menu(String pressed_item, int id);
-	void handle_canvas_menu(String pressed_item, int id);
-	void handle_layer_menu(String pressed_item, int id);
-	void handle_grid_menu(String pressed_item, int id);
-
-	void handle_magic_menu(String pressed_item, int id);
-	void handle_editor_menu(String pressed_item, int id);
-	bool is_any_menu_open();
-
-	PaintNavbar();
-	~PaintNavbar();
+	PaintSaveFileDialog();
+	~PaintSaveFileDialog();
 
 protected:
 	static void _bind_methods();
 
-	/*
-	var editor
-	var paint_canvas
-	*/
+	//var file_path = ""
 };
 
 #endif

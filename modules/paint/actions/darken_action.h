@@ -1,5 +1,5 @@
-#ifndef PAINT_NAVBAR_H
-#define PAINT_NAVBAR_H
+#ifndef DARKEN_ACTION_H
+#define DARKEN_ACTION_H
 
 /*
 Copyright (c) 2019 Flairieve
@@ -25,35 +25,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "scene/gui/control.h"
+#include "paint_action.h"
 
-class PaintNavbar : public Control {
-	GDCLASS(PaintNavbar, Control);
+class PaintCanvas;
+
+class DarkenAction : public PaintAction {
+	GDCLASS(DarkenAction, PaintAction);
 
 public:
-	void _ready();
-	void button_pressed(String button_name, Node *button_item, int id);
+	void do_action(PaintCanvas *canvas, Array data);
+	void commit_action(PaintCanvas *canvas);
 
-	void handle_file_menu(String pressed_item, int id);
-	void handle_edit_menu(String pressed_item, int id);
-	void handle_canvas_menu(String pressed_item, int id);
-	void handle_layer_menu(String pressed_item, int id);
-	void handle_grid_menu(String pressed_item, int id);
+	void undo_action(PaintCanvas *canvas);
+	void redo_action(PaintCanvas *canvas);
 
-	void handle_magic_menu(String pressed_item, int id);
-	void handle_editor_menu(String pressed_item, int id);
-	bool is_any_menu_open();
+	DarkenAction();
+	~DarkenAction();
 
-	PaintNavbar();
-	~PaintNavbar();
+	//const dark_factor = 0.1
 
 protected:
 	static void _bind_methods();
-
-	/*
-	var editor
-	var paint_canvas
-	*/
 };
 
 #endif
