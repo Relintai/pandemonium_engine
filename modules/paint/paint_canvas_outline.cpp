@@ -1,5 +1,7 @@
 /*
-Copyright (c) 2019-2022 Péter Magyar
+Copyright (c) 2019 Flairieve
+Copyright (c) 2020-2022 cobrapitz
+Copyright (c) 2022 Péter Magyar
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,19 +22,39 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "register_types.h"
+#include "paint_canvas_outline.h"
 
+void PaintCanvasOutline::_draw() {
+/*
+	var size = get_parent().rect_size
+	var pos = Vector2.ZERO //get_parent().rect_global_position
+	draw_outline_box(pos, size, color, 1)
+*/
+}
+void PaintCanvasOutline::draw_outline_box(Vector2 pos, Vector2 size, Color color, int width) {
+/*
+		//Top line
+		draw_line(pos, pos + Vector2(size.x, 0), color, width)
+		//Left line
+		draw_line(pos, pos + Vector2(0, size.y), color, width)
+		//Bottom line
+		draw_line(pos + Vector2(0, size.y), pos + Vector2(size.x, size.y), color, width)
+		//Right line
+		draw_line(pos + Vector2(size.x, 0), pos + Vector2(size.x, size.y), color, width)
+*/
+}
+/*
+func _process(delta):
+	if not is_visible_in_tree():
+		return
+	update()
+*/
 
-#ifdef TOOLS_ENABLED
-#endif
-
-void register_paint_types() {
-	//ClassDB::register_class<MeshDataResource>();
-
-#ifdef TOOLS_ENABLED
-	//EditorPlugins::add_by_type<PaintEditorPlugin>();
-#endif
+PaintCanvasOutline::PaintCanvasOutline() {
 }
 
-void unregister_paint_types() {
+PaintCanvasOutline::~PaintCanvasOutline() {
+}
+
+void PaintCanvasOutline::_bind_methods() {
 }

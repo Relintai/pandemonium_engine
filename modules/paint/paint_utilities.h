@@ -1,5 +1,10 @@
+#ifndef PAINT_UTILITIES_H
+#define PAINT_UTILITIES_H
+
 /*
-Copyright (c) 2019-2022 Péter Magyar
+Copyright (c) 2019 Flairieve
+Copyright (c) 2020-2022 cobrapitz
+Copyright (c) 2022 Péter Magyar
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,19 +25,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "register_types.h"
+#include "scene/gui/control.h"
 
+class PaintUtilities : public Control {
+	GDCLASS(PaintUtilities, Control);
 
-#ifdef TOOLS_ENABLED
+public:
+	PaintUtilities();
+	~PaintUtilities();
+
+protected:
+	static void _bind_methods();
+};
+
 #endif
-
-void register_paint_types() {
-	//ClassDB::register_class<MeshDataResource>();
-
-#ifdef TOOLS_ENABLED
-	//EditorPlugins::add_by_type<PaintEditorPlugin>();
-#endif
-}
-
-void unregister_paint_types() {
-}

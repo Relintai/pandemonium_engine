@@ -1,5 +1,10 @@
+#ifndef PAINT_VISUAL_GRID_H
+#define PAINT_VISUAL_GRID_H
+
 /*
-Copyright (c) 2019-2022 Péter Magyar
+Copyright (c) 2019 Flairieve
+Copyright (c) 2020-2022 cobrapitz
+Copyright (c) 2022 Péter Magyar
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,19 +25,34 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "register_types.h"
+#include "scene/gui/control.h"
 
+#include "core/reference.h"
 
-#ifdef TOOLS_ENABLED
+class MeshDataResource;
+class MeshDataInstance;
+class Texture;
+
+class PaintVisualGrid : public Control {
+	GDCLASS(PaintVisualGrid, Control);
+
+public:
+	void _draw();
+
+	PaintVisualGrid();
+	~PaintVisualGrid();
+
+protected:
+	void _notification(int p_what);
+	static void _bind_methods();
+
+	/*
+	export var color = Color()
+	export var size:int = 16
+	export var zoom = 0
+	export var offset = Vector2(0, 0)
+
+	*/
+};
+
 #endif
-
-void register_paint_types() {
-	//ClassDB::register_class<MeshDataResource>();
-
-#ifdef TOOLS_ENABLED
-	//EditorPlugins::add_by_type<PaintEditorPlugin>();
-#endif
-}
-
-void unregister_paint_types() {
-}

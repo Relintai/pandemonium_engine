@@ -1,3 +1,6 @@
+#ifndef PAINT_EDITOR__PLUGIN_H
+#define PAINT_EDITOR__PLUGIN_H
+
 /*
 Copyright (c) 2019-2022 Péter Magyar
 
@@ -20,19 +23,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "register_types.h"
+#include "editor/editor_plugin.h"
 
+class PaintEditorPlugin : public EditorPlugin {
+	GDCLASS(PaintEditorPlugin, EditorPlugin);
 
-#ifdef TOOLS_ENABLED
+public:
+	void make_visible(bool visible);
+	const Ref<Texture> get_icon() const;
+	bool has_main_screen() const;
+	String get_name() const;
+
+	PaintEditorPlugin(EditorNode *p_node);
+	~PaintEditorPlugin();
+
+	EditorNode *editor;
+
+	//var editor_scene = load("res://addons/Godoxel/Editor.tscn").instance()
+
+protected:
+	static void _bind_methods();
+};
+
 #endif
-
-void register_paint_types() {
-	//ClassDB::register_class<MeshDataResource>();
-
-#ifdef TOOLS_ENABLED
-	//EditorPlugins::add_by_type<PaintEditorPlugin>();
-#endif
-}
-
-void unregister_paint_types() {
-}
