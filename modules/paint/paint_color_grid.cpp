@@ -24,37 +24,33 @@ SOFTWARE.
 
 #include "paint_color_grid.h"
 
-void PaintColorGrid::_enter_tree() {
-	/*
-	for child in get_children():
-		child.set("custom_styles/normal", StyleBoxFlat.new())
-		child.get("custom_styles/normal").set("bg_color", Color(randf(), randf(), randf()))
-	for child in get_children():
-		if child.is_connected("pressed", self, "change_color_to"):
-			return
-		child.connect("pressed", self, "change_color_to", [child.get("custom_styles/normal").bg_color])
-	*/
+#include "scene/gui/button.h"
+#include "scene/resources/style_box.h"
+
+void PaintColorGrid::change_color_to(const Color &color) {
+	emit_signal("color_change_request", color);
 }
-void PaintColorGrid::change_color_to(Color color) {
-	/*
-	emit_signal("color_change_request", color)
-	*/
-}
-void PaintColorGrid::add_color_prefab(Color color) {
-	/*
-	var dup = get_child(0).duplicate()
-	add_child(dup)
-	move_child(dup, 0)
-	dup.set("custom_styles/normal", StyleBoxFlat.new())
-	dup.get("custom_styles/normal").set("bg_color", color)
-	for child in get_children():
-		if child.is_connected("pressed", self, "change_color_to"):
-			return
-		child.connect("pressed", self, "change_color_to", [child.get("custom_styles/normal").bg_color])
-	*/
+void PaintColorGrid::add_color_prefab(const Color &color) {
+	Button *button = memnew(Button);
+	add_child(button);
+	move_child(button, 0);
+
+	Ref<StyleBoxFlat> style_box;
+	style_box.instance();
+	style_box->set("bg_color", color);
+
+	button->set("custom_styles/normal", style_box);
+
+	Vector<Variant> binds;
+	binds.push_back(color);
+
+	button->connect("pressed", this, "change_color_to", binds);
 }
 
 PaintColorGrid::PaintColorGrid() {
+	for (int i = 0; i < 24; ++i) {
+		add_color_prefab(Color(Math::randf(), Math::randf(), Math::randf()));
+	}
 }
 
 PaintColorGrid::~PaintColorGrid() {

@@ -25,92 +25,86 @@ SOFTWARE.
 #include "paint_action.h"
 
 void PaintAction::do_action(PaintCanvas *canvas, Array data) {
-	/*
-	if not "cells" in action_data.redo:
-		action_data.redo["cells"] = []
-		action_data.redo["colors"] = []
+	if (!action_data_redo.has("cells")) {
+		action_data_redo["cells"] = Array();
+		action_data_redo["colors"] = Array();
+	}
 
-	if not "cells" in action_data.undo:
-		action_data.undo["cells"] = []
-		action_data.undo["colors"] = []
+	if (!action_data_undo.has("cells")) {
+		action_data_undo["cells"] = Array();
+		action_data_undo["colors"] = Array();
+	}
 
-	if not "cells" in action_data.preview:
-		action_data.preview["cells"] = []
-		action_data.preview["colors"] = []
+	if (!action_data_preview.has("cells")) {
+		action_data_preview["cells"] = Array();
+		action_data_preview["colors"] = Array();
+	}
 
-	if not "layer" in action_data:
-		action_data["layer"] = canvas.active_layer
-	*/
+	if (!action_data.has("layer")) {
+		//action_data["layer"] = canvas->get_active_layer();
+	}
 }
 void PaintAction::commit_action(PaintCanvas *canvas) {
-	/*
-	print("NO IMPL commit_action ")
-	return []
-	*/
+	ERR_PRINT("NO IMPL commit_action");
 }
 
 void PaintAction::undo_action(PaintCanvas *canvas) {
-	/*
-	print("NO IMPL undo_action ")
-	*/
+	ERR_PRINT("NO IMPL undo_action");
 }
 void PaintAction::redo_action(PaintCanvas *canvas) {
-	/*
-	print("NO IMPL redo_action ")
-	*/
+	ERR_PRINT("NO IMPL redo_action");
 }
 bool PaintAction::can_commit() {
-	/*
-	return not action_data.redo.empty()
-	*/
+	return !action_data_redo.empty();
 }
 
-Array PaintAction::get_x_sym_points(int canvas_width, Vector2i pixel) {
-	/*
-	var p = int(canvas_width - pixel.x)
-	var all_points = [pixel, Vector2(p-1, pixel.y)]
+PoolVector2iArray PaintAction::get_x_sym_points(int canvas_width, Vector2i pixel) {
+	int p = canvas_width - pixel.x;
 
-	var points :Array = []
-	for point in all_points:
-		if point in points:
-			continue
-		points.append(point)
-	return points
-	*/
+	PoolVector2iArray points;
+	points.append(pixel);
+	points.append(Vector2i(p - 1, pixel.y));
+
+	return points;
 }
-Array PaintAction::get_y_sym_points(int canvas_height, Vector2i pixel) {
-	/*
-	var p = int(canvas_height - pixel.y)
-	var all_points = [pixel, Vector2(pixel.x, p-1)]
+PoolVector2iArray PaintAction::get_y_sym_points(int canvas_height, Vector2i pixel) {
+	int p = canvas_height - pixel.y;
 
-	var points :Array = []
-	for point in all_points:
-		if point in points:
-			continue
-		points.append(point)
-	return points
-	*/
+	PoolVector2iArray points;
+	points.append(pixel);
+	points.append(Vector2i(pixel.x, p - 1));
+
+	return points;
 }
-Array PaintAction::get_xy_sym_points(int canvas_width, int canvas_height, Vector2i pixel) {
-	/*
-	var all_points = []
-	var xpoints = get_x_sym_points(canvas_width, pixel)
+PoolVector2iArray PaintAction::get_xy_sym_points(int canvas_width, int canvas_height, Vector2i pixel) {
+	PoolVector2iArray all_points;
+	PoolVector2iArray xpoints = get_x_sym_points(canvas_width, pixel);
 
-	all_points += get_y_sym_points(canvas_height, xpoints[0])
-	all_points += get_y_sym_points(canvas_height, xpoints[1])
+	all_points.append_array(get_y_sym_points(canvas_height, xpoints[0]));
+	all_points.append_array(get_y_sym_points(canvas_height, xpoints[1]));
 
-	var points :Array = []
-	for point in all_points:
-		if point in points:
-			continue
-		points.append(point)
+	PoolVector2iArray points;
+	for (int i = 0; i < all_points.size(); ++i) { //point in all_points:
+		Vector2i point = all_points[i];
+		bool found = false;
 
-	return points
-	*/
+		for (int j = 0; j < points.size(); ++j) {
+			if (points[j] == point) {
+				found = true;
+				break;
+			}
+		}
+
+		if (!found) {
+			points.append(point);
+		}
+	}
+
+	return points;
 }
-Array PaintAction::get_points(PaintCanvas *canvas, Vector2i pixel) {
+PoolVector2iArray PaintAction::get_points(PaintCanvas *canvas, Vector2i pixel) {
 	/*
-	var points = []
+	PoolVector2iArray points;
 	if canvas.symmetry_x and canvas.symmetry_y:
 		var sym_points = get_xy_sym_points(canvas.canvas_width, canvas.canvas_height, pixel)
 		for point in sym_points:
@@ -142,18 +136,13 @@ Array PaintAction::get_points(PaintCanvas *canvas, Vector2i pixel) {
 			return []
 		points.append(pixel)
 
-	return points
+	return points;
 	*/
+
+	return PoolVector2iArray();
 }
 
 PaintAction::PaintAction() {
-	/*
-
-	action_data["redo"] = {}
-	action_data["undo"] = {}
-	action_data["preview"] = {}
-
-	*/
 }
 
 PaintAction::~PaintAction() {

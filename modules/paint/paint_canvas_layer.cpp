@@ -24,114 +24,113 @@ SOFTWARE.
 
 #include "paint_canvas_layer.h"
 
-void PaintCanvasLayer::_init() {
-    /*
-	texture = ImageTexture.new()
-    */
+#include "paint_utilities.h"
+#include "scene/gui/texture_rect.h"
+
+bool PaintCanvasLayer::get_visible() {
+	return _visible;
 }
-void PaintCanvasLayer::create(Node *texture_rect_ref, int width, int height) {
-    /*
-	self.texture_rect_ref = texture_rect_ref
+void PaintCanvasLayer::set_visible(bool vis) {
+	_visible = vis;
+	texture_rect_ref->set_visible(_visible);
+}
 
-	layer_width = width
-	layer_height = height
+void PaintCanvasLayer::create(TextureRect *p_texture_rect_ref, int width, int height) {
+	texture_rect_ref = p_texture_rect_ref;
 
-	image = Image.new()
-	image.create(width, height, false, Image.FORMAT_RGBA8)
-	image.fill(Color.transparent)
-	update_texture()
-    */
+	layer_width = width;
+	layer_height = height;
+
+	image.instance();
+	image->create(width, height, false, Image::FORMAT_RGBA8);
+	//Color.transparent
+	image->fill(Color(1.00, 1.00, 1.00, 0.00));
+	update_texture();
 }
 
 void PaintCanvasLayer::resize(int width, int height) {
-    /*
-	var pixel_colors = []
-	var prev_width = layer_width
-	var prev_height = layer_height
+	PoolColorArray pixel_colors;
+	int prev_width = layer_width;
+	int prev_height = layer_height;
 
-	image.lock()
-	for y in range(prev_height):
-		for x in range(prev_width):
-			pixel_colors.append(image.get_pixel(x, y))
-	image.unlock()
+	image->lock();
 
-	layer_width = width
-	layer_height = height
+	for (int y = 0; y < prev_height; ++y) {
+		for (int x = 0; x < prev_width; ++x) {
+			pixel_colors.append(image->get_pixel(x, y));
+		}
+	}
 
-	image.create(width, height, false, Image.FORMAT_RGBA8)
+	image->unlock();
 
-	image.lock()
-	for x in range(prev_width):
-		for y in range(prev_height):
-			if x >= width or y >= height:
-				continue
-			image.set_pixel(x, y, pixel_colors[GEUtils.to_1D(x, y, prev_width)])
-	image.unlock()
+	layer_width = width;
+	layer_height = height;
 
-	update_texture()
-    */
+	image->create(width, height, false, Image::FORMAT_RGBA8);
+
+	image->lock();
+
+	for (int x = 0; x < prev_width; ++x) {
+		for (int y = 0; y < prev_height; ++y) {
+			if (x >= width or y >= height) {
+				continue;
+			}
+
+			image->set_pixel(x, y, pixel_colors[PaintUtilities::to_1D(x, y, prev_width)]);
+		}
+	}
+
+	image->unlock();
+
+	update_texture();
 }
 void PaintCanvasLayer::set_pixel(int x, int y, Color color) {
-    /*
-	image.lock()
-	image.set_pixel(x, y, color)
-	image.unlock()
-    */
+	image->lock();
+	image->set_pixel(x, y, color);
+	image->unlock();
 }
 Color PaintCanvasLayer::get_pixel(int x, int y) {
-    /*
-	if x < 0 or y < 0 or x >= image.get_width() or y >= image.get_height():
-		return null
-	image.lock()
-	var pixel = image.get_pixel(x, y)
-	image.unlock()
-	return pixel
-    */
+	if (x < 0 || y < 0 || x >= image->get_width() || y >= image->get_height()) {
+		return Color();
+	}
+
+	image->lock();
+	Color pixel = image->get_pixel(x, y);
+	image->unlock();
+
+	return pixel;
 }
 void PaintCanvasLayer::clear() {
-    /*
-	image.fill(Color.transparent)
-	update_texture()
-    */
+	//Color.transparent
+	image->fill(Color(1.00, 1.00, 1.00, 0.00));
+
+	update_texture();
 }
 void PaintCanvasLayer::update_texture() {
-    /*
-	texture.create_from_image(image, 0)
-	texture_rect_ref.texture = texture
-	texture_rect_ref.margin_right = 0
-	texture_rect_ref.margin_bottom = 0
-    */
+	texture->create_from_image(image, 0);
+
+	texture_rect_ref->set_texture(texture);
+	texture_rect_ref->set_margin(Margin::MARGIN_RIGHT, 0);
+	texture_rect_ref->set_margin(Margin::MARGIN_BOTTOM, 0);
 }
-void PaintCanvasLayer::set_visible(bool vis) {
-    /*
-	visible = vis
-	texture_rect_ref.visible = visible
-    */
-}
+
 void PaintCanvasLayer::toggle_lock() {
-    /*
-	locked = not locked
-    */
+	locked = !locked;
 }
 void PaintCanvasLayer::toggle_alpha_locked() {
-    /*
-	alpha_locked = not alpha_locked
-    */
+	alpha_locked = !alpha_locked;
 }
 
 PaintCanvasLayer::PaintCanvasLayer() {
-	/*
-    var name
-    var layer_width
-    var layer_height
-    var visible = true setget set_visible
-    var locked = false
-    var alpha_locked = false
+	layer_width = 0;
+	layer_height = 0;
+	_visible = true;
+	locked = false;
+	alpha_locked = false;
 
-    var texture: ImageTexture
-    var image: Image
-    var texture_rect_ref
-	*/
+	texture_rect_ref = nullptr;
+
+	texture.instance();
 }
 
 PaintCanvasLayer::~PaintCanvasLayer() {

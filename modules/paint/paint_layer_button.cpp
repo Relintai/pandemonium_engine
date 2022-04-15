@@ -24,121 +24,102 @@ SOFTWARE.
 
 #include "paint_layer_button.h"
 
+#include "scene/gui/box_container.h"
+#include "scene/gui/button.h"
+#include "scene/gui/check_button.h"
+#include "scene/gui/margin_container.h"
+#include "scene/gui/texture_button.h"
+#include "scene/resources/style_box.h"
+
 PaintLayerButton::PaintLayerButton() {
-	/*
-[gd_scene load_steps=11 format=2]
+	set_custom_minimum_size(Size2(0, 32));
+	set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
 
-[ext_resource path="res://addons/Godoxel/assets/minidotta_invis.png" type="Texture" id=1]
-[ext_resource path="res://addons/Godoxel/assets/minidotta.png" type="Texture" id=2]
-[ext_resource path="res://addons/Godoxel/assets/arrow_down.png" type="Texture" id=3]
-[ext_resource path="res://addons/Godoxel/assets/arrow_up.png" type="Texture" id=4]
-[ext_resource path="res://addons/Godoxel/assets/lock_layer_1.png" type="Texture" id=5]
-[ext_resource path="res://addons/Godoxel/assets/unlock_layer.png" type="Texture" id=6]
+	Ref<StyleBoxFlat> style_box;
+	style_box.instance();
+	style_box->set("bg_color", Color(0.35, 0.5, 0.77));
+	set("custom_styles/panel", style_box);
 
+	HBoxContainer *main_box_container = memnew(HBoxContainer);
+	add_child(main_box_container);
 
-[sub_resource type="StyleBoxFlat" id=4]
-bg_color = Color( 0.180392, 0.176471, 0.176471, 1 )
+	MarginContainer *left_main_container = memnew(MarginContainer);
+	left_main_container->set("custom_constants/margin_right", 2);
+	left_main_container->set("custom_constants/margin_top", 2);
+	left_main_container->set("custom_constants/margin_left", 2);
+	left_main_container->set("custom_constants/margin_bottom", 2);
+	left_main_container->set_h_size_flags(SIZE_EXPAND_FILL);
+	left_main_container->set_v_size_flags(SIZE_EXPAND_FILL);
+	main_box_container->add_child(left_main_container);
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.25098, 0.25098, 0.25098, 0 )
+	// Layer Button
+	layer_button = memnew(Button);
+	layer_button->set_text("Layer 1");
+	layer_button->set_text_align(Button::ALIGN_RIGHT);
+	layer_button->set_h_size_flags(SIZE_EXPAND_FILL);
+	layer_button->set_v_size_flags(SIZE_EXPAND_FILL);
+	style_box.instance();
+	style_box->set("bg_color", Color(0.25, 0.25, 0.25));
+	layer_button->set("custom_styles/hover", style_box);
+	style_box.instance();
+	style_box->set("bg_color", Color(0.25, 0.25, 0.25));
+	layer_button->set("custom_styles/pressed", style_box);
+	style_box.instance();
+	style_box->set("bg_color", Color(0.25, 0.25, 0.25));
+	layer_button->set("custom_styles/focus", style_box);
+	style_box.instance();
+	style_box->set("bg_color", Color(0.25, 0.25, 0.25));
+	layer_button->set("custom_styles/disabled", style_box);
+	style_box.instance();
+	style_box->set("bg_color", Color(0.25, 0.25, 0.25));
+	layer_button->set("custom_styles/normal", style_box);
+	left_main_container->add_child(layer_button);
 
-[sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0.6, 0.6, 0.6, 0 )
+	HBoxContainer *check_container = memnew(HBoxContainer);
+	check_container->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
+	left_main_container->add_child(check_container);
 
-[sub_resource type="StyleBoxFlat" id=3]
-bg_color = Color( 0.6, 0.6, 0.6, 0 )
+	// Visible Button
+	visible_button = memnew(CheckButton);
+	visible_button->set_pressed(true);
+	//visible_button->set("custom_icons/off", ); //res://addons/Godoxel/assets/minidotta_invis.png
+	//visible_button->set("custom_icons/on", ); //res://addons/Godoxel/assets/minidotta.png
+	style_box.instance();
+	style_box->set("bg_color", Color(0.6, 0.6, 0.6));
+	layer_button->set("custom_styles/normal", style_box);
+	check_container->add_child(visible_button);
 
-[node name="Layer1" type="Panel"]
-show_behind_parent = true
-anchor_right = 0.113281
-anchor_bottom = 0.0416667
-margin_bottom = -1.90735e-06
-rect_min_size = Vector2( 0, 32 )
-mouse_filter = 2
-custom_styles/panel = SubResource( 4 )
-__meta__ = {
-"_edit_use_anchors_": true
-}
+	// Lock Button
+	lock_button = memnew(CheckButton);
+	lock_button->set_pressed(false);
+	//lock_button->set("custom_icons/off", ); //res://addons/Godoxel/assets/unlock_layer.png
+	//lock_button->set("custom_icons/on", ); //res://addons/Godoxel/assets/lock_layer_1.png
+	style_box.instance();
+	style_box->set("bg_color", Color(0.6, 0.6, 0.6));
+	layer_button->set("custom_styles/normal", style_box);
+	check_container->add_child(lock_button);
 
-[node name="Select" type="Button" parent="." groups=[
-"layer_button",
-]]
-anchor_right = 0.827586
-anchor_bottom = 1.0
-custom_styles/hover = SubResource( 1 )
-custom_styles/pressed = SubResource( 1 )
-custom_styles/focus = SubResource( 1 )
-custom_styles/disabled = SubResource( 1 )
-custom_styles/normal = SubResource( 1 )
-text = "Layer 1"
-align = 2
-__meta__ = {
-"_edit_use_anchors_": true
-}
+	// Right side
+	VBoxContainer *right_main_container = memnew(VBoxContainer);
+	main_box_container->add_child(right_main_container);
 
-[node name="Visible" type="CheckButton" parent="."]
-anchor_top = 0.5
-anchor_bottom = 0.5
-margin_left = 3.0
-margin_top = -8.5
-margin_right = 19.0
-margin_bottom = 7.5
-custom_icons/off = ExtResource( 1 )
-custom_icons/on = ExtResource( 2 )
-custom_styles/normal = SubResource( 2 )
-pressed = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
+	up_button = memnew(TextureButton);
+	up_button->set_expand(true);
+	up_button->set_stretch_mode(TextureButton::STRETCH_KEEP_CENTERED);
+	up_button->set_h_size_flags(SIZE_EXPAND_FILL);
+	up_button->set_v_size_flags(SIZE_EXPAND_FILL);
+	//up_button->set_normal_texture(); //res://addons/Godoxel/assets/arrow_up.png
+	//up_button->set_pressed_texture(); //res://addons/Godoxel/assets/minidotta.png
+	right_main_container->add_child(up_button);
 
-[node name="Lock" type="CheckButton" parent="."]
-anchor_top = 0.5
-anchor_bottom = 0.5
-margin_left = 22.0
-margin_top = -11.0
-margin_right = 46.0
-margin_bottom = 11.0
-custom_icons/off = ExtResource( 6 )
-custom_icons/on = ExtResource( 5 )
-custom_styles/normal = SubResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -20.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Up" type="TextureButton" parent="VBoxContainer"]
-margin_right = 20.0
-margin_bottom = 14.0
-rect_min_size = Vector2( 20, 0 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture_normal = ExtResource( 4 )
-texture_pressed = ExtResource( 2 )
-expand = true
-stretch_mode = 3
-
-[node name="Down" type="TextureButton" parent="VBoxContainer"]
-margin_top = 18.0
-margin_right = 20.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 20, 0 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture_normal = ExtResource( 3 )
-texture_pressed = ExtResource( 2 )
-expand = true
-stretch_mode = 3
-
-
-	*/
+	down_button = memnew(TextureButton);
+	down_button->set_expand(true);
+	down_button->set_stretch_mode(TextureButton::STRETCH_KEEP_CENTERED);
+	down_button->set_h_size_flags(SIZE_EXPAND_FILL);
+	down_button->set_v_size_flags(SIZE_EXPAND_FILL);
+	//down_button->set_normal_texture(); //res://addons/Godoxel/assets/arrow_up.png
+	//down_button->set_pressed_texture(); //res://addons/Godoxel/assets/minidotta.png
+	right_main_container->add_child(down_button);
 }
 
 PaintLayerButton::~PaintLayerButton() {

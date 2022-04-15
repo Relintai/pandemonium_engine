@@ -6,6 +6,18 @@ module_env = env.Clone()
 
 module_env.add_source_files(env.modules_sources,"register_types.cpp")
 
+module_env.add_source_files(env.modules_sources,"paint_utilities.cpp")
+
+module_env.add_source_files(env.modules_sources,"actions/paint_action.cpp")
+
+
+module_env.add_source_files(env.modules_sources,"paint_canvas_layer.cpp")
+
+module_env.add_source_files(env.modules_sources,"paint_canvas_outline.cpp")
+module_env.add_source_files(env.modules_sources,"paint_color_grid.cpp")
+module_env.add_source_files(env.modules_sources,"paint_layer_button.cpp")
+
+
 #module_env.add_source_files(env.modules_sources,"plugin/mdr_import_plugin_base.cpp")
 
 #if 'TOOLS_ENABLED' in env["CPPDEFINES"]:

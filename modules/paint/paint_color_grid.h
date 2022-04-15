@@ -31,9 +31,8 @@ class PaintColorGrid : public GridContainer {
 	GDCLASS(PaintColorGrid, GridContainer);
 
 public:
-	void _enter_tree();
-	void change_color_to(Color color);
-	void add_color_prefab(Color color);
+	void change_color_to(const Color &color);
+	void add_color_prefab(const Color &color);
 
 	PaintColorGrid();
 	~PaintColorGrid();

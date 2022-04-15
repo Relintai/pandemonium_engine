@@ -27,22 +27,38 @@ SOFTWARE.
 
 #include "core/reference.h"
 
-class Node;
+#include "core/image.h"
+#include "scene/resources/texture.h"
+
+class TextureRect;
 
 //class_name GELayer
 class PaintCanvasLayer : public Reference {
 	GDCLASS(PaintCanvasLayer, Reference);
 
 public:
-	void _init();
-	void create(Node *texture_rect_ref, int width, int height);
+	String name;
+	int layer_width;
+	int layer_height;
+
+	bool locked = false;
+	bool alpha_locked = false;
+
+	Ref<ImageTexture> texture;
+	Ref<Image> image;
+	TextureRect *texture_rect_ref;
+
+	bool get_visible();
+	void set_visible(bool vis);
+
+	void create(TextureRect *p_texture_rect_ref, int width, int height);
 
 	void resize(int width, int height);
 	void set_pixel(int x, int y, Color color);
 	Color get_pixel(int x, int y);
 	void clear();
 	void update_texture();
-	void set_visible(bool vis);
+
 	void toggle_lock();
 	void toggle_alpha_locked();
 
@@ -52,18 +68,7 @@ public:
 protected:
 	static void _bind_methods();
 
-	/*
-	var name
-	var layer_width
-	var layer_height
-	var visible = true setget set_visible
-	var locked = false
-	var alpha_locked = false
-
-	var texture: ImageTexture
-	var image: Image
-	var texture_rect_ref
-	*/
+	bool _visible;
 };
 
 #endif

@@ -29,6 +29,7 @@ SOFTWARE.
 
 #include "core/pool_vector.h"
 #include "core/variant.h"
+#include "core/dictionary.h"
 #include "core/array.h"
 #include "core/math/vector2i.h"
 
@@ -47,15 +48,19 @@ public:
 	virtual void redo_action(PaintCanvas *canvas);
 	virtual bool can_commit();
 
-	virtual Array get_x_sym_points(int canvas_width, Vector2i pixel);
-	virtual Array get_y_sym_points(int canvas_height, Vector2i pixel);
-	virtual Array get_xy_sym_points(int canvas_width, int canvas_height, Vector2i pixel);
-	virtual Array get_points(PaintCanvas *canvas, Vector2i pixel);
+	virtual PoolVector2iArray get_x_sym_points(int canvas_width, Vector2i pixel);
+	virtual PoolVector2iArray get_y_sym_points(int canvas_height, Vector2i pixel);
+	virtual PoolVector2iArray get_xy_sym_points(int canvas_width, int canvas_height, Vector2i pixel);
+	virtual PoolVector2iArray get_points(PaintCanvas *canvas, Vector2i pixel);
 
 	PaintAction();
 	~PaintAction();
 
-	//var action_data = {}
+	Dictionary action_data_undo;
+	Dictionary action_data_redo;
+	Dictionary action_data_preview;
+
+	Dictionary action_data;
 
 protected:
 	static void _bind_methods();

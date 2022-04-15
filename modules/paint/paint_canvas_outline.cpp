@@ -24,33 +24,45 @@ SOFTWARE.
 
 #include "paint_canvas_outline.h"
 
-void PaintCanvasOutline::_draw() {
-/*
-	var size = get_parent().rect_size
-	var pos = Vector2.ZERO //get_parent().rect_global_position
-	draw_outline_box(pos, size, color, 1)
-*/
-}
 void PaintCanvasOutline::draw_outline_box(Vector2 pos, Vector2 size, Color color, int width) {
-/*
-		//Top line
-		draw_line(pos, pos + Vector2(size.x, 0), color, width)
-		//Left line
-		draw_line(pos, pos + Vector2(0, size.y), color, width)
-		//Bottom line
-		draw_line(pos + Vector2(0, size.y), pos + Vector2(size.x, size.y), color, width)
-		//Right line
-		draw_line(pos + Vector2(size.x, 0), pos + Vector2(size.x, size.y), color, width)
-*/
+	//Top line
+	draw_line(pos, pos + Vector2(size.x, 0), color, width);
+	//Left line
+	draw_line(pos, pos + Vector2(0, size.y), color, width);
+	//Bottom line
+	draw_line(pos + Vector2(0, size.y), pos + Vector2(size.x, size.y), color, width);
+	//Right line
+	draw_line(pos + Vector2(size.x, 0), pos + Vector2(size.x, size.y), color, width);
 }
-/*
-func _process(delta):
-	if not is_visible_in_tree():
-		return
-	update()
-*/
+
+void PaintCanvasOutline::_notification(int p_what) {
+	switch(p_what) {
+		/*
+		case NOTIFICATION_PROCESS: {
+			if (!is_visible_in_tree()) {
+				return;
+			}
+
+			update();
+		} break;
+		*/
+		case NOTIFICATION_DRAW: {
+			//Control *pc = get_parent_control();
+
+			//if (!pc) {
+			//	return;
+			//}
+
+			//Vector2 size = pc.rect_size;
+
+			//var pos = Vector2(); //get_parent().rect_global_position
+			draw_outline_box(Vector2(), get_size(), color, 1);
+		} break;
+	}
+}
 
 PaintCanvasOutline::PaintCanvasOutline() {
+	color = Color(0, 1, 0, 1);
 }
 
 PaintCanvasOutline::~PaintCanvasOutline() {

@@ -35,19 +35,19 @@ class PaintUtilities : public Object {
 	GDCLASS(PaintUtilities, Object);
 
 public:
-	static Array get_pixels_in_line(Vector2 from, Vector2 to);
+	static PoolVector2iArray get_pixels_in_line(const Vector2i &from, const Vector2i &to);
 
-	static int to_1D_v(Vector2 p, float w);
-	static int to_1D(float x, float y, float w);
-	static Vector2 to_2D(int idx, float w);
+	static int to_1D_v(const Vector2i &p, int w);
+	static int to_1D(int x, int y, int w);
+	static Vector2i to_2D(int idx, int w);
 
-	static Color color_from_array(PoolRealArray color_array);
+	static Color color_from_array(const PoolRealArray &color_array);
 	static Color random_color();
 	static Color random_color_alt();
 
-	static String get_line_string(String file, int number);
+	static String get_line_string(const String &file, const int number);
 
-	static void printv(Variant variable);
+	static void printv(const Variant &variable);
 
 	PaintUtilities();
 	~PaintUtilities();

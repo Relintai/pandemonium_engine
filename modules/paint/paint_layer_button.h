@@ -27,12 +27,22 @@ SOFTWARE.
 
 #include "scene/gui/panel_container.h"
 
+class Button;
+class CheckButton;
+class TextureButton;
+
 class PaintLayerButton : public PanelContainer {
 	GDCLASS(PaintLayerButton, PanelContainer);
 
 public:
 	PaintLayerButton();
 	~PaintLayerButton();
+
+	Button *layer_button;
+	CheckButton *visible_button;
+	CheckButton *lock_button;
+	TextureButton *up_button;
+	TextureButton *down_button;
 
 protected:
 	static void _bind_methods();

@@ -31,16 +31,16 @@ class PaintCanvasOutline : public Control {
 	GDCLASS(PaintCanvasOutline, Control);
 
 public:
-	void _draw();
 	void draw_outline_box(Vector2 pos, Vector2 size, Color color, int width);
 
 	PaintCanvasOutline();
 	~PaintCanvasOutline();
 
 protected:
+	void _notification(int p_what);
 	static void _bind_methods();
 
-	//export var color = Color()
+	Color color;
 };
 
 #endif
