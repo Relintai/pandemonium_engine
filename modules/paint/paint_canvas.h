@@ -38,15 +38,15 @@ public:
 	void _process(float delta);
 	void _draw();
 
-	void resize(int width, int height);
+	void resize(const int width, const int height);
 
-	void set_pixel_size(int size);
-	void set_grid_size(int size);
-	void set_big_grid_size(int size);
-	void set_canvas_width(int val);
-	void set_canvas_height(int val);
+	void set_pixel_size(const int size);
+	void set_grid_size(const int size);
+	void set_big_grid_size(const int size);
+	void set_canvas_width(const int val);
+	void set_canvas_height(const int val);
 
-	void toggle_alpha_locked(String layer_name);
+	void toggle_alpha_locked(const String &layer_name);
 	bool is_alpha_locked();
 
 	Rect2 get_content_margin();
@@ -56,41 +56,41 @@ public:
 	Node *get_preview_layer();
 	void clear_active_layer();
 	void clear_preview_layer();
-	void clear_layer(String layer_name);
-	Node *remove_layer(String layer_name);
-	Node *add_new_layer(String layer_name);
-	Node *duplicate_layer(String layer_name, String new_layer_name);
-	void toggle_layer_visibility(String layer_name);
-	Node *find_layer_by_name(String layer_name);
-	void toggle_lock_layer(String layer_name);
+	void clear_layer(const String &layer_name);
+	Node *remove_layer(const String &layer_name);
+	Node *add_new_layer(const String &layer_name);
+	Node *duplicate_layer(const String &layer_name, const String &new_layer_name);
+	void toggle_layer_visibility(const String &layer_name);
+	Node *find_layer_by_name(const String &layer_name);
+	void toggle_lock_layer(const String &layer_name);
 	bool is_active_layer_locked();
-	void move_layer_forward(String layer_name);
-	void move_layer_back(String layer_name);
-	void select_layer(String layer_name);
+	void move_layer_forward(const String &layer_name);
+	void move_layer_back(const String &layer_name);
+	void select_layer(const String &layer_name);
 
 	void _on_mouse_entered();
 	void _on_mouse_exited();
 
-	bool is_inside_canvas(int x, int y);
-	void set_pixel_arr(Array pixels, Color color);
-	void set_pixel_v(Vector2 pos, Color color);
-	void set_pixel(int x, int y, Color color);
-	void _set_pixel_v(PaintCanvasLayer *layer, Vector2 v, Color color);
-	void _set_pixel(PaintCanvasLayer *layer, int x, int y, Color color);
-	Color get_pixel_v(Vector2 pos);
-	Color get_pixel(int x, int y);
-	void set_preview_pixel_v(Vector2 pos, Color color);
-	void set_preview_pixel(int x, int y, Color color);
-	Color get_preview_pixel_v(Vector2 pos);
-	Color get_preview_pixel(int x, int y);
+	bool is_inside_canvas(const int x, const int y);
+	void set_pixel_arr(const Array &pixels, const Color &color);
+	void set_pixel_v(const Vector2 &pos, const Color &color);
+	void set_pixel(const int x, const int y, const Color &color);
+	void _set_pixel_v(PaintCanvasLayer *layer, const Vector2 &v, const Color &color);
+	void _set_pixel(PaintCanvasLayer *layer, const int x, const int y, const Color &color);
+	Color get_pixel_v(const Vector2 &pos);
+	Color get_pixel(const int x, const int y);
+	void set_preview_pixel_v(const Vector2 &pos, const Color &color);
+	void set_preview_pixel(const int x, const int y, const Color &color);
+	Color get_preview_pixel_v(const Vector2 &pos);
+	Color get_preview_pixel(const int x, const int y);
 
 	void toggle_grid();
 	void show_grid();
 	void hide_grid();
 
-	Array select_color(int x, int y);
-	Array select_same_color(int x, int y);
-	Array get_neighbouring_pixels(int pos_x, int pos_y);
+	Array select_color(const int x, const int y);
+	Array select_same_color(const int x, const int y);
+	Array get_neighbouring_pixels(const int pos_x, const int pos_y);
 
 	PaintCanvas();
 	~PaintCanvas();

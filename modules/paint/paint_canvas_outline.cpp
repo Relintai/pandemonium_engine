@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "paint_canvas_outline.h"
 
-void PaintCanvasOutline::draw_outline_box(Vector2 pos, Vector2 size, Color color, int width) {
+void PaintCanvasOutline::draw_outline_box(const Vector2 &pos, const Vector2 &size, const Color &color, const int width) {
 	//Top line
 	draw_line(pos, pos + Vector2(size.x, 0), color, width);
 	//Left line

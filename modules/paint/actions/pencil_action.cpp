@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "pencil_action.h"
 
-void PencilAction::do_action(PaintCanvas *canvas, Array data) {
+void PencilAction::do_action(PaintCanvas *canvas, const Array &data) {
 	/*
 	.do_action(canvas, data)
 	

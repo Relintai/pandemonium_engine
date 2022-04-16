@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "bucket_action.h"
 
-void BucketAction::do_action(PaintCanvas *canvas, Array data) {
+void BucketAction::do_action(PaintCanvas *canvas, const Array &data) {
 	/*
 	.do_action(canvas, data)
 

@@ -28,7 +28,7 @@ bool MultiLineAction::can_commit() {
 	return false;
 }
 
-void MultiLineAction::do_action(PaintCanvas *canvas, Array data) {
+void MultiLineAction::do_action(PaintCanvas *canvas, const Array &data) {
 	/*
 	.do_action(canvas, data)
 

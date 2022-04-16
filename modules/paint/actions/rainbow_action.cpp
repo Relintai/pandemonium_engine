@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "rainbow_action.h"
 
-void RainbowAction::do_action(PaintCanvas *canvas, Array data) {
+void RainbowAction::do_action(PaintCanvas *canvas, const Array &data) {
 	/*
 	.do_action(canvas, data)
 	

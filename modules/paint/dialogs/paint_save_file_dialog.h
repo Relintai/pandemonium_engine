@@ -32,7 +32,7 @@ class PaintSaveFileDialog : public FileDialog {
 
 public:
 	void _ready();
-	void _on_SaveFileDialog_file_selected(String path);
+	void _on_SaveFileDialog_file_selected(const String &path);
 	void save_file();
 	void _on_SaveFileDialog_about_to_show();
 	void _on_SaveFileDialog_visibility_changed();

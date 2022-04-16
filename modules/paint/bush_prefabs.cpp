@@ -44,7 +44,7 @@ const list = [
 ]
 */
 
-PoolVector3iArray BrushPrefabs::get_brush(BrushPrefabs::Type type, int size) {
+PoolVector3iArray BrushPrefabs::get_brush(const BrushPrefabs::Type type, const int size) {
 /*
 	var pixels = []
 	if size < 1:

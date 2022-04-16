@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "brush_action.h"
 
-void BrushAction::do_action(PaintCanvas *canvas, Array data) {
+void BrushAction::do_action(PaintCanvas *canvas, const Array &data) {
 	/*
 	.do_action(canvas, data)
 

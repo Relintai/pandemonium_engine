@@ -31,7 +31,7 @@ class PaintLoadFileDialog : public FileDialog {
 	GDCLASS(PaintLoadFileDialog, FileDialog);
 
 public:
-	void _on_LoadFileDialog_file_selected(String path);
+	void _on_LoadFileDialog_file_selected(const String &path);
 	void _on_LoadFileDialog_confirmed();
 	void load_img();
 	void _on_LoadFileDialog_about_to_show();

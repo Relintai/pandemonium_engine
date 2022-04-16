@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "paint_window.h"
 
-void PaintWindow::_input(Ref<InputEvent> event) {
+void PaintWindow::_input(const Ref<InputEvent> &event) {
 	/*
 	if is_any_menu_open():
 		return
@@ -131,7 +131,7 @@ void PaintWindow::_process(float delta) {
 	*/
 }
 
-void PaintWindow::_handle_shortcuts(int scancode) {
+void PaintWindow::_handle_shortcuts(const int scancode) {
 	/*
 	match scancode:
 		K_UNDO:
@@ -221,7 +221,7 @@ void PaintWindow::_handle_scroll() {
 	*/
 }
 
-void PaintWindow::_handle_zoom(Ref<InputEvent> event) {
+void PaintWindow::_handle_zoom(const Ref<InputEvent> &event) {
 	/*
 	if not event is InputEventMouseButton:
 		return
@@ -361,7 +361,7 @@ void PaintWindow::_on_Save_pressed() {
 	*/
 }
 
-void PaintWindow::do_action(Array data) {
+void PaintWindow::do_action(const Array &data) {
 	/*
 	if _current_action == null:
 		#print("clear redo")
@@ -448,12 +448,12 @@ Ref<PaintAction> PaintWindow::get_action() {
 	*/
 }
 
-void PaintWindow::set_selected_color(Color color) {
+void PaintWindow::set_selected_color(const Color &color) {
 	/*
 	selected_color = color
 	*/
 }
-void PaintWindow::set_brush(PaintWindow::Tools new_mode) {
+void PaintWindow::set_brush(const PaintWindow::Tools new_mode) {
 	/*
 	if brush_mode == new_mode:
 		return
@@ -474,7 +474,7 @@ void PaintWindow::set_brush(PaintWindow::Tools new_mode) {
 	*/
 }
 
-void PaintWindow::change_color(Color new_color) {
+void PaintWindow::change_color(const Color &new_color) {
 	/*
 	if new_color.a == 0:
 		return
@@ -483,7 +483,7 @@ void PaintWindow::change_color(Color new_color) {
 	*/
 }
 
-void PaintWindow::_on_ColorPicker_color_changed(Color color) {
+void PaintWindow::_on_ColorPicker_color_changed(const Color &color) {
 	/*
 	selected_color = color
 	*/
@@ -544,7 +544,7 @@ void PaintWindow::_on_Editor_visibility_changed() {
 	*/
 }
 
-void PaintWindow::highlight_layer(String layer_name) {
+void PaintWindow::highlight_layer(const String &layer_name) {
 	/*
 	for button in layer_buttons.get_children():
 		if paint_canvas.find_layer_by_name(button.name).locked:
@@ -555,20 +555,20 @@ void PaintWindow::highlight_layer(String layer_name) {
 			button.get("custom_styles/panel").set("bg_color", other_layer_highlight)
 	*/
 }
-void PaintWindow::toggle_layer_visibility(Node *button, String layer_name) {
+void PaintWindow::toggle_layer_visibility(Node *button, const String &layer_name) {
 	/*
 	#print("toggling: ", layer_name)
 	paint_canvas.toggle_layer_visibility(layer_name)
 	*/
 }
-void PaintWindow::select_layer(String layer_name) {
+void PaintWindow::select_layer(const String &layer_name) {
 	/*
 	#print("select layer: ", layer_name)
 	paint_canvas.select_layer(layer_name)
 	highlight_layer(layer_name)
 	*/
 }
-void PaintWindow::lock_layer(Node *button, String layer_name) {
+void PaintWindow::lock_layer(Node *button, const String &layer_name) {
 	/*
 	paint_canvas.toggle_lock_layer(layer_name)
 	highlight_layer(paint_canvas.get_active_layer().name)
@@ -696,7 +696,7 @@ void PaintWindow::_on_ColorPicker_popup_closed() {
 	*/
 }
 
-bool PaintWindow::is_position_in_canvas(Vector2 pos) {
+bool PaintWindow::is_position_in_canvas(const Vector2 &pos) {
 	/*
 	if Rect2(paint_canvas_container_node.rect_global_position,
 			 paint_canvas_container_node.rect_global_position + paint_canvas_container_node.rect_size).has_point(pos):

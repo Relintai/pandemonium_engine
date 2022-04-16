@@ -28,7 +28,7 @@ SOFTWARE.
 //data[3] = selection_color
 //data[4] = cut pos
 //data[5] = cut size
-void PasteCutAction::do_action(PaintCanvas *canvas, Array data) {
+void PasteCutAction::do_action(PaintCanvas *canvas, const Array &data) {
 	/*
 	.do_action(canvas, data)
 

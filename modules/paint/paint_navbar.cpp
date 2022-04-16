@@ -48,7 +48,7 @@ void PaintNavbar::_ready() {
 		i.connect("item_pressed", self, "button_pressed")
 	*/
 }
-void PaintNavbar::button_pressed(String button_name, Node *button_item, int id) {
+void PaintNavbar::button_pressed(const String &button_name, Node *button_item, const int id) {
 	/*
 #	print("pressed: ", button_name)
 #	print("pressed item is: '%s'" % button_item)
@@ -71,7 +71,7 @@ void PaintNavbar::button_pressed(String button_name, Node *button_item, int id) 
 	*/
 }
 
-void PaintNavbar::handle_file_menu(String pressed_item, int id) {
+void PaintNavbar::handle_file_menu(const String &pressed_item, const int id) {
 	/*
 	match pressed_item:
 		"Save":
@@ -82,14 +82,14 @@ void PaintNavbar::handle_file_menu(String pressed_item, int id) {
 			owner.get_node("ConfirmationDialog").show()
 	*/
 }
-void PaintNavbar::handle_edit_menu(String pressed_item, int id) {
+void PaintNavbar::handle_edit_menu(const String &pressed_item, const int id) {
 	/*
 	match pressed_item:
 		"Add Layer":
 			editor.add_new_layer()
 	*/
 }
-void PaintNavbar::handle_canvas_menu(String pressed_item, int id) {
+void PaintNavbar::handle_canvas_menu(const String &pressed_item, const int id) {
 	/*
 	match pressed_item:
 		"Change Size":
@@ -98,7 +98,7 @@ void PaintNavbar::handle_canvas_menu(String pressed_item, int id) {
 			owner.paint_canvas.crop_to_content()
 	*/
 }
-void PaintNavbar::handle_layer_menu(String pressed_item, int id) {
+void PaintNavbar::handle_layer_menu(const String &pressed_item, const int id) {
 	/*
 	match pressed_item:
 		"Add Layer":
@@ -115,7 +115,7 @@ void PaintNavbar::handle_layer_menu(String pressed_item, int id) {
 			owner.find_node("LockAlpha").pressed = $Buttons/Layer.get_popup().is_item_checked(id)
 	*/
 }
-void PaintNavbar::handle_grid_menu(String pressed_item, int id) {
+void PaintNavbar::handle_grid_menu(const String &pressed_item, const int id) {
 	/*
 	match pressed_item:
 		"Change Grid Size":
@@ -125,14 +125,14 @@ void PaintNavbar::handle_grid_menu(String pressed_item, int id) {
 	*/
 }
 
-void PaintNavbar::handle_magic_menu(String pressed_item, int id) {
+void PaintNavbar::handle_magic_menu(const String &pressed_item, const int id) {
 	/*
 	match pressed_item:
 		"Add Layer":
 			editor.add_new_layer()
 	*/
 }
-void PaintNavbar::handle_editor_menu(String pressed_item, int id) {
+void PaintNavbar::handle_editor_menu(const String &pressed_item, const int id) {
 	/*
 	match pressed_item:
 		"Settings":

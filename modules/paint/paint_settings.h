@@ -32,8 +32,8 @@ class PaintTextInfo : public Control {
 
 public:
 	void _enter_tree();
-	void _on_ColorPickerButton_color_changed(Color color);
-	void _on_CheckButton_toggled(bool button_pressed);
+	void _on_ColorPickerButton_color_changed(const Color &color);
+	void _on_CheckButton_toggled(const bool button_pressed);
 	void _on_Ok_pressed();
 
 	PaintTextInfo();

@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "paint_action.h"
 
-void PaintAction::do_action(PaintCanvas *canvas, Array data) {
+void PaintAction::do_action(PaintCanvas *canvas, const Array &data) {
 	if (!action_data_redo.has("cells")) {
 		action_data_redo["cells"] = Array();
 		action_data_redo["colors"] = Array();
@@ -58,7 +58,7 @@ bool PaintAction::can_commit() {
 	return !action_data_redo.empty();
 }
 
-PoolVector2iArray PaintAction::get_x_sym_points(int canvas_width, Vector2i pixel) {
+PoolVector2iArray PaintAction::get_x_sym_points(const int canvas_width, const Vector2i &pixel) {
 	int p = canvas_width - pixel.x;
 
 	PoolVector2iArray points;
@@ -67,7 +67,7 @@ PoolVector2iArray PaintAction::get_x_sym_points(int canvas_width, Vector2i pixel
 
 	return points;
 }
-PoolVector2iArray PaintAction::get_y_sym_points(int canvas_height, Vector2i pixel) {
+PoolVector2iArray PaintAction::get_y_sym_points(const int canvas_height, const Vector2i &pixel) {
 	int p = canvas_height - pixel.y;
 
 	PoolVector2iArray points;
@@ -76,7 +76,7 @@ PoolVector2iArray PaintAction::get_y_sym_points(int canvas_height, Vector2i pixe
 
 	return points;
 }
-PoolVector2iArray PaintAction::get_xy_sym_points(int canvas_width, int canvas_height, Vector2i pixel) {
+PoolVector2iArray PaintAction::get_xy_sym_points(const int canvas_width, const int canvas_height, const Vector2i &pixel) {
 	PoolVector2iArray all_points;
 	PoolVector2iArray xpoints = get_x_sym_points(canvas_width, pixel);
 
@@ -102,7 +102,7 @@ PoolVector2iArray PaintAction::get_xy_sym_points(int canvas_width, int canvas_he
 
 	return points;
 }
-PoolVector2iArray PaintAction::get_points(PaintCanvas *canvas, Vector2i pixel) {
+PoolVector2iArray PaintAction::get_points(PaintCanvas *canvas, const Vector2i &pixel) {
 	/*
 	PoolVector2iArray points;
 	if canvas.symmetry_x and canvas.symmetry_y:

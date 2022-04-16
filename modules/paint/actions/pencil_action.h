@@ -33,7 +33,7 @@ class PencilAction : public PaintAction {
 	GDCLASS(PencilAction, PaintAction);
 
 public:
-	void do_action(PaintCanvas *canvas, Array data);
+	void do_action(PaintCanvas *canvas, const Array &data);
 	void commit_action(PaintCanvas *canvas);
 
 	void undo_action(PaintCanvas *canvas);

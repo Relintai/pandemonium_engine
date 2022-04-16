@@ -71,15 +71,15 @@ public:
 		max_zoom_in = 50,
 	};
 
-	void _input(Ref<InputEvent> event);
+	void _input(const Ref<InputEvent> &event);
 	void _process(float delta);
 
-	void _handle_shortcuts(int scancode);
+	void _handle_shortcuts(const int scancode);
 	void _draw_tool_brush();
 
 	void _handle_scroll();
 
-	void _handle_zoom(Ref<InputEvent> event);
+	void _handle_zoom(const Ref<InputEvent> &event);
 
 	void _handle_cut();
 	void brush_process();
@@ -87,19 +87,19 @@ public:
 
 	void _on_Save_pressed();
 
-	void do_action(Array data);
+	void do_action(const Array &data);
 	void commit_action();
 	void redo_action();
 	void undo_action();
 
 	Ref<PaintAction> get_action();
 
-	void set_selected_color(Color color);
-	void set_brush(Tools new_mode);
+	void set_selected_color(const Color &color);
+	void set_brush(const Tools new_mode);
 
-	void change_color(Color new_color);
+	void change_color(const Color &new_color);
 
-	void _on_ColorPicker_color_changed(Color color);
+	void _on_ColorPicker_color_changed(const Color &color);
 	void _on_PaintTool_pressed();
 	void _on_BucketTool_pressed();
 	void _on_RainbowTool_pressed();
@@ -112,10 +112,10 @@ public:
 	void _on_CutTool_pressed();
 	void _on_Editor_visibility_changed();
 
-	void highlight_layer(String layer_name);
-	void toggle_layer_visibility(Node *button, String layer_name);
-	void select_layer(String layer_name);
-	void lock_layer(Node *button, String layer_name);
+	void highlight_layer(const String &layer_name);
+	void toggle_layer_visibility(Node *button, const String &layer_name);
+	void select_layer(const String &layer_name);
+	void lock_layer(Node *button, const String &layer_name);
 
 	Ref<PaintCanvasLayer> add_new_layer();
 	void remove_active_layer();
@@ -131,7 +131,7 @@ public:
 	void _on_PaintCanvasContainer_mouse_exited();
 	void _on_ColorPicker_popup_closed();
 
-	bool is_position_in_canvas(Vector2 pos);
+	bool is_position_in_canvas(const Vector2 &pos);
 
 	bool is_mouse_in_canvas();
 

@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "brighten_action.h"
 
-void BrightenAction::do_action(PaintCanvas *canvas, Array data) {
+void BrightenAction::do_action(PaintCanvas *canvas, const Array &data) {
 	/*
 	.do_action(canvas, data)
 

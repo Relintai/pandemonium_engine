@@ -30,12 +30,12 @@ SOFTWARE.
 bool PaintCanvasLayer::get_visible() {
 	return _visible;
 }
-void PaintCanvasLayer::set_visible(bool vis) {
+void PaintCanvasLayer::set_visible(const bool vis) {
 	_visible = vis;
 	texture_rect_ref->set_visible(_visible);
 }
 
-void PaintCanvasLayer::create(TextureRect *p_texture_rect_ref, int width, int height) {
+void PaintCanvasLayer::create(TextureRect *p_texture_rect_ref, const int width, const int height) {
 	texture_rect_ref = p_texture_rect_ref;
 
 	layer_width = width;
@@ -48,7 +48,7 @@ void PaintCanvasLayer::create(TextureRect *p_texture_rect_ref, int width, int he
 	update_texture();
 }
 
-void PaintCanvasLayer::resize(int width, int height) {
+void PaintCanvasLayer::resize(const int width, const int height) {
 	PoolColorArray pixel_colors;
 	int prev_width = layer_width;
 	int prev_height = layer_height;
@@ -84,12 +84,12 @@ void PaintCanvasLayer::resize(int width, int height) {
 
 	update_texture();
 }
-void PaintCanvasLayer::set_pixel(int x, int y, Color color) {
+void PaintCanvasLayer::set_pixel(const int x, const int y, const Color &color) {
 	image->lock();
 	image->set_pixel(x, y, color);
 	image->unlock();
 }
-Color PaintCanvasLayer::get_pixel(int x, int y) {
+Color PaintCanvasLayer::get_pixel(const int x, const int y) {
 	if (x < 0 || y < 0 || x >= image->get_width() || y >= image->get_height()) {
 		return Color();
 	}

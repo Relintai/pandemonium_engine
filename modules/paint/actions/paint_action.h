@@ -41,17 +41,17 @@ class PaintAction : public Reference {
 	GDCLASS(PaintAction, Reference);
 
 public:
-	virtual void do_action(PaintCanvas *canvas, Array data);
+	virtual void do_action(PaintCanvas *canvas, const Array &data);
 	virtual void commit_action(PaintCanvas *canvas);
 
 	virtual void undo_action(PaintCanvas *canvas);
 	virtual void redo_action(PaintCanvas *canvas);
 	virtual bool can_commit();
 
-	virtual PoolVector2iArray get_x_sym_points(int canvas_width, Vector2i pixel);
-	virtual PoolVector2iArray get_y_sym_points(int canvas_height, Vector2i pixel);
-	virtual PoolVector2iArray get_xy_sym_points(int canvas_width, int canvas_height, Vector2i pixel);
-	virtual PoolVector2iArray get_points(PaintCanvas *canvas, Vector2i pixel);
+	virtual PoolVector2iArray get_x_sym_points(const int canvas_width, const Vector2i &pixel);
+	virtual PoolVector2iArray get_y_sym_points(const int canvas_height, const Vector2i &pixel);
+	virtual PoolVector2iArray get_xy_sym_points(const int canvas_width, const int canvas_height, const Vector2i &pixel);
+	virtual PoolVector2iArray get_points(PaintCanvas *canvas, const Vector2i &pixel);
 
 	PaintAction();
 	~PaintAction();

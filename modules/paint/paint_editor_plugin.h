@@ -29,7 +29,7 @@ class PaintEditorPlugin : public EditorPlugin {
 	GDCLASS(PaintEditorPlugin, EditorPlugin);
 
 public:
-	void make_visible(bool visible);
+	void make_visible(const bool visible);
 	const Ref<Texture> get_icon() const;
 	bool has_main_screen() const;
 	String get_name() const;

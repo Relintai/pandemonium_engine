@@ -35,7 +35,7 @@ if not rect_size == Vector2():
 		draw_outline_box(rect_size, Color.gray, outline_size)
 	*/
 }
-void PaintSelectionBox::draw_outline_box(Vector2 size, Color color, int width) {
+void PaintSelectionBox::draw_outline_box(const Vector2 &size, const Color &color, const int width) {
 	/*
 		#Top line
 		draw_line(Vector2(0 + 1, 0), Vector2(size.x, 0), color, width)

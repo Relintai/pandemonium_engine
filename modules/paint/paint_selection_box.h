@@ -33,7 +33,7 @@ class PaintSelectionBox : public Control {
 public:
 	void _process(float delta);
 	void _draw();
-	void draw_outline_box(Vector2 size, Color color, int width);
+	void draw_outline_box(const Vector2 &size, const Color &color, const int width);
 
 	PaintSelectionBox();
 	~PaintSelectionBox();

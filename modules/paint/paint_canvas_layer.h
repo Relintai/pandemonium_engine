@@ -49,13 +49,13 @@ public:
 	TextureRect *texture_rect_ref;
 
 	bool get_visible();
-	void set_visible(bool vis);
+	void set_visible(const bool vis);
 
-	void create(TextureRect *p_texture_rect_ref, int width, int height);
+	void create(TextureRect *p_texture_rect_ref, const int width, const int height);
 
-	void resize(int width, int height);
-	void set_pixel(int x, int y, Color color);
-	Color get_pixel(int x, int y);
+	void resize(const int width, const int height);
+	void set_pixel(const int x, const int y, const Color &color);
+	Color get_pixel(const int x, const int y);
 	void clear();
 	void update_texture();
 

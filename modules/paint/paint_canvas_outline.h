@@ -31,7 +31,7 @@ class PaintCanvasOutline : public Control {
 	GDCLASS(PaintCanvasOutline, Control);
 
 public:
-	void draw_outline_box(Vector2 pos, Vector2 size, Color color, int width);
+	void draw_outline_box(const Vector2 &pos, const Vector2 &size, const Color &color, const int width);
 
 	PaintCanvasOutline();
 	~PaintCanvasOutline();

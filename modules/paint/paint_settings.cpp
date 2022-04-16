@@ -30,12 +30,12 @@ void PaintTextInfo::_enter_tree() {
 	editor = get_parent()
 	*/
 }
-void PaintTextInfo::_on_ColorPickerButton_color_changed(Color color) {
+void PaintTextInfo::_on_ColorPickerButton_color_changed(const Color &color) {
 	/*
 	canvas_outline.color = color
 	*/
 }
-void PaintTextInfo::_on_CheckButton_toggled(bool button_pressed) {
+void PaintTextInfo::_on_CheckButton_toggled(const bool button_pressed) {
 	/*
 	canvas_outline.visible = button_pressed
 	*/

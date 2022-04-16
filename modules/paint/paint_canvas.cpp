@@ -72,7 +72,7 @@ void PaintCanvas::_draw() {
 	*/
 }
 
-void PaintCanvas::resize(int width, int height) {
+void PaintCanvas::resize(const int width, const int height) {
 	/*
 	if width < 0:
 		width = 1
@@ -88,7 +88,7 @@ void PaintCanvas::resize(int width, int height) {
 		layer.resize(width, height)
 	*/
 }
-void PaintCanvas::set_pixel_size(int size) {
+void PaintCanvas::set_pixel_size(const int size) {
 	/*
 	pixel_size = size
 	set_grid_size(grid_size)
@@ -97,7 +97,7 @@ void PaintCanvas::set_pixel_size(int size) {
 	set_canvas_height(canvas_height)
 	*/
 }
-void PaintCanvas::set_grid_size(int size) {
+void PaintCanvas::set_grid_size(const int size) {
 	/*
 	grid_size = size
 	if not find_node("Grid"):
@@ -105,7 +105,7 @@ void PaintCanvas::set_grid_size(int size) {
 	find_node("Grid").size = size * pixel_size
 	*/
 }
-void PaintCanvas::set_big_grid_size(int size) {
+void PaintCanvas::set_big_grid_size(const int size) {
 	/*
 	big_grid_size = size
 	if not find_node("BigGrid"):
@@ -113,19 +113,19 @@ void PaintCanvas::set_big_grid_size(int size) {
 	find_node("BigGrid").size = size * pixel_size
 	*/
 }
-void PaintCanvas::set_canvas_width(int val) {
+void PaintCanvas::set_canvas_width(const int val) {
 	/*
 	canvas_width = val
 	rect_size.x = canvas_width * pixel_size
 	*/
 }
-void PaintCanvas::set_canvas_height(int val) {
+void PaintCanvas::set_canvas_height(const int val) {
 	/*
 	canvas_height = val
 	rect_size.y = canvas_height * pixel_size
 	*/
 }
-void PaintCanvas::toggle_alpha_locked(String layer_name) {
+void PaintCanvas::toggle_alpha_locked(const String &layer_name) {
 	/*
 	var layer = find_layer_by_name(layer_name)
 	layer.toggle_alpha_locked()
@@ -196,7 +196,7 @@ void PaintCanvas::clear_preview_layer() {
 	*/
 }
 
-void PaintCanvas::clear_layer(String layer_name) {
+void PaintCanvas::clear_layer(const String &layer_name) {
 	/*
 	for layer in layers:
 		if layer.name == layer_name:
@@ -204,7 +204,7 @@ void PaintCanvas::clear_layer(String layer_name) {
 			break
 	*/
 }
-Node *PaintCanvas::remove_layer(String layer_name) {
+Node *PaintCanvas::remove_layer(const String &layer_name) {
 	/*
 	# change current layer if the active layer is removed
 	var del_layer = find_layer_by_name(layer_name)
@@ -219,7 +219,7 @@ Node *PaintCanvas::remove_layer(String layer_name) {
 	return active_layer
 	*/
 }
-Node *PaintCanvas::add_new_layer(String layer_name) {
+Node *PaintCanvas::add_new_layer(const String &layer_name) {
 	/*
 	for layer in layers:
 		if layer.name == layer_name:
@@ -247,7 +247,7 @@ Node *PaintCanvas::add_new_layer(String layer_name) {
 	return layer
 	*/
 }
-Node *PaintCanvas::duplicate_layer(String layer_name, String new_layer_name) {
+Node *PaintCanvas::duplicate_layer(const String &layer_name, const String &new_layer_name) {
 	/*
 	for layer in layers:
 		if layer.name == new_layer_name:
@@ -259,14 +259,14 @@ Node *PaintCanvas::duplicate_layer(String layer_name, String new_layer_name) {
 	return layer
 	*/
 }
-void PaintCanvas::toggle_layer_visibility(String layer_name) {
+void PaintCanvas::toggle_layer_visibility(const String &layer_name) {
 	/*
 	for layer in layers:
 		if layer.name == layer_name:
 			layer.visible = not layer.visible
 	*/
 }
-Node *PaintCanvas::find_layer_by_name(String layer_name) {
+Node *PaintCanvas::find_layer_by_name(const String &layer_name) {
 	/*
 	for layer in layers:
 		if layer.name == layer_name:
@@ -274,7 +274,7 @@ Node *PaintCanvas::find_layer_by_name(String layer_name) {
 	return null
 	*/
 }
-void PaintCanvas::toggle_lock_layer(String layer_name) {
+void PaintCanvas::toggle_lock_layer(const String &layer_name) {
 	/*
 	find_layer_by_name(layer_name).toggle_lock()
 	*/
@@ -284,21 +284,21 @@ bool PaintCanvas::is_active_layer_locked() {
 	return active_layer.locked
 	*/
 }
-void PaintCanvas::move_layer_forward(String layer_name) {
+void PaintCanvas::move_layer_forward(const String &layer_name) {
 	/*
 	var layer = find_layer_by_name(layer_name).texture_rect_ref
 	var new_idx = max(layer.get_index() - 1, 0)
 	canvas_layers.move_child(layer, new_idx)
 	*/
 }
-void PaintCanvas::move_layer_back(String layer_name) {
+void PaintCanvas::move_layer_back(const String &layer_name) {
 	/*
 	var layer = find_layer_by_name(layer_name).texture_rect_ref
 	canvas_layers.move_child(layer, layer.get_index() + 1)
 	*/
 }
 
-void PaintCanvas::select_layer(String layer_name) {
+void PaintCanvas::select_layer(const String &layer_name) {
 	/*
 	active_layer = find_layer_by_name(layer_name)
 	*/
@@ -313,7 +313,7 @@ void PaintCanvas::_on_mouse_exited() {
 	mouse_on_top = false
 	*/
 }
-bool PaintCanvas::is_inside_canvas(int x, int y) {
+bool PaintCanvas::is_inside_canvas(const int x, const int y) {
 	/*
 	if x < 0 or y < 0:
 		return false
@@ -326,66 +326,66 @@ bool PaintCanvas::is_inside_canvas(int x, int y) {
 //Note: Arrays are always passed by reference. To get a copy of an array which
 //      can be modified independently of the original array, use duplicate.
 // (https://docs.godotengine.org/en/stable/classes/class_array.html)
-void PaintCanvas::set_pixel_arr(Array pixels, Color color) {
+void PaintCanvas::set_pixel_arr(const Array &pixels, const Color &color) {
 	/*
 	for pixel in pixels:
 		_set_pixel(active_layer, pixel.x, pixel.y, color)
 	*/
 }
-void PaintCanvas::set_pixel_v(Vector2 pos, Color color) {
+void PaintCanvas::set_pixel_v(const Vector2 &pos, const Color &color) {
 	/*
 	set_pixel(pos.x, pos.y, color)
 	*/
 }
-void PaintCanvas::set_pixel(int x, int y, Color color) {
+void PaintCanvas::set_pixel(const int x, const int y, const Color &color) {
 	/*
 	_set_pixel(active_layer, x, y, color)
 	*/
 }
-void PaintCanvas::_set_pixel_v(PaintCanvasLayer *layer, Vector2 v, Color color) {
+void PaintCanvas::_set_pixel_v(PaintCanvasLayer *layer, const Vector2 &v, const Color &color) {
 	/*
 	_set_pixel(layer, v.x, v.y, color)
 	*/
 }
-void PaintCanvas::_set_pixel(PaintCanvasLayer *layer, int x, int y, Color color) {
+void PaintCanvas::_set_pixel(PaintCanvasLayer *layer, const int x, const int y, const Color &color) {
 	/*
 	if not is_inside_canvas(x, y):
 		return
 	layer.set_pixel(x, y, color)
 	*/
 }
-Color PaintCanvas::get_pixel_v(Vector2 pos) {
+Color PaintCanvas::get_pixel_v(const Vector2 &pos) {
 	/*
 	return get_pixel(pos.x, pos.y)
 	*/
 }
-Color PaintCanvas::get_pixel(int x, int y) {
+Color PaintCanvas::get_pixel(const int x, const int y) {
 	/*
 	if active_layer:
 		return active_layer.get_pixel(x, y)
 	return null
 	*/
 }
-void PaintCanvas::set_preview_pixel_v(Vector2 pos, Color color) {
+void PaintCanvas::set_preview_pixel_v(const Vector2 &pos, const Color &color) {
 	/*
 	set_preview_pixel(pos.x, pos.y, color)
 	*/
 }
 
-void PaintCanvas::set_preview_pixel(int x, int y, Color color) {
+void PaintCanvas::set_preview_pixel(const int x, const int y, const Color &color) {
 	/*
 	if not is_inside_canvas(x, y):
 		return
 	preview_layer.set_pixel(x, y, color)
 	*/
 }
-Color PaintCanvas::get_preview_pixel_v(Vector2 pos) {
+Color PaintCanvas::get_preview_pixel_v(const Vector2 &pos) {
 	/*
 	return get_preview_pixel(pos.x, pos.y)
 	*/
 }
 
-Color PaintCanvas::get_preview_pixel(int x, int y) {
+Color PaintCanvas::get_preview_pixel(const int x, const int y) {
 	/*
 	if not preview_layer:
 		return null
@@ -408,7 +408,7 @@ void PaintCanvas::hide_grid() {
 	*/
 }
 
-Array PaintCanvas::select_color(int x, int y) {
+Array PaintCanvas::select_color(const int x, const int y) {
 	/*
 	print("???")
 	var same_color_pixels = []
@@ -421,7 +421,7 @@ Array PaintCanvas::select_color(int x, int y) {
 	return same_color_pixels
 	*/
 }
-Array PaintCanvas::select_same_color(int x, int y) {
+Array PaintCanvas::select_same_color(const int x, const int y) {
 	/*
 	return get_neighbouring_pixels(x, y)
 	*/
@@ -430,7 +430,7 @@ Array PaintCanvas::select_same_color(int x, int y) {
 // returns array of Vector2
 // yoinked from
 // https://www.geeksforgeeks.org/flood-fill-algorithm-implement-fill-paint/
-Array PaintCanvas::get_neighbouring_pixels(int pos_x, int pos_y) {
+Array PaintCanvas::get_neighbouring_pixels(const int pos_x, const int pos_y) {
 	/*
 	var pixels = []
 

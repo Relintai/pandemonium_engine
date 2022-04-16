@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "line_action.h"
 
-void LineAction::do_action(PaintCanvas *canvas, Array data) {
+void LineAction::do_action(PaintCanvas *canvas, const Array &data) {
 	/*
 	.do_action(canvas, data)
 	

@@ -27,7 +27,7 @@ SOFTWARE.
 #include "mdi_gizmo.h"
 #include "mdi_gizmo_plugin.h"
 
-void PaintEditorPlugin::make_visible(bool visible) {
+void PaintEditorPlugin::make_visible(const bool visible) {
 	/*
 if editor_scene:
 		editor_scene.visible = visible

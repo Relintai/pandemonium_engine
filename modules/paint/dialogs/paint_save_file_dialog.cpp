@@ -33,7 +33,7 @@ void PaintSaveFileDialog::_ready() {
 	add_filter("*.png ; PNG Images")
 	*/
 }
-void PaintSaveFileDialog::_on_SaveFileDialog_file_selected(String path) {
+void PaintSaveFileDialog::_on_SaveFileDialog_file_selected(const String &path) {
 	/*
 	#print("selected file: ", path)
 	file_path = path

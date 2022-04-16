@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "paint_load_file_dialog.h"
 
-void PaintLoadFileDialog::_on_LoadFileDialog_file_selected(String path) {
+void PaintLoadFileDialog::_on_LoadFileDialog_file_selected(const String &path) {
 	/*
 	file_path = path
 	#print("1ere")

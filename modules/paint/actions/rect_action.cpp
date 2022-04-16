@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "rect_action.h"
 
-void RectAction::do_action(PaintCanvas *canvas, Array data) {
+void RectAction::do_action(PaintCanvas *canvas, const Array &data) {
 	/*
 	.do_action(canvas, data)
 

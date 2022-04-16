@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "darken_action.h"
 
-void DarkenAction::do_action(PaintCanvas *canvas, Array data) {
+void DarkenAction::do_action(PaintCanvas *canvas, const Array &data) {
 	/*
 	.do_action(canvas, data)
 

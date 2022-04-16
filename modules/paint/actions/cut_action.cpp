@@ -28,7 +28,7 @@ bool CutAction::can_commit() {
 	return false; //ugly way of handling a cut
 }
 
-void CutAction::do_action(PaintCanvas *canvas, Array data) {
+void CutAction::do_action(PaintCanvas *canvas, const Array &data) {
 	/*
 	.do_action(canvas, data)
 

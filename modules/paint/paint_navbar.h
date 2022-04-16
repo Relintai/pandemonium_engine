@@ -32,16 +32,16 @@ class PaintNavbar : public Control {
 
 public:
 	void _ready();
-	void button_pressed(String button_name, Node *button_item, int id);
+	void button_pressed(const String &button_name, Node *button_item, const int id);
 
-	void handle_file_menu(String pressed_item, int id);
-	void handle_edit_menu(String pressed_item, int id);
-	void handle_canvas_menu(String pressed_item, int id);
-	void handle_layer_menu(String pressed_item, int id);
-	void handle_grid_menu(String pressed_item, int id);
+	void handle_file_menu(const String &pressed_item, const int id);
+	void handle_edit_menu(const String &pressed_item, const int id);
+	void handle_canvas_menu(const String &pressed_item, const int id);
+	void handle_layer_menu(const String &pressed_item, const int id);
+	void handle_grid_menu(const String &pressed_item, const int id);
 
-	void handle_magic_menu(String pressed_item, int id);
-	void handle_editor_menu(String pressed_item, int id);
+	void handle_magic_menu(const String &pressed_item, const int id);
+	void handle_editor_menu(const String &pressed_item, const int id);
 	bool is_any_menu_open();
 
 	PaintNavbar();
