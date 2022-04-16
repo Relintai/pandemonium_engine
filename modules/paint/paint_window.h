@@ -32,7 +32,23 @@ SOFTWARE.
 
 class PaintAction;
 class PaintCanvasLayer;
+class PaintCanvas;
 class InputEvent;
+class PaintCanvasDialog;
+class PaintChangeGridSizeDialog;
+class PaintLoadFileDialog;
+class PaintSaveFileDialog;
+class PaintSettings;
+class RichTextLabel;
+class PaintNavbar;
+class PaintColorGrid;
+class CheckButton;
+class Label;
+class HSlider;
+class Control;
+class Button;
+class ColorPickerButton;
+class VBoxContainer;
 
 class PaintWindow : public Control {
 	GDCLASS(PaintWindow, Control);
@@ -148,6 +164,44 @@ public:
 
 	PaintWindow();
 	~PaintWindow();
+
+	PaintCanvasDialog *paint_canvas_dialog;
+	PaintChangeGridSizeDialog *paint_change_grid_size_dialog;
+	PaintLoadFileDialog *paint_load_file_dialog;
+	PaintSaveFileDialog *paint_save_file_dialog;
+	PaintSettings *paint_settings_dialog;
+
+	RichTextLabel *text_info;
+
+	PaintNavbar *navbar;
+	PaintColorGrid *color_grid;
+
+	CheckButton *lock_alpha_button;
+
+	Label *brush_size_label;
+	HSlider *brush_size_slider;
+
+	CheckButton *x_symmetry_button;
+	CheckButton *y_symmetry_button;
+
+	Control *paint_canvas_container;
+	PaintCanvas *paint_canvas;
+
+	Button *paint_tool_button;
+	Button *brush_tool_button;
+	Button *multi_tool_button;
+	Button *bucket_tool_button;
+	Button *rainbow_tool_button;
+	Button *line_tool_button;
+	Button *rect_tool_button;
+	Button *darken_tool_button;
+	Button *brighten_tool_button;
+	Button *color_picker_tool_button;
+	Button *cut_tool_button;
+	ColorPickerButton *color_picker_button;
+
+	VBoxContainer *layers_box_container;
+	Button *add_layer_button;
 
 protected:
 	static void _bind_methods();

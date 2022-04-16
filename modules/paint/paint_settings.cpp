@@ -24,29 +24,29 @@ SOFTWARE.
 
 #include "paint_settings.h"
 
-void PaintTextInfo::_enter_tree() {
+void PaintSettings::_enter_tree() {
 	/*
 	canvas_outline = get_parent().find_node("CanvasOutline")
 	editor = get_parent()
 	*/
 }
-void PaintTextInfo::_on_ColorPickerButton_color_changed(const Color &color) {
+void PaintSettings::_on_ColorPickerButton_color_changed(const Color &color) {
 	/*
 	canvas_outline.color = color
 	*/
 }
-void PaintTextInfo::_on_CheckButton_toggled(const bool button_pressed) {
+void PaintSettings::_on_CheckButton_toggled(const bool button_pressed) {
 	/*
 	canvas_outline.visible = button_pressed
 	*/
 }
-void PaintTextInfo::_on_Ok_pressed() {
+void PaintSettings::_on_Ok_pressed() {
 	/*
 	hide()
 	*/
 }
 
-PaintTextInfo::PaintTextInfo() {
+PaintSettings::PaintSettings() {
 	/*
 
 [gd_scene load_steps=2 format=2]
@@ -118,8 +118,8 @@ margin_bottom = 20.0
 	*/
 }
 
-PaintTextInfo::~PaintTextInfo() {
+PaintSettings::~PaintSettings() {
 }
 
-void PaintTextInfo::_bind_methods() {
+void PaintSettings::_bind_methods() {
 }

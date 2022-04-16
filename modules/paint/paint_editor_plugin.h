@@ -24,6 +24,10 @@ SOFTWARE.
 */
 
 #include "editor/editor_plugin.h"
+#include "core/reference.h"
+
+class PaintWindow;
+class Texture;
 
 class PaintEditorPlugin : public EditorPlugin {
 	GDCLASS(PaintEditorPlugin, EditorPlugin);
@@ -39,10 +43,12 @@ public:
 
 	EditorNode *editor;
 
-	//var editor_scene = load("res://addons/Godoxel/Editor.tscn").instance()
+	PaintWindow *window;
 
 protected:
 	static void _bind_methods();
+
+	Ref<Texture> _icon;
 };
 
 #endif

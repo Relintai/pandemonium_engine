@@ -6,8 +6,6 @@ module_env = env.Clone()
 
 module_env.add_source_files(env.modules_sources,"register_types.cpp")
 
-module_env.add_source_files(env.modules_sources,"paint_utilities.cpp")
-
 module_env.add_source_files(env.modules_sources,"actions/paint_action.cpp")
 module_env.add_source_files(env.modules_sources,"actions/brighten_action.cpp")
 module_env.add_source_files(env.modules_sources,"actions/brush_action.cpp")
@@ -38,7 +36,6 @@ module_env.add_source_files(env.modules_sources,"paint_layer_button.cpp")
 module_env.add_source_files(env.modules_sources,"paint_navbar.cpp")
 module_env.add_source_files(env.modules_sources,"paint_selection_box.cpp")
 module_env.add_source_files(env.modules_sources,"paint_settings.cpp")
-module_env.add_source_files(env.modules_sources,"paint_text_info.cpp")
 module_env.add_source_files(env.modules_sources,"paint_utilities.cpp")
 
 module_env.add_source_files(env.modules_sources,"paint_visual_grid.cpp")

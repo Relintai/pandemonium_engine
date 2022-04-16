@@ -32,6 +32,11 @@ void PaintColorGrid::change_color_to(const Color &color) {
 }
 void PaintColorGrid::add_color_prefab(const Color &color) {
 	Button *button = memnew(Button);
+	
+	button->set_custom_minimum_size(Size2(25, 25));
+	button->set_h_size_flags(SIZE_EXPAND_FILL);
+	button->set_v_size_flags(SIZE_EXPAND_FILL);
+
 	add_child(button);
 	move_child(button, 0);
 

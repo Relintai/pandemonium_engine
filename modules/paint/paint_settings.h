@@ -27,8 +27,8 @@ SOFTWARE.
 
 #include "scene/gui/control.h"
 
-class PaintTextInfo : public Control {
-	GDCLASS(PaintTextInfo, Control);
+class PaintSettings : public Control {
+	GDCLASS(PaintSettings, Control);
 
 public:
 	void _enter_tree();
@@ -36,8 +36,8 @@ public:
 	void _on_CheckButton_toggled(const bool button_pressed);
 	void _on_Ok_pressed();
 
-	PaintTextInfo();
-	~PaintTextInfo();
+	PaintSettings();
+	~PaintSettings();
 
 protected:
 	static void _bind_methods();
