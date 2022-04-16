@@ -24,6 +24,9 @@ SOFTWARE.
 
 #include "paint_window.h"
 
+#include "paint_canvas_layer.h"
+#include "actions/paint_action.h"
+
 void PaintWindow::_input(const Ref<InputEvent> &event) {
 	/*
 	if is_any_menu_open():
@@ -446,6 +449,8 @@ Ref<PaintAction> PaintWindow::get_action() {
 			#print("no tool!")
 			return null
 	*/
+
+	return Ref<PaintAction>();
 }
 
 void PaintWindow::set_selected_color(const Color &color) {
@@ -592,6 +597,8 @@ Ref<PaintCanvasLayer> PaintWindow::add_new_layer() {
 	#print("added layer: ", layer.name)
 	return layer
 	*/
+
+	return Ref<PaintCanvasLayer>();
 }
 void PaintWindow::remove_active_layer() {
 	/*
@@ -703,6 +710,8 @@ bool PaintWindow::is_position_in_canvas(const Vector2 &pos) {
 		return true
 	return false
 	*/
+
+	return false;
 }
 
 bool PaintWindow::is_mouse_in_canvas() {
@@ -712,6 +721,7 @@ bool PaintWindow::is_mouse_in_canvas() {
 	else:
 		return false
 	*/
+	return false;
 }
 
 bool PaintWindow::is_any_menu_open() {
@@ -723,6 +733,7 @@ bool PaintWindow::is_any_menu_open() {
 			$SaveFileDialog.visible or \
 			find_node("Navbar").is_any_menu_open()
 	*/
+	return false;
 }
 
 void PaintWindow::_on_LockAlpha_pressed() {

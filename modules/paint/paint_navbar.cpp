@@ -151,6 +151,8 @@ bool PaintNavbar::is_any_menu_open() {
 			return true
 	return false
 	*/
+
+	return false;
 }
 
 PaintNavbar::PaintNavbar() {

@@ -27,7 +27,7 @@ SOFTWARE.
 //TODO: To make reading the text easier, the text info with the longest text should have it's length applied to all the
 //the other text infos
 
-void PaintTextInfo::add_text_info(String text_name, Node *custom_node) {
+void PaintTextInfo::add_text_info(const String &text_name, Node *custom_node) {
 	/*
 	var last_text_info_child = null
 	var child_count = get_child_count()
@@ -50,7 +50,7 @@ void PaintTextInfo::add_text_info(String text_name, Node *custom_node) {
 	add_child(label)
 	*/
 }
-void PaintTextInfo::update_text_info(String text_name, Node *text_value, Node *node, Node *node_target_value, Node *node_value) {
+void PaintTextInfo::update_text_info(const String &text_name, Node *text_value, Node *node, Node *node_target_value, Node *node_value) {
 	/*
 	var text_label = self.get_node(text_name)
 	if text_label == null:

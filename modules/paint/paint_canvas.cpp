@@ -135,6 +135,7 @@ bool PaintCanvas::is_alpha_locked() {
 	/*
 	return active_layer.alpha_locked
 	*/
+	return false;
 }
 Rect2 PaintCanvas::get_content_margin() {
 	/*
@@ -156,6 +157,8 @@ Rect2 PaintCanvas::get_content_margin() {
 
 	return rect
 	*/
+
+	return Rect2();
 }
 void PaintCanvas::crop_to_content() {
 	/*
@@ -179,11 +182,14 @@ Node *PaintCanvas::get_active_layer() {
 	/*
 	return active_layer
 	*/
+
+	return nullptr;
 }
 Node *PaintCanvas::get_preview_layer() {
 	/*
 	return preview_layer
 	*/
+	return nullptr;
 }
 void PaintCanvas::clear_active_layer() {
 	/*
@@ -218,6 +224,7 @@ Node *PaintCanvas::remove_layer(const String &layer_name) {
 	layers.erase(del_layer)
 	return active_layer
 	*/
+	return nullptr;
 }
 Node *PaintCanvas::add_new_layer(const String &layer_name) {
 	/*
@@ -246,6 +253,7 @@ Node *PaintCanvas::add_new_layer(const String &layer_name) {
 
 	return layer
 	*/
+	return nullptr;
 }
 Node *PaintCanvas::duplicate_layer(const String &layer_name, const String &new_layer_name) {
 	/*
@@ -258,6 +266,7 @@ Node *PaintCanvas::duplicate_layer(const String &layer_name, const String &new_l
 	layer.image.copy_from(dup_layer.image)
 	return layer
 	*/
+	return nullptr;
 }
 void PaintCanvas::toggle_layer_visibility(const String &layer_name) {
 	/*
@@ -273,6 +282,7 @@ Node *PaintCanvas::find_layer_by_name(const String &layer_name) {
 			return layer
 	return null
 	*/
+	return nullptr;
 }
 void PaintCanvas::toggle_lock_layer(const String &layer_name) {
 	/*
@@ -283,6 +293,8 @@ bool PaintCanvas::is_active_layer_locked() {
 	/*
 	return active_layer.locked
 	*/
+
+	return false;
 }
 void PaintCanvas::move_layer_forward(const String &layer_name) {
 	/*
@@ -321,6 +333,7 @@ bool PaintCanvas::is_inside_canvas(const int x, const int y) {
 		return false
 	return true
 	*/
+	return false;
 }
 
 //Note: Arrays are always passed by reference. To get a copy of an array which
@@ -358,6 +371,7 @@ Color PaintCanvas::get_pixel_v(const Vector2 &pos) {
 	/*
 	return get_pixel(pos.x, pos.y)
 	*/
+	return Color();
 }
 Color PaintCanvas::get_pixel(const int x, const int y) {
 	/*
@@ -365,6 +379,7 @@ Color PaintCanvas::get_pixel(const int x, const int y) {
 		return active_layer.get_pixel(x, y)
 	return null
 	*/
+	return Color();
 }
 void PaintCanvas::set_preview_pixel_v(const Vector2 &pos, const Color &color) {
 	/*
@@ -383,6 +398,7 @@ Color PaintCanvas::get_preview_pixel_v(const Vector2 &pos) {
 	/*
 	return get_preview_pixel(pos.x, pos.y)
 	*/
+	return Color();
 }
 
 Color PaintCanvas::get_preview_pixel(const int x, const int y) {
@@ -391,6 +407,7 @@ Color PaintCanvas::get_preview_pixel(const int x, const int y) {
 		return null
 	return preview_layer.get_pixel(x, y)
 	*/
+	return Color();
 }
 void PaintCanvas::toggle_grid() {
 	/*
@@ -420,11 +437,14 @@ Array PaintCanvas::select_color(const int x, const int y) {
 				same_color_pixels.append(color)
 	return same_color_pixels
 	*/
+	return Array();
 }
 Array PaintCanvas::select_same_color(const int x, const int y) {
 	/*
 	return get_neighbouring_pixels(x, y)
 	*/
+
+	return Array();
 }
 
 // returns array of Vector2
@@ -481,6 +501,7 @@ Array PaintCanvas::get_neighbouring_pixels(const int pos_x, const int pos_y) {
 
 	return pixels
 	*/
+	return Array();
 }
 
 PaintCanvas::PaintCanvas() {

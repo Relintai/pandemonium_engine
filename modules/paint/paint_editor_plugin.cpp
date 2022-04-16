@@ -22,11 +22,6 @@ SOFTWARE.
 
 #include "paint_editor_plugin.h"
 
-#include "../nodes/mesh_data_instance.h"
-#include "mdi_ed.h"
-#include "mdi_gizmo.h"
-#include "mdi_gizmo_plugin.h"
-
 void PaintEditorPlugin::make_visible(const bool visible) {
 	/*
 if editor_scene:
