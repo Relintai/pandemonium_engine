@@ -1055,7 +1055,6 @@ PaintWindow::PaintWindow() {
 	paint_canvas->set_h_size_flags(SIZE_EXPAND_FILL);
 	paint_canvas->set_v_size_flags(SIZE_EXPAND_FILL);
 	paint_canvas->set_size(Size2(256, 256));
-	paint_canvas->set_position(Point2());
 	paint_canvas->set_anchors_and_margins_preset(Control::PRESET_CENTER);
 	paint_canvas_container->add_child(paint_canvas);
 	navbar->canvas = paint_canvas;

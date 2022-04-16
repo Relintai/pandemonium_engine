@@ -67,16 +67,16 @@ public:
 	Rect2 get_content_margin();
 	void crop_to_content();
 
-	Node *get_active_layer();
-	Node *get_preview_layer();
+	Ref<PaintCanvasLayer> get_active_layer();
+	Ref<PaintCanvasLayer> get_preview_layer();
 	void clear_active_layer();
 	void clear_preview_layer();
 	void clear_layer(const String &layer_name);
-	Node *remove_layer(const String &layer_name);
-	Node *add_new_layer(const String &layer_name);
-	Node *duplicate_layer(const String &layer_name, const String &new_layer_name);
+	Ref<PaintCanvasLayer> remove_layer(const String &layer_name);
+	Ref<PaintCanvasLayer> add_new_layer(const String &layer_name);
+	Ref<PaintCanvasLayer> duplicate_layer(const String &layer_name, const String &new_layer_name);
 	void toggle_layer_visibility(const String &layer_name);
-	Node *find_layer_by_name(const String &layer_name);
+	Ref<PaintCanvasLayer> find_layer_by_name(const String &layer_name);
 	void toggle_lock_layer(const String &layer_name);
 	bool is_active_layer_locked();
 	void move_layer_forward(const String &layer_name);
@@ -87,27 +87,27 @@ public:
 	void _on_mouse_exited();
 
 	bool is_inside_canvas(const int x, const int y);
-	void set_pixel_arr(const Array &pixels, const Color &color);
-	void set_pixel_v(const Vector2 &pos, const Color &color);
+	void set_pixel_arr(const PoolVector2iArray &pixels, const Color &color);
+	void set_pixel_v(const Vector2i &pos, const Color &color);
 	void set_pixel(const int x, const int y, const Color &color);
-	void _set_pixel_v(PaintCanvasLayer *layer, const Vector2 &v, const Color &color);
-	void _set_pixel(PaintCanvasLayer *layer, const int x, const int y, const Color &color);
-	Color get_pixel_v(const Vector2 &pos);
+	void _set_pixel_v(Ref<PaintCanvasLayer> layer, const Vector2i &v, const Color &color);
+	void _set_pixel(Ref<PaintCanvasLayer> layer, const int x, const int y, const Color &color);
+	Color get_pixel_v(const Vector2i &pos);
 	Color get_pixel(const int x, const int y);
-	void set_preview_pixel_v(const Vector2 &pos, const Color &color);
+	void set_preview_pixel_v(const Vector2i &pos, const Color &color);
 	void set_preview_pixel(const int x, const int y, const Color &color);
-	Color get_preview_pixel_v(const Vector2 &pos);
+	Color get_preview_pixel_v(const Vector2i &pos);
 	Color get_preview_pixel(const int x, const int y);
 
 	void toggle_grid();
 	void show_grid();
 	void hide_grid();
 
-	Array select_color(const int x, const int y);
-	Array select_same_color(const int x, const int y);
-	Array get_neighbouring_pixels(const int pos_x, const int pos_y);
+	PoolVector2iArray select_color(const int x, const int y);
+	PoolVector2iArray select_same_color(const int x, const int y);
+	PoolVector2iArray get_neighbouring_pixels(const int pos_x, const int pos_y);
 
-	void resize(const int width, const int height);
+	void resize(int width, int height);
 
 	PaintCanvas();
 	~PaintCanvas();
@@ -136,6 +136,7 @@ public:
 	Array selected_pixels;
 
 protected:
+	void _notification(int p_what);
 	static void _bind_methods();
 
 	int _pixel_size;
