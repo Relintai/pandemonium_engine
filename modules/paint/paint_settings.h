@@ -25,10 +25,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "scene/gui/control.h"
+#include "scene/gui/dialogs.h"
 
-class PaintSettings : public Control {
-	GDCLASS(PaintSettings, Control);
+class PaintSettings : public WindowDialog {
+	GDCLASS(PaintSettings, WindowDialog);
 
 public:
 	void _enter_tree();

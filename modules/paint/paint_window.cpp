@@ -28,11 +28,13 @@ SOFTWARE.
 #include "paint_canvas.h"
 #include "paint_canvas_layer.h"
 #include "paint_color_grid.h"
-#include "paint_navbar.h"
 #include "paint_layer_button.h"
+#include "paint_navbar.h"
 #include "scene/resources/style_box.h"
 
+#include "scene/gui/button.h"
 #include "scene/gui/check_button.h"
+#include "scene/gui/color_picker.h"
 #include "scene/gui/label.h"
 #include "scene/gui/margin_container.h"
 #include "scene/gui/panel_container.h"
@@ -40,8 +42,6 @@ SOFTWARE.
 #include "scene/gui/scroll_container.h"
 #include "scene/gui/slider.h"
 #include "scene/gui/texture_button.h"
-#include "scene/gui/button.h"
-#include "scene/gui/color_picker.h"
 
 #include "dialogs/paint_canvas_dialog.h"
 #include "dialogs/paint_change_grid_size_dialog.h"
@@ -930,6 +930,7 @@ PaintWindow::PaintWindow() {
 
 	//Main Content Top (Navbar)
 	navbar = memnew(PaintNavbar);
+	navbar->paint_window = this;
 	navbar->set_h_size_flags(SIZE_EXPAND_FILL);
 	main_content_container->add_child(navbar);
 
@@ -1056,6 +1057,7 @@ PaintWindow::PaintWindow() {
 	paint_canvas->set_size(Size2(256, 256));
 	paint_canvas->set_anchors_and_margins_preset(Control::PRESET_CENTER);
 	paint_canvas_container->add_child(paint_canvas);
+	navbar->canvas = paint_canvas;
 
 	//Main Content Mid (App) -- Right Panel
 	PanelContainer *mid_right_panel_container = memnew(PanelContainer);

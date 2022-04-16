@@ -25,35 +25,67 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "scene/gui/control.h"
+#include "scene/gui/box_container.h"
 
-class PaintNavbar : public Control {
-	GDCLASS(PaintNavbar, Control);
+class PaintWindow;
+class PaintCanvas;
+class MenuButton;
+
+class PaintNavbar : public BoxContainer {
+	GDCLASS(PaintNavbar, BoxContainer);
 
 public:
-	void _ready();
-	void button_pressed(const String &button_name, Node *button_item, const int id);
+	enum {
+		MENU_FILE_NEW = 0,
+		MENU_FILE_SAVE,
+		MENU_FILE_LOAD,
 
-	void handle_file_menu(const String &pressed_item, const int id);
-	void handle_edit_menu(const String &pressed_item, const int id);
-	void handle_canvas_menu(const String &pressed_item, const int id);
-	void handle_layer_menu(const String &pressed_item, const int id);
-	void handle_grid_menu(const String &pressed_item, const int id);
+		MENU_EDIT_UNDO,
+		MENU_EDIT_REDO,
+		MENU_EDIT_CUT,
+		MENU_EDIT_COPY,
+		MENU_EDIT_PASTE,
 
-	void handle_magic_menu(const String &pressed_item, const int id);
-	void handle_editor_menu(const String &pressed_item, const int id);
+		MENU_CANVAS_CHANGE_SIZE,
+		MENU_CANVAS_CROP_TO_CONTENT,
+
+		MENU_LAYER_ADD,
+		MENU_LAYER_DELETE,
+		MENU_LAYER_DUPLICATE,
+		MENU_LAYER_CLEAR,
+		MENU_LAYER_TOGGLE_ALPHA_LOCKED,
+
+		MENU_GRID_TOGGLE,
+		MENU_GRID_CHANGE_SIZE,
+
+		MENU_MAGIC_CHANGE_SINGLE_COLOR,
+		MENU_MAGIC_CHANGE_COLOR_RANGE,
+		MENU_MAGIC_HSV_NOISE,
+		MENU_MAGIC_HSV_COLOR_MODULATION,
+
+		MENU_EDITOR_SETTINGS,
+	};
+
+	void handle_menu_item_pressed(const int id);
+
 	bool is_any_menu_open();
 
 	PaintNavbar();
 	~PaintNavbar();
 
+	PaintWindow *paint_window;
+	PaintCanvas *canvas;
+
+	MenuButton *file_menu_button;
+	MenuButton *edit_menu_button;
+	MenuButton *canvas_menu_button;
+	MenuButton *layer_menu_button;
+	MenuButton *grid_menu_button;
+	MenuButton *magic_menu_button;
+	MenuButton *editor_menu_button;
+
 protected:
 	static void _bind_methods();
-
-	/*
-	var editor
-	var paint_canvas
-	*/
 };
 
 #endif
