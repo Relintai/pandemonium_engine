@@ -72,7 +72,7 @@ void PaintCanvasLayer::resize(const int width, const int height) {
 
 	for (int x = 0; x < prev_width; ++x) {
 		for (int y = 0; y < prev_height; ++y) {
-			if (x >= width or y >= height) {
+			if (x >= width || y >= height) {
 				continue;
 			}
 
