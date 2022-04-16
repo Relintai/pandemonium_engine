@@ -233,7 +233,7 @@ PaintNavbar::PaintNavbar() {
 	urlabel->set_text("Undo (Z)  Redo (Y)");
 	urlabel->set_align(Label::ALIGN_CENTER);
 	urlabel->set_valign(Label::VALIGN_CENTER);
-	add_child(spacer);
+	add_child(urlabel);
 }
 
 PaintNavbar::~PaintNavbar() {
