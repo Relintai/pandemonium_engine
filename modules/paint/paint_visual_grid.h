@@ -42,6 +42,11 @@ public:
 	PaintVisualGrid();
 	~PaintVisualGrid();
 
+	Color color;
+	int size;
+	float zoom;
+	Vector2 offset;
+
 protected:
 	void _notification(int p_what);
 	static void _bind_methods();

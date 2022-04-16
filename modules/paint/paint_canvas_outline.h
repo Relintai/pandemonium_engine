@@ -36,11 +36,13 @@ public:
 	PaintCanvasOutline();
 	~PaintCanvasOutline();
 
+	Color color;
+
 protected:
 	void _notification(int p_what);
 	static void _bind_methods();
 
-	Color color;
+	
 };
 
 #endif

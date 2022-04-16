@@ -24,6 +24,13 @@ SOFTWARE.
 
 #include "paint_canvas.h"
 
+#include "paint_canvas_outline.h"
+#include "paint_visual_grid.h"
+#include "scene/gui/control.h"
+#include "scene/gui/texture_rect.h"
+
+#include "paint_canvas_layer.h"
+
 void PaintCanvas::_enter_tree() {
 	/*
 	#-------------------------------
@@ -72,22 +79,10 @@ void PaintCanvas::_draw() {
 	*/
 }
 
-void PaintCanvas::resize(const int width, const int height) {
-	/*
-	if width < 0:
-		width = 1
-	if height < 0:
-		height = 1
-
-	set_canvas_width(width)
-	set_canvas_height(height)
-
-	preview_layer.resize(width, height)
-	tool_layer.resize(width, height)
-	for layer in layers:
-		layer.resize(width, height)
-	*/
+int PaintCanvas::get_pixel_size() const {
+	return _pixel_size;
 }
+
 void PaintCanvas::set_pixel_size(const int size) {
 	/*
 	pixel_size = size
@@ -97,6 +92,10 @@ void PaintCanvas::set_pixel_size(const int size) {
 	set_canvas_height(canvas_height)
 	*/
 }
+
+int PaintCanvas::get_grid_size() const {
+	return _grid_size;
+}
 void PaintCanvas::set_grid_size(const int size) {
 	/*
 	grid_size = size
@@ -104,6 +103,10 @@ void PaintCanvas::set_grid_size(const int size) {
 		return
 	find_node("Grid").size = size * pixel_size
 	*/
+}
+
+int PaintCanvas::get_big_grid_size() const {
+	return _big_grid_size;
 }
 void PaintCanvas::set_big_grid_size(const int size) {
 	/*
@@ -113,11 +116,19 @@ void PaintCanvas::set_big_grid_size(const int size) {
 	find_node("BigGrid").size = size * pixel_size
 	*/
 }
+
+int PaintCanvas::get_canvas_width() const {
+	return _canvas_width;
+}
 void PaintCanvas::set_canvas_width(const int val) {
 	/*
 	canvas_width = val
 	rect_size.x = canvas_width * pixel_size
 	*/
+}
+
+int PaintCanvas::get_canvas_height() const {
+	return _canvas_height;
 }
 void PaintCanvas::set_canvas_height(const int val) {
 	/*
@@ -504,35 +515,69 @@ Array PaintCanvas::get_neighbouring_pixels(const int pos_x, const int pos_y) {
 	return Array();
 }
 
-PaintCanvas::PaintCanvas() {
+void PaintCanvas::resize(const int width, const int height) {
 	/*
+	if width < 0:
+		width = 1
+	if height < 0:
+		height = 1
 
-export var pixel_size: int = 16 setget set_pixel_size
-export(int, 1, 2500) var canvas_width = 48 setget set_canvas_width # == pixels
-export(int, 1, 2500) var canvas_height = 28 setget set_canvas_height # == pixels
-export var grid_size = 16 setget set_grid_size
-export var big_grid_size = 10 setget set_big_grid_size
-export var can_draw = true
+	set_canvas_width(width)
+	set_canvas_height(height)
 
-var mouse_in_region
-var mouse_on_top
-
-var layers : Array = [] # Key: layer_name, val: GELayer
-var active_layer: GELayer
-var preview_layer: GELayer
-var tool_layer: GELayer
-var canvas_layers: Control
-
-var canvas
-var grid
-var big_grid
-var selected_pixels = []
-
-var symmetry_x = false
-var symmetry_y = false
-
-
+	preview_layer.resize(width, height)
+	tool_layer.resize(width, height)
+	for layer in layers:
+		layer.resize(width, height)
 	*/
+}
+
+PaintCanvas::PaintCanvas() {
+	big_grid = nullptr;
+
+	_pixel_size = 16;
+	_canvas_width = 48;
+	_canvas_height = 28;
+	_grid_size = 16;
+	_big_grid_size = 10;
+	_can_draw = true;
+
+	symmetry_x = false;
+	symmetry_y = false;
+
+	mouse_in_region = false;
+	mouse_on_top = false;
+
+	canvas_background_rect = memnew(TextureRect);
+	//canvas_background_rect->set_texture();//res://addons/Godoxel/assets/grid.png
+	canvas_background_rect->set_expand(true);
+	canvas_background_rect->set_stretch_mode(TextureRect::STRETCH_TILE);
+	add_child(canvas_background_rect);
+
+	canvas_layers = memnew(Control);
+	canvas_layers->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
+	add_child(canvas_layers);
+
+	preview_layer_rect = memnew(TextureRect);
+	preview_layer_rect->set_expand(true);
+	preview_layer_rect->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
+	add_child(preview_layer_rect);
+
+	tool_preview_layer_rect = memnew(TextureRect);
+	tool_preview_layer_rect->set_expand(true);
+	tool_preview_layer_rect->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
+	add_child(tool_preview_layer_rect);
+
+	grid = memnew(PaintVisualGrid);
+	grid->color = Color(1, 1, 1, 1);
+	grid->size = 4;
+	grid->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
+	add_child(grid);
+
+	canvas_outline = memnew(PaintCanvasOutline);
+	canvas_outline->color = Color(0, 1, 0, 1);
+	canvas_outline->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
+	add_child(canvas_outline);
 }
 
 PaintCanvas::~PaintCanvas() {

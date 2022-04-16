@@ -25,25 +25,40 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "scene/gui/control.h"
+#include "core/reference.h"
+#include "scene/gui/margin_container.h"
 
+#include "core/vector.h"
+
+class PaintCanvasLayer;
+class TextureRect;
+class Control;
+class PaintCanvasOutline;
+class PaintVisualGrid;
 class PaintCanvasLayer;
 
 //class_name GECanvas
-class PaintCanvas : public Control {
-	GDCLASS(PaintCanvas, Control);
+class PaintCanvas : public MarginContainer {
+	GDCLASS(PaintCanvas, MarginContainer);
 
 public:
 	void _enter_tree();
 	void _process(float delta);
 	void _draw();
 
-	void resize(const int width, const int height);
-
+	int get_pixel_size() const;
 	void set_pixel_size(const int size);
+
+	int get_grid_size() const;
 	void set_grid_size(const int size);
+
+	int get_big_grid_size() const;
 	void set_big_grid_size(const int size);
+
+	int get_canvas_width() const;
 	void set_canvas_width(const int val);
+
+	int get_canvas_height() const;
 	void set_canvas_height(const int val);
 
 	void toggle_alpha_locked(const String &layer_name);
@@ -92,37 +107,43 @@ public:
 	Array select_same_color(const int x, const int y);
 	Array get_neighbouring_pixels(const int pos_x, const int pos_y);
 
+	void resize(const int width, const int height);
+
 	PaintCanvas();
 	~PaintCanvas();
+
+	Vector<Ref<PaintCanvasLayer>> layers;
+	Ref<PaintCanvasLayer> active_layer;
+	Ref<PaintCanvasLayer> preview_layer;
+	Ref<PaintCanvasLayer> tool_layer;
+
+	TextureRect *canvas_background_rect;
+	Control *canvas_layers;
+	TextureRect *preview_layer_rect;
+	TextureRect *tool_preview_layer_rect;
+	PaintVisualGrid *grid;
+	PaintCanvasOutline *canvas_outline;
+
+	//not used
+	PaintVisualGrid *big_grid;
+
+	bool symmetry_x;
+	bool symmetry_y;
+
+	bool mouse_in_region;
+	bool mouse_on_top;
+
+	Array selected_pixels;
 
 protected:
 	static void _bind_methods();
 
-	/*
-	export var pixel_size: int = 16 setget set_pixel_size
-	export(int, 1, 2500) var canvas_width = 48 setget set_canvas_width # == pixels
-	export(int, 1, 2500) var canvas_height = 28 setget set_canvas_height # == pixels
-	export var grid_size = 16 setget set_grid_size
-	export var big_grid_size = 10 setget set_big_grid_size
-	export var can_draw = true
-
-	var mouse_in_region
-	var mouse_on_top
-
-	var layers : Array = [] # Key: layer_name, val: GELayer
-	var active_layer: GELayer
-	var preview_layer: GELayer
-	var tool_layer: GELayer
-	var canvas_layers: Control
-
-	var canvas
-	var grid
-	var big_grid
-	var selected_pixels = []
-
-	var symmetry_x = false
-	var symmetry_y = false
-	*/
+	int _pixel_size;
+	int _canvas_width;
+	int _canvas_height;
+	int _grid_size;
+	int _big_grid_size;
+	bool _can_draw;
 };
 
 #endif
