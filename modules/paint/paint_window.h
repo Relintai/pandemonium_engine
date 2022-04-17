@@ -30,6 +30,7 @@ SOFTWARE.
 #include "bush_prefabs.h"
 #include "core/os/keyboard.h"
 #include "core/reference.h"
+#include "core/hash_map.h"
 
 class PaintAction;
 class PaintCanvasLayer;
@@ -50,6 +51,7 @@ class Control;
 class Button;
 class ColorPickerButton;
 class VBoxContainer;
+class PaintLayerButton;
 
 class PaintWindow : public Control {
 	GDCLASS(PaintWindow, Control);
@@ -88,6 +90,9 @@ public:
 		max_zoom_in = 50,
 	};
 
+	Color get_selected_color();
+	void set_selected_color(const Color &color);
+
 	void _input(const Ref<InputEvent> &event);
 	void _process(float delta);
 
@@ -111,7 +116,6 @@ public:
 
 	Ref<PaintAction> get_action();
 
-	void set_selected_color(const Color &color);
 	void set_brush(const Tools new_mode);
 
 	void change_color(const Color &new_color);
@@ -204,17 +208,10 @@ public:
 	VBoxContainer *layers_box_container;
 	Button *add_layer_button;
 
-	//var layer_buttons : Control;
-	//var canvas_background : TextureRect;
-	//var grids_node;
-	//var colors_grid;
-	Color selected_color; // = Color(1, 1, 1, 1) setget set_selected_color;
-	//var util = preload("res://addons/Godoxel/Util.gd");
-	//var textinfo;
-	bool allow_drawing = true;
+	bool allow_drawing;
 
-	bool mouse_in_region = false;
-	bool mouse_on_top = false;
+	bool mouse_in_region;
+	bool mouse_on_top;
 
 	Vector2 _middle_mouse_pressed_pos;
 	Vector2 _middle_mouse_pressed_start_pos;
@@ -223,9 +220,8 @@ public:
 	PaintWindow::Tools _previous_tool;
 	PaintWindow::Tools brush_mode;
 
-	//var _layer_button_ref = {};
-
-	//var _total_added_layers = 1;
+	HashMap<String, PaintLayerButton *> _layer_button_ref;
+	int _total_added_layers;
 
 	BrushPrefabs::Type selected_brush_prefab;
 	Vector2 _last_drawn_pixel;
@@ -261,10 +257,13 @@ public:
 	Color other_layer_highlight;
 	Color locked_layer_highlight;
 
-	int big_grid_pixels = 4; // 1 grid-box is big_grid_pixels big
+	int big_grid_pixels = 4;
 
 protected:
+	void _notification(int p_what);
 	static void _bind_methods();
+
+	Color _selected_color;
 };
 
 #endif

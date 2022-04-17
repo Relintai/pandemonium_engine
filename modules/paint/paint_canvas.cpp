@@ -274,6 +274,10 @@ Ref<PaintCanvasLayer> PaintCanvas::add_new_layer(const String &layer_name) {
 		layers.push_back(layer);
 	}
 
+	if (!active_layer.is_valid()) {
+		active_layer = layer;
+	}
+
 	return layer;
 }
 Ref<PaintCanvasLayer> PaintCanvas::duplicate_layer(const String &layer_name, const String &new_layer_name) {
@@ -599,6 +603,8 @@ PaintCanvas::PaintCanvas() {
 	canvas_outline->color = Color(0, 1, 0, 1);
 	canvas_outline->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
 	add_child(canvas_outline);
+
+	add_new_layer("Layer1");
 }
 
 PaintCanvas::~PaintCanvas() {

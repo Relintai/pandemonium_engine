@@ -62,5 +62,7 @@ PaintColorGrid::~PaintColorGrid() {
 }
 
 void PaintColorGrid::_bind_methods() {
-	//signal color_change_request
+	ADD_SIGNAL(MethodInfo("color_change_request", PropertyInfo(Variant::COLOR, "color")));
+
+	ClassDB::bind_method(D_METHOD("change_color_to"), &PaintColorGrid::change_color_to);
 }

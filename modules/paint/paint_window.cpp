@@ -64,6 +64,14 @@ SOFTWARE.
 #include "dialogs/paint_save_file_dialog.h"
 #include "paint_settings.h"
 
+Color PaintWindow::get_selected_color() {
+	return _selected_color;
+}
+
+void PaintWindow::set_selected_color(const Color &color) {
+	_selected_color = color;
+}
+
 void PaintWindow::_input(const Ref<InputEvent> &event) {
 	if (!is_visible_in_tree()) {
 		return;
@@ -108,7 +116,7 @@ void PaintWindow::_input(const Ref<InputEvent> &event) {
 						Array arr;
 						arr.append(cell_mouse_position);
 						arr.append(last_cell_mouse_position);
-						arr.append(selected_color);
+						arr.append(_selected_color);
 
 						do_action(arr);
 					}
@@ -122,10 +130,10 @@ void PaintWindow::_input(const Ref<InputEvent> &event) {
 								return;
 							}
 
-							selected_color = c;
+							_selected_color = c;
 							_picked_color = true;
 
-							color_grid->add_color_prefab(selected_color);
+							color_grid->add_color_prefab(_selected_color);
 						} else {
 							if (_picked_color) {
 								set_brush(_previous_tool);
@@ -266,7 +274,7 @@ void PaintWindow::_draw_tool_brush() {
 
 			for (int i = 0; i < pixels.size(); ++i) {
 				Vector2i pixel = r[i];
-				paint_canvas->_set_pixel(paint_canvas->tool_layer, cell_mouse_position.x + pixel.x, cell_mouse_position.y + pixel.y, selected_color);
+				paint_canvas->_set_pixel(paint_canvas->tool_layer, cell_mouse_position.x + pixel.x, cell_mouse_position.y + pixel.y, _selected_color);
 			}
 
 			r.release();
@@ -278,7 +286,7 @@ void PaintWindow::_draw_tool_brush() {
 			paint_canvas->_set_pixel(paint_canvas->tool_layer, cell_mouse_position.x, cell_mouse_position.y, Color(0.866667, 0.847059, 0.847059, 0.196078));
 		} break;
 		default: {
-			paint_canvas->_set_pixel(paint_canvas->tool_layer, cell_mouse_position.x, cell_mouse_position.y, selected_color);
+			paint_canvas->_set_pixel(paint_canvas->tool_layer, cell_mouse_position.x, cell_mouse_position.y, _selected_color);
 		} break;
 	}
 
@@ -420,7 +428,7 @@ void PaintWindow::brush_process() {
 
 				arr.append(cell_mouse_position);
 				arr.append(last_cell_mouse_position);
-				arr.append(selected_color);
+				arr.append(_selected_color);
 
 				do_action(arr);
 			} break;
@@ -429,7 +437,7 @@ void PaintWindow::brush_process() {
 
 				arr.append(cell_mouse_position);
 				arr.append(last_cell_mouse_position);
-				arr.append(selected_color);
+				arr.append(_selected_color);
 				arr.append(selected_brush_prefab);
 				arr.append(brush_size_slider->get_value());
 
@@ -440,7 +448,7 @@ void PaintWindow::brush_process() {
 
 				arr.append(cell_mouse_position);
 				arr.append(last_cell_mouse_position);
-				arr.append(selected_color);
+				arr.append(_selected_color);
 
 				do_action(arr);
 			} break;
@@ -449,7 +457,7 @@ void PaintWindow::brush_process() {
 
 				arr.append(cell_mouse_position);
 				arr.append(last_cell_mouse_position);
-				arr.append(selected_color);
+				arr.append(_selected_color);
 
 				do_action(arr);
 			} break;
@@ -458,7 +466,7 @@ void PaintWindow::brush_process() {
 
 				arr.append(cell_mouse_position);
 				arr.append(last_cell_mouse_position);
-				arr.append(selected_color);
+				arr.append(_selected_color);
 
 				do_action(arr);
 			} break;
@@ -467,7 +475,7 @@ void PaintWindow::brush_process() {
 
 				arr.append(cell_mouse_position);
 				arr.append(last_cell_mouse_position);
-				arr.append(selected_color);
+				arr.append(_selected_color);
 
 				do_action(arr);
 			} break;
@@ -478,7 +486,7 @@ void PaintWindow::brush_process() {
 
 				arr.append(cell_mouse_position);
 				arr.append(last_cell_mouse_position);
-				arr.append(selected_color);
+				arr.append(_selected_color);
 
 				do_action(arr);
 			} break;
@@ -671,9 +679,6 @@ Ref<PaintAction> PaintWindow::get_action() {
 	return Ref<PaintAction>();
 }
 
-void PaintWindow::set_selected_color(const Color &color) {
-	selected_color = color;
-}
 void PaintWindow::set_brush(const PaintWindow::Tools new_mode) {
 	if (brush_mode == new_mode) {
 		return;
@@ -707,13 +712,13 @@ void PaintWindow::change_color(const Color &new_color) {
 		return;
 	}
 
-	selected_color = new_color;
+	_selected_color = new_color;
 
-	color_picker_button->set_pick_color(selected_color);
+	color_picker_button->set_pick_color(_selected_color);
 }
 
 void PaintWindow::_on_ColorPicker_color_changed(const Color &color) {
-	selected_color = color;
+	_selected_color = color;
 }
 void PaintWindow::_on_PaintTool_pressed() {
 	set_brush(Tools::PAINT);
@@ -761,21 +766,23 @@ void PaintWindow::highlight_layer(const String &layer_name) {
 			continue;
 		}
 
-		if (paint_canvas->find_layer_by_name(button->get_name())->locked) {
+		String name = button->get_name();
+
+		if (paint_canvas->find_layer_by_name(name)->locked) {
 			Ref<StyleBox> sb = button->get("custom_styles/panel");
 
 			if (sb.is_valid()) {
 				sb->set("bg_color", locked_layer_highlight);
 			}
-		} else if (button->get_name() == layer_name) {
+		} else if (name == layer_name) {
 			Ref<StyleBox> sb = button->get("custom_styles/panel");
-			
+
 			if (sb.is_valid()) {
 				sb->set("bg_color", current_layer_highlight);
 			}
 		} else {
 			Ref<StyleBox> sb = button->get("custom_styles/panel");
-			
+
 			if (sb.is_valid()) {
 				sb->set("bg_color", other_layer_highlight);
 			}
@@ -798,63 +805,95 @@ void PaintWindow::lock_layer(Node *button, const String &layer_name) {
 }
 
 Ref<PaintCanvasLayer> PaintWindow::add_new_layer() {
-	/*
-	var new_layer_button = layers_box_container.get_child(0).duplicate()
-	new_layer_button.set("custom_styles/panel", layers_box_container.get_child(0).get("custom_styles/panel").duplicate())
-	layers_box_container.add_child_below_node(
-			layers_box_container.get_child(layers_box_container.get_child_count() - 1), new_layer_button, true)
-	_total_added_layers += 1
-	new_layer_button.find_node("Select").text = "Layer " + str(_total_added_layers)
-	_layer_button_ref[new_layer_button.name] = new_layer_button
-	_connect_layers_box_container()
+	PaintLayerButton *new_layer_button = memnew(PaintLayerButton);
 
-	var layer: GELayer = paint_canvas.add_new_layer(new_layer_button.name)
+	_total_added_layers += 1;
+	String name = "Layer" + String::num(_total_added_layers);
+	new_layer_button->set_name(name);
+	new_layer_button->layer_button->set_text(name);
 
-	highlight_layer(paint_canvas.get_active_layer().name)
-	#print("added layer: ", layer.name)
-	return layer
-	*/
+	if (layers_box_container->get_child_count() > 0) {
+		layers_box_container->add_child_below_node(layers_box_container->get_child(layers_box_container->get_child_count() - 1), new_layer_button, true);
+	} else {
+		layers_box_container->add_child(new_layer_button, true);
+	}
 
-	return Ref<PaintCanvasLayer>();
+	_layer_button_ref[new_layer_button->get_name()] = new_layer_button;
+
+	Vector<Variant> blb;
+	blb.push_back(new_layer_button->get_name());
+	new_layer_button->layer_button->connect("pressed", this, "select_layer", blb);
+
+	Vector<Variant> bvis;
+	bvis.push_back(new_layer_button->visible_button);
+	bvis.push_back(new_layer_button->get_name());
+	new_layer_button->visible_button->connect("pressed", this, "toggle_layer_visibility", bvis);
+
+	Vector<Variant> bud;
+	bud.push_back(new_layer_button);
+	new_layer_button->up_button->connect("pressed", this, "move_down", bud);
+	new_layer_button->down_button->connect("pressed", this, "move_up", bud);
+
+	Vector<Variant> blo;
+	blo.push_back(new_layer_button);
+	blo.push_back(new_layer_button->get_name());
+	new_layer_button->lock_button->connect("pressed", this, "lock_layer", blo);
+
+	Ref<PaintCanvasLayer> layer = paint_canvas->add_new_layer(new_layer_button->get_name());
+
+	highlight_layer(paint_canvas->get_active_layer()->name);
+
+	//print("added layer: ", layer.name)
+
+	return layer;
 }
 void PaintWindow::remove_active_layer() {
-	/*
-	if layers_box_container.get_child_count() <= 1:
-		return
-	var layer_name = paint_canvas.active_layer.name
-	paint_canvas.remove_layer(layer_name)
-	layers_box_container.remove_child(_layer_button_ref[layer_name])
-	_layer_button_ref[layer_name].queue_free()
-	_layer_button_ref.erase(layer_name)
+	if (layers_box_container->get_child_count() <= 1) {
+		return;
+	}
 
-	highlight_layer(paint_canvas.get_active_layer().name)
-	*/
+	String layer_name = paint_canvas->active_layer->name;
+	paint_canvas->remove_layer(layer_name);
+	layers_box_container->remove_child(_layer_button_ref[layer_name]);
+	_layer_button_ref[layer_name]->queue_delete();
+	_layer_button_ref.erase(layer_name);
+
+	highlight_layer(paint_canvas->get_active_layer()->name);
 }
 void PaintWindow::duplicate_active_layer() {
-	/*
-	var new_layer_button = layers_box_container.get_child(0).duplicate()
-	new_layer_button.set("custom_styles/panel", layers_box_container.get_child(0).get("custom_styles/panel").duplicate())
-	layers_box_container.add_child_below_node(
-			layers_box_container.get_child(layers_box_container.get_child_count() - 1), new_layer_button, true)
+	PaintLayerButton *new_layer_button = memnew(PaintLayerButton);
+	//new_layer_button.set("custom_styles/panel", layers_box_container.get_child(0).get("custom_styles/panel").duplicate());
+	layers_box_container->add_child_below_node(layers_box_container->get_child(layers_box_container->get_child_count() - 1), new_layer_button, true);
 
-	_total_added_layers += 1 # for keeping track...
-	new_layer_button.find_node("Select").text = "Layer " + str(_total_added_layers)
+	_total_added_layers += 1; // for keeping track...
+	new_layer_button->layer_button->set_text("Layer" + String::num(_total_added_layers));
 
-	var new_layer = paint_canvas.duplicate_layer(paint_canvas.active_layer.name, new_layer_button.name)
-	new_layer.update_texture()
-	_layer_button_ref[new_layer.name] = new_layer_button
+	Ref<PaintCanvasLayer> new_layer = paint_canvas->duplicate_layer(paint_canvas->active_layer->name, new_layer_button->get_name());
+	new_layer->update_texture();
+	_layer_button_ref[new_layer->name] = new_layer_button;
 
-	new_layer_button.find_node("Select").connect("pressed", self, "select_layer", [new_layer_button.name])
-	new_layer_button.find_node("Visible").connect("pressed", self, "toggle_layer_visibility",
-			[new_layer_button.find_node("Visible"), new_layer_button.name])
-	new_layer_button.find_node("Up").connect("pressed", self, "move_down", [new_layer_button])
-	new_layer_button.find_node("Down").connect("pressed", self, "move_up", [new_layer_button])
-	new_layer_button.find_node("Lock").connect("pressed", self, "lock_layer", [new_layer_button, new_layer_button.name])
+	Vector<Variant> blb;
+	blb.push_back(new_layer_button->get_name());
+	new_layer_button->layer_button->connect("pressed", this, "select_layer", blb);
 
-	# update highlight
-	highlight_layer(paint_canvas.get_active_layer().name)
-	#print("added layer: ", new_layer.name, " (total:", layers_box_container.get_child_count(), ")")
-	*/
+	Vector<Variant> bvis;
+	bvis.push_back(new_layer_button->visible_button);
+	bvis.push_back(new_layer_button->get_name());
+	new_layer_button->visible_button->connect("pressed", this, "toggle_layer_visibility", bvis);
+
+	Vector<Variant> bud;
+	bud.push_back(new_layer_button);
+	new_layer_button->up_button->connect("pressed", this, "move_down", bud);
+	new_layer_button->down_button->connect("pressed", this, "move_up", bud);
+
+	Vector<Variant> blo;
+	blo.push_back(new_layer_button);
+	blo.push_back(new_layer_button->get_name());
+	new_layer_button->lock_button->connect("pressed", this, "lock_layer", blo);
+
+	// update highlight
+	highlight_layer(paint_canvas->get_active_layer()->name);
+	//print("added layer: ", new_layer.name, " (total:", layers_box_container.get_child_count(), ")")
 }
 
 void PaintWindow::move_up(Node *layer_btn) {
@@ -871,22 +910,36 @@ void PaintWindow::move_down(Node *layer_btn) {
 }
 
 void PaintWindow::_connect_layer_buttons() {
-	//for (int i = 0; i < layers_box_container->get_child_count(); ++i) {
-		//PaintLayerButton *layer_btn = Object::cast_to<PaintLayerButton>(layers_box_container->get_child(i));
+	for (int i = 0; i < layers_box_container->get_child_count(); ++i) {
+		PaintLayerButton *layer_btn = Object::cast_to<PaintLayerButton>(layers_box_container->get_child(i));
 
-		//if (!layer_btn) {
-		//	continue;
-		//}
+		if (!layer_btn) {
+			continue;
+		}
 
-		//if layer_btn.find_node("Select").is_connected("pressed", self, "select_layer"):
-		//	continue;
+		if (layer_btn->layer_button->is_connected("pressed", this, "select_layer")) {
+			continue;
+		}
 
-		//layer_btn->find_node("Select").connect("pressed", this, "select_layer", [layer_btn.name]);
-		//layer_btn->find_node("Visible").connect("pressed", this, "toggle_layer_visibility", [layer_btn.find_node("Visible"), layer_btn.name]);
-		//layer_btn->find_node("Up").connect("pressed", this, "move_down", [layer_btn]);
-		//layer_btn->find_node("Down").connect("pressed", this, "move_up", [layer_btn]);
-		//layer_btn->find_node("Lock").connect("pressed", this, "lock_layer", [layer_btn, layer_btn.name]);
-	//}
+		Vector<Variant> blb;
+		blb.push_back(layer_btn->get_name());
+		layer_btn->layer_button->connect("pressed", this, "select_layer", blb);
+
+		Vector<Variant> bvis;
+		bvis.push_back(layer_btn->visible_button);
+		bvis.push_back(layer_btn->get_name());
+		layer_btn->visible_button->connect("pressed", this, "toggle_layer_visibility", bvis);
+
+		Vector<Variant> bud;
+		bud.push_back(layer_btn);
+		layer_btn->up_button->connect("pressed", this, "move_down", bud);
+		layer_btn->down_button->connect("pressed", this, "move_up", bud);
+
+		Vector<Variant> blo;
+		blo.push_back(layer_btn);
+		blo.push_back(layer_btn->get_name());
+		layer_btn->lock_button->connect("pressed", this, "lock_layer", blo);
+	}
 }
 
 void PaintWindow::_on_Button_pressed() {
@@ -935,24 +988,19 @@ bool PaintWindow::is_mouse_in_canvas() {
 }
 
 bool PaintWindow::is_any_menu_open() {
-	/*
-	return $ChangeCanvasSize.visible || \
-			$ChangeGridSizeDialog.visible || \
-			$Settings.visible || \
-			$LoadFileDialog.visible || \
-			$SaveFileDialog.visible || \
-			find_node("Navbar").is_any_menu_open()
-	*/
-	return false;
+	return paint_canvas_dialog->is_visible() || paint_change_grid_size_dialog->is_visible() ||
+			paint_load_file_dialog->is_visible() || paint_save_file_dialog->is_visible() ||
+			paint_settings_dialog->is_visible() || navbar->is_any_menu_open();
 }
 
 void PaintWindow::_on_LockAlpha_pressed() {
+	//bool checked = lock_alpha_button->is_pressed();
+	paint_canvas->active_layer->toggle_alpha_locked();
+
 	/*
-	var checked = find_node("LockAlpha").pressed
-	paint_canvas.active_layer.toggle_alpha_locked()
-	for i in range(find_node("Layer").get_popup().get_item_count()):
-		if find_node("Layer").get_popup().get_item_text(i) == "Toggle Alpha Locked":
-			find_node("Layer").get_popup().set_item_checked(i, not find_node("Layer").get_popup().is_item_checked(i))
+		for i in range(find_node("Layer").get_popup().get_item_count()):
+			if find_node("Layer").get_popup().get_item_text(i) == "Toggle Alpha Locked":
+				find_node("Layer").get_popup().set_item_checked(i, not find_node("Layer").get_popup().is_item_checked(i));
 	*/
 }
 void PaintWindow::_on_BrushRect_pressed() {
@@ -993,11 +1041,34 @@ void PaintWindow::_on_YSymmetry_pressed() {
 	paint_canvas->symmetry_y = !paint_canvas->symmetry_y;
 }
 
+void PaintWindow::_notification(int p_what) {
+	switch (p_what) {
+		case NOTIFICATION_PROCESS: {
+			_process(get_process_delta_time());
+		} break;
+		case NOTIFICATION_POSTINITIALIZE: {
+			connect("visibility_changed", this, "_on_Editor_visibility_changed");
+		} break;
+		default: {
+		} break;
+	}
+}
+
 PaintWindow::PaintWindow() {
-	selected_color = Color(1, 1, 1, 1);
+	_selected_color = Color(1, 1, 1, 1);
+
+	allow_drawing = true;
+
+	mouse_in_region = false;
+	mouse_on_top = false;
 
 	_picked_color = false;
+
+	_total_added_layers = 0;
+
 	_middle_mouse_pressed = false;
+	_previous_tool = PaintWindow::PAINT;
+	brush_mode = PaintWindow::PAINT;
 
 	selected_brush_prefab = BrushPrefabs::CIRCLE;
 
@@ -1005,109 +1076,7 @@ PaintWindow::PaintWindow() {
 	other_layer_highlight = Color(0.180392, 0.176471, 0.176471);
 	locked_layer_highlight = Color(0.098039, 0.094118, 0.094118);
 
-	/*
-
-	var layers_box_container: Control
-	var paint_canvas_container_node
-	var paint_canvas: GECanvas
-	var canvas_background: TextureRect
-	var grids_node
-	var colors_grid
-	var selected_color = Color(1, 1, 1, 1) setget set_selected_color
-	var util = preload("res://addons/Godoxel/Util.gd")
-	var textinfo
-	var allow_drawing = true
-
-	var mouse_in_region = false
-	var mouse_on_top = false
-
-
-	var _middle_mouse_pressed_pos = null
-	var _middle_mouse_pressed_start_pos = null
-	var _left_mouse_pressed_start_pos = Vector2()
-	var _previous_tool
-	var brush_mode
-
-	var _layer_button_ref = {}
-
-	var _total_added_layers = 1
-
-	var selected_brush_prefab = 0
-	var _last_drawn_pixel = Vector2.ZERO
-	var _last_preview_draw_cell_pos = Vector2.ZERO
-
-	var _selection_cells = []
-	var _selection_colors = []
-
-	var _cut_pos = Vector2.ZERO
-	var _cut_size = Vector2.ZERO
-
-	var _actions_history = [] # for undo
-	var _redo_history = []
-	var _current_action
-
-	var _last_mouse_pos_canvas_area = Vector2.ZERO
-
-	var _picked_color = false
-
-	var mouse_position = Vector2()
-	var canvas_position = Vector2()
-	var canvas_mouse_position = Vector2()
-	var cell_mouse_position = Vector2()
-	var cell_color = Color()
-
-	var last_mouse_position = Vector2()
-	var last_canvas_position = Vector2()
-	var last_canvas_mouse_position = Vector2()
-	var last_cell_mouse_position = Vector2()
-	var last_cell_color = Color()
-
-	const current_layer_highlight = Color(0.354706, 0.497302, 0.769531)
-	const other_layer_highlight = Color(0.180392, 0.176471, 0.176471)
-	const locked_layer_highlight = Color(0.098039, 0.094118, 0.094118)
-
-	var big_grid_pixels = 4 # 1 grid-box is big_grid_pixels big
-
-
-
-	#--------------------
-	#Setup nodes
-	#--------------------
-
-	paint_canvas_container_node = find_node("PaintCanvasContainer")
-	textinfo = find_node("DebugTextDisplay")
-	selected_color = find_node("ColorPicker").color
-	colors_grid = find_node("Colors")
-	paint_canvas = paint_canvas_container_node.find_node("Canvas")
-	layers_box_container = find_node("LayerButtons")
-	canvas_background = find_node("CanvasBackground")
-
-	set_process(true)
-
-	#--------------------
-	#connect nodes
-	#--------------------
-	if not colors_grid.is_connected("color_change_request", self, "change_color"):
-		colors_grid.connect("color_change_request", self, "change_color")
-
-	if not is_connected("visibility_changed", self, "_on_Editor_visibility_changed"):
-		connect("visibility_changed", self, "_on_Editor_visibility_changed")
-
-	find_node("CanvasBackground").material.set_shader_param(
-			"pixel_size", 8 * pow(0.5, big_grid_pixels)/paint_canvas.pixel_size)
-
-	# ready
-
-	set_brush(Tools::PAINT)
-	_layer_button_ref[layers_box_container.get_child(0).name] = layers_box_container.get_child(0) #ugly
-	_connect_layer_buttons()
-	highlight_layer(paint_canvas.get_active_layer().name)
-
-	find_node("BrushSizeLabel").text = str(int(find_node("BrushSize").value))
-
-	paint_canvas.update()
-
-	*/
+	big_grid_pixels = 4;
 
 	set_clip_contents(true);
 	set_h_size_flags(SIZE_EXPAND_FILL);
@@ -1163,6 +1132,7 @@ PaintWindow::PaintWindow() {
 	color_grid->set_custom_minimum_size(Size2(0, 145));
 	color_grid->set_h_size_flags(SIZE_EXPAND_FILL);
 	color_grid->set_v_size_flags(SIZE_EXPAND_FILL);
+	color_grid->connect("color_change_request", this, "change_color");
 	left_color_scroll_container->add_child(color_grid);
 
 	//Main Content Mid (App) -- Left Panel -- Margin container -- VBoxContainer -- Lock Alpha Button
@@ -1218,6 +1188,8 @@ PaintWindow::PaintWindow() {
 	brush_size_slider->set_h_size_flags(SIZE_EXPAND_FILL);
 	brush_size_slider->set_v_size_flags(SIZE_EXPAND);
 	brush_size_container->add_child(brush_size_slider);
+
+	brush_size_label->set_text(String::num(static_cast<int>(brush_size_slider->get_value())));
 
 	//Main Content Mid (App) -- Left Panel -- Margin container -- VBoxContainer -- Symmetries
 	x_symmetry_button = memnew(CheckButton);
@@ -1367,10 +1339,6 @@ PaintWindow::PaintWindow() {
 	layers_box_container->set_v_size_flags(SIZE_EXPAND_FILL);
 	main_layers_box_container->add_child(layers_box_container);
 
-	PaintLayerButton *layer_button = memnew(PaintLayerButton);
-	layer_button->set_h_size_flags(SIZE_EXPAND_FILL);
-	layers_box_container->add_child(layer_button);
-
 	add_layer_button = memnew(Button);
 	add_layer_button->set_text("+");
 	add_layer_button->set_custom_minimum_size(Size2(0, 25));
@@ -1405,10 +1373,53 @@ PaintWindow::PaintWindow() {
 	//PaintSettings
 	paint_settings_dialog = memnew(PaintSettings);
 	add_child(paint_settings_dialog);
+
+	set_brush(Tools::PAINT);
+
+	//find_node("CanvasBackground").material.set_shader_param("pixel_size", 8 * pow(0.5, big_grid_pixels)/paint_canvas.pixel_size)
+
+	add_new_layer();
+	paint_canvas->update();
+
+	set_process(true);
 }
 
 PaintWindow::~PaintWindow() {
 }
 
 void PaintWindow::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("change_color", "color"), &PaintWindow::change_color);
+
+	ClassDB::bind_method(D_METHOD("_on_Save_pressed"), &PaintWindow::_on_Save_pressed);
+
+	ClassDB::bind_method(D_METHOD("_on_ColorPicker_color_changed", "color"), &PaintWindow::_on_ColorPicker_color_changed);
+
+	ClassDB::bind_method(D_METHOD("_on_PaintTool_pressed"), &PaintWindow::_on_PaintTool_pressed);
+	ClassDB::bind_method(D_METHOD("_on_BucketTool_pressed"), &PaintWindow::_on_BucketTool_pressed);
+	ClassDB::bind_method(D_METHOD("_on_RainbowTool_pressed"), &PaintWindow::_on_RainbowTool_pressed);
+	ClassDB::bind_method(D_METHOD("_on_BrushTool_pressed"), &PaintWindow::_on_BrushTool_pressed);
+	ClassDB::bind_method(D_METHOD("_on_LineTool_pressed"), &PaintWindow::_on_LineTool_pressed);
+	ClassDB::bind_method(D_METHOD("_on_RectTool_pressed"), &PaintWindow::_on_RectTool_pressed);
+	ClassDB::bind_method(D_METHOD("_on_DarkenTool_pressed"), &PaintWindow::_on_DarkenTool_pressed);
+	ClassDB::bind_method(D_METHOD("_on_BrightenTool_pressed"), &PaintWindow::_on_BrightenTool_pressed);
+	ClassDB::bind_method(D_METHOD("_on_ColorPickerTool_pressed"), &PaintWindow::_on_ColorPickerTool_pressed);
+	ClassDB::bind_method(D_METHOD("_on_CutTool_pressed"), &PaintWindow::_on_CutTool_pressed);
+	ClassDB::bind_method(D_METHOD("_on_Editor_visibility_changed"), &PaintWindow::_on_Editor_visibility_changed);
+
+	ClassDB::bind_method(D_METHOD("_on_Button_pressed"), &PaintWindow::_on_Button_pressed);
+	ClassDB::bind_method(D_METHOD("_on_PaintCanvasContainer_mouse_entered"), &PaintWindow::_on_PaintCanvasContainer_mouse_entered);
+	ClassDB::bind_method(D_METHOD("_on_PaintCanvasContainer_mouse_exited"), &PaintWindow::_on_PaintCanvasContainer_mouse_exited);
+	ClassDB::bind_method(D_METHOD("_on_ColorPicker_popup_closed"), &PaintWindow::_on_ColorPicker_popup_closed);
+
+	ClassDB::bind_method(D_METHOD("_on_LockAlpha_pressed"), &PaintWindow::_on_LockAlpha_pressed);
+	ClassDB::bind_method(D_METHOD("_on_BrushRect_pressed"), &PaintWindow::_on_BrushRect_pressed);
+	ClassDB::bind_method(D_METHOD("_on_BrushCircle_pressed"), &PaintWindow::_on_BrushCircle_pressed);
+	ClassDB::bind_method(D_METHOD("_on_BrushVLine_pressed"), &PaintWindow::_on_BrushVLine_pressed);
+	ClassDB::bind_method(D_METHOD("_on_BrushHLine_pressed"), &PaintWindow::_on_BrushHLine_pressed);
+	ClassDB::bind_method(D_METHOD("_on_BrushSize_value_changed", "value"), &PaintWindow::_on_BrushSize_value_changed);
+	ClassDB::bind_method(D_METHOD("_on_XSymmetry_pressed"), &PaintWindow::_on_XSymmetry_pressed);
+	ClassDB::bind_method(D_METHOD("_on_YSymmetry_pressed"), &PaintWindow::_on_YSymmetry_pressed);
+
+	ClassDB::bind_method(D_METHOD("lock_layer"), &PaintWindow::lock_layer);
+	ClassDB::bind_method(D_METHOD("toggle_layer_visibility"), &PaintWindow::toggle_layer_visibility);
 }
