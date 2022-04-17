@@ -25,6 +25,8 @@ SOFTWARE.
 #include "paint_window.h"
 
 #include "core/os/input.h"
+#include "core/image.h"
+#include "scene/resources/texture.h"
 
 #include "actions/brighten_action.h"
 #include "actions/brush_action.h"
@@ -63,6 +65,32 @@ SOFTWARE.
 #include "dialogs/paint_load_file_dialog.h"
 #include "dialogs/paint_save_file_dialog.h"
 #include "paint_settings.h"
+
+#include "icons/paint_icons.h"
+
+static float scale = 1;
+
+template <class T>
+static Ref<Texture> make_icon(T p_src) {
+	Ref<ImageTexture> texture(memnew(ImageTexture));
+	Ref<Image> img = memnew(Image(p_src));
+	if (scale > 1) {
+		Size2 orig_size = Size2(img->get_width(), img->get_height());
+
+		img->convert(Image::FORMAT_RGBA8);
+		img->expand_x2_hq2x();
+		if (scale != 2.0) {
+			img->resize(orig_size.x * scale, orig_size.y * scale);
+		}
+	} else if (scale < 1) {
+		Size2 orig_size = Size2(img->get_width(), img->get_height());
+		img->convert(Image::FORMAT_RGBA8);
+		img->resize(orig_size.x * scale, orig_size.y * scale);
+	}
+	texture->create_from_image(img, ImageTexture::FLAG_FILTER);
+
+	return texture;
+}
 
 Color PaintWindow::get_selected_color() {
 	return _selected_color;
@@ -1147,26 +1175,26 @@ PaintWindow::PaintWindow() {
 	left_main_vbox_container->add_child(brush_container);
 
 	TextureButton *brush_rect_button = memnew(TextureButton);
-	//brush_rect_button->set_normal_texture(); //res://addons/Godoxel/assets/BrushRect.png
-	//brush_rect_button->set_hover_texture(); //res://addons/Godoxel/assets/BrushRect_Hovered.png
+	brush_rect_button->set_normal_texture(make_icon(brush_rect_png));
+	brush_rect_button->set_hover_texture(make_icon(brush_rect_hovered_png));
 	brush_rect_button->set_custom_minimum_size(Size2(25, 25));
 	brush_container->add_child(brush_rect_button);
 
 	TextureButton *brush_circle_button = memnew(TextureButton);
-	//brush_circle_button->set_normal_texture(); //res://addons/Godoxel/assets/BrushCircle.png
-	//brush_circle_button->set_hover_texture(); //res://addons/Godoxel/assets/BrushCircle_Hovered.png
+	brush_circle_button->set_normal_texture(make_icon(brush_circle_png));
+	brush_circle_button->set_hover_texture(make_icon(brush_circle_hovered_png));
 	brush_circle_button->set_custom_minimum_size(Size2(25, 25));
 	brush_container->add_child(brush_circle_button);
 
 	TextureButton *brush_v_line_button = memnew(TextureButton);
-	//brush_v_line_button->set_normal_texture(); //res://addons/Godoxel/assets/BrushVLine.png
-	//brush_v_line_button->set_hover_texture(); //res://addons/Godoxel/assets/BrushVLine_Hovered.png
+	brush_v_line_button->set_normal_texture(make_icon(brush_v_line_png));
+	brush_v_line_button->set_hover_texture(make_icon(brush_v_line_hovered_png));
 	brush_v_line_button->set_custom_minimum_size(Size2(25, 25));
 	brush_container->add_child(brush_v_line_button);
 
 	TextureButton *brush_h_line_button = memnew(TextureButton);
-	//brush_h_line_button->set_normal_texture(); //res://addons/Godoxel/assets/BrushHLine.png
-	//brush_h_line_button->set_hover_texture(); //res://addons/Godoxel/assets/BrushHLine_Hovered.png
+	brush_h_line_button->set_normal_texture(make_icon(brush_h_line_png));
+	brush_h_line_button->set_hover_texture(make_icon(brush_h_line_hovered_png));
 	brush_h_line_button->set_custom_minimum_size(Size2(25, 25));
 	brush_container->add_child(brush_h_line_button);
 

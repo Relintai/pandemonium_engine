@@ -32,6 +32,32 @@ SOFTWARE.
 
 #include "paint_canvas_layer.h"
 
+#include "icons/paint_icons.h"
+
+static float scale = 1;
+
+template <class T>
+static Ref<Texture> make_icon(T p_src) {
+	Ref<ImageTexture> texture(memnew(ImageTexture));
+	Ref<Image> img = memnew(Image(p_src));
+	if (scale > 1) {
+		Size2 orig_size = Size2(img->get_width(), img->get_height());
+
+		img->convert(Image::FORMAT_RGBA8);
+		img->expand_x2_hq2x();
+		if (scale != 2.0) {
+			img->resize(orig_size.x * scale, orig_size.y * scale);
+		}
+	} else if (scale < 1) {
+		Size2 orig_size = Size2(img->get_width(), img->get_height());
+		img->convert(Image::FORMAT_RGBA8);
+		img->resize(orig_size.x * scale, orig_size.y * scale);
+	}
+	texture->create_from_image(img, ImageTexture::FLAG_FILTER);
+
+	return texture;
+}
+
 void PaintCanvas::_enter_tree() {
 	connect("mouse_entered", this, "_on_mouse_entered");
 	connect("mouse_exited", this, "_on_mouse_exited");
@@ -574,7 +600,7 @@ PaintCanvas::PaintCanvas() {
 	mouse_on_top = false;
 
 	canvas_background_rect = memnew(TextureRect);
-	//canvas_background_rect->set_texture();//res://addons/Godoxel/assets/grid.png
+	canvas_background_rect->set_texture(make_icon(grid_png));
 	canvas_background_rect->set_expand(true);
 	canvas_background_rect->set_stretch_mode(TextureRect::STRETCH_TILE);
 	add_child(canvas_background_rect);

@@ -24,12 +24,41 @@ SOFTWARE.
 
 #include "paint_layer_button.h"
 
+#include "core/image.h"
+#include "scene/resources/texture.h"
+#include "scene/resources/style_box.h"
+
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/check_button.h"
 #include "scene/gui/margin_container.h"
 #include "scene/gui/texture_button.h"
-#include "scene/resources/style_box.h"
+
+#include "icons/paint_icons.h"
+
+static float scale = 1;
+
+template <class T>
+static Ref<Texture> make_icon(T p_src) {
+	Ref<ImageTexture> texture(memnew(ImageTexture));
+	Ref<Image> img = memnew(Image(p_src));
+	if (scale > 1) {
+		Size2 orig_size = Size2(img->get_width(), img->get_height());
+
+		img->convert(Image::FORMAT_RGBA8);
+		img->expand_x2_hq2x();
+		if (scale != 2.0) {
+			img->resize(orig_size.x * scale, orig_size.y * scale);
+		}
+	} else if (scale < 1) {
+		Size2 orig_size = Size2(img->get_width(), img->get_height());
+		img->convert(Image::FORMAT_RGBA8);
+		img->resize(orig_size.x * scale, orig_size.y * scale);
+	}
+	texture->create_from_image(img, ImageTexture::FLAG_FILTER);
+
+	return texture;
+}
 
 PaintLayerButton::PaintLayerButton() {
 	set_custom_minimum_size(Size2(0, 32));
@@ -82,8 +111,8 @@ PaintLayerButton::PaintLayerButton() {
 	// Visible Button
 	visible_button = memnew(CheckButton);
 	visible_button->set_pressed(true);
-	//visible_button->set("custom_icons/off", ); //res://addons/Godoxel/assets/minidotta_invis.png
-	//visible_button->set("custom_icons/on", ); //res://addons/Godoxel/assets/minidotta.png
+	visible_button->set("custom_icons/off", make_icon(minidotta_invis_png));
+	visible_button->set("custom_icons/on", make_icon(minidotta_png));
 	style_box.instance();
 	style_box->set("bg_color", Color(0.6, 0.6, 0.6));
 	layer_button->set("custom_styles/normal", style_box);
@@ -92,8 +121,8 @@ PaintLayerButton::PaintLayerButton() {
 	// Lock Button
 	lock_button = memnew(CheckButton);
 	lock_button->set_pressed(false);
-	//lock_button->set("custom_icons/off", ); //res://addons/Godoxel/assets/unlock_layer.png
-	//lock_button->set("custom_icons/on", ); //res://addons/Godoxel/assets/lock_layer_1.png
+	lock_button->set("custom_icons/off", make_icon(unlock_layer_png));
+	lock_button->set("custom_icons/on", make_icon(lock_layer_1_png));
 	style_box.instance();
 	style_box->set("bg_color", Color(0.6, 0.6, 0.6));
 	layer_button->set("custom_styles/normal", style_box);
@@ -108,8 +137,8 @@ PaintLayerButton::PaintLayerButton() {
 	up_button->set_stretch_mode(TextureButton::STRETCH_KEEP_CENTERED);
 	up_button->set_h_size_flags(SIZE_EXPAND_FILL);
 	up_button->set_v_size_flags(SIZE_EXPAND_FILL);
-	//up_button->set_normal_texture(); //res://addons/Godoxel/assets/arrow_up.png
-	//up_button->set_pressed_texture(); //res://addons/Godoxel/assets/minidotta.png
+	up_button->set_normal_texture(make_icon(arrow_up_png));
+	up_button->set_pressed_texture(make_icon(minidotta_png));
 	right_main_container->add_child(up_button);
 
 	down_button = memnew(TextureButton);
@@ -117,8 +146,8 @@ PaintLayerButton::PaintLayerButton() {
 	down_button->set_stretch_mode(TextureButton::STRETCH_KEEP_CENTERED);
 	down_button->set_h_size_flags(SIZE_EXPAND_FILL);
 	down_button->set_v_size_flags(SIZE_EXPAND_FILL);
-	//down_button->set_normal_texture(); //res://addons/Godoxel/assets/arrow_up.png
-	//down_button->set_pressed_texture(); //res://addons/Godoxel/assets/minidotta.png
+	down_button->set_normal_texture(make_icon(arrow_down_png));
+	down_button->set_pressed_texture(make_icon(minidotta_png));
 	right_main_container->add_child(down_button);
 }
 
