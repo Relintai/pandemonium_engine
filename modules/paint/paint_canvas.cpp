@@ -226,7 +226,7 @@ Ref<PaintCanvasLayer> PaintCanvas::remove_layer(const String &layer_name) {
 
 			ERR_CONTINUE(!layer.is_valid());
 
-			if (layer == preview_layer or layer == active_layer or layer == tool_layer) {
+			if (layer == preview_layer || layer == active_layer || layer == tool_layer) {
 				continue;
 			}
 
@@ -344,7 +344,7 @@ void PaintCanvas::_on_mouse_exited() {
 	mouse_on_top = false;
 }
 bool PaintCanvas::is_inside_canvas(const int x, const int y) {
-	if (x < 0 or y < 0) {
+	if (x < 0 || y < 0) {
 		return false;
 	}
 	if (x >= _canvas_width || y >= _canvas_height) {
