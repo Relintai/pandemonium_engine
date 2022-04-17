@@ -24,102 +24,72 @@ SOFTWARE.
 
 #include "paint_settings.h"
 
-void PaintSettings::_enter_tree() {
-	/*
-	canvas_outline = get_parent().find_node("CanvasOutline")
-	editor = get_parent()
-	*/
-}
+#include "paint_canvas_outline.h"
+
+#include "scene/gui/box_container.h"
+#include "scene/gui/check_button.h"
+#include "scene/gui/color_picker.h"
+#include "scene/gui/label.h"
+#include "scene/gui/spin_box.h"
+
 void PaintSettings::_on_ColorPickerButton_color_changed(const Color &color) {
-	/*
-	canvas_outline.color = color
-	*/
+	canvas_outline->color = color;
+	canvas_outline->update();
 }
 void PaintSettings::_on_CheckButton_toggled(const bool button_pressed) {
-	/*
-	canvas_outline.visible = button_pressed
-	*/
-}
-void PaintSettings::_on_Ok_pressed() {
-	/*
-	hide()
-	*/
+	canvas_outline->set_visible(button_pressed);
 }
 
 PaintSettings::PaintSettings() {
-	/*
+	set_resizable(true);
+	set_title("Settings");
 
-[gd_scene load_steps=2 format=2]
+	VBoxContainer *main_box_container = memnew(VBoxContainer);
+	add_child(main_box_container);
 
-[ext_resource path="res://addons/Godoxel/Settings.gd" type="Script" id=1]
+	HBoxContainer *outline_container = memnew(HBoxContainer);
+	outline_container->set_v_size_flags(Control::SIZE_EXPAND_FILL);
+	outline_container->set_h_size_flags(Control::SIZE_EXPAND_FILL);
+	main_box_container->add_child(outline_container);
 
+	Label *outline_label = memnew(Label);
+	outline_label->set_text("Canvas Outline:");
+	outline_label->set_valign(Label::VALIGN_CENTER);
+	outline_label->set_v_size_flags(Control::SIZE_EXPAND_FILL);
+	outline_label->set_h_size_flags(Control::SIZE_EXPAND_FILL);
+	outline_container->add_child(outline_label);
 
-[node name="Settings" type="WindowDialog"]
-visible = true
-margin_top = 20.0
-margin_right = 300.0
-margin_bottom = 120.0
-window_title = "Settings"
-script = ExtResource( 1 )
+	_check_button = memnew(CheckButton);
+	_check_button->set_pressed(true);
+	_check_button->set_v_size_flags(Control::SIZE_EXPAND_FILL);
+	_check_button->set_h_size_flags(Control::SIZE_EXPAND_FILL);
+	_check_button->connect("toggled", this, "_on_CheckButton_toggled");
+	outline_container->add_child(_check_button);
 
-[node name="Ok" type="Button" parent="."]
-margin_left = 210.0
-margin_top = 70.0
-margin_right = 290.0
-margin_bottom = 90.0
-text = "Ok"
+	HBoxContainer *color_picker_container = memnew(HBoxContainer);
+	color_picker_container->set_v_size_flags(Control::SIZE_EXPAND_FILL);
+	color_picker_container->set_h_size_flags(Control::SIZE_EXPAND_FILL);
+	main_box_container->add_child(color_picker_container);
 
-[node name="CanvasOutlineToggle" type="Control" parent="."]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 290.0
-margin_bottom = 30.0
-__meta__ = {
-"_edit_group_": true
-}
+	Label *grid_label = memnew(Label);
+	grid_label->set_text("Canvas Outline Color:");
+	grid_label->set_valign(Label::VALIGN_CENTER);
+	grid_label->set_v_size_flags(Control::SIZE_EXPAND_FILL);
+	grid_label->set_h_size_flags(Control::SIZE_EXPAND_FILL);
+	color_picker_container->add_child(grid_label);
 
-[node name="Label" type="Label" parent="CanvasOutlineToggle"]
-margin_right = 130.0
-margin_bottom = 20.0
-text = "Canvas Outline:"
-valign = 1
-
-[node name="CheckButton" type="CheckButton" parent="CanvasOutlineToggle"]
-margin_left = 210.0
-margin_top = -10.0
-margin_right = 286.0
-margin_bottom = 30.0
-pressed = true
-
-[node name="CanvasOutlineColor" type="Control" parent="."]
-margin_left = 10.0
-margin_top = 40.0
-margin_right = 290.0
-margin_bottom = 60.0
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Label" type="Label" parent="CanvasOutlineColor"]
-margin_right = 130.0
-margin_bottom = 20.0
-text = "Canvas Outline Color:"
-valign = 1
-
-[node name="ColorPickerButton" type="ColorPickerButton" parent="CanvasOutlineColor"]
-margin_left = 170.0
-margin_right = 280.0
-margin_bottom = 20.0
-[connection signal="pressed" from="Ok" to="." method="_on_Ok_pressed"]
-[connection signal="toggled" from="CanvasOutlineToggle/CheckButton" to="." method="_on_CheckButton_toggled"]
-[connection signal="color_changed" from="CanvasOutlineColor/ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]
-
-
-	*/
+	_color_picker_button = memnew(ColorPickerButton);
+	_color_picker_button->set_v_size_flags(Control::SIZE_EXPAND_FILL);
+	_color_picker_button->set_h_size_flags(Control::SIZE_EXPAND_FILL);
+	_color_picker_button->set_custom_minimum_size(Size2(100, 0));
+	_color_picker_button->connect("color_changed", this, "_on_ColorPickerButton_color_changed");
+	color_picker_container->add_child(_color_picker_button);
 }
 
 PaintSettings::~PaintSettings() {
 }
 
 void PaintSettings::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_on_ColorPickerButton_color_changed"), &PaintSettings::_on_ColorPickerButton_color_changed);
+	ClassDB::bind_method(D_METHOD("_on_CheckButton_toggled"), &PaintSettings::_on_CheckButton_toggled);
 }

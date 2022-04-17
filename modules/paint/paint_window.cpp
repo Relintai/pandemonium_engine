@@ -1443,6 +1443,7 @@ PaintWindow::PaintWindow() {
 
 	//PaintSettings
 	paint_settings_dialog = memnew(PaintSettings);
+	paint_settings_dialog->canvas_outline = paint_canvas->canvas_outline;
 	add_child(paint_settings_dialog);
 
 	set_brush(Tools::PAINT);

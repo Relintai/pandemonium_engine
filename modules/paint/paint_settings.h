@@ -27,29 +27,27 @@ SOFTWARE.
 
 #include "scene/gui/dialogs.h"
 
-class PaintSettings : public WindowDialog {
-	GDCLASS(PaintSettings, WindowDialog);
+class CheckButton;
+class ColorPickerButton;
+class PaintCanvasOutline;
+
+class PaintSettings : public AcceptDialog {
+	GDCLASS(PaintSettings, AcceptDialog);
 
 public:
-	void _enter_tree();
-	void _on_ColorPickerButton_color_changed(const Color &color);
-	void _on_CheckButton_toggled(const bool button_pressed);
-	void _on_Ok_pressed();
-
 	PaintSettings();
 	~PaintSettings();
 
+	PaintCanvasOutline *canvas_outline;
+
 protected:
+	void _on_ColorPickerButton_color_changed(const Color &color);
+	void _on_CheckButton_toggled(const bool button_pressed);
+
 	static void _bind_methods();
 
-	/*
-
-	var editor
-	var canvas_outline
-	var start_time
-	var end_time
-
-	*/
+	CheckButton *_check_button;
+	ColorPickerButton *_color_picker_button;
 };
 
 #endif
