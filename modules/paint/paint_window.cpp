@@ -183,7 +183,7 @@ void PaintWindow::_process(float delta) {
 
 	if (is_mouse_in_canvas() && paint_canvas->mouse_on_top) {
 		if (!paint_canvas->is_active_layer_locked()) {
-			if (is_position_in_canvas(get_global_mouse_position()) or is_position_in_canvas(_last_mouse_pos_canvas_area)) {
+			if (is_position_in_canvas(get_global_mouse_position()) || is_position_in_canvas(_last_mouse_pos_canvas_area)) {
 				brush_process();
 			}
 			//else {
@@ -251,7 +251,7 @@ void PaintWindow::_draw_tool_brush() {
 		case Tools::PASTECUT: {
 			for (int idx = 0; idx < _selection_cells.size(); ++idx) {
 				Vector2i pixel = _selection_cells[idx];
-				//if pixel.x < 0 or pixel.y < 0:
+				//if pixel.x < 0 || pixel.y < 0:
 				//	print(pixel);
 				Color color = _selection_colors[idx];
 				pixel -= _cut_pos + _cut_size / 2;
@@ -936,11 +936,11 @@ bool PaintWindow::is_mouse_in_canvas() {
 
 bool PaintWindow::is_any_menu_open() {
 	/*
-	return $ChangeCanvasSize.visible or \
-			$ChangeGridSizeDialog.visible or \
-			$Settings.visible or \
-			$LoadFileDialog.visible or \
-			$SaveFileDialog.visible or \
+	return $ChangeCanvasSize.visible || \
+			$ChangeGridSizeDialog.visible || \
+			$Settings.visible || \
+			$LoadFileDialog.visible || \
+			$SaveFileDialog.visible || \
 			find_node("Navbar").is_any_menu_open()
 	*/
 	return false;
