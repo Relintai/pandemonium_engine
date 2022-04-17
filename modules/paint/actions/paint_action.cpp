@@ -24,24 +24,27 @@ SOFTWARE.
 
 #include "paint_action.h"
 
+#include "../paint_canvas.h"
+#include "../paint_canvas_layer.h"
+
 void PaintAction::do_action(PaintCanvas *canvas, const Array &data) {
 	if (!action_data_redo.has("cells")) {
-		action_data_redo["cells"] = Array();
-		action_data_redo["colors"] = Array();
+		action_data_redo["cells"] = PoolVector2iArray();
+		action_data_redo["colors"] = PoolColorArray();
 	}
 
 	if (!action_data_undo.has("cells")) {
-		action_data_undo["cells"] = Array();
-		action_data_undo["colors"] = Array();
+		action_data_undo["cells"] = PoolVector2iArray();
+		action_data_undo["colors"] = PoolColorArray();
 	}
 
 	if (!action_data_preview.has("cells")) {
-		action_data_preview["cells"] = Array();
-		action_data_preview["colors"] = Array();
+		action_data_preview["cells"] = PoolVector2iArray();
+		action_data_preview["colors"] = PoolColorArray();
 	}
 
 	if (!action_data.has("layer")) {
-		//action_data["layer"] = canvas->get_active_layer();
+		action_data["layer"] = canvas->get_active_layer();
 	}
 }
 void PaintAction::commit_action(PaintCanvas *canvas) {

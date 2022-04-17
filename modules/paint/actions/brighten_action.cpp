@@ -24,33 +24,53 @@ SOFTWARE.
 
 #include "brighten_action.h"
 
+#include "../paint_canvas_layer.h"
+#include "../paint_canvas.h"
+#include "../paint_utilities.h"
+
 void BrightenAction::do_action(PaintCanvas *canvas, const Array &data) {
-	/*
-	.do_action(canvas, data)
+	PaintAction::do_action(canvas, data);
+/*
+	PoolVector2iArray undo_cells = action_data_undo["cells"];
+	PoolColorArray undo_colors = action_data_undo["colors"];
+	PoolVector2iArray redo_cells = action_data_redo["cells"];
+	PoolColorArray redo_colors = action_data_redo["colors"];
 
-	var pixels = GEUtils.get_pixels_in_line(data[0], data[1])
-	for pixel in pixels:
-		if canvas.get_pixel_v(pixel) == null:
-			continue
+	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);
 
-		if canvas.is_alpha_locked() and canvas.get_pixel_v(pixel) == Color.transparent:
-			continue
+	for (int i = 0; i < pixels.size(); ++i) {
+		Vector2i pixel = pixels[i];
+
+		Color col = canvas->get_pixel_v(pixel);
+
+		if (canvas->is_alpha_locked() && col.a < 0.00001) {
+			continue;
+		}
+
+		
 
 		if pixel in action_data.undo.cells:
-			var brightened_color = canvas.get_pixel_v(pixel).lightened(0.1)
-			canvas.set_pixel_v(pixel, brightened_color)
+			var brightened_color = canvas.get_pixel_v(pixel).lightened(0.1);
+			canvas.set_pixel_v(pixel, brightened_color);
 
-			action_data.redo.cells.append(pixel)
-			action_data.redo.colors.append(brightened_color)
-			continue
+			action_data.redo.cells.append(pixel);
+			action_data.redo.colors.append(brightened_color);
+			continue;
 
-		action_data.undo.colors.append(canvas.get_pixel_v(pixel))
-		action_data.undo.cells.append(pixel)
-		var brightened_color = canvas.get_pixel_v(pixel).lightened(0.1)
-		canvas.set_pixel_v(pixel, brightened_color)
+		action_data.undo.colors.append(canvas.get_pixel_v(pixel));
+		action_data.undo.cells.append(pixel);
+		Color brightened_color = canvas.get_pixel_v(pixel).lightened(0.1);
+		canvas.set_pixel_v(pixel, brightened_color);
 
-		action_data.redo.cells.append(pixel)
-		action_data.redo.colors.append(brightened_color)
+		action_data.redo.cells.append(pixel);
+		action_data.redo.colors.append(brightened_color);
+	}
+
+	PoolVector2iArray undo_cells = action_data_undo["cells"] = undo_cells;
+	PoolColorArray undo_colors = action_data_undo["colors"] = undo_colors;
+	PoolVector2iArray redo_cells = action_data_redo["cells"] = redo_cells;
+	PoolColorArray redo_colors = action_data_redo["colors"] = redo_colors;
+
 	*/
 }
 void BrightenAction::commit_action(PaintCanvas *canvas) {
@@ -61,20 +81,20 @@ void BrightenAction::commit_action(PaintCanvas *canvas) {
 }
 
 void BrightenAction::undo_action(PaintCanvas *canvas) {
-	/*
-	var cells = action_data.undo.cells
-	var colors = action_data.undo.colors
-	for idx in range(cells.size()):
-		canvas._set_pixel_v(action_data.layer, cells[idx], colors[idx])
-	*/
+	PoolVector2iArray cells = action_data_undo["cells"];
+	PoolColorArray colors = action_data_undo["colors"];
+
+	for (int idx = 0; idx < cells.size(); ++idx) {
+		canvas->_set_pixel_v(action_data["layer"], cells[idx], colors[idx]);
+	}
 }
 void BrightenAction::redo_action(PaintCanvas *canvas) {
-	/*
-	var cells = action_data.redo.cells
-	var colors = action_data.redo.colors
-	for idx in range(cells.size()):
-		canvas._set_pixel_v(action_data.layer, cells[idx], colors[idx])
-	*/
+	PoolVector2iArray cells = action_data_redo["cells"];
+	PoolColorArray colors = action_data_redo["colors"];
+
+	for (int idx = 0; idx < cells.size(); ++idx) {
+		canvas->_set_pixel_v(action_data["layer"], cells[idx], colors[idx]);
+	}
 }
 
 BrightenAction::BrightenAction() {

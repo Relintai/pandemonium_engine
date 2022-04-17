@@ -44,85 +44,107 @@ const list = [
 ]
 */
 
-PoolVector2iArray BrushPrefabs::get_brush(const BrushPrefabs::Type type, const int size) {
-	/*
-		var pixels = []
-		if size < 1:
-			size = 1
+PoolVector2iArray BrushPrefabs::get_brush(const BrushPrefabs::Type type, int size) {
+	PoolVector2iArray pixels;
 
-		match type:
-			Type.CIRCLE:
-				size += 1
-				var center = Vector2.ZERO
-				var last = center
-				var radius = size / 2.0
-				for x in range(size):
-					for y in range(size):
-						if Vector2(x - radius, y - radius).length() < size / 3.0:
-							pixels.append(Vector2(x, y))
+	if (size < 1) {
+		size = 1;
+	}
 
-				var avg = Vector2(size / 2, size / 2)
-				avg = Vector2(floor(avg.x), floor(avg.y))
+	switch (type) {
+		case CIRCLE: {
+			size += 1;
+			Vector2 center;
+			int radius = size / 2.0;
 
-				for i in range(pixels.size()):
-					pixels[i] -= avg
+			for (int x = 0; x < size; ++x) {
+				for (int y = 0; y < size; ++y) {
+					if (Vector2(x - radius, y - radius).length() < size / 3.0) {
+						pixels.append(Vector2(x, y));
+					}
+				}
+			}
 
-			Type.RECT:
-				var center = Vector2.ZERO
-				var last = center
-				for x in range(size):
-					for y in range(size):
-						pixels.append(Vector2(x, y))
+			int av = static_cast<int>(size / 2);
+			Vector2i avg = Vector2i(av, av);
 
-				var avg = Vector2.ZERO
-				for cell in pixels:
-					avg += cell
+			for (int i = 0; i < pixels.size(); ++i) {
+				Vector2i p = pixels[i];
+				p -= avg;
+				pixels.set(i, p);
+			}
+		} break;
+		case RECT: {
+			for (int x = 0; x < size; ++x) {
+				for (int y = 0; y < size; ++y) {
+					pixels.append(Vector2(x, y));
+				}
+			}
 
-				avg.x /= pixels.size()
-				avg.y /= pixels.size()
+			Vector2i avg;
+			for (int i = 0; i < pixels.size(); ++i) {
+				Vector2i p = pixels[i];
+				avg += p;
+			}
 
-				avg = Vector2(floor(avg.x), floor(avg.y))
+			avg.x /= pixels.size();
+			avg.y /= pixels.size();
 
-				for i in range(pixels.size()):
-					pixels[i] -= avg
+			for (int i = 0; i < pixels.size(); ++i) {
+				Vector2i p = pixels[i];
+				p -= avg;
+				pixels.set(i, p);
+			}
+		} break;
+		case V_LINE: {
+			Vector2i center;
+			Vector2i last = center;
+			pixels.append(Vector2i());
 
-			Type.V_LINE:
-				var center = Vector2.ZERO
-				var last = center
-				pixels.append(Vector2.ZERO)
+			for (int i = 0; i < size - 1; ++i) {
+				int sig = SGN(last.y);
 
-				for i in range(size - 1):
-					var sig = sign(last.y)
-					if sig == 0:
-						sig = 1
+				if (sig == 0) {
+					sig = 1;
+				}
 
-					if last.y < 0:
-						center.y = abs(last.y) * -sig
-					else:
-						center.y = abs(last.y+1) * -sig
-					last = center
-					pixels.append(center)
-			Type.H_LINE:
-				var center = Vector2.ZERO
-				var last = center
-				pixels.append(Vector2.ZERO)
+				if (last.y < 0) {
+					center.y = abs(last.y) * -sig;
+				} else {
+					center.y = abs(last.y + 1) * -sig;
+				}
 
-				for i in range(size - 1):
-					var sig = sign(last.x)
-					if sig == 0:
-						sig = 1
+				last = center;
+				pixels.append(center);
+			}
 
-					if last.x < 0:
-						center.x = abs(last.x) * -sig
-					else:
-						center.x = abs(last.x+1) * -sig
-					last = center
-					pixels.append(center)
+		} break;
+		case H_LINE: {
+			Vector2i center;
+			Vector2i last = center;
+			pixels.append(Vector2i());
 
-		return pixels
-	*/
+			for (int i = 0; i < size - 1; ++i) {
+				int sig = SGN(last.x);
 
-	return PoolVector2iArray();
+				if (sig == 0) {
+					sig = 1;
+				}
+
+				if (last.x < 0) {
+					center.x = abs(last.x) * -sig;
+				} else {
+					center.x = abs(last.x + 1) * -sig;
+				}
+
+				last = center;
+				pixels.append(center);
+			}
+
+		} break;
+	}
+
+	return pixels;
 }
 
 BrushPrefabs::BrushPrefabs() {
