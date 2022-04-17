@@ -27,24 +27,31 @@ SOFTWARE.
 
 #include "scene/gui/file_dialog.h"
 
+class PaintCanvas;
+class PaintWindow;
+
 class PaintLoadFileDialog : public FileDialog {
 	GDCLASS(PaintLoadFileDialog, FileDialog);
 
 public:
+	void load_img();
+
 	void _on_LoadFileDialog_file_selected(const String &path);
 	void _on_LoadFileDialog_confirmed();
-	void load_img();
 	void _on_LoadFileDialog_about_to_show();
 	void _on_LoadFileDialog_visibility_changed();
 
 	PaintLoadFileDialog();
 	~PaintLoadFileDialog();
 
-protected:
-	static void _bind_methods();
+	String file_path;
 
-	//var file_path = ""
-	//var canvas: GECanvas
+	PaintCanvas *canvas;
+	PaintWindow *window;
+
+protected:
+	void _notification(int p_what);
+	static void _bind_methods();
 };
 
 #endif

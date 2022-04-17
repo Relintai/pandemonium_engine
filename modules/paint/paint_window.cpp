@@ -1415,11 +1415,15 @@ PaintWindow::PaintWindow() {
 
 	//PaintLoadFileDialog
 	paint_load_file_dialog = memnew(PaintLoadFileDialog);
+	paint_load_file_dialog->canvas = paint_canvas;
+	paint_load_file_dialog->window = this;
+	paint_load_file_dialog->set_size(Size2(600, 400));
 	add_child(paint_load_file_dialog);
 
 	//PaintSaveFileDialog
 	paint_save_file_dialog = memnew(PaintSaveFileDialog);
 	paint_save_file_dialog->canvas = paint_canvas;
+	paint_load_file_dialog->set_size(Size2(600, 400));
 	add_child(paint_save_file_dialog);
 
 	//PaintSettings

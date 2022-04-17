@@ -24,12 +24,50 @@ SOFTWARE.
 
 #include "paint_load_file_dialog.h"
 
+#include "../paint_canvas.h"
+#include "../paint_canvas_layer.h"
+#include "../paint_window.h"
+#include "../paint_utilities.h"
+
+void PaintLoadFileDialog::load_img() {
+	Ref<Image> image;
+	image.instance();
+
+	if (image->load(file_path) != OK) {
+		ERR_FAIL_MSG("couldn't load image!");
+	}
+
+	PoolByteArray image_data = image->get_data();
+	Ref<PaintCanvasLayer> layer = window->add_new_layer();
+
+	int width = image->get_width();
+	int height = image->get_height();
+
+	if (canvas->get_canvas_width() < width) {
+		canvas->resize(width, canvas->get_canvas_height());
+	}
+
+	if (canvas->get_canvas_height() < height) {
+		canvas->resize(canvas->get_canvas_width(), height);
+	}
+
+	int iss = image_data.size() / 4;
+	for (int i = 0; i < iss; ++i) {
+		Color color = Color(image_data[i*4] / 255.0, image_data[i*4+1] / 255.0, image_data[i*4+2] / 255.0, image_data[i*4+3] / 255.0);
+		Vector2i pos = PaintUtilities::to_2D(i, image->get_width());
+		if (pos.x > layer->layer_width) {
+			continue;
+		}
+
+		layer->set_pixel(pos.x, pos.y, color);
+	}
+
+	layer->update_texture();
+}
+
 void PaintLoadFileDialog::_on_LoadFileDialog_file_selected(const String &path) {
-	/*
-	file_path = path
-	#print("1ere")
-	load_img()
-	*/
+	file_path = path;
+	load_img();
 }
 void PaintLoadFileDialog::_on_LoadFileDialog_confirmed() {
 	/*
@@ -38,87 +76,39 @@ void PaintLoadFileDialog::_on_LoadFileDialog_confirmed() {
 	#load_img()
 	*/
 }
-void PaintLoadFileDialog::load_img() {
-	/*
-	var image = Image.new()
-	if image.load(file_path) != OK:
-		print("couldn't load image!")
-		return
-
-	var image_data = image.get_data()
-	var layer: GELayer = owner.add_new_layer()
-
-	var width = image.get_width()
-	var height = image.get_height()
-
-	if owner.paint_canvas.canvas_width < width:
-		owner.paint_canvas.resize(width, owner.paint_canvas.canvas_height)
-
-	if owner.paint_canvas.canvas_height < height:
-		owner.paint_canvas.resize(owner.paint_canvas.canvas_width, height)
-
-	for i in range(image_data.size() / 4):
-		var color = Color(image_data[i*4] / 255.0, image_data[i*4+1] / 255.0, image_data[i*4+2] / 255.0, image_data[i*4+3] / 255.0)
-		var pos = GEUtils.to_2D(i, image.get_width())
-		if pos.x > layer.layer_width:
-			continue
-
-		layer.set_pixel(pos.x, pos.y, color)
-	layer.update_texture()
-	*/
-}
 void PaintLoadFileDialog::_on_LoadFileDialog_about_to_show() {
-	/*
-	invalidate()
-	*/
+	invalidate();
 }
 void PaintLoadFileDialog::_on_LoadFileDialog_visibility_changed() {
-	/*
-	invalidate()
-	*/
+	invalidate();
+}
+
+void PaintLoadFileDialog::_notification(int p_what) {
+	switch (p_what) {
+		case NOTIFICATION_POSTINITIALIZE: {
+			connect("file_selected", this, "_on_LoadFileDialog_file_selected");
+			connect("about_to_show", this, "_on_LoadFileDialog_about_to_show");
+			connect("confirmed", this, "_on_LoadFileDialog_confirmed");
+			connect("visibility_changed", this, "_on_LoadFileDialog_visibility_changed");
+		} break;
+	}
 }
 
 PaintLoadFileDialog::PaintLoadFileDialog() {
-	//var file_path = ""
-
-/*
-	get_line_edit().connect("text_entered", self, "_on_LineEdit_text_entered")
-	invalidate()
-	clear_filters()
-	add_filter("*.png ; PNG Images")
-*/
-
-	/*
-
-[gd_scene load_steps=2 format=2]
-
-[sub_resource type="GDScript" id=1]
-script/source = "extends ConfirmationDialog
-
-func _ready():
-	get_ok().connect(\"pressed\", self, \"hide\")
-	get_cancel().connect(\"pressed\", self, \"hide\")
-
-
-
-"
-
-[node name="LoadFileDialog" type="FileDialog"]
-margin_right = 604.0
-margin_bottom = 367.0
-window_title = "Open a File"
-mode = 0
-access = 2
-current_dir = "/Projects/BitBucket/GraphicsEditor"
-current_path = "/Projects/BitBucket/GraphicsEditor/"
-script = SubResource( 1 )
-
-
-	*/
+	add_filter("*.png ; PNG Images");
+	set_mode(FileDialog::MODE_OPEN_FILE);
+	set_show_hidden_files(true);
+	set_resizable(true);
+	set_size(Size2(600, 400));
+	set_title("Open a File");
 }
 
 PaintLoadFileDialog::~PaintLoadFileDialog() {
 }
 
 void PaintLoadFileDialog::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_on_LoadFileDialog_file_selected", "path"), &PaintLoadFileDialog::_on_LoadFileDialog_file_selected);
+	ClassDB::bind_method(D_METHOD("_on_LoadFileDialog_confirmed"), &PaintLoadFileDialog::_on_LoadFileDialog_confirmed);
+	ClassDB::bind_method(D_METHOD("_on_LoadFileDialog_about_to_show"), &PaintLoadFileDialog::_on_LoadFileDialog_about_to_show);
+	ClassDB::bind_method(D_METHOD("_on_LoadFileDialog_visibility_changed"), &PaintLoadFileDialog::_on_LoadFileDialog_visibility_changed);
 }
