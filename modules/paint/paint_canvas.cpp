@@ -545,8 +545,10 @@ void PaintCanvas::resize(int width, int height) {
 		height = 1;
 	}
 
-	set_canvas_width(width);
-	set_canvas_height(height);
+	Size2 s;
+	s.x = _canvas_height * _pixel_size;
+	s.y = _canvas_width * _pixel_size;
+	set_size(s);
 
 	preview_layer->resize(width, height);
 	tool_layer->resize(width, height);
@@ -558,6 +560,8 @@ void PaintCanvas::resize(int width, int height) {
 
 		layer->resize(width, height);
 	}
+
+	update();
 }
 
 void PaintCanvas::_notification(int p_what) {
@@ -572,6 +576,12 @@ void PaintCanvas::_notification(int p_what) {
 			active_layer = add_new_layer("Layer1");
 			preview_layer = add_new_layer("Preview");
 			tool_layer = add_new_layer("Tool");
+
+			//hack
+			_canvas_width = 0;
+			_canvas_height = 0;
+
+			resize(64, 64);
 
 			set_process(true);
 		} break;
@@ -588,8 +598,8 @@ PaintCanvas::PaintCanvas() {
 	big_grid = nullptr;
 
 	_pixel_size = 16;
-	_canvas_width = 48;
-	_canvas_height = 28;
+	_canvas_width = 64;
+	_canvas_height = 64;
 	_grid_size = 16;
 	_big_grid_size = 10;
 	_can_draw = true;

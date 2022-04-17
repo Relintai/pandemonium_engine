@@ -30,29 +30,34 @@ void PaintSelectionBox::_process(float delta) {
 	*/
 }
 void PaintSelectionBox::_draw() {
-	/*
-if not rect_size == Vector2():
-		draw_outline_box(rect_size, Color.gray, outline_size)
-	*/
+	if (get_size() != Vector2()) {
+		draw_outline_box(get_size(), Color(0.75, 0.75, 0.75), outline_size);
+	}
 }
 void PaintSelectionBox::draw_outline_box(const Vector2 &size, const Color &color, const int width) {
-	/*
-		#Top line
-		draw_line(Vector2(0 + 1, 0), Vector2(size.x, 0), color, width)
-		#Left line
-		draw_line(Vector2(0 + 1, 0), Vector2(0, size.y), color, width)
-		#Bottom line
-		draw_line(Vector2(0 + 1, size.y), Vector2(size.x, size.y), color, width)
-		#Right line
-		draw_line(Vector2(size.x, 0), Vector2(size.x, size.y), color, width)
-	*/
+	//Top line
+	draw_line(Vector2(0 + 1, 0), Vector2(size.x, 0), color, width);
+	//Left line
+	draw_line(Vector2(0 + 1, 0), Vector2(0, size.y), color, width);
+	//Bottom line
+	draw_line(Vector2(0 + 1, size.y), Vector2(size.x, size.y), color, width);
+	//Right line
+	draw_line(Vector2(size.x, 0), Vector2(size.x, size.y), color, width);
 }
 
 PaintSelectionBox::PaintSelectionBox() {
-	////export var outline_size = 3
+	outline_size = 3;
 }
 
 PaintSelectionBox::~PaintSelectionBox() {
+}
+
+void PaintSelectionBox::_notification(int p_what) {
+	switch (p_what) {
+		case NOTIFICATION_DRAW: {
+			_draw();
+		} break;
+	}
 }
 
 void PaintSelectionBox::_bind_methods() {

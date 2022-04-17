@@ -38,10 +38,11 @@ public:
 	PaintSelectionBox();
 	~PaintSelectionBox();
 
-protected:
-	static void _bind_methods();
+	int outline_size;
 
-	//export var outline_size = 3
+protected:
+	void _notification(int p_what);
+	static void _bind_methods();
 };
 
 #endif

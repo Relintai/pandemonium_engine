@@ -25,31 +25,32 @@ SOFTWARE.
 #include "paint_visual_grid.h"
 
 void PaintVisualGrid::_draw() {
-	/*
-	if size == 0:
-		size = 1
+	if (size == 0) {
+		size = 1;
+	}
 
-	var temp_size = size + zoom
+	float temp_size = size + zoom;
 
-	var wrap_offset = Vector2(wrapf(offset.x, 0, temp_size), wrapf(offset.y, 0, temp_size))
+	Vector2 wrap_offset = Vector2(Math::wrapf(offset.x, 0, temp_size), Math::wrapf(offset.y, 0, temp_size));
 
-	var ceil_x = ceil(rect_size.x / temp_size)
-	var ceil_y = ceil(rect_size.y / temp_size)
+	Size2 rect_size = get_size();
 
-	for i in ceil_y:
-		var start_x = Vector2(0, (i * temp_size) + wrap_offset.y)
-		var end_x = Vector2(rect_size.x, (i * temp_size) + wrap_offset.y)
-#		var end_x = Vector2(int(rect_size.x) + size - int(rect_size.x) % size, (i * temp_size) + wrap_offset.y)
-		draw_line(start_x, end_x, color, 1)
+	float ceil_x = Math::ceil(rect_size.x / temp_size);
+	float ceil_y = Math::ceil(rect_size.y / temp_size);
 
-	for i in ceil_x:
-		var start_y = Vector2((i * temp_size) + wrap_offset.x, 0)
-		var end_y = Vector2((i * temp_size) + (wrap_offset.x), rect_size.y)
-#		var end_y = Vector2((i * temp_size) + (wrap_offset.x), int(rect_size.y) + size - int(rect_size.y) % size)
-		draw_line(start_y, end_y, color, 1)
+	for (int i = 0; i < ceil_y; ++i) {
+		Point2 start_x = Vector2(0, (i * temp_size) + wrap_offset.y);
+		Point2 end_x = Vector2(rect_size.x, (i * temp_size) + wrap_offset.y);
+		//var end_x = Vector2(int(rect_size.x) + size - int(rect_size.x) % size, (i * temp_size) + wrap_offset.y);
+		draw_line(start_x, end_x, color, 1);
+	}
 
-
-	*/
+	for (int i = 0; i < ceil_x; ++i) {
+		Point2 start_y = Vector2((i * temp_size) + wrap_offset.x, 0);
+		Point2 end_y = Vector2((i * temp_size) + (wrap_offset.x), rect_size.y);
+		//var end_y = Vector2((i * temp_size) + (wrap_offset.x), int(rect_size.y) + size - int(rect_size.y) % size);
+		draw_line(start_y, end_y, color, 1);
+	}
 }
 
 void PaintVisualGrid::_notification(int p_what) {
@@ -62,15 +63,27 @@ void PaintVisualGrid::_notification(int p_what) {
 		return
 	update()
 	*/
+
+	switch (p_what) {
+		/*
+		case NOTIFICATION_PROCESS: {
+			if (!is_visible_in_tree()) {
+				return;
+			}
+
+			update();
+		} break;
+		*/
+		case NOTIFICATION_DRAW: {
+			_draw();
+		} break;
+	}
 }
 
 PaintVisualGrid::PaintVisualGrid() {
-	/*
-	export var color = Color()
-	export var size:int = 16
-	export var zoom = 0
-	export var offset = Vector2(0, 0)
-	*/
+	color = Color(1, 1, 1);
+	size = 16;
+	zoom = 0;
 }
 
 PaintVisualGrid::~PaintVisualGrid() {

@@ -27,12 +27,6 @@ SOFTWARE.
 
 #include "scene/gui/control.h"
 
-#include "core/reference.h"
-
-class MeshDataResource;
-class MeshDataInstance;
-class Texture;
-
 class PaintVisualGrid : public Control {
 	GDCLASS(PaintVisualGrid, Control);
 
@@ -51,13 +45,6 @@ protected:
 	void _notification(int p_what);
 	static void _bind_methods();
 
-	/*
-	export var color = Color()
-	export var size:int = 16
-	export var zoom = 0
-	export var offset = Vector2(0, 0)
-
-	*/
 };
 
 #endif
