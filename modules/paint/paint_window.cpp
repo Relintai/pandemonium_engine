@@ -782,6 +782,15 @@ void PaintWindow::_on_Editor_visibility_changed() {
 	set_process(is_visible_in_tree());
 }
 
+void PaintWindow::_on_ChangeGridSizeDialog_confirmed() {
+	paint_canvas->set_grid_size(paint_change_grid_size_dialog->get_grid_value());
+	paint_canvas->set_big_grid_size(paint_change_grid_size_dialog->get_big_grid_value());
+}
+
+void PaintWindow::_on_ChangeCanvasSizeDialog_confirmed() {
+	paint_canvas->resize(paint_canvas_dialog->get_size_x(), paint_canvas_dialog->get_size_y());
+}
+
 void PaintWindow::highlight_layer(const String &layer_name) {
 	for (int i = 0; i < layers_box_container->get_child_count(); ++i) {
 		PaintLayerButton *button = Object::cast_to<PaintLayerButton>(layers_box_container->get_child(i));
@@ -1407,10 +1416,16 @@ PaintWindow::PaintWindow() {
 
 	//PaintCanvasDialog
 	paint_canvas_dialog = memnew(PaintCanvasDialog);
+	paint_canvas_dialog->set_size_x(64);
+	paint_canvas_dialog->set_size_y(64);
+	paint_canvas_dialog->connect("confirmed", this, "_on_ChangeCanvasSizeDialog_confirmed");
 	add_child(paint_canvas_dialog);
 
 	//PaintChangeGridSizeDialog
 	paint_change_grid_size_dialog = memnew(PaintChangeGridSizeDialog);
+	paint_change_grid_size_dialog->set_grid_value(1);
+	paint_change_grid_size_dialog->set_big_grid_value(8);
+	paint_change_grid_size_dialog->connect("confirmed", this, "_on_ChangeGridSizeDialog_confirmed");
 	add_child(paint_change_grid_size_dialog);
 
 	//PaintLoadFileDialog
@@ -1432,6 +1447,9 @@ PaintWindow::PaintWindow() {
 
 	set_brush(Tools::PAINT);
 
+	_on_ChangeCanvasSizeDialog_confirmed();
+	_on_ChangeGridSizeDialog_confirmed();
+	
 	//find_node("CanvasBackground").material.set_shader_param("pixel_size", 8 * pow(0.5, big_grid_pixels)/paint_canvas.pixel_size)
 
 	add_new_layer();
@@ -1459,6 +1477,8 @@ void PaintWindow::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_on_ColorPickerTool_pressed"), &PaintWindow::_on_ColorPickerTool_pressed);
 	ClassDB::bind_method(D_METHOD("_on_CutTool_pressed"), &PaintWindow::_on_CutTool_pressed);
 	ClassDB::bind_method(D_METHOD("_on_Editor_visibility_changed"), &PaintWindow::_on_Editor_visibility_changed);
+	ClassDB::bind_method(D_METHOD("_on_ChangeGridSizeDialog_confirmed"), &PaintWindow::_on_ChangeGridSizeDialog_confirmed);
+	ClassDB::bind_method(D_METHOD("_on_ChangeCanvasSizeDialog_confirmed"), &PaintWindow::_on_ChangeCanvasSizeDialog_confirmed);
 
 	ClassDB::bind_method(D_METHOD("_on_Button_pressed"), &PaintWindow::_on_Button_pressed);
 	ClassDB::bind_method(D_METHOD("_on_PaintCanvasContainer_mouse_entered"), &PaintWindow::_on_PaintCanvasContainer_mouse_entered);

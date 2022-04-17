@@ -27,17 +27,23 @@ SOFTWARE.
 
 #include "scene/gui/dialogs.h"
 
+class SpinBox;
+
 class PaintChangeGridSizeDialog : public AcceptDialog {
 	GDCLASS(PaintChangeGridSizeDialog, AcceptDialog);
 
 public:
-	void _ready();
-	void _on_ChangeGridSizeDialog_confirmed();
-	void _on_GridValue_value_changed(float value);
-	void _on_BigGridValue_value_changed(float value);
+	int get_grid_value() const;
+	void set_grid_value(const int val);
+
+	int get_big_grid_value() const;
+	void set_big_grid_value(const int val);
 
 	PaintChangeGridSizeDialog();
 	~PaintChangeGridSizeDialog();
+
+	SpinBox *grid_spin_box;
+	SpinBox *big_grid_spin_box;
 
 protected:
 	static void _bind_methods();

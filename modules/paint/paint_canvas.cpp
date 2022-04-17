@@ -533,6 +533,10 @@ PoolVector2iArray PaintCanvas::get_neighbouring_pixels(const int pos_x, const in
 }
 
 void PaintCanvas::resize(int width, int height) {
+	if (get_canvas_width() == width && get_canvas_height() == height) {
+		return;
+	}
+
 	if (width < 0) {
 		width = 1;
 	}

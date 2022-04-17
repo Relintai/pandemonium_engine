@@ -27,18 +27,32 @@ SOFTWARE.
 
 #include "scene/gui/dialogs.h"
 
+class SpinBox;
+
 class PaintCanvasDialog : public ConfirmationDialog {
 	GDCLASS(PaintCanvasDialog, ConfirmationDialog);
 
 public:
-	void _ready();
-	void _on_ConfirmationDialog_confirmed();
-	void _on_ChangeCanvasSize_visibility_changed();
+	int get_size_x() const;
+	void set_size_x(const int val);
+
+	int get_size_y() const;
+	void set_size_y(const int val);
+
+	SpinBox *size_x_spin_box;
+	SpinBox *size_y_spin_box;
 
 	PaintCanvasDialog();
 	~PaintCanvasDialog();
 
 protected:
+	void _on_confirmed();
+	void _on_about_to_show();
+
+	int _x_prev_val;
+	int _y_prev_val;
+
+	void _notification(int p_what);
 	static void _bind_methods();
 };
 

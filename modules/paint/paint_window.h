@@ -132,6 +132,8 @@ public:
 	void _on_ColorPickerTool_pressed();
 	void _on_CutTool_pressed();
 	void _on_Editor_visibility_changed();
+	void _on_ChangeGridSizeDialog_confirmed();
+	void _on_ChangeCanvasSizeDialog_confirmed();
 
 	void highlight_layer(const String &layer_name);
 	void toggle_layer_visibility(Node *button, const String &layer_name);

@@ -24,36 +24,75 @@ SOFTWARE.
 
 #include "paint_change_grid_size_dialog.h"
 
-void PaintChangeGridSizeDialog::_ready() {
-	/*
-	yield(owner, "ready")
-	find_node("GridValue").value = owner.paint_canvas.grid_size
-	find_node("BigGridValue").value = owner.paint_canvas.big_grid_size
-	*/
+#include "scene/gui/box_container.h"
+#include "scene/gui/label.h"
+#include "scene/gui/spin_box.h"
+
+int PaintChangeGridSizeDialog::get_grid_value() const {
+	return static_cast<int>(grid_spin_box->get_value());
+}
+void PaintChangeGridSizeDialog::set_grid_value(const int val) {
+	grid_spin_box->set_value(val);
 }
 
-void PaintChangeGridSizeDialog::_on_ChangeGridSizeDialog_confirmed() {
-	/*
-	var grid_size = find_node("GridValue").value
-	var big_grid_size = find_node("BigGridValue").value
-	owner.paint_canvas.grid_size = grid_size
-	owner.paint_canvas.big_grid_size = big_grid_size
-	*/
+int PaintChangeGridSizeDialog::get_big_grid_value() const {
+	return static_cast<int>(big_grid_spin_box->get_value());
 }
-void PaintChangeGridSizeDialog::_on_GridValue_value_changed(float value) {
-	/*
-	var grid_size = value
-	owner.paint_canvas.grid_size = grid_size
-	*/
-}
-void PaintChangeGridSizeDialog::_on_BigGridValue_value_changed(float value) {
-	/*
-	var big_grid_size = value
-	owner.paint_canvas.big_grid_size = big_grid_size
-	*/
+void PaintChangeGridSizeDialog::set_big_grid_value(const int val) {
+	big_grid_spin_box->set_value(val);
 }
 
 PaintChangeGridSizeDialog::PaintChangeGridSizeDialog() {
+	set_resizable(true);
+	set_title("Change Grid Size");
+
+	VBoxContainer *main_box_container = memnew(VBoxContainer);
+	add_child(main_box_container);
+
+	Label *main_label = memnew(Label);
+	main_label->set_text("Change Grid Size");
+	main_label->set_align(Label::ALIGN_CENTER);
+	main_label->set_v_size_flags(Control::SIZE_EXPAND_FILL);
+	main_label->set_h_size_flags(Control::SIZE_EXPAND_FILL);
+	main_box_container->add_child(main_label);
+
+	HBoxContainer *grid_spin_container = memnew(HBoxContainer);
+	grid_spin_container->set_v_size_flags(Control::SIZE_EXPAND_FILL);
+	grid_spin_container->set_h_size_flags(Control::SIZE_EXPAND_FILL);
+	main_box_container->add_child(grid_spin_container);
+
+	Label *grid_label = memnew(Label);
+	grid_label->set_text("Grid 1");
+	grid_label->set_align(Label::ALIGN_CENTER);
+	grid_label->set_v_size_flags(Control::SIZE_EXPAND_FILL);
+	grid_label->set_h_size_flags(Control::SIZE_EXPAND_FILL);
+	grid_spin_container->add_child(grid_label);
+
+	grid_spin_box = memnew(SpinBox);
+	grid_spin_box->set_value(1);
+	grid_spin_box->set_max(2500);
+	grid_spin_box->set_v_size_flags(Control::SIZE_EXPAND_FILL);
+	grid_spin_box->set_h_size_flags(Control::SIZE_EXPAND_FILL);
+	grid_spin_container->add_child(grid_spin_box);
+
+	HBoxContainer *big_grid_spin_container = memnew(HBoxContainer);
+	big_grid_spin_container->set_v_size_flags(Control::SIZE_EXPAND_FILL);
+	big_grid_spin_container->set_h_size_flags(Control::SIZE_EXPAND_FILL);
+	main_box_container->add_child(big_grid_spin_container);
+
+	grid_label = memnew(Label);
+	grid_label->set_text("Grid 2");
+	grid_label->set_align(Label::ALIGN_CENTER);
+	grid_label->set_v_size_flags(Control::SIZE_EXPAND_FILL);
+	grid_label->set_h_size_flags(Control::SIZE_EXPAND_FILL);
+	big_grid_spin_container->add_child(grid_label);
+
+	big_grid_spin_box = memnew(SpinBox);
+	big_grid_spin_box->set_value(8);
+	big_grid_spin_box->set_max(2500);
+	big_grid_spin_box->set_v_size_flags(Control::SIZE_EXPAND_FILL);
+	big_grid_spin_box->set_h_size_flags(Control::SIZE_EXPAND_FILL);
+	big_grid_spin_container->add_child(big_grid_spin_box);
 }
 
 PaintChangeGridSizeDialog::~PaintChangeGridSizeDialog() {
