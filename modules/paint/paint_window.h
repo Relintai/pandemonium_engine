@@ -27,6 +27,7 @@ SOFTWARE.
 
 #include "scene/gui/control.h"
 
+#include "bush_prefabs.h"
 #include "core/os/keyboard.h"
 #include "core/reference.h"
 
@@ -203,70 +204,67 @@ public:
 	VBoxContainer *layers_box_container;
 	Button *add_layer_button;
 
+	//var layer_buttons : Control;
+	//var canvas_background : TextureRect;
+	//var grids_node;
+	//var colors_grid;
+	Color selected_color; // = Color(1, 1, 1, 1) setget set_selected_color;
+	//var util = preload("res://addons/Godoxel/Util.gd");
+	//var textinfo;
+	bool allow_drawing = true;
+
+	bool mouse_in_region = false;
+	bool mouse_on_top = false;
+
+	Vector2 _middle_mouse_pressed_pos;
+	Vector2 _middle_mouse_pressed_start_pos;
+	bool _middle_mouse_pressed;
+	Vector2 _left_mouse_pressed_start_pos;
+	PaintWindow::Tools _previous_tool;
+	PaintWindow::Tools brush_mode;
+
+	//var _layer_button_ref = {};
+
+	//var _total_added_layers = 1;
+
+	BrushPrefabs::Type selected_brush_prefab;
+	Vector2 _last_drawn_pixel;
+	Vector2 _last_preview_draw_cell_pos;
+
+	PoolVector2iArray _selection_cells;
+	PoolColorArray _selection_colors;
+
+	Vector2 _cut_pos;
+	Vector2 _cut_size;
+
+	Vector<Ref<PaintAction>> _actions_history;
+	Vector<Ref<PaintAction>> _redo_history;
+	Ref<PaintAction> _current_action;
+
+	Vector2 _last_mouse_pos_canvas_area;
+
+	bool _picked_color;
+
+	Vector2 mouse_position;
+	Vector2 canvas_position;
+	Vector2 canvas_mouse_position;
+	Vector2 cell_mouse_position;
+	Color cell_color;
+
+	Vector2 last_mouse_position;
+	Vector2 last_canvas_position;
+	Vector2 last_canvas_mouse_position;
+	Vector2 last_cell_mouse_position;
+	Color last_cell_color;
+
+	Color current_layer_highlight;
+	Color other_layer_highlight;
+	Color locked_layer_highlight;
+
+	int big_grid_pixels = 4; // 1 grid-box is big_grid_pixels big
+
 protected:
 	static void _bind_methods();
-	/*
-
-		var layer_buttons: Control
-		var paint_canvas_container_node
-		var paint_canvas: GECanvas
-		var canvas_background: TextureRect
-		var grids_node
-		var colors_grid
-		var selected_color = Color(1, 1, 1, 1) setget set_selected_color
-		var util = preload("res://addons/Godoxel/Util.gd")
-		var textinfo
-		var allow_drawing = true
-
-		var mouse_in_region = false
-		var mouse_on_top = false
-
-		var _middle_mouse_pressed_pos = null
-		var _middle_mouse_pressed_start_pos = null
-		var _left_mouse_pressed_start_pos = Vector2()
-		var _previous_tool
-		var brush_mode
-
-		var _layer_button_ref = {}
-
-		var _total_added_layers = 1
-
-		var selected_brush_prefab = 0
-		var _last_drawn_pixel = Vector2.ZERO
-		var _last_preview_draw_cell_pos = Vector2.ZERO
-
-		var _selection_cells = []
-		var _selection_colors = []
-
-		var _cut_pos = Vector2.ZERO
-		var _cut_size = Vector2.ZERO
-
-		var _actions_history = [] # for undo
-		var _redo_history = []
-		var _current_action
-
-		var _last_mouse_pos_canvas_area = Vector2.ZERO
-
-		var _picked_color = false
-
-		var mouse_position = Vector2()
-		var canvas_position = Vector2()
-		var canvas_mouse_position = Vector2()
-		var cell_mouse_position = Vector2()
-		var cell_color = Color()
-
-		var last_mouse_position = Vector2()
-		var last_canvas_position = Vector2()
-		var last_canvas_mouse_position = Vector2()
-		var last_cell_mouse_position = Vector2()
-		var last_cell_color = Color()
-
-		const current_layer_highlight = Color(0.354706, 0.497302, 0.769531)
-		const other_layer_highlight = Color(0.180392, 0.176471, 0.176471)
-		const locked_layer_highlight = Color(0.098039, 0.094118, 0.094118)
-
-		var big_grid_pixels = 4 // 1 grid-box is big_grid_pixels big
-	*/
 };
 
 #endif

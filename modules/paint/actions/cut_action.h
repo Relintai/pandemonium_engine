@@ -45,8 +45,8 @@ public:
 	~CutAction();
 
 	//const selection_color = Color(0.8, 0.8, 0.8, 0.5)
-	//var mouse_start_pos = null
-	//var mouse_end_pos = null
+	Vector2 mouse_start_pos;
+	Vector2 mouse_end_pos;
 
 protected:
 	static void _bind_methods();

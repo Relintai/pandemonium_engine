@@ -24,12 +24,26 @@ SOFTWARE.
 
 #include "paint_window.h"
 
-#include "actions/paint_action.h"
+#include "core/os/input.h"
+
+#include "actions/brighten_action.h"
+#include "actions/brush_action.h"
+#include "actions/bucket_action.h"
+#include "actions/cut_action.h"
+#include "actions/darken_action.h"
+#include "actions/line_action.h"
+#include "actions/multiline_action.h"
+#include "actions/paste_cut_action.h"
+#include "actions/pencil_action.h"
+#include "actions/rainbow_action.h"
+#include "actions/rect_action.h"
+
 #include "paint_canvas.h"
 #include "paint_canvas_layer.h"
 #include "paint_color_grid.h"
 #include "paint_layer_button.h"
 #include "paint_navbar.h"
+#include "paint_utilities.h"
 #include "scene/resources/style_box.h"
 
 #include "scene/gui/button.h"
@@ -42,6 +56,7 @@ SOFTWARE.
 #include "scene/gui/scroll_container.h"
 #include "scene/gui/slider.h"
 #include "scene/gui/texture_button.h"
+#include "scene/gui/texture_rect.h"
 
 #include "dialogs/paint_canvas_dialog.h"
 #include "dialogs/paint_change_grid_size_dialog.h"
@@ -50,568 +65,748 @@ SOFTWARE.
 #include "paint_settings.h"
 
 void PaintWindow::_input(const Ref<InputEvent> &event) {
-	/*
-	if is_any_menu_open():
-		return
-	if not is_visible_in_tree():
-		return
-	if paint_canvas_container_node == null or paint_canvas == null:
-		return
+	if (!is_visible_in_tree()) {
+		return;
+	}
 
-	if event is InputEventKey and event.is_pressed() and not event.is_echo():
-		_handle_shortcuts(event.scancode)
+	if (is_any_menu_open()) {
+		return;
+	}
 
-	if is_mouse_in_canvas() and paint_canvas.mouse_on_top:
-		_handle_zoom(event)
+	Ref<InputEventKey> iek = event;
 
-	if paint_canvas.is_active_layer_locked():
-		return
+	if (iek.is_valid() && iek->is_pressed() & !iek->is_echo()) {
+		_handle_shortcuts(iek->get_scancode());
+		return;
+	}
 
-	if brush_mode == Tools.CUT:
-		if event is InputEventMouseButton:
-			if event.button_index == BUTTON_LEFT:
-				if not event.pressed:
-					commit_action()
+	if (is_mouse_in_canvas() && paint_canvas->mouse_on_top) {
+		_handle_zoom(event);
+	}
 
-	if (paint_canvas.mouse_in_region and paint_canvas.mouse_on_top):
-		if event is InputEventMouseButton:
-			match brush_mode:
-				Tools.BUCKET:
-					if event.button_index == BUTTON_LEFT:
-						if event.pressed:
-							if _current_action == null:
-								_current_action = get_action()
-							do_action([cell_mouse_position, last_cell_mouse_position, selected_color])
+	if (paint_canvas->is_active_layer_locked()) {
+		return;
+	}
 
-				Tools.COLORPICKER:
-					if event.button_index == BUTTON_LEFT:
-						if event.pressed:
-							if paint_canvas.get_pixel(cell_mouse_position.x, cell_mouse_position.y).a == 0:
-								return
-							selected_color = paint_canvas.get_pixel(cell_mouse_position.x, cell_mouse_position.y)
-							_picked_color = true
-							find_node("Colors").add_color_prefab(selected_color)
-						elif _picked_color:
-							set_brush(_previous_tool)
-					elif event.button_index == BUTTON_RIGHT:
-						if event.pressed:
-							set_brush(_previous_tool)
+	Ref<InputEventMouseButton> iemb = event;
 
-				Tools.PASTECUT:
-					if event.button_index == BUTTON_RIGHT:
-						if event.pressed:
-							commit_action()
-							set_brush(Tools.PAINT)
-	*/
+	if (iemb.is_valid()) {
+		if (brush_mode == Tools::CUT) {
+			if (iemb->get_button_index() == BUTTON_LEFT && !iemb->is_pressed()) {
+				commit_action();
+			}
+		}
+
+		if (paint_canvas->mouse_in_region && paint_canvas->mouse_on_top) {
+			switch (brush_mode) {
+				case Tools::BUCKET: {
+					if (iemb->get_button_index() == BUTTON_LEFT && iemb->is_pressed()) {
+						if (!_current_action.is_valid()) {
+							_current_action = get_action();
+						}
+
+						Array arr;
+						arr.append(cell_mouse_position);
+						arr.append(last_cell_mouse_position);
+						arr.append(selected_color);
+
+						do_action(arr);
+					}
+				} break;
+				case Tools::COLORPICKER: {
+					if (iemb->get_button_index() == BUTTON_LEFT) {
+						if (iemb->is_pressed()) {
+							Color c = paint_canvas->get_pixel(cell_mouse_position.x, cell_mouse_position.y);
+
+							if (c.a < 0.00001) {
+								return;
+							}
+
+							selected_color = c;
+							_picked_color = true;
+
+							color_grid->add_color_prefab(selected_color);
+						} else {
+							if (_picked_color) {
+								set_brush(_previous_tool);
+							}
+						}
+					} else {
+						if (iemb->get_button_index() == BUTTON_RIGHT && iemb->is_pressed()) {
+							set_brush(_previous_tool);
+						}
+					}
+				} break;
+				case Tools::PASTECUT: {
+					if (iemb->get_button_index() == BUTTON_RIGHT && iemb->is_pressed()) {
+						commit_action();
+						set_brush(Tools::PAINT);
+					}
+				} break;
+				default:
+					break;
+			}
+		}
+	}
 }
 void PaintWindow::_process(float delta) {
-	/*
-	if not is_visible_in_tree():
-		return
-	if paint_canvas_container_node == null or paint_canvas == null:
-		return
-	if is_any_menu_open():
-		return
+	if (!is_visible_in_tree()) {
+		return;
+	}
 
-	if is_mouse_in_canvas():
-		_handle_scroll()
+	if (is_any_menu_open()) {
+		return;
+	}
 
-	#Update commonly used variables
-	var grid_size = paint_canvas.pixel_size
-	mouse_position = get_global_mouse_position() #paint_canvas.get_local_mouse_position()
-	canvas_position = paint_canvas.rect_global_position
-	canvas_mouse_position = Vector2(mouse_position.x - canvas_position.x, mouse_position.y - canvas_position.y)
+	if (is_mouse_in_canvas()) {
+		_handle_scroll();
+	}
 
-	if is_mouse_in_canvas() && paint_canvas.mouse_on_top:
-		cell_mouse_position = Vector2(
-				floor(canvas_mouse_position.x / grid_size),
-				floor(canvas_mouse_position.y / grid_size))
-		cell_color = paint_canvas.get_pixel(cell_mouse_position.x, cell_mouse_position.y)
+	//Update commonly used variables
+	int grid_size = paint_canvas->get_pixel_size();
+	mouse_position = get_global_mouse_position(); //paint_canvas.get_local_mouse_position()
+	canvas_position = paint_canvas->get_global_position();
+	canvas_mouse_position = Vector2(mouse_position.x - canvas_position.x, mouse_position.y - canvas_position.y);
 
-	update_text_info()
+	if (is_mouse_in_canvas() && paint_canvas->mouse_on_top) {
+		cell_mouse_position = Vector2(floor(canvas_mouse_position.x / grid_size), floor(canvas_mouse_position.y / grid_size));
+		cell_color = paint_canvas->get_pixel(cell_mouse_position.x, cell_mouse_position.y);
+	}
 
-#	if not is_mouse_in_canvas():
-#		paint_canvas.tool_layer.clear()
-#		paint_canvas.update()
-#		paint_canvas.tool_layer.update_texture()
-#	else:
-	if is_mouse_in_canvas() && paint_canvas.mouse_on_top:
-		if not paint_canvas.is_active_layer_locked():
-			if is_position_in_canvas(get_global_mouse_position()) or \
-					is_position_in_canvas(_last_mouse_pos_canvas_area):
-				brush_process()
-			else:
-				print(cell_mouse_position, " not in ", paint_canvas_container_node.rect_size)
-				print("not in canvas")
+	update_text_info();
 
-		_draw_tool_brush()
+	//	if not is_mouse_in_canvas():
+	//		paint_canvas.tool_layer.clear()
+	//		paint_canvas.update()
+	//		paint_canvas.tool_layer.update_texture()
+	//	else:
 
-	#Update last variables with the current variables
-	last_mouse_position = mouse_position
-	last_canvas_position = canvas_position
-	last_canvas_mouse_position = canvas_mouse_position
-	last_cell_mouse_position = cell_mouse_position
-	last_cell_color = cell_color
-	_last_mouse_pos_canvas_area = get_global_mouse_position() #paint_canvas_container_node.get_local_mouse_position()
-	*/
+	if (is_mouse_in_canvas() && paint_canvas->mouse_on_top) {
+		if (!paint_canvas->is_active_layer_locked()) {
+			if (is_position_in_canvas(get_global_mouse_position()) or is_position_in_canvas(_last_mouse_pos_canvas_area)) {
+				brush_process();
+			}
+			//else {
+			//print(cell_mouse_position, " not in ", paint_canvas_container_node.rect_size);
+			//print("not in canvas");
+			//}
+		}
+
+		_draw_tool_brush();
+	}
+
+	//Update last variables with the current variables
+
+	last_mouse_position = mouse_position;
+	last_canvas_position = canvas_position;
+	last_canvas_mouse_position = canvas_mouse_position;
+	last_cell_mouse_position = cell_mouse_position;
+	last_cell_color = cell_color;
+
+	_last_mouse_pos_canvas_area = get_global_mouse_position(); //paint_canvas_container_node.get_local_mouse_position()
 }
 
 void PaintWindow::_handle_shortcuts(const int scancode) {
-	/*
-	match scancode:
-		K_UNDO:
-			undo_action()
-
-		K_REDO:
-			redo_action()
-
-		K_PENCIL:
-			set_brush(Tools.PAINT)
-
-		K_BRUSH:
-			set_brush(Tools.BRUSH)
-
-		K_BUCKET:
-			set_brush(Tools.BUCKET)
-
-		K_RAINBOW:
-			set_brush(Tools.RAINBOW)
-
-		K_LINE:
-			set_brush(Tools.LINE)
-
-		K_DARK:
-			set_brush(Tools.DARKEN)
-
-		K_BRIGHT:
-			set_brush(Tools.BRIGHTEN)
-
-		K_CUT:
-			set_brush(Tools.CUT)
-
-		K_PICK:
-			set_brush(Tools.COLORPICKER)
-	*/
+	switch (scancode) {
+		case K_UNDO:
+			undo_action();
+			break;
+		case K_REDO:
+			redo_action();
+			break;
+		case K_PENCIL:
+			set_brush(Tools::PAINT);
+			break;
+		case K_BRUSH:
+			set_brush(Tools::BRUSH);
+			break;
+		case K_BUCKET:
+			set_brush(Tools::BUCKET);
+			break;
+		case K_RAINBOW:
+			set_brush(Tools::RAINBOW);
+			break;
+		case K_LINE:
+			set_brush(Tools::LINE);
+			break;
+		case K_DARK:
+			set_brush(Tools::DARKEN);
+			break;
+		case K_BRIGHT:
+			set_brush(Tools::BRIGHTEN);
+			break;
+		case K_CUT:
+			set_brush(Tools::CUT);
+			break;
+		case K_PICK:
+			set_brush(Tools::COLORPICKER);
+			break;
+	}
 }
+
 void PaintWindow::_draw_tool_brush() {
-	/*
-	paint_canvas.tool_layer.clear()
+	paint_canvas->tool_layer->clear();
 
-	match brush_mode:
-		Tools.PASTECUT:
-			for idx in range(_selection_cells.size()):
-				var pixel = _selection_cells[idx]
-#				if pixel.x < 0 or pixel.y < 0:
-#					print(pixel)
-				var color = _selection_colors[idx]
-				pixel -= _cut_pos + _cut_size / 2
-				pixel += cell_mouse_position
-				paint_canvas._set_pixel_v(paint_canvas.tool_layer, pixel, color)
-		Tools.BRUSH:
-			var pixels = BrushPrefabs.get_brush(selected_brush_prefab, find_node("BrushSize").value)
-			for pixel in pixels:
+	switch (brush_mode) {
+		case Tools::PASTECUT: {
+			for (int idx = 0; idx < _selection_cells.size(); ++idx) {
+				Vector2i pixel = _selection_cells[idx];
+				//if pixel.x < 0 or pixel.y < 0:
+				//	print(pixel);
+				Color color = _selection_colors[idx];
+				pixel -= _cut_pos + _cut_size / 2;
+				pixel += cell_mouse_position;
+				paint_canvas->_set_pixel_v(paint_canvas->tool_layer, pixel, color);
+			}
+		} break;
+		case Tools::BRUSH: {
+			PoolVector2iArray pixels = BrushPrefabs::get_brush(selected_brush_prefab, brush_size_slider->get_value());
 
-				paint_canvas._set_pixel(paint_canvas.tool_layer,
-						cell_mouse_position.x + pixel.x, cell_mouse_position.y + pixel.y, selected_color)
+			PoolVector2iArray::Read r = pixels.read();
 
-		Tools.RAINBOW:
-			paint_canvas._set_pixel(paint_canvas.tool_layer,
-					cell_mouse_position.x, cell_mouse_position.y, Color(0.46875, 0.446777, 0.446777, 0.196078))
+			for (int i = 0; i < pixels.size(); ++i) {
+				Vector2i pixel = r[i];
+				paint_canvas->_set_pixel(paint_canvas->tool_layer, cell_mouse_position.x + pixel.x, cell_mouse_position.y + pixel.y, selected_color);
+			}
 
-		Tools.COLORPICKER:
-			paint_canvas._set_pixel(paint_canvas.tool_layer,
-					cell_mouse_position.x, cell_mouse_position.y, Color(0.866667, 0.847059, 0.847059, 0.196078))
-		_:
-			paint_canvas._set_pixel(paint_canvas.tool_layer,
-					cell_mouse_position.x, cell_mouse_position.y, selected_color)
+			r.release();
+		} break;
+		case Tools::RAINBOW: {
+			paint_canvas->_set_pixel(paint_canvas->tool_layer, cell_mouse_position.x, cell_mouse_position.y, Color(0.46875, 0.446777, 0.446777, 0.196078));
+		} break;
+		case Tools::COLORPICKER: {
+			paint_canvas->_set_pixel(paint_canvas->tool_layer, cell_mouse_position.x, cell_mouse_position.y, Color(0.866667, 0.847059, 0.847059, 0.196078));
+		} break;
+		default: {
+			paint_canvas->_set_pixel(paint_canvas->tool_layer, cell_mouse_position.x, cell_mouse_position.y, selected_color);
+		} break;
+	}
 
-	paint_canvas.update()
-	#TODO add here brush prefab drawing
-	paint_canvas.tool_layer.update_texture()
-	*/
+	paint_canvas->update();
+	//TODO add here brush prefab drawing
+	paint_canvas->tool_layer->update_texture();
 }
 
 void PaintWindow::_handle_scroll() {
-	/*
-	if Input.is_mouse_button_pressed(BUTTON_MIDDLE):
-		if _middle_mouse_pressed_start_pos == null:
-			_middle_mouse_pressed_start_pos = paint_canvas.rect_position
-			_middle_mouse_pressed_pos = get_global_mouse_position()
+	if (Input::get_singleton()->is_mouse_button_pressed(BUTTON_MIDDLE)) {
+		if (!_middle_mouse_pressed) {
+			_middle_mouse_pressed_start_pos = paint_canvas->get_position();
+			_middle_mouse_pressed_pos = get_global_mouse_position();
 
-		paint_canvas.rect_position = _middle_mouse_pressed_start_pos
-		paint_canvas.rect_position += get_global_mouse_position() - _middle_mouse_pressed_pos
+			_middle_mouse_pressed = true;
+		}
 
-	elif _middle_mouse_pressed_start_pos != null:
-		_middle_mouse_pressed_start_pos = null
-	*/
+		paint_canvas->set_position(_middle_mouse_pressed_start_pos + (get_global_mouse_position() - _middle_mouse_pressed_pos));
+
+	} else if (!_middle_mouse_pressed) {
+		_middle_mouse_pressed = false;
+	}
 }
 
 void PaintWindow::_handle_zoom(const Ref<InputEvent> &event) {
-	/*
-	if not event is InputEventMouseButton:
-		return
-	if event.is_pressed():
-		if event.button_index == BUTTON_WHEEL_UP:
-			var px = min(paint_canvas.pixel_size * 2, max_zoom_in)
-			if px == paint_canvas.pixel_size:
-				return
-			paint_canvas.set_pixel_size(px)
-			find_node("CanvasBackground").material.set_shader_param(
-					"pixel_size", 8 * pow(0.5, big_grid_pixels)/paint_canvas.pixel_size)
-			paint_canvas.rect_position -= paint_canvas.get_local_mouse_position()
-			paint_canvas.rect_position.x = clamp(paint_canvas.rect_position.x, -paint_canvas.rect_size.x * 0.8, rect_size.x)
-			paint_canvas.rect_position.y = clamp(paint_canvas.rect_position.y, -paint_canvas.rect_size.y * 0.8, rect_size.y)
-		elif event.button_index == BUTTON_WHEEL_DOWN:
-			var px = max(paint_canvas.pixel_size / 2.0, max_zoom_out)
-			if px == paint_canvas.pixel_size:
-				return
-			paint_canvas.set_pixel_size(px)
-			find_node("CanvasBackground").material.set_shader_param(
-					# 4 2 1
-					"pixel_size", 8 * pow(0.5, big_grid_pixels)/paint_canvas.pixel_size)
-			paint_canvas.rect_position += paint_canvas.get_local_mouse_position() / 2
-			paint_canvas.rect_position.x = clamp(paint_canvas.rect_position.x, -paint_canvas.rect_size.x * 0.8, rect_size.x)
-			paint_canvas.rect_position.y = clamp(paint_canvas.rect_position.y, -paint_canvas.rect_size.y * 0.8, rect_size.y)
-	*/
+	Ref<InputEventMouseButton> iemb = event;
+
+	if (!iemb.is_valid()) {
+		return;
+	}
+
+	if (iemb->is_pressed()) {
+		if (iemb->get_button_index() == BUTTON_WHEEL_UP) {
+			int pixel_size = paint_canvas->get_pixel_size();
+			int px = MIN(pixel_size * 2, max_zoom_in);
+
+			if (px == pixel_size) {
+				return;
+			}
+
+			paint_canvas->set_pixel_size(px);
+
+			//Ref<CanvasItemMaterial> mat = paint_canvas->canvas_background_rect->get_material();
+
+			//if (mat.is_valid()) {
+			//	mat->set_shader_param("pixel_size", 8 * pow(0.5, big_grid_pixels) / paint_canvas->get_pixel_size());
+			//}
+
+			Point2 pos = paint_canvas->get_position();
+			Size2 size = paint_canvas->get_size();
+			Size2 tsize = get_size();
+
+			pos -= paint_canvas->get_local_mouse_position();
+			pos.x = CLAMP(pos.x, -size.x * 0.8, tsize.x);
+			pos.y = CLAMP(pos.y, -size.y * 0.8, tsize.y);
+
+			paint_canvas->set_position(pos);
+
+		} else if (iemb->get_button_index() == BUTTON_WHEEL_DOWN) {
+			int pixel_size = paint_canvas->get_pixel_size();
+			int px = MAX(pixel_size / 2.0, max_zoom_out);
+
+			if (px == pixel_size) {
+				return;
+			}
+
+			paint_canvas->set_pixel_size(px);
+
+			//find_node("CanvasBackground").material.set_shader_param("pixel_size", 8 * pow(0.5, big_grid_pixels)/paint_canvas.pixel_size);
+
+			Point2 pos = paint_canvas->get_position();
+			Size2 size = paint_canvas->get_size();
+			Size2 tsize = get_size();
+
+			pos += paint_canvas->get_local_mouse_position() / 2;
+			pos.x = CLAMP(pos.x, -size.x * 0.8, tsize.x);
+			pos.y = CLAMP(pos.y, -size.y * 0.8, tsize.y);
+
+			paint_canvas->set_position(pos);
+		}
+	}
 }
 
 void PaintWindow::_handle_cut() {
-	/*
-	if Input.is_mouse_button_pressed(BUTTON_RIGHT):
-		paint_canvas.clear_preview_layer()
-		set_brush(_previous_tool)
-		return
+	if (Input::get_singleton()->is_mouse_button_pressed(BUTTON_RIGHT)) {
+		paint_canvas->clear_preview_layer();
+		set_brush(_previous_tool);
+		return;
+	}
 
-	if Input.is_mouse_button_pressed(BUTTON_LEFT):
-		for pixel_pos in GEUtils.get_pixels_in_line(cell_mouse_position, last_cell_mouse_position):
-			for idx in range(_selection_cells.size()):
-				var pixel = _selection_cells[idx]
-				var color = _selection_colors[idx]
-				pixel -= _cut_pos + _cut_size / 2
-				pixel += pixel_pos
-				paint_canvas.set_pixel_v(pixel, color)
-	else:
-		if _last_preview_draw_cell_pos == cell_mouse_position:
-			return
-		paint_canvas.clear_preview_layer()
-		for idx in range(_selection_cells.size()):
-			var pixel = _selection_cells[idx]
-			var color = _selection_colors[idx]
-			pixel -= _cut_pos + _cut_size / 2
-			pixel += cell_mouse_position
-			paint_canvas.set_preview_pixel_v(pixel, color)
-		_last_preview_draw_cell_pos = cell_mouse_position
-	*/
+	if (Input::get_singleton()->is_mouse_button_pressed(BUTTON_LEFT)) {
+		PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(cell_mouse_position, last_cell_mouse_position);
+
+		PoolVector2iArray::Read r = pixels.read();
+		for (int i = 0; i < pixels.size(); ++i) {
+			Vector2i pixel_pos = r[i];
+
+			for (int idx = 0; idx < _selection_cells.size(); ++idx) {
+				Vector2i pixel = _selection_cells[idx];
+				Color color = _selection_colors[idx];
+				pixel -= _cut_pos + _cut_size / 2;
+				pixel += pixel_pos;
+				paint_canvas->set_pixel_v(pixel, color);
+			}
+		}
+
+		r.release();
+	} else {
+		if (_last_preview_draw_cell_pos == cell_mouse_position) {
+			return;
+		}
+
+		paint_canvas->clear_preview_layer();
+
+		for (int idx = 0; idx < _selection_cells.size(); ++idx) {
+			Vector2i pixel = _selection_cells[idx];
+			Color color = _selection_colors[idx];
+			pixel -= _cut_pos + _cut_size / 2;
+			pixel += cell_mouse_position;
+			paint_canvas->set_preview_pixel_v(pixel, color);
+		}
+
+		_last_preview_draw_cell_pos = cell_mouse_position;
+	}
 }
 void PaintWindow::brush_process() {
-	/*
-	if Input.is_mouse_button_pressed(BUTTON_LEFT):
-		if _current_action == null:
-			_current_action = get_action()
-		if brush_mode == Tools.COLORPICKER:
-			_current_action = null
+	if (Input::get_singleton()->is_mouse_button_pressed(BUTTON_LEFT)) {
+		if (_current_action.is_null()) {
+			_current_action = get_action();
+		}
 
-		match brush_mode:
-			Tools.PAINT:
-				do_action([cell_mouse_position, last_cell_mouse_position, selected_color])
-			Tools.BRUSH:
-				do_action([cell_mouse_position, last_cell_mouse_position, selected_color,
-						selected_brush_prefab, find_node("BrushSize").value])
-			Tools.LINE:
-				do_action([cell_mouse_position, last_cell_mouse_position, selected_color])
-			Tools.RECT:
-				do_action([cell_mouse_position, last_cell_mouse_position, selected_color])
-			Tools.DARKEN:
-				do_action([cell_mouse_position, last_cell_mouse_position, selected_color])
-			Tools.BRIGHTEN:
-				do_action([cell_mouse_position, last_cell_mouse_position, selected_color])
-			Tools.COLORPICKER:
-				pass
-			Tools.CUT:
-				do_action([cell_mouse_position, last_cell_mouse_position, selected_color])
-			Tools.PASTECUT:
-				do_action([cell_mouse_position, last_cell_mouse_position,
-						_selection_cells, _selection_colors,
-						_cut_pos, _cut_size])
-			Tools.RAINBOW:
-				do_action([cell_mouse_position, last_cell_mouse_position])
-		paint_canvas.update()
+		if (brush_mode == Tools::COLORPICKER) {
+			_current_action.unref();
+		}
 
-	elif Input.is_mouse_button_pressed(BUTTON_RIGHT):
-		paint_canvas.update()
-		if _current_action == null:
-			_current_action = get_action()
+		switch (brush_mode) {
+			case Tools::PAINT: {
+				Array arr;
 
-		match brush_mode:
-			Tools.PAINT:
-				do_action([cell_mouse_position, last_cell_mouse_position, Color.transparent])
-			Tools.BRUSH:
-				do_action([cell_mouse_position, last_cell_mouse_position, Color.transparent,
-						selected_brush_prefab, find_node("BrushSize").value])
-	else:
-		if _current_action and _current_action.can_commit():
-			commit_action()
-			paint_canvas.update()
-	*/
+				arr.append(cell_mouse_position);
+				arr.append(last_cell_mouse_position);
+				arr.append(selected_color);
+
+				do_action(arr);
+			} break;
+			case Tools::BRUSH: {
+				Array arr;
+
+				arr.append(cell_mouse_position);
+				arr.append(last_cell_mouse_position);
+				arr.append(selected_color);
+				arr.append(selected_brush_prefab);
+				arr.append(brush_size_slider->get_value());
+
+				do_action(arr);
+			} break;
+			case Tools::LINE: {
+				Array arr;
+
+				arr.append(cell_mouse_position);
+				arr.append(last_cell_mouse_position);
+				arr.append(selected_color);
+
+				do_action(arr);
+			} break;
+			case Tools::RECT: {
+				Array arr;
+
+				arr.append(cell_mouse_position);
+				arr.append(last_cell_mouse_position);
+				arr.append(selected_color);
+
+				do_action(arr);
+			} break;
+			case Tools::DARKEN: {
+				Array arr;
+
+				arr.append(cell_mouse_position);
+				arr.append(last_cell_mouse_position);
+				arr.append(selected_color);
+
+				do_action(arr);
+			} break;
+			case Tools::BRIGHTEN: {
+				Array arr;
+
+				arr.append(cell_mouse_position);
+				arr.append(last_cell_mouse_position);
+				arr.append(selected_color);
+
+				do_action(arr);
+			} break;
+			case Tools::COLORPICKER: {
+			} break;
+			case Tools::CUT: {
+				Array arr;
+
+				arr.append(cell_mouse_position);
+				arr.append(last_cell_mouse_position);
+				arr.append(selected_color);
+
+				do_action(arr);
+			} break;
+			case Tools::PASTECUT: {
+				Array arr;
+
+				arr.append(cell_mouse_position);
+				arr.append(last_cell_mouse_position);
+				arr.append(_selection_cells);
+				arr.append(_selection_colors);
+				arr.append(_cut_pos);
+				arr.append(_cut_size);
+
+				do_action(arr);
+			} break;
+			case Tools::RAINBOW: {
+				Array arr;
+
+				arr.append(cell_mouse_position);
+				arr.append(last_cell_mouse_position);
+
+				do_action(arr);
+			} break;
+			default: {
+			} break;
+		}
+
+		paint_canvas->update();
+
+	} else if (Input::get_singleton()->is_mouse_button_pressed(BUTTON_RIGHT)) {
+		paint_canvas->update();
+
+		if (_current_action.is_null()) {
+			_current_action = get_action();
+		}
+
+		switch (brush_mode) {
+			case Tools::PAINT: {
+				Array arr;
+
+				arr.append(cell_mouse_position);
+				arr.append(last_cell_mouse_position);
+				arr.append(Color(1, 1, 1, 0));
+
+				do_action(arr);
+			} break;
+			case Tools::BRUSH: {
+				Array arr;
+
+				arr.append(cell_mouse_position);
+				arr.append(last_cell_mouse_position);
+				arr.append(Color(1, 1, 1, 0));
+				arr.append(selected_brush_prefab);
+				arr.append(brush_size_slider->get_value());
+
+				do_action(arr);
+			} break;
+			default: {
+			} break;
+		}
+	} else {
+		if (_current_action.is_valid() && _current_action->can_commit()) {
+			commit_action();
+			paint_canvas->update();
+		}
+	}
 }
 void PaintWindow::update_text_info() {
-	/*
-	var text = ""
+	String text;
 
-	var cell_color_text = cell_color
-	cell_color_text = Color(0, 0, 0, 0)
+	text = vformat("Mouse Position %s\tCanvas Mouse Position %s \tCanvas Position %s\t\nCell Position %s \tCell Color %s\t",
+			mouse_position, canvas_mouse_position, canvas_position, cell_mouse_position, cell_color);
 
-	text += \
-	str("FPS %s\t" + \
-	"Mouse Position %s\t" + \
-	"Canvas Mouse Position %s \t" + \
-	"Canvas Position %s\t\n" + \
-	"Cell Position %s \t" + \
-	"Cell Color %s\t") % [
-		str(Engine.get_frames_per_second()),
-		str(mouse_position),
-		str(canvas_mouse_position),
-		str(canvas_position),
-		str(cell_mouse_position),
-		str(cell_color_text),
-	]
-
-	find_node("DebugTextDisplay").display_text(text)
-	*/
+	text_info->set_text(text);
 }
 
 void PaintWindow::_on_Save_pressed() {
-	/*
-	get_node("SaveFileDialog").show()
-	*/
+	paint_save_file_dialog->popup_centered();
 }
 
 void PaintWindow::do_action(const Array &data) {
-	/*
-	if _current_action == null:
-		#print("clear redo")
-		_redo_history.clear()
-	_current_action.do_action(paint_canvas, data)
-	*/
+	if (_current_action.is_null()) {
+		//print("clear redo");
+		_redo_history.clear();
+	}
+
+	_current_action->do_action(paint_canvas, data);
 }
 void PaintWindow::commit_action() {
-	/*
-	if not _current_action:
-		return
+	if (!_current_action.is_valid()) {
+		return;
+	}
 
-	#print("commit action")
-	var commit_data = _current_action.commit_action(paint_canvas)
-	var action = get_action()
-	action.action_data = _current_action.action_data.duplicate(true)
-	_actions_history.push_back(action)
-	_redo_history.clear()
+	//print("commit action")
+	_current_action->commit_action(paint_canvas);
+	Ref<PaintAction> action = get_action();
+	action->action_data = _current_action->action_data.duplicate(true);
+	_actions_history.push_back(action);
+	_redo_history.clear();
 
-	match brush_mode:
-		Tools.CUT:
-			_cut_pos = _current_action.mouse_start_pos
-			_cut_size = _current_action.mouse_end_pos - _current_action.mouse_start_pos
-			_selection_cells = _current_action.action_data.redo.cells.duplicate()
-			_selection_colors = _current_action.action_data.redo.colors.duplicate()
-			set_brush(Tools.PASTECUT)
-		_:
-			_current_action = null
-	*/
+	switch (brush_mode) {
+		case Tools::CUT: {
+			Ref<CutAction> ca = _current_action;
+
+			_cut_pos = ca->mouse_start_pos;
+			_cut_size = ca->mouse_end_pos - ca->mouse_start_pos;
+
+			PoolVector2iArray dcell = ca->action_data_redo["cells"];
+			PoolColorArray dcol = ca->action_data_redo["colors"];
+
+			//_selection_cells = dcell.duplicate();
+			//_selection_colors = dcol.duplicate();
+
+			_selection_cells = dcell;
+			_selection_colors = dcol;
+
+			set_brush(Tools::PASTECUT);
+		} break;
+		default: {
+			_current_action.unref();
+		} break;
+	}
 }
 void PaintWindow::redo_action() {
-	/*
-	if _redo_history.empty():
-		print("nothing to redo")
-		return
-	var action = _redo_history.pop_back()
-	if not action:
-		return
-	_actions_history.append(action)
-	action.redo_action(paint_canvas)
-	paint_canvas.update()
-	#print("redo action")
-	*/
+	if (_redo_history.empty()) {
+		//print("nothing to redo");
+		return;
+	}
+
+	Ref<PaintAction> action = _redo_history[0];
+	_redo_history.remove(0);
+
+	if (!action.is_valid()) {
+		return;
+	}
+
+	_actions_history.push_back(action);
+	action->redo_action(paint_canvas);
+	paint_canvas->update();
+
+	//print("redo action");
 }
 void PaintWindow::undo_action() {
-	/*
-	var action = _actions_history.pop_back()
-	if not action:
-		return
-	_redo_history.append(action)
-	action.undo_action(paint_canvas)
-	update()
-	paint_canvas.update()
-	#print("undo action")
-	*/
+	if (_actions_history.empty()) {
+		return;
+	}
+
+	Ref<PaintAction> action = _redo_history[0];
+	_redo_history.remove(0);
+
+	if (!action.is_valid()) {
+		return;
+	}
+
+	_redo_history.push_back(action);
+	action->undo_action(paint_canvas);
+	update();
+	paint_canvas->update();
+
+	//print("undo action")
 }
 
 Ref<PaintAction> PaintWindow::get_action() {
-	/*
-	match brush_mode:
-		Tools.PAINT:
-			return GEPencil.new()
-		Tools.BRUSH:
-			return GEBrush.new()
-		Tools.LINE:
-			return GELine.new()
-		Tools.RAINBOW:
-			return GERainbow.new()
-		Tools.BUCKET:
-			return GEBucket.new()
-		Tools.RECT:
-			return GERect.new()
-		Tools.DARKEN:
-			return GEDarken.new()
-		Tools.BRIGHTEN:
-			return GEBrighten.new()
-		Tools.CUT:
-			return GECut.new()
-		Tools.PASTECUT:
-			return GEPasteCut.new()
-		_:
-			#print("no tool!")
-			return null
-	*/
+	switch (brush_mode) {
+		case Tools::PAINT:
+			return Ref<PaintAction>(memnew(PencilAction));
+		case Tools::BRUSH:
+			return Ref<PaintAction>(memnew(BrushAction));
+		case Tools::LINE:
+			return Ref<PaintAction>(memnew(LineAction));
+		case Tools::RAINBOW:
+			return Ref<PaintAction>(memnew(RainbowAction));
+		case Tools::BUCKET:
+			return Ref<PaintAction>(memnew(BucketAction));
+		case Tools::RECT:
+			return Ref<PaintAction>(memnew(RectAction));
+		case Tools::DARKEN:
+			return Ref<PaintAction>(memnew(DarkenAction));
+		case Tools::BRIGHTEN:
+			return Ref<PaintAction>(memnew(BrightenAction));
+		case Tools::CUT:
+			return Ref<PaintAction>(memnew(CutAction));
+		case Tools::PASTECUT:
+			return Ref<PaintAction>(memnew(PasteCutAction));
+		default:
+			//print("no tool!")
+			break;
+	}
 
 	return Ref<PaintAction>();
 }
 
 void PaintWindow::set_selected_color(const Color &color) {
-	/*
-	selected_color = color
-	*/
+	selected_color = color;
 }
 void PaintWindow::set_brush(const PaintWindow::Tools new_mode) {
-	/*
-	if brush_mode == new_mode:
-		return
-	_previous_tool = brush_mode
-	brush_mode = new_mode
+	if (brush_mode == new_mode) {
+		return;
+	}
 
-	_current_action = get_action()
+	_previous_tool = brush_mode;
+	brush_mode = new_mode;
 
-	match _previous_tool:
-		Tools.CUT:
-			paint_canvas.clear_preview_layer()
-		Tools.PASTECUT:
-			_selection_cells.clear()
-			_selection_colors.clear()
-		Tools.BUCKET:
-			_current_action = null
-	#print("Selected: ", Tools.keys()[brush_mode])
-	*/
+	_current_action = get_action();
+
+	switch (_previous_tool) {
+		case Tools::CUT:
+			paint_canvas->clear_preview_layer();
+			break;
+		case Tools::PASTECUT:
+			_selection_cells.resize(0);
+			_selection_colors.resize(0);
+			break;
+		case Tools::BUCKET:
+			_current_action.unref();
+			break;
+		default:
+			break;
+	}
+
+	//print("Selected: ", Tools::keys()[brush_mode]);
 }
 
 void PaintWindow::change_color(const Color &new_color) {
-	/*
-	if new_color.a == 0:
-		return
-	selected_color = new_color
-	find_node("ColorPicker").color = selected_color
-	*/
+	if (new_color.a == 0) {
+		return;
+	}
+
+	selected_color = new_color;
+
+	color_picker_button->set_pick_color(selected_color);
 }
 
 void PaintWindow::_on_ColorPicker_color_changed(const Color &color) {
-	/*
-	selected_color = color
-	*/
+	selected_color = color;
 }
 void PaintWindow::_on_PaintTool_pressed() {
-	/*
-	set_brush(Tools.PAINT)
-	*/
+	set_brush(Tools::PAINT);
 }
 void PaintWindow::_on_BucketTool_pressed() {
-	/*
-	set_brush(Tools.BUCKET)
-	*/
+	set_brush(Tools::BUCKET);
 }
 void PaintWindow::_on_RainbowTool_pressed() {
-	/*
-	set_brush(Tools.RAINBOW)
-	*/
+	set_brush(Tools::RAINBOW);
 }
 void PaintWindow::_on_BrushTool_pressed() {
-	/*
-	set_brush(Tools.BRUSH)
-	*/
+	set_brush(Tools::BRUSH);
 }
 void PaintWindow::_on_LineTool_pressed() {
-	/*
-	set_brush(Tools.LINE)
-	*/
+	set_brush(Tools::LINE);
 }
 void PaintWindow::_on_RectTool_pressed() {
-	/*
-	set_brush(Tools.RECT)
-	*/
+	set_brush(Tools::RECT);
 }
 void PaintWindow::_on_DarkenTool_pressed() {
-	/*
-	set_brush(Tools.DARKEN)
-	*/
+	set_brush(Tools::DARKEN);
 }
 void PaintWindow::_on_BrightenTool_pressed() {
-	/*
-	set_brush(Tools.BRIGHTEN)
-	*/
+	set_brush(Tools::BRIGHTEN);
 }
 void PaintWindow::_on_ColorPickerTool_pressed() {
-	/*
-	set_brush(Tools.COLORPICKER)
-	*/
+	set_brush(Tools::COLORPICKER);
 }
 void PaintWindow::_on_CutTool_pressed() {
-	/*
-	set_brush(Tools.CUT)
-	*/
+	set_brush(Tools::CUT);
 }
 void PaintWindow::_on_Editor_visibility_changed() {
-	/*
-	pause_mode = not visible
-	*/
+	if (is_visible()) {
+		set_pause_mode(Node::PAUSE_MODE_INHERIT);
+	} else {
+		set_pause_mode(Node::PAUSE_MODE_STOP);
+	}
 }
 
 void PaintWindow::highlight_layer(const String &layer_name) {
-	/*
-	for button in layer_buttons.get_children():
-		if paint_canvas.find_layer_by_name(button.name).locked:
-			button.get("custom_styles/panel").set("bg_color", locked_layer_highlight)
-		elif button.name == layer_name:
-			button.get("custom_styles/panel").set("bg_color", current_layer_highlight)
-		else:
-			button.get("custom_styles/panel").set("bg_color", other_layer_highlight)
-	*/
+	for (int i = 0; i < layers_box_container->get_child_count(); ++i) {
+		PaintLayerButton *button = Object::cast_to<PaintLayerButton>(layers_box_container->get_child(i));
+
+		if (!button) {
+			continue;
+		}
+
+		if (paint_canvas->find_layer_by_name(button->get_name())->locked) {
+			Ref<StyleBox> sb = button->get("custom_styles/panel");
+
+			if (sb.is_valid()) {
+				sb->set("bg_color", locked_layer_highlight);
+			}
+		} else if (button->get_name() == layer_name) {
+			Ref<StyleBox> sb = button->get("custom_styles/panel");
+			
+			if (sb.is_valid()) {
+				sb->set("bg_color", current_layer_highlight);
+			}
+		} else {
+			Ref<StyleBox> sb = button->get("custom_styles/panel");
+			
+			if (sb.is_valid()) {
+				sb->set("bg_color", other_layer_highlight);
+			}
+		}
+	}
 }
+
 void PaintWindow::toggle_layer_visibility(Node *button, const String &layer_name) {
-	/*
-	#print("toggling: ", layer_name)
-	paint_canvas.toggle_layer_visibility(layer_name)
-	*/
+	//print("toggling: ", layer_name)
+	paint_canvas->toggle_layer_visibility(layer_name);
 }
 void PaintWindow::select_layer(const String &layer_name) {
-	/*
-	#print("select layer: ", layer_name)
-	paint_canvas.select_layer(layer_name)
-	highlight_layer(layer_name)
-	*/
+	//print("select layer: ", layer_name)
+	paint_canvas->select_layer(layer_name);
+	highlight_layer(layer_name);
 }
 void PaintWindow::lock_layer(Node *button, const String &layer_name) {
-	/*
-	paint_canvas.toggle_lock_layer(layer_name)
-	highlight_layer(paint_canvas.get_active_layer().name)
-	*/
+	paint_canvas->toggle_lock_layer(layer_name);
+	highlight_layer(paint_canvas->get_active_layer()->name);
 }
 
 Ref<PaintCanvasLayer> PaintWindow::add_new_layer() {
 	/*
-	var new_layer_button = layer_buttons.get_child(0).duplicate()
-	new_layer_button.set("custom_styles/panel", layer_buttons.get_child(0).get("custom_styles/panel").duplicate())
-	layer_buttons.add_child_below_node(
-			layer_buttons.get_child(layer_buttons.get_child_count() - 1), new_layer_button, true)
+	var new_layer_button = layers_box_container.get_child(0).duplicate()
+	new_layer_button.set("custom_styles/panel", layers_box_container.get_child(0).get("custom_styles/panel").duplicate())
+	layers_box_container.add_child_below_node(
+			layers_box_container.get_child(layers_box_container.get_child_count() - 1), new_layer_button, true)
 	_total_added_layers += 1
 	new_layer_button.find_node("Select").text = "Layer " + str(_total_added_layers)
 	_layer_button_ref[new_layer_button.name] = new_layer_button
-	_connect_layer_buttons()
+	_connect_layers_box_container()
 
 	var layer: GELayer = paint_canvas.add_new_layer(new_layer_button.name)
 
@@ -624,11 +819,11 @@ Ref<PaintCanvasLayer> PaintWindow::add_new_layer() {
 }
 void PaintWindow::remove_active_layer() {
 	/*
-	if layer_buttons.get_child_count() <= 1:
+	if layers_box_container.get_child_count() <= 1:
 		return
 	var layer_name = paint_canvas.active_layer.name
 	paint_canvas.remove_layer(layer_name)
-	layer_buttons.remove_child(_layer_button_ref[layer_name])
+	layers_box_container.remove_child(_layer_button_ref[layer_name])
 	_layer_button_ref[layer_name].queue_free()
 	_layer_button_ref.erase(layer_name)
 
@@ -637,10 +832,10 @@ void PaintWindow::remove_active_layer() {
 }
 void PaintWindow::duplicate_active_layer() {
 	/*
-	var new_layer_button = layer_buttons.get_child(0).duplicate()
-	new_layer_button.set("custom_styles/panel", layer_buttons.get_child(0).get("custom_styles/panel").duplicate())
-	layer_buttons.add_child_below_node(
-			layer_buttons.get_child(layer_buttons.get_child_count() - 1), new_layer_button, true)
+	var new_layer_button = layers_box_container.get_child(0).duplicate()
+	new_layer_button.set("custom_styles/panel", layers_box_container.get_child(0).get("custom_styles/panel").duplicate())
+	layers_box_container.add_child_below_node(
+			layers_box_container.get_child(layers_box_container.get_child_count() - 1), new_layer_button, true)
 
 	_total_added_layers += 1 # for keeping track...
 	new_layer_button.find_node("Select").text = "Layer " + str(_total_added_layers)
@@ -658,92 +853,85 @@ void PaintWindow::duplicate_active_layer() {
 
 	# update highlight
 	highlight_layer(paint_canvas.get_active_layer().name)
-	#print("added layer: ", new_layer.name, " (total:", layer_buttons.get_child_count(), ")")
+	#print("added layer: ", new_layer.name, " (total:", layers_box_container.get_child_count(), ")")
 	*/
 }
 
 void PaintWindow::move_up(Node *layer_btn) {
-	/*
-	var new_idx = min(layer_btn.get_index() + 1, layer_buttons.get_child_count())
-	#print("move_up: ", layer_btn.name, " from ", layer_btn.get_index(), " to ", new_idx)
-	layer_buttons.move_child(layer_btn, new_idx)
-	paint_canvas.move_layer_back(layer_btn.name)
-	*/
+	int new_idx = MIN(layer_btn->get_index() + 1, layers_box_container->get_child_count());
+	//print("move_up: ", layer_btn.name, " from ", layer_btn.get_index(), " to ", new_idx)
+	layers_box_container->move_child(layer_btn, new_idx);
+	paint_canvas->move_layer_back(layer_btn->get_name());
 }
 void PaintWindow::move_down(Node *layer_btn) {
-	/*
-	var new_idx = max(layer_btn.get_index() - 1, 0)
-	#print("move_down: ", layer_btn.name, " from ", layer_btn.get_index(), " to ", new_idx)
-	layer_buttons.move_child(layer_btn, new_idx)
-	paint_canvas.move_layer_forward(layer_btn.name)
-	*/
+	int new_idx = MAX(layer_btn->get_index() - 1, 0);
+	//print("move_down: ", layer_btn.name, " from ", layer_btn.get_index(), " to ", new_idx)
+	layers_box_container->move_child(layer_btn, new_idx);
+	paint_canvas->move_layer_forward(layer_btn->get_name());
 }
 
 void PaintWindow::_connect_layer_buttons() {
-	/*
-	for layer_btn in layer_buttons.get_children():
-		if layer_btn.find_node("Select").is_connected("pressed", self, "select_layer"):
-			continue
-		layer_btn.find_node("Select").connect("pressed", self, "select_layer", [layer_btn.name])
-		layer_btn.find_node("Visible").connect("pressed", self, "toggle_layer_visibility",
-				[layer_btn.find_node("Visible"), layer_btn.name])
-		layer_btn.find_node("Up").connect("pressed", self, "move_down", [layer_btn])
-		layer_btn.find_node("Down").connect("pressed", self, "move_up", [layer_btn])
-		layer_btn.find_node("Lock").connect("pressed", self, "lock_layer",
-				[layer_btn, layer_btn.name])
-	*/
+	//for (int i = 0; i < layers_box_container->get_child_count(); ++i) {
+		//PaintLayerButton *layer_btn = Object::cast_to<PaintLayerButton>(layers_box_container->get_child(i));
+
+		//if (!layer_btn) {
+		//	continue;
+		//}
+
+		//if layer_btn.find_node("Select").is_connected("pressed", self, "select_layer"):
+		//	continue;
+
+		//layer_btn->find_node("Select").connect("pressed", this, "select_layer", [layer_btn.name]);
+		//layer_btn->find_node("Visible").connect("pressed", this, "toggle_layer_visibility", [layer_btn.find_node("Visible"), layer_btn.name]);
+		//layer_btn->find_node("Up").connect("pressed", this, "move_down", [layer_btn]);
+		//layer_btn->find_node("Down").connect("pressed", this, "move_up", [layer_btn]);
+		//layer_btn->find_node("Lock").connect("pressed", this, "lock_layer", [layer_btn, layer_btn.name]);
+	//}
 }
 
 void PaintWindow::_on_Button_pressed() {
-	/*
-	add_new_layer()
-	*/
+	add_new_layer();
 }
 void PaintWindow::_on_PaintCanvasContainer_mouse_entered() {
-	/*
-	if mouse_on_top == true:
-		return
-	mouse_on_top = true
-	paint_canvas.tool_layer.clear()
-	paint_canvas.update()
-	paint_canvas.tool_layer.update_texture()
-	*/
+	if (mouse_on_top) {
+		return;
+	}
+
+	mouse_on_top = true;
+	paint_canvas->tool_layer->clear();
+	paint_canvas->update();
+	paint_canvas->tool_layer->update_texture();
 }
 void PaintWindow::_on_PaintCanvasContainer_mouse_exited() {
-	/*
-	if mouse_on_top == false:
-		return
-	mouse_on_top = false
-	paint_canvas.tool_layer.clear()
-	paint_canvas.update()
-	paint_canvas.tool_layer.update_texture()
-	*/
+	if (!mouse_on_top) {
+		return;
+	}
+
+	mouse_on_top = false;
+	paint_canvas->tool_layer->clear();
+	paint_canvas->update();
+	paint_canvas->tool_layer->update_texture();
 }
 void PaintWindow::_on_ColorPicker_popup_closed() {
-	/*
-	find_node("Colors").add_color_prefab(find_node("ColorPicker").color)
-	*/
+	color_grid->add_color_prefab(color_picker_button->get_pick_color());
 }
 
 bool PaintWindow::is_position_in_canvas(const Vector2 &pos) {
-	/*
-	if Rect2(paint_canvas_container_node.rect_global_position,
-			 paint_canvas_container_node.rect_global_position + paint_canvas_container_node.rect_size).has_point(pos):
-		return true
-	return false
-	*/
+	Rect2 r = Rect2(paint_canvas_container->get_global_position(), paint_canvas_container->get_global_position() + paint_canvas_container->get_size());
+
+	if (r.has_point(pos)) {
+		return true;
+	}
 
 	return false;
 }
 
 bool PaintWindow::is_mouse_in_canvas() {
-	/*
-	if is_position_in_canvas(get_global_mouse_position()):
-		return true #mouse_on_top # check if mouse is inside canvas
-	else:
-		return false
-	*/
-	return false;
+	if (is_position_in_canvas(get_global_mouse_position())) {
+		return true; //mouse_on_top # check if mouse is inside canvas
+	} else {
+		return false;
+	}
 }
 
 bool PaintWindow::is_any_menu_open() {
@@ -768,53 +956,58 @@ void PaintWindow::_on_LockAlpha_pressed() {
 	*/
 }
 void PaintWindow::_on_BrushRect_pressed() {
-	/*
-	if brush_mode != Tools.BRUSH:
-		set_brush(Tools.BRUSH)
-	selected_brush_prefab = BrushPrefabs.Type.RECT
-	*/
+	if (brush_mode != Tools::BRUSH) {
+		set_brush(Tools::BRUSH);
+	}
+
+	selected_brush_prefab = BrushPrefabs::RECT;
 }
 void PaintWindow::_on_BrushCircle_pressed() {
-	/*
-	if brush_mode != Tools.BRUSH:
-		set_brush(Tools.BRUSH)
-	selected_brush_prefab = BrushPrefabs.Type.CIRCLE
-	*/
+	if (brush_mode != Tools::BRUSH) {
+		set_brush(Tools::BRUSH);
+	}
+
+	selected_brush_prefab = BrushPrefabs::CIRCLE;
 }
 void PaintWindow::_on_BrushVLine_pressed() {
-	/*
-	if brush_mode != Tools.BRUSH:
-		set_brush(Tools.BRUSH)
-	selected_brush_prefab = BrushPrefabs.Type.V_LINE
-	*/
+	if (brush_mode != Tools::BRUSH) {
+		set_brush(Tools::BRUSH);
+	}
+
+	selected_brush_prefab = BrushPrefabs::V_LINE;
 }
 void PaintWindow::_on_BrushHLine_pressed() {
-	/*
-	if brush_mode != Tools.BRUSH:
-		set_brush(Tools.BRUSH)
-	selected_brush_prefab = BrushPrefabs.Type.H_LINE
-	*/
+	if (brush_mode != Tools::BRUSH) {
+		set_brush(Tools::BRUSH);
+	}
+
+	selected_brush_prefab = BrushPrefabs::H_LINE;
 }
 void PaintWindow::_on_BrushSize_value_changed(float value) {
-	/*
-	find_node("BrushSizeLabel").text = str(int(value))
-	*/
+	brush_size_label->set_text(rtos(value));
 }
 void PaintWindow::_on_XSymmetry_pressed() {
-	/*
-	paint_canvas.symmetry_x = not paint_canvas.symmetry_x
-	*/
+	paint_canvas->symmetry_x = !paint_canvas->symmetry_x;
 }
 void PaintWindow::_on_YSymmetry_pressed() {
-	/*
-	paint_canvas.symmetry_y = not paint_canvas.symmetry_y
-	*/
+	paint_canvas->symmetry_y = !paint_canvas->symmetry_y;
 }
 
 PaintWindow::PaintWindow() {
+	selected_color = Color(1, 1, 1, 1);
+
+	_picked_color = false;
+	_middle_mouse_pressed = false;
+
+	selected_brush_prefab = BrushPrefabs::CIRCLE;
+
+	current_layer_highlight = Color(0.354706, 0.497302, 0.769531);
+	other_layer_highlight = Color(0.180392, 0.176471, 0.176471);
+	locked_layer_highlight = Color(0.098039, 0.094118, 0.094118);
+
 	/*
 
-	var layer_buttons: Control
+	var layers_box_container: Control
 	var paint_canvas_container_node
 	var paint_canvas: GECanvas
 	var canvas_background: TextureRect
@@ -886,7 +1079,7 @@ PaintWindow::PaintWindow() {
 	selected_color = find_node("ColorPicker").color
 	colors_grid = find_node("Colors")
 	paint_canvas = paint_canvas_container_node.find_node("Canvas")
-	layer_buttons = find_node("LayerButtons")
+	layers_box_container = find_node("LayerButtons")
 	canvas_background = find_node("CanvasBackground")
 
 	set_process(true)
@@ -905,8 +1098,8 @@ PaintWindow::PaintWindow() {
 
 	# ready
 
-	set_brush(Tools.PAINT)
-	_layer_button_ref[layer_buttons.get_child(0).name] = layer_buttons.get_child(0) #ugly
+	set_brush(Tools::PAINT)
+	_layer_button_ref[layers_box_container.get_child(0).name] = layers_box_container.get_child(0) #ugly
 	_connect_layer_buttons()
 	highlight_layer(paint_canvas.get_active_layer().name)
 

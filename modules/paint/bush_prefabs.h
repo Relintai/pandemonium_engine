@@ -39,7 +39,7 @@ public:
 		CIRCLE,
 	};
 
-	static PoolVector3iArray get_brush(const Type type, const int size);
+	static PoolVector2iArray get_brush(const Type type, const int size);
 
 	BrushPrefabs();
 	~BrushPrefabs();
