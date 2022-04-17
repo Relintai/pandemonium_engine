@@ -424,12 +424,12 @@ void PaintCanvas::hide_grid() {
 	grid->hide();
 }
 
-PoolVector2iArray PaintCanvas::select_color(const int x, const int y) {
+PoolVector2iArray PaintCanvas::select_color(const int p_x, const int p_y) {
 	PoolVector2iArray same_color_pixels;
 
-	Color color = get_pixel(x, y);
+	Color color = get_pixel(p_x, p_y);
 	for (int x = 0; x < active_layer->layer_width; ++x) {
-		for (int x = 0; x < active_layer->layer_height; ++x) {
+		for (int y = 0; y < active_layer->layer_height; ++y) {
 			Color pixel_color = active_layer->get_pixel(x, y);
 			if (pixel_color == color) {
 				same_color_pixels.append(Vector2i(x, y));
@@ -439,8 +439,8 @@ PoolVector2iArray PaintCanvas::select_color(const int x, const int y) {
 
 	return same_color_pixels;
 }
-PoolVector2iArray PaintCanvas::select_same_color(const int x, const int y) {
-	return get_neighbouring_pixels(x, y);
+PoolVector2iArray PaintCanvas::select_same_color(const int p_x, const int p_y) {
+	return get_neighbouring_pixels(p_x, p_y);
 }
 
 // returns array of Vector2

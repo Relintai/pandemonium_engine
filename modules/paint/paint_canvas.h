@@ -103,8 +103,8 @@ public:
 	void show_grid();
 	void hide_grid();
 
-	PoolVector2iArray select_color(const int x, const int y);
-	PoolVector2iArray select_same_color(const int x, const int y);
+	PoolVector2iArray select_color(const int p_x, const int p_y);
+	PoolVector2iArray select_same_color(const int p_x, const int p_y);
 	PoolVector2iArray get_neighbouring_pixels(const int pos_x, const int pos_y);
 
 	void resize(int width, int height);
