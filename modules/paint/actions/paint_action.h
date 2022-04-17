@@ -27,13 +27,14 @@ SOFTWARE.
 
 #include "core/reference.h"
 
+#include "core/array.h"
+#include "core/dictionary.h"
+#include "core/math/vector2i.h"
 #include "core/pool_vector.h"
 #include "core/variant.h"
-#include "core/dictionary.h"
-#include "core/array.h"
-#include "core/math/vector2i.h"
 
 class PaintCanvas;
+class PaintCanvasLayer;
 
 //extends Node  (this should probably not be a node)
 //class_name GEAction
@@ -53,12 +54,27 @@ public:
 	virtual PoolVector2iArray get_xy_sym_points(const int canvas_width, const int canvas_height, const Vector2i &pixel);
 	virtual PoolVector2iArray get_points(PaintCanvas *canvas, const Vector2i &pixel);
 
+	bool pv2ia_contains(const PoolVector2iArray &arr, const Vector2i &v) const;
+
+	void draw_points(PaintCanvas *canvas, const PoolVector2iArray &point_arr, const PoolColorArray &color_arr);
+
 	PaintAction();
 	~PaintAction();
 
 	Dictionary action_data_undo;
 	Dictionary action_data_redo;
 	Dictionary action_data_preview;
+
+	PoolVector2iArray undo_cells;
+	PoolColorArray undo_colors;
+
+	PoolVector2iArray redo_cells;
+	PoolColorArray redo_colors;
+
+	PoolVector2iArray preview_cells;
+	PoolColorArray preview_colors;
+
+	Ref<PaintCanvasLayer> layer;
 
 	Dictionary action_data;
 

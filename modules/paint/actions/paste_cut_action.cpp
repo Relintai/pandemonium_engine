@@ -24,11 +24,17 @@ SOFTWARE.
 
 #include "paste_cut_action.h"
 
+#include "../paint_canvas.h"
+#include "../paint_canvas_layer.h"
+#include "../paint_utilities.h"
+
 //data[2] = selection_pos
 //data[3] = selection_color
 //data[4] = cut pos
 //data[5] = cut size
 void PasteCutAction::do_action(PaintCanvas *canvas, const Array &data) {
+	PaintAction::do_action(canvas, data);
+
 	/*
 	.do_action(canvas, data)
 
@@ -58,28 +64,6 @@ void PasteCutAction::do_action(PaintCanvas *canvas, const Array &data) {
 				action_data.undo.cells.append(pixel)
 
 			canvas.set_pixel_v(pixel, color)
-	*/
-}
-void PasteCutAction::commit_action(PaintCanvas *canvas) {
-	/*
-	canvas.clear_preview_layer()
-	*/
-}
-
-void PasteCutAction::undo_action(PaintCanvas *canvas) {
-	/*
-	var cells = action_data.undo.cells
-	var colors = action_data.undo.colors
-	for idx in range(cells.size()):
-		canvas._set_pixel_v(action_data.layer, cells[idx], colors[idx])
-	*/
-}
-void PasteCutAction::redo_action(PaintCanvas *canvas) {
-	/*
-	var cells = action_data.redo.cells
-	var colors = action_data.redo.colors
-	for idx in range(cells.size()):
-		canvas._set_pixel_v(action_data.layer, cells[idx], colors[idx])
 	*/
 }
 

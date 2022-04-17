@@ -28,37 +28,25 @@ SOFTWARE.
 #include "../paint_canvas_layer.h"
 
 void PaintAction::do_action(PaintCanvas *canvas, const Array &data) {
-	if (!action_data_redo.has("cells")) {
-		action_data_redo["cells"] = PoolVector2iArray();
-		action_data_redo["colors"] = PoolColorArray();
-	}
-
-	if (!action_data_undo.has("cells")) {
-		action_data_undo["cells"] = PoolVector2iArray();
-		action_data_undo["colors"] = PoolColorArray();
-	}
-
-	if (!action_data_preview.has("cells")) {
-		action_data_preview["cells"] = PoolVector2iArray();
-		action_data_preview["colors"] = PoolColorArray();
-	}
-
-	if (!action_data.has("layer")) {
-		action_data["layer"] = canvas->get_active_layer();
-	}
+	layer = canvas->get_active_layer();
 }
 void PaintAction::commit_action(PaintCanvas *canvas) {
 	ERR_PRINT("NO IMPL commit_action");
 }
 
 void PaintAction::undo_action(PaintCanvas *canvas) {
-	ERR_PRINT("NO IMPL undo_action");
+	for (int idx = 0; idx < undo_cells.size(); ++idx) {
+		canvas->_set_pixel_v(layer, undo_cells[idx], undo_colors[idx]);
+	}
 }
 void PaintAction::redo_action(PaintCanvas *canvas) {
-	ERR_PRINT("NO IMPL redo_action");
+	for (int idx = 0; idx < redo_cells.size(); ++idx) {
+		canvas->_set_pixel_v(layer, redo_cells[idx], redo_colors[idx]);
+	}
 }
+
 bool PaintAction::can_commit() {
-	return !action_data_redo.empty();
+	return !redo_cells.empty();
 }
 
 PoolVector2iArray PaintAction::get_x_sym_points(const int canvas_width, const Vector2i &pixel) {
@@ -143,6 +131,39 @@ PoolVector2iArray PaintAction::get_points(PaintCanvas *canvas, const Vector2i &p
 	*/
 
 	return PoolVector2iArray();
+}
+
+bool PaintAction::pv2ia_contains(const PoolVector2iArray &arr, const Vector2i &v) const {
+	PoolVector2iArray::Read r = arr.read();
+	int s = arr.size();
+
+	for (int i = 0; i < s; ++s) {
+		if (r[i] == v) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void PaintAction::draw_points(PaintCanvas *canvas, const PoolVector2iArray &point_arr, const PoolColorArray &color_arr) {
+	for (int i = 0; i < point_arr.size(); ++i) {
+		Vector2i pixel = point_arr[i];
+
+		Color col = color_arr[i];
+
+		if (canvas->is_alpha_locked() && col.a < 0.00001) {
+			continue;
+		}
+
+		undo_cells.append(pixel);
+		undo_colors.append(col);
+
+		canvas->set_pixel_v(pixel, col);
+
+		redo_cells.append(pixel);
+		redo_colors.append(col);
+	}
 }
 
 PaintAction::PaintAction() {

@@ -24,7 +24,13 @@ SOFTWARE.
 
 #include "rect_action.h"
 
+#include "../paint_canvas.h"
+#include "../paint_canvas_layer.h"
+#include "../paint_utilities.h"
+
 void RectAction::do_action(PaintCanvas *canvas, const Array &data) {
+	PaintAction::do_action(canvas, data);
+
 	/*
 	.do_action(canvas, data)
 
@@ -71,23 +77,6 @@ void RectAction::commit_action(PaintCanvas *canvas) {
 		action_data.redo.cells.append(cells[idx])
 		action_data.redo.colors.append(colors[idx])
 	mouse_start_pos = null
-	*/
-}
-
-void RectAction::undo_action(PaintCanvas *canvas) {
-	/*
-	var cells = action_data.undo.cells
-	var colors = action_data.undo.colors
-	for idx in range(cells.size()):
-		canvas._set_pixel_v(action_data.layer, cells[idx], colors[idx])
-	*/
-}
-void RectAction::redo_action(PaintCanvas *canvas) {
-	/*
-	var cells = action_data.redo.cells
-	var colors = action_data.redo.colors
-	for idx in range(cells.size()):
-		canvas._set_pixel_v(action_data.layer, cells[idx], colors[idx])
 	*/
 }
 

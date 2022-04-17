@@ -36,13 +36,10 @@ public:
 	void do_action(PaintCanvas *canvas, const Array &data);
 	void commit_action(PaintCanvas *canvas);
 
-	void undo_action(PaintCanvas *canvas);
-	void redo_action(PaintCanvas *canvas);
-
 	LineAction();
 	~LineAction();
 
-	//var mouse_start_pos = null
+	Vector2 mouse_start_pos;
 
 protected:
 	static void _bind_methods();

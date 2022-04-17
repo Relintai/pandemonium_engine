@@ -38,9 +38,6 @@ public:
 	void do_action(PaintCanvas *canvas, const Array &data);
 	void commit_action(PaintCanvas *canvas);
 
-	void undo_action(PaintCanvas *canvas);
-	void redo_action(PaintCanvas *canvas);
-
 	MultiLineAction();
 	~MultiLineAction();
 

@@ -24,51 +24,44 @@ SOFTWARE.
 
 #include "brush_action.h"
 
+#include "../bush_prefabs.h"
+#include "../paint_canvas.h"
+#include "../paint_canvas_layer.h"
+#include "../paint_utilities.h"
+
 void BrushAction::do_action(PaintCanvas *canvas, const Array &data) {
-	/*
-	.do_action(canvas, data)
+	PaintAction::do_action(canvas, data);
 
-	for pixel in GEUtils.get_pixels_in_line(data[0], data[1]):
-		for off in BrushPrefabs.get_brush(data[3], data[4]):
-			var p = pixel + off
+	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);
+	int brush_type = data[3];
+	PoolVector2iArray brush = BrushPrefabs::get_brush(static_cast<BrushPrefabs::Type>(brush_type), data[4]);
 
-			if p in action_data.undo.cells or canvas.get_pixel_v(p) == null:
-				continue
+	for (int i = 0; i < pixels.size(); ++i) {
+		Vector2i pixel = pixels[i];
 
-			if canvas.is_alpha_locked() and canvas.get_pixel_v(p) == Color.transparent:
-				continue
+		for (int i = 0; i < brush.size(); ++i) {
+			Vector2i off = brush[i];
+			Vector2i p = pixel + off;
 
-			action_data.undo.colors.append(canvas.get_pixel_v(p))
-			action_data.undo.cells.append(p)
+			if (pv2ia_contains(undo_cells, p)) {
+				continue;
+			}
 
-			canvas.set_pixel_v(p, data[2])
+			Color col = canvas->get_pixel_v(p);
 
-			action_data.redo.cells.append(p)
-			action_data.redo.colors.append(data[2])
-	*/
-}
-void BrushAction::commit_action(PaintCanvas *canvas) {
-	/*
-	var cells = action_data.redo.cells
-	var colors = action_data.redo.colors
-	*/
-}
+			if (canvas->is_alpha_locked() && col.a < 0.00001) {
+				continue;
+			}
 
-void BrushAction::undo_action(PaintCanvas *canvas) {
-	/*
-	var cells = action_data.undo.cells
-	var colors = action_data.undo.colors
-	for idx in range(cells.size()):
-		canvas._set_pixel_v(action_data.layer, cells[idx], colors[idx])
-	*/
-}
-void BrushAction::redo_action(PaintCanvas *canvas) {
-	/*
-	var cells = action_data.redo.cells
-	var colors = action_data.redo.colors
-	for idx in range(cells.size()):
-		canvas._set_pixel_v(action_data.layer, cells[idx], colors[idx])
-	*/
+			undo_colors.append(col);
+			undo_cells.append(p);
+
+			canvas->set_pixel_v(pixel, data[2]);
+
+			redo_cells.append(p);
+			redo_colors.append(data[2]);
+		}
+	}
 }
 
 BrushAction::BrushAction() {

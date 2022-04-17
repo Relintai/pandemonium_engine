@@ -24,51 +24,39 @@ SOFTWARE.
 
 #include "bucket_action.h"
 
+#include "../paint_canvas.h"
+#include "../paint_canvas_layer.h"
+#include "../paint_utilities.h"
+
 void BucketAction::do_action(PaintCanvas *canvas, const Array &data) {
+	PaintAction::do_action(canvas, data);
 	/*
-	.do_action(canvas, data)
+		Color col = canvas->get_pixel_v(data[0]);
+		Color col2 = data[2];
 
-	if canvas.get_pixel_v(data[0]) == data[2]:
-		return
-	var pixels = canvas.select_same_color(data[0].x, data[0].y)
+		if (col == col2) {
+			return;
+		}
 
-	for pixel in pixels:
-		if pixel in action_data.undo.cells:
-				continue
+		PoolVector2iArray pixels = canvas->select_same_color(data[0].x, data[0].y);
 
-		if canvas.is_alpha_locked() and canvas.get_pixel_v(pixel) == Color.transparent:
-			continue
+		for (int i = 0; i < pixels.size(); ++i) {
+			Vector2i pixel = pixels[i];
 
-		action_data.undo.colors.append(canvas.get_pixel_v(pixel))
-		action_data.undo.cells.append(pixel)
+			if pixel in action_data.undo.cells:
+					continue;
 
-		canvas.set_pixel_v(pixel, data[2])
+			if canvas.is_alpha_locked() and canvas.get_pixel_v(pixel) == Color.transparent:
+				continue;
 
-		action_data.redo.cells.append(pixel)
-		action_data.redo.colors.append(data[2])
-	*/
-}
-void BucketAction::commit_action(PaintCanvas *canvas) {
-	/*
-	var cells = action_data.preview.cells
-	var colors = action_data.preview.colors
-	*/
-}
+			action_data.undo.colors.append(canvas.get_pixel_v(pixel));
+			action_data.undo.cells.append(pixel);
 
-void BucketAction::undo_action(PaintCanvas *canvas) {
-	/*
-	var cells = action_data.undo.cells
-	var colors = action_data.undo.colors
-	for idx in range(cells.size()):
-		canvas._set_pixel_v(action_data.layer, cells[idx], colors[idx])
-	*/
-}
-void BucketAction::redo_action(PaintCanvas *canvas) {
-	/*
-	var cells = action_data.redo.cells
-	var colors = action_data.redo.colors
-	for idx in range(cells.size()):
-		canvas._set_pixel_v(action_data.layer, cells[idx], colors[idx])
+			canvas.set_pixel_v(pixel, data[2]);
+
+			action_data.redo.cells.append(pixel);
+			action_data.redo.colors.append(data[2]);
+		}
 	*/
 }
 

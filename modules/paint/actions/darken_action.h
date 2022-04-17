@@ -34,15 +34,11 @@ class DarkenAction : public PaintAction {
 
 public:
 	void do_action(PaintCanvas *canvas, const Array &data);
-	void commit_action(PaintCanvas *canvas);
-
-	void undo_action(PaintCanvas *canvas);
-	void redo_action(PaintCanvas *canvas);
 
 	DarkenAction();
 	~DarkenAction();
 
-	//const dark_factor = 0.1
+	float dark_factor;
 
 protected:
 	static void _bind_methods();
