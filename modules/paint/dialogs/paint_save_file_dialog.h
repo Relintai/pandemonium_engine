@@ -27,23 +27,28 @@ SOFTWARE.
 
 #include "scene/gui/file_dialog.h"
 
+class PaintCanvas;
+
 class PaintSaveFileDialog : public FileDialog {
 	GDCLASS(PaintSaveFileDialog, FileDialog);
 
 public:
-	void _ready();
-	void _on_SaveFileDialog_file_selected(const String &path);
 	void save_file();
+
+	void _on_SaveFileDialog_file_selected(const String &path);
 	void _on_SaveFileDialog_about_to_show();
 	void _on_SaveFileDialog_visibility_changed();
 
 	PaintSaveFileDialog();
 	~PaintSaveFileDialog();
 
-protected:
-	static void _bind_methods();
+	String file_path;
 
-	//var file_path = ""
+	PaintCanvas *canvas;
+
+protected:
+	void _notification(int p_what);
+	static void _bind_methods();
 };
 
 #endif

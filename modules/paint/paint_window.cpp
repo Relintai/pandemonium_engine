@@ -24,8 +24,8 @@ SOFTWARE.
 
 #include "paint_window.h"
 
-#include "core/os/input.h"
 #include "core/image.h"
+#include "core/os/input.h"
 #include "scene/resources/texture.h"
 
 #include "actions/brighten_action.h"
@@ -779,11 +779,7 @@ void PaintWindow::_on_CutTool_pressed() {
 	set_brush(Tools::CUT);
 }
 void PaintWindow::_on_Editor_visibility_changed() {
-	if (is_visible()) {
-		set_pause_mode(Node::PAUSE_MODE_INHERIT);
-	} else {
-		set_pause_mode(Node::PAUSE_MODE_STOP);
-	}
+	set_process(is_visible_in_tree());
 }
 
 void PaintWindow::highlight_layer(const String &layer_name) {
@@ -1071,11 +1067,11 @@ void PaintWindow::_on_YSymmetry_pressed() {
 
 void PaintWindow::_notification(int p_what) {
 	switch (p_what) {
-		case NOTIFICATION_PROCESS: {
-			_process(get_process_delta_time());
-		} break;
 		case NOTIFICATION_POSTINITIALIZE: {
 			connect("visibility_changed", this, "_on_Editor_visibility_changed");
+		} break;
+		case NOTIFICATION_PROCESS: {
+			_process(get_process_delta_time());
 		} break;
 		default: {
 		} break;
@@ -1167,6 +1163,7 @@ PaintWindow::PaintWindow() {
 	lock_alpha_button = memnew(CheckButton);
 	lock_alpha_button->set_text("Lock Alpha");
 	lock_alpha_button->set_text_align(Button::ALIGN_RIGHT);
+	lock_alpha_button->connect("pressed", this, "_on_LockAlpha_pressed");
 	left_main_vbox_container->add_child(lock_alpha_button);
 
 	//Main Content Mid (App) -- Left Panel -- Margin container -- VBoxContainer -- Brush Selection
@@ -1178,24 +1175,28 @@ PaintWindow::PaintWindow() {
 	brush_rect_button->set_normal_texture(make_icon(brush_rect_png));
 	brush_rect_button->set_hover_texture(make_icon(brush_rect_hovered_png));
 	brush_rect_button->set_custom_minimum_size(Size2(25, 25));
+	brush_rect_button->connect("pressed", this, "_on_BrushRect_pressed");
 	brush_container->add_child(brush_rect_button);
 
 	TextureButton *brush_circle_button = memnew(TextureButton);
 	brush_circle_button->set_normal_texture(make_icon(brush_circle_png));
 	brush_circle_button->set_hover_texture(make_icon(brush_circle_hovered_png));
 	brush_circle_button->set_custom_minimum_size(Size2(25, 25));
+	brush_circle_button->connect("pressed", this, "_on_BrushCircle_pressed");
 	brush_container->add_child(brush_circle_button);
 
 	TextureButton *brush_v_line_button = memnew(TextureButton);
 	brush_v_line_button->set_normal_texture(make_icon(brush_v_line_png));
 	brush_v_line_button->set_hover_texture(make_icon(brush_v_line_hovered_png));
 	brush_v_line_button->set_custom_minimum_size(Size2(25, 25));
+	brush_v_line_button->connect("pressed", this, "_on_BrushVLine_pressed");
 	brush_container->add_child(brush_v_line_button);
 
 	TextureButton *brush_h_line_button = memnew(TextureButton);
 	brush_h_line_button->set_normal_texture(make_icon(brush_h_line_png));
 	brush_h_line_button->set_hover_texture(make_icon(brush_h_line_hovered_png));
 	brush_h_line_button->set_custom_minimum_size(Size2(25, 25));
+	brush_h_line_button->connect("pressed", this, "_on_BrushHLine_pressed");
 	brush_container->add_child(brush_h_line_button);
 
 	//Main Content Mid (App) -- Left Panel -- Margin container -- VBoxContainer -- Brush Size
@@ -1218,14 +1219,17 @@ PaintWindow::PaintWindow() {
 	brush_size_container->add_child(brush_size_slider);
 
 	brush_size_label->set_text(String::num(static_cast<int>(brush_size_slider->get_value())));
+	brush_size_slider->connect("value_changed", this, "_on_BrushSize_value_changed");
 
 	//Main Content Mid (App) -- Left Panel -- Margin container -- VBoxContainer -- Symmetries
 	x_symmetry_button = memnew(CheckButton);
 	x_symmetry_button->set_text("X Symmetry");
+	x_symmetry_button->connect("pressed", this, "_on_XSymmetry_pressed");
 	left_main_vbox_container->add_child(x_symmetry_button);
 
 	y_symmetry_button = memnew(CheckButton);
 	y_symmetry_button->set_text("Y Symmetry");
+	y_symmetry_button->connect("pressed", this, "_on_YSymmetry_pressed");
 	left_main_vbox_container->add_child(y_symmetry_button);
 
 	//Main Content Mid (App) -- Mid (PaintCanvas)
@@ -1236,6 +1240,8 @@ PaintWindow::PaintWindow() {
 	paint_canvas_container->set_h_size_flags(SIZE_EXPAND_FILL);
 	paint_canvas_container->set_v_size_flags(SIZE_EXPAND_FILL);
 	paint_canvas_container->set_stretch_ratio(6);
+	paint_canvas_container->connect("mouse_entered", this, "_on_PaintCanvasContainer_mouse_entered");
+	paint_canvas_container->connect("mouse_exited", this, "_on_PaintCanvasContainer_mouse_exited");
 	app_mid_container->add_child(paint_canvas_container);
 
 	paint_canvas = memnew(PaintCanvas);
@@ -1265,6 +1271,7 @@ PaintWindow::PaintWindow() {
 	ScrollContainer *mid_right_main_scroll_container = memnew(ScrollContainer);
 	mid_right_main_scroll_container->set_h_size_flags(SIZE_EXPAND_FILL);
 	mid_right_main_scroll_container->set_v_size_flags(SIZE_EXPAND_FILL);
+	mid_right_main_scroll_container->set_h_scroll(false);
 	mid_right_panel_container->add_child(mid_right_main_scroll_container);
 
 	VBoxContainer *main_tool_contianer = memnew(VBoxContainer);
@@ -1281,12 +1288,14 @@ PaintWindow::PaintWindow() {
 	paint_tool_button->set_text("Pencil (Q)");
 	paint_tool_button->set_h_size_flags(SIZE_EXPAND_FILL);
 	paint_tool_button->set_v_size_flags(SIZE_EXPAND_FILL);
+	paint_tool_button->connect("pressed", this, "_on_PaintTool_pressed");
 	tools_contianer->add_child(paint_tool_button);
 
 	brush_tool_button = memnew(Button);
 	brush_tool_button->set_text("Brush");
 	brush_tool_button->set_h_size_flags(SIZE_EXPAND_FILL);
 	brush_tool_button->set_v_size_flags(SIZE_EXPAND_FILL);
+	brush_tool_button->connect("pressed", this, "_on_BrushTool_pressed");
 	tools_contianer->add_child(brush_tool_button);
 	brush_tool_button->hide();
 
@@ -1294,6 +1303,7 @@ PaintWindow::PaintWindow() {
 	multi_tool_button->set_text("Polygon");
 	multi_tool_button->set_h_size_flags(SIZE_EXPAND_FILL);
 	multi_tool_button->set_v_size_flags(SIZE_EXPAND_FILL);
+	//multi_tool_button->connect("pressed", this, "_on_PaintTool_pressed");
 	tools_contianer->add_child(multi_tool_button);
 	multi_tool_button->hide();
 
@@ -1301,60 +1311,71 @@ PaintWindow::PaintWindow() {
 	bucket_tool_button->set_text("Bucket Fill (F)");
 	bucket_tool_button->set_h_size_flags(SIZE_EXPAND_FILL);
 	bucket_tool_button->set_v_size_flags(SIZE_EXPAND_FILL);
+	bucket_tool_button->connect("pressed", this, "_on_BucketTool_pressed");
 	tools_contianer->add_child(bucket_tool_button);
 
 	rainbow_tool_button = memnew(Button);
 	rainbow_tool_button->set_text("Rainbow (R)");
 	rainbow_tool_button->set_h_size_flags(SIZE_EXPAND_FILL);
 	rainbow_tool_button->set_v_size_flags(SIZE_EXPAND_FILL);
+	rainbow_tool_button->connect("pressed", this, "_on_RainbowTool_pressed");
 	tools_contianer->add_child(rainbow_tool_button);
 
 	line_tool_button = memnew(Button);
 	line_tool_button->set_text("Line (L)");
 	line_tool_button->set_h_size_flags(SIZE_EXPAND_FILL);
 	line_tool_button->set_v_size_flags(SIZE_EXPAND_FILL);
+	line_tool_button->connect("pressed", this, "_on_LineTool_pressed");
 	tools_contianer->add_child(line_tool_button);
 
 	rect_tool_button = memnew(Button);
 	rect_tool_button->set_text("Rectangle");
 	rect_tool_button->set_h_size_flags(SIZE_EXPAND_FILL);
 	rect_tool_button->set_v_size_flags(SIZE_EXPAND_FILL);
+	rect_tool_button->connect("pressed", this, "_on_RectTool_pressed");
 	tools_contianer->add_child(rect_tool_button);
 
 	darken_tool_button = memnew(Button);
 	darken_tool_button->set_text("Darken (D)");
 	darken_tool_button->set_h_size_flags(SIZE_EXPAND_FILL);
 	darken_tool_button->set_v_size_flags(SIZE_EXPAND_FILL);
+	darken_tool_button->connect("pressed", this, "_on_DarkenTool_pressed");
 	tools_contianer->add_child(darken_tool_button);
 
 	brighten_tool_button = memnew(Button);
 	brighten_tool_button->set_text("Brighten (B)");
 	brighten_tool_button->set_h_size_flags(SIZE_EXPAND_FILL);
 	brighten_tool_button->set_v_size_flags(SIZE_EXPAND_FILL);
+	brighten_tool_button->connect("pressed", this, "_on_BrightenTool_pressed");
 	tools_contianer->add_child(brighten_tool_button);
 
 	color_picker_tool_button = memnew(Button);
 	color_picker_tool_button->set_text("Color Picker (P)");
 	color_picker_tool_button->set_h_size_flags(SIZE_EXPAND_FILL);
 	color_picker_tool_button->set_v_size_flags(SIZE_EXPAND_FILL);
+	color_picker_tool_button->connect("pressed", this, "_on_ColorPickerTool_pressed");
 	tools_contianer->add_child(color_picker_tool_button);
 
 	cut_tool_button = memnew(Button);
 	cut_tool_button->set_text("Cut Section (C)");
 	cut_tool_button->set_h_size_flags(SIZE_EXPAND_FILL);
 	cut_tool_button->set_v_size_flags(SIZE_EXPAND_FILL);
+	cut_tool_button->connect("pressed", this, "_on_CutTool_pressed");
 	tools_contianer->add_child(cut_tool_button);
 
 	color_picker_button = memnew(ColorPickerButton);
 	color_picker_button->set_text("Cut Section (C)");
 	color_picker_button->set_h_size_flags(SIZE_EXPAND_FILL);
 	color_picker_button->set_v_size_flags(SIZE_EXPAND_FILL);
+	color_picker_button->connect("color_changed", this, "_on_ColorPicker_color_changed");
+	color_picker_button->connect("popup_closed", this, "_on_ColorPicker_popup_closed");
 	tools_contianer->add_child(color_picker_button);
 
 	//Main Content Mid (App) -- Right Panel -- Layers
 	ScrollContainer *layers_scroll_contianer = memnew(ScrollContainer);
 	layers_scroll_contianer->set_h_size_flags(SIZE_EXPAND_FILL);
 	layers_scroll_contianer->set_v_size_flags(SIZE_EXPAND_FILL);
+	layers_scroll_contianer->set_h_scroll(false);
 	main_tool_contianer->add_child(layers_scroll_contianer);
 
 	VBoxContainer *main_layers_box_container = memnew(VBoxContainer);
@@ -1371,11 +1392,13 @@ PaintWindow::PaintWindow() {
 	add_layer_button->set_text("+");
 	add_layer_button->set_custom_minimum_size(Size2(0, 25));
 	add_layer_button->set_h_size_flags(SIZE_EXPAND_FILL);
+	add_layer_button->connect("pressed", this, "_on_Button_pressed");
 	main_layers_box_container->add_child(add_layer_button);
 
 	//Main Content Bottom (Text display)
 	PanelContainer *bottom_content_panel = memnew(PanelContainer);
 	bottom_content_panel->set_h_size_flags(SIZE_EXPAND_FILL);
+	bottom_content_panel->set_custom_minimum_size(Size2(0, 50));
 	main_content_container->add_child(bottom_content_panel);
 
 	text_info = memnew(RichTextLabel);
@@ -1396,6 +1419,7 @@ PaintWindow::PaintWindow() {
 
 	//PaintSaveFileDialog
 	paint_save_file_dialog = memnew(PaintSaveFileDialog);
+	paint_save_file_dialog->canvas = paint_canvas;
 	add_child(paint_save_file_dialog);
 
 	//PaintSettings
@@ -1408,8 +1432,6 @@ PaintWindow::PaintWindow() {
 
 	add_new_layer();
 	paint_canvas->update();
-
-	set_process(true);
 }
 
 PaintWindow::~PaintWindow() {
@@ -1450,4 +1472,5 @@ void PaintWindow::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("lock_layer"), &PaintWindow::lock_layer);
 	ClassDB::bind_method(D_METHOD("toggle_layer_visibility"), &PaintWindow::toggle_layer_visibility);
+	ClassDB::bind_method(D_METHOD("select_layer", "name"), &PaintWindow::select_layer);
 }

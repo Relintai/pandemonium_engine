@@ -58,19 +58,6 @@ static Ref<Texture> make_icon(T p_src) {
 	return texture;
 }
 
-void PaintCanvas::_enter_tree() {
-	connect("mouse_entered", this, "_on_mouse_entered");
-	connect("mouse_exited", this, "_on_mouse_exited");
-
-	//canvas_size = Vector2(int(rect_size.x / grid_size), int(rect_size.y / grid_size));
-	//pixel_size = canvas_size;
-
-	active_layer = add_new_layer("Layer1");
-	preview_layer = add_new_layer("Preview");
-	tool_layer = add_new_layer("Tool");
-
-	set_process(true);
-}
 void PaintCanvas::_process(float delta) {
 	if (!is_visible_in_tree()) {
 		return;
@@ -571,8 +558,18 @@ void PaintCanvas::resize(int width, int height) {
 
 void PaintCanvas::_notification(int p_what) {
 	switch (p_what) {
-		case NOTIFICATION_ENTER_TREE: {
-			_enter_tree();
+		case NOTIFICATION_POSTINITIALIZE: {
+			connect("mouse_entered", this, "_on_mouse_entered");
+			connect("mouse_exited", this, "_on_mouse_exited");
+
+			//canvas_size = Vector2(int(rect_size.x / grid_size), int(rect_size.y / grid_size));
+			//pixel_size = canvas_size;
+
+			active_layer = add_new_layer("Layer1");
+			preview_layer = add_new_layer("Preview");
+			tool_layer = add_new_layer("Tool");
+
+			set_process(true);
 		} break;
 		case NOTIFICATION_PROCESS: {
 			_process(get_process_delta_time());
@@ -629,8 +626,6 @@ PaintCanvas::PaintCanvas() {
 	canvas_outline->color = Color(0, 1, 0, 1);
 	canvas_outline->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
 	add_child(canvas_outline);
-
-	add_new_layer("Layer1");
 }
 
 PaintCanvas::~PaintCanvas() {

@@ -24,68 +24,83 @@ SOFTWARE.
 
 #include "paint_save_file_dialog.h"
 
-void PaintSaveFileDialog::_ready() {
-	/*
-	# warning-ignore:return_value_discarded
-	get_line_edit().connect("text_entered", self, "_on_LineEdit_text_entered")
-	invalidate()
-	clear_filters()
-	add_filter("*.png ; PNG Images")
-	*/
-}
-void PaintSaveFileDialog::_on_SaveFileDialog_file_selected(const String &path) {
-	/*
-	#print("selected file: ", path)
-	file_path = path
-	save_file()
-	*/
-}
+#include "../paint_canvas.h"
+#include "../paint_canvas_layer.h"
+
+#include "core/image.h"
+#include "core/os/dir_access.h"
+#include "core/os/file_access.h"
+
 void PaintSaveFileDialog::save_file() {
-	/*
-	var image = Image.new()
-	var canvas = get_parent().paint_canvas
-	image.create(canvas.canvas_width, canvas.canvas_height, true, Image.FORMAT_RGBA8)
-	image.lock()
+	Ref<Image> image;
+	image.instance();
 
-	for layer in canvas.layers:
-		var idx = 0
-		if not layer.visible:
-			continue
-		for x in range(layer.layer_width):
-			for y in range(layer.layer_height):
-				var color = layer.get_pixel(x, y)
-				var image_color = image.get_pixel(x, y)
+	image->create(canvas->get_canvas_width(), canvas->get_canvas_height(), true, Image::FORMAT_RGBA8);
+	image->lock();
 
-				if color.a != 0:
-					image.set_pixel(x, y, image_color.blend(color))
-				else:
-					image.set_pixel(x, y, color)
-	image.unlock()
+	for (int i = 0; i < canvas->layers.size(); ++i) {
+		Ref<PaintCanvasLayer> layer = canvas->layers[i];
 
-	var dir = Directory.new()
-	if dir.file_exists(file_path):
-		dir.remove(file_path)
+		if (!layer->get_visible()) {
+			continue;
+		}
 
-	image.save_png(file_path)
-	*/
+		for (int x = 0; x < layer->layer_width; ++x) {
+			for (int y = 0; y < layer->layer_height; ++y) {
+				Color color = layer->get_pixel(x, y);
+				Color image_color = image->get_pixel(x, y);
+
+				if (color.a < 0.999998) {
+					image->set_pixel(x, y, image_color.blend(color));
+				} else {
+					image->set_pixel(x, y, color);
+				}
+			}
+		}
+	}
+
+	image->unlock();
+
+	if (FileAccess::exists(file_path)) {
+		DirAccess::remove_file_or_error(file_path);
+	}
+
+	image->save_png(file_path);
+}
+
+void PaintSaveFileDialog::_on_SaveFileDialog_file_selected(const String &path) {
+	file_path = path;
+	save_file();
 }
 void PaintSaveFileDialog::_on_SaveFileDialog_about_to_show() {
-	/*
-	invalidate()
-	*/
+	invalidate();
 }
 void PaintSaveFileDialog::_on_SaveFileDialog_visibility_changed() {
-	/*
-	invalidate()
-	*/
+	invalidate();
+}
+
+void PaintSaveFileDialog::_notification(int p_what) {
+	switch (p_what) {
+		case NOTIFICATION_POSTINITIALIZE: {
+			connect("file_selected", this, "_on_SaveFileDialog_file_selected");
+			connect("about_to_show", this, "_on_SaveFileDialog_about_to_show");
+			connect("visibility_changed", this, "_on_SaveFileDialog_visibility_changed");
+		} break;
+	}
 }
 
 PaintSaveFileDialog::PaintSaveFileDialog() {
-	//var file_path = ""
+	add_filter("*.png ; PNG Images");
+	set_show_hidden_files(true);
+	set_resizable(true);
+	set_size(Size2(600, 400));
 }
 
 PaintSaveFileDialog::~PaintSaveFileDialog() {
 }
 
 void PaintSaveFileDialog::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_on_SaveFileDialog_file_selected"), &PaintSaveFileDialog::_on_SaveFileDialog_file_selected);
+	ClassDB::bind_method(D_METHOD("_on_SaveFileDialog_about_to_show"), &PaintSaveFileDialog::_on_SaveFileDialog_about_to_show);
+	ClassDB::bind_method(D_METHOD("_on_SaveFileDialog_visibility_changed"), &PaintSaveFileDialog::_on_SaveFileDialog_visibility_changed);
 }

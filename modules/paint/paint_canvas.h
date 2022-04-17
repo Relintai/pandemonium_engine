@@ -42,7 +42,6 @@ class PaintCanvas : public MarginContainer {
 	GDCLASS(PaintCanvas, MarginContainer);
 
 public:
-	void _enter_tree();
 	void _process(float delta);
 	void _draw();
 
