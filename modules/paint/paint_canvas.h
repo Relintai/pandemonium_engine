@@ -36,6 +36,7 @@ class Control;
 class PaintCanvasOutline;
 class PaintVisualGrid;
 class PaintCanvasLayer;
+class PaintCanvasBackground;
 
 //class_name GECanvas
 class PaintCanvas : public MarginContainer {
@@ -116,7 +117,7 @@ public:
 	Ref<PaintCanvasLayer> preview_layer;
 	Ref<PaintCanvasLayer> tool_layer;
 
-	TextureRect *canvas_background_rect;
+	PaintCanvasBackground *canvas_background;
 	Control *canvas_layers;
 	TextureRect *preview_layer_rect;
 	TextureRect *tool_preview_layer_rect;

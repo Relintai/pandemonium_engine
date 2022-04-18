@@ -29,7 +29,7 @@ module_env.add_source_files(env.modules_sources,"paint_canvas_layer.cpp")
 module_env.add_source_files(env.modules_sources,"paint_canvas.cpp")
 module_env.add_source_files(env.modules_sources,"paint_canvas_outline.cpp")
 module_env.add_source_files(env.modules_sources,"paint_color_grid.cpp")
-
+module_env.add_source_files(env.modules_sources,"paint_canvas_background.cpp")
 
 module_env.add_source_files(env.modules_sources,"paint_layer_button.cpp")
 

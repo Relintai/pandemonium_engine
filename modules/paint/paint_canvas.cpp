@@ -29,6 +29,7 @@ SOFTWARE.
 #include "paint_visual_grid.h"
 #include "scene/gui/control.h"
 #include "scene/gui/texture_rect.h"
+#include "paint_canvas_background.h"
 
 #include "paint_canvas_layer.h"
 
@@ -610,11 +611,11 @@ PaintCanvas::PaintCanvas() {
 	mouse_in_region = false;
 	mouse_on_top = false;
 
-	canvas_background_rect = memnew(TextureRect);
-	canvas_background_rect->set_texture(make_icon(grid_png));
-	canvas_background_rect->set_expand(true);
-	canvas_background_rect->set_stretch_mode(TextureRect::STRETCH_TILE);
-	add_child(canvas_background_rect);
+	canvas_background = memnew(PaintCanvasBackground);
+	canvas_background->set_texture(make_icon(grid_png));
+	canvas_background->set_expand(true);
+	canvas_background->set_stretch_mode(TextureRect::STRETCH_TILE);
+	add_child(canvas_background);
 
 	canvas_layers = memnew(Control);
 	canvas_layers->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);

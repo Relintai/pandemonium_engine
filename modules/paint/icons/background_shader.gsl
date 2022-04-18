@@ -1,0 +1,35 @@
+
+shader_type canvas_item;
+
+uniform float pixel_size : hint_range(0.01, 1.0);
+
+
+void fragment() {
+	vec4 color = texture(TEXTURE, UV);
+	
+	float light = 0.8;
+	float dark = 0.4;
+	
+	float val = dark;
+	
+	if ( int(UV.y * 8.0 * pixel_size) % 2 == 1 ) {
+		if ( int(UV.x * 8.0 * pixel_size) % 2 == 1 ) {
+			val = dark;
+		}
+		else {
+			val = light;
+		}
+	}
+	else {
+		if ( int(UV.x * 8.0 * pixel_size) % 2 == 1 ) {
+			val = light;
+		}
+		else {
+			val = dark;
+		}
+	}
+	
+	color.rgb = vec3(val, val, val);
+	
+	COLOR = color;
+}

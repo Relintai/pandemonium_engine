@@ -41,6 +41,7 @@ SOFTWARE.
 #include "actions/rect_action.h"
 
 #include "paint_canvas.h"
+#include "paint_canvas_background.h"
 #include "paint_canvas_layer.h"
 #include "paint_color_grid.h"
 #include "paint_layer_button.h"
@@ -357,11 +358,7 @@ void PaintWindow::_handle_zoom(const Ref<InputEvent> &event) {
 
 			paint_canvas->set_pixel_size(px);
 
-			//Ref<CanvasItemMaterial> mat = paint_canvas->canvas_background_rect->get_material();
-
-			//if (mat.is_valid()) {
-			//	mat->set_shader_param("pixel_size", 8 * pow(0.5, big_grid_pixels) / paint_canvas->get_pixel_size());
-			//}
+			paint_canvas->canvas_background->set_pixel_size(8 * pow(0.5, big_grid_pixels) / paint_canvas->get_pixel_size());
 
 			Point2 pos = paint_canvas->get_position();
 			Size2 size = paint_canvas->get_size();
@@ -383,7 +380,7 @@ void PaintWindow::_handle_zoom(const Ref<InputEvent> &event) {
 
 			paint_canvas->set_pixel_size(px);
 
-			//find_node("CanvasBackground").material.set_shader_param("pixel_size", 8 * pow(0.5, big_grid_pixels)/paint_canvas.pixel_size);
+			paint_canvas->canvas_background->set_pixel_size(8 * pow(0.5, big_grid_pixels) / paint_canvas->get_pixel_size());
 
 			Point2 pos = paint_canvas->get_position();
 			Size2 size = paint_canvas->get_size();
@@ -1078,6 +1075,7 @@ void PaintWindow::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_POSTINITIALIZE: {
 			connect("visibility_changed", this, "_on_Editor_visibility_changed");
+			paint_canvas->canvas_background->set_pixel_size(8 * pow(0.5, big_grid_pixels) / paint_canvas->get_pixel_size());
 		} break;
 		case NOTIFICATION_PROCESS: {
 			_process(get_process_delta_time());
@@ -1100,8 +1098,8 @@ PaintWindow::PaintWindow() {
 	_total_added_layers = 0;
 
 	_middle_mouse_pressed = false;
-	_previous_tool = PaintWindow::PAINT;
-	brush_mode = PaintWindow::PAINT;
+	_previous_tool = PaintWindow::COLORPICKER;
+	brush_mode = PaintWindow::COLORPICKER;
 
 	selected_brush_prefab = BrushPrefabs::CIRCLE;
 
@@ -1450,7 +1448,7 @@ PaintWindow::PaintWindow() {
 
 	_on_ChangeCanvasSizeDialog_confirmed();
 	_on_ChangeGridSizeDialog_confirmed();
-	
+
 	//find_node("CanvasBackground").material.set_shader_param("pixel_size", 8 * pow(0.5, big_grid_pixels)/paint_canvas.pixel_size)
 
 	add_new_layer();

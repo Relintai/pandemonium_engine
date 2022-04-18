@@ -40,4 +40,38 @@ for x in pixmaps:
     f.write(b"\n};\n")
     pngf.close()
 
+# Generate shaders block
+f.write(b"\n// shaders block\n")
+
+shaders = glob.glob("*.gsl")
+shaders.sort()
+
+for x in shaders:
+
+    var_str = x[:-4] + "_shader_code"
+
+    s = "\nstatic const char *" + var_str + " = \n"
+    f.write(s.encode(enc))
+
+    sf = open(x, "rb")
+
+    b = sf.readline()
+    while b != b"":
+        if b.endswith(b"\r\n"):
+            b = b[:-2]
+            
+        if b.endswith(b"\n"):
+            b = b[:-1]
+
+        s = b'			"' + b
+        f.write(s)
+        b = sf.readline()
+
+        if b != b"":
+            f.write(b'"\n')
+
+    f.write(b'";\n')
+    sf.close()
+
 f.close()
+
