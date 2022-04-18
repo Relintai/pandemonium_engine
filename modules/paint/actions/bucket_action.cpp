@@ -49,8 +49,6 @@ void BucketAction::do_action(PaintCanvas *canvas, const Array &data) {
 			continue;
 		}
 
-		Color col = canvas->get_pixel_v(pixel);
-
 		if (canvas->is_alpha_locked() && col.a < 0.00001) {
 			continue;
 		}
