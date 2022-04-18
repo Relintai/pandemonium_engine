@@ -54,8 +54,6 @@ public:
 	virtual PoolVector2iArray get_xy_sym_points(const int canvas_width, const int canvas_height, const Vector2i &pixel);
 	virtual PoolVector2iArray get_points(PaintCanvas *canvas, const Vector2i &pixel);
 
-	bool pv2ia_contains(const PoolVector2iArray &arr, const Vector2i &v) const;
-
 	void draw_points(PaintCanvas *canvas, const PoolVector2iArray &point_arr, const PoolColorArray &color_arr);
 
 	PaintAction();

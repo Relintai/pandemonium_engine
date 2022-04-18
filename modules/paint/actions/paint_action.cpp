@@ -133,19 +133,6 @@ PoolVector2iArray PaintAction::get_points(PaintCanvas *canvas, const Vector2i &p
 	return PoolVector2iArray();
 }
 
-bool PaintAction::pv2ia_contains(const PoolVector2iArray &arr, const Vector2i &v) const {
-	PoolVector2iArray::Read r = arr.read();
-	int s = arr.size();
-
-	for (int i = 0; i < s; ++s) {
-		if (r[i] == v) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
 void PaintAction::draw_points(PaintCanvas *canvas, const PoolVector2iArray &point_arr, const PoolColorArray &color_arr) {
 	for (int i = 0; i < point_arr.size(); ++i) {
 		Vector2i pixel = point_arr[i];

@@ -30,7 +30,8 @@ SOFTWARE.
 
 void BucketAction::do_action(PaintCanvas *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
-	/*
+/*
+
 		Color col = canvas->get_pixel_v(data[0]);
 		Color col2 = data[2];
 
@@ -43,8 +44,10 @@ void BucketAction::do_action(PaintCanvas *canvas, const Array &data) {
 		for (int i = 0; i < pixels.size(); ++i) {
 			Vector2i pixel = pixels[i];
 
-			if pixel in action_data.undo.cells:
-					continue;
+			if (pv2ia_contains(undo_cells, pixel)) {
+				continue;
+			}
+			
 
 			if canvas.is_alpha_locked() and canvas.get_pixel_v(pixel) == Color.transparent:
 				continue;
@@ -57,7 +60,7 @@ void BucketAction::do_action(PaintCanvas *canvas, const Array &data) {
 			action_data.redo.cells.append(pixel);
 			action_data.redo.colors.append(data[2]);
 		}
-	*/
+		*/
 }
 
 BucketAction::BucketAction() {

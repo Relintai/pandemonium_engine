@@ -44,7 +44,7 @@ void BrightenAction::do_action(PaintCanvas *canvas, const Array &data) {
 
 		Color brightened_color = col.lightened(brighten_color);
 
-		if (pv2ia_contains(undo_cells, pixel)) {
+		if (undo_cells.contains(pixel)) {
 			canvas->set_pixel_v(pixel, brightened_color);
 
 			redo_cells.append(pixel);

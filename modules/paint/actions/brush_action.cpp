@@ -43,7 +43,7 @@ void BrushAction::do_action(PaintCanvas *canvas, const Array &data) {
 			Vector2i off = brush[i];
 			Vector2i p = pixel + off;
 
-			if (pv2ia_contains(undo_cells, p)) {
+			if (undo_cells.contains(p)) {
 				continue;
 			}
 
