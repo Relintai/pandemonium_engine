@@ -30,7 +30,7 @@ void register_paint_types() {
 	//ClassDB::register_class<MeshDataResource>();
 
 #ifdef TOOLS_ENABLED
-	EditorPlugins::add_by_type<PaintEditorPlugin>();
+	//EditorPlugins::add_by_type<PaintEditorPlugin>();
 #endif
 }
 
