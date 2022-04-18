@@ -39,8 +39,8 @@ void BrushAction::do_action(PaintCanvas *canvas, const Array &data) {
 	for (int i = 0; i < pixels.size(); ++i) {
 		Vector2i pixel = pixels[i];
 
-		for (int i = 0; i < brush.size(); ++i) {
-			Vector2i off = brush[i];
+		for (int j = 0; j < brush.size(); ++j) {
+			Vector2i off = brush[j];
 			Vector2i p = pixel + off;
 
 			if (undo_cells.contains(p)) {
