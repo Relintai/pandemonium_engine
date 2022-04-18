@@ -441,18 +441,7 @@ public:
 		return rs;
 	}
 
-	bool contains(const T &val) const {
-		Read r = read();
-		int s = size();
-
-		for (int i = 0; i < s; ++s) {
-			if (r[i] == val) {
-				return true;
-			}
-		}
-
-		return false;
-	}
+	bool contains(const T &p_val) const;
 
 	bool is_locked() const { return alloc && alloc->lock.get() > 0; }
 
@@ -498,6 +487,20 @@ template <class T>
 void PoolVector<T>::push_back(const T &p_val) {
 	resize(size() + 1);
 	set(size() - 1, p_val);
+}
+
+template <class T>
+bool PoolVector<T>::contains(const T &p_val) const {
+	Read r = read();
+	int s = size();
+
+	for (int i = 0; i < s; ++s) {
+		if (r[i] == p_val) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 template <class T>
