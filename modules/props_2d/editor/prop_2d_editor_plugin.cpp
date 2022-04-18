@@ -99,6 +99,7 @@ Prop2DEditorPlugin::Prop2DEditorPlugin(EditorNode *p_node) {
 	editor->add_tool_menu_item("(Prop2D) Find room points.", this, "find_room_points");
 
 	Button *b = memnew(Button);
+	b->set_flat(true);
 
 	b->connect("pressed", this, "_quick_convert_button_pressed");
 	b->set_text("To Prop2D");
