@@ -441,6 +441,19 @@ public:
 		return rs;
 	}
 
+	bool contains(const T &val) const {
+		Read r = read();
+		int s = size();
+
+		for (int i = 0; i < s; ++s) {
+			if (r[i] == val) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	bool is_locked() const { return alloc && alloc->lock.get() > 0; }
 
 	inline T operator[](int p_index) const;
