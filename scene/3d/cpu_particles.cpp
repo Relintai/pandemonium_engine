@@ -46,6 +46,14 @@ PoolVector<Face3> CPUParticles::get_faces(uint32_t p_usage_flags) const {
 	return PoolVector<Face3>();
 }
 
+void CPUParticles::_set_particles_processing(bool p_enable) {
+	if (_interpolated) {
+		set_physics_process_internal(p_enable);
+	} else {
+		set_process_internal(p_enable);
+	}
+}
+
 void CPUParticles::set_emitting(bool p_emitting) {
 	if (emitting == p_emitting) {
 		return;
@@ -53,7 +61,7 @@ void CPUParticles::set_emitting(bool p_emitting) {
 
 	emitting = p_emitting;
 	if (emitting) {
-		set_process_internal(true);
+		_set_particles_processing(true);
 
 		// first update before rendering to avoid one frame delay after emitting starts
 		if ((time == 0) && !_interpolated) {
@@ -537,7 +545,7 @@ void CPUParticles::_update_internal(bool p_on_physics_tick) {
 	} else {
 		inactive_time += delta;
 		if (inactive_time > lifetime * 1.2) {
-			set_process_internal(false);
+			_set_particles_processing(false);
 			_set_redraw(false);
 
 			//reset variables
@@ -1209,8 +1217,14 @@ void CPUParticles::_refresh_interpolation_state() {
 	_set_redraw(false);
 
 	_interpolated = interpolated;
-	set_process_internal(!_interpolated);
-	set_physics_process_internal(_interpolated);
+
+	if (_interpolated) {
+		set_process_internal(false);
+		set_physics_process_internal(emitting);
+	} else {
+		set_physics_process_internal(false);
+		set_process_internal(emitting);
+	}
 
 	// re-establish all connections
 	_set_redraw(curr_redraw);
