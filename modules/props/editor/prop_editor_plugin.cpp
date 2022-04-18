@@ -101,19 +101,14 @@ PropEditorPlugin::PropEditorPlugin(EditorNode *p_node) {
 	editor->add_tool_menu_item("Convert selected scene(s) to PropData", this, "convert_selected_scene_to_prop_data");
 	editor->add_tool_menu_item("(Prop) Find room points.", this, "find_room_points");
 
-	HBoxContainer *container = memnew(HBoxContainer);
-
-	container->add_child(memnew(VSeparator));
-
 	Button *b = memnew(Button);
-	container->add_child(b);
 	b->set_flat(true);
 
 	b->connect("pressed", this, "_quick_convert_button_pressed");
 	b->set_text("To Prop");
 	b->set_shortcut(ED_SHORTCUT("spatial_editor/quick_prop_convert", "Quick convert scene to PropData.", KEY_MASK_ALT + KEY_U));
 
-	add_control_to_container(EditorPlugin::CONTAINER_SPATIAL_EDITOR_MENU, container);
+	add_control_to_container(EditorPlugin::CONTAINER_SPATIAL_EDITOR_MENU, b);
 }
 
 PropEditorPlugin::~PropEditorPlugin() {
