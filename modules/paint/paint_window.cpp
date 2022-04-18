@@ -622,8 +622,8 @@ void PaintWindow::commit_action() {
 			_cut_pos = ca->mouse_start_pos;
 			_cut_size = ca->mouse_end_pos - ca->mouse_start_pos;
 
-			PoolVector2iArray dcell = ca->action_data_redo["cells"];
-			PoolColorArray dcol = ca->action_data_redo["colors"];
+			PoolVector2iArray dcell = ca->redo_cells;
+			PoolColorArray dcol = ca->redo_colors;
 
 			//_selection_cells = dcell.duplicate();
 			//_selection_colors = dcol.duplicate();

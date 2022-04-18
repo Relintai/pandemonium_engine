@@ -30,37 +30,39 @@ SOFTWARE.
 
 void BucketAction::do_action(PaintCanvas *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
-/*
 
-		Color col = canvas->get_pixel_v(data[0]);
-		Color col2 = data[2];
+	Vector2i pos = data[0];
 
-		if (col == col2) {
-			return;
+	Color col = canvas->get_pixel_v(pos);
+	Color col2 = data[2];
+
+	if (col == col2) {
+		return;
+	}
+
+	PoolVector2iArray pixels = canvas->select_same_color(pos.x, pos.y);
+
+	for (int i = 0; i < pixels.size(); ++i) {
+		Vector2i pixel = pixels[i];
+
+		if (undo_cells.contains(pixel)) {
+			continue;
 		}
 
-		PoolVector2iArray pixels = canvas->select_same_color(data[0].x, data[0].y);
+		Color col = canvas->get_pixel_v(pixel);
 
-		for (int i = 0; i < pixels.size(); ++i) {
-			Vector2i pixel = pixels[i];
-
-			if (pv2ia_contains(undo_cells, pixel)) {
-				continue;
-			}
-			
-
-			if canvas.is_alpha_locked() and canvas.get_pixel_v(pixel) == Color.transparent:
-				continue;
-
-			action_data.undo.colors.append(canvas.get_pixel_v(pixel));
-			action_data.undo.cells.append(pixel);
-
-			canvas.set_pixel_v(pixel, data[2]);
-
-			action_data.redo.cells.append(pixel);
-			action_data.redo.colors.append(data[2]);
+		if (canvas->is_alpha_locked() && col.a < 0.00001) {
+			continue;
 		}
-		*/
+
+		undo_cells.append(pixel);
+		undo_colors.append(col);
+
+		canvas->set_pixel_v(pixel, col2);
+
+		redo_cells.append(pixel);
+		redo_colors.append(col2);
+	}
 }
 
 BucketAction::BucketAction() {

@@ -31,7 +31,6 @@ void PaintAction::do_action(PaintCanvas *canvas, const Array &data) {
 	layer = canvas->get_active_layer();
 }
 void PaintAction::commit_action(PaintCanvas *canvas) {
-	ERR_PRINT("NO IMPL commit_action");
 }
 
 void PaintAction::undo_action(PaintCanvas *canvas) {

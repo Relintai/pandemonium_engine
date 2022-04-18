@@ -31,25 +31,31 @@ SOFTWARE.
 void PencilAction::do_action(PaintCanvas *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
 
-	/*
-	.do_action(canvas, data)
-	
-	var pixels = GEUtils.get_pixels_in_line(data[0], data[1])
-	for pixel in pixels:
-		for p in get_points(canvas, pixel):
-			_set_pixel(canvas, p, data[2])
-	*/
+	Color c = data[2];
+
+	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);
+
+	for (int i = 0; i < pixels.size(); ++i) {
+		Vector2i pixel = pixels[i];
+
+		PoolVector2iArray points = get_points(canvas, pixel);
+
+		for (int j = 0; j < points.size(); ++j) {
+			Vector2i p = points[i];
+
+			_set_pixel(canvas, p, c);
+		}
+	}
 }
 
 void PencilAction::_set_pixel(PaintCanvas *canvas, Vector2i pixel, Color color) {
-	/*
-	action_data.undo.colors.append(canvas.get_pixel_v(pixel))
-	action_data.undo.cells.append(pixel)
-	canvas.set_pixel_v(pixel, color)
-	
-	action_data.redo.cells.append(pixel)
-	action_data.redo.colors.append(color)
-	*/
+	undo_colors.append(canvas->get_pixel_v(pixel));
+	undo_cells.append(pixel);
+
+	canvas->set_pixel_v(pixel, color);
+
+	redo_cells.append(pixel);
+	redo_colors.append(color);
 }
 
 PencilAction::PencilAction() {

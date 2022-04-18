@@ -34,31 +34,29 @@ bool CutAction::can_commit() {
 
 void CutAction::do_action(PaintCanvas *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
-
-	/*
-	.do_action(canvas, data)
-
+/*
 	if mouse_start_pos == null:
-		mouse_start_pos = data[0]
-	mouse_end_pos = data[0]
+		mouse_start_pos = data[0];
 
-	action_data.preview.cells.clear()
-	action_data.preview.colors.clear()
-	canvas.clear_preview_layer()
+	mouse_end_pos = data[0];
 
-	var p = mouse_start_pos
-	var s = mouse_end_pos - mouse_start_pos
+	action_data.preview.cells.clear();
+	action_data.preview.colors.clear();
+	canvas.clear_preview_layer();
 
-	var pixels = GEUtils.get_pixels_in_line(p, p + Vector2(s.x, 0))
-	pixels += GEUtils.get_pixels_in_line(p, p + Vector2(0, s.y))
-	pixels += GEUtils.get_pixels_in_line(p + s, p + s + Vector2(0, -s.y))
-	pixels += GEUtils.get_pixels_in_line(p + s, p + s  + Vector2(-s.x, 0))
+	var p = mouse_start_pos;
+	var s = mouse_end_pos - mouse_start_pos;
+
+	var pixels = GEUtils.get_pixels_in_line(p, p + Vector2(s.x, 0));
+	pixels += GEUtils.get_pixels_in_line(p, p + Vector2(0, s.y));
+	pixels += GEUtils.get_pixels_in_line(p + s, p + s + Vector2(0, -s.y));
+	pixels += GEUtils.get_pixels_in_line(p + s, p + s  + Vector2(-s.x, 0));
 
 	for pixel in pixels:
-		canvas.set_preview_pixel_v(pixel, selection_color)
-		action_data.preview.cells.append(pixel)
-		action_data.preview.colors.append(selection_color)
-	*/
+		canvas.set_preview_pixel_v(pixel, selection_color);
+		action_data.preview.cells.append(pixel);
+		action_data.preview.colors.append(selection_color);
+*/
 }
 void CutAction::commit_action(PaintCanvas *canvas) {
 	/*
