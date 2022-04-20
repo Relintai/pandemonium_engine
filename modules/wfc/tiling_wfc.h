@@ -7,10 +7,8 @@
 #include "array_2d.h"
 #include "wfc.h"
 
-/**
- * The distinct symmetries of a tile.
- * It represents how the tile behave when it is rotated or reflected
- */
+// The distinct symmetries of a tile.
+// It represents how the tile behave when it is rotated or reflected
 enum class Symmetry {
 	X,
 	T,
@@ -21,8 +19,8 @@ enum class Symmetry {
 };
 
 /**
- * Return the number of possible distinct orientations for a tile.
- * An orientation is a combination of rotations and reflections.
+// Return the number of possible distinct orientations for a tile.
+// An orientation is a combination of rotations and reflections.
  */
 constexpr unsigned nb_of_possible_orientations(const Symmetry &symmetry) {
 	switch (symmetry) {
@@ -39,21 +37,16 @@ constexpr unsigned nb_of_possible_orientations(const Symmetry &symmetry) {
 	}
 }
 
-/**
- * A tile that can be placed on the board.
- */
+// A tile that can be placed on the board.
 template <typename T>
 struct Tile {
 	std::vector<Array2D<T>> data; // The different orientations of the tile
 	Symmetry symmetry; // The symmetry of the tile
 	double weight; // Its weight on the distribution of presence of tiles
 
-	/**
-	 * Generate the map associating an orientation id to the orientation
-	 * id obtained when rotating 90° anticlockwise the tile.
-	 */
-	static std::vector<unsigned>
-	generate_rotation_map(const Symmetry &symmetry) noexcept {
+	// Generate the map associating an orientation id to the orientation
+	// id obtained when rotating 90° anticlockwise the tile.
+	static std::vector<unsigned> generate_rotation_map(const Symmetry &symmetry) {
 		switch (symmetry) {
 			case Symmetry::X:
 				return { 0 };
@@ -69,12 +62,10 @@ struct Tile {
 		}
 	}
 
-	/**
-	 * Generate the map associating an orientation id to the orientation
-	 * id obtained when reflecting the tile along the x axis.
-	 */
+	// Generate the map associating an orientation id to the orientation
+	// id obtained when reflecting the tile along the x axis.
 	static std::vector<unsigned>
-	generate_reflection_map(const Symmetry &symmetry) noexcept {
+	generate_reflection_map(const Symmetry &symmetry) {
 		switch (symmetry) {
 			case Symmetry::X:
 				return { 0 };
@@ -92,15 +83,12 @@ struct Tile {
 		}
 	}
 
-	/**
-	 * Generate the map associating an orientation id and an action to the
-	 * resulting orientation id.
-	 * Actions 0, 1, 2, and 3 are 0°, 90°, 180°, and 270° anticlockwise rotations.
-	 * Actions 4, 5, 6, and 7 are actions 0, 1, 2, and 3 preceded by a reflection
-	 * on the x axis.
-	 */
-	static std::vector<std::vector<unsigned>>
-	generate_action_map(const Symmetry &symmetry) noexcept {
+	// Generate the map associating an orientation id and an action to the
+	// resulting orientation id.
+	// Actions 0, 1, 2, and 3 are 0°, 90°, 180°, and 270° anticlockwise rotations.
+	// Actions 4, 5, 6, and 7 are actions 0, 1, 2, and 3 preceded by a reflection
+	// on the x axis.
+	static std::vector<std::vector<unsigned>> generate_action_map(const Symmetry &symmetry) {
 		std::vector<unsigned> rotation_map = generate_rotation_map(symmetry);
 		std::vector<unsigned> reflection_map = generate_reflection_map(symmetry);
 		size_t size = rotation_map.size();
@@ -126,11 +114,9 @@ struct Tile {
 		return action_map;
 	}
 
-	/**
-	 * Generate all distincts rotations of a 2D array given its symmetries;
-	 */
+	// Generate all distincts rotations of a 2D array given its symmetries;
 	static std::vector<Array2D<T>> generate_oriented(Array2D<T> data,
-			Symmetry symmetry) noexcept {
+			Symmetry symmetry) {
 		std::vector<Array2D<T>> oriented;
 		oriented.push_back(data);
 
@@ -161,80 +147,43 @@ struct Tile {
 		return oriented;
 	}
 
-	/**
-	 * Create a tile with its differents orientations, its symmetries and its
-	 * weight on the distribution of tiles.
-	 */
-	Tile(std::vector<Array2D<T>> data, Symmetry symmetry, double weight) noexcept
-			:
+	// Create a tile with its differents orientations, its symmetries and its
+	// weight on the distribution of tiles.
+	Tile(std::vector<Array2D<T>> data, Symmetry symmetry, double weight) :
 			data(data), symmetry(symmetry), weight(weight) {}
 
-	/*
-	 * Create a tile with its base orientation, its symmetries and its
-	 * weight on the distribution of tiles.
-	 * The other orientations are generated with its first one.
-	 */
-	Tile(Array2D<T> data, Symmetry symmetry, double weight) noexcept
-			:
+	// Create a tile with its base orientation, its symmetries and its
+	// weight on the distribution of tiles.
+	// The other orientations are generated with its first one.
+	Tile(Array2D<T> data, Symmetry symmetry, double weight) :
 			data(generate_oriented(data, symmetry)), symmetry(symmetry), weight(weight) {}
 };
 
-/**
- * Options needed to use the tiling wfc.
- */
 struct TilingWFCOptions {
 	bool periodic_output;
 };
 
-/**
- * Class generating a new image with the tiling WFC algorithm.
- */
+// Class generating a new image with the tiling WFC algorithm.
 template <typename T>
 class TilingWFC {
 private:
-	/**
-	 * The distincts tiles.
-	 */
 	std::vector<Tile<T>> tiles;
-
-	/**
-	 * Map ids of oriented tiles to tile and orientation.
-	 */
 	std::vector<std::pair<unsigned, unsigned>> id_to_oriented_tile;
-
-	/**
-	 * Map tile and orientation to oriented tile id.
-	 */
 	std::vector<std::vector<unsigned>> oriented_tile_ids;
 
-	/**
-	 * Otions needed to use the tiling wfc.
-	 */
 	TilingWFCOptions options;
 
-	/**
-	 * The underlying generic WFC algorithm.
-	 */
 	WFC wfc;
 
 public:
-	/**
-	 * The number of vertical tiles
-	 */
 	unsigned height;
-
-	/**
-	 * The number of horizontal tiles
-	 */
 	unsigned width;
 
 private:
-	/**
-	 * Generate mapping from id to oriented tiles and vice versa.
-	 */
+	// Generate mapping from id to oriented tiles and vice versa.
 	static std::pair<std::vector<std::pair<unsigned, unsigned>>,
 			std::vector<std::vector<unsigned>>>
-	generate_oriented_tile_ids(const std::vector<Tile<T>> &tiles) noexcept {
+	generate_oriented_tile_ids(const std::vector<Tile<T>> &tiles) {
 		std::vector<std::pair<unsigned, unsigned>> id_to_oriented_tile;
 		std::vector<std::vector<unsigned>> oriented_tile_ids;
 
@@ -251,9 +200,7 @@ private:
 		return { id_to_oriented_tile, oriented_tile_ids };
 	}
 
-	/**
-	 * Generate the propagator which will be used in the wfc algorithm.
-	 */
+	// Generate the propagator which will be used in the wfc algorithm.
 	static std::vector<std::array<std::vector<unsigned>, 4>> generate_propagator(
 			const std::vector<std::tuple<unsigned, unsigned, unsigned, unsigned>>
 					&neighbors,
@@ -313,9 +260,7 @@ private:
 		return propagator;
 	}
 
-	/**
-	 * Get probability of presence of tiles.
-	 */
+	// Get probability of presence of tiles.
 	static std::vector<double>
 	get_tiles_weights(const std::vector<Tile<T>> &tiles) {
 		std::vector<double> frequencies;
@@ -327,9 +272,7 @@ private:
 		return frequencies;
 	}
 
-	/**
-	 * Translate the generic WFC result into the image result
-	 */
+	// Translate the generic WFC result into the image result
 	Array2D<T> id_to_tiling(Array2D<unsigned> ids) {
 		unsigned size = tiles[0].data[0].height;
 		Array2D<T> tiling(size * ids.height, size * ids.width);
@@ -348,7 +291,7 @@ private:
 		return tiling;
 	}
 
-	void set_tile(unsigned tile_id, unsigned i, unsigned j) noexcept {
+	void set_tile(unsigned tile_id, unsigned i, unsigned j) {
 		for (unsigned p = 0; p < id_to_oriented_tile.size(); p++) {
 			if (tile_id != p) {
 				wfc.remove_wave_pattern(i, j, p);
@@ -357,9 +300,7 @@ private:
 	}
 
 public:
-	/**
-	 * Construct the TilingWFC class to generate a tiled image.
-	 */
+	// Construct the TilingWFC class to generate a tiled image.
 	TilingWFC(
 			const std::vector<Tile<T>> &tiles,
 			const std::vector<std::tuple<unsigned, unsigned, unsigned, unsigned>>
@@ -377,12 +318,10 @@ public:
 			height(height),
 			width(width) {}
 
-	/**
-	 * Set the tile at a specific position.
-	 * Returns false if the given tile and orientation does not exist,
-	 * or if the coordinates are not in the wave
-	 */
-	bool set_tile(unsigned tile_id, unsigned orientation, unsigned i, unsigned j) noexcept {
+	// Set the tile at a specific position.
+	// Returns false if the given tile and orientation does not exist,
+	// or if the coordinates are not in the wave
+	bool set_tile(unsigned tile_id, unsigned orientation, unsigned i, unsigned j) {
 		if (tile_id >= oriented_tile_ids.size() || orientation >= oriented_tile_ids[tile_id].size() || i >= height || j >= width) {
 			return false;
 		}
@@ -392,9 +331,7 @@ public:
 		return true;
 	}
 
-	/**
-	 * Run the tiling wfc and return the result if the algorithm succeeded
-	 */
+	// Run the tiling wfc and return the result if the algorithm succeeded
 	std::optional<Array2D<T>> run() {
 		auto a = wfc.run();
 		if (a == std::nullopt) {
