@@ -1,0 +1,21 @@
+# The executable
+wfc
+example/wfc_demo
+
+# The results of the algorithm
+example/results/*
+
+# The library files
+lib/*
+
+# CMake files
+**/CMakeLists.txt.user
+**/CMakeCache.txt
+**/CMakeFiles
+**/CMakeScripts
+**/Testing
+**/Makefile
+**/install_manifest.txt
+**/compile_commands.json
+**/*.cmake
+**/_deps
