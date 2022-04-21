@@ -12,6 +12,12 @@ public:
 
 	Vector<T> data;
 
+	Array3D() {
+		height = 0;
+		width = 0;
+		depth = 0;
+	}
+
 	Array3D(uint32_t p_height, uint32_t p_width, uint32_t p_depth) {
 		height = p_height;
 		width = p_width;
@@ -20,6 +26,21 @@ public:
 	}
 
 	Array3D(uint32_t p_height, uint32_t p_width, uint32_t p_depth, T value) {
+		height = p_height;
+		width = p_width;
+		depth = p_depth;
+		data.resize(width * height * depth);
+		data.fill(value);
+	}
+
+	void resize(uint32_t p_height, uint32_t p_width, uint32_t p_depth) {
+		height = p_height;
+		width = p_width;
+		depth = p_depth;
+		data.resize(width * height * depth);
+	}
+
+	void resize_fill(uint32_t p_height, uint32_t p_width, uint32_t p_depth, T value) {
 		height = p_height;
 		width = p_width;
 		depth = p_depth;

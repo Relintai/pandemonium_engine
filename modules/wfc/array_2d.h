@@ -11,6 +11,11 @@ public:
 
 	Vector<T> data;
 
+	Array2D() {
+		height = 0;
+		width = 0;
+	}
+
 	Array2D(uint32_t p_height, uint32_t p_width) {
 		height = p_height;
 		width = p_width;
@@ -18,6 +23,19 @@ public:
 	}
 
 	Array2D(uint32_t p_height, uint32_t p_width, T p_value) {
+		height = p_height;
+		width = p_width;
+		data.resize(width * height);
+		data.fill(p_value);
+	}
+
+	void resize(uint32_t p_height, uint32_t p_width) {
+		height = p_height;
+		width = p_width;
+		data.resize(width * height);
+	}
+
+	void resize_fill(uint32_t p_height, uint32_t p_width, T p_value) {
 		height = p_height;
 		width = p_width;
 		data.resize(width * height);
@@ -34,7 +52,7 @@ public:
 	T &get(uint32_t i, uint32_t j) {
 		CRASH_BAD_INDEX(i, height);
 		CRASH_BAD_INDEX(j, width);
-		
+
 		return data.write[j + i * width];
 	}
 

@@ -208,7 +208,7 @@ private:
 	};
 
 	// Generate the propagator which will be used in the wfc algorithm.
-	static Vector<PropagatorEntry> generate_propagator(
+	static Vector<PropagatorStateEntry> generate_propagator(
 			const Vector<NeighbourData> &neighbors,
 			Vector<Tile<T>> tiles,
 			Vector<std::pair<uint32_t, uint32_t>> id_to_oriented_tile,
@@ -250,7 +250,7 @@ private:
 			add(7, 0);
 		}
 
-		Vector<PropagatorEntry> propagator(nb_oriented_tiles);
+		Vector<PropagatorStateEntry> propagator(nb_oriented_tiles);
 
 		for (size_t i = 0; i < nb_oriented_tiles; ++i) {
 			for (size_t j = 0; j < nb_oriented_tiles; ++j) {
