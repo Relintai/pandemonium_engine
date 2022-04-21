@@ -3,7 +3,7 @@
 
 #include <algorithm>
 #include <unordered_map>
-#include <vector>
+#include "core/vector.h"
 
 #include "array_2d.h"
 #include "wfc.h"
@@ -35,15 +35,15 @@ private:
 
 	OverlappingWFCOptions options;
 
-	std::vector<Array2D<T>> patterns;
+	Vector<Array2D<T>> patterns;
 
 	WFC wfc;
 
 	OverlappingWFC(
 			const Array2D<T> &input, const OverlappingWFCOptions &options,
 			const int &seed,
-			const std::pair<std::vector<Array2D<T>>, std::vector<double>> &patterns,
-			const std::vector<std::array<std::vector<unsigned>, 4>> &propagator) :
+			const std::pair<Vector<Array2D<T>>, Vector<double>> &patterns,
+			const Vector<std::array<Vector<unsigned>, 4>> &propagator) :
 			input(input), options(options), patterns(patterns.first), wfc(options.periodic_output, seed, patterns.second, propagator, options.get_wave_height(), options.get_wave_width()) {
 		// If necessary, the ground is set.
 		if (options.ground) {
@@ -53,12 +53,12 @@ private:
 
 	OverlappingWFC(const Array2D<T> &input, const OverlappingWFCOptions &options,
 			const int &seed,
-			const std::pair<std::vector<Array2D<T>>, std::vector<double>>
+			const std::pair<Vector<Array2D<T>>, Vector<double>>
 					&patterns) :
 			OverlappingWFC(input, options, seed, patterns,
 					generate_compatible(patterns.first)) {}
 
-	void init_ground(WFC &wfc, const Array2D<T> &input, const std::vector<Array2D<T>> &patterns, const OverlappingWFCOptions &options) {
+	void init_ground(WFC &wfc, const Array2D<T> &input, const Vector<Array2D<T>> &patterns, const OverlappingWFCOptions &options) {
 		unsigned ground_pattern_id = get_ground_pattern_id(input, patterns, options);
 
 		for (unsigned j = 0; j < options.get_wave_width(); j++) {
@@ -74,7 +74,7 @@ private:
 		wfc.propagate();
 	}
 
-	static unsigned get_ground_pattern_id(const Array2D<T> &input, const std::vector<Array2D<T>> &patterns, const OverlappingWFCOptions &options) {
+	static unsigned get_ground_pattern_id(const Array2D<T> &input, const Vector<Array2D<T>> &patterns, const OverlappingWFCOptions &options) {
 		// Get the pattern.
 		Array2D<T> ground_pattern = input.get_sub_array(input.height - 1, input.width / 2, options.pattern_size, options.pattern_size);
 
@@ -91,14 +91,14 @@ private:
 	}
 
 	//Return the list of patterns, as well as their probabilities of apparition.
-	static std::pair<std::vector<Array2D<T>>, std::vector<double>> get_patterns(const Array2D<T> &input, const OverlappingWFCOptions &options) {
+	static std::pair<Vector<Array2D<T>>, Vector<double>> get_patterns(const Array2D<T> &input, const OverlappingWFCOptions &options) {
 		std::unordered_map<Array2D<T>, unsigned> patterns_id;
-		std::vector<Array2D<T>> patterns;
+		Vector<Array2D<T>> patterns;
 
 		// The number of time a pattern is seen in the input image.
-		std::vector<double> patterns_weight;
+		Vector<double> patterns_weight;
 
-		std::vector<Array2D<T>> symmetries(
+		Vector<Array2D<T>> symmetries(
 				8, Array2D<T>(options.pattern_size, options.pattern_size));
 		unsigned max_i = options.periodic_input
 				? input.height
@@ -166,15 +166,14 @@ private:
 	// If agrees(pattern1, pattern2, dy, dx), then compatible[pattern1][direction]
 	// contains pattern2, where direction is the direction defined by (dy, dx)
 	// (see direction.hpp).
-	static std::vector<std::array<std::vector<unsigned>, 4>> generate_compatible(const std::vector<Array2D<T>> &patterns) {
-		std::vector<std::array<std::vector<unsigned>, 4>> compatible = std::vector<std::array<std::vector<unsigned>, 4>>(patterns.size());
+	static Vector<std::array<Vector<unsigned>, 4>> generate_compatible(const Vector<Array2D<T>> &patterns) {
+		Vector<std::array<Vector<unsigned>, 4>> compatible = Vector<std::array<Vector<unsigned>, 4>>(patterns.size());
 
 		// Iterate on every dy, dx, pattern1 and pattern2
 		for (unsigned pattern1 = 0; pattern1 < patterns.size(); pattern1++) {
 			for (unsigned direction = 0; direction < 4; direction++) {
 				for (unsigned pattern2 = 0; pattern2 < patterns.size(); pattern2++) {
-					if (agrees(patterns[pattern1], patterns[pattern2],
-								directions_y[direction], directions_x[direction])) {
+					if (agrees(patterns[pattern1], patterns[pattern2], directions_y[direction], directions_x[direction])) {
 						compatible[pattern1][direction].push_back(pattern2);
 					}
 				}
@@ -200,27 +199,27 @@ private:
 					output.get(y, x) = patterns[output_patterns.get(y, x)].get(0, 0);
 				}
 			}
+
 			for (unsigned y = 0; y < options.get_wave_height(); y++) {
-				const Array2D<T> &pattern =
-						patterns[output_patterns.get(y, options.get_wave_width() - 1)];
+				const Array2D<T> &pattern = patterns[output_patterns.get(y, options.get_wave_width() - 1)];
 				for (unsigned dx = 1; dx < options.pattern_size; dx++) {
 					output.get(y, options.get_wave_width() - 1 + dx) = pattern.get(0, dx);
 				}
 			}
+
 			for (unsigned x = 0; x < options.get_wave_width(); x++) {
-				const Array2D<T> &pattern =
-						patterns[output_patterns.get(options.get_wave_height() - 1, x)];
+				const Array2D<T> &pattern = patterns[output_patterns.get(options.get_wave_height() - 1, x)];
 				for (unsigned dy = 1; dy < options.pattern_size; dy++) {
 					output.get(options.get_wave_height() - 1 + dy, x) =
 							pattern.get(dy, 0);
 				}
 			}
-			const Array2D<T> &pattern = patterns[output_patterns.get(
-					options.get_wave_height() - 1, options.get_wave_width() - 1)];
+
+			const Array2D<T> &pattern = patterns[output_patterns.get(options.get_wave_height() - 1, options.get_wave_width() - 1)];
+
 			for (unsigned dy = 1; dy < options.pattern_size; dy++) {
 				for (unsigned dx = 1; dx < options.pattern_size; dx++) {
-					output.get(options.get_wave_height() - 1 + dy,
-							options.get_wave_width() - 1 + dx) = pattern.get(dy, dx);
+					output.get(options.get_wave_height() - 1 + dy, options.get_wave_width() - 1 + dx) = pattern.get(dy, dx);
 				}
 			}
 		}

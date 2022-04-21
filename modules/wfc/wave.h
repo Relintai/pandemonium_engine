@@ -3,18 +3,18 @@
 
 #include "array_2d.h"
 #include <random>
-#include <vector>
+#include "core/vector.h"
 
 // Struct containing the values needed to compute the entropy of all the cells.
 // This struct is updated every time the wave is changed.
 // p'(pattern) is equal to patterns_frequencies[pattern] if wave.get(cell,
 // pattern) is set to true, otherwise 0.
 struct EntropyMemoisation {
-	std::vector<double> plogp_sum; // The sum of p'(pattern)// log(p'(pattern)).
-	std::vector<double> sum; // The sum of p'(pattern).
-	std::vector<double> log_sum; // The log of sum.
-	std::vector<unsigned> nb_patterns; // The number of patterns present
-	std::vector<double> entropy; // The entropy of the cell.
+	Vector<double> plogp_sum; // The sum of p'(pattern)// log(p'(pattern)).
+	Vector<double> sum; // The sum of p'(pattern).
+	Vector<double> log_sum; // The log of sum.
+	Vector<unsigned> nb_patterns; // The number of patterns present
+	Vector<double> entropy; // The entropy of the cell.
 };
 
 // Contains the pattern possibilities in every cell.
@@ -22,10 +22,10 @@ struct EntropyMemoisation {
 class Wave {
 private:
 	// The patterns frequencies p given to wfc.
-	const std::vector<double> patterns_frequencies;
+	const Vector<double> patterns_frequencies;
 
 	// The precomputation of p * log(p).
-	const std::vector<double> plogp_patterns_frequencies;
+	const Vector<double> plogp_patterns_frequencies;
 
 	// The precomputation of min (p * log(p)) / 2.
 	// This is used to define the maximum value of the noise.
@@ -50,7 +50,7 @@ public:
 	const unsigned size;
 
 	// Initialize the wave with every cell being able to have every pattern.
-	Wave(unsigned height, unsigned width, const std::vector<double> &patterns_frequencies);
+	Wave(unsigned height, unsigned width, const Vector<double> &patterns_frequencies);
 
 	// Return true if pattern can be placed in cell index.
 	bool get(unsigned index, unsigned pattern) const {

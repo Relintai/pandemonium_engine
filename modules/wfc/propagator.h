@@ -5,13 +5,13 @@
 #include "direction.h"
 #include <array>
 #include <tuple>
-#include <vector>
+#include "core/vector.h"
 
 class Wave;
 
 class Propagator {
 public:
-	using PropagatorState = std::vector<std::array<std::vector<unsigned>, 4>>;
+	using PropagatorState = Vector<std::array<Vector<unsigned>, 4>>;
 
 private:
 	const std::size_t patterns_size;
@@ -26,7 +26,7 @@ private:
 	// All the tuples (y, x, pattern) that should be propagated.
 	// The tuple should be propagated when wave.get(y, x, pattern) is set to
 	// false.
-	std::vector<std::tuple<unsigned, unsigned, unsigned>> propagating;
+	Vector<std::tuple<unsigned, unsigned, unsigned>> propagating;
 
 	// compatible.get(y, x, pattern)[direction] contains the number of patterns
 	// present in the wave that can be placed in the cell next to (y,x) in the
@@ -53,7 +53,8 @@ public:
 		// All the direction are set to 0, since the pattern cannot be set in (y,x).
 		std::array<int, 4> temp = {};
 		compatible.get(y, x, pattern) = temp;
-		propagating.emplace_back(y, x, pattern);
+		
+		propagating.push_back(std::tuple<unsigned, unsigned, unsigned>(y, x, pattern));
 	}
 
 	void propagate(Wave &wave);

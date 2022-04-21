@@ -2,7 +2,7 @@
 #define FAST_WFC_UTILS_ARRAY2D_HPP_
 
 #include "assert.h"
-#include <vector>
+#include "core/vector.h"
 
 template <typename T>
 class Array2D {
@@ -10,7 +10,7 @@ public:
 	std::size_t height;
 	std::size_t width;
 
-	std::vector<T> data;
+	Vector<T> data;
 
 	Array2D(std::size_t p_height, std::size_t p_width) {
 		height = p_height;
@@ -21,7 +21,8 @@ public:
 	Array2D(std::size_t p_height, std::size_t p_width, T p_value) {
 		height = p_height;
 		width = p_width;
-		data.resize(width * height, p_value);
+		data.resize(width * height);
+		data.fill(p_value);
 	}
 
 	const T &get(std::size_t i, std::size_t j) const {
@@ -31,7 +32,7 @@ public:
 
 	T &get(std::size_t i, std::size_t j) {
 		assert(i < height && j < width);
-		return data[j + i * width];
+		return data.write[j + i * width];
 	}
 
 	Array2D<T> reflected() const {
@@ -77,19 +78,5 @@ public:
 		return true;
 	}
 };
-
-namespace std {
-template <typename T>
-class hash<Array2D<T>> {
-public:
-	std::size_t operator()(const Array2D<T> &a) const {
-		std::size_t seed = a.data.size();
-		for (const T &i : a.data) {
-			seed ^= hash<T>()(i) + (std::size_t)0x9e3779b9 + (seed << 6) + (seed >> 2);
-		}
-		return seed;
-	}
-};
-} //namespace std
 
 #endif

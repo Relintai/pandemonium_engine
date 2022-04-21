@@ -5,27 +5,31 @@
 namespace {
 
 // Return distribution * log(distribution).
-std::vector<double> get_plogp(const std::vector<double> &distribution) {
-	std::vector<double> plogp;
+Vector<double> get_plogp(const Vector<double> &distribution) {
+	Vector<double> plogp;
+
 	for (unsigned i = 0; i < distribution.size(); i++) {
 		plogp.push_back(distribution[i] * log(distribution[i]));
 	}
+
 	return plogp;
 }
 
 // Return min(v) / 2.
-double get_min_abs_half(const std::vector<double> &v) {
+double get_min_abs_half(const Vector<double> &v) {
 	double min_abs_half = std::numeric_limits<double>::infinity();
+
 	for (unsigned i = 0; i < v.size(); i++) {
 		min_abs_half = std::min(min_abs_half, std::abs(v[i] / 2.0));
 	}
+
 	return min_abs_half;
 }
 
 } // namespace
 
 Wave::Wave(unsigned height, unsigned width,
-		const std::vector<double> &patterns_frequencies) :
+		const Vector<double> &patterns_frequencies) :
 		patterns_frequencies(patterns_frequencies),
 		plogp_patterns_frequencies(get_plogp(patterns_frequencies)),
 		min_abs_half_plogp(get_min_abs_half(plogp_patterns_frequencies)),
@@ -35,38 +39,52 @@ Wave::Wave(unsigned height, unsigned width,
 		width(width),
 		height(height),
 		size(height * width) {
+
 	// Initialize the memoisation of entropy.
 	double base_entropy = 0;
 	double base_s = 0;
+
 	for (unsigned i = 0; i < nb_patterns; i++) {
 		base_entropy += plogp_patterns_frequencies[i];
 		base_s += patterns_frequencies[i];
 	}
+
 	double log_base_s = log(base_s);
 	double entropy_base = log_base_s - base_entropy / base_s;
-	memoisation.plogp_sum = std::vector<double>(width * height, base_entropy);
-	memoisation.sum = std::vector<double>(width * height, base_s);
-	memoisation.log_sum = std::vector<double>(width * height, log_base_s);
-	memoisation.nb_patterns =
-			std::vector<unsigned>(width * height, static_cast<unsigned>(nb_patterns));
-	memoisation.entropy = std::vector<double>(width * height, entropy_base);
+
+	memoisation.plogp_sum.resize(width * height);
+	memoisation.plogp_sum.fill(base_entropy);
+
+	memoisation.sum.resize(width * height);
+	memoisation.sum.fill(base_s);
+
+	memoisation.log_sum.resize(width * height);
+	memoisation.log_sum.fill(log_base_s);
+
+	memoisation.nb_patterns.resize(width * height);
+	memoisation.nb_patterns.fill(static_cast<unsigned>(nb_patterns));
+
+	memoisation.entropy.resize(width * height);
+	memoisation.entropy.fill(entropy_base);
 }
 
 void Wave::set(unsigned index, unsigned pattern, bool value) {
 	bool old_value = data.get(index, pattern);
+
 	// If the value isn't changed, nothing needs to be done.
 	if (old_value == value) {
 		return;
 	}
+
 	// Otherwise, the memoisation should be updated.
 	data.get(index, pattern) = value;
-	memoisation.plogp_sum[index] -= plogp_patterns_frequencies[pattern];
-	memoisation.sum[index] -= patterns_frequencies[pattern];
-	memoisation.log_sum[index] = log(memoisation.sum[index]);
-	memoisation.nb_patterns[index]--;
-	memoisation.entropy[index] = memoisation.log_sum[index] - memoisation.plogp_sum[index] / memoisation.sum[index];
-	// If there is no patterns possible in the cell, then there is a
-	// contradiction.
+	memoisation.plogp_sum.write[index] -= plogp_patterns_frequencies[pattern];
+	memoisation.sum.write[index] -= patterns_frequencies[pattern];
+	memoisation.log_sum.write[index] = log(memoisation.sum[index]);
+	memoisation.nb_patterns.write[index]--;
+	memoisation.entropy.write[index] = memoisation.log_sum[index] - memoisation.plogp_sum[index] / memoisation.sum[index];
+
+	// If there is no patterns possible in the cell, then there is a contradiction.
 	if (memoisation.nb_patterns[index] == 0) {
 		is_impossible = true;
 	}
@@ -87,6 +105,7 @@ int Wave::get_min_entropy(std::minstd_rand &gen) const {
 		// If the cell is decided, we do not compute the entropy (which is equal
 		// to 0).
 		double nb_patterns_local = memoisation.nb_patterns[i];
+		
 		if (nb_patterns_local == 1) {
 			continue;
 		}

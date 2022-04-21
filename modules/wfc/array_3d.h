@@ -2,7 +2,7 @@
 #define FAST_WFC_UTILS_ARRAY3D_HPP_
 
 #include "assert.h"
-#include <vector>
+#include "core/vector.h"
 
 template <typename T>
 class Array3D {
@@ -11,7 +11,7 @@ public:
 	std::size_t width;
 	std::size_t depth;
 
-	std::vector<T> data;
+	Vector<T> data;
 
 	Array3D(std::size_t p_height, std::size_t p_width, std::size_t p_depth) {
 		height = p_height;
@@ -24,7 +24,8 @@ public:
 		height = p_height;
 		width = p_width;
 		depth = p_depth;
-		data.resize(width * height * depth, value);
+		data.resize(width * height * depth);
+		data.fill(value);
 	}
 
 	const T &get(std::size_t i, std::size_t j, std::size_t k) const {
@@ -33,7 +34,7 @@ public:
 	}
 
 	T &get(std::size_t i, std::size_t j, std::size_t k) {
-		return data[i * width * depth + j * depth + k];
+		return data.write[i * width * depth + j * depth + k];
 	}
 
 	bool operator==(const Array3D &a) const {

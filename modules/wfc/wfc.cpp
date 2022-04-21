@@ -3,15 +3,18 @@
 
 namespace {
 // Normalize a vector so the sum of its elements is equal to 1.0f
-std::vector<double> &normalize(std::vector<double> &v) {
+Vector<double> &normalize(Vector<double> &v) {
 	double sum_weights = 0.0;
-	for (double weight : v) {
-		sum_weights += weight;
+	int size = v.size();
+	const double* vpr = v.ptr();
+	for (int i = 0; i < size; ++i) {
+		sum_weights += vpr[i];
 	}
 
+	double* vpw = v.ptrw();
 	double inv_sum_weights = 1.0 / sum_weights;
-	for (double &weight : v) {
-		weight *= inv_sum_weights;
+	for (int i = 0; i < size; ++i) {
+		vpw[i] *= inv_sum_weights;
 	}
 
 	return v;
@@ -20,10 +23,11 @@ std::vector<double> &normalize(std::vector<double> &v) {
 
 Array2D<unsigned> WFC::wave_to_output() const {
 	Array2D<unsigned> output_patterns(wave.height, wave.width);
+
 	for (unsigned i = 0; i < wave.size; i++) {
 		for (unsigned k = 0; k < nb_patterns; k++) {
 			if (wave.get(i, k)) {
-				output_patterns.data[i] = k;
+				output_patterns.data.write[i] = k;
 			}
 		}
 	}
@@ -31,7 +35,7 @@ Array2D<unsigned> WFC::wave_to_output() const {
 }
 
 WFC::WFC(bool periodic_output, int seed,
-		std::vector<double> patterns_frequencies,
+		Vector<double> patterns_frequencies,
 		Propagator::PropagatorState propagator, unsigned wave_height,
 		unsigned wave_width) :
 		gen(seed), patterns_frequencies(normalize(patterns_frequencies)), wave(wave_height, wave_width, patterns_frequencies), nb_patterns(propagator.size()), propagator(wave.height, wave.width, periodic_output, propagator) {}

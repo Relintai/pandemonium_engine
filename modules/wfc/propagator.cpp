@@ -23,8 +23,8 @@ void Propagator::propagate(Wave &wave) {
 	while (propagating.size() != 0) {
 		// The cell and pattern that has been set to false.
 		unsigned y1, x1, pattern;
-		std::tie(y1, x1, pattern) = propagating.back();
-		propagating.pop_back();
+		std::tie(y1, x1, pattern) = propagating[propagating.size() - 1];
+		propagating.resize(propagating.size() - 1);
 
 		// We propagate the information in all 4 directions.
 		for (unsigned direction = 0; direction < 4; direction++) {
@@ -48,24 +48,25 @@ void Propagator::propagate(Wave &wave) {
 
 			// The index of the second cell, and the patterns compatible
 			unsigned i2 = x2 + y2 * wave.width;
-			const std::vector<unsigned> &patterns =
-					propagator_state[pattern][direction];
+			const Vector<unsigned> &patterns = propagator_state[pattern][direction];
 
 			// For every pattern that could be placed in that cell without being in
 			// contradiction with pattern1
-			for (auto it = patterns.begin(), it_end = patterns.end(); it < it_end;
-					++it) {
+			int size = patterns.size();
+			for (int i = 0; i < size; ++i) {
+				unsigned int pattern = patterns[i];
+				
 				// We decrease the number of compatible patterns in the opposite
 				// direction If the pattern was discarded from the wave, the element
 				// is still negative, which is not a problem
-				std::array<int, 4> &value = compatible.get(y2, x2, *it);
+				std::array<int, 4> &value = compatible.get(y2, x2, pattern);
 				value[direction]--;
 
 				// If the element was set to 0 with this operation, we need to remove
 				// the pattern from the wave, and propagate the information
 				if (value[direction] == 0) {
-					add_to_propagator(y2, x2, *it);
-					wave.set(i2, *it, false);
+					add_to_propagator(y2, x2, pattern);
+					wave.set(i2, pattern, false);
 				}
 			}
 		}

@@ -15,7 +15,7 @@ private:
 	std::minstd_rand gen;
 
 	// The distribution of the patterns as given in input.
-	const std::vector<double> patterns_frequencies;
+	const Vector<double> patterns_frequencies;
 
 	Wave wave;
 
@@ -32,7 +32,7 @@ private:
 
 public:
 	// Basic constructor initializing the algorithm.
-	WFC(bool periodic_output, int seed, std::vector<double> patterns_frequencies,
+	WFC(bool periodic_output, int seed, Vector<double> patterns_frequencies,
 			Propagator::PropagatorState propagator, unsigned wave_height,
 			unsigned wave_width);
 
