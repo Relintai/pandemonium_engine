@@ -14,7 +14,7 @@ public:
 	using PropagatorState = Vector<std::array<Vector<unsigned>, 4>>;
 
 private:
-	const std::size_t patterns_size;
+	const uint32_t patterns_size;
 
 	PropagatorState propagator_state;
 
