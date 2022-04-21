@@ -118,7 +118,7 @@ public:
 
 	void propagate();
 
-	void initialize();
+	virtual void initialize();
 
 	WaveFormCollapse();
 	~WaveFormCollapse();
