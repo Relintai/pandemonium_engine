@@ -1,7 +1,5 @@
 #include "wave_form_collapse.h"
 
-#include <limits>
-
 // Normalize a vector so the sum of its elements is equal to 1.0f
 void WaveFormCollapse::normalize(Vector<double> &v) {
 	double sum_weights = 0.0;
@@ -31,10 +29,10 @@ Vector<double> WaveFormCollapse::get_plogp(const Vector<double> &distribution) {
 
 // Return min(v) / 2.
 double WaveFormCollapse::get_min_abs_half(const Vector<double> &v) {
-	double min_abs_half = std::numeric_limits<double>::infinity();
+	double min_abs_half = Math_INF;
 
 	for (int i = 0; i < v.size(); i++) {
-		min_abs_half = std::min(min_abs_half, std::abs(v[i] / 2.0));
+		min_abs_half = MIN(min_abs_half, ABS(v[i] / 2.0));
 	}
 
 	return min_abs_half;
@@ -175,7 +173,8 @@ int WaveFormCollapse::wave_get_min_entropy() const {
 	RandomPCG pcg;
 
 	// The minimum entropy (plus a small noise)
-	double min = std::numeric_limits<double>::infinity();
+	double min = Math_INF;
+	
 	int argmin = -1;
 
 	for (uint32_t i = 0; i < wave_size; i++) {
