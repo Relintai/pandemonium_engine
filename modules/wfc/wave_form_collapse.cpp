@@ -230,13 +230,11 @@ void WaveFormCollapse::propagate() {
 	while (propagating.size() != 0) {
 		// The cell and pattern that has been set to false.
 
-		const PropagatingEntry &e = propagating[propagating.size() - 1];
+		uint32_t y1 = propagating[propagating.size() - 1];
+		uint32_t x1 = propagating[propagating.size() - 2];
+		uint32_t pattern = propagating[propagating.size() - 3];
 
-		uint32_t y1 = e.data[0];
-		uint32_t x1 = e.data[1];
-		uint32_t pattern = e.data[2];
-
-		propagating.resize(propagating.size() - 1);
+		propagating.resize(propagating.size() - 3);
 
 		// We propagate the information in all 4 directions.
 		for (uint32_t direction = 0; direction < 4; direction++) {

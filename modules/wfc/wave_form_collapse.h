@@ -7,6 +7,7 @@
 #include "array_2d.h"
 #include "array_3d.h"
 #include "core/vector.h"
+#include "core/pool_vector.h"
 
 #include "core/reference.h"
 
@@ -22,22 +23,6 @@ public:
 
 	struct PropagatorStateEntry {
 		Vector<uint32_t> directions[4];
-	};
-
-	struct PropagatingEntry {
-		uint32_t data[3];
-
-		PropagatingEntry() {
-			for (int i = 0; i < 3; ++i) {
-				data[i] = 0;
-			}
-		}
-
-		PropagatingEntry(uint32_t x, uint32_t y, uint32_t z) {
-			data[0] = x;
-			data[1] = y;
-			data[2] = z;
-		}
 	};
 
 	struct CompatibilityEntry {
@@ -105,7 +90,9 @@ public:
 		CompatibilityEntry temp;
 		compatible.get(y, x, pattern) = temp;
 
-		propagating.push_back(PropagatingEntry(y, x, pattern));
+		propagating.push_back(pattern);
+		propagating.push_back(x);
+		propagating.push_back(y);
 	}
 
 	constexpr uint32_t get_opposite_direction(uint32_t direction) {
@@ -172,7 +159,7 @@ private:
 
 	// All the tuples (y, x, pattern) that should be propagated.
 	// The tuple should be propagated when wave.get(y, x, pattern) is set to false.
-	Vector<PropagatingEntry> propagating;
+	Vector<uint32_t> propagating;
 
 	// compatible.get(y, x, pattern)[direction] contains the number of patterns
 	// present in the wave that can be placed in the cell next to (y,x) in the
