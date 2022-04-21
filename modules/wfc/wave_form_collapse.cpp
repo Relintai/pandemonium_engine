@@ -2,9 +2,8 @@
 
 #include <limits>
 
-namespace {
 // Normalize a vector so the sum of its elements is equal to 1.0f
-void normalize(Vector<double> &v) {
+void WaveFormCollapse::normalize(Vector<double> &v) {
 	double sum_weights = 0.0;
 	int size = v.size();
 	const double *vpr = v.ptr();
@@ -20,7 +19,7 @@ void normalize(Vector<double> &v) {
 }
 
 // Return distribution * log(distribution).
-Vector<double> get_plogp(const Vector<double> &distribution) {
+Vector<double> WaveFormCollapse::get_plogp(const Vector<double> &distribution) {
 	Vector<double> plogp;
 
 	for (int i = 0; i < distribution.size(); i++) {
@@ -31,7 +30,7 @@ Vector<double> get_plogp(const Vector<double> &distribution) {
 }
 
 // Return min(v) / 2.
-double get_min_abs_half(const Vector<double> &v) {
+double WaveFormCollapse::get_min_abs_half(const Vector<double> &v) {
 	double min_abs_half = std::numeric_limits<double>::infinity();
 
 	for (int i = 0; i < v.size(); i++) {
@@ -40,8 +39,6 @@ double get_min_abs_half(const Vector<double> &v) {
 
 	return min_abs_half;
 }
-
-} //namespace
 
 bool WaveFormCollapse::get_eriodic_output() const {
 	return is_impossible;
@@ -339,7 +336,6 @@ WaveFormCollapse::WaveFormCollapse() {
 }
 
 WaveFormCollapse::~WaveFormCollapse() {
-
 }
 
 void WaveFormCollapse::bind_methods() {

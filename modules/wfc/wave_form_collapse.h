@@ -107,6 +107,10 @@ public:
 		propagating.push_back(PropagatingEntry(y, x, pattern));
 	}
 
+	void normalize(Vector<double> &v);
+	Vector<double> get_plogp(const Vector<double> &distribution);
+	double get_min_abs_half(const Vector<double> &v);
+
 	void propagate();
 
 	void initialize();
