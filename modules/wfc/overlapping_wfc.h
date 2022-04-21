@@ -8,6 +8,7 @@
 #include "array_2d.h"
 #include "wfc.h"
 
+//Merge this into OverlappingWFC
 struct OverlappingWFCOptions {
 	bool periodic_input; // True if the input is toric.
 	bool periodic_output; // True if the output is toric.
@@ -28,6 +29,8 @@ struct OverlappingWFCOptions {
 	}
 };
 
+//T -> hardcode it to uint32_t, and add support for variant conversion -> set_data(Array) -> maps it to ids 
+//Make this inherit from WFC, also WFC should inherit from reference
 template <typename T>
 class OverlappingWFC {
 private:
