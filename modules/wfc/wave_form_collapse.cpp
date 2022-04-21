@@ -1,4 +1,5 @@
-#include "wfc.h"
+#include "wave_form_collapse.h"
+
 #include <limits>
 
 namespace {
@@ -6,12 +7,12 @@ namespace {
 Vector<double> &normalize(Vector<double> &v) {
 	double sum_weights = 0.0;
 	int size = v.size();
-	const double* vpr = v.ptr();
+	const double *vpr = v.ptr();
 	for (int i = 0; i < size; ++i) {
 		sum_weights += vpr[i];
 	}
 
-	double* vpw = v.ptrw();
+	double *vpw = v.ptrw();
 	double inv_sum_weights = 1.0 / sum_weights;
 	for (int i = 0; i < size; ++i) {
 		vpw[i] *= inv_sum_weights;
@@ -21,7 +22,7 @@ Vector<double> &normalize(Vector<double> &v) {
 }
 } //namespace
 
-Array2D<uint32_t> WFC::wave_to_output() const {
+Array2D<uint32_t> WaveFormCollapse::wave_to_output() const {
 	Array2D<uint32_t> output_patterns(wave.height, wave.width);
 
 	for (uint32_t i = 0; i < wave.size; i++) {
@@ -34,20 +35,24 @@ Array2D<uint32_t> WFC::wave_to_output() const {
 	return output_patterns;
 }
 
-WFC::WFC(bool periodic_output, int seed,
+//WaveFormCollapse::WaveFormCollapse() {
+//}
+
+WaveFormCollapse::WaveFormCollapse(bool periodic_output, int seed,
 		Vector<double> patterns_frequencies,
 		Vector<Propagator::PropagatorEntry> propagator, uint32_t wave_height, uint32_t wave_width) :
-		gen(seed), patterns_frequencies(normalize(patterns_frequencies)), wave(wave_height, wave_width, patterns_frequencies), nb_patterns(propagator.size()), propagator(wave.height, wave.width, periodic_output, propagator) {}
+		gen(seed), patterns_frequencies(normalize(patterns_frequencies)), wave(wave_height, wave_width, patterns_frequencies), nb_patterns(propagator.size()), propagator(wave.height, wave.width, periodic_output, propagator) {
+}
 
-Array2D<uint32_t> WFC::run() {
+Array2D<uint32_t> WaveFormCollapse::run() {
 	while (true) {
 		// Define the value of an undefined cell.
 		ObserveStatus result = observe();
 
 		// Check if the algorithm has terminated.
-		if (result == failure) {
+		if (result == OBSERVE_STATUS_FAILURE) {
 			return Array2D<uint32_t>(0, 0);
-		} else if (result == success) {
+		} else if (result == OBSERVE_STATUS_FAILURE) {
 			return wave_to_output();
 		}
 
@@ -56,20 +61,20 @@ Array2D<uint32_t> WFC::run() {
 	}
 }
 
-WFC::ObserveStatus WFC::observe() {
+WaveFormCollapse::ObserveStatus WaveFormCollapse::observe() {
 	// Get the cell with lowest entropy.
 	int argmin = wave.get_min_entropy(gen);
 
 	// If there is a contradiction, the algorithm has failed.
 	if (argmin == -2) {
-		return failure;
+		return OBSERVE_STATUS_FAILURE;
 	}
 
 	// If the lowest entropy is 0, then the algorithm has succeeded and
 	// finished.
 	if (argmin == -1) {
 		wave_to_output();
-		return success;
+		return OBSERVE_STATUS_SUCCESS;
 	}
 
 	// Choose an element according to the pattern distribution
@@ -98,5 +103,8 @@ WFC::ObserveStatus WFC::observe() {
 		}
 	}
 
-	return to_continue;
+	return OBSERVE_STATUS_TO_CONTINUE;
+}
+
+void WaveFormCollapse::bind_methods() {
 }
