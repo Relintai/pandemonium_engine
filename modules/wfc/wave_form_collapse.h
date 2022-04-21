@@ -10,8 +10,6 @@
 
 #include "core/reference.h"
 
-#include "direction.h"
-
 class WaveFormCollapse : public Reference {
 	GDCLASS(WaveFormCollapse, Reference);
 
@@ -51,6 +49,9 @@ public:
 			}
 		}
 	};
+
+	static constexpr int directions_x[4] = { 0, -1, 1, 0 };
+	static constexpr int directions_y[4] = { -1, 0, 0, 1 };
 
 public:
 	bool get_eriodic_output() const;
@@ -105,6 +106,10 @@ public:
 		compatible.get(y, x, pattern) = temp;
 
 		propagating.push_back(PropagatingEntry(y, x, pattern));
+	}
+
+	constexpr uint32_t get_opposite_direction(uint32_t direction) {
+		return 3 - direction;
 	}
 
 	void normalize(Vector<double> &v);
