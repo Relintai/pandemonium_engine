@@ -85,9 +85,7 @@ private:
 			}
 		}
 
-		// The pattern exists.
-		assert(false);
-		return 0;
+		ERR_FAIL_V(0);
 	}
 
 	//Return the list of patterns, as well as their probabilities of apparition.
@@ -98,22 +96,14 @@ private:
 		// The number of time a pattern is seen in the input image.
 		Vector<double> patterns_weight;
 
-		Vector<Array2D<T>> symmetries(
-				8, Array2D<T>(options.pattern_size, options.pattern_size));
-		uint32_t max_i = options.periodic_input
-				? input.height
-				: input.height - options.pattern_size + 1;
-		uint32_t max_j = options.periodic_input
-				? input.width
-				: input.width - options.pattern_size + 1;
+		Vector<Array2D<T>> symmetries(8, Array2D<T>(options.pattern_size, options.pattern_size));
+		uint32_t max_i = options.periodic_input ? input.height : input.height - options.pattern_size + 1;
+		uint32_t max_j = options.periodic_input ? input.width : input.width - options.pattern_size + 1;
 
 		for (uint32_t i = 0; i < max_i; i++) {
 			for (uint32_t j = 0; j < max_j; j++) {
 				// Compute the symmetries of every pattern in the image.
-				symmetries[0].data =
-						input
-								.get_sub_array(i, j, options.pattern_size, options.pattern_size)
-								.data;
+				symmetries[0].data = input.get_sub_array(i, j, options.pattern_size, options.pattern_size).data;
 				symmetries[1].data = symmetries[0].reflected().data;
 				symmetries[2].data = symmetries[0].rotated().data;
 				symmetries[3].data = symmetries[2].reflected().data;

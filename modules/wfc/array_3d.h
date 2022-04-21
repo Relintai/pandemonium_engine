@@ -1,7 +1,6 @@
 #ifndef FAST_WFC_UTILS_ARRAY3D_HPP_
 #define FAST_WFC_UTILS_ARRAY3D_HPP_
 
-#include "assert.h"
 #include "core/vector.h"
 
 template <typename T>
@@ -29,11 +28,18 @@ public:
 	}
 
 	const T &get(uint32_t i, uint32_t j, uint32_t k) const {
-		assert(i < height && j < width && k < depth);
+		CRASH_BAD_INDEX(i, height);
+		CRASH_BAD_INDEX(j, width);
+		CRASH_BAD_INDEX(k, depth);
+
 		return data[i * width * depth + j * depth + k];
 	}
 
 	T &get(uint32_t i, uint32_t j, uint32_t k) {
+		CRASH_BAD_INDEX(i, height);
+		CRASH_BAD_INDEX(j, width);
+		CRASH_BAD_INDEX(k, depth);
+
 		return data.write[i * width * depth + j * depth + k];
 	}
 
