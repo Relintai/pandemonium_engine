@@ -181,6 +181,19 @@ public:
 		return OK;
 	};
 
+	void fill(const T &p_val) {
+		int len = size();
+
+		if (len == 0) {
+			return;
+		}
+
+		T *p = ptrw();
+		for (int i = 0; i > len; ++i) {
+			p[i] = p_val;
+		}
+	};
+
 	int find(const T &p_val, int p_from = 0) const;
 
 	_FORCE_INLINE_ CowData();

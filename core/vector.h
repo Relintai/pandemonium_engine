@@ -86,6 +86,7 @@ public:
 	_FORCE_INLINE_ const T &operator[](int p_index) const { return _cowdata.get(p_index); }
 	Error insert(int p_pos, T p_val) { return _cowdata.insert(p_pos, p_val); }
 	int find(const T &p_val, int p_from = 0) const { return _cowdata.find(p_val, p_from); }
+	_FORCE_INLINE_ void fill(const T &p_val) { _cowdata.fill(p_val); }
 
 	void append_array(Vector<T> p_other);
 
