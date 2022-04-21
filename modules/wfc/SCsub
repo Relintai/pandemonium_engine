@@ -5,4 +5,4 @@ Import("env_modules")
 
 env_wfc = env_modules.Clone()
 
-env_wfc.add_source_files(env.modules_sources, "register_types.cpp")
+env_wfc.add_source_files(env.modules_sources, "*.cpp")
