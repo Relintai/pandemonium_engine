@@ -64,8 +64,7 @@ struct Tile {
 
 	// Generate the map associating an orientation id to the orientation
 	// id obtained when reflecting the tile along the x axis.
-	static std::vector<unsigned>
-	generate_reflection_map(const Symmetry &symmetry) {
+	static std::vector<unsigned> generate_reflection_map(const Symmetry &symmetry) {
 		switch (symmetry) {
 			case Symmetry::X:
 				return { 0 };
@@ -332,12 +331,14 @@ public:
 	}
 
 	// Run the tiling wfc and return the result if the algorithm succeeded
-	std::optional<Array2D<T>> run() {
-		auto a = wfc.run();
-		if (a == std::nullopt) {
-			return std::nullopt;
+	Array2D<T> run() {
+		Array2D<unsigned> a = wfc.run();
+
+		if (a.width == 0 && a.height == 0) {
+			return Array2D<T>(0, 0);
 		}
-		return id_to_tiling(*a);
+
+		return id_to_tiling(a);
 	}
 };
 

@@ -5,8 +5,7 @@
 namespace {
 
 // Return distribution * log(distribution).
-std::vector<double>
-get_plogp(const std::vector<double> &distribution) {
+std::vector<double> get_plogp(const std::vector<double> &distribution) {
 	std::vector<double> plogp;
 	for (unsigned i = 0; i < distribution.size(); i++) {
 		plogp.push_back(distribution[i] * log(distribution[i]));
@@ -65,9 +64,7 @@ void Wave::set(unsigned index, unsigned pattern, bool value) {
 	memoisation.sum[index] -= patterns_frequencies[pattern];
 	memoisation.log_sum[index] = log(memoisation.sum[index]);
 	memoisation.nb_patterns[index]--;
-	memoisation.entropy[index] =
-			memoisation.log_sum[index] -
-			memoisation.plogp_sum[index] / memoisation.sum[index];
+	memoisation.entropy[index] = memoisation.log_sum[index] - memoisation.plogp_sum[index] / memoisation.sum[index];
 	// If there is no patterns possible in the cell, then there is a
 	// contradiction.
 	if (memoisation.nb_patterns[index] == 0) {

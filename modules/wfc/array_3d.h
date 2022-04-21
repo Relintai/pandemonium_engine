@@ -20,7 +20,7 @@ public:
 		data.resize(width * height * depth);
 	}
 
-	Array3D(std::size_t height, std::size_t width, std::size_t depth, T value) {
+	Array3D(std::size_t p_height, std::size_t p_width, std::size_t p_depth, T value) {
 		height = p_height;
 		width = p_width;
 		depth = p_depth;

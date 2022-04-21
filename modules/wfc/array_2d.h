@@ -21,7 +21,7 @@ public:
 	Array2D(std::size_t p_height, std::size_t p_width, T p_value) {
 		height = p_height;
 		width = p_width;
-		data.resize(width * height, value);
+		data.resize(width * height, p_value);
 	}
 
 	const T &get(std::size_t i, std::size_t j) const {

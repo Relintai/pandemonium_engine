@@ -37,7 +37,7 @@ public:
 			unsigned wave_width);
 
 	// Run the algorithm, and return a result if it succeeded.
-	std::optional<Array2D<unsigned>> run();
+	Array2D<unsigned> run();
 
 	// Return value of observe.
 	enum ObserveStatus {

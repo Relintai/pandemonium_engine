@@ -36,14 +36,14 @@ WFC::WFC(bool periodic_output, int seed,
 		unsigned wave_width) :
 		gen(seed), patterns_frequencies(normalize(patterns_frequencies)), wave(wave_height, wave_width, patterns_frequencies), nb_patterns(propagator.size()), propagator(wave.height, wave.width, periodic_output, propagator) {}
 
-std::optional<Array2D<unsigned>> WFC::run() {
+Array2D<unsigned> WFC::run() {
 	while (true) {
 		// Define the value of an undefined cell.
 		ObserveStatus result = observe();
 
 		// Check if the algorithm has terminated.
 		if (result == failure) {
-			return std::nullopt;
+			return Array2D<unsigned>(0, 0);
 		} else if (result == success) {
 			return wave_to_output();
 		}
@@ -90,8 +90,7 @@ WFC::ObserveStatus WFC::observe() {
 	// And define the cell with the pattern.
 	for (unsigned k = 0; k < nb_patterns; k++) {
 		if (wave.get(argmin, k) != (k == chosen_value)) {
-			propagator.add_to_propagator(argmin / wave.width, argmin % wave.width,
-					k);
+			propagator.add_to_propagator(argmin / wave.width, argmin % wave.width, k);
 			wave.set(argmin, k, false);
 		}
 	}

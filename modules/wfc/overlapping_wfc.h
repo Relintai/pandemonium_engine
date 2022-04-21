@@ -228,14 +228,14 @@ private:
 		return output;
 	}
 
-	std::optional<unsigned> get_pattern_id(const Array2D<T> &pattern) {
+	unsigned get_pattern_id(const Array2D<T> &pattern) {
 		unsigned *pattern_id = std::find(patterns.begin(), patterns.end(), pattern);
 
 		if (pattern_id != patterns.end()) {
 			return *pattern_id;
 		}
 
-		return std::nullopt;
+		return -1;
 	}
 
 	// Set the pattern at a specific position, given its pattern id
@@ -267,12 +267,14 @@ public:
 	}
 
 	// Run the WFC algorithm, and return the result if the algorithm succeeded.
-	std::optional<Array2D<T>> run() {
-		std::optional<Array2D<unsigned>> result = wfc.run();
-		if (result.has_value()) {
-			return to_image(*result);
+	Array2D<T> run() {
+		Array2D<unsigned> result = wfc.run();
+
+		if (result.width == 0 && result.height == 0) {
+			return Array2D<T>(0, 0);
 		}
-		return std::nullopt;
+
+		return to_image(result);
 	}
 };
 
