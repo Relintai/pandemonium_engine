@@ -1,45 +1,23 @@
-#ifndef FAST_WFC_TILING_WFC_HPP_
-#define FAST_WFC_TILING_WFC_HPP_
+#ifndef TILING_WAVE_FORM_COLLAPSE_H
+#define TILING_WAVE_FORM_COLLAPSE_H
 
+#include "array_2d.h"
 #include "core/vector.h"
 #include <unordered_map>
 
-#include "array_2d.h"
-#include "wfc.h"
+#include "wave_form_collapse.h"
 
-// The distinct symmetries of a tile.
-// It represents how the tile behave when it is rotated or reflected
-enum class Symmetry {
-	X,
-	T,
-	I,
-	L,
-	backslash,
-	P
-};
-
-/**
-// Return the number of possible distinct orientations for a tile.
-// An orientation is a combination of rotations and reflections.
- */
-constexpr uint32_t nb_of_possible_orientations(const Symmetry &symmetry) {
-	switch (symmetry) {
-		case Symmetry::X:
-			return 1;
-		case Symmetry::I:
-		case Symmetry::backslash:
-			return 2;
-		case Symmetry::T:
-		case Symmetry::L:
-			return 4;
-		default:
-			return 8;
-	}
-}
-
-// A tile that can be placed on the board.
 template <typename T>
 struct Tile {
+	enum Symmetry {
+		SYMMETRY_X,
+		SYMMETRY_T,
+		SYMMETRY_I,
+		SYMMETRY_L,
+		SYMMETRY_BACKSLASH,
+		SYMMETRY_P
+	};
+
 	Vector<Array2D<T>> data; // The different orientations of the tile
 	Symmetry symmetry; // The symmetry of the tile
 	double weight; // Its weight on the distribution of presence of tiles
@@ -102,14 +80,17 @@ struct Tile {
 				action_map[a][i] = rotation_map[action_map[a - 1][i]];
 			}
 		}
+
 		for (int i = 0; i < size; ++i) {
 			action_map[4][i] = reflection_map[action_map[0][i]];
 		}
+
 		for (int a = 5; a < 8; ++a) {
 			for (int i = 0; i < size; ++i) {
 				action_map[a][i] = rotation_map[action_map[a - 1][i]];
 			}
 		}
+
 		return action_map;
 	}
 
@@ -145,37 +126,92 @@ struct Tile {
 		return oriented;
 	}
 
-	// Create a tile with its differents orientations, its symmetries and its
-	// weight on the distribution of tiles.
-	Tile(Vector<Array2D<T>> data, Symmetry symmetry, double weight) :
-			data(data), symmetry(symmetry), weight(weight) {}
+	// Return the number of possible distinct orientations for a tile. An orientation is a combination of rotations and reflections.
+	static constexpr uint32_t nb_of_possible_orientations(const Symmetry &symmetry) {
+		switch (symmetry) {
+			case SYMMETRY_X:
+				return 1;
+			case SYMMETRY_I:
+			case SYMMETRY_BACKSLASH:
+				return 2;
+			case SYMMETRY_T:
+			case SYMMETRY_L:
+				return 4;
+			default:
+				return 8;
+		}
+	}
 
-	// Create a tile with its base orientation, its symmetries and its
-	// weight on the distribution of tiles.
+	// Create a tile with its differents orientations, its symmetries and its weight on the distribution of tiles.
+	Tile(const Vector<Array2D<T>> &p_data, Symmetry p_symmetry, double p_weight) {
+		data = p_data;
+		symmetry = p_symmetry;
+		weight = p_weight;
+	}
+
+	// Create a tile with its base orientation, its symmetries and its weight on the distribution of tiles.
 	// The other orientations are generated with its first one.
-	Tile(Array2D<T> data, Symmetry symmetry, double weight) :
-			data(generate_oriented(data, symmetry)), symmetry(symmetry), weight(weight) {}
-};
-
-struct TilingWFCOptions {
-	bool periodic_output;
+	Tile(const Array2D<T> &data, Symmetry p_symmetry, double p_weight) {
+		data = generate_oriented(p_data, p_symmetry);
+		symmetry = p_symmetry;
+		weight = p_weight;
+	}
 };
 
 // Class generating a new image with the tiling WFC algorithm.
 template <typename T>
 class TilingWFC {
-private:
-	Vector<Tile<T>> tiles;
-	Vector<std::pair<uint32_t, uint32_t>> id_to_oriented_tile;
-	Vector<Vector<uint32_t>> oriented_tile_ids;
-
-	TilingWFCOptions options;
-
-	WFC wfc;
-
 public:
 	uint32_t height;
 	uint32_t width;
+
+	struct NeighbourData {
+		uint32_t data[4];
+
+		NeighbourData() {
+			for (int i = 0; i < 4; ++i) {
+				direction[i] = 0;
+			}
+		}
+	};
+
+	TilingWFC(
+			const Vector<Tile<T>> &tiles,
+			const Vector<NeighbourData> &neighbors,
+			const uint32_t height, const uint32_t width,
+			const bool periodic_output, int seed) :
+			tiles(tiles),
+			id_to_oriented_tile(generate_oriented_tile_ids(tiles).first),
+			oriented_tile_ids(generate_oriented_tile_ids(tiles).second),
+			options(options),
+			wfc(options.periodic_output, seed, get_tiles_weights(tiles),
+					generate_propagator(neighbors, tiles, id_to_oriented_tile,
+							oriented_tile_ids),
+					height, width),
+			height(height),
+			width(width) {}
+
+	// Returns false if the given tile and orientation does not exist, or if the coordinates are not in the wave
+	bool set_tile(uint32_t tile_id, uint32_t orientation, uint32_t i, uint32_t j) {
+		if (tile_id >= oriented_tile_ids.size() || orientation >= oriented_tile_ids[tile_id].size() || i >= height || j >= width) {
+			return false;
+		}
+
+		uint32_t oriented_tile_id = oriented_tile_ids[tile_id][orientation];
+		set_tile(oriented_tile_id, i, j);
+
+		return true;
+	}
+
+	Array2D<T> run() {
+		Array2D<uint32_t> a = wfc.run();
+
+		if (a.width == 0 && a.height == 0) {
+			return Array2D<T>(0, 0);
+		}
+
+		return id_to_tiling(a);
+	}
 
 private:
 	// Generate mapping from id to oriented tiles and vice versa.
@@ -213,7 +249,6 @@ private:
 			Vector<Tile<T>> tiles,
 			Vector<std::pair<uint32_t, uint32_t>> id_to_oriented_tile,
 			Vector<Vector<uint32_t>> oriented_tile_ids) {
-
 		size_t nb_oriented_tiles = id_to_oriented_tile.size();
 
 		Vector<DensePropagatorHelper> dense_propagator;
@@ -306,58 +341,13 @@ private:
 		}
 	}
 
-public:
-	struct NeighbourData {
-		uint32_t data[4];
+	Vector<Tile<T>> tiles;
+	Vector<std::pair<uint32_t, uint32_t>> id_to_oriented_tile;
+	Vector<Vector<uint32_t>> oriented_tile_ids;
 
-		NeighbourData() {
-			for (int i = 0; i < 4; ++i) {
-				direction[i] = 0;
-			}
-		}
-	};
+	bool periodic_output;
 
-	// Construct the TilingWFC class to generate a tiled image.
-	TilingWFC(
-			const Vector<Tile<T>> &tiles,
-			const Vector<NeighbourData> &neighbors,
-			const uint32_t height, const uint32_t width,
-			const TilingWFCOptions &options, int seed) :
-			tiles(tiles),
-			id_to_oriented_tile(generate_oriented_tile_ids(tiles).first),
-			oriented_tile_ids(generate_oriented_tile_ids(tiles).second),
-			options(options),
-			wfc(options.periodic_output, seed, get_tiles_weights(tiles),
-					generate_propagator(neighbors, tiles, id_to_oriented_tile,
-							oriented_tile_ids),
-					height, width),
-			height(height),
-			width(width) {}
-
-	// Set the tile at a specific position.
-	// Returns false if the given tile and orientation does not exist,
-	// or if the coordinates are not in the wave
-	bool set_tile(uint32_t tile_id, uint32_t orientation, uint32_t i, uint32_t j) {
-		if (tile_id >= oriented_tile_ids.size() || orientation >= oriented_tile_ids[tile_id].size() || i >= height || j >= width) {
-			return false;
-		}
-
-		uint32_t oriented_tile_id = oriented_tile_ids[tile_id][orientation];
-		set_tile(oriented_tile_id, i, j);
-		
-		return true;
-	}
-
-	// Run the tiling wfc and return the result if the algorithm succeeded
-	Array2D<T> run() {
-		Array2D<uint32_t> a = wfc.run();
-
-		if (a.width == 0 && a.height == 0) {
-			return Array2D<T>(0, 0);
-		}
-
-		return id_to_tiling(a);
-	}
+	WFC wfc;
 };
 
 #endif // FAST_WFC_TILING_WFC_HPP_
