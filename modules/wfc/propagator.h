@@ -2,16 +2,19 @@
 #define FAST_WFC_PROPAGATOR_HPP_
 
 #include "array_3d.h"
-#include "direction.h"
-#include <array>
-#include <tuple>
 #include "core/vector.h"
+#include "direction.h"
+#include <tuple>
 
 class Wave;
 
 class Propagator {
 public:
-	using PropagatorState = Vector<std::array<Vector<uint32_t>, 4>>;
+	struct PropagatorEntry {
+		Vector<uint32_t> directions[4];
+	};
+
+	using PropagatorState = Vector<PropagatorEntry>;
 
 private:
 	const uint32_t patterns_size;
@@ -28,12 +31,22 @@ private:
 	// false.
 	Vector<std::tuple<uint32_t, uint32_t, uint32_t>> propagating;
 
+	struct CompatibilityEntry {
+		int direction[4];
+
+		CompatibilityEntry() {
+			for (int i = 0; i < 4; ++i) {
+				direction[i] = 0;
+			}
+		}
+	};
+
 	// compatible.get(y, x, pattern)[direction] contains the number of patterns
 	// present in the wave that can be placed in the cell next to (y,x) in the
 	// opposite direction of direction without being in contradiction with pattern
 	// placed in (y,x). If wave.get(y, x, pattern) is set to false, then
 	// compatible.get(y, x, pattern) has every element negative or null
-	Array3D<std::array<int, 4>> compatible;
+	Array3D<CompatibilityEntry> compatible;
 
 	void init_compatible();
 
@@ -51,9 +64,9 @@ public:
 
 	void add_to_propagator(uint32_t y, uint32_t x, uint32_t pattern) {
 		// All the direction are set to 0, since the pattern cannot be set in (y,x).
-		std::array<int, 4> temp = {};
+		CompatibilityEntry temp;
 		compatible.get(y, x, pattern) = temp;
-		
+
 		propagating.push_back(std::tuple<uint32_t, uint32_t, uint32_t>(y, x, pattern));
 	}
 

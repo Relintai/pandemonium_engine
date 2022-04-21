@@ -2,13 +2,14 @@
 #include "wave.h"
 
 void Propagator::init_compatible() {
-	std::array<int, 4> value;
+	CompatibilityEntry value;
 	// We compute the number of pattern compatible in all directions.
 	for (uint32_t y = 0; y < wave_height; y++) {
 		for (uint32_t x = 0; x < wave_width; x++) {
 			for (uint32_t pattern = 0; pattern < patterns_size; pattern++) {
+				
 				for (int direction = 0; direction < 4; direction++) {
-					value[direction] = static_cast<uint32_t>(propagator_state[pattern][get_opposite_direction(direction)].size());
+					value.direction[direction] = static_cast<uint32_t>(propagator_state[pattern].directions[get_opposite_direction(direction)].size());
 				}
 
 				compatible.get(y, x, pattern) = value;
@@ -47,7 +48,7 @@ void Propagator::propagate(Wave &wave) {
 
 			// The index of the second cell, and the patterns compatible
 			uint32_t i2 = x2 + y2 * wave.width;
-			const Vector<uint32_t> &patterns = propagator_state[pattern][direction];
+			const Vector<uint32_t> &patterns = propagator_state[pattern].directions[direction];
 
 			// For every pattern that could be placed in that cell without being in
 			// contradiction with pattern1
@@ -58,12 +59,12 @@ void Propagator::propagate(Wave &wave) {
 				// We decrease the number of compatible patterns in the opposite
 				// direction If the pattern was discarded from the wave, the element
 				// is still negative, which is not a problem
-				std::array<int, 4> &value = compatible.get(y2, x2, pattern);
-				value[direction]--;
+				CompatibilityEntry &value = compatible.get(y2, x2, pattern);
+				value.direction[direction]--;
 
 				// If the element was set to 0 with this operation, we need to remove
 				// the pattern from the wave, and propagate the information
-				if (value[direction] == 0) {
+				if (value.direction[direction] == 0) {
 					add_to_propagator(y2, x2, pattern);
 					wave.set(i2, pattern, false);
 				}

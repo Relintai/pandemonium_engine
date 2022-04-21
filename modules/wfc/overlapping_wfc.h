@@ -43,7 +43,7 @@ private:
 			const Array2D<T> &input, const OverlappingWFCOptions &options,
 			const int &seed,
 			const std::pair<Vector<Array2D<T>>, Vector<double>> &patterns,
-			const Vector<std::array<Vector<uint32_t>, 4>> &propagator) :
+			const Vector<PropagatorEntry> &propagator) :
 			input(input), options(options), patterns(patterns.first), wfc(options.periodic_output, seed, patterns.second, propagator, options.get_wave_height(), options.get_wave_width()) {
 		// If necessary, the ground is set.
 		if (options.ground) {
@@ -156,8 +156,8 @@ private:
 	// If agrees(pattern1, pattern2, dy, dx), then compatible[pattern1][direction]
 	// contains pattern2, where direction is the direction defined by (dy, dx)
 	// (see direction.hpp).
-	static Vector<std::array<Vector<uint32_t>, 4>> generate_compatible(const Vector<Array2D<T>> &patterns) {
-		Vector<std::array<Vector<uint32_t>, 4>> compatible = Vector<std::array<Vector<uint32_t>, 4>>(patterns.size());
+	static Vector<PropagatorEntry> generate_compatible(const Vector<Array2D<T>> &patterns) {
+		Vector<PropagatorEntry> compatible = Vector<PropagatorEntry>(patterns.size());
 
 		// Iterate on every dy, dx, pattern1 and pattern2
 		for (uint32_t pattern1 = 0; pattern1 < patterns.size(); pattern1++) {

@@ -1,8 +1,8 @@
 #ifndef FAST_WFC_TILING_WFC_HPP_
 #define FAST_WFC_TILING_WFC_HPP_
 
-#include <unordered_map>
 #include "core/vector.h"
+#include <unordered_map>
 
 #include "array_2d.h"
 #include "wfc.h"
@@ -199,16 +199,30 @@ private:
 		return { id_to_oriented_tile, oriented_tile_ids };
 	}
 
+	struct DensePropagatorHelper {
+		Vector<bool> directions[4];
+
+		void resize(const int size) {
+			for (int i = 0; i < 4; ++i) {
+				directions[i].resize(size);
+				directions[i].fill(false);
+			}
+		}
+	};
+
 	// Generate the propagator which will be used in the wfc algorithm.
-	static Vector<std::array<Vector<uint32_t>, 4>> generate_propagator(
+	static Vector<PropagatorEntry> generate_propagator(
 			const Vector<std::tuple<uint32_t, uint32_t, uint32_t, uint32_t>> &neighbors,
 			Vector<Tile<T>> tiles,
 			Vector<std::pair<uint32_t, uint32_t>> id_to_oriented_tile,
 			Vector<Vector<uint32_t>> oriented_tile_ids) {
-
+				
 		size_t nb_oriented_tiles = id_to_oriented_tile.size();
-		Vector<std::array<Vector<bool>, 4>> dense_propagator(
-				nb_oriented_tiles, { Vector<bool>(nb_oriented_tiles, false), Vector<bool>(nb_oriented_tiles, false), Vector<bool>(nb_oriented_tiles, false), Vector<bool>(nb_oriented_tiles, false) });
+		Vector<DensePropagatorHelper> dense_propagator(nb_oriented_tiles, { Vector<bool>(nb_oriented_tiles, false), Vector<bool>(nb_oriented_tiles, false), Vector<bool>(nb_oriented_tiles, false), Vector<bool>(nb_oriented_tiles, false) });
+		dense_propagator.resize(nb_oriented_tiles);
+		for (int i = 0; i < nb_oriented_tiles; ++i) {
+			dense_propagator.write[i].resize(nb_oriented_tiles);
+		}
 
 		for (auto neighbor : neighbors) {
 			uint32_t tile1 = std::get<0>(neighbor);
@@ -240,7 +254,7 @@ private:
 			add(7, 0);
 		}
 
-		Vector<std::array<Vector<uint32_t>, 4>> propagator(nb_oriented_tiles);
+		Vector<PropagatorEntry> propagator(nb_oriented_tiles);
 
 		for (size_t i = 0; i < nb_oriented_tiles; ++i) {
 			for (size_t j = 0; j < nb_oriented_tiles; ++j) {
