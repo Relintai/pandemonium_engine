@@ -13,12 +13,10 @@ public:
 		Vector<uint32_t> directions[4];
 	};
 
-	using PropagatorState = Vector<PropagatorEntry>;
-
 private:
 	const uint32_t patterns_size;
 
-	PropagatorState propagator_state;
+	Vector<PropagatorEntry> propagator_state;
 
 	const uint32_t wave_width;
 	const uint32_t wave_height;
@@ -66,8 +64,7 @@ private:
 	void init_compatible();
 
 public:
-	Propagator(uint32_t wave_height, uint32_t wave_width, bool periodic_output,
-			PropagatorState propagator_state) :
+	Propagator(uint32_t wave_height, uint32_t wave_width, bool periodic_output, Vector<PropagatorEntry> propagator_state) :
 			patterns_size(propagator_state.size()),
 			propagator_state(propagator_state),
 			wave_width(wave_width),

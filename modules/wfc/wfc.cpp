@@ -36,8 +36,7 @@ Array2D<uint32_t> WFC::wave_to_output() const {
 
 WFC::WFC(bool periodic_output, int seed,
 		Vector<double> patterns_frequencies,
-		Propagator::PropagatorState propagator, uint32_t wave_height,
-		uint32_t wave_width) :
+		Vector<Propagator::PropagatorEntry> propagator, uint32_t wave_height, uint32_t wave_width) :
 		gen(seed), patterns_frequencies(normalize(patterns_frequencies)), wave(wave_height, wave_width, patterns_frequencies), nb_patterns(propagator.size()), propagator(wave.height, wave.width, periodic_output, propagator) {}
 
 Array2D<uint32_t> WFC::run() {

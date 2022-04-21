@@ -179,9 +179,7 @@ public:
 
 private:
 	// Generate mapping from id to oriented tiles and vice versa.
-	static std::pair<Vector<std::pair<uint32_t, uint32_t>>,
-			Vector<Vector<uint32_t>>>
-	generate_oriented_tile_ids(const Vector<Tile<T>> &tiles) {
+	static std::pair<Vector<std::pair<uint32_t, uint32_t>>, Vector<Vector<uint32_t>>> generate_oriented_tile_ids(const Vector<Tile<T>> &tiles) {
 		Vector<std::pair<uint32_t, uint32_t>> id_to_oriented_tile;
 		Vector<Vector<uint32_t>> oriented_tile_ids;
 
@@ -215,8 +213,10 @@ private:
 			Vector<Tile<T>> tiles,
 			Vector<std::pair<uint32_t, uint32_t>> id_to_oriented_tile,
 			Vector<Vector<uint32_t>> oriented_tile_ids) {
+
 		size_t nb_oriented_tiles = id_to_oriented_tile.size();
-		Vector<DensePropagatorHelper> dense_propagator(nb_oriented_tiles, { Vector<bool>(nb_oriented_tiles, false), Vector<bool>(nb_oriented_tiles, false), Vector<bool>(nb_oriented_tiles, false), Vector<bool>(nb_oriented_tiles, false) });
+
+		Vector<DensePropagatorHelper> dense_propagator;
 		dense_propagator.resize(nb_oriented_tiles);
 		for (int i = 0; i < nb_oriented_tiles; ++i) {
 			dense_propagator.write[i].resize(nb_oriented_tiles);
@@ -227,10 +227,8 @@ private:
 			uint32_t orientation1 = std::get<1>(neighbor);
 			uint32_t tile2 = std::get<2>(neighbor);
 			uint32_t orientation2 = std::get<3>(neighbor);
-			Vector<Vector<uint32_t>> action_map1 =
-					Tile<T>::generate_action_map(tiles[tile1].symmetry);
-			Vector<Vector<uint32_t>> action_map2 =
-					Tile<T>::generate_action_map(tiles[tile2].symmetry);
+			Vector<Vector<uint32_t>> action_map1 = Tile<T>::generate_action_map(tiles[tile1].symmetry);
+			Vector<Vector<uint32_t>> action_map2 = Tile<T>::generate_action_map(tiles[tile2].symmetry);
 
 			auto add = [&](uint32_t action, uint32_t direction) {
 				uint32_t temp_orientation1 = action_map1[action][orientation1];
@@ -346,6 +344,7 @@ public:
 
 		uint32_t oriented_tile_id = oriented_tile_ids[tile_id][orientation];
 		set_tile(oriented_tile_id, i, j);
+		
 		return true;
 	}
 

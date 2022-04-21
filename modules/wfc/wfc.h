@@ -33,7 +33,7 @@ private:
 public:
 	// Basic constructor initializing the algorithm.
 	WFC(bool periodic_output, int seed, Vector<double> patterns_frequencies,
-			Propagator::PropagatorState propagator, uint32_t wave_height,
+			Vector<Propagator::PropagatorEntry> propagator, uint32_t wave_height,
 			uint32_t wave_width);
 
 	// Run the algorithm, and return a result if it succeeded.
