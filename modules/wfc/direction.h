@@ -4,7 +4,7 @@
 constexpr int directions_x[4] = { 0, -1, 1, 0 };
 constexpr int directions_y[4] = { -1, 0, 0, 1 };
 
-constexpr unsigned get_opposite_direction(unsigned direction) {
+constexpr uint32_t get_opposite_direction(uint32_t direction) {
 	return 3 - direction;
 }
 

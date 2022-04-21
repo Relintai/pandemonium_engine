@@ -8,7 +8,7 @@ namespace {
 Vector<double> get_plogp(const Vector<double> &distribution) {
 	Vector<double> plogp;
 
-	for (unsigned i = 0; i < distribution.size(); i++) {
+	for (uint32_t i = 0; i < distribution.size(); i++) {
 		plogp.push_back(distribution[i] * log(distribution[i]));
 	}
 
@@ -19,7 +19,7 @@ Vector<double> get_plogp(const Vector<double> &distribution) {
 double get_min_abs_half(const Vector<double> &v) {
 	double min_abs_half = std::numeric_limits<double>::infinity();
 
-	for (unsigned i = 0; i < v.size(); i++) {
+	for (uint32_t i = 0; i < v.size(); i++) {
 		min_abs_half = std::min(min_abs_half, std::abs(v[i] / 2.0));
 	}
 
@@ -28,7 +28,7 @@ double get_min_abs_half(const Vector<double> &v) {
 
 } // namespace
 
-Wave::Wave(unsigned height, unsigned width,
+Wave::Wave(uint32_t height, uint32_t width,
 		const Vector<double> &patterns_frequencies) :
 		patterns_frequencies(patterns_frequencies),
 		plogp_patterns_frequencies(get_plogp(patterns_frequencies)),
@@ -44,7 +44,7 @@ Wave::Wave(unsigned height, unsigned width,
 	double base_entropy = 0;
 	double base_s = 0;
 
-	for (unsigned i = 0; i < nb_patterns; i++) {
+	for (uint32_t i = 0; i < nb_patterns; i++) {
 		base_entropy += plogp_patterns_frequencies[i];
 		base_s += patterns_frequencies[i];
 	}
@@ -62,13 +62,13 @@ Wave::Wave(unsigned height, unsigned width,
 	memoisation.log_sum.fill(log_base_s);
 
 	memoisation.nb_patterns.resize(width * height);
-	memoisation.nb_patterns.fill(static_cast<unsigned>(nb_patterns));
+	memoisation.nb_patterns.fill(static_cast<uint32_t>(nb_patterns));
 
 	memoisation.entropy.resize(width * height);
 	memoisation.entropy.fill(entropy_base);
 }
 
-void Wave::set(unsigned index, unsigned pattern, bool value) {
+void Wave::set(uint32_t index, uint32_t pattern, bool value) {
 	bool old_value = data.get(index, pattern);
 
 	// If the value isn't changed, nothing needs to be done.
@@ -101,7 +101,7 @@ int Wave::get_min_entropy(std::minstd_rand &gen) const {
 	double min = std::numeric_limits<double>::infinity();
 	int argmin = -1;
 
-	for (unsigned i = 0; i < size; i++) {
+	for (uint32_t i = 0; i < size; i++) {
 		// If the cell is decided, we do not compute the entropy (which is equal
 		// to 0).
 		double nb_patterns_local = memoisation.nb_patterns[i];

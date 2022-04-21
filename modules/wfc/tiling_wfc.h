@@ -22,7 +22,7 @@ enum class Symmetry {
 // Return the number of possible distinct orientations for a tile.
 // An orientation is a combination of rotations and reflections.
  */
-constexpr unsigned nb_of_possible_orientations(const Symmetry &symmetry) {
+constexpr uint32_t nb_of_possible_orientations(const Symmetry &symmetry) {
 	switch (symmetry) {
 		case Symmetry::X:
 			return 1;
@@ -46,7 +46,7 @@ struct Tile {
 
 	// Generate the map associating an orientation id to the orientation
 	// id obtained when rotating 90° anticlockwise the tile.
-	static Vector<unsigned> generate_rotation_map(const Symmetry &symmetry) {
+	static Vector<uint32_t> generate_rotation_map(const Symmetry &symmetry) {
 		switch (symmetry) {
 			case Symmetry::X:
 				return { 0 };
@@ -64,7 +64,7 @@ struct Tile {
 
 	// Generate the map associating an orientation id to the orientation
 	// id obtained when reflecting the tile along the x axis.
-	static Vector<unsigned> generate_reflection_map(const Symmetry &symmetry) {
+	static Vector<uint32_t> generate_reflection_map(const Symmetry &symmetry) {
 		switch (symmetry) {
 			case Symmetry::X:
 				return { 0 };
@@ -87,12 +87,12 @@ struct Tile {
 	// Actions 0, 1, 2, and 3 are 0°, 90°, 180°, and 270° anticlockwise rotations.
 	// Actions 4, 5, 6, and 7 are actions 0, 1, 2, and 3 preceded by a reflection
 	// on the x axis.
-	static Vector<Vector<unsigned>> generate_action_map(const Symmetry &symmetry) {
-		Vector<unsigned> rotation_map = generate_rotation_map(symmetry);
-		Vector<unsigned> reflection_map = generate_reflection_map(symmetry);
+	static Vector<Vector<uint32_t>> generate_action_map(const Symmetry &symmetry) {
+		Vector<uint32_t> rotation_map = generate_rotation_map(symmetry);
+		Vector<uint32_t> reflection_map = generate_reflection_map(symmetry);
 		size_t size = rotation_map.size();
-		Vector<Vector<unsigned>> action_map(8,
-				Vector<unsigned>(size));
+		Vector<Vector<uint32_t>> action_map(8,
+				Vector<uint32_t>(size));
 		for (size_t i = 0; i < size; ++i) {
 			action_map[0][i] = i;
 		}
@@ -167,29 +167,29 @@ template <typename T>
 class TilingWFC {
 private:
 	Vector<Tile<T>> tiles;
-	Vector<std::pair<unsigned, unsigned>> id_to_oriented_tile;
-	Vector<Vector<unsigned>> oriented_tile_ids;
+	Vector<std::pair<uint32_t, uint32_t>> id_to_oriented_tile;
+	Vector<Vector<uint32_t>> oriented_tile_ids;
 
 	TilingWFCOptions options;
 
 	WFC wfc;
 
 public:
-	unsigned height;
-	unsigned width;
+	uint32_t height;
+	uint32_t width;
 
 private:
 	// Generate mapping from id to oriented tiles and vice versa.
-	static std::pair<Vector<std::pair<unsigned, unsigned>>,
-			Vector<Vector<unsigned>>>
+	static std::pair<Vector<std::pair<uint32_t, uint32_t>>,
+			Vector<Vector<uint32_t>>>
 	generate_oriented_tile_ids(const Vector<Tile<T>> &tiles) {
-		Vector<std::pair<unsigned, unsigned>> id_to_oriented_tile;
-		Vector<Vector<unsigned>> oriented_tile_ids;
+		Vector<std::pair<uint32_t, uint32_t>> id_to_oriented_tile;
+		Vector<Vector<uint32_t>> oriented_tile_ids;
 
-		unsigned id = 0;
-		for (unsigned i = 0; i < tiles.size(); i++) {
+		uint32_t id = 0;
+		for (uint32_t i = 0; i < tiles.size(); i++) {
 			oriented_tile_ids.push_back({});
-			for (unsigned j = 0; j < tiles[i].data.size(); j++) {
+			for (uint32_t j = 0; j < tiles[i].data.size(); j++) {
 				id_to_oriented_tile.push_back({ i, j });
 				oriented_tile_ids[i].push_back(id);
 				id++;
@@ -200,31 +200,31 @@ private:
 	}
 
 	// Generate the propagator which will be used in the wfc algorithm.
-	static Vector<std::array<Vector<unsigned>, 4>> generate_propagator(
-			const Vector<std::tuple<unsigned, unsigned, unsigned, unsigned>> &neighbors,
+	static Vector<std::array<Vector<uint32_t>, 4>> generate_propagator(
+			const Vector<std::tuple<uint32_t, uint32_t, uint32_t, uint32_t>> &neighbors,
 			Vector<Tile<T>> tiles,
-			Vector<std::pair<unsigned, unsigned>> id_to_oriented_tile,
-			Vector<Vector<unsigned>> oriented_tile_ids) {
+			Vector<std::pair<uint32_t, uint32_t>> id_to_oriented_tile,
+			Vector<Vector<uint32_t>> oriented_tile_ids) {
 
 		size_t nb_oriented_tiles = id_to_oriented_tile.size();
 		Vector<std::array<Vector<bool>, 4>> dense_propagator(
 				nb_oriented_tiles, { Vector<bool>(nb_oriented_tiles, false), Vector<bool>(nb_oriented_tiles, false), Vector<bool>(nb_oriented_tiles, false), Vector<bool>(nb_oriented_tiles, false) });
 
 		for (auto neighbor : neighbors) {
-			unsigned tile1 = std::get<0>(neighbor);
-			unsigned orientation1 = std::get<1>(neighbor);
-			unsigned tile2 = std::get<2>(neighbor);
-			unsigned orientation2 = std::get<3>(neighbor);
-			Vector<Vector<unsigned>> action_map1 =
+			uint32_t tile1 = std::get<0>(neighbor);
+			uint32_t orientation1 = std::get<1>(neighbor);
+			uint32_t tile2 = std::get<2>(neighbor);
+			uint32_t orientation2 = std::get<3>(neighbor);
+			Vector<Vector<uint32_t>> action_map1 =
 					Tile<T>::generate_action_map(tiles[tile1].symmetry);
-			Vector<Vector<unsigned>> action_map2 =
+			Vector<Vector<uint32_t>> action_map2 =
 					Tile<T>::generate_action_map(tiles[tile2].symmetry);
 
-			auto add = [&](unsigned action, unsigned direction) {
-				unsigned temp_orientation1 = action_map1[action][orientation1];
-				unsigned temp_orientation2 = action_map2[action][orientation2];
-				unsigned oriented_tile_id1 = oriented_tile_ids[tile1][temp_orientation1];
-				unsigned oriented_tile_id2 = oriented_tile_ids[tile2][temp_orientation2];
+			auto add = [&](uint32_t action, uint32_t direction) {
+				uint32_t temp_orientation1 = action_map1[action][orientation1];
+				uint32_t temp_orientation2 = action_map2[action][orientation2];
+				uint32_t oriented_tile_id1 = oriented_tile_ids[tile1][temp_orientation1];
+				uint32_t oriented_tile_id2 = oriented_tile_ids[tile2][temp_orientation2];
 				dense_propagator[oriented_tile_id1][direction][oriented_tile_id2] = true;
 				direction = get_opposite_direction(direction);
 				dense_propagator[oriented_tile_id2][direction][oriented_tile_id1] = true;
@@ -240,7 +240,7 @@ private:
 			add(7, 0);
 		}
 
-		Vector<std::array<Vector<unsigned>, 4>> propagator(nb_oriented_tiles);
+		Vector<std::array<Vector<uint32_t>, 4>> propagator(nb_oriented_tiles);
 
 		for (size_t i = 0; i < nb_oriented_tiles; ++i) {
 			for (size_t j = 0; j < nb_oriented_tiles; ++j) {
@@ -269,16 +269,16 @@ private:
 	}
 
 	// Translate the generic WFC result into the image result
-	Array2D<T> id_to_tiling(Array2D<unsigned> ids) {
-		unsigned size = tiles[0].data[0].height;
+	Array2D<T> id_to_tiling(Array2D<uint32_t> ids) {
+		uint32_t size = tiles[0].data[0].height;
 		Array2D<T> tiling(size * ids.height, size * ids.width);
 
-		for (unsigned i = 0; i < ids.height; i++) {
-			for (unsigned j = 0; j < ids.width; j++) {
-				std::pair<unsigned, unsigned> oriented_tile = id_to_oriented_tile[ids.get(i, j)];
+		for (uint32_t i = 0; i < ids.height; i++) {
+			for (uint32_t j = 0; j < ids.width; j++) {
+				std::pair<uint32_t, uint32_t> oriented_tile = id_to_oriented_tile[ids.get(i, j)];
 
-				for (unsigned y = 0; y < size; y++) {
-					for (unsigned x = 0; x < size; x++) {
+				for (uint32_t y = 0; y < size; y++) {
+					for (uint32_t x = 0; x < size; x++) {
 						tiling.get(i * size + y, j * size + x) = tiles[oriented_tile.first].data[oriented_tile.second].get(y, x);
 					}
 				}
@@ -288,8 +288,8 @@ private:
 		return tiling;
 	}
 
-	void set_tile(unsigned tile_id, unsigned i, unsigned j) {
-		for (unsigned p = 0; p < id_to_oriented_tile.size(); p++) {
+	void set_tile(uint32_t tile_id, uint32_t i, uint32_t j) {
+		for (uint32_t p = 0; p < id_to_oriented_tile.size(); p++) {
 			if (tile_id != p) {
 				wfc.remove_wave_pattern(i, j, p);
 			}
@@ -300,9 +300,9 @@ public:
 	// Construct the TilingWFC class to generate a tiled image.
 	TilingWFC(
 			const Vector<Tile<T>> &tiles,
-			const Vector<std::tuple<unsigned, unsigned, unsigned, unsigned>>
+			const Vector<std::tuple<uint32_t, uint32_t, uint32_t, uint32_t>>
 					&neighbors,
-			const unsigned height, const unsigned width,
+			const uint32_t height, const uint32_t width,
 			const TilingWFCOptions &options, int seed) :
 			tiles(tiles),
 			id_to_oriented_tile(generate_oriented_tile_ids(tiles).first),
@@ -318,19 +318,19 @@ public:
 	// Set the tile at a specific position.
 	// Returns false if the given tile and orientation does not exist,
 	// or if the coordinates are not in the wave
-	bool set_tile(unsigned tile_id, unsigned orientation, unsigned i, unsigned j) {
+	bool set_tile(uint32_t tile_id, uint32_t orientation, uint32_t i, uint32_t j) {
 		if (tile_id >= oriented_tile_ids.size() || orientation >= oriented_tile_ids[tile_id].size() || i >= height || j >= width) {
 			return false;
 		}
 
-		unsigned oriented_tile_id = oriented_tile_ids[tile_id][orientation];
+		uint32_t oriented_tile_id = oriented_tile_ids[tile_id][orientation];
 		set_tile(oriented_tile_id, i, j);
 		return true;
 	}
 
 	// Run the tiling wfc and return the result if the algorithm succeeded
 	Array2D<T> run() {
-		Array2D<unsigned> a = wfc.run();
+		Array2D<uint32_t> a = wfc.run();
 
 		if (a.width == 0 && a.height == 0) {
 			return Array2D<T>(0, 0);

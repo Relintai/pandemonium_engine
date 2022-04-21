@@ -13,7 +13,7 @@ struct EntropyMemoisation {
 	Vector<double> plogp_sum; // The sum of p'(pattern)// log(p'(pattern)).
 	Vector<double> sum; // The sum of p'(pattern).
 	Vector<double> log_sum; // The log of sum.
-	Vector<unsigned> nb_patterns; // The number of patterns present
+	Vector<uint32_t> nb_patterns; // The number of patterns present
 	Vector<double> entropy; // The entropy of the cell.
 };
 
@@ -45,28 +45,28 @@ private:
 
 public:
 	// The size of the wave.
-	const unsigned width;
-	const unsigned height;
-	const unsigned size;
+	const uint32_t width;
+	const uint32_t height;
+	const uint32_t size;
 
 	// Initialize the wave with every cell being able to have every pattern.
-	Wave(unsigned height, unsigned width, const Vector<double> &patterns_frequencies);
+	Wave(uint32_t height, uint32_t width, const Vector<double> &patterns_frequencies);
 
 	// Return true if pattern can be placed in cell index.
-	bool get(unsigned index, unsigned pattern) const {
+	bool get(uint32_t index, uint32_t pattern) const {
 		return data.get(index, pattern);
 	}
 
 	// Return true if pattern can be placed in cell (i,j)
-	bool get(unsigned i, unsigned j, unsigned pattern) const {
+	bool get(uint32_t i, uint32_t j, uint32_t pattern) const {
 		return get(i * width + j, pattern);
 	}
 
 	// Set the value of pattern in cell index.
-	void set(unsigned index, unsigned pattern, bool value);
+	void set(uint32_t index, uint32_t pattern, bool value);
 
 	// Set the value of pattern in cell (i,j).
-	void set(unsigned i, unsigned j, unsigned pattern, bool value) {
+	void set(uint32_t i, uint32_t j, uint32_t pattern, bool value) {
 		set(i * width + j, pattern, value);
 	}
 

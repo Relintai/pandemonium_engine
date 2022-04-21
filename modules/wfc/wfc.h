@@ -28,16 +28,16 @@ private:
 	// Transform the wave to a valid output (a 2d array of patterns that aren't in
 	// contradiction). This function should be used only when all cell of the wave
 	// are defined.
-	Array2D<unsigned> wave_to_output() const;
+	Array2D<uint32_t> wave_to_output() const;
 
 public:
 	// Basic constructor initializing the algorithm.
 	WFC(bool periodic_output, int seed, Vector<double> patterns_frequencies,
-			Propagator::PropagatorState propagator, unsigned wave_height,
-			unsigned wave_width);
+			Propagator::PropagatorState propagator, uint32_t wave_height,
+			uint32_t wave_width);
 
 	// Run the algorithm, and return a result if it succeeded.
-	Array2D<unsigned> run();
+	Array2D<uint32_t> run();
 
 	// Return value of observe.
 	enum ObserveStatus {
@@ -53,7 +53,7 @@ public:
 	void propagate() { propagator.propagate(wave); }
 
 	// Remove pattern from cell (i,j).
-	void remove_wave_pattern(unsigned i, unsigned j, unsigned pattern) {
+	void remove_wave_pattern(uint32_t i, uint32_t j, uint32_t pattern) {
 		if (wave.get(i, j, pattern)) {
 			wave.set(i, j, pattern, false);
 			propagator.add_to_propagator(i, j, pattern);

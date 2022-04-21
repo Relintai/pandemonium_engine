@@ -11,19 +11,19 @@
 struct OverlappingWFCOptions {
 	bool periodic_input; // True if the input is toric.
 	bool periodic_output; // True if the output is toric.
-	unsigned out_height; // The height of the output in pixels.
-	unsigned out_width; // The width of the output in pixels.
-	unsigned symmetry; // The number of symmetries (the order is defined in wfc).
+	uint32_t out_height; // The height of the output in pixels.
+	uint32_t out_width; // The width of the output in pixels.
+	uint32_t symmetry; // The number of symmetries (the order is defined in wfc).
 	bool ground; // True if the ground needs to be set (see init_ground).
-	unsigned pattern_size; // The width and height in pixel of the patterns.
+	uint32_t pattern_size; // The width and height in pixel of the patterns.
 
 	//Get the wave height given these options.
-	unsigned get_wave_height() const {
+	uint32_t get_wave_height() const {
 		return periodic_output ? out_height : out_height - pattern_size + 1;
 	}
 
 	//Get the wave width given these options.
-	unsigned get_wave_width() const {
+	uint32_t get_wave_width() const {
 		return periodic_output ? out_width : out_width - pattern_size + 1;
 	}
 };
@@ -43,7 +43,7 @@ private:
 			const Array2D<T> &input, const OverlappingWFCOptions &options,
 			const int &seed,
 			const std::pair<Vector<Array2D<T>>, Vector<double>> &patterns,
-			const Vector<std::array<Vector<unsigned>, 4>> &propagator) :
+			const Vector<std::array<Vector<uint32_t>, 4>> &propagator) :
 			input(input), options(options), patterns(patterns.first), wfc(options.periodic_output, seed, patterns.second, propagator, options.get_wave_height(), options.get_wave_width()) {
 		// If necessary, the ground is set.
 		if (options.ground) {
@@ -59,14 +59,14 @@ private:
 					generate_compatible(patterns.first)) {}
 
 	void init_ground(WFC &wfc, const Array2D<T> &input, const Vector<Array2D<T>> &patterns, const OverlappingWFCOptions &options) {
-		unsigned ground_pattern_id = get_ground_pattern_id(input, patterns, options);
+		uint32_t ground_pattern_id = get_ground_pattern_id(input, patterns, options);
 
-		for (unsigned j = 0; j < options.get_wave_width(); j++) {
+		for (uint32_t j = 0; j < options.get_wave_width(); j++) {
 			set_pattern(ground_pattern_id, options.get_wave_height() - 1, j);
 		}
 
-		for (unsigned i = 0; i < options.get_wave_height() - 1; i++) {
-			for (unsigned j = 0; j < options.get_wave_width(); j++) {
+		for (uint32_t i = 0; i < options.get_wave_height() - 1; i++) {
+			for (uint32_t j = 0; j < options.get_wave_width(); j++) {
 				wfc.remove_wave_pattern(i, j, ground_pattern_id);
 			}
 		}
@@ -74,12 +74,12 @@ private:
 		wfc.propagate();
 	}
 
-	static unsigned get_ground_pattern_id(const Array2D<T> &input, const Vector<Array2D<T>> &patterns, const OverlappingWFCOptions &options) {
+	static uint32_t get_ground_pattern_id(const Array2D<T> &input, const Vector<Array2D<T>> &patterns, const OverlappingWFCOptions &options) {
 		// Get the pattern.
 		Array2D<T> ground_pattern = input.get_sub_array(input.height - 1, input.width / 2, options.pattern_size, options.pattern_size);
 
 		// Retrieve the id of the pattern.
-		for (unsigned i = 0; i < patterns.size(); i++) {
+		for (uint32_t i = 0; i < patterns.size(); i++) {
 			if (ground_pattern == patterns[i]) {
 				return i;
 			}
@@ -92,7 +92,7 @@ private:
 
 	//Return the list of patterns, as well as their probabilities of apparition.
 	static std::pair<Vector<Array2D<T>>, Vector<double>> get_patterns(const Array2D<T> &input, const OverlappingWFCOptions &options) {
-		std::unordered_map<Array2D<T>, unsigned> patterns_id;
+		std::unordered_map<Array2D<T>, uint32_t> patterns_id;
 		Vector<Array2D<T>> patterns;
 
 		// The number of time a pattern is seen in the input image.
@@ -100,15 +100,15 @@ private:
 
 		Vector<Array2D<T>> symmetries(
 				8, Array2D<T>(options.pattern_size, options.pattern_size));
-		unsigned max_i = options.periodic_input
+		uint32_t max_i = options.periodic_input
 				? input.height
 				: input.height - options.pattern_size + 1;
-		unsigned max_j = options.periodic_input
+		uint32_t max_j = options.periodic_input
 				? input.width
 				: input.width - options.pattern_size + 1;
 
-		for (unsigned i = 0; i < max_i; i++) {
-			for (unsigned j = 0; j < max_j; j++) {
+		for (uint32_t i = 0; i < max_i; i++) {
+			for (uint32_t j = 0; j < max_j; j++) {
 				// Compute the symmetries of every pattern in the image.
 				symmetries[0].data =
 						input
@@ -124,7 +124,7 @@ private:
 
 				// The number of symmetries in the option class define which symetries
 				// will be used.
-				for (unsigned k = 0; k < options.symmetry; k++) {
+				for (uint32_t k = 0; k < options.symmetry; k++) {
 					auto res = patterns_id.insert(
 							std::make_pair(symmetries[k], patterns.size()));
 
@@ -145,14 +145,14 @@ private:
 
 	//Return true if the pattern1 is compatible with pattern2 when pattern2 is at a distance (dy,dx) from pattern1.
 	static bool agrees(const Array2D<T> &pattern1, const Array2D<T> &pattern2, int dy, int dx) {
-		unsigned xmin = dx < 0 ? 0 : dx;
-		unsigned xmax = dx < 0 ? dx + pattern2.width : pattern1.width;
-		unsigned ymin = dy < 0 ? 0 : dy;
-		unsigned ymax = dy < 0 ? dy + pattern2.height : pattern1.width;
+		uint32_t xmin = dx < 0 ? 0 : dx;
+		uint32_t xmax = dx < 0 ? dx + pattern2.width : pattern1.width;
+		uint32_t ymin = dy < 0 ? 0 : dy;
+		uint32_t ymax = dy < 0 ? dy + pattern2.height : pattern1.width;
 
 		// Iterate on every pixel contained in the intersection of the two pattern.
-		for (unsigned y = ymin; y < ymax; y++) {
-			for (unsigned x = xmin; x < xmax; x++) {
+		for (uint32_t y = ymin; y < ymax; y++) {
+			for (uint32_t x = xmin; x < xmax; x++) {
 				// Check if the color is the same in the two patterns in that pixel.
 				if (pattern1.get(y, x) != pattern2.get(y - dy, x - dx)) {
 					return false;
@@ -166,13 +166,13 @@ private:
 	// If agrees(pattern1, pattern2, dy, dx), then compatible[pattern1][direction]
 	// contains pattern2, where direction is the direction defined by (dy, dx)
 	// (see direction.hpp).
-	static Vector<std::array<Vector<unsigned>, 4>> generate_compatible(const Vector<Array2D<T>> &patterns) {
-		Vector<std::array<Vector<unsigned>, 4>> compatible = Vector<std::array<Vector<unsigned>, 4>>(patterns.size());
+	static Vector<std::array<Vector<uint32_t>, 4>> generate_compatible(const Vector<Array2D<T>> &patterns) {
+		Vector<std::array<Vector<uint32_t>, 4>> compatible = Vector<std::array<Vector<uint32_t>, 4>>(patterns.size());
 
 		// Iterate on every dy, dx, pattern1 and pattern2
-		for (unsigned pattern1 = 0; pattern1 < patterns.size(); pattern1++) {
-			for (unsigned direction = 0; direction < 4; direction++) {
-				for (unsigned pattern2 = 0; pattern2 < patterns.size(); pattern2++) {
+		for (uint32_t pattern1 = 0; pattern1 < patterns.size(); pattern1++) {
+			for (uint32_t direction = 0; direction < 4; direction++) {
+				for (uint32_t pattern2 = 0; pattern2 < patterns.size(); pattern2++) {
 					if (agrees(patterns[pattern1], patterns[pattern2], directions_y[direction], directions_x[direction])) {
 						compatible[pattern1][direction].push_back(pattern2);
 					}
@@ -184,32 +184,32 @@ private:
 	}
 
 	// Transform a 2D array containing the patterns id to a 2D array containing the pixels.
-	Array2D<T> to_image(const Array2D<unsigned> &output_patterns) const {
+	Array2D<T> to_image(const Array2D<uint32_t> &output_patterns) const {
 		Array2D<T> output = Array2D<T>(options.out_height, options.out_width);
 
 		if (options.periodic_output) {
-			for (unsigned y = 0; y < options.get_wave_height(); y++) {
-				for (unsigned x = 0; x < options.get_wave_width(); x++) {
+			for (uint32_t y = 0; y < options.get_wave_height(); y++) {
+				for (uint32_t x = 0; x < options.get_wave_width(); x++) {
 					output.get(y, x) = patterns[output_patterns.get(y, x)].get(0, 0);
 				}
 			}
 		} else {
-			for (unsigned y = 0; y < options.get_wave_height(); y++) {
-				for (unsigned x = 0; x < options.get_wave_width(); x++) {
+			for (uint32_t y = 0; y < options.get_wave_height(); y++) {
+				for (uint32_t x = 0; x < options.get_wave_width(); x++) {
 					output.get(y, x) = patterns[output_patterns.get(y, x)].get(0, 0);
 				}
 			}
 
-			for (unsigned y = 0; y < options.get_wave_height(); y++) {
+			for (uint32_t y = 0; y < options.get_wave_height(); y++) {
 				const Array2D<T> &pattern = patterns[output_patterns.get(y, options.get_wave_width() - 1)];
-				for (unsigned dx = 1; dx < options.pattern_size; dx++) {
+				for (uint32_t dx = 1; dx < options.pattern_size; dx++) {
 					output.get(y, options.get_wave_width() - 1 + dx) = pattern.get(0, dx);
 				}
 			}
 
-			for (unsigned x = 0; x < options.get_wave_width(); x++) {
+			for (uint32_t x = 0; x < options.get_wave_width(); x++) {
 				const Array2D<T> &pattern = patterns[output_patterns.get(options.get_wave_height() - 1, x)];
-				for (unsigned dy = 1; dy < options.pattern_size; dy++) {
+				for (uint32_t dy = 1; dy < options.pattern_size; dy++) {
 					output.get(options.get_wave_height() - 1 + dy, x) =
 							pattern.get(dy, 0);
 				}
@@ -217,8 +217,8 @@ private:
 
 			const Array2D<T> &pattern = patterns[output_patterns.get(options.get_wave_height() - 1, options.get_wave_width() - 1)];
 
-			for (unsigned dy = 1; dy < options.pattern_size; dy++) {
-				for (unsigned dx = 1; dx < options.pattern_size; dx++) {
+			for (uint32_t dy = 1; dy < options.pattern_size; dy++) {
+				for (uint32_t dx = 1; dx < options.pattern_size; dx++) {
 					output.get(options.get_wave_height() - 1 + dy, options.get_wave_width() - 1 + dx) = pattern.get(dy, dx);
 				}
 			}
@@ -227,8 +227,8 @@ private:
 		return output;
 	}
 
-	unsigned get_pattern_id(const Array2D<T> &pattern) {
-		unsigned *pattern_id = std::find(patterns.begin(), patterns.end(), pattern);
+	uint32_t get_pattern_id(const Array2D<T> &pattern) {
+		uint32_t *pattern_id = std::find(patterns.begin(), patterns.end(), pattern);
 
 		if (pattern_id != patterns.end()) {
 			return *pattern_id;
@@ -239,8 +239,8 @@ private:
 
 	// Set the pattern at a specific position, given its pattern id
 	// pattern_id needs to be a valid pattern id, and i and j needs to be in the wave range
-	void set_pattern(unsigned pattern_id, unsigned i, unsigned j) {
-		for (unsigned p = 0; p < patterns.size(); p++) {
+	void set_pattern(uint32_t pattern_id, uint32_t i, uint32_t j) {
+		for (uint32_t p = 0; p < patterns.size(); p++) {
 			if (pattern_id != p) {
 				wfc.remove_wave_pattern(i, j, p);
 			}
@@ -254,7 +254,7 @@ public:
 	// Set the pattern at a specific position.
 	// Returns false if the given pattern does not exist, or if the
 	// coordinates are not in the wave
-	bool set_pattern(const Array2D<T> &pattern, unsigned i, unsigned j) {
+	bool set_pattern(const Array2D<T> &pattern, uint32_t i, uint32_t j) {
 		auto pattern_id = get_pattern_id(pattern);
 
 		if (pattern_id == std::nullopt || i >= options.get_wave_height() || j >= options.get_wave_width()) {
@@ -267,7 +267,7 @@ public:
 
 	// Run the WFC algorithm, and return the result if the algorithm succeeded.
 	Array2D<T> run() {
-		Array2D<unsigned> result = wfc.run();
+		Array2D<uint32_t> result = wfc.run();
 
 		if (result.width == 0 && result.height == 0) {
 			return Array2D<T>(0, 0);
