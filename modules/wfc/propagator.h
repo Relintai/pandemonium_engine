@@ -4,7 +4,6 @@
 #include "array_3d.h"
 #include "core/vector.h"
 #include "direction.h"
-#include <tuple>
 
 class Wave;
 
@@ -26,10 +25,26 @@ private:
 
 	const bool periodic_output;
 
+	struct PropagatingEntry {
+		uint32_t data[3];
+
+		PropagatingEntry() {
+			for (int i = 0; i < 3; ++i) {
+				data[i] = 0;
+			}
+		}
+
+		PropagatingEntry(uint32_t x, uint32_t y, uint32_t z) {
+			data[0] = x;
+			data[1] = y;
+			data[2] = z;
+		}
+	};
+
 	// All the tuples (y, x, pattern) that should be propagated.
 	// The tuple should be propagated when wave.get(y, x, pattern) is set to
 	// false.
-	Vector<std::tuple<uint32_t, uint32_t, uint32_t>> propagating;
+	Vector<PropagatingEntry> propagating;
 
 	struct CompatibilityEntry {
 		int direction[4];
@@ -67,7 +82,7 @@ public:
 		CompatibilityEntry temp;
 		compatible.get(y, x, pattern) = temp;
 
-		propagating.push_back(std::tuple<uint32_t, uint32_t, uint32_t>(y, x, pattern));
+		propagating.push_back(PropagatingEntry(y, x, pattern));
 	}
 
 	void propagate(Wave &wave);

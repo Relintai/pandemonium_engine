@@ -212,11 +212,10 @@ private:
 
 	// Generate the propagator which will be used in the wfc algorithm.
 	static Vector<PropagatorEntry> generate_propagator(
-			const Vector<std::tuple<uint32_t, uint32_t, uint32_t, uint32_t>> &neighbors,
+			const Vector<NeighbourData> &neighbors,
 			Vector<Tile<T>> tiles,
 			Vector<std::pair<uint32_t, uint32_t>> id_to_oriented_tile,
 			Vector<Vector<uint32_t>> oriented_tile_ids) {
-				
 		size_t nb_oriented_tiles = id_to_oriented_tile.size();
 		Vector<DensePropagatorHelper> dense_propagator(nb_oriented_tiles, { Vector<bool>(nb_oriented_tiles, false), Vector<bool>(nb_oriented_tiles, false), Vector<bool>(nb_oriented_tiles, false), Vector<bool>(nb_oriented_tiles, false) });
 		dense_propagator.resize(nb_oriented_tiles);
@@ -311,11 +310,20 @@ private:
 	}
 
 public:
+	struct NeighbourData {
+		uint32_t data[4];
+
+		NeighbourData() {
+			for (int i = 0; i < 4; ++i) {
+				direction[i] = 0;
+			}
+		}
+	};
+
 	// Construct the TilingWFC class to generate a tiled image.
 	TilingWFC(
 			const Vector<Tile<T>> &tiles,
-			const Vector<std::tuple<uint32_t, uint32_t, uint32_t, uint32_t>>
-					&neighbors,
+			const Vector<NeighbourData> &neighbors,
 			const uint32_t height, const uint32_t width,
 			const TilingWFCOptions &options, int seed) :
 			tiles(tiles),

@@ -7,7 +7,6 @@ void Propagator::init_compatible() {
 	for (uint32_t y = 0; y < wave_height; y++) {
 		for (uint32_t x = 0; x < wave_width; x++) {
 			for (uint32_t pattern = 0; pattern < patterns_size; pattern++) {
-				
 				for (int direction = 0; direction < 4; direction++) {
 					value.direction[direction] = static_cast<uint32_t>(propagator_state[pattern].directions[get_opposite_direction(direction)].size());
 				}
@@ -22,8 +21,13 @@ void Propagator::propagate(Wave &wave) {
 	// We propagate every element while there is element to propagate.
 	while (propagating.size() != 0) {
 		// The cell and pattern that has been set to false.
-		uint32_t y1, x1, pattern;
-		std::tie(y1, x1, pattern) = propagating[propagating.size() - 1];
+
+		const PropagatingEntry &e = propagating[propagating.size() - 1];
+
+		uint32_t y1 = e.data[0];
+		uint32_t x1 = e.data[1];
+		uint32_t pattern = e.data[2];
+
 		propagating.resize(propagating.size() - 1);
 
 		// We propagate the information in all 4 directions.
@@ -38,9 +42,11 @@ void Propagator::propagate(Wave &wave) {
 			} else {
 				x2 = x1 + dx;
 				y2 = y1 + dy;
+
 				if (x2 < 0 || x2 >= (int)wave.width) {
 					continue;
 				}
+
 				if (y2 < 0 || y2 >= (int)wave.height) {
 					continue;
 				}
@@ -54,19 +60,19 @@ void Propagator::propagate(Wave &wave) {
 			// contradiction with pattern1
 			int size = patterns.size();
 			for (int i = 0; i < size; ++i) {
-				uint32_t pattern = patterns[i];
-				
+				uint32_t pattern_entry = patterns[i];
+
 				// We decrease the number of compatible patterns in the opposite
 				// direction If the pattern was discarded from the wave, the element
 				// is still negative, which is not a problem
-				CompatibilityEntry &value = compatible.get(y2, x2, pattern);
+				CompatibilityEntry &value = compatible.get(y2, x2, pattern_entry);
 				value.direction[direction]--;
 
 				// If the element was set to 0 with this operation, we need to remove
 				// the pattern from the wave, and propagate the information
 				if (value.direction[direction] == 0) {
-					add_to_propagator(y2, x2, pattern);
-					wave.set(i2, pattern, false);
+					add_to_propagator(y2, x2, pattern_entry);
+					wave.set(i2, pattern_entry, false);
 				}
 			}
 		}
