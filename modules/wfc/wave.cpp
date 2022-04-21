@@ -52,20 +52,20 @@ Wave::Wave(uint32_t height, uint32_t width,
 	double log_base_s = log(base_s);
 	double entropy_base = log_base_s - base_entropy / base_s;
 
-	memoisation.plogp_sum.resize(width * height);
-	memoisation.plogp_sum.fill(base_entropy);
+	memoisation_plogp_sum.resize(width * height);
+	memoisation_plogp_sum.fill(base_entropy);
 
-	memoisation.sum.resize(width * height);
-	memoisation.sum.fill(base_s);
+	memoisation_sum.resize(width * height);
+	memoisation_sum.fill(base_s);
 
-	memoisation.log_sum.resize(width * height);
-	memoisation.log_sum.fill(log_base_s);
+	memoisation_log_sum.resize(width * height);
+	memoisation_log_sum.fill(log_base_s);
 
-	memoisation.nb_patterns.resize(width * height);
-	memoisation.nb_patterns.fill(static_cast<uint32_t>(nb_patterns));
+	memoisation_nb_patterns.resize(width * height);
+	memoisation_nb_patterns.fill(static_cast<uint32_t>(nb_patterns));
 
-	memoisation.entropy.resize(width * height);
-	memoisation.entropy.fill(entropy_base);
+	memoisation_entropy.resize(width * height);
+	memoisation_entropy.fill(entropy_base);
 }
 
 void Wave::set(uint32_t index, uint32_t pattern, bool value) {
@@ -78,14 +78,14 @@ void Wave::set(uint32_t index, uint32_t pattern, bool value) {
 
 	// Otherwise, the memoisation should be updated.
 	data.get(index, pattern) = value;
-	memoisation.plogp_sum.write[index] -= plogp_patterns_frequencies[pattern];
-	memoisation.sum.write[index] -= patterns_frequencies[pattern];
-	memoisation.log_sum.write[index] = log(memoisation.sum[index]);
-	memoisation.nb_patterns.write[index]--;
-	memoisation.entropy.write[index] = memoisation.log_sum[index] - memoisation.plogp_sum[index] / memoisation.sum[index];
+	memoisation_plogp_sum.write[index] -= plogp_patterns_frequencies[pattern];
+	memoisation_sum.write[index] -= patterns_frequencies[pattern];
+	memoisation_log_sum.write[index] = log(memoisation_sum[index]);
+	memoisation_nb_patterns.write[index]--;
+	memoisation_entropy.write[index] = memoisation_log_sum[index] - memoisation_plogp_sum[index] / memoisation_sum[index];
 
 	// If there is no patterns possible in the cell, then there is a contradiction.
-	if (memoisation.nb_patterns[index] == 0) {
+	if (memoisation_nb_patterns[index] == 0) {
 		is_impossible = true;
 	}
 }
@@ -104,14 +104,14 @@ int Wave::get_min_entropy(std::minstd_rand &gen) const {
 	for (uint32_t i = 0; i < size; i++) {
 		// If the cell is decided, we do not compute the entropy (which is equal
 		// to 0).
-		double nb_patterns_local = memoisation.nb_patterns[i];
+		double nb_patterns_local = memoisation_nb_patterns[i];
 		
 		if (nb_patterns_local == 1) {
 			continue;
 		}
 
 		// Otherwise, we take the memoised entropy.
-		double entropy = memoisation.entropy[i];
+		double entropy = memoisation_entropy[i];
 
 		// We first check if the entropy is less than the minimum.
 		// This is important to reduce noise computation (which is not

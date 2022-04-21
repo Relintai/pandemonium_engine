@@ -5,18 +5,6 @@
 #include <random>
 #include "core/vector.h"
 
-// Struct containing the values needed to compute the entropy of all the cells.
-// This struct is updated every time the wave is changed.
-// p'(pattern) is equal to patterns_frequencies[pattern] if wave.get(cell,
-// pattern) is set to true, otherwise 0.
-struct EntropyMemoisation {
-	Vector<double> plogp_sum; // The sum of p'(pattern)// log(p'(pattern)).
-	Vector<double> sum; // The sum of p'(pattern).
-	Vector<double> log_sum; // The log of sum.
-	Vector<uint32_t> nb_patterns; // The number of patterns present
-	Vector<double> entropy; // The entropy of the cell.
-};
-
 // Contains the pattern possibilities in every cell.
 // Also contains information about cell entropy.
 class Wave {
@@ -31,7 +19,11 @@ private:
 	// This is used to define the maximum value of the noise.
 	const double min_abs_half_plogp;
 
-	EntropyMemoisation memoisation;
+	Vector<double> memoisation_plogp_sum; // The sum of p'(pattern)// log(p'(pattern)).
+	Vector<double> memoisation_sum; // The sum of p'(pattern).
+	Vector<double> memoisation_log_sum; // The log of sum.
+	Vector<uint32_t> memoisation_nb_patterns; // The number of patterns present
+	Vector<double> memoisation_entropy; // The entropy of the cell.
 
 	// This value is set to true if there is a contradiction in the wave (all elements set to false in a cell).
 	bool is_impossible;
