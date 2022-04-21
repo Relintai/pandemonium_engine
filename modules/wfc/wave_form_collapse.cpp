@@ -109,7 +109,7 @@ WaveFormCollapse::ObserveStatus WaveFormCollapse::observe() {
 
 	double random_value = gen.random(0.0, s);
 
-	size_t chosen_value = patterns_frequencies.size() - 1;
+	int chosen_value = patterns_frequencies.size() - 1;
 
 	for (int k = 0; k < patterns_frequencies.size(); k++) {
 		random_value -= wave_get(argmin, k) ? patterns_frequencies[k] : 0;
@@ -301,7 +301,7 @@ void WaveFormCollapse::initialize() {
 	double base_entropy = 0;
 	double base_s = 0;
 
-	for (uint32_t i = 0; i < patterns_frequencies.size(); i++) {
+	for (int i = 0; i < patterns_frequencies.size(); i++) {
 		base_entropy += plogp_patterns_frequencies[i];
 		base_s += patterns_frequencies[i];
 	}
