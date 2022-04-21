@@ -79,7 +79,7 @@ private:
 		Array2D<T> ground_pattern = input.get_sub_array(input.height - 1, input.width / 2, options.pattern_size, options.pattern_size);
 
 		// Retrieve the id of the pattern.
-		for (uint32_t i = 0; i < patterns.size(); i++) {
+		for (int i = 0; i < patterns.size(); i++) {
 			if (ground_pattern == patterns[i]) {
 				return i;
 			}
@@ -115,8 +115,7 @@ private:
 				// The number of symmetries in the option class define which symetries
 				// will be used.
 				for (uint32_t k = 0; k < options.symmetry; k++) {
-					auto res = patterns_id.insert(
-							std::make_pair(symmetries[k], patterns.size()));
+					auto res = patterns_id.insert(std::make_pair(symmetries[k], patterns.size()));
 
 					// If the pattern already exist, we just have to increase its number
 					// of appearance.
@@ -149,6 +148,7 @@ private:
 				}
 			}
 		}
+
 		return true;
 	}
 
@@ -157,12 +157,13 @@ private:
 	// contains pattern2, where direction is the direction defined by (dy, dx)
 	// (see direction.hpp).
 	static Vector<PropagatorEntry> generate_compatible(const Vector<Array2D<T>> &patterns) {
-		Vector<PropagatorEntry> compatible = Vector<PropagatorEntry>(patterns.size());
+		Vector<PropagatorEntry> compatible;
+		compatible.resize(patterns.size());
 
 		// Iterate on every dy, dx, pattern1 and pattern2
-		for (uint32_t pattern1 = 0; pattern1 < patterns.size(); pattern1++) {
+		for (int pattern1 = 0; pattern1 < patterns.size(); pattern1++) {
 			for (uint32_t direction = 0; direction < 4; direction++) {
-				for (uint32_t pattern2 = 0; pattern2 < patterns.size(); pattern2++) {
+				for (int pattern2 = 0; pattern2 < patterns.size(); pattern2++) {
 					if (agrees(patterns[pattern1], patterns[pattern2], directions_y[direction], directions_x[direction])) {
 						compatible[pattern1][direction].push_back(pattern2);
 					}
@@ -230,7 +231,7 @@ private:
 	// Set the pattern at a specific position, given its pattern id
 	// pattern_id needs to be a valid pattern id, and i and j needs to be in the wave range
 	void set_pattern(uint32_t pattern_id, uint32_t i, uint32_t j) {
-		for (uint32_t p = 0; p < patterns.size(); p++) {
+		for (int p = 0; p < patterns.size(); p++) {
 			if (pattern_id != p) {
 				wfc.remove_wave_pattern(i, j, p);
 			}

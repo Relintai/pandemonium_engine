@@ -90,23 +90,23 @@ struct Tile {
 	static Vector<Vector<uint32_t>> generate_action_map(const Symmetry &symmetry) {
 		Vector<uint32_t> rotation_map = generate_rotation_map(symmetry);
 		Vector<uint32_t> reflection_map = generate_reflection_map(symmetry);
-		size_t size = rotation_map.size();
-		Vector<Vector<uint32_t>> action_map(8,
-				Vector<uint32_t>(size));
-		for (size_t i = 0; i < size; ++i) {
+		int size = rotation_map.size();
+		Vector<Vector<uint32_t>> action_map(8, Vector<uint32_t>(size));
+
+		for (int i = 0; i < size; ++i) {
 			action_map[0][i] = i;
 		}
 
-		for (size_t a = 1; a < 4; ++a) {
-			for (size_t i = 0; i < size; ++i) {
+		for (int a = 1; a < 4; ++a) {
+			for (int i = 0; i < size; ++i) {
 				action_map[a][i] = rotation_map[action_map[a - 1][i]];
 			}
 		}
-		for (size_t i = 0; i < size; ++i) {
+		for (int i = 0; i < size; ++i) {
 			action_map[4][i] = reflection_map[action_map[0][i]];
 		}
-		for (size_t a = 5; a < 8; ++a) {
-			for (size_t i = 0; i < size; ++i) {
+		for (int a = 5; a < 8; ++a) {
+			for (int i = 0; i < size; ++i) {
 				action_map[a][i] = rotation_map[action_map[a - 1][i]];
 			}
 		}
@@ -114,8 +114,7 @@ struct Tile {
 	}
 
 	// Generate all distincts rotations of a 2D array given its symmetries;
-	static Vector<Array2D<T>> generate_oriented(Array2D<T> data,
-			Symmetry symmetry) {
+	static Vector<Array2D<T>> generate_oriented(Array2D<T> data, Symmetry symmetry) {
 		Vector<Array2D<T>> oriented;
 		oriented.push_back(data);
 
@@ -187,9 +186,9 @@ private:
 		Vector<Vector<uint32_t>> oriented_tile_ids;
 
 		uint32_t id = 0;
-		for (uint32_t i = 0; i < tiles.size(); i++) {
+		for (int i = 0; i < tiles.size(); i++) {
 			oriented_tile_ids.push_back({});
-			for (uint32_t j = 0; j < tiles[i].data.size(); j++) {
+			for (int j = 0; j < tiles[i].data.size(); j++) {
 				id_to_oriented_tile.push_back({ i, j });
 				oriented_tile_ids[i].push_back(id);
 				id++;
@@ -272,8 +271,8 @@ private:
 	static Vector<double> get_tiles_weights(const Vector<Tile<T>> &tiles) {
 		Vector<double> frequencies;
 
-		for (size_t i = 0; i < tiles.size(); ++i) {
-			for (size_t j = 0; j < tiles[i].data.size(); ++j) {
+		for (int i = 0; i < tiles.size(); ++i) {
+			for (int j = 0; j < tiles[i].data.size(); ++j) {
 				frequencies.push_back(tiles[i].weight / tiles[i].data.size());
 			}
 		}
@@ -302,7 +301,7 @@ private:
 	}
 
 	void set_tile(uint32_t tile_id, uint32_t i, uint32_t j) {
-		for (uint32_t p = 0; p < id_to_oriented_tile.size(); p++) {
+		for (int p = 0; p < id_to_oriented_tile.size(); p++) {
 			if (tile_id != p) {
 				wfc.remove_wave_pattern(i, j, p);
 			}

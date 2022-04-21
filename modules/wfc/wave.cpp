@@ -8,7 +8,7 @@ namespace {
 Vector<double> get_plogp(const Vector<double> &distribution) {
 	Vector<double> plogp;
 
-	for (uint32_t i = 0; i < distribution.size(); i++) {
+	for (int i = 0; i < distribution.size(); i++) {
 		plogp.push_back(distribution[i] * log(distribution[i]));
 	}
 
@@ -19,7 +19,7 @@ Vector<double> get_plogp(const Vector<double> &distribution) {
 double get_min_abs_half(const Vector<double> &v) {
 	double min_abs_half = std::numeric_limits<double>::infinity();
 
-	for (uint32_t i = 0; i < v.size(); i++) {
+	for (int i = 0; i < v.size(); i++) {
 		min_abs_half = std::min(min_abs_half, std::abs(v[i] / 2.0));
 	}
 

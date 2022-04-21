@@ -73,7 +73,7 @@ public:
 			return false;
 		}
 
-		for (uint32_t i = 0; i < data.size(); i++) {
+		for (int i = 0; i < data.size(); i++) {
 			if (a.data[i] != data[i]) {
 				return false;
 			}
