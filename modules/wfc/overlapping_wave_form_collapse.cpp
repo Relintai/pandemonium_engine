@@ -3,8 +3,46 @@
 
 #include "core/set.h"
 
-void OverlappingWaveFormCollapse::set_input(const Array2D<int> &data) {
-	input = data;
+bool OverlappingWaveFormCollapse::get_periodic_input() const {
+	return periodic_input;
+}
+void OverlappingWaveFormCollapse::set_periodic_input(const bool val) {
+	periodic_input = val;
+}
+
+int OverlappingWaveFormCollapse::get_out_height() const {
+	return out_height;
+}
+void OverlappingWaveFormCollapse::set_out_height(const int val) {
+	out_height = val;
+}
+
+int OverlappingWaveFormCollapse::get_out_width() const {
+	return out_width;
+}
+void OverlappingWaveFormCollapse::set_out_width(const int val) {
+	periodic_output = val;
+}
+
+int OverlappingWaveFormCollapse::get_symmetry() const {
+	return symmetry;
+}
+void OverlappingWaveFormCollapse::set_symmetry(const int val) {
+	symmetry = val;
+}
+
+bool OverlappingWaveFormCollapse::get_ground() const {
+	return ground;
+}
+void OverlappingWaveFormCollapse::set_ground(const bool val) {
+	ground = val;
+}
+
+int OverlappingWaveFormCollapse::get_pattern_size() const {
+	return pattern_size;
+}
+void OverlappingWaveFormCollapse::set_pattern_size(const int val) {
+	pattern_size = val;
 }
 
 int OverlappingWaveFormCollapse::get_wave_height() const {
@@ -17,8 +55,8 @@ int OverlappingWaveFormCollapse::get_wave_width() const {
 }
 
 // Run the WFC algorithm, and return the result if the algorithm succeeded.
-Array2D<int> OverlappingWaveFormCollapse::orun() {
-	Array2D<int> result = run();
+Array2D<int> OverlappingWaveFormCollapse::run() {
+	Array2D<int> result = WaveFormCollapse::run();
 
 	if (result.width == 0 && result.height == 0) {
 		return Array2D<int>(0, 0);
@@ -248,7 +286,6 @@ void OverlappingWaveFormCollapse::initialize() {
 
 OverlappingWaveFormCollapse::OverlappingWaveFormCollapse() {
 	periodic_input = false;
-	periodic_output = false;
 	out_height = 0;
 	out_width = 0;
 	symmetry = 0;
@@ -259,4 +296,27 @@ OverlappingWaveFormCollapse::~OverlappingWaveFormCollapse() {
 }
 
 void OverlappingWaveFormCollapse::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_periodic_input"), &OverlappingWaveFormCollapse::get_periodic_input);
+	ClassDB::bind_method(D_METHOD("set_periodic_input", "value"), &OverlappingWaveFormCollapse::set_periodic_input);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "periodic_input"), "set_periodic_input", "get_periodic_input");
+
+	ClassDB::bind_method(D_METHOD("get_out_height"), &OverlappingWaveFormCollapse::get_out_height);
+	ClassDB::bind_method(D_METHOD("set_out_height", "value"), &OverlappingWaveFormCollapse::set_out_height);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "out_height"), "set_out_height", "get_out_height");
+
+	ClassDB::bind_method(D_METHOD("get_out_width"), &OverlappingWaveFormCollapse::get_out_width);
+	ClassDB::bind_method(D_METHOD("set_out_width", "value"), &OverlappingWaveFormCollapse::set_out_width);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "out_width"), "set_out_width", "get_out_width");
+
+	ClassDB::bind_method(D_METHOD("get_symmetry"), &OverlappingWaveFormCollapse::get_symmetry);
+	ClassDB::bind_method(D_METHOD("set_symmetry", "value"), &OverlappingWaveFormCollapse::set_symmetry);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "symmetry"), "set_symmetry", "get_symmetry");
+
+	ClassDB::bind_method(D_METHOD("get_ground"), &OverlappingWaveFormCollapse::get_ground);
+	ClassDB::bind_method(D_METHOD("set_ground", "value"), &OverlappingWaveFormCollapse::set_ground);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "ground"), "set_ground", "get_ground");
+
+	ClassDB::bind_method(D_METHOD("get_pattern_size"), &OverlappingWaveFormCollapse::get_pattern_size);
+	ClassDB::bind_method(D_METHOD("set_pattern_size", "value"), &OverlappingWaveFormCollapse::set_pattern_size);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "pattern_size"), "set_pattern_size", "get_pattern_size");
 }

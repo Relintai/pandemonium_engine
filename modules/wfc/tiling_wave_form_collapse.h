@@ -7,14 +7,6 @@
 #include "wave_form_collapse.h"
 
 struct Tile {
-	enum Symmetry {
-		SYMMETRY_X = 0,
-		SYMMETRY_T,
-		SYMMETRY_I,
-		SYMMETRY_L,
-		SYMMETRY_BACKSLASH,
-		SYMMETRY_P
-	};
 
 	struct ActionMap {
 		Vector<int> map[8];
@@ -30,15 +22,15 @@ struct Tile {
 	static const uint8_t reflection_map[6][9];
 
 	Vector<Array2D<int>> data;
-	Symmetry symmetry;
+	WaveFormCollapse::Symmetry symmetry;
 	double weight;
 
-	static ActionMap generate_action_map(const Symmetry &symmetry);
+	static ActionMap generate_action_map(const WaveFormCollapse::Symmetry &symmetry);
 
-	static Vector<Array2D<int>> generate_oriented(Array2D<int> data, Symmetry symmetry);
+	static Vector<Array2D<int>> generate_oriented(Array2D<int> data, WaveFormCollapse::Symmetry symmetry);
 
-	Tile(const Vector<Array2D<int>> &p_data, Symmetry p_symmetry, double p_weight);
-	Tile(const Array2D<int> &p_data, Symmetry p_symmetry, double p_weight);
+	Tile(const Vector<Array2D<int>> &p_data, WaveFormCollapse::Symmetry p_symmetry, double p_weight);
+	Tile(const Array2D<int> &p_data, WaveFormCollapse::Symmetry p_symmetry, double p_weight);
 };
 
 class TilingWaveFormCollapse : public WaveFormCollapse {
@@ -94,7 +86,7 @@ public:
 	void set_tile(int tile_id, int i, int j);
 	bool set_tile(int tile_id, int orientation, int i, int j);
 
-	Array2D<int> do_run();
+	Array2D<int> run();
 
 	Array2D<int> id_to_tiling(Array2D<int> ids);
 

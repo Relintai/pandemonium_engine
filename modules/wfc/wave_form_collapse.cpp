@@ -77,6 +77,23 @@ void WaveFormCollapse::set_pattern_frequencies(const Vector<double> &p_patterns_
 	}
 }
 
+void WaveFormCollapse::set_input(const PoolIntArray &p_data, int p_width, int p_height) {
+	set_size(p_width, p_height);
+
+	input.resize(p_width, p_height);
+
+	ERR_FAIL_COND(input.data.size() != p_data.size());
+
+	int *w = input.data.ptrw();
+	int s = input.data.size();
+
+	PoolIntArray::Read r = p_data.read();
+
+	for (int i = 0; i < s; ++i) {
+		w[i] = r[i];
+	}
+}
+
 Array2D<int> WaveFormCollapse::run() {
 	while (true) {
 		// Define the value of an undefined cell.
@@ -91,6 +108,34 @@ Array2D<int> WaveFormCollapse::run() {
 
 		propagate();
 	}
+}
+
+PoolIntArray WaveFormCollapse::generate_image_index_data() {
+	PoolIntArray arr;
+
+	Array2D<int> a = run();
+
+	if (a.width == 0 && a.height == 0) {
+		return arr;
+	}
+
+	print_error(String::num(a.width));
+	print_error(String::num(a.height));
+	print_error("---");
+
+	const int *r = a.data.ptr();
+	int s = a.data.size();
+
+	arr.resize(s);
+	PoolIntArray::Write w = arr.write();
+
+	for (int i = 0; i < s; ++i) {
+		w[i] = r[i];
+	}
+
+	w.release();
+
+	return arr;
 }
 
 WaveFormCollapse::ObserveStatus WaveFormCollapse::observe() {
@@ -299,6 +344,7 @@ void WaveFormCollapse::propagate() {
 
 void WaveFormCollapse::initialize() {
 	//wave
+	data.resize(0, 0);
 	data.resize_fill(wave_width * wave_height, patterns_frequencies.size(), 1);
 
 	plogp_patterns_frequencies = get_plogp(patterns_frequencies);
@@ -354,5 +400,28 @@ WaveFormCollapse::WaveFormCollapse() {
 WaveFormCollapse::~WaveFormCollapse() {
 }
 
-void WaveFormCollapse::bind_methods() {
+void WaveFormCollapse::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_width"), &WaveFormCollapse::get_width);
+	ClassDB::bind_method(D_METHOD("get_height"), &WaveFormCollapse::get_height);
+
+	ClassDB::bind_method(D_METHOD("get_periodic_output"), &WaveFormCollapse::get_periodic_output);
+	ClassDB::bind_method(D_METHOD("set_periodic_output", "value"), &WaveFormCollapse::set_periodic_output);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "periodic_output"), "set_periodic_output", "get_periodic_output");
+
+	ClassDB::bind_method(D_METHOD("set_seed", "seed"), &WaveFormCollapse::set_seed);
+	ClassDB::bind_method(D_METHOD("set_size", "width", "height"), &WaveFormCollapse::set_size);
+
+	ClassDB::bind_method(D_METHOD("propagate"), &WaveFormCollapse::propagate);
+	ClassDB::bind_method(D_METHOD("initialize"), &WaveFormCollapse::initialize);
+
+	ClassDB::bind_method(D_METHOD("set_input", "data", "width", "height"), &WaveFormCollapse::set_input);
+
+	ClassDB::bind_method(D_METHOD("generate_image_index_data"), &WaveFormCollapse::generate_image_index_data);
+
+	BIND_ENUM_CONSTANT(SYMMETRY_X);
+	BIND_ENUM_CONSTANT(SYMMETRY_T);
+	BIND_ENUM_CONSTANT(SYMMETRY_I);
+	BIND_ENUM_CONSTANT(SYMMETRY_L);
+	BIND_ENUM_CONSTANT(SYMMETRY_BACKSLASH);
+	BIND_ENUM_CONSTANT(SYMMETRY_P);
 }

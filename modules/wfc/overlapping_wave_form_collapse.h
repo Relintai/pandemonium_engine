@@ -10,20 +10,28 @@ class OverlappingWaveFormCollapse : public WaveFormCollapse {
 	GDCLASS(OverlappingWaveFormCollapse, WaveFormCollapse);
 
 public:
-	bool periodic_input;
-	bool periodic_output;
-	int out_height;
-	int out_width;
-	int symmetry;
-	bool ground;
-	int pattern_size;
+	bool get_periodic_input() const;
+	void set_periodic_input(const bool val);
 
-	void set_input(const Array2D<int> &data);
+	int get_out_height() const;
+	void set_out_height(const int val);
+
+	int get_out_width() const;
+	void set_out_width(const int val);
+
+	int get_symmetry() const;
+	void set_symmetry(const int val);
+
+	bool get_ground() const;
+	void set_ground(const bool val);
+
+	int get_pattern_size() const;
+	void set_pattern_size(const int val);
 
 	int get_wave_height() const;
 	int get_wave_width() const;
 
-	Array2D<int> orun();
+	Array2D<int> run();
 
 	void init_ground();
 
@@ -48,9 +56,14 @@ protected:
 	static void _bind_methods();
 
 private:
-	Array2D<int> input;
-
 	Vector<Array2D<int>> patterns;
+
+	bool periodic_input;
+	int out_height;
+	int out_width;
+	int symmetry;
+	bool ground;
+	int pattern_size;
 };
 
 #endif

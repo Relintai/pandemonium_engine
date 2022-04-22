@@ -14,6 +14,15 @@ class WaveFormCollapse : public Reference {
 	GDCLASS(WaveFormCollapse, Reference);
 
 public:
+	enum Symmetry {
+		SYMMETRY_X = 0,
+		SYMMETRY_T,
+		SYMMETRY_I,
+		SYMMETRY_L,
+		SYMMETRY_BACKSLASH,
+		SYMMETRY_P
+	};
+
 	enum ObserveStatus {
 		OBSERVE_STATUS_SUCCESS,
 		OBSERVE_STATUS_FAILURE,
@@ -67,7 +76,11 @@ public:
 	void set_propagator_state(const Vector<PropagatorStateEntry> &p_propagator_state);
 	void set_pattern_frequencies(const Vector<double> &p_patterns_frequencies, const bool p_normalize = true);
 
-	Array2D<int> run();
+	virtual void set_input(const PoolIntArray &p_data, int p_width, int p_height);
+
+	virtual Array2D<int> run();
+
+	PoolIntArray generate_image_index_data();
 
 	ObserveStatus observe();
 
@@ -125,7 +138,11 @@ public:
 	~WaveFormCollapse();
 
 protected:
-	static void bind_methods();
+	static void _bind_methods();
+
+	Array2D<int> input;
+
+	bool periodic_output;
 
 private:
 	RandomPCG gen;
@@ -164,12 +181,10 @@ private:
 
 	// The actual wave. data.get(index, pattern) is equal to 0 if the pattern can
 	// be placed in the cell index.
-	Array2D<uint8_t> data;
+	Array2D<int> data;
 
 	//Propagator
 	Vector<PropagatorStateEntry> propagator_state;
-
-	bool periodic_output;
 
 	// All the tuples (y, x, pattern) that should be propagated.
 	// The tuple should be propagated when wave.get(y, x, pattern) is set to false.
@@ -184,5 +199,7 @@ private:
 
 	void init_compatible();
 };
+
+VARIANT_ENUM_CAST(WaveFormCollapse::Symmetry);
 
 #endif

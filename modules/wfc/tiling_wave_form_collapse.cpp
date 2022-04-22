@@ -30,7 +30,7 @@ const uint8_t Tile::reflection_map[6][9] = {
 // Actions 0, 1, 2, and 3 are 0°, 90°, 180°, and 270° anticlockwise rotations.
 // Actions 4, 5, 6, and 7 are actions 0, 1, 2, and 3 preceded by a reflection
 // on the x axis.
-Tile::ActionMap Tile::generate_action_map(const Symmetry &symmetry) {
+Tile::ActionMap Tile::generate_action_map(const WaveFormCollapse::Symmetry &symmetry) {
 	int sindx = static_cast<int>(symmetry);
 	int size = rotation_map[sindx][0];
 
@@ -60,22 +60,22 @@ Tile::ActionMap Tile::generate_action_map(const Symmetry &symmetry) {
 }
 
 // Generate all distincts rotations of a 2D array given its symmetries;
-Vector<Array2D<int>> Tile::generate_oriented(Array2D<int> data, Symmetry symmetry) {
+Vector<Array2D<int>> Tile::generate_oriented(Array2D<int> data, WaveFormCollapse::Symmetry symmetry) {
 	Vector<Array2D<int>> oriented;
 	oriented.push_back(data);
 
 	switch (symmetry) {
-		case SYMMETRY_I:
-		case SYMMETRY_BACKSLASH:
+		case WaveFormCollapse::SYMMETRY_I:
+		case WaveFormCollapse::SYMMETRY_BACKSLASH:
 			oriented.push_back(data.rotated());
 			break;
-		case SYMMETRY_T:
-		case SYMMETRY_L:
+		case WaveFormCollapse::SYMMETRY_T:
+		case WaveFormCollapse::SYMMETRY_L:
 			oriented.push_back(data = data.rotated());
 			oriented.push_back(data = data.rotated());
 			oriented.push_back(data = data.rotated());
 			break;
-		case SYMMETRY_P:
+		case WaveFormCollapse::SYMMETRY_P:
 			oriented.push_back(data = data.rotated());
 			oriented.push_back(data = data.rotated());
 			oriented.push_back(data = data.rotated());
@@ -92,7 +92,7 @@ Vector<Array2D<int>> Tile::generate_oriented(Array2D<int> data, Symmetry symmetr
 }
 
 // Create a tile with its differents orientations, its symmetries and its weight on the distribution of tiles.
-Tile::Tile(const Vector<Array2D<int>> &p_data, Symmetry p_symmetry, double p_weight) {
+Tile::Tile(const Vector<Array2D<int>> &p_data, WaveFormCollapse::Symmetry p_symmetry, double p_weight) {
 	data = p_data;
 	symmetry = p_symmetry;
 	weight = p_weight;
@@ -100,7 +100,7 @@ Tile::Tile(const Vector<Array2D<int>> &p_data, Symmetry p_symmetry, double p_wei
 
 // Create a tile with its base orientation, its symmetries and its weight on the distribution of tiles.
 // The other orientations are generated with its first one.
-Tile::Tile(const Array2D<int> &p_data, Symmetry p_symmetry, double p_weight) {
+Tile::Tile(const Array2D<int> &p_data, WaveFormCollapse::Symmetry p_symmetry, double p_weight) {
 	data = generate_oriented(p_data, p_symmetry);
 	symmetry = p_symmetry;
 	weight = p_weight;
@@ -211,8 +211,8 @@ void TilingWaveFormCollapse::set_tile(int tile_id, int i, int j) {
 	}
 }
 
-Array2D<int> TilingWaveFormCollapse::do_run() {
-	Array2D<int> a = run();
+Array2D<int> TilingWaveFormCollapse::run() {
+	Array2D<int> a = WaveFormCollapse::run();
 
 	if (a.width == 0 && a.height == 0) {
 		return Array2D<int>(0, 0);
@@ -243,6 +243,7 @@ Array2D<int> TilingWaveFormCollapse::id_to_tiling(Array2D<int> ids) {
 
 void TilingWaveFormCollapse::initialize() {
 	generate_oriented_tile_ids();
+	generate_propagator();
 
 	WaveFormCollapse::initialize();
 }
