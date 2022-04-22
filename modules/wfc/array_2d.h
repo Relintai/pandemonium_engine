@@ -6,8 +6,8 @@
 template <typename T>
 class Array2D {
 public:
-	uint32_t height;
-	uint32_t width;
+	int height;
+	int width;
 
 	Vector<T> data;
 
@@ -16,40 +16,40 @@ public:
 		width = 0;
 	}
 
-	Array2D(uint32_t p_height, uint32_t p_width) {
+	Array2D(int p_height, int p_width) {
 		height = p_height;
 		width = p_width;
 		data.resize(width * height);
 	}
 
-	Array2D(uint32_t p_height, uint32_t p_width, T p_value) {
-		height = p_height;
-		width = p_width;
-		data.resize(width * height);
-		data.fill(p_value);
-	}
-
-	void resize(uint32_t p_height, uint32_t p_width) {
-		height = p_height;
-		width = p_width;
-		data.resize(width * height);
-	}
-
-	void resize_fill(uint32_t p_height, uint32_t p_width, T p_value) {
+	Array2D(int p_height, int p_width, T p_value) {
 		height = p_height;
 		width = p_width;
 		data.resize(width * height);
 		data.fill(p_value);
 	}
 
-	const T &get(uint32_t i, uint32_t j) const {
+	void resize(int p_height, int p_width) {
+		height = p_height;
+		width = p_width;
+		data.resize(width * height);
+	}
+
+	void resize_fill(int p_height, int p_width, T p_value) {
+		height = p_height;
+		width = p_width;
+		data.resize(width * height);
+		data.fill(p_value);
+	}
+
+	const T &get(int i, int j) const {
 		CRASH_BAD_INDEX(i, height);
 		CRASH_BAD_INDEX(j, width);
 
 		return data[j + i * width];
 	}
 
-	T &get(uint32_t i, uint32_t j) {
+	T &get(int i, int j) {
 		CRASH_BAD_INDEX(i, height);
 		CRASH_BAD_INDEX(j, width);
 
@@ -58,8 +58,8 @@ public:
 
 	Array2D<T> reflected() const {
 		Array2D<T> result = Array2D<T>(width, height);
-		for (uint32_t y = 0; y < height; y++) {
-			for (uint32_t x = 0; x < width; x++) {
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
 				result.get(y, x) = get(y, width - 1 - x);
 			}
 		}
@@ -68,18 +68,18 @@ public:
 
 	Array2D<T> rotated() const {
 		Array2D<T> result = Array2D<T>(width, height);
-		for (uint32_t y = 0; y < width; y++) {
-			for (uint32_t x = 0; x < height; x++) {
+		for (int y = 0; y < width; y++) {
+			for (int x = 0; x < height; x++) {
 				result.get(y, x) = get(x, width - 1 - y);
 			}
 		}
 		return result;
 	}
 
-	Array2D<T> get_sub_array(uint32_t y, uint32_t x, uint32_t sub_width, uint32_t sub_height) const {
+	Array2D<T> get_sub_array(int y, int x, int sub_width, int sub_height) const {
 		Array2D<T> sub_array_2d = Array2D<T>(sub_width, sub_height);
-		for (uint32_t ki = 0; ki < sub_height; ki++) {
-			for (uint32_t kj = 0; kj < sub_width; kj++) {
+		for (int ki = 0; ki < sub_height; ki++) {
+			for (int kj = 0; kj < sub_width; kj++) {
 				sub_array_2d.get(ki, kj) = get((y + ki) % height, (x + kj) % width);
 			}
 		}

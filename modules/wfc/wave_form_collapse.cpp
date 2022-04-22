@@ -1,5 +1,8 @@
 #include "wave_form_collapse.h"
 
+const int WaveFormCollapse::DIRECTIONS_X[4] = { 0, -1, 1, 0 };
+const int WaveFormCollapse::DIRECTIONS_Y[4] = { -1, 0, 0, 1 };
+
 // Normalize a vector so the sum of its elements is equal to 1.0f
 void WaveFormCollapse::normalize(Vector<double> &v) {
 	double sum_weights = 0.0;
@@ -38,10 +41,10 @@ double WaveFormCollapse::get_min_abs_half(const Vector<double> &v) {
 	return min_abs_half;
 }
 
-uint32_t WaveFormCollapse::get_width() const {
+int WaveFormCollapse::get_width() const {
 	return wave_width;
 }
-uint32_t WaveFormCollapse::get_height() const {
+int WaveFormCollapse::get_height() const {
 	return wave_height;
 }
 
@@ -56,7 +59,7 @@ void WaveFormCollapse::set_seed(const int seed) {
 	gen.seed(seed);
 }
 
-void WaveFormCollapse::set_size(uint32_t p_width, uint32_t p_height) {
+void WaveFormCollapse::set_size(int p_width, int p_height) {
 	wave_width = p_width;
 	wave_height = p_height;
 	wave_size = p_height * p_width;
@@ -74,14 +77,14 @@ void WaveFormCollapse::set_pattern_frequencies(const Vector<double> &p_patterns_
 	}
 }
 
-Array2D<uint32_t> WaveFormCollapse::run() {
+Array2D<int> WaveFormCollapse::run() {
 	while (true) {
 		// Define the value of an undefined cell.
 		ObserveStatus result = observe();
 
 		// Check if the algorithm has terminated.
 		if (result == OBSERVE_STATUS_FAILURE) {
-			return Array2D<uint32_t>(0, 0);
+			return Array2D<int>(0, 0);
 		} else if (result == OBSERVE_STATUS_FAILURE) {
 			return wave_to_output();
 		}
@@ -135,10 +138,10 @@ WaveFormCollapse::ObserveStatus WaveFormCollapse::observe() {
 	return OBSERVE_STATUS_TO_CONTINUE;
 }
 
-Array2D<uint32_t> WaveFormCollapse::wave_to_output() const {
-	Array2D<uint32_t> output_patterns(wave_height, wave_width);
+Array2D<int> WaveFormCollapse::wave_to_output() const {
+	Array2D<int> output_patterns(wave_height, wave_width);
 
-	for (uint32_t i = 0; i < wave_size; i++) {
+	for (int i = 0; i < wave_size; i++) {
 		for (int k = 0; k < patterns_frequencies.size(); k++) {
 			if (wave_get(i, k)) {
 				output_patterns.data.write[i] = k;
@@ -149,7 +152,7 @@ Array2D<uint32_t> WaveFormCollapse::wave_to_output() const {
 	return output_patterns;
 }
 
-void WaveFormCollapse::wave_set(uint32_t index, uint32_t pattern, bool value) {
+void WaveFormCollapse::wave_set(int index, int pattern, bool value) {
 	bool old_value = data.get(index, pattern);
 
 	// If the value isn't changed, nothing needs to be done.
@@ -184,7 +187,7 @@ int WaveFormCollapse::wave_get_min_entropy() const {
 
 	int argmin = -1;
 
-	for (uint32_t i = 0; i < wave_size; i++) {
+	for (int i = 0; i < wave_size; i++) {
 		// If the cell is decided, we do not compute the entropy (which is equal
 		// to 0).
 		double nb_patterns_local = memoisation_nb_patterns[i];
@@ -218,11 +221,11 @@ void WaveFormCollapse::init_compatible() {
 	CompatibilityEntry value;
 
 	// We compute the number of pattern compatible in all directions.
-	for (uint32_t y = 0; y < wave_height; y++) {
-		for (uint32_t x = 0; x < wave_width; x++) {
+	for (int y = 0; y < wave_height; y++) {
+		for (int x = 0; x < wave_width; x++) {
 			for (int pattern = 0; pattern < propagator_state.size(); pattern++) {
 				for (int direction = 0; direction < 4; direction++) {
-					value.direction[direction] = static_cast<uint32_t>(propagator_state[pattern].directions[get_opposite_direction(direction)].size());
+					value.direction[direction] = static_cast<int>(propagator_state[pattern].directions[get_opposite_direction(direction)].size());
 				}
 
 				compatible.get(y, x, pattern) = value;
@@ -238,17 +241,17 @@ void WaveFormCollapse::propagate() {
 
 		const PropagatingEntry &e = propagating[propagating.size() - 1];
 
-		uint32_t y1 = e.data[0];
-		uint32_t x1 = e.data[1];
-		uint32_t pattern = e.data[2];
+		int y1 = e.data[0];
+		int x1 = e.data[1];
+		int pattern = e.data[2];
 
 		propagating.resize(propagating.size() - 1);
 
 		// We propagate the information in all 4 directions.
-		for (uint32_t direction = 0; direction < 4; direction++) {
+		for (int direction = 0; direction < 4; direction++) {
 			// We get the next cell in the direction direction.
-			int dx = directions_x[direction];
-			int dy = directions_y[direction];
+			int dx = DIRECTIONS_X[direction];
+			int dy = DIRECTIONS_Y[direction];
 			int x2, y2;
 
 			if (periodic_output) {
@@ -268,14 +271,14 @@ void WaveFormCollapse::propagate() {
 			}
 
 			// The index of the second cell, and the patterns compatible
-			uint32_t i2 = x2 + y2 * wave_width;
-			const Vector<uint32_t> &patterns = propagator_state[pattern].directions[direction];
+			int i2 = x2 + y2 * wave_width;
+			const Vector<int> &patterns = propagator_state[pattern].directions[direction];
 
 			// For every pattern that could be placed in that cell without being in
 			// contradiction with pattern1
 			int size = patterns.size();
 			for (int i = 0; i < size; ++i) {
-				uint32_t pattern_entry = patterns[i];
+				int pattern_entry = patterns[i];
 
 				// We decrease the number of compatible patterns in the opposite
 				// direction If the pattern was discarded from the wave, the element
@@ -325,7 +328,7 @@ void WaveFormCollapse::initialize() {
 	memoisation_log_sum.fill(log_base_s);
 
 	memoisation_nb_patterns.resize(wave_width * wave_height);
-	memoisation_nb_patterns.fill(static_cast<uint32_t>(patterns_frequencies.size()));
+	memoisation_nb_patterns.fill(static_cast<int>(patterns_frequencies.size()));
 
 	memoisation_entropy.resize(wave_width * wave_height);
 	memoisation_entropy.fill(entropy_base);

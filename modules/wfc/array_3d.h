@@ -6,9 +6,9 @@
 template <typename T>
 class Array3D {
 public:
-	uint32_t height;
-	uint32_t width;
-	uint32_t depth;
+	int height;
+	int width;
+	int depth;
 
 	Vector<T> data;
 
@@ -18,29 +18,14 @@ public:
 		depth = 0;
 	}
 
-	Array3D(uint32_t p_height, uint32_t p_width, uint32_t p_depth) {
+	Array3D(int p_height, int p_width, int p_depth) {
 		height = p_height;
 		width = p_width;
 		depth = p_depth;
 		data.resize(width * height * depth);
 	}
 
-	Array3D(uint32_t p_height, uint32_t p_width, uint32_t p_depth, T value) {
-		height = p_height;
-		width = p_width;
-		depth = p_depth;
-		data.resize(width * height * depth);
-		data.fill(value);
-	}
-
-	void resize(uint32_t p_height, uint32_t p_width, uint32_t p_depth) {
-		height = p_height;
-		width = p_width;
-		depth = p_depth;
-		data.resize(width * height * depth);
-	}
-
-	void resize_fill(uint32_t p_height, uint32_t p_width, uint32_t p_depth, T value) {
+	Array3D(int p_height, int p_width, int p_depth, T value) {
 		height = p_height;
 		width = p_width;
 		depth = p_depth;
@@ -48,7 +33,22 @@ public:
 		data.fill(value);
 	}
 
-	const T &get(uint32_t i, uint32_t j, uint32_t k) const {
+	void resize(int p_height, int p_width, int p_depth) {
+		height = p_height;
+		width = p_width;
+		depth = p_depth;
+		data.resize(width * height * depth);
+	}
+
+	void resize_fill(int p_height, int p_width, int p_depth, T value) {
+		height = p_height;
+		width = p_width;
+		depth = p_depth;
+		data.resize(width * height * depth);
+		data.fill(value);
+	}
+
+	const T &get(int i, int j, int k) const {
 		CRASH_BAD_INDEX(i, height);
 		CRASH_BAD_INDEX(j, width);
 		CRASH_BAD_INDEX(k, depth);
@@ -56,7 +56,7 @@ public:
 		return data[i * width * depth + j * depth + k];
 	}
 
-	T &get(uint32_t i, uint32_t j, uint32_t k) {
+	T &get(int i, int j, int k) {
 		CRASH_BAD_INDEX(i, height);
 		CRASH_BAD_INDEX(j, width);
 		CRASH_BAD_INDEX(k, depth);

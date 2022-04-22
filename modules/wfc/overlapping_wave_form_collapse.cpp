@@ -3,39 +3,39 @@
 
 #include "core/set.h"
 
-void OverlappingWaveFormCollapse::set_input(const Array2D<uint32_t> &data) {
+void OverlappingWaveFormCollapse::set_input(const Array2D<int> &data) {
 	input = data;
 }
 
-uint32_t OverlappingWaveFormCollapse::get_wave_height() const {
+int OverlappingWaveFormCollapse::get_wave_height() const {
 	return periodic_output ? out_height : out_height - pattern_size + 1;
 }
 
 //Get the wave width given these
-uint32_t OverlappingWaveFormCollapse::get_wave_width() const {
+int OverlappingWaveFormCollapse::get_wave_width() const {
 	return periodic_output ? out_width : out_width - pattern_size + 1;
 }
 
 // Run the WFC algorithm, and return the result if the algorithm succeeded.
-Array2D<uint32_t> OverlappingWaveFormCollapse::orun() {
-	Array2D<uint32_t> result = run();
+Array2D<int> OverlappingWaveFormCollapse::orun() {
+	Array2D<int> result = run();
 
 	if (result.width == 0 && result.height == 0) {
-		return Array2D<uint32_t>(0, 0);
+		return Array2D<int>(0, 0);
 	}
 
 	return to_image(result);
 }
 
 void OverlappingWaveFormCollapse::init_ground() {
-	uint32_t ground_pattern_id = get_ground_pattern_id();
+	int ground_pattern_id = get_ground_pattern_id();
 
-	for (uint32_t j = 0; j < get_wave_width(); j++) {
+	for (int j = 0; j < get_wave_width(); j++) {
 		set_pattern(ground_pattern_id, get_wave_height() - 1, j);
 	}
 
-	for (uint32_t i = 0; i < get_wave_height() - 1; i++) {
-		for (uint32_t j = 0; j < get_wave_width(); j++) {
+	for (int i = 0; i < get_wave_height() - 1; i++) {
+		for (int j = 0; j < get_wave_width(); j++) {
 			remove_wave_pattern(i, j, ground_pattern_id);
 		}
 	}
@@ -46,10 +46,10 @@ void OverlappingWaveFormCollapse::init_ground() {
 // Set the pattern at a specific position.
 // Returns false if the given pattern does not exist, or if the
 // coordinates are not in the wave
-bool OverlappingWaveFormCollapse::set_pattern(const Array2D<uint32_t> &pattern, uint32_t i, uint32_t j) {
-	uint32_t pattern_id = get_pattern_id(pattern);
+bool OverlappingWaveFormCollapse::set_pattern(const Array2D<int> &pattern, int i, int j) {
+	int pattern_id = get_pattern_id(pattern);
 
-	if (pattern_id == static_cast<uint32_t>(-1) || i >= get_wave_height() || j >= get_wave_width()) {
+	if (pattern_id == static_cast<int>(-1) || i >= get_wave_height() || j >= get_wave_width()) {
 		return false;
 	}
 
@@ -57,9 +57,9 @@ bool OverlappingWaveFormCollapse::set_pattern(const Array2D<uint32_t> &pattern, 
 	return true;
 }
 
-uint32_t OverlappingWaveFormCollapse::get_ground_pattern_id() {
+int OverlappingWaveFormCollapse::get_ground_pattern_id() {
 	// Get the pattern.
-	Array2D<uint32_t> ground_pattern = input.get_sub_array(input.height - 1, input.width / 2, pattern_size, pattern_size);
+	Array2D<int> ground_pattern = input.get_sub_array(input.height - 1, input.width / 2, pattern_size, pattern_size);
 
 	// Retrieve the id of the pattern.
 	for (int i = 0; i < patterns.size(); i++) {
@@ -71,7 +71,7 @@ uint32_t OverlappingWaveFormCollapse::get_ground_pattern_id() {
 	ERR_FAIL_V(0);
 }
 
-uint32_t OverlappingWaveFormCollapse::get_pattern_id(const Array2D<uint32_t> &pattern) {
+int OverlappingWaveFormCollapse::get_pattern_id(const Array2D<int> &pattern) {
 	for (int i = 0; i < patterns.size(); ++i) {
 		if (patterns[i] == pattern) {
 			return i;
@@ -83,9 +83,9 @@ uint32_t OverlappingWaveFormCollapse::get_pattern_id(const Array2D<uint32_t> &pa
 
 // Set the pattern at a specific position, given its pattern id
 // pattern_id needs to be a valid pattern id, and i and j needs to be in the wave range
-void OverlappingWaveFormCollapse::set_pattern(uint32_t pattern_id, uint32_t i, uint32_t j) {
+void OverlappingWaveFormCollapse::set_pattern(int pattern_id, int i, int j) {
 	for (int p = 0; p < patterns.size(); p++) {
-		if (pattern_id != static_cast<uint32_t>(p)) {
+		if (pattern_id != static_cast<int>(p)) {
 			remove_wave_pattern(i, j, p);
 		}
 	}
@@ -93,27 +93,27 @@ void OverlappingWaveFormCollapse::set_pattern(uint32_t pattern_id, uint32_t i, u
 
 //Return the list of patterns, as well as their probabilities of apparition.
 void OverlappingWaveFormCollapse::get_patterns() {
-	//OAHashMap<Array2D<uint32_t>, uint32_t> patterns_id;
+	//OAHashMap<Array2D<int>, int> patterns_id;
 
-	LocalVector<Array2D<uint32_t>> patterns_id;
+	LocalVector<Array2D<int>> patterns_id;
 
 	patterns.clear();
 
 	// The number of time a pattern is seen in the input image.
 	Vector<double> patterns_weight;
 
-	Vector<Array2D<uint32_t>> symmetries;
+	Vector<Array2D<int>> symmetries;
 	symmetries.resize(8);
 
 	for (int i = 0; i < 8; ++i) {
 		symmetries.write[i].resize(pattern_size, pattern_size);
 	}
 
-	uint32_t max_i = periodic_input ? input.height : input.height - pattern_size + 1;
-	uint32_t max_j = periodic_input ? input.width : input.width - pattern_size + 1;
+	int max_i = periodic_input ? input.height : input.height - pattern_size + 1;
+	int max_j = periodic_input ? input.width : input.width - pattern_size + 1;
 
-	for (uint32_t i = 0; i < max_i; i++) {
-		for (uint32_t j = 0; j < max_j; j++) {
+	for (int i = 0; i < max_i; i++) {
+		for (int j = 0; j < max_j; j++) {
 			// Compute the symmetries of every pattern in the image.
 			symmetries.write[0].data = input.get_sub_array(i, j, pattern_size, pattern_size).data;
 			symmetries.write[1].data = symmetries[0].reflected().data;
@@ -125,7 +125,7 @@ void OverlappingWaveFormCollapse::get_patterns() {
 			symmetries.write[7].data = symmetries[6].reflected().data;
 
 			// The number of symmetries in the option class define which symetries will be used.
-			for (uint32_t k = 0; k < symmetry; k++) {
+			for (int k = 0; k < symmetry; k++) {
 				int indx = patterns.size();
 
 				for (uint32_t h = 0; h < patterns_id.size(); ++h) {
@@ -150,15 +150,15 @@ void OverlappingWaveFormCollapse::get_patterns() {
 }
 
 //Return true if the pattern1 is compatible with pattern2 when pattern2 is at a distance (dy,dx) from pattern1.
-bool OverlappingWaveFormCollapse::agrees(const Array2D<uint32_t> &pattern1, const Array2D<uint32_t> &pattern2, int dy, int dx) {
-	uint32_t xmin = dx < 0 ? 0 : dx;
-	uint32_t xmax = dx < 0 ? dx + pattern2.width : pattern1.width;
-	uint32_t ymin = dy < 0 ? 0 : dy;
-	uint32_t ymax = dy < 0 ? dy + pattern2.height : pattern1.width;
+bool OverlappingWaveFormCollapse::agrees(const Array2D<int> &pattern1, const Array2D<int> &pattern2, int dy, int dx) {
+	int xmin = dx < 0 ? 0 : dx;
+	int xmax = dx < 0 ? dx + pattern2.width : pattern1.width;
+	int ymin = dy < 0 ? 0 : dy;
+	int ymax = dy < 0 ? dy + pattern2.height : pattern1.width;
 
 	// Iterate on every pixel contained in the intersection of the two pattern.
-	for (uint32_t y = ymin; y < ymax; y++) {
-		for (uint32_t x = xmin; x < xmax; x++) {
+	for (int y = ymin; y < ymax; y++) {
+		for (int x = xmin; x < xmax; x++) {
 			// Check if the color is the same in the two patterns in that pixel.
 			if (pattern1.get(y, x) != pattern2.get(y - dy, x - dx)) {
 				return false;
@@ -179,9 +179,9 @@ Vector<WaveFormCollapse::PropagatorStateEntry> OverlappingWaveFormCollapse::gene
 
 	// Iterate on every dy, dx, pattern1 and pattern2
 	for (int pattern1 = 0; pattern1 < patterns.size(); pattern1++) {
-		for (uint32_t direction = 0; direction < 4; direction++) {
+		for (int direction = 0; direction < 4; direction++) {
 			for (int pattern2 = 0; pattern2 < patterns.size(); pattern2++) {
-				if (agrees(patterns[pattern1], patterns[pattern2], directions_y[direction], directions_x[direction])) {
+				if (agrees(patterns[pattern1], patterns[pattern2], DIRECTIONS_Y[direction], DIRECTIONS_X[direction])) {
 					compatible.write[pattern1].directions[direction].push_back(pattern2);
 				}
 			}
@@ -192,41 +192,41 @@ Vector<WaveFormCollapse::PropagatorStateEntry> OverlappingWaveFormCollapse::gene
 }
 
 // Transform a 2D array containing the patterns id to a 2D array containing the pixels.
-Array2D<uint32_t> OverlappingWaveFormCollapse::to_image(const Array2D<uint32_t> &output_patterns) const {
-	Array2D<uint32_t> output = Array2D<uint32_t>(out_height, out_width);
+Array2D<int> OverlappingWaveFormCollapse::to_image(const Array2D<int> &output_patterns) const {
+	Array2D<int> output = Array2D<int>(out_height, out_width);
 
 	if (periodic_output) {
-		for (uint32_t y = 0; y < get_wave_height(); y++) {
-			for (uint32_t x = 0; x < get_wave_width(); x++) {
+		for (int y = 0; y < get_wave_height(); y++) {
+			for (int x = 0; x < get_wave_width(); x++) {
 				output.get(y, x) = patterns[output_patterns.get(y, x)].get(0, 0);
 			}
 		}
 	} else {
-		for (uint32_t y = 0; y < get_wave_height(); y++) {
-			for (uint32_t x = 0; x < get_wave_width(); x++) {
+		for (int y = 0; y < get_wave_height(); y++) {
+			for (int x = 0; x < get_wave_width(); x++) {
 				output.get(y, x) = patterns[output_patterns.get(y, x)].get(0, 0);
 			}
 		}
 
-		for (uint32_t y = 0; y < get_wave_height(); y++) {
-			const Array2D<uint32_t> &pattern = patterns[output_patterns.get(y, get_wave_width() - 1)];
-			for (uint32_t dx = 1; dx < pattern_size; dx++) {
+		for (int y = 0; y < get_wave_height(); y++) {
+			const Array2D<int> &pattern = patterns[output_patterns.get(y, get_wave_width() - 1)];
+			for (int dx = 1; dx < pattern_size; dx++) {
 				output.get(y, get_wave_width() - 1 + dx) = pattern.get(0, dx);
 			}
 		}
 
-		for (uint32_t x = 0; x < get_wave_width(); x++) {
-			const Array2D<uint32_t> &pattern = patterns[output_patterns.get(get_wave_height() - 1, x)];
-			for (uint32_t dy = 1; dy < pattern_size; dy++) {
+		for (int x = 0; x < get_wave_width(); x++) {
+			const Array2D<int> &pattern = patterns[output_patterns.get(get_wave_height() - 1, x)];
+			for (int dy = 1; dy < pattern_size; dy++) {
 				output.get(get_wave_height() - 1 + dy, x) =
 						pattern.get(dy, 0);
 			}
 		}
 
-		const Array2D<uint32_t> &pattern = patterns[output_patterns.get(get_wave_height() - 1, get_wave_width() - 1)];
+		const Array2D<int> &pattern = patterns[output_patterns.get(get_wave_height() - 1, get_wave_width() - 1)];
 
-		for (uint32_t dy = 1; dy < pattern_size; dy++) {
-			for (uint32_t dx = 1; dx < pattern_size; dx++) {
+		for (int dy = 1; dy < pattern_size; dy++) {
+			for (int dx = 1; dx < pattern_size; dx++) {
 				output.get(get_wave_height() - 1 + dy, get_wave_width() - 1 + dx) = pattern.get(dy, dx);
 			}
 		}

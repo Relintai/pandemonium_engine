@@ -60,8 +60,8 @@ Tile::ActionMap Tile::generate_action_map(const Symmetry &symmetry) {
 }
 
 // Generate all distincts rotations of a 2D array given its symmetries;
-Vector<Array2D<uint32_t>> Tile::generate_oriented(Array2D<uint32_t> data, Symmetry symmetry) {
-	Vector<Array2D<uint32_t>> oriented;
+Vector<Array2D<int>> Tile::generate_oriented(Array2D<int> data, Symmetry symmetry) {
+	Vector<Array2D<int>> oriented;
 	oriented.push_back(data);
 
 	switch (symmetry) {
@@ -92,7 +92,7 @@ Vector<Array2D<uint32_t>> Tile::generate_oriented(Array2D<uint32_t> data, Symmet
 }
 
 // Create a tile with its differents orientations, its symmetries and its weight on the distribution of tiles.
-Tile::Tile(const Vector<Array2D<uint32_t>> &p_data, Symmetry p_symmetry, double p_weight) {
+Tile::Tile(const Vector<Array2D<int>> &p_data, Symmetry p_symmetry, double p_weight) {
 	data = p_data;
 	symmetry = p_symmetry;
 	weight = p_weight;
@@ -100,20 +100,20 @@ Tile::Tile(const Vector<Array2D<uint32_t>> &p_data, Symmetry p_symmetry, double 
 
 // Create a tile with its base orientation, its symmetries and its weight on the distribution of tiles.
 // The other orientations are generated with its first one.
-Tile::Tile(const Array2D<uint32_t> &p_data, Symmetry p_symmetry, double p_weight) {
+Tile::Tile(const Array2D<int> &p_data, Symmetry p_symmetry, double p_weight) {
 	data = generate_oriented(p_data, p_symmetry);
 	symmetry = p_symmetry;
 	weight = p_weight;
 }
 
 // Returns false if the given tile and orientation does not exist, or if the coordinates are not in the wave
-bool TilingWaveFormCollapse::set_tile(uint32_t tile_id, uint32_t orientation, uint32_t i, uint32_t j) {
-	if (tile_id >= static_cast<uint32_t>(oriented_tile_ids.size()) || orientation >= static_cast<uint32_t>(oriented_tile_ids[tile_id].size()) ||
+bool TilingWaveFormCollapse::set_tile(int tile_id, int orientation, int i, int j) {
+	if (tile_id >= static_cast<int>(oriented_tile_ids.size()) || orientation >= static_cast<int>(oriented_tile_ids[tile_id].size()) ||
 			i >= get_height() || j >= get_width()) {
 		return false;
 	}
 
-	uint32_t oriented_tile_id = oriented_tile_ids[tile_id][orientation];
+	int oriented_tile_id = oriented_tile_ids[tile_id][orientation];
 	set_tile(oriented_tile_id, i, j);
 
 	return true;
@@ -132,7 +132,7 @@ void TilingWaveFormCollapse::generate_oriented_tile_ids() {
 	id_to_oriented_tile.clear();
 	oriented_tile_ids.clear();
 
-	uint32_t id = 0;
+	int id = 0;
 	for (int i = 0; i < tiles.size(); i++) {
 		oriented_tile_ids.push_back({});
 		for (int j = 0; j < tiles[i].data.size(); j++) {
@@ -157,8 +157,8 @@ void TilingWaveFormCollapse::generate_propagator() {
 	for (int i = 0; i < size; ++i) {
 		const NeighbourData &neighbour = neighbors[i];
 
-		uint32_t tile1 = neighbour.data[0];
-		uint32_t tile2 = neighbour.data[2];
+		int tile1 = neighbour.data[0];
+		int tile2 = neighbour.data[2];
 		Tile::ActionMap action_map1 = Tile::generate_action_map(tiles[tile1].symmetry);
 		Tile::ActionMap action_map2 = Tile::generate_action_map(tiles[tile2].symmetry);
 
@@ -203,35 +203,35 @@ Vector<double> TilingWaveFormCollapse::get_tiles_weights(const Vector<Tile> &til
 	return frequencies;
 }
 
-void TilingWaveFormCollapse::set_tile(uint32_t tile_id, uint32_t i, uint32_t j) {
+void TilingWaveFormCollapse::set_tile(int tile_id, int i, int j) {
 	for (int p = 0; p < id_to_oriented_tile.size(); p++) {
-		if (tile_id != static_cast<uint32_t>(p)) {
+		if (tile_id != static_cast<int>(p)) {
 			remove_wave_pattern(i, j, p);
 		}
 	}
 }
 
-Array2D<uint32_t> TilingWaveFormCollapse::do_run() {
-	Array2D<uint32_t> a = run();
+Array2D<int> TilingWaveFormCollapse::do_run() {
+	Array2D<int> a = run();
 
 	if (a.width == 0 && a.height == 0) {
-		return Array2D<uint32_t>(0, 0);
+		return Array2D<int>(0, 0);
 	}
 
 	return id_to_tiling(a);
 }
 
 // Translate the generic WFC result into the image result
-Array2D<uint32_t> TilingWaveFormCollapse::id_to_tiling(Array2D<uint32_t> ids) {
-	uint32_t size = tiles[0].data[0].height;
-	Array2D<uint32_t> tiling(size * ids.height, size * ids.width);
+Array2D<int> TilingWaveFormCollapse::id_to_tiling(Array2D<int> ids) {
+	int size = tiles[0].data[0].height;
+	Array2D<int> tiling(size * ids.height, size * ids.width);
 
-	for (uint32_t i = 0; i < ids.height; i++) {
-		for (uint32_t j = 0; j < ids.width; j++) {
+	for (int i = 0; i < ids.height; i++) {
+		for (int j = 0; j < ids.width; j++) {
 			IdToTilePair oriented_tile = id_to_oriented_tile[ids.get(i, j)];
 
-			for (uint32_t y = 0; y < size; y++) {
-				for (uint32_t x = 0; x < size; x++) {
+			for (int y = 0; y < size; y++) {
+				for (int x = 0; x < size; x++) {
 					tiling.get(i * size + y, j * size + x) = tiles[oriented_tile.id].data[oriented_tile.oriented_tile].get(y, x);
 				}
 			}
@@ -257,17 +257,17 @@ void TilingWaveFormCollapse::_bind_methods() {
 
 void TilingWaveFormCollapse::generate_propagator_add_helper(Tile::ActionMap *action_map1, Tile::ActionMap *action_map2,
 		Vector<DensePropagatorHelper> *dense_propagator,
-		const NeighbourData &neighbour, uint32_t action, uint32_t direction) {
+		const NeighbourData &neighbour, int action, int direction) {
 	// --
-	uint32_t tile1 = neighbour.data[0];
-	uint32_t orientation1 = neighbour.data[1];
-	uint32_t tile2 = neighbour.data[2];
-	uint32_t orientation2 = neighbour.data[3];
+	int tile1 = neighbour.data[0];
+	int orientation1 = neighbour.data[1];
+	int tile2 = neighbour.data[2];
+	int orientation2 = neighbour.data[3];
 
-	uint32_t temp_orientation1 = action_map1->map[action][orientation1];
-	uint32_t temp_orientation2 = action_map2->map[action][orientation2];
-	uint32_t oriented_tile_id1 = oriented_tile_ids[tile1][temp_orientation1];
-	uint32_t oriented_tile_id2 = oriented_tile_ids[tile2][temp_orientation2];
+	int temp_orientation1 = action_map1->map[action][orientation1];
+	int temp_orientation2 = action_map2->map[action][orientation2];
+	int oriented_tile_id1 = oriented_tile_ids[tile1][temp_orientation1];
+	int oriented_tile_id2 = oriented_tile_ids[tile2][temp_orientation2];
 	dense_propagator->write[oriented_tile_id1].directions[direction].write[oriented_tile_id2] = true;
 	direction = get_opposite_direction(direction);
 	dense_propagator->write[oriented_tile_id2].directions[direction].write[oriented_tile_id1] = true;

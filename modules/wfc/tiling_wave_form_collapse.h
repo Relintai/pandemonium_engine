@@ -17,7 +17,7 @@ struct Tile {
 	};
 
 	struct ActionMap {
-		Vector<uint32_t> map[8];
+		Vector<int> map[8];
 
 		void set_size(int size) {
 			for (int i = 0; i < 8; ++i) {
@@ -29,16 +29,16 @@ struct Tile {
 	static const uint8_t rotation_map[6][9];
 	static const uint8_t reflection_map[6][9];
 
-	Vector<Array2D<uint32_t>> data;
+	Vector<Array2D<int>> data;
 	Symmetry symmetry;
 	double weight;
 
 	static ActionMap generate_action_map(const Symmetry &symmetry);
 
-	static Vector<Array2D<uint32_t>> generate_oriented(Array2D<uint32_t> data, Symmetry symmetry);
+	static Vector<Array2D<int>> generate_oriented(Array2D<int> data, Symmetry symmetry);
 
-	Tile(const Vector<Array2D<uint32_t>> &p_data, Symmetry p_symmetry, double p_weight);
-	Tile(const Array2D<uint32_t> &p_data, Symmetry p_symmetry, double p_weight);
+	Tile(const Vector<Array2D<int>> &p_data, Symmetry p_symmetry, double p_weight);
+	Tile(const Array2D<int> &p_data, Symmetry p_symmetry, double p_weight);
 };
 
 class TilingWaveFormCollapse : public WaveFormCollapse {
@@ -46,7 +46,7 @@ class TilingWaveFormCollapse : public WaveFormCollapse {
 
 public:
 	struct NeighbourData {
-		uint32_t data[4];
+		int data[4];
 
 		NeighbourData() {
 			for (int i = 0; i < 4; ++i) {
@@ -67,15 +67,15 @@ public:
 	};
 
 	struct IdToTilePair {
-		uint32_t id;
-		uint32_t oriented_tile;
+		int id;
+		int oriented_tile;
 
 		IdToTilePair() {
 			id = 0;
 			oriented_tile = 0;
 		}
 
-		IdToTilePair(uint32_t p_id, uint32_t p_oriented_tile) {
+		IdToTilePair(int p_id, int p_oriented_tile) {
 			id = p_id;
 			oriented_tile = p_oriented_tile;
 		}
@@ -91,12 +91,12 @@ public:
 
 	static Vector<double> get_tiles_weights(const Vector<Tile> &tiles);
 
-	void set_tile(uint32_t tile_id, uint32_t i, uint32_t j);
-	bool set_tile(uint32_t tile_id, uint32_t orientation, uint32_t i, uint32_t j);
+	void set_tile(int tile_id, int i, int j);
+	bool set_tile(int tile_id, int orientation, int i, int j);
 
-	Array2D<uint32_t> do_run();
+	Array2D<int> do_run();
 
-	Array2D<uint32_t> id_to_tiling(Array2D<uint32_t> ids);
+	Array2D<int> id_to_tiling(Array2D<int> ids);
 
 	void initialize();
 
@@ -110,13 +110,13 @@ private:
 	void generate_propagator_add_helper(Tile::ActionMap *action_map1, Tile::ActionMap *action_map2,
 			Vector<DensePropagatorHelper> *dense_propagator,
 			const NeighbourData &neighbour,
-			uint32_t action, uint32_t direction);
+			int action, int direction);
 
 	Vector<Tile> tiles;
 	Vector<NeighbourData> neighbors;
 
 	Vector<IdToTilePair> id_to_oriented_tile;
-	Vector<Vector<uint32_t>> oriented_tile_ids;
+	Vector<Vector<int>> oriented_tile_ids;
 };
 
 #endif // FAST_WFC_TILING_WFC_HPP_

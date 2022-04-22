@@ -12,32 +12,32 @@ class OverlappingWaveFormCollapse : public WaveFormCollapse {
 public:
 	bool periodic_input;
 	bool periodic_output;
-	uint32_t out_height;
-	uint32_t out_width;
-	uint32_t symmetry;
+	int out_height;
+	int out_width;
+	int symmetry;
 	bool ground;
-	uint32_t pattern_size;
+	int pattern_size;
 
-	void set_input(const Array2D<uint32_t> &data);
+	void set_input(const Array2D<int> &data);
 
-	uint32_t get_wave_height() const;
-	uint32_t get_wave_width() const;
+	int get_wave_height() const;
+	int get_wave_width() const;
 
-	Array2D<uint32_t> orun();
+	Array2D<int> orun();
 
 	void init_ground();
 
-	bool set_pattern(const Array2D<uint32_t> &pattern, uint32_t i, uint32_t j);
-	uint32_t get_ground_pattern_id();
-	uint32_t get_pattern_id(const Array2D<uint32_t> &pattern);
-	void set_pattern(uint32_t pattern_id, uint32_t i, uint32_t j);
+	bool set_pattern(const Array2D<int> &pattern, int i, int j);
+	int get_ground_pattern_id();
+	int get_pattern_id(const Array2D<int> &pattern);
+	void set_pattern(int pattern_id, int i, int j);
 	void get_patterns();
 
-	bool agrees(const Array2D<uint32_t> &pattern1, const Array2D<uint32_t> &pattern2, int dy, int dx);
+	bool agrees(const Array2D<int> &pattern1, const Array2D<int> &pattern2, int dy, int dx);
 
 	Vector<WaveFormCollapse::PropagatorStateEntry> generate_compatible();
 
-	Array2D<uint32_t> to_image(const Array2D<uint32_t> &output_patterns) const;
+	Array2D<int> to_image(const Array2D<int> &output_patterns) const;
 
 	void initialize();
 
@@ -48,9 +48,9 @@ protected:
 	static void _bind_methods();
 
 private:
-	Array2D<uint32_t> input;
+	Array2D<int> input;
 
-	Vector<Array2D<uint32_t>> patterns;
+	Vector<Array2D<int>> patterns;
 };
 
 #endif
