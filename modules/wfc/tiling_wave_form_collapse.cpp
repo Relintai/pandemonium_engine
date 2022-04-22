@@ -108,7 +108,8 @@ Tile::Tile(const Array2D<uint32_t> &p_data, Symmetry p_symmetry, double p_weight
 
 // Returns false if the given tile and orientation does not exist, or if the coordinates are not in the wave
 bool TilingWaveFormCollapse::set_tile(uint32_t tile_id, uint32_t orientation, uint32_t i, uint32_t j) {
-	if (tile_id >= oriented_tile_ids.size() || orientation >= oriented_tile_ids[tile_id].size() || i >= get_height() || j >= get_width()) {
+	if (tile_id >= static_cast<uint32_t>(oriented_tile_ids.size()) || orientation >= static_cast<uint32_t>(oriented_tile_ids[tile_id].size()) ||
+			i >= get_height() || j >= get_width()) {
 		return false;
 	}
 
@@ -176,9 +177,9 @@ void TilingWaveFormCollapse::generate_propagator() {
 
 	PropagatorStateEntry *propw = propagator.ptrw();
 
-	for (size_t i = 0; i < nb_oriented_tiles; ++i) {
-		for (size_t j = 0; j < nb_oriented_tiles; ++j) {
-			for (size_t d = 0; d < 4; ++d) {
+	for (int i = 0; i < nb_oriented_tiles; ++i) {
+		for (int j = 0; j < nb_oriented_tiles; ++j) {
+			for (int d = 0; d < 4; ++d) {
 				if (propw[i].directions[d][j]) {
 					propw[i].directions[d].push_back(j);
 				}
@@ -204,7 +205,7 @@ Vector<double> TilingWaveFormCollapse::get_tiles_weights(const Vector<Tile> &til
 
 void TilingWaveFormCollapse::set_tile(uint32_t tile_id, uint32_t i, uint32_t j) {
 	for (int p = 0; p < id_to_oriented_tile.size(); p++) {
-		if (tile_id != p) {
+		if (tile_id != static_cast<uint32_t>(p)) {
 			remove_wave_pattern(i, j, p);
 		}
 	}
