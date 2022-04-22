@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ImageIndexer" inherits="Reference" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_color_indices">
+			<return type="PoolIntArray" />
+			<description>
+			</description>
+		</method>
+		<method name="get_colors">
+			<return type="PoolColorArray" />
+			<description>
+			</description>
+		</method>
+		<method name="index_image">
+			<return type="void" />
+			<argument index="0" name="arg0" type="Image" />
+			<description>
+			</description>
+		</method>
+		<method name="indices_to_argb8_data">
+			<return type="PoolByteArray" />
+			<argument index="0" name="arg0" type="PoolIntArray" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

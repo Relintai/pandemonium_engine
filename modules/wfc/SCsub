@@ -10,3 +10,5 @@ env_wfc.add_source_files(env.modules_sources, "wave_form_collapse.cpp")
 
 env_wfc.add_source_files(env.modules_sources, "tiling_wave_form_collapse.cpp")
 env_wfc.add_source_files(env.modules_sources, "overlapping_wave_form_collapse.cpp")
+
+env_wfc.add_source_files(env.modules_sources, "image_indexer.cpp")

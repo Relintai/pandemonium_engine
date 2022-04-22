@@ -11,6 +11,7 @@ def get_doc_classes():
         "WaveFormCollapse",
         "TilingWaveFormCollapse",
         "OverlappingWaveFormCollapse",
+        "ImageIndexer",
     ]
 
 
