@@ -71,8 +71,6 @@ public:
 
 	ObserveStatus observe();
 
-	//dvoid propagate() { propagator.propagate(wave); }
-
 	void remove_wave_pattern(int i, int j, int pattern) {
 		if (wave_get(i, j, pattern)) {
 			wave_set(i, j, pattern, false);
