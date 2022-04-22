@@ -8,5 +8,5 @@ env_wfc = env_modules.Clone()
 env_wfc.add_source_files(env.modules_sources, "register_types.cpp")
 env_wfc.add_source_files(env.modules_sources, "wave_form_collapse.cpp")
 
-#env_wfc.add_source_files(env.modules_sources, "tiling_wave_form_collapse.cpp")
+env_wfc.add_source_files(env.modules_sources, "tiling_wave_form_collapse.cpp")
 #env_wfc.add_source_files(env.modules_sources, "tiling_wave_form_collapse.cpp")

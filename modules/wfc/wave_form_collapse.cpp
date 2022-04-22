@@ -38,11 +38,18 @@ double WaveFormCollapse::get_min_abs_half(const Vector<double> &v) {
 	return min_abs_half;
 }
 
-bool WaveFormCollapse::get_eriodic_output() const {
-	return is_impossible;
+uint32_t WaveFormCollapse::get_width() const {
+	return wave_width;
+}
+uint32_t WaveFormCollapse::get_height() const {
+	return wave_height;
+}
+
+bool WaveFormCollapse::get_periodic_output() const {
+	return periodic_output;
 }
 void WaveFormCollapse::set_periodic_output(const bool val) {
-	is_impossible = val;
+	periodic_output = val;
 }
 
 void WaveFormCollapse::set_seed(const int seed) {
@@ -174,7 +181,7 @@ int WaveFormCollapse::wave_get_min_entropy() const {
 
 	// The minimum entropy (plus a small noise)
 	double min = Math_INF;
-	
+
 	int argmin = -1;
 
 	for (uint32_t i = 0; i < wave_size; i++) {
@@ -329,9 +336,16 @@ void WaveFormCollapse::initialize() {
 }
 
 WaveFormCollapse::WaveFormCollapse() {
-	//todo maybe it should be better as true?
 	periodic_output = false;
 	is_impossible = false;
+
+	nb_patterns = 0;
+
+	wave_width = 0;
+	wave_height = 0;
+	wave_size = 0;
+
+	min_abs_half_plogp = 0;
 }
 
 WaveFormCollapse::~WaveFormCollapse() {

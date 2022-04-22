@@ -108,7 +108,7 @@ Tile::Tile(const Array2D<uint32_t> &p_data, Symmetry p_symmetry, double p_weight
 
 // Returns false if the given tile and orientation does not exist, or if the coordinates are not in the wave
 bool TilingWaveFormCollapse::set_tile(uint32_t tile_id, uint32_t orientation, uint32_t i, uint32_t j) {
-	if (tile_id >= oriented_tile_ids.size() || orientation >= oriented_tile_ids[tile_id].size() || i >= height || j >= width) {
+	if (tile_id >= oriented_tile_ids.size() || orientation >= oriented_tile_ids[tile_id].size() || i >= get_height() || j >= get_width()) {
 		return false;
 	}
 
@@ -118,71 +118,33 @@ bool TilingWaveFormCollapse::set_tile(uint32_t tile_id, uint32_t orientation, ui
 	return true;
 }
 
-Array2D<uint32_t> TilingWaveFormCollapse::do_run() {
-	Array2D<uint32_t> a = run();
-
-	if (a.width == 0 && a.height == 0) {
-		return Array2D<uint32_t>(0, 0);
-	}
-
-	return id_to_tiling(a);
+void TilingWaveFormCollapse::set_tiles(const Vector<Tile> &p_tiles) {
+	tiles = p_tiles;
 }
 
-/*
-TilingWaveFormCollapse::TilingWaveFormCollapse(
-		const Vector<Tile> &tiles,
-		const Vector<NeighbourData> &neighbors,
-		const uint32_t height, const uint32_t width,
-		const bool periodic_output, int seed) :
-		tiles(tiles),
-		id_to_oriented_tile(generate_oriented_tile_ids(tiles).first),
-		oriented_tile_ids(generate_oriented_tile_ids(tiles).second),
-		options(options),
-		wfc(options.periodic_output, seed, get_tiles_weights(tiles),
-				generate_propagator(neighbors, tiles, id_to_oriented_tile,
-						oriented_tile_ids),
-				height, width),
-		height(height),
-		width(width) {}
-*/
-
-void TilingWaveFormCollapse::initialize() {
-	WaveFormCollapse::initialize();
-}
-
-TilingWaveFormCollapse::TilingWaveFormCollapse() {
-}
-TilingWaveFormCollapse::~TilingWaveFormCollapse() {
-}
-
-void TilingWaveFormCollapse::_bind_methods() {
+void TilingWaveFormCollapse::set_neighbours(const Vector<NeighbourData> &p_neighbors) {
+	neighbors = p_neighbors;
 }
 
 // Generate mapping from id to oriented tiles and vice versa.
-std::pair<Vector<std::pair<uint32_t, uint32_t>>, Vector<Vector<uint32_t>>> TilingWaveFormCollapse::generate_oriented_tile_ids(const Vector<Tile> &tiles) {
-	Vector<std::pair<uint32_t, uint32_t>> id_to_oriented_tile;
-	Vector<Vector<uint32_t>> oriented_tile_ids;
+void TilingWaveFormCollapse::generate_oriented_tile_ids() {
+	id_to_oriented_tile.clear();
+	oriented_tile_ids.clear();
 
 	uint32_t id = 0;
 	for (int i = 0; i < tiles.size(); i++) {
 		oriented_tile_ids.push_back({});
 		for (int j = 0; j < tiles[i].data.size(); j++) {
-			id_to_oriented_tile.push_back({ i, j });
-			oriented_tile_ids[i].push_back(id);
+			id_to_oriented_tile.push_back(IdToTilePair(i, j));
+			oriented_tile_ids.write[i].push_back(id);
 			id++;
 		}
 	}
-
-	return { id_to_oriented_tile, oriented_tile_ids };
 }
 
 // Generate the propagator which will be used in the wfc algorithm.
-Vector<PropagatorStateEntry> TilingWaveFormCollapse::generate_propagator(
-		const Vector<NeighbourData> &neighbors,
-		Vector<Tile> tiles,
-		Vector<std::pair<uint32_t, uint32_t>> id_to_oriented_tile,
-		Vector<Vector<uint32_t>> oriented_tile_ids) {
-	size_t nb_oriented_tiles = id_to_oriented_tile.size();
+void TilingWaveFormCollapse::generate_propagator() {
+	int nb_oriented_tiles = id_to_oriented_tile.size();
 
 	Vector<DensePropagatorHelper> dense_propagator;
 	dense_propagator.resize(nb_oriented_tiles);
@@ -190,47 +152,41 @@ Vector<PropagatorStateEntry> TilingWaveFormCollapse::generate_propagator(
 		dense_propagator.write[i].resize(nb_oriented_tiles);
 	}
 
-	for (auto neighbor : neighbors) {
-		uint32_t tile1 = std::get<0>(neighbor);
-		uint32_t orientation1 = std::get<1>(neighbor);
-		uint32_t tile2 = std::get<2>(neighbor);
-		uint32_t orientation2 = std::get<3>(neighbor);
-		Vector<Vector<uint32_t>> action_map1 = Tile::generate_action_map(tiles[tile1].symmetry);
-		Vector<Vector<uint32_t>> action_map2 = Tile::generate_action_map(tiles[tile2].symmetry);
+	int size = neighbors.size();
+	for (int i = 0; i < size; ++i) {
+		const NeighbourData &neighbour = neighbors[i];
 
-		auto add = [&](uint32_t action, uint32_t direction) {
-			uint32_t temp_orientation1 = action_map1[action][orientation1];
-			uint32_t temp_orientation2 = action_map2[action][orientation2];
-			uint32_t oriented_tile_id1 = oriented_tile_ids[tile1][temp_orientation1];
-			uint32_t oriented_tile_id2 = oriented_tile_ids[tile2][temp_orientation2];
-			dense_propagator[oriented_tile_id1][direction][oriented_tile_id2] = true;
-			direction = get_opposite_direction(direction);
-			dense_propagator[oriented_tile_id2][direction][oriented_tile_id1] = true;
-		};
+		uint32_t tile1 = neighbour.data[0];
+		uint32_t tile2 = neighbour.data[2];
+		Tile::ActionMap action_map1 = Tile::generate_action_map(tiles[tile1].symmetry);
+		Tile::ActionMap action_map2 = Tile::generate_action_map(tiles[tile2].symmetry);
 
-		add(0, 2);
-		add(1, 0);
-		add(2, 1);
-		add(3, 3);
-		add(4, 1);
-		add(5, 3);
-		add(6, 2);
-		add(7, 0);
+		generate_propagator_add_helper(&action_map1, &action_map2, &dense_propagator, neighbour, 0, 2);
+		generate_propagator_add_helper(&action_map1, &action_map2, &dense_propagator, neighbour, 1, 0);
+		generate_propagator_add_helper(&action_map1, &action_map2, &dense_propagator, neighbour, 2, 1);
+		generate_propagator_add_helper(&action_map1, &action_map2, &dense_propagator, neighbour, 3, 3);
+		generate_propagator_add_helper(&action_map1, &action_map2, &dense_propagator, neighbour, 4, 1);
+		generate_propagator_add_helper(&action_map1, &action_map2, &dense_propagator, neighbour, 5, 3);
+		generate_propagator_add_helper(&action_map1, &action_map2, &dense_propagator, neighbour, 6, 2);
+		generate_propagator_add_helper(&action_map1, &action_map2, &dense_propagator, neighbour, 7, 0);
 	}
 
-	Vector<PropagatorStateEntry> propagator(nb_oriented_tiles);
+	Vector<PropagatorStateEntry> propagator;
+	propagator.resize(nb_oriented_tiles);
+
+	PropagatorStateEntry *propw = propagator.ptrw();
 
 	for (size_t i = 0; i < nb_oriented_tiles; ++i) {
 		for (size_t j = 0; j < nb_oriented_tiles; ++j) {
 			for (size_t d = 0; d < 4; ++d) {
-				if (dense_propagator[i][d][j]) {
-					propagator[i][d].push_back(j);
+				if (propw[i].directions[d][j]) {
+					propw[i].directions[d].push_back(j);
 				}
 			}
 		}
 	}
 
-	return propagator;
+	set_propagator_state(propagator);
 }
 
 // Get probability of presence of tiles.
@@ -246,6 +202,24 @@ Vector<double> TilingWaveFormCollapse::get_tiles_weights(const Vector<Tile> &til
 	return frequencies;
 }
 
+void TilingWaveFormCollapse::set_tile(uint32_t tile_id, uint32_t i, uint32_t j) {
+	for (int p = 0; p < id_to_oriented_tile.size(); p++) {
+		if (tile_id != p) {
+			remove_wave_pattern(i, j, p);
+		}
+	}
+}
+
+Array2D<uint32_t> TilingWaveFormCollapse::do_run() {
+	Array2D<uint32_t> a = run();
+
+	if (a.width == 0 && a.height == 0) {
+		return Array2D<uint32_t>(0, 0);
+	}
+
+	return id_to_tiling(a);
+}
+
 // Translate the generic WFC result into the image result
 Array2D<uint32_t> TilingWaveFormCollapse::id_to_tiling(Array2D<uint32_t> ids) {
 	uint32_t size = tiles[0].data[0].height;
@@ -253,11 +227,11 @@ Array2D<uint32_t> TilingWaveFormCollapse::id_to_tiling(Array2D<uint32_t> ids) {
 
 	for (uint32_t i = 0; i < ids.height; i++) {
 		for (uint32_t j = 0; j < ids.width; j++) {
-			std::pair<uint32_t, uint32_t> oriented_tile = id_to_oriented_tile[ids.get(i, j)];
+			IdToTilePair oriented_tile = id_to_oriented_tile[ids.get(i, j)];
 
 			for (uint32_t y = 0; y < size; y++) {
 				for (uint32_t x = 0; x < size; x++) {
-					tiling.get(i * size + y, j * size + x) = tiles[oriented_tile.first].data[oriented_tile.second].get(y, x);
+					tiling.get(i * size + y, j * size + x) = tiles[oriented_tile.id].data[oriented_tile.oriented_tile].get(y, x);
 				}
 			}
 		}
@@ -266,10 +240,34 @@ Array2D<uint32_t> TilingWaveFormCollapse::id_to_tiling(Array2D<uint32_t> ids) {
 	return tiling;
 }
 
-void TilingWaveFormCollapse::set_tile(uint32_t tile_id, uint32_t i, uint32_t j) {
-	for (int p = 0; p < id_to_oriented_tile.size(); p++) {
-		if (tile_id != p) {
-			remove_wave_pattern(i, j, p);
-		}
-	}
+void TilingWaveFormCollapse::initialize() {
+	generate_oriented_tile_ids();
+
+	WaveFormCollapse::initialize();
+}
+
+TilingWaveFormCollapse::TilingWaveFormCollapse() {
+}
+TilingWaveFormCollapse::~TilingWaveFormCollapse() {
+}
+
+void TilingWaveFormCollapse::_bind_methods() {
+}
+
+void TilingWaveFormCollapse::generate_propagator_add_helper(Tile::ActionMap *action_map1, Tile::ActionMap *action_map2,
+		Vector<DensePropagatorHelper> *dense_propagator,
+		const NeighbourData &neighbour, uint32_t action, uint32_t direction) {
+	// --
+	uint32_t tile1 = neighbour.data[0];
+	uint32_t orientation1 = neighbour.data[1];
+	uint32_t tile2 = neighbour.data[2];
+	uint32_t orientation2 = neighbour.data[3];
+
+	uint32_t temp_orientation1 = action_map1->map[action][orientation1];
+	uint32_t temp_orientation2 = action_map2->map[action][orientation2];
+	uint32_t oriented_tile_id1 = oriented_tile_ids[tile1][temp_orientation1];
+	uint32_t oriented_tile_id2 = oriented_tile_ids[tile2][temp_orientation2];
+	dense_propagator->write[oriented_tile_id1].directions[direction].write[oriented_tile_id2] = true;
+	direction = get_opposite_direction(direction);
+	dense_propagator->write[oriented_tile_id2].directions[direction].write[oriented_tile_id1] = true;
 }

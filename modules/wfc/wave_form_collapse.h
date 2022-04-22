@@ -54,7 +54,10 @@ public:
 	static constexpr int directions_y[4] = { -1, 0, 0, 1 };
 
 public:
-	bool get_eriodic_output() const;
+	uint32_t get_width() const;
+	uint32_t get_height() const;
+
+	bool get_periodic_output() const;
 	void set_periodic_output(const bool val);
 
 	void set_seed(const int seed);

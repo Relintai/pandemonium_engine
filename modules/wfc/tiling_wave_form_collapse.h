@@ -41,8 +41,6 @@ struct Tile {
 	Tile(const Array2D<uint32_t> &p_data, Symmetry p_symmetry, double p_weight);
 };
 
-// Class generating a new image with the tiling WFC algorithm.
-
 class TilingWaveFormCollapse : WaveFormCollapse {
 	GDCLASS(TilingWaveFormCollapse, WaveFormCollapse);
 
@@ -57,20 +55,6 @@ public:
 		}
 	};
 
-	bool set_tile(uint32_t tile_id, uint32_t orientation, uint32_t i, uint32_t j);
-	Array2D<uint32_t> do_run();
-
-	void initialize();
-
-	TilingWaveFormCollapse();
-	~TilingWaveFormCollapse();
-
-protected:
-	static void _bind_methods();
-
-private:
-	static std::pair<Vector<std::pair<uint32_t, uint32_t>>, Vector<Vector<uint32_t>>> generate_oriented_tile_ids(const Vector<Tile> &tiles);
-
 	struct DensePropagatorHelper {
 		Vector<bool> directions[4];
 
@@ -82,22 +66,57 @@ private:
 		}
 	};
 
-	static Vector<PropagatorStateEntry> generate_propagator(
-			const Vector<NeighbourData> &neighbors,
-			Vector<Tile> tiles,
-			Vector<std::pair<uint32_t, uint32_t>> id_to_oriented_tile,
-			Vector<Vector<uint32_t>> oriented_tile_ids);
+	struct IdToTilePair {
+		uint32_t id;
+		uint32_t oriented_tile;
+
+		IdToTilePair() {
+			id = 0;
+			oriented_tile = 0;
+		}
+
+		IdToTilePair(uint32_t p_id, uint32_t p_oriented_tile) {
+			id = p_id;
+			oriented_tile = p_oriented_tile;
+		}
+	};
+
+public:
+	void set_tiles(const Vector<Tile> &p_tiles);
+	void set_neighbours(const Vector<NeighbourData> &p_neighbors);
+
+	void generate_oriented_tile_ids();
+
+	void generate_propagator();
 
 	static Vector<double> get_tiles_weights(const Vector<Tile> &tiles);
 
+	void set_tile(uint32_t tile_id, uint32_t i, uint32_t j);
+	bool set_tile(uint32_t tile_id, uint32_t orientation, uint32_t i, uint32_t j);
+
+	Array2D<uint32_t> do_run();
+
 	Array2D<uint32_t> id_to_tiling(Array2D<uint32_t> ids);
 
-	void set_tile(uint32_t tile_id, uint32_t i, uint32_t j);
-	Vector<Tile> tiles;
-	Vector<std::pair<uint32_t, uint32_t>> id_to_oriented_tile;
-	Vector<Vector<uint32_t>> oriented_tile_ids;
+	void initialize();
 
-	bool periodic_output;
+	TilingWaveFormCollapse();
+	~TilingWaveFormCollapse();
+
+protected:
+	static void _bind_methods();
+
+private:
+	void generate_propagator_add_helper(Tile::ActionMap *action_map1, Tile::ActionMap *action_map2,
+			Vector<DensePropagatorHelper> *dense_propagator,
+			const NeighbourData &neighbour,
+			uint32_t action, uint32_t direction);
+
+	Vector<Tile> tiles;
+	Vector<NeighbourData> neighbors;
+
+	Vector<IdToTilePair> id_to_oriented_tile;
+	Vector<Vector<uint32_t>> oriented_tile_ids;
 };
 
 #endif // FAST_WFC_TILING_WFC_HPP_
