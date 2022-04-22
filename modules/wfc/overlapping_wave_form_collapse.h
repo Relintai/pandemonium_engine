@@ -18,24 +18,28 @@ public:
 	bool ground;
 	uint32_t pattern_size;
 
+	void set_input(const Array2D<uint32_t> &data);
+
 	uint32_t get_wave_height() const;
 	uint32_t get_wave_width() const;
 
-	Array2D<uint32_t> run();
+	Array2D<uint32_t> orun();
 
-	void init_ground(const Array2D<uint32_t> &input, const Vector<Array2D<uint32_t>> &patterns, const OverlappingWFCOptions &options);
+	void init_ground();
 
 	bool set_pattern(const Array2D<uint32_t> &pattern, uint32_t i, uint32_t j);
-	static uint32_t get_ground_pattern_id(const Array2D<uint32_t> &input, const Vector<Array2D<uint32_t>> &patterns, const OverlappingWFCOptions &options);
+	uint32_t get_ground_pattern_id();
 	uint32_t get_pattern_id(const Array2D<uint32_t> &pattern);
 	void set_pattern(uint32_t pattern_id, uint32_t i, uint32_t j);
-	static std::pair<Vector<Array2D<uint32_t>>, Vector<double>> get_patterns(const Array2D<uint32_t> &input, const OverlappingWFCOptions &options);
+	void get_patterns();
 
-	static bool agrees(const Array2D<uint32_t> &pattern1, const Array2D<uint32_t> &pattern2, int dy, int dx);
+	bool agrees(const Array2D<uint32_t> &pattern1, const Array2D<uint32_t> &pattern2, int dy, int dx);
 
-	static Vector<PropagatorStateEntry> generate_compatible(const Vector<Array2D<uint32_t>> &patterns);
+	Vector<WaveFormCollapse::PropagatorStateEntry> generate_compatible();
 
 	Array2D<uint32_t> to_image(const Array2D<uint32_t> &output_patterns) const;
+
+	void initialize();
 
 	OverlappingWaveFormCollapse();
 	~OverlappingWaveFormCollapse();
