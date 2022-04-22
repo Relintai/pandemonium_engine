@@ -41,7 +41,7 @@ struct Tile {
 	Tile(const Array2D<uint32_t> &p_data, Symmetry p_symmetry, double p_weight);
 };
 
-class TilingWaveFormCollapse : WaveFormCollapse {
+class TilingWaveFormCollapse : public WaveFormCollapse {
 	GDCLASS(TilingWaveFormCollapse, WaveFormCollapse);
 
 public:
