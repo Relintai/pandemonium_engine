@@ -41,11 +41,18 @@ double WaveFormCollapse::get_min_abs_half(const Vector<double> &v) {
 	return min_abs_half;
 }
 
-int WaveFormCollapse::get_width() const {
-	return wave_width;
+int WaveFormCollapse::get_wave_width() const {
+	return _wave_width;
 }
-int WaveFormCollapse::get_height() const {
-	return wave_height;
+void WaveFormCollapse::set_wave_width(const int val) {
+	_wave_width = val;
+}
+
+int WaveFormCollapse::get_wave_height() const {
+	return _wave_height;
+}
+void WaveFormCollapse::set_wave_height(const int val) {
+	_wave_height = val;
 }
 
 bool WaveFormCollapse::get_periodic_output() const {
@@ -59,10 +66,14 @@ void WaveFormCollapse::set_seed(const int seed) {
 	gen.seed(seed);
 }
 
-void WaveFormCollapse::set_size(int p_width, int p_height) {
-	wave_width = p_width;
-	wave_height = p_height;
-	wave_size = p_height * p_width;
+void WaveFormCollapse::set_wave_size(int p_width, int p_height) {
+	_wave_width = p_width;
+	_wave_height = p_height;
+	_wave_size = p_height * p_width;
+}
+
+void WaveFormCollapse::init_wave() {
+	_wave_size = _wave_height * _wave_width;
 }
 
 void WaveFormCollapse::set_propagator_state(const Vector<PropagatorStateEntry> &p_propagator_state) {
@@ -78,8 +89,6 @@ void WaveFormCollapse::set_pattern_frequencies(const Vector<double> &p_patterns_
 }
 
 void WaveFormCollapse::set_input(const PoolIntArray &p_data, int p_width, int p_height) {
-	set_size(p_width, p_height);
-
 	input.resize(p_width, p_height);
 
 	ERR_FAIL_COND(input.data.size() != p_data.size());
@@ -102,7 +111,7 @@ Array2D<int> WaveFormCollapse::run() {
 		// Check if the algorithm has terminated.
 		if (result == OBSERVE_STATUS_FAILURE) {
 			return Array2D<int>(0, 0);
-		} else if (result == OBSERVE_STATUS_FAILURE) {
+		} else if (result == OBSERVE_STATUS_SUCCESS) {
 			return wave_to_output();
 		}
 
@@ -118,10 +127,6 @@ PoolIntArray WaveFormCollapse::generate_image_index_data() {
 	if (a.width == 0 && a.height == 0) {
 		return arr;
 	}
-
-	print_error(String::num(a.width));
-	print_error(String::num(a.height));
-	print_error("---");
 
 	const int *r = a.data.ptr();
 	int s = a.data.size();
@@ -147,8 +152,7 @@ WaveFormCollapse::ObserveStatus WaveFormCollapse::observe() {
 		return OBSERVE_STATUS_FAILURE;
 	}
 
-	// If the lowest entropy is 0, then the algorithm has succeeded and
-	// finished.
+	// If the lowest entropy is 0, then the algorithm has succeeded and finished.
 	if (argmin == -1) {
 		wave_to_output();
 		return OBSERVE_STATUS_SUCCESS;
@@ -175,7 +179,7 @@ WaveFormCollapse::ObserveStatus WaveFormCollapse::observe() {
 	// And define the cell with the pattern.
 	for (int k = 0; k < patterns_frequencies.size(); k++) {
 		if (wave_get(argmin, k) != (k == chosen_value)) {
-			add_to_propagator(argmin / wave_width, argmin % wave_width, k);
+			add_to_propagator(argmin / _wave_width, argmin % _wave_width, k);
 			wave_set(argmin, k, false);
 		}
 	}
@@ -184,9 +188,9 @@ WaveFormCollapse::ObserveStatus WaveFormCollapse::observe() {
 }
 
 Array2D<int> WaveFormCollapse::wave_to_output() const {
-	Array2D<int> output_patterns(wave_height, wave_width);
+	Array2D<int> output_patterns(_wave_height, _wave_width);
 
-	for (int i = 0; i < wave_size; i++) {
+	for (int i = 0; i < _wave_size; i++) {
 		for (int k = 0; k < patterns_frequencies.size(); k++) {
 			if (wave_get(i, k)) {
 				output_patterns.data.write[i] = k;
@@ -198,15 +202,17 @@ Array2D<int> WaveFormCollapse::wave_to_output() const {
 }
 
 void WaveFormCollapse::wave_set(int index, int pattern, bool value) {
-	bool old_value = data.get(index, pattern);
+	bool old_value = wave_data.get(index, pattern);
 
 	// If the value isn't changed, nothing needs to be done.
 	if (old_value == value) {
 		return;
 	}
 
+	print_error(String::num(index));
+
 	// Otherwise, the memoisation should be updated.
-	data.get(index, pattern) = value;
+	wave_data.get(index, pattern) = value;
 
 	memoisation_plogp_sum.write[index] -= plogp_patterns_frequencies[pattern];
 	memoisation_sum.write[index] -= patterns_frequencies[pattern];
@@ -232,9 +238,8 @@ int WaveFormCollapse::wave_get_min_entropy() const {
 
 	int argmin = -1;
 
-	for (int i = 0; i < wave_size; i++) {
-		// If the cell is decided, we do not compute the entropy (which is equal
-		// to 0).
+	for (int i = 0; i < _wave_size; i++) {
+		// If the cell is decided, we do not compute the entropy (which is equal to 0).
 		double nb_patterns_local = memoisation_nb_patterns[i];
 
 		if (nb_patterns_local == 1) {
@@ -266,8 +271,8 @@ void WaveFormCollapse::init_compatible() {
 	CompatibilityEntry value;
 
 	// We compute the number of pattern compatible in all directions.
-	for (int y = 0; y < wave_height; y++) {
-		for (int x = 0; x < wave_width; x++) {
+	for (int y = 0; y < _wave_height; y++) {
+		for (int x = 0; x < _wave_width; x++) {
 			for (int pattern = 0; pattern < propagator_state.size(); pattern++) {
 				for (int direction = 0; direction < 4; direction++) {
 					value.direction[direction] = static_cast<int>(propagator_state[pattern].directions[get_opposite_direction(direction)].size());
@@ -300,23 +305,23 @@ void WaveFormCollapse::propagate() {
 			int x2, y2;
 
 			if (periodic_output) {
-				x2 = ((int)x1 + dx + (int)wave_width) % wave_width;
-				y2 = ((int)y1 + dy + (int)wave_height) % wave_height;
+				x2 = ((int)x1 + dx + (int)_wave_width) % _wave_width;
+				y2 = ((int)y1 + dy + (int)_wave_height) % _wave_height;
 			} else {
 				x2 = x1 + dx;
 				y2 = y1 + dy;
 
-				if (x2 < 0 || x2 >= (int)wave_width) {
+				if (x2 < 0 || x2 >= (int)_wave_width) {
 					continue;
 				}
 
-				if (y2 < 0 || y2 >= (int)wave_height) {
+				if (y2 < 0 || y2 >= (int)_wave_height) {
 					continue;
 				}
 			}
 
 			// The index of the second cell, and the patterns compatible
-			int i2 = x2 + y2 * wave_width;
+			int i2 = x2 + y2 * _wave_width;
 			const Vector<int> &patterns = propagator_state[pattern].directions[direction];
 
 			// For every pattern that could be placed in that cell without being in
@@ -344,13 +349,15 @@ void WaveFormCollapse::propagate() {
 
 void WaveFormCollapse::initialize() {
 	//wave
-	data.resize(0, 0);
-	data.resize_fill(wave_width * wave_height, patterns_frequencies.size(), 1);
+	init_wave();
 
 	plogp_patterns_frequencies = get_plogp(patterns_frequencies);
 	min_abs_half_plogp = get_min_abs_half(plogp_patterns_frequencies);
 
 	is_impossible = false;
+	nb_patterns = patterns_frequencies.size();
+
+	wave_data.resize_fill(_wave_width * _wave_height, nb_patterns, true);
 
 	// Initialize the memoisation of entropy.
 	double base_entropy = 0;
@@ -364,35 +371,35 @@ void WaveFormCollapse::initialize() {
 	double log_base_s = log(base_s);
 	double entropy_base = log_base_s - base_entropy / base_s;
 
-	memoisation_plogp_sum.resize(wave_width * wave_height);
+	memoisation_plogp_sum.resize(_wave_width * _wave_height);
 	memoisation_plogp_sum.fill(base_entropy);
 
-	memoisation_sum.resize(wave_width * wave_height);
+	memoisation_sum.resize(_wave_width * _wave_height);
 	memoisation_sum.fill(base_s);
 
-	memoisation_log_sum.resize(wave_width * wave_height);
+	memoisation_log_sum.resize(_wave_width * _wave_height);
 	memoisation_log_sum.fill(log_base_s);
 
-	memoisation_nb_patterns.resize(wave_width * wave_height);
+	memoisation_nb_patterns.resize(_wave_width * _wave_height);
 	memoisation_nb_patterns.fill(static_cast<int>(patterns_frequencies.size()));
 
-	memoisation_entropy.resize(wave_width * wave_height);
+	memoisation_entropy.resize(_wave_width * _wave_height);
 	memoisation_entropy.fill(entropy_base);
 
 	//propagator
-	compatible.resize(wave_height, wave_width, propagator_state.size());
+	compatible.resize(_wave_height, _wave_width, propagator_state.size());
 	init_compatible();
 }
 
 WaveFormCollapse::WaveFormCollapse() {
-	periodic_output = false;
+	periodic_output = true;
 	is_impossible = false;
 
 	nb_patterns = 0;
 
-	wave_width = 0;
-	wave_height = 0;
-	wave_size = 0;
+	_wave_width = 0;
+	_wave_height = 0;
+	_wave_size = 0;
 
 	min_abs_half_plogp = 0;
 }
@@ -401,15 +408,20 @@ WaveFormCollapse::~WaveFormCollapse() {
 }
 
 void WaveFormCollapse::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_width"), &WaveFormCollapse::get_width);
-	ClassDB::bind_method(D_METHOD("get_height"), &WaveFormCollapse::get_height);
+	ClassDB::bind_method(D_METHOD("get_wave_width"), &WaveFormCollapse::get_wave_width);
+	ClassDB::bind_method(D_METHOD("set_wave_width", "value"), &WaveFormCollapse::set_wave_width);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "wave_width"), "set_wave_width", "get_wave_width");
+
+	ClassDB::bind_method(D_METHOD("get_wave_height"), &WaveFormCollapse::get_wave_height);
+	ClassDB::bind_method(D_METHOD("set_wave_height", "value"), &WaveFormCollapse::set_wave_height);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "wave_height"), "set_wave_height", "get_wave_height");
 
 	ClassDB::bind_method(D_METHOD("get_periodic_output"), &WaveFormCollapse::get_periodic_output);
 	ClassDB::bind_method(D_METHOD("set_periodic_output", "value"), &WaveFormCollapse::set_periodic_output);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "periodic_output"), "set_periodic_output", "get_periodic_output");
 
 	ClassDB::bind_method(D_METHOD("set_seed", "seed"), &WaveFormCollapse::set_seed);
-	ClassDB::bind_method(D_METHOD("set_size", "width", "height"), &WaveFormCollapse::set_size);
+	//ClassDB::bind_method(D_METHOD("set_wave_size", "width", "height"), &WaveFormCollapse::set_wave_size);
 
 	ClassDB::bind_method(D_METHOD("propagate"), &WaveFormCollapse::propagate);
 	ClassDB::bind_method(D_METHOD("initialize"), &WaveFormCollapse::initialize);

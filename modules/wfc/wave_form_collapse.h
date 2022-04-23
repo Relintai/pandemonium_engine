@@ -24,7 +24,7 @@ public:
 	};
 
 	enum ObserveStatus {
-		OBSERVE_STATUS_SUCCESS,
+		OBSERVE_STATUS_SUCCESS = 0,
 		OBSERVE_STATUS_FAILURE,
 		OBSERVE_STATUS_TO_CONTINUE
 	};
@@ -63,15 +63,19 @@ public:
 	static const int DIRECTIONS_Y[4];
 
 public:
-	int get_width() const;
-	int get_height() const;
+	int get_wave_width() const;
+	void set_wave_width(const int val);
+
+	int get_wave_height() const;
+	void set_wave_height(const int val);
 
 	bool get_periodic_output() const;
 	void set_periodic_output(const bool val);
 
 	void set_seed(const int seed);
 
-	void set_size(int p_width, int p_height);
+	void set_wave_size(int p_width, int p_height);
+	void init_wave();
 
 	void set_propagator_state(const Vector<PropagatorStateEntry> &p_propagator_state);
 	void set_pattern_frequencies(const Vector<double> &p_patterns_frequencies, const bool p_normalize = true);
@@ -93,12 +97,12 @@ public:
 
 	// Return true if pattern can be placed in cell index.
 	bool wave_get(int index, int pattern) const {
-		return data.get(index, pattern);
+		return wave_data.get(index, pattern);
 	}
 
 	// Return true if pattern can be placed in cell (i,j)
 	bool wave_get(int i, int j, int pattern) const {
-		return wave_get(i * wave_width + j, pattern);
+		return wave_get(i * _wave_width + j, pattern);
 	}
 
 	// Set the value of pattern in cell index.
@@ -106,7 +110,7 @@ public:
 
 	// Set the value of pattern in cell (i,j).
 	void wave_set(int i, int j, int pattern, bool value) {
-		wave_set(i * wave_width + j, pattern, value);
+		wave_set(i * _wave_width + j, pattern, value);
 	}
 
 	// Return the index of the cell with lowest entropy different of 0.
@@ -144,6 +148,11 @@ protected:
 
 	bool periodic_output;
 
+	//Wave
+	int _wave_width;
+	int _wave_height;
+	int _wave_size;
+
 private:
 	RandomPCG gen;
 
@@ -154,11 +163,6 @@ private:
 	// contradiction). This function should be used only when all cell of the wave
 	// are defined.
 	Array2D<int> wave_to_output() const;
-
-	//Wave
-	int wave_width;
-	int wave_height;
-	int wave_size;
 
 	// The patterns frequencies p given to wfc.
 	Vector<double> patterns_frequencies;
@@ -179,9 +183,8 @@ private:
 	// This value is set to true if there is a contradiction in the wave (all elements set to false in a cell).
 	bool is_impossible;
 
-	// The actual wave. data.get(index, pattern) is equal to 0 if the pattern can
-	// be placed in the cell index.
-	Array2D<int> data;
+	// The actual wave. wave_data.get(index, pattern) is equal to false if the pattern can be placed in the cell index.
+	Array2D<bool> wave_data;
 
 	//Propagator
 	Vector<PropagatorStateEntry> propagator_state;

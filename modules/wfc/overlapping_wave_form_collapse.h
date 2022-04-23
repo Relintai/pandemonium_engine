@@ -39,11 +39,12 @@ public:
 	int get_ground_pattern_id();
 	int get_pattern_id(const Array2D<int> &pattern);
 	void set_pattern(int pattern_id, int i, int j);
-	void get_patterns();
+	
+	void init_patterns();
 
 	bool agrees(const Array2D<int> &pattern1, const Array2D<int> &pattern2, int dy, int dx);
 
-	Vector<WaveFormCollapse::PropagatorStateEntry> generate_compatible();
+	void generate_compatible();
 
 	Array2D<int> to_image(const Array2D<int> &output_patterns) const;
 

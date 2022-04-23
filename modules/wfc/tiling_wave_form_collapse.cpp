@@ -109,7 +109,7 @@ Tile::Tile(const Array2D<int> &p_data, WaveFormCollapse::Symmetry p_symmetry, do
 // Returns false if the given tile and orientation does not exist, or if the coordinates are not in the wave
 bool TilingWaveFormCollapse::set_tile(int tile_id, int orientation, int i, int j) {
 	if (tile_id >= static_cast<int>(oriented_tile_ids.size()) || orientation >= static_cast<int>(oriented_tile_ids[tile_id].size()) ||
-			i >= get_height() || j >= get_width()) {
+			i >= _wave_height || j >= _wave_width) {
 		return false;
 	}
 
