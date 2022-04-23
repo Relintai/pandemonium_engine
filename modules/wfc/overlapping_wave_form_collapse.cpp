@@ -123,7 +123,7 @@ int OverlappingWaveFormCollapse::get_pattern_id(const Array2D<int> &pattern) {
 // pattern_id needs to be a valid pattern id, and i and j needs to be in the wave range
 void OverlappingWaveFormCollapse::set_pattern(int pattern_id, int i, int j) {
 	for (int p = 0; p < patterns.size(); p++) {
-		if (pattern_id != static_cast<int>(p)) {
+		if (pattern_id != p) {
 			remove_wave_pattern(i, j, p);
 		}
 	}
