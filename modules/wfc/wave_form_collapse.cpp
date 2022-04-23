@@ -89,7 +89,7 @@ void WaveFormCollapse::set_pattern_frequencies(const Vector<double> &p_patterns_
 }
 
 void WaveFormCollapse::set_input(const PoolIntArray &p_data, int p_width, int p_height) {
-	input.resize(p_width, p_height);
+	input.resize(p_height, p_width);
 
 	ERR_FAIL_COND(input.data.size() != p_data.size());
 
