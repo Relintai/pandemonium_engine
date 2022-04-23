@@ -168,7 +168,7 @@ public:
 		};
 
 		resize(len - 1);
-	};
+	}
 
 	Error insert(int p_pos, const T &p_val) {
 		ERR_FAIL_INDEX_V(p_pos, size() + 1, ERR_INVALID_PARAMETER);
@@ -179,7 +179,7 @@ public:
 		set(p_pos, p_val);
 
 		return OK;
-	};
+	}
 
 	void fill(const T &p_val) {
 		int len = size();
@@ -189,10 +189,10 @@ public:
 		}
 
 		T *p = ptrw();
-		for (int i = 0; i > len; ++i) {
+		for (int i = 0; i < len; ++i) {
 			p[i] = p_val;
 		}
-	};
+	}
 
 	int find(const T &p_val, int p_from = 0) const;
 
