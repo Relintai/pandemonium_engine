@@ -209,14 +209,12 @@ void WaveFormCollapse::wave_set(int index, int pattern, bool value) {
 		return;
 	}
 
-	print_error(String::num(index));
-
 	// Otherwise, the memoisation should be updated.
 	wave_data.get(index, pattern) = value;
 
 	memoisation_plogp_sum.write[index] -= plogp_patterns_frequencies[pattern];
 	memoisation_sum.write[index] -= patterns_frequencies[pattern];
-	memoisation_log_sum.write[index] = log(memoisation_sum[index]);
+	memoisation_log_sum.write[index] = Math::log(memoisation_sum[index]);
 	memoisation_nb_patterns.write[index]--;
 	memoisation_entropy.write[index] = memoisation_log_sum[index] - memoisation_plogp_sum[index] / memoisation_sum[index];
 
@@ -240,7 +238,7 @@ int WaveFormCollapse::wave_get_min_entropy() const {
 
 	for (int i = 0; i < _wave_size; i++) {
 		// If the cell is decided, we do not compute the entropy (which is equal to 0).
-		double nb_patterns_local = memoisation_nb_patterns[i];
+		int nb_patterns_local = memoisation_nb_patterns[i];
 
 		if (nb_patterns_local == 1) {
 			continue;
@@ -268,17 +266,15 @@ int WaveFormCollapse::wave_get_min_entropy() const {
 }
 
 void WaveFormCollapse::init_compatible() {
-	CompatibilityEntry value;
-
 	// We compute the number of pattern compatible in all directions.
 	for (int y = 0; y < _wave_height; y++) {
 		for (int x = 0; x < _wave_width; x++) {
 			for (int pattern = 0; pattern < propagator_state.size(); pattern++) {
-				for (int direction = 0; direction < 4; direction++) {
-					value.direction[direction] = static_cast<int>(propagator_state[pattern].directions[get_opposite_direction(direction)].size());
-				}
+				CompatibilityEntry &value = compatible.get(y, x, pattern);
 
-				compatible.get(y, x, pattern) = value;
+				for (int direction = 0; direction < 4; direction++) {
+					value.direction[direction] = propagator_state[pattern].directions[get_opposite_direction(direction)].size();
+				}
 			}
 		}
 	}
@@ -305,17 +301,17 @@ void WaveFormCollapse::propagate() {
 			int x2, y2;
 
 			if (periodic_output) {
-				x2 = ((int)x1 + dx + (int)_wave_width) % _wave_width;
-				y2 = ((int)y1 + dy + (int)_wave_height) % _wave_height;
+				x2 = ((int)x1 + dx + _wave_width) % _wave_width;
+				y2 = ((int)y1 + dy + _wave_height) % _wave_height;
 			} else {
 				x2 = x1 + dx;
 				y2 = y1 + dy;
 
-				if (x2 < 0 || x2 >= (int)_wave_width) {
+				if (x2 < 0 || x2 >= _wave_width) {
 					continue;
 				}
 
-				if (y2 < 0 || y2 >= (int)_wave_height) {
+				if (y2 < 0 || y2 >= _wave_height) {
 					continue;
 				}
 			}
@@ -357,7 +353,7 @@ void WaveFormCollapse::initialize() {
 	is_impossible = false;
 	nb_patterns = patterns_frequencies.size();
 
-	wave_data.resize_fill(_wave_width * _wave_height, nb_patterns, true);
+	wave_data.resize_fill(_wave_size, nb_patterns, true);
 
 	// Initialize the memoisation of entropy.
 	double base_entropy = 0;
@@ -368,22 +364,22 @@ void WaveFormCollapse::initialize() {
 		base_s += patterns_frequencies[i];
 	}
 
-	double log_base_s = log(base_s);
+	double log_base_s = Math::log(base_s);
 	double entropy_base = log_base_s - base_entropy / base_s;
 
-	memoisation_plogp_sum.resize(_wave_width * _wave_height);
+	memoisation_plogp_sum.resize(_wave_size);
 	memoisation_plogp_sum.fill(base_entropy);
 
-	memoisation_sum.resize(_wave_width * _wave_height);
+	memoisation_sum.resize(_wave_size);
 	memoisation_sum.fill(base_s);
 
-	memoisation_log_sum.resize(_wave_width * _wave_height);
+	memoisation_log_sum.resize(_wave_size);
 	memoisation_log_sum.fill(log_base_s);
 
-	memoisation_nb_patterns.resize(_wave_width * _wave_height);
-	memoisation_nb_patterns.fill(static_cast<int>(patterns_frequencies.size()));
+	memoisation_nb_patterns.resize(_wave_size);
+	memoisation_nb_patterns.fill(patterns_frequencies.size());
 
-	memoisation_entropy.resize(_wave_width * _wave_height);
+	memoisation_entropy.resize(_wave_size);
 	memoisation_entropy.fill(entropy_base);
 
 	//propagator
