@@ -7,7 +7,6 @@
 #include "wave_form_collapse.h"
 
 struct Tile {
-
 	struct ActionMap {
 		Vector<int> map[8];
 
@@ -21,16 +20,25 @@ struct Tile {
 	static const uint8_t rotation_map[6][9];
 	static const uint8_t reflection_map[6][9];
 
+	String name;
 	Vector<Array2D<int>> data;
 	WaveFormCollapse::Symmetry symmetry;
 	double weight;
 
 	static ActionMap generate_action_map(const WaveFormCollapse::Symmetry &symmetry);
-
 	static Vector<Array2D<int>> generate_oriented(Array2D<int> data, WaveFormCollapse::Symmetry symmetry);
 
+	void set_generate_data(const PoolIntArray &p_data, const int width, const int height);
+
+	PoolIntArray data_get(const int index);
+	void data_set(const int index, const PoolIntArray &p_data, const int width, const int height);
+	void data_remove(const int index);
+
+	Tile();
+	Tile(WaveFormCollapse::Symmetry p_symmetry, double p_weight);
 	Tile(const Vector<Array2D<int>> &p_data, WaveFormCollapse::Symmetry p_symmetry, double p_weight);
 	Tile(const Array2D<int> &p_data, WaveFormCollapse::Symmetry p_symmetry, double p_weight);
+	Tile(const PoolIntArray &p_data, const int width, const int height, WaveFormCollapse::Symmetry p_symmetry, double p_weight);
 };
 
 class TilingWaveFormCollapse : public WaveFormCollapse {
@@ -44,6 +52,13 @@ public:
 			for (int i = 0; i < 4; ++i) {
 				data[i] = 0;
 			}
+		}
+
+		NeighbourData(const int n1, const int n2, const int n3, const int n4) {
+			data[0] = n1;
+			data[1] = n2;
+			data[2] = n3;
+			data[3] = n4;
 		}
 	};
 
@@ -74,11 +89,41 @@ public:
 	};
 
 public:
+	int tile_add_generated(const PoolIntArray &data, const int width, const int height, const WaveFormCollapse::Symmetry symmetry, const float weight);
+	int tile_add(const WaveFormCollapse::Symmetry symmetry, const float weight);
+	int tile_create();
+	void tile_remove(const int tile_index);
+	int tile_count_get();
+
+	void tile_data_add(const int tile_index, const PoolIntArray &data, const int width, const int height);
+	void tile_data_generated_add(const int tile_index, const PoolIntArray &data, const int width, const int height);
+	PoolIntArray tile_data_get(const int tile_index, const int data_index);
+	void tile_data_set(const int tile_index, const int data_index, const PoolIntArray &data, const int width, const int height);
+	void tile_data_remove(const int tile_index, const int data_index);
+	void tile_data_clear(const int tile_index);
+	int tile_data_count_get(const int tile_index);
+
+	int tile_width_get(const int tile_index, const int data_index);
+	int tile_height_get(const int tile_index, const int data_index);
+
+	WaveFormCollapse::Symmetry tile_symmetry_get(const int tile_index);
+	void tile_symmetry_set(const int tile_index, const WaveFormCollapse::Symmetry val);
+
+	float tile_weight_get(const int tile_index);
+	void tile_weight_set(const int tile_index, const float val);
+
+	String tile_name_get(const int tile_index);
+	void tile_name_set(const int tile_index, const String &val);
+
+	int neighbour_data_add(const int n1, const int n2, const int n3, const int n4);
+	PoolIntArray neighbour_data_get(const int index);
+	void neighbour_data_remove(const int index);
+	void neighbour_data_set(const int index, const int n1, const int n2, const int n3, const int n4);
+
 	void set_tiles(const Vector<Tile> &p_tiles);
 	void set_neighbours(const Vector<NeighbourData> &p_neighbors);
 
 	void generate_oriented_tile_ids();
-
 	void generate_propagator();
 
 	static Vector<double> get_tiles_weights(const Vector<Tile> &tiles);
@@ -111,4 +156,4 @@ private:
 	Vector<Vector<int>> oriented_tile_ids;
 };
 
-#endif // FAST_WFC_TILING_WFC_HPP_
+#endif 
