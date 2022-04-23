@@ -2,6 +2,8 @@
 #define FAST_WFC_UTILS_ARRAY2D_HPP_
 
 #include "core/vector.h"
+#include "core/pool_vector.h"
+#include "core/variant.h"
 
 template <typename T>
 class Array2D {
@@ -29,6 +31,28 @@ public:
 		data.fill(p_value);
 	}
 
+	Array2D(const PoolIntArray &p_data, int p_height, int p_width) {
+		int wh = p_width * p_height;
+		if (wh != p_data.size()) {
+			width = 0;
+			height = 0;
+			ERR_FAIL_MSG("wh != p_data.size()");
+		}
+
+		height = p_height;
+		width = p_width;
+		data.resize(wh);
+
+		int *w = data.ptrw();
+		int s = data.size();
+
+		PoolIntArray::Read r = p_data.read();
+
+		for (int i = 0; i < s; ++i) {
+			w[i] = r[i];
+		}
+	}
+
 	void resize(int p_height, int p_width) {
 		height = p_height;
 		width = p_width;
@@ -40,6 +64,26 @@ public:
 		width = p_width;
 		data.resize(width * height);
 		data.fill(p_value);
+	}
+
+	void set_data(const PoolIntArray &p_data, int p_height, int p_width) {
+		int wh = p_width * p_height;
+		ERR_FAIL_COND(wh != p_data.size());
+
+		resize(p_height, p_width);
+
+		height = p_height;
+		width = p_width;
+		data.resize(wh);
+
+		int *w = data.ptrw();
+		int s = data.size();
+
+		PoolIntArray::Read r = p_data.read();
+
+		for (int i = 0; i < s; ++i) {
+			w[i] = r[i];
+		}
 	}
 
 	const T &get(int i, int j) const {
