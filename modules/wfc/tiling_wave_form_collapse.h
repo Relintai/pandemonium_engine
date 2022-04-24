@@ -114,11 +114,14 @@ public:
 
 	String tile_name_get(const int tile_index);
 	void tile_name_set(const int tile_index, const String &val);
+	int tile_index_get(const String &tile_name);
 
-	int neighbour_data_add(const int n1, const int n2, const int n3, const int n4);
+	int neighbour_data_add(const int left, const int left_orientation, const int right, const int right_orientation);
+	int neighbour_data_add_str(const String &left, const int left_orientation, const String &right, const int right_orientation);
 	PoolIntArray neighbour_data_get(const int index);
 	void neighbour_data_remove(const int index);
-	void neighbour_data_set(const int index, const int n1, const int n2, const int n3, const int n4);
+	void neighbour_data_set(const int index, const int left, const int left_orientation, const int right, const int right_orientation);
+	void neighbour_data_set_str(const int index, const String &left, const int left_orientation, const String &right, const int right_orientation);
 
 	void set_tiles(const Vector<Tile> &p_tiles);
 	void set_neighbours(const Vector<NeighbourData> &p_neighbors);

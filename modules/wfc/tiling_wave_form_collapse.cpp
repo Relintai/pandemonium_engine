@@ -270,14 +270,33 @@ void TilingWaveFormCollapse::tile_name_set(const int tile_index, const String &v
 
 	tiles.write[tile_index].name = val;
 }
+int TilingWaveFormCollapse::tile_index_get(const String &tile_name) {
+	for (int i = 0; i < tiles.size(); ++i) {
+		if (tiles[i].name == tile_name) {
+			return i;
+		}
+	}
 
-int TilingWaveFormCollapse::neighbour_data_add(const int n1, const int n2, const int n3, const int n4) {
-	NeighbourData d(n1, n2, n3, n4);
+	return -1;
+}
+
+int TilingWaveFormCollapse::neighbour_data_add(const int left, const int left_orientation, const int right, const int right_orientation) {
+	NeighbourData d(left, left_orientation, right, right_orientation);
 
 	neighbors.push_back(d);
 
 	return neighbors.size() - 1;
 }
+int TilingWaveFormCollapse::neighbour_data_add_str(const String &left, const int left_orientation, const String &right, const int right_orientation) {
+	int left_index = tile_index_get(left);
+	int right_index = tile_index_get(right);
+
+	ERR_FAIL_COND_V(left_index == -1, -1);
+	ERR_FAIL_COND_V(right_index == -1, -1);
+
+	return neighbour_data_add(left_index, left_orientation, right_index, right_orientation);
+}
+
 PoolIntArray TilingWaveFormCollapse::neighbour_data_get(const int index) {
 	ERR_FAIL_INDEX_V(index, neighbors.size(), PoolIntArray());
 
@@ -301,12 +320,23 @@ void TilingWaveFormCollapse::neighbour_data_remove(const int index) {
 
 	neighbors.remove(index);
 }
-void TilingWaveFormCollapse::neighbour_data_set(const int index, const int n1, const int n2, const int n3, const int n4) {
+
+void TilingWaveFormCollapse::neighbour_data_set(const int index, const int left, const int left_orientation, const int right, const int right_orientation) {
 	ERR_FAIL_INDEX(index, neighbors.size());
 
-	NeighbourData d(n1, n2, n3, n4);
+	NeighbourData d(left, left_orientation, right, right_orientation);
 
 	neighbors.write[index] = d;
+}
+
+void TilingWaveFormCollapse::neighbour_data_set_str(const int index, const String &left, const int left_orientation, const String &right, const int right_orientation) {
+	int left_index = tile_index_get(left);
+	int right_index = tile_index_get(right);
+
+	ERR_FAIL_COND(left_index == -1);
+	ERR_FAIL_COND(right_index == -1);
+
+	neighbour_data_set(index, left_index, left_orientation, right_index, right_orientation);
 }
 
 // Returns false if the given tile and orientation does not exist, or if the coordinates are not in the wave
@@ -482,11 +512,14 @@ void TilingWaveFormCollapse::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("tile_name_get", "tile_index"), &TilingWaveFormCollapse::tile_name_get);
 	ClassDB::bind_method(D_METHOD("tile_name_set", "tile_index", "val"), &TilingWaveFormCollapse::tile_name_set);
+	ClassDB::bind_method(D_METHOD("tile_index_get", "tile_name"), &TilingWaveFormCollapse::tile_index_get);
 
-	ClassDB::bind_method(D_METHOD("neighbour_data_add", "n1", "n2", "n3", "n4"), &TilingWaveFormCollapse::neighbour_data_add);
+	ClassDB::bind_method(D_METHOD("neighbour_data_add", "left", "left_orientation", "right", "right_orientation"), &TilingWaveFormCollapse::neighbour_data_add);
+	ClassDB::bind_method(D_METHOD("neighbour_data_add_str", "left", "left_orientation", "right", "right_orientation"), &TilingWaveFormCollapse::neighbour_data_add_str);
 	ClassDB::bind_method(D_METHOD("neighbour_data_get", "index"), &TilingWaveFormCollapse::neighbour_data_get);
 	ClassDB::bind_method(D_METHOD("neighbour_data_remove", "index"), &TilingWaveFormCollapse::neighbour_data_remove);
-	ClassDB::bind_method(D_METHOD("neighbour_data_set", "tile_index", "n1", "n2", "n3", "n4"), &TilingWaveFormCollapse::neighbour_data_set);
+	ClassDB::bind_method(D_METHOD("neighbour_data_set", "tile_index", "left", "left_orientation", "right", "right_orientation"), &TilingWaveFormCollapse::neighbour_data_set);
+	ClassDB::bind_method(D_METHOD("neighbour_data_set_str", "tile_index", "left", "left_orientation", "right", "right_orientation"), &TilingWaveFormCollapse::neighbour_data_set_str);
 }
 
 void TilingWaveFormCollapse::generate_propagator_add_helper(Tile::ActionMap *action_map1, Tile::ActionMap *action_map2,
