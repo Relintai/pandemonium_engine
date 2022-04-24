@@ -25,7 +25,7 @@ struct Tile {
 	WaveFormCollapse::Symmetry symmetry;
 	double weight;
 
-	static ActionMap generate_action_map(const WaveFormCollapse::Symmetry &symmetry);
+	static ActionMap generate_action_map(const WaveFormCollapse::Symmetry symmetry);
 	static Vector<Array2D<int>> generate_oriented(Array2D<int> data, WaveFormCollapse::Symmetry symmetry);
 
 	void set_generate_data(const PoolIntArray &p_data, const int width, const int height);
@@ -102,6 +102,7 @@ public:
 	void tile_data_remove(const int tile_index, const int data_index);
 	void tile_data_clear(const int tile_index);
 	int tile_data_count_get(const int tile_index);
+	int tile_data_required_count_get(const int tile_index);
 
 	int tile_width_get(const int tile_index, const int data_index);
 	int tile_height_get(const int tile_index, const int data_index);
@@ -122,6 +123,8 @@ public:
 	void neighbour_data_remove(const int index);
 	void neighbour_data_set(const int index, const int left, const int left_orientation, const int right, const int right_orientation);
 	void neighbour_data_set_str(const int index, const String &left, const int left_orientation, const String &right, const int right_orientation);
+	bool neighbour_data_validate(const int tile_index, const int orientation);
+	bool neighbour_data_validate_str(const String &tile_name, const int orientation);
 
 	void set_tiles(const Vector<Tile> &p_tiles);
 	void set_neighbours(const Vector<NeighbourData> &p_neighbors);
@@ -138,6 +141,7 @@ public:
 
 	Array2D<int> id_to_tiling(Array2D<int> ids);
 
+	bool validate();
 	void initialize();
 
 	TilingWaveFormCollapse();
@@ -147,7 +151,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	void generate_propagator_add_helper(Tile::ActionMap *action_map1, Tile::ActionMap *action_map2,
+	void generate_propagator_add_helper(const Tile::ActionMap &action_map1, const Tile::ActionMap &action_map2,
 			Vector<DensePropagatorHelper> *dense_propagator,
 			const NeighbourData &neighbour,
 			int action, int direction);

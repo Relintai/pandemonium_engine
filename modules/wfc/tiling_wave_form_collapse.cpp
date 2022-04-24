@@ -30,11 +30,12 @@ const uint8_t Tile::reflection_map[6][9] = {
 // Actions 0, 1, 2, and 3 are 0°, 90°, 180°, and 270° anticlockwise rotations.
 // Actions 4, 5, 6, and 7 are actions 0, 1, 2, and 3 preceded by a reflection
 // on the x axis.
-Tile::ActionMap Tile::generate_action_map(const WaveFormCollapse::Symmetry &symmetry) {
+Tile::ActionMap Tile::generate_action_map(const WaveFormCollapse::Symmetry symmetry) {
 	int sindx = static_cast<int>(symmetry);
 	int size = rotation_map[sindx][0];
 
 	ActionMap action_map;
+	action_map.set_size(size);
 
 	for (int i = 0; i < size; ++i) {
 		action_map.map[0].write[i] = i;
@@ -224,6 +225,13 @@ int TilingWaveFormCollapse::tile_data_count_get(const int tile_index) {
 
 	return tiles[tile_index].data.size();
 }
+int TilingWaveFormCollapse::tile_data_required_count_get(const int tile_index) {
+	ERR_FAIL_INDEX_V(tile_index, tiles.size(), 0);
+
+	int symm_indx = static_cast<int>(tiles[tile_index].symmetry);
+
+	return Tile::rotation_map[symm_indx][0];
+}
 
 int TilingWaveFormCollapse::tile_width_get(const int tile_index, const int data_index) {
 	ERR_FAIL_INDEX_V(tile_index, tiles.size(), 0);
@@ -281,6 +289,9 @@ int TilingWaveFormCollapse::tile_index_get(const String &tile_name) {
 }
 
 int TilingWaveFormCollapse::neighbour_data_add(const int left, const int left_orientation, const int right, const int right_orientation) {
+	ERR_FAIL_COND_V(!neighbour_data_validate(left, left_orientation), -1);
+	ERR_FAIL_COND_V(!neighbour_data_validate(right, right_orientation), -1);
+
 	NeighbourData d(left, left_orientation, right, right_orientation);
 
 	neighbors.push_back(d);
@@ -324,6 +335,9 @@ void TilingWaveFormCollapse::neighbour_data_remove(const int index) {
 void TilingWaveFormCollapse::neighbour_data_set(const int index, const int left, const int left_orientation, const int right, const int right_orientation) {
 	ERR_FAIL_INDEX(index, neighbors.size());
 
+	ERR_FAIL_COND(!neighbour_data_validate(left, left_orientation));
+	ERR_FAIL_COND(!neighbour_data_validate(right, right_orientation));
+
 	NeighbourData d(left, left_orientation, right, right_orientation);
 
 	neighbors.write[index] = d;
@@ -337,6 +351,29 @@ void TilingWaveFormCollapse::neighbour_data_set_str(const int index, const Strin
 	ERR_FAIL_COND(right_index == -1);
 
 	neighbour_data_set(index, left_index, left_orientation, right_index, right_orientation);
+}
+
+bool TilingWaveFormCollapse::neighbour_data_validate(const int tile_index, const int orientation) {
+	ERR_FAIL_INDEX_V(tile_index, tiles.size(), false);
+
+	if (orientation < 0) {
+		return false;
+	}
+
+	int symm_indx = static_cast<int>(tiles[tile_index].symmetry);
+
+	if (orientation >= Tile::rotation_map[symm_indx][0]) {
+		return false;
+	}
+
+	return true;
+}
+bool TilingWaveFormCollapse::neighbour_data_validate_str(const String &tile_name, const int orientation) {
+	int tile_index = tile_index_get(tile_name);
+
+	ERR_FAIL_COND_V(tile_index == -1, false);
+
+	return neighbour_data_validate(tile_index, orientation);
 }
 
 // Returns false if the given tile and orientation does not exist, or if the coordinates are not in the wave
@@ -367,7 +404,8 @@ void TilingWaveFormCollapse::generate_oriented_tile_ids() {
 
 	int id = 0;
 	for (int i = 0; i < tiles.size(); i++) {
-		oriented_tile_ids.push_back({});
+		oriented_tile_ids.push_back(Vector<int>());
+
 		for (int j = 0; j < tiles[i].data.size(); j++) {
 			id_to_oriented_tile.push_back(IdToTilePair(i, j));
 			oriented_tile_ids.write[i].push_back(id);
@@ -395,14 +433,14 @@ void TilingWaveFormCollapse::generate_propagator() {
 		Tile::ActionMap action_map1 = Tile::generate_action_map(tiles[tile1].symmetry);
 		Tile::ActionMap action_map2 = Tile::generate_action_map(tiles[tile2].symmetry);
 
-		generate_propagator_add_helper(&action_map1, &action_map2, &dense_propagator, neighbour, 0, 2);
-		generate_propagator_add_helper(&action_map1, &action_map2, &dense_propagator, neighbour, 1, 0);
-		generate_propagator_add_helper(&action_map1, &action_map2, &dense_propagator, neighbour, 2, 1);
-		generate_propagator_add_helper(&action_map1, &action_map2, &dense_propagator, neighbour, 3, 3);
-		generate_propagator_add_helper(&action_map1, &action_map2, &dense_propagator, neighbour, 4, 1);
-		generate_propagator_add_helper(&action_map1, &action_map2, &dense_propagator, neighbour, 5, 3);
-		generate_propagator_add_helper(&action_map1, &action_map2, &dense_propagator, neighbour, 6, 2);
-		generate_propagator_add_helper(&action_map1, &action_map2, &dense_propagator, neighbour, 7, 0);
+		generate_propagator_add_helper(action_map1, action_map2, &dense_propagator, neighbour, 0, 2);
+		generate_propagator_add_helper(action_map1, action_map2, &dense_propagator, neighbour, 1, 0);
+		generate_propagator_add_helper(action_map1, action_map2, &dense_propagator, neighbour, 2, 1);
+		generate_propagator_add_helper(action_map1, action_map2, &dense_propagator, neighbour, 3, 3);
+		generate_propagator_add_helper(action_map1, action_map2, &dense_propagator, neighbour, 4, 1);
+		generate_propagator_add_helper(action_map1, action_map2, &dense_propagator, neighbour, 5, 3);
+		generate_propagator_add_helper(action_map1, action_map2, &dense_propagator, neighbour, 6, 2);
+		generate_propagator_add_helper(action_map1, action_map2, &dense_propagator, neighbour, 7, 0);
 	}
 
 	Vector<PropagatorStateEntry> propagator;
@@ -413,7 +451,7 @@ void TilingWaveFormCollapse::generate_propagator() {
 	for (int i = 0; i < nb_oriented_tiles; ++i) {
 		for (int j = 0; j < nb_oriented_tiles; ++j) {
 			for (int d = 0; d < 4; ++d) {
-				if (propw[i].directions[d][j]) {
+				if (dense_propagator[i].directions[d][j]) {
 					propw[i].directions[d].push_back(j);
 				}
 			}
@@ -474,7 +512,23 @@ Array2D<int> TilingWaveFormCollapse::id_to_tiling(Array2D<int> ids) {
 	return tiling;
 }
 
+bool TilingWaveFormCollapse::validate() {
+	for (int i = 0; i < tiles.size(); ++i) {
+		int symm_indx = static_cast<int>(tiles[i].symmetry);
+
+		int symm_req_count = Tile::rotation_map[symm_indx][0];
+
+		if (tiles[i].data.size() != symm_req_count) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
 void TilingWaveFormCollapse::initialize() {
+	ERR_FAIL_COND(!validate());
+
 	generate_oriented_tile_ids();
 	generate_propagator();
 
@@ -500,6 +554,7 @@ void TilingWaveFormCollapse::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("tile_data_remove", "tile_index", "data_index"), &TilingWaveFormCollapse::tile_data_remove);
 	ClassDB::bind_method(D_METHOD("tile_data_clear", "tile_index"), &TilingWaveFormCollapse::tile_data_clear);
 	ClassDB::bind_method(D_METHOD("tile_data_count_get", "tile_index"), &TilingWaveFormCollapse::tile_data_count_get);
+	ClassDB::bind_method(D_METHOD("tile_data_required_count_get", "tile_index"), &TilingWaveFormCollapse::tile_data_required_count_get);
 
 	ClassDB::bind_method(D_METHOD("tile_width_get", "tile_index", "data_index"), &TilingWaveFormCollapse::tile_width_get);
 	ClassDB::bind_method(D_METHOD("tile_height_get", "tile_index", "data_index"), &TilingWaveFormCollapse::tile_height_get);
@@ -520,9 +575,11 @@ void TilingWaveFormCollapse::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("neighbour_data_remove", "index"), &TilingWaveFormCollapse::neighbour_data_remove);
 	ClassDB::bind_method(D_METHOD("neighbour_data_set", "tile_index", "left", "left_orientation", "right", "right_orientation"), &TilingWaveFormCollapse::neighbour_data_set);
 	ClassDB::bind_method(D_METHOD("neighbour_data_set_str", "tile_index", "left", "left_orientation", "right", "right_orientation"), &TilingWaveFormCollapse::neighbour_data_set_str);
+	ClassDB::bind_method(D_METHOD("neighbour_data_validate", "tile_index", "orientation"), &TilingWaveFormCollapse::neighbour_data_validate);
+	ClassDB::bind_method(D_METHOD("neighbour_data_validate_str", "tile_name", "orientation"), &TilingWaveFormCollapse::neighbour_data_validate_str);
 }
 
-void TilingWaveFormCollapse::generate_propagator_add_helper(Tile::ActionMap *action_map1, Tile::ActionMap *action_map2,
+void TilingWaveFormCollapse::generate_propagator_add_helper(const Tile::ActionMap &action_map1, const Tile::ActionMap &action_map2,
 		Vector<DensePropagatorHelper> *dense_propagator,
 		const NeighbourData &neighbour, int action, int direction) {
 	// --
@@ -531,8 +588,8 @@ void TilingWaveFormCollapse::generate_propagator_add_helper(Tile::ActionMap *act
 	int tile2 = neighbour.data[2];
 	int orientation2 = neighbour.data[3];
 
-	int temp_orientation1 = action_map1->map[action][orientation1];
-	int temp_orientation2 = action_map2->map[action][orientation2];
+	int temp_orientation1 = action_map1.map[action][orientation1];
+	int temp_orientation2 = action_map2.map[action][orientation2];
 	int oriented_tile_id1 = oriented_tile_ids[tile1][temp_orientation1];
 	int oriented_tile_id2 = oriented_tile_ids[tile2][temp_orientation2];
 	dense_propagator->write[oriented_tile_id1].directions[direction].write[oriented_tile_id2] = true;
