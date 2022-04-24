@@ -68,6 +68,8 @@ Array2D<int> OverlappingWaveFormCollapse::run() {
 void OverlappingWaveFormCollapse::init_ground() {
 	int ground_pattern_id = get_ground_pattern_id();
 
+	ERR_FAIL_COND(ground_pattern_id == -1);
+
 	for (int j = 0; j < get_wave_width(); j++) {
 		set_pattern(ground_pattern_id, get_wave_height() - 1, j);
 	}
@@ -106,7 +108,7 @@ int OverlappingWaveFormCollapse::get_ground_pattern_id() {
 		}
 	}
 
-	ERR_FAIL_V(0);
+	ERR_FAIL_V(-1);
 }
 
 int OverlappingWaveFormCollapse::get_pattern_id(const Array2D<int> &pattern) {
