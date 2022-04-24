@@ -75,4 +75,5 @@ void ImageIndexer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_color_indices"), &ImageIndexer::get_color_indices);
 	ClassDB::bind_method(D_METHOD("index_image", "image"), &ImageIndexer::index_image);
 	ClassDB::bind_method(D_METHOD("reset"), &ImageIndexer::reset);
+	ClassDB::bind_method(D_METHOD("indices_to_argb8_data", "indices"), &ImageIndexer::indices_to_argb8_data);
 }
