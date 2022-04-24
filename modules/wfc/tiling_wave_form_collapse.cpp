@@ -379,7 +379,8 @@ bool TilingWaveFormCollapse::neighbour_data_validate_str(const String &tile_name
 
 // Returns false if the given tile and orientation does not exist, or if the coordinates are not in the wave
 bool TilingWaveFormCollapse::set_tile(int tile_id, int orientation, int i, int j) {
-	if (tile_id >= static_cast<int>(oriented_tile_ids.size()) || orientation >= static_cast<int>(oriented_tile_ids[tile_id].size()) ||
+	if (tile_id >= static_cast<int>(oriented_tile_ids.size()) ||
+			orientation >= static_cast<int>(oriented_tile_ids[tile_id].size()) ||
 			i >= _wave_height || j >= _wave_width) {
 		return false;
 	}
@@ -538,6 +539,7 @@ bool TilingWaveFormCollapse::validate() {
 void TilingWaveFormCollapse::initialize() {
 	ERR_FAIL_COND(!validate());
 
+	set_pattern_frequencies(get_tiles_weights(tiles));
 	generate_oriented_tile_ids();
 	generate_propagator();
 
