@@ -15,6 +15,12 @@ struct Tile {
 				map[i].resize(size);
 			}
 		}
+
+		void zero() {
+			for (int i = 0; i < 8; ++i) {
+				map[i].fill(0);
+			}
+		}
 	};
 
 	static const uint8_t rotation_map[6][9];
@@ -163,4 +169,4 @@ private:
 	Vector<Vector<int>> oriented_tile_ids;
 };
 
-#endif 
+#endif

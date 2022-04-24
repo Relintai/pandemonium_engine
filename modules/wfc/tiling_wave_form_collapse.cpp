@@ -36,6 +36,7 @@ Tile::ActionMap Tile::generate_action_map(const WaveFormCollapse::Symmetry symme
 
 	ActionMap action_map;
 	action_map.set_size(size);
+	action_map.zero();
 
 	for (int i = 0; i < size; ++i) {
 		action_map.map[0].write[i] = i;
@@ -499,7 +500,15 @@ Array2D<int> TilingWaveFormCollapse::id_to_tiling(Array2D<int> ids) {
 
 	for (int i = 0; i < ids.height; i++) {
 		for (int j = 0; j < ids.width; j++) {
-			IdToTilePair oriented_tile = id_to_oriented_tile[ids.get(i, j)];
+			int id = ids.get(i, j);
+
+			if (id < 0 || id >= id_to_oriented_tile.size()) {
+				id = 0;
+
+				ERR_PRINT("id < 0 || id >= id_to_oriented_tile.size()");
+			}
+
+			IdToTilePair oriented_tile = id_to_oriented_tile[id];
 
 			for (int y = 0; y < size; y++) {
 				for (int x = 0; x < size; x++) {
