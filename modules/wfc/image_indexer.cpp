@@ -6,11 +6,8 @@ PoolColorArray ImageIndexer::get_colors() {
 }
 
 PoolIntArray ImageIndexer::index_image(Ref<Image> image) {
-	if(!image.is_valid()) {
-		return  PoolIntArray();
-	}
+	ERR_FAIL_COND_V(!image.is_valid(), PoolIntArray());
 
-	_colors.resize(0);
 	PoolIntArray color_indices;
 
 	image->lock();
