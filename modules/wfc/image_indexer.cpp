@@ -1,8 +1,6 @@
 
 #include "image_indexer.h"
 
-#include "core/oa_hash_map.h"
-
 PoolColorArray ImageIndexer::get_colors() {
 	return _colors;
 }
@@ -16,8 +14,6 @@ void ImageIndexer::index_image(Ref<Image> image) {
 	_colors.resize(0);
 	_color_indices.resize(0);
 
-	OAHashMap<Color, int> col_map;
-
 	image->lock();
 
 	int w = image->get_width();
@@ -28,10 +24,10 @@ void ImageIndexer::index_image(Ref<Image> image) {
 			Color c = image->get_pixel(x, y);
 
 			int color_index = 0;
-			if (!col_map.lookup(c, color_index)) {
+			if (!_col_map.lookup(c, color_index)) {
 				color_index = _colors.size();
 				_colors.push_back(c);
-				col_map.set(c, color_index);
+				_col_map.set(c, color_index);
 			}
 
 			_color_indices.push_back(color_index);
@@ -39,6 +35,12 @@ void ImageIndexer::index_image(Ref<Image> image) {
 	}
 
 	image->unlock();
+}
+
+void ImageIndexer::reset() {
+	_colors.resize(0);
+	_color_indices.resize(0);
+	_col_map.clear();
 }
 
 PoolByteArray ImageIndexer::indices_to_argb8_data(const PoolIntArray &indices) {
@@ -71,6 +73,6 @@ ImageIndexer::~ImageIndexer() {
 void ImageIndexer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_colors"), &ImageIndexer::get_colors);
 	ClassDB::bind_method(D_METHOD("get_color_indices"), &ImageIndexer::get_color_indices);
-	ClassDB::bind_method(D_METHOD("index_image"), &ImageIndexer::index_image);
-	ClassDB::bind_method(D_METHOD("indices_to_argb8_data"), &ImageIndexer::indices_to_argb8_data);
+	ClassDB::bind_method(D_METHOD("index_image", "image"), &ImageIndexer::index_image);
+	ClassDB::bind_method(D_METHOD("reset"), &ImageIndexer::reset);
 }

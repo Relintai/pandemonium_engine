@@ -4,6 +4,7 @@
 #include "core/image.h"
 #include "core/reference.h"
 #include "core/variant.h"
+#include "core/oa_hash_map.h"
 
 class ImageIndexer : public Reference {
 	GDCLASS(ImageIndexer, Reference);
@@ -13,6 +14,7 @@ public:
 	PoolIntArray get_color_indices();
 
 	void index_image(Ref<Image> image);
+	void reset();
 
 	PoolByteArray indices_to_argb8_data(const PoolIntArray &indices);
 
@@ -25,6 +27,7 @@ protected:
 private:
 	PoolColorArray _colors;
 	PoolIntArray _color_indices;
+	OAHashMap<Color, int> _col_map;
 };
 
 #endif
