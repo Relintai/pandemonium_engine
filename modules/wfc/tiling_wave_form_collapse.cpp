@@ -511,9 +511,11 @@ Array2D<int> TilingWaveFormCollapse::id_to_tiling(Array2D<int> ids) {
 
 			IdToTilePair oriented_tile = id_to_oriented_tile[id];
 
+			const Array2D<int> &tile = tiles[oriented_tile.id].data[oriented_tile.oriented_tile];
+
 			for (int y = 0; y < size; y++) {
 				for (int x = 0; x < size; x++) {
-					tiling.get(i * size + y, j * size + x) = tiles[oriented_tile.id].data[oriented_tile.oriented_tile].get(y, x);
+					tiling.get(i * size + y, j * size + x) = tile.get(y, x);
 				}
 			}
 		}
