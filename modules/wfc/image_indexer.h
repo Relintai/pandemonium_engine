@@ -11,9 +11,8 @@ class ImageIndexer : public Reference {
 
 public:
 	PoolColorArray get_colors();
-	PoolIntArray get_color_indices();
 
-	void index_image(Ref<Image> image);
+	PoolIntArray index_image(Ref<Image> image);
 	void reset();
 
 	PoolByteArray indices_to_argb8_data(const PoolIntArray &indices);
@@ -26,7 +25,6 @@ protected:
 
 private:
 	PoolColorArray _colors;
-	PoolIntArray _color_indices;
 	OAHashMap<Color, int> _col_map;
 };
 

@@ -4,15 +4,14 @@
 PoolColorArray ImageIndexer::get_colors() {
 	return _colors;
 }
-PoolIntArray ImageIndexer::get_color_indices() {
-	return _color_indices;
-}
 
-void ImageIndexer::index_image(Ref<Image> image) {
-	ERR_FAIL_COND(!image.is_valid());
+PoolIntArray ImageIndexer::index_image(Ref<Image> image) {
+	if(!image.is_valid()) {
+		return  PoolIntArray();
+	}
 
 	_colors.resize(0);
-	_color_indices.resize(0);
+	PoolIntArray color_indices;
 
 	image->lock();
 
@@ -30,16 +29,17 @@ void ImageIndexer::index_image(Ref<Image> image) {
 				_col_map.set(c, color_index);
 			}
 
-			_color_indices.push_back(color_index);
+			color_indices.push_back(color_index);
 		}
 	}
 
 	image->unlock();
+
+	return color_indices;
 }
 
 void ImageIndexer::reset() {
 	_colors.resize(0);
-	_color_indices.resize(0);
 	_col_map.clear();
 }
 
@@ -72,7 +72,6 @@ ImageIndexer::~ImageIndexer() {
 
 void ImageIndexer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_colors"), &ImageIndexer::get_colors);
-	ClassDB::bind_method(D_METHOD("get_color_indices"), &ImageIndexer::get_color_indices);
 	ClassDB::bind_method(D_METHOD("index_image", "image"), &ImageIndexer::index_image);
 	ClassDB::bind_method(D_METHOD("reset"), &ImageIndexer::reset);
 	ClassDB::bind_method(D_METHOD("indices_to_argb8_data", "indices"), &ImageIndexer::indices_to_argb8_data);
