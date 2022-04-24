@@ -101,7 +101,7 @@ public:
 	}
 
 	Array2D<T> reflected() const {
-		Array2D<T> result = Array2D<T>(width, height);
+		Array2D<T> result = Array2D<T>(height, width);
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				result.get(y, x) = get(y, width - 1 - x);
@@ -121,7 +121,7 @@ public:
 	}
 
 	Array2D<T> get_sub_array(int y, int x, int sub_width, int sub_height) const {
-		Array2D<T> sub_array_2d = Array2D<T>(sub_width, sub_height);
+		Array2D<T> sub_array_2d = Array2D<T>(sub_height, sub_width);
 		for (int ki = 0; ki < sub_height; ki++) {
 			for (int kj = 0; kj < sub_width; kj++) {
 				sub_array_2d.get(ki, kj) = get((y + ki) % height, (x + kj) % width);
