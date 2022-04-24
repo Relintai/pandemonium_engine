@@ -8,12 +8,15 @@ PoolColorArray ImageIndexer::get_colors() {
 PoolIntArray ImageIndexer::index_image(Ref<Image> image) {
 	ERR_FAIL_COND_V(!image.is_valid(), PoolIntArray());
 
-	PoolIntArray color_indices;
-
 	image->lock();
 
 	int w = image->get_width();
 	int h = image->get_height();
+
+	PoolIntArray color_indices;
+	color_indices.resize(w * h);
+	PoolIntArray::Write wci = color_indices.write();
+	int *wi = wci.ptr();
 
 	for (int x = 0; x < w; ++x) {
 		for (int y = 0; y < h; ++y) {
@@ -26,10 +29,11 @@ PoolIntArray ImageIndexer::index_image(Ref<Image> image) {
 				_col_map.set(c, color_index);
 			}
 
-			color_indices.push_back(color_index);
+			wi[y * w + x] = color_index;
 		}
 	}
 
+	wci.release();
 	image->unlock();
 
 	return color_indices;
