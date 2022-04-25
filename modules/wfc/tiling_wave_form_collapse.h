@@ -23,8 +23,8 @@ struct Tile {
 		}
 	};
 
-	static const uint8_t rotation_map[6][9];
-	static const uint8_t reflection_map[6][9];
+	static const uint8_t ROTATION_MAP[6][9];
+	static const uint8_t REFLECTION_MAP[6][9];
 
 	String name;
 	Vector<Array2D<int>> data;

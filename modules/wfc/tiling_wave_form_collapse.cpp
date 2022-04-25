@@ -4,7 +4,7 @@
 // 0th index is the count
 // Generate the map associating an orientation id to the orientation
 // id obtained when rotating 90° anticlockwise the tile.
-const uint8_t Tile::rotation_map[6][9] = {
+const uint8_t Tile::ROTATION_MAP[6][9] = {
 	{ 1, 0 }, // SYMMETRY_X
 	{ 4, 1, 2, 3, 0 }, // SYMMETRY_T
 	{ 2, 1, 0 }, // SYMMETRY_I
@@ -16,7 +16,7 @@ const uint8_t Tile::rotation_map[6][9] = {
 // 0th index is the count
 // Generate the map associating an orientation id to the orientation
 // id obtained when rotating 90° anticlockwise the tile.
-const uint8_t Tile::reflection_map[6][9] = {
+const uint8_t Tile::REFLECTION_MAP[6][9] = {
 	{ 1, 0 }, // SYMMETRY_X
 	{ 4, 0, 3, 2, 1 }, // SYMMETRY_T
 	{ 2, 0, 1 }, // SYMMETRY_I
@@ -32,7 +32,7 @@ const uint8_t Tile::reflection_map[6][9] = {
 // on the x axis.
 Tile::ActionMap Tile::generate_action_map(const WaveFormCollapse::Symmetry symmetry) {
 	int sindx = static_cast<int>(symmetry);
-	int size = rotation_map[sindx][0];
+	int size = ROTATION_MAP[sindx][0];
 
 	ActionMap action_map;
 	action_map.set_size(size);
@@ -44,17 +44,17 @@ Tile::ActionMap Tile::generate_action_map(const WaveFormCollapse::Symmetry symme
 
 	for (int a = 1; a < 4; ++a) {
 		for (int i = 0; i < size; ++i) {
-			action_map.map[a].write[i] = rotation_map[sindx][action_map.map[a - 1][i] + 1];
+			action_map.map[a].write[i] = ROTATION_MAP[sindx][action_map.map[a - 1][i] + 1];
 		}
 	}
 
 	for (int i = 0; i < size; ++i) {
-		action_map.map[4].write[i] = reflection_map[sindx][action_map.map[0][i] + 1];
+		action_map.map[4].write[i] = REFLECTION_MAP[sindx][action_map.map[0][i] + 1];
 	}
 
 	for (int a = 5; a < 8; ++a) {
 		for (int i = 0; i < size; ++i) {
-			action_map.map[a].write[i] = rotation_map[sindx][action_map.map[a - 1][i] + 1];
+			action_map.map[a].write[i] = ROTATION_MAP[sindx][action_map.map[a - 1][i] + 1];
 		}
 	}
 
@@ -231,7 +231,7 @@ int TilingWaveFormCollapse::tile_data_required_count_get(const int tile_index) {
 
 	int symm_indx = static_cast<int>(tiles[tile_index].symmetry);
 
-	return Tile::rotation_map[symm_indx][0];
+	return Tile::ROTATION_MAP[symm_indx][0];
 }
 
 int TilingWaveFormCollapse::tile_width_get(const int tile_index, const int data_index) {
@@ -363,7 +363,7 @@ bool TilingWaveFormCollapse::neighbour_data_validate(const int tile_index, const
 
 	int symm_indx = static_cast<int>(tiles[tile_index].symmetry);
 
-	if (orientation >= Tile::rotation_map[symm_indx][0]) {
+	if (orientation >= Tile::ROTATION_MAP[symm_indx][0]) {
 		return false;
 	}
 
@@ -528,7 +528,7 @@ bool TilingWaveFormCollapse::validate() {
 	for (int i = 0; i < tiles.size(); ++i) {
 		int symm_indx = static_cast<int>(tiles[i].symmetry);
 
-		int symm_req_count = Tile::rotation_map[symm_indx][0];
+		int symm_req_count = Tile::ROTATION_MAP[symm_indx][0];
 
 		if (tiles[i].data.size() != symm_req_count) {
 			return false;
