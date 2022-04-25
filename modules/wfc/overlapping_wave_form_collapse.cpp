@@ -4,54 +4,54 @@
 #include "core/set.h"
 
 bool OverlappingWaveFormCollapse::get_periodic_input() const {
-	return periodic_input;
+	return _periodic_input;
 }
 void OverlappingWaveFormCollapse::set_periodic_input(const bool val) {
-	periodic_input = val;
+	_periodic_input = val;
 }
 
 int OverlappingWaveFormCollapse::get_out_height() const {
-	return out_height;
+	return _out_height;
 }
 void OverlappingWaveFormCollapse::set_out_height(const int val) {
-	out_height = val;
+	_out_height = val;
 }
 
 int OverlappingWaveFormCollapse::get_out_width() const {
-	return out_width;
+	return _out_width;
 }
 void OverlappingWaveFormCollapse::set_out_width(const int val) {
-	out_width = val;
+	_out_width = val;
 }
 
 int OverlappingWaveFormCollapse::get_symmetry() const {
-	return symmetry;
+	return _symmetry;
 }
 void OverlappingWaveFormCollapse::set_symmetry(const int val) {
-	symmetry = val;
+	_symmetry = val;
 }
 
 bool OverlappingWaveFormCollapse::get_ground() const {
-	return ground;
+	return _ground;
 }
 void OverlappingWaveFormCollapse::set_ground(const bool val) {
-	ground = val;
+	_ground = val;
 }
 
 int OverlappingWaveFormCollapse::get_pattern_size() const {
-	return pattern_size;
+	return _pattern_size;
 }
 void OverlappingWaveFormCollapse::set_pattern_size(const int val) {
-	pattern_size = val;
+	_pattern_size = val;
 }
 
 int OverlappingWaveFormCollapse::get_wave_height() const {
-	return periodic_output ? out_height : out_height - pattern_size + 1;
+	return _periodic_output ? _out_height : _out_height - _pattern_size + 1;
 }
 
 //Get the wave width given these
 int OverlappingWaveFormCollapse::get_wave_width() const {
-	return periodic_output ? out_width : out_width - pattern_size + 1;
+	return _periodic_output ? _out_width : _out_width - _pattern_size + 1;
 }
 
 // Run the WFC algorithm, and return the result if the algorithm succeeded.
@@ -99,11 +99,11 @@ bool OverlappingWaveFormCollapse::set_pattern(const Array2D<int> &pattern, int i
 
 int OverlappingWaveFormCollapse::get_ground_pattern_id() {
 	// Get the pattern.
-	Array2D<int> ground_pattern = input.get_sub_array(input.height - 1, input.width / 2, pattern_size, pattern_size);
+	Array2D<int> ground_pattern = _input.get_sub_array(_input.height - 1, _input.width / 2, _pattern_size, _pattern_size);
 
 	// Retrieve the id of the pattern.
-	for (int i = 0; i < patterns.size(); i++) {
-		if (ground_pattern == patterns[i]) {
+	for (int i = 0; i < _patterns.size(); i++) {
+		if (ground_pattern == _patterns[i]) {
 			return i;
 		}
 	}
@@ -112,8 +112,8 @@ int OverlappingWaveFormCollapse::get_ground_pattern_id() {
 }
 
 int OverlappingWaveFormCollapse::get_pattern_id(const Array2D<int> &pattern) {
-	for (int i = 0; i < patterns.size(); ++i) {
-		if (patterns[i] == pattern) {
+	for (int i = 0; i < _patterns.size(); ++i) {
+		if (_patterns[i] == pattern) {
 			return i;
 		}
 	}
@@ -124,7 +124,7 @@ int OverlappingWaveFormCollapse::get_pattern_id(const Array2D<int> &pattern) {
 // Set the pattern at a specific position, given its pattern id
 // pattern_id needs to be a valid pattern id, and i and j needs to be in the wave range
 void OverlappingWaveFormCollapse::set_pattern(int pattern_id, int i, int j) {
-	for (int p = 0; p < patterns.size(); p++) {
+	for (int p = 0; p < _patterns.size(); p++) {
 		if (pattern_id != p) {
 			remove_wave_pattern(i, j, p);
 		}
@@ -135,7 +135,7 @@ void OverlappingWaveFormCollapse::set_pattern(int pattern_id, int i, int j) {
 void OverlappingWaveFormCollapse::init_patterns() {
 	LocalVector<Array2D<int>> patterns_id;
 
-	patterns.clear();
+	_patterns.clear();
 
 	// The number of time a pattern is seen in the input image.
 	Vector<double> patterns_weight;
@@ -144,16 +144,16 @@ void OverlappingWaveFormCollapse::init_patterns() {
 	symmetries.resize(8);
 
 	for (int i = 0; i < 8; ++i) {
-		symmetries.write[i].resize(pattern_size, pattern_size);
+		symmetries.write[i].resize(_pattern_size, _pattern_size);
 	}
 
-	int max_i = periodic_input ? input.height : input.height - pattern_size + 1;
-	int max_j = periodic_input ? input.width : input.width - pattern_size + 1;
+	int max_i = _periodic_input ? _input.height : _input.height - _pattern_size + 1;
+	int max_j = _periodic_input ? _input.width : _input.width - _pattern_size + 1;
 
 	for (int i = 0; i < max_i; i++) {
 		for (int j = 0; j < max_j; j++) {
 			// Compute the symmetries of every pattern in the image.
-			symmetries.write[0].data = input.get_sub_array(i, j, pattern_size, pattern_size).data;
+			symmetries.write[0].data = _input.get_sub_array(i, j, _pattern_size, _pattern_size).data;
 			symmetries.write[1].data = symmetries[0].reflected().data;
 			symmetries.write[2].data = symmetries[0].rotated().data;
 			symmetries.write[3].data = symmetries[2].reflected().data;
@@ -163,8 +163,8 @@ void OverlappingWaveFormCollapse::init_patterns() {
 			symmetries.write[7].data = symmetries[6].reflected().data;
 
 			// The number of symmetries in the option class define which symetries will be used.
-			for (int k = 0; k < symmetry; k++) {
-				int indx = patterns.size();
+			for (int k = 0; k < _symmetry; k++) {
+				int indx = _patterns.size();
 
 				for (uint32_t h = 0; h < patterns_id.size(); ++h) {
 					if (patterns_id[h] == symmetries[k]) {
@@ -173,11 +173,11 @@ void OverlappingWaveFormCollapse::init_patterns() {
 					}
 				}
 
-				if (indx != patterns.size()) {
+				if (indx != _patterns.size()) {
 					// If the pattern already exist, we just have to increase its number of appearance.
 					patterns_weight.write[indx] += 1;
 				} else {
-					patterns.push_back(symmetries[k]);
+					_patterns.push_back(symmetries[k]);
 					patterns_weight.push_back(1);
 					patterns_id.push_back(symmetries[k]);
 				}
@@ -214,13 +214,13 @@ bool OverlappingWaveFormCollapse::agrees(const Array2D<int> &pattern1, const Arr
 // (see direction.hpp).
 void OverlappingWaveFormCollapse::generate_compatible() {
 	Vector<WaveFormCollapse::PropagatorStateEntry> compatible;
-	compatible.resize(patterns.size());
+	compatible.resize(_patterns.size());
 
 	// Iterate on every dy, dx, pattern1 and pattern2
-	for (int pattern1 = 0; pattern1 < patterns.size(); pattern1++) {
+	for (int pattern1 = 0; pattern1 < _patterns.size(); pattern1++) {
 		for (int direction = 0; direction < 4; direction++) {
-			for (int pattern2 = 0; pattern2 < patterns.size(); pattern2++) {
-				if (agrees(patterns[pattern1], patterns[pattern2], DIRECTIONS_Y[direction], DIRECTIONS_X[direction])) {
+			for (int pattern2 = 0; pattern2 < _patterns.size(); pattern2++) {
+				if (agrees(_patterns[pattern1], _patterns[pattern2], DIRECTIONS_Y[direction], DIRECTIONS_X[direction])) {
 					compatible.write[pattern1].directions[direction].push_back(pattern2);
 				}
 			}
@@ -232,40 +232,40 @@ void OverlappingWaveFormCollapse::generate_compatible() {
 
 // Transform a 2D array containing the patterns id to a 2D array containing the pixels.
 Array2D<int> OverlappingWaveFormCollapse::to_image(const Array2D<int> &output_patterns) const {
-	Array2D<int> output(out_height, out_width);
+	Array2D<int> output(_out_height, _out_width);
 
-	if (periodic_output) {
+	if (_periodic_output) {
 		for (int y = 0; y < get_wave_height(); y++) {
 			for (int x = 0; x < get_wave_width(); x++) {
-				output.get(y, x) = patterns[output_patterns.get(y, x)].get(0, 0);
+				output.get(y, x) = _patterns[output_patterns.get(y, x)].get(0, 0);
 			}
 		}
 	} else {
 		for (int y = 0; y < get_wave_height(); y++) {
 			for (int x = 0; x < get_wave_width(); x++) {
-				output.get(y, x) = patterns[output_patterns.get(y, x)].get(0, 0);
+				output.get(y, x) = _patterns[output_patterns.get(y, x)].get(0, 0);
 			}
 		}
 
 		for (int y = 0; y < get_wave_height(); y++) {
-			const Array2D<int> &pattern = patterns[output_patterns.get(y, get_wave_width() - 1)];
-			for (int dx = 1; dx < pattern_size; dx++) {
+			const Array2D<int> &pattern = _patterns[output_patterns.get(y, get_wave_width() - 1)];
+			for (int dx = 1; dx < _pattern_size; dx++) {
 				output.get(y, get_wave_width() - 1 + dx) = pattern.get(0, dx);
 			}
 		}
 
 		for (int x = 0; x < get_wave_width(); x++) {
-			const Array2D<int> &pattern = patterns[output_patterns.get(get_wave_height() - 1, x)];
-			for (int dy = 1; dy < pattern_size; dy++) {
+			const Array2D<int> &pattern = _patterns[output_patterns.get(get_wave_height() - 1, x)];
+			for (int dy = 1; dy < _pattern_size; dy++) {
 				output.get(get_wave_height() - 1 + dy, x) =
 						pattern.get(dy, 0);
 			}
 		}
 
-		const Array2D<int> &pattern = patterns[output_patterns.get(get_wave_height() - 1, get_wave_width() - 1)];
+		const Array2D<int> &pattern = _patterns[output_patterns.get(get_wave_height() - 1, get_wave_width() - 1)];
 
-		for (int dy = 1; dy < pattern_size; dy++) {
-			for (int dx = 1; dx < pattern_size; dx++) {
+		for (int dy = 1; dy < _pattern_size; dy++) {
+			for (int dx = 1; dx < _pattern_size; dx++) {
 				output.get(get_wave_height() - 1 + dy, get_wave_width() - 1 + dx) = pattern.get(dy, dx);
 			}
 		}
@@ -283,18 +283,18 @@ void OverlappingWaveFormCollapse::initialize() {
 	WaveFormCollapse::initialize();
 
 	// If necessary, the ground is set.
-	if (ground) {
+	if (_ground) {
 		init_ground();
 	}
 }
 
 OverlappingWaveFormCollapse::OverlappingWaveFormCollapse() {
-	periodic_input = true;
-	out_height = 0;
-	out_width = 0;
-	symmetry = 8;
-	ground = false;
-	pattern_size = 0;
+	_periodic_input = true;
+	_out_height = 0;
+	_out_width = 0;
+	_symmetry = 8;
+	_ground = false;
+	_pattern_size = 0;
 }
 OverlappingWaveFormCollapse::~OverlappingWaveFormCollapse() {
 }

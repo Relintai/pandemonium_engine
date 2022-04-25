@@ -166,122 +166,122 @@ Tile::Tile(const PoolIntArray &p_data, const int width, const int height, WaveFo
 }
 
 int TilingWaveFormCollapse::tile_add_generated(const PoolIntArray &data, const int width, const int height, const WaveFormCollapse::Symmetry symmetry, const float weight) {
-	tiles.push_back(Tile(data, width, height, symmetry, weight));
+	_tiles.push_back(Tile(data, width, height, symmetry, weight));
 
-	return tiles.size() - 1;
+	return _tiles.size() - 1;
 }
 int TilingWaveFormCollapse::tile_add(const WaveFormCollapse::Symmetry symmetry, const float weight) {
-	tiles.push_back(Tile(symmetry, weight));
+	_tiles.push_back(Tile(symmetry, weight));
 
-	return tiles.size() - 1;
+	return _tiles.size() - 1;
 }
 int TilingWaveFormCollapse::tile_create() {
-	tiles.push_back(Tile());
+	_tiles.push_back(Tile());
 
-	return tiles.size() - 1;
+	return _tiles.size() - 1;
 }
 void TilingWaveFormCollapse::tile_remove(const int tile_index) {
-	ERR_FAIL_INDEX(tile_index, tiles.size());
+	ERR_FAIL_INDEX(tile_index, _tiles.size());
 
-	tiles.remove(tile_index);
+	_tiles.remove(tile_index);
 }
 int TilingWaveFormCollapse::tile_count_get() {
-	return tiles.size();
+	return _tiles.size();
 }
 
 void TilingWaveFormCollapse::tile_data_add(const int tile_index, const PoolIntArray &data, const int width, const int height) {
-	ERR_FAIL_INDEX(tile_index, tiles.size());
+	ERR_FAIL_INDEX(tile_index, _tiles.size());
 
 	Array2D<int> d(data, height, width);
 
-	tiles.write[tile_index].data.push_back(d);
+	_tiles.write[tile_index].data.push_back(d);
 }
 void TilingWaveFormCollapse::tile_data_generated_add(const int tile_index, const PoolIntArray &data, const int width, const int height) {
-	ERR_FAIL_INDEX(tile_index, tiles.size());
+	ERR_FAIL_INDEX(tile_index, _tiles.size());
 
-	tiles.write[tile_index].set_generate_data(data, width, height);
+	_tiles.write[tile_index].set_generate_data(data, width, height);
 }
 PoolIntArray TilingWaveFormCollapse::tile_data_get(const int tile_index, const int data_index) {
-	ERR_FAIL_INDEX_V(tile_index, tiles.size(), PoolIntArray());
+	ERR_FAIL_INDEX_V(tile_index, _tiles.size(), PoolIntArray());
 
-	return tiles.write[tile_index].data_get(data_index);
+	return _tiles.write[tile_index].data_get(data_index);
 }
 void TilingWaveFormCollapse::tile_data_set(const int tile_index, const int data_index, const PoolIntArray &data, const int width, const int height) {
-	ERR_FAIL_INDEX(tile_index, tiles.size());
+	ERR_FAIL_INDEX(tile_index, _tiles.size());
 
-	tiles.write[tile_index].data_set(data_index, data, width, height);
+	_tiles.write[tile_index].data_set(data_index, data, width, height);
 }
 void TilingWaveFormCollapse::tile_data_remove(const int tile_index, const int data_index) {
-	ERR_FAIL_INDEX(tile_index, tiles.size());
+	ERR_FAIL_INDEX(tile_index, _tiles.size());
 
-	tiles.write[tile_index].data_remove(data_index);
+	_tiles.write[tile_index].data_remove(data_index);
 }
 void TilingWaveFormCollapse::tile_data_clear(const int tile_index) {
-	ERR_FAIL_INDEX(tile_index, tiles.size());
+	ERR_FAIL_INDEX(tile_index, _tiles.size());
 
-	tiles.write[tile_index].data.clear();
+	_tiles.write[tile_index].data.clear();
 }
 int TilingWaveFormCollapse::tile_data_count_get(const int tile_index) {
-	ERR_FAIL_INDEX_V(tile_index, tiles.size(), 0);
+	ERR_FAIL_INDEX_V(tile_index, _tiles.size(), 0);
 
-	return tiles[tile_index].data.size();
+	return _tiles[tile_index].data.size();
 }
 int TilingWaveFormCollapse::tile_data_required_count_get(const int tile_index) {
-	ERR_FAIL_INDEX_V(tile_index, tiles.size(), 0);
+	ERR_FAIL_INDEX_V(tile_index, _tiles.size(), 0);
 
-	int symm_indx = static_cast<int>(tiles[tile_index].symmetry);
+	int symm_indx = static_cast<int>(_tiles[tile_index].symmetry);
 
 	return Tile::ROTATION_MAP[symm_indx][0];
 }
 
 int TilingWaveFormCollapse::tile_width_get(const int tile_index, const int data_index) {
-	ERR_FAIL_INDEX_V(tile_index, tiles.size(), 0);
-	ERR_FAIL_INDEX_V(data_index, tiles[tile_index].data.size(), 0);
+	ERR_FAIL_INDEX_V(tile_index, _tiles.size(), 0);
+	ERR_FAIL_INDEX_V(data_index, _tiles[tile_index].data.size(), 0);
 
-	return tiles[tile_index].data[data_index].width;
+	return _tiles[tile_index].data[data_index].width;
 }
 int TilingWaveFormCollapse::tile_height_get(const int tile_index, const int data_index) {
-	ERR_FAIL_INDEX_V(tile_index, tiles.size(), 0);
-	ERR_FAIL_INDEX_V(data_index, tiles[tile_index].data.size(), 0);
+	ERR_FAIL_INDEX_V(tile_index, _tiles.size(), 0);
+	ERR_FAIL_INDEX_V(data_index, _tiles[tile_index].data.size(), 0);
 
-	return tiles[tile_index].data[data_index].height;
+	return _tiles[tile_index].data[data_index].height;
 }
 
 WaveFormCollapse::Symmetry TilingWaveFormCollapse::tile_symmetry_get(const int tile_index) {
-	ERR_FAIL_INDEX_V(tile_index, tiles.size(), WaveFormCollapse::SYMMETRY_X);
+	ERR_FAIL_INDEX_V(tile_index, _tiles.size(), WaveFormCollapse::SYMMETRY_X);
 
-	return tiles[tile_index].symmetry;
+	return _tiles[tile_index].symmetry;
 }
 void TilingWaveFormCollapse::tile_symmetry_set(const int tile_index, const WaveFormCollapse::Symmetry val) {
-	ERR_FAIL_INDEX(tile_index, tiles.size());
+	ERR_FAIL_INDEX(tile_index, _tiles.size());
 
-	tiles.write[tile_index].symmetry = val;
+	_tiles.write[tile_index].symmetry = val;
 }
 
 float TilingWaveFormCollapse::tile_weight_get(const int tile_index) {
-	ERR_FAIL_INDEX_V(tile_index, tiles.size(), 0);
+	ERR_FAIL_INDEX_V(tile_index, _tiles.size(), 0);
 
-	return tiles[tile_index].weight;
+	return _tiles[tile_index].weight;
 }
 void TilingWaveFormCollapse::tile_weight_set(const int tile_index, const float val) {
-	ERR_FAIL_INDEX(tile_index, tiles.size());
+	ERR_FAIL_INDEX(tile_index, _tiles.size());
 
-	tiles.write[tile_index].weight = val;
+	_tiles.write[tile_index].weight = val;
 }
 
 String TilingWaveFormCollapse::tile_name_get(const int tile_index) {
-	ERR_FAIL_INDEX_V(tile_index, tiles.size(), String());
+	ERR_FAIL_INDEX_V(tile_index, _tiles.size(), String());
 
-	return tiles[tile_index].name;
+	return _tiles[tile_index].name;
 }
 void TilingWaveFormCollapse::tile_name_set(const int tile_index, const String &val) {
-	ERR_FAIL_INDEX(tile_index, tiles.size());
+	ERR_FAIL_INDEX(tile_index, _tiles.size());
 
-	tiles.write[tile_index].name = val;
+	_tiles.write[tile_index].name = val;
 }
 int TilingWaveFormCollapse::tile_index_get(const String &tile_name) {
-	for (int i = 0; i < tiles.size(); ++i) {
-		if (tiles[i].name == tile_name) {
+	for (int i = 0; i < _tiles.size(); ++i) {
+		if (_tiles[i].name == tile_name) {
 			return i;
 		}
 	}
@@ -295,9 +295,9 @@ int TilingWaveFormCollapse::neighbour_data_add(const int left, const int left_or
 
 	NeighbourData d(left, left_orientation, right, right_orientation);
 
-	neighbors.push_back(d);
+	_neighbors.push_back(d);
 
-	return neighbors.size() - 1;
+	return _neighbors.size() - 1;
 }
 int TilingWaveFormCollapse::neighbour_data_add_str(const String &left, const int left_orientation, const String &right, const int right_orientation) {
 	int left_index = tile_index_get(left);
@@ -310,9 +310,9 @@ int TilingWaveFormCollapse::neighbour_data_add_str(const String &left, const int
 }
 
 PoolIntArray TilingWaveFormCollapse::neighbour_data_get(const int index) {
-	ERR_FAIL_INDEX_V(index, neighbors.size(), PoolIntArray());
+	ERR_FAIL_INDEX_V(index, _neighbors.size(), PoolIntArray());
 
-	const NeighbourData &d = neighbors[index];
+	const NeighbourData &d = _neighbors[index];
 
 	PoolIntArray p;
 	p.resize(4);
@@ -328,20 +328,20 @@ PoolIntArray TilingWaveFormCollapse::neighbour_data_get(const int index) {
 	return p;
 }
 void TilingWaveFormCollapse::neighbour_data_remove(const int index) {
-	ERR_FAIL_INDEX(index, neighbors.size());
+	ERR_FAIL_INDEX(index, _neighbors.size());
 
-	neighbors.remove(index);
+	_neighbors.remove(index);
 }
 
 void TilingWaveFormCollapse::neighbour_data_set(const int index, const int left, const int left_orientation, const int right, const int right_orientation) {
-	ERR_FAIL_INDEX(index, neighbors.size());
+	ERR_FAIL_INDEX(index, _neighbors.size());
 
 	ERR_FAIL_COND(!neighbour_data_validate(left, left_orientation));
 	ERR_FAIL_COND(!neighbour_data_validate(right, right_orientation));
 
 	NeighbourData d(left, left_orientation, right, right_orientation);
 
-	neighbors.write[index] = d;
+	_neighbors.write[index] = d;
 }
 
 void TilingWaveFormCollapse::neighbour_data_set_str(const int index, const String &left, const int left_orientation, const String &right, const int right_orientation) {
@@ -355,13 +355,13 @@ void TilingWaveFormCollapse::neighbour_data_set_str(const int index, const Strin
 }
 
 bool TilingWaveFormCollapse::neighbour_data_validate(const int tile_index, const int orientation) {
-	ERR_FAIL_INDEX_V(tile_index, tiles.size(), false);
+	ERR_FAIL_INDEX_V(tile_index, _tiles.size(), false);
 
 	if (orientation < 0) {
 		return false;
 	}
 
-	int symm_indx = static_cast<int>(tiles[tile_index].symmetry);
+	int symm_indx = static_cast<int>(_tiles[tile_index].symmetry);
 
 	if (orientation >= Tile::ROTATION_MAP[symm_indx][0]) {
 		return false;
@@ -379,38 +379,38 @@ bool TilingWaveFormCollapse::neighbour_data_validate_str(const String &tile_name
 
 // Returns false if the given tile and orientation does not exist, or if the coordinates are not in the wave
 bool TilingWaveFormCollapse::set_tile(int tile_id, int orientation, int i, int j) {
-	if (tile_id >= static_cast<int>(oriented_tile_ids.size()) ||
-			orientation >= static_cast<int>(oriented_tile_ids[tile_id].size()) ||
+	if (tile_id >= static_cast<int>(_oriented_tile_ids.size()) ||
+			orientation >= static_cast<int>(_oriented_tile_ids[tile_id].size()) ||
 			i >= _wave_height || j >= _wave_width) {
 		return false;
 	}
 
-	int oriented_tile_id = oriented_tile_ids[tile_id][orientation];
+	int oriented_tile_id = _oriented_tile_ids[tile_id][orientation];
 	set_tile(oriented_tile_id, i, j);
 
 	return true;
 }
 
 void TilingWaveFormCollapse::set_tiles(const Vector<Tile> &p_tiles) {
-	tiles = p_tiles;
+	_tiles = p_tiles;
 }
 
 void TilingWaveFormCollapse::set_neighbours(const Vector<NeighbourData> &p_neighbors) {
-	neighbors = p_neighbors;
+	_neighbors = p_neighbors;
 }
 
 // Generate mapping from id to oriented tiles and vice versa.
 void TilingWaveFormCollapse::generate_oriented_tile_ids() {
-	id_to_oriented_tile.clear();
-	oriented_tile_ids.clear();
+	_id_to_oriented_tile.clear();
+	_oriented_tile_ids.clear();
 
 	int id = 0;
-	for (int i = 0; i < tiles.size(); i++) {
-		oriented_tile_ids.push_back(Vector<int>());
+	for (int i = 0; i < _tiles.size(); i++) {
+		_oriented_tile_ids.push_back(Vector<int>());
 
-		for (int j = 0; j < tiles[i].data.size(); j++) {
-			id_to_oriented_tile.push_back(IdToTilePair(i, j));
-			oriented_tile_ids.write[i].push_back(id);
+		for (int j = 0; j < _tiles[i].data.size(); j++) {
+			_id_to_oriented_tile.push_back(IdToTilePair(i, j));
+			_oriented_tile_ids.write[i].push_back(id);
 			id++;
 		}
 	}
@@ -418,7 +418,7 @@ void TilingWaveFormCollapse::generate_oriented_tile_ids() {
 
 // Generate the propagator which will be used in the wfc algorithm.
 void TilingWaveFormCollapse::generate_propagator() {
-	int nb_oriented_tiles = id_to_oriented_tile.size();
+	int nb_oriented_tiles = _id_to_oriented_tile.size();
 
 	Vector<DensePropagatorHelper> dense_propagator;
 	dense_propagator.resize(nb_oriented_tiles);
@@ -426,14 +426,14 @@ void TilingWaveFormCollapse::generate_propagator() {
 		dense_propagator.write[i].resize(nb_oriented_tiles);
 	}
 
-	int size = neighbors.size();
+	int size = _neighbors.size();
 	for (int i = 0; i < size; ++i) {
-		const NeighbourData &neighbour = neighbors[i];
+		const NeighbourData &neighbour = _neighbors[i];
 
 		int tile1 = neighbour.data[0];
 		int tile2 = neighbour.data[2];
-		Tile::ActionMap action_map1 = Tile::generate_action_map(tiles[tile1].symmetry);
-		Tile::ActionMap action_map2 = Tile::generate_action_map(tiles[tile2].symmetry);
+		Tile::ActionMap action_map1 = Tile::generate_action_map(_tiles[tile1].symmetry);
+		Tile::ActionMap action_map2 = Tile::generate_action_map(_tiles[tile2].symmetry);
 
 		generate_propagator_add_helper(action_map1, action_map2, &dense_propagator, neighbour, 0, 2);
 		generate_propagator_add_helper(action_map1, action_map2, &dense_propagator, neighbour, 1, 0);
@@ -477,7 +477,7 @@ Vector<double> TilingWaveFormCollapse::get_tiles_weights(const Vector<Tile> &til
 }
 
 void TilingWaveFormCollapse::set_tile(int tile_id, int i, int j) {
-	for (int p = 0; p < id_to_oriented_tile.size(); p++) {
+	for (int p = 0; p < _id_to_oriented_tile.size(); p++) {
 		if (tile_id != static_cast<int>(p)) {
 			remove_wave_pattern(i, j, p);
 		}
@@ -496,22 +496,22 @@ Array2D<int> TilingWaveFormCollapse::run() {
 
 // Translate the generic WFC result into the image result
 Array2D<int> TilingWaveFormCollapse::id_to_tiling(Array2D<int> ids) {
-	int size = tiles[0].data[0].height;
+	int size = _tiles[0].data[0].height;
 	Array2D<int> tiling(size * ids.height, size * ids.width);
 
 	for (int i = 0; i < ids.height; i++) {
 		for (int j = 0; j < ids.width; j++) {
 			int id = ids.get(i, j);
 
-			if (id < 0 || id >= id_to_oriented_tile.size()) {
+			if (id < 0 || id >= _id_to_oriented_tile.size()) {
 				id = 0;
 
 				ERR_PRINT("id < 0 || id >= id_to_oriented_tile.size()");
 			}
 
-			IdToTilePair oriented_tile = id_to_oriented_tile[id];
+			IdToTilePair oriented_tile = _id_to_oriented_tile[id];
 
-			const Array2D<int> &tile = tiles[oriented_tile.id].data[oriented_tile.oriented_tile];
+			const Array2D<int> &tile = _tiles[oriented_tile.id].data[oriented_tile.oriented_tile];
 
 			for (int y = 0; y < size; y++) {
 				for (int x = 0; x < size; x++) {
@@ -525,12 +525,12 @@ Array2D<int> TilingWaveFormCollapse::id_to_tiling(Array2D<int> ids) {
 }
 
 bool TilingWaveFormCollapse::validate() {
-	for (int i = 0; i < tiles.size(); ++i) {
-		int symm_indx = static_cast<int>(tiles[i].symmetry);
+	for (int i = 0; i < _tiles.size(); ++i) {
+		int symm_indx = static_cast<int>(_tiles[i].symmetry);
 
 		int symm_req_count = Tile::ROTATION_MAP[symm_indx][0];
 
-		if (tiles[i].data.size() != symm_req_count) {
+		if (_tiles[i].data.size() != symm_req_count) {
 			return false;
 		}
 	}
@@ -541,7 +541,7 @@ bool TilingWaveFormCollapse::validate() {
 void TilingWaveFormCollapse::initialize() {
 	ERR_FAIL_COND(!validate());
 
-	set_pattern_frequencies(get_tiles_weights(tiles));
+	set_pattern_frequencies(get_tiles_weights(_tiles));
 	generate_oriented_tile_ids();
 	generate_propagator();
 
@@ -603,8 +603,8 @@ void TilingWaveFormCollapse::generate_propagator_add_helper(const Tile::ActionMa
 
 	int temp_orientation1 = action_map1.map[action][orientation1];
 	int temp_orientation2 = action_map2.map[action][orientation2];
-	int oriented_tile_id1 = oriented_tile_ids[tile1][temp_orientation1];
-	int oriented_tile_id2 = oriented_tile_ids[tile2][temp_orientation2];
+	int oriented_tile_id1 = _oriented_tile_ids[tile1][temp_orientation1];
+	int oriented_tile_id2 = _oriented_tile_ids[tile2][temp_orientation2];
 	dense_propagator->write[oriented_tile_id1].directions[direction].write[oriented_tile_id2] = true;
 	direction = get_opposite_direction(direction);
 	dense_propagator->write[oriented_tile_id2].directions[direction].write[oriented_tile_id1] = true;

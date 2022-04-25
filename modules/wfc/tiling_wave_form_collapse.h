@@ -162,11 +162,11 @@ private:
 			const NeighbourData &neighbour,
 			int action, int direction);
 
-	Vector<Tile> tiles;
-	Vector<NeighbourData> neighbors;
+	Vector<Tile> _tiles;
+	Vector<NeighbourData> _neighbors;
 
-	Vector<IdToTilePair> id_to_oriented_tile;
-	Vector<Vector<int>> oriented_tile_ids;
+	Vector<IdToTilePair> _id_to_oriented_tile;
+	Vector<Vector<int>> _oriented_tile_ids;
 };
 
 #endif

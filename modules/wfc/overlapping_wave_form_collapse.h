@@ -57,14 +57,14 @@ protected:
 	static void _bind_methods();
 
 private:
-	Vector<Array2D<int>> patterns;
+	Vector<Array2D<int>> _patterns;
 
-	bool periodic_input;
-	int out_height;
-	int out_width;
-	int symmetry;
-	bool ground;
-	int pattern_size;
+	bool _periodic_input;
+	int _out_height;
+	int _out_width;
+	int _symmetry;
+	bool _ground;
+	int _pattern_size;
 };
 
 #endif

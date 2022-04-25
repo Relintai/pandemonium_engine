@@ -97,7 +97,7 @@ public:
 
 	// Return true if pattern can be placed in cell index.
 	bool wave_get(int index, int pattern) const {
-		return wave_data.get(index, pattern);
+		return _wave_data.get(index, pattern);
 	}
 
 	// Return true if pattern can be placed in cell (i,j)
@@ -121,9 +121,9 @@ public:
 	void add_to_propagator(int y, int x, int pattern) {
 		// All the direction are set to 0, since the pattern cannot be set in (y,x).
 		CompatibilityEntry temp;
-		compatible.get(y, x, pattern) = temp;
+		_compatible.get(y, x, pattern) = temp;
 
-		propagating.push_back(PropagatingEntry(y, x, pattern));
+		_propagating.push_back(PropagatingEntry(y, x, pattern));
 	}
 
 	constexpr int get_opposite_direction(int direction) {
@@ -144,9 +144,9 @@ public:
 protected:
 	static void _bind_methods();
 
-	Array2D<int> input;
+	Array2D<int> _input;
 
-	bool periodic_output;
+	bool _periodic_output;
 
 	//Wave
 	int _wave_width;
@@ -154,10 +154,10 @@ protected:
 	int _wave_size;
 
 private:
-	RandomPCG gen;
+	RandomPCG _gen;
 
 	// The number of distinct patterns.
-	size_t nb_patterns;
+	size_t _nb_patterns;
 
 	// Transform the wave to a valid output (a 2d array of patterns that aren't in
 	// contradiction). This function should be used only when all cell of the wave
@@ -165,40 +165,40 @@ private:
 	Array2D<int> wave_to_output() const;
 
 	// The patterns frequencies p given to wfc.
-	Vector<double> patterns_frequencies;
+	Vector<double> _patterns_frequencies;
 
 	// The precomputation of p * log(p).
-	Vector<double> plogp_patterns_frequencies;
+	Vector<double> _plogp_patterns_frequencies;
 
 	// The precomputation of min (p * log(p)) / 2.
 	// This is used to define the maximum value of the noise.
-	double min_abs_half_plogp;
+	double _min_abs_half_plogp;
 
-	Vector<double> memoisation_plogp_sum; // The sum of p'(pattern)// log(p'(pattern)).
-	Vector<double> memoisation_sum; // The sum of p'(pattern).
-	Vector<double> memoisation_log_sum; // The log of sum.
-	Vector<int> memoisation_nb_patterns; // The number of patterns present
-	Vector<double> memoisation_entropy; // The entropy of the cell.
+	Vector<double> _memoisation_plogp_sum; // The sum of p'(pattern)// log(p'(pattern)).
+	Vector<double> _memoisation_sum; // The sum of p'(pattern).
+	Vector<double> _memoisation_log_sum; // The log of sum.
+	Vector<int> _memoisation_nb_patterns; // The number of patterns present
+	Vector<double> _memoisation_entropy; // The entropy of the cell.
 
 	// This value is set to true if there is a contradiction in the wave (all elements set to false in a cell).
-	bool is_impossible;
+	bool _is_impossible;
 
 	// The actual wave. wave_data.get(index, pattern) is equal to false if the pattern can be placed in the cell index.
-	Array2D<bool> wave_data;
+	Array2D<bool> _wave_data;
 
 	//Propagator
-	Vector<PropagatorStateEntry> propagator_state;
+	Vector<PropagatorStateEntry> _propagator_state;
 
 	// All the tuples (y, x, pattern) that should be propagated.
 	// The tuple should be propagated when wave.get(y, x, pattern) is set to false.
-	Vector<PropagatingEntry> propagating;
+	Vector<PropagatingEntry> _propagating;
 
 	// compatible.get(y, x, pattern)[direction] contains the number of patterns
 	// present in the wave that can be placed in the cell next to (y,x) in the
 	// opposite direction of direction without being in contradiction with pattern
 	// placed in (y,x). If wave.get(y, x, pattern) is set to false, then
 	// compatible.get(y, x, pattern) has every element negative or null
-	Array3D<CompatibilityEntry> compatible;
+	Array3D<CompatibilityEntry> _compatible;
 
 	void init_compatible();
 };
