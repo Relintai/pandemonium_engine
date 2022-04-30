@@ -382,6 +382,10 @@ bool NavigationPolygonInstance::is_enabled() const {
 	return enabled;
 }
 
+RID NavigationPolygonInstance::get_region_rid() const {
+	return region;
+}
+
 /////////////////////////////
 #ifdef TOOLS_ENABLED
 Rect2 NavigationPolygonInstance::_edit_get_rect() const {
@@ -532,6 +536,8 @@ void NavigationPolygonInstance::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_enabled", "enabled"), &NavigationPolygonInstance::set_enabled);
 	ClassDB::bind_method(D_METHOD("is_enabled"), &NavigationPolygonInstance::is_enabled);
+
+	ClassDB::bind_method(D_METHOD("get_region_rid"), &NavigationPolygonInstance::get_region_rid);
 
 	ClassDB::bind_method(D_METHOD("_navpoly_changed"), &NavigationPolygonInstance::_navpoly_changed);
 
