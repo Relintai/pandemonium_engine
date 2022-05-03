@@ -705,7 +705,8 @@ void ScriptEditorDebugger::_parse_message(const String &p_msg, const Array &p_da
 				new_props_added++;
 				debugObj->prop_values[pinfo.name] = var;
 			} else {
-				if (bool(Variant::evaluate(Variant::OP_NOT_EQUAL, debugObj->prop_values[pinfo.name], var))) {
+				// Compare using `deep_equal` so dictionaries/arrays will be compared by value.
+				if (!debugObj->prop_values[pinfo.name].deep_equal(var)) {
 					debugObj->prop_values[pinfo.name] = var;
 					changed.insert(pinfo.name);
 				}
@@ -748,7 +749,6 @@ void ScriptEditorDebugger::_parse_message(const String &p_msg, const Array &p_da
 
 		vmem_total->set_tooltip(TTR("Bytes:") + " " + itos(total));
 		vmem_total->set_text(String::humanize_size(total));
-
 	} else if (p_msg == "stack_dump") {
 		stack_dump->clear();
 		TreeItem *r = stack_dump->create_item();
@@ -834,7 +834,6 @@ void ScriptEditorDebugger::_parse_message(const String &p_msg, const Array &p_da
 
 		variables->update();
 		inspector->edit(variables);
-
 	} else if (p_msg == "output") {
 		//OUT
 		for (int i = 0; i < p_data.size(); i++) {
@@ -870,7 +869,6 @@ void ScriptEditorDebugger::_parse_message(const String &p_msg, const Array &p_da
 
 			EditorNode::get_log()->add_message(str, msg_type);
 		}
-
 	} else if (p_msg == "performance") {
 		Array arr = p_data[0];
 		Vector<float> p;
@@ -904,7 +902,6 @@ void ScriptEditorDebugger::_parse_message(const String &p_msg, const Array &p_da
 		}
 		perf_history.push_front(p);
 		perf_draw->update();
-
 	} else if (p_msg == "error") {
 		// Should have at least two elements, error array and stack items count.
 		ERR_FAIL_COND_MSG(p_data.size() < 2, "Malformed error message from script debugger.");
@@ -1032,11 +1029,9 @@ void ScriptEditorDebugger::_parse_message(const String &p_msg, const Array &p_da
 		} else {
 			error_count++;
 		}
-
 	} else if (p_msg == "profile_sig") {
 		//cache a signature
 		profiler_signature[p_data[1]] = p_data[0];
-
 	} else if (p_msg == "profile_frame" || p_msg == "profile_total") {
 		EditorProfiler::Metric metric;
 		metric.valid = true;
