@@ -63,7 +63,7 @@ public:
 
 		int frame_number;
 		float frame_time;
-		float idle_time;
+		float process_time;
 		float physics_time;
 		float physics_frame_time;
 
