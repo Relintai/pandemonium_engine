@@ -849,6 +849,7 @@ void EditorPropertyDictionary::update_property() {
 		if (vbox) {
 			set_bottom_editor(nullptr);
 			memdelete(vbox);
+			button_add_item = nullptr;
 			vbox = nullptr;
 		}
 		return;
@@ -1182,6 +1183,7 @@ void EditorPropertyDictionary::update_property() {
 		if (vbox) {
 			set_bottom_editor(nullptr);
 			memdelete(vbox);
+			button_add_item = nullptr;
 			vbox = nullptr;
 		}
 	}
