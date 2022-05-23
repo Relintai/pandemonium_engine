@@ -44,6 +44,7 @@ JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_ond
 JNIEXPORT jboolean JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_setup(JNIEnv *env, jclass clazz, jobjectArray p_cmdline);
 JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_resize(JNIEnv *env, jclass clazz, jint width, jint height);
 JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_newcontext(JNIEnv *env, jclass clazz);
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_ttsCallback(JNIEnv *env, jclass clazz, jint event, jint id, jint pos);
 JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_step(JNIEnv *env, jclass clazz);
 JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_back(JNIEnv *env, jclass clazz);
 JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_dispatchMouseEvent(JNIEnv *env, jclass clazz, jint p_event_type, jint p_button_mask, jfloat p_x, jfloat p_y, jfloat p_delta_x, jfloat p_delta_y, jboolean p_double_click, jboolean p_source_mouse_relative);

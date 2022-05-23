@@ -81,14 +81,14 @@ const PandemoniumDisplayVK = {
                 PandemoniumDisplayVK.hide();
             }
             PandemoniumDisplayVK.updateSize();
-            let elem = GodotDisplayVK.textinput;
+            let elem = PandemoniumDisplayVK.textinput;
             switch (type) {
                 case 0: // KEYBOARD_TYPE_DEFAULT
                     elem.type = 'text';
                     elem.inputmode = '';
                     break;
                 case 1: // KEYBOARD_TYPE_MULTILINE
-                    elem = GodotDisplayVK.textarea;
+                    elem = PandemoniumDisplayVK.textarea;
                     break;
                 case 2: // KEYBOARD_TYPE_NUMBER
                     elem.type = 'text';
@@ -365,6 +365,91 @@ const PandemoniumDisplay = {
         }
         return 0;
     },
+
+	  pandemonium_js_tts_is_speaking__sig: 'i',
+	  pandemonium_js_tts_is_speaking: function () {
+			return window.speechSynthesis.speaking;
+		},
+
+	  pandemonium_js_tts_is_paused__sig: 'i',
+	  pandemonium_js_tts_is_paused: function () {
+			return window.speechSynthesis.paused;
+		},
+
+	  pandemonium_js_tts_get_voices__sig: 'vi',
+	  pandemonium_js_tts_get_voices: function (p_callback) {
+			const func = PandemoniumRuntime.get_func(p_callback);
+			try {
+				const arr = [];
+				const voices = window.speechSynthesis.getVoices();
+				for (let i = 0; i < voices.length; i++) {
+					arr.push(`${voices[i].lang};${voices[i].name}`);
+				}
+				const c_ptr = PandemoniumRuntime.allocStringArray(arr);
+				func(arr.length, c_ptr);
+				PandemoniumRuntime.freeStringArray(c_ptr, arr.length);
+			} catch (e) {
+				// Fail graciously.
+			}
+		},
+
+		pandemonium_js_tts_speak__sig: 'viiiffii',
+	  pandemonium_js_tts_speak: function (p_text, p_voice, p_volume, p_pitch, p_rate, p_utterance_id, p_callback) {
+			const func = PandemoniumRuntime.get_func(p_callback);
+
+			function listener_end(evt) {
+				evt.currentTarget.cb(1 /*TTS_UTTERANCE_ENDED*/, evt.currentTarget.id, 0);
+			}
+
+			function listener_start(evt) {
+				evt.currentTarget.cb(0 /*TTS_UTTERANCE_STARTED*/, evt.currentTarget.id, 0);
+			}
+
+			function listener_error(evt) {
+				evt.currentTarget.cb(2 /*TTS_UTTERANCE_CANCELED*/, evt.currentTarget.id, 0);
+			}
+
+			function listener_bound(evt) {
+				evt.currentTarget.cb(3 /*TTS_UTTERANCE_BOUNDARY*/, evt.currentTarget.id, evt.charIndex);
+			}
+
+			const utterance = new SpeechSynthesisUtterance(PandemoniumRuntime.parseString(p_text));
+			utterance.rate = p_rate;
+			utterance.pitch = p_pitch;
+			utterance.volume = p_volume / 100.0;
+			utterance.addEventListener('end', listener_end);
+			utterance.addEventListener('start', listener_start);
+			utterance.addEventListener('error', listener_error);
+			utterance.addEventListener('boundary', listener_bound);
+			utterance.id = p_utterance_id;
+			utterance.cb = func;
+			const voice = PandemoniumRuntime.parseString(p_voice);
+			const voices = window.speechSynthesis.getVoices();
+			for (let i = 0; i < voices.length; i++) {
+				if (voices[i].name === voice) {
+					utterance.voice = voices[i];
+					break;
+				}
+			}
+			window.speechSynthesis.resume();
+			window.speechSynthesis.speak(utterance);
+		},
+
+		pandemonium_js_tts_pause__sig: 'v',
+	  pandemonium_js_tts_pause: function () {
+			window.speechSynthesis.pause();
+		},
+
+	  pandemonium_js_tts_resume__sig: 'v',
+	  pandemonium_js_tts_resume: function () {
+			window.speechSynthesis.resume();
+		},
+
+	  pandemonium_js_tts_stop__sig: 'v',
+	  pandemonium_js_tts_stop: function () {
+			window.speechSynthesis.cancel();
+			window.speechSynthesis.resume();
+		},
 
     pandemonium_js_display_alert__sig: 'vi',
     pandemonium_js_display_alert: function(p_text) {

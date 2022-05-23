@@ -49,6 +49,7 @@
 #include "os_android.h"
 #include "string_android.h"
 #include "thread_jandroid.h"
+#include "tts_android.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_settings.h"
@@ -178,6 +179,7 @@ JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_ini
 	DirAccessJAndroid::setup(p_directory_access_handler);
 	FileAccessFilesystemJAndroid::setup(p_file_access_handler);
 	NetSocketAndroid::setup(p_net_utils);
+	TTS_Android::setup(godot_java->get_member_object("tts", "Lorg/pandemoniumengine/pandemonium/tts/PandemoniumTTS;", env));
 
 	os_android = new OS_Android(pandemonium_java, pandemonium_io_java, p_use_apk_expansion);
 
@@ -262,6 +264,10 @@ JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_bac
 	if (os_android->get_main_loop()) {
 		os_android->get_main_loop()->notification(MainLoop::NOTIFICATION_WM_GO_BACK_REQUEST);
 	}
+}
+
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_ttsCallback(JNIEnv *env, jclass clazz, jint event, jint id, jint pos) {
+	TTS_Android::_java_utterance_callback(event, id, pos);
 }
 
 JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_step(JNIEnv *env, jclass clazz) {

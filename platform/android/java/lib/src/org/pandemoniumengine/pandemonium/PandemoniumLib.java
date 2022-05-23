@@ -92,6 +92,11 @@ public class PandemoniumLib {
 	public static native void step();
 
 	/**
+	 * TTS callback.
+	 */
+	public static native void ttsCallback(int event, int id, int pos);
+
+	/**
 	 * Forward touch events
 	 */
 	public static native void dispatchTouchEvent(int event, int pointer, int pointerCount, float[] positions, boolean doubleTap);

@@ -75,6 +75,15 @@ extern int pandemonium_js_input_gamepad_sample_get(int p_idx, float r_btns[16], 
 extern void pandemonium_js_input_paste_cb(void (*p_callback)(const char *p_text));
 extern void pandemonium_js_input_drop_files_cb(void (*p_callback)(char **p_filev, int p_filec));
 
+// TTS
+extern int pandemonium_js_tts_is_speaking();
+extern int pandemonium_js_tts_is_paused();
+extern int pandemonium_js_tts_get_voices(void (*p_callback)(int p_size, const char **p_voices));
+extern void pandemonium_js_tts_speak(const char *p_text, const char *p_voice, int p_volume, float p_pitch, float p_rate, int p_utterance_id, void (*p_callback)(int p_event, int p_id, int p_pos));
+extern void pandemonium_js_tts_pause();
+extern void pandemonium_js_tts_resume();
+extern void pandemonium_js_tts_stop();
+
 // Display
 extern int pandemonium_js_display_screen_dpi_get();
 extern double pandemonium_js_display_pixel_ratio_get();
@@ -117,6 +126,7 @@ extern void pandemonium_js_display_notification_cb(void (*p_callback)(int p_noti
 
 // Display Virtual Keyboard
 extern int pandemonium_js_display_vk_available();
+extern int pandemonium_js_display_tts_available();
 extern void pandemonium_js_display_vk_cb(void (*p_input)(const char *p_text, int p_cursor));
 extern void pandemonium_js_display_vk_show(const char *p_text, int p_type, int p_start, int p_end);
 extern void pandemonium_js_display_vk_hide();

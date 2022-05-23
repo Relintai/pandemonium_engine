@@ -43,6 +43,7 @@ import org.pandemoniumengine.pandemonium.plugin.PandemoniumPluginRegistry;
 import org.pandemoniumengine.pandemonium.utils.BenchmarkUtils;
 import org.pandemoniumengine.pandemonium.utils.PandemoniumNetUtils;
 import org.pandemoniumengine.pandemonium.utils.PermissionsUtil;
+import org.pandemoniumengine.pandemonium.tts.PandemoniumTTS;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -265,6 +266,7 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 	public PandemoniumNetUtils netUtils;
 	private DirectoryAccessHandler directoryAccessHandler;
 	private FileAccessHandler fileAccessHandler;
+	public PandemoniumTTS tts;
 
 	static SingletonBase[] singletons = new SingletonBase[MAX_SINGLETONS];
 	static int singleton_count = 0;
@@ -330,7 +332,7 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 	protected void onPandemoniumSetupCompleted() {
 		Log.d(TAG, "onPandemoniumSetupCompleted");
 
-		// These properties are defined after Godot setup completion, so we retrieve them here.
+		// These properties are defined after Pandemonium setup completion, so we retrieve them here.
 		boolean longPressEnabled = Boolean.parseBoolean(PandemoniumLib.getGlobal("input_devices/pointing/android/enable_long_press_as_right_click"));
 		boolean panScaleEnabled = Boolean.parseBoolean(PandemoniumLib.getGlobal("input_devices/pointing/android/enable_pan_and_scale_gestures"));
 		int rotaryInputAxis = java.lang.Integer.parseInt(PandemoniumLib.getGlobal("input_devices/pointing/android/rotary_input_scroll_axis"));
@@ -385,7 +387,7 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 		PandemoniumEditText edittext = new PandemoniumEditText(activity);
 		edittext.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT,
 				(int)getResources().getDimension(R.dimen.text_edit_height)));
-		// Prevent GodotEditText from showing on splash screen on devices with Android 14 or newer.
+		// Prevent PandemoniumEditText from showing on splash screen on devices with Android 14 or newer.
 		edittext.setBackgroundColor(Color.TRANSPARENT);
 		// ...add to FrameLayout
 		containerLayout.addView(edittext);
@@ -709,6 +711,7 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 		final Activity activity = getActivity();
 		io = new PandemoniumIO(activity);
 		netUtils = new PandemoniumNetUtils(activity);
+		tts = new PandemoniumTTS(activity);
 
 		Context context = getContext();
 		directoryAccessHandler = new DirectoryAccessHandler(context);
