@@ -156,8 +156,8 @@ private:
 	TiledWallTilingType _tiling_type;
 	TiledWallColliderType _collider_type;
 
-	Vector<TextureEntry> _textures;
-	Vector<TextureEntry> _flavour_textures;
+	Vector<TextureEntry> _tiles;
+	Vector<TextureEntry> _flavour_tiles;
 	float _flavour_chance;
 
 	Vector<Ref<Material>> _materials;
