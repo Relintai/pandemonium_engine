@@ -51,11 +51,23 @@ public:
 		TILED_WALL_TILING_TYPE_BOTH
 	};
 
+	enum TiledWallColliderType {
+		TILED_WALL_COLLIDER_TYPE_NONE = 0,
+		TILED_WALL_COLLIDER_TYPE_PLANE,
+		TILED_WALL_COLLIDER_TYPE_BOX,
+		TILED_WALL_COLLIDER_TYPE_CONVEX_MESH,
+		TILED_WALL_COLLIDER_TYPE_CONCAVE_MESH
+	};
+
 	static const String BINDING_STRING_TILED_WALL_TILING_TYPE;
+	static const String BINDING_STRING_TILED_WALL_COLLIDER_TYPE;
 
 public:
 	TiledWallTilingType get_tiling_type() const;
 	void set_tiling_type(const TiledWallTilingType value);
+
+	TiledWallColliderType get_collider_type() const;
+	void set_collider_type(const TiledWallColliderType value);
 
 	//textures
 	void add_tile(const Ref<Texture> &texture, const Vector2 &val = Vector2(1, 1), const float z_offset = 0);
@@ -124,8 +136,6 @@ protected:
 	static void _bind_methods();
 
 private:
-	TiledWallTilingType _tiling_type;
-
 	struct TextureEntry {
 		Ref<Texture> texture;
 		Vector2 size;
@@ -143,6 +153,9 @@ private:
 		}
 	};
 
+	TiledWallTilingType _tiling_type;
+	TiledWallColliderType _collider_type;
+
 	Vector<TextureEntry> _textures;
 	Vector<TextureEntry> _flavour_textures;
 	float _flavour_chance;
@@ -151,5 +164,6 @@ private:
 };
 
 VARIANT_ENUM_CAST(TiledWallData::TiledWallTilingType);
+VARIANT_ENUM_CAST(TiledWallData::TiledWallColliderType);
 
 #endif

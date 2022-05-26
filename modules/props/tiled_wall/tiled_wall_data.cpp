@@ -41,12 +41,22 @@ SOFTWARE.
 #include "../material_cache/prop_material_cache.h"
 
 const String TiledWallData::BINDING_STRING_TILED_WALL_TILING_TYPE = "None,Horizontal,Vertical,Both";
+const String TiledWallData::BINDING_STRING_TILED_WALL_COLLIDER_TYPE = "None,Plane,Box,Convex Mesh,Concave Mesh";
 
 TiledWallData::TiledWallTilingType TiledWallData::get_tiling_type() const {
 	return _tiling_type;
 }
 void TiledWallData::set_tiling_type(const TiledWallData::TiledWallTilingType value) {
 	_tiling_type = value;
+
+	emit_changed();
+}
+
+TiledWallData::TiledWallColliderType TiledWallData::get_collider_type() const {
+	return _collider_type;
+}
+void TiledWallData::set_collider_type(const TiledWallData::TiledWallColliderType value) {
+	_collider_type = value;
 
 	emit_changed();
 }
@@ -299,6 +309,7 @@ void TiledWallData::copy_from(const Ref<TiledWallData> &tiled_wall_data) {
 
 TiledWallData::TiledWallData() {
 	_tiling_type = TILED_WALL_TILING_TYPE_NONE;
+	_collider_type = TILED_WALL_COLLIDER_TYPE_PLANE;
 	_flavour_chance = 0.15;
 }
 TiledWallData::~TiledWallData() {
@@ -429,6 +440,10 @@ void TiledWallData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_tiling_type"), &TiledWallData::get_tiling_type);
 	ClassDB::bind_method(D_METHOD("set_tiling_type", "texture"), &TiledWallData::set_tiling_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "tiling_type", PROPERTY_HINT_ENUM, TiledWallData::BINDING_STRING_TILED_WALL_TILING_TYPE), "set_tiling_type", "get_tiling_type");
+
+	ClassDB::bind_method(D_METHOD("get_collider_type"), &TiledWallData::get_collider_type);
+	ClassDB::bind_method(D_METHOD("set_collider_type", "texture"), &TiledWallData::set_collider_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "collider_type", PROPERTY_HINT_ENUM, TiledWallData::BINDING_STRING_TILED_WALL_COLLIDER_TYPE), "set_collider_type", "get_collider_type");
 
 	//textures
 	ClassDB::bind_method(D_METHOD("add_tile", "texture", "size", "z_offset"), &TiledWallData::add_tile, Vector2(1, 1), 0);
