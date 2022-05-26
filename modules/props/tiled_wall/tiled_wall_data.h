@@ -76,11 +76,11 @@ public:
 	Ref<Texture> get_tile_texture(const int index) const;
 	void set_tile_texture(const int index, const Ref<Texture> &texture);
 
-	Vector2 get_tile_texture_size(const int index) const;
-	void set_tile_texture_size(const int index, const Vector2 &val);
+	Vector2 get_tile_size(const int index) const;
+	void set_tile_size(const int index, const Vector2 &val);
 
-	float get_tile_texture_z_offset(const int index) const;
-	void set_tile_texture_z_offset(const int index, const float val);
+	float get_tile_z_offset(const int index) const;
+	void set_tile_z_offset(const int index, const float val);
 
 	int get_tile_count() const;
 	void set_tile_count(const int count);
@@ -92,11 +92,11 @@ public:
 	Ref<Texture> get_flavour_tile_texture(const int index) const;
 	void set_flavour_tile_texture(const int index, const Ref<Texture> &texture);
 
-	Vector2 get_flavour_tile_texture_size(const int index) const;
-	void set_flavour_tile_texture_size(const int index, const Vector2 &val);
+	Vector2 get_flavour_tile_size(const int index) const;
+	void set_flavour_tile_size(const int index, const Vector2 &val);
 
-	float get_flavour_tile_texture_z_offset(const int index) const;
-	void set_flavour_tile_texture_z_offset(const int index, const float val);
+	float get_flavour_tile_z_offset(const int index) const;
+	void set_flavour_tile_z_offset(const int index, const float val);
 
 	int get_flavour_tile_count() const;
 	void set_flavour_tile_count(const int count);

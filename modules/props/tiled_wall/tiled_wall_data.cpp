@@ -85,12 +85,12 @@ void TiledWallData::set_tile_texture(const int index, const Ref<Texture> &textur
 	emit_changed();
 }
 
-Vector2 TiledWallData::get_tile_texture_size(const int index) const {
+Vector2 TiledWallData::get_tile_size(const int index) const {
 	ERR_FAIL_INDEX_V(index, _textures.size(), Vector2(1, 1));
 
 	return _textures.get(index).size;
 }
-void TiledWallData::set_tile_texture_size(const int index, const Vector2 &val) {
+void TiledWallData::set_tile_size(const int index, const Vector2 &val) {
 	ERR_FAIL_INDEX(index, _textures.size());
 
 	_textures.write[index].size = val;
@@ -98,12 +98,12 @@ void TiledWallData::set_tile_texture_size(const int index, const Vector2 &val) {
 	emit_changed();
 }
 
-float TiledWallData::get_tile_texture_z_offset(const int index) const {
+float TiledWallData::get_tile_z_offset(const int index) const {
 	ERR_FAIL_INDEX_V(index, _textures.size(), 0);
 
 	return _textures.get(index).z_offset;
 }
-void TiledWallData::set_tile_texture_z_offset(const int index, const float val) {
+void TiledWallData::set_tile_z_offset(const int index, const float val) {
 	ERR_FAIL_INDEX(index, _textures.size());
 
 	_textures.write[index].z_offset = val;
@@ -144,12 +144,12 @@ void TiledWallData::set_flavour_tile_texture(const int index, const Ref<Texture>
 	emit_changed();
 }
 
-Vector2 TiledWallData::get_flavour_tile_texture_size(const int index) const {
+Vector2 TiledWallData::get_flavour_tile_size(const int index) const {
 	ERR_FAIL_INDEX_V(index, _flavour_textures.size(), Vector2(1, 1));
 
 	return _flavour_textures.get(index).size;
 }
-void TiledWallData::set_flavour_tile_texture_size(const int index, const Vector2 &val) {
+void TiledWallData::set_flavour_tile_size(const int index, const Vector2 &val) {
 	ERR_FAIL_INDEX(index, _flavour_textures.size());
 
 	_flavour_textures.write[index].size = val;
@@ -157,12 +157,12 @@ void TiledWallData::set_flavour_tile_texture_size(const int index, const Vector2
 	emit_changed();
 }
 
-float TiledWallData::get_flavour_tile_texture_z_offset(const int index) const {
+float TiledWallData::get_flavour_tile_z_offset(const int index) const {
 	ERR_FAIL_INDEX_V(index, _flavour_textures.size(), 0);
 
 	return _flavour_textures.get(index).z_offset;
 }
-void TiledWallData::set_flavour_tile_texture_z_offset(const int index, const float val) {
+void TiledWallData::set_flavour_tile_z_offset(const int index, const float val) {
 	ERR_FAIL_INDEX(index, _flavour_textures.size());
 
 	_flavour_textures.write[index].z_offset = val;
@@ -452,11 +452,11 @@ void TiledWallData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_tile_texture", "index"), &TiledWallData::get_tile_texture);
 	ClassDB::bind_method(D_METHOD("set_tile_texture", "index", "texture"), &TiledWallData::set_tile_texture);
 
-	ClassDB::bind_method(D_METHOD("get_tile_texture_size", "index"), &TiledWallData::get_tile_texture_size);
-	ClassDB::bind_method(D_METHOD("set_tile_texture_size", "index", "val"), &TiledWallData::set_tile_texture_size);
+	ClassDB::bind_method(D_METHOD("get_tile_size", "index"), &TiledWallData::get_tile_size);
+	ClassDB::bind_method(D_METHOD("set_tile_size", "index", "val"), &TiledWallData::set_tile_size);
 
-	ClassDB::bind_method(D_METHOD("get_tile_texture_z_offset", "index"), &TiledWallData::get_tile_texture_z_offset);
-	ClassDB::bind_method(D_METHOD("set_tile_texture_z_offset", "index", "val"), &TiledWallData::set_tile_texture_z_offset);
+	ClassDB::bind_method(D_METHOD("get_tile_z_offset", "index"), &TiledWallData::get_tile_z_offset);
+	ClassDB::bind_method(D_METHOD("set_tile_z_offset", "index", "val"), &TiledWallData::set_tile_z_offset);
 
 	ClassDB::bind_method(D_METHOD("get_tile_count"), &TiledWallData::get_tile_count);
 	ClassDB::bind_method(D_METHOD("set_tile_count", "count"), &TiledWallData::set_tile_count);
@@ -469,11 +469,11 @@ void TiledWallData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_flavour_tile_texture", "index"), &TiledWallData::get_flavour_tile_texture);
 	ClassDB::bind_method(D_METHOD("set_flavour_tile_texture", "index", "texture"), &TiledWallData::set_flavour_tile_texture);
 
-	ClassDB::bind_method(D_METHOD("get_flavour_tile_texture_size", "index"), &TiledWallData::get_flavour_tile_texture_size);
-	ClassDB::bind_method(D_METHOD("set_flavour_tile_texture_size", "index", "val"), &TiledWallData::set_flavour_tile_texture_size);
+	ClassDB::bind_method(D_METHOD("get_flavour_tile_size", "index"), &TiledWallData::get_flavour_tile_size);
+	ClassDB::bind_method(D_METHOD("set_flavour_tile_size", "index", "val"), &TiledWallData::set_flavour_tile_size);
 
-	ClassDB::bind_method(D_METHOD("get_flavour_tile_texture_z_offset", "index"), &TiledWallData::get_flavour_tile_texture_z_offset);
-	ClassDB::bind_method(D_METHOD("set_flavour_tile_texture_z_offset", "index", "val"), &TiledWallData::set_flavour_tile_texture_z_offset);
+	ClassDB::bind_method(D_METHOD("get_flavour_tile_z_offset", "index"), &TiledWallData::get_flavour_tile_z_offset);
+	ClassDB::bind_method(D_METHOD("set_flavour_tile_z_offset", "index", "val"), &TiledWallData::set_flavour_tile_z_offset);
 
 	ClassDB::bind_method(D_METHOD("get_flavour_tile_count"), &TiledWallData::get_flavour_tile_count);
 	ClassDB::bind_method(D_METHOD("set_flavour_tile_count", "count"), &TiledWallData::set_flavour_tile_count);
