@@ -237,16 +237,16 @@ void PropMaterialCache::prop_remove_textures(const Ref<PropData> &prop) {
 			if (!twd.is_valid())
 				continue;
 
-			for (int j = 0; j < twd->get_texture_count(); ++j) {
-				const Ref<Texture> &tex = twd->get_texture(j);
+			for (int j = 0; j < twd->get_tile_count(); ++j) {
+				const Ref<Texture> &tex = twd->get_tile_texture(j);
 
 				if (tex.is_valid()) {
 					texture_remove(tex);
 				}
 			}
 
-			for (int j = 0; j < twd->get_flavour_texture_count(); ++j) {
-				const Ref<Texture> &tex = twd->get_flavour_texture(j);
+			for (int j = 0; j < twd->get_flavour_tile_count(); ++j) {
+				const Ref<Texture> &tex = twd->get_flavour_tile_texture(j);
 
 				if (tex.is_valid()) {
 					texture_remove(tex);

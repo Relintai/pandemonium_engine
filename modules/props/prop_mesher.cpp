@@ -432,26 +432,26 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 	ERR_FAIL_COND(width < 0);
 	ERR_FAIL_COND(height < 0);
 
-	if (tiled_wall_data->get_texture_count() == 0) {
+	if (tiled_wall_data->get_tile_count() == 0) {
 		return;
 	}
 
-	float flavour_chance = tiled_wall_data->get_flavour_chance();
+	float flavour_chance = tiled_wall_data->get_flavour_tile_chance();
 
 	//collect rects
 	Vector<Rect2> normal_rects;
 	Vector<Rect2> flavour_rects;
 
-	for (int i = 0; i < tiled_wall_data->get_texture_count(); ++i) {
-		const Ref<Texture> &t = tiled_wall_data->get_texture(i);
+	for (int i = 0; i < tiled_wall_data->get_tile_count(); ++i) {
+		const Ref<Texture> &t = tiled_wall_data->get_tile_texture(i);
 
 		if (t.is_valid()) {
 			normal_rects.push_back(cache->texture_get_uv_rect(t));
 		}
 	}
 
-	for (int i = 0; i < tiled_wall_data->get_flavour_texture_count(); ++i) {
-		const Ref<Texture> &t = tiled_wall_data->get_flavour_texture(i);
+	for (int i = 0; i < tiled_wall_data->get_flavour_tile_count(); ++i) {
+		const Ref<Texture> &t = tiled_wall_data->get_flavour_tile_texture(i);
 
 		if (t.is_valid()) {
 			flavour_rects.push_back(cache->texture_get_uv_rect(t));

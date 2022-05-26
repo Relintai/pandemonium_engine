@@ -58,29 +58,39 @@ public:
 	void set_tiling_type(const TiledWallTilingType value);
 
 	//textures
-	Ref<Texture> get_texture(const int index) const;
-	void set_texture(const int index, const Ref<Texture> &texture);
-	void add_texture(const Ref<Texture> &texture);
-	void remove_texture(const int index);
+	void add_tile(const Ref<Texture> &texture, const Vector2 &val = Vector2(1, 1), const float z_offset = 0);
+	void remove_tile(const int index);
 
-	int get_texture_count() const;
+	Ref<Texture> get_tile_texture(const int index) const;
+	void set_tile_texture(const int index, const Ref<Texture> &texture);
 
-	Vector<Variant> get_textures();
-	void set_textures(const Vector<Variant> &textures);
+	Vector2 get_tile_texture_size(const int index) const;
+	void set_tile_texture_size(const int index, const Vector2 &val);
+
+	float get_tile_texture_z_offset(const int index) const;
+	void set_tile_texture_z_offset(const int index, const float val);
+
+	int get_tile_count() const;
+	void set_tile_count(const int count);
 
 	//flavour_textures
-	Ref<Texture> get_flavour_texture(const int index) const;
-	void set_flavour_texture(const int index, const Ref<Texture> &texture);
-	void add_flavour_texture(const Ref<Texture> &texture);
-	void remove_flavour_texture(const int index);
+	void add_flavour_tile(const Ref<Texture> &texture, const Vector2 &val = Vector2(1, 1), const float z_offset = 0);
+	void remove_flavour_tile(const int index);
 
-	int get_flavour_texture_count() const;
+	Ref<Texture> get_flavour_tile_texture(const int index) const;
+	void set_flavour_tile_texture(const int index, const Ref<Texture> &texture);
 
-	Vector<Variant> get_flavour_textures();
-	void set_flavour_textures(const Vector<Variant> &textures);
+	Vector2 get_flavour_tile_texture_size(const int index) const;
+	void set_flavour_tile_texture_size(const int index, const Vector2 &val);
 
-	float get_flavour_chance() const;
-	void set_flavour_chance(const float value);
+	float get_flavour_tile_texture_z_offset(const int index) const;
+	void set_flavour_tile_texture_z_offset(const int index, const float val);
+
+	int get_flavour_tile_count() const;
+	void set_flavour_tile_count(const int count);
+
+	float get_flavour_tile_chance() const;
+	void set_flavour_tile_chance(const float value);
 
 	//materials
 	void material_add(const Ref<Material> &value);
@@ -107,13 +117,34 @@ public:
 	~TiledWallData();
 
 protected:
+	bool _set(const StringName &p_name, const Variant &p_value);
+	bool _get(const StringName &p_name, Variant &r_ret) const;
+	void _get_property_list(List<PropertyInfo> *p_list) const;
+
 	static void _bind_methods();
 
 private:
 	TiledWallTilingType _tiling_type;
 
-	Vector<Ref<Texture>> _textures;
-	Vector<Ref<Texture>> _flavour_textures;
+	struct TextureEntry {
+		Ref<Texture> texture;
+		Vector2 size;
+		float z_offset;
+
+		TextureEntry() {
+			size = Vector2(1, 1);
+			z_offset = 0;
+		}
+
+		TextureEntry(const Ref<Texture> &p_texture, const Vector2 &p_size = Vector2(1, 1), const float p_z_offset = 0) {
+			texture = p_texture;
+			size = p_size;
+			z_offset = p_z_offset;
+		}
+	};
+
+	Vector<TextureEntry> _textures;
+	Vector<TextureEntry> _flavour_textures;
 	float _flavour_chance;
 
 	Vector<Ref<Material>> _materials;
