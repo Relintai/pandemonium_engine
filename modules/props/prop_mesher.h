@@ -129,7 +129,8 @@ public:
 	void reset();
 
 	void add_tiled_wall_simple(const int width, const int height, const Transform &transform, const Ref<TiledWallData> &tiled_wall_data, Ref<PropMaterialCache> cache);
-	void add_tiled_wall_mesh_rect_simple(const float x, const float y, const float y_size, const Transform &transform, const Rect2 &texture_rect);
+	void add_tiled_wall_mesh_rect_simple(const float x, const float y, const float y_size, const float prev_z_offset, const float current_z_offset, const Transform &transform, const Rect2 &texture_rect);
+	
 	Vector2 transform_uv(const Vector2 &uv, const Rect2 &rect) const;
 
 #ifdef MESH_DATA_RESOURCE_PRESENT

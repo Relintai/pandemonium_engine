@@ -443,6 +443,8 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 	LocalVector<Rect2> flavour_rects;
 	LocalVector<float> normal_y_sizes;
 	LocalVector<float> flavour_y_sizes;
+	LocalVector<float> normal_z_offsets;
+	LocalVector<float> flavour_z_offsets;
 
 	for (int i = 0; i < tiled_wall_data->get_tile_count(); ++i) {
 		const Ref<Texture> &t = tiled_wall_data->get_tile_texture(i);
@@ -450,6 +452,7 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 		if (t.is_valid()) {
 			normal_rects.push_back(cache->texture_get_uv_rect(t));
 			normal_y_sizes.push_back(tiled_wall_data->get_tile_y_size(i));
+			normal_z_offsets.push_back(tiled_wall_data->get_tile_z_offset(i));
 		}
 	}
 
@@ -459,6 +462,7 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 		if (t.is_valid()) {
 			flavour_rects.push_back(cache->texture_get_uv_rect(t));
 			flavour_y_sizes.push_back(tiled_wall_data->get_flavour_tile_y_size(i));
+			flavour_z_offsets.push_back(tiled_wall_data->get_flavour_tile_z_offset(i));
 		}
 	}
 
@@ -479,7 +483,7 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 				float ych = 0;
 
 				for (int y = 0; y < height; ++y) {
-					add_tiled_wall_mesh_rect_simple(x, ych, yh, transform, r);
+					add_tiled_wall_mesh_rect_simple(x, ych, yh, 0, 0, transform, r);
 
 					ych += yh;
 				}
@@ -491,15 +495,14 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 
 				for (int y = 0; y < height; ++y) {
 					if (Math::randf() > flavour_chance) {
-						add_tiled_wall_mesh_rect_simple(x, ych, yh, transform, r);
+						add_tiled_wall_mesh_rect_simple(x, ych, yh, 0, 0, transform, r);
 
 						ych += yh;
 					} else {
 						int indx = Math::rand() % flavour_rects.size();
 
 						float yh = flavour_y_sizes[indx];
-
-						add_tiled_wall_mesh_rect_simple(x, ych, yh, transform, flavour_rects[indx]);
+						add_tiled_wall_mesh_rect_simple(x, ych, yh, 0, 0, transform, flavour_rects[indx]);
 
 						ych += yh;
 					}
@@ -516,11 +519,12 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 
 				r = normal_rects[indx];
 				float ysize = normal_y_sizes[indx];
+				float z_offset = normal_z_offsets[indx];
 
 				float cys = 0;
 
 				for (int y = 0; y < height; ++y) {
-					add_tiled_wall_mesh_rect_simple(x, cys, ysize, transform, r);
+					add_tiled_wall_mesh_rect_simple(x, cys, ysize, z_offset, z_offset, transform, r);
 
 					cys += ysize;
 				}
@@ -537,14 +541,14 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 
 				for (int y = 0; y < height; ++y) {
 					if (Math::randf() > flavour_chance) {
-						add_tiled_wall_mesh_rect_simple(x, cys, ysize, transform, r);
+						add_tiled_wall_mesh_rect_simple(x, cys, ysize, 0, 0, transform, r);
 
 						cys += ysize;
 					} else {
 						int findx = Math::rand() % flavour_rects.size();
 						float yh = flavour_y_sizes[findx];
 
-						add_tiled_wall_mesh_rect_simple(x, cys, yh, transform, flavour_rects[findx]);
+						add_tiled_wall_mesh_rect_simple(x, cys, yh, 0, 0, transform, flavour_rects[findx]);
 
 						cys += yh;
 					}
@@ -556,18 +560,28 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 
 		if (flavour_rects.size() == 0) {
 			//no flavours
+
 			for (int x = 0; x < width; ++x) {
 				float cys = 0;
-				
+
+				float prev_z_offset = 0;
+
 				for (int y = 0; y < height; ++y) {
 					int indx = y % normal_rects.size();
 
 					r = normal_rects[indx];
 					float ysize = normal_y_sizes[indx];
+					float current_z_offset = normal_z_offsets[indx];
 
-					add_tiled_wall_mesh_rect_simple(x, cys, ysize, transform, r);
+					if (y == 0) {
+						prev_z_offset = current_z_offset;
+					}
+
+					add_tiled_wall_mesh_rect_simple(x, cys, ysize, prev_z_offset, current_z_offset, transform, r);
 
 					cys += ysize;
+
+					prev_z_offset = current_z_offset;
 				}
 			}
 		} else {
@@ -575,23 +589,33 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 			for (int x = 0; x < width; ++x) {
 				float cys = 0;
 
+				float prev_z_offset = 0;
+
 				for (int y = 0; y < height; ++y) {
 					int indx = y % normal_rects.size();
 
 					r = normal_rects[indx];
 					float ysize = normal_y_sizes[indx];
+					float current_z_offset = 0;
+
+					if (y == 0) {
+						prev_z_offset = current_z_offset;
+					}
 
 					if (Math::randf() > flavour_chance) {
-						add_tiled_wall_mesh_rect_simple(x, cys, ysize, transform, r);
+						current_z_offset = normal_z_offsets[indx];
+						
+						add_tiled_wall_mesh_rect_simple(x, cys, ysize, prev_z_offset, current_z_offset, transform, r);
 						cys += ysize;
 					} else {
 						int findx = Math::rand() % flavour_rects.size();
-						float yh = flavour_y_sizes[findx];
+						current_z_offset = flavour_z_offsets[findx];
 
-						add_tiled_wall_mesh_rect_simple(x, cys, ysize, transform, flavour_rects[findx]);
-
-						cys += yh;
+						add_tiled_wall_mesh_rect_simple(x, cys, ysize, prev_z_offset, current_z_offset, transform, flavour_rects[findx]);
+						cys += ysize;
 					}
+
+					prev_z_offset = current_z_offset;
 				}
 			}
 		}
@@ -609,7 +633,7 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 					r = normal_rects[indx];
 					float ysize = normal_y_sizes[indx];
 
-					add_tiled_wall_mesh_rect_simple(x, cys, ysize, transform, r);
+					add_tiled_wall_mesh_rect_simple(x, cys, ysize, 0, 0, transform, r);
 
 					cys += ysize;
 				}
@@ -626,13 +650,13 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 					float ysize = normal_y_sizes[indx];
 
 					if (Math::randf() > flavour_chance) {
-						add_tiled_wall_mesh_rect_simple(x, cys, ysize, transform, r);
+						add_tiled_wall_mesh_rect_simple(x, cys, ysize, 0, 0, transform, r);
 						cys += ysize;
 					} else {
 						int findx = Math::rand() % flavour_rects.size();
 						float yh = flavour_y_sizes[findx];
 
-						add_tiled_wall_mesh_rect_simple(x, cys, ysize, transform, flavour_rects[findx]);
+						add_tiled_wall_mesh_rect_simple(x, cys, ysize, 0, 0, transform, flavour_rects[findx]);
 
 						cys += yh;
 					}
@@ -642,28 +666,28 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 	}
 }
 
-void PropMesher::add_tiled_wall_mesh_rect_simple(const float x, const float y, const float y_size, const Transform &transform, const Rect2 &texture_rect) {
+void PropMesher::add_tiled_wall_mesh_rect_simple(const float x, const float y, const float y_size, const float prev_z_offset, const float current_z_offset, const Transform &transform, const Rect2 &texture_rect) {
 	int vc = get_vertex_count();
 
 	//x + 1, y
 	add_normal(transform.basis.xform(Vector3(0, 0, -1)));
 	add_uv(transform_uv(Vector2(1, 1), texture_rect));
-	add_vertex(transform.xform(Vector3(x + 1, y, 0)));
+	add_vertex(transform.xform(Vector3(x + 1, y, prev_z_offset)));
 
 	//x, y
 	add_normal(transform.basis.xform(Vector3(0, 0, -1)));
 	add_uv(transform_uv(Vector2(0, 1), texture_rect));
-	add_vertex(transform.xform(Vector3(x, y, 0)));
+	add_vertex(transform.xform(Vector3(x, y, prev_z_offset)));
 
 	//x, y + 1
 	add_normal(transform.basis.xform(Vector3(0, 0, -1)));
 	add_uv(transform_uv(Vector2(0, 0), texture_rect));
-	add_vertex(transform.xform(Vector3(x, y + y_size, 0)));
+	add_vertex(transform.xform(Vector3(x, y + y_size, current_z_offset)));
 
 	//x + 1, y + 1
 	add_normal(transform.basis.xform(Vector3(0, 0, -1)));
 	add_uv(transform_uv(Vector2(1, 0), texture_rect));
-	add_vertex(transform.xform(Vector3(x + 1, y + y_size, 0)));
+	add_vertex(transform.xform(Vector3(x + 1, y + y_size, current_z_offset)));
 
 	add_indices(vc + 2);
 	add_indices(vc + 1);
@@ -1410,10 +1434,7 @@ void PropMesher::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "build_flags", PROPERTY_HINT_FLAGS, PropMesher::BINDING_STRING_BUILD_FLAGS), "set_build_flags", "get_build_flags");
 
 	ClassDB::bind_method(D_METHOD("add_tiled_wall_simple", "width", "height", "transform", "tiled_wall_data", "cache"), &PropMesher::add_tiled_wall_simple);
-	ClassDB::bind_method(D_METHOD("add_tiled_wall_mesh_rect_simple", "x", "y", "y_size"
-																			   "transform",
-								 "texture_rect"),
-			&PropMesher::add_tiled_wall_mesh_rect_simple);
+	//ClassDB::bind_method(D_METHOD("add_tiled_wall_mesh_rect_simple", "x", "y", "y_size", "transform", "texture_rect"), &PropMesher::add_tiled_wall_mesh_rect_simple);
 	ClassDB::bind_method(D_METHOD("transform_uv", "uv", "rect"), &PropMesher::transform_uv);
 
 #ifdef MESH_DATA_RESOURCE_PRESENT
