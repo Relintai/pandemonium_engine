@@ -501,10 +501,10 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 					} else {
 						int indx = Math::rand() % flavour_rects.size();
 
-						float yh = flavour_y_sizes[indx];
-						add_tiled_wall_mesh_rect_simple(x, ych, yh, 0, 0, transform, flavour_rects[indx]);
+						float fyh = flavour_y_sizes[indx];
+						add_tiled_wall_mesh_rect_simple(x, ych, fyh, 0, 0, transform, flavour_rects[indx]);
 
-						ych += yh;
+						ych += fyh;
 					}
 				}
 			}
