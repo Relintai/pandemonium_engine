@@ -85,15 +85,15 @@ void TiledWallData::set_tile_texture(const int index, const Ref<Texture> &textur
 	emit_changed();
 }
 
-Vector2 TiledWallData::get_tile_size(const int index) const {
-	ERR_FAIL_INDEX_V(index, _tiles.size(), Vector2(1, 1));
+float TiledWallData::get_tile_y_size(const int index) const {
+	ERR_FAIL_INDEX_V(index, _tiles.size(),1);
 
-	return _tiles.get(index).size;
+	return _tiles.get(index).y_size;
 }
-void TiledWallData::set_tile_size(const int index, const Vector2 &val) {
+void TiledWallData::set_tile_y_size(const int index, const float val) {
 	ERR_FAIL_INDEX(index, _tiles.size());
 
-	_tiles.write[index].size = val;
+	_tiles.write[index].y_size = val;
 
 	emit_changed();
 }
@@ -144,15 +144,15 @@ void TiledWallData::set_flavour_tile_texture(const int index, const Ref<Texture>
 	emit_changed();
 }
 
-Vector2 TiledWallData::get_flavour_tile_size(const int index) const {
-	ERR_FAIL_INDEX_V(index, _flavour_tiles.size(), Vector2(1, 1));
+float TiledWallData::get_flavour_tile_y_size(const int index) const {
+	ERR_FAIL_INDEX_V(index, _flavour_tiles.size(), 1);
 
-	return _flavour_tiles.get(index).size;
+	return _flavour_tiles.get(index).y_size;
 }
-void TiledWallData::set_flavour_tile_size(const int index, const Vector2 &val) {
+void TiledWallData::set_flavour_tile_y_size(const int index, const float val) {
 	ERR_FAIL_INDEX(index, _flavour_tiles.size());
 
-	_flavour_tiles.write[index].size = val;
+	_flavour_tiles.write[index].y_size = val;
 
 	emit_changed();
 }
@@ -334,8 +334,8 @@ bool TiledWallData::_set(const StringName &p_name, const Variant &p_value) {
 			_tiles.write[index].texture = p_value;
 
 			return true;
-		} else if (p == "size") {
-			_tiles.write[index].size = p_value;
+		} else if (p == "y_size") {
+			_tiles.write[index].y_size = p_value;
 
 			return true;
 		} else if (p == "z_offset") {
@@ -356,8 +356,8 @@ bool TiledWallData::_set(const StringName &p_name, const Variant &p_value) {
 			_flavour_tiles.write[index].texture = p_value;
 
 			return true;
-		} else if (p == "size") {
-			_flavour_tiles.write[index].size = p_value;
+		} else if (p == "y_size") {
+			_flavour_tiles.write[index].y_size = p_value;
 
 			return true;
 		} else if (p == "z_offset") {
@@ -386,8 +386,8 @@ bool TiledWallData::_get(const StringName &p_name, Variant &r_ret) const {
 			r_ret = _tiles[index].texture;
 
 			return true;
-		} else if (p == "size") {
-			r_ret = _tiles[index].size;
+		} else if (p == "y_size") {
+			r_ret = _tiles[index].y_size;
 
 			return true;
 		} else if (p == "z_offset") {
@@ -408,8 +408,8 @@ bool TiledWallData::_get(const StringName &p_name, Variant &r_ret) const {
 			r_ret = _flavour_tiles[index].texture;
 
 			return true;
-		} else if (p == "size") {
-			r_ret = _flavour_tiles[index].size;
+		} else if (p == "y_size") {
+			r_ret = _flavour_tiles[index].y_size;
 
 			return true;
 		} else if (p == "z_offset") {
@@ -425,13 +425,13 @@ bool TiledWallData::_get(const StringName &p_name, Variant &r_ret) const {
 void TiledWallData::_get_property_list(List<PropertyInfo> *p_list) const {
 	for (int i = 0; i < _tiles.size(); ++i) {
 		p_list->push_back(PropertyInfo(Variant::OBJECT, "tile_" + itos(i) + "/texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture", PROPERTY_USAGE_DEFAULT));
-		p_list->push_back(PropertyInfo(Variant::VECTOR2, "tile_" + itos(i) + "/size", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
+		p_list->push_back(PropertyInfo(Variant::REAL, "tile_" + itos(i) + "/y_size", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
 		p_list->push_back(PropertyInfo(Variant::REAL, "tile_" + itos(i) + "/z_offset", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
 	}
 
 	for (int i = 0; i < _flavour_tiles.size(); ++i) {
 		p_list->push_back(PropertyInfo(Variant::OBJECT, "flavour_tile_" + itos(i) + "/texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture", PROPERTY_USAGE_DEFAULT));
-		p_list->push_back(PropertyInfo(Variant::VECTOR2, "flavour_tile_" + itos(i) + "/size", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
+		p_list->push_back(PropertyInfo(Variant::REAL, "flavour_tile_" + itos(i) + "/y_size", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
 		p_list->push_back(PropertyInfo(Variant::REAL, "flavour_tile_" + itos(i) + "/z_offset", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
 	}
 }
@@ -452,8 +452,8 @@ void TiledWallData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_tile_texture", "index"), &TiledWallData::get_tile_texture);
 	ClassDB::bind_method(D_METHOD("set_tile_texture", "index", "texture"), &TiledWallData::set_tile_texture);
 
-	ClassDB::bind_method(D_METHOD("get_tile_size", "index"), &TiledWallData::get_tile_size);
-	ClassDB::bind_method(D_METHOD("set_tile_size", "index", "val"), &TiledWallData::set_tile_size);
+	ClassDB::bind_method(D_METHOD("get_tile_y_size", "index"), &TiledWallData::get_tile_y_size);
+	ClassDB::bind_method(D_METHOD("set_tile_y_size", "index", "val"), &TiledWallData::set_tile_y_size);
 
 	ClassDB::bind_method(D_METHOD("get_tile_z_offset", "index"), &TiledWallData::get_tile_z_offset);
 	ClassDB::bind_method(D_METHOD("set_tile_z_offset", "index", "val"), &TiledWallData::set_tile_z_offset);
@@ -469,8 +469,8 @@ void TiledWallData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_flavour_tile_texture", "index"), &TiledWallData::get_flavour_tile_texture);
 	ClassDB::bind_method(D_METHOD("set_flavour_tile_texture", "index", "texture"), &TiledWallData::set_flavour_tile_texture);
 
-	ClassDB::bind_method(D_METHOD("get_flavour_tile_size", "index"), &TiledWallData::get_flavour_tile_size);
-	ClassDB::bind_method(D_METHOD("set_flavour_tile_size", "index", "val"), &TiledWallData::set_flavour_tile_size);
+	ClassDB::bind_method(D_METHOD("get_flavour_tile_y_size", "index"), &TiledWallData::get_flavour_tile_y_size);
+	ClassDB::bind_method(D_METHOD("set_flavour_tile_y_size", "index", "val"), &TiledWallData::set_flavour_tile_y_size);
 
 	ClassDB::bind_method(D_METHOD("get_flavour_tile_z_offset", "index"), &TiledWallData::get_flavour_tile_z_offset);
 	ClassDB::bind_method(D_METHOD("set_flavour_tile_z_offset", "index", "val"), &TiledWallData::set_flavour_tile_z_offset);

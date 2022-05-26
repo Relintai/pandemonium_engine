@@ -76,8 +76,8 @@ public:
 	Ref<Texture> get_tile_texture(const int index) const;
 	void set_tile_texture(const int index, const Ref<Texture> &texture);
 
-	Vector2 get_tile_size(const int index) const;
-	void set_tile_size(const int index, const Vector2 &val);
+	float get_tile_y_size(const int index) const;
+	void set_tile_y_size(const int index, const float val);
 
 	float get_tile_z_offset(const int index) const;
 	void set_tile_z_offset(const int index, const float val);
@@ -92,8 +92,8 @@ public:
 	Ref<Texture> get_flavour_tile_texture(const int index) const;
 	void set_flavour_tile_texture(const int index, const Ref<Texture> &texture);
 
-	Vector2 get_flavour_tile_size(const int index) const;
-	void set_flavour_tile_size(const int index, const Vector2 &val);
+	float get_flavour_tile_y_size(const int index) const;
+	void set_flavour_tile_y_size(const int index, const float val);
 
 	float get_flavour_tile_z_offset(const int index) const;
 	void set_flavour_tile_z_offset(const int index, const float val);
@@ -138,17 +138,17 @@ protected:
 private:
 	struct TextureEntry {
 		Ref<Texture> texture;
-		Vector2 size;
+		float y_size;
 		float z_offset;
 
 		TextureEntry() {
-			size = Vector2(1, 1);
+			y_size = 1;
 			z_offset = 0;
 		}
 
-		TextureEntry(const Ref<Texture> &p_texture, const Vector2 &p_size = Vector2(1, 1), const float p_z_offset = 0) {
+		TextureEntry(const Ref<Texture> &p_texture, const float p_y_size = 1, const float p_z_offset = 0) {
 			texture = p_texture;
-			size = p_size;
+			y_size = p_y_size;
 			z_offset = p_z_offset;
 		}
 	};
