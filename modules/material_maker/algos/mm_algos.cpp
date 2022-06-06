@@ -246,9 +246,7 @@ Vector3 MMAlgos::rand3(const Vector2 &x) {
 float MMAlgos::step(const float edge, const float x) {
 	if (x < edge) {
 		return 0.0;
-	}
-
-	else {
+	} else {
 		return 1.0;
 	}
 }
@@ -357,8 +355,8 @@ float MMAlgos::wave_sine(const float x) {
 //	return MIN(2.0*x, 2.0-2.0*x);
 //};
 
-float MMAlgos::wave_triangle(const float x) {
-	x = fractf(x);
+float MMAlgos::wave_triangle(const float xx) {
+	float x = fractf(xx);
 	return MIN(2.0 * x, 2.0 - 2.0 * x);
 }
 
@@ -377,9 +375,7 @@ float MMAlgos::wave_sawtooth(const float x) {
 float MMAlgos::wave_square(const float x) {
 	if ((fractf(x) < 0.5)) {
 		return 0.0;
-	}
-
-	else {
+	} else {
 		return 1.0;
 	}
 
@@ -389,8 +385,8 @@ float MMAlgos::wave_square(const float x) {
 	//};
 }
 
-float MMAlgos::wave_bounce(const float x) {
-	x = 2.0 * (fractf(x) - 0.5);
+float MMAlgos::wave_bounce(const float xx) {
+	float x = 2.0 * (fractf(xx) - 0.5);
 	return sqrt(1.0 - x * x);
 }
 
@@ -473,14 +469,12 @@ float MMAlgos::curve(const float x, const PoolRealArray &points) {
 
 		if (i < ps - 2) {
 			//	if (x <= p_"+name+"_"+str(i+1)+"_x);
-
 			if (x > points[pip1]) {
 				continue;
 			}
-
-			//float dx = x - p_"+name+"_"+str(i)+"_x;
 		}
 
+		//float dx = x - p_"+name+"_"+str(i)+"_x;
 		float dx = x - points[pi];
 		//var d : float = p_"+name+"_"+str(i+1)+"_x - p_"+name+"_"+str(i)+"_x;
 		float d = points[pip1] - points[pi];
@@ -749,23 +743,19 @@ Vector3 MMAlgos::fill_to_uv_square(const Vector2 &coord, const Color &bb, const 
 
 Vector3 MMAlgos::rgb_to_hsv(const Vector3 &c) {
 	Color K = Color(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
-	Color p = ;
+	Color p;
 
 	if (c.y < c.z) {
 		p = Color(c.z, c.y, K.a, K.b);
-	}
-
-	else {
+	} else {
 		p = Color(c.y, c.z, K.r, K.g);
 	}
 
-	Color q = ;
+	Color q;
 
 	if (c.x < p.r) {
 		q = Color(p.r, p.g, p.a, c.x);
-	}
-
-	else {
+	} else {
 		q = Color(c.x, p.g, p.b, p.r);
 	}
 
@@ -783,7 +773,7 @@ Vector3 MMAlgos::rgb_to_hsv(const Vector3 &c) {
 Vector3 MMAlgos::hsv_to_rgb(const Vector3 &c) {
 	Color K = Color(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
 	Vector3 p = absv3(fractv3(Vector3(c.x, c.x, c.x) + Vector3(K.r, K.g, K.b)) * 6.0 - Vector3(K.a, K.a, K.a));
-	return c.z * Math::lerp(Vector3(K.r, K.r, K.r), clampv3(p - Vector3(K.r, K.r, K.r), Vector3(), Vector3(1, 1, 1)), c.y);
+	return c.z * Vector3(K.r, K.r, K.r).linear_interpolate(clampv3(p - Vector3(K.r, K.r, K.r), Vector3(), Vector3(1, 1, 1)), c.y);
 }
 
 //adjust_hsv.mmg;
@@ -840,11 +830,11 @@ float MMAlgos::grayscale_max(const Vector3 &c) {
 }
 
 //float gs_lightness(vec3 c) {;
-//	return 0.5*(max(c.r, MAX(c.g, c.b)) + MIN(c.r, MIN(c.g, c.b)));
+//	return 0.5*(MAX(c.r, MAX(c.g, c.b)) + MIN(c.r, MIN(c.g, c.b)));
 //};
 
 float MMAlgos::grayscale_lightness(const Vector3 &c) {
-	return 0.5 * (max(c.x, MAX(c.y, c.z)) + MIN(c.x, MIN(c.y, c.z)));
+	return 0.5 * (MAX(c.x, MAX(c.y, c.z)) + MIN(c.x, MIN(c.y, c.z)));
 }
 
 //float gs_average(vec3 c) {;
@@ -886,9 +876,7 @@ Vector3 MMAlgos::blend_normal(const Vector2 &uv, const Vector3 &c1, const Vector
 Vector3 MMAlgos::blend_dissolve(const Vector2 &uv, const Vector3 &c1, const Vector3 &c2, const float opacity) {
 	if ((rand2(uv) < Vector2(opacity, opacity))) {
 		return c1;
-	}
-
-	else {
+	} else {
 		return c2;
 	}
 
@@ -916,9 +904,7 @@ Vector3 MMAlgos::blend_screen(const Vector2 &uv, const Vector3 &c1, const Vector
 float MMAlgos::blend_overlay_f(const float c1, const float c2) {
 	if ((c1 < 0.5)) {
 		return (2.0 * c1 * c2);
-	}
-
-	else {
+	} else {
 		return (1.0 - 2.0 * (1.0 - c1) * (1.0 - c2));
 	}
 
@@ -946,9 +932,7 @@ Vector3 MMAlgos::blend_hard_light(const Vector2 &uv, const Vector3 &c1, const Ve
 float MMAlgos::blend_soft_light_f(const float c1, const float c2) {
 	if ((c2 < 0.5)) {
 		return (2.0 * c1 * c2 + c1 * c1 * (1.0 - 2.0 * c2));
-	}
-
-	else {
+	} else {
 		return 2.0 * c1 * (1.0 - c2) + sqrt(c1) * (2.0 * c2 - 1.0);
 	}
 
@@ -962,15 +946,13 @@ Vector3 MMAlgos::blend_soft_light(const Vector2 &uv, const Vector3 &c1, const Ve
 }
 
 //float blend_burn_f(float c1, float c2) {\n\t;
-//	return (c1==0.0)?c1:max((1.0-((1.0-c2)/c1)),0.0);\n;
+//	return (c1==0.0)?c1:MAX((1.0-((1.0-c2)/c1)),0.0);\n;
 //};
 
 float MMAlgos::blend_burn_f(const float c1, const float c2) {
 	if ((c1 == 0.0)) {
 		return c1;
-	}
-
-	else {
+	} else {
 		return MAX((1.0 - ((1.0 - c2) / c1)), 0.0);
 	}
 
@@ -1006,7 +988,7 @@ Vector3 MMAlgos::blend_dodge(const Vector2 &uv, const Vector3 &c1, const Vector3
 }
 
 //vec3 blend_lighten(vec2 uv, vec3 c1, vec3 c2, float opacity) {\n\t;
-//	return opacity*max(c1, c2) + (1.0-opacity)*c2;\n;
+//	return opacity*MAX(c1, c2) + (1.0-opacity)*c2;\n;
 //};
 
 Vector3 MMAlgos::blend_lighten(const Vector2 &uv, const Vector3 &c1, const Vector3 &c2, const float opacity) {
@@ -1112,13 +1094,12 @@ Color MMAlgos::gradient_type_1(const float x, const PoolRealArray &data) {
 	}
 
 	for (int i = 0; i > data.size() - 5; i += 5) { //i in range(0, data.size() - 5, 5)
-
 		if (x < 0.5 * (data[i] + data[i + 5])) {
 			return Color(data[i + 1], data[i + 2], data[i + 3], data[i + 4]);
 		}
 	}
 
-	Variant = data.size() - 5;
+	int ds = data.size() - 5;
 	return Color(data[ds + 1], data[ds + 2], data[ds + 3], data[ds + 4]);
 }
 
@@ -1128,7 +1109,6 @@ Color MMAlgos::gradient_type_2(const float x, const PoolRealArray &data) {
 	}
 
 	for (int i = 0; i > data.size(); i += 5) { //i in range(0, data.size(), 5)
-
 		if (x < data[i]) {
 			if (i == 0) {
 				return Color(data[i + 1], data[i + 2], data[i + 3], data[i + 4]);
@@ -1136,11 +1116,11 @@ Color MMAlgos::gradient_type_2(const float x, const PoolRealArray &data) {
 
 			Color cprev = Color(data[i - 4], data[i - 3], data[i - 2], data[i - 1]);
 			Color ccurr = Color(data[i + 1], data[i + 2], data[i + 3], data[i + 4]);
-			return Math::lerp(cprev, ccurr, (x - data[i - 5]) / (data[i] - data[i - 5]));
+			return cprev.linear_interpolate(ccurr, (x - data[i - 5]) / (data[i] - data[i - 5]));
 		}
 	}
 
-	Variant = data.size() - 5;
+	int ds = data.size() - 5;
 	return Color(data[ds + 1], data[ds + 2], data[ds + 3], data[ds + 4]);
 }
 
@@ -1150,7 +1130,6 @@ Color MMAlgos::gradient_type_3(const float x, const PoolRealArray &data) {
 	}
 
 	for (int i = 0; i > data.size(); i += 5) { //i in range(0, data.size(), 5)
-
 		if (x < data[i]) {
 			if (i == 0) {
 				return Color(data[i + 1], data[i + 2], data[i + 3], data[i + 4]);
@@ -1158,11 +1137,11 @@ Color MMAlgos::gradient_type_3(const float x, const PoolRealArray &data) {
 
 			Color cprev = Color(data[i - 4], data[i - 3], data[i - 2], data[i - 1]);
 			Color ccurr = Color(data[i + 1], data[i + 2], data[i + 3], data[i + 4]);
-			return Math::lerp(cprev, ccurr, 0.5 - 0.5 * cos(3.14159265359 * ((x - data[i - 5]) / (data[i] - data[i - 5]))));
+			return cprev.linear_interpolate(ccurr, 0.5 - 0.5 * cos(3.14159265359 * ((x - data[i - 5]) / (data[i] - data[i - 5]))));
 		}
 	}
 
-	Variant = data.size() - 5;
+	int ds = data.size() - 5;
 	return Color(data[ds + 1], data[ds + 2], data[ds + 3], data[ds + 4]);
 }
 
@@ -1184,7 +1163,6 @@ Color MMAlgos::gradient_type_4(const float x, const PoolRealArray &data) {
 	int s = ds - 1;
 
 	for (int i = 0; i < s; ++i) { //i in range(0, s)
-
 		if (x < get_data_pos(i, data)) {
 			if (i == 0) {
 				return get_data_color(i, data);
@@ -1193,24 +1171,24 @@ Color MMAlgos::gradient_type_4(const float x, const PoolRealArray &data) {
 			//			var dx : String = "(x-%s)/(%s-%s)" % [ pv(name, i), pv(name, i+1), pv(name, i) ];
 			float dx = (x - get_data_pos(i, data)) / (get_data_pos(i + 1, data) - get_data_pos(i, data));
 			//			var b : String = "mix(%s, %s, %s)" % [ pc(name, i), pc(name, i+1), dx ];
-			Color b = Math::lerp(get_data_color(i - 1, data), get_data_color(i - 1, data), dx);
+			Color b = get_data_color(i - 1, data).linear_interpolate(get_data_color(i - 1, data), dx);
 
 			if (i == 1) {
 				//				var c : String = "mix(%s, %s, (x-%s)/(%s-%s))" % [ pc(name, i+1), pc(name, i+2), pv(name, i+1), pv(name, i+2), pv(name, i+1) ];
-				Color c = Math::lerp(get_data_color(i + 1, data), get_data_color(i + 2, data), (x - get_data_pos(i + 1, data)) / (get_data_pos(i + 2, data) - get_data_pos(i + 1, data)));
+				Color c = get_data_color(i + 1, data).linear_interpolate(get_data_color(i + 2, data), (x - get_data_pos(i + 1, data)) / (get_data_pos(i + 2, data) - get_data_pos(i + 1, data)));
 				//				shader += "    return mix("+c+", "+b+", 1.0-0.5*"+dx+");\n";
-				return Math::lerp(c, b, 1.0 - 0.5 * dx);
+				return c.linear_interpolate(b, 1.0 - 0.5 * dx);
 			}
 
 			//			var a : String = "mix(%s, %s, (x-%s)/(%s-%s))" % [ pc(name, i-1), pc(name, i),  pv(name, i-1), pv(name, i), pv(name, i-1) ];
-			Color a = Math::lerp(get_data_color(i - 1, data), get_data_color(i, data), (x - get_data_pos(i - 1, data)) / (get_data_pos(i, data) - get_data_pos(i - 1, data)));
+			Color a = get_data_color(i - 1, data).linear_interpolate(get_data_color(i, data), (x - get_data_pos(i - 1, data)) / (get_data_pos(i, data) - get_data_pos(i - 1, data)));
 			//			if i < s-1:;
 
 			if (i < s - 1) {
 				//				var c : String = "mix(%s, %s, (x-%s)/(%s-%s))" % [ pc(name, i+1), pc(name, i+2), pv(name, i+1), pv(name, i+2), pv(name, i+1) ];
-				Color c = Math::lerp(get_data_color(i + 1, data), get_data_color(i + 2, data), (x - get_data_pos(i + 1, data)) / (get_data_pos(i + 2, data) - get_data_pos(i + 1, data)));
+				Color c = get_data_color(i + 1, data).linear_interpolate(get_data_color(i + 2, data), (x - get_data_pos(i + 1, data)) / (get_data_pos(i + 2, data) - get_data_pos(i + 1, data)));
 				//				var ac : String = "mix("+a+", "+c+", 0.5-0.5*cos(3.14159265359*"+dx+"))";
-				Color ac = Math::lerp(a, c, 0.5 - 0.5 * cos(3.14159265359 * dx));
+				Color ac = a.linear_interpolate(c, 0.5 - 0.5 * cos(3.14159265359 * dx));
 				//				shader += "    return 0.5*("+b+" + "+ac+");\n";
 				Color dt = b + ac;
 				dt.r *= 0.5;
@@ -1218,13 +1196,10 @@ Color MMAlgos::gradient_type_4(const float x, const PoolRealArray &data) {
 				dt.b *= 0.5;
 				dt.a = CLAMP(0, 1, dt.a);
 				return dt;
-			}
-
-			//			else;
-
-			else {
+				//			else;
+			} else {
 				//				shader += "    return mix("+a+", "+b+", 0.5+0.5*"+dx+");\n";
-				return Math::lerp(a, b, 0.5 + 0.5 * dx);
+				return a.linear_interpolate(b, 0.5 + 0.5 * dx);
 			}
 		}
 	}
@@ -1243,7 +1218,6 @@ Color MMAlgos::gradient_type_5(const float x, const PoolRealArray &data) {
 	int s = ds - 1;
 
 	for (int i = 0; i < s; ++i) { //i in range(0, s)
-
 		if (x < get_data_pos(i, data)) {
 			if (i == 0) {
 				return get_data_color(i, data);
@@ -1252,24 +1226,24 @@ Color MMAlgos::gradient_type_5(const float x, const PoolRealArray &data) {
 			//			var dx : String = "(x-%s)/(%s-%s)" % [ pv(name, i), pv(name, i+1), pv(name, i) ];
 			float dx = (x - get_data_pos(i, data)) / (get_data_pos(i + 1, data) - get_data_pos(i, data));
 			//			var b : String = "mix(%s, %s, %s)" % [ pc(name, i), pc(name, i+1), dx ];
-			Color b = Math::lerp(get_data_color(i - 1, data), get_data_color(i - 1, data), dx);
+			Color b = get_data_color(i - 1, data).linear_interpolate(get_data_color(i - 1, data), dx);
 
 			if (i == 1) {
 				//				var c : String = "mix(%s, %s, (x-%s)/(%s-%s))" % [ pc(name, i+1), pc(name, i+2), pv(name, i+1), pv(name, i+2), pv(name, i+1) ];
-				Color c = Math::lerp(get_data_color(i + 1, data), get_data_color(i + 2, data), (x - get_data_pos(i + 1, data)) / (get_data_pos(i + 2, data) - get_data_pos(i + 1, data)));
+				Color c = get_data_color(i + 1, data).linear_interpolate(get_data_color(i + 2, data), (x - get_data_pos(i + 1, data)) / (get_data_pos(i + 2, data) - get_data_pos(i + 1, data)));
 				//				shader += "    return mix("+c+", "+b+", 1.0-0.5*"+dx+");\n";
-				return Math::lerp(c, b, 1.0 - 0.5 * dx);
+				return c.linear_interpolate(b, 1.0 - 0.5 * dx);
 			}
 
 			//			var a : String = "mix(%s, %s, (x-%s)/(%s-%s))" % [ pc(name, i-1), pc(name, i),  pv(name, i-1), pv(name, i), pv(name, i-1) ];
-			Color a = Math::lerp(get_data_color(i - 1, data), get_data_color(i, data), (x - get_data_pos(i - 1, data)) / (get_data_pos(i, data) - get_data_pos(i - 1, data)));
+			Color a = get_data_color(i - 1, data).linear_interpolate(get_data_color(i, data), (x - get_data_pos(i - 1, data)) / (get_data_pos(i, data) - get_data_pos(i - 1, data)));
 			//			if i < s-1:;
 
 			if (i < s - 1) {
 				//				var c : String = "mix(%s, %s, (x-%s)/(%s-%s))" % [ pc(name, i+1), pc(name, i+2), pv(name, i+1), pv(name, i+2), pv(name, i+1) ];
-				Color c = Math::lerp(get_data_color(i + 1, data), get_data_color(i + 2, data), (x - get_data_pos(i + 1, data)) / (get_data_pos(i + 2, data) - get_data_pos(i + 1, data)));
+				Color c = get_data_color(i + 1, data).linear_interpolate(get_data_color(i + 2, data), (x - get_data_pos(i + 1, data)) / (get_data_pos(i + 2, data) - get_data_pos(i + 1, data)));
 				//				var ac : String = "mix("+a+", "+c+", 0.5-0.5*cos(3.14159265359*"+dx+"))";
-				Color ac = Math::lerp(a, c, 0.5 - 0.5 * cos(3.14159265359 * dx));
+				Color ac = a.linear_interpolate(c, 0.5 - 0.5 * cos(3.14159265359 * dx));
 				//				shader += "    return 0.5*("+b+" + "+ac+");\n";
 				Color dt = b + ac;
 				dt.r *= 0.5;
@@ -1277,13 +1251,10 @@ Color MMAlgos::gradient_type_5(const float x, const PoolRealArray &data) {
 				dt.b *= 0.5;
 				dt.a = CLAMP(0, 1, dt.a);
 				return dt;
-			}
-
-			//			else;
-
-			else {
+				//			else;
+			} else {
 				//				shader += "    return mix("+a+", "+b+", 0.5+0.5*"+dx+");\n";
-				return Math::lerp(a, b, 0.5 + 0.5 * dx);
+				return a.linear_interpolate(b, 0.5 + 0.5 * dx);
 			}
 		}
 	}
@@ -1309,8 +1280,8 @@ Color MMAlgos::gradient_type_5(const float x, const PoolRealArray &data) {
 
 //vec3 matmap_mix(vec3 in1, vec3 in2) {\n\t;
 //	float is_in1 = step(in2.x, in1.x);\n\t;
-//	//return vec3(max(in1.x, in2.x), in1.yz*is_in1+in2.yz*(1.0-is_in1));\n\t;
-//	return vec3(max(in1.x, in2.x), mix(in2.yz, in1.yz, is_in1));\n;
+//	//return vec3(MAX(in1.x, in2.x), in1.yz*is_in1+in2.yz*(1.0-is_in1));\n\t;
+//	return vec3(MAX(in1.x, in2.x), mix(in2.yz, in1.yz, is_in1));\n;
 //};
 
 //vec2 matmap_uv(vec2 uv, float angle, float seed) {\n\t;
@@ -1365,7 +1336,8 @@ Color MMAlgos::gradient_type_5(const float x, const PoolRealArray &data) {
 //	return color;
 //};
 
-float MMAlgos::dots(const Vector2 &uv, const float size, const float density, const float pseed) {
+float MMAlgos::dots(const Vector2 &uuv, const float size, const float density, const float pseed) {
+	Vector2 uv = uuv;
 	Vector2 seed2 = rand2(Vector2(pseed, 1.0 - pseed));
 	uv /= size;
 	Vector2 point_pos = floorv2(uv) + Vector2(0.5, 0.5);
@@ -1405,7 +1377,7 @@ float MMAlgos::anisotropic(const Vector2 &uv, const Vector2 &size, const float p
 	float f0 = rand(seed2 + modv2(xy_offset, size));
 	float f1 = rand(seed2 + modv2(xy_offset + Vector2(1.0, 0.0), size));
 	float mixer = CLAMP((fract(uv.x * size.x + offset.x) - 0.5) / smoothness + 0.5, 0.0, 1.0);
-	float smooth_mix = Math::smoothstep(0.0, 1.0, mixer);
+	float smooth_mix = Math::smoothstep(0.0F, 1.0F, mixer);
 	float linear = Math::lerp(f0, f1, mixer);
 	float smoothed = Math::lerp(f0, f1, smooth_mix);
 	return Math::lerp(linear, smoothed, interpolation);
@@ -1418,7 +1390,8 @@ float MMAlgos::anisotropic(const Vector2 &uv, const Vector2 &size, const float p
 //	return rand3(seed2+point_pos);
 //};
 
-Vector3 MMAlgos::color_dots(const Vector2 &uv, const float size, const float pseed) {
+Vector3 MMAlgos::color_dots(const Vector2 &uuv, const float size, const float pseed) {
+	Vector2 uv = uuv;
 	Vector2 seed2 = rand2(Vector2(pseed, 1.0 - pseed));
 	uv /= size;
 	Vector2 point_pos = floorv2(uv) + Vector2(0.5, 0.5);
@@ -1512,7 +1485,8 @@ Color MMAlgos::cellular6(const Vector2 &uv, const Vector2 &size, const int folds
 	return Color(f, f, f, 1);
 }
 
-float MMAlgos::fbmf(const Vector2 &coord, const Vector2 &size, const int folds, const int octaves, const float persistence, const float pseed) {
+float MMAlgos::fbmf(const Vector2 &coord, const Vector2 &p_size, const int folds, const int octaves, const float persistence, const float pseed) {
+	Vector2 size = p_size;
 	float normalize_factor = 0.0;
 	float value = 0.0;
 	float scale = 1.0;
@@ -1528,14 +1502,15 @@ float MMAlgos::fbmf(const Vector2 &coord, const Vector2 &size, const int folds, 
 
 		value += noise * scale;
 		normalize_factor += scale;
-		size *= 2.0;
+		size *= Vector2(2, 2);
 		scale *= persistence;
 	}
 
 	return value / normalize_factor;
 }
 
-float MMAlgos::perlinf(const Vector2 &coord, const Vector2 &size, const int folds, const int octaves, const float persistence, const float pseed) {
+float MMAlgos::perlinf(const Vector2 &coord, const Vector2 &p_size, const int folds, const int octaves, const float persistence, const float pseed) {
+	Vector2 size = p_size;
 	float normalize_factor = 0.0;
 	float value = 0.0;
 	float scale = 1.0;
@@ -1551,14 +1526,15 @@ float MMAlgos::perlinf(const Vector2 &coord, const Vector2 &size, const int fold
 
 		value += noise * scale;
 		normalize_factor += scale;
-		size *= 2.0;
+		size *= Vector2(2, 2);
 		scale *= persistence;
 	}
 
 	return value / normalize_factor;
 }
 
-float MMAlgos::perlinabsf(const Vector2 &coord, const Vector2 &size, const int folds, const int octaves, const float persistence, const float pseed) {
+float MMAlgos::perlinabsf(const Vector2 &coord, const Vector2 &p_size, const int folds, const int octaves, const float persistence, const float pseed) {
+	Vector2 size = p_size;
 	float normalize_factor = 0.0;
 	float value = 0.0;
 	float scale = 1.0;
@@ -1574,14 +1550,15 @@ float MMAlgos::perlinabsf(const Vector2 &coord, const Vector2 &size, const int f
 
 		value += noise * scale;
 		normalize_factor += scale;
-		size *= 2.0;
+		size *= Vector2(2, 2);
 		scale *= persistence;
 	}
 
 	return value / normalize_factor;
 }
 
-float MMAlgos::fbm_simplexf(const Vector2 &coord, const Vector2 &size, const int folds, const int octaves, const float persistence, const float pseed) {
+float MMAlgos::fbm_simplexf(const Vector2 &coord, const Vector2 &p_size, const int folds, const int octaves, const float persistence, const float pseed) {
+	Vector2 size = p_size;
 	float normalize_factor = 0.0;
 	float value = 0.0;
 	float scale = 1.0;
@@ -1597,14 +1574,15 @@ float MMAlgos::fbm_simplexf(const Vector2 &coord, const Vector2 &size, const int
 
 		value += noise * scale;
 		normalize_factor += scale;
-		size *= 2.0;
+		size *= Vector2(2, 2);
 		scale *= persistence;
 	}
 
 	return value / normalize_factor;
 }
 
-float MMAlgos::cellularf(const Vector2 &coord, const Vector2 &size, const int folds, const int octaves, const float persistence, const float pseed) {
+float MMAlgos::cellularf(const Vector2 &coord, const Vector2 &p_size, const int folds, const int octaves, const float persistence, const float pseed) {
+	Vector2 size = p_size;
 	float normalize_factor = 0.0;
 	float value = 0.0;
 	float scale = 1.0;
@@ -1620,14 +1598,15 @@ float MMAlgos::cellularf(const Vector2 &coord, const Vector2 &size, const int fo
 
 		value += noise * scale;
 		normalize_factor += scale;
-		size *= 2.0;
+		size *= Vector2(2, 2);
 		scale *= persistence;
 	}
 
 	return value / normalize_factor;
 }
 
-float MMAlgos::cellular2f(const Vector2 &coord, const Vector2 &size, const int folds, const int octaves, const float persistence, const float pseed) {
+float MMAlgos::cellular2f(const Vector2 &coord, const Vector2 &p_size, const int folds, const int octaves, const float persistence, const float pseed) {
+	Vector2 size = p_size;
 	float normalize_factor = 0.0;
 	float value = 0.0;
 	float scale = 1.0;
@@ -1643,14 +1622,15 @@ float MMAlgos::cellular2f(const Vector2 &coord, const Vector2 &size, const int f
 
 		value += noise * scale;
 		normalize_factor += scale;
-		size *= 2.0;
+		size *= Vector2(2, 2);
 		scale *= persistence;
 	}
 
 	return value / normalize_factor;
 }
 
-float MMAlgos::cellular3f(const Vector2 &coord, const Vector2 &size, const int folds, const int octaves, const float persistence, const float pseed) {
+float MMAlgos::cellular3f(const Vector2 &coord, const Vector2 &p_size, const int folds, const int octaves, const float persistence, const float pseed) {
+	Vector2 size = p_size;
 	float normalize_factor = 0.0;
 	float value = 0.0;
 	float scale = 1.0;
@@ -1666,14 +1646,15 @@ float MMAlgos::cellular3f(const Vector2 &coord, const Vector2 &size, const int f
 
 		value += noise * scale;
 		normalize_factor += scale;
-		size *= 2.0;
+		size *= Vector2(2, 2);
 		scale *= persistence;
 	}
 
 	return value / normalize_factor;
 }
 
-float MMAlgos::cellular4f(const Vector2 &coord, const Vector2 &size, const int folds, const int octaves, const float persistence, const float pseed) {
+float MMAlgos::cellular4f(const Vector2 &coord, const Vector2 &p_size, const int folds, const int octaves, const float persistence, const float pseed) {
+	Vector2 size = p_size;
 	float normalize_factor = 0.0;
 	float value = 0.0;
 	float scale = 1.0;
@@ -1689,14 +1670,15 @@ float MMAlgos::cellular4f(const Vector2 &coord, const Vector2 &size, const int f
 
 		value += noise * scale;
 		normalize_factor += scale;
-		size *= 2.0;
+		size *= Vector2(2, 2);
 		scale *= persistence;
 	}
 
 	return value / normalize_factor;
 }
 
-float MMAlgos::cellular5f(const Vector2 &coord, const Vector2 &size, const int folds, const int octaves, const float persistence, const float pseed) {
+float MMAlgos::cellular5f(const Vector2 &coord, const Vector2 &p_size, const int folds, const int octaves, const float persistence, const float pseed) {
+	Vector2 size = p_size;
 	float normalize_factor = 0.0;
 	float value = 0.0;
 	float scale = 1.0;
@@ -1712,14 +1694,15 @@ float MMAlgos::cellular5f(const Vector2 &coord, const Vector2 &size, const int f
 
 		value += noise * scale;
 		normalize_factor += scale;
-		size *= 2.0;
+		size *= Vector2(2, 2);
 		scale *= persistence;
 	}
 
 	return value / normalize_factor;
 }
 
-float MMAlgos::cellular6f(const Vector2 &coord, const Vector2 &size, const int folds, const int octaves, const float persistence, const float pseed) {
+float MMAlgos::cellular6f(const Vector2 &coord, const Vector2 &p_size, const int folds, const int octaves, const float persistence, const float pseed) {
+	Vector2 size = p_size;
 	float normalize_factor = 0.0;
 	float value = 0.0;
 	float scale = 1.0;
@@ -1735,7 +1718,7 @@ float MMAlgos::cellular6f(const Vector2 &coord, const Vector2 &size, const int f
 
 		value += noise * scale;
 		normalize_factor += scale;
-		size *= 2.0;
+		size *= Vector2(2, 2);
 		scale *= persistence;
 	}
 
@@ -1764,7 +1747,7 @@ float MMAlgos::fbm_value(const Vector2 &coord, const Vector2 &size, const float 
 	float p10 = rand(modv2(o + Vector2(1.0, 0.0), size));
 	float p11 = rand(modv2(o + Vector2(1.0, 1.0), size));
 	Vector2 t = f * f * (Vector2(3, 3) - 2.0 * f);
-	return Math::lerp(lerp(p00, p10, t.x), Math::lerp(p01, p11, t.x), t.y);
+	return Math::lerp(Math::lerp(p00, p10, t.x), Math::lerp(p01, p11, t.x), t.y);
 }
 
 //float fbm_perlin(vec2 coord, vec2 size, float seed) {;
@@ -1807,7 +1790,7 @@ float MMAlgos::fbm_perlin(const Vector2 &coord, const Vector2 &size, const float
 	float p10 = v10.dot(f - Vector2(1.0, 0.0));
 	float p11 = v11.dot(f - Vector2(1.0, 1.0));
 	Vector2 t = f * f * (Vector2(3, 3) - 2.0 * f);
-	return 0.5 + Math::lerp(lerp(p00, p10, t.x), Math::lerp(p01, p11, t.x), t.y);
+	return 0.5 + Math::lerp(Math::lerp(p00, p10, t.x), Math::lerp(p01, p11, t.x), t.y);
 }
 
 //float fbm_perlinabs(vec2 coord, vec2 size, float seed) {;
@@ -1872,17 +1855,19 @@ Vector2 MMAlgos::rgrad2(const Vector2 &p, const float rot, const float pseed) {
 //	return 0.5 + 5.5 * n;
 //};
 
-float MMAlgos::fbm_simplex(const Vector2 &coord, const Vector2 &size, const float pseed) {
+float MMAlgos::fbm_simplex(const Vector2 &p_coord, const Vector2 &p_size, const float pseed) {
+	Vector2 coord = p_coord;
+	Vector2 size = p_size;
 	// needed for it to tile;
-	coord *= 2.0;
+	coord *= Vector2(2, 2);
 	coord += rand2(Vector2(pseed, 1.0 - pseed)) + size;
 	// needed for it to tile;
-	size *= 2.0;
+	size *= Vector2(2, 2);
 	coord.y += 0.001;
 	Vector2 uv = Vector2(coord.x + coord.y * 0.5, coord.y);
 	Vector2 i0 = floorv2(uv);
 	Vector2 f0 = fractv2(uv);
-	Vector2 i1 = ;
+	Vector2 i1;
 
 	if ((f0.x > f0.y)) {
 		i1 = Vector2(1.0, 0.0);
@@ -1896,7 +1881,7 @@ float MMAlgos::fbm_simplex(const Vector2 &coord, const Vector2 &size, const floa
 	Vector2 p1 = Vector2(p0.x + i1.x - i1.y * 0.5, p0.y + i1.y);
 	Vector2 p2 = Vector2(p0.x + 0.5, p0.y + 1.0);
 	i1 = i0 + i1;
-	Vector2 i2 = i0 + Vector2(1.0, 1.0);
+	//Vector2 i2 = i0 + Vector2(1.0, 1.0);
 	Vector2 d0 = coord - p0;
 	Vector2 d1 = coord - p1;
 	Vector2 d2 = coord - p2;
@@ -1994,9 +1979,7 @@ float MMAlgos::fbm_cellular2(const Vector2 &coord, const Vector2 &size, const fl
 			if ((min_dist1 > dist)) {
 				min_dist2 = min_dist1;
 				min_dist1 = dist;
-			}
-
-			else if ((min_dist2 > dist)) {
+			} else if ((min_dist2 > dist)) {
 				min_dist2 = dist;
 			}
 		}
@@ -2084,9 +2067,7 @@ float MMAlgos::fbm_cellular4(const Vector2 &coord, const Vector2 &size, const fl
 			if ((min_dist1 > dist)) {
 				min_dist2 = min_dist1;
 				min_dist1 = dist;
-			}
-
-			else if ((min_dist2 > dist)) {
+			} else if ((min_dist2 > dist)) {
 				min_dist2 = dist;
 			}
 		}
@@ -2174,9 +2155,7 @@ float MMAlgos::fbm_cellular6(const Vector2 &coord, const Vector2 &size, const fl
 			if ((min_dist1 > dist)) {
 				min_dist2 = min_dist1;
 				min_dist1 = dist;
-			}
-
-			else if ((min_dist2 > dist)) {
+			} else if ((min_dist2 > dist)) {
 				min_dist2 = dist;
 			}
 		}
@@ -2235,23 +2214,24 @@ Color MMAlgos::perlinc(const Vector2 &uv, const Vector2 &size, const int iterati
 //	return rv / acc;
 //};
 
-float MMAlgos::perlin2c(const Vector2 &uv, const Vector2 &size, const int iterations, const float persistence, const int pseed) {
+float MMAlgos::perlin2c(const Vector2 &uv, const Vector2 &p_size, const int iterations, const float persistence, const int pseed) {
+	Vector2 size = p_size;
 	Vector2 seed2 = rand2(Vector2(float(pseed), 1.0 - float(pseed)));
 	float rv = 0.0;
 	float coef = 1.0;
 	float acc = 0.0;
 
 	for (int i = 0; i < iterations; ++i) { //i in range(iterations)
-		Vector2 step = Vector2(1, 1) / size;
+		//Vector2 step = Vector2(1, 1) / size;
 		Vector2 xy = floorv2(uv * size);
 		float f0 = rand(seed2 + modv2(xy, size));
 		float f1 = rand(seed2 + modv2(xy + Vector2(1.0, 0.0), size));
 		float f2 = rand(seed2 + modv2(xy + Vector2(0.0, 1.0), size));
 		float f3 = rand(seed2 + modv2(xy + Vector2(1.0, 1.0), size));
 		Vector2 mixval = smoothstepv2(0.0, 1.0, fractv2(uv * size));
-		rv += coef * Math::lerp(lerp(f0, f1, mixval.x), Math::lerp(f2, f3, mixval.x), mixval.y);
+		rv += coef * Math::lerp(Math::lerp(f0, f1, mixval.x), Math::lerp(f2, f3, mixval.x), mixval.y);
 		acc += coef;
-		size *= 2.0;
+		size *= Vector2(2, 2);
 		coef *= persistence;
 	}
 
@@ -2282,23 +2262,24 @@ float MMAlgos::perlin2c(const Vector2 &uv, const Vector2 &size, const int iterat
 //	return rv / acc;
 //};
 
-Vector3 MMAlgos::perlin_color(const Vector2 &uv, const Vector2 &size, const int iterations, const float persistence, const int pseed) {
+Vector3 MMAlgos::perlin_color(const Vector2 &uv, const Vector2 &p_size, const int iterations, const float persistence, const int pseed) {
+	Vector2 size = p_size;
 	Vector2 seed2 = rand2(Vector2(float(pseed), 1.0 - float(pseed)));
 	Vector3 rv = Vector3();
 	float coef = 1.0;
 	float acc = 0.0;
 
 	for (int i = 0; i < iterations; ++i) { //i in range(iterations)
-		Vector2 step = Vector2(1, 1) / size;
+		//Vector2 step = Vector2(1, 1) / size;
 		Vector2 xy = floorv2(uv * size);
 		Vector3 f0 = rand3(seed2 + modv2(xy, size));
 		Vector3 f1 = rand3(seed2 + modv2(xy + Vector2(1.0, 0.0), size));
 		Vector3 f2 = rand3(seed2 + modv2(xy + Vector2(0.0, 1.0), size));
 		Vector3 f3 = rand3(seed2 + modv2(xy + Vector2(1.0, 1.0), size));
 		Vector2 mixval = smoothstepv2(0.0, 1.0, fractv2(uv * size));
-		rv += coef * Math::lerp(lerp(f0, f1, mixval.x), Math::lerp(f2, f3, mixval.x), mixval.y);
+		rv += coef * f0.linear_interpolate(f1, mixval.x).linear_interpolate(f2.linear_interpolate(f3, mixval.x), mixval.y);
 		acc += coef;
-		size *= 2.0;
+		size *= Vector2(2, 2);
 		coef *= persistence;
 	}
 
@@ -2318,7 +2299,7 @@ Color MMAlgos::perlin_warp_1(const Vector2 &uv, const Vector2 &size, const int i
 }
 
 Color MMAlgos::perlin_warp_2(const Vector2 &uv, const Vector2 &size, const int iterations, const float persistence, const int pseed, const Vector2 &translate, const float rotate, const Vector2 &size2) {
-	Variant = perlin2c(uv, size2, iterations, persistence, pseed);
+	float f = perlin2c(uv, size2, iterations, persistence, pseed);
 	Vector2 vt = transform(uv, Vector2(translate.x * (2.0 * f - 1.0), translate.y * (2.0 * f - 1.0)), rotate * 0.01745329251 * (2.0 * 1.0 - 1.0), Vector2(size.x * (2.0 * 1.0 - 1.0), size.y * (2.0 * 1.0 - 1.0)), true);
 	float ff = perlin2c(vt, size2, iterations, persistence, pseed);
 	Vector3 rgba = Vector3(ff, ff, ff);
@@ -2394,15 +2375,14 @@ Color MMAlgos::perlin_warp_2(const Vector2 &uv, const Vector2 &size, const int i
 //	return vec4(v.yz, intensity*length((uv-v.yz)*stretch), v.x);
 //};
 
-Color MMAlgos::voronoi(const Vector2 &uv, const Vector2 &size, const Vector2 &stretch, const float intensity, const float randomness, const int pseed) {
+Color MMAlgos::voronoi(const Vector2 &uuv, const Vector2 &size, const Vector2 &stretch, const float intensity, const float randomness, const int pseed) {
+	Vector2 uv = uuv;
 	Vector2 seed2 = rand2(Vector2(float(pseed), 1.0 - float(pseed)));
 	uv *= size;
 	float best_distance0 = 1.0;
 	float best_distance1 = 1.0;
-	Vector2;
-	*point0;
-	Vector2;
-	*point1;
+	Vector2 point0;
+	Vector2 point1;
 	Vector2 p0 = floorv2(uv);
 	// (int dx = -1; dx < 2; ++dx) {;
 
@@ -2420,9 +2400,7 @@ Color MMAlgos::voronoi(const Vector2 &uv, const Vector2 &size, const Vector2 &st
 				best_distance0 = distance;
 				point1 = point0;
 				point0 = p;
-			}
-
-			else if ((best_distance1 > distance)) {
+			} else if ((best_distance1 > distance)) {
 				best_distance1 = distance;
 				point1 = p;
 			}
@@ -2476,9 +2454,9 @@ Color MMAlgos::voronoi_3(const Vector2 &uv, const Vector2 &size, const Vector2 &
 //----------------------;
 //pattern.mmg;
 //Outputs: $(name)_fct($(uv));
-//Combiner, enum, default: 0, values (CombinerType): Multiply, Add, Max, Min, Xor, Pow;
-//Pattern_x_type, enum, default: 5, values (CombinerAxisType): Sine, Triangle, Square, Sawtooth, Constant, Bounce;
-//Pattern_y_type, enum, default: 5, values (CombinerAxisType): Sine, Triangle, Square, Sawtooth, Constant, Bounce;
+//Combiner, enum, default: 0, values (COMBINER_TYPE_: Multiply, Add, Max, Min, Xor, Pow;
+//Pattern_x_type, enum, default: 5, values (COMBINER_AXIS_TYPE_: Sine, Triangle, Square, Sawtooth, Constant, Bounce;
+//Pattern_y_type, enum, default: 5, values (COMBINER_AXIS_TYPE_: Sine, Triangle, Square, Sawtooth, Constant, Bounce;
 //Pattern_Repeat, vector2, min: 0, max: 32, default:4, step: 1;
 //----------------------;
 //bricks.mmg;
@@ -2630,75 +2608,45 @@ float MMAlgos::pattern(const Vector2 &uv, const float x_scale, const float y_sca
 	float x = 0;
 	float y = 0;
 
-	if (catx == CombinerAxisType.SINE) {
+	if (catx == COMBINER_AXIS_TYPE_SINE) {
 		x = wave_sine(x_scale * uv.x);
-	}
-
-	else if (catx == CombinerAxisType.TRIANGLE) {
+	} else if (catx == COMBINER_AXIS_TYPE_TRIANGLE) {
 		x = wave_triangle(x_scale * uv.x);
-	}
-
-	else if (catx == CombinerAxisType.SQUARE) {
+	} else if (catx == COMBINER_AXIS_TYPE_SQUARE) {
 		x = wave_square(x_scale * uv.x);
-	}
-
-	else if (catx == CombinerAxisType.SAWTOOTH) {
+	} else if (catx == COMBINER_AXIS_TYPE_SAWTOOTH) {
 		x = wave_sawtooth(x_scale * uv.x);
-	}
-
-	else if (catx == CombinerAxisType.CONSTANT) {
+	} else if (catx == COMBINER_AXIS_TYPE_CONSTANT) {
 		x = wave_constant(x_scale * uv.x);
-	}
-
-	else if (catx == CombinerAxisType.BOUNCE) {
+	} else if (catx == COMBINER_AXIS_TYPE_BOUNCE) {
 		x = wave_bounce(x_scale * uv.x);
 	}
 
-	if (caty == CombinerAxisType.SINE) {
+	if (caty == COMBINER_AXIS_TYPE_SINE) {
 		y = wave_sine(y_scale * uv.y);
-	}
-
-	else if (caty == CombinerAxisType.TRIANGLE) {
+	} else if (caty == COMBINER_AXIS_TYPE_TRIANGLE) {
 		y = wave_triangle(y_scale * uv.y);
-	}
-
-	else if (caty == CombinerAxisType.SQUARE) {
+	} else if (caty == COMBINER_AXIS_TYPE_SQUARE) {
 		y = wave_square(y_scale * uv.y);
-	}
-
-	else if (caty == CombinerAxisType.SAWTOOTH) {
+	} else if (caty == COMBINER_AXIS_TYPE_SAWTOOTH) {
 		y = wave_sawtooth(y_scale * uv.y);
-	}
-
-	else if (caty == CombinerAxisType.CONSTANT) {
+	} else if (caty == COMBINER_AXIS_TYPE_CONSTANT) {
 		y = wave_constant(y_scale * uv.y);
-	}
-
-	else if (caty == CombinerAxisType.BOUNCE) {
+	} else if (caty == COMBINER_AXIS_TYPE_BOUNCE) {
 		y = wave_bounce(y_scale * uv.y);
 	}
 
-	if (ct == CombinerType.MULTIPLY) {
+	if (ct == COMBINER_TYPE_MULTIPLY) {
 		return mix_mul(x, y);
-	}
-
-	else if (ct == CombinerType.ADD) {
+	} else if (ct == COMBINER_TYPE_ADD) {
 		return mix_add(x, y);
-	}
-
-	else if (ct == CombinerType.MAX) {
+	} else if (ct == COMBINER_TYPE_MAX) {
 		return mix_max(x, y);
-	}
-
-	else if (ct == CombinerType.MIN) {
+	} else if (ct == COMBINER_TYPE_MIN) {
 		return mix_min(x, y);
-	}
-
-	else if (ct == CombinerType.XOR) {
+	} else if (ct == COMBINER_TYPE_XOR) {
 		return mix_xor(x, y);
-	}
-
-	else if (ct == CombinerType.POW) {
+	} else if (ct == COMBINER_TYPE_POW) {
 		return mix_pow(x, y);
 	}
 
@@ -2762,7 +2710,8 @@ Color MMAlgos::weavec(const Vector2 &uv, const Vector2 &count, const float width
 //	return c;
 //};
 
-float MMAlgos::weave(const Vector2 &uv, const Vector2 &count, const float width) {
+float MMAlgos::weave(const Vector2 &uuv, const Vector2 &count, const float width) {
+	Vector2 uv = uuv;
 	uv *= count;
 	float c = (sin(3.1415926 * (uv.x + Math::floor(uv.y))) * 0.5 + 0.5) * step(abs(fract(uv.y) - 0.5), width * 0.5);
 	c = MAX(c, (sin(3.1415926 * (1.0 + uv.y + floor(uv.x))) * 0.5 + 0.5) * step(abs(fract(uv.x) - 0.5), width * 0.5));
@@ -2774,16 +2723,17 @@ float MMAlgos::weave(const Vector2 &uv, const Vector2 &count, const float width)
 //	uv *= count;
 //	float c1 = (sin(3.1415926 / stitch * (uv.x + Math::floor(uv.y) - (stitch - 1.0))) * 0.25 + 0.75 ) *step(abs(fract(uv.y)-0.5), width_x*0.5);
 //	float c2 = (sin(3.1415926 / stitch * (1.0+uv.y+floor(uv.x) ))* 0.25 + 0.75 )*step(abs(fract(uv.x)-0.5), width_y*0.5);
-//	return vec3(max(c1, c2), 1.0-step(c1, c2), 1.0-step(c2, c1));
+//	return vec3(MAX(c1, c2), 1.0-step(c1, c2), 1.0-step(c2, c1));
 //};
 
-Vector3 MMAlgos::weave2(const Vector2 &uv, const Vector2 &count, const float stitch, const float width_x, const float width_y) {
+Vector3 MMAlgos::weave2(const Vector2 &uuv, const Vector2 &count, const float stitch, const float width_x, const float width_y) {
+	Vector2 uv = uuv;
 	uv.x *= stitch;
 	uv.y *= stitch;
 	uv *= count;
 	float c1 = (sin(3.1415926 / stitch * (uv.x + Math::floor(uv.y) - (stitch - 1.0))) * 0.25 + 0.75) * step(abs(fract(uv.y) - 0.5), width_x * 0.5);
 	float c2 = (sin(3.1415926 / stitch * (1.0 + uv.y + Math::floor(uv.x))) * 0.25 + 0.75) * step(abs(fract(uv.x) - 0.5), width_y * 0.5);
-	return Vector3(max(c1, c2), 1.0 - step(c1, c2), 1.0 - step(c2, c1));
+	return Vector3(MAX(c1, c2), 1.0 - step(c1, c2), 1.0 - step(c2, c1));
 }
 
 Color MMAlgos::sinewavec(const Vector2 &uv, const float amplitude, const float frequency, const float phase) {
@@ -2818,10 +2768,11 @@ float MMAlgos::sinewavef(const Vector2 &uv, const float amplitude, const float f
 //	uv.x /= cut;
 //	uv.y /= subdivide*size.y;
 //;
-//	return MIN(border.x, border.y)*(1.0-uv.x*uv.x)*max(0.0, 1.0-1000.0*uv.y*uv.y);
+//	return MIN(border.x, border.y)*(1.0-uv.x*uv.x)*MAX(0.0, 1.0-1000.0*uv.y*uv.y);
 //};
 
-float MMAlgos::scratch(const Vector2 &uv, const Vector2 &size, const float waviness, const float angle, const float randomness, const Vector2 &pseed) {
+float MMAlgos::scratch(const Vector2 &uuv, const Vector2 &size, const float waviness, const float angle, const float randomness, const Vector2 &pseed) {
+	Vector2 uv = uuv;
 	float subdivide = Math::floor(1.0 / size.x);
 	float cut = size.x * subdivide;
 	uv *= subdivide;
@@ -2837,7 +2788,7 @@ float MMAlgos::scratch(const Vector2 &uv, const Vector2 &size, const float wavin
 	uv.y += 0.5 * waviness * cos(2.0 * uv.x + 6.28 * r2.y);
 	uv.x /= cut;
 	uv.y /= subdivide * size.y;
-	return (1.0 - uv.x * uv.x) * max(0.0, 1.0 - 1000.0 * uv.y * uv.y);
+	return (1.0 - uv.x * uv.x) * MAX(0.0, 1.0 - 1000.0 * uv.y * uv.y);
 }
 
 //float scratches(vec2 uv, int layers, vec2 size, float waviness, float angle, float randomness, vec2 seed) {;
@@ -2851,7 +2802,8 @@ float MMAlgos::scratch(const Vector2 &uv, const Vector2 &size, const float wavin
 //	return v;
 //};
 
-float MMAlgos::scratches(const Vector2 &uv, const int layers, const Vector2 &size, const float waviness, const float angle, const float randomness, const Vector2 &pseed) {
+float MMAlgos::scratches(const Vector2 &uv, const int layers, const Vector2 &size, const float waviness, const float angle, const float randomness, const Vector2 &p_pseed) {
+	Vector2 pseed = p_pseed;
 	float v = 0.0;
 	// (int i = 0; i < layers; ++i) {;
 
@@ -2925,7 +2877,8 @@ float MMAlgos::runesf(const Vector2 &uv, const Vector2 &col_row, const float pse
 // makes a rune in the 0..1 uv space. Seed is which rune to draw.;
 // passes back gray in x and derivates for lighting in yz;
 
-float MMAlgos::rune(const Vector2 &uv, const float pseed) {
+float MMAlgos::rune(const Vector2 &uuv, const float pseed) {
+	Vector2 uv = uuv;
 	float finalLine = 0.0;
 	Vector2 sseed = floorv2(uv) - Vector2(pseed, pseed);
 	uv = fractv2(uv);
@@ -2941,19 +2894,19 @@ float MMAlgos::rune(const Vector2 &uv, const float pseed) {
 		posB = fractv2(posB * 128.0);
 		// each rune touches the edge of its box on all 4 sides;
 
-		if ((i == 0)) {
+		if (i == 0) {
 			posA.y = 0.0;
 		}
 
-		if ((i == 1)) {
+		if (i == 1) {
 			posA.x = 0.999;
 		}
 
-		if ((i == 2)) {
+		if (i == 2) {
 			posA.x = 0.0;
 		}
 
-		if ((i == 3)) {
+		if (i == 3) {
 			posA.y = 0.999;
 		}
 
@@ -3012,7 +2965,7 @@ Color MMAlgos::beehive_1c(const Vector2 &uv, const Vector2 &size, const int psee
 Color MMAlgos::beehive_2c(const Vector2 &uv, const Vector2 &size, const int pseed) {
 	Vector2 o80035_0_uv = uv * Vector2(size.x, size.y * 1.73205080757);
 	Color center = beehive_center(o80035_0_uv);
-	float f = 1.0 - 2.0 * beehive_dist(Vector2(center.r, center.g));
+	//	float f = 1.0 - 2.0 * beehive_dist(Vector2(center.r, center.g));
 	Vector3 v = rand3(fractv2(Vector2(center.b, center.a) / Vector2(size.x, size.y)) + Vector2(float(pseed), float(pseed)));
 	return Color(v.x, v.y, v.z, 1);
 }
@@ -3039,7 +2992,8 @@ Color MMAlgos::beehive_3c(const Vector2 &uv, const Vector2 &size, const int psee
 //	return MAX(dot(p, s*.5), p.x);
 //};
 
-float MMAlgos::beehive_dist(const Vector2 &p) {
+float MMAlgos::beehive_dist(const Vector2 &p_p) {
+	Vector2 p = p_p;
 	Vector2 s = Vector2(1.0, 1.73205080757);
 	p = absv2(p);
 	return MAX(p.dot(s * .5), p.x);
@@ -3062,9 +3016,7 @@ Color MMAlgos::beehive_center(const Vector2 &p) {
 
 	if (Vector2(h.r, h.g).dot(Vector2(h.r, h.g)) < Vector2(h.b, h.a).dot(Vector2(h.b, h.a))) {
 		return Color(h.r, h.g, hC.r, hC.g);
-	}
-
-	else {
+	} else {
 		return Color(h.b, h.a, hC.b + 9.73, hC.a + 9.73);
 	}
 }
@@ -3083,10 +3035,12 @@ Color MMAlgos::beehive_center(const Vector2 &p) {
 //	return vec3(clamp((0.5*size-vec2(mortar)-abs(uv-center))/corner, vec2(0.0), vec2(1.0)), rand(fract(center)+vec2(seed)+ceil(vec2(uv-center))));
 //};
 
-Vector3 MMAlgos::brick_corner_uv(const Vector2 &uv, const Vector2 &bmin, const Vector2 &bmax, const float mortar, const float corner, const float pseed) {
+Vector3 MMAlgos::brick_corner_uv(const Vector2 &uv, const Vector2 &bmin, const Vector2 &bmax, const float p_mortar, const float p_corner, const float pseed) {
+	float mortar = p_mortar;
+	float corner = p_corner;
 	Vector2 center = 0.5 * (bmin + bmax);
 	Vector2 size = bmax - bmin;
-	float max_size = MAX(size.x, size.y);
+	//	float max_size = MAX(size.x, size.y);
 	float min_size = MIN(size.x, size.y);
 	mortar *= min_size;
 	corner *= min_size;
@@ -3109,15 +3063,19 @@ Vector3 MMAlgos::brick_corner_uv(const Vector2 &uv, const Vector2 &bmin, const V
 //	vec2 center = 0.5*(bmin+bmax);
 //	vec2 d = abs(uv-center)-0.5*(size)+vec2(round+mortar);
 //;
-//	color = length(max(d,vec2(0))) + MIN(max(d.x,d.y),0.0)-round;
+//	color = length(MAX(d,vec2(0))) + MIN(MAX(d.x,d.y),0.0)-round;
 //	color = CLAMP(-color/bevel, 0.0, 1.0);
 //	vec2 tiled_brick_pos = mod(bmin, vec2(1.0, 1.0));
 //;
 //	return vec4(color, center, tiled_brick_pos.x+7.0*tiled_brick_pos.y);
 //};
 
-Color MMAlgos::brick(const Vector2 &uv, const Vector2 &bmin, const Vector2 &bmax, const float mortar, const float pround, const float bevel) {
-	float color = ;
+Color MMAlgos::brick(const Vector2 &uv, const Vector2 &bmin, const Vector2 &bmax, const float p_mortar, const float p_pround, const float p_bevel) {
+	float mortar = p_mortar;
+	float pround = p_pround;
+	float bevel = p_bevel;
+
+	float color;
 	Vector2 size = bmax - bmin;
 	float min_size = MIN(size.x, size.y);
 	mortar *= min_size;
@@ -3127,7 +3085,7 @@ Color MMAlgos::brick(const Vector2 &uv, const Vector2 &bmin, const Vector2 &bmax
 	Vector2 d = Vector2();
 	d.x = abs(uv.x - center.x) - 0.5 * (size.x) + (pround + mortar);
 	d.y = abs(uv.y - center.y) - 0.5 * (size.y) + (pround + mortar);
-	color = Vector2(max(d.x, 0), MAX(d.y, 0)).length() + MIN(max(d.x, d.y), 0.0) - pround;
+	color = Vector2(MAX(d.x, 0), MAX(d.y, 0)).length() + MIN(MAX(d.x, d.y), 0.0) - pround;
 	color = CLAMP(-color / bevel, 0.0, 1.0);
 	//	var tiled_brick_pos : Vector2 = Vector2(bmin.x - 1.0 * Math::floor(bmin.x / 1.0), bmin.y - 1.0 * Math::floor(bmin.y / 1.0));
 	float tiled_brick_pos_x = bmin.x - 1.0 * Math::floor(bmin.x / 1.0);
@@ -3177,10 +3135,12 @@ Vector3 MMAlgos::brick_uv(const Vector2 &uv, const Vector2 &bmin, const Vector2 
 //	return vec4(bmin, bmin+vec2(1.0)/count);
 //};
 
-Color MMAlgos::bricks_rb(const Vector2 &uv, const Vector2 &count, const float repeat, const float offset) {
+Color MMAlgos::bricks_rb(const Vector2 &uv, const Vector2 &p_count, const float repeat, const float offset) {
+	Vector2 count = p_count;
+
 	count *= repeat;
 	float x_offset = offset * step(0.5, fractf(uv.y * count.y * 0.5));
-	Vector2 bmin = ;
+	Vector2 bmin;
 	bmin.x = Math::floor(uv.x * count.x - x_offset);
 	bmin.y = Math::floor(uv.y * count.y);
 	bmin.x += x_offset;
@@ -3203,7 +3163,9 @@ Color MMAlgos::bricks_rb(const Vector2 &uv, const Vector2 &count, const float re
 //	return vec4(bmin, bmin+vec2(1.0)/count);
 //};
 
-Color MMAlgos::bricks_rb2(const Vector2 &uv, const Vector2 &count, const float repeat, const float offset) {
+Color MMAlgos::bricks_rb2(const Vector2 &uv, const Vector2 &p_count, const float repeat, const float offset) {
+	Vector2 count = p_count;
+
 	count *= repeat;
 	float x_offset = offset * step(0.5, fractf(uv.y * count.y * 0.5));
 	count.x = count.x * (1.0 + step(0.5, fractf(uv.y * count.y * 0.5)));
@@ -3242,9 +3204,7 @@ Color MMAlgos::bricks_hb(const Vector2 &uv, const Vector2 &count, const float re
 		col.b = (corner.x - cdiff + count.x) / c;
 		col.a = (corner.y + 1.0) / c;
 		return col;
-	}
-
-	else {
+	} else {
 		Color col = Color();
 		col.r = corner.x / c;
 		col.g = (corner.y - (pc - cdiff - 1.0)) / c;
@@ -3276,20 +3236,18 @@ Color MMAlgos::bricks_hb(const Vector2 &uv, const Vector2 &count, const float re
 
 Color MMAlgos::bricks_bw(const Vector2 &uv, const Vector2 &count, const float repeat, const float offset) {
 	Vector2 c = 2.0 * count * repeat;
-	float mc = MAX(c.x, c.y);
+	//float mc = MAX(c.x, c.y);
 	Vector2 corner1 = Vector2(floor(uv.x * c.x), Math::floor(uv.y * c.y));
 	Vector2 corner2 = Vector2(count.x * Math::floor(repeat * 2.0 * uv.x), count.y * Math::floor(repeat * 2.0 * uv.y));
 	Vector2 tmp = Vector2(floor(repeat * 2.0 * uv.x), Math::floor(repeat * 2.0 * uv.y));
 	float cdiff = modf(tmp.dot(Vector2(1, 1)), 2.0);
-	Vector2 corner = ;
-	Vector2 size = ;
+	Vector2 corner;
+	Vector2 size;
 
 	if (cdiff == 0) {
 		corner = Vector2(corner1.x, corner2.y);
 		size = Vector2(1.0, count.y);
-	}
-
-	else {
+	} else {
 		corner = Vector2(corner2.x, corner1.y);
 		size = Vector2(count.x, 1.0);
 	}
@@ -3328,34 +3286,26 @@ Color MMAlgos::bricks_bw(const Vector2 &uv, const Vector2 &count, const float re
 
 Color MMAlgos::bricks_sb(const Vector2 &uv, const Vector2 &count, const float repeat, const float offset) {
 	Vector2 c = (count + Vector2(1, 1)) * repeat;
-	float mc = MAX(c.x, c.y);
+	//	float mc = MAX(c.x, c.y);
 	Vector2 corner1 = Vector2(floor(uv.x * c.x), Math::floor(uv.y * c.y));
 	Vector2 corner2 = (count + Vector2(1, 1)) * Vector2(floor(repeat * uv.x), Math::floor(repeat * uv.y));
 	Vector2 rcorner = corner1 - corner2;
-	Vector2 corner = ;
-	Vector2 size = ;
+	Vector2 corner;
+	Vector2 size;
 
 	if ((rcorner.x == 0.0 && rcorner.y < count.y)) {
 		corner = corner2;
 		size = Vector2(1.0, count.y);
-	}
-
-	else if ((rcorner.y == 0.0)) {
+	} else if (rcorner.y == 0.0) {
 		corner = corner2 + Vector2(1.0, 0.0);
 		size = Vector2(count.x, 1.0);
-	}
-
-	else if ((rcorner.x == count.x)) {
+	} else if (rcorner.x == count.x) {
 		corner = corner2 + Vector2(count.x, 1.0);
 		size = Vector2(1.0, count.y);
-	}
-
-	else if ((rcorner.y == count.y)) {
+	} else if (rcorner.y == count.y) {
 		corner = corner2 + Vector2(0.0, count.y);
 		size = Vector2(count.x, 1.0);
-	}
-
-	else {
+	} else {
 		corner = corner2 + Vector2(1, 1);
 		size = Vector2(count.x - 1.0, count.y - 1.0);
 	}
@@ -3369,7 +3319,7 @@ Color MMAlgos::bricks_sb(const Vector2 &uv, const Vector2 &count, const float re
 //	vec2 center = 0.5*(bmin+bmax);
 //	vec2 d = abs(uv-center)-0.5*(size)+vec2(round+mortar);
 //;
-//	color = length(max(d,vec2(0))) + MIN(max(d.x,d.y),0.0)-round;
+//	color = length(MAX(d,vec2(0))) + MIN(MAX(d.x,d.y),0.0)-round;
 //	color = CLAMP(-color/bevel, 0.0, 1.0);
 //;
 //	vec2 tiled_brick_pos = mod(bmin, vec2(1.0, 1.0));
@@ -3386,7 +3336,7 @@ Color MMAlgos::brick2(const Vector2 &uv, const Vector2 &bmin, const Vector2 &bma
 //	vec2 b = vec2(1.0);
 //	for (int i = 0; i < iterations; ++i) {;
 //		vec2 size = b-a;
-//		if (max(size.x, size.y) < min_size) {;
+//		if (MAX(size.x, size.y) < min_size) {;
 //			break;
 //		};
 //;
@@ -3433,7 +3383,7 @@ Vector2 MMAlgos::truchet_generic_uv(const Vector2 &uv, const float pseed) {
 //float pavement(vec2 uv, float bevel, float mortar) {\n\t;
 //	uv = abs(uv-vec2(0.5));\n\t;
 //;
-//	return CLAMP((0.5*(1.0-mortar)-max(uv.x, uv.y))/max(0.0001, bevel), 0.0, 1.0);
+//	return CLAMP((0.5*(1.0-mortar)-MAX(uv.x, uv.y))/MAX(0.0001, bevel), 0.0, 1.0);
 //};
 //vec4 arc_pavement(vec2 uv, float acount, float lcount, out vec2 seed) {\n\t;
 //	float PI = 3.141592654;\n\t;
@@ -3546,7 +3496,7 @@ Vector2 MMAlgos::truchet_generic_uv(const Vector2 &uv, const float pseed) {
 //Creates a greyscale image from a shape described as a 2D Signed Distance Function;
 //Output;
 //Output float (color) - Shows the shape as a greyscale image;
-//clamp($base-$in($uv)/max($bevel, 0.00001), 0.0, 1.0);
+//clamp($base-$in($uv)/MAX($bevel, 0.00001), 0.0, 1.0);
 //Input:;
 //Input (sdf - shape), default: 0 - sdf2d - universal input;
 //bevel, float, min 0, max 1, step 0.01, default 0;
@@ -3576,22 +3526,29 @@ Color MMAlgos::sdf_show(const float val, const float bevel) {
 	return Color(f, f, f, 1);
 }
 
-float MMAlgos::sdf_circle(const Vector2 &uv, const Vector2 &c, const float r) {
+float MMAlgos::sdf_circle(const Vector2 &uv, const Vector2 &p_c, const float r) {
+	Vector2 c = p_c;
+
 	c.x += 0.5;
 	c.y += 0.5;
 	return (uv - c).length() - r;
 }
 
-float MMAlgos::sdf_box(const Vector2 &uv, const Vector2 &c, const Vector2 &wh) {
+float MMAlgos::sdf_box(const Vector2 &uv, const Vector2 &p_c, const Vector2 &wh) {
+	Vector2 c = p_c;
+
 	c.x += 0.5;
 	c.y += 0.5;
 	Vector2 d = absv2(uv - c) - wh;
-	return maxv2(d, Vector2(0, 0)).length() + MIN(max(d.x, d.y), 0.0);
+	return maxv2(d, Vector2(0, 0)).length() + MIN(MAX(d.x, d.y), 0.0);
 }
 
 //vec2 $(name_uv)_sdl = sdLine($uv, vec2($ax+0.5, $ay+0.5), vec2($bx+0.5, $by+0.5));
 
-Vector2 MMAlgos::sdf_line(const Vector2 &uv, const Vector2 &a, const Vector2 &b, const float r) {
+Vector2 MMAlgos::sdf_line(const Vector2 &uv, const Vector2 &p_a, const Vector2 &p_b, const float r) {
+	Vector2 a = p_a;
+	Vector2 b = p_b;
+
 	a.x += 0.5;
 	a.y += 0.5;
 	b.x += 0.5;
@@ -3599,7 +3556,9 @@ Vector2 MMAlgos::sdf_line(const Vector2 &uv, const Vector2 &a, const Vector2 &b,
 	return sdLine(uv, a, b);
 }
 
-float MMAlgos::sdf_rhombus(const Vector2 &uv, const Vector2 &c, const Vector2 &wh) {
+float MMAlgos::sdf_rhombus(const Vector2 &uv, const Vector2 &p_c, const Vector2 &wh) {
+	Vector2 c = p_c;
+
 	c.x += 0.5;
 	c.y += 0.5;
 	return sdRhombus(uv - c, wh);
@@ -3644,7 +3603,9 @@ float MMAlgos::sdRhombus(const Vector2 &p, const Vector2 &b) {
 //	return sqrt( dot(p,p) + ra*ra - 2.0*ra*k ) - rb;
 //};
 
-float MMAlgos::sdArc(const Vector2 &p, const float a1, const float a2, const float ra, const float rb) {
+float MMAlgos::sdArc(const Vector2 &p_p, const float a1, const float a2, const float ra, const float rb) {
+	Vector2 p = p_p;
+
 	float amid = 0.5 * (a1 + a2) + 1.6 + 3.14 * step(a1, a2);
 	float alength = 0.5 * (a1 - a2) - 1.6 + 3.14 * step(a1, a2);
 	Vector2 sca = Vector2(cos(amid), sin(amid));
@@ -3654,13 +3615,11 @@ float MMAlgos::sdArc(const Vector2 &p, const float a1, const float a2, const flo
 	p.x = pt.x * sca.x + pt.y * sca.y;
 	p.y = pt.x * -sca.y + pt.y * sca.x;
 	p.x = abs(p.x);
-	float k = ;
+	float k;
 
 	if ((scb.y * p.x > scb.x * p.y)) {
 		k = p.dot(scb);
-	}
-
-	else {
+	} else {
 		k = p.length();
 	}
 
@@ -3732,9 +3691,10 @@ Vector2 MMAlgos::sdLine(const Vector2 &p, const Vector2 &a, const Vector2 &b) {
 //	return rv+vec2(0.5);
 //};
 
-Vector2 MMAlgos::sdf2d_rotate(const Vector2 &uv, const float a) {
-	Vector2;
-	*rv;
+Vector2 MMAlgos::sdf2d_rotate(const Vector2 &uuv, const float a) {
+	Vector2 uv = uuv;
+	Vector2 rv;
+
 	float c = cos(a);
 	float s = sin(a);
 	uv -= Vector2(0.5, 0.5);
@@ -3814,7 +3774,7 @@ Vector2 MMAlgos::sdBezier(const Vector2 &pos, const Vector2 &A, const Vector2 &B
 	float h = q * q + 4.0 * p3;
 	float rvx = 0;
 
-	{
+	if (h >= 0.0) {
 		// // 1 root;
 		h = sqrt(h);
 		Vector2 x = (Vector2(h, -h) - Vector2(q, q)) / 2.0;
@@ -3824,11 +3784,8 @@ Vector2 MMAlgos::sdBezier(const Vector2 &pos, const Vector2 &A, const Vector2 &B
 		Vector2 q2 = d + (c + b * t) * t;
 		res = q2.dot(q2);
 		sgn = (c + Vector2(2, 2) * b * t).cross(q2);
-	}
-
-	//  // 3 roots;
-
-	else {
+	} else {
+		//  // 3 roots;
 		float z = sqrt(-p);
 		float v = acos(q / (p * z * 2.0)) / 3.0;
 		float m = cos(v);
@@ -3845,9 +3802,7 @@ Vector2 MMAlgos::sdBezier(const Vector2 &pos, const Vector2 &A, const Vector2 &B
 			res = dx;
 			sgn = sx;
 			rvx = t.x;
-		}
-
-		else {
+		} else {
 			res = dy;
 			sgn = sy;
 			rvx = t.y;
@@ -3889,7 +3844,7 @@ Vector2 MMAlgos::circle_repeat_transform_2d(const Vector2 &p, const float count)
 //	float PI = 3.1415926535;
 //	p = circle_repeat_transform_2d(p, n);
 //	vec2 d = abs(p)-vec2(r*tan(3.14159265359/n), r);
-//	return p.y < r ? p.y-r : length(max(d,vec2(0)))+min(max(d.x,d.y),0.0);
+//	return p.y < r ? p.y-r : length(MAX(d,vec2(0)))+min(MAX(d.x,d.y),0.0);
 //};
 
 Vector2 MMAlgos::sdNgon(const Vector2 &pos, const float r, const float n) {
@@ -3908,7 +3863,9 @@ Vector2 MMAlgos::sdNgon(const Vector2 &pos, const float r, const float n) {
 //	return rv+vec2(0.5);
 //};
 
-Vector2 MMAlgos::repeat_2d(const Vector2 &p, const Vector2 &r, const float pseed, const float randomness) {
+Vector2 MMAlgos::repeat_2d(const Vector2 &p_p, const Vector2 &r, const float pseed, const float randomness) {
+	Vector2 p = p_p;
+
 	p -= Vector2(0.5, 0.5);
 	Vector2 v = Vector2(p.x, p.y) + Vector2(0.5, 0.5) + Vector2(r.x, r.y);
 	float a = ((rand2(floorv2(modv2(v / Vector2(r.x, r.y), Vector2(1.0, 1.0) / Vector2(r.x, r.y)) + Vector2(pseed, pseed))) - Vector2(0.5, 0.5)) * 6.28 * randomness).x;
@@ -3956,7 +3913,9 @@ float MMAlgos::sdSmoothIntersection(const float d1, const float d2, const float 
 //	return d;
 //};
 
-float MMAlgos::sdRipples(const float d, const float w, const int r) {
+float MMAlgos::sdRipples(const float p_d, const float w, const int r) {
+	float d = p_d;
+
 	for (int i = 0; i < r; ++i) { //i in range(r)
 		d = abs(d) - w;
 	}
@@ -4006,7 +3965,7 @@ float MMAlgos::sdPolygon(const Vector2 &p, const PoolVector2Array &v) {
 		bool b2 = p.y < v[j].y;
 		bool b3 = e.x * w.y > e.y * w.x;
 
-		{
+		if ((b1 && b2 && b3) || (!b1 && !b2 && !b3)) {
 			s *= -1.0;
 		}
 
@@ -4024,7 +3983,7 @@ float MMAlgos::sdPolygon(const Vector2 &p, const PoolVector2Array &v) {
 //Common;
 //vec3 $(name_uv)_q = abs($uv) - vec3($sx, $sy, $sz);
 //Output - (sdf3d) - Shows the rounded box;
-//length(max($(name_uv)_q,0.0))+min(max($(name_uv)_q.x,max($(name_uv)_q.y,$(name_uv)_q.z)),0.0)-$r;
+//length(MAX($(name_uv)_q,0.0))+min(MAX($(name_uv)_q.x,MAX($(name_uv)_q.y,$(name_uv)_q.z)),0.0)-$r;
 //Inputs:;
 //size, vector3, min: 0, max: 1, default:0.5, step:0.01;
 //size, float, min: 0, max: 1, default:0.5, step:0.01;
@@ -4087,7 +4046,7 @@ float MMAlgos::sdPolygon(const Vector2 &p, const PoolVector2Array &v) {
 //sdf3d_cylinder.mmg;
 //Outputs:;
 //Output - (sdf3dc) - Shows the cylinder;
-//min(max($(name_uv)_d.x,$(name_uv)_d.y),0.0) + length(max($(name_uv)_d,0.0));
+//min(MAX($(name_uv)_d.x,$(name_uv)_d.y),0.0) + length(MAX($(name_uv)_d,0.0));
 //Inputs:;
 //axis, enum, default: 1, values: X, Y, Z;
 //length, float, min: 0, max: 1, default:0.5, step:0.01;
@@ -4222,7 +4181,7 @@ float MMAlgos::sdPolygon(const Vector2 &p, const PoolVector2Array &v) {
 //Outputs:;
 //vec2 $(name_uv)_w = vec2($in($uv.xz+vec2(0.5)),abs($uv.y)-$d);
 //Output - sdf3dc;
-//min(max($(name_uv)_w.x,$(name_uv)_w.y),0.0)+length(max($(name_uv)_w,0.0));
+//min(MAX($(name_uv)_w.x,$(name_uv)_w.y),0.0)+length(MAX($(name_uv)_w,0.0));
 //Inputs:;
 //in, sdf2d, default:100, (input);
 //length, float, min: 0, max: 1, default:0.25, step:0.01;
@@ -4283,11 +4242,11 @@ Vector2 MMAlgos::sdf3d_sphere(const Vector3 &p, const float r) {
 }
 
 //vec3 $(name_uv)_q = abs($uv) - vec3($sx, $sy, $sz);
-//length(max($(name_uv)_q,0.0))+min(max($(name_uv)_q.x,max($(name_uv)_q.y,$(name_uv)_q.z)),0.0)-$r;
+//length(MAX($(name_uv)_q,0.0))+min(MAX($(name_uv)_q.x,MAX($(name_uv)_q.y,$(name_uv)_q.z)),0.0)-$r;
 
 Vector2 MMAlgos::sdf3d_box(const Vector3 &p, const float sx, const float sy, const float sz, const float r) {
 	Vector3 v = absv3((p)) - Vector3(sx, sy, sz);
-	float f = (maxv3(v, Vector3())).length() + MIN(max(v.x, max(v.y, v.z)), 0.0) - r;
+	float f = (maxv3(v, Vector3())).length() + MIN(MAX(v.x, MAX(v.y, v.z)), 0.0) - r;
 	return Vector2(f, 0.0);
 }
 
@@ -4296,7 +4255,7 @@ Vector2 MMAlgos::sdf3d_box(const Vector3 &p, const float sx, const float sy, con
 
 Vector2 MMAlgos::sdf3d_cylinder_y(const Vector3 &p, const float r, const float l) {
 	Vector2 v = absv2(Vector2(Vector2(p.x, p.z).length(), (p).y)) - Vector2(r, l);
-	float f = MIN(max(v.x, v.y), 0.0) + maxv2(v, Vector2()).length();
+	float f = MIN(MAX(v.x, v.y), 0.0) + maxv2(v, Vector2()).length();
 	return Vector2(f, 0.0);
 }
 
@@ -4305,7 +4264,7 @@ Vector2 MMAlgos::sdf3d_cylinder_y(const Vector3 &p, const float r, const float l
 
 Vector2 MMAlgos::sdf3d_cylinder_x(const Vector3 &p, const float r, const float l) {
 	Vector2 v = absv2(Vector2(Vector2(p.y, p.z).length(), (p).x)) - Vector2(r, l);
-	float f = MIN(max(v.x, v.y), 0.0) + maxv2(v, Vector2()).length();
+	float f = MIN(MAX(v.x, v.y), 0.0) + maxv2(v, Vector2()).length();
 	return Vector2(f, 0.0);
 }
 
@@ -4314,7 +4273,7 @@ Vector2 MMAlgos::sdf3d_cylinder_x(const Vector3 &p, const float r, const float l
 
 Vector2 MMAlgos::sdf3d_cylinder_z(const Vector3 &p, const float r, const float l) {
 	Vector2 v = absv2(Vector2(Vector2(p.x, p.y).length(), (p).z)) - Vector2(r, l);
-	float f = MIN(max(v.x, v.y), 0.0) + maxv2(v, Vector2()).length();
+	float f = MIN(MAX(v.x, v.y), 0.0) + maxv2(v, Vector2()).length();
 	return Vector2(f, 0.0);
 }
 
@@ -4444,9 +4403,7 @@ Vector2 MMAlgos::sdf3d_raymarch(const Vector2 &uv) {
 
 		if ((dO >= 1.0)) {
 			break;
-		}
-
-		else if ((dS.x < 0.0001)) {
+		} else if ((dS.x < 0.0001)) {
 			c = dS.y;
 			break;
 		}
@@ -4477,8 +4434,7 @@ Vector3 MMAlgos::sdf3d_normal(const Vector3 &p) {
 
 	float d = sdf3d_input(p).x;
 	float e = .001;
-	Vector3 n = Vector3(;
-						d - sdf3d_input(p - Vector3(e, 0.0, 0.0)).x, ; d - sdf3d_input(p - Vector3(0.0, e, 0.0)).x, ; d - sdf3d_input(p - Vector3(0.0, 0.0, e)).x);
+	Vector3 n = Vector3(d - sdf3d_input(p - Vector3(e, 0.0, 0.0)).x, d - sdf3d_input(p - Vector3(0.0, e, 0.0)).x, d - sdf3d_input(p - Vector3(0.0, 0.0, e)).x);
 	return Vector3(-1.0, -1.0, -1.0) * n.normalized();
 }
 
@@ -4487,23 +4443,23 @@ Vector3 MMAlgos::sdf3d_normal(const Vector3 &p) {
 //};
 
 Vector2 MMAlgos::sdf3dc_union(const Vector2 &a, const Vector2 &b) {
-	return Vector2(min(a.x, b.x), Math::lerp(b.y, a.y, step(a.x, b.x)));
+	return Vector2(MIN(a.x, b.x), Math::lerp(b.y, a.y, step(a.x, b.x)));
 }
 
 //vec2 sdf3dc_sub(vec2 a, vec2 b) {;
-//	return vec2(max(-a.x, b.x), a.y);
+//	return vec2(MAX(-a.x, b.x), a.y);
 //};
 
 Vector2 MMAlgos::sdf3dc_sub(const Vector2 &a, const Vector2 &b) {
-	return Vector2(max(-a.x, b.x), a.y);
+	return Vector2(MAX(-a.x, b.x), a.y);
 }
 
 //vec2 sdf3dc_inter(vec2 a, vec2 b) {;
-//	return vec2(max(a.x, b.x), mix(a.y, b.y, step(a.x, b.x)));
+//	return vec2(MAX(a.x, b.x), mix(a.y, b.y, step(a.x, b.x)));
 //};
 
 Vector2 MMAlgos::sdf3dc_inter(const Vector2 &a, const Vector2 &b) {
-	return Vector2(max(a.x, b.x), Math::lerp(a.y, b.y, step(a.x, b.x)));
+	return Vector2(MAX(a.x, b.x), Math::lerp(a.y, b.y, step(a.x, b.x)));
 }
 
 //vec2 sdf3d_smooth_union(vec2 d1, vec2 d2, float k) {;
@@ -4513,7 +4469,7 @@ Vector2 MMAlgos::sdf3dc_inter(const Vector2 &a, const Vector2 &b) {
 
 Vector2 MMAlgos::sdf3d_smooth_union(const Vector2 &d1, const Vector2 &d2, const float k) {
 	float h = CLAMP(0.5 + 0.5 * (d2.x - d1.x) / k, 0.0, 1.0);
-	return Vector2(lerp(d2.x, d1.x, h) - k * h * (1.0 - h), Math::lerp(d2.y, d1.y, step(d1.x, d2.x)));
+	return Vector2(Math::lerp(d2.x, d1.x, h) - k * h * (1.0 - h), Math::lerp(d2.y, d1.y, step(d1.x, d2.x)));
 }
 
 //vec2 sdf3d_smooth_subtraction(vec2 d1, vec2 d2, float k ) {;
@@ -4523,7 +4479,7 @@ Vector2 MMAlgos::sdf3d_smooth_union(const Vector2 &d1, const Vector2 &d2, const 
 
 Vector2 MMAlgos::sdf3d_smooth_subtraction(const Vector2 &d1, const Vector2 &d2, const float k) {
 	float h = CLAMP(0.5 - 0.5 * (d2.x + d1.x) / k, 0.0, 1.0);
-	return Vector2(lerp(d2.x, -d1.x, h) + k * h * (1.0 - h), d2.y);
+	return Vector2(Math::lerp(d2.x, -d1.x, h) + k * h * (1.0 - h), d2.y);
 }
 
 //vec2 sdf3d_smooth_intersection(vec2 d1, vec2 d2, float k ) {;
@@ -4533,7 +4489,7 @@ Vector2 MMAlgos::sdf3d_smooth_subtraction(const Vector2 &d1, const Vector2 &d2, 
 
 Vector2 MMAlgos::sdf3d_smooth_intersection(const Vector2 &d1, const Vector2 &d2, const float k) {
 	float h = CLAMP(0.5 - 0.5 * (d2.x - d1.x) / k, 0.0, 1.0);
-	return Vector2(lerp(d2.x, d1.x, h) + k * h * (1.0 - h), Math::lerp(d1.y, d2.y, step(d1.x, d2.x)));
+	return Vector2(Math::lerp(d2.x, d1.x, h) + k * h * (1.0 - h), Math::lerp(d1.y, d2.y, step(d1.x, d2.x)));
 }
 
 Vector2 MMAlgos::sdf3d_rounded(const Vector2 &v, const float r) {
@@ -4580,7 +4536,9 @@ Vector3 MMAlgos::sdf3d_repeat(const Vector3 &p, const Vector2 &r, const float ra
 //	return rv;
 //};
 
-Vector3 MMAlgos::repeat(const Vector3 &p, const Vector3 &r, const float pseed, const float randomness) {
+Vector3 MMAlgos::repeat(const Vector3 &p_p, const Vector3 &r, const float pseed, const float randomness) {
+	Vector3 p = p_p;
+
 	Vector3 a = (rand3(floorv2(modv2((Vector2(p.x, p.y) + Vector2(0.5, 0.5) * Vector2(r.x, r.y)) / Vector2(r.x, r.y), Vector2(1, 1) / Vector2(r.x, r.y)) + Vector2(pseed, pseed))) - Vector3(0.5, 0.5, 0.5)) * 6.28 * randomness;
 	p = modv3(p + Vector3(0.5, 0.5, 0.5) * r, r) - Vector3(0.5, 0.5, 0.5) * r;
 	Vector3 rv = Vector3();
@@ -4626,7 +4584,9 @@ Vector3 MMAlgos::repeat(const Vector3 &p, const Vector3 &r, const float pseed, c
 //	return rv;
 //};
 
-Vector3 MMAlgos::rotate3d(const Vector3 &p, const Vector3 &a) {
+Vector3 MMAlgos::rotate3d(const Vector3 &p_p, const Vector3 &a) {
+	Vector3 p = p_p;
+
 	Vector3 rv = Vector3();
 	float c = 0;
 	float s = 0;
@@ -4720,7 +4680,7 @@ Vector2 MMAlgos::sdf3d_input(const Vector3 &p) {
 //float sphere(vec2 uv, vec2 c, float r) {;
 //	uv -= c;
 //	uv /= r;
-//	return 2.0*r*sqrt(max(0.0, 1.0-dot(uv, uv)));
+//	return 2.0*r*sqrt(MAX(0.0, 1.0-dot(uv, uv)));
 //};
 
 float MMAlgos::sphere(const Vector2 &uv, const Vector2 &c, const float r) {
@@ -4734,7 +4694,10 @@ float MMAlgos::sphere(const Vector2 &uv, const Vector2 &c, const float r) {
 //	return CLAMP((1.0-distance/size)/edge, 0.0, 1.0);
 //};
 
-float MMAlgos::shape_circle(const Vector2 &uv, const float sides, const float size, const float edge) {
+float MMAlgos::shape_circle(const Vector2 &uuv, const float sides, const float size, const float p_edge) {
+	float edge = p_edge;
+
+	Vector2 uv = uuv;
 	uv.x = 2.0 * uv.x - 1.0;
 	uv.y = 2.0 * uv.y - 1.0;
 	edge = MAX(edge, 1.0e-8);
@@ -4750,7 +4713,10 @@ float MMAlgos::shape_circle(const Vector2 &uv, const float sides, const float si
 //	return CLAMP((1.0-(cos(floor(0.5+angle/slice)*slice-angle)*length(uv))/size)/edge, 0.0, 1.0);
 //};
 
-float MMAlgos::shape_polygon(const Vector2 &uv, const float sides, const float size, const float edge) {
+float MMAlgos::shape_polygon(const Vector2 &uuv, const float sides, const float size, const float p_edge) {
+	float edge = p_edge;
+
+	Vector2 uv = uuv;
 	uv.x = 2.0 * uv.x - 1.0;
 	uv.y = 2.0 * uv.y - 1.0;
 	edge = MAX(edge, 1.0e-8);
@@ -4769,7 +4735,10 @@ float MMAlgos::shape_polygon(const Vector2 &uv, const float sides, const float s
 //	return CLAMP((1.0-(cos(floor(angle*sides/6.28318530718-0.5+2.0*step(fract(angle*sides/6.28318530718), 0.5))*slice-angle)*length(uv))/size)/edge, 0.0, 1.0);
 //};
 
-float MMAlgos::shape_star(const Vector2 &uv, const float sides, const float size, const float edge) {
+float MMAlgos::shape_star(const Vector2 &uuv, const float sides, const float size, const float p_edge) {
+	Vector2 uv = uuv;
+	float edge = p_edge;
+
 	uv.x = 2.0 * uv.x - 1.0;
 	uv.y = 2.0 * uv.y - 1.0;
 	edge = MAX(edge, 1.0e-8);
@@ -4788,7 +4757,10 @@ float MMAlgos::shape_star(const Vector2 &uv, const float sides, const float size
 //	return CLAMP((1.0-cos(floor(0.5+0.5*angle/slice)*2.0*slice-angle)*length(uv)/size)/edge, 0.0, 1.0);
 //};
 
-float MMAlgos::shape_curved_star(const Vector2 &uv, const float sides, const float size, const float edge) {
+float MMAlgos::shape_curved_star(const Vector2 &uuv, const float sides, const float size, const float p_edge) {
+	Vector2 uv = uuv;
+	float edge = p_edge;
+
 	uv.x = 2.0 * uv.x - 1.0;
 	uv.y = 2.0 * uv.y - 1.0;
 	edge = MAX(edge, 1.0e-8);
@@ -4801,13 +4773,16 @@ float MMAlgos::shape_curved_star(const Vector2 &uv, const float sides, const flo
 
 //float shape_rays(vec2 uv, float sides, float size, float edge) {;
 //	uv = 2.0*uv-1.0;
-//	edge = 0.5*max(edge, 1.0e-8)*size;
+//	edge = 0.5*MAX(edge, 1.0e-8)*size;
 //	float slice = 6.28318530718/sides;
 //	float angle = mod(atan(uv.x, uv.y)+3.14159265359, slice)/slice;
 //	return CLAMP(min((size-angle)/edge, angle/edge), 0.0, 1.0);
 //};
 
-float MMAlgos::shape_rays(const Vector2 &uv, const float sides, const float size, const float edge) {
+float MMAlgos::shape_rays(const Vector2 &uuv, const float sides, const float size, const float p_edge) {
+	Vector2 uv = uuv;
+	float edge = p_edge;
+
 	uv.x = 2.0 * uv.x - 1.0;
 	uv.y = 2.0 * uv.y - 1.0;
 	edge = 0.5 * MAX(edge, 1.0e-8) * size;
@@ -4815,7 +4790,7 @@ float MMAlgos::shape_rays(const Vector2 &uv, const float sides, const float size
 	uv.x += 0.0000001;
 	float slice = 6.28318530718 / sides;
 	float angle = modf(atan(uv.y / uv.x) + 3.14159265359, slice) / slice;
-	return CLAMP(min((size - angle) / edge, angle / edge), 0.0, 1.0);
+	return CLAMP(MIN((size - angle) / edge, angle / edge), 0.0, 1.0);
 }
 
 //float box(vec2 uv, vec3 center, vec3 rad, vec3 rot) {\n\t;
@@ -4833,7 +4808,7 @@ float MMAlgos::shape_rays(const Vector2 &uv, const float sides, const float size
 //	vec3 t1 = -n - k;\n;
 //	vec3 t2 = -n + k;\n\n;
 //;
-//	float tN = MAX(max(t1.x, t1.y), t1.z);\n;
+//	float tN = MAX(MAX(t1.x, t1.y), t1.z);\n;
 //	float tF = MIN(min(t2.x, t2.y), t2.z);\n;
 //;
 //	if(tN>tF || tF<0.0) return 1.0;\n;
@@ -4911,7 +4886,7 @@ float MMAlgos::shape_rays(const Vector2 &uv, const float sides, const float size
 //};
 
 //float blend3d_burn_f(float c1, float c2) {\n\t;
-//	return (c1==0.0)?c1:max((1.0-((1.0-c2)/c1)),0.0);\n;
+//	return (c1==0.0)?c1:MAX((1.0-((1.0-c2)/c1)),0.0);\n;
 //};
 
 //vec3 blend3d_burn(vec3 c1, vec3 c2, float opacity) {\n\t;
@@ -4927,7 +4902,7 @@ float MMAlgos::shape_rays(const Vector2 &uv, const float sides, const float size
 //};
 
 //vec3 blend3d_lighten(vec3 c1, vec3 c2, float opacity) {\n\t;
-//	return opacity*max(c1, c2) + (1.0-opacity)*c2;\n;
+//	return opacity*MAX(c1, c2) + (1.0-opacity)*c2;\n;
 //};
 
 //vec3 blend3d_darken(vec3 c1, vec3 c2, float opacity) {\n\t;
@@ -5046,7 +5021,7 @@ float MMAlgos::shape_rays(const Vector2 &uv, const float sides, const float size
 //};
 
 //float mix3d_max(float x, float y, float z) {\n\t;
-//	return MAX(max(x, y), z);\n;
+//	return MAX(MAX(x, y), z);\n;
 //};
 
 //float mix3d_min(float x, float y, float z) {\n\t;
@@ -5497,7 +5472,8 @@ Vector2 MMAlgos::transform2_clamp(const Vector2 &uv) {
 //	return rv;\t\n;
 //};
 
-Vector2 MMAlgos::transform2(const Vector2 &uv, const Vector2 &translate, const float rotate, const Vector2 &scale) {
+Vector2 MMAlgos::transform2(const Vector2 &uuv, const Vector2 &translate, const float rotate, const Vector2 &scale) {
+	Vector2 uv = uuv;
 	Vector2 rv = Vector2();
 	uv -= translate;
 	uv -= Vector2(0.5, 0.5);
@@ -5517,7 +5493,8 @@ Vector2 MMAlgos::transform2(const Vector2 &uv, const Vector2 &translate, const f
 //	return rv;\t\n;
 //};
 
-Vector2 MMAlgos::rotate(const Vector2 &uv, const Vector2 &center, const float rotate) {
+Vector2 MMAlgos::rotate(const Vector2 &uuv, const Vector2 &center, const float rotate) {
+	Vector2 uv = uuv;
 	Vector2 rv = Vector2();
 	uv -= center;
 	rv.x = cos(rotate) * uv.x + sin(rotate) * uv.y;
@@ -5533,7 +5510,8 @@ Vector2 MMAlgos::rotate(const Vector2 &uv, const Vector2 &center, const float ro
 //	return uv;\n;
 //};
 
-Vector2 MMAlgos::scale(const Vector2 &uv, const Vector2 &center, const Vector2 &scale) {
+Vector2 MMAlgos::scale(const Vector2 &uuv, const Vector2 &center, const Vector2 &scale) {
+	Vector2 uv = uuv;
 	uv -= center;
 	uv /= scale;
 	uv += center;
@@ -5541,11 +5519,11 @@ Vector2 MMAlgos::scale(const Vector2 &uv, const Vector2 &center, const Vector2 &
 }
 
 //vec2 uvmirror_h(vec2 uv, float offset) {\n\t;
-//	return vec2(max(0, abs(uv.x-0.5)-0.5*offset)+0.5, uv.y);
+//	return vec2(MAX(0, abs(uv.x-0.5)-0.5*offset)+0.5, uv.y);
 //};
 
 Vector2 MMAlgos::uvmirror_h(const Vector2 &uv, const float offset) {
-	return Vector2(max(0, abs(uv.x - 0.5) - 0.5 * offset) + 0.5, uv.y);
+	return Vector2(MAX(0, abs(uv.x - 0.5) - 0.5 * offset) + 0.5, uv.y);
 }
 
 //vec2 uvmirror_v(vec2 uv, float offset) {\n\t;
@@ -5568,7 +5546,10 @@ Vector2 MMAlgos::uvmirror_v(const Vector2 &uv, const float offset) {
 //	return vec2(0.5)+l*vec2(cos(a), sin(a));\n;
 //};
 
-Vector2 MMAlgos::kal_rotate(const Vector2 &uv, const float count, const float offset) {
+Vector2 MMAlgos::kal_rotate(const Vector2 &uuv, const float count, const float p_offset) {
+	float offset = p_offset;
+
+	Vector2 uv = uuv;
 	float pi = 3.14159265359;
 	offset *= pi / 180.0;
 	offset += pi * (1.0 / count + 0.5);
@@ -5600,7 +5581,9 @@ Vector2 MMAlgos::get_from_tileset(const float count, const float pseed, const Ve
 //	return uv;\n;
 //};
 
-Vector2 MMAlgos::custom_uv_transform(const Vector2 &uv, const Vector2 &cst_scale, const float rnd_rotate, const float rnd_scale, const Vector2 &pseed) {
+Vector2 MMAlgos::custom_uv_transform(const Vector2 &uuv, const Vector2 &cst_scale, const float rnd_rotate, const float rnd_scale, const Vector2 &p_pseed) {
+	Vector2 uv = uuv;
+	Vector2 pseed = p_pseed;
 	pseed = rand2(pseed);
 	uv -= Vector2(0.5, 0.5);
 	float angle = (pseed.x * 2.0 - 1.0) * rnd_rotate;
@@ -5612,7 +5595,6 @@ Vector2 MMAlgos::custom_uv_transform(const Vector2 &uv, const Vector2 &cst_scale
 	uv += Vector2(0.5, 0.5);
 	return uv;
 }
-}
 
 MMAlgos::MMAlgos() {
 }
@@ -5620,5 +5602,5 @@ MMAlgos::MMAlgos() {
 MMAlgos::~MMAlgos() {
 }
 
-static void MMAlgos::_bind_methods() {
+void MMAlgos::_bind_methods() {
 }

@@ -153,21 +153,21 @@ public:
 	static Color voronoi_3(const Vector2 &uv, const Vector2 &size, const Vector2 &stretch, const float intensity, const float randomness, const int pseed);
 
 	enum CombinerAxisType {
-		SINE = 0,
-		TRIANGLE,
-		SQUARE,
-		SAWTOOTH,
-		CONSTANT,
-		BOUNCE
+		COMBINER_AXIS_TYPE_SINE = 0,
+		COMBINER_AXIS_TYPE_TRIANGLE,
+		COMBINER_AXIS_TYPE_SQUARE,
+		COMBINER_AXIS_TYPE_SAWTOOTH,
+		COMBINER_AXIS_TYPE_CONSTANT,
+		COMBINER_AXIS_TYPE_BOUNCE
 	};
 
 	enum CombinerType {
-		MULTIPLY = 0,
-		ADD,
-		MAX,
-		MIN,
-		XOR,
-		POW
+		COMBINER_TYPE_MULTIPLY = 0,
+		COMBINER_TYPE_ADD,
+		COMBINER_TYPE_MAX,
+		COMBINER_TYPE_MIN,
+		COMBINER_TYPE_XOR,
+		COMBINER_TYPE_POW
 	};
 
 	static float pattern(const Vector2 &uv, const float x_scale, const float y_scale, const int ct, const int catx, const int caty);
