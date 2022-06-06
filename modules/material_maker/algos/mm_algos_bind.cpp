@@ -1023,7 +1023,7 @@ _MMAlgos::~_MMAlgos() {
 	self = nullptr;
 }
 
-static void _MMAlgos::_bind_methods() {
+void _MMAlgos::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("clampv3", "v", "mi", "ma"), &_MMAlgos::clampv3);
 	ClassDB::bind_method(D_METHOD("floorc", "a"), &_MMAlgos::floorc);
 	ClassDB::bind_method(D_METHOD("floorv2", "a"), &_MMAlgos::floorv2);

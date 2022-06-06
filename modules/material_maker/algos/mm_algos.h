@@ -1,6 +1,12 @@
 #ifndef MM_ALGOS_H
 #define MM_ALGOS_H
 
+#include "core/color.h"
+#include "core/math/vector2.h"
+#include "core/math/vector3.h"
+#include "core/pool_vector.h"
+#include "core/variant.h"
+
 #include "core/reference.h"
 
 class MMAlgos : public Reference {
@@ -145,9 +151,9 @@ public:
 	static Color voronoi_1(const Vector2 &uv, const Vector2 &size, const Vector2 &stretch, const float intensity, const float randomness, const int pseed);
 	static Color voronoi_2(const Vector2 &uv, const Vector2 &size, const Vector2 &stretch, const float intensity, const float randomness, const int pseed);
 	static Color voronoi_3(const Vector2 &uv, const Vector2 &size, const Vector2 &stretch, const float intensity, const float randomness, const int pseed);
-	enum CombinerAxisType {
 
-		SINE,
+	enum CombinerAxisType {
+		SINE = 0,
 		TRIANGLE,
 		SQUARE,
 		SAWTOOTH,
@@ -156,8 +162,7 @@ public:
 	};
 
 	enum CombinerType {
-
-		MULTIPLY,
+		MULTIPLY = 0,
 		ADD,
 		MAX,
 		MIN,
