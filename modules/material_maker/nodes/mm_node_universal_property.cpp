@@ -1,6 +1,8 @@
 
 #include "mm_node_universal_property.h"
 
+#include "mm_node.h"
+
 int MMNodeUniversalProperty::get_default_type() const {
 	return default_type;
 }
@@ -81,14 +83,6 @@ void MMNodeUniversalProperty::set_override_image(const Ref<Image> &val) {
 	override_image = val;
 }
 
-Ref<Resource> MMNodeUniversalProperty::get_input_property() {
-	return input_property;
-}
-
-void MMNodeUniversalProperty::set_input_property(const Ref<Resource> &val) {
-	input_property = val;
-}
-
 int MMNodeUniversalProperty::get_input_slot_type() const {
 	return input_slot_type;
 }
@@ -129,428 +123,23 @@ void MMNodeUniversalProperty::set_value_range(const Vector2 &val) {
 	value_range = val;
 }
 
-Variant MMNodeUniversalProperty::get_Variant() {
-	return Variant;
+Ref<MMNodeUniversalProperty> MMNodeUniversalProperty::get_input_property() {
+	return input_property;
 }
 
-void MMNodeUniversalProperty::set_Variant(const Variant &val) {
-	Variant = val;
-}
-
-//tool;
-}
-;
-}
-;
-//export(int, "Int,Float,Vector2,Vector3,Color,Image") ;
-int default_type = ;
-//export(int) ;
-int default_int = ;
-//export(float) ;
-float default_float = ;
-//export(Vector2) ;
-Vector2 default_vector2 = ;
-//export(Vector3) ;
-Vector3 default_vector3 = ;
-//export(Color) ;
-Color default_color = ;
-//export(Image) ;
-Ref<Image> default_image;
-bool get_value_from_owner = false;
-bool force_override = false;
-//This is not exported on purpose!;
-Ref<Image> override_image;
-//Should be a MMNodeUniversalProperty, but can't set it up like that;
-//export(Resource) ;
-Ref<Resource> input_property;
-int input_slot_type = SlotTypes.SLOT_TYPE_NONE;
-int output_slot_type = SlotTypes.SLOT_TYPE_NONE;
-String slot_name = ;
-float value_step = 0.1;
-Vector2 value_range = Vector2(-1000, 1000);
-//MMNode;
-Variant;
-
-void MMNodeUniversalProperty::_init() {
-	if (input_property) {
-		input_property.connect("changed", self, "on_input_property_changed");
-	}
-}
-
-void MMNodeUniversalProperty::get_value(const Vector2 &uv, const bool skip_owner_val) {
-	if (get_value_from_owner && !skip_owner_val) {
-		return get_owner_value(uv);
-	}
-
-	if (!input_property) {
-		return get_default_value(uv);
-	}
-
-	if (default_type == input_property.default_type) {
-		return input_property.get_value(uv);
-	}
-
-	if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_INT) {
-		return to_int(input_property.get_value(uv));
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_FLOAT) {
-		return to_float(input_property.get_value(uv));
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_VECTOR2) {
-		return to_vector2(input_property.get_value(uv));
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_VECTOR3) {
-		return to_vector3(input_property.get_value(uv));
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_COLOR) {
-		return to_color(input_property.get_value(uv));
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_IMAGE) {
-		return to_color(input_property.get_value(uv));
-	}
-
-	return input_property.get_value(uv);
-}
-
-void MMNodeUniversalProperty::get_owner_value(const Vector2 &uv) {
-	if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_INT) {
-		return to_int(owner.get_property_value(uv));
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_FLOAT) {
-		return to_float(owner.get_property_value(uv));
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_VECTOR2) {
-		return to_vector2(owner.get_property_value(uv));
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_VECTOR3) {
-		return to_vector3(owner.get_property_value(uv));
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_COLOR) {
-		return to_color(owner.get_property_value(uv));
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_IMAGE) {
-		return to_color(owner.get_property_value(uv));
-	}
-}
-
-void MMNodeUniversalProperty::get_value_or_zero(const Vector2 &uv, const bool skip_owner_val) {
-	if (get_value_from_owner && !skip_owner_val) {
-		return get_owner_value(uv);
-	}
-
-	if (!input_property) {
-		return get_zero_value();
-	}
-
-	if (default_type == input_property.default_type) {
-		return input_property.get_value(uv);
-	}
-
-	if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_INT) {
-		return to_int(input_property.get_value(uv));
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_FLOAT) {
-		return to_float(input_property.get_value(uv));
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_VECTOR2) {
-		return to_vector2(input_property.get_value(uv));
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_VECTOR3) {
-		return to_vector3(input_property.get_value(uv));
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_COLOR) {
-		return to_color(input_property.get_value(uv));
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_IMAGE) {
-		return to_color(input_property.get_value(uv));
-	}
-
-	return input_property.get_value(uv);
-}
-
-Vector2 MMNodeUniversalProperty::get_value_sdf3d(const Vector3 &uv3, const bool skip_owner_val) {
-	if (get_value_from_owner && !skip_owner_val) {
-		return owner.get_property_value_sdf3d(uv3);
-	}
-
-	if (!input_property) {
-		return default_vector2;
-	}
-
-	return input_property.get_value_sdf3d(uv3);
-}
-
-int MMNodeUniversalProperty::to_int(const Variant &val) {
-	if (val is int) {
-		return val;
-	}
-
-	if (val is float) {
-		return int(val);
-	}
-
-	if (val is Vector2) {
-		return int(val.x);
-	}
-
-	if (val is Vector3) {
-		return int(val.x);
-	}
-
-	if (val is Color) {
-		return int(val.r);
-	}
-
-	return 0;
-}
-
-float MMNodeUniversalProperty::to_float(const Variant &val) {
-	if (val is float) {
-		return val;
-	}
-
-	if (val is int) {
-		return float(val);
-	}
-
-	if (val is Vector2) {
-		return float(val.x);
-	}
-
-	if (val is Vector3) {
-		return float(val.x);
-	}
-
-	if (val is Color) {
-		return float(val.r);
-	}
-
-	return 0.0;
-}
-
-Vector2 MMNodeUniversalProperty::to_vector2(const Variant &val) {
-	if (val is Vector2) {
-		return val;
-	}
-
-	if (val is int) {
-		return Vector2(val, val);
-	}
-
-	if (val is float) {
-		return Vector2(val, val);
-	}
-
-	if (val is Vector3) {
-		return Vector2(val.x, val.y);
-	}
-
-	if (val is Color) {
-		return Vector2(val.r, val.g);
-	}
-
-	return Vector2();
-}
-
-Vector3 MMNodeUniversalProperty::to_vector3(const Variant &val) {
-	if (val is Vector3) {
-		return val;
-	}
-
-	if (val is int) {
-		return Vector3(val, val, val);
-	}
-
-	if (val is float) {
-		return Vector3(val, val, val);
-	}
-
-	if (val is Vector2) {
-		return Vector3(val.x, val.y, 0);
-	}
-
-	if (val is Color) {
-		return Vector3(val.r, val.g, val.b);
-	}
-
-	return Vector3();
-}
-
-Color MMNodeUniversalProperty::to_color(const Variant &val) {
-	if (val is Color) {
-		return val;
-	}
-
-	if (val is int) {
-		return Color(val, val, val, 1);
-	}
-
-	if (val is float) {
-		return Color(val, val, val, 1);
-	}
-
-	if (val is Vector2) {
-		return Color(val.x, val.y, 0, 1);
-	}
-
-	if (val is Vector3) {
-		return Color(val.x, val.y, val.z, 1);
-	}
-
-	return Color();
-}
-
-void MMNodeUniversalProperty::set_value(const Variant &val) {
-	if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_IMAGE) {
-		override_image = val;
-		emit_changed();
-		return;
-	}
-
-	set_default_value(val);
-}
-
-void MMNodeUniversalProperty::get_zero_value() {
-	if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_INT) {
-		return 0;
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_FLOAT) {
-		return 0.0;
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_VECTOR2) {
-		return Vector2();
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_VECTOR3) {
-		return Vector3();
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_COLOR) {
-		return Color();
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_IMAGE) {
-		return Color();
-	}
-
-	return null;
-}
-
-void MMNodeUniversalProperty::get_default_value(const Vector2 &uv) {
-	if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_INT) {
-		return default_int;
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_FLOAT) {
-		return default_float;
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_VECTOR2) {
-		return default_vector2;
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_VECTOR3) {
-		return default_vector3;
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_COLOR) {
-		return default_color;
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_IMAGE) {
-		Ref<Image> image = default_image;
-
-		if (override_image) {
-			image = override_image;
-		}
-
-		if (!image) {
-			return default_color;
-		}
-
-		image.lock();
-		int x = uv.x * image.get_width();
-		int y = uv.y * image.get_height();
-		x = clamp(x, 0, image.get_width() - 1);
-		y = clamp(y, 0, image.get_width() - 1);
-		Color c = image.get_pixel(x, y);
-		image.unlock();
-		return c;
-	}
-
-	return null;
-}
-
-void MMNodeUniversalProperty::set_default_value(const Variant &val) {
-	if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_INT) {
-		default_int = val;
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_FLOAT) {
-		default_float = val;
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_VECTOR2) {
-		default_vector2 = val;
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_VECTOR3) {
-		default_vector3 = val;
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_COLOR) {
-		default_color = val;
-	}
-
-	else if (default_type == MMNodeUniversalPropertyDefaultType.DEFAULT_TYPE_IMAGE) {
-		default_image = val;
-	}
-
-	emit_changed();
-}
-
-Image MMNodeUniversalProperty::get_active_image() {
-	if (!force_override && input_property) {
-		return input_property.get_active_image();
-	}
-
-	if (override_image) {
-		return override_image;
-	}
-
-	return default_image;
-}
-
-void MMNodeUniversalProperty::set_input_property(const MMNodeUniversalProperty &val) {
+void MMNodeUniversalProperty::set_input_property(const Ref<MMNodeUniversalProperty> &val) {
 	if (input_property == val) {
 		return;
 	}
 
-	if (input_property) {
-		input_property.disconnect("changed", self, "on_input_property_changed");
+	if (input_property.is_valid()) {
+		input_property->disconnect("changed", this, "on_input_property_changed");
 	}
 
 	input_property = val;
 
-	if (input_property) {
-		input_property.connect("changed", self, "on_input_property_changed");
+	if (input_property.is_valid()) {
+		input_property->connect("changed", this, "on_input_property_changed");
 	}
 
 	emit_changed();
@@ -560,38 +149,356 @@ void MMNodeUniversalProperty::set_input_property(const MMNodeUniversalProperty &
 // for a method with no arguments;
 
 void MMNodeUniversalProperty::unset_input_property() {
-	set_input_property(null);
+	set_input_property(Ref<MMNodeUniversalProperty>());
 }
 
 void MMNodeUniversalProperty::on_input_property_changed() {
 	emit_changed();
 }
+
+Ref<MMNode> MMNodeUniversalProperty::get_owner() {
+	return owner;
+}
+
+void MMNodeUniversalProperty::set_owner(const Ref<MMNode> &val) {
+	owner = val;
+}
+
+void MMNodeUniversalProperty::_init() {
+	if (input_property.is_valid()) {
+		input_property->connect("changed", this, "on_input_property_changed");
+	}
+}
+
+Variant MMNodeUniversalProperty::get_value(const Vector2 &uv, const bool skip_owner_val) {
+	if (get_value_from_owner && !skip_owner_val) {
+		return get_owner_value(uv);
+	}
+
+	if (!input_property.is_valid()) {
+		return get_default_value(uv);
+	}
+
+	if (default_type == input_property->default_type) {
+		return input_property->get_value(uv);
+	}
+
+	if (default_type == DEFAULT_TYPE_INT) {
+		return to_int(input_property->get_value(uv));
+	} else if (default_type == DEFAULT_TYPE_FLOAT) {
+		return to_float(input_property->get_value(uv));
+	} else if (default_type == DEFAULT_TYPE_VECTOR2) {
+		return to_vector2(input_property->get_value(uv));
+	} else if (default_type == DEFAULT_TYPE_VECTOR3) {
+		return to_vector3(input_property->get_value(uv));
+	} else if (default_type == DEFAULT_TYPE_COLOR) {
+		return to_color(input_property->get_value(uv));
+	} else if (default_type == DEFAULT_TYPE_IMAGE) {
+		return to_color(input_property->get_value(uv));
+	}
+
+	return input_property->get_value(uv);
+}
+
+Variant MMNodeUniversalProperty::get_owner_value(const Vector2 &uv) {
+	if (default_type == DEFAULT_TYPE_INT) {
+		return to_int(owner->get_property_value(uv));
+	} else if (default_type == DEFAULT_TYPE_FLOAT) {
+		return to_float(owner->get_property_value(uv));
+	} else if (default_type == DEFAULT_TYPE_VECTOR2) {
+		return to_vector2(owner->get_property_value(uv));
+	} else if (default_type == DEFAULT_TYPE_VECTOR3) {
+		return to_vector3(owner->get_property_value(uv));
+	} else if (default_type == DEFAULT_TYPE_COLOR) {
+		return to_color(owner->get_property_value(uv));
+	} else if (default_type == DEFAULT_TYPE_IMAGE) {
+		return to_color(owner->get_property_value(uv));
+	}
+}
+
+Variant MMNodeUniversalProperty::get_value_or_zero(const Vector2 &uv, const bool skip_owner_val) {
+	if (get_value_from_owner && !skip_owner_val) {
+		return get_owner_value(uv);
+	}
+
+	if (!input_property.is_valid()) {
+		return get_zero_value();
+	}
+
+	if (default_type == input_property->default_type) {
+		return input_property->get_value(uv);
+	}
+
+	if (default_type == DEFAULT_TYPE_INT) {
+		return to_int(input_property->get_value(uv));
+	} else if (default_type == DEFAULT_TYPE_FLOAT) {
+		return to_float(input_property->get_value(uv));
+	} else if (default_type == DEFAULT_TYPE_VECTOR2) {
+		return to_vector2(input_property->get_value(uv));
+	} else if (default_type == DEFAULT_TYPE_VECTOR3) {
+		return to_vector3(input_property->get_value(uv));
+	} else if (default_type == DEFAULT_TYPE_COLOR) {
+		return to_color(input_property->get_value(uv));
+	} else if (default_type == DEFAULT_TYPE_IMAGE) {
+		return to_color(input_property->get_value(uv));
+	}
+
+	return input_property->get_value(uv);
+}
+
+Vector2 MMNodeUniversalProperty::get_value_sdf3d(const Vector3 &uv3, const bool skip_owner_val) {
+	if (get_value_from_owner && !skip_owner_val) {
+		return owner->get_property_value_sdf3d(uv3);
+	}
+
+	if (!input_property.is_valid()) {
+		return default_vector2;
+	}
+
+	return input_property->get_value_sdf3d(uv3);
+}
+
+int MMNodeUniversalProperty::to_int(const Variant &val) {
+	if (val.get_type() == Variant::INT) {
+		return val;
+	}
+
+	if (val.get_type() == Variant::REAL) {
+		return int(val);
+	}
+
+	if (val.get_type() == Variant::VECTOR2) {
+		Vector2 v = val;
+		return int(v.x);
+	}
+
+	if (val.get_type() == Variant::VECTOR3) {
+		Vector3 v = val;
+		return int(v.x);
+	}
+
+	if (val.get_type() == Variant::COLOR) {
+		Color v = val;
+		return int(v.r);
+	}
+
+	return 0;
+}
+
+float MMNodeUniversalProperty::to_float(const Variant &val) {
+	if (val.get_type() == Variant::REAL) {
+		return val;
+	}
+
+	if (val.get_type() == Variant::INT) {
+		return float(val);
+	}
+
+	if (val.get_type() == Variant::VECTOR2) {
+		Vector2 v = val;
+		return float(v.x);
+	}
+
+	if (val.get_type() == Variant::VECTOR3) {
+		Vector3 v = val;
+		return float(v.x);
+	}
+
+	if (val.get_type() == Variant::COLOR) {
+		Color v = val;
+		return float(v.r);
+	}
+
+	return 0.0;
+}
+
+Vector2 MMNodeUniversalProperty::to_vector2(const Variant &val) {
+	if (val.get_type() == Variant::VECTOR2) {
+		return val;
+	}
+
+	if (val.get_type() == Variant::INT) {
+		return Vector2(val, val);
+	}
+
+	if (val.get_type() == Variant::REAL) {
+		return Vector2(val, val);
+	}
+
+	if (val.get_type() == Variant::VECTOR3) {
+		Vector3 v = val;
+		return Vector2(v.x, v.y);
+	}
+
+	if (val.get_type() == Variant::COLOR) {
+		Color v = val;
+		return Vector2(v.r, v.g);
+	}
+
+	return Vector2();
+}
+
+Vector3 MMNodeUniversalProperty::to_vector3(const Variant &val) {
+	if (val.get_type() == Variant::VECTOR3) {
+		return val;
+	}
+
+	if (val.get_type() == Variant::INT) {
+		return Vector3(val, val, val);
+	}
+
+	if (val.get_type() == Variant::REAL) {
+		return Vector3(val, val, val);
+	}
+
+	if (val.get_type() == Variant::VECTOR2) {
+		Vector2 v = val;
+		return Vector3(v.x, v.y, 0);
+	}
+
+	if (val.get_type() == Variant::COLOR) {
+		Color v = val;
+		return Vector3(v.r, v.g, v.b);
+	}
+
+	return Vector3();
+}
+
+Color MMNodeUniversalProperty::to_color(const Variant &val) {
+	if (val.get_type() == Variant::COLOR) {
+		return val;
+	}
+
+	if (val.get_type() == Variant::INT) {
+		return Color(val, val, val, 1);
+	}
+
+	if (val.get_type() == Variant::REAL) {
+		return Color(val, val, val, 1);
+	}
+
+	if (val.get_type() == Variant::VECTOR2) {
+		Vector2 v = val;
+		return Color(v.x, v.y, 0, 1);
+	}
+
+	if (val.get_type() == Variant::VECTOR3) {
+		Vector3 v = val;
+		return Color(v.x, v.y, v.z, 1);
+	}
+
+	return Color();
+}
+
+void MMNodeUniversalProperty::set_value(const Variant &val) {
+	if (default_type == DEFAULT_TYPE_IMAGE) {
+		override_image = val;
+		emit_changed();
+		return;
+	}
+
+	set_default_value(val);
+}
+
+Variant MMNodeUniversalProperty::get_zero_value() {
+	if (default_type == DEFAULT_TYPE_INT) {
+		return 0;
+	} else if (default_type == DEFAULT_TYPE_FLOAT) {
+		return 0.0;
+	} else if (default_type == DEFAULT_TYPE_VECTOR2) {
+		return Vector2();
+	} else if (default_type == DEFAULT_TYPE_VECTOR3) {
+		return Vector3();
+	} else if (default_type == DEFAULT_TYPE_COLOR) {
+		return Color();
+	} else if (default_type == DEFAULT_TYPE_IMAGE) {
+		return Color();
+	}
+
+	return Variant();
+}
+
+Variant MMNodeUniversalProperty::get_default_value(const Vector2 &uv) {
+	if (default_type == DEFAULT_TYPE_INT) {
+		return default_int;
+	} else if (default_type == DEFAULT_TYPE_FLOAT) {
+		return default_float;
+	} else if (default_type == DEFAULT_TYPE_VECTOR2) {
+		return default_vector2;
+	} else if (default_type == DEFAULT_TYPE_VECTOR3) {
+		return default_vector3;
+	} else if (default_type == DEFAULT_TYPE_COLOR) {
+		return default_color;
+	} else if (default_type == DEFAULT_TYPE_IMAGE) {
+		Ref<Image> image = default_image;
+
+		if (override_image.is_valid()) {
+			image = override_image;
+		}
+
+		if (!image.is_valid()) {
+			return default_color;
+		}
+
+		image->lock();
+		int x = uv.x * image->get_width();
+		int y = uv.y * image->get_height();
+		x = CLAMP(x, 0, image->get_width() - 1);
+		y = CLAMP(y, 0, image->get_width() - 1);
+		Color c = image->get_pixel(x, y);
+		image->unlock();
+		return c;
+	}
+
+	return Variant();
+}
+
+void MMNodeUniversalProperty::set_default_value(const Variant &val) {
+	if (default_type == DEFAULT_TYPE_INT) {
+		default_int = val;
+	} else if (default_type == DEFAULT_TYPE_FLOAT) {
+		default_float = val;
+	} else if (default_type == DEFAULT_TYPE_VECTOR2) {
+		default_vector2 = val;
+	} else if (default_type == DEFAULT_TYPE_VECTOR3) {
+		default_vector3 = val;
+	} else if (default_type == DEFAULT_TYPE_COLOR) {
+		default_color = val;
+	} else if (default_type == DEFAULT_TYPE_IMAGE) {
+		default_image = val;
+	}
+
+	emit_changed();
+}
+
+Ref<Image> MMNodeUniversalProperty::get_active_image() {
+	if (!force_override && input_property.is_valid()) {
+		return input_property->get_active_image();
+	}
+
+	if (override_image.is_valid()) {
+		return override_image;
+	}
+
+	return default_image;
 }
 
 MMNodeUniversalProperty::MMNodeUniversalProperty() {
-	default_type = ;
-	default_int = ;
-	default_float = ;
-	default_vector2 = ;
-	default_vector3 = ;
-	default_color = ;
-	default_image;
+	default_type = DEFAULT_TYPE_INT;
+	default_int = 0;
+	default_float = 0;
 	get_value_from_owner = false;
 	force_override = false;
-	override_image;
-	input_property;
-	input_slot_type = SlotTypes.SLOT_TYPE_NONE;
-	output_slot_type = SlotTypes.SLOT_TYPE_NONE;
-	slot_name = ;
+	input_slot_type = SLOT_TYPE_NONE;
+	output_slot_type = SLOT_TYPE_NONE;
 	value_step = 0.1;
 	value_range = Vector2(-1000, 1000);
-	;
 }
 
 MMNodeUniversalProperty::~MMNodeUniversalProperty() {
 }
 
-static void MMNodeUniversalProperty::_bind_methods() {
+void MMNodeUniversalProperty::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_default_type"), &MMNodeUniversalProperty::get_default_type);
 	ClassDB::bind_method(D_METHOD("set_default_type", "value"), &MMNodeUniversalProperty::set_default_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "default_type"), "set_default_type", "get_default_type");
@@ -618,7 +525,7 @@ static void MMNodeUniversalProperty::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_default_image"), &MMNodeUniversalProperty::get_default_image);
 	ClassDB::bind_method(D_METHOD("set_default_image", "value"), &MMNodeUniversalProperty::set_default_image);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "default_image", PROPERTY_HINT_RESOURCE_TYPE, "Ref<Image>"), "set_default_image", "get_default_image");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "default_image", PROPERTY_HINT_RESOURCE_TYPE, "Image"), "set_default_image", "get_default_image");
 
 	ClassDB::bind_method(D_METHOD("get_get_value_from_owner"), &MMNodeUniversalProperty::get_get_value_from_owner);
 	ClassDB::bind_method(D_METHOD("set_get_value_from_owner", "value"), &MMNodeUniversalProperty::set_get_value_from_owner);
@@ -630,11 +537,7 @@ static void MMNodeUniversalProperty::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_override_image"), &MMNodeUniversalProperty::get_override_image);
 	ClassDB::bind_method(D_METHOD("set_override_image", "value"), &MMNodeUniversalProperty::set_override_image);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "override_image", PROPERTY_HINT_RESOURCE_TYPE, "Ref<Image>"), "set_override_image", "get_override_image");
-
-	ClassDB::bind_method(D_METHOD("get_input_property"), &MMNodeUniversalProperty::get_input_property);
-	ClassDB::bind_method(D_METHOD("set_input_property", "value"), &MMNodeUniversalProperty::set_input_property);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input_property", PROPERTY_HINT_RESOURCE_TYPE, "Ref<Resource>"), "set_input_property", "get_input_property");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "override_image", PROPERTY_HINT_RESOURCE_TYPE, "Image", 0), "set_override_image", "get_override_image");
 
 	ClassDB::bind_method(D_METHOD("get_input_slot_type"), &MMNodeUniversalProperty::get_input_slot_type);
 	ClassDB::bind_method(D_METHOD("set_input_slot_type", "value"), &MMNodeUniversalProperty::set_input_slot_type);
@@ -656,15 +559,23 @@ static void MMNodeUniversalProperty::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_value_range", "value"), &MMNodeUniversalProperty::set_value_range);
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "value_range"), "set_value_range", "get_value_range");
 
-	ClassDB::bind_method(D_METHOD("get_Variant"), &MMNodeUniversalProperty::get_Variant);
-	ClassDB::bind_method(D_METHOD("set_Variant", "value"), &MMNodeUniversalProperty::set_Variant);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "Variant", PROPERTY_HINT_RESOURCE_TYPE, "Variant"), "set_Variant", "get_Variant");
+	ClassDB::bind_method(D_METHOD("get_input_property"), &MMNodeUniversalProperty::get_input_property);
+	ClassDB::bind_method(D_METHOD("set_input_property", "value"), &MMNodeUniversalProperty::set_input_property);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input_property", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_input_property", "get_input_property");
+	ClassDB::bind_method(D_METHOD("unset_input_property"), &MMNodeUniversalProperty::unset_input_property);
+	ClassDB::bind_method(D_METHOD("on_input_property_changed"), &MMNodeUniversalProperty::on_input_property_changed);
+
+	ClassDB::bind_method(D_METHOD("get_owner"), &MMNodeUniversalProperty::get_owner);
+	ClassDB::bind_method(D_METHOD("set_owner", "value"), &MMNodeUniversalProperty::set_owner);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "owner", PROPERTY_HINT_RESOURCE_TYPE, "MMNode", 0), "set_owner", "get_owner");
 
 	ClassDB::bind_method(D_METHOD("_init"), &MMNodeUniversalProperty::_init);
+
 	ClassDB::bind_method(D_METHOD("get_value", "uv", "skip_owner_val"), &MMNodeUniversalProperty::get_value, false);
 	ClassDB::bind_method(D_METHOD("get_owner_value", "uv"), &MMNodeUniversalProperty::get_owner_value);
 	ClassDB::bind_method(D_METHOD("get_value_or_zero", "uv", "skip_owner_val"), &MMNodeUniversalProperty::get_value_or_zero, false);
 	ClassDB::bind_method(D_METHOD("get_value_sdf3d", "uv3", "skip_owner_val"), &MMNodeUniversalProperty::get_value_sdf3d, false);
+
 	ClassDB::bind_method(D_METHOD("to_int", "val"), &MMNodeUniversalProperty::to_int);
 	ClassDB::bind_method(D_METHOD("to_float", "val"), &MMNodeUniversalProperty::to_float);
 	ClassDB::bind_method(D_METHOD("to_vector2", "val"), &MMNodeUniversalProperty::to_vector2);
@@ -675,7 +586,4 @@ static void MMNodeUniversalProperty::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_default_value", "uv"), &MMNodeUniversalProperty::get_default_value, Vector2());
 	ClassDB::bind_method(D_METHOD("set_default_value", "val"), &MMNodeUniversalProperty::set_default_value);
 	ClassDB::bind_method(D_METHOD("get_active_image"), &MMNodeUniversalProperty::get_active_image);
-	ClassDB::bind_method(D_METHOD("set_input_property", "val"), &MMNodeUniversalProperty::set_input_property);
-	ClassDB::bind_method(D_METHOD("unset_input_property"), &MMNodeUniversalProperty::unset_input_property);
-	ClassDB::bind_method(D_METHOD("on_input_property_changed"), &MMNodeUniversalProperty::on_input_property_changed);
 }
