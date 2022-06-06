@@ -1,28 +1,14 @@
 
 #include "mm_node.h"
+#include "modules/material_maker/nodes/mm_node_universal_property.h"
 
 Vector2 MMNode::get_graph_position() {
 	return graph_position;
 }
 
-void MMNode::set_graph_position(const Vector2 &val) {
-	graph_position = val;
-}
-
-Array MMNode::get_input_properties() {
-	return input_properties;
-}
-
-void MMNode::set_input_properties(const Array &val) {
-	input_properties = val;
-}
-
-Array MMNode::get_output_properties() {
-	return output_properties;
-}
-
-void MMNode::set_output_properties(const Array &val) {
-	output_properties = val;
+void MMNode::set_graph_position(const Vector2 &pos) {
+	graph_position = pos;
+	emit_changed();
 }
 
 bool MMNode::get_properties_initialized() const {
@@ -38,25 +24,23 @@ bool MMNode::get_dirty() const {
 }
 
 void MMNode::set_dirty(const bool val) {
+	bool changed = val != dirty;
 	dirty = val;
+
+	if (changed) {
+		emit_changed();
+	}
 }
 
-//tool;
-//export(Vector2) ;
-Vector2 graph_position = Vector2();
-Array input_properties = ;
-Array output_properties = ;
-bool properties_initialized = false;
-bool dirty = true;
-//MMMateial;
-
-bool MMNode::render(const Variant &material) {
+bool MMNode::render(const Ref<MMMaterial> &material) {
 	if (!dirty) {
 		return false;
 	}
 
-	for (p in input_properties) {
-		if (p.input_property && p.input_property.owner.dirty) {
+	for (int i = 0; i < input_properties.size(); ++i) {
+		Ref<MMNodeUniversalProperty> p = input_properties[i];
+
+		if (p->get_input_property().is_valid() && p->get_input_property()->get_owner()->get_dirty()) {
 			return false;
 		}
 	}
@@ -66,30 +50,30 @@ bool MMNode::render(const Variant &material) {
 	return true;
 }
 
-//MMMateial;
-
-void MMNode::_render(const Variant &material) {
-	pass;
+void MMNode::_render(const Ref<MMMaterial> &material) {
 }
 
-Image MMNode::render_image(const Variant &material) {
-	Ref<Image> image = Image.new();
-	image.create(material.image_size.x, material.image_size.y, false, Image.FORMAT_RGBA8);
-	image.lock();
-	float w = image.get_width();
-	float h = image.get_height();
-	float pseed = randf() + randi();
+Ref<Image> MMNode::render_image(const Ref<MMMaterial> &material) {
+	Ref<Image> image;
+	image.instance();
 
-	for (int x = 0; x < image.get_width(); ++x) { //x in range(image.get_width())
+	image->create(material->image_size.x, material->image_size.y, false, Image::FORMAT_RGBA8);
+	image->lock();
 
-		for (int y = 0; y < image.get_height(); ++y) { //y in range(image.get_height())
+	float w = image->get_width();
+	float h = image->get_height();
+	float pseed = Math::randf() + Math::rand();
+
+	for (int x = 0; x < image->get_width(); ++x) { //x in range(image.get_width())
+
+		for (int y = 0; y < image->get_height(); ++y) { //y in range(image.get_height())
 			Vector2 v = Vector2(x / w, y / h);
 			Color col = get_value_for(v, pseed);
-			image.set_pixel(x, y, col);
+			image->set_pixel(x, y, col);
 		}
 	}
 
-	image.unlock();
+	image->unlock();
 	return image;
 }
 
@@ -105,7 +89,6 @@ void MMNode::init_properties() {
 }
 
 void MMNode::_init_properties() {
-	pass;
 }
 
 void MMNode::register_methods(const Variant &mm_graph_node) {
@@ -114,60 +97,49 @@ void MMNode::register_methods(const Variant &mm_graph_node) {
 }
 
 void MMNode::_register_methods(const Variant &mm_graph_node) {
-	pass;
 }
 
-Vector2 MMNode::get_graph_position() {
-	return graph_position;
-}
+void MMNode::register_input_property(const Ref<MMNodeUniversalProperty> &p_prop) {
+	Ref<MMNodeUniversalProperty> prop = p_prop;
 
-void MMNode::set_graph_position(const Vector2 &pos) {
-	graph_position = pos;
-	emit_changed();
-}
+	prop->set_owner(this);
 
-void MMNode::register_input_property(const MMNodeUniversalProperty &prop) {
-	prop.owner = self;
-
-	if (!prop.is_connected("changed", self, "on_input_property_changed")) {
-		prop.connect("changed", self, "on_input_property_changed");
+	if (!prop->is_connected("changed", this, "on_input_property_changed")) {
+		prop->connect("changed", this, "on_input_property_changed");
 	}
 
-	input_properties.append(prop);
+	input_properties.push_back(prop);
 }
 
-void MMNode::unregister_input_property(const MMNodeUniversalProperty &prop) {
-	if (prop.owner == self) {
-		prop.owner = null;
+void MMNode::unregister_input_property(const Ref<MMNodeUniversalProperty> &p_prop) {
+	Ref<MMNodeUniversalProperty> prop = p_prop;
+
+	if (prop->get_owner() == this) {
+		prop->set_owner(nullptr);
 	}
 
-	if (prop.is_connected("changed", self, "on_input_property_changed")) {
-		prop.disconnect("changed", self, "on_input_property_changed");
+	if (prop->is_connected("changed", this, "on_input_property_changed")) {
+		prop->disconnect("changed", this, "on_input_property_changed");
 	}
 
 	input_properties.erase(prop);
 }
 
-void MMNode::register_output_property(const MMNodeUniversalProperty &prop) {
-	prop.owner = self;
-	output_properties.append(prop);
+void MMNode::register_output_property(const Ref<MMNodeUniversalProperty> &p_prop) {
+	Ref<MMNodeUniversalProperty> prop = p_prop;
+
+	prop->set_owner(this);
+	output_properties.push_back(prop);
 }
 
-void MMNode::unregister_output_property(const MMNodeUniversalProperty &prop) {
-	if (prop.owner == self) {
-		prop.owner = null;
+void MMNode::unregister_output_property(const Ref<MMNodeUniversalProperty> &p_prop) {
+	Ref<MMNodeUniversalProperty> prop = p_prop;
+
+	if (prop->get_owner() == this) {
+		prop->set_owner(nullptr);
 	}
 
 	output_properties.erase(prop);
-}
-
-void MMNode::set_dirty(const bool val) {
-	bool changed = val != dirty;
-	dirty = val;
-
-	if (changed) {
-		emit_changed();
-	}
 }
 
 void MMNode::on_input_property_changed() {
@@ -187,12 +159,8 @@ void MMNode::on_input_property_changed() {
 //func editor_register_node_script(category : String, script_path : String);
 // same as the above, but for scripts;
 //func editor_unregister_node_script(category : String, cls : String);
-}
 
 MMNode::MMNode() {
-	graph_position = Vector2();
-	input_properties = ;
-	output_properties = ;
 	properties_initialized = false;
 	dirty = true;
 }
@@ -200,18 +168,10 @@ MMNode::MMNode() {
 MMNode::~MMNode() {
 }
 
-static void MMNode::_bind_methods() {
+void MMNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_graph_position"), &MMNode::get_graph_position);
 	ClassDB::bind_method(D_METHOD("set_graph_position", "value"), &MMNode::set_graph_position);
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "graph_position"), "set_graph_position", "get_graph_position");
-
-	ClassDB::bind_method(D_METHOD("get_input_properties"), &MMNode::get_input_properties);
-	ClassDB::bind_method(D_METHOD("set_input_properties", "value"), &MMNode::set_input_properties);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "input_properties"), "set_input_properties", "get_input_properties");
-
-	ClassDB::bind_method(D_METHOD("get_output_properties"), &MMNode::get_output_properties);
-	ClassDB::bind_method(D_METHOD("set_output_properties", "value"), &MMNode::set_output_properties);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "output_properties"), "set_output_properties", "get_output_properties");
 
 	ClassDB::bind_method(D_METHOD("get_properties_initialized"), &MMNode::get_properties_initialized);
 	ClassDB::bind_method(D_METHOD("set_properties_initialized", "value"), &MMNode::set_properties_initialized);
