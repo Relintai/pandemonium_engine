@@ -1,6 +1,7 @@
 
 #include "mm_algos_bind.h"
 
+#include "core/method_bind_ext.gen.inc"
 #include "mm_algos.h"
 
 Vector3 _MMAlgos::clampv3(const Vector3 &v, const Vector3 &mi, const Vector3 &ma) {

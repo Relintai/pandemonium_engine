@@ -1,0 +1,17 @@
+import os
+
+Import('env')
+
+module_env = env.Clone()
+
+
+sources = [
+    "register_types.cpp",
+
+    "algos/mm_algos.cpp",
+    "algos/mm_algos_bind.cpp",
+]
+
+
+module_env.add_source_files(env.modules_sources, sources)
+
