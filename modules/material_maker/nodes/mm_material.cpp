@@ -61,6 +61,11 @@ void MMMaterial::initialize() {
 
 		for (int i = 0; i < nodes.size(); ++i) {
 			Ref<MMNode> n = nodes[i];
+
+			if (!n.is_valid()) {
+				continue;
+			}
+
 			n->init_properties();
 			n->connect("changed", this, "on_node_changed");
 		}
@@ -68,6 +73,8 @@ void MMMaterial::initialize() {
 }
 
 void MMMaterial::add_node(const Ref<MMNode> &node) {
+	ERR_FAIL_COND(!node.is_valid());
+
 	nodes.push_back(node);
 	Ref<MMNode> n = node;
 	n->connect("changed", this, "on_node_changed");
@@ -85,13 +92,15 @@ void MMMaterial::remove_node(const Ref<MMNode> &node) {
 		for (int j = 0; j < nodes.size(); ++j) {
 			Ref<MMNode> n = nodes[j];
 
-			if (n.is_valid()) {
-				for (int k = 0; k < n->input_properties.size(); ++k) {
-					Ref<MMNodeUniversalProperty> ip = n->input_properties[k];
+			if (!n.is_valid()) {
+				continue;
+			}
 
-					if (ip->get_input_property() == op) {
-						ip->set_input_property(Ref<MMNodeUniversalProperty>());
-					}
+			for (int k = 0; k < n->input_properties.size(); ++k) {
+				Ref<MMNodeUniversalProperty> ip = n->input_properties[k];
+
+				if (ip->get_input_property() == op) {
+					ip->set_input_property(Ref<MMNodeUniversalProperty>());
 				}
 			}
 		}

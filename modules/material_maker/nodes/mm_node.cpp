@@ -27,11 +27,6 @@ void MMNode::set_input_properties(const Vector<Variant> &val) {
 	input_properties.clear();
 	for (int i = 0; i < val.size(); i++) {
 		Ref<MMNode> e = Ref<MMNode>(val[i]);
-
-		if (!e.is_valid()) {
-			continue;
-		}
-
 		input_properties.push_back(e);
 	}
 }
@@ -48,11 +43,6 @@ void MMNode::set_output_properties(const Vector<Variant> &val) {
 	output_properties.clear();
 	for (int i = 0; i < val.size(); i++) {
 		Ref<MMNode> e = Ref<MMNode>(val[i]);
-
-		if (!e.is_valid()) {
-			continue;
-		}
-
 		output_properties.push_back(e);
 	}
 }
@@ -85,6 +75,10 @@ bool MMNode::render(const Ref<MMMaterial> &material) {
 
 	for (int i = 0; i < input_properties.size(); ++i) {
 		Ref<MMNodeUniversalProperty> p = input_properties[i];
+
+		if (!p.is_valid()) {
+			continue;
+		}
 
 		if (p->get_input_property().is_valid() && p->get_input_property()->get_owner()->get_dirty()) {
 			return false;
