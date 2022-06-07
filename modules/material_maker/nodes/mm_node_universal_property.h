@@ -15,7 +15,6 @@ class MMNodeUniversalProperty : public Resource {
 
 public:
 	enum SlotTypes {
-
 		SLOT_TYPE_NONE = -1,
 		SLOT_TYPE_IMAGE = 0,
 		SLOT_TYPE_INT = 1,
@@ -27,7 +26,6 @@ public:
 	};
 
 	enum MMNodeUniversalPropertyDefaultType {
-
 		DEFAULT_TYPE_INT = 0,
 		DEFAULT_TYPE_FLOAT = 1,
 		DEFAULT_TYPE_VECTOR2 = 2,

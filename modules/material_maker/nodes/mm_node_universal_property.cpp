@@ -214,6 +214,8 @@ Variant MMNodeUniversalProperty::get_owner_value(const Vector2 &uv) {
 	} else if (default_type == DEFAULT_TYPE_IMAGE) {
 		return to_color(owner->get_property_value(uv));
 	}
+
+	return Variant();
 }
 
 Variant MMNodeUniversalProperty::get_value_or_zero(const Vector2 &uv, const bool skip_owner_val) {
