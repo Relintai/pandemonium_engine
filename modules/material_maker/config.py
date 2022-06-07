@@ -11,6 +11,9 @@ def configure(env):
 def get_doc_classes():
     return [
         "MMAlgos",
+        "MMNode",
+        "MMNodeUniversalProperty",
+        "MMMaterial",
     ]
 
 def get_doc_path():

@@ -10,6 +10,10 @@ sources = [
 
     "algos/mm_algos.cpp",
     "algos/mm_algos_bind.cpp",
+
+    "nodes/mm_material.cpp",
+    "nodes/mm_node_universal_property.cpp",
+    "nodes/mm_node.cpp",
 ]
 
 

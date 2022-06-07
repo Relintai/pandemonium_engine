@@ -27,10 +27,18 @@ SOFTWARE.
 #include "algos/mm_algos.h"
 #include "algos/mm_algos_bind.h"
 
+#include "nodes/mm_material.h"
+#include "nodes/mm_node.h"
+#include "nodes/mm_node_universal_property.h"
+
 static _MMAlgos *_mm_algos_singleton = nullptr;
 
 void register_material_maker_types() {
 	ClassDB::register_class<_MMAlgos>();
+
+	ClassDB::register_class<MMNodeUniversalProperty>();
+	ClassDB::register_class<MMMaterial>();
+	ClassDB::register_class<MMNode>();
 
 	_mm_algos_singleton = memnew(_MMAlgos);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("MMAlgos", _MMAlgos::get_singleton()));
