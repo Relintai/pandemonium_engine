@@ -1,5 +1,5 @@
 
-#include "matmakergdeditor.h"
+#include "mat_maker_gd_editor.h"
 
 Variant MatMakerGDEditor::get_Variant() {
 	return Variant;
@@ -648,13 +648,13 @@ static void MatMakerGDEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_add_popup_path", "value"), &MatMakerGDEditor::set_add_popup_path);
 	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "add_popup_path"), "set_add_popup_path", "get_add_popup_path");
 
-	ClassDB::bind_method(D_METHOD("get_*_graph_edit"), &MatMakerGDEditor::get_ * _graph_edit);
-	ClassDB::bind_method(D_METHOD("set_*_graph_edit", "value"), &MatMakerGDEditor::set_ * _graph_edit);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_graph_edit", PROPERTY_HINT_RESOURCE_TYPE, "GraphEdit"), "set_*_graph_edit", "get_*_graph_edit");
+	ClassDB::bind_method(D_METHOD("get_graph_edit"), &MatMakerGDEditor::get_ * _graph_edit);
+	ClassDB::bind_method(D_METHOD("set_graph_edit", "value"), &MatMakerGDEditor::set_ * _graph_edit);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_graph_edit", PROPERTY_HINT_RESOURCE_TYPE, "GraphEdit"), "set_graph_edit", "get_graph_edit");
 
-	ClassDB::bind_method(D_METHOD("get_*_material"), &MatMakerGDEditor::get_ * _material);
-	ClassDB::bind_method(D_METHOD("set_*_material", "value"), &MatMakerGDEditor::set_ * _material);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_material", PROPERTY_HINT_RESOURCE_TYPE, "MMMateial"), "set_*_material", "get_*_material");
+	ClassDB::bind_method(D_METHOD("get_material"), &MatMakerGDEditor::get_ * _material);
+	ClassDB::bind_method(D_METHOD("set_material", "value"), &MatMakerGDEditor::set_ * _material);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_material", PROPERTY_HINT_RESOURCE_TYPE, "MMMateial"), "set_material", "get_material");
 
 	ClassDB::bind_method(D_METHOD("get__ignore_material_change_event"), &MatMakerGDEditor::get__ignore_material_change_event);
 	ClassDB::bind_method(D_METHOD("set__ignore_material_change_event", "value"), &MatMakerGDEditor::set__ignore_material_change_event);
@@ -664,13 +664,13 @@ static void MatMakerGDEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set__recreation_in_progress", "value"), &MatMakerGDEditor::set__recreation_in_progress);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "_recreation_in_progress"), "set__recreation_in_progress", "get__recreation_in_progress");
 
-	ClassDB::bind_method(D_METHOD("get_*_plugin"), &MatMakerGDEditor::get_ * _plugin);
-	ClassDB::bind_method(D_METHOD("set_*_plugin", "value"), &MatMakerGDEditor::set_ * _plugin);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_plugin", PROPERTY_HINT_RESOURCE_TYPE, "EditorPlugin"), "set_*_plugin", "get_*_plugin");
+	ClassDB::bind_method(D_METHOD("get_plugin"), &MatMakerGDEditor::get_ * _plugin);
+	ClassDB::bind_method(D_METHOD("set_plugin", "value"), &MatMakerGDEditor::set_ * _plugin);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_plugin", PROPERTY_HINT_RESOURCE_TYPE, "EditorPlugin"), "set_plugin", "get_plugin");
 
-	ClassDB::bind_method(D_METHOD("get_*_undo_redo"), &MatMakerGDEditor::get_ * _undo_redo);
-	ClassDB::bind_method(D_METHOD("set_*_undo_redo", "value"), &MatMakerGDEditor::set_ * _undo_redo);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_undo_redo", PROPERTY_HINT_RESOURCE_TYPE, "UndoRedo"), "set_*_undo_redo", "get_*_undo_redo");
+	ClassDB::bind_method(D_METHOD("get_undo_redo"), &MatMakerGDEditor::get_ * _undo_redo);
+	ClassDB::bind_method(D_METHOD("set_undo_redo", "value"), &MatMakerGDEditor::set_ * _undo_redo);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_undo_redo", PROPERTY_HINT_RESOURCE_TYPE, "UndoRedo"), "set_undo_redo", "get_undo_redo");
 
 	ClassDB::bind_method(D_METHOD("_enter_tree"), &MatMakerGDEditor::_enter_tree);
 	ClassDB::bind_method(D_METHOD("set_plugin", "plugin"), &MatMakerGDEditor::set_plugin);

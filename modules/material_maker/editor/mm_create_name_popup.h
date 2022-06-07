@@ -1,8 +1,8 @@
-#ifndef CREATENAMEPOPUP_H
-#define CREATENAMEPOPUP_H
+#ifndef MM_CREATE_NAME_POPUP_H
+#define MM_CREATE_NAME_POPUP_H
 
-class CreateNamePopup : public ConfirmationDialog {
-	GDCLASS(CreateNamePopup, ConfirmationDialog);
+class MMCreateNamePopup : public ConfirmationDialog {
+	GDCLASS(MMCreateNamePopup, ConfirmationDialog);
 
 public:
 	NodePath get_line_edit_path();
@@ -17,11 +17,11 @@ public:
 	String get__resource_type();
 	void set__resource_type(const String &val);
 
-	LineEdit get_ *_line_edit();
-	void set_ *_line_edit(const LineEdit &val);
+	LineEdit get_line_edit();
+	void set_line_edit(const LineEdit &val);
 
-	Tree get_ *_tree();
-	void set_ *_tree(const Tree &val);
+	Tree get_tree();
+	void set_tree(const Tree &val);
 
 	void _ready();
 	void set_resource_type(const String &resource_type);
@@ -29,8 +29,8 @@ public:
 	void evaluate_folder(const String &folder, const TreeItem &root);
 	void _on_OK_pressed();
 
-	CreateNamePopup();
-	~CreateNamePopup();
+	MMCreateNamePopup();
+	~MMCreateNamePopup();
 
 protected:
 	static void _bind_methods();
