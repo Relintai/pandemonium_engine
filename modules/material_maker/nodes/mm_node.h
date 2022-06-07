@@ -19,6 +19,12 @@ public:
 	Vector2 get_graph_position();
 	void set_graph_position(const Vector2 &val);
 
+	Vector<Variant> get_input_properties();
+	void set_input_properties(const Vector<Variant> &val);
+
+	Vector<Variant> get_output_properties();
+	void set_output_properties(const Vector<Variant> &val);
+
 	bool get_properties_initialized() const;
 	void set_properties_initialized(const bool val);
 
@@ -29,8 +35,10 @@ public:
 	void _render(const Ref<MMMaterial> &material);
 
 	Ref<Image> render_image(const Ref<MMMaterial> &material);
+	Ref<Image> _render_image(const Ref<MMMaterial> &material);
 
 	Color get_value_for(const Vector2 &uv, const int pseed);
+	Color _get_value_for(const Vector2 &uv, const int pseed);
 
 	void init_properties();
 	void _init_properties();

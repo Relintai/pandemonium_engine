@@ -15,6 +15,48 @@ void MMNode::set_graph_position(const Vector2 &pos) {
 	emit_changed();
 }
 
+Vector<Variant> MMNode::get_input_properties() {
+	Vector<Variant> r;
+	for (int i = 0; i < input_properties.size(); i++) {
+		r.push_back(input_properties[i].get_ref_ptr());
+	}
+	return r;
+}
+
+void MMNode::set_input_properties(const Vector<Variant> &val) {
+	input_properties.clear();
+	for (int i = 0; i < val.size(); i++) {
+		Ref<MMNode> e = Ref<MMNode>(val[i]);
+
+		if (!e.is_valid()) {
+			continue;
+		}
+
+		input_properties.push_back(e);
+	}
+}
+
+Vector<Variant> MMNode::get_output_properties() {
+	Vector<Variant> r;
+	for (int i = 0; i < output_properties.size(); i++) {
+		r.push_back(output_properties[i].get_ref_ptr());
+	}
+	return r;
+}
+
+void MMNode::set_output_properties(const Vector<Variant> &val) {
+	output_properties.clear();
+	for (int i = 0; i < val.size(); i++) {
+		Ref<MMNode> e = Ref<MMNode>(val[i]);
+
+		if (!e.is_valid()) {
+			continue;
+		}
+
+		output_properties.push_back(e);
+	}
+}
+
 bool MMNode::get_properties_initialized() const {
 	return properties_initialized;
 }
@@ -59,6 +101,10 @@ void MMNode::_render(const Ref<MMMaterial> &material) {
 }
 
 Ref<Image> MMNode::render_image(const Ref<MMMaterial> &material) {
+	return call("_render_image", material);
+}
+
+Ref<Image> MMNode::_render_image(const Ref<MMMaterial> &material) {
 	Ref<Image> image;
 	image.instance();
 
@@ -83,6 +129,10 @@ Ref<Image> MMNode::render_image(const Ref<MMMaterial> &material) {
 }
 
 Color MMNode::get_value_for(const Vector2 &uv, const int pseed) {
+	return call("_get_value_for", uv, pseed);
+}
+
+Color MMNode::_get_value_for(const Vector2 &uv, const int pseed) {
 	return Color();
 }
 
@@ -102,6 +152,7 @@ void MMNode::register_methods(Node *mm_graph_node) {
 }
 
 void MMNode::_register_methods_bind(Node *mm_graph_node) {
+	_register_methods(mm_graph_node);
 }
 
 void MMNode::_register_methods(Node *mm_graph_node) {
@@ -197,6 +248,14 @@ void MMNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_graph_position", "value"), &MMNode::set_graph_position);
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "graph_position"), "set_graph_position", "get_graph_position");
 
+	ClassDB::bind_method(D_METHOD("get_input_properties"), &MMNode::get_input_properties);
+	ClassDB::bind_method(D_METHOD("set_input_properties", "value"), &MMNode::set_input_properties);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "input_properties", PROPERTY_HINT_NONE, "17/17:MMNodeUniversalProperty", PROPERTY_USAGE_DEFAULT, "MMNodeUniversalProperty"), "set_input_properties", "get_input_properties");
+
+	ClassDB::bind_method(D_METHOD("get_output_properties"), &MMNode::get_output_properties);
+	ClassDB::bind_method(D_METHOD("set_output_properties", "value"), &MMNode::set_output_properties);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "output_properties", PROPERTY_HINT_NONE, "17/17:MMNodeUniversalProperty", PROPERTY_USAGE_DEFAULT, "MMNodeUniversalProperty"), "set_output_properties", "get_output_properties");
+
 	ClassDB::bind_method(D_METHOD("get_properties_initialized"), &MMNode::get_properties_initialized);
 	ClassDB::bind_method(D_METHOD("set_properties_initialized", "value"), &MMNode::set_properties_initialized);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "properties_initialized", PROPERTY_HINT_NONE, "", 0), "set_properties_initialized", "get_properties_initialized");
@@ -208,16 +267,21 @@ void MMNode::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_render", PropertyInfo(Variant::OBJECT, "material", PROPERTY_HINT_RESOURCE_TYPE, "MMMaterial")));
 	ClassDB::bind_method(D_METHOD("render", "material"), &MMNode::render);
 	ClassDB::bind_method(D_METHOD("_render", "material"), &MMNode::_render);
-	ClassDB::bind_method(D_METHOD("render_image", "material"), &MMNode::render_image);
 
+	BIND_VMETHOD(MethodInfo("_render_image", PropertyInfo(Variant::OBJECT, "material", PROPERTY_HINT_RESOURCE_TYPE, "MMMaterial")));
+	ClassDB::bind_method(D_METHOD("render_image", "material"), &MMNode::render_image);
+	ClassDB::bind_method(D_METHOD("_render_image", "material"), &MMNode::_render_image);
+
+	BIND_VMETHOD(MethodInfo("_get_value_for", PropertyInfo(Variant::VECTOR2, "uv"), PropertyInfo(Variant::INT, "pseed")));
 	ClassDB::bind_method(D_METHOD("get_value_for", "uv", "pseed"), &MMNode::get_value_for);
+	ClassDB::bind_method(D_METHOD("_get_value_for", "uv", "pseed"), &MMNode::_get_value_for);
 
 	BIND_VMETHOD(MethodInfo("_init_properties"));
 	ClassDB::bind_method(D_METHOD("init_properties"), &MMNode::init_properties);
 	ClassDB::bind_method(D_METHOD("_init_properties"), &MMNode::_init_properties);
 
-	BIND_VMETHOD(MethodInfo("_get_property_value", PropertyInfo(Variant::OBJECT, "mm_graph_node")));
-	//ClassDB::bind_method(D_METHOD("register_methods", "mm_graph_node"), &MMNode::register_methods);
+	BIND_VMETHOD(MethodInfo("_register_methods", PropertyInfo(Variant::OBJECT, "mm_graph_node")));
+	ClassDB::bind_method(D_METHOD("register_methods", "mm_graph_node"), &MMNode::register_methods);
 	ClassDB::bind_method(D_METHOD("_register_methods", "mm_graph_node"), &MMNode::_register_methods_bind);
 
 	ClassDB::bind_method(D_METHOD("register_input_property", "prop"), &MMNode::register_input_property);
