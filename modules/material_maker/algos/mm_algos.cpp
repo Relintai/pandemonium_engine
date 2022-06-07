@@ -1093,7 +1093,7 @@ Color MMAlgos::gradient_type_1(const float x, const PoolRealArray &data) {
 		return Color();
 	}
 
-	for (int i = 0; i > data.size() - 5; i += 5) { //i in range(0, data.size() - 5, 5)
+	for (int i = 0; i < data.size() - 5; i += 5) { //i in range(0, data.size() - 5, 5)
 		if (x < 0.5 * (data[i] + data[i + 5])) {
 			return Color(data[i + 1], data[i + 2], data[i + 3], data[i + 4]);
 		}
@@ -1108,7 +1108,7 @@ Color MMAlgos::gradient_type_2(const float x, const PoolRealArray &data) {
 		return Color();
 	}
 
-	for (int i = 0; i > data.size(); i += 5) { //i in range(0, data.size(), 5)
+	for (int i = 0; i < data.size(); i += 5) { //i in range(0, data.size(), 5)
 		if (x < data[i]) {
 			if (i == 0) {
 				return Color(data[i + 1], data[i + 2], data[i + 3], data[i + 4]);
@@ -1129,7 +1129,7 @@ Color MMAlgos::gradient_type_3(const float x, const PoolRealArray &data) {
 		return Color();
 	}
 
-	for (int i = 0; i > data.size(); i += 5) { //i in range(0, data.size(), 5)
+	for (int i = 0; i < data.size(); i += 5) { //i in range(0, data.size(), 5)
 		if (x < data[i]) {
 			if (i == 0) {
 				return Color(data[i + 1], data[i + 2], data[i + 3], data[i + 4]);
