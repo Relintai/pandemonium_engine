@@ -100,307 +100,328 @@ int MMGraphNode::add_slot_texture(const String &getter, const String &setter) {
 	t->set_custom_minimum_size(Vector2(128, 128));
 	t->set_expand(true);
 	t->set_stretch_mode(TextureRect::STRETCH_KEEP_ASPECT_CENTERED);
-	int slot_idx = add_slot(MMNodeuniversalProperty::SLOT_TYPE_NONE, MMNodeuniversalProperty::SLOT_TYPE_NONE, getter, setter, t);
-	t->texture = _node.call(getter, _material, slot_idx);
-	properties[slot_idx].append(t->texture);
+	int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, getter, setter, t);
+	t->set_texture(_node->call(getter, _material, slot_idx));
+	properties[slot_idx].append(t->get_texture());
 	return slot_idx;
 }
 
-int MMGraphNode::add_slot_texture_universal(const MMNodeuniversalProperty::&property) {
+int MMGraphNode::add_slot_texture_universal(const Ref<MMNodeUniversalProperty> &property) {
 	TextureRect *t = memnew(TextureRect);
-	t.rect_min_size = Vector2(128, 128);
-	t.expand = true;
-	t.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED;
-	int slot_idx = add_slot(property.input_slot_type, property.output_slot_type, "", "", t);
-	Ref<Image> img = property.get_active_image();
-	Ref<ImageTexture> tex = ImageTexture.new();
+	t->set_custom_minimum_size(Vector2(128, 128));
+	t->set_expand(true);
+	t->set_stretch_mode(TextureRect::STRETCH_KEEP_ASPECT_CENTERED);
+	int slot_idx = add_slot(property->input_slot_type, property.output_slot_type, "", "", t);
+	Ref<Image> img = property->get_active_image();
+	Ref<ImageTexture> tex;
+	tex.instance();
 
 	if (img) {
-		tex.create_from_image(img, 0);
+		tex->create_from_image(img, 0);
 	}
 
-	t.texture = tex;
+	t->set_texture(tex);
 	properties[slot_idx].append(property);
 	property.connect("changed", self, "on_universal_texture_changed", [slot_idx]);
 	return slot_idx;
 }
 
-int MMGraphNode::add_slot_image_path_universal(const MMNodeuniversalProperty::&property, const String &getter, const String &setter) {
-	TextureButton *t = load("res://addons/mat_maker_gd/widgets/image_picker_button/image_picker_button.tscn").instance();
-	int slot_idx = add_slot(property.input_slot_type, property.output_slot_type, "", "", t);
-	properties[slot_idx].append(property);
-	properties[slot_idx].append(getter);
-	properties[slot_idx].append(setter);
-	property.connect("changed", self, "on_universal_texture_changed_image_picker", [slot_idx]);
-	t.connect("on_file_selected", self, "on_universal_image_path_changed", [slot_idx]);
-	t.call_deferred("do_set_image_path", _node.call(getter));
-	return slot_idx;
+int MMGraphNode::add_slot_image_path_universal(const Ref<MMNodeUniversalProperty> &property, const String &getter, const String &setter) {
+	/*
+	  TextureButton *t = load("res://addons/mat_maker_gd/widgets/image_picker_button/image_picker_button.tscn").instance();
+	  int slot_idx = add_slot(property.input_slot_type, property.output_slot_type, "", "", t);
+	  properties[slot_idx].append(property);
+	  properties[slot_idx].append(getter);
+	  properties[slot_idx].append(setter);
+	  property.connect("changed", self, "on_universal_texture_changed_image_picker", [slot_idx]);
+	  t.connect("on_file_selected", self, "on_universal_image_path_changed", [slot_idx]);
+	  t.call_deferred("do_set_image_path", _node.call(getter));
+	  return slot_idx;
+	*/
+
+	return 0;
 }
 
 int MMGraphNode::add_slot_gradient() {
-	Control *ge = gradient_editor_scene.instance();
-	ge.graph_node = self;
-	ge.set_undo_redo(_undo_redo);
-	int slot_idx = add_slot(MMNodeuniversalProperty::SLOT_TYPE_NONE, MMNodeuniversalProperty::SLOT_TYPE_NONE, "", "", ge);
-	ge.set_value(_node);
-	//ge.texture = _node.call(getter, _material, slot_idx);
-	//properties[slot_idx].append(ge.texture);
-	return slot_idx;
+	/*
+	  Control *ge = gradient_editor_scene.instance();
+	  ge.graph_node = self;
+	  ge.set_undo_redo(_undo_redo);
+	  int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, "", "", ge);
+	  ge.set_value(_node);
+	  //ge.texture = _node.call(getter, _material, slot_idx);
+	  //properties[slot_idx].append(ge.texture);
+	  return slot_idx;
+	*/
+
+	return 0;
 }
 
 int MMGraphNode::add_slot_polygon() {
-	Control *ge = polygon_edit_scene.instance();
-	int slot_idx = add_slot(MMNodeuniversalProperty::SLOT_TYPE_NONE, MMNodeuniversalProperty::SLOT_TYPE_NONE, "", "", ge);
-	ge.set_value(_node);
-	//ge.texture = _node.call(getter, _material, slot_idx);
-	//properties[slot_idx].append(ge.texture);
-	return slot_idx;
+	/*
+	  Control *ge = polygon_edit_scene.instance();
+	  int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, "", "", ge);
+	  ge.set_value(_node);
+	  //ge.texture = _node.call(getter, _material, slot_idx);
+	  //properties[slot_idx].append(ge.texture);
+	  return slot_idx;
+	*/
+
+	return 0;
 }
 
 int MMGraphNode::add_slot_curve() {
-	Control *ge = curve_edit_scene.instance();
-	int slot_idx = add_slot(MMNodeuniversalProperty::SLOT_TYPE_NONE, MMNodeuniversalProperty::SLOT_TYPE_NONE, "", "", ge);
-	ge.set_value(_node);
-	//ge.texture = _node.call(getter, _material, slot_idx);
-	//properties[slot_idx].append(ge.texture);
-	return slot_idx;
+	/*
+	  Control *ge = curve_edit_scene.instance();
+	  int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, "", "", ge);
+	  ge.set_value(_node);
+	  //ge.texture = _node.call(getter, _material, slot_idx);
+	  //properties[slot_idx].append(ge.texture);
+	  return slot_idx;
+	*/
+
+	return 0;
 }
 
 int MMGraphNode::add_slot_color(const String &getter, const String &setter) {
-	ColorPickerButton *cp = ColorPickerButton.new();
-	int slot_idx = add_slot(MMNodeuniversalProperty::SLOT_TYPE_NONE, MMNodeuniversalProperty::SLOT_TYPE_NONE, getter, setter, cp);
-	cp.color = _node.call(getter);
-	cp.connect("color_changed", _node, setter);
-	return slot_idx;
+	/*
+	  ColorPickerButton *cp = ColorPickerButton.new();
+	  int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, getter, setter, cp);
+	  cp.color = _node.call(getter);
+	  cp.connect("color_changed", _node, setter);
+	  return slot_idx;
+	*/
+
+	return 0;
 }
 
-int MMGraphNode::add_slot_color_universal(const MMNodeuniversalProperty::&property) {
-	ColorPickerButton *cp = ColorPickerButton.new();
+int MMGraphNode::add_slot_color_universal(const Ref<MMNodeUniversalProperty> &property) {
+	ColorPickerButton *cp = memnew(ColorPickerButton);
 	int slot_idx = add_slot(property.input_slot_type, property.output_slot_type, "", "", cp);
-	cp.color = property.get_default_value();
+	cp->set_color(property->get_default_value());
 	properties[slot_idx].append(property);
-	cp.connect("color_changed", self, "on_universal_color_changed", [slot_idx]);
+	cp->connect("color_changed", this, "on_universal_color_changed", [slot_idx]);
 	return slot_idx;
 }
 
 int MMGraphNode::add_slot_label(const String &getter, const String &setter, const String &slot_name) {
-	Label *l = Label.new();
-	l.text = slot_name;
-	return add_slot(MMNodeuniversalProperty::SLOT_TYPE_NONE, MMNodeuniversalProperty::SLOT_TYPE_NONE, getter, setter, l);
+	Label *l = memnew(Label);
+	l->set_text(slot_name);
+	return add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, getter, setter, l);
 }
 
 int MMGraphNode::add_slot_line_edit(const String &getter, const String &setter, const String &slot_name, const String &placeholder) {
-	VBoxContainer *bc = VBoxContainer.new();
-	Label *l = Label.new();
-	l.text = slot_name;
+	VBoxContainer *bc = memnew(VBoxContainer);
+	Label *l = memnew(Label);
+	l.set_text(slot_name);
 	bc.add_child(l);
 	LineEdit *le = LineEdit.new();
-	le.placeholder_text = placeholder;
+	le.set_placeholder_text(placeholder);
 	bc.add_child(le);
-	int slot_idx = add_slot(MMNodeuniversalProperty::SLOT_TYPE_NONE, MMNodeuniversalProperty::SLOT_TYPE_NONE, getter, setter, bc);
-	le.text = _node.call(getter);
-	le.connect("text_entered", self, "on_slot_line_edit_text_entered", [slot_idx]);
+	int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, getter, setter, bc);
+	le->set_text(_node->call(getter));
+	le->connect("text_entered", this, "on_slot_line_edit_text_entered", [slot_idx]);
 	return slot_idx;
 }
 
 int MMGraphNode::add_slot_enum(const String &getter, const String &setter, const String &slot_name, const Array &values) {
-	VBoxContainer *bc = VBoxContainer.new();
+	VBoxContainer *bc = memnew(VBoxContainer);
 
 	if (slot_name) {
-		Label *l = Label.new();
-		l.text = slot_name;
-		bc.add_child(l);
+		Label *l = memnew(Label);
+		l->set_text(slot_name);
+		bc->add_child(l);
 	}
 
-	OptionButton *mb = OptionButton.new();
+	OptionButton *mb = memnew(OptionButton);
 
 	for (v in values) {
 		mb.add_item(v);
 	}
 
-	bc.add_child(mb);
-	int slot_idx = add_slot(MMNodeuniversalProperty::SLOT_TYPE_NONE, MMNodeuniversalProperty::SLOT_TYPE_NONE, getter, setter, bc);
-	mb.selected = _node.call(getter);
-	mb.connect("item_selected", self, "on_slot_enum_item_selected", [slot_idx]);
+	bc->add_child(mb);
+	int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, getter, setter, bc);
+	mb->set_selected(_node->call(getter));
+	mb->connect("item_selected", this, "on_slot_enum_item_selected", [slot_idx]);
 	return slot_idx;
 }
 
  int MMGraphNode::add_slot_int(const String &getter, const String &setter, const String &slot_name, const Vector2 &prange, const Variant & 1000)) {
-	 VBoxContainer *bc = VBoxContainer.new();
-	 Label *l = Label.new();
-	 l.text = slot_name;
-	 bc.add_child(l);
-	 SpinBox *sb = SpinBox.new();
-	 sb.rounded = true;
-	 sb.min_value = prange.x;
-	 sb.max_value = prange.y;
-	 bc.add_child(sb);
-	 int slot_idx = add_slot(MMNodeuniversalProperty::SLOT_TYPE_NONE, MMNodeuniversalProperty::SLOT_TYPE_NONE, getter, setter, bc);
-	 sb.value = _node.call(getter);
-	 sb.connect("value_changed", self, "on_int_spinbox_value_changed", [slot_idx]);
+	 VBoxContainer *bc = memnew(VBoxContainer);
+	 Label *l = memnew(Label);
+	 l->set_text(slot_name);
+	 bc->add_child(l);
+	 SpinBox *sb = memnew(SpinBox);
+	 sb->set_rounded(true);
+	 sb->set_min_value(prange.x);
+	 sb->set_max_value(prange.y);
+	 bc->add_child(sb);
+	 int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, getter, setter, bc);
+	 sb->set_value(_node->call(getter));
+	 sb->connect("value_changed", this, "on_int_spinbox_value_changed", [slot_idx]);
 	 return slot_idx;
  }
 
  int MMGraphNode::add_slot_bool(const String &getter, const String &setter, const String &slot_name) {
-	 CheckBox *cb = CheckBox.new();
-	 cb.text = slot_name;
-	 int slot_idx = add_slot(MMNodeuniversalProperty::SLOT_TYPE_NONE, MMNodeuniversalProperty::SLOT_TYPE_NONE, getter, setter, cb);
-	 cb.pressed = _node.call(getter);
-	 cb.connect("toggled", _node, setter);
+	 CheckBox *cb = memnew(CheckBox);
+	 cb->set_text(slot_name);
+	 int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, getter, setter, cb);
+	 cb->set_pressed(_node->call(getter));
+	 cb->connect("toggled", _node, setter);
 	 return slot_idx;
  }
 
- int MMGraphNode::add_slot_label_universal(const MMNodeuniversalProperty::&property) {
-	 Label *l = Label.new();
-	 l.text = property.slot_name;
-	 int slot_idx = add_slot(property.input_slot_type, property.output_slot_type, "", "", l);
+ int MMGraphNode::add_slot_label_universal(const Ref<MMNodeUniversalProperty> &property) {
+	 Label *l = memnew(Label);
+	 l->set_text(property.slot_name);
+	 int slot_idx = add_slot(property->input_slot_type, property->output_slot_type, "", "", l);
 	 properties[slot_idx].append(property);
 	 return slot_idx;
  }
 
- int MMGraphNode::add_slot_int_universal(const MMNodeuniversalProperty::&property) {
-	 VBoxContainer *bc = VBoxContainer.new();
-	 Label *l = Label.new();
-	 l.text = property.slot_name;
-	 bc.add_child(l);
-	 SpinBox *sb = SpinBox.new();
-	 sb.rounded = true;
-	 sb.min_value = property.value_range.x;
-	 sb.max_value = property.value_range.y;
-	 bc.add_child(sb);
-	 int slot_idx = add_slot(property.input_slot_type, property.output_slot_type, "", "", bc);
-	 sb.value = property.get_default_value();
-	 sb.connect("value_changed", self, "on_int_universal_spinbox_value_changed", [slot_idx]);
+ int MMGraphNode::add_slot_int_universal(const Ref<MMNodeUniversalProperty> &property) {
+	 VBoxContainer *bc = memnew(VBoxContainer);
+	 Label *l = memnew(Label);
+	 l->set_text(property->slot_name);
+	 bc->add_child(l);
+	 SpinBox *sb = memnew(SpinBox);
+	 sb->set_rounded(true);
+	 sb->set_min_value(property.value_range.x);
+	 sb->set_max_value(property.value_range.y);
+	 bc->add_child(sb);
+	 int slot_idx = add_slot(property->input_slot_type, property->output_slot_type, "", "", bc);
+	 sb->set_value(property->get_default_value());
+	 sb->connect("value_changed", this, "on_int_universal_spinbox_value_changed", [slot_idx]);
 	 properties[slot_idx].append(property);
 	 return slot_idx;
  }
 
  int MMGraphNode::add_slot_float(const String &getter, const String &setter, const String &slot_name, const float step, const Vector2 &prange, const Variant & 1000)) {
-	 VBoxContainer *bc = VBoxContainer.new();
-	 Label *l = Label.new();
-	 l.text = slot_name;
-	 bc.add_child(l);
-	 SpinBox *sb = SpinBox.new();
-	 bc.add_child(sb);
-	 int slot_idx = add_slot(MMNodeuniversalProperty::SLOT_TYPE_NONE, MMNodeuniversalProperty::SLOT_TYPE_NONE, getter, setter, bc);
-	 sb.rounded = false;
-	 sb.step = step;
-	 sb.min_value = prange.x;
-	 sb.max_value = prange.y;
-	 sb.value = _node.call(getter);
-	 sb.connect("value_changed", self, "on_float_spinbox_value_changed", [slot_idx]);
+	 VBoxContainer *bc = memnew(VBoxContainer);
+	 Label *l = memnew(Label);
+	 l->set_text(slot_name);
+	 bc->add_child(l);
+	 SpinBox *sb = memnew(SpinBox);
+	 bc->add_child(sb);
+	 int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, getter, setter, bc);
+	 sb->set_rounded(false);
+	 sb->set_step(step);
+	 sb->set_min_value(prange.x);
+	 sb->set_max_value(prange.y);
+	 sb->set_value(_node->call(getter));
+	 sb->connect("value_changed", this, "on_float_spinbox_value_changed", [slot_idx]);
 	 return slot_idx;
  }
 
- int MMGraphNode::add_slot_float_universal(const MMNodeuniversalProperty::&property) {
-	 VBoxContainer *bc = VBoxContainer.new();
-	 Label *l = Label.new();
-	 l.text = property.slot_name;
-	 bc.add_child(l);
-	 SpinBox *sb = SpinBox.new();
-	 bc.add_child(sb);
-	 int slot_idx = add_slot(property.input_slot_type, property.output_slot_type, "", "", bc);
-	 sb.rounded = false;
-	 sb.step = property.value_step;
-	 sb.min_value = property.value_range.x;
-	 sb.max_value = property.value_range.y;
-	 sb.value = property.get_default_value();
+ int MMGraphNode::add_slot_float_universal(const Ref<MMNodeUniversalProperty> &property) {
+	 VBoxContainer *bc = memnew(VBoxContainer);
+	 Label *l = memnew(Label);
+	 l->set_text(property->slot_name);
+	 bc->add_child(l);
+	 SpinBox *sb = memnew(SpinBox);
+	 bc->add_child(sb);
+	 int slot_idx = add_slot(property->input_slot_type, property->output_slot_type, "", "", bc);
+	 sb->set_rounded(false);
+	 sb->set_step(property->value_step);
+	 sb->set_min_value(property->value_range.x);
+	 sb->set_max_value(property->value_range.y);
+	 sb->set_value(property.get_default_value());
 	 properties[slot_idx].append(property);
-	 sb.connect("value_changed", self, "on_float_universal_spinbox_value_changed", [slot_idx]);
+	 sb->connect("value_changed", this, "on_float_universal_spinbox_value_changed", [slot_idx]);
 	 return slot_idx;
  }
 
- int MMGraphNode::add_slot_vector2(const String &getter, const String &setter, const String &slot_name, const float step, const Vector2 &prange, const Variant & 1000)) {
-	 VBoxContainer *bc = VBoxContainer.new();
-	 Label *l = Label.new();
-	 l.text = slot_name;
-	 bc.add_child(l);
-	 SpinBox *sbx = SpinBox.new();
-	 bc.add_child(sbx);
-	 SpinBox *sby = SpinBox.new();
-	 bc.add_child(sby);
-	 int slot_idx = add_slot(MMNodeuniversalProperty::SLOT_TYPE_NONE, MMNodeuniversalProperty::SLOT_TYPE_NONE, getter, setter, bc);
-	 sbx.rounded = false;
-	 sby.rounded = false;
-	 sbx.step = step;
-	 sby.step = step;
-	 sbx.min_value = prange.x;
-	 sbx.max_value = prange.y;
-	 sby.min_value = prange.x;
-	 sby.max_value = prange.y;
-	 Vector2 val = _node.call(getter);
-	 sbx.value = val.x;
-	 sby.value = val.y;
-	 sbx.connect("value_changed", self, "on_vector2_spinbox_value_changed", [ slot_idx, sbx, sby ]);
-	 sby.connect("value_changed", self, "on_vector2_spinbox_value_changed", [ slot_idx, sbx, sby ]);
+ int MMGraphNode::add_slot_vector2(const String &getter, const String &setter, const String &slot_name, const float step, const Vector2 &prange) {
+	 VBoxContainer *bc = memnew(VBoxContainer);
+	 Label *l = memnew(Label);
+	 l->set_text(slot_name);
+	 bc->add_child(l);
+	 SpinBox *sbx = memnew(SpinBox);
+	 bc->add_child(sbx);
+	 SpinBox *sby = memnew(SpinBox);
+	 bc->add_child(sby);
+	 int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, getter, setter, bc);
+	 sbx->set_rounded(false);
+	 sby->set_rounded(false);
+	 sbx->set_step(step);
+	 sby->set_step(step);
+	 sbx->set_min_value(prange.x);
+	 sbx->set_max_value(prange.y);
+	 sby->set_min_value(prange.x);
+	 sby->set_max_value(prange.y);
+	 Vector2 val = _node->call(getter);
+	 sbx->set_value(val.x);
+	 sby->set_value(val.y);
+	 sbx->connect("value_changed", this, "on_vector2_spinbox_value_changed", [ slot_idx, sbx, sby ]);
+	 sby->connect("value_changed", this, "on_vector2_spinbox_value_changed", [ slot_idx, sbx, sby ]);
 	 return slot_idx;
  }
 
  int MMGraphNode::add_slot_vector3(const String &getter, const String &setter, const String &slot_name, const float step, const Vector2 &prange, const Variant & 1000)) {
-	 VBoxContainer *bc = VBoxContainer.new();
-	 Label *l = Label.new();
-	 l.text = slot_name;
-	 bc.add_child(l);
-	 SpinBox *sbx = SpinBox.new();
-	 bc.add_child(sbx);
-	 SpinBox *sby = SpinBox.new();
-	 bc.add_child(sby);
-	 SpinBox *sbz = SpinBox.new();
-	 bc.add_child(sbz);
-	 int slot_idx = add_slot(MMNodeuniversalProperty::SLOT_TYPE_NONE, MMNodeuniversalProperty::SLOT_TYPE_NONE, getter, setter, bc);
-	 sbx.rounded = false;
-	 sby.rounded = false;
-	 sbz.rounded = false;
-	 sbx.step = step;
-	 sby.step = step;
-	 sbz.step = step;
-	 sbx.min_value = prange.x;
-	 sbx.max_value = prange.y;
-	 sby.min_value = prange.x;
-	 sby.max_value = prange.y;
-	 sbz.min_value = prange.x;
-	 sbz.max_value = prange.y;
-	 Vector3 val = _node.call(getter);
-	 sbx.value = val.x;
-	 sby.value = val.y;
-	 sbz.value = val.z;
-	 sbx.connect("value_changed", self, "on_vector3_spinbox_value_changed", [ slot_idx, sbx, sby, sbz ]);
-	 sby.connect("value_changed", self, "on_vector3_spinbox_value_changed", [ slot_idx, sbx, sby, sbz ]);
-	 sbz.connect("value_changed", self, "on_vector3_spinbox_value_changed", [ slot_idx, sbx, sby, sbz ]);
+	 VBoxContainer *bc = memnew(VBoxContainer);
+	 Label *l = memnew(Label);
+	 l->set_text(slot_name);
+	 bc->add_child(l);
+	 SpinBox *sbx = memnew(SpinBox);
+	 bc->add_child(sbx);
+	 SpinBox *sby = memnew(SpinBox);
+	 bc->add_child(sby);
+	 SpinBox *sbz = memnew(SpinBox);
+	 bc->add_child(sbz);
+	 int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, getter, setter, bc);
+	 sbx->set_rounded(false);
+	 sby->set_rounded(false);
+	 sbz->set_rounded(false);
+	 sbx->set_step(step);
+	 sby->set_step(step);
+	 sbz->set_step(step);
+	 sbx->set_min_value(prange.x);
+	 sbx->set_max_value(prange.y);
+	 sby->set_min_value(prange.x);
+	 sby->set_max_value(prange.y);
+	 sbz->set_min_value(prange.x);
+	 sbz->set_max_value(prange.y);
+	 Vector3 val = _node->call(getter);
+	 sbx->set_value(val.x);
+	 sby->set_value(val.y);
+	 sbz->set_value(val.z);
+	 sbx->connect("value_changed", this, "on_vector3_spinbox_value_changed", [ slot_idx, sbx, sby, sbz ]);
+	 sby->connect("value_changed", this, "on_vector3_spinbox_value_changed", [ slot_idx, sbx, sby, sbz ]);
+	 sbz->connect("value_changed", this, "on_vector3_spinbox_value_changed", [ slot_idx, sbx, sby, sbz ]);
 	 return slot_idx;
  }
 
- int MMGraphNode::add_slot_vector2_universal(const MMNodeuniversalProperty::&property) {
-	 VBoxContainer *bc = VBoxContainer.new();
-	 Label *l = Label.new();
-	 l.text = property.slot_name;
+ int MMGraphNode::add_slot_vector2_universal(const Ref<MMNodeUniversalProperty> &property) {
+	 VBoxContainer *bc = memnew(VBoxContainer);
+	 Label *l = memnew(Label);
+	 l.text = property->slot_name;
 	 bc.add_child(l);
-	 SpinBox *sbx = SpinBox.new();
+	 SpinBox *sbx = memnew(SpinBox);
 	 bc.add_child(sbx);
-	 SpinBox *sby = SpinBox.new();
+	 SpinBox *sby = memnew(SpinBox);
 	 bc.add_child(sby);
 	 int slot_idx = add_slot(property.input_slot_type, property.output_slot_type, "", "", bc);
-	 sbx.rounded = false;
-	 sby.rounded = false;
-	 sbx.step = property.value_step;
-	 sby.step = property.value_step;
-	 sbx.min_value = property.value_range.x;
-	 sbx.max_value = property.value_range.y;
-	 sby.min_value = property.value_range.x;
-	 sby.max_value = property.value_range.y;
-	 Vector2 val = property.get_default_value();
-	 sbx.value = val.x;
-	 sby.value = val.y;
+	 sbx.set_rounded(false);
+	 sby.set_rounded(false);
+	 sbx.set_step(property->value_step);
+	 sby.set_step(property->value_step);
+	 sbx.set_min_value(property->value_range.x);
+	 sbx.set_max_value(property->value_range.y);
+	 sby.set_min_value(property->value_range.x);
+	 sby.set_max_value(property->value_range.y);
+	 Vector2 val = property->get_default_value();
+	 sbx.set_value(val.x);
+	 sby.set_value(val.y);
 	 properties[slot_idx].append(property);
 	 sbx.connect("value_changed", self, "on_vector2_universal_spinbox_value_changed", [ slot_idx, sbx, sby ]);
 	 sby.connect("value_changed", self, "on_vector2_universal_spinbox_value_changed", [ slot_idx, sbx, sby ]);
 	 return slot_idx;
  }
 
- int MMGraphNode::add_slot(const int input_type, const int output_type, const String &getter, const String &setter, const Control &control) {
+ int MMGraphNode::add_slot(const int input_type, const int output_type, const String &getter, const String &setter, Control *control) {
 	 add_child(control);
 	 int slot_idx = get_child_count() - 1;
-	 Array arr = Array();
+	 Array arr;
 	 arr.append(slot_idx);
 	 arr.append(input_type);
 	 arr.append(output_type);
@@ -424,12 +445,11 @@ int MMGraphNode::add_slot_enum(const String &getter, const String &setter, const
 	 return slot_idx;
  }
 
- bool MMGraphNode::connect_slot(const int slot_idx, const Node &to_node, const int to_slot_idx) {
+ bool MMGraphNode::connect_slot(const int slot_idx, const Node *to_node, const int to_slot_idx) {
 	 int from_property_index = -1;
 	 int to_property_index = -1;
 
 	 for (int i = 0; i < properties.size(); ++i) { //i in range(properties.size())
-
 		 if (properties[i][2] != -1) {
 			 from_property_index += 1;
 
@@ -441,7 +461,6 @@ int MMGraphNode::add_slot_enum(const String &getter, const String &setter, const
 	 }
 
 	 for (int i = 0; i < to_node.properties.size(); ++i) { //i in range(to_node.properties.size())
-
 		 if (to_node.properties[i][1] != -1) {
 			 to_property_index += 1;
 
@@ -455,13 +474,13 @@ int MMGraphNode::add_slot_enum(const String &getter, const String &setter, const
 	 }
 
 	 _undo_redo->create_action("MMGD: connect_slot");
-	 _undo_redo->add_do_method(to_node.properties[to_property_index][6], "set_input_property", properties[from_property_index][6]);
-	 _undo_redo->add_undo_method(to_node.properties[to_property_index][6], "set_input_property", to_node.properties[to_property_index][6].input_property);
+	 _undo_redo->add_do_method(to_node->properties[to_property_index][6], "set_input_property", properties[from_property_index][6]);
+	 _undo_redo->add_undo_method(to_node->properties[to_property_index][6], "set_input_property", to_node->properties[to_property_index][6].input_property);
 	 _undo_redo->commit_action();
 	 return true;
  }
 
- bool MMGraphNode::disconnect_slot(const int slot_idx, const Node &to_node, const int to_slot_idx) {
+ bool MMGraphNode::disconnect_slot(const int slot_idx, const Node *to_node, const int to_slot_idx) {
 	 int from_property_index = -1;
 	 int to_property_index = -1;
 
@@ -492,8 +511,8 @@ int MMGraphNode::add_slot_enum(const String &getter, const String &setter, const
 	 }
 
 	 _undo_redo->create_action("MMGD: disconnect_slot");
-	 _undo_redo->add_do_method(to_node.properties[to_property_index][6], "unset_input_property");
-	 _undo_redo->add_undo_method(to_node.properties[to_property_index][6], "set_input_property", to_node.properties[to_property_index][6].input_property);
+	 _undo_redo->add_do_method(to_node->properties[to_property_index][6], "unset_input_property");
+	 _undo_redo->add_undo_method(to_node->properties[to_property_index][6], "set_input_property", to_node->properties[to_property_index][6].input_property);
 	 _undo_redo->commit_action();
 	 return true;
  }
@@ -670,12 +689,10 @@ int MMGraphNode::add_slot_enum(const String &getter, const String &setter, const
 	 if (img) {
 		 properties[slot_idx][5].texture.create_from_image(img, 0);
 	 }
+	 properties[slot_idx][5].texture = ImageTexture.new();
+ }
 
-	 else {
-		 properties[slot_idx][5].texture = ImageTexture.new();
-	 }
-
-	 ignore_changes(false);
+ ignore_changes(false);
  }
 
  void MMGraphNode::on_universal_texture_changed_image_picker(const int slot_idx) {
@@ -683,12 +700,9 @@ int MMGraphNode::add_slot_enum(const String &getter, const String &setter, const
 	 Ref<Image> img = properties[slot_idx][6].get_active_image();
 	 Ref<ImageTexture> tex = properties[slot_idx][5].texture_normal;
 
-	 if (img) {
+	 if (img.is_valid()) {
 		 properties[slot_idx][5].texture_normal.create_from_image(img, 0);
-	 }
-
-	 else {
-		 properties[slot_idx][5].texture_normal = ImageTexture.new();
+	 } else {
 	 }
 
 	 ignore_changes(false);
@@ -777,25 +791,25 @@ int MMGraphNode::add_slot_enum(const String &getter, const String &setter, const
  void MMGraphNode::_bind_methods() {
 	 ClassDB::bind_method(D_METHOD("get_gradient_editor_scene"), &MMGraphNode::get_gradient_editor_scene);
 	 ClassDB::bind_method(D_METHOD("set_gradient_editor_scene", "value"), &MMGraphNode::set_gradient_editor_scene);
-	 ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "gradient_editor_scene", PROPERTY_HINT_RESOURCE_TYPE, "Ref<PackedScene>"), "set_gradient_editor_scene", "get_gradient_editor_scene");
+	 ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "gradient_editor_scene", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_gradient_editor_scene", "get_gradient_editor_scene");
 
 	 ClassDB::bind_method(D_METHOD("get_polygon_edit_scene"), &MMGraphNode::get_polygon_edit_scene);
 	 ClassDB::bind_method(D_METHOD("set_polygon_edit_scene", "value"), &MMGraphNode::set_polygon_edit_scene);
-	 ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "polygon_edit_scene", PROPERTY_HINT_RESOURCE_TYPE, "Ref<PackedScene>"), "set_polygon_edit_scene", "get_polygon_edit_scene");
+	 ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "polygon_edit_scene", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_polygon_edit_scene", "get_polygon_edit_scene");
 
 	 ClassDB::bind_method(D_METHOD("get_curve_edit_scene"), &MMGraphNode::get_curve_edit_scene);
 	 ClassDB::bind_method(D_METHOD("set_curve_edit_scene", "value"), &MMGraphNode::set_curve_edit_scene);
-	 ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "curve_edit_scene", PROPERTY_HINT_RESOURCE_TYPE, "Ref<PackedScene>"), "set_curve_edit_scene", "get_curve_edit_scene");
+	 ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "curve_edit_scene", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_curve_edit_scene", "get_curve_edit_scene");
 
-	 ClassDB::bind_method(D_METHOD("get_*_material"), &MMGraphNode::get_ * _material);
-	 ClassDB::bind_method(D_METHOD("set_*_material", "value"), &MMGraphNode::set_ * _material);
-	 ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_material", PROPERTY_HINT_RESOURCE_TYPE, "MMMaterial"), "set_*_material", "get_*_material");
+	 ClassDB::bind_method(D_METHOD("get_material"), &MMGraphNode::get_material);
+	 ClassDB::bind_method(D_METHOD("set_material", "value"), &MMGraphNode::set_material);
+	 ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "material", PROPERTY_HINT_RESOURCE_TYPE, "MMMaterial"), "set_material", "get_material");
 
 	 ClassDB::bind_method(D_METHOD("get_material_node"), &MMGraphNode::get_material_node);
 
-	 ClassDB::bind_method(D_METHOD("get_*_node"), &MMGraphNode::get_ * _node);
-	 ClassDB::bind_method(D_METHOD("set_*_node", "value"), &MMGraphNode::set_ * _node);
-	 ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_node", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNode>"), "set_*_node", "get_*_node");
+	 ClassDB::bind_method(D_METHOD("get_node"), &MMGraphNode::get_node);
+	 ClassDB::bind_method(D_METHOD("set_node", "value"), &MMGraphNode::set_node);
+	 ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_node", PROPERTY_HINT_RESOURCE_TYPE, "MMNode"), "set_node", "get_node");
 
 	 ClassDB::bind_method(D_METHOD("get_properties"), &MMGraphNode::get_properties);
 	 ClassDB::bind_method(D_METHOD("set_properties", "value"), &MMGraphNode::set_properties);
@@ -804,10 +818,6 @@ int MMGraphNode::add_slot_enum(const String &getter, const String &setter, const
 	 ClassDB::bind_method(D_METHOD("get_Variant"), &MMGraphNode::get_Variant);
 	 ClassDB::bind_method(D_METHOD("set_Variant", "value"), &MMGraphNode::set_Variant);
 	 ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "Variant", PROPERTY_HINT_RESOURCE_TYPE, "Variant"), "set_Variant", "get_Variant");
-
-	 ClassDB::bind_method(D_METHOD("get_*_undo_redo"), &MMGraphNode::get_ * _undo_redo);
-	 ClassDB::bind_method(D_METHOD("set_*_undo_redo", "value"), &MMGraphNode::set_ * _undo_redo);
-	 ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_undo_redo", PROPERTY_HINT_RESOURCE_TYPE, "UndoRedo"), "set_*_undo_redo", "get_*_undo_redo");
 
 	 ClassDB::bind_method(D_METHOD("get_ignore_change_event"), &MMGraphNode::get_ignore_change_event);
 	 ClassDB::bind_method(D_METHOD("set_ignore_change_event", "value"), &MMGraphNode::set_ignore_change_event);
@@ -827,47 +837,47 @@ int MMGraphNode::add_slot_enum(const String &getter, const String &setter, const
 	 ClassDB::bind_method(D_METHOD("add_slot_color", "getter", "setter"), &MMGraphNode::add_slot_color);
 	 ClassDB::bind_method(D_METHOD("add_slot_color_universal", "property"), &MMGraphNode::add_slot_color_universal);
 	 ClassDB::bind_method(D_METHOD("add_slot_label", "getter", "setter", "slot_name"), &MMGraphNode::add_slot_label);
-	 ClassDB::bind_method(D_METHOD("add_slot_line_edit", "getter", "setter", "slot_name", "placeholder"), &MMGraphNode::add_slot_line_edit, "");
+	 ClassDB::bind_method(D_METHOD("add_slot_line_edit", "getter", "setter", "slot_name", "placeholder"), &MMGraphNode::add_slot_line_edit, String());
 	 ClassDB::bind_method(D_METHOD("add_slot_enum", "getter", "setter", "slot_name", "values"), &MMGraphNode::add_slot_enum);
-  ClassDB::bind_method(D_METHOD("add_slot_int", "getter", "setter", "slot_name", "prange", " 1000)"), &MMGraphNode::add_slot_int, Vector2(-1000);
-  ClassDB::bind_method(D_METHOD("add_slot_bool", "getter", "setter", "slot_name"), &MMGraphNode::add_slot_bool);
-  ClassDB::bind_method(D_METHOD("add_slot_label_universal", "property"), &MMGraphNode::add_slot_label_universal);
-  ClassDB::bind_method(D_METHOD("add_slot_int_universal", "property"), &MMGraphNode::add_slot_int_universal);
-  ClassDB::bind_method(D_METHOD("add_slot_float", "getter", "setter", "slot_name", "step", "prange", " 1000)"), &MMGraphNode::add_slot_float, 0.1, Vector2(-1000);
-  ClassDB::bind_method(D_METHOD("add_slot_float_universal", "property"), &MMGraphNode::add_slot_float_universal);
-  ClassDB::bind_method(D_METHOD("add_slot_vector2", "getter", "setter", "slot_name", "step", "prange", " 1000)"), &MMGraphNode::add_slot_vector2, 0.1, Vector2(-1000);
-  ClassDB::bind_method(D_METHOD("add_slot_vector3", "getter", "setter", "slot_name", "step", "prange", " 1000)"), &MMGraphNode::add_slot_vector3, 0.1, Vector2(-1000);
-  ClassDB::bind_method(D_METHOD("add_slot_vector2_universal", "property"), &MMGraphNode::add_slot_vector2_universal);
-  ClassDB::bind_method(D_METHOD("add_slot", "input_type", "output_type", "getter", "setter", "control"), &MMGraphNode::add_slot);
+	 ClassDB::bind_method(D_METHOD("add_slot_int", "getter", "setter", "slot_name", "prange"), &MMGraphNode::add_slot_int, Vector2(-1000, -1000));
+	 ClassDB::bind_method(D_METHOD("add_slot_bool", "getter", "setter", "slot_name"), &MMGraphNode::add_slot_bool);
+	 ClassDB::bind_method(D_METHOD("add_slot_label_universal", "property"), &MMGraphNode::add_slot_label_universal);
+	 ClassDB::bind_method(D_METHOD("add_slot_int_universal", "property"), &MMGraphNode::add_slot_int_universal);
+	 ClassDB::bind_method(D_METHOD("add_slot_float", "getter", "setter", "slot_name", "step", "prange", " 1000)"), &MMGraphNode::add_slot_float, 0.1, Vector2(-1000));
+	 ClassDB::bind_method(D_METHOD("add_slot_float_universal", "property"), &MMGraphNode::add_slot_float_universal);
+	 ClassDB::bind_method(D_METHOD("add_slot_vector2", "getter", "setter", "slot_name", "step", "prange", " 1000)"), &MMGraphNode::add_slot_vector2, 0.1, Vector2(-1000, -1000));
+	 ClassDB::bind_method(D_METHOD("add_slot_vector3", "getter", "setter", "slot_name", "step", "prange", " 1000)"), &MMGraphNode::add_slot_vector3, 0.1, Vector2(-1000, -1000));
+	 ClassDB::bind_method(D_METHOD("add_slot_vector2_universal", "property"), &MMGraphNode::add_slot_vector2_universal);
+	 ClassDB::bind_method(D_METHOD("add_slot", "input_type", "output_type", "getter", "setter", "control"), &MMGraphNode::add_slot);
 
-  ClassDB::bind_method(D_METHOD("connect_slot", "slot_idx", "to_node", "to_slot_idx"), &MMGraphNode::connect_slot);
-  ClassDB::bind_method(D_METHOD("disconnect_slot", "slot_idx", "to_node", "to_slot_idx"), &MMGraphNode::disconnect_slot);
+	 ClassDB::bind_method(D_METHOD("connect_slot", "slot_idx", "to_node", "to_slot_idx"), &MMGraphNode::connect_slot);
+	 ClassDB::bind_method(D_METHOD("disconnect_slot", "slot_idx", "to_node", "to_slot_idx"), &MMGraphNode::disconnect_slot);
 
-  ClassDB::bind_method(D_METHOD("get_input_property_graph_node_slot_index", "property"), &MMGraphNode::get_input_property_graph_node_slot_index);
-  ClassDB::bind_method(D_METHOD("get_output_property_graph_node_slot_index", "property"), &MMGraphNode::get_output_property_graph_node_slot_index);
+	 ClassDB::bind_method(D_METHOD("get_input_property_graph_node_slot_index", "property"), &MMGraphNode::get_input_property_graph_node_slot_index);
+	 ClassDB::bind_method(D_METHOD("get_output_property_graph_node_slot_index", "property"), &MMGraphNode::get_output_property_graph_node_slot_index);
 
-  ClassDB::bind_method(D_METHOD("get_property_control", "slot_idx"), &MMGraphNode::get_property_control);
+	 ClassDB::bind_method(D_METHOD("get_property_control", "slot_idx"), &MMGraphNode::get_property_control);
 
-  ClassDB::bind_method(D_METHOD("set_node", "material", "node"), &MMGraphNode::set_node);
+	 ClassDB::bind_method(D_METHOD("set_node", "material", "node"), &MMGraphNode::set_node);
 
-  ClassDB::bind_method(D_METHOD("propagate_node_change"), &MMGraphNode::propagate_node_change);
+	 ClassDB::bind_method(D_METHOD("propagate_node_change"), &MMGraphNode::propagate_node_change);
 
-  ClassDB::bind_method(D_METHOD("on_dragged", "from", "to"), &MMGraphNode::on_dragged);
-  ClassDB::bind_method(D_METHOD("on_int_spinbox_value_changed", "val", " slot_idx"), &MMGraphNode::on_int_spinbox_value_changed);
-  ClassDB::bind_method(D_METHOD("on_float_spinbox_value_changed", "val", " slot_idx"), &MMGraphNode::on_float_spinbox_value_changed);
-  ClassDB::bind_method(D_METHOD("on_vector2_spinbox_value_changed", "val", " slot_idx", " spinbox_x", " spinbox_y"), &MMGraphNode::on_vector2_spinbox_value_changed);
-  ClassDB::bind_method(D_METHOD("on_vector3_spinbox_value_changed", "val", " slot_idx", " spinbox_x", " spinbox_y", " spinbox_z"), &MMGraphNode::on_vector3_spinbox_value_changed);
-  ClassDB::bind_method(D_METHOD("on_int_universal_spinbox_value_changed", "val", " slot_idx"), &MMGraphNode::on_int_universal_spinbox_value_changed);
-  ClassDB::bind_method(D_METHOD("on_float_universal_spinbox_value_changed", "val", " slot_idx"), &MMGraphNode::on_float_universal_spinbox_value_changed);
-  ClassDB::bind_method(D_METHOD("on_vector2_universal_spinbox_value_changed", "val", " slot_idx", " spinbox_x", " spinbox_y"), &MMGraphNode::on_vector2_universal_spinbox_value_changed);
-  ClassDB::bind_method(D_METHOD("on_slot_enum_item_selected", "val", "slot_idx"), &MMGraphNode::on_slot_enum_item_selected);
-  ClassDB::bind_method(D_METHOD("on_universal_texture_changed", "slot_idx"), &MMGraphNode::on_universal_texture_changed);
-  ClassDB::bind_method(D_METHOD("on_universal_texture_changed_image_picker", "slot_idx"), &MMGraphNode::on_universal_texture_changed_image_picker);
-  ClassDB::bind_method(D_METHOD("on_slot_line_edit_text_entered", "text", "slot_idx"), &MMGraphNode::on_slot_line_edit_text_entered);
-  ClassDB::bind_method(D_METHOD("on_universal_color_changed", "c", "slot_idx"), &MMGraphNode::on_universal_color_changed);
-  ClassDB::bind_method(D_METHOD("on_universal_image_path_changed", "f", "slot_idx"), &MMGraphNode::on_universal_image_path_changed);
-  ClassDB::bind_method(D_METHOD("on_close_request"), &MMGraphNode::on_close_request);
+	 ClassDB::bind_method(D_METHOD("on_dragged", "from", "to"), &MMGraphNode::on_dragged);
+	 ClassDB::bind_method(D_METHOD("on_int_spinbox_value_changed", "val", " slot_idx"), &MMGraphNode::on_int_spinbox_value_changed);
+	 ClassDB::bind_method(D_METHOD("on_float_spinbox_value_changed", "val", " slot_idx"), &MMGraphNode::on_float_spinbox_value_changed);
+	 ClassDB::bind_method(D_METHOD("on_vector2_spinbox_value_changed", "val", " slot_idx", " spinbox_x", " spinbox_y"), &MMGraphNode::on_vector2_spinbox_value_changed);
+	 ClassDB::bind_method(D_METHOD("on_vector3_spinbox_value_changed", "val", " slot_idx", " spinbox_x", " spinbox_y", " spinbox_z"), &MMGraphNode::on_vector3_spinbox_value_changed);
+	 ClassDB::bind_method(D_METHOD("on_int_universal_spinbox_value_changed", "val", " slot_idx"), &MMGraphNode::on_int_universal_spinbox_value_changed);
+	 ClassDB::bind_method(D_METHOD("on_float_universal_spinbox_value_changed", "val", " slot_idx"), &MMGraphNode::on_float_universal_spinbox_value_changed);
+	 ClassDB::bind_method(D_METHOD("on_vector2_universal_spinbox_value_changed", "val", " slot_idx", " spinbox_x", " spinbox_y"), &MMGraphNode::on_vector2_universal_spinbox_value_changed);
+	 ClassDB::bind_method(D_METHOD("on_slot_enum_item_selected", "val", "slot_idx"), &MMGraphNode::on_slot_enum_item_selected);
+	 ClassDB::bind_method(D_METHOD("on_universal_texture_changed", "slot_idx"), &MMGraphNode::on_universal_texture_changed);
+	 ClassDB::bind_method(D_METHOD("on_universal_texture_changed_image_picker", "slot_idx"), &MMGraphNode::on_universal_texture_changed_image_picker);
+	 ClassDB::bind_method(D_METHOD("on_slot_line_edit_text_entered", "text", "slot_idx"), &MMGraphNode::on_slot_line_edit_text_entered);
+	 ClassDB::bind_method(D_METHOD("on_universal_color_changed", "c", "slot_idx"), &MMGraphNode::on_universal_color_changed);
+	 ClassDB::bind_method(D_METHOD("on_universal_image_path_changed", "f", "slot_idx"), &MMGraphNode::on_universal_image_path_changed);
+	 ClassDB::bind_method(D_METHOD("on_close_request"), &MMGraphNode::on_close_request);
 
-  ClassDB::bind_method(D_METHOD("get_slot_color", "slot_type"), &MMGraphNode::get_slot_color);
-  ClassDB::bind_method(D_METHOD("_get_slot_color", "slot_type"), &MMGraphNode::_get_slot_color);
+	 ClassDB::bind_method(D_METHOD("get_slot_color", "slot_type"), &MMGraphNode::get_slot_color);
+	 ClassDB::bind_method(D_METHOD("_get_slot_color", "slot_type"), &MMGraphNode::_get_slot_color);
  }

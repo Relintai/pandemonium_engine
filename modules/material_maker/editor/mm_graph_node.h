@@ -70,10 +70,10 @@ public:
 	int add_slot_vector2(const String &getter, const String &setter, const String &slot_name, const float step = 0.1, const Vector2 &prange = Vector2(-1000, 1000));
 	int add_slot_vector3(const String &getter, const String &setter, const String &slot_name, const float step = 0.1, const Vector2 &prange = Vector2(-1000, 1000));
 	int add_slot_vector2_universal(const Ref<MMNodeUniversalProperty> &property);
-	int add_slot(const int input_type, const int output_type, const String &getter, const String &setter, const Control &control);
+	int add_slot(const int input_type, const int output_type, const String &getter, const String &setter, Control *control);
 
-	bool connect_slot(const int slot_idx, const Node &to_node, const int to_slot_idx);
-	bool disconnect_slot(const int slot_idx, const Node &to_node, const int to_slot_idx);
+	bool connect_slot(const int slot_idx, const Node *to_node, const int to_slot_idx);
+	bool disconnect_slot(const int slot_idx, const Node *to_node, const int to_slot_idx);
 
 	int get_input_property_graph_node_slot_index(const Variant &property);
 	int get_output_property_graph_node_slot_index(const Variant &property);
