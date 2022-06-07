@@ -1,97 +1,90 @@
 
 #include "mm_material.h"
 
-Vector2 MMMateial::get_image_size() {
+#include "mm_node.h"
+#include "mm_node_universal_property.h"
+#include "modules/thread_pool/thread_pool.h"
+#include "modules/thread_pool/thread_pool_job.h"
+
+Vector2 MMMaterial::get_image_size() {
 	return image_size;
 }
 
-void MMMateial::set_image_size(const Vector2 &val) {
+void MMMaterial::set_image_size(const Vector2 &val) {
 	image_size = val;
 }
 
-Array MMMateial::get_nodes() {
+/*
+Array MMMaterial::get_nodes() {
 	return nodes;
 }
 
-void MMMateial::set_nodes(const Array &val) {
+void MMMaterial::set_nodes(const Array &val) {
 	nodes = val;
 }
+*/
 
-bool MMMateial::get_initialized() const {
+bool MMMaterial::get_initialized() const {
 	return initialized;
 }
 
-void MMMateial::set_initialized(const bool val) {
+void MMMaterial::set_initialized(const bool val) {
 	initialized = val;
 }
 
-bool MMMateial::get_rendering() const {
+bool MMMaterial::get_rendering() const {
 	return rendering;
 }
 
-void MMMateial::set_rendering(const bool val) {
+void MMMaterial::set_rendering(const bool val) {
 	rendering = val;
 }
 
-bool MMMateial::get_queued_render() const {
+bool MMMaterial::get_queued_render() const {
 	return queued_render;
 }
 
-void MMMateial::set_queued_render(const bool val) {
+void MMMaterial::set_queued_render(const bool val) {
 	queued_render = val;
 }
 
-Ref<ThreadPoolExecuteJob> MMMateial::get_job() {
-	return job;
-}
-
-void MMMateial::set_job(const Ref<ThreadPoolExecuteJob> &val) {
-	job = val;
-}
-
-//tool;
-//threads are implemented using my thread pool engine module.;
-//if you want to use this without that module in your engine set this to false,;
-//and comment out the lines that give errors;
-const USE_THREADS = true;
-//export(Vector2) ;
-Vector2 image_size = Vector2(128, 128);
-//export(Array) ;
-Array nodes = ;
-bool initialized = false;
-bool rendering = false;
-bool queued_render = false;
-Ref<ThreadPoolExecuteJob> job = ThreadPoolExecuteJob.new();
-
-void MMMateial::initialize() {
+void MMMaterial::initialize() {
 	if (!initialized) {
 		initialized = true;
-		job.setup(self, "_thread_func");
+		job->setup(this, "_thread_func");
 
-		for (n in nodes) {
-			n.init_properties();
-			n.connect("changed", self, "on_node_changed");
+		for (int i = 0; i < nodes.size(); ++i) {
+			Ref<MMNode> n = nodes[i];
+			n->init_properties();
+			n->connect("changed", this, "on_node_changed");
 		}
 	}
 }
 
-void MMMateial::add_node(const MMNode &node) {
-	nodes.append(node);
-	node.connect("changed", self, "on_node_changed");
+void MMMaterial::add_node(const Ref<MMNode> &node) {
+	nodes.push_back(node);
+	Ref<MMNode> n = node;
+	n->connect("changed", this, "on_node_changed");
 	emit_changed();
 }
 
-void MMMateial::remove_node(const MMNode &node) {
-	if (!node) {
+void MMMaterial::remove_node(const Ref<MMNode> &node) {
+	if (!node.is_valid()) {
 		return;
 	}
 
-	for (op in node.output_properties) {
-		for (n in nodes) {
-			if (n) {
-				for (ip in n.input_properties) {
-					if (ip.input_property == op) {
-						ip.set_input_property(null);
+	for (int i = 0; i < node->output_properties.size(); ++i) {
+		Ref<MMNodeUniversalProperty> op = node->output_properties[i];
+
+		for (int j = 0; j < nodes.size(); ++j) {
+			Ref<MMNode> n = nodes[j];
+
+			if (n.is_valid()) {
+				for (int k = 0; k < n->input_properties.size(); ++k) {
+					Ref<MMNodeUniversalProperty> ip = n->input_properties[k];
+
+					if (ip->get_input_property() == op) {
+						ip->set_input_property(Ref<MMNodeUniversalProperty>());
 					}
 				}
 			}
@@ -99,11 +92,14 @@ void MMMateial::remove_node(const MMNode &node) {
 	}
 
 	nodes.erase(node);
-	node.disconnect("changed", self, "on_node_changed");
+
+	Ref<MMNode> nn = node;
+
+	nn->disconnect("changed", this, "on_node_changed");
 	emit_changed();
 }
 
-void MMMateial::render() {
+void MMMaterial::render() {
 	initialize();
 
 	if (rendering) {
@@ -120,47 +116,53 @@ void MMMateial::render() {
 	}
 }
 
-void MMMateial::render_non_threaded() {
+void MMMaterial::render_non_threaded() {
 	bool did_render = true;
+	Ref<MMMaterial> self = Ref<MMMaterial>(this);
 
 	while (did_render) {
 		did_render = false;
 
-		for (n in nodes) {
-			if (n && n.render(self)) {
+		for (int i = 0; i < nodes.size(); ++i) {
+			Ref<MMNode> n = nodes[i];
+
+			if (n.is_valid() && n->render(self)) {
 				did_render = true;
 			}
 		}
 	}
 }
 
-void MMMateial::render_threaded() {
-	job.cancelled = false;
+void MMMaterial::render_threaded() {
+	job->set_cancelled(false);
 
-	if (!ThreadPool.has_job(job)) {
-		ThreadPool.add_job(job);
+	if (!ThreadPool::get_singleton()->has_job(job)) {
+		ThreadPool::get_singleton()->add_job(job);
 	}
 }
 
-void MMMateial::_thread_func() {
-	if (job.cancelled) {
+void MMMaterial::_thread_func() {
+	if (job->get_cancelled()) {
 		rendering = false;
 		return;
 	}
 
 	rendering = true;
-	job.cancelled = false;
+	job->set_cancelled(false);
 	bool did_render = true;
+	Ref<MMMaterial> self = Ref<MMMaterial>(this);
 
 	while (did_render) {
 		did_render = false;
 
-		for (n in nodes) {
-			if (n && n.render(self)) {
+		for (int i = 0; i < nodes.size(); ++i) {
+			Ref<MMNode> n = nodes[i];
+
+			if (n.is_valid() && n->render(self)) {
 				did_render = true;
 			}
 
-			if (job.cancelled) {
+			if (job->get_cancelled()) {
 				rendering = false;
 				return;
 			}
@@ -175,64 +177,58 @@ void MMMateial::_thread_func() {
 	}
 }
 
-void MMMateial::cancel_render_and_wait() {
+void MMMaterial::cancel_render_and_wait() {
 	if (rendering) {
-		ThreadPool.cancel_job_wait(job);
-		job.cancelled = false;
-		pass;
+		ThreadPool::get_singleton()->cancel_job_wait(job);
+		job->set_cancelled(false);
 	}
 }
 
-void MMMateial::on_node_changed() {
+void MMMaterial::on_node_changed() {
 	emit_changed();
 	call_deferred("render");
 }
-}
 
-MMMateial::MMMateial() {
+MMMaterial::MMMaterial() {
+	USE_THREADS = true;
 	image_size = Vector2(128, 128);
-	nodes = ;
 	initialized = false;
 	rendering = false;
 	queued_render = false;
-	job = ThreadPoolExecuteJob.new();
+	job.instance();
 }
 
-MMMateial::~MMMateial() {
+MMMaterial::~MMMaterial() {
 }
 
-static void MMMateial::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_image_size"), &MMMateial::get_image_size);
-	ClassDB::bind_method(D_METHOD("set_image_size", "value"), &MMMateial::set_image_size);
+void MMMaterial::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_image_size"), &MMMaterial::get_image_size);
+	ClassDB::bind_method(D_METHOD("set_image_size", "value"), &MMMaterial::set_image_size);
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "image_size"), "set_image_size", "get_image_size");
 
-	ClassDB::bind_method(D_METHOD("get_nodes"), &MMMateial::get_nodes);
-	ClassDB::bind_method(D_METHOD("set_nodes", "value"), &MMMateial::set_nodes);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "nodes"), "set_nodes", "get_nodes");
+	//ClassDB::bind_method(D_METHOD("get_nodes"), &MMMaterial::get_nodes);
+	//ClassDB::bind_method(D_METHOD("set_nodes", "value"), &MMMaterial::set_nodes);
+	//ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "nodes"), "set_nodes", "get_nodes");
 
-	ClassDB::bind_method(D_METHOD("get_initialized"), &MMMateial::get_initialized);
-	ClassDB::bind_method(D_METHOD("set_initialized", "value"), &MMMateial::set_initialized);
+	ClassDB::bind_method(D_METHOD("get_initialized"), &MMMaterial::get_initialized);
+	ClassDB::bind_method(D_METHOD("set_initialized", "value"), &MMMaterial::set_initialized);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "initialized"), "set_initialized", "get_initialized");
 
-	ClassDB::bind_method(D_METHOD("get_rendering"), &MMMateial::get_rendering);
-	ClassDB::bind_method(D_METHOD("set_rendering", "value"), &MMMateial::set_rendering);
+	ClassDB::bind_method(D_METHOD("get_rendering"), &MMMaterial::get_rendering);
+	ClassDB::bind_method(D_METHOD("set_rendering", "value"), &MMMaterial::set_rendering);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "rendering"), "set_rendering", "get_rendering");
 
-	ClassDB::bind_method(D_METHOD("get_queued_render"), &MMMateial::get_queued_render);
-	ClassDB::bind_method(D_METHOD("set_queued_render", "value"), &MMMateial::set_queued_render);
+	ClassDB::bind_method(D_METHOD("get_queued_render"), &MMMaterial::get_queued_render);
+	ClassDB::bind_method(D_METHOD("set_queued_render", "value"), &MMMaterial::set_queued_render);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "queued_render"), "set_queued_render", "get_queued_render");
 
-	ClassDB::bind_method(D_METHOD("get_job"), &MMMateial::get_job);
-	ClassDB::bind_method(D_METHOD("set_job", "value"), &MMMateial::set_job);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "job", PROPERTY_HINT_RESOURCE_TYPE, "Ref<ThreadPoolExecuteJob>"), "set_job", "get_job");
-
-	ClassDB::bind_method(D_METHOD("initialize"), &MMMateial::initialize);
-	ClassDB::bind_method(D_METHOD("add_node", "node"), &MMMateial::add_node);
-	ClassDB::bind_method(D_METHOD("remove_node", "node"), &MMMateial::remove_node);
-	ClassDB::bind_method(D_METHOD("render"), &MMMateial::render);
-	ClassDB::bind_method(D_METHOD("render_non_threaded"), &MMMateial::render_non_threaded);
-	ClassDB::bind_method(D_METHOD("render_threaded"), &MMMateial::render_threaded);
-	ClassDB::bind_method(D_METHOD("_thread_func"), &MMMateial::_thread_func);
-	ClassDB::bind_method(D_METHOD("cancel_render_and_wait"), &MMMateial::cancel_render_and_wait);
-	ClassDB::bind_method(D_METHOD("on_node_changed"), &MMMateial::on_node_changed);
+	ClassDB::bind_method(D_METHOD("initialize"), &MMMaterial::initialize);
+	ClassDB::bind_method(D_METHOD("add_node", "node"), &MMMaterial::add_node);
+	ClassDB::bind_method(D_METHOD("remove_node", "node"), &MMMaterial::remove_node);
+	ClassDB::bind_method(D_METHOD("render"), &MMMaterial::render);
+	ClassDB::bind_method(D_METHOD("render_non_threaded"), &MMMaterial::render_non_threaded);
+	ClassDB::bind_method(D_METHOD("render_threaded"), &MMMaterial::render_threaded);
+	ClassDB::bind_method(D_METHOD("_thread_func"), &MMMaterial::_thread_func);
+	ClassDB::bind_method(D_METHOD("cancel_render_and_wait"), &MMMaterial::cancel_render_and_wait);
+	ClassDB::bind_method(D_METHOD("on_node_changed"), &MMMaterial::on_node_changed);
 }
