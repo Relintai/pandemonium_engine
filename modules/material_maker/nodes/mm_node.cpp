@@ -1,8 +1,10 @@
 
 #include "mm_node.h"
 
+#include "core/object.h"
 #include "mm_material.h"
 #include "mm_node_universal_property.h"
+#include "scene/main/node.h"
 
 Vector2 MMNode::get_graph_position() {
 	return graph_position;
@@ -47,7 +49,8 @@ bool MMNode::render(const Ref<MMMaterial> &material) {
 		}
 	}
 
-	_render(material);
+	call("_render", material);
+
 	dirty = false;
 	return true;
 }
@@ -86,19 +89,22 @@ Color MMNode::get_value_for(const Vector2 &uv, const int pseed) {
 void MMNode::init_properties() {
 	if (!properties_initialized) {
 		properties_initialized = true;
-		_init_properties();
+		call("_init_properties");
 	}
 }
 
 void MMNode::_init_properties() {
 }
 
-void MMNode::register_methods(const Variant &mm_graph_node) {
+void MMNode::register_methods(Node *mm_graph_node) {
 	init_properties();
-	_register_methods(mm_graph_node);
+	call("_register_methods", mm_graph_node);
 }
 
-void MMNode::_register_methods(const Variant &mm_graph_node) {
+void MMNode::_register_methods_bind(Node *mm_graph_node) {
+}
+
+void MMNode::_register_methods(Node *mm_graph_node) {
 }
 
 void MMNode::register_input_property(const Ref<MMNodeUniversalProperty> &p_prop) {
@@ -193,26 +199,26 @@ void MMNode::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_properties_initialized"), &MMNode::get_properties_initialized);
 	ClassDB::bind_method(D_METHOD("set_properties_initialized", "value"), &MMNode::set_properties_initialized);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "properties_initialized"), "set_properties_initialized", "get_properties_initialized");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "properties_initialized", PROPERTY_HINT_NONE, "", 0), "set_properties_initialized", "get_properties_initialized");
 
 	ClassDB::bind_method(D_METHOD("get_dirty"), &MMNode::get_dirty);
 	ClassDB::bind_method(D_METHOD("set_dirty", "value"), &MMNode::set_dirty);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "dirty"), "set_dirty", "get_dirty");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "dirty", PROPERTY_HINT_NONE, "", 0), "set_dirty", "get_dirty");
 
+	BIND_VMETHOD(MethodInfo("_render", PropertyInfo(Variant::OBJECT, "material", PROPERTY_HINT_RESOURCE_TYPE, "MMMaterial")));
 	ClassDB::bind_method(D_METHOD("render", "material"), &MMNode::render);
 	ClassDB::bind_method(D_METHOD("_render", "material"), &MMNode::_render);
 	ClassDB::bind_method(D_METHOD("render_image", "material"), &MMNode::render_image);
 
 	ClassDB::bind_method(D_METHOD("get_value_for", "uv", "pseed"), &MMNode::get_value_for);
 
+	BIND_VMETHOD(MethodInfo("_init_properties"));
 	ClassDB::bind_method(D_METHOD("init_properties"), &MMNode::init_properties);
 	ClassDB::bind_method(D_METHOD("_init_properties"), &MMNode::_init_properties);
 
-	ClassDB::bind_method(D_METHOD("register_methods", "mm_graph_node"), &MMNode::register_methods);
-	ClassDB::bind_method(D_METHOD("_register_methods", "mm_graph_node"), &MMNode::_register_methods);
-
-	ClassDB::bind_method(D_METHOD("get_graph_position"), &MMNode::get_graph_position);
-	ClassDB::bind_method(D_METHOD("set_graph_position", "pos"), &MMNode::set_graph_position);
+	BIND_VMETHOD(MethodInfo("_get_property_value", PropertyInfo(Variant::OBJECT, "mm_graph_node")));
+	//ClassDB::bind_method(D_METHOD("register_methods", "mm_graph_node"), &MMNode::register_methods);
+	ClassDB::bind_method(D_METHOD("_register_methods", "mm_graph_node"), &MMNode::_register_methods_bind);
 
 	ClassDB::bind_method(D_METHOD("register_input_property", "prop"), &MMNode::register_input_property);
 	ClassDB::bind_method(D_METHOD("unregister_input_property", "prop"), &MMNode::unregister_input_property);

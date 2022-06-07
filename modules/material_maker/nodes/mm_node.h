@@ -8,6 +8,7 @@
 
 #include "core/resource.h"
 
+class Node;
 class MMMaterial;
 class MMNodeUniversalProperty;
 
@@ -34,8 +35,9 @@ public:
 	void init_properties();
 	void _init_properties();
 
-	void register_methods(const Variant &mm_graph_node);
-	void _register_methods(const Variant &mm_graph_node);
+	void register_methods(Node *mm_graph_node);
+	void _register_methods_bind(Node *mm_graph_node);
+	void _register_methods(Node *mm_graph_node);
 
 	void register_input_property(const Ref<MMNodeUniversalProperty> &prop);
 	void unregister_input_property(const Ref<MMNodeUniversalProperty> &prop);
