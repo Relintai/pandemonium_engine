@@ -1,5 +1,5 @@
-#ifndef MM_NODE_H
-#define MM_NODE_H
+#ifndef MAT_MAKER_NODE_H
+#define MAT_MAKER_NODE_H
 
 #include "core/image.h"
 #include "core/math/vector2.h"
@@ -26,7 +26,9 @@ public:
 
 	bool render(const Ref<MMMaterial> &material);
 	void _render(const Ref<MMMaterial> &material);
+
 	Ref<Image> render_image(const Ref<MMMaterial> &material);
+
 	Color get_value_for(const Vector2 &uv, const int pseed);
 
 	void init_properties();
@@ -43,17 +45,23 @@ public:
 
 	void on_input_property_changed();
 
+	Variant get_property_value(const Vector2 &uv);
+	virtual Variant _get_property_value(const Vector2 &uv);
+
+	Vector2 get_property_value_sdf3d(const Vector3 &uv3);
+	virtual Vector2 _get_property_value_sdf3d(const Vector3 &uv3);
+
 	MMNode();
 	~MMNode();
-
-protected:
-	static void _bind_methods();
 
 	Vector2 graph_position;
 	Vector<Ref<MMNodeUniversalProperty>> input_properties;
 	Vector<Ref<MMNodeUniversalProperty>> output_properties;
 	bool properties_initialized;
 	bool dirty;
+
+protected:
+	static void _bind_methods();
 };
 
 #endif
