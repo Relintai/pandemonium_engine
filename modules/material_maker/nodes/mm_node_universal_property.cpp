@@ -164,12 +164,6 @@ void MMNodeUniversalProperty::set_owner(const Ref<MMNode> &val) {
 	owner = val;
 }
 
-void MMNodeUniversalProperty::_init() {
-	if (input_property.is_valid()) {
-		input_property->connect("changed", this, "on_input_property_changed");
-	}
-}
-
 Variant MMNodeUniversalProperty::get_value(const Vector2 &uv, const bool skip_owner_val) {
 	if (get_value_from_owner && !skip_owner_val) {
 		return get_owner_value(uv);
@@ -500,6 +494,14 @@ MMNodeUniversalProperty::MMNodeUniversalProperty() {
 MMNodeUniversalProperty::~MMNodeUniversalProperty() {
 }
 
+void MMNodeUniversalProperty::_notification(int p_what) {
+	if (p_what == NOTIFICATION_POSTINITIALIZE) {
+		if (input_property.is_valid()) {
+			input_property->connect("changed", this, "on_input_property_changed");
+		}
+	}
+}
+
 void MMNodeUniversalProperty::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_default_type"), &MMNodeUniversalProperty::get_default_type);
 	ClassDB::bind_method(D_METHOD("set_default_type", "value"), &MMNodeUniversalProperty::set_default_type);
@@ -571,8 +573,6 @@ void MMNodeUniversalProperty::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_owner", "value"), &MMNodeUniversalProperty::set_owner);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "owner", PROPERTY_HINT_RESOURCE_TYPE, "MMNode", 0), "set_owner", "get_owner");
 
-	ClassDB::bind_method(D_METHOD("_init"), &MMNodeUniversalProperty::_init);
-
 	ClassDB::bind_method(D_METHOD("get_value", "uv", "skip_owner_val"), &MMNodeUniversalProperty::get_value, false);
 	ClassDB::bind_method(D_METHOD("get_owner_value", "uv"), &MMNodeUniversalProperty::get_owner_value);
 	ClassDB::bind_method(D_METHOD("get_value_or_zero", "uv", "skip_owner_val"), &MMNodeUniversalProperty::get_value_or_zero, false);
@@ -588,4 +588,20 @@ void MMNodeUniversalProperty::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_default_value", "uv"), &MMNodeUniversalProperty::get_default_value, Vector2());
 	ClassDB::bind_method(D_METHOD("set_default_value", "val"), &MMNodeUniversalProperty::set_default_value);
 	ClassDB::bind_method(D_METHOD("get_active_image"), &MMNodeUniversalProperty::get_active_image);
+
+	BIND_ENUM_CONSTANT(SLOT_TYPE_NONE);
+	BIND_ENUM_CONSTANT(SLOT_TYPE_IMAGE);
+	BIND_ENUM_CONSTANT(SLOT_TYPE_INT);
+	BIND_ENUM_CONSTANT(SLOT_TYPE_FLOAT);
+	BIND_ENUM_CONSTANT(SLOT_TYPE_VECTOR2);
+	BIND_ENUM_CONSTANT(SLOT_TYPE_VECTOR3);
+	BIND_ENUM_CONSTANT(SLOT_TYPE_COLOR);
+	BIND_ENUM_CONSTANT(SLOT_TYPE_UNIVERSAL);
+
+	BIND_ENUM_CONSTANT(DEFAULT_TYPE_INT);
+	BIND_ENUM_CONSTANT(DEFAULT_TYPE_FLOAT);
+	BIND_ENUM_CONSTANT(DEFAULT_TYPE_VECTOR2);
+	BIND_ENUM_CONSTANT(DEFAULT_TYPE_VECTOR3);
+	BIND_ENUM_CONSTANT(DEFAULT_TYPE_COLOR);
+	BIND_ENUM_CONSTANT(DEFAULT_TYPE_IMAGE);
 }

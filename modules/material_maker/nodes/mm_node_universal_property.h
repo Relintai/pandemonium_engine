@@ -4,6 +4,7 @@
 #include "core/image.h"
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
+#include "core/method_bind.h"
 #include "core/variant.h"
 
 #include "core/resource.h"
@@ -87,8 +88,6 @@ public:
 	Ref<MMNode> get_owner();
 	void set_owner(const Ref<MMNode> &val);
 
-	void _init();
-
 	Variant get_value(const Vector2 &uv, const bool skip_owner_val = false);
 	Variant get_owner_value(const Vector2 &uv);
 	Variant get_value_or_zero(const Vector2 &uv, const bool skip_owner_val = false);
@@ -109,6 +108,7 @@ public:
 	~MMNodeUniversalProperty();
 
 protected:
+	void _notification(int p_what);
 	static void _bind_methods();
 
 	//export(int, "Int,Float,Vector2,Vector3,Color,Image")
@@ -141,5 +141,8 @@ protected:
 
 	Ref<MMNode> owner;
 };
+
+VARIANT_ENUM_CAST(MMNodeUniversalProperty::SlotTypes);
+VARIANT_ENUM_CAST(MMNodeUniversalProperty::MMNodeUniversalPropertyDefaultType);
 
 #endif
