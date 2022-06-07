@@ -14,15 +14,21 @@ void MMMaterial::set_image_size(const Vector2 &val) {
 	image_size = val;
 }
 
-/*
-Array MMMaterial::get_nodes() {
-	return nodes;
+Vector<Variant> MMMaterial::get_nodes() {
+	Vector<Variant> r;
+	for (int i = 0; i < nodes.size(); i++) {
+		r.push_back(nodes[i].get_ref_ptr());
+	}
+	return r;
 }
 
-void MMMaterial::set_nodes(const Array &val) {
-	nodes = val;
+void MMMaterial::set_nodes(const Vector<Variant> &val) {
+	nodes.clear();
+	for (int i = 0; i < val.size(); i++) {
+		Ref<MMNode> e = Ref<MMNode>(val[i]);
+		nodes.push_back(e);
+	}
 }
-*/
 
 bool MMMaterial::get_initialized() const {
 	return initialized;
@@ -109,9 +115,7 @@ void MMMaterial::render() {
 
 	if (USE_THREADS) {
 		render_threaded();
-	}
-
-	else {
+	} else {
 		render_non_threaded();
 	}
 }
@@ -206,29 +210,33 @@ void MMMaterial::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_image_size", "value"), &MMMaterial::set_image_size);
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "image_size"), "set_image_size", "get_image_size");
 
-	//ClassDB::bind_method(D_METHOD("get_nodes"), &MMMaterial::get_nodes);
-	//ClassDB::bind_method(D_METHOD("set_nodes", "value"), &MMMaterial::set_nodes);
-	//ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "nodes"), "set_nodes", "get_nodes");
+	ClassDB::bind_method(D_METHOD("get_nodes"), &MMMaterial::get_nodes);
+	ClassDB::bind_method(D_METHOD("set_nodes", "value"), &MMMaterial::set_nodes);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "nodes", PROPERTY_HINT_NONE, "17/17:MMNode", PROPERTY_USAGE_DEFAULT, "MMNode"), "set_nodes", "get_nodes");
 
 	ClassDB::bind_method(D_METHOD("get_initialized"), &MMMaterial::get_initialized);
 	ClassDB::bind_method(D_METHOD("set_initialized", "value"), &MMMaterial::set_initialized);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "initialized"), "set_initialized", "get_initialized");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "initialized", PROPERTY_HINT_NONE, "", 0), "set_initialized", "get_initialized");
 
 	ClassDB::bind_method(D_METHOD("get_rendering"), &MMMaterial::get_rendering);
 	ClassDB::bind_method(D_METHOD("set_rendering", "value"), &MMMaterial::set_rendering);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "rendering"), "set_rendering", "get_rendering");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "rendering", PROPERTY_HINT_NONE, "", 0), "set_rendering", "get_rendering");
 
 	ClassDB::bind_method(D_METHOD("get_queued_render"), &MMMaterial::get_queued_render);
 	ClassDB::bind_method(D_METHOD("set_queued_render", "value"), &MMMaterial::set_queued_render);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "queued_render"), "set_queued_render", "get_queued_render");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "queued_render", PROPERTY_HINT_NONE, "", 0), "set_queued_render", "get_queued_render");
 
 	ClassDB::bind_method(D_METHOD("initialize"), &MMMaterial::initialize);
+
 	ClassDB::bind_method(D_METHOD("add_node", "node"), &MMMaterial::add_node);
 	ClassDB::bind_method(D_METHOD("remove_node", "node"), &MMMaterial::remove_node);
+
 	ClassDB::bind_method(D_METHOD("render"), &MMMaterial::render);
 	ClassDB::bind_method(D_METHOD("render_non_threaded"), &MMMaterial::render_non_threaded);
 	ClassDB::bind_method(D_METHOD("render_threaded"), &MMMaterial::render_threaded);
+
 	ClassDB::bind_method(D_METHOD("_thread_func"), &MMMaterial::_thread_func);
+
 	ClassDB::bind_method(D_METHOD("cancel_render_and_wait"), &MMMaterial::cancel_render_and_wait);
 	ClassDB::bind_method(D_METHOD("on_node_changed"), &MMMaterial::on_node_changed);
 }

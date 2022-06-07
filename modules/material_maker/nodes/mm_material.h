@@ -20,8 +20,8 @@ public:
 	Vector2 get_image_size();
 	void set_image_size(const Vector2 &val);
 
-	//Array get_nodes();
-	//void set_nodes(const Array &val);
+	Vector<Variant> get_nodes();
+	void set_nodes(const Vector<Variant> &val);
 
 	bool get_initialized() const;
 	void set_initialized(const bool val);
