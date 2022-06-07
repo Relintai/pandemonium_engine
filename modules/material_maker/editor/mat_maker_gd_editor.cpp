@@ -1,14 +1,6 @@
 
 #include "mat_maker_gd_editor.h"
 
-Variant MatMakerGDEditor::get_Variant() {
-	return Variant;
-}
-
-void MatMakerGDEditor::set_Variant(const Variant &val) {
-	Variant = val;
-}
-
 NodePath MatMakerGDEditor::get_graph_edit_path() {
 	return graph_edit_path;
 }
@@ -25,104 +17,85 @@ void MatMakerGDEditor::set_add_popup_path(const NodePath &val) {
 	add_popup_path = val;
 }
 
-GraphEdit MatMakerGDEditor::get_ *_graph_edit() {
-	return *_graph_edit;
+GraphEdit *MatMakerGDEditor::get_graph_edit() {
+	return _graph_edit;
 }
 
-void MatMakerGDEditor::set_ *_graph_edit(const GraphEdit &val) {
-	*_graph_edit = val;
+void MatMakerGDEditor::set_graph_edit(GraphEdit *val) {
+	_graph_edit = val;
 }
 
-MMMateial MatMakerGDEditor::get_ *_material() {
-	return *_material;
+Ref<MMMaterial> MatMakerGDEditor::get_mm_material() {
+	return _material;
 }
 
-void MatMakerGDEditor::set_ *_material(const MMMateial &val) {
-	*_material = val;
+void MatMakerGDEditor::set_mm_material(const Ref<MMMaterial> &val) {
+	_material = val;
 }
 
-int MatMakerGDEditor::get__ignore_material_change_event() const {
+int MatMakerGDEditor::get_ignore_material_change_event() const {
 	return _ignore_material_change_event;
 }
 
-void MatMakerGDEditor::set__ignore_material_change_event(const int val) {
+void MatMakerGDEditor::set_ignore_material_change_event(const int val) {
 	_ignore_material_change_event = val;
 }
 
-bool MatMakerGDEditor::get__recreation_in_progress() const {
+bool MatMakerGDEditor::get_recreation_in_progress() const {
 	return _recreation_in_progress;
 }
 
-void MatMakerGDEditor::set__recreation_in_progress(const bool val) {
+void MatMakerGDEditor::set_recreation_in_progress(const bool val) {
 	_recreation_in_progress = val;
 }
 
-EditorPlugin MatMakerGDEditor::get_ *_plugin() {
-	return *_plugin;
+EditorPlugin *MatMakerGDEditor::get_plugin() {
+	return _plugin;
 }
 
-void MatMakerGDEditor::set_ *_plugin(const EditorPlugin &val) {
-	*_plugin = val;
+void MatMakerGDEditor::set_plugin(EditorPlugin *plugin) {
+	_plugin = plugin;
+	_undo_redo = plugin->get_undo_redo();
 }
 
-UndoRedo MatMakerGDEditor::get_ *_undo_redo() {
-	return *_undo_redo;
+UndoRedo *MatMakerGDEditor::get_undo_redo() {
+	return _undo_redo;
 }
 
-void MatMakerGDEditor::set_ *_undo_redo(const UndoRedo &val) {
-	*_undo_redo = val;
+void MatMakerGDEditor::set_undo_redo(UndoRedo *val) {
+	_undo_redo = val;
 }
-
-//tool;
-//var MMGraphNode = preload("res://addons/mat_maker_gd/editor/mm_graph_node.gd");
-//export(NodePath) ;
-NodePath graph_edit_path = "VBoxContainer/GraphEdit";
-//export(NodePath) ;
-NodePath add_popup_path = "Popups/AddPopup";
-GraphEdit *_graph_edit = null;
-MMMateial *_material;
-int _ignore_material_change_event = 0;
-bool _recreation_in_progress = false;
-EditorPlugin *_plugin = null;
-UndoRedo *_undo_redo = null;
 
 void MatMakerGDEditor::_enter_tree() {
 	ensure_objs();
 }
 
-void MatMakerGDEditor::set_plugin(const EditorPlugin &plugin) {
-	_plugin = plugin;
-	_undo_redo = plugin.get_undo_redo();
-}
-
-UndoRedo MatMakerGDEditor::get_undo_redo() {
-	return _undo_redo;
-}
-
 void MatMakerGDEditor::ensure_objs() {
 	if (!_graph_edit) {
 		_graph_edit = get_node(graph_edit_path);
-		_graph_edit.add_valid_connection_type(MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_IMAGE, MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_UNIVERSAL);
-		_graph_edit.add_valid_connection_type(MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_INT, MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_UNIVERSAL);
-		_graph_edit.add_valid_connection_type(MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_FLOAT, MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_UNIVERSAL);
-		_graph_edit.add_valid_connection_type(MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_VECTOR2, MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_UNIVERSAL);
-		_graph_edit.add_valid_connection_type(MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_VECTOR3, MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_UNIVERSAL);
-		_graph_edit.add_valid_connection_type(MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_COLOR, MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_UNIVERSAL);
-		_graph_edit.add_valid_connection_type(MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_UNIVERSAL, MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_IMAGE);
-		_graph_edit.add_valid_connection_type(MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_UNIVERSAL, MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_INT);
-		_graph_edit.add_valid_connection_type(MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_UNIVERSAL, MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_FLOAT);
-		_graph_edit.add_valid_connection_type(MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_UNIVERSAL, MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_VECTOR2);
-		_graph_edit.add_valid_connection_type(MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_UNIVERSAL, MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_VECTOR3);
-		_graph_edit.add_valid_connection_type(MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_UNIVERSAL, MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_COLOR);
-		_graph_edit.add_valid_connection_type(MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_UNIVERSAL, MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_UNIVERSAL);
-		_graph_edit.add_valid_connection_type(MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_IMAGE, MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_IMAGE);
-		_graph_edit.add_valid_connection_type(MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_INT, MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_INT);
-		_graph_edit.add_valid_connection_type(MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_FLOAT, MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_FLOAT);
-		_graph_edit.add_valid_connection_type(MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_VECTOR2, MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_VECTOR2);
-		_graph_edit.add_valid_connection_type(MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_VECTOR3, MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_VECTOR3);
-		_graph_edit.add_valid_connection_type(MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_COLOR, MMNodeUniversalProperty.SlotTypes.SLOT_TYPE_COLOR);
-		_graph_edit.connect("connection_request", self, "on_graph_edit_connection_request");
-		_graph_edit.connect("disconnection_request", self, "on_graph_edit_disconnection_request");
+
+		_graph_edit->add_valid_connection_type(MMNodeUniversalProperty::SLOT_TYPE_IMAGE, MMNodeUniversalProperty::SLOT_TYPE_UNIVERSAL);
+		_graph_edit->add_valid_connection_type(MMNodeUniversalProperty::SLOT_TYPE_INT, MMNodeUniversalProperty::SLOT_TYPE_UNIVERSAL);
+		_graph_edit->add_valid_connection_type(MMNodeUniversalProperty::SLOT_TYPE_FLOAT, MMNodeUniversalProperty::SLOT_TYPE_UNIVERSAL);
+		_graph_edit->add_valid_connection_type(MMNodeUniversalProperty::SLOT_TYPE_VECTOR2, MMNodeUniversalProperty::SLOT_TYPE_UNIVERSAL);
+		_graph_edit->add_valid_connection_type(MMNodeUniversalProperty::SLOT_TYPE_VECTOR3, MMNodeUniversalProperty::SLOT_TYPE_UNIVERSAL);
+		_graph_edit->add_valid_connection_type(MMNodeUniversalProperty::SLOT_TYPE_COLOR, MMNodeUniversalProperty::SLOT_TYPE_UNIVERSAL);
+		_graph_edit->add_valid_connection_type(MMNodeUniversalProperty::SLOT_TYPE_UNIVERSAL, MMNodeUniversalProperty::SLOT_TYPE_IMAGE);
+		_graph_edit->add_valid_connection_type(MMNodeUniversalProperty::SLOT_TYPE_UNIVERSAL, MMNodeUniversalProperty::SLOT_TYPE_INT);
+		_graph_edit->add_valid_connection_type(MMNodeUniversalProperty::SLOT_TYPE_UNIVERSAL, MMNodeUniversalProperty::SLOT_TYPE_FLOAT);
+		_graph_edit->add_valid_connection_type(MMNodeUniversalProperty::SLOT_TYPE_UNIVERSAL, MMNodeUniversalProperty::SLOT_TYPE_VECTOR2);
+		_graph_edit->add_valid_connection_type(MMNodeUniversalProperty::SLOT_TYPE_UNIVERSAL, MMNodeUniversalProperty::SLOT_TYPE_VECTOR3);
+		_graph_edit->add_valid_connection_type(MMNodeUniversalProperty::SLOT_TYPE_UNIVERSAL, MMNodeUniversalProperty::SLOT_TYPE_COLOR);
+		_graph_edit->add_valid_connection_type(MMNodeUniversalProperty::SLOT_TYPE_UNIVERSAL, MMNodeUniversalProperty::SLOT_TYPE_UNIVERSAL);
+		_graph_edit->add_valid_connection_type(MMNodeUniversalProperty::SLOT_TYPE_IMAGE, MMNodeUniversalProperty::SLOT_TYPE_IMAGE);
+		_graph_edit->add_valid_connection_type(MMNodeUniversalProperty::SLOT_TYPE_INT, MMNodeUniversalProperty::SLOT_TYPE_INT);
+		_graph_edit->add_valid_connection_type(MMNodeUniversalProperty::SLOT_TYPE_FLOAT, MMNodeUniversalProperty::SLOT_TYPE_FLOAT);
+		_graph_edit->add_valid_connection_type(MMNodeUniversalProperty::SLOT_TYPE_VECTOR2, MMNodeUniversalProperty::SLOT_TYPE_VECTOR2);
+		_graph_edit->add_valid_connection_type(MMNodeUniversalProperty::SLOT_TYPE_VECTOR3, MMNodeUniversalProperty::SLOT_TYPE_VECTOR3);
+		_graph_edit->add_valid_connection_type(MMNodeUniversalProperty::SLOT_TYPE_COLOR, MMNodeUniversalProperty::SLOT_TYPE_COLOR);
+
+		_graph_edit->connect("connection_request", this, "on_graph_edit_connection_request");
+		_graph_edit->connect("disconnection_request", this, "on_graph_edit_disconnection_request");
 	}
 }
 
@@ -137,10 +110,12 @@ void MatMakerGDEditor::recreate() {
 	ensure_objs();
 	_graph_edit.clear_connections();
 
-	for (c in _graph_edit.get_children()) {
-		if (c is GraphNode) {
-			_graph_edit.remove_child(c);
-			c.queue_free();
+	for (int i = 0; i < _graph_edit->get_child_count(); ++i) {
+		GraphNode *c = Object::cast_to<GraphNode>(_graph_edit->get_child(i));
+
+		if (c) {
+			_graph_edit->remove_child(c);
+			c->queue_free();
 		}
 	}
 
@@ -148,21 +123,27 @@ void MatMakerGDEditor::recreate() {
 		return;
 	}
 
-	_material.cancel_render_and_wait();
+	_material->cancel_render_and_wait();
 
-	for (n in _material.nodes) {
-		GraphNode *gn = MMGraphNode.new();
-		gn.set_editor(self);
-		gn.set_node(_material, n);
-		_graph_edit.add_child(gn);
+	for (int i = 0; i < _material->nodes.size(); ++i) {
+		Ref<MMNode> n = _material->nodes[i];
+
+		MMGraphNode *gn = memnew(MMGraphNode);
+		gn->set_editor(this);
+		gn->set_node(_material, n);
+		_graph_edit->add_child(gn);
 	}
 
 	//connect them;
 
-	for (n in _material.nodes) {
-		if (n) {
-			for (ip in n.input_properties) {
-				if (ip.input_property) {
+	for (int i = 0; i < _material->nodes.size(); ++i) {
+		Ref<MMNode> n = _material->nodes[i];
+
+		if (n.is_valid()) {
+			for (int j = 0; j < n->input_property.size(); ++j) {
+				Ref<MMNodeUniversalProperty> ip = n->input_properties[j];
+
+				if (ip.is_valid()) {
 					Node *input_node = find_graph_node_for(n);
 					Node *output_node = find_graph_node_for(ip.input_property.owner);
 					int to_slot = input_node.get_input_property_graph_node_slot_index(ip);
@@ -178,11 +159,13 @@ void MatMakerGDEditor::recreate() {
 	ignore_changes(false);
 }
 
-Node MatMakerGDEditor::find_graph_node_for(const Variant &nnode) {
-	for (c in _graph_edit.get_children()) {
-		if (c is GraphNode) {
-			if (c.has_method("get_material_node")) {
-				Variant = c.get_material_node();
+MMGraphNode *MatMakerGDEditor::find_graph_node_for(const Ref<MMnode> &nnode) {
+	for (int i = 0; i < _graph_edit->get_child_count(); ++i) {
+		GraphNode *c = Object::cast_to<GraphNode>(_graph_edit->get_child(i));
+
+		if (c) {
+			if (c->has_method("get_material_node")) {
+				Ref<MMnode> n = c->get_material_node();
 
 				if (n == nnode) {
 					return c;
@@ -191,19 +174,19 @@ Node MatMakerGDEditor::find_graph_node_for(const Variant &nnode) {
 		}
 	}
 
-	return null;
+	return nullptr;
 }
 
-void MatMakerGDEditor::set_mmmaterial(const MMMateial &object) {
+void MatMakerGDEditor::set_mmmaterial(const Ref<MMMaterial> &object) {
 	if (_material) {
-		_material.disconnect("changed", self, "on_material_changed");
+		_material->disconnect("changed", this, "on_material_changed");
 	}
 
 	_material = object;
 	recreate();
 
 	if (_material) {
-		_material.connect("changed", self, "on_material_changed");
+		_material->connect("changed", this, "on_material_changed");
 	}
 }
 
@@ -233,10 +216,10 @@ void MatMakerGDEditor::on_graph_edit_connection_request(const String &from, cons
 	GraphNode *from_node = _graph_edit.get_node(from);
 	GraphNode *to_node = _graph_edit.get_node(to);
 	ignore_changes(true);
-	_material.cancel_render_and_wait();
+	_material->cancel_render_and_wait();
 
-	if (from_node.connect_slot(from_slot, to_node, to_slot)) {
-		_graph_edit.connect_node(from, from_slot, to, to_slot);
+	if (from_node->connect_slot(from_slot, to_node, to_slot)) {
+		_graph_edit->connect_node(from, from_slot, to, to_slot);
 	}
 
 	ignore_changes(false);
@@ -246,10 +229,10 @@ void MatMakerGDEditor::on_graph_edit_disconnection_request(const String &from, c
 	GraphNode *from_node = _graph_edit.get_node(from);
 	GraphNode *to_node = _graph_edit.get_node(to);
 	ignore_changes(true);
-	_material.cancel_render_and_wait();
+	_material->cancel_render_and_wait();
 
-	if (from_node.disconnect_slot(from_slot, to_node, to_slot)) {
-		_graph_edit.disconnect_node(from, from_slot, to, to_slot);
+	if (from_node->disconnect_slot(from_slot, to_node, to_slot)) {
+		_graph_edit->disconnect_node(from, from_slot, to, to_slot);
 	}
 
 	ignore_changes(false);
@@ -258,19 +241,19 @@ void MatMakerGDEditor::on_graph_edit_disconnection_request(const String &from, c
 void MatMakerGDEditor::on_graph_node_close_request(const GraphNode &node) {
 	if (_material) {
 		ignore_changes(true);
-		_material.cancel_render_and_wait();
+		_material->cancel_render_and_wait();
 		//_material.remove_node(node._node);
-		_undo_redo.create_action("MMGD: Remove Node");
-		_undo_redo.add_do_method(_material, "remove_node", node._node);
-		_undo_redo.add_undo_method(_material, "add_node", node._node);
-		_undo_redo.commit_action();
+		_undo_redo->create_action("MMGD: Remove Node");
+		_undo_redo->add_do_method(_material, "remove_node", node._node);
+		_undo_redo->add_undo_method(_material, "add_node", node._node);
+		_undo_redo->commit_action();
 		recreate();
 		ignore_changes(false);
 	}
 }
 
 void MatMakerGDEditor::_on_AddButton_pressed() {
-	get_node(add_popup_path).popup_centered();
+	get_node(add_popup_path)->opup_centered();
 }
 
 void MatMakerGDEditor::_on_AddPopup_ok_pressed(const String &script_path) {
@@ -279,43 +262,41 @@ void MatMakerGDEditor::_on_AddPopup_ok_pressed(const String &script_path) {
 	}
 
 	ensure_objs();
-	_material.cancel_render_and_wait();
-	Variant = load(script_path);
-	MMNode *nnode = sc.new();
+	_material->cancel_render_and_wait();
+	//Variant = load(script_path);
+	MMGraphNode *nnode = memnew(MMGraphNode);
 
 	if (!nnode) {
-		print("_on_AddPopup_ok_pressed: Error !nnode! script: " + script_path);
+		print_error("_on_AddPopup_ok_pressed: Error !nnode! script: " + script_path);
 		return;
 	}
 
 	ignore_changes(true);
 	//_material.add_node(nnode);
-	_undo_redo.create_action("MMGD: Add Node");
-	_undo_redo.add_do_method(_material, "add_node", nnode);
-	_undo_redo.add_undo_method(_material, "remove_node", nnode);
-	_undo_redo.commit_action();
-	GraphNode *gn = MMGraphNode.new();
-	gn.set_editor(self);
-	gn.set_node(_material, nnode);
-	_graph_edit.add_child(gn);
+	_undo_redo->create_action("MMGD: Add Node");
+	_undo_redo->add_do_method(_material, "add_node", nnode);
+	_undo_redo->add_undo_method(_material, "remove_node", nnode);
+	_undo_redo->commit_action();
+	MMGraphNode *gn = memnew(MMGraphNode);
+	gn->set_editor(this);
+	gn->set_node(_material, nnode);
+	_graph_edit->add_child(gn);
 	ignore_changes(false);
-}
 }
 
 MatMakerGDEditor::MatMakerGDEditor() {
 	//var MMGraphNode = preload("res://addons/mat_maker_gd/editor/mm_graph_node.gd");
 	graph_edit_path = "VBoxContainer/GraphEdit";
 	add_popup_path = "Popups/AddPopup";
-	*_graph_edit = null;
-	*_material;
+	_graph_edit = nullptr;
+	_material;
 	_ignore_material_change_event = 0;
 	_recreation_in_progress = false;
-	*_plugin = null;
-	*_undo_redo = null;
+	_plugin = nullptr;
+	_undo_redo = nullptr;
 
 	//Script: res://addons/mat_maker_gd/editor/MatMakerGDEditor.gd
 	MarginContainer *matmakergdeditor = memnew(MarginContainer);
-	matmakergdeditor->set_name("MatMakerGDEditor");
 	matmakergdeditor->set_name("MatMakerGDEditor");
 	matmakergdeditor->set_filename("res://addons/mat_maker_gd/editor/MatMakerGDEditor.tscn");
 	matmakergdeditor->set_anchor_right(1);
@@ -419,7 +400,7 @@ MatMakerGDEditor::MatMakerGDEditor() {
 	addpopup_popups_matmakergdeditor->set_rect_global_position(Vector2(-245.5, -220));
 	addpopup_popups_matmakergdeditor->set_rect_size(Vector2(491, 440));
 	addpopup_popups_matmakergdeditor->set_window_title("Create New Resource");
-	//addpopup_popups_matmakergdeditor property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+	//addpopup_popups_matmakergdeditor property _meta_ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
 	//addpopup_popups_matmakergdeditor property line_edit_path TYPE_NODE_PATH value: VBoxContainer/LineEdit
 	//addpopup_popups_matmakergdeditor property tree_path TYPE_NODE_PATH value: VBoxContainer/Tree
 	//addpopup_popups_matmakergdeditor property type_folders TYPE_STRING_ARRAY value: [res://addons/mat_maker_gd/nodes/uniform, res://addons/mat_maker_gd/nodes/noise, res://addons/mat_maker_gd/nodes/filter, res://addons/mat_maker_gd/nodes/gradient, res://addons/mat_maker_gd/nodes/pattern, res://addons/mat_maker_gd/nodes/sdf2d, res://addons/mat_maker_gd/nodes/sdf3d, res://addons/mat_maker_gd/nodes/transform, res://addons/mat_maker_gd/nodes/simple, res://addons/mat_maker_gd/nodes/other]
@@ -495,7 +476,7 @@ MatMakerGDEditor::MatMakerGDEditor() {
 	vboxcontainer_addpopup_popups_matmakergdeditor->set_rect_size(Vector2(475, 396));
 	vboxcontainer_addpopup_popups_matmakergdeditor->set_size_flags_horizontal(3);
 	vboxcontainer_addpopup_popups_matmakergdeditor->set_size_flags_vertical(3);
-	//vboxcontainer_addpopup_popups_matmakergdeditor property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+	//vboxcontainer_addpopup_popups_matmakergdeditor property _meta_ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
 
 	Label *label2_vboxcontainer_addpopup_popups_matmakergdeditor = memnew(Label);
 	label2_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("Label2");
@@ -528,37 +509,17 @@ MatMakerGDEditor::MatMakerGDEditor() {
 	tree_vboxcontainer_addpopup_popups_matmakergdeditor->add_child(popupmenu_tree_vboxcontainer_addpopup_popups_matmakergdeditor);
 	popupmenu_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("PopupMenu");
 
-	Timer *timer_popupmenu_tree_vboxcontainer_addpopup_popups_matmakergdeditor = memnew(Timer);
-	timer_popupmenu_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("Timer");
-	popupmenu_tree_vboxcontainer_addpopup_popups_matmakergdeditor->add_child(timer_popupmenu_tree_vboxcontainer_addpopup_popups_matmakergdeditor);
-	timer_popupmenu_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("Timer");
-	timer_popupmenu_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_wait_time(0.3);
-	timer_popupmenu_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_one_shot(True);
-
 	LineEdit *lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor = memnew(LineEdit);
 	lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("LineEdit");
 	tree_vboxcontainer_addpopup_popups_matmakergdeditor->add_child(lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor);
 	lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("LineEdit");
 	lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_visible(False);
 
-	Timer *timer_lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor = memnew(Timer);
-	timer_lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("Timer");
-	lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor->add_child(timer_lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor);
-	timer_lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("Timer");
-	timer_lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_wait_time(0.65);
-
 	PopupMenu *popupmenu_lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor = memnew(PopupMenu);
 	popupmenu_lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("PopupMenu");
 	lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor->add_child(popupmenu_lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor);
 	popupmenu_lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("PopupMenu");
 	//popupmenu_lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor property items TYPE_ARRAY value: [Cut, [Object:null], 0, False, False, 0, 268435544, Null, , False, Copy, [Object:null], 0, False, False, 1, 268435523, Null, , False, Paste, [Object:null], 0, False, False, 2, 268435542, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Select All, [Object:null], 0, False, False, 4, 268435521, Null, , False, Clear, [Object:null], 0, False, False, 3, 0, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Undo, [Object:null], 0, False, False, 5, 268435546, Null, , False, Redo, [Object:null], 0, False, False, 6, 301989978, Null, , False]
-
-	Timer *timer_popupmenu_lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor = memnew(Timer);
-	timer_popupmenu_lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("Timer");
-	popupmenu_lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor->add_child(timer_popupmenu_lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor);
-	timer_popupmenu_lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("Timer");
-	timer_popupmenu_lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_wait_time(0.3);
-	timer_popupmenu_lineedit_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_one_shot(True);
 
 	HSlider *hslider_tree_vboxcontainer_addpopup_popups_matmakergdeditor = memnew(HSlider);
 	hslider_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("HSlider");
@@ -576,11 +537,6 @@ MatMakerGDEditor::MatMakerGDEditor() {
 	tree_vboxcontainer_addpopup_popups_matmakergdeditor->add_child(vscrollbar_tree_vboxcontainer_addpopup_popups_matmakergdeditor);
 	vscrollbar_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("VScrollBar");
 	vscrollbar_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_custom_step(14);
-
-	Timer *timer_tree_vboxcontainer_addpopup_popups_matmakergdeditor = memnew(Timer);
-	timer_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("Timer");
-	tree_vboxcontainer_addpopup_popups_matmakergdeditor->add_child(timer_tree_vboxcontainer_addpopup_popups_matmakergdeditor);
-	timer_tree_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("Timer");
 
 	Label *label_vboxcontainer_addpopup_popups_matmakergdeditor = memnew(Label);
 	label_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("Label");
@@ -612,24 +568,11 @@ MatMakerGDEditor::MatMakerGDEditor() {
 	lineedit_vboxcontainer_addpopup_popups_matmakergdeditor->set_size_flags_horizontal(3);
 	lineedit_vboxcontainer_addpopup_popups_matmakergdeditor->set_caret_blink(True);
 
-	Timer *timer_lineedit_vboxcontainer_addpopup_popups_matmakergdeditor = memnew(Timer);
-	timer_lineedit_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("Timer");
-	lineedit_vboxcontainer_addpopup_popups_matmakergdeditor->add_child(timer_lineedit_vboxcontainer_addpopup_popups_matmakergdeditor);
-	timer_lineedit_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("Timer");
-	timer_lineedit_vboxcontainer_addpopup_popups_matmakergdeditor->set_wait_time(0.65);
-
 	PopupMenu *popupmenu_lineedit_vboxcontainer_addpopup_popups_matmakergdeditor = memnew(PopupMenu);
 	popupmenu_lineedit_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("PopupMenu");
 	lineedit_vboxcontainer_addpopup_popups_matmakergdeditor->add_child(popupmenu_lineedit_vboxcontainer_addpopup_popups_matmakergdeditor);
 	popupmenu_lineedit_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("PopupMenu");
 	//popupmenu_lineedit_vboxcontainer_addpopup_popups_matmakergdeditor property items TYPE_ARRAY value: [Cut, [Object:null], 0, False, False, 0, 268435544, Null, , False, Copy, [Object:null], 0, False, False, 1, 268435523, Null, , False, Paste, [Object:null], 0, False, False, 2, 268435542, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Select All, [Object:null], 0, False, False, 4, 268435521, Null, , False, Clear, [Object:null], 0, False, False, 3, 0, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Undo, [Object:null], 0, False, False, 5, 268435546, Null, , False, Redo, [Object:null], 0, False, False, 6, 301989978, Null, , False]
-
-	Timer *timer_popupmenu_lineedit_vboxcontainer_addpopup_popups_matmakergdeditor = memnew(Timer);
-	timer_popupmenu_lineedit_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("Timer");
-	popupmenu_lineedit_vboxcontainer_addpopup_popups_matmakergdeditor->add_child(timer_popupmenu_lineedit_vboxcontainer_addpopup_popups_matmakergdeditor);
-	timer_popupmenu_lineedit_vboxcontainer_addpopup_popups_matmakergdeditor->set_name("Timer");
-	timer_popupmenu_lineedit_vboxcontainer_addpopup_popups_matmakergdeditor->set_wait_time(0.3);
-	timer_popupmenu_lineedit_vboxcontainer_addpopup_popups_matmakergdeditor->set_one_shot(True);
 }
 
 MatMakerGDEditor::~MatMakerGDEditor() {
@@ -648,31 +591,32 @@ static void MatMakerGDEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_add_popup_path", "value"), &MatMakerGDEditor::set_add_popup_path);
 	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "add_popup_path"), "set_add_popup_path", "get_add_popup_path");
 
-	ClassDB::bind_method(D_METHOD("get_graph_edit"), &MatMakerGDEditor::get_ * _graph_edit);
-	ClassDB::bind_method(D_METHOD("set_graph_edit", "value"), &MatMakerGDEditor::set_ * _graph_edit);
+	ClassDB::bind_method(D_METHOD("get_graph_edit"), &MatMakerGDEditor::get_graph_edit);
+	ClassDB::bind_method(D_METHOD("set_graph_edit", "value"), &MatMakerGDEditor::set_graph_edit);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_graph_edit", PROPERTY_HINT_RESOURCE_TYPE, "GraphEdit"), "set_graph_edit", "get_graph_edit");
 
-	ClassDB::bind_method(D_METHOD("get_material"), &MatMakerGDEditor::get_ * _material);
-	ClassDB::bind_method(D_METHOD("set_material", "value"), &MatMakerGDEditor::set_ * _material);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_material", PROPERTY_HINT_RESOURCE_TYPE, "MMMateial"), "set_material", "get_material");
+	ClassDB::bind_method(D_METHOD("get_material"), &MatMakerGDEditor::get_material);
+	ClassDB::bind_method(D_METHOD("set_material", "value"), &MatMakerGDEditor::set_material);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_material", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMMaterial>"), "set_material", "get_material");
 
-	ClassDB::bind_method(D_METHOD("get__ignore_material_change_event"), &MatMakerGDEditor::get__ignore_material_change_event);
-	ClassDB::bind_method(D_METHOD("set__ignore_material_change_event", "value"), &MatMakerGDEditor::set__ignore_material_change_event);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "_ignore_material_change_event"), "set__ignore_material_change_event", "get__ignore_material_change_event");
+	ClassDB::bind_method(D_METHOD("get_ignore_material_change_event"), &MatMakerGDEditor::get_ignore_material_change_event);
+	ClassDB::bind_method(D_METHOD("set_ignore_material_change_event", "value"), &MatMakerGDEditor::set_ignore_material_change_event);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "_ignore_material_change_event"), "set_ignore_material_change_event", "get_ignore_material_change_event");
 
-	ClassDB::bind_method(D_METHOD("get__recreation_in_progress"), &MatMakerGDEditor::get__recreation_in_progress);
-	ClassDB::bind_method(D_METHOD("set__recreation_in_progress", "value"), &MatMakerGDEditor::set__recreation_in_progress);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "_recreation_in_progress"), "set__recreation_in_progress", "get__recreation_in_progress");
+	ClassDB::bind_method(D_METHOD("get_recreation_in_progress"), &MatMakerGDEditor::get_recreation_in_progress);
+	ClassDB::bind_method(D_METHOD("set_recreation_in_progress", "value"), &MatMakerGDEditor::set_recreation_in_progress);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "_recreation_in_progress"), "set_recreation_in_progress", "get_recreation_in_progress");
 
-	ClassDB::bind_method(D_METHOD("get_plugin"), &MatMakerGDEditor::get_ * _plugin);
-	ClassDB::bind_method(D_METHOD("set_plugin", "value"), &MatMakerGDEditor::set_ * _plugin);
+	ClassDB::bind_method(D_METHOD("get_plugin"), &MatMakerGDEditor::get_plugin);
+	ClassDB::bind_method(D_METHOD("set_plugin", "value"), &MatMakerGDEditor::set_plugin);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_plugin", PROPERTY_HINT_RESOURCE_TYPE, "EditorPlugin"), "set_plugin", "get_plugin");
 
-	ClassDB::bind_method(D_METHOD("get_undo_redo"), &MatMakerGDEditor::get_ * _undo_redo);
-	ClassDB::bind_method(D_METHOD("set_undo_redo", "value"), &MatMakerGDEditor::set_ * _undo_redo);
+	ClassDB::bind_method(D_METHOD("get_undo_redo"), &MatMakerGDEditor::get_undo_redo);
+	ClassDB::bind_method(D_METHOD("set_undo_redo", "value"), &MatMakerGDEditor::set_undo_redo);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_undo_redo", PROPERTY_HINT_RESOURCE_TYPE, "UndoRedo"), "set_undo_redo", "get_undo_redo");
 
 	ClassDB::bind_method(D_METHOD("_enter_tree"), &MatMakerGDEditor::_enter_tree);
+
 	ClassDB::bind_method(D_METHOD("set_plugin", "plugin"), &MatMakerGDEditor::set_plugin);
 	ClassDB::bind_method(D_METHOD("get_undo_redo"), &MatMakerGDEditor::get_undo_redo);
 	ClassDB::bind_method(D_METHOD("ensure_objs"), &MatMakerGDEditor::ensure_objs);
@@ -681,6 +625,7 @@ static void MatMakerGDEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_mmmaterial", "object"), &MatMakerGDEditor::set_mmmaterial);
 	ClassDB::bind_method(D_METHOD("on_material_changed"), &MatMakerGDEditor::on_material_changed);
 	ClassDB::bind_method(D_METHOD("ignore_changes", "val"), &MatMakerGDEditor::ignore_changes);
+
 	ClassDB::bind_method(D_METHOD("on_graph_edit_connection_request", "from", "from_slot", "to", "to_slot"), &MatMakerGDEditor::on_graph_edit_connection_request);
 	ClassDB::bind_method(D_METHOD("on_graph_edit_disconnection_request", "from", "from_slot", "to", "to_slot"), &MatMakerGDEditor::on_graph_edit_disconnection_request);
 	ClassDB::bind_method(D_METHOD("on_graph_node_close_request", "node"), &MatMakerGDEditor::on_graph_node_close_request);
