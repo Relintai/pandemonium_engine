@@ -3,14 +3,15 @@
 
 #include "core/math/vector2.h"
 #include "core/reference.h"
+#include "core/undo_redo.h"
 #include "core/ustring.h"
+#include "core/vector.h"
 
 #include "scene/gui/graph_node.h"
 
 class MMMaterial;
 class MMNode;
 class PackedScene;
-class UndoRedo;
 class MatMakerGDEditor;
 class MMNodeUniversalProperty;
 
@@ -109,12 +110,30 @@ public:
 protected:
 	static void _bind_methods();
 
+	struct MMGraphNodeEntry {
+		int slot_idx;
+		int input_type;
+		int output_type;
+		String getter;
+		String setter;
+		Control *control;
+		Ref<MMGraphNodeEntry> universal_property;
+		Ref<Texture> texture;
+
+		MMGraphNodeEntry() {
+			slot_idx = 0;
+			input_type = 0;
+			output_type = 0;
+			control = nullptr;
+		}
+	};
+
 	Ref<PackedScene> gradient_editor_scene; // = preload("res://addons/mat_maker_gd/widgets/gradient_editor/gradient_editor.tscn");
 	Ref<PackedScene> polygon_edit_scene; // = preload("res://addons/mat_maker_gd/widgets/polygon_edit/polygon_edit.tscn");
 	Ref<PackedScene> curve_edit_scene; // = preload("res://addons/mat_maker_gd/widgets/curve_edit/curve_edit.tscn");
 	Ref<MMMaterial> _material;
 	Ref<MMNode> _node;
-	Array properties;
+	Vector<MMGraphNodeEntry> properties;
 	MatMakerGDEditor *_editor_node;
 	UndoRedo *_undo_redo;
 	bool _ignore_change_event;
