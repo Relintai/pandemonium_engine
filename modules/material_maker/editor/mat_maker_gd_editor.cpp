@@ -151,6 +151,10 @@ void MatMakerGDEditor::recreate() {
 				if (ip.is_valid()) {
 					MMGraphNode *input_node = find_graph_node_for(n);
 					MMGraphNode *output_node = find_graph_node_for(ip->get_input_property()->get_owner());
+
+					ERR_CONTINUE(!input_node);
+					ERR_CONTINUE(!output_node);
+
 					int to_slot = input_node->get_input_property_graph_node_slot_index(ip);
 					int from_slot = output_node->get_output_property_graph_node_slot_index(ip->get_input_property());
 					_graph_edit->connect_node(output_node->get_name(), from_slot, input_node->get_name(), to_slot);
@@ -337,9 +341,9 @@ MatMakerGDEditor::~MatMakerGDEditor() {
 void MatMakerGDEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_graph_edit"), &MatMakerGDEditor::get_graph_edit);
 
-	ClassDB::bind_method(D_METHOD("get_material"), &MatMakerGDEditor::get_material);
-	ClassDB::bind_method(D_METHOD("set_material", "value"), &MatMakerGDEditor::set_material);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_material", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMMaterial>"), "set_material", "get_material");
+	ClassDB::bind_method(D_METHOD("get_mm_material"), &MatMakerGDEditor::get_mm_material);
+	ClassDB::bind_method(D_METHOD("set_mm_material", "value"), &MatMakerGDEditor::set_mm_material);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "mm_material", PROPERTY_HINT_RESOURCE_TYPE, "MMMaterial"), "set_mm_material", "get_mm_material");
 
 	ClassDB::bind_method(D_METHOD("get_ignore_material_change_event"), &MatMakerGDEditor::get_ignore_material_change_event);
 	ClassDB::bind_method(D_METHOD("set_ignore_material_change_event", "value"), &MatMakerGDEditor::set_ignore_material_change_event);
@@ -348,8 +352,8 @@ void MatMakerGDEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_recreation_in_progress", "value"), &MatMakerGDEditor::set_recreation_in_progress);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "recreation_in_progress"), "set_recreation_in_progress", "get_recreation_in_progress");
 
-	ClassDB::bind_method(D_METHOD("get_undo_redo"), &MatMakerGDEditor::get_undo_redo);
-	ClassDB::bind_method(D_METHOD("set_undo_redo", "value"), &MatMakerGDEditor::set_undo_redo);
+	//ClassDB::bind_method(D_METHOD("get_undo_redo"), &MatMakerGDEditor::get_undo_redo);
+	//ClassDB::bind_method(D_METHOD("set_undo_redo", "value"), &MatMakerGDEditor::set_undo_redo);
 
 	ClassDB::bind_method(D_METHOD("recreate"), &MatMakerGDEditor::recreate);
 	//ClassDB::bind_method(D_METHOD("find_graph_node_for", "nnode"), &MatMakerGDEditor::find_graph_node_for);

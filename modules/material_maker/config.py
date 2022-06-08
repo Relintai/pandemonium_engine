@@ -14,6 +14,8 @@ def get_doc_classes():
         "MMNode",
         "MMNodeUniversalProperty",
         "MMMaterial",
+        "MMGraphNode",
+        "MatMakerGDEditor",
     ]
 
 def get_doc_path():

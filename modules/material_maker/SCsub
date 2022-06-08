@@ -14,6 +14,10 @@ sources = [
     "nodes/mm_material.cpp",
     "nodes/mm_node_universal_property.cpp",
     "nodes/mm_node.cpp",
+
+    #"editor/mat_maker_gd_editor.cpp",
+    #"editor/mm_create_name_popup.cpp",
+    #"editor/mm_graph_node.cpp",
 ]
 
 

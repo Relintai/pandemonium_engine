@@ -5,6 +5,7 @@
 #include "../nodes/mm_node.h"
 #include "../nodes/mm_node_universal_property.h"
 #include "mat_maker_gd_editor.h"
+#include "scene/resources/packed_scene.h"
 
 #include "scene/gui/check_box.h"
 #include "scene/gui/color_picker.h"
@@ -905,10 +906,10 @@ void MMGraphNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_slot_bool", "getter", "setter", "slot_name"), &MMGraphNode::add_slot_bool);
 	ClassDB::bind_method(D_METHOD("add_slot_label_universal", "property"), &MMGraphNode::add_slot_label_universal);
 	ClassDB::bind_method(D_METHOD("add_slot_int_universal", "property"), &MMGraphNode::add_slot_int_universal);
-	ClassDB::bind_method(D_METHOD("add_slot_float", "getter", "setter", "slot_name", "step", "prange", " 1000)"), &MMGraphNode::add_slot_float, 0.1, Vector2(-1000, -1000));
+	ClassDB::bind_method(D_METHOD("add_slot_float", "getter", "setter", "slot_name", "step", "prange"), &MMGraphNode::add_slot_float, 0.1, Vector2(-1000, -1000));
 	ClassDB::bind_method(D_METHOD("add_slot_float_universal", "property"), &MMGraphNode::add_slot_float_universal);
-	ClassDB::bind_method(D_METHOD("add_slot_vector2", "getter", "setter", "slot_name", "step", "prange", " 1000)"), &MMGraphNode::add_slot_vector2, 0.1, Vector2(-1000, -1000));
-	ClassDB::bind_method(D_METHOD("add_slot_vector3", "getter", "setter", "slot_name", "step", "prange", " 1000)"), &MMGraphNode::add_slot_vector3, 0.1, Vector2(-1000, -1000));
+	ClassDB::bind_method(D_METHOD("add_slot_vector2", "getter", "setter", "slot_name", "step", "prange"), &MMGraphNode::add_slot_vector2, 0.1, Vector2(-1000, -1000));
+	ClassDB::bind_method(D_METHOD("add_slot_vector3", "getter", "setter", "slot_name", "step", "prange"), &MMGraphNode::add_slot_vector3, 0.1, Vector2(-1000, -1000));
 	ClassDB::bind_method(D_METHOD("add_slot_vector2_universal", "property"), &MMGraphNode::add_slot_vector2_universal);
 	ClassDB::bind_method(D_METHOD("add_slot", "input_type", "output_type", "getter", "setter", "control"), &MMGraphNode::add_slot);
 
