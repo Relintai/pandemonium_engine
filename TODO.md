@@ -1,6 +1,6 @@
 # Pandemonium Engine TODOs
 
-# WFC module
+## WFC module
 
 - Need to rework the readme. Also link to the sample repo. (https://github.com/Relintai/wfc_module_samples)
 - TilingWaveFormCollapse should not generate the images themeslves, rather it should just use internal ids, and return those to you. It could store variants. -> a derived class chould be mamde that adds image generation on top, but in a friendlier way.
@@ -11,3 +11,12 @@
 - The bindings will likely need more improvements.
 - Would be nice, if the algorithm could be parametrized from gdscript aswell.
 - Maybe addding Array2D, and Array3D like classes to the engine would be a good idea.
+
+## Physics
+
+- Add a multi thread wrapper around the physics server (and nav server).
+- Add a method to the physics server that lets the caller thread wait for the physics update, and wait for each thread to finish.
+- These 2 changes would enable heavy simplifications to most Props, Voxelman, and Terraman generation code, as they could just directly use the physics server in multi threaded jobs without crashing. The entire update mode thing could be removed.
+
+
+
