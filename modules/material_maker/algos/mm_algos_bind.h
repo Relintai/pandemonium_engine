@@ -266,6 +266,12 @@ public:
 	Vector2 get_from_tileset(const float count, const float pseed, const Vector2 &uv);
 	Vector2 custom_uv_transform(const Vector2 &uv, const Vector2 &cst_scale, const float rnd_rotate, const float rnd_scale, const Vector2 &pseed);
 
+	void register_node_class(const String &category, const String &cls);
+	void unregister_node_class(const String &category, const String &cls);
+
+	void register_node_script(const String &category, const String &file_path);
+	void unregister_node_script(const String &category, const String &file_path);
+
 	static _MMAlgos *get_singleton();
 
 	_MMAlgos();

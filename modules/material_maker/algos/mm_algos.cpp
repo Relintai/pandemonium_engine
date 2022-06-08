@@ -5596,6 +5596,74 @@ Vector2 MMAlgos::custom_uv_transform(const Vector2 &uuv, const Vector2 &cst_scal
 	return uv;
 }
 
+void MMAlgos::register_node_class(const String &category, const String &cls) {
+	for (int i = 0; i < mm_node_registry.size(); ++i) {
+		const MMNodeRegistryCategory &categ = mm_node_registry[i];
+
+		if (categ.category_name == category) {
+			for (int j = 0; j < categ.entries.size(); ++j) {
+				ERR_FAIL_COND(categ.entries[j].data == cls);
+			}
+
+			MMNodeRegistryEntry e;
+			e.type = MMNODE_REGISTRY_TYPE_CLASS;
+			e.data = cls;
+
+			mm_node_registry.write[i].entries.push_back(e);
+
+			return;
+		}
+	}
+}
+void MMAlgos::unregister_node_class(const String &category, const String &cls) {
+	for (int i = 0; i < mm_node_registry.size(); ++i) {
+		const MMNodeRegistryCategory &categ = mm_node_registry[i];
+
+		if (categ.category_name == category) {
+			for (int j = 0; j < categ.entries.size(); ++j) {
+				if (categ.entries[j].data == cls) {
+					mm_node_registry.write[j].entries.remove(j);
+					return;
+				}
+			}
+		}
+	}
+}
+
+void MMAlgos::register_node_script(const String &category, const String &file_path) {
+	for (int i = 0; i < mm_node_registry.size(); ++i) {
+		const MMNodeRegistryCategory &categ = mm_node_registry[i];
+
+		if (categ.category_name == category) {
+			for (int j = 0; j < categ.entries.size(); ++j) {
+				ERR_FAIL_COND(categ.entries[j].data == file_path);
+			}
+
+			MMNodeRegistryEntry e;
+			e.type = MMNODE_REGISTRY_TYPE_SCRIPT;
+			e.data = file_path;
+
+			mm_node_registry.write[i].entries.push_back(e);
+
+			return;
+		}
+	}
+}
+void MMAlgos::unregister_node_script(const String &category, const String &file_path) {
+	for (int i = 0; i < mm_node_registry.size(); ++i) {
+		const MMNodeRegistryCategory &categ = mm_node_registry[i];
+
+		if (categ.category_name == category) {
+			for (int j = 0; j < categ.entries.size(); ++j) {
+				if (categ.entries[j].data == file_path) {
+					mm_node_registry.write[j].entries.remove(j);
+					return;
+				}
+			}
+		}
+	}
+}
+
 MMAlgos::MMAlgos() {
 }
 
@@ -5604,3 +5672,5 @@ MMAlgos::~MMAlgos() {
 
 void MMAlgos::_bind_methods() {
 }
+
+Vector<MMAlgos::MMNodeRegistryCategory> MMAlgos::mm_node_registry;

@@ -1012,6 +1012,20 @@ Vector2 _MMAlgos::custom_uv_transform(const Vector2 &uv, const Vector2 &cst_scal
 	return MMAlgos::custom_uv_transform(uv, cst_scale, rnd_rotate, rnd_scale, pseed);
 }
 
+void _MMAlgos::register_node_class(const String &category, const String &cls) {
+	MMAlgos::register_node_class(category, cls);
+}
+void _MMAlgos::unregister_node_class(const String &category, const String &cls) {
+	MMAlgos::unregister_node_class(category, cls);
+}
+
+void _MMAlgos::register_node_script(const String &category, const String &file_path) {
+	MMAlgos::register_node_class(category, file_path);
+}
+void _MMAlgos::unregister_node_script(const String &category, const String &file_path) {
+	MMAlgos::unregister_node_class(category, file_path);
+}
+
 _MMAlgos *_MMAlgos::get_singleton() {
 	return self;
 }
@@ -1277,6 +1291,12 @@ void _MMAlgos::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("kal_rotate", "uv", "count", "offset"), &_MMAlgos::kal_rotate);
 	ClassDB::bind_method(D_METHOD("get_from_tileset", "count", "pseed", "uv"), &_MMAlgos::get_from_tileset);
 	ClassDB::bind_method(D_METHOD("custom_uv_transform", "uv", "cst_scale", "rnd_rotate", "rnd_scale", "pseed"), &_MMAlgos::custom_uv_transform);
+
+	ClassDB::bind_method(D_METHOD("register_node_class", "category", "cls"), &_MMAlgos::register_node_class);
+	ClassDB::bind_method(D_METHOD("unregister_node_class", "category", "cls"), &_MMAlgos::unregister_node_class);
+
+	ClassDB::bind_method(D_METHOD("register_node_script", "category", "file_path"), &_MMAlgos::register_node_script);
+	ClassDB::bind_method(D_METHOD("unregister_node_script", "category", "file_path"), &_MMAlgos::unregister_node_script);
 }
 
 _MMAlgos *_MMAlgos::self = nullptr;
