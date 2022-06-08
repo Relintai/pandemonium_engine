@@ -8,6 +8,7 @@
 #include "core/ustring.h"
 #include "core/vector.h"
 
+#include "modules/material_maker/editor/mm_create_name_popup.h"
 #include "scene/gui/margin_container.h"
 
 class GraphEdit;
@@ -16,22 +17,13 @@ class UndoRedo;
 class MMMaterial;
 class GraphNode;
 class MMGraphNode;
+class MMNode;
 
 class MatMakerGDEditor : public MarginContainer {
 	GDCLASS(MatMakerGDEditor, MarginContainer);
 
 public:
-	Variant get_Variant();
-	void set_Variant(const Variant &val);
-
-	NodePath get_graph_edit_path();
-	void set_graph_edit_path(const NodePath &val);
-
-	NodePath get_add_popup_path();
-	void set_add_popup_path(const NodePath &val);
-
 	GraphEdit *get_graph_edit();
-	void set_graph_edit(const GraphEdit *val);
 
 	Ref<MMMaterial> get_mm_material();
 	void set_mm_material(const Ref<MMMaterial> &val);
@@ -39,43 +31,40 @@ public:
 	int get_ignore_material_change_event() const;
 	void set_ignore_material_change_event(const int val);
 
+	void ignore_changes(const bool val);
+
 	bool get_recreation_in_progress() const;
 	void set_recreation_in_progress(const bool val);
 
-	EditorPlugin *get_plugin();
-	void set_plugin(const EditorPlugin *val);
-
 	UndoRedo *get_undo_redo();
-	void set_undo_redo(const UndoRedo *val);
+	void set_undo_redo(UndoRedo *ur);
 
-	void _enter_tree();
-
-	void ensure_objs();
 	void recreate();
-	MMGraphNode *find_graph_node_for(const Ref<MMnode> &nnode);
-	void set_mmmaterial(const Ref<MMMaterial> &object);
+	MMGraphNode *find_graph_node_for(const Ref<MMNode> &nnode);
+
 	void on_material_changed();
-	void ignore_changes(const bool val);
 
 	void on_graph_edit_connection_request(const String &from, const int from_slot, const String &to, const int to_slot);
 	void on_graph_edit_disconnection_request(const String &from, const int from_slot, const String &to, const int to_slot);
-	void on_graph_node_close_request(GraphNode *node);
+	void on_graph_node_close_request(Node *node);
 	void _on_AddButton_pressed();
-	void _on_AddPopup_ok_pressed(const String &script_path);
+	void _on_AddPopup_ok_pressed(const int type, const String &data);
 
 	MatMakerGDEditor();
 	~MatMakerGDEditor();
 
 protected:
+	void _notification(int p_what);
 	static void _bind_methods();
 
-	NodePath graph_edit_path;
-	NodePath add_popup_path;
 	GraphEdit *_graph_edit;
-	Ref<MMMaterial> *_material;
+	MMCreateNamePopup *_create_popup;
+	Ref<MMMaterial> _material;
 	int _ignore_material_change_event;
 	bool _recreation_in_progress;
 	EditorPlugin *_plugin;
+
+private:
 	UndoRedo *_undo_redo;
 };
 
