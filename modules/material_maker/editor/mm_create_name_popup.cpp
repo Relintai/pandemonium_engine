@@ -25,41 +25,29 @@ void MMCreateNamePopup::set_type_folders(const PoolStringArray &val) {
 	type_folders = val;
 }
 
-String MMCreateNamePopup::get__resource_type() {
+String MMCreateNamePopup::get_resource_type() {
 	return _resource_type;
 }
 
-void MMCreateNamePopup::set__resource_type(const String &val) {
+void MMCreateNamePopup::set_resource_type(const String &val) {
 	_resource_type = val;
 }
 
-LineEdit MMCreateNamePopup::get_line_edit() {
-	return *_line_edit;
+LineEdit *MMCreateNamePopup::get_line_edit() {
+	return _line_edit;
 }
 
-void MMCreateNamePopup::set_line_edit(const LineEdit &val) {
-	*_line_edit = val;
+void MMCreateNamePopup::set_line_edit(LineEdit *val) {
+	_line_edit = val;
 }
 
-Tree MMCreateNamePopup::get_tree() {
-	return *_tree;
+Tree *MMCreateNamePopup::get_tree() {
+	return _tree;
 }
 
-void MMCreateNamePopup::set_tree(const Tree &val) {
-	*_tree = val;
+void MMCreateNamePopup::set_tree(Tree *val) {
+	_tree = val;
 }
-
-//tool;
-signal ok_pressed;
-//export(NodePath) ;
-NodePath line_edit_path = ;
-//export(NodePath) ;
-NodePath tree_path = ;
-//export(PoolStringArray) ;
-PoolStringArray type_folders = ;
-String _resource_type = "MMNode";
-LineEdit *_line_edit;
-Tree *_tree;
 
 void MMCreateNamePopup::_ready() {
 	_line_edit = get_node(line_edit_path) as LineEdit;
@@ -122,7 +110,6 @@ void MMCreateNamePopup::_on_OK_pressed() {
 	}
 
 	hide();
-}
 }
 
 MMCreateNamePopup::MMCreateNamePopup() {
@@ -260,37 +247,17 @@ MMCreateNamePopup::MMCreateNamePopup() {
 	tree_vboxcontainer_createnamepopup->add_child(popupmenu_tree_vboxcontainer_createnamepopup);
 	popupmenu_tree_vboxcontainer_createnamepopup->set_name("PopupMenu");
 
-	Timer *timer_popupmenu_tree_vboxcontainer_createnamepopup = memnew(Timer);
-	timer_popupmenu_tree_vboxcontainer_createnamepopup->set_name("Timer");
-	popupmenu_tree_vboxcontainer_createnamepopup->add_child(timer_popupmenu_tree_vboxcontainer_createnamepopup);
-	timer_popupmenu_tree_vboxcontainer_createnamepopup->set_name("Timer");
-	timer_popupmenu_tree_vboxcontainer_createnamepopup->set_wait_time(0.3);
-	timer_popupmenu_tree_vboxcontainer_createnamepopup->set_one_shot(True);
-
 	LineEdit *lineedit_tree_vboxcontainer_createnamepopup = memnew(LineEdit);
 	lineedit_tree_vboxcontainer_createnamepopup->set_name("LineEdit");
 	tree_vboxcontainer_createnamepopup->add_child(lineedit_tree_vboxcontainer_createnamepopup);
 	lineedit_tree_vboxcontainer_createnamepopup->set_name("LineEdit");
 	lineedit_tree_vboxcontainer_createnamepopup->set_visible(False);
 
-	Timer *timer_lineedit_tree_vboxcontainer_createnamepopup = memnew(Timer);
-	timer_lineedit_tree_vboxcontainer_createnamepopup->set_name("Timer");
-	lineedit_tree_vboxcontainer_createnamepopup->add_child(timer_lineedit_tree_vboxcontainer_createnamepopup);
-	timer_lineedit_tree_vboxcontainer_createnamepopup->set_name("Timer");
-	timer_lineedit_tree_vboxcontainer_createnamepopup->set_wait_time(0.65);
-
 	PopupMenu *popupmenu_lineedit_tree_vboxcontainer_createnamepopup = memnew(PopupMenu);
 	popupmenu_lineedit_tree_vboxcontainer_createnamepopup->set_name("PopupMenu");
 	lineedit_tree_vboxcontainer_createnamepopup->add_child(popupmenu_lineedit_tree_vboxcontainer_createnamepopup);
 	popupmenu_lineedit_tree_vboxcontainer_createnamepopup->set_name("PopupMenu");
 	//popupmenu_lineedit_tree_vboxcontainer_createnamepopup property items TYPE_ARRAY value: [Cut, [Object:null], 0, False, False, 0, 268435544, Null, , False, Copy, [Object:null], 0, False, False, 1, 268435523, Null, , False, Paste, [Object:null], 0, False, False, 2, 268435542, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Select All, [Object:null], 0, False, False, 4, 268435521, Null, , False, Clear, [Object:null], 0, False, False, 3, 0, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Undo, [Object:null], 0, False, False, 5, 268435546, Null, , False, Redo, [Object:null], 0, False, False, 6, 301989978, Null, , False]
-
-	Timer *timer_popupmenu_lineedit_tree_vboxcontainer_createnamepopup = memnew(Timer);
-	timer_popupmenu_lineedit_tree_vboxcontainer_createnamepopup->set_name("Timer");
-	popupmenu_lineedit_tree_vboxcontainer_createnamepopup->add_child(timer_popupmenu_lineedit_tree_vboxcontainer_createnamepopup);
-	timer_popupmenu_lineedit_tree_vboxcontainer_createnamepopup->set_name("Timer");
-	timer_popupmenu_lineedit_tree_vboxcontainer_createnamepopup->set_wait_time(0.3);
-	timer_popupmenu_lineedit_tree_vboxcontainer_createnamepopup->set_one_shot(True);
 
 	HSlider *hslider_tree_vboxcontainer_createnamepopup = memnew(HSlider);
 	hslider_tree_vboxcontainer_createnamepopup->set_name("HSlider");
@@ -308,11 +275,6 @@ MMCreateNamePopup::MMCreateNamePopup() {
 	tree_vboxcontainer_createnamepopup->add_child(vscrollbar_tree_vboxcontainer_createnamepopup);
 	vscrollbar_tree_vboxcontainer_createnamepopup->set_name("VScrollBar");
 	vscrollbar_tree_vboxcontainer_createnamepopup->set_custom_step(14);
-
-	Timer *timer_tree_vboxcontainer_createnamepopup = memnew(Timer);
-	timer_tree_vboxcontainer_createnamepopup->set_name("Timer");
-	tree_vboxcontainer_createnamepopup->add_child(timer_tree_vboxcontainer_createnamepopup);
-	timer_tree_vboxcontainer_createnamepopup->set_name("Timer");
 
 	Label *label_vboxcontainer_createnamepopup = memnew(Label);
 	label_vboxcontainer_createnamepopup->set_name("Label");
@@ -344,30 +306,19 @@ MMCreateNamePopup::MMCreateNamePopup() {
 	lineedit_vboxcontainer_createnamepopup->set_size_flags_horizontal(3);
 	lineedit_vboxcontainer_createnamepopup->set_caret_blink(True);
 
-	Timer *timer_lineedit_vboxcontainer_createnamepopup = memnew(Timer);
-	timer_lineedit_vboxcontainer_createnamepopup->set_name("Timer");
-	lineedit_vboxcontainer_createnamepopup->add_child(timer_lineedit_vboxcontainer_createnamepopup);
-	timer_lineedit_vboxcontainer_createnamepopup->set_name("Timer");
-	timer_lineedit_vboxcontainer_createnamepopup->set_wait_time(0.65);
-
 	PopupMenu *popupmenu_lineedit_vboxcontainer_createnamepopup = memnew(PopupMenu);
 	popupmenu_lineedit_vboxcontainer_createnamepopup->set_name("PopupMenu");
 	lineedit_vboxcontainer_createnamepopup->add_child(popupmenu_lineedit_vboxcontainer_createnamepopup);
 	popupmenu_lineedit_vboxcontainer_createnamepopup->set_name("PopupMenu");
 	//popupmenu_lineedit_vboxcontainer_createnamepopup property items TYPE_ARRAY value: [Cut, [Object:null], 0, False, False, 0, 268435544, Null, , False, Copy, [Object:null], 0, False, False, 1, 268435523, Null, , False, Paste, [Object:null], 0, False, False, 2, 268435542, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Select All, [Object:null], 0, False, False, 4, 268435521, Null, , False, Clear, [Object:null], 0, False, False, 3, 0, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Undo, [Object:null], 0, False, False, 5, 268435546, Null, , False, Redo, [Object:null], 0, False, False, 6, 301989978, Null, , False]
-
-	Timer *timer_popupmenu_lineedit_vboxcontainer_createnamepopup = memnew(Timer);
-	timer_popupmenu_lineedit_vboxcontainer_createnamepopup->set_name("Timer");
-	popupmenu_lineedit_vboxcontainer_createnamepopup->add_child(timer_popupmenu_lineedit_vboxcontainer_createnamepopup);
-	timer_popupmenu_lineedit_vboxcontainer_createnamepopup->set_name("Timer");
-	timer_popupmenu_lineedit_vboxcontainer_createnamepopup->set_wait_time(0.3);
-	timer_popupmenu_lineedit_vboxcontainer_createnamepopup->set_one_shot(True);
 }
 
 MMCreateNamePopup::~MMCreateNamePopup() {
 }
 
 static void MMCreateNamePopup::_bind_methods() {
+	//	signal ok_pressed;
+
 	ClassDB::bind_method(D_METHOD("get_line_edit_path"), &MMCreateNamePopup::get_line_edit_path);
 	ClassDB::bind_method(D_METHOD("set_line_edit_path", "value"), &MMCreateNamePopup::set_line_edit_path);
 	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "line_edit_path"), "set_line_edit_path", "get_line_edit_path");
@@ -380,17 +331,17 @@ static void MMCreateNamePopup::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_type_folders", "value"), &MMCreateNamePopup::set_type_folders);
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_STRING_ARRAY, "type_folders"), "set_type_folders", "get_type_folders");
 
-	ClassDB::bind_method(D_METHOD("get__resource_type"), &MMCreateNamePopup::get__resource_type);
-	ClassDB::bind_method(D_METHOD("set__resource_type", "value"), &MMCreateNamePopup::set__resource_type);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "_resource_type"), "set__resource_type", "get__resource_type");
+	ClassDB::bind_method(D_METHOD("get_resource_type"), &MMCreateNamePopup::get__resource_type);
+	ClassDB::bind_method(D_METHOD("set_resource_type", "value"), &MMCreateNamePopup::set__resource_type);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "_resource_type"), "set_resource_type", "get_resource_type");
 
-	ClassDB::bind_method(D_METHOD("get_*_line_edit"), &MMCreateNamePopup::get_ * _line_edit);
-	ClassDB::bind_method(D_METHOD("set_*_line_edit", "value"), &MMCreateNamePopup::set_ * _line_edit);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_line_edit", PROPERTY_HINT_RESOURCE_TYPE, "LineEdit"), "set_*_line_edit", "get_*_line_edit");
+	ClassDB::bind_method(D_METHOD("get_line_edit"), &MMCreateNamePopup::get_ * _line_edit);
+	ClassDB::bind_method(D_METHOD("set_line_edit", "value"), &MMCreateNamePopup::set_ * _line_edit);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_line_edit", PROPERTY_HINT_RESOURCE_TYPE, "LineEdit"), "set_line_edit", "get_line_edit");
 
-	ClassDB::bind_method(D_METHOD("get_*_tree"), &MMCreateNamePopup::get_ * _tree);
-	ClassDB::bind_method(D_METHOD("set_*_tree", "value"), &MMCreateNamePopup::set_ * _tree);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_tree", PROPERTY_HINT_RESOURCE_TYPE, "Tree"), "set_*_tree", "get_*_tree");
+	ClassDB::bind_method(D_METHOD("get_tree"), &MMCreateNamePopup::get_ * _tree);
+	ClassDB::bind_method(D_METHOD("set_tree", "value"), &MMCreateNamePopup::set_ * _tree);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "tree", PROPERTY_HINT_RESOURCE_TYPE, "Tree"), "set_tree", "get_tree");
 
 	ClassDB::bind_method(D_METHOD("_ready"), &MMCreateNamePopup::_ready);
 	ClassDB::bind_method(D_METHOD("set_resource_type", "resource_type"), &MMCreateNamePopup::set_resource_type);
