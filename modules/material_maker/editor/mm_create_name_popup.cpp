@@ -1,74 +1,20 @@
 
 #include "mm_create_name_popup.h"
 
-NodePath MMCreateNamePopup::get_line_edit_path() {
-	return line_edit_path;
-}
-
-void MMCreateNamePopup::set_line_edit_path(const NodePath &val) {
-	line_edit_path = val;
-}
-
-NodePath MMCreateNamePopup::get_tree_path() {
-	return tree_path;
-}
-
-void MMCreateNamePopup::set_tree_path(const NodePath &val) {
-	tree_path = val;
-}
-
-PoolStringArray MMCreateNamePopup::get_type_folders() {
-	return type_folders;
-}
-
-void MMCreateNamePopup::set_type_folders(const PoolStringArray &val) {
-	type_folders = val;
-}
-
-String MMCreateNamePopup::get_resource_type() {
-	return _resource_type;
-}
-
-void MMCreateNamePopup::set_resource_type(const String &val) {
-	_resource_type = val;
-}
-
-LineEdit *MMCreateNamePopup::get_line_edit() {
-	return _line_edit;
-}
-
-void MMCreateNamePopup::set_line_edit(LineEdit *val) {
-	_line_edit = val;
-}
-
-Tree *MMCreateNamePopup::get_tree() {
-	return _tree;
-}
-
-void MMCreateNamePopup::set_tree(Tree *val) {
-	_tree = val;
-}
-
-void MMCreateNamePopup::_ready() {
-	_line_edit = get_node(line_edit_path) as LineEdit;
-	_tree = get_node(tree_path) as Tree;
-	connect("confirmed", self, "_on_OK_pressed");
-	connect("about_to_show", self, "about_to_show");
-}
-
-void MMCreateNamePopup::set_resource_type(const String &resource_type) {
-	_resource_type = resource_type;
-}
+#include "scene/gui/box_container.h"
+#include "scene/gui/label.h"
+#include "scene/gui/tree.h"
 
 void MMCreateNamePopup::about_to_show() {
-	_tree.clear();
-	TreeItem *root = _tree.create_item();
+	_tree->clear();
+	TreeItem *root = _tree->create_item();
 
-	for (s in type_folders) {
-		evaluate_folder(s, root);
-	}
+	//for (s in type_folders) {
+	//	evaluate_folder(s, root);
+	//}
 }
 
+/*
 void MMCreateNamePopup::evaluate_folder(const String &folder, const TreeItem &root) {
 	TreeItem *ti = _tree.create_item(root);
 	ti.set_text(0, folder.substr(folder.find_last("/") + 1));
@@ -95,17 +41,18 @@ void MMCreateNamePopup::evaluate_folder(const String &folder, const TreeItem &ro
 		print("An error occurred when trying to access the path.");
 	}
 }
+*/
 
 void MMCreateNamePopup::_on_OK_pressed() {
-	TreeItem *selected = _tree.get_selected();
+	TreeItem *selected = _tree->get_selected();
 
 	if (selected) {
-		if (!selected.has_meta("file")) {
+		if (!selected->has_meta("file")) {
 			hide();
 			return;
 		}
 
-		String file_name = selected.get_meta("file");
+		String file_name = selected->get_meta("file");
 		emit_signal("ok_pressed", file_name);
 	}
 
@@ -113,239 +60,43 @@ void MMCreateNamePopup::_on_OK_pressed() {
 }
 
 MMCreateNamePopup::MMCreateNamePopup() {
-	line_edit_path = ;
-	tree_path = ;
-	type_folders = ;
-	_resource_type = "MMNode";
-	*_line_edit;
-	*_tree;
+	set_anchors_and_margins_preset(LayoutPreset::PRESET_CENTER);
+	set_size(Vector2(491, 440));
+	set_title("Create New Resource");
 
-	//Script: res://addons/mat_maker_gd/editor/MMCreateNamePopup.gd
-	ConfirmationDialog *createnamepopup = memnew(ConfirmationDialog);
-	createnamepopup->set_name("MMCreateNamePopup");
+	VBoxContainer *vboxcontainer = memnew(VBoxContainer);
+	vboxcontainer->set_name("VBoxContainer");
+	vboxcontainer->set_h_size_flags(SIZE_EXPAND_FILL);
+	vboxcontainer->set_v_size_flags(SIZE_EXPAND_FILL);
+	add_child(vboxcontainer);
 
-	createnamepopup->set_name("MMCreateNamePopup");
-	createnamepopup->set_filename("res://addons/mat_maker_gd/editor/MMCreateNamePopup.tscn");
-	createnamepopup->set_anchor_left(0.5);
-	createnamepopup->set_anchor_top(0.5);
-	createnamepopup->set_anchor_right(0.5);
-	createnamepopup->set_anchor_bottom(0.5);
-	createnamepopup->set_margin_left(-245.5);
-	createnamepopup->set_margin_top(-220);
-	createnamepopup->set_margin_right(245.5);
-	createnamepopup->set_margin_bottom(220);
-	createnamepopup->set_rect_position(Vector2(-245.5, -220));
-	createnamepopup->set_rect_global_position(Vector2(-245.5, -220));
-	createnamepopup->set_rect_size(Vector2(491, 440));
-	createnamepopup->set_window_title("Create New Resource");
-	//createnamepopup property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
-	//createnamepopup property line_edit_path TYPE_NODE_PATH value: VBoxContainer/LineEdit
-	//createnamepopup property tree_path TYPE_NODE_PATH value: VBoxContainer/Tree
+	Label *label2_vboxcontainer = memnew(Label);
+	label2_vboxcontainer->set_name("Label2");
+	label2_vboxcontainer->set_h_size_flags(SIZE_EXPAND_FILL);
+	label2_vboxcontainer->set_text("Type");
+	vboxcontainer->add_child(label2_vboxcontainer);
 
-	TextureButton *texturebutton_createnamepopup = memnew(TextureButton);
-	texturebutton_createnamepopup->set_name("TextureButton");
-	createnamepopup->add_child(texturebutton_createnamepopup);
-	texturebutton_createnamepopup->set_name("TextureButton");
-
-	Label *label_createnamepopup = memnew(Label);
-	label_createnamepopup->set_name("Label");
-	createnamepopup->add_child(label_createnamepopup);
-
-	label_createnamepopup->set_name("Label");
-	label_createnamepopup->set_anchor_right(1);
-	label_createnamepopup->set_anchor_bottom(1);
-	label_createnamepopup->set_margin_left(8);
-	label_createnamepopup->set_margin_top(8);
-	label_createnamepopup->set_margin_right(-8);
-	label_createnamepopup->set_margin_bottom(-42);
-	label_createnamepopup->set_rect_position(Vector2(8, 8));
-	label_createnamepopup->set_rect_global_position(Vector2(8, 8));
-	label_createnamepopup->set_rect_size(Vector2(0, 14));
-
-	HBoxContainer *hboxcontainer_createnamepopup = memnew(HBoxContainer);
-	hboxcontainer_createnamepopup->set_name("HBoxContainer");
-	createnamepopup->add_child(hboxcontainer_createnamepopup);
-	hboxcontainer_createnamepopup->set_name("HBoxContainer");
-
-	Control *control3_hboxcontainer_createnamepopup = memnew(Control);
-	control3_hboxcontainer_createnamepopup->set_name("Control3");
-	hboxcontainer_createnamepopup->add_child(control3_hboxcontainer_createnamepopup);
-	control3_hboxcontainer_createnamepopup->set_name("Control3");
-	control3_hboxcontainer_createnamepopup->set_mouse_filter(1);
-	control3_hboxcontainer_createnamepopup->set_size_flags_horizontal(3);
-
-	Button *button2_hboxcontainer_createnamepopup = memnew(Button);
-	button2_hboxcontainer_createnamepopup->set_name("Button2");
-	hboxcontainer_createnamepopup->add_child(button2_hboxcontainer_createnamepopup);
-	button2_hboxcontainer_createnamepopup->set_name("Button2");
-	button2_hboxcontainer_createnamepopup->set_text("Cancel");
-
-	Control *control_hboxcontainer_createnamepopup = memnew(Control);
-	control_hboxcontainer_createnamepopup->set_name("Control");
-	hboxcontainer_createnamepopup->add_child(control_hboxcontainer_createnamepopup);
-	control_hboxcontainer_createnamepopup->set_name("Control");
-	control_hboxcontainer_createnamepopup->set_mouse_filter(1);
-	control_hboxcontainer_createnamepopup->set_size_flags_horizontal(3);
-
-	Button *button_hboxcontainer_createnamepopup = memnew(Button);
-	button_hboxcontainer_createnamepopup->set_name("Button");
-	hboxcontainer_createnamepopup->add_child(button_hboxcontainer_createnamepopup);
-	button_hboxcontainer_createnamepopup->set_name("Button");
-	button_hboxcontainer_createnamepopup->set_text("OK");
-
-	Control *control2_hboxcontainer_createnamepopup = memnew(Control);
-	control2_hboxcontainer_createnamepopup->set_name("Control2");
-	hboxcontainer_createnamepopup->add_child(control2_hboxcontainer_createnamepopup);
-	control2_hboxcontainer_createnamepopup->set_name("Control2");
-	control2_hboxcontainer_createnamepopup->set_mouse_filter(1);
-	control2_hboxcontainer_createnamepopup->set_size_flags_horizontal(3);
-
-	VBoxContainer *vboxcontainer_createnamepopup = memnew(VBoxContainer);
-	vboxcontainer_createnamepopup->set_name("VBoxContainer");
-	createnamepopup->add_child(vboxcontainer_createnamepopup);
-	vboxcontainer_createnamepopup->set_name("VBoxContainer");
-	//vboxcontainer_createnamepopup property owner TYPE_OBJECT value: MMCreateNamePopup:[ConfirmationDialog:280461]
-	vboxcontainer_createnamepopup->set_margin_left(8);
-	vboxcontainer_createnamepopup->set_margin_top(8);
-	vboxcontainer_createnamepopup->set_margin_right(483);
-	vboxcontainer_createnamepopup->set_margin_bottom(404);
-	vboxcontainer_createnamepopup->set_rect_position(Vector2(8, 8));
-	vboxcontainer_createnamepopup->set_rect_global_position(Vector2(8, 8));
-	vboxcontainer_createnamepopup->set_rect_size(Vector2(475, 396));
-	vboxcontainer_createnamepopup->set_size_flags_horizontal(3);
-	vboxcontainer_createnamepopup->set_size_flags_vertical(3);
-	//vboxcontainer_createnamepopup property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
-
-	Label *label2_vboxcontainer_createnamepopup = memnew(Label);
-	label2_vboxcontainer_createnamepopup->set_name("Label2");
-	vboxcontainer_createnamepopup->add_child(label2_vboxcontainer_createnamepopup);
-	label2_vboxcontainer_createnamepopup->set_name("Label2");
-	//label2_vboxcontainer_createnamepopup property owner TYPE_OBJECT value: MMCreateNamePopup:[ConfirmationDialog:280461]
-	label2_vboxcontainer_createnamepopup->set_margin_right(475);
-	label2_vboxcontainer_createnamepopup->set_margin_bottom(14);
-	label2_vboxcontainer_createnamepopup->set_rect_size(Vector2(475, 14));
-	label2_vboxcontainer_createnamepopup->set_size_flags_horizontal(3);
-	label2_vboxcontainer_createnamepopup->set_text("Type");
-
-	Tree *tree_vboxcontainer_createnamepopup = memnew(Tree);
-	tree_vboxcontainer_createnamepopup->set_name("Tree");
-	vboxcontainer_createnamepopup->add_child(tree_vboxcontainer_createnamepopup);
-	tree_vboxcontainer_createnamepopup->set_name("Tree");
-	//tree_vboxcontainer_createnamepopup property owner TYPE_OBJECT value: MMCreateNamePopup:[ConfirmationDialog:280461]
-	tree_vboxcontainer_createnamepopup->set_margin_top(18);
-	tree_vboxcontainer_createnamepopup->set_margin_right(475);
-	tree_vboxcontainer_createnamepopup->set_margin_bottom(350);
-	tree_vboxcontainer_createnamepopup->set_rect_position(Vector2(0, 18));
-	tree_vboxcontainer_createnamepopup->set_rect_global_position(Vector2(0, 18));
-	tree_vboxcontainer_createnamepopup->set_rect_size(Vector2(475, 332));
-	tree_vboxcontainer_createnamepopup->set_size_flags_horizontal(3);
-	tree_vboxcontainer_createnamepopup->set_size_flags_vertical(3);
-	tree_vboxcontainer_createnamepopup->set_hide_root(True);
-
-	PopupMenu *popupmenu_tree_vboxcontainer_createnamepopup = memnew(PopupMenu);
-	popupmenu_tree_vboxcontainer_createnamepopup->set_name("PopupMenu");
-	tree_vboxcontainer_createnamepopup->add_child(popupmenu_tree_vboxcontainer_createnamepopup);
-	popupmenu_tree_vboxcontainer_createnamepopup->set_name("PopupMenu");
-
-	LineEdit *lineedit_tree_vboxcontainer_createnamepopup = memnew(LineEdit);
-	lineedit_tree_vboxcontainer_createnamepopup->set_name("LineEdit");
-	tree_vboxcontainer_createnamepopup->add_child(lineedit_tree_vboxcontainer_createnamepopup);
-	lineedit_tree_vboxcontainer_createnamepopup->set_name("LineEdit");
-	lineedit_tree_vboxcontainer_createnamepopup->set_visible(False);
-
-	PopupMenu *popupmenu_lineedit_tree_vboxcontainer_createnamepopup = memnew(PopupMenu);
-	popupmenu_lineedit_tree_vboxcontainer_createnamepopup->set_name("PopupMenu");
-	lineedit_tree_vboxcontainer_createnamepopup->add_child(popupmenu_lineedit_tree_vboxcontainer_createnamepopup);
-	popupmenu_lineedit_tree_vboxcontainer_createnamepopup->set_name("PopupMenu");
-	//popupmenu_lineedit_tree_vboxcontainer_createnamepopup property items TYPE_ARRAY value: [Cut, [Object:null], 0, False, False, 0, 268435544, Null, , False, Copy, [Object:null], 0, False, False, 1, 268435523, Null, , False, Paste, [Object:null], 0, False, False, 2, 268435542, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Select All, [Object:null], 0, False, False, 4, 268435521, Null, , False, Clear, [Object:null], 0, False, False, 3, 0, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Undo, [Object:null], 0, False, False, 5, 268435546, Null, , False, Redo, [Object:null], 0, False, False, 6, 301989978, Null, , False]
-
-	HSlider *hslider_tree_vboxcontainer_createnamepopup = memnew(HSlider);
-	hslider_tree_vboxcontainer_createnamepopup->set_name("HSlider");
-	tree_vboxcontainer_createnamepopup->add_child(hslider_tree_vboxcontainer_createnamepopup);
-	hslider_tree_vboxcontainer_createnamepopup->set_name("HSlider");
-	hslider_tree_vboxcontainer_createnamepopup->set_visible(False);
-
-	HScrollBar *hscrollbar_tree_vboxcontainer_createnamepopup = memnew(HScrollBar);
-	hscrollbar_tree_vboxcontainer_createnamepopup->set_name("HScrollBar");
-	tree_vboxcontainer_createnamepopup->add_child(hscrollbar_tree_vboxcontainer_createnamepopup);
-	hscrollbar_tree_vboxcontainer_createnamepopup->set_name("HScrollBar");
-
-	VScrollBar *vscrollbar_tree_vboxcontainer_createnamepopup = memnew(VScrollBar);
-	vscrollbar_tree_vboxcontainer_createnamepopup->set_name("VScrollBar");
-	tree_vboxcontainer_createnamepopup->add_child(vscrollbar_tree_vboxcontainer_createnamepopup);
-	vscrollbar_tree_vboxcontainer_createnamepopup->set_name("VScrollBar");
-	vscrollbar_tree_vboxcontainer_createnamepopup->set_custom_step(14);
-
-	Label *label_vboxcontainer_createnamepopup = memnew(Label);
-	label_vboxcontainer_createnamepopup->set_name("Label");
-	vboxcontainer_createnamepopup->add_child(label_vboxcontainer_createnamepopup);
-	label_vboxcontainer_createnamepopup->set_name("Label");
-	//label_vboxcontainer_createnamepopup property owner TYPE_OBJECT value: MMCreateNamePopup:[ConfirmationDialog:280461]
-	label_vboxcontainer_createnamepopup->set_visible(False);
-	label_vboxcontainer_createnamepopup->set_margin_top(354);
-	label_vboxcontainer_createnamepopup->set_margin_right(475);
-	label_vboxcontainer_createnamepopup->set_margin_bottom(368);
-	label_vboxcontainer_createnamepopup->set_rect_position(Vector2(0, 354));
-	label_vboxcontainer_createnamepopup->set_rect_global_position(Vector2(0, 354));
-	label_vboxcontainer_createnamepopup->set_rect_size(Vector2(475, 14));
-	label_vboxcontainer_createnamepopup->set_size_flags_horizontal(3);
-	label_vboxcontainer_createnamepopup->set_text("Name");
-
-	LineEdit *lineedit_vboxcontainer_createnamepopup = memnew(LineEdit);
-	lineedit_vboxcontainer_createnamepopup->set_name("LineEdit");
-	vboxcontainer_createnamepopup->add_child(lineedit_vboxcontainer_createnamepopup);
-	lineedit_vboxcontainer_createnamepopup->set_name("LineEdit");
-	//lineedit_vboxcontainer_createnamepopup property owner TYPE_OBJECT value: MMCreateNamePopup:[ConfirmationDialog:280461]
-	lineedit_vboxcontainer_createnamepopup->set_visible(False);
-	lineedit_vboxcontainer_createnamepopup->set_margin_top(372);
-	lineedit_vboxcontainer_createnamepopup->set_margin_right(475);
-	lineedit_vboxcontainer_createnamepopup->set_margin_bottom(396);
-	lineedit_vboxcontainer_createnamepopup->set_rect_position(Vector2(0, 372));
-	lineedit_vboxcontainer_createnamepopup->set_rect_global_position(Vector2(0, 372));
-	lineedit_vboxcontainer_createnamepopup->set_rect_size(Vector2(475, 24));
-	lineedit_vboxcontainer_createnamepopup->set_size_flags_horizontal(3);
-	lineedit_vboxcontainer_createnamepopup->set_caret_blink(True);
-
-	PopupMenu *popupmenu_lineedit_vboxcontainer_createnamepopup = memnew(PopupMenu);
-	popupmenu_lineedit_vboxcontainer_createnamepopup->set_name("PopupMenu");
-	lineedit_vboxcontainer_createnamepopup->add_child(popupmenu_lineedit_vboxcontainer_createnamepopup);
-	popupmenu_lineedit_vboxcontainer_createnamepopup->set_name("PopupMenu");
-	//popupmenu_lineedit_vboxcontainer_createnamepopup property items TYPE_ARRAY value: [Cut, [Object:null], 0, False, False, 0, 268435544, Null, , False, Copy, [Object:null], 0, False, False, 1, 268435523, Null, , False, Paste, [Object:null], 0, False, False, 2, 268435542, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Select All, [Object:null], 0, False, False, 4, 268435521, Null, , False, Clear, [Object:null], 0, False, False, 3, 0, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Undo, [Object:null], 0, False, False, 5, 268435546, Null, , False, Redo, [Object:null], 0, False, False, 6, 301989978, Null, , False]
+	_tree = memnew(Tree);
+	_tree->set_name("Tree");
+	_tree->set_h_size_flags(SIZE_EXPAND_FILL);
+	_tree->set_v_size_flags(SIZE_EXPAND_FILL);
+	_tree->set_hide_root(true);
+	vboxcontainer->add_child(_tree);
 }
 
 MMCreateNamePopup::~MMCreateNamePopup() {
 }
 
-static void MMCreateNamePopup::_bind_methods() {
-	//	signal ok_pressed;
+void MMCreateNamePopup::_notification(int p_what) {
+	if (p_what == NOTIFICATION_READY) {
+		connect("confirmed", this, "_on_OK_pressed");
+		connect("about_to_show", this, "about_to_show");
+	}
+}
 
-	ClassDB::bind_method(D_METHOD("get_line_edit_path"), &MMCreateNamePopup::get_line_edit_path);
-	ClassDB::bind_method(D_METHOD("set_line_edit_path", "value"), &MMCreateNamePopup::set_line_edit_path);
-	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "line_edit_path"), "set_line_edit_path", "get_line_edit_path");
+void MMCreateNamePopup::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("ok_pressed", PropertyInfo(Variant::INT, "type"), PropertyInfo(Variant::STRING, "data")));
 
-	ClassDB::bind_method(D_METHOD("get_tree_path"), &MMCreateNamePopup::get_tree_path);
-	ClassDB::bind_method(D_METHOD("set_tree_path", "value"), &MMCreateNamePopup::set_tree_path);
-	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "tree_path"), "set_tree_path", "get_tree_path");
-
-	ClassDB::bind_method(D_METHOD("get_type_folders"), &MMCreateNamePopup::get_type_folders);
-	ClassDB::bind_method(D_METHOD("set_type_folders", "value"), &MMCreateNamePopup::set_type_folders);
-	ADD_PROPERTY(PropertyInfo(Variant::POOL_STRING_ARRAY, "type_folders"), "set_type_folders", "get_type_folders");
-
-	ClassDB::bind_method(D_METHOD("get_resource_type"), &MMCreateNamePopup::get__resource_type);
-	ClassDB::bind_method(D_METHOD("set_resource_type", "value"), &MMCreateNamePopup::set__resource_type);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "_resource_type"), "set_resource_type", "get_resource_type");
-
-	ClassDB::bind_method(D_METHOD("get_line_edit"), &MMCreateNamePopup::get_ * _line_edit);
-	ClassDB::bind_method(D_METHOD("set_line_edit", "value"), &MMCreateNamePopup::set_ * _line_edit);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "*_line_edit", PROPERTY_HINT_RESOURCE_TYPE, "LineEdit"), "set_line_edit", "get_line_edit");
-
-	ClassDB::bind_method(D_METHOD("get_tree"), &MMCreateNamePopup::get_ * _tree);
-	ClassDB::bind_method(D_METHOD("set_tree", "value"), &MMCreateNamePopup::set_ * _tree);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "tree", PROPERTY_HINT_RESOURCE_TYPE, "Tree"), "set_tree", "get_tree");
-
-	ClassDB::bind_method(D_METHOD("_ready"), &MMCreateNamePopup::_ready);
-	ClassDB::bind_method(D_METHOD("set_resource_type", "resource_type"), &MMCreateNamePopup::set_resource_type);
 	ClassDB::bind_method(D_METHOD("about_to_show"), &MMCreateNamePopup::about_to_show);
-	ClassDB::bind_method(D_METHOD("evaluate_folder", "folder", "root"), &MMCreateNamePopup::evaluate_folder);
 	ClassDB::bind_method(D_METHOD("_on_OK_pressed"), &MMCreateNamePopup::_on_OK_pressed);
 }

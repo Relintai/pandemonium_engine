@@ -10,49 +10,31 @@
 
 #include "scene/gui/dialogs.h"
 
+class Tree;
+
 class MMCreateNamePopup : public ConfirmationDialog {
 	GDCLASS(MMCreateNamePopup, ConfirmationDialog);
 
 public:
-	NodePath get_line_edit_path();
-	void set_line_edit_path(const NodePath &val);
-
-	NodePath get_tree_path();
-	void set_tree_path(const NodePath &val);
-
-	PoolStringArray get_type_folders();
-	void set_type_folders(const PoolStringArray &val);
-
-	String get_resource_type();
-	void set_resource_type(const String &val);
-
-	LineEdit *get_line_edit();
-	void set_line_edit(const LineEdit *val);
-
-	Tree *get_tree();
-	void set_tree(Tree *val);
-
-	void _ready();
-	void set_resource_type(const String &resource_type);
-	void about_to_show();
-	void evaluate_folder(const String &folder, TreeItem *root);
-	void _on_OK_pressed();
+	enum OKPressedType {
+		OK_PRESSED_TYPE_CLASS = 0,
+		OK_PRESSED_TYPE_FILE,
+	};
 
 	MMCreateNamePopup();
 	~MMCreateNamePopup();
 
 protected:
+	void _notification(int p_what);
+
+	void about_to_show();
+	void _on_OK_pressed();
+
 	static void _bind_methods();
 
-	//export(NodePath)
-	NodePath line_edit_path;
-	//export(NodePath)
-	NodePath tree_path;
-	//export(PoolStringArray)
-	PoolStringArray type_folders = ;
-	String _resource_type = "MMNode";
-	LineEdit *_line_edit;
 	Tree *_tree;
 };
+
+VARIANT_ENUM_CAST(MMCreateNamePopup::OKPressedType);
 
 #endif
