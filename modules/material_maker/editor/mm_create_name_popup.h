@@ -33,6 +33,7 @@ protected:
 	static void _bind_methods();
 
 	Tree *_tree;
+	bool _initialized;
 };
 
 VARIANT_ENUM_CAST(MMCreateNamePopup::OKPressedType);

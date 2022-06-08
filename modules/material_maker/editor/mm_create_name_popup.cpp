@@ -1,65 +1,66 @@
 
 #include "mm_create_name_popup.h"
 
+#include "../algos/mm_algos.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/label.h"
 #include "scene/gui/tree.h"
 
 void MMCreateNamePopup::about_to_show() {
+	if (_initialized) {
+		return;
+	}
+
+	_initialized = true;
+
 	_tree->clear();
 	TreeItem *root = _tree->create_item();
 
-	//for (s in type_folders) {
-	//	evaluate_folder(s, root);
-	//}
-}
+	for (int i = 0; i < MMAlgos::mm_node_registry.size(); ++i) {
+		const MMAlgos::MMNodeRegistryCategory &category = MMAlgos::mm_node_registry[i];
 
-/*
-void MMCreateNamePopup::evaluate_folder(const String &folder, const TreeItem &root) {
-	TreeItem *ti = _tree.create_item(root);
-	ti.set_text(0, folder.substr(folder.find_last("/") + 1));
-	Variant = Directory.new();
+		TreeItem *ti = _tree->create_item(root);
+		ti->set_text(0, category.category_name);
 
-	if (dir.open(folder) == OK) {
-		dir.list_dir_begin();
-		Variant = dir.get_next();
+		for (int j = 0; j < category.entries.size(); ++j) {
+			const MMAlgos::MMNodeRegistryEntry &e = category.entries[j];
 
-		while (file_name != "") {
-			if (!dir.current_is_dir()) {
-				print("Found file: " + file_name);
-				TreeItem *e = _tree.create_item(ti);
-				e.set_text(0, file_name.get_file());
-				e.set_meta("file", folder + "/" + file_name);
+			TreeItem *ce = _tree->create_item(ti);
+
+			if (e.type == MMAlgos::MMNODE_REGISTRY_TYPE_CLASS) {
+				ce->set_text(0, e.data);
+				ce->set_meta("node_type", static_cast<int>(MMAlgos::MMNODE_REGISTRY_TYPE_CLASS));
+			} else if (e.type == MMAlgos::MMNODE_REGISTRY_TYPE_SCRIPT) {
+				ce->set_text(0, e.data.get_file());
+				ce->set_meta("node_type", static_cast<int>(MMAlgos::MMNODE_REGISTRY_TYPE_SCRIPT));
 			}
 
-			file_name = dir.get_next();
+			ce->set_meta("data", e.data);
 		}
-
-	}
-
-	else {
-		print("An error occurred when trying to access the path.");
 	}
 }
-*/
 
 void MMCreateNamePopup::_on_OK_pressed() {
 	TreeItem *selected = _tree->get_selected();
 
 	if (selected) {
-		if (!selected->has_meta("file")) {
+		if (!selected->has_meta("node_type")) {
 			hide();
 			return;
 		}
 
-		String file_name = selected->get_meta("file");
-		emit_signal("ok_pressed", file_name);
+		int type = selected->get_meta("node_type");
+		String data = selected->get_meta("data");
+
+		emit_signal("ok_pressed", type, data);
 	}
 
 	hide();
 }
 
 MMCreateNamePopup::MMCreateNamePopup() {
+	_initialized = false;
+
 	set_anchors_and_margins_preset(LayoutPreset::PRESET_CENTER);
 	set_size(Vector2(491, 440));
 	set_title("Create New Resource");
