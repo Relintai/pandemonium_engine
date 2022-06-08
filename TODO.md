@@ -18,5 +18,12 @@
 - Add a method to the physics server that lets the caller thread wait for the physics update, and wait for each thread to finish.
 - These 2 changes would enable heavy simplifications to most Props, Voxelman, and Terraman generation code, as they could just directly use the physics server in multi threaded jobs without crashing. The entire update mode thing could be removed.
 
+## Terraman, Voxelman, Props
+
+- MaterialCache class (classes) should be either core or just an another module. (I think the build system has module dependencies implemented.)
+
+## Terraman, Voxelman
+
+- The rid storage API is using dicts currently, and it's pretty awful to mess with. A new mesh storage class should be added instead. Since more than one module needs it either should be core or a new module.  The api could just return a Ref<> to the storage class. And the class could be inherited from when needed. Should probably contain some generic api which allows you to store most things without really messing around too much. Like an api for mesh rids, navmesh rids, and collider rids, and generic rids.
 
 
