@@ -33,11 +33,8 @@ public:
 
 	Ref<MMNode> get_material_node();
 
-	Ref<MMNode> get_node();
-	void set_node(const Ref<MMNode> &val);
-
-	Array get_properties();
-	void set_properties(const Array &val);
+	Ref<MMNode> get_mm_node();
+	void set_mm_node(const Ref<MMNode> &val);
 
 	MatMakerGDEditor *get_editor_node();
 	void set_editor_node(MatMakerGDEditor *val);
@@ -73,25 +70,25 @@ public:
 	int add_slot_vector2_universal(const Ref<MMNodeUniversalProperty> &property);
 	int add_slot(const int input_type, const int output_type, const String &getter, const String &setter, Control *control);
 
-	bool connect_slot(const int slot_idx, const Node *to_node, const int to_slot_idx);
-	bool disconnect_slot(const int slot_idx, const Node *to_node, const int to_slot_idx);
+	bool connect_slot(const int slot_idx, Node *to_node, const int to_slot_idx);
+	bool disconnect_slot(const int slot_idx, Node *to_node, const int to_slot_idx);
 
 	int get_input_property_graph_node_slot_index(const Variant &property);
 	int get_output_property_graph_node_slot_index(const Variant &property);
 
-	Node get_property_control(const int slot_idx);
+	Control *get_property_control(const int slot_idx);
 	void set_node(const Ref<MMMaterial> &material, const Ref<MMNode> &node);
 
 	void propagate_node_change();
 
 	void on_dragged(const Vector2 &from, const Vector2 &to);
-	void on_int_spinbox_value_changed(const float val, const Variant &slot_idx);
-	void on_float_spinbox_value_changed(const float val, const Variant &slot_idx);
-	void on_vector2_spinbox_value_changed(const float val, const Variant &slot_idx, const Variant &spinbox_x, const Variant &spinbox_y);
-	void on_vector3_spinbox_value_changed(const float val, const Variant &slot_idx, const Variant &spinbox_x, const Variant &spinbox_y, const Variant &spinbox_z);
-	void on_int_universal_spinbox_value_changed(const float val, const Variant &slot_idx);
-	void on_float_universal_spinbox_value_changed(const float val, const Variant &slot_idx);
-	void on_vector2_universal_spinbox_value_changed(const float val, const Variant &slot_idx, const Variant &spinbox_x, const Variant &spinbox_y);
+	void on_int_spinbox_value_changed(const float val, const int slot_idx);
+	void on_float_spinbox_value_changed(const float val, const int slot_idx);
+	void on_vector2_spinbox_value_changed(const float val, const int slot_idx, Node *spinbox_x, Node *spinbox_y);
+	void on_vector3_spinbox_value_changed(const float val, const int slot_idx, Node *spinbox_x, Node *spinbox_y, Node *spinbox_z);
+	void on_int_universal_spinbox_value_changed(const float val, const int slot_idx);
+	void on_float_universal_spinbox_value_changed(const float val, const int slot_idx);
+	void on_vector2_universal_spinbox_value_changed(const float val, const int slot_idx, Node *spinbox_x, Node *spinbox_y);
 	void on_slot_enum_item_selected(const int val, const int slot_idx);
 	void on_universal_texture_changed(const int slot_idx);
 	void on_universal_texture_changed_image_picker(const int slot_idx);
@@ -117,8 +114,10 @@ protected:
 		String getter;
 		String setter;
 		Control *control;
-		Ref<MMGraphNodeEntry> universal_property;
+		Ref<MMNodeUniversalProperty> universal_property;
 		Ref<Texture> texture;
+		String alt_getter;
+		String alt_setter;
 
 		MMGraphNodeEntry() {
 			slot_idx = 0;

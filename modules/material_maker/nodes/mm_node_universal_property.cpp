@@ -27,7 +27,7 @@ void MMNodeUniversalProperty::set_default_float(const float val) {
 	default_float = val;
 }
 
-Vector2 MMNodeUniversalProperty::get_default_vector2() {
+Vector2 MMNodeUniversalProperty::get_default_vector2() const {
 	return default_vector2;
 }
 
@@ -35,7 +35,7 @@ void MMNodeUniversalProperty::set_default_vector2(const Vector2 &val) {
 	default_vector2 = val;
 }
 
-Vector3 MMNodeUniversalProperty::get_default_vector3() {
+Vector3 MMNodeUniversalProperty::get_default_vector3() const {
 	return default_vector3;
 }
 
@@ -43,7 +43,7 @@ void MMNodeUniversalProperty::set_default_vector3(const Vector3 &val) {
 	default_vector3 = val;
 }
 
-Color MMNodeUniversalProperty::get_default_color() {
+Color MMNodeUniversalProperty::get_default_color() const {
 	return default_color;
 }
 
@@ -99,7 +99,7 @@ void MMNodeUniversalProperty::set_output_slot_type(const int val) {
 	output_slot_type = val;
 }
 
-String MMNodeUniversalProperty::get_slot_name() {
+String MMNodeUniversalProperty::get_slot_name() const {
 	return slot_name;
 }
 
@@ -115,7 +115,7 @@ void MMNodeUniversalProperty::set_value_step(const float val) {
 	value_step = val;
 }
 
-Vector2 MMNodeUniversalProperty::get_value_range() {
+Vector2 MMNodeUniversalProperty::get_value_range() const {
 	return value_range;
 }
 
@@ -415,6 +415,41 @@ Variant MMNodeUniversalProperty::get_zero_value() {
 }
 
 Variant MMNodeUniversalProperty::get_default_value(const Vector2 &uv) {
+	if (default_type == DEFAULT_TYPE_INT) {
+		return default_int;
+	} else if (default_type == DEFAULT_TYPE_FLOAT) {
+		return default_float;
+	} else if (default_type == DEFAULT_TYPE_VECTOR2) {
+		return default_vector2;
+	} else if (default_type == DEFAULT_TYPE_VECTOR3) {
+		return default_vector3;
+	} else if (default_type == DEFAULT_TYPE_COLOR) {
+		return default_color;
+	} else if (default_type == DEFAULT_TYPE_IMAGE) {
+		Ref<Image> image = default_image;
+
+		if (override_image.is_valid()) {
+			image = override_image;
+		}
+
+		if (!image.is_valid()) {
+			return default_color;
+		}
+
+		image->lock();
+		int x = uv.x * image->get_width();
+		int y = uv.y * image->get_height();
+		x = CLAMP(x, 0, image->get_width() - 1);
+		y = CLAMP(y, 0, image->get_width() - 1);
+		Color c = image->get_pixel(x, y);
+		image->unlock();
+		return c;
+	}
+
+	return Variant();
+}
+
+Variant MMNodeUniversalProperty::get_default_value_const(const Vector2 &uv) const {
 	if (default_type == DEFAULT_TYPE_INT) {
 		return default_int;
 	} else if (default_type == DEFAULT_TYPE_FLOAT) {

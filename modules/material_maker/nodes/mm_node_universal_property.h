@@ -44,13 +44,13 @@ public:
 	float get_default_float() const;
 	void set_default_float(const float val);
 
-	Vector2 get_default_vector2();
+	Vector2 get_default_vector2() const;
 	void set_default_vector2(const Vector2 &val);
 
-	Vector3 get_default_vector3();
+	Vector3 get_default_vector3() const;
 	void set_default_vector3(const Vector3 &val);
 
-	Color get_default_color();
+	Color get_default_color() const;
 	void set_default_color(const Color &val);
 
 	Ref<Image> get_default_image();
@@ -71,13 +71,13 @@ public:
 	int get_output_slot_type() const;
 	void set_output_slot_type(const int val);
 
-	String get_slot_name();
+	String get_slot_name() const;
 	void set_slot_name(const String &val);
 
 	float get_value_step() const;
 	void set_value_step(const float val);
 
-	Vector2 get_value_range();
+	Vector2 get_value_range() const;
 	void set_value_range(const Vector2 &val);
 
 	Ref<MMNodeUniversalProperty> get_input_property();
@@ -101,6 +101,7 @@ public:
 	void set_value(const Variant &val);
 	Variant get_zero_value();
 	Variant get_default_value(const Vector2 &uv = Vector2());
+	Variant get_default_value_const(const Vector2 &uv = Vector2()) const;
 	void set_default_value(const Variant &val);
 	Ref<Image> get_active_image();
 
