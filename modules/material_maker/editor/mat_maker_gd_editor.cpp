@@ -231,8 +231,8 @@ void MatMakerGDEditor::on_graph_node_close_request(Node *p_node) {
 		_material->cancel_render_and_wait();
 		//_material.remove_node(node._node);
 		get_undo_redo()->create_action("MMGD: Remove Node");
-		get_undo_redo()->add_do_method(*_material, "remove_node", node->get_node());
-		get_undo_redo()->add_undo_method(*_material, "add_node", node->get_node());
+		get_undo_redo()->add_do_method(*_material, "remove_node", node->get_mm_node());
+		get_undo_redo()->add_undo_method(*_material, "add_node", node->get_mm_node());
 		get_undo_redo()->commit_action();
 
 		recreate();
