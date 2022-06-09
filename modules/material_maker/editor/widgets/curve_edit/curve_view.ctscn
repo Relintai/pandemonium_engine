@@ -1,0 +1,46 @@
+
+void construct() {
+
+//Script: res://addons/mat_maker_gd/widgets/curve_edit/curve_view.gd
+Control *curveview = memnew(Control);
+curveview->set_name("CurveView");
+
+curveview->set_name("CurveView");
+//curveview->set("name", CurveView));
+
+curveview->set_filename("res://addons/mat_maker_gd/widgets/curve_edit/curve_view.tscn");
+//curveview->set("filename", "res://addons/mat_maker_gd/widgets/curve_edit/curve_view.tscn");
+
+curveview->set_anchor_right(1);
+//curveview->set("anchor_right", 1);
+
+curveview->set_anchor_bottom(1);
+//curveview->set("anchor_bottom", 1);
+
+curveview->set_margin_left(4);
+//curveview->set("margin_left", 4);
+
+curveview->set_margin_top(4);
+//curveview->set("margin_top", 4);
+
+curveview->set_margin_right(-4);
+//curveview->set("margin_right", -4);
+
+curveview->set_margin_bottom(-4);
+//curveview->set("margin_bottom", -4);
+
+curveview->set_rect_position(Vector2(4, 4));
+//curveview->set("rect_position", Vector2(4, 4));
+
+curveview->set_rect_global_position(Vector2(4, 4));
+//curveview->set("rect_global_position", Vector2(4, 4));
+
+curveview->set_mouse_filter(2);
+//curveview->set("mouse_filter", 2);
+
+//curveview property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+
+
+
+}

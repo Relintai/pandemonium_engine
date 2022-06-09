@@ -1,0 +1,43 @@
+
+void construct() {
+
+//Script: res://addons/mat_maker_gd/widgets/curve_edit/curve_editor.gd
+Control *curveeditor = memnew(Control);
+curveeditor->set_name("CurveEditor");
+
+curveeditor->set_name("CurveEditor");
+//curveeditor->set("name", CurveEditor));
+
+curveeditor->set_filename("res://addons/mat_maker_gd/widgets/curve_edit/curve_editor.tscn");
+//curveeditor->set("filename", "res://addons/mat_maker_gd/widgets/curve_edit/curve_editor.tscn");
+
+curveeditor->set_anchor_right(1);
+//curveeditor->set("anchor_right", 1);
+
+curveeditor->set_anchor_bottom(1);
+//curveeditor->set("anchor_bottom", 1);
+
+curveeditor->set_margin_left(10);
+//curveeditor->set("margin_left", 10);
+
+curveeditor->set_margin_top(10);
+//curveeditor->set("margin_top", 10);
+
+curveeditor->set_margin_right(-10);
+//curveeditor->set("margin_right", -10);
+
+curveeditor->set_margin_bottom(-10);
+//curveeditor->set("margin_bottom", -10);
+
+curveeditor->set_rect_position(Vector2(10, 10));
+//curveeditor->set("rect_position", Vector2(10, 10));
+
+curveeditor->set_rect_global_position(Vector2(10, 10));
+//curveeditor->set("rect_global_position", Vector2(10, 10));
+
+//curveeditor property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+
+
+
+}

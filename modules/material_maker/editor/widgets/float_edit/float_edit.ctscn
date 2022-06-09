@@ -1,0 +1,172 @@
+
+void construct() {
+
+//Script: res://addons/mat_maker_gd/widgets/float_edit/float_edit.gd
+LineEdit *floatedit = memnew(LineEdit);
+floatedit->set_name("FloatEdit");
+
+floatedit->set_name("FloatEdit");
+//floatedit->set("name", FloatEdit));
+
+floatedit->set_filename("res://addons/mat_maker_gd/widgets/float_edit/float_edit.tscn");
+//floatedit->set("filename", "res://addons/mat_maker_gd/widgets/float_edit/float_edit.tscn");
+
+floatedit->set_anchor_left(1);
+//floatedit->set("anchor_left", 1);
+
+floatedit->set_anchor_right(1);
+//floatedit->set("anchor_right", 1);
+
+floatedit->set_anchor_bottom(1);
+//floatedit->set("anchor_bottom", 1);
+
+floatedit->set_margin_left(-1280);
+//floatedit->set("margin_left", -1280);
+
+floatedit->set_margin_right(-1222);
+//floatedit->set("margin_right", -1222);
+
+floatedit->set_margin_bottom(-696);
+//floatedit->set("margin_bottom", -696);
+
+floatedit->set_rect_position(Vector2(-1280, 0));
+//floatedit->set("rect_position", Vector2(-1280, 0));
+
+floatedit->set_rect_global_position(Vector2(-1280, 0));
+//floatedit->set("rect_global_position", Vector2(-1280, 0));
+
+floatedit->set_rect_size(Vector2(58, 24));
+//floatedit->set("rect_size", Vector2(58, 24));
+
+floatedit->set_focus_mode(1);
+//floatedit->set("focus_mode", 1);
+
+floatedit->set_text("0.5");
+//floatedit->set("text", "0.5");
+
+floatedit->set_max_length(100);
+//floatedit->set("max_length", 100);
+
+floatedit->set_context_menu_enabled(False);
+//floatedit->set("context_menu_enabled", False);
+
+floatedit->set_caret_blink(True);
+//floatedit->set("caret_blink", True);
+
+//floatedit property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+
+
+Timer *timer_floatedit = memnew(Timer);
+timer_floatedit->set_name("Timer");
+floatedit->add_child(timer_floatedit);
+
+timer_floatedit->set_name("Timer");
+//timer_floatedit->set("name", Timer));
+
+timer_floatedit->set_wait_time(0.65);
+//timer_floatedit->set("wait_time", 0.65);
+
+
+
+PopupMenu *popupmenu_floatedit = memnew(PopupMenu);
+popupmenu_floatedit->set_name("PopupMenu");
+floatedit->add_child(popupmenu_floatedit);
+
+popupmenu_floatedit->set_name("PopupMenu");
+//popupmenu_floatedit->set("name", PopupMenu));
+
+//popupmenu_floatedit property items TYPE_ARRAY value: [Cut, [Object:null], 0, False, False, 0, 268435544, Null, , False, Copy, [Object:null], 0, False, False, 1, 268435523, Null, , False, Paste, [Object:null], 0, False, False, 2, 268435542, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Select All, [Object:null], 0, False, False, 4, 268435521, Null, , False, Clear, [Object:null], 0, False, False, 3, 0, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Undo, [Object:null], 0, False, False, 5, 268435546, Null, , False, Redo, [Object:null], 0, False, False, 6, 301989978, Null, , False]
+
+
+
+Timer *timer_popupmenu_floatedit = memnew(Timer);
+timer_popupmenu_floatedit->set_name("Timer");
+popupmenu_floatedit->add_child(timer_popupmenu_floatedit);
+
+timer_popupmenu_floatedit->set_name("Timer");
+//timer_popupmenu_floatedit->set("name", Timer));
+
+timer_popupmenu_floatedit->set_wait_time(0.3);
+//timer_popupmenu_floatedit->set("wait_time", 0.3);
+
+timer_popupmenu_floatedit->set_one_shot(True);
+//timer_popupmenu_floatedit->set("one_shot", True);
+
+
+
+ColorRect *slider_floatedit = memnew(ColorRect);
+slider_floatedit->set_name("Slider");
+floatedit->add_child(slider_floatedit);
+
+slider_floatedit->set_name("Slider");
+//slider_floatedit->set("name", Slider));
+
+//slider_floatedit property owner TYPE_OBJECT value: FloatEdit:[LineEdit:55206]
+
+slider_floatedit->set_anchor_top(1);
+//slider_floatedit->set("anchor_top", 1);
+
+slider_floatedit->set_anchor_right(1);
+//slider_floatedit->set("anchor_right", 1);
+
+slider_floatedit->set_anchor_bottom(1);
+//slider_floatedit->set("anchor_bottom", 1);
+
+slider_floatedit->set_margin_left(2);
+//slider_floatedit->set("margin_left", 2);
+
+slider_floatedit->set_margin_top(-3);
+//slider_floatedit->set("margin_top", -3);
+
+slider_floatedit->set_margin_right(-2);
+//slider_floatedit->set("margin_right", -2);
+
+slider_floatedit->set_margin_bottom(-3);
+//slider_floatedit->set("margin_bottom", -3);
+
+slider_floatedit->set_rect_position(Vector2(2, -3));
+//slider_floatedit->set("rect_position", Vector2(2, -3));
+
+slider_floatedit->set_rect_global_position(Vector2(2, -3));
+//slider_floatedit->set("rect_global_position", Vector2(2, -3));
+
+slider_floatedit->set_rect_min_size(Vector2(0, 2));
+//slider_floatedit->set("rect_min_size", Vector2(0, 2));
+
+slider_floatedit->set_mouse_filter(2);
+//slider_floatedit->set("mouse_filter", 2);
+
+slider_floatedit->set_color(Color(0.501961, 0.501961, 0.501961, 1));
+//slider_floatedit->set("color", Color(0.501961, 0.501961, 0.501961, 1));
+
+
+
+ColorRect *cursor_slider_floatedit = memnew(ColorRect);
+cursor_slider_floatedit->set_name("Cursor");
+slider_floatedit->add_child(cursor_slider_floatedit);
+
+cursor_slider_floatedit->set_name("Cursor");
+//cursor_slider_floatedit->set("name", Cursor));
+
+//cursor_slider_floatedit property owner TYPE_OBJECT value: FloatEdit:[LineEdit:55206]
+
+cursor_slider_floatedit->set_margin_right(3);
+//cursor_slider_floatedit->set("margin_right", 3);
+
+cursor_slider_floatedit->set_margin_bottom(1);
+//cursor_slider_floatedit->set("margin_bottom", 1);
+
+cursor_slider_floatedit->set_rect_size(Vector2(3, 1));
+//cursor_slider_floatedit->set("rect_size", Vector2(3, 1));
+
+cursor_slider_floatedit->set_rect_min_size(Vector2(3, 2));
+//cursor_slider_floatedit->set("rect_min_size", Vector2(3, 2));
+
+cursor_slider_floatedit->set_mouse_filter(2);
+//cursor_slider_floatedit->set("mouse_filter", 2);
+
+
+
+
+}

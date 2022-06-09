@@ -1,0 +1,96 @@
+
+void construct() {
+
+//Script: res://addons/mat_maker_gd/widgets/curve_edit/curve_edit.gd
+Button *curveedit = memnew(Button);
+curveedit->set_name("CurveEdit");
+
+curveedit->set_name("CurveEdit");
+//curveedit->set("name", CurveEdit));
+
+curveedit->set_filename("res://addons/mat_maker_gd/widgets/curve_edit/curve_edit.tscn");
+//curveedit->set("filename", "res://addons/mat_maker_gd/widgets/curve_edit/curve_edit.tscn");
+
+curveedit->set_anchor_left(1);
+//curveedit->set("anchor_left", 1);
+
+curveedit->set_anchor_right(1);
+//curveedit->set("anchor_right", 1);
+
+curveedit->set_anchor_bottom(1);
+//curveedit->set("anchor_bottom", 1);
+
+curveedit->set_margin_left(-1280);
+//curveedit->set("margin_left", -1280);
+
+curveedit->set_margin_right(-1220);
+//curveedit->set("margin_right", -1220);
+
+curveedit->set_margin_bottom(-700);
+//curveedit->set("margin_bottom", -700);
+
+curveedit->set_rect_position(Vector2(-1280, 0));
+//curveedit->set("rect_position", Vector2(-1280, 0));
+
+curveedit->set_rect_global_position(Vector2(-1280, 0));
+//curveedit->set("rect_global_position", Vector2(-1280, 0));
+
+curveedit->set_rect_size(Vector2(60, 20));
+//curveedit->set("rect_size", Vector2(60, 20));
+
+curveedit->set_rect_min_size(Vector2(60, 20));
+//curveedit->set("rect_min_size", Vector2(60, 20));
+
+curveedit->set_focus_mode(1);
+//curveedit->set("focus_mode", 1);
+
+//curveedit property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+
+
+//Script: res://addons/mat_maker_gd/widgets/curve_edit/curve_view.gd
+Control *curveview_curveedit = memnew(Control);
+curveview_curveedit->set_name("CurveView");
+curveedit->add_child(curveview_curveedit);
+
+curveview_curveedit->set_name("CurveView");
+//curveview_curveedit->set("name", CurveView));
+
+curveview_curveedit->set_filename("res://addons/mat_maker_gd/widgets/curve_edit/curve_view.tscn");
+//curveview_curveedit->set("filename", "res://addons/mat_maker_gd/widgets/curve_edit/curve_view.tscn");
+
+//curveview_curveedit property owner TYPE_OBJECT value: CurveEdit:[Button:59797]
+
+curveview_curveedit->set_anchor_right(1);
+//curveview_curveedit->set("anchor_right", 1);
+
+curveview_curveedit->set_anchor_bottom(1);
+//curveview_curveedit->set("anchor_bottom", 1);
+
+curveview_curveedit->set_margin_left(4);
+//curveview_curveedit->set("margin_left", 4);
+
+curveview_curveedit->set_margin_top(4);
+//curveview_curveedit->set("margin_top", 4);
+
+curveview_curveedit->set_margin_right(-4);
+//curveview_curveedit->set("margin_right", -4);
+
+curveview_curveedit->set_margin_bottom(-4);
+//curveview_curveedit->set("margin_bottom", -4);
+
+curveview_curveedit->set_rect_position(Vector2(4, 4));
+//curveview_curveedit->set("rect_position", Vector2(4, 4));
+
+curveview_curveedit->set_rect_global_position(Vector2(4, 4));
+//curveview_curveedit->set("rect_global_position", Vector2(4, 4));
+
+curveview_curveedit->set_mouse_filter(2);
+//curveview_curveedit->set("mouse_filter", 2);
+
+//curveview_curveedit property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+
+
+
+}

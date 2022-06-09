@@ -1,0 +1,178 @@
+
+void construct() {
+
+//Script: res://addons/mat_maker_gd/windows/file_dialog/left_panel.gd
+VBoxContainer *leftpanel = memnew(VBoxContainer);
+leftpanel->set_name("LeftPanel");
+
+leftpanel->set_name("LeftPanel");
+//leftpanel->set("name", LeftPanel));
+
+leftpanel->set_filename("res://addons/mat_maker_gd/windows/file_dialog/left_panel.tscn");
+//leftpanel->set("filename", "res://addons/mat_maker_gd/windows/file_dialog/left_panel.tscn");
+
+leftpanel->set_margin_right(40);
+//leftpanel->set("margin_right", 40);
+
+leftpanel->set_margin_bottom(40);
+//leftpanel->set("margin_bottom", 40);
+
+leftpanel->set_rect_size(Vector2(40, 40));
+//leftpanel->set("rect_size", Vector2(40, 40));
+
+leftpanel->set_size_flags_vertical(3);
+//leftpanel->set("size_flags_vertical", 3);
+
+//leftpanel property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+
+
+Label *recentlabel_leftpanel = memnew(Label);
+recentlabel_leftpanel->set_name("RecentLabel");
+leftpanel->add_child(recentlabel_leftpanel);
+
+recentlabel_leftpanel->set_name("RecentLabel");
+//recentlabel_leftpanel->set("name", RecentLabel));
+
+//recentlabel_leftpanel property owner TYPE_OBJECT value: LeftPanel:[VBoxContainer:37180]
+
+recentlabel_leftpanel->set_margin_right(100);
+//recentlabel_leftpanel->set("margin_right", 100);
+
+recentlabel_leftpanel->set_margin_bottom(14);
+//recentlabel_leftpanel->set("margin_bottom", 14);
+
+recentlabel_leftpanel->set_rect_size(Vector2(100, 14));
+//recentlabel_leftpanel->set("rect_size", Vector2(100, 14));
+
+recentlabel_leftpanel->set_text("Recent");
+//recentlabel_leftpanel->set("text", "Recent");
+
+
+
+ItemList *recentlist_leftpanel = memnew(ItemList);
+recentlist_leftpanel->set_name("RecentList");
+leftpanel->add_child(recentlist_leftpanel);
+
+recentlist_leftpanel->set_name("RecentList");
+//recentlist_leftpanel->set("name", RecentList));
+
+//recentlist_leftpanel property owner TYPE_OBJECT value: LeftPanel:[VBoxContainer:37180]
+
+recentlist_leftpanel->set_margin_top(18);
+//recentlist_leftpanel->set("margin_top", 18);
+
+recentlist_leftpanel->set_margin_right(100);
+//recentlist_leftpanel->set("margin_right", 100);
+
+recentlist_leftpanel->set_margin_bottom(18);
+//recentlist_leftpanel->set("margin_bottom", 18);
+
+recentlist_leftpanel->set_rect_position(Vector2(0, 18));
+//recentlist_leftpanel->set("rect_position", Vector2(0, 18));
+
+recentlist_leftpanel->set_rect_global_position(Vector2(0, 18));
+//recentlist_leftpanel->set("rect_global_position", Vector2(0, 18));
+
+recentlist_leftpanel->set_rect_size(Vector2(100, 0));
+//recentlist_leftpanel->set("rect_size", Vector2(100, 0));
+
+recentlist_leftpanel->set_rect_min_size(Vector2(100, 0));
+//recentlist_leftpanel->set("rect_min_size", Vector2(100, 0));
+
+recentlist_leftpanel->set_size_flags_vertical(3);
+//recentlist_leftpanel->set("size_flags_vertical", 3);
+
+//recentlist_leftpanel property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+
+
+VScrollBar *vscrollbar_recentlist_leftpanel = memnew(VScrollBar);
+vscrollbar_recentlist_leftpanel->set_name("VScrollBar");
+recentlist_leftpanel->add_child(vscrollbar_recentlist_leftpanel);
+
+vscrollbar_recentlist_leftpanel->set_name("VScrollBar");
+//vscrollbar_recentlist_leftpanel->set("name", VScrollBar));
+
+
+
+Label *favlabel_leftpanel = memnew(Label);
+favlabel_leftpanel->set_name("FavLabel");
+leftpanel->add_child(favlabel_leftpanel);
+
+favlabel_leftpanel->set_name("FavLabel");
+//favlabel_leftpanel->set("name", FavLabel));
+
+//favlabel_leftpanel property owner TYPE_OBJECT value: LeftPanel:[VBoxContainer:37180]
+
+favlabel_leftpanel->set_margin_top(22);
+//favlabel_leftpanel->set("margin_top", 22);
+
+favlabel_leftpanel->set_margin_right(100);
+//favlabel_leftpanel->set("margin_right", 100);
+
+favlabel_leftpanel->set_margin_bottom(36);
+//favlabel_leftpanel->set("margin_bottom", 36);
+
+favlabel_leftpanel->set_rect_position(Vector2(0, 22));
+//favlabel_leftpanel->set("rect_position", Vector2(0, 22));
+
+favlabel_leftpanel->set_rect_global_position(Vector2(0, 22));
+//favlabel_leftpanel->set("rect_global_position", Vector2(0, 22));
+
+favlabel_leftpanel->set_rect_size(Vector2(100, 14));
+//favlabel_leftpanel->set("rect_size", Vector2(100, 14));
+
+favlabel_leftpanel->set_text("Favorite");
+//favlabel_leftpanel->set("text", "Favorite");
+
+
+
+ItemList *favlist_leftpanel = memnew(ItemList);
+favlist_leftpanel->set_name("FavList");
+leftpanel->add_child(favlist_leftpanel);
+
+favlist_leftpanel->set_name("FavList");
+//favlist_leftpanel->set("name", FavList));
+
+//favlist_leftpanel property owner TYPE_OBJECT value: LeftPanel:[VBoxContainer:37180]
+
+favlist_leftpanel->set_margin_top(40);
+//favlist_leftpanel->set("margin_top", 40);
+
+favlist_leftpanel->set_margin_right(100);
+//favlist_leftpanel->set("margin_right", 100);
+
+favlist_leftpanel->set_margin_bottom(40);
+//favlist_leftpanel->set("margin_bottom", 40);
+
+favlist_leftpanel->set_rect_position(Vector2(0, 40));
+//favlist_leftpanel->set("rect_position", Vector2(0, 40));
+
+favlist_leftpanel->set_rect_global_position(Vector2(0, 40));
+//favlist_leftpanel->set("rect_global_position", Vector2(0, 40));
+
+favlist_leftpanel->set_rect_size(Vector2(100, 0));
+//favlist_leftpanel->set("rect_size", Vector2(100, 0));
+
+favlist_leftpanel->set_rect_min_size(Vector2(100, 0));
+//favlist_leftpanel->set("rect_min_size", Vector2(100, 0));
+
+favlist_leftpanel->set_size_flags_vertical(3);
+//favlist_leftpanel->set("size_flags_vertical", 3);
+
+//favlist_leftpanel property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+
+
+VScrollBar *vscrollbar_favlist_leftpanel = memnew(VScrollBar);
+vscrollbar_favlist_leftpanel->set_name("VScrollBar");
+favlist_leftpanel->add_child(vscrollbar_favlist_leftpanel);
+
+vscrollbar_favlist_leftpanel->set_name("VScrollBar");
+//vscrollbar_favlist_leftpanel->set("name", VScrollBar));
+
+
+
+
+}

@@ -1,0 +1,328 @@
+
+void construct() {
+
+//Script: res://addons/mat_maker_gd/widgets/curve_edit/curve_dialog.gd
+WindowDialog *curvedialog = memnew(WindowDialog);
+curvedialog->set_name("CurveDialog");
+
+curvedialog->set_name("CurveDialog");
+//curvedialog->set("name", CurveDialog));
+
+curvedialog->set_filename("res://addons/mat_maker_gd/widgets/curve_edit/curve_dialog.tscn");
+//curvedialog->set("filename", "res://addons/mat_maker_gd/widgets/curve_edit/curve_dialog.tscn");
+
+curvedialog->set_anchor_right(1);
+//curvedialog->set("anchor_right", 1);
+
+curvedialog->set_anchor_bottom(1);
+//curvedialog->set("anchor_bottom", 1);
+
+curvedialog->set_margin_left(307);
+//curvedialog->set("margin_left", 307);
+
+curvedialog->set_margin_top(151);
+//curvedialog->set("margin_top", 151);
+
+curvedialog->set_margin_right(-347);
+//curvedialog->set("margin_right", -347);
+
+curvedialog->set_margin_bottom(-174);
+//curvedialog->set("margin_bottom", -174);
+
+curvedialog->set_rect_position(Vector2(307, 151));
+//curvedialog->set("rect_position", Vector2(307, 151));
+
+curvedialog->set_rect_global_position(Vector2(307, 151));
+//curvedialog->set("rect_global_position", Vector2(307, 151));
+
+curvedialog->set_rect_size(Vector2(0, 1));
+//curvedialog->set("rect_size", Vector2(0, 1));
+
+curvedialog->set_window_title("Edit curve");
+//curvedialog->set("window_title", "Edit curve");
+
+//curvedialog property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+
+
+TextureButton *texturebutton_curvedialog = memnew(TextureButton);
+texturebutton_curvedialog->set_name("TextureButton");
+curvedialog->add_child(texturebutton_curvedialog);
+
+texturebutton_curvedialog->set_name("TextureButton");
+//texturebutton_curvedialog->set("name", TextureButton));
+
+
+
+VBoxContainer *vboxcontainer_curvedialog = memnew(VBoxContainer);
+vboxcontainer_curvedialog->set_name("VBoxContainer");
+curvedialog->add_child(vboxcontainer_curvedialog);
+
+vboxcontainer_curvedialog->set_name("VBoxContainer");
+//vboxcontainer_curvedialog->set("name", VBoxContainer));
+
+//vboxcontainer_curvedialog property owner TYPE_OBJECT value: CurveDialog:[WindowDialog:59762]
+
+vboxcontainer_curvedialog->set_anchor_right(1);
+//vboxcontainer_curvedialog->set("anchor_right", 1);
+
+vboxcontainer_curvedialog->set_anchor_bottom(1);
+//vboxcontainer_curvedialog->set("anchor_bottom", 1);
+
+vboxcontainer_curvedialog->set_margin_left(5);
+//vboxcontainer_curvedialog->set("margin_left", 5);
+
+vboxcontainer_curvedialog->set_margin_top(5);
+//vboxcontainer_curvedialog->set("margin_top", 5);
+
+vboxcontainer_curvedialog->set_margin_right(-5);
+//vboxcontainer_curvedialog->set("margin_right", -5);
+
+vboxcontainer_curvedialog->set_margin_bottom(-5);
+//vboxcontainer_curvedialog->set("margin_bottom", -5);
+
+vboxcontainer_curvedialog->set_rect_position(Vector2(5, 5));
+//vboxcontainer_curvedialog->set("rect_position", Vector2(5, 5));
+
+vboxcontainer_curvedialog->set_rect_global_position(Vector2(5, 5));
+//vboxcontainer_curvedialog->set("rect_global_position", Vector2(5, 5));
+
+//vboxcontainer_curvedialog property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+
+
+MarginContainer *editorcontainer_vboxcontainer_curvedialog = memnew(MarginContainer);
+editorcontainer_vboxcontainer_curvedialog->set_name("EditorContainer");
+vboxcontainer_curvedialog->add_child(editorcontainer_vboxcontainer_curvedialog);
+
+editorcontainer_vboxcontainer_curvedialog->set_name("EditorContainer");
+//editorcontainer_vboxcontainer_curvedialog->set("name", EditorContainer));
+
+//editorcontainer_vboxcontainer_curvedialog property owner TYPE_OBJECT value: CurveDialog:[WindowDialog:59762]
+
+editorcontainer_vboxcontainer_curvedialog->set_margin_right(616);
+//editorcontainer_vboxcontainer_curvedialog->set("margin_right", 616);
+
+editorcontainer_vboxcontainer_curvedialog->set_margin_bottom(353);
+//editorcontainer_vboxcontainer_curvedialog->set("margin_bottom", 353);
+
+editorcontainer_vboxcontainer_curvedialog->set_rect_size(Vector2(616, 353));
+//editorcontainer_vboxcontainer_curvedialog->set("rect_size", Vector2(616, 353));
+
+editorcontainer_vboxcontainer_curvedialog->set_rect_clip_content(True);
+//editorcontainer_vboxcontainer_curvedialog->set("rect_clip_content", True);
+
+editorcontainer_vboxcontainer_curvedialog->set_size_flags_horizontal(3);
+//editorcontainer_vboxcontainer_curvedialog->set("size_flags_horizontal", 3);
+
+editorcontainer_vboxcontainer_curvedialog->set_size_flags_vertical(3);
+//editorcontainer_vboxcontainer_curvedialog->set("size_flags_vertical", 3);
+
+editorcontainer_vboxcontainer_curvedialog->set_custom_constants/margin_right(4);
+//editorcontainer_vboxcontainer_curvedialog->set("custom_constants/margin_right", 4);
+
+editorcontainer_vboxcontainer_curvedialog->set_custom_constants/margin_top(4);
+//editorcontainer_vboxcontainer_curvedialog->set("custom_constants/margin_top", 4);
+
+editorcontainer_vboxcontainer_curvedialog->set_custom_constants/margin_left(4);
+//editorcontainer_vboxcontainer_curvedialog->set("custom_constants/margin_left", 4);
+
+editorcontainer_vboxcontainer_curvedialog->set_custom_constants/margin_bottom(4);
+//editorcontainer_vboxcontainer_curvedialog->set("custom_constants/margin_bottom", 4);
+
+
+
+//Script: res://addons/mat_maker_gd/widgets/curve_edit/curve_editor.gd
+Control *curveeditor_editorcontainer_vboxcontainer_curvedialog = memnew(Control);
+curveeditor_editorcontainer_vboxcontainer_curvedialog->set_name("CurveEditor");
+editorcontainer_vboxcontainer_curvedialog->add_child(curveeditor_editorcontainer_vboxcontainer_curvedialog);
+
+curveeditor_editorcontainer_vboxcontainer_curvedialog->set_name("CurveEditor");
+//curveeditor_editorcontainer_vboxcontainer_curvedialog->set("name", CurveEditor));
+
+curveeditor_editorcontainer_vboxcontainer_curvedialog->set_filename("res://addons/mat_maker_gd/widgets/curve_edit/curve_editor.tscn");
+//curveeditor_editorcontainer_vboxcontainer_curvedialog->set("filename", "res://addons/mat_maker_gd/widgets/curve_edit/curve_editor.tscn");
+
+//curveeditor_editorcontainer_vboxcontainer_curvedialog property owner TYPE_OBJECT value: CurveDialog:[WindowDialog:59762]
+
+curveeditor_editorcontainer_vboxcontainer_curvedialog->set_margin_left(4);
+//curveeditor_editorcontainer_vboxcontainer_curvedialog->set("margin_left", 4);
+
+curveeditor_editorcontainer_vboxcontainer_curvedialog->set_margin_top(4);
+//curveeditor_editorcontainer_vboxcontainer_curvedialog->set("margin_top", 4);
+
+curveeditor_editorcontainer_vboxcontainer_curvedialog->set_margin_right(612);
+//curveeditor_editorcontainer_vboxcontainer_curvedialog->set("margin_right", 612);
+
+curveeditor_editorcontainer_vboxcontainer_curvedialog->set_margin_bottom(349);
+//curveeditor_editorcontainer_vboxcontainer_curvedialog->set("margin_bottom", 349);
+
+curveeditor_editorcontainer_vboxcontainer_curvedialog->set_rect_position(Vector2(4, 4));
+//curveeditor_editorcontainer_vboxcontainer_curvedialog->set("rect_position", Vector2(4, 4));
+
+curveeditor_editorcontainer_vboxcontainer_curvedialog->set_rect_global_position(Vector2(4, 4));
+//curveeditor_editorcontainer_vboxcontainer_curvedialog->set("rect_global_position", Vector2(4, 4));
+
+curveeditor_editorcontainer_vboxcontainer_curvedialog->set_rect_size(Vector2(608, 345));
+//curveeditor_editorcontainer_vboxcontainer_curvedialog->set("rect_size", Vector2(608, 345));
+
+curveeditor_editorcontainer_vboxcontainer_curvedialog->set_size_flags_vertical(3);
+//curveeditor_editorcontainer_vboxcontainer_curvedialog->set("size_flags_vertical", 3);
+
+//curveeditor_editorcontainer_vboxcontainer_curvedialog property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+
+
+HSeparator *hseparator_vboxcontainer_curvedialog = memnew(HSeparator);
+hseparator_vboxcontainer_curvedialog->set_name("HSeparator");
+vboxcontainer_curvedialog->add_child(hseparator_vboxcontainer_curvedialog);
+
+hseparator_vboxcontainer_curvedialog->set_name("HSeparator");
+//hseparator_vboxcontainer_curvedialog->set("name", HSeparator));
+
+//hseparator_vboxcontainer_curvedialog property owner TYPE_OBJECT value: CurveDialog:[WindowDialog:59762]
+
+hseparator_vboxcontainer_curvedialog->set_margin_top(357);
+//hseparator_vboxcontainer_curvedialog->set("margin_top", 357);
+
+hseparator_vboxcontainer_curvedialog->set_margin_right(616);
+//hseparator_vboxcontainer_curvedialog->set("margin_right", 616);
+
+hseparator_vboxcontainer_curvedialog->set_margin_bottom(361);
+//hseparator_vboxcontainer_curvedialog->set("margin_bottom", 361);
+
+hseparator_vboxcontainer_curvedialog->set_rect_position(Vector2(0, 357));
+//hseparator_vboxcontainer_curvedialog->set("rect_position", Vector2(0, 357));
+
+hseparator_vboxcontainer_curvedialog->set_rect_global_position(Vector2(0, 357));
+//hseparator_vboxcontainer_curvedialog->set("rect_global_position", Vector2(0, 357));
+
+hseparator_vboxcontainer_curvedialog->set_rect_size(Vector2(616, 4));
+//hseparator_vboxcontainer_curvedialog->set("rect_size", Vector2(616, 4));
+
+
+
+HBoxContainer *hboxcontainer_vboxcontainer_curvedialog = memnew(HBoxContainer);
+hboxcontainer_vboxcontainer_curvedialog->set_name("HBoxContainer");
+vboxcontainer_curvedialog->add_child(hboxcontainer_vboxcontainer_curvedialog);
+
+hboxcontainer_vboxcontainer_curvedialog->set_name("HBoxContainer");
+//hboxcontainer_vboxcontainer_curvedialog->set("name", HBoxContainer));
+
+//hboxcontainer_vboxcontainer_curvedialog property owner TYPE_OBJECT value: CurveDialog:[WindowDialog:59762]
+
+hboxcontainer_vboxcontainer_curvedialog->set_margin_top(365);
+//hboxcontainer_vboxcontainer_curvedialog->set("margin_top", 365);
+
+hboxcontainer_vboxcontainer_curvedialog->set_margin_right(616);
+//hboxcontainer_vboxcontainer_curvedialog->set("margin_right", 616);
+
+hboxcontainer_vboxcontainer_curvedialog->set_margin_bottom(385);
+//hboxcontainer_vboxcontainer_curvedialog->set("margin_bottom", 385);
+
+hboxcontainer_vboxcontainer_curvedialog->set_rect_position(Vector2(0, 365));
+//hboxcontainer_vboxcontainer_curvedialog->set("rect_position", Vector2(0, 365));
+
+hboxcontainer_vboxcontainer_curvedialog->set_rect_global_position(Vector2(0, 365));
+//hboxcontainer_vboxcontainer_curvedialog->set("rect_global_position", Vector2(0, 365));
+
+hboxcontainer_vboxcontainer_curvedialog->set_rect_size(Vector2(616, 20));
+//hboxcontainer_vboxcontainer_curvedialog->set("rect_size", Vector2(616, 20));
+
+
+
+Control *control_hboxcontainer_vboxcontainer_curvedialog = memnew(Control);
+control_hboxcontainer_vboxcontainer_curvedialog->set_name("Control");
+hboxcontainer_vboxcontainer_curvedialog->add_child(control_hboxcontainer_vboxcontainer_curvedialog);
+
+control_hboxcontainer_vboxcontainer_curvedialog->set_name("Control");
+//control_hboxcontainer_vboxcontainer_curvedialog->set("name", Control));
+
+//control_hboxcontainer_vboxcontainer_curvedialog property owner TYPE_OBJECT value: CurveDialog:[WindowDialog:59762]
+
+control_hboxcontainer_vboxcontainer_curvedialog->set_margin_right(488);
+//control_hboxcontainer_vboxcontainer_curvedialog->set("margin_right", 488);
+
+control_hboxcontainer_vboxcontainer_curvedialog->set_margin_bottom(20);
+//control_hboxcontainer_vboxcontainer_curvedialog->set("margin_bottom", 20);
+
+control_hboxcontainer_vboxcontainer_curvedialog->set_rect_size(Vector2(488, 20));
+//control_hboxcontainer_vboxcontainer_curvedialog->set("rect_size", Vector2(488, 20));
+
+control_hboxcontainer_vboxcontainer_curvedialog->set_size_flags_horizontal(3);
+//control_hboxcontainer_vboxcontainer_curvedialog->set("size_flags_horizontal", 3);
+
+
+
+Button *ok_hboxcontainer_vboxcontainer_curvedialog = memnew(Button);
+ok_hboxcontainer_vboxcontainer_curvedialog->set_name("OK");
+hboxcontainer_vboxcontainer_curvedialog->add_child(ok_hboxcontainer_vboxcontainer_curvedialog);
+
+ok_hboxcontainer_vboxcontainer_curvedialog->set_name("OK");
+//ok_hboxcontainer_vboxcontainer_curvedialog->set("name", OK));
+
+//ok_hboxcontainer_vboxcontainer_curvedialog property owner TYPE_OBJECT value: CurveDialog:[WindowDialog:59762]
+
+ok_hboxcontainer_vboxcontainer_curvedialog->set_margin_left(492);
+//ok_hboxcontainer_vboxcontainer_curvedialog->set("margin_left", 492);
+
+ok_hboxcontainer_vboxcontainer_curvedialog->set_margin_right(552);
+//ok_hboxcontainer_vboxcontainer_curvedialog->set("margin_right", 552);
+
+ok_hboxcontainer_vboxcontainer_curvedialog->set_margin_bottom(20);
+//ok_hboxcontainer_vboxcontainer_curvedialog->set("margin_bottom", 20);
+
+ok_hboxcontainer_vboxcontainer_curvedialog->set_rect_position(Vector2(492, 0));
+//ok_hboxcontainer_vboxcontainer_curvedialog->set("rect_position", Vector2(492, 0));
+
+ok_hboxcontainer_vboxcontainer_curvedialog->set_rect_global_position(Vector2(492, 0));
+//ok_hboxcontainer_vboxcontainer_curvedialog->set("rect_global_position", Vector2(492, 0));
+
+ok_hboxcontainer_vboxcontainer_curvedialog->set_rect_size(Vector2(60, 20));
+//ok_hboxcontainer_vboxcontainer_curvedialog->set("rect_size", Vector2(60, 20));
+
+ok_hboxcontainer_vboxcontainer_curvedialog->set_rect_min_size(Vector2(60, 0));
+//ok_hboxcontainer_vboxcontainer_curvedialog->set("rect_min_size", Vector2(60, 0));
+
+ok_hboxcontainer_vboxcontainer_curvedialog->set_text("OK");
+//ok_hboxcontainer_vboxcontainer_curvedialog->set("text", "OK");
+
+
+
+Button *cancel_hboxcontainer_vboxcontainer_curvedialog = memnew(Button);
+cancel_hboxcontainer_vboxcontainer_curvedialog->set_name("Cancel");
+hboxcontainer_vboxcontainer_curvedialog->add_child(cancel_hboxcontainer_vboxcontainer_curvedialog);
+
+cancel_hboxcontainer_vboxcontainer_curvedialog->set_name("Cancel");
+//cancel_hboxcontainer_vboxcontainer_curvedialog->set("name", Cancel));
+
+//cancel_hboxcontainer_vboxcontainer_curvedialog property owner TYPE_OBJECT value: CurveDialog:[WindowDialog:59762]
+
+cancel_hboxcontainer_vboxcontainer_curvedialog->set_margin_left(556);
+//cancel_hboxcontainer_vboxcontainer_curvedialog->set("margin_left", 556);
+
+cancel_hboxcontainer_vboxcontainer_curvedialog->set_margin_right(616);
+//cancel_hboxcontainer_vboxcontainer_curvedialog->set("margin_right", 616);
+
+cancel_hboxcontainer_vboxcontainer_curvedialog->set_margin_bottom(20);
+//cancel_hboxcontainer_vboxcontainer_curvedialog->set("margin_bottom", 20);
+
+cancel_hboxcontainer_vboxcontainer_curvedialog->set_rect_position(Vector2(556, 0));
+//cancel_hboxcontainer_vboxcontainer_curvedialog->set("rect_position", Vector2(556, 0));
+
+cancel_hboxcontainer_vboxcontainer_curvedialog->set_rect_global_position(Vector2(556, 0));
+//cancel_hboxcontainer_vboxcontainer_curvedialog->set("rect_global_position", Vector2(556, 0));
+
+cancel_hboxcontainer_vboxcontainer_curvedialog->set_rect_size(Vector2(60, 20));
+//cancel_hboxcontainer_vboxcontainer_curvedialog->set("rect_size", Vector2(60, 20));
+
+cancel_hboxcontainer_vboxcontainer_curvedialog->set_rect_min_size(Vector2(60, 0));
+//cancel_hboxcontainer_vboxcontainer_curvedialog->set("rect_min_size", Vector2(60, 0));
+
+cancel_hboxcontainer_vboxcontainer_curvedialog->set_text("Cancel");
+//cancel_hboxcontainer_vboxcontainer_curvedialog->set("text", "Cancel");
+
+
+
+
+}

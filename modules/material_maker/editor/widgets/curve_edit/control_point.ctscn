@@ -1,0 +1,116 @@
+
+void construct() {
+
+//Script: res://addons/mat_maker_gd/widgets/curve_edit/control_point.gd
+Control *controlpoint = memnew(Control);
+controlpoint->set_name("ControlPoint");
+
+controlpoint->set_name("ControlPoint");
+//controlpoint->set("name", ControlPoint));
+
+controlpoint->set_filename("res://addons/mat_maker_gd/widgets/curve_edit/control_point.tscn");
+//controlpoint->set("filename", "res://addons/mat_maker_gd/widgets/curve_edit/control_point.tscn");
+
+controlpoint->set_margin_left(56.986401);
+//controlpoint->set("margin_left", 56.986401);
+
+controlpoint->set_margin_top(33.8615);
+//controlpoint->set("margin_top", 33.8615);
+
+controlpoint->set_margin_right(63.986401);
+//controlpoint->set("margin_right", 63.986401);
+
+controlpoint->set_margin_bottom(40.8615);
+//controlpoint->set("margin_bottom", 40.8615);
+
+controlpoint->set_rect_position(Vector2(56.986401, 33.8615));
+//controlpoint->set("rect_position", Vector2(56.986401, 33.8615));
+
+controlpoint->set_rect_global_position(Vector2(56.986401, 33.8615));
+//controlpoint->set("rect_global_position", Vector2(56.986401, 33.8615));
+
+controlpoint->set_rect_size(Vector2(7, 7));
+//controlpoint->set("rect_size", Vector2(7, 7));
+
+controlpoint->set_rect_min_size(Vector2(7, 7));
+//controlpoint->set("rect_min_size", Vector2(7, 7));
+
+//controlpoint property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+
+
+//Script: res://addons/mat_maker_gd/widgets/curve_edit/slope_point.gd
+Control *leftslope_controlpoint = memnew(Control);
+leftslope_controlpoint->set_name("LeftSlope");
+controlpoint->add_child(leftslope_controlpoint);
+
+leftslope_controlpoint->set_name("LeftSlope");
+//leftslope_controlpoint->set("name", LeftSlope));
+
+//leftslope_controlpoint property owner TYPE_OBJECT value: ControlPoint:[Control:59789]
+
+leftslope_controlpoint->set_margin_left(-18.5235);
+//leftslope_controlpoint->set("margin_left", -18.5235);
+
+leftslope_controlpoint->set_margin_right(-11.5235);
+//leftslope_controlpoint->set("margin_right", -11.5235);
+
+leftslope_controlpoint->set_margin_bottom(7);
+//leftslope_controlpoint->set("margin_bottom", 7);
+
+leftslope_controlpoint->set_rect_position(Vector2(-18.5235, 0));
+//leftslope_controlpoint->set("rect_position", Vector2(-18.5235, 0));
+
+leftslope_controlpoint->set_rect_global_position(Vector2(-18.5235, 0));
+//leftslope_controlpoint->set("rect_global_position", Vector2(-18.5235, 0));
+
+leftslope_controlpoint->set_rect_size(Vector2(7, 7));
+//leftslope_controlpoint->set("rect_size", Vector2(7, 7));
+
+leftslope_controlpoint->set_rect_min_size(Vector2(7, 7));
+//leftslope_controlpoint->set("rect_min_size", Vector2(7, 7));
+
+//leftslope_controlpoint property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+leftslope_controlpoint->set_distance(-30);
+//leftslope_controlpoint->set("distance", -30);
+
+
+
+//Script: res://addons/mat_maker_gd/widgets/curve_edit/slope_point.gd
+Control *rightslope_controlpoint = memnew(Control);
+rightslope_controlpoint->set_name("RightSlope");
+controlpoint->add_child(rightslope_controlpoint);
+
+rightslope_controlpoint->set_name("RightSlope");
+//rightslope_controlpoint->set("name", RightSlope));
+
+//rightslope_controlpoint property owner TYPE_OBJECT value: ControlPoint:[Control:59789]
+
+rightslope_controlpoint->set_margin_left(15.6919);
+//rightslope_controlpoint->set("margin_left", 15.6919);
+
+rightslope_controlpoint->set_margin_right(22.6919);
+//rightslope_controlpoint->set("margin_right", 22.6919);
+
+rightslope_controlpoint->set_margin_bottom(7);
+//rightslope_controlpoint->set("margin_bottom", 7);
+
+rightslope_controlpoint->set_rect_position(Vector2(15.6919, 0));
+//rightslope_controlpoint->set("rect_position", Vector2(15.6919, 0));
+
+rightslope_controlpoint->set_rect_global_position(Vector2(15.6919, 0));
+//rightslope_controlpoint->set("rect_global_position", Vector2(15.6919, 0));
+
+rightslope_controlpoint->set_rect_size(Vector2(7, 7));
+//rightslope_controlpoint->set("rect_size", Vector2(7, 7));
+
+//rightslope_controlpoint property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+rightslope_controlpoint->set_distance(30);
+//rightslope_controlpoint->set("distance", 30);
+
+
+
+
+}

@@ -1,0 +1,251 @@
+
+void construct() {
+
+//Script: res://addons/mat_maker_gd/widgets/gradient_editor/gradient_editor.gd
+Control *control = memnew(Control);
+control->set_name("Control");
+
+control->set_name("Control");
+//control->set("name", Control));
+
+control->set_filename("res://addons/mat_maker_gd/widgets/gradient_editor/gradient_editor.tscn");
+//control->set("filename", "res://addons/mat_maker_gd/widgets/gradient_editor/gradient_editor.tscn");
+
+control->set_margin_right(120);
+//control->set("margin_right", 120);
+
+control->set_margin_bottom(30);
+//control->set("margin_bottom", 30);
+
+control->set_rect_size(Vector2(120, 30));
+//control->set("rect_size", Vector2(120, 30));
+
+control->set_rect_min_size(Vector2(120, 32));
+//control->set("rect_min_size", Vector2(120, 32));
+
+control->set_focus_mode(1);
+//control->set("focus_mode", 1);
+
+
+
+ColorRect *background_control = memnew(ColorRect);
+background_control->set_name("Background");
+control->add_child(background_control);
+
+background_control->set_name("Background");
+//background_control->set("name", Background));
+
+//background_control property owner TYPE_OBJECT value: Control:[Control:51414]
+
+//background_control property material TYPE_OBJECT value: [ShaderMaterial:19166]
+Ref<ShaderMaterial> background_control_prop_material;
+background_control_prop_material.instance();
+background_control->set_material(background_control_prop_material);
+//background_control->set("material", background_control_prop_material);
+
+background_control->set_anchor_right(1);
+//background_control->set("anchor_right", 1);
+
+background_control->set_margin_left(4);
+//background_control->set("margin_left", 4);
+
+background_control->set_margin_right(-4);
+//background_control->set("margin_right", -4);
+
+background_control->set_margin_bottom(15);
+//background_control->set("margin_bottom", 15);
+
+background_control->set_rect_position(Vector2(4, 0));
+//background_control->set("rect_position", Vector2(4, 0));
+
+background_control->set_rect_global_position(Vector2(4, 0));
+//background_control->set("rect_global_position", Vector2(4, 0));
+
+background_control->set_rect_size(Vector2(0, 15));
+//background_control->set("rect_size", Vector2(0, 15));
+
+background_control->set_rect_min_size(Vector2(112, 17));
+//background_control->set("rect_min_size", Vector2(112, 17));
+
+background_control->set_mouse_filter(2);
+//background_control->set("mouse_filter", 2);
+
+//background_control property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+
+
+TextureRect *gradient_control = memnew(TextureRect);
+gradient_control->set_name("Gradient");
+control->add_child(gradient_control);
+
+gradient_control->set_name("Gradient");
+//gradient_control->set("name", Gradient));
+
+//gradient_control property owner TYPE_OBJECT value: Control:[Control:51414]
+
+gradient_control->set_anchor_right(1);
+//gradient_control->set("anchor_right", 1);
+
+gradient_control->set_margin_left(4);
+//gradient_control->set("margin_left", 4);
+
+gradient_control->set_margin_right(-4);
+//gradient_control->set("margin_right", -4);
+
+gradient_control->set_margin_bottom(15);
+//gradient_control->set("margin_bottom", 15);
+
+gradient_control->set_rect_position(Vector2(4, 0));
+//gradient_control->set("rect_position", Vector2(4, 0));
+
+gradient_control->set_rect_global_position(Vector2(4, 0));
+//gradient_control->set("rect_global_position", Vector2(4, 0));
+
+gradient_control->set_rect_size(Vector2(0, 15));
+//gradient_control->set("rect_size", Vector2(0, 15));
+
+gradient_control->set_rect_min_size(Vector2(112, 17));
+//gradient_control->set("rect_min_size", Vector2(112, 17));
+
+gradient_control->set_mouse_filter(2);
+//gradient_control->set("mouse_filter", 2);
+
+//gradient_control property theme TYPE_OBJECT value: [Theme:19167]
+Ref<Theme> gradient_control_prop_theme;
+gradient_control_prop_theme.instance();
+gradient_control->set_theme(gradient_control_prop_theme);
+//gradient_control->set("theme", gradient_control_prop_theme);
+
+//gradient_control property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+
+
+OptionButton *interpolation_control = memnew(OptionButton);
+interpolation_control->set_name("Interpolation");
+control->add_child(interpolation_control);
+
+interpolation_control->set_name("Interpolation");
+//interpolation_control->set("name", Interpolation));
+
+//interpolation_control property owner TYPE_OBJECT value: Control:[Control:51414]
+
+interpolation_control->set_margin_left(0.418457);
+//interpolation_control->set("margin_left", 0.418457);
+
+interpolation_control->set_margin_top(-2.90374);
+//interpolation_control->set("margin_top", -2.90374);
+
+interpolation_control->set_margin_right(73.418503);
+//interpolation_control->set("margin_right", 73.418503);
+
+interpolation_control->set_margin_bottom(19.0963);
+//interpolation_control->set("margin_bottom", 19.0963);
+
+interpolation_control->set_rect_position(Vector2(0.418457, -2.90374));
+//interpolation_control->set("rect_position", Vector2(0.418457, -2.90374));
+
+interpolation_control->set_rect_global_position(Vector2(0.418457, -2.90374));
+//interpolation_control->set("rect_global_position", Vector2(0.418457, -2.90374));
+
+interpolation_control->set_rect_size(Vector2(73.000046, 22.00004));
+//interpolation_control->set("rect_size", Vector2(73.000046, 22.00004));
+
+interpolation_control->set_rect_scale(Vector2(0.5, 0.5));
+//interpolation_control->set("rect_scale", Vector2(0.5, 0.5));
+
+//interpolation_control property icon TYPE_OBJECT value: [AtlasTexture:19168]
+Ref<AtlasTexture> interpolation_control_prop_icon;
+interpolation_control_prop_icon.instance();
+interpolation_control->set_icon(interpolation_control_prop_icon);
+//interpolation_control->set("icon", interpolation_control_prop_icon);
+
+//interpolation_control property items TYPE_ARRAY value: [, [AtlasTexture:19169], False, 0, Null, , [AtlasTexture:19168], False, 1, Null, , [AtlasTexture:19170], False, 2, Null, , [AtlasTexture:19171], False, 3, Null]
+
+interpolation_control->set_selected(1);
+//interpolation_control->set("selected", 1);
+
+
+
+PopupMenu *popupmenu_interpolation_control = memnew(PopupMenu);
+popupmenu_interpolation_control->set_name("PopupMenu");
+interpolation_control->add_child(popupmenu_interpolation_control);
+
+popupmenu_interpolation_control->set_name("PopupMenu");
+//popupmenu_interpolation_control->set("name", PopupMenu));
+
+popupmenu_interpolation_control->set_input_pass_on_modal_close_click(False);
+//popupmenu_interpolation_control->set("input_pass_on_modal_close_click", False);
+
+//popupmenu_interpolation_control property items TYPE_ARRAY value: [, [AtlasTexture:19169], 2, False, False, 0, 0, Null, , False, , [AtlasTexture:19168], 2, True, False, 1, 0, Null, , False, , [AtlasTexture:19170], 2, False, False, 2, 0, Null, , False, , [AtlasTexture:19171], 2, False, False, 3, 0, Null, , False]
+
+popupmenu_interpolation_control->set_allow_search(True);
+//popupmenu_interpolation_control->set("allow_search", True);
+
+
+
+Timer *timer_popupmenu_interpolation_control = memnew(Timer);
+timer_popupmenu_interpolation_control->set_name("Timer");
+popupmenu_interpolation_control->add_child(timer_popupmenu_interpolation_control);
+
+timer_popupmenu_interpolation_control->set_name("Timer");
+//timer_popupmenu_interpolation_control->set("name", Timer));
+
+timer_popupmenu_interpolation_control->set_wait_time(0.3);
+//timer_popupmenu_interpolation_control->set("wait_time", 0.3);
+
+timer_popupmenu_interpolation_control->set_one_shot(True);
+//timer_popupmenu_interpolation_control->set("one_shot", True);
+
+
+
+Label *value_control = memnew(Label);
+value_control->set_name("Value");
+control->add_child(value_control);
+
+value_control->set_name("Value");
+//value_control->set("name", Value));
+
+//value_control property owner TYPE_OBJECT value: Control:[Control:51414]
+
+value_control->set_anchor_right(1);
+//value_control->set("anchor_right", 1);
+
+value_control->set_margin_top(-1);
+//value_control->set("margin_top", -1);
+
+value_control->set_margin_bottom(14);
+//value_control->set("margin_bottom", 14);
+
+value_control->set_rect_position(Vector2(0, -1));
+//value_control->set("rect_position", Vector2(0, -1));
+
+value_control->set_rect_global_position(Vector2(0, -1));
+//value_control->set("rect_global_position", Vector2(0, -1));
+
+value_control->set_rect_size(Vector2(0, 15));
+//value_control->set("rect_size", Vector2(0, 15));
+
+value_control->set_custom_colors/font_color(Color(1, 1, 1, 1));
+//value_control->set("custom_colors/font_color", Color(1, 1, 1, 1));
+
+value_control->set_custom_colors/font_color_shadow(Color(0, 0, 0, 1));
+//value_control->set("custom_colors/font_color_shadow", Color(0, 0, 0, 1));
+
+value_control->set_custom_constants/shadow_offset_x(1);
+//value_control->set("custom_constants/shadow_offset_x", 1);
+
+value_control->set_custom_constants/shadow_offset_y(1);
+//value_control->set("custom_constants/shadow_offset_y", 1);
+
+value_control->set_custom_constants/shadow_as_outline(1);
+//value_control->set("custom_constants/shadow_as_outline", 1);
+
+value_control->set_align(1);
+//value_control->set("align", 1);
+
+//value_control property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+
+
+
+}

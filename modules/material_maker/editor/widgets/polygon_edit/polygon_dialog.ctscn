@@ -1,0 +1,325 @@
+
+void construct() {
+
+//Script: res://addons/mat_maker_gd/widgets/polygon_edit/polygon_dialog.gd
+WindowDialog *polygondialog = memnew(WindowDialog);
+polygondialog->set_name("PolygonDialog");
+
+polygondialog->set_name("PolygonDialog");
+//polygondialog->set("name", PolygonDialog));
+
+polygondialog->set_filename("res://addons/mat_maker_gd/widgets/polygon_edit/polygon_dialog.tscn");
+//polygondialog->set("filename", "res://addons/mat_maker_gd/widgets/polygon_edit/polygon_dialog.tscn");
+
+polygondialog->set_anchor_right(1);
+//polygondialog->set("anchor_right", 1);
+
+polygondialog->set_anchor_bottom(1);
+//polygondialog->set("anchor_bottom", 1);
+
+polygondialog->set_margin_left(307);
+//polygondialog->set("margin_left", 307);
+
+polygondialog->set_margin_top(151);
+//polygondialog->set("margin_top", 151);
+
+polygondialog->set_margin_right(-508);
+//polygondialog->set("margin_right", -508);
+
+polygondialog->set_margin_bottom(-70);
+//polygondialog->set("margin_bottom", -70);
+
+polygondialog->set_rect_position(Vector2(307, 151));
+//polygondialog->set("rect_position", Vector2(307, 151));
+
+polygondialog->set_rect_global_position(Vector2(307, 151));
+//polygondialog->set("rect_global_position", Vector2(307, 151));
+
+polygondialog->set_rect_size(Vector2(0, 1));
+//polygondialog->set("rect_size", Vector2(0, 1));
+
+polygondialog->set_window_title("Edit polygon");
+//polygondialog->set("window_title", "Edit polygon");
+
+//polygondialog property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+
+
+TextureButton *texturebutton_polygondialog = memnew(TextureButton);
+texturebutton_polygondialog->set_name("TextureButton");
+polygondialog->add_child(texturebutton_polygondialog);
+
+texturebutton_polygondialog->set_name("TextureButton");
+//texturebutton_polygondialog->set("name", TextureButton));
+
+
+
+VBoxContainer *vboxcontainer_polygondialog = memnew(VBoxContainer);
+vboxcontainer_polygondialog->set_name("VBoxContainer");
+polygondialog->add_child(vboxcontainer_polygondialog);
+
+vboxcontainer_polygondialog->set_name("VBoxContainer");
+//vboxcontainer_polygondialog->set("name", VBoxContainer));
+
+//vboxcontainer_polygondialog property owner TYPE_OBJECT value: PolygonDialog:[WindowDialog:42399]
+
+vboxcontainer_polygondialog->set_anchor_right(1);
+//vboxcontainer_polygondialog->set("anchor_right", 1);
+
+vboxcontainer_polygondialog->set_anchor_bottom(1);
+//vboxcontainer_polygondialog->set("anchor_bottom", 1);
+
+vboxcontainer_polygondialog->set_margin_left(5);
+//vboxcontainer_polygondialog->set("margin_left", 5);
+
+vboxcontainer_polygondialog->set_margin_top(5);
+//vboxcontainer_polygondialog->set("margin_top", 5);
+
+vboxcontainer_polygondialog->set_margin_right(-5);
+//vboxcontainer_polygondialog->set("margin_right", -5);
+
+vboxcontainer_polygondialog->set_margin_bottom(-5);
+//vboxcontainer_polygondialog->set("margin_bottom", -5);
+
+vboxcontainer_polygondialog->set_rect_position(Vector2(5, 5));
+//vboxcontainer_polygondialog->set("rect_position", Vector2(5, 5));
+
+vboxcontainer_polygondialog->set_rect_global_position(Vector2(5, 5));
+//vboxcontainer_polygondialog->set("rect_global_position", Vector2(5, 5));
+
+//vboxcontainer_polygondialog property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+
+
+MarginContainer *editorcontainer_vboxcontainer_polygondialog = memnew(MarginContainer);
+editorcontainer_vboxcontainer_polygondialog->set_name("EditorContainer");
+vboxcontainer_polygondialog->add_child(editorcontainer_vboxcontainer_polygondialog);
+
+editorcontainer_vboxcontainer_polygondialog->set_name("EditorContainer");
+//editorcontainer_vboxcontainer_polygondialog->set("name", EditorContainer));
+
+//editorcontainer_vboxcontainer_polygondialog property owner TYPE_OBJECT value: PolygonDialog:[WindowDialog:42399]
+
+editorcontainer_vboxcontainer_polygondialog->set_margin_right(455);
+//editorcontainer_vboxcontainer_polygondialog->set("margin_right", 455);
+
+editorcontainer_vboxcontainer_polygondialog->set_margin_bottom(457);
+//editorcontainer_vboxcontainer_polygondialog->set("margin_bottom", 457);
+
+editorcontainer_vboxcontainer_polygondialog->set_rect_size(Vector2(455, 457));
+//editorcontainer_vboxcontainer_polygondialog->set("rect_size", Vector2(455, 457));
+
+editorcontainer_vboxcontainer_polygondialog->set_rect_clip_content(True);
+//editorcontainer_vboxcontainer_polygondialog->set("rect_clip_content", True);
+
+editorcontainer_vboxcontainer_polygondialog->set_size_flags_horizontal(3);
+//editorcontainer_vboxcontainer_polygondialog->set("size_flags_horizontal", 3);
+
+editorcontainer_vboxcontainer_polygondialog->set_size_flags_vertical(3);
+//editorcontainer_vboxcontainer_polygondialog->set("size_flags_vertical", 3);
+
+editorcontainer_vboxcontainer_polygondialog->set_custom_constants/margin_right(4);
+//editorcontainer_vboxcontainer_polygondialog->set("custom_constants/margin_right", 4);
+
+editorcontainer_vboxcontainer_polygondialog->set_custom_constants/margin_top(4);
+//editorcontainer_vboxcontainer_polygondialog->set("custom_constants/margin_top", 4);
+
+editorcontainer_vboxcontainer_polygondialog->set_custom_constants/margin_left(4);
+//editorcontainer_vboxcontainer_polygondialog->set("custom_constants/margin_left", 4);
+
+editorcontainer_vboxcontainer_polygondialog->set_custom_constants/margin_bottom(4);
+//editorcontainer_vboxcontainer_polygondialog->set("custom_constants/margin_bottom", 4);
+
+
+
+//Script: res://addons/mat_maker_gd/widgets/polygon_edit/polygon_editor.gd
+Control *polygoneditor_editorcontainer_vboxcontainer_polygondialog = memnew(Control);
+polygoneditor_editorcontainer_vboxcontainer_polygondialog->set_name("PolygonEditor");
+editorcontainer_vboxcontainer_polygondialog->add_child(polygoneditor_editorcontainer_vboxcontainer_polygondialog);
+
+polygoneditor_editorcontainer_vboxcontainer_polygondialog->set_name("PolygonEditor");
+//polygoneditor_editorcontainer_vboxcontainer_polygondialog->set("name", PolygonEditor));
+
+polygoneditor_editorcontainer_vboxcontainer_polygondialog->set_filename("res://addons/mat_maker_gd/widgets/polygon_edit/polygon_editor.tscn");
+//polygoneditor_editorcontainer_vboxcontainer_polygondialog->set("filename", "res://addons/mat_maker_gd/widgets/polygon_edit/polygon_editor.tscn");
+
+//polygoneditor_editorcontainer_vboxcontainer_polygondialog property owner TYPE_OBJECT value: PolygonDialog:[WindowDialog:42399]
+
+polygoneditor_editorcontainer_vboxcontainer_polygondialog->set_margin_left(4);
+//polygoneditor_editorcontainer_vboxcontainer_polygondialog->set("margin_left", 4);
+
+polygoneditor_editorcontainer_vboxcontainer_polygondialog->set_margin_top(4);
+//polygoneditor_editorcontainer_vboxcontainer_polygondialog->set("margin_top", 4);
+
+polygoneditor_editorcontainer_vboxcontainer_polygondialog->set_margin_right(451);
+//polygoneditor_editorcontainer_vboxcontainer_polygondialog->set("margin_right", 451);
+
+polygoneditor_editorcontainer_vboxcontainer_polygondialog->set_margin_bottom(453);
+//polygoneditor_editorcontainer_vboxcontainer_polygondialog->set("margin_bottom", 453);
+
+polygoneditor_editorcontainer_vboxcontainer_polygondialog->set_rect_position(Vector2(4, 4));
+//polygoneditor_editorcontainer_vboxcontainer_polygondialog->set("rect_position", Vector2(4, 4));
+
+polygoneditor_editorcontainer_vboxcontainer_polygondialog->set_rect_global_position(Vector2(4, 4));
+//polygoneditor_editorcontainer_vboxcontainer_polygondialog->set("rect_global_position", Vector2(4, 4));
+
+polygoneditor_editorcontainer_vboxcontainer_polygondialog->set_rect_size(Vector2(447, 449));
+//polygoneditor_editorcontainer_vboxcontainer_polygondialog->set("rect_size", Vector2(447, 449));
+
+//polygoneditor_editorcontainer_vboxcontainer_polygondialog property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+
+
+HSeparator *hseparator_vboxcontainer_polygondialog = memnew(HSeparator);
+hseparator_vboxcontainer_polygondialog->set_name("HSeparator");
+vboxcontainer_polygondialog->add_child(hseparator_vboxcontainer_polygondialog);
+
+hseparator_vboxcontainer_polygondialog->set_name("HSeparator");
+//hseparator_vboxcontainer_polygondialog->set("name", HSeparator));
+
+//hseparator_vboxcontainer_polygondialog property owner TYPE_OBJECT value: PolygonDialog:[WindowDialog:42399]
+
+hseparator_vboxcontainer_polygondialog->set_margin_top(461);
+//hseparator_vboxcontainer_polygondialog->set("margin_top", 461);
+
+hseparator_vboxcontainer_polygondialog->set_margin_right(455);
+//hseparator_vboxcontainer_polygondialog->set("margin_right", 455);
+
+hseparator_vboxcontainer_polygondialog->set_margin_bottom(465);
+//hseparator_vboxcontainer_polygondialog->set("margin_bottom", 465);
+
+hseparator_vboxcontainer_polygondialog->set_rect_position(Vector2(0, 461));
+//hseparator_vboxcontainer_polygondialog->set("rect_position", Vector2(0, 461));
+
+hseparator_vboxcontainer_polygondialog->set_rect_global_position(Vector2(0, 461));
+//hseparator_vboxcontainer_polygondialog->set("rect_global_position", Vector2(0, 461));
+
+hseparator_vboxcontainer_polygondialog->set_rect_size(Vector2(455, 4));
+//hseparator_vboxcontainer_polygondialog->set("rect_size", Vector2(455, 4));
+
+
+
+HBoxContainer *hboxcontainer_vboxcontainer_polygondialog = memnew(HBoxContainer);
+hboxcontainer_vboxcontainer_polygondialog->set_name("HBoxContainer");
+vboxcontainer_polygondialog->add_child(hboxcontainer_vboxcontainer_polygondialog);
+
+hboxcontainer_vboxcontainer_polygondialog->set_name("HBoxContainer");
+//hboxcontainer_vboxcontainer_polygondialog->set("name", HBoxContainer));
+
+//hboxcontainer_vboxcontainer_polygondialog property owner TYPE_OBJECT value: PolygonDialog:[WindowDialog:42399]
+
+hboxcontainer_vboxcontainer_polygondialog->set_margin_top(469);
+//hboxcontainer_vboxcontainer_polygondialog->set("margin_top", 469);
+
+hboxcontainer_vboxcontainer_polygondialog->set_margin_right(455);
+//hboxcontainer_vboxcontainer_polygondialog->set("margin_right", 455);
+
+hboxcontainer_vboxcontainer_polygondialog->set_margin_bottom(489);
+//hboxcontainer_vboxcontainer_polygondialog->set("margin_bottom", 489);
+
+hboxcontainer_vboxcontainer_polygondialog->set_rect_position(Vector2(0, 469));
+//hboxcontainer_vboxcontainer_polygondialog->set("rect_position", Vector2(0, 469));
+
+hboxcontainer_vboxcontainer_polygondialog->set_rect_global_position(Vector2(0, 469));
+//hboxcontainer_vboxcontainer_polygondialog->set("rect_global_position", Vector2(0, 469));
+
+hboxcontainer_vboxcontainer_polygondialog->set_rect_size(Vector2(455, 20));
+//hboxcontainer_vboxcontainer_polygondialog->set("rect_size", Vector2(455, 20));
+
+
+
+Control *control_hboxcontainer_vboxcontainer_polygondialog = memnew(Control);
+control_hboxcontainer_vboxcontainer_polygondialog->set_name("Control");
+hboxcontainer_vboxcontainer_polygondialog->add_child(control_hboxcontainer_vboxcontainer_polygondialog);
+
+control_hboxcontainer_vboxcontainer_polygondialog->set_name("Control");
+//control_hboxcontainer_vboxcontainer_polygondialog->set("name", Control));
+
+//control_hboxcontainer_vboxcontainer_polygondialog property owner TYPE_OBJECT value: PolygonDialog:[WindowDialog:42399]
+
+control_hboxcontainer_vboxcontainer_polygondialog->set_margin_right(327);
+//control_hboxcontainer_vboxcontainer_polygondialog->set("margin_right", 327);
+
+control_hboxcontainer_vboxcontainer_polygondialog->set_margin_bottom(20);
+//control_hboxcontainer_vboxcontainer_polygondialog->set("margin_bottom", 20);
+
+control_hboxcontainer_vboxcontainer_polygondialog->set_rect_size(Vector2(327, 20));
+//control_hboxcontainer_vboxcontainer_polygondialog->set("rect_size", Vector2(327, 20));
+
+control_hboxcontainer_vboxcontainer_polygondialog->set_size_flags_horizontal(3);
+//control_hboxcontainer_vboxcontainer_polygondialog->set("size_flags_horizontal", 3);
+
+
+
+Button *ok_hboxcontainer_vboxcontainer_polygondialog = memnew(Button);
+ok_hboxcontainer_vboxcontainer_polygondialog->set_name("OK");
+hboxcontainer_vboxcontainer_polygondialog->add_child(ok_hboxcontainer_vboxcontainer_polygondialog);
+
+ok_hboxcontainer_vboxcontainer_polygondialog->set_name("OK");
+//ok_hboxcontainer_vboxcontainer_polygondialog->set("name", OK));
+
+//ok_hboxcontainer_vboxcontainer_polygondialog property owner TYPE_OBJECT value: PolygonDialog:[WindowDialog:42399]
+
+ok_hboxcontainer_vboxcontainer_polygondialog->set_margin_left(331);
+//ok_hboxcontainer_vboxcontainer_polygondialog->set("margin_left", 331);
+
+ok_hboxcontainer_vboxcontainer_polygondialog->set_margin_right(391);
+//ok_hboxcontainer_vboxcontainer_polygondialog->set("margin_right", 391);
+
+ok_hboxcontainer_vboxcontainer_polygondialog->set_margin_bottom(20);
+//ok_hboxcontainer_vboxcontainer_polygondialog->set("margin_bottom", 20);
+
+ok_hboxcontainer_vboxcontainer_polygondialog->set_rect_position(Vector2(331, 0));
+//ok_hboxcontainer_vboxcontainer_polygondialog->set("rect_position", Vector2(331, 0));
+
+ok_hboxcontainer_vboxcontainer_polygondialog->set_rect_global_position(Vector2(331, 0));
+//ok_hboxcontainer_vboxcontainer_polygondialog->set("rect_global_position", Vector2(331, 0));
+
+ok_hboxcontainer_vboxcontainer_polygondialog->set_rect_size(Vector2(60, 20));
+//ok_hboxcontainer_vboxcontainer_polygondialog->set("rect_size", Vector2(60, 20));
+
+ok_hboxcontainer_vboxcontainer_polygondialog->set_rect_min_size(Vector2(60, 0));
+//ok_hboxcontainer_vboxcontainer_polygondialog->set("rect_min_size", Vector2(60, 0));
+
+ok_hboxcontainer_vboxcontainer_polygondialog->set_text("OK");
+//ok_hboxcontainer_vboxcontainer_polygondialog->set("text", "OK");
+
+
+
+Button *cancel_hboxcontainer_vboxcontainer_polygondialog = memnew(Button);
+cancel_hboxcontainer_vboxcontainer_polygondialog->set_name("Cancel");
+hboxcontainer_vboxcontainer_polygondialog->add_child(cancel_hboxcontainer_vboxcontainer_polygondialog);
+
+cancel_hboxcontainer_vboxcontainer_polygondialog->set_name("Cancel");
+//cancel_hboxcontainer_vboxcontainer_polygondialog->set("name", Cancel));
+
+//cancel_hboxcontainer_vboxcontainer_polygondialog property owner TYPE_OBJECT value: PolygonDialog:[WindowDialog:42399]
+
+cancel_hboxcontainer_vboxcontainer_polygondialog->set_margin_left(395);
+//cancel_hboxcontainer_vboxcontainer_polygondialog->set("margin_left", 395);
+
+cancel_hboxcontainer_vboxcontainer_polygondialog->set_margin_right(455);
+//cancel_hboxcontainer_vboxcontainer_polygondialog->set("margin_right", 455);
+
+cancel_hboxcontainer_vboxcontainer_polygondialog->set_margin_bottom(20);
+//cancel_hboxcontainer_vboxcontainer_polygondialog->set("margin_bottom", 20);
+
+cancel_hboxcontainer_vboxcontainer_polygondialog->set_rect_position(Vector2(395, 0));
+//cancel_hboxcontainer_vboxcontainer_polygondialog->set("rect_position", Vector2(395, 0));
+
+cancel_hboxcontainer_vboxcontainer_polygondialog->set_rect_global_position(Vector2(395, 0));
+//cancel_hboxcontainer_vboxcontainer_polygondialog->set("rect_global_position", Vector2(395, 0));
+
+cancel_hboxcontainer_vboxcontainer_polygondialog->set_rect_size(Vector2(60, 20));
+//cancel_hboxcontainer_vboxcontainer_polygondialog->set("rect_size", Vector2(60, 20));
+
+cancel_hboxcontainer_vboxcontainer_polygondialog->set_rect_min_size(Vector2(60, 0));
+//cancel_hboxcontainer_vboxcontainer_polygondialog->set("rect_min_size", Vector2(60, 0));
+
+cancel_hboxcontainer_vboxcontainer_polygondialog->set_text("Cancel");
+//cancel_hboxcontainer_vboxcontainer_polygondialog->set("text", "Cancel");
+
+
+
+
+}

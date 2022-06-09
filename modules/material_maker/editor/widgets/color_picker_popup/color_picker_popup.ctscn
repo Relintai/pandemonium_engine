@@ -1,0 +1,798 @@
+
+void construct() {
+
+PopupPanel *colorpickerpopup = memnew(PopupPanel);
+colorpickerpopup->set_name("ColorPickerPopup");
+
+colorpickerpopup->set_name("ColorPickerPopup");
+//colorpickerpopup->set("name", ColorPickerPopup));
+
+colorpickerpopup->set_filename("res://addons/mat_maker_gd/widgets/color_picker_popup/color_picker_popup.tscn");
+//colorpickerpopup->set("filename", "res://addons/mat_maker_gd/widgets/color_picker_popup/color_picker_popup.tscn");
+
+colorpickerpopup->set_margin_right(316);
+//colorpickerpopup->set("margin_right", 316);
+
+colorpickerpopup->set_margin_bottom(470);
+//colorpickerpopup->set("margin_bottom", 470);
+
+colorpickerpopup->set_rect_size(Vector2(316, 470));
+//colorpickerpopup->set("rect_size", Vector2(316, 470));
+
+
+
+ColorPicker *colorpicker_colorpickerpopup = memnew(ColorPicker);
+colorpicker_colorpickerpopup->set_name("ColorPicker");
+colorpickerpopup->add_child(colorpicker_colorpickerpopup);
+
+colorpicker_colorpickerpopup->set_name("ColorPicker");
+//colorpicker_colorpickerpopup->set("name", ColorPicker));
+
+//colorpicker_colorpickerpopup property owner TYPE_OBJECT value: ColorPickerPopup:[PopupPanel:62683]
+
+colorpicker_colorpickerpopup->set_margin_left(8);
+//colorpicker_colorpickerpopup->set("margin_left", 8);
+
+colorpicker_colorpickerpopup->set_margin_top(8);
+//colorpicker_colorpickerpopup->set("margin_top", 8);
+
+colorpicker_colorpickerpopup->set_margin_right(316);
+//colorpicker_colorpickerpopup->set("margin_right", 316);
+
+colorpicker_colorpickerpopup->set_margin_bottom(470);
+//colorpicker_colorpickerpopup->set("margin_bottom", 470);
+
+colorpicker_colorpickerpopup->set_rect_position(Vector2(8, 8));
+//colorpicker_colorpickerpopup->set("rect_position", Vector2(8, 8));
+
+colorpicker_colorpickerpopup->set_rect_global_position(Vector2(8, 8));
+//colorpicker_colorpickerpopup->set("rect_global_position", Vector2(8, 8));
+
+colorpicker_colorpickerpopup->set_rect_size(Vector2(308, 462));
+//colorpicker_colorpickerpopup->set("rect_size", Vector2(308, 462));
+
+//colorpicker_colorpickerpopup property __meta__ TYPE_DICTIONARY value: {_edit_use_anchors_:False}
+
+
+
+HBoxContainer *hboxcontainer_colorpicker_colorpickerpopup = memnew(HBoxContainer);
+hboxcontainer_colorpicker_colorpickerpopup->set_name("HBoxContainer");
+colorpicker_colorpickerpopup->add_child(hboxcontainer_colorpicker_colorpickerpopup);
+
+hboxcontainer_colorpicker_colorpickerpopup->set_name("HBoxContainer");
+//hboxcontainer_colorpicker_colorpickerpopup->set("name", HBoxContainer));
+
+hboxcontainer_colorpicker_colorpickerpopup->set_size_flags_vertical(3);
+//hboxcontainer_colorpicker_colorpickerpopup->set("size_flags_vertical", 3);
+
+
+
+Control *control_hboxcontainer_colorpicker_colorpickerpopup = memnew(Control);
+control_hboxcontainer_colorpicker_colorpickerpopup->set_name("Control");
+hboxcontainer_colorpicker_colorpickerpopup->add_child(control_hboxcontainer_colorpicker_colorpickerpopup);
+
+control_hboxcontainer_colorpicker_colorpickerpopup->set_name("Control");
+//control_hboxcontainer_colorpicker_colorpickerpopup->set("name", Control));
+
+control_hboxcontainer_colorpicker_colorpickerpopup->set_rect_min_size(Vector2(256, 256));
+//control_hboxcontainer_colorpicker_colorpickerpopup->set("rect_min_size", Vector2(256, 256));
+
+control_hboxcontainer_colorpicker_colorpickerpopup->set_mouse_filter(1);
+//control_hboxcontainer_colorpicker_colorpickerpopup->set("mouse_filter", 1);
+
+control_hboxcontainer_colorpicker_colorpickerpopup->set_size_flags_horizontal(3);
+//control_hboxcontainer_colorpicker_colorpickerpopup->set("size_flags_horizontal", 3);
+
+control_hboxcontainer_colorpicker_colorpickerpopup->set_size_flags_vertical(3);
+//control_hboxcontainer_colorpicker_colorpickerpopup->set("size_flags_vertical", 3);
+
+
+
+Control *control2_hboxcontainer_colorpicker_colorpickerpopup = memnew(Control);
+control2_hboxcontainer_colorpicker_colorpickerpopup->set_name("Control2");
+hboxcontainer_colorpicker_colorpickerpopup->add_child(control2_hboxcontainer_colorpicker_colorpickerpopup);
+
+control2_hboxcontainer_colorpicker_colorpickerpopup->set_name("Control2");
+//control2_hboxcontainer_colorpicker_colorpickerpopup->set("name", Control2));
+
+control2_hboxcontainer_colorpicker_colorpickerpopup->set_rect_min_size(Vector2(30, 0));
+//control2_hboxcontainer_colorpicker_colorpickerpopup->set("rect_min_size", Vector2(30, 0));
+
+control2_hboxcontainer_colorpicker_colorpickerpopup->set_size_flags_vertical(3);
+//control2_hboxcontainer_colorpicker_colorpickerpopup->set("size_flags_vertical", 3);
+
+
+
+HBoxContainer *hboxcontainer2_colorpicker_colorpickerpopup = memnew(HBoxContainer);
+hboxcontainer2_colorpicker_colorpickerpopup->set_name("HBoxContainer2");
+colorpicker_colorpickerpopup->add_child(hboxcontainer2_colorpicker_colorpickerpopup);
+
+hboxcontainer2_colorpicker_colorpickerpopup->set_name("HBoxContainer2");
+//hboxcontainer2_colorpicker_colorpickerpopup->set("name", HBoxContainer2));
+
+
+
+TextureRect *texturerect_hboxcontainer2_colorpicker_colorpickerpopup = memnew(TextureRect);
+texturerect_hboxcontainer2_colorpicker_colorpickerpopup->set_name("TextureRect");
+hboxcontainer2_colorpicker_colorpickerpopup->add_child(texturerect_hboxcontainer2_colorpicker_colorpickerpopup);
+
+texturerect_hboxcontainer2_colorpicker_colorpickerpopup->set_name("TextureRect");
+//texturerect_hboxcontainer2_colorpicker_colorpickerpopup->set("name", TextureRect));
+
+texturerect_hboxcontainer2_colorpicker_colorpickerpopup->set_size_flags_horizontal(3);
+//texturerect_hboxcontainer2_colorpicker_colorpickerpopup->set("size_flags_horizontal", 3);
+
+
+
+ToolButton *toolbutton_hboxcontainer2_colorpicker_colorpickerpopup = memnew(ToolButton);
+toolbutton_hboxcontainer2_colorpicker_colorpickerpopup->set_name("ToolButton");
+hboxcontainer2_colorpicker_colorpickerpopup->add_child(toolbutton_hboxcontainer2_colorpicker_colorpickerpopup);
+
+toolbutton_hboxcontainer2_colorpicker_colorpickerpopup->set_name("ToolButton");
+//toolbutton_hboxcontainer2_colorpicker_colorpickerpopup->set("name", ToolButton));
+
+toolbutton_hboxcontainer2_colorpicker_colorpickerpopup->set_hint_tooltip("Pick a color from the editor window.");
+//toolbutton_hboxcontainer2_colorpicker_colorpickerpopup->set("hint_tooltip", "Pick a color from the editor window.");
+
+toolbutton_hboxcontainer2_colorpicker_colorpickerpopup->set_toggle_mode(True);
+//toolbutton_hboxcontainer2_colorpicker_colorpickerpopup->set("toggle_mode", True);
+
+
+
+VBoxContainer *vboxcontainer_colorpicker_colorpickerpopup = memnew(VBoxContainer);
+vboxcontainer_colorpicker_colorpickerpopup->set_name("VBoxContainer");
+colorpicker_colorpickerpopup->add_child(vboxcontainer_colorpicker_colorpickerpopup);
+
+vboxcontainer_colorpicker_colorpickerpopup->set_name("VBoxContainer");
+//vboxcontainer_colorpicker_colorpickerpopup->set("name", VBoxContainer));
+
+
+
+HSeparator *hseparator_colorpicker_colorpickerpopup = memnew(HSeparator);
+hseparator_colorpicker_colorpickerpopup->set_name("HSeparator");
+colorpicker_colorpickerpopup->add_child(hseparator_colorpicker_colorpickerpopup);
+
+hseparator_colorpicker_colorpickerpopup->set_name("HSeparator");
+//hseparator_colorpicker_colorpickerpopup->set("name", HSeparator));
+
+
+
+VBoxContainer *vboxcontainer2_colorpicker_colorpickerpopup = memnew(VBoxContainer);
+vboxcontainer2_colorpicker_colorpickerpopup->set_name("VBoxContainer2");
+colorpicker_colorpickerpopup->add_child(vboxcontainer2_colorpicker_colorpickerpopup);
+
+vboxcontainer2_colorpicker_colorpickerpopup->set_name("VBoxContainer2");
+//vboxcontainer2_colorpicker_colorpickerpopup->set("name", VBoxContainer2));
+
+vboxcontainer2_colorpicker_colorpickerpopup->set_size_flags_horizontal(3);
+//vboxcontainer2_colorpicker_colorpickerpopup->set("size_flags_horizontal", 3);
+
+
+
+HBoxContainer *hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup = memnew(HBoxContainer);
+hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_name("HBoxContainer");
+vboxcontainer2_colorpicker_colorpickerpopup->add_child(hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup);
+
+hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_name("HBoxContainer");
+//hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("name", HBoxContainer));
+
+
+
+Label *label_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup = memnew(Label);
+label_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Label");
+hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->add_child(label_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup);
+
+label_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Label");
+//label_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("name", Label));
+
+label_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_rect_min_size(Vector2(10, 0));
+//label_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("rect_min_size", Vector2(10, 0));
+
+label_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_text("R");
+//label_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("text", "R");
+
+
+
+HSlider *hslider_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup = memnew(HSlider);
+hslider_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_name("HSlider");
+hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->add_child(hslider_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup);
+
+hslider_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_name("HSlider");
+//hslider_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("name", HSlider));
+
+hslider_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_focus_mode(0);
+//hslider_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("focus_mode", 0);
+
+hslider_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_size_flags_horizontal(3);
+//hslider_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("size_flags_horizontal", 3);
+
+hslider_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_size_flags_vertical(4);
+//hslider_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("size_flags_vertical", 4);
+
+
+
+SpinBox *spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup = memnew(SpinBox);
+spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_name("SpinBox");
+hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->add_child(spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup);
+
+spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_name("SpinBox");
+//spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("name", SpinBox));
+
+
+
+LineEdit *lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup = memnew(LineEdit);
+lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_name("LineEdit");
+spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->add_child(lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup);
+
+lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_name("LineEdit");
+//lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("name", LineEdit));
+
+lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_anchor_right(1);
+//lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("anchor_right", 1);
+
+lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_anchor_bottom(1);
+//lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("anchor_bottom", 1);
+
+lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_rect_size(Vector2(58, 24));
+//lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("rect_size", Vector2(58, 24));
+
+lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_mouse_filter(1);
+//lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("mouse_filter", 1);
+
+lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_text("0");
+//lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("text", "0");
+
+
+
+Timer *timer_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup = memnew(Timer);
+timer_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->add_child(timer_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup);
+
+timer_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+//timer_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("name", Timer));
+
+timer_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_wait_time(0.65);
+//timer_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("wait_time", 0.65);
+
+
+
+PopupMenu *popupmenu_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup = memnew(PopupMenu);
+popupmenu_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_name("PopupMenu");
+lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->add_child(popupmenu_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup);
+
+popupmenu_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_name("PopupMenu");
+//popupmenu_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("name", PopupMenu));
+
+//popupmenu_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup property items TYPE_ARRAY value: [Cut, [Object:null], 0, False, False, 0, 268435544, Null, , False, Copy, [Object:null], 0, False, False, 1, 268435523, Null, , False, Paste, [Object:null], 0, False, False, 2, 268435542, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Select All, [Object:null], 0, False, False, 4, 268435521, Null, , False, Clear, [Object:null], 0, False, False, 3, 0, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Undo, [Object:null], 0, False, False, 5, 268435546, Null, , False, Redo, [Object:null], 0, False, False, 6, 301989978, Null, , False]
+
+
+
+Timer *timer_popupmenu_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup = memnew(Timer);
+timer_popupmenu_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+popupmenu_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->add_child(timer_popupmenu_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup);
+
+timer_popupmenu_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+//timer_popupmenu_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("name", Timer));
+
+timer_popupmenu_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_wait_time(0.3);
+//timer_popupmenu_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("wait_time", 0.3);
+
+timer_popupmenu_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_one_shot(True);
+//timer_popupmenu_lineedit_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("one_shot", True);
+
+
+
+Timer *timer_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup = memnew(Timer);
+timer_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->add_child(timer_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup);
+
+timer_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+//timer_spinbox_hboxcontainer_vboxcontainer2_colorpicker_colorpickerpopup->set("name", Timer));
+
+
+
+HBoxContainer *hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup = memnew(HBoxContainer);
+hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_name("HBoxContainer2");
+vboxcontainer2_colorpicker_colorpickerpopup->add_child(hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup);
+
+hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_name("HBoxContainer2");
+//hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("name", HBoxContainer2));
+
+
+
+Label *label_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup = memnew(Label);
+label_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Label");
+hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->add_child(label_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup);
+
+label_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Label");
+//label_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("name", Label));
+
+label_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_rect_min_size(Vector2(10, 0));
+//label_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("rect_min_size", Vector2(10, 0));
+
+label_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_text("G");
+//label_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("text", "G");
+
+
+
+HSlider *hslider_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup = memnew(HSlider);
+hslider_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_name("HSlider");
+hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->add_child(hslider_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup);
+
+hslider_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_name("HSlider");
+//hslider_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("name", HSlider));
+
+hslider_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_focus_mode(0);
+//hslider_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("focus_mode", 0);
+
+hslider_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_size_flags_horizontal(3);
+//hslider_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("size_flags_horizontal", 3);
+
+hslider_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_size_flags_vertical(4);
+//hslider_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("size_flags_vertical", 4);
+
+
+
+SpinBox *spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup = memnew(SpinBox);
+spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_name("SpinBox");
+hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->add_child(spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup);
+
+spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_name("SpinBox");
+//spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("name", SpinBox));
+
+
+
+LineEdit *lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup = memnew(LineEdit);
+lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_name("LineEdit");
+spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->add_child(lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup);
+
+lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_name("LineEdit");
+//lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("name", LineEdit));
+
+lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_anchor_right(1);
+//lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("anchor_right", 1);
+
+lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_anchor_bottom(1);
+//lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("anchor_bottom", 1);
+
+lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_rect_size(Vector2(58, 24));
+//lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("rect_size", Vector2(58, 24));
+
+lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_mouse_filter(1);
+//lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("mouse_filter", 1);
+
+lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_text("0");
+//lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("text", "0");
+
+
+
+Timer *timer_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup = memnew(Timer);
+timer_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->add_child(timer_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup);
+
+timer_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+//timer_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("name", Timer));
+
+timer_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_wait_time(0.65);
+//timer_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("wait_time", 0.65);
+
+
+
+PopupMenu *popupmenu_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup = memnew(PopupMenu);
+popupmenu_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_name("PopupMenu");
+lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->add_child(popupmenu_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup);
+
+popupmenu_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_name("PopupMenu");
+//popupmenu_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("name", PopupMenu));
+
+//popupmenu_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup property items TYPE_ARRAY value: [Cut, [Object:null], 0, False, False, 0, 268435544, Null, , False, Copy, [Object:null], 0, False, False, 1, 268435523, Null, , False, Paste, [Object:null], 0, False, False, 2, 268435542, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Select All, [Object:null], 0, False, False, 4, 268435521, Null, , False, Clear, [Object:null], 0, False, False, 3, 0, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Undo, [Object:null], 0, False, False, 5, 268435546, Null, , False, Redo, [Object:null], 0, False, False, 6, 301989978, Null, , False]
+
+
+
+Timer *timer_popupmenu_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup = memnew(Timer);
+timer_popupmenu_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+popupmenu_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->add_child(timer_popupmenu_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup);
+
+timer_popupmenu_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+//timer_popupmenu_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("name", Timer));
+
+timer_popupmenu_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_wait_time(0.3);
+//timer_popupmenu_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("wait_time", 0.3);
+
+timer_popupmenu_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_one_shot(True);
+//timer_popupmenu_lineedit_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("one_shot", True);
+
+
+
+Timer *timer_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup = memnew(Timer);
+timer_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->add_child(timer_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup);
+
+timer_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+//timer_spinbox_hboxcontainer2_vboxcontainer2_colorpicker_colorpickerpopup->set("name", Timer));
+
+
+
+HBoxContainer *hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup = memnew(HBoxContainer);
+hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_name("HBoxContainer3");
+vboxcontainer2_colorpicker_colorpickerpopup->add_child(hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup);
+
+hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_name("HBoxContainer3");
+//hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("name", HBoxContainer3));
+
+
+
+Label *label_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup = memnew(Label);
+label_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Label");
+hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->add_child(label_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup);
+
+label_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Label");
+//label_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("name", Label));
+
+label_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_rect_min_size(Vector2(10, 0));
+//label_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("rect_min_size", Vector2(10, 0));
+
+label_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_text("B");
+//label_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("text", "B");
+
+
+
+HSlider *hslider_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup = memnew(HSlider);
+hslider_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_name("HSlider");
+hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->add_child(hslider_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup);
+
+hslider_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_name("HSlider");
+//hslider_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("name", HSlider));
+
+hslider_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_focus_mode(0);
+//hslider_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("focus_mode", 0);
+
+hslider_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_size_flags_horizontal(3);
+//hslider_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("size_flags_horizontal", 3);
+
+hslider_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_size_flags_vertical(4);
+//hslider_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("size_flags_vertical", 4);
+
+
+
+SpinBox *spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup = memnew(SpinBox);
+spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_name("SpinBox");
+hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->add_child(spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup);
+
+spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_name("SpinBox");
+//spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("name", SpinBox));
+
+
+
+LineEdit *lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup = memnew(LineEdit);
+lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_name("LineEdit");
+spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->add_child(lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup);
+
+lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_name("LineEdit");
+//lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("name", LineEdit));
+
+lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_anchor_right(1);
+//lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("anchor_right", 1);
+
+lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_anchor_bottom(1);
+//lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("anchor_bottom", 1);
+
+lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_rect_size(Vector2(58, 24));
+//lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("rect_size", Vector2(58, 24));
+
+lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_mouse_filter(1);
+//lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("mouse_filter", 1);
+
+lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_text("0");
+//lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("text", "0");
+
+
+
+Timer *timer_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup = memnew(Timer);
+timer_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->add_child(timer_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup);
+
+timer_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+//timer_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("name", Timer));
+
+timer_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_wait_time(0.65);
+//timer_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("wait_time", 0.65);
+
+
+
+PopupMenu *popupmenu_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup = memnew(PopupMenu);
+popupmenu_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_name("PopupMenu");
+lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->add_child(popupmenu_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup);
+
+popupmenu_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_name("PopupMenu");
+//popupmenu_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("name", PopupMenu));
+
+//popupmenu_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup property items TYPE_ARRAY value: [Cut, [Object:null], 0, False, False, 0, 268435544, Null, , False, Copy, [Object:null], 0, False, False, 1, 268435523, Null, , False, Paste, [Object:null], 0, False, False, 2, 268435542, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Select All, [Object:null], 0, False, False, 4, 268435521, Null, , False, Clear, [Object:null], 0, False, False, 3, 0, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Undo, [Object:null], 0, False, False, 5, 268435546, Null, , False, Redo, [Object:null], 0, False, False, 6, 301989978, Null, , False]
+
+
+
+Timer *timer_popupmenu_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup = memnew(Timer);
+timer_popupmenu_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+popupmenu_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->add_child(timer_popupmenu_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup);
+
+timer_popupmenu_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+//timer_popupmenu_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("name", Timer));
+
+timer_popupmenu_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_wait_time(0.3);
+//timer_popupmenu_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("wait_time", 0.3);
+
+timer_popupmenu_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_one_shot(True);
+//timer_popupmenu_lineedit_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("one_shot", True);
+
+
+
+Timer *timer_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup = memnew(Timer);
+timer_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->add_child(timer_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup);
+
+timer_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+//timer_spinbox_hboxcontainer3_vboxcontainer2_colorpicker_colorpickerpopup->set("name", Timer));
+
+
+
+HBoxContainer *hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup = memnew(HBoxContainer);
+hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_name("HBoxContainer4");
+vboxcontainer2_colorpicker_colorpickerpopup->add_child(hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup);
+
+hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_name("HBoxContainer4");
+//hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("name", HBoxContainer4));
+
+
+
+Label *label_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup = memnew(Label);
+label_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Label");
+hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->add_child(label_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup);
+
+label_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Label");
+//label_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("name", Label));
+
+label_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_rect_min_size(Vector2(10, 0));
+//label_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("rect_min_size", Vector2(10, 0));
+
+label_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_text("A");
+//label_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("text", "A");
+
+
+
+HSlider *hslider_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup = memnew(HSlider);
+hslider_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_name("HSlider");
+hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->add_child(hslider_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup);
+
+hslider_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_name("HSlider");
+//hslider_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("name", HSlider));
+
+hslider_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_focus_mode(0);
+//hslider_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("focus_mode", 0);
+
+hslider_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_size_flags_horizontal(3);
+//hslider_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("size_flags_horizontal", 3);
+
+hslider_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_size_flags_vertical(4);
+//hslider_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("size_flags_vertical", 4);
+
+
+
+SpinBox *spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup = memnew(SpinBox);
+spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_name("SpinBox");
+hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->add_child(spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup);
+
+spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_name("SpinBox");
+//spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("name", SpinBox));
+
+
+
+LineEdit *lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup = memnew(LineEdit);
+lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_name("LineEdit");
+spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->add_child(lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup);
+
+lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_name("LineEdit");
+//lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("name", LineEdit));
+
+lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_anchor_right(1);
+//lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("anchor_right", 1);
+
+lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_anchor_bottom(1);
+//lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("anchor_bottom", 1);
+
+lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_rect_size(Vector2(58, 24));
+//lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("rect_size", Vector2(58, 24));
+
+lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_mouse_filter(1);
+//lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("mouse_filter", 1);
+
+lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_text("0");
+//lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("text", "0");
+
+
+
+Timer *timer_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup = memnew(Timer);
+timer_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->add_child(timer_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup);
+
+timer_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+//timer_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("name", Timer));
+
+timer_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_wait_time(0.65);
+//timer_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("wait_time", 0.65);
+
+
+
+PopupMenu *popupmenu_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup = memnew(PopupMenu);
+popupmenu_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_name("PopupMenu");
+lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->add_child(popupmenu_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup);
+
+popupmenu_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_name("PopupMenu");
+//popupmenu_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("name", PopupMenu));
+
+//popupmenu_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup property items TYPE_ARRAY value: [Cut, [Object:null], 0, False, False, 0, 268435544, Null, , False, Copy, [Object:null], 0, False, False, 1, 268435523, Null, , False, Paste, [Object:null], 0, False, False, 2, 268435542, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Select All, [Object:null], 0, False, False, 4, 268435521, Null, , False, Clear, [Object:null], 0, False, False, 3, 0, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Undo, [Object:null], 0, False, False, 5, 268435546, Null, , False, Redo, [Object:null], 0, False, False, 6, 301989978, Null, , False]
+
+
+
+Timer *timer_popupmenu_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup = memnew(Timer);
+timer_popupmenu_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+popupmenu_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->add_child(timer_popupmenu_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup);
+
+timer_popupmenu_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+//timer_popupmenu_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("name", Timer));
+
+timer_popupmenu_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_wait_time(0.3);
+//timer_popupmenu_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("wait_time", 0.3);
+
+timer_popupmenu_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_one_shot(True);
+//timer_popupmenu_lineedit_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("one_shot", True);
+
+
+
+Timer *timer_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup = memnew(Timer);
+timer_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->add_child(timer_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup);
+
+timer_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+//timer_spinbox_hboxcontainer4_vboxcontainer2_colorpicker_colorpickerpopup->set("name", Timer));
+
+
+
+HBoxContainer *hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup = memnew(HBoxContainer);
+hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_name("HBoxContainer5");
+vboxcontainer2_colorpicker_colorpickerpopup->add_child(hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup);
+
+hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_name("HBoxContainer5");
+//hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set("name", HBoxContainer5));
+
+
+
+CheckButton *checkbutton_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup = memnew(CheckButton);
+checkbutton_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_name("CheckButton");
+hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->add_child(checkbutton_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup);
+
+checkbutton_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_name("CheckButton");
+//checkbutton_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set("name", CheckButton));
+
+checkbutton_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_text("HSV");
+//checkbutton_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set("text", "HSV");
+
+
+
+CheckButton *checkbutton2_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup = memnew(CheckButton);
+checkbutton2_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_name("CheckButton2");
+hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->add_child(checkbutton2_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup);
+
+checkbutton2_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_name("CheckButton2");
+//checkbutton2_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set("name", CheckButton2));
+
+checkbutton2_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_text("Raw");
+//checkbutton2_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set("text", "Raw");
+
+
+
+Button *button_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup = memnew(Button);
+button_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Button");
+hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->add_child(button_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup);
+
+button_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Button");
+//button_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set("name", Button));
+
+button_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_rect_min_size(Vector2(28, 0));
+//button_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set("rect_min_size", Vector2(28, 0));
+
+button_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_hint_tooltip("Switch between hexadecimal and code values.");
+//button_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set("hint_tooltip", "Switch between hexadecimal and code values.");
+
+button_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_text("#");
+//button_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set("text", "#");
+
+
+
+LineEdit *lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup = memnew(LineEdit);
+lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_name("LineEdit");
+hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->add_child(lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup);
+
+lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_name("LineEdit");
+//lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set("name", LineEdit));
+
+lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_size_flags_horizontal(3);
+//lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set("size_flags_horizontal", 3);
+
+
+
+Timer *timer_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup = memnew(Timer);
+timer_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->add_child(timer_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup);
+
+timer_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+//timer_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set("name", Timer));
+
+timer_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_wait_time(0.65);
+//timer_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set("wait_time", 0.65);
+
+
+
+PopupMenu *popupmenu_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup = memnew(PopupMenu);
+popupmenu_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_name("PopupMenu");
+lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->add_child(popupmenu_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup);
+
+popupmenu_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_name("PopupMenu");
+//popupmenu_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set("name", PopupMenu));
+
+//popupmenu_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup property items TYPE_ARRAY value: [Cut, [Object:null], 0, False, False, 0, 268435544, Null, , False, Copy, [Object:null], 0, False, False, 1, 268435523, Null, , False, Paste, [Object:null], 0, False, False, 2, 268435542, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Select All, [Object:null], 0, False, False, 4, 268435521, Null, , False, Clear, [Object:null], 0, False, False, 3, 0, Null, , False, , [Object:null], 0, False, False, -1, 0, Null, , True, Undo, [Object:null], 0, False, False, 5, 268435546, Null, , False, Redo, [Object:null], 0, False, False, 6, 301989978, Null, , False]
+
+
+
+Timer *timer_popupmenu_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup = memnew(Timer);
+timer_popupmenu_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+popupmenu_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->add_child(timer_popupmenu_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup);
+
+timer_popupmenu_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_name("Timer");
+//timer_popupmenu_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set("name", Timer));
+
+timer_popupmenu_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_wait_time(0.3);
+//timer_popupmenu_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set("wait_time", 0.3);
+
+timer_popupmenu_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set_one_shot(True);
+//timer_popupmenu_lineedit_hboxcontainer5_vboxcontainer2_colorpicker_colorpickerpopup->set("one_shot", True);
+
+
+
+HSeparator *hseparator2_colorpicker_colorpickerpopup = memnew(HSeparator);
+hseparator2_colorpicker_colorpickerpopup->set_name("HSeparator2");
+colorpicker_colorpickerpopup->add_child(hseparator2_colorpicker_colorpickerpopup);
+
+hseparator2_colorpicker_colorpickerpopup->set_name("HSeparator2");
+//hseparator2_colorpicker_colorpickerpopup->set("name", HSeparator2));
+
+
+
+GridContainer *gridcontainer_colorpicker_colorpickerpopup = memnew(GridContainer);
+gridcontainer_colorpicker_colorpickerpopup->set_name("GridContainer");
+colorpicker_colorpickerpopup->add_child(gridcontainer_colorpicker_colorpickerpopup);
+
+gridcontainer_colorpicker_colorpickerpopup->set_name("GridContainer");
+//gridcontainer_colorpicker_colorpickerpopup->set("name", GridContainer));
+
+gridcontainer_colorpicker_colorpickerpopup->set_size_flags_horizontal(3);
+//gridcontainer_colorpicker_colorpickerpopup->set("size_flags_horizontal", 3);
+
+gridcontainer_colorpicker_colorpickerpopup->set_columns(10);
+//gridcontainer_colorpicker_colorpickerpopup->set("columns", 10);
+
+
+
+Button *button_gridcontainer_colorpicker_colorpickerpopup = memnew(Button);
+button_gridcontainer_colorpicker_colorpickerpopup->set_name("Button");
+gridcontainer_colorpicker_colorpickerpopup->add_child(button_gridcontainer_colorpicker_colorpickerpopup);
+
+button_gridcontainer_colorpicker_colorpickerpopup->set_name("Button");
+//button_gridcontainer_colorpicker_colorpickerpopup->set("name", Button));
+
+button_gridcontainer_colorpicker_colorpickerpopup->set_hint_tooltip("Add current color as a preset.");
+//button_gridcontainer_colorpicker_colorpickerpopup->set("hint_tooltip", "Add current color as a preset.");
+
+
+
+
+}
