@@ -68,6 +68,7 @@ class SceneTreeDialog;
 class TextEdit;
 class VBoxContainer;
 class TextureButton;
+class EditorLocaleDialog;
 
 class EditorPropertyNil : public EditorProperty {
 	GDCLASS(EditorPropertyNil, EditorProperty);
@@ -738,6 +739,26 @@ public:
 	virtual void update_property();
 	void setup(const NodePath &p_base_hint, Vector<StringName> p_valid_types, bool p_use_path_from_scene_root = true);
 	EditorPropertyNodePath();
+};
+
+class EditorPropertyLocale : public EditorProperty {
+	GDCLASS(EditorPropertyLocale, EditorProperty);
+	EditorLocaleDialog *dialog;
+	LineEdit *locale;
+	Button *locale_edit;
+
+	void _locale_selected(const String &p_locale);
+	void _locale_pressed();
+	void _locale_focus_exited();
+
+protected:
+	static void _bind_methods();
+	void _notification(int p_what);
+
+public:
+	void setup(const String &p_hit_string);
+	virtual void update_property();
+	EditorPropertyLocale();
 };
 
 class EditorPropertyRID : public EditorProperty {

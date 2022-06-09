@@ -99,8 +99,9 @@ enum PropertyHint {
 	PROPERTY_HINT_SAVE_FILE, ///< a file path must be passed, hint_text (optionally) is a filter "*.png,*.wav,*.doc,". This opens a save dialog
 	PROPERTY_HINT_ENUM_SUGGESTION, ///< hint_text= "val1,val2,val3,etc"
 	PROPERTY_HINT_LINK,
+	PROPERTY_HINT_LOCALE_ID,
 	PROPERTY_HINT_MAX,
-	// When updating PropertyHint, also sync the hardcoded list in VisualScriptEditorVariableEdit
+	// When updating PropertyHint, also sync the hardcoded list in NativeScript
 };
 
 enum PropertyUsageFlags {
@@ -135,6 +136,8 @@ enum PropertyUsageFlags {
 	PROPERTY_USAGE_DEFAULT = PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_NETWORK,
 	PROPERTY_USAGE_DEFAULT_INTL = PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_NETWORK | PROPERTY_USAGE_INTERNATIONALIZED,
 	PROPERTY_USAGE_NOEDITOR = PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_NETWORK,
+
+	// When updating PropertyUsageFlags, also sync the hardcoded list in NativeScript
 };
 
 #define ADD_SIGNAL(m_signal) ClassDB::add_signal(get_class_static(), m_signal)

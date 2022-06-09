@@ -64,6 +64,7 @@ class SceneTreeDialog;
 class SpinBox;
 class TextEdit;
 class TextureRect;
+class EditorLocaleDialog;
 struct Color;
 
 class EditorResourceConversionPlugin : public Reference {
@@ -108,6 +109,7 @@ class CustomPropertyEditor : public Popup {
 
 	PopupMenu *menu;
 	SceneTreeDialog *scene_tree;
+	EditorLocaleDialog *locale;
 	EditorFileDialog *file;
 	ConfirmationDialog *error;
 	String name;
@@ -144,6 +146,7 @@ class CustomPropertyEditor : public Popup {
 	PropertyValueEvaluator *evaluator;
 
 	void _text_edit_changed();
+	void _locale_selected(String p_locale);
 	void _file_selected(String p_file);
 	void _modified(String p_string);
 

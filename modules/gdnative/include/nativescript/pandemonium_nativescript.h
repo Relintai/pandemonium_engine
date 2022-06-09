@@ -91,6 +91,7 @@ typedef enum {
 	PANDEMONIUM_PROPERTY_HINT_SAVE_FILE, ///< a file path must be passed, hint_text (optionally) is a filter "*.png,*.wav,*.doc,". This opens a save dialog
 	PANDEMONIUM_PROPERTY_HINT_ENUM_SUGGESTION, ///< hint_text= "val1,val2,val3,etc"
 	PANDEMONIUM_PROPERTY_HINT_LINK,
+	PANDEMONIUM_PROPERTY_HINT_LOCALE_ID,
 	PANDEMONIUM_PROPERTY_HINT_MAX,
 } pandemonium_property_hint;
 
