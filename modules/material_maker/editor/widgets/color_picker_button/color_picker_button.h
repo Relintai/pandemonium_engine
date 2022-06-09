@@ -1,24 +1,21 @@
-#ifndef COLOR_PICKER_BUTTON_H
-#define COLOR_PICKER_BUTTON_H
+#ifndef MM_DND_COLOR_PICKER_BUTTON_H
+#define MM_DND_COLOR_PICKER_BUTTON_H
 
+#include "scene/gui/color_picker.h"
 
-class ColorPickerButton : public ColorPickerButton {
- GDCLASS(ColorPickerButton, ColorPickerButton);
+class MMDNDColorPickerButton : public ColorPickerButton {
+	GDCLASS(MMDNDColorPickerButton, ColorPickerButton);
 
- public:
+public:
+	Variant get_drag_data_fw(const Point2 &p_point, Control *p_from);
+	bool can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const;
+	void drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from);
 
- void get_drag_data(const Variant &_position);
- bool can_drop_data(const Variant &_position, const Variant & data);
- void drop_data(const Variant &_position, const Variant & data);
+	MMDNDColorPickerButton();
+	~MMDNDColorPickerButton();
 
- ColorPickerButton();
- ~ColorPickerButton();
-
- protected:
- static void _bind_methods();
-
- //tool
+protected:
+	static void _bind_methods();
 };
-
 
 #endif

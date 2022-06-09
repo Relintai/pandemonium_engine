@@ -1,44 +1,35 @@
 
 #include "color_picker_button.h"
 
+#include "scene/gui/color_rect.h"
 
-
- //tool;
-
- void ColorPickerButton::get_drag_data(const Variant &_position) {
-   Variant  = ColorRect.new();
-  preview.color = color;
-  preview.rect_min_size = Vector2(32, 32);
-  set_drag_preview(preview);
-  return color;
+Variant MMDNDColorPickerButton::get_drag_data_fw(const Point2 &p_point, Control *p_from) {
+	ColorRect *preview = memnew(ColorRect);
+	preview->set_frame_color(get_pick_color());
+	preview->set_custom_minimum_size(Vector2(32, 32));
+	set_drag_preview(preview);
+	return get_pick_color();
 }
 
-
- bool ColorPickerButton::can_drop_data(const Variant &_position, const Variant & data) {
-  return typeof(data) == TYPE_COLOR;
+bool MMDNDColorPickerButton::can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const {
+	return p_data.get_type() == Variant::COLOR;
 }
 
-
- void ColorPickerButton::drop_data(const Variant &_position, const Variant & data) {
-  color = data;
-  emit_signal("color_changed", color);
+void MMDNDColorPickerButton::drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) {
+	set_pick_color(p_data);
+	emit_signal("color_changed", get_pick_color());
 }
 
+MMDNDColorPickerButton::MMDNDColorPickerButton() {
 }
 
- ColorPickerButton::ColorPickerButton() {
- }
+MMDNDColorPickerButton::~MMDNDColorPickerButton() {
+}
 
- ColorPickerButton::~ColorPickerButton() {
- }
+void MMDNDColorPickerButton::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("color_changed", PropertyInfo(Variant::COLOR, "color")));
 
-
- static void ColorPickerButton::_bind_methods() {
-  ClassDB::bind_method(D_METHOD("get_drag_data", "_position"), &ColorPickerButton::get_drag_data);
-  ClassDB::bind_method(D_METHOD("can_drop_data", "_position", " data"), &ColorPickerButton::can_drop_data);
-  ClassDB::bind_method(D_METHOD("drop_data", "_position", " data"), &ColorPickerButton::drop_data);
-
- }
-
-
-
+	ClassDB::bind_method(D_METHOD("get_drag_data_fw", "point", "from"), &MMDNDColorPickerButton::get_drag_data_fw);
+	ClassDB::bind_method(D_METHOD("can_drop_data_fw", "point", "data", "from"), &MMDNDColorPickerButton::can_drop_data_fw);
+	ClassDB::bind_method(D_METHOD("drop_data_fw", "point", "data", "from"), &MMDNDColorPickerButton::drop_data_fw);
+}
