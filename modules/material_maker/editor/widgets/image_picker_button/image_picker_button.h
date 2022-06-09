@@ -1,31 +1,30 @@
 #ifndef IMAGE_PICKER_BUTTON_H
 #define IMAGE_PICKER_BUTTON_H
 
+#include "core/ustring.h"
+
+#include "scene/gui/texture_button.h"
 
 class ImagePickerButton : public TextureButton {
- GDCLASS(ImagePickerButton, TextureButton);
+	GDCLASS(ImagePickerButton, TextureButton);
 
- public:
+public:
+	String get_image_path();
+	void set_image_path(const String &path);
 
- Variant get_Variant();
- void set_Variant(const Variant &val);
+	void do_set_image_path(const String &path);
 
- void _ready();
- void do_set_image_path(const Variant &path);
- void set_image_path(const Variant &path);
- void _on_ImagePicker_pressed();
- void on_drop_image_file(const String &file_name);
+	void _on_ImagePicker_pressed();
+	void on_drop_image_file(const String &file_name);
 
- ImagePickerButton();
- ~ImagePickerButton();
+	ImagePickerButton();
+	~ImagePickerButton();
 
- protected:
- static void _bind_methods();
+protected:
+	void _notification(int p_what);
+	static void _bind_methods();
 
- //tool
- Variant  = "";
- signal on_file_selected(f);
+	String image_path;
 };
-
 
 #endif
