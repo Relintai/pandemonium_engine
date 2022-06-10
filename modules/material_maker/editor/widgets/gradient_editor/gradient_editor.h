@@ -29,6 +29,7 @@ public:
 	void set_Variant(const Variant &val);
 
 	void _init();
+
 	void ignore_changes(const Variant &val);
 	void save_color_state();
 	void undo_redo_save_color_state();
@@ -52,13 +53,12 @@ public:
 protected:
 	static void _bind_methods();
 
-	Variant = null;
-	Variant = null;
+	Variant graph_node = null;
+	Variant value = null;
 	bool embedded = true;
 	UndoRedo *_undo_redo = null;
-	signal updated(value);
-	PoolRealArray _saved_points = PoolRealArray();
-	Variant;
+	PoolRealArray _saved_points;
+	active_cursor;
 };
 
 #endif
