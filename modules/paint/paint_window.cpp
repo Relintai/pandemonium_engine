@@ -1073,6 +1073,16 @@ void PaintWindow::_on_YSymmetry_pressed() {
 
 void PaintWindow::_notification(int p_what) {
 	switch (p_what) {
+		case NOTIFICATION_ENTER_TREE: {
+			set_process_input(is_visible_in_tree());
+		} break;
+		case NOTIFICATION_VISIBILITY_CHANGED: {
+			if (is_visible_in_tree()) {
+				set_process_input(true);
+			} else {
+				set_process_input(false);
+			}
+		} break;
 		case NOTIFICATION_POSTINITIALIZE: {
 			connect("visibility_changed", this, "_on_Editor_visibility_changed");
 			paint_canvas->canvas_background->set_pixel_size(8 * pow(0.5, big_grid_pixels) / paint_canvas->get_pixel_size());
@@ -1459,6 +1469,8 @@ PaintWindow::~PaintWindow() {
 }
 
 void PaintWindow::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_input", "event"), &PaintWindow::_input);
+
 	ClassDB::bind_method(D_METHOD("change_color", "color"), &PaintWindow::change_color);
 
 	ClassDB::bind_method(D_METHOD("_on_Save_pressed"), &PaintWindow::_on_Save_pressed);
