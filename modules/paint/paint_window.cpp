@@ -112,7 +112,7 @@ void PaintWindow::_input(const Ref<InputEvent> &event) {
 
 	Ref<InputEventKey> iek = event;
 
-	if (iek.is_valid() && iek->is_pressed() & !iek->is_echo()) {
+	if (iek.is_valid() && iek->is_pressed() && !iek->is_echo()) {
 		_handle_shortcuts(iek->get_scancode());
 		return;
 	}
