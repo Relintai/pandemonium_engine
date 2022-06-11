@@ -191,8 +191,8 @@ SConscript("os/SCsub")
 SConscript("math/SCsub")
 SConscript("crypto/SCsub")
 SConscript("io/SCsub")
+SConscript("log/SCsub")
 SConscript("bind/SCsub")
-
 
 # Build it all as a library
 lib = env.add_library("core", env.core_sources)

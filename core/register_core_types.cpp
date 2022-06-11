@@ -58,6 +58,7 @@
 #include "core/io/translation_loader_po.h"
 #include "core/io/udp_server.h"
 #include "core/io/xml_parser.h"
+#include "core/log/logger_backend.h"
 #include "core/math/a_star.h"
 #include "core/math/expression.h"
 #include "core/math/geometry.h"
@@ -71,6 +72,9 @@
 #include "core/project_settings.h"
 #include "core/translation.h"
 #include "core/undo_redo.h"
+
+#include "core/bind/logger_bind.h"
+#include "core/log/logger_backend.h"
 
 static Ref<ResourceFormatSaverBinary> resource_saver_binary;
 static Ref<ResourceFormatLoaderBinary> resource_loader_binary;
@@ -87,6 +91,7 @@ static _Engine *_engine = nullptr;
 static _ClassDB *_classdb = nullptr;
 static _Marshalls *_marshalls = nullptr;
 static _JSON *_json = nullptr;
+static _PLogger *_plogger = nullptr;
 
 static IP *ip = nullptr;
 
@@ -212,6 +217,8 @@ void register_core_types() {
 
 	ClassDB::register_virtual_class<ResourceImporter>();
 
+	ClassDB::register_class<LoggerBackend>();
+
 	ip = IP::create();
 
 	_geometry = memnew(_Geometry);
@@ -223,6 +230,7 @@ void register_core_types() {
 	_classdb = memnew(_ClassDB);
 	_marshalls = memnew(_Marshalls);
 	_json = memnew(_JSON);
+	_plogger = memnew(_PLogger);
 }
 
 void register_core_settings() {
@@ -252,6 +260,7 @@ void register_core_singletons() {
 	ClassDB::register_class<_JSON>();
 	ClassDB::register_class<Expression>();
 	ClassDB::register_class<Time>();
+	ClassDB::register_class<_PLogger>();
 
 	Engine::get_singleton()->add_singleton(Engine::Singleton("ProjectSettings", ProjectSettings::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("IP", IP::get_singleton()));
@@ -267,6 +276,7 @@ void register_core_singletons() {
 	Engine::get_singleton()->add_singleton(Engine::Singleton("InputMap", InputMap::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("JSON", _JSON::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("Time", Time::get_singleton()));
+	Engine::get_singleton()->add_singleton(Engine::Singleton("PLogger", _PLogger::get_singleton()));
 }
 
 void unregister_core_types() {
@@ -277,6 +287,7 @@ void unregister_core_types() {
 	memdelete(_classdb);
 	memdelete(_marshalls);
 	memdelete(_json);
+	memdelete(_plogger);
 
 	memdelete(_geometry);
 

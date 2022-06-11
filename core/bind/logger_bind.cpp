@@ -1,7 +1,7 @@
 
 #include "logger_bind.h"
 
-#include "logger.h"
+#include "core/log/logger.h"
 
 Ref<LoggerBackend> _PLogger::get_backend() {
 	return PLogger::_backend;
@@ -71,6 +71,9 @@ _PLogger::_PLogger() {
 }
 _PLogger::~_PLogger() {
 	_self = nullptr;
+}
+
+void _PLogger::_bind_methods() {
 }
 
 _PLogger *_PLogger::_self = nullptr;

@@ -1,14 +1,8 @@
 
 #include "logger.h"
 
-#include "core/string.h"
-#include <cstdio>
-
-#include "logger.h"
-#include <stdio.h>
-#include <thread>
-
 #include "core/print_string.h"
+#include "core/typedefs.h"
 
 void PLogger::log_trace(const String &str) {
 	String s;
