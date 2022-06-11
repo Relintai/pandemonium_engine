@@ -17,24 +17,9 @@ public:
 	void set_backend(const Ref<LoggerBackend> &backend);
 
 	void log_trace(const String &str);
-	void log_trace(const char *str);
-	void log_trace(const char *p_function, const char *p_file, int p_line, const String &str);
-	void log_trace(const char *p_function, const char *p_file, int p_line, const char *str);
-
 	void log_message(const String &str);
-	void log_message(const char *str);
-	void log_message(const char *p_function, const char *p_file, int p_line, const String &str);
-	void log_message(const char *p_function, const char *p_file, int p_line, const char *str);
-
 	void log_warning(const String &str);
-	void log_warning(const char *str);
-	void log_warning(const char *p_function, const char *p_file, int p_line, const String &str);
-	void log_warning(const char *p_function, const char *p_file, int p_line, const char *str);
-
 	void log_error(const String &str);
-	void log_error(const char *str);
-	void log_error(const char *p_function, const char *p_file, int p_line, const char *str);
-	void log_error(const char *p_function, const char *p_file, int p_line, const String &str);
 
 	static _PLogger *get_singleton();
 
