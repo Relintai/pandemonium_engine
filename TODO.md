@@ -30,3 +30,7 @@
 
 - Add support for enabling / disabling editor plugins, and also add a gui for this. (Like how the gdscript addons can be enabled/disabled, but for built in c++ stuff.) It will need support for either exlusion, or dependencies. (Dependencies would be better.)
 - Modularize the editor. Should probably add a new editor_modules folder (Just normal modules, but they won't get compiled if tools are disabled).
+
+## Engine
+
+- Add a built in logger singleton, with possibly a replacable (even from script) log interface.
