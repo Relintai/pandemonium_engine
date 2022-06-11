@@ -33,5 +33,4 @@
 
 ## Engine
 
-- Add a built in logger singleton, with possibly a replacable (even from script) log interface.
 - Organize the core folder a bit better.
