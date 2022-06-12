@@ -1,29 +1,27 @@
 #ifndef CURVE_EDITOR_H
 #define CURVE_EDITOR_H
 
+#include "curve_view.h"
 
-class CurveEditor : public "res://addons/mat_maker_gd/widgets/curve_edit/curve_view.gd" {
- GDCLASS(CurveEditor, "res://addons/mat_maker_gd/widgets/curve_edit/curve_view.gd");
+class CurveEditor : public CurveView {
+	GDCLASS(CurveEditor, CurveView);
 
- public:
+public:
+	void set_curve(const Variant &c);
+	void update_controls();
 
- void _ready();
- void set_curve(const Variant &c);
- void update_controls();
- void _on_ControlPoint_moved(const Variant &index);
- void _on_ControlPoint_removed(const Variant &index);
- void _on_CurveEditor_gui_input(const Variant &event);
- void _on_resize();
+	void _on_ControlPoint_moved(const Variant &index);
+	void _on_ControlPoint_removed(const Variant &index);
+	void _on_CurveEditor_gui_input(const Variant &event);
+	void _on_resize();
 
- CurveEditor();
- ~CurveEditor();
+	CurveEditor();
+	~CurveEditor();
 
- protected:
- static void _bind_methods();
+protected:
+	void _notification(int p_what);
 
- //tool
- signal value_changed(value);
+	static void _bind_methods();
 };
-
 
 #endif
