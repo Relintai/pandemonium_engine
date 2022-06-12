@@ -1,136 +1,93 @@
 
 #include "slope_point.h"
 
-
 float SlopePoint::get_distance() const {
- return distance;
+	return distance;
 }
 
 void SlopePoint::set_distance(const float val) {
-distance = val;
+	distance = val;
 }
 
-
-Variant SlopePoint::get_Variant() {
- return Variant;
+Variant SlopePoint::get_moving() {
+	return moving;
 }
 
-void SlopePoint::set_Variant(const Variant &val) {
-Variant = val;
+void SlopePoint::set_moving(const bool val) {
+	moving = val;
 }
 
+void SlopePoint::_on_ControlPoint_gui_input(const Variant &event) {
+	Ref<InputEventMouseButton> iemb = event;
+	Ref<InputEventMouseMotion> iemm = event;
 
+	if (iemb.is_valid()) {
+		if (iemb->get_button_index() == BUTTON_LEFT) {
+			if (iemb->is_pressed()) {
+				if (iemb->is_doubleclick()) {
+					Control *parent = get_parent_control();
+					Vector2 vector;
 
- //tool;
- //export ;
-  float distance = ;
-  Variant  = false;
- const OFFSET = -Vector2(0, 0);
+					if (get_index() == 0) {
+						vector = parent->get_position() - Object::cast_to<Control>(parent->get_parent()->get_child(parent->get_index() - 1))->get_position();
+					} else {
+						vector = Object::cast_to<Control>(parent->get_parent()->get_child(parent->get_index() + 1))->get_position() - parent->get_position();
+					}
 
- void SlopePoint::_ready() {
-  // Replace with function body.;
-  pass;
+					vector = distance * vector.normalized();
+					set_position(vector - OFFSET);
+
+					if (iemb->get_control()) {
+						Object::cast_to<Control>(get_parent()->get_child(1 - get_index()))->get_position() = -vector - OFFSET;
+					}
+
+					get_parent()->call("update_tangents");
+				} else {
+					moving = true;
+				}
+			} else {
+				moving = false;
+			}
+		}
+	} else if (moving && iemm.is_valid()) {
+		Vector2 vector = get_global_mouse_position() - get_parent_control()->get_global_rect().position + OFFSET;
+		vector *= SGN(vector.x);
+		vector = distance * vector.normalized();
+		set_position(vector - OFFSET);
+
+		if (iemm->get_control()) {
+			Object::cast_to<Control>(get_parent()->get_child(1 - get_index()))->get_position() = -vector - OFFSET;
+		}
+
+		get_parent()->call("update_tangents");
+	}
 }
 
-
- void SlopePoint::_draw() {
-  //	var current_theme : Theme = get_node("/root/MainWindow").theme;
-  //	var color : Color = current_theme.get_color("font_color", "Label");
-   Color color = Color(1, 1, 1, 1);
-  draw_circle(Vector2(3.0, 3.0), 3.0, color);
+SlopePoint::SlopePoint() {
+	distance = 0;
+	moving = false;
 }
 
-
- void SlopePoint::_on_ControlPoint_gui_input(const Variant &event) {
-
-  if (event is InputEventMouseButton) {
-
-   if (event.button_index == BUTTON_LEFT) {
-
-    if (event.pressed) {
-
-     if (event.doubleclick) {
-       Variant  = get_parent();
-       Vector2 vector = ;
-
-      if (get_index() == 0) {
-       vector = parent.rect_position-parent.get_parent().get_child(parent.get_index()-1).rect_position;
+SlopePoint::~SlopePoint() {
 }
 
-
-      else {
-       vector = parent.get_parent().get_child(parent.get_index()+1).rect_position-parent.rect_position;
+void SlopePoint::_notification(int p_what) {
+	if (p_what == NOTIFICATION_DRAW) {
+		//	var current_theme : Theme = get_node("/root/MainWindow").theme;
+		//	var color : Color = current_theme.get_color("font_color", "Label");
+		Color color = Color(1, 1, 1, 1);
+		draw_circle(Vector2(3.0, 3.0), 3.0, color);
+	}
 }
 
-      vector = distance*vector.normalized();
-      rect_position = vector-OFFSET;
+void SlopePoint::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_distance"), &SlopePoint::get_distance);
+	ClassDB::bind_method(D_METHOD("set_distance", "value"), &SlopePoint::set_distance);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "distance"), "set_distance", "get_distance");
 
-      if (event.control) {
-       get_parent().get_child(1-get_index()).rect_position = -vector-OFFSET;
+	ClassDB::bind_method(D_METHOD("get_moving"), &SlopePoint::get_moving);
+	ClassDB::bind_method(D_METHOD("set_moving", "value"), &SlopePoint::set_moving);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "moving"), "set_moving", "get_moving");
+
+	ClassDB::bind_method(D_METHOD("_on_ControlPoint_gui_input", "event"), &SlopePoint::_on_ControlPoint_gui_input);
 }
-
-      get_parent().update_tangents();
-}
-
-
-     else {
-      moving = true;
-}
-
-}
-
-
-    else {
-     moving = false;
-}
-
-}
-
-}
-
-
-  else if (moving && event is InputEventMouseMotion) {
-    Variant  = get_global_mouse_position()-get_parent().get_global_rect().position+OFFSET;
-   vector *= sign(vector.x);
-   vector = distance*vector.normalized();
-   rect_position = vector-OFFSET;
-
-   if (event.control) {
-    get_parent().get_child(1-get_index()).rect_position = -vector-OFFSET;
-}
-
-   get_parent().update_tangents();
-}
-
-}
-
-}
-
- SlopePoint::SlopePoint() {
-  distance = ;
-   = false;
- }
-
- SlopePoint::~SlopePoint() {
- }
-
-
- static void SlopePoint::_bind_methods() {
-   ClassDB::bind_method(D_METHOD("get_distance"), &SlopePoint::get_distance);
-   ClassDB::bind_method(D_METHOD("set_distance", "value"), &SlopePoint::set_distance);
-   ADD_PROPERTY(PropertyInfo(Variant::REAL, "distance"), "set_distance", "get_distance");
-
-
-   ClassDB::bind_method(D_METHOD("get_Variant"), &SlopePoint::get_Variant);
-   ClassDB::bind_method(D_METHOD("set_Variant", "value"), &SlopePoint::set_Variant);
-   ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "Variant", PROPERTY_HINT_RESOURCE_TYPE, "Variant"), "set_Variant", "get_Variant");
-
-
-  ClassDB::bind_method(D_METHOD("_ready"), &SlopePoint::_ready);
-  ClassDB::bind_method(D_METHOD("_draw"), &SlopePoint::_draw);
-  ClassDB::bind_method(D_METHOD("_on_ControlPoint_gui_input", "event"), &SlopePoint::_on_ControlPoint_gui_input);
-
- }
-
-
-

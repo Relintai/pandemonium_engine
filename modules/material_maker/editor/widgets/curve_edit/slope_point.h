@@ -1,34 +1,31 @@
 #ifndef SLOPE_POINT_H
 #define SLOPE_POINT_H
 
+#include "scene/gui/control.h"
 
 class SlopePoint : public Control {
- GDCLASS(SlopePoint, Control);
+	GDCLASS(SlopePoint, Control);
 
- public:
+public:
+	float get_distance() const;
+	void set_distance(const float val);
 
- float get_distance() const;
- void set_distance(const float val);
+	Variant get_moving();
+	void set_moving(const bool val);
 
- Variant get_Variant();
- void set_Variant(const Variant &val);
+	void _on_ControlPoint_gui_input(const Variant &event);
 
- void _ready();
- void _draw();
- void _on_ControlPoint_gui_input(const Variant &event);
+	SlopePoint();
+	~SlopePoint();
 
- SlopePoint();
- ~SlopePoint();
+protected:
+	void _notification(int p_what);
 
- protected:
- static void _bind_methods();
+	static void _bind_methods();
 
- //tool
- //export 
- float distance = ;
- Variant  = false;
- const OFFSET = -Vector2(0, 0);
+	float distance;
+	bool moving;
+	const Vector2 OFFSET = -Vector2(0, 0);
 };
-
 
 #endif
