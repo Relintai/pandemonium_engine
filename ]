@@ -54,24 +54,24 @@ void CurveView::_draw() {
 
 	Vector<CurveBase::Point> points = curve->get_points();
 
-	for (int i = 0; i < points.size() - 1; ++i) {
+	for (int i = 0; i < points.size() - 1; ++i) { //i in range(points.size() - 1)
 		Vector2 p1 = points[i].p;
 		Vector2 p2 = points[i + 1].p;
 		float d = (p2.x - p1.x) / 3.0;
 		float yac = p1.y + d * points[i].rs;
 		float ybc = p2.y - d * points[i + 1].ls;
 		Vector2 p = transform_point(p1);
-		int count = MAX(1, static_cast<int>((transform_point(p2).x - p.x / 5.0)));
+		int count = max(1, int((transform_point(p2).x - p.x / 5.0)));
 
-		for (int tt = 0; tt < count; ++tt) {
-			float t = (tt + 1.0) / count;
-			float omt = (1.0 - t);
-			float omt2 = omt * omt;
-			float omt3 = omt2 * omt;
-			float t2 = t * t;
-			float t3 = t2 * t;
-			float x = p1.x + (p2.x - p1.x) * t;
-			Vector2 np = transform_point(Vector2(x, p1.y * omt3 + yac * omt2 * t * 3.0 + ybc * omt * t2 * 3.0 + p2.y * t3));
+		for (int tt = 0; tt < count; ++tt) { //tt in range(count)
+			Variant = (tt + 1.0) / count;
+			Variant = (1.0 - t);
+			Variant = omt * omt;
+			Variant = omt2 * omt;
+			Variant = t * t;
+			Variant = t2 * t;
+			Variant = p1.x + (p2.x - p1.x) * t;
+			Variant = transform_point(Vector2(x, p1.y * omt3 + yac * omt2 * t * 3.0 + ybc * omt * t2 * 3.0 + p2.y * t3));
 			draw_line(p, np, curve_color);
 			p = np;
 		}
