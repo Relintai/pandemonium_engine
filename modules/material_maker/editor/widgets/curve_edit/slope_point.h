@@ -1,6 +1,9 @@
 #ifndef SLOPE_POINT_H
 #define SLOPE_POINT_H
 
+#include "core/math/vector2.h"
+#include "core/os/input_event.h"
+
 #include "scene/gui/control.h"
 
 class SlopePoint : public Control {
@@ -13,7 +16,7 @@ public:
 	Variant get_moving();
 	void set_moving(const bool val);
 
-	void _on_ControlPoint_gui_input(const Variant &event);
+	void _on_ControlPoint_gui_input(const Ref<InputEvent> &event);
 
 	SlopePoint();
 	~SlopePoint();

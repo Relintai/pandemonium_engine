@@ -17,7 +17,7 @@ void SlopePoint::set_moving(const bool val) {
 	moving = val;
 }
 
-void SlopePoint::_on_ControlPoint_gui_input(const Variant &event) {
+void SlopePoint::_on_ControlPoint_gui_input(const Ref<InputEvent> &event) {
 	Ref<InputEventMouseButton> iemb = event;
 	Ref<InputEventMouseMotion> iemm = event;
 
