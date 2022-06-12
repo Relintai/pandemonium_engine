@@ -72,7 +72,9 @@ SlopePoint::~SlopePoint() {
 }
 
 void SlopePoint::_notification(int p_what) {
-	if (p_what == NOTIFICATION_DRAW) {
+	if (p_what == NOTIFICATION_POSTINITIALIZE) {
+		connect("gui_input", this, "_on_ControlPoint_gui_input");
+	} else if (p_what == NOTIFICATION_DRAW) {
 		//	var current_theme : Theme = get_node("/root/MainWindow").theme;
 		//	var color : Color = current_theme.get_color("font_color", "Label");
 		Color color = Color(1, 1, 1, 1);
