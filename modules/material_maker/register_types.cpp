@@ -31,6 +31,10 @@ SOFTWARE.
 #include "nodes/mm_node.h"
 #include "nodes/mm_node_universal_property.h"
 
+#include "nodes/bases/curve_base.h"
+#include "nodes/bases/gradient_base.h"
+#include "nodes/bases/polygon_base.h"
+
 //#include "editor/mat_maker_gd_editor.h"
 //#include "editor/mm_graph_node.h"
 
@@ -42,6 +46,10 @@ void register_material_maker_types() {
 	ClassDB::register_class<MMNodeUniversalProperty>();
 	ClassDB::register_class<MMMaterial>();
 	ClassDB::register_class<MMNode>();
+
+	ClassDB::register_class<CurveBase>();
+	ClassDB::register_class<GradientBase>();
+	ClassDB::register_class<PolygonBase>();
 
 	//ClassDB::register_class<MMGraphNode>();
 	//ClassDB::register_class<MatMakerGDEditor>();

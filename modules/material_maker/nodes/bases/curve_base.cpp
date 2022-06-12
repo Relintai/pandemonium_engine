@@ -196,8 +196,8 @@ void CurveBase::_bind_methods() {
 	//ClassDB::bind_method(D_METHOD("set_point", "i", "v"), &CurveBase::set_point);
 	//ClassDB::bind_method(D_METHOD("get_point", "i"), &CurveBase::get_point);
 
-	ClassDB::bind_method(D_METHOD("get_points"), &CurveBase::get_points);
-	ClassDB::bind_method(D_METHOD("set_points", "arr", "notify"), &CurveBase::set_points, true);
+	//ClassDB::bind_method(D_METHOD("get_points"), &CurveBase::get_points);
+	//ClassDB::bind_method(D_METHOD("set_points", "arr", "notify"), &CurveBase::set_points, true);
 
 	BIND_VMETHOD(MethodInfo("_curve_changed"));
 	ClassDB::bind_method(D_METHOD("curve_changed"), &CurveBase::curve_changed);

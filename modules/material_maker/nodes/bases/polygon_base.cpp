@@ -71,6 +71,10 @@ void PolygonBase::set_point(const int i, const Vector2 &v) {
 	_polygon_changed();
 }
 
+PoolVector2Array PolygonBase::get_points() {
+	return points;
+}
+
 void PolygonBase::set_points(const PoolVector2Array &v) {
 	points = v;
 	_polygon_changed();
