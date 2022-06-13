@@ -1,41 +1,36 @@
 #ifndef POLYGON_EDIT_H
 #define POLYGON_EDIT_H
 
+#include "core/reference.h"
+
+#include "scene/gui/control.h"
+
+class PolygonBase;
+class PolygonView;
 
 class PolygonEdit : public Control {
- GDCLASS(PolygonEdit, Control);
+	GDCLASS(PolygonEdit, Control);
 
- public:
+public:
+	bool get_closed() const;
+	void set_closed(const bool c = true);
 
- Variant get_Variant();
- void set_Variant(const Variant &val);
+	Ref<PolygonBase> get_value();
+	void set_value(const Ref<PolygonBase> &v);
 
- bool get_closed() const;
- void set_closed(const bool val);
+	void _on_PolygonEdit_pressed();
+	void on_value_changed(const Variant &v);
 
- Variant get_Variant();
- void set_Variant(const Variant &val);
+	PolygonEdit();
+	~PolygonEdit();
 
- void set_closed(const bool c = true);
- void set_value(const Variant &v);
- void _on_PolygonEdit_pressed();
- void on_value_changed(const Variant &v);
+protected:
+	static void _bind_methods();
 
- PolygonEdit();
- ~PolygonEdit();
+	bool closed;
+	Ref<PolygonBase> value;
 
- protected:
- static void _bind_methods();
-
- //tool
- Variant  = preload("res://addons/mat_maker_gd/nodes/bases/polygon_base.gd");
- //export 
- // setget set_closed
- bool closed = true;
- // setget set_value
- Variant  = null;
- signal updated(polygon);
+	PolygonView *_polygon_view;
 };
-
 
 #endif
