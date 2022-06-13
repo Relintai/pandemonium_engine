@@ -1,55 +1,46 @@
 #ifndef LEFT_PANEL_H
 #define LEFT_PANEL_H
 
+#include "core/array.h"
+#include "core/os/input_event.h"
+#include "core/ustring.h"
+
+#include "scene/gui/box_container.h"
+
+class ItemList;
 
 class LeftPanel : public VBoxContainer {
- GDCLASS(LeftPanel, VBoxContainer);
+	GDCLASS(LeftPanel, VBoxContainer);
 
- public:
+public:
+	Array get_recents();
+	void set_recents(const Array &val);
 
- Array get_recents();
- void set_recents(const Array &val);
+	Array get_favorites();
+	void set_favorites(const Array &val);
 
- Array get_favorites();
- void set_favorites(const Array &val);
+	void add_recent(const String &file_path);
+	void add_favorite(const String &file_path);
 
- void add_recent(const String &file_path);
- void add_favorite(const String &file_path);
- String my_basename(const String &s);
- void update_lists();
- void _on_FavList_item_activated(const Variant &index);
- void _on_RecentList_item_activated(const Variant &index);
- void _on_FavList_gui_input(const Variant &event);
- void _on_RecentList_gui_input(const Variant &event);
+	String my_basename(const String &s);
+	void update_lists();
 
- LeftPanel();
- ~LeftPanel();
+	void _on_FavList_item_activated(const int index);
+	void _on_RecentList_item_activated(const int index);
+	void _on_FavList_gui_input(const Ref<InputEvent> &event);
+	void _on_RecentList_gui_input(const Ref<InputEvent> &event);
 
- protected:
- static void _bind_methods();
+	LeftPanel();
+	~LeftPanel();
 
- //tool
- Array recents = [];
- Array favorites = [];
- signal open_directory(dirpath);
- //func _ready():
- //	if get_node("/root/MainWindow") != null:
- //		var config_cache = get_node("/root/MainWindow").config_cache
- //		if config_cache.has_section_key("file_dialog", "recents"):
- //			var parse_result = JSON.parse(config_cache.get_value("file_dialog", "recents"))
- //			if parse_result != null:
- //				recents = parse_result.result
- //		if config_cache.has_section_key("file_dialog", "favorites"):
- //			var parse_result = JSON.parse(config_cache.get_value("file_dialog", "favorites"))
- //			if parse_result != null:
- //				favorites = parse_result.result
- //		update_lists()
- //func _exit_tree():
- //	if get_node("/root/MainWindow") != null:
- //		var config_cache = get_node("/root/MainWindow").config_cache
- //		config_cache.set_value("file_dialog", "recents", JSON.print(recents))
- //		config_cache.set_value("file_dialog", "favorites", JSON.print(favorites))
+protected:
+	static void _bind_methods();
+
+	Array recents;
+	Array favorites;
+
+	ItemList *_recent_list;
+	ItemList *_fav_list;
 };
-
 
 #endif
