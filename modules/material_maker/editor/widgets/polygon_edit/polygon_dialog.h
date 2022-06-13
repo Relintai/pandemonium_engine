@@ -1,45 +1,46 @@
 #ifndef POLYGON_DIALOG_H
 #define POLYGON_DIALOG_H
 
+#include "core/reference.h"
+
+#include "scene/gui/dialogs.h"
+
+class Button;
+class PolygonEditor;
+class PolygonBase;
 
 class PolygonDialog : public WindowDialog {
- GDCLASS(PolygonDialog, WindowDialog);
+	GDCLASS(PolygonDialog, WindowDialog);
 
- public:
+public:
+	bool get_closed() const;
+	void set_closed(const bool c = true);
 
- bool get_closed() const;
- void set_closed(const bool val);
+	PoolVector2Array get_previous_points();
+	void set_previous_points(const PoolVector2Array &val);
 
- PoolVector2Array get_previous_points();
- void set_previous_points(const PoolVector2Array &val);
+	Ref<PolygonBase> get_polygon();
+	void set_polygon(const Ref<PolygonBase> &val);
+	void edit_polygon(const Ref<PolygonBase> &poly);
 
- Variant get_Variant();
- void set_Variant(const Variant &val);
+	void _on_CurveDialog_popup_hide();
+	void _on_OK_pressed();
+	void _on_Cancel_pressed();
+	void _on_PolygonEditor_value_changed(const Variant &value);
 
- void set_closed(const bool c = true);
- void _on_CurveDialog_popup_hide();
- void _on_OK_pressed();
- void _on_Cancel_pressed();
- void edit_polygon(const Variant &poly);
- void _on_PolygonEditor_value_changed(const Variant &value);
+	PolygonDialog();
+	~PolygonDialog();
 
- PolygonDialog();
- ~PolygonDialog();
+protected:
+	static void _bind_methods();
 
- protected:
- static void _bind_methods();
+	bool closed;
+	PoolVector2Array previous_points;
+	Ref<PolygonBase> polygon;
 
- //tool
- //export 
- // setget set_closed
- bool closed = true;
- PoolVector2Array previous_points = ;
- Variant ;
- signal polygon_changed(polygon);
- //var result = yield(self, "return_polygon")
- //queue_free()
- //return result
+	PolygonEditor *_polygon_editor;
+	Button *_ok_button;
+	Button *_cancel_button;
 };
-
 
 #endif
