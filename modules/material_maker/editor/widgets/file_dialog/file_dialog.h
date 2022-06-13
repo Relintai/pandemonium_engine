@@ -1,38 +1,38 @@
-#ifndef FILE_DIALOG_H
-#define FILE_DIALOG_H
+#ifndef MAT_MAKER_FILE_DIALOG_H
+#define MAT_MAKER_FILE_DIALOG_H
 
+#include "core/ustring.h"
+#include "core/variant.h"
 
-class FileDialog : public FileDialog {
- GDCLASS(FileDialog, FileDialog);
+#include "scene/gui/file_dialog.h"
 
- public:
+class LeftPanel;
+class OptionButton;
 
- Variant get_Variant();
- void set_Variant(const Variant &val);
+class MatMakerFileDialog : public FileDialog {
+	GDCLASS(MatMakerFileDialog, FileDialog);
 
- Variant get_Variant();
- void set_Variant(const Variant &val);
+public:
+	String get_full_current_dir();
 
- void _ready();
- String get_full_current_dir();
- void _on_FileDialog_file_selected(const Variant &path);
- void _on_FileDialog_files_selected(const Variant &paths);
- void _on_FileDialog_dir_selected(const Variant &dir);
- void _on_FileDialog_popup_hide();
- Array select_files();
- void add_favorite();
+	void _on_FileDialog_file_selected(const String &path);
+	void _on_FileDialog_files_selected(const PoolStringArray &paths);
+	void _on_FileDialog_dir_selected(const String &dir);
+	void _on_FileDialog_popup_hide();
 
- FileDialog();
- ~FileDialog();
+	Array select_files();
+	void add_favorite();
 
- protected:
- static void _bind_methods();
+	MatMakerFileDialog();
+	~MatMakerFileDialog();
 
- //tool
- Variant  = null;
- Variant  = null;
- signal return_paths(path_list);
+protected:
+	void _notification(int p_what);
+
+	static void _bind_methods();
+
+	LeftPanel *_left_panel;
+	OptionButton *_volume_option;
 };
-
 
 #endif
