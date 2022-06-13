@@ -43,11 +43,8 @@ void MatMakerFileDialog::_on_FileDialog_popup_hide() {
 	emit_signal("return_paths", Array());
 }
 
-Array MatMakerFileDialog::select_files() {
+void MatMakerFileDialog::select_files() {
 	popup_centered();
-	Variant = yield(self, "return_paths");
-	queue_free();
-	return result;
 }
 
 void MatMakerFileDialog::add_favorite() {

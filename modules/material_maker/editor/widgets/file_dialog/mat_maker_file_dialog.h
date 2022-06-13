@@ -20,7 +20,7 @@ public:
 	void _on_FileDialog_dir_selected(const String &dir);
 	void _on_FileDialog_popup_hide();
 
-	Array select_files();
+	void select_files();
 	void add_favorite();
 
 	MatMakerFileDialog();
