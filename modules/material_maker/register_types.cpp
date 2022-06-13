@@ -35,8 +35,8 @@ SOFTWARE.
 #include "nodes/bases/gradient_base.h"
 #include "nodes/bases/polygon_base.h"
 
-//#include "editor/mat_maker_gd_editor.h"
-//#include "editor/mm_graph_node.h"
+#include "editor/mat_maker_gd_editor.h"
+#include "editor/mm_graph_node.h"
 
 static _MMAlgos *_mm_algos_singleton = nullptr;
 
@@ -51,8 +51,8 @@ void register_material_maker_types() {
 	ClassDB::register_class<GradientBase>();
 	ClassDB::register_class<PolygonBase>();
 
-	//ClassDB::register_class<MMGraphNode>();
-	//ClassDB::register_class<MatMakerGDEditor>();
+	ClassDB::register_class<MMGraphNode>();
+	ClassDB::register_class<MatMakerGDEditor>();
 
 	_mm_algos_singleton = memnew(_MMAlgos);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("MMAlgos", _MMAlgos::get_singleton()));

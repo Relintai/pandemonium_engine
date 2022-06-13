@@ -19,9 +19,18 @@ sources = [
     "nodes/bases/gradient_base.cpp",
     "nodes/bases/polygon_base.cpp",
 
-    #"editor/mat_maker_gd_editor.cpp",
-    #"editor/mm_create_name_popup.cpp",
-    #"editor/mm_graph_node.cpp",
+    "editor/mat_maker_gd_editor.cpp",
+    "editor/mm_create_name_popup.cpp",
+    "editor/mm_graph_node.cpp",
+
+    "editor/widgets/color_picker_popup/color_picker_popup.cpp",
+
+    "editor/widgets/curve_edit/control_point.cpp",
+    "editor/widgets/curve_edit/curve_dialog.cpp",
+    "editor/widgets/curve_edit/curve_edit.cpp",
+    "editor/widgets/curve_edit/curve_editor.cpp",
+    "editor/widgets/curve_edit/curve_view.cpp",
+    "editor/widgets/curve_edit/slope_point.cpp",
 ]
 
 
