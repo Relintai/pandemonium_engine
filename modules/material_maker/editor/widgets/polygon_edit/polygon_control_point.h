@@ -1,12 +1,12 @@
-#ifndef CONTROL_POINT_H
-#define CONTROL_POINT_H
+#ifndef POLYGON_CONTROL_POINT_H
+#define POLYGON_CONTROL_POINT_H
 
 #include "scene/gui/control.h"
 
 #include "core/os/input_event.h"
 
-class ControlPoint : public Control {
-	GDCLASS(ControlPoint, Control);
+class PolygonControlPoint : public Control {
+	GDCLASS(PolygonControlPoint, Control);
 
 public:
 	bool get_moving() const;
@@ -17,10 +17,12 @@ public:
 
 	void _on_ControlPoint_gui_input(const Ref<InputEvent> &event);
 
-	ControlPoint();
-	~ControlPoint();
+	PolygonControlPoint();
+	~PolygonControlPoint();
 
 protected:
+	void _notification(int p_what);
+
 	static void _bind_methods();
 
 	bool moving = false;
