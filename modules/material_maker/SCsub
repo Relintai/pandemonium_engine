@@ -31,6 +31,21 @@ sources = [
     "editor/widgets/curve_edit/curve_editor.cpp",
     "editor/widgets/curve_edit/curve_view.cpp",
     "editor/widgets/curve_edit/slope_point.cpp",
+
+    "editor/widgets/file_dialog/left_panel.cpp",
+    "editor/widgets/file_dialog/mat_maker_file_dialog.cpp",
+
+    "editor/widgets/float_edit/float_edit.cpp",
+
+    #"editor/widgets/gradient_editor/gradient_cursor.cpp",
+    #"editor/widgets/gradient_editor/gradient_editor.cpp",
+    #"editor/widgets/gradient_editor/gradient_popup.cpp",
+
+    #"editor/widgets//.cpp",
+    #"editor/widgets//.cpp",
+    #"editor/widgets//.cpp",
+    #"editor/widgets//.cpp",
+    #"editor/widgets//.cpp",
 ]
 
 
