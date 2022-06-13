@@ -1,80 +1,53 @@
 
 #include "curve_edit.h"
 
+#include "curve_dialog.h"
+#include "curve_view.h"
 
-Variant CurveEdit::get_Variant() {
- return Variant;
+Variant CurveEdit::get_value() {
+	return value;
 }
 
-void CurveEdit::set_Variant(const Variant &val) {
-Variant = val;
+void CurveEdit::set_value(const Variant &v) {
+	value = v;
+	_curve_view->set_curve(value);
+	_curve_view->update();
 }
 
-
-Variant CurveEdit::get_Variant() {
- return Variant;
+void CurveEdit::_on_CurveEdit_pressed() {
+	CurveDialog *dialog = memnew(CurveDialog);
+	add_child(dialog);
+	dialog->connect("curve_changed", self, "on_value_changed");
+	dialog->edit_curve(value);
 }
 
-void CurveEdit::set_Variant(const Variant &val) {
-Variant = val;
+void CurveEdit::on_value_changed(const Variant &v) {
+	//set_value(v);
+	emit_signal("updated", v);
+	_curve_view->update();
 }
 
+CurveEdit::CurveEdit() {
+	set_custom_minimum_size(Vector2(60, 20));
+	set_focus_mode(FOCUS_CLICK);
 
-
- //tool;
- //var MMCurve = preload("res://addons/mat_maker_gd/nodes/bases/curve_base.gd");
- // setget set_value;
-  Variant  = null;
- signal updated(curve);
-
- void CurveEdit::set_value(const Variant &v) {
-  value = v;
-  $CurveView.set_curve(value);
-  $CurveView.update();
+	_curve_view = memnew(CurveView);
+	_curve_view->set_name("CurveView");
+	add_child(_curve_view);
+	_curve_view->set_mouse_filter(MOUSE_FILTER_IGNORE);
 }
 
-
- void CurveEdit::_on_CurveEdit_pressed() {
-  //var dialog = preload("res://addons/mat_maker_gd/widgets/curve_edit/curve_dialog.tscn").instance();
-  add_child(dialog);
-  dialog.connect("curve_changed", self, "on_value_changed");
-  dialog.edit_curve(value);
+CurveEdit::~CurveEdit() {
 }
 
+void CurveEdit::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("updated", PropertyInfo(Variant::OBJECT, "curve", PROPERTY_HINT_RESOURCE_TYPE, "CurveBase")));
 
- void CurveEdit::on_value_changed(const Variant &v) {
-  //set_value(v);
-  emit_signal("updated", v);
-  $CurveView.update();
+	//ClassDB::bind_method(D_METHOD("get_Variant"), &CurveEdit::get_Variant);
+	//ClassDB::bind_method(D_METHOD("set_Variant", "value"), &CurveEdit::set_Variant);
+	//ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "Variant", PROPERTY_HINT_RESOURCE_TYPE, "Variant"), "set_Variant", "get_Variant");
+
+	ClassDB::bind_method(D_METHOD("set_value", "v"), &CurveEdit::set_value);
+	ClassDB::bind_method(D_METHOD("_on_CurveEdit_pressed"), &CurveEdit::_on_CurveEdit_pressed);
+	ClassDB::bind_method(D_METHOD("on_value_changed", "v"), &CurveEdit::on_value_changed);
 }
-
-}
-
- CurveEdit::CurveEdit() {
- //var MMCurve = preload("res://addons/mat_maker_gd/nodes/bases/curve_base.gd");
-   = null;
- }
-
- CurveEdit::~CurveEdit() {
- }
-
-
- static void CurveEdit::_bind_methods() {
-   ClassDB::bind_method(D_METHOD("get_Variant"), &CurveEdit::get_Variant);
-   ClassDB::bind_method(D_METHOD("set_Variant", "value"), &CurveEdit::set_Variant);
-   ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "Variant", PROPERTY_HINT_RESOURCE_TYPE, "Variant"), "set_Variant", "get_Variant");
-
-
-   ClassDB::bind_method(D_METHOD("get_Variant"), &CurveEdit::get_Variant);
-   ClassDB::bind_method(D_METHOD("set_Variant", "value"), &CurveEdit::set_Variant);
-   ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "Variant", PROPERTY_HINT_RESOURCE_TYPE, "Variant"), "set_Variant", "get_Variant");
-
-
-  ClassDB::bind_method(D_METHOD("set_value", "v"), &CurveEdit::set_value);
-  ClassDB::bind_method(D_METHOD("_on_CurveEdit_pressed"), &CurveEdit::_on_CurveEdit_pressed);
-  ClassDB::bind_method(D_METHOD("on_value_changed", "v"), &CurveEdit::on_value_changed);
-
- }
-
-
-
