@@ -37,6 +37,11 @@ public:
 	ControlPoint();
 	~ControlPoint();
 
+	const Vector2 OFFSET = Vector2(3, 3);
+
+	SlopePoint *left_slope_point;
+	SlopePoint *right_slope_point;
+
 protected:
 	void _notification(int p_what);
 
@@ -47,10 +52,6 @@ protected:
 	float max_x;
 	float min_y;
 	float max_y;
-	const Vector2 OFFSET = Vector2(3, 3);
-
-	SlopePoint *left_slope_point;
-	SlopePoint *right_slope_point;
 };
 
 #endif

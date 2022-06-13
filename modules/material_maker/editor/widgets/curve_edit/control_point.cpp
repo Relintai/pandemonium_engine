@@ -66,7 +66,8 @@ void ControlPoint::_draw() {
 }
 
 void ControlPoint::initialize(const CurveBase::Point &p) {
-	set_rect_position(get_parent_control()->transform_point(p.p) - OFFSET);
+	Vector2 parc = get_parent_control()->call("transform_point", p.p);
+	set_position(parc - OFFSET);
 
 	if (p.ls != Math_INF) {
 		left_slope_point->set_position(left_slope_point->get_distance() * (get_parent_control()->get_size() * Vector2(1.0, -p.ls)).normalized());
@@ -94,7 +95,7 @@ void ControlPoint::_on_ControlPoint_gui_input(const Ref<InputEvent> &event) {
 				moving = true;
 			} else {
 				moving = false;
-				get_parent()->update_controls();
+				get_parent()->call("update_controls");
 			}
 		} else if (iemb->get_button_index() == BUTTON_RIGHT && iemb->is_pressed()) {
 			emit_signal("removed", get_index());
