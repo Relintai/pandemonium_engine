@@ -1,41 +1,46 @@
 #ifndef CURVE_DIALOG_H
 #define CURVE_DIALOG_H
 
+#include "core/reference.h"
+
+#include "scene/gui/dialogs.h"
+
+#include "../../../nodes/bases/curve_base.h"
+
+class Button;
+class CurveEditor;
 
 class CurveDialog : public WindowDialog {
- GDCLASS(CurveDialog, WindowDialog);
+	GDCLASS(CurveDialog, WindowDialog);
 
- public:
+public:
+	Ref<CurveBase> get_curve();
+	void set_curve(const Ref<CurveBase> &val);
 
- Variant get_Variant();
- void set_Variant(const Variant &val);
+	Vector<CurveBase::Point> get_previous_points();
+	void set_previous_points(const Vector<CurveBase::Point> &val);
 
- Array get_previous_points();
- void set_previous_points(const Array &val);
+	void edit_curve(const Ref<CurveBase> &c);
 
- Variant get_Variant();
- void set_Variant(const Variant &val);
+	void _on_CurveDialog_popup_hide();
+	void _on_OK_pressed();
+	void _on_Cancel_pressed();
+	void _on_CurveEditor_value_changed(const Ref<CurveBase> &value);
 
- void _ready();
- void _on_CurveDialog_popup_hide();
- void _on_OK_pressed();
- void _on_Cancel_pressed();
- void edit_curve(const Variant &c);
- void _on_CurveEditor_value_changed(const Variant &value);
+	CurveDialog();
+	~CurveDialog();
 
- CurveDialog();
- ~CurveDialog();
+protected:
+	void _notification(int p_what);
 
- protected:
- static void _bind_methods();
+	static void _bind_methods();
 
- //tool
- Variant  = preload("res://addons/mat_maker_gd/nodes/bases/curve_base.gd");
- Array previous_points = ;
- Variant ;
- signal curve_changed(curve);
- // Called when the node enters the scene tree for the first time.
+	Vector<CurveBase::Point> previous_points;
+	Ref<CurveBase> curve;
+
+	CurveEditor *_curve_editor;
+	Button *_ok_button;
+	Button *_cancel_button;
 };
-
 
 #endif
