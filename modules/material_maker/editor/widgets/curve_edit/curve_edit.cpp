@@ -4,11 +4,13 @@
 #include "curve_dialog.h"
 #include "curve_view.h"
 
-Variant CurveEdit::get_value() {
+#include "../../../nodes/bases/curve_base.h"
+
+Ref<CurveBase> CurveEdit::get_value() {
 	return value;
 }
 
-void CurveEdit::set_value(const Variant &v) {
+void CurveEdit::set_value(const Ref<CurveBase> &v) {
 	value = v;
 	_curve_view->set_curve(value);
 	_curve_view->update();
@@ -17,11 +19,11 @@ void CurveEdit::set_value(const Variant &v) {
 void CurveEdit::_on_CurveEdit_pressed() {
 	CurveDialog *dialog = memnew(CurveDialog);
 	add_child(dialog);
-	dialog->connect("curve_changed", self, "on_value_changed");
+	dialog->connect("curve_changed", this, "on_value_changed");
 	dialog->edit_curve(value);
 }
 
-void CurveEdit::on_value_changed(const Variant &v) {
+void CurveEdit::on_value_changed(const Ref<CurveBase> &v) {
 	//set_value(v);
 	emit_signal("updated", v);
 	_curve_view->update();
@@ -43,9 +45,9 @@ CurveEdit::~CurveEdit() {
 void CurveEdit::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("updated", PropertyInfo(Variant::OBJECT, "curve", PROPERTY_HINT_RESOURCE_TYPE, "CurveBase")));
 
-	//ClassDB::bind_method(D_METHOD("get_Variant"), &CurveEdit::get_Variant);
-	//ClassDB::bind_method(D_METHOD("set_Variant", "value"), &CurveEdit::set_Variant);
-	//ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "Variant", PROPERTY_HINT_RESOURCE_TYPE, "Variant"), "set_Variant", "get_Variant");
+	ClassDB::bind_method(D_METHOD("get_value"), &CurveEdit::get_value);
+	ClassDB::bind_method(D_METHOD("set_value", "value"), &CurveEdit::set_value);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "value", PROPERTY_HINT_RESOURCE_TYPE, "CurveBase"), "set_value", "get_value");
 
 	ClassDB::bind_method(D_METHOD("set_value", "v"), &CurveEdit::set_value);
 	ClassDB::bind_method(D_METHOD("_on_CurveEdit_pressed"), &CurveEdit::_on_CurveEdit_pressed);
