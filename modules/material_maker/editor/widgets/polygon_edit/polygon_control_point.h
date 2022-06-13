@@ -20,13 +20,14 @@ public:
 	PolygonControlPoint();
 	~PolygonControlPoint();
 
+	const Vector2 OFFSET = Vector2(3, 3);
+
 protected:
 	void _notification(int p_what);
 
 	static void _bind_methods();
 
 	bool moving = false;
-	const Vector2 OFFSET = Vector2(3, 3);
 };
 
 #endif

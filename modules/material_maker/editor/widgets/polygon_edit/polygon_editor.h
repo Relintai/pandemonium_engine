@@ -1,29 +1,34 @@
 #ifndef POLYGON_EDITOR_H
 #define POLYGON_EDITOR_H
 
+#include "core/os/input_event.h"
+#include "core/reference.h"
 
-class PolygonEditor : public "res://addons/mat_maker_gd/widgets/polygon_edit/polygon_view.gd" {
- GDCLASS(PolygonEditor, "res://addons/mat_maker_gd/widgets/polygon_edit/polygon_view.gd");
+#include "polygon_view.h"
 
- public:
+class PolygonBase;
 
- void _ready();
- void set_polygon(const Variant &p);
- void update_controls();
- void _on_ControlPoint_moved(const Variant &index);
- void _on_ControlPoint_removed(const Variant &index);
- void _on_PolygonEditor_gui_input(const Variant &event);
- void _on_resize();
+class PolygonEditor : public PolygonView {
+	GDCLASS(PolygonEditor, PolygonView);
 
- PolygonEditor();
- ~PolygonEditor();
+public:
+	void set_polygon(const Ref<PolygonBase> &p);
+	void update_controls();
 
- protected:
- static void _bind_methods();
+	void _on_ControlPoint_moved(const int index);
+	void _on_ControlPoint_removed(const int index);
+	void _on_PolygonEditor_gui_input(const Ref<InputEvent> &event);
+	void _on_resize();
 
- //tool
- signal value_changed(value);
+	PolygonEditor();
+	~PolygonEditor();
+
+protected:
+	void _notification(int p_what);
+
+	static void _bind_methods();
+
+	Ref<PolygonBase> polygon;
 };
-
 
 #endif
