@@ -42,7 +42,7 @@ public:
 	void init_points_01();
 	void init_points_11();
 
-	String to_string();
+	String _to_string();
 
 	void clear();
 

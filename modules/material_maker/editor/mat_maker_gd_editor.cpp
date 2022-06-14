@@ -357,7 +357,7 @@ void MatMakerGDEditor::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("recreate"), &MatMakerGDEditor::recreate);
 	//ClassDB::bind_method(D_METHOD("find_graph_node_for", "nnode"), &MatMakerGDEditor::find_graph_node_for);
-	ClassDB::bind_method(D_METHOD("set_mm_material", "object"), &MatMakerGDEditor::set_mm_material);
+	//ClassDB::bind_method(D_METHOD("set_mm_material", "object"), &MatMakerGDEditor::set_mm_material);
 	ClassDB::bind_method(D_METHOD("on_material_changed"), &MatMakerGDEditor::on_material_changed);
 	ClassDB::bind_method(D_METHOD("ignore_changes", "val"), &MatMakerGDEditor::ignore_changes);
 

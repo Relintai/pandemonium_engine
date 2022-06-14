@@ -35,7 +35,7 @@ void CurveBase::init_points_11() {
 	}
 }
 
-String CurveBase::to_string() {
+String CurveBase::_to_string() {
 	PoolStringArray rv;
 
 	Vector<CurveBase::Point> ps = get_points();
@@ -183,7 +183,7 @@ void CurveBase::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("init_points_01"), &CurveBase::init_points_01);
 	ClassDB::bind_method(D_METHOD("init_points_11"), &CurveBase::init_points_11);
 
-	ClassDB::bind_method(D_METHOD("to_string"), &CurveBase::to_string);
+	ClassDB::bind_method(D_METHOD("_to_string"), &CurveBase::_to_string);
 
 	ClassDB::bind_method(D_METHOD("clear"), &CurveBase::clear);
 

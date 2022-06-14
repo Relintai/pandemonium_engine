@@ -26,7 +26,7 @@ public:
 	void polygon_changed();
 	void _polygon_changed();
 
-	String to_string();
+	String _to_string();
 
 	PolygonBase();
 	~PolygonBase();

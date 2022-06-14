@@ -88,7 +88,7 @@ void PolygonBase::_polygon_changed() {
 	emit_changed();
 }
 
-String PolygonBase::to_string() {
+String PolygonBase::_to_string() {
 	String rv;
 
 	PoolVector2Array ps = get_points();
@@ -128,5 +128,5 @@ void PolygonBase::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("polygon_changed"), &PolygonBase::polygon_changed);
 	ClassDB::bind_method(D_METHOD("_polygon_changed"), &PolygonBase::_polygon_changed);
 
-	ClassDB::bind_method(D_METHOD("to_string"), &PolygonBase::to_string);
+	ClassDB::bind_method(D_METHOD("_to_string"), &PolygonBase::_to_string);
 }
