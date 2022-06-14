@@ -27,7 +27,7 @@ public:
 
 	float get_cursor_position();
 
-	static bool sort(const Variant &a, const Variant &b);
+	static bool sort(GradientCursor *a, GradientCursor *b);
 
 	bool can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const;
 	void drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from);

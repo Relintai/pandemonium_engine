@@ -95,8 +95,8 @@ float GradientCursor::get_cursor_position() {
 	return get_position().x / (get_parent_control()->get_size().x - WIDTH);
 }
 
-bool GradientCursor::sort(const Variant &a, const Variant &b) {
-	return a.get_position() < b.get_position();
+bool GradientCursor::sort(GradientCursor *a, const GradientCursor *b) {
+	return a->get_position() < b->get_position();
 }
 
 bool GradientCursor::can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const {
