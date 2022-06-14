@@ -33,7 +33,7 @@ GradientPopup::GradientPopup() {
 	panel_gradientpopup_prop_custom_styles.instance();
 	panel_gradientpopup->set("custom_styles/panel", panel_gradientpopup_prop_custom_styles);
 
-	_gradient_editor = memnew(GradientEditor);
+	_gradient_editor = memnew(MMGradientEditor);
 	panel_gradientpopup->add_child(_gradient_editor);
 }
 

@@ -47,7 +47,7 @@ void CurveDialog::_on_Cancel_pressed() {
 	queue_delete();
 }
 
-void CurveDialog::_on_CurveEditor_value_changed(const Ref<CurveBase> &value) {
+void CurveDialog::_on_MMCurveEditor_value_changed(const Ref<CurveBase> &value) {
 	emit_signal("curve_changed", value);
 }
 
@@ -70,7 +70,7 @@ CurveDialog::CurveDialog() {
 
 	mvbc->add_child(mc);
 
-	_curve_editor = memnew(CurveEditor);
+	_curve_editor = memnew(MMCurveEditor);
 	_curve_editor->set_filename("res://addons/mat_maker_gd/widgets/curve_edit/curve_editor.tscn");
 	_curve_editor->set_v_size_flags(SIZE_EXPAND_FILL);
 	mc->add_child(_curve_editor);
@@ -100,7 +100,7 @@ CurveDialog::~CurveDialog() {
 void CurveDialog::_notification(int p_what) {
 	if (p_what == NOTIFICATION_POSTINITIALIZE) {
 		connect("popup_hide", this, "_on_CurveDialog_popup_hide");
-		_curve_editor->connect("value_changed", this, "_on_CurveEditor_value_changed");
+		_curve_editor->connect("value_changed", this, "_on_MMCurveEditor_value_changed");
 		_ok_button->connect("pressed", this, "_on_OK_pressed");
 		_cancel_button->connect("pressed", this, "_on_Cancel_pressed");
 	}
@@ -122,5 +122,5 @@ void CurveDialog::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_on_CurveDialog_popup_hide"), &CurveDialog::_on_CurveDialog_popup_hide);
 	ClassDB::bind_method(D_METHOD("_on_OK_pressed"), &CurveDialog::_on_OK_pressed);
 	ClassDB::bind_method(D_METHOD("_on_Cancel_pressed"), &CurveDialog::_on_Cancel_pressed);
-	ClassDB::bind_method(D_METHOD("_on_CurveEditor_value_changed", "value"), &CurveDialog::_on_CurveEditor_value_changed);
+	ClassDB::bind_method(D_METHOD("_on_MMCurveEditor_value_changed", "value"), &CurveDialog::_on_MMCurveEditor_value_changed);
 }

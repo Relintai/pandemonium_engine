@@ -1,5 +1,5 @@
-#ifndef GRADIENT_EDITOR_H
-#define GRADIENT_EDITOR_H
+#ifndef MM_GRADIENT_EDITOR_H
+#define MM_GRADIENT_EDITOR_H
 
 #include "core/color.h"
 #include "core/os/input_event.h"
@@ -16,8 +16,8 @@ class GradientCursor;
 class TextureRect;
 class OptionButton;
 
-class GradientEditor : public Control {
-	GDCLASS(GradientEditor, Control);
+class MMGradientEditor : public Control {
+	GDCLASS(MMGradientEditor, Control);
 
 public:
 	MMGraphNode *get_graph_node();
@@ -62,8 +62,8 @@ public:
 	void _on_Interpolation_item_selected(const int ID);
 	void on_resized();
 
-	GradientEditor();
-	~GradientEditor();
+	MMGradientEditor();
+	~MMGradientEditor();
 
 protected:
 	static void _bind_methods();

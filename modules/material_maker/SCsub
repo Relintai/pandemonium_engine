@@ -35,7 +35,7 @@ sources = [
     "editor/widgets/file_dialog/left_panel.cpp",
     "editor/widgets/file_dialog/mat_maker_file_dialog.cpp",
 
-    "editor/widgets/float_edit/float_edit.cpp",
+    #"editor/widgets/float_edit/float_edit.cpp",
 
     "editor/widgets/gradient_editor/gradient_cursor.cpp",
     "editor/widgets/gradient_editor/gradient_editor.cpp",

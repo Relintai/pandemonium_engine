@@ -9,7 +9,7 @@ Color GradientCursor::get_color() {
 
 void GradientCursor::set_color(const Color &val) {
 	color = val;
-	GradientEditor *ged = Object::cast_to<GradientEditor>(get_parent());
+	MMGradientEditor *ged = Object::cast_to<MMGradientEditor>(get_parent());
 	ERR_FAIL_COND(!ged);
 	ged->update_value();
 	update();
@@ -46,7 +46,7 @@ void GradientCursor::_gui_input(const Ref<InputEvent> &ev) {
 	Ref<InputEventMouseButton> iemb = ev;
 	Ref<InputEventMouseMotion> iemm = ev;
 
-	GradientEditor *ged = Object::cast_to<GradientEditor>(get_parent());
+	MMGradientEditor *ged = Object::cast_to<MMGradientEditor>(get_parent());
 	ERR_FAIL_COND(!ged);
 
 	if (iemb.is_valid()) {

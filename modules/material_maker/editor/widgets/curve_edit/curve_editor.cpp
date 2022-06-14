@@ -6,13 +6,13 @@
 #include "core/object.h"
 #include "slope_point.h"
 
-void CurveEditor::set_curve(const Variant &c) {
+void MMCurveEditor::set_curve(const Variant &c) {
 	curve = c;
 	update();
 	update_controls();
 }
 
-void CurveEditor::update_controls() {
+void MMCurveEditor::update_controls() {
 	if (!curve.is_valid()) {
 		return;
 	}
@@ -52,7 +52,7 @@ void CurveEditor::update_controls() {
 	emit_signal("value_changed", curve);
 }
 
-void CurveEditor::_on_ControlPoint_moved(const Variant &index) {
+void MMCurveEditor::_on_ControlPoint_moved(const Variant &index) {
 	Vector<CurveBase::Point> points = curve->get_points();
 	ControlPoint *control_point = Object::cast_to<ControlPoint>(get_child(index));
 	points.write[index].p = reverse_transform_point(control_point->get_position() + control_point->OFFSET);
@@ -78,14 +78,14 @@ void CurveEditor::_on_ControlPoint_moved(const Variant &index) {
 	emit_signal("value_changed", curve);
 }
 
-void CurveEditor::_on_ControlPoint_removed(const Variant &index) {
+void MMCurveEditor::_on_ControlPoint_removed(const Variant &index) {
 	if (curve->remove_point(index)) {
 		update();
 		update_controls();
 	}
 }
 
-void CurveEditor::_on_CurveEditor_gui_input(const Variant &event) {
+void MMCurveEditor::_on_MMCurveEditor_gui_input(const Variant &event) {
 	Ref<InputEventMouseButton> iemb = event;
 
 	if (iemb.is_valid()) {
@@ -97,36 +97,36 @@ void CurveEditor::_on_CurveEditor_gui_input(const Variant &event) {
 	}
 }
 
-void CurveEditor::_on_resize() {
+void MMCurveEditor::_on_resize() {
 	CurveView::_on_resize();
 	update_controls();
 }
 
-CurveEditor::CurveEditor() {
+MMCurveEditor::MMCurveEditor() {
 	set_mouse_filter(MOUSE_FILTER_STOP);
 }
 
-CurveEditor::~CurveEditor() {
+MMCurveEditor::~MMCurveEditor() {
 }
 
-void CurveEditor::_notification(int p_what) {
+void MMCurveEditor::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_POSTINITIALIZE: {
-			connect("gui_input", this, "_on_CurveEditor_gui_input");
+			connect("gui_input", this, "_on_MMCurveEditor_gui_input");
 			update_controls();
 		} break;
 		default: {
 		} break;
 	}
 }
-void CurveEditor::_bind_methods() {
+void MMCurveEditor::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("value_changed", PropertyInfo(Variant::OBJECT, "value", PROPERTY_HINT_RESOURCE_TYPE, "CurveBase")));
 
-	ClassDB::bind_method(D_METHOD("set_curve", "c"), &CurveEditor::set_curve);
-	ClassDB::bind_method(D_METHOD("update_controls"), &CurveEditor::update_controls);
+	ClassDB::bind_method(D_METHOD("set_curve", "c"), &MMCurveEditor::set_curve);
+	ClassDB::bind_method(D_METHOD("update_controls"), &MMCurveEditor::update_controls);
 
-	ClassDB::bind_method(D_METHOD("_on_ControlPoint_moved", "index"), &CurveEditor::_on_ControlPoint_moved);
-	ClassDB::bind_method(D_METHOD("_on_ControlPoint_removed", "index"), &CurveEditor::_on_ControlPoint_removed);
-	ClassDB::bind_method(D_METHOD("_on_CurveEditor_gui_input", "event"), &CurveEditor::_on_CurveEditor_gui_input);
-	ClassDB::bind_method(D_METHOD("_on_resize"), &CurveEditor::_on_resize);
+	ClassDB::bind_method(D_METHOD("_on_ControlPoint_moved", "index"), &MMCurveEditor::_on_ControlPoint_moved);
+	ClassDB::bind_method(D_METHOD("_on_ControlPoint_removed", "index"), &MMCurveEditor::_on_ControlPoint_removed);
+	ClassDB::bind_method(D_METHOD("_on_MMCurveEditor_gui_input", "event"), &MMCurveEditor::_on_MMCurveEditor_gui_input);
+	ClassDB::bind_method(D_METHOD("_on_resize"), &MMCurveEditor::_on_resize);
 }

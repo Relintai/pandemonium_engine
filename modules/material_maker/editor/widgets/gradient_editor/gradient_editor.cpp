@@ -17,65 +17,65 @@
 #include "scene/gui/texture_rect.h"
 #include "scene/resources/material.h"
 
-MMGraphNode *GradientEditor::get_graph_node() {
+MMGraphNode *MMGradientEditor::get_graph_node() {
 	return graph_node;
 }
 
-void GradientEditor::set_graph_node(MMGraphNode *val) {
+void MMGradientEditor::set_graph_node(MMGraphNode *val) {
 	graph_node = val;
 }
 
-Ref<GradientBase> GradientEditor::get_value() {
+Ref<GradientBase> MMGradientEditor::get_value() {
 	return value;
 }
 
-void GradientEditor::set_value(const Ref<GradientBase> &val) {
+void MMGradientEditor::set_value(const Ref<GradientBase> &val) {
 	value = val;
 	update_preview();
 	call_deferred("update_cursors");
 }
 
-bool GradientEditor::get_embedded() const {
+bool MMGradientEditor::get_embedded() const {
 	return embedded;
 }
 
-void GradientEditor::set_embedded(const bool val) {
+void MMGradientEditor::set_embedded(const bool val) {
 	embedded = val;
 }
 
-UndoRedo *GradientEditor::get_undo_redo() {
+UndoRedo *MMGradientEditor::get_undo_redo() {
 	return _undo_redo;
 }
 
-void GradientEditor::set_undo_redo(UndoRedo *val) {
+void MMGradientEditor::set_undo_redo(UndoRedo *val) {
 	_undo_redo = val;
 }
 
-PoolRealArray GradientEditor::get_saved_points() {
+PoolRealArray MMGradientEditor::get_saved_points() {
 	return _saved_points;
 }
 
-void GradientEditor::set_saved_points(const PoolRealArray &val) {
+void MMGradientEditor::set_saved_points(const PoolRealArray &val) {
 	_saved_points = val;
 }
 
-GradientCursor *GradientEditor::get_active_cursor() {
+GradientCursor *MMGradientEditor::get_active_cursor() {
 	return active_cursor;
 }
 
-void GradientEditor::set_active_cursor(GradientCursor *val) {
+void MMGradientEditor::set_active_cursor(GradientCursor *val) {
 	active_cursor = val;
 }
 
-void GradientEditor::_init() {
+void MMGradientEditor::_init() {
 	connect("resized", this, "on_resized");
 }
 
-void GradientEditor::ignore_changes(const bool val) {
+void MMGradientEditor::ignore_changes(const bool val) {
 	graph_node->ignore_changes(val);
 }
 
-void GradientEditor::save_color_state() {
+void MMGradientEditor::save_color_state() {
 	PoolRealArray p = value->get_points();
 	_saved_points.resize(0);
 
@@ -86,7 +86,7 @@ void GradientEditor::save_color_state() {
 	ignore_changes(true);
 }
 
-void GradientEditor::undo_redo_save_color_state() {
+void MMGradientEditor::undo_redo_save_color_state() {
 	PoolRealArray op;
 	PoolRealArray np;
 
@@ -107,7 +107,7 @@ void GradientEditor::undo_redo_save_color_state() {
 	ignore_changes(false);
 }
 
-void GradientEditor::update_cursors() {
+void MMGradientEditor::update_cursors() {
 	for (int i = 0; i < get_child_count(); ++i) {
 		GradientCursor *c = Object::cast_to<GradientCursor>(get_child(i));
 
@@ -126,7 +126,7 @@ void GradientEditor::update_cursors() {
 	interpolation->select(value->get_interpolation_type());
 }
 
-void GradientEditor::update_value() {
+void MMGradientEditor::update_value() {
 	value->clear();
 	Vector<GradientCursor *> sc = get_sorted_cursors();
 	PoolRealArray points;
@@ -146,7 +146,7 @@ void GradientEditor::update_value() {
 	update_preview();
 }
 
-void GradientEditor::add_cursor(const float x, const Color &color) {
+void MMGradientEditor::add_cursor(const float x, const Color &color) {
 	GradientCursor *cursor = memnew(GradientCursor);
 	add_child(cursor);
 
@@ -157,7 +157,7 @@ void GradientEditor::add_cursor(const float x, const Color &color) {
 	cursor->set_color(color);
 }
 
-void GradientEditor::_gui_input(const Ref<InputEvent> &ev) {
+void MMGradientEditor::_gui_input(const Ref<InputEvent> &ev) {
 	Ref<InputEventMouseButton> iemb = ev;
 
 	if (iemb.is_valid() && iemb->get_button_index() == 1 && iemb->is_doubleclick()) {
@@ -182,7 +182,7 @@ void GradientEditor::_gui_input(const Ref<InputEvent> &ev) {
 	}
 }
 
-void GradientEditor::select_color(GradientCursor *cursor, const Vector2 &position) {
+void MMGradientEditor::select_color(GradientCursor *cursor, const Vector2 &position) {
 	active_cursor = cursor;
 
 	ColorPickerPopup *color_picker_popup = memnew(ColorPickerPopup);
@@ -200,7 +200,7 @@ void GradientEditor::select_color(GradientCursor *cursor, const Vector2 &positio
 
 // Calculating a color from the gradient and generating the shader;
 
-Vector<GradientCursor *> GradientEditor::get_sorted_cursors() {
+Vector<GradientCursor *> MMGradientEditor::get_sorted_cursors() {
 	Vector<GradientCursor *> array;
 
 	for (int i = 0; i < get_child_count(); ++i) {
@@ -216,7 +216,7 @@ Vector<GradientCursor *> GradientEditor::get_sorted_cursors() {
 	return array;
 }
 
-void GradientEditor::generate_preview_image() {
+void MMGradientEditor::generate_preview_image() {
 	Ref<ImageTexture> tex = gradient->get_texture();
 
 	if (!tex.is_valid()) {
@@ -251,15 +251,15 @@ void GradientEditor::generate_preview_image() {
 	tex->create_from_image(img, 0);
 }
 
-Color GradientEditor::get_gradient_color(const float x) {
+Color MMGradientEditor::get_gradient_color(const float x) {
 	return value->get_gradient_color(x / (get_size().x - GradientCursor::WIDTH));
 }
 
-void GradientEditor::update_preview() {
+void MMGradientEditor::update_preview() {
 	call_deferred("generate_preview_image");
 }
 
-void GradientEditor::_on_Interpolation_item_selected(const int ID) {
+void MMGradientEditor::_on_Interpolation_item_selected(const int ID) {
 	ignore_changes(true);
 	_undo_redo->create_action("MMGD: gradient interpolation_type changed");
 	_undo_redo->add_do_method(value.ptr(), "set_interpolation_type", ID);
@@ -269,14 +269,14 @@ void GradientEditor::_on_Interpolation_item_selected(const int ID) {
 	update_preview();
 }
 
-void GradientEditor::on_resized() {
+void MMGradientEditor::on_resized() {
 	if (value.is_valid()) {
 		update_preview();
 		call_deferred("update_cursors");
 	}
 }
 
-GradientEditor::GradientEditor() {
+MMGradientEditor::MMGradientEditor() {
 	graph_node = nullptr;
 	embedded = false;
 	_undo_redo = nullptr;
@@ -344,61 +344,61 @@ GradientEditor::GradientEditor() {
 	add_child(value_control);
 }
 
-GradientEditor::~GradientEditor() {
+MMGradientEditor::~MMGradientEditor() {
 }
 
-void GradientEditor::_bind_methods() {
+void MMGradientEditor::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("updated", PropertyInfo(Variant::OBJECT, "value", PROPERTY_HINT_RESOURCE_TYPE, "GradientBase")));
 
-	//ClassDB::bind_method(D_METHOD("get_graph_node"), &GradientEditor::get_graph_node);
-	//ClassDB::bind_method(D_METHOD("set_graph_node", "value"), &GradientEditor::set_graph_node);
+	//ClassDB::bind_method(D_METHOD("get_graph_node"), &MMGradientEditor::get_graph_node);
+	//ClassDB::bind_method(D_METHOD("set_graph_node", "value"), &MMGradientEditor::set_graph_node);
 	//ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "graph_node", PROPERTY_HINT_RESOURCE_TYPE, "MMGraphNode "), "set_graph_node", "get_graph_node");
 
-	ClassDB::bind_method(D_METHOD("get_value"), &GradientEditor::get_value);
-	ClassDB::bind_method(D_METHOD("set_value", "value"), &GradientEditor::set_value);
+	ClassDB::bind_method(D_METHOD("get_value"), &MMGradientEditor::get_value);
+	ClassDB::bind_method(D_METHOD("set_value", "value"), &MMGradientEditor::set_value);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "value", PROPERTY_HINT_RESOURCE_TYPE, "GradientBase"), "set_value", "get_value");
 
-	ClassDB::bind_method(D_METHOD("get_embedded"), &GradientEditor::get_embedded);
-	ClassDB::bind_method(D_METHOD("set_embedded", "value"), &GradientEditor::set_embedded);
+	ClassDB::bind_method(D_METHOD("get_embedded"), &MMGradientEditor::get_embedded);
+	ClassDB::bind_method(D_METHOD("set_embedded", "value"), &MMGradientEditor::set_embedded);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "embedded"), "set_embedded", "get_embedded");
 
-	ClassDB::bind_method(D_METHOD("get_undo_redo"), &GradientEditor::get_undo_redo);
-	//ClassDB::bind_method(D_METHOD("set_undo_redo", "value"), &GradientEditor::set_undo_redo);
+	ClassDB::bind_method(D_METHOD("get_undo_redo"), &MMGradientEditor::get_undo_redo);
+	//ClassDB::bind_method(D_METHOD("set_undo_redo", "value"), &MMGradientEditor::set_undo_redo);
 	//ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "undo_redo", PROPERTY_HINT_RESOURCE_TYPE, "UndoRedo"), "set_undo_redo", "get_undo_redo");
 
-	ClassDB::bind_method(D_METHOD("get_saved_points"), &GradientEditor::get_saved_points);
-	ClassDB::bind_method(D_METHOD("set_saved_points", "value"), &GradientEditor::set_saved_points);
+	ClassDB::bind_method(D_METHOD("get_saved_points"), &MMGradientEditor::get_saved_points);
+	ClassDB::bind_method(D_METHOD("set_saved_points", "value"), &MMGradientEditor::set_saved_points);
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_REAL_ARRAY, "saved_points"), "set_saved_points", "get_saved_points");
 
-	//ClassDB::bind_method(D_METHOD("get_active_cursor"), &GradientEditor::get_active_cursor);
-	//ClassDB::bind_method(D_METHOD("set_active_cursor", "value"), &GradientEditor::set_active_cursor);
+	//ClassDB::bind_method(D_METHOD("get_active_cursor"), &MMGradientEditor::get_active_cursor);
+	//ClassDB::bind_method(D_METHOD("set_active_cursor", "value"), &MMGradientEditor::set_active_cursor);
 	//ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "active_cursor", PROPERTY_HINT_RESOURCE_TYPE, "GradientCursor "), "set_active_cursor", "get_active_cursor");
 
-	ClassDB::bind_method(D_METHOD("ignore_changes", "val"), &GradientEditor::ignore_changes);
+	ClassDB::bind_method(D_METHOD("ignore_changes", "val"), &MMGradientEditor::ignore_changes);
 
-	ClassDB::bind_method(D_METHOD("save_color_state"), &GradientEditor::save_color_state);
+	ClassDB::bind_method(D_METHOD("save_color_state"), &MMGradientEditor::save_color_state);
 
-	ClassDB::bind_method(D_METHOD("undo_redo_save_color_state"), &GradientEditor::undo_redo_save_color_state);
+	ClassDB::bind_method(D_METHOD("undo_redo_save_color_state"), &MMGradientEditor::undo_redo_save_color_state);
 
-	//ClassDB::bind_method(D_METHOD("set_undo_redo", "ur"), &GradientEditor::set_undo_redo);
+	//ClassDB::bind_method(D_METHOD("set_undo_redo", "ur"), &MMGradientEditor::set_undo_redo);
 
-	ClassDB::bind_method(D_METHOD("set_value", "v"), &GradientEditor::set_value);
-	ClassDB::bind_method(D_METHOD("update_cursors"), &GradientEditor::update_cursors);
-	ClassDB::bind_method(D_METHOD("update_value"), &GradientEditor::update_value);
-	ClassDB::bind_method(D_METHOD("add_cursor", "x", " color"), &GradientEditor::add_cursor);
+	ClassDB::bind_method(D_METHOD("set_value", "v"), &MMGradientEditor::set_value);
+	ClassDB::bind_method(D_METHOD("update_cursors"), &MMGradientEditor::update_cursors);
+	ClassDB::bind_method(D_METHOD("update_value"), &MMGradientEditor::update_value);
+	ClassDB::bind_method(D_METHOD("add_cursor", "x", " color"), &MMGradientEditor::add_cursor);
 
-	ClassDB::bind_method(D_METHOD("_gui_input", "ev"), &GradientEditor::_gui_input);
+	ClassDB::bind_method(D_METHOD("_gui_input", "ev"), &MMGradientEditor::_gui_input);
 
-	//ClassDB::bind_method(D_METHOD("select_color", "cursor", " position"), &GradientEditor::select_color);
+	//ClassDB::bind_method(D_METHOD("select_color", "cursor", " position"), &MMGradientEditor::select_color);
 
-	//ClassDB::bind_method(D_METHOD("get_sorted_cursors"), &GradientEditor::get_sorted_cursors);
+	//ClassDB::bind_method(D_METHOD("get_sorted_cursors"), &MMGradientEditor::get_sorted_cursors);
 
-	ClassDB::bind_method(D_METHOD("generate_preview_image"), &GradientEditor::generate_preview_image);
+	ClassDB::bind_method(D_METHOD("generate_preview_image"), &MMGradientEditor::generate_preview_image);
 
-	ClassDB::bind_method(D_METHOD("get_gradient_color", "x"), &GradientEditor::get_gradient_color);
+	ClassDB::bind_method(D_METHOD("get_gradient_color", "x"), &MMGradientEditor::get_gradient_color);
 
-	ClassDB::bind_method(D_METHOD("update_preview"), &GradientEditor::update_preview);
+	ClassDB::bind_method(D_METHOD("update_preview"), &MMGradientEditor::update_preview);
 
-	ClassDB::bind_method(D_METHOD("_on_Interpolation_item_selected", "ID"), &GradientEditor::_on_Interpolation_item_selected);
-	ClassDB::bind_method(D_METHOD("on_resized"), &GradientEditor::on_resized);
+	ClassDB::bind_method(D_METHOD("_on_Interpolation_item_selected", "ID"), &MMGradientEditor::_on_Interpolation_item_selected);
+	ClassDB::bind_method(D_METHOD("on_resized"), &MMGradientEditor::on_resized);
 }

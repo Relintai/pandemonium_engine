@@ -1,6 +1,9 @@
 
 #include "mm_graph_node.h"
 
+#include "../nodes/bases/curve_base.h"
+#include "../nodes/bases/gradient_base.h"
+#include "../nodes/bases/polygon_base.h"
 #include "../nodes/mm_material.h"
 #include "../nodes/mm_node.h"
 #include "../nodes/mm_node_universal_property.h"
@@ -14,6 +17,11 @@
 #include "scene/gui/option_button.h"
 #include "scene/gui/spin_box.h"
 #include "scene/gui/texture_rect.h"
+
+#include "widgets/curve_edit/curve_editor.h"
+#include "widgets/gradient_editor/gradient_editor.h"
+#include "widgets/image_picker_button/image_picker_button.h"
+#include "widgets/polygon_edit/polygon_editor.h"
 
 Ref<PackedScene> MMGraphNode::get_gradient_editor_scene() {
 	return gradient_editor_scene;
@@ -133,72 +141,59 @@ int MMGraphNode::add_slot_texture_universal(const Ref<MMNodeUniversalProperty> &
 }
 
 int MMGraphNode::add_slot_image_path_universal(const Ref<MMNodeUniversalProperty> &property, const String &getter, const String &setter) {
-	/*
-	  TextureButton *t = load("res://addons/mat_maker_gd/widgets/image_picker_button/image_picker_button.tscn").instance();
-	  int slot_idx = add_slot(property.input_slot_type, property.output_slot_type, "", "", t);
-	  properties[slot_idx].append(property);
-	  properties[slot_idx].append(getter);
-	  properties[slot_idx].append(setter);
-	  property.connect("changed", self, "on_universal_texture_changed_image_picker", [slot_idx]);
-	  t.connect("on_file_selected", self, "on_universal_image_path_changed", [slot_idx]);
-	  t.call_deferred("do_set_image_path", _node.call(getter));
-	  return slot_idx;
-	*/
+	ImagePickerButton *t = memnew(ImagePickerButton);
+	int slot_idx = add_slot(property->get_input_slot_type(), property->get_output_slot_type(), "", "", t);
 
-	return 0;
+	properties.write[slot_idx].universal_property = property;
+	properties.write[slot_idx].alt_getter = getter;
+	properties.write[slot_idx].alt_setter = setter;
+
+	Vector<Variant> bindings;
+	bindings.push_back(slot_idx);
+
+	Ref<MMNodeUniversalProperty> prop = property;
+
+	prop->connect("changed", this, "on_universal_texture_changed_image_picker", bindings);
+	t->connect("on_file_selected", this, "on_universal_image_path_changed", bindings);
+	t->call_deferred("do_set_image_path", _node->call(getter));
+	return slot_idx;
 }
 
 int MMGraphNode::add_slot_gradient() {
-	/*
-	  Control *ge = gradient_editor_scene.instance();
-	  ge.graph_node = self;
-	  ge.set_undo_redo(_undo_redo);
-	  int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, "", "", ge);
-	  ge.set_value(_node);
-	  //ge.texture = _node.call(getter, _material, slot_idx);
-	  //properties[slot_idx].append(ge.texture);
-	  return slot_idx;
-	*/
-
-	return 0;
+	MMGradientEditor *ge = memnew(MMGradientEditor);
+	ge->set_graph_node(this);
+	ge->set_undo_redo(_undo_redo);
+	int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, "", "", ge);
+	ge->set_value(_node);
+	//ge.texture = _node.call(getter, _material, slot_idx);
+	//properties[slot_idx].append(ge.texture);
+	return slot_idx;
 }
 
 int MMGraphNode::add_slot_polygon() {
-	/*
-	  Control *ge = polygon_edit_scene.instance();
-	  int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, "", "", ge);
-	  ge.set_value(_node);
-	  //ge.texture = _node.call(getter, _material, slot_idx);
-	  //properties[slot_idx].append(ge.texture);
-	  return slot_idx;
-	*/
-
-	return 0;
+	PolygonEditor *pe = memnew(PolygonEditor);
+	int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, "", "", pe);
+	pe->set_polygon(_node);
+	//ge.texture = _node.call(getter, _material, slot_idx);
+	//properties[slot_idx].append(ge.texture);
+	return slot_idx;
 }
 
 int MMGraphNode::add_slot_curve() {
-	/*
-	  Control *ge = curve_edit_scene.instance();
-	  int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, "", "", ge);
-	  ge.set_value(_node);
-	  //ge.texture = _node.call(getter, _material, slot_idx);
-	  //properties[slot_idx].append(ge.texture);
-	  return slot_idx;
-	*/
-
-	return 0;
+	MMCurveEditor *ce = memnew(MMCurveEditor);
+	int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, "", "", ce);
+	ce->set_curve(_node);
+	//ge.texture = _node.call(getter, _material, slot_idx);
+	//properties[slot_idx].append(ge.texture);
+	return slot_idx;
 }
 
 int MMGraphNode::add_slot_color(const String &getter, const String &setter) {
-	/*
-	  ColorPickerButton *cp = ColorPickerButton.new();
-	  int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, getter, setter, cp);
-	  cp.color = _node.call(getter);
-	  cp.connect("color_changed", _node, setter);
-	  return slot_idx;
-	*/
-
-	return 0;
+	ColorPickerButton *cp = memnew(ColorPickerButton);
+	int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, getter, setter, cp);
+	cp->set_pick_color(_node->call(getter));
+	cp->connect("color_changed", _node.ptr(), setter);
+	return slot_idx;
 }
 
 int MMGraphNode::add_slot_color_universal(const Ref<MMNodeUniversalProperty> &property) {

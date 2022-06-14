@@ -8,7 +8,7 @@
 #include "../../../nodes/bases/curve_base.h"
 
 class Button;
-class CurveEditor;
+class MMCurveEditor;
 
 class CurveDialog : public WindowDialog {
 	GDCLASS(CurveDialog, WindowDialog);
@@ -25,7 +25,7 @@ public:
 	void _on_CurveDialog_popup_hide();
 	void _on_OK_pressed();
 	void _on_Cancel_pressed();
-	void _on_CurveEditor_value_changed(const Ref<CurveBase> &value);
+	void _on_MMCurveEditor_value_changed(const Ref<CurveBase> &value);
 
 	CurveDialog();
 	~CurveDialog();
@@ -38,7 +38,7 @@ protected:
 	Vector<CurveBase::Point> previous_points;
 	Ref<CurveBase> curve;
 
-	CurveEditor *_curve_editor;
+	MMCurveEditor *_curve_editor;
 	Button *_ok_button;
 	Button *_cancel_button;
 };

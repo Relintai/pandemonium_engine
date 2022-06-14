@@ -8,7 +8,7 @@
 class GradientBase;
 class UndoRedo;
 class MMGraphNode;
-class GradientEditor;
+class MMGradientEditor;
 
 class GradientPopup : public Popup {
 	GDCLASS(GradientPopup, Popup);
@@ -24,7 +24,7 @@ public:
 protected:
 	static void _bind_methods();
 
-	GradientEditor *_gradient_editor;
+	MMGradientEditor *_gradient_editor;
 };
 
 #endif

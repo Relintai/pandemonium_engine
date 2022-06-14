@@ -1,10 +1,10 @@
-#ifndef CURVE_EDITOR_H
-#define CURVE_EDITOR_H
+#ifndef MM_CURVE_EDITOR_H
+#define MM_CURVE_EDITOR_H
 
 #include "curve_view.h"
 
-class CurveEditor : public CurveView {
-	GDCLASS(CurveEditor, CurveView);
+class MMCurveEditor : public CurveView {
+	GDCLASS(MMCurveEditor, CurveView);
 
 public:
 	void set_curve(const Variant &c);
@@ -12,11 +12,11 @@ public:
 
 	void _on_ControlPoint_moved(const Variant &index);
 	void _on_ControlPoint_removed(const Variant &index);
-	void _on_CurveEditor_gui_input(const Variant &event);
+	void _on_MMCurveEditor_gui_input(const Variant &event);
 	void _on_resize();
 
-	CurveEditor();
-	~CurveEditor();
+	MMCurveEditor();
+	~MMCurveEditor();
 
 protected:
 	void _notification(int p_what);
