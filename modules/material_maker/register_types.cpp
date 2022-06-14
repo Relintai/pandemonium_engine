@@ -38,6 +38,10 @@ SOFTWARE.
 #include "editor/mat_maker_gd_editor.h"
 #include "editor/mm_graph_node.h"
 
+#if TOOLS_ENABLED
+#include "editor_plugin.h"
+#endif
+
 static _MMAlgos *_mm_algos_singleton = nullptr;
 
 void register_material_maker_types() {
@@ -56,6 +60,10 @@ void register_material_maker_types() {
 
 	_mm_algos_singleton = memnew(_MMAlgos);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("MMAlgos", _MMAlgos::get_singleton()));
+
+#if TOOLS_ENABLED
+	EditorPlugins::add_by_type<MaterialMakerEditorPlugin>();
+#endif
 }
 
 void unregister_material_maker_types() {

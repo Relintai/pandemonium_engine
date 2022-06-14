@@ -4,7 +4,6 @@ Import('env')
 
 module_env = env.Clone()
 
-
 sources = [
     "register_types.cpp",
 
@@ -52,6 +51,8 @@ sources = [
     "editor/widgets/polygon_edit/polygon_view.cpp",
 ]
 
+if env["tools"]:
+    sources.append("editor_plugin.cpp")
 
 module_env.add_source_files(env.modules_sources, sources)
 
