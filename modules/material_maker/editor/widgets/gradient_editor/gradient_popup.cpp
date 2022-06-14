@@ -4,9 +4,11 @@
 #include "core/object.h"
 #include "gradient_editor.h"
 
+#include "../../../nodes/bases/gradient_base.h"
+#include "../../../nodes/mm_node_universal_property.h"
 #include "scene/gui/panel.h"
 
-void GradientPopup::init(const Ref<GradientBase> &value, MMGraphNode *graph_node, UndoRedo &undo_redo) {
+void GradientPopup::init(const Ref<GradientBase> &value, MMGraphNode *graph_node, UndoRedo *undo_redo) {
 	_gradient_editor->set_undo_redo(undo_redo);
 	_gradient_editor->set_graph_node(graph_node);
 	_gradient_editor->set_value(value);

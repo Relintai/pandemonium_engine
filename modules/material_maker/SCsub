@@ -37,9 +37,9 @@ sources = [
 
     "editor/widgets/float_edit/float_edit.cpp",
 
-    #"editor/widgets/gradient_editor/gradient_cursor.cpp",
-    #"editor/widgets/gradient_editor/gradient_editor.cpp",
-    #"editor/widgets/gradient_editor/gradient_popup.cpp",
+    "editor/widgets/gradient_editor/gradient_cursor.cpp",
+    "editor/widgets/gradient_editor/gradient_editor.cpp",
+    "editor/widgets/gradient_editor/gradient_popup.cpp",
 
     #"editor/widgets//.cpp",
     #"editor/widgets//.cpp",

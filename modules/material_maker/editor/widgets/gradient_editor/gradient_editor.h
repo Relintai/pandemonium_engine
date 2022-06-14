@@ -6,12 +6,15 @@
 #include "core/reference.h"
 #include "core/undo_redo.h"
 #include "core/variant.h"
+#include "core/vector.h"
 
 #include "scene/gui/control.h"
 
 class MMGraphNode;
 class GradientBase;
 class GradientCursor;
+class TextureRect;
+class OptionButton;
 
 class GradientEditor : public Control {
 	GDCLASS(GradientEditor, Control);
@@ -41,7 +44,6 @@ public:
 	void save_color_state();
 
 	void undo_redo_save_color_state();
-	void set_undo_redo(const UndoRedo &ur);
 
 	void update_cursors();
 	void update_value();
@@ -49,9 +51,9 @@ public:
 	void add_cursor(const float x, const Color &color);
 	void _gui_input(const Ref<InputEvent> &ev);
 
-	void select_color(const GradientCursor *cursor, const Vector2 &position);
+	void select_color(GradientCursor *cursor, const Vector2 &position);
 
-	Array get_sorted_cursors();
+	Vector<GradientCursor *> get_sorted_cursors();
 	void generate_preview_image();
 
 	Color get_gradient_color(const float x);
@@ -72,6 +74,8 @@ protected:
 	UndoRedo *_undo_redo;
 	PoolRealArray _saved_points;
 	GradientCursor *active_cursor;
+	TextureRect *gradient;
+	OptionButton *interpolation;
 };
 
 #endif

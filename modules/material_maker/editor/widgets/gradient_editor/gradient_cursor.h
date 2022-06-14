@@ -27,13 +27,15 @@ public:
 
 	float get_cursor_position();
 
-	static bool sort(GradientCursor *a, GradientCursor *b);
+	bool operator<(const GradientCursor &b) const;
 
 	bool can_drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) const;
 	void drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from);
 
 	GradientCursor();
 	~GradientCursor();
+
+	static const int WIDTH;
 
 protected:
 	void _notification(int p_what);
@@ -43,8 +45,6 @@ protected:
 	Color color;
 	bool sliding;
 	Label *label;
-
-	const int WIDTH = 10;
 };
 
 #endif
