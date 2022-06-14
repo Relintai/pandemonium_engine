@@ -1,6 +1,8 @@
 
 #include "polygon_control_point.h"
 
+#include "polygon_editor.h"
+
 bool PolygonControlPoint::get_moving() const {
 	return moving;
 }
@@ -17,7 +19,7 @@ void PolygonControlPoint::_draw() {
 }
 
 void PolygonControlPoint::initialize(const Vector2 &p) {
-	set_rect_position(get_parent().transform_point(p) - OFFSET);
+	set_position(polygon_editor->transform_point(p) - OFFSET);
 }
 
 void PolygonControlPoint::_on_ControlPoint_gui_input(const Ref<InputEvent> &event) {
@@ -30,7 +32,7 @@ void PolygonControlPoint::_on_ControlPoint_gui_input(const Ref<InputEvent> &even
 				moving = true;
 			} else {
 				moving = false;
-				get_parent().update_controls();
+				polygon_editor->update_controls();
 			}
 		} else if (iemb->get_button_index() == BUTTON_RIGHT && event->is_pressed()) {
 			emit_signal("removed", get_index());
@@ -44,6 +46,7 @@ void PolygonControlPoint::_on_ControlPoint_gui_input(const Ref<InputEvent> &even
 }
 
 PolygonControlPoint::PolygonControlPoint() {
+	polygon_editor = nullptr;
 	moving = false;
 
 	set_custom_minimum_size(Vector2(7, 7));

@@ -5,6 +5,8 @@
 
 #include "core/os/input_event.h"
 
+class PolygonEditor;
+
 class PolygonControlPoint : public Control {
 	GDCLASS(PolygonControlPoint, Control);
 
@@ -19,6 +21,8 @@ public:
 
 	PolygonControlPoint();
 	~PolygonControlPoint();
+
+	PolygonEditor *polygon_editor;
 
 	const Vector2 OFFSET = Vector2(3, 3);
 

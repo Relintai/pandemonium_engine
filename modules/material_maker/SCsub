@@ -41,11 +41,15 @@ sources = [
     "editor/widgets/gradient_editor/gradient_editor.cpp",
     "editor/widgets/gradient_editor/gradient_popup.cpp",
 
-    #"editor/widgets//.cpp",
-    #"editor/widgets//.cpp",
-    #"editor/widgets//.cpp",
-    #"editor/widgets//.cpp",
-    #"editor/widgets//.cpp",
+    "editor/widgets/image_picker_button/image_picker_button.cpp",
+
+    "editor/widgets/mm_dnd_color_picker_button/mm_dnd_color_picker_button.cpp",
+    
+    "editor/widgets/polygon_edit/polygon_control_point.cpp",
+    "editor/widgets/polygon_edit/polygon_dialog.cpp",
+    "editor/widgets/polygon_edit/polygon_edit.cpp",
+    "editor/widgets/polygon_edit/polygon_editor.cpp",
+    "editor/widgets/polygon_edit/polygon_view.cpp",
 ]
 
 

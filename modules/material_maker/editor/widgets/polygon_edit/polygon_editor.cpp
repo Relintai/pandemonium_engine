@@ -26,6 +26,7 @@ void PolygonEditor::update_controls() {
 		Vector2 p = points[i];
 
 		PolygonControlPoint *control_point = memnew(PolygonControlPoint);
+		control_point->polygon_editor = this;
 
 		add_child(control_point);
 		control_point->initialize(p);
