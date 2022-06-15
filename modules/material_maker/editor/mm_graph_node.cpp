@@ -897,14 +897,14 @@ void MMGraphNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_slot_label", "getter", "setter", "slot_name"), &MMGraphNode::add_slot_label);
 	ClassDB::bind_method(D_METHOD("add_slot_line_edit", "getter", "setter", "slot_name", "placeholder"), &MMGraphNode::add_slot_line_edit, String());
 	ClassDB::bind_method(D_METHOD("add_slot_enum", "getter", "setter", "slot_name", "values"), &MMGraphNode::add_slot_enum);
-	ClassDB::bind_method(D_METHOD("add_slot_int", "getter", "setter", "slot_name", "prange"), &MMGraphNode::add_slot_int, Vector2(-1000, -1000));
+	ClassDB::bind_method(D_METHOD("add_slot_int", "getter", "setter", "slot_name", "prange"), &MMGraphNode::add_slot_int, Vector2(-1000, 1000));
 	ClassDB::bind_method(D_METHOD("add_slot_bool", "getter", "setter", "slot_name"), &MMGraphNode::add_slot_bool);
 	ClassDB::bind_method(D_METHOD("add_slot_label_universal", "property"), &MMGraphNode::add_slot_label_universal);
 	ClassDB::bind_method(D_METHOD("add_slot_int_universal", "property"), &MMGraphNode::add_slot_int_universal);
-	ClassDB::bind_method(D_METHOD("add_slot_float", "getter", "setter", "slot_name", "step", "prange"), &MMGraphNode::add_slot_float, 0.1, Vector2(-1000, -1000));
+	ClassDB::bind_method(D_METHOD("add_slot_float", "getter", "setter", "slot_name", "step", "prange"), &MMGraphNode::add_slot_float, 0.1, Vector2(-1000, 1000));
 	ClassDB::bind_method(D_METHOD("add_slot_float_universal", "property"), &MMGraphNode::add_slot_float_universal);
-	ClassDB::bind_method(D_METHOD("add_slot_vector2", "getter", "setter", "slot_name", "step", "prange"), &MMGraphNode::add_slot_vector2, 0.1, Vector2(-1000, -1000));
-	ClassDB::bind_method(D_METHOD("add_slot_vector3", "getter", "setter", "slot_name", "step", "prange"), &MMGraphNode::add_slot_vector3, 0.1, Vector2(-1000, -1000));
+	ClassDB::bind_method(D_METHOD("add_slot_vector2", "getter", "setter", "slot_name", "step", "prange"), &MMGraphNode::add_slot_vector2, 0.1, Vector2(-1000, 1000));
+	ClassDB::bind_method(D_METHOD("add_slot_vector3", "getter", "setter", "slot_name", "step", "prange"), &MMGraphNode::add_slot_vector3, 0.1, Vector2(-1000, 1000));
 	ClassDB::bind_method(D_METHOD("add_slot_vector2_universal", "property"), &MMGraphNode::add_slot_vector2_universal);
 	ClassDB::bind_method(D_METHOD("add_slot", "input_type", "output_type", "getter", "setter", "control"), &MMGraphNode::add_slot);
 
