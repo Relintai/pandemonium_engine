@@ -1,13 +1,13 @@
 #ifndef CURVE_EDIT_H
 #define CURVE_EDIT_H
 
-#include "scene/gui/control.h"
+#include "scene/gui/button.h"
 
 class CurveView;
 class CurveBase;
 
-class CurveEdit : public Control {
-	GDCLASS(CurveEdit, Control);
+class CurveEdit : public Button {
+	GDCLASS(CurveEdit, Button);
 
 public:
 	Ref<CurveBase> get_value();
