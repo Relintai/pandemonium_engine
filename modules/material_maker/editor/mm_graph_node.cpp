@@ -18,7 +18,7 @@
 #include "scene/gui/spin_box.h"
 #include "scene/gui/texture_rect.h"
 
-#include "widgets/curve_edit/curve_editor.h"
+#include "widgets/curve_edit/curve_edit.h"
 #include "widgets/gradient_editor/gradient_editor.h"
 #include "widgets/image_picker_button/image_picker_button.h"
 #include "widgets/polygon_edit/polygon_edit.h"
@@ -179,9 +179,9 @@ int MMGraphNode::add_slot_polygon() {
 int MMGraphNode::add_slot_curve() {
 	ERR_FAIL_COND_V(!_node->is_class("CurveBase"), 0);
 
-	MMCurveEditor *ce = memnew(MMCurveEditor);
+	CurveEdit *ce = memnew(CurveEdit);
 	int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, "", "", ce);
-	ce->set_curve(_node);
+	ce->set_value(_node);
 	//ge.texture = _node.call(getter, _material, slot_idx);
 	//properties[slot_idx].append(ge.texture);
 	return slot_idx;
