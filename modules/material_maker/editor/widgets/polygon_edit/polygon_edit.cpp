@@ -59,15 +59,13 @@ void PolygonEdit::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("updated", PropertyInfo(Variant::OBJECT, "polygon", PROPERTY_HINT_RESOURCE_TYPE, "PolygonBase")));
 
 	ClassDB::bind_method(D_METHOD("get_closed"), &PolygonEdit::get_closed);
-	ClassDB::bind_method(D_METHOD("set_closed", "value"), &PolygonEdit::set_closed);
+	ClassDB::bind_method(D_METHOD("set_closed", "value"), &PolygonEdit::set_closed, true);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "closed"), "set_closed", "get_closed");
 
 	ClassDB::bind_method(D_METHOD("get_value"), &PolygonEdit::get_value);
 	ClassDB::bind_method(D_METHOD("set_value", "value"), &PolygonEdit::set_value);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "value", PROPERTY_HINT_RESOURCE_TYPE, "PolygonBase"), "set_value", "get_value");
 
-	ClassDB::bind_method(D_METHOD("set_closed", "c"), &PolygonEdit::set_closed, true);
-	ClassDB::bind_method(D_METHOD("set_value", "v"), &PolygonEdit::set_value);
 	ClassDB::bind_method(D_METHOD("_on_PolygonEdit_pressed"), &PolygonEdit::_on_PolygonEdit_pressed);
 	ClassDB::bind_method(D_METHOD("on_value_changed", "v"), &PolygonEdit::on_value_changed);
 }
