@@ -5614,6 +5614,17 @@ void MMAlgos::register_node_class(const String &category, const String &cls) {
 			return;
 		}
 	}
+
+	MMNodeRegistryCategory categ;
+	categ.category_name = category;
+
+	MMNodeRegistryEntry e;
+	e.type = MMNODE_REGISTRY_TYPE_CLASS;
+	e.data = cls;
+
+	categ.entries.push_back(e);
+
+	mm_node_registry.push_back(categ);
 }
 void MMAlgos::unregister_node_class(const String &category, const String &cls) {
 	for (int i = 0; i < mm_node_registry.size(); ++i) {
@@ -5623,6 +5634,11 @@ void MMAlgos::unregister_node_class(const String &category, const String &cls) {
 			for (int j = 0; j < categ.entries.size(); ++j) {
 				if (categ.entries[j].data == cls) {
 					mm_node_registry.write[j].entries.remove(j);
+
+					if (categ.entries.size() == 0) {
+						mm_node_registry.remove(i);
+					}
+
 					return;
 				}
 			}
@@ -5648,6 +5664,17 @@ void MMAlgos::register_node_script(const String &category, const String &file_pa
 			return;
 		}
 	}
+
+	MMNodeRegistryCategory categ;
+	categ.category_name = category;
+
+	MMNodeRegistryEntry e;
+	e.type = MMNODE_REGISTRY_TYPE_SCRIPT;
+	e.data = file_path;
+
+	categ.entries.push_back(e);
+
+	mm_node_registry.push_back(categ);
 }
 void MMAlgos::unregister_node_script(const String &category, const String &file_path) {
 	for (int i = 0; i < mm_node_registry.size(); ++i) {
@@ -5657,6 +5684,11 @@ void MMAlgos::unregister_node_script(const String &category, const String &file_
 			for (int j = 0; j < categ.entries.size(); ++j) {
 				if (categ.entries[j].data == file_path) {
 					mm_node_registry.write[j].entries.remove(j);
+
+					if (categ.entries.size() == 0) {
+						mm_node_registry.remove(i);
+					}
+
 					return;
 				}
 			}
