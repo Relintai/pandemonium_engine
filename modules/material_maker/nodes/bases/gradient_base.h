@@ -17,6 +17,7 @@ public:
 	void set_points(const PoolRealArray &val);
 
 	Color get_gradient_color(const float x);
+	virtual Color _get_gradient_color(const float x);
 
 	float get_point_value(const int index);
 	Color get_point_color(const int index);

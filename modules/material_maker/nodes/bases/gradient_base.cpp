@@ -20,6 +20,10 @@ void GradientBase::set_points(const PoolRealArray &val) {
 }
 
 Color GradientBase::get_gradient_color(const float x) {
+	return call("_get_gradient_color", x);
+}
+
+Color GradientBase::_get_gradient_color(const float x) {
 	//	if interpolation_type == 0:;
 	//		return Gradients.gradient_type_1(x, points);
 	//	elif interpolation_type == 1:;
@@ -78,7 +82,9 @@ void GradientBase::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_points", "value"), &GradientBase::set_points);
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_REAL_ARRAY, "points"), "set_points", "get_points");
 
+	BIND_VMETHOD(MethodInfo(Variant::COLOR, "_get_gradient_color", PropertyInfo(Variant::REAL, "x")));
 	ClassDB::bind_method(D_METHOD("get_gradient_color", "x"), &GradientBase::get_gradient_color);
+	ClassDB::bind_method(D_METHOD("_get_gradient_color", "x"), &GradientBase::_get_gradient_color);
 
 	ClassDB::bind_method(D_METHOD("get_point_value", "index"), &GradientBase::get_point_value);
 	ClassDB::bind_method(D_METHOD("get_point_color", "index"), &GradientBase::get_point_color);
