@@ -57,6 +57,9 @@ PolygonControlPoint::~PolygonControlPoint() {
 
 void PolygonControlPoint::_notification(int p_what) {
 	switch (p_what) {
+		case NOTIFICATION_POSTINITIALIZE: {
+			connect("gui_input", this, "_on_ControlPoint_gui_input");
+		} break;
 		case NOTIFICATION_DRAW: {
 			_draw();
 		} break;

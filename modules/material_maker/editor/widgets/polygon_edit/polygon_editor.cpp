@@ -42,9 +42,7 @@ void PolygonEditor::_on_ControlPoint_moved(const int index) {
 	PolygonControlPoint *control_point = Object::cast_to<PolygonControlPoint>(get_child(index));
 
 	PoolVector2Array points = polygon->get_points();
-
 	points.set(index, reverse_transform_point(control_point->get_position() + control_point->OFFSET));
-
 	polygon->set_points(points);
 
 	update();
