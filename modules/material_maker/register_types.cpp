@@ -62,7 +62,7 @@ void register_material_maker_types() {
 	Engine::get_singleton()->add_singleton(Engine::Singleton("MMAlgos", _MMAlgos::get_singleton()));
 
 #if TOOLS_ENABLED
-	//EditorPlugins::add_by_type<MaterialMakerEditorPlugin>();
+	EditorPlugins::add_by_type<MaterialMakerEditorPlugin>();
 #endif
 }
 
