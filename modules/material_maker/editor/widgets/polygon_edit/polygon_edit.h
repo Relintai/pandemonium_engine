@@ -3,13 +3,13 @@
 
 #include "core/reference.h"
 
-#include "scene/gui/control.h"
+#include "scene/gui/button.h"
 
 class PolygonBase;
 class PolygonView;
 
-class PolygonEdit : public Control {
-	GDCLASS(PolygonEdit, Control);
+class PolygonEdit : public Button {
+	GDCLASS(PolygonEdit, Button);
 
 public:
 	bool get_closed() const;
@@ -25,6 +25,8 @@ public:
 	~PolygonEdit();
 
 protected:
+	void _notification(int p_what);
+
 	static void _bind_methods();
 
 	bool closed;

@@ -55,6 +55,12 @@ PolygonEdit::PolygonEdit() {
 PolygonEdit::~PolygonEdit() {
 }
 
+void PolygonEdit::_notification(int p_what) {
+	if (p_what == NOTIFICATION_POSTINITIALIZE) {
+		connect("pressed", this, "_on_PolygonEdit_pressed");
+	}
+}
+
 void PolygonEdit::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("updated", PropertyInfo(Variant::OBJECT, "polygon", PROPERTY_HINT_RESOURCE_TYPE, "PolygonBase")));
 
