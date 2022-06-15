@@ -1020,10 +1020,10 @@ void _MMAlgos::unregister_node_class(const String &category, const String &cls) 
 }
 
 void _MMAlgos::register_node_script(const String &category, const String &file_path) {
-	MMAlgos::register_node_class(category, file_path);
+	MMAlgos::register_node_script(category, file_path);
 }
 void _MMAlgos::unregister_node_script(const String &category, const String &file_path) {
-	MMAlgos::unregister_node_class(category, file_path);
+	MMAlgos::unregister_node_script(category, file_path);
 }
 
 _MMAlgos *_MMAlgos::get_singleton() {
