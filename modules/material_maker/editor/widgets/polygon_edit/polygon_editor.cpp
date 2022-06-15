@@ -80,6 +80,7 @@ void PolygonEditor::_on_resize() {
 }
 
 PolygonEditor::PolygonEditor() {
+	set_anchors_and_margins_preset(PRESET_WIDE, PRESET_MODE_MINSIZE, 10);
 }
 
 PolygonEditor::~PolygonEditor() {
@@ -87,6 +88,7 @@ PolygonEditor::~PolygonEditor() {
 
 void PolygonEditor::_notification(int p_what) {
 	if (p_what == NOTIFICATION_POSTINITIALIZE) {
+		connect("gui_input", this, "_on_PolygonEditor_gui_input");
 		update_controls();
 	}
 }
