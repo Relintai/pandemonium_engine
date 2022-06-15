@@ -5,6 +5,11 @@
 
 #include "polygon_editor.h"
 
+#include "scene/gui/box_container.h"
+#include "scene/gui/button.h"
+#include "scene/gui/margin_container.h"
+#include "scene/gui/separator.h"
+
 bool PolygonDialog::get_closed() const {
 	return closed;
 }
@@ -71,9 +76,66 @@ PolygonDialog::PolygonDialog() {
 	closed = true;
 
 	set_title("Edit polygon");
+
+	set_size(Vector2(300, 300));
+	//set_resizable(true);
+
+	MarginContainer *main_mc = memnew(MarginContainer);
+	main_mc->set_anchors_and_margins_preset(PRESET_WIDE);
+	main_mc->set("custom_constants/margin_right", 4);
+	main_mc->set("custom_constants/margin_top", 4);
+	main_mc->set("custom_constants/margin_left", 4);
+	main_mc->set("custom_constants/margin_bottom", 4);
+	add_child(main_mc);
+
+	VBoxContainer *mvbc = memnew(VBoxContainer);
+	main_mc->add_child(mvbc);
+
+	MarginContainer *mc = memnew(MarginContainer);
+	mc->set_clip_contents(true);
+	mc->set_h_size_flags(SIZE_EXPAND_FILL);
+	mc->set_v_size_flags(SIZE_EXPAND_FILL);
+
+	mc->set("custom_constants/margin_right", 4);
+	mc->set("custom_constants/margin_top", 4);
+	mc->set("custom_constants/margin_left", 4);
+	mc->set("custom_constants/margin_bottom", 4);
+
+	mvbc->add_child(mc);
+
+	_polygon_editor = memnew(PolygonEditor);
+	_polygon_editor->set_v_size_flags(SIZE_EXPAND_FILL);
+	mc->add_child(_polygon_editor);
+
+	HSeparator *hsep = memnew(HSeparator);
+	mvbc->add_child(hsep);
+
+	HBoxContainer *bhbc = memnew(HBoxContainer);
+	mvbc->add_child(bhbc);
+
+	Control *spacer = memnew(Control);
+	spacer->set_h_size_flags(SIZE_EXPAND_FILL);
+	bhbc->add_child(spacer);
+
+	_ok_button = memnew(Button);
+	_ok_button->set_text("OK");
+	bhbc->add_child(_ok_button);
+
+	_cancel_button = memnew(Button);
+	_cancel_button->set_text("Cancel");
+	bhbc->add_child(_cancel_button);
 }
 
 PolygonDialog::~PolygonDialog() {
+}
+
+void PolygonDialog::_notification(int p_what) {
+	if (p_what == NOTIFICATION_POSTINITIALIZE) {
+		_ok_button->connect("pressed", this, "_on_OK_pressed");
+		_cancel_button->connect("pressed", this, "_on_Cancel_pressed");
+		connect("popup_hide", this, "_on_CurveDialog_popup_hide");
+		_polygon_editor->connect("value_changed", this, "_on_PolygonEditor_value_changed");
+	}
 }
 
 void PolygonDialog::_bind_methods() {
