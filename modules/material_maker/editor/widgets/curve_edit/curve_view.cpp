@@ -118,7 +118,6 @@ void CurveView::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_on_resize"), &CurveView::_on_resize);
 
-	ClassDB::bind_method(D_METHOD("set_curve", "val"), &CurveView::set_curve);
 	ClassDB::bind_method(D_METHOD("transform_point", "p"), &CurveView::transform_point);
 	ClassDB::bind_method(D_METHOD("reverse_transform_point", "p"), &CurveView::reverse_transform_point);
 }
