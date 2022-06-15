@@ -26,7 +26,7 @@ Vector<Variant> MMNode::get_input_properties() {
 void MMNode::set_input_properties(const Vector<Variant> &val) {
 	input_properties.clear();
 	for (int i = 0; i < val.size(); i++) {
-		Ref<MMNode> e = Ref<MMNode>(val[i]);
+		Ref<MMNodeUniversalProperty> e = Ref<MMNodeUniversalProperty>(val[i]);
 		input_properties.push_back(e);
 	}
 }
@@ -42,7 +42,7 @@ Vector<Variant> MMNode::get_output_properties() {
 void MMNode::set_output_properties(const Vector<Variant> &val) {
 	output_properties.clear();
 	for (int i = 0; i < val.size(); i++) {
-		Ref<MMNode> e = Ref<MMNode>(val[i]);
+		Ref<MMNodeUniversalProperty> e = Ref<MMNodeUniversalProperty>(val[i]);
 		output_properties.push_back(e);
 	}
 }
