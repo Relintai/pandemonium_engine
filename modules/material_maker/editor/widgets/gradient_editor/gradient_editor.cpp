@@ -201,6 +201,10 @@ void MMGradientEditor::select_color(GradientCursor *cursor, const Vector2 &posit
 
 // Calculating a color from the gradient and generating the shader;
 
+struct GradientCursorCustomSorter {
+	_FORCE_INLINE_ bool operator()(const GradientCursor *a, const GradientCursor *b) const { return a->operator<(*b); }
+};
+
 Vector<GradientCursor *> MMGradientEditor::get_sorted_cursors() {
 	Vector<GradientCursor *> array;
 
@@ -212,7 +216,7 @@ Vector<GradientCursor *> MMGradientEditor::get_sorted_cursors() {
 		}
 	}
 
-	array.sort();
+	array.sort_custom<GradientCursorCustomSorter>();
 
 	return array;
 }
