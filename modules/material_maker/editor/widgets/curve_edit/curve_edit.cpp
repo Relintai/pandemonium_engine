@@ -13,7 +13,6 @@ Ref<CurveBase> CurveEdit::get_value() {
 void CurveEdit::set_value(const Ref<CurveBase> &v) {
 	value = v;
 	_curve_view->set_curve(value);
-	_curve_view->update();
 }
 
 void CurveEdit::_on_CurveEdit_pressed() {
@@ -34,7 +33,6 @@ CurveEdit::CurveEdit() {
 	set_focus_mode(FOCUS_CLICK);
 
 	_curve_view = memnew(CurveView);
-	_curve_view->set_name("CurveView");
 	add_child(_curve_view);
 	_curve_view->set_mouse_filter(MOUSE_FILTER_IGNORE);
 }
@@ -49,7 +47,6 @@ void CurveEdit::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_value", "value"), &CurveEdit::set_value);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "value", PROPERTY_HINT_RESOURCE_TYPE, "CurveBase"), "set_value", "get_value");
 
-	ClassDB::bind_method(D_METHOD("set_value", "v"), &CurveEdit::set_value);
 	ClassDB::bind_method(D_METHOD("_on_CurveEdit_pressed"), &CurveEdit::_on_CurveEdit_pressed);
 	ClassDB::bind_method(D_METHOD("on_value_changed", "v"), &CurveEdit::on_value_changed);
 }
