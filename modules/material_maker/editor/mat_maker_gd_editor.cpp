@@ -51,9 +51,7 @@ void MatMakerGDEditor::set_ignore_material_change_event(const int val) {
 void MatMakerGDEditor::ignore_changes(const bool val) {
 	if (val) {
 		_ignore_material_change_event += 1;
-	}
-
-	else {
+	} else {
 		_ignore_material_change_event -= 1;
 	}
 }
@@ -151,14 +149,20 @@ void MatMakerGDEditor::recreate() {
 				Ref<MMNodeUniversalProperty> ip = n->input_properties[j];
 
 				if (ip.is_valid()) {
+					Ref<MMNodeUniversalProperty> target_ip = ip->get_input_property();
+
+					if (!target_ip.is_valid()) {
+						continue;
+					}
+
 					MMGraphNode *input_node = find_graph_node_for(n);
-					MMGraphNode *output_node = find_graph_node_for(ip->get_input_property()->get_owner());
+					MMGraphNode *output_node = find_graph_node_for(target_ip->get_owner());
 
 					ERR_CONTINUE(!input_node);
 					ERR_CONTINUE(!output_node);
 
 					int to_slot = input_node->get_input_property_graph_node_slot_index(ip);
-					int from_slot = output_node->get_output_property_graph_node_slot_index(ip->get_input_property());
+					int from_slot = output_node->get_output_property_graph_node_slot_index(target_ip);
 					_graph_edit->connect_node(output_node->get_name(), from_slot, input_node->get_name(), to_slot);
 				}
 			}
