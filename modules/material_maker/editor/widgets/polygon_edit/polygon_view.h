@@ -12,7 +12,7 @@ class PolygonView : public Control {
 
 public:
 	Ref<PolygonBase> get_polygon();
-	void set_polygon(const Ref<PolygonBase> &val);
+	virtual void set_polygon(const Ref<PolygonBase> &val);
 
 	Vector2 get_draw_size();
 	void set_draw_size(const Vector2 &val);
@@ -27,7 +27,7 @@ public:
 	Vector2 reverse_transform_point(const Vector2 &p);
 
 	void _draw();
-	void _on_resize();
+	virtual void _on_resize();
 
 	PolygonView();
 	~PolygonView();

@@ -94,11 +94,9 @@ void PolygonEditor::_notification(int p_what) {
 void PolygonEditor::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("value_changed", PropertyInfo(Variant::OBJECT, "value", PROPERTY_HINT_RESOURCE_TYPE, "PolygonBase")));
 
-	ClassDB::bind_method(D_METHOD("set_polygon", "p"), &PolygonEditor::set_polygon);
 	ClassDB::bind_method(D_METHOD("update_controls"), &PolygonEditor::update_controls);
 
 	ClassDB::bind_method(D_METHOD("_on_ControlPoint_moved", "index"), &PolygonEditor::_on_ControlPoint_moved);
 	ClassDB::bind_method(D_METHOD("_on_ControlPoint_removed", "index"), &PolygonEditor::_on_ControlPoint_removed);
 	ClassDB::bind_method(D_METHOD("_on_PolygonEditor_gui_input", "event"), &PolygonEditor::_on_PolygonEditor_gui_input);
-	ClassDB::bind_method(D_METHOD("_on_resize"), &PolygonEditor::_on_resize);
 }
