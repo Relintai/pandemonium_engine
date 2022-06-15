@@ -17,6 +17,8 @@ public:
 	Color get_cursor_color();
 	void set_cursor_color(const Color &val);
 
+	void set_cursor_color_notify(const Color &val);
+
 	bool get_sliding() const;
 	void set_sliding(const bool val);
 

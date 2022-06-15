@@ -191,7 +191,7 @@ void MMGradientEditor::select_color(GradientCursor *cursor, const Vector2 &posit
 
 	ColorPicker *color_picker = color_picker_popup->color_picker;
 	color_picker->set_pick_color(cursor->get_cursor_color());
-	color_picker->connect("color_changed", cursor, "set_cursor_color");
+	color_picker->connect("color_changed", cursor, "set_cursor_color_notify");
 
 	color_picker_popup->set_position(position);
 	color_picker_popup->connect("popup_hide", this, "undo_redo_save_color_state");
