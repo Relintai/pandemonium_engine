@@ -139,7 +139,6 @@ void GradientCursor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_gui_input", "ev"), &GradientCursor::_gui_input);
 
 	ClassDB::bind_method(D_METHOD("get_cursor_position"), &GradientCursor::get_cursor_position);
-	ClassDB::bind_method(D_METHOD("set_color", "c"), &GradientCursor::set_color);
 
 	ClassDB::bind_method(D_METHOD("can_drop_data_fw", "point", "data", "from"), &GradientCursor::can_drop_data_fw);
 	ClassDB::bind_method(D_METHOD("drop_data_fw", "point", "data", "from"), &GradientCursor::drop_data_fw);
