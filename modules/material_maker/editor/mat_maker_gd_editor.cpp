@@ -300,7 +300,7 @@ MatMakerGDEditor::MatMakerGDEditor() {
 	_plugin = nullptr;
 	_undo_redo = nullptr;
 
-	set_name("MatMakerGDEditor");
+	set_custom_minimum_size(Vector2(0, 200));
 	set_anchors_and_margins_preset(LayoutPreset::PRESET_WIDE);
 	set_h_size_flags(SIZE_EXPAND_FILL);
 	set_v_size_flags(SIZE_EXPAND_FILL);
