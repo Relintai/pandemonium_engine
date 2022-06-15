@@ -292,8 +292,8 @@ MMGradientEditor::MMGradientEditor() {
 	String bg_shader_code = "shader_type canvas_item;\n"
 							"\n"
 							"void fragment() {\n"
-							"	COLOR = vec4(vec3(2.0*fract(0.5*(floor(0.12*FRAGCOORD.x)+floor(0.125*FRAGCOORD.y)))), 1.0);/n"
-							"}";
+							"	COLOR = vec4(vec3(2.0*fract(0.5*(floor(0.12*FRAGCOORD.x)+floor(0.125*FRAGCOORD.y)))), 1.0);\n"
+							"}\n";
 
 	Ref<Shader> bg_shader;
 	bg_shader.instance();
@@ -315,22 +315,22 @@ MMGradientEditor::MMGradientEditor() {
 	gradient_control_prop_theme.instance();
 	gradient->set_theme(gradient_control_prop_theme);
 
-	OptionButton *interpolation_control = memnew(OptionButton);
-	interpolation_control->set_scale(Vector2(0.5, 0.5));
+	interpolation = memnew(OptionButton);
+	interpolation->set_scale(Vector2(0.5, 0.5));
 
-	interpolation_control->add_item("0", 0);
-	interpolation_control->add_item("1", 1);
-	interpolation_control->add_item("2", 2);
-	interpolation_control->add_item("3", 3);
+	interpolation->add_item("0", 0);
+	interpolation->add_item("1", 1);
+	interpolation->add_item("2", 2);
+	interpolation->add_item("3", 3);
 
 	//Ref<AtlasTexture> interpolation_control_prop_icon;
 	//interpolation_control_prop_icon.instance();
-	//interpolation_control->set_icon(interpolation_control_prop_icon);
-	//interpolation_control->set("icon", interpolation_control_prop_icon);
+	//interpolation->set_icon(interpolation_control_prop_icon);
+	//interpolation->set("icon", interpolation_control_prop_icon);
 	//interpolation_control property items TYPE_ARRAY value: [, [AtlasTexture:19169], False, 0, Null, , [AtlasTexture:19168], False, 1, Null, , [AtlasTexture:19170], False, 2, Null, , [AtlasTexture:19171], False, 3, Null]
-	interpolation_control->select(1);
-	interpolation_control->connect("item_selected", this, "_on_Interpolation_item_selected");
-	add_child(interpolation_control);
+	interpolation->select(1);
+	interpolation->connect("item_selected", this, "_on_Interpolation_item_selected");
+	add_child(interpolation);
 
 	Label *value_control = memnew(Label);
 	value_control->set_align(Label::ALIGN_CENTER);
@@ -382,7 +382,6 @@ void MMGradientEditor::_bind_methods() {
 
 	//ClassDB::bind_method(D_METHOD("set_undo_redo", "ur"), &MMGradientEditor::set_undo_redo);
 
-	ClassDB::bind_method(D_METHOD("set_value", "v"), &MMGradientEditor::set_value);
 	ClassDB::bind_method(D_METHOD("update_cursors"), &MMGradientEditor::update_cursors);
 	ClassDB::bind_method(D_METHOD("update_value"), &MMGradientEditor::update_value);
 	ClassDB::bind_method(D_METHOD("add_cursor", "x", " color"), &MMGradientEditor::add_cursor);
