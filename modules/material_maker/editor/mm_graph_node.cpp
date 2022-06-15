@@ -92,13 +92,6 @@ void MMGraphNode::set_ignore_change_event(const bool val) {
 	_ignore_change_event = val;
 }
 
-void MMGraphNode::_init() {
-	set_show_close_button(true);
-
-	connect("dragged", this, "on_dragged");
-	connect("close_request", this, "on_close_request");
-}
-
 void MMGraphNode::ignore_changes(const bool val) {
 	_ignore_change_event = val;
 	_editor_node->ignore_changes(val);
@@ -634,8 +627,8 @@ void MMGraphNode::on_dragged(const Vector2 &from, const Vector2 &to) {
 		ignore_changes(true);
 		//_node.set_graph_position(offset);
 		_undo_redo->create_action("MMGD: value changed");
-		_undo_redo->add_do_method(*_node, "set_graph_position", to);
-		_undo_redo->add_undo_method(*_node, "set_graph_position", from);
+		_undo_redo->add_do_method(_node.ptr(), "set_graph_position", to);
+		_undo_redo->add_undo_method(_node.ptr(), "set_graph_position", from);
 		_undo_redo->commit_action();
 		ignore_changes(false);
 	}
@@ -854,6 +847,14 @@ MMGraphNode::MMGraphNode() {
 
 MMGraphNode::~MMGraphNode() {
 }
+void MMGraphNode::_notification(int p_what) {
+	if (p_what == NOTIFICATION_POSTINITIALIZE) {
+		set_show_close_button(true);
+
+		connect("dragged", this, "on_dragged");
+		connect("close_request", this, "on_close_request");
+	}
+}
 
 void MMGraphNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_gradient_editor_scene"), &MMGraphNode::get_gradient_editor_scene);
@@ -881,8 +882,6 @@ void MMGraphNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_ignore_change_event"), &MMGraphNode::get_ignore_change_event);
 	ClassDB::bind_method(D_METHOD("set_ignore_change_event", "value"), &MMGraphNode::set_ignore_change_event);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "_ignore_change_event"), "set_ignore_change_event", "get_ignore_change_event");
-
-	ClassDB::bind_method(D_METHOD("_init"), &MMGraphNode::_init);
 
 	ClassDB::bind_method(D_METHOD("ignore_changes", "val"), &MMGraphNode::ignore_changes);
 

@@ -45,7 +45,6 @@ public:
 	bool get_ignore_change_event() const;
 	void set_ignore_change_event(const bool val);
 
-	void _init();
 	void ignore_changes(const bool val);
 
 	int add_slot_texture(const String &getter, const String &setter);
@@ -105,6 +104,8 @@ public:
 	~MMGraphNode();
 
 protected:
+	void _notification(int p_what);
+
 	static void _bind_methods();
 
 	struct MMGraphNodeEntry {
