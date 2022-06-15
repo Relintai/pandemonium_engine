@@ -102,6 +102,8 @@ void MatMakerGDEditor::_notification(int p_what) {
 
 		_graph_edit->connect("connection_request", this, "on_graph_edit_connection_request");
 		_graph_edit->connect("disconnection_request", this, "on_graph_edit_disconnection_request");
+
+		_create_popup->connect("ok_pressed", this, "_on_AddPopup_ok_pressed");
 	}
 }
 
