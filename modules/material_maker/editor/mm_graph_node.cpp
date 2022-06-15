@@ -153,6 +153,8 @@ int MMGraphNode::add_slot_image_path_universal(const Ref<MMNodeUniversalProperty
 }
 
 int MMGraphNode::add_slot_gradient() {
+	ERR_FAIL_COND_V(!_node->is_class("GradientBase"), 0);
+
 	MMGradientEditor *ge = memnew(MMGradientEditor);
 	ge->set_graph_node(this);
 	ge->set_undo_redo(_undo_redo);
@@ -164,6 +166,8 @@ int MMGraphNode::add_slot_gradient() {
 }
 
 int MMGraphNode::add_slot_polygon() {
+	ERR_FAIL_COND_V(!_node->is_class("PolygonBase"), 0);
+
 	PolygonEditor *pe = memnew(PolygonEditor);
 	int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, "", "", pe);
 	pe->set_polygon(_node);
@@ -173,6 +177,8 @@ int MMGraphNode::add_slot_polygon() {
 }
 
 int MMGraphNode::add_slot_curve() {
+	ERR_FAIL_COND_V(!_node->is_class("CurveBase"), 0);
+
 	MMCurveEditor *ce = memnew(MMCurveEditor);
 	int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, "", "", ce);
 	ce->set_curve(_node);
