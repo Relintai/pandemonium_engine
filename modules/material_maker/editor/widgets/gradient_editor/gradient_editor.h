@@ -14,6 +14,7 @@ class MMGraphNode;
 class GradientBase;
 class GradientCursor;
 class TextureRect;
+class Label;
 class OptionButton;
 
 class MMGradientEditor : public Control {
@@ -76,6 +77,7 @@ protected:
 	GradientCursor *active_cursor;
 	TextureRect *gradient;
 	OptionButton *interpolation;
+	Label *cursor_value_label;
 };
 
 #endif

@@ -3,11 +3,11 @@
 #include "gradient_editor.h"
 #include "scene/gui/label.h"
 
-Color GradientCursor::get_color() {
+Color GradientCursor::get_cursor_color() {
 	return color;
 }
 
-void GradientCursor::set_color(const Color &val) {
+void GradientCursor::set_cursor_color(const Color &val) {
 	color = val;
 	MMGradientEditor *ged = Object::cast_to<MMGradientEditor>(get_parent());
 	ERR_FAIL_COND(!ged);
@@ -104,7 +104,7 @@ bool GradientCursor::can_drop_data_fw(const Point2 &p_point, const Variant &p_da
 }
 
 void GradientCursor::drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from) {
-	set_color(p_data);
+	set_cursor_color(p_data);
 }
 
 GradientCursor::GradientCursor() {
@@ -128,9 +128,9 @@ void GradientCursor::_notification(int p_what) {
 }
 
 void GradientCursor::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_color"), &GradientCursor::get_color);
-	ClassDB::bind_method(D_METHOD("set_color", "value"), &GradientCursor::set_color);
-	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "color"), "set_color", "get_color");
+	ClassDB::bind_method(D_METHOD("get_cursor_color"), &GradientCursor::get_cursor_color);
+	ClassDB::bind_method(D_METHOD("set_cursor_color", "value"), &GradientCursor::set_cursor_color);
+	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "cursor_color"), "set_cursor_color", "get_cursor_color");
 
 	ClassDB::bind_method(D_METHOD("get_sliding"), &GradientCursor::get_sliding);
 	ClassDB::bind_method(D_METHOD("set_sliding", "value"), &GradientCursor::set_sliding);

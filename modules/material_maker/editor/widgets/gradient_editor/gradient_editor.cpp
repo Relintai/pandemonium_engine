@@ -135,7 +135,7 @@ void MMGradientEditor::update_value() {
 		GradientCursor *c = sc[i];
 
 		points.push_back(c->get_position().x / (get_size().x - GradientCursor::WIDTH));
-		Color color = c->get_color();
+		Color color = c->get_cursor_color();
 		points.push_back(color.r);
 		points.push_back(color.g);
 		points.push_back(color.b);
@@ -148,13 +148,14 @@ void MMGradientEditor::update_value() {
 
 void MMGradientEditor::add_cursor(const float x, const Color &color) {
 	GradientCursor *cursor = memnew(GradientCursor);
+	cursor->set_label(cursor_value_label);
 	add_child(cursor);
 
 	Vector2 rp = cursor->get_position();
 	rp.x = x;
 
 	cursor->set_position(rp);
-	cursor->set_color(color);
+	cursor->set_cursor_color(color);
 }
 
 void MMGradientEditor::_gui_input(const Ref<InputEvent> &ev) {
@@ -189,8 +190,8 @@ void MMGradientEditor::select_color(GradientCursor *cursor, const Vector2 &posit
 	add_child(color_picker_popup);
 
 	ColorPicker *color_picker = color_picker_popup->color_picker;
-	color_picker->set_pick_color(cursor->get_color());
-	color_picker->connect("color_changed", cursor, "set_color");
+	color_picker->set_pick_color(cursor->get_cursor_color());
+	color_picker->connect("color_changed", cursor, "set_cursor_color");
 
 	color_picker_popup->set_position(position);
 	color_picker_popup->connect("popup_hide", this, "undo_redo_save_color_state");
@@ -332,16 +333,16 @@ MMGradientEditor::MMGradientEditor() {
 	interpolation->connect("item_selected", this, "_on_Interpolation_item_selected");
 	add_child(interpolation);
 
-	Label *value_control = memnew(Label);
-	value_control->set_align(Label::ALIGN_CENTER);
+	cursor_value_label = memnew(Label);
+	cursor_value_label->set_align(Label::ALIGN_CENTER);
 
-	value_control->set("custom_colors/font_color", Color(1, 1, 1, 1));
-	value_control->set("custom_colors/font_color_shadow", Color(0, 0, 0, 1));
-	value_control->set("custom_constants/shadow_offset_x", 1);
-	value_control->set("custom_constants/shadow_offset_y", 1);
-	value_control->set("custom_constants/shadow_as_outline", 1);
+	cursor_value_label->set("custom_colors/font_color", Color(1, 1, 1, 1));
+	cursor_value_label->set("custom_colors/font_color_shadow", Color(0, 0, 0, 1));
+	cursor_value_label->set("custom_constants/shadow_offset_x", 1);
+	cursor_value_label->set("custom_constants/shadow_offset_y", 1);
+	cursor_value_label->set("custom_constants/shadow_as_outline", 1);
 
-	add_child(value_control);
+	add_child(cursor_value_label);
 }
 
 MMGradientEditor::~MMGradientEditor() {

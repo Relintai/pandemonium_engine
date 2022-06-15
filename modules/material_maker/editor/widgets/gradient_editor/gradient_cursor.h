@@ -14,8 +14,8 @@ class GradientCursor : public Control {
 	GDCLASS(GradientCursor, Control);
 
 public:
-	Color get_color();
-	void set_color(const Color &val);
+	Color get_cursor_color();
+	void set_cursor_color(const Color &val);
 
 	bool get_sliding() const;
 	void set_sliding(const bool val);
