@@ -268,7 +268,10 @@ void MatMakerGDEditor::_on_AddPopup_ok_pressed(const int type, const String &dat
 		Ref<Script> script = ResourceLoader::load(data);
 
 		if (script.is_valid() && script->can_instance()) {
-			nnode.instance();
+			nnode = Ref<MMNode>(ClassDB::instance(script->get_instance_base_type()));
+
+			ERR_FAIL_COND(!nnode.is_valid());
+
 			nnode->set_script(script.get_ref_ptr());
 		}
 	}
