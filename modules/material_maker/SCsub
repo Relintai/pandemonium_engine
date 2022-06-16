@@ -59,6 +59,8 @@ sources = [
     "nodes/transform/shear.cpp",
     "nodes/transform/scale.cpp",
     "nodes/transform/rotate.cpp",
+    "nodes/transform/repeat.cpp",
+    "nodes/transform/mirror.cpp",
 ]
 
 if env["tools"]:

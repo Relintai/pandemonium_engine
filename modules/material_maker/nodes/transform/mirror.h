@@ -1,51 +1,41 @@
-#ifndef MIRROR_H
-#define MIRROR_H
+#ifndef MM_MIRROR_H
+#define MM_MIRROR_H
 
+#include "../mm_node.h"
+#include "../mm_node_universal_property.h"
 
-class Mirror : public MMNode {
- GDCLASS(Mirror, MMNode);
+class MMMirror : public MMNode {
+	GDCLASS(MMMirror, MMNode);
 
- public:
+public:
+	Ref<MMNodeUniversalProperty> get_image();
+	void set_image(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_image();
- void set_image(const Ref<Resource> &val);
+	Ref<MMNodeUniversalProperty> get_input();
+	void set_input(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_input();
- void set_input(const Ref<Resource> &val);
+	int get_direction() const;
+	void set_direction(const int val);
 
- int get_direction() const;
- void set_direction(const int val);
+	float get_offset() const;
+	void set_offset(const float val);
 
- float get_offset() const;
- void set_offset(const float val);
+	void _init_properties();
+	void _register_methods(MMGraphNode *mm_graph_node);
+	void _render(const Ref<MMMaterial> &material);
+	Color _get_value_for(const Vector2 &uv, const int pseed);
 
- void _init_properties();
- void _register_methods(const Variant &mm_graph_node);
- void _render(const Variant &material);
- Color _get_value_for(const Vector2 &uv, const int pseed);
- int get_direction();
- void set_direction(const int val);
- float get_offset();
- void set_offset(const float val);
+	MMMirror();
+	~MMMirror();
 
- Mirror();
- ~Mirror();
+protected:
+	static void _bind_methods();
 
- protected:
- static void _bind_methods();
-
- //tool
- //export(Resource) 
- Ref<Resource> image;
- //export(Resource) 
- Ref<Resource> input;
- //export(int, "Horizontal,Vertical") 
- int direction = 0;
- //export(float) 
- float offset = 0;
- //direction
- //offset
+	Ref<MMNodeUniversalProperty> image;
+	Ref<MMNodeUniversalProperty> input;
+	//export(int, "Horizontal,Vertical")
+	int direction;
+	float offset;
 };
-
 
 #endif
