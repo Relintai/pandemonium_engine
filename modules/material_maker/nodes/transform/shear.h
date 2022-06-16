@@ -1,59 +1,45 @@
-#ifndef SHEAR_H
-#define SHEAR_H
+#ifndef MM_SHEAR_H
+#define MM_SHEAR_H
 
+#include "../mm_node.h"
+#include "../mm_node_universal_property.h"
 
-class Shear : public MMNode {
- GDCLASS(Shear, MMNode);
+class MMShear : public MMNode {
+	GDCLASS(MMShear, MMNode);
 
- public:
+public:
+	Ref<MMNodeUniversalProperty> get_image();
+	void set_image(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_image();
- void set_image(const Ref<Resource> &val);
+	Ref<MMNodeUniversalProperty> get_input();
+	void set_input(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_input();
- void set_input(const Ref<Resource> &val);
+	int get_direction() const;
+	void set_direction(const int val);
 
- int get_direction() const;
- void set_direction(const int val);
+	float get_amount() const;
+	void set_amount(const float val);
 
- float get_amount() const;
- void set_amount(const float val);
+	float get_center() const;
+	void set_center(const float val);
 
- float get_center() const;
- void set_center(const float val);
+	void _init_properties();
+	void _register_methods(MMGraphNode *mm_graph_node);
+	void _render(const Ref<MMMaterial> &material);
+	Color _get_value_for(const Vector2 &uv, const int pseed);
 
- void _init_properties();
- void _register_methods(const Variant &mm_graph_node);
- void _render(const Variant &material);
- Color _get_value_for(const Vector2 &uv, const int pseed);
- int get_direction();
- void set_direction(const int val);
- float get_amount();
- void set_amount(const float val);
- float get_center();
- void set_center(const float val);
+	MMShear();
+	~MMShear();
 
- Shear();
- ~Shear();
+protected:
+	static void _bind_methods();
 
- protected:
- static void _bind_methods();
-
- //tool
- //export(Resource) 
- Ref<Resource> image;
- //export(Resource) 
- Ref<Resource> input;
- //export(int, "Horizontal,Vertical") 
- int direction = 0;
- //export(float) 
- float amount = 1;
- //export(float) 
- float center = 0;
- //direction
- //amount
- //center
+	Ref<MMNodeUniversalProperty> image;
+	Ref<MMNodeUniversalProperty> input;
+	//export(int, "Horizontal,Vertical")
+	int direction;
+	float amount;
+	float center;
 };
-
 
 #endif

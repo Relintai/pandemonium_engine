@@ -45,6 +45,7 @@ SOFTWARE.
 #include "nodes/uniform/greyscale_uniform.h"
 #include "nodes/uniform/uniform.h"
 
+#include "nodes/transform/shear.h"
 #include "nodes/transform/tiler.h"
 #include "nodes/transform/transform.h"
 #include "nodes/transform/translate.h"
@@ -76,6 +77,8 @@ void register_material_maker_types() {
 	MMAlgos::register_node_class("Transform", "MMTransform");
 	ClassDB::register_class<MMTiler>();
 	MMAlgos::register_node_class("Transform", "MMTiler");
+	ClassDB::register_class<MMShear>();
+	MMAlgos::register_node_class("Transform", "MMShear");
 
 	_mm_algos_singleton = memnew(_MMAlgos);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("MMAlgos", _MMAlgos::get_singleton()));
