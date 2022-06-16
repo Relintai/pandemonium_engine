@@ -54,6 +54,7 @@ sources = [
     "nodes/uniform/greyscale_uniform.cpp",
 
     "nodes/transform/translate.cpp",
+    "nodes/transform/transform.cpp",
 ]
 
 if env["tools"]:

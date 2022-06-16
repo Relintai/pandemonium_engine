@@ -45,6 +45,7 @@ SOFTWARE.
 #include "nodes/uniform/greyscale_uniform.h"
 #include "nodes/uniform/uniform.h"
 
+#include "nodes/transform/transform.h"
 #include "nodes/transform/translate.h"
 
 static _MMAlgos *_mm_algos_singleton = nullptr;
@@ -70,6 +71,9 @@ void register_material_maker_types() {
 
 	ClassDB::register_class<MMTranslate>();
 	MMAlgos::register_node_class("Transform", "MMTranslate");
+
+	ClassDB::register_class<MMTransform>();
+	MMAlgos::register_node_class("Transform", "MMTransform");
 
 	_mm_algos_singleton = memnew(_MMAlgos);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("MMAlgos", _MMAlgos::get_singleton()));

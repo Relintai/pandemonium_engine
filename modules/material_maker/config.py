@@ -24,6 +24,7 @@ def get_doc_classes():
         "MMGreyscaleUniform",
 
         "MMTranslate",
+        "MMTransform",
     ]
 
 def get_doc_path():
