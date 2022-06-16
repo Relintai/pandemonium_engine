@@ -89,11 +89,11 @@ MMKaleidoscope::~MMKaleidoscope() {
 void MMKaleidoscope::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_image"), &MMKaleidoscope::get_image);
 	ClassDB::bind_method(D_METHOD("set_image", "value"), &MMKaleidoscope::set_image);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "image", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_image", "get_image");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "image", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_image", "get_image");
 
 	ClassDB::bind_method(D_METHOD("get_input"), &MMKaleidoscope::get_input);
 	ClassDB::bind_method(D_METHOD("set_input", "value"), &MMKaleidoscope::set_input);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_input", "get_input");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_input", "get_input");
 
 	ClassDB::bind_method(D_METHOD("get_count"), &MMKaleidoscope::get_count);
 	ClassDB::bind_method(D_METHOD("set_count", "value"), &MMKaleidoscope::set_count);

@@ -89,11 +89,11 @@ MMScale::~MMScale() {
 void MMScale::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_image"), &MMScale::get_image);
 	ClassDB::bind_method(D_METHOD("set_image", "value"), &MMScale::set_image);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "image", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_image", "get_image");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "image", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_image", "get_image");
 
 	ClassDB::bind_method(D_METHOD("get_input"), &MMScale::get_input);
 	ClassDB::bind_method(D_METHOD("set_input", "value"), &MMScale::set_input);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_input", "get_input");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_input", "get_input");
 
 	ClassDB::bind_method(D_METHOD("get_center"), &MMScale::get_center);
 	ClassDB::bind_method(D_METHOD("set_center", "value"), &MMScale::set_center);

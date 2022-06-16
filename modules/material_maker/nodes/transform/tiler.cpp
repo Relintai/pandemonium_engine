@@ -308,19 +308,19 @@ MMTiler::~MMTiler() {
 void MMTiler::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_input"), &MMTiler::get_input);
 	ClassDB::bind_method(D_METHOD("set_input", "value"), &MMTiler::set_input);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_input", "get_input");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_input", "get_input");
 
 	ClassDB::bind_method(D_METHOD("get_in_mask"), &MMTiler::get_in_mask);
 	ClassDB::bind_method(D_METHOD("set_in_mask", "value"), &MMTiler::set_in_mask);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "in_mask", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_in_mask", "get_in_mask");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "in_mask", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_in_mask", "get_in_mask");
 
 	ClassDB::bind_method(D_METHOD("get_output"), &MMTiler::get_output);
 	ClassDB::bind_method(D_METHOD("set_output", "value"), &MMTiler::set_output);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "output", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_output", "get_output");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "output", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_output", "get_output");
 
 	ClassDB::bind_method(D_METHOD("get_instance_map"), &MMTiler::get_instance_map);
 	ClassDB::bind_method(D_METHOD("set_instance_map", "value"), &MMTiler::set_instance_map);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "instance_map", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_instance_map", "get_instance_map");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "instance_map", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_instance_map", "get_instance_map");
 
 	ClassDB::bind_method(D_METHOD("get_tile"), &MMTiler::get_tile);
 	ClassDB::bind_method(D_METHOD("set_tile", "value"), &MMTiler::set_tile);

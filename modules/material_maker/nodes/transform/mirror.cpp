@@ -103,11 +103,11 @@ MMMirror::~MMMirror() {
 void MMMirror::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_image"), &MMMirror::get_image);
 	ClassDB::bind_method(D_METHOD("set_image", "value"), &MMMirror::set_image);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "image", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_image", "get_image");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "image", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_image", "get_image");
 
 	ClassDB::bind_method(D_METHOD("get_input"), &MMMirror::get_input);
 	ClassDB::bind_method(D_METHOD("set_input", "value"), &MMMirror::set_input);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_input", "get_input");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_input", "get_input");
 
 	ClassDB::bind_method(D_METHOD("get_direction"), &MMMirror::get_direction);
 	ClassDB::bind_method(D_METHOD("set_direction", "value"), &MMMirror::set_direction);

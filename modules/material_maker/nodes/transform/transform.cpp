@@ -201,31 +201,31 @@ MMTransform::~MMTransform() {
 void MMTransform::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_image"), &MMTransform::get_image);
 	ClassDB::bind_method(D_METHOD("set_image", "value"), &MMTransform::set_image);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "image", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_image", "get_image");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "image", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_image", "get_image");
 
 	ClassDB::bind_method(D_METHOD("get_input"), &MMTransform::get_input);
 	ClassDB::bind_method(D_METHOD("set_input", "value"), &MMTransform::set_input);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_input", "get_input");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_input", "get_input");
 
 	ClassDB::bind_method(D_METHOD("get_translate_x"), &MMTransform::get_translate_x);
 	ClassDB::bind_method(D_METHOD("set_translate_x", "value"), &MMTransform::set_translate_x);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "translate_x", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_translate_x", "get_translate_x");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "translate_x", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_translate_x", "get_translate_x");
 
 	ClassDB::bind_method(D_METHOD("get_translate_y"), &MMTransform::get_translate_y);
 	ClassDB::bind_method(D_METHOD("set_translate_y", "value"), &MMTransform::set_translate_y);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "translate_y", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_translate_y", "get_translate_y");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "translate_y", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_translate_y", "get_translate_y");
 
 	ClassDB::bind_method(D_METHOD("get_rotate"), &MMTransform::get_rotate);
 	ClassDB::bind_method(D_METHOD("set_rotate", "value"), &MMTransform::set_rotate);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "rotate", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_rotate", "get_rotate");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "rotate", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_rotate", "get_rotate");
 
 	ClassDB::bind_method(D_METHOD("get_scale_x"), &MMTransform::get_scale_x);
 	ClassDB::bind_method(D_METHOD("set_scale_x", "value"), &MMTransform::set_scale_x);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "scale_x", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_scale_x", "get_scale_x");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "scale_x", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_scale_x", "get_scale_x");
 
 	ClassDB::bind_method(D_METHOD("get_scale_y"), &MMTransform::get_scale_y);
 	ClassDB::bind_method(D_METHOD("set_scale_y", "value"), &MMTransform::set_scale_y);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "scale_y", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_scale_y", "get_scale_y");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "scale_y", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_scale_y", "get_scale_y");
 
 	ClassDB::bind_method(D_METHOD("get_mode"), &MMTransform::get_mode);
 	ClassDB::bind_method(D_METHOD("set_mode", "value"), &MMTransform::set_mode);

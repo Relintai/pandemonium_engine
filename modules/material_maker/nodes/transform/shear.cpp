@@ -113,11 +113,11 @@ MMShear::~MMShear() {
 void MMShear::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_image"), &MMShear::get_image);
 	ClassDB::bind_method(D_METHOD("set_image", "value"), &MMShear::set_image);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "image", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_image", "get_image");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "image", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_image", "get_image");
 
 	ClassDB::bind_method(D_METHOD("get_input"), &MMShear::get_input);
 	ClassDB::bind_method(D_METHOD("set_input", "value"), &MMShear::set_input);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_input", "get_input");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_input", "get_input");
 
 	ClassDB::bind_method(D_METHOD("get_direction"), &MMShear::get_direction);
 	ClassDB::bind_method(D_METHOD("set_direction", "value"), &MMShear::set_direction);

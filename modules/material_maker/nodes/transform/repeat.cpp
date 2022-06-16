@@ -47,5 +47,5 @@ MMRepeat::~MMRepeat() {
 void MMRepeat::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_input"), &MMRepeat::get_input);
 	ClassDB::bind_method(D_METHOD("set_input", "value"), &MMRepeat::set_input);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_input", "get_input");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_input", "get_input");
 }
