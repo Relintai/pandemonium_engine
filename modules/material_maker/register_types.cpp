@@ -42,6 +42,7 @@ SOFTWARE.
 #include "editor_plugin.h"
 #endif
 
+#include "nodes/uniform/greyscale_uniform.h"
 #include "nodes/uniform/uniform.h"
 
 static _MMAlgos *_mm_algos_singleton = nullptr;
@@ -61,7 +62,9 @@ void register_material_maker_types() {
 	ClassDB::register_class<MatMakerGDEditor>();
 
 	ClassDB::register_class<MMUniform>();
+	ClassDB::register_class<GreyscaleUniform>();
 	MMAlgos::register_node_class("Uniform", "MMUniform");
+	MMAlgos::register_node_class("Uniform", "GreyscaleUniform");
 
 	_mm_algos_singleton = memnew(_MMAlgos);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("MMAlgos", _MMAlgos::get_singleton()));

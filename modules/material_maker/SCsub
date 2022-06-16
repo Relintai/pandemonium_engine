@@ -51,6 +51,7 @@ sources = [
     "editor/widgets/polygon_edit/polygon_view.cpp",
 
     "nodes/uniform/uniform.cpp",
+    "nodes/uniform/greyscale_uniform.cpp",
 ]
 
 if env["tools"]:
