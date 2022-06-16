@@ -1,29 +1,27 @@
-#ifndef UNIFORM_H
-#define UNIFORM_H
+#ifndef MM_UNIFORM_H
+#define MM_UNIFORM_H
 
+#include "../mm_node.h"
+#include "../mm_node_universal_property.h"
 
-class Uniform : public MMNode {
- GDCLASS(Uniform, MMNode);
+class MMUniform : public MMNode {
+	GDCLASS(MMUniform, MMNode);
 
- public:
+public:
+	Ref<MMNodeUniversalProperty> get_uniform();
+	void set_uniform(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_uniform();
- void set_uniform(const Ref<Resource> &val);
+	void _init_properties();
+	void _register_methods(MMGraphNode *mm_graph_node);
+	Color _get_value_for(const Vector2 &uv, const int pseed);
 
- void _init_properties();
- void _register_methods(const Variant &mm_graph_node);
- Color _get_value_for(const Vector2 &uv, const int pseed);
+	MMUniform();
+	~MMUniform();
 
- Uniform();
- ~Uniform();
+protected:
+	static void _bind_methods();
 
- protected:
- static void _bind_methods();
-
- //tool
- //export(Resource) 
- Ref<Resource> uniform;
+	Ref<MMNodeUniversalProperty> uniform;
 };
-
 
 #endif

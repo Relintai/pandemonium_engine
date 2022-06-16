@@ -49,6 +49,8 @@ sources = [
     "editor/widgets/polygon_edit/polygon_edit.cpp",
     "editor/widgets/polygon_edit/polygon_editor.cpp",
     "editor/widgets/polygon_edit/polygon_view.cpp",
+
+    "nodes/uniform/uniform.cpp",
 ]
 
 if env["tools"]:
