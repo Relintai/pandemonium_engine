@@ -31,6 +31,8 @@ def get_doc_classes():
         "MMRotate",
         "MMRepeat",
         "MMMirror",
+        "MMKaleidoscope",
+        "MMColorTiler",
     ]
 
 def get_doc_path():

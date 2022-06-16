@@ -45,6 +45,9 @@ SOFTWARE.
 #include "nodes/uniform/greyscale_uniform.h"
 #include "nodes/uniform/uniform.h"
 
+#include "nodes/transform/circle_map.h"
+#include "nodes/transform/color_tiler.h"
+#include "nodes/transform/kaleidoscope.h"
 #include "nodes/transform/mirror.h"
 #include "nodes/transform/repeat.h"
 #include "nodes/transform/rotate.h"
@@ -91,6 +94,12 @@ void register_material_maker_types() {
 	MMAlgos::register_node_class("Transform", "MMRepeat");
 	ClassDB::register_class<MMMirror>();
 	MMAlgos::register_node_class("Transform", "MMMirror");
+	ClassDB::register_class<MMKaleidoscope>();
+	MMAlgos::register_node_class("Transform", "MMKaleidoscope");
+	ClassDB::register_class<MMColorTiler>();
+	MMAlgos::register_node_class("Transform", "MMColorTiler");
+	ClassDB::register_class<MMCircleMap>();
+	MMAlgos::register_node_class("Transform", "MMCircleMap");
 
 	_mm_algos_singleton = memnew(_MMAlgos);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("MMAlgos", _MMAlgos::get_singleton()));
