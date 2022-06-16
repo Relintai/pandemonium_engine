@@ -40,6 +40,16 @@ CurveEdit::CurveEdit() {
 CurveEdit::~CurveEdit() {
 }
 
+void CurveEdit::_notification(int p_what) {
+	switch (p_what) {
+		case NOTIFICATION_POSTINITIALIZE: {
+			connect("pressed", this, "_on_CurveEdit_pressed");
+		} break;
+		default: {
+		} break;
+	}
+}
+
 void CurveEdit::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("updated", PropertyInfo(Variant::OBJECT, "curve", PROPERTY_HINT_RESOURCE_TYPE, "CurveBase")));
 
