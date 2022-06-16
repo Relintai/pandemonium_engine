@@ -1,64 +1,53 @@
-#ifndef SHAPE_H
-#define SHAPE_H
+#ifndef MM_SHAPE_H
+#define MM_SHAPE_H
 
+#include "../mm_node.h"
+#include "../mm_node_universal_property.h"
 
-class Shape : public MMNode {
- GDCLASS(Shape, MMNode);
+class MMShape : public MMNode {
+	GDCLASS(MMShape, MMNode);
 
- public:
+public:
+	Ref<MMNodeUniversalProperty> get_image();
+	void set_image(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_image();
- void set_image(const Ref<Resource> &val);
+	int get_shape_type() const;
+	void set_shape_type(const int val);
 
- int get_shape_type() const;
- void set_shape_type(const int val);
+	int get_sides() const;
+	void set_sides(const int val);
 
- int get_sides() const;
- void set_sides(const int val);
+	Ref<MMNodeUniversalProperty> get_radius();
+	void set_radius(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_radius();
- void set_radius(const Ref<Resource> &val);
+	Ref<MMNodeUniversalProperty> get_edge();
+	void set_edge(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_edge();
- void set_edge(const Ref<Resource> &val);
+	enum MMShapeType {
+		SHAPE_TYPE_CIRCLE = 0,
+		SHAPE_TYPE_POLYGON = 1,
+		SHAPE_TYPE_STAR = 2,
+		SHAPE_TYPE_CURVED_STAR = 3,
+		SHAPE_TYPE_RAYS = 4,
+	};
 
- enum ShapeType  {
+	void _init_properties();
+	void _register_methods(MMGraphNode *mm_graph_node);
+	void _render(const Ref<MMMaterial> &material);
+	Color _get_value_for(const Vector2 &uv, const int pseed);
 
-  SHAPE_TYPE_CIRCLE = 0,
-  SHAPE_TYPE_POLYGON = 1,
-  SHAPE_TYPE_STAR = 2,
-  SHAPE_TYPE_CURVED_STAR = 3,
-  SHAPE_TYPE_RAYS = 4,
+	MMShape();
+	~MMShape();
+
+protected:
+	static void _bind_methods();
+
+	Ref<MMNodeUniversalProperty> image;
+	//export(int, "Circle,Polygon,Star,Curved Star,Rays")
+	int shape_type;
+	int sides;
+	Ref<MMNodeUniversalProperty> radius;
+	Ref<MMNodeUniversalProperty> edge;
 };
-
- void _init_properties();
- void _register_methods(const Variant &mm_graph_node);
- void _render(const Variant &material);
- Color _get_value_for(const Vector2 &uv, const int pseed);
- int get_shape_typoe();
- void set_shape_typoe(const int val);
- int get_sides();
- void set_sides(const int val);
-
- Shape();
- ~Shape();
-
- protected:
- static void _bind_methods();
-
- //tool
- };
- //export(Resource) 
- Ref<Resource> image;
- //export(int, "Circle,Polygon,Star,Curved Star,Rays") 
- int shape_type = 0;
- //export(int) 
- int sides = 6;
- //export(Resource) 
- Ref<Resource> radius;
- //export(Resource) 
- Ref<Resource> edge;
-};
-
 
 #endif

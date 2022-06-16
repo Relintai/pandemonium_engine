@@ -64,6 +64,8 @@ sources = [
     "nodes/transform/kaleidoscope.cpp",
     "nodes/transform/color_tiler.cpp",
     "nodes/transform/circle_map.cpp",
+
+    "nodes/simple/shape.cpp",
 ]
 
 if env["tools"]:
