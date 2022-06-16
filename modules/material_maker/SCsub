@@ -55,6 +55,7 @@ sources = [
 
     "nodes/transform/translate.cpp",
     "nodes/transform/transform.cpp",
+    "nodes/transform/tiler.cpp",
 ]
 
 if env["tools"]:
