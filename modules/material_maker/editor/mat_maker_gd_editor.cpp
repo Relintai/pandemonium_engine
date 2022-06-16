@@ -115,13 +115,19 @@ void MatMakerGDEditor::recreate() {
 	_recreation_in_progress = true;
 	_graph_edit->clear_connections();
 
+	LocalVector<MMGraphNode *> nodes;
+
 	for (int i = 0; i < _graph_edit->get_child_count(); ++i) {
 		MMGraphNode *c = Object::cast_to<MMGraphNode>(_graph_edit->get_child(i));
 
 		if (c) {
-			_graph_edit->remove_child(c);
 			c->queue_delete();
+			nodes.push_back(c);
 		}
+	}
+
+	for (int i = 0; i < nodes.size(); ++i) {
+		_graph_edit->remove_child(nodes[i]);
 	}
 
 	if (!_material.is_valid()) {
