@@ -54,11 +54,20 @@ void CurveDialog::_on_MMCurveEditor_value_changed(const Ref<CurveBase> &value) {
 CurveDialog::CurveDialog() {
 	set_title("Edit curve");
 
+	set_size(Vector2(300, 300));
+
+	MarginContainer *main_mc = memnew(MarginContainer);
+	main_mc->set_anchors_and_margins_preset(PRESET_WIDE);
+	main_mc->set("custom_constants/margin_right", 4);
+	main_mc->set("custom_constants/margin_top", 4);
+	main_mc->set("custom_constants/margin_left", 4);
+	main_mc->set("custom_constants/margin_bottom", 4);
+	add_child(main_mc);
+
 	VBoxContainer *mvbc = memnew(VBoxContainer);
-	add_child(mvbc);
+	main_mc->add_child(mvbc);
 
 	MarginContainer *mc = memnew(MarginContainer);
-
 	mc->set_clip_contents(true);
 	mc->set_h_size_flags(SIZE_EXPAND_FILL);
 	mc->set_v_size_flags(SIZE_EXPAND_FILL);
@@ -71,7 +80,6 @@ CurveDialog::CurveDialog() {
 	mvbc->add_child(mc);
 
 	_curve_editor = memnew(MMCurveEditor);
-	_curve_editor->set_filename("res://addons/mat_maker_gd/widgets/curve_edit/curve_editor.tscn");
 	_curve_editor->set_v_size_flags(SIZE_EXPAND_FILL);
 	mc->add_child(_curve_editor);
 
