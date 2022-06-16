@@ -15,13 +15,13 @@ public:
 	void set_show_axes(const bool val);
 
 	Ref<CurveBase> get_curve();
-	void set_curve(const Ref<CurveBase> &val);
+	virtual void set_curve(const Ref<CurveBase> &val);
 
 	Vector2 transform_point(const Vector2 &p);
 	Vector2 reverse_transform_point(const Vector2 &p);
 
 	void _draw();
-	void _on_resize();
+	virtual void _on_resize();
 
 	CurveView();
 	~CurveView();

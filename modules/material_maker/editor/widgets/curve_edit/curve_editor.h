@@ -7,12 +7,12 @@ class MMCurveEditor : public CurveView {
 	GDCLASS(MMCurveEditor, CurveView);
 
 public:
-	void set_curve(const Variant &c);
+	void set_curve(const Ref<CurveBase> &c);
 	void update_controls();
 
-	void _on_ControlPoint_moved(const Variant &index);
-	void _on_ControlPoint_removed(const Variant &index);
-	void _on_MMCurveEditor_gui_input(const Variant &event);
+	void _on_ControlPoint_moved(const int index);
+	void _on_ControlPoint_removed(const int index);
+	void _on_MMCurveEditor_gui_input(const Ref<InputEvent> &event);
 	void _on_resize();
 
 	MMCurveEditor();
