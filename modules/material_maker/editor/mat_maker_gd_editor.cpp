@@ -126,7 +126,7 @@ void MatMakerGDEditor::recreate() {
 		}
 	}
 
-	for (int i = 0; i < nodes.size(); ++i) {
+	for (uint32_t i = 0; i < nodes.size(); ++i) {
 		_graph_edit->remove_child(nodes[i]);
 	}
 
