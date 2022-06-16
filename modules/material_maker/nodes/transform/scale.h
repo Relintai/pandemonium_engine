@@ -1,51 +1,40 @@
-#ifndef SCALE_H
-#define SCALE_H
+#ifndef MM_SCALE_H
+#define MM_SCALE_H
 
+#include "../mm_node.h"
+#include "../mm_node_universal_property.h"
 
-class Scale : public MMNode {
- GDCLASS(Scale, MMNode);
+class MMScale : public MMNode {
+	GDCLASS(MMScale, MMNode);
 
- public:
+public:
+	Ref<MMNodeUniversalProperty> get_image();
+	void set_image(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_image();
- void set_image(const Ref<Resource> &val);
+	Ref<MMNodeUniversalProperty> get_input();
+	void set_input(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_input();
- void set_input(const Ref<Resource> &val);
+	Vector2 get_center();
+	void set_center(const Vector2 &val);
 
- Vector2 get_center();
- void set_center(const Vector2 &val);
+	Vector2 get_scale();
+	void set_scale(const Vector2 &val);
 
- Vector2 get_scale();
- void set_scale(const Vector2 &val);
+	void _init_properties();
+	void _register_methods(MMGraphNode *mm_graph_node);
+	void _render(const Ref<MMMaterial> &material);
+	Color _get_value_for(const Vector2 &uv, const int pseed);
 
- void _init_properties();
- void _register_methods(const Variant &mm_graph_node);
- void _render(const Variant &material);
- Color _get_value_for(const Vector2 &uv, const int pseed);
- Vector2 get_center();
- void set_center(const Vector2 &val);
- Vector2 get_scale();
- void set_scale(const Vector2 &val);
+	MMScale();
+	~MMScale();
 
- Scale();
- ~Scale();
+protected:
+	static void _bind_methods();
 
- protected:
- static void _bind_methods();
-
- //tool
- //export(Resource) 
- Ref<Resource> image;
- //export(Resource) 
- Ref<Resource> input;
- //export(Vector2) 
- Vector2 center = Vector2();
- //export(Vector2) 
- Vector2 scale = Vector2(1, 1);
- //center
- //scale
+	Ref<MMNodeUniversalProperty> image;
+	Ref<MMNodeUniversalProperty> input;
+	Vector2 center;
+	Vector2 scale;
 };
-
 
 #endif

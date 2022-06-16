@@ -27,6 +27,8 @@ def get_doc_classes():
         "MMTransform",
         "MMTiler",
         "MMShear",
+        "MMScale",
+        "MMRotate",
     ]
 
 def get_doc_path():

@@ -1,165 +1,105 @@
 
 #include "rotate.h"
 
+#include "../../algos/mm_algos.h"
+#include "../../editor/mm_graph_node.h"
+#include "../mm_material.h"
 
-Ref<Resource> Rotate::get_image() {
- return image;
+Ref<MMNodeUniversalProperty> MMRotate::get_image() {
+	return image;
 }
 
-void Rotate::set_image(const Ref<Resource> &val) {
-image = val;
+void MMRotate::set_image(const Ref<MMNodeUniversalProperty> &val) {
+	image = val;
 }
 
-
-Ref<Resource> Rotate::get_input() {
- return input;
+Ref<MMNodeUniversalProperty> MMRotate::get_input() {
+	return input;
 }
 
-void Rotate::set_input(const Ref<Resource> &val) {
-input = val;
+void MMRotate::set_input(const Ref<MMNodeUniversalProperty> &val) {
+	input = val;
 }
 
-
-Vector2 Rotate::get_center() {
- return center;
+Vector2 MMRotate::get_center() {
+	return center;
 }
 
-void Rotate::set_center(const Vector2 &val) {
-center = val;
+void MMRotate::set_center(const Vector2 &val) {
+	center = val;
+	set_dirty(true);
 }
 
-
-float Rotate::get_rotate() const {
- return rotate;
+float MMRotate::get_rotate() const {
+	return rotate;
 }
 
-void Rotate::set_rotate(const float val) {
-rotate = val;
+void MMRotate::set_rotate(const float val) {
+	rotate = val;
+	set_dirty(true);
 }
 
+void MMRotate::_init_properties() {
+	if (!input.is_valid()) {
+		input.instance();
+		input->set_default_type(MMNodeUniversalProperty::DEFAULT_TYPE_COLOR);
+		input->set_default_value(Color(0, 0, 0, 1));
+	}
 
+	input->set_input_slot_type(MMNodeUniversalProperty::SLOT_TYPE_UNIVERSAL);
+	input->set_slot_name(">>>    Input1    ");
 
- //tool;
- //export(Resource) ;
-  Ref<Resource> image;
- //export(Resource) ;
-  Ref<Resource> input;
- //export(Vector2) ;
-  Vector2 center = Vector2();
- //export(float) ;
-  float rotate = 0;
+	if (!image.is_valid()) {
+		image.instance();
+		image->set_default_type(MMNodeUniversalProperty::DEFAULT_TYPE_IMAGE);
+	}
 
- void Rotate::_init_properties() {
+	//image.input_slot_type = MMNodeUniversalProperty.SLOT_TYPE_FLOAT;
+	image->set_output_slot_type(MMNodeUniversalProperty::SLOT_TYPE_IMAGE);
+	//image.force_override = true;
 
-  if (!input) {
-   input = MMNodeUniversalProperty.new();
-   input.default_type = MMNodeUniversalProperty.DEFAULT_TYPE_COLOR;
-   input.set_default_value(Color(0, 0, 0, 1));
+	register_input_property(input);
+	register_output_property(image);
 }
 
-  input.input_slot_type = MMNodeUniversalProperty.SLOT_TYPE_UNIVERSAL;
-  input.slot_name = ">>>    Input1    ";
-
-  if (!image) {
-   image = MMNodeUniversalProperty.new();
-   image.default_type = MMNodeUniversalProperty.DEFAULT_TYPE_IMAGE;
+void MMRotate::_register_methods(MMGraphNode *mm_graph_node) {
+	mm_graph_node->add_slot_label_universal(input);
+	mm_graph_node->add_slot_texture_universal(image);
+	mm_graph_node->add_slot_vector2("get_center", "set_center", "Center", 0.01);
+	mm_graph_node->add_slot_float("get_rotate", "set_rotate", "MMRotate", 0.1);
 }
 
-  //image.input_slot_type = MMNodeUniversalProperty.SLOT_TYPE_FLOAT;
-  image.output_slot_type = MMNodeUniversalProperty.SLOT_TYPE_IMAGE;
-  //image.force_override = true;
-  register_input_property(input);
-  register_output_property(image);
+void MMRotate::_render(const Ref<MMMaterial> &material) {
+	Ref<Image> img = render_image(material);
+	image->set_value(img);
 }
 
-
- void Rotate::_register_methods(const Variant &mm_graph_node) {
-  mm_graph_node.add_slot_label_universal(input);
-  mm_graph_node.add_slot_texture_universal(image);
-  mm_graph_node.add_slot_vector2("get_center", "set_center", "Center", 0.01);
-  mm_graph_node.add_slot_float("get_rotate", "set_rotate", "Rotate", 0.1);
+Color MMRotate::_get_value_for(const Vector2 &uv, const int pseed) {
+	//$i(rotate($uv, vec2(0.5+$cx, 0.5+$cy), $rotate*0.01745329251));
+	return input->get_value(MMAlgos::rotate(uv, center + Vector2(0.5, 0.5), rotate * 0.01745329251));
 }
 
-
- void Rotate::_render(const Variant &material) {
-   Ref<Image> img = render_image(material);
-  image.set_value(img);
+MMRotate::MMRotate() {
+	rotate = 0;
 }
 
-
- Color Rotate::_get_value_for(const Vector2 &uv, const int pseed) {
-  //$i(rotate($uv, vec2(0.5+$cx, 0.5+$cy), $rotate*0.01745329251));
-  return input.get_value(MMAlgos.rotate(uv, center + Vector2(0.5, 0.5), rotate*0.01745329251));
+MMRotate::~MMRotate() {
 }
 
- //center;
+void MMRotate::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_image"), &MMRotate::get_image);
+	ClassDB::bind_method(D_METHOD("set_image", "value"), &MMRotate::set_image);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "image", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_image", "get_image");
 
- Vector2 Rotate::get_center() {
-  return center;
+	ClassDB::bind_method(D_METHOD("get_input"), &MMRotate::get_input);
+	ClassDB::bind_method(D_METHOD("set_input", "value"), &MMRotate::set_input);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_input", "get_input");
+
+	ClassDB::bind_method(D_METHOD("get_center"), &MMRotate::get_center);
+	ClassDB::bind_method(D_METHOD("set_center", "value"), &MMRotate::set_center);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "center"), "set_center", "get_center");
+
+	ClassDB::bind_method(D_METHOD("get_rotate"), &MMRotate::get_rotate);
+	ClassDB::bind_method(D_METHOD("set_rotate", "value"), &MMRotate::set_rotate);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "rotate"), "set_rotate", "get_rotate");
 }
-
-
- void Rotate::set_center(const Vector2 &val) {
-  center = val;
-  set_dirty(true);
-}
-
- //rotate;
-
- float Rotate::get_rotate() {
-  return rotate;
-}
-
-
- void Rotate::set_rotate(const float val) {
-  rotate = val;
-  set_dirty(true);
-}
-
-}
-
- Rotate::Rotate() {
-  image;
-  input;
-  center = Vector2();
-  rotate = 0;
- }
-
- Rotate::~Rotate() {
- }
-
-
- static void Rotate::_bind_methods() {
-   ClassDB::bind_method(D_METHOD("get_image"), &Rotate::get_image);
-   ClassDB::bind_method(D_METHOD("set_image", "value"), &Rotate::set_image);
-   ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "image", PROPERTY_HINT_RESOURCE_TYPE, "Ref<Resource>"), "set_image", "get_image");
-
-
-   ClassDB::bind_method(D_METHOD("get_input"), &Rotate::get_input);
-   ClassDB::bind_method(D_METHOD("set_input", "value"), &Rotate::set_input);
-   ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "Ref<Resource>"), "set_input", "get_input");
-
-
-   ClassDB::bind_method(D_METHOD("get_center"), &Rotate::get_center);
-   ClassDB::bind_method(D_METHOD("set_center", "value"), &Rotate::set_center);
-   ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "center"), "set_center", "get_center");
-
-
-   ClassDB::bind_method(D_METHOD("get_rotate"), &Rotate::get_rotate);
-   ClassDB::bind_method(D_METHOD("set_rotate", "value"), &Rotate::set_rotate);
-   ADD_PROPERTY(PropertyInfo(Variant::REAL, "rotate"), "set_rotate", "get_rotate");
-
-
-  ClassDB::bind_method(D_METHOD("_init_properties"), &Rotate::_init_properties);
-  ClassDB::bind_method(D_METHOD("_register_methods", "mm_graph_node"), &Rotate::_register_methods);
-  ClassDB::bind_method(D_METHOD("_render", "material"), &Rotate::_render);
-  ClassDB::bind_method(D_METHOD("_get_value_for", "uv", "pseed"), &Rotate::_get_value_for);
-  ClassDB::bind_method(D_METHOD("get_center"), &Rotate::get_center);
-  ClassDB::bind_method(D_METHOD("set_center", "val"), &Rotate::set_center);
-  ClassDB::bind_method(D_METHOD("get_rotate"), &Rotate::get_rotate);
-  ClassDB::bind_method(D_METHOD("set_rotate", "val"), &Rotate::set_rotate);
-
- }
-
-
-
