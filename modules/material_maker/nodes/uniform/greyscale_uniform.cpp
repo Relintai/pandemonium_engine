@@ -44,7 +44,4 @@ void MMGreyscaleUniform::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_uniform"), &MMGreyscaleUniform::get_uniform);
 	ClassDB::bind_method(D_METHOD("set_uniform", "value"), &MMGreyscaleUniform::set_uniform);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "uniform", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_uniform", "get_uniform");
-
-	ClassDB::bind_method(D_METHOD("_init_properties"), &MMGreyscaleUniform::_init_properties);
-	ClassDB::bind_method(D_METHOD("_get_value_for", "uv", "pseed"), &MMGreyscaleUniform::_get_value_for);
 }

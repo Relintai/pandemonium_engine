@@ -40,8 +40,4 @@ void MMUniform::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_uniform"), &MMUniform::get_uniform);
 	ClassDB::bind_method(D_METHOD("set_uniform", "value"), &MMUniform::set_uniform);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "uniform", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_uniform", "get_uniform");
-
-	ClassDB::bind_method(D_METHOD("_init_properties"), &MMUniform::_init_properties);
-	//ClassDB::bind_method(D_METHOD("_register_methods", "mm_graph_node"), &MMUniform::_register_methods);
-	ClassDB::bind_method(D_METHOD("_get_value_for", "uv", "pseed"), &MMUniform::_get_value_for);
 }
