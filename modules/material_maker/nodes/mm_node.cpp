@@ -1,6 +1,7 @@
 
 #include "mm_node.h"
 
+#include "../editor/mm_graph_node.h"
 #include "core/object.h"
 #include "mm_material.h"
 #include "mm_node_universal_property.h"
@@ -146,10 +147,14 @@ void MMNode::register_methods(Node *mm_graph_node) {
 }
 
 void MMNode::_register_methods_bind(Node *mm_graph_node) {
-	_register_methods(mm_graph_node);
+	MMGraphNode *gn = Object::cast_to<MMGraphNode>(mm_graph_node);
+
+	ERR_FAIL_COND(!gn);
+
+	_register_methods(gn);
 }
 
-void MMNode::_register_methods(Node *mm_graph_node) {
+void MMNode::_register_methods(MMGraphNode *mm_graph_node) {
 }
 
 void MMNode::register_input_property(const Ref<MMNodeUniversalProperty> &p_prop) {

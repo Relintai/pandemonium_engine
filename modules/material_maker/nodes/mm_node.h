@@ -11,6 +11,7 @@
 class Node;
 class MMMaterial;
 class MMNodeUniversalProperty;
+class MMGraphNode;
 
 class MMNode : public Resource {
 	GDCLASS(MMNode, Resource);
@@ -32,20 +33,20 @@ public:
 	void set_dirty(const bool val);
 
 	bool render(const Ref<MMMaterial> &material);
-	void _render(const Ref<MMMaterial> &material);
+	virtual void _render(const Ref<MMMaterial> &material);
 
 	Ref<Image> render_image(const Ref<MMMaterial> &material);
-	Ref<Image> _render_image(const Ref<MMMaterial> &material);
+	virtual Ref<Image> _render_image(const Ref<MMMaterial> &material);
 
 	Color get_value_for(const Vector2 &uv, const int pseed);
-	Color _get_value_for(const Vector2 &uv, const int pseed);
+	virtual Color _get_value_for(const Vector2 &uv, const int pseed);
 
 	void init_properties();
-	void _init_properties();
+	virtual void _init_properties();
 
 	void register_methods(Node *mm_graph_node);
-	void _register_methods_bind(Node *mm_graph_node);
-	void _register_methods(Node *mm_graph_node);
+	virtual void _register_methods_bind(Node *mm_graph_node);
+	virtual void _register_methods(MMGraphNode *mm_graph_node);
 
 	void register_input_property(const Ref<MMNodeUniversalProperty> &prop);
 	void unregister_input_property(const Ref<MMNodeUniversalProperty> &prop);
