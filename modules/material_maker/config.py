@@ -21,7 +21,7 @@ def get_doc_classes():
         "MatMakerGDEditor",
 
         "MMUniform",
-        "GreyscaleUniform ",
+        "MMGreyscaleUniform",
     ]
 
 def get_doc_path():

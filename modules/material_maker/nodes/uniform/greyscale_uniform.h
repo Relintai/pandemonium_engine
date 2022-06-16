@@ -4,8 +4,8 @@
 #include "../mm_node.h"
 #include "../mm_node_universal_property.h"
 
-class GreyscaleUniform : public MMNode {
-	GDCLASS(GreyscaleUniform, MMNode);
+class MMGreyscaleUniform : public MMNode {
+	GDCLASS(MMGreyscaleUniform, MMNode);
 
 public:
 	Ref<MMNodeUniversalProperty> get_uniform();
@@ -15,8 +15,8 @@ public:
 	void _register_methods(MMGraphNode *mm_graph_node);
 	Color _get_value_for(const Vector2 &uv, const int pseed);
 
-	GreyscaleUniform();
-	~GreyscaleUniform();
+	MMGreyscaleUniform();
+	~MMGreyscaleUniform();
 
 protected:
 	static void _bind_methods();

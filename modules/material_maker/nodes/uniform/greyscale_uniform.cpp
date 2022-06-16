@@ -3,15 +3,15 @@
 
 #include "../../editor/mm_graph_node.h"
 
-Ref<MMNodeUniversalProperty> GreyscaleUniform::get_uniform() {
+Ref<MMNodeUniversalProperty> MMGreyscaleUniform::get_uniform() {
 	return uniform;
 }
 
-void GreyscaleUniform::set_uniform(const Ref<MMNodeUniversalProperty> &val) {
+void MMGreyscaleUniform::set_uniform(const Ref<MMNodeUniversalProperty> &val) {
 	uniform = val;
 }
 
-void GreyscaleUniform::_init_properties() {
+void MMGreyscaleUniform::_init_properties() {
 	if (!uniform.is_valid()) {
 		uniform.instance();
 		uniform->set_default_type(MMNodeUniversalProperty::DEFAULT_TYPE_FLOAT);
@@ -25,26 +25,26 @@ void GreyscaleUniform::_init_properties() {
 	register_output_property(uniform);
 }
 
-void GreyscaleUniform::_register_methods(MMGraphNode *mm_graph_node) {
+void MMGreyscaleUniform::_register_methods(MMGraphNode *mm_graph_node) {
 	mm_graph_node->add_slot_float_universal(uniform);
 }
 
-Color GreyscaleUniform::_get_value_for(const Vector2 &uv, const int pseed) {
+Color MMGreyscaleUniform::_get_value_for(const Vector2 &uv, const int pseed) {
 	float f = uniform->get_value(uv);
 	return Color(f, f, f, 1);
 }
 
-GreyscaleUniform::GreyscaleUniform() {
+MMGreyscaleUniform::MMGreyscaleUniform() {
 }
 
-GreyscaleUniform::~GreyscaleUniform() {
+MMGreyscaleUniform::~MMGreyscaleUniform() {
 }
 
-void GreyscaleUniform::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_uniform"), &GreyscaleUniform::get_uniform);
-	ClassDB::bind_method(D_METHOD("set_uniform", "value"), &GreyscaleUniform::set_uniform);
+void MMGreyscaleUniform::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_uniform"), &MMGreyscaleUniform::get_uniform);
+	ClassDB::bind_method(D_METHOD("set_uniform", "value"), &MMGreyscaleUniform::set_uniform);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "uniform", PROPERTY_HINT_RESOURCE_TYPE, "Ref<MMNodeUniversalProperty>"), "set_uniform", "get_uniform");
 
-	ClassDB::bind_method(D_METHOD("_init_properties"), &GreyscaleUniform::_init_properties);
-	ClassDB::bind_method(D_METHOD("_get_value_for", "uv", "pseed"), &GreyscaleUniform::_get_value_for);
+	ClassDB::bind_method(D_METHOD("_init_properties"), &MMGreyscaleUniform::_init_properties);
+	ClassDB::bind_method(D_METHOD("_get_value_for", "uv", "pseed"), &MMGreyscaleUniform::_get_value_for);
 }
