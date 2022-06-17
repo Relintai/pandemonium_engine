@@ -68,6 +68,8 @@ sources = [
     "nodes/simple/shape.cpp",
     "nodes/simple/image.cpp",
     "nodes/simple/curve.cpp",
+
+    "nodes/sdf3d/sdf3d_tf_translate.cpp",
 ]
 
 if env["tools"]:

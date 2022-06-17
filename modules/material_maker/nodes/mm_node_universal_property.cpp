@@ -514,6 +514,10 @@ Ref<Image> MMNodeUniversalProperty::get_active_image() {
 	return default_image;
 }
 
+void MMNodeUniversalProperty::do_emit_changed() {
+	emit_changed();
+}
+
 MMNodeUniversalProperty::MMNodeUniversalProperty() {
 	default_type = DEFAULT_TYPE_INT;
 	default_int = 0;
@@ -623,6 +627,8 @@ void MMNodeUniversalProperty::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_default_value", "uv"), &MMNodeUniversalProperty::get_default_value, Vector2());
 	ClassDB::bind_method(D_METHOD("set_default_value", "val"), &MMNodeUniversalProperty::set_default_value);
 	ClassDB::bind_method(D_METHOD("get_active_image"), &MMNodeUniversalProperty::get_active_image);
+
+	ClassDB::bind_method(D_METHOD("do_emit_changed"), &MMNodeUniversalProperty::do_emit_changed);
 
 	BIND_ENUM_CONSTANT(SLOT_TYPE_NONE);
 	BIND_ENUM_CONSTANT(SLOT_TYPE_IMAGE);

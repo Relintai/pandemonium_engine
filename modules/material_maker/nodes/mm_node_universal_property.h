@@ -105,6 +105,8 @@ public:
 	void set_default_value(const Variant &val);
 	Ref<Image> get_active_image();
 
+	void do_emit_changed();
+
 	MMNodeUniversalProperty();
 	~MMNodeUniversalProperty();
 

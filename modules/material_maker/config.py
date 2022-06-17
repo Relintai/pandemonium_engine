@@ -38,6 +38,8 @@ def get_doc_classes():
         "MMShape",
         "MMImage",
         "MMCurve",
+
+        "MMSdf3dTfTranslate",
     ]
 
 def get_doc_path():
