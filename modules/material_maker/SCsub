@@ -76,6 +76,11 @@ sources = [
     "nodes/sdf3d/sdf3d_tf_rotate.cpp",
 
     "nodes/sdf3d/sdf3d_shape_torus.cpp",
+    "nodes/sdf3d/sdf3d_shape_sphere.cpp",
+    "nodes/sdf3d/sdf3d_shape_cylinder.cpp",
+    "nodes/sdf3d/sdf3d_shape_cone.cpp",
+    "nodes/sdf3d/sdf3d_shape_capsule.cpp",
+    "nodes/sdf3d/sdf3d_shape_box.cpp",
 
 ]
 

@@ -67,6 +67,11 @@ SOFTWARE.
 #include "nodes/sdf3d/sdf3d_tf_scale.h"
 #include "nodes/sdf3d/sdf3d_tf_translate.h"
 
+#include "nodes/sdf3d/sdf3d_shape_box.h"
+#include "nodes/sdf3d/sdf3d_shape_capsule.h"
+#include "nodes/sdf3d/sdf3d_shape_cone.h"
+#include "nodes/sdf3d/sdf3d_shape_cylinder.h"
+#include "nodes/sdf3d/sdf3d_shape_sphere.h"
 #include "nodes/sdf3d/sdf3d_shape_torus.h"
 
 static _MMAlgos *_mm_algos_singleton = nullptr;
@@ -132,6 +137,16 @@ void register_material_maker_types() {
 
 	ClassDB::register_class<MMSdf3dShapeTorus>();
 	MMAlgos::register_node_class("SDF3D - Shape", "MMSdf3dShapeTorus");
+	ClassDB::register_class<MMSdf3dShapeSphere>();
+	MMAlgos::register_node_class("SDF3D - Shape", "MMSdf3dShapeSphere");
+	ClassDB::register_class<MMSdf3dShapeCylinder>();
+	MMAlgos::register_node_class("SDF3D - Shape", "MMSdf3dShapeCylinder");
+	ClassDB::register_class<MMSdf3dShapeCone>();
+	MMAlgos::register_node_class("SDF3D - Shape", "MMSdf3dShapeCone");
+	ClassDB::register_class<MMSdf3dShapeCapsule>();
+	MMAlgos::register_node_class("SDF3D - Shape", "MMSdf3dShapeCapsule");
+	ClassDB::register_class<MMSdf3dShapeBox>();
+	MMAlgos::register_node_class("SDF3D - Shape", "MMSdf3dShapeBox");
 
 	_mm_algos_singleton = memnew(_MMAlgos);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("MMAlgos", _MMAlgos::get_singleton()));

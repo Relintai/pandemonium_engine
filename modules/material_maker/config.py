@@ -46,6 +46,11 @@ def get_doc_classes():
         "MMSdf3dTfRotate",
 
         "MMSdf3dShapeTorus",
+        "MMSdf3dShapeSphere",
+        "MMSdf3dShapeCylinder",
+        "MMSdf3dShapeCone",
+        "MMSdf3dShapeCapsule",
+        "MMSdf3dShapeBox",
     ]
 
 def get_doc_path():
