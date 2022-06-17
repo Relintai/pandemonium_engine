@@ -59,7 +59,7 @@ public:
 	void set_points(const Vector<Point> &arr, const bool notify = true);
 
 	void curve_changed();
-	void _curve_changed();
+	virtual void _curve_changed();
 
 	CurveBase();
 	~CurveBase();

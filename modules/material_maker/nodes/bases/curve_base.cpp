@@ -162,7 +162,7 @@ void CurveBase::set_points(const Vector<CurveBase::Point> &arr, const bool notif
 }
 
 void CurveBase::curve_changed() {
-	_curve_changed();
+	call("_curve_changed");
 }
 
 void CurveBase::_curve_changed() {
