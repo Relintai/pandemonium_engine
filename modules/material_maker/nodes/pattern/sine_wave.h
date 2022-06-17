@@ -1,54 +1,40 @@
-#ifndef SINE_WAVE_H
-#define SINE_WAVE_H
+#ifndef MM_SINE_WAVE_H
+#define MM_SINE_WAVE_H
 
+#include "../mm_node.h"
+#include "../mm_node_universal_property.h"
 
-class SineWave : public MMNode {
- GDCLASS(SineWave, MMNode);
+class MMSineWave : public MMNode {
+	GDCLASS(MMSineWave, MMNode);
 
- public:
+public:
+	Ref<MMNodeUniversalProperty> get_image();
+	void set_image(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_image();
- void set_image(const Ref<Resource> &val);
+	float get_amplitude() const;
+	void set_amplitude(const float val);
 
- float get_amplitude() const;
- void set_amplitude(const float val);
+	float get_frequency() const;
+	void set_frequency(const float val);
 
- float get_frequency() const;
- void set_frequency(const float val);
+	float get_phase() const;
+	void set_phase(const float val);
 
- float get_phase() const;
- void set_phase(const float val);
+	void _init_properties();
+	void _register_methods(MMGraphNode *mm_graph_node);
+	void _render(const Ref<MMMaterial> &material);
+	Color _get_value_for(const Vector2 &uv, const int pseed);
 
- void _init_properties();
- void _register_methods(const Variant &mm_graph_node);
- void _render(const Variant &material);
- Color _get_value_for(const Vector2 &uv, const int pseed);
- float get_amplitude();
- void set_amplitude(const float val);
- float get_frequency();
- void set_frequency(const float val);
- float get_phase();
- void set_phase(const float val);
+	MMSineWave();
+	~MMSineWave();
 
- SineWave();
- ~SineWave();
+protected:
+	static void _bind_methods();
 
- protected:
- static void _bind_methods();
-
- //tool
- //export(Resource) 
- Ref<Resource> image;
- //export(float) 
- float amplitude = 0.5;
- //export(float) 
- float frequency = 2;
- //export(float) 
- float phase = 0;
- //amplitude
- //frequency
- //phase
+	Ref<MMNodeUniversalProperty> image;
+	float amplitude;
+	float frequency;
+	float phase;
 };
-
 
 #endif

@@ -107,6 +107,16 @@ SOFTWARE.
 #include "nodes/sdf2d/sd_op_rounded_shape.h"
 #include "nodes/sdf2d/sd_op_smooth_bool.h"
 
+#include "nodes/pattern/beehive.h"
+#include "nodes/pattern/bricks.h"
+#include "nodes/pattern/iching.h"
+#include "nodes/pattern/pattern.h"
+#include "nodes/pattern/runes.h"
+#include "nodes/pattern/scratches.h"
+#include "nodes/pattern/sine_wave.h"
+#include "nodes/pattern/truchet.h"
+#include "nodes/pattern/weave.h"
+
 static _MMAlgos *_mm_algos_singleton = nullptr;
 
 void register_material_maker_types() {
@@ -237,6 +247,25 @@ void register_material_maker_types() {
 	MMAlgos::register_node_class("SDF2D - OP", "MMSdOpBool");
 	ClassDB::register_class<MMSdOpAnnularShape>();
 	MMAlgos::register_node_class("SDF2D - OP", "MMSdOpAnnularShape");
+
+	ClassDB::register_class<MMWeave>();
+	MMAlgos::register_node_class("Patterns", "MMWeave");
+	ClassDB::register_class<MMTruchet>();
+	MMAlgos::register_node_class("Patterns", "MMTruchet");
+	ClassDB::register_class<MMSineWave>();
+	MMAlgos::register_node_class("Patterns", "MMSineWave");
+	ClassDB::register_class<MMScratches>();
+	MMAlgos::register_node_class("Patterns", "MMScratches");
+	ClassDB::register_class<MMRunes>();
+	MMAlgos::register_node_class("Patterns", "MMRunes");
+	ClassDB::register_class<MMPattern>();
+	MMAlgos::register_node_class("Patterns", "MMPattern");
+	ClassDB::register_class<MMIching>();
+	MMAlgos::register_node_class("Patterns", "MMIching");
+	ClassDB::register_class<MMBricks>();
+	MMAlgos::register_node_class("Patterns", "MMBricks");
+	ClassDB::register_class<MMBeehive>();
+	MMAlgos::register_node_class("Patterns", "MMBeehive");
 
 	_mm_algos_singleton = memnew(_MMAlgos);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("MMAlgos", _MMAlgos::get_singleton()));

@@ -1,48 +1,40 @@
-#ifndef BEEHIVE_H
-#define BEEHIVE_H
+#ifndef MM_BEEHIVE_H
+#define MM_BEEHIVE_H
 
+#include "../mm_node.h"
+#include "../mm_node_universal_property.h"
 
-class Beehive : public MMNode {
- GDCLASS(Beehive, MMNode);
+class MMBeehive : public MMNode {
+	GDCLASS(MMBeehive, MMNode);
 
- public:
+public:
+	Ref<MMNodeUniversalProperty> get_out_main();
+	void set_out_main(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_out_main();
- void set_out_main(const Ref<Resource> &val);
+	Ref<MMNodeUniversalProperty> get_out_random_color();
+	void set_out_random_color(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_out_random_color();
- void set_out_random_color(const Ref<Resource> &val);
+	Ref<MMNodeUniversalProperty> get_out_uv_map();
+	void set_out_uv_map(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_out_uv_map();
- void set_out_uv_map(const Ref<Resource> &val);
+	Vector2 get_size();
+	void set_size(const Vector2 &val);
 
- Vector2 get_size();
- void set_size(const Vector2 &val);
+	void _init_properties();
+	void _register_methods(MMGraphNode *mm_graph_node);
+	void _render(const Ref<MMMaterial> &material);
+	Color _get_value_for(const Vector2 &uv, const int pseed);
 
- void _init_properties();
- void _register_methods(const Variant &mm_graph_node);
- void _render(const Variant &material);
- Color _get_value_for(const Vector2 &uv, const int pseed);
- Vector2 get_size();
- void set_size(const Vector2 &val);
+	MMBeehive();
+	~MMBeehive();
 
- Beehive();
- ~Beehive();
+protected:
+	static void _bind_methods();
 
- protected:
- static void _bind_methods();
-
- //tool
- //export(Resource) 
- Ref<Resource> out_main;
- //export(Resource) 
- Ref<Resource> out_random_color;
- //export(Resource) 
- Ref<Resource> out_uv_map;
- //export(Vector2) 
- Vector2 size = Vector2(4, 4);
- //size
+	Ref<MMNodeUniversalProperty> out_main;
+	Ref<MMNodeUniversalProperty> out_random_color;
+	Ref<MMNodeUniversalProperty> out_uv_map;
+	Vector2 size;
 };
-
 
 #endif

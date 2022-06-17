@@ -1,38 +1,32 @@
-#ifndef ICHING_H
-#define ICHING_H
+#ifndef MM_ICHING_H
+#define MM_ICHING_H
 
+#include "../mm_node.h"
+#include "../mm_node_universal_property.h"
 
-class Iching : public MMNode {
- GDCLASS(Iching, MMNode);
+class MMIching : public MMNode {
+	GDCLASS(MMIching, MMNode);
 
- public:
+public:
+	Ref<MMNodeUniversalProperty> get_image();
+	void set_image(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_image();
- void set_image(const Ref<Resource> &val);
+	Vector2 get_size();
+	void set_size(const Vector2 &val);
 
- Vector2 get_size();
- void set_size(const Vector2 &val);
+	void _init_properties();
+	void _register_methods(MMGraphNode *mm_graph_node);
+	void _render(const Ref<MMMaterial> &material);
+	Color _get_value_for(const Vector2 &uv, const int pseed);
 
- void _init_properties();
- void _register_methods(const Variant &mm_graph_node);
- void _render(const Variant &material);
- Color _get_value_for(const Vector2 &uv, const int pseed);
- Vector2 get_size();
- void set_size(const Vector2 &val);
+	MMIching();
+	~MMIching();
 
- Iching();
- ~Iching();
+protected:
+	static void _bind_methods();
 
- protected:
- static void _bind_methods();
-
- //tool
- //export(Resource) 
- Ref<Resource> image;
- //export(Vector2) 
- Vector2 size = Vector2(4, 4);
- //size
+	Ref<MMNodeUniversalProperty> image;
+	Vector2 size;
 };
-
 
 #endif

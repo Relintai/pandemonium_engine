@@ -82,6 +82,16 @@ def get_doc_classes():
         "MMSdOpCircleRepeat",
         "MMSdOpBool",
         "MMSdOpAnnularShape",
+
+        "MMWeave",
+        "MMTruchet",
+        "MMSineWave",
+        "MMScratches",
+        "MMRunes",
+        "MMPattern",
+        "MMIching",
+        "MMBricks",
+        "MMBeehive",
     ]
 
 def get_doc_path():

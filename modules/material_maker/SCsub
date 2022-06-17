@@ -112,6 +112,16 @@ sources = [
     "nodes/sdf2d/sd_op_circle_repeat.cpp",
     "nodes/sdf2d/sd_op_bool.cpp",
     "nodes/sdf2d/sd_op_annular_shape.cpp",
+
+    "nodes/pattern/weave.cpp",
+    "nodes/pattern/truchet.cpp",
+    "nodes/pattern/sine_wave.cpp",
+    "nodes/pattern/scratches.cpp",
+    "nodes/pattern/runes.cpp",
+    "nodes/pattern/pattern.cpp",
+    "nodes/pattern/iching.cpp",
+    "nodes/pattern/bricks.cpp",
+    "nodes/pattern/beehive.cpp",
 ]
 
 if env["tools"]:
