@@ -1,141 +1,99 @@
 
 #include "sdf3d_op_revolution.h"
 
+#include "../../algos/mm_algos.h"
+#include "../../editor/mm_graph_node.h"
+#include "../mm_material.h"
 
-Ref<Resource> Sdf3dOpRevolution::get_input() {
- return input;
+Ref<MMNodeUniversalProperty> MMSdf3dOpRevolution::get_input() {
+	return input;
 }
 
-void Sdf3dOpRevolution::set_input(const Ref<Resource> &val) {
-input = val;
+void MMSdf3dOpRevolution::set_input(const Ref<MMNodeUniversalProperty> &val) {
+	input = val;
 }
 
-
-Ref<Resource> Sdf3dOpRevolution::get_output() {
- return output;
+Ref<MMNodeUniversalProperty> MMSdf3dOpRevolution::get_output() {
+	return output;
 }
 
-void Sdf3dOpRevolution::set_output(const Ref<Resource> &val) {
-output = val;
+void MMSdf3dOpRevolution::set_output(const Ref<MMNodeUniversalProperty> &val) {
+	output = val;
 }
 
-
-float Sdf3dOpRevolution::get_offset() const {
- return offset;
+float MMSdf3dOpRevolution::get_offset() const {
+	return offset;
 }
 
-void Sdf3dOpRevolution::set_offset(const float val) {
-offset = val;
+void MMSdf3dOpRevolution::set_offset(const float val) {
+	offset = val;
+	emit_changed();
+	output->do_emit_changed();
 }
 
+void MMSdf3dOpRevolution::_init_properties() {
+	if (!input.is_valid()) {
+		input.instance();
+		input->set_default_type(MMNodeUniversalProperty::DEFAULT_TYPE_FLOAT);
+	}
 
+	input->set_input_slot_type(MMNodeUniversalProperty::SLOT_TYPE_UNIVERSAL);
+	//	input.input_slot_type = MMNodeUniversalProperty.SLOT_TYPE_FLOAT;
+	input->set_slot_name(">>>   Input        ");
 
- //tool;
- //export(Resource) ;
-  Ref<Resource> input;
- //export(Resource) ;
-  Ref<Resource> output;
- //export(float) ;
-  float offset = 0.25;
+	if (!input->is_connected("changed", this, "on_input_changed")) {
+		input->connect("changed", this, "on_input_changed");
+	}
 
- void Sdf3dOpRevolution::_init_properties() {
+	if (!output.is_valid()) {
+		output.instance();
+		output->set_default_type(MMNodeUniversalProperty::DEFAULT_TYPE_VECTOR2);
+	}
 
-  if (!input) {
-   input = MMNodeUniversalProperty.new();
-   input.default_type = MMNodeUniversalProperty.DEFAULT_TYPE_FLOAT;
+	output->set_output_slot_type(MMNodeUniversalProperty::SLOT_TYPE_FLOAT);
+	output->set_slot_name(">>>   Output    >>>");
+	output->set_get_value_from_owner(true);
+	register_input_property(input);
+	register_output_property(output);
 }
 
-  input.input_slot_type = MMNodeUniversalProperty.SLOT_TYPE_UNIVERSAL;
-  //	input.input_slot_type = MMNodeUniversalProperty.SLOT_TYPE_FLOAT;
-  input.slot_name = ">>>   Input        ";
-
-  if (!input.is_connected("changed", self, "on_input_changed")) {
-   input.connect("changed", self, "on_input_changed");
+void MMSdf3dOpRevolution::_register_methods(MMGraphNode *mm_graph_node) {
+	mm_graph_node->add_slot_label_universal(input);
+	mm_graph_node->add_slot_label_universal(output);
+	mm_graph_node->add_slot_float("get_offset", "set_offset", "Offset", 0.01);
 }
 
-
-  if (!output) {
-   output = MMNodeUniversalProperty.new();
-   output.default_type = MMNodeUniversalProperty.DEFAULT_TYPE_VECTOR2;
+Vector2 MMSdf3dOpRevolution::_get_property_value_sdf3d(const Vector3 &uv3) {
+	//vec2 $(name_uv)_q = vec2(length($uv.xy) - $d + 0.5, $uv.z + 0.5);
+	Vector2 uv = Vector2(Vector2(uv3.x, uv3.y).length() - offset + 0.5, uv3.z + 0.5);
+	float f = input->get_value(uv);
+	return Vector2(f, 0);
 }
 
-  output.output_slot_type = MMNodeUniversalProperty.SLOT_TYPE_FLOAT;
-  output.slot_name = ">>>   Output    >>>";
-  output.get_value_from_owner = true;
-  register_input_property(input);
-  register_output_property(output);
+void MMSdf3dOpRevolution::on_input_changed() {
+	emit_changed();
+	output->do_emit_changed();
 }
 
-
- void Sdf3dOpRevolution::_register_methods(const Variant &mm_graph_node) {
-  mm_graph_node.add_slot_label_universal(input);
-  mm_graph_node.add_slot_label_universal(output);
-  mm_graph_node.add_slot_float("get_offset", "set_offset", "Offset", 0.01);
+MMSdf3dOpRevolution::MMSdf3dOpRevolution() {
+	offset = 0.25;
 }
 
-
- Vector2 Sdf3dOpRevolution::_get_property_value_sdf3d(const Vector3 &uv3) {
-  //vec2 $(name_uv)_q = vec2(length($uv.xy) - $d + 0.5, $uv.z + 0.5);
-   Vector2 uv = Vector2(Vector2(uv3.x, uv3.y).length() - offset + 0.5, uv3.z + 0.5);
-   float f = input.get_value(uv);
-  return Vector2(f, 0);
+MMSdf3dOpRevolution::~MMSdf3dOpRevolution() {
 }
 
- //offset;
+void MMSdf3dOpRevolution::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_input"), &MMSdf3dOpRevolution::get_input);
+	ClassDB::bind_method(D_METHOD("set_input", "value"), &MMSdf3dOpRevolution::set_input);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_input", "get_input");
 
- float Sdf3dOpRevolution::get_offset() {
-  return offset;
+	ClassDB::bind_method(D_METHOD("get_output"), &MMSdf3dOpRevolution::get_output);
+	ClassDB::bind_method(D_METHOD("set_output", "value"), &MMSdf3dOpRevolution::set_output);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "output", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_output", "get_output");
+
+	ClassDB::bind_method(D_METHOD("get_offset"), &MMSdf3dOpRevolution::get_offset);
+	ClassDB::bind_method(D_METHOD("set_offset", "value"), &MMSdf3dOpRevolution::set_offset);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "offset"), "set_offset", "get_offset");
+
+	ClassDB::bind_method(D_METHOD("on_input_changed"), &MMSdf3dOpRevolution::on_input_changed);
 }
-
-
- void Sdf3dOpRevolution::set_offset(const float val) {
-  offset = val;
-  emit_changed();
-  output.emit_changed();
-}
-
-
- void Sdf3dOpRevolution::on_input_changed() {
-  emit_changed();
-  output.emit_changed();
-}
-
-}
-
- Sdf3dOpRevolution::Sdf3dOpRevolution() {
-  input;
-  output;
-  offset = 0.25;
- }
-
- Sdf3dOpRevolution::~Sdf3dOpRevolution() {
- }
-
-
- static void Sdf3dOpRevolution::_bind_methods() {
-   ClassDB::bind_method(D_METHOD("get_input"), &Sdf3dOpRevolution::get_input);
-   ClassDB::bind_method(D_METHOD("set_input", "value"), &Sdf3dOpRevolution::set_input);
-   ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "Ref<Resource>"), "set_input", "get_input");
-
-
-   ClassDB::bind_method(D_METHOD("get_output"), &Sdf3dOpRevolution::get_output);
-   ClassDB::bind_method(D_METHOD("set_output", "value"), &Sdf3dOpRevolution::set_output);
-   ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "output", PROPERTY_HINT_RESOURCE_TYPE, "Ref<Resource>"), "set_output", "get_output");
-
-
-   ClassDB::bind_method(D_METHOD("get_offset"), &Sdf3dOpRevolution::get_offset);
-   ClassDB::bind_method(D_METHOD("set_offset", "value"), &Sdf3dOpRevolution::set_offset);
-   ADD_PROPERTY(PropertyInfo(Variant::REAL, "offset"), "set_offset", "get_offset");
-
-
-  ClassDB::bind_method(D_METHOD("_init_properties"), &Sdf3dOpRevolution::_init_properties);
-  ClassDB::bind_method(D_METHOD("_register_methods", "mm_graph_node"), &Sdf3dOpRevolution::_register_methods);
-  ClassDB::bind_method(D_METHOD("_get_property_value_sdf3d", "uv3"), &Sdf3dOpRevolution::_get_property_value_sdf3d);
-  ClassDB::bind_method(D_METHOD("get_offset"), &Sdf3dOpRevolution::get_offset);
-  ClassDB::bind_method(D_METHOD("set_offset", "val"), &Sdf3dOpRevolution::set_offset);
-  ClassDB::bind_method(D_METHOD("on_input_changed"), &Sdf3dOpRevolution::on_input_changed);
-
- }
-
-
-

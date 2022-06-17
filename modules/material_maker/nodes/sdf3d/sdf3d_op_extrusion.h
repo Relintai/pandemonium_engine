@@ -1,43 +1,37 @@
-#ifndef SDF3D_OP_EXTRUSION_H
-#define SDF3D_OP_EXTRUSION_H
+#ifndef MM_SDF3D_OP_EXTRUSION_H
+#define MM_SDF3D_OP_EXTRUSION_H
 
+#include "../mm_node.h"
+#include "../mm_node_universal_property.h"
 
 class Sdf3dOpExtrusion : public MMNode {
- GDCLASS(Sdf3dOpExtrusion, MMNode);
+	GDCLASS(Sdf3dOpExtrusion, MMNode);
 
- public:
+public:
+	Ref<MMNodeUniversalProperty> get_input();
+	void set_input(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_input();
- void set_input(const Ref<Resource> &val);
+	Ref<MMNodeUniversalProperty> get_output();
+	void set_output(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_output();
- void set_output(const Ref<Resource> &val);
+	float get_length() const;
+	void set_length(const float val);
 
- float get_length() const;
- void set_length(const float val);
+	void _init_properties();
+	void _register_methods(MMGraphNode *mm_graph_node);
+	Vector2 _get_property_value_sdf3d(const Vector3 &uv3);
 
- void _init_properties();
- void _register_methods(const Variant &mm_graph_node);
- Vector2 _get_property_value_sdf3d(const Vector3 &uv3);
- float get_length();
- void set_length(const float val);
- void on_input_changed();
+	void on_input_changed();
 
- Sdf3dOpExtrusion();
- ~Sdf3dOpExtrusion();
+	Sdf3dOpExtrusion();
+	~Sdf3dOpExtrusion();
 
- protected:
- static void _bind_methods();
+protected:
+	static void _bind_methods();
 
- //tool
- //export(Resource) 
- Ref<Resource> input;
- //export(Resource) 
- Ref<Resource> output;
- //export(float) 
- float length = 0.25;
- //length
+	Ref<MMNodeUniversalProperty> input;
+	Ref<MMNodeUniversalProperty> output;
+	float length;
 };
-
 
 #endif

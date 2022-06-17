@@ -61,6 +61,7 @@ SOFTWARE.
 #include "nodes/simple/image.h"
 #include "nodes/simple/shape.h"
 
+#include "nodes/sdf3d/sdf3d_color.h"
 #include "nodes/sdf3d/sdf3d_render.h"
 
 #include "nodes/sdf3d/sdf3d_tf_rotate.h"
@@ -73,6 +74,15 @@ SOFTWARE.
 #include "nodes/sdf3d/sdf3d_shape_cylinder.h"
 #include "nodes/sdf3d/sdf3d_shape_sphere.h"
 #include "nodes/sdf3d/sdf3d_shape_torus.h"
+
+#include "nodes/sdf3d/sdf3d_op_bool.h"
+#include "nodes/sdf3d/sdf3d_op_circle_repeat.h"
+#include "nodes/sdf3d/sdf3d_op_elongation.h"
+#include "nodes/sdf3d/sdf3d_op_morph.h"
+#include "nodes/sdf3d/sdf3d_op_repeat.h"
+#include "nodes/sdf3d/sdf3d_op_revolution.h"
+#include "nodes/sdf3d/sdf3d_op_rounded.h"
+#include "nodes/sdf3d/sdf3d_op_smooth_bool.h"
 
 static _MMAlgos *_mm_algos_singleton = nullptr;
 
@@ -125,6 +135,8 @@ void register_material_maker_types() {
 	ClassDB::register_class<MMCurve>();
 	MMAlgos::register_node_class("Simple", "MMCurve");
 
+	ClassDB::register_class<MMSdf3dColor>();
+	MMAlgos::register_node_class("SDF3D", "MMSdf3dColor");
 	ClassDB::register_class<MMSdf3dRender>();
 	MMAlgos::register_node_class("SDF3D", "MMSdf3dRender");
 
@@ -147,6 +159,23 @@ void register_material_maker_types() {
 	MMAlgos::register_node_class("SDF3D - Shape", "MMSdf3dShapeCapsule");
 	ClassDB::register_class<MMSdf3dShapeBox>();
 	MMAlgos::register_node_class("SDF3D - Shape", "MMSdf3dShapeBox");
+
+	ClassDB::register_class<MMSdf3dOpSmoothBool>();
+	MMAlgos::register_node_class("SDF3D - OP", "MMSdf3dOpSmoothBool");
+	ClassDB::register_class<MMSdf3dOpRounded>();
+	MMAlgos::register_node_class("SDF3D - OP", "MMSdf3dOpRounded");
+	ClassDB::register_class<MMSdf3dOpRevolution>();
+	MMAlgos::register_node_class("SDF3D - OP", "MMSdf3dOpRevolution");
+	ClassDB::register_class<MMSdf3dOpRepeat>();
+	MMAlgos::register_node_class("SDF3D - OP", "MMSdf3dOpRepeat");
+	ClassDB::register_class<MMSdf3dOpMorph>();
+	MMAlgos::register_node_class("SDF3D - OP", "MMSdf3dOpMorph");
+	ClassDB::register_class<MMSdf3dOpElongation>();
+	MMAlgos::register_node_class("SDF3D - OP", "MMSdf3dOpElongation");
+	ClassDB::register_class<MMSdf3dOpCircleRepeat>();
+	MMAlgos::register_node_class("SDF3D - OP", "MMSdf3dOpCircleRepeat");
+	ClassDB::register_class<MMSdf3dOpBool>();
+	MMAlgos::register_node_class("SDF3D - OP", "MMSdf3dOpBool");
 
 	_mm_algos_singleton = memnew(_MMAlgos);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("MMAlgos", _MMAlgos::get_singleton()));

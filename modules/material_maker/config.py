@@ -40,6 +40,7 @@ def get_doc_classes():
         "MMCurve",
 
         "MMSdf3dRender",
+        "MMSdf3dColor",
 
         "MMSdf3dTfTranslate",
         "MMSdf3dTfScale",
@@ -51,6 +52,15 @@ def get_doc_classes():
         "MMSdf3dShapeCone",
         "MMSdf3dShapeCapsule",
         "MMSdf3dShapeBox",
+
+        "MMSdf3dOpSmoothBool",
+        "MMSdf3dOpRounded",
+        "MMSdf3dOpRevolution",
+        "MMSdf3dOpRepeat",
+        "MMSdf3dOpMorph",
+        "MMSdf3dOpElongation",
+        "MMSdf3dOpCircleRepeat",
+        "MMSdf3dOpBool",
     ]
 
 def get_doc_path():

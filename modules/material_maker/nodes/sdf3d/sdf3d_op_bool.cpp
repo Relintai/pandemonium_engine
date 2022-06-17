@@ -1,188 +1,141 @@
 
 #include "sdf3d_op_bool.h"
 
+#include "../../algos/mm_algos.h"
+#include "../../editor/mm_graph_node.h"
+#include "../mm_material.h"
 
-Ref<Resource> Sdf3dOpBool::get_input1() {
- return input1;
+Ref<MMNodeUniversalProperty> MMSdf3dOpBool::get_input1() {
+	return input1;
 }
 
-void Sdf3dOpBool::set_input1(const Ref<Resource> &val) {
-input1 = val;
+void MMSdf3dOpBool::set_input1(const Ref<MMNodeUniversalProperty> &val) {
+	input1 = val;
 }
 
-
-Ref<Resource> Sdf3dOpBool::get_input2() {
- return input2;
+Ref<MMNodeUniversalProperty> MMSdf3dOpBool::get_input2() {
+	return input2;
 }
 
-void Sdf3dOpBool::set_input2(const Ref<Resource> &val) {
-input2 = val;
+void MMSdf3dOpBool::set_input2(const Ref<MMNodeUniversalProperty> &val) {
+	input2 = val;
 }
 
-
-Ref<Resource> Sdf3dOpBool::get_output() {
- return output;
+Ref<MMNodeUniversalProperty> MMSdf3dOpBool::get_output() {
+	return output;
 }
 
-void Sdf3dOpBool::set_output(const Ref<Resource> &val) {
-output = val;
+void MMSdf3dOpBool::set_output(const Ref<MMNodeUniversalProperty> &val) {
+	output = val;
 }
 
-
-int Sdf3dOpBool::get_operation() const {
- return operation;
+int MMSdf3dOpBool::get_operation() const {
+	return operation;
 }
 
-void Sdf3dOpBool::set_operation(const int val) {
-operation = val;
+void MMSdf3dOpBool::set_operation(const int val) {
+	operation = val;
+	emit_changed();
+	output->do_emit_changed();
 }
 
+void MMSdf3dOpBool::_init_properties() {
+	if (!input1.is_valid()) {
+		input1.instance();
+		input1->set_default_type(MMNodeUniversalProperty::DEFAULT_TYPE_VECTOR2);
+	}
 
+	input1->set_input_slot_type(MMNodeUniversalProperty::SLOT_TYPE_UNIVERSAL);
+	//	input1.input_slot_type = MMNodeUniversalProperty.SLOT_TYPE_VECTOR2;
+	input1->set_slot_name(">>>   Input 1        ");
 
- //tool;
- //export(Resource) ;
-  Ref<Resource> input1;
- //export(Resource) ;
-  Ref<Resource> input2;
- //export(Resource) ;
-  Ref<Resource> output;
- //export(int, "Union,Substraction,Intersection") ;
-  int operation = 0;
+	if (!input1->is_connected("changed", this, "on_input_changed")) {
+		input1->connect("changed", this, "on_input_changed");
+	}
 
- void Sdf3dOpBool::_init_properties() {
+	if (!input2.is_valid()) {
+		input2.instance();
+		input2->set_default_type(MMNodeUniversalProperty::DEFAULT_TYPE_VECTOR2);
+	}
 
-  if (!input1) {
-   input1 = MMNodeUniversalProperty.new();
-   input1.default_type = MMNodeUniversalProperty.DEFAULT_TYPE_VECTOR2;
+	input2->set_input_slot_type(MMNodeUniversalProperty::SLOT_TYPE_UNIVERSAL);
+	//	input2.input_slot_type = MMNodeUniversalProperty.SLOT_TYPE_VECTOR2;
+	input2->set_slot_name(">>>   Input 2        ");
+
+	if (!input2->is_connected("changed", this, "on_input_changed")) {
+		input2->connect("changed", this, "on_input_changed");
+	}
+
+	if (!output.is_valid()) {
+		output.instance();
+		output->set_default_type(MMNodeUniversalProperty::DEFAULT_TYPE_VECTOR2);
+	}
+
+	output->set_output_slot_type(MMNodeUniversalProperty::SLOT_TYPE_FLOAT);
+	output->set_slot_name(">>>   Output    >>>");
+	output->set_get_value_from_owner(true);
+
+	register_input_property(input1);
+	register_input_property(input2);
+	register_output_property(output);
 }
 
-  input1.input_slot_type = MMNodeUniversalProperty.SLOT_TYPE_UNIVERSAL;
-  //	input1.input_slot_type = MMNodeUniversalProperty.SLOT_TYPE_VECTOR2;
-  input1.slot_name = ">>>   Input 1        ";
+void MMSdf3dOpBool::_register_methods(MMGraphNode *mm_graph_node) {
+	mm_graph_node->add_slot_label_universal(input1);
+	mm_graph_node->add_slot_label_universal(input2);
+	mm_graph_node->add_slot_label_universal(output);
 
-  if (!input1.is_connected("changed", self, "on_input_changed")) {
-   input1.connect("changed", self, "on_input_changed");
+	Array arr;
+	arr.push_back("Union");
+	arr.push_back("Substraction");
+	arr.push_back("Intersection");
+
+	mm_graph_node->add_slot_enum("get_operation", "set_operation", "Operation", arr);
 }
 
+Vector2 MMSdf3dOpBool::_get_property_value_sdf3d(const Vector3 &uv3) {
+	Vector2 s1 = input1->get_value_sdf3d(uv3);
+	Vector2 s2 = input2->get_value_sdf3d(uv3);
 
-  if (!input2) {
-   input2 = MMNodeUniversalProperty.new();
-   input2.default_type = MMNodeUniversalProperty.DEFAULT_TYPE_VECTOR2;
+	if (operation == 0) {
+		return MMAlgos::sdf3dc_union(s1, s2);
+	} else if (operation == 1) {
+		return MMAlgos::sdf3dc_sub(s1, s2);
+	} else if (operation == 2) {
+		return MMAlgos::sdf3dc_inter(s1, s2);
+	}
+
+	return Vector2();
 }
 
-  input2.input_slot_type = MMNodeUniversalProperty.SLOT_TYPE_UNIVERSAL;
-  //	input2.input_slot_type = MMNodeUniversalProperty.SLOT_TYPE_VECTOR2;
-  input2.slot_name = ">>>   Input 2        ";
-
-  if (!input2.is_connected("changed", self, "on_input_changed")) {
-   input2.connect("changed", self, "on_input_changed");
+void MMSdf3dOpBool::on_input_changed() {
+	emit_changed();
+	output->do_emit_changed();
 }
 
-
-  if (!output) {
-   output = MMNodeUniversalProperty.new();
-   output.default_type = MMNodeUniversalProperty.DEFAULT_TYPE_VECTOR2;
+MMSdf3dOpBool::MMSdf3dOpBool() {
+	operation = 0;
 }
 
-  output.output_slot_type = MMNodeUniversalProperty.SLOT_TYPE_FLOAT;
-  output.slot_name = ">>>   Output    >>>";
-  output.get_value_from_owner = true;
-  register_input_property(input1);
-  register_input_property(input2);
-  register_output_property(output);
+MMSdf3dOpBool::~MMSdf3dOpBool() {
 }
 
+void MMSdf3dOpBool::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_input1"), &MMSdf3dOpBool::get_input1);
+	ClassDB::bind_method(D_METHOD("set_input1", "value"), &MMSdf3dOpBool::set_input1);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input1", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_input1", "get_input1");
 
- void Sdf3dOpBool::_register_methods(const Variant &mm_graph_node) {
-  mm_graph_node.add_slot_label_universal(input1);
-  mm_graph_node.add_slot_label_universal(input2);
-  mm_graph_node.add_slot_label_universal(output);
-  mm_graph_node.add_slot_enum("get_operation", "set_operation", "Operation", [ "Union", "Substraction", "Intersection" ]);
+	ClassDB::bind_method(D_METHOD("get_input2"), &MMSdf3dOpBool::get_input2);
+	ClassDB::bind_method(D_METHOD("set_input2", "value"), &MMSdf3dOpBool::set_input2);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input2", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_input2", "get_input2");
+
+	ClassDB::bind_method(D_METHOD("get_output"), &MMSdf3dOpBool::get_output);
+	ClassDB::bind_method(D_METHOD("set_output", "value"), &MMSdf3dOpBool::set_output);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "output", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_output", "get_output");
+
+	ClassDB::bind_method(D_METHOD("get_operation"), &MMSdf3dOpBool::get_operation);
+	ClassDB::bind_method(D_METHOD("set_operation", "value"), &MMSdf3dOpBool::set_operation);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "operation"), "set_operation", "get_operation");
+
+	ClassDB::bind_method(D_METHOD("on_input_changed"), &MMSdf3dOpBool::on_input_changed);
 }
-
-
- Vector2 Sdf3dOpBool::_get_property_value_sdf3d(const Vector3 &uv3) {
-   Vector2 s1 = input1.get_value_sdf3d(uv3);
-   Vector2 s2 = input2.get_value_sdf3d(uv3);
-
-  if (operation == 0) {
-   return MMAlgos.sdf3dc_union(s1, s2);
-}
-
-
-  else if (operation == 1) {
-   return MMAlgos.sdf3dc_sub(s1, s2);
-}
-
-
-  else if (operation == 2) {
-   return MMAlgos.sdf3dc_inter(s1, s2);
-}
-
-  return Vector2();
-}
-
- //operation;
-
- int Sdf3dOpBool::get_operation() {
-  return operation;
-}
-
-
- void Sdf3dOpBool::set_operation(const int val) {
-  operation = val;
-  emit_changed();
-  output.emit_changed();
-}
-
-
- void Sdf3dOpBool::on_input_changed() {
-  emit_changed();
-  output.emit_changed();
-}
-
-}
-
- Sdf3dOpBool::Sdf3dOpBool() {
-  input1;
-  input2;
-  output;
-  operation = 0;
- }
-
- Sdf3dOpBool::~Sdf3dOpBool() {
- }
-
-
- static void Sdf3dOpBool::_bind_methods() {
-   ClassDB::bind_method(D_METHOD("get_input1"), &Sdf3dOpBool::get_input1);
-   ClassDB::bind_method(D_METHOD("set_input1", "value"), &Sdf3dOpBool::set_input1);
-   ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input1", PROPERTY_HINT_RESOURCE_TYPE, "Ref<Resource>"), "set_input1", "get_input1");
-
-
-   ClassDB::bind_method(D_METHOD("get_input2"), &Sdf3dOpBool::get_input2);
-   ClassDB::bind_method(D_METHOD("set_input2", "value"), &Sdf3dOpBool::set_input2);
-   ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input2", PROPERTY_HINT_RESOURCE_TYPE, "Ref<Resource>"), "set_input2", "get_input2");
-
-
-   ClassDB::bind_method(D_METHOD("get_output"), &Sdf3dOpBool::get_output);
-   ClassDB::bind_method(D_METHOD("set_output", "value"), &Sdf3dOpBool::set_output);
-   ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "output", PROPERTY_HINT_RESOURCE_TYPE, "Ref<Resource>"), "set_output", "get_output");
-
-
-   ClassDB::bind_method(D_METHOD("get_operation"), &Sdf3dOpBool::get_operation);
-   ClassDB::bind_method(D_METHOD("set_operation", "value"), &Sdf3dOpBool::set_operation);
-   ADD_PROPERTY(PropertyInfo(Variant::INT, "operation"), "set_operation", "get_operation");
-
-
-  ClassDB::bind_method(D_METHOD("_init_properties"), &Sdf3dOpBool::_init_properties);
-  ClassDB::bind_method(D_METHOD("_register_methods", "mm_graph_node"), &Sdf3dOpBool::_register_methods);
-  ClassDB::bind_method(D_METHOD("_get_property_value_sdf3d", "uv3"), &Sdf3dOpBool::_get_property_value_sdf3d);
-  ClassDB::bind_method(D_METHOD("get_operation"), &Sdf3dOpBool::get_operation);
-  ClassDB::bind_method(D_METHOD("set_operation", "val"), &Sdf3dOpBool::set_operation);
-  ClassDB::bind_method(D_METHOD("on_input_changed"), &Sdf3dOpBool::on_input_changed);
-
- }
-
-
-

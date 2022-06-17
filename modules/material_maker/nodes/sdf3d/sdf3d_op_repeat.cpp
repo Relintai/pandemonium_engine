@@ -1,173 +1,115 @@
 
 #include "sdf3d_op_repeat.h"
 
+#include "../../algos/mm_algos.h"
+#include "../../editor/mm_graph_node.h"
+#include "../mm_material.h"
 
-Ref<Resource> Sdf3dOpRepeat::get_input() {
- return input;
+Ref<MMNodeUniversalProperty> MMSdf3dOpRepeat::get_input() {
+	return input;
 }
 
-void Sdf3dOpRepeat::set_input(const Ref<Resource> &val) {
-input = val;
+void MMSdf3dOpRepeat::set_input(const Ref<MMNodeUniversalProperty> &val) {
+	input = val;
 }
 
-
-Ref<Resource> Sdf3dOpRepeat::get_output() {
- return output;
+Ref<MMNodeUniversalProperty> MMSdf3dOpRepeat::get_output() {
+	return output;
 }
 
-void Sdf3dOpRepeat::set_output(const Ref<Resource> &val) {
-output = val;
+void MMSdf3dOpRepeat::set_output(const Ref<MMNodeUniversalProperty> &val) {
+	output = val;
 }
 
-
-Vector2 Sdf3dOpRepeat::get_col_row() {
- return col_row;
+Vector2 MMSdf3dOpRepeat::get_col_row() {
+	return col_row;
 }
 
-void Sdf3dOpRepeat::set_col_row(const Vector2 &val) {
-col_row = val;
+void MMSdf3dOpRepeat::set_col_row(const Vector2 &val) {
+	col_row = val;
+	emit_changed();
+	output->do_emit_changed();
 }
 
-
-float Sdf3dOpRepeat::get_rotation() const {
- return rotation;
+float MMSdf3dOpRepeat::get_rotation() const {
+	return rotation;
 }
 
-void Sdf3dOpRepeat::set_rotation(const float val) {
-rotation = val;
+void MMSdf3dOpRepeat::set_rotation(const float val) {
+	rotation = val;
+	emit_changed();
+	output->do_emit_changed();
 }
 
+void MMSdf3dOpRepeat::_init_properties() {
+	if (!input.is_valid()) {
+		input.instance();
+		input->set_default_type(MMNodeUniversalProperty::DEFAULT_TYPE_VECTOR2);
+	}
 
+	input->set_input_slot_type(MMNodeUniversalProperty::SLOT_TYPE_UNIVERSAL);
+	//	input.input_slot_type = MMNodeUniversalProperty.SLOT_TYPE_VECTOR2;
+	input->set_slot_name(">>>   Input        ");
 
- //tool;
- //export(Resource) ;
-  Ref<Resource> input;
- //export(Resource) ;
-  Ref<Resource> output;
- //export(Vector2) ;
-  Vector2 col_row = Vector2(3, 3);
- //export(float) ;
-  float rotation = 0.3;
+	if (!input->is_connected("changed", this, "on_input_changed")) {
+		input->connect("changed", this, "on_input_changed");
+	}
 
- void Sdf3dOpRepeat::_init_properties() {
+	if (!output.is_valid()) {
+		output.instance();
+		output->set_default_type(MMNodeUniversalProperty::DEFAULT_TYPE_VECTOR2);
+	}
 
-  if (!input) {
-   input = MMNodeUniversalProperty.new();
-   input.default_type = MMNodeUniversalProperty.DEFAULT_TYPE_VECTOR2;
+	output->set_output_slot_type(MMNodeUniversalProperty::SLOT_TYPE_FLOAT);
+	output->set_slot_name(">>>   Output    >>>");
+	output->set_get_value_from_owner(true);
+
+	register_input_property(input);
+	register_output_property(output);
 }
 
-  input.input_slot_type = MMNodeUniversalProperty.SLOT_TYPE_UNIVERSAL;
-  //	input.input_slot_type = MMNodeUniversalProperty.SLOT_TYPE_VECTOR2;
-  input.slot_name = ">>>   Input        ";
-
-  if (!input.is_connected("changed", self, "on_input_changed")) {
-   input.connect("changed", self, "on_input_changed");
+void MMSdf3dOpRepeat::_register_methods(MMGraphNode *mm_graph_node) {
+	mm_graph_node->add_slot_label_universal(input);
+	mm_graph_node->add_slot_label_universal(output);
+	mm_graph_node->add_slot_vector2("get_col_row", "set_col_row", "Col,Row", 1);
+	mm_graph_node->add_slot_float("get_rotation", "set_rotation", "Rotation", 0.01);
 }
 
-
-  if (!output) {
-   output = MMNodeUniversalProperty.new();
-   output.default_type = MMNodeUniversalProperty.DEFAULT_TYPE_VECTOR2;
+Vector2 MMSdf3dOpRepeat::_get_property_value_sdf3d(const Vector3 &uv3) {
+	//todo make seed a class variable probably into MMNode;
+	Vector3 new_uv = MMAlgos::sdf3d_repeat(uv3, col_row, rotation, 1);
+	return input->get_value_sdf3d(new_uv);
 }
 
-  output.output_slot_type = MMNodeUniversalProperty.SLOT_TYPE_FLOAT;
-  output.slot_name = ">>>   Output    >>>";
-  output.get_value_from_owner = true;
-  register_input_property(input);
-  register_output_property(output);
+void MMSdf3dOpRepeat::on_input_changed() {
+	emit_changed();
+	output->do_emit_changed();
 }
 
-
- void Sdf3dOpRepeat::_register_methods(const Variant &mm_graph_node) {
-  mm_graph_node.add_slot_label_universal(input);
-  mm_graph_node.add_slot_label_universal(output);
-  mm_graph_node.add_slot_vector2("get_col_row", "set_col_row", "Col,Row", 1);
-  mm_graph_node.add_slot_float("get_rotation", "set_rotation", "Rotation", 0.01);
+MMSdf3dOpRepeat::MMSdf3dOpRepeat() {
+	col_row = Vector2(3, 3);
+	rotation = 0.3;
 }
 
-
- Vector2 Sdf3dOpRepeat::_get_property_value_sdf3d(const Vector3 &uv3) {
-  //todo make seed a class variable probably into MMNode;
-   Vector3 new_uv = MMAlgos.sdf3d_repeat(uv3, col_row, rotation, 1);
-  return input.get_value_sdf3d(new_uv);
+MMSdf3dOpRepeat::~MMSdf3dOpRepeat() {
 }
 
- //col_row;
+void MMSdf3dOpRepeat::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_input"), &MMSdf3dOpRepeat::get_input);
+	ClassDB::bind_method(D_METHOD("set_input", "value"), &MMSdf3dOpRepeat::set_input);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_input", "get_input");
 
- Vector2 Sdf3dOpRepeat::get_col_row() {
-  return col_row;
+	ClassDB::bind_method(D_METHOD("get_output"), &MMSdf3dOpRepeat::get_output);
+	ClassDB::bind_method(D_METHOD("set_output", "value"), &MMSdf3dOpRepeat::set_output);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "output", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_output", "get_output");
+
+	ClassDB::bind_method(D_METHOD("get_col_row"), &MMSdf3dOpRepeat::get_col_row);
+	ClassDB::bind_method(D_METHOD("set_col_row", "value"), &MMSdf3dOpRepeat::set_col_row);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "col_row"), "set_col_row", "get_col_row");
+
+	ClassDB::bind_method(D_METHOD("get_rotation"), &MMSdf3dOpRepeat::get_rotation);
+	ClassDB::bind_method(D_METHOD("set_rotation", "value"), &MMSdf3dOpRepeat::set_rotation);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "rotation"), "set_rotation", "get_rotation");
+
+	ClassDB::bind_method(D_METHOD("on_input_changed"), &MMSdf3dOpRepeat::on_input_changed);
 }
-
-
- void Sdf3dOpRepeat::set_col_row(const Vector2 &val) {
-  col_row = val;
-  emit_changed();
-  output.emit_changed();
-}
-
- //rotation;
-
- float Sdf3dOpRepeat::get_rotation() {
-  return rotation;
-}
-
-
- void Sdf3dOpRepeat::set_rotation(const float val) {
-  rotation = val;
-  emit_changed();
-  output.emit_changed();
-}
-
-
- void Sdf3dOpRepeat::on_input_changed() {
-  emit_changed();
-  output.emit_changed();
-}
-
-}
-
- Sdf3dOpRepeat::Sdf3dOpRepeat() {
-  input;
-  output;
-  col_row = Vector2(3, 3);
-  rotation = 0.3;
- }
-
- Sdf3dOpRepeat::~Sdf3dOpRepeat() {
- }
-
-
- static void Sdf3dOpRepeat::_bind_methods() {
-   ClassDB::bind_method(D_METHOD("get_input"), &Sdf3dOpRepeat::get_input);
-   ClassDB::bind_method(D_METHOD("set_input", "value"), &Sdf3dOpRepeat::set_input);
-   ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "Ref<Resource>"), "set_input", "get_input");
-
-
-   ClassDB::bind_method(D_METHOD("get_output"), &Sdf3dOpRepeat::get_output);
-   ClassDB::bind_method(D_METHOD("set_output", "value"), &Sdf3dOpRepeat::set_output);
-   ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "output", PROPERTY_HINT_RESOURCE_TYPE, "Ref<Resource>"), "set_output", "get_output");
-
-
-   ClassDB::bind_method(D_METHOD("get_col_row"), &Sdf3dOpRepeat::get_col_row);
-   ClassDB::bind_method(D_METHOD("set_col_row", "value"), &Sdf3dOpRepeat::set_col_row);
-   ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "col_row"), "set_col_row", "get_col_row");
-
-
-   ClassDB::bind_method(D_METHOD("get_rotation"), &Sdf3dOpRepeat::get_rotation);
-   ClassDB::bind_method(D_METHOD("set_rotation", "value"), &Sdf3dOpRepeat::set_rotation);
-   ADD_PROPERTY(PropertyInfo(Variant::REAL, "rotation"), "set_rotation", "get_rotation");
-
-
-  ClassDB::bind_method(D_METHOD("_init_properties"), &Sdf3dOpRepeat::_init_properties);
-  ClassDB::bind_method(D_METHOD("_register_methods", "mm_graph_node"), &Sdf3dOpRepeat::_register_methods);
-  ClassDB::bind_method(D_METHOD("_get_property_value_sdf3d", "uv3"), &Sdf3dOpRepeat::_get_property_value_sdf3d);
-  ClassDB::bind_method(D_METHOD("get_col_row"), &Sdf3dOpRepeat::get_col_row);
-  ClassDB::bind_method(D_METHOD("set_col_row", "val"), &Sdf3dOpRepeat::set_col_row);
-  ClassDB::bind_method(D_METHOD("get_rotation"), &Sdf3dOpRepeat::get_rotation);
-  ClassDB::bind_method(D_METHOD("set_rotation", "val"), &Sdf3dOpRepeat::set_rotation);
-  ClassDB::bind_method(D_METHOD("on_input_changed"), &Sdf3dOpRepeat::on_input_changed);
-
- }
-
-
-

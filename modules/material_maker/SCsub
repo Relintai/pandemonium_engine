@@ -70,6 +70,7 @@ sources = [
     "nodes/simple/curve.cpp",
 
     "nodes/sdf3d/sdf3d_render.cpp",
+    "nodes/sdf3d/sdf3d_color.cpp",
 
     "nodes/sdf3d/sdf3d_tf_translate.cpp",
     "nodes/sdf3d/sdf3d_tf_scale.cpp",
@@ -81,6 +82,15 @@ sources = [
     "nodes/sdf3d/sdf3d_shape_cone.cpp",
     "nodes/sdf3d/sdf3d_shape_capsule.cpp",
     "nodes/sdf3d/sdf3d_shape_box.cpp",
+
+    "nodes/sdf3d/sdf3d_op_smooth_bool.cpp",
+    "nodes/sdf3d/sdf3d_op_rounded.cpp",
+    "nodes/sdf3d/sdf3d_op_revolution.cpp",
+    "nodes/sdf3d/sdf3d_op_repeat.cpp",
+    "nodes/sdf3d/sdf3d_op_morph.cpp",
+    "nodes/sdf3d/sdf3d_op_elongation.cpp",
+    "nodes/sdf3d/sdf3d_op_circle_repeat.cpp",
+    "nodes/sdf3d/sdf3d_op_bool.cpp",
 
 ]
 
