@@ -66,6 +66,7 @@ sources = [
     "nodes/transform/circle_map.cpp",
 
     "nodes/simple/shape.cpp",
+    "nodes/simple/image.cpp",
 ]
 
 if env["tools"]:
