@@ -40,6 +40,10 @@ def get_doc_classes():
         "MMCurve",
 
         "MMSdf3dTfTranslate",
+        "MMSdf3dTfScale",
+        "MMSdf3dTfRotate",
+
+        "MMSdf3dShapeTorus",
     ]
 
 def get_doc_path():

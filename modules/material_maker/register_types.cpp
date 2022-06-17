@@ -61,7 +61,11 @@ SOFTWARE.
 #include "nodes/simple/image.h"
 #include "nodes/simple/shape.h"
 
+#include "nodes/sdf3d/sdf3d_tf_rotate.h"
+#include "nodes/sdf3d/sdf3d_tf_scale.h"
 #include "nodes/sdf3d/sdf3d_tf_translate.h"
+
+#include "nodes/sdf3d/sdf3d_shape_torus.h"
 
 static _MMAlgos *_mm_algos_singleton = nullptr;
 
@@ -115,7 +119,14 @@ void register_material_maker_types() {
 	MMAlgos::register_node_class("Simple", "MMCurve");
 
 	ClassDB::register_class<MMSdf3dTfTranslate>();
-	MMAlgos::register_node_class("SDF3D", "MMSdf3dTfTranslate");
+	MMAlgos::register_node_class("SDF3D - TF", "MMSdf3dTfTranslate");
+	ClassDB::register_class<MMSdf3dTfScale>();
+	MMAlgos::register_node_class("SDF3D - TF", "MMSdf3dTfScale");
+	ClassDB::register_class<MMSdf3dTfRotate>();
+	MMAlgos::register_node_class("SDF3D - TF", "MMSdf3dTfRotate");
+
+	ClassDB::register_class<MMSdf3dShapeTorus>();
+	MMAlgos::register_node_class("SDF3D - Shape", "MMSdf3dShapeTorus");
 
 	_mm_algos_singleton = memnew(_MMAlgos);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("MMAlgos", _MMAlgos::get_singleton()));
