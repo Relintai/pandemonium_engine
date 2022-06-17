@@ -84,6 +84,8 @@ SOFTWARE.
 #include "nodes/sdf3d/sdf3d_op_rounded.h"
 #include "nodes/sdf3d/sdf3d_op_smooth_bool.h"
 
+#include "nodes/sdf2d/sd_show.h"
+
 #include "nodes/sdf2d/sd_shape_arc.h"
 #include "nodes/sdf2d/sd_shape_box.h"
 #include "nodes/sdf2d/sd_shape_circle.h"
@@ -95,7 +97,15 @@ SOFTWARE.
 #include "nodes/sdf2d/sd_tf_scale.h"
 #include "nodes/sdf2d/sd_tf_translate.h"
 
-#include "nodes/sdf2d/sd_show.h"
+#include "nodes/sdf2d/sd_tf_translate.h"
+
+#include "nodes/sdf2d/sd_op_annular_shape.h"
+#include "nodes/sdf2d/sd_op_bool.h"
+#include "nodes/sdf2d/sd_op_circle_repeat.h"
+#include "nodes/sdf2d/sd_op_morph.h"
+#include "nodes/sdf2d/sd_op_repeat.h"
+#include "nodes/sdf2d/sd_op_rounded_shape.h"
+#include "nodes/sdf2d/sd_op_smooth_bool.h"
 
 static _MMAlgos *_mm_algos_singleton = nullptr;
 
@@ -212,6 +222,21 @@ void register_material_maker_types() {
 	MMAlgos::register_node_class("SDF2D - TF", "MMSdTfScale");
 	ClassDB::register_class<MMSdTfRotate>();
 	MMAlgos::register_node_class("SDF2D - TF", "MMSdTfRotate");
+
+	ClassDB::register_class<MMSdOpSmoothBool>();
+	MMAlgos::register_node_class("SDF2D - OP", "MMSdOpSmoothBool");
+	ClassDB::register_class<MMSdOpRoundedShape>();
+	MMAlgos::register_node_class("SDF2D - OP", "MMSdOpRoundedShape");
+	ClassDB::register_class<MMSdOpRepeat>();
+	MMAlgos::register_node_class("SDF2D - OP", "MMSdOpRepeat");
+	ClassDB::register_class<MMSdOpMorph>();
+	MMAlgos::register_node_class("SDF2D - OP", "MMSdOpMorph");
+	ClassDB::register_class<MMSdOpCircleRepeat>();
+	MMAlgos::register_node_class("SDF2D - OP", "MMSdOpCircleRepeat");
+	ClassDB::register_class<MMSdOpBool>();
+	MMAlgos::register_node_class("SDF2D - OP", "MMSdOpBool");
+	ClassDB::register_class<MMSdOpAnnularShape>();
+	MMAlgos::register_node_class("SDF2D - OP", "MMSdOpAnnularShape");
 
 	_mm_algos_singleton = memnew(_MMAlgos);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("MMAlgos", _MMAlgos::get_singleton()));

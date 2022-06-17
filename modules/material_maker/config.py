@@ -74,6 +74,14 @@ def get_doc_classes():
         "MMSdShapeCircle",
         "MMSdShapeBox",
         "MMSdShapeArc",
+
+        "MMSdOpSmoothBool",
+        "MMSdOpRoundedShape",
+        "MMSdOpRepeat",
+        "MMSdOpMorph",
+        "MMSdOpCircleRepeat",
+        "MMSdOpBool",
+        "MMSdOpAnnularShape",
     ]
 
 def get_doc_path():

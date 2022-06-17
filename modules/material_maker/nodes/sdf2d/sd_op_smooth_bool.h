@@ -1,56 +1,46 @@
-#ifndef SD_OP_SMOOTH_BOOL_H
-#define SD_OP_SMOOTH_BOOL_H
+#ifndef MM_SD_OP_SMOOTH_BOOL_H
+#define MM_SD_OP_SMOOTH_BOOL_H
 
+#include "../mm_node.h"
+#include "../mm_node_universal_property.h"
 
-class SdOpSmoothBool : public MMNode {
- GDCLASS(SdOpSmoothBool, MMNode);
+class MMSdOpSmoothBool : public MMNode {
+	GDCLASS(MMSdOpSmoothBool, MMNode);
 
- public:
+public:
+	Ref<MMNodeUniversalProperty> get_input1();
+	void set_input1(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_input1();
- void set_input1(const Ref<Resource> &val);
+	Ref<MMNodeUniversalProperty> get_input2();
+	void set_input2(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_input2();
- void set_input2(const Ref<Resource> &val);
+	Ref<MMNodeUniversalProperty> get_output();
+	void set_output(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_output();
- void set_output(const Ref<Resource> &val);
+	int get_operation() const;
+	void set_operation(const int val);
 
- int get_operation() const;
- void set_operation(const int val);
+	float get_smoothness() const;
+	void set_smoothness(const float val);
 
- float get_smoothness() const;
- void set_smoothness(const float val);
+	void _init_properties();
+	void _register_methods(MMGraphNode *mm_graph_node);
+	Variant _get_property_value(const Vector2 &uv);
 
- void _init_properties();
- void _register_methods(const Variant &mm_graph_node);
- float _get_property_value(const Vector2 &uv);
- int get_operation();
- void set_operation(const int val);
- float get_smoothness();
- void set_smoothness(const float val);
- void on_input_changed();
+	void on_input_changed();
 
- SdOpSmoothBool();
- ~SdOpSmoothBool();
+	MMSdOpSmoothBool();
+	~MMSdOpSmoothBool();
 
- protected:
- static void _bind_methods();
+protected:
+	static void _bind_methods();
 
- //tool
- //export(Resource) 
- Ref<Resource> input1;
- //export(Resource) 
- Ref<Resource> input2;
- //export(Resource) 
- Ref<Resource> output;
- //export(int, "Union,Substraction,Intersection") 
- int operation = 0;
- //export(float) 
- float smoothness = 0.15;
- //operation
- //smoothness
+	Ref<MMNodeUniversalProperty> input1;
+	Ref<MMNodeUniversalProperty> input2;
+	Ref<MMNodeUniversalProperty> output;
+	//export(int, "Union,Substraction,Intersection")
+	int operation;
+	float smoothness;
 };
-
 
 #endif
