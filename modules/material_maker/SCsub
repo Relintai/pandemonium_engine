@@ -69,11 +69,14 @@ sources = [
     "nodes/simple/image.cpp",
     "nodes/simple/curve.cpp",
 
+    "nodes/sdf3d/sdf3d_render.cpp",
+
     "nodes/sdf3d/sdf3d_tf_translate.cpp",
     "nodes/sdf3d/sdf3d_tf_scale.cpp",
     "nodes/sdf3d/sdf3d_tf_rotate.cpp",
 
     "nodes/sdf3d/sdf3d_shape_torus.cpp",
+
 ]
 
 if env["tools"]:

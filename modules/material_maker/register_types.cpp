@@ -61,6 +61,8 @@ SOFTWARE.
 #include "nodes/simple/image.h"
 #include "nodes/simple/shape.h"
 
+#include "nodes/sdf3d/sdf3d_render.h"
+
 #include "nodes/sdf3d/sdf3d_tf_rotate.h"
 #include "nodes/sdf3d/sdf3d_tf_scale.h"
 #include "nodes/sdf3d/sdf3d_tf_translate.h"
@@ -117,6 +119,9 @@ void register_material_maker_types() {
 	MMAlgos::register_node_class("Simple", "MMImage");
 	ClassDB::register_class<MMCurve>();
 	MMAlgos::register_node_class("Simple", "MMCurve");
+
+	ClassDB::register_class<MMSdf3dRender>();
+	MMAlgos::register_node_class("SDF3D", "MMSdf3dRender");
 
 	ClassDB::register_class<MMSdf3dTfTranslate>();
 	MMAlgos::register_node_class("SDF3D - TF", "MMSdf3dTfTranslate");

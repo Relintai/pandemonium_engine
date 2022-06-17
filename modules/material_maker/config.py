@@ -39,6 +39,8 @@ def get_doc_classes():
         "MMImage",
         "MMCurve",
 
+        "MMSdf3dRender",
+
         "MMSdf3dTfTranslate",
         "MMSdf3dTfScale",
         "MMSdf3dTfRotate",
