@@ -67,6 +67,7 @@ sources = [
 
     "nodes/simple/shape.cpp",
     "nodes/simple/image.cpp",
+    "nodes/simple/curve.cpp",
 ]
 
 if env["tools"]:

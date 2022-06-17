@@ -57,6 +57,7 @@ SOFTWARE.
 #include "nodes/transform/transform.h"
 #include "nodes/transform/translate.h"
 
+#include "nodes/simple/curve.h"
 #include "nodes/simple/image.h"
 #include "nodes/simple/shape.h"
 
@@ -108,6 +109,8 @@ void register_material_maker_types() {
 	MMAlgos::register_node_class("Simple", "MMShape");
 	ClassDB::register_class<MMImage>();
 	MMAlgos::register_node_class("Simple", "MMImage");
+	ClassDB::register_class<MMCurve>();
+	MMAlgos::register_node_class("Simple", "MMCurve");
 
 	_mm_algos_singleton = memnew(_MMAlgos);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("MMAlgos", _MMAlgos::get_singleton()));
