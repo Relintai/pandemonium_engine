@@ -61,6 +61,14 @@ def get_doc_classes():
         "MMSdf3dOpElongation",
         "MMSdf3dOpCircleRepeat",
         "MMSdf3dOpBool",
+
+        "SSSdShow",
+
+        "MMSdTfTranslate",
+        "MMSdTfScale",
+        "MMSdTfRotate",
+
+        "MMSdShapeRhombus",
     ]
 
 def get_doc_path():

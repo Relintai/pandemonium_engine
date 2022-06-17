@@ -92,6 +92,14 @@ sources = [
     "nodes/sdf3d/sdf3d_op_circle_repeat.cpp",
     "nodes/sdf3d/sdf3d_op_bool.cpp",
 
+    "nodes/sdf2d/sd_shape_rhombus.cpp",
+
+    "nodes/sdf2d/sd_tf_translate.cpp",
+    "nodes/sdf2d/sd_tf_scale.cpp",
+    "nodes/sdf2d/sd_tf_rotate.cpp",
+
+    "nodes/sdf2d/sd_show.cpp",
+
 ]
 
 if env["tools"]:

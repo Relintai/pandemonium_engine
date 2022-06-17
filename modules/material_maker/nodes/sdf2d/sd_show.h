@@ -1,51 +1,41 @@
-#ifndef SD_SHOW_H
-#define SD_SHOW_H
+#ifndef MM_SD_SHOW_H
+#define MM_SD_SHOW_H
 
+#include "../mm_node.h"
+#include "../mm_node_universal_property.h"
 
-class SdShow : public MMNode {
- GDCLASS(SdShow, MMNode);
+class SSSdShow : public MMNode {
+	GDCLASS(SSSdShow, MMNode);
 
- public:
+public:
+	Ref<MMNodeUniversalProperty> get_image();
+	void set_image(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_image();
- void set_image(const Ref<Resource> &val);
+	Ref<MMNodeUniversalProperty> get_input();
+	void set_input(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_input();
- void set_input(const Ref<Resource> &val);
+	float get_bevel() const;
+	void set_bevel(const float val);
 
- float get_bevel() const;
- void set_bevel(const float val);
+	float get_base() const;
+	void set_base(const float val);
 
- float get_base() const;
- void set_base(const float val);
+	void _init_properties();
+	void _register_methods(MMGraphNode *mm_graph_node);
+	void _render(const Ref<MMMaterial> &material);
 
- void _init_properties();
- void _register_methods(const Variant &mm_graph_node);
- void _render(const Variant &material);
- Color _get_value_for(const Vector2 &uv, const int pseed);
- float get_bevel();
- void set_bevel(const float val);
- float get_base();
- void set_base(const float val);
+	Color _get_value_for(const Vector2 &uv, const int pseed);
 
- SdShow();
- ~SdShow();
+	SSSdShow();
+	~SSSdShow();
 
- protected:
- static void _bind_methods();
+protected:
+	static void _bind_methods();
 
- //tool
- //export(Resource) 
- Ref<Resource> image;
- //export(Resource) 
- Ref<Resource> input;
- //export(float) 
- float bevel = 0;
- //export(float) 
- float base = 0;
- //bevel
- //base
+	Ref<MMNodeUniversalProperty> image;
+	Ref<MMNodeUniversalProperty> input;
+	float bevel;
+	float base;
 };
-
 
 #endif
