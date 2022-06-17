@@ -2,6 +2,7 @@
 #include "image_picker_button.h"
 
 #include "../file_dialog/mat_maker_file_dialog.h"
+#include "core/io/image_loader.h"
 #include "core/io/resource_loader.h"
 #include "scene/resources/texture.h"
 
@@ -23,7 +24,9 @@ void ImagePickerButton::do_set_image_path(const String &path) {
 
 	image_path = path;
 
-	Ref<Image> img = ResourceLoader::load("image_path", "Image");
+	Ref<Image> img;
+	img.instance();
+	ImageLoader::load_image(image_path, img);
 	Ref<ImageTexture> tex = get_normal_texture();
 
 	if (!tex.is_valid()) {
@@ -108,7 +111,6 @@ void ImagePickerButton::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "image_path"), "set_image_path", "get_image_path");
 
 	ClassDB::bind_method(D_METHOD("do_set_image_path", "path"), &ImagePickerButton::do_set_image_path);
-	ClassDB::bind_method(D_METHOD("set_image_path", "path"), &ImagePickerButton::set_image_path);
 	ClassDB::bind_method(D_METHOD("_on_ImagePicker_pressed"), &ImagePickerButton::_on_ImagePicker_pressed);
 	ClassDB::bind_method(D_METHOD("on_drop_image_file", "file_name"), &ImagePickerButton::on_drop_image_file);
 	ClassDB::bind_method(D_METHOD("on_file_selected", "files"), &ImagePickerButton::on_file_selected);
