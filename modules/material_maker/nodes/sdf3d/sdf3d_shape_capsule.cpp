@@ -129,7 +129,9 @@ MMSdf3dShapeCapsule::~MMSdf3dShapeCapsule() {
 
 void MMSdf3dShapeCapsule::_notification(int p_what) {
 	if (p_what == NOTIFICATION_POSTINITIALIZE) {
-		init_points_11();
+		if (points.size() == 0) {
+			init_points_11();
+		}
 	}
 }
 
