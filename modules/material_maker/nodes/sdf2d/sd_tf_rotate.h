@@ -1,5 +1,5 @@
-#ifndef SD_TF_ROTATE_H
-#define SD_TF_ROTATE_H
+#ifndef MM_SD_TF_ROTATE_H
+#define MM_SD_TF_ROTATE_H
 
 #include "../mm_node.h"
 #include "../mm_node_universal_property.h"

@@ -93,6 +93,11 @@ sources = [
     "nodes/sdf3d/sdf3d_op_bool.cpp",
 
     "nodes/sdf2d/sd_shape_rhombus.cpp",
+    "nodes/sdf2d/sd_shape_polygon.cpp",
+    "nodes/sdf2d/sd_shape_line.cpp",
+    "nodes/sdf2d/sd_shape_circle.cpp",
+    "nodes/sdf2d/sd_shape_box.cpp",
+    "nodes/sdf2d/sd_shape_arc.cpp",
 
     "nodes/sdf2d/sd_tf_translate.cpp",
     "nodes/sdf2d/sd_tf_scale.cpp",

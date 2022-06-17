@@ -84,6 +84,11 @@ SOFTWARE.
 #include "nodes/sdf3d/sdf3d_op_rounded.h"
 #include "nodes/sdf3d/sdf3d_op_smooth_bool.h"
 
+#include "nodes/sdf2d/sd_shape_arc.h"
+#include "nodes/sdf2d/sd_shape_box.h"
+#include "nodes/sdf2d/sd_shape_circle.h"
+#include "nodes/sdf2d/sd_shape_line.h"
+#include "nodes/sdf2d/sd_shape_polygon.h"
 #include "nodes/sdf2d/sd_shape_rhombus.h"
 
 #include "nodes/sdf2d/sd_tf_rotate.h"
@@ -190,6 +195,16 @@ void register_material_maker_types() {
 
 	ClassDB::register_class<MMSdShapeRhombus>();
 	MMAlgos::register_node_class("SDF2D - Shape", "MMSdShapeRhombus");
+	ClassDB::register_class<MMSdShapePolygon>();
+	MMAlgos::register_node_class("SDF2D - Shape", "MMSdShapePolygon");
+	ClassDB::register_class<MMSdShapeLine>();
+	MMAlgos::register_node_class("SDF2D - Shape", "MMSdShapeLine");
+	ClassDB::register_class<MMSdShapeCircle>();
+	MMAlgos::register_node_class("SDF2D - Shape", "MMSdShapeCircle");
+	ClassDB::register_class<MMSdShapeBox>();
+	MMAlgos::register_node_class("SDF2D - Shape", "MMSdShapeBox");
+	ClassDB::register_class<MMSdShapeArc>();
+	MMAlgos::register_node_class("SDF2D - Shape", "MMSdShapeArc");
 
 	ClassDB::register_class<MMSdTfTranslate>();
 	MMAlgos::register_node_class("SDF2D - TF", "MMSdTfTranslate");

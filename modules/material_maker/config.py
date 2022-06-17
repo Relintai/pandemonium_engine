@@ -69,6 +69,11 @@ def get_doc_classes():
         "MMSdTfRotate",
 
         "MMSdShapeRhombus",
+        "MMSdShapePolygon",
+        "MMSdShapeLine",
+        "MMSdShapeCircle",
+        "MMSdShapeBox",
+        "MMSdShapeArc",
     ]
 
 def get_doc_path():
