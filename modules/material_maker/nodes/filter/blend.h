@@ -1,69 +1,60 @@
-#ifndef BLEND_H
-#define BLEND_H
+#ifndef MM_BLEND_H
+#define MM_BLEND_H
 
+#include "../mm_node.h"
+#include "../mm_node_universal_property.h"
 
-class Blend : public MMNode {
- GDCLASS(Blend, MMNode);
+class MMBlend : public MMNode {
+	GDCLASS(MMBlend, MMNode);
 
- public:
+public:
+	Ref<MMNodeUniversalProperty> get_image();
+	void set_image(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_image();
- void set_image(const Ref<Resource> &val);
+	Ref<MMNodeUniversalProperty> get_input1();
+	void set_input1(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_input1();
- void set_input1(const Ref<Resource> &val);
+	Ref<MMNodeUniversalProperty> get_input2();
+	void set_input2(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_input2();
- void set_input2(const Ref<Resource> &val);
+	int get_blend_type() const;
+	void set_blend_type(const int val);
 
- int get_blend_type() const;
- void set_blend_type(const int val);
+	Ref<MMNodeUniversalProperty> get_opacity();
+	void set_opacity(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_opacity();
- void set_opacity(const Ref<Resource> &val);
+	enum MMBlendType {
+		BLEND_TYPE_NORMAL = 0,
+		BLEND_TYPE_DISSOLVE,
+		BLEND_TYPE_MULTIPLY,
+		BLEND_TYPE_SCREEN,
+		BLEND_TYPE_OVERLAY,
+		BLEND_TYPE_HARD_LIGHT,
+		BLEND_TYPE_SOFT_LIGHT,
+		BLEND_TYPE_BURN,
+		BLEND_TYPE_DODGE,
+		BLEND_TYPE_LIGHTEN,
+		BLEND_TYPE_DARKEN,
+		BLEND_TYPE_DIFFRENCE
+	};
 
- enum BlendType  {
+	void _init_properties();
+	void _register_methods(MMGraphNode *mm_graph_node);
+	void _render(const Ref<MMMaterial> &material);
+	Color _get_value_for(const Vector2 &uv, const int pseed);
 
-  NORMAL = 0,
-  DISSOLVE,
-  MULTIPLY,
-  SCREEN,
-  OVERLAY,
-  HARD_LIGHT,
-  SOFT_LIGHT,
-  BURN,
-  DODGE,
-  LIGHTEN,
-  DARKEN,
-  DIFFRENCE
+	MMBlend();
+	~MMBlend();
+
+protected:
+	static void _bind_methods();
+
+	Ref<MMNodeUniversalProperty> image;
+	Ref<MMNodeUniversalProperty> input1;
+	Ref<MMNodeUniversalProperty> input2;
+	//export(int, "Normal,Dissolve,Multiply,Screen,Overlay,Hard Light,Soft Light,Burn,Dodge,Lighten,Darken,Difference")
+	int blend_type;
+	Ref<MMNodeUniversalProperty> opacity;
 };
-
- void _init_properties();
- void _register_methods(const Variant &mm_graph_node);
- void _render(const Variant &material);
- Color _get_value_for(const Vector2 &uv, const int pseed);
- int get_blend_type();
- void set_blend_type(const int val);
-
- Blend();
- ~Blend();
-
- protected:
- static void _bind_methods();
-
- //tool
- };
- //export(Resource) 
- Ref<Resource> image;
- //export(Resource) 
- Ref<Resource> input1;
- //export(Resource) 
- Ref<Resource> input2;
- //export(int, "Normal,Dissolve,Multiply,Screen,Overlay,Hard Light,Soft Light,Burn,Dodge,Lighten,Darken,Difference") 
- int blend_type = 0;
- //export(Resource) 
- Ref<Resource> opacity;
-};
-
 
 #endif

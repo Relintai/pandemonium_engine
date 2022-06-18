@@ -1,37 +1,35 @@
-#ifndef TONALITY_H
-#define TONALITY_H
+#ifndef MM_TONALITY_H
+#define MM_TONALITY_H
 
+#include "../bases/curve_base.h"
+#include "../mm_node_universal_property.h"
 
-class Tonality : public CurveBase {
- GDCLASS(Tonality, CurveBase);
+class MMTonality : public CurveBase {
+	GDCLASS(MMTonality, CurveBase);
 
- public:
+public:
+	Ref<MMNodeUniversalProperty> get_image();
+	void set_image(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_image();
- void set_image(const Ref<Resource> &val);
+	Ref<MMNodeUniversalProperty> get_input();
+	void set_input(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_input();
- void set_input(const Ref<Resource> &val);
+	void _init_properties();
+	void _register_methods(MMGraphNode *mm_graph_node);
+	void _render(const Ref<MMMaterial> &material);
+	Color _get_value_for(const Vector2 &uv, const int pseed);
+	void _curve_changed();
 
- void _init();
- void _init_properties();
- void _register_methods(const Variant &mm_graph_node);
- void _render(const Variant &material);
- Color _get_value_for(const Vector2 &uv, const int pseed);
- void _curve_changed();
+	MMTonality();
+	~MMTonality();
 
- Tonality();
- ~Tonality();
+protected:
+	void _notification(int p_what);
 
- protected:
- static void _bind_methods();
+	static void _bind_methods();
 
- //tool
- //export(Resource) 
- Ref<Resource> image;
- //export(Resource) 
- Ref<Resource> input;
+	Ref<MMNodeUniversalProperty> image;
+	Ref<MMNodeUniversalProperty> input;
 };
-
 
 #endif

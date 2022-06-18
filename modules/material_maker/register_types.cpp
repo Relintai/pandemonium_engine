@@ -130,6 +130,29 @@ SOFTWARE.
 #include "nodes/gradient/gradient.h"
 #include "nodes/gradient/radial_gradient.h"
 
+#include "nodes/filter/adjust_hsv.h"
+#include "nodes/filter/blend.h"
+#include "nodes/filter/blur_gaussian.h"
+#include "nodes/filter/brightness_contrast.h"
+#include "nodes/filter/colorize.h"
+#include "nodes/filter/combine.h"
+#include "nodes/filter/decompose.h"
+#include "nodes/filter/emboss.h"
+#include "nodes/filter/fill_channel.h"
+#include "nodes/filter/fill_to_color.h"
+#include "nodes/filter/fill_to_position.h"
+#include "nodes/filter/fill_to_random_color.h"
+#include "nodes/filter/fill_to_random_grey.h"
+#include "nodes/filter/fill_to_size.h"
+#include "nodes/filter/fill_to_uv.h"
+#include "nodes/filter/greyscale.h"
+#include "nodes/filter/invert.h"
+#include "nodes/filter/make_tileable.h"
+#include "nodes/filter/math.h"
+#include "nodes/filter/quantize.h"
+#include "nodes/filter/swap_channels.h"
+#include "nodes/filter/tonality.h"
+
 static _MMAlgos *_mm_algos_singleton = nullptr;
 
 void register_material_maker_types() {
@@ -302,6 +325,51 @@ void register_material_maker_types() {
 	MMAlgos::register_node_class("Gradient", "MMGradient");
 	ClassDB::register_class<MMCircularGradient>();
 	MMAlgos::register_node_class("Gradient", "MMCircularGradient");
+
+	ClassDB::register_class<MMTonality>();
+	MMAlgos::register_node_class("Filter", "MMTonality");
+	ClassDB::register_class<MMSwapChannels>();
+	MMAlgos::register_node_class("Filter", "MMSwapChannels");
+	ClassDB::register_class<MMQuantize>();
+	MMAlgos::register_node_class("Filter", "MMQuantize");
+	ClassDB::register_class<MMMath>();
+	MMAlgos::register_node_class("Filter", "MMMath");
+	ClassDB::register_class<MMMakeTileable>();
+	MMAlgos::register_node_class("Filter", "MMMakeTileable");
+	ClassDB::register_class<MMInvert>();
+	MMAlgos::register_node_class("Filter", "MMInvert");
+	ClassDB::register_class<MMGreyscale>();
+	MMAlgos::register_node_class("Filter", "MMGreyscale");
+	ClassDB::register_class<MMFillToUv>();
+	MMAlgos::register_node_class("Filter", "MMFillToUv");
+	ClassDB::register_class<MMFillToSize>();
+	MMAlgos::register_node_class("Filter", "MMFillToSize");
+	ClassDB::register_class<MMFillToRandomGrey>();
+	MMAlgos::register_node_class("Filter", "MMFillToRandomGrey");
+	ClassDB::register_class<MMFillToRandomColor>();
+	MMAlgos::register_node_class("Filter", "MMFillToRandomColor");
+	ClassDB::register_class<MMFillToPosition>();
+	MMAlgos::register_node_class("Filter", "MMFillToPosition");
+	ClassDB::register_class<MMFillToColor>();
+	MMAlgos::register_node_class("Filter", "MMFillToColor");
+	ClassDB::register_class<MMFillChannel>();
+	MMAlgos::register_node_class("Filter", "MMFillChannel");
+	ClassDB::register_class<MMEmboss>();
+	MMAlgos::register_node_class("Filter", "MMEmboss");
+	ClassDB::register_class<MMDecompose>();
+	MMAlgos::register_node_class("Filter", "MMDecompose");
+	ClassDB::register_class<MMCombine>();
+	MMAlgos::register_node_class("Filter", "MMCombine");
+	ClassDB::register_class<MMColorize>();
+	MMAlgos::register_node_class("Filter", "MMColorize");
+	ClassDB::register_class<MMBrightnessContrast>();
+	MMAlgos::register_node_class("Filter", "MMBrightnessContrast");
+	ClassDB::register_class<MMBlurGaussian>();
+	MMAlgos::register_node_class("Filter", "MMBlurGaussian");
+	ClassDB::register_class<MMBlend>();
+	MMAlgos::register_node_class("Filter", "MMBlend");
+	ClassDB::register_class<MMAdjustHsv>();
+	MMAlgos::register_node_class("Filter", "MMAdjustHsv");
 
 	_mm_algos_singleton = memnew(_MMAlgos);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("MMAlgos", _MMAlgos::get_singleton()));

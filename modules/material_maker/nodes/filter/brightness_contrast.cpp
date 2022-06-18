@@ -1,165 +1,106 @@
 
 #include "brightness_contrast.h"
 
+#include "../../algos/mm_algos.h"
+#include "../../editor/mm_graph_node.h"
+#include "../mm_material.h"
 
-Ref<Resource> BrightnessContrast::get_image() {
- return image;
+Ref<MMNodeUniversalProperty> MMBrightnessContrast::get_image() {
+	return image;
 }
 
-void BrightnessContrast::set_image(const Ref<Resource> &val) {
-image = val;
+void MMBrightnessContrast::set_image(const Ref<MMNodeUniversalProperty> &val) {
+	image = val;
 }
 
-
-Ref<Resource> BrightnessContrast::get_input() {
- return input;
+Ref<MMNodeUniversalProperty> MMBrightnessContrast::get_input() {
+	return input;
 }
 
-void BrightnessContrast::set_input(const Ref<Resource> &val) {
-input = val;
+void MMBrightnessContrast::set_input(const Ref<MMNodeUniversalProperty> &val) {
+	input = val;
 }
 
-
-float BrightnessContrast::get_brightness() const {
- return brightness;
+float MMBrightnessContrast::get_brightness() const {
+	return brightness;
 }
 
-void BrightnessContrast::set_brightness(const float val) {
-brightness = val;
+void MMBrightnessContrast::set_brightness(const float val) {
+	brightness = val;
+	set_dirty(true);
 }
 
-
-float BrightnessContrast::get_contrast() const {
- return contrast;
+float MMBrightnessContrast::get_contrast() const {
+	return contrast;
 }
 
-void BrightnessContrast::set_contrast(const float val) {
-contrast = val;
+void MMBrightnessContrast::set_contrast(const float val) {
+	contrast = val;
+	set_dirty(true);
 }
 
+void MMBrightnessContrast::_init_properties() {
+	if (!input.is_valid()) {
+		input.instance();
+		input->set_default_type(MMNodeUniversalProperty::DEFAULT_TYPE_COLOR);
+		input->set_default_value(Color(0, 0, 0, 1));
+	}
 
+	input->set_input_slot_type(MMNodeUniversalProperty::SLOT_TYPE_UNIVERSAL);
+	input->set_slot_name(">>>    Input1    ");
 
- //tool;
- //export(Resource) ;
-  Ref<Resource> image;
- //export(Resource) ;
-  Ref<Resource> input;
- //export(float) ;
-  float brightness = 0;
- //export(float) ;
-  float contrast = 1;
+	if (!image.is_valid()) {
+		image.instance();
+		image->set_default_type(MMNodeUniversalProperty::DEFAULT_TYPE_IMAGE);
+	}
 
- void BrightnessContrast::_init_properties() {
+	//image.input_slot_type = MMNodeUniversalProperty.SLOT_TYPE_FLOAT;
+	image->set_output_slot_type(MMNodeUniversalProperty::SLOT_TYPE_IMAGE);
+	//image.force_override = true;
 
-  if (!input) {
-   input = MMNodeUniversalProperty.new();
-   input.default_type = MMNodeUniversalProperty.DEFAULT_TYPE_COLOR;
-   input.set_default_value(Color(0, 0, 0, 1));
+	register_input_property(input);
+	register_output_property(image);
 }
 
-  input.input_slot_type = MMNodeUniversalProperty.SLOT_TYPE_UNIVERSAL;
-  input.slot_name = ">>>    Input1    ";
-
-  if (!image) {
-   image = MMNodeUniversalProperty.new();
-   image.default_type = MMNodeUniversalProperty.DEFAULT_TYPE_IMAGE;
+void MMBrightnessContrast::_register_methods(MMGraphNode *mm_graph_node) {
+	mm_graph_node->add_slot_label_universal(input);
+	mm_graph_node->add_slot_texture_universal(image);
+	mm_graph_node->add_slot_float("get_brightness", "set_brightness", "Brightness", 0.01);
+	mm_graph_node->add_slot_float("get_contrast", "set_contrast", "Contrast", 0.01);
 }
 
-  //image.input_slot_type = MMNodeUniversalProperty.SLOT_TYPE_FLOAT;
-  image.output_slot_type = MMNodeUniversalProperty.SLOT_TYPE_IMAGE;
-  //image.force_override = true;
-  register_input_property(input);
-  register_output_property(image);
+void MMBrightnessContrast::_render(const Ref<MMMaterial> &material) {
+	Ref<Image> img = render_image(material);
+	image->set_value(img);
 }
 
-
- void BrightnessContrast::_register_methods(const Variant &mm_graph_node) {
-  mm_graph_node.add_slot_label_universal(input);
-  mm_graph_node.add_slot_texture_universal(image);
-  mm_graph_node.add_slot_float("get_brightness", "set_brightness", "Brightness", 0.01);
-  mm_graph_node.add_slot_float("get_contrast", "set_contrast", "Contrast", 0.01);
+Color MMBrightnessContrast::_get_value_for(const Vector2 &uv, const int pseed) {
+	Color c = input->get_value(uv);
+	return MMAlgos::brightness_contrast(c, brightness, contrast);
 }
 
-
- void BrightnessContrast::_render(const Variant &material) {
-   Ref<Image> img = render_image(material);
-  image.set_value(img);
+MMBrightnessContrast::MMBrightnessContrast() {
+	brightness = 0;
+	contrast = 1;
 }
 
-
- Color BrightnessContrast::_get_value_for(const Vector2 &uv, const int pseed) {
-   Color c = input.get_value(uv);
-  return MMAlgos.brightness_contrast(c, brightness, contrast);
+MMBrightnessContrast::~MMBrightnessContrast() {
 }
 
- //brightness;
+void MMBrightnessContrast::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_image"), &MMBrightnessContrast::get_image);
+	ClassDB::bind_method(D_METHOD("set_image", "value"), &MMBrightnessContrast::set_image);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "image", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_image", "get_image");
 
- float BrightnessContrast::get_brightness() {
-  return brightness;
+	ClassDB::bind_method(D_METHOD("get_input"), &MMBrightnessContrast::get_input);
+	ClassDB::bind_method(D_METHOD("set_input", "value"), &MMBrightnessContrast::set_input);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "MMNodeUniversalProperty"), "set_input", "get_input");
+
+	ClassDB::bind_method(D_METHOD("get_brightness"), &MMBrightnessContrast::get_brightness);
+	ClassDB::bind_method(D_METHOD("set_brightness", "value"), &MMBrightnessContrast::set_brightness);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "brightness"), "set_brightness", "get_brightness");
+
+	ClassDB::bind_method(D_METHOD("get_contrast"), &MMBrightnessContrast::get_contrast);
+	ClassDB::bind_method(D_METHOD("set_contrast", "value"), &MMBrightnessContrast::set_contrast);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "contrast"), "set_contrast", "get_contrast");
 }
-
-
- void BrightnessContrast::set_brightness(const float val) {
-  brightness = val;
-  set_dirty(true);
-}
-
- //contrast;
-
- float BrightnessContrast::get_contrast() {
-  return contrast;
-}
-
-
- void BrightnessContrast::set_contrast(const float val) {
-  contrast = val;
-  set_dirty(true);
-}
-
-}
-
- BrightnessContrast::BrightnessContrast() {
-  image;
-  input;
-  brightness = 0;
-  contrast = 1;
- }
-
- BrightnessContrast::~BrightnessContrast() {
- }
-
-
- static void BrightnessContrast::_bind_methods() {
-   ClassDB::bind_method(D_METHOD("get_image"), &BrightnessContrast::get_image);
-   ClassDB::bind_method(D_METHOD("set_image", "value"), &BrightnessContrast::set_image);
-   ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "image", PROPERTY_HINT_RESOURCE_TYPE, "Ref<Resource>"), "set_image", "get_image");
-
-
-   ClassDB::bind_method(D_METHOD("get_input"), &BrightnessContrast::get_input);
-   ClassDB::bind_method(D_METHOD("set_input", "value"), &BrightnessContrast::set_input);
-   ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input", PROPERTY_HINT_RESOURCE_TYPE, "Ref<Resource>"), "set_input", "get_input");
-
-
-   ClassDB::bind_method(D_METHOD("get_brightness"), &BrightnessContrast::get_brightness);
-   ClassDB::bind_method(D_METHOD("set_brightness", "value"), &BrightnessContrast::set_brightness);
-   ADD_PROPERTY(PropertyInfo(Variant::REAL, "brightness"), "set_brightness", "get_brightness");
-
-
-   ClassDB::bind_method(D_METHOD("get_contrast"), &BrightnessContrast::get_contrast);
-   ClassDB::bind_method(D_METHOD("set_contrast", "value"), &BrightnessContrast::set_contrast);
-   ADD_PROPERTY(PropertyInfo(Variant::REAL, "contrast"), "set_contrast", "get_contrast");
-
-
-  ClassDB::bind_method(D_METHOD("_init_properties"), &BrightnessContrast::_init_properties);
-  ClassDB::bind_method(D_METHOD("_register_methods", "mm_graph_node"), &BrightnessContrast::_register_methods);
-  ClassDB::bind_method(D_METHOD("_render", "material"), &BrightnessContrast::_render);
-  ClassDB::bind_method(D_METHOD("_get_value_for", "uv", "pseed"), &BrightnessContrast::_get_value_for);
-  ClassDB::bind_method(D_METHOD("get_brightness"), &BrightnessContrast::get_brightness);
-  ClassDB::bind_method(D_METHOD("set_brightness", "val"), &BrightnessContrast::set_brightness);
-  ClassDB::bind_method(D_METHOD("get_contrast"), &BrightnessContrast::get_contrast);
-  ClassDB::bind_method(D_METHOD("set_contrast", "val"), &BrightnessContrast::set_contrast);
-
- }
-
-
-

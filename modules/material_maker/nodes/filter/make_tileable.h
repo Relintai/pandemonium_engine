@@ -1,57 +1,42 @@
-#ifndef MAKE_TILEABLE_H
-#define MAKE_TILEABLE_H
+#ifndef MM_MAKE_TILEABLE_H
+#define MM_MAKE_TILEABLE_H
 
+#include "../mm_node.h"
+#include "../mm_node_universal_property.h"
 
-class MakeTileable : public MMNode {
- GDCLASS(MakeTileable, MMNode);
+class MMMakeTileable : public MMNode {
+	GDCLASS(MMMakeTileable, MMNode);
 
- public:
+public:
+	Ref<MMNodeUniversalProperty> get_image();
+	void set_image(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_image();
- void set_image(const Ref<Resource> &val);
+	Ref<MMNodeUniversalProperty> get_input();
+	void set_input(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_input();
- void set_input(const Ref<Resource> &val);
+	float get_width() const;
+	void set_width(const float val);
 
- float get_width() const;
- void set_width(const float val);
+	int get_size() const;
+	void set_size(const int val);
 
- int get_size() const;
- void set_size(const int val);
+	void _init_properties();
+	void _register_methods(MMGraphNode *mm_graph_node);
+	void _render(const Ref<MMMaterial> &material);
+	Color _get_value_for(const Vector2 &uv, const int pseed);
 
- void _init_properties();
- void _register_methods(const Variant &mm_graph_node);
- void _render(const Variant &material);
- Color _get_value_for(const Vector2 &uv, const int pseed);
- float get_width();
- void set_width(const float val);
- Color make_tileable(const Vector2 &uv, const float w);
+	Color make_tileable(const Vector2 &uv, const float w);
 
- MakeTileable();
- ~MakeTileable();
+	MMMakeTileable();
+	~MMMakeTileable();
 
- protected:
- static void _bind_methods();
+protected:
+	static void _bind_methods();
 
- //tool
- //export(Resource) 
- Ref<Resource> image;
- //export(Resource) 
- Ref<Resource> input;
- //export(float) 
- float width = 0.1;
- int size = 0;
- //----------------------
- //make_tileable.mmg
- //vec4 make_tileable_$(name)(vec2 uv, float w) {
- //	vec4 a = $in(uv);
- //	vec4 b = $in(fract(uv+vec2(0.5)));
- //	float coef_ab = sin(1.57079632679*clamp((length(uv-vec2(0.5))-0.5+w)/w, 0.0, 1.0));
- //	vec4 c = $in(fract(uv+vec2(0.25)));
- //	float coef_abc = sin(1.57079632679*clamp((min(min(length(uv-vec2(0.0, 0.5)), length(uv-vec2(0.5, 0.0))), min(length(uv-vec2(1.0, 0.5)), length(uv-vec2(0.5, 1.0))))-w)/w, 0.0, 1.0));
- //	return mix(c, mix(a, b, coef_ab), coef_abc);
- //}
+	Ref<MMNodeUniversalProperty> image;
+	Ref<MMNodeUniversalProperty> input;
+	float width;
+	int size;
 };
-
 
 #endif
