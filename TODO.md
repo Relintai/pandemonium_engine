@@ -34,3 +34,16 @@
 ## Engine
 
 - Organize the core folder a bit better.
+
+## Rendering
+
+- Move CPUParticles code into the VisualServer.
+- Add support for generating vertex colors from lights in the VisualServer. (Also do this for 2d)
+- Add LOD support to the visualserver. (Or maybe the meshes) - Add core LOD generation support (probably VisualServer). (This and vertex color baking could drastically reduce the amount of code in Terraman, Voxelman, and terraman 2d, props)
+- Maybe add a texture (mergedTexture) that makes it easier to handle texture merges.
+- Add gles3 support, but just expand gles2 for it. (Like it could use better multimesh support, better particles etc), but it shouldn't be that different from gles2.
+- Probably add support for other renderers, like vulkan, but unlike godot4 this should be realtively simple, with the visualserver design. (In the same veins as gles2/3)
+- (And/or other highly portable graphics apis, that is if they exist.)
+- Add a raw shader type that can be written in the native graphics api language (support per backend shader implementation for it). It will likely need some easily parsable header for shader properties. This might simplify the creation of other backends.
+- Support for adding graphics backends from modules. This will require platform specific creation funcs.
+
