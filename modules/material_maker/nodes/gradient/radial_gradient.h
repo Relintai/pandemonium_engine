@@ -1,38 +1,33 @@
-#ifndef RADIAL_GRADIENT_H
-#define RADIAL_GRADIENT_H
+#ifndef MM_RADIAL_GRADIENT_H
+#define MM_RADIAL_GRADIENT_H
 
+#include "../bases/gradient_base.h"
+#include "../mm_node_universal_property.h"
 
-class RadialGradient : public GradientBase {
- GDCLASS(RadialGradient, GradientBase);
+class MMRadialGradient : public GradientBase {
+	GDCLASS(MMRadialGradient, GradientBase);
 
- public:
+public:
+	Ref<MMNodeUniversalProperty> get_image();
+	void set_image(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_image();
- void set_image(const Ref<Resource> &val);
+	float get_repeat() const;
+	void set_repeat(const float val);
 
- float get_repeat() const;
- void set_repeat(const float val);
+	void _init_properties();
+	void _register_methods(MMGraphNode *mm_graph_node);
+	void _render(const Ref<MMMaterial> &material);
+	Color _get_value_for(const Vector2 &uv, const int pseed);
+	Color _get_gradient_color(const float x);
 
- void _init_properties();
- void _register_methods(const Variant &mm_graph_node);
- void _render(const Variant &material);
- Color _get_value_for(const Vector2 &uv, const int pseed);
- Color _get_gradient_color(const float x);
- float get_repeat();
- void set_repeat(const float val);
+	MMRadialGradient();
+	~MMRadialGradient();
 
- RadialGradient();
- ~RadialGradient();
+protected:
+	static void _bind_methods();
 
- protected:
- static void _bind_methods();
-
- //tool
- //export(Resource) 
- Ref<Resource> image;
- //export(float) 
- float repeat = 1;
+	Ref<MMNodeUniversalProperty> image;
+	float repeat;
 };
-
 
 #endif

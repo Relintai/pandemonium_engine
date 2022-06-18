@@ -131,6 +131,10 @@ sources = [
     "nodes/noise/color_value.cpp",
     "nodes/noise/color_noise.cpp",
     "nodes/noise/anisotropic_noise.cpp",
+
+    "nodes/gradient/radial_gradient.cpp",
+    "nodes/gradient/gradient.cpp",
+    "nodes/gradient/circular_gradient.cpp",
 ]
 
 if env["tools"]:

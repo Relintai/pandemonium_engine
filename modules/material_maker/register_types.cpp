@@ -126,6 +126,10 @@ SOFTWARE.
 #include "nodes/noise/noise.h"
 #include "nodes/noise/voronoi.h"
 
+#include "nodes/gradient/circular_gradient.h"
+#include "nodes/gradient/gradient.h"
+#include "nodes/gradient/radial_gradient.h"
+
 static _MMAlgos *_mm_algos_singleton = nullptr;
 
 void register_material_maker_types() {
@@ -291,6 +295,13 @@ void register_material_maker_types() {
 	MMAlgos::register_node_class("Noise", "MMColorNoise");
 	ClassDB::register_class<MMAnisotropicNoise>();
 	MMAlgos::register_node_class("Noise", "MMAnisotropicNoise");
+
+	ClassDB::register_class<MMRadialGradient>();
+	MMAlgos::register_node_class("Gradient", "MMRadialGradient");
+	ClassDB::register_class<MMGradient>();
+	MMAlgos::register_node_class("Gradient", "MMGradient");
+	ClassDB::register_class<MMCircularGradient>();
+	MMAlgos::register_node_class("Gradient", "MMCircularGradient");
 
 	_mm_algos_singleton = memnew(_MMAlgos);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("MMAlgos", _MMAlgos::get_singleton()));

@@ -101,6 +101,10 @@ def get_doc_classes():
         "MMColorValue",
         "MMColorNoise",
         "MMAnisotropicNoise",
+
+        "MMRadialGradient",
+        "MMGradient",
+        "MMCircularGradient",
     ]
 
 def get_doc_path():
