@@ -92,6 +92,8 @@ def get_doc_classes():
         "MMIching",
         "MMBricks",
         "MMBeehive",
+
+        "MMOutputImage",
     ]
 
 def get_doc_path():

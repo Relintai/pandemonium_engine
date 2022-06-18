@@ -117,6 +117,8 @@ SOFTWARE.
 #include "nodes/pattern/truchet.h"
 #include "nodes/pattern/weave.h"
 
+#include "nodes/other/output_image.h"
+
 static _MMAlgos *_mm_algos_singleton = nullptr;
 
 void register_material_maker_types() {
@@ -266,6 +268,9 @@ void register_material_maker_types() {
 	MMAlgos::register_node_class("Patterns", "MMBricks");
 	ClassDB::register_class<MMBeehive>();
 	MMAlgos::register_node_class("Patterns", "MMBeehive");
+
+	ClassDB::register_class<MMOutputImage>();
+	MMAlgos::register_node_class("Output", "MMOutputImage");
 
 	_mm_algos_singleton = memnew(_MMAlgos);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("MMAlgos", _MMAlgos::get_singleton()));

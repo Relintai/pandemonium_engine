@@ -1,36 +1,31 @@
-#ifndef OUTPUT_IMAGE_H
-#define OUTPUT_IMAGE_H
+#ifndef MM_OUTPUT_IMAGE_H
+#define MM_OUTPUT_IMAGE_H
 
+#include "../mm_node.h"
+#include "../mm_node_universal_property.h"
 
-class OutputImage : public MMNode {
- GDCLASS(OutputImage, MMNode);
+class MMOutputImage : public MMNode {
+	GDCLASS(MMOutputImage, MMNode);
 
- public:
+public:
+	Ref<MMNodeUniversalProperty> get_image();
+	void set_image(const Ref<MMNodeUniversalProperty> &val);
 
- Ref<Resource> get_image();
- void set_image(const Ref<Resource> &val);
+	String get_postfix();
+	void set_postfix(const String &val);
 
- String get_postfix();
- void set_postfix(const String &val);
+	void _init_properties();
+	void _register_methods(MMGraphNode *mm_graph_node);
+	void _render(const Ref<MMMaterial> &material);
 
- void _init_properties();
- void _register_methods(const Variant &mm_graph_node);
- void _render(const Variant &material);
- String get_postfix();
- void set_postfix(const String &pf);
+	MMOutputImage();
+	~MMOutputImage();
 
- OutputImage();
- ~OutputImage();
+protected:
+	static void _bind_methods();
 
- protected:
- static void _bind_methods();
-
- //tool
- //export(Resource) 
- Ref<Resource> image;
- //export(String) 
- String postfix = "";
+	Ref<MMNodeUniversalProperty> image;
+	String postfix;
 };
-
 
 #endif

@@ -122,6 +122,8 @@ sources = [
     "nodes/pattern/iching.cpp",
     "nodes/pattern/bricks.cpp",
     "nodes/pattern/beehive.cpp",
+
+    "nodes/other/output_image.cpp",
 ]
 
 if env["tools"]:
