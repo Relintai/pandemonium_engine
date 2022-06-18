@@ -94,6 +94,13 @@ def get_doc_classes():
         "MMBeehive",
 
         "MMOutputImage",
+
+        "MMVoronoi",
+        "MMNoise",
+        "MMFbmNoise",
+        "MMColorValue",
+        "MMColorNoise",
+        "MMAnisotropicNoise",
     ]
 
 def get_doc_path():

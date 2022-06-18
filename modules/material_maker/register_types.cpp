@@ -119,6 +119,13 @@ SOFTWARE.
 
 #include "nodes/other/output_image.h"
 
+#include "nodes/noise/anisotropic_noise.h"
+#include "nodes/noise/color_noise.h"
+#include "nodes/noise/color_value.h"
+#include "nodes/noise/fbm_noise.h"
+#include "nodes/noise/noise.h"
+#include "nodes/noise/voronoi.h"
+
 static _MMAlgos *_mm_algos_singleton = nullptr;
 
 void register_material_maker_types() {
@@ -271,6 +278,19 @@ void register_material_maker_types() {
 
 	ClassDB::register_class<MMOutputImage>();
 	MMAlgos::register_node_class("Output", "MMOutputImage");
+
+	ClassDB::register_class<MMVoronoi>();
+	MMAlgos::register_node_class("Noise", "MMVoronoi");
+	ClassDB::register_class<MMNoise>();
+	MMAlgos::register_node_class("Noise", "MMNoise");
+	ClassDB::register_class<MMFbmNoise>();
+	MMAlgos::register_node_class("Noise", "MMFbmNoise");
+	ClassDB::register_class<MMColorValue>();
+	MMAlgos::register_node_class("Noise", "MMColorValue");
+	ClassDB::register_class<MMColorNoise>();
+	MMAlgos::register_node_class("Noise", "MMColorNoise");
+	ClassDB::register_class<MMAnisotropicNoise>();
+	MMAlgos::register_node_class("Noise", "MMAnisotropicNoise");
 
 	_mm_algos_singleton = memnew(_MMAlgos);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("MMAlgos", _MMAlgos::get_singleton()));

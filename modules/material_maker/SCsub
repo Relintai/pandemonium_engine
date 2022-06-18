@@ -124,6 +124,13 @@ sources = [
     "nodes/pattern/beehive.cpp",
 
     "nodes/other/output_image.cpp",
+
+    "nodes/noise/voronoi.cpp",
+    "nodes/noise/noise.cpp",
+    "nodes/noise/fbm_noise.cpp",
+    "nodes/noise/color_value.cpp",
+    "nodes/noise/color_noise.cpp",
+    "nodes/noise/anisotropic_noise.cpp",
 ]
 
 if env["tools"]:
