@@ -34,6 +34,7 @@
 ## Engine
 
 - Organize the core folder a bit better.
+- (Maybe) add an SDL backend.
 
 ## Rendering
 
