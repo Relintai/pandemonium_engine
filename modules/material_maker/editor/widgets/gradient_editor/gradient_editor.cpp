@@ -33,7 +33,19 @@ Ref<GradientBase> MMGradientEditor::get_value() {
 }
 
 void MMGradientEditor::set_value(const Ref<GradientBase> &val) {
+	if (value == val) {
+		return;
+	}
+
+	if (value.is_valid()) {
+		value->disconnect("changed", this, "on_value_changed");
+	}
+
 	value = val;
+
+	if (value.is_valid()) {
+		value->connect("changed", this, "on_value_changed");
+	}
 
 	_update_preview_queued = true;
 	_update_cursors_queued = true;
@@ -308,6 +320,13 @@ void MMGradientEditor::on_color_selector_closed() {
 	_selecting_color = false;
 }
 
+void MMGradientEditor::on_value_changed() {
+	if (!graph_node->get_ignore_change_event()) {
+		_color_selection_done = true;
+		_selecting_color = false;
+	}
+}
+
 MMGradientEditor::MMGradientEditor() {
 	graph_node = nullptr;
 	embedded = false;
@@ -535,4 +554,5 @@ void MMGradientEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_on_Interpolation_item_selected", "ID"), &MMGradientEditor::_on_Interpolation_item_selected);
 	ClassDB::bind_method(D_METHOD("on_resized"), &MMGradientEditor::on_resized);
 	ClassDB::bind_method(D_METHOD("on_color_selector_closed"), &MMGradientEditor::on_color_selector_closed);
+	ClassDB::bind_method(D_METHOD("on_value_changed"), &MMGradientEditor::on_value_changed);
 }

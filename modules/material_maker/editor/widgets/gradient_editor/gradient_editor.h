@@ -21,8 +21,6 @@ class MMMaterial;
 class MMGradientEditor : public Control {
 	GDCLASS(MMGradientEditor, Control);
 
-	//todo mmnode changed event sub + handle
-
 public:
 	MMGraphNode *get_graph_node();
 	void set_graph_node(MMGraphNode *val);
@@ -68,6 +66,7 @@ public:
 	void apply_new_interpolation();
 	void on_resized();
 	void on_color_selector_closed();
+	void on_value_changed();
 
 	MMGradientEditor();
 	~MMGradientEditor();

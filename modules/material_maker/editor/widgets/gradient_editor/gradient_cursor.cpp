@@ -1,5 +1,6 @@
 #include "gradient_cursor.h"
 
+#include "core/print_string.h"
 #include "gradient_editor.h"
 #include "scene/gui/label.h"
 
@@ -65,6 +66,7 @@ void GradientCursor::_gui_input(const Ref<InputEvent> &ev) {
 				//ged->save_color_state();
 				sliding = true;
 				label->set_visible(true);
+
 				label->set_text(String::num(get_cursor_position(), 3));
 			} else {
 				if (sliding) {
