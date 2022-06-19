@@ -22,15 +22,17 @@ SOFTWARE.
 
 #include "register_types.h"
 
+#include "paint_window.h"
+
 #ifdef TOOLS_ENABLED
 #include "paint_editor_plugin.h"
 #endif
 
 void register_paint_types() {
-	//ClassDB::register_class<MeshDataResource>();
+	ClassDB::register_class<PaintWindow>();
 
 #ifdef TOOLS_ENABLED
-	//EditorPlugins::add_by_type<PaintEditorPlugin>();
+	EditorPlugins::add_by_type<PaintEditorPlugin>();
 #endif
 }
 
