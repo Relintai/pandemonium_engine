@@ -142,7 +142,7 @@ void MMGradientEditor::update_cursors() {
 		}
 	}
 
-	for (int i = 0; i < cursors.size(); ++i) {
+	for (uint32_t i = 0; i < cursors.size(); ++i) {
 		remove_child(cursors[i]);
 	}
 
