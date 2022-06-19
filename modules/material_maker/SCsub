@@ -136,7 +136,7 @@ sources = [
     "nodes/gradient/gradient.cpp",
     "nodes/gradient/circular_gradient.cpp",
 
-    #"nodes/filter/tonality.cpp",
+    "nodes/filter/tonality.cpp",
     #"nodes/filter/swap_channels.cpp",
     #"nodes/filter/quantize.cpp",
     #"nodes/filter/math.cpp",
