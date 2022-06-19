@@ -139,7 +139,6 @@ SOFTWARE.
 #include "nodes/filter/combine.h"
 #include "nodes/filter/decompose.h"
 #include "nodes/filter/emboss.h"
-*/
 #include "nodes/filter/fill_channel.h"
 #include "nodes/filter/fill_to_color.h"
 #include "nodes/filter/fill_to_position.h"
@@ -147,7 +146,6 @@ SOFTWARE.
 #include "nodes/filter/fill_to_random_grey.h"
 #include "nodes/filter/fill_to_size.h"
 #include "nodes/filter/fill_to_uv.h"
-/*
 #include "nodes/filter/greyscale.h"
 #include "nodes/filter/invert.h"
 #include "nodes/filter/make_tileable.h"
@@ -333,7 +331,6 @@ void register_material_maker_types() {
 	/*
 	  ClassDB::register_class<MMTonality>();
 	  MMAlgos::register_node_class("Filter", "MMTonality");
-
 			ClassDB::register_class<MMSwapChannels>();
 			MMAlgos::register_node_class("Filter", "MMSwapChannels");
 			ClassDB::register_class<MMQuantize>();
@@ -347,7 +344,6 @@ void register_material_maker_types() {
 			ClassDB::register_class<MMGreyscale>();
 			MMAlgos::register_node_class("Filter", "MMGreyscale");
 			ClassDB::register_class<MMFillToUv>();
-		*/
 	MMAlgos::register_node_class("Filter", "MMFillToUv");
 	ClassDB::register_class<MMFillToSize>();
 	MMAlgos::register_node_class("Filter", "MMFillToSize");
@@ -361,7 +357,6 @@ void register_material_maker_types() {
 	MMAlgos::register_node_class("Filter", "MMFillToColor");
 	ClassDB::register_class<MMFillChannel>();
 	MMAlgos::register_node_class("Filter", "MMFillChannel");
-	/*
 	ClassDB::register_class<MMEmboss>();
 			MMAlgos::register_node_class("Filter", "MMEmboss");
 			ClassDB::register_class<MMDecompose>();
