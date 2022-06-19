@@ -16,9 +16,12 @@ class GradientCursor;
 class TextureRect;
 class Label;
 class OptionButton;
+class MMMaterial;
 
 class MMGradientEditor : public Control {
 	GDCLASS(MMGradientEditor, Control);
+
+	//todo mmnode changed event sub + handle
 
 public:
 	MMGraphNode *get_graph_node();
@@ -36,15 +39,15 @@ public:
 	PoolRealArray get_saved_points();
 	void set_saved_points(const PoolRealArray &val);
 
-	GradientCursor *get_active_cursor();
-	void set_active_cursor(GradientCursor *val);
-
-	void _init();
-
 	void ignore_changes(const bool val);
-	void save_color_state();
 
+	void save_color_state();
 	void undo_redo_save_color_state();
+
+	void cursor_move_started(GradientCursor *c);
+	void cursor_move_ended();
+	void cursor_delete_request(GradientCursor *c);
+	void cursor_doubleclicked(GradientCursor *c, const Vector2 &position);
 
 	void update_cursors();
 	void update_value();
@@ -61,16 +64,22 @@ public:
 	void update_preview();
 
 	void _on_Interpolation_item_selected(const int ID);
+
+	void apply_new_interpolation();
 	void on_resized();
+	void on_color_selector_closed();
 
 	MMGradientEditor();
 	~MMGradientEditor();
 
 protected:
+	void _notification(int p_what);
+
 	static void _bind_methods();
 
 	MMGraphNode *graph_node;
 	Ref<GradientBase> value;
+	Ref<MMMaterial> _material;
 	bool embedded;
 	UndoRedo *_undo_redo;
 	PoolRealArray _saved_points;
@@ -78,6 +87,24 @@ protected:
 	TextureRect *gradient;
 	OptionButton *interpolation;
 	Label *cursor_value_label;
+
+	bool _update_preview_queued;
+	bool _update_cursors_queued;
+	//bool _value_update_queued;
+
+	bool _cursor_moving;
+	bool _cursor_started_moving;
+	bool _cursor_stopped_moving;
+	GradientCursor *_cursor_doubleclicked;
+	Vector2 _cursor_doubleclick_position;
+	GradientCursor *_cursor_delete_request;
+	bool _cursor_add_queued;
+	float _cursor_add_x;
+	bool _selecting_color;
+	bool _color_selection_done;
+
+	bool _interpolation_change_queued;
+	int _new_interpolation;
 };
 
 #endif

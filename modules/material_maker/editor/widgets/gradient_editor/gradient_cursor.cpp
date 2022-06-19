@@ -14,9 +14,9 @@ void GradientCursor::set_cursor_color(const Color &val) {
 
 void GradientCursor::set_cursor_color_notify(const Color &val) {
 	color = val;
-	MMGradientEditor *ged = Object::cast_to<MMGradientEditor>(get_parent());
-	ERR_FAIL_COND(!ged);
-	ged->update_value();
+	//MMGradientEditor *ged = Object::cast_to<MMGradientEditor>(get_parent());
+	//ERR_FAIL_COND(!ged);
+	//ged->update_value();
 	update();
 }
 
@@ -57,27 +57,31 @@ void GradientCursor::_gui_input(const Ref<InputEvent> &ev) {
 	if (iemb.is_valid()) {
 		if (iemb->get_button_index() == BUTTON_LEFT) {
 			if (iemb->is_doubleclick()) {
-				ged->save_color_state();
-				ged->select_color(this, iemb->get_global_position());
+				//ged->save_color_state();
+				//ged->select_color(this, iemb->get_global_position());
+				ged->cursor_doubleclicked(this, iemb->get_global_position());
 			} else if (iemb->is_pressed()) {
-				ged->save_color_state();
+				ged->cursor_move_started(this);
+				//ged->save_color_state();
 				sliding = true;
 				label->set_visible(true);
 				label->set_text(String::num(get_cursor_position(), 3));
 			} else {
 				if (sliding) {
-					ged->undo_redo_save_color_state();
+					//ged->undo_redo_save_color_state();
+					ged->cursor_move_ended();
 				}
 
 				sliding = false;
 				label->set_visible(false);
 			}
 		} else if (iemb->get_button_index() == BUTTON_RIGHT && ged->get_sorted_cursors().size() > 2) {
-			ged->save_color_state();
-			ged->remove_child(this);
-			ged->update_value();
-			ged->undo_redo_save_color_state();
-			queue_delete();
+			//ged->save_color_state();
+			//ged->remove_child(this);
+			//ged->update_value();
+			//ged->undo_redo_save_color_state();
+			//queue_delete();
+			ged->cursor_delete_request(this);
 		}
 	} else if (iemm.is_valid() && (iemm->get_button_mask() & BUTTON_MASK_LEFT) != 0 && sliding) {
 		Vector2 position = get_position();
@@ -91,7 +95,7 @@ void GradientCursor::_gui_input(const Ref<InputEvent> &ev) {
 		position.x = MIN(MAX(0, position.x), ged->get_size().x - get_size().x);
 		set_position(position);
 
-		ged->update_value();
+		//ged->update_value();
 		label->set_text(String::num(get_cursor_position(), 3));
 	}
 }

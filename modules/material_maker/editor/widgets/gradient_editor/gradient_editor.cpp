@@ -2,6 +2,7 @@
 #include "gradient_editor.h"
 
 #include "../../../nodes/bases/gradient_base.h"
+#include "../../../nodes/mm_material.h"
 #include "../../../nodes/mm_node_universal_property.h"
 #include "../../mm_graph_node.h"
 
@@ -23,6 +24,8 @@ MMGraphNode *MMGradientEditor::get_graph_node() {
 
 void MMGradientEditor::set_graph_node(MMGraphNode *val) {
 	graph_node = val;
+
+	_material = graph_node->get_mm_material();
 }
 
 Ref<GradientBase> MMGradientEditor::get_value() {
@@ -31,8 +34,12 @@ Ref<GradientBase> MMGradientEditor::get_value() {
 
 void MMGradientEditor::set_value(const Ref<GradientBase> &val) {
 	value = val;
-	update_preview();
-	call_deferred("update_cursors");
+
+	_update_preview_queued = true;
+	_update_cursors_queued = true;
+
+	//update_preview();
+	//call_deferred("update_cursors");
 }
 
 bool MMGradientEditor::get_embedded() const {
@@ -57,18 +64,6 @@ PoolRealArray MMGradientEditor::get_saved_points() {
 
 void MMGradientEditor::set_saved_points(const PoolRealArray &val) {
 	_saved_points = val;
-}
-
-GradientCursor *MMGradientEditor::get_active_cursor() {
-	return active_cursor;
-}
-
-void MMGradientEditor::set_active_cursor(GradientCursor *val) {
-	active_cursor = val;
-}
-
-void MMGradientEditor::_init() {
-	connect("resized", this, "on_resized");
 }
 
 void MMGradientEditor::ignore_changes(const bool val) {
@@ -107,15 +102,39 @@ void MMGradientEditor::undo_redo_save_color_state() {
 	ignore_changes(false);
 }
 
+void MMGradientEditor::cursor_move_started(GradientCursor *c) {
+	_cursor_started_moving = true;
+	_cursor_moving = true;
+}
+void MMGradientEditor::cursor_move_ended() {
+	_cursor_stopped_moving = true;
+	_cursor_moving = false;
+}
+void MMGradientEditor::cursor_delete_request(GradientCursor *c) {
+	_cursor_delete_request = c;
+}
+void MMGradientEditor::cursor_doubleclicked(GradientCursor *c, const Vector2 &position) {
+	_cursor_doubleclicked = c;
+	_cursor_doubleclick_position = position;
+}
+
 void MMGradientEditor::update_cursors() {
+	LocalVector<GradientCursor *> cursors;
+
 	for (int i = 0; i < get_child_count(); ++i) {
 		GradientCursor *c = Object::cast_to<GradientCursor>(get_child(i));
 
 		if (c) {
-			remove_child(c);
+			cursors.push_back(c);
 			c->queue_delete();
 		}
 	}
+
+	for (int i = 0; i < cursors.size(); ++i) {
+		remove_child(cursors[i]);
+	}
+
+	cursors.clear();
 
 	int vs = value->get_point_count();
 
@@ -143,7 +162,8 @@ void MMGradientEditor::update_value() {
 	}
 
 	value->set_points(points);
-	update_preview();
+	//_update_cursors_queued = true;
+	//update_preview();
 }
 
 void MMGradientEditor::add_cursor(const float x, const Color &color) {
@@ -164,10 +184,10 @@ void MMGradientEditor::_gui_input(const Ref<InputEvent> &ev) {
 	if (iemb.is_valid() && iemb->get_button_index() == 1 && iemb->is_doubleclick()) {
 		if (iemb->get_position().y > 15) {
 			float p = CLAMP(iemb->get_position().x, 0, get_size().x - GradientCursor::WIDTH);
-			save_color_state();
-			add_cursor(p, get_gradient_color(p));
-			update_value();
-			undo_redo_save_color_state();
+
+			_cursor_add_queued = true;
+			_cursor_add_x = p;
+
 		} else if (embedded) {
 			GradientPopup *popup = memnew(GradientPopup);
 			add_child(popup);
@@ -184,8 +204,6 @@ void MMGradientEditor::_gui_input(const Ref<InputEvent> &ev) {
 }
 
 void MMGradientEditor::select_color(GradientCursor *cursor, const Vector2 &position) {
-	active_cursor = cursor;
-
 	ColorPickerPopup *color_picker_popup = memnew(ColorPickerPopup);
 	add_child(color_picker_popup);
 
@@ -194,7 +212,7 @@ void MMGradientEditor::select_color(GradientCursor *cursor, const Vector2 &posit
 	color_picker->connect("color_changed", cursor, "set_cursor_color_notify");
 
 	color_picker_popup->set_position(position);
-	color_picker_popup->connect("popup_hide", this, "undo_redo_save_color_state");
+	color_picker_popup->connect("popup_hide", this, "on_color_selector_closed");
 	color_picker_popup->connect("popup_hide", color_picker_popup, "queue_free");
 	color_picker_popup->popup();
 }
@@ -261,13 +279,19 @@ Color MMGradientEditor::get_gradient_color(const float x) {
 }
 
 void MMGradientEditor::update_preview() {
-	call_deferred("generate_preview_image");
+	//call_deferred("generate_preview_image");
+	generate_preview_image();
 }
 
 void MMGradientEditor::_on_Interpolation_item_selected(const int ID) {
+	_new_interpolation = ID;
+	_interpolation_change_queued = true;
+}
+
+void MMGradientEditor::apply_new_interpolation() {
 	ignore_changes(true);
 	_undo_redo->create_action("MMGD: gradient interpolation_type changed");
-	_undo_redo->add_do_method(value.ptr(), "set_interpolation_type", ID);
+	_undo_redo->add_do_method(value.ptr(), "set_interpolation_type", _new_interpolation);
 	_undo_redo->add_undo_method(value.ptr(), "set_interpolation_type", value->get_interpolation_type());
 	_undo_redo->commit_action();
 	ignore_changes(false);
@@ -275,17 +299,34 @@ void MMGradientEditor::_on_Interpolation_item_selected(const int ID) {
 }
 
 void MMGradientEditor::on_resized() {
-	if (value.is_valid()) {
-		update_preview();
-		call_deferred("update_cursors");
-	}
+	_update_preview_queued = true;
+	_update_cursors_queued = true;
+}
+
+void MMGradientEditor::on_color_selector_closed() {
+	_color_selection_done = true;
+	_selecting_color = false;
 }
 
 MMGradientEditor::MMGradientEditor() {
 	graph_node = nullptr;
 	embedded = false;
 	_undo_redo = nullptr;
-	active_cursor = nullptr;
+	_update_preview_queued = false;
+	_update_cursors_queued = false;
+
+	_cursor_moving = false;
+	_cursor_started_moving = false;
+	_cursor_stopped_moving = false;
+	_cursor_doubleclicked = nullptr;
+	_cursor_delete_request = nullptr;
+	_cursor_add_queued = false;
+	_cursor_add_x = 0;
+	_selecting_color = false;
+	_color_selection_done = false;
+
+	_interpolation_change_queued = false;
+	_new_interpolation = 0;
 
 	set_custom_minimum_size(Vector2(120, 32));
 	set_focus_mode(FOCUS_CLICK);
@@ -347,9 +388,101 @@ MMGradientEditor::MMGradientEditor() {
 	cursor_value_label->set("custom_constants/shadow_as_outline", 1);
 
 	add_child(cursor_value_label);
+
+	set_process_internal(true);
 }
 
 MMGradientEditor::~MMGradientEditor() {
+}
+
+void MMGradientEditor::_notification(int p_what) {
+	if (p_what == NOTIFICATION_POSTINITIALIZE) {
+		connect("resized", this, "on_resized");
+	} else if (p_what == NOTIFICATION_INTERNAL_PROCESS) {
+		if (value.is_valid() && _material.is_valid()) {
+			if (_material->get_rendering()) {
+				return;
+			}
+
+			if (_selecting_color) {
+				//update_preview();
+				return;
+			}
+
+			if (_color_selection_done) {
+				_color_selection_done = false;
+
+				save_color_state();
+				update_value();
+				undo_redo_save_color_state();
+			}
+
+			if (_cursor_started_moving) {
+				_cursor_started_moving = false;
+				save_color_state();
+			}
+
+			if (_cursor_moving) {
+				//update_preview();
+				return;
+			}
+
+			if (_cursor_stopped_moving) {
+				_cursor_stopped_moving = false;
+
+				update_value();
+				undo_redo_save_color_state();
+				_update_preview_queued = true;
+			}
+
+			if (_cursor_doubleclicked) {
+				if (ObjectDB::instance_validate(_cursor_doubleclicked)) {
+					select_color(_cursor_doubleclicked, _cursor_doubleclick_position);
+				}
+
+				_cursor_doubleclicked = nullptr;
+				return;
+			}
+
+			if (_interpolation_change_queued) {
+				_interpolation_change_queued = false;
+				apply_new_interpolation();
+			}
+
+			if (_cursor_add_queued) {
+				_cursor_add_queued = false;
+
+				save_color_state();
+				add_cursor(_cursor_add_x, get_gradient_color(_cursor_add_x));
+				update_value();
+				undo_redo_save_color_state();
+
+				_update_preview_queued = true;
+			}
+
+			if (_cursor_delete_request) {
+				if (ObjectDB::instance_validate(_cursor_delete_request)) {
+					save_color_state();
+					_cursor_delete_request->queue_delete();
+					remove_child(_cursor_delete_request);
+					update_value();
+					undo_redo_save_color_state();
+				}
+
+				_cursor_delete_request = nullptr;
+			}
+
+			if (_update_cursors_queued) {
+				_update_cursors_queued = false;
+				update_cursors();
+			}
+
+			if (_update_preview_queued) {
+				_update_preview_queued = false;
+				update_preview();
+			}
+		}
+	}
 }
 
 void MMGradientEditor::_bind_methods() {
@@ -374,10 +507,6 @@ void MMGradientEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_saved_points"), &MMGradientEditor::get_saved_points);
 	ClassDB::bind_method(D_METHOD("set_saved_points", "value"), &MMGradientEditor::set_saved_points);
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_REAL_ARRAY, "saved_points"), "set_saved_points", "get_saved_points");
-
-	//ClassDB::bind_method(D_METHOD("get_active_cursor"), &MMGradientEditor::get_active_cursor);
-	//ClassDB::bind_method(D_METHOD("set_active_cursor", "value"), &MMGradientEditor::set_active_cursor);
-	//ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "active_cursor", PROPERTY_HINT_RESOURCE_TYPE, "GradientCursor "), "set_active_cursor", "get_active_cursor");
 
 	ClassDB::bind_method(D_METHOD("ignore_changes", "val"), &MMGradientEditor::ignore_changes);
 
@@ -405,4 +534,5 @@ void MMGradientEditor::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_on_Interpolation_item_selected", "ID"), &MMGradientEditor::_on_Interpolation_item_selected);
 	ClassDB::bind_method(D_METHOD("on_resized"), &MMGradientEditor::on_resized);
+	ClassDB::bind_method(D_METHOD("on_color_selector_closed"), &MMGradientEditor::on_color_selector_closed);
 }
