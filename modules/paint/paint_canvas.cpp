@@ -101,7 +101,7 @@ void PaintCanvas::set_grid_size(const int size) {
 
 	if (grid) {
 		int s = size * _pixel_size;
-		grid->set_size(Size2(s, s));
+		grid->set_grid_size(s);
 	}
 }
 

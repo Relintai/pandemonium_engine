@@ -31,6 +31,8 @@ class PaintVisualGrid : public Control {
 	GDCLASS(PaintVisualGrid, Control);
 
 public:
+	void set_grid_size(const int gs);
+
 	void _draw();
 
 	PaintVisualGrid();
@@ -44,7 +46,6 @@ public:
 protected:
 	void _notification(int p_what);
 	static void _bind_methods();
-
 };
 
 #endif
