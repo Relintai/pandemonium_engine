@@ -92,6 +92,7 @@ public:
 	void on_universal_texture_changed(const int slot_idx);
 	void on_universal_texture_changed_image_picker(const int slot_idx);
 	void on_slot_line_edit_text_entered(const String &text, const int slot_idx);
+	void on_color_picker_popup_closed(const int slot_idx);
 	void on_universal_color_changed(const Color &c, const int slot_idx);
 	void on_universal_image_path_changed(const String &f, const int slot_idx);
 

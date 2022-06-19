@@ -191,7 +191,9 @@ int MMGraphNode::add_slot_color(const String &getter, const String &setter) {
 	ColorPickerButton *cp = memnew(ColorPickerButton);
 	int slot_idx = add_slot(MMNodeUniversalProperty::SLOT_TYPE_NONE, MMNodeUniversalProperty::SLOT_TYPE_NONE, getter, setter, cp);
 	cp->set_pick_color(_node->call(getter));
-	cp->connect("color_changed", _node.ptr(), setter);
+	Vector<Variant> bindings;
+	bindings.push_back(slot_idx);
+	cp->connect("popup_closed", this, "on_color_picker_popup_closed", bindings);
 	return slot_idx;
 }
 
@@ -784,6 +786,20 @@ void MMGraphNode::on_slot_line_edit_text_entered(const String &text, const int s
 	ignore_changes(false);
 }
 
+void MMGraphNode::on_color_picker_popup_closed(const int slot_idx) {
+	//properties[slot_idx][6].set_default_value(c);
+	ignore_changes(true);
+	_undo_redo->create_action("MMGD: value changed");
+
+	ColorPickerButton *btn = Object::cast_to<ColorPickerButton>(properties[slot_idx].control);
+	ERR_FAIL_COND(!btn);
+
+	_undo_redo->add_do_method(*_node, properties[slot_idx].setter, btn->get_pick_color());
+	_undo_redo->add_undo_method(*_node, properties[slot_idx].setter, _node->call(properties[slot_idx].getter));
+	_undo_redo->commit_action();
+	ignore_changes(false);
+}
+
 void MMGraphNode::on_universal_color_changed(const Color &c, const int slot_idx) {
 	//properties[slot_idx][6].set_default_value(c);
 	ignore_changes(true);
@@ -937,6 +953,7 @@ void MMGraphNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("on_universal_texture_changed", "slot_idx"), &MMGraphNode::on_universal_texture_changed);
 	ClassDB::bind_method(D_METHOD("on_universal_texture_changed_image_picker", "slot_idx"), &MMGraphNode::on_universal_texture_changed_image_picker);
 	ClassDB::bind_method(D_METHOD("on_slot_line_edit_text_entered", "text", "slot_idx"), &MMGraphNode::on_slot_line_edit_text_entered);
+	ClassDB::bind_method(D_METHOD("on_color_picker_popup_closed", "slot_idx"), &MMGraphNode::on_color_picker_popup_closed);
 	ClassDB::bind_method(D_METHOD("on_universal_color_changed", "c", "slot_idx"), &MMGraphNode::on_universal_color_changed);
 	ClassDB::bind_method(D_METHOD("on_universal_image_path_changed", "f", "slot_idx"), &MMGraphNode::on_universal_image_path_changed);
 	ClassDB::bind_method(D_METHOD("on_close_request"), &MMGraphNode::on_close_request);
