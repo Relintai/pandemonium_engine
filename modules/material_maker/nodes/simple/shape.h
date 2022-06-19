@@ -31,8 +31,6 @@ public:
 		SHAPE_TYPE_RAYS = 4,
 	};
 
-	void test();
-
 	void _init_properties();
 	void _register_methods(MMGraphNode *mm_graph_node);
 	void _render(const Ref<MMMaterial> &material);

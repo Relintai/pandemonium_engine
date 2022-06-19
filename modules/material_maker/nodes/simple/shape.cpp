@@ -5,12 +5,7 @@
 #include "../../editor/mm_graph_node.h"
 #include "../mm_material.h"
 
-void MMShape::test() {
-	print_error("test");
-}
-
 Ref<MMNodeUniversalProperty> MMShape::get_image() {
-	test();
 	return image;
 }
 
