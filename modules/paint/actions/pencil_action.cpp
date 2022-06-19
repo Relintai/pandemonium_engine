@@ -27,6 +27,7 @@ SOFTWARE.
 #include "../paint_canvas.h"
 #include "../paint_canvas_layer.h"
 #include "../paint_utilities.h"
+#include "core/print_string.h"
 
 void PencilAction::do_action(PaintCanvas *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
@@ -41,7 +42,7 @@ void PencilAction::do_action(PaintCanvas *canvas, const Array &data) {
 		PoolVector2iArray points = get_points(canvas, pixel);
 
 		for (int j = 0; j < points.size(); ++j) {
-			Vector2i p = points[i];
+			Vector2i p = points[j];
 
 			_set_pixel(canvas, p, c);
 		}
