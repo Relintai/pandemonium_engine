@@ -72,9 +72,7 @@ MMTonality::~MMTonality() {
 
 void MMTonality::_notification(int p_what) {
 	if (p_what == NOTIFICATION_POSTINITIALIZE) {
-		if (points.size() == 0) {
-			init_points_01();
-		}
+		init_points_01();
 	}
 }
 
