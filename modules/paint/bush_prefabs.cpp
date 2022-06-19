@@ -23,6 +23,7 @@ SOFTWARE.
 */
 
 #include "bush_prefabs.h"
+#include "core/print_string.h"
 
 /*
 const list = [
@@ -55,12 +56,12 @@ PoolVector2iArray BrushPrefabs::get_brush(const BrushPrefabs::Type type, int siz
 		case CIRCLE: {
 			size += 1;
 			Vector2 center;
-			int radius = size / 2.0;
+			float radius = size / 2.0;
 
 			for (int x = 0; x < size; ++x) {
 				for (int y = 0; y < size; ++y) {
 					if (Vector2(x - radius, y - radius).length() < size / 3.0) {
-						pixels.append(Vector2(x, y));
+						pixels.append(Vector2i(x, y));
 					}
 				}
 			}

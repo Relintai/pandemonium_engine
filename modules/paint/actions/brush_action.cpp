@@ -34,7 +34,9 @@ void BrushAction::do_action(PaintCanvas *canvas, const Array &data) {
 
 	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);
 	int brush_type = data[3];
-	PoolVector2iArray brush = BrushPrefabs::get_brush(static_cast<BrushPrefabs::Type>(brush_type), data[4]);
+	int brush_size = data[4];
+	PoolVector2iArray brush = BrushPrefabs::get_brush(static_cast<BrushPrefabs::Type>(brush_type), brush_size);
+	Color tcolor = data[2];
 
 	for (int i = 0; i < pixels.size(); ++i) {
 		Vector2i pixel = pixels[i];
@@ -56,10 +58,10 @@ void BrushAction::do_action(PaintCanvas *canvas, const Array &data) {
 			undo_colors.append(col);
 			undo_cells.append(p);
 
-			canvas->set_pixel_v(pixel, data[2]);
+			canvas->set_pixel_v(p, tcolor);
 
 			redo_cells.append(p);
-			redo_colors.append(data[2]);
+			redo_colors.append(tcolor);
 		}
 	}
 }
