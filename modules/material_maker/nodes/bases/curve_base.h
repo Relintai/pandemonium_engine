@@ -2,6 +2,7 @@
 #define CURVE_BASE_H
 
 #include "core/math/math_defs.h"
+#include "core/math/math_funcs.h"
 #include "core/math/vector2.h"
 #include "core/variant.h"
 #include "core/vector.h"
