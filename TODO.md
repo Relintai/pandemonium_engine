@@ -48,3 +48,9 @@
 - Add a raw shader type that can be written in the native graphics api language (support per backend shader implementation for it). It will likely need some easily parsable header for shader properties. This might simplify the creation of other backends.
 - Support for adding graphics backends from modules. This will require platform specific creation funcs.
 
+## material_maker module
+
+- Polygon editor needs fixes, and likely an overhaul.
+- Curve editor needs smaller fixes, and likely an overhaul.
+- Port the rest of the nodes from material maker.
+
