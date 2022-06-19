@@ -349,6 +349,7 @@ MMGradientEditor::MMGradientEditor() {
 
 	set_custom_minimum_size(Vector2(120, 32));
 	set_focus_mode(FOCUS_CLICK);
+	set_h_size_flags(SIZE_EXPAND_FILL);
 
 	ColorRect *background_control = memnew(ColorRect);
 	background_control->set_custom_minimum_size(Vector2(112, 17));
@@ -374,6 +375,7 @@ MMGradientEditor::MMGradientEditor() {
 	gradient = memnew(TextureRect);
 	gradient->set_custom_minimum_size(Vector2(112, 17));
 	gradient->set_mouse_filter(MOUSE_FILTER_IGNORE);
+	gradient->set_anchors_and_margins_preset(PRESET_TOP_WIDE);
 	add_child(gradient);
 
 	Ref<Theme> gradient_control_prop_theme;
