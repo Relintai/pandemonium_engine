@@ -1,6 +1,8 @@
 
 #include "tonality.h"
 
+#include "core/math/math_funcs.h"
+
 #include "../../algos/mm_algos.h"
 #include "../../editor/mm_graph_node.h"
 #include "../mm_material.h"

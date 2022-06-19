@@ -1,6 +1,8 @@
 #ifndef MM_TONALITY_H
 #define MM_TONALITY_H
 
+#include "core/math/vector2.h"
+
 #include "../bases/curve_base.h"
 #include "../mm_node_universal_property.h"
 
