@@ -60,7 +60,7 @@ Ref<MMNode> MMGraphNode::get_material_node() {
 }
 
 Ref<MMNode> MMGraphNode::get_mm_node() {
-	return *_node;
+	return _node;
 }
 
 void MMGraphNode::set_mm_node(const Ref<MMNode> &val) {
