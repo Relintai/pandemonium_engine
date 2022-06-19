@@ -56,6 +56,7 @@ public:
 	void resize(const int width, const int height);
 	void set_pixel(const int x, const int y, const Color &color);
 	Color get_pixel(const int x, const int y);
+	bool validate_pixel_v(const Vector2i &pos) const;
 	void clear();
 	void update_texture();
 

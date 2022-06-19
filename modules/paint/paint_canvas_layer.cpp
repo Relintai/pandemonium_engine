@@ -100,6 +100,13 @@ Color PaintCanvasLayer::get_pixel(const int x, const int y) {
 
 	return pixel;
 }
+bool PaintCanvasLayer::validate_pixel_v(const Vector2i &pos) const {
+	if (pos.x < 0 || pos.y < 0 || pos.x >= image->get_width() || pos.y >= image->get_height()) {
+		return false;
+	}
+
+	return true;
+}
 void PaintCanvasLayer::clear() {
 	//Color.transparent
 	image->fill(Color(1.00, 1.00, 1.00, 0.00));

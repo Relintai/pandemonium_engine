@@ -99,6 +99,8 @@ public:
 	Color get_preview_pixel_v(const Vector2i &pos);
 	Color get_preview_pixel(const int x, const int y);
 
+	bool validate_pixel_v(const Vector2i &pos) const;
+
 	void toggle_grid();
 	void show_grid();
 	void hide_grid();

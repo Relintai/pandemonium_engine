@@ -432,6 +432,15 @@ Color PaintCanvas::get_preview_pixel(const int x, const int y) {
 
 	return preview_layer->get_pixel(x, y);
 }
+
+bool PaintCanvas::validate_pixel_v(const Vector2i &pos) const {
+	if (active_layer.is_valid()) {
+		return active_layer->validate_pixel_v(pos);
+	}
+
+	return false;
+}
+
 void PaintCanvas::toggle_grid() {
 	grid->set_visible(!grid->is_visible());
 }
