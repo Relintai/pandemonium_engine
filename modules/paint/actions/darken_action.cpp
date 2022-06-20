@@ -31,33 +31,35 @@ SOFTWARE.
 void DarkenAction::do_action(PaintCanvas *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
 
-	/*
-	.do_action(canvas, data)
+	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);
 
-	var pixels = GEUtils.get_pixels_in_line(data[0], data[1])
-	for pixel in pixels:
-		if canvas.get_pixel_v(pixel) == null:
-				continue
+	for (int i = 0; i < pixels.size(); ++i) {
+		Vector2i pixel = pixels[i];
 
-		if canvas.is_alpha_locked() and canvas.get_pixel_v(pixel) == Color.transparent:
-			continue
+		if (!canvas->validate_pixel_v(pixel)) {
+			continue;
+		}
 
-		if pixel in action_data.undo.cells:
-			var darkened_color = canvas.get_pixel_v(pixel).darkened(dark_factor)
-			canvas.set_pixel_v(pixel, darkened_color)
+		Color col = canvas->get_pixel_v(pixel);
 
-			action_data.redo.cells.append(pixel)
-			action_data.redo.colors.append(darkened_color)
-			continue
+		if (canvas->is_alpha_locked() && col.a < 0.001) {
+			continue;
+		}
 
-		action_data.undo.colors.append(canvas.get_pixel_v(pixel))
-		action_data.undo.cells.append(pixel)
-		var darkened_color = canvas.get_pixel_v(pixel).darkened(dark_factor)
-		canvas.set_pixel_v(pixel, darkened_color)
+		Color darkened_color = col.darkened(dark_factor);
 
-		action_data.redo.cells.append(pixel)
-		action_data.redo.colors.append(darkened_color)
-	*/
+		canvas->set_pixel_v(pixel, darkened_color);
+
+		redo_cells.append(pixel);
+		redo_colors.append(darkened_color);
+
+		if (undo_cells.contains(pixel)) {
+			continue;
+		}
+
+		undo_colors.append(col);
+		undo_cells.append(pixel);
+	}
 }
 
 DarkenAction::DarkenAction() {
