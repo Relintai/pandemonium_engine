@@ -31,46 +31,61 @@ SOFTWARE.
 void LineAction::do_action(PaintCanvas *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
 
-	/*
-	.do_action(canvas, data)
-	
-	if mouse_start_pos == null:
-		mouse_start_pos = data[0]
-	
-	action_data.preview.cells.clear()
-	action_data.preview.colors.clear()
-	canvas.clear_preview_layer()
-	
-	var pixels = GEUtils.get_pixels_in_line(data[0], mouse_start_pos)
-	for pixel in pixels:
-		if canvas.is_alpha_locked() and canvas.get_pixel_v(pixel) == Color.transparent:
-			continue
-		
-		canvas.set_preview_pixel_v(pixel, data[2])
-		action_data.preview.cells.append(pixel)
-		action_data.preview.colors.append(data[2])
-	*/
+	if (!mouse_start_pos_set) {
+		mouse_start_pos = data[0];
+		mouse_start_pos_set = true;
+	}
+
+	preview_cells.resize(0);
+	preview_colors.resize(0);
+	canvas->clear_preview_layer();
+
+	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], mouse_start_pos);
+
+	for (int i = 0; i < pixels.size(); ++i) {
+		Vector2i pixel = pixels[i];
+
+		Color col = canvas->get_pixel_v(pixel);
+
+		if (canvas->is_alpha_locked() && col.a < 0.00001) {
+			continue;
+		}
+
+		Color nc = data[2];
+
+		canvas->set_preview_pixel_v(pixel, nc);
+
+		preview_cells.append(pixel);
+		preview_colors.append(nc);
+	}
 }
+
 void LineAction::commit_action(PaintCanvas *canvas) {
-	/*
-	canvas.clear_preview_layer()
-	var cells = action_data.preview.cells
-	var colors = action_data.preview.colors
-	for idx in range(cells.size()):
-		if canvas.get_pixel_v(cells[idx]) == null:
-			continue
-		action_data.undo.cells.append(cells[idx])
-		action_data.undo.colors.append(canvas.get_pixel_v(cells[idx]))
-		
-		canvas.set_pixel_v(cells[idx], colors[idx])
-	
-		action_data.redo.cells.append(cells[idx])
-		action_data.redo.colors.append(colors[idx])
-	mouse_start_pos = null
-	*/
+	canvas->clear_preview_layer();
+
+	for (int i = 0; i < preview_cells.size(); ++i) {
+		Vector2i pc = preview_cells[i];
+
+		if (!canvas->validate_pixel_v(pc)) {
+			continue;
+		}
+
+		Color pcol = preview_colors[i];
+
+		undo_cells.append(pc);
+		undo_colors.append(canvas->get_pixel_v(pc));
+
+		canvas->set_pixel_v(pc, pcol);
+
+		redo_cells.append(pc);
+		redo_colors.append(pcol);
+	}
+
+	mouse_start_pos_set = false;
 }
 
 LineAction::LineAction() {
+	mouse_start_pos_set = false;
 }
 
 LineAction::~LineAction() {

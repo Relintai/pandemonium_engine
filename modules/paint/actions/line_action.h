@@ -39,6 +39,7 @@ public:
 	LineAction();
 	~LineAction();
 
+	bool mouse_start_pos_set;
 	Vector2 mouse_start_pos;
 
 protected:
