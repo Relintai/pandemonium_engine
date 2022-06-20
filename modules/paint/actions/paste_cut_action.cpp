@@ -35,36 +35,50 @@ SOFTWARE.
 void PasteCutAction::do_action(PaintCanvas *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
 
-	/*
-	.do_action(canvas, data)
+	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);
+	Vector2i cut_pos = data[4];
+	Vector2i cut_size = data[5];
 
-	for pixel_pos in GEUtils.get_pixels_in_line(data[0], data[1]):
-		for idx in range(data[2].size()):
-			var pixel = data[2][idx]
-			var color = data[3][idx]
-			pixel -= data[4] + data[5] / 2
-			pixel += pixel_pos
+	for (int i = 0; i < pixels.size(); ++i) {
+		Vector2i pixel_pos = pixels[i];
 
-			if canvas.get_pixel_v(pixel) == null:
-				continue
+		PoolVector2iArray cells = data[2];
+		PoolColorArray colors = data[3];
 
-			if canvas.is_alpha_locked() and canvas.get_pixel_v(pixel) == Color.transparent:
-				continue
+		for (int idx = 0; idx < cells.size(); ++idx) {
+			Vector2i pixel = cells[idx];
+			Color color = colors[idx];
+			pixel -= cut_pos + cut_size / 2;
+			pixel += pixel_pos;
 
-			var found = action_data.redo.cells.find(pixel)
-			if found == -1:
-				action_data.redo.cells.append(pixel)
-				action_data.redo.colors.append(color)
-			else:
-				action_data.redo.colors[found] = color
+			if (canvas->validate_pixel_v(pixel)) {
+				continue;
+			}
 
-			found = action_data.undo.cells.find(pixel)
-			if found == -1:
-				action_data.undo.colors.append(canvas.get_pixel_v(pixel))
-				action_data.undo.cells.append(pixel)
+			Color col = canvas->get_pixel_v(pixel);
 
-			canvas.set_pixel_v(pixel, color)
-	*/
+			if (canvas->is_alpha_locked() && col.a < 0.0001) {
+				continue;
+			}
+
+			int found = redo_cells.find(pixel);
+			if (found == -1) {
+				redo_cells.push_back(pixel);
+				redo_colors.push_back(color);
+			} else {
+				redo_colors[found] = color;
+			}
+
+			found = undo_cells.find(pixel);
+
+			if (found == -1) {
+				undo_colors.append(col);
+				undo_cells.append(pixel);
+			}
+
+			canvas->set_pixel_v(pixel, color);
+		}
+	}
 }
 
 PasteCutAction::PasteCutAction() {
