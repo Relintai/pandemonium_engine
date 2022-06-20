@@ -444,6 +444,7 @@ public:
 	}
 
 	bool contains(const T &p_val) const;
+	int find(const T &p_val) const;
 
 	bool is_locked() const {
 		return alloc && alloc->lock.get() > 0;
@@ -452,6 +453,9 @@ public:
 	inline T operator[](int p_index) const;
 
 	Error resize(int p_size);
+	Error clear() {
+		return resize(0);
+	}
 
 	void invert();
 
@@ -511,6 +515,20 @@ bool PoolVector<T>::contains(const T &p_val) const {
 	}
 
 	return false;
+}
+
+template <class T>
+int PoolVector<T>::find(const T &p_val) const {
+	Read r = read();
+	int s = size();
+
+	for (int i = 0; i < s; ++i) {
+		if (r[i] == p_val) {
+			return i;
+		}
+	}
+
+	return -1;
 }
 
 template <class T>

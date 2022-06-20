@@ -211,32 +211,58 @@ struct _VariantCall {
 		type_funcs[p_type].functions[p_name] = funcdata;
 	}
 
-#define VCALL_LOCALMEM0(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { reinterpret_cast<m_type *>(p_self._data._mem)->m_method(); }
-#define VCALL_LOCALMEM0R(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { r_ret = reinterpret_cast<m_type *>(p_self._data._mem)->m_method(); }
-#define VCALL_LOCALMEM0RI(m_type, m_method, m_internal_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { r_ret = reinterpret_cast<m_type *>(p_self._data._mem)->m_internal_method(); }
-#define VCALL_LOCALMEM1(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { reinterpret_cast<m_type *>(p_self._data._mem)->m_method(*p_args[0]); }
-#define VCALL_LOCALMEM1R(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { r_ret = reinterpret_cast<m_type *>(p_self._data._mem)->m_method(*p_args[0]); }
-#define VCALL_LOCALMEM2(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { reinterpret_cast<m_type *>(p_self._data._mem)->m_method(*p_args[0], *p_args[1]); }
-#define VCALL_LOCALMEM2R(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { r_ret = reinterpret_cast<m_type *>(p_self._data._mem)->m_method(*p_args[0], *p_args[1]); }
-#define VCALL_LOCALMEM3(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { reinterpret_cast<m_type *>(p_self._data._mem)->m_method(*p_args[0], *p_args[1], *p_args[2]); }
-#define VCALL_LOCALMEM3R(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { r_ret = reinterpret_cast<m_type *>(p_self._data._mem)->m_method(*p_args[0], *p_args[1], *p_args[2]); }
-#define VCALL_LOCALMEM4(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { reinterpret_cast<m_type *>(p_self._data._mem)->m_method(*p_args[0], *p_args[1], *p_args[2], *p_args[3]); }
-#define VCALL_LOCALMEM4R(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { r_ret = reinterpret_cast<m_type *>(p_self._data._mem)->m_method(*p_args[0], *p_args[1], *p_args[2], *p_args[3]); }
-#define VCALL_LOCALMEM5(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { reinterpret_cast<m_type *>(p_self._data._mem)->m_method(*p_args[0], *p_args[1], *p_args[2], *p_args[3], *p_args[4]); }
-#define VCALL_LOCALMEM5R(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { r_ret = reinterpret_cast<m_type *>(p_self._data._mem)->m_method(*p_args[0], *p_args[1], *p_args[2], *p_args[3], *p_args[4]); }
+#define VCALL_LOCALMEM0(m_type, m_method)                                                              \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { \
+		reinterpret_cast<m_type *>(p_self._data._mem)->m_method();                                     \
+	}
+#define VCALL_LOCALMEM0R(m_type, m_method)                                                             \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { \
+		r_ret = reinterpret_cast<m_type *>(p_self._data._mem)->m_method();                             \
+	}
+#define VCALL_LOCALMEM0RI(m_type, m_method, m_internal_method)                                         \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { \
+		r_ret = reinterpret_cast<m_type *>(p_self._data._mem)->m_internal_method();                    \
+	}
+#define VCALL_LOCALMEM1(m_type, m_method)                                                              \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { \
+		reinterpret_cast<m_type *>(p_self._data._mem)->m_method(*p_args[0]);                           \
+	}
+#define VCALL_LOCALMEM1R(m_type, m_method)                                                             \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { \
+		r_ret = reinterpret_cast<m_type *>(p_self._data._mem)->m_method(*p_args[0]);                   \
+	}
+#define VCALL_LOCALMEM2(m_type, m_method)                                                              \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { \
+		reinterpret_cast<m_type *>(p_self._data._mem)->m_method(*p_args[0], *p_args[1]);               \
+	}
+#define VCALL_LOCALMEM2R(m_type, m_method)                                                             \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { \
+		r_ret = reinterpret_cast<m_type *>(p_self._data._mem)->m_method(*p_args[0], *p_args[1]);       \
+	}
+#define VCALL_LOCALMEM3(m_type, m_method)                                                              \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { \
+		reinterpret_cast<m_type *>(p_self._data._mem)->m_method(*p_args[0], *p_args[1], *p_args[2]);   \
+	}
+#define VCALL_LOCALMEM3R(m_type, m_method)                                                                   \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) {       \
+		r_ret = reinterpret_cast<m_type *>(p_self._data._mem)->m_method(*p_args[0], *p_args[1], *p_args[2]); \
+	}
+#define VCALL_LOCALMEM4(m_type, m_method)                                                                        \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) {           \
+		reinterpret_cast<m_type *>(p_self._data._mem)->m_method(*p_args[0], *p_args[1], *p_args[2], *p_args[3]); \
+	}
+#define VCALL_LOCALMEM4R(m_type, m_method)                                                                               \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) {                   \
+		r_ret = reinterpret_cast<m_type *>(p_self._data._mem)->m_method(*p_args[0], *p_args[1], *p_args[2], *p_args[3]); \
+	}
+#define VCALL_LOCALMEM5(m_type, m_method)                                                                                    \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) {                       \
+		reinterpret_cast<m_type *>(p_self._data._mem)->m_method(*p_args[0], *p_args[1], *p_args[2], *p_args[3], *p_args[4]); \
+	}
+#define VCALL_LOCALMEM5R(m_type, m_method)                                                                                           \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) {                               \
+		r_ret = reinterpret_cast<m_type *>(p_self._data._mem)->m_method(*p_args[0], *p_args[1], *p_args[2], *p_args[3], *p_args[4]); \
+	}
 
 	// built-in functions of localmem based types
 
@@ -722,6 +748,9 @@ struct _VariantCall {
 	VCALL_LOCALMEM1(PoolByteArray, append_array);
 	VCALL_LOCALMEM0(PoolByteArray, invert);
 	VCALL_LOCALMEM2R(PoolByteArray, subarray);
+	VCALL_LOCALMEM1R(PoolByteArray, contains);
+	VCALL_LOCALMEM1R(PoolByteArray, find);
+	VCALL_LOCALMEM0(PoolByteArray, clear);
 
 	VCALL_LOCALMEM0R(PoolIntArray, size);
 	VCALL_LOCALMEM0R(PoolIntArray, empty);
@@ -734,6 +763,9 @@ struct _VariantCall {
 	VCALL_LOCALMEM1(PoolIntArray, append);
 	VCALL_LOCALMEM1(PoolIntArray, append_array);
 	VCALL_LOCALMEM0(PoolIntArray, invert);
+	VCALL_LOCALMEM1R(PoolIntArray, contains);
+	VCALL_LOCALMEM1R(PoolIntArray, find);
+	VCALL_LOCALMEM0(PoolIntArray, clear);
 
 	VCALL_LOCALMEM0R(PoolRealArray, size);
 	VCALL_LOCALMEM0R(PoolRealArray, empty);
@@ -746,6 +778,9 @@ struct _VariantCall {
 	VCALL_LOCALMEM1(PoolRealArray, append);
 	VCALL_LOCALMEM1(PoolRealArray, append_array);
 	VCALL_LOCALMEM0(PoolRealArray, invert);
+	VCALL_LOCALMEM1R(PoolRealArray, contains);
+	VCALL_LOCALMEM1R(PoolRealArray, find);
+	VCALL_LOCALMEM0(PoolRealArray, clear);
 
 	VCALL_LOCALMEM0R(PoolStringArray, size);
 	VCALL_LOCALMEM0R(PoolStringArray, empty);
@@ -759,6 +794,9 @@ struct _VariantCall {
 	VCALL_LOCALMEM1(PoolStringArray, append_array);
 	VCALL_LOCALMEM0(PoolStringArray, invert);
 	VCALL_LOCALMEM1R(PoolStringArray, join);
+	VCALL_LOCALMEM1R(PoolStringArray, contains);
+	VCALL_LOCALMEM1R(PoolStringArray, find);
+	VCALL_LOCALMEM0(PoolStringArray, clear);
 
 	VCALL_LOCALMEM0R(PoolVector2Array, size);
 	VCALL_LOCALMEM0R(PoolVector2Array, empty);
@@ -771,6 +809,9 @@ struct _VariantCall {
 	VCALL_LOCALMEM1(PoolVector2Array, append);
 	VCALL_LOCALMEM1(PoolVector2Array, append_array);
 	VCALL_LOCALMEM0(PoolVector2Array, invert);
+	VCALL_LOCALMEM1R(PoolVector2Array, contains);
+	VCALL_LOCALMEM1R(PoolVector2Array, find);
+	VCALL_LOCALMEM0(PoolVector2Array, clear);
 
 	VCALL_LOCALMEM0R(PoolVector2iArray, size);
 	VCALL_LOCALMEM0R(PoolVector2iArray, empty);
@@ -783,6 +824,9 @@ struct _VariantCall {
 	VCALL_LOCALMEM1(PoolVector2iArray, append);
 	VCALL_LOCALMEM1(PoolVector2iArray, append_array);
 	VCALL_LOCALMEM0(PoolVector2iArray, invert);
+	VCALL_LOCALMEM1R(PoolVector2iArray, contains);
+	VCALL_LOCALMEM1R(PoolVector2iArray, find);
+	VCALL_LOCALMEM0(PoolVector2iArray, clear);
 
 	VCALL_LOCALMEM0R(PoolVector3Array, size);
 	VCALL_LOCALMEM0R(PoolVector3Array, empty);
@@ -795,6 +839,9 @@ struct _VariantCall {
 	VCALL_LOCALMEM1(PoolVector3Array, append);
 	VCALL_LOCALMEM1(PoolVector3Array, append_array);
 	VCALL_LOCALMEM0(PoolVector3Array, invert);
+	VCALL_LOCALMEM1R(PoolVector3Array, contains);
+	VCALL_LOCALMEM1R(PoolVector3Array, find);
+	VCALL_LOCALMEM0(PoolVector3Array, clear);
 
 	VCALL_LOCALMEM0R(PoolVector3iArray, size);
 	VCALL_LOCALMEM0R(PoolVector3iArray, empty);
@@ -807,6 +854,9 @@ struct _VariantCall {
 	VCALL_LOCALMEM1(PoolVector3iArray, append);
 	VCALL_LOCALMEM1(PoolVector3iArray, append_array);
 	VCALL_LOCALMEM0(PoolVector3iArray, invert);
+	VCALL_LOCALMEM1R(PoolVector3iArray, contains);
+	VCALL_LOCALMEM1R(PoolVector3iArray, find);
+	VCALL_LOCALMEM0(PoolVector3iArray, clear);
 
 	VCALL_LOCALMEM0R(PoolColorArray, size);
 	VCALL_LOCALMEM0R(PoolColorArray, empty);
@@ -819,31 +869,58 @@ struct _VariantCall {
 	VCALL_LOCALMEM1(PoolColorArray, append);
 	VCALL_LOCALMEM1(PoolColorArray, append_array);
 	VCALL_LOCALMEM0(PoolColorArray, invert);
+	VCALL_LOCALMEM1R(PoolColorArray, contains);
+	VCALL_LOCALMEM1R(PoolColorArray, find);
+	VCALL_LOCALMEM0(PoolColorArray, clear);
 
-#define VCALL_PTR0(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(); }
-#define VCALL_PTR0R(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { r_ret = reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(); }
-#define VCALL_PTR1(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0]); }
-#define VCALL_PTR1R(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { r_ret = reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0]); }
-#define VCALL_PTR2(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0], *p_args[1]); }
-#define VCALL_PTR2R(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { r_ret = reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0], *p_args[1]); }
-#define VCALL_PTR3(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0], *p_args[1], *p_args[2]); }
-#define VCALL_PTR3R(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { r_ret = reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0], *p_args[1], *p_args[2]); }
-#define VCALL_PTR4(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0], *p_args[1], *p_args[2], *p_args[3]); }
-#define VCALL_PTR4R(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { r_ret = reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0], *p_args[1], *p_args[2], *p_args[3]); }
-#define VCALL_PTR5(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0], *p_args[1], *p_args[2], *p_args[3], *p_args[4]); }
-#define VCALL_PTR5R(m_type, m_method) \
-	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { r_ret = reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0], *p_args[1], *p_args[2], *p_args[3], *p_args[4]); }
+#define VCALL_PTR0(m_type, m_method)                                                                   \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { \
+		reinterpret_cast<m_type *>(p_self._data._ptr)->m_method();                                     \
+	}
+#define VCALL_PTR0R(m_type, m_method)                                                                  \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { \
+		r_ret = reinterpret_cast<m_type *>(p_self._data._ptr)->m_method();                             \
+	}
+#define VCALL_PTR1(m_type, m_method)                                                                   \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { \
+		reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0]);                           \
+	}
+#define VCALL_PTR1R(m_type, m_method)                                                                  \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { \
+		r_ret = reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0]);                   \
+	}
+#define VCALL_PTR2(m_type, m_method)                                                                   \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { \
+		reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0], *p_args[1]);               \
+	}
+#define VCALL_PTR2R(m_type, m_method)                                                                  \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { \
+		r_ret = reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0], *p_args[1]);       \
+	}
+#define VCALL_PTR3(m_type, m_method)                                                                   \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) { \
+		reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0], *p_args[1], *p_args[2]);   \
+	}
+#define VCALL_PTR3R(m_type, m_method)                                                                        \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) {       \
+		r_ret = reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0], *p_args[1], *p_args[2]); \
+	}
+#define VCALL_PTR4(m_type, m_method)                                                                             \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) {           \
+		reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0], *p_args[1], *p_args[2], *p_args[3]); \
+	}
+#define VCALL_PTR4R(m_type, m_method)                                                                                    \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) {                   \
+		r_ret = reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0], *p_args[1], *p_args[2], *p_args[3]); \
+	}
+#define VCALL_PTR5(m_type, m_method)                                                                                         \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) {                       \
+		reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0], *p_args[1], *p_args[2], *p_args[3], *p_args[4]); \
+	}
+#define VCALL_PTR5R(m_type, m_method)                                                                                                \
+	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) {                               \
+		r_ret = reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0], *p_args[1], *p_args[2], *p_args[3], *p_args[4]); \
+	}
 
 	VCALL_PTR0R(AABB, abs);
 	VCALL_PTR0R(AABB, get_area);
@@ -2136,6 +2213,9 @@ void register_variant_methods() {
 	ADDFUNC1(POOL_BYTE_ARRAY, NIL, PoolByteArray, resize, INT, "idx", varray());
 	ADDFUNC0(POOL_BYTE_ARRAY, NIL, PoolByteArray, invert, varray());
 	ADDFUNC2R(POOL_BYTE_ARRAY, POOL_BYTE_ARRAY, PoolByteArray, subarray, INT, "from", INT, "to", varray());
+	ADDFUNC1R(POOL_BYTE_ARRAY, BOOL, PoolByteArray, contains, INT, "value", varray())
+	ADDFUNC1R(POOL_BYTE_ARRAY, INT, PoolByteArray, find, INT, "value", varray())
+	ADDFUNC0(POOL_BYTE_ARRAY, NIL, PoolByteArray, clear, varray());
 
 	ADDFUNC0R(POOL_BYTE_ARRAY, STRING, PoolByteArray, get_string_from_ascii, varray());
 	ADDFUNC0R(POOL_BYTE_ARRAY, STRING, PoolByteArray, get_string_from_utf8, varray());
@@ -2154,6 +2234,9 @@ void register_variant_methods() {
 	ADDFUNC2R(POOL_INT_ARRAY, INT, PoolIntArray, insert, INT, "idx", INT, "integer", varray());
 	ADDFUNC1(POOL_INT_ARRAY, NIL, PoolIntArray, resize, INT, "idx", varray());
 	ADDFUNC0(POOL_INT_ARRAY, NIL, PoolIntArray, invert, varray());
+	ADDFUNC1R(POOL_INT_ARRAY, BOOL, PoolIntArray, contains, INT, "value", varray())
+	ADDFUNC1R(POOL_INT_ARRAY, INT, PoolIntArray, find, INT, "value", varray())
+	ADDFUNC0(POOL_INT_ARRAY, NIL, PoolIntArray, clear, varray());
 
 	ADDFUNC0R(POOL_REAL_ARRAY, INT, PoolRealArray, size, varray());
 	ADDFUNC0R(POOL_REAL_ARRAY, BOOL, PoolRealArray, empty, varray());
@@ -2165,6 +2248,9 @@ void register_variant_methods() {
 	ADDFUNC2R(POOL_REAL_ARRAY, INT, PoolRealArray, insert, INT, "idx", REAL, "value", varray());
 	ADDFUNC1(POOL_REAL_ARRAY, NIL, PoolRealArray, resize, INT, "idx", varray());
 	ADDFUNC0(POOL_REAL_ARRAY, NIL, PoolRealArray, invert, varray());
+	ADDFUNC1R(POOL_REAL_ARRAY, BOOL, PoolRealArray, contains, REAL, "value", varray())
+	ADDFUNC1R(POOL_REAL_ARRAY, INT, PoolRealArray, find, REAL, "value", varray())
+	ADDFUNC0(POOL_REAL_ARRAY, NIL, PoolRealArray, clear, varray());
 
 	ADDFUNC0R(POOL_STRING_ARRAY, INT, PoolStringArray, size, varray());
 	ADDFUNC0R(POOL_STRING_ARRAY, BOOL, PoolStringArray, empty, varray());
@@ -2177,6 +2263,9 @@ void register_variant_methods() {
 	ADDFUNC1(POOL_STRING_ARRAY, NIL, PoolStringArray, resize, INT, "idx", varray());
 	ADDFUNC0(POOL_STRING_ARRAY, NIL, PoolStringArray, invert, varray());
 	ADDFUNC1(POOL_STRING_ARRAY, STRING, PoolStringArray, join, STRING, "delimiter", varray());
+	ADDFUNC1R(POOL_STRING_ARRAY, BOOL, PoolStringArray, contains, STRING, "value", varray())
+	ADDFUNC1R(POOL_STRING_ARRAY, INT, PoolStringArray, find, STRING, "value", varray())
+	ADDFUNC0(POOL_STRING_ARRAY, NIL, PoolStringArray, clear, varray());
 
 	ADDFUNC0R(POOL_VECTOR2_ARRAY, INT, PoolVector2Array, size, varray());
 	ADDFUNC0R(POOL_VECTOR2_ARRAY, BOOL, PoolVector2Array, empty, varray());
@@ -2188,6 +2277,9 @@ void register_variant_methods() {
 	ADDFUNC2R(POOL_VECTOR2_ARRAY, INT, PoolVector2Array, insert, INT, "idx", VECTOR2, "vector2", varray());
 	ADDFUNC1(POOL_VECTOR2_ARRAY, NIL, PoolVector2Array, resize, INT, "idx", varray());
 	ADDFUNC0(POOL_VECTOR2_ARRAY, NIL, PoolVector2Array, invert, varray());
+	ADDFUNC1R(POOL_VECTOR2_ARRAY, BOOL, PoolVector2Array, contains, VECTOR2, "value", varray())
+	ADDFUNC1R(POOL_VECTOR2_ARRAY, INT, PoolVector2Array, find, VECTOR2, "value", varray())
+	ADDFUNC0(POOL_VECTOR2_ARRAY, NIL, PoolVector2Array, clear, varray());
 
 	ADDFUNC0R(POOL_VECTOR2I_ARRAY, INT, PoolVector2iArray, size, varray());
 	ADDFUNC0R(POOL_VECTOR2I_ARRAY, BOOL, PoolVector2iArray, empty, varray());
@@ -2199,6 +2291,9 @@ void register_variant_methods() {
 	ADDFUNC2R(POOL_VECTOR2I_ARRAY, INT, PoolVector2iArray, insert, INT, "idx", VECTOR2I, "vector2i", varray());
 	ADDFUNC1(POOL_VECTOR2I_ARRAY, NIL, PoolVector2iArray, resize, INT, "idx", varray());
 	ADDFUNC0(POOL_VECTOR2I_ARRAY, NIL, PoolVector2iArray, invert, varray());
+	ADDFUNC1R(POOL_VECTOR2I_ARRAY, BOOL, PoolVector2iArray, contains, VECTOR2I, "value", varray())
+	ADDFUNC1R(POOL_VECTOR2I_ARRAY, INT, PoolVector2iArray, find, VECTOR2I, "value", varray())
+	ADDFUNC0(POOL_VECTOR2I_ARRAY, NIL, PoolVector2iArray, clear, varray());
 
 	ADDFUNC0R(POOL_VECTOR3_ARRAY, INT, PoolVector3Array, size, varray());
 	ADDFUNC0R(POOL_VECTOR3_ARRAY, BOOL, PoolVector3Array, empty, varray());
@@ -2210,6 +2305,9 @@ void register_variant_methods() {
 	ADDFUNC2R(POOL_VECTOR3_ARRAY, INT, PoolVector3Array, insert, INT, "idx", VECTOR3, "vector3", varray());
 	ADDFUNC1(POOL_VECTOR3_ARRAY, NIL, PoolVector3Array, resize, INT, "idx", varray());
 	ADDFUNC0(POOL_VECTOR3_ARRAY, NIL, PoolVector3Array, invert, varray());
+	ADDFUNC1R(POOL_VECTOR3_ARRAY, BOOL, PoolVector3Array, contains, VECTOR3, "value", varray())
+	ADDFUNC1R(POOL_VECTOR3_ARRAY, INT, PoolVector3Array, find, VECTOR3, "value", varray())
+	ADDFUNC0(POOL_VECTOR3_ARRAY, NIL, PoolVector3Array, clear, varray());
 
 	ADDFUNC0R(POOL_VECTOR3I_ARRAY, INT, PoolVector3iArray, size, varray());
 	ADDFUNC0R(POOL_VECTOR3I_ARRAY, BOOL, PoolVector3iArray, empty, varray());
@@ -2221,6 +2319,9 @@ void register_variant_methods() {
 	ADDFUNC2R(POOL_VECTOR3I_ARRAY, INT, PoolVector3iArray, insert, INT, "idx", VECTOR3I, "vector3i", varray());
 	ADDFUNC1(POOL_VECTOR3I_ARRAY, NIL, PoolVector3iArray, resize, INT, "idx", varray());
 	ADDFUNC0(POOL_VECTOR3I_ARRAY, NIL, PoolVector3iArray, invert, varray());
+	ADDFUNC1R(POOL_VECTOR3I_ARRAY, BOOL, PoolVector3iArray, contains, VECTOR3I, "value", varray())
+	ADDFUNC1R(POOL_VECTOR3I_ARRAY, INT, PoolVector3iArray, find, VECTOR3I, "value", varray())
+	ADDFUNC0(POOL_VECTOR3I_ARRAY, NIL, PoolVector3iArray, clear, varray());
 
 	ADDFUNC0R(POOL_COLOR_ARRAY, INT, PoolColorArray, size, varray());
 	ADDFUNC0R(POOL_COLOR_ARRAY, BOOL, PoolColorArray, empty, varray());
@@ -2232,6 +2333,9 @@ void register_variant_methods() {
 	ADDFUNC2R(POOL_COLOR_ARRAY, INT, PoolColorArray, insert, INT, "idx", COLOR, "color", varray());
 	ADDFUNC1(POOL_COLOR_ARRAY, NIL, PoolColorArray, resize, INT, "idx", varray());
 	ADDFUNC0(POOL_COLOR_ARRAY, NIL, PoolColorArray, invert, varray());
+	ADDFUNC1R(POOL_COLOR_ARRAY, BOOL, PoolColorArray, contains, COLOR, "value", varray())
+	ADDFUNC1R(POOL_COLOR_ARRAY, INT, PoolColorArray, find, COLOR, "value", varray())
+	ADDFUNC0(POOL_COLOR_ARRAY, NIL, PoolColorArray, clear, varray());
 
 	//pointerbased
 
