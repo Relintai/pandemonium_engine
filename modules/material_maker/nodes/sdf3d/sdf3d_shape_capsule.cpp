@@ -155,6 +155,4 @@ void MMSdf3dShapeCapsule::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("sdf3d_capsule_y", "p", "r", "l"), &MMSdf3dShapeCapsule::sdf3d_capsule_y);
 	ClassDB::bind_method(D_METHOD("sdf3d_capsule_x", "p", "r", "l"), &MMSdf3dShapeCapsule::sdf3d_capsule_x);
 	ClassDB::bind_method(D_METHOD("sdf3d_capsule_z", "p", "r", "l"), &MMSdf3dShapeCapsule::sdf3d_capsule_z);
-
-	ClassDB::bind_method(D_METHOD("_curve_changed"), &MMSdf3dShapeCapsule::_curve_changed);
 }
