@@ -659,8 +659,8 @@ void PaintWindow::undo_action() {
 		return;
 	}
 
-	Ref<PaintAction> action = _redo_history[0];
-	_redo_history.remove(0);
+	Ref<PaintAction> action = _actions_history[0];
+	_actions_history.remove(0);
 
 	if (!action.is_valid()) {
 		return;
