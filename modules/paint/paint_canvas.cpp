@@ -543,9 +543,9 @@ PoolVector2iArray PaintCanvas::get_neighbouring_pixels(const int pos_x, const in
 }
 
 void PaintCanvas::resize(int width, int height) {
-	if (get_canvas_width() == width && get_canvas_height() == height) {
-		return;
-	}
+	//if (get_canvas_width() == width && get_canvas_height() == height) {
+	//	return;
+	//	}
 
 	if (width < 0) {
 		width = 1;
@@ -587,13 +587,14 @@ void PaintCanvas::_notification(int p_what) {
 			preview_layer = add_new_layer("Preview");
 			tool_layer = add_new_layer("Tool");
 
-			//hack
-			_canvas_width = 0;
-			_canvas_height = 0;
-
-			resize(64, 64);
+			////hack
+			//_canvas_width = 0;
+			//_canvas_height = 0;
 
 			set_process(true);
+		} break;
+		case NOTIFICATION_ENTER_TREE: {
+			resize(64, 64);
 		} break;
 		case NOTIFICATION_PROCESS: {
 			_process(get_process_delta_time());
