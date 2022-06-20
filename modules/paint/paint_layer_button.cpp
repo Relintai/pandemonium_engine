@@ -25,8 +25,8 @@ SOFTWARE.
 #include "paint_layer_button.h"
 
 #include "core/image.h"
-#include "scene/resources/texture.h"
 #include "scene/resources/style_box.h"
+#include "scene/resources/texture.h"
 
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
@@ -87,6 +87,7 @@ PaintLayerButton::PaintLayerButton() {
 	layer_button->set_text_align(Button::ALIGN_RIGHT);
 	layer_button->set_h_size_flags(SIZE_EXPAND_FILL);
 	layer_button->set_v_size_flags(SIZE_EXPAND_FILL);
+
 	style_box.instance();
 	style_box->set("bg_color", Color(0.25, 0.25, 0.25));
 	layer_button->set("custom_styles/hover", style_box);
@@ -139,6 +140,7 @@ PaintLayerButton::PaintLayerButton() {
 	up_button->set_v_size_flags(SIZE_EXPAND_FILL);
 	up_button->set_normal_texture(make_icon(arrow_up_png));
 	up_button->set_pressed_texture(make_icon(minidotta_png));
+	up_button->set_custom_minimum_size(Vector2(15, 15));
 	right_main_container->add_child(up_button);
 
 	down_button = memnew(TextureButton);
@@ -148,6 +150,7 @@ PaintLayerButton::PaintLayerButton() {
 	down_button->set_v_size_flags(SIZE_EXPAND_FILL);
 	down_button->set_normal_texture(make_icon(arrow_down_png));
 	down_button->set_pressed_texture(make_icon(minidotta_png));
+	down_button->set_custom_minimum_size(Vector2(15, 15));
 	right_main_container->add_child(down_button);
 }
 

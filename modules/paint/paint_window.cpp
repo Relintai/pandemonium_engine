@@ -1508,4 +1508,6 @@ void PaintWindow::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("lock_layer"), &PaintWindow::lock_layer);
 	ClassDB::bind_method(D_METHOD("toggle_layer_visibility"), &PaintWindow::toggle_layer_visibility);
 	ClassDB::bind_method(D_METHOD("select_layer", "name"), &PaintWindow::select_layer);
+	ClassDB::bind_method(D_METHOD("move_up", "n"), &PaintWindow::move_up);
+	ClassDB::bind_method(D_METHOD("move_down", "n"), &PaintWindow::move_down);
 }
