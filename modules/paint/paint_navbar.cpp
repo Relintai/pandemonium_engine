@@ -213,6 +213,8 @@ PaintNavbar::PaintNavbar() {
 	menu->add_item("HSV Color Modulation", MENU_MAGIC_HSV_COLOR_MODULATION);
 	menu->connect("id_pressed", this, "handle_menu_item_pressed");
 
+	magic_menu_button->hide();
+
 	editor_menu_button = memnew(MenuButton);
 	editor_menu_button->set_switch_on_hover(true);
 	editor_menu_button->set_text("Editor");
