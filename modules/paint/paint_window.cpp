@@ -609,7 +609,8 @@ void PaintWindow::commit_action() {
 	//print("commit action")
 	_current_action->commit_action(paint_canvas);
 	Ref<PaintAction> action = get_action();
-	action->action_data = _current_action->action_data.duplicate(true);
+	action->copy_data_from(_current_action);
+
 	_actions_history.push_back(action);
 	_redo_history.clear();
 

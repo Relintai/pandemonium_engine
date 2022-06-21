@@ -56,6 +56,8 @@ public:
 
 	void draw_points(PaintCanvas *canvas, const PoolVector2iArray &point_arr, const PoolColorArray &color_arr);
 
+	void copy_data_from(const Ref<PaintAction> &other);
+
 	PaintAction();
 	~PaintAction();
 
