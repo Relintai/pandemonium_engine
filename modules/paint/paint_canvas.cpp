@@ -211,9 +211,7 @@ void PaintCanvas::clear_active_layer() {
 	}
 }
 void PaintCanvas::clear_preview_layer() {
-	if (preview_layer.is_valid()) {
-		preview_layer->clear();
-	}
+	preview_layer->clear();
 }
 
 void PaintCanvas::clear_layer(const String &layer_name) {
@@ -240,7 +238,7 @@ Ref<PaintCanvasLayer> PaintCanvas::remove_layer(const String &layer_name) {
 
 			ERR_CONTINUE(!layer.is_valid());
 
-			if (layer == preview_layer || layer == active_layer || layer == tool_layer) {
+			if (layer == active_layer) {
 				continue;
 			}
 
@@ -268,25 +266,19 @@ Ref<PaintCanvasLayer> PaintCanvas::add_new_layer(const String &layer_name) {
 	layer.instance();
 	layer->name = layer_name;
 
-	if (layer_name == "Preview") {
-		layer->create(preview_layer_rect, _canvas_width, _canvas_height);
-	} else if (layer_name == "Tool") {
-		layer->create(tool_preview_layer_rect, _canvas_width, _canvas_height);
-	} else {
-		TextureRect *texture_rect = memnew(TextureRect);
-		texture_rect->set_name(layer_name);
-		canvas_layers->add_child(texture_rect, true);
+	TextureRect *texture_rect = memnew(TextureRect);
+	texture_rect->set_name(layer_name);
+	canvas_layers->add_child(texture_rect, true);
 
-		texture_rect->set_expand(true);
-		texture_rect->set_anchors_and_margins_preset(Control::PRESET_WIDE);
-		texture_rect->set_margin(Margin::MARGIN_RIGHT, 0);
-		texture_rect->set_margin(Margin::MARGIN_BOTTOM, 0);
+	texture_rect->set_expand(true);
+	texture_rect->set_anchors_and_margins_preset(Control::PRESET_WIDE);
+	//texture_rect->set_margin(Margin::MARGIN_RIGHT, 0);
+	//texture_rect->set_margin(Margin::MARGIN_BOTTOM, 0);
 
-		texture_rect->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
+	texture_rect->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
 
-		layer->create(texture_rect, _canvas_width, _canvas_height);
-		layers.push_back(layer);
-	}
+	layer->create(texture_rect, _canvas_width, _canvas_height);
+	layers.push_back(layer);
 
 	if (!active_layer.is_valid()) {
 		active_layer = layer;
@@ -584,8 +576,6 @@ void PaintCanvas::_notification(int p_what) {
 			//pixel_size = canvas_size;
 
 			active_layer = add_new_layer("Layer1");
-			preview_layer = add_new_layer("Preview");
-			tool_layer = add_new_layer("Tool");
 
 			////hack
 			//_canvas_width = 0;
@@ -625,21 +615,24 @@ PaintCanvas::PaintCanvas() {
 	canvas_background->set_texture(make_icon(grid_png));
 	canvas_background->set_expand(true);
 	canvas_background->set_stretch_mode(TextureRect::STRETCH_TILE);
-	canvas_background->set_draw_behind_parent(true);
+	//canvas_background->set_draw_behind_parent(true);
 	add_child(canvas_background);
 
 	canvas_layers = memnew(Control);
 	canvas_layers->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
+	canvas_layers->set_anchors_and_margins_preset(Control::PRESET_WIDE);
 	add_child(canvas_layers);
 
 	preview_layer_rect = memnew(TextureRect);
 	preview_layer_rect->set_expand(true);
 	preview_layer_rect->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
+	preview_layer_rect->set_anchors_and_margins_preset(Control::PRESET_WIDE);
 	add_child(preview_layer_rect);
 
 	tool_preview_layer_rect = memnew(TextureRect);
 	tool_preview_layer_rect->set_expand(true);
 	tool_preview_layer_rect->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
+	tool_preview_layer_rect->set_anchors_and_margins_preset(Control::PRESET_WIDE);
 	add_child(tool_preview_layer_rect);
 
 	grid = memnew(PaintVisualGrid);
@@ -652,6 +645,13 @@ PaintCanvas::PaintCanvas() {
 	canvas_outline->color = Color(0, 1, 0, 1);
 	canvas_outline->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
 	add_child(canvas_outline);
+
+	preview_layer.instance();
+	tool_layer.instance();
+	preview_layer->name = "Preview";
+	tool_layer->name = "Tool";
+	preview_layer->create(preview_layer_rect, _canvas_width, _canvas_height);
+	tool_layer->create(tool_preview_layer_rect, _canvas_width, _canvas_height);
 }
 
 PaintCanvas::~PaintCanvas() {
