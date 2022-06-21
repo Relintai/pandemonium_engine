@@ -622,7 +622,6 @@ PaintCanvas::PaintCanvas() {
 	add_child(tool_preview_layer_rect);
 
 	grid = memnew(PaintVisualGrid);
-	grid->color = Color(1, 1, 1, 1);
 	grid->size = 4;
 	grid->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
 	add_child(grid);

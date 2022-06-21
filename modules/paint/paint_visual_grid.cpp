@@ -100,7 +100,7 @@ void PaintVisualGrid::_notification(int p_what) {
 }
 
 PaintVisualGrid::PaintVisualGrid() {
-	color = Color(1, 1, 1, 1);
+	color = Color(1, 1, 1, 0.42);
 	size = 16;
 	zoom = 0;
 }
