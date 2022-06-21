@@ -28,6 +28,34 @@ SOFTWARE.
 #include "../paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
+Color CutAction::get_selection_color() {
+	return selection_color;
+}
+void CutAction::set_selection_color(const Color &val) {
+	selection_color = val;
+}
+
+Vector2i CutAction::get_mouse_start_pos() {
+	return mouse_start_pos;
+}
+void CutAction::set_mouse_start_pos(const Vector2i &val) {
+	mouse_start_pos = val;
+}
+
+Vector2i CutAction::get_mouse_end_pos() {
+	return mouse_end_pos;
+}
+void CutAction::set_mouse_end_pos(const Vector2i &val) {
+	mouse_end_pos = val;
+}
+
+bool CutAction::get_mouse_start_pos_set() {
+	return mouse_start_pos_set;
+}
+void CutAction::set_mouse_start_pos_set(const bool val) {
+	mouse_start_pos_set = val;
+}
+
 bool CutAction::can_commit() {
 	return false; //ugly way of handling a cut
 }
@@ -116,4 +144,19 @@ CutAction::~CutAction() {
 }
 
 void CutAction::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_selection_color"), &CutAction::get_selection_color);
+	ClassDB::bind_method(D_METHOD("set_selection_color", "value"), &CutAction::set_selection_color);
+	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "selection_color"), "set_selection_color", "get_selection_color");
+
+	ClassDB::bind_method(D_METHOD("get_mouse_start_pos"), &CutAction::get_mouse_start_pos);
+	ClassDB::bind_method(D_METHOD("set_mouse_start_pos", "value"), &CutAction::set_mouse_start_pos);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "mouse_start_pos"), "set_mouse_start_pos", "get_mouse_start_pos");
+
+	ClassDB::bind_method(D_METHOD("get_mouse_end_pos"), &CutAction::get_mouse_end_pos);
+	ClassDB::bind_method(D_METHOD("set_mouse_end_pos", "value"), &CutAction::set_mouse_end_pos);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "mouse_end_pos"), "set_mouse_end_pos", "get_mouse_end_pos");
+
+	ClassDB::bind_method(D_METHOD("get_mouse_start_pos_set"), &CutAction::get_mouse_start_pos_set);
+	ClassDB::bind_method(D_METHOD("set_mouse_start_pos_set", "value"), &CutAction::set_mouse_start_pos_set);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "mouse_start_pos_set"), "set_mouse_start_pos_set", "get_mouse_start_pos_set");
 }

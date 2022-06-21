@@ -28,6 +28,20 @@ SOFTWARE.
 #include "../paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
+Vector2i RectAction::get_mouse_start_pos() {
+	return mouse_start_pos;
+}
+void RectAction::set_mouse_start_pos(const Vector2i &val) {
+	mouse_start_pos = val;
+}
+
+bool RectAction::get_mouse_start_pos_set() {
+	return mouse_start_pos_set;
+}
+void RectAction::set_mouse_start_pos_set(const bool val) {
+	mouse_start_pos_set = val;
+}
+
 void RectAction::do_action(PaintCanvas *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
 
@@ -103,4 +117,11 @@ RectAction::~RectAction() {
 }
 
 void RectAction::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_mouse_start_pos"), &RectAction::get_mouse_start_pos);
+	ClassDB::bind_method(D_METHOD("set_mouse_start_pos", "value"), &RectAction::set_mouse_start_pos);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "mouse_start_pos"), "set_mouse_start_pos", "get_mouse_start_pos");
+
+	ClassDB::bind_method(D_METHOD("get_mouse_start_pos_set"), &RectAction::get_mouse_start_pos_set);
+	ClassDB::bind_method(D_METHOD("set_mouse_start_pos_set", "value"), &RectAction::set_mouse_start_pos_set);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "mouse_start_pos_set"), "set_mouse_start_pos_set", "get_mouse_start_pos_set");
 }

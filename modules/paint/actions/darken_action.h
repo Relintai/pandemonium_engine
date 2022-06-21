@@ -33,6 +33,9 @@ class DarkenAction : public PaintAction {
 	GDCLASS(DarkenAction, PaintAction);
 
 public:
+	float get_dark_factor();
+	void set_dark_factor(const float val);
+
 	void do_action(PaintCanvas *canvas, const Array &data);
 
 	DarkenAction();

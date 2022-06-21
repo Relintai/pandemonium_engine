@@ -33,6 +33,18 @@ class CutAction : public PaintAction {
 	GDCLASS(CutAction, PaintAction);
 
 public:
+	Color get_selection_color();
+	void set_selection_color(const Color &val);
+
+	Vector2i get_mouse_start_pos();
+	void set_mouse_start_pos(const Vector2i &val);
+
+	Vector2i get_mouse_end_pos();
+	void set_mouse_end_pos(const Vector2i &val);
+
+	bool get_mouse_start_pos_set();
+	void set_mouse_start_pos_set(const bool val);
+
 	bool can_commit();
 
 	void do_action(PaintCanvas *canvas, const Array &data);

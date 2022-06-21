@@ -33,6 +33,12 @@ class LineAction : public PaintAction {
 	GDCLASS(LineAction, PaintAction);
 
 public:
+	Vector2i get_mouse_start_pos();
+	void set_mouse_start_pos(const Vector2i &val);
+
+	bool get_mouse_start_pos_set();
+	void set_mouse_start_pos_set(const bool val);
+
 	void do_action(PaintCanvas *canvas, const Array &data);
 	void commit_action(PaintCanvas *canvas);
 	bool can_commit();

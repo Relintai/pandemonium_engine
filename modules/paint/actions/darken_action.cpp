@@ -28,6 +28,13 @@ SOFTWARE.
 #include "../paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
+float DarkenAction::get_dark_factor() {
+	return dark_factor;
+}
+void DarkenAction::set_dark_factor(const float val) {
+	dark_factor = val;
+}
+
 void DarkenAction::do_action(PaintCanvas *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
 
@@ -70,4 +77,7 @@ DarkenAction::~DarkenAction() {
 }
 
 void DarkenAction::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_dark_factor"), &DarkenAction::get_dark_factor);
+	ClassDB::bind_method(D_METHOD("set_dark_factor", "value"), &DarkenAction::set_dark_factor);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "dark_factor"), "set_dark_factor", "get_dark_factor");
 }

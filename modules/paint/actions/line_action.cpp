@@ -28,6 +28,20 @@ SOFTWARE.
 #include "../paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
+Vector2i LineAction::get_mouse_start_pos() {
+	return mouse_start_pos;
+}
+void LineAction::set_mouse_start_pos(const Vector2i &val) {
+	mouse_start_pos = val;
+}
+
+bool LineAction::get_mouse_start_pos_set() {
+	return mouse_start_pos_set;
+}
+void LineAction::set_mouse_start_pos_set(const bool val) {
+	mouse_start_pos_set = val;
+}
+
 void LineAction::do_action(PaintCanvas *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
 
@@ -96,4 +110,11 @@ LineAction::~LineAction() {
 }
 
 void LineAction::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_mouse_start_pos"), &LineAction::get_mouse_start_pos);
+	ClassDB::bind_method(D_METHOD("set_mouse_start_pos", "value"), &LineAction::set_mouse_start_pos);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "mouse_start_pos"), "set_mouse_start_pos", "get_mouse_start_pos");
+
+	ClassDB::bind_method(D_METHOD("get_mouse_start_pos_set"), &LineAction::get_mouse_start_pos_set);
+	ClassDB::bind_method(D_METHOD("set_mouse_start_pos_set", "value"), &LineAction::set_mouse_start_pos_set);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "mouse_start_pos_set"), "set_mouse_start_pos_set", "get_mouse_start_pos_set");
 }
