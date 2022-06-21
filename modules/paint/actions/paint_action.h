@@ -25,7 +25,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/reference.h"
+#include "core/resource.h"
 
 #include "core/array.h"
 #include "core/dictionary.h"
@@ -36,10 +36,8 @@ SOFTWARE.
 class PaintCanvas;
 class PaintCanvasLayer;
 
-//extends Node  (this should probably not be a node)
-//class_name GEAction
-class PaintAction : public Reference {
-	GDCLASS(PaintAction, Reference);
+class PaintAction : public Resource {
+	GDCLASS(PaintAction, Resource);
 
 public:
 	virtual void do_action(PaintCanvas *canvas, const Array &data);
