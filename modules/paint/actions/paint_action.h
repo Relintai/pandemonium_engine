@@ -40,6 +40,39 @@ class PaintAction : public Resource {
 	GDCLASS(PaintAction, Resource);
 
 public:
+	Dictionary get_action_data_undo();
+	void set_action_data_undo(const Dictionary &val);
+
+	Dictionary get_action_data_redo();
+	void set_action_data_redo(const Dictionary &val);
+
+	Dictionary get_action_data_preview();
+	void set_action_data_preview(const Dictionary &val);
+
+	PoolVector2iArray get_undo_cells();
+	void set_undo_cells(const PoolVector2iArray &val);
+
+	PoolColorArray get_undo_colors();
+	void set_undo_colors(const PoolColorArray &val);
+
+	PoolVector2iArray get_redo_cells();
+	void set_redo_cells(const PoolVector2iArray &val);
+
+	PoolColorArray get_redo_colors();
+	void set_redo_colors(const PoolColorArray &val);
+
+	PoolVector2iArray get_preview_cells();
+	void set_preview_cells(const PoolVector2iArray &val);
+
+	PoolColorArray get_preview_colors();
+	void set_preview_colors(const PoolColorArray &val);
+
+	Ref<PaintCanvasLayer> get_layer();
+	void set_layer(const Ref<PaintCanvasLayer> &val);
+
+	Dictionary get_action_data();
+	void set_action_data(const Dictionary &val);
+
 	virtual void do_action(PaintCanvas *canvas, const Array &data);
 	virtual void commit_action(PaintCanvas *canvas);
 

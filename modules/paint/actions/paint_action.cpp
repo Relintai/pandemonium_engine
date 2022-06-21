@@ -26,6 +26,84 @@ SOFTWARE.
 
 #include "../paint_canvas.h"
 #include "../paint_canvas_layer.h"
+#include "core/object.h"
+
+Dictionary PaintAction::get_action_data_undo() {
+	return action_data_undo;
+}
+void PaintAction::set_action_data_undo(const Dictionary &val) {
+	action_data_undo = val;
+}
+
+Dictionary PaintAction::get_action_data_redo() {
+	return action_data_redo;
+}
+void PaintAction::set_action_data_redo(const Dictionary &val) {
+	action_data_redo = val;
+}
+
+Dictionary PaintAction::get_action_data_preview() {
+	return action_data_preview;
+}
+void PaintAction::set_action_data_preview(const Dictionary &val) {
+	action_data_preview = val;
+}
+
+PoolVector2iArray PaintAction::get_undo_cells() {
+	return undo_cells;
+}
+void PaintAction::set_undo_cells(const PoolVector2iArray &val) {
+	undo_cells = val;
+}
+
+PoolColorArray PaintAction::get_undo_colors() {
+	return undo_colors;
+}
+void PaintAction::set_undo_colors(const PoolColorArray &val) {
+	undo_colors = val;
+}
+
+PoolVector2iArray PaintAction::get_redo_cells() {
+	return redo_cells;
+}
+void PaintAction::set_redo_cells(const PoolVector2iArray &val) {
+	redo_cells = val;
+}
+
+PoolColorArray PaintAction::get_redo_colors() {
+	return redo_colors;
+}
+void PaintAction::set_redo_colors(const PoolColorArray &val) {
+	redo_colors = val;
+}
+
+PoolVector2iArray PaintAction::get_preview_cells() {
+	return preview_cells;
+}
+void PaintAction::set_preview_cells(const PoolVector2iArray &val) {
+	preview_cells = val;
+}
+
+PoolColorArray PaintAction::get_preview_colors() {
+	return preview_colors;
+}
+void PaintAction::set_preview_colors(const PoolColorArray &val) {
+	preview_colors = val;
+}
+
+Ref<PaintCanvasLayer> PaintAction::get_layer() {
+	return layer;
+}
+void PaintAction::set_layer(const Ref<PaintCanvasLayer> &val) {
+	layer = val;
+}
+
+Dictionary PaintAction::get_action_data() {
+	return action_data;
+}
+void PaintAction::set_action_data(const Dictionary &val) {
+	action_data = val;
+}
 
 void PaintAction::do_action(PaintCanvas *canvas, const Array &data) {
 	layer = canvas->get_active_layer();
@@ -207,4 +285,47 @@ PaintAction::~PaintAction() {
 }
 
 void PaintAction::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_action_data_undo"), &PaintAction::get_action_data_undo);
+	ClassDB::bind_method(D_METHOD("set_action_data_undo", "value"), &PaintAction::set_action_data_undo);
+	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "action_data_undo"), "set_action_data_undo", "get_action_data_undo");
+
+	ClassDB::bind_method(D_METHOD("get_action_data_redo"), &PaintAction::get_action_data_redo);
+	ClassDB::bind_method(D_METHOD("set_action_data_redo", "value"), &PaintAction::set_action_data_redo);
+	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "action_data_redo"), "set_action_data_redo", "get_action_data_redo");
+
+	ClassDB::bind_method(D_METHOD("get_action_data_preview"), &PaintAction::get_action_data_preview);
+	ClassDB::bind_method(D_METHOD("set_action_data_preview", "value"), &PaintAction::set_action_data_preview);
+	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "action_data_preview"), "set_action_data_preview", "get_action_data_preview");
+
+	ClassDB::bind_method(D_METHOD("get_undo_cells"), &PaintAction::get_undo_cells);
+	ClassDB::bind_method(D_METHOD("set_undo_cells", "value"), &PaintAction::set_undo_cells);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_VECTOR2I_ARRAY, "undo_cells"), "set_undo_cells", "get_undo_cells");
+
+	ClassDB::bind_method(D_METHOD("get_undo_colors"), &PaintAction::get_undo_colors);
+	ClassDB::bind_method(D_METHOD("set_undo_colors", "value"), &PaintAction::set_undo_colors);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_COLOR_ARRAY, "undo_colors"), "set_undo_colors", "get_undo_colors");
+
+	ClassDB::bind_method(D_METHOD("get_redo_cells"), &PaintAction::get_redo_cells);
+	ClassDB::bind_method(D_METHOD("set_redo_cells", "value"), &PaintAction::set_redo_cells);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_VECTOR2I_ARRAY, "redo_cells"), "set_redo_cells", "get_redo_cells");
+
+	ClassDB::bind_method(D_METHOD("get_redo_colors"), &PaintAction::get_redo_colors);
+	ClassDB::bind_method(D_METHOD("set_redo_colors", "value"), &PaintAction::set_redo_colors);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_COLOR_ARRAY, "redo_colors"), "set_redo_colors", "get_redo_colors");
+
+	ClassDB::bind_method(D_METHOD("get_preview_cells"), &PaintAction::get_preview_cells);
+	ClassDB::bind_method(D_METHOD("set_preview_cells", "value"), &PaintAction::set_preview_cells);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_VECTOR2I_ARRAY, "preview_cells"), "set_preview_cells", "get_preview_cells");
+
+	ClassDB::bind_method(D_METHOD("get_preview_colors"), &PaintAction::get_preview_colors);
+	ClassDB::bind_method(D_METHOD("set_preview_colors", "value"), &PaintAction::set_preview_colors);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_COLOR_ARRAY, "preview_colors"), "set_preview_colors", "get_preview_colors");
+
+	//ClassDB::bind_method(D_METHOD("get_layer"), &PaintAction::get_layer);
+	//ClassDB::bind_method(D_METHOD("set_layer", "value"), &PaintAction::set_layer);
+	//ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "layer", PROPERTY_HINT_RESOURCE_TYPE, "PaintCanvasLayer", 0), "set_layer", "get_layer");
+
+	ClassDB::bind_method(D_METHOD("get_action_data"), &PaintAction::get_action_data);
+	ClassDB::bind_method(D_METHOD("set_action_data", "value"), &PaintAction::set_action_data);
+	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "action_data"), "set_action_data", "get_action_data");
 }
