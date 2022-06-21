@@ -41,6 +41,7 @@ SOFTWARE.
 void PaintNavbar::handle_menu_item_pressed(const int id) {
 	switch (id) {
 		case MENU_FILE_NEW:
+			paint_window->paint_canvas_dialog->is_new = true;
 			paint_window->paint_canvas_dialog->popup_centered();
 			break;
 		case MENU_FILE_SAVE:
@@ -60,6 +61,7 @@ void PaintNavbar::handle_menu_item_pressed(const int id) {
 		case MENU_EDIT_PASTE:
 			break;
 		case MENU_CANVAS_CHANGE_SIZE:
+			paint_window->paint_canvas_dialog->is_new = false;
 			paint_window->paint_canvas_dialog->popup_centered();
 			break;
 		case MENU_CANVAS_CROP_TO_CONTENT:

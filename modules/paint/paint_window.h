@@ -143,6 +143,7 @@ public:
 	Ref<PaintCanvasLayer> add_new_layer();
 	void remove_active_layer();
 	void duplicate_active_layer();
+	void delete_all_layers();
 
 	void move_up(Node *layer_btn);
 	void move_down(Node *layer_btn);

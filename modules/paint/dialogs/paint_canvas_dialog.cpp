@@ -57,6 +57,7 @@ void PaintCanvasDialog::_on_about_to_show() {
 PaintCanvasDialog::PaintCanvasDialog() {
 	_x_prev_val = 0;
 	_y_prev_val = 0;
+	is_new = false;
 
 	set_resizable(true);
 	set_title("Please Confirm...");

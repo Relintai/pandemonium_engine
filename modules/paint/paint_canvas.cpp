@@ -233,17 +233,21 @@ Ref<PaintCanvasLayer> PaintCanvas::remove_layer(const String &layer_name) {
 	del_layer->clear();
 
 	if (del_layer == active_layer) {
-		for (int i = 0; i < layers.size(); ++i) {
-			Ref<PaintCanvasLayer> layer = layers[i];
+		if (layers.size() > 1) {
+			for (int i = 0; i < layers.size(); ++i) {
+				Ref<PaintCanvasLayer> layer = layers[i];
 
-			ERR_CONTINUE(!layer.is_valid());
+				ERR_CONTINUE(!layer.is_valid());
 
-			if (layer == active_layer) {
-				continue;
+				if (layer == active_layer) {
+					continue;
+				}
+
+				active_layer = layer;
+				break;
 			}
-
-			active_layer = layer;
-			break;
+		} else {
+			active_layer.unref();
 		}
 	}
 

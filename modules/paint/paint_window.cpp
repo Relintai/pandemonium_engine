@@ -784,6 +784,11 @@ void PaintWindow::_on_ChangeGridSizeDialog_confirmed() {
 }
 
 void PaintWindow::_on_ChangeCanvasSizeDialog_confirmed() {
+	if (paint_canvas_dialog->is_new) {
+		delete_all_layers();
+		add_new_layer();
+	}
+
 	paint_canvas->resize(paint_canvas_dialog->get_size_x(), paint_canvas_dialog->get_size_y());
 }
 
@@ -923,6 +928,18 @@ void PaintWindow::duplicate_active_layer() {
 	// update highlight
 	highlight_layer(paint_canvas->get_active_layer()->name);
 	//print("added layer: ", new_layer.name, " (total:", layers_box_container.get_child_count(), ")")
+}
+
+void PaintWindow::delete_all_layers() {
+	while (paint_canvas->layers.size() > 0) {
+		String layer_name = paint_canvas->layers[0]->name;
+		paint_canvas->remove_layer(layer_name);
+		layers_box_container->remove_child(_layer_button_ref[layer_name]);
+		_layer_button_ref[layer_name]->queue_delete();
+		_layer_button_ref.erase(layer_name);
+	}
+
+	_total_added_layers = 0;
 }
 
 void PaintWindow::move_up(Node *layer_btn) {

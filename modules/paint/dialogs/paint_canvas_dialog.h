@@ -45,6 +45,8 @@ public:
 	PaintCanvasDialog();
 	~PaintCanvasDialog();
 
+	bool is_new;
+
 protected:
 	void _on_confirmed();
 	void _on_about_to_show();
