@@ -418,10 +418,6 @@ Color PaintCanvas::get_preview_pixel_v(const Vector2i &pos) {
 }
 
 Color PaintCanvas::get_preview_pixel(const int x, const int y) {
-	if (!preview_layer.is_valid()) {
-		return Color();
-	}
-
 	return preview_layer->get_pixel(x, y);
 }
 
