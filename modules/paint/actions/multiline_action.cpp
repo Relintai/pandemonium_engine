@@ -35,20 +35,27 @@ bool MultiLineAction::can_commit() {
 void MultiLineAction::do_action(PaintCanvas *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
 
-	/*
-	.do_action(canvas, data)
+	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);
 
-	var pixels = GEUtils.get_pixels_in_line(data[0], data[1])
-	for pixel in pixels:
-		if pixel in action_data.undo.cells or canvas.get_pixel_v(pixel) == null or canvas.is_alpha_locked():
-			continue
-		action_data.undo.colors.append(canvas.get_pixel_v(pixel))
-		action_data.undo.cells.append(pixel)
-		canvas.set_pixel_v(pixel, data[2])
+	for (int i = 0; i < pixels.size(); ++i) {
+		Vector2i pixel = pixels[i];
 
-		action_data.redo.cells.append(pixel)
-		action_data.redo.colors.append(data[2])
-	*/
+		Color col = canvas->get_pixel_v(pixel);
+
+		if (undo_cells.contains(pixel) || !canvas->validate_pixel_v(pixel) || (canvas->is_alpha_locked() && col.a < 0.0001)) {
+			continue;
+		}
+
+		undo_colors.append(col);
+		undo_cells.append(pixel);
+
+		Color tpx = data[2];
+
+		canvas->set_pixel_v(pixel, tpx);
+
+		redo_cells.append(pixel);
+		redo_colors.append(tpx);
+	}
 }
 
 MultiLineAction::MultiLineAction() {
