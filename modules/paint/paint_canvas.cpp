@@ -541,8 +541,8 @@ void PaintCanvas::resize(int width, int height) {
 	_canvas_height = height;
 
 	Size2 s;
-	s.x = _canvas_height * _pixel_size;
-	s.y = _canvas_width * _pixel_size;
+	s.x = _canvas_width * _pixel_size;
+	s.y = _canvas_height * _pixel_size;
 	set_size(s);
 
 	preview_layer->resize(width, height);
