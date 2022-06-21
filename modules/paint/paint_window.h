@@ -28,9 +28,9 @@ SOFTWARE.
 #include "scene/gui/control.h"
 
 #include "bush_prefabs.h"
+#include "core/hash_map.h"
 #include "core/os/keyboard.h"
 #include "core/reference.h"
-#include "core/hash_map.h"
 
 class PaintAction;
 class PaintCanvasLayer;
@@ -232,8 +232,8 @@ public:
 	PoolVector2iArray _selection_cells;
 	PoolColorArray _selection_colors;
 
-	Vector2 _cut_pos;
-	Vector2 _cut_size;
+	Vector2i _cut_pos;
+	Vector2i _cut_size;
 
 	Vector<Ref<PaintAction>> _actions_history;
 	Vector<Ref<PaintAction>> _redo_history;

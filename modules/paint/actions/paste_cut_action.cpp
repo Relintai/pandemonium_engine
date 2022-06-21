@@ -28,10 +28,12 @@ SOFTWARE.
 #include "../paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
-//data[2] = selection_pos
-//data[3] = selection_color
-//data[4] = cut pos
-//data[5] = cut size
+//arr.append(cell_mouse_position);
+//arr.append(last_cell_mouse_position);
+//arr.append(_selection_cells);
+//arr.append(_selection_colors);
+//arr.append(_cut_pos);
+//arr.append(_cut_size);
 void PasteCutAction::do_action(PaintCanvas *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
 
@@ -51,7 +53,7 @@ void PasteCutAction::do_action(PaintCanvas *canvas, const Array &data) {
 			pixel -= cut_pos + cut_size / 2;
 			pixel += pixel_pos;
 
-			if (canvas->validate_pixel_v(pixel)) {
+			if (!canvas->validate_pixel_v(pixel)) {
 				continue;
 			}
 
