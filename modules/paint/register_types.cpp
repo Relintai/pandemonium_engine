@@ -22,6 +22,20 @@ SOFTWARE.
 
 #include "register_types.h"
 
+#include "actions/paint_action.h"
+
+#include "actions/brighten_action.h"
+#include "actions/brush_action.h"
+#include "actions/bucket_action.h"
+#include "actions/cut_action.h"
+#include "actions/darken_action.h"
+#include "actions/line_action.h"
+#include "actions/multiline_action.h"
+#include "actions/paste_cut_action.h"
+#include "actions/pencil_action.h"
+#include "actions/rainbow_action.h"
+#include "actions/rect_action.h"
+
 #include "paint_window.h"
 
 #ifdef TOOLS_ENABLED
@@ -30,6 +44,20 @@ SOFTWARE.
 
 void register_paint_types() {
 	ClassDB::register_class<PaintWindow>();
+
+	ClassDB::register_class<PaintAction>();
+
+	ClassDB::register_class<BrightenAction>();
+	ClassDB::register_class<BrushAction>();
+	ClassDB::register_class<BucketAction>();
+	ClassDB::register_class<CutAction>();
+	ClassDB::register_class<DarkenAction>();
+	ClassDB::register_class<LineAction>();
+	ClassDB::register_class<MultiLineAction>();
+	ClassDB::register_class<PasteCutAction>();
+	ClassDB::register_class<PencilAction>();
+	ClassDB::register_class<RainbowAction>();
+	ClassDB::register_class<RectAction>();
 
 #ifdef TOOLS_ENABLED
 	EditorPlugins::add_by_type<PaintEditorPlugin>();
