@@ -39,7 +39,8 @@ public:
 	RectAction();
 	~RectAction();
 
-	Vector2 mouse_start_pos;
+	Vector2i mouse_start_pos;
+	bool mouse_start_pos_set;
 
 protected:
 	static void _bind_methods();

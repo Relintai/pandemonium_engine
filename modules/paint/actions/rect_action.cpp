@@ -31,56 +31,68 @@ SOFTWARE.
 void RectAction::do_action(PaintCanvas *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
 
-	/*
-	.do_action(canvas, data)
+	if (!mouse_start_pos_set) {
+		mouse_start_pos = data[0];
+		//print("init:", mouse_start_pos)
+		mouse_start_pos_set = true;
+	}
 
-	if mouse_start_pos == null:
-		mouse_start_pos = data[0]
-		#print("init:", mouse_start_pos)
+	undo_cells.clear();
+	undo_colors.clear();
+	preview_cells.clear();
+	preview_colors.clear();
 
+	canvas->clear_preview_layer();
 
-	action_data.undo.cells.clear()
-	action_data.undo.colors.clear()
-	action_data.preview.cells.clear()
-	action_data.preview.colors.clear()
-	canvas.clear_preview_layer()
+	Vector2i p = mouse_start_pos;
+	Vector2i current_mouse_pos = data[0];
+	Vector2i s = current_mouse_pos - mouse_start_pos;
 
-	var p = mouse_start_pos
-	var s = data[0] - mouse_start_pos
-	var pixels = GEUtils.get_pixels_in_line(p, p + Vector2(s.x, 0))
-	pixels += GEUtils.get_pixels_in_line(p, p + Vector2(0, s.y))
-	pixels += GEUtils.get_pixels_in_line(p + s, p + s + Vector2(0, -s.y))
-	pixels += GEUtils.get_pixels_in_line(p + s, p + s  + Vector2(-s.x, 0))
+	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(p, p + Vector2i(s.x, 0));
+	pixels.append_array(PaintUtilities::get_pixels_in_line(p, p + Vector2(0, s.y)));
+	pixels.append_array(PaintUtilities::get_pixels_in_line(p + s, p + s + Vector2(0, -s.y)));
+	pixels.append_array(PaintUtilities::get_pixels_in_line(p + s, p + s + Vector2(-s.x, 0)));
 
-	for pixel in pixels:
-		if canvas.get_pixel_v(pixel) == null:
-			continue
+	for (int i = 0; i < pixels.size(); ++i) {
+		Vector2i pixel = pixels[i];
 
-		if canvas.is_alpha_locked() and canvas.get_pixel_v(pixel) == Color.transparent:
-			continue
+		if (!canvas->validate_pixel_v(pixel)) {
+			continue;
+		}
 
-		canvas.set_preview_pixel_v(pixel, data[2])
-		action_data.undo.cells.append(pixel)
-		action_data.undo.colors.append(canvas.get_pixel_v(pixel))
-		action_data.preview.cells.append(pixel)
-		action_data.preview.colors.append(data[2])
-	*/
+		Color col = canvas->get_pixel_v(pixel);
+
+		if (canvas->is_alpha_locked() && col.a < 0.00001) {
+			continue;
+		}
+
+		Color tc = data[2];
+
+		canvas->set_preview_pixel_v(pixel, tc);
+		undo_cells.append(pixel);
+		undo_colors.append(col);
+		preview_cells.append(pixel);
+		preview_colors.append(tc);
+	}
 }
 void RectAction::commit_action(PaintCanvas *canvas) {
-	/*
-	canvas.clear_preview_layer()
-	var cells = action_data.preview.cells
-	var colors = action_data.preview.colors
-	for idx in range(cells.size()):
-		canvas.set_pixel_v(cells[idx], colors[idx])
+	canvas->clear_preview_layer();
 
-		action_data.redo.cells.append(cells[idx])
-		action_data.redo.colors.append(colors[idx])
-	mouse_start_pos = null
-	*/
+	for (int idx = 0; idx < preview_cells.size(); ++idx) {
+		Vector2i pcell = preview_cells[idx];
+		Color pcolor = preview_colors[idx];
+
+		canvas->set_pixel_v(pcell, pcolor);
+
+		redo_cells.append(pcell);
+		redo_colors.append(pcolor);
+	}
+
+	mouse_start_pos_set = false;
 }
 
 RectAction::RectAction() {
+	mouse_start_pos_set = false;
 }
 
 RectAction::~RectAction() {
