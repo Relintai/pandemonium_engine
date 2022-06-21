@@ -84,6 +84,10 @@ void LineAction::commit_action(PaintCanvas *canvas) {
 	mouse_start_pos_set = false;
 }
 
+bool LineAction::can_commit() {
+	return true;
+}
+
 LineAction::LineAction() {
 	mouse_start_pos_set = false;
 }

@@ -35,6 +35,7 @@ class LineAction : public PaintAction {
 public:
 	void do_action(PaintCanvas *canvas, const Array &data);
 	void commit_action(PaintCanvas *canvas);
+	bool can_commit();
 
 	LineAction();
 	~LineAction();
