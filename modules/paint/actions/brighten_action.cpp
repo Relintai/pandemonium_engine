@@ -78,5 +78,5 @@ BrightenAction::~BrightenAction() {
 void BrightenAction::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_brighten_color"), &BrightenAction::get_brighten_color);
 	ClassDB::bind_method(D_METHOD("set_brighten_color", "value"), &BrightenAction::set_brighten_color);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "brighten_color"), "set_", "get_brighten_color");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "brighten_color"), "set_brighten_color", "get_brighten_color");
 }
