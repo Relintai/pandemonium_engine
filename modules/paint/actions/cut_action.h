@@ -42,8 +42,9 @@ public:
 	~CutAction();
 
 	Color selection_color;
-	Vector2 mouse_start_pos;
-	Vector2 mouse_end_pos;
+	Vector2i mouse_start_pos;
+	Vector2i mouse_end_pos;
+	bool mouse_start_pos_set;
 
 protected:
 	static void _bind_methods();

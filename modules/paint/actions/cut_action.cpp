@@ -34,63 +34,82 @@ bool CutAction::can_commit() {
 
 void CutAction::do_action(PaintCanvas *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
-/*
-	if mouse_start_pos == null:
+
+	if (!mouse_start_pos_set) {
 		mouse_start_pos = data[0];
+		mouse_start_pos_set = true;
+	}
 
 	mouse_end_pos = data[0];
 
-	action_data.preview.cells.clear();
-	action_data.preview.colors.clear();
-	canvas.clear_preview_layer();
+	preview_cells.clear();
+	preview_colors.clear();
+	canvas->clear_preview_layer();
 
-	var p = mouse_start_pos;
-	var s = mouse_end_pos - mouse_start_pos;
+	Vector2i p = mouse_start_pos;
+	Vector2i s = mouse_end_pos - mouse_start_pos;
 
-	var pixels = GEUtils.get_pixels_in_line(p, p + Vector2(s.x, 0));
-	pixels += GEUtils.get_pixels_in_line(p, p + Vector2(0, s.y));
-	pixels += GEUtils.get_pixels_in_line(p + s, p + s + Vector2(0, -s.y));
-	pixels += GEUtils.get_pixels_in_line(p + s, p + s  + Vector2(-s.x, 0));
+	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(p, p + Vector2i(s.x, 0));
+	pixels.append_array(PaintUtilities::get_pixels_in_line(p, p + Vector2i(0, s.y)));
+	pixels.append_array(PaintUtilities::get_pixels_in_line(p + s, p + s + Vector2i(0, -s.y)));
+	pixels.append_array(PaintUtilities::get_pixels_in_line(p + s, p + s + Vector2i(-s.x, 0)));
 
-	for pixel in pixels:
-		canvas.set_preview_pixel_v(pixel, selection_color);
-		action_data.preview.cells.append(pixel);
-		action_data.preview.colors.append(selection_color);
-*/
+	for (int i = 0; i < pixels.size(); ++i) {
+		Vector2i pixel = pixels[i];
+
+		canvas->set_preview_pixel_v(pixel, selection_color);
+		preview_cells.append(pixel);
+		preview_colors.append(selection_color);
+	}
 }
+
 void CutAction::commit_action(PaintCanvas *canvas) {
-	/*
-	canvas.clear_preview_layer()
-	var p = mouse_start_pos
-	var s = mouse_end_pos - mouse_start_pos
+	canvas->clear_preview_layer();
+	Vector2i p = mouse_start_pos;
+	Vector2i s = mouse_end_pos - mouse_start_pos;
 
-	for x in range(abs(s.x)+1):
-		for y in range(abs(s.y)+1):
-			var px = x
-			var py = y
-			if s.x < 0:
-				px *= -1
-			if s.y < 0:
-				py *= -1
+	int ex = ABS(s.x) + 1;
+	int ey = ABS(s.y) + 1;
 
-			var pos = p + Vector2(px, py)
-			var color = canvas.get_pixel(pos.x, pos.y)
+	for (int x = 0; x < ex; ++x) {
+		for (int y = 0; y < ey; ++y) {
+			int px = x;
+			int py = y;
 
-			if color == null or color.a == 0.0:
-				continue
+			if (s.x < 0) {
+				px *= -1;
+			}
 
-			action_data.redo.cells.append(pos)
-			action_data.redo.colors.append(canvas.get_pixel_v(pos))
+			if (s.y < 0) {
+				py *= -1;
+			}
 
-			canvas.set_pixel_v(pos, Color.transparent)
+			Vector2i pos = p + Vector2i(px, py);
 
-			action_data.undo.cells.append(pos)
-			action_data.undo.colors.append(Color.transparent)
-	*/
+			if (!canvas->validate_pixel_v(pos)) {
+				continue;
+			}
+
+			Color color = canvas->get_pixel_v(pos);
+
+			if (color.a < 0.0001) {
+				continue;
+			}
+
+			redo_cells.append(pos);
+			redo_colors.append(color);
+
+			canvas->set_pixel_v(pos, Color(1, 1, 1, 0));
+
+			undo_cells.append(pos);
+			undo_colors.append(Color(1, 1, 1, 0));
+		}
+	}
 }
 
 CutAction::CutAction() {
 	selection_color = Color(0.8, 0.8, 0.8, 0.5);
+	mouse_start_pos_set = false;
 }
 
 CutAction::~CutAction() {
