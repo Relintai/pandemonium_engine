@@ -49,7 +49,7 @@ void BucketAction::do_action(PaintCanvas *canvas, const Array &data) {
 			continue;
 		}
 
-		if (canvas->is_alpha_locked() && col.a < 0.00001) {
+		if (canvas->is_alpha_locked() && col.a < 0.0001) {
 			continue;
 		}
 

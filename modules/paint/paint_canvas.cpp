@@ -476,17 +476,7 @@ PoolVector2iArray PaintCanvas::get_neighbouring_pixels(const int pos_x, const in
 		to_check_queue.remove(0);
 		Vector2i p = PaintUtilities::to_2D(idx, _canvas_width);
 
-		bool found = false;
-		PoolIntArray::Read r = checked_queue.read();
-		for (int i = 0; i < checked_queue.size(); ++i) {
-			if (r[i] == idx) {
-				found = true;
-				break;
-			}
-		}
-		r.release();
-
-		if (!found) {
+		if (checked_queue.contains(idx)) {
 			continue;
 		}
 
