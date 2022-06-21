@@ -608,10 +608,10 @@ void PaintWindow::commit_action() {
 
 	//print("commit action")
 	_current_action->commit_action(paint_canvas);
-	Ref<PaintAction> action = _current_action->duplicate(true);
-	action->layer = _current_action->layer;
+	//Ref<PaintAction> action = _current_action->duplicate(true);
+	//action->layer = _current_action->layer;
 
-	_actions_history.push_back(action);
+	_actions_history.push_back(_current_action);
 	_redo_history.clear();
 
 	switch (brush_mode) {
@@ -621,14 +621,11 @@ void PaintWindow::commit_action() {
 			_cut_pos = ca->mouse_start_pos;
 			_cut_size = ca->mouse_end_pos - ca->mouse_start_pos;
 
-			PoolVector2iArray dcell = ca->redo_cells;
-			PoolColorArray dcol = ca->redo_colors;
+			_selection_cells.clear();
+			_selection_colors.clear();
 
-			//_selection_cells = dcell.duplicate();
-			//_selection_colors = dcol.duplicate();
-
-			_selection_cells = dcell;
-			_selection_colors = dcol;
+			_selection_cells.append_array(ca->redo_cells);
+			_selection_colors.append_array(ca->redo_colors);
 
 			set_brush(Tools::PASTECUT);
 		} break;
