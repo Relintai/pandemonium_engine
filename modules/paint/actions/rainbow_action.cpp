@@ -71,12 +71,6 @@ void RainbowAction::do_action(PaintCanvas *canvas, const Array &data) {
 	}
 }
 
-void RainbowAction::commit_action(PaintCanvas *canvas) {
-	for (int idx = 0; idx < undo_cells.size(); ++idx) {
-		canvas->_set_pixel_v(layer, undo_cells[idx], undo_colors[idx]);
-	}
-}
-
 RainbowAction::RainbowAction() {
 }
 
