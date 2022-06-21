@@ -643,8 +643,8 @@ void PaintWindow::redo_action() {
 		return;
 	}
 
-	Ref<PaintAction> action = _redo_history[0];
-	_redo_history.remove(0);
+	Ref<PaintAction> action = _redo_history[_redo_history.size() - 1];
+	_redo_history.remove(_redo_history.size() - 1);
 
 	if (!action.is_valid()) {
 		return;
@@ -661,8 +661,8 @@ void PaintWindow::undo_action() {
 		return;
 	}
 
-	Ref<PaintAction> action = _actions_history[0];
-	_actions_history.remove(0);
+	Ref<PaintAction> action = _actions_history[_actions_history.size() - 1];
+	_actions_history.remove(_actions_history.size() - 1);
 
 	if (!action.is_valid()) {
 		return;
