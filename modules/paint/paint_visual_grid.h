@@ -40,8 +40,8 @@ public:
 
 	Color color;
 	int size;
-	float zoom;
-	Vector2 offset;
+	//float zoom;
+	//Vector2 offset;
 
 protected:
 	void _notification(int p_what);

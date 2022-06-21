@@ -533,6 +533,9 @@ void PaintCanvas::resize(int width, int height) {
 		height = 1;
 	}
 
+	_canvas_width = width;
+	_canvas_height = height;
+
 	Size2 s;
 	s.x = _canvas_height * _pixel_size;
 	s.y = _canvas_width * _pixel_size;
