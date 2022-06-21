@@ -259,25 +259,6 @@ void PaintAction::draw_points(PaintCanvas *canvas, const PoolVector2iArray &poin
 	}
 }
 
-void PaintAction::copy_data_from(const Ref<PaintAction> &other) {
-	action_data_undo = other->action_data_undo.duplicate(true);
-	action_data_redo = other->action_data_redo.duplicate(true);
-	action_data_preview = other->action_data_preview.duplicate(true);
-
-	undo_cells.append_array(other->undo_cells);
-	undo_colors.append_array(other->undo_colors);
-
-	redo_cells.append_array(other->redo_cells);
-	redo_colors.append_array(other->redo_colors);
-
-	preview_cells.append_array(other->preview_cells);
-	preview_colors.append_array(other->preview_colors);
-
-	layer = other->layer;
-
-	action_data = other->action_data.duplicate(true);
-}
-
 PaintAction::PaintAction() {
 }
 
