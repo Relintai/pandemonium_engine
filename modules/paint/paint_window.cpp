@@ -304,6 +304,7 @@ void PaintWindow::_draw_tool_brush() {
 			for (int i = 0; i < pixels.size(); ++i) {
 				Vector2i pixel = r[i];
 				paint_canvas->_set_pixel(paint_canvas->tool_layer, cell_mouse_position.x + pixel.x, cell_mouse_position.y + pixel.y, _selected_color);
+				//print_error("ad " + String::num(cell_mouse_position.x + pixel.x) + " " + String::num(cell_mouse_position.y + pixel.y));
 			}
 
 			r.release();
@@ -321,7 +322,7 @@ void PaintWindow::_draw_tool_brush() {
 
 	paint_canvas->update();
 	//TODO add here brush prefab drawing
-	paint_canvas->tool_layer->update_texture();
+	//	paint_canvas->tool_layer->update_texture();
 }
 
 void PaintWindow::_handle_scroll() {
@@ -983,7 +984,7 @@ void PaintWindow::_on_PaintCanvasContainer_mouse_entered() {
 	mouse_on_top = true;
 	paint_canvas->tool_layer->clear();
 	paint_canvas->update();
-	paint_canvas->tool_layer->update_texture();
+	//paint_canvas->tool_layer->update_texture();
 }
 void PaintWindow::_on_PaintCanvasContainer_mouse_exited() {
 	if (!mouse_on_top) {
@@ -993,7 +994,7 @@ void PaintWindow::_on_PaintCanvasContainer_mouse_exited() {
 	mouse_on_top = false;
 	paint_canvas->tool_layer->clear();
 	paint_canvas->update();
-	paint_canvas->tool_layer->update_texture();
+	//paint_canvas->tool_layer->update_texture();
 }
 void PaintWindow::_on_ColorPicker_popup_closed() {
 	color_grid->add_color_prefab(color_picker_button->get_pick_color());

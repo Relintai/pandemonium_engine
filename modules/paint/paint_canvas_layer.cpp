@@ -117,8 +117,6 @@ void PaintCanvasLayer::update_texture() {
 	texture->create_from_image(image, 0);
 
 	texture_rect_ref->set_texture(texture);
-	texture_rect_ref->set_margin(Margin::MARGIN_RIGHT, 0);
-	texture_rect_ref->set_margin(Margin::MARGIN_BOTTOM, 0);
 }
 
 void PaintCanvasLayer::toggle_lock() {
