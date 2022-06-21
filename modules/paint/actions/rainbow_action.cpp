@@ -31,46 +31,50 @@ SOFTWARE.
 void RainbowAction::do_action(PaintCanvas *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
 
-	/*
-	.do_action(canvas, data)
-	
-	var pixels = GEUtils.get_pixels_in_line(data[0], data[1])
-	for pixel in pixels:
-		if canvas.get_pixel_v(pixel) == null:
-			continue
-		
-		if canvas.is_alpha_locked() and canvas.get_pixel_v(pixel) == Color.transparent:
-			continue
-		
-		if pixel in action_data.undo.cells:
-			var color = GEUtils.random_color()
-			canvas.set_pixel_v(pixel, color)
-			
-			var idx = action_data.redo.cells.find(pixel)
-			action_data.redo.cells.remove(idx)
-			action_data.redo.colors.remove(idx)
-			
-			action_data.redo.cells.append(pixel)
-			action_data.redo.colors.append(color)
-			continue
-		
-		action_data.undo.colors.append(canvas.get_pixel_v(pixel))
-		action_data.undo.cells.append(pixel)
-		
-		var color = GEUtils.random_color()
-		canvas.set_pixel_v(pixel, color)
-	
-		action_data.redo.cells.append(pixel)
-		action_data.redo.colors.append(color)
-	*/
+	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);
+
+	for (int i = 0; i < pixels.size(); ++i) {
+		Vector2i pixel = pixels[i];
+
+		if (!canvas->validate_pixel_v(pixel)) {
+			continue;
+		}
+
+		Color col = canvas->get_pixel_v(pixel);
+
+		if (canvas->is_alpha_locked() && col.a < 0.0001) {
+			continue;
+		}
+
+		if (undo_cells.contains(pixel)) {
+			Color color = PaintUtilities::random_color();
+			canvas->set_pixel_v(pixel, color);
+
+			int idx = redo_cells.find(pixel);
+			redo_cells.remove(idx);
+			redo_colors.remove(idx);
+
+			redo_cells.append(pixel);
+			redo_colors.append(color);
+
+			continue;
+		}
+
+		undo_colors.append(col);
+		undo_cells.append(pixel);
+
+		Color color = PaintUtilities::random_color();
+		canvas->set_pixel_v(pixel, color);
+
+		redo_cells.append(pixel);
+		redo_colors.append(color);
+	}
 }
+
 void RainbowAction::commit_action(PaintCanvas *canvas) {
-	/*
-	var cells = action_data.undo.cells
-	var colors = action_data.undo.colors
-	for idx in range(cells.size()):
-		canvas._set_pixel_v(action_data.layer, cells[idx], colors[idx])
-	*/
+	for (int idx = 0; idx < undo_cells.size(); ++idx) {
+		canvas->_set_pixel_v(layer, undo_cells[idx], undo_colors[idx]);
+	}
 }
 
 RainbowAction::RainbowAction() {
