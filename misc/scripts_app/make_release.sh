@@ -29,8 +29,8 @@ mkdir ${full_project_name}${version_snake_cased}_full_source
 mkdir ${full_project_name}${version_snake_cased}_game_source
 
 # Warn if a file is over a megabyte. Used to catch big temporary files that would slip through outherwise
-python ../tools/copy_repos.py ../ ./${full_project_name}${version_snake_cased}_full_source 1048576
-python ../tools/copy_repos.py ../game/ ./${full_project_name}${version_snake_cased}_game_source
+python ../pandemonium_engine/misc/scripts_app/copy_repos.py ../ ./${full_project_name}${version_snake_cased}_full_source 1048576
+python ../pandemonium_engine/misc/scripts_app/copy_repos.py ../game/ ./${full_project_name}${version_snake_cased}_game_source
 
 zip -q ../release/${full_project_name}${version_snake_cased}_android_debug.zip  ./${full_project_name}${version_snake_cased}_android_debug/*
 zip -q ../release/${full_project_name}${version_snake_cased}_android_release.zip  ./${full_project_name}${version_snake_cased}_android_release/*
