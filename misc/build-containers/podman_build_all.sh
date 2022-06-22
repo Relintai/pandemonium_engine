@@ -222,4 +222,4 @@ if [ $error -eq 0 ]; then
   echo "All files are present!"
 fi
 
-cd ../..
+cd ..
