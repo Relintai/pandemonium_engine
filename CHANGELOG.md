@@ -6,7 +6,63 @@ All notable changes to this project will be documented in this file.
 
 - Nothing since the last changeset.
 
-## [Changes up to 57ffe2211b850bc0d93a2092fac8c1b01061f1da] 
+## [3.6.0]
+
+### Added
+
+#### Core
+
+- Added contains(), find(), and clear() to PoolVector. Also added bindings for them.
+- Added a bound core logger class.
+
+#### Modules
+
+- Ported the mesh data editor addon to c++, and now it's a part of the mesh_data_resource module.
+- Ported my fork of Godoxel to c++, and now it's part of the engine. (paint module)
+- Added a new wfc (WaweFormCollapse) module. I used https://github.com/math-fehr/fast-wfc 's code as a base for it. Samples repository: https://github.com/Relintai/wfc_module_samples
+- Ported mat_maker_gd to c++, and now it's part of the engine. (material_maker module)
+
+#### Module - Props
+
+- Added Z-offset support for TiledWalls. It can be used to offset wall tiles to create 3d wall features. It's missing collider support at the moment.
+
+#### Other
+
+- Added TODO.md.
+- Added some of my game project helper scripts, and made them work from their new place.
+
+#### UI
+
+- Ported the EditorZoomWidget from Godot4.
+
+#### Platform
+
+- Added frt1 (https://github.com/efornara/frt/tree/1.x).
+- Added efornara's frt2 platform. (https://github.com/efornara/frt - 2.0 branch). It won't build when selected right now, due to core changes.
+
+### Removed
+
+#### Modules
+
+- webp.
+- webm.
+- remnants of libvpx, and libwebp, and xatlas.
+
+### Fixed
+
+#### Platform
+
+- Fixed low processor mode on android. The fix was inspired by https://github.com/godotengine/godot/pull/59606, although I did it differently.
+
+#### Engine
+
+- Fix compile when using llvm on linux.
+
+#### Modules
+
+- Set Prop2D and Prop module's convert button style to flat, so it's in the expected style.
+
+## [3.5.0]
 
 ### Added
 
@@ -33,7 +89,11 @@ All notable changes to this project will be documented in this file.
 - Added Vector2i, Vector3i, Rect2i, PoolVector2i, PoolVector3i, and StringName as core classes.
 - Added an is_null() helper method to Variant.
 - Backported the 3.x android editor port pr by m4gr3d and thebestnom. (https://github.com/godotengine/godot/pull/57747)
-- Added most of the build tools from the broken seasl repo, and cleaned them up a bit.
+- Added most of the build tools from the broken seals repo, and cleaned them up a bit.
+
+#### Other
+
+- Added the build containers from BrokenSeals.
 
 ### Changed
 
@@ -142,6 +202,9 @@ All notable changes to this project will be documented in this file.
 - Godot's regression test tool have been updated / fixed.
 - Fixed all crashed the regression test tool found by throwing invalid / unexpected arguments at methods.
 - Cleanups to the docs.
+- Fix errors / update the osx scripts.
+- Annotated the podman build all script better, also changed the log file names, and added more variants.
+- improvements and fixes to the build container.
 
 ### Backports
 
