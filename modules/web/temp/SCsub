@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+
+Import("env")
+
+env.core_sources = []
+
+env.add_source_files(env.core_sources, "*.cpp")
+env.add_source_files(env.core_sources, "./html/*.cpp")
+env.add_source_files(env.core_sources, "./http/*.cpp")
+
+# Build it all as a library
+lib = env.add_library("web", env.core_sources)
+env.Prepend(LIBS=[lib])
