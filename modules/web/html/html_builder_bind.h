@@ -12,8 +12,11 @@ class _HTMLTag : public Reference {
 	GDCLASS(_HTMLTag, Reference)
 
 public:
-	bool simple;
-	String result;
+	bool get_simple() const;
+	void set_simple(const bool val);
+
+	String get_result();
+	void set_result(const String &str);
 
 	Ref<_HTMLTag> str(const String &str);
 	Ref<_HTMLTag> style(const String &val);
@@ -189,6 +192,8 @@ public:
 	_HTMLTag();
 
 	Ref<_HTMLBuilder> owner;
+	bool simple;
+	String result;
 
 protected:
 	static void _bind_methods();

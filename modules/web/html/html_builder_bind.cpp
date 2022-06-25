@@ -4,6 +4,20 @@
 
 //#include "web/http/request.h"
 
+bool _HTMLTag::get_simple() const {
+	return simple;
+}
+void _HTMLTag::set_simple(const bool val) {
+	simple = val;
+}
+
+String _HTMLTag::get_result() {
+	return result;
+}
+void _HTMLTag::set_result(const String &str) {
+	result = str;
+}
+
 Ref<_HTMLTag> _HTMLTag::str(const String &str) {
 	result += " " + str;
 
