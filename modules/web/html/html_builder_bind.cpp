@@ -7,372 +7,372 @@
 Ref<_HTMLTag> _HTMLTag::str(const String &str) {
 	result += " " + str;
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::style(const String &val) {
 	attrib("style", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::href(const String &val) {
 	attrib("href", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::cls(const String &val) {
 	attrib("class", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::clsse(const String &val) {
 	if (val == "") {
-		return this;
+		return Ref<_HTMLTag>(this);
 	}
 
 	attrib("class", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::id(const String &val) {
 	attrib("id", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::name(const String &val) {
 	attrib("name", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::content(const String &val) {
 	attrib("content", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::value(const String &val) {
 	attrib("value", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::accept(const String &val) {
 	attrib("accept", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::src(const String &val) {
 	attrib("src", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::alt(const String &val) {
 	attrib("alt", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::autocomplete(const String &val) {
 	attrib("autocomplete", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::autocomplete_off() {
 	attrib("autocomplete", "off");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_on() {
 	attrib("autocomplete", "on");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_name() {
 	attrib("autocomplete", "name");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_name_honorific_prefix() {
 	attrib("autocomplete", "honorific-prefix");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_name_given_name() {
 	attrib("autocomplete", "given-name");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_name_additional_name() {
 	attrib("autocomplete", "additional-name");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_name_family_name() {
 	attrib("autocomplete", "family-name");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_name_honorific_suffix() {
 	attrib("autocomplete", "honorific-suffix");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_name_nickname() {
 	attrib("autocomplete", "nickname");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_email() {
 	attrib("autocomplete", "email");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_username() {
 	attrib("autocomplete", "username");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_new_password() {
 	attrib("autocomplete", "new-password");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_current_password() {
 	attrib("autocomplete", "current-password");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_one_time_code() {
 	attrib("autocomplete", "one-time-code");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_organization_title() {
 	attrib("autocomplete", "organization-title");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_organization() {
 	attrib("autocomplete", "organization");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_street_address() {
 	attrib("autocomplete", "street-address");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_address_line1() {
 	attrib("autocomplete", "address-line1");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_address_line2() {
 	attrib("autocomplete", "address-line2");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_address_line3() {
 	attrib("autocomplete", "address-line3");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_address_level_1() {
 	attrib("autocomplete", "address-level1");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_address_level_2() {
 	attrib("autocomplete", "address-level2");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_address_level_3() {
 	attrib("autocomplete", "address-level3");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_address_level_4() {
 	attrib("autocomplete", "address-level4");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_country() {
 	attrib("autocomplete", "country");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_country_name() {
 	attrib("autocomplete", "country-name");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_postal_code() {
 	attrib("autocomplete", "postal-code");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_cc_name() {
 	attrib("autocomplete", "cc-name");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_cc_given_name() {
 	attrib("autocomplete", "cc-given-name");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_cc_additional_name() {
 	attrib("autocomplete", "cc-additional-name");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_cc_family_name() {
 	attrib("autocomplete", "cc-family-name");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_cc_number() {
 	attrib("autocomplete", "cc-number");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_cc_exp() {
 	attrib("autocomplete", "cc-exp");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_cc_exp_month() {
 	attrib("autocomplete", "cc-exp-month");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_cc_exp_year() {
 	attrib("autocomplete", "cc-exp-year");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_cc_csc() {
 	attrib("autocomplete", "cc-csc");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_cc_type() {
 	attrib("autocomplete", "cc-type");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_transaction_currency() {
 	attrib("autocomplete", "transaction-currency");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_transaction_amount() {
 	attrib("autocomplete", "transaction-amount");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_language() {
 	attrib("autocomplete", "language");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_bday() {
 	attrib("autocomplete", "bday");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_bday_day() {
 	attrib("autocomplete", "bday-day");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_bday_month() {
 	attrib("autocomplete", "bday-month");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_bday_year() {
 	attrib("autocomplete", "bday-year");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_sex() {
 	attrib("autocomplete", "sex");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_tel() {
 	attrib("autocomplete", "tel");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_tel_country_code() {
 	attrib("autocomplete", "tel-country-code");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_tel_national() {
 	attrib("autocomplete", "tel-national");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_tel_area_code() {
 	attrib("autocomplete", "tel-area-code");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_tel_local() {
 	attrib("autocomplete", "tel-local");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_tel_extension() {
 	attrib("autocomplete", "tel-extension");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_impp() {
 	attrib("autocomplete", "impp");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_url() {
 	attrib("autocomplete", "url");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::autocomplete_photo() {
 	attrib("autocomplete", "photo");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::onclick(const String &val) {
 	attrib("onclick", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::inputmode(const String &val) {
 	attrib("inputmode", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::list(const String &val) {
 	attrib("list", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::checked(const bool val) {
@@ -380,7 +380,7 @@ Ref<_HTMLTag> _HTMLTag::checked(const bool val) {
 		result += " checked";
 	}
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::selected(const bool val) {
@@ -388,7 +388,7 @@ Ref<_HTMLTag> _HTMLTag::selected(const bool val) {
 		result += " selected";
 	}
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::autofocus(const bool val) {
@@ -396,7 +396,7 @@ Ref<_HTMLTag> _HTMLTag::autofocus(const bool val) {
 		result += " autofocus";
 	}
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::disabled(const bool val) {
@@ -404,7 +404,7 @@ Ref<_HTMLTag> _HTMLTag::disabled(const bool val) {
 		result += " disabled";
 	}
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::multiple(const bool val) {
@@ -412,7 +412,7 @@ Ref<_HTMLTag> _HTMLTag::multiple(const bool val) {
 		result += " multiple";
 	}
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::required(const bool val) {
@@ -420,7 +420,7 @@ Ref<_HTMLTag> _HTMLTag::required(const bool val) {
 		result += " required";
 	}
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::spellcheck(const bool val) {
@@ -430,386 +430,386 @@ Ref<_HTMLTag> _HTMLTag::spellcheck(const bool val) {
 		attrib("spellcheck", "false");
 	}
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::max(const String &val) {
 	attrib("max", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::min(const String &val) {
 	attrib("min", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::step(const String &val) {
 	attrib("step", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::step_any() {
 	attrib("step", "any");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::minlength(const int val) {
 	attrib("minlength", String::num(val));
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::minlength(const String &val) {
 	attrib("minlength", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::maxlength(const int val) {
 	attrib("maxlength", String::num(val));
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::maxlength(const String &val) {
 	attrib("maxlength", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::size(const int val) {
 	attrib("size", String::num(val));
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::size(const String &val) {
 	attrib("size", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::width(const int val) {
 	attrib("width", String::num(val));
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::width(const String &val) {
 	attrib("width", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::height(const int val) {
 	attrib("height", String::num(val));
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::height(const String &val) {
 	attrib("height", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::pattern(const String &val) {
 	attrib("pattern", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::method(const String &val) {
 	attrib("method", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::method_get() {
 	attrib("method", "get");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::method_post() {
 	attrib("method", "post");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::action(const String &val) {
 	attrib("action", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::type(const String &val) {
 	attrib("type", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::placeholder(const String &val) {
 	attrib("placeholder", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::fora(const String &val) {
 	attrib("for", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::rel(const String &val) {
 	attrib("rel", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::rel_stylesheet() {
 	attrib("rel", "stylesheet");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::rel_alternate() {
 	attrib("rel", "alternate");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::rel_author() {
 	attrib("rel", "author");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::rel_bookmark() {
 	attrib("rel", "bookmark");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::rel_external() {
 	attrib("rel", "external");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::rel_help() {
 	attrib("rel", "help");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::rel_next() {
 	attrib("rel", "next");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::rel_nofollow() {
 	attrib("rel", "nofollow");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::rel_noopener() {
 	attrib("rel", "noopener");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::rel_noreferrer() {
 	attrib("rel", "noreferrer");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::rel_prev() {
 	attrib("rel", "prev");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::rel_search() {
 	attrib("rel", "search");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::rel_tag() {
 	attrib("rel", "tag");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::charset(const String &val) {
 	attrib("charset", val);
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::charset_utf_8() {
 	attrib("charset", "utf-8");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::itbutton() {
 	attrib("type", "button");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::itcheckbox() {
 	attrib("type", "checkbox");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::itcolor() {
 	attrib("type", "color");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::itdate() {
 	attrib("type", "date");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::itdatetime_local() {
 	attrib("type", "datetime_local");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::itemail() {
 	attrib("type", "email");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::itfile() {
 	attrib("type", "file");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::ithidden() {
 	attrib("type", "hidden");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::itimage() {
 	attrib("type", "image");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::itmonth() {
 	attrib("type", "month");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::itnumber() {
 	attrib("type", "number");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::itpassword() {
 	attrib("type", "password");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::itradio() {
 	attrib("type", "radio");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::itrange() {
 	attrib("type", "range");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::itreset() {
 	attrib("type", "reset");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::itsearch() {
 	attrib("type", "search");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::itsubmit() {
 	attrib("type", "submit");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::ittel() {
 	attrib("type", "tel");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::ittext() {
 	attrib("type", "text");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::ittime() {
 	attrib("type", "time");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::iturl() {
 	attrib("type", "url");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::itweek() {
 	attrib("type", "week");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::inputmode_none() {
 	attrib("inputmode", "none");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::inputmode_text() {
 	attrib("inputmode", "text");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::inputmode_decimal() {
 	attrib("inputmode", "decimal");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::inputmode_numeric() {
 	attrib("inputmode", "numeric");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::inputmode_tel() {
 	attrib("inputmode", "tel");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::inputmode_search() {
 	attrib("inputmode", "search");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::inputmode_email() {
 	attrib("inputmode", "email");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 Ref<_HTMLTag> _HTMLTag::inputmode_url() {
 	attrib("inputmode", "url");
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::attrib(const String &attr, const String &val) {
 	result += " " + attr + "=\"" + val + "\"";
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::start(const String &p_tag, const bool p_simple) {
@@ -817,13 +817,13 @@ Ref<_HTMLTag> _HTMLTag::start(const String &p_tag, const bool p_simple) {
 
 	result = "<" + p_tag;
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::reset() {
 	result.clear();
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLTag> _HTMLTag::close() {
@@ -833,7 +833,7 @@ Ref<_HTMLTag> _HTMLTag::close() {
 		result += ">";
 	}
 
-	return this;
+	return Ref<_HTMLTag>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLTag::f() {
@@ -857,7 +857,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::comment(const String &val) {
 
 	result += "<!--" + val + "-->";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLTag> _HTMLBuilder::doctype() {
@@ -871,7 +871,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::doctype(const String &val) {
 
 	result += "<!DOCTYPE " + val + ">";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLTag> _HTMLBuilder::a() {
@@ -1611,7 +1611,7 @@ Ref<_HTMLTag> _HTMLBuilder::wbr() {
 	  t->id(id);
   }
 */
-//	return this;
+//	return Ref<_HTMLBuilder>(this);
 //}
 
 Ref<_HTMLBuilder> _HTMLBuilder::fa(const String &href, const String &body, const String &cls, const String &id) {
@@ -1619,7 +1619,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::fa(const String &href, const String &body, const
 	w(body);
 	ca();
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::div(const String &cls, const String &id) {
@@ -1633,7 +1633,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::div(const String &cls, const String &id) {
 		t->id(id);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::fdiv(const String &body, const String &cls, const String &id) {
@@ -1641,7 +1641,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::fdiv(const String &body, const String &cls, cons
 	w(body);
 	cdiv();
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::textarea(const String &name, const String &cls, const String &id) {
@@ -1657,14 +1657,14 @@ Ref<_HTMLBuilder> _HTMLBuilder::textarea(const String &name, const String &cls, 
 		t->id(id);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 Ref<_HTMLBuilder> _HTMLBuilder::ftextarea(const String &name, const String &body, const String &cls, const String &id) {
 	textarea(name, cls, id);
 	w(body);
 	ctextarea();
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::select(const String &name, const String &cls, const String &id) {
@@ -1680,7 +1680,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::select(const String &name, const String &cls, co
 		t->id(id);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLTag> _HTMLBuilder::option(const String &value) {
@@ -1695,7 +1695,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::foption(const String &value, const String &body,
 	w(body);
 	coption();
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 // Closing tags
@@ -1704,840 +1704,840 @@ Ref<_HTMLBuilder> _HTMLBuilder::ca() {
 	write_tag();
 	result += "</a>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cabbr() {
 	write_tag();
 	result += "</abbr>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cacronym() {
 	write_tag();
 	result += "</acronym>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::caddress() {
 	write_tag();
 	result += "</address>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::capplet() {
 	write_tag();
 	result += "</applet>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::carea() {
 	write_tag();
 	result += "</area>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::carticle() {
 	write_tag();
 	result += "</article>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::caside() {
 	write_tag();
 	result += "</aside>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::caudio() {
 	write_tag();
 	result += "</audio>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cb() {
 	write_tag();
 	result += "</b>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cbasefont() {
 	write_tag();
 	result += "</basefont>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cbdi() {
 	write_tag();
 	result += "</bdi>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cbdo() {
 	write_tag();
 	result += "</bdo>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cbig() {
 	write_tag();
 	result += "</big>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cblockquote() {
 	write_tag();
 	result += "</blockquote>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cbody() {
 	write_tag();
 	result += "</body>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cbutton() {
 	write_tag();
 	result += "</button>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ccanvas() {
 	write_tag();
 	result += "</canvas>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ccaption() {
 	write_tag();
 	result += "</caption>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ccenter() {
 	write_tag();
 	result += "</center>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ccite() {
 	write_tag();
 	result += "</cite>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ccode() {
 	write_tag();
 	result += "</code>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ccol() {
 	write_tag();
 	result += "</col>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ccolgroup() {
 	write_tag();
 	result += "</colgroup>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cdata() {
 	write_tag();
 	result += "</data>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cdatalist() {
 	write_tag();
 	result += "</datalist>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cdd() {
 	write_tag();
 	result += "</dd>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cdel() {
 	write_tag();
 	result += "</del>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cdetails() {
 	write_tag();
 	result += "</details>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cdfn() {
 	write_tag();
 	result += "</dfn>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cdialog() {
 	write_tag();
 	result += "</dialog>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cdir() {
 	write_tag();
 	result += "</dir>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cdiv() {
 	write_tag();
 	result += "</div>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cdl() {
 	write_tag();
 	result += "</dl>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cdt() {
 	write_tag();
 	result += "</dt>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cem() {
 	write_tag();
 	result += "</em>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cembed() {
 	write_tag();
 	result += "</embed>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cfieldset() {
 	write_tag();
 	result += "</fieldset>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cfigcaption() {
 	write_tag();
 	result += "</figcaption>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cfigure() {
 	write_tag();
 	result += "</figure>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cfont() {
 	write_tag();
 	result += "</font>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cfooter() {
 	write_tag();
 	result += "</footer>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cform() {
 	write_tag();
 	result += "</form>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cframe() {
 	write_tag();
 	result += "</frame>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cframeset() {
 	write_tag();
 	result += "</frameset>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ch1() {
 	write_tag();
 	result += "</h1>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ch2() {
 	write_tag();
 	result += "</h2>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ch3() {
 	write_tag();
 	result += "</h3>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ch4() {
 	write_tag();
 	result += "</h4>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ch5() {
 	write_tag();
 	result += "</h5>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ch6() {
 	write_tag();
 	result += "</h6>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::chead() {
 	write_tag();
 	result += "</head>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cheader() {
 	write_tag();
 	result += "</header>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::chr() {
 	write_tag();
 	result += "</hr>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::chtml() {
 	write_tag();
 	result += "</html>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ci() {
 	write_tag();
 	result += "</i>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ciframe() {
 	write_tag();
 	result += "</iframe>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cimg() {
 	write_tag();
 	result += "</img>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cinput() {
 	write_tag();
 	result += "</input>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cins() {
 	write_tag();
 	result += "</ins>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ckbd() {
 	write_tag();
 	result += "</kbd>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::clabel() {
 	write_tag();
 	result += "</label>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::clegend() {
 	write_tag();
 	result += "</legend>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cli() {
 	write_tag();
 	result += "</li>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::clink() {
 	write_tag();
 	result += "</link>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cmain() {
 	write_tag();
 	result += "</main>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cmap() {
 	write_tag();
 	result += "</map>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cmark() {
 	write_tag();
 	result += "</mark>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cmeta() {
 	write_tag();
 	result += "</meta>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cmeter() {
 	write_tag();
 	result += "</meter>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cnav() {
 	write_tag();
 	result += "</nav>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cnoframes() {
 	write_tag();
 	result += "</noframes>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cnoscript() {
 	write_tag();
 	result += "</noscript>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cobject() {
 	write_tag();
 	result += "</object>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::c_ol() {
 	write_tag();
 	result += "</ol>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::coptgroup() {
 	write_tag();
 	result += "</optgroup>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::coption() {
 	write_tag();
 	result += "</option>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::coutput() {
 	write_tag();
 	result += "</output>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cp() {
 	write_tag();
 	result += "</p>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cparam() {
 	write_tag();
 	result += "</param>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cpicture() {
 	write_tag();
 	result += "</picture>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cpre() {
 	write_tag();
 	result += "</pre>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cprogress() {
 	write_tag();
 	result += "</progress>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cq() {
 	write_tag();
 	result += "</a>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::crp() {
 	write_tag();
 	result += "</rp>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::crt() {
 	write_tag();
 	result += "</rt>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cruby() {
 	write_tag();
 	result += "</ruby>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cs() {
 	write_tag();
 	result += "</s>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::csamp() {
 	write_tag();
 	result += "</samp>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cscript() {
 	write_tag();
 	result += "</script>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::csection() {
 	write_tag();
 	result += "</section>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cselect() {
 	write_tag();
 	result += "</select>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::csmall() {
 	write_tag();
 	result += "</small>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::csource() {
 	write_tag();
 	result += "</source>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cspan() {
 	write_tag();
 	result += "</span>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cstrike() {
 	write_tag();
 	result += "</strike>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cstrong() {
 	write_tag();
 	result += "</strong>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cstyle() {
 	write_tag();
 	result += "</style>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::csub() {
 	write_tag();
 	result += "</sub>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::csummary() {
 	write_tag();
 	result += "</summary>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::csup() {
 	write_tag();
 	result += "</sup>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::csvg() {
 	write_tag();
 	result += "</svg>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ctable() {
 	write_tag();
 	result += "</table>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ctbody() {
 	write_tag();
 	result += "</tbody>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ctd() {
 	write_tag();
 	result += "</td>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ctemplateh() {
 	write_tag();
 	result += "</templateh>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ctextarea() {
 	write_tag();
 	result += "</textarea>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ctfoot() {
 	write_tag();
 	result += "</tfoot>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cth() {
 	write_tag();
 	result += "</th>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cthead() {
 	write_tag();
 	result += "</thead>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ctime() {
 	write_tag();
 	result += "</time>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ctitle() {
 	write_tag();
 	result += "</title>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ctr() {
 	write_tag();
 	result += "</tr>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ctrack() {
 	write_tag();
 	result += "</track>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::ctt() {
 	write_tag();
 	result += "</tt>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cu() {
 	write_tag();
 	result += "</u>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cul() {
 	write_tag();
 	result += "</ul>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cvar() {
 	write_tag();
 	result += "</var>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cvideo() {
 	write_tag();
 	result += "</video>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::cwbr() {
 	write_tag();
 	result += "</wbr>";
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLTag> _HTMLBuilder::form_get() {
@@ -2563,7 +2563,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::form_get(const String &action, const String &cls
 		t->id(id);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 Ref<_HTMLBuilder> _HTMLBuilder::form_post(const String &action, const String &cls, const String &id) {
 	Ref<_HTMLTag> t = form_post();
@@ -2578,7 +2578,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::form_post(const String &action, const String &cl
 		t->id(id);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 /*
@@ -2586,7 +2586,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::form_post(const String &action, Request *request
 	form_post(action, cls, id);
 	csrf_token(request);
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 */
 
@@ -2739,7 +2739,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::label(const String &pfor, const String &plabel, 
 
 	clabel();
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_button(const String &name, const String &value, const String &cls, const String &id) {
@@ -2759,7 +2759,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_button(const String &name, const String &v
 		t->id(id);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_checkbox(const String &name, const String &value, const bool checked, const String &cls, const String &id) {
@@ -2781,7 +2781,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_checkbox(const String &name, const String 
 
 	t->checked(checked);
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_color(const String &name, const String &value, const String &cls, const String &id) {
@@ -2801,7 +2801,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_color(const String &name, const String &va
 		t->id(id);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_date(const String &name, const String &value, const String &cls, const String &id, const String &date_min, const String &date_max, const String &date_step) {
@@ -2833,7 +2833,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_date(const String &name, const String &val
 		t->step(date_step);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_datetime_local(const String &name, const String &value, const String &cls, const String &id, const String &date_min, const String &date_max, const String &date_step) {
@@ -2865,7 +2865,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_datetime_local(const String &name, const S
 		t->step(date_step);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_email(const String &name, const String &value, const String &placeholder, const String &cls, const String &id) {
@@ -2889,7 +2889,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_email(const String &name, const String &va
 		t->placeholder(placeholder);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_file(const String &name, const String &accept, const String &cls, const String &id) {
@@ -2909,7 +2909,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_file(const String &name, const String &acc
 		t->id(id);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_image(const String &name, const String &src, const String &alt, const String &cls, const String &id, const int width, const int height) {
@@ -2941,7 +2941,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_image(const String &name, const String &sr
 		t->height(height);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_month(const String &name, const String &cls, const String &id) {
@@ -2957,7 +2957,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_month(const String &name, const String &cl
 		t->id(id);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_number(const String &name, const String &vmin, const String &vmax, const String &cls, const String &id) {
@@ -2981,7 +2981,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_number(const String &name, const String &v
 		t->id(id);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_password(const String &name, const String &value, const String &placeholder, const String &cls, const String &id, const String &minlength, const String &maxlength, const String &size) {
@@ -3017,7 +3017,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_password(const String &name, const String 
 		t->size(size);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_radio(const String &name, const String &value, const String &cls, const String &id) {
@@ -3037,7 +3037,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_radio(const String &name, const String &va
 		t->id(id);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_range(const String &name, const String &value, const String &vmin, const String &vmax, const String &vstep, const String &cls, const String &id) {
@@ -3069,7 +3069,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_range(const String &name, const String &va
 		t->id(id);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_reset(const String &name, const String &value, const String &cls, const String &id) {
@@ -3089,7 +3089,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_reset(const String &name, const String &va
 		t->id(id);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_search(const String &name, const String &value, const String &placeholder, const String &cls, const String &id, const String &minlength, const String &maxlength, const String &size, const String &pattern) {
@@ -3129,7 +3129,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_search(const String &name, const String &v
 		t->pattern(pattern);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_submit(const String &value, const String &cls, const String &id) {
@@ -3145,7 +3145,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_submit(const String &value, const String &
 		t->id(id);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_tel(const String &name, const String &value, const String &placeholder, const String &cls, const String &id, const String &minlength, const String &maxlength, const String &size, const String &pattern) {
@@ -3185,7 +3185,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_tel(const String &name, const String &valu
 		t->pattern(pattern);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_text(const String &name, const String &value, const String &placeholder, const String &cls, const String &id, const String &minlength, const String &maxlength, const String &size) {
@@ -3221,7 +3221,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_text(const String &name, const String &val
 		t->size(size);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_time(const String &name, const String &cls, const String &id, const String &vmin, const String &vmax, const String &vstep) {
@@ -3249,7 +3249,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_time(const String &name, const String &cls
 		t->step(vstep);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_url(const String &name, const String &value, const String &placeholder, const String &cls, const String &id, const String &minlength, const String &maxlength, const String &size) {
@@ -3285,7 +3285,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_url(const String &name, const String &valu
 		t->size(size);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_week(const String &name, const String &cls, const String &id, const String &vmin, const String &vmax) {
@@ -3309,7 +3309,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_week(const String &name, const String &cls
 		t->max(vmax);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::input_hidden(const String &name, const String &value) {
@@ -3321,18 +3321,18 @@ Ref<_HTMLBuilder> _HTMLBuilder::input_hidden(const String &name, const String &v
 		t->value(value);
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::csrf_token(const String &token) {
 	if (token == "") {
 		// don't waste html characters if it's an empty string anyway
-		return this;
+		return Ref<_HTMLBuilder>(this);
 	}
 
 	input_hidden("csrf_token", token);
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 /*
 Ref<_HTMLBuilder> _HTMLBuilder::csrf_token(Request *request) {
@@ -3349,7 +3349,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::w(const String &val) {
 
 	result += val;
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::wn(const double val, int p_decimals) {
@@ -3357,14 +3357,14 @@ Ref<_HTMLBuilder> _HTMLBuilder::wn(const double val, int p_decimals) {
 
 	result += String::num(val, p_decimals);
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 Ref<_HTMLBuilder> _HTMLBuilder::wns(const double val) {
 	write_tag();
 
 	result += String::num_scientific(val);
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 Ref<_HTMLBuilder> _HTMLBuilder::wr(const double val, const bool p_trailing) {
 	write_tag();
@@ -3372,21 +3372,21 @@ Ref<_HTMLBuilder> _HTMLBuilder::wr(const double val, const bool p_trailing) {
 	//TODO
 	//result += String::num_real(val, p_trailing);
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 Ref<_HTMLBuilder> _HTMLBuilder::wi(const int64_t val, const int base, const bool capitalize_hex) {
 	write_tag();
 
 	result += String::num_int64(val, base, capitalize_hex);
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 Ref<_HTMLBuilder> _HTMLBuilder::wui(const uint64_t val, const int base, const bool capitalize_hex) {
 	write_tag();
 
 	result += String::num_uint64(val, base, capitalize_hex);
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::wbn(const bool val) {
@@ -3395,7 +3395,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::wbn(const bool val) {
 	//TODO
 	//result += String::bool_num(val);
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 Ref<_HTMLBuilder> _HTMLBuilder::wbs(const bool val) {
 	write_tag();
@@ -3403,7 +3403,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::wbs(const bool val) {
 	//TODO
 	//result += String::bool_str(val);
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 // TODO!
@@ -3414,7 +3414,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::we(const String &val) {
 
 	result += val;
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::write_tag() {
@@ -3424,7 +3424,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::write_tag() {
 		tag->reset();
 	}
 
-	return this;
+	return Ref<_HTMLBuilder>(this);
 }
 
 _HTMLBuilder::_HTMLBuilder() {
