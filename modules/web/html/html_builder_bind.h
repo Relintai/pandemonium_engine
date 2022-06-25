@@ -205,7 +205,8 @@ public:
 	Ref<_HTMLTag> doctype();
 	Ref<_HTMLBuilder> doctype(const String &val);
 
-	Ref<_HTMLTag> a();
+	Ref<_HTMLTag> a(const String &href = "", const String &cls = "", const String &id = "");
+	Ref<_HTMLBuilder> fa(const String &href, const String &body, const String &cls = "", const String &id = "");
 	Ref<_HTMLTag> abbr();
 	Ref<_HTMLTag> acronym(); // Not supported in HTML5.
 	Ref<_HTMLTag> address();
@@ -238,7 +239,8 @@ public:
 	Ref<_HTMLTag> dfn();
 	Ref<_HTMLTag> dialog();
 	Ref<_HTMLTag> dir(); // Not supported in HTML5.
-	Ref<_HTMLTag> div();
+	Ref<_HTMLTag> div(const String &cls = "", const String &id = "");
+	Ref<_HTMLBuilder> fdiv(const String &body, const String &cls = "", const String &id = "");
 	Ref<_HTMLTag> dl();
 	Ref<_HTMLTag> dt();
 	Ref<_HTMLTag> em();
@@ -284,7 +286,8 @@ public:
 	Ref<_HTMLTag> object();
 	Ref<_HTMLTag> ol();
 	Ref<_HTMLTag> optgroup();
-	Ref<_HTMLTag> option();
+	Ref<_HTMLTag> option(const String &value = "");
+	Ref<_HTMLBuilder> foption(const String &value, const String &body, const bool selected = false);
 	Ref<_HTMLTag> output();
 	Ref<_HTMLTag> p();
 	Ref<_HTMLTag> param();
@@ -300,7 +303,7 @@ public:
 	Ref<_HTMLTag> samp();
 	Ref<_HTMLTag> script();
 	Ref<_HTMLTag> section();
-	Ref<_HTMLTag> select();
+	Ref<_HTMLTag> select(const String &name = "", const String &cls = "", const String &id = "");
 	Ref<_HTMLTag> small();
 	Ref<_HTMLTag> source();
 	Ref<_HTMLTag> span();
@@ -316,7 +319,8 @@ public:
 	Ref<_HTMLTag> tbody();
 	Ref<_HTMLTag> td();
 	Ref<_HTMLTag> templateh();
-	Ref<_HTMLTag> textarea();
+	Ref<_HTMLTag> textarea(const String &name = "", const String &cls = "", const String &id = "");
+	Ref<_HTMLBuilder> ftextarea(const String &name, const String &body, const String &cls = "", const String &id = "");
 	Ref<_HTMLTag> tfoot();
 	Ref<_HTMLTag> th();
 	Ref<_HTMLTag> thead();
@@ -330,20 +334,6 @@ public:
 	Ref<_HTMLTag> var();
 	Ref<_HTMLTag> video();
 	Ref<_HTMLTag> wbr();
-
-	//Ref<_HTMLBuilder> a(const String &href, const String &cls = "", const String &id = "");
-	Ref<_HTMLBuilder> fa(const String &href, const String &body, const String &cls = "", const String &id = "");
-
-	Ref<_HTMLBuilder> div(const String &cls, const String &id = "");
-	Ref<_HTMLBuilder> fdiv(const String &body, const String &cls = "", const String &id = "");
-
-	Ref<_HTMLBuilder> textarea(const String &name, const String &cls = "", const String &id = "");
-	Ref<_HTMLBuilder> ftextarea(const String &name, const String &body, const String &cls = "", const String &id = "");
-
-	Ref<_HTMLBuilder> select(const String &name, const String &cls = "", const String &id = "");
-
-	Ref<_HTMLTag> option(const String &value);
-	Ref<_HTMLBuilder> foption(const String &value, const String &body, const bool selected = false);
 
 	// closing tags c prefix means close
 	// Note simple tags should not have these like <br>
@@ -475,60 +465,35 @@ public:
 	Ref<_HTMLBuilder> cvideo();
 	Ref<_HTMLBuilder> cwbr();
 
-	Ref<_HTMLTag> form_get();
-	Ref<_HTMLTag> form_post();
-	Ref<_HTMLBuilder> form_get(const String &action, const String &cls = "", const String &id = "");
-	Ref<_HTMLBuilder> form_post(const String &action, const String &cls = "", const String &id = "");
+	Ref<_HTMLTag> form_get(const String &action = "", const String &cls = "", const String &id = "");
+	Ref<_HTMLTag> form_post(const String &action = "", const String &cls = "", const String &id = "");
 	// will add a csrf token from request
 	//Ref<_HTMLBuilder> form_post(const String &action, Request *request, const String &cls = "", const String &id = "");
 
-	Ref<_HTMLTag> input_button();
-	Ref<_HTMLTag> input_checkbox();
-	Ref<_HTMLTag> input_color();
-	Ref<_HTMLTag> input_date();
-	Ref<_HTMLTag> input_datetime_local();
-	Ref<_HTMLTag> input_email();
-	Ref<_HTMLTag> input_file();
-	Ref<_HTMLTag> input_hidden();
-	Ref<_HTMLTag> input_image();
-	Ref<_HTMLTag> input_month();
-	Ref<_HTMLTag> input_number();
-	Ref<_HTMLTag> input_password();
-	Ref<_HTMLTag> input_radio();
-	Ref<_HTMLTag> input_range();
-	Ref<_HTMLTag> input_reset();
-	Ref<_HTMLTag> input_search();
-	Ref<_HTMLTag> input_submit();
-	Ref<_HTMLTag> input_tel();
-	Ref<_HTMLTag> input_text();
-	Ref<_HTMLTag> input_time();
-	Ref<_HTMLTag> input_url();
-	Ref<_HTMLTag> input_week();
+	Ref<_HTMLTag> input_button(const String &name = "", const String &value = "", const String &cls = "", const String &id = "");
+	Ref<_HTMLTag> input_checkbox(const String &name = "", const String &value = "", const bool checked = false, const String &cls = "", const String &id = "");
+	Ref<_HTMLTag> input_color(const String &name = "", const String &value = "", const String &cls = "", const String &id = "");
+	Ref<_HTMLTag> input_date(const String &name = "", const String &value = "", const String &cls = "", const String &id = "", const String &date_min = "", const String &date_max = "", const String &date_step = "");
+	Ref<_HTMLTag> input_datetime_local(const String &name = "", const String &value = "", const String &cls = "", const String &id = "", const String &date_min = "", const String &date_max = "", const String &date_step = "");
+	Ref<_HTMLTag> input_email(const String &name = "", const String &value = "", const String &placeholder = "", const String &cls = "", const String &id = "");
+	Ref<_HTMLTag> input_file(const String &name = "", const String &accept = "", const String &cls = "", const String &id = "");
+	Ref<_HTMLTag> input_image(const String &name = "", const String &src = "", const String &alt = "", const String &cls = "", const String &id = "", const int width = 0, const int height = 0);
+	Ref<_HTMLTag> input_month(const String &name = "", const String &cls = "", const String &id = "");
+	Ref<_HTMLTag> input_number(const String &name = "", const String & = "", const String & = "", const String &cls = "", const String &id = "");
+	Ref<_HTMLTag> input_password(const String &name = "", const String &value = "", const String &placeholder = "", const String &cls = "", const String &id = "", const String &minlength = "", const String &maxlength = "", const String &size = "");
+	Ref<_HTMLTag> input_radio(const String &name = "", const String &value = "", const String &cls = "", const String &id = "");
+	Ref<_HTMLTag> input_range(const String &name = "", const String &value = "", const String &vmin = "", const String &vmax = "", const String &vstep = "", const String &cls = "", const String &id = "");
+	Ref<_HTMLTag> input_reset(const String &name = "", const String &value = "", const String &cls = "", const String &id = "");
+	Ref<_HTMLTag> input_search(const String &name = "", const String &value = "", const String &placeholder = "", const String &cls = "", const String &id = "", const String &minlength = "", const String &maxlength = "", const String &size = "", const String &pattern = "");
+	Ref<_HTMLTag> input_submit(const String &value = "", const String &cls = "", const String &id = "");
+	Ref<_HTMLTag> input_tel(const String &name = "", const String &value = "", const String &placeholder = "", const String &cls = "", const String &id = "", const String &minlength = "", const String &maxlength = "", const String &size = "", const String &pattern = "");
+	Ref<_HTMLTag> input_text(const String &name = "", const String &value = "", const String &placeholder = "", const String &cls = "", const String &id = "", const String &minlength = "", const String &maxlength = "", const String &size = "");
+	Ref<_HTMLTag> input_time(const String &name = "", const String &cls = "", const String &id = "", const String &vmin = "", const String &vmax = "", const String &vstep = "");
+	Ref<_HTMLTag> input_url(const String &name = "", const String &value = "", const String &placeholder = "", const String &cls = "", const String &id = "", const String &minlength = "", const String &maxlength = "", const String &size = "");
+	Ref<_HTMLTag> input_week(const String &name = "", const String &cls = "", const String &id = "", const String &vmin = "", const String &vmax = "");
+	Ref<_HTMLTag> input_hidden(const String &name = "", const String &value = "");
 
-	Ref<_HTMLBuilder> label(const String &pfor, const String &plabel, const String &cls = "", const String &id = "");
-
-	Ref<_HTMLBuilder> input_button(const String &name, const String &value = "", const String &cls = "", const String &id = "");
-	Ref<_HTMLBuilder> input_checkbox(const String &name, const String &value = "", const bool checked = false, const String &cls = "", const String &id = "");
-	Ref<_HTMLBuilder> input_color(const String &name, const String &value = "", const String &cls = "", const String &id = "");
-	Ref<_HTMLBuilder> input_date(const String &name, const String &value = "", const String &cls = "", const String &id = "", const String &date_min = "", const String &date_max = "", const String &date_step = "");
-	Ref<_HTMLBuilder> input_datetime_local(const String &name, const String &value = "", const String &cls = "", const String &id = "", const String &date_min = "", const String &date_max = "", const String &date_step = "");
-	Ref<_HTMLBuilder> input_email(const String &name, const String &value = "", const String &placeholder = "", const String &cls = "", const String &id = "");
-	Ref<_HTMLBuilder> input_file(const String &name, const String &accept = "", const String &cls = "", const String &id = "");
-	Ref<_HTMLBuilder> input_image(const String &name, const String &src = "", const String &alt = "", const String &cls = "", const String &id = "", const int width = 0, const int height = 0);
-	Ref<_HTMLBuilder> input_month(const String &name, const String &cls = "", const String &id = "");
-	Ref<_HTMLBuilder> input_number(const String &name, const String & = "", const String & = "", const String &cls = "", const String &id = "");
-	Ref<_HTMLBuilder> input_password(const String &name, const String &value = "", const String &placeholder = "", const String &cls = "", const String &id = "", const String &minlength = "", const String &maxlength = "", const String &size = "");
-	Ref<_HTMLBuilder> input_radio(const String &name, const String &value = "", const String &cls = "", const String &id = "");
-	Ref<_HTMLBuilder> input_range(const String &name, const String &value = "", const String &vmin = "", const String &vmax = "", const String &vstep = "", const String &cls = "", const String &id = "");
-	Ref<_HTMLBuilder> input_reset(const String &name, const String &value = "", const String &cls = "", const String &id = "");
-	Ref<_HTMLBuilder> input_search(const String &name, const String &value = "", const String &placeholder = "", const String &cls = "", const String &id = "", const String &minlength = "", const String &maxlength = "", const String &size = "", const String &pattern = "");
-	Ref<_HTMLBuilder> input_submit(const String &value, const String &cls = "", const String &id = "");
-	Ref<_HTMLBuilder> input_tel(const String &name, const String &value = "", const String &placeholder = "", const String &cls = "", const String &id = "", const String &minlength = "", const String &maxlength = "", const String &size = "", const String &pattern = "");
-	Ref<_HTMLBuilder> input_text(const String &name, const String &value = "", const String &placeholder = "", const String &cls = "", const String &id = "", const String &minlength = "", const String &maxlength = "", const String &size = "");
-	Ref<_HTMLBuilder> input_time(const String &name, const String &cls = "", const String &id = "", const String &vmin = "", const String &vmax = "", const String &vstep = "");
-	Ref<_HTMLBuilder> input_url(const String &name, const String &value = "", const String &placeholder = "", const String &cls = "", const String &id = "", const String &minlength = "", const String &maxlength = "", const String &size = "");
-	Ref<_HTMLBuilder> input_week(const String &name, const String &cls = "", const String &id = "", const String &vmin = "", const String &vmax = "");
-	Ref<_HTMLBuilder> input_hidden(const String &name, const String &value);
+	Ref<_HTMLBuilder> flabel(const String &pfor, const String &plabel, const String &cls = "", const String &id = "");
 
 	Ref<_HTMLBuilder> csrf_token(const String &token);
 	//Ref<_HTMLBuilder> csrf_token(Request *request);

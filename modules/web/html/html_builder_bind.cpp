@@ -881,11 +881,34 @@ Ref<_HTMLBuilder> _HTMLBuilder::doctype(const String &val) {
 	return Ref<_HTMLBuilder>(this);
 }
 
-Ref<_HTMLTag> _HTMLBuilder::a() {
+Ref<_HTMLTag> _HTMLBuilder::a(const String &href, const String &cls, const String &id) {
 	write_tag();
 
-	return tag->start("a");
+	tag->start("a");
+
+	if (href != "") {
+		tag->href(href);
+	}
+
+	if (cls != "") {
+		tag->cls(cls);
+	}
+
+	if (id != "") {
+		tag->id(id);
+	}
+
+	return tag;
 }
+
+Ref<_HTMLBuilder> _HTMLBuilder::fa(const String &href, const String &body, const String &cls, const String &id) {
+	a(href, cls, id);
+	w(body);
+	ca();
+
+	return Ref<_HTMLBuilder>(this);
+}
+
 Ref<_HTMLTag> _HTMLBuilder::abbr() {
 	write_tag();
 
@@ -1078,10 +1101,28 @@ Ref<_HTMLTag> _HTMLBuilder::dir() { // Not supported in HTML5. Use <ul> instead.
 	return tag->start("dir");
 }
 
-Ref<_HTMLTag> _HTMLBuilder::div() {
+Ref<_HTMLTag> _HTMLBuilder::div(const String &cls, const String &id) {
 	write_tag();
 
-	return tag->start("div");
+	tag->start("div");
+
+	if (cls != "") {
+		tag->cls(cls);
+	}
+
+	if (id != "") {
+		tag->id(id);
+	}
+
+	return tag;
+}
+
+Ref<_HTMLBuilder> _HTMLBuilder::fdiv(const String &body, const String &cls, const String &id) {
+	div(cls, id);
+	w(body);
+	cdiv();
+
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLTag> _HTMLBuilder::dl() {
@@ -1340,10 +1381,23 @@ Ref<_HTMLTag> _HTMLBuilder::optgroup() {
 	return tag->start("optgroup");
 }
 
-Ref<_HTMLTag> _HTMLBuilder::option() {
+Ref<_HTMLTag> _HTMLBuilder::option(const String &value) {
 	write_tag();
 
-	return tag->start("option");
+	tag->start("option");
+
+	if (value != "") {
+		tag->value(value);
+	}
+
+	return tag;
+}
+Ref<_HTMLBuilder> _HTMLBuilder::foption(const String &value, const String &body, const bool selected) {
+	option(value)->selected(selected);
+	w(body);
+	coption();
+
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLTag> _HTMLBuilder::output() {
@@ -1430,10 +1484,24 @@ Ref<_HTMLTag> _HTMLBuilder::section() {
 	return tag->start("section");
 }
 
-Ref<_HTMLTag> _HTMLBuilder::select() {
+Ref<_HTMLTag> _HTMLBuilder::select(const String &name, const String &cls, const String &id) {
 	write_tag();
 
-	return tag->start("select");
+	tag->start("select");
+
+	if (name != "") {
+		tag->name(name);
+	}
+
+	if (cls != "") {
+		tag->cls(cls);
+	}
+
+	if (id != "") {
+		tag->id(id);
+	}
+
+	return tag;
 }
 
 Ref<_HTMLTag> _HTMLBuilder::small() {
@@ -1520,10 +1588,32 @@ Ref<_HTMLTag> _HTMLBuilder::templateh() {
 	return tag->start("template");
 }
 
-Ref<_HTMLTag> _HTMLBuilder::textarea() {
+Ref<_HTMLTag> _HTMLBuilder::textarea(const String &name, const String &cls, const String &id) {
 	write_tag();
 
-	return tag->start("textarea");
+	tag->start("textarea");
+
+	if (name != "") {
+		tag->name(name);
+	}
+
+	if (cls != "") {
+		tag->cls(cls);
+	}
+
+	if (id != "") {
+		tag->id(id);
+	}
+
+	return tag;
+}
+
+Ref<_HTMLBuilder> _HTMLBuilder::ftextarea(const String &name, const String &body, const String &cls, const String &id) {
+	textarea(name, cls, id);
+	w(body);
+	ctextarea();
+
+	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLTag> _HTMLBuilder::tfoot() {
@@ -1602,107 +1692,6 @@ Ref<_HTMLTag> _HTMLBuilder::wbr() {
 	write_tag();
 
 	return tag->start("wbr");
-}
-
-//Ref<_HTMLBuilder> _HTMLBuilder::a(const String &href, const String &cls, const String &id) {
-/*
-  Ref<_HTMLTag> t = a();
-
-  t->href(href);
-
-  if (cls != "") {
-	  t->cls(cls);
-  }
-
-  if (id != "") {
-	  t->id(id);
-  }
-*/
-//	return Ref<_HTMLBuilder>(this);
-//}
-
-Ref<_HTMLBuilder> _HTMLBuilder::fa(const String &href, const String &body, const String &cls, const String &id) {
-	//a(href, cls, id);
-	w(body);
-	ca();
-
-	return Ref<_HTMLBuilder>(this);
-}
-
-Ref<_HTMLBuilder> _HTMLBuilder::div(const String &cls, const String &id) {
-	Ref<_HTMLTag> t = div();
-
-	if (cls != "") {
-		t->cls(cls);
-	}
-
-	if (id != "") {
-		t->id(id);
-	}
-
-	return Ref<_HTMLBuilder>(this);
-}
-
-Ref<_HTMLBuilder> _HTMLBuilder::fdiv(const String &body, const String &cls, const String &id) {
-	div(cls, id);
-	w(body);
-	cdiv();
-
-	return Ref<_HTMLBuilder>(this);
-}
-
-Ref<_HTMLBuilder> _HTMLBuilder::textarea(const String &name, const String &cls, const String &id) {
-	Ref<_HTMLTag> t = textarea();
-
-	t->name(name);
-
-	if (cls != "") {
-		t->cls(cls);
-	}
-
-	if (id != "") {
-		t->id(id);
-	}
-
-	return Ref<_HTMLBuilder>(this);
-}
-Ref<_HTMLBuilder> _HTMLBuilder::ftextarea(const String &name, const String &body, const String &cls, const String &id) {
-	textarea(name, cls, id);
-	w(body);
-	ctextarea();
-
-	return Ref<_HTMLBuilder>(this);
-}
-
-Ref<_HTMLBuilder> _HTMLBuilder::select(const String &name, const String &cls, const String &id) {
-	Ref<_HTMLTag> t = select();
-
-	t->name(name);
-
-	if (cls != "") {
-		t->cls(cls);
-	}
-
-	if (id != "") {
-		t->id(id);
-	}
-
-	return Ref<_HTMLBuilder>(this);
-}
-
-Ref<_HTMLTag> _HTMLBuilder::option(const String &value) {
-	Ref<_HTMLTag> t = option();
-
-	t->value(value);
-
-	return t;
-}
-Ref<_HTMLBuilder> _HTMLBuilder::foption(const String &value, const String &body, const bool selected) {
-	option(value)->selected(selected);
-	w(body);
-	coption();
-
-	return Ref<_HTMLBuilder>(this);
 }
 
 // Closing tags
@@ -2547,45 +2536,40 @@ Ref<_HTMLBuilder> _HTMLBuilder::cwbr() {
 	return Ref<_HTMLBuilder>(this);
 }
 
-Ref<_HTMLTag> _HTMLBuilder::form_get() {
+Ref<_HTMLTag> _HTMLBuilder::form_get(const String &action, const String &cls, const String &id) {
 	write_tag();
 
-	return tag->start("form")->method_get();
-}
-Ref<_HTMLTag> _HTMLBuilder::form_post() {
-	write_tag();
+	tag->start("form")->method_get();
 
-	return tag->start("form")->method_post();
-}
-Ref<_HTMLBuilder> _HTMLBuilder::form_get(const String &action, const String &cls, const String &id) {
-	Ref<_HTMLTag> t = form_get();
-
-	t->fora(action);
+	tag->fora(action);
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
-Ref<_HTMLBuilder> _HTMLBuilder::form_post(const String &action, const String &cls, const String &id) {
-	Ref<_HTMLTag> t = form_post();
 
-	t->action(action);
+Ref<_HTMLTag> _HTMLBuilder::form_post(const String &action, const String &cls, const String &id) {
+	write_tag();
+
+	tag->start("form")->method_post();
+
+	tag->action(action);
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
 
 /*
@@ -2597,139 +2581,7 @@ Ref<_HTMLBuilder> _HTMLBuilder::form_post(const String &action, Request *request
 }
 */
 
-Ref<_HTMLTag> _HTMLBuilder::input_button() {
-	write_tag();
-
-	return tag->start("input")->itbutton();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_checkbox() {
-	write_tag();
-
-	return tag->start("input")->itcheckbox();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_color() {
-	write_tag();
-
-	return tag->start("input")->itcolor();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_date() {
-	write_tag();
-
-	return tag->start("input")->itdate();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_datetime_local() {
-	write_tag();
-
-	return tag->start("input")->itdatetime_local();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_email() {
-	write_tag();
-
-	return tag->start("input")->itemail();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_file() {
-	write_tag();
-
-	return tag->start("input")->itfile();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_hidden() {
-	write_tag();
-
-	return tag->start("input")->ithidden();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_image() {
-	write_tag();
-
-	return tag->start("input")->itimage();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_month() {
-	write_tag();
-
-	return tag->start("input")->itmonth();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_number() {
-	write_tag();
-
-	return tag->start("input")->itnumber();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_password() {
-	write_tag();
-
-	return tag->start("input")->itpassword();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_radio() {
-	write_tag();
-
-	return tag->start("input")->itradio();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_range() {
-	write_tag();
-
-	return tag->start("input")->itrange();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_reset() {
-	write_tag();
-
-	return tag->start("input")->itreset();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_search() {
-	write_tag();
-
-	return tag->start("input")->itsearch();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_submit() {
-	write_tag();
-
-	return tag->start("input")->itsubmit();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_tel() {
-	write_tag();
-
-	return tag->start("input")->ittel();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_text() {
-	write_tag();
-
-	return tag->start("input")->ittext();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_time() {
-	write_tag();
-
-	return tag->start("input")->ittime();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_url() {
-	write_tag();
-
-	return tag->start("input")->iturl();
-}
-
-Ref<_HTMLTag> _HTMLBuilder::input_week() {
-	write_tag();
-
-	return tag->start("input")->itweek();
-}
-
-Ref<_HTMLBuilder> _HTMLBuilder::label(const String &pfor, const String &plabel, const String &cls, const String &id) {
+Ref<_HTMLBuilder> _HTMLBuilder::flabel(const String &pfor, const String &plabel, const String &cls, const String &id) {
 	Ref<_HTMLTag> t = label();
 
 	t->fora(pfor);
@@ -2749,586 +2601,673 @@ Ref<_HTMLBuilder> _HTMLBuilder::label(const String &pfor, const String &plabel, 
 	return Ref<_HTMLBuilder>(this);
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_button(const String &name, const String &value, const String &cls, const String &id) {
-	Ref<_HTMLTag> t = input_button();
+Ref<_HTMLTag> _HTMLBuilder::input_button(const String &name, const String &value, const String &cls, const String &id) {
+	write_tag();
 
-	t->name(name);
+	tag->start("input")->itbutton();
+
+	if (name != "") {
+		tag->name(name);
+	}
 
 	if (value != "") {
-		t->value(value);
+		tag->value(value);
 	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_checkbox(const String &name, const String &value, const bool checked, const String &cls, const String &id) {
-	Ref<_HTMLTag> t = input_checkbox();
+Ref<_HTMLTag> _HTMLBuilder::input_checkbox(const String &name, const String &value, const bool checked, const String &cls, const String &id) {
+	write_tag();
 
-	t->name(name);
+	tag->start("input")->itcheckbox();
+
+	if (name != "") {
+		tag->name(name);
+	}
 
 	if (value != "") {
-		t->value(value);
+		tag->value(value);
 	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
-	t->checked(checked);
+	tag->checked(checked);
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_color(const String &name, const String &value, const String &cls, const String &id) {
-	Ref<_HTMLTag> t = input_color();
+Ref<_HTMLTag> _HTMLBuilder::input_color(const String &name, const String &value, const String &cls, const String &id) {
+	write_tag();
 
-	t->name(name);
+	tag->start("input")->itcolor();
+
+	if (name != "") {
+		tag->name(name);
+	}
 
 	if (value != "") {
-		t->value(value);
+		tag->value(value);
 	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_date(const String &name, const String &value, const String &cls, const String &id, const String &date_min, const String &date_max, const String &date_step) {
-	Ref<_HTMLTag> t = input_date();
+Ref<_HTMLTag> _HTMLBuilder::input_date(const String &name, const String &value, const String &cls, const String &id, const String &date_min, const String &date_max, const String &date_step) {
+	write_tag();
 
-	t->name(name);
+	tag->start("input")->itdate();
+
+	if (name != "") {
+		tag->name(name);
+	}
 
 	if (value != "") {
-		t->value(value);
+		tag->value(value);
 	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
 	if (date_min != "") {
-		t->min(date_min);
+		tag->min(date_min);
 	}
 
 	if (date_max != "") {
-		t->max(date_max);
+		tag->max(date_max);
 	}
 
 	if (date_step != "") {
-		t->step(date_step);
+		tag->step(date_step);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_datetime_local(const String &name, const String &value, const String &cls, const String &id, const String &date_min, const String &date_max, const String &date_step) {
-	Ref<_HTMLTag> t = input_datetime_local();
+Ref<_HTMLTag> _HTMLBuilder::input_datetime_local(const String &name, const String &value, const String &cls, const String &id, const String &date_min, const String &date_max, const String &date_step) {
+	write_tag();
 
-	t->name(name);
+	tag->start("input")->itdatetime_local();
+
+	if (name != "") {
+		tag->name(name);
+	}
 
 	if (value != "") {
-		t->value(value);
+		tag->value(value);
 	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
 	if (date_min != "") {
-		t->min(date_min);
+		tag->min(date_min);
 	}
 
 	if (date_max != "") {
-		t->max(date_max);
+		tag->max(date_max);
 	}
 
 	if (date_step != "") {
-		t->step(date_step);
+		tag->step(date_step);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_email(const String &name, const String &value, const String &placeholder, const String &cls, const String &id) {
-	Ref<_HTMLTag> t = input_email();
+Ref<_HTMLTag> _HTMLBuilder::input_email(const String &name, const String &value, const String &placeholder, const String &cls, const String &id) {
+	write_tag();
 
-	t->name(name);
+	tag->start("input")->itemail();
+
+	if (name != "") {
+		tag->name(name);
+	}
 
 	if (value != "") {
-		t->value(value);
+		tag->value(value);
 	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
 	if (placeholder != "") {
-		t->placeholder(placeholder);
+		tag->placeholder(placeholder);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_file(const String &name, const String &accept, const String &cls, const String &id) {
-	Ref<_HTMLTag> t = input_file();
+Ref<_HTMLTag> _HTMLBuilder::input_file(const String &name, const String &accept, const String &cls, const String &id) {
+	write_tag();
 
-	t->name(name);
+	tag->start("input")->itfile();
+
+	if (name != "") {
+		tag->name(name);
+	}
 
 	if (accept != "") {
-		t->accept(accept);
+		tag->accept(accept);
 	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
 	return Ref<_HTMLBuilder>(this);
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_image(const String &name, const String &src, const String &alt, const String &cls, const String &id, const int width, const int height) {
-	Ref<_HTMLTag> t = input_image();
+Ref<_HTMLTag> _HTMLBuilder::input_image(const String &name, const String &src, const String &alt, const String &cls, const String &id, const int width, const int height) {
+	write_tag();
 
-	t->name(name);
+	tag->start("input")->itimage();
+
+	if (name != "") {
+		tag->name(name);
+	}
 
 	if (src != "") {
-		t->src(src);
+		tag->src(src);
 	}
 
 	if (alt != "") {
-		t->alt(alt);
+		tag->alt(alt);
 	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
 	if (width != 0) {
-		t->width(width);
+		tag->width(width);
 	}
 
 	if (height != 0) {
-		t->height(height);
+		tag->height(height);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_month(const String &name, const String &cls, const String &id) {
-	Ref<_HTMLTag> t = input_month();
+Ref<_HTMLTag> _HTMLBuilder::input_month(const String &name, const String &cls, const String &id) {
+	write_tag();
 
-	t->name(name);
+	tag->start("input")->itmonth();
+
+	if (name != "") {
+		tag->name(name);
+	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_number(const String &name, const String &vmin, const String &vmax, const String &cls, const String &id) {
-	Ref<_HTMLTag> t = input_number();
+Ref<_HTMLTag> _HTMLBuilder::input_number(const String &name, const String &vmin, const String &vmax, const String &cls, const String &id) {
+	write_tag();
 
-	t->name(name);
+	tag->start("input")->itnumber();
+
+	if (name != "") {
+		tag->name(name);
+	}
 
 	if (vmin != "") {
-		t->min(vmin);
+		tag->min(vmin);
 	}
 
 	if (vmax != "") {
-		t->max(vmax);
+		tag->max(vmax);
 	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_password(const String &name, const String &value, const String &placeholder, const String &cls, const String &id, const String &minlength, const String &maxlength, const String &size) {
-	Ref<_HTMLTag> t = input_password();
+Ref<_HTMLTag> _HTMLBuilder::input_password(const String &name, const String &value, const String &placeholder, const String &cls, const String &id, const String &minlength, const String &maxlength, const String &size) {
+	write_tag();
 
-	t->name(name);
+	tag->start("input")->itpassword();
+
+	if (name != "") {
+		tag->name(name);
+	}
 
 	if (value != "") {
-		t->value(value);
+		tag->value(value);
 	}
 
 	if (placeholder != "") {
-		t->placeholder(placeholder);
+		tag->placeholder(placeholder);
 	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
 	if (minlength != "") {
-		t->minlength(minlength);
+		tag->minlength(minlength);
 	}
 
 	if (maxlength != "") {
-		t->maxlength(maxlength);
+		tag->maxlength(maxlength);
 	}
 
 	if (size != "") {
-		t->size(size);
+		tag->size(size);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_radio(const String &name, const String &value, const String &cls, const String &id) {
-	Ref<_HTMLTag> t = input_password();
+Ref<_HTMLTag> _HTMLBuilder::input_radio(const String &name, const String &value, const String &cls, const String &id) {
+	write_tag();
 
-	t->name(name);
+	tag->start("input")->itradio();
+
+	if (name != "") {
+		tag->name(name);
+	}
 
 	if (value != "") {
-		t->value(value);
+		tag->value(value);
 	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_range(const String &name, const String &value, const String &vmin, const String &vmax, const String &vstep, const String &cls, const String &id) {
-	Ref<_HTMLTag> t = input_range();
+Ref<_HTMLTag> _HTMLBuilder::input_range(const String &name, const String &value, const String &vmin, const String &vmax, const String &vstep, const String &cls, const String &id) {
+	write_tag();
 
-	t->name(name);
+	tag->start("input")->itrange();
+
+	if (name != "") {
+		tag->name(name);
+	}
 
 	if (value != "") {
-		t->value(value);
+		tag->value(value);
 	}
 
 	if (vmin != "") {
-		t->min(vmin);
+		tag->min(vmin);
 	}
 
 	if (vmax != "") {
-		t->max(vmax);
+		tag->max(vmax);
 	}
 
 	if (vstep != "") {
-		t->step(vstep);
+		tag->step(vstep);
 	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
 	return Ref<_HTMLBuilder>(this);
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_reset(const String &name, const String &value, const String &cls, const String &id) {
-	Ref<_HTMLTag> t = input_reset();
+Ref<_HTMLTag> _HTMLBuilder::input_reset(const String &name, const String &value, const String &cls, const String &id) {
+	write_tag();
 
-	t->name(name);
+	tag->start("input")->itreset();
+
+	if (name != "") {
+		tag->name(name);
+	}
 
 	if (value != "") {
-		t->value(value);
+		tag->value(value);
 	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_search(const String &name, const String &value, const String &placeholder, const String &cls, const String &id, const String &minlength, const String &maxlength, const String &size, const String &pattern) {
-	Ref<_HTMLTag> t = input_search();
+Ref<_HTMLTag> _HTMLBuilder::input_search(const String &name, const String &value, const String &placeholder, const String &cls, const String &id, const String &minlength, const String &maxlength, const String &size, const String &pattern) {
+	write_tag();
 
-	t->name(name);
+	tag->start("input")->itsearch();
+
+	if (name != "") {
+		tag->name(name);
+	}
 
 	if (value != "") {
-		t->value(value);
+		tag->value(value);
 	}
 
 	if (placeholder != "") {
-		t->placeholder(placeholder);
+		tag->placeholder(placeholder);
 	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
 	if (minlength != "") {
-		t->minlength(minlength);
+		tag->minlength(minlength);
 	}
 
 	if (maxlength != "") {
-		t->maxlength(maxlength);
+		tag->maxlength(maxlength);
 	}
 
 	if (size != "") {
-		t->size(size);
+		tag->size(size);
 	}
 
 	if (pattern != "") {
-		t->pattern(pattern);
+		tag->pattern(pattern);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_submit(const String &value, const String &cls, const String &id) {
-	Ref<_HTMLTag> t = input_submit();
+Ref<_HTMLTag> _HTMLBuilder::input_submit(const String &value, const String &cls, const String &id) {
+	write_tag();
 
-	t->value(value);
+	tag->start("input")->itsubmit();
+
+	if (value != "") {
+		tag->value(value);
+	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_tel(const String &name, const String &value, const String &placeholder, const String &cls, const String &id, const String &minlength, const String &maxlength, const String &size, const String &pattern) {
-	Ref<_HTMLTag> t = input_tel();
+Ref<_HTMLTag> _HTMLBuilder::input_tel(const String &name, const String &value, const String &placeholder, const String &cls, const String &id, const String &minlength, const String &maxlength, const String &size, const String &pattern) {
+	write_tag();
 
-	t->name(name);
+	tag->start("input")->ittel();
+
+	if (name != "") {
+		tag->name(name);
+	}
 
 	if (value != "") {
-		t->value(value);
+		tag->value(value);
 	}
 
 	if (placeholder != "") {
-		t->placeholder(placeholder);
+		tag->placeholder(placeholder);
 	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
 	if (minlength != "") {
-		t->minlength(minlength);
+		tag->minlength(minlength);
 	}
 
 	if (maxlength != "") {
-		t->maxlength(maxlength);
+		tag->maxlength(maxlength);
 	}
 
 	if (size != "") {
-		t->size(size);
+		tag->size(size);
 	}
 
 	if (pattern != "") {
-		t->pattern(pattern);
+		tag->pattern(pattern);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_text(const String &name, const String &value, const String &placeholder, const String &cls, const String &id, const String &minlength, const String &maxlength, const String &size) {
-	Ref<_HTMLTag> t = input_text();
+Ref<_HTMLTag> _HTMLBuilder::input_text(const String &name, const String &value, const String &placeholder, const String &cls, const String &id, const String &minlength, const String &maxlength, const String &size) {
+	write_tag();
 
-	t->name(name);
+	tag->start("input")->ittext();
+
+	if (name != "") {
+		tag->name(name);
+	}
 
 	if (value != "") {
-		t->value(value);
+		tag->value(value);
 	}
 
 	if (placeholder != "") {
-		t->placeholder(placeholder);
+		tag->placeholder(placeholder);
 	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
 	if (minlength != "") {
-		t->minlength(minlength);
+		tag->minlength(minlength);
 	}
 
 	if (maxlength != "") {
-		t->maxlength(maxlength);
+		tag->maxlength(maxlength);
 	}
 
 	if (size != "") {
-		t->size(size);
+		tag->size(size);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_time(const String &name, const String &cls, const String &id, const String &vmin, const String &vmax, const String &vstep) {
-	Ref<_HTMLTag> t = input_time();
+Ref<_HTMLTag> _HTMLBuilder::input_time(const String &name, const String &cls, const String &id, const String &vmin, const String &vmax, const String &vstep) {
+	write_tag();
 
-	t->name(name);
+	tag->start("input")->ittime();
+
+	if (name != "") {
+		tag->name(name);
+	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
 	if (vmin != "") {
-		t->min(vmin);
+		tag->min(vmin);
 	}
 
 	if (vmax != "") {
-		t->max(vmax);
+		tag->max(vmax);
 	}
 
 	if (vstep != "") {
-		t->step(vstep);
+		tag->step(vstep);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_url(const String &name, const String &value, const String &placeholder, const String &cls, const String &id, const String &minlength, const String &maxlength, const String &size) {
-	Ref<_HTMLTag> t = input_url();
+Ref<_HTMLTag> _HTMLBuilder::input_url(const String &name, const String &value, const String &placeholder, const String &cls, const String &id, const String &minlength, const String &maxlength, const String &size) {
+	write_tag();
 
-	t->name(name);
+	tag->start("input")->iturl();
+
+	if (name != "") {
+		tag->name(name);
+	}
 
 	if (value != "") {
-		t->value(value);
+		tag->value(value);
 	}
 
 	if (placeholder != "") {
-		t->placeholder(placeholder);
+		tag->placeholder(placeholder);
 	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
 	if (minlength != "") {
-		t->minlength(minlength);
+		tag->minlength(minlength);
 	}
 
 	if (maxlength != "") {
-		t->maxlength(maxlength);
+		tag->maxlength(maxlength);
 	}
 
 	if (size != "") {
-		t->size(size);
+		tag->size(size);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_week(const String &name, const String &cls, const String &id, const String &vmin, const String &vmax) {
-	Ref<_HTMLTag> t = input_week();
+Ref<_HTMLTag> _HTMLBuilder::input_week(const String &name, const String &cls, const String &id, const String &vmin, const String &vmax) {
+	write_tag();
+	return tag->start("input")->itweek();
 
-	t->name(name);
+	if (name != "") {
+		tag->name(name);
+	}
 
 	if (cls != "") {
-		t->cls(cls);
+		tag->cls(cls);
 	}
 
 	if (id != "") {
-		t->id(id);
+		tag->id(id);
 	}
 
 	if (vmin != "") {
-		t->min(vmin);
+		tag->min(vmin);
 	}
 
 	if (vmax != "") {
-		t->max(vmax);
+		tag->max(vmax);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	return tag;
 }
 
-Ref<_HTMLBuilder> _HTMLBuilder::input_hidden(const String &name, const String &value) {
-	Ref<_HTMLTag> t = input_hidden();
+Ref<_HTMLTag> _HTMLBuilder::input_hidden(const String &name, const String &value) {
+	write_tag();
 
-	t->name(name);
+	tag->start("input")->ithidden();
 
-	if (value != "") {
-		t->value(value);
+	if (name != "") {
+		tag->name(name);
 	}
 
-	return Ref<_HTMLBuilder>(this);
+	if (value != "") {
+		tag->value(value);
+	}
+
+	return tag;
 }
 
 Ref<_HTMLBuilder> _HTMLBuilder::csrf_token(const String &token) {
@@ -3413,9 +3352,8 @@ Ref<_HTMLBuilder> _HTMLBuilder::wbs(const bool val) {
 	return Ref<_HTMLBuilder>(this);
 }
 
-// TODO!
 Ref<_HTMLBuilder> _HTMLBuilder::we(const String &val) {
-	//print_error("_HTMLBuilder::write_excaped NYI!");
+	print_error("_HTMLBuilder::write_excaped NYI!");
 
 	write_tag();
 
@@ -3443,6 +3381,5 @@ _HTMLBuilder::~_HTMLBuilder() {
 }
 
 void _HTMLBuilder::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("a"), &_HTMLBuilder::a);
-	//Ref<_HTMLTag> a();
+	ClassDB::bind_method(D_METHOD("a", "href", "cls", "id"), &_HTMLBuilder::a, "", "", "");
 }
