@@ -1,8 +1,8 @@
 
 
 def can_build(env, platform):
-    #return True
-    return False
+    return True
+    #return False
 
 
 def configure(env):
@@ -13,8 +13,8 @@ def get_doc_classes():
     return [
         #"WorldArea",
 
-        #"HTMLBuilder",
-        #"HTMLTag",
+        "HTMLBuilder",
+        "HTMLTag",
     ]
 
 

@@ -2,6 +2,8 @@
 #include "core/print_string.h"
 #include "core/ustring.h"
 
+#include "core/method_bind_ext.gen.inc"
+
 //#include "web/http/request.h"
 
 bool _HTMLTag::get_simple() const {
@@ -857,7 +859,7 @@ Ref<_HTMLTag> _HTMLTag::close() {
 }
 
 Ref<_HTMLBuilder> _HTMLTag::f() {
-	return owner;
+	return Ref<_HTMLBuilder>(owner);
 }
 
 bool _HTMLTag::has_data() {
@@ -1079,18 +1081,10 @@ Ref<_HTMLBuilder> _HTMLBuilder::comment(const String &val) {
 	return Ref<_HTMLBuilder>(this);
 }
 
-Ref<_HTMLTag> _HTMLBuilder::doctype() {
+Ref<_HTMLTag> _HTMLBuilder::doctype(const String &val) {
 	write_tag();
 
 	return tag->start("!DOCTYPE");
-}
-
-Ref<_HTMLBuilder> _HTMLBuilder::doctype(const String &val) {
-	write_tag();
-
-	result += "<!DOCTYPE " + val + ">";
-
-	return Ref<_HTMLBuilder>(this);
 }
 
 Ref<_HTMLTag> _HTMLBuilder::a(const String &href, const String &cls, const String &id) {
@@ -3586,12 +3580,363 @@ Ref<_HTMLBuilder> _HTMLBuilder::write_tag() {
 
 _HTMLBuilder::_HTMLBuilder() {
 	tag.instance();
-	tag->owner.reference_ptr(this);
+	tag->owner = this;
 }
 
 _HTMLBuilder::~_HTMLBuilder() {
+	tag->owner = nullptr;
+	tag.unref();
 }
 
 void _HTMLBuilder::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_result"), &_HTMLBuilder::get_result);
+	ClassDB::bind_method(D_METHOD("set_result", "val"), &_HTMLBuilder::set_result);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "result"), "set_result", "get_result");
+
+	ClassDB::bind_method(D_METHOD("comment", "val"), &_HTMLBuilder::comment);
+	ClassDB::bind_method(D_METHOD("doctype", "val"), &_HTMLBuilder::doctype, "");
+
 	ClassDB::bind_method(D_METHOD("a", "href", "cls", "id"), &_HTMLBuilder::a, "", "", "");
+	ClassDB::bind_method(D_METHOD("fa", "href", "body", "cls", "id"), &_HTMLBuilder::fa, "", "");
+
+	ClassDB::bind_method(D_METHOD("abbr"), &_HTMLBuilder::abbr);
+	ClassDB::bind_method(D_METHOD("acronym"), &_HTMLBuilder::acronym);
+	ClassDB::bind_method(D_METHOD("address"), &_HTMLBuilder::address);
+	ClassDB::bind_method(D_METHOD("applet"), &_HTMLBuilder::applet);
+	ClassDB::bind_method(D_METHOD("area"), &_HTMLBuilder::area);
+
+	ClassDB::bind_method(D_METHOD("article"), &_HTMLBuilder::article);
+	ClassDB::bind_method(D_METHOD("aside"), &_HTMLBuilder::aside);
+	ClassDB::bind_method(D_METHOD("audio"), &_HTMLBuilder::audio);
+	ClassDB::bind_method(D_METHOD("b"), &_HTMLBuilder::b);
+	ClassDB::bind_method(D_METHOD("basefont"), &_HTMLBuilder::basefont);
+
+	ClassDB::bind_method(D_METHOD("bdi"), &_HTMLBuilder::bdi);
+	ClassDB::bind_method(D_METHOD("bdo"), &_HTMLBuilder::bdo);
+	ClassDB::bind_method(D_METHOD("big"), &_HTMLBuilder::big);
+	ClassDB::bind_method(D_METHOD("blockquote"), &_HTMLBuilder::blockquote);
+	ClassDB::bind_method(D_METHOD("body"), &_HTMLBuilder::body);
+
+	ClassDB::bind_method(D_METHOD("br"), &_HTMLBuilder::br);
+	ClassDB::bind_method(D_METHOD("button"), &_HTMLBuilder::button);
+	ClassDB::bind_method(D_METHOD("canvas"), &_HTMLBuilder::canvas);
+	ClassDB::bind_method(D_METHOD("caption"), &_HTMLBuilder::caption);
+	ClassDB::bind_method(D_METHOD("center"), &_HTMLBuilder::center);
+	ClassDB::bind_method(D_METHOD("cite"), &_HTMLBuilder::cite);
+	ClassDB::bind_method(D_METHOD("code"), &_HTMLBuilder::code);
+
+	ClassDB::bind_method(D_METHOD("col"), &_HTMLBuilder::col);
+	ClassDB::bind_method(D_METHOD("colgroup"), &_HTMLBuilder::colgroup);
+	ClassDB::bind_method(D_METHOD("data"), &_HTMLBuilder::data);
+	ClassDB::bind_method(D_METHOD("datalist"), &_HTMLBuilder::datalist);
+	ClassDB::bind_method(D_METHOD("dd"), &_HTMLBuilder::dd);
+	ClassDB::bind_method(D_METHOD("del"), &_HTMLBuilder::del);
+
+	ClassDB::bind_method(D_METHOD("details"), &_HTMLBuilder::details);
+	ClassDB::bind_method(D_METHOD("dfn"), &_HTMLBuilder::dfn);
+	ClassDB::bind_method(D_METHOD("dialog"), &_HTMLBuilder::dialog);
+	ClassDB::bind_method(D_METHOD("dir"), &_HTMLBuilder::dir);
+
+	ClassDB::bind_method(D_METHOD("div", "cls", "id"), &_HTMLBuilder::div, "", "");
+	ClassDB::bind_method(D_METHOD("fdiv", "body", "cls", "id"), &_HTMLBuilder::fdiv, "", "");
+
+	ClassDB::bind_method(D_METHOD("dl"), &_HTMLBuilder::dl);
+	ClassDB::bind_method(D_METHOD("dt"), &_HTMLBuilder::dt);
+	ClassDB::bind_method(D_METHOD("em"), &_HTMLBuilder::em);
+	ClassDB::bind_method(D_METHOD("embed"), &_HTMLBuilder::embed);
+	ClassDB::bind_method(D_METHOD("fieldset"), &_HTMLBuilder::fieldset);
+	ClassDB::bind_method(D_METHOD("figcaption"), &_HTMLBuilder::figcaption);
+
+	ClassDB::bind_method(D_METHOD("figure"), &_HTMLBuilder::figure);
+	ClassDB::bind_method(D_METHOD("font"), &_HTMLBuilder::font);
+	ClassDB::bind_method(D_METHOD("footer"), &_HTMLBuilder::footer);
+	ClassDB::bind_method(D_METHOD("form"), &_HTMLBuilder::form);
+	ClassDB::bind_method(D_METHOD("frame"), &_HTMLBuilder::frame);
+	ClassDB::bind_method(D_METHOD("frameset"), &_HTMLBuilder::frameset);
+
+	ClassDB::bind_method(D_METHOD("h1"), &_HTMLBuilder::h1);
+	ClassDB::bind_method(D_METHOD("h2"), &_HTMLBuilder::h2);
+	ClassDB::bind_method(D_METHOD("h3"), &_HTMLBuilder::h3);
+	ClassDB::bind_method(D_METHOD("h4"), &_HTMLBuilder::h4);
+	ClassDB::bind_method(D_METHOD("h5"), &_HTMLBuilder::h5);
+	ClassDB::bind_method(D_METHOD("h6"), &_HTMLBuilder::h6);
+
+	ClassDB::bind_method(D_METHOD("head"), &_HTMLBuilder::head);
+	ClassDB::bind_method(D_METHOD("header"), &_HTMLBuilder::header);
+	ClassDB::bind_method(D_METHOD("hr"), &_HTMLBuilder::hr);
+	ClassDB::bind_method(D_METHOD("html"), &_HTMLBuilder::html);
+
+	ClassDB::bind_method(D_METHOD("i"), &_HTMLBuilder::i);
+	ClassDB::bind_method(D_METHOD("iframe"), &_HTMLBuilder::iframe);
+	ClassDB::bind_method(D_METHOD("img"), &_HTMLBuilder::img);
+	ClassDB::bind_method(D_METHOD("input"), &_HTMLBuilder::input);
+	ClassDB::bind_method(D_METHOD("ins"), &_HTMLBuilder::ins);
+	ClassDB::bind_method(D_METHOD("kbd"), &_HTMLBuilder::kbd);
+
+	ClassDB::bind_method(D_METHOD("label"), &_HTMLBuilder::label);
+	ClassDB::bind_method(D_METHOD("legend"), &_HTMLBuilder::legend);
+	ClassDB::bind_method(D_METHOD("li"), &_HTMLBuilder::li);
+	ClassDB::bind_method(D_METHOD("link"), &_HTMLBuilder::link);
+	ClassDB::bind_method(D_METHOD("main"), &_HTMLBuilder::main);
+	ClassDB::bind_method(D_METHOD("map"), &_HTMLBuilder::map);
+	ClassDB::bind_method(D_METHOD("mark"), &_HTMLBuilder::mark);
+	ClassDB::bind_method(D_METHOD("meta"), &_HTMLBuilder::meta);
+	ClassDB::bind_method(D_METHOD("meter"), &_HTMLBuilder::meter);
+
+	ClassDB::bind_method(D_METHOD("nav"), &_HTMLBuilder::nav);
+	ClassDB::bind_method(D_METHOD("noframes"), &_HTMLBuilder::noframes);
+	ClassDB::bind_method(D_METHOD("noscript"), &_HTMLBuilder::noscript);
+	ClassDB::bind_method(D_METHOD("object"), &_HTMLBuilder::object);
+	ClassDB::bind_method(D_METHOD("ol"), &_HTMLBuilder::ol);
+	ClassDB::bind_method(D_METHOD("optgroup"), &_HTMLBuilder::optgroup);
+
+	ClassDB::bind_method(D_METHOD("option", "val"), &_HTMLBuilder::option, "");
+	ClassDB::bind_method(D_METHOD("foption", "value", "body", "selected"), &_HTMLBuilder::foption, false);
+
+	ClassDB::bind_method(D_METHOD("output"), &_HTMLBuilder::output);
+	ClassDB::bind_method(D_METHOD("p"), &_HTMLBuilder::p);
+	ClassDB::bind_method(D_METHOD("param"), &_HTMLBuilder::param);
+
+	ClassDB::bind_method(D_METHOD("picture"), &_HTMLBuilder::picture);
+	ClassDB::bind_method(D_METHOD("pre"), &_HTMLBuilder::pre);
+	ClassDB::bind_method(D_METHOD("progress"), &_HTMLBuilder::progress);
+	ClassDB::bind_method(D_METHOD("q"), &_HTMLBuilder::q);
+	ClassDB::bind_method(D_METHOD("rp"), &_HTMLBuilder::rp);
+
+	ClassDB::bind_method(D_METHOD("rt"), &_HTMLBuilder::rt);
+	ClassDB::bind_method(D_METHOD("ruby"), &_HTMLBuilder::ruby);
+	ClassDB::bind_method(D_METHOD("s"), &_HTMLBuilder::s);
+	ClassDB::bind_method(D_METHOD("samp"), &_HTMLBuilder::samp);
+	ClassDB::bind_method(D_METHOD("script"), &_HTMLBuilder::script);
+	ClassDB::bind_method(D_METHOD("section"), &_HTMLBuilder::section);
+
+	ClassDB::bind_method(D_METHOD("select", "name", "cls", "id"), &_HTMLBuilder::select, "", "", "");
+
+	ClassDB::bind_method(D_METHOD("small"), &_HTMLBuilder::small);
+	ClassDB::bind_method(D_METHOD("source"), &_HTMLBuilder::source);
+	ClassDB::bind_method(D_METHOD("span"), &_HTMLBuilder::span);
+	ClassDB::bind_method(D_METHOD("strike"), &_HTMLBuilder::strike);
+
+	ClassDB::bind_method(D_METHOD("strong"), &_HTMLBuilder::strong);
+	ClassDB::bind_method(D_METHOD("style"), &_HTMLBuilder::style);
+	ClassDB::bind_method(D_METHOD("sub"), &_HTMLBuilder::sub);
+	ClassDB::bind_method(D_METHOD("summary"), &_HTMLBuilder::summary);
+	ClassDB::bind_method(D_METHOD("sup"), &_HTMLBuilder::sup);
+
+	ClassDB::bind_method(D_METHOD("svg"), &_HTMLBuilder::svg);
+	ClassDB::bind_method(D_METHOD("table"), &_HTMLBuilder::table);
+	ClassDB::bind_method(D_METHOD("tbody"), &_HTMLBuilder::tbody);
+	ClassDB::bind_method(D_METHOD("td"), &_HTMLBuilder::td);
+	ClassDB::bind_method(D_METHOD("templateh"), &_HTMLBuilder::templateh);
+
+	ClassDB::bind_method(D_METHOD("textarea", "name", "cls", "id"), &_HTMLBuilder::textarea, "", "", "");
+	ClassDB::bind_method(D_METHOD("ftextarea", "name", "body", "cls", "id"), &_HTMLBuilder::ftextarea, "", "");
+
+	ClassDB::bind_method(D_METHOD("tfoot"), &_HTMLBuilder::tfoot);
+	ClassDB::bind_method(D_METHOD("th"), &_HTMLBuilder::th);
+	ClassDB::bind_method(D_METHOD("thead"), &_HTMLBuilder::thead);
+
+	ClassDB::bind_method(D_METHOD("time"), &_HTMLBuilder::time);
+	ClassDB::bind_method(D_METHOD("title"), &_HTMLBuilder::title);
+	ClassDB::bind_method(D_METHOD("tra"), &_HTMLBuilder::tr);
+	ClassDB::bind_method(D_METHOD("track"), &_HTMLBuilder::track);
+	ClassDB::bind_method(D_METHOD("tt"), &_HTMLBuilder::tt);
+
+	ClassDB::bind_method(D_METHOD("u"), &_HTMLBuilder::u);
+	ClassDB::bind_method(D_METHOD("ul"), &_HTMLBuilder::ul);
+	ClassDB::bind_method(D_METHOD("var"), &_HTMLBuilder::var);
+	ClassDB::bind_method(D_METHOD("video"), &_HTMLBuilder::video);
+	ClassDB::bind_method(D_METHOD("wbr"), &_HTMLBuilder::wbr);
+
+	ClassDB::bind_method(D_METHOD("ca"), &_HTMLBuilder::ca);
+	ClassDB::bind_method(D_METHOD("cabbr"), &_HTMLBuilder::cabbr);
+	ClassDB::bind_method(D_METHOD("cacronym"), &_HTMLBuilder::cacronym);
+	ClassDB::bind_method(D_METHOD("caddress"), &_HTMLBuilder::caddress);
+	ClassDB::bind_method(D_METHOD("capplet"), &_HTMLBuilder::capplet);
+	ClassDB::bind_method(D_METHOD("carea"), &_HTMLBuilder::carea);
+	ClassDB::bind_method(D_METHOD("carticle"), &_HTMLBuilder::carticle);
+
+	ClassDB::bind_method(D_METHOD("caside"), &_HTMLBuilder::caside);
+	ClassDB::bind_method(D_METHOD("caudio"), &_HTMLBuilder::caudio);
+	ClassDB::bind_method(D_METHOD("cb"), &_HTMLBuilder::cb);
+	ClassDB::bind_method(D_METHOD("cbasefont"), &_HTMLBuilder::cbasefont);
+	ClassDB::bind_method(D_METHOD("cbdi"), &_HTMLBuilder::cbdi);
+	ClassDB::bind_method(D_METHOD("cbdo"), &_HTMLBuilder::cbdo);
+
+	ClassDB::bind_method(D_METHOD("cbig"), &_HTMLBuilder::cbig);
+	ClassDB::bind_method(D_METHOD("cblockquote"), &_HTMLBuilder::cblockquote);
+	ClassDB::bind_method(D_METHOD("cbody"), &_HTMLBuilder::cbody);
+	ClassDB::bind_method(D_METHOD("cbutton"), &_HTMLBuilder::cbutton);
+	ClassDB::bind_method(D_METHOD("ccanvas"), &_HTMLBuilder::ccanvas);
+
+	ClassDB::bind_method(D_METHOD("ccaption"), &_HTMLBuilder::ccaption);
+	ClassDB::bind_method(D_METHOD("ccenter"), &_HTMLBuilder::ccenter);
+	ClassDB::bind_method(D_METHOD("ccite"), &_HTMLBuilder::ccite);
+	ClassDB::bind_method(D_METHOD("ccode"), &_HTMLBuilder::ccode);
+	ClassDB::bind_method(D_METHOD("ccol"), &_HTMLBuilder::ccol);
+
+	ClassDB::bind_method(D_METHOD("ccolgroup"), &_HTMLBuilder::ccolgroup);
+	ClassDB::bind_method(D_METHOD("cdata"), &_HTMLBuilder::cdata);
+	ClassDB::bind_method(D_METHOD("cdatalist"), &_HTMLBuilder::cdatalist);
+	ClassDB::bind_method(D_METHOD("cdd"), &_HTMLBuilder::cdd);
+	ClassDB::bind_method(D_METHOD("cdel"), &_HTMLBuilder::cdel);
+	ClassDB::bind_method(D_METHOD("cdetails"), &_HTMLBuilder::cdetails);
+
+	ClassDB::bind_method(D_METHOD("cdfn"), &_HTMLBuilder::cdfn);
+	ClassDB::bind_method(D_METHOD("cdialog"), &_HTMLBuilder::cdialog);
+	ClassDB::bind_method(D_METHOD("cdir"), &_HTMLBuilder::cdir);
+	ClassDB::bind_method(D_METHOD("cdiv"), &_HTMLBuilder::cdiv);
+	ClassDB::bind_method(D_METHOD("cdl"), &_HTMLBuilder::cdl);
+	ClassDB::bind_method(D_METHOD("cdt"), &_HTMLBuilder::cdt);
+
+	ClassDB::bind_method(D_METHOD("cembed"), &_HTMLBuilder::cembed);
+	ClassDB::bind_method(D_METHOD("cfieldset"), &_HTMLBuilder::cfieldset);
+	ClassDB::bind_method(D_METHOD("cfigcaption"), &_HTMLBuilder::cfigcaption);
+	ClassDB::bind_method(D_METHOD("cfigure"), &_HTMLBuilder::cfigure);
+	ClassDB::bind_method(D_METHOD("cfont"), &_HTMLBuilder::cfont);
+
+	ClassDB::bind_method(D_METHOD("cfooter"), &_HTMLBuilder::cfooter);
+	ClassDB::bind_method(D_METHOD("cform"), &_HTMLBuilder::cform);
+	ClassDB::bind_method(D_METHOD("cframe"), &_HTMLBuilder::cframe);
+	ClassDB::bind_method(D_METHOD("cframeset"), &_HTMLBuilder::cframeset);
+	ClassDB::bind_method(D_METHOD("ch1"), &_HTMLBuilder::ch1);
+	ClassDB::bind_method(D_METHOD("ch2"), &_HTMLBuilder::ch2);
+
+	ClassDB::bind_method(D_METHOD("ch3"), &_HTMLBuilder::ch3);
+	ClassDB::bind_method(D_METHOD("ch4"), &_HTMLBuilder::ch4);
+	ClassDB::bind_method(D_METHOD("ch5"), &_HTMLBuilder::ch5);
+	ClassDB::bind_method(D_METHOD("ch6"), &_HTMLBuilder::ch6);
+
+	ClassDB::bind_method(D_METHOD("chead"), &_HTMLBuilder::chead);
+	ClassDB::bind_method(D_METHOD("cheader"), &_HTMLBuilder::cheader);
+	ClassDB::bind_method(D_METHOD("chr"), &_HTMLBuilder::chr);
+	ClassDB::bind_method(D_METHOD("chtml"), &_HTMLBuilder::chtml);
+
+	ClassDB::bind_method(D_METHOD("ci"), &_HTMLBuilder::ci);
+	ClassDB::bind_method(D_METHOD("ciframe"), &_HTMLBuilder::ciframe);
+	ClassDB::bind_method(D_METHOD("cimg"), &_HTMLBuilder::cimg);
+	ClassDB::bind_method(D_METHOD("cinput"), &_HTMLBuilder::cinput);
+	ClassDB::bind_method(D_METHOD("cins"), &_HTMLBuilder::cins);
+	ClassDB::bind_method(D_METHOD("ckbd"), &_HTMLBuilder::ckbd);
+
+	ClassDB::bind_method(D_METHOD("clabel"), &_HTMLBuilder::clabel);
+	ClassDB::bind_method(D_METHOD("clegend"), &_HTMLBuilder::clegend);
+	ClassDB::bind_method(D_METHOD("cli"), &_HTMLBuilder::cli);
+	ClassDB::bind_method(D_METHOD("clink"), &_HTMLBuilder::clink);
+
+	ClassDB::bind_method(D_METHOD("cmain"), &_HTMLBuilder::cmain);
+	ClassDB::bind_method(D_METHOD("cmap"), &_HTMLBuilder::cmap);
+	ClassDB::bind_method(D_METHOD("cmark"), &_HTMLBuilder::cmark);
+	ClassDB::bind_method(D_METHOD("cmeta"), &_HTMLBuilder::cmeta);
+
+	ClassDB::bind_method(D_METHOD("cmeter"), &_HTMLBuilder::cmeter);
+	ClassDB::bind_method(D_METHOD("cnav"), &_HTMLBuilder::cnav);
+	ClassDB::bind_method(D_METHOD("cnoframes"), &_HTMLBuilder::cnoframes);
+
+	ClassDB::bind_method(D_METHOD("cnoscript"), &_HTMLBuilder::cnoscript);
+	ClassDB::bind_method(D_METHOD("cobject"), &_HTMLBuilder::cobject);
+	ClassDB::bind_method(D_METHOD("c_ol"), &_HTMLBuilder::c_ol);
+	ClassDB::bind_method(D_METHOD("coptgroup"), &_HTMLBuilder::coptgroup);
+	ClassDB::bind_method(D_METHOD("coption"), &_HTMLBuilder::coption);
+
+	ClassDB::bind_method(D_METHOD("coutput"), &_HTMLBuilder::coutput);
+	ClassDB::bind_method(D_METHOD("cp"), &_HTMLBuilder::cp);
+	ClassDB::bind_method(D_METHOD("cparam"), &_HTMLBuilder::cparam);
+	ClassDB::bind_method(D_METHOD("cpicture"), &_HTMLBuilder::cpicture);
+	ClassDB::bind_method(D_METHOD("cpre"), &_HTMLBuilder::cpre);
+
+	ClassDB::bind_method(D_METHOD("cprogress"), &_HTMLBuilder::cprogress);
+	ClassDB::bind_method(D_METHOD("cq"), &_HTMLBuilder::cq);
+	ClassDB::bind_method(D_METHOD("crp"), &_HTMLBuilder::crp);
+	ClassDB::bind_method(D_METHOD("crt"), &_HTMLBuilder::crt);
+	ClassDB::bind_method(D_METHOD("cruby"), &_HTMLBuilder::cruby);
+
+	ClassDB::bind_method(D_METHOD("cs"), &_HTMLBuilder::cs);
+	ClassDB::bind_method(D_METHOD("csamp"), &_HTMLBuilder::csamp);
+	ClassDB::bind_method(D_METHOD("cscript"), &_HTMLBuilder::cscript);
+	ClassDB::bind_method(D_METHOD("csection"), &_HTMLBuilder::csection);
+	ClassDB::bind_method(D_METHOD("cselect"), &_HTMLBuilder::cselect);
+	ClassDB::bind_method(D_METHOD("csmall"), &_HTMLBuilder::csmall);
+
+	ClassDB::bind_method(D_METHOD("csource"), &_HTMLBuilder::csource);
+	ClassDB::bind_method(D_METHOD("cspan"), &_HTMLBuilder::cspan);
+	ClassDB::bind_method(D_METHOD("cstrike"), &_HTMLBuilder::cstrike);
+	ClassDB::bind_method(D_METHOD("cstrong"), &_HTMLBuilder::cstrong);
+
+	ClassDB::bind_method(D_METHOD("cstyle"), &_HTMLBuilder::cstyle);
+	ClassDB::bind_method(D_METHOD("csub"), &_HTMLBuilder::csub);
+	ClassDB::bind_method(D_METHOD("csummary"), &_HTMLBuilder::csummary);
+	ClassDB::bind_method(D_METHOD("csup"), &_HTMLBuilder::csup);
+
+	ClassDB::bind_method(D_METHOD("csvg"), &_HTMLBuilder::csvg);
+	ClassDB::bind_method(D_METHOD("ctable"), &_HTMLBuilder::ctable);
+	ClassDB::bind_method(D_METHOD("ctbody"), &_HTMLBuilder::ctbody);
+	ClassDB::bind_method(D_METHOD("ctd"), &_HTMLBuilder::ctd);
+
+	ClassDB::bind_method(D_METHOD("ctemplateh"), &_HTMLBuilder::ctemplateh);
+	ClassDB::bind_method(D_METHOD("ctextarea"), &_HTMLBuilder::ctextarea);
+	ClassDB::bind_method(D_METHOD("ctfoot"), &_HTMLBuilder::ctfoot);
+	ClassDB::bind_method(D_METHOD("cth"), &_HTMLBuilder::cth);
+	ClassDB::bind_method(D_METHOD("cthead"), &_HTMLBuilder::cthead);
+	ClassDB::bind_method(D_METHOD("ctime"), &_HTMLBuilder::ctime);
+	ClassDB::bind_method(D_METHOD("ctitle"), &_HTMLBuilder::ctitle);
+
+	ClassDB::bind_method(D_METHOD("ctr"), &_HTMLBuilder::ctr);
+	ClassDB::bind_method(D_METHOD("ctrack"), &_HTMLBuilder::ctrack);
+	ClassDB::bind_method(D_METHOD("ctt"), &_HTMLBuilder::ctt);
+	ClassDB::bind_method(D_METHOD("cu"), &_HTMLBuilder::cu);
+
+	ClassDB::bind_method(D_METHOD("cul"), &_HTMLBuilder::cul);
+	ClassDB::bind_method(D_METHOD("cvar"), &_HTMLBuilder::cvar);
+	ClassDB::bind_method(D_METHOD("cvideo"), &_HTMLBuilder::cvideo);
+	ClassDB::bind_method(D_METHOD("cwbr"), &_HTMLBuilder::cwbr);
+
+	ClassDB::bind_method(D_METHOD("form_get", "action", "cls", "id"), &_HTMLBuilder::form_get, "", "", "");
+	ClassDB::bind_method(D_METHOD("form_post", "action", "cls", "id"), &_HTMLBuilder::form_post, "", "", "");
+
+	//ClassDB::bind_method(D_METHOD("", "name", "cls", "id"), &_HTMLBuilder::, "", "", "");
+	// will add a csrf token from request
+	//Ref<_HTMLBuilder> form_post(const String &action, Request *request, const String &cls = "", const String &id = "");
+
+	ClassDB::bind_method(D_METHOD("input_button", "name", "value", "cls", "id"), &_HTMLBuilder::input_button, "", "", "", "");
+	ClassDB::bind_method(D_METHOD("input_checkbox", "name", "value", "checked", "cls", "id"), &_HTMLBuilder::input_checkbox, "", "", false, "", "");
+	ClassDB::bind_method(D_METHOD("input_color", "name", "value", "cls", "id"), &_HTMLBuilder::input_color, "", "", "", "");
+	ClassDB::bind_method(D_METHOD("input_date", "name", "value", "cls", "id", "date_min", "date_max", "date_step"), &_HTMLBuilder::input_date, "", "", "", "", "", "", "");
+	ClassDB::bind_method(D_METHOD("input_datetime_local", "name", "value", "cls", "id", "date_min", "date_max", "date_step"), &_HTMLBuilder::input_datetime_local, "", "", "", "", "", "", "");
+	ClassDB::bind_method(D_METHOD("input_email", "name", "value", "placeholder ", "cls", "id"), &_HTMLBuilder::input_email, "", "", "", "", "");
+	ClassDB::bind_method(D_METHOD("input_file", "name", "accept ", "cls", "id"), &_HTMLBuilder::input_file, "", "", "", "");
+	ClassDB::bind_method(D_METHOD("input_image", "name", "src", "alt", "cls", "id", "width", "height"), &_HTMLBuilder::input_image, "", "", "", "", "", 0, 0);
+	ClassDB::bind_method(D_METHOD("input_month", "name", "cls", "id"), &_HTMLBuilder::input_month, "", "", "");
+	ClassDB::bind_method(D_METHOD("input_number", "name", "vmin", "vmax", "cls", "id"), &_HTMLBuilder::input_number, "", "", "", "", "");
+	ClassDB::bind_method(D_METHOD("input_password", "name", "value", "placeholder", "cls", "id", "minlength", "maxlength", "size"), &_HTMLBuilder::input_password, "", "", "", "", "", "", "", "");
+	ClassDB::bind_method(D_METHOD("input_radio", "name", "value", "cls", "id"), &_HTMLBuilder::input_radio, "", "", "", "");
+	ClassDB::bind_method(D_METHOD("input_range", "name", "value", "vmin", "vmax", "vstep", "cls", "id"), &_HTMLBuilder::input_range, "", "", "", "", "", "", "");
+	ClassDB::bind_method(D_METHOD("input_reset", "name", "value", "cls", "id"), &_HTMLBuilder::input_reset, "", "", "", "");
+	ClassDB::bind_method(D_METHOD("input_search", "name", "value", "placeholder ", "cls", "id", "minlength", "maxlength", "size"), &_HTMLBuilder::input_search, "", "", "", "", "", "", "", "");
+	ClassDB::bind_method(D_METHOD("input_submit", "value", "cls", "id"), &_HTMLBuilder::input_submit, "", "", "");
+	ClassDB::bind_method(D_METHOD("input_tel", "name", "value", "placeholder", "cls", "id", "minlength", "maxlength", "size"), &_HTMLBuilder::input_tel, "", "", "", "", "", "", "", "");
+	ClassDB::bind_method(D_METHOD("input_text", "name", "value", "placeholder", "cls", "id", "minlength", "maxlength", "size"), &_HTMLBuilder::input_text, "", "", "", "", "", "", "", "");
+	ClassDB::bind_method(D_METHOD("input_time", "name", "cls", "id", "vmin", "vmax", "vstep"), &_HTMLBuilder::input_time, "", "", "", "", "", "");
+	ClassDB::bind_method(D_METHOD("input_url", "name", "value", "placeholder ", "cls", "id", "minlength", "maxlength", "size"), &_HTMLBuilder::input_url, "", "", "", "", "", "", "", "");
+	ClassDB::bind_method(D_METHOD("input_week", "name", "cls", "id", "vmin", "vmax"), &_HTMLBuilder::input_week, "", "", "", "", "");
+	ClassDB::bind_method(D_METHOD("input_hidden", "name", "value"), &_HTMLBuilder::input_hidden, "", "");
+
+	ClassDB::bind_method(D_METHOD("flabel", "pfor", "plabel", "cls", "id"), &_HTMLBuilder::flabel, "", "");
+
+	ClassDB::bind_method(D_METHOD("csrf_token", "token"), &_HTMLBuilder::csrf_token);
+	//ClassDB::bind_method(D_METHOD("csrf_token", "request"), &_HTMLBuilder::csrf_token);
+
+	ClassDB::bind_method(D_METHOD("f"), &_HTMLBuilder::f);
+
+	ClassDB::bind_method(D_METHOD("w", "val"), &_HTMLBuilder::w);
+	ClassDB::bind_method(D_METHOD("wn", "val", "decimals "), &_HTMLBuilder::wn, -1);
+	ClassDB::bind_method(D_METHOD("wns", "val"), &_HTMLBuilder::wns);
+	ClassDB::bind_method(D_METHOD("wr", "val", "trailing "), &_HTMLBuilder::wr, true);
+	ClassDB::bind_method(D_METHOD("wi", "val", "base", "capitalize_hex"), &_HTMLBuilder::wi, 10, false);
+	ClassDB::bind_method(D_METHOD("wui", "val", "base", "capitalize_hex"), &_HTMLBuilder::wui, 10, false);
+	ClassDB::bind_method(D_METHOD("wbn", "val"), &_HTMLBuilder::wbn);
+	ClassDB::bind_method(D_METHOD("wbs", "val"), &_HTMLBuilder::wbs);
+	ClassDB::bind_method(D_METHOD("we", "val"), &_HTMLBuilder::we);
+
+	ClassDB::bind_method(D_METHOD("write_tag"), &_HTMLBuilder::write_tag);
 }

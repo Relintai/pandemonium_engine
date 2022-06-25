@@ -191,7 +191,7 @@ public:
 
 	_HTMLTag();
 
-	Ref<_HTMLBuilder> owner;
+	_HTMLBuilder *owner;
 	bool simple;
 	String result;
 
@@ -207,8 +207,7 @@ public:
 	void set_result(const String &str);
 
 	Ref<_HTMLBuilder> comment(const String &val);
-	Ref<_HTMLTag> doctype();
-	Ref<_HTMLBuilder> doctype(const String &val);
+	Ref<_HTMLTag> doctype(const String &val = "");
 
 	Ref<_HTMLTag> a(const String &href = "", const String &cls = "", const String &id = "");
 	Ref<_HTMLBuilder> fa(const String &href, const String &body, const String &cls = "", const String &id = "");
@@ -484,7 +483,7 @@ public:
 	Ref<_HTMLTag> input_file(const String &name = "", const String &accept = "", const String &cls = "", const String &id = "");
 	Ref<_HTMLTag> input_image(const String &name = "", const String &src = "", const String &alt = "", const String &cls = "", const String &id = "", const int width = 0, const int height = 0);
 	Ref<_HTMLTag> input_month(const String &name = "", const String &cls = "", const String &id = "");
-	Ref<_HTMLTag> input_number(const String &name = "", const String & = "", const String & = "", const String &cls = "", const String &id = "");
+	Ref<_HTMLTag> input_number(const String &name = "", const String &vmin = "", const String &vmax = "", const String &cls = "", const String &id = "");
 	Ref<_HTMLTag> input_password(const String &name = "", const String &value = "", const String &placeholder = "", const String &cls = "", const String &id = "", const String &minlength = "", const String &maxlength = "", const String &size = "");
 	Ref<_HTMLTag> input_radio(const String &name = "", const String &value = "", const String &cls = "", const String &id = "");
 	Ref<_HTMLTag> input_range(const String &name = "", const String &value = "", const String &vmin = "", const String &vmax = "", const String &vstep = "", const String &cls = "", const String &id = "");
