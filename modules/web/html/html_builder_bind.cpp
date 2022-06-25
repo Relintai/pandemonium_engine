@@ -475,7 +475,7 @@ Ref<_HTMLTag> _HTMLTag::minlength(const int val) {
 
 	return Ref<_HTMLTag>(this);
 }
-Ref<_HTMLTag> _HTMLTag::minlength(const String &val) {
+Ref<_HTMLTag> _HTMLTag::minlengths(const String &val) {
 	attrib("minlength", val);
 
 	return Ref<_HTMLTag>(this);
@@ -485,7 +485,7 @@ Ref<_HTMLTag> _HTMLTag::maxlength(const int val) {
 
 	return Ref<_HTMLTag>(this);
 }
-Ref<_HTMLTag> _HTMLTag::maxlength(const String &val) {
+Ref<_HTMLTag> _HTMLTag::maxlengths(const String &val) {
 	attrib("maxlength", val);
 
 	return Ref<_HTMLTag>(this);
@@ -495,7 +495,7 @@ Ref<_HTMLTag> _HTMLTag::size(const int val) {
 
 	return Ref<_HTMLTag>(this);
 }
-Ref<_HTMLTag> _HTMLTag::size(const String &val) {
+Ref<_HTMLTag> _HTMLTag::sizes(const String &val) {
 	attrib("size", val);
 
 	return Ref<_HTMLTag>(this);
@@ -507,7 +507,7 @@ Ref<_HTMLTag> _HTMLTag::width(const int val) {
 	return Ref<_HTMLTag>(this);
 }
 
-Ref<_HTMLTag> _HTMLTag::width(const String &val) {
+Ref<_HTMLTag> _HTMLTag::widths(const String &val) {
 	attrib("width", val);
 
 	return Ref<_HTMLTag>(this);
@@ -519,7 +519,7 @@ Ref<_HTMLTag> _HTMLTag::height(const int val) {
 	return Ref<_HTMLTag>(this);
 }
 
-Ref<_HTMLTag> _HTMLTag::height(const String &val) {
+Ref<_HTMLTag> _HTMLTag::heights(const String &val) {
 	attrib("height", val);
 
 	return Ref<_HTMLTag>(this);
@@ -610,6 +610,12 @@ Ref<_HTMLTag> _HTMLTag::rel_external() {
 
 Ref<_HTMLTag> _HTMLTag::rel_help() {
 	attrib("rel", "help");
+
+	return Ref<_HTMLTag>(this);
+}
+
+Ref<_HTMLTag> _HTMLTag::rel_license() {
+	attrib("rel", "license");
 
 	return Ref<_HTMLTag>(this);
 }
@@ -863,7 +869,199 @@ _HTMLTag::_HTMLTag() {
 }
 
 void _HTMLTag::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_simple"), &_HTMLTag::get_simple);
+	ClassDB::bind_method(D_METHOD("set_simple", "val"), &_HTMLTag::set_simple);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "simple"), "set_simple", "get_simple");
+
+	ClassDB::bind_method(D_METHOD("get_result"), &_HTMLTag::get_result);
+	ClassDB::bind_method(D_METHOD("set_result", "val"), &_HTMLTag::set_result);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "result"), "set_result", "get_result");
+
+	ClassDB::bind_method(D_METHOD("str", "srt"), &_HTMLTag::str);
 	ClassDB::bind_method(D_METHOD("style", "val"), &_HTMLTag::style);
+	ClassDB::bind_method(D_METHOD("href", "val"), &_HTMLTag::href);
+	ClassDB::bind_method(D_METHOD("cls", "val"), &_HTMLTag::cls);
+	ClassDB::bind_method(D_METHOD("clsse", "val"), &_HTMLTag::clsse);
+	ClassDB::bind_method(D_METHOD("id", "val"), &_HTMLTag::id);
+	ClassDB::bind_method(D_METHOD("name", "val"), &_HTMLTag::name);
+	ClassDB::bind_method(D_METHOD("content", "val"), &_HTMLTag::content);
+	ClassDB::bind_method(D_METHOD("value", "val"), &_HTMLTag::value);
+	ClassDB::bind_method(D_METHOD("accept", "val"), &_HTMLTag::accept);
+	ClassDB::bind_method(D_METHOD("src", "val"), &_HTMLTag::src);
+	ClassDB::bind_method(D_METHOD("alt", "val"), &_HTMLTag::alt);
+	ClassDB::bind_method(D_METHOD("inputmode", "val"), &_HTMLTag::inputmode);
+	ClassDB::bind_method(D_METHOD("list", "val"), &_HTMLTag::list);
+
+	ClassDB::bind_method(D_METHOD("autocomplete", "val"), &_HTMLTag::autocomplete);
+
+	ClassDB::bind_method(D_METHOD("autocomplete_off"), &_HTMLTag::autocomplete_off);
+	ClassDB::bind_method(D_METHOD("autocomplete_on"), &_HTMLTag::autocomplete_on);
+	ClassDB::bind_method(D_METHOD("autocomplete_name"), &_HTMLTag::autocomplete_name);
+	ClassDB::bind_method(D_METHOD("autocomplete_name_honorific_prefix"), &_HTMLTag::autocomplete_name_honorific_prefix);
+	ClassDB::bind_method(D_METHOD("autocomplete_name_given_name"), &_HTMLTag::autocomplete_name_given_name);
+	ClassDB::bind_method(D_METHOD("autocomplete_name_additional_name"), &_HTMLTag::autocomplete_name_additional_name);
+	ClassDB::bind_method(D_METHOD("autocomplete_name_family_name"), &_HTMLTag::autocomplete_name_family_name);
+	ClassDB::bind_method(D_METHOD("autocomplete_name_honorific_suffix"), &_HTMLTag::autocomplete_name_honorific_suffix);
+	ClassDB::bind_method(D_METHOD("autocomplete_name_nickname"), &_HTMLTag::autocomplete_name_nickname);
+	ClassDB::bind_method(D_METHOD("autocomplete_email"), &_HTMLTag::autocomplete_email);
+
+	ClassDB::bind_method(D_METHOD("autocomplete_username"), &_HTMLTag::autocomplete_username);
+	ClassDB::bind_method(D_METHOD("autocomplete_new_password"), &_HTMLTag::autocomplete_new_password);
+	ClassDB::bind_method(D_METHOD("autocomplete_current_password"), &_HTMLTag::autocomplete_current_password);
+	ClassDB::bind_method(D_METHOD("autocomplete_one_time_code"), &_HTMLTag::autocomplete_one_time_code);
+	ClassDB::bind_method(D_METHOD("autocomplete_organization_title"), &_HTMLTag::autocomplete_organization_title);
+	ClassDB::bind_method(D_METHOD("autocomplete_organization"), &_HTMLTag::autocomplete_organization);
+	ClassDB::bind_method(D_METHOD("autocomplete_street_address"), &_HTMLTag::autocomplete_street_address);
+	ClassDB::bind_method(D_METHOD("autocomplete_address_line1"), &_HTMLTag::autocomplete_address_line1);
+	ClassDB::bind_method(D_METHOD("autocomplete_address_line2"), &_HTMLTag::autocomplete_address_line2);
+	ClassDB::bind_method(D_METHOD("autocomplete_address_line3"), &_HTMLTag::autocomplete_address_line3);
+	ClassDB::bind_method(D_METHOD("autocomplete_address_level_1"), &_HTMLTag::autocomplete_address_level_1);
+	ClassDB::bind_method(D_METHOD("autocomplete_address_level_2"), &_HTMLTag::autocomplete_address_level_2);
+	ClassDB::bind_method(D_METHOD("autocomplete_address_level_3"), &_HTMLTag::autocomplete_address_level_3);
+	ClassDB::bind_method(D_METHOD("autocomplete_address_level_4"), &_HTMLTag::autocomplete_address_level_4);
+
+	ClassDB::bind_method(D_METHOD("autocomplete_country"), &_HTMLTag::autocomplete_country);
+	ClassDB::bind_method(D_METHOD("autocomplete_country_name"), &_HTMLTag::autocomplete_country_name);
+	ClassDB::bind_method(D_METHOD("autocomplete_postal_code"), &_HTMLTag::autocomplete_postal_code);
+	ClassDB::bind_method(D_METHOD("autocomplete_cc_name"), &_HTMLTag::autocomplete_cc_name);
+	ClassDB::bind_method(D_METHOD("autocomplete_cc_given_name"), &_HTMLTag::autocomplete_cc_given_name);
+	ClassDB::bind_method(D_METHOD("autocomplete_cc_additional_name"), &_HTMLTag::autocomplete_cc_additional_name);
+
+	ClassDB::bind_method(D_METHOD("autocomplete_cc_family_name"), &_HTMLTag::autocomplete_cc_family_name);
+	ClassDB::bind_method(D_METHOD("autocomplete_cc_number"), &_HTMLTag::autocomplete_cc_number);
+	ClassDB::bind_method(D_METHOD("autocomplete_cc_exp"), &_HTMLTag::autocomplete_cc_exp);
+	ClassDB::bind_method(D_METHOD("autocomplete_cc_exp_month"), &_HTMLTag::autocomplete_cc_exp_month);
+	ClassDB::bind_method(D_METHOD("autocomplete_cc_exp_year"), &_HTMLTag::autocomplete_cc_exp_year);
+
+	ClassDB::bind_method(D_METHOD("autocomplete_cc_csc"), &_HTMLTag::autocomplete_cc_csc);
+	ClassDB::bind_method(D_METHOD("autocomplete_cc_type"), &_HTMLTag::autocomplete_cc_type);
+	ClassDB::bind_method(D_METHOD("autocomplete_transaction_currency"), &_HTMLTag::autocomplete_transaction_currency);
+	ClassDB::bind_method(D_METHOD("autocomplete_transaction_amount"), &_HTMLTag::autocomplete_transaction_amount);
+
+	ClassDB::bind_method(D_METHOD("autocomplete_language"), &_HTMLTag::autocomplete_language);
+	ClassDB::bind_method(D_METHOD("autocomplete_bday"), &_HTMLTag::autocomplete_bday);
+	ClassDB::bind_method(D_METHOD("autocomplete_bday_day"), &_HTMLTag::autocomplete_bday_day);
+	ClassDB::bind_method(D_METHOD("autocomplete_bday_month"), &_HTMLTag::autocomplete_bday_month);
+
+	ClassDB::bind_method(D_METHOD("autocomplete_bday_year"), &_HTMLTag::autocomplete_bday_year);
+	ClassDB::bind_method(D_METHOD("autocomplete_sex"), &_HTMLTag::autocomplete_sex);
+	ClassDB::bind_method(D_METHOD("autocomplete_tel"), &_HTMLTag::autocomplete_tel);
+	ClassDB::bind_method(D_METHOD("autocomplete_tel_country_code"), &_HTMLTag::autocomplete_tel_country_code);
+	ClassDB::bind_method(D_METHOD("autocomplete_tel_national"), &_HTMLTag::autocomplete_tel_national);
+
+	ClassDB::bind_method(D_METHOD("autocomplete_tel_area_code"), &_HTMLTag::autocomplete_tel_area_code);
+	ClassDB::bind_method(D_METHOD("autocomplete_tel_local"), &_HTMLTag::autocomplete_tel_local);
+	ClassDB::bind_method(D_METHOD("autocomplete_tel_extension"), &_HTMLTag::autocomplete_tel_extension);
+	ClassDB::bind_method(D_METHOD("autocomplete_impp"), &_HTMLTag::autocomplete_impp);
+	ClassDB::bind_method(D_METHOD("autocomplete_url"), &_HTMLTag::autocomplete_url);
+	ClassDB::bind_method(D_METHOD("autocomplete_photo"), &_HTMLTag::autocomplete_photo);
+
+	ClassDB::bind_method(D_METHOD("onclick", "val"), &_HTMLTag::onclick);
+
+	ClassDB::bind_method(D_METHOD("checked", "val"), &_HTMLTag::checked, true);
+	ClassDB::bind_method(D_METHOD("selected", "val"), &_HTMLTag::selected, true);
+	ClassDB::bind_method(D_METHOD("autofocus", "val"), &_HTMLTag::autofocus, true);
+	ClassDB::bind_method(D_METHOD("disabled", "val"), &_HTMLTag::disabled, true);
+	ClassDB::bind_method(D_METHOD("multiple", "val"), &_HTMLTag::multiple, true);
+	ClassDB::bind_method(D_METHOD("required", "val"), &_HTMLTag::required, true);
+	ClassDB::bind_method(D_METHOD("spellcheck", "val"), &_HTMLTag::spellcheck, true);
+
+	ClassDB::bind_method(D_METHOD("max", "val"), &_HTMLTag::max);
+	ClassDB::bind_method(D_METHOD("min", "val"), &_HTMLTag::min);
+	ClassDB::bind_method(D_METHOD("step", "val"), &_HTMLTag::step);
+
+	ClassDB::bind_method(D_METHOD("step_any"), &_HTMLTag::step_any);
+
+	ClassDB::bind_method(D_METHOD("minlength", "val"), &_HTMLTag::minlength);
+	ClassDB::bind_method(D_METHOD("minlengths", "val"), &_HTMLTag::minlengths);
+	ClassDB::bind_method(D_METHOD("maxlength", "val"), &_HTMLTag::maxlength);
+	ClassDB::bind_method(D_METHOD("maxlengths", "val"), &_HTMLTag::maxlengths);
+	ClassDB::bind_method(D_METHOD("size", "val"), &_HTMLTag::size);
+	ClassDB::bind_method(D_METHOD("sizes", "val"), &_HTMLTag::sizes);
+
+	ClassDB::bind_method(D_METHOD("width", "val"), &_HTMLTag::width);
+	ClassDB::bind_method(D_METHOD("widths", "val"), &_HTMLTag::widths);
+	ClassDB::bind_method(D_METHOD("height", "val"), &_HTMLTag::height);
+	ClassDB::bind_method(D_METHOD("heights", "val"), &_HTMLTag::heights);
+
+	ClassDB::bind_method(D_METHOD("pattern", "val"), &_HTMLTag::pattern);
+
+	ClassDB::bind_method(D_METHOD("method", "val"), &_HTMLTag::method);
+
+	ClassDB::bind_method(D_METHOD("method_get"), &_HTMLTag::method_get);
+	ClassDB::bind_method(D_METHOD("method_post"), &_HTMLTag::method_post);
+
+	ClassDB::bind_method(D_METHOD("action", "val"), &_HTMLTag::action);
+	ClassDB::bind_method(D_METHOD("type", "val"), &_HTMLTag::type);
+	ClassDB::bind_method(D_METHOD("placeholder", "val"), &_HTMLTag::placeholder);
+	ClassDB::bind_method(D_METHOD("fora", "val"), &_HTMLTag::fora);
+
+	ClassDB::bind_method(D_METHOD("rel", "val"), &_HTMLTag::rel);
+
+	ClassDB::bind_method(D_METHOD("rel_stylesheet"), &_HTMLTag::rel_stylesheet);
+	ClassDB::bind_method(D_METHOD("rel_alternate"), &_HTMLTag::rel_alternate);
+	ClassDB::bind_method(D_METHOD("rel_author"), &_HTMLTag::rel_author);
+	ClassDB::bind_method(D_METHOD("rel_bookmark"), &_HTMLTag::rel_bookmark);
+	ClassDB::bind_method(D_METHOD("rel_external"), &_HTMLTag::rel_external);
+	ClassDB::bind_method(D_METHOD("rel_help"), &_HTMLTag::rel_help);
+	ClassDB::bind_method(D_METHOD("rel_license"), &_HTMLTag::rel_license);
+
+	ClassDB::bind_method(D_METHOD("rel_next"), &_HTMLTag::rel_next);
+	ClassDB::bind_method(D_METHOD("rel_nofollow"), &_HTMLTag::rel_nofollow);
+	ClassDB::bind_method(D_METHOD("rel_noopener"), &_HTMLTag::rel_noopener);
+	ClassDB::bind_method(D_METHOD("rel_noreferrer"), &_HTMLTag::rel_noreferrer);
+	ClassDB::bind_method(D_METHOD("rel_prev"), &_HTMLTag::rel_prev);
+	ClassDB::bind_method(D_METHOD("rel_search"), &_HTMLTag::rel_search);
+	ClassDB::bind_method(D_METHOD("rel_tag"), &_HTMLTag::rel_tag);
+
+	ClassDB::bind_method(D_METHOD("charset", "val"), &_HTMLTag::charset);
+	ClassDB::bind_method(D_METHOD("charset_utf_8"), &_HTMLTag::charset_utf_8);
+
+	ClassDB::bind_method(D_METHOD("itbutton"), &_HTMLTag::itbutton);
+	ClassDB::bind_method(D_METHOD("itcheckbox"), &_HTMLTag::itcheckbox);
+	ClassDB::bind_method(D_METHOD("itcolor"), &_HTMLTag::itcolor);
+	ClassDB::bind_method(D_METHOD("itdate"), &_HTMLTag::itdate);
+	ClassDB::bind_method(D_METHOD("itdatetime_local"), &_HTMLTag::itdatetime_local);
+	ClassDB::bind_method(D_METHOD("itemail"), &_HTMLTag::itemail);
+	ClassDB::bind_method(D_METHOD("itfile"), &_HTMLTag::itfile);
+	ClassDB::bind_method(D_METHOD("ithidden"), &_HTMLTag::ithidden);
+	ClassDB::bind_method(D_METHOD("itimage"), &_HTMLTag::itimage);
+
+	ClassDB::bind_method(D_METHOD("itmonth"), &_HTMLTag::itmonth);
+	ClassDB::bind_method(D_METHOD("itnumber"), &_HTMLTag::itnumber);
+	ClassDB::bind_method(D_METHOD("itpassword"), &_HTMLTag::itpassword);
+	ClassDB::bind_method(D_METHOD("itradio"), &_HTMLTag::itradio);
+	ClassDB::bind_method(D_METHOD("itrange"), &_HTMLTag::itrange);
+
+	ClassDB::bind_method(D_METHOD("itreset"), &_HTMLTag::itreset);
+	ClassDB::bind_method(D_METHOD("itsearch"), &_HTMLTag::itsearch);
+	ClassDB::bind_method(D_METHOD("itsubmit"), &_HTMLTag::itsubmit);
+	ClassDB::bind_method(D_METHOD("ittel"), &_HTMLTag::ittel);
+	ClassDB::bind_method(D_METHOD("ittext"), &_HTMLTag::ittext);
+
+	ClassDB::bind_method(D_METHOD("ittime"), &_HTMLTag::ittime);
+	ClassDB::bind_method(D_METHOD("iturl"), &_HTMLTag::iturl);
+	ClassDB::bind_method(D_METHOD("itweek"), &_HTMLTag::itweek);
+
+	ClassDB::bind_method(D_METHOD("inputmode_none"), &_HTMLTag::inputmode_none);
+	ClassDB::bind_method(D_METHOD("inputmode_text"), &_HTMLTag::inputmode_text);
+	ClassDB::bind_method(D_METHOD("inputmode_decimal"), &_HTMLTag::inputmode_decimal);
+	ClassDB::bind_method(D_METHOD("inputmode_numeric"), &_HTMLTag::inputmode_numeric);
+	ClassDB::bind_method(D_METHOD("inputmode_tel"), &_HTMLTag::inputmode_tel);
+	ClassDB::bind_method(D_METHOD("inputmode_search"), &_HTMLTag::inputmode_search);
+	ClassDB::bind_method(D_METHOD("inputmode_email"), &_HTMLTag::inputmode_email);
+	ClassDB::bind_method(D_METHOD("inputmode_url"), &_HTMLTag::inputmode_url);
+
+	ClassDB::bind_method(D_METHOD("attrib", "attr", "val"), &_HTMLTag::attrib);
+
+	ClassDB::bind_method(D_METHOD("start", "new_tag", "simple"), &_HTMLTag::start, false);
+
+	ClassDB::bind_method(D_METHOD("reset"), &_HTMLTag::reset);
+	ClassDB::bind_method(D_METHOD("close"), &_HTMLTag::close);
+
+	ClassDB::bind_method(D_METHOD("f"), &_HTMLTag::f);
+
+	ClassDB::bind_method(D_METHOD("has_data"), &_HTMLTag::has_data);
 }
 
 String _HTMLBuilder::get_result() {
@@ -2923,15 +3121,15 @@ Ref<_HTMLTag> _HTMLBuilder::input_password(const String &name, const String &val
 	}
 
 	if (minlength != "") {
-		tag->minlength(minlength);
+		tag->minlengths(minlength);
 	}
 
 	if (maxlength != "") {
-		tag->maxlength(maxlength);
+		tag->maxlengths(maxlength);
 	}
 
 	if (size != "") {
-		tag->size(size);
+		tag->sizes(size);
 	}
 
 	return tag;
@@ -3047,15 +3245,15 @@ Ref<_HTMLTag> _HTMLBuilder::input_search(const String &name, const String &value
 	}
 
 	if (minlength != "") {
-		tag->minlength(minlength);
+		tag->minlengths(minlength);
 	}
 
 	if (maxlength != "") {
-		tag->maxlength(maxlength);
+		tag->maxlengths(maxlength);
 	}
 
 	if (size != "") {
-		tag->size(size);
+		tag->sizes(size);
 	}
 
 	if (pattern != "") {
@@ -3111,15 +3309,15 @@ Ref<_HTMLTag> _HTMLBuilder::input_tel(const String &name, const String &value, c
 	}
 
 	if (minlength != "") {
-		tag->minlength(minlength);
+		tag->minlengths(minlength);
 	}
 
 	if (maxlength != "") {
-		tag->maxlength(maxlength);
+		tag->maxlengths(maxlength);
 	}
 
 	if (size != "") {
-		tag->size(size);
+		tag->sizes(size);
 	}
 
 	if (pattern != "") {
@@ -3155,15 +3353,15 @@ Ref<_HTMLTag> _HTMLBuilder::input_text(const String &name, const String &value, 
 	}
 
 	if (minlength != "") {
-		tag->minlength(minlength);
+		tag->minlengths(minlength);
 	}
 
 	if (maxlength != "") {
-		tag->maxlength(maxlength);
+		tag->maxlengths(maxlength);
 	}
 
 	if (size != "") {
-		tag->size(size);
+		tag->sizes(size);
 	}
 
 	return tag;
@@ -3227,15 +3425,15 @@ Ref<_HTMLTag> _HTMLBuilder::input_url(const String &name, const String &value, c
 	}
 
 	if (minlength != "") {
-		tag->minlength(minlength);
+		tag->minlengths(minlength);
 	}
 
 	if (maxlength != "") {
-		tag->maxlength(maxlength);
+		tag->maxlengths(maxlength);
 	}
 
 	if (size != "") {
-		tag->size(size);
+		tag->sizes(size);
 	}
 
 	return tag;

@@ -106,16 +106,16 @@ public:
 	Ref<_HTMLTag> step_any();
 
 	Ref<_HTMLTag> minlength(const int val);
-	Ref<_HTMLTag> minlength(const String &val);
+	Ref<_HTMLTag> minlengths(const String &val);
 	Ref<_HTMLTag> maxlength(const int val);
-	Ref<_HTMLTag> maxlength(const String &val);
+	Ref<_HTMLTag> maxlengths(const String &val);
 	Ref<_HTMLTag> size(const int val);
-	Ref<_HTMLTag> size(const String &val);
+	Ref<_HTMLTag> sizes(const String &val);
 
 	Ref<_HTMLTag> width(const int val);
-	Ref<_HTMLTag> width(const String &val);
+	Ref<_HTMLTag> widths(const String &val);
 	Ref<_HTMLTag> height(const int val);
-	Ref<_HTMLTag> height(const String &val);
+	Ref<_HTMLTag> heights(const String &val);
 
 	Ref<_HTMLTag> pattern(const String &val);
 
