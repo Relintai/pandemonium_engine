@@ -852,6 +852,13 @@ void _HTMLTag::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("style", "val"), &_HTMLTag::style);
 }
 
+String _HTMLBuilder::get_result() {
+	return result;
+}
+void _HTMLBuilder::set_result(const String &str) {
+	result = str;
+}
+
 Ref<_HTMLBuilder> _HTMLBuilder::comment(const String &val) {
 	write_tag();
 

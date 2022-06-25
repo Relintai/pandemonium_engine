@@ -198,7 +198,8 @@ class _HTMLBuilder : public Reference {
 	GDCLASS(_HTMLBuilder, Reference)
 
 public:
-	String result;
+	String get_result();
+	void set_result(const String &str);
 
 	Ref<_HTMLBuilder> comment(const String &val);
 	Ref<_HTMLTag> doctype();
@@ -552,6 +553,8 @@ public:
 
 	_HTMLBuilder();
 	virtual ~_HTMLBuilder();
+
+	String result;
 
 protected:
 	static void _bind_methods();
