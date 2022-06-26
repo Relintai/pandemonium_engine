@@ -13,6 +13,7 @@ def get_doc_classes():
     return [
         #"WorldArea",
 
+        "HTTPServerEnums",
         "HTMLBuilder",
         "HTMLTag",
     ]

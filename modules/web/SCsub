@@ -8,6 +8,8 @@ sources = [
 
     "register_types.cpp",
 
+    "http/http_server_enums.cpp",
+
     "html/html_builder_bind.cpp",
 ]
 
