@@ -1,7 +1,7 @@
 #ifndef WEB_SERVER_REQUEST_H
 #define WEB_SERVER_REQUEST_H
 
-#include "core/hash_map.h"
+#include "core/dictionary.h"
 #include "core/ustring.h"
 #include "core/vector.h"
 
@@ -19,29 +19,34 @@ class WebServerRequest : public Reference {
 	GDCLASS(WebServerRequest, Reference);
 
 public:
-	WebServer *server;
+	String get_head();
+	void set_head(const String &val);
 
-	String head;
-	String body;
-	String footer;
-	String compiled_body;
+	String get_body();
+	void set_body(const String &val);
 
-	String file_path;
-	long file_size;
-	long current_file_progress;
-	long file_chunk_size;
-	bool file_next;
+	String get_footer();
+	void set_footer(const String &val);
 
-	bool connection_closed;
+	String get_compiled_body();
+	void set_compiled_body(const String &val);
 
-	Ref<HTTPSession> session;
-	HashMap<String, Object *> data;
-	HashMap<String, Ref<Reference>> reference_data;
+	bool get_connection_closed();
+	void set_connection_closed(const bool &val);
+
+	Ref<HTTPSession> get_session();
+	void set_session(const Ref<HTTPSession> &val);
+
+	Dictionary get_data();
+	void set_data(const Dictionary &val);
+
+	Ref<WebPermission> get_active_permission();
+	void set_active_permission(const Ref<WebPermission> &val);
+
+	int get_permissions();
+	void set_permissions(const int &val);
 
 	Ref<HTTPSession> get_or_create_session();
-
-	Ref<WebPermission> active_permission;
-	int permissions;
 
 	bool can_view() const;
 	bool can_create() const;
@@ -57,7 +62,7 @@ public:
 	virtual void add_cookie(const ::WebServerCookie &cookie);
 	virtual void remove_cookie(const String &key);
 
-	virtual HTTPMethod get_method() const;
+	virtual HTTPServerEnums::HTTPMethod get_method() const;
 
 	virtual void parse_files();
 	virtual int get_file_count() const;
@@ -66,25 +71,24 @@ public:
 
 	virtual const String get_parameter(const String &key) const;
 
-	HTTPStatusCode get_status_code() const;
-	void set_status_code(const HTTPStatusCode status_code);
+	HTTPServerEnums::HTTPStatusCode get_status_code() const;
+	void set_status_code(const HTTPServerEnums::HTTPStatusCode status_code);
 
-	virtual void send_redirect(const String &location, const HTTPStatusCode status_code = HTTP_STATUS_CODE_302_FOUND);
+	virtual void send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code = HTTPServerEnums::HTTP_STATUS_CODE_302_FOUND);
 	virtual void compile_body();
 	virtual void compile_and_send_body();
 	virtual void send();
 	virtual void send_file(const String &p_file_path);
 	virtual void send_error(int error_code);
-	virtual void reset();
 	virtual String parser_get_path();
 	virtual String get_host() const;
 
 	void setup_url_stack();
 	String get_path(const bool beginning_slash = false, const bool end_slash = true) const;
-	virtual const String &get_path_full() const;
-	const String &get_path_segment(const uint32_t i) const;
-	const String &get_current_path_segment() const;
-	const String &get_next_path_segment() const;
+	virtual String get_path_full() const;
+	String get_path_segment(const uint32_t i) const;
+	String get_current_path_segment() const;
+	String get_next_path_segment() const;
 	uint32_t get_path_segment_count() const;
 	uint32_t get_current_segment_index() const;
 	uint32_t get_remaining_segment_count() const;
@@ -96,18 +100,37 @@ public:
 	String get_url_root_current() const;
 	String get_url_site() const;
 
-	String get_url_root_parent(const String &add) const;
-	String get_url_root(const String &add) const;
-	String get_url_site(const String &add) const;
+	String get_url_root_parent_add(const String &add) const;
+	String get_url_root_add(const String &add) const;
+	String get_url_site_add(const String &add) const;
 
 	virtual void update();
-	virtual void pool();
+
+	WebServer *get_server();
+	Node *get_server_bind();
 
 	WebServerRequest();
-	virtual ~WebServerRequest();
+	~WebServerRequest();
+
+	WebServer *server;
+
+	String head;
+	String body;
+	String footer;
+	String compiled_body;
+
+	bool connection_closed;
+
+	Ref<HTTPSession> session;
+	Dictionary data;
+
+	Ref<WebPermission> active_permission;
+	int permissions;
 
 protected:
-	HTTPStatusCode _status_code;
+	static void _bind_methods();
+
+	HTTPServerEnums::HTTPStatusCode _status_code;
 	String _full_path;
 	Vector<String> _path_stack;
 	uint32_t _path_stack_pointer;
