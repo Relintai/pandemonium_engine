@@ -8,8 +8,8 @@
 
 class Request;
 
-class CSRFTokenMiddleware : public Middleware {
-	RCPP_OBJECT(CSRFTokenMiddleware, Middleware);
+class CSRFTokenWebServerMiddleware : public WebServerMiddleware {
+	RCPP_OBJECT(CSRFTokenWebServerMiddleware, WebServerMiddleware);
 
 public:
 	//returnring true means handled, false means continue
@@ -19,8 +19,8 @@ public:
 
 	virtual String create_token();
 
-	CSRFTokenMiddleware();
-	~CSRFTokenMiddleware();
+	CSRFTokenWebServerMiddleware();
+	~CSRFTokenWebServerMiddleware();
 
 	Vector<String> ignored_urls;
 };

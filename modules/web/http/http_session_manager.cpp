@@ -62,7 +62,6 @@ void SessionManager::delete_session(const String &session_id) {
 		Ref<HTTPSession> sess = _sessions_vec[i];
 
 		if (sess->session_id == session_id) {
-
 			_sessions_vec[i] = _sessions_vec[_sessions_vec.size() - 1];
 			_sessions_vec.pop_back();
 
@@ -131,7 +130,6 @@ Ref<HTTPSession> SessionManager::create_session() {
 		_mutex.lock();
 
 		if (_sessions[session->session_id] == nullptr) {
-
 			_sessions_vec.push_back(session);
 			_sessions[session->session_id] = session;
 
@@ -269,7 +267,6 @@ SessionManager *SessionManager::get_singleton() {
 
 SessionManager::SessionManager() :
 		Object() {
-
 	if (_self) {
 		printf("SessionManager::SessionManager(): Error! self is not null!/n");
 	}
@@ -291,7 +288,7 @@ SessionManager *SessionManager::_self = nullptr;
 String SessionManager::_table_name = "sessions";
 String SessionManager::_data_table_name = "session_data";
 
-bool SessionSetupMiddleware::on_before_handle_request_main(Request *request) {
+bool SessionSetupWebServerMiddleware::on_before_handle_request_main(Request *request) {
 	const String sid = request->get_cookie("session_id");
 
 	if (sid == "") {
@@ -309,7 +306,7 @@ bool SessionSetupMiddleware::on_before_handle_request_main(Request *request) {
 	return false;
 }
 
-SessionSetupMiddleware::SessionSetupMiddleware() {
+SessionSetupWebServerMiddleware::SessionSetupWebServerMiddleware() {
 }
-SessionSetupMiddleware::~SessionSetupMiddleware() {
+SessionSetupWebServerMiddleware::~SessionSetupWebServerMiddleware() {
 }

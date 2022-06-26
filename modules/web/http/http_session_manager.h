@@ -1,8 +1,8 @@
 #ifndef SESSION_MANAGER_H
 #define SESSION_MANAGER_H
 
-#include "core/string.h"
 #include "core/containers/vector.h"
+#include "core/string.h"
 #include "core/threading/mutex.h"
 #include <map>
 
@@ -50,15 +50,15 @@ protected:
 	static String _data_table_name;
 };
 
-class SessionSetupMiddleware : public Middleware {
-	RCPP_OBJECT(SessionSetupMiddleware, Middleware);
+class SessionSetupWebServerMiddleware : public WebServerMiddleware {
+	RCPP_OBJECT(SessionSetupWebServerMiddleware, WebServerMiddleware);
 
 public:
 	//returnring true means handled, false means continue
 	bool on_before_handle_request_main(Request *request);
 
-	SessionSetupMiddleware();
-	~SessionSetupMiddleware();
+	SessionSetupWebServerMiddleware();
+	~SessionSetupWebServerMiddleware();
 };
 
 #endif

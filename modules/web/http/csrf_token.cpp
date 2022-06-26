@@ -5,13 +5,12 @@
 #include "request.h"
 #include <time.h>
 
-bool CSRFTokenMiddleware::on_before_handle_request_main(Request *request) {
+bool CSRFTokenWebServerMiddleware::on_before_handle_request_main(Request *request) {
 	switch (request->get_method()) {
 		case HTTP_METHOD_POST:
 		case HTTP_METHOD_DELETE:
 		case HTTP_METHOD_PATCH:
 		case HTTP_METHOD_PUT: {
-
 			if (shold_ignore(request)) {
 				return false;
 			}
@@ -44,7 +43,7 @@ bool CSRFTokenMiddleware::on_before_handle_request_main(Request *request) {
 	return false;
 }
 
-bool CSRFTokenMiddleware::shold_ignore(Request *request) {
+bool CSRFTokenWebServerMiddleware::shold_ignore(Request *request) {
 	const String &path = request->get_path_full();
 
 	for (int i = 0; i < ignored_urls.size(); ++i) {
@@ -56,7 +55,7 @@ bool CSRFTokenMiddleware::shold_ignore(Request *request) {
 	return false;
 }
 
-String CSRFTokenMiddleware::create_token() {
+String CSRFTokenWebServerMiddleware::create_token() {
 	Ref<SHA256> h = SHA256::get();
 
 	String s = h->compute(String::num(time(NULL)));
@@ -64,7 +63,7 @@ String CSRFTokenMiddleware::create_token() {
 	return s.substr(0, 10);
 }
 
-CSRFTokenMiddleware::CSRFTokenMiddleware() {
+CSRFTokenWebServerMiddleware::CSRFTokenWebServerMiddleware() {
 }
-CSRFTokenMiddleware::~CSRFTokenMiddleware() {
+CSRFTokenWebServerMiddleware::~CSRFTokenWebServerMiddleware() {
 }

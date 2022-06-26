@@ -24,34 +24,34 @@ void WebRoot::setup_error_handlers() {
 }
 
 void WebRoot::setup_middleware() {
-	// Middlewares get processed in the order they are in the _middlewares array
+	// WebServerMiddlewares get processed in the order they are in the _middlewares array
 
 	// -------        Built in middleware selection        -------
 
-	// ---   SessionSetupMiddleware   ---
+	// ---   SessionSetupWebServerMiddleware   ---
 	// If you want sessions add this to your inherited class.
 	// (#include "web/http/session_manager.h")
 
-	// _middlewares.push_back(Ref<SessionSetupMiddleware>(new SessionSetupMiddleware()));
+	// _middlewares.push_back(Ref<SessionSetupWebServerMiddleware>(new SessionSetupWebServerMiddleware()));
 
-	// ---   UserSessionSetupMiddleware   ---
+	// ---   UserSessionSetupWebServerMiddleware   ---
 	// This one looks up users based on sessions
 	// (#include "web_modules/users/user_controller.h")
 
-	// _middlewares.push_back(Ref<UserSessionSetupMiddleware>(new UserSessionSetupMiddleware()));
+	// _middlewares.push_back(Ref<UserSessionSetupWebServerMiddleware>(new UserSessionSetupWebServerMiddleware()));
 
-	// ---   RBACUserSessionSetupMiddleware / RBACDefaultUserSessionSetupMiddleware   ---
+	// ---   RBACUserSessionSetupWebServerMiddleware / RBACDefaultUserSessionSetupWebServerMiddleware   ---
 	// Same as the previous, but if you want the RBAC system to work use one of these
-	// UserSessionSetupMiddleware is not needed if you need these
+	// UserSessionSetupWebServerMiddleware is not needed if you need these
 	// (#include "web_modules/rbac_users/rbac_user_controller.h")
 
-	// _middlewares.push_back(Ref<RBACUserSessionSetupMiddleware>(new RBACUserSessionSetupMiddleware()));
-	// _middlewares.push_back(Ref<RBACDefaultUserSessionSetupMiddleware>(new RBACDefaultUserSessionSetupMiddleware()));
+	// _middlewares.push_back(Ref<RBACUserSessionSetupWebServerMiddleware>(new RBACUserSessionSetupWebServerMiddleware()));
+	// _middlewares.push_back(Ref<RBACDefaultUserSessionSetupWebServerMiddleware>(new RBACDefaultUserSessionSetupWebServerMiddleware()));
 
 	// ---   CSRF Token Middlweare    ---
 	// (#include "web/http/csrf_token.h")
 
-	// Ref<CSRFTokenMiddleware> csrf_middleware;
+	// Ref<CSRFTokenWebServerMiddleware> csrf_middleware;
 	// csrf_middleware.instance();
 	// csrf_middleware->ignored_urls.push_back("/user/login");
 	// csrf_middleware->ignored_urls.push_back("/user/register");

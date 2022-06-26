@@ -7,15 +7,15 @@
 
 class Request;
 
-class Middleware : public Reference {
-	RCPP_OBJECT(Middleware, Reference);
+class WebServerMiddleware : public Reference {
+	RCPP_OBJECT(WebServerMiddleware, Reference);
 
 public:
 	//returnring true means handled, false, means continue
 	virtual bool on_before_handle_request_main(Request *request);
 
-	Middleware();
-	~Middleware();
+	WebServerMiddleware();
+	~WebServerMiddleware();
 };
 
 #endif

@@ -85,7 +85,7 @@ const String WebServerRequest::get_cookie(const String &key) {
 	return str;
 }
 
-void WebServerRequest::add_cookie(const ::Cookie &cookie) {
+void WebServerRequest::add_cookie(const ::WebServerCookie &cookie) {
 }
 
 void WebServerRequest::remove_cookie(const String &key) {

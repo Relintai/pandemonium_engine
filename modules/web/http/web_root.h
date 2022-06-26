@@ -2,10 +2,10 @@
 #define WEB_ROOT_H
 
 #include "core/containers/vector.h"
+#include "core/string.h"
 #include "mutex"
 #include <functional>
 #include <map>
-#include "core/string.h"
 
 #include "web_node.h"
 
@@ -46,9 +46,9 @@ public:
 	virtual ~WebRoot();
 
 public:
-	Vector<Ref<Middleware> > _middlewares;
+	Vector<Ref<WebServerMiddleware>> _middlewares;
 
-	std::map<int, std::function<void(Request *, int)> > error_handler_map;
+	std::map<int, std::function<void(Request *, int)>> error_handler_map;
 	std::function<void(Request *, int)> default_error_handler_func;
 
 protected:

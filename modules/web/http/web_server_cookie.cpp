@@ -1,7 +1,7 @@
 
 #include "cookie.h"
 
-Cookie::Cookie(const String &p_key, const String &p_value) {
+WebServerCookie::WebServerCookie(const String &p_key, const String &p_value) {
 	http_only = true;
 	secure = false;
 
@@ -9,10 +9,10 @@ Cookie::Cookie(const String &p_key, const String &p_value) {
 	value = p_value;
 }
 
-Cookie::Cookie() {
+WebServerCookie::WebServerCookie() {
 	http_only = true;
 	secure = false;
 }
 
-Cookie::~Cookie() {
+WebServerCookie::~WebServerCookie() {
 }

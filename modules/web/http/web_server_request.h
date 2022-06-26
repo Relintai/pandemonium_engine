@@ -1,12 +1,9 @@
 #ifndef WEB_SERVER_REQUEST_H
 #define WEB_SERVER_REQUEST_H
 
+#include "core/hash_map.h"
 #include "core/ustring.h"
 #include "core/vector.h"
-
-#include <map>
-#include <mutex>
-#include <vector>
 
 #include "core/object.h"
 #include "core/reference.h"
@@ -14,11 +11,13 @@
 #include "http_enums.h"
 
 class WebServer;
-class Cookie;
+class WebServerCookie;
 class HTTPSession;
 class WebPermission;
 
-class WebServerRequest {
+class WebServerRequest : public Reference {
+	GDCLASS(WebServerRequest, Reference);
+
 public:
 	WebServer *server;
 
@@ -36,8 +35,8 @@ public:
 	bool connection_closed;
 
 	Ref<HTTPSession> session;
-	std::map<String, Object *> data;
-	std::map<String, Ref<Reference>> reference_data;
+	HashMap<String, Object *> data;
+	HashMap<String, Ref<Reference>> reference_data;
 
 	Ref<HTTPSession> get_or_create_session();
 
@@ -55,7 +54,7 @@ public:
 	bool validate_csrf_token();
 
 	virtual const String get_cookie(const String &key);
-	virtual void add_cookie(const ::Cookie &cookie);
+	virtual void add_cookie(const ::WebServerCookie &cookie);
 	virtual void remove_cookie(const String &key);
 
 	virtual HTTPMethod get_method() const;

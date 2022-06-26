@@ -3,7 +3,7 @@
 
 #include "core/string.h"
 
-class Cookie {
+class WebServerCookie {
 public:
 	//todo date
 	String domain;
@@ -13,9 +13,9 @@ public:
 	bool http_only;
 	bool secure;
 
-	Cookie();
-	Cookie(const String &p_key, const String &p_value);
-	~Cookie();
+	WebServerCookie();
+	WebServerCookie(const String &p_key, const String &p_value);
+	~WebServerCookie();
 };
 
 #endif
