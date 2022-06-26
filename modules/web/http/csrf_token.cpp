@@ -6,6 +6,13 @@
 #include "http_session.h"
 #include "web_server_request.h"
 
+PoolStringArray CSRFTokenWebServerMiddleware::get_ignored_urls() {
+	return ignored_urls;
+}
+void CSRFTokenWebServerMiddleware::set_ignored_urls(const PoolStringArray &val) {
+	ignored_urls = val;
+}
+
 bool CSRFTokenWebServerMiddleware::_on_before_handle_request_main(Ref<WebServerRequest> request) {
 	switch (request->get_method()) {
 		case HTTPServerEnums::HTTP_METHOD_POST:
@@ -68,4 +75,9 @@ CSRFTokenWebServerMiddleware::~CSRFTokenWebServerMiddleware() {
 }
 
 void CSRFTokenWebServerMiddleware::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_ignored_urls"), &CSRFTokenWebServerMiddleware::get_ignored_urls);
+	ClassDB::bind_method(D_METHOD("set_ignored_urls", "val"), &CSRFTokenWebServerMiddleware::set_ignored_urls);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_STRING_ARRAY, "ignored_urls"), "set_ignored_urls", "get_ignored_urls");
+
+	ClassDB::bind_method(D_METHOD("create_token"), &CSRFTokenWebServerMiddleware::create_token);
 }
