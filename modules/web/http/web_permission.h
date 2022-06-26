@@ -1,14 +1,15 @@
 #ifndef WEB_PERMISSION_H
 #define WEB_PERMISSION_H
 
-#include "core/string.h"
+#include "core/ustring.h"
+#include "core/variant.h"
 
 #include "core/reference.h"
 
-class Request;
+class WebServerRequest;
 
 class WebPermission : public Reference {
-	RCPP_OBJECT(WebPermission, Reference);
+	GDCLASS(WebPermission, Reference);
 
 public:
 	enum WebPermissions {
@@ -22,12 +23,21 @@ public:
 	};
 
 	//like in middlewate returns whether it handled the request or not
-	virtual bool activate(Request *request);
-	virtual int _get_permissions(Request *request);
-	virtual void handle_view_permission_missing(Request *request);
+	bool activate(const Ref<WebServerRequest> &request);
+	int get_permissions(const Ref<WebServerRequest> &request);
+	void handle_view_permission_missing(const Ref<WebServerRequest> &request);
+
+	virtual bool _activate(Ref<WebServerRequest> request);
+	virtual int _get_permissions(Ref<WebServerRequest> request);
+	virtual void _handle_view_permission_missing(Ref<WebServerRequest> request);
 
 	WebPermission();
 	~WebPermission();
+
+protected:
+	static void _bind_methods();
 };
+
+VARIANT_ENUM_CAST(WebPermission::WebPermissions);
 
 #endif

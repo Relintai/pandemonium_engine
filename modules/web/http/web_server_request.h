@@ -8,7 +8,7 @@
 #include "core/object.h"
 #include "core/reference.h"
 
-#include "http_enums.h"
+#include "http_server_enums.h"
 
 class WebServer;
 class WebServerCookie;
