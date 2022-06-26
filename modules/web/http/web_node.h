@@ -1,13 +1,15 @@
 #ifndef WEB_NODE_H
 #define WEB_NODE_H
 
-#include "core/nodes/node.h"
+#include "core/hash_map.h"
 #include "core/reference.h"
 #include "core/variant.h"
-#include <map>
+#include "scene/main/node.h"
 
-class Request;
+class WebServerRequest;
+#if WEB_SETTINGS_ENABLED
 class Settings;
+#endif
 class WebServer;
 class WebPermission;
 
@@ -17,31 +19,33 @@ class TableBuilder;
 class QueryBuilder;
 #endif
 
-//note add an alterative queue_delete() -> (with different name) -> if called node stops getting routed to, and when rwlock can be locked gets queue_deleted.
+//note add an alterative queue_delete() -> (with different name) -> if called node tells parent to stop getting routed to, and when rwlock can be locked gets queue_deleted.
 
 class WebNode : public Node {
-	RCPP_OBJECT(WebNode, Node);
+	GDCLASS(WebNode, Node);
 
 public:
 	enum {
-		//todo likely needs a different constant number
-		NOTIFICATION_SERVER_TREE_WRITE_LOCKED = 2000,
+		NOTIFICATION_WEB_TREE_WRITE_LOCKED = 2000,
 	};
 
 	String get_uri_segment();
 	void set_uri_segment(const String &val);
 
-	virtual String get_full_uri(const bool slash_at_the_end = true);
-	virtual String get_full_uri_parent(const bool slash_at_the_end = true);
+	String get_full_uri(const bool slash_at_the_end = true);
+	String get_full_uri_parent(const bool slash_at_the_end = true);
 
+	//Maybe this settings class could be a resource, also it needs a new name
+#if WEB_SETTINGS_ENABLED
 	Settings *get_settings();
 	void set_settings(Settings *settings);
+#endif
 
 	Ref<WebPermission> get_web_permission();
 	void set_web_permission(const Ref<WebPermission> &wp);
 
-	virtual bool get_routing_enabled();
-	virtual void set_routing_enabled(const bool value);
+	bool get_routing_enabled();
+	void set_routing_enabled(const bool value);
 
 #ifdef DATABASES_ENABLED
 	Database *get_database();
@@ -50,44 +54,65 @@ public:
 	void set_database(Database *db);
 #endif
 
-	virtual void handle_request_main(Request *request);
-	virtual void _handle_request_main(Request *request);
-	virtual void handle_error_send_request(Request *request, const int error_code);
+	void handle_request_main(Ref<WebServerRequest> request);
+	virtual void _handle_request_main(Ref<WebServerRequest> request);
 
-	virtual void render_index(Request *request);
-	virtual void render_preview(Request *request);
+	void handle_request(Ref<WebServerRequest> request);
+	virtual void _handle_request(Ref<WebServerRequest> request);
 
-	virtual void render_menu(Request *request);
-	virtual void _render_menu(Request *request);
+	void handle_error_send_request(Ref<WebServerRequest> request, const int error_code);
+	virtual void _handle_error_send_request(Ref<WebServerRequest> request, const int error_code);
 
-	virtual void create_validators();
+	void render_index(Ref<WebServerRequest> request);
+	void render_preview(Ref<WebServerRequest> request);
+	void render_menu(Ref<WebServerRequest> request);
+	void render_main_menu(Ref<WebServerRequest> request);
 
-	virtual void create_table();
-	virtual void drop_table();
-	virtual void udpate_table();
-	virtual void create_default_entries();
+	virtual void _render_index(Ref<WebServerRequest> request);
+	virtual void _render_preview(Ref<WebServerRequest> request);
+	virtual void _render_menu(Ref<WebServerRequest> request);
+	virtual void _render_main_menu(Ref<WebServerRequest> request);
 
-	virtual void migrate(const bool clear, const bool seed);
+	void create_table();
+	void drop_table();
+	void udpate_table();
+	void create_default_entries();
+
+	virtual void _create_table();
+	virtual void _drop_table();
+	virtual void _udpate_table();
+	virtual void _create_default_entries();
+
+	void migrate(const bool clear, const bool seed);
 	virtual void _migrate(const bool clear, const bool seed);
 
-	bool try_route_request_to_children(Request *request);
-	WebNode *get_request_handler_child(Request *request);
+	bool try_route_request_to_children(Ref<WebServerRequest> request);
+	WebNode *get_request_handler_child(Ref<WebServerRequest> request);
 	void build_handler_map();
 	void clear_handlers();
 
+	void request_write_lock();
+
 	WebServer *get_server();
-	WebNode *get_root();
+	WebNode *get_web_root();
 	WebNode *get_parent_webnode();
 
-	void _notification(const int what);
+	void add_child_notify(Node *p_child);
+	void remove_child_notify(Node *p_child);
 
 	WebNode();
 	~WebNode();
 
 protected:
+	void _notification(const int what);
+
+	static void _bind_methods();
+
 	String _uri_segment;
 
+#if WEB_SETTINGS_ENABLED
 	Settings *_settings;
+#endif
 
 #ifdef DATABASES_ENABLED
 	Database *_database;
@@ -95,9 +120,12 @@ protected:
 
 	bool _routing_enabled;
 	WebNode *_index_node;
-	std::map<String, WebNode *> _node_route_map;
+	HashMap<String, WebNode *> _node_route_map;
 
 	Ref<WebPermission> _web_permission;
+
+	bool _write_lock_requested;
+	RWLock _rw_lock;
 };
 
 #endif

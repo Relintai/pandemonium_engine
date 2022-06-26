@@ -1,12 +1,18 @@
 
 #include "web_node.h"
 
-#include "http_enums.h"
-#include "request.h"
+#include "core/error_macros.h"
 
+#include "core/object.h"
+#include "http_server_enums.h"
+#include "web_server_request.h"
+
+#if WEB_SETTINGS_ENABLED
 #include "core/settings/settings.h"
-#include "web/http/web_server.h"
+#endif
+
 #include "web_permission.h"
+#include "web_server.h"
 
 #ifdef DATABASES_ENABLED
 #include "database/database.h"
@@ -18,19 +24,6 @@
 
 /*
 void WebNode::update() {
-	if (!_root_node) {
-		return;
-	}
-
-	_root_node->notification(Node::NOTIFICATION_UPDATE);
-
-	if (_write_lock_requested) {
-		_rw_lock.write_lock();
-		_root_node->notification(Node::NOTIFICATION_TREE_WRITE_LOCKED);
-		_rw_lock.write_unlock();
-
-		_write_lock_requested = false;
-	}
 }
 */
 
@@ -43,18 +36,19 @@ void WebNode::set_uri_segment(const String &val) {
 
 String WebNode::get_full_uri(const bool slash_at_the_end) {
 	if (slash_at_the_end) {
-		return get_full_uri_parent(true) + _uri_segment + '/';
+		return get_full_uri_parent(true) + _uri_segment + "/";
 	} else {
 		return get_full_uri_parent(true) + _uri_segment;
 	}
 }
+
 String WebNode::get_full_uri_parent(const bool slash_at_the_end) {
 	String uri = "/";
 
 	WebNode *n = get_parent_webnode();
 
 	while (n) {
-		if (n->_uri_segment == "" || n->_uri_segment == '/') {
+		if (n->_uri_segment == "" || n->_uri_segment == "/") {
 			break;
 		}
 
@@ -64,12 +58,13 @@ String WebNode::get_full_uri_parent(const bool slash_at_the_end) {
 	}
 
 	if (!slash_at_the_end) {
-		uri.pop_back();
+		uri.resize(uri.length() - 1);
 	}
 
 	return uri;
 }
 
+#if WEB_SETTINGS_ENABLED
 Settings *WebNode::get_settings() {
 	if (_settings) {
 		return _settings;
@@ -82,6 +77,7 @@ void WebNode::set_settings(Settings *settings) {
 
 	// todo send event to children when it's implemented?
 }
+#endif
 
 Ref<WebPermission> WebNode::get_web_permission() {
 	return _web_permission;
@@ -103,7 +99,7 @@ void WebNode::set_routing_enabled(const bool value) {
 	if (!_routing_enabled) {
 		clear_handlers();
 	} else {
-		if (is_in_tree()) {
+		if (is_inside_tree()) {
 			build_handler_map();
 		}
 	}
@@ -143,7 +139,13 @@ void WebNode::set_database(Database *db) {
 
 #endif
 
-void WebNode::handle_request_main(Request *request) {
+void WebNode::handle_request_main(Ref<WebServerRequest> request) {
+	_rw_lock.read_lock();
+	call("_handle_request_main", request);
+	_rw_lock.read_unlock();
+}
+
+void WebNode::_handle_request_main(Ref<WebServerRequest> request) {
 	if (_web_permission.is_valid()) {
 		if (_web_permission->activate(request)) {
 			return;
@@ -160,53 +162,85 @@ void WebNode::handle_request_main(Request *request) {
 	}
 }
 
-void WebNode::_handle_request_main(Request *request) {
-	request->send_error(HTTP_STATUS_CODE_404_NOT_FOUND);
+void WebNode::handle_request(Ref<WebServerRequest> request) {
+	call("_handle_request", request);
 }
 
-void WebNode::handle_error_send_request(Request *request, const int error_code) {
+void WebNode::_handle_request(Ref<WebServerRequest> request) {
+	request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_404_NOT_FOUND);
+}
+
+void WebNode::handle_error_send_request(Ref<WebServerRequest> request, const int error_code) {
+	call("_handle_error_send_request", request, error_code);
+}
+
+void WebNode::_handle_error_send_request(Ref<WebServerRequest> request, const int error_code) {
 	// this is a fallback error handler.
 	// Webroot implements a proper one
 	request->compiled_body = "<html><body>Internal server error!</body></html>";
-	request->set_status_code(HTTP_STATUS_CODE_503_SERVICE_UNAVAILABLE);
+	request->set_status_code(HTTPServerEnums ::HTTP_STATUS_CODE_503_SERVICE_UNAVAILABLE);
 	request->send();
 }
 
-void WebNode::render_index(Request *request) {
+void WebNode::render_index(Ref<WebServerRequest> request) {
+	call("_render_index", request);
 }
-void WebNode::render_preview(Request *request) {
+void WebNode::render_preview(Ref<WebServerRequest> request) {
+	call("_render_preview", request);
+}
+void WebNode::render_menu(Ref<WebServerRequest> request) {
+	call("_render_menu", request);
+}
+void WebNode::render_main_menu(Ref<WebServerRequest> request) {
+	call("_render_main_menu", request);
 }
 
-void WebNode::render_menu(Request *request) {
-	WebNode *root = get_root();
+void WebNode::_render_index(Ref<WebServerRequest> request) {
+}
+void WebNode::_render_preview(Ref<WebServerRequest> request) {
+}
+void WebNode::_render_menu(Ref<WebServerRequest> request) {
+	WebNode *root = get_web_root();
 
 	if (root) {
-		root->_render_menu(request);
+		root->render_main_menu(request);
 	}
 }
-void WebNode::_render_menu(Request *request) {
-}
-
-void WebNode::create_validators() {
+void WebNode::_render_main_menu(Ref<WebServerRequest> request) {
 }
 
 void WebNode::create_table() {
+	call("_create_table");
 }
-
 void WebNode::drop_table() {
+	call("_drop_table");
 }
-
 void WebNode::udpate_table() {
+	call("_udpate_table");
+}
+void WebNode::create_default_entries() {
+	call("_create_default_entries");
 }
 
-void WebNode::create_default_entries() {
+void WebNode::_create_table() {
+}
+void WebNode::_drop_table() {
+}
+void WebNode::_udpate_table() {
+}
+void WebNode::_create_default_entries() {
 }
 
 void WebNode::migrate(const bool clear, const bool seed_db) {
 	_migrate(clear, seed_db);
 
-	for (int i = 0; i < _children.size(); ++i) {
-		WebNode *c = Object::cast_to<WebNode>(_children[i]);
+	for (int i = 0; i < get_child_count(); ++i) {
+		WebNode *c = Object::cast_to<WebNode>(get_child(i));
+
+		if (!c) {
+			continue;
+		}
+
 		c->migrate(clear, seed_db);
 	}
 }
@@ -224,7 +258,7 @@ void WebNode::_migrate(const bool clear, const bool seed_db) {
 	}
 }
 
-bool WebNode::try_route_request_to_children(Request *request) {
+bool WebNode::try_route_request_to_children(Ref<WebServerRequest> request) {
 	WebNode *handler = nullptr;
 
 	// if (path == "/") {
@@ -247,7 +281,7 @@ bool WebNode::try_route_request_to_children(Request *request) {
 	return true;
 }
 
-WebNode *WebNode::get_request_handler_child(Request *request) {
+WebNode *WebNode::get_request_handler_child(Ref<WebServerRequest> request) {
 	WebNode *handler = nullptr;
 
 	// if (path == "/") {
@@ -279,17 +313,11 @@ void WebNode::build_handler_map() {
 			// ignore
 			continue;
 		} else if (uri_segment == "/") {
-			if (_index_node) {
-				RLOG_ERR("You have multiple root nodes!");
-				continue;
-			}
+			ERR_CONTINUE_MSG(_index_node, "You have multiple root nodes!");
 
 			_index_node = c;
 		} else {
-			if (_node_route_map[uri_segment]) {
-				RLOG_ERR("You have multiple of the same uri! URI:" + uri_segment);
-				continue;
-			}
+			ERR_CONTINUE_MSG(_node_route_map[uri_segment], "You have multiple of the same uri! URI:" + uri_segment);
 
 			_node_route_map[uri_segment] = c;
 		}
@@ -306,7 +334,7 @@ WebServer *WebNode::get_server() {
 	return Object::cast_to<WebServer>(get_tree());
 }
 
-WebNode *WebNode::get_root() {
+WebNode *WebNode::get_web_root() {
 	WebServer *s = get_server();
 
 	if (!s) {
@@ -320,44 +348,144 @@ WebNode *WebNode::get_parent_webnode() {
 	return Object::cast_to<WebNode>(get_parent());
 }
 
+void WebNode::add_child_notify(Node *p_child) {
+	if (_routing_enabled && is_inside_tree()) {
+		build_handler_map();
+	}
+}
+void WebNode::remove_child_notify(Node *p_child) {
+	if (_routing_enabled && is_inside_tree()) {
+		build_handler_map();
+	}
+}
+
 void WebNode::_notification(const int what) {
 	switch (what) {
-		case NOTIFICATION_ENTER_TREE:
+		case NOTIFICATION_ENTER_TREE: {
 			if (_routing_enabled) {
 				build_handler_map();
 			}
-			break;
-		case NOTIFICATION_CHILD_ADDED:
-			if (_routing_enabled && is_in_tree()) {
-				build_handler_map();
+		} break;
+		case NOTIFICATION_INTERNAL_PROCESS: {
+			if (_write_lock_requested) {
+				_rw_lock.write_lock();
+				notification(NOTIFICATION_WEB_TREE_WRITE_LOCKED);
+				_rw_lock.write_unlock();
+
+				_write_lock_requested = false;
 			}
-			break;
-		case NOTIFICATION_CHILD_REMOVED:
-			if (_routing_enabled && is_in_tree()) {
-				build_handler_map();
-			}
-			break;
+		} break;
 		default:
 			break;
 	}
 }
 
-WebNode::WebNode() :
-		Node() {
+WebNode::WebNode() {
 	// should look this up in parents when parented (and node parenting is implemented)
 	// should have an event later when a parent gets one
 #ifdef DATABASES_ENABLED
 	_database = nullptr;
 #endif
 
+#if WEB_SETTINGS_ENABLED
 	// same for this
 	_settings = nullptr;
+#endif
 
 	_routing_enabled = true;
 	_index_node = nullptr;
-
-	create_validators();
 }
 
 WebNode::~WebNode() {
+}
+
+void WebNode::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_uri_segment"), &WebNode::get_uri_segment);
+	ClassDB::bind_method(D_METHOD("set_uri_segment", "val"), &WebNode::set_uri_segment);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "uri_segment"), "set_uri_segment", "get_uri_segment");
+
+	ClassDB::bind_method(D_METHOD("get_uri_segment"), &WebNode::get_uri_segment);
+	ClassDB::bind_method(D_METHOD("get_uri_segment"), &WebNode::get_uri_segment);
+
+	String get_full_uri(const bool slash_at_the_end = true);
+	String get_full_uri_parent(const bool slash_at_the_end = true);
+
+	//#if WEB_SETTINGS_ENABLED
+	//	Settings *get_settings();
+	//	void set_settings(Settings * settings);
+	//#endif
+
+	ClassDB::bind_method(D_METHOD("get_web_permission"), &WebNode::get_web_permission);
+	ClassDB::bind_method(D_METHOD("set_web_permission", "val"), &WebNode::set_web_permission);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "web_permission", PROPERTY_HINT_RESOURCE_TYPE, "WebPermission"), "set_web_permission", "get_web_permission");
+
+	ClassDB::bind_method(D_METHOD("get_routing_enabled"), &WebNode::get_routing_enabled);
+	ClassDB::bind_method(D_METHOD("set_routing_enabled", "val"), &WebNode::set_routing_enabled);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "routing_enabled"), "set_routing_enabled", "get_routing_enabled");
+
+	//#ifdef DATABASES_ENABLED
+	//	Database *get_database();
+	//	Ref<TableBuilder> get_table_builder();
+	//	Ref<QueryBuilder> get_query_builder();
+	//	void set_database(Database * db);
+	//#endif
+
+	BIND_VMETHOD(MethodInfo("_handle_request_main", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
+	ClassDB::bind_method(D_METHOD("handle_request_main", "request"), &WebNode::handle_request_main);
+	ClassDB::bind_method(D_METHOD("_handle_request_main", "request"), &WebNode::_handle_request_main);
+
+	BIND_VMETHOD(MethodInfo("_handle_request", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
+	ClassDB::bind_method(D_METHOD("handle_request", "request"), &WebNode::handle_request);
+	ClassDB::bind_method(D_METHOD("_handle_request", "request"), &WebNode::_handle_request);
+
+	BIND_VMETHOD(MethodInfo("_handle_error_send_request", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest"), PropertyInfo(Variant::INT, "error_code")));
+	ClassDB::bind_method(D_METHOD("handle_error_send_request", "request", "error_code"), &WebNode::handle_error_send_request);
+	ClassDB::bind_method(D_METHOD("_handle_error_send_request", "request", "error_code"), &WebNode::_handle_error_send_request);
+
+	BIND_VMETHOD(MethodInfo("_render_index", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
+	BIND_VMETHOD(MethodInfo("_render_preview", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
+	BIND_VMETHOD(MethodInfo("_render_menu", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
+	BIND_VMETHOD(MethodInfo("_render_main_menu", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
+
+	ClassDB::bind_method(D_METHOD("render_index", "request"), &WebNode::render_index);
+	ClassDB::bind_method(D_METHOD("render_preview", "request"), &WebNode::render_preview);
+	ClassDB::bind_method(D_METHOD("render_menu", "request"), &WebNode::render_menu);
+	ClassDB::bind_method(D_METHOD("render_main_menu", "request"), &WebNode::render_main_menu);
+
+	ClassDB::bind_method(D_METHOD("_render_index", "request"), &WebNode::_render_index);
+	ClassDB::bind_method(D_METHOD("_render_preview", "request"), &WebNode::_render_preview);
+	ClassDB::bind_method(D_METHOD("_render_menu", "request"), &WebNode::_render_menu);
+	ClassDB::bind_method(D_METHOD("_render_main_menu", "request"), &WebNode::_render_main_menu);
+
+	BIND_VMETHOD(MethodInfo("_create_table"));
+	BIND_VMETHOD(MethodInfo("_drop_table"));
+	BIND_VMETHOD(MethodInfo("_udpate_table"));
+	BIND_VMETHOD(MethodInfo("_create_default_entries"));
+
+	ClassDB::bind_method(D_METHOD("create_table"), &WebNode::create_table);
+	ClassDB::bind_method(D_METHOD("drop_table"), &WebNode::drop_table);
+	ClassDB::bind_method(D_METHOD("udpate_table"), &WebNode::udpate_table);
+	ClassDB::bind_method(D_METHOD("create_default_entries"), &WebNode::create_default_entries);
+
+	ClassDB::bind_method(D_METHOD("_create_table"), &WebNode::_create_table);
+	ClassDB::bind_method(D_METHOD("_drop_table"), &WebNode::_drop_table);
+	ClassDB::bind_method(D_METHOD("_udpate_table"), &WebNode::_udpate_table);
+	ClassDB::bind_method(D_METHOD("_create_default_entries"), &WebNode::_create_default_entries);
+
+	BIND_VMETHOD(MethodInfo("_migrate", PropertyInfo(Variant::BOOL, "clear"), PropertyInfo(Variant::BOOL, "pseed")));
+	ClassDB::bind_method(D_METHOD("migrate", "clear", "pseed"), &WebNode::migrate);
+	ClassDB::bind_method(D_METHOD("_migrate", "clear", "pseed"), &WebNode::_migrate);
+
+	ClassDB::bind_method(D_METHOD("try_route_request_to_children", "request"), &WebNode::try_route_request_to_children);
+	ClassDB::bind_method(D_METHOD("get_request_handler_child", "request"), &WebNode::get_request_handler_child);
+	ClassDB::bind_method(D_METHOD("build_handler_map"), &WebNode::build_handler_map);
+	ClassDB::bind_method(D_METHOD("clear_handlers"), &WebNode::clear_handlers);
+
+	ClassDB::bind_method(D_METHOD("request_write_lock"), &WebNode::request_write_lock);
+
+	ClassDB::bind_method(D_METHOD("get_server"), &WebNode::get_server);
+	ClassDB::bind_method(D_METHOD("get_web_root"), &WebNode::get_web_root);
+	ClassDB::bind_method(D_METHOD("get_parent_webnode"), &WebNode::get_parent_webnode);
+
+	BIND_CONSTANT(NOTIFICATION_WEB_TREE_WRITE_LOCKED);
 }

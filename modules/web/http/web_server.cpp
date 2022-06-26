@@ -27,8 +27,11 @@ void WebServer::set_web_root_bind(Node *root) {
 	_web_root = web_root;
 }
 
-void WebServer::handle_request(Ref<WebServerRequest> request) {
+void WebServer::server_handle_request(Ref<WebServerRequest> request) {
 	ERR_FAIL_COND(!_web_root);
+
+	request->set_server(this);
+	request->web_root = _web_root;
 
 	_rw_lock.read_lock();
 	_web_root->handle_request_main(request);
@@ -53,6 +56,6 @@ void WebServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_web_root_bind", "val"), &WebServer::set_web_root_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "web_root", PROPERTY_HINT_RESOURCE_TYPE, "Node"), "set_web_root_bind", "get_web_root_bind");
 
-	ClassDB::bind_method(D_METHOD("handle_request", "request"), &WebServer::handle_request);
+	ClassDB::bind_method(D_METHOD("server_handle_request", "request"), &WebServer::server_handle_request);
 	ClassDB::bind_method(D_METHOD("request_write_lock"), &WebServer::request_write_lock);
 }

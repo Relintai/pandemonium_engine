@@ -20,7 +20,7 @@ public:
 	Node *get_web_root_bind();
 	void set_web_root_bind(Node *root);
 
-	void handle_request(Ref<WebServerRequest> request);
+	void server_handle_request(Ref<WebServerRequest> request);
 
 	void request_write_lock();
 
