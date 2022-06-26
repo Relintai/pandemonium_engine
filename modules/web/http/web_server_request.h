@@ -1,8 +1,8 @@
-#ifndef REQUEST_H
-#define REQUEST_H
+#ifndef WEB_SERVER_REQUEST_H
+#define WEB_SERVER_REQUEST_H
 
-#include "core/containers/vector.h"
-#include "core/string.h"
+#include "core/ustring.h"
+#include "core/vector.h"
 
 #include <map>
 #include <mutex>
@@ -18,8 +18,7 @@ class Cookie;
 class HTTPSession;
 class WebPermission;
 
-//Rename to WebServerRequest
-class Request {
+class WebServerRequest {
 public:
 	WebServer *server;
 
@@ -105,8 +104,8 @@ public:
 	virtual void update();
 	virtual void pool();
 
-	Request();
-	virtual ~Request();
+	WebServerRequest();
+	virtual ~WebServerRequest();
 
 protected:
 	HTTPStatusCode _status_code;
@@ -116,13 +115,13 @@ protected:
 };
 
 template <class T>
-class RequestPool {
+class WebServerRequestPool {
 public:
 	T *get_request();
 	void return_request(T *request);
 
-	RequestPool();
-	~RequestPool();
+	WebServerRequestPool();
+	~WebServerRequestPool();
 
 protected:
 	std::mutex _mutex;
@@ -130,7 +129,7 @@ protected:
 };
 
 template <class T>
-T *RequestPool<T>::get_request() {
+T *WebServerRequestPool<T>::get_request() {
 	_mutex.lock();
 
 	T *request;
@@ -154,18 +153,18 @@ T *RequestPool<T>::get_request() {
 }
 
 template <class T>
-void RequestPool<T>::return_request(T *request) {
+void WebServerRequestPool<T>::return_request(T *request) {
 	_mutex.lock();
 	_requests.push_back(request);
 	_mutex.unlock();
 }
 
 template <class T>
-RequestPool<T>::RequestPool() {
+WebServerRequestPool<T>::WebServerRequestPool() {
 }
 
 template <class T>
-RequestPool<T>::~RequestPool() {
+WebServerRequestPool<T>::~WebServerRequestPool() {
 	for (uint32_t i = 0; i < _requests.size(); ++i) {
 		delete _requests[i];
 	}

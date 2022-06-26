@@ -1,4 +1,4 @@
-#include "request.h"
+#include "web_server_request.h"
 
 #include "web/http/cookie.h"
 #include "web_server.h"
@@ -10,7 +10,7 @@
 
 #include "web_permission.h"
 
-Ref<HTTPSession> Request::get_or_create_session() {
+Ref<HTTPSession> WebServerRequest::get_or_create_session() {
 	if (session.is_valid()) {
 		return session;
 	}
@@ -20,20 +20,20 @@ Ref<HTTPSession> Request::get_or_create_session() {
 	return session;
 }
 
-bool Request::can_view() const {
+bool WebServerRequest::can_view() const {
 	return (permissions & WebPermission::WEB_PERMISSION_VIEW) != 0;
 }
-bool Request::can_create() const {
+bool WebServerRequest::can_create() const {
 	return (permissions & WebPermission::WEB_PERMISSION_CREATE) != 0;
 }
-bool Request::can_edit() const {
+bool WebServerRequest::can_edit() const {
 	return (permissions & WebPermission::WEB_PERMISSION_EDIT) != 0;
 }
-bool Request::can_delete() const {
+bool WebServerRequest::can_delete() const {
 	return (permissions & WebPermission::WEB_PERMISSION_DELETE) != 0;
 }
 
-bool Request::has_csrf_token() {
+bool WebServerRequest::has_csrf_token() {
 	if (!session.is_valid()) {
 		return false;
 	}
@@ -41,7 +41,7 @@ bool Request::has_csrf_token() {
 	return session->has("csrf_token");
 }
 
-String Request::get_csrf_token() {
+String WebServerRequest::get_csrf_token() {
 	if (!session.is_valid()) {
 		return "";
 	}
@@ -55,7 +55,7 @@ String Request::get_csrf_token() {
 	return "";
 }
 
-void Request::set_csrf_token(const String &value) {
+void WebServerRequest::set_csrf_token(const String &value) {
 	if (session.is_valid()) {
 		session->add("csrf_token", value);
 
@@ -63,7 +63,7 @@ void Request::set_csrf_token(const String &value) {
 	}
 }
 
-bool Request::validate_csrf_token() {
+bool WebServerRequest::validate_csrf_token() {
 	String param_token = get_parameter("csrf_token");
 	param_token.trim();
 
@@ -80,49 +80,49 @@ bool Request::validate_csrf_token() {
 	return param_token == token;
 }
 
-const String Request::get_cookie(const String &key) {
+const String WebServerRequest::get_cookie(const String &key) {
 	static String str(0);
 	return str;
 }
 
-void Request::add_cookie(const ::Cookie &cookie) {
+void WebServerRequest::add_cookie(const ::Cookie &cookie) {
 }
 
-void Request::remove_cookie(const String &key) {
+void WebServerRequest::remove_cookie(const String &key) {
 }
 
-HTTPMethod Request::get_method() const {
+HTTPMethod WebServerRequest::get_method() const {
 	return HTTP_METHOD_GET;
 }
 
-void Request::parse_files() {
+void WebServerRequest::parse_files() {
 }
-int Request::get_file_count() const {
+int WebServerRequest::get_file_count() const {
 	return 0;
 }
-int Request::get_file_length(const int index) const {
+int WebServerRequest::get_file_length(const int index) const {
 	return 0;
 }
-const uint8_t *Request::get_file_data(const int index) const {
+const uint8_t *WebServerRequest::get_file_data(const int index) const {
 	return nullptr;
 }
 
-const String Request::get_parameter(const String &key) const {
+const String WebServerRequest::get_parameter(const String &key) const {
 	static String str(0);
 	return str;
 }
 
-HTTPStatusCode Request::get_status_code() const {
+HTTPStatusCode WebServerRequest::get_status_code() const {
 	return _status_code;
 }
-void Request::set_status_code(const HTTPStatusCode status_code) {
+void WebServerRequest::set_status_code(const HTTPStatusCode status_code) {
 	_status_code = status_code;
 }
 
-void Request::send_redirect(const String &location, const HTTPStatusCode status_code) {
+void WebServerRequest::send_redirect(const String &location, const HTTPStatusCode status_code) {
 }
 
-void Request::compile_body() {
+void WebServerRequest::compile_body() {
 	compiled_body.ensure_capacity(body.size() + head.size() + 15 + 13 + 14 + 15 + 1);
 
 	// 15
@@ -148,29 +148,29 @@ void Request::compile_body() {
 	// response->setBody(compiled_body);
 }
 
-void Request::compile_and_send_body() {
+void WebServerRequest::compile_and_send_body() {
 	compile_body();
 	send();
 }
 
-void Request::send() {
+void WebServerRequest::send() {
 	// if (connection_closed) {
-	//	RequestPool::return_request(this);
+	//	WebServerRequestPool::return_request(this);
 	//	return;
 	// }
 
-	// RequestPool::return_request(this);
+	// WebServerRequestPool::return_request(this);
 }
 
-void Request::send_file(const String &p_file_path) {
-	// RequestPool::return_request(this);
+void WebServerRequest::send_file(const String &p_file_path) {
+	// WebServerRequestPool::return_request(this);
 }
 
-void Request::send_error(int error_code) {
+void WebServerRequest::send_error(int error_code) {
 	server->get_web_root()->handle_error_send_request(this, error_code);
 }
 
-void Request::reset() {
+void WebServerRequest::reset() {
 	session = nullptr;
 	server = nullptr;
 	_path_stack.clear();
@@ -193,11 +193,11 @@ void Request::reset() {
 	reference_data.clear();
 }
 
-String Request::parser_get_path() {
+String WebServerRequest::parser_get_path() {
 	return "";
 }
 
-void Request::setup_url_stack() {
+void WebServerRequest::setup_url_stack() {
 	_full_path = parser_get_path();
 	String path = parser_get_path();
 
@@ -218,7 +218,7 @@ void Request::setup_url_stack() {
 	}
 }
 
-String Request::get_path(const bool beginning_slash, const bool end_slash) const {
+String WebServerRequest::get_path(const bool beginning_slash, const bool end_slash) const {
 	String path;
 
 	if (beginning_slash) {
@@ -237,15 +237,15 @@ String Request::get_path(const bool beginning_slash, const bool end_slash) const
 	return path;
 }
 
-const String &Request::get_path_full() const {
+const String &WebServerRequest::get_path_full() const {
 	return _full_path;
 }
 
-const String &Request::get_path_segment(const uint32_t i) const {
+const String &WebServerRequest::get_path_segment(const uint32_t i) const {
 	return _path_stack[i];
 }
 
-const String &Request::get_current_path_segment() const {
+const String &WebServerRequest::get_current_path_segment() const {
 	if (_path_stack_pointer >= _path_stack.size()) {
 		// for convenience
 		static const String e_str = "";
@@ -255,7 +255,7 @@ const String &Request::get_current_path_segment() const {
 	return _path_stack[_path_stack_pointer];
 }
 
-const String &Request::get_next_path_segment() const {
+const String &WebServerRequest::get_next_path_segment() const {
 	int pst = _path_stack_pointer + 1;
 
 	if (pst >= _path_stack.size()) {
@@ -267,15 +267,15 @@ const String &Request::get_next_path_segment() const {
 	return _path_stack[pst];
 }
 
-uint32_t Request::get_path_segment_count() const {
+uint32_t WebServerRequest::get_path_segment_count() const {
 	return _path_stack.size();
 }
 
-uint32_t Request::get_current_segment_index() const {
+uint32_t WebServerRequest::get_current_segment_index() const {
 	return _path_stack_pointer;
 }
 
-uint32_t Request::get_remaining_segment_count() const {
+uint32_t WebServerRequest::get_remaining_segment_count() const {
 	if (_path_stack_pointer > _path_stack.size()) {
 		return 0;
 	}
@@ -283,15 +283,15 @@ uint32_t Request::get_remaining_segment_count() const {
 	return _path_stack.size() - _path_stack_pointer;
 }
 
-void Request::pop_path() {
+void WebServerRequest::pop_path() {
 	_path_stack_pointer -= 1;
 }
 
-void Request::push_path() {
+void WebServerRequest::push_path() {
 	_path_stack_pointer += 1;
 }
 
-String Request::get_url_root_parent(const int parent) const {
+String WebServerRequest::get_url_root_parent(const int parent) const {
 	String path = "/";
 
 	for (uint32_t i = 0; i < _path_stack_pointer - parent; ++i) {
@@ -302,7 +302,7 @@ String Request::get_url_root_parent(const int parent) const {
 	return path;
 }
 
-String Request::get_url_root() const {
+String WebServerRequest::get_url_root() const {
 	int pst = _path_stack_pointer + 1;
 
 	if (pst > _path_stack.size()) {
@@ -319,7 +319,7 @@ String Request::get_url_root() const {
 	return path;
 }
 
-String Request::get_url_root_current() const {
+String WebServerRequest::get_url_root_current() const {
 	int pst = _path_stack_pointer + 1;
 
 	if (pst > _path_stack.size()) {
@@ -336,7 +336,7 @@ String Request::get_url_root_current() const {
 	return path;
 }
 
-String Request::get_url_site() const {
+String WebServerRequest::get_url_site() const {
 	String path = get_host();
 
 	for (uint32_t i = _path_stack_pointer; i < _path_stack.size(); ++i) {
@@ -347,32 +347,32 @@ String Request::get_url_site() const {
 	return path;
 }
 
-String Request::get_url_root_parent(const String &add) const {
+String WebServerRequest::get_url_root_parent(const String &add) const {
 	return get_url_root_parent() + add;
 }
-String Request::get_url_root(const String &add) const {
+String WebServerRequest::get_url_root(const String &add) const {
 	return get_url_root() + add;
 }
-String Request::get_url_site(const String &add) const {
+String WebServerRequest::get_url_site(const String &add) const {
 	return get_url_site() + add;
 }
 
-String Request::get_host() const {
+String WebServerRequest::get_host() const {
 	return "";
 }
 
-void Request::update() {
+void WebServerRequest::update() {
 }
 
-void Request::pool() {
+void WebServerRequest::pool() {
 }
 
-Request::Request() {
+WebServerRequest::WebServerRequest() {
 	// This value will need benchmarks, 2 MB seems to be just as fast for me as 4 MB, but 1MB is slower
 	// It is a tradeoff on server memory though, as every active download will consume this amount of memory
 	// where the file is bigger than this number
 	file_chunk_size = 1 << 21; // 2MB
 }
 
-Request::~Request() {
+WebServerRequest::~WebServerRequest() {
 }
