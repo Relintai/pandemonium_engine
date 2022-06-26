@@ -1,19 +1,19 @@
-#include "session_manager.h"
+#include "http_session_manager.h"
 
 #include "http_session.h"
 #include <stdlib.h>
 #include <time.h>
 
+#if DATABASES_ENABLED
 #include "database/database_manager.h"
 #include "database/query_builder.h"
 #include "database/query_result.h"
 #include "database/table_builder.h"
+#endif
 
-#include "crypto/hash/sha256.h"
+#include "web_server_request.h"
 
-#include "request.h"
-
-#include "cookie.h"
+#include "web_server_cookie.h"
 
 void SessionManager::add_session(Ref<HTTPSession> &session) {
 	if (!session.is_valid()) {
@@ -41,8 +41,8 @@ void SessionManager::remove_session(Ref<HTTPSession> &session) {
 
 	for (int i = 0; i < _sessions_vec.size(); ++i) {
 		if (_sessions_vec[i] == session) {
-			_sessions_vec[i] = _sessions_vec[_sessions_vec.size() - 1];
-			_sessions_vec.pop_back();
+			_sessions_vec.write[i] = _sessions_vec[_sessions_vec.size() - 1];
+			_sessions_vec.resize(_sessions_vec.size() - 1);
 			_mutex.unlock();
 			return;
 		}
@@ -62,8 +62,8 @@ void SessionManager::delete_session(const String &session_id) {
 		Ref<HTTPSession> sess = _sessions_vec[i];
 
 		if (sess->session_id == session_id) {
-			_sessions_vec[i] = _sessions_vec[_sessions_vec.size() - 1];
-			_sessions_vec.pop_back();
+			_sessions_vec.write[i] = _sessions_vec[_sessions_vec.size() - 1];
+			_sessions_vec.resize(_sessions_vec.size() - 1);
 
 			break;
 		}
@@ -79,14 +79,17 @@ void SessionManager::delete_session(const String &session_id) {
 		return;
 	}
 
+#if DATABASES_ENABLED
 	Ref<QueryBuilder> b = DatabaseManager::get_singleton()->ddb->get_query_builder();
 
 	b->del(_data_table_name)->where()->wp("session_db_id", s->id)->end_command();
 	b->del(_table_name)->where()->wp("id", s->id)->end_command();
 	b->run_query();
+#endif
 }
 
 void SessionManager::save_session(Ref<HTTPSession> &session) {
+#if DATABASES_ENABLED
 	Ref<QueryBuilder> b = DatabaseManager::get_singleton()->ddb->get_query_builder();
 
 	if (!session->id) {
@@ -115,6 +118,7 @@ void SessionManager::save_session(Ref<HTTPSession> &session) {
 	}
 
 	b->run_query();
+#endif
 }
 
 Ref<HTTPSession> SessionManager::get_session(const String &session_id) {
@@ -149,6 +153,7 @@ Ref<HTTPSession> SessionManager::create_session() {
 void SessionManager::load_sessions() {
 	clear();
 
+#if DATABASES_ENABLED
 	Ref<QueryBuilder> b = DatabaseManager::get_singleton()->ddb->get_query_builder();
 
 	b->select("id, session_id");
@@ -200,6 +205,7 @@ void SessionManager::load_sessions() {
 
 		s->add(key, Variant::parse_string(value));
 	}
+#endif
 }
 
 void SessionManager::clear() {
@@ -214,16 +220,11 @@ void SessionManager::clear() {
 String SessionManager::generate_session_id(const String &base) {
 	// todo make something simpler / better
 
-	Ref<SHA256> h = SHA256::get();
 	String sid = base;
 
-	sid += rand();
-	h->compute(sid);
+	sid += itos(Math::rand());
 
-	sid = h->get_hash();
-	sid.resize(20);
-
-	return sid;
+	return sid.sha256_text().substr(0, 20);
 }
 
 void SessionManager::migrate() {
@@ -232,6 +233,7 @@ void SessionManager::migrate() {
 }
 
 void SessionManager::create_table() {
+#if DATABASES_ENABLED
 	Ref<TableBuilder> tb = DatabaseManager::get_singleton()->ddb->get_table_builder();
 
 	tb->create_table(_table_name);
@@ -253,42 +255,30 @@ void SessionManager::create_table() {
 	tb->ccreate_table();
 	// tb->print();
 	tb->run_query();
+#endif
 }
 void SessionManager::drop_table() {
+#if DATABASES_ENABLED
 	Ref<TableBuilder> tb = DatabaseManager::get_singleton()->ddb->get_table_builder();
 
 	tb->drop_table_if_exists(_table_name)->run_query();
 	tb->drop_table_if_exists(_data_table_name)->run_query();
+#endif
 }
 
-SessionManager *SessionManager::get_singleton() {
-	return _self;
-}
-
-SessionManager::SessionManager() :
-		Object() {
-	if (_self) {
-		printf("SessionManager::SessionManager(): Error! self is not null!/n");
-	}
-
-	_self = this;
-
-	srand(time(NULL));
+SessionManager::SessionManager() {
+	_table_name = "sessions";
+	_data_table_name = "session_data";
 }
 
 SessionManager::~SessionManager() {
 	clear();
-
-	if (_self == this) {
-		_self = nullptr;
-	}
 }
 
-SessionManager *SessionManager::_self = nullptr;
-String SessionManager::_table_name = "sessions";
-String SessionManager::_data_table_name = "session_data";
+void SessionManager::_bind_methods() {
+}
 
-bool SessionSetupWebServerMiddleware::on_before_handle_request_main(Request *request) {
+bool SessionSetupWebServerMiddleware::_on_before_handle_request_main(Ref<WebServerRequest> request) {
 	const String sid = request->get_cookie("session_id");
 
 	if (sid == "") {
@@ -301,7 +291,18 @@ bool SessionSetupWebServerMiddleware::on_before_handle_request_main(Request *req
 		return false;
 	}
 
-	request->session = SessionManager::get_singleton()->get_session(sid);
+	//TODO WebServer nodes should have a get_sess-manager() method
+
+	//Probably:
+	//WebServer (Impl) -> maybe webroot node should not be auto discovered, it should have a nodepath for safety
+	// I - WebRoot
+	//     I - WebNodes ... (site)
+	// I - SessionManager (finds parent websercver, registers itself in enter tree)
+	// I - Other helper nodes, maybe a DatabaseManager (convert to node) etc These will not be accessible
+
+	//request->server->get_session_manager()->get_session(sid);
+
+	//request->session = SessionManager::get_singleton()->get_session(sid);
 
 	return false;
 }
@@ -309,4 +310,7 @@ bool SessionSetupWebServerMiddleware::on_before_handle_request_main(Request *req
 SessionSetupWebServerMiddleware::SessionSetupWebServerMiddleware() {
 }
 SessionSetupWebServerMiddleware::~SessionSetupWebServerMiddleware() {
+}
+
+void SessionSetupWebServerMiddleware::_bind_methods() {
 }

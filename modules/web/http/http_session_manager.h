@@ -1,20 +1,21 @@
-#ifndef SESSION_MANAGER_H
-#define SESSION_MANAGER_H
+#ifndef HTTP_SESSION_MANAGER_H
+#define HTTP_SESSION_MANAGER_H
 
-#include "core/containers/vector.h"
-#include "core/string.h"
-#include "core/threading/mutex.h"
-#include <map>
+#include "core/hash_map.h"
+#include "core/os/mutex.h"
+#include "core/ustring.h"
+#include "core/vector.h"
 
-#include "core/object.h"
+#include "core/reference.h"
+#include "scene/main/node.h"
 
-#include "middleware.h"
+#include "web_server_middleware.h"
 
 class HTTPSession;
-class Request;
+class WebServerRequest;
 
-class SessionManager : public Object {
-	RCPP_OBJECT(SessionManager, Object);
+class SessionManager : public Node {
+	GDCLASS(SessionManager, Node);
 
 public:
 	void add_session(Ref<HTTPSession> &session);
@@ -34,31 +35,31 @@ public:
 	virtual void create_table();
 	virtual void drop_table();
 
-	static SessionManager *get_singleton();
-
 	SessionManager();
 	~SessionManager();
 
-	std::map<String, Ref<HTTPSession>> _sessions;
+	HashMap<String, Ref<HTTPSession>> _sessions;
 	Vector<Ref<HTTPSession>> _sessions_vec;
 	Mutex _mutex;
+	String _table_name;
+	String _data_table_name;
 
 protected:
-	static SessionManager *_self;
-
-	static String _table_name;
-	static String _data_table_name;
+	static void _bind_methods();
 };
 
 class SessionSetupWebServerMiddleware : public WebServerMiddleware {
-	RCPP_OBJECT(SessionSetupWebServerMiddleware, WebServerMiddleware);
+	GDCLASS(SessionSetupWebServerMiddleware, WebServerMiddleware);
 
 public:
 	//returnring true means handled, false means continue
-	bool on_before_handle_request_main(Request *request);
+	bool _on_before_handle_request_main(Ref<WebServerRequest> request);
 
 	SessionSetupWebServerMiddleware();
 	~SessionSetupWebServerMiddleware();
+
+protected:
+	static void _bind_methods();
 };
 
 #endif
