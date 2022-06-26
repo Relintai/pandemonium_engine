@@ -14,6 +14,7 @@ def get_doc_classes():
         #"WorldArea",
 
         "HTTPServerEnums",
+        "WebServerCookie",
         "HTMLBuilder",
         "HTMLTag",
     ]

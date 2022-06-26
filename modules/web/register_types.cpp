@@ -26,9 +26,12 @@ SOFTWARE.
 
 #include "html/html_builder_bind.h"
 #include "http/http_server_enums.h"
+#include "http/web_server_cookie.h"
 
 void register_web_types() {
 	ClassDB::register_class<HTTPServerEnums>();
+
+	ClassDB::register_class<WebServerCookie>();
 
 	ClassDB::register_class<_HTMLBuilder>();
 	ClassDB::register_class<_HTMLTag>();
