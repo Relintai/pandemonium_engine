@@ -202,6 +202,8 @@ public:
 
 	/* complex helpers */
 	String substr(int p_from, int p_chars = -1) const;
+	String substr_index(const int p_start_index, const int p_end_index) const; //end_index is not included
+
 	int find(const String &p_str, int p_from = 0) const; ///< return <0 if failed
 	int find(const char *p_str, int p_from = 0) const; ///< return <0 if failed
 	int find_char(const CharType &p_char, int p_from = 0) const; ///< return <0 if failed
@@ -210,33 +212,52 @@ public:
 	int rfind(const String &p_str, int p_from = -1) const; ///< return <0 if failed
 	int rfindn(const String &p_str, int p_from = -1) const; ///< return <0 if failed, case insensitive
 	int findmk(const Vector<String> &p_keys, int p_from = 0, int *r_key = nullptr) const; ///< return <0 if failed
+	int find_first_difference_index(const String &p_str) const;
+
+	bool is_word_at(const int p_index, const char *p_str) const;
+	bool is_word_at(const int p_index, const String &p_str) const;
+
 	bool match(const String &p_wildcard) const;
 	bool matchn(const String &p_wildcard) const;
+
 	bool begins_with(const String &p_string) const;
 	bool begins_with(const char *p_string) const;
 	bool ends_with(const String &p_string) const;
+
 	bool is_enclosed_in(const String &p_string) const;
 	bool is_subsequence_of(const String &p_string) const;
 	bool is_subsequence_ofi(const String &p_string) const;
 	bool is_quoted() const;
+
 	Vector<String> bigrams() const;
 	float similarity(const String &p_string) const;
 	String format(const Variant &values, String placeholder = "{_}") const;
+
 	String replace_first(const String &p_key, const String &p_with) const;
 	String replace(const String &p_key, const String &p_with) const;
 	String replace(const char *p_key, const char *p_with) const;
 	String replacen(const String &p_key, const String &p_with) const;
+
+	String newline_to_br() const;
+
 	String repeat(int p_count) const;
 	String insert(int p_at_pos, const String &p_string) const;
+
 	String pad_decimals(int p_digits) const;
 	String pad_zeros(int p_digits) const;
+
 	String trim_prefix(const String &p_prefix) const;
 	String trim_suffix(const String &p_suffix) const;
+
 	String lpad(int min_length, const String &character = " ") const;
 	String rpad(int min_length, const String &character = " ") const;
+
 	String sprintf(const Array &values, bool *error) const;
+
 	String quote(String quotechar = "\"") const;
+
 	String unquote() const;
+
 	static String num(double p_num, int p_decimals = -1);
 	static String num_scientific(double p_num);
 	static String num_real(double p_num);
@@ -245,11 +266,18 @@ public:
 	static String chr(CharType p_char);
 	static String md5(const uint8_t *p_md5);
 	static String hex_encode_buffer(const uint8_t *p_buffer, int p_len);
+	static String bool_num(bool p_val);
+	static String bool_str(bool p_val);
+
 	bool is_numeric() const;
+	bool is_zero() const;
+
 	double to_double() const;
 	float to_float() const;
 	int hex_to_int(bool p_with_prefix = true) const;
 	int to_int() const;
+	bool to_bool() const;
+	uint32_t to_uint() const;
 
 	int64_t hex_to_int64(bool p_with_prefix = true) const;
 	int64_t bin_to_int64(bool p_with_prefix = true) const;
@@ -328,6 +356,11 @@ public:
 	String get_file() const;
 	static String humanize_size(uint64_t p_size);
 	String simplify_path() const;
+	String append_path(const char *p_path) const;
+	String append_path(const String &p_path) const;
+	String path_clean_end_slash() const;
+	String path_ensure_end_slash() const;
+	String path_get_prev_dir() const;
 
 	String xml_escape(bool p_escape_quotes = false) const;
 	String xml_unescape() const;
@@ -356,6 +389,8 @@ public:
 	bool is_valid_html_color() const;
 	bool is_valid_ip_address() const;
 	bool is_valid_filename() const;
+	bool is_valid_bool() const;
+	bool is_valid_unsigned_integer() const;
 
 	/**
 	 * The constructors must not depend on other overloads

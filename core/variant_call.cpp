@@ -273,12 +273,15 @@ struct _VariantCall {
 	VCALL_LOCALMEM3R(String, count);
 	VCALL_LOCALMEM3R(String, countn);
 	VCALL_LOCALMEM2R(String, substr);
+	VCALL_LOCALMEM2R(String, substr_index);
 	VCALL_LOCALMEM2R(String, get_slice);
 	VCALL_LOCALMEM2R(String, find);
 	VCALL_LOCALMEM1R(String, find_last);
 	VCALL_LOCALMEM2R(String, findn);
 	VCALL_LOCALMEM2R(String, rfind);
 	VCALL_LOCALMEM2R(String, rfindn);
+	VCALL_LOCALMEM1R(String, find_first_difference_index);
+	VCALL_LOCALMEM2R(String, is_word_at);
 	VCALL_LOCALMEM1R(String, match);
 	VCALL_LOCALMEM1R(String, matchn);
 	VCALL_LOCALMEM1R(String, begins_with);
@@ -290,6 +293,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM2R(String, format);
 	VCALL_LOCALMEM2R(String, replace);
 	VCALL_LOCALMEM2R(String, replacen);
+	VCALL_LOCALMEM0R(String, newline_to_br);
 	VCALL_LOCALMEM1R(String, repeat);
 	VCALL_LOCALMEM2R(String, insert);
 	VCALL_LOCALMEM0R(String, capitalize);
@@ -326,6 +330,10 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(String, is_rel_path);
 	VCALL_LOCALMEM0R(String, get_base_dir);
 	VCALL_LOCALMEM0R(String, get_file);
+	VCALL_LOCALMEM1R(String, append_path);
+	VCALL_LOCALMEM0R(String, path_clean_end_slash);
+	VCALL_LOCALMEM0R(String, path_ensure_end_slash);
+	VCALL_LOCALMEM0R(String, path_get_prev_dir);
 	VCALL_LOCALMEM0R(String, xml_escape);
 	VCALL_LOCALMEM0R(String, xml_unescape);
 	VCALL_LOCALMEM0R(String, http_escape);
@@ -343,8 +351,14 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(String, is_valid_html_color);
 	VCALL_LOCALMEM0R(String, is_valid_ip_address);
 	VCALL_LOCALMEM0R(String, is_valid_filename);
+	VCALL_LOCALMEM0R(String, is_valid_bool);
+	VCALL_LOCALMEM0R(String, is_valid_unsigned_integer);
+	VCALL_LOCALMEM0R(String, is_numeric);
+	VCALL_LOCALMEM0R(String, is_zero);
 	VCALL_LOCALMEM0RI(String, to_int, to_int64);
 	VCALL_LOCALMEM0R(String, to_float);
+	VCALL_LOCALMEM0R(String, to_bool);
+	VCALL_LOCALMEM0R(String, to_uint);
 	VCALL_LOCALMEM0RI(String, hex_to_int, hex_to_int64);
 	VCALL_LOCALMEM1R(String, pad_decimals);
 	VCALL_LOCALMEM1R(String, pad_zeros);
@@ -1873,7 +1887,10 @@ void register_variant_methods() {
 	ADDFUNC1R(STRING, INT, String, nocasecmp_to, STRING, "to", varray());
 	ADDFUNC1R(STRING, INT, String, naturalnocasecmp_to, STRING, "to", varray());
 	ADDFUNC0R(STRING, INT, String, length, varray());
+
 	ADDFUNC2R(STRING, STRING, String, substr, INT, "from", INT, "len", varray(-1));
+	ADDFUNC2R(STRING, STRING, String, substr_index, INT, "start_index", INT, "end_index", varray());
+
 	ADDFUNC2R(STRING, STRING, String, get_slice, STRING, "delimiter", INT, "slice", varray());
 
 	ADDFUNC2R(STRING, INT, String, find, STRING, "what", INT, "from", varray(0));
@@ -1885,6 +1902,11 @@ void register_variant_methods() {
 	ADDFUNC2R(STRING, INT, String, findn, STRING, "what", INT, "from", varray(0));
 	ADDFUNC2R(STRING, INT, String, rfind, STRING, "what", INT, "from", varray(-1));
 	ADDFUNC2R(STRING, INT, String, rfindn, STRING, "what", INT, "from", varray(-1));
+
+	ADDFUNC1R(STRING, INT, String, find_first_difference_index, STRING, "what", varray(0));
+
+	ADDFUNC2R(STRING, INT, String, is_word_at, INT, "index", STRING, "str", varray());
+
 	ADDFUNC1R(STRING, BOOL, String, match, STRING, "expr", varray());
 	ADDFUNC1R(STRING, BOOL, String, matchn, STRING, "expr", varray());
 	ADDFUNC1R(STRING, BOOL, String, begins_with, STRING, "text", varray());
@@ -1897,6 +1919,9 @@ void register_variant_methods() {
 	ADDFUNC2R(STRING, STRING, String, format, NIL, "values", STRING, "placeholder", varray("{_}"));
 	ADDFUNC2R(STRING, STRING, String, replace, STRING, "what", STRING, "forwhat", varray());
 	ADDFUNC2R(STRING, STRING, String, replacen, STRING, "what", STRING, "forwhat", varray());
+
+	ADDFUNC0R(STRING, STRING, String, newline_to_br, varray());
+
 	ADDFUNC1R(STRING, STRING, String, repeat, INT, "count", varray());
 	ADDFUNC2R(STRING, STRING, String, insert, INT, "position", STRING, "what", varray());
 	ADDFUNC0R(STRING, STRING, String, capitalize, varray());
@@ -1921,6 +1946,7 @@ void register_variant_methods() {
 	ADDFUNC1R(STRING, STRING, String, indent, STRING, "prefix", varray());
 	ADDFUNC0R(STRING, STRING, String, dedent, varray());
 	ADDFUNC2(STRING, NIL, String, erase, INT, "position", INT, "chars", varray());
+
 	ADDFUNC0R(STRING, INT, String, hash, varray());
 	ADDFUNC0R(STRING, STRING, String, md5_text, varray());
 	ADDFUNC0R(STRING, STRING, String, sha1_text, varray());
@@ -1928,13 +1954,20 @@ void register_variant_methods() {
 	ADDFUNC0R(STRING, POOL_BYTE_ARRAY, String, md5_buffer, varray());
 	ADDFUNC0R(STRING, POOL_BYTE_ARRAY, String, sha1_buffer, varray());
 	ADDFUNC0R(STRING, POOL_BYTE_ARRAY, String, sha256_buffer, varray());
+
 	ADDFUNC0R(STRING, BOOL, String, empty, varray());
 	ADDFUNC1R(STRING, STRING, String, humanize_size, INT, "size", varray());
+
 	ADDFUNC0R(STRING, BOOL, String, is_abs_path, varray());
 	ADDFUNC0R(STRING, STRING, String, simplify_path, varray());
 	ADDFUNC0R(STRING, BOOL, String, is_rel_path, varray());
 	ADDFUNC0R(STRING, STRING, String, get_base_dir, varray());
 	ADDFUNC0R(STRING, STRING, String, get_file, varray());
+	ADDFUNC1R(STRING, STRING, String, append_path, STRING, "path", varray());
+	ADDFUNC0R(STRING, STRING, String, path_clean_end_slash, varray());
+	ADDFUNC0R(STRING, STRING, String, path_ensure_end_slash, varray());
+	ADDFUNC0R(STRING, STRING, String, path_get_prev_dir, varray());
+
 	ADDFUNC0R(STRING, STRING, String, xml_escape, varray());
 	ADDFUNC0R(STRING, STRING, String, xml_unescape, varray());
 	ADDFUNC0R(STRING, STRING, String, http_escape, varray());
@@ -1945,6 +1978,7 @@ void register_variant_methods() {
 	ADDFUNC0R(STRING, STRING, String, percent_encode, varray());
 	ADDFUNC0R(STRING, STRING, String, percent_decode, varray());
 	ADDFUNC0R(STRING, STRING, String, validate_node_name, varray());
+
 	ADDFUNC0R(STRING, BOOL, String, is_valid_identifier, varray());
 	ADDFUNC0R(STRING, BOOL, String, is_valid_integer, varray());
 	ADDFUNC0R(STRING, BOOL, String, is_valid_float, varray());
@@ -1952,8 +1986,17 @@ void register_variant_methods() {
 	ADDFUNC0R(STRING, BOOL, String, is_valid_html_color, varray());
 	ADDFUNC0R(STRING, BOOL, String, is_valid_ip_address, varray());
 	ADDFUNC0R(STRING, BOOL, String, is_valid_filename, varray());
+	ADDFUNC0R(STRING, BOOL, String, is_valid_bool, varray());
+	ADDFUNC0R(STRING, BOOL, String, is_valid_unsigned_integer, varray());
+
+	ADDFUNC0R(STRING, BOOL, String, is_numeric, varray());
+	ADDFUNC0R(STRING, BOOL, String, is_zero, varray());
+
 	ADDFUNC0R(STRING, INT, String, to_int, varray());
 	ADDFUNC0R(STRING, REAL, String, to_float, varray());
+	ADDFUNC0R(STRING, INT, String, to_bool, varray());
+	ADDFUNC0R(STRING, INT, String, to_uint, varray());
+
 	ADDFUNC0R(STRING, INT, String, hex_to_int, varray());
 	ADDFUNC1R(STRING, STRING, String, pad_decimals, INT, "digits", varray());
 	ADDFUNC1R(STRING, STRING, String, pad_zeros, INT, "digits", varray());

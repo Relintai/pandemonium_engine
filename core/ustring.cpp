@@ -1077,6 +1077,22 @@ String String::hex_encode_buffer(const uint8_t *p_buffer, int p_len) {
 	return ret;
 }
 
+String String::bool_num(bool p_val) {
+	if (p_val) {
+		return "1";
+	} else {
+		return "0";
+	}
+}
+
+String String::bool_str(bool p_val) {
+	if (p_val) {
+		return "true";
+	} else {
+		return "false";
+	}
+}
+
 String String::chr(CharType p_char) {
 	CharType c[2] = { p_char, 0 };
 	return String(c);
@@ -1857,6 +1873,26 @@ int String::to_int() const {
 	return integer * sign;
 }
 
+bool String::to_bool() const {
+	if (length() == 0) {
+		return false;
+	}
+
+	if (is_numeric()) {
+		return to_int() != 0;
+	}
+
+	return to_lower() == "true";
+}
+
+uint32_t String::to_uint() const {
+	if (is_numeric()) {
+		return static_cast<uint32_t>(to_int());
+	}
+
+	return 0;
+}
+
 int64_t String::to_int64() const {
 	if (length() == 0) {
 		return 0;
@@ -1939,6 +1975,40 @@ bool String::is_numeric() const {
 
 	return true; // TODO: Use the parser below for this instead
 };
+
+bool String::is_zero() const {
+	int size = length();
+
+	if (size == 0) {
+		return false;
+	}
+
+	int starti = 0;
+
+	if (operator[](0) == '-') {
+		starti += 1;
+	}
+
+	bool had_dot = false;
+	for (int i = starti; i < size; ++i) {
+		CharType c = operator[](i);
+
+		if (c == '.') {
+			if (!had_dot) {
+				had_dot = true;
+				continue;
+			} else {
+				return false;
+			}
+		}
+
+		if (c != '0') {
+			return false;
+		}
+	}
+
+	return true;
+}
 
 template <class C>
 static double built_in_strtod(
@@ -2431,6 +2501,20 @@ String String::substr(int p_from, int p_chars) const {
 	return s;
 }
 
+String String::substr_index(const int start_index, const int end_index) const {
+	int s = length();
+
+	if (start_index < 0 || start_index >= s || end_index < 0 || start_index >= s) {
+		return "";
+	}
+
+	if (start_index > end_index) {
+		return "";
+	}
+
+	return substr(start_index, end_index - start_index);
+}
+
 int String::find_last(const String &p_str) const {
 	return rfind(p_str);
 }
@@ -2721,6 +2805,66 @@ int String::rfindn(const String &p_str, int p_from) const {
 	}
 
 	return -1;
+}
+
+int String::find_first_difference_index(const String &p_str) const {
+	const int olen = p_str.length();
+	const int len = length();
+	const int c = len < olen ? len : olen;
+
+	const CharType *p = c_str();
+	const CharType *op = p_str.c_str();
+
+	for (int i = 0; i < c; ++i) {
+		if (p[i] != op[i]) {
+			return i;
+		}
+	}
+
+	return c;
+}
+
+bool String::is_word_at(const int index, const char *p_str) const {
+	int size = length();
+
+	ERR_FAIL_INDEX_V(index, size, false);
+
+	int i = 0;
+
+	while (p_str[i] != '\0') {
+		int iind = index + i;
+
+		if (iind >= size) {
+			return false;
+		}
+
+		if (operator[](iind) != p_str[i]) {
+			return false;
+		}
+
+		++i;
+	}
+
+	return true;
+}
+bool String::is_word_at(const int index, const String &p_str) const {
+	int size = length();
+
+	ERR_FAIL_INDEX_V(index, size, false);
+
+	if (index + p_str.length() >= size) {
+		return false;
+	}
+
+	for (int i = 0; i < p_str.length(); ++i) {
+		int iind = index + i;
+
+		if (operator[](iind) != p_str[i]) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 bool String::ends_with(const String &p_string) const {
@@ -3078,6 +3222,11 @@ String String::replacen(const String &p_key, const String &p_with) const {
 	return new_string;
 }
 
+String String::newline_to_br() const {
+	String r = replace("\r\n", "<br>");
+	return r.replace("\n", "<br>");
+}
+
 String String::repeat(int p_count) const {
 	ERR_FAIL_COND_V_MSG(p_count < 0, "", "Parameter count should be a positive number.");
 
@@ -3331,6 +3480,156 @@ String String::simplify_path() const {
 	}
 
 	return drive + s;
+}
+
+String String::append_path(const char *path) const {
+	if (path[0] == '\0') {
+		return *this;
+	}
+
+	String ret = *this;
+	int size = length();
+
+	if (size == 0) {
+		ret += path;
+		return ret;
+	}
+
+	int sindex = 0;
+	char ch = path[sindex];
+	while (ch == '/' || ch == '\\') {
+		if (ch == '\0') {
+			return ret;
+		}
+
+		ch = path[++sindex];
+	}
+
+	// /////folder
+	//      ^ (sindex)
+
+	if (ret.ends_with("/") || ret.ends_with("\\")) {
+		ret += &path[sindex];
+	} else {
+		if (sindex > 0) {
+			ret += '/';
+			ret += &path[sindex - 1];
+		} else {
+			ret += '/';
+			ret += &path[sindex];
+		}
+	}
+
+	return ret;
+}
+
+String String::append_path(const String &path) const {
+	if (path.length() == 0) {
+		return *this;
+	}
+
+	int size = length();
+
+	if (size == 0) {
+		return path;
+	}
+
+	int sindex = 0;
+	int ts = path.size() - 1;
+	char ch = path[sindex];
+	while (ch == '/' || ch == '\\') {
+		if (sindex == ts) {
+			return *this;
+		}
+
+		ch = path[++sindex];
+	}
+
+	String ret = *this;
+
+	// /////folder
+	//      ^ (sindex)
+
+	if (ret.ends_with("/") || ret.ends_with("\\")) {
+		ret += &path[sindex];
+	} else {
+		if (sindex > 0) {
+			ret += '/';
+			ret += &path[sindex - 1];
+		} else {
+			ret += '/';
+			ret += &path[sindex];
+		}
+	}
+
+	return ret;
+}
+
+String String::path_clean_end_slash() const {
+	// _size > 1, so if root is given ("/"), it will not be removed
+
+	String ret = *this;
+
+	while (ret.length() > 1 && (ret.ends_with("/") || ret.ends_with("\\"))) {
+		ret.resize(length() - 1);
+	}
+
+	return ret;
+}
+String String::path_ensure_end_slash() const {
+	// Don't add if empty string, as it would make it root on linux, which can easily become a serious bug
+
+	String ret = *this;
+
+	if (ret.length() == 0) {
+		return ret;
+	}
+
+	if (!(ret.ends_with("/") || ret.ends_with("\\"))) {
+		ret += "/";
+	}
+
+	return ret;
+}
+
+String String::path_get_prev_dir() const {
+	int size = length();
+
+	if (size == 0) {
+		return "/";
+	}
+
+	int seind = size - 1;
+	while (seind > 0 && (operator[](seind) == '/' || operator[](seind) == '\\')) {
+		--seind;
+	}
+
+	if (seind == 0) {
+		// /////////
+		// or
+		// a///////
+		// no prev dir
+
+		return "/";
+	}
+
+	// fol/fol2/fol3//
+	//             ^  (seind)
+
+	while (seind > 0 && (operator[](seind) != '/' && operator[](seind) != '\\')) {
+		--seind;
+	}
+
+	// fol/fol2/fol3//
+	//         ^  (seind)
+
+	//--seind;
+
+	if (seind <= 0) {
+		return "/";
+	}
+
+	return substr_index(0, seind);
 }
 
 static int _humanize_digits(int p_num) {
@@ -3843,6 +4142,63 @@ bool String::is_valid_float() const {
 	}
 
 	return numbers_found;
+}
+
+bool String::is_valid_bool() const {
+	int size = length();
+
+	if (size == 1) {
+		CharType c = ptr()[0];
+
+		if (c == '0') {
+			return true;
+		} else if (c == '1') {
+			return true;
+		}
+
+		return false;
+	} else if (size == 4) {
+		String l = to_lower();
+		const CharType *p = l.ptr();
+
+		if (p[0] == 't' && p[1] == 'r' && p[2] == 'u' && p[3] == 'e') {
+			return true;
+		} else {
+			return false;
+		}
+	} else if (size == 5) {
+		String l = to_lower();
+		const CharType *p = l.ptr();
+
+		if (p[0] == 'f' && p[1] == 'a' && p[2] == 'l' && p[3] == 's' && p[3] == 'e') {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	return false;
+}
+
+bool String::is_valid_unsigned_integer() const {
+	int len = length();
+
+	if (len == 0) {
+		return false;
+	}
+
+	int from = 0;
+	if (len != 1 && (operator[](0) == '+')) {
+		from++;
+	}
+
+	for (int i = from; i < len; i++) {
+		if (operator[](i) < '0' || operator[](i) > '9') {
+			return false; // no start with number plz
+		}
+	}
+
+	return true;
 }
 
 String String::path_to_file(const String &p_path) const {
