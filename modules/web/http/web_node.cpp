@@ -16,6 +16,24 @@
 #include "database/table_builder.h"
 #endif
 
+/*
+void WebNode::update() {
+	if (!_root_node) {
+		return;
+	}
+
+	_root_node->notification(Node::NOTIFICATION_UPDATE);
+
+	if (_write_lock_requested) {
+		_rw_lock.write_lock();
+		_root_node->notification(Node::NOTIFICATION_TREE_WRITE_LOCKED);
+		_rw_lock.write_unlock();
+
+		_write_lock_requested = false;
+	}
+}
+*/
+
 String WebNode::get_uri_segment() {
 	return _uri_segment;
 }

@@ -1,29 +1,40 @@
 #ifndef WEB_SERVER_H
 #define WEB_SERVER_H
 
-#include "core/nodes/node_tree.h"
+#include "core/os/rw_lock.h"
+#include "scene/main/node.h"
 
-class Request;
+class WebServerRequest;
 class WebNode;
 
-class WebServer : public NodeTree {
-	RCPP_OBJECT(WebServer, NodeTree);
+class WebServer : public Node {
+	GDCLASS(WebServer, Node);
 
 public:
+	NodePath get_web_root_path() const;
+	void set_web_root_path(const NodePath &path);
+
 	WebNode *get_web_root();
+	void set_web_root(WebNode *root);
 
-	void set_root(Node *root);
+	Node *get_web_root_bind();
+	void set_web_root_bind(Node *root);
 
-	void handle_request(Request *request);
+	void handle_request(Ref<WebServerRequest> request);
 
-	float get_update_delta_time();
+	void request_write_lock();
 
 	WebServer();
-	virtual ~WebServer();
+	~WebServer();
 
 protected:
+	static void _bind_methods();
+
+	NodePath _web_root_path;
 	WebNode *_web_root;
-	float _update_interval;
+
+	bool _write_lock_requested;
+	RWLock _rw_lock;
 };
 
 #endif

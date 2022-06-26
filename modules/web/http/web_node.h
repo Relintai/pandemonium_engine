@@ -17,10 +17,17 @@ class TableBuilder;
 class QueryBuilder;
 #endif
 
+//note add an alterative queue_delete() -> (with different name) -> if called node stops getting routed to, and when rwlock can be locked gets queue_deleted.
+
 class WebNode : public Node {
 	RCPP_OBJECT(WebNode, Node);
 
 public:
+	enum {
+		//todo likely needs a different constant number
+		NOTIFICATION_SERVER_TREE_WRITE_LOCKED = 2000,
+	};
+
 	String get_uri_segment();
 	void set_uri_segment(const String &val);
 
@@ -49,7 +56,7 @@ public:
 
 	virtual void render_index(Request *request);
 	virtual void render_preview(Request *request);
-	
+
 	virtual void render_menu(Request *request);
 	virtual void _render_menu(Request *request);
 
