@@ -1,8 +1,7 @@
 #include "file_cache.h"
 
-#include "core/os/directory.h"
-
-#include <iostream>
+#include "core/os/dir_access.h"
+#include "core/os/file_access.h"
 
 void FileCache::wwwroot_register_file(const String &file_path) {
 	registered_files.insert(file_path);
@@ -13,7 +12,7 @@ void FileCache::wwwroot_deregister_file(const String &file_path) {
 }
 
 bool FileCache::wwwroot_has_file(const String &file_path) {
-	return registered_files.find(file_path) != registered_files.end();
+	return registered_files.has(file_path);
 }
 
 void FileCache::wwwroot_refresh_cache() {
@@ -23,30 +22,33 @@ void FileCache::wwwroot_refresh_cache() {
 
 	wwwroot.path_clean_end_slash();
 
-	wwwroot_evaluate_dir(wwwroot.c_str());
+	wwwroot_evaluate_dir(wwwroot);
 
 	_lock.write_unlock();
 }
 
-void FileCache::wwwroot_evaluate_dir(const char *path, const bool should_exist) {
-	Ref<Directory> dir;
-	dir.instance();
+void FileCache::wwwroot_evaluate_dir(const String &path, const bool should_exist) {
+	DirAccess *da = DirAccess::open(path);
 
-	ERR_FAIL_COND_MSG(dir->open_dir(path) != OK, "Error opening wwwroot! folder: " + String(path));
+	ERR_FAIL_COND_MSG(!da, "Error opening wwwroot! folder: " + path);
 
-	while (dir->next()) {
-		if (dir->current_is_file()) {
-			String np = dir->current_get_path_cstr();
+	da->list_dir_begin();
+	String f = da->get_next();
 
+	while (f != String()) {
+		if (!da->current_is_dir()) {
+			String np = path + "/" + f;
 			np = np.substr(wwwroot.size(), np.size() - wwwroot.size());
-
 			registered_files.insert(np);
 		} else {
-			wwwroot_evaluate_dir(dir->current_get_path_cstr());
+			wwwroot_evaluate_dir(path + "/" + f);
 		}
-	}
 
-	dir->close_dir();
+		f = da->get_next();
+	}
+	da->list_dir_end();
+
+	memdelete(da);
 }
 
 bool FileCache::get_cached_body(const String &path, String *body) {
@@ -68,7 +70,7 @@ bool FileCache::get_cached_body(const String &path, String *body) {
 		return false;
 	}
 
-	body->append_str(e->body);
+	body->operator+=(e->body);
 
 	return true;
 }
@@ -96,40 +98,23 @@ void FileCache::clear() {
 
 	registered_files.clear();
 
-	for (std::map<String, CacheEntry *>::iterator E = cache_map.begin(); E != cache_map.end(); E++) {
-		CacheEntry * ce = E->second;
+	for (Map<String, CacheEntry *>::Element *E = cache_map.front(); E; E++) {
+		CacheEntry *ce = E->get();
 
 		if (ce) {
 			delete ce;
 		}
 	}
-	
+
 	cache_map.clear();
 
 	_lock.write_unlock();
 }
 
-FileCache::FileCache(bool singleton) {
-	if (singleton) {
-		if (_instance) {
-			printf("FileCache: Filecache instance is set as singleton, but an another FileCache instance is already set up as singleton! Ignoring setting!\n");
-		} else {
-			_instance = this;
-		}
-	}
-
+FileCache::FileCache() {
 	cache_invalidation_time = 1;
 }
 
 FileCache::~FileCache() {
 	registered_files.clear();
-
-	if (_instance == this)
-		_instance = nullptr;
 }
-
-FileCache *FileCache::get_singleton() {
-	return _instance;
-}
-
-FileCache *FileCache::_instance = nullptr;
