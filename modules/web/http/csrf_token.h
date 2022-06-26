@@ -1,21 +1,21 @@
-#ifndef CSRF_TOKEN_H
-#define CSRF_TOKEN_H
+#ifndef CSRF_TOKEN_MIDDLEWARE_H
+#define CSRF_TOKEN_MIDDLEWARE_H
 
-#include "middleware.h"
+#include "web_server_middleware.h"
 
-#include "core/containers/vector.h"
-#include "core/string.h"
+#include "core/ustring.h"
+#include "core/vector.h"
 
-class Request;
+class WebServerRequest;
 
 class CSRFTokenWebServerMiddleware : public WebServerMiddleware {
-	RCPP_OBJECT(CSRFTokenWebServerMiddleware, WebServerMiddleware);
+	GDCLASS(CSRFTokenWebServerMiddleware, WebServerMiddleware);
 
 public:
 	//returnring true means handled, false means continue
-	bool on_before_handle_request_main(Request *request);
+	bool _on_before_handle_request_main(Ref<WebServerRequest> request);
 
-	bool shold_ignore(Request *request);
+	bool shold_ignore(Ref<WebServerRequest> request);
 
 	virtual String create_token();
 
@@ -23,6 +23,9 @@ public:
 	~CSRFTokenWebServerMiddleware();
 
 	Vector<String> ignored_urls;
+
+protected:
+	static void _bind_methods();
 };
 
 #endif

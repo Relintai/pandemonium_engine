@@ -1,27 +1,28 @@
 #include "csrf_token.h"
 
-#include "crypto/hash/sha256.h"
+#include "core/crypto/crypto_core.h"
+#include "core/os/os.h"
+#include "http_server_enums.h"
 #include "http_session.h"
-#include "request.h"
-#include <time.h>
+#include "web_server_request.h"
 
-bool CSRFTokenWebServerMiddleware::on_before_handle_request_main(Request *request) {
+bool CSRFTokenWebServerMiddleware::_on_before_handle_request_main(Ref<WebServerRequest> request) {
 	switch (request->get_method()) {
-		case HTTP_METHOD_POST:
-		case HTTP_METHOD_DELETE:
-		case HTTP_METHOD_PATCH:
-		case HTTP_METHOD_PUT: {
+		case HTTPServerEnums::HTTP_METHOD_POST:
+		case HTTPServerEnums::HTTP_METHOD_DELETE:
+		case HTTPServerEnums::HTTP_METHOD_PATCH:
+		case HTTPServerEnums::HTTP_METHOD_PUT: {
 			if (shold_ignore(request)) {
 				return false;
 			}
 
 			if (!request->session.is_valid()) {
-				request->send_error(HTTP_STATUS_CODE_401_UNAUTHORIZED);
+				request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_401_UNAUTHORIZED);
 				return true;
 			}
 
 			if (!request->validate_csrf_token()) {
-				request->send_error(HTTP_STATUS_CODE_401_UNAUTHORIZED);
+				request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_401_UNAUTHORIZED);
 				return true;
 			}
 
@@ -43,11 +44,11 @@ bool CSRFTokenWebServerMiddleware::on_before_handle_request_main(Request *reques
 	return false;
 }
 
-bool CSRFTokenWebServerMiddleware::shold_ignore(Request *request) {
-	const String &path = request->get_path_full();
+bool CSRFTokenWebServerMiddleware::shold_ignore(Ref<WebServerRequest> request) {
+	String path = request->get_path_full();
 
 	for (int i = 0; i < ignored_urls.size(); ++i) {
-		if (path.starts_with(ignored_urls[i])) {
+		if (path.begins_with(ignored_urls[i])) {
 			return true;
 		}
 	}
@@ -56,14 +57,15 @@ bool CSRFTokenWebServerMiddleware::shold_ignore(Request *request) {
 }
 
 String CSRFTokenWebServerMiddleware::create_token() {
-	Ref<SHA256> h = SHA256::get();
+	String s = String::num(OS::get_singleton()->get_unix_time());
 
-	String s = h->compute(String::num(time(NULL)));
-
-	return s.substr(0, 10);
+	return s.sha256_text().substr(0, 10);
 }
 
 CSRFTokenWebServerMiddleware::CSRFTokenWebServerMiddleware() {
 }
 CSRFTokenWebServerMiddleware::~CSRFTokenWebServerMiddleware() {
+}
+
+void CSRFTokenWebServerMiddleware::_bind_methods() {
 }
