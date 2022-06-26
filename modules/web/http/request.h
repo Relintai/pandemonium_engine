@@ -18,6 +18,7 @@ class Cookie;
 class HTTPSession;
 class WebPermission;
 
+//Rename to WebServerRequest
 class Request {
 public:
 	WebServer *server;
@@ -37,7 +38,7 @@ public:
 
 	Ref<HTTPSession> session;
 	std::map<String, Object *> data;
-	std::map<String, Ref<Reference> > reference_data;
+	std::map<String, Ref<Reference>> reference_data;
 
 	Ref<HTTPSession> get_or_create_session();
 
