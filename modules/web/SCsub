@@ -22,9 +22,6 @@ sources = [
     "http/web_server_middleware.cpp",
     "http/web_server_request.cpp",
 
-    "http/http_server_enums.cpp",
-    "http/web_server_cookie.cpp",
-
     "html/html_builder_bind.cpp",
 ]
 
