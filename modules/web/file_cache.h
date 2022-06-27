@@ -13,8 +13,11 @@ class FileCache : public Reference {
 	GDCLASS(FileCache, Reference);
 
 public:
-	String wwwroot;
-	int cache_invalidation_time;
+	String get_wwwroot();
+	void set_wwwroot(const String &val);
+
+	int get_cache_invalidation_time();
+	void set_cache_invalidation_time(const int &val);
 
 	//Note: file path should be the url you want to access the file with, inculding lead slash
 	//e.g. http://127.0.0.1/a/b/d.jpg -> /a/b/d.jpg
@@ -25,6 +28,8 @@ public:
 	void wwwroot_evaluate_dir(const String &path, const bool should_exist = true);
 
 	bool get_cached_body(const String &path, String *body);
+	bool has_cached_body(const String &path);
+	String get_cached_body_bind(const String &path);
 	void set_cached_body(const String &path, const String &body);
 
 	void clear();
@@ -32,11 +37,16 @@ public:
 	FileCache();
 	~FileCache();
 
+	String wwwroot;
+	int cache_invalidation_time;
+
 	Set<String> registered_files;
 
 protected:
+	static void _bind_methods();
+
 	struct CacheEntry {
-		int64_t timestamp;
+		uint64_t timestamp;
 		String body;
 
 		CacheEntry() {
