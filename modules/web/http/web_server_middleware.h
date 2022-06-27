@@ -3,12 +3,12 @@
 
 #include "core/ustring.h"
 
-#include "core/reference.h"
+#include "core/resource.h"
 
 class WebServerRequest;
 
-class WebServerMiddleware : public Reference {
-	GDCLASS(WebServerMiddleware, Reference);
+class WebServerMiddleware : public Resource {
+	GDCLASS(WebServerMiddleware, Resource);
 
 public:
 	//returnring true means handled, false, means continue
