@@ -138,7 +138,7 @@ protected:
 	HTTPServerEnums::HTTPStatusCode _status_code;
 	String _full_path;
 	Vector<String> _path_stack;
-	uint32_t _path_stack_pointer;
+	int _path_stack_pointer;
 };
 
 #endif
