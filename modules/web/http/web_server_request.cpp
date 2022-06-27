@@ -272,7 +272,7 @@ String WebServerRequest::get_path(const bool beginning_slash, const bool end_sla
 		path += '/';
 	}
 
-	for (uint32_t i = _path_stack_pointer; i < _path_stack.size(); ++i) {
+	for (int i = _path_stack_pointer; i < _path_stack.size(); ++i) {
 		path += _path_stack[i];
 		path += '/';
 	}
@@ -341,7 +341,7 @@ void WebServerRequest::push_path() {
 String WebServerRequest::get_url_root_parent(const int parent) const {
 	String path = "/";
 
-	for (uint32_t i = 0; i < _path_stack_pointer - parent; ++i) {
+	for (int i = 0; i < _path_stack_pointer - parent; ++i) {
 		path += _path_stack[i];
 		path += "/";
 	}
@@ -358,7 +358,7 @@ String WebServerRequest::get_url_root() const {
 
 	String path = "/";
 
-	for (uint32_t i = 0; i < _path_stack_pointer; ++i) {
+	for (int i = 0; i < _path_stack_pointer; ++i) {
 		path += _path_stack[i];
 		path += "/";
 	}
@@ -375,7 +375,7 @@ String WebServerRequest::get_url_root_current() const {
 
 	String path = "/";
 
-	for (uint32_t i = 0; i < pst; ++i) {
+	for (int i = 0; i < pst; ++i) {
 		path += _path_stack[i];
 		path += "/";
 	}
@@ -386,7 +386,7 @@ String WebServerRequest::get_url_root_current() const {
 String WebServerRequest::get_url_site() const {
 	String path = get_host();
 
-	for (uint32_t i = _path_stack_pointer; i < _path_stack.size(); ++i) {
+	for (int i = _path_stack_pointer; i < _path_stack.size(); ++i) {
 		path += _path_stack[i];
 		path += "/";
 	}
