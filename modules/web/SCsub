@@ -8,6 +8,8 @@ sources = [
 
     "register_types.cpp",
 
+    "file_cache.cpp",
+
     "http/http_server_enums.cpp",
     "http/web_server_cookie.cpp",
 

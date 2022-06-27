@@ -24,12 +24,15 @@ SOFTWARE.
 
 //#include "core/engine.h"
 
+#include "file_cache.h"
 #include "html/html_builder_bind.h"
 #include "http/http_server_enums.h"
 #include "http/web_server_cookie.h"
 
 void register_web_types() {
 	ClassDB::register_class<HTTPServerEnums>();
+
+	ClassDB::register_class<FileCache>();
 
 	ClassDB::register_class<WebServerCookie>();
 
