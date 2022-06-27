@@ -1,81 +1,82 @@
 #include "web_root.h"
 
+#include "core/object.h"
+#include "modules/web/http/http_server_enums.h"
 #include "web_server_request.h"
 
 #include "../file_cache.h"
 
 #include "web_permission.h"
 
-String WebRoot::get_default_error_404_body() {
-	return default_error_404_body;
+String WebRoot::get_www_root_path() {
+	return _www_root_path;
 }
-void WebRoot::set_default_error_404_body(const String &val) {
-	default_error_404_body = val;
-}
+void WebRoot::set_www_root_path(const String &val) {
+	_www_root_path = val;
 
-String WebRoot::get_default_generic_error_body() {
-	return default_generic_error_body;
-}
-void WebRoot::set_default_generic_error_body(const String &val) {
-	default_generic_error_body = val;
-}
-
-void WebRoot::setup() {
-	setup_error_handlers();
-	setup_middleware();
+	if (val == "") {
+		_www_root_file_cache->clear();
+	} else {
+		_www_root_file_cache->wwwroot_evaluate_dir(val);
+	}
 }
 
-void WebRoot::setup_error_handlers() {
-	default_error_handler_func = WebRoot::default_fallback_error_handler;
-	error_handler_map[404] = WebRoot::default_404_error_handler;
+Ref<FileCache> WebRoot::get_www_root_file_cache() {
+	return _www_root_file_cache;
 }
 
-void WebRoot::setup_middleware() {
-	// WebServerMiddlewares get processed in the order they are in the _middlewares array
-
-	// -------        Built in middleware selection        -------
-
-	// ---   SessionSetupWebServerMiddleware   ---
-	// If you want sessions add this to your inherited class.
-	// (#include "web/http/session_manager.h")
-
-	// _middlewares.push_back(Ref<SessionSetupWebServerMiddleware>(new SessionSetupWebServerMiddleware()));
-
-	// ---   UserSessionSetupWebServerMiddleware   ---
-	// This one looks up users based on sessions
-	// (#include "web_modules/users/user_controller.h")
-
-	// _middlewares.push_back(Ref<UserSessionSetupWebServerMiddleware>(new UserSessionSetupWebServerMiddleware()));
-
-	// ---   RBACUserSessionSetupWebServerMiddleware / RBACDefaultUserSessionSetupWebServerMiddleware   ---
-	// Same as the previous, but if you want the RBAC system to work use one of these
-	// UserSessionSetupWebServerMiddleware is not needed if you need these
-	// (#include "web_modules/rbac_users/rbac_user_controller.h")
-
-	// _middlewares.push_back(Ref<RBACUserSessionSetupWebServerMiddleware>(new RBACUserSessionSetupWebServerMiddleware()));
-	// _middlewares.push_back(Ref<RBACDefaultUserSessionSetupWebServerMiddleware>(new RBACDefaultUserSessionSetupWebServerMiddleware()));
-
-	// ---   CSRF Token Middlweare    ---
-	// (#include "web/http/csrf_token.h")
-
-	// Ref<CSRFTokenWebServerMiddleware> csrf_middleware;
-	// csrf_middleware.instance();
-	// csrf_middleware->ignored_urls.push_back("/user/login");
-	// csrf_middleware->ignored_urls.push_back("/user/register");
-	// _middlewares.push_back(csrf_middleware);
+Vector<Variant> WebRoot::get_middlewares() {
+	Vector<Variant> r;
+	for (int i = 0; i < _middlewares.size(); i++) {
+		r.push_back(_middlewares[i].get_ref_ptr());
+	}
+	return r;
 }
 
-void WebRoot::default_fallback_error_handler(Ref<WebServerRequest> request, int error_code) {
-	request->compiled_body = default_generic_error_body;
-	request->send();
+void WebRoot::set_middlewares(const Vector<Variant> &data) {
+	_middlewares.clear();
+	for (int i = 0; i < data.size(); i++) {
+		Ref<WebServerMiddleware> e = Ref<WebServerMiddleware>(data[i]);
+		_middlewares.push_back(e);
+	}
 }
 
-void WebRoot::default_404_error_handler(Ref<WebServerRequest> request, int error_code) {
-	request->compiled_body = default_error_404_body;
-	request->send();
-}
+//void WebRoot::setup_middleware() {
+// WebServerMiddlewares get processed in the order they are in the _middlewares array
 
-void WebRoot::handle_request_main(Ref<WebServerRequest> request) {
+// -------        Built in middleware selection        -------
+
+// ---   SessionSetupWebServerMiddleware   ---
+// If you want sessions add this to your inherited class.
+// (#include "web/http/session_manager.h")
+
+// _middlewares.push_back(Ref<SessionSetupWebServerMiddleware>(new SessionSetupWebServerMiddleware()));
+
+// ---   UserSessionSetupWebServerMiddleware   ---
+// This one looks up users based on sessions
+// (#include "web_modules/users/user_controller.h")
+
+// _middlewares.push_back(Ref<UserSessionSetupWebServerMiddleware>(new UserSessionSetupWebServerMiddleware()));
+
+// ---   RBACUserSessionSetupWebServerMiddleware / RBACDefaultUserSessionSetupWebServerMiddleware   ---
+// Same as the previous, but if you want the RBAC system to work use one of these
+// UserSessionSetupWebServerMiddleware is not needed if you need these
+// (#include "web_modules/rbac_users/rbac_user_controller.h")
+
+// _middlewares.push_back(Ref<RBACUserSessionSetupWebServerMiddleware>(new RBACUserSessionSetupWebServerMiddleware()));
+// _middlewares.push_back(Ref<RBACDefaultUserSessionSetupWebServerMiddleware>(new RBACDefaultUserSessionSetupWebServerMiddleware()));
+
+// ---   CSRF Token Middlweare    ---
+// (#include "web/http/csrf_token.h")
+
+// Ref<CSRFTokenWebServerMiddleware> csrf_middleware;
+// csrf_middleware.instance();
+// csrf_middleware->ignored_urls.push_back("/user/login");
+// csrf_middleware->ignored_urls.push_back("/user/register");
+// _middlewares.push_back(csrf_middleware);
+//}
+
+void WebRoot::_handle_request_main(Ref<WebServerRequest> request) {
 	if (process_middlewares(request)) {
 		return;
 	}
@@ -102,25 +103,27 @@ void WebRoot::handle_request_main(Ref<WebServerRequest> request) {
 	}
 }
 
-void WebRoot::handle_error_send_request(Ref<WebServerRequest> request, const int error_code) {
-	void (*func)(Ref<WebServerRequest>, int) = error_handler_map[error_code];
+void WebRoot::_handle_error_send_request(Ref<WebServerRequest> request, const int error_code) {
+	if (error_code == HTTPServerEnums::HTTP_STATUS_CODE_404_NOT_FOUND) {
+		request->compiled_body = "<html><body>404 :(</body></html>";
 
-	if (!func) {
-		if (!default_error_handler_func) {
-			WebNode::handle_error_send_request(request, error_code);
-			return;
-		}
-
-		default_error_handler_func(request, error_code);
+		request->send();
 		return;
 	}
 
-	func(request, error_code);
+	request->compiled_body = "<html><body>Internal server error! :(</body></html>";
+	request->send();
 }
 
 bool WebRoot::process_middlewares(Ref<WebServerRequest> request) {
 	for (int i = 0; i < _middlewares.size(); ++i) {
-		if (_middlewares.write[i]->on_before_handle_request_main(request)) {
+		Ref<WebServerMiddleware> m = _middlewares[i];
+
+		if (!m.is_valid()) {
+			continue;
+		}
+
+		if (m->on_before_handle_request_main(request)) {
 			// handled
 			return true;
 		}
@@ -132,7 +135,7 @@ bool WebRoot::process_middlewares(Ref<WebServerRequest> request) {
 bool WebRoot::try_send_wwwroot_file(Ref<WebServerRequest> request) {
 	const String &path = request->get_path_full();
 
-	if (FileCache::get_singleton()->wwwroot_has_file(path)) {
+	if (_www_root_file_cache->wwwroot_has_file(path)) {
 		send_file(path, request);
 
 		return true;
@@ -142,7 +145,7 @@ bool WebRoot::try_send_wwwroot_file(Ref<WebServerRequest> request) {
 }
 
 void WebRoot::send_file(const String &path, Ref<WebServerRequest> request) {
-	String fp = FileCache::get_singleton()->wwwroot + path;
+	String fp = _www_root_file_cache->wwwroot + path;
 
 	request->send_file(fp);
 }
@@ -169,22 +172,40 @@ void WebRoot::unregister_request_update(Ref<WebServerRequest> request) {
 	_update_registered_requests_mutex.unlock();
 }
 
-void WebRoot::update() {
-	for (std::size_t i = 0; i < _update_registered_requests.size(); ++i) {
-		Ref<WebServerRequest> r = _update_registered_requests[i];
-
-		r->update();
-	}
-}
-
 WebRoot::WebRoot() {
-	default_error_handler_func = nullptr;
+	_www_root_file_cache.instance();
+	set_process_internal(true);
 }
 
 WebRoot::~WebRoot() {
-	error_handler_map.clear();
-	_middlewares.clear();
 }
 
-String WebRoot::default_error_404_body = "<html><body>404 :(</body></html>";
-String WebRoot::default_generic_error_body = "<html><body>Internal server error! :(</body></html>";
+void WebRoot::_notification(int p_what) {
+	if (p_what == NOTIFICATION_INTERNAL_PROCESS) {
+		for (int i = 0; i < _update_registered_requests.size(); ++i) {
+			Ref<WebServerRequest> r = _update_registered_requests[i];
+
+			r->update();
+		}
+	}
+}
+
+void WebRoot::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_www_root_path"), &WebRoot::get_www_root_path);
+	ClassDB::bind_method(D_METHOD("set_www_root_path", "val"), &WebRoot::set_www_root_path);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "www_root_path"), "set_www_root_path", "get_www_root_path");
+
+	ClassDB::bind_method(D_METHOD("get_www_root_file_cache"), &WebRoot::get_www_root_file_cache);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "www_root_file_cache", PROPERTY_HINT_RESOURCE_TYPE, "FileCache", 0), "", "get_www_root_file_cache");
+
+	ClassDB::bind_method(D_METHOD("get_middlewares"), &WebRoot::get_middlewares);
+	ClassDB::bind_method(D_METHOD("set_middlewares", "data"), &WebRoot::set_middlewares);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "middlewares", PROPERTY_HINT_NONE, "17/17:WebServerRequest", PROPERTY_USAGE_DEFAULT, "WebServerRequest"), "set_middlewares", "get_middlewares");
+
+	ClassDB::bind_method(D_METHOD("process_middlewares", "request"), &WebRoot::process_middlewares);
+	ClassDB::bind_method(D_METHOD("try_send_wwwroot_file", "request"), &WebRoot::try_send_wwwroot_file);
+	ClassDB::bind_method(D_METHOD("send_file", "path", "request"), &WebRoot::send_file);
+
+	ClassDB::bind_method(D_METHOD("register_request_update", "request"), &WebRoot::register_request_update);
+	ClassDB::bind_method(D_METHOD("unregister_request_update", "request"), &WebRoot::unregister_request_update);
+}
