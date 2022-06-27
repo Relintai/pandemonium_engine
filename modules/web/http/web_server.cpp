@@ -67,6 +67,10 @@ void WebServer::stop() {
 
 void WebServer::_start() {
 	//look up root node, and sessionmanager, if not set.
+
+	if (!_web_root && _web_root_path != NodePath()) {
+		_web_root = Object::cast_to<WebNode>(get_node_or_null(_web_root_path));
+	}
 }
 void WebServer::_stop() {
 }
@@ -87,7 +91,7 @@ void WebServer::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_web_root"), &WebServer::get_web_root_bind);
 	ClassDB::bind_method(D_METHOD("set_web_root", "val"), &WebServer::set_web_root_bind);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "web_root", PROPERTY_HINT_RESOURCE_TYPE, "WebRoot"), "set_web_root", "get_web_root");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "web_root", PROPERTY_HINT_RESOURCE_TYPE, "WebRoot", 0), "set_web_root", "get_web_root");
 
 	ClassDB::bind_method(D_METHOD("get_session_manager"), &WebServer::get_session_manager_bind);
 	ClassDB::bind_method(D_METHOD("set_session_manager", "val"), &WebServer::set_session_manager_bind);
