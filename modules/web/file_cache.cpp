@@ -50,6 +50,11 @@ void FileCache::wwwroot_evaluate_dir(const String &path, const bool should_exist
 	String f = da->get_next();
 
 	while (f != String()) {
+		if (f == "." || f == "..") {
+			f = da->get_next();
+			continue;
+		}
+
 		if (!da->current_is_dir()) {
 			String np = path + "/" + f;
 			np = np.substr(wwwroot.size(), np.size() - wwwroot.size());
