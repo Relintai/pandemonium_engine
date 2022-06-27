@@ -94,12 +94,12 @@ void WebRoot::_handle_request_main(Ref<WebServerRequest> request) {
 
 	// normal routing
 	if (!_routing_enabled) {
-		_handle_request_main(request);
+		handle_request(request);
 		return;
 	}
 
 	if (!try_route_request_to_children(request)) {
-		_handle_request_main(request);
+		handle_request(request);
 	}
 }
 
@@ -200,7 +200,7 @@ void WebRoot::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_middlewares"), &WebRoot::get_middlewares);
 	ClassDB::bind_method(D_METHOD("set_middlewares", "data"), &WebRoot::set_middlewares);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "middlewares", PROPERTY_HINT_NONE, "17/17:WebServerRequest", PROPERTY_USAGE_DEFAULT, "WebServerRequest"), "set_middlewares", "get_middlewares");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "middlewares", PROPERTY_HINT_NONE, "17/17:WebServerMiddleware ", PROPERTY_USAGE_DEFAULT, "WebServerMiddleware "), "set_middlewares", "get_middlewares");
 
 	ClassDB::bind_method(D_METHOD("process_middlewares", "request"), &WebRoot::process_middlewares);
 	ClassDB::bind_method(D_METHOD("try_send_wwwroot_file", "request"), &WebRoot::try_send_wwwroot_file);

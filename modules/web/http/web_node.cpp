@@ -153,12 +153,12 @@ void WebNode::_handle_request_main(Ref<WebServerRequest> request) {
 	}
 
 	if (!_routing_enabled) {
-		_handle_request_main(request);
+		handle_request(request);
 		return;
 	}
 
 	if (!try_route_request_to_children(request)) {
-		_handle_request_main(request);
+		handle_request(request);
 	}
 }
 
