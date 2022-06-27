@@ -14,8 +14,8 @@
 class HTTPSession;
 class WebServerRequest;
 
-class SessionManager : public Node {
-	GDCLASS(SessionManager, Node);
+class HTTPSessionManager : public Node {
+	GDCLASS(HTTPSessionManager, Node);
 
 public:
 	void add_session(Ref<HTTPSession> &session);
@@ -35,8 +35,8 @@ public:
 	virtual void create_table();
 	virtual void drop_table();
 
-	SessionManager();
-	~SessionManager();
+	HTTPSessionManager();
+	~HTTPSessionManager();
 
 	HashMap<String, Ref<HTTPSession>> _sessions;
 	Vector<Ref<HTTPSession>> _sessions_vec;

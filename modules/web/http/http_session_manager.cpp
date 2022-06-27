@@ -15,9 +15,9 @@
 
 #include "web_server_cookie.h"
 
-void SessionManager::add_session(Ref<HTTPSession> &session) {
+void HTTPSessionManager::add_session(Ref<HTTPSession> &session) {
 	if (!session.is_valid()) {
-		printf("SessionManager::add_session: ERROR, session is null!\n");
+		printf("HTTPSessionManager::add_session: ERROR, session is null!\n");
 		return;
 	}
 
@@ -29,9 +29,9 @@ void SessionManager::add_session(Ref<HTTPSession> &session) {
 	_mutex.unlock();
 }
 
-void SessionManager::remove_session(Ref<HTTPSession> &session) {
+void HTTPSessionManager::remove_session(Ref<HTTPSession> &session) {
 	if (!session.is_valid()) {
-		printf("SessionManager::remove_session: ERROR, session is null!\n");
+		printf("HTTPSessionManager::remove_session: ERROR, session is null!\n");
 		return;
 	}
 
@@ -51,7 +51,7 @@ void SessionManager::remove_session(Ref<HTTPSession> &session) {
 	_mutex.unlock();
 }
 
-void SessionManager::delete_session(const String &session_id) {
+void HTTPSessionManager::delete_session(const String &session_id) {
 	_mutex.lock();
 
 	Ref<HTTPSession> s = _sessions[session_id];
@@ -88,7 +88,7 @@ void SessionManager::delete_session(const String &session_id) {
 #endif
 }
 
-void SessionManager::save_session(Ref<HTTPSession> &session) {
+void HTTPSessionManager::save_session(Ref<HTTPSession> &session) {
 #if DATABASES_ENABLED
 	Ref<QueryBuilder> b = DatabaseManager::get_singleton()->ddb->get_query_builder();
 
@@ -121,11 +121,11 @@ void SessionManager::save_session(Ref<HTTPSession> &session) {
 #endif
 }
 
-Ref<HTTPSession> SessionManager::get_session(const String &session_id) {
+Ref<HTTPSession> HTTPSessionManager::get_session(const String &session_id) {
 	return _sessions[session_id];
 }
 
-Ref<HTTPSession> SessionManager::create_session() {
+Ref<HTTPSession> HTTPSessionManager::create_session() {
 	Ref<HTTPSession> session = new HTTPSession();
 
 	while (true) {
@@ -150,7 +150,7 @@ Ref<HTTPSession> SessionManager::create_session() {
 	return session;
 }
 
-void SessionManager::load_sessions() {
+void HTTPSessionManager::load_sessions() {
 	clear();
 
 #if DATABASES_ENABLED
@@ -195,7 +195,7 @@ void SessionManager::load_sessions() {
 		}
 
 		if (!s.is_valid()) {
-			printf("Error: SessionManager::load_sessions(): %d sid doesn't exists!\n", session_db_id);
+			printf("Error: HTTPSessionManager::load_sessions(): %d sid doesn't exists!\n", session_db_id);
 
 			continue;
 		}
@@ -208,7 +208,7 @@ void SessionManager::load_sessions() {
 #endif
 }
 
-void SessionManager::clear() {
+void HTTPSessionManager::clear() {
 	_mutex.lock();
 
 	_sessions.clear();
@@ -217,7 +217,7 @@ void SessionManager::clear() {
 	_mutex.unlock();
 }
 
-String SessionManager::generate_session_id(const String &base) {
+String HTTPSessionManager::generate_session_id(const String &base) {
 	// todo make something simpler / better
 
 	String sid = base;
@@ -227,12 +227,12 @@ String SessionManager::generate_session_id(const String &base) {
 	return sid.sha256_text().substr(0, 20);
 }
 
-void SessionManager::migrate() {
+void HTTPSessionManager::migrate() {
 	drop_table();
 	create_table();
 }
 
-void SessionManager::create_table() {
+void HTTPSessionManager::create_table() {
 #if DATABASES_ENABLED
 	Ref<TableBuilder> tb = DatabaseManager::get_singleton()->ddb->get_table_builder();
 
@@ -257,7 +257,7 @@ void SessionManager::create_table() {
 	tb->run_query();
 #endif
 }
-void SessionManager::drop_table() {
+void HTTPSessionManager::drop_table() {
 #if DATABASES_ENABLED
 	Ref<TableBuilder> tb = DatabaseManager::get_singleton()->ddb->get_table_builder();
 
@@ -266,16 +266,16 @@ void SessionManager::drop_table() {
 #endif
 }
 
-SessionManager::SessionManager() {
+HTTPSessionManager::HTTPSessionManager() {
 	_table_name = "sessions";
 	_data_table_name = "session_data";
 }
 
-SessionManager::~SessionManager() {
+HTTPSessionManager::~HTTPSessionManager() {
 	clear();
 }
 
-void SessionManager::_bind_methods() {
+void HTTPSessionManager::_bind_methods() {
 }
 
 bool SessionSetupWebServerMiddleware::_on_before_handle_request_main(Ref<WebServerRequest> request) {
@@ -284,7 +284,7 @@ bool SessionSetupWebServerMiddleware::_on_before_handle_request_main(Ref<WebServ
 	if (sid == "") {
 		// You could create a session here if you want to always assign sessions to visitors.
 		// Example code:
-		// HTTPSession *session = SessionManager::get_singleton()->create_session();
+		// HTTPSession *session = HTTPSessionManager::get_singleton()->create_session();
 		// request->session = session;
 		// request->add_cookie(::Cookie("session_id", session->session_id));
 
@@ -297,12 +297,12 @@ bool SessionSetupWebServerMiddleware::_on_before_handle_request_main(Ref<WebServ
 	//WebServer (Impl) -> maybe webroot node should not be auto discovered, it should have a nodepath for safety
 	// I - WebRoot
 	//     I - WebNodes ... (site)
-	// I - SessionManager (finds parent websercver, registers itself in enter tree)
+	// I - HTTPSessionManager (finds parent websercver, registers itself in enter tree)
 	// I - Other helper nodes, maybe a DatabaseManager (convert to node) etc These will not be accessible
 
 	//request->server->get_session_manager()->get_session(sid);
 
-	//request->session = SessionManager::get_singleton()->get_session(sid);
+	//request->session = HTTPSessionManager::get_singleton()->get_session(sid);
 
 	return false;
 }
