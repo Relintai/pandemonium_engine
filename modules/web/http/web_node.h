@@ -20,6 +20,7 @@ class QueryBuilder;
 #endif
 
 //note add an alterative queue_delete() -> (with different name) -> if called node tells parent to stop getting routed to, and when rwlock can be locked gets queue_deleted.
+//Also add an rwlock just around the handler map (if it's not done already), and add api to lock and unlock it
 
 class WebNode : public Node {
 	GDCLASS(WebNode, Node);
