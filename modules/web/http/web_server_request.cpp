@@ -247,7 +247,7 @@ void WebServerRequest::setup_url_stack() {
 	_full_path = parser_get_path();
 	String path = parser_get_path();
 
-	size_t pos = 0;
+	int pos = 0;
 	String st;
 
 	while ((pos = path.find("/")) != -1) {
