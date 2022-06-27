@@ -10,6 +10,18 @@ sources = [
 
     "file_cache.cpp",
 
+    "http/csrf_token.cpp",
+    "http/http_server_enums.cpp",
+    "http/http_session.cpp",
+    "http/http_session_manager.cpp",
+    "http/web_node.cpp",
+    "http/web_permission.cpp",
+    "http/web_root.cpp",
+    "http/web_server.cpp",
+    "http/web_server_cookie.cpp",
+    "http/web_server_middleware.cpp",
+    "http/web_server_request.cpp",
+
     "http/http_server_enums.cpp",
     "http/web_server_cookie.cpp",
 

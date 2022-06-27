@@ -18,10 +18,10 @@ class HTTPSessionManager : public Node {
 	GDCLASS(HTTPSessionManager, Node);
 
 public:
-	void add_session(Ref<HTTPSession> &session);
-	void remove_session(Ref<HTTPSession> &session);
+	void add_session(Ref<HTTPSession> session);
+	void remove_session(Ref<HTTPSession> session);
 	void delete_session(const String &session_id);
-	void save_session(Ref<HTTPSession> &session);
+	void save_session(Ref<HTTPSession> session);
 	Ref<HTTPSession> get_session(const String &session_id);
 	Ref<HTTPSession> create_session();
 

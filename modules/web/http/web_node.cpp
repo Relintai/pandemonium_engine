@@ -329,6 +329,10 @@ void WebNode::clear_handlers() {
 	_node_route_map.clear();
 }
 
+void WebNode::request_write_lock() {
+	_write_lock_requested = true;
+}
+
 WebServer *WebNode::get_server() {
 	// todo this shoult probably be cached
 	return Object::cast_to<WebServer>(get_tree());
@@ -404,11 +408,8 @@ void WebNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_uri_segment", "val"), &WebNode::set_uri_segment);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "uri_segment"), "set_uri_segment", "get_uri_segment");
 
-	ClassDB::bind_method(D_METHOD("get_uri_segment"), &WebNode::get_uri_segment);
-	ClassDB::bind_method(D_METHOD("get_uri_segment"), &WebNode::get_uri_segment);
-
-	String get_full_uri(const bool slash_at_the_end = true);
-	String get_full_uri_parent(const bool slash_at_the_end = true);
+	ClassDB::bind_method(D_METHOD("get_full_uri", "slash_at_the_end "), &WebNode::get_full_uri, true);
+	ClassDB::bind_method(D_METHOD("get_full_uri_parent", "slash_at_the_end "), &WebNode::get_full_uri_parent, true);
 
 	//#if WEB_SETTINGS_ENABLED
 	//	Settings *get_settings();

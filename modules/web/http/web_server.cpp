@@ -54,6 +54,10 @@ void WebServer::server_handle_request(Ref<WebServerRequest> request) {
 	_rw_lock.read_unlock();
 }
 
+void WebServer::request_write_lock() {
+	_write_lock_requested = true;
+}
+
 void WebServer::start() {
 	call("_start");
 }
@@ -87,7 +91,6 @@ void WebServer::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_session_manager"), &WebServer::get_session_manager_bind);
 	ClassDB::bind_method(D_METHOD("set_session_manager", "val"), &WebServer::set_session_manager_bind);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "session_manager", PROPERTY_HINT_RESOURCE_TYPE, "HTTPSessionManager"), "set_session_manager", "get_session_manager");
 
 	ClassDB::bind_method(D_METHOD("server_handle_request", "request"), &WebServer::server_handle_request);
 	ClassDB::bind_method(D_METHOD("request_write_lock"), &WebServer::request_write_lock);

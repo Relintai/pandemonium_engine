@@ -1,8 +1,6 @@
 #include "http_session_manager.h"
 
 #include "http_session.h"
-#include <stdlib.h>
-#include <time.h>
 
 #if DATABASES_ENABLED
 #include "database/database_manager.h"
@@ -11,11 +9,11 @@
 #include "database/table_builder.h"
 #endif
 
+#include "web_server.h"
+#include "web_server_cookie.h"
 #include "web_server_request.h"
 
-#include "web_server_cookie.h"
-
-void HTTPSessionManager::add_session(Ref<HTTPSession> &session) {
+void HTTPSessionManager::add_session(Ref<HTTPSession> session) {
 	if (!session.is_valid()) {
 		printf("HTTPSessionManager::add_session: ERROR, session is null!\n");
 		return;
@@ -29,7 +27,7 @@ void HTTPSessionManager::add_session(Ref<HTTPSession> &session) {
 	_mutex.unlock();
 }
 
-void HTTPSessionManager::remove_session(Ref<HTTPSession> &session) {
+void HTTPSessionManager::remove_session(Ref<HTTPSession> session) {
 	if (!session.is_valid()) {
 		printf("HTTPSessionManager::remove_session: ERROR, session is null!\n");
 		return;
@@ -88,7 +86,7 @@ void HTTPSessionManager::delete_session(const String &session_id) {
 #endif
 }
 
-void HTTPSessionManager::save_session(Ref<HTTPSession> &session) {
+void HTTPSessionManager::save_session(Ref<HTTPSession> session) {
 #if DATABASES_ENABLED
 	Ref<QueryBuilder> b = DatabaseManager::get_singleton()->ddb->get_query_builder();
 
@@ -276,6 +274,16 @@ HTTPSessionManager::~HTTPSessionManager() {
 }
 
 void HTTPSessionManager::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("add_session", "session"), &HTTPSessionManager::add_session);
+	ClassDB::bind_method(D_METHOD("remove_session", "session"), &HTTPSessionManager::remove_session);
+	ClassDB::bind_method(D_METHOD("delete_session", "session_id"), &HTTPSessionManager::delete_session);
+	ClassDB::bind_method(D_METHOD("save_session", "session"), &HTTPSessionManager::save_session);
+	ClassDB::bind_method(D_METHOD("get_session", "session_id"), &HTTPSessionManager::get_session);
+	ClassDB::bind_method(D_METHOD("create_session"), &HTTPSessionManager::create_session);
+
+	ClassDB::bind_method(D_METHOD("load_sessions"), &HTTPSessionManager::load_sessions);
+	ClassDB::bind_method(D_METHOD("clear"), &HTTPSessionManager::clear);
+	ClassDB::bind_method(D_METHOD("generate_session_id", "base"), &HTTPSessionManager::generate_session_id, "");
 }
 
 bool SessionSetupWebServerMiddleware::_on_before_handle_request_main(Ref<WebServerRequest> request) {
@@ -284,25 +292,18 @@ bool SessionSetupWebServerMiddleware::_on_before_handle_request_main(Ref<WebServ
 	if (sid == "") {
 		// You could create a session here if you want to always assign sessions to visitors.
 		// Example code:
-		// HTTPSession *session = HTTPSessionManager::get_singleton()->create_session();
+		// HTTPSessionManager *sm = request->server->get_session_manager();
+		// ERR_FAIL_COND_V(!sm, false);
+		// Ref<HTTPSession> session = sm->create_session();
 		// request->session = session;
 		// request->add_cookie(::Cookie("session_id", session->session_id));
 
 		return false;
 	}
 
-	//TODO WebServer nodes should have a get_sess-manager() method
-
-	//Probably:
-	//WebServer (Impl) -> maybe webroot node should not be auto discovered, it should have a nodepath for safety
-	// I - WebRoot
-	//     I - WebNodes ... (site)
-	// I - HTTPSessionManager (finds parent websercver, registers itself in enter tree)
-	// I - Other helper nodes, maybe a DatabaseManager (convert to node) etc These will not be accessible
-
-	//request->server->get_session_manager()->get_session(sid);
-
-	//request->session = HTTPSessionManager::get_singleton()->get_session(sid);
+	HTTPSessionManager *sm = request->server->get_session_manager();
+	ERR_FAIL_COND_V(!sm, false);
+	request->session = sm->get_session(sid);
 
 	return false;
 }

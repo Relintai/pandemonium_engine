@@ -11,11 +11,22 @@ def configure(env):
 
 def get_doc_classes():
     return [
-        #"WorldArea",
-
         "FileCache",
+
         "HTTPServerEnums",
         "WebServerCookie",
+	    "CSRFTokenWebServerMiddleware",
+	    "HTTPSession",
+	    "HTTPSessionManager",
+	    "SessionSetupWebServerMiddleware",
+	    "WebNode",
+	    "WebPermission",
+    	"WebRoot",
+	    "WebServer",
+	    "WebServerCookie",
+	    "WebServerMiddleware",
+	    "WebServerRequest",
+
         "HTMLBuilder",
         "HTMLTag",
     ]

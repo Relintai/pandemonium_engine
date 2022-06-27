@@ -49,6 +49,7 @@ protected:
 
 	HTTPSessionManager *_session_manager;
 
+	//TODO this should be atomic
 	bool _write_lock_requested;
 	RWLock _rw_lock;
 };
