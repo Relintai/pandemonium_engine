@@ -6,8 +6,8 @@
 
 #include "http_session.h"
 
-#include "session_manager.h"
-#include "web_root.h"
+#include "http_session_manager.h"
+#include "web_node.h"
 
 #include "web_permission.h"
 
@@ -79,7 +79,11 @@ Ref<HTTPSession> WebServerRequest::get_or_create_session() {
 		return session;
 	}
 
-	session = SessionManager::get_singleton()->create_session();
+	HTTPSessionManager *sm = server->get_session_manager();
+
+	ERR_FAIL_COND_V(!sm, session);
+
+	session = sm->create_session();
 
 	return session;
 }
@@ -119,7 +123,11 @@ void WebServerRequest::set_csrf_token(const String &value) {
 	if (session.is_valid()) {
 		session->add("csrf_token", value);
 
-		SessionManager::get_singleton()->save_session(session);
+		HTTPSessionManager *sm = server->get_session_manager();
+
+		ERR_FAIL_COND(!sm);
+
+		sm->save_session(session);
 	}
 }
 
@@ -275,15 +283,15 @@ String WebServerRequest::get_path(const bool beginning_slash, const bool end_sla
 	return path;
 }
 
-String WebServerRequest::path_full() const {
+String WebServerRequest::get_path_full() const {
 	return _full_path;
 }
 
-String WebServerRequest::path_segment(const uint32_t i) const {
+String WebServerRequest::get_path_segment(const uint32_t i) const {
 	return _path_stack[i];
 }
 
-String WebServerRequest::current_path_segment() const {
+String WebServerRequest::get_current_path_segment() const {
 	if (_path_stack_pointer >= _path_stack.size()) {
 		// for convenience
 		static const String e_str = "";
@@ -293,7 +301,7 @@ String WebServerRequest::current_path_segment() const {
 	return _path_stack[_path_stack_pointer];
 }
 
-String WebServerRequest::next_path_segment() const {
+String WebServerRequest::get_next_path_segment() const {
 	int pst = _path_stack_pointer + 1;
 
 	if (pst >= _path_stack.size()) {
@@ -427,6 +435,8 @@ WebServerRequest::WebServerRequest() {
 	//compiled_body.clear();
 
 	//data.clear();
+	server = nullptr;
+	web_root = nullptr;
 }
 
 WebServerRequest::~WebServerRequest() {

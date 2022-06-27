@@ -14,6 +14,7 @@ class WebServer;
 class WebServerCookie;
 class HTTPSession;
 class WebPermission;
+class WebNode;
 
 class WebServerRequest : public Reference {
 	GDCLASS(WebServerRequest, Reference);
@@ -108,11 +109,14 @@ public:
 
 	WebServer *get_server();
 	Node *get_server_bind();
+	WebNode *get_web_root();
+	Node *get_web_root_bind();
 
 	WebServerRequest();
 	~WebServerRequest();
 
 	WebServer *server;
+	WebNode *web_root;
 
 	String head;
 	String body;
