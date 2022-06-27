@@ -11,10 +11,10 @@ void FileCache::set_wwwroot(const String &val) {
 }
 
 int FileCache::get_cache_invalidation_time() {
-	return cache_invalidation_time;
+	return static_cast<int>(cache_invalidation_time);
 }
 void FileCache::set_cache_invalidation_time(const int &val) {
-	cache_invalidation_time = val;
+	cache_invalidation_time = static_cast<uint64_t>(val);
 }
 
 void FileCache::wwwroot_register_file(const String &file_path) {

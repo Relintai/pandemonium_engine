@@ -38,7 +38,7 @@ public:
 	~FileCache();
 
 	String wwwroot;
-	int cache_invalidation_time;
+	uint64_t cache_invalidation_time;
 
 	Set<String> registered_files;
 
