@@ -59,8 +59,8 @@ public:
 	void set_csrf_token(const String &value);
 	bool validate_csrf_token();
 
-	virtual const String get_cookie(const String &key);
-	virtual void add_cookie(const ::WebServerCookie &cookie);
+	virtual String get_cookie(const String &key);
+	virtual void add_cookie(const Ref<WebServerCookie> &cookie);
 	virtual void remove_cookie(const String &key);
 
 	virtual HTTPServerEnums::HTTPMethod get_method() const;
@@ -69,8 +69,9 @@ public:
 	virtual int get_file_count() const;
 	virtual int get_file_length(const int index) const;
 	virtual const uint8_t *get_file_data(const int index) const;
+	virtual String get_file_data_str(const int index) const;
 
-	virtual const String get_parameter(const String &key) const;
+	virtual String get_parameter(const String &key) const;
 
 	HTTPServerEnums::HTTPStatusCode get_status_code() const;
 	void set_status_code(const HTTPServerEnums::HTTPStatusCode status_code);

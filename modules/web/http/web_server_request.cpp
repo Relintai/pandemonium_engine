@@ -148,12 +148,11 @@ bool WebServerRequest::validate_csrf_token() {
 	return param_token == token;
 }
 
-const String WebServerRequest::get_cookie(const String &key) {
-	static String str;
-	return str;
+String WebServerRequest::get_cookie(const String &key) {
+	return "";
 }
 
-void WebServerRequest::add_cookie(const ::WebServerCookie &cookie) {
+void WebServerRequest::add_cookie(const Ref<WebServerCookie> &cookie) {
 }
 
 void WebServerRequest::remove_cookie(const String &key) {
@@ -174,10 +173,12 @@ int WebServerRequest::get_file_length(const int index) const {
 const uint8_t *WebServerRequest::get_file_data(const int index) const {
 	return nullptr;
 }
+String WebServerRequest::get_file_data_str(const int index) const {
+	return "";
+}
 
-const String WebServerRequest::get_parameter(const String &key) const {
-	static String str;
-	return str;
+String WebServerRequest::get_parameter(const String &key) const {
+	return "";
 }
 
 HTTPServerEnums::HTTPStatusCode WebServerRequest::get_status_code() const {
@@ -443,35 +444,35 @@ WebServerRequest::~WebServerRequest() {
 }
 
 void WebServerRequest::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_head"), &WebServerRequest::head);
+	ClassDB::bind_method(D_METHOD("get_head"), &WebServerRequest::get_head);
 	ClassDB::bind_method(D_METHOD("set_head", "val"), &WebServerRequest::set_head);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "head"), "set_head", "get_head");
 
-	ClassDB::bind_method(D_METHOD("get_body"), &WebServerRequest::body);
+	ClassDB::bind_method(D_METHOD("get_body"), &WebServerRequest::get_body);
 	ClassDB::bind_method(D_METHOD("set_body", "val"), &WebServerRequest::set_body);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "body"), "set_body", "get_body");
 
-	ClassDB::bind_method(D_METHOD("get_footer"), &WebServerRequest::footer);
+	ClassDB::bind_method(D_METHOD("get_footer"), &WebServerRequest::get_footer);
 	ClassDB::bind_method(D_METHOD("set_footer", "val"), &WebServerRequest::set_footer);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "footer"), "set_footer", "get_footer");
 
-	ClassDB::bind_method(D_METHOD("get_compiled_body"), &WebServerRequest::compiled_body);
+	ClassDB::bind_method(D_METHOD("get_compiled_body"), &WebServerRequest::get_compiled_body);
 	ClassDB::bind_method(D_METHOD("set_compiled_body", "val"), &WebServerRequest::set_compiled_body);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "compiled_body"), "set_compiled_body", "get_compiled_body");
 
-	ClassDB::bind_method(D_METHOD("get_connection_closed"), &WebServerRequest::connection_closed);
+	ClassDB::bind_method(D_METHOD("get_connection_closed"), &WebServerRequest::get_connection_closed);
 	ClassDB::bind_method(D_METHOD("set_connection_closed", "val"), &WebServerRequest::set_connection_closed);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "connection_closed"), "set_connection_closed", "get_connection_closed");
 
-	ClassDB::bind_method(D_METHOD("get_session"), &WebServerRequest::session);
+	ClassDB::bind_method(D_METHOD("get_session"), &WebServerRequest::get_session);
 	ClassDB::bind_method(D_METHOD("set_session", "val"), &WebServerRequest::set_session);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "session", PROPERTY_HINT_RESOURCE_TYPE, "HTTPSession"), "set_session", "get_session");
 
-	ClassDB::bind_method(D_METHOD("get_data"), &WebServerRequest::data);
+	ClassDB::bind_method(D_METHOD("get_data"), &WebServerRequest::get_data);
 	ClassDB::bind_method(D_METHOD("set_data", "val"), &WebServerRequest::set_data);
 	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "data"), "set_data", "get_data");
 
-	ClassDB::bind_method(D_METHOD("get_active_permission"), &WebServerRequest::active_permission);
+	ClassDB::bind_method(D_METHOD("get_active_permission"), &WebServerRequest::get_active_permission);
 	ClassDB::bind_method(D_METHOD("set_active_permission", "val"), &WebServerRequest::set_active_permission);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "active_permission", PROPERTY_HINT_RESOURCE_TYPE, "WebPermission"), "set_active_permission", "get_active_permission");
 
@@ -501,7 +502,7 @@ void WebServerRequest::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("parse_files"), &WebServerRequest::parse_files);
 	ClassDB::bind_method(D_METHOD("get_file_count"), &WebServerRequest::get_file_count);
 	ClassDB::bind_method(D_METHOD("get_file_length", "index"), &WebServerRequest::get_file_length);
-	//ClassDB::bind_method(D_METHOD(""), &WebServerRequest::);
+	ClassDB::bind_method(D_METHOD("get_file_data_str"), &WebServerRequest::get_file_data_str);
 
 	ClassDB::bind_method(D_METHOD("get_parameter", "key"), &WebServerRequest::get_parameter);
 
