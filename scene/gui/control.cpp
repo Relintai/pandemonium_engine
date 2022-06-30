@@ -1906,7 +1906,7 @@ Control *Control::find_next_valid_focus() const {
 			}
 		}
 
-		if (next_child == from) { // No next control.
+		if (next_child == from || next_child == this) { // No next control.
 			return (get_focus_mode() == FOCUS_ALL) ? next_child : nullptr;
 		}
 		if (next_child) {
@@ -1990,7 +1990,7 @@ Control *Control::find_prev_valid_focus() const {
 			}
 		}
 
-		if (prev_child == from) { // No prev control.
+		if (prev_child == from || prev_child == this) { // No prev control.
 			return (get_focus_mode() == FOCUS_ALL) ? prev_child : nullptr;
 		}
 
