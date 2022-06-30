@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+
+Import("env_db")
+Import("env")
+
+env_db.core_sources = []
+
+env_db.add_source_files(env_db.core_sources, "*.cpp")
+env_db.core_sources.append("./sqlite/sqlite3.c")
+
+# Build it all as a library
+lib = env_db.add_library("database_sqlite", env_db.core_sources)
+env.Prepend(LIBS=[lib])

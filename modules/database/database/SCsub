@@ -1,0 +1,11 @@
+#!/usr/bin/env python
+
+Import("env")
+
+env.core_sources = []
+
+env.add_source_files(env.core_sources, "*.cpp")
+
+# Build it all as a library
+lib = env.add_library("database", env.core_sources)
+env.Prepend(LIBS=[lib])
