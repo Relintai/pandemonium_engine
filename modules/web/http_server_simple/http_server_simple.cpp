@@ -30,6 +30,9 @@
 
 #include "http_server_simple.h"
 
+#include "../http/http_parser.h"
+#include "simple_web_server_request.h"
+
 void HTTPServerSimple::stop() {
 	server->stop();
 	_clear_client();
@@ -166,27 +169,48 @@ void HTTPServerSimple::poll() {
 		}
 	}
 
+	//char *r = (char *)req_buf;
+	//int l = req_pos - 1;
+	//if (l > 3 && r[l] == '\n' && r[l - 1] == '\r' && r[l - 2] == '\n' && r[l - 3] == '\r') {
+	//		_send_response();
+	//		_clear_client();
+	//		return;
+	//	}
+
+	int read = 0;
+	Error err = peer->get_partial_data(req_buf, 4096, read);
+
+	if (err != OK) {
+		// Got an error
+		_clear_client();
+		return;
+	}
+
+	if (read == 0) {
+		// Busy, wait next poll
+		return;
+	}
+
+	int buffer_start_index = 0;
 	while (true) {
-		char *r = (char *)req_buf;
-		int l = req_pos - 1;
-		if (l > 3 && r[l] == '\n' && r[l - 1] == '\r' && r[l - 2] == '\n' && r[l - 3] == '\r') {
-			_send_response();
-			_clear_client();
-			return;
+		char *rb = reinterpret_cast<char *>(&req_buf[buffer_start_index]);
+		buffer_start_index = _http_parser->read_from_buffer(rb, read);
+
+		if (_http_parser->is_ready()) {
+			Ref<SimpleWebServerRequest> req;
+
+			req = _http_parser->get_request();
+
+			//handle request
+
+			req.instance();
+			_http_parser->set_request(req);
+			_http_parser->reset();
 		}
 
-		int read = 0;
-		ERR_FAIL_COND(req_pos >= 4096);
-		Error err = peer->get_partial_data(&req_buf[req_pos], 1, read);
-		if (err != OK) {
-			// Got an error
-			_clear_client();
-			return;
-		} else if (read != 1) {
-			// Busy, wait next poll
+		if (buffer_start_index == read) {
 			return;
 		}
-		req_pos += read;
 	}
 }
 
@@ -199,6 +223,10 @@ HTTPServerSimple::HTTPServerSimple() {
 	mimes["svg"] = "image/svg";
 	mimes["wasm"] = "application/wasm";
 	server.instance();
+	_http_parser.instance();
+	Ref<SimpleWebServerRequest> req;
+	req.instance();
+	_http_parser->set_request(req);
 	stop();
 }
 
@@ -208,7 +236,6 @@ void HTTPServerSimple::_clear_client() {
 	tcp = Ref<StreamPeerTCP>();
 	memset(req_buf, 0, sizeof(req_buf));
 	time = 0;
-	req_pos = 0;
 }
 
 void HTTPServerSimple::_set_internal_certs(Ref<Crypto> p_crypto) {

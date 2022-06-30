@@ -37,6 +37,8 @@
 
 #include "core/project_settings.h"
 
+class HTTPParser;
+
 class HTTPServerSimple : public Reference {
 public:
 	void stop();
@@ -56,10 +58,10 @@ private:
 	Ref<StreamPeer> peer;
 	Ref<CryptoKey> key;
 	Ref<X509Certificate> cert;
+	Ref<HTTPParser> _http_parser;
 	bool use_ssl = false;
 	uint64_t time = 0;
 	uint8_t req_buf[4096];
-	int req_pos = 0;
 
 	void _clear_client();
 	void _set_internal_certs(Ref<Crypto> p_crypto);

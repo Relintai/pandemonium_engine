@@ -4,6 +4,8 @@
 #include "core/reference.h"
 
 class HTTPWriter : public Reference {
+	GDCLASS(HTTPWriter, Reference);
+
 public:
 	HTTPWriter();
 	~HTTPWriter();
