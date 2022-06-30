@@ -30,6 +30,7 @@ sources = [
     "http_server_simple/simple_web_server_request.cpp",
     "http_server_simple/http_parser.cpp",
     "http_server_simple/http_writer.cpp",
+    "http_server_simple/http_parser/http_parser.c",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
