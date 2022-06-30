@@ -29,6 +29,7 @@ SOFTWARE.
 #include "html/html_builder_bind.h"
 
 #include "http/csrf_token.h"
+#include "http/http_parser.h"
 #include "http/http_server_enums.h"
 #include "http/http_session.h"
 #include "http/http_session_manager.h"
@@ -62,7 +63,7 @@ void register_web_types() {
 	ClassDB::register_class<WebServerMiddleware>();
 	ClassDB::register_class<WebServerRequest>();
 
-	ClassDB::register_class<WebServerSimple>();
+	ClassDB::register_class<HTTPParser>();
 }
 
 void unregister_web_types() {
