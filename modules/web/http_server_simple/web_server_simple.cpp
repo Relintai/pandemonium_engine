@@ -28,335 +28,54 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "export.h"
+#include "web_server_simple.h"
 
-#include "core/io/image_loader.h"
-#include "core/io/json.h"
-#include "core/io/stream_peer_ssl.h"
-#include "core/io/tcp_server.h"
-#include "core/io/zip_io.h"
-#include "editor/editor_export.h"
-#include "editor/editor_node.h"
-#include "main/splash.gen.h"
-#include "platform/javascript/logo.gen.h"
-#include "platform/javascript/run_icon.gen.h"
+#include "http_server_simple.h"
 
-#include "core/project_settings.h"
-#include "editor/editor_settings.h"
-
-class EditorHTTPServer : public Reference {
-private:
-	Ref<TCP_Server> server;
-	Map<String, String> mimes;
-	Ref<StreamPeerTCP> tcp;
-	Ref<StreamPeerSSL> ssl;
-	Ref<StreamPeer> peer;
-	Ref<CryptoKey> key;
-	Ref<X509Certificate> cert;
-	bool use_ssl = false;
-	uint64_t time = 0;
-	uint8_t req_buf[4096];
-	int req_pos = 0;
-
-	void _clear_client() {
-		peer = Ref<StreamPeer>();
-		ssl = Ref<StreamPeerSSL>();
-		tcp = Ref<StreamPeerTCP>();
-		memset(req_buf, 0, sizeof(req_buf));
-		time = 0;
-		req_pos = 0;
+String EditorExportPlatformJavaScript::_get_template_name(ExportMode p_mode, bool p_debug) const {
+	String name = "webassembly";
+	switch (p_mode) {
+		case EXPORT_MODE_THREADS:
+			name += "_threads";
+			break;
+		case EXPORT_MODE_GDNATIVE:
+			name += "_gdnative";
+			break;
+		default:
+			break;
 	}
-
-	void _set_internal_certs(Ref<Crypto> p_crypto) {
-		const String cache_path = EditorSettings::get_singleton()->get_cache_dir();
-		const String key_path = cache_path.plus_file("html5_server.key");
-		const String crt_path = cache_path.plus_file("html5_server.crt");
-		bool regen = !FileAccess::exists(key_path) || !FileAccess::exists(crt_path);
-		if (!regen) {
-			key = Ref<CryptoKey>(CryptoKey::create());
-			cert = Ref<X509Certificate>(X509Certificate::create());
-			if (key->load(key_path) != OK || cert->load(crt_path) != OK) {
-				regen = true;
-			}
-		}
-		if (regen) {
-			key = p_crypto->generate_rsa(2048);
-			key->save(key_path);
-			cert = p_crypto->generate_self_signed_certificate(key, "CN=pandemonium-debug.local,O=A Game Dev,C=XXA", "20140101000000", "20340101000000");
-			cert->save(crt_path);
-		}
+	if (p_debug) {
+		name += "_debug.zip";
+	} else {
+		name += "_release.zip";
 	}
+	return name;
+}
 
-public:
-	EditorHTTPServer() {
-		mimes["html"] = "text/html";
-		mimes["js"] = "application/javascript";
-		mimes["json"] = "application/json";
-		mimes["pck"] = "application/octet-stream";
-		mimes["png"] = "image/png";
-		mimes["svg"] = "image/svg";
-		mimes["wasm"] = "application/wasm";
-		server.instance();
-		stop();
+Ref<Image> EditorExportPlatformJavaScript::_get_project_icon() const {
+	Ref<Image> icon;
+	icon.instance();
+	const String icon_path = String(GLOBAL_GET("application/config/icon")).strip_edges();
+	if (icon_path.empty() || ImageLoader::load_image(icon_path, icon) != OK) {
+		return EditorNode::get_singleton()->get_editor_theme()->get_icon("DefaultProjectIcon", "EditorIcons")->get_data();
 	}
+	return icon;
+}
 
-	void stop() {
-		server->stop();
-		_clear_client();
+Ref<Image> EditorExportPlatformJavaScript::_get_project_splash() const {
+	Ref<Image> splash;
+	splash.instance();
+	const String splash_path = String(GLOBAL_GET("application/boot_splash/image")).strip_edges();
+	if (splash_path.empty() || ImageLoader::load_image(splash_path, splash) != OK) {
+		return Ref<Image>(memnew(Image(boot_splash_png)));
 	}
+	return splash;
+}
 
-	Error listen(int p_port, IP_Address p_address, bool p_use_ssl, String p_ssl_key, String p_ssl_cert) {
-		use_ssl = p_use_ssl;
-		if (use_ssl) {
-			Ref<Crypto> crypto = Crypto::create();
-			if (crypto.is_null()) {
-				return ERR_UNAVAILABLE;
-			}
-			if (!p_ssl_key.empty() && !p_ssl_cert.empty()) {
-				key = Ref<CryptoKey>(CryptoKey::create());
-				Error err = key->load(p_ssl_key);
-				ERR_FAIL_COND_V(err != OK, err);
-				cert = Ref<X509Certificate>(X509Certificate::create());
-				err = cert->load(p_ssl_cert);
-				ERR_FAIL_COND_V(err != OK, err);
-			} else {
-				_set_internal_certs(crypto);
-			}
-		}
-		return server->listen(p_port, p_address);
-	}
-
-	bool is_listening() const {
-		return server->is_listening();
-	}
-
-	void _send_response() {
-		Vector<String> psa = String((char *)req_buf).split("\r\n");
-		int len = psa.size();
-		ERR_FAIL_COND_MSG(len < 4, "Not enough response headers, got: " + itos(len) + ", expected >= 4.");
-
-		Vector<String> req = psa[0].split(" ", false);
-		ERR_FAIL_COND_MSG(req.size() < 2, "Invalid protocol or status code.");
-
-		// Wrong protocol
-		ERR_FAIL_COND_MSG(req[0] != "GET" || req[2] != "HTTP/1.1", "Invalid method or HTTP version.");
-
-		const int query_index = req[1].find_char('?');
-		const String path = (query_index == -1) ? req[1] : req[1].substr(0, query_index);
-
-		const String req_file = path.get_file();
-		const String req_ext = path.get_extension();
-		const String cache_path = EditorSettings::get_singleton()->get_cache_dir().plus_file("web");
-		const String filepath = cache_path.plus_file(req_file);
-
-		if (!mimes.has(req_ext) || !FileAccess::exists(filepath)) {
-			String s = "HTTP/1.1 404 Not Found\r\n";
-			s += "Connection: Close\r\n";
-			s += "\r\n";
-			CharString cs = s.utf8();
-			peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
-			return;
-		}
-		const String ctype = mimes[req_ext];
-
-		FileAccess *f = FileAccess::open(filepath, FileAccess::READ);
-		ERR_FAIL_COND(!f);
-		String s = "HTTP/1.1 200 OK\r\n";
-		s += "Connection: Close\r\n";
-		s += "Content-Type: " + ctype + "\r\n";
-		s += "Access-Control-Allow-Origin: *\r\n";
-		s += "Cross-Origin-Opener-Policy: same-origin\r\n";
-		s += "Cross-Origin-Embedder-Policy: require-corp\r\n";
-		s += "Cache-Control: no-store, max-age=0\r\n";
-		s += "\r\n";
-		CharString cs = s.utf8();
-		Error err = peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
-		if (err != OK) {
-			memdelete(f);
-			ERR_FAIL();
-		}
-
-		while (true) {
-			uint8_t bytes[4096];
-			uint64_t read = f->get_buffer(bytes, 4096);
-			if (read == 0) {
-				break;
-			}
-			err = peer->put_data(bytes, read);
-			if (err != OK) {
-				memdelete(f);
-				ERR_FAIL();
-			}
-		}
-		memdelete(f);
-	}
-
-	void poll() {
-		if (!server->is_listening()) {
-			return;
-		}
-		if (tcp.is_null()) {
-			if (!server->is_connection_available()) {
-				return;
-			}
-			tcp = server->take_connection();
-			peer = tcp;
-			time = OS::get_singleton()->get_ticks_usec();
-		}
-		if (OS::get_singleton()->get_ticks_usec() - time > 1000000) {
-			_clear_client();
-			return;
-		}
-		if (tcp->get_status() != StreamPeerTCP::STATUS_CONNECTED) {
-			return;
-		}
-
-		if (use_ssl) {
-			if (ssl.is_null()) {
-				ssl = Ref<StreamPeerSSL>(StreamPeerSSL::create());
-				peer = ssl;
-				ssl->set_blocking_handshake_enabled(false);
-				if (ssl->accept_stream(tcp, key, cert) != OK) {
-					_clear_client();
-					return;
-				}
-			}
-			ssl->poll();
-			if (ssl->get_status() == StreamPeerSSL::STATUS_HANDSHAKING) {
-				// Still handshaking, keep waiting.
-				return;
-			}
-			if (ssl->get_status() != StreamPeerSSL::STATUS_CONNECTED) {
-				_clear_client();
-				return;
-			}
-		}
-
-		while (true) {
-			char *r = (char *)req_buf;
-			int l = req_pos - 1;
-			if (l > 3 && r[l] == '\n' && r[l - 1] == '\r' && r[l - 2] == '\n' && r[l - 3] == '\r') {
-				_send_response();
-				_clear_client();
-				return;
-			}
-
-			int read = 0;
-			ERR_FAIL_COND(req_pos >= 4096);
-			Error err = peer->get_partial_data(&req_buf[req_pos], 1, read);
-			if (err != OK) {
-				// Got an error
-				_clear_client();
-				return;
-			} else if (read != 1) {
-				// Busy, wait next poll
-				return;
-			}
-			req_pos += read;
-		}
-	}
-};
-
-class EditorExportPlatformJavaScript : public EditorExportPlatform {
-	GDCLASS(EditorExportPlatformJavaScript, EditorExportPlatform);
-
-	Ref<ImageTexture> logo;
-	Ref<ImageTexture> run_icon;
-	Ref<ImageTexture> stop_icon;
-	int menu_options = 0;
-
-	Ref<EditorHTTPServer> server;
-	bool server_quit = false;
-	Mutex server_lock;
-	Thread server_thread;
-
-	enum ExportMode {
-		EXPORT_MODE_NORMAL = 0,
-		EXPORT_MODE_THREADS = 1,
-		EXPORT_MODE_GDNATIVE = 2,
-	};
-
-	String _get_template_name(ExportMode p_mode, bool p_debug) const {
-		String name = "webassembly";
-		switch (p_mode) {
-			case EXPORT_MODE_THREADS:
-				name += "_threads";
-				break;
-			case EXPORT_MODE_GDNATIVE:
-				name += "_gdnative";
-				break;
-			default:
-				break;
-		}
-		if (p_debug) {
-			name += "_debug.zip";
-		} else {
-			name += "_release.zip";
-		}
-		return name;
-	}
-
-	Ref<Image> _get_project_icon() const {
-		Ref<Image> icon;
-		icon.instance();
-		const String icon_path = String(GLOBAL_GET("application/config/icon")).strip_edges();
-		if (icon_path.empty() || ImageLoader::load_image(icon_path, icon) != OK) {
-			return EditorNode::get_singleton()->get_editor_theme()->get_icon("DefaultProjectIcon", "EditorIcons")->get_data();
-		}
-		return icon;
-	}
-
-	Ref<Image> _get_project_splash() const {
-		Ref<Image> splash;
-		splash.instance();
-		const String splash_path = String(GLOBAL_GET("application/boot_splash/image")).strip_edges();
-		if (splash_path.empty() || ImageLoader::load_image(splash_path, splash) != OK) {
-			return Ref<Image>(memnew(Image(boot_splash_png)));
-		}
-		return splash;
-	}
-
-	Error _extract_template(const String &p_template, const String &p_dir, const String &p_name, bool pwa);
-	void _replace_strings(Map<String, String> p_replaces, Vector<uint8_t> &r_template);
-	void _fix_html(Vector<uint8_t> &p_html, const Ref<EditorExportPreset> &p_preset, const String &p_name, bool p_debug, int p_flags, const Vector<SharedObject> p_shared_objects, const Dictionary &p_file_sizes);
-	Error _add_manifest_icon(const String &p_path, const String &p_icon, int p_size, Array &r_arr);
-	Error _build_pwa(const Ref<EditorExportPreset> &p_preset, const String p_path, const Vector<SharedObject> &p_shared_objects);
-	Error _write_or_error(const uint8_t *p_content, int p_len, String p_path);
-
-	static void _server_thread_poll(void *data);
-
-public:
-	virtual void get_preset_features(const Ref<EditorExportPreset> &p_preset, List<String> *r_features);
-
-	virtual void get_export_options(List<ExportOption> *r_options);
-
-	virtual String get_name() const;
-	virtual String get_os_name() const;
-	virtual Ref<Texture> get_logo() const;
-
-	virtual bool can_export(const Ref<EditorExportPreset> &p_preset, String &r_error, bool &r_missing_templates) const;
-	virtual List<String> get_binary_extensions(const Ref<EditorExportPreset> &p_preset) const;
-	virtual Error export_project(const Ref<EditorExportPreset> &p_preset, bool p_debug, const String &p_path, int p_flags = 0);
-
-	virtual bool poll_export();
-	virtual int get_options_count() const;
-	virtual String get_option_label(int p_index) const { return p_index ? TTR("Stop HTTP Server") : TTR("Run in Browser"); }
-	virtual String get_option_tooltip(int p_index) const { return p_index ? TTR("Stop HTTP Server") : TTR("Run exported HTML in the system's default browser."); }
-	virtual Ref<ImageTexture> get_option_icon(int p_index) const;
-	virtual Error run(const Ref<EditorExportPreset> &p_preset, int p_option, int p_debug_flags);
-	virtual Ref<Texture> get_run_icon() const;
-
-	virtual void get_platform_features(List<String> *r_features) {
-		r_features->push_back("web");
-		r_features->push_back(get_os_name());
-	}
-
-	virtual void resolve_platform_feature_priorities(const Ref<EditorExportPreset> &p_preset, Set<String> &p_features) {
-	}
-
-	EditorExportPlatformJavaScript();
-	~EditorExportPlatformJavaScript();
-};
+void EditorExportPlatformJavaScript::get_platform_features(List<String> *r_features) {
+	r_features->push_back("web");
+	r_features->push_back(get_os_name());
+}
 
 Error EditorExportPlatformJavaScript::_extract_template(const String &p_template, const String &p_dir, const String &p_name, bool pwa) {
 	FileAccess *src_f = nullptr;

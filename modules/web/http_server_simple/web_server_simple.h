@@ -28,4 +28,81 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-void register_javascript_exporter();
+#include "core/io/image_loader.h"
+#include "core/io/json.h"
+#include "core/io/stream_peer_ssl.h"
+#include "core/io/tcp_server.h"
+#include "core/io/zip_io.h"
+#include "editor/editor_export.h"
+#include "editor/editor_node.h"
+#include "main/splash.gen.h"
+#include "platform/javascript/logo.gen.h"
+#include "platform/javascript/run_icon.gen.h"
+
+#include "core/project_settings.h"
+#include "editor/editor_settings.h"
+
+class HTTPServerSimple;
+
+class EditorExportPlatformJavaScript : public EditorExportPlatform {
+	GDCLASS(EditorExportPlatformJavaScript, EditorExportPlatform);
+
+	Ref<ImageTexture> logo;
+	Ref<ImageTexture> run_icon;
+	Ref<ImageTexture> stop_icon;
+	int menu_options = 0;
+
+	Ref<EditorHTTPServer> server;
+	bool server_quit = false;
+	Mutex server_lock;
+	Thread server_thread;
+
+	enum ExportMode {
+		EXPORT_MODE_NORMAL = 0,
+		EXPORT_MODE_THREADS = 1,
+		EXPORT_MODE_GDNATIVE = 2,
+	};
+
+	String _get_template_name(ExportMode p_mode, bool p_debug) const;
+
+	Ref<Image> _get_project_icon() const;
+
+	Ref<Image> _get_project_splash() const;
+
+	Error _extract_template(const String &p_template, const String &p_dir, const String &p_name, bool pwa);
+	void _replace_strings(Map<String, String> p_replaces, Vector<uint8_t> &r_template);
+	void _fix_html(Vector<uint8_t> &p_html, const Ref<EditorExportPreset> &p_preset, const String &p_name, bool p_debug, int p_flags, const Vector<SharedObject> p_shared_objects, const Dictionary &p_file_sizes);
+	Error _add_manifest_icon(const String &p_path, const String &p_icon, int p_size, Array &r_arr);
+	Error _build_pwa(const Ref<EditorExportPreset> &p_preset, const String p_path, const Vector<SharedObject> &p_shared_objects);
+	Error _write_or_error(const uint8_t *p_content, int p_len, String p_path);
+
+	static void _server_thread_poll(void *data);
+
+public:
+	virtual void get_preset_features(const Ref<EditorExportPreset> &p_preset, List<String> *r_features);
+
+	virtual void get_export_options(List<ExportOption> *r_options);
+
+	virtual String get_name() const;
+	virtual String get_os_name() const;
+	virtual Ref<Texture> get_logo() const;
+
+	virtual bool can_export(const Ref<EditorExportPreset> &p_preset, String &r_error, bool &r_missing_templates) const;
+	virtual List<String> get_binary_extensions(const Ref<EditorExportPreset> &p_preset) const;
+	virtual Error export_project(const Ref<EditorExportPreset> &p_preset, bool p_debug, const String &p_path, int p_flags = 0);
+
+	virtual bool poll_export();
+	virtual int get_options_count() const;
+	virtual String get_option_label(int p_index) const { return p_index ? TTR("Stop HTTP Server") : TTR("Run in Browser"); }
+	virtual String get_option_tooltip(int p_index) const { return p_index ? TTR("Stop HTTP Server") : TTR("Run exported HTML in the system's default browser."); }
+	virtual Ref<ImageTexture> get_option_icon(int p_index) const;
+	virtual Error run(const Ref<EditorExportPreset> &p_preset, int p_option, int p_debug_flags);
+	virtual Ref<Texture> get_run_icon() const;
+
+	virtual void get_platform_features(List<String> *r_features);
+	virtual void resolve_platform_feature_priorities(const Ref<EditorExportPreset> &p_preset, Set<String> &p_features) {
+	}
+
+	EditorExportPlatformJavaScript();
+	~EditorExportPlatformJavaScript();
+};

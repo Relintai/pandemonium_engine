@@ -28,4 +28,38 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-void register_javascript_exporter();
+#include "core/io/image_loader.h"
+#include "core/io/json.h"
+#include "core/io/stream_peer_ssl.h"
+#include "core/io/tcp_server.h"
+#include "core/io/zip_io.h"
+
+#include "core/project_settings.h"
+
+class HTTPServerSimple : public Reference {
+public:
+	void stop();
+
+	Error listen(int p_port, IP_Address p_address, bool p_use_ssl, String p_ssl_key, String p_ssl_cert);
+	bool is_listening() const;
+	void _send_response();
+	void poll();
+
+	HTTPServerSimple();
+
+private:
+	Ref<TCP_Server> server;
+	Map<String, String> mimes;
+	Ref<StreamPeerTCP> tcp;
+	Ref<StreamPeerSSL> ssl;
+	Ref<StreamPeer> peer;
+	Ref<CryptoKey> key;
+	Ref<X509Certificate> cert;
+	bool use_ssl = false;
+	uint64_t time = 0;
+	uint8_t req_buf[4096];
+	int req_pos = 0;
+
+	void _clear_client();
+	void _set_internal_certs(Ref<Crypto> p_crypto);
+};
