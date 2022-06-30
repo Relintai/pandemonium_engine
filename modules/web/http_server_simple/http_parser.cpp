@@ -69,7 +69,7 @@ String HTTPParser::chr_len_to_str(const char *at, size_t length) {
 
 	CharType *p = ret.ptrw();
 
-	for (int i = 0; i <= length; ++i) {
+	for (size_t i = 0; i <= length; ++i) {
 		p[i] = at[i];
 	}
 
