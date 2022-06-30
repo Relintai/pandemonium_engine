@@ -26,8 +26,9 @@ def get_doc_classes():
 	    "WebServerCookie",
 	    "WebServerMiddleware",
 	    "WebServerRequest",
-        "HTTPParser",
-        "HTTPWriter",
+
+        #"HTTPParser",
+        #"HTTPWriter",
 
         "HTMLBuilder",
         "HTMLTag",

@@ -49,6 +49,7 @@ public:
 	void poll();
 
 	HTTPServerSimple();
+	~HTTPServerSimple();
 
 private:
 	Ref<TCP_Server> server;

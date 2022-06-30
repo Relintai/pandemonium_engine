@@ -30,7 +30,7 @@
 
 #include "http_server_simple.h"
 
-#include "../http/http_parser.h"
+#include "http_parser.h"
 #include "simple_web_server_request.h"
 
 void HTTPServerSimple::stop() {
@@ -228,6 +228,9 @@ HTTPServerSimple::HTTPServerSimple() {
 	req.instance();
 	_http_parser->set_request(req);
 	stop();
+}
+
+HTTPServerSimple::~HTTPServerSimple() {
 }
 
 void HTTPServerSimple::_clear_client() {
