@@ -6,6 +6,8 @@
 #include "core/reference.h"
 
 class WebServerRequest;
+struct http_parser;
+struct http_parser_settings;
 
 class HTTPParser : public Reference {
 	GDCLASS(HTTPParser, Reference);
@@ -32,6 +34,34 @@ protected:
 	Ref<WebServerRequest> _request;
 
 	bool _is_ready;
+
+private:
+	String chr_len_to_str(const char *at, size_t length);
+
+	int on_message_begin();
+	int on_url(const char *at, size_t length);
+	int on_status(const char *at, size_t length);
+	int on_header_field(const char *at, size_t length);
+	int on_header_value(const char *at, size_t length);
+	int on_headers_complete();
+	int on_body(const char *at, size_t length);
+	int on_message_complete();
+	int on_chunk_header();
+	int on_chunk_complete();
+
+	static int _on_message_begin_cb(http_parser *parser);
+	static int _on_url_cb(http_parser *parser, const char *at, size_t length);
+	static int _on_status_cb(http_parser *parser, const char *at, size_t length);
+	static int _on_header_field_cb(http_parser *parser, const char *at, size_t length);
+	static int _on_header_value_cb(http_parser *parser, const char *at, size_t length);
+	static int _on_headers_complete_cb(http_parser *parser);
+	static int _on_body_cb(http_parser *parser, const char *at, size_t length);
+	static int _on_message_complete_cb(http_parser *parser);
+	static int _on_chunk_header_cb(http_parser *parser);
+	static int _on_chunk_complete_cb(http_parser *parser);
+
+	http_parser *parser;
+	http_parser_settings *settings;
 };
 
 #endif

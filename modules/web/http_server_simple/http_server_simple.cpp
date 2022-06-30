@@ -194,7 +194,7 @@ void HTTPServerSimple::poll() {
 	int buffer_start_index = 0;
 	while (true) {
 		char *rb = reinterpret_cast<char *>(&req_buf[buffer_start_index]);
-		buffer_start_index = _http_parser->read_from_buffer(rb, read);
+		buffer_start_index += _http_parser->read_from_buffer(rb, read);
 
 		if (_http_parser->is_ready()) {
 			Ref<SimpleWebServerRequest> req;
@@ -208,7 +208,7 @@ void HTTPServerSimple::poll() {
 			_http_parser->reset();
 		}
 
-		if (buffer_start_index == read) {
+		if (buffer_start_index >= read) {
 			return;
 		}
 	}

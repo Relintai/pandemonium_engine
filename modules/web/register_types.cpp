@@ -61,6 +61,8 @@ void register_web_types() {
 	ClassDB::register_class<WebServerCookie>();
 	ClassDB::register_class<WebServerMiddleware>();
 	ClassDB::register_class<WebServerRequest>();
+
+	ClassDB::register_class<WebServerSimple>();
 }
 
 void unregister_web_types() {

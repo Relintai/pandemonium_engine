@@ -39,7 +39,7 @@ public:
 	virtual String parser_get_path();
 	virtual String get_host() const;
 
-	virtual String get_path_full() const;
+	//virtual String get_path_full() const;
 
 	SimpleWebServerRequest();
 	~SimpleWebServerRequest();
