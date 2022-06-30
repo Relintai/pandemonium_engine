@@ -102,6 +102,7 @@ void HTTPServerSimple::_send_response() {
 	s += "Cache-Control: no-store, max-age=0\r\n";
 	s += "\r\n";
 	CharString cs = s.utf8();
+
 	Error err = peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
 	if (err != OK) {
 		memdelete(f);
@@ -120,6 +121,7 @@ void HTTPServerSimple::_send_response() {
 			ERR_FAIL();
 		}
 	}
+
 	memdelete(f);
 }
 
