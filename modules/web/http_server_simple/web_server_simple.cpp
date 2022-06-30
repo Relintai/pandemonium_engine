@@ -60,7 +60,7 @@ void WebServerSimple::_start() {
 		err = server->listen(bind_port, bind_ip, use_ssl, ssl_key, ssl_cert);
 	}
 
-	ERR_FAIL_COND_MSG(err != OK, "Error starting HTTP server:" + "\n" + itos(err));
+	ERR_FAIL_COND_MSG(err != OK, "Error starting HTTP server:\n" + itos(err));
 }
 
 void WebServerSimple::_stop() {
