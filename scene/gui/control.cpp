@@ -1828,7 +1828,7 @@ void Control::set_focus_mode(FocusMode p_focus_mode) {
 
 static Control *_next_control(Control *p_from) {
 	if (p_from->is_set_as_toplevel()) {
-		return nullptr; // can't go above
+		return nullptr; // Can't go above.
 	}
 
 	Control *parent = Object::cast_to<Control>(p_from->get_parent());
@@ -1848,7 +1848,7 @@ static Control *_next_control(Control *p_from) {
 		return c;
 	}
 
-	//no next in parent, try the same in parent
+	// No next in parent, try the same in parent.
 	return _next_control(parent);
 }
 
@@ -1872,7 +1872,7 @@ Control *Control::find_next_valid_focus() const {
 			}
 		}
 
-		// find next child
+		// Find next child.
 
 		Control *next_child = nullptr;
 
@@ -1888,7 +1888,7 @@ Control *Control::find_next_valid_focus() const {
 
 		if (!next_child) {
 			next_child = _next_control(from);
-			if (!next_child) { //nothing else.. go up and find either window or subwindow
+			if (!next_child) { // Nothing else. Go up and find either window or subwindow.
 				next_child = const_cast<Control *>(this);
 				while (next_child && !next_child->is_set_as_toplevel()) {
 					next_child = cast_to<Control>(next_child->get_parent());
@@ -1906,7 +1906,7 @@ Control *Control::find_next_valid_focus() const {
 			}
 		}
 
-		if (next_child == this) { // no next control->
+		if (next_child == from) { // No next control.
 			return (get_focus_mode() == FOCUS_ALL) ? next_child : nullptr;
 		}
 		if (next_child) {
@@ -1938,7 +1938,7 @@ static Control *_prev_control(Control *p_from) {
 		return p_from;
 	}
 
-	//no prev in parent, try the same in parent
+	// No prev in parent, try the same in parent.
 	return _prev_control(child);
 }
 
@@ -1962,12 +1962,12 @@ Control *Control::find_prev_valid_focus() const {
 			}
 		}
 
-		// find prev child
+		// Find prev child.
 
 		Control *prev_child = nullptr;
 
 		if (from->is_set_as_toplevel() || !Object::cast_to<Control>(from->get_parent())) {
-			//find last of the children
+			// Find last of the children.
 
 			prev_child = _prev_control(from);
 
@@ -1990,7 +1990,7 @@ Control *Control::find_prev_valid_focus() const {
 			}
 		}
 
-		if (prev_child == this) { // no prev control->
+		if (prev_child == from) { // No prev control.
 			return (get_focus_mode() == FOCUS_ALL) ? prev_child : nullptr;
 		}
 
