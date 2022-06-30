@@ -33,6 +33,7 @@ SOFTWARE.
 #include "http/http_server_enums.h"
 #include "http/http_session.h"
 #include "http/http_session_manager.h"
+#include "http/http_writer.h"
 #include "http/web_node.h"
 #include "http/web_permission.h"
 #include "http/web_root.h"
@@ -64,6 +65,7 @@ void register_web_types() {
 	ClassDB::register_class<WebServerRequest>();
 
 	ClassDB::register_class<HTTPParser>();
+	ClassDB::register_class<HTTPWriter>();
 }
 
 void unregister_web_types() {
