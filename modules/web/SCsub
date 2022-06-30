@@ -27,9 +27,6 @@ sources = [
     "http_server_simple/http_server_simple.cpp",
     "http_server_simple/web_server_simple.cpp",
     "http_server_simple/simple_web_server_request.cpp",
-
-    "http_server_simple/httpio/http.c",
-    "http_server_simple/httpio/httpio.c",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
