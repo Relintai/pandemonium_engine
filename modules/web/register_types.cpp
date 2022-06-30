@@ -40,6 +40,8 @@ SOFTWARE.
 #include "http/web_server_middleware.h"
 #include "http/web_server_request.h"
 
+#include "http_server_simple/web_server_simple.h"
+
 void register_web_types() {
 	ClassDB::register_class<_HTMLBuilder>();
 	ClassDB::register_class<_HTMLTag>();
@@ -59,6 +61,8 @@ void register_web_types() {
 	ClassDB::register_class<WebServerCookie>();
 	ClassDB::register_class<WebServerMiddleware>();
 	ClassDB::register_class<WebServerRequest>();
+
+	ClassDB::register_class<WebServerSimple>();
 }
 
 void unregister_web_types() {

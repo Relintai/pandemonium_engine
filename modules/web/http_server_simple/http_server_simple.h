@@ -1,5 +1,6 @@
-/*************************************************************************/
-/*  export.h                                                             */
+#ifndef HTTP_SERVER_SIMPLE_H
+#define HTTP_SERVER_SIMPLE_H
+
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -63,3 +64,5 @@ private:
 	void _clear_client();
 	void _set_internal_certs(Ref<Crypto> p_crypto);
 };
+
+#endif

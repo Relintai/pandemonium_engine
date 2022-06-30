@@ -23,6 +23,9 @@ sources = [
     "http/web_server_request.cpp",
 
     "html/html_builder_bind.cpp",
+
+    "http_server_simple/http_server_simple.cpp",
+    "http_server_simple/web_server_simple.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':

@@ -76,7 +76,9 @@ void HTTPServerSimple::_send_response() {
 
 	const String req_file = path.get_file();
 	const String req_ext = path.get_extension();
-	const String cache_path = EditorSettings::get_singleton()->get_cache_dir().plus_file("web");
+	//const String cache_path = EditorSettings::get_singleton()->get_cache_dir().plus_file("web");
+	//TODO
+	const String cache_path = "./cache/web/";
 	const String filepath = cache_path.plus_file(req_file);
 
 	if (!mimes.has(req_ext) || !FileAccess::exists(filepath)) {
@@ -208,7 +210,9 @@ void HTTPServerSimple::_clear_client() {
 }
 
 void HTTPServerSimple::_set_internal_certs(Ref<Crypto> p_crypto) {
-	const String cache_path = EditorSettings::get_singleton()->get_cache_dir();
+	//const String cache_path = EditorSettings::get_singleton()->get_cache_dir();
+	//TODO
+	const String cache_path = "./cache/web/";
 	const String key_path = cache_path.plus_file("html5_server.key");
 	const String crt_path = cache_path.plus_file("html5_server.crt");
 	bool regen = !FileAccess::exists(key_path) || !FileAccess::exists(crt_path);

@@ -29,6 +29,8 @@ def get_doc_classes():
 
         "HTMLBuilder",
         "HTMLTag",
+
+        "WebServerSimple",
     ]
 
 
