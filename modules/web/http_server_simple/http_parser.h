@@ -17,6 +17,7 @@ public:
 	int get_request_count() const;
 
 	bool is_ready() const;
+	bool is_finished() const;
 
 	void reset();
 

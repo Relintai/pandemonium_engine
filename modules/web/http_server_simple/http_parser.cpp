@@ -23,6 +23,10 @@ bool HTTPParser::is_ready() const {
 	return _is_ready;
 }
 
+bool HTTPParser::is_finished() const {
+	return !_request.is_valid();
+}
+
 void HTTPParser::reset() {
 	_partial_data = "";
 	_is_ready = false;

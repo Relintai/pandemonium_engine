@@ -10,6 +10,7 @@
 #include "../http/web_node.h"
 
 #include "../http/web_permission.h"
+#include "http_server_simple.h"
 
 String SimpleWebServerRequest::get_cookie(const String &key) {
 	return "";
@@ -49,9 +50,16 @@ String SimpleWebServerRequest::get_parameter(const String &key) const {
 }
 
 void SimpleWebServerRequest::send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
+	ERR_FAIL_COND(!_server);
+
+	_server->send_redirect(location, status_code);
 }
 
 void SimpleWebServerRequest::send() {
+	ERR_FAIL_COND(!_server);
+
+	_server->send(compiled_body);
+
 	// if (connection_closed) {
 	//	SimpleWebServerRequestPool::return_request(this);
 	//	return;
@@ -61,6 +69,10 @@ void SimpleWebServerRequest::send() {
 }
 
 void SimpleWebServerRequest::send_file(const String &p_file_path) {
+	ERR_FAIL_COND(!_server);
+
+	_server->send_file(p_file_path);
+
 	// SimpleWebServerRequestPool::return_request(this);
 }
 

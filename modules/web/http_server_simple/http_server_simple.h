@@ -37,6 +37,8 @@
 
 #include "core/project_settings.h"
 
+#include "../http/http_server_enums.h"
+
 class HTTPParser;
 class WebServerSimple;
 
@@ -48,6 +50,10 @@ public:
 	bool is_listening() const;
 	void _send_response();
 	void poll();
+
+	void send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code);
+	void send(const String &body);
+	void send_file(const String &p_file_path);
 
 	HTTPServerSimple();
 	~HTTPServerSimple();
