@@ -247,7 +247,7 @@ void HTTPServerSimple::send_file(const String &p_file_path) {
 	String req_ext = p_file_path.get_extension();
 
 	if (!mimes.has(req_ext)) {
-		const String ctype = mimes[req_ext];
+		ctype = mimes[req_ext];
 	} else {
 		ctype = "text/plain";
 	}
