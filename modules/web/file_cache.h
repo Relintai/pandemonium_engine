@@ -1,11 +1,12 @@
 #ifndef FILE_CACHE_H
 #define FILE_CACHE_H
 
+#include "core/hash_map.h"
 #include "core/map.h"
 #include "core/os/os.h"
 #include "core/os/rw_lock.h"
-#include "core/set.h"
 #include "core/ustring.h"
+#include "core/vector.h"
 
 #include "core/reference.h"
 
@@ -16,6 +17,8 @@ public:
 	String get_wwwroot();
 	void set_wwwroot(const String &val);
 
+	String get_wwwroot_abs();
+
 	int get_cache_invalidation_time();
 	void set_cache_invalidation_time(const int &val);
 
@@ -24,6 +27,9 @@ public:
 	void wwwroot_register_file(const String &file_path);
 	void wwwroot_deregister_file(const String &file_path);
 	bool wwwroot_has_file(const String &file_path);
+	//return -1 if does not exists
+	int wwwroot_get_file_index(const String &file_path);
+	String wwwroot_get_file_orig_path(const int index);
 	void wwwroot_refresh_cache();
 	void wwwroot_evaluate_dir(const String &path, const bool should_exist = true);
 
@@ -37,10 +43,7 @@ public:
 	FileCache();
 	~FileCache();
 
-	String wwwroot;
 	uint64_t cache_invalidation_time;
-
-	Set<String> registered_files;
 
 protected:
 	static void _bind_methods();
@@ -56,6 +59,16 @@ protected:
 
 	RWLock _lock;
 	Map<String, CacheEntry *> cache_map;
+
+	String _wwwroot_orig;
+	String _wwwroot;
+
+	struct RegisteredFileEntry {
+		String orig_path;
+		String lowercase_path;
+	};
+
+	Vector<RegisteredFileEntry> _registered_files;
 };
 
 #endif

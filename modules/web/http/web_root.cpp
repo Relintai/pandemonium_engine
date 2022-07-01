@@ -15,9 +15,11 @@ void WebRoot::set_www_root_path(const String &val) {
 	_www_root_path = val;
 
 	if (val == "") {
+		_www_root_file_cache->set_wwwroot(val);
 		_www_root_file_cache->clear();
 	} else {
-		_www_root_file_cache->wwwroot_evaluate_dir(val);
+		_www_root_file_cache->set_wwwroot(val);
+		_www_root_file_cache->wwwroot_refresh_cache();
 	}
 }
 
@@ -134,9 +136,12 @@ bool WebRoot::process_middlewares(Ref<WebServerRequest> request) {
 
 bool WebRoot::try_send_wwwroot_file(Ref<WebServerRequest> request) {
 	String path = request->get_path_full();
+	path = path.to_lower();
 
-	if (_www_root_file_cache->wwwroot_has_file(path)) {
-		send_file(path, request);
+	int file_indx = _www_root_file_cache->wwwroot_get_file_index(path);
+
+	if (file_indx != -1) {
+		send_file(_www_root_file_cache->wwwroot_get_file_orig_path(file_indx), request);
 
 		return true;
 	}
@@ -145,7 +150,7 @@ bool WebRoot::try_send_wwwroot_file(Ref<WebServerRequest> request) {
 }
 
 void WebRoot::send_file(const String &path, Ref<WebServerRequest> request) {
-	String fp = _www_root_file_cache->wwwroot + path;
+	String fp = _www_root_file_cache->get_wwwroot_abs() + path;
 
 	request->send_file(fp);
 }

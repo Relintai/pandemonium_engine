@@ -2,12 +2,18 @@
 
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
+#include "core/os/os.h"
+#include "core/print_string.h"
 
 String FileCache::get_wwwroot() {
-	return wwwroot;
+	return _wwwroot_orig;
 }
 void FileCache::set_wwwroot(const String &val) {
-	wwwroot = val;
+	_wwwroot_orig = val;
+}
+
+String FileCache::get_wwwroot_abs() {
+	return _wwwroot_orig;
 }
 
 int FileCache::get_cache_invalidation_time() {
@@ -18,25 +24,67 @@ void FileCache::set_cache_invalidation_time(const int &val) {
 }
 
 void FileCache::wwwroot_register_file(const String &file_path) {
-	registered_files.insert(file_path);
+	RegisteredFileEntry e;
+	e.orig_path = file_path;
+	e.lowercase_path = file_path.to_lower();
+
+	_registered_files.push_back(e);
 }
 
 void FileCache::wwwroot_deregister_file(const String &file_path) {
-	registered_files.erase(file_path);
+	for (int i = 0; i < _registered_files.size(); ++i) {
+		const RegisteredFileEntry &e = _registered_files[i];
+
+		if (file_path == e.orig_path) {
+			_registered_files.remove(i);
+			return;
+		}
+	}
 }
 
 bool FileCache::wwwroot_has_file(const String &file_path) {
-	return registered_files.has(file_path);
+	//return registered_files.has(file_path);
+
+	for (int i = 0; i < _registered_files.size(); ++i) {
+		const RegisteredFileEntry &e = _registered_files[i];
+
+		if (file_path == e.lowercase_path) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+int FileCache::wwwroot_get_file_index(const String &file_path) {
+	for (int i = 0; i < _registered_files.size(); ++i) {
+		const RegisteredFileEntry &e = _registered_files[i];
+
+		if (file_path == e.lowercase_path) {
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+String FileCache::wwwroot_get_file_orig_path(const int index) {
+	ERR_FAIL_INDEX_V(index, _registered_files.size(), "");
+
+	return _registered_files[index].orig_path;
 }
 
 void FileCache::wwwroot_refresh_cache() {
 	_lock.write_lock();
 
-	registered_files.clear();
+	_registered_files.clear();
 
-	wwwroot.path_clean_end_slash();
+	if (_wwwroot_orig != "") {
+		_wwwroot = DirAccess::get_full_path(_wwwroot_orig, DirAccess::ACCESS_FILESYSTEM);
 
-	wwwroot_evaluate_dir(wwwroot);
+		_wwwroot = _wwwroot.path_clean_end_slash();
+		wwwroot_evaluate_dir(_wwwroot);
+	}
 
 	_lock.write_unlock();
 }
@@ -57,8 +105,8 @@ void FileCache::wwwroot_evaluate_dir(const String &path, const bool should_exist
 
 		if (!da->current_is_dir()) {
 			String np = path + "/" + f;
-			np = np.substr(wwwroot.size(), np.size() - wwwroot.size());
-			registered_files.insert(np);
+			np = np.substr(_wwwroot.size() - 1, np.size() - _wwwroot.size());
+			wwwroot_register_file(np);
 		} else {
 			wwwroot_evaluate_dir(path + "/" + f);
 		}
@@ -162,7 +210,7 @@ void FileCache::set_cached_body(const String &path, const String &body) {
 void FileCache::clear() {
 	_lock.write_lock();
 
-	registered_files.clear();
+	_registered_files.clear();
 
 	for (Map<String, CacheEntry *>::Element *E = cache_map.front(); E; E++) {
 		CacheEntry *ce = E->get();
@@ -182,7 +230,7 @@ FileCache::FileCache() {
 }
 
 FileCache::~FileCache() {
-	registered_files.clear();
+	_registered_files.clear();
 }
 
 void FileCache::_bind_methods() {
