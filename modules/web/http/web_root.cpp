@@ -133,7 +133,7 @@ bool WebRoot::process_middlewares(Ref<WebServerRequest> request) {
 }
 
 bool WebRoot::try_send_wwwroot_file(Ref<WebServerRequest> request) {
-	const String &path = request->get_path_full();
+	String path = request->get_path_full();
 
 	if (_www_root_file_cache->wwwroot_has_file(path)) {
 		send_file(path, request);

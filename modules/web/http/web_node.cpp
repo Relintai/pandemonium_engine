@@ -4,6 +4,7 @@
 #include "core/error_macros.h"
 
 #include "core/object.h"
+#include "core/print_string.h"
 #include "http_server_enums.h"
 #include "web_server_request.h"
 
@@ -22,11 +23,6 @@
 #include "database/table_builder.h"
 #endif
 
-/*
-void WebNode::update() {
-}
-*/
-
 String WebNode::get_uri_segment() {
 	return _uri_segment;
 }
@@ -43,6 +39,8 @@ String WebNode::get_full_uri(const bool slash_at_the_end) {
 }
 
 String WebNode::get_full_uri_parent(const bool slash_at_the_end) {
+	_rw_lock.read_lock();
+
 	String uri = "/";
 
 	WebNode *n = get_parent_webnode();
@@ -56,6 +54,8 @@ String WebNode::get_full_uri_parent(const bool slash_at_the_end) {
 
 		n = n->get_parent_webnode();
 	}
+
+	_rw_lock.read_unlock();
 
 	if (!slash_at_the_end) {
 		uri.resize(uri.length() - 1);
@@ -232,7 +232,7 @@ void WebNode::_create_default_entries() {
 }
 
 void WebNode::migrate(const bool clear, const bool seed_db) {
-	_migrate(clear, seed_db);
+	call("_migrate", clear, seed_db);
 
 	for (int i = 0; i < get_child_count(); ++i) {
 		WebNode *c = Object::cast_to<WebNode>(get_child(i));
@@ -261,15 +261,19 @@ void WebNode::_migrate(const bool clear, const bool seed_db) {
 bool WebNode::try_route_request_to_children(Ref<WebServerRequest> request) {
 	WebNode *handler = nullptr;
 
+	_handler_map_lock.read_lock();
+
 	// if (path == "/") {
 	if (request->get_path_segment_count() == 0) {
 		// quick shortcut
 		handler = _index_node;
 	} else {
-		const String &main_route = request->get_current_path_segment();
+		String main_route = request->get_current_path_segment();
 
 		handler = _node_route_map[main_route];
 	}
+
+	_handler_map_lock.read_unlock();
 
 	if (!handler) {
 		return false;
@@ -284,6 +288,8 @@ bool WebNode::try_route_request_to_children(Ref<WebServerRequest> request) {
 WebNode *WebNode::get_request_handler_child(Ref<WebServerRequest> request) {
 	WebNode *handler = nullptr;
 
+	_handler_map_lock.read_lock();
+
 	// if (path == "/") {
 	if (request->get_path_segment_count() == 0) {
 		// quick shortcut
@@ -293,10 +299,14 @@ WebNode *WebNode::get_request_handler_child(Ref<WebServerRequest> request) {
 		handler = _node_route_map[main_route];
 	}
 
+	_handler_map_lock.read_unlock();
+
 	return handler;
 }
 
 void WebNode::build_handler_map() {
+	_handler_map_lock.write_lock();
+
 	_index_node = nullptr;
 	_node_route_map.clear();
 
@@ -317,16 +327,22 @@ void WebNode::build_handler_map() {
 
 			_index_node = c;
 		} else {
-			ERR_CONTINUE_MSG(_node_route_map[uri_segment], "You have multiple of the same uri! URI:" + uri_segment);
+			ERR_CONTINUE_MSG(_node_route_map[uri_segment], "You have multiple of the same uri! URI: " + uri_segment);
 
 			_node_route_map[uri_segment] = c;
 		}
 	}
+
+	_handler_map_lock.write_unlock();
 }
 
 void WebNode::clear_handlers() {
+	_handler_map_lock.write_lock();
+
 	_index_node = nullptr;
 	_node_route_map.clear();
+
+	_handler_map_lock.write_unlock();
 }
 
 void WebNode::request_write_lock() {

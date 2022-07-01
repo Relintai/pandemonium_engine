@@ -2,6 +2,7 @@
 #define WEB_NODE_H
 
 #include "core/hash_map.h"
+#include "core/os/rw_lock.h"
 #include "core/reference.h"
 #include "core/variant.h"
 #include "scene/main/node.h"
@@ -122,6 +123,7 @@ protected:
 	bool _routing_enabled;
 	WebNode *_index_node;
 	HashMap<String, WebNode *> _node_route_map;
+	RWLock _handler_map_lock;
 
 	Ref<WebPermission> _web_permission;
 
