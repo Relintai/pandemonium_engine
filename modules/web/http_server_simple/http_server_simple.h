@@ -38,6 +38,7 @@
 #include "core/project_settings.h"
 
 class HTTPParser;
+class WebServerSimple;
 
 class HTTPServerSimple : public Reference {
 public:
@@ -50,6 +51,8 @@ public:
 
 	HTTPServerSimple();
 	~HTTPServerSimple();
+
+	WebServerSimple *_web_server;
 
 private:
 	Ref<TCP_Server> server;

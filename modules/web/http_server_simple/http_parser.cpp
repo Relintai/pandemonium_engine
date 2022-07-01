@@ -1,14 +1,22 @@
 #include "http_parser.h"
 
 #include "../http/web_server_request.h"
-
 #include "./http_parser/http_parser.h"
 
-Ref<WebServerRequest> HTTPParser::get_request() {
-	return _request;
+#include "simple_web_server_request.h"
+
+Ref<SimpleWebServerRequest> HTTPParser::get_next_request() {
+	ERR_FAIL_COND_V(_requests.size() == 0, Ref<SimpleWebServerRequest>());
+
+	Ref<SimpleWebServerRequest> rn = _requests[0];
+
+	_requests.remove(0);
+
+	return rn;
 }
-void HTTPParser::set_request(const Ref<WebServerRequest> &val) {
-	_request = val;
+
+int HTTPParser::get_request_count() const {
+	return _requests.size();
 }
 
 bool HTTPParser::is_ready() const {
@@ -22,8 +30,6 @@ void HTTPParser::reset() {
 
 //returns the index where processing was ended -> start of the next query if != data_length
 int HTTPParser::read_from_buffer(const char *p_buffer, const int p_data_length) {
-	ERR_FAIL_COND_V(!_request.is_valid(), p_data_length);
-
 	int parsed_bytes = 0;
 
 	parsed_bytes = static_cast<int>(http_parser_execute(parser, settings, p_buffer, p_data_length));
@@ -76,50 +82,127 @@ String HTTPParser::chr_len_to_str(const char *at, size_t length) {
 	return ret;
 }
 
+#define MESSAGE_DEBUG 0
+
 int HTTPParser::on_message_begin() {
-	print_error("begin");
+	if (_request.is_valid()) {
+		ERR_PRINT("Request was valid!");
+	}
+
+	_in_header = true;
+
+	_request.instance();
+
+#if MESSAGE_DEBUG
+	ERR_PRINT("begin");
+#endif
+
 	return 0;
 }
 int HTTPParser::on_url(const char *at, size_t length) {
+	ERR_FAIL_COND_V(!_request.is_valid(), 0);
+
 	String s = chr_len_to_str(at, length);
 
-	print_error("url " + s);
+#if MESSAGE_DEBUG
+	ERR_PRINT("url " + s);
+#endif
+
+	_request->set_parser_path(s);
+
 	return 0;
 }
 int HTTPParser::on_status(const char *at, size_t length) {
+	ERR_FAIL_COND_V(!_request.is_valid(), 0);
+
 	String s = chr_len_to_str(at, length);
-	print_error("status " + s);
+
+#if MESSAGE_DEBUG
+	ERR_PRINT("status " + s);
+#endif
+
 	return 0;
 }
 int HTTPParser::on_header_field(const char *at, size_t length) {
+	ERR_FAIL_COND_V(!_request.is_valid(), 0);
+
 	String s = chr_len_to_str(at, length);
-	print_error("header_field " + s);
+
+#if MESSAGE_DEBUG
+	ERR_PRINT("header_field " + s);
+#endif
+
+	_queued_header_field = s;
+
 	return 0;
 }
 int HTTPParser::on_header_value(const char *at, size_t length) {
+	ERR_FAIL_COND_V(!_request.is_valid(), 0);
+
 	String s = chr_len_to_str(at, length);
-	print_error("header_val " + s);
+
+#if MESSAGE_DEBUG
+	ERR_PRINT("header_val " + s);
+#endif
+
+	_request->add_parameter(_queued_header_field, s);
+
+	if (_queued_header_field == "Host") {
+		_request->set_host(s);
+	}
+
 	return 0;
 }
 int HTTPParser::on_headers_complete() {
-	print_error("headers_complete");
+	ERR_FAIL_COND_V(!_request.is_valid(), 0);
+
+#if MESSAGE_DEBUG
+	ERR_PRINT("headers_complete");
+#endif
+
+	_in_header = false;
+
 	return 0;
 }
 int HTTPParser::on_body(const char *at, size_t length) {
+	ERR_FAIL_COND_V(!_request.is_valid(), 0);
+
 	String s = chr_len_to_str(at, length);
-	print_error("on_body " + s);
+
+#if MESSAGE_DEBUG
+	ERR_PRINT("on_body " + s);
+#endif
+
 	return 0;
 }
 int HTTPParser::on_message_complete() {
-	print_error("msg_copmlete");
+	ERR_FAIL_COND_V(!_request.is_valid(), 0);
+
+#if MESSAGE_DEBUG
+	ERR_PRINT("msg_copmlete");
+#endif
+
+	_requests.push_back(_request);
+	_request.unref();
+
 	return 0;
 }
 int HTTPParser::on_chunk_header() {
-	print_error("chunk_header");
+	ERR_FAIL_COND_V(!_request.is_valid(), 0);
+
+#if MESSAGE_DEBUG
+	ERR_PRINT("chunk_header");
+#endif
+
 	return 0;
 }
 int HTTPParser::on_chunk_complete() {
-	print_error("chunk_complete");
+	ERR_FAIL_COND_V(!_request.is_valid(), 0);
+
+#if MESSAGE_DEBUG
+	ERR_PRINT("chunk_complete");
+#endif
+
 	return 0;
 }
 

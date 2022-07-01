@@ -41,7 +41,11 @@ String SimpleWebServerRequest::get_file_data_str(const int index) const {
 }
 
 String SimpleWebServerRequest::get_parameter(const String &key) const {
-	return "";
+	if (!_parameters.has(key)) {
+		return "";
+	}
+
+	return _parameters[key];
 }
 
 void SimpleWebServerRequest::send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
@@ -61,14 +65,27 @@ void SimpleWebServerRequest::send_file(const String &p_file_path) {
 }
 
 String SimpleWebServerRequest::parser_get_path() {
-	return "";
+	return _parser_path;
 }
 
 String SimpleWebServerRequest::get_host() const {
-	return "";
+	return _host;
+}
+
+void SimpleWebServerRequest::add_parameter(const String &key, const String &value) {
+	_parameters[key] = value;
+}
+
+void SimpleWebServerRequest::set_parser_path(const String &value) {
+	_parser_path = value;
+}
+
+void SimpleWebServerRequest::set_host(const String &value) {
+	_host = value;
 }
 
 SimpleWebServerRequest::SimpleWebServerRequest() {
+	_server = nullptr;
 }
 
 SimpleWebServerRequest::~SimpleWebServerRequest() {

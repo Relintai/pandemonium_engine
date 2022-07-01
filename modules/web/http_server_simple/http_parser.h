@@ -5,7 +5,7 @@
 
 #include "core/reference.h"
 
-class WebServerRequest;
+class SimpleWebServerRequest;
 struct http_parser;
 struct http_parser_settings;
 
@@ -13,8 +13,8 @@ class HTTPParser : public Reference {
 	GDCLASS(HTTPParser, Reference);
 
 public:
-	Ref<WebServerRequest> get_request();
-	void set_request(const Ref<WebServerRequest> &val);
+	Ref<SimpleWebServerRequest> get_next_request();
+	int get_request_count() const;
 
 	bool is_ready() const;
 
@@ -31,7 +31,8 @@ protected:
 
 	String _partial_data;
 
-	Ref<WebServerRequest> _request;
+	Ref<SimpleWebServerRequest> _request;
+	Vector<Ref<SimpleWebServerRequest>> _requests;
 
 	bool _is_ready;
 
@@ -62,6 +63,9 @@ private:
 
 	http_parser *parser;
 	http_parser_settings *settings;
+
+	bool _in_header;
+	String _queued_header_field;
 };
 
 #endif

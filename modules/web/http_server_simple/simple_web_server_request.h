@@ -2,6 +2,7 @@
 #define SIMPLE_WEB_SERVER_REQUEST_H
 
 #include "core/dictionary.h"
+#include "core/hash_map.h"
 #include "core/ustring.h"
 #include "core/vector.h"
 
@@ -14,6 +15,7 @@ class WebServerCookie;
 class HTTPSession;
 class WebPermission;
 class WebNode;
+class HTTPServerSimple;
 
 class SimpleWebServerRequest : public WebServerRequest {
 	GDCLASS(SimpleWebServerRequest, WebServerRequest);
@@ -39,13 +41,23 @@ public:
 	virtual String parser_get_path();
 	virtual String get_host() const;
 
+	void add_parameter(const String &key, const String &value);
+	void set_parser_path(const String &value);
+	void set_host(const String &value);
+
 	//virtual String get_path_full() const;
 
 	SimpleWebServerRequest();
 	~SimpleWebServerRequest();
 
+	HTTPServerSimple *_server;
+
 protected:
 	static void _bind_methods();
+
+	HashMap<String, String> _parameters;
+	String _parser_path;
+	String _host;
 };
 
 #endif

@@ -32,6 +32,7 @@
 
 #include "http_parser.h"
 #include "simple_web_server_request.h"
+#include "web_server_simple.h"
 
 void HTTPServerSimple::stop() {
 	server->stop();
@@ -186,35 +187,30 @@ void HTTPServerSimple::poll() {
 		return;
 	}
 
-	if (read == 0) {
-		// Busy, wait next poll
-		return;
+	if (read > 0) {
+		int buffer_start_index = 0;
+		while (true) {
+			char *rb = reinterpret_cast<char *>(&req_buf[buffer_start_index]);
+			buffer_start_index += _http_parser->read_from_buffer(rb, read);
+
+			if (buffer_start_index >= read) {
+				break;
+			}
+		}
 	}
 
-	int buffer_start_index = 0;
-	while (true) {
-		char *rb = reinterpret_cast<char *>(&req_buf[buffer_start_index]);
-		buffer_start_index += _http_parser->read_from_buffer(rb, read);
+	if (_http_parser->get_request_count() > 0) {
+		Ref<SimpleWebServerRequest> request = _http_parser->get_next_request();
 
-		if (_http_parser->is_ready()) {
-			Ref<SimpleWebServerRequest> req;
+		request->_server = this;
 
-			req = _http_parser->get_request();
-
-			//handle request
-
-			req.instance();
-			_http_parser->set_request(req);
-			_http_parser->reset();
-		}
-
-		if (buffer_start_index >= read) {
-			return;
-		}
+		_web_server->server_handle_request(request);
 	}
 }
 
 HTTPServerSimple::HTTPServerSimple() {
+	_web_server = nullptr;
+
 	mimes["html"] = "text/html";
 	mimes["js"] = "application/javascript";
 	mimes["json"] = "application/json";
@@ -222,11 +218,9 @@ HTTPServerSimple::HTTPServerSimple() {
 	mimes["png"] = "image/png";
 	mimes["svg"] = "image/svg";
 	mimes["wasm"] = "application/wasm";
+
 	server.instance();
 	_http_parser.instance();
-	Ref<SimpleWebServerRequest> req;
-	req.instance();
-	_http_parser->set_request(req);
 	stop();
 }
 

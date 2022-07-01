@@ -33,6 +33,8 @@
 #include "http_server_simple.h"
 
 void WebServerSimple::_start() {
+	WebServer::_start();
+
 	const uint16_t bind_port = 8080;
 	// Resolve host if needed.
 	const String bind_host = "127.0.0.1";
@@ -64,12 +66,15 @@ void WebServerSimple::_start() {
 }
 
 void WebServerSimple::_stop() {
+	WebServer::_stop();
+
 	MutexLock lock(server_lock);
 	server->stop();
 }
 
 WebServerSimple::WebServerSimple() {
 	server.instance();
+	server->_web_server = this;
 	server_thread.start(_server_thread_poll, this);
 }
 
