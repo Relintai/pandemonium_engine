@@ -203,6 +203,7 @@ void HTTPServerSimple::poll() {
 		Ref<SimpleWebServerRequest> request = _http_parser->get_next_request();
 
 		request->_server = this;
+		request->setup_url_stack();
 
 		_web_server->server_handle_request(request);
 
