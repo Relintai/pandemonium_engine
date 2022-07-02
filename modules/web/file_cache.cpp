@@ -4,6 +4,7 @@
 #include "core/os/file_access.h"
 #include "core/os/os.h"
 #include "core/print_string.h"
+#include "core/project_settings.h"
 
 String FileCache::get_wwwroot() {
 	return _wwwroot_orig;
@@ -13,7 +14,7 @@ void FileCache::set_wwwroot(const String &val) {
 }
 
 String FileCache::get_wwwroot_abs() {
-	return _wwwroot_orig;
+	return _wwwroot;
 }
 
 int FileCache::get_cache_invalidation_time() {
@@ -74,15 +75,41 @@ String FileCache::wwwroot_get_file_orig_path(const int index) {
 	return _registered_files[index].orig_path;
 }
 
+String FileCache::wwwroot_get_file_orig_path_abs(const int index) {
+	return get_wwwroot_abs() + wwwroot_get_file_orig_path(index);
+}
+
 void FileCache::wwwroot_refresh_cache() {
 	_lock.write_lock();
 
 	_registered_files.clear();
 
+	//TODO this should probably be a static method in DirAccess
 	if (_wwwroot_orig != "") {
-		_wwwroot = DirAccess::get_full_path(_wwwroot_orig, DirAccess::ACCESS_FILESYSTEM);
+		String path = _wwwroot_orig;
+
+		if (path.begins_with("res://")) {
+			if (ProjectSettings::get_singleton()) {
+				String resource_path = ProjectSettings::get_singleton()->get_resource_path();
+				if (resource_path != "") {
+					path = path.replace_first("res:/", resource_path);
+				} else {
+					path = path.replace_first("res://", "");
+				}
+			}
+		} else if (path.begins_with("user://")) {
+			String data_dir = OS::get_singleton()->get_user_data_dir();
+			if (data_dir != "") {
+				path = path.replace_first("user:/", data_dir);
+			} else {
+				path = path.replace_first("user://", "");
+			}
+		}
+
+		_wwwroot = DirAccess::get_full_path(path, DirAccess::ACCESS_FILESYSTEM);
 
 		_wwwroot = _wwwroot.path_clean_end_slash();
+
 		wwwroot_evaluate_dir(_wwwroot);
 	}
 
@@ -107,6 +134,7 @@ void FileCache::wwwroot_evaluate_dir(const String &path, const bool should_exist
 			String np = path + "/" + f;
 			np = np.substr(_wwwroot.size() - 1, np.size() - _wwwroot.size());
 			wwwroot_register_file(np);
+
 		} else {
 			wwwroot_evaluate_dir(path + "/" + f);
 		}

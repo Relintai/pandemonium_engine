@@ -30,6 +30,7 @@ public:
 	//return -1 if does not exists
 	int wwwroot_get_file_index(const String &file_path);
 	String wwwroot_get_file_orig_path(const int index);
+	String wwwroot_get_file_orig_path_abs(const int index);
 	void wwwroot_refresh_cache();
 	void wwwroot_evaluate_dir(const String &path, const bool should_exist = true);
 
