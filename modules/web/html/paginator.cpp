@@ -103,7 +103,7 @@ String HTMLPaginator::render_indexed(Ref<HTMLPaginator> target, const int page_i
 	}
 
 	if (starti != toi) {
-		for (uint32_t i = starti; i < toi; ++i) {
+		for (int i = starti; i < toi; ++i) {
 			if (i != page_index) {
 				b.li()->clsse(tclass_enabled_li);
 				{
@@ -146,7 +146,7 @@ String HTMLPaginator::render_links(Ref<HTMLPaginator> target, const int page_ind
 		s += '/';
 	}
 
-	uint32_t max = target->links.size();
+	int max = target->links.size();
 
 	int max_visible_links = target->_max_visible_links;
 	//int page_count = target->_page_count;
@@ -190,7 +190,7 @@ String HTMLPaginator::render_links(Ref<HTMLPaginator> target, const int page_ind
 	}
 
 	if (starti != toi) {
-		for (uint32_t i = starti; i < toi; ++i) {
+		for (int i = starti; i < toi; ++i) {
 			if (i != page_index) {
 				b.li()->clsse(tclass_enabled_li);
 				{
@@ -220,7 +220,7 @@ String HTMLPaginator::render_links(Ref<HTMLPaginator> target, const int page_ind
 	return b.result;
 }
 
-String HTMLPaginator::get_pagination_old(const String &base_url, const uint32_t max, const uint32_t current_index, const uint32_t max_visible_links) {
+String HTMLPaginator::get_pagination_old(const String &base_url, const int max, const int current_index, const int max_visible_links) {
 	String s = base_url;
 	if (s.size() > 0 && s[s.size() - 1] != '/') {
 		s += '/';
@@ -262,7 +262,7 @@ String HTMLPaginator::get_pagination_old(const String &base_url, const uint32_t 
 	}
 
 	if (starti != toi) {
-		for (uint32_t i = starti; i < toi; ++i) {
+		for (int i = starti; i < toi; ++i) {
 			if (i != current_index) {
 				b.li();
 				b.a()->href(s + itos(i + 1));
@@ -298,13 +298,13 @@ String HTMLPaginator::get_pagination_old(const String &base_url, const uint32_t 
 	return b.result;
 }
 
-String HTMLPaginator::get_pagination_links_old(const String &base_url, const Vector<String> &links, const uint32_t current_index, const uint32_t max_visible_links) {
+String HTMLPaginator::get_pagination_links_old(const String &base_url, const Vector<String> &links, const int current_index, const int max_visible_links) {
 	String s = base_url;
 	if (s.size() > 0 && s[s.size() - 1] != '/') {
 		s += '/';
 	}
 
-	uint32_t max = links.size();
+	int max = links.size();
 
 	int starti = current_index - max_visible_links / 2;
 	int toi = current_index + max_visible_links / 2;
@@ -342,7 +342,7 @@ String HTMLPaginator::get_pagination_links_old(const String &base_url, const Vec
 	}
 
 	if (starti != toi) {
-		for (uint32_t i = starti; i < toi; ++i) {
+		for (int i = starti; i < toi; ++i) {
 			if (i != current_index) {
 				b.li();
 				b.a()->href(s + links[i]);
