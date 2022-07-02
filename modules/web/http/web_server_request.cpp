@@ -277,7 +277,7 @@ String WebServerRequest::get_path(const bool beginning_slash, const bool end_sla
 		path += '/';
 	}
 
-	if (!end_slash && path.size() > 1) {
+	if (!end_slash && path.length() > 1) {
 		path.resize(path.size() - 1);
 	}
 
