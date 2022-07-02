@@ -34,6 +34,10 @@ def get_doc_classes():
         "HTMLTag",
 
         "WebServerSimple",
+
+        "StaticPage",
+        "StaticPageFile",
+        "StaticPageFolderFiles",
     ]
 
 

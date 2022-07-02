@@ -31,6 +31,10 @@ sources = [
     "http_server_simple/http_parser.cpp",
     "http_server_simple/http_writer.cpp",
     "http_server_simple/http_parser/http_parser.c",
+
+    "nodes/static_pages/static_page.cpp",
+    "nodes/static_pages/static_page_file.cpp",
+    "nodes/static_pages/static_page_folder_files.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':

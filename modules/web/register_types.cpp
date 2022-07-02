@@ -42,6 +42,10 @@ SOFTWARE.
 
 #include "http_server_simple/web_server_simple.h"
 
+#include "nodes/static_pages/static_page.h"
+#include "nodes/static_pages/static_page_file.h"
+#include "nodes/static_pages/static_page_folder_files.h"
+
 void register_web_types() {
 	ClassDB::register_class<_HTMLBuilder>();
 	ClassDB::register_class<_HTMLTag>();
@@ -63,6 +67,10 @@ void register_web_types() {
 	ClassDB::register_class<WebServerRequest>();
 
 	ClassDB::register_class<WebServerSimple>();
+
+	ClassDB::register_class<StaticPage>();
+	ClassDB::register_class<StaticPageFile>();
+	ClassDB::register_class<StaticPageFolderFiles>();
 }
 
 void unregister_web_types() {
