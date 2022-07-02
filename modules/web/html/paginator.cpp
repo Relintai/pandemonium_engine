@@ -220,6 +220,164 @@ String HTMLPaginator::render_links(Ref<HTMLPaginator> target, const int page_ind
 	return b.result;
 }
 
+String HTMLPaginator::get_pagination_old(const String &base_url, const uint32_t max, const uint32_t current_index, const uint32_t max_visible_links) {
+	String s = base_url;
+	if (s.size() > 0 && s[s.size() - 1] != '/') {
+		s += '/';
+	}
+
+	int starti = current_index - max_visible_links / 2;
+	int toi = current_index + max_visible_links / 2;
+
+	if (starti < 0) {
+		toi += -starti;
+		starti = 0;
+	}
+
+	if (toi > max) {
+		starti -= toi - max;
+		toi = max;
+
+		if (starti < 0) {
+			starti = 0;
+		}
+	}
+
+	//int toi = max > max_visible_links ? max_visible_links : max;
+
+	HTMLBuilder b;
+
+	b.ul()->cls("pagination");
+
+	if (max != 0 && current_index != 0) {
+		b.li();
+		b.a()->href(s + itos(current_index - 1));
+		b.w("previous");
+		b.ca();
+		b.cli();
+	} else {
+		b.li()->cls("disabled");
+		b.w("previous");
+		b.cli();
+	}
+
+	if (starti != toi) {
+		for (uint32_t i = starti; i < toi; ++i) {
+			if (i != current_index) {
+				b.li();
+				b.a()->href(s + itos(i + 1));
+				b.w(itos(i + 1));
+				b.ca();
+				b.cli();
+			} else {
+				b.li()->cls("disabled");
+				b.w(itos(i + 1));
+				b.cli();
+			}
+		}
+	} else {
+		b.li()->cls("disabled");
+		b.w(itos(1));
+		b.cli();
+	}
+
+	if (max != 0 && current_index < max - 1) {
+		b.li();
+		b.a()->href(s + itos(current_index + 2));
+		b.w("next");
+		b.ca();
+		b.cli();
+	} else {
+		b.li()->cls("disabled");
+		b.w("next");
+		b.cli();
+	}
+
+	b.cul();
+
+	return b.result;
+}
+
+String HTMLPaginator::get_pagination_links_old(const String &base_url, const Vector<String> &links, const uint32_t current_index, const uint32_t max_visible_links) {
+	String s = base_url;
+	if (s.size() > 0 && s[s.size() - 1] != '/') {
+		s += '/';
+	}
+
+	uint32_t max = links.size();
+
+	int starti = current_index - max_visible_links / 2;
+	int toi = current_index + max_visible_links / 2;
+
+	if (starti < 0) {
+		toi += -starti;
+		starti = 0;
+	}
+
+	if (toi > max) {
+		starti -= toi - max;
+		toi = max;
+
+		if (starti < 0) {
+			starti = 0;
+		}
+	}
+
+	//int toi = max > max_visible_links ? max_visible_links : max;
+
+	HTMLBuilder b;
+
+	b.ul()->cls("pagination");
+
+	if (max != 0 && current_index != 0) {
+		b.li();
+		b.a()->href(s + links[current_index - 1]);
+		b.w("previous");
+		b.ca();
+		b.cli();
+	} else {
+		b.li()->cls("disabled");
+		b.w("previous");
+		b.cli();
+	}
+
+	if (starti != toi) {
+		for (uint32_t i = starti; i < toi; ++i) {
+			if (i != current_index) {
+				b.li();
+				b.a()->href(s + links[i]);
+				b.w(itos(i + 1));
+				b.ca();
+				b.cli();
+			} else {
+				b.li()->cls("disabled");
+				b.w(itos(i + 1));
+				b.cli();
+			}
+		}
+	} else {
+		b.li()->cls("disabled");
+		b.w(itos(1));
+		b.cli();
+	}
+
+	if (max != 0 && current_index < max - 1) {
+		b.li();
+		b.a()->href(s + links[current_index + 1]);
+		b.w("next");
+		b.ca();
+		b.cli();
+	} else {
+		b.li()->cls("disabled");
+		b.w("next");
+		b.cli();
+	}
+
+	b.cul();
+
+	return b.result;
+}
+
 HTMLPaginator::HTMLPaginator() {
 	use_links_array = false;
 	hide_if_one_page = false;

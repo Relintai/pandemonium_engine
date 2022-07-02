@@ -44,6 +44,10 @@ public:
 
 	Ref<HTMLPaginator> renderer;
 
+	//Old methods for the time being
+	static String get_pagination_old(const String &base_url, const uint32_t max, const uint32_t current_index, const uint32_t max_visible_links = 10);
+	static String get_pagination_links_old(const String &base_url, const Vector<String> &links, const uint32_t current_index, const uint32_t max_visible_links = 10);
+
 	HTMLPaginator();
 	~HTMLPaginator();
 
