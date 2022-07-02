@@ -92,6 +92,8 @@ public:
 
 	static _ALWAYS_INLINE_ double floor(double p_x) { return ::floor(p_x); }
 	static _ALWAYS_INLINE_ float floor(float p_x) { return ::floorf(p_x); }
+	// x + 0.5 -> so f.e. 0.9999999 will become 1
+	static _ALWAYS_INLINE_ int floorf_int(const float x) { return static_cast<int>(x + 0.5); }
 
 	static _ALWAYS_INLINE_ double ceil(double p_x) { return ::ceil(p_x); }
 	static _ALWAYS_INLINE_ float ceil(float p_x) { return ::ceilf(p_x); }
@@ -104,6 +106,9 @@ public:
 
 	static _ALWAYS_INLINE_ double exp(double p_x) { return ::exp(p_x); }
 	static _ALWAYS_INLINE_ float exp(float p_x) { return ::expf(p_x); }
+
+	// can save typing static_cast<float>
+	inline static float divf(const float a, const float b) { return a / b; }
 
 	static _ALWAYS_INLINE_ bool is_nan(double p_val) {
 #ifdef _MSC_VER
@@ -177,10 +182,18 @@ public:
 #endif
 	}
 
-	static _ALWAYS_INLINE_ double abs(double g) { return absd(g); }
-	static _ALWAYS_INLINE_ float abs(float g) { return absf(g); }
-	static _ALWAYS_INLINE_ int abs(int g) { return g > 0 ? g : -g; }
-	static _ALWAYS_INLINE_ int64_t abs(int64_t g) { return g > 0 ? g : -g; }
+	static _ALWAYS_INLINE_ double abs(double g) {
+		return absd(g);
+	}
+	static _ALWAYS_INLINE_ float abs(float g) {
+		return absf(g);
+	}
+	static _ALWAYS_INLINE_ int abs(int g) {
+		return g > 0 ? g : -g;
+	}
+	static _ALWAYS_INLINE_ int64_t abs(int64_t g) {
+		return g > 0 ? g : -g;
+	}
 
 	static _ALWAYS_INLINE_ double fposmod(double p_x, double p_y) {
 		double value = Math::fmod(p_x, p_y);
@@ -206,14 +219,26 @@ public:
 		return value;
 	}
 
-	static _ALWAYS_INLINE_ double deg2rad(double p_y) { return p_y * Math_PI / 180.0; }
-	static _ALWAYS_INLINE_ float deg2rad(float p_y) { return p_y * (float)(Math_PI / 180.0); }
+	static _ALWAYS_INLINE_ double deg2rad(double p_y) {
+		return p_y * Math_PI / 180.0;
+	}
+	static _ALWAYS_INLINE_ float deg2rad(float p_y) {
+		return p_y * (float)(Math_PI / 180.0);
+	}
 
-	static _ALWAYS_INLINE_ double rad2deg(double p_y) { return p_y * 180.0 / Math_PI; }
-	static _ALWAYS_INLINE_ float rad2deg(float p_y) { return p_y * (float)(180.0 / Math_PI); }
+	static _ALWAYS_INLINE_ double rad2deg(double p_y) {
+		return p_y * 180.0 / Math_PI;
+	}
+	static _ALWAYS_INLINE_ float rad2deg(float p_y) {
+		return p_y * (float)(180.0 / Math_PI);
+	}
 
-	static _ALWAYS_INLINE_ double lerp(double p_from, double p_to, double p_weight) { return p_from + (p_to - p_from) * p_weight; }
-	static _ALWAYS_INLINE_ float lerp(float p_from, float p_to, float p_weight) { return p_from + (p_to - p_from) * p_weight; }
+	static _ALWAYS_INLINE_ double lerp(double p_from, double p_to, double p_weight) {
+		return p_from + (p_to - p_from) * p_weight;
+	}
+	static _ALWAYS_INLINE_ float lerp(float p_from, float p_to, float p_weight) {
+		return p_from + (p_to - p_from) * p_weight;
+	}
 
 	static _ALWAYS_INLINE_ double lerp_angle(double p_from, double p_to, double p_weight) {
 		double difference = fmod(p_to - p_from, Math_TAU);
@@ -226,11 +251,19 @@ public:
 		return p_from + distance * p_weight;
 	}
 
-	static _ALWAYS_INLINE_ double inverse_lerp(double p_from, double p_to, double p_value) { return (p_value - p_from) / (p_to - p_from); }
-	static _ALWAYS_INLINE_ float inverse_lerp(float p_from, float p_to, float p_value) { return (p_value - p_from) / (p_to - p_from); }
+	static _ALWAYS_INLINE_ double inverse_lerp(double p_from, double p_to, double p_value) {
+		return (p_value - p_from) / (p_to - p_from);
+	}
+	static _ALWAYS_INLINE_ float inverse_lerp(float p_from, float p_to, float p_value) {
+		return (p_value - p_from) / (p_to - p_from);
+	}
 
-	static _ALWAYS_INLINE_ double range_lerp(double p_value, double p_istart, double p_istop, double p_ostart, double p_ostop) { return Math::lerp(p_ostart, p_ostop, Math::inverse_lerp(p_istart, p_istop, p_value)); }
-	static _ALWAYS_INLINE_ float range_lerp(float p_value, float p_istart, float p_istop, float p_ostart, float p_ostop) { return Math::lerp(p_ostart, p_ostop, Math::inverse_lerp(p_istart, p_istop, p_value)); }
+	static _ALWAYS_INLINE_ double range_lerp(double p_value, double p_istart, double p_istop, double p_ostart, double p_ostop) {
+		return Math::lerp(p_ostart, p_ostop, Math::inverse_lerp(p_istart, p_istop, p_value));
+	}
+	static _ALWAYS_INLINE_ float range_lerp(float p_value, float p_istart, float p_istop, float p_ostart, float p_ostop) {
+		return Math::lerp(p_ostart, p_ostop, Math::inverse_lerp(p_istart, p_istop, p_value));
+	}
 
 	static _ALWAYS_INLINE_ double smoothstep(double p_from, double p_to, double p_s) {
 		if (is_equal_approx(p_from, p_to)) {
@@ -246,17 +279,33 @@ public:
 		float s = CLAMP((p_s - p_from) / (p_to - p_from), 0.0f, 1.0f);
 		return s * s * (3.0f - 2.0f * s);
 	}
-	static _ALWAYS_INLINE_ double move_toward(double p_from, double p_to, double p_delta) { return abs(p_to - p_from) <= p_delta ? p_to : p_from + SGN(p_to - p_from) * p_delta; }
-	static _ALWAYS_INLINE_ float move_toward(float p_from, float p_to, float p_delta) { return abs(p_to - p_from) <= p_delta ? p_to : p_from + SGN(p_to - p_from) * p_delta; }
+	static _ALWAYS_INLINE_ double move_toward(double p_from, double p_to, double p_delta) {
+		return abs(p_to - p_from) <= p_delta ? p_to : p_from + SGN(p_to - p_from) * p_delta;
+	}
+	static _ALWAYS_INLINE_ float move_toward(float p_from, float p_to, float p_delta) {
+		return abs(p_to - p_from) <= p_delta ? p_to : p_from + SGN(p_to - p_from) * p_delta;
+	}
 
-	static _ALWAYS_INLINE_ double linear2db(double p_linear) { return Math::log(p_linear) * 8.6858896380650365530225783783321; }
-	static _ALWAYS_INLINE_ float linear2db(float p_linear) { return Math::log(p_linear) * (float)8.6858896380650365530225783783321; }
+	static _ALWAYS_INLINE_ double linear2db(double p_linear) {
+		return Math::log(p_linear) * 8.6858896380650365530225783783321;
+	}
+	static _ALWAYS_INLINE_ float linear2db(float p_linear) {
+		return Math::log(p_linear) * (float)8.6858896380650365530225783783321;
+	}
 
-	static _ALWAYS_INLINE_ double db2linear(double p_db) { return Math::exp(p_db * 0.11512925464970228420089957273422); }
-	static _ALWAYS_INLINE_ float db2linear(float p_db) { return Math::exp(p_db * (float)0.11512925464970228420089957273422); }
+	static _ALWAYS_INLINE_ double db2linear(double p_db) {
+		return Math::exp(p_db * 0.11512925464970228420089957273422);
+	}
+	static _ALWAYS_INLINE_ float db2linear(float p_db) {
+		return Math::exp(p_db * (float)0.11512925464970228420089957273422);
+	}
 
-	static _ALWAYS_INLINE_ double round(double p_val) { return ::round(p_val); }
-	static _ALWAYS_INLINE_ float round(float p_val) { return ::roundf(p_val); }
+	static _ALWAYS_INLINE_ double round(double p_val) {
+		return ::round(p_val);
+	}
+	static _ALWAYS_INLINE_ float round(float p_val) {
+		return ::roundf(p_val);
+	}
 
 	static _ALWAYS_INLINE_ int64_t wrapi(int64_t value, int64_t min, int64_t max) {
 		int64_t range = max - min;
@@ -284,12 +333,18 @@ public:
 	static void randomize();
 	static uint32_t rand_from_seed(uint64_t *seed);
 	static uint32_t rand();
-	static _ALWAYS_INLINE_ double randd() { return (double)rand() / (double)Math::RANDOM_32BIT_MAX; }
-	static _ALWAYS_INLINE_ float randf() { return (float)rand() / (float)Math::RANDOM_32BIT_MAX; }
+	static _ALWAYS_INLINE_ double randd() {
+		return (double)rand() / (double)Math::RANDOM_32BIT_MAX;
+	}
+	static _ALWAYS_INLINE_ float randf() {
+		return (float)rand() / (float)Math::RANDOM_32BIT_MAX;
+	}
 
 	static double random(double from, double to);
 	static float random(float from, float to);
-	static real_t random(int from, int to) { return (real_t)random((real_t)from, (real_t)to); }
+	static real_t random(int from, int to) {
+		return (real_t)random((real_t)from, (real_t)to);
+	}
 
 	static _ALWAYS_INLINE_ bool is_equal_approx_ratio(real_t a, real_t b, real_t epsilon = CMP_EPSILON, real_t min_epsilon = CMP_EPSILON) {
 		// this is an approximate way to check that numbers are close, as a ratio of their average size
