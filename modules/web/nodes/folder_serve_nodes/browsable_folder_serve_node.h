@@ -27,7 +27,7 @@ public:
 	bool get_should_render_menu();
 	void set_should_render_menu(const bool &val);
 
-	void _handle_request_main(Ref<WebServerRequest> request);
+	void _handle_request(Ref<WebServerRequest> request);
 
 	void render_index(Ref<WebServerRequest> request);
 	void render_preview(Ref<WebServerRequest> request);

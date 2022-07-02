@@ -22,7 +22,7 @@ void FolderServeNode::_handle_request_main(Ref<WebServerRequest> request) {
 
 	if (rp == "") {
 		if (!try_route_request_to_children(request)) {
-			_handle_request_main(request);
+			handle_request(request);
 		}
 		return;
 	}
@@ -33,16 +33,12 @@ void FolderServeNode::_handle_request_main(Ref<WebServerRequest> request) {
 	int file_indx = _file_cache->wwwroot_get_file_index(file_name);
 
 	if (file_indx != -1) {
-		String fp = _file_cache->get_wwwroot_abs();
-		fp = fp.append_path(file_name);
-
-		request->send_file(_file_cache->wwwroot_get_file_orig_path(file_indx));
-
+		request->send_file(_file_cache->wwwroot_get_file_orig_path_abs(file_indx));
 		return;
 	}
 
 	if (!try_route_request_to_children(request)) {
-		_handle_request_main(request);
+		handle_request(request);
 	}
 }
 

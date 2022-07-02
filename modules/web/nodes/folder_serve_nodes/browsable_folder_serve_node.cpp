@@ -17,7 +17,7 @@ void BrowsableFolderServeNode::set_should_render_menu(const bool &val) {
 	_should_render_menu = val;
 }
 
-void BrowsableFolderServeNode::_handle_request_main(Ref<WebServerRequest> request) {
+void BrowsableFolderServeNode::_handle_request(Ref<WebServerRequest> request) {
 	String file_name = request->get_path(true, false);
 
 	String *s = _folder_indexes[file_name];
@@ -28,7 +28,7 @@ void BrowsableFolderServeNode::_handle_request_main(Ref<WebServerRequest> reques
 	}
 
 	if (_should_render_menu) {
-		render_menu(request);
+		render_main_menu(request);
 	}
 
 	request->body += (*s);
