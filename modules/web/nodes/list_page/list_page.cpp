@@ -1,14 +1,13 @@
 #include "list_page.h"
 
-#include "core/math/math.h"
-#include "web/html/html_builder.h"
+#include "../../html/html_builder.h"
+#include "../../http/web_permission.h"
 #include "web/html/utils.h"
-#include "web/http/web_permission.h"
 
 #include <tinydir/tinydir.h>
 #include <iostream>
 
-void ListPage::handle_request_main(Request *request) {
+void ListPage::_handle_request_main(Ref<WebServerRequest> request) {
 	if (_web_permission.is_valid()) {
 		if (_web_permission->activate(request)) {
 			return;
@@ -22,7 +21,7 @@ void ListPage::handle_request_main(Request *request) {
 		return;
 	}
 
-	const String &cs = request->get_current_path_segment();
+	String cs = request->get_current_path_segment();
 
 	if (cs == "") {
 		render_menu(request);
@@ -50,10 +49,10 @@ void ListPage::handle_request_main(Request *request) {
 	request->compile_and_send_body();
 }
 
-void ListPage::render_index(Request *request) {
+void ListPage::_render_index(Ref<WebServerRequest> request) {
 	request->body += _pages[0];
 }
-void ListPage::render_preview(Request *request) {
+void ListPage::_render_preview(Ref<WebServerRequest> request) {
 }
 
 void ListPage::load() {
@@ -88,7 +87,7 @@ void ListPage::load() {
 
 	tinydir_close(&dir);
 
-	files.sort_inc();
+	files.sort();
 
 	Vector<String> list_entries;
 
@@ -184,7 +183,6 @@ void ListPage::_notification(const int what) {
 
 ListPage::ListPage() :
 		WebNode() {
-
 	max_visible_navigation_links = 6;
 	entry_per_page = 4;
 	main_div_class = "list_page";
@@ -194,4 +192,40 @@ ListPage::ListPage() :
 }
 
 ListPage::~ListPage() {
+}
+
+void ListPage::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_paginate"), &ListPage::get_paginate);
+	ClassDB::bind_method(D_METHOD("set_paginate", "val"), &ListPage::set_paginate);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "paginate"), "set_paginate", "get_paginate");
+
+	ClassDB::bind_method(D_METHOD("get_max_visible_navigation_links"), &ListPage::get_max_visible_navigation_links);
+	ClassDB::bind_method(D_METHOD("set_max_visible_navigation_links", "val"), &ListPage::set_max_visible_navigation_links);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_visible_navigation_links"), "set_max_visible_navigation_links", "get_max_visible_navigation_links");
+
+	ClassDB::bind_method(D_METHOD("get_entry_per_page"), &ListPage::get_entry_per_page);
+	ClassDB::bind_method(D_METHOD("set_entry_per_page", "val"), &ListPage::set_entry_per_page);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "entry_per_page"), "set_entry_per_page", "get_entry_per_page");
+
+	ClassDB::bind_method(D_METHOD("get_folder"), &ListPage::get_folder);
+	ClassDB::bind_method(D_METHOD("set_folder", "val"), &ListPage::set_folder);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "folder"), "set_folder", "get_folder");
+
+	ClassDB::bind_method(D_METHOD("get_main_div_class"), &ListPage::get_main_div_class);
+	ClassDB::bind_method(D_METHOD("set_main_div_class", "val"), &ListPage::set_main_div_class);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "main_div_class"), "set_main_div_class", "get_main_div_class");
+
+	ClassDB::bind_method(D_METHOD("get_entry_div_class"), &ListPage::get_entry_div_class);
+	ClassDB::bind_method(D_METHOD("set_entry_div_class", "val"), &ListPage::set_entry_div_class);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entry_div_class"), "set_entry_div_class", "get_entry_div_class");
+
+	ClassDB::bind_method(D_METHOD("get_empty_div_class"), &ListPage::get_empty_div_class);
+	ClassDB::bind_method(D_METHOD("set_empty_div_class", "val"), &ListPage::set_empty_div_class);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "empty_div_class"), "set_empty_div_class", "get_empty_div_class");
+
+	ClassDB::bind_method(D_METHOD("get_placeholder_text"), &ListPage::get_placeholder_text);
+	ClassDB::bind_method(D_METHOD("set_placeholder_text", "val"), &ListPage::set_placeholder_text);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "placeholder_text"), "set_placeholder_text", "get_placeholder_text");
+
+	ClassDB::bind_method(D_METHOD("load"), &ListPage::load);
 }

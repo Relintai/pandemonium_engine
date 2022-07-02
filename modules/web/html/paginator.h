@@ -1,13 +1,13 @@
-#ifndef PAGINATOR_H
-#define PAGINATOR_H
+#ifndef HTML_PAGINATOR_H
+#define HTML_PAGINATOR_H
 
-#include "core/string.h"
-#include "core/containers/vector.h"
+#include "core/ustring.h"
+#include "core/vector.h"
 
 #include "core/reference.h"
 
-class Paginator : public Reference {
-	RCPP_OBJECT(Paginator, Reference);
+class HTMLPaginator : public Reference {
+	GDCLASS(HTMLPaginator, Reference);
 
 public:
 	//settint the item count will update page count and vice versa
@@ -39,13 +39,13 @@ public:
 	String get_pagination_for_indx(const int page_index);
 	String get_pagination_for_num(const int page_num);
 
-	virtual String render_indexed(Ref<Paginator> target, const int page_index);
-	virtual String render_links(Ref<Paginator> target, const int page_index);
+	virtual String render_indexed(Ref<HTMLPaginator> target, const int page_index);
+	virtual String render_links(Ref<HTMLPaginator> target, const int page_index);
 
-	Ref<Paginator> renderer;
+	Ref<HTMLPaginator> renderer;
 
-	Paginator();
-	~Paginator();
+	HTMLPaginator();
+	~HTMLPaginator();
 
 protected:
 	int _item_count;

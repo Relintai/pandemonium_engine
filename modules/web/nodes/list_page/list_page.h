@@ -1,12 +1,10 @@
 #ifndef LIST_PAGE_H
 #define LIST_PAGE_H
 
-#include "core/containers/vector.h"
-#include "core/string.h"
+#include "core/ustring.h"
+#include "core/vector.h"
 
-#include "web/http/web_node.h"
-
-#include "web/http/request.h"
+#include "../../http/web_node.h"
 
 // This class will load and generate pages from a folder of md files. It supports pagination,
 // it will put entry_per_page md files per page. It generates html on enter tree, and caches everything.
@@ -27,14 +25,40 @@
 // <div class="list_entry_empty">No content yet!</div>   // Set the class via the empty_div_class property, text via placeholder_text property
 // </div>
 
+class WebServerRequest;
+
 class ListPage : public WebNode {
-	RCPP_OBJECT(ListPage, WebNode);
+	GDCLASS(ListPage, WebNode);
 
 public:
-	void handle_request_main(Request *request);
+	bool get_paginate();
+	void set_paginate(const bool &val);
 
-	void render_index(Request *request);
-	void render_preview(Request *request);
+	int get_max_visible_navigation_links();
+	void set_max_visible_navigation_links(const int &val);
+
+	int get_entry_per_page();
+	void set_entry_per_page(const int &val);
+
+	String get_folder();
+	void set_folder(const String &val);
+
+	String get_main_div_class();
+	void set_main_div_class(const String &val);
+
+	String get_entry_div_class();
+	void set_entry_div_class(const String &val);
+
+	String get_empty_div_class();
+	void set_empty_div_class(const String &val);
+
+	String get_placeholder_text();
+	void set_placeholder_text(const String &val);
+
+	void _handle_request_main(Ref<WebServerRequest> request);
+
+	void _render_index(Ref<WebServerRequest> request);
+	void _render_preview(Ref<WebServerRequest> request);
 
 	void load();
 
@@ -43,10 +67,12 @@ public:
 	virtual String render_entry(const String &list_entry);
 	virtual void render_no_entries_response();
 
-	void _notification(const int what);
-
 	ListPage();
 	~ListPage();
+
+protected:
+	void _notification(const int what);
+	static void _bind_methods();
 
 	bool paginate;
 	int max_visible_navigation_links;
@@ -58,7 +84,6 @@ public:
 	String empty_div_class;
 	String placeholder_text;
 
-protected:
 	Vector<String> _pages;
 	String _no_entries_response;
 };
