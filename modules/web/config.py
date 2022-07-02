@@ -38,6 +38,9 @@ def get_doc_classes():
         "StaticPage",
         "StaticPageFile",
         "StaticPageFolderFiles",
+
+        "FolderServeNode",
+        "BrowsableFolderServeNode",
     ]
 
 

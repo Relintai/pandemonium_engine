@@ -46,6 +46,9 @@ SOFTWARE.
 #include "nodes/static_pages/static_page_file.h"
 #include "nodes/static_pages/static_page_folder_files.h"
 
+#include "nodes/folder_serve_nodes/browsable_folder_serve_node.h"
+#include "nodes/folder_serve_nodes/folder_serve_node.h"
+
 void register_web_types() {
 	ClassDB::register_class<_HTMLBuilder>();
 	ClassDB::register_class<_HTMLTag>();
@@ -71,6 +74,9 @@ void register_web_types() {
 	ClassDB::register_class<StaticPage>();
 	ClassDB::register_class<StaticPageFile>();
 	ClassDB::register_class<StaticPageFolderFiles>();
+
+	ClassDB::register_class<FolderServeNode>();
+	ClassDB::register_class<BrowsableFolderServeNode>();
 }
 
 void unregister_web_types() {

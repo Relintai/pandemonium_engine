@@ -1,12 +1,14 @@
 #ifndef BROWSABLE_FOLDER_SERVE_NODE_H
 #define BROWSABLE_FOLDER_SERVE_NODE_H
 
-#include "core/string.h"
-#include <map>
+#include "core/hash_map.h"
+#include "core/ustring.h"
 
 #include "folder_serve_node.h"
 
-// On top of serving the files from the folder set to it's serve_folder property, 
+class WebServerRequest;
+
+// On top of serving the files from the folder set to it's serve_folder property,
 // this class also generates HTML directory lists. (Similar to apache's directory listing)
 // It caches folder contents on ENTER_TREE, it does not watch for folder changes yet.
 
@@ -19,26 +21,28 @@
 // </div>
 
 class BrowsableFolderServeNode : public FolderServeNode {
-	RCPP_OBJECT(BrowsableFolderServeNode, FolderServeNode);
+	GDCLASS(BrowsableFolderServeNode, FolderServeNode);
 
 public:
-	void _handle_request_main(Request *request);
+	bool get_should_render_menu();
+	void set_should_render_menu(const bool &val);
 
-	void render_index(Request *request);
-	void render_preview(Request *request);
+	void _handle_request_main(Ref<WebServerRequest> request);
 
-	virtual void load();
+	void render_index(Ref<WebServerRequest> request);
+	void render_preview(Ref<WebServerRequest> request);
+
+	void load();
 
 	void evaluate_dir(const String &path, const bool top_level = false);
 	virtual void render_dir_page(const String &dir_uri, const Vector<String> &folders, const Vector<String> &files, const bool top_level);
-
-	bool should_render_menu;
 
 	BrowsableFolderServeNode();
 	~BrowsableFolderServeNode();
 
 protected:
-	std::map<String, String *> _folder_indexes;
+	bool _should_render_menu;
+	HashMap<String, String *> _folder_indexes;
 };
 
 #endif

@@ -22,8 +22,8 @@ sources = [
     "http/web_server_middleware.cpp",
     "http/web_server_request.cpp",
 
-
     "html/html_builder_bind.cpp",
+    "html/html_builder.cpp",
 
     "http_server_simple/http_server_simple.cpp",
     "http_server_simple/web_server_simple.cpp",
@@ -35,6 +35,9 @@ sources = [
     "nodes/static_pages/static_page.cpp",
     "nodes/static_pages/static_page_file.cpp",
     "nodes/static_pages/static_page_folder_files.cpp",
+
+    "nodes/folder_serve_nodes/browsable_folder_serve_node.cpp",
+    "nodes/folder_serve_nodes/folder_serve_node.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':

@@ -1,33 +1,40 @@
 #ifndef FOLDER_SERVE_NODE_H
 #define FOLDER_SERVE_NODE_H
 
-#include "core/string.h"
+#include "core/reference.h"
+#include "core/ustring.h"
 
-#include "web/file_cache.h"
-#include "web/http/web_node.h"
+#include "../../http/web_node.h"
+
+class WebServerRequest;
+class FileCache;
 
 // This class will serve the files from the folder set to it's serve_folder property.
 // It will cache the folder's contents on ENTER_TREE, and will match against the cached list,
-// this means directory walking (for example sending http://webapp.com/files/../../../etc/passwd), 
+// this means directory walking (for example sending http://webapp.com/files/../../../etc/passwd),
 // and other techniques like it should not be possible.
 
 class FolderServeNode : public WebNode {
-	RCPP_OBJECT(FolderServeNode, WebNode);
+	GDCLASS(FolderServeNode, WebNode);
 
 public:
-	void handle_request_main(Request *request);
+	String get_serve_folder();
+	void set_serve_folder(const String &val);
+
+	void _handle_request_main(Ref<WebServerRequest> request);
 
 	virtual void load();
-
-	void _notification(const int what);
-
-	String serve_folder;
 
 	FolderServeNode();
 	~FolderServeNode();
 
 protected:
-	FileCache *file_cache;
+	void _notification(const int what);
+	static void _bind_methods();
+
+	String _serve_folder;
+
+	Ref<FileCache> _file_cache;
 };
 
 #endif

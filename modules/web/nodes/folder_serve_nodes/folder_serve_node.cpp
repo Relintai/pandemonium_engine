@@ -1,9 +1,17 @@
 #include "folder_serve_node.h"
 
-#include "web/http/request.h"
-#include "web/http/web_permission.h"
+#include "../../file_cache.h"
+#include "../../http/web_permission.h"
+#include "../../http/web_server_request.h"
 
-void FolderServeNode::handle_request_main(Request *request) {
+String FolderServeNode::get_serve_folder() {
+	return _serve_folder;
+}
+void FolderServeNode::set_serve_folder(const String &val) {
+	_serve_folder = val;
+}
+
+void FolderServeNode::_handle_request_main(Ref<WebServerRequest> request) {
 	if (_web_permission.is_valid()) {
 		if (_web_permission->activate(request)) {
 			return;
@@ -20,12 +28,16 @@ void FolderServeNode::handle_request_main(Request *request) {
 	}
 
 	String file_name = request->get_path(true, false);
+	file_name = file_name.to_lower();
 
-	if (file_cache->wwwroot_has_file(file_name)) {
-		String fp = file_cache->wwwroot;
-		fp.append_path(file_name);
+	int file_indx = _file_cache->wwwroot_get_file_index(file_name);
 
-		request->send_file(fp);
+	if (file_indx != -1) {
+		String fp = _file_cache->get_wwwroot_abs();
+		fp = fp.append_path(file_name);
+
+		request->send_file(_file_cache->wwwroot_get_file_orig_path(file_indx));
+
 		return;
 	}
 
@@ -35,16 +47,15 @@ void FolderServeNode::handle_request_main(Request *request) {
 }
 
 void FolderServeNode::load() {
-	file_cache->clear();
+	_file_cache->clear();
 
-	if (serve_folder == "") {
-		return;
+	if (_serve_folder == "") {
+		_file_cache->set_wwwroot(_serve_folder);
+		_file_cache->clear();
+	} else {
+		_file_cache->set_wwwroot(_serve_folder);
+		_file_cache->wwwroot_refresh_cache();
 	}
-
-	serve_folder.path_clean_end_slash();
-
-	file_cache->wwwroot = serve_folder;
-	file_cache->wwwroot_refresh_cache();
 }
 
 void FolderServeNode::_notification(const int what) {
@@ -57,11 +68,17 @@ void FolderServeNode::_notification(const int what) {
 	}
 }
 
-FolderServeNode::FolderServeNode() :
-		WebNode() {
-
-	file_cache = new FileCache();
+FolderServeNode::FolderServeNode() {
+	_file_cache.instance();
 }
 
 FolderServeNode::~FolderServeNode() {
+}
+
+void FolderServeNode::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_serve_folder"), &FolderServeNode::get_serve_folder);
+	ClassDB::bind_method(D_METHOD("set_serve_folder", "val"), &FolderServeNode::set_serve_folder);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "serve_folder"), "set_serve_folder", "get_serve_folder");
+
+	ClassDB::bind_method(D_METHOD("load"), &FolderServeNode::load);
 }

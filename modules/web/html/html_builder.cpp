@@ -1,7 +1,4 @@
 #include "html_builder.h"
-#include "core/string.h"
-
-#include "web/http/request.h"
 
 HTMLTag *HTMLTag::str(const String &str) {
 	result += " " + str;
@@ -826,10 +823,11 @@ HTMLTag *HTMLTag::reset() {
 }
 
 HTMLTag *HTMLTag::close() {
-	if (simple)
+	if (simple) {
 		result += "/>";
-	else
+	} else {
 		result += ">";
+	}
 
 	return this;
 }
@@ -2575,12 +2573,14 @@ HTMLBuilder *HTMLBuilder::form_post(const String &action, const String &cls, con
 	return this;
 }
 
+/*
 HTMLBuilder *HTMLBuilder::form_post(const String &action, Request *request, const String &cls, const String &id) {
 	form_post(action, cls, id);
 	csrf_token(request);
 
 	return this;
 }
+*/
 
 HTMLTag *HTMLBuilder::input_button() {
 	write_tag();
@@ -3326,9 +3326,11 @@ HTMLBuilder *HTMLBuilder::csrf_token(const String &token) {
 
 	return this;
 }
+/*
 HTMLBuilder *HTMLBuilder::csrf_token(Request *request) {
 	return csrf_token(request->get_csrf_token());
 }
+*/
 
 void HTMLBuilder::f() {
 	write_tag();
@@ -3359,7 +3361,8 @@ HTMLBuilder *HTMLBuilder::wns(const double val) {
 HTMLBuilder *HTMLBuilder::wr(const double val, const bool p_trailing) {
 	write_tag();
 
-	result += String::num_real(val, p_trailing);
+	//TODO
+	//result += String::num_real(val, p_trailing);
 
 	return this;
 }
@@ -3393,13 +3396,10 @@ HTMLBuilder *HTMLBuilder::wbs(const bool val) {
 	return this;
 }
 
-// TODO!
 HTMLBuilder *HTMLBuilder::we(const String &val) {
-	printf("HTMLBuilder::write_excaped NYI!");
-
 	write_tag();
 
-	result += val;
+	result += val.http_escape();
 
 	return this;
 }
