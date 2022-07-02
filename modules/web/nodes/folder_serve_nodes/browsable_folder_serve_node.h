@@ -1,8 +1,8 @@
 #ifndef BROWSABLE_FOLDER_SERVE_NODE_H
 #define BROWSABLE_FOLDER_SERVE_NODE_H
 
-#include "core/hash_map.h"
 #include "core/ustring.h"
+#include "core/vector.h"
 
 #include "folder_serve_node.h"
 
@@ -29,8 +29,8 @@ public:
 
 	void _handle_request(Ref<WebServerRequest> request);
 
-	void render_index(Ref<WebServerRequest> request);
-	void render_preview(Ref<WebServerRequest> request);
+	void _render_index(Ref<WebServerRequest> request);
+	void _render_preview(Ref<WebServerRequest> request);
 
 	void load();
 
@@ -41,8 +41,17 @@ public:
 	~BrowsableFolderServeNode();
 
 protected:
+	static void _bind_methods();
+
 	bool _should_render_menu;
-	HashMap<String, String *> _folder_indexes;
+
+	struct BFSNEntry {
+		String uri;
+		String data;
+	};
+
+	Vector<BFSNEntry> _folder_indexes;
+	String _index;
 };
 
 #endif

@@ -20,41 +20,37 @@ void BrowsableFolderServeNode::set_should_render_menu(const bool &val) {
 void BrowsableFolderServeNode::_handle_request(Ref<WebServerRequest> request) {
 	String file_name = request->get_path(true, false);
 
-	String *s = _folder_indexes[file_name];
+	for (int i = 0; i < _folder_indexes.size(); ++i) {
+		const BFSNEntry &e = _folder_indexes[i];
 
-	if (!s) {
-		request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_404_NOT_FOUND);
-		return;
+		if (e.uri == file_name) {
+			if (_should_render_menu) {
+				render_main_menu(request);
+			}
+
+			request->body += e.data;
+			request->compile_and_send_body();
+			return;
+		}
 	}
 
-	if (_should_render_menu) {
-		render_main_menu(request);
-	}
-
-	request->body += (*s);
-	request->compile_and_send_body();
+	request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_404_NOT_FOUND);
 }
 
-void BrowsableFolderServeNode::render_index(Ref<WebServerRequest> request) {
-	String *s = _folder_indexes["/"];
-
-	if (!s) {
-		return;
-	}
-
-	request->body += (*s);
+void BrowsableFolderServeNode::_render_index(Ref<WebServerRequest> request) {
+	request->body += _index;
 }
-void BrowsableFolderServeNode::render_preview(Ref<WebServerRequest> request) {
+void BrowsableFolderServeNode::_render_preview(Ref<WebServerRequest> request) {
 }
 
 void BrowsableFolderServeNode::load() {
+	FolderServeNode::load();
+
 	if (_serve_folder == "") {
 		return;
 	}
 
-	FolderServeNode::load();
-
-	evaluate_dir(_serve_folder, true);
+	evaluate_dir(_file_cache->get_wwwroot_abs(), true);
 }
 
 void BrowsableFolderServeNode::evaluate_dir(const String &path, const bool top_level) {
@@ -62,10 +58,12 @@ void BrowsableFolderServeNode::evaluate_dir(const String &path, const bool top_l
 
 	ERR_FAIL_COND_MSG(!dir, "Error opening folde!r: " + String(path));
 
+	String serve_folder = _file_cache->get_wwwroot_abs();
+
 	String dir_uri;
 
 	if (!top_level) {
-		dir_uri = path.substr(_serve_folder.size(), path.size() - _serve_folder.size());
+		dir_uri = path.substr(serve_folder.length(), path.length() - serve_folder.length());
 	} else {
 		dir_uri = "/";
 	}
@@ -79,11 +77,15 @@ void BrowsableFolderServeNode::evaluate_dir(const String &path, const bool top_l
 
 	while (file != "") {
 		String np = path.append_path(file);
-		String nnp = np.substr(_serve_folder.size(), np.size() - _serve_folder.size());
+		String nnp = np.substr(serve_folder.length(), np.length() - serve_folder.length());
 
-		if (dir->current_is_dir() && file != "." && file != "..") {
+		if (dir->current_is_dir()) {
+			if (file == "." || file == "..") {
+				file = dir->get_next();
+				continue;
+			}
+
 			folders.push_back(nnp);
-
 			evaluate_dir(np);
 		} else {
 			files.push_back(nnp);
@@ -123,7 +125,7 @@ void BrowsableFolderServeNode::render_dir_page(const String &dir_uri, const Vect
 		for (int i = 0; i < folders.size(); ++i) {
 			b.div("file_list_entry");
 			{
-				b.a(uri + folders[i])->w("(Folder) ")->w(folders[i].get_basename())->ca();
+				b.a(uri + folders[i])->w("(Folder) ")->w(folders[i].get_slicec('/', folders[i].get_slice_count("/") - 1))->ca();
 			}
 			b.cdiv();
 		}
@@ -131,17 +133,22 @@ void BrowsableFolderServeNode::render_dir_page(const String &dir_uri, const Vect
 		for (int i = 0; i < files.size(); ++i) {
 			b.div("file_list_entry");
 			{
-				b.a(uri + files[i])->w("(File) ")->w(files[i].get_basename())->ca();
+				b.a(uri + files[i])->w("(File) ")->w(files[i].get_slicec('/', files[i].get_slice_count("/") - 1))->ca();
 			}
 			b.cdiv();
 		}
 	}
 	b.cdiv();
 
-	String *s = memnew(String);
-	s->operator+=(b.result);
+	BFSNEntry e;
+	e.uri = dir_uri;
+	e.data = b.result;
 
-	_folder_indexes[dir_uri] = s;
+	_folder_indexes.push_back(e);
+
+	if (dir_uri == "/") {
+		_index = b.result;
+	}
 }
 
 BrowsableFolderServeNode::BrowsableFolderServeNode() {
@@ -149,16 +156,10 @@ BrowsableFolderServeNode::BrowsableFolderServeNode() {
 }
 
 BrowsableFolderServeNode::~BrowsableFolderServeNode() {
-	const String *key = nullptr;
-	while ((key = _folder_indexes.next(key))) {
-		String k = *key;
-
-		String *v = _folder_indexes[k];
-
-		if (v) {
-			memdelete(v);
-		}
-	}
-
 	_folder_indexes.clear();
+}
+void BrowsableFolderServeNode::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_should_render_menu"), &BrowsableFolderServeNode::get_should_render_menu);
+	ClassDB::bind_method(D_METHOD("set_should_render_menu", "val"), &BrowsableFolderServeNode::set_should_render_menu);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "should_render_menu"), "set_should_render_menu", "get_should_render_menu");
 }
