@@ -3571,7 +3571,7 @@ String String::path_clean_end_slash() const {
 	String ret = *this;
 
 	while (ret.length() > 1 && (ret.ends_with("/") || ret.ends_with("\\"))) {
-		ret.resize(length() - 1);
+		ret.resize(ret.length());
 	}
 
 	return ret;
