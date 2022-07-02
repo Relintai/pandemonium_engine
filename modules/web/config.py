@@ -32,6 +32,7 @@ def get_doc_classes():
 
         "HTMLBuilder",
         "HTMLTag",
+        "HTMLPaginator",
 
         "WebServerSimple",
 

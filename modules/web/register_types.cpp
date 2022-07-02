@@ -27,6 +27,7 @@ SOFTWARE.
 #include "file_cache.h"
 
 #include "html/html_builder_bind.h"
+#include "html/paginator.h"
 
 #include "http/csrf_token.h"
 #include "http/http_server_enums.h"
@@ -52,6 +53,8 @@ SOFTWARE.
 void register_web_types() {
 	ClassDB::register_class<_HTMLBuilder>();
 	ClassDB::register_class<_HTMLTag>();
+
+	ClassDB::register_class<HTMLPaginator>();
 
 	ClassDB::register_class<FileCache>();
 

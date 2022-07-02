@@ -24,6 +24,7 @@ sources = [
 
     "html/html_builder_bind.cpp",
     "html/html_builder.cpp",
+    "html/paginator.cpp",
 
     "http_server_simple/http_server_simple.cpp",
     "http_server_simple/web_server_simple.cpp",
