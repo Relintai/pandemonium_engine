@@ -1,9 +1,8 @@
 #ifndef PAGED_ARTICLE_H
 #define PAGED_ARTICLE_H
 
-#include "core/containers/vector.h"
-#include "core/string.h"
-#include <map>
+#include "core/ustring.h"
+#include "core/vector.h"
 
 #include "web/file_cache.h"
 #include "web/http/web_node.h"
@@ -18,7 +17,7 @@
 // files are served under <url>/files/<file>
 
 class PagedArticle : public WebNode {
-	RCPP_OBJECT(PagedArticle, WebNode);
+	GDCLASS(PagedArticle, WebNode);
 
 public:
 	void handle_request_main(Request *request);

@@ -125,14 +125,14 @@ void ListPage::load() {
 
 	dir->list_dir_begin();
 
-	String f = dir->get_next();
+	String file = dir->get_next();
 
-	while (f != "") {
+	while (file != "") {
 		if (!dir->current_is_dir()) {
-			files.push_back(folder.append_path(f));
+			files.push_back(folder.append_path(file));
 		}
 
-		f = dir->get_next();
+		file = dir->get_next();
 	}
 
 	dir->list_dir_end();
@@ -143,7 +143,7 @@ void ListPage::load() {
 
 	Vector<String> list_entries;
 
-	for (uint32_t i = 0; i < files.size(); ++i) {
+	for (int i = 0; i < files.size(); ++i) {
 		FileAccess *f = FileAccess::open(files[i], FileAccess::READ);
 
 		String fd = f->get_as_utf8_string();
