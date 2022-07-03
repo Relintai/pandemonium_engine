@@ -84,30 +84,8 @@ void FileCache::wwwroot_refresh_cache() {
 
 	_registered_files.clear();
 
-	//TODO this should probably be a static method in DirAccess
 	if (_wwwroot_orig != "") {
-		String path = _wwwroot_orig;
-
-		if (path.begins_with("res://")) {
-			if (ProjectSettings::get_singleton()) {
-				String resource_path = ProjectSettings::get_singleton()->get_resource_path();
-				if (resource_path != "") {
-					path = path.replace_first("res:/", resource_path);
-				} else {
-					path = path.replace_first("res://", "");
-				}
-			}
-		} else if (path.begins_with("user://")) {
-			String data_dir = OS::get_singleton()->get_user_data_dir();
-			if (data_dir != "") {
-				path = path.replace_first("user:/", data_dir);
-			} else {
-				path = path.replace_first("user://", "");
-			}
-		}
-
-		_wwwroot = DirAccess::get_full_path(path, DirAccess::ACCESS_FILESYSTEM);
-
+		_wwwroot = DirAccess::get_filesystem_abspath_for(_wwwroot_orig);
 		_wwwroot = _wwwroot.path_clean_end_slash();
 
 		wwwroot_evaluate_dir(_wwwroot);

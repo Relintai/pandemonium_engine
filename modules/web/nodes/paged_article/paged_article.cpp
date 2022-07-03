@@ -85,27 +85,7 @@ void PagedArticle::_render_preview(Ref<WebServerRequest> request) {
 void PagedArticle::load() {
 	ERR_FAIL_COND_MSG(articles_folder == "", "Error: PagedArticle::load called, but a articles_folder is not set!");
 
-	String path = articles_folder;
-
-	if (path.begins_with("res://")) {
-		if (ProjectSettings::get_singleton()) {
-			String resource_path = ProjectSettings::get_singleton()->get_resource_path();
-			if (resource_path != "") {
-				path = path.replace_first("res:/", resource_path);
-			} else {
-				path = path.replace_first("res://", "");
-			}
-		}
-	} else if (path.begins_with("user://")) {
-		String data_dir = OS::get_singleton()->get_user_data_dir();
-		if (data_dir != "") {
-			path = path.replace_first("user:/", data_dir);
-		} else {
-			path = path.replace_first("user://", "");
-		}
-	}
-
-	_articles_folder_abs = DirAccess::get_full_path(path, DirAccess::ACCESS_FILESYSTEM);
+	_articles_folder_abs = DirAccess::get_filesystem_abspath_for(articles_folder);
 	_articles_folder_abs = _articles_folder_abs.path_ensure_end_slash();
 
 	DirAccess *dir = DirAccess::open(_articles_folder_abs);

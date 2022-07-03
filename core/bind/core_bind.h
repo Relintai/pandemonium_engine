@@ -626,6 +626,8 @@ public:
 	Error rename(String p_from, String p_to);
 	Error remove(String p_name);
 
+	String get_filesystem_abspath_for(String p_path);
+
 	_Directory();
 	virtual ~_Directory();
 

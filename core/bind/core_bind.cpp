@@ -2473,6 +2473,11 @@ Error _Directory::remove(String p_name) {
 	return d->remove(p_name);
 }
 
+String _Directory::get_filesystem_abspath_for(String p_path) {
+	ERR_FAIL_COND_V_MSG(!d, "", "Directory must be opened before use.");
+	return DirAccess::get_filesystem_abspath_for(p_path);
+}
+
 void _Directory::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("open", "path"), &_Directory::open);
 	ClassDB::bind_method(D_METHOD("list_dir_begin", "skip_navigational", "skip_hidden"), &_Directory::list_dir_begin, DEFVAL(false), DEFVAL(false));
@@ -2493,6 +2498,7 @@ void _Directory::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("copy", "from", "to"), &_Directory::copy);
 	ClassDB::bind_method(D_METHOD("rename", "from", "to"), &_Directory::rename);
 	ClassDB::bind_method(D_METHOD("remove", "path"), &_Directory::remove);
+	ClassDB::bind_method(D_METHOD("get_filesystem_abspath_for", "path"), &_Directory::get_filesystem_abspath_for);
 }
 
 _Directory::_Directory() {

@@ -420,6 +420,36 @@ bool DirAccess::exists(String p_dir) {
 	return valid;
 }
 
+String DirAccess::get_filesystem_abspath_for(String p_path) {
+	if (p_path.begins_with("res://")) {
+		if (ProjectSettings::get_singleton()) {
+			String resource_path = ProjectSettings::get_singleton()->get_resource_path();
+			if (resource_path != "") {
+				p_path = p_path.replace_first("res:/", resource_path);
+			} else {
+				p_path = p_path.replace_first("res://", "");
+			}
+		}
+	} else if (p_path.begins_with("user://")) {
+		String data_dir = OS::get_singleton()->get_user_data_dir();
+		if (data_dir != "") {
+			p_path = p_path.replace_first("user:/", data_dir);
+		} else {
+			p_path = p_path.replace_first("user://", "");
+		}
+	}
+
+	DirAccess *d = DirAccess::create(ACCESS_FILESYSTEM);
+	if (!d) {
+		return p_path;
+	}
+
+	d->change_dir(p_path);
+	String full = d->get_current_dir();
+	memdelete(d);
+	return full;
+}
+
 DirAccess::DirAccess() {
 	_access_type = ACCESS_FILESYSTEM;
 }
