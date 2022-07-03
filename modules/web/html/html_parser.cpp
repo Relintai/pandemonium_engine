@@ -1,5 +1,7 @@
 #include "html_parser.h"
+
 #include "core/error_macros.h"
+#include "core/print_string.h"
 
 bool HTMLParserAttribute::match_attrib(const String &attrib) {
 	return attribute == attrib;
@@ -20,7 +22,7 @@ String HTMLParserAttribute::to_string() {
 		return attribute;
 	}
 
-	if (data.find('"' == -1)) {
+	if (data.find("\"") == -1) {
 		return attribute + "=\"" + data + "\"";
 	} else {
 		return attribute + "=\'" + data + "\'";
@@ -28,7 +30,7 @@ String HTMLParserAttribute::to_string() {
 }
 
 void HTMLParserAttribute::print() {
-	to_string().print();
+	print_verbose(to_string());
 }
 
 HTMLParserAttribute::HTMLParserAttribute() {
@@ -157,7 +159,7 @@ void HTMLParserTag::process() {
 		if (data[2] == '-' && data[3] == '-') {
 			type = HTMLParserTag::HTML_PARSER_TAG_TYPE_COMMENT;
 
-			int comment_start_index = data.find(' ', 3);
+			int comment_start_index = data.find_char(' ', 3);
 
 			if (comment_start_index == -1) {
 				comment_start_index = 4;
@@ -196,7 +198,7 @@ void HTMLParserTag::process() {
 			tag_text = data.substr(1, data.size() - 2);
 		}
 
-		int fspc_index = tag_text.find(' ');
+		int fspc_index = tag_text.find_char(' ');
 
 		if (fspc_index == -1) {
 			// no args
@@ -216,7 +218,7 @@ void HTMLParserTag::process() {
 		parse_args(args);
 	}
 
-	int tag_end_index = data.find(' ', start_index);
+	int tag_end_index = data.find_char(' ', start_index);
 
 	if (tag_end_index == -1) {
 		// simple tag
@@ -236,9 +238,9 @@ void HTMLParserTag::parse_args(const String &args) {
 			continue;
 		}
 
-		int equals_index = args.find('=', i);
+		int equals_index = args.find_char('=', i);
 
-		HTMLParserAttribute *a = new HTMLParserAttribute();
+		HTMLParserAttribute *a = memnew(HTMLParserAttribute);
 
 		if (equals_index == -1) {
 			a->attribute = args.substr(i, args.size() - i);
@@ -280,7 +282,7 @@ void HTMLParserTag::parse_args(const String &args) {
 			find_char = c;
 		}
 
-		int end_index = args.find(find_char, next_char_index);
+		int end_index = args.find_char(find_char, next_char_index);
 
 		if (end_index == -1) {
 			// missing closing ' or " if c is ' or "
@@ -301,13 +303,13 @@ void HTMLParserTag::parse_args(const String &args) {
 String HTMLParserTag::to_string(const int level) {
 	String s;
 
-	s.append_repeat(" ", level);
+	s += String(" ").repeat(level);
 
 	if (type == HTML_PARSER_TAG_TYPE_CONTENT) {
 		s += data + "\n";
 
 		if (tags.size() != 0) {
-			s.append_repeat(" ", level);
+			s += String(" ").repeat(level);
 			s += "(!CONTENT TAG HAS TAGS!)\n";
 
 			for (int i = 0; i < tags.size(); ++i) {
@@ -329,7 +331,7 @@ String HTMLParserTag::to_string(const int level) {
 			s += tags[i]->to_string(ln);
 		}
 
-		s.append_repeat(" ", level);
+		s += String(" ").repeat(level);
 
 		s += "</" + tag + ">\n";
 	} else if (type == HTML_PARSER_TAG_TYPE_CLOSING_TAG) {
@@ -338,7 +340,7 @@ String HTMLParserTag::to_string(const int level) {
 		s += "</" + tag + "(!)>";
 
 		if (tags.size() != 0) {
-			s.append_repeat(" ", level);
+			s += String(" ").repeat(level);
 			s += "(!CLOSING TAG HAS TAGS!)\n";
 
 			for (int i = 0; i < tags.size(); ++i) {
@@ -355,7 +357,7 @@ String HTMLParserTag::to_string(const int level) {
 		s += "/>\n";
 
 		if (tags.size() != 0) {
-			s.append_repeat(" ", level);
+			s += String(" ").repeat(level);
 			s += "(!SELF CLOSING TAG HAS TAGS!)\n";
 
 			for (int i = 0; i < tags.size(); ++i) {
@@ -366,7 +368,7 @@ String HTMLParserTag::to_string(const int level) {
 		s += "<!-- " + data + " -->\n";
 
 		if (tags.size() != 0) {
-			s.append_repeat(" ", level);
+			s += String(" ").repeat(level);
 			s += "(!COMMENT TAG HAS TAGS!)\n";
 
 			for (int i = 0; i < tags.size(); ++i) {
@@ -377,7 +379,7 @@ String HTMLParserTag::to_string(const int level) {
 		s += data + "\n";
 
 		if (tags.size() != 0) {
-			s.append_repeat(" ", level);
+			s += String(" ").repeat(level);
 			s += "(!DOCTYPE TAG HAS TAGS!)\n";
 
 			for (int i = 0; i < tags.size(); ++i) {
@@ -387,14 +389,14 @@ String HTMLParserTag::to_string(const int level) {
 	} else if (type == HTML_PARSER_TAG_TYPE_NONE) {
 		for (int i = 0; i < tags.size(); ++i) {
 			s += tags[i]->to_string(level) + "\n";
-			s.append_repeat(" ", level);
+			s += String(" ").repeat(level);
 		}
 	}
 
 	return s;
 }
 void HTMLParserTag::print() {
-	to_string().print();
+	print_verbose(to_string());
 }
 
 HTMLParserTag::HTMLParserTag() {
@@ -403,11 +405,11 @@ HTMLParserTag::HTMLParserTag() {
 
 HTMLParserTag::~HTMLParserTag() {
 	for (int i = 0; i < tags.size(); ++i) {
-		delete tags[i];
+		memdelete(tags[i]);
 	}
 
 	for (int i = 0; i < attributes.size(); ++i) {
-		delete attributes[i];
+		memdelete(attributes[i]);
 	}
 }
 
@@ -436,7 +438,7 @@ void HTMLParser::parse(const String &data) {
 
 				for (int j = i + 1; j < data.size(); ++j) {
 					if (data[j] == '>') {
-						HTMLParserTag *t = new HTMLParserTag();
+						HTMLParserTag *t = memnew(HTMLParserTag);
 
 						t->data = data.substr(i, j - i + 1);
 						t->process();
@@ -452,7 +454,7 @@ void HTMLParser::parse(const String &data) {
 
 				for (int j = i + 1; j < data.size(); ++j) {
 					if (data[j] == '<') {
-						HTMLParserTag *t = new HTMLParserTag();
+						HTMLParserTag *t = memnew(HTMLParserTag);
 
 						t->data = data.substr(i, j - i);
 						t->type = HTMLParserTag::HTML_PARSER_TAG_TYPE_CONTENT;
@@ -482,7 +484,6 @@ void HTMLParser::parse(const String &data) {
 				}
 
 				if (state == STATE_DATA_1) {
-
 					if (data.is_word_at(j, "<!--")) {
 						// if <!-- is encountered while in data1 state, switch to data2 state
 						state = STATE_DATA_2;
@@ -492,7 +493,6 @@ void HTMLParser::parse(const String &data) {
 					}
 
 				} else if (state == STATE_DATA_2) {
-
 					if (data.is_word_at(j, "<script")) {
 						// if <script[\s/>] is encountered while in data2 state, switch to data3 state
 						state = STATE_DATA_3;
@@ -502,7 +502,6 @@ void HTMLParser::parse(const String &data) {
 					}
 
 				} else if (state == STATE_DATA_3) {
-
 					// if </script[\s/>] is encountered while in data3 state, switch to data2 state
 					if (data.is_word_at(j, "</script")) {
 						state = STATE_DATA_2;
@@ -511,7 +510,7 @@ void HTMLParser::parse(const String &data) {
 
 				if (done) {
 					state = STATE_NONE;
-					HTMLParserTag *t = new HTMLParserTag();
+					HTMLParserTag *t = memnew(HTMLParserTag);
 
 					t->data = data.substr(i, j - i);
 					t->type = HTMLParserTag::HTML_PARSER_TAG_TYPE_CONTENT;
@@ -526,30 +525,27 @@ void HTMLParser::parse(const String &data) {
 	}
 
 	if (root) {
-		delete root;
+		memdelete(root);
 	}
 
-	root = new HTMLParserTag();
+	root = memnew(HTMLParserTag);
 
 	// process tags into hierarchical order
 	Vector<HTMLParserTag *> tag_stack;
 	for (int i = 0; i < tags.size(); ++i) {
 		HTMLParserTag *t = tags[i];
 
-		if (t == nullptr) {
-			RLOG_ERR("HTMLParser::parse: t == nullptr!");
-			continue;
-		}
+		ERR_CONTINUE_MSG(t == nullptr, "HTMLParser::parse: t == nullptr!");
 
 		if (t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_NONE) {
-			RLOG_ERR("HTMLParser::parse: t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_NONE!");
-			delete t;
-			tags[i] = nullptr;
+			ERR_PRINT("HTMLParser::parse: t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_NONE!");
+			memdelete(t);
+			tags.write[i] = nullptr;
 			continue;
 		} else if (t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_OPENING_TAG) {
 			tag_stack.push_back(t);
 
-			tags[i] = nullptr;
+			tags.write[i] = nullptr;
 			continue;
 		} else if (t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_SELF_CLOSING_TAG) {
 			if (tag_stack.size() == 0) {
@@ -558,7 +554,7 @@ void HTMLParser::parse(const String &data) {
 				tag_stack[tag_stack.size() - 1]->tags.push_back(t);
 			}
 
-			tags[i] = nullptr;
+			tags.write[i] = nullptr;
 			continue;
 		} else if (t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_CONTENT) {
 			if (tag_stack.size() == 0) {
@@ -567,7 +563,7 @@ void HTMLParser::parse(const String &data) {
 				tag_stack[tag_stack.size() - 1]->tags.push_back(t);
 			}
 
-			tags[i] = nullptr;
+			tags.write[i] = nullptr;
 			continue;
 		} else if (t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_COMMENT) {
 			if (tag_stack.size() == 0) {
@@ -576,7 +572,7 @@ void HTMLParser::parse(const String &data) {
 				tag_stack[tag_stack.size() - 1]->tags.push_back(t);
 			}
 
-			tags[i] = nullptr;
+			tags.write[i] = nullptr;
 			continue;
 		} else if (t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_DOCTYPE) {
 			if (tag_stack.size() == 0) {
@@ -585,12 +581,12 @@ void HTMLParser::parse(const String &data) {
 				tag_stack[tag_stack.size() - 1]->tags.push_back(t);
 			}
 
-			tags[i] = nullptr;
+			tags.write[i] = nullptr;
 			continue;
 		} else if (t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_CLOSING_TAG) {
 			if (tag_stack.size() == 0) {
-				delete t;
-				tags[i] = nullptr;
+				memdelete(t);
+				tags.write[i] = nullptr;
 
 				// ill-formed html
 				continue;
@@ -628,8 +624,8 @@ void HTMLParser::parse(const String &data) {
 				tag_stack[tag_stack.size() - 1]->tags.push_back(opening_tag);
 			}
 
-			delete t;
-			tags[i] = nullptr;
+			memdelete(t);
+			tags.write[i] = nullptr;
 
 			continue;
 		}
@@ -644,10 +640,10 @@ void HTMLParser::parse(const String &data) {
 		HTMLParserTag *t = tags[i];
 
 		if (t != nullptr) {
-			RLOG_ERR("HTMLParser::parse(const String &data): tag was not processed!\n");
+			ERR_PRINT("HTMLParser::parse(const String &data): tag was not processed!\n");
 			t->print();
 
-			delete t;
+			memdelete(t);
 		}
 	}
 }
@@ -671,6 +667,6 @@ HTMLParser::HTMLParser() {
 
 HTMLParser::~HTMLParser() {
 	if (root) {
-		delete root;
+		memdelete(root);
 	}
 }

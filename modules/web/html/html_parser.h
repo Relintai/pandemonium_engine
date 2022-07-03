@@ -1,8 +1,8 @@
 #ifndef HTML_PARSER_H
 #define HTML_PARSER_H
 
-#include "core/containers/vector.h"
-#include "core/string.h"
+#include "core/ustring.h"
+#include "core/vector.h"
 
 class HTMLParserAttribute {
 public:
@@ -39,8 +39,8 @@ public:
 	String tag;
 	String data;
 
-	Vector<HTMLParserTag*> tags;
-	Vector<HTMLParserAttribute*> attributes;
+	Vector<HTMLParserTag *> tags;
+	Vector<HTMLParserAttribute *> attributes;
 
 	HTMLParserTag *get_first(const String &t);
 	HTMLParserTag *get_first(const String &t, const String &attrib, const String &val);
