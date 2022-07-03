@@ -42,6 +42,8 @@ def get_doc_classes():
 
         "FolderServeNode",
         "BrowsableFolderServeNode",
+
+        "ListPage",
     ]
 
 

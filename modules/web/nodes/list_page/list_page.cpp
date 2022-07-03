@@ -1,11 +1,70 @@
 #include "list_page.h"
 
-#include "../../html/html_builder.h"
-#include "../../http/web_permission.h"
-#include "web/html/utils.h"
+#include "core/error_macros.h"
+#include "core/os/dir_access.h"
+#include "core/os/file_access.h"
 
-#include <tinydir/tinydir.h>
-#include <iostream>
+#include "../../html/html_builder.h"
+#include "../../html/paginator.h"
+#include "../../http/http_server_enums.h"
+#include "../../http/web_permission.h"
+#include "../../http/web_server_request.h"
+
+bool ListPage::get_paginate() {
+	return paginate;
+}
+void ListPage::set_paginate(const bool &val) {
+	paginate = val;
+}
+
+int ListPage::get_max_visible_navigation_links() {
+	return max_visible_navigation_links;
+}
+void ListPage::set_max_visible_navigation_links(const int &val) {
+	max_visible_navigation_links = val;
+}
+
+int ListPage::get_entry_per_page() {
+	return entry_per_page;
+}
+void ListPage::set_entry_per_page(const int &val) {
+	entry_per_page = val;
+}
+
+String ListPage::get_folder() {
+	return folder;
+}
+void ListPage::set_folder(const String &val) {
+	folder = val;
+}
+
+String ListPage::get_main_div_class() {
+	return main_div_class;
+}
+void ListPage::set_main_div_class(const String &val) {
+	main_div_class = val;
+}
+
+String ListPage::get_entry_div_class() {
+	return entry_div_class;
+}
+void ListPage::set_entry_div_class(const String &val) {
+	entry_div_class = val;
+}
+
+String ListPage::get_empty_div_class() {
+	return empty_div_class;
+}
+void ListPage::set_empty_div_class(const String &val) {
+	empty_div_class = val;
+}
+
+String ListPage::get_placeholder_text() {
+	return placeholder_text;
+}
+void ListPage::set_placeholder_text(const String &val) {
+	placeholder_text = val;
+}
 
 void ListPage::_handle_request_main(Ref<WebServerRequest> request) {
 	if (_web_permission.is_valid()) {
@@ -30,8 +89,8 @@ void ListPage::_handle_request_main(Ref<WebServerRequest> request) {
 		return;
 	}
 
-	if (!cs.is_uint()) {
-		request->send_error(HTTP_STATUS_CODE_404_NOT_FOUND);
+	if (!cs.is_valid_unsigned_integer()) {
+		request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_404_NOT_FOUND);
 		return;
 	}
 
@@ -40,7 +99,7 @@ void ListPage::_handle_request_main(Ref<WebServerRequest> request) {
 	p = ((p == 0) ? (0) : (p - 1));
 
 	if (p < 0 || p >= _pages.size()) {
-		request->send_error(HTTP_STATUS_CODE_404_NOT_FOUND);
+		request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_404_NOT_FOUND);
 		return;
 	}
 
@@ -56,60 +115,43 @@ void ListPage::_render_preview(Ref<WebServerRequest> request) {
 }
 
 void ListPage::load() {
-	if (folder == "") {
-		RLOG_ERR("Error: ListPage::load called, but a folder is not set!");
-		return;
-	}
+	ERR_FAIL_COND_MSG(folder == "", "Error: ListPage::load called, but a folder is not set!");
 
 	Vector<String> files;
 
-	tinydir_dir dir;
-	if (tinydir_open(&dir, folder.c_str()) == -1) {
-		RLOG_ERR("Error opening ListPage::folder! folder: \n" + folder);
-		return;
-	}
+	DirAccess *dir = DirAccess::open(folder);
 
-	while (dir.has_next) {
-		tinydir_file file;
-		if (tinydir_readfile(&dir, &file) == -1) {
-			tinydir_next(&dir);
-			continue;
+	ERR_FAIL_COND_MSG(!dir, "Error opening ListPage::folder! folder: \n" + folder);
+
+	dir->list_dir_begin();
+
+	String f = dir->get_next();
+
+	while (f != "") {
+		if (!dir->current_is_dir()) {
+			files.push_back(folder.append_path(f));
 		}
 
-		if (!file.is_dir) {
-			String np = file.path;
-
-			files.push_back(np);
-		}
-
-		tinydir_next(&dir);
+		f = dir->get_next();
 	}
 
-	tinydir_close(&dir);
+	dir->list_dir_end();
+	memdelete(dir);
+	dir = nullptr;
 
 	files.sort();
 
 	Vector<String> list_entries;
 
 	for (uint32_t i = 0; i < files.size(); ++i) {
-		FILE *f = fopen(files[i].c_str(), "r");
+		FileAccess *f = FileAccess::open(files[i], FileAccess::READ);
 
-		if (!f) {
-			RLOG_ERR("Settings::parse_file: Error opening file!\n");
-			return;
-		}
+		String fd = f->get_as_utf8_string();
+		f->close();
 
-		fseek(f, 0, SEEK_END);
-		long fsize = ftell(f);
-		fseek(f, 0, SEEK_SET); /* same as rewind(f); */
+		memdelete(f);
 
-		String fd;
-		fd.resize(fsize);
-
-		fread(&fd[0], 1, fsize, f);
-		fclose(f);
-
-		Utils::markdown_to_html(&fd);
+		//Utils::markdown_to_html(&fd);
 
 		list_entries.push_back(fd);
 	}
@@ -144,7 +186,7 @@ String ListPage::render_page(const int page_index, const int page_count, const V
 		b.w(render_entry(list_entries[i]));
 	}
 
-	b.w(Utils::get_pagination(get_full_uri(), page_count, page_index, max_visible_navigation_links));
+	b.w(HTMLPaginator::get_pagination_old(get_full_uri(), page_count, page_index, max_visible_navigation_links));
 	b.cdiv();
 
 	return b.result;

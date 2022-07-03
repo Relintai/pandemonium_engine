@@ -50,6 +50,8 @@ SOFTWARE.
 #include "nodes/folder_serve_nodes/browsable_folder_serve_node.h"
 #include "nodes/folder_serve_nodes/folder_serve_node.h"
 
+#include "nodes/list_page/list_page.h"
+
 void register_web_types() {
 	ClassDB::register_class<_HTMLBuilder>();
 	ClassDB::register_class<_HTMLTag>();
@@ -80,6 +82,8 @@ void register_web_types() {
 
 	ClassDB::register_class<FolderServeNode>();
 	ClassDB::register_class<BrowsableFolderServeNode>();
+
+	ClassDB::register_class<ListPage>();
 }
 
 void unregister_web_types() {
