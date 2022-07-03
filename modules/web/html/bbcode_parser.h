@@ -1,8 +1,8 @@
 #ifndef BBCODE_PARSER_H
 #define BBCODE_PARSER_H
 
-#include "core/containers/vector.h"
-#include "core/string.h"
+#include "core/ustring.h"
+#include "core/vector.h"
 
 class BBCodeParserAttribute {
 public:
@@ -37,8 +37,8 @@ public:
 	String tag;
 	String data;
 
-	Vector<BBCodeParserTag*> tags;
-	Vector<BBCodeParserAttribute*> attributes;
+	Vector<BBCodeParserTag *> tags;
+	Vector<BBCodeParserAttribute *> attributes;
 
 	BBCodeParserTag *get_first(const String &t);
 	BBCodeParserTag *get_first(const String &t, const String &attrib, const String &val);

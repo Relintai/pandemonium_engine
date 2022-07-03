@@ -1,4 +1,5 @@
 #include "bbcode_parser.h"
+
 #include "core/error_macros.h"
 
 bool BBCodeParserAttribute::match_attrib(const String &attrib) {
@@ -20,7 +21,7 @@ String BBCodeParserAttribute::to_string() {
 		return attribute;
 	}
 
-	if (data.find('"' == -1)) {
+	if (data.find_char('"' == -1)) {
 		return attribute + "=\"" + data + "\"";
 	} else {
 		return attribute + "=\'" + data + "\'";
@@ -28,7 +29,7 @@ String BBCodeParserAttribute::to_string() {
 }
 
 void BBCodeParserAttribute::print() {
-	to_string().print();
+	ERR_PRINT(to_string());
 }
 
 BBCodeParserAttribute::BBCodeParserAttribute() {
@@ -163,22 +164,22 @@ void BBCodeParserTag::process() {
 			tag_text = data.substr(1, data.size() - 2);
 		}
 
-		int fspc_index = tag_text.find(' ');
+		int fspc_index = tag_text.find_char(' ');
 
 		if (fspc_index == -1) {
 			// no args
-			
-			int feq_ind = tag_text.find('=');
+
+			int feq_ind = tag_text.find_char('=');
 			if (feq_ind == -1) {
 				tag = tag_text;
 				return;
-			} 
+			}
 
 			//Tag is like: [color=white]
 			//tag will be like color
 			tag = tag_text.substr(0, feq_ind);
 
-			//Add color=white as argument 
+			//Add color=white as argument
 			parse_args(tag_text);
 
 			return;
@@ -196,7 +197,7 @@ void BBCodeParserTag::process() {
 		parse_args(args);
 	}
 
-	int tag_end_index = data.find(' ', start_index);
+	int tag_end_index = data.find_char(' ', start_index);
 
 	if (tag_end_index == -1) {
 		// simple tag
@@ -216,9 +217,9 @@ void BBCodeParserTag::parse_args(const String &args) {
 			continue;
 		}
 
-		int equals_index = args.find('=', i);
+		int equals_index = args.find_char('=', i);
 
-		BBCodeParserAttribute *a = new BBCodeParserAttribute();
+		BBCodeParserAttribute *a = memnew(BBCodeParserAttribute);
 
 		if (equals_index == -1) {
 			a->attribute = args.substr(i, args.size() - i);
@@ -260,7 +261,7 @@ void BBCodeParserTag::parse_args(const String &args) {
 			find_char = c;
 		}
 
-		int end_index = args.find(find_char, next_char_index);
+		int end_index = args.find_char(find_char, next_char_index);
 
 		if (end_index == -1) {
 			// missing closing ' or " if c is ' or "
@@ -281,13 +282,13 @@ void BBCodeParserTag::parse_args(const String &args) {
 String BBCodeParserTag::to_string(const int level) {
 	String s;
 
-	s.append_repeat(" ", level);
+	s += String(" ").repeat(level);
 
 	if (type == BBCODE_PARSER_TAG_TYPE_CONTENT) {
 		s += data + "\n";
 
 		if (tags.size() != 0) {
-			s.append_repeat(" ", level);
+			s += String(" ").repeat(level);
 			s += "(!CONTENT TAG HAS TAGS!)\n";
 
 			for (int i = 0; i < tags.size(); ++i) {
@@ -309,7 +310,7 @@ String BBCodeParserTag::to_string(const int level) {
 			s += tags[i]->to_string(ln);
 		}
 
-		s.append_repeat(" ", level);
+		s += String(" ").repeat(level);
 
 		s += "[/" + tag + "]\n";
 	} else if (type == BBCODE_PARSER_TAG_TYPE_CLOSING_TAG) {
@@ -318,7 +319,7 @@ String BBCodeParserTag::to_string(const int level) {
 		s += "[/" + tag + "(!)]";
 
 		if (tags.size() != 0) {
-			s.append_repeat(" ", level);
+			s += String(" ").repeat(level);
 			s += "(!CLOSING TAG HAS TAGS!)\n";
 
 			for (int i = 0; i < tags.size(); ++i) {
@@ -335,7 +336,7 @@ String BBCodeParserTag::to_string(const int level) {
 		s += "/]\n";
 
 		if (tags.size() != 0) {
-			s.append_repeat(" ", level);
+			s += String(" ").repeat(level);
 
 			for (int i = 0; i < tags.size(); ++i) {
 				s += tags[i]->to_string(level + 1) + "\n";
@@ -344,14 +345,14 @@ String BBCodeParserTag::to_string(const int level) {
 	} else if (type == BBCODE_PARSER_TAG_TYPE_NONE) {
 		for (int i = 0; i < tags.size(); ++i) {
 			s += tags[i]->to_string(level) + "\n";
-			s.append_repeat(" ", level);
+			s += String(" ").repeat(level);
 		}
 	}
 
 	return s;
 }
 void BBCodeParserTag::print() {
-	to_string().print();
+	ERR_PRINT(to_string());
 }
 
 BBCodeParserTag::BBCodeParserTag() {
@@ -360,11 +361,11 @@ BBCodeParserTag::BBCodeParserTag() {
 
 BBCodeParserTag::~BBCodeParserTag() {
 	for (int i = 0; i < tags.size(); ++i) {
-		delete tags[i];
+		memdelete(tags[i]);
 	}
 
 	for (int i = 0; i < attributes.size(); ++i) {
-		delete attributes[i];
+		memdelete(attributes[i]);
 	}
 }
 
@@ -377,7 +378,7 @@ void BBCodeParser::parse(const String &data) {
 			// tag
 			for (int j = i + 1; j < data.size(); ++j) {
 				if (data[j] == ']') {
-					BBCodeParserTag *t = new BBCodeParserTag();
+					BBCodeParserTag *t = memnew(BBCodeParserTag);
 
 					t->data = data.substr(i, j - i + 1);
 					t->process();
@@ -393,7 +394,7 @@ void BBCodeParser::parse(const String &data) {
 
 			for (int j = i + 1; j < data.size(); ++j) {
 				if (data[j] == '[') {
-					BBCodeParserTag *t = new BBCodeParserTag();
+					BBCodeParserTag *t = memnew(BBCodeParserTag);
 
 					t->data = data.substr(i, j - i);
 					t->type = BBCodeParserTag::BBCODE_PARSER_TAG_TYPE_CONTENT;
@@ -408,30 +409,27 @@ void BBCodeParser::parse(const String &data) {
 	}
 
 	if (root) {
-		delete root;
+		memdelete(root);
 	}
 
-	root = new BBCodeParserTag();
+	root = memnew(BBCodeParserTag);
 
 	// process tags into hierarchical order
 	Vector<BBCodeParserTag *> tag_stack;
 	for (int i = 0; i < tags.size(); ++i) {
 		BBCodeParserTag *t = tags[i];
 
-		if (t == nullptr) {
-			RLOG_ERR("BBCodeParser::parse: t == nullptr!");
-			continue;
-		}
+		ERR_CONTINUE_MSG(t == nullptr, "BBCodeParser::parse: t == nullptr!");
 
 		if (t->type == BBCodeParserTag::BBCODE_PARSER_TAG_TYPE_NONE) {
-			RLOG_ERR("BBCodeParser::parse: t->type == BBCodeParserTag::BBCODE_PARSER_TAG_TYPE_NONE!");
-			delete t;
-			tags[i] = nullptr;
+			ERR_PRINT("BBCodeParser::parse: t->type == BBCodeParserTag::BBCODE_PARSER_TAG_TYPE_NONE!");
+			memdelete(t);
+			tags.write[i] = nullptr;
 			continue;
 		} else if (t->type == BBCodeParserTag::BBCODE_PARSER_TAG_TYPE_OPENING_TAG) {
 			tag_stack.push_back(t);
 
-			tags[i] = nullptr;
+			tags.write[i] = nullptr;
 			continue;
 		} else if (t->type == BBCodeParserTag::BBCODE_PARSER_TAG_TYPE_SELF_CLOSING_TAG) {
 			if (tag_stack.size() == 0) {
@@ -440,7 +438,7 @@ void BBCodeParser::parse(const String &data) {
 				tag_stack[tag_stack.size() - 1]->tags.push_back(t);
 			}
 
-			tags[i] = nullptr;
+			tags.write[i] = nullptr;
 			continue;
 		} else if (t->type == BBCodeParserTag::BBCODE_PARSER_TAG_TYPE_CONTENT) {
 			if (tag_stack.size() == 0) {
@@ -449,12 +447,12 @@ void BBCodeParser::parse(const String &data) {
 				tag_stack[tag_stack.size() - 1]->tags.push_back(t);
 			}
 
-			tags[i] = nullptr;
+			tags.write[i] = nullptr;
 			continue;
 		} else if (t->type == BBCodeParserTag::BBCODE_PARSER_TAG_TYPE_CLOSING_TAG) {
 			if (tag_stack.size() == 0) {
-				delete t;
-				tags[i] = nullptr;
+				memdelete(t);
+				tags.write[i] = nullptr;
 
 				// ill-formed html
 				continue;
@@ -492,8 +490,8 @@ void BBCodeParser::parse(const String &data) {
 				tag_stack[tag_stack.size() - 1]->tags.push_back(opening_tag);
 			}
 
-			delete t;
-			tags[i] = nullptr;
+			memdelete(t);
+			tags.write[i] = nullptr;
 
 			continue;
 		}
@@ -508,10 +506,10 @@ void BBCodeParser::parse(const String &data) {
 		BBCodeParserTag *t = tags[i];
 
 		if (t != nullptr) {
-			RLOG_ERR("BBCodeParser::parse(const String &data): tag was not processed!\n");
+			ERR_PRINT("BBCodeParser::parse(const String &data): tag was not processed!\n");
 			t->print();
 
-			delete t;
+			memdelete(t);
 		}
 	}
 }
@@ -535,6 +533,6 @@ BBCodeParser::BBCodeParser() {
 
 BBCodeParser::~BBCodeParser() {
 	if (root) {
-		delete root;
+		memdelete(root);
 	}
 }

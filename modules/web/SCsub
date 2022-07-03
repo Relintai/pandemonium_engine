@@ -26,6 +26,7 @@ sources = [
     "html/html_builder.cpp",
     "html/paginator.cpp",
     "html/html_parser.cpp",
+    "html/bbcode_parser.cpp",
 
     "http_server_simple/http_server_simple.cpp",
     "http_server_simple/web_server_simple.cpp",
