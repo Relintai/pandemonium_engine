@@ -179,13 +179,29 @@ class FormField : public Resource {
 	GDCLASS(FormField, Resource);
 
 public:
-	String name;
-	String human_name;
+	String get_field_name() const;
+	void set_field_name(const String &val);
 
-	bool _ignore_if_not_exists;
+	String get_human_name() const;
+	void set_human_name(const String &val);
 
-	bool _ignore_if_other_field_not_exists;
-	String _ignore_if_other_field_not_exist_field;
+	bool get_ignore_if_not_exists() const;
+	void set_ignore_if_not_exists(const bool &val);
+
+	bool get_ignore_if_other_field_not_exists() const;
+	void set_ignore_if_other_field_not_exists(const bool &val);
+
+	String get_ignore_if_other_field_not_exist_field() const;
+	void set_ignore_if_other_field_not_exist_field(const String &val);
+
+	void add_entry(const Ref<FormFieldEntry> &field);
+	Ref<FormFieldEntry> get_entry(const int index);
+	void remove_entry(const int index);
+	void clear_entries();
+	int get_entry_count() const;
+
+	Vector<Variant> get_entries();
+	void set_entries(const Vector<Variant> &p_arrays);
 
 	Ref<FormField> need_to_exist();
 	Ref<FormField> need_to_be_int();
@@ -202,15 +218,24 @@ public:
 	Ref<FormField> ignore_if_not_exists();
 	Ref<FormField> ignore_if_other_field_not_exists(const String &other);
 
-	void add_entry(const Ref<FormFieldEntry> &field);
-
 	PoolStringArray validate(const Ref<WebServerRequest> &request);
 	virtual PoolStringArray _validate(Ref<WebServerRequest> request);
 
 	FormField();
 	~FormField();
 
-	Vector<Ref<FormFieldEntry>> fields;
+protected:
+	static void _bind_methods();
+
+	String _field_name;
+	String _human_name;
+
+	bool _ignore_if_not_exists;
+
+	bool _ignore_if_other_field_not_exists;
+	String _ignore_if_other_field_not_exist_field;
+
+	Vector<Ref<FormFieldEntry>> _entries;
 };
 
 //FormValidator
@@ -219,17 +244,26 @@ class FormValidator : public Resource {
 	GDCLASS(FormValidator, Resource);
 
 public:
+	void add_field(const Ref<FormField> &field);
+	Ref<FormField> get_field(const int index);
+	void remove_field(const int index);
+	void clear_fields();
+	Ref<FormField> new_field(const String &name, const String &human_name);
+	int get_field_count() const;
+
+	Vector<Variant> get_fields();
+	void set_fields(const Vector<Variant> &p_arrays);
+
 	PoolStringArray validate(const Ref<WebServerRequest> &request);
 	virtual PoolStringArray _validate(Ref<WebServerRequest> request);
-
-	void add_field(const Ref<FormField> &field);
-	Ref<FormField> new_field(const String &name, const String &human_name);
 
 	FormValidator();
 	~FormValidator();
 
 protected:
-	Vector<Ref<FormField>> fields;
+	static void _bind_methods();
+
+	Vector<Ref<FormField>> _fields;
 };
 
 #endif

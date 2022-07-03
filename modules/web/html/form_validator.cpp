@@ -24,7 +24,7 @@ PoolStringArray FormExistsFieldEntry::_validate(Ref<WebServerRequest> request, c
 	PoolStringArray errors;
 
 	if (data == "") {
-		errors.push_back(field->human_name + not_exists_error);
+		errors.push_back(field->get_human_name() + not_exists_error);
 	}
 
 	return errors;
@@ -46,7 +46,7 @@ PoolStringArray FormIntFieldEntry::_validate(Ref<WebServerRequest> request, cons
 	}
 
 	if (!data.is_valid_integer()) {
-		errors.push_back(field->human_name + not_int_error);
+		errors.push_back(field->get_human_name() + not_int_error);
 	}
 
 	return errors;
@@ -69,7 +69,7 @@ PoolStringArray FormFloatFieldEntry::_validate(Ref<WebServerRequest> request, co
 	}
 
 	if (!data.is_valid_float()) {
-		errors.push_back(field->human_name + not_float_error);
+		errors.push_back(field->get_human_name() + not_float_error);
 	}
 
 	return errors;
@@ -88,7 +88,7 @@ PoolStringArray FormAlphaFieldEntry::_validate(Ref<WebServerRequest> request, co
 
 	for (int i = 0; i < data.size(); ++i) {
 		if (!isalpha(data[i])) {
-			errors.push_back(field->human_name + not_alpha_error);
+			errors.push_back(field->get_human_name() + not_alpha_error);
 
 			return errors;
 		}
@@ -110,7 +110,7 @@ PoolStringArray FormAlphaNumericFieldEntry::_validate(Ref<WebServerRequest> requ
 
 	for (int i = 0; i < data.size(); ++i) {
 		if (!isalnum(data[i])) {
-			errors.push_back(field->human_name + not_alpha_numeric_error);
+			errors.push_back(field->get_human_name() + not_alpha_numeric_error);
 
 			return errors;
 		}
@@ -136,7 +136,7 @@ PoolStringArray FormNeedsLowercaseCharacterFieldEntry::_validate(Ref<WebServerRe
 		}
 	}
 
-	errors.push_back(field->human_name + does_not_have_lowercase_error);
+	errors.push_back(field->get_human_name() + does_not_have_lowercase_error);
 
 	return errors;
 }
@@ -157,7 +157,7 @@ PoolStringArray FormNeedsUppercaseCharacterFieldEntry::_validate(Ref<WebServerRe
 		}
 	}
 
-	errors.push_back(field->human_name + does_not_have_uppercase_error);
+	errors.push_back(field->get_human_name() + does_not_have_uppercase_error);
 
 	return errors;
 }
@@ -178,7 +178,7 @@ PoolStringArray FormNeedsOtherCharacterFieldEntry::_validate(Ref<WebServerReques
 		}
 	}
 
-	errors.push_back(field->human_name + does_not_have_other_error);
+	errors.push_back(field->get_human_name() + does_not_have_other_error);
 
 	return errors;
 }
@@ -194,7 +194,7 @@ FormNeedsOtherCharacterFieldEntry::~FormNeedsOtherCharacterFieldEntry() {
 PoolStringArray FormMinimumLengthFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
 	if (data.size() < min_length) {
-		errors.push_back(field->human_name + does_not_have_min_length_errorf + itos(min_length) + does_not_have_min_length_errors);
+		errors.push_back(field->get_human_name() + does_not_have_min_length_errorf + itos(min_length) + does_not_have_min_length_errors);
 	}
 
 	return errors;
@@ -215,7 +215,7 @@ PoolStringArray FormMaximumLengthFieldEntry::_validate(Ref<WebServerRequest> req
 	PoolStringArray errors;
 
 	if (data.size() > max_length) {
-		errors.push_back(field->human_name + does_not_have_max_length_errorf + itos(max_length) + does_not_have_max_length_errors);
+		errors.push_back(field->get_human_name() + does_not_have_max_length_errorf + itos(max_length) + does_not_have_max_length_errors);
 	}
 
 	return errors;
@@ -236,13 +236,13 @@ PoolStringArray FormEmailFieldEntry::_validate(Ref<WebServerRequest> request, co
 	PoolStringArray errors;
 
 	if (data.size() == 0) {
-		errors.push_back(field->human_name + email_format_error);
+		errors.push_back(field->get_human_name() + email_format_error);
 
 		return errors;
 	}
 
 	if (!isalpha(data[0])) {
-		errors.push_back(field->human_name + email_format_error);
+		errors.push_back(field->get_human_name() + email_format_error);
 
 		return errors;
 	}
@@ -253,7 +253,7 @@ PoolStringArray FormEmailFieldEntry::_validate(Ref<WebServerRequest> request, co
 	for (int i = 0; i < data.size(); ++i) {
 		if (data[i] == '.') {
 			if (dot_pos != -1) {
-				errors.push_back(field->human_name + email_format_error);
+				errors.push_back(field->get_human_name() + email_format_error);
 
 				return errors;
 			}
@@ -265,7 +265,7 @@ PoolStringArray FormEmailFieldEntry::_validate(Ref<WebServerRequest> request, co
 	}
 
 	if (dot_pos == -1) {
-		errors.push_back(field->human_name + email_format_error);
+		errors.push_back(field->get_human_name() + email_format_error);
 
 		return errors;
 	}
@@ -273,7 +273,7 @@ PoolStringArray FormEmailFieldEntry::_validate(Ref<WebServerRequest> request, co
 	for (int i = 0; i < data.size(); ++i) {
 		if (data[i] == '@') {
 			if (at_pos != -1) {
-				errors.push_back(field->human_name + email_format_error);
+				errors.push_back(field->get_human_name() + email_format_error);
 
 				return errors;
 			}
@@ -285,7 +285,7 @@ PoolStringArray FormEmailFieldEntry::_validate(Ref<WebServerRequest> request, co
 	}
 
 	if (at_pos == -1) {
-		errors.push_back(field->human_name + email_format_error);
+		errors.push_back(field->get_human_name() + email_format_error);
 
 		return errors;
 	}
@@ -296,7 +296,7 @@ PoolStringArray FormEmailFieldEntry::_validate(Ref<WebServerRequest> request, co
 		}
 
 		if (!isalnum(data[i])) {
-			errors.push_back(field->human_name + email_format_error);
+			errors.push_back(field->get_human_name() + email_format_error);
 
 			return errors;
 		}
@@ -317,7 +317,7 @@ PoolStringArray FormNeedToMatchOtherFieldEntry::_validate(Ref<WebServerRequest> 
 	PoolStringArray errors;
 
 	if (data != request->get_parameter(other_field)) {
-		errors.push_back(field->human_name + does_not_match_error + field->name + ".");
+		errors.push_back(field->get_human_name() + does_not_match_error + field->get_field_name() + ".");
 	}
 
 	return errors;
@@ -330,6 +330,80 @@ FormNeedToMatchOtherFieldEntry::~FormNeedToMatchOtherFieldEntry() {
 }
 
 //FormField
+
+String FormField::get_field_name() const {
+	return _field_name;
+}
+void FormField::set_field_name(const String &val) {
+	_field_name = val;
+}
+
+String FormField::get_human_name() const {
+	return _human_name;
+}
+void FormField::set_human_name(const String &val) {
+	_human_name = val;
+}
+
+bool FormField::get_ignore_if_not_exists() const {
+	return _ignore_if_not_exists;
+}
+void FormField::set_ignore_if_not_exists(const bool &val) {
+	_ignore_if_not_exists = val;
+}
+
+bool FormField::get_ignore_if_other_field_not_exists() const {
+	return _ignore_if_other_field_not_exists;
+}
+void FormField::set_ignore_if_other_field_not_exists(const bool &val) {
+	_ignore_if_other_field_not_exists = val;
+}
+
+String FormField::get_ignore_if_other_field_not_exist_field() const {
+	return _ignore_if_other_field_not_exist_field;
+}
+void FormField::set_ignore_if_other_field_not_exist_field(const String &val) {
+	_ignore_if_other_field_not_exist_field = val;
+}
+
+void FormField::add_entry(const Ref<FormFieldEntry> &field) {
+	_entries.push_back(field);
+}
+
+Ref<FormFieldEntry> FormField::get_entry(const int index) {
+	ERR_FAIL_INDEX_V(index, _entries.size(), Ref<FormFieldEntry>());
+
+	return _entries[index];
+}
+
+void FormField::remove_entry(const int index) {
+	ERR_FAIL_INDEX(index, _entries.size());
+
+	_entries.remove(index);
+}
+void FormField::clear_entries() {
+	_entries.clear();
+}
+
+int FormField::get_entry_count() const {
+	return _entries.size();
+}
+
+Vector<Variant> FormField::get_entries() {
+	Vector<Variant> r;
+	for (int i = 0; i < _entries.size(); i++) {
+		r.push_back(_entries[i].get_ref_ptr());
+	}
+	return r;
+}
+void FormField::set_entries(const Vector<Variant> &p_arrays) {
+	_entries.clear();
+	for (int i = 0; i < p_arrays.size(); ++i) {
+		Ref<FormFieldEntry> f = Ref<FormFieldEntry>(p_arrays[i]);
+
+		_entries.push_back(f);
+	}
+}
 
 Ref<FormField> FormField::need_to_exist() {
 	Ref<FormExistsFieldEntry> f;
@@ -434,16 +508,12 @@ Ref<FormField> FormField::ignore_if_other_field_not_exists(const String &other) 
 	return Ref<FormField>(this);
 }
 
-void FormField::add_entry(const Ref<FormFieldEntry> &field) {
-	fields.push_back(field);
-}
-
 PoolStringArray FormField::validate(const Ref<WebServerRequest> &request) {
 	return call("_validate", request);
 }
 
 PoolStringArray FormField::_validate(Ref<WebServerRequest> request) {
-	String param = request->get_parameter(name);
+	String param = request->get_parameter(get_field_name());
 
 	if (_ignore_if_not_exists && param == "") {
 		return PoolStringArray();
@@ -459,8 +529,12 @@ PoolStringArray FormField::_validate(Ref<WebServerRequest> request) {
 
 	PoolStringArray arr;
 
-	for (int i = 0; i < fields.size(); ++i) {
-		arr.append_array(fields.write[i]->validate(request, Ref<FormField>(this), param));
+	for (int i = 0; i < _entries.size(); ++i) {
+		Ref<FormFieldEntry> f = _entries[i];
+
+		if (f.is_valid()) {
+			arr.append_array(f->validate(request, Ref<FormField>(this), param));
+		}
 	}
 
 	return arr;
@@ -471,10 +545,60 @@ FormField::FormField() {
 	_ignore_if_other_field_not_exists = false;
 }
 FormField::~FormField() {
-	fields.clear();
+	_entries.clear();
 }
 
 //FormValidator
+
+void FormValidator::add_field(const Ref<FormField> &field) {
+	_fields.push_back(field);
+}
+
+Ref<FormField> FormValidator::get_field(const int index) {
+	ERR_FAIL_INDEX_V(index, _fields.size(), Ref<FormField>());
+
+	return _fields[index];
+}
+
+void FormValidator::remove_field(const int index) {
+	ERR_FAIL_INDEX(index, _fields.size());
+
+	_fields.remove(index);
+}
+void FormValidator::clear_fields() {
+	_fields.clear();
+}
+
+Ref<FormField> FormValidator::new_field(const String &name, const String &human_name) {
+	Ref<FormField> f;
+	f.instance();
+	f->set_field_name(name);
+	f->set_human_name(human_name);
+
+	_fields.push_back(f);
+
+	return f;
+}
+
+int FormValidator::get_field_count() const {
+	return _fields.size();
+}
+
+Vector<Variant> FormValidator::get_fields() {
+	Vector<Variant> r;
+	for (int i = 0; i < _fields.size(); i++) {
+		r.push_back(_fields[i].get_ref_ptr());
+	}
+	return r;
+}
+void FormValidator::set_fields(const Vector<Variant> &p_arrays) {
+	_fields.clear();
+	for (int i = 0; i < p_arrays.size(); ++i) {
+		Ref<FormField> f = Ref<FormField>(p_arrays[i]);
+
+		_fields.push_back(f);
+	}
+}
 
 PoolStringArray FormValidator::validate(const Ref<WebServerRequest> &request) {
 	return call("_validate", request);
@@ -483,31 +607,20 @@ PoolStringArray FormValidator::validate(const Ref<WebServerRequest> &request) {
 PoolStringArray FormValidator::_validate(Ref<WebServerRequest> request) {
 	PoolStringArray arr;
 
-	for (int i = 0; i < fields.size(); ++i) {
-		arr.append_array(fields.write[i]->validate(request));
+	for (int i = 0; i < _fields.size(); ++i) {
+		Ref<FormField> f = _fields[i];
+
+		if (f.is_valid()) {
+			arr.append_array(f->validate(request));
+		}
 	}
 
 	return arr;
-}
-
-void FormValidator::add_field(const Ref<FormField> &field) {
-	fields.push_back(field);
-}
-
-Ref<FormField> FormValidator::new_field(const String &name, const String &human_name) {
-	Ref<FormField> f;
-	f.instance();
-	f->name = name;
-	f->human_name = human_name;
-
-	fields.push_back(f);
-
-	return f;
 }
 
 FormValidator::FormValidator() {
 }
 
 FormValidator::~FormValidator() {
-	fields.clear();
+	_fields.clear();
 }
