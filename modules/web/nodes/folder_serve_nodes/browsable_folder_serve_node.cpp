@@ -125,7 +125,7 @@ void BrowsableFolderServeNode::render_dir_page(const String &dir_uri, const Vect
 		for (int i = 0; i < folders.size(); ++i) {
 			b.div("file_list_entry");
 			{
-				b.a(uri + folders[i])->w("(Folder) ")->w(folders[i].get_slicec('/', folders[i].get_slice_count("/") - 1))->ca();
+				b.a(uri + folders[i])->w("(Folder) ")->w(folders[i].get_file())->ca();
 			}
 			b.cdiv();
 		}
@@ -133,7 +133,7 @@ void BrowsableFolderServeNode::render_dir_page(const String &dir_uri, const Vect
 		for (int i = 0; i < files.size(); ++i) {
 			b.div("file_list_entry");
 			{
-				b.a(uri + files[i])->w("(File) ")->w(files[i].get_slicec('/', files[i].get_slice_count("/") - 1))->ca();
+				b.a(uri + files[i])->w("(File) ")->w(files[i].get_file())->ca();
 			}
 			b.cdiv();
 		}
