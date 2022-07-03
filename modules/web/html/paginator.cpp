@@ -3,6 +3,69 @@
 #include "core/math/math_funcs.h"
 #include "html_builder.h"
 
+String HTMLPaginator::get_base_url() {
+	return base_url;
+}
+void HTMLPaginator::set_base_url(const String &val) {
+	base_url = val;
+}
+
+PoolStringArray HTMLPaginator::get_links() {
+	return links;
+}
+void HTMLPaginator::set_links(const PoolStringArray &val) {
+	links = val;
+}
+
+bool HTMLPaginator::get_use_links_array() {
+	return use_links_array;
+}
+void HTMLPaginator::set_use_links_array(const bool &val) {
+	use_links_array = val;
+}
+
+bool HTMLPaginator::get_hide_if_one_page() {
+	return hide_if_one_page;
+}
+void HTMLPaginator::set_hide_if_one_page(const bool &val) {
+	hide_if_one_page = val;
+}
+
+String HTMLPaginator::get_class_main_ul() {
+	return class_main_ul;
+}
+void HTMLPaginator::set_class_main_ul(const String &val) {
+	class_main_ul = val;
+}
+
+String HTMLPaginator::get_class_enabled_li() {
+	return class_enabled_li;
+}
+void HTMLPaginator::set_class_enabled_li(const String &val) {
+	class_enabled_li = val;
+}
+
+String HTMLPaginator::get_class_disabled_li() {
+	return class_disabled_li;
+}
+void HTMLPaginator::set_class_disabled_li(const String &val) {
+	class_disabled_li = val;
+}
+
+String HTMLPaginator::get_text_next_link() {
+	return text_next_link;
+}
+void HTMLPaginator::set_text_next_link(const String &val) {
+	text_next_link = val;
+}
+
+String HTMLPaginator::get_text_prev_link() {
+	return text_prev_link;
+}
+void HTMLPaginator::set_text_prev_link(const String &val) {
+	text_prev_link = val;
+}
+
 int HTMLPaginator::get_item_count() const {
 	return _item_count;
 }
@@ -26,6 +89,13 @@ void HTMLPaginator::set_max_visible_links(const int val) {
 	_max_visible_links = val;
 
 	set_item_count(_item_count);
+}
+
+Ref<HTMLPaginator> HTMLPaginator::get_renderer() {
+	return renderer;
+}
+void HTMLPaginator::set_renderer(const Ref<HTMLPaginator> &val) {
+	renderer = val;
 }
 
 void HTMLPaginator::start() {
@@ -52,6 +122,10 @@ String HTMLPaginator::get_pagination_for_num(const int page_num) {
 }
 
 String HTMLPaginator::render_indexed(Ref<HTMLPaginator> target, const int page_index) {
+	return call("_render_indexed", target, page_index);
+}
+
+String HTMLPaginator::_render_indexed(Ref<HTMLPaginator> target, const int page_index) {
 	if (!target.is_valid()) {
 		target = Ref<HTMLPaginator>(this);
 	}
@@ -132,7 +206,12 @@ String HTMLPaginator::render_indexed(Ref<HTMLPaginator> target, const int page_i
 
 	return b.result;
 }
+
 String HTMLPaginator::render_links(Ref<HTMLPaginator> target, const int page_index) {
+	return call("_render_links", target, page_index);
+}
+
+String HTMLPaginator::_render_links(Ref<HTMLPaginator> target, const int page_index) {
 	if (!target.is_valid()) {
 		target = Ref<HTMLPaginator>(this);
 	}
@@ -396,4 +475,73 @@ HTMLPaginator::HTMLPaginator() {
 
 HTMLPaginator::~HTMLPaginator() {
 	renderer.unref();
+}
+
+void HTMLPaginator::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_item_count"), &HTMLPaginator::get_item_count);
+	ClassDB::bind_method(D_METHOD("set_item_count", "val"), &HTMLPaginator::set_item_count);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "item_count"), "set_item_count", "get_item_count");
+
+	ClassDB::bind_method(D_METHOD("get_page_count"), &HTMLPaginator::get_page_count);
+	ClassDB::bind_method(D_METHOD("set_page_count", "val"), &HTMLPaginator::set_page_count);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "page_count"), "set_page_count", "get_page_count");
+
+	ClassDB::bind_method(D_METHOD("get_max_visible_links"), &HTMLPaginator::get_max_visible_links);
+	ClassDB::bind_method(D_METHOD("set_max_visible_links", "val"), &HTMLPaginator::set_max_visible_links);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_visible_links"), "set_max_visible_links", "get_max_visible_links");
+
+	ClassDB::bind_method(D_METHOD("get_base_url"), &HTMLPaginator::get_base_url);
+	ClassDB::bind_method(D_METHOD("set_base_url", "val"), &HTMLPaginator::set_base_url);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "base_url"), "set_base_url", "get_base_url");
+
+	ClassDB::bind_method(D_METHOD("get_links"), &HTMLPaginator::get_links);
+	ClassDB::bind_method(D_METHOD("set_links", "val"), &HTMLPaginator::set_links);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_STRING_ARRAY, "links"), "set_links", "get_links");
+
+	ClassDB::bind_method(D_METHOD("get_use_links_array"), &HTMLPaginator::get_use_links_array);
+	ClassDB::bind_method(D_METHOD("set_use_links_array", "val"), &HTMLPaginator::set_use_links_array);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_links_array"), "set_use_links_array", "get_use_links_array");
+
+	ClassDB::bind_method(D_METHOD("get_hide_if_one_page"), &HTMLPaginator::get_hide_if_one_page);
+	ClassDB::bind_method(D_METHOD("set_hide_if_one_page", "val"), &HTMLPaginator::set_hide_if_one_page);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "hide_if_one_page"), "set_hide_if_one_page", "get_hide_if_one_page");
+
+	ClassDB::bind_method(D_METHOD("get_class_main_ul"), &HTMLPaginator::get_class_main_ul);
+	ClassDB::bind_method(D_METHOD("set_class_main_ul", "val"), &HTMLPaginator::set_class_main_ul);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "class_main_ul"), "set_class_main_ul", "get_class_main_ul");
+
+	ClassDB::bind_method(D_METHOD("get_class_enabled_li"), &HTMLPaginator::get_class_enabled_li);
+	ClassDB::bind_method(D_METHOD("set_class_enabled_li", "val"), &HTMLPaginator::set_class_enabled_li);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "class_enabled_li"), "set_class_enabled_li", "get_class_enabled_li");
+
+	ClassDB::bind_method(D_METHOD("get_class_disabled_li"), &HTMLPaginator::get_class_disabled_li);
+	ClassDB::bind_method(D_METHOD("set_class_disabled_li", "val"), &HTMLPaginator::set_class_disabled_li);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "class_disabled_li"), "set_class_disabled_li", "get_class_disabled_li");
+
+	ClassDB::bind_method(D_METHOD("get_text_next_link"), &HTMLPaginator::get_text_next_link);
+	ClassDB::bind_method(D_METHOD("set_text_next_link", "val"), &HTMLPaginator::set_text_next_link);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_next_link"), "set_text_next_link", "get_text_next_link");
+
+	ClassDB::bind_method(D_METHOD("get_text_prev_link"), &HTMLPaginator::get_text_prev_link);
+	ClassDB::bind_method(D_METHOD("set_text_prev_link", "val"), &HTMLPaginator::set_text_prev_link);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_prev_link"), "set_text_prev_link", "get_text_prev_link");
+
+	ClassDB::bind_method(D_METHOD("get_renderer"), &HTMLPaginator::get_renderer);
+	ClassDB::bind_method(D_METHOD("set_renderer", "val"), &HTMLPaginator::set_renderer);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "renderer", PROPERTY_HINT_RESOURCE_TYPE, "HTMLPaginator"), "set_renderer", "get_renderer");
+
+	ClassDB::bind_method(D_METHOD("start"), &HTMLPaginator::start);
+	ClassDB::bind_method(D_METHOD("next"), &HTMLPaginator::next);
+	ClassDB::bind_method(D_METHOD("get_current"), &HTMLPaginator::get_current);
+
+	ClassDB::bind_method(D_METHOD("get_pagination_for_indx", "page_index"), &HTMLPaginator::get_pagination_for_indx);
+	ClassDB::bind_method(D_METHOD("get_pagination_for_num", "page_num"), &HTMLPaginator::get_pagination_for_num);
+
+	BIND_VMETHOD(MethodInfo("_render_indexed", PropertyInfo(Variant::OBJECT, "target", PROPERTY_HINT_RESOURCE_TYPE, "HTMLPaginator"), PropertyInfo(Variant::INT, "page_index")));
+	ClassDB::bind_method(D_METHOD("render_indexed", "target", "page_index"), &HTMLPaginator::render_indexed);
+	ClassDB::bind_method(D_METHOD("_render_indexed", "target", "page_index"), &HTMLPaginator::_render_indexed);
+
+	BIND_VMETHOD(MethodInfo("_render_links", PropertyInfo(Variant::OBJECT, "target", PROPERTY_HINT_RESOURCE_TYPE, "HTMLPaginator"), PropertyInfo(Variant::INT, "page_index")));
+	ClassDB::bind_method(D_METHOD("render_links", "target", "page_index"), &HTMLPaginator::render_links);
+	ClassDB::bind_method(D_METHOD("_render_links", "target", "page_index"), &HTMLPaginator::_render_links);
 }
