@@ -47,7 +47,7 @@ void PagedArticles::load() {
 		if (dir->current_is_dir() && file_name != "." && file_name != "..") {
 			String ff = folder + "/" + file_name;
 
-			PagedArticle *p = new PagedArticle();
+			PagedArticle *p = memnew(PagedArticle);
 
 			p->set_articles_folder(ff);
 			p->set_uri_segment(file_name);
