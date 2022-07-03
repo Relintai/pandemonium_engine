@@ -1,10 +1,22 @@
 #include "paged_articles_md_index.h"
 
-#include "web/html/html_builder.h"
-#include "web/http/request.h"
-#include "web/http/web_permission.h"
+#include "core/os/dir_access.h"
 
-void PagedArticlesMDIndex::handle_request_main(Request *request) {
+#include "../../html/html_builder.h"
+#include "../../http/web_permission.h"
+#include "../../http/web_server_request.h"
+
+#include "../list_page/list_page.h"
+#include "paged_article.h"
+
+String PagedArticlesMDIndex::get_folder() {
+	return folder;
+}
+void PagedArticlesMDIndex::set_folder(const String &val) {
+	folder = val;
+}
+
+void PagedArticlesMDIndex::_handle_request_main(Ref<WebServerRequest> request) {
 	if (_web_permission.is_valid()) {
 		if (_web_permission->activate(request)) {
 			return;
@@ -21,31 +33,35 @@ void PagedArticlesMDIndex::handle_request_main(Request *request) {
 	articles->handle_request_main(request);
 }
 
-void PagedArticlesMDIndex::render_index(Request *request) {
+void PagedArticlesMDIndex::_render_index(Ref<WebServerRequest> request) {
 	main_page->render_index(request);
 }
 
-void PagedArticlesMDIndex::render_preview(Request *request) {
+void PagedArticlesMDIndex::_render_preview(Ref<WebServerRequest> request) {
 	main_page->render_preview(request);
 }
 
 void PagedArticlesMDIndex::load() {
-	main_page->folder = folder;
+	main_page->set_folder(folder);
 	main_page->load();
 
-	articles->articles_folder = folder;
-	articles->serve_folder = folder + "/files";
+	articles->set_articles_folder(folder);
+	//articles->set_serve_folder(folder + "/files");
 	articles->load();
 }
 
-PagedArticlesMDIndex::PagedArticlesMDIndex() :
-		WebNode() {
-
-	main_page = new ListPage();
-	articles = new PagedArticle();
+PagedArticlesMDIndex::PagedArticlesMDIndex() {
+	main_page = memnew(ListPage);
+	articles = memnew(PagedArticle);
 }
 
 PagedArticlesMDIndex::~PagedArticlesMDIndex() {
-	delete main_page;
-	delete articles;
+	memdelete(main_page);
+	memdelete(articles);
+}
+
+void PagedArticlesMDIndex::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_folder"), &PagedArticlesMDIndex::get_folder);
+	ClassDB::bind_method(D_METHOD("set_folder", "val"), &PagedArticlesMDIndex::set_folder);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "folder"), "set_folder", "get_folder");
 }

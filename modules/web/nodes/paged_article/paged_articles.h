@@ -1,13 +1,10 @@
 #ifndef PAGED_ARTICLES_H
 #define PAGED_ARTICLES_H
 
-#include "core/containers/vector.h"
-#include "core/string.h"
+#include "core/ustring.h"
+#include "core/vector.h"
 
-#include "web/file_cache.h"
-#include "web/http/web_node.h"
-
-#include "web/http/request.h"
+#include "../../http/web_node.h"
 
 // This class will load and process all md files from the folder set to it's folder property,
 // and generate one page from them. TThe files are processed in alphabetical order.
@@ -24,27 +21,34 @@
 // ...
 // </div>
 
+class WebServerRequest;
+
 class PagedArticles : public WebNode {
-	RCPP_OBJECT(PagedArticles, WebNode);
+	GDCLASS(PagedArticles, WebNode);
 
 public:
-	void _handle_request_main(Request *request);
+	String get_folder();
+	void set_folder(const String &val);
 
-	void render_index(Request *request);
-	void render_preview(Request *request);
+	void _handle_request(Ref<WebServerRequest> request);
+
+	void _render_index(Ref<WebServerRequest> request);
+	void _render_preview(Ref<WebServerRequest> request);
 
 	void load();
 	void generate_index_page();
 
-	void _notification(const int what);
-
 	PagedArticles();
 	~PagedArticles();
 
-	String folder;
-
 protected:
-	String index_page;
+	void _notification(int what);
+
+	static void _bind_methods();
+
+	String _folder;
+
+	String _index_page;
 };
 
 #endif

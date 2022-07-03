@@ -53,6 +53,8 @@ SOFTWARE.
 #include "nodes/list_page/list_page.h"
 
 #include "nodes/paged_article/paged_article.h"
+#include "nodes/paged_article/paged_articles.h"
+//#include "nodes/paged_article/paged_articles_md_index.h"
 
 void register_web_types() {
 	ClassDB::register_class<_HTMLBuilder>();
@@ -88,6 +90,8 @@ void register_web_types() {
 	ClassDB::register_class<ListPage>();
 
 	ClassDB::register_class<PagedArticle>();
+	ClassDB::register_class<PagedArticles>();
+	//ClassDB::register_class<PagedArticlesMDIndex>();
 }
 
 void unregister_web_types() {

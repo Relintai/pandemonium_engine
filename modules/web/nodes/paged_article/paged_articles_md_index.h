@@ -1,32 +1,38 @@
 #ifndef PAGED_ARTICLES_MD_INDEX_H
 #define PAGED_ARTICLES_MD_INDEX_H
 
-#include "core/string.h"
+#include "core/ustring.h"
 
-#include "web/http/web_node.h"
-
-#include "web_modules/list_page/list_page.h"
-#include "web_modules/paged_article/paged_article.h"
+#include "../../http/web_node.h"
 
 // Inherit from PagedArticles and override generate_index_page -> load and process md files in the set folder
 // SHould probably be called something else. PagedArticlesMDIndex ?
 
+class WebServerRequest;
+class ListPage;
+class PagedArticle;
+
 class PagedArticlesMDIndex : public WebNode {
-	RCPP_OBJECT(PagedArticlesMDIndex, WebNode);
+	GDCLASS(PagedArticlesMDIndex, WebNode);
 
 public:
-	void handle_request_main(Request *request);
+	String get_folder();
+	void set_folder(const String &val);
 
-	void render_index(Request *request);
-	void render_preview(Request *request);
+	void _handle_request_main(Ref<WebServerRequest> request);
+
+	void _render_index(Ref<WebServerRequest> request);
+	void _render_preview(Ref<WebServerRequest> request);
 
 	void load();
 
 	PagedArticlesMDIndex();
 	~PagedArticlesMDIndex();
 
+protected:
+	static void _bind_methods();
+
 	String folder;
-	String base_path;
 
 	ListPage *main_page;
 	PagedArticle *articles;

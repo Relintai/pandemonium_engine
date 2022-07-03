@@ -46,6 +46,8 @@ def get_doc_classes():
         "ListPage",
 
         "PagedArticle",
+        "PagedArticles",
+        "PagedArticlesMDIndex",
     ]
 
 
