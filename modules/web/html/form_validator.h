@@ -1,25 +1,31 @@
-#ifndef FORM_H
-#define FORM_H
+#ifndef HTTP_FORM_VALIDATOR_H
+#define HTTP_FORM_VALIDATOR_H
 
-#include "core/string.h"
-#include "core/containers/vector.h"
+#include "core/ustring.h"
+#include "core/vector.h"
 
-#include <ctype.h>
+#include "core/resource.h"
 
 class Request;
 class FormField;
+class WebServerRequest;
 
-class FormFieldEntry {
+class FormFieldEntry : public Resource {
+	GDCLASS(FormFieldEntry, Resource);
+
 public:
-	virtual bool validate(Request *request, const FormField* field, const String &data, Vector<String> *errors);
+	PoolStringArray validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
+	virtual PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormFieldEntry();
-	virtual ~FormFieldEntry();
+	~FormFieldEntry();
 };
 
 class FormExistsFieldEntry : public FormFieldEntry {
+	GDCLASS(FormExistsFieldEntry, FormFieldEntry);
+
 public:
-	virtual bool validate(Request *request, const FormField* field, const String &data, Vector<String> *errors);
+	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormExistsFieldEntry();
 	~FormExistsFieldEntry();
@@ -28,8 +34,10 @@ public:
 };
 
 class FormIntFieldEntry : public FormFieldEntry {
+	GDCLASS(FormIntFieldEntry, FormFieldEntry);
+
 public:
-	virtual bool validate(Request *request, const FormField* field, const String &data, Vector<String> *errors);
+	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormIntFieldEntry();
 	~FormIntFieldEntry();
@@ -38,8 +46,10 @@ public:
 };
 
 class FormFloatFieldEntry : public FormFieldEntry {
+	GDCLASS(FormFloatFieldEntry, FormFieldEntry);
+
 public:
-	virtual bool validate(Request *request, const FormField* field, const String &data, Vector<String> *errors);
+	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormFloatFieldEntry();
 	~FormFloatFieldEntry();
@@ -48,8 +58,10 @@ public:
 };
 
 class FormAlphaFieldEntry : public FormFieldEntry {
+	GDCLASS(FormAlphaFieldEntry, FormFieldEntry);
+
 public:
-	virtual bool validate(Request *request, const FormField* field, const String &data, Vector<String> *errors);
+	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormAlphaFieldEntry();
 	~FormAlphaFieldEntry();
@@ -58,8 +70,10 @@ public:
 };
 
 class FormAlphaNumericFieldEntry : public FormFieldEntry {
+	GDCLASS(FormAlphaNumericFieldEntry, FormFieldEntry);
+
 public:
-	virtual bool validate(Request *request, const FormField* field, const String &data, Vector<String> *errors);
+	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormAlphaNumericFieldEntry();
 	~FormAlphaNumericFieldEntry();
@@ -68,8 +82,10 @@ public:
 };
 
 class FormNeedsLowercaseCharacterFieldEntry : public FormFieldEntry {
+	GDCLASS(FormNeedsLowercaseCharacterFieldEntry, FormFieldEntry);
+
 public:
-	virtual bool validate(Request *request, const FormField* field, const String &data, Vector<String> *errors);
+	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormNeedsLowercaseCharacterFieldEntry();
 	~FormNeedsLowercaseCharacterFieldEntry();
@@ -78,8 +94,10 @@ public:
 };
 
 class FormNeedsUppercaseCharacterFieldEntry : public FormFieldEntry {
+	GDCLASS(FormNeedsUppercaseCharacterFieldEntry, FormFieldEntry);
+
 public:
-	virtual bool validate(Request *request, const FormField* field, const String &data, Vector<String> *errors);
+	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormNeedsUppercaseCharacterFieldEntry();
 	~FormNeedsUppercaseCharacterFieldEntry();
@@ -88,8 +106,10 @@ public:
 };
 
 class FormNeedsOtherCharacterFieldEntry : public FormFieldEntry {
+	GDCLASS(FormNeedsOtherCharacterFieldEntry, FormFieldEntry);
+
 public:
-	virtual bool validate(Request *request, const FormField* field, const String &data, Vector<String> *errors);
+	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormNeedsOtherCharacterFieldEntry();
 	~FormNeedsOtherCharacterFieldEntry();
@@ -98,8 +118,10 @@ public:
 };
 
 class FormMinimumLengthFieldEntry : public FormFieldEntry {
+	GDCLASS(FormMinimumLengthFieldEntry, FormFieldEntry);
+
 public:
-	virtual bool validate(Request *request, const FormField* field, const String &data, Vector<String> *errors);
+	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormMinimumLengthFieldEntry();
 	~FormMinimumLengthFieldEntry();
@@ -111,8 +133,10 @@ public:
 };
 
 class FormMaximumLengthFieldEntry : public FormFieldEntry {
+	GDCLASS(FormMaximumLengthFieldEntry, FormFieldEntry);
+
 public:
-	virtual bool validate(Request *request, const FormField* field, const String &data, Vector<String> *errors);
+	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormMaximumLengthFieldEntry();
 	~FormMaximumLengthFieldEntry();
@@ -124,8 +148,10 @@ public:
 };
 
 class FormEmailFieldEntry : public FormFieldEntry {
+	GDCLASS(FormEmailFieldEntry, FormFieldEntry);
+
 public:
-	virtual bool validate(Request *request, const FormField* field, const String &data, Vector<String> *errors);
+	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormEmailFieldEntry();
 	~FormEmailFieldEntry();
@@ -134,8 +160,10 @@ public:
 };
 
 class FormNeedToMatchOtherFieldEntry : public FormFieldEntry {
+	GDCLASS(FormNeedToMatchOtherFieldEntry, FormFieldEntry);
+
 public:
-	virtual bool validate(Request *request, const FormField* field, const String &data, Vector<String> *errors);
+	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormNeedToMatchOtherFieldEntry();
 	~FormNeedToMatchOtherFieldEntry();
@@ -147,54 +175,61 @@ public:
 
 //FormField
 
-class FormField {
+class FormField : public Resource {
+	GDCLASS(FormField, Resource);
+
 public:
 	String name;
-    String human_name;
+	String human_name;
 
 	bool _ignore_if_not_exists;
 
 	bool _ignore_if_other_field_not_exists;
 	String _ignore_if_other_field_not_exist_field;
 
-	FormField *need_to_exist();
-	FormField *need_to_be_int();
-	FormField *need_to_be_float();
-	FormField *need_to_be_alpha();
-	FormField *need_to_be_alpha_numeric();
-	FormField *need_to_have_lowercase_character();
-	FormField *need_to_have_uppercase_character();
-	FormField *need_to_have_other_character();
-	FormField *need_minimum_length(const int min_length);
-	FormField *need_maximum_length(const int max_length);
-	FormField *need_to_be_email();
-    FormField *need_to_match(const String &other);
-	FormField *ignore_if_not_exists();
-	FormField *ignore_if_other_field_not_exists(const String &other);
+	Ref<FormField> need_to_exist();
+	Ref<FormField> need_to_be_int();
+	Ref<FormField> need_to_be_float();
+	Ref<FormField> need_to_be_alpha();
+	Ref<FormField> need_to_be_alpha_numeric();
+	Ref<FormField> need_to_have_lowercase_character();
+	Ref<FormField> need_to_have_uppercase_character();
+	Ref<FormField> need_to_have_other_character();
+	Ref<FormField> need_minimum_length(const int min_length);
+	Ref<FormField> need_maximum_length(const int max_length);
+	Ref<FormField> need_to_be_email();
+	Ref<FormField> need_to_match(const String &other);
+	Ref<FormField> ignore_if_not_exists();
+	Ref<FormField> ignore_if_other_field_not_exists(const String &other);
 
-	void add_entry(FormFieldEntry *field);
+	void add_entry(const Ref<FormFieldEntry> &field);
 
-	bool validate(Request *request, Vector<String> *errors);
+	PoolStringArray validate(const Ref<WebServerRequest> &request);
+	virtual PoolStringArray _validate(Ref<WebServerRequest> request);
 
 	FormField();
-	virtual ~FormField();
+	~FormField();
 
-	Vector<FormFieldEntry *> fields;
+	Vector<Ref<FormFieldEntry>> fields;
 };
 
 //FormValidator
 
-class FormValidator {
-public:
-	bool validate(Request *request, Vector<String> *errors = nullptr);
+class FormValidator : public Resource {
+	GDCLASS(FormValidator, Resource);
 
-	void add_field(FormField *field);
-	FormField *new_field(const String &name, const String &human_name);
+public:
+	PoolStringArray validate(const Ref<WebServerRequest> &request);
+	virtual PoolStringArray _validate(Ref<WebServerRequest> request);
+
+	void add_field(const Ref<FormField> &field);
+	Ref<FormField> new_field(const String &name, const String &human_name);
 
 	FormValidator();
-	virtual ~FormValidator();
+	~FormValidator();
 
-	Vector<FormField *> fields;
+protected:
+	Vector<Ref<FormField>> fields;
 };
 
 #endif

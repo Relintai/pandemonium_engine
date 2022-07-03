@@ -1,11 +1,15 @@
 #include "form_validator.h"
 
-#include "web/http/request.h"
+#include "../http/web_server_request.h"
 
 //FormFieldEntry
 
-bool FormFieldEntry::validate(Request *request, const FormField *field, const String &data, Vector<String> *errors) {
-	return true;
+PoolStringArray FormFieldEntry::validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
+	return call("_validate", request, field, data);
+}
+
+PoolStringArray FormFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
+	return PoolStringArray();
 }
 
 FormFieldEntry::FormFieldEntry() {
@@ -16,16 +20,14 @@ FormFieldEntry::~FormFieldEntry() {
 
 //FormExistsFieldEntry
 
-bool FormExistsFieldEntry::validate(Request *request, const FormField *field, const String &data, Vector<String> *errors) {
-	if (data == "") {
-		if (errors) {
-			errors->push_back(field->human_name + not_exists_error);
-		}
+PoolStringArray FormExistsFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
+	PoolStringArray errors;
 
-		return false;
+	if (data == "") {
+		errors.push_back(field->human_name + not_exists_error);
 	}
 
-	return true;
+	return errors;
 }
 
 FormExistsFieldEntry::FormExistsFieldEntry() {
@@ -36,33 +38,18 @@ FormExistsFieldEntry::~FormExistsFieldEntry() {
 
 //FormIntFieldEntry
 
-bool FormIntFieldEntry::validate(Request *request, const FormField *field, const String &data, Vector<String> *errors) {
-	//https://stackoverflow.com/questions/2844817/how-do-i-check-if-a-c-string-is-an-int
+PoolStringArray FormIntFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
+	PoolStringArray errors;
 
 	if (data.empty()) {
-		return true;
+		return errors;
 	}
 
-	if (((!isdigit(data[0])) && (data[0] != '-') && (data[0] != '+'))) {
-		if (errors) {
-			errors->push_back(field->human_name + not_int_error);
-		}
-
-		return false;
+	if (!data.is_valid_integer()) {
+		errors.push_back(field->human_name + not_int_error);
 	}
 
-	char *p;
-	strtol(data.c_str(), &p, 10);
-
-	bool is_int = (*p == 0);
-
-	if (!is_int) {
-		if (errors) {
-			errors->push_back(field->human_name + not_int_error);
-		}
-	}
-
-	return is_int;
+	return errors;
 }
 
 FormIntFieldEntry::FormIntFieldEntry() {
@@ -74,23 +61,18 @@ FormIntFieldEntry::~FormIntFieldEntry() {
 
 //FormFloatFieldEntry
 
-bool FormFloatFieldEntry::validate(Request *request, const FormField *field, const String &data, Vector<String> *errors) {
+PoolStringArray FormFloatFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
+	PoolStringArray errors;
+
 	if (data.empty()) {
-		return true;
+		return errors;
 	}
 
-	//from https://stackoverflow.com/questions/447206/c-isfloat-function
-	char *ptr;
-	strtof(data.c_str(), &ptr);
-	bool is_float = (*ptr) == '\0';
-
-	if (!is_float) {
-		if (errors) {
-			errors->push_back(field->human_name + not_float_error);
-		}
+	if (!data.is_valid_float()) {
+		errors.push_back(field->human_name + not_float_error);
 	}
 
-	return is_float;
+	return errors;
 }
 
 FormFloatFieldEntry::FormFloatFieldEntry() {
@@ -101,18 +83,18 @@ FormFloatFieldEntry::~FormFloatFieldEntry() {
 
 //FormAlphaFieldEntry
 
-bool FormAlphaFieldEntry::validate(Request *request, const FormField *field, const String &data, Vector<String> *errors) {
+PoolStringArray FormAlphaFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
+	PoolStringArray errors;
+
 	for (int i = 0; i < data.size(); ++i) {
 		if (!isalpha(data[i])) {
-			if (errors) {
-				errors->push_back(field->human_name + not_alpha_error);
-			}
+			errors.push_back(field->human_name + not_alpha_error);
 
-			return false;
+			return errors;
 		}
 	}
 
-	return true;
+	return errors;
 }
 
 FormAlphaFieldEntry::FormAlphaFieldEntry() {
@@ -123,18 +105,18 @@ FormAlphaFieldEntry::~FormAlphaFieldEntry() {
 
 //FormAlphaNumericFieldEntry
 
-bool FormAlphaNumericFieldEntry::validate(Request *request, const FormField *field, const String &data, Vector<String> *errors) {
+PoolStringArray FormAlphaNumericFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
+	PoolStringArray errors;
+
 	for (int i = 0; i < data.size(); ++i) {
 		if (!isalnum(data[i])) {
-			if (errors) {
-				errors->push_back(field->human_name + not_alpha_numeric_error);
-			}
+			errors.push_back(field->human_name + not_alpha_numeric_error);
 
-			return false;
+			return errors;
 		}
 	}
 
-	return true;
+	return errors;
 }
 
 FormAlphaNumericFieldEntry::FormAlphaNumericFieldEntry() {
@@ -145,19 +127,18 @@ FormAlphaNumericFieldEntry::~FormAlphaNumericFieldEntry() {
 
 //FormNeedsLowercaseCharacterFieldEntry
 
-bool FormNeedsLowercaseCharacterFieldEntry::validate(Request *request, const FormField *field, const String &data, Vector<String> *errors) {
+PoolStringArray FormNeedsLowercaseCharacterFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
+	PoolStringArray errors;
+
 	for (int i = 0; i < data.size(); ++i) {
 		if (islower(data[i])) {
-
-			return true;
+			return errors;
 		}
 	}
 
-	if (errors) {
-		errors->push_back(field->human_name + does_not_have_lowercase_error);
-	}
+	errors.push_back(field->human_name + does_not_have_lowercase_error);
 
-	return false;
+	return errors;
 }
 
 FormNeedsLowercaseCharacterFieldEntry::FormNeedsLowercaseCharacterFieldEntry() {
@@ -168,18 +149,17 @@ FormNeedsLowercaseCharacterFieldEntry::~FormNeedsLowercaseCharacterFieldEntry() 
 
 //FormNeedsUppercaseCharacterFieldEntry
 
-bool FormNeedsUppercaseCharacterFieldEntry::validate(Request *request, const FormField *field, const String &data, Vector<String> *errors) {
+PoolStringArray FormNeedsUppercaseCharacterFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
+	PoolStringArray errors;
 	for (int i = 0; i < data.size(); ++i) {
 		if (isupper(data[i])) {
-			return true;
+			return errors;
 		}
 	}
 
-	if (errors) {
-		errors->push_back(field->human_name + does_not_have_uppercase_error);
-	}
+	errors.push_back(field->human_name + does_not_have_uppercase_error);
 
-	return false;
+	return errors;
 }
 
 FormNeedsUppercaseCharacterFieldEntry::FormNeedsUppercaseCharacterFieldEntry() {
@@ -190,18 +170,17 @@ FormNeedsUppercaseCharacterFieldEntry::~FormNeedsUppercaseCharacterFieldEntry() 
 
 //FormNeedsOtherCharacterFieldEntry
 
-bool FormNeedsOtherCharacterFieldEntry::validate(Request *request, const FormField *field, const String &data, Vector<String> *errors) {
+PoolStringArray FormNeedsOtherCharacterFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
+	PoolStringArray errors;
 	for (int i = 0; i < data.size(); ++i) {
 		if (!isalnum(data[i])) {
-			return true;
+			return errors;
 		}
 	}
 
-	if (errors) {
-		errors->push_back(field->human_name + does_not_have_other_error);
-	}
+	errors.push_back(field->human_name + does_not_have_other_error);
 
-	return false;
+	return errors;
 }
 
 FormNeedsOtherCharacterFieldEntry::FormNeedsOtherCharacterFieldEntry() {
@@ -212,16 +191,13 @@ FormNeedsOtherCharacterFieldEntry::~FormNeedsOtherCharacterFieldEntry() {
 
 //FormMinimumLengthFieldEntry
 
-bool FormMinimumLengthFieldEntry::validate(Request *request, const FormField *field, const String &data, Vector<String> *errors) {
+PoolStringArray FormMinimumLengthFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
+	PoolStringArray errors;
 	if (data.size() < min_length) {
-		if (errors) {
-			errors->push_back(field->human_name + does_not_have_min_length_errorf + min_length + does_not_have_min_length_errors);
-		}
-
-		return false;
+		errors.push_back(field->human_name + does_not_have_min_length_errorf + itos(min_length) + does_not_have_min_length_errors);
 	}
 
-	return true;
+	return errors;
 }
 
 FormMinimumLengthFieldEntry::FormMinimumLengthFieldEntry() {
@@ -235,16 +211,14 @@ FormMinimumLengthFieldEntry::~FormMinimumLengthFieldEntry() {
 
 //FormMaximumLengthFieldEntry
 
-bool FormMaximumLengthFieldEntry::validate(Request *request, const FormField *field, const String &data, Vector<String> *errors) {
-	if (data.size() > max_length) {
-		if (errors) {
-			errors->push_back(field->human_name + does_not_have_max_length_errorf + max_length + does_not_have_max_length_errors);
-		}
+PoolStringArray FormMaximumLengthFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
+	PoolStringArray errors;
 
-		return false;
+	if (data.size() > max_length) {
+		errors.push_back(field->human_name + does_not_have_max_length_errorf + itos(max_length) + does_not_have_max_length_errors);
 	}
 
-	return true;
+	return errors;
 }
 
 FormMaximumLengthFieldEntry::FormMaximumLengthFieldEntry() {
@@ -258,21 +232,19 @@ FormMaximumLengthFieldEntry::~FormMaximumLengthFieldEntry() {
 
 //FormEmailFieldEntry
 
-bool FormEmailFieldEntry::validate(Request *request, const FormField *field, const String &data, Vector<String> *errors) {
-	if (data.size() == 0) {
-		if (errors) {
-			errors->push_back(field->human_name + email_format_error);
-		}
+PoolStringArray FormEmailFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
+	PoolStringArray errors;
 
-		return false;
+	if (data.size() == 0) {
+		errors.push_back(field->human_name + email_format_error);
+
+		return errors;
 	}
 
 	if (!isalpha(data[0])) {
-		if (errors) {
-			errors->push_back(field->human_name + email_format_error);
-		}
+		errors.push_back(field->human_name + email_format_error);
 
-		return false;
+		return errors;
 	}
 
 	int dot_pos = -1;
@@ -281,49 +253,41 @@ bool FormEmailFieldEntry::validate(Request *request, const FormField *field, con
 	for (int i = 0; i < data.size(); ++i) {
 		if (data[i] == '.') {
 			if (dot_pos != -1) {
-				if (errors) {
-					errors->push_back(field->human_name + email_format_error);
-				}
+				errors.push_back(field->human_name + email_format_error);
 
-				return false;
+				return errors;
 			}
 
 			dot_pos = i;
 
-			return true;
+			return errors;
 		}
 	}
 
 	if (dot_pos == -1) {
-		if (errors) {
-			errors->push_back(field->human_name + email_format_error);
-		}
+		errors.push_back(field->human_name + email_format_error);
 
-		return false;
+		return errors;
 	}
 
 	for (int i = 0; i < data.size(); ++i) {
 		if (data[i] == '@') {
 			if (at_pos != -1) {
-				if (errors) {
-					errors->push_back(field->human_name + email_format_error);
-				}
+				errors.push_back(field->human_name + email_format_error);
 
-				return false;
+				return errors;
 			}
 
 			at_pos = i;
 
-			return true;
+			return errors;
 		}
 	}
 
 	if (at_pos == -1) {
-		if (errors) {
-			errors->push_back(field->human_name + email_format_error);
-		}
+		errors.push_back(field->human_name + email_format_error);
 
-		return false;
+		return errors;
 	}
 
 	for (int i = 0; i < data.size(); ++i) {
@@ -332,15 +296,13 @@ bool FormEmailFieldEntry::validate(Request *request, const FormField *field, con
 		}
 
 		if (!isalnum(data[i])) {
-			if (errors) {
-				errors->push_back(field->human_name + email_format_error);
-			}
+			errors.push_back(field->human_name + email_format_error);
 
-			return false;
+			return errors;
 		}
 	}
 
-	return true;
+	return errors;
 }
 
 FormEmailFieldEntry::FormEmailFieldEntry() {
@@ -351,16 +313,14 @@ FormEmailFieldEntry::~FormEmailFieldEntry() {
 
 //FormNeedToMatchOtherFieldEntry
 
-bool FormNeedToMatchOtherFieldEntry::validate(Request *request, const FormField *field, const String &data, Vector<String> *errors) {
-	if (data != request->get_parameter(other_field)) {
-		if (errors) {
-			errors->push_back(field->human_name + does_not_match_error + field->name + ".");
-		}
+PoolStringArray FormNeedToMatchOtherFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
+	PoolStringArray errors;
 
-		return false;
+	if (data != request->get_parameter(other_field)) {
+		errors.push_back(field->human_name + does_not_match_error + field->name + ".");
 	}
 
-	return true;
+	return errors;
 }
 
 FormNeedToMatchOtherFieldEntry::FormNeedToMatchOtherFieldEntry() {
@@ -371,115 +331,139 @@ FormNeedToMatchOtherFieldEntry::~FormNeedToMatchOtherFieldEntry() {
 
 //FormField
 
-FormField *FormField::need_to_exist() {
-	add_entry(new FormExistsFieldEntry());
+Ref<FormField> FormField::need_to_exist() {
+	Ref<FormExistsFieldEntry> f;
+	f.instance();
+	add_entry(f);
 
-	return this;
+	return Ref<FormField>(this);
 }
-FormField *FormField::need_to_be_int() {
-	add_entry(new FormIntFieldEntry());
+Ref<FormField> FormField::need_to_be_int() {
+	Ref<FormIntFieldEntry> f;
+	f.instance();
+	add_entry(f);
 
-	return this;
+	return Ref<FormField>(this);
 }
-FormField *FormField::need_to_be_float() {
-	add_entry(new FormFloatFieldEntry());
+Ref<FormField> FormField::need_to_be_float() {
+	Ref<FormFloatFieldEntry> f;
+	f.instance();
+	add_entry(f);
 
-	return this;
+	return Ref<FormField>(this);
 }
-FormField *FormField::need_to_be_alpha() {
-	add_entry(new FormAlphaFieldEntry());
+Ref<FormField> FormField::need_to_be_alpha() {
+	Ref<FormAlphaFieldEntry> f;
+	f.instance();
+	add_entry(f);
 
-	return this;
+	return Ref<FormField>(this);
 }
-FormField *FormField::need_to_be_alpha_numeric() {
-	add_entry(new FormAlphaNumericFieldEntry());
+Ref<FormField> FormField::need_to_be_alpha_numeric() {
+	Ref<FormAlphaNumericFieldEntry> f;
+	f.instance();
+	add_entry(f);
 
-	return this;
+	return Ref<FormField>(this);
 }
-FormField *FormField::need_to_have_lowercase_character() {
-	add_entry(new FormNeedsLowercaseCharacterFieldEntry());
+Ref<FormField> FormField::need_to_have_lowercase_character() {
+	Ref<FormNeedsLowercaseCharacterFieldEntry> f;
+	f.instance();
+	add_entry(f);
 
-	return this;
+	return Ref<FormField>(this);
 }
-FormField *FormField::need_to_have_uppercase_character() {
-	add_entry(new FormNeedsUppercaseCharacterFieldEntry());
+Ref<FormField> FormField::need_to_have_uppercase_character() {
+	Ref<FormNeedsUppercaseCharacterFieldEntry> f;
+	f.instance();
+	add_entry(f);
 
-	return this;
+	return Ref<FormField>(this);
 }
-FormField *FormField::need_to_have_other_character() {
-	add_entry(new FormNeedsOtherCharacterFieldEntry());
+Ref<FormField> FormField::need_to_have_other_character() {
+	Ref<FormNeedsOtherCharacterFieldEntry> f;
+	f.instance();
+	add_entry(f);
 
-	return this;
+	return Ref<FormField>(this);
 }
-FormField *FormField::need_minimum_length(const int min_length) {
-	FormMinimumLengthFieldEntry *f = new FormMinimumLengthFieldEntry();
+Ref<FormField> FormField::need_minimum_length(const int min_length) {
+	Ref<FormMinimumLengthFieldEntry> f;
+	f.instance();
 	f->min_length = min_length;
 	add_entry(f);
 
-	return this;
+	return Ref<FormField>(this);
 }
-FormField *FormField::need_maximum_length(const int max_length) {
-	FormMaximumLengthFieldEntry *f = new FormMaximumLengthFieldEntry();
+Ref<FormField> FormField::need_maximum_length(const int max_length) {
+	Ref<FormMaximumLengthFieldEntry> f;
+	f.instance();
 	f->max_length = max_length;
 	add_entry(f);
 
-	return this;
+	return Ref<FormField>(this);
 }
-FormField *FormField::need_to_be_email() {
-	add_entry(new FormEmailFieldEntry());
+Ref<FormField> FormField::need_to_be_email() {
+	Ref<FormEmailFieldEntry> f;
+	f.instance();
+	add_entry(f);
 
-	return this;
+	return Ref<FormField>(this);
 }
 
-FormField *FormField::need_to_match(const String &other) {
-	FormNeedToMatchOtherFieldEntry *f = new FormNeedToMatchOtherFieldEntry();
+Ref<FormField> FormField::need_to_match(const String &other) {
+	Ref<FormNeedToMatchOtherFieldEntry> f;
+	f.instance();
+
 	f->other_field = other;
 	add_entry(f);
 
-	return this;
+	return Ref<FormField>(this);
 }
 
-FormField *FormField::ignore_if_not_exists() {
+Ref<FormField> FormField::ignore_if_not_exists() {
 	_ignore_if_not_exists = true;
 
-	return this;
+	return Ref<FormField>(this);
 }
 
-FormField *FormField::ignore_if_other_field_not_exists(const String &other) {
+Ref<FormField> FormField::ignore_if_other_field_not_exists(const String &other) {
 	_ignore_if_other_field_not_exists = true;
 	_ignore_if_other_field_not_exist_field = other;
 
-	return this;
+	return Ref<FormField>(this);
 }
 
-void FormField::add_entry(FormFieldEntry *field) {
+void FormField::add_entry(const Ref<FormFieldEntry> &field) {
 	fields.push_back(field);
 }
 
-bool FormField::validate(Request *request, Vector<String> *errors) {
+PoolStringArray FormField::validate(const Ref<WebServerRequest> &request) {
+	return call("_validate", request);
+}
+
+PoolStringArray FormField::_validate(Ref<WebServerRequest> request) {
 	String param = request->get_parameter(name);
 
 	if (_ignore_if_not_exists && param == "") {
-		return true;
+		return PoolStringArray();
 	}
 
 	if (_ignore_if_other_field_not_exists) {
 		String op = request->get_parameter(_ignore_if_other_field_not_exist_field);
 
 		if (op == "") {
-			return true;
+			return PoolStringArray();
 		}
 	}
 
-	bool valid = true;
+	PoolStringArray arr;
 
 	for (int i = 0; i < fields.size(); ++i) {
-		if (!fields[i]->validate(request, this, param, errors)) {
-			valid = false;
-		}
+		arr.append_array(fields.write[i]->validate(request, Ref<FormField>(this), param));
 	}
 
-	return valid;
+	return arr;
 }
 
 FormField::FormField() {
@@ -487,34 +471,32 @@ FormField::FormField() {
 	_ignore_if_other_field_not_exists = false;
 }
 FormField::~FormField() {
-	for (int i = 0; i < fields.size(); ++i) {
-		delete fields[i];
-	}
-
 	fields.clear();
 }
 
 //FormValidator
 
-bool FormValidator::validate(Request *request, Vector<String> *errors) {
-	bool valid = true;
-
-	for (int i = 0; i < fields.size(); ++i) {
-
-		if (!fields[i]->validate(request, errors)) {
-			valid = false;
-		}
-	}
-
-	return valid;
+PoolStringArray FormValidator::validate(const Ref<WebServerRequest> &request) {
+	return call("_validate", request);
 }
 
-void FormValidator::add_field(FormField *field) {
+PoolStringArray FormValidator::_validate(Ref<WebServerRequest> request) {
+	PoolStringArray arr;
+
+	for (int i = 0; i < fields.size(); ++i) {
+		arr.append_array(fields.write[i]->validate(request));
+	}
+
+	return arr;
+}
+
+void FormValidator::add_field(const Ref<FormField> &field) {
 	fields.push_back(field);
 }
 
-FormField *FormValidator::new_field(const String &name, const String &human_name) {
-	FormField *f = new FormField();
+Ref<FormField> FormValidator::new_field(const String &name, const String &human_name) {
+	Ref<FormField> f;
+	f.instance();
 	f->name = name;
 	f->human_name = human_name;
 
@@ -527,9 +509,5 @@ FormValidator::FormValidator() {
 }
 
 FormValidator::~FormValidator() {
-	for (int i = 0; i < fields.size(); ++i) {
-		delete fields[i];
-	}
-
 	fields.clear();
 }
