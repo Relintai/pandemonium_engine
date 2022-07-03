@@ -41,6 +41,8 @@ sources = [
     "nodes/folder_serve_nodes/folder_serve_node.cpp",
 
     "nodes/list_page/list_page.cpp",
+
+    "nodes/paged_article/paged_article.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':

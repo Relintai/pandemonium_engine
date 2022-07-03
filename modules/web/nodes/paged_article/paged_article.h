@@ -1,13 +1,11 @@
 #ifndef PAGED_ARTICLE_H
 #define PAGED_ARTICLE_H
 
+#include "core/reference.h"
 #include "core/ustring.h"
 #include "core/vector.h"
 
-#include "web/file_cache.h"
-#include "web/http/web_node.h"
-
-#include "web/http/request.h"
+#include "../../http/web_node.h"
 
 // This class will load and process all md files from the folder set to it's articles_folder property,
 // and serve every file from the directory set to it's serve_folder property.
@@ -16,14 +14,26 @@
 // THe links is generates currently look like: <url>/01_test.md
 // files are served under <url>/files/<file>
 
+class WebServerRequest;
+class FileCache;
+
 class PagedArticle : public WebNode {
 	GDCLASS(PagedArticle, WebNode);
 
 public:
-	void handle_request_main(Request *request);
+	String get_articles_folder();
+	void set_articles_folder(const String &val);
 
-	void render_index(Request *request);
-	void render_preview(Request *request);
+	bool get_serve_folder_relative();
+	void set_serve_folder_relative(const bool &val);
+
+	String get_serve_folder();
+	void set_serve_folder(const String &val);
+
+	void _handle_request_main(Ref<WebServerRequest> request);
+
+	void _render_index(Ref<WebServerRequest> request);
+	void _render_preview(Ref<WebServerRequest> request);
 
 	void load();
 	void load_folder(const String &folder, const String &path);
@@ -32,20 +42,28 @@ public:
 
 	virtual void generate_summary();
 
-	void _notification(const int what);
-
 	PagedArticle();
 	~PagedArticle();
 
+protected:
+	void _notification(const int what);
+	static void _bind_methods();
+
 	String articles_folder;
+	String _articles_folder_abs;
 	bool serve_folder_relative;
 	String serve_folder;
 
-protected:
 	String index_page;
 	String summary;
-	std::map<String, String *> pages;
-	FileCache *file_cache;
+
+	struct PAEntry {
+		String url;
+		String data;
+	};
+
+	Vector<PAEntry> pages;
+	Ref<FileCache> file_cache;
 };
 
 #endif

@@ -44,6 +44,8 @@ def get_doc_classes():
         "BrowsableFolderServeNode",
 
         "ListPage",
+
+        "PagedArticle",
     ]
 
 

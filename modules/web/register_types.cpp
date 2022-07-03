@@ -52,6 +52,8 @@ SOFTWARE.
 
 #include "nodes/list_page/list_page.h"
 
+#include "nodes/paged_article/paged_article.h"
+
 void register_web_types() {
 	ClassDB::register_class<_HTMLBuilder>();
 	ClassDB::register_class<_HTMLTag>();
@@ -84,6 +86,8 @@ void register_web_types() {
 	ClassDB::register_class<BrowsableFolderServeNode>();
 
 	ClassDB::register_class<ListPage>();
+
+	ClassDB::register_class<PagedArticle>();
 }
 
 void unregister_web_types() {

@@ -1,12 +1,37 @@
 #include "paged_article.h"
 
-#include "core/os/directory.h"
-#include "web/html/utils.h"
-#include "web/http/web_permission.h"
+#include "core/os/dir_access.h"
+#include "core/os/file_access.h"
+#include "core/project_settings.h"
 
-#include <iostream>
+#include "../../file_cache.h"
+#include "../../html/paginator.h"
+#include "../../http/http_server_enums.h"
+#include "../../http/web_permission.h"
+#include "../../http/web_server_request.h"
 
-void PagedArticle::handle_request_main(Request *request) {
+String PagedArticle::get_articles_folder() {
+	return articles_folder;
+}
+void PagedArticle::set_articles_folder(const String &val) {
+	articles_folder = val;
+}
+
+bool PagedArticle::get_serve_folder_relative() {
+	return serve_folder_relative;
+}
+void PagedArticle::set_serve_folder_relative(const bool &val) {
+	serve_folder_relative = val;
+}
+
+String PagedArticle::get_serve_folder() {
+	return serve_folder;
+}
+void PagedArticle::set_serve_folder(const String &val) {
+	serve_folder = val;
+}
+
+void PagedArticle::_handle_request_main(Ref<WebServerRequest> request) {
 	if (_web_permission.is_valid()) {
 		if (_web_permission->activate(request)) {
 			return;
@@ -18,8 +43,10 @@ void PagedArticle::handle_request_main(Request *request) {
 	if (request->get_remaining_segment_count() > 1 && rp == "files") {
 		String file_name = "/" + request->get_path_segment(request->get_current_segment_index() + 1);
 
-		if (file_cache->wwwroot_has_file(file_name)) {
-			String fp = file_cache->wwwroot + file_name;
+		int file_indx = file_cache->wwwroot_get_file_index(file_name);
+
+		if (file_indx != -1) {
+			String fp = file_cache->wwwroot_get_file_orig_path_abs(file_indx);
 
 			request->send_file(fp);
 			return;
@@ -28,69 +55,104 @@ void PagedArticle::handle_request_main(Request *request) {
 
 	if (rp == "") {
 		render_menu(request);
-
 		render_index(request);
 
 		request->compile_and_send_body();
 		return;
 	}
 
-	const String *page = pages[rp];
+	for (int i = 0; i < pages.size(); ++i) {
+		const PAEntry &e = pages[i];
 
-	if (page == nullptr) {
-		// bad url
-		request->send_error(404);
-		return;
+		if (e.url == rp) {
+			render_menu(request);
+			request->body += e.data;
+			request->compile_and_send_body();
+		}
 	}
 
-	render_menu(request);
-	request->body += (*page);
-	request->compile_and_send_body();
+	request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_404_NOT_FOUND);
 }
 
-void PagedArticle::render_index(Request *request) {
+void PagedArticle::_render_index(Ref<WebServerRequest> request) {
 	// summary page
 	request->body += index_page;
 }
 
-void PagedArticle::render_preview(Request *request) {
+void PagedArticle::_render_preview(Ref<WebServerRequest> request) {
 }
 
 void PagedArticle::load() {
 	ERR_FAIL_COND_MSG(articles_folder == "", "Error: PagedArticle::load called, but a articles_folder is not set!");
 
-	Ref<Directory> dir;
-	dir.instance();
+	String path = articles_folder;
 
-	ERR_FAIL_COND_MSG(dir->open_dir(articles_folder.c_str()) != OK, "Error opening PagedArticle::folder! folder: " + articles_folder);
-
-	Vector<String> files;
-
-	while (dir->next()) {
-		if (dir->current_is_file()) {
-			files.push_back(dir->current_get_name());
+	if (path.begins_with("res://")) {
+		if (ProjectSettings::get_singleton()) {
+			String resource_path = ProjectSettings::get_singleton()->get_resource_path();
+			if (resource_path != "") {
+				path = path.replace_first("res:/", resource_path);
+			} else {
+				path = path.replace_first("res://", "");
+			}
+		}
+	} else if (path.begins_with("user://")) {
+		String data_dir = OS::get_singleton()->get_user_data_dir();
+		if (data_dir != "") {
+			path = path.replace_first("user:/", data_dir);
+		} else {
+			path = path.replace_first("user://", "");
 		}
 	}
 
-	dir->close_dir();
+	_articles_folder_abs = DirAccess::get_full_path(path, DirAccess::ACCESS_FILESYSTEM);
+	_articles_folder_abs = _articles_folder_abs.path_ensure_end_slash();
+
+	DirAccess *dir = DirAccess::open(_articles_folder_abs);
+
+	ERR_FAIL_COND_MSG(!dir, "Error opening PagedArticle::folder! folder: " + _articles_folder_abs);
+
+	Vector<String> files;
+
+	dir->list_dir_begin();
+
+	String file = dir->get_next();
+
+	while (file != "") {
+		if (!dir->current_is_dir()) {
+			files.push_back(file);
+		}
+
+		file = dir->get_next();
+	}
+
+	dir->list_dir_end();
+	memdelete(dir);
+	dir = nullptr;
 
 	if (files.size() == 0) {
 		return;
 	}
 
-	files.sort_inc();
+	files.sort();
 
-	for (uint32_t i = 0; i < files.size(); ++i) {
-		String file_path = articles_folder;
-		file_path.append_path(files[i]);
+	for (int i = 0; i < files.size(); ++i) {
+		String file_path = _articles_folder_abs;
+		file_path += files[i];
 
 		String fd;
 
-		ERR_CONTINUE_MSG(dir->read_file_into(file_path, &fd) != OK, "PagedArticle::load_folder: Error opening file! " + file_path);
+		FileAccess *f = FileAccess::open(file_path, FileAccess::READ);
 
-		Utils::markdown_to_html(&fd);
+		ERR_CONTINUE_MSG(!f, "Error opening file! " + file_path);
 
-		if (files[i] == "summary.md") {
+		fd = f->get_as_utf8_string();
+		f->close();
+		memdelete(f);
+
+		//Utils::markdown_to_html(&fd);
+
+		if (files[i].get_file().get_basename() == "summary") {
 			summary = fd;
 
 			continue;
@@ -98,18 +160,22 @@ void PagedArticle::load() {
 
 		String pagination;
 
-		pagination = Utils::get_pagination_links(get_full_uri(), files, i);
+		pagination = HTMLPaginator::get_pagination_links_old(get_full_uri(false), files, i);
 
-		String *finals = new String();
+		String finals;
 
-		(*finals) += pagination;
-		(*finals) += fd;
-		(*finals) += pagination;
+		finals += pagination;
+		finals += fd;
+		finals += pagination;
 
-		pages[files[i]] = finals;
+		PAEntry e;
+		e.url = files[i];
+		e.data = finals;
+
+		pages.push_back(e);
 
 		if (i == 0) {
-			index_page = (*finals);
+			index_page = finals;
 		}
 	}
 
@@ -117,10 +183,9 @@ void PagedArticle::load() {
 
 	if (serve_folder != "") {
 		if (serve_folder_relative) {
-			file_cache->wwwroot = articles_folder;
-			file_cache->wwwroot.append_path(serve_folder);
+			file_cache->set_wwwroot(_articles_folder_abs.append_path(serve_folder));
 		} else {
-			file_cache->wwwroot = serve_folder;
+			file_cache->set_wwwroot(serve_folder);
 		}
 
 		file_cache->wwwroot_refresh_cache();
@@ -153,21 +218,32 @@ void PagedArticle::_notification(const int what) {
 	}
 }
 
-PagedArticle::PagedArticle() :
-		WebNode() {
-
-	file_cache = new FileCache();
+PagedArticle::PagedArticle() {
+	file_cache.instance();
 
 	serve_folder_relative = true;
 	serve_folder = "files";
 }
 
 PagedArticle::~PagedArticle() {
-	for (std::map<String, String *>::iterator it = pages.begin(); it != pages.end(); ++it) {
-		delete ((*it).second);
-	}
-
 	pages.clear();
+}
 
-	delete file_cache;
+void PagedArticle::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_articles_folder"), &PagedArticle::get_articles_folder);
+	ClassDB::bind_method(D_METHOD("set_articles_folder", "val"), &PagedArticle::set_articles_folder);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "articles_folder"), "set_articles_folder", "get_articles_folder");
+
+	ClassDB::bind_method(D_METHOD("get_serve_folder_relative"), &PagedArticle::get_serve_folder_relative);
+	ClassDB::bind_method(D_METHOD("set_serve_folder_relative", "val"), &PagedArticle::set_serve_folder_relative);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "serve_folder_relative"), "set_serve_folder_relative", "get_serve_folder_relative");
+
+	ClassDB::bind_method(D_METHOD("get_serve_folder"), &PagedArticle::get_serve_folder);
+	ClassDB::bind_method(D_METHOD("set_serve_folder", "val"), &PagedArticle::set_serve_folder);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "serve_folder"), "set_serve_folder", "get_serve_folder");
+
+	ClassDB::bind_method(D_METHOD("load"), &PagedArticle::load);
+	ClassDB::bind_method(D_METHOD("get_index_page"), &PagedArticle::get_index_page);
+	ClassDB::bind_method(D_METHOD("get_summary"), &PagedArticle::get_summary);
+	ClassDB::bind_method(D_METHOD("generate_summary"), &PagedArticle::generate_summary);
 }
