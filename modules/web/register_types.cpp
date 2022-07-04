@@ -26,6 +26,7 @@ SOFTWARE.
 
 #include "file_cache.h"
 
+#include "html/form_validator.h"
 #include "html/html_builder_bind.h"
 #include "html/paginator.h"
 
@@ -61,6 +62,22 @@ void register_web_types() {
 	ClassDB::register_class<_HTMLTag>();
 
 	ClassDB::register_class<HTMLPaginator>();
+
+	ClassDB::register_class<FormFieldEntry>();
+	ClassDB::register_class<FormExistsFieldEntry>();
+	ClassDB::register_class<FormIntFieldEntry>();
+	ClassDB::register_class<FormFloatFieldEntry>();
+	ClassDB::register_class<FormAlphaFieldEntry>();
+	ClassDB::register_class<FormAlphaNumericFieldEntry>();
+	ClassDB::register_class<FormNeedsLowercaseCharacterFieldEntry>();
+	ClassDB::register_class<FormNeedsUppercaseCharacterFieldEntry>();
+	ClassDB::register_class<FormNeedsOtherCharacterFieldEntry>();
+	ClassDB::register_class<FormMinimumLengthFieldEntry>();
+	ClassDB::register_class<FormMaximumLengthFieldEntry>();
+	ClassDB::register_class<FormEmailFieldEntry>();
+	ClassDB::register_class<FormNeedToMatchOtherFieldEntry>();
+	ClassDB::register_class<FormField>();
+	ClassDB::register_class<FormValidator>();
 
 	ClassDB::register_class<FileCache>();
 

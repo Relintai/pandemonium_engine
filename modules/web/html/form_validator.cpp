@@ -18,6 +18,12 @@ FormFieldEntry::FormFieldEntry() {
 FormFieldEntry::~FormFieldEntry() {
 }
 
+void FormFieldEntry::_bind_methods() {
+	BIND_VMETHOD(MethodInfo("_validate", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest"), PropertyInfo(Variant::OBJECT, "field", PROPERTY_HINT_RESOURCE_TYPE, "FormField"), PropertyInfo(Variant::STRING, "data")));
+	ClassDB::bind_method(D_METHOD("validate", "request", "field", "data"), &FormFieldEntry::validate);
+	ClassDB::bind_method(D_METHOD("_validate", "request", "field", "data"), &FormFieldEntry::_validate);
+}
+
 //FormExistsFieldEntry
 
 String FormExistsFieldEntry::get_not_exists_error() {
@@ -41,6 +47,12 @@ FormExistsFieldEntry::FormExistsFieldEntry() {
 	_not_exists_error = " field need to exists!";
 }
 FormExistsFieldEntry::~FormExistsFieldEntry() {
+}
+
+void FormExistsFieldEntry::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_not_exists_error"), &FormExistsFieldEntry::get_not_exists_error);
+	ClassDB::bind_method(D_METHOD("set_not_exists_error", "val"), &FormExistsFieldEntry::set_not_exists_error);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "not_exists_error"), "set_not_exists_error", "get_not_exists_error");
 }
 
 //FormIntFieldEntry
@@ -73,6 +85,12 @@ FormIntFieldEntry::FormIntFieldEntry() {
 FormIntFieldEntry::~FormIntFieldEntry() {
 }
 
+void FormIntFieldEntry::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_not_int_error"), &FormIntFieldEntry::get_not_int_error);
+	ClassDB::bind_method(D_METHOD("set_not_int_error", "val"), &FormIntFieldEntry::set_not_int_error);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "not_int_error"), "set_not_int_error", "get_not_int_error");
+}
+
 //FormFloatFieldEntry
 
 String FormFloatFieldEntry::get_not_float_error() {
@@ -100,6 +118,12 @@ FormFloatFieldEntry::FormFloatFieldEntry() {
 	_not_float_error = " needs to be an floating point number.";
 }
 FormFloatFieldEntry::~FormFloatFieldEntry() {
+}
+
+void FormFloatFieldEntry::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_not_float_error"), &FormFloatFieldEntry::get_not_float_error);
+	ClassDB::bind_method(D_METHOD("set_not_float_error", "val"), &FormFloatFieldEntry::set_not_float_error);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "not_float_error"), "set_not_float_error", "get_not_float_error");
 }
 
 //FormAlphaFieldEntry
@@ -131,6 +155,12 @@ FormAlphaFieldEntry::FormAlphaFieldEntry() {
 FormAlphaFieldEntry::~FormAlphaFieldEntry() {
 }
 
+void FormAlphaFieldEntry::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_not_alpha_error"), &FormAlphaFieldEntry::get_not_alpha_error);
+	ClassDB::bind_method(D_METHOD("set_not_alpha_error", "val"), &FormAlphaFieldEntry::set_not_alpha_error);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "not_alpha_error"), "set_not_alpha_error", "get_not_alpha_error");
+}
+
 //FormAlphaNumericFieldEntry
 
 String FormAlphaNumericFieldEntry::get_not_alpha_numeric_error() {
@@ -158,6 +188,12 @@ FormAlphaNumericFieldEntry::FormAlphaNumericFieldEntry() {
 	_not_alpha_numeric_error = " needs to only contain caharcters of numbers.";
 }
 FormAlphaNumericFieldEntry::~FormAlphaNumericFieldEntry() {
+}
+
+void FormAlphaNumericFieldEntry::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_not_alpha_numeric_error"), &FormAlphaNumericFieldEntry::get_not_alpha_numeric_error);
+	ClassDB::bind_method(D_METHOD("set_not_alpha_numeric_error", "val"), &FormAlphaNumericFieldEntry::set_not_alpha_numeric_error);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "not_alpha_numeric_error"), "set_not_alpha_numeric_error", "get_not_alpha_numeric_error");
 }
 
 //FormNeedsLowercaseCharacterFieldEntry
@@ -189,6 +225,12 @@ FormNeedsLowercaseCharacterFieldEntry::FormNeedsLowercaseCharacterFieldEntry() {
 FormNeedsLowercaseCharacterFieldEntry::~FormNeedsLowercaseCharacterFieldEntry() {
 }
 
+void FormNeedsLowercaseCharacterFieldEntry::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_does_not_have_lowercase_error"), &FormNeedsLowercaseCharacterFieldEntry::get_does_not_have_lowercase_error);
+	ClassDB::bind_method(D_METHOD("set_does_not_have_lowercase_error", "val"), &FormNeedsLowercaseCharacterFieldEntry::set_does_not_have_lowercase_error);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "does_not_have_lowercase_error"), "set_does_not_have_lowercase_error", "get_does_not_have_lowercase_error");
+}
+
 //FormNeedsUppercaseCharacterFieldEntry
 
 String FormNeedsUppercaseCharacterFieldEntry::get_does_not_have_uppercase_error() {
@@ -217,6 +259,12 @@ FormNeedsUppercaseCharacterFieldEntry::FormNeedsUppercaseCharacterFieldEntry() {
 FormNeedsUppercaseCharacterFieldEntry::~FormNeedsUppercaseCharacterFieldEntry() {
 }
 
+void FormNeedsUppercaseCharacterFieldEntry::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_does_not_have_uppercase_error"), &FormNeedsUppercaseCharacterFieldEntry::get_does_not_have_uppercase_error);
+	ClassDB::bind_method(D_METHOD("set_does_not_have_uppercase_error", "val"), &FormNeedsUppercaseCharacterFieldEntry::set_does_not_have_uppercase_error);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "does_not_have_uppercase_error"), "set_does_not_have_uppercase_error", "get_does_not_have_uppercase_error");
+}
+
 //FormNeedsOtherCharacterFieldEntry
 
 String FormNeedsOtherCharacterFieldEntry::get_does_not_have_other_error() {
@@ -243,6 +291,12 @@ FormNeedsOtherCharacterFieldEntry::FormNeedsOtherCharacterFieldEntry() {
 	_does_not_have_other_error = " needs at least one other character!";
 }
 FormNeedsOtherCharacterFieldEntry::~FormNeedsOtherCharacterFieldEntry() {
+}
+
+void FormNeedsOtherCharacterFieldEntry::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_does_not_have_other_error"), &FormNeedsOtherCharacterFieldEntry::get_does_not_have_other_error);
+	ClassDB::bind_method(D_METHOD("set_does_not_have_other_error", "val"), &FormNeedsOtherCharacterFieldEntry::set_does_not_have_other_error);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "does_not_have_other_error"), "set_does_not_have_other_error", "get_does_not_have_other_error");
 }
 
 //FormMinimumLengthFieldEntry
@@ -286,6 +340,20 @@ FormMinimumLengthFieldEntry::FormMinimumLengthFieldEntry() {
 FormMinimumLengthFieldEntry::~FormMinimumLengthFieldEntry() {
 }
 
+void FormMinimumLengthFieldEntry::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_min_length"), &FormMinimumLengthFieldEntry::get_min_length);
+	ClassDB::bind_method(D_METHOD("set_min_length", "val"), &FormMinimumLengthFieldEntry::set_min_length);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "min_length"), "set_min_length", "get_min_length");
+
+	ClassDB::bind_method(D_METHOD("get_does_not_have_min_length_errorf"), &FormMinimumLengthFieldEntry::get_does_not_have_min_length_errorf);
+	ClassDB::bind_method(D_METHOD("set_does_not_have_min_length_errorf", "val"), &FormMinimumLengthFieldEntry::set_does_not_have_min_length_errorf);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "does_not_have_min_length_errorf"), "set_does_not_have_min_length_errorf", "get_does_not_have_min_length_errorf");
+
+	ClassDB::bind_method(D_METHOD("get_does_not_have_min_length_errors"), &FormMinimumLengthFieldEntry::get_does_not_have_min_length_errors);
+	ClassDB::bind_method(D_METHOD("set_does_not_have_min_length_errors", "val"), &FormMinimumLengthFieldEntry::set_does_not_have_min_length_errors);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "does_not_have_min_length_errors"), "set_does_not_have_min_length_errors", "get_does_not_have_min_length_errors");
+}
+
 //FormMaximumLengthFieldEntry
 
 int FormMaximumLengthFieldEntry::get_max_length() {
@@ -326,6 +394,20 @@ FormMaximumLengthFieldEntry::FormMaximumLengthFieldEntry() {
 	_max_length = 10;
 }
 FormMaximumLengthFieldEntry::~FormMaximumLengthFieldEntry() {
+}
+
+void FormMaximumLengthFieldEntry::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_max_length"), &FormMaximumLengthFieldEntry::get_max_length);
+	ClassDB::bind_method(D_METHOD("set_max_length", "val"), &FormMaximumLengthFieldEntry::set_max_length);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_length"), "set_max_length", "get_max_length");
+
+	ClassDB::bind_method(D_METHOD("get_does_not_have_max_length_errorf"), &FormMaximumLengthFieldEntry::get_does_not_have_max_length_errorf);
+	ClassDB::bind_method(D_METHOD("set_does_not_have_max_length_errorf", "val"), &FormMaximumLengthFieldEntry::set_does_not_have_max_length_errorf);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "does_not_have_max_length_errorf"), "set_does_not_have_max_length_errorf", "get_does_not_have_max_length_errorf");
+
+	ClassDB::bind_method(D_METHOD("get_does_not_have_max_length_errors"), &FormMaximumLengthFieldEntry::get_does_not_have_max_length_errors);
+	ClassDB::bind_method(D_METHOD("set_does_not_have_max_length_errors", "val"), &FormMaximumLengthFieldEntry::set_does_not_have_max_length_errors);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "does_not_have_max_length_errors"), "set_does_not_have_max_length_errors", "get_does_not_have_max_length_errors");
 }
 
 //FormEmailFieldEntry
@@ -416,6 +498,12 @@ FormEmailFieldEntry::FormEmailFieldEntry() {
 FormEmailFieldEntry::~FormEmailFieldEntry() {
 }
 
+void FormEmailFieldEntry::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_email_format_error"), &FormEmailFieldEntry::get_email_format_error);
+	ClassDB::bind_method(D_METHOD("set_email_format_error", "val"), &FormEmailFieldEntry::set_email_format_error);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "email_format_error"), "set_email_format_error", "get_email_format_error");
+}
+
 //FormNeedToMatchOtherFieldEntry
 
 String FormNeedToMatchOtherFieldEntry::get_other_field() {
@@ -446,6 +534,16 @@ FormNeedToMatchOtherFieldEntry::FormNeedToMatchOtherFieldEntry() {
 	_does_not_match_error = " does not match ";
 }
 FormNeedToMatchOtherFieldEntry::~FormNeedToMatchOtherFieldEntry() {
+}
+
+void FormNeedToMatchOtherFieldEntry::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_other_field"), &FormNeedToMatchOtherFieldEntry::get_other_field);
+	ClassDB::bind_method(D_METHOD("set_other_field", "val"), &FormNeedToMatchOtherFieldEntry::set_other_field);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "other_field"), "set_other_field", "get_other_field");
+
+	ClassDB::bind_method(D_METHOD("get_does_not_match_error"), &FormNeedToMatchOtherFieldEntry::get_does_not_match_error);
+	ClassDB::bind_method(D_METHOD("set_does_not_match_error", "val"), &FormNeedToMatchOtherFieldEntry::set_does_not_match_error);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "does_not_match_error"), "set_does_not_match_error", "get_does_not_match_error");
 }
 
 //FormField
@@ -667,6 +765,57 @@ FormField::~FormField() {
 	_entries.clear();
 }
 
+void FormField::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_field_name"), &FormField::get_field_name);
+	ClassDB::bind_method(D_METHOD("set_field_name", "val"), &FormField::set_field_name);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "field_name"), "set_field_name", "get_field_name");
+
+	ClassDB::bind_method(D_METHOD("get_human_name"), &FormField::get_human_name);
+	ClassDB::bind_method(D_METHOD("set_human_name", "val"), &FormField::set_human_name);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "human_name"), "set_human_name", "get_human_name");
+
+	ClassDB::bind_method(D_METHOD("get_ignore_if_not_exists"), &FormField::get_ignore_if_not_exists);
+	ClassDB::bind_method(D_METHOD("set_ignore_if_not_exists", "val"), &FormField::set_ignore_if_not_exists);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "ignore_if_not_exists"), "set_ignore_if_not_exists", "get_ignore_if_not_exists");
+
+	ClassDB::bind_method(D_METHOD("get_ignore_if_other_field_not_exists"), &FormField::get_ignore_if_other_field_not_exists);
+	ClassDB::bind_method(D_METHOD("set_ignore_if_other_field_not_exists", "val"), &FormField::set_ignore_if_other_field_not_exists);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "ignore_if_other_field_not_exists"), "set_ignore_if_other_field_not_exists", "get_ignore_if_other_field_not_exists");
+
+	ClassDB::bind_method(D_METHOD("get_ignore_if_other_field_not_exist_field"), &FormField::get_ignore_if_other_field_not_exist_field);
+	ClassDB::bind_method(D_METHOD("set_ignore_if_other_field_not_exist_field", "val"), &FormField::set_ignore_if_other_field_not_exist_field);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "ignore_if_other_field_not_exist_field"), "set_ignore_if_other_field_not_exist_field", "get_ignore_if_other_field_not_exist_field");
+
+	ClassDB::bind_method(D_METHOD("add_entry", "field"), &FormField::add_entry);
+	ClassDB::bind_method(D_METHOD("get_entry", "index"), &FormField::get_entry);
+	ClassDB::bind_method(D_METHOD("remove_entry", "index"), &FormField::remove_entry);
+	ClassDB::bind_method(D_METHOD("clear_entries"), &FormField::clear_entries);
+	ClassDB::bind_method(D_METHOD("get_entry_count"), &FormField::get_entry_count);
+
+	ClassDB::bind_method(D_METHOD("get_entries"), &FormField::get_entries);
+	ClassDB::bind_method(D_METHOD("set_entries", "array"), &FormField::set_entries);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entries", PROPERTY_HINT_NONE, "17/17:FormFieldEntry", PROPERTY_USAGE_DEFAULT, "FormFieldEntry"), "set_entries", "get_entries");
+
+	ClassDB::bind_method(D_METHOD("need_to_exist"), &FormField::need_to_exist);
+	ClassDB::bind_method(D_METHOD("need_to_be_int"), &FormField::need_to_be_int);
+	ClassDB::bind_method(D_METHOD("need_to_be_float"), &FormField::need_to_be_float);
+	ClassDB::bind_method(D_METHOD("need_to_be_alpha"), &FormField::need_to_be_alpha);
+	ClassDB::bind_method(D_METHOD("need_to_be_alpha_numeric"), &FormField::need_to_be_alpha_numeric);
+	ClassDB::bind_method(D_METHOD("need_to_have_lowercase_character"), &FormField::need_to_have_lowercase_character);
+	ClassDB::bind_method(D_METHOD("need_to_have_uppercase_character"), &FormField::need_to_have_uppercase_character);
+	ClassDB::bind_method(D_METHOD("need_to_have_other_character"), &FormField::need_to_have_other_character);
+	ClassDB::bind_method(D_METHOD("need_minimum_length", "min_length"), &FormField::need_minimum_length);
+	ClassDB::bind_method(D_METHOD("need_maximum_length", "max_length"), &FormField::need_maximum_length);
+	ClassDB::bind_method(D_METHOD("need_to_be_email"), &FormField::need_to_be_email);
+	ClassDB::bind_method(D_METHOD("need_to_match", "other"), &FormField::need_to_match);
+	ClassDB::bind_method(D_METHOD("ignore_if_not_exists"), &FormField::ignore_if_not_exists);
+	ClassDB::bind_method(D_METHOD("ignore_if_other_field_not_exists", "other"), &FormField::ignore_if_other_field_not_exists);
+
+	BIND_VMETHOD(MethodInfo("_validate", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
+	ClassDB::bind_method(D_METHOD("validate", "request"), &FormField::validate);
+	ClassDB::bind_method(D_METHOD("_validate", "request"), &FormField::_validate);
+}
+
 //FormValidator
 
 void FormValidator::add_field(const Ref<FormField> &field) {
@@ -742,4 +891,21 @@ FormValidator::FormValidator() {
 
 FormValidator::~FormValidator() {
 	_fields.clear();
+}
+
+void FormValidator::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("add_field", "field"), &FormValidator::add_field);
+	ClassDB::bind_method(D_METHOD("get_field", "index"), &FormValidator::get_field);
+	ClassDB::bind_method(D_METHOD("remove_field", "index"), &FormValidator::remove_field);
+	ClassDB::bind_method(D_METHOD("clear_fields"), &FormValidator::clear_fields);
+	ClassDB::bind_method(D_METHOD("new_field", "name", "human_name"), &FormValidator::new_field);
+	ClassDB::bind_method(D_METHOD("get_field_count"), &FormValidator::get_field_count);
+
+	ClassDB::bind_method(D_METHOD("get_fields"), &FormValidator::get_fields);
+	ClassDB::bind_method(D_METHOD("set_fields", "array"), &FormValidator::set_fields);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "fields", PROPERTY_HINT_NONE, "17/17:FormField", PROPERTY_USAGE_DEFAULT, "FormField"), "set_fields", "get_fields");
+
+	BIND_VMETHOD(MethodInfo("_validate", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
+	ClassDB::bind_method(D_METHOD("validate", "request"), &FormValidator::validate);
+	ClassDB::bind_method(D_METHOD("_validate", "request"), &FormValidator::_validate);
 }

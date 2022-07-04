@@ -19,6 +19,9 @@ public:
 
 	FormFieldEntry();
 	~FormFieldEntry();
+
+protected:
+	static void _bind_methods();
 };
 
 class FormExistsFieldEntry : public FormFieldEntry {
@@ -34,6 +37,8 @@ public:
 	~FormExistsFieldEntry();
 
 protected:
+	static void _bind_methods();
+
 	String _not_exists_error;
 };
 
@@ -50,6 +55,8 @@ public:
 	~FormIntFieldEntry();
 
 protected:
+	static void _bind_methods();
+
 	String _not_int_error;
 };
 
@@ -66,6 +73,8 @@ public:
 	~FormFloatFieldEntry();
 
 protected:
+	static void _bind_methods();
+
 	String _not_float_error;
 };
 
@@ -82,6 +91,8 @@ public:
 	~FormAlphaFieldEntry();
 
 protected:
+	static void _bind_methods();
+
 	String _not_alpha_error;
 };
 
@@ -98,6 +109,8 @@ public:
 	~FormAlphaNumericFieldEntry();
 
 protected:
+	static void _bind_methods();
+
 	String _not_alpha_numeric_error;
 };
 
@@ -114,6 +127,8 @@ public:
 	~FormNeedsLowercaseCharacterFieldEntry();
 
 protected:
+	static void _bind_methods();
+
 	String _does_not_have_lowercase_error;
 };
 
@@ -130,6 +145,8 @@ public:
 	~FormNeedsUppercaseCharacterFieldEntry();
 
 protected:
+	static void _bind_methods();
+
 	String _does_not_have_uppercase_error;
 };
 
@@ -146,6 +163,8 @@ public:
 	~FormNeedsOtherCharacterFieldEntry();
 
 protected:
+	static void _bind_methods();
+
 	String _does_not_have_other_error;
 };
 
@@ -168,6 +187,8 @@ public:
 	~FormMinimumLengthFieldEntry();
 
 protected:
+	static void _bind_methods();
+
 	int _min_length;
 
 	String _does_not_have_min_length_errorf;
@@ -193,6 +214,8 @@ public:
 	~FormMaximumLengthFieldEntry();
 
 protected:
+	static void _bind_methods();
+
 	int _max_length;
 
 	String _does_not_have_max_length_errorf;
@@ -212,6 +235,8 @@ public:
 	~FormEmailFieldEntry();
 
 protected:
+	static void _bind_methods();
+
 	String _email_format_error;
 };
 
@@ -231,6 +256,8 @@ public:
 	~FormNeedToMatchOtherFieldEntry();
 
 protected:
+	static void _bind_methods();
+
 	String _other_field;
 	String _does_not_match_error;
 };

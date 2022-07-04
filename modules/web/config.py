@@ -34,6 +34,22 @@ def get_doc_classes():
         "HTMLTag",
         "HTMLPaginator",
 
+        "FormFieldEntry",
+    	"FormExistsFieldEntry",
+	    "FormIntFieldEntry",
+    	"FormFloatFieldEntry",
+	    "FormAlphaFieldEntry",
+    	"FormAlphaNumericFieldEntry",
+	    "FormNeedsLowercaseCharacterFieldEntry",
+    	"FormNeedsUppercaseCharacterFieldEntry",
+	    "FormNeedsOtherCharacterFieldEntry",
+    	"FormMinimumLengthFieldEntry",
+	    "FormMaximumLengthFieldEntry",
+    	"FormEmailFieldEntry",
+	    "FormNeedToMatchOtherFieldEntry",
+    	"FormField",
+	    "FormValidator",
+
         "WebServerSimple",
 
         "StaticPage",
