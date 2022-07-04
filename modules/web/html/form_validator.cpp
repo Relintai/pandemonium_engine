@@ -20,23 +20,37 @@ FormFieldEntry::~FormFieldEntry() {
 
 //FormExistsFieldEntry
 
+String FormExistsFieldEntry::get_not_exists_error() {
+	return _not_exists_error;
+}
+void FormExistsFieldEntry::set_not_exists_error(const String &val) {
+	_not_exists_error = val;
+}
+
 PoolStringArray FormExistsFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
 
 	if (data == "") {
-		errors.push_back(field->get_human_name() + not_exists_error);
+		errors.push_back(field->get_human_name() + _not_exists_error);
 	}
 
 	return errors;
 }
 
 FormExistsFieldEntry::FormExistsFieldEntry() {
-	not_exists_error = " field need to exists!";
+	_not_exists_error = " field need to exists!";
 }
 FormExistsFieldEntry::~FormExistsFieldEntry() {
 }
 
 //FormIntFieldEntry
+
+String FormIntFieldEntry::get_not_int_error() {
+	return _not_int_error;
+}
+void FormIntFieldEntry::set_not_int_error(const String &val) {
+	_not_int_error = val;
+}
 
 PoolStringArray FormIntFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
@@ -46,20 +60,27 @@ PoolStringArray FormIntFieldEntry::_validate(Ref<WebServerRequest> request, cons
 	}
 
 	if (!data.is_valid_integer()) {
-		errors.push_back(field->get_human_name() + not_int_error);
+		errors.push_back(field->get_human_name() + _not_int_error);
 	}
 
 	return errors;
 }
 
 FormIntFieldEntry::FormIntFieldEntry() {
-	not_int_error = " needs to be an integer.";
+	_not_int_error = " needs to be an integer.";
 }
 
 FormIntFieldEntry::~FormIntFieldEntry() {
 }
 
 //FormFloatFieldEntry
+
+String FormFloatFieldEntry::get_not_float_error() {
+	return _not_float_error;
+}
+void FormFloatFieldEntry::set_not_float_error(const String &val) {
+	_not_float_error = val;
+}
 
 PoolStringArray FormFloatFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
@@ -69,26 +90,33 @@ PoolStringArray FormFloatFieldEntry::_validate(Ref<WebServerRequest> request, co
 	}
 
 	if (!data.is_valid_float()) {
-		errors.push_back(field->get_human_name() + not_float_error);
+		errors.push_back(field->get_human_name() + _not_float_error);
 	}
 
 	return errors;
 }
 
 FormFloatFieldEntry::FormFloatFieldEntry() {
-	not_float_error = " needs to be an floating point number.";
+	_not_float_error = " needs to be an floating point number.";
 }
 FormFloatFieldEntry::~FormFloatFieldEntry() {
 }
 
 //FormAlphaFieldEntry
 
+String FormAlphaFieldEntry::get_not_alpha_error() {
+	return _not_alpha_error;
+}
+void FormAlphaFieldEntry::set_not_alpha_error(const String &val) {
+	_not_alpha_error = val;
+}
+
 PoolStringArray FormAlphaFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
 
 	for (int i = 0; i < data.size(); ++i) {
 		if (!isalpha(data[i])) {
-			errors.push_back(field->get_human_name() + not_alpha_error);
+			errors.push_back(field->get_human_name() + _not_alpha_error);
 
 			return errors;
 		}
@@ -98,19 +126,26 @@ PoolStringArray FormAlphaFieldEntry::_validate(Ref<WebServerRequest> request, co
 }
 
 FormAlphaFieldEntry::FormAlphaFieldEntry() {
-	not_alpha_error = " needs to only contain caharcters.";
+	_not_alpha_error = " needs to only contain caharcters.";
 }
 FormAlphaFieldEntry::~FormAlphaFieldEntry() {
 }
 
 //FormAlphaNumericFieldEntry
 
+String FormAlphaNumericFieldEntry::get_not_alpha_numeric_error() {
+	return _not_alpha_numeric_error;
+}
+void FormAlphaNumericFieldEntry::set_not_alpha_numeric_error(const String &val) {
+	_not_alpha_numeric_error = val;
+}
+
 PoolStringArray FormAlphaNumericFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
 
 	for (int i = 0; i < data.size(); ++i) {
 		if (!isalnum(data[i])) {
-			errors.push_back(field->get_human_name() + not_alpha_numeric_error);
+			errors.push_back(field->get_human_name() + _not_alpha_numeric_error);
 
 			return errors;
 		}
@@ -120,12 +155,19 @@ PoolStringArray FormAlphaNumericFieldEntry::_validate(Ref<WebServerRequest> requ
 }
 
 FormAlphaNumericFieldEntry::FormAlphaNumericFieldEntry() {
-	not_alpha_numeric_error = " needs to only contain caharcters of numbers.";
+	_not_alpha_numeric_error = " needs to only contain caharcters of numbers.";
 }
 FormAlphaNumericFieldEntry::~FormAlphaNumericFieldEntry() {
 }
 
 //FormNeedsLowercaseCharacterFieldEntry
+
+String FormNeedsLowercaseCharacterFieldEntry::get_does_not_have_lowercase_error() {
+	return _does_not_have_lowercase_error;
+}
+void FormNeedsLowercaseCharacterFieldEntry::set_does_not_have_lowercase_error(const String &val) {
+	_does_not_have_lowercase_error = val;
+}
 
 PoolStringArray FormNeedsLowercaseCharacterFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
@@ -136,18 +178,25 @@ PoolStringArray FormNeedsLowercaseCharacterFieldEntry::_validate(Ref<WebServerRe
 		}
 	}
 
-	errors.push_back(field->get_human_name() + does_not_have_lowercase_error);
+	errors.push_back(field->get_human_name() + _does_not_have_lowercase_error);
 
 	return errors;
 }
 
 FormNeedsLowercaseCharacterFieldEntry::FormNeedsLowercaseCharacterFieldEntry() {
-	does_not_have_lowercase_error = " needs at least one lowercase character!";
+	_does_not_have_lowercase_error = " needs at least one lowercase character!";
 }
 FormNeedsLowercaseCharacterFieldEntry::~FormNeedsLowercaseCharacterFieldEntry() {
 }
 
 //FormNeedsUppercaseCharacterFieldEntry
+
+String FormNeedsUppercaseCharacterFieldEntry::get_does_not_have_uppercase_error() {
+	return _does_not_have_uppercase_error;
+}
+void FormNeedsUppercaseCharacterFieldEntry::set_does_not_have_uppercase_error(const String &val) {
+	_does_not_have_uppercase_error = val;
+}
 
 PoolStringArray FormNeedsUppercaseCharacterFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
@@ -157,18 +206,25 @@ PoolStringArray FormNeedsUppercaseCharacterFieldEntry::_validate(Ref<WebServerRe
 		}
 	}
 
-	errors.push_back(field->get_human_name() + does_not_have_uppercase_error);
+	errors.push_back(field->get_human_name() + _does_not_have_uppercase_error);
 
 	return errors;
 }
 
 FormNeedsUppercaseCharacterFieldEntry::FormNeedsUppercaseCharacterFieldEntry() {
-	does_not_have_uppercase_error = " needs at least one uppercase character!";
+	_does_not_have_uppercase_error = " needs at least one uppercase character!";
 }
 FormNeedsUppercaseCharacterFieldEntry::~FormNeedsUppercaseCharacterFieldEntry() {
 }
 
 //FormNeedsOtherCharacterFieldEntry
+
+String FormNeedsOtherCharacterFieldEntry::get_does_not_have_other_error() {
+	return _does_not_have_other_error;
+}
+void FormNeedsOtherCharacterFieldEntry::set_does_not_have_other_error(const String &val) {
+	_does_not_have_other_error = val;
+}
 
 PoolStringArray FormNeedsOtherCharacterFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
@@ -178,71 +234,120 @@ PoolStringArray FormNeedsOtherCharacterFieldEntry::_validate(Ref<WebServerReques
 		}
 	}
 
-	errors.push_back(field->get_human_name() + does_not_have_other_error);
+	errors.push_back(field->get_human_name() + _does_not_have_other_error);
 
 	return errors;
 }
 
 FormNeedsOtherCharacterFieldEntry::FormNeedsOtherCharacterFieldEntry() {
-	does_not_have_other_error = " needs at least one other character!";
+	_does_not_have_other_error = " needs at least one other character!";
 }
 FormNeedsOtherCharacterFieldEntry::~FormNeedsOtherCharacterFieldEntry() {
 }
 
 //FormMinimumLengthFieldEntry
 
+int FormMinimumLengthFieldEntry::get_min_length() {
+	return _min_length;
+}
+void FormMinimumLengthFieldEntry::set_min_length(const int &val) {
+	_min_length = val;
+}
+
+String FormMinimumLengthFieldEntry::get_does_not_have_min_length_errorf() {
+	return _does_not_have_min_length_errorf;
+}
+void FormMinimumLengthFieldEntry::set_does_not_have_min_length_errorf(const String &val) {
+	_does_not_have_min_length_errorf = val;
+}
+
+String FormMinimumLengthFieldEntry::get_does_not_have_min_length_errors() {
+	return _does_not_have_min_length_errors;
+}
+void FormMinimumLengthFieldEntry::set_does_not_have_min_length_errors(const String &val) {
+	_does_not_have_min_length_errors = val;
+}
+
 PoolStringArray FormMinimumLengthFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
-	if (data.size() < min_length) {
-		errors.push_back(field->get_human_name() + does_not_have_min_length_errorf + itos(min_length) + does_not_have_min_length_errors);
+	if (data.size() < _min_length) {
+		errors.push_back(field->get_human_name() + _does_not_have_min_length_errorf + itos(_min_length) + _does_not_have_min_length_errors);
 	}
 
 	return errors;
 }
 
 FormMinimumLengthFieldEntry::FormMinimumLengthFieldEntry() {
-	does_not_have_min_length_errorf = " needs at least ";
-	does_not_have_min_length_errors = " characters!";
+	_does_not_have_min_length_errorf = " needs at least ";
+	_does_not_have_min_length_errors = " characters!";
 
-	min_length = 5;
+	_min_length = 5;
 }
 FormMinimumLengthFieldEntry::~FormMinimumLengthFieldEntry() {
 }
 
 //FormMaximumLengthFieldEntry
 
+int FormMaximumLengthFieldEntry::get_max_length() {
+	return _max_length;
+}
+void FormMaximumLengthFieldEntry::set_max_length(const int &val) {
+	_max_length = val;
+}
+
+String FormMaximumLengthFieldEntry::get_does_not_have_max_length_errorf() {
+	return _does_not_have_max_length_errorf;
+}
+void FormMaximumLengthFieldEntry::set_does_not_have_max_length_errorf(const String &val) {
+	_does_not_have_max_length_errorf = val;
+}
+
+String FormMaximumLengthFieldEntry::get_does_not_have_max_length_errors() {
+	return _does_not_have_max_length_errors;
+}
+void FormMaximumLengthFieldEntry::set_does_not_have_max_length_errors(const String &val) {
+	_does_not_have_max_length_errors = val;
+}
+
 PoolStringArray FormMaximumLengthFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
 
-	if (data.size() > max_length) {
-		errors.push_back(field->get_human_name() + does_not_have_max_length_errorf + itos(max_length) + does_not_have_max_length_errors);
+	if (data.size() > _max_length) {
+		errors.push_back(field->get_human_name() + _does_not_have_max_length_errorf + itos(_max_length) + _does_not_have_max_length_errors);
 	}
 
 	return errors;
 }
 
 FormMaximumLengthFieldEntry::FormMaximumLengthFieldEntry() {
-	does_not_have_max_length_errorf = " needs at most ";
-	does_not_have_max_length_errors = " characters!";
+	_does_not_have_max_length_errorf = " needs at most ";
+	_does_not_have_max_length_errors = " characters!";
 
-	max_length = 10;
+	_max_length = 10;
 }
 FormMaximumLengthFieldEntry::~FormMaximumLengthFieldEntry() {
 }
 
 //FormEmailFieldEntry
 
+String FormEmailFieldEntry::get_email_format_error() {
+	return _email_format_error;
+}
+void FormEmailFieldEntry::set_email_format_error(const String &val) {
+	_email_format_error = val;
+}
+
 PoolStringArray FormEmailFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
 
 	if (data.size() == 0) {
-		errors.push_back(field->get_human_name() + email_format_error);
+		errors.push_back(field->get_human_name() + _email_format_error);
 
 		return errors;
 	}
 
 	if (!isalpha(data[0])) {
-		errors.push_back(field->get_human_name() + email_format_error);
+		errors.push_back(field->get_human_name() + _email_format_error);
 
 		return errors;
 	}
@@ -253,7 +358,7 @@ PoolStringArray FormEmailFieldEntry::_validate(Ref<WebServerRequest> request, co
 	for (int i = 0; i < data.size(); ++i) {
 		if (data[i] == '.') {
 			if (dot_pos != -1) {
-				errors.push_back(field->get_human_name() + email_format_error);
+				errors.push_back(field->get_human_name() + _email_format_error);
 
 				return errors;
 			}
@@ -265,7 +370,7 @@ PoolStringArray FormEmailFieldEntry::_validate(Ref<WebServerRequest> request, co
 	}
 
 	if (dot_pos == -1) {
-		errors.push_back(field->get_human_name() + email_format_error);
+		errors.push_back(field->get_human_name() + _email_format_error);
 
 		return errors;
 	}
@@ -273,7 +378,7 @@ PoolStringArray FormEmailFieldEntry::_validate(Ref<WebServerRequest> request, co
 	for (int i = 0; i < data.size(); ++i) {
 		if (data[i] == '@') {
 			if (at_pos != -1) {
-				errors.push_back(field->get_human_name() + email_format_error);
+				errors.push_back(field->get_human_name() + _email_format_error);
 
 				return errors;
 			}
@@ -285,7 +390,7 @@ PoolStringArray FormEmailFieldEntry::_validate(Ref<WebServerRequest> request, co
 	}
 
 	if (at_pos == -1) {
-		errors.push_back(field->get_human_name() + email_format_error);
+		errors.push_back(field->get_human_name() + _email_format_error);
 
 		return errors;
 	}
@@ -296,7 +401,7 @@ PoolStringArray FormEmailFieldEntry::_validate(Ref<WebServerRequest> request, co
 		}
 
 		if (!isalnum(data[i])) {
-			errors.push_back(field->get_human_name() + email_format_error);
+			errors.push_back(field->get_human_name() + _email_format_error);
 
 			return errors;
 		}
@@ -306,25 +411,39 @@ PoolStringArray FormEmailFieldEntry::_validate(Ref<WebServerRequest> request, co
 }
 
 FormEmailFieldEntry::FormEmailFieldEntry() {
-	email_format_error = " is invalid!";
+	_email_format_error = " is invalid!";
 }
 FormEmailFieldEntry::~FormEmailFieldEntry() {
 }
 
 //FormNeedToMatchOtherFieldEntry
 
+String FormNeedToMatchOtherFieldEntry::get_other_field() {
+	return _other_field;
+}
+void FormNeedToMatchOtherFieldEntry::set_other_field(const String &val) {
+	_other_field = val;
+}
+
+String FormNeedToMatchOtherFieldEntry::get_does_not_match_error() {
+	return _does_not_match_error;
+}
+void FormNeedToMatchOtherFieldEntry::set_does_not_match_error(const String &val) {
+	_does_not_match_error = val;
+}
+
 PoolStringArray FormNeedToMatchOtherFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
 
-	if (data != request->get_parameter(other_field)) {
-		errors.push_back(field->get_human_name() + does_not_match_error + field->get_field_name() + ".");
+	if (data != request->get_parameter(_other_field)) {
+		errors.push_back(field->get_human_name() + _does_not_match_error + field->get_field_name() + ".");
 	}
 
 	return errors;
 }
 
 FormNeedToMatchOtherFieldEntry::FormNeedToMatchOtherFieldEntry() {
-	does_not_match_error = " does not match ";
+	_does_not_match_error = " does not match ";
 }
 FormNeedToMatchOtherFieldEntry::~FormNeedToMatchOtherFieldEntry() {
 }
@@ -464,7 +583,7 @@ Ref<FormField> FormField::need_to_have_other_character() {
 Ref<FormField> FormField::need_minimum_length(const int min_length) {
 	Ref<FormMinimumLengthFieldEntry> f;
 	f.instance();
-	f->min_length = min_length;
+	f->set_min_length(min_length);
 	add_entry(f);
 
 	return Ref<FormField>(this);
@@ -472,7 +591,7 @@ Ref<FormField> FormField::need_minimum_length(const int min_length) {
 Ref<FormField> FormField::need_maximum_length(const int max_length) {
 	Ref<FormMaximumLengthFieldEntry> f;
 	f.instance();
-	f->max_length = max_length;
+	f->set_max_length(max_length);
 	add_entry(f);
 
 	return Ref<FormField>(this);
@@ -489,7 +608,7 @@ Ref<FormField> FormField::need_to_match(const String &other) {
 	Ref<FormNeedToMatchOtherFieldEntry> f;
 	f.instance();
 
-	f->other_field = other;
+	f->set_other_field(other);
 	add_entry(f);
 
 	return Ref<FormField>(this);

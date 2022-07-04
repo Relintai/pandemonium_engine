@@ -25,152 +25,214 @@ class FormExistsFieldEntry : public FormFieldEntry {
 	GDCLASS(FormExistsFieldEntry, FormFieldEntry);
 
 public:
+	String get_not_exists_error();
+	void set_not_exists_error(const String &val);
+
 	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormExistsFieldEntry();
 	~FormExistsFieldEntry();
 
-	String not_exists_error;
+protected:
+	String _not_exists_error;
 };
 
 class FormIntFieldEntry : public FormFieldEntry {
 	GDCLASS(FormIntFieldEntry, FormFieldEntry);
 
 public:
+	String get_not_int_error();
+	void set_not_int_error(const String &val);
+
 	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormIntFieldEntry();
 	~FormIntFieldEntry();
 
-	String not_int_error;
+protected:
+	String _not_int_error;
 };
 
 class FormFloatFieldEntry : public FormFieldEntry {
 	GDCLASS(FormFloatFieldEntry, FormFieldEntry);
 
 public:
+	String get_not_float_error();
+	void set_not_float_error(const String &val);
+
 	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormFloatFieldEntry();
 	~FormFloatFieldEntry();
 
-	String not_float_error;
+protected:
+	String _not_float_error;
 };
 
 class FormAlphaFieldEntry : public FormFieldEntry {
 	GDCLASS(FormAlphaFieldEntry, FormFieldEntry);
 
 public:
+	String get_not_alpha_error();
+	void set_not_alpha_error(const String &val);
+
 	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormAlphaFieldEntry();
 	~FormAlphaFieldEntry();
 
-	String not_alpha_error;
+protected:
+	String _not_alpha_error;
 };
 
 class FormAlphaNumericFieldEntry : public FormFieldEntry {
 	GDCLASS(FormAlphaNumericFieldEntry, FormFieldEntry);
 
 public:
+	String get_not_alpha_numeric_error();
+	void set_not_alpha_numeric_error(const String &val);
+
 	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormAlphaNumericFieldEntry();
 	~FormAlphaNumericFieldEntry();
 
-	String not_alpha_numeric_error;
+protected:
+	String _not_alpha_numeric_error;
 };
 
 class FormNeedsLowercaseCharacterFieldEntry : public FormFieldEntry {
 	GDCLASS(FormNeedsLowercaseCharacterFieldEntry, FormFieldEntry);
 
 public:
+	String get_does_not_have_lowercase_error();
+	void set_does_not_have_lowercase_error(const String &val);
+
 	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormNeedsLowercaseCharacterFieldEntry();
 	~FormNeedsLowercaseCharacterFieldEntry();
 
-	String does_not_have_lowercase_error;
+protected:
+	String _does_not_have_lowercase_error;
 };
 
 class FormNeedsUppercaseCharacterFieldEntry : public FormFieldEntry {
 	GDCLASS(FormNeedsUppercaseCharacterFieldEntry, FormFieldEntry);
 
 public:
+	String get_does_not_have_uppercase_error();
+	void set_does_not_have_uppercase_error(const String &val);
+
 	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormNeedsUppercaseCharacterFieldEntry();
 	~FormNeedsUppercaseCharacterFieldEntry();
 
-	String does_not_have_uppercase_error;
+protected:
+	String _does_not_have_uppercase_error;
 };
 
 class FormNeedsOtherCharacterFieldEntry : public FormFieldEntry {
 	GDCLASS(FormNeedsOtherCharacterFieldEntry, FormFieldEntry);
 
 public:
+	String get_does_not_have_other_error();
+	void set_does_not_have_other_error(const String &val);
+
 	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormNeedsOtherCharacterFieldEntry();
 	~FormNeedsOtherCharacterFieldEntry();
 
-	String does_not_have_other_error;
+protected:
+	String _does_not_have_other_error;
 };
 
 class FormMinimumLengthFieldEntry : public FormFieldEntry {
 	GDCLASS(FormMinimumLengthFieldEntry, FormFieldEntry);
 
 public:
+	int get_min_length();
+	void set_min_length(const int &val);
+
+	String get_does_not_have_min_length_errorf();
+	void set_does_not_have_min_length_errorf(const String &val);
+
+	String get_does_not_have_min_length_errors();
+	void set_does_not_have_min_length_errors(const String &val);
+
 	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormMinimumLengthFieldEntry();
 	~FormMinimumLengthFieldEntry();
 
-	int min_length;
+protected:
+	int _min_length;
 
-	String does_not_have_min_length_errorf;
-	String does_not_have_min_length_errors;
+	String _does_not_have_min_length_errorf;
+	String _does_not_have_min_length_errors;
 };
 
 class FormMaximumLengthFieldEntry : public FormFieldEntry {
 	GDCLASS(FormMaximumLengthFieldEntry, FormFieldEntry);
 
 public:
+	int get_max_length();
+	void set_max_length(const int &val);
+
+	String get_does_not_have_max_length_errorf();
+	void set_does_not_have_max_length_errorf(const String &val);
+
+	String get_does_not_have_max_length_errors();
+	void set_does_not_have_max_length_errors(const String &val);
+
 	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormMaximumLengthFieldEntry();
 	~FormMaximumLengthFieldEntry();
 
-	int max_length;
+protected:
+	int _max_length;
 
-	String does_not_have_max_length_errorf;
-	String does_not_have_max_length_errors;
+	String _does_not_have_max_length_errorf;
+	String _does_not_have_max_length_errors;
 };
 
 class FormEmailFieldEntry : public FormFieldEntry {
 	GDCLASS(FormEmailFieldEntry, FormFieldEntry);
 
 public:
+	String get_email_format_error();
+	void set_email_format_error(const String &val);
+
 	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormEmailFieldEntry();
 	~FormEmailFieldEntry();
 
-	String email_format_error;
+protected:
+	String _email_format_error;
 };
 
 class FormNeedToMatchOtherFieldEntry : public FormFieldEntry {
 	GDCLASS(FormNeedToMatchOtherFieldEntry, FormFieldEntry);
 
 public:
+	String get_other_field();
+	void set_other_field(const String &val);
+
+	String get_does_not_match_error();
+	void set_does_not_match_error(const String &val);
+
 	PoolStringArray _validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data);
 
 	FormNeedToMatchOtherFieldEntry();
 	~FormNeedToMatchOtherFieldEntry();
 
-	String other_field;
-
-	String does_not_match_error;
+protected:
+	String _other_field;
+	String _does_not_match_error;
 };
 
 //FormField
