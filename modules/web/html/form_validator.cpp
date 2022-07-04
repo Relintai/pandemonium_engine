@@ -2,6 +2,8 @@
 
 #include "../http/web_server_request.h"
 
+#include <ctype.h>
+
 //FormFieldEntry
 
 PoolStringArray FormFieldEntry::validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
