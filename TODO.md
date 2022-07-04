@@ -17,6 +17,11 @@
 - Add a multi thread wrapper around the physics server (and nav server).
 - Add a method to the physics server that lets the caller thread wait for the physics update, and wait for each thread to finish.
 - These 2 changes would enable heavy simplifications to most Props, Voxelman, and Terraman generation code, as they could just directly use the physics server in multi threaded jobs without crashing. The entire update mode thing could be removed.
+- Add dummy physics servers, so they can be turned off when not needed. It should return rids that seem valid, so app code doesn't freak out anywhere.
+
+## Navmeshes
+
+- Add dummy nav server, so it can be turned off.
 
 ## Terraman, Voxelman, Props
 
@@ -36,6 +41,11 @@
 - Organize the core folder a bit better.
 - (Maybe) add an SDL backend.
 
+## Graphics 
+
+- Refactor platform code so it's not automatically creating a window, instead the VS should ask for it's creation, passing along the requested graphics api.
+- Add a dummy VisualServer implementation, and a way to switch between this and gles2. Similar to how godot4 can have a dummy renderer.
+
 ## Rendering
 
 - Move CPUParticles code into the VisualServer.
@@ -47,6 +57,7 @@
 - (And/or other highly portable graphics apis, that is if they exist.)
 - Add a raw shader type that can be written in the native graphics api language (support per backend shader implementation for it). It will likely need some easily parsable header for shader properties. This might simplify the creation of other backends.
 - Support for adding graphics backends from modules. This will require platform specific creation funcs.
+- Could add an api to query gpus, and optionally to mess with them. Like you could use an off gpu to to do something, maybe like calculations, etc. (Needs more research, not even sure if this is possible or not, or how hard it would be.) 
 
 ## material_maker module
 
