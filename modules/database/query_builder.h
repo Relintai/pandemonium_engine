@@ -17,10 +17,6 @@ public:
 	virtual QueryBuilder *update();
 	virtual QueryBuilder *del();
 
-	virtual QueryBuilder *where();
-	virtual QueryBuilder *from();
-	virtual QueryBuilder *insert();
-	virtual QueryBuilder *values();
 	virtual QueryBuilder *cvalues();
 	virtual QueryBuilder *next_value();
 
@@ -32,16 +28,14 @@ public:
 	virtual QueryBuilder *str();
 	virtual QueryBuilder *cstr();
 
-	virtual QueryBuilder *like();
-
 	virtual QueryBuilder *select(const String &params);
 	virtual QueryBuilder *update(const String &params);
 	virtual QueryBuilder *del(const String &params);
 
-	virtual QueryBuilder *where(const String &params);
-	virtual QueryBuilder *from(const String &params);
-	virtual QueryBuilder *insert(const String &table_name, const String &columns = "");
-	virtual QueryBuilder *values(const String &params_str);
+	virtual QueryBuilder *where(const String &params = "");
+	virtual QueryBuilder *from(const String &params = "");
+	virtual QueryBuilder *insert(const String &table_name = "", const String &columns = "");
+	virtual QueryBuilder *values(const String &params_str = "");
 	virtual QueryBuilder *val();
 	virtual QueryBuilder *vals(const String &param);
 	virtual QueryBuilder *vals(const char *param);
@@ -50,9 +44,10 @@ public:
 	virtual QueryBuilder *valf(const float param);
 	virtual QueryBuilder *vald(const double param);
 
-	virtual QueryBuilder *like(const String &str);
+	virtual QueryBuilder *like(const String &str = "");
 
-	virtual QueryBuilder *set();
+	//Object Already has set(), so think of it as set_sql
+	virtual QueryBuilder *sets();
 	virtual QueryBuilder *cset();
 
 	virtual QueryBuilder *setps(const String &col, const String &param);
@@ -86,15 +81,12 @@ public:
 
 	virtual QueryBuilder *order_by_asc(const String &col);
 	virtual QueryBuilder *order_by_desc(const String &col);
-	virtual QueryBuilder *order_by(const String &col);
+	virtual QueryBuilder *order_by(const String &col = "");
 
-	virtual QueryBuilder *order_by();
 	virtual QueryBuilder *corder_by();
-	virtual QueryBuilder *asc();
-	virtual QueryBuilder *desc();
 	virtual QueryBuilder *order_by_add_col(const String &col);
-	virtual QueryBuilder *asc(const String &col);
-	virtual QueryBuilder *desc(const String &col);
+	virtual QueryBuilder *asc(const String &col = "");
+	virtual QueryBuilder *desc(const String &col = "");
 
 	//l=logical (and, or are operators)
 	virtual QueryBuilder *land();
@@ -133,14 +125,6 @@ public:
 protected:
 	static void _bind_methods();
 
-	Ref<QueryBuilder> _select_bind();
-	Ref<QueryBuilder> _update_bind();
-	Ref<QueryBuilder> _del_bind();
-
-	Ref<QueryBuilder> _where_bind();
-	Ref<QueryBuilder> _from_bind();
-	Ref<QueryBuilder> _insert_bind();
-	Ref<QueryBuilder> _values_bind();
 	Ref<QueryBuilder> _cvalues_bind();
 	Ref<QueryBuilder> _next_value_bind();
 
@@ -152,16 +136,14 @@ protected:
 	Ref<QueryBuilder> _str_bind();
 	Ref<QueryBuilder> _cstr_bind();
 
-	Ref<QueryBuilder> _like_bind();
-
 	Ref<QueryBuilder> _select_bind(const String &params);
 	Ref<QueryBuilder> _update_bind(const String &params);
 	Ref<QueryBuilder> _del_bind(const String &params);
 
-	Ref<QueryBuilder> _where_bind(const String &params);
-	Ref<QueryBuilder> _from_bind(const String &params);
-	Ref<QueryBuilder> _insert_bind(const String &table_name, const String &columns = "");
-	Ref<QueryBuilder> _values_bind(const String &params_str);
+	Ref<QueryBuilder> _where_bind(const String &params = "");
+	Ref<QueryBuilder> _from_bind(const String &params = "");
+	Ref<QueryBuilder> _insert_bind(const String &table_name = "", const String &columns = "");
+	Ref<QueryBuilder> _values_bind(const String &params_str = "");
 	Ref<QueryBuilder> _val_bind();
 	Ref<QueryBuilder> _vals_bind(const String &param);
 	Ref<QueryBuilder> _vali_bind(const int param);
@@ -171,7 +153,7 @@ protected:
 
 	Ref<QueryBuilder> _like_bind(const String &str);
 
-	Ref<QueryBuilder> _set_bind();
+	Ref<QueryBuilder> _sets_bind();
 	Ref<QueryBuilder> _cset_bind();
 
 	Ref<QueryBuilder> _setps_bind(const String &col, const String &param);
@@ -203,15 +185,12 @@ protected:
 
 	Ref<QueryBuilder> _order_by_asc_bind(const String &col);
 	Ref<QueryBuilder> _order_by_desc_bind(const String &col);
-	Ref<QueryBuilder> _order_by_bind(const String &col);
+	Ref<QueryBuilder> _order_by_bind(const String &col = "");
 
-	Ref<QueryBuilder> _order_by_bind();
 	Ref<QueryBuilder> _corder_by_bind();
-	Ref<QueryBuilder> _asc_bind();
-	Ref<QueryBuilder> _desc_bind();
 	Ref<QueryBuilder> _order_by_add_col_bind(const String &col);
-	Ref<QueryBuilder> _asc_bind(const String &col);
-	Ref<QueryBuilder> _desc_bind(const String &col);
+	Ref<QueryBuilder> _asc_bind(const String &col = "");
+	Ref<QueryBuilder> _desc_bind(const String &col = "");
 
 	//l=logical (and, or are operators)
 	Ref<QueryBuilder> _land_bind();
