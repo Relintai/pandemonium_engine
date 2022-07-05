@@ -6,60 +6,39 @@ bool QueryResult::next_row() {
 	return false;
 }
 
-const char *QueryResult::get_cell(const int index) {
+const char *QueryResult::get_cell_chr(const int index) {
 	return "";
 }
 
-const String QueryResult::get_cell_str(const int index) {
-	return String(get_cell(index));
+String QueryResult::get_cell(const int index) {
+	return String(get_cell_chr(index));
 }
 
-const bool QueryResult::get_cell_bool(const int index) {
+bool QueryResult::get_cell_bool(const int index) {
 	return get_cell_int(index);
 }
 
-const int QueryResult::get_cell_int(const int index) {
+int QueryResult::get_cell_int(const int index) {
 	if (is_cell_null(index)) {
 		return 0;
 	}
 
-	//todo better way
-	std::stringstream ss;
-	ss.str(get_cell(index));
-
-	int r;
-	ss >> r;
-
-	return r;
+	return get_cell(index).to_int();
 }
 
-const float QueryResult::get_cell_float(const int index) {
+float QueryResult::get_cell_float(const int index) {
 	if (is_cell_null(index)) {
 		return 0;
 	}
 
-	//todo better way
-	std::stringstream ss;
-	ss.str(get_cell(index));
-
-	float r;
-	ss >> r;
-
-	return r;
+	return get_cell(index).to_float();
 }
-const double QueryResult::get_cell_double(const int index) {
+double QueryResult::get_cell_double(const int index) {
 	if (is_cell_null(index)) {
 		return 0;
 	}
 
-	//todo better way
-	std::stringstream ss;
-	ss.str(get_cell(index));
-
-	double r;
-	ss >> r;
-
-	return r;
+	return get_cell(index).to_double();
 }
 
 bool QueryResult::is_cell_null(const int index) {
@@ -74,4 +53,18 @@ QueryResult::QueryResult() {
 }
 
 QueryResult::~QueryResult() {
+}
+
+void QueryResult::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("next_row"), &QueryResult::next_row);
+
+	ClassDB::bind_method(D_METHOD("get_cell", "index"), &QueryResult::get_cell);
+	ClassDB::bind_method(D_METHOD("get_cell_bool", "index"), &QueryResult::get_cell_bool);
+	ClassDB::bind_method(D_METHOD("get_cell_int", "index"), &QueryResult::get_cell_int);
+	ClassDB::bind_method(D_METHOD("get_cell_float", "index"), &QueryResult::get_cell_float);
+	ClassDB::bind_method(D_METHOD("get_cell_double", "index"), &QueryResult::get_cell_double);
+
+	ClassDB::bind_method(D_METHOD("is_cell_null", "index"), &QueryResult::is_cell_null);
+
+	ClassDB::bind_method(D_METHOD("get_last_insert_rowid"), &QueryResult::get_last_insert_rowid);
 }
