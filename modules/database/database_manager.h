@@ -1,42 +1,33 @@
 #ifndef DATABASE_MANAGER_H
 #define DATABASE_MANAGER_H
 
-#include "core/string.h"
-
-#include <vector>
-#include <map>
-#include <functional>
+#include "core/reference.h"
+#include "core/ustring.h"
 
 #include "core/object.h"
 
-#include "database.h"
+class Database;
 
 class DatabaseManager : public Object {
-    RCPP_OBJECT(DatabaseManager, Object);
+	GDCLASS(DatabaseManager, Object);
 
 public:
-    std::vector<Database *> databases;
-    Database *ddb;
+	Ref<Database> get_ddb();
+	void set_ddb(const Ref<Database> &db);
 
-    void load();
+	void load();
 
-    static DatabaseManager *get_singleton();
+	static DatabaseManager *get_singleton();
 
-    //note: not threadsafe, create these at the start of your program!
-    uint32_t create_database(const String &name);
+	DatabaseManager();
+	~DatabaseManager();
 
-    static void _register_db_creation_func(const String &name, std::function<Database*()> func);
-    static void _unregister_db_creation_func(const String &name);
-
-    static Database *_create_database(const String &name);
-
-    DatabaseManager();
-    ~DatabaseManager();
+protected:
+	Vector<Ref<Database>> _databases;
+	Ref<Database> _ddb;
 
 private:
-    static DatabaseManager * _instance;
-
-    static std::map<String, std::function<Database *()> > _db_creation_func_map;
+	static DatabaseManager *_instance;
 };
 
 #endif
