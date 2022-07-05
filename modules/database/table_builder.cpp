@@ -1,12 +1,16 @@
 #include "table_builder.h"
 
+#include "core/print_string.h"
 #include "query_result.h"
 
-TableBuilder *TableBuilder::create_table(const String &name) {
-	return this;
+String TableBuilder::get_result() {
+	return result;
+}
+void TableBuilder::set_result(const String &val) {
+	result = val;
 }
 
-TableBuilder *TableBuilder::integer(const String &name) {
+TableBuilder *TableBuilder::create_table(const String &name) {
 	return this;
 }
 
@@ -14,35 +18,19 @@ TableBuilder *TableBuilder::integer(const String &name, const int length) {
 	return this;
 }
 
-TableBuilder *TableBuilder::tiny_integer(const String &name) {
-	return this;
-}
 TableBuilder *TableBuilder::tiny_integer(const String &name, const int length) {
 	return this;
 }
 
-TableBuilder *TableBuilder::small_integer(const String &name) {
-	return this;
-}
 TableBuilder *TableBuilder::small_integer(const String &name, const int length) {
 	return this;
 }
 
-TableBuilder *TableBuilder::real_float(const String &name) {
-	return this;
-}
 TableBuilder *TableBuilder::real_float(const String &name, const int size, const int d) {
 	return this;
 }
 
-TableBuilder *TableBuilder::real_double(const String &name) {
-	return this;
-}
 TableBuilder *TableBuilder::real_double(const String &name, const int size, const int d) {
-	return this;
-}
-
-TableBuilder *TableBuilder::date(const String &name) {
 	return this;
 }
 
@@ -74,10 +62,6 @@ TableBuilder *TableBuilder::primary_key(const String &name) {
 	return this;
 }
 
-TableBuilder *TableBuilder::primary_key() {
-	return this;
-}
-
 TableBuilder *TableBuilder::next_row() {
 	return this;
 }
@@ -86,9 +70,6 @@ TableBuilder *TableBuilder::ccreate_table() {
 	return this;
 }
 
-TableBuilder *TableBuilder::drop_table() {
-	return this;
-}
 TableBuilder *TableBuilder::drop_table_if_exists() {
 	return this;
 }
@@ -117,11 +98,115 @@ void TableBuilder::run_query() {
 }
 
 void TableBuilder::print() {
-	printf("%s\n", result.c_str());
+	//printf("%s\n", result.c_str());
+	print_error(result);
 }
 
 TableBuilder::TableBuilder() {
 }
 
 TableBuilder::~TableBuilder() {
+}
+
+void TableBuilder::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_result"), &TableBuilder::get_result);
+	ClassDB::bind_method(D_METHOD("set_result", "value"), &TableBuilder::set_result);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "result"), "set_result", "get_result");
+
+	ClassDB::bind_method(D_METHOD("create_table", "value"), &TableBuilder::_create_table_bind);
+
+	ClassDB::bind_method(D_METHOD("integer", "name", "length"), &TableBuilder::_integer_bind);
+	ClassDB::bind_method(D_METHOD("tiny_integer", "name", "length"), &TableBuilder::_tiny_integer_bind, -1);
+	ClassDB::bind_method(D_METHOD("small_integer", "name", "length"), &TableBuilder::_small_integer_bind, -1);
+	ClassDB::bind_method(D_METHOD("real_float", "name", "size", "d"), &TableBuilder::_real_float_bind, -1, -1);
+	ClassDB::bind_method(D_METHOD("real_double", "name", "size", "d"), &TableBuilder::_real_double_bind, -1, -1);
+
+	ClassDB::bind_method(D_METHOD("date", "name"), &TableBuilder::_date_bind);
+	ClassDB::bind_method(D_METHOD("varchar", "name", "length"), &TableBuilder::_varchar_bind, -1);
+	ClassDB::bind_method(D_METHOD("text", "name"), &TableBuilder::_text_bind);
+
+	ClassDB::bind_method(D_METHOD("not_null"), &TableBuilder::_not_null_bind);
+	ClassDB::bind_method(D_METHOD("null"), &TableBuilder::_null_bind);
+	ClassDB::bind_method(D_METHOD("defval", "val"), &TableBuilder::_defval_bind);
+	ClassDB::bind_method(D_METHOD("auto_increment"), &TableBuilder::_auto_increment_bind);
+	ClassDB::bind_method(D_METHOD("primary_key", "name"), &TableBuilder::_primary_key_bind, "");
+	ClassDB::bind_method(D_METHOD("next_row"), &TableBuilder::_next_row_bind);
+	ClassDB::bind_method(D_METHOD("ccreate_table"), &TableBuilder::_ccreate_table_bind);
+
+	ClassDB::bind_method(D_METHOD("drop_table", "name"), &TableBuilder::_drop_table_bind, "");
+	ClassDB::bind_method(D_METHOD("drop_table_if_exists", "name"), &TableBuilder::_drop_table_if_exists_bind, "");
+	ClassDB::bind_method(D_METHOD("cdrop_table"), &TableBuilder::_cdrop_table_bind);
+
+	ClassDB::bind_method(D_METHOD("foreign_key", "name"), &TableBuilder::_foreign_key_bind);
+	ClassDB::bind_method(D_METHOD("references", "table", "name"), &TableBuilder::_references_bind);
+}
+
+Ref<TableBuilder> TableBuilder::_create_table_bind(const String &name) {
+	return Ref<TableBuilder>(create_table(name));
+}
+
+Ref<TableBuilder> TableBuilder::_integer_bind(const String &name, const int length) {
+	return Ref<TableBuilder>(integer(name, length));
+}
+Ref<TableBuilder> TableBuilder::_tiny_integer_bind(const String &name, const int length) {
+	return Ref<TableBuilder>(tiny_integer(name, length));
+}
+Ref<TableBuilder> TableBuilder::_small_integer_bind(const String &name, const int length) {
+	return Ref<TableBuilder>(small_integer(name, length));
+}
+Ref<TableBuilder> TableBuilder::_real_float_bind(const String &name, const int size, const int d) {
+	return Ref<TableBuilder>(real_float(name, size, d));
+}
+Ref<TableBuilder> TableBuilder::_real_double_bind(const String &name, const int size, const int d) {
+	return Ref<TableBuilder>(real_double(name, size, d));
+}
+
+Ref<TableBuilder> TableBuilder::_date_bind(const String &name) {
+	return Ref<TableBuilder>(date(name));
+}
+
+Ref<TableBuilder> TableBuilder::_varchar_bind(const String &name, const int length) {
+	return Ref<TableBuilder>(varchar(name));
+}
+Ref<TableBuilder> TableBuilder::_text_bind(const String &name) {
+	return Ref<TableBuilder>(text(name));
+}
+
+Ref<TableBuilder> TableBuilder::_not_null_bind() {
+	return Ref<TableBuilder>(not_null());
+}
+Ref<TableBuilder> TableBuilder::_null_bind() {
+	return Ref<TableBuilder>(null());
+}
+Ref<TableBuilder> TableBuilder::_defval_bind(const String &val) {
+	return Ref<TableBuilder>(defval(val));
+}
+Ref<TableBuilder> TableBuilder::_auto_increment_bind() {
+	return Ref<TableBuilder>(auto_increment());
+}
+Ref<TableBuilder> TableBuilder::_primary_key_bind(const String &name) {
+	return Ref<TableBuilder>(primary_key(name));
+}
+Ref<TableBuilder> TableBuilder::_next_row_bind() {
+	return Ref<TableBuilder>(next_row());
+}
+Ref<TableBuilder> TableBuilder::_ccreate_table_bind() {
+	return Ref<TableBuilder>(ccreate_table());
+}
+
+Ref<TableBuilder> TableBuilder::_drop_table_bind(const String &name) {
+	return Ref<TableBuilder>(drop_table(name));
+}
+Ref<TableBuilder> TableBuilder::_drop_table_if_exists_bind(const String &name) {
+	return Ref<TableBuilder>(drop_table_if_exists(name));
+}
+Ref<TableBuilder> TableBuilder::_cdrop_table_bind() {
+	return Ref<TableBuilder>(cdrop_table());
+}
+
+Ref<TableBuilder> TableBuilder::_foreign_key_bind(const String &name) {
+	return Ref<TableBuilder>(foreign_key(name));
+}
+Ref<TableBuilder> TableBuilder::_references_bind(const String &table, const String &name) {
+	return Ref<TableBuilder>(references(table, name));
 }
