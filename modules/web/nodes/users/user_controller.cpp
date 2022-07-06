@@ -56,7 +56,6 @@ void UserController::handle_login_request_default(Request *request) {
 	LoginRequestData data;
 
 	if (request->get_method() == HTTP_METHOD_POST) {
-
 		// this is probbaly not needed
 		// it's ok for now as I need to test the validators more
 		Vector<String> errors;
@@ -115,7 +114,6 @@ void UserController::render_login_request_default(Request *request, LoginRequest
 
 	b.div()->cls("login");
 	{
-
 		// todo href path helper
 		b.form()->method("POST")->href("/user/login");
 		{
@@ -149,7 +147,6 @@ void UserController::handle_register_request_default(Request *request) {
 	RegisterRequestData data;
 
 	if (request->get_method() == HTTP_METHOD_POST) {
-
 		Vector<String> errors;
 
 		_registration_validator->validate(request, &errors);
@@ -315,11 +312,9 @@ void UserController::handle_main_page_request(Ref<User> &user, Request *request)
 }
 
 void UserController::handle_settings_request(Ref<User> &user, Request *request) {
-
 	SettingsRequestData data;
 
 	if (request->get_method() == HTTP_METHOD_POST) {
-
 		data.uname_val = request->get_parameter("username");
 		data.email_val = request->get_parameter("email");
 		data.pass_val = request->get_parameter("password");
@@ -408,7 +403,7 @@ void UserController::render_settings_request(Ref<User> &user, Request *request, 
 		b.form()->method("POST")->href("/user/settings");
 		{
 			b.csrf_token(request);
-			
+
 			b.w("Username");
 			b.br();
 			b.input()->type("text")->name("username")->placeholder(user->name_user_input)->value(data->uname_val);
@@ -633,7 +628,7 @@ void UserController::db_save_user(Ref<User> &user) {
 	}
 }
 
-Vector<Ref<User> > UserController::db_get_all() {
+Vector<Ref<User>> UserController::db_get_all() {
 	Ref<QueryBuilder> b = get_query_builder();
 
 	b->select("id, username, email, rank, pre_salt, post_salt, password_hash, banned, password_reset_token, locked");
@@ -641,7 +636,7 @@ Vector<Ref<User> > UserController::db_get_all() {
 	b->end_command();
 	// b->print();
 
-	Vector<Ref<User> > users;
+	Vector<Ref<User>> users;
 
 	Ref<QueryResult> r = b->run();
 
@@ -775,7 +770,6 @@ UserController *UserController::get_singleton() {
 
 UserController::UserController() :
 		WebNode() {
-
 	if (_self) {
 		printf("UserController::UserController(): Error! self is not null!/n");
 	}
@@ -800,14 +794,12 @@ FormValidator *UserController::_profile_validator = nullptr;
 String UserController::_path = "./";
 String UserController::_table_name = "users";
 
-
 // returnring true means handled, false means continue
 bool UserSessionSetupMiddleware::on_before_handle_request_main(Request *request) {
 	if (request->session.is_valid()) {
 		int user_id = request->session->get_int("user_id");
 
 		if (user_id != 0) {
-
 			Ref<User> u = UserController::get_singleton()->db_get_user(user_id);
 
 			if (u.is_valid()) {

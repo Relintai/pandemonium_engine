@@ -12,6 +12,14 @@
 class Request;
 class FormValidator;
 
+//TODO
+// Break this up into multiple small webnodes (per page)
+// that would make this a lot more customizable
+// Only User management, save, load etc should be kept here
+// and this node should be expected to be autoloaded.
+// It should keep get_singleton() and c++ stuff that deal with users should expect it's presence
+// they should use err macros to not crash the app though
+
 class UserController : public WebNode {
 	RCPP_OBJECT(UserController, WebNode);
 
@@ -69,7 +77,7 @@ public:
 	virtual Ref<User> db_get_user(const String &user_name_input);
 	virtual void db_save_user(Ref<User> &user);
 
-	virtual Vector<Ref<User> > db_get_all();
+	virtual Vector<Ref<User>> db_get_all();
 
 	virtual Ref<User> create_user();
 
@@ -113,6 +121,5 @@ public:
 	UserSessionSetupMiddleware();
 	~UserSessionSetupMiddleware();
 };
-
 
 #endif
