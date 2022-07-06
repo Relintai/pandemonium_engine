@@ -3,8 +3,8 @@
 
 #include "web/http/web_node.h"
 
-#include "core/string.h"
 #include "core/containers/vector.h"
+#include "core/string.h"
 
 class Request;
 class FormValidator;
@@ -12,7 +12,7 @@ class AdminNode;
 
 class AdminPanel : public WebNode {
 	RCPP_OBJECT(AdminPanel, WebNode);
-	
+
 public:
 	void handle_request_main(Request *request);
 
@@ -46,7 +46,7 @@ protected:
 
 	static AdminPanel *_self;
 
-	Vector<AdminPanelSection> _controllers; 
+	Vector<AdminPanelSection> _controllers;
 
 	String _default_headers;
 	String _default_main_body_top;
