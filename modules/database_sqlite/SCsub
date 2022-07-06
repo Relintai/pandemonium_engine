@@ -22,15 +22,19 @@ module_env = env.Clone()
 sources = [
     "register_types.cpp",
 
-    "sqlite/sqlite3.c"
+    "sqlite/sqlite3.c",
 
     "sqlite3_database.cpp",
-    "sqlite3_database_connection.cpp",
-    "sqlite3_database_manager.cpp",
+    "sqlite3_connection.cpp",
     "sqlite3_query_builder.cpp",
     "sqlite3_query_result.cpp",
     "sqlite3_table_builder.cpp",
 ]
+
+# sqlite has a few warnings, disable werrors for this module for now
+# it should be patched later.
+if module_env["werror"]:
+  module_env["werror"] = False
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
     # Shared lib compilation

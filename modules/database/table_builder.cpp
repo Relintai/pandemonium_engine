@@ -143,6 +143,9 @@ void TableBuilder::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("foreign_key", "name"), &TableBuilder::_foreign_key_bind);
 	ClassDB::bind_method(D_METHOD("references", "table", "name"), &TableBuilder::_references_bind);
+
+	ClassDB::bind_method(D_METHOD("run"), &TableBuilder::run);
+	ClassDB::bind_method(D_METHOD("run_query"), &TableBuilder::run_query);
 }
 
 Ref<TableBuilder> TableBuilder::_create_table_bind(const String &name) {
@@ -170,7 +173,7 @@ Ref<TableBuilder> TableBuilder::_date_bind(const String &name) {
 }
 
 Ref<TableBuilder> TableBuilder::_varchar_bind(const String &name, const int length) {
-	return Ref<TableBuilder>(varchar(name));
+	return Ref<TableBuilder>(varchar(name, length));
 }
 Ref<TableBuilder> TableBuilder::_text_bind(const String &name) {
 	return Ref<TableBuilder>(text(name));

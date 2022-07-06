@@ -1,25 +1,20 @@
 #ifndef SQLITE3_QUERY_BUILDER_H
 #define SQLITE3_QUERY_BUILDER_H
 
-#include <memory>
-#include <string>
+#include "core/ustring.h"
 
-#include "database/query_builder.h"
+#include "../database/query_builder.h"
 
-class SQLite3Database;
+class SQLite3DatabaseConnection;
 
 class SQLite3QueryBuilder : public QueryBuilder {
-	RCPP_OBJECT(SQLite3QueryBuilder, QueryBuilder);
+	GDCLASS(SQLite3QueryBuilder, QueryBuilder);
 
 public:
 	QueryBuilder *select();
 	QueryBuilder *update();
 	QueryBuilder *del();
 
-	QueryBuilder *where();
-	QueryBuilder *from();
-	QueryBuilder *insert();
-	QueryBuilder *values();
 	QueryBuilder *cvalues();
 	QueryBuilder *next_value();
 
@@ -29,7 +24,7 @@ public:
 	QueryBuilder *str();
 	QueryBuilder *cstr();
 
-	QueryBuilder *like();
+	QueryBuilder *like(const String &str = "");
 
 	QueryBuilder *nselect(const String &params);
 	QueryBuilder *nupdate(const String &params);
@@ -37,32 +32,37 @@ public:
 
 	QueryBuilder *nwhere(const String &params);
 	QueryBuilder *nfrom(const String &params);
-	QueryBuilder *insert(const String &table_name);
-	QueryBuilder *insert(const String &table_name, const String &columns);
+
+	QueryBuilder *insert(const String &table_name = "", const String &columns = "");
 	QueryBuilder *nvalues(const String &params_str);
 	QueryBuilder *val();
 	QueryBuilder *nval(const String &param);
-	QueryBuilder *val(const char *param);
-	QueryBuilder *val(const int param);
-	QueryBuilder *val(const bool param);
+
+	QueryBuilder *vals(const String &param);
+	QueryBuilder *vals(const char *param);
+	QueryBuilder *vali(const int param);
+	QueryBuilder *valb(const bool param);
 	QueryBuilder *valf(const float param);
 	QueryBuilder *vald(const double param);
 
 	QueryBuilder *nlike(const String &str);
 
-	QueryBuilder *set();
+	QueryBuilder *sets();
 	QueryBuilder *cset();
+
 	QueryBuilder *nsetp(const String &col, const String &param);
-	QueryBuilder *setp(const String &col, const char *param);
-	QueryBuilder *setp(const String &col, const int param);
-	QueryBuilder *setp(const String &col, const bool param);
+
+	QueryBuilder *setps(const String &col, const char *param);
+	QueryBuilder *setpi(const String &col, const int param);
+	QueryBuilder *setpb(const String &col, const bool param);
 	QueryBuilder *setpf(const String &col, const float param);
 	QueryBuilder *setpd(const String &col, const double param);
 
 	QueryBuilder *nwp(const String &col, const String &param);
-	QueryBuilder *wp(const String &col, const char *param);
-	QueryBuilder *wp(const String &col, const int param);
-	QueryBuilder *wp(const String &col, const bool param);
+
+	QueryBuilder *wps(const String &col, const char *param);
+	QueryBuilder *wpi(const String &col, const int param);
+	QueryBuilder *wpb(const String &col, const bool param);
 
 	QueryBuilder *limit(const int num);
 	QueryBuilder *offset(const int num);
@@ -90,7 +90,7 @@ public:
 	SQLite3QueryBuilder();
 	~SQLite3QueryBuilder();
 
-	SQLite3Database *_db;
+	Ref<SQLite3DatabaseConnection> _connection;
 };
 
 #endif

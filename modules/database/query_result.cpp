@@ -6,12 +6,8 @@ bool QueryResult::next_row() {
 	return false;
 }
 
-const char *QueryResult::get_cell_chr(const int index) {
-	return "";
-}
-
 String QueryResult::get_cell(const int index) {
-	return String(get_cell_chr(index));
+	return String();
 }
 
 bool QueryResult::get_cell_bool(const int index) {
@@ -49,6 +45,10 @@ int QueryResult::get_last_insert_rowid() {
 	return 0;
 }
 
+String QueryResult::get_error_message() {
+	return "";
+}
+
 QueryResult::QueryResult() {
 }
 
@@ -67,4 +67,6 @@ void QueryResult::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("is_cell_null", "index"), &QueryResult::is_cell_null);
 
 	ClassDB::bind_method(D_METHOD("get_last_insert_rowid"), &QueryResult::get_last_insert_rowid);
+
+	ClassDB::bind_method(D_METHOD("get_error_message"), &QueryResult::get_error_message);
 }

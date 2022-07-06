@@ -1,13 +1,16 @@
 #include "sqlite3_query_result.h"
 
+#include "./sqlite/sqlite3.h"
+#include "core/print_string.h"
+#include "core/ustring.h"
 #include <cstdio>
 
 bool Sqlite3QueryResult::next_row() {
 	return ++current_row < rows.size();
 }
 
-const char *Sqlite3QueryResult::get_cell(const int index) {
-	return rows[current_row]->cells[index].data.c_str();
+String Sqlite3QueryResult::get_cell(const int index) {
+	return rows[current_row]->cells[index].data;
 }
 
 bool Sqlite3QueryResult::is_cell_null(const int index) {
@@ -18,11 +21,19 @@ int Sqlite3QueryResult::get_last_insert_rowid() {
 	return sqlite3_last_insert_rowid(_connection);
 }
 
+String Sqlite3QueryResult::get_error_message() {
+	return String(err_msg);
+}
+
 void Sqlite3QueryResult::query(const String &query, sqlite3 *conn) {
 	_connection = conn;
 
-	if (sqlite3_exec(conn, query.c_str(), Sqlite3QueryResult::run_query_finished, this, &err_msg) != SQLITE_OK) {
-		printf("SQLite3Database::query error: \nQuery: %s \n Error:\n %s\n", query.c_str(), err_msg);
+	CharString q = query.utf8();
+
+	if (sqlite3_exec(conn, q.get_data(), Sqlite3QueryResult::run_query_finished, this, &err_msg) != SQLITE_OK) {
+		ERR_PRINT("SQLite3Database::query error: ");
+		ERR_PRINT("Query: " + query);
+		ERR_PRINT("Error: " + String(err_msg));
 		sqlite3_free(err_msg);
 	}
 }
@@ -32,7 +43,7 @@ int Sqlite3QueryResult::run_query_finished(void *data, int argc, char **argv, ch
 
 	//res->col_names = col_names;
 
-	Sqlite3QueryResultRow *r = new Sqlite3QueryResultRow();
+	Sqlite3QueryResultRow *r = memnew(Sqlite3QueryResultRow);
 
 	for (int i = 0; i < argc; ++i) {
 		Cell c;
@@ -51,14 +62,13 @@ int Sqlite3QueryResult::run_query_finished(void *data, int argc, char **argv, ch
 	return 0;
 }
 
-Sqlite3QueryResult::Sqlite3QueryResult() :
-		QueryResult() {
+Sqlite3QueryResult::Sqlite3QueryResult() {
 	err_msg = nullptr;
 	current_row = -1;
 }
 
 Sqlite3QueryResult::~Sqlite3QueryResult() {
 	for (int i = 0; i < rows.size(); ++i) {
-		delete rows[i];
+		memdelete(rows[i]);
 	}
 }

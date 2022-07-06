@@ -2,6 +2,13 @@
 
 #include "query_result.h"
 
+String QueryBuilder::get_result() {
+	return query_result;
+}
+void QueryBuilder::set_result(const String &val) {
+	query_result = val;
+}
+
 QueryBuilder *QueryBuilder::select() {
 	return this;
 }
@@ -280,12 +287,6 @@ Ref<QueryResult> QueryBuilder::run() {
 void QueryBuilder::run_query() {
 }
 
-String QueryBuilder::get_result() {
-	end_command();
-
-	return query_result;
-}
-
 void QueryBuilder::print() {
 	//printf("%s\n", query_result.c_str());
 	ERR_PRINT(query_result);
@@ -298,6 +299,10 @@ QueryBuilder::~QueryBuilder() {
 }
 
 void QueryBuilder::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_result"), &QueryBuilder::get_result);
+	ClassDB::bind_method(D_METHOD("set_result", "value"), &QueryBuilder::set_result);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "result"), "set_result", "get_result");
+
 	ClassDB::bind_method(D_METHOD("cvalues"), &QueryBuilder::_cvalues_bind);
 	ClassDB::bind_method(D_METHOD("next_value"), &QueryBuilder::_next_value_bind);
 
@@ -381,6 +386,9 @@ void QueryBuilder::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("end_command"), &QueryBuilder::_end_command_bind);
 
 	ClassDB::bind_method(D_METHOD("reset"), &QueryBuilder::_reset_bind);
+
+	ClassDB::bind_method(D_METHOD("run"), &QueryBuilder::run);
+	ClassDB::bind_method(D_METHOD("run_query"), &QueryBuilder::run_query);
 }
 
 Ref<QueryBuilder> QueryBuilder::_cvalues_bind() {
@@ -409,26 +417,26 @@ Ref<QueryBuilder> QueryBuilder::_cstr_bind() {
 }
 
 Ref<QueryBuilder> QueryBuilder::_select_bind(const String &params) {
-	return Ref<QueryBuilder>(select());
+	return Ref<QueryBuilder>(select(params));
 }
 Ref<QueryBuilder> QueryBuilder::_update_bind(const String &params) {
-	return Ref<QueryBuilder>(update());
+	return Ref<QueryBuilder>(update(params));
 }
 Ref<QueryBuilder> QueryBuilder::_del_bind(const String &params) {
-	return Ref<QueryBuilder>(del());
+	return Ref<QueryBuilder>(del(params));
 }
 
 Ref<QueryBuilder> QueryBuilder::_where_bind(const String &params) {
-	return Ref<QueryBuilder>(where());
+	return Ref<QueryBuilder>(where(params));
 }
 Ref<QueryBuilder> QueryBuilder::_from_bind(const String &params) {
-	return Ref<QueryBuilder>(from());
+	return Ref<QueryBuilder>(from(params));
 }
 Ref<QueryBuilder> QueryBuilder::_insert_bind(const String &table_name, const String &columns) {
-	return Ref<QueryBuilder>(insert());
+	return Ref<QueryBuilder>(insert(table_name, columns));
 }
 Ref<QueryBuilder> QueryBuilder::_values_bind(const String &params_str) {
-	return Ref<QueryBuilder>(values());
+	return Ref<QueryBuilder>(values(params_str));
 }
 Ref<QueryBuilder> QueryBuilder::_val_bind() {
 	return Ref<QueryBuilder>(val());
@@ -450,7 +458,7 @@ Ref<QueryBuilder> QueryBuilder::_vald_bind(const double param) {
 }
 
 Ref<QueryBuilder> QueryBuilder::_like_bind(const String &str) {
-	return Ref<QueryBuilder>(like());
+	return Ref<QueryBuilder>(like(str));
 }
 
 Ref<QueryBuilder> QueryBuilder::_sets_bind() {

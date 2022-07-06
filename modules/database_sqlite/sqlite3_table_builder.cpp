@@ -1,8 +1,8 @@
 #include "sqlite3_table_builder.h"
 
-#include "database/query_result.h"
+#include "../database/query_result.h"
 
-#include "sqlite3_database.h"
+#include "sqlite3_connection.h"
 
 TableBuilder *SQLite3TableBuilder::create_table(const String &name) {
 	result += "CREATE TABLE " + name + " ( ";
@@ -10,61 +10,52 @@ TableBuilder *SQLite3TableBuilder::create_table(const String &name) {
 	return this;
 }
 
-TableBuilder *SQLite3TableBuilder::integer(const String &name) {
+TableBuilder *SQLite3TableBuilder::integer(const String &name, const int length) {
 	result += name + " INTEGER ";
 
-	return this;
-}
-TableBuilder *SQLite3TableBuilder::integer(const String &name, const int length) {
-	result += name + " INTEGER(";
-	result += String::num(length);
-	result += ") ";
+	if (length != -1) {
+		result += "(";
+		result += itos(length);
+		result += ") ";
+	}
 
 	return this;
 }
 
-TableBuilder *SQLite3TableBuilder::tiny_integer(const String &name) {
-	result += name + " INTEGER(4) ";
-
-	return this;
-}
 TableBuilder *SQLite3TableBuilder::tiny_integer(const String &name, const int length) {
 	result += name + " INTEGER(";
-	result += String::num(length);
+
+	if (length == -1) {
+		result += "4";
+	} else {
+		result += itos(length);
+	}
+
 	result += ") ";
 
 	return this;
 }
 
-TableBuilder *SQLite3TableBuilder::small_integer(const String &name) {
-	result += name + " INTEGER(6) ";
-
-	return this;
-}
 TableBuilder *SQLite3TableBuilder::small_integer(const String &name, const int length) {
 	result += name + " INTEGER(";
-	result += String::num(length);
+
+	if (length == -1) {
+		result += "6";
+	} else {
+		result += itos(length);
+	}
+
 	result += ") ";
 
 	return this;
 }
 
-TableBuilder *SQLite3TableBuilder::real_float(const String &name) {
-	result += name + " FLOAT ";
-
-	return this;
-}
 TableBuilder *SQLite3TableBuilder::real_float(const String &name, const int size, const int d) {
 	result += name + " FLOAT ";
 
 	return this;
 }
 
-TableBuilder *SQLite3TableBuilder::real_double(const String &name) {
-	result += name + " DOUBLE ";
-
-	return this;
-}
 TableBuilder *SQLite3TableBuilder::real_double(const String &name, const int size, const int d) {
 	result += name + " DOUBLE ";
 
@@ -78,7 +69,13 @@ TableBuilder *SQLite3TableBuilder::date(const String &name) {
 }
 
 TableBuilder *SQLite3TableBuilder::varchar(const String &name, const int length) {
-	result += name + " VARCHAR(" + std::to_string(length) + ") ";
+	result += name + " VARCHAR ";
+
+	if (length != -1) {
+		result += "(";
+		result += itos(length);
+		result += ") ";
+	}
 
 	return this;
 }
@@ -177,23 +174,23 @@ TableBuilder *SQLite3TableBuilder::references(const String &table, const String 
 }
 
 Ref<QueryResult> SQLite3TableBuilder::run() {
-	if (!_db) {
+	if (!_connection.is_valid()) {
 		printf("SQLite3TableBuilder::run !db!\n");
 
 		return nullptr;
 	}
 
-	return _db->query(result);
+	return _connection->query(result);
 }
 
 void SQLite3TableBuilder::run_query() {
-	if (!_db) {
+	if (!_connection.is_valid()) {
 		printf("SQLite3TableBuilder::run_query !db!\n");
 
 		return;
 	}
 
-	_db->query_run(result);
+	_connection->query_run(result);
 }
 
 SQLite3TableBuilder::SQLite3TableBuilder() {

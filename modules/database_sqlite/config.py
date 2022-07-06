@@ -4,7 +4,7 @@ import sys
 
 
 def can_build(env, platform):
-    return False
+    return True
 
 def _can_build():
 
@@ -26,8 +26,6 @@ def _can_build():
 #    #todo
 #    return False
 
-    #print("sqlite3 built in!")
-
     return True
 
 
@@ -48,8 +46,7 @@ def _configure(env):
         
 def get_doc_classes():
     return [
-        #"",
-    	"Sqlite3Database",
+        "SQLite3Database ",
     ]
 
 def get_doc_path():

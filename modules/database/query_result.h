@@ -10,7 +10,6 @@ class QueryResult : public Reference {
 
 public:
 	virtual bool next_row();
-	virtual const char *get_cell_chr(const int index);
 	virtual String get_cell(const int index);
 	virtual bool get_cell_bool(const int index);
 	virtual int get_cell_int(const int index);
@@ -20,6 +19,8 @@ public:
 	virtual bool is_cell_null(const int index);
 
 	virtual int get_last_insert_rowid();
+
+	virtual String get_error_message();
 
 	QueryResult();
 	virtual ~QueryResult();

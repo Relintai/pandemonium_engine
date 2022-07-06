@@ -13,6 +13,9 @@ class QueryBuilder : public Reference {
 	GDCLASS(QueryBuilder, Reference);
 
 public:
+	String get_result();
+	void set_result(const String &val);
+
 	virtual QueryBuilder *select();
 	virtual QueryBuilder *update();
 	virtual QueryBuilder *del();
@@ -112,8 +115,6 @@ public:
 
 	virtual Ref<QueryResult> run();
 	virtual void run_query();
-
-	String get_result();
 
 	void print();
 

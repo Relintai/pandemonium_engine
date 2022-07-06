@@ -5,9 +5,6 @@
 
 #include "core/reference.h"
 
-class QueryBuilder;
-class TableBuilder;
-class QueryResult;
 class DatabaseConnection;
 
 class Database : public Reference {

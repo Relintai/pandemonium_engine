@@ -1,23 +1,22 @@
-#ifndef MYSQL_QUERY_RESULT_H
-#define MYSQL_QUERY_RESULT_H
+#ifndef SQLITE3_QUERY_RESULT_H
+#define SQLITE3_QUERY_RESULT_H
 
-#include "core/string.h"
-#include <vector>
+#include "core/ustring.h"
+#include "core/vector.h"
 
-#include "database/query_result.h"
+#include "../database/query_result.h"
 
-#include "./sqlite/sqlite3.h"
+struct sqlite3;
 
 class Sqlite3QueryResult : public QueryResult {
-	RCPP_OBJECT(Sqlite3QueryResult, QueryResult);
+	GDCLASS(Sqlite3QueryResult, QueryResult);
 
 public:
 	bool next_row();
-	const char* get_cell(const int index);
-
+	String get_cell(const int index);
 	bool is_cell_null(const int index);
-
 	int get_last_insert_rowid();
+	String get_error_message();
 
 	void query(const String &query, sqlite3 *conn);
 
@@ -26,9 +25,7 @@ public:
 	Sqlite3QueryResult();
 	~Sqlite3QueryResult();
 
-	char* err_msg;
-
-public:
+protected:
 	struct Cell {
 		bool null;
 		String data;
@@ -39,12 +36,13 @@ public:
 	};
 
 	struct Sqlite3QueryResultRow {
-		std::vector<Cell> cells;
+		Vector<Cell> cells;
 	};
 
 	char **col_names;
-	std::vector<Sqlite3QueryResultRow *> rows;
+	Vector<Sqlite3QueryResultRow *> rows;
 	int current_row;
+	char *err_msg;
 
 	sqlite3 *_connection;
 };
