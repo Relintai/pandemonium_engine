@@ -10,6 +10,14 @@ def configure(env):
 def get_doc_classes():
     return [
         #"",
+    	"Database",
+	    "DatabaseConnection",
+	    "DatabaseManager",
+	    "DatabaseMultiThreaded",
+    	"DatabaseSingleThreaded",
+	    "QueryBuilder",
+	    "QueryResult",
+	    "TableBuilder",
     ]
 
 def get_doc_path():

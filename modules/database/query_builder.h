@@ -203,8 +203,6 @@ protected:
 
 	Ref<QueryBuilder> _select_last_insert_id_bind();
 
-	Ref<String> _escape_bind(const String &params);
-
 	Ref<QueryBuilder> _prepare_bind();
 	Ref<QueryBuilder> _set_params_bind(const int index, const String &value);
 	Ref<QueryBuilder> _set_parami_bind(const int index, const int value);

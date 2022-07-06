@@ -373,7 +373,7 @@ void QueryBuilder::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("select_last_insert_id"), &QueryBuilder::_select_last_insert_id_bind);
 
-	ClassDB::bind_method(D_METHOD("escape", "param"), &QueryBuilder::_escape_bind);
+	ClassDB::bind_method(D_METHOD("escape", "param"), &QueryBuilder::escape);
 
 	ClassDB::bind_method(D_METHOD("prepare"), &QueryBuilder::_prepare_bind);
 	ClassDB::bind_method(D_METHOD("set_params", "index", "value"), &QueryBuilder::_set_params_bind);
@@ -573,10 +573,6 @@ Ref<QueryBuilder> QueryBuilder::_ew_bind(const String &str) {
 
 Ref<QueryBuilder> QueryBuilder::_select_last_insert_id_bind() {
 	return Ref<QueryBuilder>(select_last_insert_id());
-}
-
-Ref<String> QueryBuilder::_escape_bind(const String &params) {
-	return Ref<QueryBuilder>(escape(params));
 }
 
 Ref<QueryBuilder> QueryBuilder::_prepare_bind() {

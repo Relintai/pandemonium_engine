@@ -33,6 +33,10 @@ Ref<Database> DatabaseConnection::get_owner() {
 	return Ref<Database>(_owner);
 }
 
+void DatabaseConnection::set_owner(Database *owner) {
+	_owner = owner;
+}
+
 DatabaseConnection::DatabaseConnection() {
 	_owner = nullptr;
 }

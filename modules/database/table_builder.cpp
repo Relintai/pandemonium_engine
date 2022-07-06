@@ -34,6 +34,10 @@ TableBuilder *TableBuilder::real_double(const String &name, const int size, cons
 	return this;
 }
 
+TableBuilder *TableBuilder::date(const String &name) {
+	return this;
+}
+
 TableBuilder *TableBuilder::varchar(const String &name, const int length) {
 	return this;
 }

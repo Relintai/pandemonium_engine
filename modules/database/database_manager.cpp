@@ -1,10 +1,11 @@
 #include "database_manager.h"
 
+#include "database.h"
+
 void DatabaseManager::load() {
 	//go thourgh settings, and create all the defined db backends
-  //add them to ProjectSettings
+	//add them to ProjectSettings
 }
-
 
 DatabaseManager *DatabaseManager::get_singleton() {
 	return _instance;
@@ -19,4 +20,3 @@ DatabaseManager::~DatabaseManager() {
 }
 
 DatabaseManager *DatabaseManager::_instance = nullptr;
-

@@ -22,8 +22,24 @@ SOFTWARE.
 
 #include "register_types.h"
 
+#include "database.h"
+#include "database_connection.h"
+#include "database_manager.h"
+#include "database_multi_threaded.h"
+#include "database_single_threaded.h"
+#include "query_builder.h"
+#include "query_result.h"
+#include "table_builder.h"
+
 void register_database_types() {
-	//ClassDB::register_class<>();
+	ClassDB::register_class<Database>();
+	ClassDB::register_class<DatabaseConnection>();
+	ClassDB::register_class<DatabaseManager>();
+	ClassDB::register_class<DatabaseMultiThreaded>();
+	ClassDB::register_class<DatabaseSingleThreaded>();
+	ClassDB::register_class<QueryBuilder>();
+	ClassDB::register_class<QueryResult>();
+	ClassDB::register_class<TableBuilder>();
 }
 
 void unregister_database_types() {

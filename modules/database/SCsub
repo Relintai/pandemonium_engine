@@ -7,6 +7,15 @@ module_env = env.Clone()
 
 sources = [
     "register_types.cpp",
+
+    "database.cpp",
+    "database_connection.cpp",
+    "database_manager.cpp",
+    "database_multi_threaded.cpp",
+    "database_single_threaded.cpp",
+    "query_builder.cpp",
+    "query_result.cpp",
+    "table_builder.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
