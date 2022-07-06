@@ -25,6 +25,11 @@ class FormValidator;
 // Also for other webnodes that have admin functionality, break those into separate nodes. It's a lot safer,
 // and I think they will work better in this setting like this.
 
+//Add a UserLevelWebPermission WebPermission. It should read a new projectsettings entry, and use it as an enum, that
+// can be manipulated form the inspector.
+
+// The RBAC system can probably be removed, as WebPermissions + the editor is a lot more powerful.
+
 class UserController : public WebNode {
 	RCPP_OBJECT(UserController, WebNode);
 
