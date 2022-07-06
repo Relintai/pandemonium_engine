@@ -31,11 +31,6 @@ sources = [
     "sqlite3_table_builder.cpp",
 ]
 
-# sqlite has a few warnings, disable werrors for this module for now
-# it should be patched later.
-if module_env["werror"]:
-  module_env["werror"] = False
-
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
     # Shared lib compilation
     module_env.Append(CCFLAGS=['-fPIC'])
