@@ -356,8 +356,6 @@ void QueryBuilder::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("order_by_asc", "col"), &QueryBuilder::_order_by_asc_bind);
 	ClassDB::bind_method(D_METHOD("order_by_desc", "col"), &QueryBuilder::_order_by_desc_bind);
 	ClassDB::bind_method(D_METHOD("order_by", "col"), &QueryBuilder::_order_by_bind);
-
-	ClassDB::bind_method(D_METHOD("order_by"), &QueryBuilder::_order_by_bind);
 	ClassDB::bind_method(D_METHOD("corder_by"), &QueryBuilder::_corder_by_bind);
 	ClassDB::bind_method(D_METHOD("order_by_add_col", "col"), &QueryBuilder::_order_by_add_col_bind);
 	ClassDB::bind_method(D_METHOD("asc", "col"), &QueryBuilder::_asc_bind, "");

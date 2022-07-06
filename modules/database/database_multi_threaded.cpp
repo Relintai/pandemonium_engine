@@ -33,7 +33,7 @@ Ref<DatabaseConnection> DatabaseMultiThreaded::_allocate_connection() {
 	Ref<DatabaseConnection> dbc;
 	dbc.instance();
 	dbc->set_owner(this);
-	dbc->connect(_connection_string);
+	dbc->database_connect(_connection_string);
 	return dbc;
 }
 

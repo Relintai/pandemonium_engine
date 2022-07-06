@@ -14,7 +14,7 @@ class DatabaseConnection : public Reference {
 	GDCLASS(DatabaseConnection, Reference);
 
 public:
-	virtual void connect(const String &connection_str);
+	virtual void database_connect(const String &connection_str);
 	virtual Ref<QueryResult> query(const String &query);
 	virtual void query_run(const String &query);
 

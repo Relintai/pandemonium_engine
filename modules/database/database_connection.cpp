@@ -5,7 +5,7 @@
 #include "query_result.h"
 #include "table_builder.h"
 
-void DatabaseConnection::connect(const String &connection_str) {
+void DatabaseConnection::database_connect(const String &connection_str) {
 }
 
 Ref<QueryResult> DatabaseConnection::query(const String &query) {
@@ -46,7 +46,7 @@ DatabaseConnection::~DatabaseConnection() {
 }
 
 void DatabaseConnection::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("connect", "connection_str"), &DatabaseConnection::connect);
+	ClassDB::bind_method(D_METHOD("database_connect", "connection_str"), &DatabaseConnection::database_connect);
 	ClassDB::bind_method(D_METHOD("query", "query"), &DatabaseConnection::query);
 	ClassDB::bind_method(D_METHOD("query_run", "query"), &DatabaseConnection::query_run);
 	ClassDB::bind_method(D_METHOD("get_query_builder"), &DatabaseConnection::get_query_builder);
