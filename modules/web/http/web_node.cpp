@@ -9,10 +9,6 @@
 #include "modules/database/database_connection.h"
 #include "web_server_request.h"
 
-#if WEB_SETTINGS_ENABLED
-#include "core/settings/settings.h"
-#endif
-
 #include "web_permission.h"
 #include "web_server.h"
 
@@ -64,21 +60,6 @@ String WebNode::get_full_uri_parent(const bool slash_at_the_end) {
 
 	return uri;
 }
-
-#if WEB_SETTINGS_ENABLED
-Settings *WebNode::get_settings() {
-	if (_settings) {
-		return _settings;
-	}
-
-	return Settings::get_singleton();
-}
-void WebNode::set_settings(Settings *settings) {
-	_settings = settings;
-
-	// todo send event to children when it's implemented?
-}
-#endif
 
 Ref<WebPermission> WebNode::get_web_permission() {
 	return _web_permission;
@@ -416,11 +397,6 @@ WebNode::WebNode() {
 	//_database = nullptr;
 	//#endif
 
-#if WEB_SETTINGS_ENABLED
-	// same for this
-	_settings = nullptr;
-#endif
-
 	_routing_enabled = true;
 	_index_node = nullptr;
 }
@@ -435,11 +411,6 @@ void WebNode::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_full_uri", "slash_at_the_end "), &WebNode::get_full_uri, true);
 	ClassDB::bind_method(D_METHOD("get_full_uri_parent", "slash_at_the_end "), &WebNode::get_full_uri_parent, true);
-
-	//#if WEB_SETTINGS_ENABLED
-	//	Settings *get_settings();
-	//	void set_settings(Settings * settings);
-	//#endif
 
 	ClassDB::bind_method(D_METHOD("get_web_permission"), &WebNode::get_web_permission);
 	ClassDB::bind_method(D_METHOD("set_web_permission", "val"), &WebNode::set_web_permission);

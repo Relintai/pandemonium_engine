@@ -9,9 +9,6 @@
 #include "scene/main/node.h"
 
 class WebServerRequest;
-#if WEB_SETTINGS_ENABLED
-class Settings;
-#endif
 class WebServer;
 class WebPermission;
 
@@ -37,12 +34,6 @@ public:
 
 	String get_full_uri(const bool slash_at_the_end = true);
 	String get_full_uri_parent(const bool slash_at_the_end = true);
-
-	//Maybe this settings class could be a resource, also it needs a new name
-#if WEB_SETTINGS_ENABLED
-	Settings *get_settings();
-	void set_settings(Settings *settings);
-#endif
 
 	Ref<WebPermission> get_web_permission();
 	void set_web_permission(const Ref<WebPermission> &wp);
@@ -112,10 +103,6 @@ protected:
 	static void _bind_methods();
 
 	String _uri_segment;
-
-#if WEB_SETTINGS_ENABLED
-	Settings *_settings;
-#endif
 
 #ifdef MODULE_DATABASE_ENABLED
 	Ref<Database> _database;
