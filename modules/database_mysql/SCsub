@@ -1,0 +1,36 @@
+#import os
+#import version
+
+#Import('env')
+
+#module_env = env.Clone()
+
+#sources = [
+    #"register_types.cpp",
+#]
+
+#if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
+    # Shared lib compilation
+#    module_env.Append(CCFLAGS=['-fPIC'])
+#    module_env['LIBS'] = []
+#    shared_lib = module_env.SharedLibrary(target='#bin/database', source=sources)
+#    shared_lib_shim = shared_lib[0].name.rsplit('.', 1)[0]
+#    env.Append(LIBS=[shared_lib_shim])
+#    env.Append(LIBPATH=['#bin'])
+#else:
+    # Static compilation
+#    module_env.add_source_files(env.modules_sources, sources)
+
+
+#Import("env_db")
+#Import("env")
+
+#env_db.core_sources = []
+
+#env_db.add_source_files(env_db.core_sources, "*.cpp")
+
+# Build it all as a library
+#lib = env_db.add_library("database_mysql", env_db.core_sources)
+#env.Prepend(LIBS=[lib])
+
+

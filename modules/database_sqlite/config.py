@@ -3,15 +3,10 @@ import platform
 import sys
 
 
-def is_active():
-    return True
+def can_build(env, platform):
+    return False
 
-
-def get_name():
-    return "sqlite3"
-
-
-def can_build():
+def _can_build():
 
 #    if os.name == "posix" or sys.platform == "darwin":
 #        x11_error = os.system("pkg-config --version > /dev/null")
@@ -31,24 +26,15 @@ def can_build():
 #    #todo
 #    return False
 
-    print("sqlite3 built in!")
+    #print("sqlite3 built in!")
 
     return True
 
-def get_opts():
-    from SCons.Variables import BoolVariable, EnumVariable
-
-    return [
-       # EnumVariable("debug_symbols", "Add debugging symbols to release/release_debug builds", "yes", ("yes", "no")),
-    ]
-
-
-def get_flags():
-
-    return []
-
 
 def configure(env):
+    pass
+
+def _configure(env):
     #env.ParseConfig("pkg-config sqlite3 --cflags --libs")
 
     env.Append(CPPDEFINES=["SQLITE_PRESENT"])

@@ -1,0 +1,11 @@
+
+#Import("env_db")
+#Import("env")
+
+#env_db.core_sources = []
+
+#env_db.add_source_files(env_db.core_sources, "*.cpp")
+
+# Build it all as a library
+#lib = env_db.add_library("database_pgsql", env_db.core_sources)
+#env.Prepend(LIBS=[lib])
