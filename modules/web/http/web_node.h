@@ -1,6 +1,7 @@
 #ifndef WEB_NODE_H
 #define WEB_NODE_H
 
+#include "../../modules_enabled.gen.h"
 #include "core/hash_map.h"
 #include "core/os/rw_lock.h"
 #include "core/reference.h"
@@ -14,8 +15,8 @@ class Settings;
 class WebServer;
 class WebPermission;
 
-#ifdef DATABASES_ENABLED
-class DataBase;
+#ifdef MODULE_DATABASE_ENABLED
+class Database;
 class TableBuilder;
 class QueryBuilder;
 #endif
@@ -49,11 +50,11 @@ public:
 	bool get_routing_enabled();
 	void set_routing_enabled(const bool value);
 
-#ifdef DATABASES_ENABLED
-	Database *get_database();
+#ifdef MODULE_DATABASE_ENABLED
+	Ref<Database> get_database();
+	void set_database(const Ref<Database> &db);
 	Ref<TableBuilder> get_table_builder();
 	Ref<QueryBuilder> get_query_builder();
-	void set_database(Database *db);
 #endif
 
 	void handle_request_main(Ref<WebServerRequest> request);
@@ -116,8 +117,8 @@ protected:
 	Settings *_settings;
 #endif
 
-#ifdef DATABASES_ENABLED
-	Database *_database;
+#ifdef MODULE_DATABASE_ENABLED
+	Ref<Database> _database;
 #endif
 
 	bool _routing_enabled;

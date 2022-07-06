@@ -6,6 +6,7 @@
 #include "core/object.h"
 #include "core/print_string.h"
 #include "http_server_enums.h"
+#include "modules/database/database_connection.h"
 #include "web_server_request.h"
 
 #if WEB_SETTINGS_ENABLED
@@ -15,12 +16,12 @@
 #include "web_permission.h"
 #include "web_server.h"
 
-#ifdef DATABASES_ENABLED
-#include "database/database.h"
-#include "database/database_manager.h"
-#include "database/query_builder.h"
-#include "database/query_result.h"
-#include "database/table_builder.h"
+#ifdef MODULE_DATABASE_ENABLED
+#include "../../database/database.h"
+#include "../../database/database_manager.h"
+#include "../../database/query_builder.h"
+#include "../../database/query_result.h"
+#include "../../database/table_builder.h"
 #endif
 
 String WebNode::get_uri_segment() {
@@ -105,36 +106,44 @@ void WebNode::set_routing_enabled(const bool value) {
 	}
 }
 
-#ifdef DATABASES_ENABLED
+#ifdef MODULE_DATABASE_ENABLED
 
-Database *WebNode::get_database() {
-	if (_database) {
+Ref<Database> WebNode::get_database() {
+	if (_database.is_valid()) {
 		return _database;
 	}
 
-	return DatabaseManager::get_singleton()->ddb;
+	return DatabaseManager::get_singleton()->get_ddb();
 }
 
-Ref<TableBuilder> WebNode::get_table_builder() {
-	Database *db = get_database();
-
-	ERR_FAIL_COND_V(!db, Ref<TableBuilder>());
-
-	return db->get_table_builder();
-}
-
-Ref<QueryBuilder> WebNode::get_query_builder() {
-	Database *db = get_database();
-
-	ERR_FAIL_COND_V(!db, Ref<QueryBuilder>());
-
-	return db->get_query_builder();
-}
-
-void WebNode::set_database(Database *db) {
+void WebNode::set_database(const Ref<Database> &db) {
 	_database = db;
 
 	// todo send event to children when it's implemented?
+}
+
+Ref<TableBuilder> WebNode::get_table_builder() {
+	Ref<Database> db = get_database();
+
+	ERR_FAIL_COND_V(!db.is_valid(), Ref<TableBuilder>());
+
+	Ref<DatabaseConnection> conn = db->get_connection();
+
+	ERR_FAIL_COND_V(!conn.is_valid(), Ref<TableBuilder>());
+
+	return conn->get_table_builder();
+}
+
+Ref<QueryBuilder> WebNode::get_query_builder() {
+	Ref<Database> db = get_database();
+
+	ERR_FAIL_COND_V(!db.is_valid(), Ref<QueryBuilder>());
+
+	Ref<DatabaseConnection> conn = db->get_connection();
+
+	ERR_FAIL_COND_V(!conn.is_valid(), Ref<QueryBuilder>());
+
+	return conn->get_query_builder();
 }
 
 #endif
@@ -403,9 +412,9 @@ void WebNode::_notification(const int what) {
 WebNode::WebNode() {
 	// should look this up in parents when parented (and node parenting is implemented)
 	// should have an event later when a parent gets one
-#ifdef DATABASES_ENABLED
-	_database = nullptr;
-#endif
+	//#ifdef MODULE_DATABASE_ENABLED
+	//_database = nullptr;
+	//#endif
 
 #if WEB_SETTINGS_ENABLED
 	// same for this
@@ -440,12 +449,14 @@ void WebNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_routing_enabled", "val"), &WebNode::set_routing_enabled);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "routing_enabled"), "set_routing_enabled", "get_routing_enabled");
 
-	//#ifdef DATABASES_ENABLED
-	//	Database *get_database();
-	//	Ref<TableBuilder> get_table_builder();
-	//	Ref<QueryBuilder> get_query_builder();
-	//	void set_database(Database * db);
-	//#endif
+#ifdef MODULE_DATABASE_ENABLED
+	ClassDB::bind_method(D_METHOD("get_database"), &WebNode::get_database);
+	ClassDB::bind_method(D_METHOD("set_database", "val"), &WebNode::set_database);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "database", PROPERTY_HINT_RESOURCE_TYPE, "Database", 0), "set_database", "get_database");
+
+	ClassDB::bind_method(D_METHOD("get_table_builder"), &WebNode::get_table_builder);
+	ClassDB::bind_method(D_METHOD("get_query_builder"), &WebNode::get_query_builder);
+#endif
 
 	BIND_VMETHOD(MethodInfo("_handle_request_main", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
 	ClassDB::bind_method(D_METHOD("handle_request_main", "request"), &WebNode::handle_request_main);
