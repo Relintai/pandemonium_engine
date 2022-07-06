@@ -19,6 +19,11 @@ class FormValidator;
 // and this node should be expected to be autoloaded.
 // It should keep get_singleton() and c++ stuff that deal with users should expect it's presence
 // they should use err macros to not crash the app though
+// Rename this UserManager
+// Also users are useful for not just web stuff, so don't rename them
+// Make this inherit from Node instead, only inherit the web user handling from webnodes.
+// Also for other webnodes that have admin functionality, break those into separate nodes. It's a lot safer,
+// and I think they will work better in this setting like this.
 
 class UserController : public WebNode {
 	RCPP_OBJECT(UserController, WebNode);
