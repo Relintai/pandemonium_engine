@@ -46,3 +46,12 @@ def _configure(env):
     env.Append(LINKFLAGS=["-ldl"])
 
         
+def get_doc_classes():
+    return [
+        #"",
+    	"Sqlite3Database",
+    ]
+
+def get_doc_path():
+    return "doc_classes"
+
