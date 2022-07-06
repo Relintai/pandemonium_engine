@@ -29,10 +29,16 @@ String DatabaseConnection::escape(const String &str) {
 void DatabaseConnection::escape_to(const String &str, String *to) {
 }
 
+Ref<Database> DatabaseConnection::get_owner() {
+	return Ref<Database>(_owner);
+}
+
 DatabaseConnection::DatabaseConnection() {
+	_owner = nullptr;
 }
 
 DatabaseConnection::~DatabaseConnection() {
+	_owner = nullptr;
 }
 
 void DatabaseConnection::_bind_methods() {
@@ -42,4 +48,5 @@ void DatabaseConnection::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_query_builder"), &DatabaseConnection::get_query_builder);
 	ClassDB::bind_method(D_METHOD("get_table_builder"), &DatabaseConnection::get_table_builder);
 	ClassDB::bind_method(D_METHOD("escape", "str"), &DatabaseConnection::escape);
+	ClassDB::bind_method(D_METHOD("get_owner"), &DatabaseConnection::get_owner);
 }

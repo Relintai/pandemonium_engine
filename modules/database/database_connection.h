@@ -8,6 +8,7 @@
 class QueryBuilder;
 class TableBuilder;
 class QueryResult;
+class Database;
 
 class DatabaseConnection : public Reference {
 	GDCLASS(DatabaseConnection, Reference);
@@ -23,11 +24,18 @@ public:
 	virtual String escape(const String &str);
 	virtual void escape_to(const String &str, String *to);
 
+	Ref<Database> get_owner();
+	void set_owner(Database *owner);
+
 	DatabaseConnection();
 	~DatabaseConnection();
 
 protected:
 	static void _bind_methods();
+
+	//"WeakRef"
+	//Note: Set this to null if the owner Database gets destroyed!
+	Database *_owner;
 };
 
 #endif

@@ -17,6 +17,11 @@ Ref<DatabaseConnection> Database::get_connection() {
 }
 
 Ref<DatabaseConnection> Database::_allocate_connection() {
+	//Ref<DatabaseConnection> dbc;
+	//dbc.instance();
+	//dbc->set_owner(this); //if needed
+	//return dbc;
+
 	return Ref<DatabaseConnection>();
 }
 
