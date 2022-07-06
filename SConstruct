@@ -286,6 +286,9 @@ for path in module_search_paths:
     # Note: custom modules can override built-in ones.
     modules_detected.update(modules)
 
+# Sort modules dependencies
+methods.sort_modules_dependencies(modules_detected)
+
 # Add module options
 for name, path in modules_detected.items():
     enabled = True
