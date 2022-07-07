@@ -22,6 +22,7 @@ public:
 	bool is_username_taken(const String &user_name);
 	bool is_email_taken(const String &email);
 
+	//TODO these should probably be moved to User
 	bool check_password(const Ref<User> &user, const String &p_password);
 	void create_password(const Ref<User> &user, const String &p_password);
 	String hash_password(const Ref<User> &user, const String &p_password);
