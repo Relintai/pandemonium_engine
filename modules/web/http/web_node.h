@@ -115,7 +115,6 @@ protected:
 
 	Ref<WebPermission> _web_permission;
 
-	//TODO this should be atomic
 	bool _write_lock_requested;
 	RWLock _rw_lock;
 };
