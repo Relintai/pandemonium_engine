@@ -1,63 +1,63 @@
 #include "user.h"
 #include "core/class_db.h"
 
-String User::get_name_user_input() {
+String User::get_name_user_input() const {
 	return _name_user_input;
 }
 void User::set_name_user_input(const String &val) {
 	_name_user_input = val;
 }
 
-String User::get_email_user_input() {
+String User::get_email_user_input() const {
 	return _email_user_input;
 }
 void User::set_email_user_input(const String &val) {
 	_email_user_input = val;
 }
 
-int User::get_rank() {
+int User::get_rank() const {
 	return _rank;
 }
 void User::set_rank(const int &val) {
 	_rank = val;
 }
 
-String User::get_pre_salt() {
+String User::get_pre_salt() const {
 	return _pre_salt;
 }
 void User::set_pre_salt(const String &val) {
 	_pre_salt = val;
 }
 
-String User::get_post_salt() {
+String User::get_post_salt() const {
 	return _post_salt;
 }
 void User::set_post_salt(const String &val) {
 	_post_salt = val;
 }
 
-String User::get_password_hash() {
+String User::get_password_hash() const {
 	return _password_hash;
 }
 void User::set_password_hash(const String &val) {
 	_password_hash = val;
 }
 
-bool User::get_banned() {
+bool User::get_banned() const {
 	return _banned;
 }
 void User::set_banned(const bool &val) {
 	_banned = val;
 }
 
-String User::get_password_reset_token() {
+String User::get_password_reset_token() const {
 	return _password_reset_token;
 }
 void User::set_password_reset_token(const String &val) {
 	_password_reset_token = val;
 }
 
-bool User::get_locked() {
+bool User::get_locked() const {
 	return _locked;
 }
 void User::set_locked(const bool &val) {

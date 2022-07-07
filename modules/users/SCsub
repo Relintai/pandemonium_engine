@@ -8,6 +8,7 @@ sources = [
     "register_types.cpp",
 
     "users/user.cpp",
+    "managers/user_manager.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':

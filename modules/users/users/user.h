@@ -19,31 +19,31 @@ public:
 		PERMISSION_NONE = 0
 	};
 
-	String get_name_user_input();
+	String get_name_user_input() const;
 	void set_name_user_input(const String &val);
 
-	String get_email_user_input();
+	String get_email_user_input() const;
 	void set_email_user_input(const String &val);
 
-	int get_rank();
+	int get_rank() const;
 	void set_rank(const int &val);
 
-	String get_pre_salt();
+	String get_pre_salt() const;
 	void set_pre_salt(const String &val);
 
-	String get_post_salt();
+	String get_post_salt() const;
 	void set_post_salt(const String &val);
 
-	String get_password_hash();
+	String get_password_hash() const;
 	void set_password_hash(const String &val);
 
-	bool get_banned();
+	bool get_banned() const;
 	void set_banned(const bool &val);
 
-	String get_password_reset_token();
+	String get_password_reset_token() const;
 	void set_password_reset_token(const String &val);
 
-	bool get_locked();
+	bool get_locked() const;
 	void set_locked(const bool &val);
 
 	User();

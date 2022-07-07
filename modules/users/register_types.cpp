@@ -26,8 +26,11 @@ SOFTWARE.
 
 #include "users/user.h"
 
+#include "managers/user_manager.h"
+
 void register_users_types() {
 	ClassDB::register_class<User>();
+	ClassDB::register_class<UserManager>();
 }
 
 void unregister_users_types() {
