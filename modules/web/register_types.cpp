@@ -57,6 +57,8 @@ SOFTWARE.
 #include "nodes/paged_article/paged_articles.h"
 //#include "nodes/paged_article/paged_articles_md_index.h"
 
+#include "nodes/users/user.h"
+
 void register_web_types() {
 	ClassDB::register_class<_HTMLBuilder>();
 	ClassDB::register_class<_HTMLTag>();
@@ -109,6 +111,8 @@ void register_web_types() {
 	ClassDB::register_class<PagedArticle>();
 	ClassDB::register_class<PagedArticles>();
 	//ClassDB::register_class<PagedArticlesMDIndex>();
+
+	ClassDB::register_class<User>();
 }
 
 void unregister_web_types() {

@@ -48,6 +48,8 @@ sources = [
     "nodes/paged_article/paged_article.cpp",
     "nodes/paged_article/paged_articles.cpp",
     #"nodes/paged_article/paged_articles_md_index.cpp",
+
+    "nodes/users/user.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':

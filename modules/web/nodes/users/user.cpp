@@ -1,107 +1,119 @@
 #include "user.h"
+#include "core/class_db.h"
 
-#include "rapidjson/document.h"
-#include "rapidjson/filewritestream.h"
-#include "rapidjson/rapidjson.h"
-#include "rapidjson/stringbuffer.h"
-#include <rapidjson/writer.h>
-#include <tinydir/tinydir.h>
-#include <cstdio>
-
-#include "database/database_manager.h"
-#include "database/query_builder.h"
-#include "database/query_result.h"
-#include "database/table_builder.h"
-
-#include "web/html/form_validator.h"
-#include "web/html/html_builder.h"
-#include "web/http/cookie.h"
-#include "web/http/http_session.h"
-#include "web/http/request.h"
-#include "web/http/session_manager.h"
-#include "web/html/utils.h"
-
-String User::to_json(rapidjson::Document *into) {
-	rapidjson::Document *document;
-
-	if (into) {
-		document = into;
-	} else {
-		document = new rapidjson::Document();
-	}
-
-	document->SetObject();
-
-	document->AddMember("id", id, document->GetAllocator());
-
-	document->AddMember("name", rapidjson::Value(name_user_input.c_str(), document->GetAllocator()), document->GetAllocator());
-	document->AddMember("email", rapidjson::Value(email_user_input.c_str(), document->GetAllocator()), document->GetAllocator());
-	document->AddMember("rank", rank, document->GetAllocator());
-	document->AddMember("pre_salt", rapidjson::Value(pre_salt.c_str(), document->GetAllocator()), document->GetAllocator());
-	document->AddMember("post_salt", rapidjson::Value(post_salt.c_str(), document->GetAllocator()), document->GetAllocator());
-	document->AddMember("password_hash", rapidjson::Value(password_hash.c_str(), document->GetAllocator()), document->GetAllocator());
-	document->AddMember("banned", banned, document->GetAllocator());
-	document->AddMember("password_reset_token", rapidjson::Value(password_reset_token.c_str(), document->GetAllocator()), document->GetAllocator());
-	document->AddMember("locked", locked, document->GetAllocator());
-
-	if (into) {
-		return "";
-	}
-
-	rapidjson::StringBuffer buffer;
-	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-	document->Accept(writer);
-
-	String s = buffer.GetString();
-
-	delete document;
-
-	return s;
+String User::get_name_user_input() {
+	return _name_user_input;
+}
+void User::set_name_user_input(const String &val) {
+	_name_user_input = val;
 }
 
-void User::from_json(const String &p_data) {
-
-	rapidjson::Document data;
-	data.Parse(p_data.c_str());
-
-	rapidjson::Value uobj = data.GetObject();
-
-	id = uobj["id"].GetInt();
-	name_user_input = uobj["name"].GetString();
-	email_user_input = uobj["email"].GetString();
-	rank = uobj["rank"].GetInt();
-	pre_salt = uobj["pre_salt"].GetString();
-	post_salt = uobj["post_salt"].GetString();
-	password_hash = uobj["password_hash"].GetString();
-	banned = uobj["banned"].GetBool();
-
-	password_reset_token = uobj["password_reset_token"].GetString();
-	locked = uobj["locked"].GetBool();
+String User::get_email_user_input() {
+	return _email_user_input;
+}
+void User::set_email_user_input(const String &val) {
+	_email_user_input = val;
 }
 
-int User::get_permissions(Request *request) {
-	return PERMISSION_ALL;
+int User::get_rank() {
+	return _rank;
+}
+void User::set_rank(const int &val) {
+	_rank = val;
 }
 
-bool User::has_permission(Request *request, const int permission) {
-	return true;
+String User::get_pre_salt() {
+	return _pre_salt;
+}
+void User::set_pre_salt(const String &val) {
+	_pre_salt = val;
 }
 
-int User::get_additional_permissions(Request *request) {
-	return 0;
+String User::get_post_salt() {
+	return _post_salt;
+}
+void User::set_post_salt(const String &val) {
+	_post_salt = val;
 }
 
-bool User::has_additional_permission(Request *request, const int permission) {
-	return true;
+String User::get_password_hash() {
+	return _password_hash;
+}
+void User::set_password_hash(const String &val) {
+	_password_hash = val;
 }
 
-User::User() :
-		Resource() {
+bool User::get_banned() {
+	return _banned;
+}
+void User::set_banned(const bool &val) {
+	_banned = val;
+}
 
-	rank = 0;
-	banned = false;
-	locked = false;
+String User::get_password_reset_token() {
+	return _password_reset_token;
+}
+void User::set_password_reset_token(const String &val) {
+	_password_reset_token = val;
+}
+
+bool User::get_locked() {
+	return _locked;
+}
+void User::set_locked(const bool &val) {
+	_locked = val;
+}
+
+User::User() {
+	_rank = 0;
+	_banned = false;
+	_locked = false;
 }
 
 User::~User() {
+}
+
+void User::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_name_user_input"), &User::get_name_user_input);
+	ClassDB::bind_method(D_METHOD("set_name_user_input", "val"), &User::set_name_user_input);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "name_user_input"), "set_name_user_input", "get_name_user_input");
+
+	ClassDB::bind_method(D_METHOD("get_email_user_input"), &User::get_email_user_input);
+	ClassDB::bind_method(D_METHOD("set_email_user_input", "val"), &User::set_email_user_input);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "email_user_input"), "set_email_user_input", "get_email_user_input");
+
+	ClassDB::bind_method(D_METHOD("get_rank"), &User::get_rank);
+	ClassDB::bind_method(D_METHOD("set_rank", "val"), &User::set_rank);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "rank"), "set_rank", "get_rank");
+
+	ClassDB::bind_method(D_METHOD("get_pre_salt"), &User::get_pre_salt);
+	ClassDB::bind_method(D_METHOD("set_pre_salt", "val"), &User::set_pre_salt);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "pre_salt"), "set_pre_salt", "get_pre_salt");
+
+	ClassDB::bind_method(D_METHOD("get_post_salt"), &User::get_post_salt);
+	ClassDB::bind_method(D_METHOD("set_post_salt", "val"), &User::set_post_salt);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "post_salt"), "set_post_salt", "get_post_salt");
+
+	ClassDB::bind_method(D_METHOD("get_password_hash"), &User::get_password_hash);
+	ClassDB::bind_method(D_METHOD("set_password_hash", "val"), &User::set_password_hash);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "password_hash"), "set_password_hash", "get_password_hash");
+
+	ClassDB::bind_method(D_METHOD("get_banned"), &User::get_banned);
+	ClassDB::bind_method(D_METHOD("set_banned", "val"), &User::set_banned);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "banned"), "set_banned", "get_banned");
+
+	ClassDB::bind_method(D_METHOD("get_password_reset_token"), &User::get_password_reset_token);
+	ClassDB::bind_method(D_METHOD("set_password_reset_token", "val"), &User::set_password_reset_token);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "password_reset_token"), "set_password_reset_token", "get_password_reset_token");
+
+	ClassDB::bind_method(D_METHOD("get_locked"), &User::get_locked);
+	ClassDB::bind_method(D_METHOD("set_locked", "val"), &User::set_locked);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "locked"), "set_locked", "get_locked");
+
+	BIND_ENUM_CONSTANT(PERMISSION_CREATE);
+	BIND_ENUM_CONSTANT(PERMISSION_READ);
+	BIND_ENUM_CONSTANT(PERMISSION_UPDATE);
+	BIND_ENUM_CONSTANT(PERMISSION_DELETE);
+	BIND_ENUM_CONSTANT(PERMISSION_ALL);
+	BIND_ENUM_CONSTANT(PERMISSION_NONE);
 }

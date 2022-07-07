@@ -1,17 +1,12 @@
 #ifndef USER_H
 #define USER_H
 
-#include "core/string.h"
+#include "core/ustring.h"
 
 #include "core/resource.h"
-#include "rapidjson/document.h"
-#include <mutex>
-
-class Request;
-class FormValidator;
 
 class User : public Resource {
-	RCPP_OBJECT(User, Resource);
+	GDCLASS(User, Resource);
 
 public:
 	enum Permissions {
@@ -24,26 +19,50 @@ public:
 		PERMISSION_NONE = 0
 	};
 
-	String name_user_input;
-	String email_user_input;
-	int rank;
-	String pre_salt;
-	String post_salt;
-	String password_hash;
-	bool banned;
-	String password_reset_token;
-	bool locked;
+	String get_name_user_input();
+	void set_name_user_input(const String &val);
 
-	String to_json(rapidjson::Document *into = nullptr);
-	void from_json(const String &data);
+	String get_email_user_input();
+	void set_email_user_input(const String &val);
 
-	virtual int get_permissions(Request *request);
-	virtual bool has_permission(Request *request, const int permission);
-	virtual int get_additional_permissions(Request *request);
-	virtual bool has_additional_permission(Request *request, const int permission);
+	int get_rank();
+	void set_rank(const int &val);
+
+	String get_pre_salt();
+	void set_pre_salt(const String &val);
+
+	String get_post_salt();
+	void set_post_salt(const String &val);
+
+	String get_password_hash();
+	void set_password_hash(const String &val);
+
+	bool get_banned();
+	void set_banned(const bool &val);
+
+	String get_password_reset_token();
+	void set_password_reset_token(const String &val);
+
+	bool get_locked();
+	void set_locked(const bool &val);
 
 	User();
 	~User();
+
+protected:
+	static void _bind_methods();
+
+	String _name_user_input;
+	String _email_user_input;
+	int _rank;
+	String _pre_salt;
+	String _post_salt;
+	String _password_hash;
+	bool _banned;
+	String _password_reset_token;
+	bool _locked;
 };
+
+VARIANT_ENUM_CAST(User::Permissions);
 
 #endif
