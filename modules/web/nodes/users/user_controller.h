@@ -30,6 +30,8 @@ class FormValidator;
 
 // The RBAC system can probably be removed, as WebPermissions + the editor is a lot more powerful.
 
+//Note move this with the user controller to it's own module.
+
 class UserController : public WebNode {
 	RCPP_OBJECT(UserController, WebNode);
 
