@@ -64,8 +64,6 @@ def get_doc_classes():
         "PagedArticle",
         "PagedArticles",
         "PagedArticlesMDIndex",
-
-        "User",
     ]
 
 
