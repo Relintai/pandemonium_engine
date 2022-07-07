@@ -69,6 +69,6 @@
 
 - Table builder should have a method that can automatically create tables from any Object using it's properties. Like tb->add_object_properties("obj type"). You could the still mess with the query, add fields, and set keys. It's purpose should be simple automation when you don't need handoptimized tables.
 - Query builder should have more helper methods to automate simpler queries as much as possible. Like: sfw("col", "table", "a < 3") -> SELECT col FROM table WHERE a < 3;, or sf()... etc
-- Query builder should also have an update and create, and get method which generates a query using properties to automatically create sql to save objects. They could also take a pk argument to tell which entry is the key. save method would also be nice that decides whether to update or create an entry.
+- Query builder should also have an update and create, (and also get) method which generates a query using properties to automatically create sql to save objects. They could also take a pk argument to tell which entry is the key. save method would also be nice that decides whether to update or create an entry.
 - No full ORM functionality though, it should be really close to SQL queries, but with lots of helper methods, for the more trivial stuff.
 
