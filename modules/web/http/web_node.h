@@ -26,7 +26,7 @@ class WebNode : public Node {
 
 public:
 	enum {
-		NOTIFICATION_WEB_TREE_WRITE_LOCKED = 2000,
+		NOTIFICATION_WEB_NODE_WRITE_LOCKED = 2100,
 	};
 
 	String get_uri_segment();

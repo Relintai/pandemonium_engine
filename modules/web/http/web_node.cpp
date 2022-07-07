@@ -379,7 +379,7 @@ void WebNode::_notification(const int what) {
 		case NOTIFICATION_INTERNAL_PROCESS: {
 			if (_write_lock_requested) {
 				_rw_lock.write_lock();
-				notification(NOTIFICATION_WEB_TREE_WRITE_LOCKED);
+				notification(NOTIFICATION_WEB_NODE_WRITE_LOCKED);
 				_rw_lock.write_unlock();
 
 				_write_lock_requested = false;
@@ -486,5 +486,5 @@ void WebNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_web_root"), &WebNode::get_web_root);
 	ClassDB::bind_method(D_METHOD("get_parent_webnode"), &WebNode::get_parent_webnode);
 
-	BIND_CONSTANT(NOTIFICATION_WEB_TREE_WRITE_LOCKED);
+	BIND_CONSTANT(NOTIFICATION_WEB_NODE_WRITE_LOCKED);
 }
