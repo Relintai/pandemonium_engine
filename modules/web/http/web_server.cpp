@@ -143,6 +143,8 @@ void WebServer::_notification(int p_what) {
 			//the root could have changed.
 			refresh_root();
 			_rw_lock.write_unlock();
+
+			_write_lock_requested = false;
 		}
 	}
 }
