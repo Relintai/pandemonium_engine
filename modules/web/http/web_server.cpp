@@ -1,46 +1,29 @@
 #include "web_server.h"
 
+#include "core/class_db.h"
 #include "web_node.h"
 #include "web_server_request.h"
 
 #include "http_session_manager.h"
 
-NodePath WebServer::get_web_root_path() const {
-	return _web_root_path;
-}
-void WebServer::set_web_root_path(const NodePath &path) {
-	_web_root_path = path;
+bool WebServer::get_is_running() {
+	return _is_running;
 }
 
 WebNode *WebServer::get_web_root() {
 	return _web_root;
 }
 
-void WebServer::set_web_root(WebNode *root) {
-	_web_root = root;
-}
-
 Node *WebServer::get_web_root_bind() {
 	return _web_root;
-}
-void WebServer::set_web_root_bind(Node *root) {
-	WebNode *web_root = Object::cast_to<WebNode>(root);
-
-	_web_root = web_root;
 }
 
 HTTPSessionManager *WebServer::get_session_manager() {
 	return _session_manager;
 }
-void WebServer::set_session_manager(HTTPSessionManager *sess_man) {
-	_session_manager = sess_man;
-}
 
 Node *WebServer::get_session_manager_bind() {
 	return _session_manager;
-}
-void WebServer::set_session_manager_bind(Node *sess_man) {
-	_session_manager = Object::cast_to<HTTPSessionManager>(sess_man);
 }
 
 void WebServer::server_handle_request(Ref<WebServerRequest> request) {
@@ -58,6 +41,21 @@ void WebServer::request_write_lock() {
 	_write_lock_requested = true;
 }
 
+void WebServer::refresh_root() {
+	_web_root = nullptr;
+	_session_manager = nullptr;
+
+	for (int i = 0; i < get_child_count(); ++i) {
+		if (!_web_root) {
+			_web_root = Object::cast_to<WebNode>(get_child(i));
+		}
+
+		if (!_session_manager) {
+			_session_manager = Object::cast_to<HTTPSessionManager>(get_child(i));
+		}
+	}
+}
+
 void WebServer::start() {
 	call("_start");
 }
@@ -66,35 +64,92 @@ void WebServer::stop() {
 }
 
 void WebServer::_start() {
-	//look up root node, and sessionmanager, if not set.
-
-	if (!_web_root && _web_root_path != NodePath()) {
-		_web_root = Object::cast_to<WebNode>(get_node_or_null(_web_root_path));
+	if (_is_running) {
+		return;
 	}
+
+	_is_running = true;
+
+	refresh_root();
 }
 void WebServer::_stop() {
+	if (!_is_running) {
+		return;
+	}
+
+	_is_running = false;
+}
+
+String WebServer::get_configuration_warning() const {
+	int webnode_count = 0;
+	int session_manager_count = 0;
+
+	for (int i = 0; i < get_child_count(); ++i) {
+		if (!_web_root) {
+			WebNode *wn = Object::cast_to<WebNode>(get_child(i));
+
+			if (wn) {
+				++webnode_count;
+			}
+		}
+
+		if (!_session_manager) {
+			HTTPSessionManager *sm = Object::cast_to<HTTPSessionManager>(get_child(i));
+
+			if (sm) {
+				++session_manager_count;
+			}
+		}
+	}
+
+	String err;
+
+	if (webnode_count == 0) {
+		err += "You need one (and only one) WebNode as the child for the webserver to work. (A WebRoot Node is recommended by default.)";
+	} else if (webnode_count > 1) {
+		err += "You have more than one root WebNode as the child of the server. Please move them under a new common WebNode, else the server will only use the first one!";
+	}
+
+	if (session_manager_count > 1) {
+		if (err != "") {
+			err += "\n";
+		}
+
+		err += "You have more than one HTTPSessionManager nodes as child, the server will only be able use the first one. Please remove the other.";
+	}
+
+	return err;
 }
 
 WebServer::WebServer() {
+	_is_running = false;
+
 	_web_root = nullptr;
+	_session_manager = nullptr;
 
 	_write_lock_requested = false;
+
+	set_process_internal(true);
 }
 
 WebServer::~WebServer() {
 }
 
+void WebServer::_notification(int p_what) {
+	if (p_what == NOTIFICATION_INTERNAL_PROCESS) {
+		if (_write_lock_requested) {
+			_rw_lock.write_lock();
+			notification(NOTIFICATION_WEB_SERVER_WRITE_LOCK_ACQUIRED);
+			//the root could have changed.
+			refresh_root();
+			_rw_lock.write_unlock();
+		}
+	}
+}
+
 void WebServer::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_web_root_path"), &WebServer::get_web_root_path);
-	ClassDB::bind_method(D_METHOD("set_web_root_path", "val"), &WebServer::set_web_root_path);
-	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "web_root_path"), "set_web_root_path", "get_web_root_path");
-
 	ClassDB::bind_method(D_METHOD("get_web_root"), &WebServer::get_web_root_bind);
-	ClassDB::bind_method(D_METHOD("set_web_root", "val"), &WebServer::set_web_root_bind);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "web_root", PROPERTY_HINT_RESOURCE_TYPE, "WebRoot", 0), "set_web_root", "get_web_root");
-
 	ClassDB::bind_method(D_METHOD("get_session_manager"), &WebServer::get_session_manager_bind);
-	ClassDB::bind_method(D_METHOD("set_session_manager", "val"), &WebServer::set_session_manager_bind);
 
 	ClassDB::bind_method(D_METHOD("server_handle_request", "request"), &WebServer::server_handle_request);
 	ClassDB::bind_method(D_METHOD("request_write_lock"), &WebServer::request_write_lock);
@@ -105,4 +160,8 @@ void WebServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("stop"), &WebServer::stop);
 	ClassDB::bind_method(D_METHOD("_start"), &WebServer::_start);
 	ClassDB::bind_method(D_METHOD("_stop"), &WebServer::_stop);
+
+	BIND_CONSTANT(NOTIFICATION_WEB_SERVER_STARTED);
+	BIND_CONSTANT(NOTIFICATION_WEB_SERVER_STOPPED);
+	BIND_CONSTANT(NOTIFICATION_WEB_SERVER_WRITE_LOCK_ACQUIRED);
 }
