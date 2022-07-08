@@ -5,6 +5,8 @@
 
 #include "core/resource.h"
 
+//TODO remove _user_input postfixes
+
 class User : public Resource {
 	GDCLASS(User, Resource);
 

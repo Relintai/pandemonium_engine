@@ -9,6 +9,8 @@
 
 class User;
 
+//TODO UserManagerStatic, UserManagerDB, UserManagerFile
+
 class UserManager : public Node {
 	GDCLASS(UserManager, Node);
 
