@@ -9,6 +9,7 @@ sources = [
 
     "users/user.cpp",
     "managers/user_manager.cpp",
+    "singleton/user_db.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':

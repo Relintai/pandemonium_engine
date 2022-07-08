@@ -12,6 +12,7 @@ def get_doc_classes():
     return [
         "User",
         "UserManager",
+        "UserDB",
     ]
 
 

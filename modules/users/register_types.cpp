@@ -22,16 +22,26 @@ SOFTWARE.
 
 #include "register_types.h"
 
-//#include "core/engine.h"
+#include "core/engine.h"
 
 #include "users/user.h"
 
 #include "managers/user_manager.h"
+#include "singleton/user_db.h"
+
+UserDB *_user_db = nullptr;
 
 void register_users_types() {
 	ClassDB::register_class<User>();
 	ClassDB::register_class<UserManager>();
+	ClassDB::register_class<UserDB>();
+
+	_user_db = memnew(UserDB);
+	Engine::get_singleton()->add_singleton(Engine::Singleton("UserDB", UserDB::get_singleton()));
 }
 
 void unregister_users_types() {
+	if (_user_db) {
+		memdelete(_user_db);
+	}
 }
