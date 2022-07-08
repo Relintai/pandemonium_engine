@@ -71,4 +71,23 @@
 - Query builder should have more helper methods to automate simpler queries as much as possible. Like: sfw("col", "table", "a < 3") -> SELECT col FROM table WHERE a < 3;, or sf()... etc
 - Query builder should also have an update and create, (and also get) method which generates a query using properties to automatically create sql to save objects. They could also take a pk argument to tell which entry is the key. save method would also be nice that decides whether to update or create an entry.
 - No full ORM functionality though, it should be really close to SQL queries, but with lots of helper methods, for the more trivial stuff.
+- Go through and double check that all methods for the QueryBuilder are properly set up, and is using escapes as they should.
+- Fix postgres and mysql backends, so they can be built. (They should be off be default.)
+
+## Web
+
+- Test / fix HTML and BBCode parser, and make bindings for them.
+- Move simple web server to a new module.
+- Implement multi threading for the simple web server.
+- Check how polling is implemented in sockets.
+- Implement Cookie support for the web server.
+- Implement file upload support.
+- Implement proper mimetype support.
+- Implement proper http header responses.
+- Implement closing the connection only after answering the last query (by default, could be overrideable).
+
+## Users
+
+- Fix, and break UserController into smaller webnodes.
+- Clean / flesh out the api of UserManager / UserDB. Also make UserManager register itself into UserDB.
 
