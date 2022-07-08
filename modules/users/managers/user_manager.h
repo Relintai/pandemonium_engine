@@ -22,11 +22,6 @@ public:
 	bool is_username_taken(const String &user_name);
 	bool is_email_taken(const String &email);
 
-	//TODO these should probably be moved to User
-	bool check_password(const Ref<User> &user, const String &p_password);
-	void create_password(const Ref<User> &user, const String &p_password);
-	String hash_password(const Ref<User> &user, const String &p_password);
-
 	virtual Ref<User> _get_user(const int id);
 	virtual Ref<User> _get_user_name(const String &user);
 	virtual void _save_user(Ref<User> user);
@@ -35,10 +30,6 @@ public:
 
 	virtual bool _is_username_taken(const String &user_name);
 	virtual bool _is_email_taken(const String &email);
-
-	virtual bool _check_password(const Ref<User> &user, const String &p_password);
-	virtual void _create_password(Ref<User> user, const String &p_password);
-	virtual String _hash_password(const Ref<User> &user, const String &p_password);
 
 	Vector<Ref<User>> get_all();
 
