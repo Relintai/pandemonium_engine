@@ -38,17 +38,17 @@
 #include "core/string_name.h"
 #include "core/variant.h"
 
-class GDScriptInstance;
-class GDScript;
+class CScriptInstance;
+class CScript;
 
-struct GDScriptDataType {
+struct CScriptDataType {
 	bool has_type;
 	enum {
 		UNINITIALIZED,
 		BUILTIN,
 		NATIVE,
 		SCRIPT,
-		GDSCRIPT,
+		CSCRIPT,
 	} kind;
 	Variant::Type builtin_type;
 	StringName native_type;
@@ -94,7 +94,7 @@ struct GDScriptDataType {
 				return true;
 			} break;
 			case SCRIPT:
-			case GDSCRIPT: {
+			case CSCRIPT: {
 				if (p_variant.get_type() == Variant::NIL) {
 					return true;
 				}
@@ -136,7 +136,7 @@ struct GDScriptDataType {
 					info.class_name = native_type;
 				} break;
 				case SCRIPT:
-				case GDSCRIPT: {
+				case CSCRIPT: {
 					info.type = Variant::OBJECT;
 					info.class_name = script_type->get_instance_base_type();
 				} break;
@@ -148,14 +148,14 @@ struct GDScriptDataType {
 		return info;
 	}
 
-	GDScriptDataType() :
+	CScriptDataType() :
 			has_type(false),
 			kind(UNINITIALIZED),
 			builtin_type(Variant::NIL),
 			script_type(nullptr) {}
 };
 
-class GDScriptFunction {
+class CScriptFunction {
 public:
 	enum Opcode {
 		OPCODE_OPERATOR,
@@ -224,7 +224,7 @@ public:
 	};
 
 private:
-	friend class GDScriptCompiler;
+	friend class CScriptCompiler;
 
 	StringName source;
 
@@ -248,7 +248,7 @@ private:
 	bool _static;
 	MultiplayerAPI::RPCMode rpc_mode;
 
-	GDScript *_script;
+	CScript *_script;
 
 	StringName name;
 	Vector<Variant> constants;
@@ -258,8 +258,8 @@ private:
 #endif
 	Vector<int> default_arguments;
 	Vector<int> code;
-	Vector<GDScriptDataType> argument_types;
-	GDScriptDataType return_type;
+	Vector<CScriptDataType> argument_types;
+	CScriptDataType return_type;
 
 #ifdef TOOLS_ENABLED
 	Vector<StringName> arg_names;
@@ -267,12 +267,12 @@ private:
 
 	List<StackDebug> stack_debug;
 
-	_FORCE_INLINE_ Variant *_get_variant(int p_address, GDScriptInstance *p_instance, GDScript *p_script, Variant &self, Variant &static_ref, Variant *p_stack, String &r_error) const;
+	_FORCE_INLINE_ Variant *_get_variant(int p_address, CScriptInstance *p_instance, CScript *p_script, Variant &self, Variant &static_ref, Variant *p_stack, String &r_error) const;
 	_FORCE_INLINE_ String _get_call_error(const Variant::CallError &p_err, const String &p_where, const Variant **argptrs) const;
 
-	friend class GDScriptLanguage;
+	friend class CScriptLanguage;
 
-	SelfList<GDScriptFunction> function_list;
+	SelfList<CScriptFunction> function_list;
 #ifdef DEBUG_ENABLED
 	CharString func_cname;
 	const char *_func_cname;
@@ -294,8 +294,8 @@ private:
 
 public:
 	struct CallState {
-		GDScript *script;
-		GDScriptInstance *instance;
+		CScript *script;
+		CScriptInstance *instance;
 #ifdef DEBUG_ENABLED
 		StringName function_name;
 		String script_path;
@@ -322,9 +322,9 @@ public:
 	int get_max_stack_size() const;
 	int get_default_argument_count() const;
 	int get_default_argument_addr(int p_idx) const;
-	GDScriptDataType get_return_type() const;
-	GDScriptDataType get_argument_type(int p_idx) const;
-	GDScript *get_script() const {
+	CScriptDataType get_return_type() const;
+	CScriptDataType get_argument_type(int p_idx) const;
+	CScript *get_script() const {
 		return _script;
 	}
 	StringName get_source() const {
@@ -353,25 +353,25 @@ public:
 		return default_arguments[p_idx];
 	}
 
-	Variant call(GDScriptInstance *p_instance, const Variant **p_args, int p_argcount, Variant::CallError &r_err, CallState *p_state = nullptr);
+	Variant call(CScriptInstance *p_instance, const Variant **p_args, int p_argcount, Variant::CallError &r_err, CallState *p_state = nullptr);
 
 	_FORCE_INLINE_ MultiplayerAPI::RPCMode get_rpc_mode() const {
 		return rpc_mode;
 	}
-	GDScriptFunction();
-	~GDScriptFunction();
+	CScriptFunction();
+	~CScriptFunction();
 };
 
-class GDScriptFunctionState : public Reference {
-	GDCLASS(GDScriptFunctionState, Reference);
-	friend class GDScriptFunction;
-	GDScriptFunction *function;
-	GDScriptFunction::CallState state;
+class CScriptFunctionState : public Reference {
+	GDCLASS(CScriptFunctionState, Reference);
+	friend class CScriptFunction;
+	CScriptFunction *function;
+	CScriptFunction::CallState state;
 	Variant _signal_callback(const Variant **p_args, int p_argcount, Variant::CallError &r_error);
-	Ref<GDScriptFunctionState> first_state;
+	Ref<CScriptFunctionState> first_state;
 
-	SelfList<GDScriptFunctionState> scripts_list;
-	SelfList<GDScriptFunctionState> instances_list;
+	SelfList<CScriptFunctionState> scripts_list;
+	SelfList<CScriptFunctionState> instances_list;
 
 protected:
 	static void _bind_methods();
@@ -382,8 +382,8 @@ public:
 
 	void _clear_stack();
 
-	GDScriptFunctionState();
-	~GDScriptFunctionState();
+	CScriptFunctionState();
+	~CScriptFunctionState();
 };
 
-#endif // GDSCRIPT_FUNCTION_H
+#endif // CSCRIPT_FUNCTION_H

@@ -35,7 +35,7 @@
 #include "core/print_string.h"
 #include "cscript_functions.h"
 
-const char *GDScriptTokenizer::token_names[TK_MAX] = {
+const char *CScriptTokenizer::token_names[TK_MAX] = {
 	"Empty",
 	"Identifier",
 	"Constant",
@@ -182,71 +182,71 @@ static const _bit _type_list[] = {
 };
 
 struct _kws {
-	GDScriptTokenizer::Token token;
+	CScriptTokenizer::Token token;
 	const char *text;
 };
 
 static const _kws _keyword_list[] = {
 	//ops
-	{ GDScriptTokenizer::TK_OP_IN, "in" },
-	{ GDScriptTokenizer::TK_OP_NOT, "not" },
-	{ GDScriptTokenizer::TK_OP_OR, "or" },
-	{ GDScriptTokenizer::TK_OP_AND, "and" },
+	{ CScriptTokenizer::TK_OP_IN, "in" },
+	{ CScriptTokenizer::TK_OP_NOT, "not" },
+	{ CScriptTokenizer::TK_OP_OR, "or" },
+	{ CScriptTokenizer::TK_OP_AND, "and" },
 	//func
-	{ GDScriptTokenizer::TK_PR_FUNCTION, "func" },
-	{ GDScriptTokenizer::TK_PR_CLASS, "class" },
-	{ GDScriptTokenizer::TK_PR_CLASS_NAME, "class_name" },
-	{ GDScriptTokenizer::TK_PR_EXTENDS, "extends" },
-	{ GDScriptTokenizer::TK_PR_IS, "is" },
-	{ GDScriptTokenizer::TK_PR_ONREADY, "onready" },
-	{ GDScriptTokenizer::TK_PR_TOOL, "tool" },
-	{ GDScriptTokenizer::TK_PR_STATIC, "static" },
-	{ GDScriptTokenizer::TK_PR_EXPORT, "export" },
-	{ GDScriptTokenizer::TK_PR_SETGET, "setget" },
-	{ GDScriptTokenizer::TK_PR_VAR, "var" },
-	{ GDScriptTokenizer::TK_PR_AS, "as" },
-	{ GDScriptTokenizer::TK_PR_VOID, "void" },
-	{ GDScriptTokenizer::TK_PR_PRELOAD, "preload" },
-	{ GDScriptTokenizer::TK_PR_ASSERT, "assert" },
-	{ GDScriptTokenizer::TK_PR_YIELD, "yield" },
-	{ GDScriptTokenizer::TK_PR_SIGNAL, "signal" },
-	{ GDScriptTokenizer::TK_PR_BREAKPOINT, "breakpoint" },
-	{ GDScriptTokenizer::TK_PR_REMOTE, "remote" },
-	{ GDScriptTokenizer::TK_PR_MASTER, "master" },
-	{ GDScriptTokenizer::TK_PR_SLAVE, "slave" },
-	{ GDScriptTokenizer::TK_PR_PUPPET, "puppet" },
-	{ GDScriptTokenizer::TK_PR_SYNC, "sync" },
-	{ GDScriptTokenizer::TK_PR_REMOTESYNC, "remotesync" },
-	{ GDScriptTokenizer::TK_PR_MASTERSYNC, "mastersync" },
-	{ GDScriptTokenizer::TK_PR_PUPPETSYNC, "puppetsync" },
-	{ GDScriptTokenizer::TK_PR_CONST, "const" },
-	{ GDScriptTokenizer::TK_PR_ENUM, "enum" },
+	{ CScriptTokenizer::TK_PR_FUNCTION, "func" },
+	{ CScriptTokenizer::TK_PR_CLASS, "class" },
+	{ CScriptTokenizer::TK_PR_CLASS_NAME, "class_name" },
+	{ CScriptTokenizer::TK_PR_EXTENDS, "extends" },
+	{ CScriptTokenizer::TK_PR_IS, "is" },
+	{ CScriptTokenizer::TK_PR_ONREADY, "onready" },
+	{ CScriptTokenizer::TK_PR_TOOL, "tool" },
+	{ CScriptTokenizer::TK_PR_STATIC, "static" },
+	{ CScriptTokenizer::TK_PR_EXPORT, "export" },
+	{ CScriptTokenizer::TK_PR_SETGET, "setget" },
+	{ CScriptTokenizer::TK_PR_VAR, "var" },
+	{ CScriptTokenizer::TK_PR_AS, "as" },
+	{ CScriptTokenizer::TK_PR_VOID, "void" },
+	{ CScriptTokenizer::TK_PR_PRELOAD, "preload" },
+	{ CScriptTokenizer::TK_PR_ASSERT, "assert" },
+	{ CScriptTokenizer::TK_PR_YIELD, "yield" },
+	{ CScriptTokenizer::TK_PR_SIGNAL, "signal" },
+	{ CScriptTokenizer::TK_PR_BREAKPOINT, "breakpoint" },
+	{ CScriptTokenizer::TK_PR_REMOTE, "remote" },
+	{ CScriptTokenizer::TK_PR_MASTER, "master" },
+	{ CScriptTokenizer::TK_PR_SLAVE, "slave" },
+	{ CScriptTokenizer::TK_PR_PUPPET, "puppet" },
+	{ CScriptTokenizer::TK_PR_SYNC, "sync" },
+	{ CScriptTokenizer::TK_PR_REMOTESYNC, "remotesync" },
+	{ CScriptTokenizer::TK_PR_MASTERSYNC, "mastersync" },
+	{ CScriptTokenizer::TK_PR_PUPPETSYNC, "puppetsync" },
+	{ CScriptTokenizer::TK_PR_CONST, "const" },
+	{ CScriptTokenizer::TK_PR_ENUM, "enum" },
 	//controlflow
-	{ GDScriptTokenizer::TK_CF_IF, "if" },
-	{ GDScriptTokenizer::TK_CF_ELIF, "elif" },
-	{ GDScriptTokenizer::TK_CF_ELSE, "else" },
-	{ GDScriptTokenizer::TK_CF_FOR, "for" },
-	{ GDScriptTokenizer::TK_CF_WHILE, "while" },
-	{ GDScriptTokenizer::TK_CF_BREAK, "break" },
-	{ GDScriptTokenizer::TK_CF_CONTINUE, "continue" },
-	{ GDScriptTokenizer::TK_CF_RETURN, "return" },
-	{ GDScriptTokenizer::TK_CF_MATCH, "match" },
-	{ GDScriptTokenizer::TK_CF_PASS, "pass" },
-	{ GDScriptTokenizer::TK_SELF, "self" },
-	{ GDScriptTokenizer::TK_CONST_PI, "PI" },
-	{ GDScriptTokenizer::TK_CONST_TAU, "TAU" },
-	{ GDScriptTokenizer::TK_WILDCARD, "_" },
-	{ GDScriptTokenizer::TK_CONST_INF, "INF" },
-	{ GDScriptTokenizer::TK_CONST_NAN, "NAN" },
-	{ GDScriptTokenizer::TK_ERROR, nullptr }
+	{ CScriptTokenizer::TK_CF_IF, "if" },
+	{ CScriptTokenizer::TK_CF_ELIF, "elif" },
+	{ CScriptTokenizer::TK_CF_ELSE, "else" },
+	{ CScriptTokenizer::TK_CF_FOR, "for" },
+	{ CScriptTokenizer::TK_CF_WHILE, "while" },
+	{ CScriptTokenizer::TK_CF_BREAK, "break" },
+	{ CScriptTokenizer::TK_CF_CONTINUE, "continue" },
+	{ CScriptTokenizer::TK_CF_RETURN, "return" },
+	{ CScriptTokenizer::TK_CF_MATCH, "match" },
+	{ CScriptTokenizer::TK_CF_PASS, "pass" },
+	{ CScriptTokenizer::TK_SELF, "self" },
+	{ CScriptTokenizer::TK_CONST_PI, "PI" },
+	{ CScriptTokenizer::TK_CONST_TAU, "TAU" },
+	{ CScriptTokenizer::TK_WILDCARD, "_" },
+	{ CScriptTokenizer::TK_CONST_INF, "INF" },
+	{ CScriptTokenizer::TK_CONST_NAN, "NAN" },
+	{ CScriptTokenizer::TK_ERROR, nullptr }
 };
 
-const char *GDScriptTokenizer::get_token_name(Token p_token) {
+const char *CScriptTokenizer::get_token_name(Token p_token) {
 	ERR_FAIL_INDEX_V(p_token, TK_MAX, "<error>");
 	return token_names[p_token];
 }
 
-bool GDScriptTokenizer::is_token_literal(int p_offset, bool variable_safe) const {
+bool CScriptTokenizer::is_token_literal(int p_offset, bool variable_safe) const {
 	switch (get_token(p_offset)) {
 		// Can always be literal:
 		case TK_IDENTIFIER:
@@ -318,7 +318,7 @@ bool GDScriptTokenizer::is_token_literal(int p_offset, bool variable_safe) const
 	}
 }
 
-StringName GDScriptTokenizer::get_token_literal(int p_offset) const {
+StringName CScriptTokenizer::get_token_literal(int p_offset) const {
 	Token token = get_token(p_offset);
 	switch (token) {
 		case TK_IDENTIFIER:
@@ -335,7 +335,7 @@ StringName GDScriptTokenizer::get_token_literal(int p_offset) const {
 			}
 		} break; // Shouldn't get here, stuff happens
 		case TK_BUILT_IN_FUNC:
-			return GDScriptFunctions::get_func_name(get_token_built_in_func(p_offset));
+			return CScriptFunctions::get_func_name(get_token_built_in_func(p_offset));
 		case TK_CONSTANT: {
 			const Variant value = get_token_constant(p_offset);
 
@@ -381,7 +381,7 @@ static bool _is_bin(CharType c) {
 	return (c == '0' || c == '1');
 }
 
-void GDScriptTokenizerText::_make_token(Token p_type) {
+void CScriptTokenizerText::_make_token(Token p_type) {
 	TokenData &tk = tk_rb[tk_rb_pos];
 
 	tk.type = p_type;
@@ -390,7 +390,7 @@ void GDScriptTokenizerText::_make_token(Token p_type) {
 
 	tk_rb_pos = (tk_rb_pos + 1) % TK_RB_SIZE;
 }
-void GDScriptTokenizerText::_make_identifier(const StringName &p_identifier) {
+void CScriptTokenizerText::_make_identifier(const StringName &p_identifier) {
 	TokenData &tk = tk_rb[tk_rb_pos];
 
 	tk.type = TK_IDENTIFIER;
@@ -401,7 +401,7 @@ void GDScriptTokenizerText::_make_identifier(const StringName &p_identifier) {
 	tk_rb_pos = (tk_rb_pos + 1) % TK_RB_SIZE;
 }
 
-void GDScriptTokenizerText::_make_built_in_func(GDScriptFunctions::Function p_func) {
+void CScriptTokenizerText::_make_built_in_func(CScriptFunctions::Function p_func) {
 	TokenData &tk = tk_rb[tk_rb_pos];
 
 	tk.type = TK_BUILT_IN_FUNC;
@@ -411,7 +411,7 @@ void GDScriptTokenizerText::_make_built_in_func(GDScriptFunctions::Function p_fu
 
 	tk_rb_pos = (tk_rb_pos + 1) % TK_RB_SIZE;
 }
-void GDScriptTokenizerText::_make_constant(const Variant &p_constant) {
+void CScriptTokenizerText::_make_constant(const Variant &p_constant) {
 	TokenData &tk = tk_rb[tk_rb_pos];
 
 	tk.type = TK_CONSTANT;
@@ -422,7 +422,7 @@ void GDScriptTokenizerText::_make_constant(const Variant &p_constant) {
 	tk_rb_pos = (tk_rb_pos + 1) % TK_RB_SIZE;
 }
 
-void GDScriptTokenizerText::_make_type(const Variant::Type &p_type) {
+void CScriptTokenizerText::_make_type(const Variant::Type &p_type) {
 	TokenData &tk = tk_rb[tk_rb_pos];
 
 	tk.type = TK_BUILT_IN_TYPE;
@@ -433,7 +433,7 @@ void GDScriptTokenizerText::_make_type(const Variant::Type &p_type) {
 	tk_rb_pos = (tk_rb_pos + 1) % TK_RB_SIZE;
 }
 
-void GDScriptTokenizerText::_make_error(const String &p_error) {
+void CScriptTokenizerText::_make_error(const String &p_error) {
 	error_flag = true;
 	last_error = p_error;
 
@@ -445,7 +445,7 @@ void GDScriptTokenizerText::_make_error(const String &p_error) {
 	tk_rb_pos = (tk_rb_pos + 1) % TK_RB_SIZE;
 }
 
-void GDScriptTokenizerText::_make_newline(int p_indentation, int p_tabs) {
+void CScriptTokenizerText::_make_newline(int p_indentation, int p_tabs) {
 	TokenData &tk = tk_rb[tk_rb_pos];
 	tk.type = TK_NEWLINE;
 	tk.constant = Vector2(p_indentation, p_tabs);
@@ -454,7 +454,7 @@ void GDScriptTokenizerText::_make_newline(int p_indentation, int p_tabs) {
 	tk_rb_pos = (tk_rb_pos + 1) % TK_RB_SIZE;
 }
 
-void GDScriptTokenizerText::_advance() {
+void CScriptTokenizerText::_advance() {
 	if (error_flag) {
 		//parser broke
 		_make_error(last_error);
@@ -1012,9 +1012,9 @@ void GDScriptTokenizerText::_advance() {
 						if (!found) {
 							//built in func?
 
-							for (int j = 0; j < GDScriptFunctions::FUNC_MAX; j++) {
-								if (str == GDScriptFunctions::get_func_name(GDScriptFunctions::Function(j))) {
-									_make_built_in_func(GDScriptFunctions::Function(j));
+							for (int j = 0; j < CScriptFunctions::FUNC_MAX; j++) {
+								if (str == CScriptFunctions::get_func_name(CScriptFunctions::Function(j))) {
+									_make_built_in_func(CScriptFunctions::Function(j));
 									found = true;
 									break;
 								}
@@ -1060,7 +1060,7 @@ void GDScriptTokenizerText::_advance() {
 	}
 }
 
-void GDScriptTokenizerText::set_code(const String &p_code) {
+void CScriptTokenizerText::set_code(const String &p_code) {
 	code = p_code;
 	len = p_code.length();
 	if (len) {
@@ -1082,7 +1082,7 @@ void GDScriptTokenizerText::set_code(const String &p_code) {
 	}
 }
 
-GDScriptTokenizerText::Token GDScriptTokenizerText::get_token(int p_offset) const {
+CScriptTokenizerText::Token CScriptTokenizerText::get_token(int p_offset) const {
 	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, TK_ERROR);
 	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, TK_ERROR);
 
@@ -1090,7 +1090,7 @@ GDScriptTokenizerText::Token GDScriptTokenizerText::get_token(int p_offset) cons
 	return tk_rb[ofs].type;
 }
 
-int GDScriptTokenizerText::get_token_line(int p_offset) const {
+int CScriptTokenizerText::get_token_line(int p_offset) const {
 	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, -1);
 	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, -1);
 
@@ -1098,7 +1098,7 @@ int GDScriptTokenizerText::get_token_line(int p_offset) const {
 	return tk_rb[ofs].line;
 }
 
-int GDScriptTokenizerText::get_token_column(int p_offset) const {
+int CScriptTokenizerText::get_token_column(int p_offset) const {
 	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, -1);
 	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, -1);
 
@@ -1106,7 +1106,7 @@ int GDScriptTokenizerText::get_token_column(int p_offset) const {
 	return tk_rb[ofs].col;
 }
 
-const Variant &GDScriptTokenizerText::get_token_constant(int p_offset) const {
+const Variant &CScriptTokenizerText::get_token_constant(int p_offset) const {
 	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, tk_rb[0].constant);
 	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, tk_rb[0].constant);
 
@@ -1115,7 +1115,7 @@ const Variant &GDScriptTokenizerText::get_token_constant(int p_offset) const {
 	return tk_rb[ofs].constant;
 }
 
-StringName GDScriptTokenizerText::get_token_identifier(int p_offset) const {
+StringName CScriptTokenizerText::get_token_identifier(int p_offset) const {
 	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, StringName());
 	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, StringName());
 
@@ -1124,16 +1124,16 @@ StringName GDScriptTokenizerText::get_token_identifier(int p_offset) const {
 	return tk_rb[ofs].identifier;
 }
 
-GDScriptFunctions::Function GDScriptTokenizerText::get_token_built_in_func(int p_offset) const {
-	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, GDScriptFunctions::FUNC_MAX);
-	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, GDScriptFunctions::FUNC_MAX);
+CScriptFunctions::Function CScriptTokenizerText::get_token_built_in_func(int p_offset) const {
+	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, CScriptFunctions::FUNC_MAX);
+	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, CScriptFunctions::FUNC_MAX);
 
 	int ofs = (TK_RB_SIZE + tk_rb_pos + p_offset - MAX_LOOKAHEAD - 1) % TK_RB_SIZE;
-	ERR_FAIL_COND_V(tk_rb[ofs].type != TK_BUILT_IN_FUNC, GDScriptFunctions::FUNC_MAX);
+	ERR_FAIL_COND_V(tk_rb[ofs].type != TK_BUILT_IN_FUNC, CScriptFunctions::FUNC_MAX);
 	return tk_rb[ofs].func;
 }
 
-Variant::Type GDScriptTokenizerText::get_token_type(int p_offset) const {
+Variant::Type CScriptTokenizerText::get_token_type(int p_offset) const {
 	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, Variant::NIL);
 	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, Variant::NIL);
 
@@ -1142,7 +1142,7 @@ Variant::Type GDScriptTokenizerText::get_token_type(int p_offset) const {
 	return tk_rb[ofs].vtype;
 }
 
-int GDScriptTokenizerText::get_token_line_indent(int p_offset) const {
+int CScriptTokenizerText::get_token_line_indent(int p_offset) const {
 	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, 0);
 	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, 0);
 
@@ -1151,7 +1151,7 @@ int GDScriptTokenizerText::get_token_line_indent(int p_offset) const {
 	return tk_rb[ofs].constant.operator Vector2().x;
 }
 
-int GDScriptTokenizerText::get_token_line_tab_indent(int p_offset) const {
+int CScriptTokenizerText::get_token_line_tab_indent(int p_offset) const {
 	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, 0);
 	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, 0);
 
@@ -1160,7 +1160,7 @@ int GDScriptTokenizerText::get_token_line_tab_indent(int p_offset) const {
 	return tk_rb[ofs].constant.operator Vector2().y;
 }
 
-String GDScriptTokenizerText::get_token_error(int p_offset) const {
+String CScriptTokenizerText::get_token_error(int p_offset) const {
 	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, String());
 	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, String());
 
@@ -1169,7 +1169,7 @@ String GDScriptTokenizerText::get_token_error(int p_offset) const {
 	return tk_rb[ofs].constant;
 }
 
-void GDScriptTokenizerText::advance(int p_amount) {
+void CScriptTokenizerText::advance(int p_amount) {
 	ERR_FAIL_COND(p_amount <= 0);
 	for (int i = 0; i < p_amount; i++) {
 		_advance();
@@ -1180,7 +1180,7 @@ void GDScriptTokenizerText::advance(int p_amount) {
 
 #define BYTECODE_VERSION 13
 
-Error GDScriptTokenizerBuffer::set_code_buffer(const Vector<uint8_t> &p_buffer) {
+Error CScriptTokenizerBuffer::set_code_buffer(const Vector<uint8_t> &p_buffer) {
 	const uint8_t *buf = p_buffer.ptr();
 	int total_len = p_buffer.size();
 	ERR_FAIL_COND_V(p_buffer.size() < 24 || p_buffer[0] != 'G' || p_buffer[1] != 'D' || p_buffer[2] != 'S' || p_buffer[3] != 'C', ERR_INVALID_DATA);
@@ -1263,7 +1263,7 @@ Error GDScriptTokenizerBuffer::set_code_buffer(const Vector<uint8_t> &p_buffer) 
 	return OK;
 }
 
-Vector<uint8_t> GDScriptTokenizerBuffer::parse_code_string(const String &p_code) {
+Vector<uint8_t> CScriptTokenizerBuffer::parse_code_string(const String &p_code) {
 	Vector<uint8_t> buf;
 
 	Map<StringName, int> identifier_map;
@@ -1271,7 +1271,7 @@ Vector<uint8_t> GDScriptTokenizerBuffer::parse_code_string(const String &p_code)
 	Map<uint32_t, int> line_map;
 	Vector<uint32_t> token_array;
 
-	GDScriptTokenizerText tt;
+	CScriptTokenizerText tt;
 	tt.set_code(p_code);
 	int line = -1;
 
@@ -1413,17 +1413,17 @@ Vector<uint8_t> GDScriptTokenizerBuffer::parse_code_string(const String &p_code)
 	return buf;
 }
 
-GDScriptTokenizerBuffer::Token GDScriptTokenizerBuffer::get_token(int p_offset) const {
+CScriptTokenizerBuffer::Token CScriptTokenizerBuffer::get_token(int p_offset) const {
 	int offset = token + p_offset;
 
 	if (offset < 0 || offset >= tokens.size()) {
 		return TK_EOF;
 	}
 
-	return GDScriptTokenizerBuffer::Token(tokens[offset] & TOKEN_MASK);
+	return CScriptTokenizerBuffer::Token(tokens[offset] & TOKEN_MASK);
 }
 
-StringName GDScriptTokenizerBuffer::get_token_identifier(int p_offset) const {
+StringName CScriptTokenizerBuffer::get_token_identifier(int p_offset) const {
 	int offset = token + p_offset;
 
 	ERR_FAIL_INDEX_V(offset, tokens.size(), StringName());
@@ -1433,20 +1433,20 @@ StringName GDScriptTokenizerBuffer::get_token_identifier(int p_offset) const {
 	return identifiers[identifier];
 }
 
-GDScriptFunctions::Function GDScriptTokenizerBuffer::get_token_built_in_func(int p_offset) const {
+CScriptFunctions::Function CScriptTokenizerBuffer::get_token_built_in_func(int p_offset) const {
 	int offset = token + p_offset;
-	ERR_FAIL_INDEX_V(offset, tokens.size(), GDScriptFunctions::FUNC_MAX);
-	return GDScriptFunctions::Function(tokens[offset] >> TOKEN_BITS);
+	ERR_FAIL_INDEX_V(offset, tokens.size(), CScriptFunctions::FUNC_MAX);
+	return CScriptFunctions::Function(tokens[offset] >> TOKEN_BITS);
 }
 
-Variant::Type GDScriptTokenizerBuffer::get_token_type(int p_offset) const {
+Variant::Type CScriptTokenizerBuffer::get_token_type(int p_offset) const {
 	int offset = token + p_offset;
 	ERR_FAIL_INDEX_V(offset, tokens.size(), Variant::NIL);
 
 	return Variant::Type(tokens[offset] >> TOKEN_BITS);
 }
 
-int GDScriptTokenizerBuffer::get_token_line(int p_offset) const {
+int CScriptTokenizerBuffer::get_token_line(int p_offset) const {
 	int offset = token + p_offset;
 	int pos = lines.find_nearest(offset);
 
@@ -1460,7 +1460,7 @@ int GDScriptTokenizerBuffer::get_token_line(int p_offset) const {
 	uint32_t l = lines.getv(pos);
 	return l & TOKEN_LINE_MASK;
 }
-int GDScriptTokenizerBuffer::get_token_column(int p_offset) const {
+int CScriptTokenizerBuffer::get_token_column(int p_offset) const {
 	int offset = token + p_offset;
 	int pos = lines.find_nearest(offset);
 	if (pos < 0) {
@@ -1473,26 +1473,26 @@ int GDScriptTokenizerBuffer::get_token_column(int p_offset) const {
 	uint32_t l = lines.getv(pos);
 	return l >> TOKEN_LINE_BITS;
 }
-int GDScriptTokenizerBuffer::get_token_line_indent(int p_offset) const {
+int CScriptTokenizerBuffer::get_token_line_indent(int p_offset) const {
 	int offset = token + p_offset;
 	ERR_FAIL_INDEX_V(offset, tokens.size(), 0);
 	return tokens[offset] >> TOKEN_BITS;
 }
-const Variant &GDScriptTokenizerBuffer::get_token_constant(int p_offset) const {
+const Variant &CScriptTokenizerBuffer::get_token_constant(int p_offset) const {
 	int offset = token + p_offset;
 	ERR_FAIL_INDEX_V(offset, tokens.size(), nil);
 	uint32_t constant = tokens[offset] >> TOKEN_BITS;
 	ERR_FAIL_UNSIGNED_INDEX_V(constant, (uint32_t)constants.size(), nil);
 	return constants[constant];
 }
-String GDScriptTokenizerBuffer::get_token_error(int p_offset) const {
+String CScriptTokenizerBuffer::get_token_error(int p_offset) const {
 	ERR_FAIL_V(String());
 }
 
-void GDScriptTokenizerBuffer::advance(int p_amount) {
+void CScriptTokenizerBuffer::advance(int p_amount) {
 	ERR_FAIL_INDEX(p_amount + token, tokens.size());
 	token += p_amount;
 }
-GDScriptTokenizerBuffer::GDScriptTokenizerBuffer() {
+CScriptTokenizerBuffer::CScriptTokenizerBuffer() {
 	token = 0;
 }

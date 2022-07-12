@@ -37,19 +37,19 @@
 #include "cscript.h"
 #include "cscript_tokenizer.h"
 
-GDScriptLanguage *script_language_gd = nullptr;
-Ref<ResourceFormatLoaderGDScript> resource_loader_gd;
-Ref<ResourceFormatSaverGDScript> resource_saver_gd;
+CScriptLanguage *script_language_cscript = nullptr;
+Ref<ResourceFormatLoaderCScript> resource_loader_cscript;
+Ref<ResourceFormatSaverCScript> resource_saver_cscript;
 
 #ifdef TOOLS_ENABLED
 
+#include "editor/cscript_highlighter.h"
 #include "editor/editor_export.h"
 #include "editor/editor_node.h"
 #include "editor/editor_settings.h"
-#include "editor/gdscript_highlighter.h"
 
-class EditorExportGDScript : public EditorExportPlugin {
-	GDCLASS(EditorExportGDScript, EditorExportPlugin);
+class EditorExportCScript : public EditorExportPlugin {
+	GDCLASS(EditorExportCScript, EditorExportPlugin);
 
 public:
 	virtual void _export_file(const String &p_path, const String &p_type, const Set<String> &p_features) {
@@ -74,7 +74,7 @@ public:
 
 		String txt;
 		txt.parse_utf8((const char *)file.ptr(), file.size());
-		file = GDScriptTokenizerBuffer::parse_code_string(txt);
+		file = CScriptTokenizerBuffer::parse_code_string(txt);
 
 		if (!file.empty()) {
 			if (script_mode == EditorExportPreset::MODE_SCRIPT_ENCRYPTED) {
@@ -129,42 +129,42 @@ public:
 };
 
 static void _editor_init() {
-	Ref<EditorExportGDScript> gd_export;
+	Ref<EditorExportCScript> gd_export;
 	gd_export.instance();
 	EditorExport::get_singleton()->add_export_plugin(gd_export);
 }
 
 #endif // TOOLS_ENABLED
 
-void register_gdscript_types() {
-	ClassDB::register_class<GDScript>();
-	ClassDB::register_virtual_class<GDScriptFunctionState>();
+void register_cscript_types() {
+	ClassDB::register_class<CScript>();
+	ClassDB::register_virtual_class<CScriptFunctionState>();
 
-	script_language_gd = memnew(GDScriptLanguage);
-	ScriptServer::register_language(script_language_gd);
+	script_language_cscript = memnew(CScriptLanguage);
+	ScriptServer::register_language(script_language_cscript);
 
-	resource_loader_gd.instance();
-	ResourceLoader::add_resource_format_loader(resource_loader_gd);
+	resource_loader_cscript.instance();
+	ResourceLoader::add_resource_format_loader(resource_loader_cscript);
 
-	resource_saver_gd.instance();
-	ResourceSaver::add_resource_format_saver(resource_saver_gd);
+	resource_saver_cscript.instance();
+	ResourceSaver::add_resource_format_saver(resource_saver_cscript);
 
 #ifdef TOOLS_ENABLED
-	ScriptEditor::register_create_syntax_highlighter_function(GDScriptSyntaxHighlighter::create);
+	ScriptEditor::register_create_syntax_highlighter_function(CScriptSyntaxHighlighter::create);
 	EditorNode::add_init_callback(_editor_init);
 #endif // TOOLS_ENABLED
 }
 
-void unregister_gdscript_types() {
-	ScriptServer::unregister_language(script_language_gd);
+void unregister_cscript_types() {
+	ScriptServer::unregister_language(script_language_cscript);
 
-	if (script_language_gd) {
-		memdelete(script_language_gd);
+	if (script_language_cscript) {
+		memdelete(script_language_cscript);
 	}
 
-	ResourceLoader::remove_resource_format_loader(resource_loader_gd);
-	resource_loader_gd.unref();
+	ResourceLoader::remove_resource_format_loader(resource_loader_cscript);
+	resource_loader_cscript.unref();
 
-	ResourceSaver::remove_resource_format_saver(resource_saver_gd);
-	resource_saver_gd.unref();
+	ResourceSaver::remove_resource_format_saver(resource_saver_cscript);
+	resource_saver_cscript.unref();
 }

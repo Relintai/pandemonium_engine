@@ -28,8 +28,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "gdscript_highlighter.h"
-#include "../gdscript_tokenizer.h"
+#include "cscript_highlighter.h"
+#include "../cscript_tokenizer.h"
 #include "editor/editor_settings.h"
 #include "scene/gui/text_edit.h"
 
@@ -57,7 +57,7 @@ static bool _is_bin_symbol(CharType c) {
 	return (c == '0' || c == '1');
 }
 
-Map<int, TextEdit::HighlighterInfo> GDScriptSyntaxHighlighter::_get_line_syntax_highlighting(int p_line) {
+Map<int, TextEdit::HighlighterInfo> CScriptSyntaxHighlighter::_get_line_syntax_highlighting(int p_line) {
 	Map<int, TextEdit::HighlighterInfo> color_map;
 
 	Type next_type = NONE;
@@ -219,7 +219,7 @@ Map<int, TextEdit::HighlighterInfo> GDScriptSyntaxHighlighter::_get_line_syntax_
 
 			if (str[k] == '(') {
 				in_function_name = true;
-			} else if (previous_text == GDScriptTokenizer::get_token_name(GDScriptTokenizer::TK_PR_VAR)) {
+			} else if (previous_text == CScriptTokenizer::get_token_name(CScriptTokenizer::TK_PR_VAR)) {
 				in_variable_declaration = true;
 			}
 		}
@@ -291,7 +291,7 @@ Map<int, TextEdit::HighlighterInfo> GDScriptSyntaxHighlighter::_get_line_syntax_
 		} else if (in_function_name) {
 			next_type = FUNCTION;
 
-			if (previous_text == GDScriptTokenizer::get_token_name(GDScriptTokenizer::TK_PR_FUNCTION)) {
+			if (previous_text == CScriptTokenizer::get_token_name(CScriptTokenizer::TK_PR_FUNCTION)) {
 				color = function_definition_color;
 			} else {
 				color = function_color;
@@ -344,17 +344,17 @@ Map<int, TextEdit::HighlighterInfo> GDScriptSyntaxHighlighter::_get_line_syntax_
 	return color_map;
 }
 
-String GDScriptSyntaxHighlighter::get_name() const {
-	return "GDScript";
+String CScriptSyntaxHighlighter::get_name() const {
+	return "CScript";
 }
 
-List<String> GDScriptSyntaxHighlighter::get_supported_languages() {
+List<String> CScriptSyntaxHighlighter::get_supported_languages() {
 	List<String> languages;
-	languages.push_back("GDScript");
+	languages.push_back("CScript");
 	return languages;
 }
 
-void GDScriptSyntaxHighlighter::_update_cache() {
+void CScriptSyntaxHighlighter::_update_cache() {
 	font_color = text_editor->get_color("font_color");
 	symbol_color = text_editor->get_color("symbol_color");
 	function_color = text_editor->get_color("function_color");
@@ -390,6 +390,6 @@ void GDScriptSyntaxHighlighter::_update_cache() {
 	type_color = EDITOR_GET("text_editor/highlighting/base_type_color");
 }
 
-SyntaxHighlighter *GDScriptSyntaxHighlighter::create() {
-	return memnew(GDScriptSyntaxHighlighter);
+SyntaxHighlighter *CScriptSyntaxHighlighter::create() {
+	return memnew(CScriptSyntaxHighlighter);
 }

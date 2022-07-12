@@ -40,7 +40,7 @@
 #include "core/variant_parser.h"
 #include "cscript.h"
 
-const char *GDScriptFunctions::get_func_name(Function p_func) {
+const char *CScriptFunctions::get_func_name(Function p_func) {
 	ERR_FAIL_INDEX_V(p_func, FUNC_MAX, "");
 
 	static const char *_names[FUNC_MAX] = {
@@ -140,7 +140,7 @@ const char *GDScriptFunctions::get_func_name(Function p_func) {
 	return _names[p_func];
 }
 
-void GDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_count, Variant &r_ret, Variant::CallError &r_error) {
+void CScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_count, Variant &r_ret, Variant::CallError &r_error) {
 	r_error.error = Variant::CallError::CALL_OK;
 #ifdef DEBUG_ENABLED
 
@@ -342,7 +342,7 @@ void GDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 			VALIDATE_ARG_COUNT(1);
 			VALIDATE_ARG_NUM(0);
 			r_ret = Math::step_decimals((double)*p_args[0]);
-			WARN_DEPRECATED_MSG("GDScript method 'decimals' is deprecated and has been renamed to 'step_decimals', please update your code accordingly.");
+			WARN_DEPRECATED_MSG("CScript method 'decimals' is deprecated and has been renamed to 'step_decimals', please update your code accordingly.");
 		} break;
 		case MATH_STEP_DECIMALS: {
 			VALIDATE_ARG_COUNT(1);
@@ -753,7 +753,7 @@ void GDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 				str += p_args[i]->operator String();
 			}
 
-			ScriptLanguage *script = GDScriptLanguage::get_singleton();
+			ScriptLanguage *script = CScriptLanguage::get_singleton();
 			if (script->debug_get_stack_level_count() > 0) {
 				str += "\n   At: " + script->debug_get_stack_level_source(0) + ":" + itos(script->debug_get_stack_level_line(0)) + ":" + script->debug_get_stack_level_function(0) + "()";
 			}
@@ -1041,15 +1041,15 @@ void GDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 				if (!obj) {
 					r_ret = Variant();
 
-				} else if (!obj->get_script_instance() || obj->get_script_instance()->get_language() != GDScriptLanguage::get_singleton()) {
+				} else if (!obj->get_script_instance() || obj->get_script_instance()->get_language() != CScriptLanguage::get_singleton()) {
 					r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
 					r_error.argument = 0;
 					r_error.expected = Variant::DICTIONARY;
 					r_ret = RTR("Not a script with an instance");
 					return;
 				} else {
-					GDScriptInstance *ins = static_cast<GDScriptInstance *>(obj->get_script_instance());
-					Ref<GDScript> base = ins->get_script();
+					CScriptInstance *ins = static_cast<CScriptInstance *>(obj->get_script_instance());
+					Ref<CScript> base = ins->get_script();
 					if (base.is_null()) {
 						r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
 						r_error.argument = 0;
@@ -1058,7 +1058,7 @@ void GDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 						return;
 					}
 
-					GDScript *p = base.ptr();
+					CScript *p = base.ptr();
 					Vector<StringName> sname;
 
 					while (p->_owner) {
@@ -1084,7 +1084,7 @@ void GDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 					d["@subpath"] = cp;
 					d["@path"] = p->get_path();
 
-					for (Map<StringName, GDScript::MemberInfo>::Element *E = base->member_indices.front(); E; E = E->next()) {
+					for (Map<StringName, CScript::MemberInfo>::Element *E = base->member_indices.front(); E; E = E->next()) {
 						if (!d.has(E->key())) {
 							d[E->key()] = ins->members[E->get().index];
 						}
@@ -1126,7 +1126,7 @@ void GDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 				return;
 			}
 
-			Ref<GDScript> gdscr = scr;
+			Ref<CScript> gdscr = scr;
 
 			if (!gdscr.is_valid()) {
 				r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
@@ -1161,10 +1161,10 @@ void GDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 				return;
 			}
 
-			GDScriptInstance *ins = static_cast<GDScriptInstance *>(static_cast<Object *>(r_ret)->get_script_instance());
-			Ref<GDScript> gd_ref = ins->get_script();
+			CScriptInstance *ins = static_cast<CScriptInstance *>(static_cast<Object *>(r_ret)->get_script_instance());
+			Ref<CScript> gd_ref = ins->get_script();
 
-			for (Map<StringName, GDScript::MemberInfo>::Element *E = gd_ref->member_indices.front(); E; E = E->next()) {
+			for (Map<StringName, CScript::MemberInfo>::Element *E = gd_ref->member_indices.front(); E; E = E->next()) {
 				if (d.has(E->key())) {
 					ins->members.write[E->get().index] = d[E->key()];
 				}
@@ -1289,7 +1289,7 @@ void GDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 		case PRINT_STACK: {
 			VALIDATE_ARG_COUNT(0);
 
-			ScriptLanguage *script = GDScriptLanguage::get_singleton();
+			ScriptLanguage *script = CScriptLanguage::get_singleton();
 			for (int i = 0; i < script->debug_get_stack_level_count(); i++) {
 				print_line("Frame " + itos(i) + " - " + script->debug_get_stack_level_source(i) + ":" + itos(script->debug_get_stack_level_line(i)) + " in function '" + script->debug_get_stack_level_function(i) + "'");
 			};
@@ -1298,7 +1298,7 @@ void GDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 		case GET_STACK: {
 			VALIDATE_ARG_COUNT(0);
 
-			ScriptLanguage *script = GDScriptLanguage::get_singleton();
+			ScriptLanguage *script = CScriptLanguage::get_singleton();
 			Array ret;
 			for (int i = 0; i < script->debug_get_stack_level_count(); i++) {
 				Dictionary frame;
@@ -1405,7 +1405,7 @@ void GDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 	}
 }
 
-bool GDScriptFunctions::is_deterministic(Function p_func) {
+bool CScriptFunctions::is_deterministic(Function p_func) {
 	//man i couldn't have chosen a worse function name,
 	//way too controversial..
 
@@ -1473,7 +1473,7 @@ bool GDScriptFunctions::is_deterministic(Function p_func) {
 	return false;
 }
 
-MethodInfo GDScriptFunctions::get_info(Function p_func) {
+MethodInfo CScriptFunctions::get_info(Function p_func) {
 #ifdef DEBUG_ENABLED
 	//using a switch, so the compiler generates a jumptable
 

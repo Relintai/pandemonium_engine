@@ -32,7 +32,7 @@
 
 #include "scene/gui/text_edit.h"
 
-class GDScriptSyntaxHighlighter : public SyntaxHighlighter {
+class CScriptSyntaxHighlighter : public SyntaxHighlighter {
 private:
 	enum Type {
 		NONE,
@@ -68,4 +68,4 @@ public:
 	virtual List<String> get_supported_languages();
 };
 
-#endif // GDSCRIPT_HIGHLIGHTER_H
+#endif // CSCRIPT_HIGHLIGHTER_H

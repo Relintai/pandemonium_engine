@@ -33,4 +33,4 @@
 void register_cscript_types();
 void unregister_cscript_types();
 
-#endif // GDSCRIPT_REGISTER_TYPES_H
+#endif // CSCRIPT_REGISTER_TYPES_H

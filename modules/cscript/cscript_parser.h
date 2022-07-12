@@ -36,10 +36,10 @@
 #include "cscript_functions.h"
 #include "cscript_tokenizer.h"
 
-struct GDScriptDataType;
-struct GDScriptWarning;
+struct CScriptDataType;
+struct CScriptWarning;
 
-class GDScriptParser {
+class CScriptParser {
 public:
 	struct ClassNode;
 
@@ -48,7 +48,7 @@ public:
 			BUILTIN,
 			NATIVE,
 			SCRIPT,
-			GDSCRIPT,
+			CSCRIPT,
 			CLASS,
 			UNRESOLVED
 		} kind;
@@ -80,7 +80,7 @@ public:
 				case NATIVE: {
 					return native_type == other.native_type;
 				} break;
-				case GDSCRIPT:
+				case CSCRIPT:
 				case SCRIPT: {
 					return script_type == other.script_type;
 				} break;
@@ -264,7 +264,7 @@ public:
 		TypeNode() { type = TYPE_TYPE; }
 	};
 	struct BuiltInFunctionNode : public Node {
-		GDScriptFunctions::Function function;
+		CScriptFunctions::Function function;
 		BuiltInFunctionNode() { type = TYPE_BUILT_IN_FUNCTION; }
 	};
 
@@ -520,7 +520,7 @@ public:
 	};
 
 private:
-	GDScriptTokenizer *tokenizer;
+	CScriptTokenizer *tokenizer;
 
 	Node *head;
 	Node *list;
@@ -542,7 +542,7 @@ private:
 #endif // DEBUG_ENABLED
 
 #ifdef DEBUG_ENABLED
-	List<GDScriptWarning> warnings;
+	List<CScriptWarning> warnings;
 #endif // DEBUG_ENABLED
 
 	int pending_newline;
@@ -626,7 +626,7 @@ private:
 	DataType _resolve_type(const DataType &p_source, int p_line);
 	DataType _type_from_variant(const Variant &p_value) const;
 	DataType _type_from_property(const PropertyInfo &p_property, bool p_nil_is_variant = true) const;
-	DataType _type_from_gdtype(const GDScriptDataType &p_gdtype) const;
+	DataType _type_from_gdtype(const CScriptDataType &p_gdtype) const;
 	DataType _get_operation_type(const Variant::Operator p_op, const DataType &p_a, const DataType &p_b, bool &r_valid) const;
 	Variant::Operator _get_variant_operation(const OperatorNode::Operator &p_op) const;
 	bool _get_function_signature(DataType &p_base_type, const StringName &p_function, DataType &r_return_type, List<DataType> &r_arg_types, int &r_default_arg_count, bool &r_static, bool &r_vararg) const;
@@ -664,7 +664,7 @@ public:
 	int get_error_line() const;
 	int get_error_column() const;
 #ifdef DEBUG_ENABLED
-	const List<GDScriptWarning> &get_warnings() const {
+	const List<CScriptWarning> &get_warnings() const {
 		return warnings;
 	}
 #endif // DEBUG_ENABLED
@@ -692,8 +692,8 @@ public:
 	}
 
 	void clear();
-	GDScriptParser();
-	~GDScriptParser();
+	CScriptParser();
+	~CScriptParser();
 };
 
-#endif // GDSCRIPT_PARSER_H
+#endif // CSCRIPT_PARSER_H

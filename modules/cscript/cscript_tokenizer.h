@@ -37,7 +37,7 @@
 #include "core/vmap.h"
 #include "cscript_functions.h"
 
-class GDScriptTokenizer {
+class CScriptTokenizer {
 public:
 	enum Token {
 
@@ -162,7 +162,7 @@ public:
 	virtual const Variant &get_token_constant(int p_offset = 0) const = 0;
 	virtual Token get_token(int p_offset = 0) const = 0;
 	virtual StringName get_token_identifier(int p_offset = 0) const = 0;
-	virtual GDScriptFunctions::Function get_token_built_in_func(int p_offset = 0) const = 0;
+	virtual CScriptFunctions::Function get_token_built_in_func(int p_offset = 0) const = 0;
 	virtual Variant::Type get_token_type(int p_offset = 0) const = 0;
 	virtual int get_token_line(int p_offset = 0) const = 0;
 	virtual int get_token_column(int p_offset = 0) const = 0;
@@ -176,10 +176,10 @@ public:
 	virtual bool is_ignoring_warnings() const = 0;
 #endif // DEBUG_ENABLED
 
-	virtual ~GDScriptTokenizer(){};
+	virtual ~CScriptTokenizer(){};
 };
 
-class GDScriptTokenizerText : public GDScriptTokenizer {
+class CScriptTokenizerText : public CScriptTokenizer {
 	enum {
 		MAX_LOOKAHEAD = 4,
 		TK_RB_SIZE = MAX_LOOKAHEAD * 2 + 1
@@ -192,7 +192,7 @@ class GDScriptTokenizerText : public GDScriptTokenizer {
 		Variant constant; //for constant types
 		union {
 			Variant::Type vtype; //for type types
-			GDScriptFunctions::Function func; //function for built in functions
+			CScriptFunctions::Function func; //function for built in functions
 			int warning_code; //for warning skip
 		};
 		int line, col;
@@ -206,7 +206,7 @@ class GDScriptTokenizerText : public GDScriptTokenizer {
 	void _make_token(Token p_type);
 	void _make_newline(int p_indentation = 0, int p_tabs = 0);
 	void _make_identifier(const StringName &p_identifier);
-	void _make_built_in_func(GDScriptFunctions::Function p_func);
+	void _make_built_in_func(CScriptFunctions::Function p_func);
 	void _make_constant(const Variant &p_constant);
 	void _make_type(const Variant::Type &p_type);
 	void _make_error(const String &p_error);
@@ -234,7 +234,7 @@ public:
 	void set_code(const String &p_code);
 	virtual Token get_token(int p_offset = 0) const;
 	virtual StringName get_token_identifier(int p_offset = 0) const;
-	virtual GDScriptFunctions::Function get_token_built_in_func(int p_offset = 0) const;
+	virtual CScriptFunctions::Function get_token_built_in_func(int p_offset = 0) const;
 	virtual Variant::Type get_token_type(int p_offset = 0) const;
 	virtual int get_token_line(int p_offset = 0) const;
 	virtual int get_token_column(int p_offset = 0) const;
@@ -256,7 +256,7 @@ public:
 #endif // DEBUG_ENABLED
 };
 
-class GDScriptTokenizerBuffer : public GDScriptTokenizer {
+class CScriptTokenizerBuffer : public CScriptTokenizer {
 	enum {
 
 		TOKEN_BYTE_MASK = 0x80,
@@ -278,7 +278,7 @@ public:
 	static Vector<uint8_t> parse_code_string(const String &p_code);
 	virtual Token get_token(int p_offset = 0) const;
 	virtual StringName get_token_identifier(int p_offset = 0) const;
-	virtual GDScriptFunctions::Function get_token_built_in_func(int p_offset = 0) const;
+	virtual CScriptFunctions::Function get_token_built_in_func(int p_offset = 0) const;
 	virtual Variant::Type get_token_type(int p_offset = 0) const;
 	virtual int get_token_line(int p_offset = 0) const;
 	virtual int get_token_column(int p_offset = 0) const;
@@ -300,7 +300,7 @@ public:
 		return true;
 	}
 #endif // DEBUG_ENABLED
-	GDScriptTokenizerBuffer();
+	CScriptTokenizerBuffer();
 };
 
-#endif // GDSCRIPT_TOKENIZER_H
+#endif // CSCRIPT_TOKENIZER_H

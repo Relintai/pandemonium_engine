@@ -32,7 +32,7 @@
 
 #include "core/variant.h"
 
-class GDScriptFunctions {
+class CScriptFunctions {
 public:
 	enum Function {
 		MATH_SIN,
@@ -135,4 +135,4 @@ public:
 	static MethodInfo get_info(Function p_func);
 };
 
-#endif // GDSCRIPT_FUNCTIONS_H
+#endif // CSCRIPT_FUNCTIONS_H
