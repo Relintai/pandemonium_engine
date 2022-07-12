@@ -60,7 +60,6 @@ class CScript : public Script {
 		int index;
 		StringName setter;
 		StringName getter;
-		MultiplayerAPI::RPCMode rpc_mode;
 		CScriptDataType data_type;
 	};
 

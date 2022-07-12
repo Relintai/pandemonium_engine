@@ -2195,8 +2195,7 @@ static void _find_identifiers(const CScriptCompletionContext &p_context, bool p_
 		"and", "in", "not", "or", "false", "PI", "TAU", "INF", "NAN", "self", "true", "as", "assert",
 		"breakpoint", "class", "extends", "is", "func", "preload", "setget", "signal", "tool", "yield",
 		"const", "enum", "export", "onready", "static", "var", "break", "continue", "if", "elif",
-		"else", "for", "pass", "return", "match", "while", "remote", "sync", "master", "puppet", "slave",
-		"remotesync", "mastersync", "puppetsync",
+		"else", "for", "pass", "return", "match", "while",
 		nullptr
 	};
 

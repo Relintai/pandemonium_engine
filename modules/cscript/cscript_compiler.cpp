@@ -1729,7 +1729,6 @@ Error CScriptCompiler::_parse_function(CScript *p_script, const CScriptParser::C
 
 	if (p_func) {
 		gdfunc->_static = p_func->_static;
-		gdfunc->rpc_mode = p_func->rpc_mode;
 		gdfunc->argument_types.resize(p_func->argument_types.size());
 		for (int i = 0; i < p_func->argument_types.size(); i++) {
 			gdfunc->argument_types.write[i] = _gdtype_from_datatype(p_func->argument_types[i], p_script);
@@ -1737,7 +1736,6 @@ Error CScriptCompiler::_parse_function(CScript *p_script, const CScriptParser::C
 		gdfunc->return_type = _gdtype_from_datatype(p_func->return_type, p_script);
 	} else {
 		gdfunc->_static = false;
-		gdfunc->rpc_mode = MultiplayerAPI::RPC_MODE_DISABLED;
 		gdfunc->return_type = CScriptDataType();
 		gdfunc->return_type.has_type = true;
 		gdfunc->return_type.kind = CScriptDataType::BUILTIN;
@@ -1944,7 +1942,6 @@ Error CScriptCompiler::_parse_class_level(CScript *p_script, const CScriptParser
 		minfo.index = p_script->member_indices.size();
 		minfo.setter = p_class->variables[i].setter;
 		minfo.getter = p_class->variables[i].getter;
-		minfo.rpc_mode = p_class->variables[i].rpc_mode;
 		minfo.data_type = _gdtype_from_datatype(p_class->variables[i].data_type, p_script);
 
 		PropertyInfo prop_info = minfo.data_type;

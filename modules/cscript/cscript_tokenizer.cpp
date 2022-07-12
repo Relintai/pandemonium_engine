@@ -106,14 +106,6 @@ const char *CScriptTokenizer::token_names[TK_MAX] = {
 	"yield",
 	"signal",
 	"breakpoint",
-	"rpc",
-	"sync",
-	"master",
-	"puppet",
-	"slave",
-	"remotesync",
-	"mastersync",
-	"puppetsync",
 	"'['",
 	"']'",
 	"'{'",
@@ -211,14 +203,6 @@ static const _kws _keyword_list[] = {
 	{ CScriptTokenizer::TK_PR_YIELD, "yield" },
 	{ CScriptTokenizer::TK_PR_SIGNAL, "signal" },
 	{ CScriptTokenizer::TK_PR_BREAKPOINT, "breakpoint" },
-	{ CScriptTokenizer::TK_PR_REMOTE, "remote" },
-	{ CScriptTokenizer::TK_PR_MASTER, "master" },
-	{ CScriptTokenizer::TK_PR_SLAVE, "slave" },
-	{ CScriptTokenizer::TK_PR_PUPPET, "puppet" },
-	{ CScriptTokenizer::TK_PR_SYNC, "sync" },
-	{ CScriptTokenizer::TK_PR_REMOTESYNC, "remotesync" },
-	{ CScriptTokenizer::TK_PR_MASTERSYNC, "mastersync" },
-	{ CScriptTokenizer::TK_PR_PUPPETSYNC, "puppetsync" },
 	{ CScriptTokenizer::TK_PR_CONST, "const" },
 	{ CScriptTokenizer::TK_PR_ENUM, "enum" },
 	//controlflow
@@ -257,13 +241,6 @@ bool CScriptTokenizer::is_token_literal(int p_offset, bool variable_safe) const 
 		case TK_PR_EXPORT:
 		case TK_PR_SETGET:
 		case TK_PR_SIGNAL:
-		case TK_PR_REMOTE:
-		case TK_PR_MASTER:
-		case TK_PR_PUPPET:
-		case TK_PR_SYNC:
-		case TK_PR_REMOTESYNC:
-		case TK_PR_MASTERSYNC:
-		case TK_PR_PUPPETSYNC:
 			return true;
 
 		// Literal for non-variables only:

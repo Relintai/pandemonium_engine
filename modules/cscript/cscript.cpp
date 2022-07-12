@@ -1284,34 +1284,11 @@ ScriptLanguage *CScriptInstance::get_language() {
 }
 
 MultiplayerAPI::RPCMode CScriptInstance::get_rpc_mode(const StringName &p_method) const {
-	const CScript *cscript = script.ptr();
-
-	while (cscript) {
-		const Map<StringName, CScriptFunction *>::Element *E = cscript->member_functions.find(p_method);
-		if (E) {
-			if (E->get()->get_rpc_mode() != MultiplayerAPI::RPC_MODE_DISABLED) {
-				return E->get()->get_rpc_mode();
-			}
-		}
-		cscript = cscript->_base;
-	}
-
+	//note that methods set up using rpc_config should still work, even if they are declared in scripts.
 	return MultiplayerAPI::RPC_MODE_DISABLED;
 }
 
 MultiplayerAPI::RPCMode CScriptInstance::get_rset_mode(const StringName &p_variable) const {
-	const CScript *cscript = script.ptr();
-
-	while (cscript) {
-		const Map<StringName, CScript::MemberInfo>::Element *E = cscript->member_indices.find(p_variable);
-		if (E) {
-			if (E->get().rpc_mode) {
-				return E->get().rpc_mode;
-			}
-		}
-		cscript = cscript->_base;
-	}
-
 	return MultiplayerAPI::RPC_MODE_DISABLED;
 }
 
@@ -1784,14 +1761,6 @@ void CScriptLanguage::get_reserved_words(List<String> *p_words) const {
 		"return",
 		"match",
 		"while",
-		"remote",
-		"sync",
-		"master",
-		"puppet",
-		"slave",
-		"remotesync",
-		"mastersync",
-		"puppetsync",
 		nullptr
 	};
 
