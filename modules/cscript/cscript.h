@@ -109,9 +109,6 @@ class CScript : public Script {
 	String fully_qualified_name;
 	SelfList<CScript> script_list;
 
-	SelfList<CScriptFunctionState>::List pending_func_states;
-	void _clear_pending_func_states();
-
 	CScriptInstance *_create_instance(const Variant **p_args, int p_argcount, Object *p_owner, bool p_isref, Variant::CallError &r_error);
 
 	void _set_subclass_path(Ref<CScript> &p_sc, const String &p_path);
@@ -258,8 +255,6 @@ class CScriptInstance : public ScriptInstance {
 	Vector<Variant> members;
 	bool base_ref;
 
-	SelfList<CScriptFunctionState>::List pending_func_states;
-
 	void _ml_call_reversed(CScript *sptr, const StringName &p_method, const Variant **p_args, int p_argcount);
 
 public:
@@ -311,7 +306,6 @@ struct CScriptWarning {
 		STANDALONE_EXPRESSION, // Expression not assigned to a variable
 		VOID_ASSIGNMENT, // Function returns void but it's assigned to a variable
 		NARROWING_CONVERSION, // Float value into an integer slot, precision is lost
-		FUNCTION_MAY_YIELD, // Typed assign of function call that yields (it may return a function state)
 		VARIABLE_CONFLICTS_FUNCTION, // Variable has the same name of a function
 		FUNCTION_CONFLICTS_VARIABLE, // Function has the same name of a variable
 		FUNCTION_CONFLICTS_CONSTANT, // Function has the same name of a constant
@@ -346,8 +340,6 @@ struct CScriptWarning {
 #endif // DEBUG_ENABLED
 
 class CScriptLanguage : public ScriptLanguage {
-	friend class CScriptFunctionState;
-
 	static CScriptLanguage *singleton;
 
 	Variant *_global_array;

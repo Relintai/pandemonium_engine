@@ -138,7 +138,6 @@ static void _editor_init() {
 
 void register_cscript_types() {
 	ClassDB::register_class<CScript>();
-	ClassDB::register_virtual_class<CScriptFunctionState>();
 
 	script_language_cscript = memnew(CScriptLanguage);
 	ScriptServer::register_language(script_language_cscript);

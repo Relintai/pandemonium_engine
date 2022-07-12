@@ -77,17 +77,6 @@ Object *CScriptNativeClass::instance() {
 	return ClassDB::instance(name);
 }
 
-void CScript::_clear_pending_func_states() {
-	CScriptLanguage::get_singleton()->lock.lock();
-	while (SelfList<CScriptFunctionState> *E = pending_func_states.first()) {
-		// Order matters since clearing the stack may already cause
-		// the CSCriptFunctionState to be destroyed and thus removed from the list.
-		pending_func_states.remove(E);
-		E->self()->_clear_stack();
-	}
-	CScriptLanguage::get_singleton()->lock.unlock();
-}
-
 CScriptInstance *CScript::_create_instance(const Variant **p_args, int p_argcount, Object *p_owner, bool p_isref, Variant::CallError &r_error) {
 	/* STEP 1, CREATE */
 
@@ -628,7 +617,6 @@ Error CScript::reload(bool p_keep_state) {
 	for (Map<StringName, Ref<CScript>>::Element *E = subclasses.front(); E; E = E->next()) {
 		_set_subclass_path(E->get(), path);
 	}
-	_clear_pending_func_states();
 
 	return OK;
 }
@@ -955,8 +943,6 @@ void CScript::_save_orphaned_subclasses() {
 }
 
 CScript::~CScript() {
-	_clear_pending_func_states();
-
 	for (Map<StringName, CScriptFunction *>::Element *E = member_functions.front(); E; E = E->next()) {
 		memdelete(E->get());
 	}
@@ -1327,13 +1313,6 @@ CScriptInstance::CScriptInstance() {
 
 CScriptInstance::~CScriptInstance() {
 	CScriptLanguage::singleton->lock.lock();
-
-	while (SelfList<CScriptFunctionState> *E = pending_func_states.first()) {
-		// Order matters since clearing the stack may already cause
-		// the CSCriptFunctionState to be destroyed and thus removed from the list.
-		pending_func_states.remove(E);
-		E->self()->_clear_stack();
-	}
 
 	if (script.is_valid() && owner) {
 		script->instances.erase(owner);
@@ -1742,7 +1721,6 @@ void CScriptLanguage::get_reserved_words(List<String> *p_words) const {
 		"setget",
 		"signal",
 		"tool",
-		"yield",
 		// var
 		"const",
 		"enum",
@@ -1930,10 +1908,6 @@ String CScriptWarning::get_message() const {
 		case NARROWING_CONVERSION: {
 			return "Narrowing conversion (float is converted to int and loses precision).";
 		} break;
-		case FUNCTION_MAY_YIELD: {
-			CHECK_SYMBOLS(1);
-			return "Assigned variable is typed but the function '" + symbols[0] + "()' may yield and return a CScriptFunctionState instead.";
-		} break;
 		case VARIABLE_CONFLICTS_FUNCTION: {
 			CHECK_SYMBOLS(1);
 			return "Variable declaration of '" + symbols[0] + "' conflicts with a function of the same name.";
@@ -2025,7 +1999,6 @@ String CScriptWarning::get_name_from_code(Code p_code) {
 		"STANDALONE_EXPRESSION",
 		"VOID_ASSIGNMENT",
 		"NARROWING_CONVERSION",
-		"FUNCTION_MAY_YIELD",
 		"VARIABLE_CONFLICTS_FUNCTION",
 		"FUNCTION_CONFLICTS_VARIABLE",
 		"FUNCTION_CONFLICTS_CONSTANT",

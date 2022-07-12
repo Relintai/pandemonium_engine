@@ -103,7 +103,6 @@ const char *CScriptTokenizer::token_names[TK_MAX] = {
 	"enum",
 	"preload",
 	"assert",
-	"yield",
 	"signal",
 	"breakpoint",
 	"'['",
@@ -200,7 +199,6 @@ static const _kws _keyword_list[] = {
 	{ CScriptTokenizer::TK_PR_VOID, "void" },
 	{ CScriptTokenizer::TK_PR_PRELOAD, "preload" },
 	{ CScriptTokenizer::TK_PR_ASSERT, "assert" },
-	{ CScriptTokenizer::TK_PR_YIELD, "yield" },
 	{ CScriptTokenizer::TK_PR_SIGNAL, "signal" },
 	{ CScriptTokenizer::TK_PR_BREAKPOINT, "breakpoint" },
 	{ CScriptTokenizer::TK_PR_CONST, "const" },
@@ -259,7 +257,6 @@ bool CScriptTokenizer::is_token_literal(int p_offset, bool variable_safe) const 
 		case TK_PR_FUNCTION:
 		case TK_PR_EXTENDS:
 		case TK_PR_ASSERT:
-		case TK_PR_YIELD:
 		case TK_PR_VAR:
 
 		case TK_CF_IF:

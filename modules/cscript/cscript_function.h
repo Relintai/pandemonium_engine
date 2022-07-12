@@ -184,9 +184,6 @@ public:
 		OPCODE_CALL_BUILT_IN,
 		OPCODE_CALL_SELF,
 		OPCODE_CALL_SELF_BASE,
-		OPCODE_YIELD,
-		OPCODE_YIELD_SIGNAL,
-		OPCODE_YIELD_RESUME,
 		OPCODE_JUMP,
 		OPCODE_JUMP_IF,
 		OPCODE_JUMP_IF_NOT,
@@ -352,34 +349,10 @@ public:
 		return default_arguments[p_idx];
 	}
 
-	Variant call(CScriptInstance *p_instance, const Variant **p_args, int p_argcount, Variant::CallError &r_err, CallState *p_state = nullptr);
+	Variant call(CScriptInstance *p_instance, const Variant **p_args, int p_argcount, Variant::CallError &r_err);
 
 	CScriptFunction();
 	~CScriptFunction();
-};
-
-class CScriptFunctionState : public Reference {
-	GDCLASS(CScriptFunctionState, Reference);
-	friend class CScriptFunction;
-	CScriptFunction *function;
-	CScriptFunction::CallState state;
-	Variant _signal_callback(const Variant **p_args, int p_argcount, Variant::CallError &r_error);
-	Ref<CScriptFunctionState> first_state;
-
-	SelfList<CScriptFunctionState> scripts_list;
-	SelfList<CScriptFunctionState> instances_list;
-
-protected:
-	static void _bind_methods();
-
-public:
-	bool is_valid(bool p_extended_check = false) const;
-	Variant resume(const Variant &p_arg = Variant());
-
-	void _clear_stack();
-
-	CScriptFunctionState();
-	~CScriptFunctionState();
 };
 
 #endif // CSCRIPT_FUNCTION_H
