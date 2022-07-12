@@ -372,21 +372,21 @@ void CScriptSyntaxHighlighter::_update_cache() {
 		node_path_color = Color(0.32, 0.55, 0.29);
 	}
 
-	EDITOR_DEF("text_editor/highlighting/gdscript/function_definition_color", function_definition_color);
-	EDITOR_DEF("text_editor/highlighting/gdscript/node_path_color", node_path_color);
+	EDITOR_DEF("text_editor/highlighting/cscript/function_definition_color", function_definition_color);
+	EDITOR_DEF("text_editor/highlighting/cscript/node_path_color", node_path_color);
 	if (text_editor_color_theme == "Adaptive" || default_theme) {
 		EditorSettings::get_singleton()->set_initial_value(
-				"text_editor/highlighting/gdscript/function_definition_color",
+				"text_editor/highlighting/cscript/function_definition_color",
 				function_definition_color,
 				true);
 		EditorSettings::get_singleton()->set_initial_value(
-				"text_editor/highlighting/gdscript/node_path_color",
+				"text_editor/highlighting/cscript/node_path_color",
 				node_path_color,
 				true);
 	}
 
-	function_definition_color = EDITOR_GET("text_editor/highlighting/gdscript/function_definition_color");
-	node_path_color = EDITOR_GET("text_editor/highlighting/gdscript/node_path_color");
+	function_definition_color = EDITOR_GET("text_editor/highlighting/cscript/function_definition_color");
+	node_path_color = EDITOR_GET("text_editor/highlighting/cscript/node_path_color");
 	type_color = EDITOR_GET("text_editor/highlighting/base_type_color");
 }
 
