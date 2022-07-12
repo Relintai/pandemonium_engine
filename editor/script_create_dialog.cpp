@@ -30,25 +30,25 @@
 
 #include "script_create_dialog.h"
 
-#include "core/io/resource_saver.h"
-#include "core/project_settings.h"
-#include "core/script_language.h"
-#include "core/string_builder.h"
-#include "editor/create_dialog.h"
-#include "editor/editor_scale.h"
 #include "core/class_db.h"
 #include "core/color.h"
 #include "core/error_list.h"
 #include "core/io/resource_loader.h"
+#include "core/io/resource_saver.h"
 #include "core/list.h"
 #include "core/math/vector2.h"
 #include "core/os/dir_access.h"
 #include "core/os/memory.h"
+#include "core/project_settings.h"
 #include "core/reference.h"
 #include "core/resource.h"
+#include "core/script_language.h"
+#include "core/string_builder.h"
 #include "core/typedefs.h"
 #include "core/variant.h"
+#include "editor/create_dialog.h"
 #include "editor/editor_file_dialog.h"
+#include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
@@ -221,7 +221,7 @@ String ScriptCreateDialog::_validate_path(const String &p_path, bool p_file_must
 	List<String> extensions;
 
 	// get all possible extensions for script
-	for (int l = 0; l < language_menu->get_item_count(); l++) {
+	for (int l = 0; l < ScriptServer::get_language_count(); l++) {
 		ScriptServer::get_language(l)->get_recognized_extensions(&extensions);
 	}
 

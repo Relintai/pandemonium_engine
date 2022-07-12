@@ -1,9 +1,6 @@
 
 def can_build(env, platform):
-    #return True
-    #not yet
-    return False
-
+    return True
 
 def configure(env):
     pass
@@ -13,7 +10,6 @@ def get_doc_classes():
     return [
         "@CScript",
         "CScript",
-        "CScriptFunctionState",
     ]
 
 
