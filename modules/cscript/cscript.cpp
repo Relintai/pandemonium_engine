@@ -1442,7 +1442,7 @@ String CScriptLanguage::get_type() const {
 	return "CScript";
 }
 String CScriptLanguage::get_extension() const {
-	return "gd";
+	return "cpps";
 }
 Error CScriptLanguage::execute_file(const String &p_path) {
 	// ??
@@ -2109,8 +2109,8 @@ CScriptLanguage::CScriptLanguage() {
 	script_frame_time = 0;
 
 	_debug_call_stack_pos = 0;
-	int dmcs = GLOBAL_DEF("debug/settings/gdscript/max_call_stack", 1024);
-	ProjectSettings::get_singleton()->set_custom_property_info("debug/settings/gdscript/max_call_stack", PropertyInfo(Variant::INT, "debug/settings/gdscript/max_call_stack", PROPERTY_HINT_RANGE, "1024,4096,1,or_greater")); //minimum is 1024
+	int dmcs = GLOBAL_DEF("debug/settings/cscript/max_call_stack", 1024);
+	ProjectSettings::get_singleton()->set_custom_property_info("debug/settings/cscript/max_call_stack", PropertyInfo(Variant::INT, "debug/settings/cscript/max_call_stack", PROPERTY_HINT_RANGE, "1024,4096,1,or_greater")); //minimum is 1024
 
 	if (ScriptDebugger::get_singleton()) {
 		//debugging enabled!
@@ -2124,14 +2124,14 @@ CScriptLanguage::CScriptLanguage() {
 	}
 
 #ifdef DEBUG_ENABLED
-	GLOBAL_DEF("debug/gdscript/warnings/enable", true);
-	GLOBAL_DEF("debug/gdscript/warnings/treat_warnings_as_errors", false);
-	GLOBAL_DEF("debug/gdscript/warnings/exclude_addons", true);
-	GLOBAL_DEF("debug/gdscript/completion/autocomplete_setters_and_getters", false);
+	GLOBAL_DEF("debug/cscript/warnings/enable", true);
+	GLOBAL_DEF("debug/cscript/warnings/treat_warnings_as_errors", false);
+	GLOBAL_DEF("debug/cscript/warnings/exclude_addons", true);
+	GLOBAL_DEF("debug/cscript/completion/autocomplete_setters_and_getters", false);
 	for (int i = 0; i < (int)CScriptWarning::WARNING_MAX; i++) {
 		String warning = CScriptWarning::get_name_from_code((CScriptWarning::Code)i).to_lower();
 		bool default_enabled = !warning.begins_with("unsafe_") && i != CScriptWarning::UNUSED_CLASS_VARIABLE;
-		GLOBAL_DEF("debug/gdscript/warnings/" + warning, default_enabled);
+		GLOBAL_DEF("debug/cscript/warnings/" + warning, default_enabled);
 	}
 #endif // DEBUG_ENABLED
 }
@@ -2198,7 +2198,7 @@ RES ResourceFormatLoaderCScript::load(const String &p_path, const String &p_orig
 
 	Ref<CScript> scriptres(script);
 
-	if (p_path.ends_with(".gde") || p_path.ends_with(".gdc")) {
+	if (p_path.ends_with(".cppse") || p_path.ends_with(".cppsc")) {
 		script->set_script_path(p_original_path); // script needs this.
 		script->set_path(p_original_path, true);
 		Error err = script->load_byte_code(p_path);
@@ -2221,9 +2221,9 @@ RES ResourceFormatLoaderCScript::load(const String &p_path, const String &p_orig
 }
 
 void ResourceFormatLoaderCScript::get_recognized_extensions(List<String> *p_extensions) const {
-	p_extensions->push_back("gd");
-	p_extensions->push_back("gdc");
-	p_extensions->push_back("gde");
+	p_extensions->push_back("cpps");
+	p_extensions->push_back("cppsc");
+	p_extensions->push_back("cppse");
 }
 
 bool ResourceFormatLoaderCScript::handles_type(const String &p_type) const {
@@ -2232,7 +2232,7 @@ bool ResourceFormatLoaderCScript::handles_type(const String &p_type) const {
 
 String ResourceFormatLoaderCScript::get_resource_type(const String &p_path) const {
 	String el = p_path.get_extension().to_lower();
-	if (el == "gd" || el == "gdc" || el == "gde") {
+	if (el == "cpps" || el == "cppsc" || el == "cppse") {
 		return "CScript";
 	}
 	return "";
@@ -2285,7 +2285,7 @@ Error ResourceFormatSaverCScript::save(const String &p_path, const RES &p_resour
 
 void ResourceFormatSaverCScript::get_recognized_extensions(const RES &p_resource, List<String> *p_extensions) const {
 	if (Object::cast_to<CScript>(*p_resource)) {
-		p_extensions->push_back("gd");
+		p_extensions->push_back("cpps");
 	}
 }
 bool ResourceFormatSaverCScript::recognize(const RES &p_resource) const {

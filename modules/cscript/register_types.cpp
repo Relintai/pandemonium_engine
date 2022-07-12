@@ -63,7 +63,7 @@ public:
 			script_key = preset->get_script_encryption_key().to_lower();
 		}
 
-		if (!p_path.ends_with(".cpp") || script_mode == EditorExportPreset::MODE_SCRIPT_TEXT) {
+		if (!p_path.ends_with(".cpps") || script_mode == EditorExportPreset::MODE_SCRIPT_TEXT) {
 			return;
 		}
 
@@ -78,7 +78,7 @@ public:
 
 		if (!file.empty()) {
 			if (script_mode == EditorExportPreset::MODE_SCRIPT_ENCRYPTED) {
-				String tmp_path = EditorSettings::get_singleton()->get_cache_dir().plus_file("script.gde");
+				String tmp_path = EditorSettings::get_singleton()->get_cache_dir().plus_file("script.cppse");
 				FileAccess *fa = FileAccess::open(tmp_path, FileAccess::WRITE);
 
 				Vector<uint8_t> key;
@@ -116,13 +116,13 @@ public:
 				memdelete(fae);
 
 				file = FileAccess::get_file_as_array(tmp_path);
-				add_file(p_path.get_basename() + ".cppe", file, true);
+				add_file(p_path.get_basename() + ".cppse", file, true);
 
 				// Clean up temporary file.
 				DirAccess::remove_file_or_error(tmp_path);
 
 			} else {
-				add_file(p_path.get_basename() + ".cppc", file, true);
+				add_file(p_path.get_basename() + ".cppsc", file, true);
 			}
 		}
 	}

@@ -842,10 +842,10 @@ static bool _guess_expression_type(CScriptCompletionContext &p_context, const CS
 																script = "res://" + script;
 															}
 
-															if (!script.ends_with(".cpp")) {
+															if (!script.ends_with(".cpps")) {
 																//not a script, try find the script anyway,
 																//may have some success
-																script = script.get_basename() + ".cpp";
+																script = script.get_basename() + ".cpps";
 															}
 
 															if (FileAccess::exists(script)) {
@@ -3434,10 +3434,10 @@ Error CScriptLanguage::lookup_code(const String &p_code, const String &p_symbol,
 						if (path.begins_with("*")) {
 							String script = path.substr(1, path.length());
 
-							if (!script.ends_with(".cpp")) {
+							if (!script.ends_with(".cpps")) {
 								// Not a script, try find the script anyway,
 								// may have some success
-								script = script.get_basename() + ".cpp";
+								script = script.get_basename() + ".cpps";
 							}
 
 							if (FileAccess::exists(script)) {
