@@ -194,6 +194,14 @@ struct _NO_DISCARD_CLASS_ Color {
 	_FORCE_INLINE_ bool operator<(const Color &p_color) const; //used in set keys
 	operator String() const;
 
+	static _FORCE_INLINE_ Color color8(int r, int g, int b) {
+		return Color(static_cast<float>(r) / 255.0f, static_cast<float>(g) / 255.0f, static_cast<float>(b) / 255.0f);
+	}
+
+	static _FORCE_INLINE_ Color color8(int r, int g, int b, int a) {
+		return Color(static_cast<float>(r) / 255.0f, static_cast<float>(g) / 255.0f, static_cast<float>(b) / 255.0f, static_cast<float>(a) / 255.0f);
+	}
+
 	/**
 	 * No construct parameters, r=0, g=0, b=0. a=255
 	 */
