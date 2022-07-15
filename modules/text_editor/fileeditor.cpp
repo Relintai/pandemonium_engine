@@ -236,22 +236,22 @@ void FileEditor::open_file(const String &path, const String &font) {
 		VanillaEditor *vanilla_editor = open_in_vanillaeditor(path);
 
 		if (font != "null" && vanilla_editor.get("custom_fonts/font") != nullptr) {
-			vanilla_editor.set_font(font);
+			vanilla_editor->set_font(font);
 		}
 
 		generate_file_item(path, vanilla_editor);
-		last_opened_files->store_opened_files(open_file_list);
+		last_opened_files->store_opened_files(_open_file_list);
 	}
 
 	current_editor->show();
 }
 
 void FileEditor::generate_file_item(const String &path, const Control &veditor) {
-	open_file_name.set_text(path);
-	open_file_list.add_item(path.get_file(), null, true);
-	current_file_index = open_file_list.get_item_count() - 1;
-	open_file_list.set_item_metadata(current_file_index, [veditor]);
-	open_file_list.select(open_file_list.get_item_count() - 1);
+	open_file_name->set_text(path);
+	_open_file_list->add_item(path.get_file(), nullptr, true);
+	current_file_index = _open_file_list.get_item_count() - 1;
+	open_file_list->set_item_metadata(current_file_index, [veditor]);
+	_open_file_list->select(_open_file_list->get_item_count() - 1);
 }
 
 Control FileEditor::open_in_vanillaeditor(const String &path) {
