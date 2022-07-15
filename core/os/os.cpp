@@ -86,6 +86,125 @@ uint64_t OS::get_system_time_secs() const {
 uint64_t OS::get_system_time_msecs() const {
 	return 0;
 }
+
+/**
+ *  Time constants borrowed from loc_time.h
+ */
+#define EPOCH_YR 1970 /* EPOCH = Jan 1 1970 00:00:00 */
+#define SECS_DAY (24L * 60L * 60L)
+#define LEAPYEAR(year) (!((year) % 4) && (((year) % 100) || !((year) % 400)))
+#define YEARSIZE(year) (LEAPYEAR(year) ? 366 : 365)
+
+/// Table of number of days in each month (for regular year and leap year)
+static const unsigned int MONTH_DAYS_TABLE[2][12] = {
+	{ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
+	{ 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
+};
+
+OS::DateTime OS::get_datetime_from_unix_time(int64_t unix_time_val) const {
+	DateTime dt;
+
+	long dayclock, dayno;
+	int year = EPOCH_YR;
+
+	if (unix_time_val >= 0) {
+		dayno = unix_time_val / SECS_DAY;
+		dayclock = unix_time_val % SECS_DAY;
+		/* day 0 was a thursday */
+		dt.date.weekday = static_cast<OS::Weekday>((dayno + 4) % 7);
+		while (dayno >= YEARSIZE(year)) {
+			dayno -= YEARSIZE(year);
+			year++;
+		}
+	} else {
+		dayno = (unix_time_val - SECS_DAY + 1) / SECS_DAY;
+		dayclock = unix_time_val - dayno * SECS_DAY;
+		dt.date.weekday = static_cast<OS::Weekday>(((dayno % 7) + 11) % 7);
+		do {
+			year--;
+			dayno += YEARSIZE(year);
+		} while (dayno < 0);
+	}
+
+	dt.time.sec = dayclock % 60;
+	dt.time.min = (dayclock % 3600) / 60;
+	dt.time.hour = dayclock / 3600;
+	dt.date.year = year;
+
+	size_t imonth = 0;
+
+	while ((unsigned long)dayno >= MONTH_DAYS_TABLE[LEAPYEAR(year)][imonth]) {
+		dayno -= MONTH_DAYS_TABLE[LEAPYEAR(year)][imonth];
+		imonth++;
+	}
+
+	/// Add 1 to month to make sure months are indexed starting at 1
+	dt.date.month = static_cast<OS::Month>(imonth + 1);
+
+	dt.date.day = dayno + 1;
+
+	return dt;
+}
+
+int64_t OS::get_unix_time_from_datetime(const DateTime &datetime) const {
+	// Bunch of conversion constants
+	static const unsigned int SECONDS_PER_MINUTE = 60;
+	static const unsigned int MINUTES_PER_HOUR = 60;
+	static const unsigned int HOURS_PER_DAY = 24;
+	static const unsigned int SECONDS_PER_HOUR = MINUTES_PER_HOUR * SECONDS_PER_MINUTE;
+	static const unsigned int SECONDS_PER_DAY = SECONDS_PER_HOUR * HOURS_PER_DAY;
+
+	unsigned int second = static_cast<unsigned int>(datetime.time.sec);
+	unsigned int minute = static_cast<unsigned int>(datetime.time.min);
+	unsigned int hour = static_cast<unsigned int>(datetime.time.hour);
+	unsigned int day = static_cast<unsigned int>(datetime.date.day);
+	unsigned int month = static_cast<unsigned int>(datetime.date.month);
+	unsigned int year = static_cast<unsigned int>(datetime.date.year);
+
+	/// How many days come before each month (0-12)
+	static const unsigned short int DAYS_PAST_THIS_YEAR_TABLE[2][13] = {
+		/* Normal years.  */
+		{ 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 },
+		/* Leap years.  */
+		{ 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 }
+	};
+
+	ERR_FAIL_COND_V_MSG(second > 59, 0, "Invalid second value of: " + itos(second) + ".");
+	ERR_FAIL_COND_V_MSG(minute > 59, 0, "Invalid minute value of: " + itos(minute) + ".");
+	ERR_FAIL_COND_V_MSG(hour > 23, 0, "Invalid hour value of: " + itos(hour) + ".");
+	ERR_FAIL_COND_V_MSG(year == 0, 0, "Years before 1 AD are not supported. Value passed: " + itos(year) + ".");
+	ERR_FAIL_COND_V_MSG(month > 12 || month == 0, 0, "Invalid month value of: " + itos(month) + ".");
+	// Do this check after month is tested as valid
+	unsigned int days_in_month = MONTH_DAYS_TABLE[LEAPYEAR(year)][month - 1];
+	ERR_FAIL_COND_V_MSG(day == 0 || day > days_in_month, 0, "Invalid day value of: " + itos(day) + ". It should be comprised between 1 and " + itos(days_in_month) + " for month " + itos(month) + ".");
+
+	// Calculate all the seconds from months past in this year
+	uint64_t SECONDS_FROM_MONTHS_PAST_THIS_YEAR = DAYS_PAST_THIS_YEAR_TABLE[LEAPYEAR(year)][month - 1] * SECONDS_PER_DAY;
+
+	int64_t SECONDS_FROM_YEARS_PAST = 0;
+	if (year >= EPOCH_YR) {
+		for (unsigned int iyear = EPOCH_YR; iyear < year; iyear++) {
+			SECONDS_FROM_YEARS_PAST += YEARSIZE(iyear) * SECONDS_PER_DAY;
+		}
+	} else {
+		for (unsigned int iyear = EPOCH_YR - 1; iyear >= year; iyear--) {
+			SECONDS_FROM_YEARS_PAST -= YEARSIZE(iyear) * SECONDS_PER_DAY;
+		}
+	}
+
+	int64_t epoch =
+			second +
+			minute * SECONDS_PER_MINUTE +
+			hour * SECONDS_PER_HOUR +
+			// Subtract 1 from day, since the current day isn't over yet
+			//   and we cannot count all 24 hours.
+			(day - 1) * SECONDS_PER_DAY +
+			SECONDS_FROM_MONTHS_PAST_THIS_YEAR +
+			SECONDS_FROM_YEARS_PAST;
+
+	return epoch;
+}
+
 void OS::debug_break(){
 
 	// something
