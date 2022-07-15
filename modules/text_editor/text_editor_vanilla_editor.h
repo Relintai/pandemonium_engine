@@ -31,8 +31,6 @@ public:
 	int get_search_flag() const;
 	void set_search_flag(const int val);
 
-	void _init();
-	void _ready();
 	void set_font(const String &font_path);
 	void load_default_font();
 	void set_wrap_enabled(const bool enabled);
@@ -62,6 +60,8 @@ public:
 	TextEdit *text_editor;
 
 protected:
+	void _notification(int p_what);
+
 	static void _bind_methods();
 
 	Ref<TextEditorSettings> last_opened_files;

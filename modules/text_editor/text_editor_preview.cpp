@@ -243,11 +243,15 @@ TextEditorPreview::TextEditorPreview() {
 	table_preview->set_h_size_flags(SIZE_EXPAND_FILL);
 	table_preview->set_v_size_flags(SIZE_EXPAND_FILL);
 	table_preview->hide();
-
-	connect("popup_hide", this, "_on_TextEditorPreview_popup_hide");
 }
 
 TextEditorPreview::~TextEditorPreview() {
+}
+
+void TextEditorPreview::_notification(int p_what) {
+	if (p_what == NOTIFICATION_POSTINITIALIZE) {
+		connect("popup_hide", this, "_on_TextEditorPreview_popup_hide");
+	}
 }
 
 void TextEditorPreview::_bind_methods() {

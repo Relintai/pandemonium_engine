@@ -40,19 +40,6 @@ void TextEditorVanillaEditor::set_search_flag(const int val) {
 	search_flag = val;
 }
 
-void TextEditorVanillaEditor::_init() {
-}
-
-void TextEditorVanillaEditor::_ready() {
-	text_editor->connect("text_changed", this, "_on_text_editor_text_changed");
-	//FileList = get_parent().get_parent().get_parent().get_parent().get_node("FileList");
-	file_info_read_only->connect("toggled", this, "_on_Readonly_toggled");
-	//file_info_read_only.set("custom_icons/checked",IconLoader.load_icon_from_name("read"));
-	//file_info_read_only.set("custom_icons/unchecked",IconLoader.load_icon_from_name("edit"));
-	add_to_group("vanilla_editor");
-	load_default_font();
-}
-
 void TextEditorVanillaEditor::set_font(const String &font_path) {
 	Ref<DynamicFont> dynamic_font;
 	Ref<DynamicFontData> dynamic_font_data;
@@ -425,6 +412,18 @@ TextEditorVanillaEditor::TextEditorVanillaEditor() {
 }
 
 TextEditorVanillaEditor::~TextEditorVanillaEditor() {
+}
+
+void TextEditorVanillaEditor::_notification(int p_what) {
+	if (p_what == NOTIFICATION_POST_ENTER_TREE) {
+		text_editor->connect("text_changed", this, "_on_text_editor_text_changed");
+		//FileList = get_parent().get_parent().get_parent().get_parent().get_node("FileList");
+		file_info_read_only->connect("toggled", this, "_on_Readonly_toggled");
+		//file_info_read_only.set("custom_icons/checked",IconLoader.load_icon_from_name("read"));
+		//file_info_read_only.set("custom_icons/unchecked",IconLoader.load_icon_from_name("edit"));
+		add_to_group("vanilla_editor");
+		load_default_font();
+	}
 }
 
 void TextEditorVanillaEditor::_bind_methods() {

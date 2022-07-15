@@ -37,7 +37,6 @@ public:
 		FILE_MENU_OPTION_REPLACE = 7,
 	};
 
-	void _ready();
 	void connect_signals();
 
 	void create_selected_file();
@@ -84,6 +83,8 @@ public:
 	~TextFileEditor();
 
 protected:
+	void _notification(int p_what);
+
 	static void _bind_methods();
 
 	String DIRECTORY;

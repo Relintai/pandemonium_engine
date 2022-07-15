@@ -26,25 +26,6 @@
 #include "scene/gui/text_edit.h"
 #include "scene/resources/dynamic_font.h"
 
-void TextFileEditor::_ready() {
-	if (!Engine::get_singleton()->is_editor_hint()) {
-		return;
-	}
-
-	clean_editor();
-	connect_signals();
-
-	Array opened_files = last_opened_files->load_opened_files();
-
-	for (int i = 0; i < opened_files.size(); ++i) {
-		Array opened_file = opened_files[i];
-
-		open_file(opened_file[1], opened_file[2]);
-	}
-
-	file_list->set_filters(EXTENSIONS);
-}
-
 void TextFileEditor::connect_signals() {
 	file_list->connect("confirmed", this, "update_list");
 	file_btn_popup->connect("id_pressed", this, "_on_file_btn_pressed");
@@ -732,9 +713,28 @@ TextFileEditor::TextFileEditor() {
 TextFileEditor::~TextFileEditor() {
 }
 
-void TextFileEditor::_bind_methods() {
-	//ClassDB::bind_method(D_METHOD("_ready"), &TextFileEditor::_ready);
+void TextFileEditor::_notification(int p_what) {
+	if (p_what == NOTIFICATION_POST_ENTER_TREE) {
+		if (!Engine::get_singleton()->is_editor_hint()) {
+			return;
+		}
 
+		clean_editor();
+		connect_signals();
+
+		Array opened_files = last_opened_files->load_opened_files();
+
+		for (int i = 0; i < opened_files.size(); ++i) {
+			Array opened_file = opened_files[i];
+
+			open_file(opened_file[1], opened_file[2]);
+		}
+
+		file_list->set_filters(EXTENSIONS);
+	}
+}
+
+void TextFileEditor::_bind_methods() {
 	//ClassDB::bind_method(D_METHOD("connect_signals"), &TextFileEditor::connect_signals);
 	//ClassDB::bind_method(D_METHOD("create_selected_file"), &TextFileEditor::create_selected_file);
 	//ClassDB::bind_method(D_METHOD("open_selected_file"), &TextFileEditor::open_selected_file);
