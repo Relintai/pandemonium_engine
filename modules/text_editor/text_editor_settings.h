@@ -1,12 +1,12 @@
-#ifndef LASTOPENEDFILES_H
-#define LASTOPENEDFILES_H
+#ifndef TEXT_EDITOR_SETTINGS_H
+#define TEXT_EDITOR_SETTINGS_H
 
 #include "core/reference.h"
 
 class ItemList;
 
-class LastOpenedFiles : public Reference {
-	GDCLASS(LastOpenedFiles, Reference);
+class TextEditorSettings : public Reference {
+	GDCLASS(TextEditorSettings, Reference);
 
 public:
 	void store_opened_files(ItemList *filecontainer);
@@ -15,8 +15,8 @@ public:
 	void store_editor_fonts(const String &file_name, const String &font_path);
 	String get_editor_font();
 
-	LastOpenedFiles();
-	~LastOpenedFiles();
+	TextEditorSettings();
+	~TextEditorSettings();
 
 protected:
 	static void _bind_methods();

@@ -1,12 +1,12 @@
-#ifndef VANILLA_EDITOR_H
-#define VANILLA_EDITOR_H
+#ifndef TEXT_EDITOR_VANILLA_EDITOR_H
+#define TEXT_EDITOR_VANILLA_EDITOR_H
 
 #include "core/reference.h"
 #include "core/ustring.h"
 
 #include "scene/gui/box_container.h"
 
-class LastOpenedFiles;
+class TextEditorSettings;
 
 class TextEdit;
 class FileDialog;
@@ -17,8 +17,8 @@ class Button;
 class TextureRect;
 class Label;
 
-class VanillaEditor : public VBoxContainer {
-	GDCLASS(VanillaEditor, VBoxContainer);
+class TextEditorVanillaEditor : public VBoxContainer {
+	GDCLASS(TextEditorVanillaEditor, VBoxContainer);
 
 public:
 	String get_current_path();
@@ -54,13 +54,13 @@ public:
 	void _on_close2_pressed();
 	void _on_LineEdit_focus_entered();
 
-	VanillaEditor();
-	~VanillaEditor();
+	TextEditorVanillaEditor();
+	~TextEditorVanillaEditor();
 
 protected:
 	static void _bind_methods();
 
-	Ref<LastOpenedFiles> last_opened_files;
+	Ref<TextEditorSettings> last_opened_files;
 
 	TextEdit *text_editor;
 	FileDialog *file_list;

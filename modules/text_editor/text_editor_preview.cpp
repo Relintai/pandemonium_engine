@@ -1,22 +1,22 @@
 
-#include "preview.h"
+#include "text_editor_preview.h"
 
 #include "scene/gui/grid_container.h"
 #include "scene/gui/rich_text_label.h"
 
 #include "modules/regex/regex.h"
 
-void Preview::print_preview(const String &content) {
+void TextEditorPreview::print_preview(const String &content) {
 	text_preview->append_bbcode(content);
 	text_preview->show();
 }
 
-void Preview::print_bb(const String &content) {
+void TextEditorPreview::print_bb(const String &content) {
 	text_preview->append_bbcode(content);
 	text_preview->show();
 }
 
-void Preview::print_markdown(const String &p_content) {
+void TextEditorPreview::print_markdown(const String &p_content) {
 	String content = p_content;
 
 	Array result;
@@ -160,7 +160,7 @@ void Preview::print_markdown(const String &p_content) {
 	text_preview->show();
 }
 
-void Preview::print_html(const String &p_content) {
+void TextEditorPreview::print_html(const String &p_content) {
 	String content = p_content;
 
 	content = content.replace("<i>", "[i]");
@@ -190,7 +190,7 @@ void Preview::print_html(const String &p_content) {
 	text_preview->show();
 }
 
-void Preview::print_csv(const Array &rows) {
+void TextEditorPreview::print_csv(const Array &rows) {
 	table_preview->set_columns(rows[0].size());
 
 	for (item in rows) {
@@ -207,11 +207,11 @@ void Preview::print_csv(const Array &rows) {
 	table_preview->show();
 }
 
-void Preview::_on_Preview_popup_hide() {
+void TextEditorPreview::_on_TextEditorPreview_popup_hide() {
 	queue_delete();
 }
 
-Preview::Preview() {
+TextEditorPreview::TextEditorPreview() {
 	set_window_title("File preview");
 	set_resizable(true);
 	set_anchors_and_margins_preset(PRESET_WIDE);
@@ -238,21 +238,21 @@ Preview::Preview() {
 	table_preview->set_v_size_flags(SIZE_EXPAND_FILL);
 	table_preview->hide();
 
-	connect("popup_hide", this, "_on_Preview_popup_hide");
+	connect("popup_hide", this, "_on_TextEditorPreview_popup_hide");
 }
 
-Preview::~Preview() {
+TextEditorPreview::~TextEditorPreview() {
 }
 
-void Preview::_bind_methods() {
+void TextEditorPreview::_bind_methods() {
 	signal image_downloaded();
 	signal image_loaded();
 
-	ClassDB::bind_method(D_METHOD("_init"), &Preview::_init);
-	ClassDB::bind_method(D_METHOD("print_preview", "content"), &Preview::print_preview);
-	ClassDB::bind_method(D_METHOD("print_bb", "content"), &Preview::print_bb);
-	ClassDB::bind_method(D_METHOD("print_markdown", "content"), &Preview::print_markdown);
-	ClassDB::bind_method(D_METHOD("print_html", "content"), &Preview::print_html);
-	ClassDB::bind_method(D_METHOD("print_csv", "rows"), &Preview::print_csv);
-	ClassDB::bind_method(D_METHOD("_on_Preview_popup_hide"), &Preview::_on_Preview_popup_hide);
+	ClassDB::bind_method(D_METHOD("_init"), &TextEditorPreview::_init);
+	ClassDB::bind_method(D_METHOD("print_preview", "content"), &TextEditorPreview::print_preview);
+	ClassDB::bind_method(D_METHOD("print_bb", "content"), &TextEditorPreview::print_bb);
+	ClassDB::bind_method(D_METHOD("print_markdown", "content"), &TextEditorPreview::print_markdown);
+	ClassDB::bind_method(D_METHOD("print_html", "content"), &TextEditorPreview::print_html);
+	ClassDB::bind_method(D_METHOD("print_csv", "rows"), &TextEditorPreview::print_csv);
+	ClassDB::bind_method(D_METHOD("_on_TextEditorPreview_popup_hide"), &TextEditorPreview::_on_TextEditorPreview_popup_hide);
 }

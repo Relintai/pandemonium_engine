@@ -1,9 +1,9 @@
 
-#include "vanillaeditor.h"
+#include "text_editor_vanilla_editor.h"
 
 #include "core/color.h"
 #include "core/object.h"
-#include "lastopenedfiles.h"
+#include "text_editor_settings.h"
 
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
@@ -16,34 +16,34 @@
 
 #include "scene/resources/dynamic_font.h"
 
-String VanillaEditor::get_current_path() {
+String TextEditorVanillaEditor::get_current_path() {
 	return current_path;
 }
 
-void VanillaEditor::set_current_path(const String &val) {
+void TextEditorVanillaEditor::set_current_path(const String &val) {
 	current_path = val;
 }
 
-String VanillaEditor::get_current_filename() {
+String TextEditorVanillaEditor::get_current_filename() {
 	return current_filename;
 }
 
-void VanillaEditor::set_current_filename(const String &val) {
+void TextEditorVanillaEditor::set_current_filename(const String &val) {
 	current_filename = val;
 }
 
-int VanillaEditor::get_search_flag() const {
+int TextEditorVanillaEditor::get_search_flag() const {
 	return search_flag;
 }
 
-void VanillaEditor::set_search_flag(const int val) {
+void TextEditorVanillaEditor::set_search_flag(const int val) {
 	search_flag = val;
 }
 
-void VanillaEditor::_init() {
+void TextEditorVanillaEditor::_init() {
 }
 
-void VanillaEditor::_ready() {
+void TextEditorVanillaEditor::_ready() {
 	text_editor->connect("text_changed", this, "_on_text_editor_text_changed");
 	//FileList = get_parent().get_parent().get_parent().get_parent().get_node("FileList");
 	file_info_read_only->connect("toggled", this, "_on_Readonly_toggled");
@@ -53,7 +53,7 @@ void VanillaEditor::_ready() {
 	load_default_font();
 }
 
-void VanillaEditor::set_font(const String &font_path) {
+void TextEditorVanillaEditor::set_font(const String &font_path) {
 	Ref<DynamicFont> dynamic_font;
 	Ref<DynamicFontData> dynamic_font_data;
 
@@ -65,7 +65,7 @@ void VanillaEditor::set_font(const String &font_path) {
 	text_editor->set("custom_fonts/font", dynamic_font);
 }
 
-void VanillaEditor::load_default_font() {
+void TextEditorVanillaEditor::load_default_font() {
 	String default_font = last_opened_files->get_editor_font();
 
 	if (default_font != "") {
@@ -73,17 +73,17 @@ void VanillaEditor::load_default_font() {
 	}
 }
 
-void VanillaEditor::set_wrap_enabled(const bool enabled) {
+void TextEditorVanillaEditor::set_wrap_enabled(const bool enabled) {
 	text_editor->set_wrap_enabled(enabled);
 	text_editor->update();
 }
 
-void VanillaEditor::draw_minimap(const bool value) {
+void TextEditorVanillaEditor::draw_minimap(const bool value) {
 	text_editor->set_draw_minimap(value);
 	text_editor->update();
 }
 
-void VanillaEditor::color_region(const String &fileextension) {
+void TextEditorVanillaEditor::color_region(const String &fileextension) {
 	if (fileextension == "bbs") {
 		text_editor->add_color_region("[b]", "[/b]", Color::color8(153, 153, 255, 255), false);
 		text_editor->add_color_region("[i]", "[/i]", Color::color8(153, 255, 153, 255), false);
@@ -133,7 +133,7 @@ void VanillaEditor::color_region(const String &fileextension) {
 	}
 }
 
-void VanillaEditor::clean_editor() {
+void TextEditorVanillaEditor::clean_editor() {
 	text_editor->set_text("");
 	//file_info_last_modified_icon.texture = IconLoader.load_icon_from_name("save");
 	file_info_last_modified->set_text("");
@@ -142,7 +142,7 @@ void VanillaEditor::clean_editor() {
 	current_path = "";
 }
 
-void VanillaEditor::new_file_open(const String &file_content, const Dictionary &last_modified, const String &current_file_path) {
+void TextEditorVanillaEditor::new_file_open(const String &file_content, const Dictionary &last_modified, const String &current_file_path) {
 	current_path = current_file_path;
 	current_filename = current_file_path.get_file();
 	color_region(current_filename.get_extension());
@@ -152,18 +152,18 @@ void VanillaEditor::new_file_open(const String &file_content, const Dictionary &
 	count_characters();
 }
 
-void VanillaEditor::update_lastmodified(const Dictionary &last_modified, const String &icon) {
+void TextEditorVanillaEditor::update_lastmodified(const Dictionary &last_modified, const String &icon) {
 	file_info_last_modified->set_text(str(last_modified.hour) + ":" + str(last_modified.minute) + "  " + str(last_modified.day) + "/" + str(last_modified.month) + "/" + str(last_modified.year));
 }
 
 //file_info_last_modified_icon.texture = IconLoader.load_icon_from_name(icon);
 
-void VanillaEditor::new_file_create(const String &file_name) {
+void TextEditorVanillaEditor::new_file_create(const String &file_name) {
 	text_editor->set_text("");
 	file_list->invalidate();
 }
 
-void VanillaEditor::_on_Readonly_toggled(const bool button_pressed) {
+void TextEditorVanillaEditor::_on_Readonly_toggled(const bool button_pressed) {
 	if (button_pressed) {
 		file_info_read_only->set_text("Read Only");
 		text_editor->set_readonly((true));
@@ -173,13 +173,13 @@ void VanillaEditor::_on_Readonly_toggled(const bool button_pressed) {
 	}
 }
 
-void VanillaEditor::_on_text_editor_text_changed() {
+void TextEditorVanillaEditor::_on_text_editor_text_changed() {
 	//file_info_last_modified_icon.texture = IconLoader.load_icon_from_name("saveas");
 	count_characters();
 	emit_signal("text_changed");
 }
 
-void VanillaEditor::count_characters() {
+void TextEditorVanillaEditor::count_characters() {
 	int counted = 0;
 
 	for (int line = 0; line < text_editor->get_line_count(); ++line) { //line in range(text_editor.get_line_count())
@@ -189,7 +189,7 @@ void VanillaEditor::count_characters() {
 	file_info_c_counter->set_text(itos(counted));
 }
 
-void VanillaEditor::_on_LineEdit_text_changed(const String &new_text) {
+void TextEditorVanillaEditor::_on_LineEdit_text_changed(const String &new_text) {
 	int linecount = text_editor->get_line_count();
 
 	if (new_text != "") {
@@ -216,7 +216,7 @@ void VanillaEditor::_on_LineEdit_text_changed(const String &new_text) {
 	}
 }
 
-void VanillaEditor::_on_matchcase_toggled(const bool button_pressed) {
+void TextEditorVanillaEditor::_on_matchcase_toggled(const bool button_pressed) {
 	if (button_pressed) {
 		search_flag = 1;
 	} else {
@@ -230,7 +230,7 @@ void VanillaEditor::_on_matchcase_toggled(const bool button_pressed) {
 	_on_LineEdit_text_changed(search_box_line_edit->get_text());
 }
 
-void VanillaEditor::_on_wholewords_toggled(const bool button_pressed) {
+void TextEditorVanillaEditor::_on_wholewords_toggled(const bool button_pressed) {
 	if (button_pressed) {
 		search_flag = 2;
 	} else {
@@ -244,11 +244,11 @@ void VanillaEditor::_on_wholewords_toggled(const bool button_pressed) {
 	_on_LineEdit_text_changed(search_box_line_edit->get_text());
 }
 
-void VanillaEditor::_on_close_pressed() {
+void TextEditorVanillaEditor::_on_close_pressed() {
 	search_box->hide();
 }
 
-void VanillaEditor::open_search_box() {
+void TextEditorVanillaEditor::open_search_box() {
 	if (search_box->get_visible()) {
 		search_box->hide();
 	} else {
@@ -257,7 +257,7 @@ void VanillaEditor::open_search_box() {
 	}
 }
 
-void VanillaEditor::_on_Button_pressed() {
+void TextEditorVanillaEditor::_on_Button_pressed() {
 	//int linecount = text_editor->get_line_count() - 1;
 	String old_text = replace_box_replace_le->get_text();
 	String new_text = replace_box_with->get_text();
@@ -265,7 +265,7 @@ void VanillaEditor::_on_Button_pressed() {
 	text_editor->set_text(text.replace(old_text, new_text));
 }
 
-void VanillaEditor::open_replace_box() {
+void TextEditorVanillaEditor::open_replace_box() {
 	if (replace_box->get_visible()) {
 		replace_box->hide();
 	} else {
@@ -274,15 +274,15 @@ void VanillaEditor::open_replace_box() {
 	}
 }
 
-void VanillaEditor::_on_close2_pressed() {
+void TextEditorVanillaEditor::_on_close2_pressed() {
 	replace_box->hide();
 }
 
-void VanillaEditor::_on_LineEdit_focus_entered() {
+void TextEditorVanillaEditor::_on_LineEdit_focus_entered() {
 	_on_LineEdit_text_changed(search_box_line_edit->get_text());
 }
 
-VanillaEditor::VanillaEditor() {
+TextEditorVanillaEditor::TextEditorVanillaEditor() {
 	search_flag = 0;
 
 	set_v_size_flags(SIZE_EXPAND_FILL);
@@ -422,43 +422,43 @@ VanillaEditor::VanillaEditor() {
 	file_info_read_only->set_h_size_flags(SIZE_EXPAND | SIZE_SHRINK_END);
 }
 
-VanillaEditor::~VanillaEditor() {
+TextEditorVanillaEditor::~TextEditorVanillaEditor() {
 }
 
-void VanillaEditor::_bind_methods() {
+void TextEditorVanillaEditor::_bind_methods() {
 	signal text_changed();
 
-	ClassDB::bind_method(D_METHOD("get_current_path"), &VanillaEditor::get_current_path);
-	ClassDB::bind_method(D_METHOD("set_current_path", "value"), &VanillaEditor::set_current_path);
+	ClassDB::bind_method(D_METHOD("get_current_path"), &TextEditorVanillaEditor::get_current_path);
+	ClassDB::bind_method(D_METHOD("set_current_path", "value"), &TextEditorVanillaEditor::set_current_path);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "current_path"), "set_current_path", "get_current_path");
 
-	ClassDB::bind_method(D_METHOD("get_current_filename"), &VanillaEditor::get_current_filename);
-	ClassDB::bind_method(D_METHOD("set_current_filename", "value"), &VanillaEditor::set_current_filename);
+	ClassDB::bind_method(D_METHOD("get_current_filename"), &TextEditorVanillaEditor::get_current_filename);
+	ClassDB::bind_method(D_METHOD("set_current_filename", "value"), &TextEditorVanillaEditor::set_current_filename);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "current_filename"), "set_current_filename", "get_current_filename");
 
-	ClassDB::bind_method(D_METHOD("get_search_flag"), &VanillaEditor::get_search_flag);
-	ClassDB::bind_method(D_METHOD("set_search_flag", "value"), &VanillaEditor::set_search_flag);
+	ClassDB::bind_method(D_METHOD("get_search_flag"), &TextEditorVanillaEditor::get_search_flag);
+	ClassDB::bind_method(D_METHOD("set_search_flag", "value"), &TextEditorVanillaEditor::set_search_flag);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "search_flag"), "set_search_flag", "get_search_flag");
 
-	ClassDB::bind_method(D_METHOD("set_font", "font_path"), &VanillaEditor::set_font);
-	ClassDB::bind_method(D_METHOD("load_default_font"), &VanillaEditor::load_default_font);
-	ClassDB::bind_method(D_METHOD("set_wrap_enabled", "enabled"), &VanillaEditor::set_wrap_enabled);
-	ClassDB::bind_method(D_METHOD("draw_minimap", "value"), &VanillaEditor::draw_minimap);
-	ClassDB::bind_method(D_METHOD("color_region", "filextension"), &VanillaEditor::color_region);
-	ClassDB::bind_method(D_METHOD("clean_editor"), &VanillaEditor::clean_editor);
-	ClassDB::bind_method(D_METHOD("new_file_open", "file_content", "last_modified", "current_file_path"), &VanillaEditor::new_file_open);
-	ClassDB::bind_method(D_METHOD("update_lastmodified", "last_modified", "icon"), &VanillaEditor::update_lastmodified);
-	ClassDB::bind_method(D_METHOD("new_file_create", "file_name"), &VanillaEditor::new_file_create);
-	ClassDB::bind_method(D_METHOD("_on_Readonly_toggled", "button_pressed"), &VanillaEditor::_on_Readonly_toggled);
-	ClassDB::bind_method(D_METHOD("_on_text_editor_text_changed"), &VanillaEditor::_on_text_editor_text_changed);
-	ClassDB::bind_method(D_METHOD("count_characters"), &VanillaEditor::count_characters);
-	ClassDB::bind_method(D_METHOD("_on_LineEdit_text_changed", "new_text"), &VanillaEditor::_on_LineEdit_text_changed);
-	ClassDB::bind_method(D_METHOD("_on_matchcase_toggled", "button_pressed"), &VanillaEditor::_on_matchcase_toggled);
-	ClassDB::bind_method(D_METHOD("_on_wholewords_toggled", "button_pressed"), &VanillaEditor::_on_wholewords_toggled);
-	ClassDB::bind_method(D_METHOD("_on_close_pressed"), &VanillaEditor::_on_close_pressed);
-	ClassDB::bind_method(D_METHOD("open_search_box"), &VanillaEditor::open_search_box);
-	ClassDB::bind_method(D_METHOD("_on_Button_pressed"), &VanillaEditor::_on_Button_pressed);
-	ClassDB::bind_method(D_METHOD("open_replace_box"), &VanillaEditor::open_replace_box);
-	ClassDB::bind_method(D_METHOD("_on_close2_pressed"), &VanillaEditor::_on_close2_pressed);
-	ClassDB::bind_method(D_METHOD("_on_LineEdit_focus_entered"), &VanillaEditor::_on_LineEdit_focus_entered);
+	ClassDB::bind_method(D_METHOD("set_font", "font_path"), &TextEditorVanillaEditor::set_font);
+	ClassDB::bind_method(D_METHOD("load_default_font"), &TextEditorVanillaEditor::load_default_font);
+	ClassDB::bind_method(D_METHOD("set_wrap_enabled", "enabled"), &TextEditorVanillaEditor::set_wrap_enabled);
+	ClassDB::bind_method(D_METHOD("draw_minimap", "value"), &TextEditorVanillaEditor::draw_minimap);
+	ClassDB::bind_method(D_METHOD("color_region", "filextension"), &TextEditorVanillaEditor::color_region);
+	ClassDB::bind_method(D_METHOD("clean_editor"), &TextEditorVanillaEditor::clean_editor);
+	ClassDB::bind_method(D_METHOD("new_file_open", "file_content", "last_modified", "current_file_path"), &TextEditorVanillaEditor::new_file_open);
+	ClassDB::bind_method(D_METHOD("update_lastmodified", "last_modified", "icon"), &TextEditorVanillaEditor::update_lastmodified);
+	ClassDB::bind_method(D_METHOD("new_file_create", "file_name"), &TextEditorVanillaEditor::new_file_create);
+	ClassDB::bind_method(D_METHOD("_on_Readonly_toggled", "button_pressed"), &TextEditorVanillaEditor::_on_Readonly_toggled);
+	ClassDB::bind_method(D_METHOD("_on_text_editor_text_changed"), &TextEditorVanillaEditor::_on_text_editor_text_changed);
+	ClassDB::bind_method(D_METHOD("count_characters"), &TextEditorVanillaEditor::count_characters);
+	ClassDB::bind_method(D_METHOD("_on_LineEdit_text_changed", "new_text"), &TextEditorVanillaEditor::_on_LineEdit_text_changed);
+	ClassDB::bind_method(D_METHOD("_on_matchcase_toggled", "button_pressed"), &TextEditorVanillaEditor::_on_matchcase_toggled);
+	ClassDB::bind_method(D_METHOD("_on_wholewords_toggled", "button_pressed"), &TextEditorVanillaEditor::_on_wholewords_toggled);
+	ClassDB::bind_method(D_METHOD("_on_close_pressed"), &TextEditorVanillaEditor::_on_close_pressed);
+	ClassDB::bind_method(D_METHOD("open_search_box"), &TextEditorVanillaEditor::open_search_box);
+	ClassDB::bind_method(D_METHOD("_on_Button_pressed"), &TextEditorVanillaEditor::_on_Button_pressed);
+	ClassDB::bind_method(D_METHOD("open_replace_box"), &TextEditorVanillaEditor::open_replace_box);
+	ClassDB::bind_method(D_METHOD("_on_close2_pressed"), &TextEditorVanillaEditor::_on_close2_pressed);
+	ClassDB::bind_method(D_METHOD("_on_LineEdit_focus_entered"), &TextEditorVanillaEditor::_on_LineEdit_focus_entered);
 }

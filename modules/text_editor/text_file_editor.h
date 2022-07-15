@@ -1,5 +1,5 @@
-#ifndef FILEEDITOR_H
-#define FILEEDITOR_H
+#ifndef TEXT_FILE_EDITOR_H
+#define TEXT_FILE_EDITOR_H
 
 #include "core/reference.h"
 #include "core/ustring.h"
@@ -18,12 +18,12 @@ class OptionButton;
 class FileDialog;
 class AcceptDialog;
 class ConfirmationDialog;
-class LastOpenedFiles;
+class TextEditorSettings;
 class DynamicFont;
-class VanillaEditor;
+class TextEditorVanillaEditor;
 
-class FileEditor : public Control {
-	GDCLASS(FileEditor, Control);
+class TextFileEditor : public Control {
+	GDCLASS(TextFileEditor, Control);
 
 public:
 	enum FileMenuOptions {
@@ -53,7 +53,7 @@ public:
 
 	void open_file(const String &path, const String &font = "null");
 	void generate_file_item(const String &path, Control *veditor);
-	VanillaEditor *open_in_vanillaeditor(const String &path);
+	TextEditorVanillaEditor *open_in_vanillaeditor(const String &path);
 	void close_file(const int index);
 	void confirm_close(const int index);
 
@@ -80,8 +80,8 @@ public:
 
 	void _on_ConfirmationDialog_confirmed();
 
-	FileEditor();
-	~FileEditor();
+	TextFileEditor();
+	~TextFileEditor();
 
 protected:
 	static void _bind_methods();
@@ -112,7 +112,7 @@ protected:
 	ConfirmationDialog *confirmation_close;
 	FileDialog *select_font_dialog;
 
-	Ref<LastOpenedFiles> last_opened_files;
+	Ref<TextEditorSettings> last_opened_files;
 
 	Array directories;
 	Array files;
@@ -121,7 +121,7 @@ protected:
 	String current_file_path;
 	bool save_as;
 
-	VanillaEditor *current_editor;
+	TextEditorVanillaEditor *current_editor;
 
 	Ref<DynamicFont> current_font;
 	bool editing_file;

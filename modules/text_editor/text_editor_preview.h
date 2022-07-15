@@ -1,5 +1,5 @@
-#ifndef PREVIEW_H
-#define PREVIEW_H
+#ifndef TEXT_EDITOR_PREVIEW_H
+#define TEXT_EDITOR_PREVIEW_H
 
 #include "core/ustring.h"
 
@@ -8,8 +8,8 @@
 class RichTextLabel;
 class GridContainer;
 
-class Preview : public WindowDialog {
-	GDCLASS(Preview, WindowDialog);
+class TextEditorPreview : public WindowDialog {
+	GDCLASS(TextEditorPreview, WindowDialog);
 
 public:
 	void print_preview(const String &content);
@@ -17,10 +17,10 @@ public:
 	void print_markdown(const String &content);
 	void print_html(const String &content);
 	void print_csv(const Array &rows);
-	void _on_Preview_popup_hide();
+	void _on_TextEditorPreview_popup_hide();
 
-	Preview();
-	~Preview();
+	TextEditorPreview();
+	~TextEditorPreview();
 
 protected:
 	static void _bind_methods();

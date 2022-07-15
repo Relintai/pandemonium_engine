@@ -1,10 +1,10 @@
 
-#include "fileeditor.h"
+#include "text_file_editor.h"
 
 #include "core/array.h"
 #include "core/engine.h"
-#include "lastopenedfiles.h"
-#include "vanillaeditor.h"
+#include "text_editor_settings.h"
+#include "text_editor_vanilla_editor.h"
 
 #include "scene/gui/box_container.h"
 #include "scene/gui/dialogs.h"
@@ -17,7 +17,7 @@
 #include "scene/gui/split_container.h"
 #include "scene/resources/dynamic_font.h"
 
-void FileEditor::_ready() {
+void TextFileEditor::_ready() {
 	if (!Engine::get_singleton()->is_editor_hint()) {
 		return;
 	}
@@ -36,7 +36,7 @@ void FileEditor::_ready() {
 	file_list->set_filters(EXTENSIONS);
 }
 
-void FileEditor::connect_signals() {
+void TextFileEditor::connect_signals() {
 	file_list->connect("confirmed", this, "update_list");
 	file_btn_popup->connect("id_pressed", this, "_on_file_btn_pressed");
 	preview_btn_popup->connect("id_pressed", this, "_on_preview_btn_pressed");
@@ -47,7 +47,7 @@ void FileEditor::connect_signals() {
 	select_font_dialog->connect("file_selected", this, "_on_font_selected");
 }
 
-void FileEditor::create_selected_file() {
+void TextFileEditor::create_selected_file() {
 	update_list();
 
 	file_list->set_mode(FileDialog::MODE_SAVE_FILE);
@@ -68,7 +68,7 @@ void FileEditor::create_selected_file() {
 	open_file_list();
 }
 
-void FileEditor::open_selected_file() {
+void TextFileEditor::open_selected_file() {
 	update_list();
 
 	file_list->set_mode(FileDialog::MODE_OPEN_FILE);
@@ -89,7 +89,7 @@ void FileEditor::open_selected_file() {
 	open_file_list();
 }
 
-void FileEditor::delete_selected_file() {
+void TextFileEditor::delete_selected_file() {
 	update_list();
 
 	file_list->set_mode(FileDialog::MODE_OPEN_FILES);
@@ -110,7 +110,7 @@ void FileEditor::delete_selected_file() {
 	open_file_list();
 }
 
-void FileEditor::save_current_file_as() {
+void TextFileEditor::save_current_file_as() {
 	update_list();
 
 	file_list->set_mode(FileDialog::MODE_SAVE_FILE);
@@ -131,7 +131,7 @@ void FileEditor::save_current_file_as() {
 	open_file_list();
 }
 
-void FileEditor::_on_file_btn_pressed(const int index) {
+void TextFileEditor::_on_file_btn_pressed(const int index) {
 	switch (index) {
 		case FILE_MENU_OPTION_NEW: {
 			create_selected_file();
@@ -171,7 +171,7 @@ void FileEditor::_on_file_btn_pressed(const int index) {
 	}
 }
 
-void FileEditor::_on_preview_btn_pressed(const int id) {
+void TextFileEditor::_on_preview_btn_pressed(const int id) {
 	if (id == 0) {
 		bbcode_preview();
 	} else if (id == 1) {
@@ -183,18 +183,18 @@ void FileEditor::_on_preview_btn_pressed(const int id) {
 	}
 }
 
-void FileEditor::_on_settings_btn_pressed(const int index) {
+void TextFileEditor::_on_settings_btn_pressed(const int index) {
 	if (index == 0) {
 		select_font_dialog->popup();
 	}
 }
 
-void FileEditor::_on_font_selected(const String &font_path) {
+void TextFileEditor::_on_font_selected(const String &font_path) {
 	current_editor->set_font(font_path);
 	last_opened_files->store_editor_fonts(current_file_path.get_file(), font_path);
 }
 
-void FileEditor::_on_fileitem_pressed(const int index) {
+void TextFileEditor::_on_fileitem_pressed(const int index) {
 	current_file_index = index;
 	Array selected_item_metadata = open_file_list->get_item_metadata(current_file_index);
 	String extension = selected_item_metadata[0].current_path.get_file().get_extension();
@@ -230,10 +230,10 @@ void FileEditor::_on_fileitem_pressed(const int index) {
 	}
 }
 
-void FileEditor::open_file(const String &path, const String &font) {
+void TextFileEditor::open_file(const String &path, const String &font) {
 	if (current_file_path != path) {
 		current_file_path = path;
-		VanillaEditor *vanilla_editor = open_in_vanillaeditor(path);
+		TextEditorVanillaEditor *vanilla_editor = open_in_vanillaeditor(path);
 
 		if (font != "null" && vanilla_editor.get("custom_fonts/font") != nullptr) {
 			vanilla_editor->set_font(font);
@@ -246,7 +246,7 @@ void FileEditor::open_file(const String &path, const String &font) {
 	current_editor->show();
 }
 
-void FileEditor::generate_file_item(const String &path, const Control &veditor) {
+void TextFileEditor::generate_file_item(const String &path, const Control &veditor) {
 	open_file_name->set_text(path);
 	_open_file_list->add_item(path.get_file(), nullptr, true);
 	current_file_index = _open_file_list.get_item_count() - 1;
@@ -254,9 +254,9 @@ void FileEditor::generate_file_item(const String &path, const Control &veditor) 
 	_open_file_list->select(_open_file_list->get_item_count() - 1);
 }
 
-Control FileEditor::open_in_vanillaeditor(const String &path) {
-	Control *editor = VanillaEditor.new();
-	editor.last_opened_files = LastOpenedFiles;
+Control TextFileEditor::open_in_vanillaeditor(const String &path) {
+	Control *editor = TextEditorVanillaEditor.new();
+	editor.last_opened_files = TextEditorSettings;
 	editor.file_list = file_list;
 	split_editor_container.add_child(editor, true);
 
@@ -285,7 +285,7 @@ Control FileEditor::open_in_vanillaeditor(const String &path) {
 	return editor;
 }
 
-void FileEditor::close_file(const int index) {
+void TextFileEditor::close_file(const int index) {
 	if (editing_file) {
 		confirmation_close.popup();
 	} else {
@@ -293,7 +293,7 @@ void FileEditor::close_file(const int index) {
 	}
 }
 
-void FileEditor::confirm_close(const int index) {
+void TextFileEditor::confirm_close(const int index) {
 	last_opened_files->remove_opened_file(index, open_file_list);
 	open_file_list->remove_item(index);
 	open_file_name->clear();
@@ -305,7 +305,7 @@ void FileEditor::confirm_close(const int index) {
 	}
 }
 
-void FileEditor::_on_update_file() {
+void TextFileEditor::_on_update_file() {
 	File *current_file = memnew(File);
 	current_file.open(current_file_path, File.READ);
 
@@ -315,7 +315,7 @@ void FileEditor::_on_update_file() {
 	current_editor->new_file_open(current_content, last_modified, current_file_path);
 }
 
-void FileEditor::delete_file(const PoolStringArray &files_selected) {
+void TextFileEditor::delete_file(const PoolStringArray &files_selected) {
 	Directory dir = Directory.new();
 
 	for (file in files_selected) {
@@ -325,18 +325,18 @@ void FileEditor::delete_file(const PoolStringArray &files_selected) {
 	update_list();
 }
 
-void FileEditor::open_new_file_dialogue() {
+void TextFileEditor::open_new_file_dialogue() {
 	new_file_dialogue.popup();
 	new_file_dialogue.set_position(OS::get_singleton()->get_screen_size() / 2 - new_file_dialogue->get_size() / 2);
 }
 
-void FileEditor::open_file_list() {
+void TextFileEditor::open_file_list() {
 	update_list();
 	file_list.popup();
 	file_list.set_position(OS::get_singleton()->get_screen_size() / 2 - file_list->get_size() / 2);
 }
 
-void FileEditor::create_new_file(const String &given_path) {
+void TextFileEditor::create_new_file(const String &given_path) {
 	File *current_file = File.new();
 	current_file.open(given_path, File.WRITE);
 
@@ -348,7 +348,7 @@ void FileEditor::create_new_file(const String &given_path) {
 	open_file(given_path);
 }
 
-void FileEditor::save_file(const String &current_path) {
+void TextFileEditor::save_file(const String &current_path) {
 	//print("Saving file: ", current_path);
 
 	File *current_file = File.new();
@@ -377,7 +377,7 @@ void FileEditor::save_file(const String &current_path) {
 	update_list();
 }
 
-void FileEditor::clean_editor() {
+void TextFileEditor::clean_editor() {
 	Array nodes = get_tree()->get_nodes_in_group("vanilla_editor");
 
 	for (int i = 0; i < nodes.size(); ++i) { //i in range(nodes.size())
@@ -389,8 +389,8 @@ void FileEditor::clean_editor() {
 	open_file_list.clear();
 }
 
-void FileEditor::csv_preview() {
-	Preview *preview = memnew(Preview);
+void TextFileEditor::csv_preview() {
+	TextEditorPreview *preview = memnew(TextEditorPreview);
 	get_parent().get_parent().get_parent().add_child(preview);
 	preview->popup();
 	preview->set_window_title(" (" + current_file_path.get_file() + ")");
@@ -404,42 +404,42 @@ void FileEditor::csv_preview() {
 	preview.print_csv(rows);
 }
 
-void FileEditor::bbcode_preview() {
-	Preview *preview = memnew(Preview);
+void TextFileEditor::bbcode_preview() {
+	TextEditorPreview *preview = memnew(TextEditorPreview);
 	get_parent().get_parent().get_parent().add_child(preview);
 	preview->popup();
 	preview->set_window_title(" (" + current_file_path.get_file() + ")");
 	preview->print_bb(current_editor.text_editor.get_text());
 }
 
-void FileEditor::markdown_preview() {
-	Preview *preview = memnew(Preview);
+void TextFileEditor::markdown_preview() {
+	TextEditorPreview *preview = memnew(TextEditorPreview);
 	get_parent().get_parent().get_parent().add_child(preview);
 	preview->popup();
 	preview->set_window_title(" (" + current_file_path.get_file() + ")");
 	preview->print_markdown(current_editor.text_editor.get_text());
 }
 
-void FileEditor::html_preview() {
-	Preview *preview = memnew(Preview);
+void TextFileEditor::html_preview() {
+	TextEditorPreview *preview = memnew(TextEditorPreview);
 	get_parent().get_parent().get_parent().add_child(preview);
 	preview->popup();
 	preview->set_window_title(" (" + current_file_path.get_file() + ")");
 	preview->print_html(current_editor.text_editor.get_text());
 }
 
-void FileEditor::_on_vanillaeditor_text_changed() {
+void TextFileEditor::_on_vanillaeditor_text_changed() {
 	if (!open_file_list->get_item_text(current_file_index).begins_with("(*)")) {
 		open_file_list->set_item_text(current_file_index, "(*)" + open_file_list.get_item_text(current_file_index));
 		editing_file = true;
 	}
 }
 
-void FileEditor::update_list() {
+void TextFileEditor::update_list() {
 	file_list->invalidate();
 }
 
-void FileEditor::on_wrap_button(const int index) {
+void TextFileEditor::on_wrap_button(const int index) {
 	switch (index) {
 		case 0: {
 			current_editor.set_wrap_enabled(false);
@@ -452,7 +452,7 @@ void FileEditor::on_wrap_button(const int index) {
 	}
 }
 
-void FileEditor::on_minimap_button(const int index) {
+void TextFileEditor::on_minimap_button(const int index) {
 	switch (index) {
 		case 0: {
 			current_editor.draw_minimap(false);
@@ -465,15 +465,15 @@ void FileEditor::on_minimap_button(const int index) {
 	}
 }
 
-void FileEditor::check_file_preview(const String &file) {
+void TextFileEditor::check_file_preview(const String &file) {
 	// check whether the opened file has a corresponding preview session for its extension;
 }
 
-void FileEditor::_on_ConfirmationDialog_confirmed() {
+void TextFileEditor::_on_ConfirmationDialog_confirmed() {
 	confirm_close(current_file_index);
 }
 
-FileEditor::FileEditor() {
+TextFileEditor::TextFileEditor() {
 	last_opened_files.instance();
 
 	DIRECTORY = "res://";
@@ -567,16 +567,16 @@ FileEditor::FileEditor() {
 	hotkey->set_control(true);
 	file_btn_popup->add_item("Replace occurencies", FILE_MENU_OPTION_REPLACE, hotkey->get_scancode_with_modifiers());
 
-	//Preview;
+	//TextEditorPreview;
 	preview_btn = memnew(MenuButton);
 	tob_bar->add_child(preview_btn);
-	preview_btn->set_text("Preview");
+	preview_btn->set_text("TextEditorPreview");
 
 	preview_btn_popup = preview_btn->get_popup();
-	preview_btn_popup->add_item("BBCode Preview");
-	preview_btn_popup->add_item("Markdown Preview");
-	preview_btn_popup->add_item("HTML Preview");
-	preview_btn_popup->add_item("CSV Preview");
+	preview_btn_popup->add_item("BBCode TextEditorPreview");
+	preview_btn_popup->add_item("Markdown TextEditorPreview");
+	preview_btn_popup->add_item("HTML TextEditorPreview");
+	preview_btn_popup->add_item("CSV TextEditorPreview");
 
 	//Settings;
 	settings_btn = memnew(MenuButton);
@@ -694,50 +694,50 @@ FileEditor::FileEditor() {
 	select_font_dialog->set_filters(farr);
 }
 
-FileEditor::~FileEditor() {
+TextFileEditor::~TextFileEditor() {
 }
 
-void FileEditor::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_ready"), &FileEditor::_ready);
+void TextFileEditor::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_ready"), &TextFileEditor::_ready);
 
-	ClassDB::bind_method(D_METHOD("connect_signals"), &FileEditor::connect_signals);
-	ClassDB::bind_method(D_METHOD("create_selected_file"), &FileEditor::create_selected_file);
-	ClassDB::bind_method(D_METHOD("open_selected_file"), &FileEditor::open_selected_file);
-	ClassDB::bind_method(D_METHOD("delete_selected_file"), &FileEditor::delete_selected_file);
-	ClassDB::bind_method(D_METHOD("save_current_file_as"), &FileEditor::save_current_file_as);
+	ClassDB::bind_method(D_METHOD("connect_signals"), &TextFileEditor::connect_signals);
+	ClassDB::bind_method(D_METHOD("create_selected_file"), &TextFileEditor::create_selected_file);
+	ClassDB::bind_method(D_METHOD("open_selected_file"), &TextFileEditor::open_selected_file);
+	ClassDB::bind_method(D_METHOD("delete_selected_file"), &TextFileEditor::delete_selected_file);
+	ClassDB::bind_method(D_METHOD("save_current_file_as"), &TextFileEditor::save_current_file_as);
 
-	ClassDB::bind_method(D_METHOD("_on_file_btn_pressed", "index"), &FileEditor::_on_file_btn_pressed);
-	ClassDB::bind_method(D_METHOD("_on_preview_btn_pressed", "id"), &FileEditor::_on_preview_btn_pressed);
-	ClassDB::bind_method(D_METHOD("_on_settings_btn_pressed", "index"), &FileEditor::_on_settings_btn_pressed);
-	ClassDB::bind_method(D_METHOD("_on_font_selected", "font_path"), &FileEditor::_on_font_selected);
-	ClassDB::bind_method(D_METHOD("_on_fileitem_pressed", "index"), &FileEditor::_on_fileitem_pressed);
+	ClassDB::bind_method(D_METHOD("_on_file_btn_pressed", "index"), &TextFileEditor::_on_file_btn_pressed);
+	ClassDB::bind_method(D_METHOD("_on_preview_btn_pressed", "id"), &TextFileEditor::_on_preview_btn_pressed);
+	ClassDB::bind_method(D_METHOD("_on_settings_btn_pressed", "index"), &TextFileEditor::_on_settings_btn_pressed);
+	ClassDB::bind_method(D_METHOD("_on_font_selected", "font_path"), &TextFileEditor::_on_font_selected);
+	ClassDB::bind_method(D_METHOD("_on_fileitem_pressed", "index"), &TextFileEditor::_on_fileitem_pressed);
 
-	ClassDB::bind_method(D_METHOD("open_file", "path", "font"), &FileEditor::open_file, "null");
-	ClassDB::bind_method(D_METHOD("generate_file_item", "path", "veditor"), &FileEditor::generate_file_item);
-	ClassDB::bind_method(D_METHOD("open_in_vanillaeditor", "path"), &FileEditor::open_in_vanillaeditor);
+	ClassDB::bind_method(D_METHOD("open_file", "path", "font"), &TextFileEditor::open_file, "null");
+	ClassDB::bind_method(D_METHOD("generate_file_item", "path", "veditor"), &TextFileEditor::generate_file_item);
+	ClassDB::bind_method(D_METHOD("open_in_vanillaeditor", "path"), &TextFileEditor::open_in_vanillaeditor);
 
-	ClassDB::bind_method(D_METHOD("close_file", "index"), &FileEditor::close_file);
-	ClassDB::bind_method(D_METHOD("confirm_close", "index"), &FileEditor::confirm_close);
-	ClassDB::bind_method(D_METHOD("_on_update_file"), &FileEditor::_on_update_file);
+	ClassDB::bind_method(D_METHOD("close_file", "index"), &TextFileEditor::close_file);
+	ClassDB::bind_method(D_METHOD("confirm_close", "index"), &TextFileEditor::confirm_close);
+	ClassDB::bind_method(D_METHOD("_on_update_file"), &TextFileEditor::_on_update_file);
 
-	ClassDB::bind_method(D_METHOD("delete_file", "files_selected"), &FileEditor::delete_file);
-	ClassDB::bind_method(D_METHOD("open_new_file_dialogue"), &FileEditor::open_new_file_dialogue);
-	ClassDB::bind_method(D_METHOD("open_file_list"), &FileEditor::open_file_list);
-	ClassDB::bind_method(D_METHOD("create_new_file", "given_path"), &FileEditor::create_new_file);
-	ClassDB::bind_method(D_METHOD("save_file", "current_path"), &FileEditor::save_file);
+	ClassDB::bind_method(D_METHOD("delete_file", "files_selected"), &TextFileEditor::delete_file);
+	ClassDB::bind_method(D_METHOD("open_new_file_dialogue"), &TextFileEditor::open_new_file_dialogue);
+	ClassDB::bind_method(D_METHOD("open_file_list"), &TextFileEditor::open_file_list);
+	ClassDB::bind_method(D_METHOD("create_new_file", "given_path"), &TextFileEditor::create_new_file);
+	ClassDB::bind_method(D_METHOD("save_file", "current_path"), &TextFileEditor::save_file);
 
-	ClassDB::bind_method(D_METHOD("clean_editor"), &FileEditor::clean_editor);
-	ClassDB::bind_method(D_METHOD("csv_preview"), &FileEditor::csv_preview);
-	ClassDB::bind_method(D_METHOD("bbcode_preview"), &FileEditor::bbcode_preview);
-	ClassDB::bind_method(D_METHOD("markdown_preview"), &FileEditor::markdown_preview);
-	ClassDB::bind_method(D_METHOD("html_preview"), &FileEditor::html_preview);
+	ClassDB::bind_method(D_METHOD("clean_editor"), &TextFileEditor::clean_editor);
+	ClassDB::bind_method(D_METHOD("csv_preview"), &TextFileEditor::csv_preview);
+	ClassDB::bind_method(D_METHOD("bbcode_preview"), &TextFileEditor::bbcode_preview);
+	ClassDB::bind_method(D_METHOD("markdown_preview"), &TextFileEditor::markdown_preview);
+	ClassDB::bind_method(D_METHOD("html_preview"), &TextFileEditor::html_preview);
 
-	ClassDB::bind_method(D_METHOD("_on_vanillaeditor_text_changed"), &FileEditor::_on_vanillaeditor_text_changed);
-	ClassDB::bind_method(D_METHOD("update_list"), &FileEditor::update_list);
+	ClassDB::bind_method(D_METHOD("_on_vanillaeditor_text_changed"), &TextFileEditor::_on_vanillaeditor_text_changed);
+	ClassDB::bind_method(D_METHOD("update_list"), &TextFileEditor::update_list);
 
-	ClassDB::bind_method(D_METHOD("on_wrap_button", "index"), &FileEditor::on_wrap_button);
-	ClassDB::bind_method(D_METHOD("on_minimap_button", "index"), &FileEditor::on_minimap_button);
-	ClassDB::bind_method(D_METHOD("check_file_preview", "file"), &FileEditor::check_file_preview);
+	ClassDB::bind_method(D_METHOD("on_wrap_button", "index"), &TextFileEditor::on_wrap_button);
+	ClassDB::bind_method(D_METHOD("on_minimap_button", "index"), &TextFileEditor::on_minimap_button);
+	ClassDB::bind_method(D_METHOD("check_file_preview", "file"), &TextFileEditor::check_file_preview);
 
-	ClassDB::bind_method(D_METHOD("_on_ConfirmationDialog_confirmed"), &FileEditor::_on_ConfirmationDialog_confirmed);
+	ClassDB::bind_method(D_METHOD("_on_ConfirmationDialog_confirmed"), &TextFileEditor::_on_ConfirmationDialog_confirmed);
 }
