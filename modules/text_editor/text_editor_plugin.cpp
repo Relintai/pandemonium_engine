@@ -46,7 +46,7 @@ TextEditorEditorPlugin::TextEditorEditorPlugin(EditorNode *p_node) {
 
 	get_editor_interface()->get_editor_viewport()->add_child(window);
 	make_visible(false);
-	_icon = get_editor_interface()->get_base_control()->get_icon("CanvasModulate", "EditorIcons");
+	_icon = get_editor_interface()->get_base_control()->get_icon("File", "EditorIcons");
 }
 
 TextEditorEditorPlugin::~TextEditorEditorPlugin() {
