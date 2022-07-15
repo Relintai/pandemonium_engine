@@ -1,5 +1,5 @@
-#ifndef PAINT_EDITOR__PLUGIN_H
-#define PAINT_EDITOR__PLUGIN_H
+#ifndef TEXT_EDITOR_EDITOR_PLUGIN_H
+#define TEXT_EDITOR_EDITOR_PLUGIN_H
 
 /*
 Copyright (c) 2019-2022 Péter Magyar
@@ -23,14 +23,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "editor/editor_plugin.h"
 #include "core/reference.h"
+#include "editor/editor_plugin.h"
 
-class PaintWindow;
+class TextFileEditor;
 class Texture;
 
-class PaintEditorPlugin : public EditorPlugin {
-	GDCLASS(PaintEditorPlugin, EditorPlugin);
+class TextEditorEditorPlugin : public EditorPlugin {
+	GDCLASS(TextEditorEditorPlugin, EditorPlugin);
 
 public:
 	void make_visible(const bool visible);
@@ -38,12 +38,12 @@ public:
 	bool has_main_screen() const;
 	String get_name() const;
 
-	PaintEditorPlugin(EditorNode *p_node);
-	~PaintEditorPlugin();
+	TextEditorEditorPlugin(EditorNode *p_node);
+	~TextEditorEditorPlugin();
 
 	EditorNode *editor;
 
-	PaintWindow *window;
+	TextFileEditor *window;
 
 protected:
 	static void _bind_methods();

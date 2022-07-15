@@ -20,38 +20,37 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "paint_editor_plugin.h"
+#include "text_editor_plugin.h"
 
-#include "paint_window.h"
+#include "text_file_editor.h"
 
-void PaintEditorPlugin::make_visible(const bool visible) {
+void TextEditorEditorPlugin::make_visible(const bool visible) {
 	window->set_visible(visible);
 }
 
-String PaintEditorPlugin::get_name() const {
-	return "Paint";
+String TextEditorEditorPlugin::get_name() const {
+	return "Text";
 }
 
-const Ref<Texture> PaintEditorPlugin::get_icon() const {
+const Ref<Texture> TextEditorEditorPlugin::get_icon() const {
 	return _icon;
 }
-bool PaintEditorPlugin::has_main_screen() const {
+bool TextEditorEditorPlugin::has_main_screen() const {
 	return true;
 }
 
-PaintEditorPlugin::PaintEditorPlugin(EditorNode *p_node) {
+TextEditorEditorPlugin::TextEditorEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
-	window = memnew(PaintWindow);
+	window = memnew(TextFileEditor);
 
 	get_editor_interface()->get_editor_viewport()->add_child(window);
-	window->set_owner(get_editor_interface()->get_editor_viewport());
 	make_visible(false);
 	_icon = get_editor_interface()->get_base_control()->get_icon("CanvasModulate", "EditorIcons");
 }
 
-PaintEditorPlugin::~PaintEditorPlugin() {
+TextEditorEditorPlugin::~TextEditorEditorPlugin() {
 }
 
-void PaintEditorPlugin::_bind_methods() {
+void TextEditorEditorPlugin::_bind_methods() {
 }
