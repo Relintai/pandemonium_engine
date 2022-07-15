@@ -22,14 +22,15 @@ SOFTWARE.
 
 #include "register_types.h"
 
-//#ifdef TOOLS_ENABLED
-//#endif
+#ifdef TOOLS_ENABLED
+#include "text_editor_plugin.h"
+#endif
 
 void register_text_editor_types() {
 	//ClassDB::register_class<PaintWindow>();
 
 #ifdef TOOLS_ENABLED
-	//EditorPlugins::add_by_type<PaintEditorPlugin>();
+	EditorPlugins::add_by_type<TextEditorEditorPlugin>();
 #endif
 }
 

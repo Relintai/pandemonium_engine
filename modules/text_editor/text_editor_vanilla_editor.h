@@ -1,6 +1,7 @@
 #ifndef TEXT_EDITOR_VANILLA_EDITOR_H
 #define TEXT_EDITOR_VANILLA_EDITOR_H
 
+#include "core/os/os.h"
 #include "core/reference.h"
 #include "core/ustring.h"
 
@@ -38,8 +39,8 @@ public:
 	void draw_minimap(const bool value);
 	void color_region(const String &filextension);
 	void clean_editor();
-	void new_file_open(const String &file_content, const Dictionary &last_modified, const String &current_file_path);
-	void update_lastmodified(const Dictionary &last_modified, const String &icon);
+	void new_file_open(const String &file_content, const OS::DateTime &last_modified, const String &current_file_path);
+	void update_lastmodified(const OS::DateTime &last_modified, const String &icon);
 	void new_file_create(const String &file_name);
 	void _on_Readonly_toggled(const bool button_pressed);
 	void _on_text_editor_text_changed();
@@ -57,13 +58,13 @@ public:
 	TextEditorVanillaEditor();
 	~TextEditorVanillaEditor();
 
+	FileDialog *file_list;
+	TextEdit *text_editor;
+
 protected:
 	static void _bind_methods();
 
 	Ref<TextEditorSettings> last_opened_files;
-
-	TextEdit *text_editor;
-	FileDialog *file_list;
 
 	HBoxContainer *search_box;
 	LineEdit *search_box_line_edit;

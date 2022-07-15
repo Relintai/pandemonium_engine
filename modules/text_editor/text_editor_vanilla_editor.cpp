@@ -142,7 +142,7 @@ void TextEditorVanillaEditor::clean_editor() {
 	current_path = "";
 }
 
-void TextEditorVanillaEditor::new_file_open(const String &file_content, const Dictionary &last_modified, const String &current_file_path) {
+void TextEditorVanillaEditor::new_file_open(const String &file_content, const OS::DateTime &last_modified, const String &current_file_path) {
 	current_path = current_file_path;
 	current_filename = current_file_path.get_file();
 	color_region(current_filename.get_extension());
@@ -152,8 +152,8 @@ void TextEditorVanillaEditor::new_file_open(const String &file_content, const Di
 	count_characters();
 }
 
-void TextEditorVanillaEditor::update_lastmodified(const Dictionary &last_modified, const String &icon) {
-	file_info_last_modified->set_text(str(last_modified.hour) + ":" + str(last_modified.minute) + "  " + str(last_modified.day) + "/" + str(last_modified.month) + "/" + str(last_modified.year));
+void TextEditorVanillaEditor::update_lastmodified(const OS::DateTime &last_modified, const String &icon) {
+	file_info_last_modified->set_text(itos(last_modified.time.hour) + ":" + itos(last_modified.time.min) + "  " + itos(last_modified.date.day) + "/" + itos(last_modified.date.month) + "/" + itos(last_modified.date.year));
 }
 
 //file_info_last_modified_icon.texture = IconLoader.load_icon_from_name(icon);
@@ -193,17 +193,19 @@ void TextEditorVanillaEditor::_on_LineEdit_text_changed(const String &new_text) 
 	int linecount = text_editor->get_line_count();
 
 	if (new_text != "") {
-		PoolIntArray found;
-		bool find = false;
+		bool found;
+		//bool find = false;
 
 		for (int line = 0; line < linecount; ++line) { //line in range(linecount)
 			for (int column = 0; column < text_editor->get_line(line).length(); ++column) { //column in range(text_editor.get_line(line).length())
-				found = text_editor->search(new_text, search_flag, line, column);
+				int fl;
+				int fc;
+				found = text_editor->search(new_text, search_flag, line, column, fl, fc);
 
-				if (found.size()) {
-					if (found[1] == line) {
+				if (found) {
+					if (fc == line) {
 						//						if not find:;
-						text_editor->select(line, found[0], found[1], found[0] + new_text.length());
+						text_editor->select(line, fl, fc, fl + new_text.length());
 					}
 					//							find = true;
 				} else {
@@ -249,11 +251,11 @@ void TextEditorVanillaEditor::_on_close_pressed() {
 }
 
 void TextEditorVanillaEditor::open_search_box() {
-	if (search_box->get_visible()) {
+	if (search_box->is_visible()) {
 		search_box->hide();
 	} else {
 		search_box->show();
-		search_box->get_node("LineEdit")->grab_focus();
+		//	search_box->get_node(NodePath("LineEdit"))->grab_focus();
 	}
 }
 
@@ -266,11 +268,11 @@ void TextEditorVanillaEditor::_on_Button_pressed() {
 }
 
 void TextEditorVanillaEditor::open_replace_box() {
-	if (replace_box->get_visible()) {
+	if (replace_box->is_visible()) {
 		replace_box->hide();
 	} else {
 		replace_box->show();
-		replace_box->get_node("replace")->grab_focus();
+		//	replace_box->get_node("replace")->grab_focus();
 	}
 }
 
@@ -291,18 +293,18 @@ TextEditorVanillaEditor::TextEditorVanillaEditor() {
 	text_editor = memnew(TextEdit);
 	add_child(text_editor);
 	text_editor->set_highlight_current_line(true);
-	text_editor->set_syntax_highlighting(true);
+	text_editor->set_syntax_coloring(true);
 	text_editor->set_show_line_numbers(true);
-	text_editor->set_breakpoint_gutter(true);
+	text_editor->set_breakpoint_gutter_enabled(true);
 	text_editor->set_highlight_all_occurrences(true);
 	text_editor->set_override_selected_font_color(true);
-	text_editor->set_smooth_scrolling(true);
+	text_editor->set_smooth_scroll_enabled(true);
 	text_editor->set_hiding_enabled(true);
 	//todo look this up from the editor settings;
 	//text_editor->set_caret_blink(true);
 	//text_editor->set_caret_blink_speed(1);
-	text_editor->set_caret_moving_by_right_click(false);
-	text_editor->set_minimap_draw(true);
+	text_editor->set_right_click_moves_caret(false);
+	text_editor->set_draw_minimap(true);
 	text_editor->set_v_size_flags(SIZE_EXPAND_FILL);
 	text_editor->set("custom_colors/member_variable_color", Color(0.737255, 0.882353, 1));
 	text_editor->set("custom_colors/code_folding_color", Color(1, 1, 1, 0.701961));
@@ -339,18 +341,18 @@ TextEditorVanillaEditor::TextEditorVanillaEditor() {
 	selabel->set_text("Search:");
 
 	search_box_line_edit = memnew(LineEdit);
-	search_box.add_child(search_box_line_edit);
+	search_box->add_child(search_box_line_edit);
 	search_box_line_edit->set_h_size_flags(SIZE_EXPAND_FILL);
 	search_box_line_edit->connect("text_changed", this, "_on_LineEdit_text_changed");
 	search_box_line_edit->connect("focus_entered", this, "_on_LineEdit_focus_entered");
 
 	search_box_match_case_cb = memnew(CheckBox);
-	search_box.add_child(search_box_match_case_cb);
+	search_box->add_child(search_box_match_case_cb);
 	search_box_match_case_cb->set_text("Match Case");
 	search_box_match_case_cb->connect("toggled", this, "_on_matchcase_toggled");
 
 	search_box_whole_words_cb = memnew(CheckBox);
-	search_box.add_child(search_box_whole_words_cb);
+	search_box->add_child(search_box_whole_words_cb);
 	search_box_whole_words_cb->set_text("Whole Words");
 	search_box_whole_words_cb->connect("toggled", this, "_on_wholewords_toggled");
 
@@ -377,7 +379,7 @@ TextEditorVanillaEditor::TextEditorVanillaEditor() {
 	rb2label->set_text("With:");
 
 	replace_box_with = memnew(LineEdit);
-	replace_box.add_child(replace_box_with);
+	replace_box->add_child(replace_box_with);
 	replace_box_with->set_h_size_flags(SIZE_EXPAND_FILL);
 
 	replace_box_button = memnew(Button);
@@ -389,7 +391,7 @@ TextEditorVanillaEditor::TextEditorVanillaEditor() {
 	replace_box->add_child(replace_box_close);
 	replace_box_close->set_text("x");
 	replace_box_close->set_flat(true);
-	replace_box_button.connect("pressed", this, "_on_close2_pressed");
+	replace_box_button->connect("pressed", this, "_on_close2_pressed");
 
 	HBoxContainer *file_info = memnew(HBoxContainer);
 	add_child(file_info);
@@ -426,39 +428,39 @@ TextEditorVanillaEditor::~TextEditorVanillaEditor() {
 }
 
 void TextEditorVanillaEditor::_bind_methods() {
-	signal text_changed();
+	ADD_SIGNAL(MethodInfo("text_changed"));
 
-	ClassDB::bind_method(D_METHOD("get_current_path"), &TextEditorVanillaEditor::get_current_path);
-	ClassDB::bind_method(D_METHOD("set_current_path", "value"), &TextEditorVanillaEditor::set_current_path);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "current_path"), "set_current_path", "get_current_path");
+	//	ClassDB::bind_method(D_METHOD("get_current_path"), &TextEditorVanillaEditor::get_current_path);
+	//	ClassDB::bind_method(D_METHOD("set_current_path", "value"), &TextEditorVanillaEditor::set_current_path);
+	//ADD_PROPERTY(PropertyInfo(Variant::STRING, "current_path"), "set_current_path", "get_current_path");
 
-	ClassDB::bind_method(D_METHOD("get_current_filename"), &TextEditorVanillaEditor::get_current_filename);
-	ClassDB::bind_method(D_METHOD("set_current_filename", "value"), &TextEditorVanillaEditor::set_current_filename);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "current_filename"), "set_current_filename", "get_current_filename");
+	//ClassDB::bind_method(D_METHOD("get_current_filename"), &TextEditorVanillaEditor::get_current_filename);
+	//ClassDB::bind_method(D_METHOD("set_current_filename", "value"), &TextEditorVanillaEditor::set_current_filename);
+	//ADD_PROPERTY(PropertyInfo(Variant::STRING, "current_filename"), "set_current_filename", "get_current_filename");
 
-	ClassDB::bind_method(D_METHOD("get_search_flag"), &TextEditorVanillaEditor::get_search_flag);
-	ClassDB::bind_method(D_METHOD("set_search_flag", "value"), &TextEditorVanillaEditor::set_search_flag);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "search_flag"), "set_search_flag", "get_search_flag");
+	//ClassDB::bind_method(D_METHOD("get_search_flag"), &TextEditorVanillaEditor::get_search_flag);
+	//ClassDB::bind_method(D_METHOD("set_search_flag", "value"), &TextEditorVanillaEditor::set_search_flag);
+	//ADD_PROPERTY(PropertyInfo(Variant::INT, "search_flag"), "set_search_flag", "get_search_flag");
 
-	ClassDB::bind_method(D_METHOD("set_font", "font_path"), &TextEditorVanillaEditor::set_font);
-	ClassDB::bind_method(D_METHOD("load_default_font"), &TextEditorVanillaEditor::load_default_font);
-	ClassDB::bind_method(D_METHOD("set_wrap_enabled", "enabled"), &TextEditorVanillaEditor::set_wrap_enabled);
-	ClassDB::bind_method(D_METHOD("draw_minimap", "value"), &TextEditorVanillaEditor::draw_minimap);
-	ClassDB::bind_method(D_METHOD("color_region", "filextension"), &TextEditorVanillaEditor::color_region);
-	ClassDB::bind_method(D_METHOD("clean_editor"), &TextEditorVanillaEditor::clean_editor);
-	ClassDB::bind_method(D_METHOD("new_file_open", "file_content", "last_modified", "current_file_path"), &TextEditorVanillaEditor::new_file_open);
-	ClassDB::bind_method(D_METHOD("update_lastmodified", "last_modified", "icon"), &TextEditorVanillaEditor::update_lastmodified);
-	ClassDB::bind_method(D_METHOD("new_file_create", "file_name"), &TextEditorVanillaEditor::new_file_create);
+	//	ClassDB::bind_method(D_METHOD("set_font", "font_path"), &TextEditorVanillaEditor::set_font);
+	//	ClassDB::bind_method(D_METHOD("load_default_font"), &TextEditorVanillaEditor::load_default_font);
+	//ClassDB::bind_method(D_METHOD("set_wrap_enabled", "enabled"), &TextEditorVanillaEditor::set_wrap_enabled);
+	//ClassDB::bind_method(D_METHOD("draw_minimap", "value"), &TextEditorVanillaEditor::draw_minimap);
+	//ClassDB::bind_method(D_METHOD("color_region", "filextension"), &TextEditorVanillaEditor::color_region);
+	//ClassDB::bind_method(D_METHOD("clean_editor"), &TextEditorVanillaEditor::clean_editor);
+	//ClassDB::bind_method(D_METHOD("new_file_open", "file_content", "last_modified", "current_file_path"), &TextEditorVanillaEditor::new_file_open);
+	//ClassDB::bind_method(D_METHOD("update_lastmodified", "last_modified", "icon"), &TextEditorVanillaEditor::update_lastmodified);
+	//ClassDB::bind_method(D_METHOD("new_file_create", "file_name"), &TextEditorVanillaEditor::new_file_create);
 	ClassDB::bind_method(D_METHOD("_on_Readonly_toggled", "button_pressed"), &TextEditorVanillaEditor::_on_Readonly_toggled);
 	ClassDB::bind_method(D_METHOD("_on_text_editor_text_changed"), &TextEditorVanillaEditor::_on_text_editor_text_changed);
-	ClassDB::bind_method(D_METHOD("count_characters"), &TextEditorVanillaEditor::count_characters);
+	//ClassDB::bind_method(D_METHOD("count_characters"), &TextEditorVanillaEditor::count_characters);
 	ClassDB::bind_method(D_METHOD("_on_LineEdit_text_changed", "new_text"), &TextEditorVanillaEditor::_on_LineEdit_text_changed);
 	ClassDB::bind_method(D_METHOD("_on_matchcase_toggled", "button_pressed"), &TextEditorVanillaEditor::_on_matchcase_toggled);
 	ClassDB::bind_method(D_METHOD("_on_wholewords_toggled", "button_pressed"), &TextEditorVanillaEditor::_on_wholewords_toggled);
 	ClassDB::bind_method(D_METHOD("_on_close_pressed"), &TextEditorVanillaEditor::_on_close_pressed);
-	ClassDB::bind_method(D_METHOD("open_search_box"), &TextEditorVanillaEditor::open_search_box);
+	//ClassDB::bind_method(D_METHOD("open_search_box"), &TextEditorVanillaEditor::open_search_box);
 	ClassDB::bind_method(D_METHOD("_on_Button_pressed"), &TextEditorVanillaEditor::_on_Button_pressed);
-	ClassDB::bind_method(D_METHOD("open_replace_box"), &TextEditorVanillaEditor::open_replace_box);
+	//ClassDB::bind_method(D_METHOD("open_replace_box"), &TextEditorVanillaEditor::open_replace_box);
 	ClassDB::bind_method(D_METHOD("_on_close2_pressed"), &TextEditorVanillaEditor::_on_close2_pressed);
 	ClassDB::bind_method(D_METHOD("_on_LineEdit_focus_entered"), &TextEditorVanillaEditor::_on_LineEdit_focus_entered);
 }

@@ -1,6 +1,8 @@
 
 #include "text_editor_preview.h"
 
+#include "core/variant.h"
+#include "scene/gui/box_container.h"
 #include "scene/gui/grid_container.h"
 #include "scene/gui/rich_text_label.h"
 
@@ -20,15 +22,16 @@ void TextEditorPreview::print_markdown(const String &p_content) {
 	String content = p_content;
 
 	Array result;
-	Array bolded;
-	Array italics;
-	Array striked;
-	Array coded;
-	Array linknames;
-	Array images;
-	Array links;
-	Array lists;
-	Array underlined;
+
+	PoolStringArray bolded;
+	PoolStringArray italics;
+	PoolStringArray striked;
+	PoolStringArray coded;
+	PoolStringArray linknames;
+	PoolStringArray images;
+	PoolStringArray links;
+	PoolStringArray lists;
+	PoolStringArray underlined;
 
 	Ref<RegEx> regex;
 	regex.instance();
@@ -191,20 +194,23 @@ void TextEditorPreview::print_html(const String &p_content) {
 }
 
 void TextEditorPreview::print_csv(const Array &rows) {
-	table_preview->set_columns(rows[0].size());
+	//TODO
+	/*
+	  table_preview->set_columns(rows[0].size());
 
-	for (item in rows) {
-		for (string in item) {
-			Label *label = memnew(Label);
-			label->set_text(str(string));
-			label->set_h_size_flags(SIZE_EXPAND);
-			label->set_align(1);
-			label->set_valign(1);
-			table_preview->add_child(label);
-		}
-	}
+	  for (item in rows) {
+		  for (string in item) {
+			  Label *label = memnew(Label);
+			  label->set_text(str(string));
+			  label->set_h_size_flags(SIZE_EXPAND);
+			  label->set_align(1);
+			  label->set_valign(1);
+			  table_preview->add_child(label);
+		  }
+	  }
 
-	table_preview->show();
+	  table_preview->show();
+		*/
 }
 
 void TextEditorPreview::_on_TextEditorPreview_popup_hide() {
@@ -212,13 +218,13 @@ void TextEditorPreview::_on_TextEditorPreview_popup_hide() {
 }
 
 TextEditorPreview::TextEditorPreview() {
-	set_window_title("File preview");
+	set_title("File preview");
 	set_resizable(true);
 	set_anchors_and_margins_preset(PRESET_WIDE);
-	set_margin_left(81);
-	set_margin_top(47);
-	set_margin_right(-80);
-	set_margin_bottom(-48);
+	set_margin(MARGIN_LEFT, 81);
+	set_margin(MARGIN_TOP, 47);
+	set_margin(MARGIN_RIGHT, -80);
+	set_margin(MARGIN_BOTTOM, -48);
 
 	VBoxContainer *vbc = memnew(VBoxContainer);
 	vbc->set_anchors_and_margins_preset(PRESET_WIDE);
@@ -226,8 +232,8 @@ TextEditorPreview::TextEditorPreview() {
 
 	text_preview = memnew(RichTextLabel);
 	vbc->add_child(text_preview);
-	text_preview->set_scroll_following(true);
-	text_preview->set_bbcode_enabled(true);
+	text_preview->set_scroll_follow(true);
+	text_preview->set_use_bbcode(true);
 	text_preview->set_v_size_flags(SIZE_EXPAND_FILL);
 	text_preview->hide();
 
@@ -245,14 +251,13 @@ TextEditorPreview::~TextEditorPreview() {
 }
 
 void TextEditorPreview::_bind_methods() {
-	signal image_downloaded();
-	signal image_loaded();
+	ADD_SIGNAL(MethodInfo("image_downloaded"));
+	ADD_SIGNAL(MethodInfo("image_loaded"));
 
-	ClassDB::bind_method(D_METHOD("_init"), &TextEditorPreview::_init);
-	ClassDB::bind_method(D_METHOD("print_preview", "content"), &TextEditorPreview::print_preview);
-	ClassDB::bind_method(D_METHOD("print_bb", "content"), &TextEditorPreview::print_bb);
-	ClassDB::bind_method(D_METHOD("print_markdown", "content"), &TextEditorPreview::print_markdown);
-	ClassDB::bind_method(D_METHOD("print_html", "content"), &TextEditorPreview::print_html);
-	ClassDB::bind_method(D_METHOD("print_csv", "rows"), &TextEditorPreview::print_csv);
+	//ClassDB::bind_method(D_METHOD("print_preview", "content"), &TextEditorPreview::print_preview);
+	//ClassDB::bind_method(D_METHOD("print_bb", "content"), &TextEditorPreview::print_bb);
+	//	ClassDB::bind_method(D_METHOD("print_markdown", "content"), &TextEditorPreview::print_markdown);
+	//ClassDB::bind_method(D_METHOD("print_html", "content"), &TextEditorPreview::print_html);
+	//ClassDB::bind_method(D_METHOD("print_csv", "rows"), &TextEditorPreview::print_csv);
 	ClassDB::bind_method(D_METHOD("_on_TextEditorPreview_popup_hide"), &TextEditorPreview::_on_TextEditorPreview_popup_hide);
 }

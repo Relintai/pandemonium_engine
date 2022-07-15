@@ -6,5 +6,9 @@ module_env = env.Clone()
 
 module_env.add_source_files(env.modules_sources,"register_types.cpp")
 
-#if env["tools"]:
-#    module_env.add_source_files(env.modules_sources,"paint_editor_plugin.cpp")
+if env["tools"]:
+    module_env.add_source_files(env.modules_sources,"text_editor_plugin.cpp")
+    module_env.add_source_files(env.modules_sources,"text_editor_settings.cpp")
+    module_env.add_source_files(env.modules_sources,"text_editor_vanilla_editor.cpp")
+    module_env.add_source_files(env.modules_sources,"text_file_editor.cpp")
+    module_env.add_source_files(env.modules_sources,"text_editor_preview.cpp")

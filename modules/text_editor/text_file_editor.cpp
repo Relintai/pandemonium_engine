@@ -3,6 +3,12 @@
 
 #include "core/array.h"
 #include "core/engine.h"
+#include "core/math/math_defs.h"
+#include "core/os/dir_access.h"
+#include "core/os/file_access.h"
+#include "core/os/keyboard.h"
+#include "core/os/os.h"
+#include "text_editor_preview.h"
 #include "text_editor_settings.h"
 #include "text_editor_vanilla_editor.h"
 
@@ -10,11 +16,14 @@
 #include "scene/gui/dialogs.h"
 #include "scene/gui/file_dialog.h"
 #include "scene/gui/item_list.h"
+#include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/menu_button.h"
 #include "scene/gui/option_button.h"
 #include "scene/gui/popup_menu.h"
+#include "scene/gui/separator.h"
 #include "scene/gui/split_container.h"
+#include "scene/gui/text_edit.h"
 #include "scene/resources/dynamic_font.h"
 
 void TextFileEditor::_ready() {
@@ -196,8 +205,12 @@ void TextFileEditor::_on_font_selected(const String &font_path) {
 
 void TextFileEditor::_on_fileitem_pressed(const int index) {
 	current_file_index = index;
-	Array selected_item_metadata = open_file_list->get_item_metadata(current_file_index);
-	String extension = selected_item_metadata[0].current_path.get_file().get_extension();
+	Array selected_item_metadata = _open_file_list->get_item_metadata(current_file_index);
+
+	Control *c = selected_item_metadata[0];
+	TextEditorVanillaEditor *e = Object::cast_to<TextEditorVanillaEditor>(c);
+
+	String extension = e->get_current_path().get_file().get_extension();
 
 	if (_open_file_list->get_item_text(current_file_index).begins_with("(*)")) {
 		editing_file = true;
@@ -205,16 +218,16 @@ void TextFileEditor::_on_fileitem_pressed(const int index) {
 		editing_file = false;
 	}
 
-	current_file_path = selected_item_metadata[0].current_path;
+	current_file_path = e->get_current_path();
 
-	if (current_editor->get_visible() || current_editor == nullptr) {
+	if (current_editor->is_visible() || current_editor == nullptr) {
 		if (current_editor != nullptr) {
-			current_editor.hide();
+			current_editor->hide();
 		}
 
-		current_editor = selected_item_metadata[0];
+		current_editor = e;
 		current_editor->show();
-		open_file_name->set_text(current_editor->current_path);
+		open_file_name->set_text(current_editor->get_current_path());
 
 		if (wrap_btn->get_selected_id() == 1) {
 			current_editor->set_wrap_enabled(true);
@@ -235,7 +248,10 @@ void TextFileEditor::open_file(const String &path, const String &font) {
 		current_file_path = path;
 		TextEditorVanillaEditor *vanilla_editor = open_in_vanillaeditor(path);
 
-		if (font != "null" && vanilla_editor.get("custom_fonts/font") != nullptr) {
+		Ref<Font> edf = vanilla_editor->get("custom_fonts/font");
+
+		//TODO this logic seems wrong
+		if (font != "null" && edf.is_valid()) {
 			vanilla_editor->set_font(font);
 		}
 
@@ -246,40 +262,45 @@ void TextFileEditor::open_file(const String &path, const String &font) {
 	current_editor->show();
 }
 
-void TextFileEditor::generate_file_item(const String &path, const Control &veditor) {
+void TextFileEditor::generate_file_item(const String &path, Control *veditor) {
 	open_file_name->set_text(path);
 	_open_file_list->add_item(path.get_file(), nullptr, true);
-	current_file_index = _open_file_list.get_item_count() - 1;
-	open_file_list->set_item_metadata(current_file_index, [veditor]);
+	current_file_index = _open_file_list->get_item_count() - 1;
+
+	Array arr;
+	arr.push_back(veditor);
+
+	_open_file_list->set_item_metadata(current_file_index, arr);
 	_open_file_list->select(_open_file_list->get_item_count() - 1);
 }
 
-Control TextFileEditor::open_in_vanillaeditor(const String &path) {
-	Control *editor = TextEditorVanillaEditor.new();
-	editor.last_opened_files = TextEditorSettings;
-	editor.file_list = file_list;
-	split_editor_container.add_child(editor, true);
+TextEditorVanillaEditor *TextFileEditor::open_in_vanillaeditor(const String &path) {
+	TextEditorVanillaEditor *editor = memnew(TextEditorVanillaEditor);
+	editor->file_list = file_list;
+	split_editor_container->add_child(editor, true);
 
 	if (current_editor && current_editor != editor) {
-		editor.show();
-		current_editor.hide();
+		editor->show();
+		current_editor->hide();
 	}
 
 	current_editor = editor;
-	editor.connect("text_changed", this, "_on_vanillaeditor_text_changed");
+	editor->connect("text_changed", this, "_on_vanillaeditor_text_changed");
 
-	File *current_file = memnew(File);
-	current_file.open(path, File.READ);
+	FileAccess *current_file = FileAccess::open(path, FileAccess::READ);
 
 	String current_content = "";
-	current_content = current_file.get_as_text();
-	Variant = OS.get_datetime_from_unix_time(current_file.get_modified_time(path));
-	current_file.close();
-	editor.new_file_open(current_content, last_modified, current_file_path);
+	current_content = current_file->get_as_utf8_string();
+	OS::DateTime last_modified = OS::get_singleton()->get_datetime_from_unix_time(current_file->get_modified_time(path));
+
+	current_file->close();
+	memdelete(current_file);
+
+	editor->new_file_open(current_content, last_modified, current_file_path);
 	update_list();
 
-	if (wrap_btn.get_selected_id() == 1) {
-		current_editor.set_wrap_enabled(true);
+	if (wrap_btn->get_selected_id() == 1) {
+		current_editor->set_wrap_enabled(true);
 	}
 
 	return editor;
@@ -287,90 +308,100 @@ Control TextFileEditor::open_in_vanillaeditor(const String &path) {
 
 void TextFileEditor::close_file(const int index) {
 	if (editing_file) {
-		confirmation_close.popup();
+		confirmation_close->popup();
 	} else {
 		confirm_close(index);
 	}
 }
 
 void TextFileEditor::confirm_close(const int index) {
-	last_opened_files->remove_opened_file(index, open_file_list);
-	open_file_list->remove_item(index);
+	last_opened_files->remove_opened_file(index, _open_file_list);
+	_open_file_list->remove_item(index);
 	open_file_name->clear();
-	current_editor->queue_free();
+	current_editor->queue_delete();
 
 	if (index > 0) {
-		open_file_list->select(index - 1);
+		_open_file_list->select(index - 1);
 		_on_fileitem_pressed(index - 1);
 	}
 }
 
 void TextFileEditor::_on_update_file() {
-	File *current_file = memnew(File);
-	current_file.open(current_file_path, File.READ);
+	FileAccess *current_file = FileAccess::open(current_file_path, FileAccess::READ);
 
-	String current_content = current_file.get_as_text();
-	Dictionary last_modified = OS::get_singleton()->get_datetime_from_unix_time(current_file->get_modified_time(current_file_path));
+	String current_content = current_file->get_as_utf8_string();
+	OS::DateTime last_modified = OS::get_singleton()->get_datetime_from_unix_time(current_file->get_modified_time(current_file_path));
+
 	current_file->close();
+	memdelete(current_file);
+
 	current_editor->new_file_open(current_content, last_modified, current_file_path);
 }
 
 void TextFileEditor::delete_file(const PoolStringArray &files_selected) {
-	Directory dir = Directory.new();
-
-	for (file in files_selected) {
-		dir.remove(file);
+	for (int i = 0; i < files_selected.size(); ++i) {
+		String file = files_selected[i];
+		DirAccess::remove_file_or_error(file);
 	}
 
 	update_list();
 }
 
 void TextFileEditor::open_new_file_dialogue() {
-	new_file_dialogue.popup();
-	new_file_dialogue.set_position(OS::get_singleton()->get_screen_size() / 2 - new_file_dialogue->get_size() / 2);
+	new_file_dialogue->popup();
+	new_file_dialogue->set_position(OS::get_singleton()->get_screen_size() / 2 - new_file_dialogue->get_size() / 2);
 }
 
 void TextFileEditor::open_file_list() {
 	update_list();
-	file_list.popup();
-	file_list.set_position(OS::get_singleton()->get_screen_size() / 2 - file_list->get_size() / 2);
+	file_list->popup();
+	file_list->set_position(OS::get_singleton()->get_screen_size() / 2 - file_list->get_size() / 2);
 }
 
 void TextFileEditor::create_new_file(const String &given_path) {
-	File *current_file = File.new();
-	current_file.open(given_path, File.WRITE);
+	FileAccess *current_file = FileAccess::open(given_path, FileAccess::WRITE);
 
 	if (save_as) {
-		current_file.store_line(current_editor.text_editor.get_text());
+		current_file->store_line(current_editor->text_editor->get_text());
 	}
 
-	current_file.close();
+	current_file->close();
+	memdelete(current_file);
+
 	open_file(given_path);
 }
 
 void TextFileEditor::save_file(const String &current_path) {
 	//print("Saving file: ", current_path);
 
-	File *current_file = File.new();
-	current_file.open(current_path, File.WRITE);
-	String current_content = "";
-	int lines = current_editor.text_editor.get_line_count();
+	FileAccess *current_file = FileAccess::open(current_path, FileAccess::WRITE);
 
-	for (int line = 0; line < lines; ++line) { //line in range(lines)
-		//if current_editor.text_editor.get_line(line) == "":;
-		//	continue;
-		current_content = current_editor.text_editor.get_text();
-		current_file.store_line(current_editor.text_editor.get_line(line));
-	}
+	//String current_content = "";
+	//int lines = current_editor.text_editor.get_line_count();
 
-	current_file.close();
+	//for (int line = 0; line < lines; ++line) { //line in range(lines)
+	//if current_editor.text_editor.get_line(line) == "":;
+	//	continue;
+	//	current_content = current_editor->text_editor->get_text();
+	//		current_file->store_line(current_editor->text_editor->get_line(line));
+	//}
+
+	current_file->store_line(current_editor->text_editor->get_text());
+
+	current_file->close();
+	memdelete(current_file);
+
 	current_file_path = current_path;
-	Dictionary last_modified = OS::get_singleton()->get_datetime_from_unix_time(current_file->get_modified_time(current_file_path));
+	OS::DateTime last_modified = OS::get_singleton()->get_datetime_from_unix_time(current_file->get_modified_time(current_file_path));
 	current_editor->update_lastmodified(last_modified, "save");
-	open_file_list->set_item_metadata(current_file_index, [current_editor]);
 
-	if (open_file_list->get_item_text(current_file_index).begins_with("(*)")) {
-		open_file_list->set_item_text(current_file_index, open_file_list->get_item_text(current_file_index).lstrip("(*)"));
+	Array arr;
+	arr.push_back(current_editor);
+
+	_open_file_list->set_item_metadata(current_file_index, arr);
+
+	if (_open_file_list->get_item_text(current_file_index).begins_with("(*)")) {
+		_open_file_list->set_item_text(current_file_index, _open_file_list->get_item_text(current_file_index).lstrip("(*)"));
 		editing_file = false;
 	}
 
@@ -378,22 +409,24 @@ void TextFileEditor::save_file(const String &current_path) {
 }
 
 void TextFileEditor::clean_editor() {
-	Array nodes = get_tree()->get_nodes_in_group("vanilla_editor");
+	List<Node *> nodes;
 
-	for (int i = 0; i < nodes.size(); ++i) { //i in range(nodes.size())
-		Node *vanillaeditor = nodes[i];
-		vanillaeditor.queue_free();
+	get_tree()->get_nodes_in_group("vanilla_editor", &nodes);
+
+	for (List<Node *>::Element *e = nodes.front(); e; e = e->next()) {
+		e->get()->queue_delete();
 	}
 
-	open_file_name.clear();
-	open_file_list.clear();
+	open_file_name->clear();
+	_open_file_list->clear();
 }
 
 void TextFileEditor::csv_preview() {
 	TextEditorPreview *preview = memnew(TextEditorPreview);
-	get_parent().get_parent().get_parent().add_child(preview);
+	get_parent()->get_parent()->get_parent()->add_child(preview);
+
 	preview->popup();
-	preview->set_window_title(" (" + current_file_path.get_file() + ")");
+	preview->set_title(" (" + current_file_path.get_file() + ")");
 	int lines = current_editor->text_editor->get_line_count();
 	Array rows = Array();
 
@@ -401,36 +434,36 @@ void TextFileEditor::csv_preview() {
 		rows.append(current_editor->text_editor->get_line(i).rsplit(",", false));
 	}
 
-	preview.print_csv(rows);
+	preview->print_csv(rows);
 }
 
 void TextFileEditor::bbcode_preview() {
 	TextEditorPreview *preview = memnew(TextEditorPreview);
-	get_parent().get_parent().get_parent().add_child(preview);
+	get_parent()->get_parent()->get_parent()->add_child(preview);
 	preview->popup();
-	preview->set_window_title(" (" + current_file_path.get_file() + ")");
-	preview->print_bb(current_editor.text_editor.get_text());
+	preview->set_title(" (" + current_file_path.get_file() + ")");
+	preview->print_bb(current_editor->text_editor->get_text());
 }
 
 void TextFileEditor::markdown_preview() {
 	TextEditorPreview *preview = memnew(TextEditorPreview);
-	get_parent().get_parent().get_parent().add_child(preview);
+	get_parent()->get_parent()->get_parent()->add_child(preview);
 	preview->popup();
-	preview->set_window_title(" (" + current_file_path.get_file() + ")");
-	preview->print_markdown(current_editor.text_editor.get_text());
+	preview->set_title(" (" + current_file_path.get_file() + ")");
+	preview->print_markdown(current_editor->text_editor->get_text());
 }
 
 void TextFileEditor::html_preview() {
 	TextEditorPreview *preview = memnew(TextEditorPreview);
-	get_parent().get_parent().get_parent().add_child(preview);
+	get_parent()->get_parent()->get_parent()->add_child(preview);
 	preview->popup();
-	preview->set_window_title(" (" + current_file_path.get_file() + ")");
-	preview->print_html(current_editor.text_editor.get_text());
+	preview->set_title(" (" + current_file_path.get_file() + ")");
+	preview->print_html(current_editor->text_editor->get_text());
 }
 
 void TextFileEditor::_on_vanillaeditor_text_changed() {
-	if (!open_file_list->get_item_text(current_file_index).begins_with("(*)")) {
-		open_file_list->set_item_text(current_file_index, "(*)" + open_file_list.get_item_text(current_file_index));
+	if (!_open_file_list->get_item_text(current_file_index).begins_with("(*)")) {
+		_open_file_list->set_item_text(current_file_index, "(*)" + _open_file_list->get_item_text(current_file_index));
 		editing_file = true;
 	}
 }
@@ -442,10 +475,10 @@ void TextFileEditor::update_list() {
 void TextFileEditor::on_wrap_button(const int index) {
 	switch (index) {
 		case 0: {
-			current_editor.set_wrap_enabled(false);
+			current_editor->set_wrap_enabled(false);
 		} break;
 		case 1: {
-			current_editor.set_wrap_enabled(true);
+			current_editor->set_wrap_enabled(true);
 		} break;
 		default:
 			break;
@@ -455,10 +488,10 @@ void TextFileEditor::on_wrap_button(const int index) {
 void TextFileEditor::on_minimap_button(const int index) {
 	switch (index) {
 		case 0: {
-			current_editor.draw_minimap(false);
+			current_editor->draw_minimap(false);
 		} break;
 		case 1: {
-			current_editor.draw_minimap(true);
+			current_editor->draw_minimap(true);
 		} break;
 		default:
 			break;
@@ -482,18 +515,19 @@ TextFileEditor::TextFileEditor() {
 	EXTENSIONS.push_back("*.txt ; Plain Text File");
 	EXTENSIONS.push_back("*.rtf ; Rich Text Format File");
 	EXTENSIONS.push_back("*.log ; Log File");
-	EXTENSIONS.push_back("*.md ; MD File", );
-	EXTENSIONS.push_back("*.doc ; WordPad Document", );
+	EXTENSIONS.push_back("*.md ; MD File");
+	EXTENSIONS.push_back("*.doc ; WordPad Document");
 	EXTENSIONS.push_back("*.doc ; Microsoft Word Document");
 	EXTENSIONS.push_back("*.docm ; Word Open XML Macro-Enabled Document");
 	EXTENSIONS.push_back("*.docx ; Microsoft Word Open XML Document");
-	EXTENSIONS.push_back("*.bbs ; Bulletin Board System Text", );
-	EXTENSIONS.push_back("*.dat ; Data File", ; "*.xml ; XML File");
+	EXTENSIONS.push_back("*.bbs ; Bulletin Board System Text");
+	EXTENSIONS.push_back("*.dat ; Data File");
+	EXTENSIONS.push_back("*.xml ; XML File");
 	EXTENSIONS.push_back("*.sql ; SQL database file");
 	EXTENSIONS.push_back("*.json ; JavaScript Object Notation File");
 	EXTENSIONS.push_back("*.html ; HyperText Markup Language");
 	EXTENSIONS.push_back("*.csv ; Comma-separated values");
-	EXTENSIONS.push_back("*.cfg ; Configuration File", );
+	EXTENSIONS.push_back("*.cfg ; Configuration File");
 	EXTENSIONS.push_back("*.ini ; Initialization File (same as .cfg Configuration File)");
 	EXTENSIONS.push_back("*.csv ; Comma-separated values File");
 	EXTENSIONS.push_back("*.res ; Resource File");
@@ -504,8 +538,8 @@ TextFileEditor::TextFileEditor() {
 	editing_file = false;
 
 	set_anchors_and_margins_preset(PRESET_WIDE);
-	set_size_flags_vertical(SIZE_EXPAND_FILL);
-	set_size_flags_horizontal(SIZE_EXPAND_FILL);
+	set_v_size_flags(SIZE_EXPAND_FILL);
+	set_h_size_flags(SIZE_EXPAND_FILL);
 
 	VBoxContainer *vbc = memnew(VBoxContainer);
 	add_child(vbc);
@@ -590,17 +624,18 @@ TextFileEditor::TextFileEditor() {
 	editor_container = memnew(HSplitContainer);
 	vbc->add_child(editor_container);
 	editor_container->set_split_offset(150);
-	editor_container->set_size_flags_horizontal(SIZE_EXPAND_FILL);
-	editor_container->set_size_flags_vertical(SIZE_EXPAND_FILL);
+	editor_container->set_h_size_flags(SIZE_EXPAND_FILL);
+	editor_container->set_v_size_flags(SIZE_EXPAND_FILL);
 
 	//Files;
 	file_container = memnew(VBoxContainer);
 	editor_container->add_child(file_container);
 
-	open_file_list = memnew(ItemList);
-	file_container->add_child(open_file_list);
-	open_file_list->set_allow_reselect(true);
-	open_file_list->set_size_flags_vertical(SIZE_EXPAND_FILL);
+	_open_file_list = memnew(ItemList);
+	file_container->add_child(_open_file_list);
+	_open_file_list->set_allow_reselect(true);
+	_open_file_list->set_v_size_flags(SIZE_EXPAND_FILL);
+
 	file_container->add_child(memnew(HSeparator));
 
 	//Editor;
@@ -617,8 +652,8 @@ TextFileEditor::TextFileEditor() {
 	open_file_name = memnew(LineEdit);
 	editor_top_bar->add_child(open_file_name);
 	open_file_name->set_editable(false);
-	open_file_name->set_mouse_filter(Control.MOUSE_FILTER_PASS);
-	open_file_name->set_size_flags_horizontal(SIZE_EXPAND_FILL);
+	open_file_name->set_mouse_filter(Control::MOUSE_FILTER_PASS);
+	open_file_name->set_h_size_flags(SIZE_EXPAND_FILL);
 
 	wrap_btn = memnew(OptionButton);
 	editor_top_bar->add_child(wrap_btn);
@@ -629,25 +664,25 @@ TextFileEditor::TextFileEditor() {
 	editor_top_bar->add_child(map_btn);
 	map_btn->add_item("Hide Map");
 	map_btn->add_item("Show Map");
-	map_btn->set_selected(1);
+	map_btn->select(1);
 
 	//dialogs;
 	file_list = memnew(FileDialog);
 	add_child(file_list);
 	file_list->set_show_hidden_files(true);
-	file_list->set_dialog_hide_on_ok(true);
-	file_list->set_window_title("Save file");
-	file_list->set_popup_exclusive(true);
-	file_list->set_anchors_and_margins_preset(Control.PRESET_WIDE);
-	file_list->set_margin_left(222);
-	file_list->set_margin_top(132);
-	file_list->set_margin_right(-221);
-	file_list->set_margin_bottom(-131);
-	file_list->set_rect_min_size(Vector2(200, 70));
+	file_list->set_hide_on_ok(true);
+	file_list->set_title("Save file");
+	file_list->set_exclusive(true);
+	file_list->set_anchors_and_margins_preset(PRESET_WIDE);
+	file_list->set_margin(MARGIN_LEFT, 222);
+	file_list->set_margin(MARGIN_TOP, 132);
+	file_list->set_margin(MARGIN_RIGHT, -221);
+	file_list->set_margin(MARGIN_BOTTOM, -131);
+	file_list->set_custom_minimum_size(Vector2(200, 70));
 
 	new_file_dialogue = memnew(AcceptDialog);
 	add_child(new_file_dialogue);
-	new_file_dialogue->set_window_title("Create new File");
+	new_file_dialogue->set_title("Create new File");
 
 	VBoxContainer *nfd_vbc = memnew(VBoxContainer);
 	new_file_dialogue->add_child(nfd_vbc);
@@ -657,20 +692,20 @@ TextFileEditor::TextFileEditor() {
 	nfd_name->set_text("Insert file name (no extension needed)");
 	nfd_name->set_align(Label::ALIGN_CENTER);
 	nfd_name->set_valign(Label::VALIGN_CENTER);
-	nfd_name->set_size_flags_vertical(SIZE_EXPAND_FILL);
+	nfd_name->set_v_size_flags(SIZE_EXPAND_FILL);
 
 	new_file_dialogue_name = memnew(LineEdit);
 	nfd_vbc->add_child(new_file_dialogue_name);
 	new_file_dialogue_name->set_clear_button_enabled(true);
 	new_file_dialogue_name->set_text("example");
-	new_file_dialogue_name->set_rect_min_size(Vector2(200, 0));
-	new_file_dialogue_name->set_size_flags_horizontal(SIZE_EXPAND | SIZE_SHRINK_CENTER);
-	new_file_dialogue_name->set_size_flags_vertical(SIZE_EXPAND_FILL);
+	new_file_dialogue_name->set_custom_minimum_size(Vector2(200, 0));
+	new_file_dialogue_name->set_h_size_flags(SIZE_EXPAND | SIZE_SHRINK_CENTER);
+	new_file_dialogue_name->set_v_size_flags(SIZE_EXPAND_FILL);
 
 	confirmation_close = memnew(ConfirmationDialog);
 	add_child(confirmation_close);
-	confirmation_close->set_dialog_text("There are some unsaved changes.\nPress \"OK\" if you want to close this tab anyway, or \"cancel\" if you want to keep on editing your file.");
-	confirmation_close->set_window_title("Unsaved changes");
+	confirmation_close->set_text("There are some unsaved changes.\nPress \"OK\" if you want to close this tab anyway, or \"cancel\" if you want to keep on editing your file.");
+	confirmation_close->set_title("Unsaved changes");
 	confirmation_close->set_anchors_and_margins_preset(PRESET_CENTER);
 
 	select_font_dialog = memnew(FileDialog);
@@ -678,16 +713,16 @@ TextFileEditor::TextFileEditor() {
 	select_font_dialog->set_mode(FileDialog::MODE_OPEN_FILE);
 	select_font_dialog->set_access(FileDialog::ACCESS_FILESYSTEM);
 	select_font_dialog->set_show_hidden_files(true);
-	select_font_dialog->set_window_title("Open a File");
+	select_font_dialog->set_title("Open a File");
 	select_font_dialog->set_resizable(true);
 	select_font_dialog->set_anchors_and_margins_preset(PRESET_WIDE);
-	select_font_dialog->set_margin_left(222);
-	select_font_dialog->set_margin_top(132);
-	select_font_dialog->set_margin_right(-221);
-	select_font_dialog->set_margin_bottom(-131);
-	select_font_dialog->set_rect_min_size(Vector2(200, 70));
+	select_font_dialog->set_margin(MARGIN_LEFT, 222);
+	select_font_dialog->set_margin(MARGIN_TOP, 132);
+	select_font_dialog->set_margin(MARGIN_RIGHT, -221);
+	select_font_dialog->set_margin(MARGIN_BOTTOM, -131);
+	select_font_dialog->set_custom_minimum_size(Vector2(200, 70));
 
-	PoolStringArray farr = PoolStringArray();
+	Vector<String> farr;
 	farr.push_back("*.TTF");
 	farr.push_back("*.ttf");
 
@@ -698,13 +733,13 @@ TextFileEditor::~TextFileEditor() {
 }
 
 void TextFileEditor::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_ready"), &TextFileEditor::_ready);
+	//ClassDB::bind_method(D_METHOD("_ready"), &TextFileEditor::_ready);
 
-	ClassDB::bind_method(D_METHOD("connect_signals"), &TextFileEditor::connect_signals);
-	ClassDB::bind_method(D_METHOD("create_selected_file"), &TextFileEditor::create_selected_file);
-	ClassDB::bind_method(D_METHOD("open_selected_file"), &TextFileEditor::open_selected_file);
-	ClassDB::bind_method(D_METHOD("delete_selected_file"), &TextFileEditor::delete_selected_file);
-	ClassDB::bind_method(D_METHOD("save_current_file_as"), &TextFileEditor::save_current_file_as);
+	//ClassDB::bind_method(D_METHOD("connect_signals"), &TextFileEditor::connect_signals);
+	//ClassDB::bind_method(D_METHOD("create_selected_file"), &TextFileEditor::create_selected_file);
+	//ClassDB::bind_method(D_METHOD("open_selected_file"), &TextFileEditor::open_selected_file);
+	//	ClassDB::bind_method(D_METHOD("delete_selected_file"), &TextFileEditor::delete_selected_file);
+	//ClassDB::bind_method(D_METHOD("save_current_file_as"), &TextFileEditor::save_current_file_as);
 
 	ClassDB::bind_method(D_METHOD("_on_file_btn_pressed", "index"), &TextFileEditor::_on_file_btn_pressed);
 	ClassDB::bind_method(D_METHOD("_on_preview_btn_pressed", "id"), &TextFileEditor::_on_preview_btn_pressed);
@@ -713,24 +748,24 @@ void TextFileEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_on_fileitem_pressed", "index"), &TextFileEditor::_on_fileitem_pressed);
 
 	ClassDB::bind_method(D_METHOD("open_file", "path", "font"), &TextFileEditor::open_file, "null");
-	ClassDB::bind_method(D_METHOD("generate_file_item", "path", "veditor"), &TextFileEditor::generate_file_item);
-	ClassDB::bind_method(D_METHOD("open_in_vanillaeditor", "path"), &TextFileEditor::open_in_vanillaeditor);
+	//ClassDB::bind_method(D_METHOD("generate_file_item", "path", "veditor"), &TextFileEditor::generate_file_item);
+	//ClassDB::bind_method(D_METHOD("open_in_vanillaeditor", "path"), &TextFileEditor::open_in_vanillaeditor);
 
-	ClassDB::bind_method(D_METHOD("close_file", "index"), &TextFileEditor::close_file);
-	ClassDB::bind_method(D_METHOD("confirm_close", "index"), &TextFileEditor::confirm_close);
+	//ClassDB::bind_method(D_METHOD("close_file", "index"), &TextFileEditor::close_file);
+	//ClassDB::bind_method(D_METHOD("confirm_close", "index"), &TextFileEditor::confirm_close);
 	ClassDB::bind_method(D_METHOD("_on_update_file"), &TextFileEditor::_on_update_file);
 
 	ClassDB::bind_method(D_METHOD("delete_file", "files_selected"), &TextFileEditor::delete_file);
-	ClassDB::bind_method(D_METHOD("open_new_file_dialogue"), &TextFileEditor::open_new_file_dialogue);
-	ClassDB::bind_method(D_METHOD("open_file_list"), &TextFileEditor::open_file_list);
+	//ClassDB::bind_method(D_METHOD("open_new_file_dialogue"), &TextFileEditor::open_new_file_dialogue);
+	//ClassDB::bind_method(D_METHOD("open_file_list"), &TextFileEditor::open_file_list);
 	ClassDB::bind_method(D_METHOD("create_new_file", "given_path"), &TextFileEditor::create_new_file);
-	ClassDB::bind_method(D_METHOD("save_file", "current_path"), &TextFileEditor::save_file);
+	//ClassDB::bind_method(D_METHOD("save_file", "current_path"), &TextFileEditor::save_file);
 
-	ClassDB::bind_method(D_METHOD("clean_editor"), &TextFileEditor::clean_editor);
-	ClassDB::bind_method(D_METHOD("csv_preview"), &TextFileEditor::csv_preview);
-	ClassDB::bind_method(D_METHOD("bbcode_preview"), &TextFileEditor::bbcode_preview);
-	ClassDB::bind_method(D_METHOD("markdown_preview"), &TextFileEditor::markdown_preview);
-	ClassDB::bind_method(D_METHOD("html_preview"), &TextFileEditor::html_preview);
+	//ClassDB::bind_method(D_METHOD("clean_editor"), &TextFileEditor::clean_editor);
+	//ClassDB::bind_method(D_METHOD("csv_preview"), &TextFileEditor::csv_preview);
+	//ClassDB::bind_method(D_METHOD("bbcode_preview"), &TextFileEditor::bbcode_preview);
+	//ClassDB::bind_method(D_METHOD("markdown_preview"), &TextFileEditor::markdown_preview);
+	//ClassDB::bind_method(D_METHOD("html_preview"), &TextFileEditor::html_preview);
 
 	ClassDB::bind_method(D_METHOD("_on_vanillaeditor_text_changed"), &TextFileEditor::_on_vanillaeditor_text_changed);
 	ClassDB::bind_method(D_METHOD("update_list"), &TextFileEditor::update_list);
