@@ -585,13 +585,13 @@ TextFileEditor::TextFileEditor() {
 	//TextEditorPreview;
 	preview_btn = memnew(MenuButton);
 	tob_bar->add_child(preview_btn);
-	preview_btn->set_text("TextEditorPreview");
+	preview_btn->set_text("Preview");
 
 	preview_btn_popup = preview_btn->get_popup();
-	preview_btn_popup->add_item("BBCode TextEditorPreview");
-	preview_btn_popup->add_item("Markdown TextEditorPreview");
-	preview_btn_popup->add_item("HTML TextEditorPreview");
-	preview_btn_popup->add_item("CSV TextEditorPreview");
+	preview_btn_popup->add_item("BBCode Preview");
+	preview_btn_popup->add_item("Markdown Preview");
+	preview_btn_popup->add_item("HTML Preview");
+	preview_btn_popup->add_item("CSV Preview");
 
 	//Settings;
 	settings_btn = memnew(MenuButton);
