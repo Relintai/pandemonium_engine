@@ -36,13 +36,26 @@
 #include "core/ustring.h"
 #include "core/vector.h"
 
-
 class Button;
 class PluginConfigDialog;
 class Tree;
+class HBoxContainer;
 
 class EditorPluginSettings : public VBoxContainer {
 	GDCLASS(EditorPluginSettings, VBoxContainer);
+
+public:
+	void add_control_to_top_bar(Control *p_control);
+	void remove_control_from_top_bar(Control *p_control);
+
+	void update_plugins();
+
+	EditorPluginSettings();
+
+protected:
+	void _notification(int p_what);
+
+	static void _bind_methods();
 
 	enum {
 		BUTTON_PLUGIN_EDIT
@@ -54,21 +67,13 @@ class EditorPluginSettings : public VBoxContainer {
 	Tree *plugin_list;
 	bool updating;
 
+	HBoxContainer *_custom_top_bar_control_container;
+
 	void _plugin_activity_changed();
 	void _create_clicked();
 	void _cell_button_pressed(Object *p_item, int p_column, int p_id);
 
 	static Vector<String> _get_plugins(const String &p_dir);
-
-protected:
-	void _notification(int p_what);
-
-	static void _bind_methods();
-
-public:
-	void update_plugins();
-
-	EditorPluginSettings();
 };
 
 #endif // EDITORPLUGINSETTINGS_H

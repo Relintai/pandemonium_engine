@@ -30,24 +30,31 @@
 
 #include "editor_plugin_settings.h"
 
-#include "core/io/config_file.h"
-#include "core/os/file_access.h"
-#include "core/os/main_loop.h"
-#include "editor_node.h"
-#include "editor_scale.h"
 #include "core/class_db.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"
+#include "core/io/config_file.h"
 #include "core/os/dir_access.h"
+#include "core/os/file_access.h"
+#include "core/os/main_loop.h"
 #include "core/os/memory.h"
 #include "core/reference.h"
 #include "core/variant.h"
 #include "editor/plugin_config_dialog.h"
+#include "editor_node.h"
+#include "editor_scale.h"
 #include "scene/gui/button.h"
 #include "scene/gui/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/tree.h"
 #include "scene/main/node.h"
+
+void EditorPluginSettings::add_control_to_top_bar(Control *p_control) {
+	_custom_top_bar_control_container->add_child(p_control);
+}
+void EditorPluginSettings::remove_control_from_top_bar(Control *p_control) {
+	_custom_top_bar_control_container->remove_child(p_control);
+}
 
 void EditorPluginSettings::_notification(int p_what) {
 	if (p_what == MainLoop::NOTIFICATION_WM_FOCUS_IN) {
@@ -209,6 +216,8 @@ EditorPluginSettings::EditorPluginSettings() {
 	HBoxContainer *title_hb = memnew(HBoxContainer);
 	title_hb->add_child(memnew(Label(TTR("Installed Plugins:"))));
 	title_hb->add_spacer();
+	_custom_top_bar_control_container = memnew(HBoxContainer);
+	title_hb->add_child(_custom_top_bar_control_container);
 	create_plugin = memnew(Button(TTR("Create")));
 	create_plugin->connect("pressed", this, "_create_clicked");
 	title_hb->add_child(create_plugin);

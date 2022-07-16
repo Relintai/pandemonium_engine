@@ -219,6 +219,7 @@ public:
 	void update_plugins();
 
 	EditorAutoloadSettings *get_autoload_settings() { return autoload_settings; }
+	EditorPluginSettings *get_plugin_settings() { return plugin_settings; }
 
 	TabContainer *get_tabs();
 
