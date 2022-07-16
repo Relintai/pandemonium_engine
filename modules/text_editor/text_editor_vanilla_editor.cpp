@@ -236,6 +236,7 @@ TextEditorVanillaEditor::TextEditorVanillaEditor() {
 	_find_replace_bar = memnew(FindReplaceBar);
 	_find_replace_bar->set_text_edit(text_editor);
 	add_child(_find_replace_bar);
+	_find_replace_bar->hide();
 
 	HBoxContainer *file_info = memnew(HBoxContainer);
 	add_child(file_info);
