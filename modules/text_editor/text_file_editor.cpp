@@ -409,9 +409,9 @@ void TextFileEditor::csv_preview() {
 	preview->popup();
 	preview->set_title(" (" + current_file_path.get_file() + ")");
 	int lines = current_editor->text_editor->get_line_count();
-	Array rows = Array();
+	Array rows;
 
-	for (int i = 0; i < lines - 1; ++i) { //i in range(0, lines-1)
+	for (int i = 0; i < lines; ++i) { //i in range(0, lines-1)
 		rows.append(current_editor->text_editor->get_line(i).rsplit(",", false));
 	}
 

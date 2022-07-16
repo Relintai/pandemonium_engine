@@ -4,6 +4,7 @@
 #include "core/variant.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/grid_container.h"
+#include "scene/gui/label.h"
 #include "scene/gui/rich_text_label.h"
 
 #include "modules/regex/regex.h"
@@ -194,23 +195,30 @@ void TextEditorPreview::print_html(const String &p_content) {
 }
 
 void TextEditorPreview::print_csv(const Array &rows) {
-	//TODO
-	/*
-	  table_preview->set_columns(rows[0].size());
+	if (rows.size() == 0) {
+		return;
+	}
 
-	  for (item in rows) {
-		  for (string in item) {
-			  Label *label = memnew(Label);
-			  label->set_text(str(string));
-			  label->set_h_size_flags(SIZE_EXPAND);
-			  label->set_align(1);
-			  label->set_valign(1);
-			  table_preview->add_child(label);
-		  }
-	  }
+	Vector<String> r0 = rows[0];
 
-	  table_preview->show();
-		*/
+	table_preview->set_columns(r0.size());
+
+	for (int i = 0; i < rows.size(); ++i) {
+		Vector<String> item = rows[i];
+
+		for (int j = 0; j < item.size(); ++j) {
+			String string = item[j];
+
+			Label *label = memnew(Label);
+			label->set_text(string);
+			label->set_h_size_flags(SIZE_EXPAND);
+			label->set_align(Label::ALIGN_CENTER);
+			label->set_valign(Label::VALIGN_CENTER);
+			table_preview->add_child(label);
+		}
+	}
+
+	table_preview->show();
 }
 
 void TextEditorPreview::_on_TextEditorPreview_popup_hide() {
