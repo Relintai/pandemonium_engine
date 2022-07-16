@@ -1,0 +1,11 @@
+import os
+
+Import('env')
+
+module_env = env.Clone()
+
+module_env.add_source_files(env.modules_sources,"register_types.cpp")
+
+if env["tools"]:
+    module_env.add_source_files(env.modules_sources,"plugin_refresher_editor_plugin.cpp")
+    module_env.add_source_files(env.modules_sources,"plugin_refresher.cpp")
