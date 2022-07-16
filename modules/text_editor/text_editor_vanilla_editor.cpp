@@ -14,6 +14,8 @@
 #include "scene/gui/text_edit.h"
 #include "scene/gui/texture_rect.h"
 
+#include "editor/code_editor.h"
+
 #include "scene/resources/dynamic_font.h"
 
 String TextEditorVanillaEditor::get_current_path() {
@@ -177,8 +179,10 @@ void TextEditorVanillaEditor::count_characters() {
 }
 
 void TextEditorVanillaEditor::open_search_box() {
+	_find_replace_bar->popup_search();
 }
 void TextEditorVanillaEditor::open_replace_box() {
+	_find_replace_bar->popup_replace();
 }
 
 TextEditorVanillaEditor::TextEditorVanillaEditor() {
@@ -228,6 +232,10 @@ TextEditorVanillaEditor::TextEditorVanillaEditor() {
 	text_editor->set("custom_constants/completion_lines", 20);
 	text_editor->set("custom_constants/completion_max_width", 20);
 	text_editor->set("custom_constants/completion_scroll_width", 20);
+
+	_find_replace_bar = memnew(FindReplaceBar);
+	_find_replace_bar->set_text_edit(text_editor);
+	add_child(_find_replace_bar);
 
 	HBoxContainer *file_info = memnew(HBoxContainer);
 	add_child(file_info);

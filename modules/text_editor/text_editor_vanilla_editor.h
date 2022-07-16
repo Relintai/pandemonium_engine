@@ -17,6 +17,7 @@ class CheckBox;
 class Button;
 class TextureRect;
 class Label;
+class FindReplaceBar;
 
 class TextEditorVanillaEditor : public VBoxContainer {
 	GDCLASS(TextEditorVanillaEditor, VBoxContainer);
@@ -63,6 +64,8 @@ protected:
 	Label *file_info_last_modified;
 	Label *file_info_c_counter;
 	CheckBox *file_info_read_only;
+
+	FindReplaceBar *_find_replace_bar;
 
 	String current_path;
 	String current_filename;
