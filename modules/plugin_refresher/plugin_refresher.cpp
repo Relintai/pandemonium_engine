@@ -1,10 +1,12 @@
 
 #include "plugin_refresher.h"
 #include "core/io/config_file.h"
+#include "core/log/logger.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 #include "core/os/input_event.h"
 
+#include "editor/editor_plugin.h"
 #include "editor/project_settings_editor.h"
 
 #include "editor/editor_settings.h"
@@ -20,6 +22,7 @@ void PluginRefresher::set_enabled(const bool p_enabled) {
 	}
 
 	_set_enabled(p_enabled);
+	_refresh();
 }
 
 void PluginRefresher::set_enabler_check_box(CheckBox *cb) {
@@ -94,6 +97,7 @@ void PluginRefresher::_refresh() {
 		if (!cf->has_section("plugin")) {
 			continue;
 		}
+
 		String addon_name = cf->get_value("plugin", "name", addon_dir);
 
 		PluginEntry p;
@@ -110,15 +114,16 @@ void PluginRefresher::_refresh() {
 
 	if (_currently_selected_addon != -1) {
 		_option_button->select(_currently_selected_addon);
+		_on_option_selected(_currently_selected_addon);
 	}
 }
 
 void PluginRefresher::_set_enabled(const bool p_enabled) {
 	set_visible(p_enabled);
 
-	bool sett_enabled = EditorSettings::get_singleton()->get_project_metadata("plugin_refresher", "enabled", false);
+	bool set_enabled = EditorSettings::get_singleton()->get_project_metadata("plugin_refresher", "enabled", false);
 
-	if (sett_enabled != p_enabled) {
+	if (set_enabled != p_enabled) {
 		EditorSettings::get_singleton()->set_project_metadata("plugin_refresher", "enabled", p_enabled);
 	}
 }
@@ -133,16 +138,49 @@ void PluginRefresher::_on_disable_button_pressed() {
 	set_enabled(false);
 }
 
+void PluginRefresher::_on_popup_confirmed() {
+	if (_currently_selected_addon == -1 && _plugins.size() > 0) {
+		_option_button->select(0);
+		_on_option_selected(0);
+	}
+}
+
 void PluginRefresher::_on_option_selected(const int id) {
 	_currently_selected_addon = id;
 
 	String selected_plugin = _plugins[_currently_selected_addon].folder;
-
 	EditorSettings::get_singleton()->set_project_metadata("plugin_refresher", "plugin", selected_plugin);
 }
 
 void PluginRefresher::_refresh_selected() {
-	//if addon got deleted do popup
+	if (_currently_selected_addon == -1) {
+		_popup();
+		return;
+	}
+
+	String folder = _plugins[_currently_selected_addon].folder;
+
+	String cp = "res://addons/";
+	cp += folder;
+	cp += "/plugin.cfg";
+
+	if (!FileAccess::exists(cp)) {
+		ERR_PRINT("Selected addon couldn't be found.");
+		_popup();
+		return;
+	}
+
+	String name = _plugins[_currently_selected_addon].name;
+
+	PLOG_MSG("Refreshing addon: " + name);
+
+	if (EditorInterface::get_singleton()->is_plugin_enabled(folder)) {
+		EditorInterface::get_singleton()->set_plugin_enabled(folder, false);
+	} else {
+		PLOG_WARN("Warning! Addon was disabled. Enabling!");
+	}
+
+	EditorInterface::get_singleton()->set_plugin_enabled(folder, true);
 }
 
 void PluginRefresher::pressed() {
@@ -209,5 +247,6 @@ void PluginRefresher::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_set_enabled", "enabled"), &PluginRefresher::_set_enabled);
 	ClassDB::bind_method(D_METHOD("_on_plugins_button_pressed"), &PluginRefresher::_on_plugins_button_pressed);
 	ClassDB::bind_method(D_METHOD("_on_disable_button_pressed"), &PluginRefresher::_on_disable_button_pressed);
+	ClassDB::bind_method(D_METHOD("_on_popup_confirmed"), &PluginRefresher::_on_popup_confirmed);
 	ClassDB::bind_method(D_METHOD("_on_option_selected", "id"), &PluginRefresher::_on_option_selected);
 }

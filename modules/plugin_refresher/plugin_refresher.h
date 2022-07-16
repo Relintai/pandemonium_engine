@@ -29,6 +29,7 @@ protected:
 	void _set_enabled(const bool p_enabled);
 	void _on_plugins_button_pressed();
 	void _on_disable_button_pressed();
+	void _on_popup_confirmed();
 	void _on_option_selected(const int id);
 	void _refresh_selected();
 
