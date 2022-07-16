@@ -9,6 +9,8 @@
 #include "scene/gui/tool_button.h"
 
 class CheckBox;
+class AcceptDialog;
+class OptionButton;
 
 class PluginRefresher : public ToolButton {
 	GDCLASS(PluginRefresher, ToolButton);
@@ -22,7 +24,12 @@ public:
 	~PluginRefresher();
 
 protected:
+	void _popup();
+	void _refresh();
 	void _set_enabled(const bool p_enabled);
+	void _on_plugins_button_pressed();
+	void _on_disable_button_pressed();
+	void _on_popup_confirmed();
 
 	void pressed();
 	void _gui_input(Ref<InputEvent> p_event);
@@ -31,6 +38,8 @@ protected:
 
 	int _button;
 	CheckBox *_enabler_check_box;
+	AcceptDialog *_selector_dialog;
+	OptionButton *_option_button;
 };
 
 #endif
