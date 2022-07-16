@@ -29,7 +29,8 @@ protected:
 	void _set_enabled(const bool p_enabled);
 	void _on_plugins_button_pressed();
 	void _on_disable_button_pressed();
-	void _on_popup_confirmed();
+	void _on_option_selected(const int id);
+	void _refresh_selected();
 
 	void pressed();
 	void _gui_input(Ref<InputEvent> p_event);
@@ -40,6 +41,14 @@ protected:
 	CheckBox *_enabler_check_box;
 	AcceptDialog *_selector_dialog;
 	OptionButton *_option_button;
+	int _currently_selected_addon;
+
+	struct PluginEntry {
+		String name;
+		String folder;
+	};
+
+	Vector<PluginEntry> _plugins;
 };
 
 #endif
