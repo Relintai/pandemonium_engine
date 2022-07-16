@@ -176,99 +176,9 @@ void TextEditorVanillaEditor::count_characters() {
 	file_info_c_counter->set_text(itos(counted));
 }
 
-void TextEditorVanillaEditor::_on_LineEdit_text_changed(const String &new_text) {
-	int linecount = text_editor->get_line_count();
-
-	if (new_text != "") {
-		bool found;
-		//bool find = false;
-
-		for (int line = 0; line < linecount; ++line) { //line in range(linecount)
-			for (int column = 0; column < text_editor->get_line(line).length(); ++column) { //column in range(text_editor.get_line(line).length())
-				int fl;
-				int fc;
-				found = text_editor->search(new_text, search_flag, line, column, fl, fc);
-
-				if (found) {
-					if (fc == line) {
-						//						if not find:;
-						text_editor->select(line, fl, fc, fl + new_text.length());
-					}
-					//							find = true;
-				} else {
-					text_editor->select(0, 0, 0, 0);
-				}
-			}
-		}
-	} else {
-		text_editor->select(0, 0, 0, 0);
-	}
-}
-
-void TextEditorVanillaEditor::_on_matchcase_toggled(const bool button_pressed) {
-	if (button_pressed) {
-		search_flag = 1;
-	} else {
-		if (search_box_whole_words_cb->is_pressed()) {
-			search_flag = 2;
-		} else {
-			search_flag = 0;
-		}
-	}
-
-	_on_LineEdit_text_changed(search_box_line_edit->get_text());
-}
-
-void TextEditorVanillaEditor::_on_wholewords_toggled(const bool button_pressed) {
-	if (button_pressed) {
-		search_flag = 2;
-	} else {
-		if (search_box_match_case_cb->is_pressed()) {
-			search_flag = 1;
-		} else {
-			search_flag = 0;
-		}
-	}
-
-	_on_LineEdit_text_changed(search_box_line_edit->get_text());
-}
-
-void TextEditorVanillaEditor::_on_close_pressed() {
-	search_box->hide();
-}
-
 void TextEditorVanillaEditor::open_search_box() {
-	if (search_box->is_visible()) {
-		search_box->hide();
-	} else {
-		search_box->show();
-		//	search_box->get_node(NodePath("LineEdit"))->grab_focus();
-	}
 }
-
-void TextEditorVanillaEditor::_on_Button_pressed() {
-	//int linecount = text_editor->get_line_count() - 1;
-	String old_text = replace_box_replace_le->get_text();
-	String new_text = replace_box_with->get_text();
-	String text = text_editor->get_text();
-	text_editor->set_text(text.replace(old_text, new_text));
-}
-
 void TextEditorVanillaEditor::open_replace_box() {
-	if (replace_box->is_visible()) {
-		replace_box->hide();
-	} else {
-		replace_box->show();
-		//	replace_box->get_node("replace")->grab_focus();
-	}
-}
-
-void TextEditorVanillaEditor::_on_close2_pressed() {
-	replace_box->hide();
-}
-
-void TextEditorVanillaEditor::_on_LineEdit_focus_entered() {
-	_on_LineEdit_text_changed(search_box_line_edit->get_text());
 }
 
 TextEditorVanillaEditor::TextEditorVanillaEditor() {
@@ -318,67 +228,6 @@ TextEditorVanillaEditor::TextEditorVanillaEditor() {
 	text_editor->set("custom_constants/completion_lines", 20);
 	text_editor->set("custom_constants/completion_max_width", 20);
 	text_editor->set("custom_constants/completion_scroll_width", 20);
-
-	search_box = memnew(HBoxContainer);
-	add_child(search_box);
-	search_box->hide();
-
-	Label *selabel = memnew(Label);
-	search_box->add_child(selabel);
-	selabel->set_text("Search:");
-
-	search_box_line_edit = memnew(LineEdit);
-	search_box->add_child(search_box_line_edit);
-	search_box_line_edit->set_h_size_flags(SIZE_EXPAND_FILL);
-	search_box_line_edit->connect("text_changed", this, "_on_LineEdit_text_changed");
-	search_box_line_edit->connect("focus_entered", this, "_on_LineEdit_focus_entered");
-
-	search_box_match_case_cb = memnew(CheckBox);
-	search_box->add_child(search_box_match_case_cb);
-	search_box_match_case_cb->set_text("Match Case");
-	search_box_match_case_cb->connect("toggled", this, "_on_matchcase_toggled");
-
-	search_box_whole_words_cb = memnew(CheckBox);
-	search_box->add_child(search_box_whole_words_cb);
-	search_box_whole_words_cb->set_text("Whole Words");
-	search_box_whole_words_cb->connect("toggled", this, "_on_wholewords_toggled");
-
-	search_box_close_button = memnew(Button);
-	search_box->add_child(search_box_close_button);
-	search_box_close_button->set_text("x");
-	search_box_close_button->set_flat(true);
-	search_box_whole_words_cb->connect("pressed", this, "_on_close_pressed");
-
-	replace_box = memnew(HBoxContainer);
-	add_child(replace_box);
-	replace_box->hide();
-
-	Label *rblabel = memnew(Label);
-	replace_box->add_child(rblabel);
-	rblabel->set_text("Replace:");
-
-	replace_box_replace_le = memnew(LineEdit);
-	replace_box->add_child(replace_box_replace_le);
-	replace_box_replace_le->set_h_size_flags(SIZE_EXPAND_FILL);
-
-	Label *rb2label = memnew(Label);
-	replace_box->add_child(rb2label);
-	rb2label->set_text("With:");
-
-	replace_box_with = memnew(LineEdit);
-	replace_box->add_child(replace_box_with);
-	replace_box_with->set_h_size_flags(SIZE_EXPAND_FILL);
-
-	replace_box_button = memnew(Button);
-	replace_box->add_child(replace_box_button);
-	replace_box_button->set_text("Replace");
-	replace_box_button->connect("pressed", this, "_on_Button_pressed");
-
-	replace_box_close = memnew(Button);
-	replace_box->add_child(replace_box_close);
-	replace_box_close->set_text("x");
-	replace_box_close->set_flat(true);
-	replace_box_button->connect("pressed", this, "_on_close2_pressed");
 
 	HBoxContainer *file_info = memnew(HBoxContainer);
 	add_child(file_info);
@@ -453,13 +302,4 @@ void TextEditorVanillaEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_on_Readonly_toggled", "button_pressed"), &TextEditorVanillaEditor::_on_Readonly_toggled);
 	ClassDB::bind_method(D_METHOD("_on_text_editor_text_changed"), &TextEditorVanillaEditor::_on_text_editor_text_changed);
 	//ClassDB::bind_method(D_METHOD("count_characters"), &TextEditorVanillaEditor::count_characters);
-	ClassDB::bind_method(D_METHOD("_on_LineEdit_text_changed", "new_text"), &TextEditorVanillaEditor::_on_LineEdit_text_changed);
-	ClassDB::bind_method(D_METHOD("_on_matchcase_toggled", "button_pressed"), &TextEditorVanillaEditor::_on_matchcase_toggled);
-	ClassDB::bind_method(D_METHOD("_on_wholewords_toggled", "button_pressed"), &TextEditorVanillaEditor::_on_wholewords_toggled);
-	ClassDB::bind_method(D_METHOD("_on_close_pressed"), &TextEditorVanillaEditor::_on_close_pressed);
-	//ClassDB::bind_method(D_METHOD("open_search_box"), &TextEditorVanillaEditor::open_search_box);
-	ClassDB::bind_method(D_METHOD("_on_Button_pressed"), &TextEditorVanillaEditor::_on_Button_pressed);
-	//ClassDB::bind_method(D_METHOD("open_replace_box"), &TextEditorVanillaEditor::open_replace_box);
-	ClassDB::bind_method(D_METHOD("_on_close2_pressed"), &TextEditorVanillaEditor::_on_close2_pressed);
-	ClassDB::bind_method(D_METHOD("_on_LineEdit_focus_entered"), &TextEditorVanillaEditor::_on_LineEdit_focus_entered);
 }

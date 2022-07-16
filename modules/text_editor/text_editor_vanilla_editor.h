@@ -43,15 +43,8 @@ public:
 	void _on_Readonly_toggled(const bool button_pressed);
 	void _on_text_editor_text_changed();
 	void count_characters();
-	void _on_LineEdit_text_changed(const String &new_text);
-	void _on_matchcase_toggled(const bool button_pressed);
-	void _on_wholewords_toggled(const bool button_pressed);
-	void _on_close_pressed();
 	void open_search_box();
-	void _on_Button_pressed();
 	void open_replace_box();
-	void _on_close2_pressed();
-	void _on_LineEdit_focus_entered();
 
 	TextEditorVanillaEditor();
 	~TextEditorVanillaEditor();
@@ -65,18 +58,6 @@ protected:
 	static void _bind_methods();
 
 	Ref<TextEditorSettings> last_opened_files;
-
-	HBoxContainer *search_box;
-	LineEdit *search_box_line_edit;
-	CheckBox *search_box_match_case_cb;
-	CheckBox *search_box_whole_words_cb;
-	Button *search_box_close_button;
-
-	HBoxContainer *replace_box;
-	LineEdit *replace_box_replace_le;
-	LineEdit *replace_box_with;
-	Button *replace_box_button;
-	Button *replace_box_close;
 
 	TextureRect *file_info_last_modified_icon;
 	Label *file_info_last_modified;
