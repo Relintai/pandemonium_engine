@@ -1,6 +1,7 @@
 #include "html_parser.h"
 
 #include "core/error_macros.h"
+#include "core/log/logger.h"
 #include "core/print_string.h"
 
 bool HTMLParserAttribute::match_attrib(const String &attrib) {
@@ -17,7 +18,7 @@ bool HTMLParserAttribute::contains_data(const String &d) {
 	return data.find(d) != -1;
 }
 
-String HTMLParserAttribute::to_string() {
+String HTMLParserAttribute::convert_to_string() const {
 	if (single) {
 		return attribute;
 	}
@@ -29,8 +30,8 @@ String HTMLParserAttribute::to_string() {
 	}
 }
 
-void HTMLParserAttribute::print() {
-	print_verbose(to_string());
+void HTMLParserAttribute::print() const {
+	PLOG_MSG(convert_to_string());
 }
 
 HTMLParserAttribute::HTMLParserAttribute() {
@@ -40,53 +41,53 @@ HTMLParserAttribute::HTMLParserAttribute() {
 HTMLParserAttribute::~HTMLParserAttribute() {
 }
 
-HTMLParserTag *HTMLParserTag::get_first(const String &t) {
+Ref<HTMLParserTag> HTMLParserTag::get_first(const String &t) {
 	if (tag == t) {
-		return this;
+		return Ref<HTMLParserTag>(this);
 	}
 
 	for (int i = 0; i < tags.size(); ++i) {
-		HTMLParserTag *ht = tags[i]->get_first(t);
+		Ref<HTMLParserTag> ht = tags.write[i]->get_first(t);
 
-		if (ht) {
+		if (ht.is_valid()) {
 			return ht;
 		}
 	}
 
-	return nullptr;
+	return Ref<HTMLParserTag>();
 }
 
-HTMLParserTag *HTMLParserTag::get_first(const String &t, const String &attrib, const String &val) {
+Ref<HTMLParserTag> HTMLParserTag::get_first(const String &t, const String &attrib, const String &val) {
 	if (tag == t) {
 		if (has_attribute(attrib, val)) {
-			return this;
+			return Ref<HTMLParserTag>(this);
 		}
 	}
 
 	for (int i = 0; i < tags.size(); ++i) {
-		HTMLParserTag *ht = tags[i]->get_first(t, attrib, val);
+		Ref<HTMLParserTag> ht = tags.write[i]->get_first(t, attrib, val);
 
-		if (ht) {
+		if (ht.is_valid()) {
 			return ht;
 		}
 	}
 
-	return nullptr;
+	return Ref<HTMLParserTag>();
 }
 
 String HTMLParserTag::get_attribute_value(const String &attrib) {
-	HTMLParserAttribute *a = get_attribute(attrib);
+	Ref<HTMLParserAttribute> a = get_attribute(attrib);
 
-	if (a) {
+	if (a.is_valid()) {
 		return a->data;
 	}
 
 	return "";
 }
 
-HTMLParserAttribute *HTMLParserTag::get_attribute(const String &attrib) {
+Ref<HTMLParserAttribute> HTMLParserTag::get_attribute(const String &attrib) {
 	for (int i = 0; i < attributes.size(); ++i) {
-		HTMLParserAttribute *a = attributes[i];
+		Ref<HTMLParserAttribute> a = attributes[i];
 
 		if (a->match_attrib(attrib)) {
 			return a;
@@ -98,7 +99,7 @@ HTMLParserAttribute *HTMLParserTag::get_attribute(const String &attrib) {
 
 bool HTMLParserTag::has_attribute(const String &attrib) {
 	for (int i = 0; i < attributes.size(); ++i) {
-		HTMLParserAttribute *a = attributes[i];
+		Ref<HTMLParserAttribute> a = attributes[i];
 
 		if (a->match_attrib(attrib)) {
 			return true;
@@ -108,9 +109,9 @@ bool HTMLParserTag::has_attribute(const String &attrib) {
 	return false;
 }
 
-HTMLParserAttribute *HTMLParserTag::get_attribute(const String &attrib, const String &contains_val) {
+Ref<HTMLParserAttribute> HTMLParserTag::get_attribute(const String &attrib, const String &contains_val) {
 	for (int i = 0; i < attributes.size(); ++i) {
-		HTMLParserAttribute *a = attributes[i];
+		Ref<HTMLParserAttribute> a = attributes[i];
 
 		if (a->match_attrib(attrib) && a->contains_data(contains_val)) {
 			return a;
@@ -122,7 +123,7 @@ HTMLParserAttribute *HTMLParserTag::get_attribute(const String &attrib, const St
 
 bool HTMLParserTag::has_attribute(const String &attrib, const String &contains_val) {
 	for (int i = 0; i < attributes.size(); ++i) {
-		HTMLParserAttribute *a = attributes[i];
+		Ref<HTMLParserAttribute> a = attributes[i];
 
 		if (a->match_attrib(attrib) && a->contains_data(contains_val)) {
 			return true;
@@ -240,7 +241,8 @@ void HTMLParserTag::parse_args(const String &args) {
 
 		int equals_index = args.find_char('=', i);
 
-		HTMLParserAttribute *a = memnew(HTMLParserAttribute);
+		Ref<HTMLParserAttribute> a;
+		a.instance();
 
 		if (equals_index == -1) {
 			a->attribute = args.substr(i, args.size() - i);
@@ -300,7 +302,7 @@ void HTMLParserTag::parse_args(const String &args) {
 	}
 }
 
-String HTMLParserTag::to_string(const int level) {
+String HTMLParserTag::convert_to_string(const int level) const {
 	String s;
 
 	s += String(" ").repeat(level);
@@ -313,7 +315,7 @@ String HTMLParserTag::to_string(const int level) {
 			s += "(!CONTENT TAG HAS TAGS!)\n";
 
 			for (int i = 0; i < tags.size(); ++i) {
-				s += tags[i]->to_string(level + 1) + "\n";
+				s += tags[i]->convert_to_string(level + 1) + "\n";
 			}
 		}
 	} else if (type == HTML_PARSER_TAG_TYPE_OPENING_TAG) {
@@ -322,13 +324,13 @@ String HTMLParserTag::to_string(const int level) {
 		s += "<" + tag;
 
 		for (int i = 0; i < attributes.size(); ++i) {
-			s += " " + attributes[i]->to_string();
+			s += " " + attributes[i]->convert_to_string();
 		}
 
 		s += ">\n";
 
 		for (int i = 0; i < tags.size(); ++i) {
-			s += tags[i]->to_string(ln);
+			s += tags[i]->convert_to_string(ln);
 		}
 
 		s += String(" ").repeat(level);
@@ -344,14 +346,14 @@ String HTMLParserTag::to_string(const int level) {
 			s += "(!CLOSING TAG HAS TAGS!)\n";
 
 			for (int i = 0; i < tags.size(); ++i) {
-				s += tags[i]->to_string(level + 1) + "\n";
+				s += tags[i]->convert_to_string(level + 1) + "\n";
 			}
 		}
 	} else if (type == HTML_PARSER_TAG_TYPE_SELF_CLOSING_TAG) {
 		s += "<" + tag;
 
 		for (int i = 0; i < attributes.size(); ++i) {
-			s += " " + attributes[i]->to_string();
+			s += " " + attributes[i]->convert_to_string();
 		}
 
 		s += "/>\n";
@@ -361,7 +363,7 @@ String HTMLParserTag::to_string(const int level) {
 			s += "(!SELF CLOSING TAG HAS TAGS!)\n";
 
 			for (int i = 0; i < tags.size(); ++i) {
-				s += tags[i]->to_string(level + 1) + "\n";
+				s += tags[i]->convert_to_string(level + 1) + "\n";
 			}
 		}
 	} else if (type == HTML_PARSER_TAG_TYPE_COMMENT) {
@@ -372,7 +374,7 @@ String HTMLParserTag::to_string(const int level) {
 			s += "(!COMMENT TAG HAS TAGS!)\n";
 
 			for (int i = 0; i < tags.size(); ++i) {
-				s += tags[i]->to_string(level + 1) + "\n";
+				s += tags[i]->convert_to_string(level + 1) + "\n";
 			}
 		}
 	} else if (type == HTML_PARSER_TAG_TYPE_DOCTYPE) {
@@ -383,20 +385,20 @@ String HTMLParserTag::to_string(const int level) {
 			s += "(!DOCTYPE TAG HAS TAGS!)\n";
 
 			for (int i = 0; i < tags.size(); ++i) {
-				s += tags[i]->to_string(level + 1) + "\n";
+				s += tags[i]->convert_to_string(level + 1) + "\n";
 			}
 		}
 	} else if (type == HTML_PARSER_TAG_TYPE_NONE) {
 		for (int i = 0; i < tags.size(); ++i) {
-			s += tags[i]->to_string(level) + "\n";
+			s += tags[i]->convert_to_string(level) + "\n";
 			s += String(" ").repeat(level);
 		}
 	}
 
 	return s;
 }
-void HTMLParserTag::print() {
-	print_verbose(to_string());
+void HTMLParserTag::print() const {
+	PLOG_MSG(convert_to_string());
 }
 
 HTMLParserTag::HTMLParserTag() {
@@ -404,17 +406,12 @@ HTMLParserTag::HTMLParserTag() {
 }
 
 HTMLParserTag::~HTMLParserTag() {
-	for (int i = 0; i < tags.size(); ++i) {
-		memdelete(tags[i]);
-	}
-
-	for (int i = 0; i < attributes.size(); ++i) {
-		memdelete(attributes[i]);
-	}
+	tags.clear();
+	attributes.clear();
 }
 
 void HTMLParser::parse(const String &data) {
-	Vector<HTMLParserTag *> tags;
+	Vector<Ref<HTMLParserTag>> tags;
 
 	// <script> content parsing is based on https://stackoverflow.com/questions/14574471/how-do-browsers-parse-a-script-tag-exactly
 	const int STATE_NONE = 0;
@@ -438,7 +435,7 @@ void HTMLParser::parse(const String &data) {
 
 				for (int j = i + 1; j < data.size(); ++j) {
 					if (data[j] == '>') {
-						HTMLParserTag *t = memnew(HTMLParserTag);
+						Ref<HTMLParserTag> t = memnew(HTMLParserTag);
 
 						t->data = data.substr(i, j - i + 1);
 						t->process();
@@ -454,7 +451,7 @@ void HTMLParser::parse(const String &data) {
 
 				for (int j = i + 1; j < data.size(); ++j) {
 					if (data[j] == '<') {
-						HTMLParserTag *t = memnew(HTMLParserTag);
+						Ref<HTMLParserTag> t = memnew(HTMLParserTag);
 
 						t->data = data.substr(i, j - i);
 						t->type = HTMLParserTag::HTML_PARSER_TAG_TYPE_CONTENT;
@@ -510,7 +507,7 @@ void HTMLParser::parse(const String &data) {
 
 				if (done) {
 					state = STATE_NONE;
-					HTMLParserTag *t = memnew(HTMLParserTag);
+					Ref<HTMLParserTag> t = memnew(HTMLParserTag);
 
 					t->data = data.substr(i, j - i);
 					t->type = HTMLParserTag::HTML_PARSER_TAG_TYPE_CONTENT;
@@ -524,69 +521,64 @@ void HTMLParser::parse(const String &data) {
 		}
 	}
 
-	if (root) {
-		memdelete(root);
-	}
-
-	root = memnew(HTMLParserTag);
+	root.instance();
 
 	// process tags into hierarchical order
-	Vector<HTMLParserTag *> tag_stack;
+	Vector<Ref<HTMLParserTag>> tag_stack;
 	for (int i = 0; i < tags.size(); ++i) {
-		HTMLParserTag *t = tags[i];
+		Ref<HTMLParserTag> t = tags[i];
 
-		ERR_CONTINUE_MSG(t == nullptr, "HTMLParser::parse: t == nullptr!");
+		ERR_CONTINUE_MSG(!t.is_valid(), "HTMLParser::parse: t == nullptr!");
 
 		if (t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_NONE) {
 			ERR_PRINT("HTMLParser::parse: t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_NONE!");
-			memdelete(t);
-			tags.write[i] = nullptr;
+			//memdelete(t);
+			tags.write[i].unref();
 			continue;
 		} else if (t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_OPENING_TAG) {
 			tag_stack.push_back(t);
 
-			tags.write[i] = nullptr;
+			tags.write[i].unref();
 			continue;
 		} else if (t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_SELF_CLOSING_TAG) {
 			if (tag_stack.size() == 0) {
 				root->tags.push_back(t);
 			} else {
-				tag_stack[tag_stack.size() - 1]->tags.push_back(t);
+				tag_stack.write[tag_stack.size() - 1]->tags.push_back(t);
 			}
 
-			tags.write[i] = nullptr;
+			tags.write[i].unref();
 			continue;
 		} else if (t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_CONTENT) {
 			if (tag_stack.size() == 0) {
 				root->tags.push_back(t);
 			} else {
-				tag_stack[tag_stack.size() - 1]->tags.push_back(t);
+				tag_stack.write[tag_stack.size() - 1]->tags.push_back(t);
 			}
 
-			tags.write[i] = nullptr;
+			tags.write[i].unref();
 			continue;
 		} else if (t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_COMMENT) {
 			if (tag_stack.size() == 0) {
 				root->tags.push_back(t);
 			} else {
-				tag_stack[tag_stack.size() - 1]->tags.push_back(t);
+				tag_stack.write[tag_stack.size() - 1]->tags.push_back(t);
 			}
 
-			tags.write[i] = nullptr;
+			tags.write[i].unref();
 			continue;
 		} else if (t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_DOCTYPE) {
 			if (tag_stack.size() == 0) {
 				root->tags.push_back(t);
 			} else {
-				tag_stack[tag_stack.size() - 1]->tags.push_back(t);
+				tag_stack.write[tag_stack.size() - 1]->tags.push_back(t);
 			}
 
-			tags.write[i] = nullptr;
+			tags.write[i].unref();
 			continue;
 		} else if (t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_CLOSING_TAG) {
 			if (tag_stack.size() == 0) {
-				memdelete(t);
-				tags.write[i] = nullptr;
+				tags.write[i].unref();
 
 				// ill-formed html
 				continue;
@@ -595,7 +587,7 @@ void HTMLParser::parse(const String &data) {
 			// find it's pair
 			int tag_index = 0;
 			for (int j = tag_stack.size() - 1; j > 0; --j) {
-				HTMLParserTag *ts = tag_stack[j];
+				Ref<HTMLParserTag> ts = tag_stack[j];
 
 				// we sould only have opening tags on the stack
 				if (ts->tag == t->tag) {
@@ -605,12 +597,12 @@ void HTMLParser::parse(const String &data) {
 				}
 			}
 
-			HTMLParserTag *opening_tag = tag_stack[tag_index];
+			Ref<HTMLParserTag> opening_tag = tag_stack[tag_index];
 
 			// mark everything else that we found before finding the opening tag as self closing, and add them to out opening tag
 			// If the html is ill formed, it just grabs everything from the tag stack
 			for (int j = tag_index + 1; j < tag_stack.size(); ++j) {
-				HTMLParserTag *ts = tag_stack[j];
+				Ref<HTMLParserTag> ts = tag_stack[j];
 
 				ts->type = HTMLParserTag::HTML_PARSER_TAG_TYPE_SELF_CLOSING_TAG;
 				opening_tag->tags.push_back(ts);
@@ -621,11 +613,10 @@ void HTMLParser::parse(const String &data) {
 			if (tag_stack.size() == 0) {
 				root->tags.push_back(opening_tag);
 			} else {
-				tag_stack[tag_stack.size() - 1]->tags.push_back(opening_tag);
+				tag_stack.write[tag_stack.size() - 1]->tags.push_back(opening_tag);
 			}
 
-			memdelete(t);
-			tags.write[i] = nullptr;
+			tags.write[i].unref();
 
 			continue;
 		}
@@ -637,36 +628,31 @@ void HTMLParser::parse(const String &data) {
 	}
 
 	for (int i = 0; i < tags.size(); ++i) {
-		HTMLParserTag *t = tags[i];
+		Ref<HTMLParserTag> t = tags[i];
 
-		if (t != nullptr) {
+		if (t.is_valid()) {
 			ERR_PRINT("HTMLParser::parse(const String &data): tag was not processed!\n");
 			t->print();
-
-			memdelete(t);
 		}
 	}
 }
 
-String HTMLParser::to_string() {
-	if (!root) {
+String HTMLParser::convert_to_string() const {
+	if (!root.is_valid()) {
 		return "";
 	}
 
-	return root->to_string();
+	return root->convert_to_string();
 }
-void HTMLParser::print() {
-	if (root) {
+void HTMLParser::print() const {
+	if (root.is_valid()) {
 		root->print();
 	}
 }
 
 HTMLParser::HTMLParser() {
-	root = nullptr;
 }
 
 HTMLParser::~HTMLParser() {
-	if (root) {
-		memdelete(root);
-	}
+	root.unref();
 }
