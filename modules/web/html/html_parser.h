@@ -10,9 +10,14 @@ class HTMLParserAttribute : public Reference {
 	GDCLASS(HTMLParserAttribute, Reference);
 
 public:
-	String attribute;
-	String data;
-	bool single;
+	String get_attribute();
+	void set_attribute(const String &val);
+
+	String get_data();
+	void set_data(const String &val);
+
+	bool get_single();
+	void set_single(const bool &val);
 
 	bool match_attrib(const String &attrib);
 	bool match_data(const String &d);
@@ -24,6 +29,11 @@ public:
 
 	HTMLParserAttribute();
 	virtual ~HTMLParserAttribute();
+
+protected:
+	String _attribute;
+	String _data;
+	bool _single;
 };
 
 class HTMLParserTag : public Reference {
@@ -40,13 +50,32 @@ public:
 		HTML_PARSER_TAG_TYPE_CONTENT
 	};
 
-	int type;
+	int get_type();
+	void set_type(const int &val);
 
-	String tag;
-	String data;
+	String get_tag();
+	void set_tag(const String &val);
 
-	Vector<Ref<HTMLParserTag>> tags;
-	Vector<Ref<HTMLParserAttribute>> attributes;
+	String get_data();
+	void set_data(const String &val);
+
+	void add_child_tag(const Ref<HTMLParserTag> &tag);
+	void remote_child_tag(const int index);
+	Ref<HTMLParserTag> get_child_tag(const int index);
+	int get_child_tag_count() const;
+	void clear_child_tags();
+
+	Vector<Variant> get_child_tags();
+	void set_child_tags(const Vector<Variant> &val);
+
+	void add_child_attribute(const Ref<HTMLParserAttribute> &tag);
+	void remote_child_attribute(const int index);
+	Ref<HTMLParserAttribute> get_child_attribute(const int index);
+	int get_child_attribute_count() const;
+	void clear_child_attributes();
+
+	Vector<Variant> get_attributes();
+	void set_attributes(const Vector<Variant> &val);
 
 	Ref<HTMLParserTag> get_first(const String &t);
 	Ref<HTMLParserTag> get_first(const String &t, const String &attrib, const String &val);
@@ -67,13 +96,22 @@ public:
 
 	HTMLParserTag();
 	virtual ~HTMLParserTag();
+
+protected:
+	int _type;
+
+	String _tag;
+	String _data;
+
+	Vector<Ref<HTMLParserTag>> _tags;
+	Vector<Ref<HTMLParserAttribute>> _attributes;
 };
 
 class HTMLParser : public Reference {
 	GDCLASS(HTMLParser, Reference);
 
 public:
-	Ref<HTMLParserTag> root;
+	Ref<HTMLParserTag> get_root();
 
 	void parse(const String &data);
 	//void parse_tag(const String &data, const int index);
@@ -83,6 +121,9 @@ public:
 
 	HTMLParser();
 	virtual ~HTMLParser();
+
+protected:
+	Ref<HTMLParserTag> _root;
 };
 
 #endif
