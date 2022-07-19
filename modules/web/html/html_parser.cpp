@@ -2,7 +2,6 @@
 
 #include "core/error_macros.h"
 #include "core/log/logger.h"
-#include "core/print_string.h"
 
 bool HTMLParserAttribute::match_attrib(const String &attrib) {
 	return attribute == attrib;
@@ -94,7 +93,7 @@ Ref<HTMLParserAttribute> HTMLParserTag::get_attribute(const String &attrib) {
 		}
 	}
 
-	return nullptr;
+	return Ref<HTMLParserAttribute>();
 }
 
 bool HTMLParserTag::has_attribute(const String &attrib) {
@@ -118,7 +117,7 @@ Ref<HTMLParserAttribute> HTMLParserTag::get_attribute(const String &attrib, cons
 		}
 	}
 
-	return nullptr;
+	return Ref<HTMLParserAttribute>();
 }
 
 bool HTMLParserTag::has_attribute(const String &attrib, const String &contains_val) {
@@ -528,7 +527,7 @@ void HTMLParser::parse(const String &data) {
 	for (int i = 0; i < tags.size(); ++i) {
 		Ref<HTMLParserTag> t = tags[i];
 
-		ERR_CONTINUE_MSG(!t.is_valid(), "HTMLParser::parse: t == nullptr!");
+		ERR_CONTINUE(!t.is_valid());
 
 		if (t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_NONE) {
 			ERR_PRINT("HTMLParser::parse: t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_NONE!");
