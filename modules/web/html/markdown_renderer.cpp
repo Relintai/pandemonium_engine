@@ -59,6 +59,9 @@ String MarkdownRenderer::render_to_html(const String &markdown) {
 		case RENDER_TYPE_HTML_TOC: {
 			renderer = hoedown_html_toc_renderer_new(_toc_level);
 		} break;
+		default: {
+			renderer = hoedown_html_renderer_new(static_cast<hoedown_html_flags>(_html_flags), _toc_level);
+		} break;
 	}
 
 	int hoedown_ext_flags = 0;
