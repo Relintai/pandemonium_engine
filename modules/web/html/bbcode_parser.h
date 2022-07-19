@@ -21,7 +21,8 @@ public:
 
 	bool match_attrib(const String &attrib);
 	bool match_data(const String &d);
-	bool match_data(const Vector<String> &d);
+	bool match_all_data(const Vector<String> &d);
+	bool match_all_data_bind(const PoolStringArray &d);
 	bool contains_data(const String &d);
 
 	String convert_to_string() const;
@@ -31,6 +32,8 @@ public:
 	virtual ~BBCodeParserAttribute();
 
 protected:
+	static void _bind_methods();
+
 	String _attribute;
 	String _data;
 	bool _single;
@@ -76,15 +79,15 @@ public:
 	void set_attributes(const Vector<Variant> &val);
 
 	Ref<BBCodeParserTag> get_first(const String &t);
-	Ref<BBCodeParserTag> get_first(const String &t, const String &attrib, const String &val);
+	Ref<BBCodeParserTag> get_firstc(const String &t, const String &attrib, const String &val);
 
 	String get_attribute_value(const String &attrib);
 
 	Ref<BBCodeParserAttribute> get_attribute(const String &attrib);
 	bool has_attribute(const String &attrib);
 
-	Ref<BBCodeParserAttribute> get_attribute(const String &attrib, const String &contains_val);
-	bool has_attribute(const String &attrib, const String &contains_val);
+	Ref<BBCodeParserAttribute> get_attributec(const String &attrib, const String &contains_val);
+	bool has_attributec(const String &attrib, const String &contains_val);
 
 	void process();
 	void parse_args(const String &args);
@@ -96,6 +99,8 @@ public:
 	virtual ~BBCodeParserTag();
 
 protected:
+	static void _bind_methods();
+
 	int _type;
 
 	String _tag;
@@ -121,7 +126,11 @@ public:
 	virtual ~BBCodeParser();
 
 protected:
+	static void _bind_methods();
+
 	Ref<BBCodeParserTag> _root;
 };
+
+VARIANT_ENUM_CAST(BBCodeParserTag::BBCodeParserTagType);
 
 #endif

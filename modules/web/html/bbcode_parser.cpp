@@ -30,7 +30,11 @@ bool BBCodeParserAttribute::match_attrib(const String &attrib) {
 bool BBCodeParserAttribute::match_data(const String &d) {
 	return _data == d;
 }
-bool BBCodeParserAttribute::match_data(const Vector<String> &d) {
+bool BBCodeParserAttribute::match_all_data(const Vector<String> &d) {
+	// todo
+	return false;
+}
+bool BBCodeParserAttribute::match_all_data_bind(const PoolStringArray &d) {
 	// todo
 	return false;
 }
@@ -60,6 +64,28 @@ BBCodeParserAttribute::BBCodeParserAttribute() {
 
 BBCodeParserAttribute::~BBCodeParserAttribute() {
 }
+
+void BBCodeParserAttribute::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_attribute"), &BBCodeParserAttribute::get_attribute);
+	ClassDB::bind_method(D_METHOD("set_attribute", "val"), &BBCodeParserAttribute::set_attribute);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "attribute"), "set_attribute", "get_attribute");
+
+	ClassDB::bind_method(D_METHOD("get_data"), &BBCodeParserAttribute::get_data);
+	ClassDB::bind_method(D_METHOD("set_data", "val"), &BBCodeParserAttribute::set_data);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "data"), "set_data", "get_data");
+
+	ClassDB::bind_method(D_METHOD("get_single"), &BBCodeParserAttribute::get_single);
+	ClassDB::bind_method(D_METHOD("set_single", "val"), &BBCodeParserAttribute::set_single);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "single"), "set_single", "get_single");
+
+	ClassDB::bind_method(D_METHOD("match_attrib", "attrib"), &BBCodeParserAttribute::match_attrib);
+	ClassDB::bind_method(D_METHOD("match_data", "data"), &BBCodeParserAttribute::match_data);
+	ClassDB::bind_method(D_METHOD("match_all_data", "data"), &BBCodeParserAttribute::match_all_data_bind);
+	ClassDB::bind_method(D_METHOD("contains_data", "data"), &BBCodeParserAttribute::contains_data);
+
+	ClassDB::bind_method(D_METHOD("convert_to_string"), &BBCodeParserAttribute::convert_to_string);
+	ClassDB::bind_method(D_METHOD("print"), &BBCodeParserAttribute::print);
+};
 
 void BBCodeParserTag::add_child_tag(const Ref<BBCodeParserTag> &tag) {
 	_tags.push_back(tag);
@@ -149,15 +175,15 @@ Ref<BBCodeParserTag> BBCodeParserTag::get_first(const String &t) {
 	return Ref<BBCodeParserTag>();
 }
 
-Ref<BBCodeParserTag> BBCodeParserTag::get_first(const String &t, const String &attrib, const String &val) {
+Ref<BBCodeParserTag> BBCodeParserTag::get_firstc(const String &t, const String &attrib, const String &val) {
 	if (_tag == t) {
-		if (has_attribute(attrib, val)) {
+		if (has_attributec(attrib, val)) {
 			return Ref<BBCodeParserTag>(this);
 		}
 	}
 
 	for (int i = 0; i < _tags.size(); ++i) {
-		Ref<BBCodeParserTag> ht = _tags.write[i]->get_first(t, attrib, val);
+		Ref<BBCodeParserTag> ht = _tags.write[i]->get_firstc(t, attrib, val);
 
 		if (ht.is_valid()) {
 			return ht;
@@ -201,7 +227,7 @@ bool BBCodeParserTag::has_attribute(const String &attrib) {
 	return false;
 }
 
-Ref<BBCodeParserAttribute> BBCodeParserTag::get_attribute(const String &attrib, const String &contains_val) {
+Ref<BBCodeParserAttribute> BBCodeParserTag::get_attributec(const String &attrib, const String &contains_val) {
 	for (int i = 0; i < _attributes.size(); ++i) {
 		Ref<BBCodeParserAttribute> a = _attributes[i];
 
@@ -213,7 +239,7 @@ Ref<BBCodeParserAttribute> BBCodeParserTag::get_attribute(const String &attrib, 
 	return Ref<BBCodeParserAttribute>();
 }
 
-bool BBCodeParserTag::has_attribute(const String &attrib, const String &contains_val) {
+bool BBCodeParserTag::has_attributec(const String &attrib, const String &contains_val) {
 	for (int i = 0; i < _attributes.size(); ++i) {
 		Ref<BBCodeParserAttribute> a = _attributes[i];
 
@@ -459,6 +485,63 @@ BBCodeParserTag::~BBCodeParserTag() {
 	_attributes.clear();
 }
 
+void BBCodeParserTag::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_type"), &BBCodeParserTag::get_type);
+	ClassDB::bind_method(D_METHOD("set_type", "val"), &BBCodeParserTag::set_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "type"), "set_type", "get_type");
+
+	ClassDB::bind_method(D_METHOD("get_tag"), &BBCodeParserTag::get_tag);
+	ClassDB::bind_method(D_METHOD("set_tag", "val"), &BBCodeParserTag::set_tag);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "tag"), "set_tag", "get_tag");
+
+	ClassDB::bind_method(D_METHOD("get_data"), &BBCodeParserTag::get_data);
+	ClassDB::bind_method(D_METHOD("set_data", "val"), &BBCodeParserTag::set_data);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "data"), "set_data", "get_data");
+
+	ClassDB::bind_method(D_METHOD("add_child_tag", "tag"), &BBCodeParserTag::add_child_tag);
+	ClassDB::bind_method(D_METHOD("remote_child_tag", "index"), &BBCodeParserTag::remote_child_tag);
+	ClassDB::bind_method(D_METHOD("get_child_tag", "index"), &BBCodeParserTag::get_child_tag);
+	ClassDB::bind_method(D_METHOD("get_child_tag_count"), &BBCodeParserTag::get_child_tag_count);
+	ClassDB::bind_method(D_METHOD("clear_child_tags"), &BBCodeParserTag::clear_child_tags);
+
+	ClassDB::bind_method(D_METHOD("get_child_tags"), &BBCodeParserTag::get_child_tags);
+	ClassDB::bind_method(D_METHOD("set_child_tags", "val"), &BBCodeParserTag::set_child_tags);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "child_tags", PROPERTY_HINT_NONE, "17/17:BBCodeParserTag", PROPERTY_USAGE_DEFAULT, "BBCodeParserTag"), "set_child_tags", "get_child_tags");
+
+	ClassDB::bind_method(D_METHOD("add_child_attribute", "tag"), &BBCodeParserTag::add_child_attribute);
+	ClassDB::bind_method(D_METHOD("remote_child_attribute", "index"), &BBCodeParserTag::remote_child_attribute);
+	ClassDB::bind_method(D_METHOD("get_child_attribute", "index"), &BBCodeParserTag::get_child_attribute);
+	ClassDB::bind_method(D_METHOD("get_child_attribute_count"), &BBCodeParserTag::get_child_attribute_count);
+	ClassDB::bind_method(D_METHOD("clear_child_attributes"), &BBCodeParserTag::clear_child_attributes);
+
+	ClassDB::bind_method(D_METHOD("get_attributes"), &BBCodeParserTag::get_attributes);
+	ClassDB::bind_method(D_METHOD("set_attributes", "val"), &BBCodeParserTag::set_attributes);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "attributes", PROPERTY_HINT_NONE, "17/17:BBCodeParserAttribute", PROPERTY_USAGE_DEFAULT, "BBCodeParserAttribute"), "set_attributes", "get_attributes");
+
+	ClassDB::bind_method(D_METHOD("get_first", "t"), &BBCodeParserTag::get_first);
+	ClassDB::bind_method(D_METHOD("get_firstc", "t", "attrib", "val"), &BBCodeParserTag::get_firstc);
+
+	ClassDB::bind_method(D_METHOD("get_attribute_value", "attrib"), &BBCodeParserTag::get_attribute_value);
+
+	ClassDB::bind_method(D_METHOD("get_attribute", "attrib"), &BBCodeParserTag::get_attribute);
+	ClassDB::bind_method(D_METHOD("has_attribute", "attrib"), &BBCodeParserTag::has_attribute);
+
+	ClassDB::bind_method(D_METHOD("get_attributec", "attrib", "contains_val"), &BBCodeParserTag::get_attributec);
+	ClassDB::bind_method(D_METHOD("has_attributec", "attrib", "contains_val"), &BBCodeParserTag::has_attributec);
+
+	ClassDB::bind_method(D_METHOD("process"), &BBCodeParserTag::process);
+	ClassDB::bind_method(D_METHOD("parse_args", "args"), &BBCodeParserTag::parse_args);
+
+	ClassDB::bind_method(D_METHOD("convert_to_string", "level"), &BBCodeParserTag::convert_to_string, 0);
+	ClassDB::bind_method(D_METHOD("print"), &BBCodeParserTag::print);
+
+	BIND_ENUM_CONSTANT(BBCODE_PARSER_TAG_TYPE_NONE);
+	BIND_ENUM_CONSTANT(BBCODE_PARSER_TAG_TYPE_OPENING_TAG);
+	BIND_ENUM_CONSTANT(BBCODE_PARSER_TAG_TYPE_CLOSING_TAG);
+	BIND_ENUM_CONSTANT(BBCODE_PARSER_TAG_TYPE_SELF_CLOSING_TAG);
+	BIND_ENUM_CONSTANT(BBCODE_PARSER_TAG_TYPE_CONTENT);
+}
+
 Ref<BBCodeParserTag> BBCodeParser::get_root() {
 	return _root;
 }
@@ -621,3 +704,10 @@ BBCodeParser::BBCodeParser() {
 BBCodeParser::~BBCodeParser() {
 	_root.unref();
 }
+
+void BBCodeParser::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_root"), &BBCodeParser::get_root);
+	ClassDB::bind_method(D_METHOD("parse", "data"), &BBCodeParser::parse);
+	ClassDB::bind_method(D_METHOD("convert_to_string"), &BBCodeParser::convert_to_string);
+	ClassDB::bind_method(D_METHOD("print"), &BBCodeParser::print);
+};
