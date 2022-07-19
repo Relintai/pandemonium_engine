@@ -87,6 +87,27 @@ void BBCodeParserAttribute::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("print"), &BBCodeParserAttribute::print);
 };
 
+int BBCodeParserTag::get_type() {
+	return _type;
+}
+void BBCodeParserTag::set_type(const int &val) {
+	_type = val;
+}
+
+String BBCodeParserTag::get_tag() {
+	return _tag;
+}
+void BBCodeParserTag::set_tag(const String &val) {
+	_tag = val;
+}
+
+String BBCodeParserTag::get_data() {
+	return _data;
+}
+void BBCodeParserTag::set_data(const String &val) {
+	_data = val;
+}
+
 void BBCodeParserTag::add_child_tag(const Ref<BBCodeParserTag> &tag) {
 	_tags.push_back(tag);
 }

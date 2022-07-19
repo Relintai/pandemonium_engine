@@ -35,7 +35,7 @@ bool HTMLParserAttribute::match_all_data(const Vector<String> &d) {
 	// todo
 	return false;
 }
-bool match_all_data_bind(const PoolStringArray &d) {
+bool HTMLParserAttribute::match_all_data_bind(const PoolStringArray &d) {
 	// todo
 	return false;
 }
@@ -87,6 +87,27 @@ void HTMLParserAttribute::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("convert_to_string"), &HTMLParserAttribute::convert_to_string);
 	ClassDB::bind_method(D_METHOD("print"), &HTMLParserAttribute::print);
 };
+
+int HTMLParserTag::get_type() {
+	return _type;
+}
+void HTMLParserTag::set_type(const int &val) {
+	_type = val;
+}
+
+String HTMLParserTag::get_tag() {
+	return _tag;
+}
+void HTMLParserTag::set_tag(const String &val) {
+	_tag = val;
+}
+
+String HTMLParserTag::get_data() {
+	return _data;
+}
+void HTMLParserTag::set_data(const String &val) {
+	_data = val;
+}
 
 void HTMLParserTag::add_child_tag(const Ref<HTMLParserTag> &tag) {
 	_tags.push_back(tag);

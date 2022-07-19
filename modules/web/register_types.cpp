@@ -26,8 +26,10 @@ SOFTWARE.
 
 #include "file_cache.h"
 
+#include "html/bbcode_parser.h"
 #include "html/form_validator.h"
 #include "html/html_builder_bind.h"
+#include "html/html_parser.h"
 #include "html/paginator.h"
 
 #include "http/csrf_token.h"
@@ -78,6 +80,14 @@ void register_web_types() {
 	ClassDB::register_class<FormNeedToMatchOtherFieldEntry>();
 	ClassDB::register_class<FormField>();
 	ClassDB::register_class<FormValidator>();
+
+	ClassDB::register_class<HTMLParserAttribute>();
+	ClassDB::register_class<HTMLParserTag>();
+	ClassDB::register_class<HTMLParser>();
+
+	ClassDB::register_class<BBCodeParserAttribute>();
+	ClassDB::register_class<BBCodeParserTag>();
+	ClassDB::register_class<BBCodeParser>();
 
 	ClassDB::register_class<FileCache>();
 

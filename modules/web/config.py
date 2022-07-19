@@ -50,6 +50,14 @@ def get_doc_classes():
     	"FormField",
 	    "FormValidator",
 
+	    "HTMLParserAttribute",
+	    "HTMLParserTag",
+	    "HTMLParser",
+
+    	"BBCodeParserAttribute",
+	    "BBCodeParserTag",
+	    "BBCodeParser",
+
         "WebServerSimple",
 
         "StaticPage",
