@@ -4,7 +4,11 @@
 #include "core/ustring.h"
 #include "core/vector.h"
 
-class BBCodeParserAttribute {
+#include "core/reference.h"
+
+class BBCodeParserAttribute : public Reference {
+	GDCLASS(BBCodeParserAttribute, Reference);
+
 public:
 	String attribute;
 	String data;
@@ -15,14 +19,16 @@ public:
 	bool match_data(const Vector<String> &d);
 	bool contains_data(const String &d);
 
-	String to_string();
-	void print();
+	String convert_to_string() const;
+	void print() const;
 
 	BBCodeParserAttribute();
 	virtual ~BBCodeParserAttribute();
 };
 
-class BBCodeParserTag {
+class BBCodeParserTag : public Reference {
+	GDCLASS(BBCodeParserTag, Reference);
+
 public:
 	enum BBCodeParserTagType {
 		BBCODE_PARSER_TAG_TYPE_NONE = 0,
@@ -37,39 +43,41 @@ public:
 	String tag;
 	String data;
 
-	Vector<BBCodeParserTag *> tags;
-	Vector<BBCodeParserAttribute *> attributes;
+	Vector<Ref<BBCodeParserTag>> tags;
+	Vector<Ref<BBCodeParserAttribute>> attributes;
 
-	BBCodeParserTag *get_first(const String &t);
-	BBCodeParserTag *get_first(const String &t, const String &attrib, const String &val);
+	Ref<BBCodeParserTag> get_first(const String &t);
+	Ref<BBCodeParserTag> get_first(const String &t, const String &attrib, const String &val);
 
 	String get_attribute_value(const String &attrib);
 
-	BBCodeParserAttribute *get_attribute(const String &attrib);
+	Ref<BBCodeParserAttribute> get_attribute(const String &attrib);
 	bool has_attribute(const String &attrib);
 
-	BBCodeParserAttribute *get_attribute(const String &attrib, const String &contains_val);
+	Ref<BBCodeParserAttribute> get_attribute(const String &attrib, const String &contains_val);
 	bool has_attribute(const String &attrib, const String &contains_val);
 
 	void process();
 	void parse_args(const String &args);
 
-	String to_string(const int level = 0);
-	void print();
+	String convert_to_string(const int level = 0) const;
+	void print() const;
 
 	BBCodeParserTag();
 	virtual ~BBCodeParserTag();
 };
 
-class BBCodeParser {
+class BBCodeParser : public Reference {
+	GDCLASS(BBCodeParser, Reference);
+
 public:
-	BBCodeParserTag *root;
+	Ref<BBCodeParserTag> root;
 
 	void parse(const String &data);
 	//void parse_tag(const String &data, const int index);
 
-	String to_string();
-	void print();
+	String convert_to_string() const;
+	void print() const;
 
 	BBCodeParser();
 	virtual ~BBCodeParser();
