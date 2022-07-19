@@ -79,7 +79,7 @@ autolink_delim(uint8_t *data, size_t link_end, size_t max_rewind, size_t size)
 	if (copen != 0) {
 		size_t closing = 0;
 		size_t opening = 0;
-		size_t i = 0;
+		i = 0;
 
 		/* Try to close the final punctuation sign in this same line;
 		 * if we managed to close it outside of the URL, that means that it's
