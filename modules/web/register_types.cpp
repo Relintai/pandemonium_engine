@@ -30,6 +30,7 @@ SOFTWARE.
 #include "html/form_validator.h"
 #include "html/html_builder_bind.h"
 #include "html/html_parser.h"
+#include "html/markdown_renderer.h"
 #include "html/paginator.h"
 
 #include "http/csrf_token.h"
@@ -88,6 +89,8 @@ void register_web_types() {
 	ClassDB::register_class<BBCodeParserAttribute>();
 	ClassDB::register_class<BBCodeParserTag>();
 	ClassDB::register_class<BBCodeParser>();
+
+	ClassDB::register_class<MarkdownRenderer>();
 
 	ClassDB::register_class<FileCache>();
 

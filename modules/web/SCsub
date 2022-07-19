@@ -29,6 +29,17 @@ sources = [
     "html/bbcode_parser.cpp",
     "html/form_validator.cpp",
 
+    "html/libs/hoedown/autolink.c",
+    "html/libs/hoedown/buffer.c",
+    "html/libs/hoedown/document.c",
+    "html/libs/hoedown/escape.c",
+    "html/libs/hoedown/html.c",
+    "html/libs/hoedown/html_blocks.c",
+    "html/libs/hoedown/html_smartypants.c",
+    "html/libs/hoedown/stack.c",
+    "html/libs/hoedown/version.c",
+    "html/markdown_renderer.cpp",
+
     "http_server_simple/http_server_simple.cpp",
     "http_server_simple/web_server_simple.cpp",
     "http_server_simple/simple_web_server_request.cpp",

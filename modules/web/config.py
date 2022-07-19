@@ -58,6 +58,8 @@ def get_doc_classes():
 	    "BBCodeParserTag",
 	    "BBCodeParser",
 
+	    "MarkdownRenderer",
+
         "WebServerSimple",
 
         "StaticPage",
