@@ -1,5 +1,6 @@
 #include "html_parser.h"
 
+#include "core/class_db.h"
 #include "core/error_macros.h"
 #include "core/log/logger.h"
 
@@ -30,7 +31,11 @@ bool HTMLParserAttribute::match_attrib(const String &attrib) {
 bool HTMLParserAttribute::match_data(const String &d) {
 	return _data == d;
 }
-bool HTMLParserAttribute::match_data(const Vector<String> &d) {
+bool HTMLParserAttribute::match_all_data(const Vector<String> &d) {
+	// todo
+	return false;
+}
+bool match_all_data_bind(const PoolStringArray &d) {
 	// todo
 	return false;
 }
@@ -60,6 +65,28 @@ HTMLParserAttribute::HTMLParserAttribute() {
 
 HTMLParserAttribute::~HTMLParserAttribute() {
 }
+
+void HTMLParserAttribute::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_attribute"), &HTMLParserAttribute::get_attribute);
+	ClassDB::bind_method(D_METHOD("set_attribute", "val"), &HTMLParserAttribute::set_attribute);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "attribute"), "set_attribute", "get_attribute");
+
+	ClassDB::bind_method(D_METHOD("get_data"), &HTMLParserAttribute::get_data);
+	ClassDB::bind_method(D_METHOD("set_data", "val"), &HTMLParserAttribute::set_data);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "data"), "set_data", "get_data");
+
+	ClassDB::bind_method(D_METHOD("get_single"), &HTMLParserAttribute::get_single);
+	ClassDB::bind_method(D_METHOD("set_single", "val"), &HTMLParserAttribute::set_single);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "single"), "set_single", "get_single");
+
+	ClassDB::bind_method(D_METHOD("match_attrib", "attrib"), &HTMLParserAttribute::match_attrib);
+	ClassDB::bind_method(D_METHOD("match_data", "data"), &HTMLParserAttribute::match_data);
+	ClassDB::bind_method(D_METHOD("match_all_data", "data"), &HTMLParserAttribute::match_all_data_bind);
+	ClassDB::bind_method(D_METHOD("contains_data", "data"), &HTMLParserAttribute::contains_data);
+
+	ClassDB::bind_method(D_METHOD("convert_to_string"), &HTMLParserAttribute::convert_to_string);
+	ClassDB::bind_method(D_METHOD("print"), &HTMLParserAttribute::print);
+};
 
 void HTMLParserTag::add_child_tag(const Ref<HTMLParserTag> &tag) {
 	_tags.push_back(tag);
@@ -149,15 +176,15 @@ Ref<HTMLParserTag> HTMLParserTag::get_first(const String &t) {
 	return Ref<HTMLParserTag>();
 }
 
-Ref<HTMLParserTag> HTMLParserTag::get_first(const String &t, const String &attrib, const String &val) {
+Ref<HTMLParserTag> HTMLParserTag::get_firstc(const String &t, const String &attrib, const String &val) {
 	if (_tag == t) {
-		if (has_attribute(attrib, val)) {
+		if (has_attributec(attrib, val)) {
 			return Ref<HTMLParserTag>(this);
 		}
 	}
 
 	for (int i = 0; i < _tags.size(); ++i) {
-		Ref<HTMLParserTag> ht = _tags.write[i]->get_first(t, attrib, val);
+		Ref<HTMLParserTag> ht = _tags.write[i]->get_firstc(t, attrib, val);
 
 		if (ht.is_valid()) {
 			return ht;
@@ -201,7 +228,7 @@ bool HTMLParserTag::has_attribute(const String &attrib) {
 	return false;
 }
 
-Ref<HTMLParserAttribute> HTMLParserTag::get_attribute(const String &attrib, const String &contains_val) {
+Ref<HTMLParserAttribute> HTMLParserTag::get_attributec(const String &attrib, const String &contains_val) {
 	for (int i = 0; i < _attributes.size(); ++i) {
 		Ref<HTMLParserAttribute> a = _attributes[i];
 
@@ -213,7 +240,7 @@ Ref<HTMLParserAttribute> HTMLParserTag::get_attribute(const String &attrib, cons
 	return Ref<HTMLParserAttribute>();
 }
 
-bool HTMLParserTag::has_attribute(const String &attrib, const String &contains_val) {
+bool HTMLParserTag::has_attributec(const String &attrib, const String &contains_val) {
 	for (int i = 0; i < _attributes.size(); ++i) {
 		Ref<HTMLParserAttribute> a = _attributes[i];
 
@@ -502,6 +529,65 @@ HTMLParserTag::~HTMLParserTag() {
 	_attributes.clear();
 }
 
+void HTMLParserTag::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_type"), &HTMLParserTag::get_type);
+	ClassDB::bind_method(D_METHOD("set_type", "val"), &HTMLParserTag::set_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "type"), "set_type", "get_type");
+
+	ClassDB::bind_method(D_METHOD("get_tag"), &HTMLParserTag::get_tag);
+	ClassDB::bind_method(D_METHOD("set_tag", "val"), &HTMLParserTag::set_tag);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "tag"), "set_tag", "get_tag");
+
+	ClassDB::bind_method(D_METHOD("get_data"), &HTMLParserTag::get_data);
+	ClassDB::bind_method(D_METHOD("set_data", "val"), &HTMLParserTag::set_data);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "data"), "set_data", "get_data");
+
+	ClassDB::bind_method(D_METHOD("add_child_tag", "tag"), &HTMLParserTag::add_child_tag);
+	ClassDB::bind_method(D_METHOD("remote_child_tag", "index"), &HTMLParserTag::remote_child_tag);
+	ClassDB::bind_method(D_METHOD("get_child_tag", "index"), &HTMLParserTag::get_child_tag);
+	ClassDB::bind_method(D_METHOD("get_child_tag_count"), &HTMLParserTag::get_child_tag_count);
+	ClassDB::bind_method(D_METHOD("clear_child_tags"), &HTMLParserTag::clear_child_tags);
+
+	ClassDB::bind_method(D_METHOD("get_child_tags"), &HTMLParserTag::get_child_tags);
+	ClassDB::bind_method(D_METHOD("set_child_tags", "val"), &HTMLParserTag::set_child_tags);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "child_tags", PROPERTY_HINT_NONE, "17/17:HTMLParserTag", PROPERTY_USAGE_DEFAULT, "HTMLParserTag"), "set_child_tags", "get_child_tags");
+
+	ClassDB::bind_method(D_METHOD("add_child_attribute", "tag"), &HTMLParserTag::add_child_attribute);
+	ClassDB::bind_method(D_METHOD("remote_child_attribute", "index"), &HTMLParserTag::remote_child_attribute);
+	ClassDB::bind_method(D_METHOD("get_child_attribute", "index"), &HTMLParserTag::get_child_attribute);
+	ClassDB::bind_method(D_METHOD("get_child_attribute_count"), &HTMLParserTag::get_child_attribute_count);
+	ClassDB::bind_method(D_METHOD("clear_child_attributes"), &HTMLParserTag::clear_child_attributes);
+
+	ClassDB::bind_method(D_METHOD("get_attributes"), &HTMLParserTag::get_attributes);
+	ClassDB::bind_method(D_METHOD("set_attributes", "val"), &HTMLParserTag::set_attributes);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "attributes", PROPERTY_HINT_NONE, "17/17:HTMLParserAttribute", PROPERTY_USAGE_DEFAULT, "HTMLParserAttribute"), "set_attributes", "get_attributes");
+
+	ClassDB::bind_method(D_METHOD("get_first", "t"), &HTMLParserTag::get_first);
+	ClassDB::bind_method(D_METHOD("get_firstc", "t", "attrib", "val"), &HTMLParserTag::get_firstc);
+
+	ClassDB::bind_method(D_METHOD("get_attribute_value", "attrib"), &HTMLParserTag::get_attribute_value);
+
+	ClassDB::bind_method(D_METHOD("get_attribute", "attrib"), &HTMLParserTag::get_attribute);
+	ClassDB::bind_method(D_METHOD("has_attribute", "attrib"), &HTMLParserTag::has_attribute);
+
+	ClassDB::bind_method(D_METHOD("get_attributec", "attrib", "contains_val"), &HTMLParserTag::get_attributec);
+	ClassDB::bind_method(D_METHOD("has_attributec", "attrib", "contains_val"), &HTMLParserTag::has_attributec);
+
+	ClassDB::bind_method(D_METHOD("process"), &HTMLParserTag::process);
+	ClassDB::bind_method(D_METHOD("parse_args", "args"), &HTMLParserTag::parse_args);
+
+	ClassDB::bind_method(D_METHOD("convert_to_string", "level"), &HTMLParserTag::convert_to_string, 0);
+	ClassDB::bind_method(D_METHOD("print"), &HTMLParserTag::print);
+
+	BIND_ENUM_CONSTANT(HTML_PARSER_TAG_TYPE_NONE);
+	BIND_ENUM_CONSTANT(HTML_PARSER_TAG_TYPE_OPENING_TAG);
+	BIND_ENUM_CONSTANT(HTML_PARSER_TAG_TYPE_CLOSING_TAG);
+	BIND_ENUM_CONSTANT(HTML_PARSER_TAG_TYPE_SELF_CLOSING_TAG);
+	BIND_ENUM_CONSTANT(HTML_PARSER_TAG_TYPE_COMMENT);
+	BIND_ENUM_CONSTANT(HTML_PARSER_TAG_TYPE_DOCTYPE);
+	BIND_ENUM_CONSTANT(HTML_PARSER_TAG_TYPE_CONTENT);
+};
+
 Ref<HTMLParserTag> HTMLParser::get_root() {
 	return _root;
 }
@@ -755,3 +841,10 @@ HTMLParser::HTMLParser() {
 HTMLParser::~HTMLParser() {
 	_root.unref();
 }
+
+void HTMLParser::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_root"), &HTMLParser::get_root);
+	ClassDB::bind_method(D_METHOD("parse", "data"), &HTMLParser::parse);
+	ClassDB::bind_method(D_METHOD("convert_to_string"), &HTMLParser::convert_to_string);
+	ClassDB::bind_method(D_METHOD("print"), &HTMLParser::print);
+};

@@ -2,6 +2,7 @@
 #define HTML_PARSER_H
 
 #include "core/ustring.h"
+#include "core/variant.h"
 #include "core/vector.h"
 
 #include "core/reference.h"
@@ -12,7 +13,6 @@ class HTMLParserAttribute : public Reference {
 public:
 	String get_attribute();
 	void set_attribute(const String &val);
-
 	String get_data();
 	void set_data(const String &val);
 
@@ -21,7 +21,8 @@ public:
 
 	bool match_attrib(const String &attrib);
 	bool match_data(const String &d);
-	bool match_data(const Vector<String> &d);
+	bool match_all_data(const Vector<String> &d);
+	bool match_all_data_bind(const PoolStringArray &d);
 	bool contains_data(const String &d);
 
 	String convert_to_string() const;
@@ -31,6 +32,8 @@ public:
 	virtual ~HTMLParserAttribute();
 
 protected:
+	static void _bind_methods();
+
 	String _attribute;
 	String _data;
 	bool _single;
@@ -78,15 +81,15 @@ public:
 	void set_attributes(const Vector<Variant> &val);
 
 	Ref<HTMLParserTag> get_first(const String &t);
-	Ref<HTMLParserTag> get_first(const String &t, const String &attrib, const String &val);
+	Ref<HTMLParserTag> get_firstc(const String &t, const String &attrib, const String &val);
 
 	String get_attribute_value(const String &attrib);
 
 	Ref<HTMLParserAttribute> get_attribute(const String &attrib);
 	bool has_attribute(const String &attrib);
 
-	Ref<HTMLParserAttribute> get_attribute(const String &attrib, const String &contains_val);
-	bool has_attribute(const String &attrib, const String &contains_val);
+	Ref<HTMLParserAttribute> get_attributec(const String &attrib, const String &contains_val);
+	bool has_attributec(const String &attrib, const String &contains_val);
 
 	void process();
 	void parse_args(const String &args);
@@ -98,6 +101,8 @@ public:
 	virtual ~HTMLParserTag();
 
 protected:
+	static void _bind_methods();
+
 	int _type;
 
 	String _tag;
@@ -123,7 +128,11 @@ public:
 	virtual ~HTMLParser();
 
 protected:
+	static void _bind_methods();
+
 	Ref<HTMLParserTag> _root;
 };
+
+VARIANT_ENUM_CAST(HTMLParserTag::HTMLParserTagType);
 
 #endif
