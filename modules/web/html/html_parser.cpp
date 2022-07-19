@@ -531,7 +531,8 @@ void HTMLParser::parse(const String &data) {
 
 				for (int j = i + 1; j < data.size(); ++j) {
 					if (data[j] == '>') {
-						Ref<HTMLParserTag> t = memnew(HTMLParserTag);
+						Ref<HTMLParserTag> t;
+						t.instance();
 
 						t->set_data(data.substr(i, j - i + 1));
 						t->process();
@@ -547,7 +548,8 @@ void HTMLParser::parse(const String &data) {
 
 				for (int j = i + 1; j < data.size(); ++j) {
 					if (data[j] == '<') {
-						Ref<HTMLParserTag> t = memnew(HTMLParserTag);
+						Ref<HTMLParserTag> t;
+						t.instance();
 
 						t->set_data(data.substr(i, j - i));
 						t->set_type(HTMLParserTag::HTML_PARSER_TAG_TYPE_CONTENT);
@@ -603,7 +605,8 @@ void HTMLParser::parse(const String &data) {
 
 				if (done) {
 					state = STATE_NONE;
-					Ref<HTMLParserTag> t = memnew(HTMLParserTag);
+					Ref<HTMLParserTag> t;
+					t.instance();
 
 					t->set_data(data.substr(i, j - i));
 					t->set_type(HTMLParserTag::HTML_PARSER_TAG_TYPE_CONTENT);

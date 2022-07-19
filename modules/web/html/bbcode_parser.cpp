@@ -472,7 +472,8 @@ void BBCodeParser::parse(const String &data) {
 			// tag
 			for (int j = i + 1; j < data.size(); ++j) {
 				if (data[j] == ']') {
-					Ref<BBCodeParserTag> t = memnew(BBCodeParserTag);
+					Ref<BBCodeParserTag> t;
+					t.instance();
 
 					t->set_data(data.substr(i, j - i + 1));
 					t->process();
@@ -488,7 +489,8 @@ void BBCodeParser::parse(const String &data) {
 
 			for (int j = i + 1; j < data.size(); ++j) {
 				if (data[j] == '[') {
-					Ref<BBCodeParserTag> t = memnew(BBCodeParserTag);
+					Ref<BBCodeParserTag> t;
+					t.instance();
 
 					t->set_data(data.substr(i, j - i));
 					t->set_type(BBCodeParserTag::BBCODE_PARSER_TAG_TYPE_CONTENT);
