@@ -85,7 +85,6 @@ private:
 	String _multipart_form_name;
 	String _multipart_form_filename;
 	String _multipart_form_content_type;
-	String _multipart_form_data;
 	bool _multipart_form_is_file;
 };
 

@@ -1,6 +1,7 @@
 #include "web_server_request.h"
 
 #include "core/object.h"
+#include "core/variant.h"
 #include "web_server.h"
 #include "web_server_cookie.h"
 
@@ -176,8 +177,8 @@ String WebServerRequest::get_file_key(const int index) const {
 int WebServerRequest::get_file_length(const int index) const {
 	return 0;
 }
-const uint8_t *WebServerRequest::get_file_data(const int index) const {
-	return nullptr;
+PoolByteArray WebServerRequest::get_file_data(const int index) const {
+	return PoolByteArray();
 }
 String WebServerRequest::get_file_data_str(const int index) const {
 	return "";
@@ -504,12 +505,12 @@ void WebServerRequest::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_method"), &WebServerRequest::get_method);
 
-	//virtual const uint8_t *get_file_data(const int index) const;
 	ClassDB::bind_method(D_METHOD("parse_files"), &WebServerRequest::parse_files);
 	ClassDB::bind_method(D_METHOD("get_file_count"), &WebServerRequest::get_file_count);
 	ClassDB::bind_method(D_METHOD("get_file_file_name", "index"), &WebServerRequest::get_file_file_name);
 	ClassDB::bind_method(D_METHOD("get_file_key", "index"), &WebServerRequest::get_file_key);
 	ClassDB::bind_method(D_METHOD("get_file_length", "index"), &WebServerRequest::get_file_length);
+	ClassDB::bind_method(D_METHOD("get_file_data"), &WebServerRequest::get_file_data);
 	ClassDB::bind_method(D_METHOD("get_file_data_str"), &WebServerRequest::get_file_data_str);
 
 	ClassDB::bind_method(D_METHOD("get_parameter", "key"), &WebServerRequest::get_parameter);

@@ -147,19 +147,31 @@ void HTTPParser::HTTPParser::process_multipart_data() {
 		}
 
 		//ERR_PRINT("BODY");
-		_multipart_form_data = _partial_data.substr_index(0, boundary_index - 4); //to strip the 2 \r\n from before the boundary
+		String data = _partial_data.substr_index(0, boundary_index - 4); //to strip the 2 \r\n from before the boundary
 
 		//ERR_PRINT(data);
 
 		if (_multipart_form_is_file) {
-			if (_multipart_form_data == "") {
+			if (data == "") {
 				_in_boundary_header = true;
 				continue;
 			}
 
-			_request->add_file(_multipart_form_name, _multipart_form_filename, _multipart_form_data);
+			CharString cs = data.ascii();
+
+			PoolByteArray file_data;
+			file_data.resize(cs.length());
+			PoolByteArray::Write w = file_data.write();
+
+			for (int i = 0; i < cs.length(); i++) {
+				w[i] = cs[i];
+			}
+
+			w.release();
+
+			_request->add_file(_multipart_form_name, _multipart_form_filename, file_data);
 		} else {
-			_request->add_parameter(_multipart_form_name, _multipart_form_data);
+			_request->add_parameter(_multipart_form_name, data);
 		}
 
 		boundary_index += _multipart_boundary.size();
@@ -182,7 +194,6 @@ void HTTPParser::_process_multipart_header(const String &header) {
 	_multipart_form_name = "";
 	_multipart_form_filename = "";
 	_multipart_form_content_type = "";
-	_multipart_form_data = "";
 	_multipart_form_is_file = false;
 
 	int nlc = header.get_slice_count("\r\n");

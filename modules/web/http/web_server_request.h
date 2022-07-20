@@ -70,7 +70,7 @@ public:
 	virtual String get_file_file_name(const int index) const;
 	virtual String get_file_key(const int index) const;
 	virtual int get_file_length(const int index) const;
-	virtual const uint8_t *get_file_data(const int index) const;
+	virtual PoolByteArray get_file_data(const int index) const;
 	virtual String get_file_data_str(const int index) const;
 
 	virtual String get_parameter(const String &key) const;

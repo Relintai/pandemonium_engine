@@ -44,18 +44,23 @@ String SimpleWebServerRequest::get_file_key(const int index) const {
 int SimpleWebServerRequest::get_file_length(const int index) const {
 	ERR_FAIL_INDEX_V(index, _files.size(), 0);
 
-	return _files[index].data.length();
+	return _files[index].data.size();
 }
-const uint8_t *SimpleWebServerRequest::get_file_data(const int index) const {
-	ERR_FAIL_INDEX_V(index, _files.size(), nullptr);
+PoolByteArray SimpleWebServerRequest::get_file_data(const int index) const {
+	ERR_FAIL_INDEX_V(index, _files.size(), PoolByteArray());
 
-	//return  _files[index].data.ptr();
-	return nullptr;
+	return _files[index].data;
 }
 String SimpleWebServerRequest::get_file_data_str(const int index) const {
 	ERR_FAIL_INDEX_V(index, _files.size(), "");
 
-	return _files[index].data;
+	PoolByteArray::Read r = _files[index].data.read();
+
+	String ret = reinterpret_cast<const char *>(r.ptr());
+
+	r.release();
+
+	return ret;
 }
 
 String SimpleWebServerRequest::get_parameter(const String &key) const {
@@ -113,7 +118,7 @@ void SimpleWebServerRequest::set_host(const String &value) {
 	_host = value;
 }
 
-void SimpleWebServerRequest::add_file(const String &key, const String &file_name, const String &data) {
+void SimpleWebServerRequest::add_file(const String &key, const String &file_name, const PoolByteArray &data) {
 	FileEntry e;
 	e.key = key;
 	e.file_name = file_name;
