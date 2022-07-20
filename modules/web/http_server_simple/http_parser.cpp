@@ -30,6 +30,7 @@ bool HTTPParser::is_finished() const {
 void HTTPParser::reset() {
 	_partial_data = "";
 	_is_ready = false;
+	_content_type = REQUEST_CONTENT_URLENCODED;
 }
 
 //returns the index where processing was ended -> start of the next query if != data_length
@@ -43,6 +44,7 @@ int HTTPParser::read_from_buffer(const char *p_buffer, const int p_data_length) 
 
 HTTPParser::HTTPParser() {
 	_is_ready = false;
+	_content_type = REQUEST_CONTENT_URLENCODED;
 
 	settings = memnew(http_parser_settings);
 
@@ -94,6 +96,8 @@ int HTTPParser::on_message_begin() {
 	}
 
 	_in_header = true;
+	_content_type = REQUEST_CONTENT_URLENCODED;
+	_multipart_boundary = "";
 
 	_request.instance();
 
@@ -153,6 +157,35 @@ int HTTPParser::on_header_value(const char *at, size_t length) {
 
 	if (_queued_header_field == "Host") {
 		_request->set_host(s);
+	} else if (_queued_header_field == "Content-Type") {
+		// It can be:
+		// application/x-www-form-urlencoded (default) -> ignore, as its the default
+		// text/plain -> useful only for debugging "They are not reliably interpretable by computer"
+		// multipart/form-data
+
+		if (s.begins_with("multipart/form-data")) {
+			_content_type = REQUEST_CONTENT_MULTIPART_FORM_DATA;
+
+			int bs = s.find("boundary=");
+
+			if (bs == -1) {
+				//Error! boundary must exist TODO set an error variable and close the connection
+				return 0;
+			}
+
+			bs += 9; //skip ahead to the end of "boundary="
+
+			_multipart_boundary = s.substr(bs);
+			_multipart_boundary = _multipart_boundary.strip_edges();
+
+			if (_multipart_boundary == "") {
+				//Error!  TODO set an error variable and close the connection
+			}
+
+		} else if (s.begins_with("text/plain")) {
+			_content_type = REQUEST_CONTENT_TEXT_PLAIN;
+			//maybe just close the connection?
+		}
 	}
 
 	return 0;
@@ -164,7 +197,10 @@ int HTTPParser::on_headers_complete() {
 	ERR_PRINT("headers_complete");
 #endif
 
+	//Check content length, and send error if bigger than server limit (add)
+
 	_in_header = false;
+	_partial_data = "";
 
 	return 0;
 }
@@ -177,6 +213,20 @@ int HTTPParser::on_body(const char *at, size_t length) {
 	ERR_PRINT("on_body " + s);
 #endif
 
+	if (_content_type == REQUEST_CONTENT_MULTIPART_FORM_DATA) {
+		//first boundary -> ignore, with everythong before it
+		//find the first \n\n -> process boundary_header
+		//cut it out from the string.
+		//if file-> create HTTPTempFile class -> try to find boundary, if cant be found append everything to the HTTPTempFile, except the last boundary.size() - 1 characters from the string.
+		//else try to find boundary, if cant be found just append everythong to _partial data and return -> if can be found handle it as normal form param
+
+		//try parse
+	} else if (_content_type == REQUEST_CONTENT_URLENCODED) {
+		_partial_data += s;
+	} else {
+		//ignore. Maybe close connection?
+	}
+
 	return 0;
 }
 int HTTPParser::on_message_complete() {
@@ -185,6 +235,15 @@ int HTTPParser::on_message_complete() {
 #if MESSAGE_DEBUG
 	ERR_PRINT("msg_copmlete");
 #endif
+
+	if (_content_type == REQUEST_CONTENT_MULTIPART_FORM_DATA) {
+		//the parser seems to cut out the last boundary, so finish parsing the last element, and send _partial_data to a file if a file is being uploaded
+	} else if (_content_type == REQUEST_CONTENT_URLENCODED) {
+		//Parse the content into the request
+		//Also add content body
+	} else {
+		//Add content body to the request?
+	}
 
 	_requests.push_back(_request);
 	_request.unref();

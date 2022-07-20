@@ -13,7 +13,14 @@ class HTTPParser : public Reference {
 	GDCLASS(HTTPParser, Reference);
 
 public:
-	Ref<SimpleWebServerRequest> get_next_request();
+	enum HTTPRequestContentType {
+		REQUEST_CONTENT_URLENCODED = 0,
+		REQUEST_CONTENT_MULTIPART_FORM_DATA,
+		REQUEST_CONTENT_TEXT_PLAIN,
+	};
+
+	Ref<SimpleWebServerRequest>
+	get_next_request();
 	int get_request_count() const;
 
 	bool is_ready() const;
@@ -65,6 +72,8 @@ private:
 	http_parser *parser;
 	http_parser_settings *settings;
 
+	HTTPRequestContentType _content_type;
+	String _multipart_boundary;
 	bool _in_header;
 	String _queued_header_field;
 };
