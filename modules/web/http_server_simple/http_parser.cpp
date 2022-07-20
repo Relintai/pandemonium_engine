@@ -45,6 +45,9 @@ int HTTPParser::read_from_buffer(const char *p_buffer, const int p_data_length) 
 HTTPParser::HTTPParser() {
 	_is_ready = false;
 	_content_type = REQUEST_CONTENT_URLENCODED;
+	_in_multipart_boundary = false;
+	_in_boundary_header = false;
+	_multipart_form_is_file = false;
 
 	settings = memnew(http_parser_settings);
 
@@ -88,6 +91,152 @@ String HTTPParser::chr_len_to_str(const char *at, size_t length) {
 	return ret;
 }
 
+void HTTPParser::HTTPParser::process_multipart_data() {
+	int iter = 0;
+	//process one element per loop
+	while (true) {
+		//first boundary -> ignore, with everything before it
+		if (!_in_multipart_boundary) {
+			int boundary_index = _partial_data.find(_multipart_boundary);
+
+			if (boundary_index == -1) {
+				return;
+			}
+
+			boundary_index += _multipart_boundary.size();
+
+			_partial_data = _partial_data.substr(boundary_index);
+			_in_multipart_boundary = true;
+			_in_boundary_header = true;
+			continue;
+		}
+
+		//find the first \n\n -> process boundary_header
+		//cut it out from the string.
+		if (_in_boundary_header) {
+			int header_end_index = _partial_data.find("\r\n\r\n");
+
+			if (header_end_index != -1) {
+				String header = _partial_data.substr_index(0, header_end_index);
+				_partial_data = _partial_data.substr(header_end_index + 4);
+
+				header = header.strip_edges();
+
+				//ERR_PRINT("HEADER");
+				//ERR_PRINT(header);
+
+				_process_multipart_header(header);
+				_in_boundary_header = false;
+				continue;
+			}
+
+			//Boundary header has not yet fully arrived, return
+			return;
+		}
+
+		//Multipart body
+		int boundary_index = _partial_data.find(_multipart_boundary);
+
+		if (boundary_index == -1) {
+			//TODO
+			//if file-> append everything to the HTTPTempFile, except the last boundary.size() - 1 characters from the string.
+			//should probably only happen after a while to save on memory use like maybe a meg or two (should be configurable)
+			// Should probably also be configurable whether it happens or not at all
+
+			return;
+		}
+
+		//ERR_PRINT("BODY");
+		_multipart_form_data = _partial_data.substr_index(0, boundary_index - 4); //to strip the 2 \r\n from before the boundary
+
+		//ERR_PRINT(data);
+
+		if (_multipart_form_is_file) {
+			if (_multipart_form_data == "") {
+				_in_boundary_header = true;
+				continue;
+			}
+
+			_request->add_file(_multipart_form_name, _multipart_form_filename, _multipart_form_data);
+		} else {
+			_request->add_parameter(_multipart_form_name, _multipart_form_data);
+		}
+
+		boundary_index += _multipart_boundary.size();
+		_partial_data = _partial_data.substr(boundary_index);
+
+		if (_partial_data.begins_with("--")) {
+			//done
+			return;
+		}
+
+		_in_boundary_header = true;
+
+		//Safety for now
+		++iter;
+		ERR_FAIL_COND(iter == 10000);
+	}
+}
+
+void HTTPParser::_process_multipart_header(const String &header) {
+	_multipart_form_name = "";
+	_multipart_form_filename = "";
+	_multipart_form_content_type = "";
+	_multipart_form_data = "";
+	_multipart_form_is_file = false;
+
+	int nlc = header.get_slice_count("\r\n");
+
+	for (int i = 0; i < nlc; ++i) {
+		String l = header.get_slice("\r\n", i);
+
+		int sc = l.get_slice_count(":");
+
+		if (sc != 2) {
+			continue;
+		}
+
+		String key = l.get_slicec(':', 0);
+		String val = l.get_slicec(':', 1);
+
+		if (key == "Content-Disposition") {
+			int c = val.get_slice_count(";");
+
+			for (int j = 0; j < c; ++j) {
+				String vs = val.get_slicec(';', j).strip_edges();
+
+				if (vs.get_slice_count("=") != 2) {
+					continue;
+				}
+
+				String kk = vs.get_slicec('=', 0);
+
+				if (kk == "name") {
+					_multipart_form_name = vs.get_slicec('=', 1);
+
+					if (_multipart_form_name.length() >= 2 && _multipart_form_name.begins_with("\"") && _multipart_form_name.ends_with("\"")) {
+						_multipart_form_name.remove(0);
+						_multipart_form_name.remove(_multipart_form_name.size() - 1);
+					}
+				} else if (kk == "filename") {
+					_multipart_form_filename = vs.get_slicec('=', 1);
+					_multipart_form_is_file = true;
+
+					if (_multipart_form_name.length() >= 2 && _multipart_form_name.begins_with("\"") && _multipart_form_name.ends_with("\"")) {
+						_multipart_form_name.remove(0);
+						_multipart_form_name.remove(_multipart_form_name.size() - 1);
+					}
+				}
+			}
+
+		} else if (key == "Content-Type") {
+			_multipart_form_content_type = val;
+		} else {
+			//Shouldn't happen, should probably close connection
+		}
+	}
+}
+
 #define MESSAGE_DEBUG 0
 
 int HTTPParser::on_message_begin() {
@@ -98,6 +247,10 @@ int HTTPParser::on_message_begin() {
 	_in_header = true;
 	_content_type = REQUEST_CONTENT_URLENCODED;
 	_multipart_boundary = "";
+	_in_multipart_boundary = false;
+	_in_multipart_boundary = false;
+	_in_boundary_header = false;
+	_multipart_form_is_file = false;
 
 	_request.instance();
 
@@ -178,6 +331,11 @@ int HTTPParser::on_header_value(const char *at, size_t length) {
 			_multipart_boundary = s.substr(bs);
 			_multipart_boundary = _multipart_boundary.strip_edges();
 
+			//TODO can be inside quoted
+			//Append -- if it doesn't have it already
+			//It shouldn't be longer that 70 chars
+			//The CRLF preceeding could also be appended for simpler logic
+
 			if (_multipart_boundary == "") {
 				//Error!  TODO set an error variable and close the connection
 			}
@@ -187,6 +345,8 @@ int HTTPParser::on_header_value(const char *at, size_t length) {
 			//maybe just close the connection?
 		}
 	}
+
+	//TODO close connection on chunked connection (for now)
 
 	return 0;
 }
@@ -213,22 +373,15 @@ int HTTPParser::on_body(const char *at, size_t length) {
 	ERR_PRINT("on_body " + s);
 #endif
 
-	if (_content_type == REQUEST_CONTENT_MULTIPART_FORM_DATA) {
-		//first boundary -> ignore, with everythong before it
-		//find the first \n\n -> process boundary_header
-		//cut it out from the string.
-		//if file-> create HTTPTempFile class -> try to find boundary, if cant be found append everything to the HTTPTempFile, except the last boundary.size() - 1 characters from the string.
-		//else try to find boundary, if cant be found just append everythong to _partial data and return -> if can be found handle it as normal form param
+	_partial_data += s;
 
-		//try parse
-	} else if (_content_type == REQUEST_CONTENT_URLENCODED) {
-		_partial_data += s;
-	} else {
-		//ignore. Maybe close connection?
+	if (_content_type == REQUEST_CONTENT_MULTIPART_FORM_DATA) {
+		process_multipart_data();
 	}
 
 	return 0;
 }
+
 int HTTPParser::on_message_complete() {
 	ERR_FAIL_COND_V(!_request.is_valid(), 0);
 
@@ -236,13 +389,13 @@ int HTTPParser::on_message_complete() {
 	ERR_PRINT("msg_copmlete");
 #endif
 
-	if (_content_type == REQUEST_CONTENT_MULTIPART_FORM_DATA) {
-		//the parser seems to cut out the last boundary, so finish parsing the last element, and send _partial_data to a file if a file is being uploaded
-	} else if (_content_type == REQUEST_CONTENT_URLENCODED) {
+	//if (_content_type == REQUEST_CONTENT_MULTIPART_FORM_DATA) {
+	//	process_multipart_data();
+	//} else
+
+	if (_content_type == REQUEST_CONTENT_URLENCODED) {
 		//Parse the content into the request
 		//Also add content body
-	} else {
-		//Add content body to the request?
 	}
 
 	_requests.push_back(_request);

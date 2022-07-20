@@ -167,6 +167,12 @@ void WebServerRequest::parse_files() {
 int WebServerRequest::get_file_count() const {
 	return 0;
 }
+String WebServerRequest::get_file_file_name(const int index) const {
+	return "";
+}
+String WebServerRequest::get_file_key(const int index) const {
+	return "";
+}
 int WebServerRequest::get_file_length(const int index) const {
 	return 0;
 }
@@ -501,6 +507,8 @@ void WebServerRequest::_bind_methods() {
 	//virtual const uint8_t *get_file_data(const int index) const;
 	ClassDB::bind_method(D_METHOD("parse_files"), &WebServerRequest::parse_files);
 	ClassDB::bind_method(D_METHOD("get_file_count"), &WebServerRequest::get_file_count);
+	ClassDB::bind_method(D_METHOD("get_file_file_name", "index"), &WebServerRequest::get_file_file_name);
+	ClassDB::bind_method(D_METHOD("get_file_key", "index"), &WebServerRequest::get_file_key);
 	ClassDB::bind_method(D_METHOD("get_file_length", "index"), &WebServerRequest::get_file_length);
 	ClassDB::bind_method(D_METHOD("get_file_data_str"), &WebServerRequest::get_file_data_str);
 

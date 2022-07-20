@@ -29,16 +29,33 @@ HTTPServerEnums::HTTPMethod SimpleWebServerRequest::get_method() const {
 void SimpleWebServerRequest::parse_files() {
 }
 int SimpleWebServerRequest::get_file_count() const {
-	return 0;
+	return _files.size();
+}
+String SimpleWebServerRequest::get_file_file_name(const int index) const {
+	ERR_FAIL_INDEX_V(index, _files.size(), "");
+
+	return _files[index].file_name;
+}
+String SimpleWebServerRequest::get_file_key(const int index) const {
+	ERR_FAIL_INDEX_V(index, _files.size(), "");
+
+	return _files[index].file_name;
 }
 int SimpleWebServerRequest::get_file_length(const int index) const {
-	return 0;
+	ERR_FAIL_INDEX_V(index, _files.size(), 0);
+
+	return _files[index].data.length();
 }
 const uint8_t *SimpleWebServerRequest::get_file_data(const int index) const {
+	ERR_FAIL_INDEX_V(index, _files.size(), nullptr);
+
+	//return  _files[index].data.ptr();
 	return nullptr;
 }
 String SimpleWebServerRequest::get_file_data_str(const int index) const {
-	return "";
+	ERR_FAIL_INDEX_V(index, _files.size(), "");
+
+	return _files[index].data;
 }
 
 String SimpleWebServerRequest::get_parameter(const String &key) const {
@@ -94,6 +111,15 @@ void SimpleWebServerRequest::set_parser_path(const String &value) {
 
 void SimpleWebServerRequest::set_host(const String &value) {
 	_host = value;
+}
+
+void SimpleWebServerRequest::add_file(const String &key, const String &file_name, const String &data) {
+	FileEntry e;
+	e.key = key;
+	e.file_name = file_name;
+	e.data = data;
+
+	_files.push_back(e);
 }
 
 SimpleWebServerRequest::SimpleWebServerRequest() {

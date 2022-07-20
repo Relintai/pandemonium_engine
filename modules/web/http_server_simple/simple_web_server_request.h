@@ -29,6 +29,8 @@ public:
 
 	virtual void parse_files();
 	virtual int get_file_count() const;
+	virtual String get_file_file_name(const int index) const;
+	virtual String get_file_key(const int index) const;
 	virtual int get_file_length(const int index) const;
 	virtual const uint8_t *get_file_data(const int index) const;
 	virtual String get_file_data_str(const int index) const;
@@ -45,6 +47,8 @@ public:
 	void set_parser_path(const String &value);
 	void set_host(const String &value);
 
+	void add_file(const String &key, const String &file_name, const String &data);
+
 	//virtual String get_path_full() const;
 
 	SimpleWebServerRequest();
@@ -58,6 +62,14 @@ protected:
 	HashMap<String, String> _parameters;
 	String _parser_path;
 	String _host;
+
+	struct FileEntry {
+		String file_name;
+		String data;
+		String key; //form name key
+	};
+
+	Vector<FileEntry> _files;
 };
 
 #endif

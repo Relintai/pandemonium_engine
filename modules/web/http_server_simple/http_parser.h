@@ -47,6 +47,9 @@ protected:
 private:
 	String chr_len_to_str(const char *at, size_t length);
 
+	void process_multipart_data();
+	void _process_multipart_header(const String &header);
+
 	int on_message_begin();
 	int on_url(const char *at, size_t length);
 	int on_status(const char *at, size_t length);
@@ -76,6 +79,14 @@ private:
 	String _multipart_boundary;
 	bool _in_header;
 	String _queued_header_field;
+	bool _in_multipart_boundary;
+	bool _in_boundary_header;
+
+	String _multipart_form_name;
+	String _multipart_form_filename;
+	String _multipart_form_content_type;
+	String _multipart_form_data;
+	bool _multipart_form_is_file;
 };
 
 #endif
