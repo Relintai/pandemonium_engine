@@ -248,6 +248,40 @@ void HTTPParser::_process_multipart_header(const String &header) {
 	}
 }
 
+void HTTPParser::process_urlenc_data() {
+	if (_partial_data == "") {
+		return;
+	}
+
+	Vector<String> params = _partial_data.split("&", false);
+
+	for (int i = 0; i < params.size(); ++i) {
+		String p = params[i];
+
+		//Ignore if it has no, or more than one =
+		const CharType *c = p.ptr();
+		int eqc = 0;
+		for (int j = 0; j < p.length(); ++j) {
+			if (c[j] == '=') {
+				++eqc;
+
+				if (eqc > 1) {
+					break;
+				}
+			}
+		}
+
+		if (eqc > 1 || eqc == 0) {
+			continue;
+		}
+
+		String key = p.get_slicec('=', 0).replace("+", " ").percent_decode();
+		String value = p.get_slicec('=', 1).replace("+", " ").percent_decode();
+
+		_request->add_parameter(key, value);
+	}
+}
+
 #define MESSAGE_DEBUG 0
 
 int HTTPParser::on_message_begin() {
@@ -405,8 +439,7 @@ int HTTPParser::on_message_complete() {
 	//} else
 
 	if (_content_type == REQUEST_CONTENT_URLENCODED) {
-		//Parse the content into the request
-		//Also add content body
+		process_urlenc_data();
 	}
 
 	_requests.push_back(_request);
