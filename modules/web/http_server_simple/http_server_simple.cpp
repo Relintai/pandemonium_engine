@@ -223,7 +223,7 @@ void HTTPServerSimple::send_redirect(const String &location, const HTTPServerEnu
 	peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
 }
 void HTTPServerSimple::send(const String &body) {
-	String s = "HTTP/1.1 302 Found\r\n";
+	String s = "HTTP/1.1 200 OK\r\n";
 	s += "Content-Length: " + itos(body.size()) + "\r\n";
 	s += "Content-type: text/html\r\n";
 	s += "Connection: Close\r\n";
