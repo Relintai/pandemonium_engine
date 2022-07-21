@@ -271,11 +271,15 @@ TextEditorVanillaEditor *TextFileEditor::open_in_vanillaeditor(const String &pat
 	FileAccess *current_file = FileAccess::open(path, FileAccess::READ);
 
 	String current_content = "";
-	current_content = current_file->get_as_utf8_string();
-	OS::DateTime last_modified = OS::get_singleton()->get_datetime_from_unix_time(current_file->get_modified_time(path));
+	OS::DateTime last_modified;
 
-	current_file->close();
-	memdelete(current_file);
+	if (current_file) {
+		current_content = current_file->get_as_utf8_string();
+		last_modified = OS::get_singleton()->get_datetime_from_unix_time(current_file->get_modified_time(path));
+
+		current_file->close();
+		memdelete(current_file);
+	}
 
 	editor->new_file_open(current_content, last_modified, current_file_path);
 	update_list();
