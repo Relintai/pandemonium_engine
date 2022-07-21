@@ -16,6 +16,9 @@ sources = [
     "singleton/user_db.cpp",
 ]
 
+if env['module_web_enabled']:
+  sources.append("web/middleware/user_session_setup_middleware.cpp")
+
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
     # Shared lib compilation
     module_env.Append(CCFLAGS=['-fPIC'])

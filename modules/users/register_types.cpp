@@ -32,6 +32,12 @@ SOFTWARE.
 
 #include "singleton/user_db.h"
 
+#include "../modules_enabled.gen.h"
+
+#ifdef MODULE_WEB_ENABLED
+#include "web/middleware/user_session_setup_middleware.h"
+#endif
+
 UserDB *_user_db = nullptr;
 
 void register_users_types() {
@@ -45,6 +51,10 @@ void register_users_types() {
 
 	_user_db = memnew(UserDB);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("UserDB", UserDB::get_singleton()));
+
+#ifdef MODULE_WEB_ENABLED
+	ClassDB::register_class<UserSessionSetupWebServerMiddleware>();
+#endif
 }
 
 void unregister_users_types() {

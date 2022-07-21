@@ -15,6 +15,8 @@ def get_doc_classes():
         "UserManagerStatic",
         "UserManagerFile",
         "UserDB",
+
+        "UserSessionSetupWebServerMiddleware",
     ]
 
 

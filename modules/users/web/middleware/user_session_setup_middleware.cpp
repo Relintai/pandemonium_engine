@@ -1,18 +1,20 @@
 #include "user_session_setup_middleware.h"
 
+#include "../../singleton/user_db.h"
+#include "../../users/user.h"
 #include "modules/web/http/http_session.h"
 #include "modules/web/http/web_server_request.h"
 
-// returnring true means handled, false means continue
-bool UserSessionSetupMiddleware::on_before_handle_request_main(Ref<WebServerRequest> request) {
+// returning true means handled, false means continue
+bool UserSessionSetupWebServerMiddleware::_on_before_handle_request_main(Ref<WebServerRequest> request) {
 	if (request->get_session().is_valid()) {
-		int user_id = request->get_session()->get_int("user_id");
+		int user_id = request->get_session()->get_int("user_id", -1);
 
-		if (user_id != 0) {
-			Ref<User> u = UserController::get_singleton()->db_get_user(user_id);
+		if (user_id != -1) {
+			Ref<User> u = UserDB::get_singleton()->get_user(user_id);
 
 			if (u.is_valid()) {
-				request->reference_data["user"] = u;
+				request->set_meta("user", u);
 			} else {
 				// log
 				request->get_session()->remove("user_id");
@@ -23,7 +25,7 @@ bool UserSessionSetupMiddleware::on_before_handle_request_main(Ref<WebServerRequ
 	return false;
 }
 
-UserSessionSetupMiddleware::UserSessionSetupMiddleware() {
+UserSessionSetupWebServerMiddleware::UserSessionSetupWebServerMiddleware() {
 }
-UserSessionSetupMiddleware::~UserSessionSetupMiddleware() {
+UserSessionSetupWebServerMiddleware::~UserSessionSetupWebServerMiddleware() {
 }
