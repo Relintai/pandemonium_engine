@@ -1,5 +1,8 @@
 #include "user_manager.h"
 
+#include "core/engine.h"
+
+#include "../singleton/user_db.h"
 #include "../users/user.h"
 
 Ref<User> UserManager::get_user(const int id) {
@@ -50,6 +53,14 @@ UserManager::UserManager() {
 }
 
 UserManager::~UserManager() {
+}
+
+void UserManager::_notification(int p_what) {
+	if (p_what == NOTIFICATION_POST_ENTER_TREE) {
+		if (!Engine::get_singleton()->is_editor_hint()) {
+			UserDB::get_singleton()->set_user_manager(this);
+		}
+	}
 }
 
 void UserManager::_bind_methods() {
