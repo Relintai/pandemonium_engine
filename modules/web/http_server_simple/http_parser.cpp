@@ -299,6 +299,34 @@ int HTTPParser::on_message_begin() {
 
 	_request.instance();
 
+	switch (parser->method) {
+		case http_method::HTTP_DELETE:
+			_request->set_method(HTTPServerEnums::HTTP_METHOD_DELETE);
+			break;
+		case http_method::HTTP_GET:
+			_request->set_method(HTTPServerEnums::HTTP_METHOD_GET);
+			break;
+		case http_method::HTTP_HEAD:
+			_request->set_method(HTTPServerEnums::HTTP_METHOD_HEAD);
+			break;
+		case http_method::HTTP_POST:
+			_request->set_method(HTTPServerEnums::HTTP_METHOD_POST);
+			break;
+		case http_method::HTTP_PUT:
+			_request->set_method(HTTPServerEnums::HTTP_METHOD_PUT);
+			break;
+		case http_method::HTTP_OPTIONS:
+			_request->set_method(HTTPServerEnums::HTTP_METHOD_OPTIONS);
+			break;
+		case http_method::HTTP_PATCH:
+			_request->set_method(HTTPServerEnums::HTTP_METHOD_PATCH);
+			break;
+		default:
+			//TODO close the connection
+			_request->set_method(HTTPServerEnums::HTTP_METHOD_INVALID);
+			break;
+	}
+
 #if MESSAGE_DEBUG
 	ERR_PRINT("begin");
 #endif

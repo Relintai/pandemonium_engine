@@ -49,6 +49,8 @@ public:
 
 	void add_cookie_data(const String &key, const String &value);
 
+	void set_method(const HTTPServerEnums::HTTPMethod method);
+
 	//virtual String get_path_full() const;
 
 	SimpleWebServerRequest();
@@ -77,6 +79,7 @@ protected:
 	};
 
 	Vector<CookieData> _cookies;
+	HTTPServerEnums::HTTPMethod _method;
 };
 
 #endif

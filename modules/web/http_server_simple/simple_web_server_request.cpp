@@ -24,7 +24,7 @@ String SimpleWebServerRequest::get_cookie(const String &key) {
 }
 
 HTTPServerEnums::HTTPMethod SimpleWebServerRequest::get_method() const {
-	return HTTPServerEnums::HTTP_METHOD_GET;
+	return _method;
 }
 
 void SimpleWebServerRequest::parse_files() {
@@ -136,8 +136,13 @@ void SimpleWebServerRequest::add_cookie_data(const String &key, const String &va
 	_cookies.push_back(d);
 }
 
+void SimpleWebServerRequest::set_method(const HTTPServerEnums::HTTPMethod method) {
+	_method = method;
+}
+
 SimpleWebServerRequest::SimpleWebServerRequest() {
 	_server = nullptr;
+	_method = HTTPServerEnums::HTTP_METHOD_GET;
 }
 
 SimpleWebServerRequest::~SimpleWebServerRequest() {
