@@ -93,6 +93,19 @@ void User::save() {
 	emit_changed();
 }
 
+void User::read_lock() {
+	_rw_lock.read_lock();
+}
+void User::read_unlock() {
+	_rw_lock.read_unlock();
+}
+void User::write_lock() {
+	_rw_lock.write_lock();
+}
+void User::write_unlock() {
+	_rw_lock.write_unlock();
+}
+
 User::User() {
 	_rank = 0;
 	_banned = false;
@@ -152,6 +165,11 @@ void User::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_hash_password", "password"), &User::_hash_password);
 
 	ClassDB::bind_method(D_METHOD("save"), &User::save);
+
+	ClassDB::bind_method(D_METHOD("read_lock"), &User::read_lock);
+	ClassDB::bind_method(D_METHOD("read_unlock"), &User::read_unlock);
+	ClassDB::bind_method(D_METHOD("write_lock"), &User::write_lock);
+	ClassDB::bind_method(D_METHOD("write_unlock"), &User::write_unlock);
 
 	BIND_ENUM_CONSTANT(PERMISSION_CREATE);
 	BIND_ENUM_CONSTANT(PERMISSION_READ);

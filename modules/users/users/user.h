@@ -1,6 +1,7 @@
 #ifndef USER_H
 #define USER_H
 
+#include "core/os/rw_lock.h"
 #include "core/ustring.h"
 
 #include "core/resource.h"
@@ -58,6 +59,11 @@ public:
 
 	void save();
 
+	void read_lock();
+	void read_unlock();
+	void write_lock();
+	void write_unlock();
+
 	User();
 	~User();
 
@@ -73,6 +79,8 @@ protected:
 	bool _banned;
 	String _password_reset_token;
 	bool _locked;
+
+	RWLock _rw_lock;
 };
 
 VARIANT_ENUM_CAST(User::Permissions);
