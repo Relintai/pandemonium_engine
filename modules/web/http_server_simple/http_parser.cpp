@@ -389,6 +389,21 @@ int HTTPParser::on_header_value(const char *at, size_t length) {
 			_content_type = REQUEST_CONTENT_TEXT_PLAIN;
 			//maybe just close the connection?
 		}
+	} else if (_queued_header_field == "Cookie") {
+		Vector<String> cookies = s.split(";");
+
+		for (int i = 0; i < cookies.size(); ++i) {
+			String c = cookies[i].strip_edges();
+
+			if (c.get_slice_count("=") != 2) {
+				continue;
+			}
+
+			String key = c.get_slice("=", 0);
+			String val = c.get_slice("=", 1);
+
+			_request->add_cookie_data(key, val);
+		}
 	}
 
 	//TODO close connection on chunked connection (for now)

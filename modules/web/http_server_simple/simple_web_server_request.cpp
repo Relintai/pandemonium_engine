@@ -13,6 +13,13 @@
 #include "http_server_simple.h"
 
 String SimpleWebServerRequest::get_cookie(const String &key) {
+	for (int i = 0; i < _cookies.size(); ++i) {
+		const CookieData &d = _cookies[i];
+		if (d.key == key) {
+			return d.value;
+		}
+	}
+
 	return "";
 }
 
@@ -119,6 +126,14 @@ void SimpleWebServerRequest::add_file(const String &key, const String &file_name
 	e.data = data;
 
 	_files.push_back(e);
+}
+
+void SimpleWebServerRequest::add_cookie_data(const String &key, const String &value) {
+	CookieData d;
+	d.key = key;
+	d.value = value;
+
+	_cookies.push_back(d);
 }
 
 SimpleWebServerRequest::SimpleWebServerRequest() {

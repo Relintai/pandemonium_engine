@@ -47,6 +47,8 @@ public:
 
 	void add_file(const String &key, const String &file_name, const PoolByteArray &data);
 
+	void add_cookie_data(const String &key, const String &value);
+
 	//virtual String get_path_full() const;
 
 	SimpleWebServerRequest();
@@ -68,6 +70,13 @@ protected:
 	};
 
 	Vector<FileEntry> _files;
+
+	struct CookieData {
+		String key;
+		String value;
+	};
+
+	Vector<CookieData> _cookies;
 };
 
 #endif
