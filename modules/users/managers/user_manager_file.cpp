@@ -1,5 +1,6 @@
 #include "user_manager_file.h"
 
+#include "core/engine.h"
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"
 #include "core/os/dir_access.h"
@@ -58,7 +59,7 @@ Ref<User> UserManagerFile::_create_user() {
 	Ref<User> u;
 	u.instance();
 
-	u->connect("chnaged", this, "_on_user_changed");
+	u->connect("changed", this, "_on_user_changed");
 
 	_users.push_back(u);
 
@@ -107,14 +108,20 @@ Vector<Ref<User>> UserManagerFile::get_all() {
 
 UserManagerFile::UserManagerFile() {
 	set_process_internal(true);
-	_save_folder_path = "user://users/";
+	_save_folder_path = "users";
 }
 
 UserManagerFile::~UserManagerFile() {
 }
 
 void UserManagerFile::load() {
-	DirAccess *dir = DirAccess::open(_save_folder_path);
+	if (Engine::get_singleton()->is_editor_hint()) {
+		return;
+	}
+
+	String fpath = "user://" + _save_folder_path;
+
+	DirAccess *dir = DirAccess::open(fpath);
 
 	if (!dir) {
 		return;
@@ -128,6 +135,7 @@ void UserManagerFile::load() {
 	while (file != "") {
 		if (!dir->current_is_dir()) {
 			if (!file.ends_with(".tres")) {
+				file = dir->get_next();
 				continue;
 			}
 
@@ -142,9 +150,14 @@ void UserManagerFile::load() {
 			//Overflow
 			ERR_CONTINUE(id < 0);
 
-			Ref<User> u = ResourceLoader::load(_save_folder_path.plus_file(file), "User");
+			//TODO Users should be able to serialize themselves to json, could work similarly to Entity
+			//need to think, maybe it can be done better.
+			//Also this is not a super safe way to do this, this will definitely be changed, relatively soon
+			Ref<User> u = ResourceLoader::load(fpath.plus_file(file), "User", true);
+			//Unset script, just for good measure
+			u->set_script(RefPtr());
 
-			u->connect("chnaged", this, "_on_user_changed");
+			u->connect("changed", this, "_on_user_changed");
 
 			if (_users.size() <= id) {
 				_users.resize(id + 1);
@@ -152,6 +165,8 @@ void UserManagerFile::load() {
 
 			_users.write[id] = u;
 		}
+
+		file = dir->get_next();
 	}
 
 	dir->list_dir_end();
@@ -160,17 +175,22 @@ void UserManagerFile::load() {
 }
 
 void UserManagerFile::save() {
-	String abspath = DirAccess::get_filesystem_abspath_for(_save_folder_path);
-
-	DirAccess *dir = DirAccess::create(DirAccess::ACCESS_FILESYSTEM);
-
-	if (!dir->dir_exists(abspath)) {
-		dir->make_dir_recursive(abspath);
+	if (Engine::get_singleton()->is_editor_hint()) {
+		return;
 	}
 
-	memdelete(dir);
+	String fpath = "user://" + _save_folder_path;
 
-	dir = DirAccess::open(_save_folder_path);
+	DirAccess *dir = DirAccess::open(fpath);
+
+	if (!dir) {
+		DirAccess *diru = DirAccess::open("user://");
+		diru->make_dir_recursive(fpath);
+
+		memdelete(diru);
+
+		dir = DirAccess::open(fpath);
+	}
 
 	ERR_FAIL_COND(!dir);
 
@@ -180,8 +200,15 @@ void UserManagerFile::save() {
 
 	while (file != "") {
 		if (!dir->current_is_dir()) {
+			if (!file.ends_with(".tres")) {
+				file = dir->get_next();
+				continue;
+			}
+
 			dir->remove(file);
 		}
+
+		file = dir->get_next();
 	}
 
 	dir->list_dir_end();
@@ -191,10 +218,13 @@ void UserManagerFile::save() {
 	_rw_lock.read_lock();
 
 	for (int i = 0; i < _users.size(); ++i) {
-		Ref<User> u;
-		u->read_lock();
-		ResourceSaver::save(_save_folder_path.plus_file(itos(i) + ".tres"), u);
-		u->read_unlock();
+		Ref<User> u = _users[i];
+
+		if (u.is_valid()) {
+			u->read_lock();
+			ResourceSaver::save(fpath.plus_file(itos(i) + ".tres"), u);
+			u->read_unlock();
+		}
 	}
 
 	_rw_lock.read_unlock();
