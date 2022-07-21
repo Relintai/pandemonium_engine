@@ -64,35 +64,28 @@ void User::set_locked(const bool &val) {
 	_locked = val;
 }
 
-bool User::check_password(const Ref<User> &user, const String &p_password) {
-	return call("_check_password", user, p_password);
+bool User::check_password(const String &p_password) {
+	return call("_check_password", p_password);
 }
-void User::create_password(const Ref<User> &user, const String &p_password) {
-	call("_create_password", user, p_password);
+void User::create_password(const String &p_password) {
+	call("_create_password", p_password);
 }
-String User::hash_password(const Ref<User> &user, const String &p_password) {
-	return call("_hash_password", user, p_password);
+String User::hash_password(const String &p_password) {
+	return call("_hash_password", p_password);
 }
 
-bool User::_check_password(const Ref<User> &user, const String &p_password) {
-	return hash_password(user, p_password) == user->get_password_hash();
+bool User::_check_password(const String &p_password) {
+	return hash_password(p_password) == get_password_hash();
 }
-void User::_create_password(Ref<User> user, const String &p_password) {
-	if (!user.is_valid()) {
-		printf("Error UserManager::create_password !user.is_valid()!\n");
-		return;
-	}
-
+void User::_create_password(const String &p_password) {
 	// todo improve a bit
-	user->set_pre_salt(hash_password(user, user->get_name_user_input() + user->get_email_user_input()));
-	user->set_post_salt(hash_password(user, user->get_email_user_input() + user->get_name_user_input()));
+	set_pre_salt(hash_password(get_name_user_input() + get_email_user_input()));
+	set_post_salt(hash_password(get_email_user_input() + get_name_user_input()));
 
-	user->set_password_hash(hash_password(user, p_password));
+	set_password_hash(hash_password(p_password));
 }
-String User::_hash_password(const Ref<User> &user, const String &p_password) {
-	ERR_FAIL_COND_V(!user.is_valid(), "");
-
-	String p = user->get_pre_salt() + p_password + user->get_post_salt();
+String User::_hash_password(const String &p_password) {
+	String p = get_pre_salt() + p_password + get_post_salt();
 	return p.sha256_text();
 }
 
@@ -142,17 +135,17 @@ void User::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_locked", "val"), &User::set_locked);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "locked"), "set_locked", "get_locked");
 
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_check_password", PropertyInfo(Variant::OBJECT, "user", PROPERTY_HINT_RESOURCE_TYPE, "User"), PropertyInfo(Variant::STRING, "password")));
-	BIND_VMETHOD(MethodInfo("_create_password", PropertyInfo(Variant::OBJECT, "user", PROPERTY_HINT_RESOURCE_TYPE, "User"), PropertyInfo(Variant::STRING, "password")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "ret"), "_hash_password", PropertyInfo(Variant::OBJECT, "user", PROPERTY_HINT_RESOURCE_TYPE, "User"), PropertyInfo(Variant::STRING, "password")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_check_password", PropertyInfo(Variant::STRING, "password")));
+	BIND_VMETHOD(MethodInfo("_create_password", PropertyInfo(Variant::STRING, "password")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "ret"), "_hash_password", PropertyInfo(Variant::STRING, "password")));
 
-	ClassDB::bind_method(D_METHOD("check_password", "user", "password"), &User::check_password);
-	ClassDB::bind_method(D_METHOD("create_password", "user", "password"), &User::create_password);
-	ClassDB::bind_method(D_METHOD("hash_password", "user", "password"), &User::hash_password);
+	ClassDB::bind_method(D_METHOD("check_password", "password"), &User::check_password);
+	ClassDB::bind_method(D_METHOD("create_password", "password"), &User::create_password);
+	ClassDB::bind_method(D_METHOD("hash_password", "password"), &User::hash_password);
 
-	ClassDB::bind_method(D_METHOD("_check_password", "user", "password"), &User::_check_password);
-	ClassDB::bind_method(D_METHOD("_create_password", "user", "password"), &User::_create_password);
-	ClassDB::bind_method(D_METHOD("_hash_password", "user", "password"), &User::_hash_password);
+	ClassDB::bind_method(D_METHOD("_check_password", "password"), &User::_check_password);
+	ClassDB::bind_method(D_METHOD("_create_password", "password"), &User::_create_password);
+	ClassDB::bind_method(D_METHOD("_hash_password", "password"), &User::_hash_password);
 
 	BIND_ENUM_CONSTANT(PERMISSION_CREATE);
 	BIND_ENUM_CONSTANT(PERMISSION_READ);

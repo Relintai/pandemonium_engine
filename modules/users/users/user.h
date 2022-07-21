@@ -48,13 +48,13 @@ public:
 	bool get_locked() const;
 	void set_locked(const bool &val);
 
-	bool check_password(const Ref<User> &user, const String &p_password);
-	void create_password(const Ref<User> &user, const String &p_password);
-	String hash_password(const Ref<User> &user, const String &p_password);
+	bool check_password(const String &p_password);
+	void create_password(const String &p_password);
+	String hash_password(const String &p_password);
 
-	virtual bool _check_password(const Ref<User> &user, const String &p_password);
-	virtual void _create_password(Ref<User> user, const String &p_password);
-	virtual String _hash_password(const Ref<User> &user, const String &p_password);
+	virtual bool _check_password(const String &p_password);
+	virtual void _create_password(const String &p_password);
+	virtual String _hash_password(const String &p_password);
 
 	User();
 	~User();
