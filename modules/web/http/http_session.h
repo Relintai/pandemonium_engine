@@ -16,6 +16,8 @@
 //Add an api for variants, similar to get set_meta, but rw locked.
 //Make sure it's obvious that it's not saved. Maybe set_temp_data ...
 
+//Also add an RWLock
+
 class HTTPSession : public Reference {
 	GDCLASS(HTTPSession, Reference);
 
@@ -34,7 +36,7 @@ public:
 	const Variant &get_const(const String &key);
 	Object *get_object(const String &key);
 	Ref<Reference> get_reference(const String &key);
-	int get_int(const String &key);
+	int get_int(const String &key, const int def = 0);
 
 	void clear();
 	void reset();

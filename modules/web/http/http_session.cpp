@@ -52,10 +52,16 @@ Ref<Reference> HTTPSession::get_reference(const String &key) {
 	return Ref<Reference>(_data[key]);
 }
 
-int HTTPSession::get_int(const String &key) {
+int HTTPSession::get_int(const String &key, const int def) {
 	// don't lock here
 
-	return _data[key];
+	Variant *v = _data.getptr(key);
+
+	if (!v) {
+		return def;
+	}
+
+	return *v;
 }
 
 void HTTPSession::clear() {
