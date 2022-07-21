@@ -445,8 +445,9 @@ void WebServerRequest::update() {
 WebServer *WebServerRequest::get_server() {
 	return server;
 }
-Node *WebServerRequest::get_server_bind() {
-	return server;
+
+WebNode *WebServerRequest::get_web_root() {
+	return web_root;
 }
 
 WebServerRequest::WebServerRequest() {
@@ -578,9 +579,6 @@ void WebServerRequest::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_url_root_add", "add"), &WebServerRequest::get_url_root_add);
 	ClassDB::bind_method(D_METHOD("get_url_site_add", "add"), &WebServerRequest::get_url_site_add);
 
-	//virtual void update();
-
-	//TODO
-	//WebServer *get_server();
-	//Node *get_server_bind();
+	ClassDB::bind_method(D_METHOD("get_server"), &WebServerRequest::get_server);
+	ClassDB::bind_method(D_METHOD("get_web_root"), &WebServerRequest::get_web_root);
 }

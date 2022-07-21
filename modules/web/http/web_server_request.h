@@ -115,9 +115,7 @@ public:
 	virtual void update();
 
 	WebServer *get_server();
-	Node *get_server_bind();
 	WebNode *get_web_root();
-	Node *get_web_root_bind();
 
 	WebServerRequest();
 	~WebServerRequest();
