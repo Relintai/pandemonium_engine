@@ -9,6 +9,13 @@
 #include "core/ustring.h"
 #include "core/variant.h"
 
+//TODO
+//Clean up the api
+//Add api for ints, floats, strings and these should be saved (like they used to be)
+//Make sure it's clear that thye will be like add_saved_int()...
+//Add an api for variants, similar to get set_meta, but rw locked.
+//Make sure it's obvious that it's not saved. Maybe set_temp_data ...
+
 class HTTPSession : public Reference {
 	GDCLASS(HTTPSession, Reference);
 
