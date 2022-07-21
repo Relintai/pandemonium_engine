@@ -10,6 +10,13 @@ class WebServerCookie : public Reference {
 	GDCLASS(WebServerCookie, Reference);
 
 public:
+	enum SameSiteValues {
+		SAME_SITE_UNSET = 0,
+		SAME_SITE_NONE,
+		SAME_SITE_LAX,
+		SAME_SITE_STRICT,
+	};
+
 	String get_domain();
 	void set_domain(const String &val);
 
@@ -31,8 +38,17 @@ public:
 	bool get_delete();
 	void set_delete(const bool val);
 
-	bool get_should_expire();
-	void set_should_expire(const bool val);
+	SameSiteValues get_same_site();
+	void set_same_site(const SameSiteValues val);
+
+	bool get_use_max_age();
+	void set_use_max_age(const bool val);
+
+	int get_max_age();
+	void set_max_age(const int val);
+
+	bool get_use_expiry_date();
+	void set_use_expiry_date(const bool val);
 
 	uint64_t get_expiry_date_unix_time();
 	void set_expiry_date_unix_time(const uint64_t unix_time);
@@ -55,7 +71,9 @@ public:
 protected:
 	static void _bind_methods();
 
-	bool _should_expire;
+	bool _use_max_age;
+	int _max_age;
+	bool _use_expiry_date;
 	OS::DateTime _expiry_date;
 	String _domain;
 	String _path;
@@ -64,6 +82,9 @@ protected:
 	bool _http_only;
 	bool _secure;
 	bool _delete;
+	SameSiteValues _same_site;
 };
+
+VARIANT_ENUM_CAST(WebServerCookie::SameSiteValues);
 
 #endif
