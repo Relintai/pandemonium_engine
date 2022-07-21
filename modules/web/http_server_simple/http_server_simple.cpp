@@ -213,17 +213,19 @@ void HTTPServerSimple::poll() {
 	}
 }
 
-void HTTPServerSimple::send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
+void HTTPServerSimple::send_redirect(Ref<WebServerRequest> request, const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
 	//String s = "HTTP/1.1 " + itos(static_cast<int>(status_code)) + " Found\r\n";
-	String s = "HTTP/1.1 302 Found\r\n";
+	String s = "HTTP/1.1 " + HTTPServerEnums::get_status_code_header_string(status_code) + "\r\n";
 	s += "Location: " + location + "\r\n";
 	s += "Connection: Close\r\n";
 	s += "\r\n";
 	CharString cs = s.utf8();
 	peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
 }
-void HTTPServerSimple::send(const String &body) {
-	String s = "HTTP/1.1 200 OK\r\n";
+void HTTPServerSimple::send(Ref<WebServerRequest> request) {
+	String body = request->get_compiled_body();
+
+	String s = "HTTP/1.1 " + HTTPServerEnums::get_status_code_header_string(request->get_status_code()) + "\r\n";
 	s += "Content-Length: " + itos(body.size()) + "\r\n";
 	s += "Content-type: text/html\r\n";
 	s += "Connection: Close\r\n";
@@ -233,7 +235,7 @@ void HTTPServerSimple::send(const String &body) {
 	CharString cs = s.utf8();
 	peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
 }
-void HTTPServerSimple::send_file(const String &p_file_path) {
+void HTTPServerSimple::send_file(Ref<WebServerRequest> request, const String &p_file_path) {
 	if (!FileAccess::exists(p_file_path)) {
 		String s = "HTTP/1.1 404 Not Found\r\n";
 		s += "Connection: Close\r\n";

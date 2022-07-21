@@ -74,13 +74,13 @@ String SimpleWebServerRequest::get_parameter(const String &key) const {
 void SimpleWebServerRequest::send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
 	ERR_FAIL_COND(!_server);
 
-	_server->send_redirect(location, status_code);
+	_server->send_redirect(Ref<WebServerRequest>(this), location, status_code);
 }
 
 void SimpleWebServerRequest::send() {
 	ERR_FAIL_COND(!_server);
 
-	_server->send(compiled_body);
+	_server->send(Ref<WebServerRequest>(this));
 
 	// if (connection_closed) {
 	//	SimpleWebServerRequestPool::return_request(this);
@@ -93,7 +93,7 @@ void SimpleWebServerRequest::send() {
 void SimpleWebServerRequest::send_file(const String &p_file_path) {
 	ERR_FAIL_COND(!_server);
 
-	_server->send_file(p_file_path);
+	_server->send_file(Ref<WebServerRequest>(this), p_file_path);
 
 	// SimpleWebServerRequestPool::return_request(this);
 }

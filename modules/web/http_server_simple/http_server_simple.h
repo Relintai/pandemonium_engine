@@ -41,6 +41,7 @@
 
 class HTTPParser;
 class WebServerSimple;
+class WebServerRequest;
 
 class HTTPServerSimple : public Reference {
 public:
@@ -51,9 +52,9 @@ public:
 	void _send_response();
 	void poll();
 
-	void send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code);
-	void send(const String &body);
-	void send_file(const String &p_file_path);
+	void send_redirect(Ref<WebServerRequest> request, const String &location, const HTTPServerEnums::HTTPStatusCode status_code);
+	void send(Ref<WebServerRequest> request);
+	void send_file(Ref<WebServerRequest> request, const String &p_file_path);
 
 	HTTPServerSimple();
 	~HTTPServerSimple();
