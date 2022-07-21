@@ -340,8 +340,19 @@ void WebNode::request_write_lock() {
 }
 
 WebServer *WebNode::get_server() {
-	// todo this shoult probably be cached
-	return Object::cast_to<WebServer>(get_tree());
+	Node *n = this;
+
+	while (n) {
+		WebServer *ws = Object::cast_to<WebServer>(n);
+
+		if (ws) {
+			return ws;
+		}
+
+		n = n->get_parent();
+	}
+
+	return nullptr;
 }
 
 WebNode *WebNode::get_web_root() {
