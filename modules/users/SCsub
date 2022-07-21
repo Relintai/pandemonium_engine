@@ -11,6 +11,7 @@ sources = [
 
     "managers/user_manager.cpp",
     "managers/user_manager_static.cpp",
+    "managers/user_manager_file.cpp",
 
     "singleton/user_db.cpp",
 ]

@@ -13,6 +13,7 @@ def get_doc_classes():
         "User",
         "UserManager",
         "UserManagerStatic",
+        "UserManagerFile",
         "UserDB",
     ]
 

@@ -27,6 +27,7 @@ SOFTWARE.
 #include "users/user.h"
 
 #include "managers/user_manager.h"
+#include "managers/user_manager_file.h"
 #include "managers/user_manager_static.h"
 
 #include "singleton/user_db.h"
@@ -38,6 +39,7 @@ void register_users_types() {
 
 	ClassDB::register_class<UserManager>();
 	ClassDB::register_class<UserManagerStatic>();
+	ClassDB::register_class<UserManagerFile>();
 
 	ClassDB::register_class<UserDB>();
 
