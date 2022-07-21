@@ -20,3 +20,10 @@ def get_doc_classes():
 
 def get_doc_path():
     return "doc_classes"
+
+# This is (or should be if not) an optional dependency, it's needed so the web module is built first, as some classes need to inherit from WebNode (only when web module is enabled).
+def get_module_dependencies():
+    return [
+        "web",
+    ]
+
