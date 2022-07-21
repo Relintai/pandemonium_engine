@@ -16,12 +16,6 @@ String SimpleWebServerRequest::get_cookie(const String &key) {
 	return "";
 }
 
-void SimpleWebServerRequest::add_cookie(const Ref<WebServerCookie> &cookie) {
-}
-
-void SimpleWebServerRequest::remove_cookie(const String &key) {
-}
-
 HTTPServerEnums::HTTPMethod SimpleWebServerRequest::get_method() const {
 	return HTTPServerEnums::HTTP_METHOD_GET;
 }

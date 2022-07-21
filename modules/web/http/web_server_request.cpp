@@ -153,10 +153,34 @@ String WebServerRequest::get_cookie(const String &key) {
 	return "";
 }
 
-void WebServerRequest::add_cookie(const Ref<WebServerCookie> &cookie) {
+void WebServerRequest::response_add_cookie(const Ref<WebServerCookie> &cookie) {
+	_cookies.push_back(cookie);
 }
 
-void WebServerRequest::remove_cookie(const String &key) {
+int WebServerRequest::response_get_cookie_count() {
+	return _cookies.size();
+}
+
+Ref<WebServerCookie> WebServerRequest::response_get_cookie(const int index) {
+	ERR_FAIL_INDEX_V(index, _cookies.size(), Ref<WebServerCookie>());
+
+	return _cookies[index];
+}
+
+void WebServerRequest::response_remove_cookie(const int index) {
+	ERR_FAIL_INDEX(index, _cookies.size());
+
+	_cookies.remove(index);
+}
+
+void WebServerRequest::response_remove_cookie_simple(const String &key) {
+	Ref<WebServerCookie> cookie;
+	cookie.instance();
+
+	cookie->set_data(key, "");
+	cookie->set_delete(true);
+
+	_cookies.push_back(cookie);
 }
 
 HTTPServerEnums::HTTPMethod WebServerRequest::get_method() const {
@@ -500,8 +524,12 @@ void WebServerRequest::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("validate_csrf_token"), &WebServerRequest::validate_csrf_token);
 
 	ClassDB::bind_method(D_METHOD("get_cookie", "key"), &WebServerRequest::get_cookie);
-	ClassDB::bind_method(D_METHOD("add_cookie", "cookie"), &WebServerRequest::add_cookie);
-	ClassDB::bind_method(D_METHOD("remove_cookie", "key"), &WebServerRequest::remove_cookie);
+
+	ClassDB::bind_method(D_METHOD("response_add_cookie", "cookie"), &WebServerRequest::response_add_cookie);
+	ClassDB::bind_method(D_METHOD("response_get_cookie_count"), &WebServerRequest::response_get_cookie_count);
+	ClassDB::bind_method(D_METHOD("response_get_cookie", "index"), &WebServerRequest::response_get_cookie);
+	ClassDB::bind_method(D_METHOD("response_remove_cookie", "index"), &WebServerRequest::response_remove_cookie);
+	ClassDB::bind_method(D_METHOD("response_remove_cookie_simple", "key"), &WebServerRequest::response_remove_cookie_simple);
 
 	ClassDB::bind_method(D_METHOD("get_method"), &WebServerRequest::get_method);
 

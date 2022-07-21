@@ -60,8 +60,12 @@ public:
 	bool validate_csrf_token();
 
 	virtual String get_cookie(const String &key);
-	virtual void add_cookie(const Ref<WebServerCookie> &cookie);
-	virtual void remove_cookie(const String &key);
+
+	void response_add_cookie(const Ref<WebServerCookie> &cookie);
+	int response_get_cookie_count();
+	Ref<WebServerCookie> response_get_cookie(const int index);
+	void response_remove_cookie(const int index);
+	void response_remove_cookie_simple(const String &key);
 
 	virtual HTTPServerEnums::HTTPMethod get_method() const;
 
@@ -141,6 +145,7 @@ protected:
 	String _full_path;
 	Vector<String> _path_stack;
 	int _path_stack_pointer;
+	Vector<Ref<WebServerCookie>> _cookies;
 };
 
 #endif

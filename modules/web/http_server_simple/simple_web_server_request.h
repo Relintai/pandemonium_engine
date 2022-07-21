@@ -22,8 +22,6 @@ class SimpleWebServerRequest : public WebServerRequest {
 
 public:
 	virtual String get_cookie(const String &key);
-	virtual void add_cookie(const Ref<WebServerCookie> &cookie);
-	virtual void remove_cookie(const String &key);
 
 	virtual HTTPServerEnums::HTTPMethod get_method() const;
 

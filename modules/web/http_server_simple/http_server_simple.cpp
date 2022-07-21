@@ -30,6 +30,7 @@
 
 #include "http_server_simple.h"
 
+#include "../http/web_server_cookie.h"
 #include "http_parser.h"
 #include "simple_web_server_request.h"
 #include "web_server_simple.h"
@@ -218,6 +219,19 @@ void HTTPServerSimple::send_redirect(Ref<WebServerRequest> request, const String
 	String s = "HTTP/1.1 " + HTTPServerEnums::get_status_code_header_string(status_code) + "\r\n";
 	s += "Location: " + location + "\r\n";
 	s += "Connection: Close\r\n";
+
+	for (int i = 0; i < request->response_get_cookie_count(); ++i) {
+		Ref<WebServerCookie> cookie = request->response_get_cookie(i);
+
+		ERR_CONTINUE(!cookie.is_valid());
+
+		String cookie_str = cookie->get_response_header_string();
+
+		if (cookie_str != "") {
+			s += cookie_str;
+		}
+	}
+
 	s += "\r\n";
 	CharString cs = s.utf8();
 	peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
@@ -229,6 +243,19 @@ void HTTPServerSimple::send(Ref<WebServerRequest> request) {
 	s += "Content-Length: " + itos(body.size()) + "\r\n";
 	s += "Content-type: text/html\r\n";
 	s += "Connection: Close\r\n";
+
+	for (int i = 0; i < request->response_get_cookie_count(); ++i) {
+		Ref<WebServerCookie> cookie = request->response_get_cookie(i);
+
+		ERR_CONTINUE(!cookie.is_valid());
+
+		String cookie_str = cookie->get_response_header_string();
+
+		if (cookie_str != "") {
+			s += cookie_str;
+		}
+	}
+
 	s += "\r\n";
 	s += body;
 
@@ -239,6 +266,19 @@ void HTTPServerSimple::send_file(Ref<WebServerRequest> request, const String &p_
 	if (!FileAccess::exists(p_file_path)) {
 		String s = "HTTP/1.1 404 Not Found\r\n";
 		s += "Connection: Close\r\n";
+
+		for (int i = 0; i < request->response_get_cookie_count(); ++i) {
+			Ref<WebServerCookie> cookie = request->response_get_cookie(i);
+
+			ERR_CONTINUE(!cookie.is_valid());
+
+			String cookie_str = cookie->get_response_header_string();
+
+			if (cookie_str != "") {
+				s += cookie_str;
+			}
+		}
+
 		s += "\r\n";
 		CharString cs = s.utf8();
 		peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
@@ -259,6 +299,19 @@ void HTTPServerSimple::send_file(Ref<WebServerRequest> request, const String &p_
 	String s = "HTTP/1.1 200 OK\r\n";
 	s += "Connection: Close\r\n";
 	s += "Content-Type: " + ctype + "\r\n";
+
+	for (int i = 0; i < request->response_get_cookie_count(); ++i) {
+		Ref<WebServerCookie> cookie = request->response_get_cookie(i);
+
+		ERR_CONTINUE(!cookie.is_valid());
+
+		String cookie_str = cookie->get_response_header_string();
+
+		if (cookie_str != "") {
+			s += cookie_str;
+		}
+	}
+
 	s += "Access-Control-Allow-Origin: *\r\n";
 	s += "Cross-Origin-Opener-Policy: same-origin\r\n";
 	s += "Cross-Origin-Embedder-Policy: require-corp\r\n";

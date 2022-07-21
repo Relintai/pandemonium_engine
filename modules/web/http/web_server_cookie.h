@@ -1,6 +1,7 @@
 #ifndef WEB_SERVER_COOKIE_H
 #define WEB_SERVER_COOKIE_H
 
+#include "core/os/os.h"
 #include "core/ustring.h"
 
 #include "core/reference.h"
@@ -27,21 +28,42 @@ public:
 	bool get_secure();
 	void set_secure(const bool val);
 
+	bool get_delete();
+	void set_delete(const bool val);
+
+	bool get_should_expire();
+	void set_should_expire(const bool val);
+
+	uint64_t get_expiry_date_unix_time();
+	void set_expiry_date_unix_time(const uint64_t unix_time);
+
+	OS::DateTime get_expiry_date();
+	void set_expiry_date(OS::DateTime date_time);
+	void set_expiry_date(OS::Date date, OS::Time time);
+
+	Dictionary get_expiry_date_dict();
+	void set_expiry_date_dict(const Dictionary &date, const Dictionary &time);
+	void set_expiry_date_dt_dict(const Dictionary &date_time);
+
 	void set_data(const String &p_key, const String &p_value);
+
+	String get_response_header_string();
 
 	WebServerCookie();
 	~WebServerCookie();
 
-	//todo date
-	String domain;
-	String path;
-	String key;
-	String value;
-	bool http_only;
-	bool secure;
-
 protected:
 	static void _bind_methods();
+
+	bool _should_expire;
+	OS::DateTime _expiry_date;
+	String _domain;
+	String _path;
+	String _key;
+	String _value;
+	bool _http_only;
+	bool _secure;
+	bool _delete;
 };
 
 #endif
