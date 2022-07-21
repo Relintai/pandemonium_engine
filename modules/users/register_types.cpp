@@ -35,7 +35,7 @@ SOFTWARE.
 #include "../modules_enabled.gen.h"
 
 #ifdef MODULE_WEB_ENABLED
-#include "web/middleware/user_session_setup_middleware.h"
+#include "web/middleware/user_session_setup_web_server_middleware.h"
 #endif
 
 UserDB *_user_db = nullptr;

@@ -17,7 +17,7 @@ sources = [
 ]
 
 if env['module_web_enabled']:
-  sources.append("web/middleware/user_session_setup_middleware.cpp")
+  sources.append("web/middleware/user_session_setup_web_server_middleware.cpp")
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
     # Shared lib compilation
