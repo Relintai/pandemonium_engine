@@ -27,13 +27,18 @@ SOFTWARE.
 #include "users/user.h"
 
 #include "managers/user_manager.h"
+#include "managers/user_manager_static.h"
+
 #include "singleton/user_db.h"
 
 UserDB *_user_db = nullptr;
 
 void register_users_types() {
 	ClassDB::register_class<User>();
+
 	ClassDB::register_class<UserManager>();
+	ClassDB::register_class<UserManagerStatic>();
+
 	ClassDB::register_class<UserDB>();
 
 	_user_db = memnew(UserDB);

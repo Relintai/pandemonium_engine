@@ -33,7 +33,7 @@ public:
 	virtual bool _is_username_taken(const String &user_name);
 	virtual bool _is_email_taken(const String &email);
 
-	Vector<Ref<User>> get_all();
+	virtual Vector<Ref<User>> get_all();
 
 	UserManager();
 	~UserManager();
