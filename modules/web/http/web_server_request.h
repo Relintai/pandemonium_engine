@@ -120,21 +120,13 @@ public:
 	WebServerRequest();
 	~WebServerRequest();
 
-	WebServer *server;
-	WebNode *web_root;
-
 	String head;
 	String body;
 	String footer;
 	String compiled_body;
 
-	bool connection_closed;
-
-	Ref<HTTPSession> session;
-	Dictionary data;
-
-	Ref<WebPermission> active_permission;
-	int permissions;
+	void _set_server(WebServer *v);
+	void _set_web_root(WebNode *v);
 
 protected:
 	static void _bind_methods();
@@ -144,6 +136,16 @@ protected:
 	Vector<String> _path_stack;
 	int _path_stack_pointer;
 	Vector<Ref<WebServerCookie>> _cookies;
+
+	Ref<WebPermission> _active_permission;
+	int _permissions;
+
+	Ref<HTTPSession> _session;
+
+	bool _connection_closed;
+
+	WebServer *_server;
+	WebNode *_web_root;
 };
 
 #endif

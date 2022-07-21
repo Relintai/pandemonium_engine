@@ -41,94 +41,87 @@ void WebServerRequest::set_compiled_body(const String &val) {
 }
 
 bool WebServerRequest::get_connection_closed() {
-	return connection_closed;
+	return _connection_closed;
 }
 void WebServerRequest::set_connection_closed(const bool &val) {
-	connection_closed = val;
+	_connection_closed = val;
 }
 
 Ref<HTTPSession> WebServerRequest::get_session() {
-	return session;
+	return _session;
 }
 void WebServerRequest::set_session(const Ref<HTTPSession> &val) {
-	session = val;
-}
-
-Dictionary WebServerRequest::get_data() {
-	return data;
-}
-void WebServerRequest::set_data(const Dictionary &val) {
-	data = val;
+	_session = val;
 }
 
 Ref<WebPermission> WebServerRequest::get_active_permission() {
-	return active_permission;
+	return _active_permission;
 }
 void WebServerRequest::set_active_permission(const Ref<WebPermission> &val) {
-	active_permission = val;
+	_active_permission = val;
 }
 
 int WebServerRequest::get_permissions() {
-	return permissions;
+	return _permissions;
 }
 void WebServerRequest::set_permissions(const int &val) {
-	permissions = val;
+	_permissions = val;
 }
 
 Ref<HTTPSession> WebServerRequest::get_or_create_session() {
-	if (session.is_valid()) {
-		return session;
+	if (_session.is_valid()) {
+		return _session;
 	}
 
-	HTTPSessionManager *sm = server->get_session_manager();
+	HTTPSessionManager *sm = _server->get_session_manager();
 
-	ERR_FAIL_COND_V(!sm, session);
+	ERR_FAIL_COND_V(!sm, _session);
 
-	session = sm->create_session();
+	_session = sm->create_session();
 
-	return session;
+	return _session;
 }
 
 bool WebServerRequest::can_view() const {
-	return (permissions & WebPermission::WEB_PERMISSION_VIEW) != 0;
+	return (_permissions & WebPermission::WEB_PERMISSION_VIEW) != 0;
 }
 bool WebServerRequest::can_create() const {
-	return (permissions & WebPermission::WEB_PERMISSION_CREATE) != 0;
+	return (_permissions & WebPermission::WEB_PERMISSION_CREATE) != 0;
 }
 bool WebServerRequest::can_edit() const {
-	return (permissions & WebPermission::WEB_PERMISSION_EDIT) != 0;
+	return (_permissions & WebPermission::WEB_PERMISSION_EDIT) != 0;
 }
 bool WebServerRequest::can_delete() const {
-	return (permissions & WebPermission::WEB_PERMISSION_DELETE) != 0;
+	return (_permissions & WebPermission::WEB_PERMISSION_DELETE) != 0;
 }
 
 bool WebServerRequest::has_csrf_token() {
-	if (!session.is_valid()) {
+	if (!_session.is_valid()) {
 		return false;
 	}
 
-	return session->has("csrf_token");
+	return _session->has("csrf_token");
 }
 
 String WebServerRequest::get_csrf_token() {
-	if (!session.is_valid()) {
+	if (!_session.is_valid()) {
 		return "";
 	}
 
-	const Variant &val = session->get_const("csrf_token");
+	const Variant &val = _session->get_const("csrf_token");
 
 	return val;
 }
 
 void WebServerRequest::set_csrf_token(const String &value) {
-	if (session.is_valid()) {
-		session->add("csrf_token", value);
+	if (_session.is_valid()) {
+		_session->add("csrf_token", value);
 
-		HTTPSessionManager *sm = server->get_session_manager();
+		HTTPSessionManager *sm = _server->get_session_manager();
 
 		ERR_FAIL_COND(!sm);
 
-		sm->save_session(session);
+		sm->save_session(_session);
 	}
 }
 
@@ -267,7 +260,7 @@ void WebServerRequest::send_file(const String &p_file_path) {
 }
 
 void WebServerRequest::send_error(int error_code) {
-	server->get_web_root()->handle_error_send_request(this, error_code);
+	_server->get_web_root()->handle_error_send_request(this, error_code);
 }
 
 String WebServerRequest::parser_get_path() {
@@ -443,11 +436,11 @@ void WebServerRequest::update() {
 }
 
 WebServer *WebServerRequest::get_server() {
-	return server;
+	return _server;
 }
 
 WebNode *WebServerRequest::get_web_root() {
-	return web_root;
+	return _web_root;
 }
 
 WebServerRequest::WebServerRequest() {
@@ -455,11 +448,11 @@ WebServerRequest::WebServerRequest() {
 	//server = nullptr;
 	//_path_stack.clear();
 	_path_stack_pointer = 0;
-	connection_closed = false;
+	_connection_closed = false;
 	//_full_path = "";
 	_status_code = HTTPServerEnums::HTTP_STATUS_CODE_200_OK;
 	// Maybe set NONE or only VIEW as default?
-	permissions = WebPermission::WEB_PERMISSION_ALL;
+	_permissions = WebPermission::WEB_PERMISSION_ALL;
 	//active_permission.unref();
 
 	//head.clear();
@@ -468,11 +461,18 @@ WebServerRequest::WebServerRequest() {
 	//compiled_body.clear();
 
 	//data.clear();
-	server = nullptr;
-	web_root = nullptr;
+	_server = nullptr;
+	_web_root = nullptr;
 }
 
 WebServerRequest::~WebServerRequest() {
+}
+
+void WebServerRequest::_set_server(WebServer *v) {
+	_server = v;
+}
+void WebServerRequest::_set_web_root(WebNode *v) {
+	_web_root = v;
 }
 
 void WebServerRequest::_bind_methods() {
@@ -499,10 +499,6 @@ void WebServerRequest::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_session"), &WebServerRequest::get_session);
 	ClassDB::bind_method(D_METHOD("set_session", "val"), &WebServerRequest::set_session);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "session", PROPERTY_HINT_RESOURCE_TYPE, "HTTPSession"), "set_session", "get_session");
-
-	ClassDB::bind_method(D_METHOD("get_data"), &WebServerRequest::get_data);
-	ClassDB::bind_method(D_METHOD("set_data", "val"), &WebServerRequest::set_data);
-	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "data"), "set_data", "get_data");
 
 	ClassDB::bind_method(D_METHOD("get_active_permission"), &WebServerRequest::get_active_permission);
 	ClassDB::bind_method(D_METHOD("set_active_permission", "val"), &WebServerRequest::set_active_permission);

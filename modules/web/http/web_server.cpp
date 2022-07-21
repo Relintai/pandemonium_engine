@@ -29,8 +29,8 @@ Node *WebServer::get_session_manager_bind() {
 void WebServer::server_handle_request(Ref<WebServerRequest> request) {
 	ERR_FAIL_COND(!_web_root);
 
-	request->server = this;
-	request->web_root = _web_root;
+	request->_set_server(this);
+	request->_set_web_root(_web_root);
 
 	_rw_lock.read_lock();
 	_web_root->handle_request_main(request);

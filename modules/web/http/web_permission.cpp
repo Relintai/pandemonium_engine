@@ -15,8 +15,8 @@ void WebPermission::handle_view_permission_missing(const Ref<WebServerRequest> &
 }
 
 bool WebPermission::_activate(Ref<WebServerRequest> request) {
-	request->active_permission.reference_ptr(this);
-	request->permissions = get_permissions(request);
+	request->set_active_permission(Ref<WebPermission>(this));
+	request->set_permissions(get_permissions(request));
 
 	if (!request->can_view()) {
 		handle_view_permission_missing(request);

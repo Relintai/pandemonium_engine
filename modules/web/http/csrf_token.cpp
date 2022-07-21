@@ -23,7 +23,7 @@ bool CSRFTokenWebServerMiddleware::_on_before_handle_request_main(Ref<WebServerR
 				return false;
 			}
 
-			if (!request->session.is_valid()) {
+			if (!request->get_session().is_valid()) {
 				request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_401_UNAUTHORIZED);
 				return true;
 			}
@@ -40,7 +40,7 @@ bool CSRFTokenWebServerMiddleware::_on_before_handle_request_main(Ref<WebServerR
 	}
 
 	// don't create the session itself
-	if (!request->session.is_valid()) {
+	if (!request->get_session().is_valid()) {
 		return false;
 	}
 

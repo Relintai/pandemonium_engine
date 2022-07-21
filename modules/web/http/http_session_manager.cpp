@@ -301,9 +301,9 @@ bool SessionSetupWebServerMiddleware::_on_before_handle_request_main(Ref<WebServ
 		return false;
 	}
 
-	HTTPSessionManager *sm = request->server->get_session_manager();
+	HTTPSessionManager *sm = request->get_server()->get_session_manager();
 	ERR_FAIL_COND_V(!sm, false);
-	request->session = sm->get_session(sid);
+	request->set_session(sm->get_session(sid));
 
 	return false;
 }
