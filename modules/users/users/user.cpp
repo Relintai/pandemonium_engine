@@ -89,6 +89,10 @@ String User::_hash_password(const String &p_password) {
 	return p.sha256_text();
 }
 
+void User::save() {
+	emit_changed();
+}
+
 User::User() {
 	_rank = 0;
 	_banned = false;
@@ -146,6 +150,8 @@ void User::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_check_password", "password"), &User::_check_password);
 	ClassDB::bind_method(D_METHOD("_create_password", "password"), &User::_create_password);
 	ClassDB::bind_method(D_METHOD("_hash_password", "password"), &User::_hash_password);
+
+	ClassDB::bind_method(D_METHOD("save"), &User::save);
 
 	BIND_ENUM_CONSTANT(PERMISSION_CREATE);
 	BIND_ENUM_CONSTANT(PERMISSION_READ);

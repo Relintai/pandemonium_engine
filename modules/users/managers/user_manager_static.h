@@ -28,6 +28,18 @@ public:
 	Vector<Variant> get_users();
 	void set_users(const Vector<Variant> &users);
 
+	String get_create_user_name_bind();
+	void set_create_user_name_bind(const String &val);
+
+	String get_create_user_email_bind();
+	void set_create_user_email_bind(const String &val);
+
+	String get_create_user_password_bind();
+	void set_create_user_password_bind(const String &val);
+
+	bool get_create_user_bind();
+	void set_create_user_bind(const bool val);
+
 	UserManagerStatic();
 	~UserManagerStatic();
 
@@ -35,6 +47,10 @@ protected:
 	static void _bind_methods();
 
 	Vector<Ref<User>> _users;
+
+	String _create_user_name;
+	String _create_user_email;
+	String _create_user_password;
 };
 
 #endif

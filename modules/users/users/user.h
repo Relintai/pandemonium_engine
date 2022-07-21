@@ -56,6 +56,8 @@ public:
 	virtual void _create_password(const String &p_password);
 	virtual String _hash_password(const String &p_password);
 
+	void save();
+
 	User();
 	~User();
 
