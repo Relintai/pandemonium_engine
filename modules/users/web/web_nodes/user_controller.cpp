@@ -793,28 +793,3 @@ FormValidator *UserController::_profile_validator = nullptr;
 
 String UserController::_path = "./";
 String UserController::_table_name = "users";
-
-// returnring true means handled, false means continue
-bool UserSessionSetupMiddleware::on_before_handle_request_main(Request *request) {
-	if (request->session.is_valid()) {
-		int user_id = request->session->get_int("user_id");
-
-		if (user_id != 0) {
-			Ref<User> u = UserController::get_singleton()->db_get_user(user_id);
-
-			if (u.is_valid()) {
-				request->reference_data["user"] = u;
-			} else {
-				// log
-				request->session->remove("user_id");
-			}
-		}
-	}
-
-	return false;
-}
-
-UserSessionSetupMiddleware::UserSessionSetupMiddleware() {
-}
-UserSessionSetupMiddleware::~UserSessionSetupMiddleware() {
-}

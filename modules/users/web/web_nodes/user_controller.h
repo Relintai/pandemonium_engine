@@ -122,16 +122,4 @@ protected:
 	static String _table_name;
 };
 
-// just session setup
-class UserSessionSetupMiddleware : public Middleware {
-	RCPP_OBJECT(UserSessionSetupMiddleware, Middleware);
-
-public:
-	//returnring true means handled, false means continue
-	bool on_before_handle_request_main(Request *request);
-
-	UserSessionSetupMiddleware();
-	~UserSessionSetupMiddleware();
-};
-
 #endif
