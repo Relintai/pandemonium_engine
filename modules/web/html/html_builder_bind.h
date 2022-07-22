@@ -7,6 +7,7 @@
 #include "core/reference.h"
 
 class _HTMLBuilder;
+class WebServerRequest;
 
 class _HTMLTag : public Reference {
 	GDCLASS(_HTMLTag, Reference)
@@ -472,7 +473,7 @@ public:
 	Ref<_HTMLTag> form_get(const String &action = "", const String &cls = "", const String &id = "");
 	Ref<_HTMLTag> form_post(const String &action = "", const String &cls = "", const String &id = "");
 	// will add a csrf token from request
-	//Ref<_HTMLBuilder> form_post(const String &action, Request *request, const String &cls = "", const String &id = "");
+	Ref<_HTMLBuilder> form_postr(const String &action, Ref<WebServerRequest> request, const String &cls = "", const String &id = "");
 
 	Ref<_HTMLTag> input_button(const String &name = "", const String &value = "", const String &cls = "", const String &id = "");
 	Ref<_HTMLTag> input_checkbox(const String &name = "", const String &value = "", const bool checked = false, const String &cls = "", const String &id = "");
@@ -500,7 +501,7 @@ public:
 	Ref<_HTMLBuilder> flabel(const String &pfor, const String &plabel, const String &cls = "", const String &id = "");
 
 	Ref<_HTMLBuilder> csrf_token(const String &token);
-	//Ref<_HTMLBuilder> csrf_token(Request *request);
+	Ref<_HTMLBuilder> csrf_tokenr(Ref<WebServerRequest> request);
 
 	void f();
 

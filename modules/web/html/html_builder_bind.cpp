@@ -4,7 +4,7 @@
 
 #include "core/method_bind_ext.gen.inc"
 
-//#include "web/http/request.h"
+#include "../http/web_server_request.h"
 
 bool _HTMLTag::get_simple() const {
 	return simple;
@@ -2778,14 +2778,12 @@ Ref<_HTMLTag> _HTMLBuilder::form_post(const String &action, const String &cls, c
 	return tag;
 }
 
-/*
-Ref<_HTMLBuilder> _HTMLBuilder::form_post(const String &action, Request *request, const String &cls, const String &id) {
+Ref<_HTMLBuilder> _HTMLBuilder::form_postr(const String &action, Ref<WebServerRequest> request, const String &cls, const String &id) {
 	form_post(action, cls, id);
-	csrf_token(request);
+	csrf_tokenr(request);
 
 	return Ref<_HTMLBuilder>(this);
 }
-*/
 
 Ref<_HTMLBuilder> _HTMLBuilder::flabel(const String &pfor, const String &plabel, const String &cls, const String &id) {
 	Ref<_HTMLTag> t = label();
@@ -3486,11 +3484,10 @@ Ref<_HTMLBuilder> _HTMLBuilder::csrf_token(const String &token) {
 
 	return Ref<_HTMLBuilder>(this);
 }
-/*
-Ref<_HTMLBuilder> _HTMLBuilder::csrf_token(Request *request) {
+
+Ref<_HTMLBuilder> _HTMLBuilder::csrf_tokenr(Ref<WebServerRequest> request) {
 	return csrf_token(request->get_csrf_token());
 }
-*/
 
 void _HTMLBuilder::f() {
 	write_tag();
@@ -3893,10 +3890,7 @@ void _HTMLBuilder::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("form_get", "action", "cls", "id"), &_HTMLBuilder::form_get, "", "", "");
 	ClassDB::bind_method(D_METHOD("form_post", "action", "cls", "id"), &_HTMLBuilder::form_post, "", "", "");
-
-	//ClassDB::bind_method(D_METHOD("", "name", "cls", "id"), &_HTMLBuilder::, "", "", "");
-	// will add a csrf token from request
-	//Ref<_HTMLBuilder> form_post(const String &action, Request *request, const String &cls = "", const String &id = "");
+	ClassDB::bind_method(D_METHOD("form_postr", "action", "request", "cls", "id"), &_HTMLBuilder::form_postr, "", "");
 
 	ClassDB::bind_method(D_METHOD("input_button", "name", "value", "cls", "id"), &_HTMLBuilder::input_button, "", "", "", "");
 	ClassDB::bind_method(D_METHOD("input_checkbox", "name", "value", "checked", "cls", "id"), &_HTMLBuilder::input_checkbox, "", "", false, "", "");
@@ -3924,7 +3918,7 @@ void _HTMLBuilder::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("flabel", "pfor", "plabel", "cls", "id"), &_HTMLBuilder::flabel, "", "");
 
 	ClassDB::bind_method(D_METHOD("csrf_token", "token"), &_HTMLBuilder::csrf_token);
-	//ClassDB::bind_method(D_METHOD("csrf_token", "request"), &_HTMLBuilder::csrf_token);
+	ClassDB::bind_method(D_METHOD("csrf_tokenr", "request"), &_HTMLBuilder::csrf_tokenr);
 
 	ClassDB::bind_method(D_METHOD("f"), &_HTMLBuilder::f);
 

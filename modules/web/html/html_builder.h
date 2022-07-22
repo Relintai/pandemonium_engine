@@ -3,8 +3,11 @@
 
 #include "core/ustring.h"
 
+#include "core/reference.h"
+
 class Request;
 class HTMLBuilder;
+class WebServerRequest;
 
 class HTMLTag {
 public:
@@ -470,7 +473,7 @@ public:
 	HTMLBuilder *form_get(const String &action, const String &cls = "", const String &id = "");
 	HTMLBuilder *form_post(const String &action, const String &cls = "", const String &id = "");
 	// will add a csrf token from request
-	//HTMLBuilder *form_post(const String &action, Request *request, const String &cls = "", const String &id = "");
+	HTMLBuilder *form_postr(const String &action, Ref<WebServerRequest> request, const String &cls = "", const String &id = "");
 
 	HTMLTag *input_button();
 	HTMLTag *input_checkbox();
@@ -521,7 +524,7 @@ public:
 	HTMLBuilder *input_hidden(const String &name, const String &value);
 
 	HTMLBuilder *csrf_token(const String &token);
-	//HTMLBuilder *csrf_token(Request *request);
+	HTMLBuilder *csrf_tokenr(Ref<WebServerRequest> request);
 
 	void f();
 

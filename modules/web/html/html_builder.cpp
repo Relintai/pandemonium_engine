@@ -1,5 +1,7 @@
 #include "html_builder.h"
 
+#include "../http/web_server_request.h"
+
 HTMLTag *HTMLTag::str(const String &str) {
 	result += " " + str;
 
@@ -2573,14 +2575,12 @@ HTMLBuilder *HTMLBuilder::form_post(const String &action, const String &cls, con
 	return this;
 }
 
-/*
-HTMLBuilder *HTMLBuilder::form_post(const String &action, Request *request, const String &cls, const String &id) {
+HTMLBuilder *HTMLBuilder::form_postr(const String &action, Ref<WebServerRequest> request, const String &cls, const String &id) {
 	form_post(action, cls, id);
-	csrf_token(request);
+	csrf_tokenr(request);
 
 	return this;
 }
-*/
 
 HTMLTag *HTMLBuilder::input_button() {
 	write_tag();
@@ -3326,11 +3326,10 @@ HTMLBuilder *HTMLBuilder::csrf_token(const String &token) {
 
 	return this;
 }
-/*
-HTMLBuilder *HTMLBuilder::csrf_token(Request *request) {
+
+HTMLBuilder *HTMLBuilder::csrf_tokenr(Ref<WebServerRequest> request) {
 	return csrf_token(request->get_csrf_token());
 }
-*/
 
 void HTMLBuilder::f() {
 	write_tag();
