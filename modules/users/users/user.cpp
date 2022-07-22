@@ -1,24 +1,31 @@
 #include "user.h"
 #include "core/class_db.h"
 
-String User::get_name_user_input() const {
-	return _name_user_input;
+int User::get_user_id() const {
+	return _user_id;
 }
-void User::set_name_user_input(const String &val) {
-	_name_user_input = val;
+void User::set_user_id(const int val) {
+	_user_id = val;
 }
 
-String User::get_email_user_input() const {
-	return _email_user_input;
+String User::get_user_name() const {
+	return _user_name;
 }
-void User::set_email_user_input(const String &val) {
-	_email_user_input = val;
+void User::set_user_name(const String &val) {
+	_user_name = val;
+}
+
+String User::get_email() const {
+	return _email;
+}
+void User::set_email(const String &val) {
+	_email = val;
 }
 
 int User::get_rank() const {
 	return _rank;
 }
-void User::set_rank(const int &val) {
+void User::set_rank(const int val) {
 	_rank = val;
 }
 
@@ -46,7 +53,7 @@ void User::set_password_hash(const String &val) {
 bool User::get_banned() const {
 	return _banned;
 }
-void User::set_banned(const bool &val) {
+void User::set_banned(const bool val) {
 	_banned = val;
 }
 
@@ -60,7 +67,7 @@ void User::set_password_reset_token(const String &val) {
 bool User::get_locked() const {
 	return _locked;
 }
-void User::set_locked(const bool &val) {
+void User::set_locked(const bool val) {
 	_locked = val;
 }
 
@@ -77,10 +84,11 @@ String User::hash_password(const String &p_password) {
 bool User::_check_password(const String &p_password) {
 	return hash_password(p_password) == get_password_hash();
 }
+
 void User::_create_password(const String &p_password) {
 	// todo improve a bit
-	set_pre_salt(hash_password(get_name_user_input() + get_email_user_input()));
-	set_post_salt(hash_password(get_email_user_input() + get_name_user_input()));
+	set_pre_salt(hash_password(get_user_name() + get_email()));
+	set_post_salt(hash_password(get_email() + get_user_name()));
 
 	set_password_hash(hash_password(p_password));
 }
@@ -107,6 +115,7 @@ void User::write_unlock() {
 }
 
 User::User() {
+	_user_id = -1;
 	_rank = 0;
 	_banned = false;
 	_locked = false;
@@ -116,13 +125,17 @@ User::~User() {
 }
 
 void User::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_name_user_input"), &User::get_name_user_input);
-	ClassDB::bind_method(D_METHOD("set_name_user_input", "val"), &User::set_name_user_input);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "name_user_input"), "set_name_user_input", "get_name_user_input");
+	ClassDB::bind_method(D_METHOD("get_user_id"), &User::get_user_id);
+	ClassDB::bind_method(D_METHOD("set_user_id", "val"), &User::set_user_id);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "user_id"), "set_user_id", "get_user_id");
 
-	ClassDB::bind_method(D_METHOD("get_email_user_input"), &User::get_email_user_input);
-	ClassDB::bind_method(D_METHOD("set_email_user_input", "val"), &User::set_email_user_input);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "email_user_input"), "set_email_user_input", "get_email_user_input");
+	ClassDB::bind_method(D_METHOD("get_user_name"), &User::get_user_name);
+	ClassDB::bind_method(D_METHOD("set_user_name", "val"), &User::set_user_name);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "user_name"), "set_user_name", "get_user_name");
+
+	ClassDB::bind_method(D_METHOD("get_email"), &User::get_email);
+	ClassDB::bind_method(D_METHOD("set_email", "val"), &User::set_email);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "email"), "set_email", "get_email");
 
 	ClassDB::bind_method(D_METHOD("get_rank"), &User::get_rank);
 	ClassDB::bind_method(D_METHOD("set_rank", "val"), &User::set_rank);

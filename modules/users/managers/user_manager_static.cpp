@@ -12,7 +12,7 @@ Ref<User> UserManagerStatic::_get_user_name(const String &user_name) {
 		Ref<User> u = _users[i];
 
 		if (u.is_valid()) {
-			if (u->get_name_user_input() == user_name) {
+			if (u->get_user_name() == user_name) {
 				return u;
 			}
 		}
@@ -36,7 +36,7 @@ bool UserManagerStatic::_is_username_taken(const String &user_name) {
 		Ref<User> u = _users[i];
 
 		if (u.is_valid()) {
-			if (u->get_name_user_input() == user_name) {
+			if (u->get_user_name() == user_name) {
 				return true;
 			}
 		}
@@ -49,7 +49,7 @@ bool UserManagerStatic::_is_email_taken(const String &email) {
 		Ref<User> u = _users[i];
 
 		if (u.is_valid()) {
-			if (u->get_email_user_input() == email) {
+			if (u->get_email() == email) {
 				return true;
 			}
 		}
@@ -106,8 +106,8 @@ void UserManagerStatic::set_create_user_bind(const bool val) {
 	if (val) {
 		Ref<User> u = create_user();
 
-		u->set_name_user_input(_create_user_name);
-		u->set_email_user_input(_create_user_email);
+		u->set_user_name(_create_user_name);
+		u->set_email(_create_user_email);
 		u->create_password(_create_user_password);
 		u->save();
 

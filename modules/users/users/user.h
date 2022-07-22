@@ -22,14 +22,17 @@ public:
 		PERMISSION_NONE = 0
 	};
 
-	String get_name_user_input() const;
-	void set_name_user_input(const String &val);
+	int get_user_id() const;
+	void set_user_id(const int val);
 
-	String get_email_user_input() const;
-	void set_email_user_input(const String &val);
+	String get_user_name() const;
+	void set_user_name(const String &val);
+
+	String get_email() const;
+	void set_email(const String &val);
 
 	int get_rank() const;
-	void set_rank(const int &val);
+	void set_rank(const int val);
 
 	String get_pre_salt() const;
 	void set_pre_salt(const String &val);
@@ -41,13 +44,13 @@ public:
 	void set_password_hash(const String &val);
 
 	bool get_banned() const;
-	void set_banned(const bool &val);
+	void set_banned(const bool val);
 
 	String get_password_reset_token() const;
 	void set_password_reset_token(const String &val);
 
 	bool get_locked() const;
-	void set_locked(const bool &val);
+	void set_locked(const bool val);
 
 	bool check_password(const String &p_password);
 	void create_password(const String &p_password);
@@ -70,8 +73,9 @@ public:
 protected:
 	static void _bind_methods();
 
-	String _name_user_input;
-	String _email_user_input;
+	int _user_id;
+	String _user_name;
+	String _email;
 	int _rank;
 	String _pre_salt;
 	String _post_salt;

@@ -27,7 +27,7 @@ Ref<User> UserDB::get_user_name(const String &user_name) {
 		Ref<User> u = _users[i];
 
 		if (u.is_valid()) {
-			if (u->get_name_user_input() == user_name) {
+			if (u->get_user_name() == user_name) {
 				_lock.read_unlock();
 				return u;
 			}
@@ -70,7 +70,7 @@ bool UserDB::is_username_taken(const String &user_name) {
 		Ref<User> u = _users[i];
 
 		if (u.is_valid()) {
-			if (u->get_name_user_input() == user_name) {
+			if (u->get_user_name() == user_name) {
 				_lock.read_unlock();
 				return true;
 			}
@@ -92,7 +92,7 @@ bool UserDB::is_email_taken(const String &email) {
 		Ref<User> u = _users[i];
 
 		if (u.is_valid()) {
-			if (u->get_email_user_input() == email) {
+			if (u->get_email() == email) {
 				_lock.read_unlock();
 				return true;
 			}

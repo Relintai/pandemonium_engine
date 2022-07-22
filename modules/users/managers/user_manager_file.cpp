@@ -39,7 +39,7 @@ Ref<User> UserManagerFile::_get_user_name(const String &user_name) {
 		Ref<User> u = _users[i];
 
 		if (u.is_valid()) {
-			if (u->get_name_user_input() == user_name) {
+			if (u->get_user_name() == user_name) {
 				_rw_lock.read_unlock();
 
 				return u;
@@ -75,7 +75,7 @@ bool UserManagerFile::_is_username_taken(const String &user_name) {
 		Ref<User> u = _users[i];
 
 		if (u.is_valid()) {
-			if (u->get_name_user_input() == user_name) {
+			if (u->get_user_name() == user_name) {
 				_rw_lock.read_unlock();
 				return true;
 			}
@@ -91,7 +91,7 @@ bool UserManagerFile::_is_email_taken(const String &email) {
 		Ref<User> u = _users[i];
 
 		if (u.is_valid()) {
-			if (u->get_email_user_input() == email) {
+			if (u->get_email() == email) {
 				_rw_lock.read_unlock();
 				return true;
 			}
