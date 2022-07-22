@@ -25,7 +25,7 @@ void UserSettingsWebPage::_handle_request_main(Ref<WebServerRequest> request) {
 		Ref<User> u = request->get_meta("user");
 
 		if (u.is_valid()) {
-			handle_request(u, request);
+			//handle_request(u, request);
 
 			return;
 		}

@@ -17,9 +17,6 @@ class UserSettingsWebPage : public UserWebPage {
 public:
 	void _handle_request_main(Ref<WebServerRequest> request);
 
-	virtual void handle_request(Ref<User> &user, Ref<WebServerRequest> request);
-	virtual void handle_main_page_request(Ref<User> &user, Ref<WebServerRequest> request);
-
 	struct SettingsRequestData {
 		String error_str;
 

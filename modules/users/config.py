@@ -17,6 +17,15 @@ def get_doc_classes():
         "UserDB",
 
         "UserSessionSetupWebServerMiddleware",
+
+    	"UserWebPage",
+	    "UserDeleteWebPage",
+	    "UserLoginWebPage",
+	    "UserLogoutWebPage",
+	    "UserPasswordResetWebPage",
+	    "UserRegisterWebPage",
+	    "UserSettingsWebPage",
+	    "UserStatsWebPage",
     ]
 
 

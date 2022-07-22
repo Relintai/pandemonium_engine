@@ -18,6 +18,14 @@ sources = [
 
 if env['module_web_enabled']:
   sources.append("web/middleware/user_session_setup_web_server_middleware.cpp")
+  sources.append("web/web_nodes/user_web_page.cpp")
+  sources.append("web/web_nodes/user_delete_web_page.cpp")
+  sources.append("web/web_nodes/user_login_web_page.cpp")
+  sources.append("web/web_nodes/user_logout_web_page.cpp")
+  sources.append("web/web_nodes/user_password_reset_web_page.cpp")
+  sources.append("web/web_nodes/user_register_web_page.cpp")
+  sources.append("web/web_nodes/user_settings_web_page.cpp")
+  sources.append("web/web_nodes/user_stats_web_page.cpp")
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
     # Shared lib compilation
