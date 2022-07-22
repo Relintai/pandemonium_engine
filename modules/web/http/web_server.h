@@ -22,10 +22,7 @@ public:
 	bool get_is_running();
 
 	WebNode *get_web_root();
-	Node *get_web_root_bind();
-
 	HTTPSessionManager *get_session_manager();
-	Node *get_session_manager_bind();
 
 	void server_handle_request(Ref<WebServerRequest> request);
 

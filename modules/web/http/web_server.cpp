@@ -14,15 +14,7 @@ WebNode *WebServer::get_web_root() {
 	return _web_root;
 }
 
-Node *WebServer::get_web_root_bind() {
-	return _web_root;
-}
-
 HTTPSessionManager *WebServer::get_session_manager() {
-	return _session_manager;
-}
-
-Node *WebServer::get_session_manager_bind() {
 	return _session_manager;
 }
 
@@ -150,8 +142,8 @@ void WebServer::_notification(int p_what) {
 }
 
 void WebServer::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_web_root"), &WebServer::get_web_root_bind);
-	ClassDB::bind_method(D_METHOD("get_session_manager"), &WebServer::get_session_manager_bind);
+	ClassDB::bind_method(D_METHOD("get_web_root"), &WebServer::get_web_root);
+	ClassDB::bind_method(D_METHOD("get_session_manager"), &WebServer::get_session_manager);
 
 	ClassDB::bind_method(D_METHOD("server_handle_request", "request"), &WebServer::server_handle_request);
 	ClassDB::bind_method(D_METHOD("request_write_lock"), &WebServer::request_write_lock);
