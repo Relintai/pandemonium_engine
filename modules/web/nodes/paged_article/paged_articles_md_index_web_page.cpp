@@ -1,4 +1,4 @@
-#include "paged_articles_md_index.h"
+#include "paged_articles_md_index_web_page.h"
 
 #include "core/os/dir_access.h"
 
@@ -6,8 +6,8 @@
 #include "../../http/web_permission.h"
 #include "../../http/web_server_request.h"
 
-#include "../list_page/list_page.h"
-#include "paged_article.h"
+#include "../list_page/list_web_page.h"
+#include "paged_article_web_page.h"
 
 String PagedArticlesMDIndex::get_folder() {
 	return folder;

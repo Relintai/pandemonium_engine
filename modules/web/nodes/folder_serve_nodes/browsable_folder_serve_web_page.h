@@ -4,7 +4,7 @@
 #include "core/ustring.h"
 #include "core/vector.h"
 
-#include "folder_serve_node.h"
+#include "folder_serve_web_page.h"
 
 class WebServerRequest;
 

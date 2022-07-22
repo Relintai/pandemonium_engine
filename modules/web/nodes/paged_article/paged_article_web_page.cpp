@@ -1,4 +1,4 @@
-#include "paged_article.h"
+#include "paged_article_web_page.h"
 
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"

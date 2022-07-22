@@ -47,17 +47,17 @@ SOFTWARE.
 
 #include "http_server_simple/web_server_simple.h"
 
-#include "nodes/static_pages/static_page.h"
-#include "nodes/static_pages/static_page_file.h"
-#include "nodes/static_pages/static_page_folder_files.h"
+#include "nodes/static_pages/static_web_page.h"
+#include "nodes/static_pages/static_web_page_file.h"
+#include "nodes/static_pages/static_web_page_folder_files.h"
 
-#include "nodes/folder_serve_nodes/browsable_folder_serve_node.h"
-#include "nodes/folder_serve_nodes/folder_serve_node.h"
+#include "nodes/folder_serve_nodes/browsable_folder_serve_web_page.h"
+#include "nodes/folder_serve_nodes/folder_serve_web_page.h"
 
-#include "nodes/list_page/list_page.h"
+#include "nodes/list_page/list_web_page.h"
 
-#include "nodes/paged_article/paged_article.h"
-#include "nodes/paged_article/paged_articles.h"
+#include "nodes/paged_article/paged_article_web_page.h"
+#include "nodes/paged_article/paged_articles_web_page.h"
 //#include "nodes/paged_article/paged_articles_md_index.h"
 
 #include "nodes/redirect/redirect_web_page.h"

@@ -1,4 +1,4 @@
-#include "paged_articles.h"
+#include "paged_articles_web_page.h"
 
 #include "core/os/dir_access.h"
 #include "core/os/os.h"
@@ -7,7 +7,7 @@
 #include "../../html/html_builder.h"
 #include "../../http/web_server_request.h"
 
-#include "paged_article.h"
+#include "paged_article_web_page.h"
 
 String PagedArticles::get_folder() {
 	return _folder;

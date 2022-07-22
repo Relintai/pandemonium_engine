@@ -47,18 +47,18 @@ sources = [
     "http_server_simple/http_writer.cpp",
     "http_server_simple/http_parser/http_parser.c",
 
-    "nodes/static_pages/static_page.cpp",
-    "nodes/static_pages/static_page_file.cpp",
-    "nodes/static_pages/static_page_folder_files.cpp",
+    "nodes/static_pages/static_web_page.cpp",
+    "nodes/static_pages/static_web_page_file.cpp",
+    "nodes/static_pages/static_web_page_folder_files.cpp",
 
-    "nodes/folder_serve_nodes/browsable_folder_serve_node.cpp",
-    "nodes/folder_serve_nodes/folder_serve_node.cpp",
+    "nodes/folder_serve_nodes/browsable_folder_serve_web_page.cpp",
+    "nodes/folder_serve_nodes/folder_serve_web_page.cpp",
 
-    "nodes/list_page/list_page.cpp",
+    "nodes/list_page/list_web_page.cpp",
 
-    "nodes/paged_article/paged_article.cpp",
-    "nodes/paged_article/paged_articles.cpp",
-    #"nodes/paged_article/paged_articles_md_index.cpp",
+    "nodes/paged_article/paged_article_web_page.cpp",
+    "nodes/paged_article/paged_articles_web_page.cpp",
+    #"nodes/paged_article/paged_articles_md_index_web_page.cpp",
 
     "nodes/redirect/redirect_web_page.cpp",
 ]

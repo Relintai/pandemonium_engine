@@ -1,4 +1,4 @@
-#include "static_page_folder_files.h"
+#include "static_web_page_folder_files.h"
 
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"

@@ -1,4 +1,4 @@
-#include "static_page_file.h"
+#include "static_web_page_file.h"
 
 String StaticPageFile::get_file_path() {
 	return _file_path;

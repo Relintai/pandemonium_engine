@@ -1,4 +1,4 @@
-#include "browsable_folder_serve_node.h"
+#include "browsable_folder_serve_web_page.h"
 
 #include "core/os/dir_access.h"
 

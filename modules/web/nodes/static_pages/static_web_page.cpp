@@ -1,4 +1,4 @@
-#include "static_page.h"
+#include "static_web_page.h"
 
 #include "../../http/web_server_request.h"
 #include "core/os/file_access.h"

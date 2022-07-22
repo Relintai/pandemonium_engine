@@ -3,7 +3,7 @@
 
 #include "core/ustring.h"
 
-#include "static_page.h"
+#include "static_web_page.h"
 
 class StaticPageFolderFiles : public StaticPage {
 	GDCLASS(StaticPageFolderFiles, StaticPage);
