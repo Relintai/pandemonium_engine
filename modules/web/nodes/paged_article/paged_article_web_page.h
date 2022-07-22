@@ -1,5 +1,5 @@
-#ifndef PAGED_ARTICLE_H
-#define PAGED_ARTICLE_H
+#ifndef PAGED_ARTICLE_WEB_PAGE_H
+#define PAGED_ARTICLE_WEB_PAGE_H
 
 #include "core/reference.h"
 #include "core/ustring.h"
@@ -17,8 +17,8 @@
 class WebServerRequest;
 class FileCache;
 
-class PagedArticle : public WebNode {
-	GDCLASS(PagedArticle, WebNode);
+class PagedArticleWebPage : public WebNode {
+	GDCLASS(PagedArticleWebPage, WebNode);
 
 public:
 	String get_articles_folder();
@@ -42,8 +42,8 @@ public:
 
 	virtual void generate_summary();
 
-	PagedArticle();
-	~PagedArticle();
+	PagedArticleWebPage();
+	~PagedArticleWebPage();
 
 protected:
 	void _notification(const int what);

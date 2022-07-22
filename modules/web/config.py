@@ -62,18 +62,18 @@ def get_doc_classes():
 
         "WebServerSimple",
 
-        "StaticPage",
-        "StaticPageFile",
-        "StaticPageFolderFiles",
+        "StaticWebPage",
+        "StaticWebPageFile",
+        "StaticWebPageFolderFiles",
 
-        "FolderServeNode",
-        "BrowsableFolderServeNode",
+        "FolderServeWebPage",
+        "BrowsableFolderServeWebPage",
 
-        "ListPage",
+        "ListWebPage",
 
-        "PagedArticle",
-        "PagedArticles",
-        "PagedArticlesMDIndex",
+        "PagedArticleWebPage",
+        "PagedArticlesWebPage",
+        "PagedArticlesWebPageMDIndex",
 
 	    "RedirectWebPage",
     ]

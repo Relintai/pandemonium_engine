@@ -4,14 +4,14 @@
 #include "../../http/web_permission.h"
 #include "../../http/web_server_request.h"
 
-String FolderServeNode::get_serve_folder() {
+String FolderServeWebPage::get_serve_folder() {
 	return _serve_folder;
 }
-void FolderServeNode::set_serve_folder(const String &val) {
+void FolderServeWebPage::set_serve_folder(const String &val) {
 	_serve_folder = val;
 }
 
-void FolderServeNode::_handle_request_main(Ref<WebServerRequest> request) {
+void FolderServeWebPage::_handle_request_main(Ref<WebServerRequest> request) {
 	if (_web_permission.is_valid()) {
 		if (_web_permission->activate(request)) {
 			return;
@@ -42,7 +42,7 @@ void FolderServeNode::_handle_request_main(Ref<WebServerRequest> request) {
 	}
 }
 
-void FolderServeNode::load() {
+void FolderServeWebPage::load() {
 	_file_cache->clear();
 
 	if (_serve_folder == "") {
@@ -54,7 +54,7 @@ void FolderServeNode::load() {
 	}
 }
 
-void FolderServeNode::_notification(const int what) {
+void FolderServeWebPage::_notification(const int what) {
 	switch (what) {
 		case NOTIFICATION_ENTER_TREE:
 			load();
@@ -64,17 +64,17 @@ void FolderServeNode::_notification(const int what) {
 	}
 }
 
-FolderServeNode::FolderServeNode() {
+FolderServeWebPage::FolderServeWebPage() {
 	_file_cache.instance();
 }
 
-FolderServeNode::~FolderServeNode() {
+FolderServeWebPage::~FolderServeWebPage() {
 }
 
-void FolderServeNode::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_serve_folder"), &FolderServeNode::get_serve_folder);
-	ClassDB::bind_method(D_METHOD("set_serve_folder", "val"), &FolderServeNode::set_serve_folder);
+void FolderServeWebPage::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_serve_folder"), &FolderServeWebPage::get_serve_folder);
+	ClassDB::bind_method(D_METHOD("set_serve_folder", "val"), &FolderServeWebPage::set_serve_folder);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "serve_folder"), "set_serve_folder", "get_serve_folder");
 
-	ClassDB::bind_method(D_METHOD("load"), &FolderServeNode::load);
+	ClassDB::bind_method(D_METHOD("load"), &FolderServeWebPage::load);
 }

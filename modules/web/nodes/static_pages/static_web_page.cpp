@@ -3,28 +3,28 @@
 #include "../../http/web_server_request.h"
 #include "core/os/file_access.h"
 
-String StaticPage::get_data() {
+String StaticWebPage::get_data() {
 	return _data;
 }
-void StaticPage::set_data(const String &val) {
+void StaticWebPage::set_data(const String &val) {
 	_data = val;
 }
 
-String StaticPage::get_preview_data() {
+String StaticWebPage::get_preview_data() {
 	return _preview_data;
 }
-void StaticPage::set_preview_data(const String &val) {
+void StaticWebPage::set_preview_data(const String &val) {
 	_preview_data = val;
 }
 
-bool StaticPage::get_should_render_menu() {
+bool StaticWebPage::get_should_render_menu() {
 	return _should_render_menu;
 }
-void StaticPage::set_should_render_menu(const bool &val) {
+void StaticWebPage::set_should_render_menu(const bool &val) {
 	_should_render_menu = val;
 }
 
-void StaticPage::_handle_request(Ref<WebServerRequest> request) {
+void StaticWebPage::_handle_request(Ref<WebServerRequest> request) {
 	if (_should_render_menu) {
 		render_main_menu(request);
 	}
@@ -33,15 +33,15 @@ void StaticPage::_handle_request(Ref<WebServerRequest> request) {
 	request->compile_and_send_body();
 }
 
-void StaticPage::_render_index(Ref<WebServerRequest> request) {
+void StaticWebPage::_render_index(Ref<WebServerRequest> request) {
 	request->body += _data;
 }
 
-void StaticPage::_render_preview(Ref<WebServerRequest> request) {
+void StaticWebPage::_render_preview(Ref<WebServerRequest> request) {
 	request->body += _preview_data;
 }
 
-void StaticPage::load_file(const String &path) {
+void StaticWebPage::load_file(const String &path) {
 	FileAccess *f = FileAccess::open(path, FileAccess::READ);
 
 	if (f) {
@@ -53,7 +53,7 @@ void StaticPage::load_file(const String &path) {
 	}
 }
 
-void StaticPage::load_and_process_file(const String &path) {
+void StaticWebPage::load_and_process_file(const String &path) {
 	FileAccess *f = FileAccess::open(path, FileAccess::READ);
 
 	if (f) {
@@ -69,26 +69,26 @@ void StaticPage::load_and_process_file(const String &path) {
 	//should probably support md -> I should probably write a parser
 }
 
-StaticPage::StaticPage() {
+StaticWebPage::StaticWebPage() {
 	_should_render_menu = true;
 }
 
-StaticPage::~StaticPage() {
+StaticWebPage::~StaticWebPage() {
 }
 
-void StaticPage::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_data"), &StaticPage::get_data);
-	ClassDB::bind_method(D_METHOD("set_data", "val"), &StaticPage::set_data);
+void StaticWebPage::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_data"), &StaticWebPage::get_data);
+	ClassDB::bind_method(D_METHOD("set_data", "val"), &StaticWebPage::set_data);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "data", PROPERTY_HINT_MULTILINE_TEXT), "set_data", "get_data");
 
-	ClassDB::bind_method(D_METHOD("get_preview_data"), &StaticPage::get_preview_data);
-	ClassDB::bind_method(D_METHOD("set_preview_data", "val"), &StaticPage::set_preview_data);
+	ClassDB::bind_method(D_METHOD("get_preview_data"), &StaticWebPage::get_preview_data);
+	ClassDB::bind_method(D_METHOD("set_preview_data", "val"), &StaticWebPage::set_preview_data);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "preview_data", PROPERTY_HINT_MULTILINE_TEXT), "set_preview_data", "get_preview_data");
 
-	ClassDB::bind_method(D_METHOD("get_should_render_menu"), &StaticPage::get_should_render_menu);
-	ClassDB::bind_method(D_METHOD("set_should_render_menu", "val"), &StaticPage::set_should_render_menu);
+	ClassDB::bind_method(D_METHOD("get_should_render_menu"), &StaticWebPage::get_should_render_menu);
+	ClassDB::bind_method(D_METHOD("set_should_render_menu", "val"), &StaticWebPage::set_should_render_menu);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "should_render_menu"), "set_should_render_menu", "get_should_render_menu");
 
-	ClassDB::bind_method(D_METHOD("load_file", "path"), &StaticPage::load_file);
-	ClassDB::bind_method(D_METHOD("load_and_process_file", "path"), &StaticPage::load_and_process_file);
+	ClassDB::bind_method(D_METHOD("load_file", "path"), &StaticWebPage::load_file);
+	ClassDB::bind_method(D_METHOD("load_and_process_file", "path"), &StaticWebPage::load_and_process_file);
 }

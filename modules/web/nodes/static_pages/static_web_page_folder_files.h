@@ -1,12 +1,12 @@
-#ifndef STATIC_PAGE_FOLDER_FILES_H
-#define STATIC_PAGE_FOLDER_FILES_H
+#ifndef STATIC_WEB_PAGE_FOLDER_FILES_H
+#define STATIC_WEB_PAGE_FOLDER_FILES_H
 
 #include "core/ustring.h"
 
 #include "static_web_page.h"
 
-class StaticPageFolderFiles : public StaticPage {
-	GDCLASS(StaticPageFolderFiles, StaticPage);
+class StaticWebPageFolderFiles : public StaticWebPage {
+	GDCLASS(StaticWebPageFolderFiles, StaticWebPage);
 
 public:
 	String get_dir_path();
@@ -18,8 +18,8 @@ public:
 	void load();
 	virtual void append_data(const String &d);
 
-	StaticPageFolderFiles();
-	~StaticPageFolderFiles();
+	StaticWebPageFolderFiles();
+	~StaticWebPageFolderFiles();
 
 protected:
 	void _notification(const int what);

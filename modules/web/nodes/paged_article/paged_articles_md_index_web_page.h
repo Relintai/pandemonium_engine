@@ -1,19 +1,19 @@
-#ifndef PAGED_ARTICLES_MD_INDEX_H
-#define PAGED_ARTICLES_MD_INDEX_H
+#ifndef PAGED_ARTICLES_WEB_PAGE_MD_INDEX_H
+#define PAGED_ARTICLES_WEB_PAGE_MD_INDEX_H
 
 #include "core/ustring.h"
 
 #include "../../http/web_node.h"
 
-// Inherit from PagedArticles and override generate_index_page -> load and process md files in the set folder
-// SHould probably be called something else. PagedArticlesMDIndex ?
+// Inherit from PagedArticlesWebPage and override generate_index_page -> load and process md files in the set folder
+// SHould probably be called something else. PagedArticlesWebPageMDIndex ?
 
 class WebServerRequest;
 class ListPage;
 class PagedArticle;
 
-class PagedArticlesMDIndex : public WebNode {
-	GDCLASS(PagedArticlesMDIndex, WebNode);
+class PagedArticlesWebPageMDIndex : public WebNode {
+	GDCLASS(PagedArticlesWebPageMDIndex, WebNode);
 
 public:
 	String get_folder();
@@ -26,8 +26,8 @@ public:
 
 	void load();
 
-	PagedArticlesMDIndex();
-	~PagedArticlesMDIndex();
+	PagedArticlesWebPageMDIndex();
+	~PagedArticlesWebPageMDIndex();
 
 protected:
 	static void _bind_methods();

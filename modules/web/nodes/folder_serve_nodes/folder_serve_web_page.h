@@ -1,5 +1,5 @@
-#ifndef FOLDER_SERVE_NODE_H
-#define FOLDER_SERVE_NODE_H
+#ifndef FOLDER_SERVE_WEB_PAGE_H
+#define FOLDER_SERVE_WEB_PAGE_H
 
 #include "core/reference.h"
 #include "core/ustring.h"
@@ -14,8 +14,8 @@ class FileCache;
 // this means directory walking (for example sending http://webapp.com/files/../../../etc/passwd),
 // and other techniques like it should not be possible.
 
-class FolderServeNode : public WebNode {
-	GDCLASS(FolderServeNode, WebNode);
+class FolderServeWebPage : public WebNode {
+	GDCLASS(FolderServeWebPage, WebNode);
 
 public:
 	String get_serve_folder();
@@ -25,8 +25,8 @@ public:
 
 	virtual void load();
 
-	FolderServeNode();
-	~FolderServeNode();
+	FolderServeWebPage();
+	~FolderServeWebPage();
 
 protected:
 	void _notification(const int what);

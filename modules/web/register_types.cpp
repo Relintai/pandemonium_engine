@@ -112,18 +112,18 @@ void register_web_types() {
 
 	ClassDB::register_class<WebServerSimple>();
 
-	ClassDB::register_class<StaticPage>();
-	ClassDB::register_class<StaticPageFile>();
-	ClassDB::register_class<StaticPageFolderFiles>();
+	ClassDB::register_class<StaticWebPage>();
+	ClassDB::register_class<StaticWebPageFile>();
+	ClassDB::register_class<StaticWebPageFolderFiles>();
 
-	ClassDB::register_class<FolderServeNode>();
-	ClassDB::register_class<BrowsableFolderServeNode>();
+	ClassDB::register_class<FolderServeWebPage>();
+	ClassDB::register_class<BrowsableFolderServeWebPage>();
 
-	ClassDB::register_class<ListPage>();
+	ClassDB::register_class<ListWebPage>();
 
-	ClassDB::register_class<PagedArticle>();
-	ClassDB::register_class<PagedArticles>();
-	//ClassDB::register_class<PagedArticlesMDIndex>();
+	ClassDB::register_class<PagedArticleWebPage>();
+	ClassDB::register_class<PagedArticlesWebPage>();
+	//ClassDB::register_class<PagedArticlesWebPageMDIndex>();
 
 	ClassDB::register_class<RedirectWebPage>();
 }

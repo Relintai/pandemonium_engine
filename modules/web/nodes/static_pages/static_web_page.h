@@ -1,5 +1,5 @@
-#ifndef STATIC_PAGE_H
-#define STATIC_PAGE_H
+#ifndef STATIC_WEB_PAGE_H
+#define STATIC_WEB_PAGE_H
 
 #include "core/ustring.h"
 
@@ -7,8 +7,8 @@
 
 class WebServerRequest;
 
-class StaticPage : public WebNode {
-	GDCLASS(StaticPage, WebNode);
+class StaticWebPage : public WebNode {
+	GDCLASS(StaticWebPage, WebNode);
 
 public:
 	String get_data();
@@ -28,8 +28,8 @@ public:
 	void load_file(const String &path);
 	void load_and_process_file(const String &path);
 
-	StaticPage();
-	~StaticPage();
+	StaticWebPage();
+	~StaticWebPage();
 
 protected:
 	static void _bind_methods();

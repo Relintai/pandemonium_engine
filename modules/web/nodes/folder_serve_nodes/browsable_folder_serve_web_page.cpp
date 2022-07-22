@@ -10,14 +10,14 @@
 
 #include "../../http/http_server_enums.h"
 
-bool BrowsableFolderServeNode::get_should_render_menu() {
+bool BrowsableFolderServeWebPage::get_should_render_menu() {
 	return _should_render_menu;
 }
-void BrowsableFolderServeNode::set_should_render_menu(const bool &val) {
+void BrowsableFolderServeWebPage::set_should_render_menu(const bool &val) {
 	_should_render_menu = val;
 }
 
-void BrowsableFolderServeNode::_handle_request(Ref<WebServerRequest> request) {
+void BrowsableFolderServeWebPage::_handle_request(Ref<WebServerRequest> request) {
 	String file_name = request->get_path(true, false);
 
 	for (int i = 0; i < _folder_indexes.size(); ++i) {
@@ -37,14 +37,14 @@ void BrowsableFolderServeNode::_handle_request(Ref<WebServerRequest> request) {
 	request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_404_NOT_FOUND);
 }
 
-void BrowsableFolderServeNode::_render_index(Ref<WebServerRequest> request) {
+void BrowsableFolderServeWebPage::_render_index(Ref<WebServerRequest> request) {
 	request->body += _index;
 }
-void BrowsableFolderServeNode::_render_preview(Ref<WebServerRequest> request) {
+void BrowsableFolderServeWebPage::_render_preview(Ref<WebServerRequest> request) {
 }
 
-void BrowsableFolderServeNode::load() {
-	FolderServeNode::load();
+void BrowsableFolderServeWebPage::load() {
+	FolderServeWebPage::load();
 
 	if (_serve_folder == "") {
 		return;
@@ -53,7 +53,7 @@ void BrowsableFolderServeNode::load() {
 	evaluate_dir(_file_cache->get_wwwroot_abs(), true);
 }
 
-void BrowsableFolderServeNode::evaluate_dir(const String &path, const bool top_level) {
+void BrowsableFolderServeWebPage::evaluate_dir(const String &path, const bool top_level) {
 	DirAccess *dir = DirAccess::open(path);
 
 	ERR_FAIL_COND_MSG(!dir, "Error opening folde!r: " + String(path));
@@ -107,7 +107,7 @@ void BrowsableFolderServeNode::evaluate_dir(const String &path, const bool top_l
 	render_dir_page(dir_uri, folders, files, top_level);
 }
 
-void BrowsableFolderServeNode::render_dir_page(const String &dir_uri, const Vector<String> &folders, const Vector<String> &files, const bool top_level) {
+void BrowsableFolderServeWebPage::render_dir_page(const String &dir_uri, const Vector<String> &folders, const Vector<String> &files, const bool top_level) {
 	HTMLBuilder b;
 
 	String uri = get_full_uri(false);
@@ -151,15 +151,15 @@ void BrowsableFolderServeNode::render_dir_page(const String &dir_uri, const Vect
 	}
 }
 
-BrowsableFolderServeNode::BrowsableFolderServeNode() {
+BrowsableFolderServeWebPage::BrowsableFolderServeWebPage() {
 	_should_render_menu = true;
 }
 
-BrowsableFolderServeNode::~BrowsableFolderServeNode() {
+BrowsableFolderServeWebPage::~BrowsableFolderServeWebPage() {
 	_folder_indexes.clear();
 }
-void BrowsableFolderServeNode::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_should_render_menu"), &BrowsableFolderServeNode::get_should_render_menu);
-	ClassDB::bind_method(D_METHOD("set_should_render_menu", "val"), &BrowsableFolderServeNode::set_should_render_menu);
+void BrowsableFolderServeWebPage::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_should_render_menu"), &BrowsableFolderServeWebPage::get_should_render_menu);
+	ClassDB::bind_method(D_METHOD("set_should_render_menu", "val"), &BrowsableFolderServeWebPage::set_should_render_menu);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "should_render_menu"), "set_should_render_menu", "get_should_render_menu");
 }

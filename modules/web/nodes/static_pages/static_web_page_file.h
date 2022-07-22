@@ -1,12 +1,12 @@
-#ifndef STATIC_PAGE_FILE_H
-#define STATIC_PAGE_FILE_H
+#ifndef STATIC_WEB_PAGE_FILE_H
+#define STATIC_WEB_PAGE_FILE_H
 
 #include "core/ustring.h"
 
 #include "static_web_page.h"
 
-class StaticPageFile : public StaticPage {
-	GDCLASS(StaticPageFile, StaticPage);
+class StaticWebPageFile : public StaticWebPage {
+	GDCLASS(StaticWebPageFile, StaticWebPage);
 
 public:
 	String get_file_path();
@@ -17,8 +17,8 @@ public:
 
 	void load();
 
-	StaticPageFile();
-	~StaticPageFile();
+	StaticWebPageFile();
+	~StaticWebPageFile();
 
 protected:
 	void _notification(const int what);

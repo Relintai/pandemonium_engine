@@ -9,36 +9,36 @@
 
 #include "paged_article_web_page.h"
 
-String PagedArticles::get_folder() {
+String PagedArticlesWebPage::get_folder() {
 	return _folder;
 }
-void PagedArticles::set_folder(const String &val) {
+void PagedArticlesWebPage::set_folder(const String &val) {
 	_folder = val;
 }
 
-void PagedArticles::_handle_request(Ref<WebServerRequest> request) {
+void PagedArticlesWebPage::_handle_request(Ref<WebServerRequest> request) {
 	render_menu(request);
 	render_index(request);
 
 	request->compile_and_send_body();
 }
 
-void PagedArticles::_render_index(Ref<WebServerRequest> request) {
+void PagedArticlesWebPage::_render_index(Ref<WebServerRequest> request) {
 	// summary page
 	request->body += _index_page;
 }
-void PagedArticles::_render_preview(Ref<WebServerRequest> request) {
+void PagedArticlesWebPage::_render_preview(Ref<WebServerRequest> request) {
 }
 
-void PagedArticles::load() {
-	ERR_FAIL_COND_MSG(_folder == "", "Error: PagedArticles::load called, but a folder is not set!");
+void PagedArticlesWebPage::load() {
+	ERR_FAIL_COND_MSG(_folder == "", "Error: PagedArticlesWebPage::load called, but a folder is not set!");
 
 	String folder = DirAccess::get_filesystem_abspath_for(_folder);
 	folder = folder.path_clean_end_slash();
 
 	DirAccess *dir = DirAccess::open(folder);
 
-	ERR_FAIL_COND_MSG(!dir, "Error opening PagedArticles::folder! folder: " + folder);
+	ERR_FAIL_COND_MSG(!dir, "Error opening PagedArticlesWebPage::folder! folder: " + folder);
 
 	dir->list_dir_begin();
 
@@ -47,7 +47,7 @@ void PagedArticles::load() {
 		if (dir->current_is_dir() && file_name != "." && file_name != "..") {
 			String ff = folder + "/" + file_name;
 
-			PagedArticle *p = memnew(PagedArticle);
+			PagedArticleWebPage *p = memnew(PagedArticleWebPage);
 
 			p->set_articles_folder(ff);
 			p->set_uri_segment(file_name);
@@ -63,13 +63,13 @@ void PagedArticles::load() {
 	generate_index_page();
 }
 
-void PagedArticles::generate_index_page() {
+void PagedArticlesWebPage::generate_index_page() {
 	HTMLBuilder b;
 
 	b.div("article_list");
 
 	for (int i = 0; i < get_child_count(); ++i) {
-		PagedArticle *a = Object::cast_to<PagedArticle>(get_child(i));
+		PagedArticleWebPage *a = Object::cast_to<PagedArticleWebPage>(get_child(i));
 
 		if (a) {
 			b.a(a->get_full_uri());
@@ -83,7 +83,7 @@ void PagedArticles::generate_index_page() {
 	_index_page = b.result;
 }
 
-void PagedArticles::_notification(int what) {
+void PagedArticlesWebPage::_notification(int what) {
 	switch (what) {
 		case NOTIFICATION_ENTER_TREE:
 			load();
@@ -93,14 +93,14 @@ void PagedArticles::_notification(int what) {
 	}
 }
 
-PagedArticles::PagedArticles() {
+PagedArticlesWebPage::PagedArticlesWebPage() {
 }
 
-PagedArticles::~PagedArticles() {
+PagedArticlesWebPage::~PagedArticlesWebPage() {
 }
 
-void PagedArticles::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_folder"), &PagedArticles::get_folder);
-	ClassDB::bind_method(D_METHOD("set_folder", "val"), &PagedArticles::set_folder);
+void PagedArticlesWebPage::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_folder"), &PagedArticlesWebPage::get_folder);
+	ClassDB::bind_method(D_METHOD("set_folder", "val"), &PagedArticlesWebPage::set_folder);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "folder"), "set_folder", "get_folder");
 }

@@ -10,63 +10,63 @@
 #include "../../http/web_permission.h"
 #include "../../http/web_server_request.h"
 
-bool ListPage::get_paginate() {
+bool ListWebPage::get_paginate() {
 	return paginate;
 }
-void ListPage::set_paginate(const bool &val) {
+void ListWebPage::set_paginate(const bool &val) {
 	paginate = val;
 }
 
-int ListPage::get_max_visible_navigation_links() {
+int ListWebPage::get_max_visible_navigation_links() {
 	return max_visible_navigation_links;
 }
-void ListPage::set_max_visible_navigation_links(const int &val) {
+void ListWebPage::set_max_visible_navigation_links(const int &val) {
 	max_visible_navigation_links = val;
 }
 
-int ListPage::get_entry_per_page() {
+int ListWebPage::get_entry_per_page() {
 	return entry_per_page;
 }
-void ListPage::set_entry_per_page(const int &val) {
+void ListWebPage::set_entry_per_page(const int &val) {
 	entry_per_page = val;
 }
 
-String ListPage::get_folder() {
+String ListWebPage::get_folder() {
 	return folder;
 }
-void ListPage::set_folder(const String &val) {
+void ListWebPage::set_folder(const String &val) {
 	folder = val;
 }
 
-String ListPage::get_main_div_class() {
+String ListWebPage::get_main_div_class() {
 	return main_div_class;
 }
-void ListPage::set_main_div_class(const String &val) {
+void ListWebPage::set_main_div_class(const String &val) {
 	main_div_class = val;
 }
 
-String ListPage::get_entry_div_class() {
+String ListWebPage::get_entry_div_class() {
 	return entry_div_class;
 }
-void ListPage::set_entry_div_class(const String &val) {
+void ListWebPage::set_entry_div_class(const String &val) {
 	entry_div_class = val;
 }
 
-String ListPage::get_empty_div_class() {
+String ListWebPage::get_empty_div_class() {
 	return empty_div_class;
 }
-void ListPage::set_empty_div_class(const String &val) {
+void ListWebPage::set_empty_div_class(const String &val) {
 	empty_div_class = val;
 }
 
-String ListPage::get_placeholder_text() {
+String ListWebPage::get_placeholder_text() {
 	return placeholder_text;
 }
-void ListPage::set_placeholder_text(const String &val) {
+void ListWebPage::set_placeholder_text(const String &val) {
 	placeholder_text = val;
 }
 
-void ListPage::_handle_request_main(Ref<WebServerRequest> request) {
+void ListWebPage::_handle_request_main(Ref<WebServerRequest> request) {
 	if (_web_permission.is_valid()) {
 		if (_web_permission->activate(request)) {
 			return;
@@ -108,20 +108,20 @@ void ListPage::_handle_request_main(Ref<WebServerRequest> request) {
 	request->compile_and_send_body();
 }
 
-void ListPage::_render_index(Ref<WebServerRequest> request) {
+void ListWebPage::_render_index(Ref<WebServerRequest> request) {
 	request->body += _pages[0];
 }
-void ListPage::_render_preview(Ref<WebServerRequest> request) {
+void ListWebPage::_render_preview(Ref<WebServerRequest> request) {
 }
 
-void ListPage::load() {
-	ERR_FAIL_COND_MSG(folder == "", "Error: ListPage::load called, but a folder is not set!");
+void ListWebPage::load() {
+	ERR_FAIL_COND_MSG(folder == "", "Error: ListWebPage::load called, but a folder is not set!");
 
 	Vector<String> files;
 
 	DirAccess *dir = DirAccess::open(folder);
 
-	ERR_FAIL_COND_MSG(!dir, "Error opening ListPage::folder! folder: \n" + folder);
+	ERR_FAIL_COND_MSG(!dir, "Error opening ListWebPage::folder! folder: \n" + folder);
 
 	dir->list_dir_begin();
 
@@ -160,7 +160,7 @@ void ListPage::load() {
 	render_no_entries_response();
 }
 
-void ListPage::render_entries(const Vector<String> &list_entries) {
+void ListWebPage::render_entries(const Vector<String> &list_entries) {
 	if (list_entries.size() == 0) {
 		return;
 	}
@@ -177,7 +177,7 @@ void ListPage::render_entries(const Vector<String> &list_entries) {
 	}
 }
 
-String ListPage::render_page(const int page_index, const int page_count, const Vector<String> &list_entries, const int efrom, const int eto) {
+String ListWebPage::render_page(const int page_index, const int page_count, const Vector<String> &list_entries, const int efrom, const int eto) {
 	HTMLBuilder b;
 
 	b.div(main_div_class);
@@ -192,7 +192,7 @@ String ListPage::render_page(const int page_index, const int page_count, const V
 	return b.result;
 }
 
-String ListPage::render_entry(const String &list_entry) {
+String ListWebPage::render_entry(const String &list_entry) {
 	HTMLBuilder b;
 
 	b.div(main_div_class);
@@ -202,7 +202,7 @@ String ListPage::render_entry(const String &list_entry) {
 	return b.result;
 }
 
-void ListPage::render_no_entries_response() {
+void ListWebPage::render_no_entries_response() {
 	HTMLBuilder b;
 
 	b.div(empty_div_class)->w(placeholder_text)->cdiv();
@@ -210,7 +210,7 @@ void ListPage::render_no_entries_response() {
 	_no_entries_response = b.result;
 }
 
-void ListPage::_notification(const int what) {
+void ListWebPage::_notification(const int what) {
 	switch (what) {
 		case NOTIFICATION_ENTER_TREE:
 			load();
@@ -223,7 +223,7 @@ void ListPage::_notification(const int what) {
 	}
 }
 
-ListPage::ListPage() :
+ListWebPage::ListWebPage() :
 		WebNode() {
 	max_visible_navigation_links = 6;
 	entry_per_page = 4;
@@ -233,41 +233,41 @@ ListPage::ListPage() :
 	placeholder_text = "No content yet!";
 }
 
-ListPage::~ListPage() {
+ListWebPage::~ListWebPage() {
 }
 
-void ListPage::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_paginate"), &ListPage::get_paginate);
-	ClassDB::bind_method(D_METHOD("set_paginate", "val"), &ListPage::set_paginate);
+void ListWebPage::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_paginate"), &ListWebPage::get_paginate);
+	ClassDB::bind_method(D_METHOD("set_paginate", "val"), &ListWebPage::set_paginate);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "paginate"), "set_paginate", "get_paginate");
 
-	ClassDB::bind_method(D_METHOD("get_max_visible_navigation_links"), &ListPage::get_max_visible_navigation_links);
-	ClassDB::bind_method(D_METHOD("set_max_visible_navigation_links", "val"), &ListPage::set_max_visible_navigation_links);
+	ClassDB::bind_method(D_METHOD("get_max_visible_navigation_links"), &ListWebPage::get_max_visible_navigation_links);
+	ClassDB::bind_method(D_METHOD("set_max_visible_navigation_links", "val"), &ListWebPage::set_max_visible_navigation_links);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_visible_navigation_links"), "set_max_visible_navigation_links", "get_max_visible_navigation_links");
 
-	ClassDB::bind_method(D_METHOD("get_entry_per_page"), &ListPage::get_entry_per_page);
-	ClassDB::bind_method(D_METHOD("set_entry_per_page", "val"), &ListPage::set_entry_per_page);
+	ClassDB::bind_method(D_METHOD("get_entry_per_page"), &ListWebPage::get_entry_per_page);
+	ClassDB::bind_method(D_METHOD("set_entry_per_page", "val"), &ListWebPage::set_entry_per_page);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "entry_per_page"), "set_entry_per_page", "get_entry_per_page");
 
-	ClassDB::bind_method(D_METHOD("get_folder"), &ListPage::get_folder);
-	ClassDB::bind_method(D_METHOD("set_folder", "val"), &ListPage::set_folder);
+	ClassDB::bind_method(D_METHOD("get_folder"), &ListWebPage::get_folder);
+	ClassDB::bind_method(D_METHOD("set_folder", "val"), &ListWebPage::set_folder);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "folder"), "set_folder", "get_folder");
 
-	ClassDB::bind_method(D_METHOD("get_main_div_class"), &ListPage::get_main_div_class);
-	ClassDB::bind_method(D_METHOD("set_main_div_class", "val"), &ListPage::set_main_div_class);
+	ClassDB::bind_method(D_METHOD("get_main_div_class"), &ListWebPage::get_main_div_class);
+	ClassDB::bind_method(D_METHOD("set_main_div_class", "val"), &ListWebPage::set_main_div_class);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "main_div_class"), "set_main_div_class", "get_main_div_class");
 
-	ClassDB::bind_method(D_METHOD("get_entry_div_class"), &ListPage::get_entry_div_class);
-	ClassDB::bind_method(D_METHOD("set_entry_div_class", "val"), &ListPage::set_entry_div_class);
+	ClassDB::bind_method(D_METHOD("get_entry_div_class"), &ListWebPage::get_entry_div_class);
+	ClassDB::bind_method(D_METHOD("set_entry_div_class", "val"), &ListWebPage::set_entry_div_class);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entry_div_class"), "set_entry_div_class", "get_entry_div_class");
 
-	ClassDB::bind_method(D_METHOD("get_empty_div_class"), &ListPage::get_empty_div_class);
-	ClassDB::bind_method(D_METHOD("set_empty_div_class", "val"), &ListPage::set_empty_div_class);
+	ClassDB::bind_method(D_METHOD("get_empty_div_class"), &ListWebPage::get_empty_div_class);
+	ClassDB::bind_method(D_METHOD("set_empty_div_class", "val"), &ListWebPage::set_empty_div_class);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "empty_div_class"), "set_empty_div_class", "get_empty_div_class");
 
-	ClassDB::bind_method(D_METHOD("get_placeholder_text"), &ListPage::get_placeholder_text);
-	ClassDB::bind_method(D_METHOD("set_placeholder_text", "val"), &ListPage::set_placeholder_text);
+	ClassDB::bind_method(D_METHOD("get_placeholder_text"), &ListWebPage::get_placeholder_text);
+	ClassDB::bind_method(D_METHOD("set_placeholder_text", "val"), &ListWebPage::set_placeholder_text);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "placeholder_text"), "set_placeholder_text", "get_placeholder_text");
 
-	ClassDB::bind_method(D_METHOD("load"), &ListPage::load);
+	ClassDB::bind_method(D_METHOD("load"), &ListWebPage::load);
 }

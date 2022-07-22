@@ -1,5 +1,5 @@
-#ifndef PAGED_ARTICLES_H
-#define PAGED_ARTICLES_H
+#ifndef PAGED_ARTICLES_WEB_PAGE_H
+#define PAGED_ARTICLES_WEB_PAGE_H
 
 #include "core/ustring.h"
 #include "core/vector.h"
@@ -23,8 +23,8 @@
 
 class WebServerRequest;
 
-class PagedArticles : public WebNode {
-	GDCLASS(PagedArticles, WebNode);
+class PagedArticlesWebPage : public WebNode {
+	GDCLASS(PagedArticlesWebPage, WebNode);
 
 public:
 	String get_folder();
@@ -38,8 +38,8 @@ public:
 	void load();
 	void generate_index_page();
 
-	PagedArticles();
-	~PagedArticles();
+	PagedArticlesWebPage();
+	~PagedArticlesWebPage();
 
 protected:
 	void _notification(int what);

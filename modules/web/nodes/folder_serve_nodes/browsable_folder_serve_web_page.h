@@ -1,5 +1,5 @@
-#ifndef BROWSABLE_FOLDER_SERVE_NODE_H
-#define BROWSABLE_FOLDER_SERVE_NODE_H
+#ifndef BROWSABLE_FOLDER_SERVE_WEB_PAGE_H
+#define BROWSABLE_FOLDER_SERVE_WEB_PAGE_H
 
 #include "core/ustring.h"
 #include "core/vector.h"
@@ -20,8 +20,8 @@ class WebServerRequest;
 // ...
 // </div>
 
-class BrowsableFolderServeNode : public FolderServeNode {
-	GDCLASS(BrowsableFolderServeNode, FolderServeNode);
+class BrowsableFolderServeWebPage : public FolderServeWebPage {
+	GDCLASS(BrowsableFolderServeWebPage, FolderServeWebPage);
 
 public:
 	bool get_should_render_menu();
@@ -37,8 +37,8 @@ public:
 	void evaluate_dir(const String &path, const bool top_level = false);
 	virtual void render_dir_page(const String &dir_uri, const Vector<String> &folders, const Vector<String> &files, const bool top_level);
 
-	BrowsableFolderServeNode();
-	~BrowsableFolderServeNode();
+	BrowsableFolderServeWebPage();
+	~BrowsableFolderServeWebPage();
 
 protected:
 	static void _bind_methods();

@@ -3,21 +3,21 @@
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 
-String StaticPageFolderFiles::get_dir_path() {
+String StaticWebPageFolderFiles::get_dir_path() {
 	return _dir_path;
 }
-void StaticPageFolderFiles::set_dir_path(const String &val) {
+void StaticWebPageFolderFiles::set_dir_path(const String &val) {
 	_dir_path = val;
 }
 
-bool StaticPageFolderFiles::get_process_if_can() {
+bool StaticWebPageFolderFiles::get_process_if_can() {
 	return _process_if_can;
 }
-void StaticPageFolderFiles::set_process_if_can(const bool &val) {
+void StaticWebPageFolderFiles::set_process_if_can(const bool &val) {
 	_process_if_can = val;
 }
 
-void StaticPageFolderFiles::load() {
+void StaticWebPageFolderFiles::load() {
 	if (_dir_path == "") {
 		return;
 	}
@@ -60,11 +60,11 @@ void StaticPageFolderFiles::load() {
 	}
 }
 
-void StaticPageFolderFiles::append_data(const String &d) {
+void StaticWebPageFolderFiles::append_data(const String &d) {
 	_data += d;
 }
 
-void StaticPageFolderFiles::_notification(const int what) {
+void StaticWebPageFolderFiles::_notification(const int what) {
 	switch (what) {
 		case NOTIFICATION_ENTER_TREE:
 			load();
@@ -74,22 +74,22 @@ void StaticPageFolderFiles::_notification(const int what) {
 	}
 }
 
-StaticPageFolderFiles::StaticPageFolderFiles() {
+StaticWebPageFolderFiles::StaticWebPageFolderFiles() {
 	_process_if_can = true;
 }
 
-StaticPageFolderFiles::~StaticPageFolderFiles() {
+StaticWebPageFolderFiles::~StaticWebPageFolderFiles() {
 }
 
-void StaticPageFolderFiles::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_dir_path"), &StaticPageFolderFiles::get_dir_path);
-	ClassDB::bind_method(D_METHOD("set_dir_path", "val"), &StaticPageFolderFiles::set_dir_path);
+void StaticWebPageFolderFiles::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_dir_path"), &StaticWebPageFolderFiles::get_dir_path);
+	ClassDB::bind_method(D_METHOD("set_dir_path", "val"), &StaticWebPageFolderFiles::set_dir_path);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "dir_path"), "set_dir_path", "get_dir_path");
 
-	ClassDB::bind_method(D_METHOD("get_process_if_can"), &StaticPageFolderFiles::get_process_if_can);
-	ClassDB::bind_method(D_METHOD("set_process_if_can", "val"), &StaticPageFolderFiles::set_process_if_can);
+	ClassDB::bind_method(D_METHOD("get_process_if_can"), &StaticWebPageFolderFiles::get_process_if_can);
+	ClassDB::bind_method(D_METHOD("set_process_if_can", "val"), &StaticWebPageFolderFiles::set_process_if_can);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "process_if_can"), "set_process_if_can", "get_process_if_can");
 
-	ClassDB::bind_method(D_METHOD("load"), &StaticPageFolderFiles::load);
-	ClassDB::bind_method(D_METHOD("append_data", "val"), &StaticPageFolderFiles::append_data);
+	ClassDB::bind_method(D_METHOD("load"), &StaticWebPageFolderFiles::load);
+	ClassDB::bind_method(D_METHOD("append_data", "val"), &StaticWebPageFolderFiles::append_data);
 }

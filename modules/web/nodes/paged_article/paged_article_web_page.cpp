@@ -10,28 +10,28 @@
 #include "../../http/web_permission.h"
 #include "../../http/web_server_request.h"
 
-String PagedArticle::get_articles_folder() {
+String PagedArticleWebPage::get_articles_folder() {
 	return articles_folder;
 }
-void PagedArticle::set_articles_folder(const String &val) {
+void PagedArticleWebPage::set_articles_folder(const String &val) {
 	articles_folder = val;
 }
 
-bool PagedArticle::get_serve_folder_relative() {
+bool PagedArticleWebPage::get_serve_folder_relative() {
 	return serve_folder_relative;
 }
-void PagedArticle::set_serve_folder_relative(const bool &val) {
+void PagedArticleWebPage::set_serve_folder_relative(const bool &val) {
 	serve_folder_relative = val;
 }
 
-String PagedArticle::get_serve_folder() {
+String PagedArticleWebPage::get_serve_folder() {
 	return serve_folder;
 }
-void PagedArticle::set_serve_folder(const String &val) {
+void PagedArticleWebPage::set_serve_folder(const String &val) {
 	serve_folder = val;
 }
 
-void PagedArticle::_handle_request_main(Ref<WebServerRequest> request) {
+void PagedArticleWebPage::_handle_request_main(Ref<WebServerRequest> request) {
 	if (_web_permission.is_valid()) {
 		if (_web_permission->activate(request)) {
 			return;
@@ -74,23 +74,23 @@ void PagedArticle::_handle_request_main(Ref<WebServerRequest> request) {
 	request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_404_NOT_FOUND);
 }
 
-void PagedArticle::_render_index(Ref<WebServerRequest> request) {
+void PagedArticleWebPage::_render_index(Ref<WebServerRequest> request) {
 	// summary page
 	request->body += index_page;
 }
 
-void PagedArticle::_render_preview(Ref<WebServerRequest> request) {
+void PagedArticleWebPage::_render_preview(Ref<WebServerRequest> request) {
 }
 
-void PagedArticle::load() {
-	ERR_FAIL_COND_MSG(articles_folder == "", "Error: PagedArticle::load called, but a articles_folder is not set!");
+void PagedArticleWebPage::load() {
+	ERR_FAIL_COND_MSG(articles_folder == "", "Error: PagedArticleWebPage::load called, but a articles_folder is not set!");
 
 	_articles_folder_abs = DirAccess::get_filesystem_abspath_for(articles_folder);
 	_articles_folder_abs = _articles_folder_abs.path_ensure_end_slash();
 
 	DirAccess *dir = DirAccess::open(_articles_folder_abs);
 
-	ERR_FAIL_COND_MSG(!dir, "Error opening PagedArticle::folder! folder: " + _articles_folder_abs);
+	ERR_FAIL_COND_MSG(!dir, "Error opening PagedArticleWebPage::folder! folder: " + _articles_folder_abs);
 
 	Vector<String> files;
 
@@ -176,19 +176,19 @@ void PagedArticle::load() {
 	}
 }
 
-String PagedArticle::get_index_page() {
+String PagedArticleWebPage::get_index_page() {
 	return index_page;
 }
 
-String PagedArticle::get_summary() {
+String PagedArticleWebPage::get_summary() {
 	return summary;
 }
 
-void PagedArticle::generate_summary() {
+void PagedArticleWebPage::generate_summary() {
 	summary = get_uri_segment();
 }
 
-void PagedArticle::_notification(const int what) {
+void PagedArticleWebPage::_notification(const int what) {
 	switch (what) {
 		case NOTIFICATION_ENTER_TREE:
 			load();
@@ -198,32 +198,32 @@ void PagedArticle::_notification(const int what) {
 	}
 }
 
-PagedArticle::PagedArticle() {
+PagedArticleWebPage::PagedArticleWebPage() {
 	file_cache.instance();
 
 	serve_folder_relative = true;
 	serve_folder = "files";
 }
 
-PagedArticle::~PagedArticle() {
+PagedArticleWebPage::~PagedArticleWebPage() {
 	pages.clear();
 }
 
-void PagedArticle::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_articles_folder"), &PagedArticle::get_articles_folder);
-	ClassDB::bind_method(D_METHOD("set_articles_folder", "val"), &PagedArticle::set_articles_folder);
+void PagedArticleWebPage::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_articles_folder"), &PagedArticleWebPage::get_articles_folder);
+	ClassDB::bind_method(D_METHOD("set_articles_folder", "val"), &PagedArticleWebPage::set_articles_folder);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "articles_folder"), "set_articles_folder", "get_articles_folder");
 
-	ClassDB::bind_method(D_METHOD("get_serve_folder_relative"), &PagedArticle::get_serve_folder_relative);
-	ClassDB::bind_method(D_METHOD("set_serve_folder_relative", "val"), &PagedArticle::set_serve_folder_relative);
+	ClassDB::bind_method(D_METHOD("get_serve_folder_relative"), &PagedArticleWebPage::get_serve_folder_relative);
+	ClassDB::bind_method(D_METHOD("set_serve_folder_relative", "val"), &PagedArticleWebPage::set_serve_folder_relative);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "serve_folder_relative"), "set_serve_folder_relative", "get_serve_folder_relative");
 
-	ClassDB::bind_method(D_METHOD("get_serve_folder"), &PagedArticle::get_serve_folder);
-	ClassDB::bind_method(D_METHOD("set_serve_folder", "val"), &PagedArticle::set_serve_folder);
+	ClassDB::bind_method(D_METHOD("get_serve_folder"), &PagedArticleWebPage::get_serve_folder);
+	ClassDB::bind_method(D_METHOD("set_serve_folder", "val"), &PagedArticleWebPage::set_serve_folder);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "serve_folder"), "set_serve_folder", "get_serve_folder");
 
-	ClassDB::bind_method(D_METHOD("load"), &PagedArticle::load);
-	ClassDB::bind_method(D_METHOD("get_index_page"), &PagedArticle::get_index_page);
-	ClassDB::bind_method(D_METHOD("get_summary"), &PagedArticle::get_summary);
-	ClassDB::bind_method(D_METHOD("generate_summary"), &PagedArticle::generate_summary);
+	ClassDB::bind_method(D_METHOD("load"), &PagedArticleWebPage::load);
+	ClassDB::bind_method(D_METHOD("get_index_page"), &PagedArticleWebPage::get_index_page);
+	ClassDB::bind_method(D_METHOD("get_summary"), &PagedArticleWebPage::get_summary);
+	ClassDB::bind_method(D_METHOD("generate_summary"), &PagedArticleWebPage::generate_summary);
 }

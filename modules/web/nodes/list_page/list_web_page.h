@@ -1,5 +1,5 @@
-#ifndef LIST_PAGE_H
-#define LIST_PAGE_H
+#ifndef LIST_WEB_PAGE_H
+#define LIST_WEB_PAGE_H
 
 #include "core/ustring.h"
 #include "core/vector.h"
@@ -27,8 +27,8 @@
 
 class WebServerRequest;
 
-class ListPage : public WebNode {
-	GDCLASS(ListPage, WebNode);
+class ListWebPage : public WebNode {
+	GDCLASS(ListWebPage, WebNode);
 
 public:
 	bool get_paginate();
@@ -67,8 +67,8 @@ public:
 	virtual String render_entry(const String &list_entry);
 	virtual void render_no_entries_response();
 
-	ListPage();
-	~ListPage();
+	ListWebPage();
+	~ListWebPage();
 
 protected:
 	void _notification(const int what);
