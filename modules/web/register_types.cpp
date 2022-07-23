@@ -60,6 +60,7 @@ SOFTWARE.
 #include "nodes/paged_article/paged_articles_web_page.h"
 //#include "nodes/paged_article/paged_articles_md_index.h"
 
+#include "nodes/redirect/alias_web_page.h"
 #include "nodes/redirect/redirect_web_page.h"
 
 void register_web_types() {
@@ -126,6 +127,7 @@ void register_web_types() {
 	//ClassDB::register_class<PagedArticlesWebPageMDIndex>();
 
 	ClassDB::register_class<RedirectWebPage>();
+	ClassDB::register_class<AliasWebPage>();
 }
 
 void unregister_web_types() {

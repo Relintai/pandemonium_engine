@@ -61,6 +61,7 @@ sources = [
     #"nodes/paged_article/paged_articles_md_index_web_page.cpp",
 
     "nodes/redirect/redirect_web_page.cpp",
+    "nodes/redirect/alias_web_page.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':

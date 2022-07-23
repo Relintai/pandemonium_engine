@@ -76,6 +76,7 @@ def get_doc_classes():
         "PagedArticlesWebPageMDIndex",
 
 	    "RedirectWebPage",
+	    "AliasWebPage",
     ]
 
 
