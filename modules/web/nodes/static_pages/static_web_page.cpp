@@ -1,5 +1,6 @@
 #include "static_web_page.h"
 
+#include "../../html/markdown_renderer.h"
 #include "../../http/web_server_request.h"
 #include "core/os/file_access.h"
 
@@ -67,6 +68,32 @@ void StaticWebPage::load_and_process_file(const String &path) {
 	//todo prcess
 	//could support bbcode easily
 	//should probably support md -> I should probably write a parser
+	if (path.get_extension() == "md") {
+		Ref<MarkdownRenderer> r;
+		r.instance();
+		_data = r->render_to_html(_data);
+	}
+}
+
+void StaticWebPage::load_md_file(const String &path) {
+	FileAccess *f = FileAccess::open(path, FileAccess::READ);
+
+	if (f) {
+		_data = f->get_as_utf8_string();
+		f->close();
+		memdelete(f);
+
+		Ref<MarkdownRenderer> r;
+		r.instance();
+		_data = r->render_to_html(_data);
+	} else {
+		_data = "";
+	}
+}
+void StaticWebPage::set_data_md(const String &data) {
+	Ref<MarkdownRenderer> r;
+	r.instance();
+	_data = r->render_to_html(data);
 }
 
 StaticWebPage::StaticWebPage() {
@@ -91,4 +118,7 @@ void StaticWebPage::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("load_file", "path"), &StaticWebPage::load_file);
 	ClassDB::bind_method(D_METHOD("load_and_process_file", "path"), &StaticWebPage::load_and_process_file);
+
+	ClassDB::bind_method(D_METHOD("load_md_file", "path"), &StaticWebPage::load_md_file);
+	ClassDB::bind_method(D_METHOD("set_data_md", "path"), &StaticWebPage::set_data_md);
 }

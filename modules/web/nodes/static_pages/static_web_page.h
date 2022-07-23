@@ -28,6 +28,9 @@ public:
 	void load_file(const String &path);
 	void load_and_process_file(const String &path);
 
+	void load_md_file(const String &path);
+	void set_data_md(const String &data);
+
 	StaticWebPage();
 	~StaticWebPage();
 
