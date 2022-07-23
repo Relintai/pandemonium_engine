@@ -21,6 +21,12 @@ public:
 	Ref<User> get_user();
 	void set_user(User *user);
 
+	Dictionary to_dict();
+	void from_dict(const Dictionary &dict);
+
+	virtual Dictionary _to_dict();
+	virtual void _from_dict(const Dictionary &dict);
+
 	void read_lock();
 	void read_unlock();
 	void write_lock();
@@ -32,7 +38,7 @@ public:
 protected:
 	static void _bind_methods();
 
-	int _module_id;
+	int _module_index;
 	String _module_name;
 
 	User *_user;

@@ -1,5 +1,6 @@
 #include "user.h"
 #include "core/class_db.h"
+#include "core/io/json.h"
 
 #include "user_module.h"
 
@@ -155,6 +156,94 @@ String User::_hash_password(const String &p_password) {
 	return p.sha256_text();
 }
 
+Dictionary User::to_dict() {
+	return call("_to_dict");
+}
+void User::from_dict(const Dictionary &dict) {
+	call("_from_dict", dict);
+}
+
+Dictionary User::_to_dict() {
+	Dictionary dict;
+
+	dict["user_id"] = _user_id;
+	dict["user_name"] = _user_name;
+	dict["email"] = _email;
+	dict["rank"] = _rank;
+	dict["pre_salt"] = _pre_salt;
+	dict["post_salt"] = _post_salt;
+	dict["password_hash"] = _password_hash;
+	dict["banned"] = _banned;
+	dict["password_reset_token"] = _password_reset_token;
+	dict["locked"] = _locked;
+
+	Array marr;
+
+	for (int i = 0; i < _modules.size(); ++i) {
+		Ref<UserModule> m = _modules[i];
+
+		if (m.is_valid()) {
+			Dictionary mdict;
+
+			mdict["index"] = i;
+			mdict["data"] = m->to_dict();
+
+			marr.push_back(mdict);
+		}
+	}
+
+	dict["modules"] = marr;
+
+	return dict;
+}
+void User::_from_dict(const Dictionary &dict) {
+	_user_id = dict["user_id "];
+	_user_name = dict["user_name "];
+	_email = dict["email "];
+	_rank = dict["rank "];
+	_pre_salt = dict["pre_salt "];
+	_post_salt = dict["post_salt "];
+	_password_hash = dict["password_hash "];
+	_banned = dict["banned "];
+	_password_reset_token = dict["password_reset_token "];
+	_locked = dict["locked "];
+
+	Array marr = dict["modules"];
+
+	for (int i = 0; i < marr.size(); ++i) {
+		Dictionary mdict = marr[i];
+
+		if (!mdict.has("index") || !mdict.has("data")) {
+			continue;
+		}
+
+		int index = mdict["index"];
+
+		Ref<UserModule> m = _modules[index];
+
+		ERR_CONTINUE(!m.is_valid());
+
+		m->from_dict(mdict["data"]);
+	}
+}
+
+String User::to_json() {
+	return JSON::print(to_dict());
+}
+void User::from_json(const String &data) {
+	Error err;
+	String err_txt;
+	int err_line;
+	Variant v;
+	err = JSON::parse(data, v, err_txt, err_line);
+
+	ERR_FAIL_COND(err != OK);
+
+	Dictionary d = v;
+
+	from_dict(d);
+}
+
 void User::save() {
 	emit_changed();
 }
@@ -251,6 +340,16 @@ void User::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_check_password", "password"), &User::_check_password);
 	ClassDB::bind_method(D_METHOD("_create_password", "password"), &User::_create_password);
 	ClassDB::bind_method(D_METHOD("_hash_password", "password"), &User::_hash_password);
+
+	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &User::from_dict);
+	ClassDB::bind_method(D_METHOD("to_dict"), &User::to_dict);
+	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &User::_from_dict);
+	ClassDB::bind_method(D_METHOD("_to_dict"), &User::_to_dict);
+
+	ClassDB::bind_method(D_METHOD("to_json"), &User::to_json);
+	ClassDB::bind_method(D_METHOD("from_json", "data"), &User::from_json);
 
 	ClassDB::bind_method(D_METHOD("save"), &User::save);
 

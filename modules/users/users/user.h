@@ -69,6 +69,15 @@ public:
 	virtual void _create_password(const String &p_password);
 	virtual String _hash_password(const String &p_password);
 
+	Dictionary to_dict();
+	void from_dict(const Dictionary &dict);
+
+	virtual Dictionary _to_dict();
+	virtual void _from_dict(const Dictionary &dict);
+
+	String to_json();
+	void from_json(const String &data);
+
 	void save();
 
 	void read_lock();
