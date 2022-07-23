@@ -76,18 +76,15 @@
 
 ## Web
 
-- Test / fix HTML and BBCode parser, and make bindings for them.
 - Move simple web server to a new module.
 - Implement multi threading for the simple web server.
-- Check how polling is implemented in sockets.
-- Implement Cookie support for the web server.
-- Implement file upload support.
-- Implement proper mimetype support.
-- Implement proper http header responses.
-- Implement closing the connection only after answering the last query (by default, could be overrideable).
+- Implement big (or not in-memory) file upload support.
+- Move HTMLParser, BBCodeParser, and MarkDownRenderer to a new (parsers?) module.
+- BlogWebPage <- BlogWepBageFile, BlogWebPageDB
+- NewsWebPage <- NewsWebPageFile, NewsWebPageDB
+- AdminWebPage <- UserAdminWebPage, AdminPanelWebPage
 
 ## Users
 
-- Fix, and break UserController into smaller webnodes.
 - Clean / flesh out the api of UserManager / UserDB. Also make UserManager register itself into UserDB.
 
