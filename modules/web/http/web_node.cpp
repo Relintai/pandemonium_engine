@@ -208,7 +208,7 @@ void WebNode::_handle_error_send_request(Ref<WebServerRequest> request, const in
 	// this is a fallback error handler.
 	// Webroot implements a proper one
 	request->compiled_body = "<html><body>Internal server error!</body></html>";
-	request->set_status_code(HTTPServerEnums ::HTTP_STATUS_CODE_503_SERVICE_UNAVAILABLE);
+	request->set_status_code(HTTPServerEnums::HTTP_STATUS_CODE_503_SERVICE_UNAVAILABLE);
 	request->send();
 }
 
