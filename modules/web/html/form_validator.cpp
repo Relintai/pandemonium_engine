@@ -140,7 +140,7 @@ void FormAlphaFieldEntry::set_not_alpha_error(const String &val) {
 PoolStringArray FormAlphaFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
 
-	for (int i = 0; i < data.size(); ++i) {
+	for (int i = 0; i < data.length(); ++i) {
 		if (!isalpha(data[i])) {
 			errors.push_back(field->get_human_name() + _not_alpha_error);
 
@@ -175,7 +175,7 @@ void FormAlphaNumericFieldEntry::set_not_alpha_numeric_error(const String &val) 
 PoolStringArray FormAlphaNumericFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
 
-	for (int i = 0; i < data.size(); ++i) {
+	for (int i = 0; i < data.length(); ++i) {
 		if (!isalnum(data[i])) {
 			errors.push_back(field->get_human_name() + _not_alpha_numeric_error);
 
@@ -187,7 +187,7 @@ PoolStringArray FormAlphaNumericFieldEntry::_validate(Ref<WebServerRequest> requ
 }
 
 FormAlphaNumericFieldEntry::FormAlphaNumericFieldEntry() {
-	_not_alpha_numeric_error = " needs to only contain caharcters of numbers.";
+	_not_alpha_numeric_error = " needs to only contain chaarcters of numbers.";
 }
 FormAlphaNumericFieldEntry::~FormAlphaNumericFieldEntry() {
 }
@@ -210,7 +210,7 @@ void FormNeedsLowercaseCharacterFieldEntry::set_does_not_have_lowercase_error(co
 PoolStringArray FormNeedsLowercaseCharacterFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
 
-	for (int i = 0; i < data.size(); ++i) {
+	for (int i = 0; i < data.length(); ++i) {
 		if (islower(data[i])) {
 			return errors;
 		}
@@ -244,7 +244,7 @@ void FormNeedsUppercaseCharacterFieldEntry::set_does_not_have_uppercase_error(co
 
 PoolStringArray FormNeedsUppercaseCharacterFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
-	for (int i = 0; i < data.size(); ++i) {
+	for (int i = 0; i < data.length(); ++i) {
 		if (isupper(data[i])) {
 			return errors;
 		}
@@ -278,7 +278,7 @@ void FormNeedsOtherCharacterFieldEntry::set_does_not_have_other_error(const Stri
 
 PoolStringArray FormNeedsOtherCharacterFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
-	for (int i = 0; i < data.size(); ++i) {
+	for (int i = 0; i < data.length(); ++i) {
 		if (!isalnum(data[i])) {
 			return errors;
 		}
@@ -326,7 +326,7 @@ void FormMinimumLengthFieldEntry::set_does_not_have_min_length_errors(const Stri
 
 PoolStringArray FormMinimumLengthFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
-	if (data.size() < _min_length) {
+	if (data.length() < _min_length) {
 		errors.push_back(field->get_human_name() + _does_not_have_min_length_errorf + itos(_min_length) + _does_not_have_min_length_errors);
 	}
 
@@ -382,7 +382,7 @@ void FormMaximumLengthFieldEntry::set_does_not_have_max_length_errors(const Stri
 PoolStringArray FormMaximumLengthFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
 
-	if (data.size() > _max_length) {
+	if (data.length() > _max_length) {
 		errors.push_back(field->get_human_name() + _does_not_have_max_length_errorf + itos(_max_length) + _does_not_have_max_length_errors);
 	}
 
@@ -424,7 +424,7 @@ void FormEmailFieldEntry::set_email_format_error(const String &val) {
 PoolStringArray FormEmailFieldEntry::_validate(Ref<WebServerRequest> request, const Ref<FormField> &field, const String &data) {
 	PoolStringArray errors;
 
-	if (data.size() == 0) {
+	if (data.length() == 0) {
 		errors.push_back(field->get_human_name() + _email_format_error);
 
 		return errors;
@@ -439,7 +439,7 @@ PoolStringArray FormEmailFieldEntry::_validate(Ref<WebServerRequest> request, co
 	int dot_pos = -1;
 	int at_pos = -1;
 
-	for (int i = 0; i < data.size(); ++i) {
+	for (int i = 0; i < data.length(); ++i) {
 		if (data[i] == '.') {
 			if (dot_pos != -1) {
 				errors.push_back(field->get_human_name() + _email_format_error);
@@ -459,7 +459,7 @@ PoolStringArray FormEmailFieldEntry::_validate(Ref<WebServerRequest> request, co
 		return errors;
 	}
 
-	for (int i = 0; i < data.size(); ++i) {
+	for (int i = 0; i < data.length(); ++i) {
 		if (data[i] == '@') {
 			if (at_pos != -1) {
 				errors.push_back(field->get_human_name() + _email_format_error);
@@ -479,7 +479,7 @@ PoolStringArray FormEmailFieldEntry::_validate(Ref<WebServerRequest> request, co
 		return errors;
 	}
 
-	for (int i = 0; i < data.size(); ++i) {
+	for (int i = 0; i < data.length(); ++i) {
 		if (i == at_pos || i == dot_pos) {
 			continue;
 		}
