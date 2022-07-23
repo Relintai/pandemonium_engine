@@ -14,7 +14,14 @@
 #include "modules/web/http/web_server_cookie.h"
 #include "modules/web/http/web_server_request.h"
 
-void UserRegisterWebPage::handle_register_request_default(Ref<WebServerRequest> request) {
+String UserRegisterWebPage::get_redirect_on_success_url() {
+	return _redirect_on_success_url;
+}
+void UserRegisterWebPage::set_redirect_on_success_url(const String &val) {
+	_redirect_on_success_url = val;
+}
+
+void UserRegisterWebPage::_render_index(Ref<WebServerRequest> request) {
 	RegisterRequestData data;
 
 	if (request->get_method() == HTTPServerEnums::HTTP_METHOD_POST) {
@@ -69,7 +76,7 @@ void UserRegisterWebPage::render_register_success(Ref<WebServerRequest> request)
 	{
 		b.w("Registration successful! You can now log in!");
 		b.br();
-		b.a()->href("/user/login");
+		b.a()->href(_redirect_on_success_url);
 		b.w(">> Login <<");
 		b.ca();
 	}
@@ -139,12 +146,6 @@ void UserRegisterWebPage::render_register_request_default(Ref<WebServerRequest> 
 	request->compile_and_send_body();
 }
 
-void UserRegisterWebPage::render_already_logged_in_error(Ref<WebServerRequest> request) {
-	request->body += "You are already logged in.";
-
-	request->compile_and_send_body();
-}
-
 UserRegisterWebPage::UserRegisterWebPage() {
 	// Registration
 	_registration_validator.instance();
@@ -160,7 +161,16 @@ UserRegisterWebPage::UserRegisterWebPage() {
 	_registration_validator->new_field("password_check", "Password check")->need_to_match("password");
 
 	_registration_validator->new_field("email", "Email")->need_to_exist()->need_to_be_email();
+
+	_logged_out_render_type = RENDER_TYPE_RENDER;
+	_logged_in_render_type = RENDER_TYPE_ERROR;
 }
 
 UserRegisterWebPage::~UserRegisterWebPage() {
+}
+
+void UserRegisterWebPage::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_redirect_on_success_url"), &UserRegisterWebPage::get_redirect_on_success_url);
+	ClassDB::bind_method(D_METHOD("set_redirect_on_success_url", "val"), &UserRegisterWebPage::set_redirect_on_success_url);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "redirect_on_success_url"), "set_redirect_on_success_url", "get_redirect_on_success_url");
 }

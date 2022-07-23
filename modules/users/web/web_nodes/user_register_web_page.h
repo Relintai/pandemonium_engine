@@ -15,6 +15,9 @@ class UserRegisterWebPage : public UserWebPage {
 	GDCLASS(UserRegisterWebPage, UserWebPage);
 
 public:
+	String get_redirect_on_success_url();
+	void set_redirect_on_success_url(const String &val);
+
 	struct RegisterRequestData {
 		String error_str;
 		String uname_val;
@@ -23,18 +26,20 @@ public:
 		String pass_check_val;
 	};
 
-	virtual void handle_register_request_default(Ref<WebServerRequest> request);
+	void _render_index(Ref<WebServerRequest> request);
 	virtual void render_register_request_default(Ref<WebServerRequest> request, RegisterRequestData *data);
 	virtual void render_register_success(Ref<WebServerRequest> request);
-
-	virtual void render_already_logged_in_error(Ref<WebServerRequest> request);
 
 	UserRegisterWebPage();
 	~UserRegisterWebPage();
 
 protected:
+	static void _bind_methods();
+
 	Ref<FormValidator> _registration_validator;
 	Ref<FormValidator> _profile_validator;
+
+	String _redirect_on_success_url;
 };
 
 #endif
