@@ -14,7 +14,11 @@
 #include "modules/web/http/web_server_cookie.h"
 #include "modules/web/http/web_server_request.h"
 
-void UserLogoutWebPage::handle_logout_request(Ref<User> &user, Ref<WebServerRequest> request) {
+void UserLogoutWebPage::_render_index(Ref<WebServerRequest> request) {
+	Ref<User> user = request->get_meta("user");
+
+	ERR_FAIL_COND(!user.is_valid());
+
 	request->response_remove_cookie_simple("session_id");
 
 	user->save();

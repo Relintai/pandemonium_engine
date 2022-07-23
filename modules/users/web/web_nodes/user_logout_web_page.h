@@ -15,7 +15,7 @@ class UserLogoutWebPage : public UserWebPage {
 	GDCLASS(UserLogoutWebPage, UserWebPage);
 
 public:
-	virtual void handle_logout_request(Ref<User> &user, Ref<WebServerRequest> request);
+	void _render_index(Ref<WebServerRequest> request);
 
 	UserLogoutWebPage();
 	~UserLogoutWebPage();
