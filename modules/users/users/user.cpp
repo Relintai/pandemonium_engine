@@ -1,6 +1,8 @@
 #include "user.h"
 #include "core/class_db.h"
 
+#include "user_module.h"
+
 int User::get_user_id() const {
 	return _user_id;
 }
@@ -71,6 +73,62 @@ void User::set_locked(const bool val) {
 	_locked = val;
 }
 
+void User::add_module(const Ref<UserModule> &module) {
+	_modules.push_back(module);
+
+	if (module.is_valid()) {
+		Ref<UserModule> m = module;
+
+		m->set_module_index(_modules.size() - 1);
+		m->set_user(this);
+	}
+}
+Ref<UserModule> User::get_module(const int index) {
+	ERR_FAIL_INDEX_V(index, _modules.size(), Ref<UserModule>());
+
+	return _modules[index];
+}
+Ref<UserModule> User::get_module_named(const String &name) {
+	for (int i = 0; i < _modules.size(); ++i) {
+		Ref<UserModule> m = _modules[i];
+
+		if (m.is_valid() && m->get_module_name() == name) {
+			return m;
+		}
+	}
+
+	return Ref<UserModule>();
+}
+void User::remove_module(const int index) {
+	ERR_FAIL_INDEX(index, _modules.size());
+
+	_modules.remove(index);
+}
+int User::get_module_count() {
+	return _modules.size();
+}
+
+Vector<Variant> User::get_modules() {
+	Vector<Variant> r;
+	for (int i = 0; i < _modules.size(); i++) {
+		r.push_back(_modules[i].get_ref_ptr());
+	}
+	return r;
+}
+void User::set_modules(const Vector<Variant> &modules) {
+	_modules.clear();
+	for (int i = 0; i < modules.size(); i++) {
+		Ref<UserModule> um = Ref<UserModule>(modules.get(i));
+
+		_modules.push_back(um);
+
+		if (um.is_valid()) {
+			um->set_module_index(_modules.size() - 1);
+			um->set_user(this);
+		}
+	}
+}
+
 bool User::check_password(const String &p_password) {
 	return call("_check_password", p_password);
 }
@@ -122,6 +180,13 @@ User::User() {
 }
 
 User::~User() {
+	for (int i = 0; i < _modules.size(); ++i) {
+		Ref<UserModule> um = _modules[i];
+
+		if (um.is_valid()) {
+			um->set_user(nullptr);
+		}
+	}
 }
 
 void User::_bind_methods() {
@@ -164,6 +229,16 @@ void User::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_locked"), &User::get_locked);
 	ClassDB::bind_method(D_METHOD("set_locked", "val"), &User::set_locked);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "locked"), "set_locked", "get_locked");
+
+	ClassDB::bind_method(D_METHOD("add_module", "module"), &User::add_module);
+	ClassDB::bind_method(D_METHOD("get_module", "index"), &User::get_module);
+	ClassDB::bind_method(D_METHOD("get_module_named", "name"), &User::get_module_named);
+	ClassDB::bind_method(D_METHOD("remove_module", "index"), &User::remove_module);
+	ClassDB::bind_method(D_METHOD("get_module_count"), &User::get_module_count);
+
+	ClassDB::bind_method(D_METHOD("get_modules"), &User::get_modules);
+	ClassDB::bind_method(D_METHOD("set_modules", "modules"), &User::set_modules);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "modules", PROPERTY_HINT_NONE, "17/17:UserModule", PROPERTY_USAGE_DEFAULT, "UserModule"), "set_modules", "get_modules");
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_check_password", PropertyInfo(Variant::STRING, "password")));
 	BIND_VMETHOD(MethodInfo("_create_password", PropertyInfo(Variant::STRING, "password")));

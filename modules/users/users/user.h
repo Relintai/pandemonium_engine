@@ -6,7 +6,7 @@
 
 #include "core/resource.h"
 
-//TODO remove _user_input postfixes
+class UserModule;
 
 class User : public Resource {
 	GDCLASS(User, Resource);
@@ -52,6 +52,15 @@ public:
 	bool get_locked() const;
 	void set_locked(const bool val);
 
+	void add_module(const Ref<UserModule> &module);
+	Ref<UserModule> get_module(const int index);
+	Ref<UserModule> get_module_named(const String &name);
+	void remove_module(const int index);
+	int get_module_count();
+
+	Vector<Variant> get_modules();
+	void set_modules(const Vector<Variant> &data);
+
 	bool check_password(const String &p_password);
 	void create_password(const String &p_password);
 	String hash_password(const String &p_password);
@@ -83,6 +92,8 @@ protected:
 	bool _banned;
 	String _password_reset_token;
 	bool _locked;
+
+	Vector<Ref<UserModule>> _modules;
 
 	RWLock _rw_lock;
 };

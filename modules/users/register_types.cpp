@@ -25,6 +25,7 @@ SOFTWARE.
 #include "core/engine.h"
 
 #include "users/user.h"
+#include "users/user_module.h"
 
 #include "managers/user_manager.h"
 #include "managers/user_manager_file.h"
@@ -51,6 +52,7 @@ UserDB *_user_db = nullptr;
 
 void register_users_types() {
 	ClassDB::register_class<User>();
+	ClassDB::register_class<UserModule>();
 
 	ClassDB::register_class<UserManager>();
 	ClassDB::register_class<UserManagerStatic>();

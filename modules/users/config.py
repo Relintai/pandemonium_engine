@@ -11,6 +11,8 @@ def configure(env):
 def get_doc_classes():
     return [
         "User",
+        "UserModule",
+
         "UserManager",
         "UserManagerStatic",
         "UserManagerFile",

@@ -8,6 +8,7 @@ sources = [
     "register_types.cpp",
 
     "users/user.cpp",
+    "users/user_module.cpp",
 
     "managers/user_manager.cpp",
     "managers/user_manager_static.cpp",
