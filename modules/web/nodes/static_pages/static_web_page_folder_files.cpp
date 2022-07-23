@@ -1,5 +1,6 @@
 #include "static_web_page_folder_files.h"
 
+#include "../../html/markdown_renderer.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 
@@ -27,6 +28,9 @@ void StaticWebPageFolderFiles::load() {
 	ERR_FAIL_COND_MSG(!da, "Dir Path = " + _dir_path);
 
 	if (da) {
+		Ref<MarkdownRenderer> r;
+		r.instance();
+
 		da->list_dir_begin();
 
 		while (true) {
@@ -47,9 +51,9 @@ void StaticWebPageFolderFiles::load() {
 					f->close();
 					memdelete(f);
 
-					//if (process_if_can && d->current_get_extension() == "md") {
-					//	Utils::markdown_to_html(&str);
-					//}
+					if (_process_if_can && (fn.get_extension()) == "md") {
+						str = r->render_to_html(str);
+					}
 
 					append_data(str);
 				}

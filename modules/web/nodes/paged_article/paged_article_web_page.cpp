@@ -5,6 +5,7 @@
 #include "core/project_settings.h"
 
 #include "../../file_cache.h"
+#include "../../html/markdown_renderer.h"
 #include "../../html/paginator.h"
 #include "../../http/http_server_enums.h"
 #include "../../http/web_permission.h"
@@ -116,6 +117,9 @@ void PagedArticleWebPage::load() {
 
 	files.sort();
 
+	Ref<MarkdownRenderer> r;
+	r.instance();
+
 	for (int i = 0; i < files.size(); ++i) {
 		String file_path = _articles_folder_abs;
 		file_path += files[i];
@@ -130,7 +134,9 @@ void PagedArticleWebPage::load() {
 		f->close();
 		memdelete(f);
 
-		//Utils::markdown_to_html(&fd);
+		if (files[i].get_extension() == "md") {
+			fd = r->render_to_html(fd);
+		}
 
 		if (files[i].get_file().get_basename() == "summary") {
 			summary = fd;

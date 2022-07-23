@@ -65,9 +65,6 @@ void StaticWebPage::load_and_process_file(const String &path) {
 		_data = "";
 	}
 
-	//todo prcess
-	//could support bbcode easily
-	//should probably support md -> I should probably write a parser
 	if (path.get_extension() == "md") {
 		Ref<MarkdownRenderer> r;
 		r.instance();

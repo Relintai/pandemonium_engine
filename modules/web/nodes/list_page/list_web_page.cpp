@@ -5,6 +5,7 @@
 #include "core/os/file_access.h"
 
 #include "../../html/html_builder.h"
+#include "../../html/markdown_renderer.h"
 #include "../../html/paginator.h"
 #include "../../http/http_server_enums.h"
 #include "../../http/web_permission.h"
@@ -141,6 +142,9 @@ void ListWebPage::load() {
 
 	files.sort();
 
+	Ref<MarkdownRenderer> r;
+	r.instance();
+
 	Vector<String> list_entries;
 
 	for (int i = 0; i < files.size(); ++i) {
@@ -151,7 +155,9 @@ void ListWebPage::load() {
 
 		memdelete(f);
 
-		//Utils::markdown_to_html(&fd);
+		if (files[i].get_extension() == "md") {
+			fd = r->render_to_html(fd);
+		}
 
 		list_entries.push_back(fd);
 	}
