@@ -58,7 +58,7 @@ Ref<User> UserManagerFile::_create_user() {
 
 	Ref<User> u;
 	u.instance();
-
+	u->set_user_id(_users.size());
 	u->connect("changed", this, "_on_user_changed");
 
 	_users.push_back(u);

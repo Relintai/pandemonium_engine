@@ -27,6 +27,8 @@ Ref<User> UserManagerStatic::_create_user() {
 	Ref<User> u;
 	u.instance();
 
+	u->set_user_id(_users.size());
+
 	_users.push_back(u);
 
 	return u;

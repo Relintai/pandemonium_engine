@@ -53,6 +53,7 @@ Ref<User> UserDB::create_user() {
 	user.instance();
 
 	_lock.write_lock();
+	user->set_user_id(_users.size());
 	_users.push_back(user);
 	_lock.write_unlock();
 
