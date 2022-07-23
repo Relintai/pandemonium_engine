@@ -14,7 +14,14 @@
 #include "modules/web/http/web_server_cookie.h"
 #include "modules/web/http/web_server_request.h"
 
-void UserLoginWebPage::handle_login_request_default(Ref<WebServerRequest> request) {
+String UserLoginWebPage::get_redirect_on_success_url() {
+	return _redirect_on_success_url;
+}
+void UserLoginWebPage::set_redirect_on_success_url(const String &val) {
+	_redirect_on_success_url = val;
+}
+
+void UserLoginWebPage::_render_index(Ref<WebServerRequest> request) {
 	LoginRequestData data;
 
 	if (request->get_method() == HTTPServerEnums::HTTP_METHOD_POST) {
@@ -41,8 +48,8 @@ void UserLoginWebPage::handle_login_request_default(Ref<WebServerRequest> reques
 
 				Ref<WebServerCookie> c;
 				c.instance();
-				c->set_data("session_id", session->session_id);
-				//c.path = "/";
+				c->set_data("session_id", session->get_session_id());
+				c->set_path("/");
 				request->response_add_cookie(c);
 
 				render_login_success(request);
@@ -104,17 +111,11 @@ void UserLoginWebPage::render_login_request_default(Ref<WebServerRequest> reques
 	request->compile_and_send_body();
 }
 
-void UserLoginWebPage::render_already_logged_in_error(Ref<WebServerRequest> request) {
-	request->body += "You are already logged in.";
-
-	request->compile_and_send_body();
-}
-
 void UserLoginWebPage::render_login_success(Ref<WebServerRequest> request) {
 	request->body = "Login Success!<br>";
 
 	// request->compile_and_send_body();
-	request->send_redirect("/user/settings");
+	request->send_redirect(_redirect_on_success_url);
 }
 
 UserLoginWebPage::UserLoginWebPage() {
@@ -126,7 +127,16 @@ UserLoginWebPage::UserLoginWebPage() {
 	pw->need_to_exist();
 	pw->need_to_have_lowercase_character()->need_to_have_uppercase_character();
 	pw->need_minimum_length(5);
+
+	_logged_out_render_type = RENDER_TYPE_RENDER;
+	_logged_in_render_type = RENDER_TYPE_ERROR;
 }
 
 UserLoginWebPage::~UserLoginWebPage() {
+}
+
+void UserLoginWebPage::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_redirect_on_success_url"), &UserLoginWebPage::get_redirect_on_success_url);
+	ClassDB::bind_method(D_METHOD("set_redirect_on_success_url", "val"), &UserLoginWebPage::set_redirect_on_success_url);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "redirect_on_success_url"), "set_redirect_on_success_url", "get_redirect_on_success_url");
 }

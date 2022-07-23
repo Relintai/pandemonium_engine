@@ -15,23 +15,29 @@ class UserLoginWebPage : public UserWebPage {
 	GDCLASS(UserLoginWebPage, UserWebPage);
 
 public:
+	String get_redirect_on_success_url();
+	void set_redirect_on_success_url(const String &val);
+
 	struct LoginRequestData {
 		String error_str;
 		String uname_val;
 		String pass_val;
 	};
 
-	virtual void handle_login_request_default(Ref<WebServerRequest> request);
-	virtual void render_login_request_default(Ref<WebServerRequest> request, LoginRequestData *data);
+	void _render_index(Ref<WebServerRequest> request);
 
-	virtual void render_already_logged_in_error(Ref<WebServerRequest> request);
+	virtual void render_login_request_default(Ref<WebServerRequest> request, LoginRequestData *data);
 	virtual void render_login_success(Ref<WebServerRequest> request);
 
 	UserLoginWebPage();
 	~UserLoginWebPage();
 
 protected:
+	static void _bind_methods();
+
 	Ref<FormValidator> _login_validator;
+
+	String _redirect_on_success_url;
 };
 
 #endif
