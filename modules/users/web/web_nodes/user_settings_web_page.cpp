@@ -14,25 +14,11 @@
 #include "modules/web/http/web_server_cookie.h"
 #include "modules/web/http/web_server_request.h"
 
-void UserSettingsWebPage::_handle_request_main(Ref<WebServerRequest> request) {
-	if (_web_permission.is_valid()) {
-		if (_web_permission->activate(request)) {
-			return;
-		}
-	}
+void UserSettingsWebPage::_render_index(Ref<WebServerRequest> request) {
+	Ref<User> user = request->get_meta("user");
 
-	if (request->get_session().is_valid()) {
-		Ref<User> u = request->get_meta("user");
+	ERR_FAIL_COND(!user.is_valid());
 
-		if (u.is_valid()) {
-			//handle_request(u, request);
-
-			return;
-		}
-	}
-}
-
-void UserSettingsWebPage::handle_settings_request(Ref<User> &user, Ref<WebServerRequest> request) {
 	SettingsRequestData data;
 
 	if (request->get_method() == HTTPServerEnums::HTTP_METHOD_POST) {

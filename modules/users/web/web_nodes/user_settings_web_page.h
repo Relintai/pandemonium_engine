@@ -15,8 +15,6 @@ class UserSettingsWebPage : public UserWebPage {
 	GDCLASS(UserSettingsWebPage, UserWebPage);
 
 public:
-	void _handle_request_main(Ref<WebServerRequest> request);
-
 	struct SettingsRequestData {
 		String error_str;
 
@@ -26,7 +24,7 @@ public:
 		String pass_check_val;
 	};
 
-	virtual void handle_settings_request(Ref<User> &user, Ref<WebServerRequest> request);
+	void _render_index(Ref<WebServerRequest> request);
 	virtual void render_settings_request(Ref<User> &user, Ref<WebServerRequest> request, SettingsRequestData *data);
 
 	UserSettingsWebPage();
