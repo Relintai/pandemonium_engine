@@ -39,8 +39,7 @@ void HTTPSessionManager::remove_session(Ref<HTTPSession> session) {
 
 	for (int i = 0; i < _sessions_vec.size(); ++i) {
 		if (_sessions_vec[i] == session) {
-			_sessions_vec.write[i] = _sessions_vec[_sessions_vec.size() - 1];
-			_sessions_vec.resize(_sessions_vec.size() - 1);
+			_sessions_vec.remove(i);
 			_mutex.unlock();
 			return;
 		}
@@ -60,8 +59,7 @@ void HTTPSessionManager::delete_session(const String &session_id) {
 		Ref<HTTPSession> sess = _sessions_vec[i];
 
 		if (sess->session_id == session_id) {
-			_sessions_vec.write[i] = _sessions_vec[_sessions_vec.size() - 1];
-			_sessions_vec.resize(_sessions_vec.size() - 1);
+			_sessions_vec.remove(i);
 
 			break;
 		}
@@ -124,7 +122,8 @@ Ref<HTTPSession> HTTPSessionManager::get_session(const String &session_id) {
 }
 
 Ref<HTTPSession> HTTPSessionManager::create_session() {
-	Ref<HTTPSession> session = new HTTPSession();
+	Ref<HTTPSession> session;
+	session.instance();
 
 	while (true) {
 		session->session_id = generate_session_id(session->session_id);
@@ -163,7 +162,8 @@ void HTTPSessionManager::load_sessions() {
 		int id = r->get_cell_int(0);
 		String session_id = r->get_cell(1);
 
-		Ref<HTTPSession> s = new HTTPSession();
+		Ref<HTTPSession> s;
+		s.instance();
 		s->id = id;
 
 		s->session_id = session_id;
