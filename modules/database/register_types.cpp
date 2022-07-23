@@ -31,6 +31,10 @@ SOFTWARE.
 #include "query_result.h"
 #include "table_builder.h"
 
+#include "core/engine.h"
+
+DatabaseManager *_database_manager = nullptr;
+
 void register_database_types() {
 	ClassDB::register_class<Database>();
 	ClassDB::register_class<DatabaseConnection>();
@@ -40,7 +44,13 @@ void register_database_types() {
 	ClassDB::register_class<QueryBuilder>();
 	ClassDB::register_class<QueryResult>();
 	ClassDB::register_class<TableBuilder>();
+
+	_database_manager = memnew(DatabaseManager);
+	Engine::get_singleton()->add_singleton(Engine::Singleton("DatabaseManager", DatabaseManager::get_singleton()));
 }
 
 void unregister_database_types() {
+	if (_database_manager) {
+		memdelete(_database_manager);
+	}
 }

@@ -3,6 +3,7 @@
 
 #include "core/reference.h"
 #include "core/ustring.h"
+#include "core/vector.h"
 
 #include "core/object.h"
 
@@ -12,8 +13,17 @@ class DatabaseManager : public Object {
 	GDCLASS(DatabaseManager, Object);
 
 public:
+	//ddb = default database
 	Ref<Database> get_ddb();
 	void set_ddb(const Ref<Database> &db);
+
+	void add_database(const Ref<Database> &db, bool set_as_default = true);
+	void remove_database(const int index, const bool unset_if_default = true);
+	Ref<Database> get_database(const int index);
+	int get_database_count();
+
+	Vector<Ref<Database>> get_databases();
+	Vector<Variant> get_databases_bind();
 
 	void load();
 
@@ -27,6 +37,8 @@ protected:
 	Ref<Database> _ddb;
 
 private:
+	static void _bind_methods();
+
 	static DatabaseManager *_instance;
 };
 
