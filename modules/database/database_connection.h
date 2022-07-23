@@ -24,6 +24,10 @@ public:
 	virtual String escape(const String &str);
 	virtual void escape_to(const String &str, String *to);
 
+	virtual int get_table_version(const String &table);
+	virtual void set_table_version(const String &table, const int version);
+	virtual void ensure_version_table_exists();
+
 	Ref<Database> get_owner();
 	void set_owner(Database *owner);
 
