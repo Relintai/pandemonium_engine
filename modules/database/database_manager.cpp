@@ -61,6 +61,10 @@ void DatabaseManager::load() {
 	//add them to ProjectSettings
 }
 
+void DatabaseManager::migrate(const bool p_clear, const bool p_should_seed, const int p_seed) {
+	emit_signal("migration", p_clear, p_should_seed, p_seed);
+}
+
 DatabaseManager *DatabaseManager::get_singleton() {
 	return _instance;
 }
@@ -74,6 +78,8 @@ DatabaseManager::~DatabaseManager() {
 }
 
 void DatabaseManager::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("migration", PropertyInfo(Variant::BOOL, "clear"), PropertyInfo(Variant::BOOL, "should_seed"), PropertyInfo(Variant::INT, "pseed")));
+
 	ADD_SIGNAL(MethodInfo("default_database_changed", PropertyInfo(Variant::OBJECT, "db", PROPERTY_HINT_RESOURCE_TYPE, "Database")));
 	ADD_SIGNAL(MethodInfo("database_added", PropertyInfo(Variant::OBJECT, "db", PROPERTY_HINT_RESOURCE_TYPE, "Database")));
 	ADD_SIGNAL(MethodInfo("database_removed", PropertyInfo(Variant::OBJECT, "db", PROPERTY_HINT_RESOURCE_TYPE, "Database")));
@@ -90,6 +96,8 @@ void DatabaseManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_databases"), &DatabaseManager::get_databases_bind);
 
 	ClassDB::bind_method(D_METHOD("load"), &DatabaseManager::load);
+
+	ClassDB::bind_method(D_METHOD("migrate", "clear", "should_seed", "pseed"), &DatabaseManager::migrate);
 }
 
 DatabaseManager *DatabaseManager::_instance = nullptr;

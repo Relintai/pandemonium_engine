@@ -89,6 +89,13 @@ void WebNode::set_routing_enabled(const bool value) {
 
 #ifdef MODULE_DATABASE_ENABLED
 
+String WebNode::get_database_table_name() {
+	return _database_table_name;
+}
+void WebNode::set_database_table_name(const String &val) {
+	_database_table_name = val;
+}
+
 Ref<Database> WebNode::get_database() {
 	if (_database.is_valid()) {
 		return _database;
@@ -101,6 +108,18 @@ void WebNode::set_database(const Ref<Database> &db) {
 	_database = db;
 
 	// todo send event to children when it's implemented?
+}
+
+Ref<DatabaseConnection> WebNode::get_database_connection() {
+	Ref<Database> db = get_database();
+
+	ERR_FAIL_COND_V(!db.is_valid(), Ref<DatabaseConnection>());
+
+	Ref<DatabaseConnection> conn = db->get_connection();
+
+	ERR_FAIL_COND_V(!conn.is_valid(), Ref<DatabaseConnection>());
+
+	return conn;
 }
 
 Ref<TableBuilder> WebNode::get_table_builder() {
@@ -125,6 +144,27 @@ Ref<QueryBuilder> WebNode::get_query_builder() {
 	ERR_FAIL_COND_V(!conn.is_valid(), Ref<QueryBuilder>());
 
 	return conn->get_query_builder();
+}
+
+bool WebNode::get_migrations_enabled() {
+	return _migrations_enabled;
+}
+
+void WebNode::set_migrations_enabled(const bool p_enabled) {
+	if (_migrations_enabled == p_enabled) {
+		return;
+	}
+
+	if (is_inside_tree()) {
+		//Note that this assumes that we returned early if p_enabled and _migrations_enabled are the same.
+		if (_migrations_enabled) {
+			DatabaseManager::get_singleton()->disconnect("migration", this, "migrate");
+		} else {
+			DatabaseManager::get_singleton()->connect("migration", this, "migrate");
+		}
+	}
+
+	_migrations_enabled = p_enabled;
 }
 
 #endif
@@ -205,46 +245,43 @@ void WebNode::create_table() {
 void WebNode::drop_table() {
 	call("_drop_table");
 }
-void WebNode::udpate_table() {
-	call("_udpate_table");
+void WebNode::udpate_table(const int p_current_table_version) {
+	call("_udpate_table", p_current_table_version);
 }
-void WebNode::create_default_entries() {
-	call("_create_default_entries");
+void WebNode::create_default_entries(const int p_seed) {
+	call("_create_default_entries", p_seed);
 }
 
 void WebNode::_create_table() {
 }
 void WebNode::_drop_table() {
 }
-void WebNode::_udpate_table() {
+void WebNode::_udpate_table(const int p_current_table_version) {
 }
-void WebNode::_create_default_entries() {
-}
-
-void WebNode::migrate(const bool clear, const bool seed_db) {
-	call("_migrate", clear, seed_db);
-
-	for (int i = 0; i < get_child_count(); ++i) {
-		WebNode *c = Object::cast_to<WebNode>(get_child(i));
-
-		if (!c) {
-			continue;
-		}
-
-		c->migrate(clear, seed_db);
-	}
+void WebNode::_create_default_entries(const int p_seed) {
 }
 
-void WebNode::_migrate(const bool clear, const bool seed_db) {
-	if (clear) {
+void WebNode::migrate(const bool p_clear, const bool p_should_seed, const int p_seed) {
+	call("_migrate", p_clear, p_should_seed, p_seed);
+}
+
+void WebNode::_migrate(const bool p_clear, const bool p_should_seed, const int p_seed) {
+	if (p_clear) {
 		drop_table();
 		create_table();
 	} else {
-		udpate_table();
+#ifdef MODULE_DATABASE_ENABLED
+		Ref<DatabaseConnection> conn = get_database_connection();
+		ERR_FAIL_COND(!conn.is_valid());
+		int ver = conn->get_table_version(_database_table_name);
+		udpate_table(ver);
+#else
+		udpate_table(0);
+#endif
 	}
 
-	if (seed_db) {
-		create_default_entries();
+	if (p_should_seed) {
+		create_default_entries(p_seed);
 	}
 }
 
@@ -386,6 +423,19 @@ void WebNode::_notification(const int what) {
 			if (_routing_enabled) {
 				build_handler_map();
 			}
+
+#ifdef MODULE_DATABASE_ENABLED
+			if (_migrations_enabled) {
+				DatabaseManager::get_singleton()->connect("migration", this, "migrate");
+			}
+#endif
+		} break;
+		case NOTIFICATION_EXIT_TREE: {
+#ifdef MODULE_DATABASE_ENABLED
+			if (_migrations_enabled) {
+				DatabaseManager::get_singleton()->disconnect("migration", this, "migrate");
+			}
+#endif
 		} break;
 		case NOTIFICATION_INTERNAL_PROCESS: {
 			if (_write_lock_requested) {
@@ -410,6 +460,10 @@ WebNode::WebNode() {
 
 	_routing_enabled = true;
 	_index_node = nullptr;
+
+#ifdef MODULE_DATABASE_ENABLED
+	_migrations_enabled = false;
+#endif
 }
 
 WebNode::~WebNode() {
@@ -432,12 +486,20 @@ void WebNode::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "routing_enabled"), "set_routing_enabled", "get_routing_enabled");
 
 #ifdef MODULE_DATABASE_ENABLED
+	ClassDB::bind_method(D_METHOD("get_database_table_name"), &WebNode::get_database_table_name);
+	ClassDB::bind_method(D_METHOD("set_database_table_name", "val"), &WebNode::set_database_table_name);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "database_table_name"), "set_database_table_name", "get_database_table_name");
+
 	ClassDB::bind_method(D_METHOD("get_database"), &WebNode::get_database);
 	ClassDB::bind_method(D_METHOD("set_database", "val"), &WebNode::set_database);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "database", PROPERTY_HINT_RESOURCE_TYPE, "Database", 0), "set_database", "get_database");
 
+	ClassDB::bind_method(D_METHOD("get_database_connection"), &WebNode::get_database_connection);
 	ClassDB::bind_method(D_METHOD("get_table_builder"), &WebNode::get_table_builder);
 	ClassDB::bind_method(D_METHOD("get_query_builder"), &WebNode::get_query_builder);
+
+	ClassDB::bind_method(D_METHOD("get_migrations_enabled"), &WebNode::get_migrations_enabled);
+	ClassDB::bind_method(D_METHOD("set_migrations_enabled", "val"), &WebNode::set_migrations_enabled);
 #endif
 
 	BIND_VMETHOD(MethodInfo("_handle_request_main", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
@@ -469,20 +531,20 @@ void WebNode::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo("_create_table"));
 	BIND_VMETHOD(MethodInfo("_drop_table"));
-	BIND_VMETHOD(MethodInfo("_udpate_table"));
-	BIND_VMETHOD(MethodInfo("_create_default_entries"));
+	BIND_VMETHOD(MethodInfo("_udpate_table", PropertyInfo(Variant::INT, "current_table_version")));
+	BIND_VMETHOD(MethodInfo("_create_default_entries", PropertyInfo(Variant::INT, "pseed")));
 
 	ClassDB::bind_method(D_METHOD("create_table"), &WebNode::create_table);
 	ClassDB::bind_method(D_METHOD("drop_table"), &WebNode::drop_table);
-	ClassDB::bind_method(D_METHOD("udpate_table"), &WebNode::udpate_table);
-	ClassDB::bind_method(D_METHOD("create_default_entries"), &WebNode::create_default_entries);
+	ClassDB::bind_method(D_METHOD("udpate_table", "current_table_version"), &WebNode::udpate_table);
+	ClassDB::bind_method(D_METHOD("create_default_entries", "pseed"), &WebNode::create_default_entries);
 
 	ClassDB::bind_method(D_METHOD("_create_table"), &WebNode::_create_table);
 	ClassDB::bind_method(D_METHOD("_drop_table"), &WebNode::_drop_table);
-	ClassDB::bind_method(D_METHOD("_udpate_table"), &WebNode::_udpate_table);
-	ClassDB::bind_method(D_METHOD("_create_default_entries"), &WebNode::_create_default_entries);
+	ClassDB::bind_method(D_METHOD("_udpate_table", "current_table_version"), &WebNode::_udpate_table);
+	ClassDB::bind_method(D_METHOD("_create_default_entries", "pseed"), &WebNode::_create_default_entries);
 
-	BIND_VMETHOD(MethodInfo("_migrate", PropertyInfo(Variant::BOOL, "clear"), PropertyInfo(Variant::BOOL, "pseed")));
+	BIND_VMETHOD(MethodInfo("_migrate", PropertyInfo(Variant::BOOL, "clear"), PropertyInfo(Variant::BOOL, "should_seed"), PropertyInfo(Variant::INT, "pseed")));
 	ClassDB::bind_method(D_METHOD("migrate", "clear", "pseed"), &WebNode::migrate);
 	ClassDB::bind_method(D_METHOD("_migrate", "clear", "pseed"), &WebNode::_migrate);
 

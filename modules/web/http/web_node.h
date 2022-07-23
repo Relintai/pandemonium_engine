@@ -16,6 +16,7 @@ class WebPermission;
 class Database;
 class TableBuilder;
 class QueryBuilder;
+class DatabaseConnection;
 #endif
 
 //note add an alterative queue_delete() -> (with different name) -> if called node tells parent to stop getting routed to, and when rwlock can be locked gets queue_deleted.
@@ -42,10 +43,18 @@ public:
 	void set_routing_enabled(const bool value);
 
 #ifdef MODULE_DATABASE_ENABLED
+	String get_database_table_name();
+	void set_database_table_name(const String &val);
+
 	Ref<Database> get_database();
 	void set_database(const Ref<Database> &db);
+
+	Ref<DatabaseConnection> get_database_connection();
 	Ref<TableBuilder> get_table_builder();
 	Ref<QueryBuilder> get_query_builder();
+
+	bool get_migrations_enabled();
+	void set_migrations_enabled(const bool p_enabled);
 #endif
 
 	void handle_request_main(Ref<WebServerRequest> request);
@@ -69,16 +78,16 @@ public:
 
 	void create_table();
 	void drop_table();
-	void udpate_table();
-	void create_default_entries();
+	void udpate_table(const int p_current_table_version);
+	void create_default_entries(const int p_seed);
 
 	virtual void _create_table();
 	virtual void _drop_table();
-	virtual void _udpate_table();
-	virtual void _create_default_entries();
+	virtual void _udpate_table(const int p_current_table_version);
+	virtual void _create_default_entries(const int p_seed);
 
-	void migrate(const bool clear, const bool seed);
-	virtual void _migrate(const bool clear, const bool seed);
+	void migrate(const bool p_clear, const bool p_should_seed, const int p_seed);
+	virtual void _migrate(const bool p_clear, const bool p_should_seed, const int p_seed);
 
 	bool try_route_request_to_children(Ref<WebServerRequest> request);
 	WebNode *get_request_handler_child(Ref<WebServerRequest> request);
@@ -105,7 +114,9 @@ protected:
 	String _uri_segment;
 
 #ifdef MODULE_DATABASE_ENABLED
+	String _database_table_name;
 	Ref<Database> _database;
+	int _migrations_enabled;
 #endif
 
 	bool _routing_enabled;

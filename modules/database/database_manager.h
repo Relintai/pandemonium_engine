@@ -27,6 +27,8 @@ public:
 
 	void load();
 
+	void migrate(const bool p_clear, const bool p_should_seed, const int p_seed);
+
 	static DatabaseManager *get_singleton();
 
 	DatabaseManager();
