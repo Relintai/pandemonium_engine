@@ -28,6 +28,9 @@ if env['module_web_enabled']:
   sources.append("web/web_nodes/user_settings_web_page.cpp")
   sources.append("web/web_nodes/user_stats_web_page.cpp")
 
+if env['module_database_enabled']:
+  sources.append("managers/user_manager_db.cpp")
+
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
     # Shared lib compilation
     module_env.Append(CCFLAGS=['-fPIC'])

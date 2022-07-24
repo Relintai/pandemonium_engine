@@ -9,11 +9,25 @@
 #include "user_manager.h"
 
 class User;
+class Database;
+class TableBuilder;
+class QueryBuilder;
+class DatabaseConnection;
 
 class UserManagerDB : public UserManager {
 	GDCLASS(UserManagerDB, UserManager);
 
 public:
+	String get_database_table_name();
+	void set_database_table_name(const String &val);
+
+	Ref<Database> get_database();
+	void set_database(const Ref<Database> &db);
+
+	Ref<DatabaseConnection> get_database_connection();
+	Ref<TableBuilder> get_table_builder();
+	Ref<QueryBuilder> get_query_builder();
+
 	Ref<User> _get_user(const int id);
 	Ref<User> _get_user_name(const String &user);
 	void _save_user(Ref<User> user);
@@ -25,15 +39,29 @@ public:
 
 	Vector<Ref<User>> get_all();
 
-	virtual void create_table();
-	virtual void drop_table();
-	virtual void create_default_entries();
+	void create_table();
+	void drop_table();
+	void udpate_table(const int p_current_table_version);
+	void create_default_entries(const int p_seed);
+
+	virtual void _create_table();
+	virtual void _drop_table();
+	virtual void _udpate_table(const int p_current_table_version);
+	virtual void _create_default_entries(const int p_seed);
+
+	void migrate(const bool p_clear, const bool p_should_seed, const int p_seed);
+	virtual void _migrate(const bool p_clear, const bool p_should_seed, const int p_seed);
 
 	UserManagerDB();
 	~UserManagerDB();
 
 protected:
+	void _notification(const int what);
+
 	static void _bind_methods();
+
+	String _database_table_name;
+	Ref<Database> _database;
 };
 
 #endif

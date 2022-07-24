@@ -48,6 +48,10 @@ SOFTWARE.
 #include "web/web_nodes/user_web_page.cpp"
 #endif
 
+#ifdef MODULE_DATABASE_ENABLED
+#include "managers/user_manager_db.h"
+#endif
+
 UserDB *_user_db = nullptr;
 
 void register_users_types() {
@@ -74,6 +78,10 @@ void register_users_types() {
 	ClassDB::register_class<UserRegisterWebPage>();
 	ClassDB::register_class<UserSettingsWebPage>();
 	ClassDB::register_class<UserStatsWebPage>();
+#endif
+
+#ifdef MODULE_DATABASE_ENABLED
+	ClassDB::register_class<UserManagerDB>();
 #endif
 }
 
