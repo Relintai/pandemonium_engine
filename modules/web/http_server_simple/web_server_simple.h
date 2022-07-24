@@ -98,9 +98,9 @@ protected:
 
 	bool _single_threaded_poll;
 
-	Ref<HTTPServerSimple> server;
-	bool server_quit;
-	Mutex server_lock;
+	Ref<HTTPServerSimple> _server;
+	bool _server_quit;
+	Mutex _server_lock;
 	Thread *_poll_thread;
 	bool _running;
 

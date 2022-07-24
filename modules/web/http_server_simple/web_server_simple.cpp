@@ -115,15 +115,15 @@ void WebServerSimple::_start() {
 	WebServer::_start();
 
 	if (!OS::get_singleton()->can_use_threads()) {
-		server->_use_worker_threads = false;
+		_server->_use_worker_threads = false;
 	} else {
-		server->_use_worker_threads = _use_worker_threads;
+		_server->_use_worker_threads = _use_worker_threads;
 	}
 
 	if (_worker_thread_count <= 0) {
-		server->_thread_count = OS::get_singleton()->get_processor_count();
+		_server->_thread_count = OS::get_singleton()->get_processor_count();
 	} else {
-		server->_thread_count = _worker_thread_count;
+		_server->_thread_count = _worker_thread_count;
 	}
 
 	const uint16_t bind_port = _bind_port;
@@ -146,12 +146,12 @@ void WebServerSimple::_start() {
 	Error err;
 
 	// Restart server.
-	server_lock.lock();
+	_server_lock.lock();
 
-	server->stop();
-	err = server->listen(bind_port, bind_ip, use_ssl, ssl_key, ssl_cert);
+	_server->stop();
+	err = _server->listen(bind_port, bind_ip, use_ssl, ssl_key, ssl_cert);
 
-	server_lock.unlock();
+	_server_lock.unlock();
 
 	ERR_FAIL_COND_MSG(err != OK, "Error starting HTTP server:\n" + itos(err));
 
@@ -174,9 +174,9 @@ void WebServerSimple::_stop() {
 
 	WebServer::_stop();
 
-	server_lock.lock();
+	_server_lock.lock();
 
-	server->stop();
+	_server->stop();
 
 	if (_poll_thread) {
 		_poll_thread->wait_to_finish();
@@ -187,7 +187,7 @@ void WebServerSimple::_stop() {
 	set_process_internal(false);
 
 	_running = false;
-	server_lock.unlock();
+	_server_lock.unlock();
 }
 
 WebServerSimple::WebServerSimple() {
@@ -203,15 +203,15 @@ WebServerSimple::WebServerSimple() {
 
 	_running = false;
 
-	server_quit = false;
+	_server_quit = false;
 
-	server.instance();
-	server->_web_server = this;
+	_server.instance();
+	_server->_web_server = this;
 }
 
 WebServerSimple::~WebServerSimple() {
-	server->stop();
-	server_quit = true;
+	_server->stop();
+	_server_quit = true;
 
 	if (_poll_thread) {
 		_poll_thread->wait_to_finish();
@@ -222,9 +222,9 @@ WebServerSimple::~WebServerSimple() {
 void WebServerSimple::_notification(int p_what) {
 	if (p_what == NOTIFICATION_INTERNAL_PROCESS) {
 		if (_single_threaded_poll) {
-			server_lock.lock();
-			server->poll();
-			server_lock.unlock();
+			_server_lock.lock();
+			_server->poll();
+			_server_lock.unlock();
 		}
 	}
 }
@@ -267,11 +267,11 @@ void WebServerSimple::_bind_methods() {
 
 void WebServerSimple::_server_thread_poll(void *data) {
 	WebServerSimple *ej = (WebServerSimple *)data;
-	while (!ej->server_quit) {
+	while (!ej->_server_quit) {
 		OS::get_singleton()->delay_usec(1000);
 
-		ej->server_lock.lock();
-		ej->server->poll();
-		ej->server_lock.unlock();
+		ej->_server_lock.lock();
+		ej->_server->poll();
+		ej->_server_lock.unlock();
 	}
 }
