@@ -96,7 +96,13 @@ void WebServerSimple::set_worker_thread_count(const int val) {
 	_worker_thread_count = val;
 }
 
+bool WebServerSimple::is_running() const {
+	return _is_running;
+}
+
 void WebServerSimple::_start() {
+	ERR_FAIL_COND(_running);
+
 	WebServer::_start();
 
 	if (!OS::get_singleton()->can_use_threads()) {
@@ -137,15 +143,31 @@ void WebServerSimple::_start() {
 		server->stop();
 		err = server->listen(bind_port, bind_ip, use_ssl, ssl_key, ssl_cert);
 	}
-
 	ERR_FAIL_COND_MSG(err != OK, "Error starting HTTP server:\n" + itos(err));
+
+	_running = true;
+
+	if (!server_thread) {
+		server_thread = memnew(Thread);
+		server_thread->start(_server_thread_poll, this);
+	}
 }
 
 void WebServerSimple::_stop() {
+	ERR_FAIL_COND(!_running);
+
 	WebServer::_stop();
 
 	MutexLock lock(server_lock);
 	server->stop();
+
+	if (server_thread) {
+		server_thread->wait_to_finish();
+		memdelete(server_thread);
+		server_thread = nullptr;
+	}
+
+	_running = false;
 }
 
 WebServerSimple::WebServerSimple() {
@@ -159,17 +181,23 @@ WebServerSimple::WebServerSimple() {
 	_poll_thread_count = 1;
 	_worker_thread_count = 4;
 
+	_running = false;
+
 	server_quit = false;
 
 	server.instance();
 	server->_web_server = this;
-	server_thread.start(_server_thread_poll, this);
+	server_thread = nullptr;
 }
 
 WebServerSimple::~WebServerSimple() {
 	server->stop();
 	server_quit = true;
-	server_thread.wait_to_finish();
+
+	if (server_thread) {
+		server_thread->wait_to_finish();
+		memdelete(server_thread);
+	}
 }
 
 void WebServerSimple::_bind_methods() {
@@ -208,6 +236,8 @@ void WebServerSimple::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_worker_thread_count"), &WebServerSimple::get_worker_thread_count);
 	ClassDB::bind_method(D_METHOD("set_worker_thread_count", "val"), &WebServerSimple::set_worker_thread_count);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "worker_thread_count"), "set_worker_thread_count", "get_worker_thread_count");
+
+	ClassDB::bind_method(D_METHOD("is_running"), &WebServerSimple::is_running);
 }
 
 void WebServerSimple::_server_thread_poll(void *data) {

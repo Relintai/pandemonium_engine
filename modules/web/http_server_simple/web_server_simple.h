@@ -73,6 +73,8 @@ public:
 	int get_worker_thread_count();
 	void set_worker_thread_count(const int val);
 
+	bool is_running() const;
+
 	void _start();
 	void _stop();
 
@@ -98,7 +100,8 @@ protected:
 	Ref<HTTPServerSimple> server;
 	bool server_quit;
 	Mutex server_lock;
-	Thread server_thread;
+	Thread *server_thread;
+	bool _running;
 
 	static void _server_thread_poll(void *data);
 };
