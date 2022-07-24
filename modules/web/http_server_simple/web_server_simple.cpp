@@ -37,6 +37,7 @@ int WebServerSimple::get_bind_port() {
 	return _bind_port;
 }
 void WebServerSimple::set_bind_port(const int val) {
+	ERR_FAIL_COND(_running);
 	_bind_port = val;
 }
 
@@ -44,6 +45,7 @@ String WebServerSimple::get_bind_host() {
 	return _bind_host;
 }
 void WebServerSimple::set_bind_host(const String &val) {
+	ERR_FAIL_COND(_running);
 	_bind_host = val;
 }
 
@@ -51,6 +53,7 @@ bool WebServerSimple::get_use_ssl() {
 	return _use_ssl;
 }
 void WebServerSimple::set_use_ssl(const bool val) {
+	ERR_FAIL_COND(_running);
 	_use_ssl = val;
 }
 
@@ -58,6 +61,7 @@ String WebServerSimple::get_ssl_key() {
 	return _ssl_key;
 }
 void WebServerSimple::set_ssl_key(const String &val) {
+	ERR_FAIL_COND(_running);
 	_ssl_key = val;
 }
 
@@ -65,6 +69,7 @@ String WebServerSimple::get_ssl_cert() {
 	return _ssl_cert;
 }
 void WebServerSimple::set_ssl_cert(const String &val) {
+	ERR_FAIL_COND(_running);
 	_ssl_cert = val;
 }
 
@@ -72,6 +77,7 @@ bool WebServerSimple::get_use_poll_thread() {
 	return _use_poll_thread;
 }
 void WebServerSimple::set_use_poll_thread(const bool val) {
+	ERR_FAIL_COND(_running);
 	_use_poll_thread = val;
 }
 
@@ -79,6 +85,7 @@ int WebServerSimple::get_poll_thread_count() {
 	return _poll_thread_count;
 }
 void WebServerSimple::set_poll_thread_count(const int val) {
+	ERR_FAIL_COND(_running);
 	_poll_thread_count = val;
 }
 
@@ -86,6 +93,7 @@ bool WebServerSimple::get_use_worker_threads() {
 	return _use_worker_threads;
 }
 void WebServerSimple::set_use_worker_threads(const bool val) {
+	ERR_FAIL_COND(_running);
 	_use_worker_threads = val;
 }
 
@@ -93,6 +101,7 @@ int WebServerSimple::get_worker_thread_count() {
 	return _worker_thread_count;
 }
 void WebServerSimple::set_worker_thread_count(const int val) {
+	ERR_FAIL_COND(_running);
 	_worker_thread_count = val;
 }
 
