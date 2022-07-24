@@ -71,6 +71,9 @@ public:
 	int get_worker_thread_count();
 	void set_worker_thread_count(const int val);
 
+	void add_mime_type(const String &file_extension, const String &mime_type);
+	void remove_mime_type(const String &file_extension);
+
 	bool is_running() const;
 
 	void _start();

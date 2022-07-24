@@ -105,6 +105,13 @@ void WebServerSimple::set_worker_thread_count(const int val) {
 	_worker_thread_count = val;
 }
 
+void WebServerSimple::add_mime_type(const String &file_extension, const String &mime_type) {
+	_server->mimes[file_extension] = mime_type;
+}
+void WebServerSimple::remove_mime_type(const String &file_extension) {
+	_server->mimes.erase(file_extension);
+}
+
 bool WebServerSimple::is_running() const {
 	return _is_running;
 }
@@ -261,6 +268,9 @@ void WebServerSimple::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_worker_thread_count"), &WebServerSimple::get_worker_thread_count);
 	ClassDB::bind_method(D_METHOD("set_worker_thread_count", "val"), &WebServerSimple::set_worker_thread_count);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "worker_thread_count"), "set_worker_thread_count", "get_worker_thread_count");
+
+	ClassDB::bind_method(D_METHOD("add_mime_type", "file_extension", "mime_type"), &WebServerSimple::add_mime_type);
+	ClassDB::bind_method(D_METHOD("remove_mime_type", "file_extension"), &WebServerSimple::remove_mime_type);
 
 	ClassDB::bind_method(D_METHOD("is_running"), &WebServerSimple::is_running);
 }
