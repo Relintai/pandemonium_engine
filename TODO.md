@@ -83,6 +83,7 @@
 - BlogWebPage <- BlogWepBageFile, BlogWebPageDB
 - NewsWebPage <- NewsWebPageFile, NewsWebPageDB
 - AdminWebPage <- UserAdminWebPage, AdminPanelWebPage
+- Add epoll api support to sockets, and make the web server use it.
 
 ## Users
 
