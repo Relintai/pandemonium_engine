@@ -33,6 +33,9 @@
 #include "http_server_simple.h"
 
 void WebServerSimple::_start() {
+	server->_use_worker_threads = _use_worker_threads;
+	server->_thread_count = _thread_count;
+
 	WebServer::_start();
 
 	const uint16_t bind_port = 8080;
@@ -75,7 +78,7 @@ void WebServerSimple::_stop() {
 WebServerSimple::WebServerSimple() {
 	_use_worker_threads = true;
 	_use_poll_thread = true;
-	_thread_count = 1;
+	_thread_count = 4;
 
 	server.instance();
 	server->_web_server = this;

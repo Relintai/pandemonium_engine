@@ -36,6 +36,7 @@
 #include "core/io/zip_io.h"
 #include "core/list.h"
 #include "core/os/rw_lock.h"
+#include "core/os/semaphore.h"
 #include "core/vector.h"
 
 #include "core/project_settings.h"
@@ -99,6 +100,9 @@ public:
 
 	Ref<X509Certificate> cert;
 
+	bool _use_worker_threads;
+	int _thread_count;
+
 private:
 	Ref<TCP_Server> server;
 
@@ -109,7 +113,29 @@ private:
 	RWLock _connections_lock;
 
 	void _clear_clients();
+	void _stop_workers();
 	void _set_internal_certs(Ref<Crypto> p_crypto);
+
+	void _wake_workers();
+
+	struct ServerWorkerThread {
+		Thread *thread;
+		Semaphore *semaphore;
+		Ref<HTTPServerSimple> server;
+		bool running;
+		bool working;
+
+		ServerWorkerThread() {
+			thread = nullptr;
+			semaphore = nullptr;
+			running = false;
+			working = false;
+		}
+	};
+
+	Vector<ServerWorkerThread *> _threads;
+
+	static void _worker_thread_func(void *data);
 };
 
 #endif
