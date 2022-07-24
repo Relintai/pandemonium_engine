@@ -73,6 +73,10 @@ void WebServerSimple::_stop() {
 }
 
 WebServerSimple::WebServerSimple() {
+	_use_worker_threads = true;
+	_use_poll_thread = true;
+	_thread_count = 1;
+
 	server.instance();
 	server->_web_server = this;
 	server_thread.start(_server_thread_poll, this);

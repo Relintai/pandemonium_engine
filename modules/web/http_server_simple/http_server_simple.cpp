@@ -305,21 +305,63 @@ void HTTPServerSimple::poll() {
 		connection->peer = connection->tcp;
 		connection->time = OS::get_singleton()->get_ticks_usec();
 
+		_connections_lock.write_lock();
 		_connections.push_back(connection);
+		_connections_lock.write_unlock();
 	}
 
-	//TODO This should be done by worker threads (with a proper lock free queue)
-	for (int i = 0; i < _connections.size(); ++i) {
-		Ref<HTTPServerConnection> c = _connections[i];
+	/*
+	  //THis will only work well in a worker thread
+	  while (!_connections.empty()) {
+		  _connections_lock.write_lock();
+		  Ref<HTTPServerConnection> c = _connections.front()->get();
+		  _connections.pop_front();
+		  _connections_lock.write_unlock();
+
+		  if (c->closed()) {
+			  continue;
+		  }
+
+		  c->update();
+
+		  if (c->closed()) {
+			  continue;
+		  }
+
+		  _connections_lock.write_lock();
+		  _connections.push_back(c);
+		  _connections_lock.write_unlock();
+	  }
+	*/
+
+	//Single threaded ver
+	_connections_lock.write_lock();
+
+	List<Ref<HTTPServerConnection>>::Element *e = _connections.front();
+
+	while (e) {
+		Ref<HTTPServerConnection> c = e->get();
 
 		if (c->closed()) {
-			_connections.remove(i);
-			--i;
+			List<Ref<HTTPServerConnection>>::Element *etmp = e->next();
+			_connections.erase(e);
+			e = etmp;
 			continue;
 		}
 
 		c->update();
+
+		if (c->closed()) {
+			List<Ref<HTTPServerConnection>>::Element *etmp = e->next();
+			_connections.erase(e);
+			e = etmp;
+			continue;
+		}
+
+		e = e->next();
 	}
+
+	_connections_lock.write_unlock();
 }
 
 HTTPServerSimple::HTTPServerSimple() {
@@ -341,11 +383,17 @@ HTTPServerSimple::~HTTPServerSimple() {
 }
 
 void HTTPServerSimple::_clear_clients() {
-	for (int i = 0; i < _connections.size(); ++i) {
-		_connections.write[i]->close();
+	//stop worker threads first!
+
+	_connections_lock.write_lock();
+
+	for (List<Ref<HTTPServerConnection>>::Element *e = _connections.front(); e; e = e->next()) {
+		e->get()->close();
 	}
 
 	_connections.clear();
+
+	_connections_lock.write_unlock();
 }
 
 void HTTPServerSimple::_set_internal_certs(Ref<Crypto> p_crypto) {
@@ -355,6 +403,7 @@ void HTTPServerSimple::_set_internal_certs(Ref<Crypto> p_crypto) {
 	const String key_path = cache_path.plus_file("html5_server.key");
 	const String crt_path = cache_path.plus_file("html5_server.crt");
 	bool regen = !FileAccess::exists(key_path) || !FileAccess::exists(crt_path);
+
 	if (!regen) {
 		key = Ref<CryptoKey>(CryptoKey::create());
 		cert = Ref<X509Certificate>(X509Certificate::create());
@@ -362,6 +411,7 @@ void HTTPServerSimple::_set_internal_certs(Ref<Crypto> p_crypto) {
 			regen = true;
 		}
 	}
+
 	if (regen) {
 		key = p_crypto->generate_rsa(2048);
 		key->save(key_path);

@@ -60,6 +60,10 @@ protected:
 	Mutex server_lock;
 	Thread server_thread;
 
+	bool _use_poll_thread;
+	bool _use_worker_threads;
+	int _thread_count;
+
 	static void _server_thread_poll(void *data);
 };
 

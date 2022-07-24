@@ -34,6 +34,8 @@
 #include "core/io/stream_peer_ssl.h"
 #include "core/io/tcp_server.h"
 #include "core/io/zip_io.h"
+#include "core/list.h"
+#include "core/os/rw_lock.h"
 #include "core/vector.h"
 
 #include "core/project_settings.h"
@@ -103,8 +105,8 @@ private:
 	Ref<CryptoKey> key;
 	bool use_ssl = false;
 
-	//TODO add a lock free queue
-	Vector<Ref<HTTPServerConnection>> _connections;
+	List<Ref<HTTPServerConnection>> _connections;
+	RWLock _connections_lock;
 
 	void _clear_clients();
 	void _set_internal_certs(Ref<Crypto> p_crypto);
