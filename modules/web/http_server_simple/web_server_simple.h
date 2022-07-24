@@ -46,6 +46,18 @@ class WebServerSimple : public WebServer {
 	GDCLASS(WebServerSimple, WebServer);
 
 public:
+	bool get_use_poll_thread();
+	void set_use_poll_thread(const bool val);
+
+	int get_poll_thread_count();
+	void set_poll_thread_count(const int val);
+
+	bool get_use_worker_threads();
+	void set_use_worker_threads(const bool val);
+
+	int get_worker_thread_count();
+	void set_worker_thread_count(const int val);
+
 	void _start();
 	void _stop();
 
@@ -56,13 +68,14 @@ protected:
 	static void _bind_methods();
 
 	Ref<HTTPServerSimple> server;
-	bool server_quit = false;
+	bool server_quit;
 	Mutex server_lock;
 	Thread server_thread;
 
 	bool _use_poll_thread;
+	int _poll_thread_count;
 	bool _use_worker_threads;
-	int _thread_count;
+	int _worker_thread_count;
 
 	static void _server_thread_poll(void *data);
 };

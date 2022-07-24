@@ -30,11 +30,49 @@
 
 #include "web_server_simple.h"
 
+#include "core/os/os.h"
 #include "http_server_simple.h"
 
+bool WebServerSimple::get_use_poll_thread() {
+	return _use_poll_thread;
+}
+void WebServerSimple::set_use_poll_thread(const bool val) {
+	_use_poll_thread = val;
+}
+
+int WebServerSimple::get_poll_thread_count() {
+	return _poll_thread_count;
+}
+void WebServerSimple::set_poll_thread_count(const int val) {
+	_poll_thread_count = val;
+}
+
+bool WebServerSimple::get_use_worker_threads() {
+	return _use_worker_threads;
+}
+void WebServerSimple::set_use_worker_threads(const bool val) {
+	_use_worker_threads = val;
+}
+
+int WebServerSimple::get_worker_thread_count() {
+	return _worker_thread_count;
+}
+void WebServerSimple::set_worker_thread_count(const int val) {
+	_worker_thread_count = val;
+}
+
 void WebServerSimple::_start() {
-	server->_use_worker_threads = _use_worker_threads;
-	server->_thread_count = _thread_count;
+	if (!OS::get_singleton()->can_use_threads()) {
+		server->_use_worker_threads = false;
+	} else {
+		server->_use_worker_threads = _use_worker_threads;
+	}
+
+	if (_worker_thread_count < 0) {
+		server->_thread_count = OS::get_singleton()->get_processor_count();
+	} else {
+		server->_thread_count = _worker_thread_count;
+	}
 
 	WebServer::_start();
 
@@ -76,9 +114,11 @@ void WebServerSimple::_stop() {
 }
 
 WebServerSimple::WebServerSimple() {
+	server_quit = false;
 	_use_worker_threads = true;
 	_use_poll_thread = true;
-	_thread_count = 4;
+	_poll_thread_count = 1;
+	_worker_thread_count = 4;
 
 	server.instance();
 	server->_web_server = this;
@@ -92,6 +132,21 @@ WebServerSimple::~WebServerSimple() {
 }
 
 void WebServerSimple::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_use_poll_thread"), &WebServerSimple::get_use_poll_thread);
+	ClassDB::bind_method(D_METHOD("set_use_poll_thread", "val"), &WebServerSimple::set_use_poll_thread);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_poll_thread"), "set_use_poll_thread", "get_use_poll_thread");
+
+	ClassDB::bind_method(D_METHOD("get_poll_thread_count"), &WebServerSimple::get_poll_thread_count);
+	ClassDB::bind_method(D_METHOD("set_poll_thread_count", "val"), &WebServerSimple::set_poll_thread_count);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "poll_thread_count"), "set_poll_thread_count", "get_poll_thread_count");
+
+	ClassDB::bind_method(D_METHOD("get_use_worker_threads"), &WebServerSimple::get_use_worker_threads);
+	ClassDB::bind_method(D_METHOD("set_use_worker_threads", "val"), &WebServerSimple::set_use_worker_threads);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_worker_threads"), "set_use_worker_threads", "get_use_worker_threads");
+
+	ClassDB::bind_method(D_METHOD("get_worker_thread_count"), &WebServerSimple::get_worker_thread_count);
+	ClassDB::bind_method(D_METHOD("set_worker_thread_count", "val"), &WebServerSimple::set_worker_thread_count);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "worker_thread_count"), "set_worker_thread_count", "get_worker_thread_count");
 }
 
 void WebServerSimple::_server_thread_poll(void *data) {
