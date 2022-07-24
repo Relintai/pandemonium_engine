@@ -65,71 +65,6 @@ bool HTTPServerSimple::is_listening() const {
 	return server->is_listening();
 }
 
-void HTTPServerSimple::_send_response() {
-	Vector<String> psa = String((char *)req_buf).split("\r\n");
-	int len = psa.size();
-	ERR_FAIL_COND_MSG(len < 4, "Not enough response headers, got: " + itos(len) + ", expected >= 4.");
-
-	Vector<String> req = psa[0].split(" ", false);
-	ERR_FAIL_COND_MSG(req.size() < 2, "Invalid protocol or status code.");
-
-	// Wrong protocol
-	ERR_FAIL_COND_MSG(req[0] != "GET" || req[2] != "HTTP/1.1", "Invalid method or HTTP version.");
-
-	const int query_index = req[1].find_char('?');
-	const String path = (query_index == -1) ? req[1] : req[1].substr(0, query_index);
-
-	const String req_file = path.get_file();
-	const String req_ext = path.get_extension();
-	//const String cache_path = EditorSettings::get_singleton()->get_cache_dir().plus_file("web");
-	//TODO
-	const String cache_path = "./cache/web/";
-	const String filepath = cache_path.plus_file(req_file);
-
-	if (!mimes.has(req_ext) || !FileAccess::exists(filepath)) {
-		String s = "HTTP/1.1 404 Not Found\r\n";
-		s += "Connection: Close\r\n";
-		s += "\r\n";
-		CharString cs = s.utf8();
-		peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
-		return;
-	}
-	const String ctype = mimes[req_ext];
-
-	FileAccess *f = FileAccess::open(filepath, FileAccess::READ);
-	ERR_FAIL_COND(!f);
-	String s = "HTTP/1.1 200 OK\r\n";
-	s += "Connection: Close\r\n";
-	s += "Content-Type: " + ctype + "\r\n";
-	s += "Access-Control-Allow-Origin: *\r\n";
-	s += "Cross-Origin-Opener-Policy: same-origin\r\n";
-	s += "Cross-Origin-Embedder-Policy: require-corp\r\n";
-	s += "Cache-Control: no-store, max-age=0\r\n";
-	s += "\r\n";
-	CharString cs = s.utf8();
-
-	Error err = peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
-	if (err != OK) {
-		memdelete(f);
-		ERR_FAIL();
-	}
-
-	while (true) {
-		uint8_t bytes[4096];
-		uint64_t read = f->get_buffer(bytes, 4096);
-		if (read == 0) {
-			break;
-		}
-		err = peer->put_data(bytes, read);
-		if (err != OK) {
-			memdelete(f);
-			ERR_FAIL();
-		}
-	}
-
-	memdelete(f);
-}
-
 void HTTPServerSimple::poll() {
 	if (!server->is_listening()) {
 		return;
@@ -170,14 +105,6 @@ void HTTPServerSimple::poll() {
 			return;
 		}
 	}
-
-	//char *r = (char *)req_buf;
-	//int l = req_pos - 1;
-	//if (l > 3 && r[l] == '\n' && r[l - 1] == '\r' && r[l - 2] == '\n' && r[l - 3] == '\r') {
-	//		_send_response();
-	//		_clear_client();
-	//		return;
-	//	}
 
 	int read = 0;
 	Error err = peer->get_partial_data(req_buf, 4096, read);

@@ -49,7 +49,6 @@ public:
 
 	Error listen(int p_port, IP_Address p_address, bool p_use_ssl, String p_ssl_key, String p_ssl_cert);
 	bool is_listening() const;
-	void _send_response();
 	void poll();
 
 	void send_redirect(Ref<WebServerRequest> request, const String &location, const HTTPServerEnums::HTTPStatusCode status_code);
