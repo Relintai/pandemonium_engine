@@ -84,6 +84,9 @@
 - NewsWebPage <- NewsWebPageFile, NewsWebPageDB
 - AdminWebPage <- UserAdminWebPage, AdminPanelWebPage
 - Add epoll api support to sockets, and make the web server use it.
+- Add range http header support.
+- Finish all the todos in the http parser.
+- Fix unicode escape issues.
 
 ## Users
 
