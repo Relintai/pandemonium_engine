@@ -147,10 +147,12 @@ void WebServerSimple::_start() {
 
 	// Restart server.
 	{
-		MutexLock lock(server_lock);
+		server_lock.write_lock();
 
 		server->stop();
 		err = server->listen(bind_port, bind_ip, use_ssl, ssl_key, ssl_cert);
+
+		server_lock.write_unlock();
 	}
 	ERR_FAIL_COND_MSG(err != OK, "Error starting HTTP server:\n" + itos(err));
 
@@ -167,7 +169,8 @@ void WebServerSimple::_stop() {
 
 	WebServer::_stop();
 
-	MutexLock lock(server_lock);
+	server_lock.write_lock();
+
 	server->stop();
 
 	if (server_thread) {
@@ -177,6 +180,7 @@ void WebServerSimple::_stop() {
 	}
 
 	_running = false;
+	server_lock.write_unlock();
 }
 
 WebServerSimple::WebServerSimple() {
@@ -254,8 +258,9 @@ void WebServerSimple::_server_thread_poll(void *data) {
 	while (!ej->server_quit) {
 		OS::get_singleton()->delay_usec(1000);
 		{
-			MutexLock lock(ej->server_lock);
+			ej->server_lock.read_lock();
 			ej->server->poll();
+			ej->server_lock.read_unlock();
 		}
 	}
 }
