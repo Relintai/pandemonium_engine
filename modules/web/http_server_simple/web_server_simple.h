@@ -35,7 +35,7 @@
 #include "core/io/stream_peer_ssl.h"
 #include "core/io/tcp_server.h"
 #include "core/io/zip_io.h"
-#include "core/os/rw_lock.h"
+#include "core/os/mutex.h"
 
 #include "../http/web_server.h"
 
@@ -100,7 +100,7 @@ protected:
 
 	Ref<HTTPServerSimple> server;
 	bool server_quit;
-	RWLock server_lock;
+	Mutex server_lock;
 	Thread *_poll_thread;
 	bool _running;
 

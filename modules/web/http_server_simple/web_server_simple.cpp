@@ -146,12 +146,12 @@ void WebServerSimple::_start() {
 	Error err;
 
 	// Restart server.
-	server_lock.write_lock();
+	server_lock.lock();
 
 	server->stop();
 	err = server->listen(bind_port, bind_ip, use_ssl, ssl_key, ssl_cert);
 
-	server_lock.write_unlock();
+	server_lock.unlock();
 
 	ERR_FAIL_COND_MSG(err != OK, "Error starting HTTP server:\n" + itos(err));
 
@@ -174,7 +174,7 @@ void WebServerSimple::_stop() {
 
 	WebServer::_stop();
 
-	server_lock.write_lock();
+	server_lock.lock();
 
 	server->stop();
 
@@ -187,7 +187,7 @@ void WebServerSimple::_stop() {
 	set_process_internal(false);
 
 	_running = false;
-	server_lock.write_unlock();
+	server_lock.unlock();
 }
 
 WebServerSimple::WebServerSimple() {
@@ -222,9 +222,9 @@ WebServerSimple::~WebServerSimple() {
 void WebServerSimple::_notification(int p_what) {
 	if (p_what == NOTIFICATION_INTERNAL_PROCESS) {
 		if (_single_threaded_poll) {
-			server_lock.read_lock();
+			server_lock.lock();
 			server->poll();
-			server_lock.read_unlock();
+			server_lock.unlock();
 		}
 	}
 }
@@ -270,8 +270,8 @@ void WebServerSimple::_server_thread_poll(void *data) {
 	while (!ej->server_quit) {
 		OS::get_singleton()->delay_usec(1000);
 
-		ej->server_lock.read_lock();
+		ej->server_lock.lock();
 		ej->server->poll();
-		ej->server_lock.read_unlock();
+		ej->server_lock.unlock();
 	}
 }
