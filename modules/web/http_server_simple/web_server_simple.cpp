@@ -33,6 +33,41 @@
 #include "core/os/os.h"
 #include "http_server_simple.h"
 
+int WebServerSimple::get_bind_port() {
+	return _bind_port;
+}
+void WebServerSimple::set_bind_port(const int val) {
+	_bind_port = val;
+}
+
+String WebServerSimple::get_bind_host() {
+	return _bind_host;
+}
+void WebServerSimple::set_bind_host(const String &val) {
+	_bind_host = val;
+}
+
+bool WebServerSimple::get_use_ssl() {
+	return _use_ssl;
+}
+void WebServerSimple::set_use_ssl(const bool val) {
+	_use_ssl = val;
+}
+
+String WebServerSimple::get_ssl_key() {
+	return _ssl_key;
+}
+void WebServerSimple::set_ssl_key(const String &val) {
+	_ssl_key = val;
+}
+
+String WebServerSimple::get_ssl_cert() {
+	return _ssl_cert;
+}
+void WebServerSimple::set_ssl_cert(const String &val) {
+	_ssl_cert = val;
+}
+
 bool WebServerSimple::get_use_poll_thread() {
 	return _use_poll_thread;
 }
@@ -62,6 +97,8 @@ void WebServerSimple::set_worker_thread_count(const int val) {
 }
 
 void WebServerSimple::_start() {
+	WebServer::_start();
+
 	if (!OS::get_singleton()->can_use_threads()) {
 		server->_use_worker_threads = false;
 	} else {
@@ -74,11 +111,9 @@ void WebServerSimple::_start() {
 		server->_thread_count = _worker_thread_count;
 	}
 
-	WebServer::_start();
-
-	const uint16_t bind_port = 8080;
+	const uint16_t bind_port = _bind_port;
 	// Resolve host if needed.
-	const String bind_host = "127.0.0.1";
+	const String bind_host = _bind_host;
 	IP_Address bind_ip;
 
 	if (bind_host.is_valid_ip_address()) {
@@ -87,11 +122,11 @@ void WebServerSimple::_start() {
 		bind_ip = IP::get_singleton()->resolve_hostname(bind_host);
 	}
 
-	ERR_FAIL_COND_MSG(!bind_ip.is_valid(), "Invalid editor setting 'export/web/http_host': '" + bind_host + "'. Try using '127.0.0.1'.");
+	ERR_FAIL_COND(!bind_ip.is_valid());
 
-	const bool use_ssl = false;
-	const String ssl_key = "";
-	const String ssl_cert = "";
+	const bool use_ssl = _use_ssl;
+	const String ssl_key = _ssl_key;
+	const String ssl_cert = _ssl_cert;
 
 	Error err;
 
@@ -114,11 +149,17 @@ void WebServerSimple::_stop() {
 }
 
 WebServerSimple::WebServerSimple() {
-	server_quit = false;
+	_bind_port = 8080;
+	_bind_host = "127.0.0.1";
+
+	_use_ssl = false;
+
 	_use_worker_threads = true;
 	_use_poll_thread = true;
 	_poll_thread_count = 1;
 	_worker_thread_count = 4;
+
+	server_quit = false;
 
 	server.instance();
 	server->_web_server = this;
@@ -132,6 +173,26 @@ WebServerSimple::~WebServerSimple() {
 }
 
 void WebServerSimple::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_bind_port"), &WebServerSimple::get_bind_port);
+	ClassDB::bind_method(D_METHOD("set_bind_port", "val"), &WebServerSimple::set_bind_port);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "bind_port"), "set_bind_port", "get_bind_port");
+
+	ClassDB::bind_method(D_METHOD("get_bind_host"), &WebServerSimple::get_bind_host);
+	ClassDB::bind_method(D_METHOD("set_bind_host", "val"), &WebServerSimple::set_bind_host);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "bind_host"), "set_bind_host", "get_bind_host");
+
+	ClassDB::bind_method(D_METHOD("get_use_ssl"), &WebServerSimple::get_use_ssl);
+	ClassDB::bind_method(D_METHOD("set_use_ssl", "val"), &WebServerSimple::set_use_ssl);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_ssl"), "set_use_ssl", "get_use_ssl");
+
+	ClassDB::bind_method(D_METHOD("get_ssl_key"), &WebServerSimple::get_ssl_key);
+	ClassDB::bind_method(D_METHOD("set_ssl_key", "val"), &WebServerSimple::set_ssl_key);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "ssl_key"), "set_ssl_key", "get_ssl_key");
+
+	ClassDB::bind_method(D_METHOD("get_ssl_cert"), &WebServerSimple::get_ssl_cert);
+	ClassDB::bind_method(D_METHOD("set_ssl_cert", "val"), &WebServerSimple::set_ssl_cert);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "ssl_cert"), "set_ssl_cert", "get_ssl_cert");
+
 	ClassDB::bind_method(D_METHOD("get_use_poll_thread"), &WebServerSimple::get_use_poll_thread);
 	ClassDB::bind_method(D_METHOD("set_use_poll_thread", "val"), &WebServerSimple::set_use_poll_thread);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_poll_thread"), "set_use_poll_thread", "get_use_poll_thread");

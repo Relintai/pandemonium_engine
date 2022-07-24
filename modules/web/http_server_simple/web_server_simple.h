@@ -46,6 +46,21 @@ class WebServerSimple : public WebServer {
 	GDCLASS(WebServerSimple, WebServer);
 
 public:
+	int get_bind_port();
+	void set_bind_port(const int val);
+
+	String get_bind_host();
+	void set_bind_host(const String &val);
+
+	bool get_use_ssl();
+	void set_use_ssl(const bool val);
+
+	String get_ssl_key();
+	void set_ssl_key(const String &val);
+
+	String get_ssl_cert();
+	void set_ssl_cert(const String &val);
+
 	bool get_use_poll_thread();
 	void set_use_poll_thread(const bool val);
 
@@ -67,15 +82,23 @@ public:
 protected:
 	static void _bind_methods();
 
-	Ref<HTTPServerSimple> server;
-	bool server_quit;
-	Mutex server_lock;
-	Thread server_thread;
+	int _bind_port;
+	String _bind_host;
+
+	//TODO add binds to set path
+	bool _use_ssl;
+	String _ssl_key;
+	String _ssl_cert;
 
 	bool _use_poll_thread;
 	int _poll_thread_count;
 	bool _use_worker_threads;
 	int _worker_thread_count;
+
+	Ref<HTTPServerSimple> server;
+	bool server_quit;
+	Mutex server_lock;
+	Thread server_thread;
 
 	static void _server_thread_poll(void *data);
 };
