@@ -34,6 +34,7 @@
 #include "core/io/stream_peer_ssl.h"
 #include "core/io/tcp_server.h"
 #include "core/io/zip_io.h"
+#include "core/vector.h"
 
 #include "core/project_settings.h"
 
@@ -42,8 +43,44 @@
 class HTTPParser;
 class WebServerSimple;
 class WebServerRequest;
+class HTTPServerSimple;
+
+class HTTPServerConnection : public Reference {
+	GDCLASS(HTTPServerConnection, Reference);
+
+public:
+	void update();
+
+	void send_redirect(Ref<WebServerRequest> request, const String &location, const HTTPServerEnums::HTTPStatusCode status_code);
+	void send(Ref<WebServerRequest> request);
+	void send_file(Ref<WebServerRequest> request, const String &p_file_path);
+
+	void close();
+	bool closed();
+
+	HTTPServerConnection();
+	~HTTPServerConnection();
+
+	WebServerSimple *_web_server;
+	HTTPServerSimple *_http_server;
+
+	bool use_ssl = false;
+	Ref<CryptoKey> key;
+
+	Ref<StreamPeerTCP> tcp;
+	Ref<StreamPeerSSL> ssl;
+	Ref<StreamPeer> peer;
+
+	Ref<HTTPParser> _http_parser;
+	uint64_t time = 0;
+	uint8_t req_buf[4096];
+
+	bool _closed;
+};
 
 class HTTPServerSimple : public Reference {
+	GDCLASS(HTTPServerSimple, Reference);
+
 public:
 	void stop();
 
@@ -51,29 +88,25 @@ public:
 	bool is_listening() const;
 	void poll();
 
-	void send_redirect(Ref<WebServerRequest> request, const String &location, const HTTPServerEnums::HTTPStatusCode status_code);
-	void send(Ref<WebServerRequest> request);
-	void send_file(Ref<WebServerRequest> request, const String &p_file_path);
-
 	HTTPServerSimple();
 	~HTTPServerSimple();
 
 	WebServerSimple *_web_server;
 
+	Map<String, String> mimes;
+
+	Ref<X509Certificate> cert;
+
 private:
 	Ref<TCP_Server> server;
-	Map<String, String> mimes;
-	Ref<StreamPeerTCP> tcp;
-	Ref<StreamPeerSSL> ssl;
-	Ref<StreamPeer> peer;
-	Ref<CryptoKey> key;
-	Ref<X509Certificate> cert;
-	Ref<HTTPParser> _http_parser;
-	bool use_ssl = false;
-	uint64_t time = 0;
-	uint8_t req_buf[4096];
 
-	void _clear_client();
+	Ref<CryptoKey> key;
+	bool use_ssl = false;
+
+	//TODO add a lock free queue
+	Vector<Ref<HTTPServerConnection>> _connections;
+
+	void _clear_clients();
 	void _set_internal_certs(Ref<Crypto> p_crypto);
 };
 

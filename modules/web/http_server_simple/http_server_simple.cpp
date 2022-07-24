@@ -35,50 +35,11 @@
 #include "simple_web_server_request.h"
 #include "web_server_simple.h"
 
-void HTTPServerSimple::stop() {
-	server->stop();
-	_clear_client();
-}
+void HTTPServerConnection::update() {
+	ERR_FAIL_COND(closed());
 
-Error HTTPServerSimple::listen(int p_port, IP_Address p_address, bool p_use_ssl, String p_ssl_key, String p_ssl_cert) {
-	use_ssl = p_use_ssl;
-	if (use_ssl) {
-		Ref<Crypto> crypto = Crypto::create();
-		if (crypto.is_null()) {
-			return ERR_UNAVAILABLE;
-		}
-		if (!p_ssl_key.empty() && !p_ssl_cert.empty()) {
-			key = Ref<CryptoKey>(CryptoKey::create());
-			Error err = key->load(p_ssl_key);
-			ERR_FAIL_COND_V(err != OK, err);
-			cert = Ref<X509Certificate>(X509Certificate::create());
-			err = cert->load(p_ssl_cert);
-			ERR_FAIL_COND_V(err != OK, err);
-		} else {
-			_set_internal_certs(crypto);
-		}
-	}
-	return server->listen(p_port, p_address);
-}
-
-bool HTTPServerSimple::is_listening() const {
-	return server->is_listening();
-}
-
-void HTTPServerSimple::poll() {
-	if (!server->is_listening()) {
-		return;
-	}
-	if (tcp.is_null()) {
-		if (!server->is_connection_available()) {
-			return;
-		}
-		tcp = server->take_connection();
-		peer = tcp;
-		time = OS::get_singleton()->get_ticks_usec();
-	}
 	if (OS::get_singleton()->get_ticks_usec() - time > 1000000) {
-		_clear_client();
+		close();
 		return;
 	}
 	if (tcp->get_status() != StreamPeerTCP::STATUS_CONNECTED) {
@@ -90,8 +51,8 @@ void HTTPServerSimple::poll() {
 			ssl = Ref<StreamPeerSSL>(StreamPeerSSL::create());
 			peer = ssl;
 			ssl->set_blocking_handshake_enabled(false);
-			if (ssl->accept_stream(tcp, key, cert) != OK) {
-				_clear_client();
+			if (ssl->accept_stream(tcp, key, _http_server->cert) != OK) {
+				close();
 				return;
 			}
 		}
@@ -101,7 +62,7 @@ void HTTPServerSimple::poll() {
 			return;
 		}
 		if (ssl->get_status() != StreamPeerSSL::STATUS_CONNECTED) {
-			_clear_client();
+			close();
 			return;
 		}
 	}
@@ -111,7 +72,7 @@ void HTTPServerSimple::poll() {
 
 	if (err != OK) {
 		// Got an error
-		_clear_client();
+		close();
 		return;
 	}
 
@@ -130,18 +91,19 @@ void HTTPServerSimple::poll() {
 	if (_http_parser->get_request_count() > 0) {
 		Ref<SimpleWebServerRequest> request = _http_parser->get_next_request();
 
-		request->_server = this;
+		request->_server = _http_server;
+		request->_connection = Ref<HTTPServerConnection>(this);
 		request->setup_url_stack();
 
 		_web_server->server_handle_request(request);
 
 		if (_http_parser->get_request_count() == 0 && _http_parser->is_finished()) {
-			_clear_client();
+			close();
 		}
 	}
 }
 
-void HTTPServerSimple::send_redirect(Ref<WebServerRequest> request, const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
+void HTTPServerConnection::send_redirect(Ref<WebServerRequest> request, const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
 	//String s = "HTTP/1.1 " + itos(static_cast<int>(status_code)) + " Found\r\n";
 	String s = "HTTP/1.1 " + HTTPServerEnums::get_status_code_header_string(status_code) + "\r\n";
 	s += "Location: " + location + "\r\n";
@@ -163,7 +125,7 @@ void HTTPServerSimple::send_redirect(Ref<WebServerRequest> request, const String
 	CharString cs = s.utf8();
 	peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
 }
-void HTTPServerSimple::send(Ref<WebServerRequest> request) {
+void HTTPServerConnection::send(Ref<WebServerRequest> request) {
 	String body = request->get_compiled_body();
 
 	String s = "HTTP/1.1 " + HTTPServerEnums::get_status_code_header_string(request->get_status_code()) + "\r\n";
@@ -189,7 +151,7 @@ void HTTPServerSimple::send(Ref<WebServerRequest> request) {
 	CharString cs = s.utf8();
 	peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
 }
-void HTTPServerSimple::send_file(Ref<WebServerRequest> request, const String &p_file_path) {
+void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String &p_file_path) {
 	if (!FileAccess::exists(p_file_path)) {
 		String s = "HTTP/1.1 404 Not Found\r\n";
 		s += "Connection: Close\r\n";
@@ -215,8 +177,8 @@ void HTTPServerSimple::send_file(Ref<WebServerRequest> request, const String &p_
 	String ctype;
 	String req_ext = p_file_path.get_extension();
 
-	if (!mimes.has(req_ext)) {
-		ctype = mimes[req_ext];
+	if (!_http_server->mimes.has(req_ext)) {
+		ctype = _http_server->mimes[req_ext];
 	} else {
 		ctype = "text/plain";
 	}
@@ -268,6 +230,98 @@ void HTTPServerSimple::send_file(Ref<WebServerRequest> request, const String &p_
 	memdelete(f);
 }
 
+void HTTPServerConnection::close() {
+	tcp.unref();
+	ssl.unref();
+	peer.unref();
+
+	_closed = true;
+}
+bool HTTPServerConnection::closed() {
+	return _closed;
+}
+
+HTTPServerConnection::HTTPServerConnection() {
+	_web_server = nullptr;
+	_http_server = nullptr;
+
+	_http_parser.instance();
+	time = 0;
+
+	memset(req_buf, 0, sizeof(req_buf));
+
+	_closed = false;
+}
+HTTPServerConnection::~HTTPServerConnection() {
+}
+
+void HTTPServerSimple::stop() {
+	server->stop();
+	_clear_clients();
+}
+
+Error HTTPServerSimple::listen(int p_port, IP_Address p_address, bool p_use_ssl, String p_ssl_key, String p_ssl_cert) {
+	use_ssl = p_use_ssl;
+	if (use_ssl) {
+		Ref<Crypto> crypto = Crypto::create();
+		if (crypto.is_null()) {
+			return ERR_UNAVAILABLE;
+		}
+		if (!p_ssl_key.empty() && !p_ssl_cert.empty()) {
+			key = Ref<CryptoKey>(CryptoKey::create());
+			Error err = key->load(p_ssl_key);
+			ERR_FAIL_COND_V(err != OK, err);
+			cert = Ref<X509Certificate>(X509Certificate::create());
+			err = cert->load(p_ssl_cert);
+			ERR_FAIL_COND_V(err != OK, err);
+		} else {
+			_set_internal_certs(crypto);
+		}
+	}
+	return server->listen(p_port, p_address);
+}
+
+bool HTTPServerSimple::is_listening() const {
+	return server->is_listening();
+}
+
+void HTTPServerSimple::poll() {
+	if (!server->is_listening()) {
+		return;
+	}
+
+	//todo add connection limit
+	while (server->is_connection_available()) {
+		Ref<HTTPServerConnection> connection;
+		connection.instance();
+
+		connection->_web_server = _web_server;
+		connection->_http_server = this;
+
+		connection->use_ssl = use_ssl;
+		connection->key = key;
+
+		connection->tcp = server->take_connection();
+		connection->peer = connection->tcp;
+		connection->time = OS::get_singleton()->get_ticks_usec();
+
+		_connections.push_back(connection);
+	}
+
+	//TODO This should be done by worker threads (with a proper lock free queue)
+	for (int i = 0; i < _connections.size(); ++i) {
+		Ref<HTTPServerConnection> c = _connections[i];
+
+		if (c->closed()) {
+			_connections.remove(i);
+			--i;
+			continue;
+		}
+
+		c->update();
+	}
+}
+
 HTTPServerSimple::HTTPServerSimple() {
 	_web_server = nullptr;
 
@@ -280,19 +334,18 @@ HTTPServerSimple::HTTPServerSimple() {
 	mimes["wasm"] = "application/wasm";
 
 	server.instance();
-	_http_parser.instance();
 	stop();
 }
 
 HTTPServerSimple::~HTTPServerSimple() {
 }
 
-void HTTPServerSimple::_clear_client() {
-	peer = Ref<StreamPeer>();
-	ssl = Ref<StreamPeerSSL>();
-	tcp = Ref<StreamPeerTCP>();
-	memset(req_buf, 0, sizeof(req_buf));
-	time = 0;
+void HTTPServerSimple::_clear_clients() {
+	for (int i = 0; i < _connections.size(); ++i) {
+		_connections.write[i]->close();
+	}
+
+	_connections.clear();
 }
 
 void HTTPServerSimple::_set_internal_certs(Ref<Crypto> p_crypto) {

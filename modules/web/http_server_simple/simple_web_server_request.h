@@ -16,6 +16,7 @@ class HTTPSession;
 class WebPermission;
 class WebNode;
 class HTTPServerSimple;
+class HTTPServerConnection;
 
 class SimpleWebServerRequest : public WebServerRequest {
 	GDCLASS(SimpleWebServerRequest, WebServerRequest);
@@ -57,6 +58,7 @@ public:
 	~SimpleWebServerRequest();
 
 	HTTPServerSimple *_server;
+	Ref<HTTPServerConnection> _connection;
 
 protected:
 	static void _bind_methods();
