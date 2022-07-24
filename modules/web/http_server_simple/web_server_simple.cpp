@@ -38,6 +38,7 @@ int WebServerSimple::get_bind_port() {
 }
 void WebServerSimple::set_bind_port(const int val) {
 	ERR_FAIL_COND(_running);
+
 	_bind_port = val;
 }
 
@@ -46,6 +47,7 @@ String WebServerSimple::get_bind_host() {
 }
 void WebServerSimple::set_bind_host(const String &val) {
 	ERR_FAIL_COND(_running);
+
 	_bind_host = val;
 }
 
@@ -54,6 +56,7 @@ bool WebServerSimple::get_use_ssl() {
 }
 void WebServerSimple::set_use_ssl(const bool val) {
 	ERR_FAIL_COND(_running);
+
 	_use_ssl = val;
 }
 
@@ -62,6 +65,7 @@ String WebServerSimple::get_ssl_key() {
 }
 void WebServerSimple::set_ssl_key(const String &val) {
 	ERR_FAIL_COND(_running);
+
 	_ssl_key = val;
 }
 
@@ -70,6 +74,7 @@ String WebServerSimple::get_ssl_cert() {
 }
 void WebServerSimple::set_ssl_cert(const String &val) {
 	ERR_FAIL_COND(_running);
+
 	_ssl_cert = val;
 }
 
@@ -78,15 +83,8 @@ bool WebServerSimple::get_use_poll_thread() {
 }
 void WebServerSimple::set_use_poll_thread(const bool val) {
 	ERR_FAIL_COND(_running);
-	_use_poll_thread = val;
-}
 
-int WebServerSimple::get_poll_thread_count() {
-	return _poll_thread_count;
-}
-void WebServerSimple::set_poll_thread_count(const int val) {
-	ERR_FAIL_COND(_running);
-	_poll_thread_count = val;
+	_use_poll_thread = val;
 }
 
 bool WebServerSimple::get_use_worker_threads() {
@@ -94,6 +92,7 @@ bool WebServerSimple::get_use_worker_threads() {
 }
 void WebServerSimple::set_use_worker_threads(const bool val) {
 	ERR_FAIL_COND(_running);
+
 	_use_worker_threads = val;
 }
 
@@ -102,6 +101,7 @@ int WebServerSimple::get_worker_thread_count() {
 }
 void WebServerSimple::set_worker_thread_count(const int val) {
 	ERR_FAIL_COND(_running);
+
 	_worker_thread_count = val;
 }
 
@@ -120,7 +120,7 @@ void WebServerSimple::_start() {
 		server->_use_worker_threads = _use_worker_threads;
 	}
 
-	if (_worker_thread_count < 0) {
+	if (_worker_thread_count <= 0) {
 		server->_thread_count = OS::get_singleton()->get_processor_count();
 	} else {
 		server->_thread_count = _worker_thread_count;
@@ -146,21 +146,26 @@ void WebServerSimple::_start() {
 	Error err;
 
 	// Restart server.
-	{
-		server_lock.write_lock();
+	server_lock.write_lock();
 
-		server->stop();
-		err = server->listen(bind_port, bind_ip, use_ssl, ssl_key, ssl_cert);
+	server->stop();
+	err = server->listen(bind_port, bind_ip, use_ssl, ssl_key, ssl_cert);
 
-		server_lock.write_unlock();
-	}
+	server_lock.write_unlock();
+
 	ERR_FAIL_COND_MSG(err != OK, "Error starting HTTP server:\n" + itos(err));
 
 	_running = true;
 
-	if (!server_thread) {
-		server_thread = memnew(Thread);
-		server_thread->start(_server_thread_poll, this);
+	if (!_use_poll_thread || !OS::get_singleton()->can_use_threads()) {
+		set_process_internal(true);
+
+		_single_threaded_poll = true;
+	} else {
+		_poll_thread = memnew(Thread);
+		_poll_thread->start(_server_thread_poll, this);
+
+		_single_threaded_poll = false;
 	}
 }
 
@@ -173,11 +178,13 @@ void WebServerSimple::_stop() {
 
 	server->stop();
 
-	if (server_thread) {
-		server_thread->wait_to_finish();
-		memdelete(server_thread);
-		server_thread = nullptr;
+	if (_poll_thread) {
+		_poll_thread->wait_to_finish();
+		memdelete(_poll_thread);
+		_poll_thread = nullptr;
 	}
+
+	set_process_internal(false);
 
 	_running = false;
 	server_lock.write_unlock();
@@ -191,7 +198,7 @@ WebServerSimple::WebServerSimple() {
 
 	_use_worker_threads = true;
 	_use_poll_thread = true;
-	_poll_thread_count = 1;
+	_poll_thread = nullptr;
 	_worker_thread_count = 4;
 
 	_running = false;
@@ -200,16 +207,25 @@ WebServerSimple::WebServerSimple() {
 
 	server.instance();
 	server->_web_server = this;
-	server_thread = nullptr;
 }
 
 WebServerSimple::~WebServerSimple() {
 	server->stop();
 	server_quit = true;
 
-	if (server_thread) {
-		server_thread->wait_to_finish();
-		memdelete(server_thread);
+	if (_poll_thread) {
+		_poll_thread->wait_to_finish();
+		memdelete(_poll_thread);
+	}
+}
+
+void WebServerSimple::_notification(int p_what) {
+	if (p_what == NOTIFICATION_INTERNAL_PROCESS) {
+		if (_single_threaded_poll) {
+			server_lock.read_lock();
+			server->poll();
+			server_lock.read_unlock();
+		}
 	}
 }
 
@@ -238,10 +254,6 @@ void WebServerSimple::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_use_poll_thread", "val"), &WebServerSimple::set_use_poll_thread);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_poll_thread"), "set_use_poll_thread", "get_use_poll_thread");
 
-	ClassDB::bind_method(D_METHOD("get_poll_thread_count"), &WebServerSimple::get_poll_thread_count);
-	ClassDB::bind_method(D_METHOD("set_poll_thread_count", "val"), &WebServerSimple::set_poll_thread_count);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "poll_thread_count"), "set_poll_thread_count", "get_poll_thread_count");
-
 	ClassDB::bind_method(D_METHOD("get_use_worker_threads"), &WebServerSimple::get_use_worker_threads);
 	ClassDB::bind_method(D_METHOD("set_use_worker_threads", "val"), &WebServerSimple::set_use_worker_threads);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_worker_threads"), "set_use_worker_threads", "get_use_worker_threads");
@@ -257,10 +269,9 @@ void WebServerSimple::_server_thread_poll(void *data) {
 	WebServerSimple *ej = (WebServerSimple *)data;
 	while (!ej->server_quit) {
 		OS::get_singleton()->delay_usec(1000);
-		{
-			ej->server_lock.read_lock();
-			ej->server->poll();
-			ej->server_lock.read_unlock();
-		}
+
+		ej->server_lock.read_lock();
+		ej->server->poll();
+		ej->server_lock.read_unlock();
 	}
 }

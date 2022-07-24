@@ -42,6 +42,7 @@ void HTTPServerConnection::update() {
 		close();
 		return;
 	}
+
 	if (tcp->get_status() != StreamPeerTCP::STATUS_CONNECTED) {
 		return;
 	}
@@ -125,6 +126,7 @@ void HTTPServerConnection::send_redirect(Ref<WebServerRequest> request, const St
 	CharString cs = s.utf8();
 	peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
 }
+
 void HTTPServerConnection::send(Ref<WebServerRequest> request) {
 	String body = request->get_compiled_body();
 
@@ -316,6 +318,12 @@ void HTTPServerSimple::poll() {
 
 	//todo add connection limit
 	while (server->is_connection_available()) {
+		_connections_lock.write_lock();
+
+		Ref<StreamPeerTCP> tcp = server->take_connection();
+
+		ERR_CONTINUE(!tcp.is_valid());
+
 		Ref<HTTPServerConnection> connection;
 		connection.instance();
 
@@ -325,11 +333,10 @@ void HTTPServerSimple::poll() {
 		connection->use_ssl = use_ssl;
 		connection->key = key;
 
-		connection->tcp = server->take_connection();
+		connection->tcp = tcp;
 		connection->peer = connection->tcp;
 		connection->time = OS::get_singleton()->get_ticks_usec();
 
-		_connections_lock.write_lock();
 		_connections.push_back(connection);
 		_connections_lock.write_unlock();
 	}
@@ -472,6 +479,7 @@ void HTTPServerSimple::_worker_thread_func(void *data) {
 			}
 
 			Ref<HTTPServerConnection> c = e->get();
+
 			server->_connections.pop_front();
 			server->_connections_lock.write_unlock();
 

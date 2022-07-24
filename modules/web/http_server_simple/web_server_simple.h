@@ -65,9 +65,6 @@ public:
 	bool get_use_poll_thread();
 	void set_use_poll_thread(const bool val);
 
-	int get_poll_thread_count();
-	void set_poll_thread_count(const int val);
-
 	bool get_use_worker_threads();
 	void set_use_worker_threads(const bool val);
 
@@ -83,6 +80,8 @@ public:
 	~WebServerSimple();
 
 protected:
+	void _notification(int p_what);
+
 	static void _bind_methods();
 
 	int _bind_port;
@@ -94,14 +93,15 @@ protected:
 	String _ssl_cert;
 
 	bool _use_poll_thread;
-	int _poll_thread_count;
 	bool _use_worker_threads;
 	int _worker_thread_count;
+
+	bool _single_threaded_poll;
 
 	Ref<HTTPServerSimple> server;
 	bool server_quit;
 	RWLock server_lock;
-	Thread *server_thread;
+	Thread *_poll_thread;
 	bool _running;
 
 	static void _server_thread_poll(void *data);
