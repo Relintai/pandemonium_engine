@@ -30,25 +30,25 @@
 
 #include "editor_log.h"
 
-#include "core/os/keyboard.h"
-#include "core/version.h"
-#include "editor_node.h"
-#include "editor_scale.h"
-#include "scene/resources/dynamic_font.h"
 #include "core/class_db.h"
 #include "core/color.h"
 #include "core/math/vector2.h"
+#include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"
 #include "core/reference.h"
 #include "core/undo_redo.h"
+#include "core/version.h"
 #include "editor/editor_settings.h"
+#include "editor_node.h"
+#include "editor_scale.h"
 #include "scene/gui/button.h"
 #include "scene/gui/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/rich_text_label.h"
 #include "scene/gui/tool_button.h"
 #include "scene/main/node.h"
+#include "scene/resources/dynamic_font.h"
 #include "scene/resources/texture.h"
 
 void EditorLog::_error_handler(void *p_self, const char *p_func, const char *p_file, int p_line, const char *p_error, const char *p_errorexp, ErrorHandlerType p_type) {
@@ -190,7 +190,7 @@ EditorLog::EditorLog() {
 	log->set_custom_minimum_size(Size2(0, 180) * EDSCALE);
 	log->set_v_size_flags(SIZE_EXPAND_FILL);
 	log->set_h_size_flags(SIZE_EXPAND_FILL);
-	log->set_deselect_on_focus_loss_enabled(false);
+	//log->set_deselect_on_focus_loss_enabled(false);
 	vb->add_child(log);
 	add_message(VERSION_FULL_NAME " (c) 2007-2022 Juan Linietsky, Ariel Manzur & Godot Contributors.");
 
