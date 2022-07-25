@@ -479,6 +479,7 @@ public:
 
 	void set_deselect_on_focus_loss_enabled(const bool p_enabled);
 	bool is_deselect_on_focus_loss_enabled() const;
+	void deselect();
 
 	Error parse_bbcode(const String &p_bbcode);
 	Error append_bbcode(const String &p_bbcode);
