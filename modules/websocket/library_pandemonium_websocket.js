@@ -135,7 +135,7 @@ const PandemoniumWebSocket = {
       if (!ref) {
         return;
       }
-      PandemoniumWebSocket.close(p_id, 1001, '');
+      PandemoniumWebSocket.close(p_id, 3001, '');
       IDHandler.remove(p_id);
       ref.onopen = null;
       ref.onmessage = null;
