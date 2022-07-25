@@ -92,7 +92,10 @@ private:
 
 	bool shortcut_keys_enabled;
 
-	bool virtual_keyboard_enabled = true;
+	bool virtual_keyboard_enabled;
+
+	bool drag_action;
+	bool drag_caret_force_displayed;
 
 	Ref<Texture> right_icon;
 
