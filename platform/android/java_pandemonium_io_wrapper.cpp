@@ -137,6 +137,16 @@ int PandemoniumIOJavaWrapper::get_screen_dpi() {
 	}
 }
 
+float GodotIOJavaWrapper::get_scaled_density() {
+	if (_get_scaled_density) {
+		JNIEnv *env = get_jni_env();
+		ERR_FAIL_COND_V(env == nullptr, 1.0f);
+		return env->CallFloatMethod(godot_io_instance, _get_scaled_density);
+	} else {
+		return 1.0f;
+	}
+}
+
 float PandemoniumIOJavaWrapper::get_screen_refresh_rate(float p_fallback) {
 	if (_get_screen_refresh_rate) {
 		JNIEnv *env = get_jni_env();

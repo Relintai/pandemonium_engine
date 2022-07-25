@@ -107,4 +107,19 @@ public class PandemoniumEditor extends FullScreenPandemoniumApp {
 		Intent newInstance = new Intent(this, targetClass).putExtra(COMMAND_LINE_PARAMS, args);
 		startActivity(newInstance);
 	}
+
+  @Override
+	public void setRequestedOrientation(int requestedOrientation) {
+		if (!overrideOrientationRequest()) {
+			super.setRequestedOrientation(requestedOrientation);
+		}
+	}
+
+	/**
+	 * The Android Editor sets its own orientation via its AndroidManifest
+	 */
+	protected boolean overrideOrientationRequest() {
+		return true;
+	}
+
 }

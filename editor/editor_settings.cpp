@@ -30,37 +30,37 @@
 
 #include "editor_settings.h"
 
-#include "core/io/certs_compressed.gen.h"
-#include "core/io/config_file.h"
-#include "core/io/ip.h"
-#include "core/io/resource_loader.h"
-#include "core/io/resource_saver.h"
-#include "core/os/dir_access.h"
-#include "core/os/file_access.h"
-#include "core/os/keyboard.h"
-#include "core/os/os.h"
-#include "core/project_settings.h"
-#include "editor/editor_translation.h"
-#include "scene/main/node.h"
-#include "scene/main/scene_tree.h"
-#include "scene/main/viewport.h"
 #include "core/array.h"
 #include "core/class_db.h"
 #include "core/color.h"
 #include "core/dictionary.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"
+#include "core/io/certs_compressed.gen.h"
+#include "core/io/config_file.h"
+#include "core/io/ip.h"
 #include "core/io/ip_address.h"
+#include "core/io/resource_loader.h"
+#include "core/io/resource_saver.h"
 #include "core/math/math_funcs.h"
 #include "core/math/vector2.h"
+#include "core/os/dir_access.h"
+#include "core/os/file_access.h"
 #include "core/os/input_event.h"
+#include "core/os/keyboard.h"
 #include "core/os/main_loop.h"
 #include "core/os/memory.h"
+#include "core/os/os.h"
 #include "core/print_string.h"
+#include "core/project_settings.h"
 #include "core/set.h"
 #include "core/translation.h"
 #include "core/typedefs.h"
 #include "core/version_generated.gen.h"
+#include "editor/editor_translation.h"
+#include "scene/main/node.h"
+#include "scene/main/scene_tree.h"
+#include "scene/main/viewport.h"
 
 // PRIVATE METHODS
 
@@ -1470,7 +1470,7 @@ String EditorSettings::get_editor_layouts_config() const {
 }
 
 float EditorSettings::get_auto_display_scale() const {
-#ifdef OSX_ENABLED
+#if defined(OSX_ENABLED) || defined(ANDROID_ENABLED)
 	return OS::get_singleton()->get_screen_max_scale();
 #else
 	const int screen = OS::get_singleton()->get_current_screen();

@@ -34,4 +34,7 @@ package net.relintai.pandemonium.editor;
  * Drives the 'run project' window of the Pandemonium Editor.
  */
 public class PandemoniumGame extends PandemoniumEditor {
+  protected boolean overrideOrientationRequest() {
+		return false;
+	}
 }
