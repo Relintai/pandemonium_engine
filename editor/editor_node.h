@@ -33,34 +33,34 @@
 #include "core/object.h"
 #include "scene/main/node.h"
 
+#include "editor/editor_folding.h"
+#include "editor/editor_run.h"
 #include "editor/inspector_dock.h"
 #include "editor/scene_tree_dock.h"
-#include "editor/editor_run.h"
-#include "editor/editor_folding.h"
 
-#include "scene/gui/split_container.h"
 #include "scene/gui/menu_button.h"
+#include "scene/gui/split_container.h"
 
-#include "editor/editor_data.h"
 #include "core/dictionary.h"
 #include "core/error_list.h"
 #include "core/list.h"
 #include "core/map.h"
 #include "core/math/rect2.h"
 #include "core/node_path.h"
-#include "core/safe_refcount.h"
 #include "core/os/mutex.h"
 #include "core/os/os.h"
 #include "core/os/thread.h"
 #include "core/print_string.h"
 #include "core/reference.h"
 #include "core/resource.h"
+#include "core/safe_refcount.h"
 #include "core/set.h"
 #include "core/string_name.h"
 #include "core/typedefs.h"
 #include "core/ustring.h"
 #include "core/variant.h"
 #include "core/vector.h"
+#include "editor/editor_data.h"
 #include "scene/gui/control.h"
 
 #include "scene/resources/texture.h"
@@ -89,7 +89,8 @@ class Tree;
 class UndoRedo;
 class VBoxContainer;
 class Viewport;
-template <class T> class PoolVector;
+template <class T>
+class PoolVector;
 
 typedef void (*EditorNodeInitCallback)();
 typedef void (*EditorPluginInitializeCallback)();
@@ -703,6 +704,7 @@ private:
 	void _reload_project_settings();
 	void _resave_scenes(String p_str);
 
+	void _project_settings_changed();
 	Ref<ImageTexture> _load_custom_class_icon(const String &p_path) const;
 
 	static String _to_absolute_plugin_path(const String &p_path);

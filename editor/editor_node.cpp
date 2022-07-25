@@ -5461,6 +5461,14 @@ void EditorNode::_resource_loaded(RES p_resource, const String &p_path) {
 	singleton->editor_folding.load_resource_folding(p_resource, p_path);
 }
 
+void EditorNode::_project_settings_changed() {
+	SceneTree *tree = get_tree();
+	tree->set_debug_collisions_color(GLOBAL_GET("debug/shapes/collision/shape_color"));
+	tree->set_debug_collision_contact_color(GLOBAL_GET("debug/shapes/collision/contact_color"));
+	tree->set_debug_navigation_color(GLOBAL_GET("debug/shapes/navigation/geometry_color"));
+	tree->set_debug_navigation_disabled_color(GLOBAL_GET("debug/shapes/navigation/disabled_geometry_color"));
+}
+
 void EditorNode::_bind_methods() {
 	GLOBAL_DEF("editor/scene/scene_naming", SCENE_NAME_CASING_AUTO);
 	ProjectSettings::get_singleton()->set_custom_property_info("editor/scene/scene_naming", PropertyInfo(Variant::INT, "editor/scene/scene_naming", PROPERTY_HINT_ENUM, "Auto,PascalCase,snake_case"));
@@ -5552,6 +5560,7 @@ void EditorNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_reload_modified_scenes"), &EditorNode::_reload_modified_scenes);
 	ClassDB::bind_method(D_METHOD("_reload_project_settings"), &EditorNode::_reload_project_settings);
 	ClassDB::bind_method(D_METHOD("_resave_scenes"), &EditorNode::_resave_scenes);
+	ClassDB::bind_method(D_METHOD("_project_settings_changed"), &EditorNode::_project_settings_changed);
 
 	ClassDB::bind_method("_screenshot", &EditorNode::_screenshot);
 	ClassDB::bind_method("_request_screenshot", &EditorNode::_request_screenshot);
@@ -6117,6 +6126,7 @@ EditorNode::EditorNode() {
 
 	project_settings = memnew(ProjectSettingsEditor(&editor_data));
 	gui_base->add_child(project_settings);
+	ProjectSettings::get_singleton()->connect("project_settings_changed", this, "_project_settings_changed");
 
 	run_settings_dialog = memnew(RunSettingsDialog);
 	gui_base->add_child(run_settings_dialog);
