@@ -30,19 +30,6 @@
 
 #include "editor_file_dialog.h"
 
-#include "core/os/file_access.h"
-#include "core/os/keyboard.h"
-#include "core/os/os.h"
-#include "dependency_editor.h"
-#include "editor_file_system.h"
-#include "editor_resource_preview.h"
-#include "editor_scale.h"
-#include "editor_settings.h"
-#include "scene/gui/center_container.h"
-#include "scene/gui/label.h"
-#include "scene/gui/popup_menu.h"
-#include "scene/gui/scroll_bar.h"
-#include "core/project_settings.h"
 #include "core/class_db.h"
 #include "core/color.h"
 #include "core/dictionary.h"
@@ -51,17 +38,31 @@
 #include "core/list.h"
 #include "core/math/vector2.h"
 #include "core/os/dir_access.h"
+#include "core/os/file_access.h"
 #include "core/os/input_event.h"
+#include "core/os/keyboard.h"
 #include "core/os/memory.h"
+#include "core/os/os.h"
 #include "core/pool_vector.h"
+#include "core/project_settings.h"
 #include "core/typedefs.h"
+#include "dependency_editor.h"
+#include "editor_file_system.h"
+#include "editor_resource_preview.h"
+#include "editor_scale.h"
+#include "editor_settings.h"
+#include "main/main.h"
 #include "scene/gui/base_button.h"
 #include "scene/gui/button.h"
+#include "scene/gui/center_container.h"
 #include "scene/gui/control.h"
 #include "scene/gui/item_list.h"
+#include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/option_button.h"
 #include "scene/gui/popup.h"
+#include "scene/gui/popup_menu.h"
+#include "scene/gui/scroll_bar.h"
 #include "scene/gui/separator.h"
 #include "scene/gui/split_container.h"
 #include "scene/gui/texture_rect.h"
@@ -794,7 +795,7 @@ void EditorFileDialog::update_file_list() {
 			}
 		} else if (!dir_access->current_is_hidden()) {
 			String full_path = cdir == "res://" ? item : dir_access->get_current_dir() + "/" + item;
-			if (dir_access->current_is_dir() && !EditorFileSystem::_should_skip_directory(full_path)) {
+			if (dir_access->current_is_dir() && (!EditorFileSystem::_should_skip_directory(full_path) || Main::is_project_manager())) {
 				dirs.push_back(item);
 			} else {
 				files.push_back(item);
