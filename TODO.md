@@ -92,3 +92,28 @@
 
 - Clean / flesh out the api of UserManager / UserDB. Also make UserManager register itself into UserDB.
 
+## Ports
+
+### Enable type information on release
+
+Not sure whether to have this or not. It does increase binary size for releasy builds by quite a bit.
+
+https://github.com/godotengine/godot/commit/226103d166e2806fdaee63242492233e810d6541
+https://github.com/godotengine/godot/commit/663978e8ba5d8b3e37b9b1baf54a69e6a3a00656
+https://github.com/godotengine/godot/commit/f0ca73892a26566e85e1fa819f151fa1db4a42ad
+
+
+### Physics interpolation - Move out of Scenario 
+
+- Move VisualServer interpolation data out of Scenario and into VisualServerScene, so the interpolation data and enabled status is now common to all Scenarios.
+- Fix physics interpolation in multithreaded mode by ensuring tick and pre-draw are called.
+
+At first glance this might have the side effect of not being able to run multiple physics worlds. If this is true this is not needed.
+
+The fix might be needed though. Double check.
+
+https://github.com/godotengine/godot/commit/d2b1d296340bb514b16af037c7ad6ed19e7b4a3f
+
+
+
+
