@@ -434,6 +434,7 @@ private:
 	int search_result_col;
 
 	bool selecting_enabled;
+	bool deselect_on_focus_loss_enabled;
 
 	bool context_menu_enabled;
 	bool shortcut_keys_enabled;
@@ -843,6 +844,9 @@ public:
 
 	void set_selecting_enabled(bool p_enabled);
 	bool is_selecting_enabled() const;
+
+	void set_deselect_on_focus_loss_enabled(const bool p_enabled);
+	bool is_deselect_on_focus_loss_enabled() const;
 
 	void set_shortcut_keys_enabled(bool p_enabled);
 	bool is_shortcut_keys_enabled() const;

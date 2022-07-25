@@ -30,26 +30,24 @@
 
 #include "code_editor.h"
 
-#include "core/os/input.h"
-#include "core/os/keyboard.h"
-#include "core/string_builder.h"
-#include "editor/editor_scale.h"
-#include "editor_node.h"
-#include "editor_settings.h"
-#include "scene/gui/texture_button.h"
-#include "scene/resources/dynamic_font.h"
 #include "core/array.h"
 #include "core/class_db.h"
 #include "core/dictionary.h"
 #include "core/math/math_funcs.h"
 #include "core/math/vector2.h"
+#include "core/os/input.h"
 #include "core/os/input_event.h"
+#include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/resource.h"
 #include "core/script_language.h"
+#include "core/string_builder.h"
 #include "core/typedefs.h"
 #include "core/vector.h"
+#include "editor/editor_scale.h"
 #include "editor/plugins/script_editor_plugin.h"
+#include "editor_node.h"
+#include "editor_settings.h"
 #include "scene/2d/canvas_item.h"
 #include "scene/gui/button.h"
 #include "scene/gui/check_box.h"
@@ -59,9 +57,11 @@
 #include "scene/gui/scroll_container.h"
 #include "scene/gui/shortcut.h"
 #include "scene/gui/text_edit.h"
+#include "scene/gui/texture_button.h"
 #include "scene/gui/tool_button.h"
 #include "scene/main/node.h"
 #include "scene/main/timer.h"
+#include "scene/resources/dynamic_font.h"
 #include "scene/resources/font.h"
 #include "scene/resources/texture.h"
 
@@ -1735,6 +1735,7 @@ CodeTextEditor::CodeTextEditor() {
 	text_editor->set_show_line_numbers(true);
 	text_editor->set_brace_matching(true);
 	text_editor->set_auto_indent(true);
+	text_editor->set_deselect_on_focus_loss_enabled(false);
 
 	status_bar = memnew(HBoxContainer);
 	add_child(status_bar);
