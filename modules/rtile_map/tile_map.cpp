@@ -40,6 +40,15 @@
 
 #include "servers/navigation_2d_server.h"
 
+void RTileMap::Quadrant::clear_navpoly() {
+	for (Map<PosKey, Quadrant::NavPoly>::Element *E = navpoly_ids.front(); E; E = E->next()) {
+		RID region = E->get().region;
+		Navigation2DServer::get_singleton()->region_set_map(region, RID());
+		Navigation2DServer::get_singleton()->free(region);
+	}
+	navpoly_ids.clear();
+}
+
 int RTileMap::_get_quadrant_size() const {
 	if (y_sort_mode) {
 		return 1;
@@ -81,10 +90,7 @@ void RTileMap::_notification(int p_what) {
 			for (Map<PosKey, Quadrant>::Element *E = quadrant_map.front(); E; E = E->next()) {
 				Quadrant &q = E->get();
 				if (navigation) {
-					for (Map<PosKey, Quadrant::NavPoly>::Element *F = q.navpoly_ids.front(); F; F = F->next()) {
-						Navigation2DServer::get_singleton()->region_set_map(F->get().region, RID());
-					}
-					q.navpoly_ids.clear();
+					q.clear_navpoly();
 				}
 
 				if (collision_parent) {
@@ -392,10 +398,7 @@ void RTileMap::update_dirty_quadrants() {
 		int shape_idx = 0;
 
 		if (navigation) {
-			for (Map<PosKey, Quadrant::NavPoly>::Element *E = q.navpoly_ids.front(); E; E = E->next()) {
-				Navigation2DServer::get_singleton()->region_set_map(E->get().region, RID());
-			}
-			q.navpoly_ids.clear();
+			q.clear_navpoly();
 		}
 
 		for (Map<PosKey, Quadrant::Occluder>::Element *E = q.occluder_instances.front(); E; E = E->next()) {
@@ -838,10 +841,7 @@ void RTileMap::_erase_quadrant(Map<PosKey, Quadrant>::Element *Q) {
 	}
 
 	if (navigation) {
-		for (Map<PosKey, Quadrant::NavPoly>::Element *E = q.navpoly_ids.front(); E; E = E->next()) {
-			Navigation2DServer::get_singleton()->region_set_map(E->get().region, RID());
-		}
-		q.navpoly_ids.clear();
+		q.clear_navpoly();
 	}
 
 	for (Map<PosKey, Quadrant::Occluder>::Element *E = q.occluder_instances.front(); E; E = E->next()) {
