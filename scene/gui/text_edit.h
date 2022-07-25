@@ -435,6 +435,7 @@ private:
 
 	bool selecting_enabled;
 	bool deselect_on_focus_loss_enabled;
+	bool popup_show;
 
 	bool context_menu_enabled;
 	bool shortcut_keys_enabled;

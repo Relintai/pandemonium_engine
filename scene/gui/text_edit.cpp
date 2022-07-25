@@ -1890,9 +1890,11 @@ void TextEdit::_notification(int p_what) {
 				OS::get_singleton()->hide_virtual_keyboard();
 			}
 
-			if (deselect_on_focus_loss_enabled) {
+			if (deselect_on_focus_loss_enabled && !popup_show) {
 				deselect();
 			}
+
+			popup_show = false;
 		} break;
 		case MainLoop::NOTIFICATION_OS_IME_UPDATE: {
 			if (has_focus()) {
@@ -2592,6 +2594,7 @@ void TextEdit::_gui_input(const Ref<InputEvent> &p_gui_input) {
 					}
 				}
 
+				popup_show = true;
 				if (!readonly) {
 					menu->set_item_disabled(menu->get_item_index(MENU_UNDO), !has_undo());
 					menu->set_item_disabled(menu->get_item_index(MENU_REDO), !has_redo());
@@ -2601,7 +2604,6 @@ void TextEdit::_gui_input(const Ref<InputEvent> &p_gui_input) {
 				menu->set_size(Vector2(1, 1));
 				menu->set_scale(get_global_transform().get_scale());
 				menu->popup();
-				grab_focus();
 			}
 		} else {
 			if (mb->get_button_index() == BUTTON_LEFT) {
@@ -3878,6 +3880,8 @@ void TextEdit::_gui_input(const Ref<InputEvent> &p_gui_input) {
 
 			case KEY_MENU: {
 				if (context_menu_enabled) {
+					popup_show = true;
+
 					if (!readonly) {
 						menu->set_item_disabled(menu->get_item_index(MENU_UNDO), !has_undo());
 						menu->set_item_disabled(menu->get_item_index(MENU_REDO), !has_redo());
@@ -7558,6 +7562,7 @@ TextEdit::TextEdit() {
 
 	selecting_enabled = true;
 	deselect_on_focus_loss_enabled = true;
+	popup_show = false;
 	context_menu_enabled = true;
 	shortcut_keys_enabled = true;
 	menu = memnew(PopupMenu);

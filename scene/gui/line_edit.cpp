@@ -54,6 +54,7 @@ void LineEdit::_gui_input(Ref<InputEvent> p_event) {
 
 	if (b.is_valid()) {
 		if (b->is_pressed() && b->get_button_index() == BUTTON_RIGHT && context_menu_enabled) {
+			popup_show = true;
 			if (editable) {
 				menu->set_item_disabled(menu->get_item_index(MENU_UNDO), !has_undo());
 				menu->set_item_disabled(menu->get_item_index(MENU_REDO), !has_redo());
@@ -63,7 +64,7 @@ void LineEdit::_gui_input(Ref<InputEvent> p_event) {
 			menu->set_size(Vector2(1, 1));
 			menu->set_scale(get_global_transform().get_scale());
 			menu->popup();
-			grab_focus();
+
 			accept_event();
 			return;
 		}
@@ -570,6 +571,8 @@ void LineEdit::_gui_input(Ref<InputEvent> p_event) {
 				} break;
 				case KEY_MENU: {
 					if (context_menu_enabled) {
+						popup_show = true;
+
 						if (editable) {
 							menu->set_item_disabled(menu->get_item_index(MENU_UNDO), !has_undo());
 							menu->set_item_disabled(menu->get_item_index(MENU_REDO), !has_redo());
@@ -980,10 +983,11 @@ void LineEdit::_notification(int p_what) {
 				OS::get_singleton()->hide_virtual_keyboard();
 			}
 
-			if (deselect_on_focus_loss_enabled) {
+			if (deselect_on_focus_loss_enabled && !popup_show) {
 				deselect();
 			}
 
+			popup_show = false;
 		} break;
 		case MainLoop::NOTIFICATION_OS_IME_UPDATE: {
 			if (has_focus()) {
@@ -1983,6 +1987,7 @@ LineEdit::LineEdit() {
 	shortcut_keys_enabled = true;
 	selecting_enabled = true;
 	deselect_on_focus_loss_enabled = true;
+	popup_show = false;
 
 	undo_stack_pos = nullptr;
 	_create_undo_state();
