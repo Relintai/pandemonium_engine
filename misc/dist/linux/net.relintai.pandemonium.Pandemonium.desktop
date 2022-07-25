@@ -9,3 +9,4 @@ PrefersNonDefaultGPU=true
 Type=Application
 MimeType=application/x-pandemonium-project;
 Categories=Development;IDE;
+StartupWMClass=Pandemonium
