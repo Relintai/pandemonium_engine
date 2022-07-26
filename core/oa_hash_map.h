@@ -236,7 +236,7 @@ public:
 		return false;
 	}
 
-	const TValue *lookup_ptr(const TKey &p_key) const {
+	const TValue *lookup_ptr_const(const TKey &p_key) const {
 		uint32_t pos = 0;
 		bool exists = _lookup_pos(p_key, pos);
 
@@ -247,7 +247,7 @@ public:
 		return nullptr;
 	}
 
-	TValue *lookup_ptr(const TKey &p_key) {
+	TValue *lookup_ptr(const TKey &p_key) const {
 		uint32_t pos = 0;
 		bool exists = _lookup_pos(p_key, pos);
 
