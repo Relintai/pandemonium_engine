@@ -6,7 +6,7 @@ index f25ab6464..6043d34ce 100644
  #include <stdlib.h>
  #include "zlib.h"
  
-+/* PANDEMONIUM start */
++/* GODOT start */
 +/* Mighty Gentoo saves the day by breaking the API of their zlib.h,
 + * removing this definition of OF(args) for no practical reason
 + * worth breaking compatibility with all projects that embed minizip
@@ -20,7 +20,7 @@ index f25ab6464..6043d34ce 100644
 +#ifndef OF /* function prototypes */
 + #define OF(args)  args
 +#endif
-+/* PANDEMONIUM end */
++/* GODOT end */
 +
  #if defined(USE_FILE32API)
  #define fopen64 fopen

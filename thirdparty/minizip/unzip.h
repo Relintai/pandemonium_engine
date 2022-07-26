@@ -1,5 +1,3 @@
-#ifndef _unz64_H
-#define _unz64_H
 /* unzip.h -- IO for uncompress .zip files using zlib
    Version 1.1, February 14h, 2010
    part of the MiniZip project - ( http://www.winimage.com/zLibDll/minizip.html )
@@ -42,8 +40,8 @@
 
 */
 
-
-
+#ifndef _unz64_H
+#define _unz64_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -85,12 +83,12 @@ typedef voidp unzFile;
 /* tm_unz contain date/time info */
 typedef struct tm_unz_s
 {
-    uInt tm_sec;            /* seconds after the minute - [0,59] */
-    uInt tm_min;            /* minutes after the hour - [0,59] */
-    uInt tm_hour;           /* hours since midnight - [0,23] */
-    uInt tm_mday;           /* day of the month - [1,31] */
-    uInt tm_mon;            /* months since January - [0,11] */
-    uInt tm_year;           /* years - [1980..2044] */
+    int tm_sec;             /* seconds after the minute - [0,59] */
+    int tm_min;             /* minutes after the hour - [0,59] */
+    int tm_hour;            /* hours since midnight - [0,23] */
+    int tm_mday;            /* day of the month - [1,31] */
+    int tm_mon;             /* months since January - [0,11] */
+    int tm_year;            /* years - [1980..2044] */
 } tm_unz;
 
 /* unz_global_info structure contain global data about the ZIPfile
@@ -204,9 +202,9 @@ extern int ZEXPORT unzClose OF((unzFile file));
     these files MUST be closed with unzCloseCurrentFile before call unzClose.
   return UNZ_OK if there is no problem. */
 
-/* PANDEMONIUM start */
+/* GODOT start */
 extern void* unzGetOpaque(unzFile file);
-/* PANDEMONIUM end */
+/* GODOT end */
 
 extern int ZEXPORT unzGetGlobalInfo OF((unzFile file,
                                         unz_global_info *pglobal_info));
@@ -396,12 +394,12 @@ extern int ZEXPORT unzReadCurrentFile OF((unzFile file,
     (UNZ_ERRNO for IO error, or zLib error for uncompress error)
 */
 
-/* PANDEMONIUM start */
+/* GODOT start */
 extern int ZEXPORT unzSeekCurrentFile(unzFile file, int pos);
 /*
   Seek to position in uncompressed data
 */
-/* PANDEMONIUM end */
+/* GODOT end */
 
 extern z_off_t ZEXPORT unztell OF((unzFile file));
 

@@ -1,7 +1,5 @@
-#ifndef _POSIX_SOURCE
-#define GZBUFSIZE 8192
 /* gzguts.h -- zlib internal header definitions for gz* operations
- * Copyright (C) 2004, 2005, 2010, 2011, 2012, 2013, 2016 Mark Adler
+ * Copyright (C) 2004-2019 Mark Adler
  * For conditions of distribution and use, see copyright notice in zlib.h
  */
 
@@ -28,7 +26,7 @@
 #  include <limits.h>
 #endif
 
-
+#ifndef _POSIX_SOURCE
 #  define _POSIX_SOURCE
 #endif
 #include <fcntl.h>
@@ -41,7 +39,7 @@
 #  include <io.h>
 #endif
 
-#if defined(_WIN32) || defined(__CYGWIN__)
+#if defined(_WIN32)
 #  define WIDECHAR
 #endif
 
@@ -155,7 +153,7 @@
 
 /* default i/o buffer size -- double this for output when reading (this and
    twice this must be able to fit in an unsigned type) */
-
+#define GZBUFSIZE 8192
 
 /* gzip modes, also provide a little integrity check on the passed structure */
 #define GZ_NONE 0
@@ -192,6 +190,7 @@ typedef struct {
         /* just for writing */
     int level;              /* compression level */
     int strategy;           /* compression strategy */
+    int reset;              /* true if a reset is pending after a Z_FINISH */
         /* seek request */
     z_off64_t skip;         /* amount to skip (already rewound if backwards) */
     int seek;               /* true if seek request pending */

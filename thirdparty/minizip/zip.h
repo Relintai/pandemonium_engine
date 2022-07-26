@@ -1,5 +1,3 @@
-#ifndef _zip12_H
-#define _zip12_H
 /* zip.h -- IO on .zip files using zlib
    Version 1.1, February 14h, 2010
    part of the MiniZip project - ( http://www.winimage.com/zLibDll/minizip.html )
@@ -39,8 +37,8 @@
 
 */
 
-
-
+#ifndef _zip12_H
+#define _zip12_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -90,12 +88,12 @@ typedef voidp zipFile;
 /* tm_zip contain date/time info */
 typedef struct tm_zip_s
 {
-    uInt tm_sec;            /* seconds after the minute - [0,59] */
-    uInt tm_min;            /* minutes after the hour - [0,59] */
-    uInt tm_hour;           /* hours since midnight - [0,23] */
-    uInt tm_mday;           /* day of the month - [1,31] */
-    uInt tm_mon;            /* months since January - [0,11] */
-    uInt tm_year;           /* years - [1980..2044] */
+    int tm_sec;             /* seconds after the minute - [0,59] */
+    int tm_min;             /* minutes after the hour - [0,59] */
+    int tm_hour;            /* hours since midnight - [0,23] */
+    int tm_mday;            /* day of the month - [1,31] */
+    int tm_mon;             /* months since January - [0,11] */
+    int tm_year;            /* years - [1980..2044] */
 } tm_zip;
 
 typedef struct
@@ -145,6 +143,11 @@ extern zipFile ZEXPORT zipOpen2_64 OF((const void *pathname,
                                    int append,
                                    zipcharpc* globalcomment,
                                    zlib_filefunc64_def* pzlib_filefunc_def));
+
+extern zipFile ZEXPORT zipOpen3 OF((const void *pathname,
+                                    int append,
+                                    zipcharpc* globalcomment,
+                                    zlib_filefunc64_32_def* pzlib_filefunc64_32_def));
 
 extern int ZEXPORT zipOpenNewFileInZip OF((zipFile file,
                        const char* filename,

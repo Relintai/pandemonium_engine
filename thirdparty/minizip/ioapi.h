@@ -1,5 +1,3 @@
-#ifndef _ZLIBIOAPI64_H
-#define _ZLIBIOAPI64_H
 /* ioapi.h -- IO base function header for compress/uncompress .zip
    part of the MiniZip project - ( http://www.winimage.com/zLibDll/minizip.html )
 
@@ -20,8 +18,8 @@
 
 */
 
-
-
+#ifndef _ZLIBIOAPI64_H
+#define _ZLIBIOAPI64_H
 
 #if (!defined(_WIN32)) && (!defined(WIN32)) && (!defined(__APPLE__))
 
@@ -47,7 +45,7 @@
 #include <stdlib.h>
 #include "zlib.h"
 
-/* PANDEMONIUM start */
+/* GODOT start */
 /* Mighty Gentoo saves the day by breaking the API of their zlib.h,
  * removing this definition of OF(args) for no practical reason
  * worth breaking compatibility with all projects that embed minizip
@@ -61,7 +59,7 @@
 #ifndef OF /* function prototypes */
  #define OF(args)  args
 #endif
-/* PANDEMONIUM end */
+/* GODOT end */
 
 #if defined(USE_FILE32API)
 #define fopen64 fopen
@@ -109,8 +107,7 @@ typedef  64BIT_INT_CUSTOM_TYPE ZPOS64_T;
 typedef uint64_t ZPOS64_T;
 #else
 
-/* Maximum unsigned 32-bit value used as placeholder for zip64 */
-#define MAXU32 0xffffffff
+
 
 #if defined(_MSC_VER) || defined(__BORLANDC__)
 typedef unsigned __int64 ZPOS64_T;
@@ -120,7 +117,10 @@ typedef unsigned long long int ZPOS64_T;
 #endif
 #endif
 
-
+/* Maximum unsigned 32-bit value used as placeholder for zip64 */
+#ifndef MAXU32
+#define MAXU32 (0xffffffff)
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -171,10 +171,10 @@ typedef struct zlib_filefunc_def_s
     close_file_func     zclose_file;
     testerror_file_func zerror_file;
     voidpf              opaque;
-    /* PANDEMONIUM start */
+    /* GODOT start */
     alloc_func          alloc_mem;
     free_func           free_mem;
-    /* PANDEMONIUM end */
+    /* GODOT end */
 } zlib_filefunc_def;
 
 typedef ZPOS64_T (ZCALLBACK *tell64_file_func)    OF((voidpf opaque, voidpf stream));
@@ -191,10 +191,10 @@ typedef struct zlib_filefunc64_def_s
     close_file_func     zclose_file;
     testerror_file_func zerror_file;
     voidpf              opaque;
-    /* PANDEMONIUM start */
+    /* GODOT start */
     alloc_func          alloc_mem;
     free_func           free_mem;
-    /* PANDEMONIUM end */
+    /* GODOT end */
 } zlib_filefunc64_def;
 
 void fill_fopen64_filefunc OF((zlib_filefunc64_def* pzlib_filefunc_def));
