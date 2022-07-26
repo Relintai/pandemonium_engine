@@ -29,8 +29,7 @@
             android:name=".PandemoniumProjectManager"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|density|keyboard|navigation|screenLayout|uiMode"
             android:launchMode="singleTask"
-            android:resizeableActivity="false"
-            android:screenOrientation="landscape"
+            android:screenOrientation="userLandscape"
             android:exported="true"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
             android:process=":PandemoniumProjectManager">
@@ -46,8 +45,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|density|keyboard|navigation|screenLayout|uiMode"
             android:process=":PandemoniumEditor"
             android:launchMode="singleTask"
-            android:resizeableActivity="false"
-            android:screenOrientation="landscape"
+            android:screenOrientation="userLandscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
         </activity>
 
@@ -57,8 +55,7 @@
             android:label="@string/pandemonium_project_name_string"
             android:process=":PandemoniumGame"
             android:launchMode="singleTask"
-            android:resizeableActivity="false"
-            android:screenOrientation="landscape"
+            android:screenOrientation="userLandscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
         </activity>
 

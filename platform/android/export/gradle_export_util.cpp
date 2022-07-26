@@ -229,11 +229,13 @@ String _get_activity_tag(const Ref<EditorExportPreset> &p_preset) {
 			OS::get_singleton()->get_screen_orientation_from_string(GLOBAL_GET("display/window/handheld/orientation")));
 	String manifest_activity_text = vformat(
 			"        <activity android:name=\"com.pandemonium.game.PandemoniumApp\" "
-			"tools:replace=\"android:screenOrientation,android:excludeFromRecents\" "
+			"tools:replace=\"android:screenOrientation,android:excludeFromRecents,android:resizeableActivity\" "
 			"android:excludeFromRecents=\"%s\" "
-			"android:screenOrientation=\"%s\">\n",
+			"android:screenOrientation=\"%s\" "
+			"android:resizeableActivity=\"%s\">\n",
 			bool_to_string(p_preset->get("package/exclude_from_recents")),
-			orientation);
+			orientation,
+			bool_to_string(p_preset->get("screen/is_resizeable")));
 	manifest_activity_text += "            <meta-data tools:node=\"remove\" android:name=\"com.oculus.vr.focusaware\" />\n";
 	manifest_activity_text += "        </activity>\n";
 	return manifest_activity_text;
