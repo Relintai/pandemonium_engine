@@ -45,6 +45,7 @@ class AnimationTrackEditor;
 class AnimationPlayerEditorPlugin;
 class AcceptDialog;
 class AnimationPlayer;
+class Animation;
 class Button;
 class ConfirmationDialog;
 class Control;
