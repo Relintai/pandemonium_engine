@@ -4496,7 +4496,7 @@ String String::property_name_encode() const {
 }
 
 // Changes made to the set of invalid characters must also be reflected in the String documentation.
-const String String::invalid_node_name_characters = ". : @ / \"";
+const String String::invalid_node_name_characters = ". : @ / \" %";
 
 String String::validate_node_name() const {
 	Vector<String> chars = String::invalid_node_name_characters.split(" ");

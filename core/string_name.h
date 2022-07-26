@@ -91,6 +91,18 @@ public:
 	bool operator==(const String &p_name) const;
 	bool operator==(const char *p_name) const;
 	bool operator!=(const String &p_name) const;
+
+	_FORCE_INLINE_ bool is_node_unique_name() const {
+		if (!_data) {
+			return false;
+		}
+		if (_data->cname != nullptr) {
+			return _data->cname[0] == '%';
+		} else {
+			return _data->name[0] == '%';
+		}
+	}
+
 	_FORCE_INLINE_ bool operator<(const StringName &p_name) const {
 		return _data < p_name._data;
 	}

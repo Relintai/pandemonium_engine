@@ -30,13 +30,6 @@
 
 #include "scene_tree_editor.h"
 
-#include "core/message_queue.h"
-#include "editor/editor_node.h"
-#include "editor/node_dock.h"
-#include "editor/plugins/animation_player_editor_plugin.h"
-#include "editor/plugins/canvas_item_editor_plugin.h"
-#include "scene/gui/label.h"
-#include "scene/resources/packed_scene.h"
 #include "core/array.h"
 #include "core/class_db.h"
 #include "core/color.h"
@@ -45,6 +38,7 @@
 #include "core/hashfuncs.h"
 #include "core/math/math_defs.h"
 #include "core/math/transform_2d.h"
+#include "core/message_queue.h"
 #include "core/os/memory.h"
 #include "core/ref_ptr.h"
 #include "core/reference.h"
@@ -53,16 +47,22 @@
 #include "core/undo_redo.h"
 #include "editor/editor_data.h"
 #include "editor/editor_file_system.h"
+#include "editor/editor_node.h"
+#include "editor/node_dock.h"
+#include "editor/plugins/animation_player_editor_plugin.h"
+#include "editor/plugins/canvas_item_editor_plugin.h"
 #include "editor/plugins/script_editor_plugin.h"
 #include "scene/2d/canvas_item.h"
 #include "scene/animation/animation_player.h"
 #include "scene/gui/box_container.h"
+#include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tree.h"
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/timer.h"
+#include "scene/resources/packed_scene.h"
 #include "scene/resources/texture.h"
 
 Node *SceneTreeEditor::get_scene_node() {
@@ -170,6 +170,13 @@ void SceneTreeEditor::_cell_button_pressed(Object *p_item, int p_column, int p_i
 
 		NodeDock::singleton->get_parent()->call("set_current_tab", NodeDock::singleton->get_index());
 		NodeDock::singleton->show_groups();
+	} else if (p_id == BUTTON_UNIQUE) {
+		undo_redo->create_action(TTR("Disable Scene Unique Name"));
+		undo_redo->add_do_method(n, "set_unique_name_in_owner", false);
+		undo_redo->add_undo_method(n, "set_unique_name_in_owner", true);
+		undo_redo->add_do_method(this, "_update_tree");
+		undo_redo->add_undo_method(this, "_update_tree");
+		undo_redo->commit_action();
 	}
 }
 void SceneTreeEditor::_toggle_visible(Node *p_node) {
@@ -286,6 +293,10 @@ bool SceneTreeEditor::_add_nodes(Node *p_node, TreeItem *p_parent, bool p_scroll
 		String warning = p_node->get_configuration_warning();
 		if (warning != String()) {
 			item->add_button(0, get_icon("NodeWarning", "EditorIcons"), BUTTON_WARNING, false, TTR("Node configuration warning:") + "\n" + p_node->get_configuration_warning());
+		}
+
+		if (p_node->is_unique_name_in_owner()) {
+			item->add_button(0, get_icon("SceneUniqueName", "EditorIcons"), BUTTON_UNIQUE, false, vformat(TTR("This node can be accessed from within anywhere in the scene by preceding it with the '%s' prefix in a node path.\nClick to disable this."), UNIQUE_NODE_PREFIX));
 		}
 
 		int num_connections = p_node->get_persistent_signal_connection_count();
@@ -847,6 +858,13 @@ void SceneTreeEditor::_renamed() {
 
 	// Trim leading/trailing whitespace to prevent node names from containing accidental whitespace, which would make it more difficult to get the node via `get_node()`.
 	new_name = new_name.strip_edges();
+
+	if (n->is_unique_name_in_owner() && get_tree()->get_edited_scene_root()->get_node_or_null("%" + new_name) != nullptr) {
+		error->set_text(TTR("Another node already uses this unique name in the scene."));
+		error->popup_centered();
+		which->set_text(0, n->get_name());
+		return;
+	}
 
 	if (!undo_redo) {
 		n->set_name(new_name);

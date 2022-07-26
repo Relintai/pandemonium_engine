@@ -30,35 +30,21 @@
 
 #include "scene_tree_dock.h"
 
-#include "core/io/resource_saver.h"
-#include "core/os/input.h"
-#include "core/os/keyboard.h"
-#include "core/project_settings.h"
-#include "editor/editor_node.h"
-#include "editor/editor_scale.h"
-#include "editor/editor_settings.h"
-#include "editor/multi_node_edit.h"
-#include "editor/plugins/animation_player_editor_plugin.h"
-#include "editor/plugins/canvas_item_editor_plugin.h"
-#include "editor/plugins/script_editor_plugin.h"
-#include "editor/plugins/spatial_editor_plugin.h"
-#include "editor/script_editor_debugger.h"
-#include "scene/2d/node_2d.h"
-#include "scene/main/viewport.h"
-#include "scene/property_utils.h"
-#include "scene/resources/packed_scene.h"
-#include "modules/modules_enabled.gen.h" // For regex.
 #include "core/array.h"
 #include "core/class_db.h"
 #include "core/dictionary.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"
 #include "core/io/resource_loader.h"
+#include "core/io/resource_saver.h"
 #include "core/math/vector2.h"
 #include "core/os/file_access.h"
+#include "core/os/input.h"
 #include "core/os/input_event.h"
+#include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"
+#include "core/project_settings.h"
 #include "core/ref_ptr.h"
 #include "core/script_language.h"
 #include "core/string_name.h"
@@ -71,15 +57,26 @@
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_file_system.h"
 #include "editor/editor_inspector.h"
+#include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
+#include "editor/editor_scale.h"
+#include "editor/editor_settings.h"
 #include "editor/editor_sub_scene.h"
 #include "editor/inspector_dock.h"
+#include "editor/multi_node_edit.h"
+#include "editor/plugins/animation_player_editor_plugin.h"
+#include "editor/plugins/canvas_item_editor_plugin.h"
+#include "editor/plugins/script_editor_plugin.h"
+#include "editor/plugins/spatial_editor_plugin.h"
 #include "editor/quick_open.h"
 #include "editor/rename_dialog.h"
 #include "editor/reparent_dialog.h"
 #include "editor/scene_tree_editor.h"
 #include "editor/script_create_dialog.h"
+#include "editor/script_editor_debugger.h"
+#include "modules/modules_enabled.gen.h" // For regex.
 #include "scene/2d/canvas_item.h"
+#include "scene/2d/node_2d.h"
 #include "scene/3d/spatial.h"
 #include "scene/animation/animation_player.h"
 #include "scene/gui/base_button.h"
@@ -94,7 +91,10 @@
 #include "scene/gui/tree.h"
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
+#include "scene/main/viewport.h"
+#include "scene/property_utils.h"
 #include "scene/resources/animation.h"
+#include "scene/resources/packed_scene.h"
 #include "scene/resources/texture.h"
 
 void SceneTreeDock::_nodes_drag_begin() {
@@ -1168,6 +1168,28 @@ void SceneTreeDock::_tool_selected(int p_tool, bool p_confirm_override) {
 				}
 			}
 		} break;
+		case TOOL_TOGGLE_SCENE_UNIQUE_NAME: {
+			List<Node *> selection = editor_selection->get_selected_node_list();
+			List<Node *>::Element *e = selection.front();
+			if (e) {
+				UndoRedo *undo_redo = &editor_data->get_undo_redo();
+				Node *node = e->get();
+				bool enabled = node->is_unique_name_in_owner();
+				if (!enabled && get_tree()->get_edited_scene_root()->get_node_or_null(UNIQUE_NODE_PREFIX + String(node->get_name())) != nullptr) {
+					accept->set_text(TTR("Another node already uses this unique name in the scene."));
+					accept->popup_centered();
+					return;
+				}
+				if (!enabled) {
+					undo_redo->create_action(TTR("Enable Scene Unique Name"));
+				} else {
+					undo_redo->create_action(TTR("Disable Scene Unique Name"));
+				}
+				undo_redo->add_do_method(node, "set_unique_name_in_owner", !enabled);
+				undo_redo->add_undo_method(node, "set_unique_name_in_owner", enabled);
+				undo_redo->commit_action();
+			}
+		} break;
 		case TOOL_CREATE_2D_SCENE:
 		case TOOL_CREATE_3D_SCENE:
 		case TOOL_CREATE_USER_INTERFACE:
@@ -1397,8 +1419,19 @@ void SceneTreeDock::_node_replace_owner(Node *p_base, Node *p_node, Node *p_root
 		UndoRedo *undo_redo = &editor_data->get_undo_redo();
 		switch (p_mode) {
 			case MODE_BIDI: {
+				bool is_unique = p_node->is_unique_name_in_owner() && p_base->get_node_or_null(UNIQUE_NODE_PREFIX + String(p_node->get_name())) != nullptr;
+				if (is_unique) {
+					// Will create a unique name conflict. Disable before setting owner.
+					undo_redo->add_do_method(p_node, "set_unique_name_in_owner", false);
+				}
+
 				undo_redo->add_do_method(p_node, "set_owner", p_root);
 				undo_redo->add_undo_method(p_node, "set_owner", p_base);
+
+				if (is_unique) {
+					// Will create a unique name conflict. Enable after setting owner.
+					undo_redo->add_undo_method(p_node, "set_unique_name_in_owner", true);
+				}
 
 			} break;
 			case MODE_DO: {
@@ -2797,6 +2830,14 @@ void SceneTreeDock::_tree_rmb(const Vector2 &p_menu_pos) {
 				menu->add_icon_shortcut(get_icon("ScriptExtend", "EditorIcons"), ED_GET_SHORTCUT("scene_tree/extend_script"), TOOL_EXTEND_SCRIPT);
 			}
 		}
+
+		if (selection[0]->get_owner() == EditorNode::get_singleton()->get_edited_scene()) {
+			// Only for nodes owned by the edited scene root.
+			menu->add_separator();
+			menu->add_icon_check_item(get_icon("SceneUniqueName", "EditorIcons"), TTR("Access as Scene Unique Name"), TOOL_TOGGLE_SCENE_UNIQUE_NAME);
+			menu->set_item_checked(menu->get_item_index(TOOL_TOGGLE_SCENE_UNIQUE_NAME), selection[0]->is_unique_name_in_owner());
+		}
+
 		if (existing_script.is_valid() && exisiting_script_removable) {
 			add_separator = true;
 			menu->add_icon_shortcut(get_icon("ScriptRemove", "EditorIcons"), ED_GET_SHORTCUT("scene_tree/detach_script"), TOOL_DETACH_SCRIPT);

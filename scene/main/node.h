@@ -93,6 +93,9 @@ private:
 		Node *parent;
 		Node *owner;
 		Vector<Node *> children; // list of children
+		HashMap<StringName, Node *> owned_unique_nodes;
+		bool unique_name_in_owner = false;
+
 		int pos;
 		int depth;
 		int blocked; // safeguard that throws an error when attempting to modify the tree in a harmful way while being traversed.
@@ -199,10 +202,16 @@ private:
 	friend class SceneTree;
 
 	void _set_tree(SceneTree *p_tree);
+	void _release_unique_name_in_owner();
+	void _acquire_unique_name_in_owner();
 
 protected:
-	void _block() { data.blocked++; }
-	void _unblock() { data.blocked--; }
+	void _block() {
+		data.blocked++;
+	}
+	void _unblock() {
+		data.blocked--;
+	}
 
 	void _notification(int p_notification);
 
@@ -223,9 +232,13 @@ protected:
 	void _set_owner_nocheck(Node *p_owner);
 	void _set_name_nocheck(const StringName &p_name);
 	void _set_physics_interpolated_client_side(bool p_enable);
-	bool _is_physics_interpolated_client_side() const { return data.physics_interpolated_client_side; }
+	bool _is_physics_interpolated_client_side() const {
+		return data.physics_interpolated_client_side;
+	}
 	void _set_use_identity_transform(bool p_enable);
-	bool _is_using_identity_transform() const { return data.use_identity_transform; }
+	bool _is_using_identity_transform() const {
+		return data.use_identity_transform;
+	}
 
 public:
 	enum {
@@ -294,7 +307,9 @@ public:
 		return data.tree;
 	}
 
-	_FORCE_INLINE_ bool is_inside_tree() const { return data.inside_tree; }
+	_FORCE_INLINE_ bool is_inside_tree() const {
+		return data.inside_tree;
+	}
 
 	bool is_a_parent_of(const Node *p_node) const;
 	bool is_greater_than(const Node *p_node) const;
@@ -321,6 +336,9 @@ public:
 	void set_owner(Node *p_owner);
 	Node *get_owner() const;
 	void get_owned_by(Node *p_by, List<Node *> *p_owned);
+
+	void set_unique_name_in_owner(bool p_enabled);
+	bool is_unique_name_in_owner() const;
 
 	void remove_and_skip();
 	int get_index() const;
@@ -411,8 +429,12 @@ public:
 	bool can_process_notification(int p_what) const;
 
 	void set_physics_interpolated(bool p_interpolated);
-	_FORCE_INLINE_ bool is_physics_interpolated() const { return data.physics_interpolated; }
-	_FORCE_INLINE_ bool is_physics_interpolated_and_enabled() const { return is_inside_tree() && get_tree()->is_physics_interpolation_enabled() && is_physics_interpolated(); }
+	_FORCE_INLINE_ bool is_physics_interpolated() const {
+		return data.physics_interpolated;
+	}
+	_FORCE_INLINE_ bool is_physics_interpolated_and_enabled() const {
+		return is_inside_tree() && get_tree()->is_physics_interpolation_enabled() && is_physics_interpolated();
+	}
 	void reset_physics_interpolation();
 
 	void request_ready();
@@ -429,7 +451,9 @@ public:
 	static void set_human_readable_collision_renaming(bool p_enabled);
 	static void init_node_hrcr();
 
-	void force_parent_owned() { data.parent_owned = true; } //hack to avoid duplicate nodes
+	void force_parent_owned() {
+		data.parent_owned = true;
+	} //hack to avoid duplicate nodes
 
 	void set_import_path(const NodePath &p_import_path); //path used when imported, used by scene editors to keep tracking
 	NodePath get_import_path() const;
@@ -440,7 +464,9 @@ public:
 
 	void clear_internal_tree_resource_paths();
 
-	_FORCE_INLINE_ Viewport *get_viewport() const { return data.viewport; }
+	_FORCE_INLINE_ Viewport *get_viewport() const {
+		return data.viewport;
+	}
 
 	virtual String get_configuration_warning() const;
 
