@@ -122,3 +122,9 @@ If needed then it's probably only the Main::force_redraw() call.
 
 https://github.com/godotengine/godot/commit/7a88d5bf283952cfcccef111143c88923017599e
 
+### Physics Interpolation - add helper warnings 
+
+Not sure if it's needed.
+
+https://github.com/godotengine/godot/commit/ad9b2b3794f33429182923f55d3451dc98063617
+
