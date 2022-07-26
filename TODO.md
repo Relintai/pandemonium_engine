@@ -128,3 +128,9 @@ Not sure if it's needed.
 
 https://github.com/godotengine/godot/commit/ad9b2b3794f33429182923f55d3451dc98063617
 
+### Remove duplicate editor settings definitions 
+
+Has to be hand ported, however some of my modules will likely need a similar cleanup, so todo.
+
+https://github.com/godotengine/godot/commit/d088128b439d2fddf08f0b87090d756dd417b6e1
+
