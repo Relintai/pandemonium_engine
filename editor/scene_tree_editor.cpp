@@ -296,7 +296,7 @@ bool SceneTreeEditor::_add_nodes(Node *p_node, TreeItem *p_parent, bool p_scroll
 		}
 
 		if (p_node->is_unique_name_in_owner()) {
-			item->add_button(0, get_icon("SceneUniqueName", "EditorIcons"), BUTTON_UNIQUE, false, vformat(TTR("This node can be accessed from within anywhere in the scene by preceding it with the '%s' prefix in a node path.\nClick to disable this."), UNIQUE_NODE_PREFIX));
+			item->add_button(0, get_icon("SceneUniqueName", "EditorIcons"), BUTTON_UNIQUE, false, TTR("This node can be accessed from within anywhere in the scene by preceding it with the '%' prefix in a node path.\nClick to disable this."));
 		}
 
 		int num_connections = p_node->get_persistent_signal_connection_count();

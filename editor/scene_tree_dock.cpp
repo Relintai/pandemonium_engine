@@ -1175,7 +1175,7 @@ void SceneTreeDock::_tool_selected(int p_tool, bool p_confirm_override) {
 				UndoRedo *undo_redo = &editor_data->get_undo_redo();
 				Node *node = e->get();
 				bool enabled = node->is_unique_name_in_owner();
-				if (!enabled && get_tree()->get_edited_scene_root()->get_node_or_null(UNIQUE_NODE_PREFIX + String(node->get_name())) != nullptr) {
+				if (!enabled && get_tree()->get_edited_scene_root()->get_node_or_null("%" + String(node->get_name())) != nullptr) {
 					accept->set_text(TTR("Another node already uses this unique name in the scene."));
 					accept->popup_centered();
 					return;
@@ -1419,7 +1419,7 @@ void SceneTreeDock::_node_replace_owner(Node *p_base, Node *p_node, Node *p_root
 		UndoRedo *undo_redo = &editor_data->get_undo_redo();
 		switch (p_mode) {
 			case MODE_BIDI: {
-				bool is_unique = p_node->is_unique_name_in_owner() && p_base->get_node_or_null(UNIQUE_NODE_PREFIX + String(p_node->get_name())) != nullptr;
+				bool is_unique = p_node->is_unique_name_in_owner() && p_base->get_node_or_null("%" + String(p_node->get_name())) != nullptr;
 				if (is_unique) {
 					// Will create a unique name conflict. Disable before setting owner.
 					undo_redo->add_do_method(p_node, "set_unique_name_in_owner", false);
