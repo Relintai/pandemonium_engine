@@ -183,7 +183,7 @@ Array PandemoniumIOJavaWrapper::get_display_cutouts() {
 	ERR_FAIL_NULL_V(_get_display_cutouts, result);
 	JNIEnv *env = get_jni_env();
 	ERR_FAIL_NULL_V(env, result);
-	jintArray returnArray = (jintArray)env->CallObjectMethod(godot_io_instance, _get_display_cutouts);
+	jintArray returnArray = (jintArray)env->CallObjectMethod(pandemonium_io_instance, _get_display_cutouts);
 	jint arrayLength = env->GetArrayLength(returnArray);
 	jint *arrayBody = env->GetIntArrayElements(returnArray, JNI_FALSE);
 	int cutouts = arrayLength / 4;
