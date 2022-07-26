@@ -178,7 +178,7 @@ void PandemoniumIOJavaWrapper::get_window_safe_area(int (&p_rect_xywh)[4]) {
 	}
 }
 
-Array GodotIOJavaWrapper::get_display_cutouts() {
+Array PandemoniumIOJavaWrapper::get_display_cutouts() {
 	Array result;
 	ERR_FAIL_NULL_V(_get_display_cutouts, result);
 	JNIEnv *env = get_jni_env();
