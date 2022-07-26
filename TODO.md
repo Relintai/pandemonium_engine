@@ -114,6 +114,11 @@ The fix might be needed though. Double check.
 
 https://github.com/godotengine/godot/commit/d2b1d296340bb514b16af037c7ad6ed19e7b4a3f
 
+###  Fix the issue causing the screen to be black after resuming when in low processor mode.
 
+I did the low processor mode fix differently than in upstream godot, so need to check.
 
+If needed then it's probably only the Main::force_redraw() call.
+
+https://github.com/godotengine/godot/commit/7a88d5bf283952cfcccef111143c88923017599e
 
