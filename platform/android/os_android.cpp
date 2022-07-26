@@ -30,6 +30,7 @@
 
 #include "os_android.h"
 
+#include "core/array.h"
 #include "core/project_settings.h"
 #include "drivers/gles2/rasterizer_gles2.h"
 #include "drivers/unix/dir_access_unix.h"
@@ -289,6 +290,10 @@ Rect2 OS_Android::get_window_safe_area() const {
 	int xywh[4];
 	pandemonium_io_java->get_window_safe_area(xywh);
 	return Rect2(xywh[0], xywh[1], xywh[2], xywh[3]);
+}
+
+Array OS_Android::get_display_cutouts() const {
+	return pandemonium_io_java->get_display_cutouts();
 }
 
 String OS_Android::get_name() const {
