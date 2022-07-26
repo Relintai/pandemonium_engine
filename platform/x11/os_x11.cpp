@@ -30,6 +30,7 @@
 
 #include "os_x11.h"
 
+#include "core/math/vector2i.h"
 #include "core/os/dir_access.h"
 #include "core/print_string.h"
 #include "detect_prime.h"
@@ -39,7 +40,6 @@
 #include "scene/resources/texture.h"
 #include "servers/visual/visual_server_raster.h"
 #include "servers/visual/visual_server_wrap_mt.h"
-#include "core/math/vector2i.h"
 
 #ifdef HAVE_MNTENT
 #include <mntent.h>
@@ -1223,7 +1223,10 @@ Point2 OS_X11::get_screen_position(int p_screen) const {
 	XineramaScreenInfo *xsi = XineramaQueryScreens(x11_display, &count);
 
 	// Check if screen is valid
-	ERR_FAIL_INDEX_V(p_screen, count, Point2i(0, 0));
+	if (p_screen < 0 || p_screen >= count) {
+		XFree(xsi);
+		ERR_FAIL_V_MSG(Point2i(0, 0), vformat("Index %d is out of bounds (count = %d)", p_screen, count));
+	}
 
 	Point2i position = Point2i(xsi[p_screen].x_org, xsi[p_screen].y_org);
 
@@ -1248,7 +1251,10 @@ Size2 OS_X11::get_screen_size(int p_screen) const {
 	XineramaScreenInfo *xsi = XineramaQueryScreens(x11_display, &count);
 
 	// Check if screen is valid
-	ERR_FAIL_INDEX_V(p_screen, count, Size2i(0, 0));
+	if (p_screen < 0 || p_screen >= count) {
+		XFree(xsi);
+		ERR_FAIL_V_MSG(Size2i(0, 0), vformat("Index %d is out of bounds (count = %d)", p_screen, count));
+	}
 
 	Size2i size = Point2i(xsi[p_screen].width, xsi[p_screen].height);
 	XFree(xsi);
@@ -3154,7 +3160,7 @@ String OS_X11::_get_clipboard_impl(Atom p_source, Window x11_window, Atom target
 				while (XCheckIfEvent(x11_display, &ev, _predicate_clipboard_incr, nullptr)) {
 					result = XGetWindowProperty(x11_display, x11_window,
 							selection, // selection type
-							0, LONG_MAX, // offset - len
+							0, LONG_MAX, // offset - lget_latin_keyboard_varianten
 							True, // delete property to notify the owner
 							AnyPropertyType, // flag
 							&type, // return type
@@ -4039,14 +4045,14 @@ OS::LatinKeyboardVariant OS_X11::get_latin_keyboard_variant() const {
 	XkbDescRec *xkbdesc = XkbAllocKeyboard();
 	ERR_FAIL_COND_V(!xkbdesc, LATIN_KEYBOARD_QWERTY);
 
-	XkbGetNames(x11_display, XkbSymbolsNameMask, xkbdesc);
-	ERR_FAIL_COND_V(!xkbdesc->names, LATIN_KEYBOARD_QWERTY);
-	ERR_FAIL_COND_V(!xkbdesc->names->symbols, LATIN_KEYBOARD_QWERTY);
+	if (XkbGetNames(x11_display, XkbSymbolsNameMask, xkbdesc) != Success) {
+		XkbFreeKeyboard(xkbdesc, 0, true);
+		ERR_FAIL_V(LATIN_KEYBOARD_QWERTY);
+	}
 
-	String layout = get_atom_name(x11_display, xkbdesc->names->symbols);
-	ERR_FAIL_COND_V(layout.empty(), LATIN_KEYBOARD_QWERTY);
+	Vector<String> info = get_atom_name(x11_display, xkbdesc->names->symbols).split("+");
+	XkbFreeKeyboard(xkbdesc, 0, true);
 
-	Vector<String> info = layout.split("+");
 	ERR_FAIL_INDEX_V(1, info.size(), LATIN_KEYBOARD_QWERTY);
 
 	if (info[1].find("colemak") != -1) {
