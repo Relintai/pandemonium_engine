@@ -293,10 +293,9 @@ static int _bsp_find_best_half_plane(const Face3 *p_faces, const Vector<int> &p_
 				}
 			}
 
-			//if (over && under) {
-			//num_spanning++;
-			//} else
-			if (over) {
+			if (over && under) {
+				//num_spanning++;
+			} else if (over) {
 				num_over++;
 			} else {
 				num_under++;
