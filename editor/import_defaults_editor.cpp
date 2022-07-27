@@ -44,7 +44,6 @@
 #include "core/variant.h"
 #include "core/vector.h"
 #include "editor/editor_inspector.h"
-#include "editor/editor_settings.h"
 #include "scene/gui/button.h"
 #include "scene/gui/center_container.h"
 #include "scene/gui/control.h"
@@ -92,13 +91,10 @@ protected:
 
 void ImportDefaultsEditor::_notification(int p_what) {
 	switch (p_what) {
-		case NOTIFICATION_ENTER_TREE:
-		case EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED: {
-			inspector->set_property_name_style(EditorPropertyNameProcessor::get_settings_style());
-		} break;
-
 		case NOTIFICATION_PREDELETE: {
-			inspector->edit(nullptr);
+			if (inspector) {
+				inspector->edit(nullptr);
+			}
 		} break;
 	}
 }
