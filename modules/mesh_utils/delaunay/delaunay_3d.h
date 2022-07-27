@@ -407,7 +407,7 @@ public:
 					}
 				}
 
-				good_triangles++;
+				//good_triangles++;
 			}
 
 			//print_line("at point " + itos(i) + "/" + itos(point_count) + " simplices added " + itos(good_triangles) + "/" + itos(simplex_list.size()) + " - triangles: " + itos(triangles.size()));
