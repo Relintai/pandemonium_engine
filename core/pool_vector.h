@@ -445,7 +445,10 @@ public:
 	}
 
 	bool contains(const T &p_val) const;
-	int find(const T &p_val) const;
+	int find(const T &p_val, int p_from = 0) const;
+	int rfind(const T &p_val, int p_from = -1) const;
+	bool count(const T &p_val) const;
+	bool has(const T &p_val) const;
 
 	bool is_locked() const {
 		return alloc && alloc->lock.get() > 0;
@@ -527,17 +530,58 @@ bool PoolVector<T>::contains(const T &p_val) const {
 }
 
 template <class T>
-int PoolVector<T>::find(const T &p_val) const {
-	Read r = read();
-	int s = size();
+int PoolVector<T>::find(const T &p_val, int p_from) const {
+	if (p_from < 0) {
+		return -1;
+	}
 
-	for (int i = 0; i < s; ++i) {
+	const int s = size();
+	const Read r = read();
+
+	for (int i = p_from; i < s; i++) {
 		if (r[i] == p_val) {
 			return i;
 		}
 	}
-
 	return -1;
+}
+
+template <class T>
+int PoolVector<T>::rfind(const T &p_val, int p_from) const {
+	const int s = size();
+	const Read r = read();
+
+	if (p_from < 0) {
+		p_from = s + p_from;
+	}
+	if (p_from < 0 || p_from >= s) {
+		p_from = s - 1;
+	}
+
+	for (int i = p_from; i >= 0; i--) {
+		if (r[i] == p_val) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+template <class T>
+bool PoolVector<T>::count(const T &p_val) const {
+	const int s = size();
+	const Read r = read();
+	int amount = 0;
+	for (int i = 0; i < s; i++) {
+		if (r[i] == p_val) {
+			amount++;
+		}
+	}
+	return amount;
+}
+
+template <class T>
+bool PoolVector<T>::has(const T &p_val) const {
+	return find(p_val) != -1;
 }
 
 template <class T>

@@ -205,7 +205,7 @@
 			<argument index="0" name="what" type="Variant" />
 			<argument index="1" name="from" type="int" default="0" />
 			<description>
-				Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed.
+				Searches the array for a value and returns its index or [code]-1[/code] if not found. Optionally, the initial search index can be passed. Returns [code]-1[/code] if [code]from[/code] is out of bounds.
 			</description>
 		</method>
 		<method name="find_last">
@@ -332,7 +332,7 @@
 		</method>
 		<method name="shuffle">
 			<description>
-				Shuffles the array such that the items will have a random order. This method uses the global random number generator common to methods such as [method @GDScript.randi]. Call [method @GDScript.randomize] to ensure that a new seed will be used each time if you want non-reproducible shuffling.
+				Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array. If the adjusted start index is out of bounds, this method searches from the end of the array.
 			</description>
 		</method>
 		<method name="size">
