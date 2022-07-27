@@ -101,6 +101,7 @@ Not sure whether to have this or not. It does increase binary size for release b
 https://github.com/godotengine/godot/commit/226103d166e2806fdaee63242492233e810d6541
 https://github.com/godotengine/godot/commit/663978e8ba5d8b3e37b9b1baf54a69e6a3a00656
 https://github.com/godotengine/godot/commit/f0ca73892a26566e85e1fa819f151fa1db4a42ad
+https://github.com/godotengine/godot/commit/3a8f2dda01adca0086a79347484d01b483c8b624
 
 
 ### Physics interpolation - Move out of Scenario 
