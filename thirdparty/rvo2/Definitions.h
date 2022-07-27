@@ -1,5 +1,3 @@
-#ifndef RVO_DEFINITIONS_H_
-#define RVO_DEFINITIONS_H_
 /*
  * Definitions.h
  * RVO2-3D Library
@@ -10,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,7 +27,7 @@
  * Chapel Hill, N.C. 27599-3175
  * United States of America
  *
- * <http://gamma.cs.unc.edu/RVO2/>
+ * <https://gamma.cs.unc.edu/RVO2/>
  */
 
 /**
@@ -37,10 +35,8 @@
  * \brief  Contains functions and constants used in multiple classes.
  */
 
-
-
-
-#include "API.h"
+#ifndef RVO3D_DEFINITIONS_H_
+#define RVO3D_DEFINITIONS_H_
 
 namespace RVO {
 	/**
@@ -54,4 +50,4 @@ namespace RVO {
 	}
 }
 
-#endif /* RVO_DEFINITIONS_H_ */
+#endif /* RVO3D_DEFINITIONS_H_ */
