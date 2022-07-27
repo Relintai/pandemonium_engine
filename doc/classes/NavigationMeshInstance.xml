@@ -4,7 +4,7 @@
 		An instance of a [NavigationMesh].
 	</brief_description>
 	<description>
-		An instance of a [NavigationMesh]. It tells the [Navigation] node what can be navigated and what cannot, based on the [NavigationMesh] resource. This should be a child of a [Navigation] node.
+		Bakes the [NavigationMesh]. If [code]on_thread[/code] is set to [code]true[/code] (default), the baking is done on a separate thread. Baking on separate thread is useful because navigation baking is not a cheap operation. When it is completed, it automatically sets the new [NavigationMesh]. Please note that baking on separate thread may be very slow if geometry is parsed from meshes as async access to each mesh involves heavy synchronization. Also, please note that baking on a separate thread is automatically disabled on operating systems that cannot use threads (such as HTML5 with threads disabled).
 	</description>
 	<tutorials>
 	</tutorials>
