@@ -1,5 +1,10 @@
 # Pandemonium Engine TODOs
 
+## Core
+
+- Add a core binder class for Math. This would allow for simpler script to engine side code ports. Maybe it could also smplify scripting language code.
+- Maye threading could be de-modernized. So the implementation could use the old os level constructs. (like pthreads). An implementation that uses std::threads could be kept around though. (without it being compiled). 
+
 ## WFC module
 
 - Need to rework the readme. Also link to the sample repo. (https://github.com/Relintai/wfc_module_samples)
