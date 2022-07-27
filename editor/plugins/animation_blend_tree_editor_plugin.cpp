@@ -30,19 +30,12 @@
 
 #include "animation_blend_tree_editor_plugin.h"
 
-#include "core/io/resource_loader.h"
-#include "editor/editor_inspector.h"
-#include "editor/editor_scale.h"
-#include "scene/3d/skeleton.h"
-#include "scene/animation/animation_player.h"
-#include "scene/gui/graph_node.h"
-#include "scene/gui/menu_button.h"
-#include "scene/gui/progress_bar.h"
 #include "core/array.h"
 #include "core/class_db.h"
 #include "core/color.h"
 #include "core/error_macros.h"
 #include "core/hash_map.h"
+#include "core/io/resource_loader.h"
 #include "core/list.h"
 #include "core/node_path.h"
 #include "core/os/memory.h"
@@ -50,25 +43,32 @@
 #include "core/typedefs.h"
 #include "core/undo_redo.h"
 #include "editor/editor_file_dialog.h"
+#include "editor/editor_inspector.h"
 #include "editor/editor_node.h"
+#include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 #include "scene/2d/canvas_item.h"
+#include "scene/3d/skeleton.h"
+#include "scene/animation/animation_blend_tree.h"
+#include "scene/animation/animation_player.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/check_box.h"
 #include "scene/gui/control.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/graph_edit.h"
+#include "scene/gui/graph_node.h"
 #include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
+#include "scene/gui/menu_button.h"
 #include "scene/gui/panel_container.h"
 #include "scene/gui/popup_menu.h"
+#include "scene/gui/progress_bar.h"
 #include "scene/gui/separator.h"
 #include "scene/gui/tree.h"
 #include "scene/main/node.h"
 #include "scene/resources/animation.h"
 #include "scene/resources/style_box.h"
-#include "scene/animation/animation_blend_tree.h"
 
 void AnimationNodeBlendTreeEditor::add_custom_type(const String &p_name, const Ref<Script> &p_script) {
 	for (int i = 0; i < add_options.size(); i++) {
@@ -484,7 +484,7 @@ void AnimationNodeBlendTreeEditor::_delete_request(const String &p_which) {
 	undo_redo->commit_action();
 }
 
-void AnimationNodeBlendTreeEditor::_delete_nodes_request() {
+void AnimationNodeBlendTreeEditor::_delete_nodes_request(const Array &p_nodes) {
 	List<StringName> to_erase;
 
 	for (int i = 0; i < graph->get_child_count(); i++) {
@@ -852,7 +852,7 @@ void AnimationNodeBlendTreeEditor::_bind_methods() {
 	ClassDB::bind_method("_open_in_editor", &AnimationNodeBlendTreeEditor::_open_in_editor);
 	ClassDB::bind_method("_scroll_changed", &AnimationNodeBlendTreeEditor::_scroll_changed);
 	ClassDB::bind_method("_delete_request", &AnimationNodeBlendTreeEditor::_delete_request);
-	ClassDB::bind_method("_delete_nodes_request", &AnimationNodeBlendTreeEditor::_delete_nodes_request);
+	ClassDB::bind_method("_delete_nodes_request", "nodes", &AnimationNodeBlendTreeEditor::_delete_nodes_request);
 	ClassDB::bind_method("_popup_request", &AnimationNodeBlendTreeEditor::_popup_request);
 	ClassDB::bind_method("_edit_filters", &AnimationNodeBlendTreeEditor::_edit_filters);
 	ClassDB::bind_method("_update_filters", &AnimationNodeBlendTreeEditor::_update_filters);
