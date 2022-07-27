@@ -765,7 +765,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM0(PoolByteArray, invert);
 	VCALL_LOCALMEM2R(PoolByteArray, subarray);
 	VCALL_LOCALMEM1R(PoolByteArray, contains);
-	VCALL_LOCALMEM1R(PoolByteArray, find);
+	VCALL_LOCALMEM2R(PoolByteArray, find);
 	VCALL_LOCALMEM2R(PoolByteArray, rfind);
 	VCALL_LOCALMEM1R(PoolByteArray, count);
 	VCALL_LOCALMEM1R(PoolByteArray, has);
@@ -784,7 +784,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM1(PoolIntArray, append_array);
 	VCALL_LOCALMEM0(PoolIntArray, invert);
 	VCALL_LOCALMEM1R(PoolIntArray, contains);
-	VCALL_LOCALMEM1R(PoolIntArray, find);
+	VCALL_LOCALMEM2R(PoolIntArray, find);
 	VCALL_LOCALMEM2R(PoolIntArray, rfind);
 	VCALL_LOCALMEM1R(PoolIntArray, count);
 	VCALL_LOCALMEM1R(PoolIntArray, has);
@@ -803,7 +803,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM1(PoolRealArray, append_array);
 	VCALL_LOCALMEM0(PoolRealArray, invert);
 	VCALL_LOCALMEM1R(PoolRealArray, contains);
-	VCALL_LOCALMEM1R(PoolRealArray, find);
+	VCALL_LOCALMEM2R(PoolRealArray, find);
 	VCALL_LOCALMEM2R(PoolRealArray, rfind);
 	VCALL_LOCALMEM1R(PoolRealArray, count);
 	VCALL_LOCALMEM1R(PoolRealArray, has);
@@ -823,7 +823,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM0(PoolStringArray, invert);
 	VCALL_LOCALMEM1R(PoolStringArray, join);
 	VCALL_LOCALMEM1R(PoolStringArray, contains);
-	VCALL_LOCALMEM1R(PoolStringArray, find);
+	VCALL_LOCALMEM2R(PoolStringArray, find);
 	VCALL_LOCALMEM2R(PoolStringArray, rfind);
 	VCALL_LOCALMEM1R(PoolStringArray, count);
 	VCALL_LOCALMEM1R(PoolStringArray, has);
@@ -842,7 +842,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM1(PoolVector2Array, append_array);
 	VCALL_LOCALMEM0(PoolVector2Array, invert);
 	VCALL_LOCALMEM1R(PoolVector2Array, contains);
-	VCALL_LOCALMEM1R(PoolVector2Array, find);
+	VCALL_LOCALMEM2R(PoolVector2Array, find);
 	VCALL_LOCALMEM2R(PoolVector2Array, rfind);
 	VCALL_LOCALMEM1R(PoolVector2Array, count);
 	VCALL_LOCALMEM1R(PoolVector2Array, has);
@@ -861,7 +861,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM1(PoolVector2iArray, append_array);
 	VCALL_LOCALMEM0(PoolVector2iArray, invert);
 	VCALL_LOCALMEM1R(PoolVector2iArray, contains);
-	VCALL_LOCALMEM1R(PoolVector2iArray, find);
+	VCALL_LOCALMEM2R(PoolVector2iArray, find);
 	VCALL_LOCALMEM2R(PoolVector2iArray, rfind);
 	VCALL_LOCALMEM1R(PoolVector2iArray, count);
 	VCALL_LOCALMEM1R(PoolVector2iArray, has);
@@ -880,7 +880,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM1(PoolVector3Array, append_array);
 	VCALL_LOCALMEM0(PoolVector3Array, invert);
 	VCALL_LOCALMEM1R(PoolVector3Array, contains);
-	VCALL_LOCALMEM1R(PoolVector3Array, find);
+	VCALL_LOCALMEM2R(PoolVector3Array, find);
 	VCALL_LOCALMEM2R(PoolVector3Array, rfind);
 	VCALL_LOCALMEM1R(PoolVector3Array, count);
 	VCALL_LOCALMEM1R(PoolVector3Array, has);
@@ -899,7 +899,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM1(PoolVector3iArray, append_array);
 	VCALL_LOCALMEM0(PoolVector3iArray, invert);
 	VCALL_LOCALMEM1R(PoolVector3iArray, contains);
-	VCALL_LOCALMEM1R(PoolVector3iArray, find);
+	VCALL_LOCALMEM2R(PoolVector3iArray, find);
 	VCALL_LOCALMEM2R(PoolVector3iArray, rfind);
 	VCALL_LOCALMEM1R(PoolVector3iArray, count);
 	VCALL_LOCALMEM1R(PoolVector3iArray, has);
@@ -918,7 +918,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM1(PoolColorArray, append_array);
 	VCALL_LOCALMEM0(PoolColorArray, invert);
 	VCALL_LOCALMEM1R(PoolColorArray, contains);
-	VCALL_LOCALMEM1R(PoolColorArray, find);
+	VCALL_LOCALMEM2R(PoolColorArray, find);
 	VCALL_LOCALMEM2R(PoolColorArray, rfind);
 	VCALL_LOCALMEM1R(PoolColorArray, count);
 	VCALL_LOCALMEM1R(PoolColorArray, has);
@@ -2296,7 +2296,7 @@ void register_variant_methods() {
 	ADDFUNC0(POOL_BYTE_ARRAY, NIL, PoolByteArray, invert, varray());
 	ADDFUNC2R(POOL_BYTE_ARRAY, POOL_BYTE_ARRAY, PoolByteArray, subarray, INT, "from", INT, "to", varray());
 	ADDFUNC1R(POOL_BYTE_ARRAY, BOOL, PoolByteArray, contains, INT, "value", varray())
-	ADDFUNC2R(POOL_BYTE_ARRAY, INT, PoolByteArray, find, INT, "value", INT, "from", varray(-1))
+	ADDFUNC2R(POOL_BYTE_ARRAY, INT, PoolByteArray, find, INT, "value", INT, "from", varray(0))
 	ADDFUNC2R(POOL_BYTE_ARRAY, INT, PoolByteArray, rfind, INT, "value", INT, "from", varray(-1));
 	ADDFUNC1R(POOL_BYTE_ARRAY, INT, PoolByteArray, count, INT, "value", varray());
 	ADDFUNC1R(POOL_BYTE_ARRAY, BOOL, PoolByteArray, has, INT, "value", varray());
@@ -2321,7 +2321,7 @@ void register_variant_methods() {
 	ADDFUNC1(POOL_INT_ARRAY, NIL, PoolIntArray, resize, INT, "idx", varray());
 	ADDFUNC0(POOL_INT_ARRAY, NIL, PoolIntArray, invert, varray());
 	ADDFUNC1R(POOL_INT_ARRAY, BOOL, PoolIntArray, contains, INT, "value", varray())
-	ADDFUNC2R(POOL_INT_ARRAY, INT, PoolIntArray, find, INT, "value", INT, "from", varray(-1))
+	ADDFUNC2R(POOL_INT_ARRAY, INT, PoolIntArray, find, INT, "value", INT, "from", varray(0))
 	ADDFUNC2R(POOL_INT_ARRAY, INT, PoolIntArray, rfind, INT, "value", INT, "from", varray(-1));
 	ADDFUNC1R(POOL_INT_ARRAY, INT, PoolIntArray, count, INT, "value", varray());
 	ADDFUNC1R(POOL_INT_ARRAY, BOOL, PoolIntArray, has, INT, "value", varray());
@@ -2339,7 +2339,7 @@ void register_variant_methods() {
 	ADDFUNC1(POOL_REAL_ARRAY, NIL, PoolRealArray, resize, INT, "idx", varray());
 	ADDFUNC0(POOL_REAL_ARRAY, NIL, PoolRealArray, invert, varray());
 	ADDFUNC1R(POOL_REAL_ARRAY, BOOL, PoolRealArray, contains, REAL, "value", varray())
-	ADDFUNC2R(POOL_REAL_ARRAY, INT, PoolRealArray, find, REAL, "value", INT, "from", varray(-1))
+	ADDFUNC2R(POOL_REAL_ARRAY, INT, PoolRealArray, find, REAL, "value", INT, "from", varray(0))
 	ADDFUNC2R(POOL_REAL_ARRAY, INT, PoolRealArray, rfind, REAL, "value", INT, "from", varray(-1));
 	ADDFUNC1R(POOL_REAL_ARRAY, INT, PoolRealArray, count, REAL, "value", varray());
 	ADDFUNC1R(POOL_REAL_ARRAY, BOOL, PoolRealArray, has, REAL, "value", varray());
@@ -2358,7 +2358,7 @@ void register_variant_methods() {
 	ADDFUNC0(POOL_STRING_ARRAY, NIL, PoolStringArray, invert, varray());
 	ADDFUNC1(POOL_STRING_ARRAY, STRING, PoolStringArray, join, STRING, "delimiter", varray());
 	ADDFUNC1R(POOL_STRING_ARRAY, BOOL, PoolStringArray, contains, STRING, "value", varray())
-	ADDFUNC2R(POOL_STRING_ARRAY, INT, PoolStringArray, find, STRING, "value", INT, "from", varray(-1))
+	ADDFUNC2R(POOL_STRING_ARRAY, INT, PoolStringArray, find, STRING, "value", INT, "from", varray(0))
 	ADDFUNC2R(POOL_STRING_ARRAY, INT, PoolStringArray, rfind, STRING, "value", INT, "from", varray(-1));
 	ADDFUNC1R(POOL_STRING_ARRAY, INT, PoolStringArray, count, STRING, "value", varray());
 	ADDFUNC1R(POOL_STRING_ARRAY, BOOL, PoolStringArray, has, STRING, "value", varray());
@@ -2376,7 +2376,7 @@ void register_variant_methods() {
 	ADDFUNC1(POOL_VECTOR2_ARRAY, NIL, PoolVector2Array, resize, INT, "idx", varray());
 	ADDFUNC0(POOL_VECTOR2_ARRAY, NIL, PoolVector2Array, invert, varray());
 	ADDFUNC1R(POOL_VECTOR2_ARRAY, BOOL, PoolVector2Array, contains, VECTOR2, "value", varray())
-	ADDFUNC2R(POOL_VECTOR2_ARRAY, INT, PoolVector2Array, find, VECTOR2, "value", INT, "from", varray(-1))
+	ADDFUNC2R(POOL_VECTOR2_ARRAY, INT, PoolVector2Array, find, VECTOR2, "value", INT, "from", varray(0))
 	ADDFUNC2R(POOL_VECTOR2_ARRAY, INT, PoolVector2Array, rfind, VECTOR2, "value", INT, "from", varray(-1));
 	ADDFUNC1R(POOL_VECTOR2_ARRAY, INT, PoolVector2Array, count, VECTOR2, "value", varray());
 	ADDFUNC1R(POOL_VECTOR2_ARRAY, BOOL, PoolVector2Array, has, VECTOR2, "value", varray());
@@ -2394,7 +2394,7 @@ void register_variant_methods() {
 	ADDFUNC1(POOL_VECTOR2I_ARRAY, NIL, PoolVector2iArray, resize, INT, "idx", varray());
 	ADDFUNC0(POOL_VECTOR2I_ARRAY, NIL, PoolVector2iArray, invert, varray());
 	ADDFUNC1R(POOL_VECTOR2I_ARRAY, BOOL, PoolVector2iArray, contains, VECTOR2I, "value", varray())
-	ADDFUNC2R(POOL_VECTOR2I_ARRAY, INT, PoolVector2iArray, find, VECTOR2I, "value", INT, "from", varray(-1))
+	ADDFUNC2R(POOL_VECTOR2I_ARRAY, INT, PoolVector2iArray, find, VECTOR2I, "value", INT, "from", varray(0))
 	ADDFUNC2R(POOL_VECTOR2I_ARRAY, INT, PoolVector2iArray, rfind, VECTOR2I, "value", INT, "from", varray(-1));
 	ADDFUNC1R(POOL_VECTOR2I_ARRAY, INT, PoolVector2iArray, count, VECTOR2I, "value", varray());
 	ADDFUNC1R(POOL_VECTOR2I_ARRAY, BOOL, PoolVector2iArray, has, VECTOR2I, "value", varray());
@@ -2412,7 +2412,7 @@ void register_variant_methods() {
 	ADDFUNC1(POOL_VECTOR3_ARRAY, NIL, PoolVector3Array, resize, INT, "idx", varray());
 	ADDFUNC0(POOL_VECTOR3_ARRAY, NIL, PoolVector3Array, invert, varray());
 	ADDFUNC1R(POOL_VECTOR3_ARRAY, BOOL, PoolVector3Array, contains, VECTOR3, "value", varray())
-	ADDFUNC2R(POOL_VECTOR3_ARRAY, INT, PoolVector3Array, find, VECTOR3, "value", INT, "from", varray(-1))
+	ADDFUNC2R(POOL_VECTOR3_ARRAY, INT, PoolVector3Array, find, VECTOR3, "value", INT, "from", varray(0))
 	ADDFUNC2R(POOL_VECTOR3_ARRAY, INT, PoolVector3Array, rfind, VECTOR3, "value", INT, "from", varray(-1));
 	ADDFUNC1R(POOL_VECTOR3_ARRAY, INT, PoolVector3Array, count, VECTOR3, "value", varray());
 	ADDFUNC1R(POOL_VECTOR3_ARRAY, BOOL, PoolVector3Array, has, VECTOR3, "value", varray());
@@ -2430,7 +2430,7 @@ void register_variant_methods() {
 	ADDFUNC1(POOL_VECTOR3I_ARRAY, NIL, PoolVector3iArray, resize, INT, "idx", varray());
 	ADDFUNC0(POOL_VECTOR3I_ARRAY, NIL, PoolVector3iArray, invert, varray());
 	ADDFUNC1R(POOL_VECTOR3I_ARRAY, BOOL, PoolVector3iArray, contains, VECTOR3I, "value", varray())
-	ADDFUNC2R(POOL_VECTOR3I_ARRAY, INT, PoolVector3iArray, find, VECTOR3I, "value", INT, "from", varray(-1))
+	ADDFUNC2R(POOL_VECTOR3I_ARRAY, INT, PoolVector3iArray, find, VECTOR3I, "value", INT, "from", varray(0))
 	ADDFUNC2R(POOL_VECTOR3I_ARRAY, INT, PoolVector3iArray, rfind, VECTOR3I, "value", INT, "from", varray(-1));
 	ADDFUNC1R(POOL_VECTOR3I_ARRAY, INT, PoolVector3iArray, count, VECTOR3I, "value", varray());
 	ADDFUNC1R(POOL_VECTOR3I_ARRAY, BOOL, PoolVector3iArray, has, VECTOR3I, "value", varray());
@@ -2448,7 +2448,7 @@ void register_variant_methods() {
 	ADDFUNC1(POOL_COLOR_ARRAY, NIL, PoolColorArray, resize, INT, "idx", varray());
 	ADDFUNC0(POOL_COLOR_ARRAY, NIL, PoolColorArray, invert, varray());
 	ADDFUNC1R(POOL_COLOR_ARRAY, BOOL, PoolColorArray, contains, COLOR, "value", varray())
-	ADDFUNC2R(POOL_COLOR_ARRAY, INT, PoolColorArray, find, COLOR, "value", INT, "from", varray(-1))
+	ADDFUNC2R(POOL_COLOR_ARRAY, INT, PoolColorArray, find, COLOR, "value", INT, "from", varray(0))
 	ADDFUNC2R(POOL_COLOR_ARRAY, INT, PoolColorArray, rfind, COLOR, "value", INT, "from", varray(-1));
 	ADDFUNC1R(POOL_COLOR_ARRAY, INT, PoolColorArray, count, COLOR, "value", varray());
 	ADDFUNC1R(POOL_COLOR_ARRAY, BOOL, PoolColorArray, has, COLOR, "value", varray());
