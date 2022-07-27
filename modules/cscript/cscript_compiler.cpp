@@ -1290,7 +1290,6 @@ int CScriptCompiler::_parse_expression(CodeGen &codegen, const CScriptParser::No
 
 Error CScriptCompiler::_parse_block(CodeGen &codegen, const CScriptParser::BlockNode *p_block, int p_stack_level, int p_break_addr, int p_continue_addr) {
 	codegen.push_stack_identifiers();
-	int new_identifiers = 0;
 	codegen.current_line = p_block->line;
 
 	for (int i = 0; i < p_block->statements.size(); i++) {
@@ -1321,7 +1320,6 @@ Error CScriptCompiler::_parse_block(CodeGen &codegen, const CScriptParser::Block
 						// copied because there is no _parse_statement :(
 						codegen.add_stack_identifier(id->name, p_stack_level++);
 						codegen.alloc_stack(p_stack_level);
-						new_identifiers++;
 
 						CScriptParser::OperatorNode *op = memnew(CScriptParser::OperatorNode);
 						op->op = CScriptParser::OperatorNode::OP_ASSIGN;
@@ -1579,7 +1577,6 @@ Error CScriptCompiler::_parse_block(CodeGen &codegen, const CScriptParser::Block
 
 				codegen.add_stack_identifier(lv->name, p_stack_level++);
 				codegen.alloc_stack(p_stack_level);
-				new_identifiers++;
 
 			} break;
 			default: {
