@@ -822,7 +822,7 @@ public:
 				v.foldover = false;
 			}
 
-			int border_vertex_count = 0;
+			//int border_vertex_count = 0;
 			double border_min_x = DBL_MIN;
 			double border_max_x = DBL_MAX;
 
@@ -860,7 +860,7 @@ public:
 						Vertex &vv = vertices[vids[j]];
 
 						vv.border = 1;
-						++border_vertex_count;
+						//++border_vertex_count;
 
 						if (_enable_smart_link) {
 							if (vv.p.x < border_min_x)
