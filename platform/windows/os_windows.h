@@ -481,6 +481,8 @@ public:
 
 	virtual MainLoop *get_main_loop() const;
 
+	virtual uint64_t get_embedded_pck_offset() const;
+
 	virtual String get_name() const;
 
 	virtual Date get_date(bool utc) const;
@@ -554,7 +556,9 @@ public:
 
 	void run();
 
-	virtual bool get_swap_ok_cancel() { return true; }
+	virtual bool get_swap_ok_cancel() {
+		return true;
+	}
 
 	virtual bool is_joy_known(int p_device);
 	virtual String get_joy_guid(int p_device) const;

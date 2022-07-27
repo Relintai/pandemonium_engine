@@ -37,11 +37,11 @@
 #include "scene/main/timer.h"
 #include "scene/resources/texture.h"
 
-#include "core/os/dir_access.h"
 #include "core/error_list.h"
 #include "core/list.h"
 #include "core/map.h"
 #include "core/object.h"
+#include "core/os/dir_access.h"
 #include "core/pool_vector.h"
 #include "core/set.h"
 #include "core/string_name.h"
@@ -448,6 +448,9 @@ public:
 	virtual List<String> get_binary_extensions(const Ref<EditorExportPreset> &p_preset) const;
 	virtual Error export_project(const Ref<EditorExportPreset> &p_preset, bool p_debug, const String &p_path, int p_flags = 0);
 	virtual Error sign_shared_object(const Ref<EditorExportPreset> &p_preset, bool p_debug, const String &p_path);
+
+	Error prepare_template(const Ref<EditorExportPreset> &p_preset, bool p_debug, const String &p_path, int p_flags);
+	Error export_project_data(const Ref<EditorExportPreset> &p_preset, bool p_debug, const String &p_path, int p_flags);
 
 	void set_extension(const String &p_extension, const String &p_feature_key = "default");
 	void set_name(const String &p_name);

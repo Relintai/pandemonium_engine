@@ -30,27 +30,27 @@
 
 #include "editor_export.h"
 
+#include "core/class_db.h"
 #include "core/crypto/crypto_core.h"
+#include "core/error_macros.h"
 #include "core/io/config_file.h"
 #include "core/io/file_access_pack.h" // PACK_HEADER_MAGIC, PACK_FORMAT_VERSION
 #include "core/io/resource_loader.h"
 #include "core/io/zip_io.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
+#include "core/os/memory.h"
+#include "core/os/os.h"
 #include "core/project_settings.h"
 #include "core/script_language.h"
 #include "core/version.h"
+#include "core/version_generated.gen.h"
 #include "editor/editor_file_system.h"
 #include "editor/plugins/script_editor_plugin.h"
 #include "editor_node.h"
 #include "editor_settings.h"
-#include "scene/resources/resource_format_text.h"
-#include "core/class_db.h"
-#include "core/error_macros.h"
-#include "core/os/memory.h"
-#include "core/os/os.h"
-#include "core/version_generated.gen.h"
 #include "scene/main/timer.h"
+#include "scene/resources/resource_format_text.h"
 #include "scene/resources/theme.h"
 #include "thirdparty/minizip/ioapi.h"
 #include "thirdparty/minizip/zip.h"
@@ -1634,6 +1634,19 @@ List<String> EditorExportPlatformPC::get_binary_extensions(const Ref<EditorExpor
 Error EditorExportPlatformPC::export_project(const Ref<EditorExportPreset> &p_preset, bool p_debug, const String &p_path, int p_flags) {
 	ExportNotifier notifier(*this, p_preset, p_debug, p_path, p_flags);
 
+	Error err = prepare_template(p_preset, p_debug, p_path, p_flags);
+	if (err == OK) {
+		err = export_project_data(p_preset, p_debug, p_path, p_flags);
+	}
+
+	return err;
+}
+
+Error EditorExportPlatformPC::prepare_template(const Ref<EditorExportPreset> &p_preset, bool p_debug, const String &p_path, int p_flags) {
+	if (!DirAccess::exists(p_path.get_base_dir())) {
+		return ERR_FILE_BAD_PATH;
+	}
+
 	String custom_debug = p_preset->get("custom_template/debug");
 	String custom_release = p_preset->get("custom_template/release");
 
@@ -1666,38 +1679,41 @@ Error EditorExportPlatformPC::export_project(const Ref<EditorExportPreset> &p_pr
 	da->make_dir_recursive(p_path.get_base_dir());
 	Error err = da->copy(template_path, p_path, get_chmod_flags());
 
-	if (err == OK) {
-		String pck_path;
-		if (p_preset->get("binary_format/embed_pck")) {
-			pck_path = p_path;
-		} else {
-			pck_path = p_path.get_basename() + ".pck";
+	return err;
+}
+
+Error EditorExportPlatformPC::export_project_data(const Ref<EditorExportPreset> &p_preset, bool p_debug, const String &p_path, int p_flags) {
+	String pck_path;
+	if (p_preset->get("binary_format/embed_pck")) {
+		pck_path = p_path;
+	} else {
+		pck_path = p_path.get_basename() + ".pck";
+	}
+
+	Vector<SharedObject> so_files;
+
+	int64_t embedded_pos;
+	int64_t embedded_size;
+	Error err = save_pack(p_preset, pck_path, &so_files, p_preset->get("binary_format/embed_pck"), &embedded_pos, &embedded_size);
+	if (err == OK && p_preset->get("binary_format/embed_pck")) {
+		if (embedded_size >= 0x100000000 && !p_preset->get("binary_format/64_bits")) {
+			EditorNode::get_singleton()->show_warning(TTR("On 32-bit exports the embedded PCK cannot be bigger than 4 GiB."));
+			return ERR_INVALID_PARAMETER;
 		}
 
-		Vector<SharedObject> so_files;
-
-		int64_t embedded_pos;
-		int64_t embedded_size;
-		err = save_pack(p_preset, pck_path, &so_files, p_preset->get("binary_format/embed_pck"), &embedded_pos, &embedded_size);
-		if (err == OK && p_preset->get("binary_format/embed_pck")) {
-			if (embedded_size >= 0x100000000 && !p_preset->get("binary_format/64_bits")) {
-				EditorNode::get_singleton()->show_warning(TTR("On 32-bit exports the embedded PCK cannot be bigger than 4 GiB."));
-				return ERR_INVALID_PARAMETER;
-			}
-
-			FixUpEmbeddedPckFunc fixup_func = get_fixup_embedded_pck_func();
-			if (fixup_func) {
-				err = fixup_func(p_path, embedded_pos, embedded_size);
-			}
+		FixUpEmbeddedPckFunc fixup_func = get_fixup_embedded_pck_func();
+		if (fixup_func) {
+			err = fixup_func(p_path, embedded_pos, embedded_size);
 		}
+	}
 
-		if (err == OK && !so_files.empty()) {
-			// If shared object files, copy them.
-			for (int i = 0; i < so_files.size() && err == OK; i++) {
-				err = da->copy(so_files[i].path, p_path.get_base_dir().plus_file(so_files[i].path.get_file()));
-				if (err == OK) {
-					err = sign_shared_object(p_preset, p_debug, p_path.get_base_dir().plus_file(so_files[i].path.get_file()));
-				}
+	if (err == OK && !so_files.empty()) {
+		// If shared object files, copy them.
+		DirAccessRef da = DirAccess::create(DirAccess::ACCESS_FILESYSTEM);
+		for (int i = 0; i < so_files.size() && err == OK; i++) {
+			err = da->copy(so_files[i].path, p_path.get_base_dir().plus_file(so_files[i].path.get_file()));
+			if (err == OK) {
+				err = sign_shared_object(p_preset, p_debug, p_path.get_base_dir().plus_file(so_files[i].path.get_file()));
 			}
 		}
 	}
