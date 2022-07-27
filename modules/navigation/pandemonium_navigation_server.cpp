@@ -46,73 +46,73 @@
 /// an instance of that struct with the submitted parameters.
 /// Then, that struct is stored in an array; the `sync` function consume that array.
 
-#define COMMAND_1(F_NAME, T_0, D_0)                        \
-	struct MERGE(F_NAME, _command) : public SetCommand {   \
-		T_0 d_0;                                           \
-		MERGE(F_NAME, _command)                            \
-		(T_0 p_d_0) :                                      \
-				d_0(p_d_0) {}                              \
-		virtual void exec(PandemoniumNavigationServer *server) { \
-			server->MERGE(_cmd_, F_NAME)(d_0);             \
-		}                                                  \
-	};                                                     \
-	void PandemoniumNavigationServer::F_NAME(T_0 D_0) const {    \
-		auto cmd = memnew(MERGE(F_NAME, _command)(         \
-				D_0));                                     \
-		add_command(cmd);                                  \
-	}                                                      \
-	void PandemoniumNavigationServer::MERGE(_cmd_, F_NAME)(T_0 D_0)
-
-#define COMMAND_2(F_NAME, T_0, D_0, T_1, D_1)                    \
+#define COMMAND_1(F_NAME, T_0, D_0)                              \
 	struct MERGE(F_NAME, _command) : public SetCommand {         \
 		T_0 d_0;                                                 \
-		T_1 d_1;                                                 \
 		MERGE(F_NAME, _command)                                  \
-		(                                                        \
-				T_0 p_d_0,                                       \
-				T_1 p_d_1) :                                     \
-				d_0(p_d_0),                                      \
-				d_1(p_d_1) {}                                    \
-		virtual void exec(PandemoniumNavigationServer *server) {       \
-			server->MERGE(_cmd_, F_NAME)(d_0, d_1);              \
+		(T_0 p_d_0) :                                            \
+				d_0(p_d_0) {}                                    \
+		virtual void exec(PandemoniumNavigationServer *server) { \
+			server->MERGE(_cmd_, F_NAME)(d_0);                   \
 		}                                                        \
 	};                                                           \
-	void PandemoniumNavigationServer::F_NAME(T_0 D_0, T_1 D_1) const { \
+	void PandemoniumNavigationServer::F_NAME(T_0 D_0) const {    \
 		auto cmd = memnew(MERGE(F_NAME, _command)(               \
-				D_0,                                             \
-				D_1));                                           \
+				D_0));                                           \
 		add_command(cmd);                                        \
 	}                                                            \
+	void PandemoniumNavigationServer::MERGE(_cmd_, F_NAME)(T_0 D_0)
+
+#define COMMAND_2(F_NAME, T_0, D_0, T_1, D_1)                          \
+	struct MERGE(F_NAME, _command) : public SetCommand {               \
+		T_0 d_0;                                                       \
+		T_1 d_1;                                                       \
+		MERGE(F_NAME, _command)                                        \
+		(                                                              \
+				T_0 p_d_0,                                             \
+				T_1 p_d_1) :                                           \
+				d_0(p_d_0),                                            \
+				d_1(p_d_1) {}                                          \
+		virtual void exec(PandemoniumNavigationServer *server) {       \
+			server->MERGE(_cmd_, F_NAME)(d_0, d_1);                    \
+		}                                                              \
+	};                                                                 \
+	void PandemoniumNavigationServer::F_NAME(T_0 D_0, T_1 D_1) const { \
+		auto cmd = memnew(MERGE(F_NAME, _command)(                     \
+				D_0,                                                   \
+				D_1));                                                 \
+		add_command(cmd);                                              \
+	}                                                                  \
 	void PandemoniumNavigationServer::MERGE(_cmd_, F_NAME)(T_0 D_0, T_1 D_1)
 
-#define COMMAND_4(F_NAME, T_0, D_0, T_1, D_1, T_2, D_2, T_3, D_3)                  \
-	struct MERGE(F_NAME, _command) : public SetCommand {                           \
-		T_0 d_0;                                                                   \
-		T_1 d_1;                                                                   \
-		T_2 d_2;                                                                   \
-		T_3 d_3;                                                                   \
-		MERGE(F_NAME, _command)                                                    \
-		(                                                                          \
-				T_0 p_d_0,                                                         \
-				T_1 p_d_1,                                                         \
-				T_2 p_d_2,                                                         \
-				T_3 p_d_3) :                                                       \
-				d_0(p_d_0),                                                        \
-				d_1(p_d_1),                                                        \
-				d_2(p_d_2),                                                        \
-				d_3(p_d_3) {}                                                      \
+#define COMMAND_4(F_NAME, T_0, D_0, T_1, D_1, T_2, D_2, T_3, D_3)                        \
+	struct MERGE(F_NAME, _command) : public SetCommand {                                 \
+		T_0 d_0;                                                                         \
+		T_1 d_1;                                                                         \
+		T_2 d_2;                                                                         \
+		T_3 d_3;                                                                         \
+		MERGE(F_NAME, _command)                                                          \
+		(                                                                                \
+				T_0 p_d_0,                                                               \
+				T_1 p_d_1,                                                               \
+				T_2 p_d_2,                                                               \
+				T_3 p_d_3) :                                                             \
+				d_0(p_d_0),                                                              \
+				d_1(p_d_1),                                                              \
+				d_2(p_d_2),                                                              \
+				d_3(p_d_3) {}                                                            \
 		virtual void exec(PandemoniumNavigationServer *server) {                         \
-			server->MERGE(_cmd_, F_NAME)(d_0, d_1, d_2, d_3);                      \
-		}                                                                          \
-	};                                                                             \
+			server->MERGE(_cmd_, F_NAME)(d_0, d_1, d_2, d_3);                            \
+		}                                                                                \
+	};                                                                                   \
 	void PandemoniumNavigationServer::F_NAME(T_0 D_0, T_1 D_1, T_2 D_2, T_3 D_3) const { \
-		auto cmd = memnew(MERGE(F_NAME, _command)(                                 \
-				D_0,                                                               \
-				D_1,                                                               \
-				D_2,                                                               \
-				D_3));                                                             \
-		add_command(cmd);                                                          \
-	}                                                                              \
+		auto cmd = memnew(MERGE(F_NAME, _command)(                                       \
+				D_0,                                                                     \
+				D_1,                                                                     \
+				D_2,                                                                     \
+				D_3));                                                                   \
+		add_command(cmd);                                                                \
+	}                                                                                    \
 	void PandemoniumNavigationServer::MERGE(_cmd_, F_NAME)(T_0 D_0, T_1 D_1, T_2 D_2, T_3 D_3)
 
 PandemoniumNavigationServer::PandemoniumNavigationServer() :
@@ -250,6 +250,38 @@ RID PandemoniumNavigationServer::map_get_closest_point_owner(RID p_map, const Ve
 	ERR_FAIL_COND_V(map == nullptr, RID());
 
 	return map->get_closest_point_owner(p_point);
+}
+
+Array PandemoniumNavigationServer::map_get_regions(RID p_map) const {
+	Array regions_rids;
+	const NavMap *map = map_owner.getornull(p_map);
+	ERR_FAIL_COND_V(map == nullptr, regions_rids);
+	for (NavRegion *region : map->get_regions()) {
+		regions_rids.push_back(region->get_self());
+	}
+	return regions_rids;
+}
+
+Array PandemoniumNavigationServer::map_get_agents(RID p_map) const {
+	Array agents_rids;
+	const NavMap *map = map_owner.getornull(p_map);
+	ERR_FAIL_COND_V(map == nullptr, agents_rids);
+	for (RvoAgent *agent : map->get_agents()) {
+		agents_rids.push_back(agent->get_self());
+	}
+	return agents_rids;
+}
+
+RID PandemoniumNavigationServer::region_get_map(RID p_region) const {
+	NavRegion *region = region_owner.getornull(p_region);
+	ERR_FAIL_COND_V(region == nullptr, RID());
+	return region->get_map()->get_self();
+}
+
+RID PandemoniumNavigationServer::agent_get_map(RID p_agent) const {
+	RvoAgent *agent = agent_owner.getornull(p_agent);
+	ERR_FAIL_COND_V(agent == nullptr, RID());
+	return agent->get_map()->get_self();
 }
 
 RID PandemoniumNavigationServer::region_create() const {
