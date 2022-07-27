@@ -259,7 +259,7 @@ public:
 	void set_tileset(const Ref<RTileSet> &p_tileset);
 	Ref<RTileSet> get_tileset() const;
 
-	void set_cell_size(Size2 p_size);
+	void set_cell_size(const Size2 &p_size);
 	Size2 get_cell_size() const;
 
 	void set_quadrant_size(int p_size);
@@ -268,7 +268,7 @@ public:
 	void set_use_rao(bool p_rao);
 	bool get_use_rao() const;
 
-	void set_cell(int p_x, int p_y, int p_tile, bool p_flip_x = false, bool p_flip_y = false, bool p_transpose = false, Vector2 p_autotile_coord = Vector2());
+	void set_cell(int p_x, int p_y, int p_tile, bool p_flip_x = false, bool p_flip_y = false, bool p_transpose = false, const Vector2 &p_autotile_coord = Vector2());
 	int get_cell(int p_x, int p_y) const;
 	bool is_cell_x_flipped(int p_x, int p_y) const;
 	bool is_cell_y_flipped(int p_x, int p_y) const;

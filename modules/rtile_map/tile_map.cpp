@@ -207,7 +207,7 @@ Ref<RTileSet> RTileMap::get_tileset() const {
 	return tile_set;
 }
 
-void RTileMap::set_cell_size(Size2 p_size) {
+void RTileMap::set_cell_size(const Size2 &p_size) {
 	ERR_FAIL_COND(p_size.x < 1 || p_size.y < 1);
 
 	_clear_quadrants();
@@ -885,7 +885,7 @@ void RTileMap::_set_celld(const Vector2 &p_pos, const Dictionary &p_data) {
 	call("set_cell", args, 7, ce);
 }
 
-void RTileMap::set_cell(int p_x, int p_y, int p_tile, bool p_flip_x, bool p_flip_y, bool p_transpose, Vector2 p_autotile_coord) {
+void RTileMap::set_cell(int p_x, int p_y, int p_tile, bool p_flip_x, bool p_flip_y, bool p_transpose, const Vector2 &p_autotile_coord) {
 	PosKey pk(p_x, p_y);
 
 	Map<PosKey, Cell>::Element *E = tile_map.find(pk);
