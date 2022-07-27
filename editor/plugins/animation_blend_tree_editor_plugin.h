@@ -32,6 +32,7 @@
 
 #include "editor/plugins/animation_tree_editor_plugin.h"
 
+#include "core/array.h"
 #include "core/map.h"
 #include "core/math/vector2.h"
 #include "core/object.h"

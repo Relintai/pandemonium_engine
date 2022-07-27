@@ -852,7 +852,7 @@ void AnimationNodeBlendTreeEditor::_bind_methods() {
 	ClassDB::bind_method("_open_in_editor", &AnimationNodeBlendTreeEditor::_open_in_editor);
 	ClassDB::bind_method("_scroll_changed", &AnimationNodeBlendTreeEditor::_scroll_changed);
 	ClassDB::bind_method("_delete_request", &AnimationNodeBlendTreeEditor::_delete_request);
-	ClassDB::bind_method("_delete_nodes_request", "nodes", &AnimationNodeBlendTreeEditor::_delete_nodes_request);
+	ClassDB::bind_method("_delete_nodes_request", &AnimationNodeBlendTreeEditor::_delete_nodes_request);
 	ClassDB::bind_method("_popup_request", &AnimationNodeBlendTreeEditor::_popup_request);
 	ClassDB::bind_method("_edit_filters", &AnimationNodeBlendTreeEditor::_edit_filters);
 	ClassDB::bind_method("_update_filters", &AnimationNodeBlendTreeEditor::_update_filters);
