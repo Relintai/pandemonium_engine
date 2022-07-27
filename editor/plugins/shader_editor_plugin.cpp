@@ -30,29 +30,28 @@
 
 #include "shader_editor_plugin.h"
 
-#include "core/io/resource_loader.h"
-#include "core/io/resource_saver.h"
-#include "core/os/keyboard.h"
-#include "core/os/os.h"
-#include "core/version_generated.gen.h"
-#include "editor/editor_node.h"
-#include "editor/editor_scale.h"
-#include "editor/editor_settings.h"
-#include "servers/visual/shader_types.h"
 #include "core/array.h"
 #include "core/class_db.h"
 #include "core/color.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"
+#include "core/io/resource_loader.h"
+#include "core/io/resource_saver.h"
 #include "core/map.h"
 #include "core/math/transform_2d.h"
 #include "core/os/file_access.h"
 #include "core/os/input_event.h"
+#include "core/os/keyboard.h"
 #include "core/os/main_loop.h"
 #include "core/os/memory.h"
+#include "core/os/os.h"
 #include "core/string_name.h"
 #include "core/variant.h"
 #include "core/vector.h"
+#include "core/version_generated.gen.h"
+#include "editor/editor_node.h"
+#include "editor/editor_scale.h"
+#include "editor/editor_settings.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/control.h"
@@ -63,6 +62,7 @@
 #include "scene/gui/text_edit.h"
 #include "scene/gui/tool_button.h"
 #include "servers/visual/shader_language.h"
+#include "servers/visual/shader_types.h"
 #include "servers/visual_server.h"
 
 struct ScriptCodeCompletionOption;
@@ -690,7 +690,7 @@ ShaderEditor::ShaderEditor(EditorNode *p_node) {
 	help_menu = memnew(MenuButton);
 	help_menu->set_text(TTR("Help"));
 	help_menu->set_switch_on_hover(true);
-	help_menu->get_popup()->add_icon_item(p_node->get_gui_base()->get_icon("Instance", "EditorIcons"), TTR("Online Docs"), HELP_DOCS);
+	help_menu->get_popup()->add_icon_item(p_node->get_gui_base()->get_icon("ExternalLink", "EditorIcons"), TTR("Online Docs"), HELP_DOCS);
 	help_menu->get_popup()->connect("id_pressed", this, "_menu_option");
 
 	add_child(main_container);

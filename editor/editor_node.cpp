@@ -622,9 +622,9 @@ void EditorNode::_notification(int p_what) {
 
 			PopupMenu *p = help_menu->get_popup();
 			p->set_item_icon(p->get_item_index(HELP_SEARCH), gui_base->get_icon("HelpSearch", "EditorIcons"));
-			p->set_item_icon(p->get_item_index(HELP_PANDEMONIUM_DOCS), gui_base->get_icon("Instance", "EditorIcons"));
-			p->set_item_icon(p->get_item_index(HELP_GODOT_DOCS), gui_base->get_icon("Instance", "EditorIcons"));
-			p->set_item_icon(p->get_item_index(HELP_REPORT_A_BUG), gui_base->get_icon("Instance", "EditorIcons"));
+			p->set_item_icon(p->get_item_index(HELP_PANDEMONIUM_DOCS), gui_base->get_icon("ExternalLink", "EditorIcons"));
+			p->set_item_icon(p->get_item_index(HELP_GODOT_DOCS), gui_base->get_icon("ExternalLink", "EditorIcons"));
+			p->set_item_icon(p->get_item_index(HELP_REPORT_A_BUG), gui_base->get_icon("ExternalLink", "EditorIcons"));
 			p->set_item_icon(p->get_item_index(HELP_ABOUT), gui_base->get_icon("Pandemonium", "EditorIcons"));
 			p->set_item_icon(p->get_item_index(HELP_SUPPORT_PANDEMONIUM_DEVELOPMENT), gui_base->get_icon("Heart", "EditorIcons"));
 
@@ -6355,9 +6355,9 @@ EditorNode::EditorNode() {
 	p->add_icon_shortcut(gui_base->get_icon("HelpSearch", "EditorIcons"), ED_SHORTCUT("editor/editor_help", TTR("Search Help"), KEY_F1), HELP_SEARCH);
 #endif
 	p->add_separator();
-	p->add_icon_shortcut(gui_base->get_icon("Instance", "EditorIcons"), ED_SHORTCUT("editor/online_docs", TTR("Online Documentation")), HELP_PANDEMONIUM_DOCS);
-	p->add_icon_shortcut(gui_base->get_icon("Instance", "EditorIcons"), ED_SHORTCUT("editor/pandemonium_online_docs", TTR("Pandemonium Online Documentation")), HELP_GODOT_DOCS);
-	p->add_icon_shortcut(gui_base->get_icon("Instance", "EditorIcons"), ED_SHORTCUT("editor/report_a_bug", TTR("Report a Bug")), HELP_REPORT_A_BUG);
+	p->add_icon_shortcut(gui_base->get_icon("ExternalLink", "EditorIcons"), ED_SHORTCUT("editor/online_docs", TTR("Online Documentation")), HELP_PANDEMONIUM_DOCS);
+	p->add_icon_shortcut(gui_base->get_icon("ExternalLink", "EditorIcons"), ED_SHORTCUT("editor/pandemonium_online_docs", TTR("Pandemonium Online Documentation")), HELP_GODOT_DOCS);
+	p->add_icon_shortcut(gui_base->get_icon("ExternalLink", "EditorIcons"), ED_SHORTCUT("editor/report_a_bug", TTR("Report a Bug")), HELP_REPORT_A_BUG);
 	p->add_separator();
 	p->add_icon_shortcut(gui_base->get_icon("Pandemonium", "EditorIcons"), ED_SHORTCUT("editor/about", TTR("About Pandemonium")), HELP_ABOUT);
 	p->add_icon_shortcut(gui_base->get_icon("Heart", "EditorIcons"), ED_SHORTCUT("editor/support_development", TTR("Support Pandemonium Development")), HELP_SUPPORT_PANDEMONIUM_DEVELOPMENT);
