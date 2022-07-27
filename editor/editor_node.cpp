@@ -106,6 +106,7 @@
 #include "editor/plugins/animation_tree_editor_plugin.h"
 #include "editor/plugins/animation_tree_player_editor_plugin.h"
 #include "editor/plugins/audio_stream_editor_plugin.h"
+#include "editor/plugins/bit_map_editor_plugin.h"
 #include "editor/plugins/camera_editor_plugin.h"
 #include "editor/plugins/canvas_item_editor_plugin.h"
 #include "editor/plugins/collision_polygon_2d_editor_plugin.h"
@@ -6798,6 +6799,7 @@ EditorNode::EditorNode() {
 	add_editor_plugin(memnew(ViewportPreviewEditorPlugin(this)));
 	add_editor_plugin(memnew(GradientTexture2DEditorPlugin(this)));
 	add_editor_plugin(memnew(RayCast2DEditorPlugin(this)));
+	add_editor_plugin(memnew(BitMapEditorPlugin(this)));
 
 	for (int i = 0; i < EditorPlugins::get_plugin_count(); i++) {
 		add_editor_plugin(EditorPlugins::create(i, this));
