@@ -135,3 +135,9 @@ Has to be hand ported, however some of my modules will likely need a similar cle
 
 https://github.com/godotengine/godot/commit/d088128b439d2fddf08f0b87090d756dd417b6e1
 
+### Display a modal dialog if threads are unavailable in the web editor 
+
+Not sure, if I end up porting it, I'll likely simplify it.
+
+https://github.com/godotengine/godot/commit/d9acd21b46352a0c6fe09b42d03bbdb6a749687d
+
