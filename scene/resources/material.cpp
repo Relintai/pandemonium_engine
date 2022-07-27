@@ -1789,7 +1789,7 @@ RID SpatialMaterial::get_material_rid_for_2d(bool p_shaded, bool p_transparent, 
 		material->set_billboard_mode(p_billboard_y ? BILLBOARD_FIXED_Y : BILLBOARD_ENABLED);
 	}
 
-	materials_for_2d[version] = material;
+	materials_for_2d[hash] = material;
 	// flush before using so we can access the shader right away
 	flush_changes();
 
