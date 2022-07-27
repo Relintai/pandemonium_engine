@@ -52,6 +52,13 @@ public:
 		PAUSE_MODE_PROCESS
 	};
 
+	enum PhysicsInterpolationMode {
+
+		PHYSICS_INTERPOLATION_MODE_INHERIT,
+		PHYSICS_INTERPOLATION_MODE_OFF,
+		PHYSICS_INTERPOLATION_MODE_ON
+	};
+
 	enum DuplicateFlags {
 
 		DUPLICATE_SIGNALS = 1,
@@ -112,7 +119,6 @@ private:
 		List<Node *>::Element *OW; // owned element
 		List<Node *> owned;
 
-		PauseMode pause_mode;
 		Node *pause_owner;
 
 		int network_master;
@@ -120,6 +126,10 @@ private:
 		Map<StringName, MultiplayerAPI::RPCMode> rpc_properties;
 
 		int process_priority;
+
+		// Keep bitpacked values together to get better packing
+		PauseMode pause_mode : 2;
+		PhysicsInterpolationMode physics_interpolation_mode : 2;
 
 		// variables used to properly sort the node when processing, ignored otherwise
 		//should move all the stuff below to bits
@@ -232,7 +242,10 @@ protected:
 	void _add_child_nocheck(Node *p_child, const StringName &p_name);
 	void _set_owner_nocheck(Node *p_owner);
 	void _set_name_nocheck(const StringName &p_name);
-	void _set_physics_interpolated_client_side(bool p_enable);
+	void set_physics_interpolation_mode(PhysicsInterpolationMode p_mode);
+	PhysicsInterpolationMode get_physics_interpolation_mode() const {
+		return data.physics_interpolation_mode;
+	}
 	bool _is_physics_interpolated_client_side() const {
 		return data.physics_interpolated_client_side;
 	}
