@@ -295,7 +295,11 @@ String OS::get_executable_path() const {
 
 int OS::get_process_id() const {
 	return -1;
-};
+}
+
+bool OS::is_process_running(const ProcessID &p_pid) const {
+	return false;
+}
 
 void OS::vibrate_handheld(int p_duration_ms) {
 	WARN_PRINT("vibrate_handheld() only works with Android and iOS");
