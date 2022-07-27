@@ -34,6 +34,10 @@
 #include "scene/2d/animated_sprite.h"
 #include "scene/scene_string_names.h"
 
+#ifdef TOOLS_ENABLED
+#include "editor/editor_settings.h"
+#endif
+
 Color SpriteBase3D::_get_color_accum() {
 	if (!color_dirty) {
 		return color_accum;
@@ -273,6 +277,23 @@ void SpriteBase3D::set_billboard_mode(SpatialMaterial::BillboardMode p_mode) {
 
 SpatialMaterial::BillboardMode SpriteBase3D::get_billboard_mode() const {
 	return billboard_mode;
+}
+
+void AnimatedSprite3D::get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options) const {
+#ifdef TOOLS_ENABLED
+	const String quote_style = EDITOR_GET("text_editor/completion/use_single_quotes") ? "'" : "\"";
+#else
+	const String quote_style = "\"";
+#endif
+
+	if (p_idx == 0 && p_function == "play" && frames.is_valid()) {
+		List<StringName> al;
+		frames->get_animation_list(&al);
+		for (List<StringName>::Element *E = al.front(); E; E = E->next()) {
+			r_options->push_back(quote_style + String(E->get()) + quote_style);
+		}
+	}
+	Node::get_argument_options(p_function, p_idx, r_options);
 }
 
 void SpriteBase3D::_bind_methods() {
