@@ -96,7 +96,7 @@
 
 ### Enable type information on release
 
-Not sure whether to have this or not. It does increase binary size for releasy builds by quite a bit.
+Not sure whether to have this or not. It does increase binary size for release builds by quite a bit.
 
 https://github.com/godotengine/godot/commit/226103d166e2806fdaee63242492233e810d6541
 https://github.com/godotengine/godot/commit/663978e8ba5d8b3e37b9b1baf54a69e6a3a00656
@@ -127,6 +127,7 @@ https://github.com/godotengine/godot/commit/7a88d5bf283952cfcccef111143c88923017
 Not sure if it's needed.
 
 https://github.com/godotengine/godot/commit/ad9b2b3794f33429182923f55d3451dc98063617
+https://github.com/godotengine/godot/commit/f1bef3c592ef18e0877fff913b5c1a8c1bfc9121
 
 ### Remove duplicate editor settings definitions 
 
