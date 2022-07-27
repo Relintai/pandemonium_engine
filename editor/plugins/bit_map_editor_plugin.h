@@ -31,8 +31,14 @@
 #ifndef BIT_MAP_EDITOR_PLUGIN_H
 #define BIT_MAP_EDITOR_PLUGIN_H
 
+#include "editor/editor_inspector.h"
 #include "editor/editor_plugin.h"
 #include "scene/resources/bit_map.h"
+
+#include "scene/gui/box_container.h"
+
+class TextureRect;
+class Label;
 
 class BitMapEditor : public VBoxContainer {
 	GDCLASS(BitMapEditor, VBoxContainer);

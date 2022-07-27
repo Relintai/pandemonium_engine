@@ -32,6 +32,9 @@
 
 #include "editor/editor_scale.h"
 
+#include "scene/gui/label.h"
+#include "scene/gui/texture_rect.h"
+
 void BitMapEditor::setup(const Ref<BitMap> &p_bitmap) {
 	Ref<ImageTexture> texture;
 	texture.instance();
