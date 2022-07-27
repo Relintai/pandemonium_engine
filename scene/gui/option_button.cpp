@@ -34,6 +34,8 @@
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/shortcut.h"
 
+static const int NONE_SELECTED = -1;
+
 Size2 OptionButton::get_minimum_size() const {
 	Size2 minsize = Button::get_minimum_size();
 
@@ -175,6 +177,10 @@ Ref<Texture> OptionButton::get_item_icon(int p_idx) const {
 }
 
 int OptionButton::get_item_id(int p_idx) const {
+	if (p_idx == NONE_SELECTED) {
+		return NONE_SELECTED;
+	}
+
 	return popup->get_item_id(p_idx);
 }
 
@@ -205,26 +211,33 @@ void OptionButton::add_separator() {
 void OptionButton::clear() {
 	popup->clear();
 	set_text("");
-	current = -1;
+	current = NONE_SELECTED;
 }
 
 void OptionButton::_select(int p_which, bool p_emit) {
-	if (p_which < 0) {
-		return;
-	}
 	if (p_which == current) {
 		return;
 	}
 
-	ERR_FAIL_INDEX(p_which, popup->get_item_count());
+	if (p_which == NONE_SELECTED) {
+		for (int i = 0; i < popup->get_item_count(); i++) {
+			popup->set_item_checked(i, false);
+		}
 
-	for (int i = 0; i < popup->get_item_count(); i++) {
-		popup->set_item_checked(i, i == p_which);
+		current = NONE_SELECTED;
+		set_text("");
+		set_icon(NULL);
+	} else {
+		ERR_FAIL_INDEX(p_which, popup->get_item_count());
+
+		for (int i = 0; i < popup->get_item_count(); i++) {
+			popup->set_item_checked(i, i == p_which);
+		}
+
+		current = p_which;
+		set_text(popup->get_item_text(current));
+		set_icon(popup->get_item_icon(current));
 	}
-
-	current = p_which;
-	set_text(popup->get_item_text(current));
-	set_icon(popup->get_item_icon(current));
 
 	if (is_inside_tree() && p_emit) {
 		emit_signal("item_selected", current);
@@ -263,6 +276,10 @@ Variant OptionButton::get_selected_metadata() const {
 
 void OptionButton::remove_item(int p_idx) {
 	popup->remove_item(p_idx);
+
+	if (current == p_idx) {
+		_select(NONE_SELECTED);
+	}
 }
 
 PopupMenu *OptionButton::get_popup() const {
