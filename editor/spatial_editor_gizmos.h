@@ -49,7 +49,8 @@ class Camera;
 class Spatial;
 class Timer;
 class Transform;
-template <class T> class PoolVector;
+template <class T>
+class PoolVector;
 
 class LightSpatialGizmoPlugin : public EditorSpatialGizmoPlugin {
 	GDCLASS(LightSpatialGizmoPlugin, EditorSpatialGizmoPlugin);
@@ -139,6 +140,19 @@ public:
 	void redraw(EditorSpatialGizmo *p_gizmo);
 
 	Sprite3DSpatialGizmoPlugin();
+};
+
+class Label3DSpatialGizmoPlugin : public EditorSpatialGizmoPlugin {
+	GDCLASS(Label3DSpatialGizmoPlugin, EditorSpatialGizmoPlugin);
+
+public:
+	bool has_gizmo(Spatial *p_spatial);
+	String get_name() const;
+	int get_priority() const;
+	bool can_be_hidden() const;
+	void redraw(EditorSpatialGizmo *p_gizmo);
+
+	Label3DSpatialGizmoPlugin();
 };
 
 class Position3DSpatialGizmoPlugin : public EditorSpatialGizmoPlugin {

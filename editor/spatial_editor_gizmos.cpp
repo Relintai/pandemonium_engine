@@ -30,12 +30,37 @@
 
 #include "spatial_editor_gizmos.h"
 
+#include "core/array.h"
+#include "core/class_db.h"
+#include "core/error_list.h"
+#include "core/error_macros.h"
+#include "core/list.h"
+#include "core/map.h"
+#include "core/math/aabb.h"
 #include "core/math/convex_hull.h"
+#include "core/math/face3.h"
 #include "core/math/geometry.h"
+#include "core/math/math_funcs.h"
+#include "core/math/plane.h"
+#include "core/math/rect2.h"
+#include "core/math/transform.h"
+#include "core/math/triangle_mesh.h"
+#include "core/node_path.h"
+#include "core/os/memory.h"
+#include "core/pool_vector.h"
+#include "core/rid.h"
+#include "core/script_language.h"
+#include "core/typedefs.h"
+#include "core/undo_redo.h"
+#include "editor/editor_node.h"
+#include "editor/editor_settings.h"
 #include "scene/3d/audio_stream_player_3d.h"
+#include "scene/3d/camera.h"
+#include "scene/3d/collision_object.h"
 #include "scene/3d/collision_polygon.h"
 #include "scene/3d/collision_shape.h"
 #include "scene/3d/cpu_particles.h"
+#include "scene/3d/label_3d.h"
 #include "scene/3d/light.h"
 #include "scene/3d/listener.h"
 #include "scene/3d/mesh_instance.h"
@@ -50,10 +75,15 @@
 #include "scene/3d/room.h"
 #include "scene/3d/skeleton.h"
 #include "scene/3d/soft_body.h"
+#include "scene/3d/spatial.h"
 #include "scene/3d/spring_arm.h"
 #include "scene/3d/sprite_3d.h"
 #include "scene/3d/vehicle_body.h"
 #include "scene/3d/visibility_notifier.h"
+#include "scene/gui/control.h"
+#include "scene/main/node.h"
+#include "scene/main/scene_tree.h"
+#include "scene/main/timer.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/box_shape.h"
 #include "scene/resources/capsule_shape.h"
@@ -61,47 +91,18 @@
 #include "scene/resources/convex_polygon_shape.h"
 #include "scene/resources/cylinder_shape.h"
 #include "scene/resources/height_map_shape.h"
+#include "scene/resources/material.h"
 #include "scene/resources/navigation_mesh.h"
 #include "scene/resources/occluder_shape.h"
 #include "scene/resources/occluder_shape_polygon.h"
 #include "scene/resources/plane_shape.h"
 #include "scene/resources/primitive_meshes.h"
 #include "scene/resources/ray_shape.h"
+#include "scene/resources/shape.h"
 #include "scene/resources/skin.h"
 #include "scene/resources/sphere_shape.h"
 #include "scene/resources/surface_tool.h"
 #include "scene/resources/world.h"
-#include "editor/editor_node.h"
-#include "core/array.h"
-#include "core/class_db.h"
-#include "core/error_list.h"
-#include "core/error_macros.h"
-#include "core/list.h"
-#include "core/map.h"
-#include "core/math/aabb.h"
-#include "core/math/face3.h"
-#include "core/math/math_funcs.h"
-#include "core/math/plane.h"
-#include "core/math/rect2.h"
-#include "core/math/transform.h"
-#include "core/math/triangle_mesh.h"
-#include "core/node_path.h"
-#include "core/os/memory.h"
-#include "core/pool_vector.h"
-#include "core/rid.h"
-#include "core/script_language.h"
-#include "core/typedefs.h"
-#include "core/undo_redo.h"
-#include "editor/editor_settings.h"
-#include "scene/3d/camera.h"
-#include "scene/3d/collision_object.h"
-#include "scene/3d/spatial.h"
-#include "scene/gui/control.h"
-#include "scene/main/node.h"
-#include "scene/main/scene_tree.h"
-#include "scene/main/timer.h"
-#include "scene/resources/material.h"
-#include "scene/resources/shape.h"
 #include "servers/visual_server.h"
 
 #define HANDLE_HALF_SIZE 9.5
@@ -1601,6 +1602,38 @@ void Sprite3DSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	p_gizmo->clear();
 
 	Ref<TriangleMesh> tm = sprite->generate_triangle_mesh();
+	if (tm.is_valid()) {
+		p_gizmo->add_collision_triangles(tm);
+	}
+}
+
+///
+
+Label3DSpatialGizmoPlugin::Label3DSpatialGizmoPlugin() {
+}
+
+bool Label3DSpatialGizmoPlugin::has_gizmo(Spatial *p_spatial) {
+	return Object::cast_to<Label3D>(p_spatial) != nullptr;
+}
+
+String Label3DSpatialGizmoPlugin::get_name() const {
+	return "Label3D";
+}
+
+int Label3DSpatialGizmoPlugin::get_priority() const {
+	return -1;
+}
+
+bool Label3DSpatialGizmoPlugin::can_be_hidden() const {
+	return false;
+}
+
+void Label3DSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
+	Label3D *label = Object::cast_to<Label3D>(p_gizmo->get_spatial_node());
+
+	p_gizmo->clear();
+
+	Ref<TriangleMesh> tm = label->generate_triangle_mesh();
 	if (tm.is_valid()) {
 		p_gizmo->add_collision_triangles(tm);
 	}

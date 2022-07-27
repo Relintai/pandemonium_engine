@@ -67,6 +67,7 @@
 #include "scene/2d/touch_screen_button.h"
 #include "scene/2d/visibility_notifier_2d.h"
 #include "scene/2d/y_sort.h"
+#include "scene/3d/label_3d.h"
 #include "scene/3d/spatial.h"
 #include "scene/3d/world_environment.h"
 #include "scene/animation/animation_blend_space_1d.h"
@@ -432,6 +433,7 @@ void register_scene_types() {
 	ClassDB::register_virtual_class<SpriteBase3D>();
 	ClassDB::register_class<Sprite3D>();
 	ClassDB::register_class<AnimatedSprite3D>();
+	ClassDB::register_class<Label3D>();
 	ClassDB::register_virtual_class<Light>();
 	ClassDB::register_class<DirectionalLight>();
 	ClassDB::register_class<OmniLight>();
