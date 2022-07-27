@@ -263,7 +263,7 @@ protected:
 	static void _bind_methods();
 
 public:
-	void start();
+	void start(int p_port = -1, const IP_Address &p_bind_address = IP_Address("*"));
 	void pause();
 	void unpause();
 	void stop();
