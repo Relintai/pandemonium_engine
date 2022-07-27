@@ -275,13 +275,23 @@ Array PandemoniumNavigationServer::map_get_agents(RID p_map) const {
 RID PandemoniumNavigationServer::region_get_map(RID p_region) const {
 	NavRegion *region = region_owner.getornull(p_region);
 	ERR_FAIL_COND_V(region == nullptr, RID());
-	return region->get_map()->get_self();
+
+	if (region->get_map()) {
+		return region->get_map()->get_self();
+	}
+
+	return RID();
 }
 
 RID PandemoniumNavigationServer::agent_get_map(RID p_agent) const {
 	RvoAgent *agent = agent_owner.getornull(p_agent);
 	ERR_FAIL_COND_V(agent == nullptr, RID());
-	return agent->get_map()->get_self();
+
+	if (agent->get_map()) {
+		return agent->get_map()->get_self();
+	}
+
+	return RID();
 }
 
 RID PandemoniumNavigationServer::region_create() const {
