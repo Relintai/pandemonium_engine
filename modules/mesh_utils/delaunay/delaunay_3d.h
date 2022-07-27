@@ -369,7 +369,7 @@ public:
 				E = N;
 			}
 
-			uint32_t good_triangles = 0;
+			//uint32_t good_triangles = 0;
 			for (uint32_t j = 0; j < triangles.size(); j++) {
 				if (triangles[j].bad) {
 					continue;
