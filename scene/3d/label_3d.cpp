@@ -31,6 +31,7 @@
 #include "label_3d.h"
 
 #include "core/core_string_names.h"
+#include "scene/resources/primitive_meshes.h"
 #include "scene/resources/theme.h"
 #include "scene/scene_string_names.h"
 

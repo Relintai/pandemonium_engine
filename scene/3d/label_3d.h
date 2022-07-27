@@ -33,6 +33,9 @@
 
 #include "scene/3d/visual_instance.h"
 #include "scene/resources/font.h"
+#include "scene/resources/material.h"
+
+class TriangleMesh;
 
 class Label3D : public GeometryInstance {
 	GDCLASS(Label3D, GeometryInstance);
