@@ -3111,7 +3111,7 @@ void RTileSetEditor::select_coord(const Vector2 &coord) {
 				for (int outline_idx = 0; outline_idx < edited_navigation_shape->get_outline_count(); outline_idx++) {
 					PoolVector<Vector2> outline_vertices = edited_navigation_shape->get_outline(outline_idx);
 					for (int vertex_inx = 0; vertex_inx < outline_vertices.size(); vertex_inx++) {
-						current_shape.push_back(outline_vertices[vertex_inx] + shape_anchor)::;
+						current_shape.push_back(outline_vertices[vertex_inx] + shape_anchor);
 					}
 				}
 			}
