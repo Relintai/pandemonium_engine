@@ -36,9 +36,14 @@
 #include "core/object.h"
 
 class MenuButton;
+class RichTextLabel;
+class AcceptDialog;
 
 class EditorRunNative : public HBoxContainer {
 	GDCLASS(EditorRunNative, HBoxContainer);
+
+	RichTextLabel *result_dialog_log;
+	AcceptDialog *result_dialog;
 
 	Map<int, MenuButton *> menus;
 	bool first;

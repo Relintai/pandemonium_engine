@@ -32,9 +32,9 @@
 
 #include "scene/gui/dialogs.h"
 
+#include "core/math/vector2.h"
 #include "core/os/dir_access.h"
 #include "core/os/thread.h"
-#include "core/math/vector2.h"
 #include "core/reference.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
@@ -81,7 +81,8 @@ private:
 	Button *button_export;
 	bool updating;
 
-	AcceptDialog *error_dialog;
+	RichTextLabel *result_dialog_log;
+	AcceptDialog *result_dialog;
 	ConfirmationDialog *delete_confirm;
 
 	OptionButton *export_filter;
