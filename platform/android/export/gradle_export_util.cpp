@@ -211,19 +211,6 @@ String _get_screen_sizes_tag(const Ref<EditorExportPreset> &p_preset) {
 	return manifest_screen_sizes;
 }
 
-String _get_instrumentation_tag(const Ref<EditorExportPreset> &p_preset) {
-	String package_name = p_preset->get("package/unique_name");
-	String manifest_instrumentation_text = vformat(
-			"    <instrumentation\n"
-			"        tools:node=\"replace\"\n"
-			"        android:name=\".PandemoniumInstrumentation\"\n"
-			"        android:icon=\"@mipmap/icon\"\n"
-			"        android:label=\"@string/pandemonium_project_name_string\"\n"
-			"        android:targetPackage=\"%s\" />\n",
-			package_name);
-	return manifest_instrumentation_text;
-}
-
 String _get_activity_tag(const Ref<EditorExportPreset> &p_preset) {
 	String orientation = _get_android_orientation_label(
 			OS::get_singleton()->get_screen_orientation_from_string(GLOBAL_GET("display/window/handheld/orientation")));

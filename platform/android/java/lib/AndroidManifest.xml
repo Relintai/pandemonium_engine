@@ -16,12 +16,13 @@
 
         <service android:name=".PandemoniumDownloaderService" />
 
-    </application>
+        <activity
+            android:name=".utils.ProcessPhoenix"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:process=":phoenix"
+            android:exported="false"
+            />
 
-    <instrumentation
-        android:name=".PandemoniumInstrumentation"
-        android:icon="@mipmap/icon"
-        android:label="@string/pandemonium_project_name_string"
-        android:targetPackage="net.relintai.pandemonium.pandemonium" />
+    </application>
 
 </manifest>

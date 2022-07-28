@@ -30,7 +30,7 @@
 
 package net.relintai.pandemonium.pandemonium;
 
-import android.content.ComponentName;
+import net.relintai.pandemonium.pandemonium.utils.ProcessPhoenix;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -75,6 +75,7 @@ public abstract class FullScreenPandemoniumApp extends FragmentActivity implemen
 
 	@Override
 	public void onDestroy() {
+		Log.v(TAG, "Destroying Pandemonium app...");
 		super.onDestroy();
 		onPandemoniumForceQuit(pandemoniumFragment);
 	}
@@ -82,27 +83,21 @@ public abstract class FullScreenPandemoniumApp extends FragmentActivity implemen
 	@Override
 	public final void onPandemoniumForceQuit(Pandemonium instance) {
 		if (instance == pandemoniumFragment) {
-			System.exit(0);
+			Log.v(TAG, "Force quitting Pandemonium instance");
+			ProcessPhoenix.forceQuit(this);
 		}
 	}
 
 	@Override
 	public final void onPandemoniumRestartRequested(Pandemonium instance) {
 		if (instance == pandemoniumFragment) {
-			// HACK:
-			//
-			// Currently it's very hard to properly deinitialize Pandemonium on Android to restart the game
+			// It's very hard to properly de-initialize Pandemonium on Android to restart the game
 			// from scratch. Therefore, we need to kill the whole app process and relaunch it.
 			//
 			// Restarting only the activity, wouldn't be enough unless it did proper cleanup (including
 			// releasing and reloading native libs or resetting their state somehow and clearing statics).
-			//
-			// Using instrumentation is a way of making the whole app process restart, because Android
-			// will kill any process of the same package which was already running.
-			//
-			Bundle args = new Bundle();
-			args.putParcelable("intent", getIntent());
-			startInstrumentation(new ComponentName(this, PandemoniumInstrumentation.class), null, args);
+			Log.v(TAG, "Restarting Pandemonium instance...");
+			ProcessPhoenix.triggerRebirth(this);
 		}
 	}
 
