@@ -1676,16 +1676,20 @@ void RTileSetEditor::_on_workspace_input(const Ref<InputEvent> &p_ie) {
 
 										w.release();
 
-										undo_redo->create_action(TTR("Edit Navigation Polygon"));
-										undo_redo->add_do_method(edited_navigation_shape.ptr(), "set_vertices", polygon);
-										undo_redo->add_undo_method(edited_navigation_shape.ptr(), "set_vertices", edited_navigation_shape->get_vertices());
-										undo_redo->add_do_method(edited_navigation_shape.ptr(), "clear_polygons");
-										undo_redo->add_undo_method(edited_navigation_shape.ptr(), "clear_polygons");
-										undo_redo->add_do_method(edited_navigation_shape.ptr(), "add_polygon", indices);
-										undo_redo->add_undo_method(edited_navigation_shape.ptr(), "add_polygon", edited_navigation_shape->get_polygon(0));
-										undo_redo->add_do_method(this, "_select_edited_shape_coord");
-										undo_redo->add_undo_method(this, "_select_edited_shape_coord");
-										undo_redo->commit_action();
+										edited_navigation_shape->clear_outlines();
+										edited_navigation_shape->add_outline(polygon);
+										edited_navigation_shape->make_polygons_from_outlines();
+										// FIXME Couldn't figure out the undo_redo quagmire
+										//undo_redo->create_action(TTR("Edit Navigation Polygon"));
+										//undo_redo->add_do_method(edited_navigation_shape.ptr(), "set_vertices", polygon);
+										//undo_redo->add_undo_method(edited_navigation_shape.ptr(), "set_vertices", edited_navigation_shape->get_vertices());
+										//undo_redo->add_do_method(edited_navigation_shape.ptr(), "clear_polygons");
+										//undo_redo->add_undo_method(edited_navigation_shape.ptr(), "clear_polygons");
+										//undo_redo->add_do_method(edited_navigation_shape.ptr(), "add_polygon", indices);
+										//undo_redo->add_undo_method(edited_navigation_shape.ptr(), "add_polygon", edited_navigation_shape->get_polygon(0));
+										//undo_redo->add_do_method(this, "_select_edited_shape_coord");
+										//undo_redo->add_undo_method(this, "_select_edited_shape_coord");
+										//undo_redo->commit_action()::;
 									}
 								}
 							}
@@ -2815,11 +2819,14 @@ void RTileSetEditor::draw_polygon_shapes() {
 							colors.push_back(c_bg);
 						}
 					} else {
-						PoolVector<Vector2> vertices = shape->get_vertices();
-						for (int j = 0; j < shape->get_polygon(0).size(); j++) {
-							polygon.push_back(vertices[shape->get_polygon(0)[j]] + anchor);
-							colors.push_back(c_bg);
+						for (int outline_idx = 0; outline_idx < shape->get_outline_count(); outline_idx++) {
+							PoolVector<Vector2> outline_vertices = shape->get_outline(outline_idx);
+							for (int vertex_idx = 0; vertex_idx < outline_vertices.size(); vertex_idx++) {
+								polygon.push_back(outline_vertices[vertex_idx] + anchor);
+							}
 						}
+						colors.resize(polygon.size());
+						colors.fill(c_bg);
 					}
 					workspace->draw_polygon(polygon, colors);
 
@@ -2863,11 +2870,14 @@ void RTileSetEditor::draw_polygon_shapes() {
 								colors.push_back(c_bg);
 							}
 						} else {
-							PoolVector<Vector2> vertices = shape->get_vertices();
-							for (int j = 0; j < shape->get_polygon(0).size(); j++) {
-								polygon.push_back(vertices[shape->get_polygon(0)[j]] + anchor);
-								colors.push_back(c_bg);
+							for (int outline_idx = 0; outline_idx < shape->get_outline_count(); outline_idx++) {
+								PoolVector<Vector2> outline_vertices = shape->get_outline(outline_idx);
+								for (int vertex_idx = 0; vertex_idx < outline_vertices.size(); vertex_idx++) {
+									polygon.push_back(outline_vertices[vertex_idx] + anchor);
+								}
 							}
+							colors.resize(polygon.size());
+							colors.fill(c_bg);
 						}
 						workspace->draw_polygon(polygon, colors);
 
@@ -2989,8 +2999,9 @@ void RTileSetEditor::close_shape(const Vector2 &shape_anchor) {
 		}
 
 		w.release();
-		shape->set_vertices(polygon);
-		shape->add_polygon(indices);
+		shape->clear_outlines();
+		shape->add_outline(polygon);
+		shape->make_polygons_from_outlines();
 
 		undo_redo->create_action(TTR("Create Navigation Polygon"));
 		if (tileset->tile_get_tile_mode(get_current_tile()) == RTileSet::AUTO_TILE || tileset->tile_get_tile_mode(get_current_tile()) == RTileSet::ATLAS_TILE) {
@@ -3044,10 +3055,10 @@ void RTileSetEditor::select_coord(const Vector2 &coord) {
 		} else if (edit_mode == EDITMODE_NAVIGATION) {
 			current_shape.resize(0);
 			if (edited_navigation_shape.is_valid()) {
-				if (edited_navigation_shape->get_polygon_count() > 0) {
-					PoolVector<Vector2> vertices = edited_navigation_shape->get_vertices();
-					for (int i = 0; i < edited_navigation_shape->get_polygon(0).size(); i++) {
-						current_shape.push_back(vertices[edited_navigation_shape->get_polygon(0)[i]] + current_tile_region.position);
+				for (int outline_idx = 0; outline_idx < edited_navigation_shape->get_outline_count(); outline_idx++) {
+					PoolVector<Vector2> outline_vertices = edited_navigation_shape->get_outline(outline_idx);
+					for (int vertex_inx = 0; vertex_inx < outline_vertices.size(); vertex_inx++) {
+						current_shape.push_back(outline_vertices[vertex_inx] + current_tile_region.position);
 					}
 				}
 			}
@@ -3097,10 +3108,10 @@ void RTileSetEditor::select_coord(const Vector2 &coord) {
 		} else if (edit_mode == EDITMODE_NAVIGATION) {
 			current_shape.resize(0);
 			if (edited_navigation_shape.is_valid()) {
-				if (edited_navigation_shape->get_polygon_count() > 0) {
-					PoolVector<Vector2> vertices = edited_navigation_shape->get_vertices();
-					for (int i = 0; i < edited_navigation_shape->get_polygon(0).size(); i++) {
-						current_shape.push_back(vertices[edited_navigation_shape->get_polygon(0)[i]] + shape_anchor);
+				for (int outline_idx = 0; outline_idx < edited_navigation_shape->get_outline_count(); outline_idx++) {
+					PoolVector<Vector2> outline_vertices = edited_navigation_shape->get_outline(outline_idx);
+					for (int vertex_inx = 0; vertex_inx < outline_vertices.size(); vertex_inx++) {
+						current_shape.push_back(outline_vertices[vertex_inx] + shape_anchor)::;
 					}
 				}
 			}
