@@ -34,10 +34,13 @@ import net.relintai.pandemonium.pandemonium.FullScreenPandemoniumApp;
 import net.relintai.pandemonium.pandemonium.utils.PermissionsUtil;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Debug;
 
 import androidx.annotation.Nullable;
+import androidx.window.layout.WindowMetrics;
+import androidx.window.layout.WindowMetricsCalculator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -91,21 +94,47 @@ public class PandemoniumEditor extends FullScreenPandemoniumApp {
 	public void onNewPandemoniumInstanceRequested(String[] args) {
 		// Parse the arguments to figure out which activity to start.
 		Class<?> targetClass = PandemoniumGame.class;
+    // Whether we should launch the new godot instance in an adjacent window
+		// https://developer.android.com/reference/android/content/Intent#FLAG_ACTIVITY_LAUNCH_ADJACENT
+		boolean launchAdjacent = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && (isInMultiWindowMode() || isLargeScreen());
+
 		for (String arg : args) {
 			if (EDITOR_ARG.equals(arg)) {
 				targetClass = PandemoniumEditor.class;
-				break;
+        launchAdjacent = false;
+        break;
 			}
 
 			if (PROJECT_MANAGER_ARG.equals(arg)) {
 				targetClass = PandemoniumProjectManager.class;
+        launchAdjacent = false;
 				break;
 			}
 		}
 
 		// Launch a new activity
-		Intent newInstance = new Intent(this, targetClass).putExtra(COMMAND_LINE_PARAMS, args);
+    Intent newInstance = new Intent(this, targetClass)
+									 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+									 .putExtra(COMMAND_LINE_PARAMS, args);
+
+		if (launchAdjacent) {
+			newInstance.addFlags(Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT);
+		}
+
 		startActivity(newInstance);
+	}
+
+  protected boolean isLargeScreen() {
+		WindowMetrics metrics =
+				WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this);
+
+		// Get the screen's density scale
+		float scale = getResources().getDisplayMetrics().density;
+
+		// Get the minimum window size
+		float minSize = Math.min(metrics.getBounds().width(), metrics.getBounds().height());
+		float minSizeDp = minSize / scale;
+		return minSizeDp >= 840f; // Correspond to the EXPANDED window size class.
 	}
 
   @Override
