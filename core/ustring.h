@@ -356,6 +356,7 @@ public:
 	String get_file() const;
 	static String humanize_size(uint64_t p_size);
 	String simplify_path() const;
+	bool is_network_share_path() const;
 	String append_path(const char *p_path) const;
 	String append_path(const String &p_path) const;
 	String path_clean_end_slash() const;
