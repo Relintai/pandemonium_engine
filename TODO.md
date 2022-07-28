@@ -27,6 +27,9 @@
 ## Navmeshes
 
 - Add dummy nav server, so it can be turned off.
+- The current nav server uses worker threads (ThreadWorkPool), maybe it should use ThreadPool.
+- The current nav server might not work if threading is disabled. TODO check.
+- Maybe ThreadWorkPool could be removed.
 
 ## Terraman, Voxelman, Props
 
