@@ -43,6 +43,7 @@ class World2D : public Resource {
 
 	RID canvas;
 	RID space;
+	RID navigation_map;
 
 	SpatialIndexer2D *indexer;
 
@@ -64,6 +65,7 @@ protected:
 public:
 	RID get_canvas();
 	RID get_space();
+	RID get_navigation_map();
 
 	Physics2DDirectSpaceState *get_direct_space_state();
 
