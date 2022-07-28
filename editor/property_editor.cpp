@@ -30,31 +30,16 @@
 
 #include "property_editor.h"
 
-#include "core/class_db.h"
-#include "core/io/resource_loader.h"
-#include "core/math/expression.h"
-#include "core/os/input.h"
-#include "core/os/keyboard.h"
-#include "core/pair.h"
-#include "core/project_settings.h"
-#include "editor/array_property_edit.h"
-#include "editor/create_dialog.h"
-#include "editor/dictionary_property_edit.h"
-#include "editor/editor_node.h"
-#include "editor/editor_scale.h"
-#include "editor/editor_settings.h"
-#include "editor/filesystem_dock.h"
-#include "editor/property_selector.h"
-#include "scene/gui/label.h"
-#include "scene/main/viewport.h"
-#include "scene/resources/font.h"
 #include "core/array.h"
+#include "core/class_db.h"
 #include "core/color.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"
+#include "core/io/resource_loader.h"
 #include "core/map.h"
 #include "core/math/aabb.h"
 #include "core/math/basis.h"
+#include "core/math/expression.h"
 #include "core/math/math_funcs.h"
 #include "core/math/plane.h"
 #include "core/math/quat.h"
@@ -63,9 +48,13 @@
 #include "core/math/transform_2d.h"
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
+#include "core/os/input.h"
 #include "core/os/input_event.h"
+#include "core/os/keyboard.h"
 #include "core/os/main_loop.h"
 #include "core/os/memory.h"
+#include "core/pair.h"
+#include "core/project_settings.h"
 #include "core/ref_ptr.h"
 #include "core/resource.h"
 #include "core/rid.h"
@@ -73,8 +62,16 @@
 #include "core/set.h"
 #include "core/string_name.h"
 #include "core/typedefs.h"
+#include "editor/array_property_edit.h"
+#include "editor/create_dialog.h"
+#include "editor/dictionary_property_edit.h"
 #include "editor/editor_data.h"
 #include "editor/editor_file_dialog.h"
+#include "editor/editor_node.h"
+#include "editor/editor_scale.h"
+#include "editor/editor_settings.h"
+#include "editor/filesystem_dock.h"
+#include "editor/property_selector.h"
 #include "editor/scene_tree_dock.h"
 #include "editor/scene_tree_editor.h"
 #include "scene/2d/canvas_item.h"
@@ -84,6 +81,7 @@
 #include "scene/gui/control.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/grid_container.h"
+#include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/menu_button.h"
 #include "scene/gui/popup_menu.h"
@@ -95,6 +93,8 @@
 #include "scene/gui/texture_rect.h"
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
+#include "scene/main/viewport.h"
+#include "scene/resources/font.h"
 #include "scene/resources/style_box.h"
 #include "scene/resources/texture.h"
 #include "servers/visual_server.h"
@@ -460,7 +460,7 @@ bool CustomPropertyEditor::edit(Object *p_owner, const String &p_name, Variant::
 				updating = false;
 				return false;
 
-			} else if (hint == PROPERTY_HINT_LAYERS_2D_PHYSICS || hint == PROPERTY_HINT_LAYERS_2D_RENDER || hint == PROPERTY_HINT_LAYERS_3D_PHYSICS || hint == PROPERTY_HINT_LAYERS_3D_RENDER) {
+			} else if (hint == PROPERTY_HINT_LAYERS_2D_PHYSICS || hint == PROPERTY_HINT_LAYERS_2D_RENDER || hint == PROPERTY_HINT_LAYERS_2D_NAVIGATION || hint == PROPERTY_HINT_LAYERS_3D_PHYSICS || hint == PROPERTY_HINT_LAYERS_3D_RENDER || hint == PROPERTY_HINT_LAYERS_3D_NAVIGATION) {
 				String basename;
 				switch (hint) {
 					case PROPERTY_HINT_LAYERS_2D_RENDER:
@@ -469,11 +469,17 @@ bool CustomPropertyEditor::edit(Object *p_owner, const String &p_name, Variant::
 					case PROPERTY_HINT_LAYERS_2D_PHYSICS:
 						basename = "layer_names/2d_physics";
 						break;
+					case PROPERTY_HINT_LAYERS_2D_NAVIGATION:
+						basename = "layer_names/2d_navigation";
+						break;
 					case PROPERTY_HINT_LAYERS_3D_RENDER:
 						basename = "layer_names/3d_render";
 						break;
 					case PROPERTY_HINT_LAYERS_3D_PHYSICS:
 						basename = "layer_names/3d_physics";
+						break;
+					case PROPERTY_HINT_LAYERS_3D_NAVIGATION:
+						basename = "layer_names/3d_navigation";
 						break;
 				}
 
@@ -1207,7 +1213,7 @@ void CustomPropertyEditor::_action_pressed(int p_which) {
 			emit_signal("variant_changed");
 		} break;
 		case Variant::INT: {
-			if (hint == PROPERTY_HINT_LAYERS_2D_PHYSICS || hint == PROPERTY_HINT_LAYERS_2D_RENDER || hint == PROPERTY_HINT_LAYERS_3D_PHYSICS || hint == PROPERTY_HINT_LAYERS_3D_RENDER) {
+			if (hint == PROPERTY_HINT_LAYERS_2D_PHYSICS || hint == PROPERTY_HINT_LAYERS_2D_RENDER || hint == PROPERTY_HINT_LAYERS_2D_NAVIGATION || hint == PROPERTY_HINT_LAYERS_3D_PHYSICS || hint == PROPERTY_HINT_LAYERS_3D_RENDER || hint == PROPERTY_HINT_LAYERS_3D_NAVIGATION) {
 				uint32_t f = v;
 				if (checks20[p_which]->is_pressed()) {
 					f |= (1 << p_which);

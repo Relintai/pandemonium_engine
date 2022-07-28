@@ -32,11 +32,8 @@
 
 #include "core/object.h"
 #include "nav_rid.h"
-#include <Agent.h>
 
-/**
-	@author AndreaCatania
-*/
+#include <Agent.h>
 
 class NavMap;
 

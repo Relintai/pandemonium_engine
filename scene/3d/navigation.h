@@ -42,6 +42,8 @@ class Navigation : public Spatial {
 	real_t cell_height;
 	real_t edge_connection_margin;
 
+	uint32_t navigation_layers;
+
 protected:
 	static void _bind_methods();
 	void _notification(int p_what);
@@ -63,6 +65,9 @@ public:
 	float get_cell_height() const {
 		return cell_height;
 	}
+
+	void set_navigation_layers(uint32_t p_navigation_layers);
+	uint32_t get_navigation_layers() const;
 
 	void set_edge_connection_margin(float p_edge_connection_margin);
 	float get_edge_connection_margin() const {

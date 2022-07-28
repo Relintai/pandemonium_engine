@@ -31,6 +31,8 @@
 #include "navigation_mesh.h"
 
 void NavigationMesh::create_from_mesh(const Ref<Mesh> &p_mesh) {
+	ERR_FAIL_COND(p_mesh.is_null());
+
 	vertices = PoolVector<Vector3>();
 	clear_polygons();
 
@@ -39,7 +41,11 @@ void NavigationMesh::create_from_mesh(const Ref<Mesh> &p_mesh) {
 			WARN_PRINT("A mesh surface was skipped when creating a NavigationMesh due to wrong primitive type in the source mesh. Mesh surface must be made out of triangles.");
 			continue;
 		}
+
 		Array arr = p_mesh->surface_get_arrays(i);
+
+		ERR_CONTINUE(arr.size() != Mesh::ARRAY_MAX);
+
 		PoolVector<Vector3> varr = arr[Mesh::ARRAY_VERTEX];
 		PoolVector<int> iarr = arr[Mesh::ARRAY_INDEX];
 		if (varr.size() == 0 || iarr.size() == 0) {

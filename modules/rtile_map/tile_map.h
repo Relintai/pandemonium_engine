@@ -80,6 +80,8 @@ private:
 	CollisionObject2D *collision_parent;
 	bool use_kinematic;
 	Navigation2D *navigation;
+	bool bake_navigation;
+	uint32_t navigation_layers;
 	bool show_collision = false;
 	Ref<FastNoise> noise;
 	bool _use_rao;
@@ -314,6 +316,12 @@ public:
 
 	void set_collision_bounce(float p_bounce);
 	float get_collision_bounce() const;
+
+	void set_bake_navigation(bool p_bake_navigation);
+	bool is_baking_navigation();
+
+	void set_navigation_layers(uint32_t p_navigation_layers);
+	uint32_t get_navigation_layers();
 
 	void set_mode(Mode p_mode);
 	Mode get_mode() const;

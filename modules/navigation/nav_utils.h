@@ -31,11 +31,9 @@
 /*************************************************************************/
 
 #include "core/math/vector3.h"
-#include <vector>
+#include "core/rid.h"
 
-/**
-	@author AndreaCatania
-*/
+#include <vector>
 
 class NavRegion;
 
@@ -49,8 +47,7 @@ union PointKey {
 		int64_t z : 21;
 	};
 
-	uint64_t key;
-	bool operator<(const PointKey &p_key) const { return key < p_key.key; }
+	uint64_t key = 0;
 };
 
 struct EdgeKey {
@@ -79,16 +76,23 @@ struct Edge {
 	/// This edge ID
 	int this_edge;
 
-	/// Other Polygon
-	Polygon *other_polygon;
+	/// The gateway in the edge, as, in some case, the whole edge might not be navigable.
+	struct Connection {
+		Polygon *polygon;
+		int edge;
+		Vector3 pathway_start;
+		Vector3 pathway_end;
 
-	/// The other `Polygon` at this edge id has this `Polygon`.
-	int other_edge;
+		Connection() {
+			polygon = nullptr;
+			edge = -1;
+		}
+	};
+
+	Vector<Connection> connections;
 
 	Edge() {
 		this_edge = -1;
-		other_polygon = NULL;
-		other_edge = -1;
 	}
 };
 
@@ -106,19 +110,9 @@ struct Polygon {
 
 	/// The center of this `Polygon`
 	Vector3 center;
-};
 
-struct Connection {
-	Polygon *A;
-	int A_edge;
-	Polygon *B;
-	int B_edge;
-
-	Connection() {
-		A = NULL;
-		B = NULL;
-		A_edge = -1;
-		B_edge = -1;
+	Polygon() {
+		owner = nullptr;
 	}
 };
 
@@ -126,21 +120,27 @@ struct NavigationPoly {
 	uint32_t self_id;
 	/// This poly.
 	const Polygon *poly;
-	/// The previous navigation poly (id in the `navigation_poly` array).
-	int prev_navigation_poly_id;
-	/// The edge id in this `Poly` to reach the `prev_navigation_poly_id`.
+
+	/// Those 4 variables are used to travel the path backwards.
+	int back_navigation_poly_id;
 	uint32_t back_navigation_edge;
+	Vector3 back_navigation_edge_pathway_start;
+	Vector3 back_navigation_edge_pathway_end;
+
 	/// The entry location of this poly.
 	Vector3 entry;
 	/// The distance to the destination.
 	float traveled_distance;
 
-	NavigationPoly(const Polygon *p_poly) :
-			self_id(0),
-			poly(p_poly),
-			prev_navigation_poly_id(-1),
-			back_navigation_edge(0),
-			traveled_distance(0.0) {
+	NavigationPoly(const Polygon *p_poly) {
+		self_id = 0;
+		poly = p_poly;
+
+		back_navigation_poly_id = -1;
+		back_navigation_edge = UINT32_MAX;
+
+		back_navigation_edge = 0;
+		traveled_distance = 0.0;
 	}
 
 	bool operator==(const NavigationPoly &other) const {
@@ -150,15 +150,6 @@ struct NavigationPoly {
 	bool operator!=(const NavigationPoly &other) const {
 		return !operator==(other);
 	}
-};
-
-struct FreeEdge {
-	bool is_free;
-	Polygon *poly;
-	uint32_t edge_id;
-	Vector3 edge_center;
-	Vector3 edge_dir;
-	float edge_len_squared;
 };
 
 struct ClosestPointQueryResult {

@@ -102,7 +102,13 @@ class NavigationPolygonInstance : public Node2D {
 	Navigation2D *navigation;
 	Ref<NavigationPolygon> navpoly;
 
+	real_t enter_cost;
+	real_t travel_cost;
+
+	uint32_t navigation_layers;
+
 	void _navpoly_changed();
+	void _map_changed(RID p_map);
 
 protected:
 	void _notification(int p_what);
@@ -117,7 +123,16 @@ public:
 	void set_enabled(bool p_enabled);
 	bool is_enabled() const;
 
+	void set_navigation_layers(uint32_t p_navigation_layers);
+	uint32_t get_navigation_layers() const;
+
 	RID get_region_rid() const;
+
+	void set_enter_cost(real_t p_enter_cost);
+	real_t get_enter_cost() const;
+
+	void set_travel_cost(real_t p_travel_cost);
+	real_t get_travel_cost() const;
 
 	void set_navigation_polygon(const Ref<NavigationPolygon> &p_navpoly);
 	Ref<NavigationPolygon> get_navigation_polygon() const;

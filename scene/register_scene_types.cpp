@@ -714,6 +714,11 @@ void register_scene_types() {
 		GLOBAL_DEF("layer_names/2d_physics/layer_" + itos(i + 1), "");
 		GLOBAL_DEF("layer_names/3d_physics/layer_" + itos(i + 1), "");
 	}
+
+	for (int i = 0; i < 32; i++) {
+		GLOBAL_DEF("layer_names/2d_navigation/layer_" + itos(i + 1), "");
+		GLOBAL_DEF("layer_names/3d_navigation/layer_" + itos(i + 1), "");
+	}
 }
 
 void initialize_theme() {

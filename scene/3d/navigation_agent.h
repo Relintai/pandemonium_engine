@@ -46,6 +46,7 @@ class NavigationAgent : public Node {
 	RID map_before_pause;
 
 	bool avoidance_enabled;
+	uint32_t navigation_layers;
 
 	real_t target_desired_distance;
 	real_t radius;
@@ -92,6 +93,11 @@ public:
 
 	void set_avoidance_enabled(bool p_enabled);
 	bool get_avoidance_enabled() const;
+
+	void set_agent_parent(Node *p_agent_parent);
+
+	void set_navigation_layers(uint32_t p_navigation_layers);
+	uint32_t get_navigation_layers() const;
 
 	void set_target_desired_distance(real_t p_dd);
 	real_t get_target_desired_distance() const {
@@ -162,6 +168,7 @@ public:
 
 private:
 	void update_navigation();
+	void _request_repath();
 	void _check_distance_to_target();
 };
 

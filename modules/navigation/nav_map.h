@@ -33,13 +33,12 @@
 
 #include "nav_rid.h"
 
+#include "core/map.h"
 #include "core/math/math_defs.h"
+#include "core/os/thread_work_pool.h"
 #include "nav_utils.h"
-#include <KdTree.h>
 
-/**
-	@author AndreaCatania
-*/
+#include <KdTree.h>
 
 class NavRegion;
 class RvoAgent;
@@ -83,8 +82,12 @@ class NavMap : public NavRid {
 	/// Change the id each time the map is updated.
 	uint32_t map_update_id;
 
+	/// Pooled threads for computing steps
+	ThreadWorkPool step_work_pool;
+
 public:
 	NavMap();
+	~NavMap();
 
 	void set_up(Vector3 p_up);
 	Vector3 get_up() const {
@@ -108,7 +111,7 @@ public:
 
 	gd::PointKey get_point_key(const Vector3 &p_pos) const;
 
-	Vector<Vector3> get_path(Vector3 p_origin, Vector3 p_destination, bool p_optimize) const;
+	Vector<Vector3> get_path(Vector3 p_origin, Vector3 p_destination, bool p_optimize, uint32_t p_navigation_layers = 1) const;
 	Vector3 get_closest_point_to_segment(const Vector3 &p_from, const Vector3 &p_to, const bool p_use_collision) const;
 	Vector3 get_closest_point(const Vector3 &p_point) const;
 	Vector3 get_closest_point_normal(const Vector3 &p_point) const;
