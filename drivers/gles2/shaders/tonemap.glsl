@@ -255,9 +255,10 @@ vec4 apply_fxaa(vec4 color, vec2 uv_interp, vec2 pixel_size) {
 	float lumaSW = dot(rgbSW.rgb, luma) - ((1.0 - rgbSW.a) / 8.0);
 	float lumaSE = dot(rgbSE.rgb, luma) - ((1.0 - rgbSE.a) / 8.0);
 	float lumaM = dot(rgbM, luma) - (color.a / 8.0);
+#endif
+
 	float lumaMin = min(lumaM, min(min(lumaNW, lumaNE), min(lumaSW, lumaSE)));
 	float lumaMax = max(lumaM, max(max(lumaNW, lumaNE), max(lumaSW, lumaSE)));
-#endif
 
 	vec2 dir;
 	dir.x = -((lumaNW + lumaNE) - (lumaSW + lumaSE));
