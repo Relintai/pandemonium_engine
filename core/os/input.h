@@ -30,10 +30,10 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/math/vector2i.h"
 #include "core/object.h"
 #include "core/os/main_loop.h"
 #include "core/os/thread_safe.h"
-#include "core/math/vector2i.h"
 
 class Input : public Object {
 	GDCLASS(Input, Object);
@@ -144,6 +144,7 @@ public:
 	virtual void flush_buffered_events() = 0;
 	virtual bool is_using_input_buffering() = 0;
 	virtual void set_use_input_buffering(bool p_enable) = 0;
+	virtual bool is_using_accumulated_input() = 0;
 	virtual void set_use_accumulated_input(bool p_enable) = 0;
 
 	Input();
