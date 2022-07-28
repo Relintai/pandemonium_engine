@@ -147,3 +147,12 @@ Not sure, if I end up porting it, I'll likely simplify it.
 
 https://github.com/godotengine/godot/commit/d9acd21b46352a0c6fe09b42d03bbdb6a749687d
 
+### Android backend to kotlin
+
+I don't think it's worth porting these while conversion work is underway, less complications,
+and less messing with build environments.
+
+https://github.com/godotengine/godot/commit/5946b4bdc63494b2a9b1fe56f2085a20456b2557
+Note there was also an another commit a few days earlier
+And a kotlin version related commit around the same page
+
