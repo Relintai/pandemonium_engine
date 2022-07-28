@@ -2492,7 +2492,7 @@ ProjectManager::ProjectManager() {
 	project_order_filter = memnew(ProjectListFilter);
 	project_order_filter->add_filter_option();
 	project_order_filter->_setup_filters(sort_filter_titles);
-	project_order_filter->set_filter_size(150);
+	project_order_filter->set_filter_size(180);
 	sort_filters->add_child(project_order_filter);
 	project_order_filter->connect("filter_changed", this, "_on_order_option_changed");
 
