@@ -32,7 +32,7 @@
 #define FILE_ACCESS_FILESYSTEM_JANDROID_H
 
 #include "core/os/file_access.h"
-#include "java_godot_lib_jni.h"
+#include "java_pandemonium_lib_jni.h"
 
 class FileAccessFilesystemJAndroid : public FileAccess {
 	static jobject file_access_handler;
