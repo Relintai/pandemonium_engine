@@ -70,9 +70,12 @@
 #define DVC_ROTATION 18
 
 #define CXO_MESSAGES 0x0004
+#define PK_STATUS 0x0002
 #define PK_NORMAL_PRESSURE 0x0400
 #define PK_TANGENT_PRESSURE 0x0800
 #define PK_ORIENTATION 0x1000
+
+#define TPS_INVERT 0x0010 /* 1.1 */
 
 typedef struct tagLOGCONTEXTW {
 	WCHAR lcName[40];
@@ -125,6 +128,7 @@ typedef struct tagORIENTATION {
 } ORIENTATION;
 
 typedef struct tagPACKET {
+	int pkStatus;
 	int pkNormalPressure;
 	int pkTangentPressure;
 	ORIENTATION pkOrientation;
@@ -145,6 +149,14 @@ typedef DWORD POINTER_INPUT_TYPE;
 typedef UINT32 POINTER_FLAGS;
 typedef UINT32 PEN_FLAGS;
 typedef UINT32 PEN_MASK;
+
+#ifndef PEN_FLAG_INVERTED
+#define PEN_FLAG_INVERTED 0x00000002
+#endif
+
+#ifndef PEN_FLAG_ERASER
+#define PEN_FLAG_ERASER 0x00000004
+#endif
 
 #ifndef PEN_MASK_PRESSURE
 #define PEN_MASK_PRESSURE 0x00000001
@@ -271,11 +283,13 @@ class OS_Windows : public OS {
 	int min_pressure;
 	int max_pressure;
 	bool tilt_supported;
-	bool block_mm = false;
+	bool pen_inverted;
+	bool block_mm;
 
 	int last_pressure_update;
 	float last_pressure;
 	Vector2 last_tilt;
+	bool last_pen_inverted;
 
 	enum {
 		KEY_EVENT_BUFFER_SIZE = 512

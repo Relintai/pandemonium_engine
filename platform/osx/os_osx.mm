@@ -809,9 +809,15 @@ static void _mouseDownEvent(NSEvent *event, int index, int mask, bool pressed) {
 	const Vector2 pos = get_mouse_pos(mpos);
 	mm->set_position(pos);
 	mm->set_pressure([event pressure]);
-	if ([event subtype] == NSEventSubtypeTabletPoint) {
+	NSEventSubtype subtype = [event subtype];
+	if (subtype == NSEventSubtypeTabletPoint) {
 		const NSPoint p = [event tilt];
 		mm->set_tilt(Vector2(p.x, p.y));
+		mm->set_pen_inverted(OS_OSX::singleton->last_pen_inverted);
+	} else if (subtype == NSEventSubtypeTabletProximity) {
+		// Check if using the eraser end of pen only on proximity event.
+		OS_OSX::singleton->last_pen_inverted = [event pointingDeviceType] == NSPointingDeviceTypeEraser;
+		mm->set_pen_inverted(OS_OSX::singleton->last_pen_inverted);
 	}
 	mm->set_global_position(pos);
 	mm->set_speed(OS_OSX::singleton->input->get_last_mouse_speed());
@@ -3357,10 +3363,10 @@ void OS_OSX::force_process_input() {
 }
 
 void OS_OSX::pre_wait_observer_cb(CFRunLoopObserverRef p_observer, CFRunLoopActivity p_activiy, void *p_context) {
-  // Prevent main loop from sleeping and redraw window during modal popup display.
+	// Prevent main loop from sleeping and redraw window during modal popup display.
 	// Do not redraw when rendering is done from the separate thread, it will conflict with the OpenGL context updates.
 
-  if (get_singleton()->get_main_loop() && (get_singleton()->get_render_thread_mode() != RENDER_SEPARATE_THREAD) && !OS_OSX::singleton->is_resizing) {
+	if (get_singleton()->get_main_loop() && (get_singleton()->get_render_thread_mode() != RENDER_SEPARATE_THREAD) && !OS_OSX::singleton->is_resizing) {
 		Main::force_redraw();
 		if (!Main::is_iterating()) { // Avoid cyclic loop.
 			Main::iteration();
