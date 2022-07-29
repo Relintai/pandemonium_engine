@@ -103,6 +103,10 @@
 
 ## Ports
 
+Currently the engine has everything that I wanted up to:
+https://github.com/godotengine/godot/commit/5eaf83f2d71fbaf825f9ceb6a1246d6b87be3729
+https://github.com/godotengine/godot/commit/5ea00ad3f05a367dfb3a076e48f241a03e973549
+
 ### Enable type information on release
 
 Not sure whether to have this or not. It does increase binary size for release builds by quite a bit.
