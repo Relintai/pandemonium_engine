@@ -1,0 +1,58 @@
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+group = ossrhGroupId
+version = PUBLISH_VERSION
+
+afterEvaluate {
+    publishing {
+        publications {
+            templateRelease(MavenPublication) {
+                from components.templateRelease
+
+                // The coordinates of the library, being set from variables that
+                // we'll set up later
+                groupId ossrhGroupId
+                artifactId PUBLISH_ARTIFACT_ID
+                version PUBLISH_VERSION
+
+                // Mostly self-explanatory metadata
+                pom {
+                    name = PUBLISH_ARTIFACT_ID
+                    description = 'Pandemonium Engine Android Library'
+                    url = 'https://github.com/Relintai/pandemonium_engine'
+                    licenses {
+                        license {
+                            name = 'MIT License'
+                            url = 'https://github.com/Relintai/pandemonium_engine/blob/master/LICENSE.txt'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'Relintai'
+                            name = 'Péter Magyar'
+                            email = 'relintai@protonmail.com'
+                        }
+                    }
+
+                    // Version control info - if you're using GitHub, follow the
+                    // format as seen here
+                    scm {
+                        connection = 'scm:git:github.com/Relintai/pandemonium_engine.git'
+                        developerConnection = 'scm:git:ssh://github.com/Relintai/pandemonium_engine.git'
+                        url = 'https://github.com/Relintai/pandemonium_engine/tree/master'
+                    }
+                }
+            }
+        }
+    }
+}
+
+signing {
+    useInMemoryPgpKeys(
+        rootProject.ext["signing.keyId"],
+        rootProject.ext["signing.key"],
+        rootProject.ext["signing.password"],
+    )
+    sign publishing.publications
+}

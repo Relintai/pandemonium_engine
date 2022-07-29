@@ -17,7 +17,7 @@ plugins {
 }
 
 apply from: 'app/config.gradle'
-apply from: 'scripts/publish-root.gradle'
+//apply from: 'scripts/publish-root.gradle'
 
 allprojects {
     repositories {
