@@ -228,7 +228,7 @@ String _get_activity_tag(const Ref<EditorExportPreset> &p_preset) {
 	return manifest_activity_text;
 }
 
-String _get_application_tag(const Ref<EditorExportPreset> &p_preset, bool p_has_storage_permission) {
+String _get_application_tag(const Ref<EditorExportPreset> &p_preset, bool p_has_read_write_storage_permission) {
 	String manifest_application_text = vformat(
 			"    <application android:label=\"@string/pandemonium_project_name_string\"\n"
 			"        android:allowBackup=\"%s\"\n"
@@ -241,7 +241,7 @@ String _get_application_tag(const Ref<EditorExportPreset> &p_preset, bool p_has_
 			bool_to_string(p_preset->get("user_data_backup/allow")),
 			bool_to_string(p_preset->get("package/classify_as_game")),
 			bool_to_string(p_preset->get("package/retain_data_on_uninstall")),
-			bool_to_string(p_has_storage_permission));
+			bool_to_string(p_has_read_write_storage_permission));
 
 	manifest_application_text += "        <meta-data tools:node=\"remove\" android:name=\"com.oculus.supportedDevices\" />\n";
 	manifest_application_text += _get_activity_tag(p_preset);

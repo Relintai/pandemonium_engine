@@ -34,6 +34,8 @@ import static android.content.Context.MODE_PRIVATE;
 import static android.content.Context.WINDOW_SERVICE;
 
 import net.relintai.pandemonium.pandemonium.input.PandemoniumEditText;
+import net.relintai.pandemonium.pandemonium.io.directory.DirectoryAccessHandler;
+import net.relintai.pandemonium.pandemonium.io.file.FileAccessHandler;
 import net.relintai.pandemonium.pandemonium.plugin.PandemoniumPlugin;
 import net.relintai.pandemonium.pandemonium.plugin.PandemoniumPluginRegistry;
 import net.relintai.pandemonium.pandemonium.utils.PandemoniumNetUtils;
@@ -248,8 +250,8 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 	private Sensor mMagnetometer;
 	private Sensor mGyroscope;
 
-	public static PandemoniumIO io;
-	public static PandemoniumNetUtils netUtils;
+	public PandemoniumIO io;
+	public PandemoniumNetUtils netUtils;
 
 	static SingletonBase[] singletons = new SingletonBase[MAX_SINGLETONS];
 	static int singleton_count = 0;
@@ -578,15 +580,19 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 
 		final Activity activity = getActivity();
 		io = new PandemoniumIO(activity);
-		PandemoniumLib.io = io;
 		netUtils = new PandemoniumNetUtils(activity);
+
+    Context context = getContext();
+    DirectoryAccessHandler directoryAccessHandler = new DirectoryAccessHandler(context);
+		FileAccessHandler fileAccessHandler = new FileAccessHandler(context);
+
 		mSensorManager = (SensorManager)activity.getSystemService(Context.SENSOR_SERVICE);
 		mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		mGravity = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
 		mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 		mGyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
-		PandemoniumLib.initialize(activity, this, activity.getAssets(), use_apk_expansion);
+		PandemoniumLib.initialize(activity, this, activity.getAssets(), io, netUtils, directoryAccessHandler, fileAccessHandler, use_apk_expansion);
 
 		result_callback = null;
 

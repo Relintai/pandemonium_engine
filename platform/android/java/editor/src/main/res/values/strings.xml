@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="pandemonium_editor_name_string">Pandemonium Editor</string>
+	<string name="denied_storage_permission_error_msg">Missing storage access permission!</string>
 </resources>

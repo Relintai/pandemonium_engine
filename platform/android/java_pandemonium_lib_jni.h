@@ -36,7 +36,8 @@
 // These functions can be called from within JAVA and are the means by which our JAVA implementation calls back into our C++ code.
 // See java/src/net/relintai/pandemonium/pandemonium/PandemoniumLib.java for the JAVA side of this (yes that's why we have the long names)
 extern "C" {
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_initialize(JNIEnv *env, jclass clazz, jobject activity, jobject pandemonium_instance, jobject p_asset_manager, jboolean p_use_apk_expansion);
+
+JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_initialize(JNIEnv *env, jclass clazz, jobject p_activity, jobject p_pandemonium_instance, jobject p_asset_manager, jobject p_pandemonium_io, jobject p_net_utils, jobject p_directory_access_handler, jobject p_file_access_handler, jboolean p_use_apk_expansion) {
 JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_ondestroy(JNIEnv *env, jclass clazz);
 JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_setup(JNIEnv *env, jclass clazz, jobjectArray p_cmdline);
 JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_resize(JNIEnv *env, jclass clazz, jint width, jint height);

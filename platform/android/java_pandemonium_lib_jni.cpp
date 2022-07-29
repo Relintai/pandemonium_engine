@@ -40,6 +40,7 @@
 #include "core/project_settings.h"
 #include "dir_access_jandroid.h"
 #include "file_access_android.h"
+#include "file_access_filesystem_jandroid.h"
 #include "jni_utils.h"
 #include "main/input_default.h"
 #include "main/main.h"
@@ -119,15 +120,15 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 	}
 }
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_initialize(JNIEnv *env, jclass clazz, jobject activity, jobject pandemonium_instance, jobject p_asset_manager, jboolean p_use_apk_expansion) {
+JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_initialize(JNIEnv *env, jclass clazz, jobject p_activity, jobject p_pandemonium_instance, jobject p_asset_manager, jobject p_pandemonium_io, jobject p_net_utils, jobject p_directory_access_handler, jobject p_file_access_handler, jboolean p_use_apk_expansion) {
 	initialized = true;
 
 	JavaVM *jvm;
 	env->GetJavaVM(&jvm);
 
 	// create our wrapper classes
-	pandemonium_java = new PandemoniumJavaWrapper(env, activity, pandemonium_instance);
-	pandemonium_io_java = new PandemoniumIOJavaWrapper(env, pandemonium_java->get_member_object("io", "Lnet/relintai/pandemonium/pandemonium/PandemoniumIO;", env));
+	pandemonium_java = new PandemoniumJavaWrapper(env, p_activity, p_pandemonium_instance);
+	pandemonium_io_java = new PandemoniumIOJavaWrapper(env, p_pandemonium_io);
 
 	init_thread_jandroid(jvm, env);
 
@@ -135,8 +136,9 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 
 	FileAccessAndroid::asset_manager = AAssetManager_fromJava(env, amgr);
 
-	DirAccessJAndroid::setup(pandemonium_io_java->get_instance());
-	NetSocketAndroid::setup(pandemonium_java->get_member_object("netUtils", "Lnet/relintai/pandemonium/pandemonium/utils/PandemoniumNetUtils;", env));
+  DirAccessJAndroid::setup(p_directory_access_handler);
+	FileAccessFilesystemJAndroid::setup(p_file_access_handler);
+	NetSocketAndroid::setup(p_net_utils);
 
 	os_android = new OS_Android(pandemonium_java, pandemonium_io_java, p_use_apk_expansion);
 

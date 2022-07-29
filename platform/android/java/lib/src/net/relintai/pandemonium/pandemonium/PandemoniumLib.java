@@ -30,7 +30,12 @@
 
 package net.relintai.pandemonium.pandemonium;
 
+import net.relintai.pandemonium.pandemonium.io.directory.DirectoryAccessHandler;
+import net.relintai.pandemonium.pandemonium.io.file.FileAccessHandler;
+import net.relintai.pandemonium.pandemonium.utils.GodotNetUtils;
+
 import android.app.Activity;
+import android.content.res.AssetManager;
 import android.hardware.SensorEvent;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -39,8 +44,6 @@ import javax.microedition.khronos.opengles.GL10;
  * Wrapper for native library
  */
 public class PandemoniumLib {
-	public static PandemoniumIO io;
-
 	static {
 		System.loadLibrary("pandemonium_android");
 	}
@@ -48,7 +51,7 @@ public class PandemoniumLib {
 	/**
 	 * Invoked on the main thread to initialize Pandemonium native layer.
 	 */
-	public static native void initialize(Activity activity, Pandemonium p_instance, Object p_asset_manager, boolean use_apk_expansion);
+  public static native void initialize(Activity activity, Pandemonium p_instance, AssetManager p_asset_manager, PandemoniumIO pandemoniumIO, PandemoniumNetUtils netUtils, DirectoryAccessHandler directoryAccessHandler, FileAccessHandler fileAccessHandler, boolean use_apk_expansion);
 
 	/**
 	 * Invoked on the main thread to clean up Pandemonium native layer.

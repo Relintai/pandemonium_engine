@@ -31,13 +31,17 @@
 /*************************************************************************/
 
 #include "core/os/dir_access.h"
+#include "drivers/unix/dir_access_unix.h"
 #include "java_pandemonium_lib_jni.h"
 #include <stdio.h>
 
-class DirAccessJAndroid : public DirAccess {
-	//AAssetDir* aad;
+/// Android implementation of the DirAccess interface used to provide access to
+/// ACCESS_FILESYSTEM and ACCESS_RESOURCES directory resources.
+/// The implementation use jni in order to comply with Android filesystem
+/// access restriction.
+class DirAccessJAndroid : public DirAccessUnix {
+	static jobject dir_access_handler;
 
-	static jobject io;
 	static jclass cls;
 
 	static jmethodID _dir_open;
@@ -45,12 +49,15 @@ class DirAccessJAndroid : public DirAccess {
 	static jmethodID _dir_close;
 	static jmethodID _dir_is_dir;
 
-	int id;
-
-	String current_dir;
-	String current;
-
-	static DirAccess *create_fs();
+	static jmethodID _dir_exists;
+	static jmethodID _file_exists;
+	static jmethodID _get_drive_count;
+	static jmethodID _get_drive;
+	static jmethodID _make_dir;
+	static jmethodID _get_space_left;
+	static jmethodID _rename;
+	static jmethodID _remove;
+	static jmethodID _current_is_hidden;
 
 public:
 	virtual Error list_dir_begin(); ///< This starts dir listing
@@ -63,12 +70,12 @@ public:
 	virtual String get_drive(int p_drive);
 
 	virtual Error change_dir(String p_dir); ///< can be relative or absolute, return false on success
-	virtual String get_current_dir(); ///< return current dir location
 
 	virtual bool file_exists(String p_file);
 	virtual bool dir_exists(String p_dir);
 
 	virtual Error make_dir(String p_dir);
+	virtual Error make_dir_recursive(String p_dir);
 
 	virtual Error rename(String p_from, String p_to);
 	virtual Error remove(String p_name);
@@ -77,14 +84,21 @@ public:
 	virtual String read_link(String p_file) { return p_file; }
 	virtual Error create_link(String p_source, String p_target) { return FAILED; }
 
-	virtual String get_filesystem_type() const;
+	virtual uint64_t get_space_left() override;
 
 	uint64_t get_space_left();
 
-	static void setup(jobject p_io);
+	static void setup(jobject p_dir_access_handler);
 
 	DirAccessJAndroid();
 	~DirAccessJAndroid();
+
+private:
+	int id;
+
+	int dir_open(String p_path);
+	void dir_close(int p_id);
+	String get_absolute_path(String p_path);
 };
 
 #endif // DIR_ACCESS_JANDROID_H

@@ -83,6 +83,6 @@ String _get_screen_sizes_tag(const Ref<EditorExportPreset> &p_preset);
 
 String _get_activity_tag(const Ref<EditorExportPreset> &p_preset);
 
-String _get_application_tag(const Ref<EditorExportPreset> &p_preset, bool p_has_storage_permission);
+String _get_application_tag(const Ref<EditorExportPreset> &p_preset, bool p_has_read_write_storage_permission);
 
 #endif //PANDEMONIUM_GRADLE_EXPORT_UTIL_H

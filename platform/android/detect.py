@@ -3,14 +3,11 @@ import sys
 import platform
 import subprocess
 
-
 def is_active():
     return True
 
-
 def get_name():
     return "Android"
-
 
 def can_build():
     return os.path.exists(get_env_android_sdk_root())
@@ -25,7 +22,6 @@ def get_opts():
         BoolVariable("android_neon", "Enable NEON support (armv7 only)", True),
     ]
 
-
 # Return the ANDROID_SDK_ROOT environment variable.
 def get_env_android_sdk_root():
     return os.environ.get("ANDROID_SDK_ROOT", -1)
@@ -33,10 +29,8 @@ def get_env_android_sdk_root():
 def get_min_sdk_version(platform):
     return int(platform.split("-")[1])
 
-
 def get_android_ndk_root(env):
     return env["ANDROID_SDK_ROOT"] + "/ndk/" + get_ndk_version()
-
 
 # This is kept in sync with the value in 'platform/android/java/app/config.gradle'.
 def get_ndk_version():
@@ -95,7 +89,7 @@ def configure(env):
             )
             env["ndk_platform"] = "android-21"
 
-     if env["android_arch"] == "armv7":
+    if env["android_arch"] == "armv7":
         target_triple = "armv7a-linux-androideabi"
         bin_utils = "arm-linux-androideabi"
         if env["android_neon"]:

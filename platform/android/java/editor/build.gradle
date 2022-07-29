@@ -23,8 +23,7 @@ android {
         versionCode getPandemoniumLibraryVersionCode()
         versionName getPandemoniumLibraryVersionName()
         minSdkVersion versions.minSdk
-        //noinspection ExpiredTargetSdkVersion - Restrict to version 29 until https://github.com/pandemoniumengine/pandemonium/pull/51815 is submitted
-        targetSdkVersion 29 // versions.targetSdk
+        targetSdkVersion versions.targetSdk
         missingDimensionStrategy 'products', 'editor'
     }
 

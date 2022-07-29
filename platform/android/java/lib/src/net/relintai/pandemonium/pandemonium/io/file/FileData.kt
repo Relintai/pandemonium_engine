@@ -1,7 +1,5 @@
-#ifndef FILE_ACCESS_UNIX_H
-#define FILE_ACCESS_UNIX_H
 /*************************************************************************/
-/*  file_access_unix.h                                                   */
+/*  FileData.kt                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -30,59 +28,66 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/os/file_access.h"
-#include "core/os/memory.h"
+package net.relintai.pandemonium.pandemonium.io.file
 
-#include <stdio.h>
+import java.io.File
+import java.io.FileOutputStream
+import java.io.RandomAccessFile
+import java.nio.channels.FileChannel
 
-#if defined(UNIX_ENABLED) || defined(LIBC_FILEIO_ENABLED)
+/**
+ * Implementation of [DataAccess] which handles regular (not scoped) file access and interactions.
+ */
+internal class FileData(filePath: String, accessFlag: FileAccessFlags) : DataAccess(filePath) {
 
-typedef void (*CloseNotificationFunc)(const String &p_file, int p_flags);
+	companion object {
+		private val TAG = FileData::class.java.simpleName
 
-class FileAccessUnix : public FileAccess {
-	FILE *f;
-	int flags;
-	void check_errors() const;
-	mutable Error last_error;
-	String save_path;
-	String path;
-	String path_src;
+		fun fileExists(path: String): Boolean {
+			return try {
+				File(path).isFile
+			} catch (e: SecurityException) {
+				false
+			}
+		}
 
-public:
-	static CloseNotificationFunc close_notification_func;
+		fun fileLastModified(filepath: String): Long {
+			return try {
+				File(filepath).lastModified()
+			} catch (e: SecurityException) {
+				0L
+			}
+		}
 
-	virtual Error _open(const String &p_path, int p_mode_flags); ///< open a file
-	virtual void close(); ///< close a file
-	virtual bool is_open() const; ///< true when file is open
+		fun delete(filepath: String): Boolean {
+			return try {
+				File(filepath).delete()
+			} catch (e: Exception) {
+				false
+			}
+		}
 
-	virtual String get_path() const; /// returns the path for the current open file
-	virtual String get_path_absolute() const; /// returns the absolute path for the current open file
+		fun rename(from: String, to: String): Boolean {
+			return try {
+				val fromFile = File(from)
+				fromFile.renameTo(File(to))
+			} catch (e: Exception) {
+				false
+			}
+		}
+	}
 
-	virtual void seek(uint64_t p_position); ///< seek to a given position
-	virtual void seek_end(int64_t p_position = 0); ///< seek from the end of file
-	virtual uint64_t get_position() const; ///< get position in the file
-	virtual uint64_t get_len() const; ///< get size of the file
+	override val fileChannel: FileChannel
 
-	virtual bool eof_reached() const; ///< reading passed EOF
+	init {
+		if (accessFlag == FileAccessFlags.WRITE) {
+			fileChannel = FileOutputStream(filePath, !accessFlag.shouldTruncate()).channel
+		} else {
+			fileChannel = RandomAccessFile(filePath, accessFlag.getMode()).channel
+		}
 
-	virtual uint8_t get_8() const; ///< get a byte
-	virtual uint64_t get_buffer(uint8_t *p_dst, uint64_t p_length) const;
-
-	virtual Error get_error() const; ///< get last error
-
-	virtual void flush();
-	virtual void store_8(uint8_t p_dest); ///< store a byte
-	virtual void store_buffer(const uint8_t *p_src, uint64_t p_length); ///< store an array of bytes
-
-	virtual bool file_exists(const String &p_path); ///< return true if a file exists
-
-	virtual uint64_t _get_modified_time(const String &p_file);
-	virtual uint32_t _get_unix_permissions(const String &p_file);
-	virtual Error _set_unix_permissions(const String &p_file, uint32_t p_permissions);
-
-	FileAccessUnix();
-	virtual ~FileAccessUnix();
-};
-
-#endif
-#endif
+		if (accessFlag.shouldTruncate()) {
+			fileChannel.truncate(0)
+		}
+	}
+}

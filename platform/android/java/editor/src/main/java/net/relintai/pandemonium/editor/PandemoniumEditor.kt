@@ -33,10 +33,14 @@ package net.relintai.pandemonium.editor
 import net.relintai.pandemonium.pandemonium.FullScreenPandemoniumApp
 import net.relintai.pandemonium.pandemonium.utils.PermissionsUtil
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Debug
+import android.os.Environment
+import android.widget.Toast
 
 import androidx.window.layout.WindowMetricsCalculator;
 
@@ -70,7 +74,7 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		val params = getIntent().getStringArrayExtra(COMMAND_LINE_PARAMS);
 		updateCommandLineParams(params);
 
-    if (BuildConfig.BUILD_TYPE == "debug" && WAIT_FOR_DEBUGGER) {
+    if (BuildConfig.BUILD_TYPE == "dev" && WAIT_FOR_DEBUGGER) {
 			Debug.waitForDebugger();
 		}
 
@@ -143,4 +147,50 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 	 * The Android Editor sets its own orientation via its AndroidManifest
 	 */
   protected open fun overrideOrientationRequest() = true
+
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+		super.onActivityResult(requestCode, resultCode, data)
+		// Check if we got the MANAGE_EXTERNAL_STORAGE permission
+		if (requestCode == PermissionsUtil.REQUEST_MANAGE_EXTERNAL_STORAGE_REQ_CODE) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+				if (!Environment.isExternalStorageManager()) {
+					Toast.makeText(
+						this,
+						R.string.denied_storage_permission_error_msg,
+						Toast.LENGTH_LONG
+					).show()
+				}
+			}
+		}
+	}
+
+	override fun onRequestPermissionsResult(
+		requestCode: Int,
+		permissions: Array<String?>,
+		grantResults: IntArray
+	) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+		// Check if we got access to the necessary storage permissions
+		if (requestCode == PermissionsUtil.REQUEST_ALL_PERMISSION_REQ_CODE) {
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+				var hasReadAccess = false
+				var hasWriteAccess = false
+				for (i in permissions.indices) {
+					if (Manifest.permission.READ_EXTERNAL_STORAGE == permissions[i] && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+						hasReadAccess = true
+					}
+					if (Manifest.permission.WRITE_EXTERNAL_STORAGE == permissions[i] && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+						hasWriteAccess = true
+					}
+				}
+				if (!hasReadAccess || !hasWriteAccess) {
+					Toast.makeText(
+						this,
+						R.string.denied_storage_permission_error_msg,
+						Toast.LENGTH_LONG
+					).show()
+				}
+			}
+		}
+	}
 }
