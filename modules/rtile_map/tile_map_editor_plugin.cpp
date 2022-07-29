@@ -36,11 +36,11 @@
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 #include "editor/plugins/canvas_item_editor_plugin.h"
-#include "scene/gui/split_container.h"
-#include "scene/gui/slider.h"
-#include "scene/gui/popup_menu.h"
 #include "scene/gui/item_list.h"
+#include "scene/gui/popup_menu.h"
 #include "scene/gui/separator.h"
+#include "scene/gui/slider.h"
+#include "scene/gui/split_container.h"
 
 void RTileMapEditor::_node_removed(Node *p_node) {
 	if (p_node == node) {
@@ -1026,6 +1026,17 @@ bool RTileMapEditor::forward_gui_input(const Ref<InputEvent> &p_event) {
 			if (mb->is_pressed()) {
 				if (Input::get_singleton()->is_key_pressed(KEY_SPACE)) {
 					return false; // Drag.
+				}
+
+				// Finish ongoing erasing.
+				if (tool == TOOL_ERASING || tool == TOOL_RECTANGLE_ERASE || tool == TOOL_LINE_ERASE) {
+					_finish_undo();
+
+					if (tool == TOOL_RECTANGLE_ERASE || tool == TOOL_LINE_ERASE) {
+						CanvasItemEditor::get_singleton()->update_viewport();
+					}
+
+					tool = TOOL_NONE;
 				}
 
 				if (tool == TOOL_NONE) {
