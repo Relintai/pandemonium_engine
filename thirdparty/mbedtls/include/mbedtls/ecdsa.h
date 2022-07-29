@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_ECDSA_H
-#define MBEDTLS_ECDSA_H
 /**
  * \file ecdsa.h
  *
@@ -29,8 +27,8 @@
  *  limitations under the License.
  */
 
-
-
+#ifndef MBEDTLS_ECDSA_H
+#define MBEDTLS_ECDSA_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

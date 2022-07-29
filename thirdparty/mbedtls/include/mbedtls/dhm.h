@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_DHM_H
-#define MBEDTLS_DHM_H
 /**
  * \file dhm.h
  *
@@ -62,8 +60,8 @@
  *  limitations under the License.
  */
 
-
-
+#ifndef MBEDTLS_DHM_H
+#define MBEDTLS_DHM_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

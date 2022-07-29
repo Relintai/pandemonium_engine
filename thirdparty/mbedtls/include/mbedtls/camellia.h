@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_CAMELLIA_H
-#define MBEDTLS_CAMELLIA_H
 /**
  * \file camellia.h
  *
@@ -21,8 +19,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
-
+#ifndef MBEDTLS_CAMELLIA_H
+#define MBEDTLS_CAMELLIA_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"
@@ -275,7 +273,7 @@ int mbedtls_camellia_crypt_cfb128( mbedtls_camellia_context *ctx,
  *             encrypted: for example, with 96-bit random nonces, you should
  *             not encrypt more than 2**32 messages with the same key.
  *
- *             Note that for both stategies, sizes are measured in blocks and
+ *             Note that for both strategies, sizes are measured in blocks and
  *             that a CAMELLIA block is \c 16 Bytes.
  *
  * \warning    Upon return, \p stream_block contains sensitive data. Its

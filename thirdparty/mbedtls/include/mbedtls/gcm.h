@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_GCM_H
-#define MBEDTLS_GCM_H
 /**
  * \file gcm.h
  *
@@ -30,8 +28,8 @@
  *  limitations under the License.
  */
 
-
-
+#ifndef MBEDTLS_GCM_H
+#define MBEDTLS_GCM_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

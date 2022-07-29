@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_SSL_COOKIE_H
-#define MBEDTLS_SSL_COOKIE_H
 /**
  * \file ssl_cookie.h
  *
@@ -21,8 +19,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
-
+#ifndef MBEDTLS_SSL_COOKIE_H
+#define MBEDTLS_SSL_COOKIE_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"
@@ -47,7 +45,7 @@
 #define MBEDTLS_SSL_COOKIE_TIMEOUT     60 /**< Default expiration delay of DTLS cookies, in seconds if HAVE_TIME, or in number of cookies issued */
 #endif
 
-/* \} name SECTION: Module settings */
+/** \} name SECTION: Module settings */
 
 #ifdef __cplusplus
 extern "C" {
@@ -86,7 +84,7 @@ int mbedtls_ssl_cookie_setup( mbedtls_ssl_cookie_ctx *ctx,
  * \brief          Set expiration delay for cookies
  *                 (Default MBEDTLS_SSL_COOKIE_TIMEOUT)
  *
- * \param ctx      Cookie contex
+ * \param ctx      Cookie context
  * \param delay    Delay, in seconds if HAVE_TIME, or in number of cookies
  *                 issued in the meantime.
  *                 0 to disable expiration (NOT recommended)

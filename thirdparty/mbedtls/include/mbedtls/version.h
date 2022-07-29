@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_VERSION_H
-#define MBEDTLS_VERSION_H
 /**
  * \file version.h
  *
@@ -25,8 +23,8 @@
  * This set of compile-time defines and run-time variables can be used to
  * determine the version number of the mbed TLS library used.
  */
-
-
+#ifndef MBEDTLS_VERSION_H
+#define MBEDTLS_VERSION_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"
@@ -40,16 +38,16 @@
  */
 #define MBEDTLS_VERSION_MAJOR  2
 #define MBEDTLS_VERSION_MINOR  28
-#define MBEDTLS_VERSION_PATCH  0
+#define MBEDTLS_VERSION_PATCH  1
 
 /**
  * The single version number has the following structure:
  *    MMNNPP00
  *    Major version | Minor version | Patch version
  */
-#define MBEDTLS_VERSION_NUMBER         0x021C0000
-#define MBEDTLS_VERSION_STRING         "2.28.0"
-#define MBEDTLS_VERSION_STRING_FULL    "mbed TLS 2.28.0"
+#define MBEDTLS_VERSION_NUMBER         0x021C0100
+#define MBEDTLS_VERSION_STRING         "2.28.1"
+#define MBEDTLS_VERSION_STRING_FULL    "mbed TLS 2.28.1"
 
 #if defined(MBEDTLS_VERSION_C)
 

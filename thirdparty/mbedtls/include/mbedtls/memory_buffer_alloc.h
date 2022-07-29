@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_MEMORY_BUFFER_ALLOC_H
-#define MBEDTLS_MEMORY_BUFFER_ALLOC_H
 /**
  * \file memory_buffer_alloc.h
  *
@@ -21,8 +19,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
-
+#ifndef MBEDTLS_MEMORY_BUFFER_ALLOC_H
+#define MBEDTLS_MEMORY_BUFFER_ALLOC_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"
@@ -44,7 +42,7 @@
 #define MBEDTLS_MEMORY_ALIGN_MULTIPLE       4 /**< Align on multiples of this value */
 #endif
 
-/* \} name SECTION: Module settings */
+/** \} name SECTION: Module settings */
 
 #define MBEDTLS_MEMORY_VERIFY_NONE         0
 #define MBEDTLS_MEMORY_VERIFY_ALLOC        (1 << 0)

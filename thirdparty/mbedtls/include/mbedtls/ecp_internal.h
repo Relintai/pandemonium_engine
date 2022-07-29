@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_ECP_INTERNAL_H
-#define MBEDTLS_ECP_INTERNAL_H
 /**
  * \file ecp_internal.h
  *
@@ -58,8 +56,8 @@
  *     Springer Science & Business Media, 1 Aug 2000
  */
 
-
-
+#ifndef MBEDTLS_ECP_INTERNAL_H
+#define MBEDTLS_ECP_INTERNAL_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

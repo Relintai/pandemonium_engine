@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_MD_H
-#define MBEDTLS_MD_H
  /**
  * \file md.h
  *
@@ -24,8 +22,8 @@
  *  limitations under the License.
  */
 
-
-
+#ifndef MBEDTLS_MD_H
+#define MBEDTLS_MD_H
 
 #include <stddef.h>
 

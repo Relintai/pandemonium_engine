@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_PLATFORM_TIME_H
-#define MBEDTLS_PLATFORM_TIME_H
 /**
  * \file platform_time.h
  *
@@ -21,8 +19,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
-
+#ifndef MBEDTLS_PLATFORM_TIME_H
+#define MBEDTLS_PLATFORM_TIME_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"
@@ -33,14 +31,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/**
- * \name SECTION: Module settings
- *
- * The configuration options you can set for this module are in this section.
- * Either change them in config.h or define them on the compiler command line.
- * \{
- */
 
 /*
  * The time_t datatype

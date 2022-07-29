@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_ARC4_H
-#define MBEDTLS_ARC4_H
 /**
  * \file arc4.h
  *
@@ -25,8 +23,8 @@
  *  limitations under the License.
  *
  */
-
-
+#ifndef MBEDTLS_ARC4_H
+#define MBEDTLS_ARC4_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

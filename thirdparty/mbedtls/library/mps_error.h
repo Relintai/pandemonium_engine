@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_MPS_ERROR_H
-#define MBEDTLS_MPS_ERROR_H
 /*
  *  Copyright The Mbed TLS Contributors
  *  SPDX-License-Identifier: Apache-2.0
@@ -25,8 +23,8 @@
  * \brief Error codes used by MPS
  */
 
-
-
+#ifndef MBEDTLS_MPS_ERROR_H
+#define MBEDTLS_MPS_ERROR_H
 
 
 /* TODO: The error code allocation needs to be revisited:

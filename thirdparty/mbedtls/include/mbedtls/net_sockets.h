@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_NET_SOCKETS_H
-#define MBEDTLS_NET_SOCKETS_H
 /**
  * \file net_sockets.h
  *
@@ -37,8 +35,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
-
+#ifndef MBEDTLS_NET_SOCKETS_H
+#define MBEDTLS_NET_SOCKETS_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_DES_H
-#define MBEDTLS_DES_H
 /**
  * \file des.h
  *
@@ -26,8 +24,8 @@
  *  limitations under the License.
  *
  */
-
-
+#ifndef MBEDTLS_DES_H
+#define MBEDTLS_DES_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

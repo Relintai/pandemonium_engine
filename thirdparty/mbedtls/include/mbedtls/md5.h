@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_MD5_H
-#define MBEDTLS_MD5_H
 /**
  * \file md5.h
  *
@@ -25,8 +23,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
-
+#ifndef MBEDTLS_MD5_H
+#define MBEDTLS_MD5_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

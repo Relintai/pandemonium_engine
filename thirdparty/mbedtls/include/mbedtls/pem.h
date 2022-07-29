@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_PEM_H
-#define MBEDTLS_PEM_H
 /**
  * \file pem.h
  *
@@ -21,8 +19,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
-
+#ifndef MBEDTLS_PEM_H
+#define MBEDTLS_PEM_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"
@@ -56,7 +54,7 @@
 #define MBEDTLS_ERR_PEM_FEATURE_UNAVAILABLE               -0x1400
 /** Bad input parameters to function. */
 #define MBEDTLS_ERR_PEM_BAD_INPUT_DATA                    -0x1480
-/* \} name */
+/** \} name PEM Error codes */
 
 #ifdef __cplusplus
 extern "C" {

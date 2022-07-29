@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_ENTROPY_H
-#define MBEDTLS_ENTROPY_H
 /**
  * \file entropy.h
  *
@@ -21,8 +19,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
-
+#ifndef MBEDTLS_ENTROPY_H
+#define MBEDTLS_ENTROPY_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"
@@ -77,7 +75,7 @@
 #define MBEDTLS_ENTROPY_MAX_GATHER      128     /**< Maximum amount requested from entropy sources */
 #endif
 
-/* \} name SECTION: Module settings */
+/** \} name SECTION: Module settings */
 
 #if defined(MBEDTLS_ENTROPY_SHA512_ACCUMULATOR)
 #define MBEDTLS_ENTROPY_BLOCK_SIZE      64      /**< Block size of entropy accumulator (SHA-512) */

@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_X509_CRL_H
-#define MBEDTLS_X509_CRL_H
 /**
  * \file x509_crl.h
  *
@@ -21,8 +19,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
-
+#ifndef MBEDTLS_X509_CRL_H
+#define MBEDTLS_X509_CRL_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"
@@ -164,8 +162,8 @@ void mbedtls_x509_crl_init( mbedtls_x509_crl *crl );
  */
 void mbedtls_x509_crl_free( mbedtls_x509_crl *crl );
 
-/* \} name */
-/* \} addtogroup x509_module */
+/** \} name Structures and functions for parsing CRLs */
+/** \} addtogroup x509_module */
 
 #ifdef __cplusplus
 }

@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_BN_MUL_H
-#define MBEDTLS_BN_MUL_H
 /**
  * \file bn_mul.h
  *
@@ -35,8 +33,8 @@
  *         . Alpha                . MIPS32
  *         . C, longlong          . C, generic
  */
-
-
+#ifndef MBEDTLS_BN_MUL_H
+#define MBEDTLS_BN_MUL_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

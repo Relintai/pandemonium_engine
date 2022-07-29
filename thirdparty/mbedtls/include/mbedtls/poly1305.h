@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_POLY1305_H
-#define MBEDTLS_POLY1305_H
 /**
  * \file poly1305.h
  *
@@ -31,8 +29,8 @@
  *  limitations under the License.
  */
 
-
-
+#ifndef MBEDTLS_POLY1305_H
+#define MBEDTLS_POLY1305_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

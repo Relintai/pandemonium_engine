@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_PK_WRAP_H
-#define MBEDTLS_PK_WRAP_H
 /**
  * \file pk_internal.h
  *
@@ -22,8 +20,8 @@
  *  limitations under the License.
  */
 
-
-
+#ifndef MBEDTLS_PK_WRAP_H
+#define MBEDTLS_PK_WRAP_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

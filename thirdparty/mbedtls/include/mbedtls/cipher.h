@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_CIPHER_H
-#define MBEDTLS_CIPHER_H
 /**
  * \file cipher.h
  *
@@ -26,8 +24,8 @@
  *  limitations under the License.
  */
 
-
-
+#ifndef MBEDTLS_CIPHER_H
+#define MBEDTLS_CIPHER_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

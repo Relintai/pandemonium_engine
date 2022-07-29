@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_CONSTANT_TIME_H
-#define MBEDTLS_CONSTANT_TIME_H
 /**
  *  Constant-time functions
  *
@@ -19,8 +17,8 @@
  *  limitations under the License.
  */
 
-
-
+#ifndef MBEDTLS_CONSTANT_TIME_H
+#define MBEDTLS_CONSTANT_TIME_H
 
 #include <stddef.h>
 

@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_CONSTANT_TIME_INTERNAL_H
-#define MBEDTLS_CONSTANT_TIME_INTERNAL_H
 /**
  *  Constant-time functions
  *
@@ -19,8 +17,8 @@
  *  limitations under the License.
  */
 
-
-
+#ifndef MBEDTLS_CONSTANT_TIME_INTERNAL_H
+#define MBEDTLS_CONSTANT_TIME_INTERNAL_H
 
 #include "common.h"
 
@@ -222,6 +220,13 @@ void mbedtls_ct_memcpy_if_eq( unsigned char *dest,
  * dst, with a code flow and memory access pattern that does not depend on \p
  * offset_secret, but only on \p offset_min, \p offset_max and \p len.
  * Functionally equivalent to `memcpy(dst, src + offset_secret, len)`.
+ *
+ * \note                This function reads from \p dest, but the value that
+ *                      is read does not influence the result and this
+ *                      function's behavior is well-defined regardless of the
+ *                      contents of the buffers. This may result in false
+ *                      positives from static or dynamic analyzers, especially
+ *                      if \p dest is not initialized.
  *
  * \param dest          The destination buffer. This must point to a writable
  *                      buffer of at least \p len bytes.

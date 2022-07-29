@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_ERROR_H
-#define MBEDTLS_ERROR_H
 /**
  * \file error.h
  *
@@ -21,8 +19,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
-
+#ifndef MBEDTLS_ERROR_H
+#define MBEDTLS_ERROR_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

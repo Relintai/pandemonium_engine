@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_CHACHAPOLY_H
-#define MBEDTLS_CHACHAPOLY_H
 /**
  * \file chachapoly.h
  *
@@ -31,8 +29,8 @@
  *  limitations under the License.
  */
 
-
-
+#ifndef MBEDTLS_CHACHAPOLY_H
+#define MBEDTLS_CHACHAPOLY_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"
@@ -163,7 +161,7 @@ int mbedtls_chachapoly_setkey( mbedtls_chachapoly_context *ctx,
  * \param ctx       The ChaCha20-Poly1305 context. This must be initialized
  *                  and bound to a key.
  * \param nonce     The nonce/IV to use for the message.
- *                  This must be a redable buffer of length \c 12 Bytes.
+ *                  This must be a readable buffer of length \c 12 Bytes.
  * \param mode      The operation to perform: #MBEDTLS_CHACHAPOLY_ENCRYPT or
  *                  #MBEDTLS_CHACHAPOLY_DECRYPT (discouraged, see warning).
  *

@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_NIST_KW_H
-#define MBEDTLS_NIST_KW_H
 /**
  * \file nist_kw.h
  *
@@ -34,8 +32,8 @@
  *  limitations under the License.
  */
 
-
-
+#ifndef MBEDTLS_NIST_KW_H
+#define MBEDTLS_NIST_KW_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"

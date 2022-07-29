@@ -1,5 +1,3 @@
-#ifndef MBEDTLS_RSA_H
-#define MBEDTLS_RSA_H
 /**
  * \file rsa.h
  *
@@ -27,8 +25,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
-
+#ifndef MBEDTLS_RSA_H
+#define MBEDTLS_RSA_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
 #include "mbedtls/config.h"
@@ -90,7 +88,7 @@
 
 /*
  * The above constants may be used even if the RSA module is compile out,
- * eg for alternative (PKCS#11) RSA implemenations in the PK layers.
+ * eg for alternative (PKCS#11) RSA implementations in the PK layers.
  */
 
 #ifdef __cplusplus
@@ -554,7 +552,7 @@ int mbedtls_rsa_public( mbedtls_rsa_context *ctx,
  *
  * \note           Blinding is used if and only if a PRNG is provided.
  *
- * \note           If blinding is used, both the base of exponentation
+ * \note           If blinding is used, both the base of exponentiation
  *                 and the exponent are blinded, providing protection
  *                 against some side-channel attacks.
  *
@@ -689,7 +687,7 @@ int mbedtls_rsa_rsaes_pkcs1_v15_encrypt( mbedtls_rsa_context *ctx,
  *                   mode being set to #MBEDTLS_RSA_PRIVATE and might instead
  *                   return #MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED.
  *
- * \param ctx        The initnialized RSA context to use.
+ * \param ctx        The initialized RSA context to use.
  * \param f_rng      The RNG function to use. This is needed for padding
  *                   generation and must be provided.
  * \param p_rng      The RNG context to be passed to \p f_rng. This may
