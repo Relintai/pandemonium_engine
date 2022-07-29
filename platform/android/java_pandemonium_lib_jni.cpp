@@ -326,14 +326,6 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 }
 
 // Called on the UI thread
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_scroll(JNIEnv *env, jclass clazz, jint p_x, jint p_y) {
-	if (step.get() <= 0)
-		return;
-
-	input_handler->process_scroll(Point2(p_x, p_y));
-}
-
-// Called on the UI thread
 JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_joybutton(JNIEnv *env, jclass clazz, jint p_device, jint p_button, jboolean p_pressed) {
 	if (step.get() <= 0)
 		return;

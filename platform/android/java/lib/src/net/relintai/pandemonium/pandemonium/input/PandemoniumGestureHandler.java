@@ -80,15 +80,6 @@ public class PandemoniumGestureHandler extends GestureDetector.SimpleOnGestureLi
 	}
 
 	@Override
-	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-		//Log.i("PandemoniumGesture", "onScroll");
-		final int x = Math.round(distanceX);
-		final int y = Math.round(distanceY);
-		PandemoniumLib.scroll(x, y);
-		return true;
-	}
-
-	@Override
 	public boolean onFling(MotionEvent event1, MotionEvent event2, float velocityX, float velocityY) {
 		//Log.i("PandemoniumGesture", "onFling");
 		return true;
