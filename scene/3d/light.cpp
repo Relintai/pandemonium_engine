@@ -134,6 +134,11 @@ PoolVector<Face3> Light::get_faces(uint32_t p_usage_flags) const {
 	return PoolVector<Face3>();
 }
 
+void Light::owner_changed_notify() {
+	// For cases where owner changes _after_ entering tree (as example, editor editing).
+	_update_visibility();
+}
+
 void Light::_update_visibility() {
 	if (!is_inside_tree()) {
 		return;

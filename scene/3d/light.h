@@ -72,6 +72,8 @@ private:
 
 	// bind helpers
 
+	virtual void owner_changed_notify();
+
 protected:
 	RID light;
 

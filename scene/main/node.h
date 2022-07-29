@@ -237,6 +237,7 @@ protected:
 	virtual void add_child_notify(Node *p_child);
 	virtual void remove_child_notify(Node *p_child);
 	virtual void move_child_notify(Node *p_child);
+	virtual void owner_changed_notify();
 
 	virtual void _physics_interpolated_changed();
 
