@@ -583,7 +583,7 @@ Error CScript::reload(bool p_keep_state) {
 			CScriptLanguage::get_singleton()->debug_break_parse(_get_debug_path(), parser.get_error_line(), "Parser Error: " + parser.get_error());
 		}
 		_err_print_error("CScript::reload", path.empty() ? "built-in" : (const char *)path.utf8().get_data(), parser.get_error_line(), ("Parse Error: " + parser.get_error()).utf8().get_data(), ERR_HANDLER_SCRIPT);
-		ERR_FAIL_V(ERR_PARSE_ERROR);
+		return ERR_PARSE_ERROR;
 	}
 
 	bool can_run = ScriptServer::is_scripting_enabled() || parser.is_tool_script();
@@ -597,7 +597,7 @@ Error CScript::reload(bool p_keep_state) {
 				CScriptLanguage::get_singleton()->debug_break_parse(_get_debug_path(), compiler.get_error_line(), "Parser Error: " + compiler.get_error());
 			}
 			_err_print_error("CScript::reload", path.empty() ? "built-in" : (const char *)path.utf8().get_data(), compiler.get_error_line(), ("Compile Error: " + compiler.get_error()).utf8().get_data(), ERR_HANDLER_SCRIPT);
-			ERR_FAIL_V(ERR_COMPILATION_FAILED);
+			return ERR_COMPILATION_FAILED;
 		} else {
 			return err;
 		}
