@@ -1,4 +1,4 @@
-/*************************************************************************/
+/*************************************************************************/ os_java
 /*  os_javascript.cpp                                                    */
 /*************************************************************************/
 /*                       This file is part of:                           */
@@ -56,8 +56,9 @@
 #define DOM_BUTTON_XBUTTON1 3
 #define DOM_BUTTON_XBUTTON2 4
 
-// Quit
-void OS_JavaScript::request_quit_callback() {
+		// Quit
+		void
+		OS_JavaScript::request_quit_callback() {
 	OS_JavaScript *os = get_singleton();
 	if (os && os->get_main_loop()) {
 		os->get_main_loop()->notification(MainLoop::NOTIFICATION_WM_QUIT_REQUEST);
@@ -972,9 +973,13 @@ bool OS_JavaScript::can_draw() const {
 	return true; // Always?
 }
 
+void OS_JavaScript::vibrate_handheld(int p_duration_ms) {
+	godot_js_input_vibrate_handheld(p_duration_ms);
+}
+
 String OS_JavaScript::get_user_data_dir() const {
 	return "/userfs";
-};
+}
 
 String OS_JavaScript::get_cache_path() const {
 	return "/home/web_user/.cache";
