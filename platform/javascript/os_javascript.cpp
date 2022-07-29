@@ -1,4 +1,4 @@
-/*************************************************************************/ os_java
+/*************************************************************************/
 /*  os_javascript.cpp                                                    */
 /*************************************************************************/
 /*                       This file is part of:                           */
@@ -56,9 +56,8 @@
 #define DOM_BUTTON_XBUTTON1 3
 #define DOM_BUTTON_XBUTTON2 4
 
-		// Quit
-		void
-		OS_JavaScript::request_quit_callback() {
+// Quit
+void OS_JavaScript::request_quit_callback() {
 	OS_JavaScript *os = get_singleton();
 	if (os && os->get_main_loop()) {
 		os->get_main_loop()->notification(MainLoop::NOTIFICATION_WM_QUIT_REQUEST);
