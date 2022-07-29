@@ -58,6 +58,7 @@ class TextureRect;
 class ToolButton;
 class Tree;
 class UndoRedo;
+class LineEdit;
 
 class SpriteFramesEditor : public HSplitContainer {
 	GDCLASS(SpriteFramesEditor, HSplitContainer);
@@ -87,6 +88,7 @@ class SpriteFramesEditor : public HSplitContainer {
 
 	ToolButton *new_anim;
 	ToolButton *remove_anim;
+	LineEdit *anim_search_box;
 
 	Tree *animations;
 	SpinBox *anim_speed;
@@ -151,6 +153,7 @@ class SpriteFramesEditor : public HSplitContainer {
 	void _animation_add();
 	void _animation_remove();
 	void _animation_remove_confirmed();
+	void _animation_search_text_changed(const String &p_text);
 	void _animation_loop_changed();
 	void _animation_fps_changed(double p_value);
 
