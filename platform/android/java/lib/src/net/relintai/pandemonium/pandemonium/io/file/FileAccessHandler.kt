@@ -33,7 +33,7 @@ package net.relintai.pandemonium.pandemonium.io.file
 import android.content.Context
 import android.util.Log
 import android.util.SparseArray
-import org.godotengine.godot.io.StorageScope
+import net.relintai.pandemonium.pandemonium.io.StorageScope
 import java.io.FileNotFoundException
 import java.nio.ByteBuffer
 

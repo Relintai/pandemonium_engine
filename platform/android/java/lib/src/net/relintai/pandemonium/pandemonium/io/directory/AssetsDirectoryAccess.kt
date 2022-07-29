@@ -33,8 +33,8 @@ package net.relintai.pandemonium.pandemonium.io.directory
 import android.content.Context
 import android.util.Log
 import android.util.SparseArray
-import org.godotengine.godot.io.directory.DirectoryAccessHandler.Companion.INVALID_DIR_ID
-import org.godotengine.godot.io.directory.DirectoryAccessHandler.Companion.STARTING_DIR_ID
+import net.relintai.pandemonium.pandemonium.io.directory.DirectoryAccessHandler.Companion.INVALID_DIR_ID
+import net.relintai.pandemonium.pandemonium.io.directory.DirectoryAccessHandler.Companion.STARTING_DIR_ID
 import java.io.File
 import java.io.IOException
 
