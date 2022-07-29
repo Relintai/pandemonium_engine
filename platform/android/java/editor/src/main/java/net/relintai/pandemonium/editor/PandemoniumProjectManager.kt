@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  PandemoniumProjectManager.java                                             */
+/*  PandemoniumProjectManager.kt                                         */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,14 +28,15 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-package net.relintai.pandemonium.editor;
+package net.relintai.pandemonium.editor
 
 /**
  * Launcher activity for the Pandemonium Android Editor.
  *
  * It presents the user with the project manager interface.
  * Upon selection of a project, this activity (via its parent logic) starts the
- * {@link PandemoniumEditor} activity.
+ * [PandemoniumEditor] activity.
  */
-public class PandemoniumProjectManager extends PandemoniumEditor {
-}
+
+class PandemoniumProjectManager : PandemoniumEditor() 
+

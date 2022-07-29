@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  PandemoniumGame.java                                                       */
+/*  PandemoniumGame.kt                                                   */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,13 +28,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-package net.relintai.pandemonium.editor;
+package net.relintai.pandemonium.editor
 
 /**
  * Drives the 'run project' window of the Pandemonium Editor.
  */
-public class PandemoniumGame extends PandemoniumEditor {
-  protected boolean overrideOrientationRequest() {
-		return false;
-	}
+class PandemoniumGame : PandemoniumEditor {
+  override fun overrideOrientationRequest() = false
 }

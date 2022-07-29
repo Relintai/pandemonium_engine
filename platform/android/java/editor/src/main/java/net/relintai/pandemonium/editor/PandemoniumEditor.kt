@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  PandemoniumEditor.java                                                     */
+/*  PandemoniumEditor.kt                                                 */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,23 +28,20 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-package net.relintai.pandemonium.editor;
+package net.relintai.pandemonium.editor
 
-import net.relintai.pandemonium.pandemonium.FullScreenPandemoniumApp;
-import net.relintai.pandemonium.pandemonium.utils.PermissionsUtil;
+import net.relintai.pandemonium.pandemonium.FullScreenPandemoniumApp
+import net.relintai.pandemonium.pandemonium.utils.PermissionsUtil
 
-import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Debug;
+import android.content.Intent
+import android.os.Build
+import android.os.Bundle
+import android.os.Debug
 
-import androidx.annotation.Nullable;
-import androidx.window.layout.WindowMetrics;
 import androidx.window.layout.WindowMetricsCalculator;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*
+import kotlin.math.min
 
 /**
  * Base class for the Pandemonium Android Editor activities.
@@ -55,100 +52,95 @@ import java.util.List;
  *
  * It also plays the role of the primary editor window.
  */
-public class PandemoniumEditor extends FullScreenPandemoniumApp {
-	private static final boolean WAIT_FOR_DEBUGGER = false;
-	private static final String COMMAND_LINE_PARAMS = "command_line_params";
+open class PandemoniumEditor : FullScreenPandemoniumApp() {
+ 	companion object {
+	  private const val WAIT_FOR_DEBUGGER = false
+	  private const val COMMAND_LINE_PARAMS = "command_line_params"
 
-	private static final String EDITOR_ARG = "--editor";
-	private static final String PROJECT_MANAGER_ARG = "--project-manager";
+  	private const val EDITOR_ARG = "--editor"
+	  private const val PROJECT_MANAGER_ARG = "--project-manager"
+  }
 
-	private final List<String> commandLineParams = new ArrayList<>();
+	private val commandLineParams = ArrayList<String>()
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	override fun onCreate(savedInstanceState : Bundle?) {
 		PermissionsUtil.requestManifestPermissions(this);
 
-		String[] params = getIntent().getStringArrayExtra(COMMAND_LINE_PARAMS);
+    //String[]
+		val params = getIntent().getStringArrayExtra(COMMAND_LINE_PARAMS);
 		updateCommandLineParams(params);
 
-		if (BuildConfig.BUILD_TYPE.equals("debug") && WAIT_FOR_DEBUGGER) {
+    if (BuildConfig.BUILD_TYPE == "debug" && WAIT_FOR_DEBUGGER) {
 			Debug.waitForDebugger();
 		}
+
 		super.onCreate(savedInstanceState);
 	}
 
-	private void updateCommandLineParams(@Nullable String[] args) {
+  private fun updateCommandLineParams(args: Array<String>?) {
 		// Update the list of command line params with the new args
-		commandLineParams.clear();
-		if (args != null && args.length > 0) {
-			commandLineParams.addAll(Arrays.asList(args));
+		commandLineParams.clear()
+		if (args != null && args.isNotEmpty()) {
+			commandLineParams.addAll(listOf(*args))
 		}
 	}
 
-	@Override
-	public List<String> getCommandLine() {
-		return commandLineParams;
-	}
-
-	@Override
-	public void onNewPandemoniumInstanceRequested(String[] args) {
+  override fun onNewGodotInstanceRequested(args: Array<String>) {
 		// Parse the arguments to figure out which activity to start.
-		Class<?> targetClass = PandemoniumGame.class;
-    // Whether we should launch the new godot instance in an adjacent window
-		// https://developer.android.com/reference/android/content/Intent#FLAG_ACTIVITY_LAUNCH_ADJACENT
-		boolean launchAdjacent = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && (isInMultiWindowMode() || isLargeScreen());
+		var targetClass: Class<*> = PandemoniumGame::class.java
 
-		for (String arg : args) {
-			if (EDITOR_ARG.equals(arg)) {
-				targetClass = PandemoniumEditor.class;
-        launchAdjacent = false;
-        break;
+		// Whether we should launch the new godot instance in an adjacent window
+		// https://developer.android.com/reference/android/content/Intent#FLAG_ACTIVITY_LAUNCH_ADJACENT
+		var launchAdjacent =
+			Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && (isInMultiWindowMode || isLargeScreen)
+
+		for (arg in args) {
+			if (EDITOR_ARG == arg) {
+				targetClass = PandemoniumEditor::class.java
+				launchAdjacent = false
+				break
 			}
 
-			if (PROJECT_MANAGER_ARG.equals(arg)) {
-				targetClass = PandemoniumProjectManager.class;
-        launchAdjacent = false;
-				break;
+			if (PROJECT_MANAGER_ARG == arg) {
+				targetClass = PandemoniumProjectManager::class.java
+				launchAdjacent = false
+				break
 			}
 		}
 
 		// Launch a new activity
-    Intent newInstance = new Intent(this, targetClass)
-									 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-									 .putExtra(COMMAND_LINE_PARAMS, args);
-
+		val newInstance = Intent(this, targetClass)
+			.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+			.putExtra(COMMAND_LINE_PARAMS, args)
 		if (launchAdjacent) {
-			newInstance.addFlags(Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT);
+			newInstance.addFlags(Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT)
+		}
+		startActivity(newInstance)
+	}
+
+  // Get the screen's density scale
+	protected val isLargeScreen: Boolean
+		// Get the minimum window size // Correspond to the EXPANDED window size class.
+		get() {
+			val metrics = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this)
+
+			// Get the screen's density scale
+			val scale = resources.displayMetrics.density
+
+			// Get the minimum window size
+			val minSize = min(metrics.bounds.width(), metrics.bounds.height()).toFloat()
+			val minSizeDp = minSize / scale
+			return minSizeDp >= 840f // Correspond to the EXPANDED window size class.
 		}
 
-		startActivity(newInstance);
-	}
-
-  protected boolean isLargeScreen() {
-		WindowMetrics metrics =
-				WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this);
-
-		// Get the screen's density scale
-		float scale = getResources().getDisplayMetrics().density;
-
-		// Get the minimum window size
-		float minSize = Math.min(metrics.getBounds().width(), metrics.getBounds().height());
-		float minSizeDp = minSize / scale;
-		return minSizeDp >= 840f; // Correspond to the EXPANDED window size class.
-	}
-
-  @Override
-	public void setRequestedOrientation(int requestedOrientation) {
+  override fun setRequestedOrientation(requestedOrientation: Int) {
 		if (!overrideOrientationRequest()) {
-			super.setRequestedOrientation(requestedOrientation);
+			super.setRequestedOrientation(requestedOrientation)
 		}
 	}
 
 	/**
 	 * The Android Editor sets its own orientation via its AndroidManifest
 	 */
-	protected boolean overrideOrientationRequest() {
-		return true;
-	}
-
+  protected open fun overrideOrientationRequest() = true
 }
