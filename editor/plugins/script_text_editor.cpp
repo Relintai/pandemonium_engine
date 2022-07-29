@@ -30,31 +30,31 @@
 
 #include "script_text_editor.h"
 
-#include "core/math/expression.h"
-#include "core/os/input.h"
-#include "core/os/keyboard.h"
-#include "core/project_settings.h"
-#include "editor/editor_node.h"
-#include "editor/editor_scale.h"
-#include "editor/editor_settings.h"
-#include "editor/script_editor_debugger.h"
 #include "core/array.h"
 #include "core/class_db.h"
 #include "core/dictionary.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"
 #include "core/io/resource_loader.h"
+#include "core/math/expression.h"
 #include "core/math/math_defs.h"
 #include "core/math/transform_2d.h"
 #include "core/node_path.h"
 #include "core/os/file_access.h"
+#include "core/os/input.h"
 #include "core/os/input_event.h"
+#include "core/os/keyboard.h"
 #include "core/os/memory.h"
+#include "core/project_settings.h"
 #include "core/script_language.h"
 #include "core/set.h"
 #include "core/string_name.h"
 #include "core/typedefs.h"
+#include "editor/editor_node.h"
+#include "editor/editor_scale.h"
+#include "editor/editor_settings.h"
 #include "editor/plugins/script_editor_plugin.h"
+#include "editor/script_editor_debugger.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/color_picker.h"
 #include "scene/gui/control.h"
@@ -1595,7 +1595,13 @@ void ScriptTextEditor::drop_data_fw(const Point2 &p_point, const Variant &p_data
 				continue;
 			}
 
-			String path = sn->get_path_to(node);
+			String path;
+			if (node->is_unique_name_in_owner()) {
+				path = "%" + node->get_name();
+			} else {
+				path = sn->get_path_to(node);
+			}
+
 			text_to_drop += "\"" + path.c_escape() + "\"";
 		}
 
