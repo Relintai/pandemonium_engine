@@ -64,11 +64,15 @@ int main(int argc, char **argv) {
 		err = Main::setup(argv[0], argc - first_arg, &argv[first_arg]);
 	}
 
-	if (err != OK)
+	if (err == ERR_HELP) { // Returned by --help and --version, so success.
+		return 0;
+	} else if (err != OK) {
 		return 255;
+	}
 
-	if (Main::start())
+	if (Main::start()) {
 		os.run(); // it is actually the OS that decides how to run
+  }
 
 	Main::cleanup();
 

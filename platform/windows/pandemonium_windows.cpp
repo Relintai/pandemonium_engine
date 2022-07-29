@@ -162,6 +162,11 @@ __declspec(dllexport) int widechar_main(int argc, wchar_t **argv) {
 			delete[] argv_utf8[i];
 		}
 		delete[] argv_utf8;
+
+		if (err == ERR_HELP) { // Returned by --help and --version, so success.
+			return 0;
+		}
+
 		return 255;
 	}
 
