@@ -32,7 +32,7 @@ package net.relintai.pandemonium.pandemonium;
 
 import net.relintai.pandemonium.pandemonium.io.directory.DirectoryAccessHandler;
 import net.relintai.pandemonium.pandemonium.io.file.FileAccessHandler;
-import net.relintai.pandemonium.pandemonium.utils.GodotNetUtils;
+import net.relintai.pandemonium.pandemonium.utils.PandemoniumNetUtils;
 
 import android.app.Activity;
 import android.content.res.AssetManager;
