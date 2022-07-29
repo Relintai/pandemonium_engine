@@ -2376,7 +2376,7 @@ void EditorNode::_menu_option_confirm(int p_option, bool p_confirmed) {
 			} else if (extensions.size()) {
 				String root_name = scene->get_name();
 				// Very similar to node naming logic.
-				switch (ProjectSettings::get_singleton()->get("editor/scene/scene_naming").operator int()) {
+				switch (ProjectSettings::get_singleton()->get("editor/scene_naming").operator int()) {
 					case SCENE_NAME_CASING_AUTO:
 						// Use casing of the root node.
 						break;
@@ -5483,9 +5483,6 @@ void EditorNode::_project_settings_changed() {
 }
 
 void EditorNode::_bind_methods() {
-	GLOBAL_DEF("editor/scene/scene_naming", SCENE_NAME_CASING_AUTO);
-	ProjectSettings::get_singleton()->set_custom_property_info("editor/scene/scene_naming", PropertyInfo(Variant::INT, "editor/scene/scene_naming", PROPERTY_HINT_ENUM, "Auto,PascalCase,snake_case"));
-
 	ClassDB::bind_method("_menu_option", &EditorNode::_menu_option);
 	ClassDB::bind_method("_tool_menu_option", &EditorNode::_tool_menu_option);
 	ClassDB::bind_method("_menu_confirm_current", &EditorNode::_menu_confirm_current);
@@ -5853,11 +5850,6 @@ EditorNode::EditorNode() {
 	EDITOR_DEF("interface/inspector/default_color_picker_mode", 0);
 	EditorSettings::get_singleton()->add_property_hint(PropertyInfo(Variant::INT, "interface/inspector/default_color_picker_mode", PROPERTY_HINT_ENUM, "RGB,HSV,RAW", PROPERTY_USAGE_DEFAULT));
 	EDITOR_DEF("run/auto_save/save_before_running", true);
-	EDITOR_DEF("version_control/username", "");
-	EDITOR_DEF("version_control/ssh_public_key_path", "");
-	EditorSettings::get_singleton()->add_property_hint(PropertyInfo(Variant::STRING, "version_control/ssh_public_key_path", PROPERTY_HINT_GLOBAL_FILE));
-	EDITOR_DEF("version_control/ssh_private_key_path", "");
-	EditorSettings::get_singleton()->add_property_hint(PropertyInfo(Variant::STRING, "version_control/ssh_private_key_path", PROPERTY_HINT_GLOBAL_FILE));
 
 	theme_base = memnew(Control);
 	add_child(theme_base);
