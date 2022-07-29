@@ -438,6 +438,7 @@ private:
 
 	bool selecting_enabled;
 	bool deselect_on_focus_loss_enabled;
+	bool drag_and_drop_selection_enabled;
 	bool popup_show;
 
 	bool context_menu_enabled;
@@ -760,6 +761,7 @@ public:
 	bool is_drawing_tabs() const;
 	void set_draw_spaces(bool p_draw);
 	bool is_drawing_spaces() const;
+
 	void set_override_selected_font_color(bool p_override_selected_font_color);
 	bool is_overriding_selected_font_color() const;
 
@@ -858,6 +860,9 @@ public:
 
 	void set_deselect_on_focus_loss_enabled(const bool p_enabled);
 	bool is_deselect_on_focus_loss_enabled() const;
+
+	void set_drag_and_drop_selection_enabled(const bool p_enabled);
+	bool is_drag_and_drop_selection_enabled() const;
 
 	void set_shortcut_keys_enabled(bool p_enabled);
 	bool is_shortcut_keys_enabled() const;

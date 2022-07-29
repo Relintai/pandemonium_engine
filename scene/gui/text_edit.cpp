@@ -2580,7 +2580,7 @@ void TextEdit::_gui_input(const Ref<InputEvent> &p_gui_input) {
 						update();
 					}
 
-				} else if (is_mouse_over_selection()) {
+				} else if (drag_and_drop_selection_enabled && is_mouse_over_selection()) {
 					selection.selecting_mode = Selection::MODE_NONE;
 					selection.drag_attempt = true;
 				} else {
@@ -7339,6 +7339,14 @@ bool TextEdit::is_deselect_on_focus_loss_enabled() const {
 	return deselect_on_focus_loss_enabled;
 }
 
+void TextEdit::set_drag_and_drop_selection_enabled(const bool p_enabled) {
+	drag_and_drop_selection_enabled = p_enabled;
+}
+
+bool TextEdit::is_drag_and_drop_selection_enabled() const {
+	return drag_and_drop_selection_enabled;
+}
+
 bool TextEdit::is_shortcut_keys_enabled() const {
 	return shortcut_keys_enabled;
 }
@@ -7449,6 +7457,8 @@ void TextEdit::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("is_selecting_enabled"), &TextEdit::is_selecting_enabled);
 	ClassDB::bind_method(D_METHOD("set_deselect_on_focus_loss_enabled", "enable"), &TextEdit::set_deselect_on_focus_loss_enabled);
 	ClassDB::bind_method(D_METHOD("is_deselect_on_focus_loss_enabled"), &TextEdit::is_deselect_on_focus_loss_enabled);
+	ClassDB::bind_method(D_METHOD("set_drag_and_drop_selection_enabled", "enable"), &TextEdit::set_drag_and_drop_selection_enabled);
+	ClassDB::bind_method(D_METHOD("is_drag_and_drop_selection_enabled"), &TextEdit::is_drag_and_drop_selection_enabled);
 	ClassDB::bind_method(D_METHOD("is_line_set_as_safe", "line"), &TextEdit::is_line_set_as_safe);
 	ClassDB::bind_method(D_METHOD("set_line_as_safe", "line", "safe"), &TextEdit::set_line_as_safe);
 	ClassDB::bind_method(D_METHOD("is_line_set_as_bookmark", "line"), &TextEdit::is_line_set_as_bookmark);
@@ -7562,6 +7572,7 @@ void TextEdit::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "virtual_keyboard_enabled"), "set_virtual_keyboard_enabled", "is_virtual_keyboard_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "selecting_enabled"), "set_selecting_enabled", "is_selecting_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "deselect_on_focus_loss_enabled"), "set_deselect_on_focus_loss_enabled", "is_deselect_on_focus_loss_enabled");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "drag_and_drop_selection_enabled"), "set_drag_and_drop_selection_enabled", "is_drag_and_drop_selection_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "smooth_scrolling"), "set_smooth_scroll_enable", "is_smooth_scroll_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "v_scroll_speed"), "set_v_scroll_speed", "get_v_scroll_speed");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "hiding_enabled"), "set_hiding_enabled", "is_hiding_enabled");
@@ -7731,6 +7742,7 @@ TextEdit::TextEdit() {
 
 	selecting_enabled = true;
 	deselect_on_focus_loss_enabled = true;
+	drag_and_drop_selection_enabled = true;
 	popup_show = false;
 	context_menu_enabled = true;
 	shortcut_keys_enabled = true;
