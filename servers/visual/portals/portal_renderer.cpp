@@ -33,6 +33,7 @@
 #include "portal_pvs_builder.h"
 #include "servers/visual/visual_server_globals.h"
 #include "servers/visual/visual_server_scene.h"
+#include "core/project_settings.h"
 
 bool PortalRenderer::use_occlusion_culling = true;
 
