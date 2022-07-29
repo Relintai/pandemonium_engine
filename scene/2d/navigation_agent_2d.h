@@ -48,6 +48,7 @@ class NavigationAgent2D : public Node {
 	bool avoidance_enabled;
 	uint32_t navigation_layers;
 
+	real_t path_desired_distance;
 	real_t target_desired_distance;
 	real_t radius;
 	real_t neighbor_dist;
@@ -99,6 +100,11 @@ public:
 
 	void set_navigation_map(RID p_navigation_map);
 	RID get_navigation_map() const;
+
+	void set_path_desired_distance(real_t p_dd);
+	real_t get_path_desired_distance() const {
+		return path_desired_distance;
+	}
 
 	void set_target_desired_distance(real_t p_dd);
 	real_t get_target_desired_distance() const {
