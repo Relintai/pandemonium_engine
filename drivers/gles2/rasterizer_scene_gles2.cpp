@@ -2319,6 +2319,13 @@ void RasterizerSceneGLES2::_render_render_list(RenderList::Element **p_elements,
 				prev_base_pass = base_pass;
 			}
 
+			if (!unshaded && e->light_index < RenderList::MAX_LIGHTS) {
+				light = render_light_instances[e->light_index];
+				if ((e->instance->layer_mask & light->light_ptr->cull_mask) == 0) {
+					light = nullptr; // Don't use this light, it is culled
+				}
+			}
+
 			if (light != prev_light) {
 				_setup_light_type(light, shadow_atlas);
 				rebind = true;
