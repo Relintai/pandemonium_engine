@@ -2278,23 +2278,26 @@ void Spell::_validate_property(PropertyInfo &property) const {
 	String prop = property.name;
 
 	if (prop.begins_with("aura_stat_attribute_")) {
-		if (prop.ends_with("count"))
+		if (prop.ends_with("count")) {
 			return;
+    }
 
-		int frame = prop.get_slicec('/', 0).get_slicec('_', 2).to_int();
+		int frame = prop.get_slicec('/', 0).get_slicec('_', 3).to_int();
 		if (frame >= _aura_stat_attribute_count) {
 			property.usage = 0;
 		}
 
-		if (property.name.ends_with("stat"))
+		if (property.name.ends_with("stat")) {
 			property.hint_string = ESS::get_singleton()->stat_get_string();
+    }
 	} else if (prop == "diminishing_return_category") {
 		property.hint_string = ESS::get_singleton()->dminishing_return_categories_get();
 	} else if (prop.begins_with("aura_trigger_")) {
-		if (prop.ends_with("count"))
+		if (prop.ends_with("count")) {
 			return;
+    }
 
-		int frame = prop.get_slicec('/', 0).get_slicec('_', 1).to_int();
+		int frame = prop.get_slicec('/', 0).get_slicec('_', 2).to_int();
 		if (frame >= _aura_trigger_count) {
 			property.usage = 0;
 		} else {
