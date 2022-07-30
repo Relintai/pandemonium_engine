@@ -241,6 +241,29 @@ public:
 	EditorPropertyCheck();
 };
 
+class EditorPropertyButton : public EditorProperty {
+	GDCLASS(EditorPropertyButton, EditorProperty);
+
+public:
+	virtual void update_property();
+
+	void setup(const String &method_name, const Vector<String> &p_options);
+
+	EditorPropertyButton();
+
+protected:
+	void _notification(int p_what);
+	static void _bind_methods();
+
+	void _button_pressed();
+
+	String _method_name;
+	String _icon_name;
+	String _icon_theme_type;
+
+	Button *_button;
+};
+
 class EditorPropertyEnum : public EditorProperty {
 	GDCLASS(EditorPropertyEnum, EditorProperty);
 	OptionButton *options;

@@ -1,6 +1,7 @@
 #include "csrf_token.h"
 
 #include "core/crypto/crypto_core.h"
+#include "core/object.h"
 #include "core/os/os.h"
 #include "http_server_enums.h"
 #include "http_session.h"

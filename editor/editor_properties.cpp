@@ -44,6 +44,7 @@
 #include "core/math/transform.h"
 #include "core/math/transform_2d.h"
 #include "core/math/vector3.h"
+#include "core/object.h"
 #include "core/object_id.h"
 #include "core/os/input_event.h"
 #include "core/os/memory.h"
@@ -640,6 +641,52 @@ EditorPropertyCheck::EditorPropertyCheck() {
 	add_child(checkbox);
 	add_focusable(checkbox);
 	checkbox->connect("pressed", this, "_checkbox_pressed");
+}
+
+///////////////////// Button /////////////////////////
+void EditorPropertyButton::update_property() {
+	_button->set_disabled(is_read_only());
+}
+
+void EditorPropertyButton::setup(const String &method_name, const Vector<String> &p_options) {
+	_method_name = method_name;
+
+	if (p_options.size() >= 2) {
+		_icon_name = p_options[0];
+		_icon_theme_type = p_options[1];
+	}
+}
+
+EditorPropertyButton::EditorPropertyButton() {
+	_button = memnew(Button);
+	_button->set_text(TTR("Run"));
+	add_child(_button);
+	add_focusable(_button);
+	_button->connect("pressed", this, "_button_pressed");
+}
+
+void EditorPropertyButton::_notification(int p_what) {
+	switch (p_what) {
+		case NOTIFICATION_THEME_CHANGED:
+		case NOTIFICATION_ENTER_TREE: {
+			if (_icon_name != "") {
+				_button->set_icon(get_icon(_icon_name, _icon_theme_type));
+			}
+		} break;
+	}
+}
+
+void EditorPropertyButton::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_button_pressed"), &EditorPropertyButton::_button_pressed);
+}
+
+void EditorPropertyButton::_button_pressed() {
+	//emit_changed(get_edited_property(), _button->is_pressed());
+	//get_edited_object()->get(get_edited_property());
+
+	if (_method_name != "") {
+		get_edited_object()->call(_method_name);
+	}
 }
 
 ///////////////////// ENUM /////////////////////////
@@ -3034,8 +3081,26 @@ bool EditorInspectorDefaultPlugin::parse_property(Object *p_object, Variant::Typ
 	switch (p_type) {
 		// atomic types
 		case Variant::NIL: {
-			EditorPropertyNil *editor = memnew(EditorPropertyNil);
-			add_property_editor(p_path, editor);
+			if (p_hint == PROPERTY_HINT_BUTTON) {
+				EditorPropertyButton *editor = memnew(EditorPropertyButton);
+
+				Vector<String> nopts = p_hint_text.split(":");
+
+				if (nopts.size() > 0) {
+					Vector<String> icon_opts;
+
+					if (nopts.size() >= 2) {
+						icon_opts = nopts[1].split("/");
+					}
+
+					editor->setup(nopts[0], icon_opts);
+				}
+
+				add_property_editor(p_path, editor);
+			} else {
+				EditorPropertyNil *editor = memnew(EditorPropertyNil);
+				add_property_editor(p_path, editor);
+			}
 		} break;
 		case Variant::BOOL: {
 			EditorPropertyCheck *editor = memnew(EditorPropertyCheck);
