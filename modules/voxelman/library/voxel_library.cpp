@@ -391,7 +391,7 @@ void VoxelLibrary::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("materials_get"), &VoxelLibrary::materials_get);
 	ClassDB::bind_method(D_METHOD("materials_set"), &VoxelLibrary::materials_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "17/17:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "20/19:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
 
 	BIND_VMETHOD(MethodInfo("_liquid_material_cache_get_key", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "TerrainMaterialCache"), "_liquid_material_cache_get", PropertyInfo(Variant::INT, "key")));
@@ -415,7 +415,7 @@ void VoxelLibrary::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("liquid_materials_get"), &VoxelLibrary::liquid_materials_get);
 	ClassDB::bind_method(D_METHOD("liquid_materials_set"), &VoxelLibrary::liquid_materials_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "liquid_materials", PROPERTY_HINT_NONE, "17/17:Material", PROPERTY_USAGE_DEFAULT, "Material"), "liquid_materials_set", "liquid_materials_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "liquid_materials", PROPERTY_HINT_NONE, "20/19:Material", PROPERTY_USAGE_DEFAULT, "Material"), "liquid_materials_set", "liquid_materials_get");
 
 	BIND_VMETHOD(MethodInfo("_prop_material_cache_get_key", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "TerrainMaterialCache"), "_prop_material_cache_get", PropertyInfo(Variant::INT, "key")));
@@ -439,7 +439,7 @@ void VoxelLibrary::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("prop_materials_get"), &VoxelLibrary::prop_materials_get);
 	ClassDB::bind_method(D_METHOD("prop_materials_set"), &VoxelLibrary::prop_materials_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "prop_materials", PROPERTY_HINT_NONE, "17/17:Material", PROPERTY_USAGE_DEFAULT, "Material"), "prop_materials_set", "prop_materials_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "prop_materials", PROPERTY_HINT_NONE, "20/19:Material", PROPERTY_USAGE_DEFAULT, "Material"), "prop_materials_set", "prop_materials_get");
 
 	ClassDB::bind_method(D_METHOD("voxel_surface_get", "index"), &VoxelLibrary::voxel_surface_get);
 	ClassDB::bind_method(D_METHOD("voxel_surface_add", "value"), &VoxelLibrary::voxel_surface_add);

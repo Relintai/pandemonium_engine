@@ -1109,7 +1109,7 @@ void VoxelWorld::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("voxel_structures_get"), &VoxelWorld::voxel_structures_get);
 	ClassDB::bind_method(D_METHOD("voxel_structures_set"), &VoxelWorld::voxel_structures_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "voxel_structures", PROPERTY_HINT_NONE, "17/17:VoxelStructure", PROPERTY_USAGE_DEFAULT, "VoxelStructure"), "voxel_structures_set", "voxel_structures_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "voxel_structures", PROPERTY_HINT_NONE, "20/19:VoxelStructure", PROPERTY_USAGE_DEFAULT, "VoxelStructure"), "voxel_structures_set", "voxel_structures_get");
 
 	BIND_VMETHOD(MethodInfo("_chunk_added", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
 
@@ -1126,7 +1126,7 @@ void VoxelWorld::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("chunks_get"), &VoxelWorld::chunks_get);
 	ClassDB::bind_method(D_METHOD("chunks_set"), &VoxelWorld::chunks_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "chunks", PROPERTY_HINT_NONE, "17/17:VoxelChunk", PROPERTY_USAGE_DEFAULT, "VoxelChunk"), "chunks_set", "chunks_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "chunks", PROPERTY_HINT_NONE, "20/19:VoxelChunk", PROPERTY_USAGE_DEFAULT, "VoxelChunk"), "chunks_set", "chunks_get");
 
 	ClassDB::bind_method(D_METHOD("generation_queue_add_to", "chunk"), &VoxelWorld::generation_queue_add_to);
 	ClassDB::bind_method(D_METHOD("generation_queue_get_index", "index"), &VoxelWorld::generation_queue_get_index);

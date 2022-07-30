@@ -70,5 +70,5 @@ void ItemContainerData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_container_datas"), &ItemContainerData::get_container_datas);
 	ClassDB::bind_method(D_METHOD("set_container_datas", "container_datas"), &ItemContainerData::set_container_datas);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "container_datas", PROPERTY_HINT_NONE, "17/17:ItemContainerDataEntry", PROPERTY_USAGE_DEFAULT, "ItemContainerDataEntry"), "set_container_datas", "get_container_datas");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "container_datas", PROPERTY_HINT_NONE, "20/19:ItemContainerDataEntry", PROPERTY_USAGE_DEFAULT, "ItemContainerDataEntry"), "set_container_datas", "get_container_datas");
 }

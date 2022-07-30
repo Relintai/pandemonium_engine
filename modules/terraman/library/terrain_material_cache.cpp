@@ -294,7 +294,7 @@ void TerrainMaterialCache::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("materials_get"), &TerrainMaterialCache::materials_get);
 	ClassDB::bind_method(D_METHOD("materials_set"), &TerrainMaterialCache::materials_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "17/17:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "20/19:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
 
 	ClassDB::bind_method(D_METHOD("surface_get", "index"), &TerrainMaterialCache::surface_get);
 	ClassDB::bind_method(D_METHOD("surface_id_get", "index"), &TerrainMaterialCache::surface_id_get);

@@ -801,12 +801,12 @@ void VoxelLibraryMergerPCM::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_voxel_surfaces"), &VoxelLibraryMergerPCM::get_voxel_surfaces);
 	ClassDB::bind_method(D_METHOD("set_voxel_surfaces"), &VoxelLibraryMergerPCM::set_voxel_surfaces);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "voxel_surfaces", PROPERTY_HINT_NONE, "17/17:VoxelSurfaceMerger", PROPERTY_USAGE_DEFAULT, "VoxelSurfaceMerger"), "set_voxel_surfaces", "get_voxel_surfaces");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "voxel_surfaces", PROPERTY_HINT_NONE, "20/19:VoxelSurfaceMerger", PROPERTY_USAGE_DEFAULT, "VoxelSurfaceMerger"), "set_voxel_surfaces", "get_voxel_surfaces");
 
 #ifdef PROPS_PRESENT
 	ClassDB::bind_method(D_METHOD("get_props"), &VoxelLibraryMergerPCM::get_props);
 	ClassDB::bind_method(D_METHOD("set_props"), &VoxelLibraryMergerPCM::set_props);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "props", PROPERTY_HINT_NONE, "17/17:PropData", PROPERTY_USAGE_DEFAULT, "PropData"), "set_props", "get_props");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "props", PROPERTY_HINT_NONE, "20/19:PropData", PROPERTY_USAGE_DEFAULT, "PropData"), "set_props", "get_props");
 
 	ClassDB::bind_method(D_METHOD("get_prop_uv_rect", "texture"), &VoxelLibraryMergerPCM::get_prop_uv_rect);
 

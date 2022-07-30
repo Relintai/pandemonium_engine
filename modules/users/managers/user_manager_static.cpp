@@ -128,7 +128,7 @@ UserManagerStatic::~UserManagerStatic() {
 void UserManagerStatic::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_users"), &UserManagerStatic::get_users);
 	ClassDB::bind_method(D_METHOD("set_users", "users"), &UserManagerStatic::set_users);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "users", PROPERTY_HINT_NONE, "17/17:User", PROPERTY_USAGE_DEFAULT, "User"), "set_users", "get_users");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "users", PROPERTY_HINT_NONE, "20/19:User", PROPERTY_USAGE_DEFAULT, "User"), "set_users", "get_users");
 
 	ClassDB::bind_method(D_METHOD("get_create_user_name"), &UserManagerStatic::get_create_user_name_bind);
 	ClassDB::bind_method(D_METHOD("set_create_user_name", "val"), &UserManagerStatic::set_create_user_name_bind);

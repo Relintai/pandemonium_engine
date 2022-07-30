@@ -202,7 +202,7 @@ void EntitySpeciesData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_model_datas"), &EntitySpeciesData::get_model_datas);
 	ClassDB::bind_method(D_METHOD("set_model_datas", "model_datas"), &EntitySpeciesData::set_model_datas);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "model_datas", PROPERTY_HINT_NONE, "17/17:SpeciesModelData", PROPERTY_USAGE_DEFAULT, "SpeciesModelData"), "set_model_datas", "get_model_datas");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "model_datas", PROPERTY_HINT_NONE, "20/19:SpeciesModelData", PROPERTY_USAGE_DEFAULT, "SpeciesModelData"), "set_model_datas", "get_model_datas");
 
 	//Spells
 	ClassDB::bind_method(D_METHOD("get_spell", "index"), &EntitySpeciesData::get_spell);
@@ -214,7 +214,7 @@ void EntitySpeciesData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_spells"), &EntitySpeciesData::get_spells);
 	ClassDB::bind_method(D_METHOD("set_spells", "spells"), &EntitySpeciesData::set_spells);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_spells", "get_spells");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells", PROPERTY_HINT_NONE, "20/19:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_spells", "get_spells");
 
 	//Auras
 	ClassDB::bind_method(D_METHOD("get_aura", "index"), &EntitySpeciesData::get_aura);
@@ -226,5 +226,5 @@ void EntitySpeciesData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_auras"), &EntitySpeciesData::get_auras);
 	ClassDB::bind_method(D_METHOD("set_auras", "auras"), &EntitySpeciesData::set_auras);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_auras", "get_auras");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "20/19:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_auras", "get_auras");
 }

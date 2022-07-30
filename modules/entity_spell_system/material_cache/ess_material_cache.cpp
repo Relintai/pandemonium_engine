@@ -337,7 +337,7 @@ void ESSMaterialCache::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("materials_get"), &ESSMaterialCache::materials_get);
 	ClassDB::bind_method(D_METHOD("materials_set"), &ESSMaterialCache::materials_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "17/17:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "20/19:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
 
 	ClassDB::bind_method(D_METHOD("texture_add", "texture"), &ESSMaterialCache::texture_add);
 	ClassDB::bind_method(D_METHOD("texture_remove", "texture"), &ESSMaterialCache::texture_remove);

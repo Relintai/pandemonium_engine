@@ -415,7 +415,7 @@ void EntityClassData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_entity_resources"), &EntityClassData::get_entity_resources);
 	ClassDB::bind_method(D_METHOD("set_entity_resources", "entity_resources"), &EntityClassData::set_entity_resources);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entity_resources", PROPERTY_HINT_NONE, "17/17:EntityResource", PROPERTY_USAGE_DEFAULT, "EntityResource"), "set_entity_resources", "get_entity_resources");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entity_resources", PROPERTY_HINT_NONE, "20/19:EntityResource", PROPERTY_USAGE_DEFAULT, "EntityResource"), "set_entity_resources", "get_entity_resources");
 
 	ClassDB::bind_method(D_METHOD("_setup_resources", "entity"), &EntityClassData::_setup_resources);
 
@@ -428,7 +428,7 @@ void EntityClassData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_specs"), &EntityClassData::get_specs);
 	ClassDB::bind_method(D_METHOD("set_specs", "specs"), &EntityClassData::set_specs);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "specs", PROPERTY_HINT_NONE, "17/17:CharacterSpec", PROPERTY_USAGE_DEFAULT, "CharacterSpec"), "set_specs", "get_specs");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "specs", PROPERTY_HINT_NONE, "20/19:CharacterSpec", PROPERTY_USAGE_DEFAULT, "CharacterSpec"), "set_specs", "get_specs");
 
 	////    Spell    ////
 	ClassDB::bind_method(D_METHOD("get_num_spells"), &EntityClassData::get_num_spells);
@@ -439,7 +439,7 @@ void EntityClassData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_spells"), &EntityClassData::get_spells);
 	ClassDB::bind_method(D_METHOD("set_spells", "spells"), &EntityClassData::set_spells);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_spells", "get_spells");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells", PROPERTY_HINT_NONE, "20/19:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_spells", "get_spells");
 
 	////    Start Spells    ////
 	ClassDB::bind_method(D_METHOD("get_num_start_spells"), &EntityClassData::get_num_start_spells);
@@ -450,7 +450,7 @@ void EntityClassData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_start_spells"), &EntityClassData::get_start_spells);
 	ClassDB::bind_method(D_METHOD("set_start_spells", "spells"), &EntityClassData::set_start_spells);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "start_spells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_start_spells", "get_start_spells");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "start_spells", PROPERTY_HINT_NONE, "20/19:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_start_spells", "get_start_spells");
 
 	////    AURAS    ////
 	ClassDB::bind_method(D_METHOD("get_num_auras"), &EntityClassData::get_num_auras);
@@ -461,7 +461,7 @@ void EntityClassData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_auras"), &EntityClassData::get_auras);
 	ClassDB::bind_method(D_METHOD("set_auras", "auras"), &EntityClassData::set_auras);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_auras", "get_auras");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "20/19:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_auras", "get_auras");
 
 	//Vendor
 	ClassDB::bind_method(D_METHOD("get_vendor_item_data"), &EntityClassData::get_vendor_item_data);
@@ -485,7 +485,7 @@ void EntityClassData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_craft_recipes"), &EntityClassData::get_craft_recipes);
 	ClassDB::bind_method(D_METHOD("set_craft_recipes", "recipe"), &EntityClassData::set_craft_recipes);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "craft_recipes", PROPERTY_HINT_NONE, "17/17:CraftRecipe", PROPERTY_USAGE_DEFAULT, "CraftRecipe"), "set_craft_recipes", "get_craft_recipes");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "craft_recipes", PROPERTY_HINT_NONE, "20/19:CraftRecipe", PROPERTY_USAGE_DEFAULT, "CraftRecipe"), "set_craft_recipes", "get_craft_recipes");
 
 	////    AI ACTIONS    ////
 	ClassDB::bind_method(D_METHOD("get_num_ais"), &EntityClassData::get_num_ais);
@@ -496,7 +496,7 @@ void EntityClassData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_ais"), &EntityClassData::get_ais);
 	ClassDB::bind_method(D_METHOD("set_ais", "auras"), &EntityClassData::set_ais);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "ais", PROPERTY_HINT_NONE, "17/17:EntityAI", PROPERTY_USAGE_DEFAULT, "EntityAI"), "set_ais", "get_ais");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "ais", PROPERTY_HINT_NONE, "20/19:EntityAI", PROPERTY_USAGE_DEFAULT, "EntityAI"), "set_ais", "get_ais");
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "EntityAI"), "_get_ai_instance"));
 

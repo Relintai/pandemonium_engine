@@ -7156,7 +7156,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("sauras_get"), &Entity::sauras_get);
 	ClassDB::bind_method(D_METHOD("sauras_set", "data"), &Entity::sauras_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sauras", PROPERTY_HINT_NONE, "17/17:AuraData", PROPERTY_USAGE_ENTITY_HIDDEN, "AuraData"), "sauras_set", "sauras_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sauras", PROPERTY_HINT_NONE, "20/19:AuraData", PROPERTY_USAGE_ENTITY_HIDDEN, "AuraData"), "sauras_set", "sauras_get");
 
 	//Hooks
 	BIND_VMETHOD(MethodInfo("_moved"));
@@ -7406,7 +7406,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("sresources_get"), &Entity::sresources_get);
 	ClassDB::bind_method(D_METHOD("sresources_set", "caster_aura_applys"), &Entity::sresources_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sresources", PROPERTY_HINT_NONE, "17/17:EntityResource", PROPERTY_USAGE_ENTITY_HIDDEN, "EntityResource"), "sresources_set", "sresources_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sresources", PROPERTY_HINT_NONE, "20/19:EntityResource", PROPERTY_USAGE_ENTITY_HIDDEN, "EntityResource"), "sresources_set", "sresources_get");
 
 	//GCD
 	ADD_SIGNAL(MethodInfo("sgcd_started", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::REAL, "value")));
@@ -7441,7 +7441,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("sdatas_get"), &Entity::sdatas_get);
 	ClassDB::bind_method(D_METHOD("sdatas_set", "data"), &Entity::sdatas_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sdatas", PROPERTY_HINT_NONE, "17/17:EntityDataContainer", PROPERTY_USAGE_ENTITY_HIDDEN, "EntityDataContainer"), "sdatas_set", "sdatas_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sdatas", PROPERTY_HINT_NONE, "20/19:EntityDataContainer", PROPERTY_USAGE_ENTITY_HIDDEN, "EntityDataContainer"), "sdatas_set", "sdatas_get");
 
 	//States
 	ADD_SIGNAL(MethodInfo("sstate_changed", PropertyInfo(Variant::INT, "value")));
@@ -7577,7 +7577,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("sspells_get"), &Entity::sspells_get);
 	ClassDB::bind_method(D_METHOD("sspells_set", "data"), &Entity::sspells_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sspells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_ENTITY_HIDDEN, "Spell"), "sspells_set", "sspells_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sspells", PROPERTY_HINT_NONE, "20/19:Spell", PROPERTY_USAGE_ENTITY_HIDDEN, "Spell"), "sspells_set", "sspells_get");
 
 	//Crafting
 	BIND_VMETHOD(MethodInfo("_crafts", PropertyInfo(Variant::INT, "id")));
@@ -7612,7 +7612,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("scraft_recipes_get"), &Entity::scraft_recipes_get);
 	ClassDB::bind_method(D_METHOD("scraft_recipes_set", "caster_aura_applys"), &Entity::scraft_recipes_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "scraft_recipes", PROPERTY_HINT_NONE, "17/17:CraftRecipe", PROPERTY_USAGE_ENTITY_HIDDEN, "CraftRecipe"), "scraft_recipes_set", "scraft_recipes_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "scraft_recipes", PROPERTY_HINT_NONE, "20/19:CraftRecipe", PROPERTY_USAGE_ENTITY_HIDDEN, "CraftRecipe"), "scraft_recipes_set", "scraft_recipes_get");
 
 	//Skills
 	ClassDB::bind_method(D_METHOD("skill_hass_id", "id"), &Entity::skill_hass_id);
@@ -7636,7 +7636,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("sskills_get"), &Entity::sskills_get);
 	ClassDB::bind_method(D_METHOD("sskills_set", "data"), &Entity::sskills_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sskills", PROPERTY_HINT_NONE, "17/17:EntitySkill", PROPERTY_USAGE_ENTITY_HIDDEN, "EntitySkill"), "sskills_set", "sskills_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sskills", PROPERTY_HINT_NONE, "20/19:EntitySkill", PROPERTY_USAGE_ENTITY_HIDDEN, "EntitySkill"), "sskills_set", "sskills_get");
 
 	//skeleton
 	ClassDB::bind_method(D_METHOD("get_body"), &Entity::get_body);

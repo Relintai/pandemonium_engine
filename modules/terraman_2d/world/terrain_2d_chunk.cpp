@@ -1598,7 +1598,7 @@ void Terrain2DChunk::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("voxel_structures_get"), &Terrain2DChunk::voxel_structures_get);
 	ClassDB::bind_method(D_METHOD("voxel_structures_set"), &Terrain2DChunk::voxel_structures_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "voxel_structures", PROPERTY_HINT_NONE, "17/17:Terrain2DStructure", PROPERTY_USAGE_DEFAULT, "Terrain2DStructure"), "voxel_structures_set", "voxel_structures_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "voxel_structures", PROPERTY_HINT_NONE, "20/19:Terrain2DStructure", PROPERTY_USAGE_DEFAULT, "Terrain2DStructure"), "voxel_structures_set", "voxel_structures_get");
 
 	//Meshes
 
