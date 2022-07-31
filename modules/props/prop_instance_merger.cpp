@@ -183,7 +183,7 @@ void PropInstanceMerger::meshes_create(const int num) {
 
 		if (get_world().is_valid()) {
 			VS::get_singleton()->instance_set_scenario(mesh_instance_rid, get_world()->get_scenario());
-    }
+		}
 
 		RID mesh_rid = VS::get_singleton()->mesh_create();
 
@@ -414,7 +414,7 @@ void PropInstanceMerger::debug_mesh_send() {
 
 	if (_debug_mesh_array.size() == 0) {
 		return;
-  }
+	}
 
 	SceneTree *st = SceneTree::get_singleton();
 
@@ -586,7 +586,7 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 
 		if (!e.is_valid()) {
 			continue;
-    }
+		}
 
 		Transform t = transform * e->get_transform();
 
@@ -597,7 +597,7 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 
 			if (!p.is_valid()) {
 				continue;
-      }
+			}
 
 			prop_preprocess(t, p);
 
@@ -607,22 +607,27 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 		Ref<PropDataTiledWall> tiled_wall_data = e;
 
 		if (tiled_wall_data.is_valid()) {
-			_job->add_tiled_wall(tiled_wall_data, t);
+			Ref<TiledWallData> twd = tiled_wall_data->get_data();
 
-			if (tiled_wall_data->get_collision()) {
-				Ref<BoxShape> tws;
-				tws.instance();
+			if (twd.is_valid()) {
+				_job->add_tiled_wall(tiled_wall_data, t);
 
-				float hew = tiled_wall_data->get_width() / 2.0;
-				float heh = tiled_wall_data->get_heigth() / 2.0;
+				if (tiled_wall_data->get_collision()) {
+					Ref<BoxShape> tws;
+					tws.instance();
 
-				tws->set_extents(Vector3(hew, heh, 0.01));
+					float hew = tiled_wall_data->get_width() / 2.0;
+					float heh = tiled_wall_data->get_heigth() / 2.0;
 
-				Transform tt = t;
-				//tt.origin += Vector3(hew, heh, 0);
-				tt.translate(hew, heh, 0);
+					tws->set_extents(Vector3(hew, heh, 0.01));
 
-				_job->add_collision_shape(tws, tt, true);
+					Transform et = e->get_transform() * Transform(Basis(), Vector3(0, 0, twd->get_colldier_z_offset()));
+					Transform tt = transform * et;
+					//tt.origin += Vector3(hew, heh, 0);
+					tt.translate(hew, heh, 0);
+
+					_job->add_collision_shape(tws, tt, true);
+				}
 			}
 
 			continue;
@@ -635,7 +640,7 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 
 			if (!sc.is_valid()) {
 				continue;
-      }
+			}
 
 			Node *n = sc->instance();
 			add_child(n);
@@ -677,7 +682,7 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 
 			if (!mdr.is_valid()) {
 				continue;
-      }
+			}
 
 			_job->add_mesh(mesh_data, t);
 
