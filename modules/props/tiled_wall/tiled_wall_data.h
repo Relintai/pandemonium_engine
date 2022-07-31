@@ -69,6 +69,9 @@ public:
 	TiledWallColliderType get_collider_type() const;
 	void set_collider_type(const TiledWallColliderType value);
 
+	float get_colldier_z_offset();
+	void set_colldier_z_offset(const float val);
+
 	//textures
 	void add_tile(const Ref<Texture> &texture, const Vector2 &val = Vector2(1, 1), const float z_offset = 0);
 	void remove_tile(const int index);
@@ -81,6 +84,9 @@ public:
 
 	float get_tile_z_offset(const int index) const;
 	void set_tile_z_offset(const int index, const float val);
+
+	int get_tile_texture_scale(const int index) const;
+	void set_tile_texture_scale(const int index, const int val);
 
 	int get_tile_count() const;
 	void set_tile_count(const int count);
@@ -97,6 +103,9 @@ public:
 
 	float get_flavour_tile_z_offset(const int index) const;
 	void set_flavour_tile_z_offset(const int index, const float val);
+
+	int get_flavour_tile_texture_scale(const int index) const;
+	void set_flavour_tile_texture_scale(const int index, const int val);
 
 	int get_flavour_tile_count() const;
 	void set_flavour_tile_count(const int count);
@@ -140,21 +149,25 @@ private:
 		Ref<Texture> texture;
 		float y_size;
 		float z_offset;
+		int texture_scale;
 
 		TextureEntry() {
 			y_size = 1;
 			z_offset = 0;
+			texture_scale = 1;
 		}
 
-		TextureEntry(const Ref<Texture> &p_texture, const float p_y_size = 1, const float p_z_offset = 0) {
+		TextureEntry(const Ref<Texture> &p_texture, const float p_y_size = 1, const float p_z_offset = 0, const float p_texture_scale = 0) {
 			texture = p_texture;
 			y_size = p_y_size;
 			z_offset = p_z_offset;
+			texture_scale = p_texture_scale;
 		}
 	};
 
 	TiledWallTilingType _tiling_type;
 	TiledWallColliderType _collider_type;
+	float _colldier_z_offset;
 
 	Vector<TextureEntry> _tiles;
 	Vector<TextureEntry> _flavour_tiles;

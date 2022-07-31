@@ -61,6 +61,13 @@ void TiledWallData::set_collider_type(const TiledWallData::TiledWallColliderType
 	emit_changed();
 }
 
+float TiledWallData::get_colldier_z_offset() {
+	return _colldier_z_offset;
+}
+void TiledWallData::set_colldier_z_offset(const float val) {
+	_colldier_z_offset = val;
+}
+
 void TiledWallData::add_tile(const Ref<Texture> &texture, const Vector2 &val, const float z_offset) {
 	_tiles.push_back(texture);
 }
@@ -86,7 +93,7 @@ void TiledWallData::set_tile_texture(const int index, const Ref<Texture> &textur
 }
 
 float TiledWallData::get_tile_y_size(const int index) const {
-	ERR_FAIL_INDEX_V(index, _tiles.size(),1);
+	ERR_FAIL_INDEX_V(index, _tiles.size(), 1);
 
 	return _tiles.get(index).y_size;
 }
@@ -107,6 +114,19 @@ void TiledWallData::set_tile_z_offset(const int index, const float val) {
 	ERR_FAIL_INDEX(index, _tiles.size());
 
 	_tiles.write[index].z_offset = val;
+
+	emit_changed();
+}
+
+int TiledWallData::get_tile_texture_scale(const int index) const {
+	ERR_FAIL_INDEX_V(index, _tiles.size(), 0);
+
+	return _tiles.get(index).texture_scale;
+}
+void TiledWallData::set_tile_texture_scale(const int index, const int val) {
+	ERR_FAIL_INDEX(index, _tiles.size());
+
+	_tiles.write[index].texture_scale = val;
 
 	emit_changed();
 }
@@ -166,6 +186,19 @@ void TiledWallData::set_flavour_tile_z_offset(const int index, const float val) 
 	ERR_FAIL_INDEX(index, _flavour_tiles.size());
 
 	_flavour_tiles.write[index].z_offset = val;
+
+	emit_changed();
+}
+
+int TiledWallData::get_flavour_tile_texture_scale(const int index) const {
+	ERR_FAIL_INDEX_V(index, _flavour_tiles.size(), 0);
+
+	return _flavour_tiles.get(index).texture_scale;
+}
+void TiledWallData::set_flavour_tile_texture_scale(const int index, const int val) {
+	ERR_FAIL_INDEX(index, _flavour_tiles.size());
+
+	_flavour_tiles.write[index].texture_scale = val;
 
 	emit_changed();
 }
@@ -342,9 +375,13 @@ bool TiledWallData::_set(const StringName &p_name, const Variant &p_value) {
 			_tiles.write[index].z_offset = p_value;
 
 			return true;
+		} else if (p == "texture_scale") {
+			_tiles.write[index].texture_scale = p_value;
+
+			return true;
 		}
 	} else if (name.begins_with("flavour_tile_")) {
-		int index = name.get_slicec('_', 1).to_int();
+		int index = name.get_slicec('_', 2).to_int();
 
 		if (index >= _flavour_tiles.size()) {
 			_flavour_tiles.resize(index + 1);
@@ -362,6 +399,10 @@ bool TiledWallData::_set(const StringName &p_name, const Variant &p_value) {
 			return true;
 		} else if (p == "z_offset") {
 			_flavour_tiles.write[index].z_offset = p_value;
+
+			return true;
+		} else if (p == "texture_scale") {
+			_flavour_tiles.write[index].texture_scale = p_value;
 
 			return true;
 		}
@@ -394,9 +435,13 @@ bool TiledWallData::_get(const StringName &p_name, Variant &r_ret) const {
 			r_ret = _tiles[index].z_offset;
 
 			return true;
+		} else if (p == "texture_scale") {
+			r_ret = _tiles[index].texture_scale;
+
+			return true;
 		}
 	} else if (name.begins_with("flavour_tile_")) {
-		int index = name.get_slicec('_', 1).to_int();
+		int index = name.get_slicec('_', 2).to_int();
 
 		if (index >= _flavour_tiles.size()) {
 			return false;
@@ -416,6 +461,10 @@ bool TiledWallData::_get(const StringName &p_name, Variant &r_ret) const {
 			r_ret = _flavour_tiles[index].z_offset;
 
 			return true;
+		} else if (p == "texture_scale") {
+			r_ret = _flavour_tiles[index].texture_scale;
+
+			return true;
 		}
 	}
 
@@ -425,14 +474,16 @@ bool TiledWallData::_get(const StringName &p_name, Variant &r_ret) const {
 void TiledWallData::_get_property_list(List<PropertyInfo> *p_list) const {
 	for (int i = 0; i < _tiles.size(); ++i) {
 		p_list->push_back(PropertyInfo(Variant::OBJECT, "tile_" + itos(i) + "/texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture", PROPERTY_USAGE_DEFAULT));
-		p_list->push_back(PropertyInfo(Variant::REAL, "tile_" + itos(i) + "/y_size", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
-		p_list->push_back(PropertyInfo(Variant::REAL, "tile_" + itos(i) + "/z_offset", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
+		p_list->push_back(PropertyInfo(Variant::REAL, "tile_" + itos(i) + "/y_size"));
+		p_list->push_back(PropertyInfo(Variant::REAL, "tile_" + itos(i) + "/z_offset"));
+		p_list->push_back(PropertyInfo(Variant::INT, "tile_" + itos(i) + "/texture_scale"));
 	}
 
 	for (int i = 0; i < _flavour_tiles.size(); ++i) {
 		p_list->push_back(PropertyInfo(Variant::OBJECT, "flavour_tile_" + itos(i) + "/texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture", PROPERTY_USAGE_DEFAULT));
-		p_list->push_back(PropertyInfo(Variant::REAL, "flavour_tile_" + itos(i) + "/y_size", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
-		p_list->push_back(PropertyInfo(Variant::REAL, "flavour_tile_" + itos(i) + "/z_offset", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
+		p_list->push_back(PropertyInfo(Variant::REAL, "flavour_tile_" + itos(i) + "/y_size"));
+		p_list->push_back(PropertyInfo(Variant::REAL, "flavour_tile_" + itos(i) + "/z_offset"));
+		p_list->push_back(PropertyInfo(Variant::INT, "flavour_tile_" + itos(i) + "/texture_scale"));
 	}
 }
 
@@ -444,6 +495,10 @@ void TiledWallData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_collider_type"), &TiledWallData::get_collider_type);
 	ClassDB::bind_method(D_METHOD("set_collider_type", "texture"), &TiledWallData::set_collider_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "collider_type", PROPERTY_HINT_ENUM, TiledWallData::BINDING_STRING_TILED_WALL_COLLIDER_TYPE), "set_collider_type", "get_collider_type");
+
+	ClassDB::bind_method(D_METHOD("get_colldier_z_offset"), &TiledWallData::get_colldier_z_offset);
+	ClassDB::bind_method(D_METHOD("set_colldier_z_offset", "val"), &TiledWallData::set_colldier_z_offset);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "colldier_z_offset"), "set_colldier_z_offset", "get_colldier_z_offset");
 
 	//textures
 	ClassDB::bind_method(D_METHOD("add_tile", "texture", "size", "z_offset"), &TiledWallData::add_tile, Vector2(1, 1), 0);
@@ -457,6 +512,9 @@ void TiledWallData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_tile_z_offset", "index"), &TiledWallData::get_tile_z_offset);
 	ClassDB::bind_method(D_METHOD("set_tile_z_offset", "index", "val"), &TiledWallData::set_tile_z_offset);
+
+	ClassDB::bind_method(D_METHOD("get_tile_texture_scale", "index"), &TiledWallData::get_tile_texture_scale);
+	ClassDB::bind_method(D_METHOD("set_tile_texture_scale", "index", "val"), &TiledWallData::set_tile_texture_scale);
 
 	ClassDB::bind_method(D_METHOD("get_tile_count"), &TiledWallData::get_tile_count);
 	ClassDB::bind_method(D_METHOD("set_tile_count", "count"), &TiledWallData::set_tile_count);
@@ -474,6 +532,9 @@ void TiledWallData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_flavour_tile_z_offset", "index"), &TiledWallData::get_flavour_tile_z_offset);
 	ClassDB::bind_method(D_METHOD("set_flavour_tile_z_offset", "index", "val"), &TiledWallData::set_flavour_tile_z_offset);
+
+	ClassDB::bind_method(D_METHOD("get_flavour_tile_texture_scale", "index"), &TiledWallData::get_flavour_tile_texture_scale);
+	ClassDB::bind_method(D_METHOD("set_flavour_tile_texture_scale", "index", "val"), &TiledWallData::set_flavour_tile_texture_scale);
 
 	ClassDB::bind_method(D_METHOD("get_flavour_tile_count"), &TiledWallData::get_flavour_tile_count);
 	ClassDB::bind_method(D_METHOD("set_flavour_tile_count", "count"), &TiledWallData::set_flavour_tile_count);

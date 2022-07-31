@@ -232,8 +232,9 @@ void TiledWall::clear_mesh() {
 	_mesh_array.clear();
 
 	if (_mesh_rid != RID()) {
-		if (VS::get_singleton()->mesh_get_surface_count(_mesh_rid) > 0)
+		if (VS::get_singleton()->mesh_get_surface_count(_mesh_rid) > 0) {
 			VS::get_singleton()->mesh_remove_surface(_mesh_rid, 0);
+		}
 	}
 }
 
