@@ -73,7 +73,7 @@ public:
 	void set_colldier_z_offset(const float val);
 
 	//textures
-	void add_tile(const Ref<Texture> &texture, const Vector2 &val = Vector2(1, 1), const float z_offset = 0);
+	void add_tile(const Ref<Texture> &texture, const float y_size = 1, const float z_offset = 0, const int texture_scale = 1);
 	void remove_tile(const int index);
 
 	Ref<Texture> get_tile_texture(const int index) const;
@@ -92,7 +92,7 @@ public:
 	void set_tile_count(const int count);
 
 	//flavour_textures
-	void add_flavour_tile(const Ref<Texture> &texture, const Vector2 &val = Vector2(1, 1), const float z_offset = 0);
+	void add_flavour_tile(const Ref<Texture> &texture, const float y_size =1, const float z_offset = 0, const int texture_scale = 1);
 	void remove_flavour_tile(const int index);
 
 	Ref<Texture> get_flavour_tile_texture(const int index) const;

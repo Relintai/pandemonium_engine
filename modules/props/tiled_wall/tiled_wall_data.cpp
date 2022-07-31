@@ -68,8 +68,8 @@ void TiledWallData::set_colldier_z_offset(const float val) {
 	_colldier_z_offset = val;
 }
 
-void TiledWallData::add_tile(const Ref<Texture> &texture, const Vector2 &val, const float z_offset) {
-	_tiles.push_back(texture);
+void TiledWallData::add_tile(const Ref<Texture> &texture, const float y_size, const float z_offset, const int texture_scale) {
+	_tiles.push_back(TextureEntry(texture, y_size, z_offset, texture_scale));
 }
 void TiledWallData::remove_tile(const int index) {
 	ERR_FAIL_INDEX(index, _tiles.size());
@@ -140,8 +140,8 @@ void TiledWallData::set_tile_count(const int count) {
 }
 
 //flavour_tiles
-void TiledWallData::add_flavour_tile(const Ref<Texture> &texture, const Vector2 &val, const float z_offset) {
-	_flavour_tiles.push_back(texture);
+void TiledWallData::add_flavour_tile(const Ref<Texture> &texture, const float y_size, const float z_offset, const int texture_scale) {
+	_flavour_tiles.push_back(TextureEntry(texture, y_size, z_offset, texture_scale));
 }
 void TiledWallData::remove_flavour_tile(const int index) {
 	ERR_FAIL_INDEX(index, _flavour_tiles.size());
@@ -501,7 +501,7 @@ void TiledWallData::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "colldier_z_offset"), "set_colldier_z_offset", "get_colldier_z_offset");
 
 	//textures
-	ClassDB::bind_method(D_METHOD("add_tile", "texture", "size", "z_offset"), &TiledWallData::add_tile, Vector2(1, 1), 0);
+	ClassDB::bind_method(D_METHOD("add_tile", "texture", "y_size", "z_offset", "texture_scale"), &TiledWallData::add_tile, 1, 0, 1);
 	ClassDB::bind_method(D_METHOD("remove_tile", "index"), &TiledWallData::remove_tile);
 
 	ClassDB::bind_method(D_METHOD("get_tile_texture", "index"), &TiledWallData::get_tile_texture);
@@ -521,7 +521,7 @@ void TiledWallData::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "set_tile_count", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_tile_count", "get_tile_count");
 
 	//flavour_tiles
-	ClassDB::bind_method(D_METHOD("add_flavour_tile", "texture", "size", "z_offset"), &TiledWallData::add_flavour_tile, Vector2(1, 1), 0);
+	ClassDB::bind_method(D_METHOD("add_flavour_tile", "texture", "y_size", "z_offset", "texture_scale"), &TiledWallData::add_flavour_tile, 1, 0, 1);
 	ClassDB::bind_method(D_METHOD("remove_flavour_tile", "index"), &TiledWallData::remove_flavour_tile);
 
 	ClassDB::bind_method(D_METHOD("get_flavour_tile_texture", "index"), &TiledWallData::get_flavour_tile_texture);
