@@ -181,8 +181,9 @@ void PropInstanceMerger::meshes_create(const int num) {
 	for (int i = 0; i < num; ++i) {
 		RID mesh_instance_rid = VS::get_singleton()->instance_create();
 
-		if (get_world().is_valid())
+		if (get_world().is_valid()) {
 			VS::get_singleton()->instance_set_scenario(mesh_instance_rid, get_world()->get_scenario());
+    }
 
 		RID mesh_rid = VS::get_singleton()->mesh_create();
 
@@ -411,8 +412,9 @@ void PropInstanceMerger::debug_mesh_send() {
 	debug_mesh_allocate();
 	debug_mesh_clear();
 
-	if (_debug_mesh_array.size() == 0)
+	if (_debug_mesh_array.size() == 0) {
 		return;
+  }
 
 	SceneTree *st = SceneTree::get_singleton();
 
@@ -582,8 +584,9 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 	for (int i = 0; i < count; ++i) {
 		Ref<PropDataEntry> e = prop->get_prop(i);
 
-		if (!e.is_valid())
+		if (!e.is_valid()) {
 			continue;
+    }
 
 		Transform t = transform * e->get_transform();
 
@@ -592,8 +595,9 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 		if (prop_entry_data.is_valid()) {
 			Ref<PropData> p = prop_entry_data->get_prop();
 
-			if (!p.is_valid())
+			if (!p.is_valid()) {
 				continue;
+      }
 
 			prop_preprocess(t, p);
 
@@ -629,8 +633,9 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 		if (scene_data.is_valid()) {
 			Ref<PackedScene> sc = scene_data->get_scene();
 
-			if (!sc.is_valid())
+			if (!sc.is_valid()) {
 				continue;
+      }
 
 			Node *n = sc->instance();
 			add_child(n);
@@ -670,8 +675,9 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 		if (mesh_data.is_valid()) {
 			Ref<MeshDataResource> mdr = mesh_data->get_mesh();
 
-			if (!mdr.is_valid())
+			if (!mdr.is_valid()) {
 				continue;
+      }
 
 			_job->add_mesh(mesh_data, t);
 
