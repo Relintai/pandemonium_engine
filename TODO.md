@@ -101,6 +101,25 @@
 
 - Clean / flesh out the api of UserManager / UserDB. Also make UserManager register itself into UserDB.
 
+## Ground Clutter
+
+- Add new ground clutter module. It should have classes that help with spawning clutter like small objects, or foliage.
+- Add GroundClutterData. It should contain all data that is needed to spawn in everything.
+- Add GroundClutter Spatial node. Similar to TiledWalls, just adds in meshed.
+- Add GroundClutterMerger Spatial node, which is the same as GroundClutter except it merges everything together.
+- GroundClutterData should have a bool property, which causes spawners to raycast the ground and spawn stuff on hit.
+- Should support foliage weights mode, which adds weights that shaders can use to add fake wind. (eventually)
+- For Terraman/Voxelman they have to be registered and freed when chunks unload, also they should eventually handle chunk mesh generation events, if they need to raycast ground.
+- When they need to raycast ground, they should wait until a raycast hits, maybe a few params could be added to how long they should try before giving up.
+- Remove Ground clutter classes from terraman and voxelman.
+- Should have prop support (by spawning in Nodes). It should not be merged.
+
+## TiledWalls
+
+- Finish implementing all collider types.
+- Finish tiling types + z index support for other tiling that horizontal.
+- Flavours + y_size probably has quite a few bugs.
+
 ## Ports
 
 Currently the engine has everything that I wanted up to:
