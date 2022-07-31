@@ -49,6 +49,13 @@
 
 - Organize the core folder a bit better.
 - (Maybe) add an SDL backend.
+- Reorganize the project. Except for core, and a few smaller things like main everything should be a module that can be disabled.
+- Module hard dependencies would be a nice thing to have. For example if you turn off module A, and B has a hard dependency on it, B would turn itself off, or warn you.
+- Add more hooks where needed, to let stuff register itself. Like visual server backends, so adding them is simple, as I think this is the best way forward, so you can just create your custom rendering backend, when needed. Like if you want lightmaps, add a module that has the tooling + visualserver that has it implemented.
+
+## Scene folder
+
+- Rework it into modules.
 
 ## Graphics 
 
