@@ -61,11 +61,11 @@ void TiledWallData::set_collider_type(const TiledWallData::TiledWallColliderType
 	emit_changed();
 }
 
-float TiledWallData::get_colldier_z_offset() {
-	return _colldier_z_offset;
+float TiledWallData::get_collider_z_offset() {
+	return _collider_z_offset;
 }
-void TiledWallData::set_colldier_z_offset(const float val) {
-	_colldier_z_offset = val;
+void TiledWallData::set_collider_z_offset(const float val) {
+	_collider_z_offset = val;
 }
 
 void TiledWallData::add_tile(const Ref<Texture> &texture, const float y_size, const float z_offset, const int texture_scale) {
@@ -355,6 +355,7 @@ TiledWallData::TiledWallData() {
 	_tiling_type = TILED_WALL_TILING_TYPE_NONE;
 	_collider_type = TILED_WALL_COLLIDER_TYPE_PLANE;
 	_flavour_chance = 0.15;
+	_collider_z_offset = 0;
 }
 TiledWallData::~TiledWallData() {
 	_tiles.clear();
@@ -507,9 +508,9 @@ void TiledWallData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_collider_type", "texture"), &TiledWallData::set_collider_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "collider_type", PROPERTY_HINT_ENUM, TiledWallData::BINDING_STRING_TILED_WALL_COLLIDER_TYPE), "set_collider_type", "get_collider_type");
 
-	ClassDB::bind_method(D_METHOD("get_colldier_z_offset"), &TiledWallData::get_colldier_z_offset);
-	ClassDB::bind_method(D_METHOD("set_colldier_z_offset", "val"), &TiledWallData::set_colldier_z_offset);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "colldier_z_offset"), "set_colldier_z_offset", "get_colldier_z_offset");
+	ClassDB::bind_method(D_METHOD("get_collider_z_offset"), &TiledWallData::get_collider_z_offset);
+	ClassDB::bind_method(D_METHOD("set_collider_z_offset", "val"), &TiledWallData::set_collider_z_offset);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "collider_z_offset"), "set_collider_z_offset", "get_collider_z_offset");
 
 	//textures
 	ClassDB::bind_method(D_METHOD("add_tile", "texture", "y_size", "z_offset", "texture_scale"), &TiledWallData::add_tile, 1, 0, 1);

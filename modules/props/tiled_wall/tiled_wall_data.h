@@ -89,8 +89,8 @@ public:
 	TiledWallColliderType get_collider_type() const;
 	void set_collider_type(const TiledWallColliderType value);
 
-	float get_colldier_z_offset();
-	void set_colldier_z_offset(const float val);
+	float get_collider_z_offset();
+	void set_collider_z_offset(const float val);
 
 	//textures
 	void add_tile(const Ref<Texture> &texture, const float y_size = 1, const float z_offset = 0, const int texture_scale = 1);
@@ -169,7 +169,7 @@ protected:
 private:
 	TiledWallTilingType _tiling_type;
 	TiledWallColliderType _collider_type;
-	float _colldier_z_offset;
+	float _collider_z_offset;
 
 	Vector<TextureEntry> _tiles;
 	Vector<TextureEntry> _flavour_tiles;

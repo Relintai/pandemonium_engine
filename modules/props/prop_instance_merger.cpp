@@ -621,7 +621,7 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 
 					tws->set_extents(Vector3(hew, heh, 0.01));
 
-					Transform et = e->get_transform() * Transform(Basis(), Vector3(0, 0, twd->get_colldier_z_offset()));
+					Transform et = e->get_transform() * Transform(Basis(), Vector3(0, 0, twd->get_collider_z_offset()));
 					Transform tt = transform * et;
 					//tt.origin += Vector3(hew, heh, 0);
 					tt.translate(hew, heh, 0);
