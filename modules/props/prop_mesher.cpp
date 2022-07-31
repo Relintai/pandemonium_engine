@@ -31,35 +31,44 @@ SOFTWARE.
 const String PropMesher::BINDING_STRING_BUILD_FLAGS = "Use Lighting,Use AO,Use RAO,Bake Lights";
 
 bool PropMesher::Vertex::operator==(const Vertex &p_vertex) const {
-	if (vertex != p_vertex.vertex)
+	if (vertex != p_vertex.vertex) {
 		return false;
+	}
 
-	if (uv != p_vertex.uv)
+	if (uv != p_vertex.uv) {
 		return false;
+	}
 
-	if (uv2 != p_vertex.uv2)
+	if (uv2 != p_vertex.uv2) {
 		return false;
+	}
 
-	if (normal != p_vertex.normal)
+	if (normal != p_vertex.normal) {
 		return false;
+	}
 
-	if (binormal != p_vertex.binormal)
+	if (binormal != p_vertex.binormal) {
 		return false;
+	}
 
-	if (color != p_vertex.color)
+	if (color != p_vertex.color) {
 		return false;
+	}
 
-	if (bones.size() != p_vertex.bones.size())
+	if (bones.size() != p_vertex.bones.size()) {
 		return false;
+	}
 
 	for (int i = 0; i < bones.size(); i++) {
-		if (bones[i] != p_vertex.bones[i])
+		if (bones[i] != p_vertex.bones[i]) {
 			return false;
+		}
 	}
 
 	for (int i = 0; i < weights.size(); i++) {
-		if (weights[i] != p_vertex.weights[i])
+		if (weights[i] != p_vertex.weights[i]) {
 			return false;
+		}
 	}
 
 	return true;
@@ -279,8 +288,9 @@ void PropMesher::build_mesh_into(RID mesh) {
 
 	VS::get_singleton()->mesh_add_surface_from_arrays(mesh, VisualServer::PRIMITIVE_TRIANGLES, arr);
 
-	if (_material.is_valid())
+	if (_material.is_valid()) {
 		VS::get_singleton()->mesh_surface_set_material(mesh, 0, _material->get_rid());
+	}
 }
 
 void PropMesher::generate_normals(bool p_flip) {
@@ -300,10 +310,11 @@ void PropMesher::generate_normals(bool p_flip) {
 		Vertex v2 = _vertices.get(i2);
 
 		Vector3 normal;
-		if (!p_flip)
+		if (!p_flip) {
 			normal = Plane(v0.vertex, v1.vertex, v2.vertex).normal;
-		else
+		} else {
 			normal = Plane(v2.vertex, v1.vertex, v0.vertex).normal;
+		}
 
 		v0.normal = normal;
 		v1.normal = normal;
@@ -316,8 +327,9 @@ void PropMesher::generate_normals(bool p_flip) {
 }
 
 void PropMesher::remove_doubles() {
-	if (_vertices.size() == 0)
+	if (_vertices.size() == 0) {
 		return;
+	}
 
 	//print_error("before " + String::num(_vertices.size()));
 
@@ -362,8 +374,9 @@ void PropMesher::remove_doubles() {
 
 //lot faster that normal remove_doubles, but false positives can happen curtesy of hash collisions
 void PropMesher::remove_doubles_hashed() {
-	if (_vertices.size() == 0)
+	if (_vertices.size() == 0) {
 		return;
+  }
 
 	//print_error("before " + String::num(_vertices.size()));
 
@@ -604,7 +617,7 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 
 					if (Math::randf() > flavour_chance) {
 						current_z_offset = normal_z_offsets[indx];
-						
+
 						add_tiled_wall_mesh_rect_simple(x, cys, ysize, prev_z_offset, current_z_offset, transform, r);
 						cys += ysize;
 					} else {
@@ -716,8 +729,9 @@ void PropMesher::add_mesh_data_resource(Ref<MeshDataResource> mesh, const Vector
 }
 
 void PropMesher::add_mesh_data_resource_transform(Ref<MeshDataResource> mesh, const Transform transform, const Rect2 uv_rect) {
-	if (mesh->get_array().size() == 0)
+	if (mesh->get_array().size() == 0) {
 		return;
+	}
 
 	const Array &arr = mesh->get_array();
 
@@ -727,14 +741,16 @@ void PropMesher::add_mesh_data_resource_transform(Ref<MeshDataResource> mesh, co
 	PoolColorArray colors = arr[Mesh::ARRAY_COLOR];
 	PoolIntArray indices = arr[Mesh::ARRAY_INDEX];
 
-	if (vertices.size() == 0)
+	if (vertices.size() == 0) {
 		return;
+	}
 
 	int orig_vert_size = _vertices.size();
 
 	for (int i = 0; i < vertices.size(); ++i) {
-		if (normals.size() > 0)
+		if (normals.size() > 0) {
 			add_normal(transform.basis.xform(normals[i]));
+    }
 
 		if (normals.size() > 0) {
 			Vector2 uv = uvs[i];
@@ -745,8 +761,9 @@ void PropMesher::add_mesh_data_resource_transform(Ref<MeshDataResource> mesh, co
 			add_uv(uv);
 		}
 
-		if (colors.size() > 0)
+		if (colors.size() > 0) {
 			add_color(colors[i]);
+    }
 
 		add_vertex(transform.xform(vertices[i]));
 	}
@@ -760,8 +777,9 @@ void PropMesher::add_mesh_data_resource_transform(Ref<MeshDataResource> mesh, co
 }
 
 void PropMesher::add_mesh_data_resource_transform_colored(Ref<MeshDataResource> mesh, const Transform transform, const PoolColorArray &colors, const Rect2 uv_rect) {
-	if (mesh->get_array().size() == 0)
+	if (mesh->get_array().size() == 0) {
 		return;
+	}
 
 	const Array &arr = mesh->get_array();
 
@@ -770,14 +788,16 @@ void PropMesher::add_mesh_data_resource_transform_colored(Ref<MeshDataResource> 
 	PoolVector2Array uvs = arr[Mesh::ARRAY_TEX_UV];
 	PoolIntArray indices = arr[Mesh::ARRAY_INDEX];
 
-	if (vertices.size() == 0)
+	if (vertices.size() == 0) {
 		return;
+	}
 
 	int orig_vert_size = _vertices.size();
 
 	for (int i = 0; i < vertices.size(); ++i) {
-		if (normals.size() > 0)
+		if (normals.size() > 0) {
 			add_normal(transform.basis.xform(normals[i]));
+		}
 
 		if (normals.size() > 0) {
 			Vector2 uv = uvs[i];
@@ -788,8 +808,9 @@ void PropMesher::add_mesh_data_resource_transform_colored(Ref<MeshDataResource> 
 			add_uv(uv);
 		}
 
-		if (colors.size() > 0)
+		if (colors.size() > 0) {
 			add_color(colors[i]);
+		}
 
 		add_vertex(transform.xform(vertices[i]));
 	}
@@ -848,11 +869,13 @@ float PropMesher::get_random_ao(const Vector3 &position) {
 
 	val *= _rao_scale_factor;
 
-	if (val > 1)
+	if (val > 1) {
 		val = 1;
+  }
 
-	if (val < 0)
+	if (val < 0) {
 		val = -val;
+  }
 
 	return val;
 }
@@ -909,8 +932,9 @@ void PropMesher::_add_mesher(const Ref<PropMesher> &mesher) {
 
 	int s = mesher->_indices.size();
 
-	if (s == 0)
+	if (s == 0) {
 		return;
+	}
 
 	int orig_indices_size = _indices.size();
 
@@ -930,8 +954,9 @@ void PropMesher::clear_lights() {
 PoolVector<Vector3> PropMesher::build_collider() const {
 	PoolVector<Vector3> face_points;
 
-	if (_vertices.size() == 0)
+	if (_vertices.size() == 0) {
 		return face_points;
+	}
 
 	if (_indices.size() == 0) {
 		int len = (_vertices.size() / 4);
@@ -1114,14 +1139,17 @@ void PropMesher::bake_lights(MeshInstance *node, Vector<Ref<TerrainLight>> &ligh
 		Vector3 cv2(f.r, f.g, f.b);
 		cv2 += v_lightDiffuse;
 
-		if (cv2.x > 1)
+		if (cv2.x > 1) {
 			cv2.x = 1;
+		}
 
-		if (cv2.y > 1)
+		if (cv2.y > 1) {
 			cv2.y = 1;
+		}
 
-		if (cv2.y > 1)
+		if (cv2.y > 1) {
 			cv2.y = 1;
+		}
 
 		// cv2.x = Mathf.Clamp(cv2.x, 0f, 1f);
 		//cv2.y = Mathf.Clamp(cv2.y, 0f, 1f);
