@@ -680,15 +680,17 @@ void PropMesher::add_tiled_wall_simple(const int width, const int height, const 
 
 void PropMesher::add_tiled_wall_mesh_rect_simple(const float x, const float y, const float y_size, const float prev_z_offset, const float current_z_offset, const Transform &transform, const Rect2 &texture_rect, const int texture_scale) {
 	int vc = get_vertex_count();
+  
+  float cy = CLAMP(0.0, 1.0, y_size);
 
 	//x + 1, y
 	add_normal(transform.basis.xform(Vector3(0, 0, -1)));
-	add_uv(transform_uv_scaled(Vector2(1, 1), texture_rect, x, y, texture_scale));
+	add_uv(transform_uv_scaled(Vector2(1, cy), texture_rect, x, y, texture_scale));
 	add_vertex(transform.xform(Vector3(x + 1, y, prev_z_offset)));
 
 	//x, y
 	add_normal(transform.basis.xform(Vector3(0, 0, -1)));
-	add_uv(transform_uv_scaled(Vector2(0, 1), texture_rect, x, y, texture_scale));
+	add_uv(transform_uv_scaled(Vector2(0, cy), texture_rect, x, y, texture_scale));
 	add_vertex(transform.xform(Vector3(x, y, prev_z_offset)));
 
 	//x, y + 1
