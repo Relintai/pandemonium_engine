@@ -150,8 +150,9 @@ void PropInstancePropJob::clear_lights() {
 }
 
 void PropInstancePropJob::_physics_process(float delta) {
-	if (_phase == 0)
+	if (_phase == 0) {
 		phase_physics_process();
+  }
 }
 
 void PropInstancePropJob::_execute_phase() {
@@ -418,8 +419,9 @@ void PropInstancePropJob::phase_steps() {
 			for (int i = 0; i < count; ++i) {
 				RID mesh_rid = _prop_instace->mesh_get(i);
 
-				if (VS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
+				if (VS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
 					VS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
+        }
 			}
 		}
 	}
@@ -603,8 +605,9 @@ Array PropInstancePropJob::merge_mesh_array(Array arr) const {
 		for (int j = i + 1; j < verts.size(); ++j) {
 			Vector3 vc = verts[j];
 
-			if (Math::is_equal_approx(v.x, vc.x) && Math::is_equal_approx(v.y, vc.y) && Math::is_equal_approx(v.z, vc.z))
+			if (Math::is_equal_approx(v.x, vc.x) && Math::is_equal_approx(v.y, vc.y) && Math::is_equal_approx(v.z, vc.z)) {
 				equals.push_back(j);
+      }
 		}
 
 		for (int k = 0; k < equals.size(); ++k) {
@@ -613,20 +616,24 @@ Array PropInstancePropJob::merge_mesh_array(Array arr) const {
 
 			verts.remove(remk);
 
-			if (has_normals)
+			if (has_normals) {
 				normals.remove(remk);
-			if (has_uvs)
+      }
+			if (has_uvs) {
 				uvs.remove(remk);
-			if (has_colors)
+      }
+			if (has_colors) {
 				colors.remove(remk);
+      }
 
 			for (int j = 0; j < indices.size(); ++j) {
 				int indx = indices[j];
 
-				if (indx == remk)
+				if (indx == remk) {
 					indices.set(j, i);
-				else if (indx > remk)
+        }	else if (indx > remk) {
 					indices.set(j, indx - 1);
+        }
 			}
 		}
 
@@ -635,12 +642,15 @@ Array PropInstancePropJob::merge_mesh_array(Array arr) const {
 
 	arr[VisualServer::ARRAY_VERTEX] = verts;
 
-	if (has_normals)
+	if (has_normals) {
 		arr[VisualServer::ARRAY_NORMAL] = normals;
-	if (has_uvs)
+  }
+	if (has_uvs) {
 		arr[VisualServer::ARRAY_TEX_UV] = uvs;
-	if (has_colors)
+  }
+	if (has_colors) {
 		arr[VisualServer::ARRAY_COLOR] = colors;
+  }
 
 	arr[VisualServer::ARRAY_INDEX] = indices;
 
@@ -659,8 +669,9 @@ Array PropInstancePropJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const
 	PoolVector2Array uvs = arr[VisualServer::ARRAY_TEX_UV];
 	PoolColorArray colors = arr[VisualServer::ARRAY_COLOR];
 
-	if (colors.size() < uvs.size())
+	if (colors.size() < uvs.size()) {
 		colors.resize(uvs.size());
+  }
 
 	img->lock();
 
@@ -695,8 +706,9 @@ void PropInstancePropJob::reset_meshes() {
 		for (int i = 0; i < count; ++i) {
 			RID mesh_rid = _prop_instace->mesh_get(i);
 
-			if (VS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
+			if (VS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
 				VS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
+      }
 		}
 	}
 }
