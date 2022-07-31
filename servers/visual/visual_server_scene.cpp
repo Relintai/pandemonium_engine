@@ -990,7 +990,7 @@ void VisualServerScene::instance_set_visible(RID p_instance, bool p_visible) {
 	instance->visible = p_visible;
 
 	// Special case for physics interpolation, we want to ensure the interpolated data is up to date
-	if (instance->scenario->_interpolation_data.interpolation_enabled && p_visible && instance->interpolated && instance->scenario && !instance->on_interpolate_list) {
+	if (instance->scenario && instance->scenario->_interpolation_data.interpolation_enabled && p_visible && instance->interpolated && !instance->on_interpolate_list) {
 		// Do all the extra work we normally do on instance_set_transform(), because this is optimized out for hidden instances.
 		// This prevents a glitch of stale interpolation transform data when unhiding before the next physics tick.
 		instance->interpolation_method = TransformInterpolator::find_method(instance->transform_prev.basis, instance->transform_curr.basis);
