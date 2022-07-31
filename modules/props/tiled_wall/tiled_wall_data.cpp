@@ -79,6 +79,12 @@ void TiledWallData::remove_tile(const int index) {
 	emit_changed();
 }
 
+TiledWallData::TextureEntry TiledWallData::get_tile(const int index) const {
+	ERR_FAIL_INDEX_V(index, _tiles.size(), TextureEntry());
+
+	return _tiles[index];
+}
+
 Ref<Texture> TiledWallData::get_tile_texture(const int index) const {
 	ERR_FAIL_INDEX_V(index, _tiles.size(), Ref<Texture>());
 
@@ -149,6 +155,11 @@ void TiledWallData::remove_flavour_tile(const int index) {
 	_flavour_tiles.remove(index);
 
 	emit_changed();
+}
+TiledWallData::TextureEntry TiledWallData::get_flavour_tile(const int index) const {
+	ERR_FAIL_INDEX_V(index, _flavour_tiles.size(), TextureEntry());
+
+	return _flavour_tiles[index];
 }
 
 Ref<Texture> TiledWallData::get_flavour_tile_texture(const int index) const {

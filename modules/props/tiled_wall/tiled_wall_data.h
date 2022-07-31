@@ -59,6 +59,26 @@ public:
 		TILED_WALL_COLLIDER_TYPE_CONCAVE_MESH
 	};
 
+	struct TextureEntry {
+		Ref<Texture> texture;
+		float y_size;
+		float z_offset;
+		int texture_scale;
+
+		TextureEntry() {
+			y_size = 1;
+			z_offset = 0;
+			texture_scale = 1;
+		}
+
+		TextureEntry(const Ref<Texture> &p_texture, const float p_y_size = 1, const float p_z_offset = 0, const float p_texture_scale = 0) {
+			texture = p_texture;
+			y_size = p_y_size;
+			z_offset = p_z_offset;
+			texture_scale = p_texture_scale;
+		}
+	};
+
 	static const String BINDING_STRING_TILED_WALL_TILING_TYPE;
 	static const String BINDING_STRING_TILED_WALL_COLLIDER_TYPE;
 
@@ -75,6 +95,7 @@ public:
 	//textures
 	void add_tile(const Ref<Texture> &texture, const float y_size = 1, const float z_offset = 0, const int texture_scale = 1);
 	void remove_tile(const int index);
+  TextureEntry get_tile(const int index) const;
 
 	Ref<Texture> get_tile_texture(const int index) const;
 	void set_tile_texture(const int index, const Ref<Texture> &texture);
@@ -92,8 +113,9 @@ public:
 	void set_tile_count(const int count);
 
 	//flavour_textures
-	void add_flavour_tile(const Ref<Texture> &texture, const float y_size =1, const float z_offset = 0, const int texture_scale = 1);
+	void add_flavour_tile(const Ref<Texture> &texture, const float y_size = 1, const float z_offset = 0, const int texture_scale = 1);
 	void remove_flavour_tile(const int index);
+  TextureEntry get_flavour_tile(const int index) const;
 
 	Ref<Texture> get_flavour_tile_texture(const int index) const;
 	void set_flavour_tile_texture(const int index, const Ref<Texture> &texture);
@@ -145,26 +167,6 @@ protected:
 	static void _bind_methods();
 
 private:
-	struct TextureEntry {
-		Ref<Texture> texture;
-		float y_size;
-		float z_offset;
-		int texture_scale;
-
-		TextureEntry() {
-			y_size = 1;
-			z_offset = 0;
-			texture_scale = 1;
-		}
-
-		TextureEntry(const Ref<Texture> &p_texture, const float p_y_size = 1, const float p_z_offset = 0, const float p_texture_scale = 0) {
-			texture = p_texture;
-			y_size = p_y_size;
-			z_offset = p_z_offset;
-			texture_scale = p_texture_scale;
-		}
-	};
-
 	TiledWallTilingType _tiling_type;
 	TiledWallColliderType _collider_type;
 	float _colldier_z_offset;
