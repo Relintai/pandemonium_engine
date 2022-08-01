@@ -1,7 +1,7 @@
 ARG img_version
 FROM pandemonium-fedora:${img_version}
 
-ENV EMSCRIPTEN_CLASSICAL=2.0.25
+ENV EMSCRIPTEN_CLASSICAL=3.1.14
 
 RUN dnf -y install --setopt=install_weak_deps=False \
       java-openjdk && \
