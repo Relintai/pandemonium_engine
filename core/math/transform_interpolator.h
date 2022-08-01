@@ -49,10 +49,10 @@ class Transform;
 
 class TransformInterpolator {
 public:
-	enum Method : unsigned int {
-		INTERP_LERP,
-		INTERP_SLERP,
-		INTERP_SCALED_SLERP,
+	enum Method {
+		INTERP_LERP = 0,
+		INTERP_SLERP = 1,
+		INTERP_SCALED_SLERP = 2,
 	};
 
 private:
