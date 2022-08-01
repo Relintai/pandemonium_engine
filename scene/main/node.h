@@ -45,26 +45,19 @@ class Node : public Object {
 	OBJ_CATEGORY("Nodes");
 
 public:
-	// N.B. Any enum stored as a bitfield should
-	// be specified as UNSIGNED to work around
-	// some compilers trying to store it as signed,
-	// and requiring 1 more bit than necessary.
-	enum PauseMode : unsigned int {
-
-		PAUSE_MODE_INHERIT,
-		PAUSE_MODE_STOP,
-		PAUSE_MODE_PROCESS
+	enum PauseMode {
+		PAUSE_MODE_INHERIT = 0,
+		PAUSE_MODE_STOP = 1,
+		PAUSE_MODE_PROCESS = 2
 	};
 
-	enum PhysicsInterpolationMode : unsigned int {
-
-		PHYSICS_INTERPOLATION_MODE_INHERIT,
-		PHYSICS_INTERPOLATION_MODE_OFF,
-		PHYSICS_INTERPOLATION_MODE_ON
+	enum PhysicsInterpolationMode {
+		PHYSICS_INTERPOLATION_MODE_INHERIT = 0,
+		PHYSICS_INTERPOLATION_MODE_OFF = 1,
+		PHYSICS_INTERPOLATION_MODE_ON = 2
 	};
 
 	enum DuplicateFlags {
-
 		DUPLICATE_SIGNALS = 1,
 		DUPLICATE_GROUPS = 2,
 		DUPLICATE_SCRIPTS = 4,
