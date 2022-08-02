@@ -2,32 +2,33 @@
 
 ## Platinum sponsors
 
-    No sponsors
+    None currently. Become one: <https://www.patreon.com/relintai>
 
 ## Gold sponsors
 
-    No sponsors
+    None currently. Become one: <https://www.patreon.com/relintai>
 
 ## Silver sponsors
 
-    No sponsors
+    None currently. Become one: <https://www.patreon.com/relintai>
 
 ## Bronze sponsors
 
-    No sponsors
+    None currently. Become one: <https://www.patreon.com/relintai>
 
 ## Mini sponsors
 
-    No sponsors
+    None currently. Become one: <https://www.patreon.com/relintai>
 
 ## Gold donors
 
-    No sponsors
+    None currently. Become one: <https://www.patreon.com/relintai>
 
 ## Silver donors
 
-    No sponsors
+    None currently. Become one: <https://www.patreon.com/relintai>
 
 ## Bronze donors
 
-    No sponsors
+    Thisisnottea 
+
