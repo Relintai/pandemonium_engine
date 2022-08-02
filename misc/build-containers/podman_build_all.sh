@@ -66,19 +66,19 @@ $podman run -v ${project_root}:/root/project -w /root/project pandemonium-linux:
 rm -f modules/modules_enabled.gen.h
 
 # Javascript editor
-$podman run -v ${project_root}:/root/project -w /root/project pandemonium-javascript:${img_version} bash -c 'source /root/emsdk_2.0.25/emsdk_env.sh;scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no threads_enabled=yes platform=javascript -j4' . 2>&1 | tee logs/javascript_ed.log
+$podman run -v ${project_root}:/root/project -w /root/project pandemonium-javascript:${img_version} bash -c 'source /root/emsdk_3.1.14/emsdk_env.sh;scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no threads_enabled=yes platform=javascript -j4' . 2>&1 | tee logs/javascript_ed.log
 rm -f modules/modules_enabled.gen.h
 
 # Javascript templates normal
-$podman run -v ${project_root}:/root/project -w /root/project pandemonium-javascript:${img_version} bash -c 'source /root/emsdk_2.0.25/emsdk_env.sh;scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=javascript -j4' . 2>&1 | tee logs/javascript_rd.log
+$podman run -v ${project_root}:/root/project -w /root/project pandemonium-javascript:${img_version} bash -c 'source /root/emsdk_3.1.14/emsdk_env.sh;scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=javascript -j4' . 2>&1 | tee logs/javascript_rd.log
 rm -f modules/modules_enabled.gen.h
-$podman run -v ${project_root}:/root/project -w /root/project pandemonium-javascript:${img_version} bash -c 'source /root/emsdk_2.0.25/emsdk_env.sh;scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=javascript -j4' . 2>&1 | tee logs/javascript_r.log
+$podman run -v ${project_root}:/root/project -w /root/project pandemonium-javascript:${img_version} bash -c 'source /root/emsdk_3.1.14/emsdk_env.sh;scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=javascript -j4' . 2>&1 | tee logs/javascript_r.log
 rm -f modules/modules_enabled.gen.h
 
 # Javascript templates threads
-$podman run -v ${project_root}:/root/project -w /root/project pandemonium-javascript:${img_version} bash -c 'source /root/emsdk_2.0.25/emsdk_env.sh;scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no threads_enabled=yes platform=javascript -j4' . 2>&1 | tee logs/javascript_rd_threads.log
+$podman run -v ${project_root}:/root/project -w /root/project pandemonium-javascript:${img_version} bash -c 'source /root/emsdk_3.1.14/emsdk_env.sh;scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no threads_enabled=yes platform=javascript -j4' . 2>&1 | tee logs/javascript_rd_threads.log
 rm -f modules/modules_enabled.gen.h
-$podman run -v ${project_root}:/root/project -w /root/project pandemonium-javascript:${img_version} bash -c 'source /root/emsdk_2.0.25/emsdk_env.sh;scons tools=no target=release custom_modules_shared=no debug_symbols=no threads_enabled=yes platform=javascript -j4' . 2>&1 | tee logs/javascript_r_threads.log
+$podman run -v ${project_root}:/root/project -w /root/project pandemonium-javascript:${img_version} bash -c 'source /root/emsdk_3.1.14/emsdk_env.sh;scons tools=no target=release custom_modules_shared=no debug_symbols=no threads_enabled=yes platform=javascript -j4' . 2>&1 | tee logs/javascript_r_threads.log
 rm -f modules/modules_enabled.gen.h
 
 # Android editor
