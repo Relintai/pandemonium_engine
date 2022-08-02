@@ -73,7 +73,7 @@ def configure(env):
     # Architecture
 
     if env["android_arch"] not in ["armv7", "arm64v8", "x86", "x86_64"]:
-        env["android_arch"] = "armv64v8"
+        env["android_arch"] = "arm64v8"
 
     neon_text = ""
     if env["android_arch"] == "armv7" and env["android_neon"]:
