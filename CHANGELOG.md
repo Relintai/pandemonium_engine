@@ -6,6 +6,53 @@ All notable changes to this project will be documented in this file.
 
 - Nothing since the last changeset.
 
+## [3.7.0]
+
+### Added
+
+#### Modules
+
+- Ported my web framework setup from rcpp_framework to a new web module, alongside with lots of improvements to make it fit the engine better. Also implemented a simple webserver that uses built in sockets.
+- Ported my database setup from rcpp_framework to a new databases module, alongside with lots of improvements to make it fit the engine better.
+- ported my user management setup from rcpp_framework to a new user module, alongside with lots of improvements to make it fit the engine better.
+- Created a new cscript module, it's currently only a simplified gdscript implementation.
+- Simplified, refactored and ported https://github.com/fenix-hub/godot-engine.file-editor to an engine module. (The refactered gdscript codebase is here: https://github.com/Relintai/godot-engine.file-editor )
+- Created a new plugin_refresher module. It can be used to quickly enable / disable addons. You can enable it in the ProjectSettings->Plugins tab. Right click the refresher icon to select the plugin that you want to refresh, left click the same icon to actyally refresh it.
+
+##### props
+
+- TiledWalls got a new collider_z_offset property, which allows you to offset the generated collider shape.
+- TiledWalls also got a new texture_scaling property. 
+
+### Other
+
+- Added a new property hint (PROPERTY_HINT_BUTTON) that can be used with NIL properties to add buttons to the inspector.
+- Lots of TODOs.
+
+#### Ports
+
+- Ported all commits that I thought would be useful since the last set of backports from upstream godot 3.x.
+
+### Changed
+
+- Disabled nullptr modernization in clang tidy.
+- updated the build container scripts.
+
+### Fixed
+
+- Lights.
+- Codestyle in a few files.
+
+#### Modules
+
+##### entity_spell_system
+
+-  Fixed the property validation for aura triggers and aura stat attributes in Spell.
+
+##### props
+
+- Fixed the 2 add methods in TiledWallData.
+
 ## [3.6.0]
 
 ### Added
