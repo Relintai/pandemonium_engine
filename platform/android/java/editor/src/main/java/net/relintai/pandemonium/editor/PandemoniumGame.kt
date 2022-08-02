@@ -33,6 +33,6 @@ package net.relintai.pandemonium.editor
 /**
  * Drives the 'run project' window of the Pandemonium Editor.
  */
-class PandemoniumGame : PandemoniumEditor {
+class PandemoniumGame : PandemoniumEditor() {
   override fun overrideOrientationRequest() = false
 }

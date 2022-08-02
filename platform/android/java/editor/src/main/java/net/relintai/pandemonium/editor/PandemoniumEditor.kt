@@ -89,7 +89,7 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		}
 	}
 
-  override fun onNewGodotInstanceRequested(args: Array<String>) {
+  override fun onNewPandemoniumInstanceRequested(args: Array<String>) {
 		// Parse the arguments to figure out which activity to start.
 		var targetClass: Class<*> = PandemoniumGame::class.java
 
