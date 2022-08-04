@@ -290,6 +290,109 @@ public:
 	WeakRef();
 };
 
+template <class T>
+class WRef {
+public:
+	_FORCE_INLINE_ bool operator==(const T *p_ptr) const {
+		ObjectID oref;
+
+		if (p_ptr) {
+			oref = p_ptr->get_instance_id();
+		}
+
+		return ref == oref;
+	}
+	_FORCE_INLINE_ bool operator!=(const T *p_ptr) const {
+		ObjectID oref;
+
+		if (p_ptr) {
+			oref = p_ptr->get_instance_id();
+		}
+
+		return ref != oref;
+	}
+
+	_FORCE_INLINE_ bool operator==(const Ref<T> &p_r) const {
+		ObjectID oref;
+
+		if (p_r.is_valid()) {
+			oref = p_r->get_instance_id();
+		}
+
+		return ref == oref;
+	}
+	_FORCE_INLINE_ bool operator!=(const Ref<T> &p_r) const {
+		ObjectID oref;
+
+		if (p_r.is_valid()) {
+			oref = p_r->get_instance_id();
+		}
+
+		return ref != oref;
+	}
+
+	_FORCE_INLINE_ bool operator<(const WRef<T> &p_r) const {
+		return ref < p_r.ref;
+	}
+	_FORCE_INLINE_ bool operator==(const WRef<T> &p_r) const {
+		return ref == p_r.ref;
+	}
+	_FORCE_INLINE_ bool operator!=(const WRef<T> &p_r) const {
+		return ref != p_r.ref;
+	}
+
+	_FORCE_INLINE_ Ref<T> get_ref() const {
+		if (ref == 0) {
+			return Ref<T>();
+		}
+
+		Object *obj = ObjectDB::get_instance(ref);
+		if (!obj) {
+			return Ref<T>();
+		}
+
+		Reference *r = Object::cast_to<Reference>(obj);
+
+		if (r) {
+			return Ref<T>(r);
+		}
+
+		return Ref<T>();
+	}
+
+	_FORCE_INLINE_ void set_obj(T *p_object) {
+		ref = p_object ? p_object->get_instance_id() : 0;
+	}
+
+	_FORCE_INLINE_ void set_ref(const Ref<T> &p_ref) {
+		ref = p_ref.is_valid() ? p_ref->get_instance_id() : 0;
+	}
+
+	void operator=(const WRef<T> &p_from) {
+		ref = p_from.ref;
+	}
+
+	WRef(const WRef<T> &p_from) {
+		ref = p_from.ref;
+	}
+
+	WRef(T *p_reference) {
+		set_obj(p_reference);
+	}
+
+	WRef(const Ref<T> &p_reference) {
+		set_ref(p_reference);
+	}
+
+	WRef() {
+	}
+
+protected:
+	static void _bind_methods();
+
+	ObjectID ref;
+};
+
 #ifdef PTRCALL_ENABLED
 
 template <class T>
