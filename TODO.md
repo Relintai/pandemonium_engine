@@ -57,6 +57,10 @@
 
 - Rework it into modules.
 
+## GUI
+
+- Rename the EditorZoomWidget to something like ZoomWidget, and make it available for the games aswell. Also I think I did smaller improvements to it in the world_generator addon. Also port those.
+
 ## Graphics 
 
 - Refactor platform code so it's not automatically creating a window, instead the VS should ask for it's creation, passing along the requested graphics api.
