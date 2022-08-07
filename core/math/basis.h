@@ -201,6 +201,13 @@ public:
 		return Vector3(elements[0][i], elements[1][i], elements[2][i]);
 	}
 
+	_FORCE_INLINE_ void set_column(int p_index, const Vector3 &p_value) {
+		// Set actual basis axis column (we store transposed as rows for performance).
+		elements[0][p_index] = p_value.x;
+		elements[1][p_index] = p_value.y;
+		elements[2][p_index] = p_value.z;
+	}
+
 	_FORCE_INLINE_ Vector3 get_row(int i) const {
 		return Vector3(elements[i][0], elements[i][1], elements[i][2]);
 	}
