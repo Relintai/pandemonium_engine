@@ -45,7 +45,7 @@ protected:
 	static void _bind_methods();
 
 public:
-	Error import_post(Ref<GLTFState> p_state, Node *p_root);
+	int _import_post(Ref<GLTFState> p_state, Node *p_root);
 };
 
 #endif // GLTF_DOCUMENT_EXTENSION_CONVERT_IMPORTER_MESH_H

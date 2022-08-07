@@ -42,7 +42,7 @@
 void GLTFDocumentExtensionConvertImporterMesh::_bind_methods() {
 }
 
-Error GLTFDocumentExtensionConvertImporterMesh::import_post(Ref<GLTFState> p_state, Node *p_root) {
+int GLTFDocumentExtensionConvertImporterMesh::_import_post(Ref<GLTFState> p_state, Node *p_root) {
 	ERR_FAIL_NULL_V(p_root, ERR_INVALID_PARAMETER);
 	ERR_FAIL_COND_V(p_state.is_null(), ERR_INVALID_PARAMETER);
 
