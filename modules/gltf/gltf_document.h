@@ -182,8 +182,8 @@ private:
 	Error _parse_lights(Ref<GLTFState> state);
 	Error _parse_animations(Ref<GLTFState> state);
 	Error _serialize_animations(Ref<GLTFState> state);
-	BoneAttachment3D *_generate_bone_attachment(Ref<GLTFState> state,
-			Skeleton3D *skeleton,
+	BoneAttachment *_generate_bone_attachment(Ref<GLTFState> state,
+			Skeleton *skeleton,
 			const GLTFNodeIndex node_index,
 			const GLTFNodeIndex bone_index);
 	ImporterMeshInstance3D *_generate_mesh_instance(Ref<GLTFState> state, const GLTFNodeIndex node_index);
@@ -305,8 +305,8 @@ public:
 			const GLTFAnimationIndex index, const int bake_fps);
 	void _convert_mesh_instances(Ref<GLTFState> state);
 	GLTFCameraIndex _convert_camera(Ref<GLTFState> state, Camera3D *p_camera);
-	void _convert_light_to_gltf(Light3D *light, Ref<GLTFState> state, Ref<GLTFNode> gltf_node);
-	GLTFLightIndex _convert_light(Ref<GLTFState> state, Light3D *p_light);
+	void _convert_light_to_gltf(Light *light, Ref<GLTFState> state, Ref<GLTFNode> gltf_node);
+	GLTFLightIndex _convert_light(Ref<GLTFState> state, Light *p_light);
 	void _convert_spatial(Ref<GLTFState> state, Node3D *p_spatial, Ref<GLTFNode> p_node);
 	void _convert_scene_node(Ref<GLTFState> state, Node *p_current,
 			const GLTFNodeIndex p_gltf_current,
@@ -338,16 +338,16 @@ public:
 			Ref<GLTFNode> gltf_node, Ref<GLTFState> state);
 #endif // MODULE_GRIDMAP_ENABLED
 	void _convert_multi_mesh_instance_to_gltf(
-			MultiMeshInstance3D *p_multi_mesh_instance,
+			MultiMeshInstance *p_multi_mesh_instance,
 			GLTFNodeIndex p_parent_node_index,
 			GLTFNodeIndex p_root_node_index,
 			Ref<GLTFNode> gltf_node, Ref<GLTFState> state);
 	void _convert_skeleton_to_gltf(
-			Skeleton3D *p_scene_parent, Ref<GLTFState> state,
+			Skeleton *p_scene_parent, Ref<GLTFState> state,
 			GLTFNodeIndex p_parent_node_index,
 			GLTFNodeIndex p_root_node_index,
 			Ref<GLTFNode> gltf_node);
-	void _convert_bone_attachment_to_gltf(BoneAttachment3D *p_bone_attachment,
+	void _convert_bone_attachment_to_gltf(BoneAttachment *p_bone_attachment,
 			Ref<GLTFState> state,
 			GLTFNodeIndex p_parent_node_index,
 			GLTFNodeIndex p_root_node_index,

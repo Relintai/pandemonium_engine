@@ -8,7 +8,7 @@
 	</tutorials>
 	<methods>
 		<method name="get_bone_attachment">
-			<return type="BoneAttachment3D" />
+			<return type="BoneAttachment" />
 			<argument index="0" name="idx" type="int" />
 			<description>
 			</description>
@@ -24,7 +24,7 @@
 			</description>
 		</method>
 		<method name="get_godot_skeleton">
-			<return type="Skeleton3D" />
+			<return type="Skeleton" />
 			<description>
 			</description>
 		</method>

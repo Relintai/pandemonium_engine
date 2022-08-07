@@ -4338,12 +4338,12 @@ Error GLTFDocument::_create_skeletons(Ref<GLTFState> state) {
 	for (GLTFSkeletonIndex skel_i = 0; skel_i < state->skeletons.size(); ++skel_i) {
 		Ref<GLTFSkeleton> gltf_skeleton = state->skeletons.write[skel_i];
 
-		Skeleton3D *skeleton = memnew(Skeleton3D);
+		Skeleton *skeleton = memnew(Skeleton);
 		gltf_skeleton->godot_skeleton = skeleton;
 		state->skeleton3d_to_gltf_skeleton[skeleton->get_instance_id()] = skel_i;
 
 		// Make a unique name, no gltf node represents this skeleton
-		skeleton->set_name(_gen_unique_name(state, "Skeleton3D"));
+		skeleton->set_name(_gen_unique_name(state, "Skeleton"));
 
 		List<GLTFNodeIndex> bones;
 
@@ -5077,10 +5077,10 @@ void GLTFDocument::_assign_scene_names(Ref<GLTFState> state) {
 	}
 }
 
-BoneAttachment3D *GLTFDocument::_generate_bone_attachment(Ref<GLTFState> state, Skeleton3D *skeleton, const GLTFNodeIndex node_index, const GLTFNodeIndex bone_index) {
+BoneAttachment *GLTFDocument::_generate_bone_attachment(Ref<GLTFState> state, Skeleton *skeleton, const GLTFNodeIndex node_index, const GLTFNodeIndex bone_index) {
 	Ref<GLTFNode> gltf_node = state->nodes[node_index];
 	Ref<GLTFNode> bone_node = state->nodes[bone_index];
-	BoneAttachment3D *bone_attachment = memnew(BoneAttachment3D);
+	BoneAttachment *bone_attachment = memnew(BoneAttachment);
 	print_verbose("glTF: Creating bone attachment for: " + gltf_node->get_name());
 
 	ERR_FAIL_COND_V(!bone_node->joint, nullptr);
@@ -5164,32 +5164,32 @@ Node3D *GLTFDocument::_generate_light(Ref<GLTFState> state, const GLTFNodeIndex 
 	}
 
 	if (l->light_type == "directional") {
-		DirectionalLight3D *light = memnew(DirectionalLight3D);
-		light->set_param(Light3D::PARAM_ENERGY, intensity);
+		DirectionalLight *light = memnew(DirectionalLight);
+		light->set_param(Light::PARAM_ENERGY, intensity);
 		light->set_color(l->color);
 		return light;
 	}
 
 	const float range = CLAMP(l->range, 0, 4096);
 	if (l->light_type == "point") {
-		OmniLight3D *light = memnew(OmniLight3D);
-		light->set_param(OmniLight3D::PARAM_ENERGY, intensity);
-		light->set_param(OmniLight3D::PARAM_RANGE, range);
+		OmniLight *light = memnew(OmniLight);
+		light->set_param(OmniLight::PARAM_ENERGY, intensity);
+		light->set_param(OmniLight::PARAM_RANGE, range);
 		light->set_color(l->color);
 		return light;
 	}
 	if (l->light_type == "spot") {
-		SpotLight3D *light = memnew(SpotLight3D);
-		light->set_param(SpotLight3D::PARAM_ENERGY, intensity);
-		light->set_param(SpotLight3D::PARAM_RANGE, range);
-		light->set_param(SpotLight3D::PARAM_SPOT_ANGLE, Math::rad2deg(l->outer_cone_angle));
+		SpotLight *light = memnew(SpotLight);
+		light->set_param(SpotLight::PARAM_ENERGY, intensity);
+		light->set_param(SpotLight::PARAM_RANGE, range);
+		light->set_param(SpotLight::PARAM_SPOT_ANGLE, Math::rad2deg(l->outer_cone_angle));
 		light->set_color(l->color);
 
 		// Line of best fit derived from guessing, see https://www.desmos.com/calculator/biiflubp8b
 		// The points in desmos are not exact, except for (1, infinity).
 		float angle_ratio = l->inner_cone_angle / l->outer_cone_angle;
 		float angle_attenuation = 0.2 / (1 - angle_ratio) - 0.1;
-		light->set_param(SpotLight3D::PARAM_SPOT_ATTENUATION, angle_attenuation);
+		light->set_param(SpotLight::PARAM_SPOT_ATTENUATION, angle_attenuation);
 		return light;
 	}
 	return memnew(Node3D);
@@ -5230,31 +5230,31 @@ GLTFCameraIndex GLTFDocument::_convert_camera(Ref<GLTFState> state, Camera3D *p_
 	return camera_index;
 }
 
-GLTFLightIndex GLTFDocument::_convert_light(Ref<GLTFState> state, Light3D *p_light) {
+GLTFLightIndex GLTFDocument::_convert_light(Ref<GLTFState> state, Light *p_light) {
 	print_verbose("glTF: Converting light: " + p_light->get_name());
 
 	Ref<GLTFLight> l;
 	l.instantiate();
 	l->color = p_light->get_color();
-	if (cast_to<DirectionalLight3D>(p_light)) {
+	if (cast_to<DirectionalLight>(p_light)) {
 		l->light_type = "directional";
-		DirectionalLight3D *light = cast_to<DirectionalLight3D>(p_light);
-		l->intensity = light->get_param(DirectionalLight3D::PARAM_ENERGY);
+		DirectionalLight *light = cast_to<DirectionalLight>(p_light);
+		l->intensity = light->get_param(DirectionalLight::PARAM_ENERGY);
 		l->range = FLT_MAX; // Range for directional lights is infinite in Godot.
-	} else if (cast_to<OmniLight3D>(p_light)) {
+	} else if (cast_to<OmniLight>(p_light)) {
 		l->light_type = "point";
-		OmniLight3D *light = cast_to<OmniLight3D>(p_light);
-		l->range = light->get_param(OmniLight3D::PARAM_RANGE);
-		l->intensity = light->get_param(OmniLight3D::PARAM_ENERGY);
-	} else if (cast_to<SpotLight3D>(p_light)) {
+		OmniLight *light = cast_to<OmniLight>(p_light);
+		l->range = light->get_param(OmniLight::PARAM_RANGE);
+		l->intensity = light->get_param(OmniLight::PARAM_ENERGY);
+	} else if (cast_to<SpotLight>(p_light)) {
 		l->light_type = "spot";
-		SpotLight3D *light = cast_to<SpotLight3D>(p_light);
-		l->range = light->get_param(SpotLight3D::PARAM_RANGE);
-		l->intensity = light->get_param(SpotLight3D::PARAM_ENERGY);
-		l->outer_cone_angle = Math::deg2rad(light->get_param(SpotLight3D::PARAM_SPOT_ANGLE));
+		SpotLight *light = cast_to<SpotLight>(p_light);
+		l->range = light->get_param(SpotLight::PARAM_RANGE);
+		l->intensity = light->get_param(SpotLight::PARAM_ENERGY);
+		l->outer_cone_angle = Math::deg2rad(light->get_param(SpotLight::PARAM_SPOT_ANGLE));
 
 		// This equation is the inverse of the import equation (which has a desmos link).
-		float angle_ratio = 1 - (0.2 / (0.1 + light->get_param(SpotLight3D::PARAM_SPOT_ATTENUATION)));
+		float angle_ratio = 1 - (0.2 / (0.1 + light->get_param(SpotLight::PARAM_SPOT_ATTENUATION)));
 		angle_ratio = MAX(0, angle_ratio);
 		l->inner_cone_angle = l->outer_cone_angle * angle_ratio;
 	}
@@ -5295,17 +5295,17 @@ void GLTFDocument::_convert_scene_node(Ref<GLTFState> state, Node *p_current, co
 	if (cast_to<MeshInstance3D>(p_current)) {
 		MeshInstance3D *mi = cast_to<MeshInstance3D>(p_current);
 		_convert_mesh_instance_to_gltf(mi, state, gltf_node);
-	} else if (cast_to<BoneAttachment3D>(p_current)) {
-		BoneAttachment3D *bone = cast_to<BoneAttachment3D>(p_current);
+	} else if (cast_to<BoneAttachment>(p_current)) {
+		BoneAttachment *bone = cast_to<BoneAttachment>(p_current);
 		_convert_bone_attachment_to_gltf(bone, state, p_gltf_parent, p_gltf_root, gltf_node);
 		return;
-	} else if (cast_to<Skeleton3D>(p_current)) {
-		Skeleton3D *skel = cast_to<Skeleton3D>(p_current);
+	} else if (cast_to<Skeleton>(p_current)) {
+		Skeleton *skel = cast_to<Skeleton>(p_current);
 		_convert_skeleton_to_gltf(skel, state, p_gltf_parent, p_gltf_root, gltf_node);
 		// We ignore the Godot Engine node that is the skeleton.
 		return;
-	} else if (cast_to<MultiMeshInstance3D>(p_current)) {
-		MultiMeshInstance3D *multi = cast_to<MultiMeshInstance3D>(p_current);
+	} else if (cast_to<MultiMeshInstance>(p_current)) {
+		MultiMeshInstance *multi = cast_to<MultiMeshInstance>(p_current);
 		_convert_multi_mesh_instance_to_gltf(multi, p_gltf_parent, p_gltf_root, gltf_node, state);
 #ifdef MODULE_CSG_ENABLED
 	} else if (cast_to<CSGShape3D>(p_current)) {
@@ -5322,8 +5322,8 @@ void GLTFDocument::_convert_scene_node(Ref<GLTFState> state, Node *p_current, co
 	} else if (cast_to<Camera3D>(p_current)) {
 		Camera3D *camera = Object::cast_to<Camera3D>(p_current);
 		_convert_camera_to_gltf(camera, state, gltf_node);
-	} else if (cast_to<Light3D>(p_current)) {
-		Light3D *light = Object::cast_to<Light3D>(p_current);
+	} else if (cast_to<Light>(p_current)) {
+		Light *light = Object::cast_to<Light>(p_current);
 		_convert_light_to_gltf(light, state, gltf_node);
 	} else if (cast_to<AnimationPlayer>(p_current)) {
 		AnimationPlayer *animation_player = Object::cast_to<AnimationPlayer>(p_current);
@@ -5423,7 +5423,7 @@ void GLTFDocument::_convert_camera_to_gltf(Camera3D *camera, Ref<GLTFState> stat
 	}
 }
 
-void GLTFDocument::_convert_light_to_gltf(Light3D *light, Ref<GLTFState> state, Ref<GLTFNode> gltf_node) {
+void GLTFDocument::_convert_light_to_gltf(Light *light, Ref<GLTFState> state, Ref<GLTFNode> gltf_node) {
 	ERR_FAIL_COND(!light);
 	GLTFLightIndex light_index = _convert_light(state, light);
 	if (light_index != -1) {
@@ -5462,7 +5462,7 @@ void GLTFDocument::_convert_grid_map_to_gltf(GridMap *p_grid_map, GLTFNodeIndex 
 #endif // MODULE_GRIDMAP_ENABLED
 
 void GLTFDocument::_convert_multi_mesh_instance_to_gltf(
-		MultiMeshInstance3D *p_multi_mesh_instance,
+		MultiMeshInstance *p_multi_mesh_instance,
 		GLTFNodeIndex p_parent_node_index,
 		GLTFNodeIndex p_root_node_index,
 		Ref<GLTFNode> gltf_node, Ref<GLTFState> state) {
@@ -5530,8 +5530,8 @@ void GLTFDocument::_convert_multi_mesh_instance_to_gltf(
 	}
 }
 
-void GLTFDocument::_convert_skeleton_to_gltf(Skeleton3D *p_skeleton3d, Ref<GLTFState> state, GLTFNodeIndex p_parent_node_index, GLTFNodeIndex p_root_node_index, Ref<GLTFNode> gltf_node) {
-	Skeleton3D *skeleton = p_skeleton3d;
+void GLTFDocument::_convert_skeleton_to_gltf(Skeleton *p_skeleton3d, Ref<GLTFState> state, GLTFNodeIndex p_parent_node_index, GLTFNodeIndex p_root_node_index, Ref<GLTFNode> gltf_node) {
+	Skeleton *skeleton = p_skeleton3d;
 	Ref<GLTFSkeleton> gltf_skeleton;
 	gltf_skeleton.instantiate();
 	// GLTFSkeleton is only used to hold internal state data. It will not be written to the document.
@@ -5584,13 +5584,13 @@ void GLTFDocument::_convert_skeleton_to_gltf(Skeleton3D *p_skeleton3d, Ref<GLTFS
 	}
 }
 
-void GLTFDocument::_convert_bone_attachment_to_gltf(BoneAttachment3D *p_bone_attachment, Ref<GLTFState> state, GLTFNodeIndex p_parent_node_index, GLTFNodeIndex p_root_node_index, Ref<GLTFNode> gltf_node) {
-	Skeleton3D *skeleton;
+void GLTFDocument::_convert_bone_attachment_to_gltf(BoneAttachment *p_bone_attachment, Ref<GLTFState> state, GLTFNodeIndex p_parent_node_index, GLTFNodeIndex p_root_node_index, Ref<GLTFNode> gltf_node) {
+	Skeleton *skeleton;
 	// Note that relative transforms to external skeletons and pose overrides are not supported.
 	if (p_bone_attachment->get_use_external_skeleton()) {
-		skeleton = cast_to<Skeleton3D>(p_bone_attachment->get_node_or_null(p_bone_attachment->get_external_skeleton()));
+		skeleton = cast_to<Skeleton>(p_bone_attachment->get_node_or_null(p_bone_attachment->get_external_skeleton()));
 	} else {
-		skeleton = cast_to<Skeleton3D>(p_bone_attachment->get_parent());
+		skeleton = cast_to<Skeleton>(p_bone_attachment->get_parent());
 	}
 	GLTFSkeletonIndex skel_gltf_i = -1;
 	if (skeleton != nullptr && state->skeleton3d_to_gltf_skeleton.has(skeleton->get_instance_id())) {
@@ -5633,20 +5633,20 @@ void GLTFDocument::_generate_scene_node(Ref<GLTFState> state, Node *scene_parent
 	Node3D *current_node = nullptr;
 
 	// Is our parent a skeleton
-	Skeleton3D *active_skeleton = Object::cast_to<Skeleton3D>(scene_parent);
+	Skeleton *active_skeleton = Object::cast_to<Skeleton>(scene_parent);
 
 	const bool non_bone_parented_to_skeleton = active_skeleton;
 
 	// skinned meshes must not be placed in a bone attachment.
 	if (non_bone_parented_to_skeleton && gltf_node->skin < 0) {
 		// Bone Attachment - Parent Case
-		BoneAttachment3D *bone_attachment = _generate_bone_attachment(state, active_skeleton, node_index, gltf_node->parent);
+		BoneAttachment *bone_attachment = _generate_bone_attachment(state, active_skeleton, node_index, gltf_node->parent);
 
 		scene_parent->add_child(bone_attachment, true);
 		bone_attachment->set_owner(scene_root);
 
 		// There is no gltf_node that represent this, so just directly create a unique name
-		bone_attachment->set_name(_gen_unique_name(state, "BoneAttachment3D"));
+		bone_attachment->set_name(_gen_unique_name(state, "BoneAttachment"));
 
 		// We change the scene_parent to our bone attachment now. We do not set current_node because we want to make the node
 		// and attach it to the bone_attachment
@@ -5683,22 +5683,22 @@ void GLTFDocument::_generate_skeleton_bone_node(Ref<GLTFState> state, Node *scen
 
 	Node3D *current_node = nullptr;
 
-	Skeleton3D *skeleton = state->skeletons[gltf_node->skeleton]->godot_skeleton;
+	Skeleton *skeleton = state->skeletons[gltf_node->skeleton]->godot_skeleton;
 	// In this case, this node is already a bone in skeleton.
 	const bool is_skinned_mesh = (gltf_node->skin >= 0 && gltf_node->mesh >= 0);
 	const bool requires_extra_node = (gltf_node->mesh >= 0 || gltf_node->camera >= 0 || gltf_node->light >= 0);
 
-	Skeleton3D *active_skeleton = Object::cast_to<Skeleton3D>(scene_parent);
+	Skeleton *active_skeleton = Object::cast_to<Skeleton>(scene_parent);
 	if (active_skeleton != skeleton) {
 		if (active_skeleton) {
 			// Bone Attachment - Direct Parented Skeleton Case
-			BoneAttachment3D *bone_attachment = _generate_bone_attachment(state, active_skeleton, node_index, gltf_node->parent);
+			BoneAttachment *bone_attachment = _generate_bone_attachment(state, active_skeleton, node_index, gltf_node->parent);
 
 			scene_parent->add_child(bone_attachment, true);
 			bone_attachment->set_owner(scene_root);
 
 			// There is no gltf_node that represent this, so just directly create a unique name
-			bone_attachment->set_name(_gen_unique_name(state, "BoneAttachment3D"));
+			bone_attachment->set_name(_gen_unique_name(state, "BoneAttachment"));
 
 			// We change the scene_parent to our bone attachment now. We do not set current_node because we want to make the node
 			// and attach it to the bone_attachment
@@ -5720,13 +5720,13 @@ void GLTFDocument::_generate_skeleton_bone_node(Ref<GLTFState> state, Node *scen
 		// skinned meshes must not be placed in a bone attachment.
 		if (!is_skinned_mesh) {
 			// Bone Attachment - Same Node Case
-			BoneAttachment3D *bone_attachment = _generate_bone_attachment(state, active_skeleton, node_index, node_index);
+			BoneAttachment *bone_attachment = _generate_bone_attachment(state, active_skeleton, node_index, node_index);
 
 			scene_parent->add_child(bone_attachment, true);
 			bone_attachment->set_owner(scene_root);
 
 			// There is no gltf_node that represent this, so just directly create a unique name
-			bone_attachment->set_name(_gen_unique_name(state, "BoneAttachment3D"));
+			bone_attachment->set_name(_gen_unique_name(state, "BoneAttachment"));
 
 			// We change the scene_parent to our bone attachment now. We do not set current_node because we want to make the node
 			// and attach it to the bone_attachment
@@ -5915,7 +5915,7 @@ void GLTFDocument::_import_animation(Ref<GLTFState> state, AnimationPlayer *ap, 
 		node_path = root->get_path_to(node_element->value);
 
 		if (gltf_node->skeleton >= 0) {
-			const Skeleton3D *sk = state->skeletons[gltf_node->skeleton]->godot_skeleton;
+			const Skeleton *sk = state->skeletons[gltf_node->skeleton]->godot_skeleton;
 			ERR_FAIL_COND(sk == nullptr);
 
 			const String path = ap->get_parent()->get_path_to(sk);
@@ -6135,7 +6135,7 @@ void GLTFDocument::_convert_mesh_instances(Ref<GLTFState> state) {
 		node->rotation = mi_xform.basis.get_rotation_quaternion();
 		node->position = mi_xform.origin;
 
-		Skeleton3D *skeleton = Object::cast_to<Skeleton3D>(mi->get_node(mi->get_skeleton_path()));
+		Skeleton *skeleton = Object::cast_to<Skeleton>(mi->get_node(mi->get_skeleton_path()));
 		if (!skeleton) {
 			continue;
 		}
@@ -6149,9 +6149,9 @@ void GLTFDocument::_convert_mesh_instances(Ref<GLTFState> state) {
 
 		NodePath skeleton_path = mi->get_skeleton_path();
 		Node *skel_node = mi->get_node_or_null(skeleton_path);
-		Skeleton3D *godot_skeleton = nullptr;
+		Skeleton *godot_skeleton = nullptr;
 		if (skel_node != nullptr) {
-			godot_skeleton = cast_to<Skeleton3D>(skel_node);
+			godot_skeleton = cast_to<Skeleton>(skel_node);
 		}
 		if (godot_skeleton != nullptr && state->skeleton3d_to_gltf_skeleton.has(godot_skeleton->get_instance_id())) {
 			// This is a skinned mesh. If the mesh has no ARRAY_WEIGHTS or ARRAY_BONES, it will be invisible.
@@ -6264,7 +6264,7 @@ void GLTFDocument::_process_mesh_instances(Ref<GLTFState> state, Node *scene_roo
 
 			const GLTFSkeletonIndex skel_i = state->skins.write[node->skin]->skeleton;
 			Ref<GLTFSkeleton> gltf_skeleton = state->skeletons.write[skel_i];
-			Skeleton3D *skeleton = gltf_skeleton->godot_skeleton;
+			Skeleton *skeleton = gltf_skeleton->godot_skeleton;
 			ERR_CONTINUE_MSG(skeleton == nullptr, vformat("Unable to find Skeleton for node %d skin %d", node_i, skin_i));
 
 			mi->get_parent()->remove_child(mi);
@@ -6557,10 +6557,10 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 			const NodePath node_path = node;
 			const String suffix = node_suffix[1];
 			Node *godot_node = ap->get_parent()->get_node_or_null(node_path);
-			Skeleton3D *skeleton = nullptr;
+			Skeleton *skeleton = nullptr;
 			GLTFSkeletonIndex skeleton_gltf_i = -1;
 			for (GLTFSkeletonIndex skeleton_i = 0; skeleton_i < state->skeletons.size(); skeleton_i++) {
-				if (state->skeletons[skeleton_i]->godot_skeleton == cast_to<Skeleton3D>(godot_node)) {
+				if (state->skeletons[skeleton_i]->godot_skeleton == cast_to<Skeleton>(godot_node)) {
 					skeleton = state->skeletons[skeleton_i]->godot_skeleton;
 					skeleton_gltf_i = skeleton_i;
 					ERR_CONTINUE(!skeleton);

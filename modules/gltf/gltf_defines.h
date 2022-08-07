@@ -34,14 +34,15 @@
 // This file should only be included by other headers.
 
 // Godot classes used by GLTF headers.
-class BoneAttachment3D;
-class CSGShape3D;
-class DirectionalLight3D;
-class GridMap;
-class Light3D;
-class MultiMeshInstance3D;
-class Skeleton3D;
+class BoneAttachment;
+class DirectionalLight;
+class Light;
+class MultiMeshInstance;
+class Skeleton;
 class Skin;
+
+class CSGShape3D;
+class GridMap;
 
 // GLTF classes.
 struct GLTFAccessor;

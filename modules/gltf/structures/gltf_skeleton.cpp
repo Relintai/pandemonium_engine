@@ -68,7 +68,7 @@ void GLTFSkeleton::set_roots(Vector<GLTFNodeIndex> p_roots) {
 	roots = p_roots;
 }
 
-Skeleton3D *GLTFSkeleton::get_godot_skeleton() {
+Skeleton *GLTFSkeleton::get_godot_skeleton() {
 	return godot_skeleton;
 }
 
@@ -88,7 +88,7 @@ void GLTFSkeleton::set_godot_bone_node(Dictionary p_indict) {
 	GLTFTemplateConvert::set_from_dict(godot_bone_node, p_indict);
 }
 
-BoneAttachment3D *GLTFSkeleton::get_bone_attachment(int idx) {
+BoneAttachment *GLTFSkeleton::get_bone_attachment(int idx) {
 	ERR_FAIL_INDEX_V(idx, bone_attachments.size(), nullptr);
 	return bone_attachments[idx];
 }

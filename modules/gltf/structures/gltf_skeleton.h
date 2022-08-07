@@ -46,15 +46,15 @@ private:
 	// same parent (ie roots are siblings)
 	Vector<GLTFNodeIndex> roots;
 
-	// The created Skeleton3D for the scene
-	Skeleton3D *godot_skeleton = nullptr;
+	// The created Skeleton for the scene
+	Skeleton *godot_skeleton = nullptr;
 
 	// Set of unique bone names for the skeleton
 	HashSet<String> unique_names;
 
 	HashMap<int32_t, GLTFNodeIndex> godot_bone_node;
 
-	Vector<BoneAttachment3D *> bone_attachments;
+	Vector<BoneAttachment *> bone_attachments;
 
 protected:
 	static void _bind_methods();
@@ -66,7 +66,7 @@ public:
 	Vector<GLTFNodeIndex> get_roots();
 	void set_roots(Vector<GLTFNodeIndex> p_roots);
 
-	Skeleton3D *get_godot_skeleton();
+	Skeleton *get_godot_skeleton();
 
 	// Skeleton *get_godot_skeleton() {
 	// 	return this->godot_skeleton;
@@ -94,7 +94,7 @@ public:
 	//	VariantConversion::set_from_dict(this->godot_bone_node, p_indict);
 	//}
 
-	BoneAttachment3D *get_bone_attachment(int idx);
+	BoneAttachment *get_bone_attachment(int idx);
 
 	int32_t get_bone_attachment_count();
 };
