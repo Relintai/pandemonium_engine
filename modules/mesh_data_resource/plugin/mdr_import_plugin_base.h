@@ -39,8 +39,6 @@ SOFTWARE.
 
 #include "scene/3d/mesh_instance.h"
 
-#include "../../gltf/editor_scene_importer_gltf.h"
-
 class MDRImportPluginBase : public EditorImportPlugin {
 	GDCLASS(MDRImportPluginBase, EditorImportPlugin);
 
