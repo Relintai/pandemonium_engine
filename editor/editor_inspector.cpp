@@ -30,15 +30,6 @@
 
 #include "editor_inspector.h"
 
-#include "core/os/input.h"
-#include "core/os/keyboard.h"
-#include "editor_node.h"
-#include "editor_property_name_processor.h"
-#include "editor_scale.h"
-#include "editor_settings.h"
-#include "multi_node_edit.h"
-#include "scene/property_utils.h"
-#include "scene/resources/packed_scene.h"
 #include "core/array.h"
 #include "core/class_db.h"
 #include "core/dictionary.h"
@@ -46,7 +37,9 @@
 #include "core/hash_map.h"
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"
+#include "core/os/input.h"
 #include "core/os/input_event.h"
+#include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"
 #include "core/script_language.h"
@@ -55,6 +48,11 @@
 #include "editor/doc/doc_data.h"
 #include "editor/editor_data.h"
 #include "editor/editor_help.h"
+#include "editor_node.h"
+#include "editor_property_name_processor.h"
+#include "editor_scale.h"
+#include "editor_settings.h"
+#include "multi_node_edit.h"
 #include "scene/2d/canvas_item.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/label.h"
@@ -64,7 +62,9 @@
 #include "scene/gui/scroll_bar.h"
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
+#include "scene/property_utils.h"
 #include "scene/resources/font.h"
+#include "scene/resources/packed_scene.h"
 #include "scene/resources/style_box.h"
 #include "servers/visual_server.h"
 
@@ -1437,8 +1437,7 @@ void EditorInspector::update_tree() {
 	String group_base;
 	VBoxContainer *category_vbox = nullptr;
 
-	List<PropertyInfo>
-			plist;
+	List<PropertyInfo> plist;
 	object->get_property_list(&plist, true);
 
 	HashMap<String, VBoxContainer *> item_path;
