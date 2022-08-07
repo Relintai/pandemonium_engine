@@ -32,20 +32,6 @@
 
 #ifndef _3D_DISABLED
 
-void register_gltf_types() {
-
-}
-void unregister_gltf_types() {
-
-}
-
-/*
-#include "extensions/gltf_light.h"
-#include "extensions/gltf_spec_gloss.h"
-#include "gltf_document.h"
-#include "gltf_document_extension.h"
-#include "gltf_document_extension_convert_importer_mesh.h"
-#include "gltf_state.h"
 #include "structures/gltf_accessor.h"
 #include "structures/gltf_animation.h"
 #include "structures/gltf_buffer_view.h"
@@ -55,6 +41,40 @@ void unregister_gltf_types() {
 #include "structures/gltf_skeleton.h"
 #include "structures/gltf_skin.h"
 #include "structures/gltf_texture.h"
+
+#include "extensions/gltf_light.h"
+#include "extensions/gltf_spec_gloss.h"
+
+void register_gltf_types() {
+		ClassDB::register_class<GLTFAccessor>();
+		ClassDB::register_class<GLTFAnimation>();
+		ClassDB::register_class<GLTFBufferView>();
+		ClassDB::register_class<GLTFCamera>();
+		ClassDB::register_class<GLTFMesh>();
+		ClassDB::register_class<GLTFNode>();
+		ClassDB::register_class<GLTFSkeleton>();
+		ClassDB::register_class<GLTFSkin>();
+		ClassDB::register_class<GLTFTexture>();
+
+		ClassDB::register_class<GLTFSpecGloss>();
+		ClassDB::register_class<GLTFLight>();
+
+		//ClassDB::register_class<GLTFDocument>();
+		//ClassDB::register_class<GLTFDocumentExtension>();
+		//ClassDB::register_class<GLTFDocumentExtensionConvertImporterMesh>();
+		//ClassDB::register_class<GLTFState>();
+}
+void unregister_gltf_types() {
+
+}
+
+/*
+
+#include "gltf_document.h"
+#include "gltf_document_extension.h"
+#include "gltf_document_extension_convert_importer_mesh.h"
+#include "gltf_state.h"
+
 
 #ifdef TOOLS_ENABLED
 #include "core/project_settings.h"

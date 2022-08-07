@@ -33,6 +33,7 @@
 
 #include "../gltf_defines.h"
 #include "core/resource.h"
+#include "core/hash_set.h"
 
 class GLTFSkeleton : public Resource {
 	GDCLASS(GLTFSkeleton, Resource);

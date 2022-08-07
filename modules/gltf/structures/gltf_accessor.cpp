@@ -124,19 +124,19 @@ void GLTFAccessor::set_type(int p_type) {
 	type = (GLTFType)p_type; // TODO: Register enum
 }
 
-Vector<double> GLTFAccessor::get_min() {
+PoolRealArray GLTFAccessor::get_min() {
 	return min;
 }
 
-void GLTFAccessor::set_min(Vector<double> p_min) {
+void GLTFAccessor::set_min(const PoolRealArray &p_min) {
 	min = p_min;
 }
 
-Vector<double> GLTFAccessor::get_max() {
+PoolRealArray GLTFAccessor::get_max() {
 	return max;
 }
 
-void GLTFAccessor::set_max(Vector<double> p_max) {
+void GLTFAccessor::set_max(const PoolRealArray &p_max) {
 	max = p_max;
 }
 

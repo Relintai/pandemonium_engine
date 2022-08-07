@@ -31,9 +31,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/hash_set.h"
 #include "core/array.h"
 #include "core/dictionary.h"
+#include "core/hash_set.h"
 
 namespace GLTFTemplateConvert {
 template <class T>
@@ -75,8 +75,9 @@ static void set_from_array(HashSet<T> &r_out, const Array &p_inp) {
 template <class K, class V>
 static Dictionary to_dict(const HashMap<K, V> &p_inp) {
 	Dictionary ret;
-	for (const KeyValue<K, V> &E : p_inp) {
-		ret[E.key] = E.value;
+	const K *key = NULL;
+	while ((key = p_inp.next(key))) {
+		ret[*key] = p_inp[*key];
 	}
 	return ret;
 }

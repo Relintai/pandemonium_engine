@@ -46,8 +46,8 @@ private:
 	bool normalized = false;
 	int count = 0;
 	GLTFType type = GLTFType::TYPE_SCALAR;
-	Vector<double> min;
-	Vector<double> max;
+	PoolRealArray min;
+	PoolRealArray max;
 	int sparse_count = 0;
 	int sparse_indices_buffer_view = 0;
 	int sparse_indices_byte_offset = 0;
@@ -77,11 +77,11 @@ public:
 	int get_type();
 	void set_type(int p_type);
 
-	Vector<double> get_min();
-	void set_min(Vector<double> p_min);
+	PoolRealArray get_min();
+	void set_min(const PoolRealArray &p_min);
 
-	Vector<double> get_max();
-	void set_max(Vector<double> p_max);
+	PoolRealArray get_max();
+	void set_max(const PoolRealArray &p_max);
 
 	int get_sparse_count();
 	void set_sparse_count(int p_sparse_count);

@@ -133,10 +133,10 @@ void GLTFSkin::set_joint_i_to_bone_i(Dictionary p_joint_i_to_bone_i) {
 
 Dictionary GLTFSkin::get_joint_i_to_name() {
 	Dictionary ret;
-	HashMap<int, StringName>::Iterator elem = joint_i_to_name.begin();
-	while (elem) {
-		ret[elem->key] = String(elem->value);
-		++elem;
+
+	const int *key = NULL;
+	while ((key = joint_i_to_name.next(key))) {
+		ret[*key] = String(joint_i_to_name[*key]);
 	}
 	return ret;
 }
