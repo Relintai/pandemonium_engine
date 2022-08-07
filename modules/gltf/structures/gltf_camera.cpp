@@ -41,7 +41,7 @@ void GLTFCamera::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_depth_near", "zdepth_near"), &GLTFCamera::set_depth_near);
 
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "perspective"), "set_perspective", "get_perspective"); // bool
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "fov_size"), "set_fov_size", "get_fov_size"); // float
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "depth_far"), "set_depth_far", "get_depth_far"); // float
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "depth_near"), "set_depth_near", "get_depth_near"); // float
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "fov_size"), "set_fov_size", "get_fov_size"); // float
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "depth_far"), "set_depth_far", "get_depth_far"); // float
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "depth_near"), "set_depth_near", "get_depth_near"); // float
 }

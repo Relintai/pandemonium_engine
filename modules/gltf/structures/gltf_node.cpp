@@ -60,16 +60,16 @@ void GLTFNode::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "parent"), "set_parent", "get_parent"); // GLTFNodeIndex
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "height"), "set_height", "get_height"); // int
-	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM3D, "xform"), "set_xform", "get_xform"); // Transform3D
+	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM, "xform"), "set_xform", "get_xform"); // Transform
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "mesh"), "set_mesh", "get_mesh"); // GLTFMeshIndex
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "camera"), "set_camera", "get_camera"); // GLTFCameraIndex
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "skin"), "set_skin", "get_skin"); // GLTFSkinIndex
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "skeleton"), "set_skeleton", "get_skeleton"); // GLTFSkeletonIndex
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "joint"), "set_joint", "get_joint"); // bool
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "position"), "set_position", "get_position"); // Vector3
-	ADD_PROPERTY(PropertyInfo(Variant::QUATERNION, "rotation"), "set_rotation", "get_rotation"); // Quaternion
+	ADD_PROPERTY(PropertyInfo(Variant::QUAT, "rotation"), "set_rotation", "get_rotation"); // Quat
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "scale"), "set_scale", "get_scale"); // Vector3
-	ADD_PROPERTY(PropertyInfo(Variant::PACKED_INT32_ARRAY, "children"), "set_children", "get_children"); // Vector<int>
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "children"), "set_children", "get_children"); // Vector<int>
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "light"), "set_light", "get_light"); // GLTFLightIndex
 }
 
@@ -89,11 +89,11 @@ void GLTFNode::set_height(int p_height) {
 	height = p_height;
 }
 
-Transform3D GLTFNode::get_xform() {
+Transform GLTFNode::get_xform() {
 	return xform;
 }
 
-void GLTFNode::set_xform(Transform3D p_xform) {
+void GLTFNode::set_xform(Transform p_xform) {
 	xform = p_xform;
 }
 
@@ -145,11 +145,11 @@ void GLTFNode::set_position(Vector3 p_position) {
 	position = p_position;
 }
 
-Quaternion GLTFNode::get_rotation() {
+Quat GLTFNode::get_rotation() {
 	return rotation;
 }
 
-void GLTFNode::set_rotation(Quaternion p_rotation) {
+void GLTFNode::set_rotation(Quat p_rotation) {
 	rotation = p_rotation;
 }
 

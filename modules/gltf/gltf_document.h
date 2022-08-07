@@ -35,14 +35,14 @@
 #include "structures/gltf_animation.h"
 
 #include "scene/3d/bone_attachment.h"
-#include "scene/3d/importer_mesh_instance.h"
+#include "scene/3d/importer_mesh_instance_3d.h"
 #include "scene/3d/mesh_instance.h"
 #include "scene/animation/animation_player.h"
 #include "scene/resources/material.h"
 
 class GLTFDocument : public Resource {
 	GDCLASS(GLTFDocument, Resource);
-	TypedArray<GLTFDocumentExtension> document_extensions;
+	Vector<GLTFDocumentExtension> document_extensions;
 
 private:
 	const float BAKE_FPS = 30.0f;
@@ -93,8 +93,8 @@ private:
 	String _gen_unique_bone_name(Ref<GLTFState> state,
 			const GLTFSkeletonIndex skel_i,
 			const String &p_name);
-	GLTFTextureIndex _set_texture(Ref<GLTFState> state, Ref<Texture2D> p_texture);
-	Ref<Texture2D> _get_texture(Ref<GLTFState> state,
+	GLTFTextureIndex _set_texture(Ref<GLTFState> state, Ref<Texture> p_texture);
+	Ref<Texture> _get_texture(Ref<GLTFState> state,
 			const GLTFTextureIndex p_texture);
 	Error _parse_json(const String &p_path, Ref<GLTFState> state);
 	Error _parse_glb(FileAccess *f, Ref<GLTFState> state);
@@ -129,7 +129,7 @@ private:
 	Vector<Color> _decode_accessor_as_color(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex);
-	Vector<Quaternion> _decode_accessor_as_quaternion(Ref<GLTFState> state,
+	Vector<Quat> _decode_accessor_as_quaternion(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex);
 	Vector<Transform2D> _decode_accessor_as_xform2d(Ref<GLTFState> state,
@@ -138,7 +138,7 @@ private:
 	Vector<Basis> _decode_accessor_as_basis(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex);
-	Vector<Transform3D> _decode_accessor_as_xform(Ref<GLTFState> state,
+	Vector<Transform> _decode_accessor_as_xform(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex);
 	Error _parse_meshes(Ref<GLTFState> state);
@@ -148,9 +148,9 @@ private:
 	Error _parse_images(Ref<GLTFState> state, const String &p_base_path);
 	Error _parse_textures(Ref<GLTFState> state);
 	Error _parse_materials(Ref<GLTFState> state);
-	void _set_texture_transform_uv1(const Dictionary &d, Ref<BaseMaterial3D> material);
+	void _set_texture_transform_uv1(const Dictionary &d, Ref<SpatialMaterial> material);
 	void spec_gloss_to_rough_metal(Ref<GLTFSpecGloss> r_spec_gloss,
-			Ref<BaseMaterial3D> p_material);
+			Ref<SpatialMaterial> p_material);
 	static void spec_gloss_to_metal_base_color(const Color &p_specular_factor,
 			const Color &p_diffuse,
 			Color &r_base_color,
@@ -194,7 +194,7 @@ private:
 			const float p_time,
 			const GLTFAnimation::Interpolation p_interp);
 	GLTFAccessorIndex _encode_accessor_as_quaternions(Ref<GLTFState> state,
-			const Vector<Quaternion> p_attribs,
+			const Vector<Quat> p_attribs,
 			const bool p_for_vertex);
 	GLTFAccessorIndex _encode_accessor_as_weights(Ref<GLTFState> state,
 			const Vector<Color> p_attribs,
@@ -237,7 +237,7 @@ private:
 			const Vector<int32_t> p_attribs,
 			const bool p_for_vertex);
 	GLTFAccessorIndex _encode_accessor_as_xform(Ref<GLTFState> state,
-			const Vector<Transform3D> p_attribs,
+			const Vector<Transform> p_attribs,
 			const bool p_for_vertex);
 	Error _encode_buffer_view(Ref<GLTFState> state, const double *src,
 			const int count, const GLTFType type,
@@ -259,8 +259,8 @@ private:
 	Error _encode_buffer_bins(Ref<GLTFState> state, const String &p_path);
 	Error _encode_buffer_glb(Ref<GLTFState> state, const String &p_path);
 	PackedByteArray _serialize_glb_buffer(Ref<GLTFState> state, Error *r_err);
-	Dictionary _serialize_texture_transform_uv1(Ref<BaseMaterial3D> p_material);
-	Dictionary _serialize_texture_transform_uv2(Ref<BaseMaterial3D> p_material);
+	Dictionary _serialize_texture_transform_uv1(Ref<SpatialMaterial> p_material);
+	Dictionary _serialize_texture_transform_uv2(Ref<SpatialMaterial> p_material);
 	Error _serialize_version(Ref<GLTFState> state);
 	Error _serialize_file(Ref<GLTFState> state, const String p_path);
 	Error _serialize_extensions(Ref<GLTFState> state) const;

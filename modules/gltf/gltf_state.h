@@ -70,13 +70,13 @@ class GLTFState : public Resource {
 	Vector<Ref<GLTFMesh>> meshes; // meshes are loaded directly, no reason not to.
 
 	Vector<AnimationPlayer *> animation_players;
-	HashMap<Ref<BaseMaterial3D>, GLTFMaterialIndex> material_cache;
-	Vector<Ref<BaseMaterial3D>> materials;
+	HashMap<Ref<SpatialMaterial>, GLTFMaterialIndex> material_cache;
+	Vector<Ref<SpatialMaterial>> materials;
 
 	String scene_name;
 	Vector<int> root_nodes;
 	Vector<Ref<GLTFTexture>> textures;
-	Vector<Ref<Texture2D>> images;
+	Vector<Ref<Texture>> images;
 
 	Vector<Ref<GLTFSkin>> skins;
 	Vector<Ref<GLTFCamera>> cameras;

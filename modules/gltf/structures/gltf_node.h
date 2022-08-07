@@ -42,14 +42,14 @@ private:
 	// matrices need to be transformed to this
 	GLTFNodeIndex parent = -1;
 	int height = -1;
-	Transform3D xform;
+	Transform xform;
 	GLTFMeshIndex mesh = -1;
 	GLTFCameraIndex camera = -1;
 	GLTFSkinIndex skin = -1;
 	GLTFSkeletonIndex skeleton = -1;
 	bool joint = false;
 	Vector3 position;
-	Quaternion rotation;
+	Quat rotation;
 	Vector3 scale = Vector3(1, 1, 1);
 	Vector<int> children;
 	GLTFLightIndex light = -1;
@@ -64,8 +64,8 @@ public:
 	int get_height();
 	void set_height(int p_height);
 
-	Transform3D get_xform();
-	void set_xform(Transform3D p_xform);
+	Transform get_xform();
+	void set_xform(Transform p_xform);
 
 	GLTFMeshIndex get_mesh();
 	void set_mesh(GLTFMeshIndex p_mesh);
@@ -85,8 +85,8 @@ public:
 	Vector3 get_position();
 	void set_position(Vector3 p_position);
 
-	Quaternion get_rotation();
-	void set_rotation(Quaternion p_rotation);
+	Quat get_rotation();
+	void set_rotation(Quat p_rotation);
 
 	Vector3 get_scale();
 	void set_scale(Vector3 p_scale);

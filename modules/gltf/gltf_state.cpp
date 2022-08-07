@@ -96,7 +96,7 @@ void GLTFState::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL | PROPERTY_USAGE_EDITOR), "set_materials", "get_materials"); // Vector<Ref<Material>
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "scene_name"), "set_scene_name", "get_scene_name"); // String
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "base_path"), "set_base_path", "get_base_path"); // String
-	ADD_PROPERTY(PropertyInfo(Variant::PACKED_INT32_ARRAY, "root_nodes"), "set_root_nodes", "get_root_nodes"); // Vector<int>
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "root_nodes"), "set_root_nodes", "get_root_nodes"); // Vector<int>
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "textures", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL | PROPERTY_USAGE_EDITOR), "set_textures", "get_textures"); // Vector<Ref<GLTFTexture>>
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "images", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL | PROPERTY_USAGE_EDITOR), "set_images", "get_images"); // Vector<Ref<Texture>
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "skins", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL | PROPERTY_USAGE_EDITOR), "set_skins", "get_skins"); // Vector<Ref<GLTFSkin>>

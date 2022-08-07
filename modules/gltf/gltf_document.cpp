@@ -44,9 +44,9 @@
 #include "core/io/stream_peer.h"
 #include "core/math/disjoint_set.h"
 #include "core/math/vector2.h"
-#include "core/variant/dictionary.h"
-#include "core/variant/typed_array.h"
-#include "core/variant/variant.h"
+#include "core/dictionary.h"
+#include "core/array.h"
+#include "core/variant.h"
 #include "core/version.h"
 #include "drivers/png/png_driver_common.h"
 #include "scene/2d/node_2d.h"
@@ -339,7 +339,7 @@ static Vector3 _arr_to_vec3(const Array &p_array) {
 	return Vector3(p_array[0], p_array[1], p_array[2]);
 }
 
-static Array _quaternion_to_array(const Quaternion &p_quaternion) {
+static Array _quaternion_to_array(const Quat &p_quaternion) {
 	Array array;
 	array.resize(4);
 	array[0] = p_quaternion.x;
@@ -349,15 +349,15 @@ static Array _quaternion_to_array(const Quaternion &p_quaternion) {
 	return array;
 }
 
-static Quaternion _arr_to_quaternion(const Array &p_array) {
-	ERR_FAIL_COND_V(p_array.size() != 4, Quaternion());
-	return Quaternion(p_array[0], p_array[1], p_array[2], p_array[3]);
+static Quat _arr_to_quaternion(const Array &p_array) {
+	ERR_FAIL_COND_V(p_array.size() != 4, Quat());
+	return Quat(p_array[0], p_array[1], p_array[2], p_array[3]);
 }
 
-static Transform3D _arr_to_xform(const Array &p_array) {
-	ERR_FAIL_COND_V(p_array.size() != 16, Transform3D());
+static Transform _arr_to_xform(const Array &p_array) {
+	ERR_FAIL_COND_V(p_array.size() != 16, Transform());
 
-	Transform3D xform;
+	Transform xform;
 	xform.basis.set_column(Vector3::AXIS_X, Vector3(p_array[0], p_array[1], p_array[2]));
 	xform.basis.set_column(Vector3::AXIS_Y, Vector3(p_array[4], p_array[5], p_array[6]));
 	xform.basis.set_column(Vector3::AXIS_Z, Vector3(p_array[8], p_array[9], p_array[10]));
@@ -366,7 +366,7 @@ static Transform3D _arr_to_xform(const Array &p_array) {
 	return xform;
 }
 
-static Vector<real_t> _xform_to_array(const Transform3D p_transform) {
+static Vector<real_t> _xform_to_array(const Transform p_transform) {
 	Vector<real_t> array;
 	array.resize(16);
 	Vector3 axis_x = p_transform.get_basis().get_column(Vector3::AXIS_X);
@@ -418,11 +418,11 @@ Error GLTFDocument::_serialize_nodes(Ref<GLTFState> state) {
 		}
 		if (n->skeleton != -1 && n->skin < 0) {
 		}
-		if (n->xform != Transform3D()) {
+		if (n->xform != Transform()) {
 			node["matrix"] = _xform_to_array(n->xform);
 		}
 
-		if (!n->rotation.is_equal_approx(Quaternion())) {
+		if (!n->rotation.is_equal_approx(Quat())) {
 			node["rotation"] = _quaternion_to_array(n->rotation);
 		}
 
@@ -1791,7 +1791,7 @@ GLTFAccessorIndex GLTFDocument::_encode_accessor_as_joints(Ref<GLTFState> state,
 	return state->accessors.size() - 1;
 }
 
-GLTFAccessorIndex GLTFDocument::_encode_accessor_as_quaternions(Ref<GLTFState> state, const Vector<Quaternion> p_attribs, const bool p_for_vertex) {
+GLTFAccessorIndex GLTFDocument::_encode_accessor_as_quaternions(Ref<GLTFState> state, const Vector<Quat> p_attribs, const bool p_for_vertex) {
 	if (p_attribs.size() == 0) {
 		return -1;
 	}
@@ -1806,7 +1806,7 @@ GLTFAccessorIndex GLTFDocument::_encode_accessor_as_quaternions(Ref<GLTFState> s
 	Vector<double> type_min;
 	type_min.resize(element_count);
 	for (int i = 0; i < p_attribs.size(); i++) {
-		Quaternion quaternion = p_attribs[i];
+		Quat quaternion = p_attribs[i];
 		attribs.write[(i * element_count) + 0] = Math::snapped(quaternion.x, CMP_NORMALIZE_TOLERANCE);
 		attribs.write[(i * element_count) + 1] = Math::snapped(quaternion.y, CMP_NORMALIZE_TOLERANCE);
 		attribs.write[(i * element_count) + 2] = Math::snapped(quaternion.z, CMP_NORMALIZE_TOLERANCE);
@@ -1951,7 +1951,7 @@ GLTFAccessorIndex GLTFDocument::_encode_accessor_as_vec3(Ref<GLTFState> state, c
 	return state->accessors.size() - 1;
 }
 
-GLTFAccessorIndex GLTFDocument::_encode_accessor_as_xform(Ref<GLTFState> state, const Vector<Transform3D> p_attribs, const bool p_for_vertex) {
+GLTFAccessorIndex GLTFDocument::_encode_accessor_as_xform(Ref<GLTFState> state, const Vector<Transform> p_attribs, const bool p_for_vertex) {
 	if (p_attribs.size() == 0) {
 		return -1;
 	}
@@ -1965,7 +1965,7 @@ GLTFAccessorIndex GLTFDocument::_encode_accessor_as_xform(Ref<GLTFState> state, 
 	Vector<double> type_min;
 	type_min.resize(element_count);
 	for (int i = 0; i < p_attribs.size(); i++) {
-		Transform3D attrib = p_attribs[i];
+		Transform attrib = p_attribs[i];
 		Basis basis = attrib.get_basis();
 		Vector3 axis_0 = basis.get_column(Vector3::AXIS_X);
 
@@ -2065,9 +2065,9 @@ Vector<Color> GLTFDocument::_decode_accessor_as_color(Ref<GLTFState> state, cons
 	}
 	return ret;
 }
-Vector<Quaternion> GLTFDocument::_decode_accessor_as_quaternion(Ref<GLTFState> state, const GLTFAccessorIndex p_accessor, const bool p_for_vertex) {
+Vector<Quat> GLTFDocument::_decode_accessor_as_quaternion(Ref<GLTFState> state, const GLTFAccessorIndex p_accessor, const bool p_for_vertex) {
 	const Vector<double> attribs = _decode_accessor(state, p_accessor, p_for_vertex);
-	Vector<Quaternion> ret;
+	Vector<Quat> ret;
 
 	if (attribs.size() == 0) {
 		return ret;
@@ -2079,7 +2079,7 @@ Vector<Quaternion> GLTFDocument::_decode_accessor_as_quaternion(Ref<GLTFState> s
 	ret.resize(ret_size);
 	{
 		for (int i = 0; i < ret_size; i++) {
-			ret.write[i] = Quaternion(attribs_ptr[i * 4 + 0], attribs_ptr[i * 4 + 1], attribs_ptr[i * 4 + 2], attribs_ptr[i * 4 + 3]).normalized();
+			ret.write[i] = Quat(attribs_ptr[i * 4 + 0], attribs_ptr[i * 4 + 1], attribs_ptr[i * 4 + 2], attribs_ptr[i * 4 + 3]).normalized();
 		}
 	}
 	return ret;
@@ -2119,9 +2119,9 @@ Vector<Basis> GLTFDocument::_decode_accessor_as_basis(Ref<GLTFState> state, cons
 	return ret;
 }
 
-Vector<Transform3D> GLTFDocument::_decode_accessor_as_xform(Ref<GLTFState> state, const GLTFAccessorIndex p_accessor, const bool p_for_vertex) {
+Vector<Transform> GLTFDocument::_decode_accessor_as_xform(Ref<GLTFState> state, const GLTFAccessorIndex p_accessor, const bool p_for_vertex) {
 	const Vector<double> attribs = _decode_accessor(state, p_accessor, p_for_vertex);
-	Vector<Transform3D> ret;
+	Vector<Transform> ret;
 
 	if (attribs.size() == 0) {
 		return ret;
@@ -2470,12 +2470,12 @@ Error GLTFDocument::_serialize_meshes(Ref<GLTFState> state) {
 			if (surface_i < instance_materials.size()) {
 				v = instance_materials.get(surface_i);
 			}
-			Ref<BaseMaterial3D> mat = v;
+			Ref<SpatialMaterial> mat = v;
 			if (!mat.is_valid()) {
 				mat = import_mesh->get_surface_material(surface_i);
 			}
 			if (mat.is_valid()) {
-				HashMap<Ref<BaseMaterial3D>, GLTFMaterialIndex>::Iterator material_cache_i = state->material_cache.find(mat);
+				HashMap<Ref<SpatialMaterial>, GLTFMaterialIndex>::Iterator material_cache_i = state->material_cache.find(mat);
 				if (material_cache_i && material_cache_i->value != -1) {
 					primitive["material"] = material_cache_i->value;
 				} else {
@@ -2927,16 +2927,16 @@ Error GLTFDocument::_parse_meshes(Ref<GLTFState> state) {
 				}
 			}
 
-			Ref<BaseMaterial3D> mat;
+			Ref<SpatialMaterial> mat;
 			String mat_name;
 			if (!state->discard_meshes_and_materials) {
 				if (p.has("material")) {
 					const int material = p["material"];
 					ERR_FAIL_INDEX_V(material, state->materials.size(), ERR_FILE_CORRUPT);
-					Ref<BaseMaterial3D> mat3d = state->materials[material];
+					Ref<SpatialMaterial> mat3d = state->materials[material];
 					ERR_FAIL_NULL_V(mat3d, ERR_FILE_CORRUPT);
 					if (has_vertex_color) {
-						mat3d->set_flag(BaseMaterial3D::FLAG_ALBEDO_FROM_VERTEX_COLOR, true);
+						mat3d->set_flag(SpatialMaterial::FLAG_ALBEDO_FROM_VERTEX_COLOR, true);
 					}
 					mat = mat3d;
 
@@ -2944,7 +2944,7 @@ Error GLTFDocument::_parse_meshes(Ref<GLTFState> state) {
 					Ref<StandardMaterial3D> mat3d;
 					mat3d.instantiate();
 					if (has_vertex_color) {
-						mat3d->set_flag(BaseMaterial3D::FLAG_ALBEDO_FROM_VERTEX_COLOR, true);
+						mat3d->set_flag(SpatialMaterial::FLAG_ALBEDO_FROM_VERTEX_COLOR, true);
 					}
 					mat = mat3d;
 				}
@@ -3101,7 +3101,7 @@ Error GLTFDocument::_parse_images(Ref<GLTFState> state, const String &p_base_pat
 						!uri.begins_with("data:image/png;base64") &&
 						!uri.begins_with("data:image/jpeg;base64")) {
 					WARN_PRINT(vformat("glTF: Image index '%d' uses an unsupported URI data type: %s. Skipping it.", i, uri));
-					state->images.push_back(Ref<Texture2D>()); // Placeholder to keep count.
+					state->images.push_back(Ref<Texture>()); // Placeholder to keep count.
 					continue;
 				}
 				data = _parse_base64_uri(uri);
@@ -3124,7 +3124,7 @@ Error GLTFDocument::_parse_images(Ref<GLTFState> state, const String &p_base_pat
 				// there could be a `.png` image which is actually JPEG), but there's no easy
 				// API for that in Godot, so we'd have to load as a buffer (i.e. embedded in
 				// the material), so we do this only as fallback.
-				Ref<Texture2D> texture = ResourceLoader::load(uri);
+				Ref<Texture> texture = ResourceLoader::load(uri);
 				if (texture.is_valid()) {
 					state->images.push_back(texture);
 					continue;
@@ -3135,14 +3135,14 @@ Error GLTFDocument::_parse_images(Ref<GLTFState> state, const String &p_base_pat
 					data = FileAccess::get_file_as_array(uri);
 					if (data.size() == 0) {
 						WARN_PRINT(vformat("glTF: Image index '%d' couldn't be loaded as a buffer of MIME type '%s' from URI: %s. Skipping it.", i, mimetype, uri));
-						state->images.push_back(Ref<Texture2D>()); // Placeholder to keep count.
+						state->images.push_back(Ref<Texture>()); // Placeholder to keep count.
 						continue;
 					}
 					data_ptr = data.ptr();
 					data_size = data.size();
 				} else {
 					WARN_PRINT(vformat("glTF: Image index '%d' couldn't be loaded from URI: %s. Skipping it.", i, uri));
-					state->images.push_back(Ref<Texture2D>()); // Placeholder to keep count.
+					state->images.push_back(Ref<Texture>()); // Placeholder to keep count.
 					continue;
 				}
 			}
@@ -3195,7 +3195,7 @@ Error GLTFDocument::_parse_images(Ref<GLTFState> state, const String &p_base_pat
 		// Now we've done our best, fix your scenes.
 		if (img.is_null()) {
 			ERR_PRINT(vformat("glTF: Couldn't load image index '%d' with its given mimetype: %s.", i, mimetype));
-			state->images.push_back(Ref<Texture2D>());
+			state->images.push_back(Ref<Texture>());
 			continue;
 		}
 		state->images.push_back(ImageTexture::create_from_image(img));
@@ -3244,7 +3244,7 @@ Error GLTFDocument::_parse_textures(Ref<GLTFState> state) {
 	return OK;
 }
 
-GLTFTextureIndex GLTFDocument::_set_texture(Ref<GLTFState> state, Ref<Texture2D> p_texture) {
+GLTFTextureIndex GLTFDocument::_set_texture(Ref<GLTFState> state, Ref<Texture> p_texture) {
 	ERR_FAIL_COND_V(p_texture.is_null(), -1);
 	Ref<GLTFTexture> gltf_texture;
 	gltf_texture.instantiate();
@@ -3257,11 +3257,11 @@ GLTFTextureIndex GLTFDocument::_set_texture(Ref<GLTFState> state, Ref<Texture2D>
 	return gltf_texture_i;
 }
 
-Ref<Texture2D> GLTFDocument::_get_texture(Ref<GLTFState> state, const GLTFTextureIndex p_texture) {
-	ERR_FAIL_INDEX_V(p_texture, state->textures.size(), Ref<Texture2D>());
+Ref<Texture> GLTFDocument::_get_texture(Ref<GLTFState> state, const GLTFTextureIndex p_texture) {
+	ERR_FAIL_INDEX_V(p_texture, state->textures.size(), Ref<Texture>());
 	const GLTFImageIndex image = state->textures[p_texture]->get_src_image();
 
-	ERR_FAIL_INDEX_V(image, state->images.size(), Ref<Texture2D>());
+	ERR_FAIL_INDEX_V(image, state->images.size(), Ref<Texture>());
 
 	return state->images[image];
 }
@@ -3271,7 +3271,7 @@ Error GLTFDocument::_serialize_materials(Ref<GLTFState> state) {
 	for (int32_t i = 0; i < state->materials.size(); i++) {
 		Dictionary d;
 
-		Ref<BaseMaterial3D> material = state->materials[i];
+		Ref<SpatialMaterial> material = state->materials[i];
 		if (material.is_null()) {
 			materials.push_back(d);
 			continue;
@@ -3292,7 +3292,7 @@ Error GLTFDocument::_serialize_materials(Ref<GLTFState> state) {
 			}
 			{
 				Dictionary bct;
-				Ref<Texture2D> albedo_texture = material->get_texture(BaseMaterial3D::TEXTURE_ALBEDO);
+				Ref<Texture> albedo_texture = material->get_texture(SpatialMaterial::TEXTURE_ALBEDO);
 				GLTFTextureIndex gltf_texture_index = -1;
 
 				if (albedo_texture.is_valid() && albedo_texture->get_image().is_valid()) {
@@ -3312,17 +3312,17 @@ Error GLTFDocument::_serialize_materials(Ref<GLTFState> state) {
 
 			mr["metallicFactor"] = material->get_metallic();
 			mr["roughnessFactor"] = material->get_roughness();
-			bool has_roughness = material->get_texture(BaseMaterial3D::TEXTURE_ROUGHNESS).is_valid() && material->get_texture(BaseMaterial3D::TEXTURE_ROUGHNESS)->get_image().is_valid();
-			bool has_ao = material->get_feature(BaseMaterial3D::FEATURE_AMBIENT_OCCLUSION) && material->get_texture(BaseMaterial3D::TEXTURE_AMBIENT_OCCLUSION).is_valid();
-			bool has_metalness = material->get_texture(BaseMaterial3D::TEXTURE_METALLIC).is_valid() && material->get_texture(BaseMaterial3D::TEXTURE_METALLIC)->get_image().is_valid();
+			bool has_roughness = material->get_texture(SpatialMaterial::TEXTURE_ROUGHNESS).is_valid() && material->get_texture(SpatialMaterial::TEXTURE_ROUGHNESS)->get_image().is_valid();
+			bool has_ao = material->get_feature(SpatialMaterial::FEATURE_AMBIENT_OCCLUSION) && material->get_texture(SpatialMaterial::TEXTURE_AMBIENT_OCCLUSION).is_valid();
+			bool has_metalness = material->get_texture(SpatialMaterial::TEXTURE_METALLIC).is_valid() && material->get_texture(SpatialMaterial::TEXTURE_METALLIC)->get_image().is_valid();
 			if (has_ao || has_roughness || has_metalness) {
 				Dictionary mrt;
-				Ref<Texture2D> roughness_texture = material->get_texture(BaseMaterial3D::TEXTURE_ROUGHNESS);
-				BaseMaterial3D::TextureChannel roughness_channel = material->get_roughness_texture_channel();
-				Ref<Texture2D> metallic_texture = material->get_texture(BaseMaterial3D::TEXTURE_METALLIC);
-				BaseMaterial3D::TextureChannel metalness_channel = material->get_metallic_texture_channel();
-				Ref<Texture2D> ao_texture = material->get_texture(BaseMaterial3D::TEXTURE_AMBIENT_OCCLUSION);
-				BaseMaterial3D::TextureChannel ao_channel = material->get_ao_texture_channel();
+				Ref<Texture> roughness_texture = material->get_texture(SpatialMaterial::TEXTURE_ROUGHNESS);
+				SpatialMaterial::TextureChannel roughness_channel = material->get_roughness_texture_channel();
+				Ref<Texture> metallic_texture = material->get_texture(SpatialMaterial::TEXTURE_METALLIC);
+				SpatialMaterial::TextureChannel metalness_channel = material->get_metallic_texture_channel();
+				Ref<Texture> ao_texture = material->get_texture(SpatialMaterial::TEXTURE_AMBIENT_OCCLUSION);
+				SpatialMaterial::TextureChannel ao_channel = material->get_ao_texture_channel();
 				Ref<ImageTexture> orm_texture;
 				orm_texture.instantiate();
 				Ref<Image> orm_image;
@@ -3368,7 +3368,7 @@ Error GLTFDocument::_serialize_materials(Ref<GLTFState> state) {
 						metallness_image->decompress();
 					}
 				}
-				Ref<Texture2D> albedo_texture = material->get_texture(BaseMaterial3D::TEXTURE_ALBEDO);
+				Ref<Texture> albedo_texture = material->get_texture(SpatialMaterial::TEXTURE_ALBEDO);
 				if (albedo_texture.is_valid() && albedo_texture->get_image().is_valid()) {
 					height = albedo_texture->get_height();
 					width = albedo_texture->get_width();
@@ -3387,35 +3387,35 @@ Error GLTFDocument::_serialize_materials(Ref<GLTFState> state) {
 					for (int32_t w = 0; w < width; w++) {
 						Color c = Color(1.0f, 1.0f, 1.0f);
 						if (has_ao) {
-							if (BaseMaterial3D::TextureChannel::TEXTURE_CHANNEL_RED == ao_channel) {
+							if (SpatialMaterial::TextureChannel::TEXTURE_CHANNEL_RED == ao_channel) {
 								c.r = ao_image->get_pixel(w, h).r;
-							} else if (BaseMaterial3D::TextureChannel::TEXTURE_CHANNEL_GREEN == ao_channel) {
+							} else if (SpatialMaterial::TextureChannel::TEXTURE_CHANNEL_GREEN == ao_channel) {
 								c.r = ao_image->get_pixel(w, h).g;
-							} else if (BaseMaterial3D::TextureChannel::TEXTURE_CHANNEL_BLUE == ao_channel) {
+							} else if (SpatialMaterial::TextureChannel::TEXTURE_CHANNEL_BLUE == ao_channel) {
 								c.r = ao_image->get_pixel(w, h).b;
-							} else if (BaseMaterial3D::TextureChannel::TEXTURE_CHANNEL_ALPHA == ao_channel) {
+							} else if (SpatialMaterial::TextureChannel::TEXTURE_CHANNEL_ALPHA == ao_channel) {
 								c.r = ao_image->get_pixel(w, h).a;
 							}
 						}
 						if (has_roughness) {
-							if (BaseMaterial3D::TextureChannel::TEXTURE_CHANNEL_RED == roughness_channel) {
+							if (SpatialMaterial::TextureChannel::TEXTURE_CHANNEL_RED == roughness_channel) {
 								c.g = roughness_image->get_pixel(w, h).r;
-							} else if (BaseMaterial3D::TextureChannel::TEXTURE_CHANNEL_GREEN == roughness_channel) {
+							} else if (SpatialMaterial::TextureChannel::TEXTURE_CHANNEL_GREEN == roughness_channel) {
 								c.g = roughness_image->get_pixel(w, h).g;
-							} else if (BaseMaterial3D::TextureChannel::TEXTURE_CHANNEL_BLUE == roughness_channel) {
+							} else if (SpatialMaterial::TextureChannel::TEXTURE_CHANNEL_BLUE == roughness_channel) {
 								c.g = roughness_image->get_pixel(w, h).b;
-							} else if (BaseMaterial3D::TextureChannel::TEXTURE_CHANNEL_ALPHA == roughness_channel) {
+							} else if (SpatialMaterial::TextureChannel::TEXTURE_CHANNEL_ALPHA == roughness_channel) {
 								c.g = roughness_image->get_pixel(w, h).a;
 							}
 						}
 						if (has_metalness) {
-							if (BaseMaterial3D::TextureChannel::TEXTURE_CHANNEL_RED == metalness_channel) {
+							if (SpatialMaterial::TextureChannel::TEXTURE_CHANNEL_RED == metalness_channel) {
 								c.b = metallness_image->get_pixel(w, h).r;
-							} else if (BaseMaterial3D::TextureChannel::TEXTURE_CHANNEL_GREEN == metalness_channel) {
+							} else if (SpatialMaterial::TextureChannel::TEXTURE_CHANNEL_GREEN == metalness_channel) {
 								c.b = metallness_image->get_pixel(w, h).g;
-							} else if (BaseMaterial3D::TextureChannel::TEXTURE_CHANNEL_BLUE == metalness_channel) {
+							} else if (SpatialMaterial::TextureChannel::TEXTURE_CHANNEL_BLUE == metalness_channel) {
 								c.b = metallness_image->get_pixel(w, h).b;
-							} else if (BaseMaterial3D::TextureChannel::TEXTURE_CHANNEL_ALPHA == metalness_channel) {
+							} else if (SpatialMaterial::TextureChannel::TEXTURE_CHANNEL_ALPHA == metalness_channel) {
 								c.b = metallness_image->get_pixel(w, h).a;
 							}
 						}
@@ -3447,12 +3447,12 @@ Error GLTFDocument::_serialize_materials(Ref<GLTFState> state) {
 			d["pbrMetallicRoughness"] = mr;
 		}
 
-		if (material->get_feature(BaseMaterial3D::FEATURE_NORMAL_MAPPING)) {
+		if (material->get_feature(SpatialMaterial::FEATURE_NORMAL_MAPPING)) {
 			Dictionary nt;
 			Ref<ImageTexture> tex;
 			tex.instantiate();
 			{
-				Ref<Texture2D> normal_texture = material->get_texture(BaseMaterial3D::TEXTURE_NORMAL);
+				Ref<Texture> normal_texture = material->get_texture(SpatialMaterial::TEXTURE_NORMAL);
 				if (normal_texture.is_valid()) {
 					// Code for uncompressing RG normal maps
 					Ref<Image> img = normal_texture->get_image();
@@ -3491,7 +3491,7 @@ Error GLTFDocument::_serialize_materials(Ref<GLTFState> state) {
 			}
 		}
 
-		if (material->get_feature(BaseMaterial3D::FEATURE_EMISSION)) {
+		if (material->get_feature(SpatialMaterial::FEATURE_EMISSION)) {
 			const Color c = material->get_emission().linear_to_srgb();
 			Array arr;
 			arr.push_back(c.r);
@@ -3499,9 +3499,9 @@ Error GLTFDocument::_serialize_materials(Ref<GLTFState> state) {
 			arr.push_back(c.b);
 			d["emissiveFactor"] = arr;
 		}
-		if (material->get_feature(BaseMaterial3D::FEATURE_EMISSION)) {
+		if (material->get_feature(SpatialMaterial::FEATURE_EMISSION)) {
 			Dictionary et;
-			Ref<Texture2D> emission_texture = material->get_texture(BaseMaterial3D::TEXTURE_EMISSION);
+			Ref<Texture> emission_texture = material->get_texture(SpatialMaterial::TEXTURE_EMISSION);
 			GLTFTextureIndex gltf_texture_index = -1;
 			if (emission_texture.is_valid() && emission_texture->get_image().is_valid()) {
 				emission_texture->set_name(material->get_name() + "_emission");
@@ -3513,14 +3513,14 @@ Error GLTFDocument::_serialize_materials(Ref<GLTFState> state) {
 				d["emissiveTexture"] = et;
 			}
 		}
-		const bool ds = material->get_cull_mode() == BaseMaterial3D::CULL_DISABLED;
+		const bool ds = material->get_cull_mode() == SpatialMaterial::CULL_DISABLED;
 		if (ds) {
 			d["doubleSided"] = ds;
 		}
-		if (material->get_transparency() == BaseMaterial3D::TRANSPARENCY_ALPHA_SCISSOR) {
+		if (material->get_transparency() == SpatialMaterial::TRANSPARENCY_ALPHA_SCISSOR) {
 			d["alphaMode"] = "MASK";
 			d["alphaCutoff"] = material->get_alpha_scissor_threshold();
-		} else if (material->get_transparency() != BaseMaterial3D::TRANSPARENCY_DISABLED) {
+		} else if (material->get_transparency() != SpatialMaterial::TRANSPARENCY_DISABLED) {
 			d["alphaMode"] = "BLEND";
 		}
 		materials.push_back(d);
@@ -3550,7 +3550,7 @@ Error GLTFDocument::_parse_materials(Ref<GLTFState> state) {
 		} else {
 			material->set_name(vformat("material_%s", itos(i)));
 		}
-		material->set_flag(BaseMaterial3D::FLAG_ALBEDO_FROM_VERTEX_COLOR, true);
+		material->set_flag(SpatialMaterial::FLAG_ALBEDO_FROM_VERTEX_COLOR, true);
 		Dictionary pbr_spec_gloss_extensions;
 		if (d.has("extensions")) {
 			pbr_spec_gloss_extensions = d["extensions"];
@@ -3564,10 +3564,10 @@ Error GLTFDocument::_parse_materials(Ref<GLTFState> state) {
 			if (sgm.has("diffuseTexture")) {
 				const Dictionary &diffuse_texture_dict = sgm["diffuseTexture"];
 				if (diffuse_texture_dict.has("index")) {
-					Ref<Texture2D> diffuse_texture = _get_texture(state, diffuse_texture_dict["index"]);
+					Ref<Texture> diffuse_texture = _get_texture(state, diffuse_texture_dict["index"]);
 					if (diffuse_texture.is_valid()) {
 						spec_gloss->diffuse_img = diffuse_texture->get_image();
-						material->set_texture(BaseMaterial3D::TEXTURE_ALBEDO, diffuse_texture);
+						material->set_texture(SpatialMaterial::TEXTURE_ALBEDO, diffuse_texture);
 					}
 				}
 			}
@@ -3592,7 +3592,7 @@ Error GLTFDocument::_parse_materials(Ref<GLTFState> state) {
 			if (sgm.has("specularGlossinessTexture")) {
 				const Dictionary &spec_gloss_texture = sgm["specularGlossinessTexture"];
 				if (spec_gloss_texture.has("index")) {
-					const Ref<Texture2D> orig_texture = _get_texture(state, spec_gloss_texture["index"]);
+					const Ref<Texture> orig_texture = _get_texture(state, spec_gloss_texture["index"]);
 					if (orig_texture.is_valid()) {
 						spec_gloss->spec_gloss_img = orig_texture->get_image();
 					}
@@ -3612,7 +3612,7 @@ Error GLTFDocument::_parse_materials(Ref<GLTFState> state) {
 			if (mr.has("baseColorTexture")) {
 				const Dictionary &bct = mr["baseColorTexture"];
 				if (bct.has("index")) {
-					material->set_texture(BaseMaterial3D::TEXTURE_ALBEDO, _get_texture(state, bct["index"]));
+					material->set_texture(SpatialMaterial::TEXTURE_ALBEDO, _get_texture(state, bct["index"]));
 				}
 				if (!mr.has("baseColorFactor")) {
 					material->set_albedo(Color(1, 1, 1));
@@ -3635,11 +3635,11 @@ Error GLTFDocument::_parse_materials(Ref<GLTFState> state) {
 			if (mr.has("metallicRoughnessTexture")) {
 				const Dictionary &bct = mr["metallicRoughnessTexture"];
 				if (bct.has("index")) {
-					const Ref<Texture2D> t = _get_texture(state, bct["index"]);
-					material->set_texture(BaseMaterial3D::TEXTURE_METALLIC, t);
-					material->set_metallic_texture_channel(BaseMaterial3D::TEXTURE_CHANNEL_BLUE);
-					material->set_texture(BaseMaterial3D::TEXTURE_ROUGHNESS, t);
-					material->set_roughness_texture_channel(BaseMaterial3D::TEXTURE_CHANNEL_GREEN);
+					const Ref<Texture> t = _get_texture(state, bct["index"]);
+					material->set_texture(SpatialMaterial::TEXTURE_METALLIC, t);
+					material->set_metallic_texture_channel(SpatialMaterial::TEXTURE_CHANNEL_BLUE);
+					material->set_texture(SpatialMaterial::TEXTURE_ROUGHNESS, t);
+					material->set_roughness_texture_channel(SpatialMaterial::TEXTURE_CHANNEL_GREEN);
 					if (!mr.has("metallicFactor")) {
 						material->set_metallic(1);
 					}
@@ -3653,8 +3653,8 @@ Error GLTFDocument::_parse_materials(Ref<GLTFState> state) {
 		if (d.has("normalTexture")) {
 			const Dictionary &bct = d["normalTexture"];
 			if (bct.has("index")) {
-				material->set_texture(BaseMaterial3D::TEXTURE_NORMAL, _get_texture(state, bct["index"]));
-				material->set_feature(BaseMaterial3D::FEATURE_NORMAL_MAPPING, true);
+				material->set_texture(SpatialMaterial::TEXTURE_NORMAL, _get_texture(state, bct["index"]));
+				material->set_feature(SpatialMaterial::FEATURE_NORMAL_MAPPING, true);
 			}
 			if (bct.has("scale")) {
 				material->set_normal_scale(bct["scale"]);
@@ -3663,9 +3663,9 @@ Error GLTFDocument::_parse_materials(Ref<GLTFState> state) {
 		if (d.has("occlusionTexture")) {
 			const Dictionary &bct = d["occlusionTexture"];
 			if (bct.has("index")) {
-				material->set_texture(BaseMaterial3D::TEXTURE_AMBIENT_OCCLUSION, _get_texture(state, bct["index"]));
-				material->set_ao_texture_channel(BaseMaterial3D::TEXTURE_CHANNEL_RED);
-				material->set_feature(BaseMaterial3D::FEATURE_AMBIENT_OCCLUSION, true);
+				material->set_texture(SpatialMaterial::TEXTURE_AMBIENT_OCCLUSION, _get_texture(state, bct["index"]));
+				material->set_ao_texture_channel(SpatialMaterial::TEXTURE_CHANNEL_RED);
+				material->set_feature(SpatialMaterial::FEATURE_AMBIENT_OCCLUSION, true);
 			}
 		}
 
@@ -3673,7 +3673,7 @@ Error GLTFDocument::_parse_materials(Ref<GLTFState> state) {
 			const Array &arr = d["emissiveFactor"];
 			ERR_FAIL_COND_V(arr.size() != 3, ERR_PARSE_ERROR);
 			const Color c = Color(arr[0], arr[1], arr[2]).linear_to_srgb();
-			material->set_feature(BaseMaterial3D::FEATURE_EMISSION, true);
+			material->set_feature(SpatialMaterial::FEATURE_EMISSION, true);
 
 			material->set_emission(c);
 		}
@@ -3681,8 +3681,8 @@ Error GLTFDocument::_parse_materials(Ref<GLTFState> state) {
 		if (d.has("emissiveTexture")) {
 			const Dictionary &bct = d["emissiveTexture"];
 			if (bct.has("index")) {
-				material->set_texture(BaseMaterial3D::TEXTURE_EMISSION, _get_texture(state, bct["index"]));
-				material->set_feature(BaseMaterial3D::FEATURE_EMISSION, true);
+				material->set_texture(SpatialMaterial::TEXTURE_EMISSION, _get_texture(state, bct["index"]));
+				material->set_feature(SpatialMaterial::FEATURE_EMISSION, true);
 				material->set_emission(Color(0, 0, 0));
 			}
 		}
@@ -3690,15 +3690,15 @@ Error GLTFDocument::_parse_materials(Ref<GLTFState> state) {
 		if (d.has("doubleSided")) {
 			const bool ds = d["doubleSided"];
 			if (ds) {
-				material->set_cull_mode(BaseMaterial3D::CULL_DISABLED);
+				material->set_cull_mode(SpatialMaterial::CULL_DISABLED);
 			}
 		}
 		if (d.has("alphaMode")) {
 			const String &am = d["alphaMode"];
 			if (am == "BLEND") {
-				material->set_transparency(BaseMaterial3D::TRANSPARENCY_ALPHA_DEPTH_PRE_PASS);
+				material->set_transparency(SpatialMaterial::TRANSPARENCY_ALPHA_DEPTH_PRE_PASS);
 			} else if (am == "MASK") {
-				material->set_transparency(BaseMaterial3D::TRANSPARENCY_ALPHA_SCISSOR);
+				material->set_transparency(SpatialMaterial::TRANSPARENCY_ALPHA_SCISSOR);
 				if (d.has("alphaCutoff")) {
 					material->set_alpha_scissor_threshold(d["alphaCutoff"]);
 				} else {
@@ -3714,7 +3714,7 @@ Error GLTFDocument::_parse_materials(Ref<GLTFState> state) {
 	return OK;
 }
 
-void GLTFDocument::_set_texture_transform_uv1(const Dictionary &d, Ref<BaseMaterial3D> material) {
+void GLTFDocument::_set_texture_transform_uv1(const Dictionary &d, Ref<SpatialMaterial> material) {
 	if (d.has("extensions")) {
 		const Dictionary &extensions = d["extensions"];
 		if (extensions.has("KHR_texture_transform")) {
@@ -3734,7 +3734,7 @@ void GLTFDocument::_set_texture_transform_uv1(const Dictionary &d, Ref<BaseMater
 	}
 }
 
-void GLTFDocument::spec_gloss_to_rough_metal(Ref<GLTFSpecGloss> r_spec_gloss, Ref<BaseMaterial3D> p_material) {
+void GLTFDocument::spec_gloss_to_rough_metal(Ref<GLTFSpecGloss> r_spec_gloss, Ref<SpatialMaterial> p_material) {
 	if (r_spec_gloss->spec_gloss_img.is_null()) {
 		return;
 	}
@@ -3783,16 +3783,16 @@ void GLTFDocument::spec_gloss_to_rough_metal(Ref<GLTFSpecGloss> r_spec_gloss, Re
 	}
 	rm_img->generate_mipmaps();
 	r_spec_gloss->diffuse_img->generate_mipmaps();
-	p_material->set_texture(BaseMaterial3D::TEXTURE_ALBEDO, ImageTexture::create_from_image(r_spec_gloss->diffuse_img));
+	p_material->set_texture(SpatialMaterial::TEXTURE_ALBEDO, ImageTexture::create_from_image(r_spec_gloss->diffuse_img));
 	Ref<ImageTexture> rm_image_texture = ImageTexture::create_from_image(rm_img);
 	if (has_roughness) {
-		p_material->set_texture(BaseMaterial3D::TEXTURE_ROUGHNESS, rm_image_texture);
-		p_material->set_roughness_texture_channel(BaseMaterial3D::TEXTURE_CHANNEL_GREEN);
+		p_material->set_texture(SpatialMaterial::TEXTURE_ROUGHNESS, rm_image_texture);
+		p_material->set_roughness_texture_channel(SpatialMaterial::TEXTURE_CHANNEL_GREEN);
 	}
 
 	if (has_metal) {
-		p_material->set_texture(BaseMaterial3D::TEXTURE_METALLIC, rm_image_texture);
-		p_material->set_metallic_texture_channel(BaseMaterial3D::TEXTURE_CHANNEL_BLUE);
+		p_material->set_texture(SpatialMaterial::TEXTURE_METALLIC, rm_image_texture);
+		p_material->set_metallic_texture_channel(SpatialMaterial::TEXTURE_CHANNEL_BLUE);
 	}
 }
 
@@ -4459,7 +4459,7 @@ Error GLTFDocument::_create_skins(Ref<GLTFState> state) {
 			GLTFNodeIndex node = gltf_skin->joints_original[joint_i];
 			String bone_name = state->nodes[node]->get_name();
 
-			Transform3D xform;
+			Transform xform;
 			if (has_ibms) {
 				xform = gltf_skin->inverse_binds[joint_i];
 			}
@@ -4503,8 +4503,8 @@ bool GLTFDocument::_skins_are_same(const Ref<Skin> skin_a, const Ref<Skin> skin_
 			return false;
 		}
 
-		Transform3D a_xform = skin_a->get_bind_pose(i);
-		Transform3D b_xform = skin_b->get_bind_pose(i);
+		Transform a_xform = skin_a->get_bind_pose(i);
+		Transform b_xform = skin_b->get_bind_pose(i);
 
 		if (a_xform != b_xform) {
 			return false;
@@ -4786,7 +4786,7 @@ Error GLTFDocument::_serialize_animations(Ref<GLTFState> state) {
 				s["interpolation"] = interpolation_to_string(track.rotation_track.interpolation);
 				Vector<real_t> times = Variant(track.rotation_track.times);
 				s["input"] = _encode_accessor_as_floats(state, times, false);
-				Vector<Quaternion> values = track.rotation_track.values;
+				Vector<Quat> values = track.rotation_track.values;
 				s["output"] = _encode_accessor_as_quaternions(state, values, false);
 
 				samplers.push_back(s);
@@ -5004,7 +5004,7 @@ Error GLTFDocument::_parse_animations(Ref<GLTFState> state) {
 				track->position_track.times = Variant(times); //convert via variant
 				track->position_track.values = Variant(positions); //convert via variant
 			} else if (path == "rotation") {
-				const Vector<Quaternion> rotations = _decode_accessor_as_quaternion(state, output, false);
+				const Vector<Quat> rotations = _decode_accessor_as_quaternion(state, output, false);
 				track->rotation_track.interpolation = interp;
 				track->rotation_track.times = Variant(times); //convert via variant
 				track->rotation_track.values = rotations;
@@ -5264,7 +5264,7 @@ GLTFLightIndex GLTFDocument::_convert_light(Ref<GLTFState> state, Light *p_light
 }
 
 void GLTFDocument::_convert_spatial(Ref<GLTFState> state, Node3D *p_spatial, Ref<GLTFNode> p_node) {
-	Transform3D xform = p_spatial->get_transform();
+	Transform xform = p_spatial->get_transform();
 	p_node->scale = xform.basis.get_scale();
 	p_node->rotation = xform.basis.get_rotation_quaternion();
 	p_node->position = xform.origin;
@@ -5421,13 +5421,13 @@ void GLTFDocument::_convert_multi_mesh_instance_to_gltf(
 	state->meshes.push_back(gltf_mesh);
 	for (int32_t instance_i = 0; instance_i < multi_mesh->get_instance_count();
 			instance_i++) {
-		Transform3D transform;
+		Transform transform;
 		if (multi_mesh->get_transform_format() == MultiMesh::TRANSFORM_2D) {
 			Transform2D xform_2d = multi_mesh->get_instance_transform_2d(instance_i);
 			transform.origin =
 					Vector3(xform_2d.get_origin().x, 0, xform_2d.get_origin().y);
 			real_t rotation = xform_2d.get_rotation();
-			Quaternion quaternion(Vector3(0, 1, 0), rotation);
+			Quat quaternion(Vector3(0, 1, 0), rotation);
 			Size2 scale = xform_2d.get_scale();
 			transform.basis.set_quaternion_scale(quaternion,
 					Vector3(scale.x, 0, scale.y));
@@ -5464,7 +5464,7 @@ void GLTFDocument::_convert_skeleton_to_gltf(Skeleton *p_skeleton3d, Ref<GLTFSta
 		// Note that we cannot use _gen_unique_bone_name here, because glTF spec requires all node
 		// names to be unique regardless of whether or not they are used as joints.
 		joint_node->set_name(_gen_unique_name(state, skeleton->get_bone_name(bone_i)));
-		Transform3D xform = skeleton->get_bone_pose(bone_i);
+		Transform xform = skeleton->get_bone_pose(bone_i);
 		joint_node->scale = xform.basis.get_scale();
 		joint_node->rotation = xform.basis.get_rotation_quaternion();
 		joint_node->position = xform.origin;
@@ -5700,24 +5700,24 @@ struct SceneFormatImporterGLTFInterpolate {
 
 // thank you for existing, partial specialization
 template <>
-struct SceneFormatImporterGLTFInterpolate<Quaternion> {
-	Quaternion lerp(const Quaternion &a, const Quaternion &b, const float c) const {
-		ERR_FAIL_COND_V_MSG(!a.is_normalized(), Quaternion(), "The quaternion \"a\" must be normalized.");
-		ERR_FAIL_COND_V_MSG(!b.is_normalized(), Quaternion(), "The quaternion \"b\" must be normalized.");
+struct SceneFormatImporterGLTFInterpolate<Quat> {
+	Quat lerp(const Quat &a, const Quat &b, const float c) const {
+		ERR_FAIL_COND_V_MSG(!a.is_normalized(), Quat(), "The quaternion \"a\" must be normalized.");
+		ERR_FAIL_COND_V_MSG(!b.is_normalized(), Quat(), "The quaternion \"b\" must be normalized.");
 
 		return a.slerp(b, c).normalized();
 	}
 
-	Quaternion catmull_rom(const Quaternion &p0, const Quaternion &p1, const Quaternion &p2, const Quaternion &p3, const float c) {
-		ERR_FAIL_COND_V_MSG(!p1.is_normalized(), Quaternion(), "The quaternion \"p1\" must be normalized.");
-		ERR_FAIL_COND_V_MSG(!p2.is_normalized(), Quaternion(), "The quaternion \"p2\" must be normalized.");
+	Quat catmull_rom(const Quat &p0, const Quat &p1, const Quat &p2, const Quat &p3, const float c) {
+		ERR_FAIL_COND_V_MSG(!p1.is_normalized(), Quat(), "The quaternion \"p1\" must be normalized.");
+		ERR_FAIL_COND_V_MSG(!p2.is_normalized(), Quat(), "The quaternion \"p2\" must be normalized.");
 
 		return p1.slerp(p2, c).normalized();
 	}
 
-	Quaternion bezier(const Quaternion start, const Quaternion control_1, const Quaternion control_2, const Quaternion end, const float t) {
-		ERR_FAIL_COND_V_MSG(!start.is_normalized(), Quaternion(), "The start quaternion must be normalized.");
-		ERR_FAIL_COND_V_MSG(!end.is_normalized(), Quaternion(), "The end quaternion must be normalized.");
+	Quat bezier(const Quat start, const Quat control_1, const Quat control_2, const Quat end, const float t) {
+		ERR_FAIL_COND_V_MSG(!start.is_normalized(), Quat(), "The start quaternion must be normalized.");
+		ERR_FAIL_COND_V_MSG(!end.is_normalized(), Quat(), "The end quaternion must be normalized.");
 
 		return start.slerp(end, t).normalized();
 	}
@@ -5896,10 +5896,10 @@ void GLTFDocument::_import_animation(Ref<GLTFState> state, AnimationPlayer *ap, 
 				}
 			}
 			if (track.rotation_track.values.size()) {
-				Quaternion base_rot = state->nodes[track_i.key]->rotation.normalized();
+				Quat base_rot = state->nodes[track_i.key]->rotation.normalized();
 				bool not_default = false; //discard the track if all it contains is default values
 				for (int i = 0; i < track.rotation_track.times.size(); i++) {
-					Quaternion value = track.rotation_track.values[track.rotation_track.interpolation == GLTFAnimation::INTERP_CUBIC_SPLINE ? (1 + i * 3) : i].normalized();
+					Quat value = track.rotation_track.values[track.rotation_track.interpolation == GLTFAnimation::INTERP_CUBIC_SPLINE ? (1 + i * 3) : i].normalized();
 					if (!value.is_equal_approx(base_rot)) {
 						not_default = true;
 						break;
@@ -5939,7 +5939,7 @@ void GLTFDocument::_import_animation(Ref<GLTFState> state, AnimationPlayer *ap, 
 			double time = 0.0;
 
 			Vector3 base_pos;
-			Quaternion base_rot;
+			Quat base_rot;
 			Vector3 base_scale = Vector3(1, 1, 1);
 
 			//TODO REMOVE:
@@ -5973,7 +5973,7 @@ void GLTFDocument::_import_animation(Ref<GLTFState> state, AnimationPlayer *ap, 
 			bool last = false;
 			while (true) {
 				Vector3 pos = base_pos;
-				Quaternion rot = base_rot;
+				Quat rot = base_rot;
 				Vector3 scale = base_scale;
 
 				//TODO DELETE
@@ -5982,7 +5982,7 @@ void GLTFDocument::_import_animation(Ref<GLTFState> state, AnimationPlayer *ap, 
 				}
 
 				if (track.rotation_track.times.size()) {
-					rot = _interpolate_track<Quaternion>(track.rotation_track.times, track.rotation_track.values, time, track.rotation_track.interpolation);
+					rot = _interpolate_track<Quat>(track.rotation_track.times, track.rotation_track.values, time, track.rotation_track.interpolation);
 				}
 
 				if (track.scale_track.times.size()) {
@@ -5997,7 +5997,7 @@ void GLTFDocument::_import_animation(Ref<GLTFState> state, AnimationPlayer *ap, 
 				}
 
 				if (rotation_idx >= 0) {
-					rot = _interpolate_track<Quaternion>(track.rotation_track.times, track.rotation_track.values, time, track.rotation_track.interpolation);
+					rot = _interpolate_track<Quat>(track.rotation_track.times, track.rotation_track.values, time, track.rotation_track.interpolation);
 					animation->rotation_track_insert_key(rotation_idx, time, rot);
 				}
 
@@ -6089,7 +6089,7 @@ void GLTFDocument::_convert_mesh_instances(Ref<GLTFState> state) {
 		if (!mi) {
 			continue;
 		}
-		Transform3D mi_xform = mi->get_transform();
+		Transform mi_xform = mi->get_transform();
 		node->scale = mi_xform.basis.get_scale();
 		node->rotation = mi_xform.basis.get_rotation_quaternion();
 		node->position = mi_xform.origin;
@@ -6148,7 +6148,7 @@ void GLTFDocument::_convert_mesh_instances(Ref<GLTFState> state) {
 				}
 				for (int bind_i = 0, cnt = skin->get_bind_count(); bind_i < cnt; bind_i++) {
 					int bone_i = skin->get_bind_bone(bind_i);
-					Transform3D bind_pose = skin->get_bind_pose(bind_i);
+					Transform bind_pose = skin->get_bind_pose(bind_i);
 					StringName bind_name = skin->get_bind_name(bind_i);
 					if (bind_name != StringName()) {
 						bone_i = bone_name_to_idx[bind_name];
@@ -6232,13 +6232,13 @@ void GLTFDocument::_process_mesh_instances(Ref<GLTFState> state, Node *scene_roo
 
 			mi->set_skin(state->skins.write[skin_i]->godot_skin);
 			mi->set_skeleton_path(mi->get_path_to(skeleton));
-			mi->set_transform(Transform3D());
+			mi->set_transform(Transform());
 		}
 	}
 }
 
 //TODO DELETE
-GLTFAnimation::Track GLTFDocument::_convert_animation_track(Ref<GLTFState> state, GLTFAnimation::Track p_track, Ref<Animation> p_animation, Transform3D p_bone_rest, int32_t p_track_i, GLTFNodeIndex p_node_i) {
+GLTFAnimation::Track GLTFDocument::_convert_animation_track(Ref<GLTFState> state, GLTFAnimation::Track p_track, Ref<Animation> p_animation, Transform p_bone_rest, int32_t p_track_i, GLTFNodeIndex p_node_i) {
 	Animation::InterpolationType interpolation = p_animation->track_get_interpolation_type(p_track_i);
 
 	GLTFAnimation::Interpolation gltf_interpolation = GLTFAnimation::INTERP_LINEAR;
@@ -6275,11 +6275,11 @@ GLTFAnimation::Track GLTFDocument::_convert_animation_track(Ref<GLTFState> state
 		p_track.rotation_track.interpolation = gltf_interpolation;
 		for (int32_t key_i = 0; key_i < key_count; key_i++) {
 			Vector3 position;
-			Quaternion rotation;
+			Quat rotation;
 			Vector3 scale;
 			Error err = p_animation->transform_track_get_key(p_track_i, key_i, &position, &rotation, &scale);
 			ERR_CONTINUE(err != OK);
-			Transform3D xform;
+			Transform xform;
 			xform.basis.set_quaternion_scale(rotation, scale);
 			xform.origin = position;
 			xform = p_bone_rest * xform;
@@ -6302,7 +6302,7 @@ GLTFAnimation::Track GLTFDocument::_convert_animation_track(Ref<GLTFState> state
 		p_track.rotation_track.values.resize(key_count);
 		p_track.rotation_track.interpolation = gltf_interpolation;
 		for (int32_t key_i = 0; key_i < key_count; key_i++) {
-			Transform3D xform = p_animation->track_get_key_value(p_track_i, key_i);
+			Transform xform = p_animation->track_get_key_value(p_track_i, key_i);
 			p_track.position_track.values.write[key_i] = xform.get_origin();
 			p_track.rotation_track.values.write[key_i] = xform.basis.get_rotation_quaternion();
 			p_track.scale_track.values.write[key_i] = xform.basis.get_scale();
@@ -6316,7 +6316,7 @@ GLTFAnimation::Track GLTFDocument::_convert_animation_track(Ref<GLTFState> state
 			p_track.rotation_track.interpolation = gltf_interpolation;
 
 			for (int32_t key_i = 0; key_i < key_count; key_i++) {
-				Quaternion rotation_track = p_animation->track_get_key_value(p_track_i, key_i);
+				Quat rotation_track = p_animation->track_get_key_value(p_track_i, key_i);
 				p_track.rotation_track.values.write[key_i] = rotation_track;
 			}
 		} else if (path.find(":position") != -1) {
@@ -6339,7 +6339,7 @@ GLTFAnimation::Track GLTFDocument::_convert_animation_track(Ref<GLTFState> state
 
 			for (int32_t key_i = 0; key_i < key_count; key_i++) {
 				Vector3 rotation_radian = p_animation->track_get_key_value(p_track_i, key_i);
-				p_track.rotation_track.values.write[key_i] = Quaternion(rotation_radian);
+				p_track.rotation_track.values.write[key_i] = Quat(rotation_radian);
 			}
 		} else if (path.find(":scale") != -1) {
 			p_track.scale_track.times = times;
@@ -6468,7 +6468,7 @@ GLTFAnimation::Track GLTFDocument::_convert_animation_track(Ref<GLTFState> state
 		p_track.rotation_track.interpolation = gltf_interpolation;
 		p_track.rotation_track.values.resize(key_count);
 		for (int32_t key_i = 0; key_i < key_count; key_i++) {
-			Quaternion rotation;
+			Quat rotation;
 			Error err = p_animation->rotation_track_get_key(p_track_i, key_i, &rotation);
 			ERR_CONTINUE(err != OK);
 			p_track.rotation_track.values.write[key_i] = rotation;
@@ -6494,7 +6494,7 @@ GLTFAnimation::Track GLTFDocument::_convert_animation_track(Ref<GLTFState> state
 
 			for (int32_t key_i = 0; key_i < key_count; key_i++) {
 				Vector3 rotation_radian = p_animation->track_get_key_value(p_track_i, key_i);
-				p_track.rotation_track.values.write[key_i] = Quaternion(rotation_radian);
+				p_track.rotation_track.values.write[key_i] = Quat(rotation_radian);
 			}
 		} else if (path.contains(":scale")) {
 			p_track.scale_track.times = times;
@@ -6831,7 +6831,7 @@ Dictionary _serialize_texture_transform_uv(Vector2 p_offset, Vector2 p_scale) {
 	return extension;
 }
 
-Dictionary GLTFDocument::_serialize_texture_transform_uv1(Ref<BaseMaterial3D> p_material) {
+Dictionary GLTFDocument::_serialize_texture_transform_uv1(Ref<SpatialMaterial> p_material) {
 	if (p_material.is_valid()) {
 		Vector3 offset = p_material->get_uv1_offset();
 		Vector3 scale = p_material->get_uv1_scale();
@@ -6840,7 +6840,7 @@ Dictionary GLTFDocument::_serialize_texture_transform_uv1(Ref<BaseMaterial3D> p_
 	return Dictionary();
 }
 
-Dictionary GLTFDocument::_serialize_texture_transform_uv2(Ref<BaseMaterial3D> p_material) {
+Dictionary GLTFDocument::_serialize_texture_transform_uv2(Ref<SpatialMaterial> p_material) {
 	if (p_material.is_valid()) {
 		Vector3 offset = p_material->get_uv2_offset();
 		Vector3 scale = p_material->get_uv2_scale();
