@@ -1,3 +1,6 @@
+#ifndef EDITOR_SCENE_IMPORTER_FBX_H
+#define EDITOR_SCENE_IMPORTER_FBX_H
+
 /*************************************************************************/
 /*  editor_scene_importer_fbx.h                                          */
 /*************************************************************************/
@@ -27,9 +30,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef EDITOR_SCENE_IMPORTER_FBX_H
-#define EDITOR_SCENE_IMPORTER_FBX_H
 
 #ifdef TOOLS_ENABLED
 

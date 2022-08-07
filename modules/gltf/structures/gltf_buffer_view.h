@@ -1,3 +1,6 @@
+#ifndef GLTF_BUFFER_VIEW_H
+#define GLTF_BUFFER_VIEW_H
+
 /*************************************************************************/
 /*  gltf_buffer_view.h                                                   */
 /*************************************************************************/
@@ -27,9 +30,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef GLTF_BUFFER_VIEW_H
-#define GLTF_BUFFER_VIEW_H
 
 #include "../gltf_defines.h"
 #include "core/io/resource.h"

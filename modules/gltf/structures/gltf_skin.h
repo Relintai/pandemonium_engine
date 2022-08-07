@@ -1,3 +1,6 @@
+#ifndef GLTF_SKIN_H
+#define GLTF_SKIN_H
+
 /*************************************************************************/
 /*  gltf_skin.h                                                          */
 /*************************************************************************/
@@ -27,9 +30,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef GLTF_SKIN_H
-#define GLTF_SKIN_H
 
 #include "../gltf_defines.h"
 #include "core/io/resource.h"

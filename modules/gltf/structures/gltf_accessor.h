@@ -1,3 +1,6 @@
+#ifndef GLTF_ACCESSOR_H
+#define GLTF_ACCESSOR_H
+
 /*************************************************************************/
 /*  gltf_accessor.h                                                      */
 /*************************************************************************/
@@ -27,9 +30,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef GLTF_ACCESSOR_H
-#define GLTF_ACCESSOR_H
 
 #include "core/io/resource.h"
 

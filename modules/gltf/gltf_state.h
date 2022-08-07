@@ -1,3 +1,6 @@
+#ifndef GLTF_STATE_H
+#define GLTF_STATE_H
+
 /*************************************************************************/
 /*  gltf_state.h                                                         */
 /*************************************************************************/
@@ -27,9 +30,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef GLTF_STATE_H
-#define GLTF_STATE_H
 
 #include "extensions/gltf_light.h"
 #include "gltf_template_convert.h"

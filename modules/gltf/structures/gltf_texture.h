@@ -1,3 +1,6 @@
+#ifndef GLTF_TEXTURE_H
+#define GLTF_TEXTURE_H
+
 /*************************************************************************/
 /*  gltf_texture.h                                                       */
 /*************************************************************************/
@@ -27,9 +30,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef GLTF_TEXTURE_H
-#define GLTF_TEXTURE_H
 
 #include "../gltf_defines.h"
 #include "core/io/resource.h"

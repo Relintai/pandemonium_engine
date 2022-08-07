@@ -1,3 +1,6 @@
+#ifndef GLTF_SPEC_GLOSS_H
+#define GLTF_SPEC_GLOSS_H
+
 /*************************************************************************/
 /*  gltf_spec_gloss.h                                                    */
 /*************************************************************************/
@@ -27,9 +30,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef GLTF_SPEC_GLOSS_H
-#define GLTF_SPEC_GLOSS_H
 
 #include "core/io/image.h"
 #include "core/io/resource.h"

@@ -1,3 +1,6 @@
+#ifndef GLTF_DOCUMENT_EXTENSION_H
+#define GLTF_DOCUMENT_EXTENSION_H
+
 /*************************************************************************/
 /*  gltf_document_extension.h                                            */
 /*************************************************************************/
@@ -27,9 +30,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef GLTF_DOCUMENT_EXTENSION_H
-#define GLTF_DOCUMENT_EXTENSION_H
 
 #include "gltf_state.h"
 #include "structures/gltf_node.h"

@@ -1,3 +1,6 @@
+#ifndef GLTF_ANIMATION_H
+#define GLTF_ANIMATION_H
+
 /*************************************************************************/
 /*  gltf_animation.h                                                     */
 /*************************************************************************/
@@ -27,9 +30,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef GLTF_ANIMATION_H
-#define GLTF_ANIMATION_H
 
 #include "core/io/resource.h"
 

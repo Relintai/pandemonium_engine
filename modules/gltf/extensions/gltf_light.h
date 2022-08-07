@@ -1,3 +1,6 @@
+#ifndef GLTF_LIGHT_H
+#define GLTF_LIGHT_H
+
 /*************************************************************************/
 /*  gltf_light.h                                                         */
 /*************************************************************************/
@@ -27,9 +30,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef GLTF_LIGHT_H
-#define GLTF_LIGHT_H
 
 #include "core/config/engine.h"
 #include "core/io/resource.h"

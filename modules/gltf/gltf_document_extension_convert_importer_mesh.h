@@ -1,3 +1,6 @@
+#ifndef GLTF_DOCUMENT_EXTENSION_CONVERT_IMPORTER_MESH_H
+#define GLTF_DOCUMENT_EXTENSION_CONVERT_IMPORTER_MESH_H
+
 /*************************************************************************/
 /*  gltf_document_extension_convert_importer_mesh.h                      */
 /*************************************************************************/
@@ -27,9 +30,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef GLTF_DOCUMENT_EXTENSION_CONVERT_IMPORTER_MESH_H
-#define GLTF_DOCUMENT_EXTENSION_CONVERT_IMPORTER_MESH_H
 
 #include "gltf_document_extension.h"
 

@@ -1,3 +1,6 @@
+#ifndef GLTF_DOCUMENT_H
+#define GLTF_DOCUMENT_H
+
 /*************************************************************************/
 /*  gltf_document.h                                                      */
 /*************************************************************************/
@@ -27,9 +30,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef GLTF_DOCUMENT_H
-#define GLTF_DOCUMENT_H
 
 #include "gltf_defines.h"
 #include "structures/gltf_animation.h"

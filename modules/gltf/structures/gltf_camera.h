@@ -1,3 +1,6 @@
+#ifndef GLTF_CAMERA_H
+#define GLTF_CAMERA_H
+
 /*************************************************************************/
 /*  gltf_camera.h                                                        */
 /*************************************************************************/
@@ -27,9 +30,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef GLTF_CAMERA_H
-#define GLTF_CAMERA_H
 
 #include "core/io/resource.h"
 

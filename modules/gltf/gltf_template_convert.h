@@ -1,3 +1,6 @@
+#ifndef GLTF_TEMPLATE_CONVERT_H
+#define GLTF_TEMPLATE_CONVERT_H
+
 /*************************************************************************/
 /*  gltf_template_convert.h                                              */
 /*************************************************************************/
@@ -27,9 +30,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef GLTF_TEMPLATE_CONVERT_H
-#define GLTF_TEMPLATE_CONVERT_H
 
 #include "core/templates/hash_set.h"
 #include "core/variant/array.h"
