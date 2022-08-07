@@ -606,6 +606,8 @@ if selected_platform in platform_list:
                 # Default path for module icons
                 env.module_icons_paths.append(path + "/" + "icons")
             modules_enabled[name] = path
+        else:
+            env["module_" + name + "_enabled"] = False
 
         sys.path.remove(path)
         sys.modules.pop("config")
