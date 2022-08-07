@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "register_types.h"
 
+#include "modules/modules_enabled.gen.h"
+
 #include "mesh_data_resource.h"
 #include "mesh_data_resource_collection.h"
 #include "nodes/mesh_data_instance.h"
@@ -30,7 +32,9 @@ SOFTWARE.
 #ifdef TOOLS_ENABLED
 #include "editor/editor_plugin.h"
 
+#ifdef MODULE_GLTF_ENABLED
 #include "plugin_gltf/editor_plugin_gltf_mdr.h"
+#endif
 
 #include "./editor/mdi_ed_plugin.h"
 #endif
@@ -65,7 +69,9 @@ void register_mesh_data_resource_types() {
 #endif
 
 #ifdef TOOLS_ENABLED
+#ifdef MODULE_GLTF_ENABLED
 	EditorPlugins::add_by_type<EditorPluginGLTFMdr>();
+#endif
 	EditorPlugins::add_by_type<MDIEdPlugin>();
 #endif
 }
