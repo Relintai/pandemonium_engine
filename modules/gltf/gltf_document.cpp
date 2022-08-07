@@ -5307,18 +5307,6 @@ void GLTFDocument::_convert_scene_node(Ref<GLTFState> state, Node *p_current, co
 	} else if (cast_to<MultiMeshInstance>(p_current)) {
 		MultiMeshInstance *multi = cast_to<MultiMeshInstance>(p_current);
 		_convert_multi_mesh_instance_to_gltf(multi, p_gltf_parent, p_gltf_root, gltf_node, state);
-#ifdef MODULE_CSG_ENABLED
-	} else if (cast_to<CSGShape3D>(p_current)) {
-		CSGShape3D *shape = cast_to<CSGShape3D>(p_current);
-		if (shape->get_parent() && shape->is_root_shape()) {
-			_convert_csg_shape_to_gltf(shape, p_gltf_parent, gltf_node, state);
-		}
-#endif // MODULE_CSG_ENABLED
-#ifdef MODULE_GRIDMAP_ENABLED
-	} else if (cast_to<GridMap>(p_current)) {
-		GridMap *gridmap = Object::cast_to<GridMap>(p_current);
-		_convert_grid_map_to_gltf(gridmap, p_gltf_parent, p_gltf_root, gltf_node, state);
-#endif // MODULE_GRIDMAP_ENABLED
 	} else if (cast_to<Camera3D>(p_current)) {
 		Camera3D *camera = Object::cast_to<Camera3D>(p_current);
 		_convert_camera_to_gltf(camera, state, gltf_node);
@@ -5342,47 +5330,6 @@ void GLTFDocument::_convert_scene_node(Ref<GLTFState> state, Node *p_current, co
 		_convert_scene_node(state, p_current->get_child(node_i), current_node_i, gltf_root);
 	}
 }
-
-#ifdef MODULE_CSG_ENABLED
-void GLTFDocument::_convert_csg_shape_to_gltf(CSGShape3D *p_current, GLTFNodeIndex p_gltf_parent, Ref<GLTFNode> gltf_node, Ref<GLTFState> state) {
-	CSGShape3D *csg = p_current;
-	csg->call("_update_shape");
-	Array meshes = csg->get_meshes();
-	if (meshes.size() != 2) {
-		return;
-	}
-
-	Ref<ImporterMesh> mesh;
-	mesh.instantiate();
-	{
-		Ref<Mesh> csg_mesh = csg->get_meshes()[1];
-
-		for (int32_t surface_i = 0; surface_i < csg_mesh->get_surface_count(); surface_i++) {
-			Array array = csg_mesh->surface_get_arrays(surface_i);
-			Ref<Material> mat = csg_mesh->surface_get_material(surface_i);
-			String mat_name;
-			if (mat.is_valid()) {
-				mat_name = mat->get_name();
-			} else {
-				// Assign default material when no material is assigned.
-				mat = Ref<StandardMaterial3D>(memnew(StandardMaterial3D));
-			}
-			mesh->add_surface(csg_mesh->surface_get_primitive_type(surface_i),
-					array, csg_mesh->surface_get_blend_shape_arrays(surface_i), csg_mesh->surface_get_lods(surface_i), mat,
-					mat_name, csg_mesh->surface_get_format(surface_i));
-		}
-	}
-
-	Ref<GLTFMesh> gltf_mesh;
-	gltf_mesh.instantiate();
-	gltf_mesh->set_mesh(mesh);
-	GLTFMeshIndex mesh_i = state->meshes.size();
-	state->meshes.push_back(gltf_mesh);
-	gltf_node->mesh = mesh_i;
-	gltf_node->xform = csg->get_meshes()[0];
-	gltf_node->set_name(_gen_unique_name(state, csg->get_name()));
-}
-#endif // MODULE_CSG_ENABLED
 
 void GLTFDocument::_create_gltf_node(Ref<GLTFState> state, Node *p_scene_parent, GLTFNodeIndex current_node_i,
 		GLTFNodeIndex p_parent_node_index, GLTFNodeIndex p_root_gltf_node, Ref<GLTFNode> gltf_node) {
@@ -5430,36 +5377,6 @@ void GLTFDocument::_convert_light_to_gltf(Light *light, Ref<GLTFState> state, Re
 		gltf_node->light = light_index;
 	}
 }
-
-#ifdef MODULE_GRIDMAP_ENABLED
-void GLTFDocument::_convert_grid_map_to_gltf(GridMap *p_grid_map, GLTFNodeIndex p_parent_node_index, GLTFNodeIndex p_root_node_index, Ref<GLTFNode> gltf_node, Ref<GLTFState> state) {
-	Array cells = p_grid_map->get_used_cells();
-	for (int32_t k = 0; k < cells.size(); k++) {
-		GLTFNode *new_gltf_node = memnew(GLTFNode);
-		gltf_node->children.push_back(state->nodes.size());
-		state->nodes.push_back(new_gltf_node);
-		Vector3 cell_location = cells[k];
-		int32_t cell = p_grid_map->get_cell_item(
-				Vector3(cell_location.x, cell_location.y, cell_location.z));
-		Transform3D cell_xform;
-		cell_xform.basis.set_orthogonal_index(
-				p_grid_map->get_cell_item_orientation(
-						Vector3(cell_location.x, cell_location.y, cell_location.z)));
-		cell_xform.basis.scale(Vector3(p_grid_map->get_cell_scale(),
-				p_grid_map->get_cell_scale(),
-				p_grid_map->get_cell_scale()));
-		cell_xform.set_origin(p_grid_map->map_to_world(
-				Vector3(cell_location.x, cell_location.y, cell_location.z)));
-		Ref<GLTFMesh> gltf_mesh;
-		gltf_mesh.instantiate();
-		gltf_mesh->set_mesh(_mesh_to_importer_mesh(p_grid_map->get_mesh_library()->get_item_mesh(cell)));
-		new_gltf_node->mesh = state->meshes.size();
-		state->meshes.push_back(gltf_mesh);
-		new_gltf_node->xform = cell_xform * p_grid_map->get_transform();
-		new_gltf_node->set_name(_gen_unique_name(state, p_grid_map->get_mesh_library()->get_item_name(cell)));
-	}
-}
-#endif // MODULE_GRIDMAP_ENABLED
 
 void GLTFDocument::_convert_multi_mesh_instance_to_gltf(
 		MultiMeshInstance *p_multi_mesh_instance,

@@ -41,9 +41,6 @@ class MultiMeshInstance;
 class Skeleton;
 class Skin;
 
-class CSGShape3D;
-class GridMap;
-
 // GLTF classes.
 struct GLTFAccessor;
 class GLTFAnimation;

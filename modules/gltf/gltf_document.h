@@ -312,10 +312,6 @@ public:
 			const GLTFNodeIndex p_gltf_current,
 			const GLTFNodeIndex p_gltf_root);
 
-#ifdef MODULE_CSG_ENABLED
-	void _convert_csg_shape_to_gltf(CSGShape3D *p_current, GLTFNodeIndex p_gltf_parent, Ref<GLTFNode> gltf_node, Ref<GLTFState> state);
-#endif // MODULE_CSG_ENABLED
-
 	void _create_gltf_node(Ref<GLTFState> state,
 			Node *p_scene_parent,
 			GLTFNodeIndex current_node_i,
@@ -330,13 +326,6 @@ public:
 	void _check_visibility(Node *p_node, bool &retflag);
 	void _convert_camera_to_gltf(Camera3D *camera, Ref<GLTFState> state,
 			Ref<GLTFNode> gltf_node);
-#ifdef MODULE_GRIDMAP_ENABLED
-	void _convert_grid_map_to_gltf(
-			GridMap *p_grid_map,
-			GLTFNodeIndex p_parent_node_index,
-			GLTFNodeIndex p_root_node_index,
-			Ref<GLTFNode> gltf_node, Ref<GLTFState> state);
-#endif // MODULE_GRIDMAP_ENABLED
 	void _convert_multi_mesh_instance_to_gltf(
 			MultiMeshInstance *p_multi_mesh_instance,
 			GLTFNodeIndex p_parent_node_index,
