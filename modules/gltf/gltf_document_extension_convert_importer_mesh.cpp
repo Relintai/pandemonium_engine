@@ -35,22 +35,26 @@
 #include "core/error_macros.h"
 #include "scene/3d/mesh_instance.h"
 #include "scene/resources/importer_mesh.h"
+#include "scene/3d/importer_mesh_instance_3d.h"
+#include "scene/3d/mesh_instance.h"
+#include "scene/main/node.h"
 
 void GLTFDocumentExtensionConvertImporterMesh::_bind_methods() {
 }
 
 Error GLTFDocumentExtensionConvertImporterMesh::import_post(Ref<GLTFState> p_state, Node *p_root) {
 	ERR_FAIL_NULL_V(p_root, ERR_INVALID_PARAMETER);
-	ERR_FAIL_NULL_V(p_state, ERR_INVALID_PARAMETER);
+	ERR_FAIL_COND_V(p_state.is_null(), ERR_INVALID_PARAMETER);
+
 	List<Node *> queue;
 	queue.push_back(p_root);
 	List<Node *> delete_queue;
-	while (!queue.is_empty()) {
+	while (!queue.empty()) {
 		List<Node *>::Element *E = queue.front();
 		Node *node = E->get();
 		ImporterMeshInstance3D *mesh_3d = cast_to<ImporterMeshInstance3D>(node);
 		if (mesh_3d) {
-			MeshInstance3D *mesh_instance_node_3d = memnew(MeshInstance3D);
+			MeshInstance *mesh_instance_node_3d = memnew(MeshInstance);
 			Ref<ImporterMesh> mesh = mesh_3d->get_mesh();
 			if (mesh.is_valid()) {
 				Ref<ArrayMesh> array_mesh = mesh->get_mesh();
@@ -71,11 +75,13 @@ Error GLTFDocumentExtensionConvertImporterMesh::import_post(Ref<GLTFState> p_sta
 		}
 		queue.pop_front();
 	}
-	while (!queue.is_empty()) {
+
+	while (!queue.empty()) {
 		List<Node *>::Element *E = delete_queue.front();
 		Node *node = E->get();
 		memdelete(node);
 		delete_queue.pop_front();
 	}
+
 	return OK;
 }

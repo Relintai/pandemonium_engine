@@ -31,11 +31,12 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/reference.h"
+
 #include "gltf_document_extension.h"
 
-#include "scene/3d/importer_mesh_instance_3d.h"
-#include "scene/3d/mesh_instance.h"
-#include "scene/resources/importer_mesh.h"
+class GLTFState;
+class Node;
 
 class GLTFDocumentExtensionConvertImporterMesh : public GLTFDocumentExtension {
 	GDCLASS(GLTFDocumentExtensionConvertImporterMesh, GLTFDocumentExtension);
@@ -44,7 +45,7 @@ protected:
 	static void _bind_methods();
 
 public:
-	Error import_post(Ref<GLTFState> p_state, Node *p_root) override;
+	Error import_post(Ref<GLTFState> p_state, Node *p_root);
 };
 
 #endif // GLTF_DOCUMENT_EXTENSION_CONVERT_IMPORTER_MESH_H
