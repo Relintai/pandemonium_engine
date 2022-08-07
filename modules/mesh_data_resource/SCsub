@@ -4,16 +4,16 @@ Import('env')
 
 module_env = env.Clone()
 
-if os.path.isdir('../texture_packer'):
+if env["module_texture_packer_enabled"]:
     module_env.Append(CPPDEFINES=['TEXTURE_PACKER_PRESENT'])
 
-if os.path.isdir('../props'):
+if env["module_props_enabled"]:
     module_env.Append(CPPDEFINES=['PROPS_PRESENT'])
 
-if os.path.isdir('../props_2d'):
+if env["module_props_2d_enabled"]:
     module_env.Append(CPPDEFINES=['PROPS_2D_PRESENT'])
 
-if os.path.isdir('../mesh_utils'):
+if env["module_mesh_utils_enabled"]:
     module_env.Append(CPPDEFINES=['MESH_UTILS_PRESENT'])
 
 module_env.add_source_files(env.modules_sources,"register_types.cpp")
@@ -24,8 +24,9 @@ module_env.add_source_files(env.modules_sources,"mesh_data_resource_collection.c
 module_env.add_source_files(env.modules_sources,"plugin/mdr_import_plugin_base.cpp")
 
 if 'TOOLS_ENABLED' in env["CPPDEFINES"]:
-    module_env.add_source_files(env.modules_sources,"plugin_gltf/editor_import_gltf_mdr.cpp")
-    module_env.add_source_files(env.modules_sources,"plugin_gltf/editor_plugin_gltf_mdr.cpp")
+    if env["module_gltf_enabled"]:
+        module_env.add_source_files(env.modules_sources,"plugin_gltf/editor_import_gltf_mdr.cpp")
+        module_env.add_source_files(env.modules_sources,"plugin_gltf/editor_plugin_gltf_mdr.cpp")
 
     module_env.add_source_files(env.modules_sources,"editor/utilities/mdr_ed_mesh_decompose.cpp")
     module_env.add_source_files(env.modules_sources,"editor/utilities/mdr_ed_mesh_outline.cpp")
@@ -45,8 +46,8 @@ if 'TOOLS_ENABLED' in env["CPPDEFINES"]:
 module_env.add_source_files(env.modules_sources,"nodes/mesh_data_instance.cpp")
 module_env.add_source_files(env.modules_sources,"nodes/mesh_data_instance_2d.cpp")
 
-if os.path.isdir('../props'):
+if env["module_props_enabled"]:
     module_env.add_source_files(env.modules_sources,"props/prop_data_mesh_data.cpp")
 
-if os.path.isdir('../props_2d'):
+if env["module_props_2d_enabled"]:
     module_env.add_source_files(env.modules_sources,"props_2d/prop_2d_data_mesh_data.cpp")
