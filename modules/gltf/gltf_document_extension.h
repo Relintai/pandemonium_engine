@@ -42,13 +42,21 @@ class GLTFDocumentExtension : public Resource {
 	GDCLASS(GLTFDocumentExtension, Resource);
 
 public:
-	virtual Error import_preflight(Ref<GLTFState> p_state);
-	virtual Error import_post_parse(Ref<GLTFState> p_state);
-	virtual Error export_post(Ref<GLTFState> p_state);
-	virtual Error import_post(Ref<GLTFState> p_state, Node *p_node);
-	virtual Error export_preflight(Node *p_state);
-	virtual Error import_node(Ref<GLTFState> p_state, Ref<GLTFNode> p_gltf_node, Dictionary &r_json, Node *p_node);
-	virtual Error export_node(Ref<GLTFState> p_state, Ref<GLTFNode> p_gltf_node, Dictionary &r_json, Node *p_node);
+	Error import_preflight(Ref<GLTFState> p_state);
+	Error import_post_parse(Ref<GLTFState> p_state);
+	Error export_post(Ref<GLTFState> p_state);
+	Error import_post(Ref<GLTFState> p_state, Node *p_node);
+	Error export_preflight(Node *p_state);
+	Error import_node(Ref<GLTFState> p_state, Ref<GLTFNode> p_gltf_node, const Dictionary &r_json, Node *p_node);
+	Error export_node(Ref<GLTFState> p_state, Ref<GLTFNode> p_gltf_node, const Dictionary &r_json, Node *p_node);
+
+	virtual int _import_preflight(Ref<GLTFState> p_state);
+	virtual int _import_post_parse(Ref<GLTFState> p_state);
+	virtual int _export_post(Ref<GLTFState> p_state);
+	virtual int _import_post(Ref<GLTFState> p_state, Node *p_node);
+	virtual int _export_preflight(Node *p_state);
+	virtual int _import_node(Ref<GLTFState> p_state, Ref<GLTFNode> p_gltf_node, const Dictionary &r_json, Node *p_node);
+	virtual int _export_node(Ref<GLTFState> p_state, Ref<GLTFNode> p_gltf_node, const Dictionary &r_json, Node *p_node);
 
 	GLTFDocumentExtension();
 	~GLTFDocumentExtension();

@@ -68,7 +68,7 @@ Error GLTFDocumentExtension::export_preflight(Node *p_root) {
 	return static_cast<Error>(err);
 }
 
-Error GLTFDocumentExtension::import_node(Ref<GLTFState> p_state, Ref<GLTFNode> p_gltf_node, Dictionary &r_dict, Node *p_node) {
+Error GLTFDocumentExtension::import_node(Ref<GLTFState> p_state, Ref<GLTFNode> p_gltf_node, const Dictionary &r_dict, Node *p_node) {
 	ERR_FAIL_COND_V(p_state.is_null(), ERR_INVALID_PARAMETER);
 	ERR_FAIL_COND_V(p_gltf_node.is_null(), ERR_INVALID_PARAMETER);
 	ERR_FAIL_NULL_V(p_node, ERR_INVALID_PARAMETER);
@@ -77,13 +77,35 @@ Error GLTFDocumentExtension::import_node(Ref<GLTFState> p_state, Ref<GLTFNode> p
 	return static_cast<Error>(err);
 }
 
-Error GLTFDocumentExtension::export_node(Ref<GLTFState> p_state, Ref<GLTFNode> p_gltf_node, Dictionary &r_dict, Node *p_node) {
+Error GLTFDocumentExtension::export_node(Ref<GLTFState> p_state, Ref<GLTFNode> p_gltf_node, const Dictionary &r_dict, Node *p_node) {
 	ERR_FAIL_COND_V(p_state.is_null(), ERR_INVALID_PARAMETER);
 	ERR_FAIL_COND_V(p_gltf_node.is_null(), ERR_INVALID_PARAMETER);
 	ERR_FAIL_NULL_V(p_node, ERR_INVALID_PARAMETER);
 
 	int err = call("_export_node", p_state, p_gltf_node, r_dict, p_node);
 	return static_cast<Error>(err);
+}
+
+int GLTFDocumentExtension::_import_preflight(Ref<GLTFState> p_state) {
+	return OK;
+}
+int GLTFDocumentExtension::_import_post_parse(Ref<GLTFState> p_state) {
+	return OK;
+}
+int GLTFDocumentExtension::_export_post(Ref<GLTFState> p_state) {
+	return OK;
+}
+int GLTFDocumentExtension::_import_post(Ref<GLTFState> p_state, Node *p_node) {
+	return OK;
+}
+int GLTFDocumentExtension::_export_preflight(Node *p_state) {
+	return OK;
+}
+int GLTFDocumentExtension::_import_node(Ref<GLTFState> p_state, Ref<GLTFNode> p_gltf_node, const Dictionary &r_json, Node *p_node) {
+	return OK;
+}
+int GLTFDocumentExtension::_export_node(Ref<GLTFState> p_state, Ref<GLTFNode> p_gltf_node, const Dictionary &r_json, Node *p_node) {
+	return OK;
 }
 
 GLTFDocumentExtension::GLTFDocumentExtension() {
@@ -126,4 +148,12 @@ void GLTFDocumentExtension::_bind_methods() {
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "ret"),
 			"_export_post",
 			PropertyInfo(Variant::OBJECT, "state", PROPERTY_HINT_RESOURCE_TYPE, "GLTFState")));
+
+	ClassDB::bind_method(D_METHOD("_import_preflight", "p_state"), &GLTFDocumentExtension::_import_preflight);
+	ClassDB::bind_method(D_METHOD("_import_post_parse", "p_state"), &GLTFDocumentExtension::_import_post_parse);
+	ClassDB::bind_method(D_METHOD("_export_post", "p_state"), &GLTFDocumentExtension::_export_post);
+	ClassDB::bind_method(D_METHOD("_import_post", "p_state", "p_node"), &GLTFDocumentExtension::_import_post);
+	ClassDB::bind_method(D_METHOD("_export_preflight", "p_state"), &GLTFDocumentExtension::_export_preflight);
+	ClassDB::bind_method(D_METHOD("_import_node", "p_state", "p_gltf_node", "r_json", "p_node"), &GLTFDocumentExtension::_import_node);
+	ClassDB::bind_method(D_METHOD("_export_node", "p_state", "p_gltf_node", "r_json", "p_node"), &GLTFDocumentExtension::_export_node);
 }
