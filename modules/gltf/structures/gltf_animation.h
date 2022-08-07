@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  register_types.h                                                     */
+/*  gltf_animation.h                                                     */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,5 +28,48 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-void register_gltf_types();
-void unregister_gltf_types();
+#ifndef GLTF_ANIMATION_H
+#define GLTF_ANIMATION_H
+
+#include "core/io/resource.h"
+
+class GLTFAnimation : public Resource {
+	GDCLASS(GLTFAnimation, Resource);
+
+protected:
+	static void _bind_methods();
+
+public:
+	enum Interpolation {
+		INTERP_LINEAR,
+		INTERP_STEP,
+		INTERP_CATMULLROMSPLINE,
+		INTERP_CUBIC_SPLINE,
+	};
+
+	template <class T>
+	struct Channel {
+		Interpolation interpolation;
+		Vector<real_t> times;
+		Vector<T> values;
+	};
+
+	struct Track {
+		Channel<Vector3> position_track;
+		Channel<Quaternion> rotation_track;
+		Channel<Vector3> scale_track;
+		Vector<Channel<real_t>> weight_tracks;
+	};
+
+public:
+	bool get_loop() const;
+	void set_loop(bool p_val);
+	HashMap<int, GLTFAnimation::Track> &get_tracks();
+	GLTFAnimation();
+
+private:
+	bool loop = false;
+	HashMap<int, Track> tracks;
+};
+
+#endif // GLTF_ANIMATION_H

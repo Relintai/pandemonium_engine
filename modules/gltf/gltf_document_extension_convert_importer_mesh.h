@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  register_types.h                                                     */
+/*  gltf_document_extension_convert_importer_mesh.h                      */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,5 +28,23 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-void register_gltf_types();
-void unregister_gltf_types();
+#ifndef GLTF_DOCUMENT_EXTENSION_CONVERT_IMPORTER_MESH_H
+#define GLTF_DOCUMENT_EXTENSION_CONVERT_IMPORTER_MESH_H
+
+#include "gltf_document_extension.h"
+
+#include "scene/3d/importer_mesh_instance_3d.h"
+#include "scene/3d/mesh_instance_3d.h"
+#include "scene/resources/importer_mesh.h"
+
+class GLTFDocumentExtensionConvertImporterMesh : public GLTFDocumentExtension {
+	GDCLASS(GLTFDocumentExtensionConvertImporterMesh, GLTFDocumentExtension);
+
+protected:
+	static void _bind_methods();
+
+public:
+	Error import_post(Ref<GLTFState> p_state, Node *p_root) override;
+};
+
+#endif // GLTF_DOCUMENT_EXTENSION_CONVERT_IMPORTER_MESH_H

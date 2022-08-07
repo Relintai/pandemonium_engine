@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  register_types.h                                                     */
+/*  gltf_texture.h                                                       */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,5 +28,24 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-void register_gltf_types();
-void unregister_gltf_types();
+#ifndef GLTF_TEXTURE_H
+#define GLTF_TEXTURE_H
+
+#include "../gltf_defines.h"
+#include "core/io/resource.h"
+
+class GLTFTexture : public Resource {
+	GDCLASS(GLTFTexture, Resource);
+
+private:
+	GLTFImageIndex src_image = 0;
+
+protected:
+	static void _bind_methods();
+
+public:
+	GLTFImageIndex get_src_image() const;
+	void set_src_image(GLTFImageIndex val);
+};
+
+#endif // GLTF_TEXTURE_H

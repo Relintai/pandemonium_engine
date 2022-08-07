@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  register_types.h                                                     */
+/*  gltf_light.h                                                         */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,5 +28,46 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-void register_gltf_types();
-void unregister_gltf_types();
+#ifndef GLTF_LIGHT_H
+#define GLTF_LIGHT_H
+
+#include "core/config/engine.h"
+#include "core/io/resource.h"
+#include "scene/3d/light_3d.h"
+
+class GLTFLight : public Resource {
+	GDCLASS(GLTFLight, Resource)
+	friend class GLTFDocument;
+
+protected:
+	static void _bind_methods();
+
+private:
+	Color color = Color(1.0f, 1.0f, 1.0f);
+	float intensity = 1.0f;
+	String light_type;
+	float range = INFINITY;
+	float inner_cone_angle = 0.0f;
+	float outer_cone_angle = Math_TAU / 8.0f;
+
+public:
+	Color get_color();
+	void set_color(Color p_color);
+
+	float get_intensity();
+	void set_intensity(float p_intensity);
+
+	String get_light_type();
+	void set_light_type(String p_light_type);
+
+	float get_range();
+	void set_range(float p_range);
+
+	float get_inner_cone_angle();
+	void set_inner_cone_angle(float p_inner_cone_angle);
+
+	float get_outer_cone_angle();
+	void set_outer_cone_angle(float p_outer_cone_angle);
+};
+
+#endif // GLTF_LIGHT_H

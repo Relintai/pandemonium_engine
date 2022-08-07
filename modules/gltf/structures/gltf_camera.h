@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  register_types.h                                                     */
+/*  gltf_camera.h                                                        */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,5 +28,32 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-void register_gltf_types();
-void unregister_gltf_types();
+#ifndef GLTF_CAMERA_H
+#define GLTF_CAMERA_H
+
+#include "core/io/resource.h"
+
+class GLTFCamera : public Resource {
+	GDCLASS(GLTFCamera, Resource);
+
+private:
+	bool perspective = true;
+	float fov_size = 75.0;
+	float depth_far = 4000.0;
+	float depth_near = 0.05;
+
+protected:
+	static void _bind_methods();
+
+public:
+	bool get_perspective() const { return perspective; }
+	void set_perspective(bool p_val) { perspective = p_val; }
+	float get_fov_size() const { return fov_size; }
+	void set_fov_size(float p_val) { fov_size = p_val; }
+	float get_depth_far() const { return depth_far; }
+	void set_depth_far(float p_val) { depth_far = p_val; }
+	float get_depth_near() const { return depth_near; }
+	void set_depth_near(float p_val) { depth_near = p_val; }
+};
+
+#endif // GLTF_CAMERA_H

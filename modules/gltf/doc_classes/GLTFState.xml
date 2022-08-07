@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="GLTFState" inherits="Resource" version="3.5">
+<class name="GLTFState" inherits="Resource" version="4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
 	<brief_description>
 	</brief_description>
 	<description>
-		[b]Note:[/b] This class is only compiled in editor builds. Run-time glTF loading and saving is [i]not[/i] available in exported projects. References to [GLTFState] within a script will cause an error in an exported project.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -193,9 +192,11 @@
 		</method>
 	</methods>
 	<members>
-		<member name="buffers" type="Array" setter="set_buffers" getter="get_buffers" default="[  ]">
+		<member name="base_path" type="String" setter="set_base_path" getter="get_base_path" default="&quot;&quot;">
 		</member>
-		<member name="glb_data" type="PoolByteArray" setter="set_glb_data" getter="get_glb_data" default="PoolByteArray(  )">
+		<member name="buffers" type="Array" setter="set_buffers" getter="get_buffers" default="[]">
+		</member>
+		<member name="glb_data" type="PackedByteArray" setter="set_glb_data" getter="get_glb_data" default="PackedByteArray()">
 		</member>
 		<member name="json" type="Dictionary" setter="set_json" getter="get_json" default="{}">
 		</member>
@@ -203,13 +204,11 @@
 		</member>
 		<member name="minor_version" type="int" setter="set_minor_version" getter="get_minor_version" default="0">
 		</member>
-		<member name="root_nodes" type="Array" setter="set_root_nodes" getter="get_root_nodes" default="[  ]">
+		<member name="root_nodes" type="Array" setter="set_root_nodes" getter="get_root_nodes" default="[]">
 		</member>
 		<member name="scene_name" type="String" setter="set_scene_name" getter="get_scene_name" default="&quot;&quot;">
 		</member>
 		<member name="use_named_skin_binds" type="bool" setter="set_use_named_skin_binds" getter="get_use_named_skin_binds" default="false">
 		</member>
 	</members>
-	<constants>
-	</constants>
 </class>

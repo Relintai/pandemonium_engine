@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="GLTFBufferView" inherits="Resource" version="3.5">
+<class name="GLTFBufferView" inherits="Resource" version="4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
 	<brief_description>
 	</brief_description>
 	<description>
-		[b]Note:[/b] This class is only compiled in editor builds. Run-time glTF loading and saving is [i]not[/i] available in exported projects. References to [GLTFBufferView] within a script will cause an error in an exported project.
 	</description>
 	<tutorials>
 	</tutorials>
-	<methods>
-	</methods>
 	<members>
 		<member name="buffer" type="int" setter="set_buffer" getter="get_buffer" default="-1">
 		</member>
@@ -21,6 +18,4 @@
 		<member name="indices" type="bool" setter="set_indices" getter="get_indices" default="false">
 		</member>
 	</members>
-	<constants>
-	</constants>
 </class>

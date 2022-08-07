@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  register_types.h                                                     */
+/*  editor_scene_importer_gltf.cpp                                       */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,5 +28,39 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-void register_gltf_types();
-void unregister_gltf_types();
+#ifdef TOOLS_ENABLED
+
+#include "editor_scene_importer_gltf.h"
+
+#include "../gltf_document.h"
+#include "../gltf_state.h"
+
+#include "scene/resources/animation.h"
+
+uint32_t EditorSceneFormatImporterGLTF::get_import_flags() const {
+	return ImportFlags::IMPORT_SCENE | ImportFlags::IMPORT_ANIMATION;
+}
+
+void EditorSceneFormatImporterGLTF::get_extensions(List<String> *r_extensions) const {
+	r_extensions->push_back("gltf");
+	r_extensions->push_back("glb");
+}
+
+Node *EditorSceneFormatImporterGLTF::import_scene(const String &p_path, uint32_t p_flags,
+		const HashMap<StringName, Variant> &p_options, int p_bake_fps,
+		List<String> *r_missing_deps, Error *r_err) {
+	Ref<GLTFDocument> doc;
+	doc.instantiate();
+	Ref<GLTFState> state;
+	state.instantiate();
+	Error err = doc->append_from_file(p_path, state, p_flags, p_bake_fps);
+	if (err != OK) {
+		if (r_err) {
+			*r_err = err;
+		}
+		return nullptr;
+	}
+	return doc->generate_scene(state, p_bake_fps);
+}
+
+#endif // TOOLS_ENABLED
