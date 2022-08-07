@@ -140,12 +140,18 @@ public:
 };
 
 struct DirAccessRef {
+	DirAccess *f;
+
+	_FORCE_INLINE_ bool is_null() const { return f == nullptr; }
+	_FORCE_INLINE_ bool is_valid() const { return f != nullptr; }
+
+	_FORCE_INLINE_ operator bool() const { return f != nullptr; }
+	_FORCE_INLINE_ operator DirAccess *() { return f; }
+
 	_FORCE_INLINE_ DirAccess *operator->() {
 		return f;
 	}
 
-	operator bool() const { return f != nullptr; }
-	DirAccess *f;
 	DirAccessRef(DirAccess *fa) { f = fa; }
 	DirAccessRef(DirAccessRef &&other) {
 		f = other.f;

@@ -177,13 +177,18 @@ public:
 };
 
 struct FileAccessRef {
+	FileAccess *f;
+
+	_FORCE_INLINE_ bool is_null() const { return f == nullptr; }
+	_FORCE_INLINE_ bool is_valid() const { return f != nullptr; }
+
+	_FORCE_INLINE_ operator bool() const { return f != nullptr; }
+	_FORCE_INLINE_ operator FileAccess *() { return f; }
+
 	_FORCE_INLINE_ FileAccess *operator->() {
 		return f;
 	}
 
-	operator bool() const { return f != nullptr; }
-	FileAccess *f;
-	operator FileAccess *() { return f; }
 	FileAccessRef(FileAccess *fa) { f = fa; }
 	FileAccessRef(FileAccessRef &&other) {
 		f = other.f;
