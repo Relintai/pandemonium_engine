@@ -43,7 +43,7 @@
 #include "structures/gltf_skin.h"
 #include "structures/gltf_texture.h"
 
-#include "core/templates/rb_map.h"
+#include "core/rb_map.h"
 #include "scene/animation/animation_player.h"
 #include "scene/resources/texture.h"
 

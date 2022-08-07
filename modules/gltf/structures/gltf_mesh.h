@@ -31,7 +31,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/io/resource.h"
+#include "core/resource.h"
 #include "scene/3d/importer_mesh_instance_3d.h"
 #include "scene/resources/importer_mesh.h"
 #include "scene/resources/mesh.h"

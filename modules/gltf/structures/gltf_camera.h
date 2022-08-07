@@ -31,7 +31,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/io/resource.h"
+#include "core/resource.h"
 
 class GLTFCamera : public Resource {
 	GDCLASS(GLTFCamera, Resource);

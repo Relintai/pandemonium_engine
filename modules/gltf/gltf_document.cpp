@@ -50,10 +50,10 @@
 #include "core/version.h"
 #include "drivers/png/png_driver_common.h"
 #include "scene/2d/node_2d.h"
-#include "scene/3d/camera_3d.h"
-#include "scene/3d/mesh_instance_3d.h"
-#include "scene/3d/multimesh_instance_3d.h"
-#include "scene/3d/node_3d.h"
+#include "scene/3d/camera.h"
+#include "scene/3d/mesh_instance.h"
+#include "scene/3d/multimesh_instance.h"
+#include "scene/3d/spatial.h"
 #include "scene/animation/animation_player.h"
 #include "scene/resources/importer_mesh.h"
 #include "scene/resources/material.h"
@@ -62,13 +62,6 @@
 #include "scene/resources/surface_tool.h"
 
 #include "modules/modules_enabled.gen.h" // For csg, gridmap.
-
-#ifdef MODULE_CSG_ENABLED
-#include "modules/csg/csg_shape.h"
-#endif // MODULE_CSG_ENABLED
-#ifdef MODULE_GRIDMAP_ENABLED
-#include "modules/gridmap/grid_map.h"
-#endif // MODULE_GRIDMAP_ENABLED
 
 // FIXME: Hardcoded to avoid editor dependency.
 #define GLTF_IMPORT_USE_NAMED_SKIN_BINDS 16

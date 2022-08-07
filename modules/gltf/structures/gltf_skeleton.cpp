@@ -31,7 +31,7 @@
 #include "gltf_skeleton.h"
 
 #include "../gltf_template_convert.h"
-#include "scene/3d/bone_attachment_3d.h"
+#include "scene/3d/bone_attachment.h"
 
 void GLTFSkeleton::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_joints"), &GLTFSkeleton::get_joints);

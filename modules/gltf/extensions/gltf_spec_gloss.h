@@ -31,8 +31,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/io/image.h"
-#include "core/io/resource.h"
+#include "core/image.h"
+#include "core/resource.h"
 
 class GLTFSpecGloss : public Resource {
 	GDCLASS(GLTFSpecGloss, Resource);

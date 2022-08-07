@@ -31,9 +31,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/templates/hash_set.h"
-#include "core/variant/array.h"
-#include "core/variant/dictionary.h"
+#include "core/hash_set.h"
+#include "core/array.h"
+#include "core/dictionary.h"
 
 namespace GLTFTemplateConvert {
 template <class T>

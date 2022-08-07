@@ -57,7 +57,7 @@ void unregister_gltf_types() {
 #include "structures/gltf_texture.h"
 
 #ifdef TOOLS_ENABLED
-#include "core/config/project_settings.h"
+#include "core/project_settings.h"
 #include "editor/editor_node.h"
 #include "editor/editor_scene_exporter_gltf_plugin.h"
 #include "editor/editor_scene_importer_blend.h"
