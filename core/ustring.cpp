@@ -3783,6 +3783,49 @@ String String::http_unescape() const {
 	return String::utf8(res.ascii());
 }
 
+String String::uri_encode() const {
+	const CharString temp = utf8();
+	String res;
+	for (int i = 0; i < temp.length(); ++i) {
+		uint8_t ord = temp[i];
+		if (ord == '.' || ord == '-' || ord == '~' || is_ascii_identifier_char(ord)) {
+			res += ord;
+		} else {
+			char p[4] = { '%', 0, 0, 0 };
+			static const char hex[16] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+			p[1] = hex[ord >> 4];
+			p[2] = hex[ord & 0xF];
+			res += p;
+		}
+	}
+	return res;
+}
+
+String String::uri_decode() const {
+	CharString src = utf8();
+	CharString res;
+	for (int i = 0; i < src.length(); ++i) {
+		if (src[i] == '%' && i + 2 < src.length()) {
+			char ord1 = src[i + 1];
+			if (is_digit(ord1) || is_ascii_upper_case(ord1)) {
+				char ord2 = src[i + 2];
+				if (is_digit(ord2) || is_ascii_upper_case(ord2)) {
+					char bytes[3] = { (char)ord1, (char)ord2, 0 };
+					res += (char)strtol(bytes, nullptr, 16);
+					i += 2;
+				}
+			} else {
+				res += src[i];
+			}
+		} else if (src[i] == '+') {
+			res += ' ';
+		} else {
+			res += src[i];
+		}
+	}
+	return String::utf8(res);
+}
+
 String String::c_unescape() const {
 	String escaped = *this;
 	escaped = escaped.replace("\\a", "\a");

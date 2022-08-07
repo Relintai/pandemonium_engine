@@ -34,6 +34,7 @@
 #include "core/cowdata.h"
 #include "core/typedefs.h"
 #include "core/vector.h"
+#include "core/char_utils.h"
 
 template <class T>
 class CharProxy {
@@ -367,6 +368,8 @@ public:
 	String xml_unescape() const;
 	String http_escape() const;
 	String http_unescape() const;
+	String uri_encode() const;
+	String uri_decode() const;
 	String c_escape() const;
 	String c_escape_multiline() const;
 	String c_unescape() const;
