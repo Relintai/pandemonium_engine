@@ -39,8 +39,8 @@
 #include "core/math/vector2i.h"
 #include "core/math/vector3.h"
 #include "core/math/vector3i.h"
-//#include "core/math/vector4.h"
-//#include "core/math/vector4i.h"
+#include "core/math/vector4.h"
+#include "core/math/vector4i.h"
 #include "core/object_id.h"
 #include "core/node_path.h"
 #include "core/string_name.h"
@@ -345,7 +345,6 @@ struct HashMapHasherDefault {
 		h = hash_murmur3_one_32(p_vec.z, h);
 		return hash_fmix32(h);
 	}
-	/*
 	static _FORCE_INLINE_ uint32_t hash(const Vector4i &p_vec) {
 		uint32_t h = hash_murmur3_one_32(p_vec.x);
 		h = hash_murmur3_one_32(p_vec.y, h);
@@ -353,7 +352,6 @@ struct HashMapHasherDefault {
 		h = hash_murmur3_one_32(p_vec.w, h);
 		return hash_fmix32(h);
 	}
-	*/
 	static _FORCE_INLINE_ uint32_t hash(const Vector2 &p_vec) {
 		uint32_t h = hash_murmur3_one_real(p_vec.x);
 		h = hash_murmur3_one_real(p_vec.y, h);
@@ -365,7 +363,6 @@ struct HashMapHasherDefault {
 		h = hash_murmur3_one_real(p_vec.z, h);
 		return hash_fmix32(h);
 	}
-	/*
 	static _FORCE_INLINE_ uint32_t hash(const Vector4 &p_vec) {
 		uint32_t h = hash_murmur3_one_real(p_vec.x);
 		h = hash_murmur3_one_real(p_vec.y, h);
@@ -373,7 +370,6 @@ struct HashMapHasherDefault {
 		h = hash_murmur3_one_real(p_vec.w, h);
 		return hash_fmix32(h);
 	}
-	*/
 	static _FORCE_INLINE_ uint32_t hash(const Rect2i &p_rect) {
 		uint32_t h = hash_murmur3_one_32(p_rect.position.x);
 		h = hash_murmur3_one_32(p_rect.position.y, h);
