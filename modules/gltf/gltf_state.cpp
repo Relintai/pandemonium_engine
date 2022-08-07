@@ -86,7 +86,7 @@ void GLTFState::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "json"), "set_json", "get_json"); // Dictionary
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "major_version"), "set_major_version", "get_major_version"); // int
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "minor_version"), "set_minor_version", "get_minor_version"); // int
-	ADD_PROPERTY(PropertyInfo(Variant::PACKED_BYTE_ARRAY, "glb_data"), "set_glb_data", "get_glb_data"); // Vector<uint8_t>
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_BYTE_ARRAY, "glb_data"), "set_glb_data", "get_glb_data"); // Vector<uint8_t>
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_named_skin_binds"), "set_use_named_skin_binds", "get_use_named_skin_binds"); // bool
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "nodes", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL | PROPERTY_USAGE_EDITOR), "set_nodes", "get_nodes"); // Vector<Ref<GLTFNode>>
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "buffers"), "set_buffers", "get_buffers"); // Vector<Vector<uint8_t>
