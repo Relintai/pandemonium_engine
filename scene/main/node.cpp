@@ -433,11 +433,8 @@ void Node::move_child(Node *p_child, int p_pos) {
 	for (int i = motion_from; i <= motion_to; i++) {
 		data.children[i]->notification(NOTIFICATION_MOVED_IN_PARENT);
 	}
-	for (const Map<StringName, GroupData>::Element *E = p_child->data.grouped.front(); E; E = E->next()) {
-		if (E->get().group) {
-			E->get().group->changed = true;
-		}
-	}
+
+	p_child->_propagate_groups_dirty();
 
 	data.blocked--;
 }
@@ -545,6 +542,18 @@ void Node::_propagate_pause_owner(Node *p_owner) {
 	data.pause_owner = p_owner;
 	for (int i = 0; i < data.children.size(); i++) {
 		data.children[i]->_propagate_pause_owner(p_owner);
+	}
+}
+
+void Node::_propagate_groups_dirty() {
+	for (const Map<StringName, GroupData>::Element *E = data.grouped.front(); E; E = E->next()) {
+		if (E->get().group) {
+			E->get().group->changed = true;
+		}
+	}
+
+	for (int i = 0; i < data.children.size(); i++) {
+		data.children[i]->_propagate_groups_dirty();
 	}
 }
 
