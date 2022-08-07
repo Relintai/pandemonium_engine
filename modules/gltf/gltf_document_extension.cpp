@@ -30,79 +30,100 @@
 
 #include "gltf_document_extension.h"
 
-void GLTFDocumentExtension::_bind_methods() {
-	GDVIRTUAL_BIND(_import_preflight, "state");
-	GDVIRTUAL_BIND(_import_post_parse, "state");
-	GDVIRTUAL_BIND(_import_node, "state", "gltf_node", "json", "node");
-	GDVIRTUAL_BIND(_import_post, "state", "root");
-	GDVIRTUAL_BIND(_export_preflight, "root");
-	GDVIRTUAL_BIND(_export_node, "state", "gltf_node", "json", "node");
-	GDVIRTUAL_BIND(_export_post, "state");
-}
+#include "gltf_state.h"
+#include "structures/gltf_node.h"
 
 Error GLTFDocumentExtension::import_post(Ref<GLTFState> p_state, Node *p_root) {
 	ERR_FAIL_NULL_V(p_root, ERR_INVALID_PARAMETER);
-	ERR_FAIL_NULL_V(p_state, ERR_INVALID_PARAMETER);
-	int err = OK;
-	if (GDVIRTUAL_CALL(_import_post, p_state, p_root, err)) {
-		return Error(err);
-	}
-	return OK;
+	ERR_FAIL_COND_V(p_state.is_null(), ERR_INVALID_PARAMETER);
+
+	int err = call("_import_post", p_state, p_root);
+	return static_cast<Error>(err);
 }
 
 Error GLTFDocumentExtension::import_preflight(Ref<GLTFState> p_state) {
-	ERR_FAIL_NULL_V(p_state, ERR_INVALID_PARAMETER);
-	int err = OK;
-	if (GDVIRTUAL_CALL(_import_preflight, p_state, err)) {
-		return Error(err);
-	}
-	return OK;
+	ERR_FAIL_COND_V(p_state.is_null(), ERR_INVALID_PARAMETER);
+
+	int err = call("_import_preflight", p_state);
+	return static_cast<Error>(err);
 }
 
 Error GLTFDocumentExtension::import_post_parse(Ref<GLTFState> p_state) {
-	ERR_FAIL_NULL_V(p_state, ERR_INVALID_PARAMETER);
-	int err = OK;
-	if (GDVIRTUAL_CALL(_import_post_parse, p_state, err)) {
-		return Error(err);
-	}
-	return OK;
+	ERR_FAIL_COND_V(p_state.is_null(), ERR_INVALID_PARAMETER);
+
+	int err = call("_import_post_parse", p_state);
+	return static_cast<Error>(err);
 }
 
 Error GLTFDocumentExtension::export_post(Ref<GLTFState> p_state) {
-	ERR_FAIL_NULL_V(p_state, ERR_INVALID_PARAMETER);
-	int err = OK;
-	if (GDVIRTUAL_CALL(_export_post, p_state, err)) {
-		return Error(err);
-	}
-	return OK;
+	ERR_FAIL_COND_V(p_state.is_null(), ERR_INVALID_PARAMETER);
+
+	int err = call("_export_post", p_state);
+	return static_cast<Error>(err);
 }
 Error GLTFDocumentExtension::export_preflight(Node *p_root) {
 	ERR_FAIL_NULL_V(p_root, ERR_INVALID_PARAMETER);
-	int err = OK;
-	if (GDVIRTUAL_CALL(_export_preflight, p_root, err)) {
-		return Error(err);
-	}
-	return OK;
+
+	int err = call("_export_preflight", p_root);
+	return static_cast<Error>(err);
 }
 
 Error GLTFDocumentExtension::import_node(Ref<GLTFState> p_state, Ref<GLTFNode> p_gltf_node, Dictionary &r_dict, Node *p_node) {
-	ERR_FAIL_NULL_V(p_state, ERR_INVALID_PARAMETER);
-	ERR_FAIL_NULL_V(p_gltf_node, ERR_INVALID_PARAMETER);
+	ERR_FAIL_COND_V(p_state.is_null(), ERR_INVALID_PARAMETER);
+	ERR_FAIL_COND_V(p_gltf_node.is_null(), ERR_INVALID_PARAMETER);
 	ERR_FAIL_NULL_V(p_node, ERR_INVALID_PARAMETER);
-	int err = OK;
-	if (GDVIRTUAL_CALL(_import_node, p_state, p_gltf_node, r_dict, p_node, err)) {
-		return Error(err);
-	}
-	return OK;
+
+	int err = call("_import_node", p_state, p_gltf_node, r_dict, p_node);
+	return static_cast<Error>(err);
 }
 
 Error GLTFDocumentExtension::export_node(Ref<GLTFState> p_state, Ref<GLTFNode> p_gltf_node, Dictionary &r_dict, Node *p_node) {
-	ERR_FAIL_NULL_V(p_state, ERR_INVALID_PARAMETER);
-	ERR_FAIL_NULL_V(p_gltf_node, ERR_INVALID_PARAMETER);
+	ERR_FAIL_COND_V(p_state.is_null(), ERR_INVALID_PARAMETER);
+	ERR_FAIL_COND_V(p_gltf_node.is_null(), ERR_INVALID_PARAMETER);
 	ERR_FAIL_NULL_V(p_node, ERR_INVALID_PARAMETER);
-	int err = OK;
-	if (GDVIRTUAL_CALL(_export_node, p_state, p_gltf_node, r_dict, p_node, err)) {
-		return Error(err);
-	}
-	return OK;
+
+	int err = call("_export_node", p_state, p_gltf_node, r_dict, p_node);
+	return static_cast<Error>(err);
+}
+
+GLTFDocumentExtension::GLTFDocumentExtension() {
+}
+GLTFDocumentExtension::~GLTFDocumentExtension() {
+}
+
+void GLTFDocumentExtension::_bind_methods() {
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "ret"),
+			"_import_preflight",
+			PropertyInfo(Variant::OBJECT, "state", PROPERTY_HINT_RESOURCE_TYPE, "GLTFState")));
+
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "ret"),
+			"_import_post_parse",
+			PropertyInfo(Variant::OBJECT, "state", PROPERTY_HINT_RESOURCE_TYPE, "GLTFState")));
+
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "ret"),
+			"_import_node",
+			PropertyInfo(Variant::OBJECT, "state", PROPERTY_HINT_RESOURCE_TYPE, "GLTFState"),
+			PropertyInfo(Variant::OBJECT, "gltf_node", PROPERTY_HINT_RESOURCE_TYPE, "GLTFNode"),
+			PropertyInfo(Variant::DICTIONARY, "json"),
+			PropertyInfo(Variant::OBJECT, "node", PROPERTY_HINT_RESOURCE_TYPE, "Node")));
+
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "ret"),
+			"_import_post",
+			PropertyInfo(Variant::OBJECT, "state", PROPERTY_HINT_RESOURCE_TYPE, "GLTFState"),
+			PropertyInfo(Variant::OBJECT, "root", PROPERTY_HINT_RESOURCE_TYPE, "Node")));
+
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "ret"),
+			"_export_preflight",
+			PropertyInfo(Variant::OBJECT, "root", PROPERTY_HINT_RESOURCE_TYPE, "Node")));
+
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "ret"),
+			"_export_node",
+			PropertyInfo(Variant::OBJECT, "state", PROPERTY_HINT_RESOURCE_TYPE, "GLTFState"),
+			PropertyInfo(Variant::OBJECT, "gltf_node", PROPERTY_HINT_RESOURCE_TYPE, "GLTFNode"),
+			PropertyInfo(Variant::DICTIONARY, "json"),
+			PropertyInfo(Variant::OBJECT, "node", PROPERTY_HINT_RESOURCE_TYPE, "Node")));
+
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "ret"),
+			"_export_post",
+			PropertyInfo(Variant::OBJECT, "state", PROPERTY_HINT_RESOURCE_TYPE, "GLTFState")));
 }

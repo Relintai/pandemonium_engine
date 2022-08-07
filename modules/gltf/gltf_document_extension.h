@@ -31,14 +31,15 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "gltf_state.h"
-#include "structures/gltf_node.h"
+#include "core/reference.h"
+
+#include "core/resource.h"
+
+class GLTFNode;
+class GLTFState;
 
 class GLTFDocumentExtension : public Resource {
 	GDCLASS(GLTFDocumentExtension, Resource);
-
-protected:
-	static void _bind_methods();
 
 public:
 	virtual Error import_preflight(Ref<GLTFState> p_state);
@@ -48,13 +49,12 @@ public:
 	virtual Error export_preflight(Node *p_state);
 	virtual Error import_node(Ref<GLTFState> p_state, Ref<GLTFNode> p_gltf_node, Dictionary &r_json, Node *p_node);
 	virtual Error export_node(Ref<GLTFState> p_state, Ref<GLTFNode> p_gltf_node, Dictionary &r_json, Node *p_node);
-	GDVIRTUAL1R(int, _import_preflight, Ref<GLTFState>);
-	GDVIRTUAL1R(int, _import_post_parse, Ref<GLTFState>);
-	GDVIRTUAL4R(int, _import_node, Ref<GLTFState>, Ref<GLTFNode>, Dictionary, Node *);
-	GDVIRTUAL2R(int, _import_post, Ref<GLTFState>, Node *);
-	GDVIRTUAL1R(int, _export_preflight, Node *);
-	GDVIRTUAL4R(int, _export_node, Ref<GLTFState>, Ref<GLTFNode>, Dictionary, Node *);
-	GDVIRTUAL1R(int, _export_post, Ref<GLTFState>);
+
+	GLTFDocumentExtension();
+	~GLTFDocumentExtension();
+
+protected:
+	static void _bind_methods();
 };
 
 #endif // GLTF_DOCUMENT_EXTENSION_H
