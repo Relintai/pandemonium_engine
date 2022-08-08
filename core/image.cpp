@@ -2972,6 +2972,9 @@ void Image::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("load_tga_from_buffer", "buffer"), &Image::load_tga_from_buffer);
 	ClassDB::bind_method(D_METHOD("load_bmp_from_buffer", "buffer"), &Image::load_bmp_from_buffer);
 
+	ClassDB::bind_method(D_METHOD("convert_rg_to_ra_rgba8"), &Image::convert_rg_to_ra_rgba8);
+	ClassDB::bind_method(D_METHOD("convert_ra_rgba8_to_rg"), &Image::convert_ra_rgba8_to_rg);
+
 	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "data", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE), "_set_data", "_get_data");
 
 	BIND_CONSTANT(MAX_WIDTH);
@@ -3298,6 +3301,34 @@ Error Image::load_bmp_from_buffer(const PoolVector<uint8_t> &p_array) {
 			ERR_UNAVAILABLE,
 			"The BMP module isn't enabled. Recompile the Godot editor or export template binary with the `module_bmp_enabled=yes` SCons option.");
 	return _load_from_buffer(p_array, _bmp_mem_loader_func);
+}
+
+void Image::convert_rg_to_ra_rgba8() {
+	ERR_FAIL_COND(format != FORMAT_RGBA8);
+	ERR_FAIL_COND(!data.size());
+
+	int s = data.size();
+	PoolVector<uint8_t>::Write pw = data.write();
+	uint8_t *w = pw.ptr();
+	for (int i = 0; i < s; i += 4) {
+		w[i + 3] = w[i + 1];
+		w[i + 1] = 0;
+		w[i + 2] = 0;
+	}
+}
+
+void Image::convert_ra_rgba8_to_rg() {
+	ERR_FAIL_COND(format != FORMAT_RGBA8);
+	ERR_FAIL_COND(!data.size());
+
+	int s = data.size();
+	PoolVector<uint8_t>::Write pw = data.write();
+	uint8_t *w = pw.ptr();
+	for (int i = 0; i < s; i += 4) {
+		w[i + 1] = w[i + 3];
+		w[i + 2] = 0;
+		w[i + 3] = 255;
+	}
 }
 
 Error Image::_load_from_buffer(const PoolVector<uint8_t> &p_array, ImageMemLoadFunc p_loader) {

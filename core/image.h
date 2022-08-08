@@ -343,6 +343,9 @@ public:
 	Error load_tga_from_buffer(const PoolVector<uint8_t> &p_array);
 	Error load_bmp_from_buffer(const PoolVector<uint8_t> &p_array);
 
+	void convert_rg_to_ra_rgba8();
+	void convert_ra_rgba8_to_rg();
+
 	Image(const uint8_t *p_mem_png_jpg, int p_len = -1);
 	Image(const char **p_xpm);
 
