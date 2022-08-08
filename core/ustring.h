@@ -31,10 +31,10 @@
 /*************************************************************************/
 
 #include "core/array.h"
+#include "core/char_utils.h"
 #include "core/cowdata.h"
 #include "core/typedefs.h"
 #include "core/vector.h"
-#include "core/char_utils.h"
 
 template <class T>
 class CharProxy {
@@ -346,6 +346,8 @@ public:
 	Vector<uint8_t> sha256_buffer() const;
 
 	_FORCE_INLINE_ bool empty() const { return length() == 0; }
+	_FORCE_INLINE_ bool contains(const char *p_str) const { return find(p_str) != -1; }
+	_FORCE_INLINE_ bool contains(const String &p_str) const { return find(p_str) != -1; }
 
 	// path functions
 	bool is_abs_path() const;
