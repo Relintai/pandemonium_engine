@@ -34,12 +34,12 @@
 #include "gltf_defines.h"
 #include "structures/gltf_animation.h"
 
+#include "core/os/file_access.h"
 #include "scene/3d/bone_attachment.h"
 #include "scene/3d/importer_mesh_instance_3d.h"
 #include "scene/3d/mesh_instance.h"
 #include "scene/animation/animation_player.h"
 #include "scene/resources/material.h"
-#include "core/os/file_access.h"
 
 class Camera;
 
@@ -112,7 +112,7 @@ private:
 	Vector<double> _decode_accessor(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex);
-	Vector<float> _decode_accessor_as_floats(Ref<GLTFState> state,
+	PoolVector<float> _decode_accessor_as_floats(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex);
 	PoolIntArray _decode_accessor_as_ints(Ref<GLTFState> state,
@@ -127,7 +127,7 @@ private:
 	Vector<Color> _decode_accessor_as_color(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex);
-	Vector<Quat> _decode_accessor_as_quaternion(Ref<GLTFState> state,
+	PoolVector<Quat> _decode_accessor_as_quaternion(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex);
 	Vector<Transform2D> _decode_accessor_as_xform2d(Ref<GLTFState> state,
@@ -188,11 +188,11 @@ private:
 	Spatial *_generate_spatial(Ref<GLTFState> state, const GLTFNodeIndex node_index);
 	void _assign_scene_names(Ref<GLTFState> state);
 	template <class T>
-	T _interpolate_track(const Vector<real_t> &p_times, const Vector<T> &p_values,
+	T _interpolate_track(const PoolRealArray &p_times, const PoolVector<T> &p_values,
 			const float p_time,
 			const GLTFAnimation::Interpolation p_interp);
 	GLTFAccessorIndex _encode_accessor_as_quaternions(Ref<GLTFState> state,
-			const Vector<Quat> p_attribs,
+			const PoolVector<Quat> p_attribs,
 			const bool p_for_vertex);
 	GLTFAccessorIndex _encode_accessor_as_weights(Ref<GLTFState> state,
 			const Vector<Color> p_attribs,
@@ -223,7 +223,7 @@ private:
 	}
 
 	GLTFAccessorIndex _encode_accessor_as_vec3(Ref<GLTFState> state,
-			const Vector<Vector3> p_attribs,
+			const PoolVector<Vector3> p_attribs,
 			const bool p_for_vertex);
 	GLTFAccessorIndex _encode_accessor_as_color(Ref<GLTFState> state,
 			const Vector<Color> p_attribs,
@@ -249,11 +249,19 @@ private:
 	Error _serialize_nodes(Ref<GLTFState> state);
 	Error _serialize_scenes(Ref<GLTFState> state);
 	String interpolation_to_string(const GLTFAnimation::Interpolation p_interp);
+
+	//TODO UNCOMMENT
+	/*
 	GLTFAnimation::Track _convert_animation_track(Ref<GLTFState> state,
 			GLTFAnimation::Track p_track,
 			Ref<Animation> p_animation,
 			int32_t p_track_i,
 			GLTFNodeIndex p_node_i);
+			*/
+
+	//TODO DELETE
+	GLTFAnimation::Track _convert_animation_track(Ref<GLTFState> state, GLTFAnimation::Track p_track, Ref<Animation> p_animation, Transform p_bone_rest, int32_t p_track_i, GLTFNodeIndex p_node_i);
+
 	Error _encode_buffer_bins(Ref<GLTFState> state, const String &p_path);
 	Error _encode_buffer_glb(Ref<GLTFState> state, const String &p_path);
 	PoolByteArray _serialize_glb_buffer(Ref<GLTFState> state, Error *r_err);

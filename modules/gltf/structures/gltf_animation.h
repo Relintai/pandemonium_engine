@@ -50,8 +50,8 @@ public:
 	template <class T>
 	struct Channel {
 		Interpolation interpolation;
-		Vector<real_t> times;
-		Vector<T> values;
+		PoolRealArray times;
+		PoolVector<T> values;
 	};
 
 	struct Track {
