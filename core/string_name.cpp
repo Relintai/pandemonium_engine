@@ -48,6 +48,10 @@ StringName _scs_create(const char *p_chr) {
 bool StringName::configured = false;
 Mutex StringName::lock;
 
+#ifdef DEBUG_ENABLED
+bool StringName::debug_stringname = false;
+#endif
+
 void StringName::setup() {
 	ERR_FAIL_COND(configured);
 	for (int i = 0; i < STRING_TABLE_LEN; i++) {
@@ -59,16 +63,49 @@ void StringName::setup() {
 void StringName::cleanup() {
 	lock.lock();
 
+#ifdef DEBUG_ENABLED
+	if (unlikely(debug_stringname)) {
+		Vector<_Data *> data;
+		for (int i = 0; i < STRING_TABLE_LEN; i++) {
+			_Data *d = _table[i];
+			while (d) {
+				data.push_back(d);
+				d = d->next;
+			}
+		}
+
+		print_line("\nStringName reference ranking (from most to least referenced):\n");
+
+		data.sort_custom<DebugSortReferences>();
+		int unreferenced_stringnames = 0;
+		int rarely_referenced_stringnames = 0;
+		for (int i = 0; i < data.size(); i++) {
+			print_line(itos(i + 1) + ": " + data[i]->get_name() + " - " + itos(data[i]->debug_references));
+			if (data[i]->debug_references == 0) {
+				unreferenced_stringnames += 1;
+			} else if (data[i]->debug_references < 5) {
+				rarely_referenced_stringnames += 1;
+			}
+		}
+
+		print_line(vformat("\nOut of %d StringNames, %d StringNames were never referenced during this run (0 times) (%.2f%%).", data.size(), unreferenced_stringnames, unreferenced_stringnames / float(data.size()) * 100));
+		print_line(vformat("Out of %d StringNames, %d StringNames were rarely referenced during this run (1-4 times) (%.2f%%).", data.size(), rarely_referenced_stringnames, rarely_referenced_stringnames / float(data.size()) * 100));
+	}
+#endif
+
 	int lost_strings = 0;
 	for (int i = 0; i < STRING_TABLE_LEN; i++) {
 		while (_table[i]) {
 			_Data *d = _table[i];
-			lost_strings++;
-			if (OS::get_singleton()->is_stdout_verbose()) {
-				if (d->cname) {
-					print_line("Orphan StringName: " + String(d->cname));
-				} else {
-					print_line("Orphan StringName: " + String(d->name));
+
+			if (d->static_count.get() != d->refcount.get()) {
+				lost_strings++;
+				if (OS::get_singleton()->is_stdout_verbose()) {
+					if (d->cname) {
+						print_line("Orphan StringName: " + String(d->cname));
+					} else {
+						print_line("Orphan StringName: " + String(d->name));
+					}
 				}
 			}
 
@@ -76,9 +113,11 @@ void StringName::cleanup() {
 			memdelete(d);
 		}
 	}
+
 	if (lost_strings) {
 		print_verbose("StringName: " + itos(lost_strings) + " unclaimed string names at exit.");
 	}
+
 	lock.unlock();
 }
 
@@ -88,18 +127,28 @@ void StringName::unref() {
 	if (_data && _data->refcount.unref()) {
 		lock.lock();
 
+		if (_data->static_count.get() > 0) {
+			if (_data->cname) {
+				ERR_PRINT("BUG: Unreferenced static string to 0: " + String(_data->cname));
+			} else {
+				ERR_PRINT("BUG: Unreferenced static string to 0: " + String(_data->name));
+			}
+		}
+
 		if (_data->prev) {
 			_data->prev->next = _data->next;
 		} else {
 			if (_table[_data->idx] != _data) {
 				ERR_PRINT("BUG!");
 			}
+
 			_table[_data->idx] = _data->next;
 		}
 
 		if (_data->next) {
 			_data->next->prev = _data->prev;
 		}
+
 		memdelete(_data);
 		lock.unlock();
 	}
@@ -155,7 +204,7 @@ StringName::StringName(const StringName &p_name) {
 	}
 }
 
-StringName::StringName(const char *p_name) {
+StringName::StringName(const char *p_name, bool p_static) {
 	_data = nullptr;
 
 	ERR_FAIL_COND(!configured);
@@ -183,6 +232,16 @@ StringName::StringName(const char *p_name) {
 	if (_data) {
 		if (_data->refcount.ref()) {
 			// exists
+			if (p_static) {
+				_data->static_count.increment();
+			}
+
+#ifdef DEBUG_ENABLED
+			if (unlikely(debug_stringname)) {
+				_data->debug_references++;
+			}
+#endif
+
 			lock.unlock();
 			return;
 		}
@@ -191,21 +250,32 @@ StringName::StringName(const char *p_name) {
 	_data = memnew(_Data);
 	_data->name = p_name;
 	_data->refcount.init();
+	_data->static_count.set(p_static ? 1 : 0);
 	_data->hash = hash;
 	_data->idx = idx;
-	_data->cname = nullptr;
+	_data->cname = NULL;
 	_data->next = _table[idx];
-	_data->prev = nullptr;
+	_data->prev = NULL;
+
+#ifdef DEBUG_ENABLED
+	if (unlikely(debug_stringname)) {
+		// Keep in memory, force static.
+		_data->refcount.ref();
+		_data->static_count.increment();
+	}
+#endif
+
 	if (_table[idx]) {
 		_table[idx]->prev = _data;
 	}
+
 	_table[idx] = _data;
 
 	lock.unlock();
 }
 
-StringName::StringName(const StaticCString &p_static_string) {
-	_data = nullptr;
+StringName::StringName(const StaticCString &p_static_string, bool p_static) {
+	_data = NULL;
 
 	ERR_FAIL_COND(!configured);
 
@@ -230,6 +300,16 @@ StringName::StringName(const StaticCString &p_static_string) {
 	if (_data) {
 		if (_data->refcount.ref()) {
 			// exists
+			if (p_static) {
+				_data->static_count.increment();
+			}
+
+#ifdef DEBUG_ENABLED
+			if (unlikely(debug_stringname)) {
+				_data->debug_references++;
+			}
+#endif
+
 			lock.unlock();
 			return;
 		}
@@ -238,25 +318,36 @@ StringName::StringName(const StaticCString &p_static_string) {
 	_data = memnew(_Data);
 
 	_data->refcount.init();
+	_data->static_count.set(p_static ? 1 : 0);
 	_data->hash = hash;
 	_data->idx = idx;
 	_data->cname = p_static_string.ptr;
 	_data->next = _table[idx];
-	_data->prev = nullptr;
+	_data->prev = NULL;
+
+#ifdef DEBUG_ENABLED
+	if (unlikely(debug_stringname)) {
+		// Keep in memory, force static.
+		_data->refcount.ref();
+		_data->static_count.increment();
+	}
+#endif
+
 	if (_table[idx]) {
 		_table[idx]->prev = _data;
 	}
+
 	_table[idx] = _data;
 
 	lock.unlock();
 }
 
-StringName::StringName(const String &p_name) {
+StringName::StringName(const String &p_name, bool p_static) {
 	_data = nullptr;
 
 	ERR_FAIL_COND(!configured);
 
-	if (p_name == String()) {
+	if (p_name.empty()) {
 		return;
 	}
 
@@ -272,12 +363,23 @@ StringName::StringName(const String &p_name) {
 		if (_data->hash == hash && _data->get_name() == p_name) {
 			break;
 		}
+
 		_data = _data->next;
 	}
 
 	if (_data) {
 		if (_data->refcount.ref()) {
 			// exists
+			if (p_static) {
+				_data->static_count.increment();
+			}
+
+#ifdef DEBUG_ENABLED
+			if (unlikely(debug_stringname)) {
+				_data->debug_references++;
+			}
+#endif
+
 			lock.unlock();
 			return;
 		}
@@ -286,14 +388,25 @@ StringName::StringName(const String &p_name) {
 	_data = memnew(_Data);
 	_data->name = p_name;
 	_data->refcount.init();
+	_data->static_count.set(p_static ? 1 : 0);
 	_data->hash = hash;
 	_data->idx = idx;
-	_data->cname = nullptr;
+	_data->cname = NULL;
 	_data->next = _table[idx];
-	_data->prev = nullptr;
+	_data->prev = NULL;
+
+#ifdef DEBUG_ENABLED
+	if (unlikely(debug_stringname)) {
+		// Keep in memory, force static.
+		_data->refcount.ref();
+		_data->static_count.increment();
+	}
+#endif
+
 	if (_table[idx]) {
 		_table[idx]->prev = _data;
 	}
+
 	_table[idx] = _data;
 
 	lock.unlock();
@@ -324,6 +437,12 @@ StringName StringName::search(const char *p_name) {
 	}
 
 	if (_data && _data->refcount.ref()) {
+#ifdef DEBUG_ENABLED
+		if (unlikely(debug_stringname)) {
+			_data->debug_references++;
+		}
+#endif
+
 		lock.unlock();
 
 		return StringName(_data);
@@ -354,6 +473,7 @@ StringName StringName::search(const CharType *p_name) {
 		if (_data->hash == hash && _data->get_name() == p_name) {
 			break;
 		}
+
 		_data = _data->next;
 	}
 
@@ -381,10 +501,16 @@ StringName StringName::search(const String &p_name) {
 		if (_data->hash == hash && p_name == _data->get_name()) {
 			break;
 		}
+
 		_data = _data->next;
 	}
 
 	if (_data && _data->refcount.ref()) {
+#ifdef DEBUG_ENABLED
+		if (unlikely(debug_stringname)) {
+			_data->debug_references++;
+		}
+#endif
 		lock.unlock();
 		return StringName(_data);
 	}
@@ -397,6 +523,18 @@ StringName::StringName() {
 	_data = nullptr;
 }
 
-StringName::~StringName() {
-	unref();
+/*
+bool operator==(const String &p_name, const StringName &p_string_name) {
+	return p_name == p_string_name.operator String();
 }
+bool operator!=(const String &p_name, const StringName &p_string_name) {
+	return p_name != p_string_name.operator String();
+}
+
+bool operator==(const char *p_name, const StringName &p_string_name) {
+	return p_name == p_string_name.operator String();
+}
+bool operator!=(const char *p_name, const StringName &p_string_name) {
+	return p_name != p_string_name.operator String();
+}
+*/
