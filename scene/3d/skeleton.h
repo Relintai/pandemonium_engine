@@ -200,7 +200,15 @@ public:
 	void localize_rests(); // used for loaders and tools
 	int get_process_order(int p_idx);
 
+	Ref<Skin> create_skin_from_rest_transforms();
+
 	Ref<SkinReference> register_skin(const Ref<Skin> &p_skin);
+
+	// Helper functions
+	Transform global_pose_to_world_transform(Transform p_global_pose);
+	Transform world_transform_to_global_pose(Transform p_transform);
+	Transform global_pose_to_local_pose(int p_bone_idx, Transform p_global_pose);
+	Transform local_pose_to_global_pose(int p_bone_idx, Transform p_local_pose);
 
 #ifndef _3D_DISABLED
 	// Physical bone API

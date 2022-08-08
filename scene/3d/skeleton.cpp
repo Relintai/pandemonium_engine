@@ -768,6 +768,37 @@ void Skeleton::_skin_changed() {
 	_make_dirty();
 }
 
+Ref<Skin> Skeleton::create_skin_from_rest_transforms() {
+	Ref<Skin> skin;
+
+	skin.instance();
+	skin->set_bind_count(bones.size());
+	_update_process_order(); //just in case
+
+	// pose changed, rebuild cache of inverses
+	const Bone *bonesptr = bones.ptr();
+	int len = bones.size();
+	const int *order = process_order.ptr();
+
+	// calculate global rests and invert them
+	for (int i = 0; i < len; i++) {
+		const Bone &b = bonesptr[order[i]];
+		if (b.parent >= 0) {
+			skin->set_bind_pose(order[i], skin->get_bind_pose(b.parent) * b.rest);
+		} else {
+			skin->set_bind_pose(order[i], b.rest);
+		}
+	}
+
+	for (int i = 0; i < len; i++) {
+		//the inverse is what is actually required
+		skin->set_bind_bone(i, i);
+		skin->set_bind_pose(i, skin->get_bind_pose(i).affine_inverse());
+	}
+
+	return skin;
+}
+
 Ref<SkinReference> Skeleton::register_skin(const Ref<Skin> &p_skin) {
 	for (Set<SkinReference *>::Element *E = skin_bindings.front(); E; E = E->next()) {
 		if (E->get()->skin == p_skin) {
@@ -826,6 +857,37 @@ Ref<SkinReference> Skeleton::register_skin(const Ref<Skin> &p_skin) {
 	return skin_ref;
 }
 
+Transform Skeleton::global_pose_to_world_transform(Transform p_global_pose) {
+	return get_global_transform() * p_global_pose;
+}
+
+Transform Skeleton::world_transform_to_global_pose(Transform p_world_transform) {
+	return get_global_transform().affine_inverse() * p_world_transform;
+}
+
+Transform Skeleton::global_pose_to_local_pose(int p_bone_idx, Transform p_global_pose) {
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone_idx, bone_size, Transform());
+	if (bones[p_bone_idx].parent >= 0) {
+		int parent_bone_idx = bones[p_bone_idx].parent;
+		Transform conversion_transform = get_bone_global_pose(parent_bone_idx).affine_inverse();
+		return conversion_transform * p_global_pose;
+	} else {
+		return p_global_pose;
+	}
+}
+
+Transform Skeleton::local_pose_to_global_pose(int p_bone_idx, Transform p_local_pose) {
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone_idx, bone_size, Transform());
+	if (bones[p_bone_idx].parent >= 0) {
+		int parent_bone_idx = bones[p_bone_idx].parent;
+		return bones[parent_bone_idx].pose_global * p_local_pose;
+	} else {
+		return p_local_pose;
+	}
+}
+
 void Skeleton::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_bone", "name"), &Skeleton::add_bone);
 	ClassDB::bind_method(D_METHOD("find_bone", "name"), &Skeleton::find_bone);
@@ -842,7 +904,15 @@ void Skeleton::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_bone_rest", "bone_idx"), &Skeleton::get_bone_rest);
 	ClassDB::bind_method(D_METHOD("set_bone_rest", "bone_idx", "rest"), &Skeleton::set_bone_rest);
 
+	ClassDB::bind_method(D_METHOD("create_skin_from_rest_transforms"), &Skeleton::create_skin_from_rest_transforms);
+
 	ClassDB::bind_method(D_METHOD("register_skin", "skin"), &Skeleton::register_skin);
+
+	// Helper functions
+	ClassDB::bind_method(D_METHOD("global_pose_to_world_transform", "global_pose"), &Skeleton::global_pose_to_world_transform);
+	ClassDB::bind_method(D_METHOD("world_transform_to_global_pose", "transform"), &Skeleton::world_transform_to_global_pose);
+	ClassDB::bind_method(D_METHOD("global_pose_to_local_pose", "bone_idx", "global_pose"), &Skeleton::global_pose_to_local_pose);
+	ClassDB::bind_method(D_METHOD("local_pose_to_global_pose", "bone_idx", "local_pose"), &Skeleton::local_pose_to_global_pose);
 
 	ClassDB::bind_method(D_METHOD("localize_rests"), &Skeleton::localize_rests);
 
