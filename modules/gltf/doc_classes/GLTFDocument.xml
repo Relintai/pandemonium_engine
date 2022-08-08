@@ -10,7 +10,7 @@
 	<methods>
 		<method name="append_from_buffer">
 			<return type="int" enum="Error" />
-			<argument index="0" name="bytes" type="PackedByteArray" />
+			<argument index="0" name="bytes" type="PoolByteArray" />
 			<argument index="1" name="base_path" type="String" />
 			<argument index="2" name="state" type="GLTFState" />
 			<argument index="3" name="flags" type="int" default="0" />
@@ -38,7 +38,7 @@
 			</description>
 		</method>
 		<method name="generate_buffer">
-			<return type="PackedByteArray" />
+			<return type="PoolByteArray" />
 			<argument index="0" name="state" type="GLTFState" />
 			<description>
 			</description>

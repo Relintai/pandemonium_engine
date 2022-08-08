@@ -39,16 +39,14 @@
 #include "scene/3d/mesh_instance.h"
 #include "scene/animation/animation_player.h"
 #include "scene/resources/material.h"
+#include "core/os/file_access.h"
+
+class Camera;
 
 class GLTFDocument : public Resource {
 	GDCLASS(GLTFDocument, Resource);
-	Vector<GLTFDocumentExtension> document_extensions;
-
-private:
-	const float BAKE_FPS = 30.0f;
 
 public:
-	GLTFDocument();
 	const int32_t JOINT_GROUP_SIZE = 4;
 
 	enum {
@@ -70,12 +68,12 @@ public:
 		COMPONENT_TYPE_FLOAT = 5126,
 	};
 
-protected:
-	static void _bind_methods();
-
 public:
-	void set_extensions(TypedArray<GLTFDocumentExtension> p_extensions);
-	TypedArray<GLTFDocumentExtension> get_extensions() const;
+	void set_extensionsv(const Vector<Ref<GLTFDocumentExtension>> &p_extensions);
+	Vector<Ref<GLTFDocumentExtension>> get_extensionsv() const;
+
+	void set_extensions(const Vector<Variant> &p_extensions);
+	Vector<Variant> get_extensions() const;
 
 private:
 	void _build_parent_hierachy(Ref<GLTFState> state);
@@ -117,13 +115,13 @@ private:
 	Vector<float> _decode_accessor_as_floats(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex);
-	Vector<int> _decode_accessor_as_ints(Ref<GLTFState> state,
+	PoolIntArray _decode_accessor_as_ints(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex);
 	Vector<Vector2> _decode_accessor_as_vec2(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex);
-	Vector<Vector3> _decode_accessor_as_vec3(Ref<GLTFState> state,
+	PoolVector3Array _decode_accessor_as_vec3(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex);
 	Vector<Color> _decode_accessor_as_color(Ref<GLTFState> state,
@@ -185,9 +183,9 @@ private:
 			const GLTFNodeIndex node_index,
 			const GLTFNodeIndex bone_index);
 	ImporterMeshInstance3D *_generate_mesh_instance(Ref<GLTFState> state, const GLTFNodeIndex node_index);
-	Camera3D *_generate_camera(Ref<GLTFState> state, const GLTFNodeIndex node_index);
-	Node3D *_generate_light(Ref<GLTFState> state, const GLTFNodeIndex node_index);
-	Node3D *_generate_spatial(Ref<GLTFState> state, const GLTFNodeIndex node_index);
+	Camera *_generate_camera(Ref<GLTFState> state, const GLTFNodeIndex node_index);
+	Spatial *_generate_light(Ref<GLTFState> state, const GLTFNodeIndex node_index);
+	Spatial *_generate_spatial(Ref<GLTFState> state, const GLTFNodeIndex node_index);
 	void _assign_scene_names(Ref<GLTFState> state);
 	template <class T>
 	T _interpolate_track(const Vector<real_t> &p_times, const Vector<T> &p_values,
@@ -203,24 +201,24 @@ private:
 			const Vector<Color> p_attribs,
 			const bool p_for_vertex);
 	GLTFAccessorIndex _encode_accessor_as_floats(Ref<GLTFState> state,
-			const Vector<real_t> p_attribs,
+			const PoolRealArray p_attribs,
 			const bool p_for_vertex);
 	GLTFAccessorIndex _encode_accessor_as_vec2(Ref<GLTFState> state,
 			const Vector<Vector2> p_attribs,
 			const bool p_for_vertex);
 
-	void _calc_accessor_vec2_min_max(int i, const int element_count, Vector<double> &type_max, Vector2 attribs, Vector<double> &type_min) {
+	void _calc_accessor_vec2_min_max(int i, const int element_count, PoolRealArray &type_max, Vector2 attribs, PoolRealArray &type_min) {
 		if (i == 0) {
 			for (int32_t type_i = 0; type_i < element_count; type_i++) {
-				type_max.write[type_i] = attribs[(i * element_count) + type_i];
-				type_min.write[type_i] = attribs[(i * element_count) + type_i];
+				type_max.set(type_i, attribs[(i * element_count) + type_i]);
+				type_min.set(type_i, attribs[(i * element_count) + type_i]);
 			}
 		}
 		for (int32_t type_i = 0; type_i < element_count; type_i++) {
-			type_max.write[type_i] = MAX(attribs[(i * element_count) + type_i], type_max[type_i]);
-			type_min.write[type_i] = MIN(attribs[(i * element_count) + type_i], type_min[type_i]);
-			type_max.write[type_i] = _filter_number(type_max.write[type_i]);
-			type_min.write[type_i] = _filter_number(type_min.write[type_i]);
+			type_max.set(type_i, MAX(attribs[(i * element_count) + type_i], type_max[type_i]));
+			type_min.set(type_i, MIN(attribs[(i * element_count) + type_i], type_min[type_i]));
+			type_max.set(type_i, _filter_number(type_max[type_i]));
+			type_min.set(type_i, _filter_number(type_min[type_i]));
 		}
 	}
 
@@ -231,7 +229,7 @@ private:
 			const Vector<Color> p_attribs,
 			const bool p_for_vertex);
 
-	void _calc_accessor_min_max(int p_i, const int p_element_count, Vector<double> &p_type_max, Vector<double> p_attribs, Vector<double> &p_type_min);
+	void _calc_accessor_min_max(int p_i, const int p_element_count, PoolRealArray &p_type_max, PoolRealArray p_attribs, PoolRealArray &p_type_min);
 
 	GLTFAccessorIndex _encode_accessor_as_ints(Ref<GLTFState> state,
 			const Vector<int32_t> p_attribs,
@@ -239,7 +237,7 @@ private:
 	GLTFAccessorIndex _encode_accessor_as_xform(Ref<GLTFState> state,
 			const Vector<Transform> p_attribs,
 			const bool p_for_vertex);
-	Error _encode_buffer_view(Ref<GLTFState> state, const double *src,
+	Error _encode_buffer_view(Ref<GLTFState> state, const float *src,
 			const int count, const GLTFType type,
 			const int component_type, const bool normalized,
 			const int byte_offset, const bool for_vertex,
@@ -258,7 +256,7 @@ private:
 			GLTFNodeIndex p_node_i);
 	Error _encode_buffer_bins(Ref<GLTFState> state, const String &p_path);
 	Error _encode_buffer_glb(Ref<GLTFState> state, const String &p_path);
-	PackedByteArray _serialize_glb_buffer(Ref<GLTFState> state, Error *r_err);
+	PoolByteArray _serialize_glb_buffer(Ref<GLTFState> state, Error *r_err);
 	Dictionary _serialize_texture_transform_uv1(Ref<SpatialMaterial> p_material);
 	Dictionary _serialize_texture_transform_uv2(Ref<SpatialMaterial> p_material);
 	Error _serialize_version(Ref<GLTFState> state);
@@ -283,12 +281,12 @@ private:
 
 public:
 	Error append_from_file(String p_path, Ref<GLTFState> r_state, uint32_t p_flags = 0, int32_t p_bake_fps = 30, String p_base_path = String());
-	Error append_from_buffer(PackedByteArray p_bytes, String p_base_path, Ref<GLTFState> r_state, uint32_t p_flags = 0, int32_t p_bake_fps = 30);
+	Error append_from_buffer(PoolByteArray p_bytes, String p_base_path, Ref<GLTFState> r_state, uint32_t p_flags = 0, int32_t p_bake_fps = 30);
 	Error append_from_scene(Node *p_node, Ref<GLTFState> r_state, uint32_t p_flags = 0, int32_t p_bake_fps = 30);
 
 public:
 	Node *generate_scene(Ref<GLTFState> state, int32_t p_bake_fps = 30.0f);
-	PackedByteArray generate_buffer(Ref<GLTFState> state);
+	PoolByteArray generate_buffer(Ref<GLTFState> state);
 	Error write_to_filesystem(Ref<GLTFState> state, const String &p_path);
 
 public:
@@ -296,16 +294,16 @@ public:
 	Error _parse_gltf_extensions(Ref<GLTFState> state);
 	void _process_mesh_instances(Ref<GLTFState> state, Node *scene_root);
 	void _generate_scene_node(Ref<GLTFState> state, Node *scene_parent,
-			Node3D *scene_root,
+			Spatial *scene_root,
 			const GLTFNodeIndex node_index);
-	void _generate_skeleton_bone_node(Ref<GLTFState> state, Node *scene_parent, Node3D *scene_root, const GLTFNodeIndex node_index);
+	void _generate_skeleton_bone_node(Ref<GLTFState> state, Node *scene_parent, Spatial *scene_root, const GLTFNodeIndex node_index);
 	void _import_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 			const GLTFAnimationIndex index, const int bake_fps);
 	void _convert_mesh_instances(Ref<GLTFState> state);
-	GLTFCameraIndex _convert_camera(Ref<GLTFState> state, Camera3D *p_camera);
+	GLTFCameraIndex _convert_camera(Ref<GLTFState> state, Camera *p_camera);
 	void _convert_light_to_gltf(Light *light, Ref<GLTFState> state, Ref<GLTFNode> gltf_node);
 	GLTFLightIndex _convert_light(Ref<GLTFState> state, Light *p_light);
-	void _convert_spatial(Ref<GLTFState> state, Node3D *p_spatial, Ref<GLTFNode> p_node);
+	void _convert_spatial(Ref<GLTFState> state, Spatial *p_spatial, Ref<GLTFNode> p_node);
 	void _convert_scene_node(Ref<GLTFState> state, Node *p_current,
 			const GLTFNodeIndex p_gltf_current,
 			const GLTFNodeIndex p_gltf_root);
@@ -322,7 +320,7 @@ public:
 			GLTFNodeIndex p_gltf_root_index,
 			Ref<GLTFNode> p_gltf_node, Node *p_scene_parent);
 	void _check_visibility(Node *p_node, bool &retflag);
-	void _convert_camera_to_gltf(Camera3D *camera, Ref<GLTFState> state,
+	void _convert_camera_to_gltf(Camera *camera, Ref<GLTFState> state,
 			Ref<GLTFNode> gltf_node);
 	void _convert_multi_mesh_instance_to_gltf(
 			MultiMeshInstance *p_multi_mesh_instance,
@@ -339,15 +337,25 @@ public:
 			GLTFNodeIndex p_parent_node_index,
 			GLTFNodeIndex p_root_node_index,
 			Ref<GLTFNode> gltf_node);
-	void _convert_mesh_instance_to_gltf(MeshInstance3D *p_mesh_instance,
+	void _convert_mesh_instance_to_gltf(MeshInstance *p_mesh_instance,
 			Ref<GLTFState> state,
 			Ref<GLTFNode> gltf_node);
 	GLTFMeshIndex _convert_mesh_to_gltf(Ref<GLTFState> state,
-			MeshInstance3D *p_mesh_instance);
+			MeshInstance *p_mesh_instance);
 	void _convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 			String p_animation_track_name);
 	Error _serialize(Ref<GLTFState> state, const String &p_path);
 	Error _parse(Ref<GLTFState> state, String p_path, FileAccess *f, int p_bake_fps);
+
+	GLTFDocument();
+
+protected:
+	static void _bind_methods();
+
+private:
+	const float BAKE_FPS = 30.0f;
+
+	Vector<Ref<GLTFDocumentExtension>> document_extensions;
 };
 
 #endif // GLTF_DOCUMENT_H

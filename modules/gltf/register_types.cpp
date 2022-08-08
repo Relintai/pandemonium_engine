@@ -48,6 +48,7 @@
 #include "gltf_document_extension.h"
 #include "gltf_document_extension_convert_importer_mesh.h"
 #include "gltf_state.h"
+#include "gltf_document.h"
 
 void register_gltf_types() {
 		ClassDB::register_class<GLTFAccessor>();
@@ -63,7 +64,7 @@ void register_gltf_types() {
 		ClassDB::register_class<GLTFSpecGloss>();
 		ClassDB::register_class<GLTFLight>();
 
-		//ClassDB::register_class<GLTFDocument>();
+		ClassDB::register_class<GLTFDocument>();
 		ClassDB::register_class<GLTFDocumentExtension>();
 		ClassDB::register_class<GLTFDocumentExtensionConvertImporterMesh>();
 		ClassDB::register_class<GLTFState>();
@@ -74,7 +75,7 @@ void unregister_gltf_types() {
 
 /*
 
-#include "gltf_document.h"
+
 
 
 

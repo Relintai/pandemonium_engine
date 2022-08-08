@@ -11,6 +11,7 @@ env_gltf.add_source_files(env.modules_sources, "register_types.cpp")
 env_gltf.add_source_files(env.modules_sources, "gltf_state.cpp")
 env_gltf.add_source_files(env.modules_sources, "gltf_document_extension.cpp")
 env_gltf.add_source_files(env.modules_sources, "gltf_document_extension_convert_importer_mesh.cpp")
+env_gltf.add_source_files(env.modules_sources, "gltf_document.cpp")
 
 #env_gltf.add_source_files(env.modules_sources, "*.cpp")
 
