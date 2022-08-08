@@ -36,7 +36,7 @@
 #include "core/math/vector3.h"
 #include "core/ustring.h"
 
-struct _NO_DISCARD_ Vector4 {
+struct _NO_DISCARD_CLASS_ Vector4 {
 	enum Axis {
 		AXIS_X,
 		AXIS_Y,

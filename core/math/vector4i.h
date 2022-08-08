@@ -37,7 +37,7 @@
 class String;
 struct Vector4;
 
-struct _NO_DISCARD_ Vector4i {
+struct _NO_DISCARD_CLASS_ Vector4i {
 	enum Axis {
 		AXIS_X,
 		AXIS_Y,
