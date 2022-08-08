@@ -1,5 +1,7 @@
+#ifndef GLTF_ACCESSOR_H
+#define GLTF_ACCESSOR_H
 /*************************************************************************/
-/*  register_types.cpp                                                   */
+/*  gltf_accessor.h                                                      */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,66 +30,75 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef _3D_DISABLED
+#include "core/resource.h"
 
-#include "register_types.h"
-
-#include "gltf_accessor.h"
-#include "gltf_animation.h"
-#include "gltf_buffer_view.h"
-#include "gltf_camera.h"
 #include "gltf_document.h"
-#include "gltf_light.h"
-#include "gltf_mesh.h"
-#include "gltf_node.h"
-#include "gltf_skeleton.h"
-#include "gltf_skin.h"
-#include "gltf_spec_gloss.h"
-#include "gltf_state.h"
-#include "gltf_texture.h"
-#include "packed_scene_gltf.h"
 
-#ifdef TOOLS_ENABLED
-#include "editor/editor_node.h"
-#include "editor_scene_exporter_gltf_plugin.h"
-#include "editor_scene_importer_gltf.h"
-#endif
+struct GLTFAccessor : public Resource {
+	GDCLASS(GLTFAccessor, Resource);
+	friend class GLTFDocument;
 
-#ifdef TOOLS_ENABLED
-static void _editor_init() {
-	Ref<EditorSceneImporterGLTF> import_gltf;
-	import_gltf.instance();
-	ResourceImporterScene::get_singleton()->add_importer(import_gltf);
-}
-#endif
+private:
+	GLTFBufferViewIndex buffer_view = 0;
+	int byte_offset = 0;
+	int component_type = 0;
+	bool normalized = false;
+	int count = 0;
+	GLTFDocument::GLTFType type = GLTFDocument::TYPE_SCALAR;
+	PoolVector<float> min;
+	PoolVector<float> max;
+	int sparse_count = 0;
+	int sparse_indices_buffer_view = 0;
+	int sparse_indices_byte_offset = 0;
+	int sparse_indices_component_type = 0;
+	int sparse_values_buffer_view = 0;
+	int sparse_values_byte_offset = 0;
 
-void register_gltf_types() {
-#ifdef TOOLS_ENABLED
-	ClassDB::APIType prev_api = ClassDB::get_current_api();
-	ClassDB::set_current_api(ClassDB::API_EDITOR);
-	ClassDB::register_class<EditorSceneImporterGLTF>();
-	ClassDB::register_class<GLTFMesh>();
-	EditorPlugins::add_by_type<SceneExporterGLTFPlugin>();
-	ClassDB::set_current_api(prev_api);
-	EditorNode::add_init_callback(_editor_init);
-#endif
+protected:
+	static void _bind_methods();
 
-	ClassDB::register_class<GLTFSpecGloss>();
-	ClassDB::register_class<GLTFNode>();
-	ClassDB::register_class<GLTFAnimation>();
-	ClassDB::register_class<GLTFBufferView>();
-	ClassDB::register_class<GLTFAccessor>();
-	ClassDB::register_class<GLTFTexture>();
-	ClassDB::register_class<GLTFSkeleton>();
-	ClassDB::register_class<GLTFSkin>();
-	ClassDB::register_class<GLTFCamera>();
-	ClassDB::register_class<GLTFLight>();
-	ClassDB::register_class<GLTFState>();
-	ClassDB::register_class<GLTFDocument>();
-	ClassDB::register_class<PackedSceneGLTF>();
-}
+public:
+	GLTFBufferViewIndex get_buffer_view();
+	void set_buffer_view(GLTFBufferViewIndex p_buffer_view);
 
-void unregister_gltf_types() {
-}
+	int get_byte_offset();
+	void set_byte_offset(int p_byte_offset);
 
-#endif // _3D_DISABLED
+	int get_component_type();
+	void set_component_type(int p_component_type);
+
+	bool get_normalized();
+	void set_normalized(bool p_normalized);
+
+	int get_count();
+	void set_count(int p_count);
+
+	int get_type();
+	void set_type(int p_type);
+
+	PoolVector<float> get_min();
+	void set_min(PoolVector<float> p_min);
+
+	PoolVector<float> get_max();
+	void set_max(PoolVector<float> p_max);
+
+	int get_sparse_count();
+	void set_sparse_count(int p_sparse_count);
+
+	int get_sparse_indices_buffer_view();
+	void set_sparse_indices_buffer_view(int p_sparse_indices_buffer_view);
+
+	int get_sparse_indices_byte_offset();
+	void set_sparse_indices_byte_offset(int p_sparse_indices_byte_offset);
+
+	int get_sparse_indices_component_type();
+	void set_sparse_indices_component_type(int p_sparse_indices_component_type);
+
+	int get_sparse_values_buffer_view();
+	void set_sparse_values_buffer_view(int p_sparse_values_buffer_view);
+
+	int get_sparse_values_byte_offset();
+	void set_sparse_values_byte_offset(int p_sparse_values_byte_offset);
+};
+
+#endif // GLTF_ACCESSOR_H

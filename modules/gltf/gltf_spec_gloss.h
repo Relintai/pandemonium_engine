@@ -1,5 +1,7 @@
+#ifndef GLTF_SPEC_GLOSS_H
+#define GLTF_SPEC_GLOSS_H
 /*************************************************************************/
-/*  register_types.cpp                                                   */
+/*  gltf_spec_gloss.h                                                    */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,66 +30,38 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef _3D_DISABLED
+#include "core/image.h"
+#include "core/resource.h"
 
-#include "register_types.h"
+class GLTFSpecGloss : public Resource {
+	GDCLASS(GLTFSpecGloss, Resource);
+	friend class GLTFDocument;
 
-#include "gltf_accessor.h"
-#include "gltf_animation.h"
-#include "gltf_buffer_view.h"
-#include "gltf_camera.h"
-#include "gltf_document.h"
-#include "gltf_light.h"
-#include "gltf_mesh.h"
-#include "gltf_node.h"
-#include "gltf_skeleton.h"
-#include "gltf_skin.h"
-#include "gltf_spec_gloss.h"
-#include "gltf_state.h"
-#include "gltf_texture.h"
-#include "packed_scene_gltf.h"
+private:
+	Ref<Image> diffuse_img = nullptr;
+	Color diffuse_factor = Color(1.0f, 1.0f, 1.0f);
+	float gloss_factor = 1.0f;
+	Color specular_factor = Color(1.0f, 1.0f, 1.0f);
+	Ref<Image> spec_gloss_img = nullptr;
 
-#ifdef TOOLS_ENABLED
-#include "editor/editor_node.h"
-#include "editor_scene_exporter_gltf_plugin.h"
-#include "editor_scene_importer_gltf.h"
-#endif
+protected:
+	static void _bind_methods();
 
-#ifdef TOOLS_ENABLED
-static void _editor_init() {
-	Ref<EditorSceneImporterGLTF> import_gltf;
-	import_gltf.instance();
-	ResourceImporterScene::get_singleton()->add_importer(import_gltf);
-}
-#endif
+public:
+	Ref<Image> get_diffuse_img();
+	void set_diffuse_img(Ref<Image> p_diffuse_img);
 
-void register_gltf_types() {
-#ifdef TOOLS_ENABLED
-	ClassDB::APIType prev_api = ClassDB::get_current_api();
-	ClassDB::set_current_api(ClassDB::API_EDITOR);
-	ClassDB::register_class<EditorSceneImporterGLTF>();
-	ClassDB::register_class<GLTFMesh>();
-	EditorPlugins::add_by_type<SceneExporterGLTFPlugin>();
-	ClassDB::set_current_api(prev_api);
-	EditorNode::add_init_callback(_editor_init);
-#endif
+	Color get_diffuse_factor();
+	void set_diffuse_factor(Color p_diffuse_factor);
 
-	ClassDB::register_class<GLTFSpecGloss>();
-	ClassDB::register_class<GLTFNode>();
-	ClassDB::register_class<GLTFAnimation>();
-	ClassDB::register_class<GLTFBufferView>();
-	ClassDB::register_class<GLTFAccessor>();
-	ClassDB::register_class<GLTFTexture>();
-	ClassDB::register_class<GLTFSkeleton>();
-	ClassDB::register_class<GLTFSkin>();
-	ClassDB::register_class<GLTFCamera>();
-	ClassDB::register_class<GLTFLight>();
-	ClassDB::register_class<GLTFState>();
-	ClassDB::register_class<GLTFDocument>();
-	ClassDB::register_class<PackedSceneGLTF>();
-}
+	float get_gloss_factor();
+	void set_gloss_factor(float p_gloss_factor);
 
-void unregister_gltf_types() {
-}
+	Color get_specular_factor();
+	void set_specular_factor(Color p_specular_factor);
 
-#endif // _3D_DISABLED
+	Ref<Image> get_spec_gloss_img();
+	void set_spec_gloss_img(Ref<Image> p_spec_gloss_img);
+};
+
+#endif // GLTF_SPEC_GLOSS_H

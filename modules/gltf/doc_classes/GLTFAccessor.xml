@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="GLTFAccessor" inherits="Resource" version="4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+<class name="GLTFAccessor" inherits="Resource" version="3.5">
 	<brief_description>
 	</brief_description>
 	<description>
+		[b]Note:[/b] This class is only compiled in editor builds. Run-time glTF loading and saving is [i]not[/i] available in exported projects. References to [GLTFAccessor] within a script will cause an error in an exported project.
 	</description>
 	<tutorials>
 	</tutorials>
+	<methods>
+	</methods>
 	<members>
 		<member name="buffer_view" type="int" setter="set_buffer_view" getter="get_buffer_view" default="0">
 		</member>
@@ -15,9 +18,9 @@
 		</member>
 		<member name="count" type="int" setter="set_count" getter="get_count" default="0">
 		</member>
-		<member name="max" type="PackedFloat64Array" setter="set_max" getter="get_max" default="PackedFloat64Array()">
+		<member name="max" type="PoolRealArray" setter="set_max" getter="get_max" default="PoolRealArray(  )">
 		</member>
-		<member name="min" type="PackedFloat64Array" setter="set_min" getter="get_min" default="PackedFloat64Array()">
+		<member name="min" type="PoolRealArray" setter="set_min" getter="get_min" default="PoolRealArray(  )">
 		</member>
 		<member name="normalized" type="bool" setter="set_normalized" getter="get_normalized" default="false">
 		</member>
@@ -36,4 +39,6 @@
 		<member name="type" type="int" setter="set_type" getter="get_type" default="0">
 		</member>
 	</members>
+	<constants>
+	</constants>
 </class>

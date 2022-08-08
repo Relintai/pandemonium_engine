@@ -1,5 +1,7 @@
+#ifndef GLTF_LIGHT_H
+#define GLTF_LIGHT_H
 /*************************************************************************/
-/*  register_types.cpp                                                   */
+/*  gltf_light.h                                                         */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,66 +30,41 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef _3D_DISABLED
+#include "core/resource.h"
 
-#include "register_types.h"
+class GLTFLight : public Resource {
+	GDCLASS(GLTFLight, Resource)
+	friend class GLTFDocument;
 
-#include "gltf_accessor.h"
-#include "gltf_animation.h"
-#include "gltf_buffer_view.h"
-#include "gltf_camera.h"
-#include "gltf_document.h"
-#include "gltf_light.h"
-#include "gltf_mesh.h"
-#include "gltf_node.h"
-#include "gltf_skeleton.h"
-#include "gltf_skin.h"
-#include "gltf_spec_gloss.h"
-#include "gltf_state.h"
-#include "gltf_texture.h"
-#include "packed_scene_gltf.h"
+protected:
+	static void _bind_methods();
 
-#ifdef TOOLS_ENABLED
-#include "editor/editor_node.h"
-#include "editor_scene_exporter_gltf_plugin.h"
-#include "editor_scene_importer_gltf.h"
-#endif
+private:
+	Color color = Color(1.0f, 1.0f, 1.0f);
+	float intensity = 1.0f;
+	String type;
+	float range = INFINITY;
+	float inner_cone_angle = 0.0f;
+	float outer_cone_angle = Math_TAU / 8.0f;
 
-#ifdef TOOLS_ENABLED
-static void _editor_init() {
-	Ref<EditorSceneImporterGLTF> import_gltf;
-	import_gltf.instance();
-	ResourceImporterScene::get_singleton()->add_importer(import_gltf);
-}
-#endif
+public:
+	Color get_color();
+	void set_color(Color p_color);
 
-void register_gltf_types() {
-#ifdef TOOLS_ENABLED
-	ClassDB::APIType prev_api = ClassDB::get_current_api();
-	ClassDB::set_current_api(ClassDB::API_EDITOR);
-	ClassDB::register_class<EditorSceneImporterGLTF>();
-	ClassDB::register_class<GLTFMesh>();
-	EditorPlugins::add_by_type<SceneExporterGLTFPlugin>();
-	ClassDB::set_current_api(prev_api);
-	EditorNode::add_init_callback(_editor_init);
-#endif
+	float get_intensity();
+	void set_intensity(float p_intensity);
 
-	ClassDB::register_class<GLTFSpecGloss>();
-	ClassDB::register_class<GLTFNode>();
-	ClassDB::register_class<GLTFAnimation>();
-	ClassDB::register_class<GLTFBufferView>();
-	ClassDB::register_class<GLTFAccessor>();
-	ClassDB::register_class<GLTFTexture>();
-	ClassDB::register_class<GLTFSkeleton>();
-	ClassDB::register_class<GLTFSkin>();
-	ClassDB::register_class<GLTFCamera>();
-	ClassDB::register_class<GLTFLight>();
-	ClassDB::register_class<GLTFState>();
-	ClassDB::register_class<GLTFDocument>();
-	ClassDB::register_class<PackedSceneGLTF>();
-}
+	String get_type();
+	void set_type(String p_type);
 
-void unregister_gltf_types() {
-}
+	float get_range();
+	void set_range(float p_range);
 
-#endif // _3D_DISABLED
+	float get_inner_cone_angle();
+	void set_inner_cone_angle(float p_inner_cone_angle);
+
+	float get_outer_cone_angle();
+	void set_outer_cone_angle(float p_outer_cone_angle);
+};
+
+#endif // GLTF_LIGHT_H

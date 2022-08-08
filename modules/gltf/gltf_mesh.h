@@ -1,5 +1,7 @@
+#ifndef GLTF_MESH_H
+#define GLTF_MESH_H
 /*************************************************************************/
-/*  register_types.cpp                                                   */
+/*  gltf_mesh.h                                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,66 +30,27 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef _3D_DISABLED
+#include "core/resource.h"
+#include "scene/resources/mesh.h"
 
-#include "register_types.h"
+class GLTFMesh : public Resource {
+	GDCLASS(GLTFMesh, Resource);
 
-#include "gltf_accessor.h"
-#include "gltf_animation.h"
-#include "gltf_buffer_view.h"
-#include "gltf_camera.h"
-#include "gltf_document.h"
-#include "gltf_light.h"
-#include "gltf_mesh.h"
-#include "gltf_node.h"
-#include "gltf_skeleton.h"
-#include "gltf_skin.h"
-#include "gltf_spec_gloss.h"
-#include "gltf_state.h"
-#include "gltf_texture.h"
-#include "packed_scene_gltf.h"
+private:
+	Ref<ArrayMesh> mesh;
+	Vector<float> blend_weights;
+	Array instance_materials;
 
-#ifdef TOOLS_ENABLED
-#include "editor/editor_node.h"
-#include "editor_scene_exporter_gltf_plugin.h"
-#include "editor_scene_importer_gltf.h"
-#endif
+protected:
+	static void _bind_methods();
 
-#ifdef TOOLS_ENABLED
-static void _editor_init() {
-	Ref<EditorSceneImporterGLTF> import_gltf;
-	import_gltf.instance();
-	ResourceImporterScene::get_singleton()->add_importer(import_gltf);
-}
-#endif
+public:
+	Ref<ArrayMesh> get_mesh();
+	void set_mesh(Ref<ArrayMesh> p_mesh);
+	Vector<float> get_blend_weights();
+	void set_blend_weights(Vector<float> p_blend_weights);
+	Array get_instance_materials();
+	void set_instance_materials(Array p_instance_materials);
+};
 
-void register_gltf_types() {
-#ifdef TOOLS_ENABLED
-	ClassDB::APIType prev_api = ClassDB::get_current_api();
-	ClassDB::set_current_api(ClassDB::API_EDITOR);
-	ClassDB::register_class<EditorSceneImporterGLTF>();
-	ClassDB::register_class<GLTFMesh>();
-	EditorPlugins::add_by_type<SceneExporterGLTFPlugin>();
-	ClassDB::set_current_api(prev_api);
-	EditorNode::add_init_callback(_editor_init);
-#endif
-
-	ClassDB::register_class<GLTFSpecGloss>();
-	ClassDB::register_class<GLTFNode>();
-	ClassDB::register_class<GLTFAnimation>();
-	ClassDB::register_class<GLTFBufferView>();
-	ClassDB::register_class<GLTFAccessor>();
-	ClassDB::register_class<GLTFTexture>();
-	ClassDB::register_class<GLTFSkeleton>();
-	ClassDB::register_class<GLTFSkin>();
-	ClassDB::register_class<GLTFCamera>();
-	ClassDB::register_class<GLTFLight>();
-	ClassDB::register_class<GLTFState>();
-	ClassDB::register_class<GLTFDocument>();
-	ClassDB::register_class<PackedSceneGLTF>();
-}
-
-void unregister_gltf_types() {
-}
-
-#endif // _3D_DISABLED
+#endif // GLTF_MESH_H

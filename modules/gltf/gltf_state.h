@@ -1,6 +1,5 @@
 #ifndef GLTF_STATE_H
 #define GLTF_STATE_H
-
 /*************************************************************************/
 /*  gltf_state.h                                                         */
 /*************************************************************************/
@@ -31,36 +30,38 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "extensions/gltf_light.h"
-#include "gltf_template_convert.h"
-#include "structures/gltf_accessor.h"
-#include "structures/gltf_animation.h"
-#include "structures/gltf_buffer_view.h"
-#include "structures/gltf_camera.h"
-#include "structures/gltf_mesh.h"
-#include "structures/gltf_node.h"
-#include "structures/gltf_skeleton.h"
-#include "structures/gltf_skin.h"
-#include "structures/gltf_texture.h"
-
-#include "core/rb_map.h"
+#include "core/map.h"
+#include "core/resource.h"
+#include "core/vector.h"
 #include "scene/animation/animation_player.h"
 #include "scene/resources/texture.h"
+
+#include "gltf_accessor.h"
+#include "gltf_animation.h"
+#include "gltf_buffer_view.h"
+#include "gltf_camera.h"
+#include "gltf_document.h"
+#include "gltf_light.h"
+#include "gltf_mesh.h"
+#include "gltf_node.h"
+#include "gltf_skeleton.h"
+#include "gltf_skin.h"
+#include "gltf_texture.h"
 
 class GLTFState : public Resource {
 	GDCLASS(GLTFState, Resource);
 	friend class GLTFDocument;
+	friend class PackedSceneGLTF;
 
 	String filename;
-	String base_path;
 	Dictionary json;
 	int major_version = 0;
 	int minor_version = 0;
 	Vector<uint8_t> glb_data;
 
 	bool use_named_skin_binds = false;
-	bool use_khr_texture_transform = false;
-	bool discard_meshes_and_materials = false;
+	bool use_legacy_names = false;
+	uint32_t compress_flags = 0;
 
 	Vector<Ref<GLTFNode>> nodes;
 	Vector<Vector<uint8_t>> buffers;
@@ -70,8 +71,8 @@ class GLTFState : public Resource {
 	Vector<Ref<GLTFMesh>> meshes; // meshes are loaded directly, no reason not to.
 
 	Vector<AnimationPlayer *> animation_players;
-	HashMap<Ref<SpatialMaterial>, GLTFMaterialIndex> material_cache;
-	Vector<Ref<SpatialMaterial>> materials;
+	Map<Ref<Material>, GLTFMaterialIndex> material_cache;
+	Vector<Ref<Material>> materials;
 
 	String scene_name;
 	Vector<int> root_nodes;
@@ -81,16 +82,16 @@ class GLTFState : public Resource {
 	Vector<Ref<GLTFSkin>> skins;
 	Vector<Ref<GLTFCamera>> cameras;
 	Vector<Ref<GLTFLight>> lights;
-	HashSet<String> unique_names;
-	HashSet<String> unique_animation_names;
+	Set<String> unique_names;
+	Set<String> unique_animation_names;
 
 	Vector<Ref<GLTFSkeleton>> skeletons;
-	HashMap<GLTFSkeletonIndex, GLTFNodeIndex> skeleton_to_node;
+	Map<GLTFSkeletonIndex, GLTFNodeIndex> skeleton_to_node;
 	Vector<Ref<GLTFAnimation>> animations;
-	HashMap<GLTFNodeIndex, Node *> scene_nodes;
+	Map<GLTFNodeIndex, Node *> scene_nodes;
 
-	HashMap<ObjectID, GLTFSkeletonIndex> skeleton3d_to_gltf_skeleton;
-	HashMap<ObjectID, HashMap<ObjectID, GLTFSkinIndex>> skin_and_skeleton3d_to_gltf_skin;
+	Map<ObjectID, GLTFSkeletonIndex> skeleton3d_to_gltf_skeleton;
+	Map<ObjectID, Map<ObjectID, GLTFSkinIndex>> skin_and_skeleton3d_to_gltf_skin;
 
 protected:
 	static void _bind_methods();
@@ -110,9 +111,6 @@ public:
 
 	bool get_use_named_skin_binds();
 	void set_use_named_skin_binds(bool p_use_named_skin_binds);
-
-	bool get_discard_meshes_and_materials();
-	void set_discard_meshes_and_materials(bool p_discard_meshes_and_materials);
 
 	Array get_nodes();
 	void set_nodes(Array p_nodes);
@@ -134,9 +132,6 @@ public:
 
 	String get_scene_name();
 	void set_scene_name(String p_scene_name);
-
-	String get_base_path();
-	void set_base_path(String p_base_path);
 
 	Array get_root_nodes();
 	void set_root_nodes(Array p_root_nodes);
@@ -176,21 +171,6 @@ public:
 	int get_animation_players_count(int idx);
 
 	AnimationPlayer *get_animation_player(int idx);
-
-	//void set_scene_nodes(RBMap<GLTFNodeIndex, Node *> p_scene_nodes) {
-	//	this->scene_nodes = p_scene_nodes;
-	//}
-
-	//void set_animation_players(Vector<AnimationPlayer *> p_animation_players) {
-	//	this->animation_players = p_animation_players;
-	//}
-
-	//RBMap<Ref<Material>, GLTFMaterialIndex> get_material_cache() {
-	//	return this->material_cache;
-	//}
-	//void set_material_cache(RBMap<Ref<Material>, GLTFMaterialIndex> p_material_cache) {
-	//	this->material_cache = p_material_cache;
-	//}
 };
 
 #endif // GLTF_STATE_H

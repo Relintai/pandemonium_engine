@@ -1,5 +1,7 @@
+#ifndef GLTF_ANIMATION_H
+#define GLTF_ANIMATION_H
 /*************************************************************************/
-/*  register_types.cpp                                                   */
+/*  gltf_animation.h                                                     */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,66 +30,45 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef _3D_DISABLED
+#include "core/resource.h"
 
-#include "register_types.h"
+class GLTFAnimation : public Resource {
+	GDCLASS(GLTFAnimation, Resource);
 
-#include "gltf_accessor.h"
-#include "gltf_animation.h"
-#include "gltf_buffer_view.h"
-#include "gltf_camera.h"
-#include "gltf_document.h"
-#include "gltf_light.h"
-#include "gltf_mesh.h"
-#include "gltf_node.h"
-#include "gltf_skeleton.h"
-#include "gltf_skin.h"
-#include "gltf_spec_gloss.h"
-#include "gltf_state.h"
-#include "gltf_texture.h"
-#include "packed_scene_gltf.h"
+protected:
+	static void _bind_methods();
 
-#ifdef TOOLS_ENABLED
-#include "editor/editor_node.h"
-#include "editor_scene_exporter_gltf_plugin.h"
-#include "editor_scene_importer_gltf.h"
-#endif
+public:
+	enum Interpolation {
+		INTERP_LINEAR,
+		INTERP_STEP,
+		INTERP_CATMULLROMSPLINE,
+		INTERP_CUBIC_SPLINE,
+	};
 
-#ifdef TOOLS_ENABLED
-static void _editor_init() {
-	Ref<EditorSceneImporterGLTF> import_gltf;
-	import_gltf.instance();
-	ResourceImporterScene::get_singleton()->add_importer(import_gltf);
-}
-#endif
+	template <class T>
+	struct Channel {
+		Interpolation interpolation;
+		Vector<float> times;
+		Vector<T> values;
+	};
 
-void register_gltf_types() {
-#ifdef TOOLS_ENABLED
-	ClassDB::APIType prev_api = ClassDB::get_current_api();
-	ClassDB::set_current_api(ClassDB::API_EDITOR);
-	ClassDB::register_class<EditorSceneImporterGLTF>();
-	ClassDB::register_class<GLTFMesh>();
-	EditorPlugins::add_by_type<SceneExporterGLTFPlugin>();
-	ClassDB::set_current_api(prev_api);
-	EditorNode::add_init_callback(_editor_init);
-#endif
+	struct Track {
+		Channel<Vector3> translation_track;
+		Channel<Quat> rotation_track;
+		Channel<Vector3> scale_track;
+		Vector<Channel<float>> weight_tracks;
+	};
 
-	ClassDB::register_class<GLTFSpecGloss>();
-	ClassDB::register_class<GLTFNode>();
-	ClassDB::register_class<GLTFAnimation>();
-	ClassDB::register_class<GLTFBufferView>();
-	ClassDB::register_class<GLTFAccessor>();
-	ClassDB::register_class<GLTFTexture>();
-	ClassDB::register_class<GLTFSkeleton>();
-	ClassDB::register_class<GLTFSkin>();
-	ClassDB::register_class<GLTFCamera>();
-	ClassDB::register_class<GLTFLight>();
-	ClassDB::register_class<GLTFState>();
-	ClassDB::register_class<GLTFDocument>();
-	ClassDB::register_class<PackedSceneGLTF>();
-}
+public:
+	bool get_loop() const;
+	void set_loop(bool p_val);
+	Map<int, GLTFAnimation::Track> &get_tracks();
+	GLTFAnimation();
 
-void unregister_gltf_types() {
-}
+private:
+	bool loop = false;
+	Map<int, Track> tracks;
+};
 
-#endif // _3D_DISABLED
+#endif // GLTF_ANIMATION_H

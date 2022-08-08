@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="GLTFSkin" inherits="Resource" version="4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+<class name="GLTFSkin" inherits="Resource" version="3.5">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -42,19 +42,21 @@
 		</method>
 	</methods>
 	<members>
-		<member name="godot_skin" type="Skin" setter="set_godot_skin" getter="get_godot_skin">
+		<member name="joints" type="PoolIntArray" setter="set_joints" getter="get_joints" default="PoolIntArray(  )">
 		</member>
-		<member name="joints" type="PackedInt32Array" setter="set_joints" getter="get_joints" default="PackedInt32Array()">
+		<member name="joints_original" type="PoolIntArray" setter="set_joints_original" getter="get_joints_original" default="PoolIntArray(  )">
 		</member>
-		<member name="joints_original" type="PackedInt32Array" setter="set_joints_original" getter="get_joints_original" default="PackedInt32Array()">
+		<member name="non_joints" type="PoolIntArray" setter="set_non_joints" getter="get_non_joints" default="PoolIntArray(  )">
 		</member>
-		<member name="non_joints" type="PackedInt32Array" setter="set_non_joints" getter="get_non_joints" default="PackedInt32Array()">
+		<member name="pandemonium_skin" type="Skin" setter="set_pandemonium_skin" getter="get_pandemonium_skin">
 		</member>
-		<member name="roots" type="PackedInt32Array" setter="set_roots" getter="get_roots" default="PackedInt32Array()">
+		<member name="roots" type="PoolIntArray" setter="set_roots" getter="get_roots" default="PoolIntArray(  )">
 		</member>
 		<member name="skeleton" type="int" setter="set_skeleton" getter="get_skeleton" default="-1">
 		</member>
 		<member name="skin_root" type="int" setter="set_skin_root" getter="get_skin_root" default="-1">
 		</member>
 	</members>
+	<constants>
+	</constants>
 </class>

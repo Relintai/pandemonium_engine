@@ -5,20 +5,5 @@ Import("env_modules")
 
 env_gltf = env_modules.Clone()
 
-# Godot source files
-env_gltf.add_source_files(env.modules_sources, "register_types.cpp")
-
-env_gltf.add_source_files(env.modules_sources, "gltf_state.cpp")
-env_gltf.add_source_files(env.modules_sources, "gltf_document_extension.cpp")
-env_gltf.add_source_files(env.modules_sources, "gltf_document_extension_convert_importer_mesh.cpp")
-env_gltf.add_source_files(env.modules_sources, "gltf_document.cpp")
-
-#env_gltf.add_source_files(env.modules_sources, "*.cpp")
-
-env_gltf.add_source_files(env.modules_sources, "extensions/*.cpp")
-env_gltf.add_source_files(env.modules_sources, "structures/*.cpp")
-
-if env["tools"]:
-    env_gltf.add_source_files(env.modules_sources, "editor/editor_scene_importer_gltf.cpp")
-    env_gltf.add_source_files(env.modules_sources, "editor/editor_scene_importer_fbx.cpp")
-    #env_gltf.add_source_files(env.modules_sources, "editor/*.cpp")
+# Pandemonium's own source files
+env_gltf.add_source_files(env.modules_sources, "*.cpp")

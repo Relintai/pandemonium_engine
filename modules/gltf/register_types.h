@@ -1,3 +1,5 @@
+#ifndef GLTF_REGISTER_TYPES_H
+#define GLTF_REGISTER_TYPES_H
 /*************************************************************************/
 /*  register_types.h                                                     */
 /*************************************************************************/
@@ -28,5 +30,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#ifndef _3D_DISABLED
+
 void register_gltf_types();
 void unregister_gltf_types();
+
+#endif // _3D_DISABLED
+
+#endif // GLTF_REGISTER_TYPES_H

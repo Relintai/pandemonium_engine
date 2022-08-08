@@ -1,5 +1,7 @@
+#ifndef GLTF_SKELETON_H
+#define GLTF_SKELETON_H
 /*************************************************************************/
-/*  register_types.cpp                                                   */
+/*  gltf_skeleton.h                                                      */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,66 +30,53 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef _3D_DISABLED
+#include "core/resource.h"
 
-#include "register_types.h"
-
-#include "gltf_accessor.h"
-#include "gltf_animation.h"
-#include "gltf_buffer_view.h"
-#include "gltf_camera.h"
 #include "gltf_document.h"
-#include "gltf_light.h"
-#include "gltf_mesh.h"
-#include "gltf_node.h"
-#include "gltf_skeleton.h"
-#include "gltf_skin.h"
-#include "gltf_spec_gloss.h"
-#include "gltf_state.h"
-#include "gltf_texture.h"
-#include "packed_scene_gltf.h"
 
-#ifdef TOOLS_ENABLED
-#include "editor/editor_node.h"
-#include "editor_scene_exporter_gltf_plugin.h"
-#include "editor_scene_importer_gltf.h"
-#endif
+class GLTFSkeleton : public Resource {
+	GDCLASS(GLTFSkeleton, Resource);
+	friend class GLTFDocument;
 
-#ifdef TOOLS_ENABLED
-static void _editor_init() {
-	Ref<EditorSceneImporterGLTF> import_gltf;
-	import_gltf.instance();
-	ResourceImporterScene::get_singleton()->add_importer(import_gltf);
-}
-#endif
+private:
+	// The *synthesized* skeletons joints
+	PoolVector<GLTFNodeIndex> joints;
 
-void register_gltf_types() {
-#ifdef TOOLS_ENABLED
-	ClassDB::APIType prev_api = ClassDB::get_current_api();
-	ClassDB::set_current_api(ClassDB::API_EDITOR);
-	ClassDB::register_class<EditorSceneImporterGLTF>();
-	ClassDB::register_class<GLTFMesh>();
-	EditorPlugins::add_by_type<SceneExporterGLTFPlugin>();
-	ClassDB::set_current_api(prev_api);
-	EditorNode::add_init_callback(_editor_init);
-#endif
+	// The roots of the skeleton. If there are multiple, each root must have the
+	// same parent (ie roots are siblings)
+	PoolVector<GLTFNodeIndex> roots;
 
-	ClassDB::register_class<GLTFSpecGloss>();
-	ClassDB::register_class<GLTFNode>();
-	ClassDB::register_class<GLTFAnimation>();
-	ClassDB::register_class<GLTFBufferView>();
-	ClassDB::register_class<GLTFAccessor>();
-	ClassDB::register_class<GLTFTexture>();
-	ClassDB::register_class<GLTFSkeleton>();
-	ClassDB::register_class<GLTFSkin>();
-	ClassDB::register_class<GLTFCamera>();
-	ClassDB::register_class<GLTFLight>();
-	ClassDB::register_class<GLTFState>();
-	ClassDB::register_class<GLTFDocument>();
-	ClassDB::register_class<PackedSceneGLTF>();
-}
+	// The created Skeleton for the scene
+	Skeleton *pandemonium_skeleton = nullptr;
 
-void unregister_gltf_types() {
-}
+	// Set of unique bone names for the skeleton
+	Set<String> unique_names;
 
-#endif // _3D_DISABLED
+	Map<int32_t, GLTFNodeIndex> pandemonium_bone_node;
+
+	PoolVector<BoneAttachment *> bone_attachments;
+
+protected:
+	static void _bind_methods();
+
+public:
+	PoolVector<GLTFNodeIndex> get_joints();
+	void set_joints(PoolVector<GLTFNodeIndex> p_joints);
+
+	PoolVector<GLTFNodeIndex> get_roots();
+	void set_roots(PoolVector<GLTFNodeIndex> p_roots);
+
+	Skeleton *get_pandemonium_skeleton();
+
+	Array get_unique_names();
+	void set_unique_names(Array p_unique_names);
+
+	Dictionary get_pandemonium_bone_node();
+	void set_pandemonium_bone_node(Dictionary p_indict);
+
+	BoneAttachment *get_bone_attachment(int idx);
+
+	int32_t get_bone_attachment_count();
+};
+
+#endif // GLTF_SKELETON_H

@@ -1,5 +1,7 @@
+#ifndef PACKED_SCENE_GLTF_H
+#define PACKED_SCENE_GLTF_H
 /*************************************************************************/
-/*  register_types.cpp                                                   */
+/*  packed_scene_gltf.h                                                  */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,66 +30,36 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef _3D_DISABLED
+#ifdef TOOLS_ENABLED
 
-#include "register_types.h"
+#include "scene/main/node.h"
+#include "scene/resources/packed_scene.h"
 
-#include "gltf_accessor.h"
-#include "gltf_animation.h"
-#include "gltf_buffer_view.h"
-#include "gltf_camera.h"
-#include "gltf_document.h"
-#include "gltf_light.h"
-#include "gltf_mesh.h"
-#include "gltf_node.h"
-#include "gltf_skeleton.h"
-#include "gltf_skin.h"
-#include "gltf_spec_gloss.h"
 #include "gltf_state.h"
-#include "gltf_texture.h"
-#include "packed_scene_gltf.h"
 
-#ifdef TOOLS_ENABLED
-#include "editor/editor_node.h"
-#include "editor_scene_exporter_gltf_plugin.h"
-#include "editor_scene_importer_gltf.h"
-#endif
+class PackedSceneGLTF : public PackedScene {
+	GDCLASS(PackedSceneGLTF, PackedScene);
 
-#ifdef TOOLS_ENABLED
-static void _editor_init() {
-	Ref<EditorSceneImporterGLTF> import_gltf;
-	import_gltf.instance();
-	ResourceImporterScene::get_singleton()->add_importer(import_gltf);
-}
-#endif
+protected:
+	static void _bind_methods();
 
-void register_gltf_types() {
-#ifdef TOOLS_ENABLED
-	ClassDB::APIType prev_api = ClassDB::get_current_api();
-	ClassDB::set_current_api(ClassDB::API_EDITOR);
-	ClassDB::register_class<EditorSceneImporterGLTF>();
-	ClassDB::register_class<GLTFMesh>();
-	EditorPlugins::add_by_type<SceneExporterGLTFPlugin>();
-	ClassDB::set_current_api(prev_api);
-	EditorNode::add_init_callback(_editor_init);
-#endif
+public:
+	virtual void save_scene(Node *p_node, const String &p_path, const String &p_src_path,
+			uint32_t p_flags, int p_bake_fps,
+			List<String> *r_missing_deps, Error *r_err = nullptr);
+	virtual void _build_parent_hierachy(Ref<GLTFState> state);
+	virtual Error export_gltf(Node *p_root, String p_path, int32_t p_flags = 0,
+			real_t p_bake_fps = 1000.0f);
+	virtual Node *import_scene(const String &p_path, uint32_t p_flags,
+			int p_bake_fps, uint32_t p_compress_flags,
+			List<String> *r_missing_deps,
+			Error *r_err,
+			Ref<GLTFState> r_state);
+	virtual Node *import_gltf_scene(const String &p_path, uint32_t p_flags, float p_bake_fps, uint32_t p_compress_flags, Ref<GLTFState> r_state = Ref<GLTFState>());
+	virtual void pack_gltf(String p_path, int32_t p_flags = 0,
+			real_t p_bake_fps = 1000.0f, uint32_t p_compress_flags = Mesh::ARRAY_COMPRESS_DEFAULT, Ref<GLTFState> r_state = Ref<GLTFState>());
+};
 
-	ClassDB::register_class<GLTFSpecGloss>();
-	ClassDB::register_class<GLTFNode>();
-	ClassDB::register_class<GLTFAnimation>();
-	ClassDB::register_class<GLTFBufferView>();
-	ClassDB::register_class<GLTFAccessor>();
-	ClassDB::register_class<GLTFTexture>();
-	ClassDB::register_class<GLTFSkeleton>();
-	ClassDB::register_class<GLTFSkin>();
-	ClassDB::register_class<GLTFCamera>();
-	ClassDB::register_class<GLTFLight>();
-	ClassDB::register_class<GLTFState>();
-	ClassDB::register_class<GLTFDocument>();
-	ClassDB::register_class<PackedSceneGLTF>();
-}
+#endif // PACKED_SCENE_GLTF_H
 
-void unregister_gltf_types() {
-}
-
-#endif // _3D_DISABLED
+#endif // TOOLS_ENABLED
