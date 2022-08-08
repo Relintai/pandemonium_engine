@@ -42,6 +42,7 @@
 #include "scene/resources/material.h"
 
 class Camera;
+class GLTFDocumentExtension;
 
 class GLTFDocument : public Resource {
 	GDCLASS(GLTFDocument, Resource);
@@ -356,6 +357,7 @@ public:
 	Error _parse(Ref<GLTFState> state, String p_path, FileAccess *f, int p_bake_fps);
 
 	GLTFDocument();
+	~GLTFDocument();
 
 protected:
 	static void _bind_methods();

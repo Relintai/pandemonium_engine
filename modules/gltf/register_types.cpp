@@ -75,11 +75,6 @@ void unregister_gltf_types() {
 
 /*
 
-
-
-
-
-
 #ifdef TOOLS_ENABLED
 #include "core/project_settings.h"
 #include "editor/editor_node.h"

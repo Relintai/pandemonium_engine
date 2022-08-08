@@ -35,7 +35,8 @@
 #include "../gltf_document.h"
 #include "../gltf_state.h"
 
-#include "core/config/project_settings.h"
+#include "core/os/os.h"
+#include "core/project_settings.h"
 #include "editor/editor_settings.h"
 #include "scene/main/node.h"
 #include "scene/resources/animation.h"
@@ -48,16 +49,14 @@ void EditorSceneFormatImporterFBX::get_extensions(List<String> *r_extensions) co
 	r_extensions->push_back("fbx");
 }
 
-Node *EditorSceneFormatImporterFBX::import_scene(const String &p_path, uint32_t p_flags,
-		const HashMap<StringName, Variant> &p_options, int p_bake_fps,
-		List<String> *r_missing_deps, Error *r_err) {
+Node *EditorSceneFormatImporterFBX::import_scene(const String &p_path, uint32_t p_flags, int p_bake_fps, uint32_t p_compress_flags, List<String> *r_missing_deps, Error *r_err) {
 	// Get global paths for source and sink.
 
 	// Don't use `c_escape()` as it can generate broken paths. These paths will be
 	// enclosed in double quotes by OS::execute(), so we only need to escape those.
 	// `c_escape_multiline()` seems to do this (escapes `\` and `"` only).
 	const String source_global = ProjectSettings::get_singleton()->globalize_path(p_path).c_escape_multiline();
-	const String sink = ProjectSettings::get_singleton()->get_imported_files_path().plus_file(
+	const String sink = ProjectSettings::get_singleton()->get_project_data_path().plus_file(
 			vformat("%s-%s.glb", p_path.get_file().get_basename(), p_path.md5_text()));
 	const String sink_global = ProjectSettings::get_singleton()->globalize_path(sink).c_escape_multiline();
 
@@ -75,7 +74,8 @@ Node *EditorSceneFormatImporterFBX::import_scene(const String &p_path, uint32_t 
 
 	String standard_out;
 	int ret;
-	OS::get_singleton()->execute(fbx2gltf_path, args, &standard_out, &ret, true);
+	OS::get_singleton()->execute(fbx2gltf_path, args, true, nullptr, &standard_out, &ret, true);
+
 	print_verbose(fbx2gltf_path);
 	print_verbose(standard_out);
 
@@ -91,27 +91,33 @@ Node *EditorSceneFormatImporterFBX::import_scene(const String &p_path, uint32_t 
 
 	// Use GLTFDocument instead of glTF importer to keep image references.
 	Ref<GLTFDocument> gltf;
-	gltf.instantiate();
+	gltf.instance();
 	Ref<GLTFState> state;
-	state.instantiate();
+	state.instance();
+
 	print_verbose(vformat("glTF path: %s", sink));
 	Error err = gltf->append_from_file(sink, state, p_flags, p_bake_fps);
+
 	if (err != OK) {
 		if (r_err) {
 			*r_err = FAILED;
 		}
 		return nullptr;
 	}
+
 	return gltf->generate_scene(state, p_bake_fps);
 }
 
-Variant EditorSceneFormatImporterFBX::get_option_visibility(const String &p_path, bool p_for_animation,
-		const String &p_option, const HashMap<StringName, Variant> &p_options) {
+bool EditorSceneFormatImporterFBX::get_option_visibility(const String &p_option, const Map<StringName, Variant> &p_options) const {
 	return true;
 }
 
-void EditorSceneFormatImporterFBX::get_import_options(const String &p_path,
-		List<ResourceImporter::ImportOption> *r_options) {
+void EditorSceneFormatImporterFBX::get_import_options(List<ResourceImporterScene::ImportOption> *r_options, int p_preset) const {
+}
+
+EditorSceneFormatImporterFBX::EditorSceneFormatImporterFBX() {
+}
+EditorSceneFormatImporterFBX::~EditorSceneFormatImporterFBX() {
 }
 
 #endif // TOOLS_ENABLED

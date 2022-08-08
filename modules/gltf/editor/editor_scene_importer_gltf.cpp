@@ -47,20 +47,27 @@ void EditorSceneFormatImporterGLTF::get_extensions(List<String> *r_extensions) c
 }
 
 Node *EditorSceneFormatImporterGLTF::import_scene(const String &p_path, uint32_t p_flags,
-		const HashMap<StringName, Variant> &p_options, int p_bake_fps,
-		List<String> *r_missing_deps, Error *r_err) {
+		int p_bake_fps, uint32_t p_compress_flags, List<String> *r_missing_deps, Error *r_err) {
+
 	Ref<GLTFDocument> doc;
-	doc.instantiate();
+	doc.instance();
 	Ref<GLTFState> state;
-	state.instantiate();
+	state.instance();
+
 	Error err = doc->append_from_file(p_path, state, p_flags, p_bake_fps);
+
 	if (err != OK) {
 		if (r_err) {
 			*r_err = err;
 		}
 		return nullptr;
 	}
+
 	return doc->generate_scene(state, p_bake_fps);
+}
+
+Ref<Animation> EditorSceneFormatImporterGLTF::import_animation(const String &p_path, uint32_t p_flags, int p_bake_fps) {
+	return Ref<Animation>();
 }
 
 #endif // TOOLS_ENABLED

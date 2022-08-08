@@ -38,19 +38,19 @@
 class Animation;
 class Node;
 
-class EditorSceneFormatImporterFBX : public EditorSceneFormatImporter {
-	GDCLASS(EditorSceneFormatImporterFBX, EditorSceneFormatImporter);
+class EditorSceneFormatImporterFBX : public EditorSceneImporter {
+	GDCLASS(EditorSceneFormatImporterFBX, EditorSceneImporter);
 
 public:
-	virtual uint32_t get_import_flags() const override;
-	virtual void get_extensions(List<String> *r_extensions) const override;
-	virtual Node *import_scene(const String &p_path, uint32_t p_flags,
-			const HashMap<StringName, Variant> &p_options, int p_bake_fps,
-			List<String> *r_missing_deps, Error *r_err = nullptr) override;
-	virtual void get_import_options(const String &p_path,
-			List<ResourceImporter::ImportOption> *r_options) override;
-	virtual Variant get_option_visibility(const String &p_path, bool p_for_animation, const String &p_option,
-			const HashMap<StringName, Variant> &p_options) override;
+	virtual uint32_t get_import_flags() const;
+	virtual void get_extensions(List<String> *r_extensions) const;
+	virtual Node *import_scene(const String &p_path, uint32_t p_flags, int p_bake_fps, uint32_t p_compress_flags, List<String> *r_missing_deps = nullptr, Error *r_err = nullptr);
+
+	virtual bool get_option_visibility(const String &p_option, const Map<StringName, Variant> &p_options) const;
+	virtual void get_import_options(List<ResourceImporterScene::ImportOption> *r_options, int p_preset = 0) const;
+
+	EditorSceneFormatImporterFBX();
+	~EditorSceneFormatImporterFBX();
 };
 
 #endif // TOOLS_ENABLED

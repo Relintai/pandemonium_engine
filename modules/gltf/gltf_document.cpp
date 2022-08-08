@@ -7201,6 +7201,9 @@ GLTFDocument::GLTFDocument() {
 	document_extensions.push_back(extension_editor);
 }
 
+GLTFDocument::~GLTFDocument() {
+}
+
 PoolByteArray GLTFDocument::_serialize_glb_buffer(Ref<GLTFState> state, Error *r_err) {
 	Error err = _encode_buffer_glb(state, "");
 	if (r_err) {
@@ -7290,11 +7293,11 @@ Node *GLTFDocument::generate_scene(Ref<GLTFState> state, int32_t p_bake_fps) {
 		}
 	}
 
-	const GLTFNodeIndex* scene_nodes_ptr = NULL;
+	const GLTFNodeIndex *scene_nodes_ptr = NULL;
 	while ((scene_nodes_ptr = state->scene_nodes.next(scene_nodes_ptr))) {
-	//for (KeyValue<GLTFNodeIndex, Node *> E : state->scene_nodes) {
-		GLTFNodeIndex  E_key = *scene_nodes_ptr;
-		Node ** E_value = state->scene_nodes.getptr(E_key);
+		//for (KeyValue<GLTFNodeIndex, Node *> E : state->scene_nodes) {
+		GLTFNodeIndex E_key = *scene_nodes_ptr;
+		Node **E_value = state->scene_nodes.getptr(E_key);
 
 		ERR_CONTINUE(!E_value);
 
