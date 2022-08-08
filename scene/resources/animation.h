@@ -42,6 +42,9 @@ public:
 	enum TrackType {
 		TYPE_VALUE, ///< Set a value in a property, can be interpolated.
 		TYPE_TRANSFORM, ///< Transform a node or a bone.
+		TYPE_POSITION_3D, ///< Position 3D track
+		TYPE_ROTATION_3D, ///< Rotation 3D track
+		TYPE_SCALE_3D, ///< Scale 3D track
 		TYPE_METHOD, ///< Call any method on a specific node.
 		TYPE_BEZIER, ///< Bezier curve
 		TYPE_AUDIO,
@@ -95,6 +98,30 @@ private:
 		Vector3 loc;
 		Quat rot;
 		Vector3 scale;
+	};
+
+	/* POSITION TRACK */
+
+	struct PositionTrack : public Track {
+		Vector<TKey<Vector3>> positions;
+		//int32_t compressed_track = -1;
+		PositionTrack() { type = TYPE_POSITION_3D; }
+	};
+
+	/* ROTATION TRACK */
+
+	struct RotationTrack : public Track {
+		Vector<TKey<Quat>> rotations;
+		//int32_t compressed_track = -1;
+		RotationTrack() { type = TYPE_ROTATION_3D; }
+	};
+
+	/* SCALE TRACK */
+
+	struct ScaleTrack : public Track {
+		Vector<TKey<Vector3>> scales;
+		//int32_t compressed_track = -1;
+		ScaleTrack() { type = TYPE_SCALE_3D; }
 	};
 
 	/* TRANSFORM TRACK */
@@ -255,6 +282,14 @@ private:
 	bool _transform_track_optimize_key(const TKey<TransformKey> &t0, const TKey<TransformKey> &t1, const TKey<TransformKey> &t2, float p_alowed_linear_err, float p_alowed_angular_err, float p_max_optimizable_angle, const Vector3 &p_norm);
 	void _transform_track_optimize(int p_idx, float p_allowed_linear_err = 0.05, float p_allowed_angular_err = 0.01, float p_max_optimizable_angle = Math_PI * 0.125);
 
+	bool _position_track_optimize_key(const TKey<Vector3> &t0, const TKey<Vector3> &t1, const TKey<Vector3> &t2, real_t p_alowed_linear_err, real_t p_allowed_angular_error, const Vector3 &p_norm);
+	bool _rotation_track_optimize_key(const TKey<Quat> &t0, const TKey<Quat> &t1, const TKey<Quat> &t2, real_t p_allowed_angular_error, float p_max_optimizable_angle);
+	bool _scale_track_optimize_key(const TKey<Vector3> &t0, const TKey<Vector3> &t1, const TKey<Vector3> &t2, real_t p_allowed_linear_error);
+
+	void _position_track_optimize(int p_idx, real_t p_allowed_linear_err, real_t p_allowed_angular_err);
+	void _rotation_track_optimize(int p_idx, real_t p_allowed_angular_err, real_t p_max_optimizable_angle);
+	void _scale_track_optimize(int p_idx, real_t p_allowed_linear_err);
+
 protected:
 	bool _set(const StringName &p_name, const Variant &p_value);
 	bool _get(const StringName &p_name, Variant &r_ret) const;
@@ -299,6 +334,19 @@ public:
 
 	int transform_track_insert_key(int p_track, float p_time, const Vector3 &p_loc, const Quat &p_rot = Quat(), const Vector3 &p_scale = Vector3());
 	Error transform_track_get_key(int p_track, int p_key, Vector3 *r_loc, Quat *r_rot, Vector3 *r_scale) const;
+
+	int position_track_insert_key(int p_track, double p_time, const Vector3 &p_position);
+	Error position_track_get_key(int p_track, int p_key, Vector3 *r_position) const;
+	Error position_track_interpolate(int p_track, double p_time, Vector3 *r_interpolation) const;
+
+	int rotation_track_insert_key(int p_track, double p_time, const Quat &p_rotation);
+	Error rotation_track_get_key(int p_track, int p_key, Quat *r_rotation) const;
+	Error rotation_track_interpolate(int p_track, double p_time, Quat *r_interpolation) const;
+
+	int scale_track_insert_key(int p_track, double p_time, const Vector3 &p_scale);
+	Error scale_track_get_key(int p_track, int p_key, Vector3 *r_scale) const;
+	Error scale_track_interpolate(int p_track, double p_time, Vector3 *r_interpolation) const;
+
 	void track_set_interpolation_type(int p_track, InterpolationType p_interp);
 	InterpolationType track_get_interpolation_type(int p_track) const;
 

@@ -31,16 +31,6 @@
 #include "animation_track_editor.h"
 
 #include "animation_track_editor_plugins.h"
-#include "core/os/input.h"
-#include "core/os/keyboard.h"
-#include "editor/animation_bezier_editor.h"
-#include "editor/plugins/animation_player_editor_plugin.h"
-#include "editor_node.h"
-#include "editor_scale.h"
-#include "scene/3d/spatial.h"
-#include "scene/main/node.h"
-#include "scene/main/viewport.h"
-#include "servers/audio/audio_stream.h"
 #include "core/array.h"
 #include "core/class_db.h"
 #include "core/color.h"
@@ -52,7 +42,9 @@
 #include "core/math/transform.h"
 #include "core/math/transform_2d.h"
 #include "core/math/vector3.h"
+#include "core/os/input.h"
 #include "core/os/input_event.h"
+#include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/pair.h"
 #include "core/resource.h"
@@ -61,13 +53,18 @@
 #include "core/string_name.h"
 #include "core/typedefs.h"
 #include "core/undo_redo.h"
+#include "editor/animation_bezier_editor.h"
 #include "editor/editor_data.h"
 #include "editor/editor_inspector.h"
 #include "editor/editor_settings.h"
 #include "editor/editor_spin_slider.h"
+#include "editor/plugins/animation_player_editor_plugin.h"
 #include "editor/property_selector.h"
 #include "editor/scene_tree_editor.h"
+#include "editor_node.h"
+#include "editor_scale.h"
 #include "scene/2d/canvas_item.h"
+#include "scene/3d/spatial.h"
 #include "scene/animation/animation_player.h"
 #include "scene/gui/button.h"
 #include "scene/gui/check_box.h"
@@ -87,9 +84,12 @@
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tool_button.h"
 #include "scene/gui/tree.h"
+#include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
+#include "scene/main/viewport.h"
 #include "scene/resources/font.h"
 #include "scene/resources/style_box.h"
+#include "servers/audio/audio_stream.h"
 
 class AnimationTrackKeyEdit : public Object {
 	GDCLASS(AnimationTrackKeyEdit, Object);
@@ -230,6 +230,40 @@ public:
 				setting = false;
 				return true;
 			} break;
+
+			case Animation::TYPE_POSITION_3D:
+			case Animation::TYPE_ROTATION_3D:
+			case Animation::TYPE_SCALE_3D: {
+				if (name == "position" || name == "rotation" || name == "scale") {
+					Variant old = animation->track_get_key_value(track, key);
+					setting = true;
+					String chan;
+					switch (animation->track_get_type(track)) {
+						case Animation::TYPE_POSITION_3D:
+							chan = "Position3D";
+							break;
+						case Animation::TYPE_ROTATION_3D:
+							chan = "Rotation3D";
+							break;
+						case Animation::TYPE_SCALE_3D:
+							chan = "Scale3D";
+							break;
+						default: {
+						}
+					}
+
+					undo_redo->create_action(vformat(TTR("Anim Change %s"), chan));
+					undo_redo->add_do_method(animation.ptr(), "track_set_key_value", track, key, p_value);
+					undo_redo->add_undo_method(animation.ptr(), "track_set_key_value", track, key, old);
+					undo_redo->add_do_method(this, "_update_obj", animation);
+					undo_redo->add_undo_method(this, "_update_obj", animation);
+					undo_redo->commit_action();
+
+					setting = false;
+					return true;
+				}
+			} break;
+
 			case Animation::TYPE_VALUE: {
 				if (name == "value") {
 					Variant value = p_value;
@@ -469,6 +503,14 @@ public:
 				return true;
 
 			} break;
+			case Animation::TYPE_POSITION_3D:
+			case Animation::TYPE_ROTATION_3D:
+			case Animation::TYPE_SCALE_3D: {
+				if (name == "position" || name == "rotation" || name == "scale") {
+					r_ret = animation->track_get_key_value(track, key);
+					return true;
+				}
+			} break;
 			case Animation::TYPE_VALUE: {
 				if (name == "value") {
 					r_ret = animation->track_get_key_value(track, key);
@@ -576,6 +618,18 @@ public:
 			case Animation::TYPE_TRANSFORM: {
 				p_list->push_back(PropertyInfo(Variant::VECTOR3, "location"));
 				p_list->push_back(PropertyInfo(Variant::QUAT, "rotation"));
+				p_list->push_back(PropertyInfo(Variant::VECTOR3, "scale"));
+
+			} break;
+			case Animation::TYPE_POSITION_3D: {
+				p_list->push_back(PropertyInfo(Variant::VECTOR3, "position"));
+
+			} break;
+			case Animation::TYPE_ROTATION_3D: {
+				p_list->push_back(PropertyInfo(Variant::VECTOR3, "rotation"));
+
+			} break;
+			case Animation::TYPE_SCALE_3D: {
 				p_list->push_back(PropertyInfo(Variant::VECTOR3, "scale"));
 
 			} break;
@@ -853,6 +907,33 @@ public:
 						undo_redo->add_undo_method(animation.ptr(), "track_set_key_value", track, key, d_old);
 						update_obj = true;
 					} break;
+					case Animation::TYPE_POSITION_3D:
+					case Animation::TYPE_ROTATION_3D:
+					case Animation::TYPE_SCALE_3D: {
+						Variant old = animation->track_get_key_value(track, key);
+						if (!setting) {
+							String chan;
+							switch (animation->track_get_type(track)) {
+								case Animation::TYPE_POSITION_3D:
+									chan = "Position3D";
+									break;
+								case Animation::TYPE_ROTATION_3D:
+									chan = "Rotation3D";
+									break;
+								case Animation::TYPE_SCALE_3D:
+									chan = "Scale3D";
+									break;
+								default: {
+								}
+							}
+
+							setting = true;
+							undo_redo->create_action(vformat(TTR("Anim Multi Change %s"), chan));
+						}
+						undo_redo->add_do_method(animation.ptr(), "track_set_key_value", track, key, p_value);
+						undo_redo->add_undo_method(animation.ptr(), "track_set_key_value", track, key, old);
+						update_obj = true;
+					} break;
 					case Animation::TYPE_VALUE: {
 						if (name == "value") {
 							Variant value = p_value;
@@ -1078,6 +1159,15 @@ public:
 						return true;
 
 					} break;
+					case Animation::TYPE_POSITION_3D:
+					case Animation::TYPE_ROTATION_3D:
+					case Animation::TYPE_SCALE_3D: {
+						if (name == "position" || name == "rotation" || name == "scale") {
+							r_ret = animation->track_get_key_value(track, key);
+							return true;
+						}
+
+					} break;
 					case Animation::TYPE_VALUE: {
 						if (name == "value") {
 							r_ret = animation->track_get_key_value(track, key);
@@ -1224,6 +1314,15 @@ public:
 				case Animation::TYPE_TRANSFORM: {
 					p_list->push_back(PropertyInfo(Variant::VECTOR3, "location"));
 					p_list->push_back(PropertyInfo(Variant::QUAT, "rotation"));
+					p_list->push_back(PropertyInfo(Variant::VECTOR3, "scale"));
+				} break;
+				case Animation::TYPE_POSITION_3D: {
+					p_list->push_back(PropertyInfo(Variant::VECTOR3, "position"));
+				} break;
+				case Animation::TYPE_ROTATION_3D: {
+					p_list->push_back(PropertyInfo(Variant::QUAT, "scale"));
+				} break;
+				case Animation::TYPE_SCALE_3D: {
 					p_list->push_back(PropertyInfo(Variant::VECTOR3, "scale"));
 				} break;
 				case Animation::TYPE_VALUE: {
@@ -1429,6 +1528,9 @@ void AnimationTimelineEdit::_notification(int p_what) {
 		add_track->get_popup()->clear();
 		add_track->get_popup()->add_icon_item(get_icon("KeyValue", "EditorIcons"), TTR("Property Track"));
 		add_track->get_popup()->add_icon_item(get_icon("KeyXform", "EditorIcons"), TTR("3D Transform Track"));
+		add_track->get_popup()->add_icon_item(get_icon("KeyXPosition", "EditorIcons"), TTR("3D Position Track"));
+		add_track->get_popup()->add_icon_item(get_icon("KeyXRotation", "EditorIcons"), TTR("3D Rotation Track"));
+		add_track->get_popup()->add_icon_item(get_icon("KeyXScale", "EditorIcons"), TTR("3D Scale Track"));
 		add_track->get_popup()->add_icon_item(get_icon("KeyCall", "EditorIcons"), TTR("Call Method Track"));
 		add_track->get_popup()->add_icon_item(get_icon("KeyBezier", "EditorIcons"), TTR("Bezier Curve Track"));
 		add_track->get_popup()->add_icon_item(get_icon("KeyAudio", "EditorIcons"), TTR("Audio Playback Track"));
@@ -2106,9 +2208,12 @@ void AnimationTrackEdit::_notification(int p_what) {
 				interp_mode_rect.position.y = int(get_size().height - icon->get_height()) / 2;
 				interp_mode_rect.size = icon->get_size();
 
-				if (animation->track_get_type(track) == Animation::TYPE_VALUE || animation->track_get_type(track) == Animation::TYPE_TRANSFORM) {
+				Animation::TrackType track_type = animation->track_get_type(track);
+
+				if (track_type == Animation::TYPE_VALUE || animation->track_get_type(track) == Animation::TYPE_TRANSFORM || track_type == Animation::TYPE_POSITION_3D || track_type == Animation::TYPE_SCALE_3D || track_type == Animation::TYPE_ROTATION_3D) {
 					draw_texture(icon, interp_mode_rect.position);
 				}
+
 				//make it easier to click
 				interp_mode_rect.position.y = 0;
 				interp_mode_rect.size.y = get_size().height;
@@ -2116,7 +2221,7 @@ void AnimationTrackEdit::_notification(int p_what) {
 				ofs += icon->get_width() + hsep;
 				interp_mode_rect.size.x += hsep;
 
-				if (animation->track_get_type(track) == Animation::TYPE_VALUE || animation->track_get_type(track) == Animation::TYPE_TRANSFORM) {
+				if (track_type == Animation::TYPE_VALUE || animation->track_get_type(track) == Animation::TYPE_TRANSFORM || track_type == Animation::TYPE_POSITION_3D || track_type == Animation::TYPE_SCALE_3D || track_type == Animation::TYPE_ROTATION_3D) {
 					draw_texture(down_icon, Vector2(ofs, int(get_size().height - down_icon->get_height()) / 2));
 					interp_mode_rect.size.x += down_icon->get_width();
 				} else {
@@ -2139,7 +2244,9 @@ void AnimationTrackEdit::_notification(int p_what) {
 				loop_mode_rect.position.y = int(get_size().height - icon->get_height()) / 2;
 				loop_mode_rect.size = icon->get_size();
 
-				if (animation->track_get_type(track) == Animation::TYPE_VALUE || animation->track_get_type(track) == Animation::TYPE_TRANSFORM) {
+				Animation::TrackType track_type = animation->track_get_type(track);
+
+				if (track_type == Animation::TYPE_VALUE || animation->track_get_type(track) == Animation::TYPE_TRANSFORM || track_type == Animation::TYPE_POSITION_3D || track_type == Animation::TYPE_SCALE_3D || track_type == Animation::TYPE_ROTATION_3D) {
 					draw_texture(icon, loop_mode_rect.position);
 				}
 
@@ -2149,7 +2256,7 @@ void AnimationTrackEdit::_notification(int p_what) {
 				ofs += icon->get_width() + hsep;
 				loop_mode_rect.size.x += hsep;
 
-				if (animation->track_get_type(track) == Animation::TYPE_VALUE || animation->track_get_type(track) == Animation::TYPE_TRANSFORM) {
+				if (track_type == Animation::TYPE_VALUE || animation->track_get_type(track) == Animation::TYPE_TRANSFORM || track_type == Animation::TYPE_POSITION_3D || track_type == Animation::TYPE_SCALE_3D || track_type == Animation::TYPE_ROTATION_3D) {
 					draw_texture(down_icon, Vector2(ofs, int(get_size().height - down_icon->get_height()) / 2));
 					loop_mode_rect.size.x += down_icon->get_width();
 				} else {
@@ -2478,9 +2585,12 @@ bool AnimationTrackEdit::_is_value_key_valid(const Variant &p_key_value, Variant
 }
 
 Ref<Texture> AnimationTrackEdit::_get_key_type_icon() const {
-	Ref<Texture> type_icons[6] = {
+	Ref<Texture> type_icons[9] = {
 		get_icon("KeyValue", "EditorIcons"),
 		get_icon("KeyXform", "EditorIcons"),
+		get_icon("KeyXPosition", "EditorIcons"),
+		get_icon("KeyXRotation", "EditorIcons"),
+		get_icon("KeyXScale", "EditorIcons"),
 		get_icon("KeyCall", "EditorIcons"),
 		get_icon("KeyBezier", "EditorIcons"),
 		get_icon("KeyAudio", "EditorIcons"),
@@ -2559,6 +2669,18 @@ String AnimationTrackEdit::get_tooltip(const Point2 &p_pos) const {
 					if (d.has("scale")) {
 						text += "Scale: " + String(d["scale"]) + "\n";
 					}
+				} break;
+				case Animation::TYPE_POSITION_3D: {
+					Vector3 t = animation->track_get_key_value(track, key_idx);
+					text += TTR("Position:") + " " + String(t) + "\n";
+				} break;
+				case Animation::TYPE_ROTATION_3D: {
+					Quat t = animation->track_get_key_value(track, key_idx);
+					text += TTR("Rotation:") + " " + String(t) + "\n";
+				} break;
+				case Animation::TYPE_SCALE_3D: {
+					Vector3 t = animation->track_get_key_value(track, key_idx);
+					text += TTR("Scale:") + " " + String(t) + "\n";
 				} break;
 				case Animation::TYPE_VALUE: {
 					const Variant &v = animation->track_get_key_value(track, key_idx);
@@ -3419,6 +3541,9 @@ static bool track_type_is_resettable(Animation::TrackType p_type) {
 		case Animation::TYPE_VALUE:
 		case Animation::TYPE_BEZIER:
 		case Animation::TYPE_TRANSFORM:
+		case Animation::TYPE_POSITION_3D:
+		case Animation::TYPE_ROTATION_3D:
+		case Animation::TYPE_SCALE_3D:
 			return true;
 		default:
 			return false;
@@ -3584,34 +3709,53 @@ void AnimationTrackEditor::insert_transform_key(Spatial *p_node, const String &p
 
 	NodePath np = path;
 
-	int track_idx = -1;
+	int position_idx = -1;
+	int rotation_idx = -1;
+	int scale_idx = -1;
 
 	for (int i = 0; i < animation->get_track_count(); i++) {
-		if (animation->track_get_type(i) != Animation::TYPE_TRANSFORM) {
-			continue;
-		}
 		if (animation->track_get_path(i) != np) {
 			continue;
 		}
 
-		track_idx = i;
-		break;
+		if (animation->track_get_type(i) == Animation::TYPE_POSITION_3D) {
+			position_idx = i;
+		}
+		if (animation->track_get_type(i) == Animation::TYPE_ROTATION_3D) {
+			rotation_idx = i;
+		}
+		if (animation->track_get_type(i) == Animation::TYPE_SCALE_3D) {
+			scale_idx = i;
+		}
 	}
 
 	InsertData id;
-	Dictionary val;
 
 	id.path = np;
-	id.track_idx = track_idx;
-	id.value = p_xform;
-	id.type = Animation::TYPE_TRANSFORM;
 	// TRANSLATORS: This describes the target of new animation track, will be inserted into another string.
 	id.query = vformat(TTR("node '%s'"), p_node->get_name());
 	id.advance = false;
 
 	//dialog insert
 
-	_query_insert(id);
+	{
+		id.track_idx = position_idx;
+		id.value = p_xform.origin;
+		id.type = Animation::TYPE_POSITION_3D;
+		_query_insert(id);
+	}
+	{
+		id.track_idx = rotation_idx;
+		id.value = p_xform.basis.get_rotation_quat();
+		id.type = Animation::TYPE_ROTATION_3D;
+		_query_insert(id);
+	}
+	{
+		id.track_idx = scale_idx;
+		id.value = p_xform.basis.get_scale();
+		id.type = Animation::TYPE_SCALE_3D;
+		_query_insert(id);
+	}
 }
 
 void AnimationTrackEditor::_insert_animation_key(NodePath p_path, const Variant &p_value) {
@@ -4063,6 +4207,12 @@ AnimationTrackEditor::TrackIndices AnimationTrackEditor::_confirm_insert(InsertD
 			d["rotation"] = Quat(tr.basis);
 			value = d;
 		} break;
+		case Animation::TYPE_POSITION_3D:
+		case Animation::TYPE_ROTATION_3D:
+		case Animation::TYPE_SCALE_3D: {
+			value = p_id.value;
+
+		} break;
 		case Animation::TYPE_BEZIER: {
 			Array array;
 			array.resize(5);
@@ -4479,8 +4629,8 @@ void AnimationTrackEditor::_new_track_node_selected(NodePath p_path) {
 	ERR_FAIL_COND(!node);
 	NodePath path_to = root->get_path_to(node);
 
-	if (adding_track_type == Animation::TYPE_TRANSFORM && !node->is_class("Spatial")) {
-		EditorNode::get_singleton()->show_warning(TTR("Transform tracks only apply to Spatial-based nodes."));
+	if ((adding_track_type == Animation::TYPE_TRANSFORM || adding_track_type == Animation::TYPE_POSITION_3D || adding_track_type == Animation::TYPE_ROTATION_3D || adding_track_type == Animation::TYPE_SCALE_3D) && !node->is_class("Spatial")) {
+		EditorNode::get_singleton()->show_warning(TTR("Transform/Position/Rotation/Scale 3D tracks only apply to Spatial-based nodes."));
 		return;
 	}
 
@@ -4491,6 +4641,9 @@ void AnimationTrackEditor::_new_track_node_selected(NodePath p_path) {
 			prop_selector->select_property_from_instance(node);
 		} break;
 		case Animation::TYPE_TRANSFORM:
+		case Animation::TYPE_POSITION_3D:
+		case Animation::TYPE_ROTATION_3D:
+		case Animation::TYPE_SCALE_3D:
 		case Animation::TYPE_METHOD: {
 			undo_redo->create_action(TTR("Add Track"));
 			undo_redo->add_do_method(animation.ptr(), "add_track", adding_track_type);
@@ -4681,6 +4834,66 @@ void AnimationTrackEditor::_insert_key_from_track(float p_ofs, int p_track) {
 			undo_redo->create_action(TTR("Add Transform Track Key"));
 			undo_redo->add_do_method(animation.ptr(), "transform_track_insert_key", p_track, p_ofs, loc, rot, scale);
 			undo_redo->add_undo_method(animation.ptr(), "track_remove_key_at_position", p_track, p_ofs);
+			undo_redo->commit_action();
+
+		} break;
+		case Animation::TYPE_POSITION_3D: {
+			if (!root->has_node(animation->track_get_path(p_track))) {
+				EditorNode::get_singleton()->show_warning(TTR("Track path is invalid, so can't add a key."));
+				return;
+			}
+			Spatial *base = Object::cast_to<Spatial>(root->get_node(animation->track_get_path(p_track)));
+
+			if (!base) {
+				EditorNode::get_singleton()->show_warning(TTR("Track is not of type Spatial, can't insert key"));
+				return;
+			}
+
+			Vector3 pos = base->get_translation();
+
+			undo_redo->create_action(TTR("Add Position Key"));
+			undo_redo->add_do_method(animation.ptr(), "position_track_insert_key", p_track, p_ofs, pos);
+			undo_redo->add_undo_method(animation.ptr(), "track_remove_key_at_time", p_track, p_ofs);
+			undo_redo->commit_action();
+
+		} break;
+		case Animation::TYPE_ROTATION_3D: {
+			if (!root->has_node(animation->track_get_path(p_track))) {
+				EditorNode::get_singleton()->show_warning(TTR("Track path is invalid, so can't add a key."));
+				return;
+			}
+			Spatial *base = Object::cast_to<Spatial>(root->get_node(animation->track_get_path(p_track)));
+
+			if (!base) {
+				EditorNode::get_singleton()->show_warning(TTR("Track is not of type Spatial, can't insert key"));
+				return;
+			}
+
+			Quat rot = base->get_transform().basis.operator Quat();
+
+			undo_redo->create_action(TTR("Add Rotation Key"));
+			undo_redo->add_do_method(animation.ptr(), "rotation_track_insert_key", p_track, p_ofs, rot);
+			undo_redo->add_undo_method(animation.ptr(), "track_remove_key_at_time", p_track, p_ofs);
+			undo_redo->commit_action();
+
+		} break;
+		case Animation::TYPE_SCALE_3D: {
+			if (!root->has_node(animation->track_get_path(p_track))) {
+				EditorNode::get_singleton()->show_warning(TTR("Track path is invalid, so can't add a key."));
+				return;
+			}
+			Spatial *base = Object::cast_to<Spatial>(root->get_node(animation->track_get_path(p_track)));
+
+			if (!base) {
+				EditorNode::get_singleton()->show_warning(TTR("Track is not of type Spatial, can't insert key"));
+				return;
+			}
+
+			Vector3 scale = base->get_scale();
+
+			undo_redo->create_action(TTR("Add Scale Key"));
+			undo_redo->add_do_method(animation.ptr(), "scale_track_insert_key", p_track, p_ofs, scale);
+			undo_redo->add_undo_method(animation.ptr(), "track_remove_key_at_time", p_track, p_ofs);
 			undo_redo->commit_action();
 
 		} break;
@@ -5364,6 +5577,15 @@ void AnimationTrackEditor::_edit_menu_pressed(int p_option) {
 				switch (animation->track_get_type(i)) {
 					case Animation::TYPE_TRANSFORM:
 						track_type = TTR("Transform");
+						break;
+					case Animation::TYPE_POSITION_3D:
+						track_type += TTR("Position");
+						break;
+					case Animation::TYPE_ROTATION_3D:
+						track_type += TTR("Rotation");
+						break;
+					case Animation::TYPE_SCALE_3D:
+						track_type += TTR("Scale");
 						break;
 					case Animation::TYPE_METHOD:
 						track_type = TTR("Methods");

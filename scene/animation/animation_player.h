@@ -93,6 +93,8 @@ private:
 		SP_NODE2D_SCALE,
 	};
 
+	uint32_t setup_pass = 1;
+
 	struct TrackNodeCache {
 		NodePath path;
 		uint32_t id;
@@ -103,6 +105,14 @@ private:
 		Skeleton *skeleton;
 		int bone_idx;
 		// accumulated transforms
+
+		bool transform_used;
+		bool loc_used;
+		bool rot_used;
+		bool scale_used;
+		Vector3 init_loc;
+		Quat init_rot;
+		Vector3 init_scale;
 
 		Vector3 loc_accum;
 		Quat rot_accum;
@@ -128,7 +138,8 @@ private:
 					owner(nullptr),
 					special(SP_NONE),
 					object(nullptr),
-					accum_pass(0) {}
+					accum_pass(0) {
+			}
 		};
 
 		Map<StringName, PropertyAnim> property_anim;
@@ -149,6 +160,8 @@ private:
 
 		Map<StringName, BezierAnim> bezier_anim;
 
+		uint32_t last_setup_pass;
+
 		TrackNodeCache() :
 				id(0),
 				node(nullptr),
@@ -160,7 +173,16 @@ private:
 				audio_playing(false),
 				audio_start(0.0),
 				audio_len(0.0),
-				animation_playing(false) {}
+				animation_playing(false) {
+			transform_used = false;
+			loc_used = false;
+			rot_used = false;
+			scale_used = false;
+			last_setup_pass = 0;
+			init_loc = Vector3(0, 0, 0);
+			init_rot = Quat(0, 0, 0, 1);
+			init_scale = Vector3(1, 1, 1);
+		}
 	};
 
 	struct TrackNodeCacheKey {

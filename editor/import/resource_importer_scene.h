@@ -67,6 +67,13 @@ public:
 
 	};
 
+	enum AnimationImportBoneTracks {
+		ANIMATION_IMPORT_BONE_TRACKS_IF_PRESENT,
+		ANIMATION_IMPORT_BONE_TRACKS_IF_PRESENT_FOR_ALL,
+		ANIMATION_IMPORT_BONE_TRACKS_ALWAYS,
+		ANIMATION_IMPORT_BONE_TRACKS_NEVER,
+	};
+
 	virtual uint32_t get_import_flags() const;
 	virtual void get_extensions(List<String> *r_extensions) const;
 	virtual Node *import_scene(const String &p_path, uint32_t p_flags, int p_bake_fps, uint32_t p_compress_flags, List<String> *r_missing_deps, Error *r_err = nullptr);

@@ -174,6 +174,7 @@ private:
 		ObjectID object_id;
 
 		TrackCache() {
+			type = Animation::TYPE_ANIMATION;
 			root_motion = false;
 			setup_pass = 0;
 			process_pass = 0;
@@ -187,16 +188,24 @@ private:
 		Spatial *spatial;
 		Skeleton *skeleton;
 		int bone_idx;
+		bool transform_used;
+		bool loc_used;
+		bool rot_used;
+		bool scale_used;
 		Vector3 loc;
 		Quat rot;
 		float rot_blend_accum;
 		Vector3 scale;
 
 		TrackCacheTransform() {
-			type = Animation::TYPE_TRANSFORM;
+			type = Animation::TYPE_POSITION_3D;
 			spatial = nullptr;
 			bone_idx = -1;
 			skeleton = nullptr;
+			transform_used = false;
+			loc_used = false;
+			rot_used = false;
+			scale_used = false;
 		}
 	};
 

@@ -31,6 +31,7 @@
 #include "resource_importer_scene.h"
 
 #include "core/io/resource_saver.h"
+#include "core/os/dir_access.h"
 #include "editor/editor_node.h"
 #include "scene/3d/collision_shape.h"
 #include "scene/3d/mesh_instance.h"
@@ -41,16 +42,14 @@
 #include "scene/animation/animation_player.h"
 #include "scene/resources/animation.h"
 #include "scene/resources/box_shape.h"
+#include "scene/resources/mesh.h"
 #include "scene/resources/navigation_mesh.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/plane_shape.h"
 #include "scene/resources/ray_shape.h"
 #include "scene/resources/resource_format_text.h"
-#include "scene/resources/sphere_shape.h"
-#include "scene/resources/animation.h"
-#include "scene/resources/mesh.h"
 #include "scene/resources/shape.h"
-#include "core/os/dir_access.h"
+#include "scene/resources/sphere_shape.h"
 
 uint32_t EditorSceneImporter::get_import_flags() const {
 	if (get_script_instance()) {
@@ -681,8 +680,19 @@ void ResourceImporterScene::_create_clips(Node *scene, const Array &p_clips, boo
 								Vector3 s;
 								default_anim->transform_track_interpolate(j, from, &p, &q, &s);
 								new_anim->transform_track_insert_key(dtrack, 0, p, q, s);
-							}
-							if (default_anim->track_get_type(j) == Animation::TYPE_VALUE) {
+							} else if (default_anim->track_get_type(j) == Animation::TYPE_POSITION_3D) {
+								Vector3 p;
+								default_anim->position_track_interpolate(j, from, &p);
+								new_anim->position_track_insert_key(dtrack, 0, p);
+							} else if (default_anim->track_get_type(j) == Animation::TYPE_ROTATION_3D) {
+								Quat r;
+								default_anim->rotation_track_interpolate(j, from, &r);
+								new_anim->rotation_track_insert_key(dtrack, 0, r);
+							} else if (default_anim->track_get_type(j) == Animation::TYPE_SCALE_3D) {
+								Vector3 s;
+								default_anim->scale_track_interpolate(j, from, &s);
+								new_anim->scale_track_insert_key(dtrack, 0, s);
+							} else if (default_anim->track_get_type(j) == Animation::TYPE_VALUE) {
 								Variant var = default_anim->value_track_interpolate(j, from);
 								new_anim->track_insert_key(dtrack, 0, var);
 							}
@@ -695,8 +705,19 @@ void ResourceImporterScene::_create_clips(Node *scene, const Array &p_clips, boo
 						Vector3 s;
 						default_anim->transform_track_get_key(j, k, &p, &q, &s);
 						new_anim->transform_track_insert_key(dtrack, kt - from, p, q, s);
-					}
-					if (default_anim->track_get_type(j) == Animation::TYPE_VALUE) {
+					} else if (default_anim->track_get_type(j) == Animation::TYPE_POSITION_3D) {
+						Vector3 p;
+						default_anim->position_track_get_key(j, k, &p);
+						new_anim->position_track_insert_key(dtrack, kt - from, p);
+					} else if (default_anim->track_get_type(j) == Animation::TYPE_ROTATION_3D) {
+						Quat r;
+						default_anim->rotation_track_get_key(j, k, &r);
+						new_anim->rotation_track_insert_key(dtrack, kt - from, r);
+					} else if (default_anim->track_get_type(j) == Animation::TYPE_SCALE_3D) {
+						Vector3 s;
+						default_anim->scale_track_get_key(j, k, &s);
+						new_anim->scale_track_insert_key(dtrack, kt - from, s);
+					} else if (default_anim->track_get_type(j) == Animation::TYPE_VALUE) {
 						Variant var = default_anim->track_get_key_value(j, k);
 						new_anim->track_insert_key(dtrack, kt - from, var);
 					}
@@ -709,8 +730,19 @@ void ResourceImporterScene::_create_clips(Node *scene, const Array &p_clips, boo
 						Vector3 s;
 						default_anim->transform_track_interpolate(j, to, &p, &q, &s);
 						new_anim->transform_track_insert_key(dtrack, to - from, p, q, s);
-					}
-					if (default_anim->track_get_type(j) == Animation::TYPE_VALUE) {
+					} else if (default_anim->track_get_type(j) == Animation::TYPE_POSITION_3D) {
+						Vector3 p;
+						default_anim->position_track_interpolate(j, to, &p);
+						new_anim->position_track_insert_key(dtrack, to - from, p);
+					} else if (default_anim->track_get_type(j) == Animation::TYPE_ROTATION_3D) {
+						Quat r;
+						default_anim->rotation_track_interpolate(j, to, &r);
+						new_anim->rotation_track_insert_key(dtrack, to - from, r);
+					} else if (default_anim->track_get_type(j) == Animation::TYPE_SCALE_3D) {
+						Vector3 s;
+						default_anim->scale_track_interpolate(j, to, &s);
+						new_anim->scale_track_insert_key(dtrack, to - from, s);
+					} else if (default_anim->track_get_type(j) == Animation::TYPE_VALUE) {
 						Variant var = default_anim->value_track_interpolate(j, to);
 						new_anim->track_insert_key(dtrack, to - from, var);
 					}
@@ -729,8 +761,25 @@ void ResourceImporterScene::_create_clips(Node *scene, const Array &p_clips, boo
 					new_anim->transform_track_insert_key(dtrack, 0, p, q, s);
 					default_anim->transform_track_interpolate(j, to, &p, &q, &s);
 					new_anim->transform_track_insert_key(dtrack, to - from, p, q, s);
-				}
-				if (default_anim->track_get_type(j) == Animation::TYPE_VALUE) {
+				} else if (default_anim->track_get_type(j) == Animation::TYPE_POSITION_3D) {
+					Vector3 p;
+					default_anim->position_track_interpolate(j, from, &p);
+					new_anim->position_track_insert_key(dtrack, 0, p);
+					default_anim->position_track_interpolate(j, to, &p);
+					new_anim->position_track_insert_key(dtrack, to - from, p);
+				} else if (default_anim->track_get_type(j) == Animation::TYPE_ROTATION_3D) {
+					Quat r;
+					default_anim->rotation_track_interpolate(j, from, &r);
+					new_anim->rotation_track_insert_key(dtrack, 0, r);
+					default_anim->rotation_track_interpolate(j, to, &r);
+					new_anim->rotation_track_insert_key(dtrack, to - from, r);
+				} else if (default_anim->track_get_type(j) == Animation::TYPE_SCALE_3D) {
+					Vector3 s;
+					default_anim->scale_track_interpolate(j, from, &s);
+					new_anim->scale_track_insert_key(dtrack, 0, s);
+					default_anim->scale_track_interpolate(j, to, &s);
+					new_anim->scale_track_insert_key(dtrack, to - from, s);
+				} else if (default_anim->track_get_type(j) == Animation::TYPE_VALUE) {
 					Variant var = default_anim->value_track_interpolate(j, from);
 					new_anim->track_insert_key(dtrack, 0, var);
 					Variant to_var = default_anim->value_track_interpolate(j, to);
@@ -1130,6 +1179,11 @@ void ResourceImporterScene::get_import_options(List<ImportOption> *r_options, in
 	r_options->push_back(ImportOption(PropertyInfo(Variant::REAL, "animation/optimizer/max_angular_error"), 0.01));
 	r_options->push_back(ImportOption(PropertyInfo(Variant::REAL, "animation/optimizer/max_angle"), 22));
 	r_options->push_back(ImportOption(PropertyInfo(Variant::BOOL, "animation/optimizer/remove_unused_tracks"), true));
+	
+	r_options->push_back(ImportOption(PropertyInfo(Variant::INT, "import_tracks/position", PROPERTY_HINT_ENUM, "IfPresent,IfPresentForAll,Always,Never"), 1));
+	r_options->push_back(ImportOption(PropertyInfo(Variant::INT, "import_tracks/rotation", PROPERTY_HINT_ENUM, "IfPresent,IfPresentForAll,Always,Never"), 1));
+	r_options->push_back(ImportOption(PropertyInfo(Variant::INT, "import_tracks/scale", PROPERTY_HINT_ENUM, "IfPresent,IfPresentForAll,Always,Never"), 1));
+
 	r_options->push_back(ImportOption(PropertyInfo(Variant::INT, "animation/clips/amount", PROPERTY_HINT_RANGE, "0,256,1", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), 0));
 	for (int i = 0; i < 256; i++) {
 		r_options->push_back(ImportOption(PropertyInfo(Variant::STRING, "animation/clip_" + itos(i + 1) + "/name"), ""));
