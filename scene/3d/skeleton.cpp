@@ -92,6 +92,7 @@ bool Skeleton::_set(const StringName &p_path, const Variant &p_value) {
 		set_bone_parent(which, p_value);
 	} else if (what == "rest") {
 		set_bone_rest(which, p_value);
+
 	} else if (what == "enabled") {
 		set_bone_enabled(which, p_value);
 	} else if (what == "position") {
@@ -100,6 +101,8 @@ bool Skeleton::_set(const StringName &p_path, const Variant &p_value) {
 		set_bone_pose_rotation(which, p_value);
 	} else if (what == "scale") {
 		set_bone_pose_scale(which, p_value);
+	} else if (what == "pose") {
+		set_bone_pose(which, p_value);
 	} else if (what == "bound_children") {
 		Array children = p_value;
 
@@ -147,6 +150,8 @@ bool Skeleton::_get(const StringName &p_path, Variant &r_ret) const {
 		r_ret = get_bone_pose_rotation(which);
 	} else if (what == "scale") {
 		r_ret = get_bone_pose_scale(which);
+	} else if (what == "pose") {
+		r_ret = get_bone_pose(which);
 	} else if (what == "bound_children") {
 		Array children;
 

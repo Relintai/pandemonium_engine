@@ -31,13 +31,13 @@
 /*************************************************************************/
 
 #include "core/os/input_event.h"
+#include "editor/editor_inspector.h"
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"
 #include "editor/plugins/spatial_editor_plugin.h"
 #include "scene/3d/camera.h"
 #include "scene/3d/mesh_instance.h"
 #include "scene/3d/skeleton.h"
-#include "editor/editor_inspector.h"
 
 class ModuleEditorInspectorPluginSkeleton;
 class Joint;
@@ -53,30 +53,19 @@ class Label;
 class PopupMenu;
 class CheckBox;
 class VSeparator;
+class EditorPropertyTransform;
+class EditorPropertyVector3;
 
 class ModuleBoneTransformEditor : public VBoxContainer {
 	GDCLASS(ModuleBoneTransformEditor, VBoxContainer);
 
-	static const int32_t TRANSLATION_COMPONENTS = 3;
-	static const int32_t ROTATION_DEGREES_COMPONENTS = 3;
-	static const int32_t SCALE_COMPONENTS = 3;
-	static const int32_t BASIS_COMPONENTS = 9;
-	static const int32_t BASIS_SPLIT_COMPONENTS = 3;
-	static const int32_t TRANSFORM_COMPONENTS = 12;
-	static const int32_t TRANSFORM_SPLIT_COMPONENTS = 3;
-	static const int32_t TRANSFORM_CONTROL_COMPONENTS = 3;
-
 	EditorInspectorSection *section;
 
-	GridContainer *translation_grid;
-	GridContainer *rotation_grid;
-	GridContainer *scale_grid;
-	GridContainer *transform_grid;
-
-	EditorSpinSlider *translation_slider[TRANSLATION_COMPONENTS];
-	EditorSpinSlider *rotation_slider[ROTATION_DEGREES_COMPONENTS];
-	EditorSpinSlider *scale_slider[SCALE_COMPONENTS];
-	EditorSpinSlider *transform_slider[TRANSFORM_COMPONENTS];
+	EditorPropertyVector3 *translation_property;
+	EditorPropertyVector3 *rotation_property;
+	EditorPropertyVector3 *scale_property;
+	EditorInspectorSection *transform_section;
+	EditorPropertyTransform *transform_property;
 
 	Rect2 background_rects[5];
 
@@ -95,11 +84,17 @@ class ModuleBoneTransformEditor : public VBoxContainer {
 	String label;
 
 	void create_editors();
-	void setup_spinner(EditorSpinSlider *spinner, const bool is_transform_spinner);
 
-	void _value_changed(const double p_value, const bool p_from_transform);
-
-	Transform compute_transform(const bool p_from_transform) const;
+	// Called when one of the EditorSpinSliders are changed.
+	void _value_changed(const double p_value);
+	// Called when the one of the EditorPropertyVector3 are updated.
+	void _value_changed_vector3(const String &p_path, const Variant &p_value, const String &p_name = "", bool changing = false);
+	// Called when the transform_property is updated.
+	void _value_changed_transform(const String &p_path, const Variant &p_value, const String &p_name = "", bool changing = false);
+	// Changes the transform to the given transform and updates the UI accordingly.
+	void _change_transform(Transform p_new_transform);
+	// Creates a Transform using the EditorPropertyVector3 properties.
+	Transform compute_transform_from_vector3s() const;
 
 	void update_enabled_checkbox();
 
@@ -117,9 +112,6 @@ public:
 	void _update_properties();
 	void _update_custom_pose_properties();
 	void _update_transform_properties(Transform p_transform);
-
-	// Can/cannot modify the spinner values for the Transform
-	void set_read_only(const bool p_read_only);
 
 	// Transform can be keyed, whether or not to show the button
 	void set_keyable(const bool p_keyable);
