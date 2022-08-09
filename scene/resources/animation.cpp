@@ -2730,6 +2730,30 @@ void Animation::track_get_key_indices_in_range(int p_track, float p_time, float 
 			_track_get_key_indices_in_range(tt->transforms, from_time, to_time, p_indices);
 
 		} break;
+		case TYPE_POSITION_3D: {
+			const PositionTrack *tt = static_cast<const PositionTrack *>(t);
+			//if (tt->compressed_track >= 0) {
+			//	_get_compressed_key_indices_in_range<3>(tt->compressed_track, from_time, to_time - from_time, p_indices);
+			//} else {
+			_track_get_key_indices_in_range(tt->positions, from_time, to_time, p_indices);
+			//}
+		} break;
+		case TYPE_ROTATION_3D: {
+			const RotationTrack *rt = static_cast<const RotationTrack *>(t);
+			//if (rt->compressed_track >= 0) {
+			//	_get_compressed_key_indices_in_range<3>(rt->compressed_track, from_time, to_time - from_time, p_indices);
+			//} else {
+			_track_get_key_indices_in_range(rt->rotations, from_time, to_time, p_indices);
+			//}
+		} break;
+		case TYPE_SCALE_3D: {
+			const ScaleTrack *st = static_cast<const ScaleTrack *>(t);
+			//if (st->compressed_track >= 0) {
+			//	_get_compressed_key_indices_in_range<3>(st->compressed_track, from_time, to_time - from_time, p_indices);
+			//} else {
+			_track_get_key_indices_in_range(st->scales, from_time, to_time, p_indices);
+			//}
+		} break;
 		case TYPE_VALUE: {
 			const ValueTrack *vt = static_cast<const ValueTrack *>(t);
 			_track_get_key_indices_in_range(vt->values, from_time, to_time, p_indices);
