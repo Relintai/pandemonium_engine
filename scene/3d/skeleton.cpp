@@ -103,20 +103,6 @@ bool Skeleton::_set(const StringName &p_path, const Variant &p_value) {
 		set_bone_pose_scale(which, p_value);
 	} else if (what == "pose") {
 		set_bone_pose(which, p_value);
-	} else if (what == "bound_children") {
-		Array children = p_value;
-
-		if (is_inside_tree()) {
-			bones.write[which].nodes_bound.clear();
-
-			for (int i = 0; i < children.size(); i++) {
-				NodePath npath = children[i];
-				ERR_CONTINUE(npath.operator String() == "");
-				Node *node = get_node(npath);
-				ERR_CONTINUE(!node);
-				bind_child_node_to_bone(which, node);
-			}
-		}
 	} else {
 		return false;
 	}
@@ -152,19 +138,6 @@ bool Skeleton::_get(const StringName &p_path, Variant &r_ret) const {
 		r_ret = get_bone_pose_scale(which);
 	} else if (what == "pose") {
 		r_ret = get_bone_pose(which);
-	} else if (what == "bound_children") {
-		Array children;
-
-		for (const List<uint32_t>::Element *E = bones[which].nodes_bound.front(); E; E = E->next()) {
-			Object *obj = ObjectDB::get_instance(E->get());
-			ERR_CONTINUE(!obj);
-			Node *node = Object::cast_to<Node>(obj);
-			ERR_CONTINUE(!node);
-			NodePath npath = get_path_to(node);
-			children.push_back(npath);
-		}
-
-		r_ret = children;
 	} else {
 		return false;
 	}
@@ -181,7 +154,6 @@ void Skeleton::_get_property_list(List<PropertyInfo> *p_list) const {
 		p_list->push_back(PropertyInfo(Variant::VECTOR3, prep + "position", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR));
 		p_list->push_back(PropertyInfo(Variant::QUAT, prep + "rotation", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR));
 		p_list->push_back(PropertyInfo(Variant::VECTOR3, prep + "scale", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR));
-		p_list->push_back(PropertyInfo(Variant::ARRAY, prep + "bound_children"));
 	}
 }
 
@@ -419,16 +391,21 @@ void Skeleton::set_bone_global_pose_override(int p_bone, const Transform &p_pose
 
 Transform Skeleton::get_bone_global_pose(int p_bone) const {
 	ERR_FAIL_INDEX_V(p_bone, bones.size(), Transform());
+
 	if (dirty) {
 		const_cast<Skeleton *>(this)->notification(NOTIFICATION_UPDATE_SKELETON);
 	}
+
 	return bones[p_bone].pose_global;
 }
 
 Transform Skeleton::get_bone_global_pose_no_override(int p_bone) const {
 	ERR_FAIL_INDEX_V(p_bone, bones.size(), Transform());
-	if (dirty)
+
+	if (dirty) {
 		const_cast<Skeleton *>(this)->notification(NOTIFICATION_UPDATE_SKELETON);
+	}
+
 	return bones[p_bone].pose_global_no_override;
 }
 
@@ -1036,10 +1013,6 @@ void Skeleton::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_bone_disable_rest", "bone_idx", "disable"), &Skeleton::set_bone_disable_rest);
 	ClassDB::bind_method(D_METHOD("is_bone_rest_disabled", "bone_idx"), &Skeleton::is_bone_rest_disabled);
-
-	ClassDB::bind_method(D_METHOD("bind_child_node_to_bone", "bone_idx", "node"), &Skeleton::bind_child_node_to_bone);
-	ClassDB::bind_method(D_METHOD("unbind_child_node_from_bone", "bone_idx", "node"), &Skeleton::unbind_child_node_from_bone);
-	ClassDB::bind_method(D_METHOD("get_bound_child_nodes_to_bone", "bone_idx"), &Skeleton::_get_bound_child_nodes_to_bone);
 
 	ClassDB::bind_method(D_METHOD("clear_bones"), &Skeleton::clear_bones);
 
