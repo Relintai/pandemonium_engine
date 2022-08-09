@@ -188,7 +188,6 @@ private:
 		Spatial *spatial;
 		Skeleton *skeleton;
 		int bone_idx;
-		bool transform_used;
 		bool loc_used;
 		bool rot_used;
 		bool scale_used;
@@ -202,7 +201,6 @@ private:
 			spatial = nullptr;
 			bone_idx = -1;
 			skeleton = nullptr;
-			transform_used = false;
 			loc_used = false;
 			rot_used = false;
 			scale_used = false;

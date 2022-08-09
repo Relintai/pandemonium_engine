@@ -52,11 +52,9 @@
 				Returns the amount of bones in the skeleton.
 			</description>
 		</method>
-		<method name="get_bone_custom_pose" qualifiers="const">
-			<return type="Transform" />
-			<argument index="0" name="bone_idx" type="int" />
+		<method name="create_skin_from_rest_transforms">
+			<return type="Skin" />
 			<description>
-				Returns the custom pose of the specified bone. Custom pose is applied on top of the rest pose.
 			</description>
 		</method>
 		<method name="get_bone_global_pose" qualifiers="const">
@@ -127,12 +125,6 @@
 				[i]Deprecated soon.[/i]
 			</description>
 		</method>
-		<method name="is_bone_rest_disabled" qualifiers="const">
-			<return type="bool" />
-			<argument index="0" name="bone_idx" type="int" />
-			<description>
-			</description>
-		</method>
 		<method name="localize_rests">
 			<return type="void" />
 			<description>
@@ -173,20 +165,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="set_bone_custom_pose">
-			<return type="void" />
-			<argument index="0" name="bone_idx" type="int" />
-			<argument index="1" name="custom_pose" type="Transform" />
-			<description>
-			</description>
-		</method>
-		<method name="set_bone_disable_rest">
-			<return type="void" />
-			<argument index="0" name="bone_idx" type="int" />
-			<argument index="1" name="disable" type="bool" />
-			<description>
-			</description>
-		</method>
 		<method name="set_bone_global_pose_override">
 			<return type="void" />
 			<argument index="0" name="bone_idx" type="int" />
@@ -210,14 +188,6 @@
 			<description>
 				Sets the bone index [code]parent_idx[/code] as the parent of the bone at [code]bone_idx[/code]. If -1, then bone has no parent.
 				[b]Note:[/b] [code]parent_idx[/code] must be less than [code]bone_idx[/code].
-			</description>
-		</method>
-		<method name="set_bone_pose">
-			<return type="void" />
-			<argument index="0" name="bone_idx" type="int" />
-			<argument index="1" name="pose" type="Transform" />
-			<description>
-				Sets the pose transform for bone [code]bone_idx[/code]. Prefer set_bone_pose_position, set_bone_pose_rotation, or set_bone_pose_scale instead.
 			</description>
 		</method>
 		<method name="set_bone_pose_position">

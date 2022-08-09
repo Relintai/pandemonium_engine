@@ -846,23 +846,7 @@ void AnimationTreePlayer::_process_animation(float p_delta) {
 				}
 
 				switch (a->track_get_type(tr.local_track)) {
-					case Animation::TYPE_TRANSFORM: { ///< Transform a node or a bone.
 
-						Vector3 loc;
-						Quat rot;
-						Vector3 scale;
-						a->transform_track_interpolate(tr.local_track, anim_list->time, &loc, &rot, &scale);
-
-						tr.track->loc += loc * tr.weight;
-
-						scale.x -= 1.0;
-						scale.y -= 1.0;
-						scale.z -= 1.0;
-						tr.track->scale += scale * tr.weight;
-
-						tr.track->rot = tr.track->rot * empty_rot.slerp(rot, tr.weight);
-
-					} break;
 					case Animation::TYPE_VALUE: { ///< Set a value in a property, can be interpolated.
 
 						if (a->value_track_get_update_mode(tr.local_track) == Animation::UPDATE_CONTINUOUS) {
@@ -917,7 +901,7 @@ void AnimationTreePlayer::_process_animation(float p_delta) {
 
 		if (t.bone_idx >= 0) {
 			if (t.skeleton) {
-				t.skeleton->set_bone_pose(t.bone_idx, xform);
+				//t.skeleton->set_bone_pose(t.bone_idx, xform);
 			}
 
 		} else if (t.spatial) {

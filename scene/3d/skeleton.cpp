@@ -93,8 +93,6 @@ bool Skeleton::_set(const StringName &p_path, const Variant &p_value) {
 		set_bone_rest(which, p_value);
 	} else if (what == "enabled") {
 		set_bone_enabled(which, p_value);
-	} else if (what == "pose") {
-		set_bone_pose(which, p_value);
 	} else if (what == "position") {
 		set_bone_pose_position(which, p_value);
 	} else if (what == "rotation") {
@@ -142,8 +140,6 @@ bool Skeleton::_get(const StringName &p_path, Variant &r_ret) const {
 		r_ret = get_bone_rest(which);
 	} else if (what == "enabled") {
 		r_ret = is_bone_enabled(which);
-	} else if (what == "pose") {
-		r_ret = get_bone_pose(which);
 	} else if (what == "position") {
 		r_ret = get_bone_pose_position(which);
 	} else if (what == "rotation") {
@@ -176,7 +172,6 @@ void Skeleton::_get_property_list(List<PropertyInfo> *p_list) const {
 		p_list->push_back(PropertyInfo(Variant::INT, prep + "parent", PROPERTY_HINT_RANGE, "-1," + itos(bones.size() - 1) + ",1"));
 		p_list->push_back(PropertyInfo(Variant::TRANSFORM, prep + "rest"));
 		p_list->push_back(PropertyInfo(Variant::BOOL, prep + "enabled"));
-		p_list->push_back(PropertyInfo(Variant::TRANSFORM, prep + "pose", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR));
 		p_list->push_back(PropertyInfo(Variant::VECTOR3, prep + "position", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR));
 		p_list->push_back(PropertyInfo(Variant::QUAT, prep + "rotation", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR));
 		p_list->push_back(PropertyInfo(Variant::VECTOR3, prep + "scale", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR));
@@ -577,19 +572,6 @@ void Skeleton::clear_bones() {
 
 // posing api
 
-void Skeleton::set_bone_pose(int p_bone, const Transform &p_pose) {
-	const int bone_size = bones.size();
-	ERR_FAIL_INDEX(p_bone, bone_size);
-
-	bones.write[p_bone].pose_position = p_pose.origin;
-	bones.write[p_bone].pose_rotation = p_pose.basis.operator Quat();
-	bones.write[p_bone].pose_scale = p_pose.basis.get_scale();
-	bones.write[p_bone].pose_cache_dirty = true;
-
-	if (is_inside_tree()) {
-		_make_dirty();
-	}
-}
 void Skeleton::set_bone_pose_position(int p_bone, const Vector3 &p_position) {
 	const int bone_size = bones.size();
 	ERR_FAIL_INDEX(p_bone, bone_size);
@@ -1001,7 +983,6 @@ void Skeleton::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("clear_bones"), &Skeleton::clear_bones);
 
-	ClassDB::bind_method(D_METHOD("set_bone_pose", "bone_idx", "pose"), &Skeleton::set_bone_pose);
 	ClassDB::bind_method(D_METHOD("set_bone_pose_position", "bone_idx", "position"), &Skeleton::set_bone_pose_position);
 	ClassDB::bind_method(D_METHOD("set_bone_pose_rotation", "bone_idx", "rotation"), &Skeleton::set_bone_pose_rotation);
 	ClassDB::bind_method(D_METHOD("set_bone_pose_scale", "bone_idx", "scale"), &Skeleton::set_bone_pose_scale);

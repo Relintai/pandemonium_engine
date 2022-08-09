@@ -5843,9 +5843,67 @@ void GLTFDocument::_import_animation(Ref<GLTFState> state, AnimationPlayer *ap, 
 		const bool transform_affects_skinned_mesh_instance = gltf_node->skeleton < 0 && gltf_node->skin >= 0;
 		if ((track.rotation_track.values.size() || track.translation_track.values.size() || track.scale_track.values.size()) && !transform_affects_skinned_mesh_instance) {
 			//make transform track
-			int track_idx = animation->get_track_count();
-			animation->add_track(Animation::TYPE_TRANSFORM);
-			animation->track_set_path(track_idx, transform_node_path);
+			int base_idx = animation->get_track_count();
+			int position_idx = -1;
+			int rotation_idx = -1;
+			int scale_idx = -1;
+
+			if (track.translation_track.values.size()) {
+				Vector3 base_pos = state->nodes[track_i->key()]->translation;
+				bool not_default = false; //discard the track if all it contains is default values
+				for (int i = 0; i < track.translation_track.times.size(); i++) {
+					Vector3 value = track.translation_track.values[track.translation_track.interpolation == GLTFAnimation::INTERP_CUBIC_SPLINE ? (1 + i * 3) : i];
+					if (!value.is_equal_approx(base_pos)) {
+						not_default = true;
+						break;
+					}
+				}
+				if (not_default) {
+					position_idx = base_idx;
+					animation->add_track(Animation::TYPE_POSITION_3D);
+					animation->track_set_path(position_idx, transform_node_path);
+					animation->track_set_imported(position_idx, true); //helps merging later
+
+					base_idx++;
+				}
+			}
+			if (track.rotation_track.values.size()) {
+				Quat base_rot = state->nodes[track_i->key()]->rotation.normalized();
+				bool not_default = false; //discard the track if all it contains is default values
+				for (int i = 0; i < track.rotation_track.times.size(); i++) {
+					Quat value = track.rotation_track.values[track.rotation_track.interpolation == GLTFAnimation::INTERP_CUBIC_SPLINE ? (1 + i * 3) : i].normalized();
+					if (!value.is_equal_approx(base_rot)) {
+						not_default = true;
+						break;
+					}
+				}
+				if (not_default) {
+					rotation_idx = base_idx;
+					animation->add_track(Animation::TYPE_ROTATION_3D);
+					animation->track_set_path(rotation_idx, transform_node_path);
+					animation->track_set_imported(rotation_idx, true); //helps merging later
+					base_idx++;
+				}
+			}
+			if (track.scale_track.values.size()) {
+				Vector3 base_scale = state->nodes[track_i->key()]->scale;
+				bool not_default = false; //discard the track if all it contains is default values
+				for (int i = 0; i < track.scale_track.times.size(); i++) {
+					Vector3 value = track.scale_track.values[track.scale_track.interpolation == GLTFAnimation::INTERP_CUBIC_SPLINE ? (1 + i * 3) : i];
+					if (!value.is_equal_approx(base_scale)) {
+						not_default = true;
+						break;
+					}
+				}
+				if (not_default) {
+					scale_idx = base_idx;
+					animation->add_track(Animation::TYPE_SCALE_3D);
+					animation->track_set_path(scale_idx, transform_node_path);
+					animation->track_set_imported(scale_idx, true); //helps merging later
+					base_idx++;
+				}
+			}
+
 			//first determine animation length
 
 			const double increment = 1.0 / bake_fps;
@@ -5855,15 +5913,15 @@ void GLTFDocument::_import_animation(Ref<GLTFState> state, AnimationPlayer *ap, 
 			Quat base_rot;
 			Vector3 base_scale = Vector3(1, 1, 1);
 
-			if (!track.rotation_track.values.size()) {
+			if (rotation_idx == -1) {
 				base_rot = state->nodes[track_i->key()]->rotation.normalized();
 			}
 
-			if (!track.translation_track.values.size()) {
+			if (position_idx == -1) {
 				base_pos = state->nodes[track_i->key()]->translation;
 			}
 
-			if (!track.scale_track.values.size()) {
+			if (scale_idx == -1) {
 				base_scale = state->nodes[track_i->key()]->scale;
 			}
 
@@ -5873,15 +5931,15 @@ void GLTFDocument::_import_animation(Ref<GLTFState> state, AnimationPlayer *ap, 
 				Quat rot = base_rot;
 				Vector3 scale = base_scale;
 
-				if (track.translation_track.times.size()) {
+				if (position_idx >= 0) {
 					pos = _interpolate_track<Vector3>(track.translation_track.times, track.translation_track.values, time, track.translation_track.interpolation);
 				}
 
-				if (track.rotation_track.times.size()) {
+				if (rotation_idx >= 0) {
 					rot = _interpolate_track<Quat>(track.rotation_track.times, track.rotation_track.values, time, track.rotation_track.interpolation);
 				}
 
-				if (track.scale_track.times.size()) {
+				if (scale_idx >= 0) {
 					scale = _interpolate_track<Vector3>(track.scale_track.times, track.scale_track.values, time, track.scale_track.interpolation);
 				}
 
@@ -5900,12 +5958,22 @@ void GLTFDocument::_import_animation(Ref<GLTFState> state, AnimationPlayer *ap, 
 					pos = xform.origin;
 				}
 
-				animation->transform_track_insert_key(track_idx, time, pos, rot, scale);
+				if (position_idx >= 0) {
+					animation->position_track_insert_key(position_idx, time, pos);
+				}
+				if (rotation_idx >= 0) {
+					animation->rotation_track_insert_key(rotation_idx, time, rot);
+				}
+				if (scale_idx >= 0) {
+					animation->scale_track_insert_key(scale_idx, time, scale);
+				}
 
 				if (last) {
 					break;
 				}
+
 				time += increment;
+				
 				if (time >= length) {
 					last = true;
 					time = length;
@@ -6123,6 +6191,8 @@ void GLTFDocument::_process_mesh_instances(Ref<GLTFState> state, Node *scene_roo
 }
 
 GLTFAnimation::Track GLTFDocument::_convert_animation_track(Ref<GLTFState> state, GLTFAnimation::Track p_track, Ref<Animation> p_animation, Transform p_bone_rest, int32_t p_track_i, GLTFNodeIndex p_node_i) {
+	//TODO PORT
+	/*
 	Animation::InterpolationType interpolation = p_animation->track_get_interpolation_type(p_track_i);
 
 	GLTFAnimation::Interpolation gltf_interpolation = GLTFAnimation::INTERP_LINEAR;
@@ -6304,7 +6374,7 @@ GLTFAnimation::Track GLTFDocument::_convert_animation_track(Ref<GLTFState> state
 			}
 		}
 	}
-
+	*/
 	return p_track;
 }
 

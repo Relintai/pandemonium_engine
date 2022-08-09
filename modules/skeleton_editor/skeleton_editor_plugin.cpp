@@ -1394,7 +1394,8 @@ bool ModuleSkeletonEditor::forward_spatial_gui_input(int p_index, Camera *p_came
 					if (rest_mode) {
 						skeleton->set_bone_rest(skeleton->get_selected_bone(), t);
 					} else {
-						skeleton->set_bone_pose(skeleton->get_selected_bone(), t);
+						//TODO
+						//skeleton->set_bone_pose(skeleton->get_selected_bone(), t);
 						//skeleton->set_bone_pose_position(p_id, t.origin);
 						//skeleton->set_bone_pose_rotation(p_id, t.basis.operator Quaternion());
 						//skeleton->set_bone_pose_scale(p_id, t.basis.get_scale());
@@ -1471,7 +1472,8 @@ bool ModuleSkeletonEditor::forward_spatial_gui_input(int p_index, Camera *p_came
 					if (rest_mode) {
 						skeleton->set_bone_rest(skeleton->get_selected_bone(), t);
 					} else {
-						skeleton->set_bone_pose(skeleton->get_selected_bone(), t);
+						//TODO
+						//skeleton->set_bone_pose(skeleton->get_selected_bone(), t);
 					}
 
 					sev->update_surface();
@@ -1547,7 +1549,8 @@ bool ModuleSkeletonEditor::forward_spatial_gui_input(int p_index, Camera *p_came
 					if (rest_mode) {
 						skeleton->set_bone_rest(skeleton->get_selected_bone(), t);
 					} else {
-						skeleton->set_bone_pose(skeleton->get_selected_bone(), t);
+						//TODO
+						//skeleton->set_bone_pose(skeleton->get_selected_bone(), t);
 					}
 
 					sev->update_surface();

@@ -106,7 +106,6 @@ private:
 		int bone_idx;
 		// accumulated transforms
 
-		bool transform_used;
 		bool loc_used;
 		bool rot_used;
 		bool scale_used;
@@ -174,7 +173,6 @@ private:
 				audio_start(0.0),
 				audio_len(0.0),
 				animation_playing(false) {
-			transform_used = false;
 			loc_used = false;
 			rot_used = false;
 			scale_used = false;

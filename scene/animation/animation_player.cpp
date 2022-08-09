@@ -65,15 +65,11 @@ void AnimatedValuesBackup::restore() const {
 		if (entry->bone_idx == -1) {
 			entry->object->set_indexed(entry->subpath, entry->value);
 		} else {
-			if (entry->value.get_type() == Variant::TRANSFORM) {
-				Object::cast_to<Skeleton>(entry->object)->set_bone_pose(entry->bone_idx, entry->value);
-			} else {
-				Array arr = entry->value;
-				if (arr.size() == 3) {
-					Object::cast_to<Skeleton>(entry->object)->set_bone_pose_position(entry->bone_idx, arr[0]);
-					Object::cast_to<Skeleton>(entry->object)->set_bone_pose_rotation(entry->bone_idx, arr[1]);
-					Object::cast_to<Skeleton>(entry->object)->set_bone_pose_scale(entry->bone_idx, arr[2]);
-				}
+			Array arr = entry->value;
+			if (arr.size() == 3) {
+				Object::cast_to<Skeleton>(entry->object)->set_bone_pose_position(entry->bone_idx, arr[0]);
+				Object::cast_to<Skeleton>(entry->object)->set_bone_pose_rotation(entry->bone_idx, arr[1]);
+				Object::cast_to<Skeleton>(entry->object)->set_bone_pose_scale(entry->bone_idx, arr[2]);
 			}
 		}
 	}
@@ -298,33 +294,7 @@ void AnimationPlayer::_ensure_node_caches(AnimationData *p_anim, Node *p_root_ov
 		node_cache->node_2d = Object::cast_to<Node2D>(child);
 
 #ifndef _3D_DISABLED
-		if (a->track_get_type(i) == Animation::TYPE_TRANSFORM) {
-			// special cases and caches for transform tracks
-
-			// cache spatial
-			node_cache->spatial = Object::cast_to<Spatial>(child);
-			// cache skeleton
-			node_cache->skeleton = Object::cast_to<Skeleton>(child);
-			if (node_cache->skeleton) {
-				if (a->track_get_path(i).get_subname_count() == 1) {
-					StringName bone_name = a->track_get_path(i).get_subname(0);
-
-					node_cache->bone_idx = node_cache->skeleton->find_bone(bone_name);
-					if (node_cache->bone_idx < 0) {
-						// broken track (nonexistent bone)
-						node_cache->skeleton = nullptr;
-						node_cache->spatial = nullptr;
-						ERR_CONTINUE(node_cache->bone_idx < 0);
-					}
-				} else {
-					// no property, just use spatialnode
-					node_cache->skeleton = nullptr;
-				}
-			}
-
-			node_cache->transform_used = true;
-			
-		} else if (a->track_get_type(i) == Animation::TYPE_POSITION_3D || a->track_get_type(i) == Animation::TYPE_ROTATION_3D || a->track_get_type(i) == Animation::TYPE_SCALE_3D) {
+		if (a->track_get_type(i) == Animation::TYPE_POSITION_3D || a->track_get_type(i) == Animation::TYPE_ROTATION_3D || a->track_get_type(i) == Animation::TYPE_SCALE_3D) {
 			// special cases and caches for transform tracks
 
 			if (node_cache->last_setup_pass != setup_pass) {
@@ -439,38 +409,6 @@ void AnimationPlayer::_animation_process_animation(AnimationData *p_anim, float 
 		}
 
 		switch (a->track_get_type(i)) {
-			case Animation::TYPE_TRANSFORM: {
-#ifndef _3D_DISABLED
-				if (!nc->spatial) {
-					continue;
-				}
-
-				Vector3 loc;
-				Quat rot;
-				Vector3 scale;
-
-				Error err = a->transform_track_interpolate(i, p_time, &loc, &rot, &scale);
-				//ERR_CONTINUE(err!=OK); //used for testing, should be removed
-
-				if (err != OK) {
-					continue;
-				}
-
-				if (nc->accum_pass != accum_pass) {
-					ERR_CONTINUE(cache_update_size >= NODE_CACHE_UPDATE_MAX);
-					cache_update[cache_update_size++] = nc;
-					nc->accum_pass = accum_pass;
-					nc->loc_accum = loc;
-					nc->rot_accum = rot;
-					nc->scale_accum = scale;
-
-				} else {
-					nc->loc_accum = nc->loc_accum.linear_interpolate(loc, p_interp);
-					nc->rot_accum = nc->rot_accum.slerp(rot, p_interp);
-					nc->scale_accum = nc->scale_accum.linear_interpolate(scale, p_interp);
-				}
-#endif // _3D_DISABLED
-			} break;
 			case Animation::TYPE_POSITION_3D: {
 #ifndef _3D_DISABLED
 				if (!nc->spatial) {
@@ -1009,37 +947,25 @@ void AnimationPlayer::_animation_update_transforms() {
 #ifndef _3D_DISABLED
 
 			if (nc->skeleton && nc->bone_idx >= 0) {
-				if (nc->transform_used) {
-					t.origin = nc->loc_accum;
-					t.basis.set_quat_scale(nc->rot_accum, nc->scale_accum);
-					nc->skeleton->set_bone_pose(nc->bone_idx, t);
-				} else {
-					if (nc->loc_used) {
-						nc->skeleton->set_bone_pose_position(nc->bone_idx, nc->loc_accum);
-					}
-					if (nc->rot_used) {
-						nc->skeleton->set_bone_pose_rotation(nc->bone_idx, nc->rot_accum);
-					}
-					if (nc->scale_used) {
-						nc->skeleton->set_bone_pose_scale(nc->bone_idx, nc->scale_accum);
-					}
+				if (nc->loc_used) {
+					nc->skeleton->set_bone_pose_position(nc->bone_idx, nc->loc_accum);
+				}
+				if (nc->rot_used) {
+					nc->skeleton->set_bone_pose_rotation(nc->bone_idx, nc->rot_accum);
+				}
+				if (nc->scale_used) {
+					nc->skeleton->set_bone_pose_scale(nc->bone_idx, nc->scale_accum);
 				}
 
 			} else if (nc->spatial) {
-				if (nc->transform_used) {
-					t.origin = nc->loc_accum;
-					t.basis.set_quat_scale(nc->rot_accum, nc->scale_accum);
-					nc->spatial->set_transform(t);
-				} else {
-					if (nc->loc_used) {
-						nc->spatial->set_translation(nc->loc_accum);
-					}
-					if (nc->rot_used) {
-						nc->spatial->set_rotation(nc->rot_accum.get_euler());
-					}
-					if (nc->scale_used) {
-						nc->spatial->set_scale(nc->scale_accum);
-					}
+				if (nc->loc_used) {
+					nc->spatial->set_translation(nc->loc_accum);
+				}
+				if (nc->rot_used) {
+					nc->spatial->set_rotation(nc->rot_accum.get_euler());
+				}
+				if (nc->scale_used) {
+					nc->spatial->set_scale(nc->scale_accum);
 				}
 			}
 #endif // _3D_DISABLED
@@ -1718,18 +1644,12 @@ Ref<AnimatedValuesBackup> AnimationPlayer::backup_animated_values(Node *p_root_o
 
 			AnimatedValuesBackup::Entry entry;
 
-			if (nc->transform_used) {
-				entry.object = nc->skeleton;
-				entry.bone_idx = nc->bone_idx;
-				entry.value = nc->skeleton->get_bone_pose(nc->bone_idx);
-			} else {
-				Array arr;
-				arr.resize(3);
-				arr[0] = nc->skeleton->get_bone_pose_position(nc->bone_idx);
-				arr[1] = nc->skeleton->get_bone_pose_rotation(nc->bone_idx);
-				arr[2] = nc->skeleton->get_bone_pose_scale(nc->bone_idx);
-				entry.value = nc;
-			}
+			Array arr;
+			arr.resize(3);
+			arr[0] = nc->skeleton->get_bone_pose_position(nc->bone_idx);
+			arr[1] = nc->skeleton->get_bone_pose_rotation(nc->bone_idx);
+			arr[2] = nc->skeleton->get_bone_pose_scale(nc->bone_idx);
+			entry.value = nc;
 
 			backup->entries.push_back(entry);
 		} else {

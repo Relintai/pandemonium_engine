@@ -674,13 +674,7 @@ void ResourceImporterScene::_create_clips(Node *scene, const Array &p_clips, boo
 						new_anim->track_set_path(dtrack, default_anim->track_get_path(j));
 
 						if (kt > (from + 0.01) && k > 0) {
-							if (default_anim->track_get_type(j) == Animation::TYPE_TRANSFORM) {
-								Quat q;
-								Vector3 p;
-								Vector3 s;
-								default_anim->transform_track_interpolate(j, from, &p, &q, &s);
-								new_anim->transform_track_insert_key(dtrack, 0, p, q, s);
-							} else if (default_anim->track_get_type(j) == Animation::TYPE_POSITION_3D) {
+							if (default_anim->track_get_type(j) == Animation::TYPE_POSITION_3D) {
 								Vector3 p;
 								default_anim->position_track_interpolate(j, from, &p);
 								new_anim->position_track_insert_key(dtrack, 0, p);
@@ -699,13 +693,7 @@ void ResourceImporterScene::_create_clips(Node *scene, const Array &p_clips, boo
 						}
 					}
 
-					if (default_anim->track_get_type(j) == Animation::TYPE_TRANSFORM) {
-						Quat q;
-						Vector3 p;
-						Vector3 s;
-						default_anim->transform_track_get_key(j, k, &p, &q, &s);
-						new_anim->transform_track_insert_key(dtrack, kt - from, p, q, s);
-					} else if (default_anim->track_get_type(j) == Animation::TYPE_POSITION_3D) {
+					if (default_anim->track_get_type(j) == Animation::TYPE_POSITION_3D) {
 						Vector3 p;
 						default_anim->position_track_get_key(j, k, &p);
 						new_anim->position_track_insert_key(dtrack, kt - from, p);
@@ -724,13 +712,7 @@ void ResourceImporterScene::_create_clips(Node *scene, const Array &p_clips, boo
 				}
 
 				if (dtrack != -1 && kt >= to) {
-					if (default_anim->track_get_type(j) == Animation::TYPE_TRANSFORM) {
-						Quat q;
-						Vector3 p;
-						Vector3 s;
-						default_anim->transform_track_interpolate(j, to, &p, &q, &s);
-						new_anim->transform_track_insert_key(dtrack, to - from, p, q, s);
-					} else if (default_anim->track_get_type(j) == Animation::TYPE_POSITION_3D) {
+					if (default_anim->track_get_type(j) == Animation::TYPE_POSITION_3D) {
 						Vector3 p;
 						default_anim->position_track_interpolate(j, to, &p);
 						new_anim->position_track_insert_key(dtrack, to - from, p);
@@ -753,15 +735,7 @@ void ResourceImporterScene::_create_clips(Node *scene, const Array &p_clips, boo
 				new_anim->add_track(default_anim->track_get_type(j));
 				dtrack = new_anim->get_track_count() - 1;
 				new_anim->track_set_path(dtrack, default_anim->track_get_path(j));
-				if (default_anim->track_get_type(j) == Animation::TYPE_TRANSFORM) {
-					Quat q;
-					Vector3 p;
-					Vector3 s;
-					default_anim->transform_track_interpolate(j, from, &p, &q, &s);
-					new_anim->transform_track_insert_key(dtrack, 0, p, q, s);
-					default_anim->transform_track_interpolate(j, to, &p, &q, &s);
-					new_anim->transform_track_insert_key(dtrack, to - from, p, q, s);
-				} else if (default_anim->track_get_type(j) == Animation::TYPE_POSITION_3D) {
+				if (default_anim->track_get_type(j) == Animation::TYPE_POSITION_3D) {
 					Vector3 p;
 					default_anim->position_track_interpolate(j, from, &p);
 					new_anim->position_track_insert_key(dtrack, 0, p);

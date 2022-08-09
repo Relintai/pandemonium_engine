@@ -95,11 +95,11 @@ private:
 				pose_cache_dirty = false;
 			}
 		}
-		bool pose_cache_dirty = true;
+		bool pose_cache_dirty;
 		Transform pose_cache;
 		Vector3 pose_position;
 		Quat pose_rotation;
-		Vector3 pose_scale = Vector3(1, 1, 1);
+		Vector3 pose_scale;
 
 		Transform pose_global;
 		Transform pose_global_no_override;
@@ -122,6 +122,8 @@ private:
 			parent = -1;
 			enabled = true;
 			disable_rest = false;
+			pose_cache_dirty = true;
+			pose_scale = Vector3(1, 1, 1);
 			custom_pose_enable = false;
 			global_pose_override_amount = 0;
 			global_pose_override_reset = false;
@@ -205,7 +207,6 @@ public:
 
 	// posing api
 
-	void set_bone_pose(int p_bone, const Transform &p_pose);
 	void set_bone_pose_position(int p_bone, const Vector3 &p_position);
 	void set_bone_pose_rotation(int p_bone, const Quat &p_rotation);
 	void set_bone_pose_scale(int p_bone, const Vector3 &p_scale);

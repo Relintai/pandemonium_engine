@@ -591,38 +591,6 @@ bool AnimationTree::_update_caches(AnimationPlayer *player) {
 						track = track_value;
 
 					} break;
-					case Animation::TYPE_TRANSFORM: {
-#ifndef _3D_DISABLED
-						Spatial *spatial = Object::cast_to<Spatial>(child);
-
-						if (!spatial) {
-							ERR_PRINT("AnimationTree: '" + String(E->get()) + "', transform track does not point to spatial:  '" + String(path) + "'");
-							continue;
-						}
-
-						TrackCacheTransform *track_xform = memnew(TrackCacheTransform);
-						track_xform->type = Animation::TYPE_TRANSFORM;
-
-						track_xform->spatial = spatial;
-						track_xform->skeleton = nullptr;
-						track_xform->bone_idx = -1;
-						track_xform->transform_used = true;
-
-						if (path.get_subname_count() == 1 && Object::cast_to<Skeleton>(spatial)) {
-							Skeleton *sk = Object::cast_to<Skeleton>(spatial);
-							track_xform->skeleton = sk;
-							int bone_idx = sk->find_bone(path.get_subname(0));
-							if (bone_idx != -1) {
-								track_xform->bone_idx = bone_idx;
-							}
-						}
-
-						track_xform->object = spatial;
-						track_xform->object_id = track_xform->object->get_instance_id();
-
-						track = track_xform;
-#endif
-					} break;
 					case Animation::TYPE_POSITION_3D:
 					case Animation::TYPE_ROTATION_3D:
 					case Animation::TYPE_SCALE_3D: {
@@ -640,7 +608,6 @@ bool AnimationTree::_update_caches(AnimationPlayer *player) {
 						track_xform->spatial = spatial;
 						track_xform->skeleton = nullptr;
 						track_xform->bone_idx = -1;
-						track_xform->transform_used = true;
 
 						if (path.get_subname_count() == 1 && Object::cast_to<Skeleton>(spatial)) {
 							Skeleton *sk = Object::cast_to<Skeleton>(spatial);
@@ -912,7 +879,7 @@ void AnimationTree::_process_graph(float p_delta) {
 				TrackCache *track = track_cache[path];
 
 				Animation::TrackType ttype = a->track_get_type(i);
-				if (ttype != Animation::TYPE_TRANSFORM && ttype != Animation::TYPE_POSITION_3D && ttype != Animation::TYPE_ROTATION_3D && ttype != Animation::TYPE_SCALE_3D && track->type != ttype) {
+				if (ttype != Animation::TYPE_POSITION_3D && ttype != Animation::TYPE_ROTATION_3D && ttype != Animation::TYPE_SCALE_3D && track->type != ttype) {
 					//broken animation, but avoid error spamming
 					continue;
 				}
@@ -931,95 +898,6 @@ void AnimationTree::_process_graph(float p_delta) {
 				}
 
 				switch (track->type) {
-					case Animation::TYPE_TRANSFORM: {
-#ifndef _3D_DISABLED
-						TrackCacheTransform *t = static_cast<TrackCacheTransform *>(track);
-
-						if (track->root_motion) {
-							if (t->process_pass != process_pass) {
-								t->process_pass = process_pass;
-								t->loc = Vector3();
-								t->rot = Quat();
-								t->rot_blend_accum = 0;
-								t->scale = Vector3(1, 1, 1);
-							}
-
-							float prev_time = time - delta;
-							if (prev_time < 0) {
-								if (!a->has_loop()) {
-									prev_time = 0;
-								} else {
-									prev_time = a->get_length() + prev_time;
-								}
-							}
-
-							Vector3 loc[2];
-							Quat rot[2];
-							Vector3 scale[2];
-
-							if (prev_time > time) {
-								Error err = a->transform_track_interpolate(i, prev_time, &loc[0], &rot[0], &scale[0]);
-								if (err != OK) {
-									continue;
-								}
-
-								a->transform_track_interpolate(i, a->get_length(), &loc[1], &rot[1], &scale[1]);
-
-								t->loc += (loc[1] - loc[0]) * blend;
-								t->scale += (scale[1] - scale[0]) * blend;
-								Quat q = Quat().slerp(rot[0].normalized().inverse() * rot[1].normalized(), blend).normalized();
-								t->rot = (t->rot * q).normalized();
-
-								prev_time = 0;
-							}
-
-							Error err = a->transform_track_interpolate(i, prev_time, &loc[0], &rot[0], &scale[0]);
-							if (err != OK) {
-								continue;
-							}
-
-							a->transform_track_interpolate(i, time, &loc[1], &rot[1], &scale[1]);
-
-							t->loc += (loc[1] - loc[0]) * blend;
-							t->scale += (scale[1] - scale[0]) * blend;
-							Quat q = Quat().slerp(rot[0].normalized().inverse() * rot[1].normalized(), blend).normalized();
-							t->rot = (t->rot * q).normalized();
-
-							prev_time = 0;
-
-						} else {
-							Vector3 loc;
-							Quat rot;
-							Vector3 scale;
-
-							Error err = a->transform_track_interpolate(i, time, &loc, &rot, &scale);
-							//ERR_CONTINUE(err!=OK); //used for testing, should be removed
-
-							if (t->process_pass != process_pass) {
-								t->process_pass = process_pass;
-								t->loc = loc;
-								t->rot = rot;
-								t->rot_blend_accum = 0;
-								t->scale = scale;
-							}
-
-							if (err != OK) {
-								continue;
-							}
-
-							t->loc = t->loc.linear_interpolate(loc, blend);
-							if (t->rot_blend_accum == 0) {
-								t->rot = rot;
-								t->rot_blend_accum = blend;
-							} else {
-								float rot_total = t->rot_blend_accum + blend;
-								t->rot = rot.slerp(t->rot, t->rot_blend_accum / rot_total).normalized();
-								t->rot_blend_accum = rot_total;
-							}
-							t->scale = t->scale.linear_interpolate(scale, blend);
-						}
-#endif
-					} break;
 					case Animation::TYPE_POSITION_3D: {
 #ifndef _3D_DISABLED
 						TrackCacheTransform *t = static_cast<TrackCacheTransform *>(track);
@@ -1482,29 +1360,6 @@ void AnimationTree::_process_graph(float p_delta) {
 			}
 
 			switch (track->type) {
-				case Animation::TYPE_TRANSFORM: {
-#ifndef _3D_DISABLED
-					TrackCacheTransform *t = static_cast<TrackCacheTransform *>(track);
-
-					Transform xform;
-					xform.origin = t->loc;
-
-					xform.basis.set_quat_scale(t->rot, t->scale);
-
-					if (t->root_motion) {
-						root_motion_transform = xform;
-
-						if (t->skeleton && t->bone_idx >= 0) {
-							root_motion_transform = (t->skeleton->get_bone_rest(t->bone_idx) * root_motion_transform) * t->skeleton->get_bone_rest(t->bone_idx).affine_inverse();
-						}
-					} else if (t->skeleton && t->bone_idx >= 0) {
-						t->skeleton->set_bone_pose(t->bone_idx, xform);
-
-					} else if (!t->skeleton) {
-						t->spatial->set_transform(xform);
-					}
-#endif
-				} break;
 				case Animation::TYPE_POSITION_3D: {
 #ifndef _3D_DISABLED
 					TrackCacheTransform *t = static_cast<TrackCacheTransform *>(track);
