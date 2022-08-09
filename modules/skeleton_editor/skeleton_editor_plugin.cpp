@@ -31,30 +31,29 @@
 #include "skeleton_editor_plugin.h"
 
 #include "core/io/resource_saver.h"
+#include "editor/animation_track_editor.h"
 #include "editor/editor_file_dialog.h"
+#include "editor/editor_inspector.h"
 #include "editor/editor_properties.h"
 #include "editor/editor_scale.h"
+#include "editor/editor_settings.h"
+#include "editor/editor_spin_slider.h"
 #include "editor/plugins/animation_player_editor_plugin.h"
 #include "editor/plugins/spatial_editor_plugin.h"
 #include "scene/3d/collision_shape.h"
 #include "scene/3d/mesh_instance.h"
 #include "scene/3d/physics_body.h"
 #include "scene/3d/physics_joint.h"
+#include "scene/gui/check_box.h"
+#include "scene/gui/grid_container.h"
+#include "scene/gui/label.h"
+#include "scene/gui/popup_menu.h"
+#include "scene/gui/separator.h"
+#include "scene/gui/texture_rect.h"
+#include "scene/gui/tree.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/capsule_shape.h"
 #include "scene/resources/sphere_shape.h"
-#include "editor/editor_spin_slider.h"
-#include "scene/gui/texture_rect.h"
-#include "editor/editor_inspector.h"
-#include "editor/editor_spin_slider.h"
-#include "editor/animation_track_editor.h"
-#include "scene/gui/grid_container.h"
-#include "scene/gui/tree.h"
-#include "scene/gui/label.h"
-#include "scene/gui/popup_menu.h"
-#include "scene/gui/check_box.h"
-#include "editor/editor_settings.h"
-#include "scene/gui/separator.h"
 
 #define DISTANCE_DEFAULT 4
 
@@ -1394,11 +1393,7 @@ bool ModuleSkeletonEditor::forward_spatial_gui_input(int p_index, Camera *p_came
 					if (rest_mode) {
 						skeleton->set_bone_rest(skeleton->get_selected_bone(), t);
 					} else {
-						//TODO
-						//skeleton->set_bone_pose(skeleton->get_selected_bone(), t);
-						//skeleton->set_bone_pose_position(p_id, t.origin);
-						//skeleton->set_bone_pose_rotation(p_id, t.basis.operator Quaternion());
-						//skeleton->set_bone_pose_scale(p_id, t.basis.get_scale());
+						skeleton->set_bone_pose_scale(skeleton->get_selected_bone(), t.basis.get_scale());
 					}
 
 					sev->update_surface();
@@ -1472,8 +1467,7 @@ bool ModuleSkeletonEditor::forward_spatial_gui_input(int p_index, Camera *p_came
 					if (rest_mode) {
 						skeleton->set_bone_rest(skeleton->get_selected_bone(), t);
 					} else {
-						//TODO
-						//skeleton->set_bone_pose(skeleton->get_selected_bone(), t);
+						skeleton->set_bone_pose_position(skeleton->get_selected_bone(), t.origin);
 					}
 
 					sev->update_surface();
@@ -1549,8 +1543,7 @@ bool ModuleSkeletonEditor::forward_spatial_gui_input(int p_index, Camera *p_came
 					if (rest_mode) {
 						skeleton->set_bone_rest(skeleton->get_selected_bone(), t);
 					} else {
-						//TODO
-						//skeleton->set_bone_pose(skeleton->get_selected_bone(), t);
+						skeleton->set_bone_pose_rotation(skeleton->get_selected_bone(), t.basis.get_rotation_quat());
 					}
 
 					sev->update_surface();
