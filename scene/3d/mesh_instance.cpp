@@ -122,7 +122,7 @@ void MeshInstance::set_mesh(const Ref<Mesh> &p_mesh) {
 
 	if (skin_ref.is_valid() && mesh.is_valid() && _is_software_skinning_enabled() && is_visible_in_tree()) {
 		ERR_FAIL_COND(!skin_ref->get_skeleton_node());
-		skin_ref->get_skeleton_node()->disconnect("skeleton_updated", this, "_update_skinning");
+		skin_ref->get_skeleton_node()->disconnect("pose_updated", this, "_update_skinning");
 	}
 
 	if (software_skinning) {
@@ -174,7 +174,7 @@ void MeshInstance::_resolve_skeleton_path() {
 
 	if (skin_ref.is_valid() && mesh.is_valid() && _is_software_skinning_enabled() && is_visible_in_tree()) {
 		ERR_FAIL_COND(!skin_ref->get_skeleton_node());
-		skin_ref->get_skeleton_node()->disconnect("skeleton_updated", this, "_update_skinning");
+		skin_ref->get_skeleton_node()->disconnect("pose_updated", this, "_update_skinning");
 	}
 
 	skin_ref = new_skin_reference;
@@ -219,8 +219,8 @@ void MeshInstance::_initialize_skinning(bool p_force_reset, bool p_call_attach_s
 		if (_is_software_skinning_enabled()) {
 			if (is_visible_in_tree()) {
 				ERR_FAIL_COND(!skin_ref->get_skeleton_node());
-				if (!skin_ref->get_skeleton_node()->is_connected("skeleton_updated", this, "_update_skinning")) {
-					skin_ref->get_skeleton_node()->connect("skeleton_updated", this, "_update_skinning");
+				if (!skin_ref->get_skeleton_node()->is_connected("pose_updated", this, "_update_skinning")) {
+					skin_ref->get_skeleton_node()->connect("pose_updated", this, "_update_skinning");
 				}
 			}
 
@@ -332,8 +332,8 @@ void MeshInstance::_initialize_skinning(bool p_force_reset, bool p_call_attach_s
 			}
 		} else {
 			ERR_FAIL_COND(!skin_ref->get_skeleton_node());
-			if (skin_ref->get_skeleton_node()->is_connected("skeleton_updated", this, "_update_skinning")) {
-				skin_ref->get_skeleton_node()->disconnect("skeleton_updated", this, "_update_skinning");
+			if (skin_ref->get_skeleton_node()->is_connected("pose_updated", this, "_update_skinning")) {
+				skin_ref->get_skeleton_node()->disconnect("pose_updated", this, "_update_skinning");
 			}
 
 			if (p_call_attach_skeleton) {
@@ -671,9 +671,9 @@ void MeshInstance::_notification(int p_what) {
 		if (skin_ref.is_valid() && mesh.is_valid() && _is_software_skinning_enabled()) {
 			ERR_FAIL_COND(!skin_ref->get_skeleton_node());
 			if (is_visible_in_tree()) {
-				skin_ref->get_skeleton_node()->connect("skeleton_updated", this, "_update_skinning");
+				skin_ref->get_skeleton_node()->connect("pose_updated", this, "_update_skinning");
 			} else {
-				skin_ref->get_skeleton_node()->disconnect("skeleton_updated", this, "_update_skinning");
+				skin_ref->get_skeleton_node()->disconnect("pose_updated", this, "_update_skinning");
 			}
 		}
 	}

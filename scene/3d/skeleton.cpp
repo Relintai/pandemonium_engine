@@ -347,7 +347,7 @@ void Skeleton::_notification(int p_what) {
 			}
 
 			dirty = false;
-			emit_signal("skeleton_updated");
+			emit_signal("pose_updated");
 		} break;
 
 #ifndef _3D_DISABLED
@@ -1047,7 +1047,7 @@ void Skeleton::_bind_methods() {
 
 #endif // _3D_DISABLED
 
-	ADD_SIGNAL(MethodInfo("skeleton_updated"));
+	ADD_SIGNAL(MethodInfo("pose_updated"));
 
 	BIND_CONSTANT(NOTIFICATION_UPDATE_SKELETON);
 

@@ -816,7 +816,7 @@ void ModuleSkeletonEditor::create_editors() {
 	if (skeleton) {
 		skeleton->add_child(pointsm);
 		pointsm->set_skeleton_path(NodePath(""));
-		skeleton->connect("skeleton_updated", this, "_draw_handles");
+		skeleton->connect("pose_updated", this, "_draw_handles");
 	}
 
 	const Color section_color = get_color("prop_subsection", "Editor");
@@ -881,7 +881,7 @@ void ModuleSkeletonEditor::_notification(int p_what) {
 			joint_tree->connect("item_rmb_selected", this, "_joint_tree_rmb_select");
 
 #ifdef TOOLS_ENABLED
-			skeleton->connect("skeleton_updated", this, "_update_properties");
+			skeleton->connect("pose_updated", this, "_update_properties");
 #endif // TOOLS_ENABLED
 
 			break;
@@ -1037,7 +1037,7 @@ ModuleSkeletonEditor::~ModuleSkeletonEditor() {
 	if (skeleton) {
 		pointsm->get_parent()->remove_child(pointsm);
 		skeleton->set_selected_bone(-1);
-		skeleton->disconnect("skeleton_updated", this, "_draw_handles");
+		skeleton->disconnect("pose_updated", this, "_draw_handles");
 		memdelete(pointsm);
 	}
 	for (int i = 0; i < 2; i++) {
