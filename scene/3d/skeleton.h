@@ -206,7 +206,7 @@ public:
 	void clear_bones();
 
 	// posing api
-
+	void set_bone_pose(int p_bone, const Transform &p_pose);
 	void set_bone_pose_position(int p_bone, const Vector3 &p_position);
 	void set_bone_pose_rotation(int p_bone, const Quat &p_rotation);
 	void set_bone_pose_scale(int p_bone, const Vector3 &p_scale);

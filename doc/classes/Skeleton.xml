@@ -190,6 +190,14 @@
 				[b]Note:[/b] [code]parent_idx[/code] must be less than [code]bone_idx[/code].
 			</description>
 		</method>
+		<method name="set_bone_pose">
+			<return type="void" />
+			<argument index="0" name="bone_idx" type="int" />
+			<argument index="1" name="pose" type="Transform" />
+			<description>
+				Sets the pose transform for bone [code]bone_idx[/code]. Prefer set_bone_pose_position, set_bone_pose_rotation, or set_bone_pose_scale instead.
+			</description>
+		</method>
 		<method name="set_bone_pose_position">
 			<return type="void" />
 			<argument index="0" name="bone_idx" type="int" />

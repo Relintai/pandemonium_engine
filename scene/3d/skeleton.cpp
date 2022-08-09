@@ -571,6 +571,19 @@ void Skeleton::clear_bones() {
 }
 
 // posing api
+void Skeleton::set_bone_pose(int p_bone, const Transform &p_pose) {
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX(p_bone, bone_size);
+
+	bones.write[p_bone].pose_position = p_pose.origin;
+	bones.write[p_bone].pose_rotation = p_pose.basis.get_rotation_quat();
+	bones.write[p_bone].pose_scale = p_pose.basis.get_scale();
+	bones.write[p_bone].pose_cache_dirty = true;
+
+	if (is_inside_tree()) {
+		_make_dirty();
+	}
+}
 
 void Skeleton::set_bone_pose_position(int p_bone, const Vector3 &p_position) {
 	const int bone_size = bones.size();
@@ -983,6 +996,7 @@ void Skeleton::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("clear_bones"), &Skeleton::clear_bones);
 
+	ClassDB::bind_method(D_METHOD("set_bone_pose", "bone_idx", "pose"), &Skeleton::set_bone_pose);
 	ClassDB::bind_method(D_METHOD("set_bone_pose_position", "bone_idx", "position"), &Skeleton::set_bone_pose_position);
 	ClassDB::bind_method(D_METHOD("set_bone_pose_rotation", "bone_idx", "rotation"), &Skeleton::set_bone_pose_rotation);
 	ClassDB::bind_method(D_METHOD("set_bone_pose_scale", "bone_idx", "scale"), &Skeleton::set_bone_pose_scale);
