@@ -1351,6 +1351,13 @@ void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Varia
 			f->store_real(val.y);
 
 		} break;
+		case Variant::VECTOR2I: {
+			f->store_32(VARIANT_VECTOR2I);
+			Vector2i val = p_property;
+			f->store_32(val.x);
+			f->store_32(val.y);
+
+		} break;
 		case Variant::RECT2: {
 			f->store_32(VARIANT_RECT2);
 			Rect2 val = p_property;
@@ -1358,6 +1365,15 @@ void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Varia
 			f->store_real(val.position.y);
 			f->store_real(val.size.x);
 			f->store_real(val.size.y);
+
+		} break;
+		case Variant::RECT2I: {
+			f->store_32(VARIANT_RECT2I);
+			Rect2i val = p_property;
+			f->store_32(val.position.x);
+			f->store_32(val.position.y);
+			f->store_32(val.size.x);
+			f->store_32(val.size.y);
 
 		} break;
 		case Variant::VECTOR3: {
@@ -1368,6 +1384,26 @@ void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Varia
 			f->store_real(val.z);
 
 		} break;
+		case Variant::VECTOR3I: {
+			f->store_32(VARIANT_VECTOR3I);
+			Vector3i val = p_property;
+			f->store_32(val.x);
+			f->store_32(val.y);
+			f->store_32(val.z);
+
+		} break;
+		case Variant::TRANSFORM2D: {
+			f->store_32(VARIANT_MATRIX32);
+			Transform2D val = p_property;
+			f->store_real(val.elements[0].x);
+			f->store_real(val.elements[0].y);
+			f->store_real(val.elements[1].x);
+			f->store_real(val.elements[1].y);
+			f->store_real(val.elements[2].x);
+			f->store_real(val.elements[2].y);
+
+		} break;
+
 		case Variant::PLANE: {
 			f->store_32(VARIANT_PLANE);
 			Plane val = p_property;
@@ -1397,17 +1433,6 @@ void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Varia
 			f->store_real(val.size.z);
 
 		} break;
-		case Variant::TRANSFORM2D: {
-			f->store_32(VARIANT_MATRIX32);
-			Transform2D val = p_property;
-			f->store_real(val.elements[0].x);
-			f->store_real(val.elements[0].y);
-			f->store_real(val.elements[1].x);
-			f->store_real(val.elements[1].y);
-			f->store_real(val.elements[2].x);
-			f->store_real(val.elements[2].y);
-
-		} break;
 		case Variant::BASIS: {
 			f->store_32(VARIANT_MATRIX3);
 			Basis val = p_property;
@@ -1422,6 +1447,7 @@ void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Varia
 			f->store_real(val.elements[2].z);
 
 		} break;
+
 		case Variant::TRANSFORM: {
 			f->store_32(VARIANT_TRANSFORM);
 			Transform val = p_property;
@@ -1503,6 +1529,12 @@ void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Varia
 			}
 
 		} break;
+		case Variant::STRING_NAME: {
+			f->store_32(VARIANT_STRING_NAME);
+			String val = p_property;
+			save_unicode_string(f, val);
+
+		} break;
 		case Variant::DICTIONARY: {
 			f->store_32(VARIANT_DICTIONARY);
 			Dictionary d = p_property;
@@ -1574,6 +1606,30 @@ void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Varia
 			}
 
 		} break;
+		case Variant::POOL_VECTOR2_ARRAY: {
+			f->store_32(VARIANT_VECTOR2_ARRAY);
+			PoolVector<Vector2> arr = p_property;
+			int len = arr.size();
+			f->store_32(len);
+			PoolVector<Vector2>::Read r = arr.read();
+			for (int i = 0; i < len; i++) {
+				f->store_real(r[i].x);
+				f->store_real(r[i].y);
+			}
+
+		} break;
+		case Variant::POOL_VECTOR2I_ARRAY: {
+			f->store_32(VARIANT_VECTOR2I_ARRAY);
+			PoolVector<Vector2i> arr = p_property;
+			int len = arr.size();
+			f->store_32(len);
+			PoolVector<Vector2i>::Read r = arr.read();
+			for (int i = 0; i < len; i++) {
+				f->store_32(r[i].x);
+				f->store_32(r[i].y);
+			}
+
+		} break;
 		case Variant::POOL_VECTOR3_ARRAY: {
 			f->store_32(VARIANT_VECTOR3_ARRAY);
 			PoolVector<Vector3> arr = p_property;
@@ -1587,15 +1643,16 @@ void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Varia
 			}
 
 		} break;
-		case Variant::POOL_VECTOR2_ARRAY: {
-			f->store_32(VARIANT_VECTOR2_ARRAY);
-			PoolVector<Vector2> arr = p_property;
+		case Variant::POOL_VECTOR3I_ARRAY: {
+			f->store_32(VARIANT_VECTOR3I_ARRAY);
+			PoolVector<Vector3i> arr = p_property;
 			int len = arr.size();
 			f->store_32(len);
-			PoolVector<Vector2>::Read r = arr.read();
+			PoolVector<Vector3i>::Read r = arr.read();
 			for (int i = 0; i < len; i++) {
-				f->store_real(r[i].x);
-				f->store_real(r[i].y);
+				f->store_32(r[i].x);
+				f->store_32(r[i].y);
+				f->store_32(r[i].z);
 			}
 
 		} break;
