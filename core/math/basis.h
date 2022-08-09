@@ -88,6 +88,8 @@ public:
 	Quat get_rotation_quat() const;
 	Vector3 get_rotation() const { return get_rotation_euler(); };
 
+	void rotate_to_align(Vector3 p_start_direction, Vector3 p_end_direction);
+
 	Vector3 rotref_posscale_decomposition(Basis &rotref) const;
 
 	Vector3 get_euler_xyz() const;

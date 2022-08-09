@@ -35,8 +35,11 @@
 #include "core/engine.h"
 #include "core/project_settings.h"
 #include "scene/3d/physics_body.h"
+#include "scene/resources/skeleton_modification_3d.h"
+#include "scene/resources/skeleton_modification_stack_3d.h"
 #include "scene/resources/skin.h"
 #include "scene/resources/surface_tool.h"
+#include "scene/scene_string_names.h"
 
 void SkinReference::_skin_changed() {
 	if (skeleton_node) {
@@ -73,6 +76,13 @@ SkinReference::~SkinReference() {
 
 bool Skeleton::_set(const StringName &p_path, const Variant &p_value) {
 	String path = p_path;
+
+#ifndef _3D_DISABLED
+	if (path.begins_with("modification_stack")) {
+		set_modification_stack(p_value);
+		return true;
+	}
+#endif //_3D_DISABLED
 
 	if (!path.begins_with("bones/")) {
 		return false;
@@ -112,6 +122,13 @@ bool Skeleton::_set(const StringName &p_path, const Variant &p_value) {
 
 bool Skeleton::_get(const StringName &p_path, Variant &r_ret) const {
 	String path = p_path;
+
+#ifndef _3D_DISABLED
+	if (path.begins_with("modification_stack")) {
+		r_ret = modification_stack;
+		return true;
+	}
+#endif //_3D_DISABLED
 
 	if (!path.begins_with("bones/")) {
 		return false;
@@ -155,6 +172,10 @@ void Skeleton::_get_property_list(List<PropertyInfo> *p_list) const {
 		p_list->push_back(PropertyInfo(Variant::QUAT, prep + "rotation", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR));
 		p_list->push_back(PropertyInfo(Variant::VECTOR3, prep + "scale", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR));
 	}
+
+#ifndef _3D_DISABLED
+	p_list->push_back(PropertyInfo(Variant::OBJECT, "modification_stack", PROPERTY_HINT_RESOURCE_TYPE, "SkeletonModificationStack3D", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_DO_NOT_SHARE_ON_DUPLICATE));
+#endif //_3D_DISABLED
 }
 
 void Skeleton::_update_process_order() {
@@ -165,47 +186,30 @@ void Skeleton::_update_process_order() {
 	Bone *bonesptr = bones.ptrw();
 	int len = bones.size();
 
-	process_order.resize(len);
-	int *order = process_order.ptrw();
+	parentless_bones.clear();
+
 	for (int i = 0; i < len; i++) {
 		if (bonesptr[i].parent >= len) {
 			//validate this just in case
 			ERR_PRINT("Bone " + itos(i) + " has invalid parent: " + itos(bonesptr[i].parent));
 			bonesptr[i].parent = -1;
 		}
-		order[i] = i;
-		bonesptr[i].sort_index = i;
-	}
-	//now check process order
-	int pass_count = 0;
-	while (pass_count < len * len) {
-		//using bubblesort because of simplicity, it won't run every frame though.
-		//bublesort worst case is O(n^2), and this may be an infinite loop if cyclic
-		bool swapped = false;
-		for (int i = 0; i < len; i++) {
-			int parent_idx = bonesptr[order[i]].parent;
-			if (parent_idx < 0) {
-				continue; //do nothing because it has no parent
-			}
-			//swap indices
-			int parent_order = bonesptr[parent_idx].sort_index;
-			if (parent_order > i) {
-				bonesptr[order[i]].sort_index = parent_order;
-				bonesptr[parent_idx].sort_index = i;
-				//swap order
-				SWAP(order[i], order[parent_order]);
-				swapped = true;
-			}
-		}
 
-		if (!swapped) {
-			break;
-		}
-		pass_count++;
-	}
+		bonesptr[i].child_bones.clear();
 
-	if (pass_count == len * len) {
-		ERR_PRINT("Skeleton parenthood graph is cyclic");
+		if (bonesptr[i].parent != -1) {
+			int parent_bone_idx = bonesptr[i].parent;
+
+			// Check to see if this node is already added to the parent:
+			if (bonesptr[parent_bone_idx].child_bones.find(i) < 0) {
+				// Add the child node
+				bonesptr[parent_bone_idx].child_bones.push_back(i);
+			} else {
+				ERR_PRINT("Skeleton parenthood graph is cyclic");
+			}
+		} else {
+			parentless_bones.push_back(i);
+		}
 	}
 
 	process_order_dirty = false;
@@ -216,79 +220,12 @@ void Skeleton::_notification(int p_what) {
 		case NOTIFICATION_UPDATE_SKELETON: {
 			VisualServer *vs = VisualServer::get_singleton();
 			Bone *bonesptr = bones.ptrw();
+
 			int len = bones.size();
+			dirty = false;
 
-			_update_process_order();
-
-			const int *order = process_order.ptr();
-
-			for (int i = 0; i < len; i++) {
-				Bone &b = bonesptr[order[i]];
-
-				if (b.disable_rest) {
-					if (b.enabled) {
-						b.update_pose_cache();
-						Transform pose = b.pose_cache;
-						if (b.custom_pose_enable) {
-							pose = b.custom_pose * pose;
-						}
-						if (b.parent >= 0) {
-							b.pose_global = bonesptr[b.parent].pose_global * pose;
-							b.pose_global_no_override = bonesptr[b.parent].pose_global_no_override * pose;
-						} else {
-							b.pose_global = pose;
-							b.pose_global_no_override = pose;
-						}
-					} else {
-						if (b.parent >= 0) {
-							b.pose_global = bonesptr[b.parent].pose_global;
-							b.pose_global_no_override = bonesptr[b.parent].pose_global_no_override;
-						} else {
-							b.pose_global = Transform();
-							b.pose_global_no_override = Transform();
-						}
-					}
-				} else {
-					if (b.enabled) {
-						b.update_pose_cache();
-						Transform pose = b.pose_cache;
-						if (b.custom_pose_enable) {
-							pose = b.custom_pose * pose;
-						}
-						if (b.parent >= 0) {
-							b.pose_global = bonesptr[b.parent].pose_global * (b.rest * pose);
-							b.pose_global_no_override = bonesptr[b.parent].pose_global_no_override * (b.rest * pose);
-						} else {
-							b.pose_global = b.rest * pose;
-							b.pose_global_no_override = b.rest * pose;
-						}
-					} else {
-						if (b.parent >= 0) {
-							b.pose_global = bonesptr[b.parent].pose_global * b.rest;
-							b.pose_global_no_override = bonesptr[b.parent].pose_global_no_override * b.rest;
-						} else {
-							b.pose_global = b.rest;
-							b.pose_global_no_override = b.rest;
-						}
-					}
-				}
-
-				if (b.global_pose_override_amount >= CMP_EPSILON) {
-					b.pose_global = b.pose_global.interpolate_with(b.global_pose_override, b.global_pose_override_amount);
-				}
-
-				if (b.global_pose_override_reset) {
-					b.global_pose_override_amount = 0.0;
-				}
-
-				for (List<uint32_t>::Element *E = b.nodes_bound.front(); E; E = E->next()) {
-					Object *obj = ObjectDB::get_instance(E->get());
-					ERR_CONTINUE(!obj);
-					Spatial *sp = Object::cast_to<Spatial>(obj);
-					ERR_CONTINUE(!sp);
-					sp->set_transform(b.pose_global);
-				}
-			}
+			// Update bone transforms
+			force_update_all_bone_transforms();
 
 			//update skins
 			for (Set<SkinReference *>::Element *E = skin_bindings.front(); E; E = E->next()) {
@@ -346,27 +283,50 @@ void Skeleton::_notification(int p_what) {
 				}
 			}
 
-			dirty = false;
+			//TODO Not sure if this is useful or not in runtime
+			//#ifdef TOOLS_ENABLED
 			emit_signal("pose_updated");
+			//#endif // TOOLS_ENABLED
 		} break;
 
 #ifndef _3D_DISABLED
 		case NOTIFICATION_INTERNAL_PHYSICS_PROCESS: {
 			// This is active only if the skeleton animates the physical bones
 			// and the state of the bone is not active.
-			if (animate_physical_bones) {
-				for (int i = 0; i < bones.size(); i += 1) {
-					if (bones[i].physical_bone) {
-						if (bones[i].physical_bone->is_simulating_physics() == false) {
-							bones[i].physical_bone->reset_to_rest_position();
+			if (Engine::get_singleton()->is_editor_hint()) {
+				if (animate_physical_bones) {
+					for (int i = 0; i < bones.size(); i += 1) {
+						if (bones[i].physical_bone) {
+							if (bones[i].physical_bone->is_simulating_physics() == false) {
+								bones[i].physical_bone->reset_to_rest_position();
+							}
 						}
 					}
 				}
 			}
+
+			if (modification_stack.is_valid()) {
+				execute_modifications(get_physics_process_delta_time(), SkeletonModificationStack3D::EXECUTION_MODE::execution_mode_physics_process);
+			}
 		} break;
+#endif
+
+#ifndef _3D_DISABLED
+		case NOTIFICATION_INTERNAL_PROCESS: {
+			if (modification_stack.is_valid()) {
+				execute_modifications(get_process_delta_time(), SkeletonModificationStack3D::EXECUTION_MODE::execution_mode_process);
+			}
+		} break;
+#endif // _3D_DISABLED
+
+#ifndef _3D_DISABLED
+
 		case NOTIFICATION_READY: {
-			if (Engine::get_singleton()->is_editor_hint()) {
-				set_physics_process_internal(true);
+			set_physics_process_internal(true);
+			set_process_internal(true);
+
+			if (modification_stack.is_valid()) {
+				set_modification_stack(modification_stack);
 			}
 		} break;
 #endif
@@ -382,15 +342,25 @@ void Skeleton::clear_bones_global_pose_override() {
 }
 
 void Skeleton::set_bone_global_pose_override(int p_bone, const Transform &p_pose, float p_amount, bool p_persistent) {
-	ERR_FAIL_INDEX(p_bone, bones.size());
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX(p_bone, bone_size);
+
 	bones.write[p_bone].global_pose_override_amount = p_amount;
 	bones.write[p_bone].global_pose_override = p_pose;
 	bones.write[p_bone].global_pose_override_reset = !p_persistent;
 	_make_dirty();
 }
 
+Transform Skeleton::get_bone_global_pose_override(int p_bone) const {
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone, bone_size, Transform());
+
+	return bones[p_bone].global_pose_override;
+}
+
 Transform Skeleton::get_bone_global_pose(int p_bone) const {
-	ERR_FAIL_INDEX_V(p_bone, bones.size(), Transform());
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone, bone_size, Transform());
 
 	if (dirty) {
 		const_cast<Skeleton *>(this)->notification(NOTIFICATION_UPDATE_SKELETON);
@@ -400,13 +370,107 @@ Transform Skeleton::get_bone_global_pose(int p_bone) const {
 }
 
 Transform Skeleton::get_bone_global_pose_no_override(int p_bone) const {
-	ERR_FAIL_INDEX_V(p_bone, bones.size(), Transform());
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone, bone_size, Transform());
 
 	if (dirty) {
 		const_cast<Skeleton *>(this)->notification(NOTIFICATION_UPDATE_SKELETON);
 	}
 
 	return bones[p_bone].pose_global_no_override;
+}
+
+void Skeleton::clear_bones_local_pose_override() {
+	for (int i = 0; i < bones.size(); i += 1) {
+		bones.write[i].local_pose_override_amount = 0;
+	}
+	_make_dirty();
+}
+
+void Skeleton::set_bone_local_pose_override(int p_bone, const Transform &p_pose, real_t p_amount, bool p_persistent) {
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX(p_bone, bone_size);
+	bones.write[p_bone].local_pose_override_amount = p_amount;
+	bones.write[p_bone].local_pose_override = p_pose;
+	bones.write[p_bone].local_pose_override_reset = !p_persistent;
+	_make_dirty();
+}
+
+Transform Skeleton::get_bone_local_pose_override(int p_bone) const {
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone, bone_size, Transform());
+	return bones[p_bone].local_pose_override;
+}
+
+void Skeleton::update_bone_rest_forward_vector(int p_bone, bool p_force_update) {
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX(p_bone, bone_size);
+
+	if (bones[p_bone].rest_bone_forward_vector.length_squared() > 0 && p_force_update == false) {
+		update_bone_rest_forward_axis(p_bone, p_force_update);
+	}
+
+	// If it is a child/leaf bone...
+	if (get_bone_parent(p_bone) > 0) {
+		bones.write[p_bone].rest_bone_forward_vector = bones[p_bone].rest.origin.normalized();
+	} else {
+		// If it has children...
+		Vector<int> child_bones = get_bone_children(p_bone);
+		if (child_bones.size() > 0) {
+			Vector3 combined_child_dir = Vector3(0, 0, 0);
+			for (int i = 0; i < child_bones.size(); i++) {
+				combined_child_dir += bones[child_bones[i]].rest.origin.normalized();
+			}
+			combined_child_dir = combined_child_dir / child_bones.size();
+			bones.write[p_bone].rest_bone_forward_vector = combined_child_dir.normalized();
+		} else {
+			WARN_PRINT_ONCE("Cannot calculate forward direction for bone " + itos(p_bone));
+			WARN_PRINT_ONCE("Assuming direction of (0, 1, 0) for bone");
+			bones.write[p_bone].rest_bone_forward_vector = Vector3(0, 1, 0);
+		}
+	}
+	update_bone_rest_forward_axis(p_bone, p_force_update);
+}
+
+void Skeleton::update_bone_rest_forward_axis(int p_bone, bool p_force_update) {
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX(p_bone, bone_size);
+	if (bones[p_bone].rest_bone_forward_axis > -1 && p_force_update == false) {
+		return;
+	}
+
+	Vector3 forward_axis_absolute = bones[p_bone].rest_bone_forward_vector.abs();
+	if (forward_axis_absolute.x > forward_axis_absolute.y && forward_axis_absolute.x > forward_axis_absolute.z) {
+		if (bones[p_bone].rest_bone_forward_vector.x > 0) {
+			bones.write[p_bone].rest_bone_forward_axis = BONE_AXIS_X_FORWARD;
+		} else {
+			bones.write[p_bone].rest_bone_forward_axis = BONE_AXIS_NEGATIVE_X_FORWARD;
+		}
+	} else if (forward_axis_absolute.y > forward_axis_absolute.x && forward_axis_absolute.y > forward_axis_absolute.z) {
+		if (bones[p_bone].rest_bone_forward_vector.y > 0) {
+			bones.write[p_bone].rest_bone_forward_axis = BONE_AXIS_Y_FORWARD;
+		} else {
+			bones.write[p_bone].rest_bone_forward_axis = BONE_AXIS_NEGATIVE_Y_FORWARD;
+		}
+	} else {
+		if (bones[p_bone].rest_bone_forward_vector.z > 0) {
+			bones.write[p_bone].rest_bone_forward_axis = BONE_AXIS_Z_FORWARD;
+		} else {
+			bones.write[p_bone].rest_bone_forward_axis = BONE_AXIS_NEGATIVE_Z_FORWARD;
+		}
+	}
+}
+
+Vector3 Skeleton::get_bone_axis_forward_vector(int p_bone) {
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone, bone_size, Vector3(0, 0, 0));
+	return bones[p_bone].rest_bone_forward_vector;
+}
+
+int Skeleton::get_bone_axis_forward_enum(int p_bone) {
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone, bone_size, -1);
+	return bones[p_bone].rest_bone_forward_axis;
 }
 
 // skeleton creation api
@@ -435,15 +499,17 @@ int Skeleton::find_bone(const String &p_name) const {
 	return -1;
 }
 String Skeleton::get_bone_name(int p_bone) const {
-	ERR_FAIL_INDEX_V(p_bone, bones.size(), "");
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone, bone_size, "");
 
 	return bones[p_bone].name;
 }
 
 void Skeleton::set_bone_name(int p_bone, const String &p_name) {
-	ERR_FAIL_INDEX(p_bone, bones.size());
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX(p_bone, bone_size);
 
-	for (int i = 0; i < bones.size(); i++) {
+	for (int i = 0; i < bone_size; i++) {
 		if (i != p_bone) {
 			ERR_FAIL_COND(bones[i].name == p_name);
 		}
@@ -471,7 +537,8 @@ int Skeleton::get_bone_count() const {
 }
 
 void Skeleton::set_bone_parent(int p_bone, int p_parent) {
-	ERR_FAIL_INDEX(p_bone, bones.size());
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX(p_bone, bone_size);
 	ERR_FAIL_COND(p_parent != -1 && (p_parent < 0));
 	ERR_FAIL_COND(p_bone == p_parent);
 
@@ -481,7 +548,8 @@ void Skeleton::set_bone_parent(int p_bone, int p_parent) {
 }
 
 void Skeleton::unparent_bone_and_rest(int p_bone) {
-	ERR_FAIL_INDEX(p_bone, bones.size());
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX(p_bone, bone_size);
 
 	_update_process_order();
 
@@ -498,73 +566,95 @@ void Skeleton::unparent_bone_and_rest(int p_bone) {
 }
 
 void Skeleton::set_bone_disable_rest(int p_bone, bool p_disable) {
-	ERR_FAIL_INDEX(p_bone, bones.size());
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX(p_bone, bone_size);
 	bones.write[p_bone].disable_rest = p_disable;
 }
 
 bool Skeleton::is_bone_rest_disabled(int p_bone) const {
-	ERR_FAIL_INDEX_V(p_bone, bones.size(), false);
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone, bone_size, false);
 	return bones[p_bone].disable_rest;
 }
 
 int Skeleton::get_bone_parent(int p_bone) const {
-	ERR_FAIL_INDEX_V(p_bone, bones.size(), -1);
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone, bone_size, -1);
 
 	return bones[p_bone].parent;
 }
 
+Vector<int> Skeleton::get_bone_children(int p_bone) {
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone, bone_size, Vector<int>());
+	return bones[p_bone].child_bones;
+}
+
+void Skeleton::set_bone_children(int p_bone, Vector<int> p_children) {
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX(p_bone, bone_size);
+	bones.write[p_bone].child_bones = p_children;
+
+	process_order_dirty = true;
+
+	_make_dirty();
+}
+
+void Skeleton::add_bone_child(int p_bone, int p_child) {
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX(p_bone, bone_size);
+	bones.write[p_bone].child_bones.push_back(p_child);
+
+	process_order_dirty = true;
+	_make_dirty();
+}
+
+void Skeleton::remove_bone_child(int p_bone, int p_child) {
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX(p_bone, bone_size);
+
+	int child_idx = bones[p_bone].child_bones.find(p_child);
+	if (child_idx >= 0) {
+		bones.write[p_bone].child_bones.remove(child_idx);
+	} else {
+		WARN_PRINT("Cannot remove child bone: Child bone not found.");
+	}
+
+	process_order_dirty = true;
+
+	_make_dirty();
+}
+
+Vector<int> Skeleton::get_parentless_bones() {
+	return parentless_bones;
+}
+
 void Skeleton::set_bone_rest(int p_bone, const Transform &p_rest) {
-	ERR_FAIL_INDEX(p_bone, bones.size());
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX(p_bone, bone_size);
 
 	bones.write[p_bone].rest = p_rest;
 	_make_dirty();
 }
 Transform Skeleton::get_bone_rest(int p_bone) const {
-	ERR_FAIL_INDEX_V(p_bone, bones.size(), Transform());
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone, bone_size, Transform());
 
 	return bones[p_bone].rest;
 }
 
 void Skeleton::set_bone_enabled(int p_bone, bool p_enabled) {
-	ERR_FAIL_INDEX(p_bone, bones.size());
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX(p_bone, bone_size);
 
 	bones.write[p_bone].enabled = p_enabled;
 	_make_dirty();
 }
+
 bool Skeleton::is_bone_enabled(int p_bone) const {
-	ERR_FAIL_INDEX_V(p_bone, bones.size(), false);
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone, bone_size, false);
 	return bones[p_bone].enabled;
-}
-
-void Skeleton::bind_child_node_to_bone(int p_bone, Node *p_node) {
-	ERR_FAIL_NULL(p_node);
-	ERR_FAIL_INDEX(p_bone, bones.size());
-
-	uint32_t id = p_node->get_instance_id();
-
-	for (const List<uint32_t>::Element *E = bones[p_bone].nodes_bound.front(); E; E = E->next()) {
-		if (E->get() == id) {
-			return; // already here
-		}
-	}
-
-	bones.write[p_bone].nodes_bound.push_back(id);
-}
-void Skeleton::unbind_child_node_from_bone(int p_bone, Node *p_node) {
-	ERR_FAIL_NULL(p_node);
-	ERR_FAIL_INDEX(p_bone, bones.size());
-
-	uint32_t id = p_node->get_instance_id();
-	bones.write[p_bone].nodes_bound.erase(id);
-}
-void Skeleton::get_bound_child_nodes_to_bone(int p_bone, List<Node *> *p_bound) const {
-	ERR_FAIL_INDEX(p_bone, bones.size());
-
-	for (const List<uint32_t>::Element *E = bones[p_bone].nodes_bound.front(); E; E = E->next()) {
-		Object *obj = ObjectDB::get_instance(E->get());
-		ERR_CONTINUE(!obj);
-		p_bound->push_back(Object::cast_to<Node>(obj));
-	}
 }
 
 void Skeleton::clear_bones() {
@@ -672,24 +762,22 @@ void Skeleton::_make_dirty() {
 	dirty = true;
 }
 
-int Skeleton::get_process_order(int p_idx) {
-	ERR_FAIL_INDEX_V(p_idx, bones.size(), -1);
-	_update_process_order();
-	return process_order[p_idx];
-}
-
-Vector<int> Skeleton::get_bone_process_orders() {
-	_update_process_order();
-	return process_order;
-}
-
 void Skeleton::localize_rests() {
 	_update_process_order();
 
-	for (int i = bones.size() - 1; i >= 0; i--) {
-		int idx = process_order[i];
-		if (bones[idx].parent >= 0) {
-			set_bone_rest(idx, bones[bones[idx].parent].rest.affine_inverse() * bones[idx].rest);
+	Vector<int> bones_to_process = get_parentless_bones();
+	while (bones_to_process.size() > 0) {
+		int current_bone_idx = bones_to_process[0];
+		bones_to_process.erase(current_bone_idx);
+
+		if (bones[current_bone_idx].parent >= 0) {
+			set_bone_rest(current_bone_idx, bones[bones[current_bone_idx].parent].rest.affine_inverse() * bones[current_bone_idx].rest);
+		}
+
+		// Add the bone's children to the list of bones to be processed
+		int child_bone_size = bones[current_bone_idx].child_bones.size();
+		for (int i = 0; i < child_bone_size; i++) {
+			bones_to_process.push_back(bones[current_bone_idx].child_bones[i]);
 		}
 	}
 }
@@ -718,7 +806,8 @@ bool Skeleton::get_animate_physical_bones() const {
 }
 
 void Skeleton::bind_physical_bone_to_bone(int p_bone, PhysicalBone *p_physical_bone) {
-	ERR_FAIL_INDEX(p_bone, bones.size());
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX(p_bone, bone_size);
 	ERR_FAIL_COND(bones[p_bone].physical_bone);
 	ERR_FAIL_COND(!p_physical_bone);
 	bones.write[p_bone].physical_bone = p_physical_bone;
@@ -727,20 +816,23 @@ void Skeleton::bind_physical_bone_to_bone(int p_bone, PhysicalBone *p_physical_b
 }
 
 void Skeleton::unbind_physical_bone_from_bone(int p_bone) {
-	ERR_FAIL_INDEX(p_bone, bones.size());
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX(p_bone, bone_size);
 	bones.write[p_bone].physical_bone = nullptr;
 
 	_rebuild_physical_bones_cache();
 }
 
 PhysicalBone *Skeleton::get_physical_bone(int p_bone) {
-	ERR_FAIL_INDEX_V(p_bone, bones.size(), nullptr);
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone, bone_size, nullptr);
 
 	return bones[p_bone].physical_bone;
 }
 
 PhysicalBone *Skeleton::get_physical_bone_parent(int p_bone) {
-	ERR_FAIL_INDEX_V(p_bone, bones.size(), nullptr);
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone, bone_size, nullptr);
 
 	if (bones[p_bone].cache_parent_physical_bone) {
 		return bones[p_bone].cache_parent_physical_bone;
@@ -750,7 +842,8 @@ PhysicalBone *Skeleton::get_physical_bone_parent(int p_bone) {
 }
 
 PhysicalBone *Skeleton::_get_physical_bone_parent(int p_bone) {
-	ERR_FAIL_INDEX_V(p_bone, bones.size(), nullptr);
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone, bone_size, nullptr);
 
 	const int parent_bone = bones[p_bone].parent;
 	if (0 > parent_bone) {
@@ -872,15 +965,21 @@ Ref<Skin> Skeleton::create_skin_from_rest_transforms() {
 	// pose changed, rebuild cache of inverses
 	const Bone *bonesptr = bones.ptr();
 	int len = bones.size();
-	const int *order = process_order.ptr();
 
 	// calculate global rests and invert them
-	for (int i = 0; i < len; i++) {
-		const Bone &b = bonesptr[order[i]];
+	Vector<int> bones_to_process = get_parentless_bones();
+	while (bones_to_process.size() > 0) {
+		int current_bone_idx = bones_to_process[0];
+		bones_to_process.erase(current_bone_idx);
+		const Bone &b = bonesptr[current_bone_idx];
+
+		// Note: the code below may not work by default. May need to track an integer for the bone pose index order
+		// in the while loop, instead of using current_bone_idx.
+
 		if (b.parent >= 0) {
-			skin->set_bind_pose(order[i], skin->get_bind_pose(b.parent) * b.rest);
+			skin->set_bind_pose(current_bone_idx, skin->get_bind_pose(b.parent) * b.rest);
 		} else {
-			skin->set_bind_pose(order[i], b.rest);
+			skin->set_bind_pose(current_bone_idx, b.rest);
 		}
 	}
 
@@ -914,15 +1013,20 @@ Ref<SkinReference> Skeleton::register_skin(const Ref<Skin> &p_skin) {
 		// pose changed, rebuild cache of inverses
 		const Bone *bonesptr = bones.ptr();
 		int len = bones.size();
-		const int *order = process_order.ptr();
 
 		// calculate global rests and invert them
-		for (int i = 0; i < len; i++) {
-			const Bone &b = bonesptr[order[i]];
+		Vector<int> bones_to_process = get_parentless_bones();
+		while (bones_to_process.size() > 0) {
+			int current_bone_idx = bones_to_process[0];
+			bones_to_process.erase(current_bone_idx);
+			const Bone &b = bonesptr[current_bone_idx];
+
+			// Note: the code below may not work by default. May need to track an integer for the bone pose index order
+			// in the while loop, instead of using current_bone_idx.
 			if (b.parent >= 0) {
-				skin->set_bind_pose(order[i], skin->get_bind_pose(b.parent) * b.rest);
+				skin->set_bind_pose(current_bone_idx, skin->get_bind_pose(b.parent) * b.rest);
 			} else {
-				skin->set_bind_pose(order[i], b.rest);
+				skin->set_bind_pose(current_bone_idx, b.rest);
 			}
 		}
 
@@ -949,6 +1053,108 @@ Ref<SkinReference> Skeleton::register_skin(const Ref<Skin> &p_skin) {
 	skin->connect("changed", skin_ref.operator->(), "_skin_changed");
 	_make_dirty();
 	return skin_ref;
+}
+
+void Skeleton::force_update_all_bone_transforms() {
+	_update_process_order();
+
+	for (int i = 0; i < parentless_bones.size(); i++) {
+		force_update_bone_children_transforms(parentless_bones[i]);
+	}
+}
+
+void Skeleton::force_update_bone_children_transforms(int p_bone_idx) {
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX(p_bone_idx, bone_size);
+
+	Bone *bonesptr = bones.ptrw();
+	List<int> bones_to_process = List<int>();
+	bones_to_process.push_back(p_bone_idx);
+
+	while (bones_to_process.size() > 0) {
+		int current_bone_idx = bones_to_process[0];
+		bones_to_process.erase(current_bone_idx);
+
+		Bone &b = bonesptr[current_bone_idx];
+
+		if (b.disable_rest) {
+			if (b.enabled) {
+				b.update_pose_cache();
+				Transform pose = b.pose_cache;
+				if (b.custom_pose_enable) {
+					pose = b.custom_pose * pose;
+				}
+				if (b.parent >= 0) {
+					b.pose_global = bonesptr[b.parent].pose_global * pose;
+					b.pose_global_no_override = b.pose_global;
+				} else {
+					b.pose_global = pose;
+					b.pose_global_no_override = b.pose_global;
+				}
+			} else {
+				if (b.parent >= 0) {
+					b.pose_global = bonesptr[b.parent].pose_global;
+					b.pose_global_no_override = b.pose_global;
+				} else {
+					b.pose_global = Transform();
+					b.pose_global_no_override = b.pose_global;
+				}
+			}
+
+		} else {
+			if (b.enabled) {
+				b.update_pose_cache();
+				Transform pose = b.pose_cache;
+				if (b.custom_pose_enable) {
+					pose = b.custom_pose * pose;
+				}
+				if (b.parent >= 0) {
+					b.pose_global = bonesptr[b.parent].pose_global * (b.rest * pose);
+					b.pose_global_no_override = b.pose_global;
+				} else {
+					b.pose_global = b.rest * pose;
+					b.pose_global_no_override = b.pose_global;
+				}
+			} else {
+				if (b.parent >= 0) {
+					b.pose_global = bonesptr[b.parent].pose_global * b.rest;
+					b.pose_global_no_override = b.pose_global;
+				} else {
+					b.pose_global = b.rest;
+					b.pose_global_no_override = b.pose_global;
+				}
+			}
+		}
+
+		if (b.local_pose_override_amount >= CMP_EPSILON) {
+			Transform override_local_pose;
+			if (b.parent >= 0) {
+				override_local_pose = bonesptr[b.parent].pose_global * (b.rest * b.local_pose_override);
+			} else {
+				override_local_pose = (b.rest * b.local_pose_override);
+			}
+			b.pose_global = b.pose_global.interpolate_with(override_local_pose, b.local_pose_override_amount);
+		}
+
+		if (b.global_pose_override_amount >= CMP_EPSILON) {
+			b.pose_global = b.pose_global.interpolate_with(b.global_pose_override, b.global_pose_override_amount);
+		}
+
+		if (b.local_pose_override_reset) {
+			b.local_pose_override_amount = 0.0;
+		}
+		if (b.global_pose_override_reset) {
+			b.global_pose_override_amount = 0.0;
+		}
+
+		// Add the bone's children to the list of bones to be processed
+		int child_bone_size = b.child_bones.size();
+		for (int i = 0; i < child_bone_size; i++) {
+			bones_to_process.push_back(b.child_bones[i]);
+		}
+
+		emit_signal(SceneStringNames::get_singleton()->bone_pose_changed, current_bone_idx);
+	}
 }
 
 Transform Skeleton::global_pose_to_world_transform(Transform p_global_pose) {
@@ -982,6 +1188,67 @@ Transform Skeleton::local_pose_to_global_pose(int p_bone_idx, Transform p_local_
 	}
 }
 
+Basis Skeleton::global_pose_z_forward_to_bone_forward(int p_bone_idx, Basis p_basis) {
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone_idx, bone_size, Basis());
+	Basis return_basis = p_basis;
+
+	if (bones[p_bone_idx].rest_bone_forward_axis < 0) {
+		update_bone_rest_forward_vector(p_bone_idx, true);
+	}
+
+	if (bones[p_bone_idx].rest_bone_forward_axis == BONE_AXIS_X_FORWARD) {
+		return_basis.rotate_local(Vector3(0, 1, 0), (Math_PI / 2.0));
+	} else if (bones[p_bone_idx].rest_bone_forward_axis == BONE_AXIS_NEGATIVE_X_FORWARD) {
+		return_basis.rotate_local(Vector3(0, 1, 0), -(Math_PI / 2.0));
+	} else if (bones[p_bone_idx].rest_bone_forward_axis == BONE_AXIS_Y_FORWARD) {
+		return_basis.rotate_local(Vector3(1, 0, 0), -(Math_PI / 2.0));
+	} else if (bones[p_bone_idx].rest_bone_forward_axis == BONE_AXIS_NEGATIVE_Y_FORWARD) {
+		return_basis.rotate_local(Vector3(1, 0, 0), (Math_PI / 2.0));
+	} else if (bones[p_bone_idx].rest_bone_forward_axis == BONE_AXIS_Z_FORWARD) {
+		// Do nothing!
+	} else if (bones[p_bone_idx].rest_bone_forward_axis == BONE_AXIS_NEGATIVE_Z_FORWARD) {
+		return_basis.rotate_local(Vector3(0, 0, 1), Math_PI);
+	}
+
+	return return_basis;
+}
+
+// Modifications
+
+#ifndef _3D_DISABLED
+
+void Skeleton::set_modification_stack(Ref<SkeletonModificationStack3D> p_stack) {
+	if (modification_stack.is_valid()) {
+		modification_stack->is_setup = false;
+		modification_stack->set_skeleton(nullptr);
+	}
+
+	modification_stack = p_stack;
+	if (modification_stack.is_valid()) {
+		modification_stack->set_skeleton(this);
+		modification_stack->setup();
+	}
+}
+Ref<SkeletonModificationStack3D> Skeleton::get_modification_stack() {
+	return modification_stack;
+}
+
+void Skeleton::execute_modifications(real_t p_delta, int p_execution_mode) {
+	if (!modification_stack.is_valid()) {
+		return;
+	}
+
+	// Needed to avoid the issue where the stack looses reference to the skeleton when the scene is saved.
+	if (modification_stack->skeleton != this) {
+		modification_stack->set_skeleton(this);
+	}
+
+	modification_stack->execute(p_delta, p_execution_mode);
+}
+
+#endif // _3D_DISABLED
+
 void Skeleton::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_bone", "name"), &Skeleton::add_bone);
 	ClassDB::bind_method(D_METHOD("find_bone", "name"), &Skeleton::find_bone);
@@ -995,6 +1262,13 @@ void Skeleton::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("unparent_bone_and_rest", "bone_idx"), &Skeleton::unparent_bone_and_rest);
 
+	ClassDB::bind_method(D_METHOD("get_bone_children", "bone_idx"), &Skeleton::get_bone_children);
+	ClassDB::bind_method(D_METHOD("set_bone_children", "bone_idx", "bone_children"), &Skeleton::set_bone_children);
+	ClassDB::bind_method(D_METHOD("add_bone_child", "bone_idx", "child_bone_idx"), &Skeleton::add_bone_child);
+	ClassDB::bind_method(D_METHOD("remove_bone_child", "bone_idx", "child_bone_idx"), &Skeleton::remove_bone_child);
+
+	ClassDB::bind_method(D_METHOD("get_parentless_bones"), &Skeleton::get_parentless_bones);
+
 	ClassDB::bind_method(D_METHOD("get_bone_rest", "bone_idx"), &Skeleton::get_bone_rest);
 	ClassDB::bind_method(D_METHOD("set_bone_rest", "bone_idx", "rest"), &Skeleton::set_bone_rest);
 
@@ -1002,14 +1276,7 @@ void Skeleton::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("register_skin", "skin"), &Skeleton::register_skin);
 
-	// Helper functions
-	ClassDB::bind_method(D_METHOD("global_pose_to_world_transform", "global_pose"), &Skeleton::global_pose_to_world_transform);
-	ClassDB::bind_method(D_METHOD("world_transform_to_global_pose", "transform"), &Skeleton::world_transform_to_global_pose);
-	ClassDB::bind_method(D_METHOD("global_pose_to_local_pose", "bone_idx", "global_pose"), &Skeleton::global_pose_to_local_pose);
-	ClassDB::bind_method(D_METHOD("local_pose_to_global_pose", "bone_idx", "local_pose"), &Skeleton::local_pose_to_global_pose);
-
 	ClassDB::bind_method(D_METHOD("localize_rests"), &Skeleton::localize_rests);
-	ClassDB::bind_method(D_METHOD("get_bone_process_orders"), &Skeleton::get_bone_process_orders);
 
 	ClassDB::bind_method(D_METHOD("set_bone_disable_rest", "bone_idx", "disable"), &Skeleton::set_bone_disable_rest);
 	ClassDB::bind_method(D_METHOD("is_bone_rest_disabled", "bone_idx"), &Skeleton::is_bone_rest_disabled);
@@ -1028,11 +1295,26 @@ void Skeleton::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("clear_bones_global_pose_override"), &Skeleton::clear_bones_global_pose_override);
 	ClassDB::bind_method(D_METHOD("set_bone_global_pose_override", "bone_idx", "pose", "amount", "persistent"), &Skeleton::set_bone_global_pose_override, DEFVAL(false));
+	ClassDB::bind_method(D_METHOD("get_bone_global_pose_override", "bone_idx"), &Skeleton::get_bone_global_pose_override);
 	ClassDB::bind_method(D_METHOD("get_bone_global_pose", "bone_idx"), &Skeleton::get_bone_global_pose);
 	ClassDB::bind_method(D_METHOD("get_bone_global_pose_no_override", "bone_idx"), &Skeleton::get_bone_global_pose_no_override);
 
+	ClassDB::bind_method(D_METHOD("clear_bones_local_pose_override"), &Skeleton::clear_bones_local_pose_override);
+	ClassDB::bind_method(D_METHOD("set_bone_local_pose_override", "bone_idx", "pose", "amount", "persistent"), &Skeleton::set_bone_local_pose_override, DEFVAL(false));
+	ClassDB::bind_method(D_METHOD("get_bone_local_pose_override", "bone_idx"), &Skeleton::get_bone_local_pose_override);
+
 	ClassDB::bind_method(D_METHOD("get_bone_custom_pose", "bone_idx"), &Skeleton::get_bone_custom_pose);
 	ClassDB::bind_method(D_METHOD("set_bone_custom_pose", "bone_idx", "custom_pose"), &Skeleton::set_bone_custom_pose);
+
+	ClassDB::bind_method(D_METHOD("force_update_all_bone_transforms"), &Skeleton::force_update_all_bone_transforms);
+	ClassDB::bind_method(D_METHOD("force_update_bone_child_transform", "bone_idx"), &Skeleton::force_update_bone_children_transforms);
+
+	// Helper functions
+	ClassDB::bind_method(D_METHOD("global_pose_to_world_transform", "global_pose"), &Skeleton::global_pose_to_world_transform);
+	ClassDB::bind_method(D_METHOD("world_transform_to_global_pose", "world_transform"), &Skeleton::world_transform_to_global_pose);
+	ClassDB::bind_method(D_METHOD("global_pose_to_local_pose", "bone_idx", "global_pose"), &Skeleton::global_pose_to_local_pose);
+	ClassDB::bind_method(D_METHOD("local_pose_to_global_pose", "bone_idx", "local_pose"), &Skeleton::local_pose_to_global_pose);
+	ClassDB::bind_method(D_METHOD("global_pose_z_forward_to_bone_forward", "bone_idx", "basis"), &Skeleton::global_pose_z_forward_to_bone_forward);
 
 #ifndef _3D_DISABLED
 
@@ -1047,7 +1329,17 @@ void Skeleton::_bind_methods() {
 
 #endif // _3D_DISABLED
 
+	// Modifications
+	ClassDB::bind_method(D_METHOD("set_modification_stack", "modification_stack"), &Skeleton::set_modification_stack);
+	ClassDB::bind_method(D_METHOD("get_modification_stack"), &Skeleton::get_modification_stack);
+	ClassDB::bind_method(D_METHOD("execute_modifications", "delta", "execution_mode"), &Skeleton::execute_modifications);
+
+	//TODO Not sure if this is useful or not in runtime
+	//#ifdef TOOLS_ENABLED
 	ADD_SIGNAL(MethodInfo("pose_updated"));
+	//#endif // TOOLS_ENABLED
+
+	ADD_SIGNAL(MethodInfo("bone_pose_changed", PropertyInfo(Variant::INT, "bone_idx")));
 
 	BIND_CONSTANT(NOTIFICATION_UPDATE_SKELETON);
 
@@ -1066,11 +1358,6 @@ Skeleton::~Skeleton() {
 	for (Set<SkinReference *>::Element *E = skin_bindings.front(); E; E = E->next()) {
 		E->get()->skeleton_node = nullptr;
 	}
-}
-
-Vector<int> Skeleton::get_bone_process_order() {
-	_update_process_order();
-	return process_order;
 }
 
 void Skeleton::set_selected_bone(int p_bone) {
@@ -1111,24 +1398,30 @@ void Skeleton::remove_bone(const int p_bone_idx) {
 
 	_update_process_order();
 
+	// pose changed, rebuild cache of inverses
+	const Bone *bonesptr = bones.ptr();
+	int len = bones.size();
+
 	for (Set<SkinReference *>::Element *E = skin_bindings.front(); E; E = E->next()) {
 		Ref<SkinReference> sr = E->get();
 		Ref<Skin> skin = sr->skin;
 
 		skin->set_bind_count(bones.size());
 
-		// pose changed, rebuild cache of inverses
-		const Bone *bonesptr = bones.ptr();
-		int len = bones.size();
-		const int *order = process_order.ptr();
-
 		// calculate global rests and invert them
-		for (int i = 0; i < len; i++) {
-			const Bone &b = bonesptr[order[i]];
+		Vector<int> bones_to_process = get_parentless_bones();
+		while (bones_to_process.size() > 0) {
+			int current_bone_idx = bones_to_process[0];
+			bones_to_process.erase(current_bone_idx);
+			const Bone &b = bonesptr[current_bone_idx];
+
+			// Note: the code below may not work by default. May need to track an integer for the bone pose index order
+			// in the while loop, instead of using current_bone_idx.
+
 			if (b.parent >= 0) {
-				skin->set_bind_pose(order[i], skin->get_bind_pose(b.parent) * b.rest);
+				skin->set_bind_pose(current_bone_idx, skin->get_bind_pose(b.parent) * b.rest);
 			} else {
-				skin->set_bind_pose(order[i], b.rest);
+				skin->set_bind_pose(current_bone_idx, b.rest);
 			}
 		}
 

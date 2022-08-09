@@ -1,14 +1,15 @@
-#ifndef MODULE_SPATIAL_EDITOR_GIZMOS_H
-#define MODULE_SPATIAL_EDITOR_GIZMOS_H
+#ifndef SKELETON_MODIFICATION_STACK_3D_H
+#define SKELETON_MODIFICATION_STACK_3D_H
+
 /*************************************************************************/
-/*  spatial_editor_gizmos.h                                              */
+/*  skeleton_modification_stack_3d.h                                     */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2022 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,27 +31,61 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/plugins/spatial_editor_plugin.h"
-#include "scene/3d/camera.h"
-#include "core/local_vector.h"
+#include "core/vector.h"
+#include "scene/3d/skeleton.h"
 
-class Camera;
+class Skeleton;
+class SkeletonModification3D;
 
-class ModuleSkeletonSpatialGizmoPlugin : public EditorSpatialGizmoPlugin {
-	GDCLASS(ModuleSkeletonSpatialGizmoPlugin, EditorSpatialGizmoPlugin);
-	Color skeleton_color = Color(1, 0.8, 0.4);
-	Color selected_bone_color = Color(1, 0, 0);
-	float bone_axis_length = 0.015;
-	Ref<ShaderMaterial> selected_mat;
-	Ref<Shader> selected_sh;
+class SkeletonModificationStack3D : public Resource {
+	GDCLASS(SkeletonModificationStack3D, Resource);
+	friend class Skeleton;
+	friend class SkeletonModification3D;
+
+protected:
+	static void _bind_methods();
+	virtual void _get_property_list(List<PropertyInfo> *p_list) const;
+	virtual bool _set(const StringName &p_path, const Variant &p_value);
+	virtual bool _get(const StringName &p_path, Variant &r_ret) const;
 
 public:
-	bool has_gizmo(Spatial *p_spatial);
-	String get_name() const;
-	int get_priority() const;
-	void redraw(EditorSpatialGizmo *p_gizmo);
+	Skeleton *skeleton = nullptr;
+	bool is_setup = false;
+	bool enabled = false;
+	real_t strength = 1.0;
 
-	ModuleSkeletonSpatialGizmoPlugin();
+	enum EXECUTION_MODE {
+		execution_mode_process,
+		execution_mode_physics_process,
+	};
+
+	Vector<Ref<SkeletonModification3D>> modifications = LocalVector<Ref<SkeletonModification3D>>();
+	int modifications_count = 0;
+
+	virtual void setup();
+	virtual void execute(real_t p_delta, int p_execution_mode);
+
+	void enable_all_modifications(bool p_enable);
+	Ref<SkeletonModification3D> get_modification(int p_mod_idx) const;
+	void add_modification(Ref<SkeletonModification3D> p_mod);
+	void delete_modification(int p_mod_idx);
+	void set_modification(int p_mod_idx, Ref<SkeletonModification3D> p_mod);
+
+	void set_modification_count(int p_count);
+	int get_modification_count() const;
+
+	void set_skeleton(Skeleton *p_skeleton);
+	Skeleton *get_skeleton() const;
+
+	bool get_is_setup() const;
+
+	void set_enabled(bool p_enabled);
+	bool get_enabled() const;
+
+	void set_strength(real_t p_strength);
+	real_t get_strength() const;
+
+	SkeletonModificationStack3D();
 };
 
-#endif // SPATIAL_EDITOR_GIZMOS_H
+#endif // SKELETON_MODIFICATION_STACK_3D_H

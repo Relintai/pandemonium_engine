@@ -1766,9 +1766,9 @@ void SkeletonSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 
 	AABB aabb;
 
-	Color bonecolor = Color(1.0, 0.4, 0.4, 0.3);
-	Color rootcolor = Color(0.4, 1.0, 0.4, 0.1);
-
+	//Color bonecolor = Color(1.0, 0.4, 0.4, 0.3);
+	//Color rootcolor = Color(0.4, 1.0, 0.4, 0.1);
+/*
 	for (int i_bone = 0; i_bone < skel->get_bone_count(); i_bone++) {
 		int i = skel->get_process_order(i_bone);
 
@@ -1868,6 +1868,7 @@ void SkeletonSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 			bones.write[0] = i;
 		}
 	}
+	*/
 
 	Ref<ArrayMesh> m = surface_tool->commit();
 	p_gizmo->add_mesh(m, false, skel->register_skin(Ref<Skin>()));
