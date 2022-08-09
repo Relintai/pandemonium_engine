@@ -134,6 +134,7 @@ private:
 		}
 	};
 
+	bool animate_physical_bones;
 	Vector<Bone> bones;
 	Vector<int> process_order;
 	bool process_order_dirty;
@@ -221,6 +222,7 @@ public:
 
 	void localize_rests(); // used for loaders and tools
 	int get_process_order(int p_idx);
+	Vector<int> get_bone_process_orders();
 
 	Ref<Skin> create_skin_from_rest_transforms();
 
@@ -234,6 +236,9 @@ public:
 
 #ifndef _3D_DISABLED
 	// Physical bone API
+
+	void set_animate_physical_bones(bool p_animate);
+	bool get_animate_physical_bones() const;
 
 	void bind_physical_bone_to_bone(int p_bone, PhysicalBone *p_physical_bone);
 	void unbind_physical_bone_from_bone(int p_bone);
