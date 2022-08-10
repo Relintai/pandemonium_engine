@@ -6870,7 +6870,7 @@ void SpatialEditor::_request_gizmo(Object *p_obj) {
 		Ref<EditorSpatialGizmo> seg;
 
 		for (int i = 0; i < gizmo_plugins_by_priority.size(); ++i) {
-			Ref<EditorSpatialGizmo> seg = gizmo_plugins_by_priority.write[i]->get_gizmo(sp);
+			seg = gizmo_plugins_by_priority.write[i]->get_gizmo(sp);
 
 			if (seg.is_valid()) {
 				sp->add_gizmo(seg);
