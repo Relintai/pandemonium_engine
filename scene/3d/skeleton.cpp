@@ -213,19 +213,22 @@ void Skeleton::_update_process_order() {
 	}
 
 	process_order_dirty = false;
+
+	emit_signal("bones_updated");
 }
 
 void Skeleton::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_UPDATE_SKELETON: {
+			// Update bone transforms
+			force_update_all_bone_transforms();
+
 			VisualServer *vs = VisualServer::get_singleton();
+
 			Bone *bonesptr = bones.ptrw();
 
 			int len = bones.size();
 			dirty = false;
-
-			// Update bone transforms
-			force_update_all_bone_transforms();
 
 			//update skins
 			for (Set<SkinReference *>::Element *E = skin_bindings.front(); E; E = E->next()) {
@@ -544,6 +547,8 @@ void Skeleton::set_bone_parent(int p_bone, int p_parent) {
 
 	bones.write[p_bone].parent = p_parent;
 	process_order_dirty = true;
+	version++;
+
 	_make_dirty();
 }
 
@@ -561,6 +566,7 @@ void Skeleton::unparent_bone_and_rest(int p_bone) {
 
 	bones.write[p_bone].parent = -1;
 	process_order_dirty = true;
+	version++;
 
 	_make_dirty();
 }
@@ -596,6 +602,7 @@ void Skeleton::set_bone_children(int p_bone, Vector<int> p_children) {
 	bones.write[p_bone].child_bones = p_children;
 
 	process_order_dirty = true;
+	version++;
 
 	_make_dirty();
 }
@@ -606,6 +613,8 @@ void Skeleton::add_bone_child(int p_bone, int p_child) {
 	bones.write[p_bone].child_bones.push_back(p_child);
 
 	process_order_dirty = true;
+	version++;
+
 	_make_dirty();
 }
 
@@ -621,6 +630,7 @@ void Skeleton::remove_bone_child(int p_bone, int p_child) {
 	}
 
 	process_order_dirty = true;
+	version++;
 
 	_make_dirty();
 }
@@ -1340,6 +1350,7 @@ void Skeleton::_bind_methods() {
 	//#endif // TOOLS_ENABLED
 
 	ADD_SIGNAL(MethodInfo("bone_pose_changed", PropertyInfo(Variant::INT, "bone_idx")));
+	ADD_SIGNAL(MethodInfo("bones_updated"));
 
 	BIND_CONSTANT(NOTIFICATION_UPDATE_SKELETON);
 
