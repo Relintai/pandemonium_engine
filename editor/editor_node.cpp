@@ -6775,7 +6775,7 @@ EditorNode::EditorNode() {
 	add_child(editor_interface);
 
 	//more visually meaningful to have this later
-	raise_bottom_panel_item(AnimationPlayerEditor::singleton);
+	raise_bottom_panel_item(AnimationPlayerEditor::get_singleton());
 
 	add_editor_plugin(memnew(ShaderEditorPlugin(this)));
 

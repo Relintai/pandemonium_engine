@@ -2865,7 +2865,7 @@ void AnimationTrackEdit::_gui_input(const Ref<InputEvent> &p_event) {
 				menu->add_separator();
 				menu->add_icon_item(get_icon("Duplicate", "EditorIcons"), TTR("Duplicate Key(s)"), MENU_KEY_DUPLICATE);
 
-				AnimationPlayer *player = AnimationPlayerEditor::singleton->get_player();
+				AnimationPlayer *player = AnimationPlayerEditor::get_singleton()->get_player();
 				if (!player->has_animation("RESET") || animation != player->get_animation("RESET")) {
 					menu->add_icon_item(get_icon("Reload", "EditorIcons"), TTR("Add RESET Value(s)"), MENU_KEY_ADD_RESET);
 				}
@@ -3502,7 +3502,7 @@ void AnimationTrackEditor::_query_insert(const InsertData &p_id) {
 	insert_data.push_back(p_id);
 
 	bool reset_allowed = true;
-	AnimationPlayer *player = AnimationPlayerEditor::singleton->get_player();
+	AnimationPlayer *player = AnimationPlayerEditor::get_singleton()->get_player();
 	if (player->has_animation("RESET") && player->get_animation("RESET") == animation) {
 		// Avoid messing with the reset animation itself
 		reset_allowed = false;
@@ -3732,7 +3732,7 @@ void AnimationTrackEditor::insert_node_value_key(Node *p_node, const String &p_p
 	String path = root->get_path_to(node);
 
 	if (Object::cast_to<AnimationPlayer>(node) && p_property == "current_animation") {
-		if (node == AnimationPlayerEditor::singleton->get_player()) {
+		if (node == AnimationPlayerEditor::get_singleton()->get_player()) {
 			EditorNode::get_singleton()->show_warning(TTR("AnimationPlayer can't animate itself, only other players."));
 			return;
 		}
@@ -3833,7 +3833,7 @@ void AnimationTrackEditor::insert_value_key(const String &p_property, const Vari
 	String path = root->get_path_to(node);
 
 	if (Object::cast_to<AnimationPlayer>(node) && p_property == "current_animation") {
-		if (node == AnimationPlayerEditor::singleton->get_player()) {
+		if (node == AnimationPlayerEditor::get_singleton()->get_player()) {
 			EditorNode::get_singleton()->show_warning(TTR("AnimationPlayer can't animate itself, only other players."));
 			return;
 		}
@@ -3913,7 +3913,7 @@ void AnimationTrackEditor::insert_value_key(const String &p_property, const Vari
 }
 
 Ref<Animation> AnimationTrackEditor::_create_and_get_reset_animation() {
-	AnimationPlayer *player = AnimationPlayerEditor::singleton->get_player();
+	AnimationPlayer *player = AnimationPlayerEditor::get_singleton()->get_player();
 	if (player->has_animation("RESET")) {
 		return player->get_animation("RESET");
 	} else {
@@ -3921,9 +3921,9 @@ Ref<Animation> AnimationTrackEditor::_create_and_get_reset_animation() {
 		reset_anim.instance();
 		reset_anim->set_length(ANIM_MIN_LENGTH);
 		undo_redo->add_do_method(player, "add_animation", "RESET", reset_anim);
-		undo_redo->add_do_method(AnimationPlayerEditor::singleton, "_animation_player_changed", player);
+		undo_redo->add_do_method(AnimationPlayerEditor::get_singleton(), "_animation_player_changed", player);
 		undo_redo->add_undo_method(player, "remove_animation", "RESET");
-		undo_redo->add_undo_method(AnimationPlayerEditor::singleton, "_animation_player_changed", player);
+		undo_redo->add_undo_method(AnimationPlayerEditor::get_singleton(), "_animation_player_changed", player);
 		return reset_anim;
 	}
 }
@@ -4607,7 +4607,7 @@ void AnimationTrackEditor::_new_track_node_selected(NodePath p_path) {
 				return;
 			}
 
-			if (node == AnimationPlayerEditor::singleton->get_player()) {
+			if (node == AnimationPlayerEditor::get_singleton()->get_player()) {
 				EditorNode::get_singleton()->show_warning(TTR("AnimationPlayer can't animate itself, only other players."));
 				return;
 			}
@@ -5379,7 +5379,7 @@ void AnimationTrackEditor::_anim_duplicate_keys(bool transpose) {
 }
 
 void AnimationTrackEditor::_edit_menu_about_to_show() {
-	AnimationPlayer *player = AnimationPlayerEditor::singleton->get_player();
+	AnimationPlayer *player = AnimationPlayerEditor::get_singleton()->get_player();
 	edit->get_popup()->set_item_disabled(edit->get_popup()->get_item_index(EDIT_APPLY_RESET), !player->can_apply_reset());
 }
 
@@ -5783,7 +5783,7 @@ void AnimationTrackEditor::_edit_menu_pressed(int p_option) {
 			goto_prev_step(false);
 		} break;
 		case EDIT_APPLY_RESET: {
-			AnimationPlayerEditor::singleton->get_player()->apply_reset(true);
+			AnimationPlayerEditor::get_singleton()->get_player()->apply_reset(true);
 
 		} break;
 		case EDIT_OPTIMIZE_ANIMATION: {
@@ -5803,9 +5803,9 @@ void AnimationTrackEditor::_edit_menu_pressed(int p_option) {
 		case EDIT_CLEAN_UP_ANIMATION_CONFIRM: {
 			if (cleanup_all->is_pressed()) {
 				List<StringName> names;
-				AnimationPlayerEditor::singleton->get_player()->get_animation_list(&names);
+				AnimationPlayerEditor::get_singleton()->get_player()->get_animation_list(&names);
 				for (List<StringName>::Element *E = names.front(); E; E = E->next()) {
-					_cleanup_animation(AnimationPlayerEditor::singleton->get_player()->get_animation(E->get()));
+					_cleanup_animation(AnimationPlayerEditor::get_singleton()->get_player()->get_animation(E->get()));
 				}
 			} else {
 				_cleanup_animation(animation);

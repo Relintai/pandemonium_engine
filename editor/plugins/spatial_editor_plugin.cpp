@@ -2174,7 +2174,7 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 				return;
 			}
 
-			if (!AnimationPlayerEditor::singleton->get_track_editor()->has_keying()) {
+			if (!AnimationPlayerEditor::get_singleton()->get_track_editor()->has_keying()) {
 				set_message(TTR("Keying is disabled (no key inserted)."));
 				return;
 			}

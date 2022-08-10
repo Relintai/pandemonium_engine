@@ -378,7 +378,7 @@ void ModuleBoneTransformEditor::_key_button_pressed() {
 	// Need to normalize the basis before you key it
 	Transform tform = compute_transform_from_vector3s();
 	tform.orthonormalize();
-	AnimationPlayerEditor::singleton->get_track_editor()->insert_transform_key(skeleton, name, tform);
+	AnimationPlayerEditor::get_singleton()->get_track_editor()->insert_transform_key(skeleton, name, tform);
 }
 
 void ModuleBoneTransformEditor::_checkbox_toggled(const bool p_toggled) {
@@ -455,14 +455,14 @@ void ModuleSkeletonEditor::insert_keys(bool p_all_bones) {
 		if (name.empty())
 			continue;
 
-		if (!p_all_bones && !AnimationPlayerEditor::singleton->get_track_editor()->has_transform_key(skeleton, name)) {
+		if (!p_all_bones && !AnimationPlayerEditor::get_singleton()->get_track_editor()->has_transform_key(skeleton, name)) {
 			continue;
 		}
 
 		// Need to normalize the basis before you key it
 		Transform tform = skeleton->get_bone_pose(i);
 		tform.orthonormalize();
-		AnimationPlayerEditor::singleton->get_track_editor()->insert_transform_key(skeleton, name, tform);
+		AnimationPlayerEditor::get_singleton()->get_track_editor()->insert_transform_key(skeleton, name, tform);
 	}
 }
 
@@ -833,7 +833,7 @@ void ModuleSkeletonEditor::create_editors() {
 
 	rest_mode = false;
 
-	set_keyable(AnimationPlayerEditor::singleton->get_track_editor()->has_keying());
+	set_keyable(AnimationPlayerEditor::get_singleton()->get_track_editor()->has_keying());
 
 	if (skeleton) {
 		skeleton->add_child(pointsm);
@@ -866,7 +866,7 @@ void ModuleSkeletonEditor::create_editors() {
 
 	pose_editor = memnew(ModuleBoneTransformEditor(skeleton));
 	pose_editor->set_label(TTR("Bone Pose"));
-	pose_editor->set_keyable(AnimationPlayerEditor::singleton->get_track_editor()->has_keying());
+	pose_editor->set_keyable(AnimationPlayerEditor::get_singleton()->get_track_editor()->has_keying());
 	// pose_editor->set_toggle_enabled(true);
 	pose_editor->set_visible(false);
 	add_child(pose_editor);
@@ -1002,7 +1002,7 @@ void ModuleSkeletonEditor::set_rest_mode_toggled(const bool pressed) {
 		skeleton->set_bone_enabled(i, !rest_mode);
 	}
 
-	set_keyable(AnimationPlayerEditor::singleton->get_track_editor()->has_keying() && !rest_mode);
+	set_keyable(AnimationPlayerEditor::get_singleton()->get_track_editor()->has_keying() && !rest_mode);
 }
 
 ModuleSkeletonEditor::ModuleSkeletonEditor(ModuleEditorInspectorPluginSkeleton *e_plugin, EditorNode *p_editor, Skeleton *p_skeleton) :

@@ -69,6 +69,7 @@ class AnimationPlayerEditor : public VBoxContainer {
 	EditorNode *editor;
 	AnimationPlayerEditorPlugin *plugin;
 	AnimationPlayer *player;
+	static AnimationPlayerEditor *singleton;
 
 	enum {
 		TOOL_NEW_ANIM,
@@ -248,7 +249,7 @@ protected:
 
 public:
 	AnimationPlayer *get_player() const;
-	static AnimationPlayerEditor *singleton;
+	static AnimationPlayerEditor *get_singleton() { return singleton; }
 
 	bool is_pinned() const { return pin->is_pressed(); }
 	void unpin() { pin->set_pressed(false); }
