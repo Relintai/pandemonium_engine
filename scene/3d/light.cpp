@@ -41,7 +41,7 @@ void Light::set_param(Param p_param, float p_value) {
 	VS::get_singleton()->light_set_param(light, VS::LightParam(p_param), p_value);
 
 	if (p_param == PARAM_SPOT_ANGLE || p_param == PARAM_RANGE) {
-		update_gizmo();
+		update_gizmos();
 
 		if (p_param == PARAM_SPOT_ANGLE) {
 			_change_notify("spot_angle");
@@ -90,7 +90,7 @@ void Light::set_color(const Color &p_color) {
 	color = p_color;
 	VS::get_singleton()->light_set_color(light, p_color);
 	// The gizmo color depends on the light color, so update it.
-	update_gizmo();
+	update_gizmos();
 }
 Color Light::get_color() const {
 	return color;

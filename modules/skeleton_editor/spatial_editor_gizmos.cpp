@@ -71,7 +71,7 @@ bool ModuleSkeletonSpatialGizmoPlugin::has_gizmo(Spatial *p_spatial) {
 	return Object::cast_to<Skeleton>(p_spatial) != NULL;
 }
 
-String ModuleSkeletonSpatialGizmoPlugin::get_name() const {
+String ModuleSkeletonSpatialGizmoPlugin::get_gizmo_name() const {
 	return "Skeleton";
 }
 
@@ -265,5 +265,5 @@ void ModuleSkeletonSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	}
 
 	Ref<ArrayMesh> m = surface_tool->commit();
-	p_gizmo->add_mesh(m, false, skel->register_skin(Ref<Skin>()));
+	p_gizmo->add_mesh(m, Ref<Material>(), Transform(), skel->register_skin(Ref<Skin>()));
 }

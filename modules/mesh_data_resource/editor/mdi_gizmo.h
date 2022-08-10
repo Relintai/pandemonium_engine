@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "editor/plugins/spatial_editor_plugin.h"
+#include "editor/spatial_editor_gizmos.h"
 
 #include "core/math/basis.h"
 #include "core/math/transform.h"

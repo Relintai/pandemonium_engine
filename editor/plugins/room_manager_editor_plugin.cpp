@@ -258,7 +258,7 @@ void OccluderEditorPlugin::_center() {
 				undo_redo->add_undo_method(_occluder, "set_transform", old_local_xform);
 				undo_redo->commit_action();
 
-				_occluder->update_gizmo();
+				_occluder->update_gizmos();
 			}
 		}
 	}

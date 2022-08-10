@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "editor/plugins/spatial_editor_plugin.h"
+#include "editor/spatial_editor_gizmos.h"
 
 class MDIEdPlugin;
 
@@ -32,7 +32,7 @@ class MDIGizmoPlugin : public EditorSpatialGizmoPlugin {
 
 public:
 	void _init();
-	String get_name() const;
+	String get_gizmo_name() const;
 	int get_priority() const;
 	bool is_handle_highlighted(const EditorSpatialGizmo *p_gizmo, int p_idx) const;
 

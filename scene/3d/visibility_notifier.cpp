@@ -105,7 +105,7 @@ void VisibilityNotifier::set_aabb(const AABB &p_aabb) {
 	}
 
 	_change_notify("aabb");
-	update_gizmo();
+	update_gizmos();
 }
 
 AABB VisibilityNotifier::get_aabb() const {

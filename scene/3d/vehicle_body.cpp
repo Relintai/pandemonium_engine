@@ -150,7 +150,7 @@ void VehicleWheel::_update(PhysicsDirectBodyState *s) {
 
 void VehicleWheel::set_radius(float p_radius) {
 	m_wheelRadius = p_radius;
-	update_gizmo();
+	update_gizmos();
 }
 
 float VehicleWheel::get_radius() const {
@@ -159,7 +159,7 @@ float VehicleWheel::get_radius() const {
 
 void VehicleWheel::set_suspension_rest_length(float p_length) {
 	m_suspensionRestLength = p_length;
-	update_gizmo();
+	update_gizmos();
 }
 float VehicleWheel::get_suspension_rest_length() const {
 	return m_suspensionRestLength;

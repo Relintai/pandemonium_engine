@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/plugins/spatial_editor_plugin.h"
+#include "editor/spatial_editor_gizmos.h"
 #include "scene/3d/camera.h"
 #include "core/local_vector.h"
 
@@ -46,7 +46,7 @@ class ModuleSkeletonSpatialGizmoPlugin : public EditorSpatialGizmoPlugin {
 
 public:
 	bool has_gizmo(Spatial *p_spatial);
-	String get_name() const;
+	String get_gizmo_name() const;
 	int get_priority() const;
 	void redraw(EditorSpatialGizmo *p_gizmo);
 

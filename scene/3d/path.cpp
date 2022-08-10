@@ -39,7 +39,7 @@ void Path::_notification(int p_what) {
 
 void Path::_curve_changed() {
 	if (is_inside_tree() && Engine::get_singleton()->is_editor_hint()) {
-		update_gizmo();
+		update_gizmos();
 	}
 	if (is_inside_tree()) {
 		emit_signal("curve_changed");

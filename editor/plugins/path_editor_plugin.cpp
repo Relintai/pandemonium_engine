@@ -301,7 +301,7 @@ void PathSpatialGizmo::redraw() {
 			add_handles(handles, handles_material);
 		}
 		if (sec_handles.size()) {
-			add_handles(sec_handles, handles_material, false, true);
+			add_handles(sec_handles, handles_material, Vector<int>(), false, true);
 		}
 	}
 }

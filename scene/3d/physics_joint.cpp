@@ -371,7 +371,7 @@ void HingeJoint::set_param(Param p_param, float p_value) {
 		PhysicsServer::get_singleton()->hinge_joint_set_param(get_joint(), PhysicsServer::HingeJointParam(p_param), p_value);
 	}
 
-	update_gizmo();
+	update_gizmos();
 }
 float HingeJoint::get_param(Param p_param) const {
 	ERR_FAIL_INDEX_V(p_param, PARAM_MAX, 0);
@@ -385,7 +385,7 @@ void HingeJoint::set_flag(Flag p_flag, bool p_value) {
 		PhysicsServer::get_singleton()->hinge_joint_set_flag(get_joint(), PhysicsServer::HingeJointFlag(p_flag), p_value);
 	}
 
-	update_gizmo();
+	update_gizmos();
 }
 bool HingeJoint::get_flag(Flag p_flag) const {
 	ERR_FAIL_INDEX_V(p_flag, FLAG_MAX, false);
@@ -519,7 +519,7 @@ void SliderJoint::set_param(Param p_param, float p_value) {
 	if (get_joint().is_valid()) {
 		PhysicsServer::get_singleton()->slider_joint_set_param(get_joint(), PhysicsServer::SliderJointParam(p_param), p_value);
 	}
-	update_gizmo();
+	update_gizmos();
 }
 float SliderJoint::get_param(Param p_param) const {
 	ERR_FAIL_INDEX_V(p_param, PARAM_MAX, 0);
@@ -625,7 +625,7 @@ void ConeTwistJoint::set_param(Param p_param, float p_value) {
 		PhysicsServer::get_singleton()->cone_twist_joint_set_param(get_joint(), PhysicsServer::ConeTwistJointParam(p_param), p_value);
 	}
 
-	update_gizmo();
+	update_gizmos();
 }
 float ConeTwistJoint::get_param(Param p_param) const {
 	ERR_FAIL_INDEX_V(p_param, PARAM_MAX, 0);
@@ -881,7 +881,7 @@ void Generic6DOFJoint::set_param_x(Param p_param, float p_value) {
 		PhysicsServer::get_singleton()->generic_6dof_joint_set_param(get_joint(), Vector3::AXIS_X, PhysicsServer::G6DOFJointAxisParam(p_param), p_value);
 	}
 
-	update_gizmo();
+	update_gizmos();
 }
 float Generic6DOFJoint::get_param_x(Param p_param) const {
 	ERR_FAIL_INDEX_V(p_param, PARAM_MAX, 0);
@@ -894,7 +894,7 @@ void Generic6DOFJoint::set_param_y(Param p_param, float p_value) {
 	if (get_joint().is_valid()) {
 		PhysicsServer::get_singleton()->generic_6dof_joint_set_param(get_joint(), Vector3::AXIS_Y, PhysicsServer::G6DOFJointAxisParam(p_param), p_value);
 	}
-	update_gizmo();
+	update_gizmos();
 }
 float Generic6DOFJoint::get_param_y(Param p_param) const {
 	ERR_FAIL_INDEX_V(p_param, PARAM_MAX, 0);
@@ -907,7 +907,7 @@ void Generic6DOFJoint::set_param_z(Param p_param, float p_value) {
 	if (get_joint().is_valid()) {
 		PhysicsServer::get_singleton()->generic_6dof_joint_set_param(get_joint(), Vector3::AXIS_Z, PhysicsServer::G6DOFJointAxisParam(p_param), p_value);
 	}
-	update_gizmo();
+	update_gizmos();
 }
 float Generic6DOFJoint::get_param_z(Param p_param) const {
 	ERR_FAIL_INDEX_V(p_param, PARAM_MAX, 0);
@@ -920,7 +920,7 @@ void Generic6DOFJoint::set_flag_x(Flag p_flag, bool p_enabled) {
 	if (get_joint().is_valid()) {
 		PhysicsServer::get_singleton()->generic_6dof_joint_set_flag(get_joint(), Vector3::AXIS_X, PhysicsServer::G6DOFJointAxisFlag(p_flag), p_enabled);
 	}
-	update_gizmo();
+	update_gizmos();
 }
 bool Generic6DOFJoint::get_flag_x(Flag p_flag) const {
 	ERR_FAIL_INDEX_V(p_flag, FLAG_MAX, false);
@@ -933,7 +933,7 @@ void Generic6DOFJoint::set_flag_y(Flag p_flag, bool p_enabled) {
 	if (get_joint().is_valid()) {
 		PhysicsServer::get_singleton()->generic_6dof_joint_set_flag(get_joint(), Vector3::AXIS_Y, PhysicsServer::G6DOFJointAxisFlag(p_flag), p_enabled);
 	}
-	update_gizmo();
+	update_gizmos();
 }
 bool Generic6DOFJoint::get_flag_y(Flag p_flag) const {
 	ERR_FAIL_INDEX_V(p_flag, FLAG_MAX, false);
@@ -946,7 +946,7 @@ void Generic6DOFJoint::set_flag_z(Flag p_flag, bool p_enabled) {
 	if (get_joint().is_valid()) {
 		PhysicsServer::get_singleton()->generic_6dof_joint_set_flag(get_joint(), Vector3::AXIS_Z, PhysicsServer::G6DOFJointAxisFlag(p_flag), p_enabled);
 	}
-	update_gizmo();
+	update_gizmos();
 }
 bool Generic6DOFJoint::get_flag_z(Flag p_flag) const {
 	ERR_FAIL_INDEX_V(p_flag, FLAG_MAX, false);

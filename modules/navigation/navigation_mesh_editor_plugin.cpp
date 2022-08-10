@@ -68,7 +68,7 @@ void NavigationMeshEditor::_bake_pressed() {
 	NavigationMeshGenerator::get_singleton()->clear(node->get_navigation_mesh());
 	NavigationMeshGenerator::get_singleton()->bake(node->get_navigation_mesh(), node);
 
-	node->update_gizmo();
+	node->update_gizmos();
 }
 
 void NavigationMeshEditor::_clear_pressed() {
@@ -80,7 +80,7 @@ void NavigationMeshEditor::_clear_pressed() {
 	bake_info->set_text("");
 
 	if (node) {
-		node->update_gizmo();
+		node->update_gizmos();
 	}
 }
 

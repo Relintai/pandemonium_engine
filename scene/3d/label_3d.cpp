@@ -379,7 +379,7 @@ void Label3D::_im_update() {
 	_shape();
 
 	triangle_mesh.unref();
-	update_gizmo();
+	update_gizmos();
 
 	pending_update = false;
 }

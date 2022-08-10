@@ -78,7 +78,7 @@ SpatialGizmo::SpatialGizmo() {
 
 void Spatial::_notify_dirty() {
 #ifdef TOOLS_ENABLED
-	if ((data.gizmo.is_valid() || data.notify_transform) && !data.ignore_notification && !xform_change.in_list()) {
+	if ((!data.gizmos.empty() || data.notify_transform) && !data.ignore_notification && !xform_change.in_list()) {
 #else
 	if (data.notify_transform && !data.ignore_notification && !xform_change.in_list()) {
 
@@ -111,7 +111,7 @@ void Spatial::_propagate_transform_changed(Spatial *p_origin) {
 		E->get()->_propagate_transform_changed(p_origin);
 	}
 #ifdef TOOLS_ENABLED
-	if ((data.gizmo.is_valid() || data.notify_transform) && !data.ignore_notification && !xform_change.in_list()) {
+	if ((!data.gizmos.empty() || data.notify_transform) && !data.ignore_notification && !xform_change.in_list()) {
 #else
 	if (data.notify_transform && !data.ignore_notification && !xform_change.in_list()) {
 #endif
@@ -200,15 +200,16 @@ void Spatial::_notification(int p_what) {
 			}
 #ifdef TOOLS_ENABLED
 			if (Engine::get_singleton()->is_editor_hint() && get_tree()->is_node_being_edited(this)) {
-				//get_scene()->call_group(SceneMainLoop::GROUP_CALL_REALTIME,SceneStringNames::get_singleton()->_spatial_editor_group,SceneStringNames::get_singleton()->_request_gizmo,this);
 				get_tree()->call_group_flags(0, SceneStringNames::get_singleton()->_spatial_editor_group, SceneStringNames::get_singleton()->_request_gizmo, this);
-				if (!data.gizmo_disabled) {
-					if (data.gizmo.is_valid()) {
-						data.gizmo->create();
+
+				if (!data.gizmos_disabled) {
+					for (int i = 0; i < data.gizmos.size(); i++) {
+						data.gizmos.write[i]->create();
+
 						if (is_visible_in_tree()) {
-							data.gizmo->redraw();
+							data.gizmos.write[i]->redraw();
 						}
-						data.gizmo->transform();
+						data.gizmos.write[i]->transform();
 					}
 				}
 			}
@@ -217,10 +218,7 @@ void Spatial::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_EXIT_WORLD: {
 #ifdef TOOLS_ENABLED
-			if (data.gizmo.is_valid()) {
-				data.gizmo->free();
-				data.gizmo.unref();
-			}
+			clear_gizmos();
 #endif
 
 			if (get_script_instance()) {
@@ -234,8 +232,8 @@ void Spatial::_notification(int p_what) {
 
 		case NOTIFICATION_TRANSFORM_CHANGED: {
 #ifdef TOOLS_ENABLED
-			if (data.gizmo.is_valid()) {
-				data.gizmo->transform();
+			for (int i = 0; i < data.gizmos.size(); i++) {
+				data.gizmos.write[i]->transform();
 			}
 #endif
 		} break;
@@ -539,77 +537,121 @@ Vector3 Spatial::get_scale() const {
 	return data.scale;
 }
 
-void Spatial::update_gizmo() {
+void Spatial::update_gizmos() {
 #ifdef TOOLS_ENABLED
 	if (!is_inside_world()) {
 		return;
 	}
-	if (!data.gizmo.is_valid()) {
-		get_tree()->call_group_flags(SceneTree::GROUP_CALL_REALTIME, SceneStringNames::get_singleton()->_spatial_editor_group, SceneStringNames::get_singleton()->_request_gizmo, this);
-	}
-	if (!data.gizmo.is_valid()) {
+
+	if (data.gizmos.empty()) {
 		return;
 	}
-	if (data.gizmo_dirty) {
-		return;
-	}
-	data.gizmo_dirty = true;
-	MessageQueue::get_singleton()->push_call(this, "_update_gizmo");
+
+	data.gizmos_dirty = true;
+	MessageQueue::get_singleton()->push_call(this, "_update_gizmos");
 #endif
 }
 
-void Spatial::set_gizmo(const Ref<SpatialGizmo> &p_gizmo) {
+void Spatial::clear_subgizmo_selection() {
 #ifdef TOOLS_ENABLED
-
-	if (data.gizmo_disabled) {
+	if (!is_inside_world()) {
 		return;
 	}
-	if (data.gizmo.is_valid() && is_inside_world()) {
-		data.gizmo->free();
+
+	if (data.gizmos.empty()) {
+		return;
 	}
-	data.gizmo = p_gizmo;
-	if (data.gizmo.is_valid() && is_inside_world()) {
-		data.gizmo->create();
+
+	if (Engine::get_singleton()->is_editor_hint() && get_tree()->is_node_being_edited(this)) {
+		get_tree()->call_group_flags(0, SceneStringNames::get_singleton()->_spatial_editor_group, SceneStringNames::get_singleton()->_clear_subgizmo_selection, this);
+	}
+#endif
+}
+
+void Spatial::add_gizmo(Ref<SpatialGizmo> p_gizmo) {
+#ifdef TOOLS_ENABLED
+	if (data.gizmos_disabled || p_gizmo.is_null()) {
+		return;
+	}
+
+	data.gizmos.push_back(p_gizmo);
+
+	if (p_gizmo.is_valid() && is_inside_world()) {
+		p_gizmo->create();
 		if (is_visible_in_tree()) {
-			data.gizmo->redraw();
+			p_gizmo->redraw();
 		}
-		data.gizmo->transform();
+		p_gizmo->transform();
 	}
-
 #endif
 }
 
-Ref<SpatialGizmo> Spatial::get_gizmo() const {
+void Spatial::remove_gizmo(Ref<SpatialGizmo> p_gizmo) {
 #ifdef TOOLS_ENABLED
 
-	return data.gizmo;
+	int idx = data.gizmos.find(p_gizmo);
+	if (idx != -1) {
+		p_gizmo->free();
+		data.gizmos.remove(idx);
+	}
+#endif
+}
+
+void Spatial::clear_gizmos() {
+#ifdef TOOLS_ENABLED
+	for (int i = 0; i < data.gizmos.size(); i++) {
+		data.gizmos.write[i]->free();
+	}
+
+	data.gizmos.clear();
+#endif
+}
+
+Vector<Variant> Spatial::get_gizmos_bind() const {
+	Vector<Variant> ret;
+
+#ifdef TOOLS_ENABLED
+	for (int i = 0; i < data.gizmos.size(); i++) {
+		ret.push_back(data.gizmos[i].get_ref_ptr());
+	}
+#endif
+
+	return ret;
+}
+
+Vector<Ref<SpatialGizmo>> Spatial::get_gizmos() const {
+#ifdef TOOLS_ENABLED
+
+	return data.gizmos;
 #else
 
-	return Ref<SpatialGizmo>();
+	return Vector<Ref<SpatialGizmo>>();
 #endif
 }
 
-void Spatial::_update_gizmo() {
+void Spatial::_update_gizmos() {
 #ifdef TOOLS_ENABLED
-	if (!is_inside_world()) {
+	if (data.gizmos_disabled || !is_inside_world() || !data.gizmos_dirty) {
 		return;
 	}
-	data.gizmo_dirty = false;
-	if (data.gizmo.is_valid()) {
+
+	data.gizmos_dirty = false;
+	for (int i = 0; i < data.gizmos.size(); i++) {
 		if (is_visible_in_tree()) {
-			data.gizmo->redraw();
+			data.gizmos.write[i]->redraw();
 		} else {
-			data.gizmo->clear();
+			data.gizmos.write[i]->clear();
 		}
 	}
 #endif
 }
 
-void Spatial::set_disable_gizmo(bool p_enabled) {
+void Spatial::set_disable_gizmos(bool p_enabled) {
 #ifdef TOOLS_ENABLED
-	data.gizmo_disabled = p_enabled;
-	if (!p_enabled && data.gizmo.is_valid()) {
-		data.gizmo = Ref<SpatialGizmo>();
+	data.gizmos_disabled = p_enabled;
+
+	if (!p_enabled) {
+		clear_gizmos();
 	}
 #endif
 }
@@ -656,9 +698,11 @@ void Spatial::_propagate_visibility_changed() {
 	notification(NOTIFICATION_VISIBILITY_CHANGED);
 	emit_signal(SceneStringNames::get_singleton()->visibility_changed);
 	_change_notify("visible");
+
 #ifdef TOOLS_ENABLED
-	if (data.gizmo.is_valid()) {
-		_update_gizmo();
+	if (!data.gizmos.empty()) {
+		data.gizmos_dirty = true;
+		_update_gizmos();
 	}
 #endif
 
@@ -890,11 +934,13 @@ void Spatial::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("force_update_transform"), &Spatial::force_update_transform);
 
-	ClassDB::bind_method(D_METHOD("_update_gizmo"), &Spatial::_update_gizmo);
+	ClassDB::bind_method(D_METHOD("_update_gizmos"), &Spatial::_update_gizmos);
 
-	ClassDB::bind_method(D_METHOD("update_gizmo"), &Spatial::update_gizmo);
-	ClassDB::bind_method(D_METHOD("set_gizmo", "gizmo"), &Spatial::set_gizmo);
-	ClassDB::bind_method(D_METHOD("get_gizmo"), &Spatial::get_gizmo);
+	ClassDB::bind_method(D_METHOD("update_gizmos"), &Spatial::update_gizmos);
+	ClassDB::bind_method(D_METHOD("add_gizmo", "gizmo"), &Spatial::add_gizmo);
+	ClassDB::bind_method(D_METHOD("get_gizmos"), &Spatial::get_gizmos_bind);
+	ClassDB::bind_method(D_METHOD("clear_gizmos"), &Spatial::clear_gizmos);
+	ClassDB::bind_method(D_METHOD("clear_subgizmo_selection"), &Spatial::clear_subgizmo_selection);
 
 	ClassDB::bind_method(D_METHOD("set_visible", "visible"), &Spatial::set_visible);
 	ClassDB::bind_method(D_METHOD("is_visible"), &Spatial::is_visible);
@@ -948,7 +994,6 @@ void Spatial::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM, "transform", PROPERTY_HINT_NONE, ""), "set_transform", "get_transform");
 	ADD_GROUP("Visibility", "");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "visible"), "set_visible", "is_visible");
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "gizmo", PROPERTY_HINT_RESOURCE_TYPE, "SpatialGizmo", 0), "set_gizmo", "get_gizmo");
 
 	ADD_SIGNAL(MethodInfo("visibility_changed"));
 	ADD_SIGNAL(MethodInfo("gameplay_entered"));
@@ -973,8 +1018,8 @@ Spatial::Spatial() :
 	data.client_physics_interpolation_data = nullptr;
 
 #ifdef TOOLS_ENABLED
-	data.gizmo_disabled = false;
-	data.gizmo_dirty = false;
+	data.gizmos_disabled = false;
+	data.gizmos_dirty = false;
 #endif
 	data.notify_local_transform = false;
 	data.notify_transform = false;

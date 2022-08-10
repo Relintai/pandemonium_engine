@@ -26,7 +26,7 @@ SOFTWARE.
 #include "mdi_ed_plugin.h"
 #include "mdi_gizmo.h"
 
-String MDIGizmoPlugin::get_name() const {
+String MDIGizmoPlugin::get_gizmo_name() const {
 	return "MDIGizmo";
 }
 int MDIGizmoPlugin::get_priority() const {

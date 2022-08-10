@@ -1607,7 +1607,7 @@ void ModuleEditorInspectorPluginSkeleton::parse_begin(Object *p_object) {
 }
 
 void ModuleEditorInspectorPluginSkeleton::set_rest_mode_toggled(const bool p_pressed) {
-	if (SpatialEditor::get_singleton()->get_selected()->get_class() == "Skeleton" && skel_editor) {
+	if (SpatialEditor::get_singleton()->get_single_selected_node()->get_class() == "Skeleton" && skel_editor) {
 		skel_editor->set_rest_mode_toggled(p_pressed);
 	}
 }

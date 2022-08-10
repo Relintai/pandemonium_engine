@@ -37,7 +37,7 @@
 #include "servers/visual_server.h"
 
 void Occluder::resource_changed(RES res) {
-	update_gizmo();
+	update_gizmos();
 }
 
 void Occluder::set_shape(const Ref<OccluderShape> &p_shape) {
@@ -58,7 +58,7 @@ void Occluder::set_shape(const Ref<OccluderShape> &p_shape) {
 		}
 	}
 
-	update_gizmo();
+	update_gizmos();
 	update_configuration_warning();
 }
 Ref<OccluderShape> Occluder::get_shape() const {
@@ -151,7 +151,7 @@ void Occluder::_notification(int p_what) {
 		case NOTIFICATION_INTERNAL_PROCESS: {
 			if (PortalOcclusionCuller::_redraw_gizmo) {
 				PortalOcclusionCuller::_redraw_gizmo = false;
-				update_gizmo();
+				update_gizmos();
 			}
 		} break;
 	}

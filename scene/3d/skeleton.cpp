@@ -490,7 +490,7 @@ void Skeleton::add_bone(const String &p_name) {
 	process_order_dirty = true;
 	version++;
 	_make_dirty();
-	update_gizmo();
+	update_gizmos();
 }
 int Skeleton::find_bone(const String &p_name) const {
 	for (int i = 0; i < bones.size(); i++) {
@@ -1373,7 +1373,7 @@ Skeleton::~Skeleton() {
 
 void Skeleton::set_selected_bone(int p_bone) {
 	selected_bone = p_bone;
-	update_gizmo();
+	update_gizmos();
 	return;
 }
 
@@ -1445,5 +1445,5 @@ void Skeleton::remove_bone(const int p_bone_idx) {
 
 	property_list_changed_notify();
 	_make_dirty();
-	update_gizmo();
+	update_gizmos();
 }

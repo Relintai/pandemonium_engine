@@ -111,6 +111,8 @@ public:
 
 	void flip_selected_faces();
 
+	Ref<MDIGizmo> get_gizmo_from(MeshDataInstance *mdi);
+
 	MDIEdPlugin(EditorNode *p_node);
 	~MDIEdPlugin();
 

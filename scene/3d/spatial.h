@@ -107,14 +107,14 @@ class Spatial : public Node {
 		ClientPhysicsInterpolationData *client_physics_interpolation_data;
 
 #ifdef TOOLS_ENABLED
-		Ref<SpatialGizmo> gizmo;
-		bool gizmo_disabled : 1;
-		bool gizmo_dirty : 1;
+		Vector<Ref<SpatialGizmo>> gizmos;
+		bool gizmos_disabled : 1;
+		bool gizmos_dirty : 1;
 #endif
 
 	} data;
 
-	void _update_gizmo();
+	void _update_gizmos();
 	void _notify_dirty();
 	void _propagate_transform_changed(Spatial *p_origin);
 
@@ -189,10 +189,14 @@ public:
 	void set_disable_scale(bool p_enabled);
 	bool is_scale_disabled() const;
 
-	void set_disable_gizmo(bool p_enabled);
-	void update_gizmo();
-	void set_gizmo(const Ref<SpatialGizmo> &p_gizmo);
-	Ref<SpatialGizmo> get_gizmo() const;
+	void set_disable_gizmos(bool p_enabled);
+	void update_gizmos();
+	void clear_subgizmo_selection();
+	Vector<Ref<SpatialGizmo>> get_gizmos() const;
+	Vector<Variant> get_gizmos_bind() const;
+	void add_gizmo(Ref<SpatialGizmo> p_gizmo);
+	void remove_gizmo(Ref<SpatialGizmo> p_gizmo);
+	void clear_gizmos();
 
 	_FORCE_INLINE_ bool is_inside_world() const {
 		return data.inside_world;

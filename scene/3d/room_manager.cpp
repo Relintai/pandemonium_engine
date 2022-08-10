@@ -412,7 +412,7 @@ void RoomManager::_update_portal_gizmos(Spatial *p_node) {
 	Portal *portal = Object::cast_to<Portal>(p_node);
 
 	if (portal) {
-		portal->update_gizmo();
+		portal->update_gizmos();
 	}
 
 	// recurse
@@ -856,7 +856,7 @@ void RoomManager::_third_pass_rooms(const LocalVector<Portal *> &p_portals) {
 		if (!_convert_room_hull_final(room, p_portals)) {
 			found_errors = true;
 		}
-		room->update_gizmo();
+		room->update_gizmos();
 		room->update_configuration_warning();
 	}
 
@@ -1028,7 +1028,7 @@ void RoomManager::_autolink_portals(Spatial *p_roomlist, LocalVector<Portal *> &
 
 #ifdef TOOLS_ENABLED
 			portal->_warning_autolink_failed = true;
-			portal->update_gizmo();
+			portal->update_gizmos();
 #endif
 		}
 	} // for portal
@@ -1190,7 +1190,7 @@ void RoomManager::_check_portal_for_warnings(Portal *p_portal, const AABB &p_roo
 	p_portal->_warning_autolink_failed = false;
 
 	if (changed) {
-		p_portal->update_gizmo();
+		p_portal->update_gizmos();
 	}
 #endif
 }
@@ -1620,7 +1620,7 @@ bool RoomManager::_room_regenerate_bound(Room *p_room) {
 	}
 
 	p_room->_bound_mesh_data = md;
-	p_room->update_gizmo();
+	p_room->update_gizmos();
 
 	return true;
 }
@@ -1963,7 +1963,7 @@ void RoomManager::_update_gizmos_recursive(Node *p_node) {
 	Portal *portal = Object::cast_to<Portal>(p_node);
 
 	if (portal) {
-		portal->update_gizmo();
+		portal->update_gizmos();
 	}
 
 	for (int n = 0; n < p_node->get_child_count(); n++) {

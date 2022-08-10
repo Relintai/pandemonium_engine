@@ -807,7 +807,7 @@ uint32_t AudioStreamPlayer3D::get_area_mask() const {
 
 void AudioStreamPlayer3D::set_emission_angle_enabled(bool p_enable) {
 	emission_angle_enabled = p_enable;
-	update_gizmo();
+	update_gizmos();
 }
 
 bool AudioStreamPlayer3D::is_emission_angle_enabled() const {
@@ -817,7 +817,7 @@ bool AudioStreamPlayer3D::is_emission_angle_enabled() const {
 void AudioStreamPlayer3D::set_emission_angle(float p_angle) {
 	ERR_FAIL_COND(p_angle < 0 || p_angle > 90);
 	emission_angle = p_angle;
-	update_gizmo();
+	update_gizmos();
 	_change_notify("emission_angle");
 }
 

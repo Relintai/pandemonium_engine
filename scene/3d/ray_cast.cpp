@@ -40,7 +40,7 @@
 
 void RayCast::set_cast_to(const Vector3 &p_point) {
 	cast_to = p_point;
-	update_gizmo();
+	update_gizmos();
 
 	if (Engine::get_singleton()->is_editor_hint()) {
 		if (is_inside_tree()) {
@@ -102,7 +102,7 @@ Vector3 RayCast::get_collision_normal() const {
 
 void RayCast::set_enabled(bool p_enabled) {
 	enabled = p_enabled;
-	update_gizmo();
+	update_gizmos();
 
 	if (is_inside_tree() && !Engine::get_singleton()->is_editor_hint()) {
 		set_physics_process_internal(p_enabled);
@@ -373,7 +373,7 @@ void RayCast::_update_debug_shape_vertices() {
 
 void RayCast::set_debug_shape_thickness(const int p_debug_shape_thickness) {
 	debug_shape_thickness = p_debug_shape_thickness;
-	update_gizmo();
+	update_gizmos();
 
 	if (Engine::get_singleton()->is_editor_hint()) {
 		if (is_inside_tree()) {

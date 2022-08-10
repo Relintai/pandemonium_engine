@@ -67,7 +67,7 @@ void NavigationMeshInstance::set_enabled(bool p_enabled) {
 		}
 	}
 
-	update_gizmo();
+	update_gizmos();
 }
 
 bool NavigationMeshInstance::is_enabled() const {
@@ -194,7 +194,7 @@ void NavigationMeshInstance::set_navigation_mesh(const Ref<NavigationMesh> &p_na
 
 	emit_signal("navigation_mesh_changed");
 
-	update_gizmo();
+	update_gizmos();
 	update_configuration_warning();
 }
 
@@ -294,7 +294,7 @@ void NavigationMeshInstance::_bind_methods() {
 }
 
 void NavigationMeshInstance::_changed_callback(Object *p_changed, const char *p_prop) {
-	update_gizmo();
+	update_gizmos();
 	update_configuration_warning();
 }
 

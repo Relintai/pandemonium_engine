@@ -2267,9 +2267,7 @@ bool PhysicalBone::_set(const StringName &p_name, const Variant &p_value) {
 	if (joint_data) {
 		if (joint_data->_set(p_name, p_value, joint)) {
 #ifdef TOOLS_ENABLED
-			if (get_gizmo().is_valid()) {
-				get_gizmo()->redraw();
-			}
+			update_gizmos();
 #endif
 			return true;
 		}
@@ -2600,9 +2598,7 @@ void PhysicalBone::set_joint_type(JointType p_joint_type) {
 
 #ifdef TOOLS_ENABLED
 	_change_notify();
-	if (get_gizmo().is_valid()) {
-		get_gizmo()->redraw();
-	}
+	update_gizmos();
 #endif
 }
 
@@ -2620,9 +2616,7 @@ void PhysicalBone::set_joint_offset(const Transform &p_offset) {
 	set_ignore_transform_notification(false);
 
 #ifdef TOOLS_ENABLED
-	if (get_gizmo().is_valid()) {
-		get_gizmo()->redraw();
-	}
+	update_gizmos();
 #endif
 }
 
@@ -2641,9 +2635,7 @@ void PhysicalBone::set_body_offset(const Transform &p_offset) {
 	set_ignore_transform_notification(false);
 
 #ifdef TOOLS_ENABLED
-	if (get_gizmo().is_valid()) {
-		get_gizmo()->redraw();
-	}
+	update_gizmos();
 #endif
 }
 

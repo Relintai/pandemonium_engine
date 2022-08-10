@@ -104,7 +104,7 @@ void CollisionShape::_notification(int p_what) {
 }
 
 void CollisionShape::resource_changed(RES res) {
-	update_gizmo();
+	update_gizmos();
 }
 
 String CollisionShape::get_configuration_warning() const {
@@ -168,7 +168,7 @@ void CollisionShape::set_shape(const Ref<Shape> &p_shape) {
 	if (!shape.is_null()) {
 		shape->register_owner(this);
 	}
-	update_gizmo();
+	update_gizmos();
 	if (parent) {
 		parent->shape_owner_clear_shapes(owner_id);
 		if (shape.is_valid()) {
@@ -189,7 +189,7 @@ Ref<Shape> CollisionShape::get_shape() const {
 
 void CollisionShape::set_disabled(bool p_disabled) {
 	disabled = p_disabled;
-	update_gizmo();
+	update_gizmos();
 	if (parent) {
 		parent->shape_owner_set_disabled(owner_id, p_disabled);
 	}

@@ -123,7 +123,7 @@ void Portal::set_point(int p_idx, const Vector2 &p_point) {
 
 	_pts_local_raw.set(p_idx, p_point);
 	_sanitize_points();
-	update_gizmo();
+	update_gizmos();
 }
 
 void Portal::set_points(const PoolVector<Vector2> &p_points) {
@@ -132,7 +132,7 @@ void Portal::set_points(const PoolVector<Vector2> &p_points) {
 
 	if (is_inside_tree()) {
 		portal_update();
-		update_gizmo();
+		update_gizmos();
 	}
 }
 
@@ -170,7 +170,7 @@ void Portal::_notification(int p_what) {
 
 			// we can't calculate world points until we have entered the tree
 			portal_update();
-			update_gizmo();
+			update_gizmos();
 
 		} break;
 		case NOTIFICATION_EXIT_WORLD: {
@@ -188,7 +188,7 @@ void Portal::_notification(int p_what) {
 			// and needs 'resyncing' to the global scale of the portal node.
 			// We really only need to do this when Z scale is changed, but it is easier codewise
 			// to always change it, unless we have evidence this is a performance problem.
-			update_gizmo();
+			update_gizmos();
 		} break;
 	}
 }
@@ -204,7 +204,7 @@ bool Portal::get_portal_active() const {
 
 void Portal::set_use_default_margin(bool p_use) {
 	_use_default_margin = p_use;
-	update_gizmo();
+	update_gizmos();
 }
 
 bool Portal::get_use_default_margin() const {
@@ -216,7 +216,7 @@ void Portal::set_portal_margin(real_t p_margin) {
 
 	if (!_use_default_margin) {
 		// give visual feedback in the editor for the portal margin zone
-		update_gizmo();
+		update_gizmos();
 	}
 }
 
@@ -343,7 +343,7 @@ void Portal::flip() {
 	_sanitize_points();
 	portal_update();
 
-	update_gizmo();
+	update_gizmos();
 }
 
 bool Portal::create_from_mesh_instance(const MeshInstance *p_mi) {
