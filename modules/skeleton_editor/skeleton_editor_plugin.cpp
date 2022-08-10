@@ -285,6 +285,8 @@ void ModuleBoneTransformEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_value_changed_vector3"), &ModuleBoneTransformEditor::_value_changed_vector3);
 	ClassDB::bind_method(D_METHOD("_value_changed_transform"), &ModuleBoneTransformEditor::_value_changed_transform);
 	ClassDB::bind_method(D_METHOD("_change_transform"), &ModuleBoneTransformEditor::_change_transform);
+
+	//ClassDB::bind_method(D_METHOD("update_joint_tree"), &ModuleBoneTransformEditor::update_joint_tree);
 }
 
 void ModuleBoneTransformEditor::_update_properties() {
@@ -632,6 +634,7 @@ void ModuleSkeletonEditor::move_skeleton_bone(NodePath p_skeleton_path, int32_t 
 	ERR_FAIL_NULL(skeleton);
 	UndoRedo *ur = EditorNode::get_singleton()->get_undo_redo();
 	ur->create_action(TTR("Set Bone Parentage"));
+
 	// If the target is a child of ourselves, we move only *us* and not our children
 	if (skeleton->is_bone_parent_of(p_target_boneidx, p_selected_boneidx)) {
 		const BoneId parent_idx = skeleton->get_bone_parent(p_selected_boneidx);
@@ -644,19 +647,23 @@ void ModuleSkeletonEditor::move_skeleton_bone(NodePath p_skeleton_path, int32_t 
 			}
 		}
 	}
+
 	ur->add_undo_method(skeleton, "set_bone_parent", p_selected_boneidx, skeleton->get_bone_parent(p_selected_boneidx));
 	ur->add_do_method(skeleton, "set_bone_parent", p_selected_boneidx, p_target_boneidx);
 	skeleton->set_bone_parent(p_selected_boneidx, p_target_boneidx);
 
 	ur->commit_action();
+
 	update_joint_tree();
 }
 
 void ModuleSkeletonEditor::_update_spatial_transform_gizmo() {
 	SpatialEditor::get_singleton()->clear_externals();
+
 	if (skeleton->get_selected_bone() >= 0) {
 		SpatialEditor::get_singleton()->append_to_externals(skeleton->get_global_transform() * skeleton->get_bone_global_pose(skeleton->get_selected_bone()));
 	}
+
 	SpatialEditor::get_singleton()->update_transform_gizmo();
 };
 
@@ -688,16 +695,24 @@ void ModuleSkeletonEditor::_joint_tree_rmb_select(const Vector2 &p_pos) {
 }
 
 void ModuleSkeletonEditor::_update_properties() {
-	if (rest_editor)
+	if (rest_editor) {
 		rest_editor->_update_properties();
-	if (pose_editor)
+	}
+
+	if (pose_editor) {
 		pose_editor->_update_properties();
-	if (custom_pose_editor)
+	}
+
+	if (custom_pose_editor) {
 		custom_pose_editor->_update_custom_pose_properties();
+	}
+
 	_update_spatial_transform_gizmo();
 }
 
 void ModuleSkeletonEditor::update_joint_tree() {
+	skeleton->force_update_all_bone_transforms();
+
 	joint_tree->clear();
 
 	if (skeleton == nullptr)
@@ -994,8 +1009,10 @@ ModuleSkeletonEditor::ModuleSkeletonEditor(ModuleEditorInspectorPluginSkeleton *
 		editor(p_editor),
 		editor_plugin(e_plugin),
 		skeleton(p_skeleton) {
+
 	handle_material = Ref<ShaderMaterial>(memnew(ShaderMaterial));
 	handle_shader = Ref<Shader>(memnew(Shader));
+
 	handle_shader->set_code(" \
 					shader_type spatial; \
 					render_mode unshaded; \
@@ -1019,6 +1036,7 @@ ModuleSkeletonEditor::ModuleSkeletonEditor(ModuleEditorInspectorPluginSkeleton *
 						ALBEDO = albedo.rgb * col; \
 					} \
 				");
+
 	handle_material->set_shader(handle_shader);
 	// handle_material->set_flag(SpatialMaterial::FLAG_DISABLE_DEPTH_TEST, true);
 	handle_material->set_render_priority(SpatialMaterial::RENDER_PRIORITY_MIN);
@@ -1041,35 +1059,43 @@ ModuleSkeletonEditor::ModuleSkeletonEditor(ModuleEditorInspectorPluginSkeleton *
 ModuleSkeletonEditor::~ModuleSkeletonEditor() {
 	set_rest_mode_toggled(false);
 	SpatialEditor::get_singleton()->disconnect("change_tool_mode", this, "_menu_tool_item_pressed");
+
 	if (skeleton) {
 		pointsm->get_parent()->remove_child(pointsm);
 		skeleton->set_selected_bone(-1);
 		skeleton->disconnect("pose_updated", this, "_draw_handles");
 		memdelete(pointsm);
 	}
+
 	for (int i = 0; i < 2; i++) {
 		if (separators[i]) {
 			SpatialEditor::get_singleton()->remove_control_from_menu_panel(separators[i]);
 			memdelete(separators[i]);
 		}
 	}
+
 	if (options) {
 		SpatialEditor::get_singleton()->remove_control_from_menu_panel(options);
 		memdelete(options);
 	}
+
 	SpatialEditor::get_singleton()->remove_control_from_menu_panel(tool_button[TOOL_MODE_BONE_SELECT]);
 	SpatialEditor::get_singleton()->remove_control_from_menu_panel(tool_button[TOOL_MODE_BONE_MOVE]);
 	SpatialEditor::get_singleton()->remove_control_from_menu_panel(tool_button[TOOL_MODE_BONE_ROTATE]);
 	SpatialEditor::get_singleton()->remove_control_from_menu_panel(tool_button[TOOL_MODE_BONE_SCALE]);
+
 	for (int i = 0; i < TOOL_MODE_BONE_MAX; i++) {
 		if (tool_button[i]) {
 			memdelete(tool_button[i]);
 		}
 	}
+
 	SpatialEditor::get_singleton()->remove_control_from_menu_panel(rest_mode_button);
+
 	if (rest_mode_button) {
 		memdelete(rest_mode_button);
 	}
+
 	if (SpatialEditor::get_singleton()->is_tool_external()) {
 		SpatialEditor::get_singleton()->set_tool_mode(SpatialEditor::TOOL_MODE_SELECT);
 		SpatialEditor::get_singleton()->set_external_tool_mode(SpatialEditor::EX_TOOL_MODE_SELECT);
@@ -1077,8 +1103,9 @@ ModuleSkeletonEditor::~ModuleSkeletonEditor() {
 }
 
 void ModuleSkeletonEditor::_hide_handles() {
-	if (!skeleton)
+	if (!skeleton) {
 		return;
+	}
 
 	pointsm->hide();
 }
@@ -1097,6 +1124,7 @@ void ModuleSkeletonEditor::_draw_handles() {
 	a.resize(Mesh::ARRAY_MAX);
 	PoolVector<Vector3> va;
 	PoolVector<Color> ca;
+
 	{
 		const int bone_len = skeleton->get_bone_count();
 		va.resize(bone_len);
@@ -1116,6 +1144,7 @@ void ModuleSkeletonEditor::_draw_handles() {
 			caw[i] = c;
 		}
 	}
+
 	a[Mesh::ARRAY_VERTEX] = va;
 	a[Mesh::ARRAY_COLOR] = ca;
 	am->add_surface_from_arrays(Mesh::PRIMITIVE_POINTS, a);
@@ -1123,8 +1152,9 @@ void ModuleSkeletonEditor::_draw_handles() {
 }
 
 bool ModuleSkeletonEditor::forward_spatial_gui_input(int p_index, Camera *p_camera, const Ref<InputEvent> &p_event) {
-	if (!skeleton || tool_mode == TOOL_MODE_BONE_NONE)
+	if (!skeleton || tool_mode == TOOL_MODE_BONE_NONE) {
 		return false;
+	}
 
 	SpatialEditor *se = SpatialEditor::get_singleton();
 	SpatialEditorViewport *sev = se->get_editor_viewport(p_index);
@@ -1198,9 +1228,11 @@ bool ModuleSkeletonEditor::forward_spatial_gui_input(int p_index, Camera *p_came
 	Ref<InputEventMouseMotion> mm = p_event;
 	if (mm.is_valid()) {
 		_edit.mouse_pos = mm->get_position();
+
 		if (!(mm->get_button_mask() & 1)) {
 			_gizmo_select(p_index, _edit.mouse_pos, true);
 		}
+
 		if (mm->get_button_mask() & BUTTON_MASK_LEFT) {
 			if (_edit.mode == SpatialEditorViewport::TRANSFORM_NONE)
 				return true;
