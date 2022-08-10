@@ -59,7 +59,7 @@ public:
 		execution_mode_physics_process,
 	};
 
-	Vector<Ref<SkeletonModification3D>> modifications = LocalVector<Ref<SkeletonModification3D>>();
+	Vector<Ref<SkeletonModification3D>> modifications;
 	int modifications_count = 0;
 
 	virtual void setup();
@@ -86,6 +86,7 @@ public:
 	real_t get_strength() const;
 
 	SkeletonModificationStack3D();
+	~SkeletonModificationStack3D();
 };
 
 #endif // SKELETON_MODIFICATION_STACK_3D_H

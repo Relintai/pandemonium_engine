@@ -224,3 +224,6 @@ void SkeletonModificationStack3D::_bind_methods() {
 
 SkeletonModificationStack3D::SkeletonModificationStack3D() {
 }
+
+SkeletonModificationStack3D::~SkeletonModificationStack3D() {
+}
