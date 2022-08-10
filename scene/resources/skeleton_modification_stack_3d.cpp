@@ -38,7 +38,7 @@
 ///////////////////////////////////////
 
 void SkeletonModificationStack3D::_get_property_list(List<PropertyInfo> *p_list) const {
-	for (uint32_t i = 0; i < modifications.size(); i++) {
+	for (int i = 0; i < modifications.size(); i++) {
 		p_list->push_back(
 				PropertyInfo(Variant::OBJECT, "modifications/" + itos(i),
 						PROPERTY_HINT_RESOURCE_TYPE,
@@ -76,7 +76,7 @@ void SkeletonModificationStack3D::setup() {
 
 	if (skeleton != nullptr) {
 		is_setup = true;
-		for (uint32_t i = 0; i < modifications.size(); i++) {
+		for (int i = 0; i < modifications.size(); i++) {
 			if (!modifications[i].is_valid()) {
 				continue;
 			}
@@ -100,7 +100,7 @@ void SkeletonModificationStack3D::execute(real_t p_delta, int p_execution_mode) 
 		return;
 	}
 
-	for (uint32_t i = 0; i < modifications.size(); i++) {
+	for (int i = 0; i < modifications.size(); i++) {
 		if (!modifications[i].is_valid()) {
 			continue;
 		}
@@ -112,7 +112,7 @@ void SkeletonModificationStack3D::execute(real_t p_delta, int p_execution_mode) 
 }
 
 void SkeletonModificationStack3D::enable_all_modifications(bool p_enabled) {
-	for (uint32_t i = 0; i < modifications.size(); i++) {
+	for (int i = 0; i < modifications.size(); i++) {
 		if (!modifications[i].is_valid()) {
 			continue;
 		}
