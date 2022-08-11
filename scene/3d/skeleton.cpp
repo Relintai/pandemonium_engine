@@ -658,6 +658,7 @@ void Skeleton::set_bone_enabled(int p_bone, bool p_enabled) {
 	ERR_FAIL_INDEX(p_bone, bone_size);
 
 	bones.write[p_bone].enabled = p_enabled;
+	emit_signal(SceneStringNames::get_singleton()->bone_enabled_changed, p_bone);
 	_make_dirty();
 }
 
@@ -665,6 +666,16 @@ bool Skeleton::is_bone_enabled(int p_bone) const {
 	const int bone_size = bones.size();
 	ERR_FAIL_INDEX_V(p_bone, bone_size, false);
 	return bones[p_bone].enabled;
+}
+
+void Skeleton::set_show_rest_only(bool p_enabled) {
+	show_rest_only = p_enabled;
+	emit_signal(SceneStringNames::get_singleton()->show_rest_only_changed);
+	_make_dirty();
+}
+
+bool Skeleton::is_show_rest_only() const {
+	return show_rest_only;
 }
 
 void Skeleton::clear_bones() {
@@ -1065,6 +1076,12 @@ Ref<SkinReference> Skeleton::register_skin(const Ref<Skin> &p_skin) {
 	return skin_ref;
 }
 
+void Skeleton::force_update_all_dirty_bones() {
+	if (dirty) {
+		const_cast<Skeleton *>(this)->notification(NOTIFICATION_UPDATE_SKELETON);
+	}
+}
+
 void Skeleton::force_update_all_bone_transforms() {
 	_update_process_order();
 
@@ -1086,9 +1103,10 @@ void Skeleton::force_update_bone_children_transforms(int p_bone_idx) {
 		bones_to_process.erase(current_bone_idx);
 
 		Bone &b = bonesptr[current_bone_idx];
+		bool bone_enabled = b.enabled && !show_rest_only;
 
 		if (b.disable_rest) {
-			if (b.enabled) {
+			if (bone_enabled) {
 				b.update_pose_cache();
 				Transform pose = b.pose_cache;
 				if (b.custom_pose_enable) {
@@ -1112,7 +1130,7 @@ void Skeleton::force_update_bone_children_transforms(int p_bone_idx) {
 			}
 
 		} else {
-			if (b.enabled) {
+			if (bone_enabled) {
 				b.update_pose_cache();
 				Transform pose = b.pose_cache;
 				if (b.custom_pose_enable) {
@@ -1303,6 +1321,9 @@ void Skeleton::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_bone_pose_rotation", "bone_idx"), &Skeleton::get_bone_pose_rotation);
 	ClassDB::bind_method(D_METHOD("get_bone_pose_scale", "bone_idx"), &Skeleton::get_bone_pose_scale);
 
+	ClassDB::bind_method(D_METHOD("is_bone_enabled", "bone_idx"), &Skeleton::is_bone_enabled);
+	ClassDB::bind_method(D_METHOD("set_bone_enabled", "bone_idx", "enabled"), &Skeleton::set_bone_enabled, true);
+
 	ClassDB::bind_method(D_METHOD("clear_bones_global_pose_override"), &Skeleton::clear_bones_global_pose_override);
 	ClassDB::bind_method(D_METHOD("set_bone_global_pose_override", "bone_idx", "pose", "amount", "persistent"), &Skeleton::set_bone_global_pose_override, DEFVAL(false));
 	ClassDB::bind_method(D_METHOD("get_bone_global_pose_override", "bone_idx"), &Skeleton::get_bone_global_pose_override);
@@ -1325,6 +1346,10 @@ void Skeleton::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("global_pose_to_local_pose", "bone_idx", "global_pose"), &Skeleton::global_pose_to_local_pose);
 	ClassDB::bind_method(D_METHOD("local_pose_to_global_pose", "bone_idx", "local_pose"), &Skeleton::local_pose_to_global_pose);
 	ClassDB::bind_method(D_METHOD("global_pose_z_forward_to_bone_forward", "bone_idx", "basis"), &Skeleton::global_pose_z_forward_to_bone_forward);
+
+	ClassDB::bind_method(D_METHOD("set_show_rest_only"), &Skeleton::set_show_rest_only);
+	ClassDB::bind_method(D_METHOD("is_show_rest_only"), &Skeleton::is_show_rest_only);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "show_rest_only"), "set_show_rest_only", "is_show_rest_only");
 
 #ifndef _3D_DISABLED
 
@@ -1351,6 +1376,8 @@ void Skeleton::_bind_methods() {
 
 	ADD_SIGNAL(MethodInfo("bone_pose_changed", PropertyInfo(Variant::INT, "bone_idx")));
 	ADD_SIGNAL(MethodInfo("bones_updated"));
+	ADD_SIGNAL(MethodInfo("bone_enabled_changed", PropertyInfo(Variant::INT, "bone_idx")));
+	ADD_SIGNAL(MethodInfo("show_rest_only_changed"));
 
 	BIND_CONSTANT(NOTIFICATION_UPDATE_SKELETON);
 
@@ -1362,6 +1389,7 @@ Skeleton::Skeleton() {
 	dirty = false;
 	version = 1;
 	process_order_dirty = true;
+	show_rest_only = false;
 }
 
 Skeleton::~Skeleton() {

@@ -6901,6 +6901,33 @@ void SpatialEditor::_request_gizmo(Object *p_obj) {
 	}
 }
 
+void SpatialEditor::_set_subgizmo_selection(Object *p_obj, Ref<SpatialGizmo> p_gizmo, int p_id, Transform p_transform) {
+	if (p_id == -1) {
+		_clear_subgizmo_selection(p_obj);
+		return;
+	}
+
+	Spatial *sp = nullptr;
+	if (p_obj) {
+		sp = Object::cast_to<Spatial>(p_obj);
+	} else {
+		sp = selected;
+	}
+
+	if (!sp) {
+		return;
+	}
+
+	SpatialEditorSelectedItem *se = editor_selection->get_node_editor_data<SpatialEditorSelectedItem>(sp);
+	if (se) {
+		se->subgizmos.clear();
+		se->subgizmos.insert(p_id, p_transform);
+		se->gizmo = p_gizmo;
+		sp->update_gizmos();
+		update_transform_gizmo();
+	}
+}
+
 void SpatialEditor::_clear_subgizmo_selection(Object *p_obj) {
 	Spatial *sp = nullptr;
 	if (p_obj) {
@@ -7022,6 +7049,7 @@ void SpatialEditor::_bind_methods() {
 	ClassDB::bind_method("_xform_dialog_action", &SpatialEditor::_xform_dialog_action);
 	ClassDB::bind_method("_get_editor_data", &SpatialEditor::_get_editor_data);
 	ClassDB::bind_method("_request_gizmo", &SpatialEditor::_request_gizmo);
+	ClassDB::bind_method("_set_subgizmo_selection", &SpatialEditor::_set_subgizmo_selection);
 	ClassDB::bind_method("_clear_subgizmo_selection", &SpatialEditor::_clear_subgizmo_selection);
 	ClassDB::bind_method("_toggle_maximize_view", &SpatialEditor::_toggle_maximize_view);
 	ClassDB::bind_method("_refresh_menu_icons", &SpatialEditor::_refresh_menu_icons);
@@ -7512,6 +7540,14 @@ Dictionary SpatialEditorPlugin::get_state() const {
 void SpatialEditorPlugin::set_state(const Dictionary &p_state) {
 	spatial_editor->set_state(p_state);
 }
+
+bool SpatialEditor::is_gizmo_visible() const {
+	if (selected) {
+		return gizmo.visible && selected->is_transform_gizmo_visible();
+	}
+	return gizmo.visible;
+}
+
 
 void SpatialEditor::snap_cursor_to_plane(const Plane &p_plane) {
 	//cursor.pos=p_plane.project(cursor.pos);

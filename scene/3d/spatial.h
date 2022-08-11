@@ -110,6 +110,7 @@ class Spatial : public Node {
 		Vector<Ref<SpatialGizmo>> gizmos;
 		bool gizmos_disabled : 1;
 		bool gizmos_dirty : 1;
+		bool transform_gizmo_visible : 1;
 #endif
 
 	} data;
@@ -180,6 +181,8 @@ public:
 #ifdef TOOLS_ENABLED
 	virtual Transform get_global_gizmo_transform() const;
 	virtual Transform get_local_gizmo_transform() const;
+	virtual void set_transform_gizmo_visible(bool p_enabled) { data.transform_gizmo_visible = p_enabled; };
+	virtual bool is_transform_gizmo_visible() const { return data.transform_gizmo_visible; };
 	virtual AABB get_fallback_gizmo_aabb() const;
 #endif
 
@@ -191,6 +194,7 @@ public:
 
 	void set_disable_gizmos(bool p_enabled);
 	void update_gizmos();
+	void set_subgizmo_selection(Ref<SpatialGizmo> p_gizmo, int p_id, Transform p_transform = Transform());
 	void clear_subgizmo_selection();
 	Vector<Ref<SpatialGizmo>> get_gizmos() const;
 	Vector<Variant> get_gizmos_bind() const;

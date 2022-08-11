@@ -30,15 +30,13 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/gui/box_container.h"
-#include "scene/gui/range.h"
-#include "scene/gui/control.h"
 #include "core/reference.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/control.h"
+#include "scene/gui/range.h"
 
 #include "scene/gui/slider.h"
 
-#include "scene/resources/texture.h"
-#include "scene/resources/animation.h"
 #include "core/dictionary.h"
 #include "core/list.h"
 #include "core/map.h"
@@ -49,6 +47,8 @@
 #include "core/ustring.h"
 #include "core/variant.h"
 #include "core/vector.h"
+#include "scene/resources/animation.h"
+#include "scene/resources/texture.h"
 
 class AnimationTrackEdit;
 class Button;
@@ -582,10 +582,12 @@ public:
 	void goto_next_step(bool p_from_mouse_event);
 
 	MenuButton *get_edit_menu();
+
 	AnimationTrackEditor();
 	~AnimationTrackEditor();
 
 	bool has_transform_key(Spatial *p_node, const String &p_sub);
+	bool has_transform_track(Spatial *p_node, const String &p_sub);
 };
 
 #endif // ANIMATION_TRACK_EDITOR_H

@@ -727,6 +727,7 @@ private:
 	Spatial *selected;
 
 	void _request_gizmo(Object *p_obj);
+	void _set_subgizmo_selection(Object *p_obj, Ref<SpatialGizmo> p_gizmo, int p_id, Transform p_transform = Transform());
 	void _clear_subgizmo_selection(Object *p_obj = nullptr);
 
 	static SpatialEditor *singleton;
@@ -758,7 +759,7 @@ public:
 	float get_fov() const { return settings_fov->get_value(); }
 
 	Transform get_gizmo_transform() const { return gizmo.transform; }
-	bool is_gizmo_visible() const { return gizmo.visible; }
+	bool is_gizmo_visible() const;
 
 	ToolMode get_tool_mode() const { return tool_mode; }
 	bool are_local_coords_enabled() const { return tool_option_button[SpatialEditor::TOOL_OPT_LOCAL_COORDS]->is_pressed(); }

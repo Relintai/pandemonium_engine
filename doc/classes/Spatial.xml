@@ -237,6 +237,15 @@
 				Sets whether the node notifies about its global and local transformation changes. [Spatial] will not propagate this by default, unless it is in the editor context and it has a valid gizmo.
 			</description>
 		</method>
+		<method name="set_subgizmo_selection">
+			<return type="void" />
+			<argument index="0" name="gizmo" type="SpatialGizmo" />
+			<argument index="1" name="id" type="int" />
+			<argument index="2" name="transform" type="Transform" />
+			<description>
+				Set subgizmo selection for this node in the editor.
+			</description>
+		</method>
 		<method name="show">
 			<return type="void" />
 			<description>

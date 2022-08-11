@@ -24,7 +24,6 @@ SOFTWARE.
 
 #ifdef TOOLS_ENABLED
 #include "skeleton_editor_plugin.h"
-#include "spatial_editor_gizmos.h"
 #endif
 
 void register_skeleton_editor_types() {

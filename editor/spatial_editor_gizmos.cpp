@@ -1166,7 +1166,7 @@ void EditorSpatialGizmoPlugin::_bind_methods() {
 	MethodInfo cs = MethodInfo("commit_subgizmos", GIZMO_REF, PropertyInfo(Variant::POOL_INT_ARRAY, "ids"), PropertyInfo(Variant::ARRAY, "restore"), PropertyInfo(Variant::BOOL, "cancel"));
 	cs.default_arguments.push_back(false);
 	BIND_VMETHOD(cs);
-	
+
 #undef GIZMO_REF
 }
 
@@ -1270,13 +1270,13 @@ Transform EditorSpatialGizmoPlugin::get_subgizmo_transform(const EditorSpatialGi
 	return Transform();
 }
 
-void EditorSpatialGizmoPlugin::set_subgizmo_transform(const EditorSpatialGizmo *p_gizmo, int p_id, Transform p_transform) const {
+void EditorSpatialGizmoPlugin::set_subgizmo_transform(const EditorSpatialGizmo *p_gizmo, int p_id, Transform p_transform) {
 	if (get_script_instance() && get_script_instance()->has_method("set_subgizmo_transform")) {
 		get_script_instance()->call("set_subgizmo_transform", p_id, p_transform);
 	}
 }
 
-void EditorSpatialGizmoPlugin::commit_subgizmos(const EditorSpatialGizmo *p_gizmo, const Vector<int> &p_ids, const Vector<Transform> &p_restore, bool p_cancel) const {
+void EditorSpatialGizmoPlugin::commit_subgizmos(const EditorSpatialGizmo *p_gizmo, const Vector<int> &p_ids, const Vector<Transform> &p_restore, bool p_cancel) {
 	if (get_script_instance() && get_script_instance()->has_method("commit_subgizmos")) {
 		Array ids;
 		for (int i = 0; i < p_ids.size(); i++) {

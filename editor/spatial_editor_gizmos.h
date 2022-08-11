@@ -186,8 +186,8 @@ public:
 	virtual int subgizmos_intersect_ray(const EditorSpatialGizmo *p_gizmo, Camera *p_camera, const Vector2 &p_point) const;
 	virtual Vector<int> subgizmos_intersect_frustum(const EditorSpatialGizmo *p_gizmo, const Camera *p_camera, const Vector<Plane> &p_frustum) const;
 	virtual Transform get_subgizmo_transform(const EditorSpatialGizmo *p_gizmo, int p_id) const;
-	virtual void set_subgizmo_transform(const EditorSpatialGizmo *p_gizmo, int p_id, Transform p_transform) const;
-	virtual void commit_subgizmos(const EditorSpatialGizmo *p_gizmo, const Vector<int> &p_ids, const Vector<Transform> &p_restore, bool p_cancel = false) const;
+	virtual void set_subgizmo_transform(const EditorSpatialGizmo *p_gizmo, int p_id, Transform p_transform);
+	virtual void commit_subgizmos(const EditorSpatialGizmo *p_gizmo, const Vector<int> &p_ids, const Vector<Transform> &p_restore, bool p_cancel = false);
 
 
 	Ref<EditorSpatialGizmo> get_gizmo(Spatial *p_spatial);

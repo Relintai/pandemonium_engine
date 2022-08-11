@@ -552,6 +552,20 @@ void Spatial::update_gizmos() {
 #endif
 }
 
+void Spatial::set_subgizmo_selection(Ref<SpatialGizmo> p_gizmo, int p_id, Transform p_transform) {
+#ifdef TOOLS_ENABLED
+	if (!is_inside_world()) {
+		return;
+	}
+
+	if (Engine::get_singleton()->is_editor_hint() && get_tree()->is_node_being_edited(this)) {
+		get_tree()->call_group_flags(0, SceneStringNames::get_singleton()->_spatial_editor_group, SceneStringNames::get_singleton()->_set_subgizmo_selection, this, p_gizmo, p_id, p_transform);
+	}
+#endif
+}
+
+
+
 void Spatial::clear_subgizmo_selection() {
 #ifdef TOOLS_ENABLED
 	if (!is_inside_world()) {
@@ -940,6 +954,7 @@ void Spatial::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_gizmo", "gizmo"), &Spatial::add_gizmo);
 	ClassDB::bind_method(D_METHOD("get_gizmos"), &Spatial::get_gizmos_bind);
 	ClassDB::bind_method(D_METHOD("clear_gizmos"), &Spatial::clear_gizmos);
+	ClassDB::bind_method(D_METHOD("set_subgizmo_selection", "gizmo", "id", "transform"), &Spatial::set_subgizmo_selection);
 	ClassDB::bind_method(D_METHOD("clear_subgizmo_selection"), &Spatial::clear_subgizmo_selection);
 
 	ClassDB::bind_method(D_METHOD("set_visible", "visible"), &Spatial::set_visible);
@@ -1020,6 +1035,7 @@ Spatial::Spatial() :
 #ifdef TOOLS_ENABLED
 	data.gizmos_disabled = false;
 	data.gizmos_dirty = false;
+	data.transform_gizmo_visible = true;
 #endif
 	data.notify_local_transform = false;
 	data.notify_transform = false;

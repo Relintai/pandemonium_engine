@@ -6403,3 +6403,31 @@ bool AnimationTrackEditor::has_transform_key(Spatial *p_node, const String &p_su
 	}
 	return false;
 }
+
+bool AnimationTrackEditor::has_transform_track(Spatial *p_node, const String &p_sub) {
+	if (!keying) {
+		return false;
+	}
+	if (!animation.is_valid()) {
+		return false;
+	}
+	if (!root) {
+		return false;
+	}
+
+	//let's build a node path
+	String path = root->get_path_to(p_node);
+	if (p_sub != "") {
+		path += ":" + p_sub;
+	}
+	int track_id = animation->find_track(path);
+	if (track_id >= 0) {
+		//TODO
+		//if (animation->track_get_type(track_id) == Animation::TYPE_TRANSFORM) {
+		//	return true;
+		//}
+		return true;
+	}
+	return false;
+}
+
