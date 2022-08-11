@@ -162,7 +162,10 @@ protected:
 	bool _get(const StringName &p_path, Variant &r_ret) const;
 	bool _set(const StringName &p_path, const Variant &p_value);
 	void _get_property_list(List<PropertyInfo> *p_list) const;
+	//void _validate_property(PropertyInfo &property) const;
+
 	void _notification(int p_what);
+
 	static void _bind_methods();
 
 #ifndef _3D_DISABLED

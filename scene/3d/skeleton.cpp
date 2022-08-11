@@ -178,6 +178,41 @@ void Skeleton::_get_property_list(List<PropertyInfo> *p_list) const {
 #endif //_3D_DISABLED
 }
 
+/*
+void Skeleton::_validate_property(PropertyInfo &property) const {
+	Vector<String> spr = property.name.split("/");
+	if (spr.size() == 3 && spr[0] == "bones") {
+		if (spr[2] == "rest") {
+			property.usage |= PROPERTY_USAGE_KEYING_INCREMENTS;
+		}
+		if (is_show_rest_only()) {
+			if (spr[2] == "enabled") {
+				property.usage |= PROPERTY_USAGE_READ_ONLY;
+			}
+			if (spr[2] == "position") {
+				property.usage |= PROPERTY_USAGE_READ_ONLY;
+			}
+			if (spr[2] == "rotation") {
+				property.usage |= PROPERTY_USAGE_READ_ONLY;
+			}
+			if (spr[2] == "scale") {
+				property.usage |= PROPERTY_USAGE_READ_ONLY;
+			}
+		} else if (!is_bone_enabled(spr[1].to_int())) {
+			if (spr[2] == "position") {
+				property.usage |= PROPERTY_USAGE_READ_ONLY;
+			}
+			if (spr[2] == "rotation") {
+				property.usage |= PROPERTY_USAGE_READ_ONLY;
+			}
+			if (spr[2] == "scale") {
+				property.usage |= PROPERTY_USAGE_READ_ONLY;
+			}
+		}
+	}
+}
+*/
+
 void Skeleton::_update_process_order() {
 	if (!process_order_dirty) {
 		return;
