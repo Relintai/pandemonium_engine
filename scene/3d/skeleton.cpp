@@ -1115,7 +1115,7 @@ Transform Skeleton::global_pose_to_local_pose(int p_bone_idx, Transform p_global
 
 	if (bones[p_bone_idx].parent >= 0) {
 		int parent_bone_idx = bones[p_bone_idx].parent;
-		Transform conversion_transform = bones[parent_bone_idx].pose_global.affine_inverse();
+		Transform conversion_transform = get_bone_global_pose(parent_bone_idx).affine_inverse();
 		return conversion_transform * p_global_pose;
 	} else {
 		return p_global_pose;
