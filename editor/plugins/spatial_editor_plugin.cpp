@@ -1361,13 +1361,21 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 		return; //do NONE
 	}
 
+	EditorPlugin::AfterGUIInput after = EditorPlugin::AFTER_GUI_INPUT_PASS;
+
 	{
 		EditorNode *en = editor;
+
 		EditorPluginList *force_input_forwarding_list = en->get_editor_plugins_force_input_forwarding();
 		if (!force_input_forwarding_list->empty()) {
-			bool discard = force_input_forwarding_list->forward_spatial_gui_input(camera, p_event, true);
-			if (discard) {
+			EditorPlugin::AfterGUIInput discard = force_input_forwarding_list->forward_spatial_gui_input(camera, p_event, true);
+
+			if (discard == EditorPlugin::AFTER_GUI_INPUT_STOP) {
 				return;
+			}
+
+			if (discard == EditorPlugin::AFTER_GUI_INPUT_DESELECT) {
+				after = EditorPlugin::AFTER_GUI_INPUT_DESELECT;
 			}
 		}
 	}
@@ -1375,9 +1383,14 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 		EditorNode *en = editor;
 		EditorPluginList *over_plugin_list = en->get_editor_plugins_over();
 		if (!over_plugin_list->empty()) {
-			bool discard = over_plugin_list->forward_spatial_gui_input(camera, p_event, false);
-			if (discard) {
+			EditorPlugin::AfterGUIInput discard = over_plugin_list->forward_spatial_gui_input(camera, p_event, false);
+
+			if (discard == EditorPlugin::AFTER_GUI_INPUT_STOP) {
 				return;
+			}
+
+			if (discard == EditorPlugin::AFTER_GUI_INPUT_DESELECT) {
+				after = EditorPlugin::AFTER_GUI_INPUT_DESELECT;
 			}
 		}
 	}
@@ -1635,20 +1648,22 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 						break;
 					}
 
-					clicked = _select_ray(b->get_position());
+					if (after != EditorPlugin::AFTER_GUI_INPUT_DESELECT) {
+						clicked = _select_ray(b->get_position());
 
-					//TODO is this needed?
-					selection_in_progress = true;
+						//TODO is this needed?
+						selection_in_progress = true;
 
-					//clicking is always deferred to either move or release
+						//clicking is always deferred to either move or release
 
-					clicked_wants_append = b->get_shift();
+						clicked_wants_append = b->get_shift();
 
-					if (!clicked) {
-						//default to regionselect
-						cursor.region_select = true;
-						cursor.region_begin = b->get_position();
-						cursor.region_end = b->get_position();
+						if (!clicked) {
+							//default to regionselect
+							cursor.region_select = true;
+							cursor.region_begin = b->get_position();
+							cursor.region_end = b->get_position();
+						}
 					}
 
 					surface->update();
@@ -1659,14 +1674,16 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 						break;
 					}
 
-					if (clicked) {
-						_select_clicked(false);
-					}
+					if (after != EditorPlugin::AFTER_GUI_INPUT_DESELECT) {
+						if (clicked) {
+							_select_clicked(false);
+						}
 
-					if (cursor.region_select) {
-						_select_region();
-						cursor.region_select = false;
-						surface->update();
+						if (cursor.region_select) {
+							_select_region();
+							cursor.region_select = false;
+							surface->update();
+						}
 					}
 
 					selection_in_progress = false;
