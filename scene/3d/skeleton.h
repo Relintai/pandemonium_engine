@@ -84,8 +84,7 @@ private:
 		int parent;
 
 		Transform rest;
-
-		//Transform pose;
+		Transform global_rest;
 
 		_FORCE_INLINE_ void update_pose_cache() {
 			if (pose_cache_dirty) {
@@ -151,6 +150,7 @@ private:
 
 	void _make_dirty();
 	bool dirty;
+	bool rest_dirty;
 
 	bool show_rest_only;
 
@@ -210,6 +210,7 @@ public:
 
 	void set_bone_rest(int p_bone, const Transform &p_rest);
 	Transform get_bone_rest(int p_bone) const;
+	Transform get_bone_global_rest(int p_bone) const;
 	Transform get_bone_global_pose(int p_bone) const;
 	Transform get_bone_global_pose_no_override(int p_bone) const;
 
