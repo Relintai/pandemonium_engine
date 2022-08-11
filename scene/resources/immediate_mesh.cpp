@@ -41,7 +41,7 @@ void ImmediateMesh::surface_set_color(const Color &p_color) {
 
 	if (!uses_colors) {
 		colors.resize(vertices.size());
-		for (uint32_t i = 0; i < colors.size(); i++) {
+		for (int i = 0; i < colors.size(); i++) {
 			colors.write[i] = p_color;
 		}
 		uses_colors = true;
@@ -54,7 +54,7 @@ void ImmediateMesh::surface_set_normal(const Vector3 &p_normal) {
 
 	if (!uses_normals) {
 		normals.resize(vertices.size());
-		for (uint32_t i = 0; i < normals.size(); i++) {
+		for (int i = 0; i < normals.size(); i++) {
 			normals.write[i] = p_normal;
 		}
 		uses_normals = true;
@@ -66,7 +66,7 @@ void ImmediateMesh::surface_set_tangent(const Plane &p_tangent) {
 	ERR_FAIL_COND_MSG(!surface_active, "Not creating any surface. Use surface_begin() to do it.");
 	if (!uses_tangents) {
 		tangents.resize(vertices.size());
-		for (uint32_t i = 0; i < tangents.size(); i++) {
+		for (int i = 0; i < tangents.size(); i++) {
 			tangents.write[i] = p_tangent;
 		}
 		uses_tangents = true;
@@ -78,7 +78,7 @@ void ImmediateMesh::surface_set_uv(const Vector2 &p_uv) {
 	ERR_FAIL_COND_MSG(!surface_active, "Not creating any surface. Use surface_begin() to do it.");
 	if (!uses_uvs) {
 		uvs.resize(vertices.size());
-		for (uint32_t i = 0; i < uvs.size(); i++) {
+		for (int i = 0; i < uvs.size(); i++) {
 			uvs.write[i] = p_uv;
 		}
 		uses_uvs = true;
@@ -90,7 +90,7 @@ void ImmediateMesh::surface_set_uv2(const Vector2 &p_uv2) {
 	ERR_FAIL_COND_MSG(!surface_active, "Not creating any surface. Use surface_begin() to do it.");
 	if (!uses_uv2s) {
 		uv2s.resize(vertices.size());
-		for (uint32_t i = 0; i < uv2s.size(); i++) {
+		for (int i = 0; i < uv2s.size(); i++) {
 			uv2s.write[i] = p_uv2;
 		}
 		uses_uv2s = true;
@@ -199,7 +199,7 @@ void ImmediateMesh::surface_end() {
 		PoolVector<uint8_t>::Write surface_array_write = surface_array_create_cache.write();
 		uint8_t *surface_vertex_ptr = surface_array_write.ptr();
 
-		for (uint32_t i = 0; i < vertices.size(); i++) {
+		for (int i = 0; i < vertices.size(); i++) {
 			{
 				float *vtx = (float *)&surface_vertex_ptr[i * vertex_stride];
 				vtx[0] = vertices[i].x;
@@ -245,7 +245,7 @@ void ImmediateMesh::surface_end() {
 		PoolVector<uint8_t>::Write surface_array_write = surface_array_create_cache.write();
 		uint8_t *surface_attribute_ptr = surface_array_write.ptr();
 
-		for (uint32_t i = 0; i < vertices.size(); i++) {
+		for (int i = 0; i < vertices.size(); i++) {
 			if (uses_colors) {
 				uint8_t *color8 = (uint8_t *)&surface_attribute_ptr[i * vertex_stride];
 
@@ -370,7 +370,7 @@ void ImmediateMesh::set_blend_shape_name(int p_index, const StringName &p_name) 
 
 AABB ImmediateMesh::get_aabb() const {
 	AABB aabb;
-	for (uint32_t i = 0; i < surfaces.size(); i++) {
+	for (int i = 0; i < surfaces.size(); i++) {
 		if (i == 0) {
 			aabb = surfaces[i].aabb;
 		} else {
