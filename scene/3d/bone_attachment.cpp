@@ -188,13 +188,13 @@ String BoneAttachment::get_configuration_warning() const {
 BoneAttachment::BoneAttachment() {
 	bound = false;
 	bone_idx = -1;
-	//override_pose = false;
-	//override_mode = 0;
-	//_override_dirty = false;
+	override_pose = false;
+	override_mode = MODE_GLOBAL_POSE;
+	_override_dirty = false;
 	use_external_skeleton = false;
 	external_skeleton_node_cache = 0;
 
-	//set_notify_transform(true);
+	set_notify_transform(true);
 }
 
 void BoneAttachment::_notification(int p_what) {
@@ -320,9 +320,11 @@ void BoneAttachment::_check_bind() {
 		}
 
 		if (bone_idx != -1) {
-			sk->call_deferred("connect", "bone_pose_changed", this, "on_bone_pose_update");
+			//sk->call_deferred("connect", "bone_pose_changed", this, "on_bone_pose_update");
+			//call_deferred("on_bone_pose_update", bone_idx);
 			bound = true;
-			call_deferred("on_bone_pose_update", bone_idx);
+			on_bone_pose_update(bone_idx);
+			sk->connect("bone_pose_changed", this, "on_bone_pose_update");
 		}
 	}
 }
