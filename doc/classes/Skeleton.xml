@@ -45,6 +45,11 @@
 				Removes the local pose override on all bones in the skeleton.
 			</description>
 		</method>
+		<method name="create_skin_from_rest_transforms">
+			<return type="Skin" />
+			<description>
+			</description>
+		</method>
 		<method name="execute_modifications">
 			<return type="void" />
 			<argument index="0" name="delta" type="float" />
@@ -200,7 +205,7 @@
 			<argument index="1" name="basis" type="Basis" />
 			<description>
 				Rotates the given [Basis] so that the forward axis of the Basis is facing in the forward direction of the bone at [code]bone_idx[/code].
-				This is helper function to make using [method Transform3D.looking_at] easier with bone poses.
+				This is helper function to make using [method Transform.looking_at] easier with bone poses.
 			</description>
 		</method>
 		<method name="is_bone_enabled" qualifiers="const">
@@ -208,15 +213,6 @@
 			<argument index="0" name="bone_idx" type="int" />
 			<description>
 				Returns whether the bone pose for the bone at [code]bone_idx[/code] is enabled.
-			</description>
-		</method>
-		<method name="is_bone_rest_disabled" qualifiers="const">
-			<return type="bool">
-			</return>
-			<argument index="0" name="bone_idx" type="int">
-			</argument>
-			<description>
-				Returns whether the bone rest for the bone at [code]bone_idx[/code] is disabled.
 			</description>
 		</method>
 		<method name="local_pose_to_global_pose">
@@ -286,15 +282,6 @@
 			<argument index="1" name="bone_children" type="PackedInt32Array" />
 			<description>
 				Sets the children for the passed in bone, [code]bone_idx[/code], to the passed-in array of bone indexes, [code]bone_children[/code].
-			</description>
-		</method>
-		<method name="set_bone_custom_pose">
-			<return type="void" />
-			<argument index="0" name="bone_idx" type="int" />
-			<argument index="1" name="custom_pose" type="Transform3D" />
-			<description>
-				Sets the custom pose transform, [code]custom_pose[/code], for the bone at [code]bone_idx[/code]. This pose is an addition to the bone rest pose.
-				[b]Note:[/b] The pose transform needs to be in bone space. Use [method world_transform_to_global_pose] to convert a world transform, like one you can get from a [Node3D], to bone space.
 			</description>
 		</method>
 		<method name="remove_bone">

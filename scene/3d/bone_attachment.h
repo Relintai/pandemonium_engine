@@ -82,7 +82,6 @@ private:
 	enum OVERRIDE_MODES {
 		MODE_GLOBAL_POSE,
 		MODE_LOCAL_POSE,
-		MODE_CUSTOM_POSE
 	};
 
 	bool bound;

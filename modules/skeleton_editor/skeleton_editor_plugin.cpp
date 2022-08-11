@@ -259,11 +259,6 @@ void BoneTransformEditor::_change_transform(Transform p_new_transform) {
 		undo_redo->add_undo_method(skeleton, "set_bone_pose", property.get_slicec('/', 1).to_int(), skeleton->get_bone_pose(property.get_slicec('/', 1).to_int()));
 		undo_redo->add_do_method(skeleton, "set_bone_pose", property.get_slicec('/', 1).to_int(), p_new_transform);
 		undo_redo->commit_action();
-	} else if (s == "custom_pose") {
-		undo_redo->create_action(TTR("Set Custom Bone Pose Transform"), UndoRedo::MERGE_ENDS);
-		undo_redo->add_undo_method(skeleton, "set_bone_custom_pose", property.get_slicec('/', 1).to_int(), skeleton->get_bone_custom_pose(property.get_slicec('/', 1).to_int()));
-		undo_redo->add_do_method(skeleton, "set_bone_custom_pose", property.get_slicec('/', 1).to_int(), p_new_transform);
-		undo_redo->commit_action();
 	} else if (s == "rest") {
 		undo_redo->create_action(TTR("Set Bone Rest Transform"), UndoRedo::MERGE_ENDS);
 		undo_redo->add_undo_property(skeleton, property, skeleton->get(property));
@@ -307,27 +302,6 @@ void BoneTransformEditor::_update_properties() {
 	updating = true;
 
 	Transform tform = skeleton->get(property);
-	_update_transform_properties(tform);
-}
-
-void BoneTransformEditor::_update_custom_pose_properties() {
-	if (updating) {
-		return;
-	}
-
-	if (skeleton == nullptr) {
-		return;
-	}
-
-	updating = true;
-
-	int idx = property.to_int();
-
-	//if (idx == 0) {
-	//	return;
-	//}
-
-	Transform tform = skeleton->get_bone_custom_pose(idx);
 	_update_transform_properties(tform);
 }
 
@@ -566,9 +540,7 @@ void SkeletonEditor::pose_to_rest() {
 
 	ur->add_do_method(skeleton, "set_bone_pose", selected_bone, Transform());
 	ur->add_undo_method(skeleton, "set_bone_pose", selected_bone, skeleton->get_bone_pose(selected_bone));
-	ur->add_do_method(skeleton, "set_bone_custom_pose", selected_bone, Transform());
-	ur->add_undo_method(skeleton, "set_bone_custom_pose", selected_bone, skeleton->get_bone_custom_pose(selected_bone));
-	ur->add_do_method(skeleton, "set_bone_rest", selected_bone, skeleton->get_bone_rest(selected_bone) * skeleton->get_bone_custom_pose(selected_bone) * skeleton->get_bone_pose(selected_bone));
+	ur->add_do_method(skeleton, "set_bone_rest", selected_bone, skeleton->get_bone_rest(selected_bone) * skeleton->get_bone_pose(selected_bone));
 	ur->add_undo_method(skeleton, "set_bone_rest", selected_bone, skeleton->get_bone_rest(selected_bone));
 
 	ur->commit_action();
@@ -784,11 +756,9 @@ void SkeletonEditor::_joint_tree_selection_changed() {
 
 			pose_editor->set_target(bone_path + "pose");
 			rest_editor->set_target(bone_path + "rest");
-			custom_pose_editor->set_target(bone_path + "custom_pose");
 
 			pose_editor->set_visible(true);
 			rest_editor->set_visible(true);
-			custom_pose_editor->set_visible(true);
 
 			selected_bone = b_idx;
 		}
@@ -811,10 +781,6 @@ void SkeletonEditor::_update_properties() {
 
 	if (pose_editor) {
 		pose_editor->_update_properties();
-	}
-
-	if (custom_pose_editor) {
-		custom_pose_editor->_update_custom_pose_properties();
 	}
 
 	_update_gizmo_transform();
@@ -1000,12 +966,6 @@ void SkeletonEditor::create_editors() {
 	rest_editor->set_visible(false);
 	add_child(rest_editor);
 	rest_editor->set_transform_read_only(true);
-
-	custom_pose_editor = memnew(BoneTransformEditor(skeleton));
-	custom_pose_editor->set_label(TTR("Bone Custom Pose"));
-	custom_pose_editor->set_visible(false);
-	add_child(custom_pose_editor);
-	custom_pose_editor->set_transform_read_only(true);
 }
 
 void SkeletonEditor::_notification(int p_what) {
@@ -1081,7 +1041,6 @@ SkeletonEditor::SkeletonEditor(EditorInspectorPluginSkeleton *e_plugin, EditorNo
 	joint_tree = nullptr;
 	rest_editor = nullptr;
 	pose_editor = nullptr;
-	custom_pose_editor = nullptr;
 
 	skeleton_options = nullptr;
 	rest_options = nullptr;
@@ -1627,7 +1586,7 @@ void SkeletonGizmoPlugin::set_subgizmo_transform(const EditorSpatialGizmo *p_giz
 	if (parent_idx >= 0) {
 		original_to_local = original_to_local * skeleton->get_bone_global_pose(parent_idx);
 	}
-	original_to_local = original_to_local * skeleton->get_bone_rest(p_id) * skeleton->get_bone_custom_pose(p_id);
+
 	Basis to_local = original_to_local.get_basis().inverse();
 
 	// Prepare transform.
@@ -1854,5 +1813,5 @@ void SkeletonGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	}
 
 	Ref<ArrayMesh> m = surface_tool->commit();
-	p_gizmo->add_mesh(m, Ref<Material>(), Transform(), skeleton->register_skin(Ref<Skin>()));
+	p_gizmo->add_mesh(m, Ref<Material>(), Transform(), skeleton->register_skin(skeleton->create_skin_from_rest_transforms()));
 }

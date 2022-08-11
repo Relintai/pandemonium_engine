@@ -83,7 +83,6 @@ private:
 		bool enabled;
 		int parent;
 
-		bool disable_rest;
 		Transform rest;
 
 		//Transform pose;
@@ -103,9 +102,6 @@ private:
 
 		Transform pose_global;
 		Transform pose_global_no_override;
-
-		bool custom_pose_enable;
-		Transform custom_pose;
 
 		float global_pose_override_amount;
 		bool global_pose_override_reset;
@@ -130,10 +126,8 @@ private:
 		Bone() {
 			parent = -1;
 			enabled = true;
-			disable_rest = false;
 			pose_cache_dirty = true;
 			pose_scale = Vector3(1, 1, 1);
-			custom_pose_enable = false;
 			global_pose_override_amount = 0;
 			global_pose_override_reset = false;
 #ifndef _3D_DISABLED
@@ -209,9 +203,6 @@ public:
 	void remove_bone_child(int p_bone, int p_child);
 	Vector<int> get_parentless_bones();
 
-	void set_bone_disable_rest(int p_bone, bool p_disable);
-	bool is_bone_rest_disabled(int p_bone) const;
-
 	int get_bone_count() const;
 
 	void set_bone_rest(int p_bone, const Transform &p_rest);
@@ -237,9 +228,6 @@ public:
 	Vector3 get_bone_pose_position(int p_bone) const;
 	Quat get_bone_pose_rotation(int p_bone) const;
 	Vector3 get_bone_pose_scale(int p_bone) const;
-
-	void set_bone_custom_pose(int p_bone, const Transform &p_custom_pose);
-	Transform get_bone_custom_pose(int p_bone) const;
 
 	void clear_bones_global_pose_override();
 	Transform get_bone_global_pose_override(int p_bone) const;

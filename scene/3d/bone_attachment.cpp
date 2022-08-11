@@ -83,8 +83,6 @@ void BoneAttachment::set_override_pose(bool p_override) {
 				sk->set_bone_global_pose_override(bone_idx, Transform(), 0.0, false);
 			} else if (override_mode == OVERRIDE_MODES::MODE_LOCAL_POSE) {
 				sk->set_bone_local_pose_override(bone_idx, Transform(), 0.0, false);
-			} else if (override_mode == OVERRIDE_MODES::MODE_CUSTOM_POSE) {
-				sk->set_bone_custom_pose(bone_idx, Transform());
 			}
 		}
 		_transform_changed();
@@ -105,8 +103,6 @@ void BoneAttachment::set_override_mode(int p_mode) {
 				sk->set_bone_global_pose_override(bone_idx, Transform(), 0.0, false);
 			} else if (override_mode == OVERRIDE_MODES::MODE_LOCAL_POSE) {
 				sk->set_bone_local_pose_override(bone_idx, Transform(), 0.0, false);
-			} else if (override_mode == OVERRIDE_MODES::MODE_CUSTOM_POSE) {
-				sk->set_bone_custom_pose(bone_idx, Transform());
 			}
 		}
 

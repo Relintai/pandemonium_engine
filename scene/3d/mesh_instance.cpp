@@ -163,11 +163,13 @@ void MeshInstance::_resolve_skeleton_path() {
 	if (!skeleton_path.is_empty()) {
 		Skeleton *skeleton = Object::cast_to<Skeleton>(get_node(skeleton_path));
 		if (skeleton) {
-			new_skin_reference = skeleton->register_skin(skin_internal);
 			if (skin_internal.is_null()) {
+				new_skin_reference = skeleton->register_skin(skeleton->create_skin_from_rest_transforms());
 				//a skin was created for us
 				skin_internal = new_skin_reference->get_skin();
 				_change_notify();
+			} else {
+				new_skin_reference = skeleton->register_skin(skin_internal);
 			}
 		}
 	}

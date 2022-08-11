@@ -113,7 +113,6 @@ public:
 	void set_label(const String &p_label) { label = p_label; }
 
 	void _update_properties();
-	void _update_custom_pose_properties();
 	void _update_transform_properties(Transform p_transform);
 
 	// Transform can be keyed, whether or not to show the button
@@ -169,7 +168,6 @@ class SkeletonEditor : public VBoxContainer {
 	Tree *joint_tree;
 	BoneTransformEditor *rest_editor;
 	BoneTransformEditor *pose_editor;
-	BoneTransformEditor *custom_pose_editor;
 
 	VSeparator *separator;
 	MenuButton *skeleton_options;
