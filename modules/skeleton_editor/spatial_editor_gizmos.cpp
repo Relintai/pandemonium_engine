@@ -35,7 +35,7 @@
 #include "scene/resources/skin.h"
 #include "scene/resources/surface_tool.h"
 
-ModuleSkeletonSpatialGizmoPlugin::ModuleSkeletonSpatialGizmoPlugin() {
+SkeletonSpatialGizmoPlugin::SkeletonSpatialGizmoPlugin() {
 	skeleton_color = EDITOR_DEF("editors/3d_gizmos/gizmo_colors/skeleton", Color(1, 0.8, 0.4));
 	selected_bone_color = EDITOR_DEF("editors/3d_gizmos/gizmo_colors/selected_bone", Color(1, 0, 0));
 	bone_axis_length = EDITOR_DEF("editors/3d_gizmos/gizmo_settings/bone_axis_length", (float)0.015);
@@ -67,19 +67,19 @@ ModuleSkeletonSpatialGizmoPlugin::ModuleSkeletonSpatialGizmoPlugin() {
 	selected_mat->set_shader(selected_sh);
 }
 
-bool ModuleSkeletonSpatialGizmoPlugin::has_gizmo(Spatial *p_spatial) {
+bool SkeletonSpatialGizmoPlugin::has_gizmo(Spatial *p_spatial) {
 	return Object::cast_to<Skeleton>(p_spatial) != NULL;
 }
 
-String ModuleSkeletonSpatialGizmoPlugin::get_gizmo_name() const {
+String SkeletonSpatialGizmoPlugin::get_gizmo_name() const {
 	return "Skeleton";
 }
 
-int ModuleSkeletonSpatialGizmoPlugin::get_priority() const {
+int SkeletonSpatialGizmoPlugin::get_priority() const {
 	return -1;
 }
 
-void ModuleSkeletonSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
+void SkeletonSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	Skeleton *skel = Object::cast_to<Skeleton>(p_gizmo->get_spatial_node());
 
 	skel->force_update_all_bone_transforms();

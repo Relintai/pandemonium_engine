@@ -39,10 +39,10 @@
 #include "scene/3d/mesh_instance.h"
 #include "scene/3d/skeleton.h"
 
-class ModuleEditorInspectorPluginSkeleton;
+class EditorInspectorPluginSkeleton;
 class Joint;
 class PhysicalBone;
-class ModuleSkeletonEditorPlugin;
+class SkeletonEditorPlugin;
 class Button;
 class CheckBox;
 class EditorSpinSlider;
@@ -56,8 +56,8 @@ class VSeparator;
 class EditorPropertyTransform;
 class EditorPropertyVector3;
 
-class ModuleBoneTransformEditor : public VBoxContainer {
-	GDCLASS(ModuleBoneTransformEditor, VBoxContainer);
+class BoneTransformEditor : public VBoxContainer {
+	GDCLASS(BoneTransformEditor, VBoxContainer);
 
 	EditorInspectorSection *section;
 
@@ -103,7 +103,7 @@ protected:
 	static void _bind_methods();
 
 public:
-	ModuleBoneTransformEditor(Skeleton *p_skeleton);
+	BoneTransformEditor(Skeleton *p_skeleton);
 
 	// Which transform target to modify
 	void set_target(const String &p_prop);
@@ -129,7 +129,7 @@ public:
 class ModuleSkeletonEditor : public VBoxContainer {
 	GDCLASS(ModuleSkeletonEditor, VBoxContainer);
 
-	friend class ModuleSkeletonEditorPlugin;
+	friend class SkeletonEditorPlugin;
 
 	enum Menu {
 		MENU_OPTION_INIT_POSE,
@@ -168,14 +168,14 @@ class ModuleSkeletonEditor : public VBoxContainer {
 	};
 
 	EditorNode *editor;
-	ModuleEditorInspectorPluginSkeleton *editor_plugin;
+	EditorInspectorPluginSkeleton *editor_plugin;
 
 	Skeleton *skeleton;
 
 	Tree *joint_tree;
-	ModuleBoneTransformEditor *rest_editor;
-	ModuleBoneTransformEditor *pose_editor;
-	ModuleBoneTransformEditor *custom_pose_editor;
+	BoneTransformEditor *rest_editor;
+	BoneTransformEditor *pose_editor;
+	BoneTransformEditor *custom_pose_editor;
 
 	VSeparator *separators[2];
 	MenuButton *options;
@@ -251,7 +251,7 @@ public:
 
 	void _update_properties();
 
-	ModuleSkeletonEditor(ModuleEditorInspectorPluginSkeleton *e_plugin, EditorNode *p_editor, Skeleton *skeleton);
+	ModuleSkeletonEditor(EditorInspectorPluginSkeleton *e_plugin, EditorNode *p_editor, Skeleton *skeleton);
 	~ModuleSkeletonEditor();
 
 	void add_bone();
@@ -272,10 +272,10 @@ public:
 	ConfirmationDialog *_bone_remove_dialog;
 };
 
-class ModuleEditorInspectorPluginSkeleton : public EditorInspectorPlugin {
-	GDCLASS(ModuleEditorInspectorPluginSkeleton, EditorInspectorPlugin);
+class EditorInspectorPluginSkeleton : public EditorInspectorPlugin {
+	GDCLASS(EditorInspectorPluginSkeleton, EditorInspectorPlugin);
 
-	friend class ModuleSkeletonEditorPlugin;
+	friend class SkeletonEditorPlugin;
 
 	ModuleSkeletonEditor *skel_editor;
 	EditorNode *editor;
@@ -293,10 +293,10 @@ public:
 	UndoRedo *get_undo_redo() { return undo_redo; }
 };
 
-class ModuleSkeletonEditorPlugin : public EditorPlugin {
-	GDCLASS(ModuleSkeletonEditorPlugin, EditorPlugin);
+class SkeletonEditorPlugin : public EditorPlugin {
+	GDCLASS(SkeletonEditorPlugin, EditorPlugin);
 
-	ModuleEditorInspectorPluginSkeleton *skeleton_plugin;
+	EditorInspectorPluginSkeleton *skeleton_plugin;
 	EditorNode *editor;
 
 public:
@@ -311,7 +311,10 @@ public:
 
 	virtual String get_name() const { return "Skeleton"; }
 
-	ModuleSkeletonEditorPlugin(EditorNode *p_node);
+	SkeletonEditorPlugin(EditorNode *p_node);
+
+protected:
+	void _notification(int p_what);
 };
 
 #endif // SKELETON_EDITOR_PLUGIN_H

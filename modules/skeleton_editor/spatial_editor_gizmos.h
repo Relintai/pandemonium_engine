@@ -36,8 +36,8 @@
 
 class Camera;
 
-class ModuleSkeletonSpatialGizmoPlugin : public EditorSpatialGizmoPlugin {
-	GDCLASS(ModuleSkeletonSpatialGizmoPlugin, EditorSpatialGizmoPlugin);
+class SkeletonSpatialGizmoPlugin : public EditorSpatialGizmoPlugin {
+	GDCLASS(SkeletonSpatialGizmoPlugin, EditorSpatialGizmoPlugin);
 	Color skeleton_color = Color(1, 0.8, 0.4);
 	Color selected_bone_color = Color(1, 0, 0);
 	float bone_axis_length = 0.015;
@@ -50,7 +50,7 @@ public:
 	int get_priority() const;
 	void redraw(EditorSpatialGizmo *p_gizmo);
 
-	ModuleSkeletonSpatialGizmoPlugin();
+	SkeletonSpatialGizmoPlugin();
 };
 
 #endif // SPATIAL_EDITOR_GIZMOS_H

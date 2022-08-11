@@ -55,6 +55,8 @@
 #include "scene/resources/capsule_shape.h"
 #include "scene/resources/sphere_shape.h"
 
+#include "spatial_editor_gizmos.h"
+
 #define DISTANCE_DEFAULT 4
 
 #define GIZMO_ARROW_SIZE 0.35
@@ -79,7 +81,7 @@
 #define MIN_FOV 0.01
 #define MAX_FOV 179
 
-void ModuleBoneTransformEditor::create_editors() {
+void BoneTransformEditor::create_editors() {
 	const Color section_color = get_color("prop_subsection", "Editor");
 
 	section = memnew(EditorInspectorSection);
@@ -140,7 +142,7 @@ void ModuleBoneTransformEditor::create_editors() {
 	transform_section->get_vbox()->add_child(transform_property);
 }
 
-void ModuleBoneTransformEditor::_notification(int p_what) {
+void BoneTransformEditor::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
 			create_editors();
@@ -202,7 +204,7 @@ void ModuleBoneTransformEditor::_notification(int p_what) {
 	}
 }
 
-void ModuleBoneTransformEditor::_value_changed(const double p_value) {
+void BoneTransformEditor::_value_changed(const double p_value) {
 	if (updating)
 		return;
 
@@ -210,7 +212,7 @@ void ModuleBoneTransformEditor::_value_changed(const double p_value) {
 	_change_transform(tform);
 }
 
-void ModuleBoneTransformEditor::_value_changed_vector3(const String &p_property, const Variant &p_value, const String &p_field, bool p_changing) {
+void BoneTransformEditor::_value_changed_vector3(const String &p_property, const Variant &p_value, const String &p_field, bool p_changing) {
 	if (updating) {
 		return;
 	}
@@ -219,7 +221,7 @@ void ModuleBoneTransformEditor::_value_changed_vector3(const String &p_property,
 	_change_transform(tform);
 }
 
-Transform ModuleBoneTransformEditor::compute_transform_from_vector3s() const {
+Transform BoneTransformEditor::compute_transform_from_vector3s() const {
 	// Convert rotation from degrees to radians.
 	Vector3 prop_rotation = rotation_property->get_vector();
 	prop_rotation.x = Math::deg2rad(prop_rotation.x);
@@ -231,7 +233,7 @@ Transform ModuleBoneTransformEditor::compute_transform_from_vector3s() const {
 			translation_property->get_vector());
 }
 
-void ModuleBoneTransformEditor::_value_changed_transform(const String &p_property, const Variant &p_value, const String &p_field, bool p_changing) {
+void BoneTransformEditor::_value_changed_transform(const String &p_property, const Variant &p_value, const String &p_field, bool p_changing) {
 	if (updating) {
 		return;
 	}
@@ -241,7 +243,7 @@ void ModuleBoneTransformEditor::_value_changed_transform(const String &p_propert
 	_change_transform(transform);
 }
 
-void ModuleBoneTransformEditor::_change_transform(Transform p_new_transform) {
+void BoneTransformEditor::_change_transform(Transform p_new_transform) {
 	if (property.get_slicec('/', 0) != "bones") {
 		return;
 	}
@@ -265,7 +267,7 @@ void ModuleBoneTransformEditor::_change_transform(Transform p_new_transform) {
 	}
 }
 
-void ModuleBoneTransformEditor::update_enabled_checkbox() {
+void BoneTransformEditor::update_enabled_checkbox() {
 	if (property == "") {
 		return;
 	}
@@ -277,19 +279,19 @@ void ModuleBoneTransformEditor::update_enabled_checkbox() {
 	}
 }
 
-void ModuleBoneTransformEditor::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_key_button_pressed"), &ModuleBoneTransformEditor::_key_button_pressed);
-	ClassDB::bind_method(D_METHOD("_checkbox_toggled", "toggled"), &ModuleBoneTransformEditor::_checkbox_toggled);
+void BoneTransformEditor::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_key_button_pressed"), &BoneTransformEditor::_key_button_pressed);
+	ClassDB::bind_method(D_METHOD("_checkbox_toggled", "toggled"), &BoneTransformEditor::_checkbox_toggled);
 
-	ClassDB::bind_method(D_METHOD("_value_changed"), &ModuleBoneTransformEditor::_value_changed);
-	ClassDB::bind_method(D_METHOD("_value_changed_vector3"), &ModuleBoneTransformEditor::_value_changed_vector3);
-	ClassDB::bind_method(D_METHOD("_value_changed_transform"), &ModuleBoneTransformEditor::_value_changed_transform);
-	ClassDB::bind_method(D_METHOD("_change_transform"), &ModuleBoneTransformEditor::_change_transform);
+	ClassDB::bind_method(D_METHOD("_value_changed"), &BoneTransformEditor::_value_changed);
+	ClassDB::bind_method(D_METHOD("_value_changed_vector3"), &BoneTransformEditor::_value_changed_vector3);
+	ClassDB::bind_method(D_METHOD("_value_changed_transform"), &BoneTransformEditor::_value_changed_transform);
+	ClassDB::bind_method(D_METHOD("_change_transform"), &BoneTransformEditor::_change_transform);
 
-	//ClassDB::bind_method(D_METHOD("update_joint_tree"), &ModuleBoneTransformEditor::update_joint_tree);
+	//ClassDB::bind_method(D_METHOD("update_joint_tree"), &BoneTransformEditor::update_joint_tree);
 }
 
-void ModuleBoneTransformEditor::_update_properties() {
+void BoneTransformEditor::_update_properties() {
 	if (updating)
 		return;
 
@@ -302,7 +304,7 @@ void ModuleBoneTransformEditor::_update_properties() {
 	_update_transform_properties(tform);
 }
 
-void ModuleBoneTransformEditor::_update_custom_pose_properties() {
+void BoneTransformEditor::_update_custom_pose_properties() {
 	if (updating)
 		return;
 
@@ -321,7 +323,7 @@ void ModuleBoneTransformEditor::_update_custom_pose_properties() {
 	_update_transform_properties(tform);
 }
 
-void ModuleBoneTransformEditor::_update_transform_properties(Transform tform) {
+void BoneTransformEditor::_update_transform_properties(Transform tform) {
 	Basis rotation_basis = tform.get_basis();
 	Vector3 rotation_radians = rotation_basis.get_rotation_euler();
 	Vector3 rotation_degrees = Vector3(Math::rad2deg(rotation_radians.x), Math::rad2deg(rotation_radians.y), Math::rad2deg(rotation_radians.z));
@@ -337,7 +339,7 @@ void ModuleBoneTransformEditor::_update_transform_properties(Transform tform) {
 	updating = false;
 }
 
-ModuleBoneTransformEditor::ModuleBoneTransformEditor(Skeleton *p_skeleton) :
+BoneTransformEditor::BoneTransformEditor(Skeleton *p_skeleton) :
 		skeleton(p_skeleton),
 		key_button(nullptr),
 		enabled_checkbox(nullptr),
@@ -347,25 +349,25 @@ ModuleBoneTransformEditor::ModuleBoneTransformEditor(Skeleton *p_skeleton) :
 	undo_redo = EditorNode::get_undo_redo();
 }
 
-void ModuleBoneTransformEditor::set_target(const String &p_prop) {
+void BoneTransformEditor::set_target(const String &p_prop) {
 	property = p_prop;
 }
 
-void ModuleBoneTransformEditor::set_keyable(const bool p_keyable) {
+void BoneTransformEditor::set_keyable(const bool p_keyable) {
 	keyable = p_keyable;
 	if (key_button) {
 		key_button->set_visible(p_keyable);
 	}
 }
 
-void ModuleBoneTransformEditor::set_toggle_enabled(const bool p_enabled) {
+void BoneTransformEditor::set_toggle_enabled(const bool p_enabled) {
 	toggle_enabled = p_enabled;
 	if (enabled_checkbox) {
 		enabled_checkbox->set_visible(p_enabled);
 	}
 }
 
-void ModuleBoneTransformEditor::_key_button_pressed() {
+void BoneTransformEditor::_key_button_pressed() {
 	if (skeleton == nullptr)
 		return;
 
@@ -381,7 +383,7 @@ void ModuleBoneTransformEditor::_key_button_pressed() {
 	AnimationPlayerEditor::get_singleton()->get_track_editor()->insert_transform_key(skeleton, name, tform);
 }
 
-void ModuleBoneTransformEditor::_checkbox_toggled(const bool p_toggled) {
+void BoneTransformEditor::_checkbox_toggled(const bool p_toggled) {
 	if (enabled_checkbox) {
 		const String path = "bones/" + property.get_slicec('/', 1) + "/enabled";
 		skeleton->set(path, p_toggled);
@@ -864,19 +866,19 @@ void ModuleSkeletonEditor::create_editors() {
 	joint_tree->set_drag_forwarding(this);
 	s_con->add_child(joint_tree);
 
-	pose_editor = memnew(ModuleBoneTransformEditor(skeleton));
+	pose_editor = memnew(BoneTransformEditor(skeleton));
 	pose_editor->set_label(TTR("Bone Pose"));
 	pose_editor->set_keyable(AnimationPlayerEditor::get_singleton()->get_track_editor()->has_keying());
 	// pose_editor->set_toggle_enabled(true);
 	pose_editor->set_visible(false);
 	add_child(pose_editor);
 
-	rest_editor = memnew(ModuleBoneTransformEditor(skeleton));
+	rest_editor = memnew(BoneTransformEditor(skeleton));
 	rest_editor->set_label(TTR("Bone Rest"));
 	rest_editor->set_visible(false);
 	add_child(rest_editor);
 
-	custom_pose_editor = memnew(ModuleBoneTransformEditor(skeleton));
+	custom_pose_editor = memnew(BoneTransformEditor(skeleton));
 	custom_pose_editor->set_label(TTR("Bone Custom Pose"));
 	custom_pose_editor->set_visible(false);
 	add_child(custom_pose_editor);
@@ -982,7 +984,7 @@ void ModuleSkeletonEditor::rest_mode_toggled(const bool pressed) {
 	// Prevent that bone pose will be undo during rest mode.
 	// However ModuleSkeletonEditor will be memdeleted,
 	// so it need to record in SpatialEditor with calling method in
-	// ModuleEditorInspectorPluginSkeleton and it will not be memdeleted.
+	// EditorInspectorPluginSkeleton and it will not be memdeleted.
 	UndoRedo *ur = SpatialEditor::get_singleton()->get_undo_redo();
 	ur->create_action(TTR("Toggled Rest Mode"));
 	set_rest_mode_toggled(pressed);
@@ -1005,7 +1007,7 @@ void ModuleSkeletonEditor::set_rest_mode_toggled(const bool pressed) {
 	set_keyable(AnimationPlayerEditor::get_singleton()->get_track_editor()->has_keying() && !rest_mode);
 }
 
-ModuleSkeletonEditor::ModuleSkeletonEditor(ModuleEditorInspectorPluginSkeleton *e_plugin, EditorNode *p_editor, Skeleton *p_skeleton) :
+ModuleSkeletonEditor::ModuleSkeletonEditor(EditorInspectorPluginSkeleton *e_plugin, EditorNode *p_editor, Skeleton *p_skeleton) :
 		editor(p_editor),
 		editor_plugin(e_plugin),
 		skeleton(p_skeleton) {
@@ -1595,15 +1597,15 @@ void ModuleSkeletonEditor::_bind_tool_popup_methods() {
 	ClassDB::bind_method(D_METHOD("_rename_bone_callback"), &ModuleSkeletonEditor::_rename_bone_callback);
 }
 
-void ModuleEditorInspectorPluginSkeleton::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("set_rest_mode_toggled"), &ModuleEditorInspectorPluginSkeleton::set_rest_mode_toggled);
+void EditorInspectorPluginSkeleton::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("set_rest_mode_toggled"), &EditorInspectorPluginSkeleton::set_rest_mode_toggled);
 }
 
-bool ModuleEditorInspectorPluginSkeleton::can_handle(Object *p_object) {
+bool EditorInspectorPluginSkeleton::can_handle(Object *p_object) {
 	return Object::cast_to<Skeleton>(p_object) != nullptr;
 }
 
-void ModuleEditorInspectorPluginSkeleton::parse_begin(Object *p_object) {
+void EditorInspectorPluginSkeleton::parse_begin(Object *p_object) {
 	Skeleton *skeleton = Object::cast_to<Skeleton>(p_object);
 	ERR_FAIL_COND(!skeleton);
 
@@ -1611,23 +1613,29 @@ void ModuleEditorInspectorPluginSkeleton::parse_begin(Object *p_object) {
 	add_custom_control(skel_editor);
 }
 
-void ModuleEditorInspectorPluginSkeleton::set_rest_mode_toggled(const bool p_pressed) {
+void EditorInspectorPluginSkeleton::set_rest_mode_toggled(const bool p_pressed) {
 	if (SpatialEditor::get_singleton()->get_single_selected_node()->get_class() == "Skeleton" && skel_editor) {
 		skel_editor->set_rest_mode_toggled(p_pressed);
 	}
 }
 
-ModuleSkeletonEditorPlugin::ModuleSkeletonEditorPlugin(EditorNode *p_node) {
+SkeletonEditorPlugin::SkeletonEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
-	skeleton_plugin = memnew(ModuleEditorInspectorPluginSkeleton);
+	skeleton_plugin = memnew(EditorInspectorPluginSkeleton);
 	skeleton_plugin->editor = editor;
 
 	EditorInspector::add_inspector_plugin(skeleton_plugin);
 }
 
-bool ModuleSkeletonEditorPlugin::handles(Object *p_object) const {
+bool SkeletonEditorPlugin::handles(Object *p_object) const {
 	return p_object->is_class("Skeleton");
+}
+
+void SkeletonEditorPlugin::_notification(int p_what) {
+	if (p_what == NOTIFICATION_ENTER_TREE) {
+		add_spatial_gizmo_plugin(Ref<SkeletonSpatialGizmoPlugin>(memnew(SkeletonSpatialGizmoPlugin)));
+	}
 }
 
 void ModuleSkeletonEditor::_compute_edit(int p_index, const Point2 &p_point) {
