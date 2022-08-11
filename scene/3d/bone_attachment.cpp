@@ -250,13 +250,13 @@ void BoneAttachment::_validate_property(PropertyInfo &property) const {
 }
 
 bool BoneAttachment::_set(const StringName &p_path, const Variant &p_value) {
-	if (p_path == SNAME("override_pose")) {
+	if (p_path == "override_pose") {
 		set_override_pose(p_value);
-	} else if (p_path == SNAME("override_mode")) {
+	} else if (p_path == "override_mode") {
 		set_override_mode(p_value);
-	} else if (p_path == SNAME("use_external_skeleton")) {
+	} else if (p_path == "use_external_skeleton") {
 		set_use_external_skeleton(p_value);
-	} else if (p_path == SNAME("external_skeleton")) {
+	} else if (p_path == "external_skeleton") {
 		set_external_skeleton(p_value);
 	}
 
@@ -264,13 +264,13 @@ bool BoneAttachment::_set(const StringName &p_path, const Variant &p_value) {
 }
 
 bool BoneAttachment::_get(const StringName &p_path, Variant &r_ret) const {
-	if (p_path == SNAME("override_pose")) {
+	if (p_path == "override_pose") {
 		r_ret = get_override_pose();
-	} else if (p_path == SNAME("override_mode")) {
+	} else if (p_path == "override_mode") {
 		r_ret = get_override_mode();
-	} else if (p_path == SNAME("use_external_skeleton")) {
+	} else if (p_path == "use_external_skeleton") {
 		r_ret = get_use_external_skeleton();
-	} else if (p_path == SNAME("external_skeleton")) {
+	} else if (p_path == "external_skeleton") {
 		r_ret = get_external_skeleton();
 	}
 

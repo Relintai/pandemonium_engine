@@ -597,7 +597,7 @@ void SkeletonEditor::update_joint_tree() {
 
 	items.insert(-1, root);
 
-	Ref<Texture> bone_icon = get_icon(SNAME("Bone"), SNAME("EditorIcons"));
+	Ref<Texture> bone_icon = get_icon("Bone", "EditorIcons");
 
 	Vector<int> bones_to_process = skeleton->get_parentless_bones();
 	while (bones_to_process.size() > 0) {
@@ -688,7 +688,7 @@ void SkeletonEditor::create_editors() {
 	ne->add_control_to_menu_panel(skeleton_options);
 
 	skeleton_options->set_text(TTR("Skeleton"));
-	skeleton_options->set_icon(EditorNode::get_singleton()->get_gui_base()->get_icon(SNAME("Skeleton"), SNAME("EditorIcons")));
+	skeleton_options->set_icon(EditorNode::get_singleton()->get_gui_base()->get_icon("Skeleton", "EditorIcons"));
 
 	skeleton_options->get_popup()->add_item(TTR("Init pose"), SKELETON_OPTION_INIT_POSE);
 	skeleton_options->get_popup()->add_item(TTR("Insert key of all bone poses"), SKELETON_OPTION_INSERT_KEYS);
@@ -704,7 +704,7 @@ void SkeletonEditor::create_editors() {
 	ne->add_control_to_menu_panel(rest_options);
 
 	rest_options->set_text(TTR("Edit Rest"));
-	rest_options->set_icon(EditorNode::get_singleton()->get_gui_base()->get_icon(SNAME("BoneAttachment"), SNAME("EditorIcons")));
+	rest_options->set_icon(EditorNode::get_singleton()->get_gui_base()->get_icon("BoneAttachment", "EditorIcons"));
 
 	rest_options->get_popup()->add_item(TTR("Apply current pose to rest"), REST_OPTION_POSE_TO_REST);
 	rest_options->get_popup()->connect("id_pressed", this, "_on_click_rest_option");
@@ -1444,9 +1444,9 @@ void SkeletonGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	int bone_shape = EditorSettings::get_singleton()->get("editors/3d_gizmos/gizmo_settings/bone_shape");
 
 	LocalVector<Color> axis_colors;
-	axis_colors.push_back(SpatialEditor::get_singleton()->get_color(SNAME("axis_x_color"), SNAME("Editor")));
-	axis_colors.push_back(SpatialEditor::get_singleton()->get_color(SNAME("axis_y_color"), SNAME("Editor")));
-	axis_colors.push_back(SpatialEditor::get_singleton()->get_color(SNAME("axis_z_color"), SNAME("Editor")));
+	axis_colors.push_back(SpatialEditor::get_singleton()->get_color("axis_x_color", "Editor"));
+	axis_colors.push_back(SpatialEditor::get_singleton()->get_color("axis_y_color", "Editor"));
+	axis_colors.push_back(SpatialEditor::get_singleton()->get_color("axis_z_color", "Editor"));
 
 	Ref<SurfaceTool> surface_tool(memnew(SurfaceTool));
 	surface_tool->begin(Mesh::PRIMITIVE_LINES);
