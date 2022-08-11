@@ -544,7 +544,7 @@ bool AnimationTree::_update_caches(AnimationPlayer *player) {
 			Animation::TrackType track_type = anim->track_get_type(i);
 
 			Animation::TrackType track_cache_type = track_type;
-			if (track_cache_type == Animation::TYPE_ROTATION_3D || track_cache_type == Animation::TYPE_SCALE_3D) {
+			if (track_cache_type == Animation::TYPE_POSITION_3D || track_cache_type == Animation::TYPE_ROTATION_3D || track_cache_type == Animation::TYPE_SCALE_3D) {
 				track_cache_type = Animation::TYPE_POSITION_3D; //reference them as position3D tracks, even if they modify rotation or scale
 			}
 
@@ -554,7 +554,7 @@ bool AnimationTree::_update_caches(AnimationPlayer *player) {
 			}
 
 			//if not valid, delete track
-			if (track && (track->type != track_cache_type || ObjectDB::get_instance(track->object_id) == nullptr)) {
+			if (track && (ObjectDB::get_instance(track->object_id) == nullptr)) {
 				playing_caches.erase(track);
 				memdelete(track);
 				track_cache.erase(path);
@@ -602,8 +602,11 @@ bool AnimationTree::_update_caches(AnimationPlayer *player) {
 							continue;
 						}
 
+						//Always uses TYPE_POSITION_3D as type (Constructor)
+						//Note that these are stored using their path as the key in a hashmap
+						//So only one will be allocated for a given spatial
+						//track_xform->type = Animation::TYPE_POSITION_3D;
 						TrackCacheTransform *track_xform = memnew(TrackCacheTransform);
-						track_xform->type = Animation::TYPE_POSITION_3D;
 
 						track_xform->spatial = spatial;
 						track_xform->skeleton = nullptr;
@@ -636,7 +639,6 @@ bool AnimationTree::_update_caches(AnimationPlayer *player) {
 							default: {
 							}
 						}
-
 #endif
 					} break;
 					case Animation::TYPE_METHOD: {
@@ -693,6 +695,10 @@ bool AnimationTree::_update_caches(AnimationPlayer *player) {
 
 				track_cache[path] = track;
 			} else if (track_cache_type == Animation::TYPE_POSITION_3D) {
+				//Note that these are stored using their path as the key in a hashmap
+				//So only one will be allocated for a given spatial
+				//This branch is for adding more flags to an already existing TrackCacheTransform
+
 				TrackCacheTransform *track_xform = static_cast<TrackCacheTransform *>(track);
 
 				if (track->setup_pass != setup_pass) {
@@ -878,12 +884,6 @@ void AnimationTree::_process_graph(float p_delta) {
 
 				TrackCache *track = track_cache[path];
 
-				Animation::TrackType ttype = a->track_get_type(i);
-				if (ttype != Animation::TYPE_POSITION_3D && ttype != Animation::TYPE_ROTATION_3D && ttype != Animation::TYPE_SCALE_3D && track->type != ttype) {
-					//broken animation, but avoid error spamming
-					continue;
-				}
-
 				track->root_motion = root_motion_track == path;
 
 				ERR_CONTINUE(!state.track_map.has(path));
@@ -897,7 +897,10 @@ void AnimationTree::_process_graph(float p_delta) {
 					continue; //nothing to blend
 				}
 
-				switch (track->type) {
+				//Note that track->type won't work
+				Animation::TrackType ttype = a->track_get_type(i);
+
+				switch (ttype) {
 					case Animation::TYPE_POSITION_3D: {
 #ifndef _3D_DISABLED
 						TrackCacheTransform *t = static_cast<TrackCacheTransform *>(track);
