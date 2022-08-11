@@ -153,6 +153,7 @@
 #include "scene/resources/line_shape_2d.h"
 #include "scene/resources/material.h"
 #include "scene/resources/mesh.h"
+#include "scene/resources/immediate_mesh.h"
 #include "scene/resources/mesh_data_tool.h"
 #include "scene/resources/navigation_mesh.h"
 #include "scene/resources/packed_scene.h"
@@ -578,6 +579,7 @@ void register_scene_types() {
 	ClassDB::register_virtual_class<Mesh>();
 	ClassDB::register_class<ArrayMesh>();
 	ClassDB::register_class<MultiMesh>();
+	ClassDB::register_class<ImmediateMesh>();
 	ClassDB::register_class<SurfaceTool>();
 	ClassDB::register_class<MeshDataTool>();
 
