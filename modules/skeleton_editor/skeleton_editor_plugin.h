@@ -79,7 +79,6 @@ class BoneTransformEditor : public VBoxContainer {
 
 	UndoRedo *undo_redo;
 
-	bool keyable;
 	bool toggle_enabled;
 	bool updating;
 
@@ -88,6 +87,8 @@ class BoneTransformEditor : public VBoxContainer {
 	void create_editors();
 
 	void _value_changed(const String &p_path, const Variant &p_value, const String &p_name = "", bool changing = false);
+
+	void _property_keyed(const String &p_path, bool p_advance);
 
 protected:
 	void _notification(int p_what);
@@ -99,6 +100,7 @@ public:
 	// Which transform target to modify
 	void set_target(const String &p_prop);
 	void set_label(const String &p_label) { label = p_label; }
+	void set_keyable(const bool p_keyable);
 
 	void _update_properties();
 };
@@ -109,17 +111,14 @@ class SkeletonEditor : public VBoxContainer {
 	friend class SkeletonEditorPlugin;
 
 	enum SkeletonOption {
-		SKELETON_OPTION_INIT_POSE,
-		SKELETON_OPTION_INSERT_KEYS,
-		SKELETON_OPTION_INSERT_KEYS_EXISTED,
+		SKELETON_OPTION_INIT_ALL_POSES,
+		SKELETON_OPTION_INIT_SELECTED_POSES,
+		SKELETON_OPTION_ALL_POSES_TO_RESTS,
+		SKELETON_OPTION_SELECTED_POSES_TO_RESTS,
 		SKELETON_OPTION_CREATE_PHYSICAL_SKELETON,
 		SKELETON_OPTION_ADD_BONE,
 		SKELETON_OPTION_REMOVE_BONE,
 		SKELETON_OPTION_RENAME_BONE
-	};
-
-	enum RestOption {
-		REST_OPTION_POSE_TO_REST
 	};
 
 	struct BoneInfo {
@@ -142,10 +141,16 @@ class SkeletonEditor : public VBoxContainer {
 
 	VSeparator *separator;
 	MenuButton *skeleton_options;
-	MenuButton *rest_options;
 	Button *edit_mode_button;
 
 	bool edit_mode;
+
+	HBoxContainer *animation_hb;
+	Button *key_loc_button;
+	Button *key_rot_button;
+	Button *key_scale_button;
+	Button *key_insert_button;
+	Button *key_insert_all_button;
 
 	EditorFileDialog *file_dialog;
 
@@ -154,7 +159,6 @@ class SkeletonEditor : public VBoxContainer {
 	static SkeletonEditor *singleton;
 
 	void _on_click_skeleton_option(int p_skeleton_option);
-	void _on_click_rest_option(int p_rest_option);
 	void _file_selected(const String &p_file);
 	TreeItem *_find(TreeItem *p_node, const NodePath &p_path);
 	void edit_mode_toggled(const bool pressed);
@@ -166,9 +170,10 @@ class SkeletonEditor : public VBoxContainer {
 
 	void create_editors();
 
-	void init_pose();
-	void insert_keys(bool p_all_bones);
-	void pose_to_rest();
+	void init_pose(const bool p_all_bones);
+	void pose_to_rest(const bool p_all_bones);
+
+	void insert_keys(const bool p_all_bones);
 
 	void create_physical_skeleton();
 	PhysicalBone *create_physical_bone(int bone_id, int bone_child_id, const Vector<BoneInfo> &bones_infos);
@@ -178,7 +183,7 @@ class SkeletonEditor : public VBoxContainer {
 	void drop_data_fw(const Point2 &p_point, const Variant &p_data, Control *p_from);
 
 	void set_keyable(const bool p_keyable);
-	void set_rest_options_enabled(const bool p_rest_options_enabled);
+	void set_bone_options_enabled(const bool p_bone_options_enabled);
 
 	MeshInstance *handles_mesh_instance;
 	Ref<ImmediateMesh> handles_mesh;

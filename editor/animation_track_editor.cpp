@@ -3494,7 +3494,7 @@ void AnimationTrackEditor::_query_insert(const InsertData &p_id) {
 
 	for (List<InsertData>::Element *E = insert_data.front(); E; E = E->next()) {
 		//prevent insertion of multiple tracks
-		if (E->get().path == p_id.path) {
+		if (E->get().path == p_id.path && E->get().type == p_id.type) {
 			return; //already inserted a track for this on this frame
 		}
 	}
@@ -3623,7 +3623,11 @@ void AnimationTrackEditor::_insert_delay(bool p_create_reset, bool p_create_bezi
 	insert_queue = false;
 }
 
-void AnimationTrackEditor::insert_transform_key(Spatial *p_node, const String &p_sub, const Transform &p_xform) {
+void AnimationTrackEditor::insert_transform_key(Spatial *p_node, const String &p_sub, const Animation::TrackType p_type, const Variant p_value) {
+	ERR_FAIL_COND(!root);
+	ERR_FAIL_COND_MSG(
+			(p_type != Animation::TYPE_POSITION_3D && p_type != Animation::TYPE_ROTATION_3D && p_type != Animation::TYPE_SCALE_3D),
+			"Track type must be Position/Rotation/Scale 3D.");
 	if (!keying) {
 		return;
 	}
@@ -3631,7 +3635,6 @@ void AnimationTrackEditor::insert_transform_key(Spatial *p_node, const String &p
 		return;
 	}
 
-	ERR_FAIL_COND(!root);
 	//let's build a node path
 	String path = root->get_path_to(p_node);
 	if (p_sub != "") {
@@ -3640,24 +3643,18 @@ void AnimationTrackEditor::insert_transform_key(Spatial *p_node, const String &p
 
 	NodePath np = path;
 
-	int position_idx = -1;
-	int rotation_idx = -1;
-	int scale_idx = -1;
+	int track_idx = -1;
 
 	for (int i = 0; i < animation->get_track_count(); i++) {
 		if (animation->track_get_path(i) != np) {
 			continue;
 		}
 
-		if (animation->track_get_type(i) == Animation::TYPE_POSITION_3D) {
-			position_idx = i;
+		if (animation->track_get_type(i) != p_type) {
+			continue;
 		}
-		if (animation->track_get_type(i) == Animation::TYPE_ROTATION_3D) {
-			rotation_idx = i;
-		}
-		if (animation->track_get_type(i) == Animation::TYPE_SCALE_3D) {
-			scale_idx = i;
-		}
+
+		track_idx = i;
 	}
 
 	InsertData id;
@@ -3667,27 +3664,38 @@ void AnimationTrackEditor::insert_transform_key(Spatial *p_node, const String &p
 	id.query = vformat(TTR("node '%s'"), p_node->get_name());
 	id.advance = false;
 
-	//dialog insert
-
-	{
-		id.track_idx = position_idx;
-		id.value = p_xform.origin;
-		id.type = Animation::TYPE_POSITION_3D;
-		_query_insert(id);
-	}
-	{
-		id.track_idx = rotation_idx;
-		id.value = p_xform.basis.get_rotation_quat();
-		id.type = Animation::TYPE_ROTATION_3D;
-		_query_insert(id);
-	}
-	{
-		id.track_idx = scale_idx;
-		id.value = p_xform.basis.get_scale();
-		id.type = Animation::TYPE_SCALE_3D;
-		_query_insert(id);
-	}
+	id.track_idx = track_idx;
+	id.value = p_value;
+	id.type = p_type;
+	_query_insert(id);
 }
+
+bool AnimationTrackEditor::has_track(Spatial *p_node, const String &p_sub, const Animation::TrackType p_type) {
+	ERR_FAIL_COND_V(!root, false);
+
+	if (!keying) {
+		return false;
+	}
+
+	if (!animation.is_valid()) {
+		return false;
+	}
+
+	//let's build a node path
+	String path = root->get_path_to(p_node);
+	if (p_sub != "") {
+		path += ":" + p_sub;
+	}
+	
+	int track_id = animation->find_track(path, p_type);
+
+	if (track_id >= 0) {
+		return true;
+	}
+
+	return false;
+}
+
 
 void AnimationTrackEditor::_insert_animation_key(NodePath p_path, const Variant &p_value) {
 	String path = p_path;
@@ -6383,51 +6391,5 @@ AnimationTrackEditor::~AnimationTrackEditor() {
 	if (multi_key_edit) {
 		memdelete(multi_key_edit);
 	}
-}
-
-bool AnimationTrackEditor::has_transform_key(Spatial *p_node, const String &p_sub) {
-	if (!keying)
-		return false;
-	if (!animation.is_valid())
-		return false;
-	if (!root)
-		return false;
-
-	//let's build a node path
-	String path = root->get_path_to(p_node);
-	if (p_sub != "")
-		path += ":" + p_sub;
-
-	if (animation->find_track(path) >= 0) {
-		return true;
-	}
-	return false;
-}
-
-bool AnimationTrackEditor::has_transform_track(Spatial *p_node, const String &p_sub) {
-	if (!keying) {
-		return false;
-	}
-	if (!animation.is_valid()) {
-		return false;
-	}
-	if (!root) {
-		return false;
-	}
-
-	//let's build a node path
-	String path = root->get_path_to(p_node);
-	if (p_sub != "") {
-		path += ":" + p_sub;
-	}
-	int track_id = animation->find_track(path);
-	if (track_id >= 0) {
-		//TODO
-		//if (animation->track_get_type(track_id) == Animation::TYPE_TRANSFORM) {
-		//	return true;
-		//}
-		return true;
-	}
-	return false;
 }
 

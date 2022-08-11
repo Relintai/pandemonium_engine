@@ -563,7 +563,8 @@ public:
 	void set_anim_pos(float p_pos);
 	void insert_node_value_key(Node *p_node, const String &p_property, const Variant &p_value, bool p_only_if_exists = false);
 	void insert_value_key(const String &p_property, const Variant &p_value, bool p_advance);
-	void insert_transform_key(Spatial *p_node, const String &p_sub, const Transform &p_xform);
+	void insert_transform_key(Spatial *p_node, const String &p_sub, const Animation::TrackType p_type, const Variant p_value);
+	bool has_track(Spatial *p_node, const String &p_sub, const Animation::TrackType p_type);
 
 	void show_select_node_warning(bool p_show);
 
@@ -585,9 +586,6 @@ public:
 
 	AnimationTrackEditor();
 	~AnimationTrackEditor();
-
-	bool has_transform_key(Spatial *p_node, const String &p_sub);
-	bool has_transform_track(Spatial *p_node, const String &p_sub);
 };
 
 #endif // ANIMATION_TRACK_EDITOR_H

@@ -6450,7 +6450,7 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 				for (int32_t shape_i = 0; shape_i < mesh->get_blend_shape_count(); shape_i++) {
 					String shape_name = mesh->get_blend_shape_name(shape_i);
 					NodePath shape_path = String(path) + ":blend_shapes/" + shape_name;
-					int32_t shape_track_i = animation->find_track(shape_path);
+					int32_t shape_track_i = animation->find_track(shape_path, Animation::TYPE_VALUE);
 					if (shape_track_i == -1) {
 						GLTFAnimation::Channel<float> weight;
 						weight.interpolation = GLTFAnimation::INTERP_LINEAR;

@@ -30,10 +30,6 @@
 
 #include "inspector_dock.h"
 
-#include "editor/editor_node.h"
-#include "editor/editor_settings.h"
-#include "editor/plugins/animation_player_editor_plugin.h"
-#include "scene/3d/spatial.h"
 #include "core/class_db.h"
 #include "core/error_macros.h"
 #include "core/io/resource_loader.h"
@@ -51,7 +47,11 @@
 #include "editor/editor_data.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_inspector.h"
+#include "editor/editor_node.h"
 #include "editor/editor_path.h"
+#include "editor/editor_settings.h"
+#include "editor/plugins/animation_player_editor_plugin.h"
+#include "scene/3d/spatial.h"
 #include "scene/gui/button.h"
 #include "scene/gui/control.h"
 #include "scene/gui/dialogs.h"
@@ -352,10 +352,14 @@ void InspectorDock::_property_keyed(const String &p_keyed, const Variant &p_valu
 
 void InspectorDock::_transform_keyed(Object *sp, const String &p_sub, const Transform &p_key) {
 	Spatial *s = Object::cast_to<Spatial>(sp);
+
 	if (!s) {
 		return;
 	}
-	AnimationPlayerEditor::get_singleton()->get_track_editor()->insert_transform_key(s, p_sub, p_key);
+
+	AnimationPlayerEditor::get_singleton()->get_track_editor()->insert_transform_key(s, p_sub, Animation::TYPE_POSITION_3D, p_key.origin);
+	AnimationPlayerEditor::get_singleton()->get_track_editor()->insert_transform_key(s, p_sub, Animation::TYPE_ROTATION_3D, p_key.basis.get_rotation_quat());
+	AnimationPlayerEditor::get_singleton()->get_track_editor()->insert_transform_key(s, p_sub, Animation::TYPE_SCALE_3D, p_key.basis.get_scale());
 }
 
 void InspectorDock::_warning_pressed() {
