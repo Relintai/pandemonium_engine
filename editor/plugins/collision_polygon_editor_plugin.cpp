@@ -128,9 +128,9 @@ void Polygon3DEditor::_wip_close() {
 	undo_redo->commit_action();
 }
 
-bool Polygon3DEditor::forward_spatial_gui_input(Camera *p_camera, const Ref<InputEvent> &p_event) {
+EditorPlugin::AfterGUIInput Polygon3DEditor::forward_spatial_gui_input(Camera *p_camera, const Ref<InputEvent> &p_event) {
 	if (!node) {
-		return false;
+		return EditorPlugin::AFTER_GUI_INPUT_PASS;
 	}
 
 	Transform gt = node->get_global_transform();
@@ -149,7 +149,7 @@ bool Polygon3DEditor::forward_spatial_gui_input(Camera *p_camera, const Ref<Inpu
 		Vector3 spoint;
 
 		if (!p.intersects_ray(ray_from, ray_dir, &spoint)) {
-			return false;
+			return EditorPlugin::AFTER_GUI_INPUT_PASS;
 		}
 
 		spoint = gi.xform(spoint);
@@ -176,19 +176,19 @@ bool Polygon3DEditor::forward_spatial_gui_input(Camera *p_camera, const Ref<Inpu
 						snap_ignore = false;
 						_polygon_draw();
 						edited_point = 1;
-						return true;
+						return EditorPlugin::AFTER_GUI_INPUT_STOP;
 					} else {
 						if (wip.size() > 1 && p_camera->unproject_position(gt.xform(Vector3(wip[0].x, wip[0].y, depth))).distance_to(gpoint) < grab_threshold) {
 							//wip closed
 							_wip_close();
 
-							return true;
+							return EditorPlugin::AFTER_GUI_INPUT_STOP;
 						} else {
 							wip.push_back(cpoint);
 							edited_point = wip.size();
 							snap_ignore = false;
 							_polygon_draw();
-							return true;
+							return EditorPlugin::AFTER_GUI_INPUT_STOP;
 						}
 					}
 				} else if (mb->get_button_index() == BUTTON_RIGHT && mb->is_pressed() && wip_active) {
@@ -209,7 +209,7 @@ bool Polygon3DEditor::forward_spatial_gui_input(Camera *p_camera, const Ref<Inpu
 								undo_redo->add_do_method(this, "_polygon_draw");
 								undo_redo->add_undo_method(this, "_polygon_draw");
 								undo_redo->commit_action();
-								return true;
+								return EditorPlugin::AFTER_GUI_INPUT_STOP;
 							}
 
 							//search edges
@@ -244,7 +244,7 @@ bool Polygon3DEditor::forward_spatial_gui_input(Camera *p_camera, const Ref<Inpu
 								_polygon_draw();
 								snap_ignore = true;
 
-								return true;
+								return EditorPlugin::AFTER_GUI_INPUT_STOP;
 							}
 						} else {
 							//look for points to move
@@ -269,7 +269,7 @@ bool Polygon3DEditor::forward_spatial_gui_input(Camera *p_camera, const Ref<Inpu
 								edited_point_pos = poly[closest_idx];
 								_polygon_draw();
 								snap_ignore = false;
-								return true;
+								return EditorPlugin::AFTER_GUI_INPUT_STOP;
 							}
 						}
 					} else {
@@ -278,7 +278,7 @@ bool Polygon3DEditor::forward_spatial_gui_input(Camera *p_camera, const Ref<Inpu
 						if (edited_point != -1) {
 							//apply
 
-							ERR_FAIL_INDEX_V(edited_point, poly.size(), false);
+							ERR_FAIL_INDEX_V(edited_point, poly.size(), EditorPlugin::AFTER_GUI_INPUT_PASS);
 							poly.write[edited_point] = edited_point_pos;
 							undo_redo->create_action(TTR("Edit Poly"));
 							undo_redo->add_do_method(node, "set_polygon", poly);
@@ -288,7 +288,7 @@ bool Polygon3DEditor::forward_spatial_gui_input(Camera *p_camera, const Ref<Inpu
 							undo_redo->commit_action();
 
 							edited_point = -1;
-							return true;
+							return EditorPlugin::AFTER_GUI_INPUT_STOP;
 						}
 					}
 				}
@@ -315,7 +315,7 @@ bool Polygon3DEditor::forward_spatial_gui_input(Camera *p_camera, const Ref<Inpu
 						undo_redo->add_do_method(this, "_polygon_draw");
 						undo_redo->add_undo_method(this, "_polygon_draw");
 						undo_redo->commit_action();
-						return true;
+						return EditorPlugin::AFTER_GUI_INPUT_STOP;
 					}
 				}
 
@@ -335,7 +335,7 @@ bool Polygon3DEditor::forward_spatial_gui_input(Camera *p_camera, const Ref<Inpu
 			Vector3 spoint;
 
 			if (!p.intersects_ray(ray_from, ray_dir, &spoint)) {
-				return false;
+				return EditorPlugin::AFTER_GUI_INPUT_PASS;
 			}
 
 			spoint = gi.xform(spoint);
@@ -357,7 +357,7 @@ bool Polygon3DEditor::forward_spatial_gui_input(Camera *p_camera, const Ref<Inpu
 		}
 	}
 
-	return false;
+	return EditorPlugin::AFTER_GUI_INPUT_PASS;
 }
 
 float Polygon3DEditor::_get_depth() {

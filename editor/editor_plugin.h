@@ -40,16 +40,16 @@
 #include "core/dictionary.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"
+#include "core/io/config_file.h"
 #include "core/list.h"
 #include "core/method_bind.h"
 #include "core/object.h"
 #include "core/os/memory.h"
 #include "core/reference.h"
+#include "core/undo_redo.h"
 #include "core/ustring.h"
 #include "core/variant.h"
 #include "core/vector.h"
-#include "core/io/config_file.h"
-#include "core/undo_redo.h"
 
 class EditorNode;
 class Spatial;
@@ -191,6 +191,12 @@ public:
 		DOCK_SLOT_MAX
 	};
 
+	enum AfterGUIInput {
+		AFTER_GUI_INPUT_PASS,
+		AFTER_GUI_INPUT_STOP,
+		AFTER_GUI_INPUT_DESELECT
+	};
+
 	//TODO: send a resource for editing to the editor node?
 
 	void add_control_to_container(CustomControlContainer p_location, Control *p_control);
@@ -219,7 +225,7 @@ public:
 	virtual void forward_canvas_draw_over_viewport(Control *p_overlay);
 	virtual void forward_canvas_force_draw_over_viewport(Control *p_overlay);
 
-	virtual bool forward_spatial_gui_input(int p_index, Camera *p_camera, const Ref<InputEvent> &p_event);
+	virtual AfterGUIInput forward_spatial_gui_input(Camera *p_camera, const Ref<InputEvent> &p_event);
 	virtual void forward_spatial_draw_over_viewport(Control *p_overlay);
 	virtual void forward_spatial_force_draw_over_viewport(Control *p_overlay);
 
@@ -282,6 +288,7 @@ public:
 
 VARIANT_ENUM_CAST(EditorPlugin::CustomControlContainer);
 VARIANT_ENUM_CAST(EditorPlugin::DockSlot);
+VARIANT_ENUM_CAST(EditorPlugin::AfterGUIInput);
 
 typedef EditorPlugin *(*EditorPluginCreateFunc)(EditorNode *);
 

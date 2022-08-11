@@ -228,13 +228,13 @@ void MDIGizmo::select_all() {
 	redraw();
 }
 
-bool MDIGizmo::selection_click(int index, Camera *camera, const Ref<InputEventMouse> &event) {
+bool MDIGizmo::selection_click(Camera *camera, const Ref<InputEventMouse> &event) {
 	if (handle_selection_type == HANDLE_SELECTION_TYPE_FRONT) {
-		return selection_click_select_front_or_back(index, camera, event);
+		return selection_click_select_front_or_back(camera, event);
 	} else if (handle_selection_type == HANDLE_SELECTION_TYPE_BACK) {
-		return selection_click_select_front_or_back(index, camera, event);
+		return selection_click_select_front_or_back(camera, event);
 	} else {
-		return selection_click_select_through(index, camera, event);
+		return selection_click_select_through(camera, event);
 	}
 
 	return false;
@@ -271,7 +271,7 @@ bool MDIGizmo::is_point_visible(const Vector3 &point_orig, const Vector3 &camera
 	return true;
 }
 
-bool MDIGizmo::selection_click_select_front_or_back(int index, Camera *camera, const Ref<InputEventMouse> &event) {
+bool MDIGizmo::selection_click_select_front_or_back(Camera *camera, const Ref<InputEventMouse> &event) {
 	Transform gt = get_spatial_node()->get_global_transform();
 	Vector3 ray_from = camera->get_global_transform().origin;
 	Vector2 gpoint = event->get_position();
@@ -349,7 +349,7 @@ bool MDIGizmo::selection_click_select_front_or_back(int index, Camera *camera, c
 
 	return false;
 }
-bool MDIGizmo::selection_click_select_through(int index, Camera *camera, const Ref<InputEventMouse> &event) {
+bool MDIGizmo::selection_click_select_through(Camera *camera, const Ref<InputEventMouse> &event) {
 	Transform gt = get_spatial_node()->get_global_transform();
 	Vector3 ray_from = camera->get_global_transform().origin;
 	Vector2 gpoint = event->get_position();
@@ -415,16 +415,16 @@ bool MDIGizmo::selection_click_select_through(int index, Camera *camera, const R
 
 	return false;
 }
-void MDIGizmo::selection_drag(int index, Camera *camera, const Ref<InputEventMouse> &event) {
+void MDIGizmo::selection_drag(Camera *camera, const Ref<InputEventMouse> &event) {
 	if (handle_selection_type == HANDLE_SELECTION_TYPE_FRONT) {
-		selection_drag_rect_select_front_back(index, camera, event);
+		selection_drag_rect_select_front_back(camera, event);
 	} else if (handle_selection_type == HANDLE_SELECTION_TYPE_BACK) {
-		selection_drag_rect_select_front_back(index, camera, event);
+		selection_drag_rect_select_front_back(camera, event);
 	} else {
-		selection_drag_rect_select_through(index, camera, event);
+		selection_drag_rect_select_through(camera, event);
 	}
 }
-void MDIGizmo::selection_drag_rect_select_front_back(int index, Camera *camera, const Ref<InputEventMouse> &event) {
+void MDIGizmo::selection_drag_rect_select_front_back(Camera *camera, const Ref<InputEventMouse> &event) {
 	Transform gt = get_spatial_node()->get_global_transform();
 	Vector3 ray_from = camera->get_global_transform().origin;
 
@@ -512,7 +512,7 @@ void MDIGizmo::selection_drag_rect_select_front_back(int index, Camera *camera, 
 
 	redraw();
 }
-void MDIGizmo::selection_drag_rect_select_through(int index, Camera *camera, const Ref<InputEventMouse> &event) {
+void MDIGizmo::selection_drag_rect_select_through(Camera *camera, const Ref<InputEventMouse> &event) {
 	Transform gt = get_spatial_node()->get_global_transform();
 
 	Vector2 mouse_pos = event->get_position();
@@ -578,7 +578,7 @@ void MDIGizmo::selection_drag_rect_select_through(int index, Camera *camera, con
 
 	redraw();
 }
-bool MDIGizmo::forward_spatial_gui_input(int index, Camera *camera, const Ref<InputEvent> &event) {
+EditorPlugin::AfterGUIInput MDIGizmo::forward_spatial_gui_input(Camera *camera, const Ref<InputEvent> &event) {
 	_last_known_camera_facing = camera->get_transform().basis.xform(Vector3(0, 0, -1));
 
 	Ref<InputEventMouseButton> event_button = event;
@@ -606,7 +606,7 @@ bool MDIGizmo::forward_spatial_gui_input(int index, Camera *camera, const Ref<In
 
 				// Dont consume the event here, because the handles will get stuck
 				// to the mouse pointer if we return true
-				return false;
+				return EditorPlugin::AFTER_GUI_INPUT_PASS;
 			}
 
 			if (!event_button->is_pressed()) {
@@ -622,11 +622,16 @@ bool MDIGizmo::forward_spatial_gui_input(int index, Camera *camera, const Ref<In
 				}
 
 				if (!had_rect_drag) {
-					return selection_click(index, camera, event);
+					if (selection_click(camera, event)) {
+						return EditorPlugin::AFTER_GUI_INPUT_STOP;
+					} else {
+						return EditorPlugin::AFTER_GUI_INPUT_PASS;
+					}
+
 				} else {
-					selection_drag(index, camera, event_button);
+					selection_drag(camera, event_button);
 					// Always return false here, so the drag rect thing disappears in the editor
-					return false;
+					return EditorPlugin::AFTER_GUI_INPUT_PASS;
 				}
 			} else {
 				// event is pressed
@@ -636,7 +641,7 @@ bool MDIGizmo::forward_spatial_gui_input(int index, Camera *camera, const Ref<In
 		}
 	}
 
-	return false;
+	return EditorPlugin::AFTER_GUI_INPUT_PASS;
 }
 void MDIGizmo::add_to_all_selected(const Vector3 &ofs) {
 	for (int i = 0; i < _selected_points.size(); ++i) {

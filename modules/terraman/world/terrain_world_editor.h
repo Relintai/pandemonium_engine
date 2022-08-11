@@ -39,10 +39,10 @@ public:
 	};
 
 public:
-	bool forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event);
+	EditorPlugin::AfterGUIInput forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event);
 
 	void edit(TerrainWorld *p_world);
-	bool do_input_action(Camera *p_camera, const Point2 &p_point, bool p_click);
+	EditorPlugin::AfterGUIInput do_input_action(Camera *p_camera, const Point2 &p_point, bool p_click);
 
 	TerrainWorldEditor();
 	TerrainWorldEditor(EditorNode *p_editor);
@@ -90,7 +90,7 @@ protected:
 
 public:
 	bool forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) { return voxel_world_editor->forward_spatial_input_event(p_camera, p_event); }
-	virtual bool forward_spatial_gui_input(int p_index, Camera *p_camera, const Ref<InputEvent> &p_event) { return voxel_world_editor->forward_spatial_input_event(p_camera, p_event); }
+	virtual EditorPlugin::AfterGUIInput forward_spatial_gui_input(Camera *p_camera, const Ref<InputEvent> &p_event) { return voxel_world_editor->forward_spatial_input_event(p_camera, p_event); }
 	virtual String get_name() const { return "TerrainWorldEditor"; }
 	bool has_main_screen() const { return false; }
 	virtual void edit(Object *p_object);

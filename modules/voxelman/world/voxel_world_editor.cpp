@@ -44,9 +44,9 @@ SOFTWARE.
 #include "scene/gui/slider.h"
 #include "scene/gui/scroll_container.h"
 
-bool VoxelWorldEditor::forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) {
+EditorPlugin::AfterGUIInput VoxelWorldEditor::forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) {
 	if (!_world || !_world->get_editable()) {
-		return false;
+		return EditorPlugin::AFTER_GUI_INPUT_PASS;
 	}
 
 	Ref<InputEventMouseButton> mb = p_event;
@@ -56,24 +56,24 @@ bool VoxelWorldEditor::forward_spatial_input_event(Camera *p_camera, const Ref<I
 			Ref<VoxelLibrary> lib = _world->get_library();
 
 			if (!lib.is_valid())
-				return false;
+				return EditorPlugin::AFTER_GUI_INPUT_PASS;
 
 			if (mb->get_button_index() == BUTTON_LEFT) {
 				return do_input_action(p_camera, Point2(mb->get_position().x, mb->get_position().y), true);
 			} else {
-				return false;
+				return EditorPlugin::AFTER_GUI_INPUT_PASS;
 			}
 
 			//return do_input_action(p_camera, Point2(mb->get_position().x, mb->get_position().y), true);
 		}
 	}
 
-	return false;
+	return EditorPlugin::AFTER_GUI_INPUT_PASS;
 }
 
-bool VoxelWorldEditor::do_input_action(Camera *p_camera, const Point2 &p_point, bool p_click) {
+EditorPlugin::AfterGUIInput VoxelWorldEditor::do_input_action(Camera *p_camera, const Point2 &p_point, bool p_click) {
 	if (!spatial_editor || !_world || !_world->is_inside_world())
-		return false;
+		return EditorPlugin::AFTER_GUI_INPUT_PASS;
 
 	Camera *camera = p_camera;
 	Vector3 from = camera->project_ray_origin(p_point);
@@ -94,7 +94,7 @@ bool VoxelWorldEditor::do_input_action(Camera *p_camera, const Point2 &p_point, 
 		channel = _channel_type;
 
 		if (channel == -1)
-			return false;
+			return EditorPlugin::AFTER_GUI_INPUT_PASS;
 
 		int isolevel = _current_isolevel;
 		bool mode_add = false;
@@ -110,10 +110,10 @@ bool VoxelWorldEditor::do_input_action(Camera *p_camera, const Point2 &p_point, 
 
 		_world->set_voxel_with_tool(mode_add, res.position, res.normal, selected_voxel, isolevel);
 
-		return true;
+		return EditorPlugin::AFTER_GUI_INPUT_STOP;
 	}
 
-	return false;
+	return EditorPlugin::AFTER_GUI_INPUT_PASS;
 }
 
 void VoxelWorldEditor::edit(VoxelWorld *p_world) {

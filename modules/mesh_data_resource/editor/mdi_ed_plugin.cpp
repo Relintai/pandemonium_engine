@@ -131,19 +131,19 @@ Ref<MeshDataResource> MDIEdPlugin::get_mdr() {
 	return Ref<MeshDataResource>();
 }
 
-bool MDIEdPlugin::forward_spatial_gui_input(int index, Camera *camera, const Ref<InputEvent> &p_event) {
+EditorPlugin::AfterGUIInput MDIEdPlugin::forward_spatial_gui_input(Camera *camera, const Ref<InputEvent> &p_event) {
 	if (!ObjectDB::instance_validate(current_mesh_data_instance)) {
 		current_mesh_data_instance = nullptr;
 	}
 
 	if (current_mesh_data_instance) {
 		Ref<MDIGizmo> g = get_gizmo_from(current_mesh_data_instance);
-		if (g.is_valid() && g->forward_spatial_gui_input(index, camera, p_event)) {
-			return true;
+		if (g.is_valid()) {
+			return g->forward_spatial_gui_input(camera, p_event);
 		}
 	}
 
-	return false;
+	return EditorPlugin::AFTER_GUI_INPUT_PASS;
 }
 
 void MDIEdPlugin::add_box() {

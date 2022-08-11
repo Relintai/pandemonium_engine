@@ -1151,13 +1151,17 @@ void ModuleSkeletonEditor::_draw_handles() {
 	am->surface_set_material(0, handle_material);
 }
 
-bool ModuleSkeletonEditor::forward_spatial_gui_input(int p_index, Camera *p_camera, const Ref<InputEvent> &p_event) {
+EditorPlugin::AfterGUIInput ModuleSkeletonEditor::forward_spatial_gui_input(Camera *p_camera, const Ref<InputEvent> &p_event) {
 	if (!skeleton || tool_mode == TOOL_MODE_BONE_NONE) {
-		return false;
+		return EditorPlugin::AFTER_GUI_INPUT_PASS;
 	}
 
+	return EditorPlugin::AFTER_GUI_INPUT_PASS;
+
+//TODO
+/*
 	SpatialEditor *se = SpatialEditor::get_singleton();
-	SpatialEditorViewport *sev = se->get_editor_viewport(p_index);
+	SpatialEditorViewport *sev = se->get_editor_viewport();
 
 	Ref<InputEventMouseButton> mb = p_event;
 	if (mb.is_valid()) {
@@ -1504,6 +1508,7 @@ bool ModuleSkeletonEditor::forward_spatial_gui_input(int p_index, Camera *p_came
 	}
 
 	return false;
+	*/
 }
 
 void ModuleSkeletonEditor::add_bone() {

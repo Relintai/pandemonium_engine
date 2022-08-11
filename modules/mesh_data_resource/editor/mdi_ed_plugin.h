@@ -61,7 +61,7 @@ public:
 
 	Ref<MeshDataResource> get_mdr();
 
-	bool forward_spatial_gui_input(int index, Camera *camera, const Ref<InputEvent> &p_event);
+	EditorPlugin::AfterGUIInput forward_spatial_gui_input(Camera *camera, const Ref<InputEvent> &p_event);
 
 	void add_box();
 	void add_triangle();

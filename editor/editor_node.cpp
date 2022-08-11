@@ -7022,20 +7022,25 @@ bool EditorPluginList::forward_gui_input(const Ref<InputEvent> &p_event) {
 	return discard;
 }
 
-bool EditorPluginList::forward_spatial_gui_input(int p_index, Camera *p_camera, const Ref<InputEvent> &p_event, bool serve_when_force_input_enabled) {
-	bool discard = false;
+EditorPlugin::AfterGUIInput EditorPluginList::forward_spatial_gui_input(Camera *p_camera, const Ref<InputEvent> &p_event, bool serve_when_force_input_enabled) {
+	EditorPlugin::AfterGUIInput after = EditorPlugin::AFTER_GUI_INPUT_PASS;
 
 	for (int i = 0; i < plugins_list.size(); i++) {
 		if ((!serve_when_force_input_enabled) && plugins_list[i]->is_input_event_forwarding_always_enabled()) {
 			continue;
 		}
 
-		if (plugins_list[i]->forward_spatial_gui_input(p_index, p_camera, p_event)) {
-			discard = true;
+		EditorPlugin::AfterGUIInput current_after = plugins_list[i]->forward_spatial_gui_input(p_camera, p_event);
+		if (current_after == EditorPlugin::AFTER_GUI_INPUT_STOP) {
+			after = EditorPlugin::AFTER_GUI_INPUT_STOP;
+		}
+		
+		if (after != EditorPlugin::AFTER_GUI_INPUT_STOP && current_after == EditorPlugin::AFTER_GUI_INPUT_DESELECT) {
+			after = EditorPlugin::AFTER_GUI_INPUT_DESELECT;
 		}
 	}
 
-	return discard;
+	return after;
 }
 
 void EditorPluginList::forward_canvas_draw_over_viewport(Control *p_overlay) {

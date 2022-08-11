@@ -1365,7 +1365,7 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 		EditorNode *en = editor;
 		EditorPluginList *force_input_forwarding_list = en->get_editor_plugins_force_input_forwarding();
 		if (!force_input_forwarding_list->empty()) {
-			bool discard = force_input_forwarding_list->forward_spatial_gui_input(index, camera, p_event, true);
+			bool discard = force_input_forwarding_list->forward_spatial_gui_input(camera, p_event, true);
 			if (discard) {
 				return;
 			}
@@ -1375,7 +1375,7 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 		EditorNode *en = editor;
 		EditorPluginList *over_plugin_list = en->get_editor_plugins_over();
 		if (!over_plugin_list->empty()) {
-			bool discard = over_plugin_list->forward_spatial_gui_input(index, camera, p_event, false);
+			bool discard = over_plugin_list->forward_spatial_gui_input(camera, p_event, false);
 			if (discard) {
 				return;
 			}

@@ -103,7 +103,7 @@ protected:
 	static void _bind_methods();
 
 public:
-	virtual bool forward_spatial_gui_input(Camera *p_camera, const Ref<InputEvent> &p_event);
+	virtual EditorPlugin::AfterGUIInput forward_spatial_gui_input(Camera *p_camera, const Ref<InputEvent> &p_event);
 	void edit(Node *p_collision_polygon);
 	Polygon3DEditor(EditorNode *p_editor);
 	~Polygon3DEditor();
@@ -116,7 +116,7 @@ class Polygon3DEditorPlugin : public EditorPlugin {
 	EditorNode *editor;
 
 public:
-	virtual bool forward_spatial_gui_input(int p_index, Camera *p_camera, const Ref<InputEvent> &p_event) { return collision_polygon_editor->forward_spatial_gui_input(p_camera, p_event); }
+	virtual EditorPlugin::AfterGUIInput forward_spatial_gui_input(Camera *p_camera, const Ref<InputEvent> &p_event) { return collision_polygon_editor->forward_spatial_gui_input(p_camera, p_event); }
 
 	virtual String get_name() const { return "Polygon3DEditor"; }
 	bool has_main_screen() const { return false; }

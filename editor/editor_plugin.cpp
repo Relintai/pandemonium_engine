@@ -621,12 +621,13 @@ int EditorPlugin::update_overlays() const {
 	}
 }
 
-bool EditorPlugin::forward_spatial_gui_input(int p_index, Camera *p_camera, const Ref<InputEvent> &p_event) {
+EditorPlugin::AfterGUIInput EditorPlugin::forward_spatial_gui_input(Camera *p_camera, const Ref<InputEvent> &p_event) {
 	if (get_script_instance() && get_script_instance()->has_method("forward_spatial_gui_input")) {
-		return get_script_instance()->call("forward_spatial_gui_input", p_index, p_camera, p_event);
+		int success = get_script_instance()->call("forward_spatial_gui_input", p_camera, p_event);
+		return static_cast<EditorPlugin::AfterGUIInput>(success);
 	}
 
-	return false;
+	return EditorPlugin::AFTER_GUI_INPUT_PASS;
 }
 
 void EditorPlugin::forward_spatial_draw_over_viewport(Control *p_overlay) {
@@ -895,7 +896,7 @@ void EditorPlugin::_bind_methods() {
 	ClassDB::add_virtual_method(get_class_static(), MethodInfo(Variant::BOOL, "forward_canvas_gui_input", PropertyInfo(Variant::OBJECT, "event", PROPERTY_HINT_RESOURCE_TYPE, "InputEvent")));
 	ClassDB::add_virtual_method(get_class_static(), MethodInfo("forward_canvas_draw_over_viewport", PropertyInfo(Variant::OBJECT, "overlay", PROPERTY_HINT_RESOURCE_TYPE, "Control")));
 	ClassDB::add_virtual_method(get_class_static(), MethodInfo("forward_canvas_force_draw_over_viewport", PropertyInfo(Variant::OBJECT, "overlay", PROPERTY_HINT_RESOURCE_TYPE, "Control")));
-	ClassDB::add_virtual_method(get_class_static(), MethodInfo(Variant::BOOL, "forward_spatial_gui_input", PropertyInfo(Variant::INT, "index"), PropertyInfo(Variant::OBJECT, "camera", PROPERTY_HINT_RESOURCE_TYPE, "Camera"), PropertyInfo(Variant::OBJECT, "event", PROPERTY_HINT_RESOURCE_TYPE, "InputEvent")));
+	ClassDB::add_virtual_method(get_class_static(), MethodInfo(Variant::INT, "forward_spatial_gui_input", PropertyInfo(Variant::OBJECT, "camera", PROPERTY_HINT_RESOURCE_TYPE, "Camera"), PropertyInfo(Variant::OBJECT, "event", PROPERTY_HINT_RESOURCE_TYPE, "InputEvent")));
 	ClassDB::add_virtual_method(get_class_static(), MethodInfo("forward_spatial_draw_over_viewport", PropertyInfo(Variant::OBJECT, "overlay", PROPERTY_HINT_RESOURCE_TYPE, "Control")));
 	ClassDB::add_virtual_method(get_class_static(), MethodInfo("forward_spatial_force_draw_over_viewport", PropertyInfo(Variant::OBJECT, "overlay", PROPERTY_HINT_RESOURCE_TYPE, "Control")));
 	ClassDB::add_virtual_method(get_class_static(), MethodInfo(Variant::STRING, "get_plugin_name"));
@@ -943,6 +944,10 @@ void EditorPlugin::_bind_methods() {
 	BIND_ENUM_CONSTANT(DOCK_SLOT_RIGHT_UR);
 	BIND_ENUM_CONSTANT(DOCK_SLOT_RIGHT_BR);
 	BIND_ENUM_CONSTANT(DOCK_SLOT_MAX);
+
+	BIND_ENUM_CONSTANT(AFTER_GUI_INPUT_PASS);
+	BIND_ENUM_CONSTANT(AFTER_GUI_INPUT_STOP);
+	BIND_ENUM_CONSTANT(AFTER_GUI_INPUT_DESELECT);
 }
 
 EditorPlugin::EditorPlugin() :

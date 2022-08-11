@@ -114,7 +114,7 @@ public:
 	Path *get_edited_path() { return path; }
 
 	static PathEditorPlugin *singleton;
-	virtual bool forward_spatial_gui_input(int p_index, Camera *p_camera, const Ref<InputEvent> &p_event);
+	virtual EditorPlugin::AfterGUIInput forward_spatial_gui_input(Camera *p_camera, const Ref<InputEvent> &p_event);
 
 	//virtual bool forward_gui_input(const InputEvent& p_event) { return collision_polygon_editor->forward_gui_input(p_event); }
 	//virtual Ref<SpatialEditorGizmo> create_spatial_gizmo(Spatial *p_spatial);

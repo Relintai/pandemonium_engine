@@ -83,15 +83,15 @@ public:
 
 	void select_all();
 
-	bool selection_click(int index, Camera *camera, const Ref<InputEventMouse> &event);
+	bool selection_click(Camera *camera, const Ref<InputEventMouse> &event);
 	bool is_point_visible(const Vector3 &point_orig, const Vector3 &camera_pos, const Transform &gt);
 
-	bool selection_click_select_front_or_back(int index, Camera *camera, const Ref<InputEventMouse> &event);
-	bool selection_click_select_through(int index, Camera *camera, const Ref<InputEventMouse> &event);
-	void selection_drag(int index, Camera *camera, const Ref<InputEventMouse> &event);
-	void selection_drag_rect_select_front_back(int index, Camera *camera, const Ref<InputEventMouse> &event);
-	void selection_drag_rect_select_through(int index, Camera *camera, const Ref<InputEventMouse> &event);
-	bool forward_spatial_gui_input(int index, Camera *camera, const Ref<InputEvent> &event);
+	bool selection_click_select_front_or_back(Camera *camera, const Ref<InputEventMouse> &event);
+	bool selection_click_select_through(Camera *camera, const Ref<InputEventMouse> &event);
+	void selection_drag(Camera *camera, const Ref<InputEventMouse> &event);
+	void selection_drag_rect_select_front_back(Camera *camera, const Ref<InputEventMouse> &event);
+	void selection_drag_rect_select_through(Camera *camera, const Ref<InputEventMouse> &event);
+	EditorPlugin::AfterGUIInput forward_spatial_gui_input(Camera *camera, const Ref<InputEvent> &event);
 	void add_to_all_selected(const Vector3 &ofs);
 
 	void mul_all_selected_with_basis(const Basis &b);

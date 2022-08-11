@@ -43,9 +43,9 @@ SOFTWARE.
 #include "scene/gui/scroll_container.h"
 #include "scene/gui/slider.h"
 
-bool Terrain2DWorldEditor::forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) {
+EditorPlugin::AfterGUIInput Terrain2DWorldEditor::forward_spatial_input_event(Camera *p_camera, const Ref<InputEvent> &p_event) {
 	if (!_world || !_world->get_editable()) {
-		return false;
+		return EditorPlugin::AFTER_GUI_INPUT_PASS;
 	}
 
 	Ref<InputEventMouseButton> mb = p_event;
@@ -55,22 +55,22 @@ bool Terrain2DWorldEditor::forward_spatial_input_event(Camera *p_camera, const R
 			Ref<Terrain2DLibrary> lib = _world->get_library();
 
 			if (!lib.is_valid())
-				return false;
+				return EditorPlugin::AFTER_GUI_INPUT_PASS;
 
 			if (mb->get_button_index() == BUTTON_LEFT) {
 				return do_input_action(p_camera, Point2(mb->get_position().x, mb->get_position().y), true);
 			} else {
-				return false;
+				return EditorPlugin::AFTER_GUI_INPUT_PASS;
 			}
 
 			//return do_input_action(p_camera, Point2(mb->get_position().x, mb->get_position().y), true);
 		}
 	}
 
-	return false;
+	return EditorPlugin::AFTER_GUI_INPUT_PASS;
 }
 
-bool Terrain2DWorldEditor::do_input_action(Camera *p_camera, const Point2 &p_point, bool p_click) {
+EditorPlugin::AfterGUIInput Terrain2DWorldEditor::do_input_action(Camera *p_camera, const Point2 &p_point, bool p_click) {
 	/*
 	if (!spatial_editor || !_world || !_world->is_inside_world())
 		return false;
@@ -113,7 +113,7 @@ bool Terrain2DWorldEditor::do_input_action(Camera *p_camera, const Point2 &p_poi
 		return true;
 	}
 */
-	return false;
+	return EditorPlugin::AFTER_GUI_INPUT_PASS;
 }
 
 void Terrain2DWorldEditor::edit(Terrain2DWorld *p_world) {

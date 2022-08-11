@@ -311,13 +311,13 @@ PathSpatialGizmo::PathSpatialGizmo(Path *p_path) {
 	set_spatial_node(p_path);
 }
 
-bool PathEditorPlugin::forward_spatial_gui_input(int p_index, Camera *p_camera, const Ref<InputEvent> &p_event) {
+EditorPlugin::AfterGUIInput PathEditorPlugin::forward_spatial_gui_input(Camera *p_camera, const Ref<InputEvent> &p_event) {
 	if (!path) {
-		return false;
+		return EditorPlugin::AFTER_GUI_INPUT_PASS;
 	}
 	Ref<Curve3D> c = path->get_curve();
 	if (c.is_null()) {
-		return false;
+		return EditorPlugin::AFTER_GUI_INPUT_PASS;
 	}
 	Transform gt = path->get_global_transform();
 	Transform it = gt.affine_inverse();
@@ -346,14 +346,14 @@ bool PathEditorPlugin::forward_spatial_gui_input(int p_index, Camera *p_camera, 
 				PoolVector<Vector3>::Read r = v3a.read();
 
 				if (p_camera->unproject_position(gt.xform(c->get_point_position(0))).distance_to(mbpos) < click_dist) {
-					return false; //nope, existing
+					return EditorPlugin::AFTER_GUI_INPUT_PASS; //nope, existing
 				}
 
 				for (int i = 0; i < c->get_point_count() - 1; i++) {
 					//find the offset and point index of the place to break up
 					int j = idx;
 					if (p_camera->unproject_position(gt.xform(c->get_point_position(i + 1))).distance_to(mbpos) < click_dist) {
-						return false; //nope, existing
+						return EditorPlugin::AFTER_GUI_INPUT_PASS; //nope, existing
 					}
 
 					while (j < rc && c->get_point_position(i + 1) != r[j]) {
@@ -403,7 +403,7 @@ bool PathEditorPlugin::forward_spatial_gui_input(int p_index, Camera *p_camera, 
 				ur->add_do_method(c.ptr(), "add_point", closest_seg_point, Vector3(), Vector3(), closest_seg + 1);
 				ur->add_undo_method(c.ptr(), "remove_point", closest_seg + 1);
 				ur->commit_action();
-				return true;
+				return EditorPlugin::AFTER_GUI_INPUT_STOP;
 
 			} else {
 				Vector3 org;
@@ -422,7 +422,7 @@ bool PathEditorPlugin::forward_spatial_gui_input(int p_index, Camera *p_camera, 
 					ur->add_do_method(c.ptr(), "add_point", it.xform(inters), Vector3(), Vector3(), -1);
 					ur->add_undo_method(c.ptr(), "remove_point", c->get_point_count());
 					ur->commit_action();
-					return true;
+					return EditorPlugin::AFTER_GUI_INPUT_STOP;
 				}
 
 				//add new at pos
@@ -442,27 +442,27 @@ bool PathEditorPlugin::forward_spatial_gui_input(int p_index, Camera *p_camera, 
 					ur->add_do_method(c.ptr(), "remove_point", i);
 					ur->add_undo_method(c.ptr(), "add_point", c->get_point_position(i), c->get_point_in(i), c->get_point_out(i), i);
 					ur->commit_action();
-					return true;
+					return EditorPlugin::AFTER_GUI_INPUT_STOP;
 				} else if (dist_to_p_out < click_dist) {
 					UndoRedo *ur = editor->get_undo_redo();
 					ur->create_action(TTR("Remove Out-Control Point"));
 					ur->add_do_method(c.ptr(), "set_point_out", i, Vector3());
 					ur->add_undo_method(c.ptr(), "set_point_out", i, c->get_point_out(i));
 					ur->commit_action();
-					return true;
+					return EditorPlugin::AFTER_GUI_INPUT_STOP;
 				} else if (dist_to_p_in < click_dist) {
 					UndoRedo *ur = editor->get_undo_redo();
 					ur->create_action(TTR("Remove In-Control Point"));
 					ur->add_do_method(c.ptr(), "set_point_in", i, Vector3());
 					ur->add_undo_method(c.ptr(), "set_point_in", i, c->get_point_in(i));
 					ur->commit_action();
-					return true;
+					return EditorPlugin::AFTER_GUI_INPUT_STOP;
 				}
 			}
 		}
 	}
 
-	return false;
+	return EditorPlugin::AFTER_GUI_INPUT_PASS;
 }
 
 void PathEditorPlugin::edit(Object *p_object) {
