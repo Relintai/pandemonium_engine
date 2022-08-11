@@ -104,7 +104,6 @@
 #include "editor/plugin_config_dialog.h"
 #include "editor/plugins/animation_player_editor_plugin.h"
 #include "editor/plugins/animation_tree_editor_plugin.h"
-#include "editor/plugins/animation_tree_player_editor_plugin.h"
 #include "editor/plugins/audio_stream_editor_plugin.h"
 #include "editor/plugins/bit_map_editor_plugin.h"
 #include "editor/plugins/camera_editor_plugin.h"
@@ -6784,7 +6783,6 @@ EditorNode::EditorNode() {
 	add_editor_plugin(memnew(MultiMeshEditorPlugin(this)));
 	add_editor_plugin(memnew(MeshInstanceEditorPlugin(this)));
 	add_editor_plugin(memnew(AnimationTreeEditorPlugin(this)));
-	add_editor_plugin(memnew(AnimationTreePlayerEditorPlugin(this)));
 	add_editor_plugin(memnew(StyleBoxEditorPlugin(this)));
 	add_editor_plugin(memnew(SpriteEditorPlugin(this)));
 	add_editor_plugin(memnew(Skeleton2DEditorPlugin(this)));

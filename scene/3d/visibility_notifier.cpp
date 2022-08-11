@@ -35,7 +35,6 @@
 #include "scene/3d/physics_body.h"
 #include "scene/animation/animation_player.h"
 #include "scene/animation/animation_tree.h"
-#include "scene/animation/animation_tree_player.h"
 #include "scene/resources/shape.h"
 #include "scene/resources/world.h"
 #include "scene/scene_string_names.h"
@@ -260,20 +259,13 @@ void VisibilityEnabler::_find_nodes(Node *p_node) {
 		}
 	}
 
-	if (Object::cast_to<AnimationPlayer>(p_node) || Object::cast_to<AnimationTree>(p_node) || Object::cast_to<AnimationTreePlayer>(p_node)) {
+	if (Object::cast_to<AnimationPlayer>(p_node) || Object::cast_to<AnimationTree>(p_node)) {
 		add = true;
 	}
 
 	{
 		AnimationTree *at = Object::cast_to<AnimationTree>(p_node);
 		if (at) {
-			add = true;
-		}
-	}
-
-	{
-		AnimationTreePlayer *atp = Object::cast_to<AnimationTreePlayer>(p_node);
-		if (atp) {
 			add = true;
 		}
 	}
@@ -343,11 +335,6 @@ void VisibilityEnabler::_change_node_state(Node *p_node, bool p_enabled) {
 			AnimationTree *at = Object::cast_to<AnimationTree>(p_node);
 			if (at) {
 				at->set_active(p_enabled);
-			} else {
-				AnimationTreePlayer *atp = Object::cast_to<AnimationTreePlayer>(p_node);
-				if (atp) {
-					atp->set_active(p_enabled);
-				}
 			}
 		}
 	}

@@ -76,7 +76,6 @@
 #include "scene/animation/animation_node_state_machine.h"
 #include "scene/animation/animation_player.h"
 #include "scene/animation/animation_tree.h"
-#include "scene/animation/animation_tree_player.h"
 #include "scene/animation/root_motion_view.h"
 #include "scene/animation/scene_tree_tween.h"
 #include "scene/animation/tween.h"
@@ -406,7 +405,6 @@ void register_scene_types() {
 	ClassDB::register_class<CallbackTweener>();
 	ClassDB::register_class<MethodTweener>();
 
-	ClassDB::register_class<AnimationTreePlayer>();
 	ClassDB::register_class<AnimationTree>();
 	ClassDB::register_class<AnimationNode>();
 	ClassDB::register_class<AnimationRootNode>();
