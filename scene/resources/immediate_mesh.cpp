@@ -256,6 +256,12 @@ void ImmediateMesh::surface_end() {
 		}
 	}
 
+	int sc = VisualServer::get_singleton()->mesh_get_surface_count(mesh);
+
+	for (int i = 0; i < sc; ++i) {
+		VisualServer::get_singleton()->mesh_remove_surface(mesh, 0);
+	}
+
 	VisualServer::get_singleton()->mesh_add_surface(mesh, format, static_cast<VS::PrimitiveType>(active_surface_data.primitive), surface_array_create_cache, vertices.size(), PoolByteArray(), 0, aabb);
 
 	if (active_surface_data.material.is_valid()) {
