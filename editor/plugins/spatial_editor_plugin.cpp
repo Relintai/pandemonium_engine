@@ -1550,18 +1550,52 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 
 					//gizmo has priority over everything
 
-					bool can_select_gizmos = true;
+					bool can_select_gizmos = spatial_editor->get_single_selected_node();
 
 					{
 						int idx = view_menu->get_popup()->get_item_index(VIEW_GIZMOS);
-						can_select_gizmos = view_menu->get_popup()->is_item_checked(idx);
+						can_select_gizmos = can_select_gizmos && view_menu->get_popup()->is_item_checked(idx);
 					}
 
-					if (can_select_gizmos && spatial_editor->get_single_selected_node()) {
-						SpatialEditorSelectedItem *se = editor_selection->get_node_editor_data<SpatialEditorSelectedItem>(spatial_editor->get_single_selected_node());
+					// Gizmo handles
+					if (can_select_gizmos) {
 						Vector<Ref<SpatialGizmo>> gizmos = spatial_editor->get_single_selected_node()->get_gizmos();
 
 						bool intersected_handle = false;
+						for (int i = 0; i < gizmos.size(); i++) {
+							Ref<EditorSpatialGizmo> seg = gizmos[i];
+
+							if ((!seg.is_valid())) {
+								continue;
+							}
+
+							int gizmo_handle = -1;
+							seg->handles_intersect_ray(camera, _edit.mouse_pos, b->get_shift(), gizmo_handle);
+							if (gizmo_handle != -1) {
+								_edit.gizmo = seg;
+								_edit.gizmo_handle = gizmo_handle;
+								_edit.gizmo_initial_value = seg->get_handle_value(gizmo_handle);
+								intersected_handle = true;
+								break;
+							}
+						}
+
+						if (intersected_handle) {
+							break;
+						}
+					}
+
+					// Transform gizmo
+					if (_transform_gizmo_select(_edit.mouse_pos)) {
+						break;
+					}
+
+					// Subgizmos
+					if (can_select_gizmos) {
+						SpatialEditorSelectedItem *se = editor_selection->get_node_editor_data<SpatialEditorSelectedItem>(spatial_editor->get_single_selected_node());
+						Vector<Ref<SpatialGizmo>> gizmos = spatial_editor->get_single_selected_node()->get_gizmos();
+
+						bool intersected_subgizmo = false;
 						for (int i = 0; i < gizmos.size(); i++) {
 							Ref<EditorSpatialGizmo> seg = gizmos[i];
 
@@ -1590,29 +1624,16 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 								}
 
 								seg->redraw();
-								spatial_editor->update_transform_gizmo();
-								intersected_handle = true;
-								break;
-							}
 
-							int gizmo_handle = -1;
-							seg->handles_intersect_ray(camera, _edit.mouse_pos, b->get_shift(), gizmo_handle);
-							if (gizmo_handle != -1) {
-								_edit.gizmo = seg;
-								_edit.gizmo_handle = gizmo_handle;
-								_edit.gizmo_initial_value = seg->get_handle_value(gizmo_handle);
-								intersected_handle = true;
+								spatial_editor->update_transform_gizmo();
+								intersected_subgizmo = true;
 								break;
 							}
 						}
 
-						if (intersected_handle) {
+						if (intersected_subgizmo) {
 							break;
 						}
-					}
-
-					if (_transform_gizmo_select(_edit.mouse_pos)) {
-						break;
 					}
 
 					clicked = 0;
@@ -1933,7 +1954,7 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 									Transform xform = GE->get();
 									Transform new_xform = _compute_transform(TRANSFORM_SCALE, se->original * xform, xform, motion, snap, local_coords);
 									if (!local_coords) {
-										new_xform = se->original.inverse() * new_xform;
+										new_xform = se->original.affine_inverse() * new_xform;
 									}
 									se->gizmo->set_subgizmo_transform(GE->key(), new_xform);
 								}
@@ -2031,7 +2052,7 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 								for (Map<int, Transform>::Element *GE = se->subgizmos.front(); GE; GE = GE->next()) {
 									Transform xform = GE->get();
 									Transform new_xform = _compute_transform(TRANSFORM_TRANSLATE, se->original * xform, xform, motion, snap, local_coords);
-									new_xform = se->original.inverse() * new_xform;
+									new_xform = se->original.affine_inverse() * new_xform;
 									se->gizmo->set_subgizmo_transform(GE->key(), new_xform);
 								}
 
@@ -2120,7 +2141,7 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 
 									Transform new_xform = _compute_transform(TRANSFORM_ROTATE, se->original * xform, xform, compute_axis, angle, local_coords);
 									if (!local_coords) {
-										new_xform = se->original.inverse() * new_xform;
+										new_xform = se->original.affine_inverse() * new_xform;
 									}
 									se->gizmo->set_subgizmo_transform(GE->key(), new_xform);
 								}
@@ -7547,7 +7568,6 @@ bool SpatialEditor::is_gizmo_visible() const {
 	}
 	return gizmo.visible;
 }
-
 
 void SpatialEditor::snap_cursor_to_plane(const Plane &p_plane) {
 	//cursor.pos=p_plane.project(cursor.pos);
