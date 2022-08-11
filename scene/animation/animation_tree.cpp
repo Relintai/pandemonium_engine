@@ -878,6 +878,10 @@ void AnimationTree::_process_graph(float p_delta) {
 			bool seeked = as.seeked;
 
 			for (int i = 0; i < a->get_track_count(); i++) {
+				if (!a->track_is_enabled(i)) {
+					continue;
+				}
+
 				NodePath path = a->track_get_path(i);
 
 				ERR_CONTINUE(!track_cache.has(path));
