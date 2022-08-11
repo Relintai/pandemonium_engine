@@ -172,10 +172,10 @@ void ImmediateMesh::surface_end() {
 		vertex_stride += sizeof(uint32_t);
 	}
 
-	uint32_t attribute_offset = 0;
+	uint32_t color_offset = 0;
 	if (uses_colors) {
 		format |= ARRAY_FORMAT_COLOR;
-		attribute_offset = vertex_stride;
+		color_offset = vertex_stride;
 		vertex_stride += sizeof(uint8_t) * 4;
 	}
 	uint32_t uv_offset = 0;
@@ -247,7 +247,7 @@ void ImmediateMesh::surface_end() {
 
 		for (int i = 0; i < vertices.size(); i++) {
 			if (uses_colors) {
-				uint8_t *color8 = (uint8_t *)&surface_attribute_ptr[i * vertex_stride];
+				uint8_t *color8 = (uint8_t *)&surface_attribute_ptr[i * vertex_stride + color_offset];
 
 				color8[0] = uint8_t(CLAMP(colors[i].r * 255.0, 0.0, 255.0));
 				color8[1] = uint8_t(CLAMP(colors[i].g * 255.0, 0.0, 255.0));
