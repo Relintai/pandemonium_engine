@@ -151,6 +151,7 @@ private:
 	void _make_dirty();
 	bool dirty;
 	bool rest_dirty;
+	int updating;
 
 	bool show_rest_only;
 

@@ -218,6 +218,8 @@ void Skeleton::_update_process_order() {
 		return;
 	}
 
+	++updating;
+
 	Bone *bonesptr = bones.ptrw();
 	int len = bones.size();
 
@@ -249,12 +251,15 @@ void Skeleton::_update_process_order() {
 
 	process_order_dirty = false;
 
+	--updating;
+
 	emit_signal("bones_updated");
 }
 
 void Skeleton::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_UPDATE_SKELETON: {
+			++updating;
 			// Update bone transforms
 			force_update_all_bone_transforms();
 
@@ -320,6 +325,8 @@ void Skeleton::_notification(int p_what) {
 					vs->skeleton_bone_set_transform(skeleton, i, bonesptr[bone_index].pose_global * skin->get_bind_pose(i));
 				}
 			}
+
+			--updating;
 
 			//TODO Not sure if this is useful or not in runtime
 			//#ifdef TOOLS_ENABLED
@@ -400,7 +407,7 @@ Transform Skeleton::get_bone_global_pose(int p_bone) const {
 	const int bone_size = bones.size();
 	ERR_FAIL_INDEX_V(p_bone, bone_size, Transform());
 
-	if (dirty) {
+	if (dirty && updating == 0) {
 		const_cast<Skeleton *>(this)->notification(NOTIFICATION_UPDATE_SKELETON);
 	}
 
@@ -411,7 +418,7 @@ Transform Skeleton::get_bone_global_pose_no_override(int p_bone) const {
 	const int bone_size = bones.size();
 	ERR_FAIL_INDEX_V(p_bone, bone_size, Transform());
 
-	if (dirty) {
+	if (dirty && updating == 0) {
 		const_cast<Skeleton *>(this)->notification(NOTIFICATION_UPDATE_SKELETON);
 	}
 
@@ -682,7 +689,7 @@ Transform Skeleton::get_bone_global_rest(int p_bone) const {
 	const int bone_size = bones.size();
 	ERR_FAIL_INDEX_V(p_bone, bone_size, Transform());
 
-	if (rest_dirty) {
+	if (rest_dirty && updating == 0) {
 		const_cast<Skeleton *>(this)->notification(NOTIFICATION_UPDATE_SKELETON);
 	}
 
@@ -1069,17 +1076,19 @@ Ref<SkinReference> Skeleton::register_skin(const Ref<Skin> &p_skin) {
 }
 
 void Skeleton::force_update_all_dirty_bones() {
-	if (dirty) {
+	if (dirty && updating == 0) {
 		const_cast<Skeleton *>(this)->notification(NOTIFICATION_UPDATE_SKELETON);
 	}
 }
 
 void Skeleton::force_update_all_bone_transforms() {
+	++updating;
 	_update_process_order();
 
 	for (int i = 0; i < parentless_bones.size(); i++) {
 		force_update_bone_children_transforms(parentless_bones[i]);
 	}
+	--updating;
 }
 
 void Skeleton::force_update_bone_children_transforms(int p_bone_idx) {
@@ -1357,6 +1366,7 @@ Skeleton::Skeleton() {
 	process_order_dirty = true;
 	show_rest_only = false;
 	rest_dirty = false;
+	updating = 0;
 }
 
 Skeleton::~Skeleton() {
