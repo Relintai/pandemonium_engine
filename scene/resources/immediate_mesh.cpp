@@ -163,20 +163,20 @@ void ImmediateMesh::surface_end() {
 	if (uses_normals) {
 		format |= ARRAY_FORMAT_NORMAL;
 		normal_offset = vertex_stride;
-		vertex_stride += sizeof(uint32_t);
+		vertex_stride += sizeof(float) * 3;
 	}
 	uint32_t tangent_offset = 0;
 	if (uses_tangents) {
 		format |= ARRAY_FORMAT_TANGENT;
 		tangent_offset = vertex_stride;
-		vertex_stride += sizeof(uint32_t);
+		vertex_stride += sizeof(float) * 4;
 	}
 
 	uint32_t color_offset = 0;
 	if (uses_colors) {
 		format |= ARRAY_FORMAT_COLOR;
 		color_offset = vertex_stride;
-		vertex_stride += sizeof(uint8_t) * 4;
+		vertex_stride += sizeof(float) * 4;
 	}
 	uint32_t uv_offset = 0;
 	if (uses_uvs) {
@@ -214,29 +214,14 @@ void ImmediateMesh::surface_end() {
 				}
 			}
 			if (uses_normals) {
-				uint32_t *normal = (uint32_t *)&surface_vertex_ptr[i * vertex_stride + normal_offset];
-
-				Vector3 n = normals[i] * Vector3(0.5, 0.5, 0.5) + Vector3(0.5, 0.5, 0.5);
-
-				uint32_t value = 0;
-				value |= CLAMP(int(n.x * 1023.0), 0, 1023);
-				value |= CLAMP(int(n.y * 1023.0), 0, 1023) << 10;
-				value |= CLAMP(int(n.z * 1023.0), 0, 1023) << 20;
-
-				*normal = value;
+				Vector3 *normal = (Vector3 *)&surface_vertex_ptr[i * vertex_stride + normal_offset];
+				Vector3 n = normals[i];
+				*normal = n;
 			}
 			if (uses_tangents) {
-				uint32_t *tangent = (uint32_t *)&surface_vertex_ptr[i * vertex_stride + tangent_offset];
+				Plane *tangent = (Plane *)&surface_vertex_ptr[i * vertex_stride + tangent_offset];
 				Plane t = tangents[i];
-				uint32_t value = 0;
-				value |= CLAMP(int((t.normal.x * 0.5 + 0.5) * 1023.0), 0, 1023);
-				value |= CLAMP(int((t.normal.y * 0.5 + 0.5) * 1023.0), 0, 1023) << 10;
-				value |= CLAMP(int((t.normal.z * 0.5 + 0.5) * 1023.0), 0, 1023) << 20;
-				if (t.d > 0) {
-					value |= 3UL << 30;
-				}
-
-				*tangent = value;
+				*tangent = t;
 			}
 		}
 	}
@@ -247,12 +232,13 @@ void ImmediateMesh::surface_end() {
 
 		for (int i = 0; i < vertices.size(); i++) {
 			if (uses_colors) {
-				uint8_t *color8 = (uint8_t *)&surface_attribute_ptr[i * vertex_stride + color_offset];
+				float *color = (float *)&surface_attribute_ptr[i * vertex_stride + color_offset];
+				Color c = colors[i];
 
-				color8[0] = uint8_t(CLAMP(colors[i].r * 255.0, 0.0, 255.0));
-				color8[1] = uint8_t(CLAMP(colors[i].g * 255.0, 0.0, 255.0));
-				color8[2] = uint8_t(CLAMP(colors[i].b * 255.0, 0.0, 255.0));
-				color8[3] = uint8_t(CLAMP(colors[i].a * 255.0, 0.0, 255.0));
+				color[0] = c.r;
+				color[1] = c.g;
+				color[2] = c.b;
+				color[3] = c.a;
 			}
 			if (uses_uvs) {
 				float *uv = (float *)&surface_attribute_ptr[i * vertex_stride + uv_offset];
