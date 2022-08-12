@@ -538,6 +538,12 @@ bool AnimationTree::_update_caches(AnimationPlayer *player) {
 	List<StringName> sname;
 	player->get_animation_list(&sname);
 
+	Ref<Animation> reset_anim;
+	bool has_reset_anim = player->has_animation("RESET");
+	if (has_reset_anim) {
+		reset_anim = player->get_animation("RESET");
+	}
+
 	for (List<StringName>::Element *E = sname.front(); E; E = E->next()) {
 		Ref<Animation> anim = player->get_animation(E->get());
 		for (int i = 0; i < anim->get_track_count(); i++) {
@@ -590,6 +596,13 @@ bool AnimationTree::_update_caches(AnimationPlayer *player) {
 						track_value->object_id = track_value->object->get_instance_id();
 
 						track = track_value;
+
+						if (has_reset_anim) {
+							int rt = reset_anim->find_track(path, track_type);
+							if (rt >= 0 && reset_anim->track_get_key_count(rt) > 0) {
+								track_value->init_value = reset_anim->track_get_key_value(rt, 0);
+							}
+						}
 
 					} break;
 					case Animation::TYPE_POSITION_3D:
@@ -645,6 +658,26 @@ bool AnimationTree::_update_caches(AnimationPlayer *player) {
 							default: {
 							}
 						}
+
+						if (has_reset_anim) {
+							int rt = reset_anim->find_track(path, track_type);
+							if (rt >= 0 && reset_anim->track_get_key_count(rt) > 0) {
+								switch (track_type) {
+									case Animation::TYPE_POSITION_3D: {
+										track_xform->init_loc = reset_anim->track_get_key_value(rt, 0);
+									} break;
+									case Animation::TYPE_ROTATION_3D: {
+										track_xform->ref_rot = reset_anim->track_get_key_value(rt, 0);
+										track_xform->init_rot = track_xform->ref_rot.log();
+									} break;
+									case Animation::TYPE_SCALE_3D: {
+										track_xform->init_scale = reset_anim->track_get_key_value(rt, 0);
+									} break;
+									default: {
+									}
+								}
+							}
+						}
 #endif
 					} break;
 					case Animation::TYPE_METHOD: {
@@ -674,6 +707,13 @@ bool AnimationTree::_update_caches(AnimationPlayer *player) {
 						track_bezier->object_id = track_bezier->object->get_instance_id();
 
 						track = track_bezier;
+
+						if (has_reset_anim) {
+							int rt = reset_anim->find_track(path, track_type);
+							if (rt >= 0 && reset_anim->track_get_key_count(rt) > 0) {
+								track_bezier->init_value = reset_anim->track_get_key_value(rt, 0);
+							}
+						}
 					} break;
 					case Animation::TYPE_AUDIO: {
 						TrackCacheAudio *track_audio = memnew(TrackCacheAudio);
@@ -1116,10 +1156,16 @@ void AnimationTree::_process_graph(float p_delta) {
 
 							if (t->process_pass != process_pass) {
 								t->process_pass = process_pass;
-								t->value = value;
-								t->value.zero();
+
+								if (!t->init_value) {
+									t->init_value = value;
+									t->init_value.zero();
+								} else {
+									t->value = t->init_value;
+								}
 							}
 
+							Variant::sub(value, t->init_value, value);
 							Variant::blend(t->value, value, blend, t->value);
 
 						} else {
@@ -1180,10 +1226,10 @@ void AnimationTree::_process_graph(float p_delta) {
 
 						if (t->process_pass != process_pass) {
 							t->process_pass = process_pass;
-							t->value = 0;
+							t->value = t->init_value;
 						}
 
-						t->value += bezier * blend;
+						t->value += (bezier - t->init_value) * blend;
 
 					} break;
 					case Animation::TYPE_AUDIO: {

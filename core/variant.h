@@ -386,6 +386,7 @@ public:
 	Variant duplicate(bool deep = false) const;
 	static void blend(const Variant &a, const Variant &b, float c, Variant &r_dst);
 	static void interpolate(const Variant &a, const Variant &b, float c, Variant &r_dst);
+	static void sub(const Variant &a, const Variant &b, Variant &r_dst);
 
 	struct CallError {
 		enum Error {

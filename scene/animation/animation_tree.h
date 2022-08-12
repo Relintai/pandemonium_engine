@@ -215,6 +215,7 @@ private:
 	};
 
 	struct TrackCacheValue : public TrackCache {
+		Variant init_value;
 		Variant value;
 		Vector<StringName> subpath;
 		TrackCacheValue() { type = Animation::TYPE_VALUE; }
@@ -225,11 +226,13 @@ private:
 	};
 
 	struct TrackCacheBezier : public TrackCache {
+		real_t init_value;
 		float value;
 		Vector<StringName> subpath;
 		TrackCacheBezier() {
 			type = Animation::TYPE_BEZIER;
 			value = 0;
+			init_value = 0.0;
 		}
 	};
 
