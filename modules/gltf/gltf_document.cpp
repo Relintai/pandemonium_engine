@@ -5505,7 +5505,7 @@ void GLTFDocument::_convert_bone_attachment_to_gltf(BoneAttachment *p_bone_attac
 	if (skeleton != nullptr) {
 		bone_idx = skeleton->find_bone(p_bone_attachment->get_bone_name());
 	}
-	
+
 	GLTFNodeIndex par_node_index = p_parent_node_index;
 	if (skeleton != nullptr && bone_idx != -1 && skel_gltf_i != -1) {
 		Ref<GLTFSkeleton> gltf_skeleton = state->skeletons.write[skel_gltf_i];
@@ -5816,7 +5816,7 @@ void GLTFDocument::_import_animation(Ref<GLTFState> state, AnimationPlayer *ap, 
 
 		const Ref<GLTFNode> gltf_node = state->nodes[track_i->key()];
 
-		Node *root = ap->get_parent();
+		Node *root = ap->get_node_or_null(ap->get_root());
 		ERR_FAIL_COND(root == nullptr);
 		Map<GLTFNodeIndex, Node *>::Element *node_element = state->scene_nodes.find(node_index);
 		ERR_CONTINUE_MSG(node_element == nullptr, vformat("Unable to find node %d for animation", node_index));
@@ -5826,7 +5826,7 @@ void GLTFDocument::_import_animation(Ref<GLTFState> state, AnimationPlayer *ap, 
 			const Skeleton *sk = state->skeletons[gltf_node->skeleton]->pandemonium_skeleton;
 			ERR_FAIL_COND(sk == nullptr);
 
-			const String path = ap->get_parent()->get_path_to(sk);
+			const String path = root->get_path_to(sk);
 			const String bone = gltf_node->get_name();
 			transform_node_path = path + ":" + bone;
 		} else {
@@ -6355,7 +6355,11 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 		if (String(orig_track_path).find(":translation") != -1) {
 			const Vector<String> node_suffix = String(orig_track_path).split(":translation");
 			const NodePath path = node_suffix[0];
-			const Node *node = ap->get_parent()->get_node_or_null(path);
+
+			Node *node = ap->get_node_or_null(ap->get_root());
+			ERR_CONTINUE(!node);
+			node = node->get_node_or_null(path);
+
 			for (Map<GLTFNodeIndex, Node *>::Element *translation_scene_node_i = state->scene_nodes.front(); translation_scene_node_i; translation_scene_node_i = translation_scene_node_i->next()) {
 				if (translation_scene_node_i->get() == node) {
 					GLTFNodeIndex node_index = translation_scene_node_i->key();
@@ -6371,7 +6375,11 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 		} else if (String(orig_track_path).find(":rotation_degrees") != -1) {
 			const Vector<String> node_suffix = String(orig_track_path).split(":rotation_degrees");
 			const NodePath path = node_suffix[0];
-			const Node *node = ap->get_parent()->get_node_or_null(path);
+
+			Node *node = ap->get_node_or_null(ap->get_root());
+			ERR_CONTINUE(!node);
+			node = node->get_node_or_null(path);
+
 			for (Map<GLTFNodeIndex, Node *>::Element *rotation_degree_scene_node_i = state->scene_nodes.front(); rotation_degree_scene_node_i; rotation_degree_scene_node_i = rotation_degree_scene_node_i->next()) {
 				if (rotation_degree_scene_node_i->get() == node) {
 					GLTFNodeIndex node_index = rotation_degree_scene_node_i->key();
@@ -6387,7 +6395,11 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 		} else if (String(orig_track_path).find(":scale") != -1) {
 			const Vector<String> node_suffix = String(orig_track_path).split(":scale");
 			const NodePath path = node_suffix[0];
-			const Node *node = ap->get_parent()->get_node_or_null(path);
+
+			Node *node = ap->get_node_or_null(ap->get_root());
+			ERR_CONTINUE(!node);
+			node = node->get_node_or_null(path);
+
 			for (Map<GLTFNodeIndex, Node *>::Element *scale_scene_node_i = state->scene_nodes.front(); scale_scene_node_i; scale_scene_node_i = scale_scene_node_i->next()) {
 				if (scale_scene_node_i->get() == node) {
 					GLTFNodeIndex node_index = scale_scene_node_i->key();
@@ -6403,7 +6415,11 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 		} else if (String(orig_track_path).find(":transform") != -1) {
 			const Vector<String> node_suffix = String(orig_track_path).split(":transform");
 			const NodePath path = node_suffix[0];
-			const Node *node = ap->get_parent()->get_node_or_null(path);
+
+			Node *node = ap->get_node_or_null(ap->get_root());
+			ERR_CONTINUE(!node);
+			node = node->get_node_or_null(path);
+
 			for (Map<GLTFNodeIndex, Node *>::Element *transform_track_i = state->scene_nodes.front(); transform_track_i; transform_track_i = transform_track_i->next()) {
 				if (transform_track_i->get() == node) {
 					GLTFAnimation::Track track;
@@ -6415,7 +6431,11 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 			const Vector<String> node_suffix = String(orig_track_path).split(":blend_shapes/");
 			const NodePath path = node_suffix[0];
 			const String suffix = node_suffix[1];
-			Node *node = ap->get_parent()->get_node_or_null(path);
+
+			Node *node = ap->get_node_or_null(ap->get_root());
+			ERR_CONTINUE(!node);
+			node = node->get_node_or_null(path);
+
 			MeshInstance *mi = cast_to<MeshInstance>(node);
 			Ref<Mesh> mesh = mi->get_mesh();
 			ERR_CONTINUE(mesh.is_null());
@@ -6473,7 +6493,11 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 			const String node = node_suffix[0];
 			const NodePath node_path = node;
 			const String suffix = node_suffix[1];
-			Node *pandemonium_node = ap->get_parent()->get_node_or_null(node_path);
+
+			Node *pandemonium_node = ap->get_node_or_null(ap->get_root());
+			ERR_CONTINUE(!pandemonium_node);
+			pandemonium_node = pandemonium_node->get_node_or_null(node_path);
+
 			Skeleton *skeleton = nullptr;
 			GLTFSkeletonIndex skeleton_gltf_i = -1;
 			for (GLTFSkeletonIndex skeleton_i = 0; skeleton_i < state->skeletons.size(); skeleton_i++) {
@@ -6498,9 +6522,10 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 				}
 			}
 		} else if (String(orig_track_path).find(":") == -1) {
-			ERR_CONTINUE(!ap->get_parent());
-			for (int32_t node_i = 0; node_i < ap->get_parent()->get_child_count(); node_i++) {
-				const Node *child = ap->get_parent()->get_child(node_i);
+			Node *ap_root = ap->get_node_or_null(ap->get_root());
+			ERR_CONTINUE(!ap_root);
+			for (int32_t node_i = 0; node_i < ap_root->get_child_count(); node_i++) {
+				const Node *child = ap_root->get_child(node_i);
 				const Node *node = child->get_node_or_null(orig_track_path);
 				for (Map<GLTFNodeIndex, Node *>::Element *scene_node_i = state->scene_nodes.front(); scene_node_i; scene_node_i = scene_node_i->next()) {
 					if (scene_node_i->get() == node) {
