@@ -286,6 +286,9 @@ float AnimationNode::_blend_node(const StringName &p_subpath, const Vector<Strin
 		new_path = String(parent->base_path) + String(p_subpath) + "/";
 	}
 
+	// If tracks for blending don't exist for one of the animations, Rest or RESET animation is blended as init animation instead.
+	// Then, blend weight is 0 means that the init animation blend weight is 1.
+	// Therefore, the blending process must be executed even if the blend weight is 0.
 	if (!p_seek && p_optimize && !any_valid) {
 		return p_node->_pre_process(new_path, new_parent, state, 0, p_seek, p_connections);
 	}
@@ -1176,12 +1179,22 @@ void AnimationTree::_process_graph(float p_delta) {
 								continue; //nothing to blend
 							}
 
-							List<int> indices;
-							a->value_track_get_key_indices(i, time, delta, &indices);
+							if (seeked) {
+								int idx = a->track_find_key(i, time);
+								if (idx < 0) {
+									continue;
+								}
+								Variant value = a->track_get_key_value(i, idx);
 
-							for (List<int>::Element *F = indices.front(); F; F = F->next()) {
-								Variant value = a->track_get_key_value(i, F->get());
 								t->object->set_indexed(t->subpath, value);
+							} else {
+								List<int> indices;
+								a->value_track_get_key_indices(i, time, delta, &indices);
+
+								for (List<int>::Element *F = indices.front(); F; F = F->next()) {
+									Variant value = a->track_get_key_value(i, F->get());
+									t->object->set_indexed(t->subpath, value);
+								}
 							}
 						}
 
@@ -1190,25 +1203,31 @@ void AnimationTree::_process_graph(float p_delta) {
 						if (blend < CMP_EPSILON) {
 							continue; //nothing to blend
 						}
-						if (!seeked && Math::is_zero_approx(delta)) {
-							continue;
-						}
+
 						TrackCacheMethod *t = static_cast<TrackCacheMethod *>(track);
 
-						List<int> indices;
+						//List<int> indices;
 
-						a->method_track_get_key_indices(i, time, delta, &indices);
+						//a->method_track_get_key_indices(i, time, delta, &indices);
 
-						for (List<int>::Element *F = indices.front(); F; F = F->next()) {
-							StringName method = a->method_track_get_name(i, F->get());
-							Vector<Variant> params = a->method_track_get_params(i, F->get());
+						//for (List<int>::Element *F = indices.front(); F; F = F->next()) {
+						//	StringName method = a->method_track_get_name(i, F->get());
+						//	Vector<Variant> params = a->method_track_get_params(i, F->get());
+						if (seeked) {
+							int idx = a->track_find_key(i, time);
+							if (idx < 0) {
+								continue;
+							}
+
+							StringName method = a->method_track_get_name(i, idx);
+							Vector<Variant> params = a->method_track_get_params(i, idx);
 
 							int s = params.size();
 
 							static_assert(VARIANT_ARG_MAX == 8, "This code needs to be updated if VARIANT_ARG_MAX != 8");
 							ERR_CONTINUE(s > VARIANT_ARG_MAX);
 							if (can_call) {
-								t->object->call_deferred(
+								t->object->call(
 										method,
 										s >= 1 ? params[0] : Variant(),
 										s >= 2 ? params[1] : Variant(),
@@ -1219,8 +1238,32 @@ void AnimationTree::_process_graph(float p_delta) {
 										s >= 7 ? params[6] : Variant(),
 										s >= 8 ? params[7] : Variant());
 							}
-						}
+						} else {
+							List<int> indices;
+							a->method_track_get_key_indices(i, time, delta, &indices);
 
+							for (List<int>::Element *F = indices.front(); F; F = F->next()) {
+								StringName method = a->method_track_get_name(i, F->get());
+								Vector<Variant> params = a->method_track_get_params(i, F->get());
+
+								int s = params.size();
+
+								static_assert(VARIANT_ARG_MAX == 8, "This code needs to be updated if VARIANT_ARG_MAX != 8");
+								ERR_CONTINUE(s > VARIANT_ARG_MAX);
+								if (can_call) {
+									t->object->call_deferred(
+											method,
+											s >= 1 ? params[0] : Variant(),
+											s >= 2 ? params[1] : Variant(),
+											s >= 3 ? params[2] : Variant(),
+											s >= 4 ? params[3] : Variant(),
+											s >= 5 ? params[4] : Variant(),
+											s >= 6 ? params[5] : Variant(),
+											s >= 7 ? params[6] : Variant(),
+											s >= 8 ? params[7] : Variant());
+								}
+							}
+						}
 					} break;
 					case Animation::TYPE_BEZIER: {
 						TrackCacheBezier *t = static_cast<TrackCacheBezier *>(track);
