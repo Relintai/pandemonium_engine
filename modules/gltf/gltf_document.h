@@ -332,11 +332,7 @@ private:
 	Error _serialize_nodes(Ref<GLTFState> state);
 	Error _serialize_scenes(Ref<GLTFState> state);
 	String interpolation_to_string(const GLTFAnimation::Interpolation p_interp);
-	GLTFAnimation::Track _convert_animation_track(Ref<GLTFState> state,
-			GLTFAnimation::Track p_track,
-			Ref<Animation> p_animation, Transform p_bone_rest,
-			int32_t p_track_i,
-			GLTFNodeIndex p_node_i);
+	GLTFAnimation::Track _convert_animation_track(Ref<GLTFState> state, GLTFAnimation::Track p_track, Ref<Animation> p_animation, int32_t p_track_i, GLTFNodeIndex p_node_i);
 	Error _encode_buffer_bins(Ref<GLTFState> state, const String &p_path);
 	Error _encode_buffer_glb(Ref<GLTFState> state, const String &p_path);
 	Dictionary _serialize_texture_transform_uv1(Ref<SpatialMaterial> p_material);

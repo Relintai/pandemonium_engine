@@ -5954,7 +5954,7 @@ void GLTFDocument::_import_animation(Ref<GLTFState> state, AnimationPlayer *ap, 
 				}
 
 				time += increment;
-				
+
 				if (time >= length) {
 					last = true;
 					time = length;
@@ -6171,9 +6171,7 @@ void GLTFDocument::_process_mesh_instances(Ref<GLTFState> state, Node *scene_roo
 	}
 }
 
-GLTFAnimation::Track GLTFDocument::_convert_animation_track(Ref<GLTFState> state, GLTFAnimation::Track p_track, Ref<Animation> p_animation, Transform p_bone_rest, int32_t p_track_i, GLTFNodeIndex p_node_i) {
-	//TODO PORT
-	/*
+GLTFAnimation::Track GLTFDocument::_convert_animation_track(Ref<GLTFState> state, GLTFAnimation::Track p_track, Ref<Animation> p_animation, int32_t p_track_i, GLTFNodeIndex p_node_i) {
 	Animation::InterpolationType interpolation = p_animation->track_get_interpolation_type(p_track_i);
 
 	GLTFAnimation::Interpolation gltf_interpolation = GLTFAnimation::INTERP_LINEAR;
@@ -6192,53 +6190,36 @@ GLTFAnimation::Track GLTFDocument::_convert_animation_track(Ref<GLTFState> state
 	for (int32_t key_i = 0; key_i < key_count; key_i++) {
 		times.write[key_i] = p_animation->track_get_key_time(p_track_i, key_i);
 	}
-	if (track_type == Animation::TYPE_TRANSFORM) {
-		p_track.translation_track.times = times;
-		p_track.translation_track.interpolation = gltf_interpolation;
-		p_track.rotation_track.times = times;
-		p_track.rotation_track.interpolation = gltf_interpolation;
+
+	if (track_type == Animation::TYPE_SCALE_3D) {
 		p_track.scale_track.times = times;
 		p_track.scale_track.interpolation = gltf_interpolation;
-
 		p_track.scale_track.values.resize(key_count);
-		p_track.scale_track.interpolation = gltf_interpolation;
-		p_track.translation_track.values.resize(key_count);
-		p_track.translation_track.interpolation = gltf_interpolation;
-		p_track.rotation_track.values.resize(key_count);
-		p_track.rotation_track.interpolation = gltf_interpolation;
 		for (int32_t key_i = 0; key_i < key_count; key_i++) {
-			Vector3 translation;
-			Quat rotation;
 			Vector3 scale;
-			Error err = p_animation->transform_track_get_key(p_track_i, key_i, &translation, &rotation, &scale);
+			Error err = p_animation->scale_track_get_key(p_track_i, key_i, &scale);
 			ERR_CONTINUE(err != OK);
-			Transform xform;
-			xform.basis.set_quat_scale(rotation, scale);
-			xform.origin = translation;
-			xform = p_bone_rest * xform;
-			p_track.translation_track.values.write[key_i] = xform.get_origin();
-			p_track.rotation_track.values.write[key_i] = xform.basis.get_rotation_quat();
-			p_track.scale_track.values.write[key_i] = xform.basis.get_scale();
+			p_track.scale_track.values.write[key_i] = scale;
 		}
-	} else if (path.find(":transform") != -1) {
+	} else if (track_type == Animation::TYPE_POSITION_3D) {
 		p_track.translation_track.times = times;
-		p_track.translation_track.interpolation = gltf_interpolation;
-		p_track.rotation_track.times = times;
-		p_track.rotation_track.interpolation = gltf_interpolation;
-		p_track.scale_track.times = times;
-		p_track.scale_track.interpolation = gltf_interpolation;
-
-		p_track.scale_track.values.resize(key_count);
-		p_track.scale_track.interpolation = gltf_interpolation;
 		p_track.translation_track.values.resize(key_count);
 		p_track.translation_track.interpolation = gltf_interpolation;
-		p_track.rotation_track.values.resize(key_count);
-		p_track.rotation_track.interpolation = gltf_interpolation;
 		for (int32_t key_i = 0; key_i < key_count; key_i++) {
-			Transform xform = p_animation->track_get_key_value(p_track_i, key_i);
-			p_track.translation_track.values.write[key_i] = xform.get_origin();
-			p_track.rotation_track.values.write[key_i] = xform.basis.get_rotation_quat();
-			p_track.scale_track.values.write[key_i] = xform.basis.get_scale();
+			Vector3 position;
+			Error err = p_animation->position_track_get_key(p_track_i, key_i, &position);
+			ERR_CONTINUE(err != OK);
+			p_track.translation_track.values.write[key_i] = position;
+		}
+	} else if (track_type == Animation::TYPE_ROTATION_3D) {
+		p_track.rotation_track.times = times;
+		p_track.rotation_track.interpolation = gltf_interpolation;
+		p_track.rotation_track.values.resize(key_count);
+		for (int32_t key_i = 0; key_i < key_count; key_i++) {
+			Quat rotation;
+			Error err = p_animation->rotation_track_get_key(p_track_i, key_i, &rotation);
+			ERR_CONTINUE(err != OK);
+			p_track.rotation_track.values.write[key_i] = rotation;
 		}
 	} else if (track_type == Animation::TYPE_VALUE) {
 		if (path.find("/rotation_quat") != -1) {
@@ -6314,13 +6295,10 @@ GLTFAnimation::Track GLTFDocument::_convert_animation_track(Ref<GLTFState> state
 				Vector3 bezier_track = p_track.scale_track.values[key_i];
 				if (path.find("/scale:x") != -1) {
 					bezier_track.x = p_animation->bezier_track_interpolate(p_track_i, key_i / BAKE_FPS);
-					bezier_track.x = p_bone_rest.affine_inverse().basis.get_scale().x * bezier_track.x;
 				} else if (path.find("/scale:y") != -1) {
 					bezier_track.y = p_animation->bezier_track_interpolate(p_track_i, key_i / BAKE_FPS);
-					bezier_track.y = p_bone_rest.affine_inverse().basis.get_scale().y * bezier_track.y;
 				} else if (path.find("/scale:z") != -1) {
 					bezier_track.z = p_animation->bezier_track_interpolate(p_track_i, key_i / BAKE_FPS);
-					bezier_track.z = p_bone_rest.affine_inverse().basis.get_scale().z * bezier_track.z;
 				}
 				p_track.scale_track.values.write[key_i] = bezier_track;
 			}
@@ -6343,19 +6321,16 @@ GLTFAnimation::Track GLTFDocument::_convert_animation_track(Ref<GLTFState> state
 				Vector3 bezier_track = p_track.translation_track.values[key_i];
 				if (path.find("/translation:x") != -1) {
 					bezier_track.x = p_animation->bezier_track_interpolate(p_track_i, key_i / BAKE_FPS);
-					bezier_track.x = p_bone_rest.affine_inverse().origin.x * bezier_track.x;
 				} else if (path.find("/translation:y") != -1) {
 					bezier_track.y = p_animation->bezier_track_interpolate(p_track_i, key_i / BAKE_FPS);
-					bezier_track.y = p_bone_rest.affine_inverse().origin.y * bezier_track.y;
 				} else if (path.find("/translation:z") != -1) {
 					bezier_track.z = p_animation->bezier_track_interpolate(p_track_i, key_i / BAKE_FPS);
-					bezier_track.z = p_bone_rest.affine_inverse().origin.z * bezier_track.z;
 				}
 				p_track.translation_track.values.write[key_i] = bezier_track;
 			}
 		}
 	}
-	*/
+
 	return p_track;
 }
 
@@ -6382,7 +6357,7 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 					if (translation_track_i) {
 						track = translation_track_i->get();
 					}
-					track = _convert_animation_track(state, track, animation, Transform(), track_i, node_index);
+					track = _convert_animation_track(state, track, animation, track_i, node_index);
 					gltf_animation->get_tracks().insert(node_index, track);
 				}
 			}
@@ -6398,7 +6373,7 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 					if (rotation_degree_track_i) {
 						track = rotation_degree_track_i->get();
 					}
-					track = _convert_animation_track(state, track, animation, Transform(), track_i, node_index);
+					track = _convert_animation_track(state, track, animation, track_i, node_index);
 					gltf_animation->get_tracks().insert(node_index, track);
 				}
 			}
@@ -6414,7 +6389,7 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 					if (scale_track_i) {
 						track = scale_track_i->get();
 					}
-					track = _convert_animation_track(state, track, animation, Transform(), track_i, node_index);
+					track = _convert_animation_track(state, track, animation, track_i, node_index);
 					gltf_animation->get_tracks().insert(node_index, track);
 				}
 			}
@@ -6425,7 +6400,7 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 			for (Map<GLTFNodeIndex, Node *>::Element *transform_track_i = state->scene_nodes.front(); transform_track_i; transform_track_i = transform_track_i->next()) {
 				if (transform_track_i->get() == node) {
 					GLTFAnimation::Track track;
-					track = _convert_animation_track(state, track, animation, Transform(), track_i, transform_track_i->key());
+					track = _convert_animation_track(state, track, animation, track_i, transform_track_i->key());
 					gltf_animation->get_tracks().insert(transform_track_i->key(), track);
 				}
 			}
@@ -6502,7 +6477,6 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 					Ref<GLTFSkeleton> skeleton_gltf = state->skeletons[skeleton_gltf_i];
 					int32_t bone = skeleton->find_bone(suffix);
 					ERR_CONTINUE(bone == -1);
-					Transform xform = skeleton->get_bone_rest(bone);
 					if (!skeleton_gltf->pandemonium_bone_node.has(bone)) {
 						continue;
 					}
@@ -6512,7 +6486,7 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 					if (property_track_i) {
 						track = property_track_i->get();
 					}
-					track = _convert_animation_track(state, track, animation, xform, track_i, node_i);
+					track = _convert_animation_track(state, track, animation, track_i, node_i);
 					gltf_animation->get_tracks()[node_i] = track;
 				}
 			}
@@ -6529,7 +6503,7 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 						if (node_track_i) {
 							track = node_track_i->get();
 						}
-						track = _convert_animation_track(state, track, animation, Transform(), track_i, node_index);
+						track = _convert_animation_track(state, track, animation, track_i, node_index);
 						gltf_animation->get_tracks().insert(node_index, track);
 						break;
 					}
