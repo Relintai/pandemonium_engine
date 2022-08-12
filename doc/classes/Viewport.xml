@@ -35,6 +35,13 @@
 				Returns the first valid [World2D] for this viewport, searching the [member world_2d] property of itself and any Viewport ancestor.
 			</description>
 		</method>
+		<method name="get_camera_2d" qualifiers="const">
+			<return type="Camera2D">
+			</return>
+			<description>
+				Returns the currently active 2D camera. Returns null if there are no active cameras.
+			</description>
+		</method>
 		<method name="get_camera" qualifiers="const">
 			<return type="Camera" />
 			<description>
