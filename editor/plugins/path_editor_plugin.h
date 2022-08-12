@@ -59,10 +59,10 @@ class PathSpatialGizmo : public EditorSpatialGizmo {
 	mutable float orig_out_length;
 
 public:
-	virtual String get_handle_name(int p_idx) const;
-	virtual Variant get_handle_value(int p_idx);
-	virtual void set_handle(int p_idx, Camera *p_camera, const Point2 &p_point);
-	virtual void commit_handle(int p_idx, const Variant &p_restore, bool p_cancel = false);
+	virtual String get_handle_name(int p_id, bool p_secondary) const;
+	virtual Variant get_handle_value(int p_id, bool p_secondary);
+	virtual void set_handle(int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point);
+	virtual void commit_handle(int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel = false);
 
 	virtual void redraw();
 	PathSpatialGizmo(Path *p_path = nullptr);

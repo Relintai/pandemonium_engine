@@ -107,11 +107,11 @@ public:
 	void add_handles(const Vector<Vector3> &p_handles, const Ref<Material> &p_material, const Vector<int> &p_ids = Vector<int>(), bool p_billboard = false, bool p_secondary = false);
 	void add_solid_box(Ref<Material> &p_material, Vector3 p_size, Vector3 p_position = Vector3(), const Transform &p_xform = Transform());
 
-	virtual bool is_handle_highlighted(int p_id) const;
-	virtual String get_handle_name(int p_id) const;
-	virtual Variant get_handle_value(int p_id);
-	virtual void set_handle(int p_id, Camera *p_camera, const Point2 &p_point);
-	virtual void commit_handle(int p_id, const Variant &p_restore, bool p_cancel = false);
+	virtual bool is_handle_highlighted(int p_id, bool p_secondary) const;
+	virtual String get_handle_name(int p_id, bool p_secondary) const;
+	virtual Variant get_handle_value(int p_id, bool p_secondary);
+	virtual void set_handle(int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point);
+	virtual void commit_handle(int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel = false);
 
 	virtual int subgizmos_intersect_ray(Camera *p_camera, const Vector2 &p_point) const;
 	virtual Vector<int> subgizmos_intersect_frustum(const Camera *p_camera, const Vector<Plane> &p_frustum) const;
@@ -126,7 +126,7 @@ public:
 	Spatial *get_spatial_node() const { return spatial_node; }
 	Ref<EditorSpatialGizmoPlugin> get_plugin() const { return gizmo_plugin; }
 	bool intersect_frustum(const Camera *p_camera, const Vector<Plane> &p_frustum);
-	void handles_intersect_ray(Camera *p_camera, const Vector2 &p_point, bool p_shift_pressed, int &r_id);
+	void handles_intersect_ray(Camera *p_camera, const Vector2 &p_point, bool p_shift_pressed, int &r_id, bool &r_secondary);
 	bool intersect_ray(Camera *p_camera, const Point2 &p_point, Vector3 &r_pos, Vector3 &r_normal);
 	bool is_subgizmo_selected(int p_id) const;
 	Vector<int> get_subgizmo_selection() const;
@@ -177,11 +177,11 @@ public:
 	virtual bool is_selectable_when_hidden() const;
 
 	virtual void redraw(EditorSpatialGizmo *p_gizmo);
-	virtual bool is_handle_highlighted(const EditorSpatialGizmo *p_gizmo, int p_id) const;
-	virtual String get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id) const;
-	virtual Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id) const;
-	virtual void set_handle(EditorSpatialGizmo *p_gizmo, int p_id, Camera *p_camera, const Point2 &p_point);
-	virtual void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, const Variant &p_restore, bool p_cancel = false);
+	virtual bool is_handle_highlighted(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	virtual String get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	virtual Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	virtual void set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point);
+	virtual void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel = false);
 	
 	virtual int subgizmos_intersect_ray(const EditorSpatialGizmo *p_gizmo, Camera *p_camera, const Vector2 &p_point) const;
 	virtual Vector<int> subgizmos_intersect_frustum(const EditorSpatialGizmo *p_gizmo, const Camera *p_camera, const Vector<Plane> &p_frustum) const;
@@ -207,10 +207,10 @@ public:
 	String get_gizmo_name() const;
 	int get_priority() const;
 
-	String get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id) const;
-	Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id) const;
-	void set_handle(EditorSpatialGizmo *p_gizmo, int p_id, Camera *p_camera, const Point2 &p_point);
-	void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, const Variant &p_restore, bool p_cancel = false);
+	String get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	void set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point);
+	void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel = false);
 	void redraw(EditorSpatialGizmo *p_gizmo);
 
 	LightSpatialGizmoPlugin();
@@ -224,10 +224,10 @@ public:
 	String get_gizmo_name() const;
 	int get_priority() const;
 
-	String get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id) const;
-	Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id) const;
-	void set_handle(EditorSpatialGizmo *p_gizmo, int p_id, Camera *p_camera, const Point2 &p_point);
-	void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, const Variant &p_restore, bool p_cancel = false);
+	String get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	void set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point);
+	void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel = false);
 	void redraw(EditorSpatialGizmo *p_gizmo);
 
 	AudioStreamPlayer3DSpatialGizmoPlugin();
@@ -254,10 +254,10 @@ public:
 	String get_gizmo_name() const;
 	int get_priority() const;
 
-	String get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id) const;
-	Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id) const;
-	void set_handle(EditorSpatialGizmo *p_gizmo, int p_id, Camera *p_camera, const Point2 &p_point);
-	void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, const Variant &p_restore, bool p_cancel = false);
+	String get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	void set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point);
+	void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel = false);
 	void redraw(EditorSpatialGizmo *p_gizmo);
 
 	CameraSpatialGizmoPlugin();
@@ -375,10 +375,10 @@ public:
 	bool is_selectable_when_hidden() const;
 	void redraw(EditorSpatialGizmo *p_gizmo);
 
-	String get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id) const;
-	Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id) const;
-	void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, const Variant &p_restore, bool p_cancel);
-	bool is_handle_highlighted(const EditorSpatialGizmo *p_gizmo, int idx) const;
+	String get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel);
+	bool is_handle_highlighted(const EditorSpatialGizmo *p_gizmo, int idx, bool p_secondary) const;
 
 	SoftBodySpatialGizmoPlugin();
 };
@@ -392,10 +392,10 @@ public:
 	int get_priority() const;
 	void redraw(EditorSpatialGizmo *p_gizmo);
 
-	String get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id) const;
-	Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id) const;
-	void set_handle(EditorSpatialGizmo *p_gizmo, int p_id, Camera *p_camera, const Point2 &p_point);
-	void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, const Variant &p_restore, bool p_cancel = false);
+	String get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	void set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point);
+	void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel = false);
 
 	VisibilityNotifierGizmoPlugin();
 };
@@ -421,10 +421,10 @@ public:
 	int get_priority() const;
 	void redraw(EditorSpatialGizmo *p_gizmo);
 
-	String get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id) const;
-	Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id) const;
-	void set_handle(EditorSpatialGizmo *p_gizmo, int p_id, Camera *p_camera, const Point2 &p_point);
-	void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, const Variant &p_restore, bool p_cancel = false);
+	String get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	void set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point);
+	void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel = false);
 
 	ReflectionProbeGizmoPlugin();
 };
@@ -450,10 +450,10 @@ public:
 	int get_priority() const;
 	void redraw(EditorSpatialGizmo *p_gizmo);
 
-	String get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id) const;
-	Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id) const;
-	void set_handle(EditorSpatialGizmo *p_gizmo, int p_id, Camera *p_camera, const Point2 &p_point);
-	void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, const Variant &p_restore, bool p_cancel = false);
+	String get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	void set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point);
+	void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel = false);
 
 	CollisionShapeSpatialGizmoPlugin();
 };
@@ -562,10 +562,10 @@ class RoomSpatialGizmo : public EditorSpatialGizmo {
 	Room *_room = nullptr;
 
 public:
-	virtual String get_handle_name(int p_id) const;
-	virtual Variant get_handle_value(int p_id);
-	virtual void set_handle(int p_id, Camera *p_camera, const Point2 &p_point);
-	virtual void commit_handle(int p_id, const Variant &p_restore, bool p_cancel = false);
+	virtual String get_handle_name(int p_id, bool p_secondary) const;
+	virtual Variant get_handle_value(int p_id, bool p_secondary);
+	virtual void set_handle(int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point);
+	virtual void commit_handle(int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel = false);
 	virtual void redraw();
 
 	RoomSpatialGizmo(Room *p_room = nullptr);
@@ -594,10 +594,10 @@ class PortalSpatialGizmo : public EditorSpatialGizmo {
 	Color _color_portal_back;
 
 public:
-	virtual String get_handle_name(int p_id) const;
-	virtual Variant get_handle_value(int p_id);
-	virtual void set_handle(int p_id, Camera *p_camera, const Point2 &p_point);
-	virtual void commit_handle(int p_id, const Variant &p_restore, bool p_cancel = false);
+	virtual String get_handle_name(int p_id, bool p_secondary) const;
+	virtual Variant get_handle_value(int p_id, bool p_secondary);
+	virtual void set_handle(int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point);
+	virtual void commit_handle(int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel = false);
 	virtual void redraw();
 
 	PortalSpatialGizmo(Portal *p_portal = nullptr);
@@ -640,10 +640,10 @@ class OccluderSpatialGizmo : public EditorSpatialGizmo {
 	void _redraw_poly(bool p_hole, const Vector<Vector2> &p_pts, const PoolVector<Vector2> &p_pts_raw);
 
 public:
-	virtual String get_handle_name(int p_id) const;
-	virtual Variant get_handle_value(int p_id);
-	virtual void set_handle(int p_id, Camera *p_camera, const Point2 &p_point);
-	virtual void commit_handle(int p_id, const Variant &p_restore, bool p_cancel = false);
+	virtual String get_handle_name(int p_id, bool p_secondary) const;
+	virtual Variant get_handle_value(int p_id, bool p_secondary);
+	virtual void set_handle(int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point);
+	virtual void commit_handle(int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel = false);
 	virtual void redraw();
 
 	OccluderSpatialGizmo(Occluder *p_occluder = nullptr);

@@ -77,7 +77,7 @@ public:
 	void setup();
 	void set_editor_plugin(EditorPlugin *editor_plugin);
 
-	void set_handle(int index, Camera *camera, const Point2 &point);
+	void set_handle(int index, bool secondary, Camera *camera, const Point2 &point);
 	void redraw();
 	void apply();
 

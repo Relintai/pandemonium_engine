@@ -47,7 +47,7 @@ void MDIGizmo::set_editor_plugin(EditorPlugin *editor_plugin) {
 	_undo_redo = EditorNode::get_undo_redo();
 }
 
-void MDIGizmo::set_handle(int index, Camera *camera, const Point2 &point) {
+void MDIGizmo::set_handle(int index, bool secondary, Camera *camera, const Point2 &point) {
 	Vector2 relative = point - previous_point;
 
 	if (!_handle_drag_op) {

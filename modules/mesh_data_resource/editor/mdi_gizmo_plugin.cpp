@@ -32,8 +32,8 @@ String MDIGizmoPlugin::get_gizmo_name() const {
 int MDIGizmoPlugin::get_priority() const {
 	return 100;
 }
-bool MDIGizmoPlugin::is_handle_highlighted(const EditorSpatialGizmo *p_gizmo, int p_idx) const {
-	return EditorSpatialGizmoPlugin::is_handle_highlighted(p_gizmo, p_idx);
+bool MDIGizmoPlugin::is_handle_highlighted(const EditorSpatialGizmo *p_gizmo, int p_idx, bool p_secondary) const {
+	return EditorSpatialGizmoPlugin::is_handle_highlighted(p_gizmo, p_idx, p_secondary);
 }
 
 Ref<EditorSpatialGizmo> MDIGizmoPlugin::create_gizmo(Spatial *p_spatial) {

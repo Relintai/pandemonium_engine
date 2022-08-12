@@ -34,7 +34,7 @@ public:
 	void _init();
 	String get_gizmo_name() const;
 	int get_priority() const;
-	bool is_handle_highlighted(const EditorSpatialGizmo *p_gizmo, int p_idx) const;
+	bool is_handle_highlighted(const EditorSpatialGizmo *p_gizmo, int p_idx, bool p_secondary) const;
 
 	MDIGizmoPlugin();
 	~MDIGizmoPlugin();

@@ -153,51 +153,51 @@ void EditorSpatialGizmo::redraw() {
 	}
 }
 
-String EditorSpatialGizmo::get_handle_name(int p_id) const {
+String EditorSpatialGizmo::get_handle_name(int p_id, bool p_secondary) const {
 	if (get_script_instance() && get_script_instance()->has_method("get_handle_name")) {
-		return get_script_instance()->call("get_handle_name", p_id);
+		return get_script_instance()->call("get_handle_name", p_id, p_secondary);
 	}
 
 	ERR_FAIL_COND_V(!gizmo_plugin, "");
-	return gizmo_plugin->get_handle_name(this, p_id);
+	return gizmo_plugin->get_handle_name(this, p_id, p_secondary);
 }
 
-bool EditorSpatialGizmo::is_handle_highlighted(int p_id) const {
+bool EditorSpatialGizmo::is_handle_highlighted(int p_id, bool p_secondary) const {
 	if (get_script_instance() && get_script_instance()->has_method("is_handle_highlighted")) {
-		return get_script_instance()->call("is_handle_highlighted", p_id);
+		return get_script_instance()->call("is_handle_highlighted", p_id, p_secondary);
 	}
 
 	ERR_FAIL_COND_V(!gizmo_plugin, false);
-	return gizmo_plugin->is_handle_highlighted(this, p_id);
+	return gizmo_plugin->is_handle_highlighted(this, p_id, p_secondary);
 }
 
-Variant EditorSpatialGizmo::get_handle_value(int p_id) {
+Variant EditorSpatialGizmo::get_handle_value(int p_id, bool p_secondary) {
 	if (get_script_instance() && get_script_instance()->has_method("get_handle_value")) {
-		return get_script_instance()->call("get_handle_value", p_id);
+		return get_script_instance()->call("get_handle_value", p_id, p_secondary);
 	}
 
 	ERR_FAIL_COND_V(!gizmo_plugin, Variant());
-	return gizmo_plugin->get_handle_value(this, p_id);
+	return gizmo_plugin->get_handle_value(this, p_id, p_secondary);
 }
 
-void EditorSpatialGizmo::set_handle(int p_id, Camera *p_camera, const Point2 &p_point) {
+void EditorSpatialGizmo::set_handle(int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point) {
 	if (get_script_instance() && get_script_instance()->has_method("set_handle")) {
-		get_script_instance()->call("set_handle", p_id, p_camera, p_point);
+		get_script_instance()->call("set_handle", p_id, p_secondary, p_camera, p_point);
 		return;
 	}
 
 	ERR_FAIL_COND(!gizmo_plugin);
-	gizmo_plugin->set_handle(this, p_id, p_camera, p_point);
+	gizmo_plugin->set_handle(this, p_id, p_secondary, p_camera, p_point);
 }
 
-void EditorSpatialGizmo::commit_handle(int p_id, const Variant &p_restore, bool p_cancel) {
+void EditorSpatialGizmo::commit_handle(int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel) {
 	if (get_script_instance() && get_script_instance()->has_method("commit_handle")) {
-		get_script_instance()->call("commit_handle", p_id, p_restore, p_cancel);
+		get_script_instance()->call("commit_handle", p_id, p_secondary, p_restore, p_cancel);
 		return;
 	}
 
 	ERR_FAIL_COND(!gizmo_plugin);
-	gizmo_plugin->commit_handle(this, p_id, p_restore, p_cancel);
+	gizmo_plugin->commit_handle(this, p_id, p_secondary, p_restore, p_cancel);
 }
 
 int EditorSpatialGizmo::subgizmos_intersect_ray(Camera *p_camera, const Vector2 &p_point) const {
@@ -494,7 +494,8 @@ void EditorSpatialGizmo::add_handles(const Vector<Vector3> &p_handles, const Ref
 	}
 
 	bool is_current_hover_gizmo = SpatialEditor::get_singleton()->get_current_hover_gizmo() == this;
-	int current_hover_handle = SpatialEditor::get_singleton()->get_current_hover_gizmo_handle();
+	bool current_hover_handle_secondary;
+	int current_hover_handle = SpatialEditor::get_singleton()->get_current_hover_gizmo_handle(current_hover_handle_secondary);
 
 	Instance ins;
 
@@ -509,12 +510,12 @@ void EditorSpatialGizmo::add_handles(const Vector<Vector3> &p_handles, const Ref
 		PoolVector<Color>::Write w = colors.write();
 		for (int i = 0; i < p_handles.size(); i++) {
 			Color col(1, 1, 1, 1);
-			if (is_handle_highlighted(i)) {
+			if (is_handle_highlighted(i, p_secondary)) {
 				col = Color(0, 0, 1, 0.9);
 			}
 
 			int id = p_ids.empty() ? i : p_ids[i];
-			if (!is_current_hover_gizmo || current_hover_handle != id) {
+			if (!is_current_hover_gizmo || current_hover_handle != id || p_secondary != current_hover_handle_secondary) {
 				col.a = 0.8;
 			}
 
@@ -658,8 +659,9 @@ bool EditorSpatialGizmo::intersect_frustum(const Camera *p_camera, const Vector<
 	return false;
 }
 
-void EditorSpatialGizmo::handles_intersect_ray(Camera *p_camera, const Vector2 &p_point, bool p_shift_pressed, int &r_id) {
+void EditorSpatialGizmo::handles_intersect_ray(Camera *p_camera, const Vector2 &p_point, bool p_shift_pressed, int &r_id, bool &r_secondary) {
 	r_id = -1;
+	r_secondary = false;
 
 	ERR_FAIL_COND(!spatial_node);
 	ERR_FAIL_COND(!valid);
@@ -689,6 +691,7 @@ void EditorSpatialGizmo::handles_intersect_ray(Camera *p_camera, const Vector2 &
 				} else {
 					r_id = secondary_handle_ids[i];
 				}
+				r_secondary = true;
 			}
 		}
 	}
@@ -711,7 +714,7 @@ void EditorSpatialGizmo::handles_intersect_ray(Camera *p_camera, const Vector2 &
 					r_id = i;
 				} else {
 					r_id = handle_ids[i];
-				}
+					r_secondary = false;				}
 			}
 		}
 	}
@@ -923,15 +926,15 @@ void EditorSpatialGizmo::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_subgizmo_selection"), &EditorSpatialGizmo::get_subgizmo_selection);
 
 	BIND_VMETHOD(MethodInfo("redraw"));
-	BIND_VMETHOD(MethodInfo(Variant::STRING, "get_handle_name", PropertyInfo(Variant::INT, "id")));
-	BIND_VMETHOD(MethodInfo(Variant::BOOL, "is_handle_highlighted", PropertyInfo(Variant::INT, "id")));
+	BIND_VMETHOD(MethodInfo(Variant::STRING, "get_handle_name", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::BOOL, "secondary")));
+	BIND_VMETHOD(MethodInfo(Variant::BOOL, "is_handle_highlighted", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::BOOL, "secondary")));
 
-	MethodInfo hvget(Variant::NIL, "get_handle_value", PropertyInfo(Variant::INT, "id"));
+	MethodInfo hvget(Variant::NIL, "get_handle_value", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::BOOL, "secondary"));
 	hvget.return_val.usage |= PROPERTY_USAGE_NIL_IS_VARIANT;
 	BIND_VMETHOD(hvget);
 
-	BIND_VMETHOD(MethodInfo("set_handle", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::OBJECT, "camera", PROPERTY_HINT_RESOURCE_TYPE, "Camera"), PropertyInfo(Variant::VECTOR2, "point")));
-	MethodInfo cm = MethodInfo("commit_handle", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::NIL, "restore"), PropertyInfo(Variant::BOOL, "cancel"));
+	BIND_VMETHOD(MethodInfo("set_handle", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::BOOL, "secondary"), PropertyInfo(Variant::OBJECT, "camera", PROPERTY_HINT_RESOURCE_TYPE, "Camera"), PropertyInfo(Variant::VECTOR2, "point")));
+	MethodInfo cm = MethodInfo("commit_handle", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::BOOL, "secondary"), PropertyInfo(Variant::NIL, "restore"), PropertyInfo(Variant::BOOL, "cancel"));
 	cm.default_arguments.push_back(false);
 	BIND_VMETHOD(cm);
 
@@ -1147,15 +1150,15 @@ void EditorSpatialGizmoPlugin::_bind_methods() {
 	BIND_VMETHOD(MethodInfo(Variant::BOOL, "is_selectable_when_hidden"));
 
 	BIND_VMETHOD(MethodInfo("redraw", GIZMO_REF));
-	BIND_VMETHOD(MethodInfo(Variant::STRING, "get_handle_name", GIZMO_REF, PropertyInfo(Variant::INT, "id")));
-	BIND_VMETHOD(MethodInfo(Variant::BOOL, "is_handle_highlighted", GIZMO_REF, PropertyInfo(Variant::INT, "id")));
+	BIND_VMETHOD(MethodInfo(Variant::STRING, "get_handle_name", GIZMO_REF, PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::BOOL, "secondary")));
+	BIND_VMETHOD(MethodInfo(Variant::BOOL, "is_handle_highlighted", GIZMO_REF, PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::BOOL, "secondary")));
 
-	MethodInfo hvget(Variant::NIL, "get_handle_value", GIZMO_REF, PropertyInfo(Variant::INT, "index"));
+	MethodInfo hvget(Variant::NIL, "get_handle_value", GIZMO_REF, PropertyInfo(Variant::INT, "index"), PropertyInfo(Variant::BOOL, "secondary"));
 	hvget.return_val.usage |= PROPERTY_USAGE_NIL_IS_VARIANT;
 	BIND_VMETHOD(hvget);
 
-	BIND_VMETHOD(MethodInfo("set_handle", GIZMO_REF, PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::OBJECT, "camera", PROPERTY_HINT_RESOURCE_TYPE, "Camera"), PropertyInfo(Variant::VECTOR2, "point")));
-	MethodInfo cm = MethodInfo("commit_handle", GIZMO_REF, PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::NIL, "restore"), PropertyInfo(Variant::BOOL, "cancel"));
+	BIND_VMETHOD(MethodInfo("set_handle", GIZMO_REF, PropertyInfo(Variant::INT, "id") , PropertyInfo(Variant::BOOL, "secondary"), PropertyInfo(Variant::OBJECT, "camera", PROPERTY_HINT_RESOURCE_TYPE, "Camera"), PropertyInfo(Variant::VECTOR2, "point")));
+	MethodInfo cm = MethodInfo("commit_handle", GIZMO_REF, PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::BOOL, "secondary"), PropertyInfo(Variant::NIL, "restore"), PropertyInfo(Variant::BOOL, "cancel"));
 	cm.default_arguments.push_back(false);
 	BIND_VMETHOD(cm);
 
@@ -1210,36 +1213,36 @@ void EditorSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	}
 }
 
-bool EditorSpatialGizmoPlugin::is_handle_highlighted(const EditorSpatialGizmo *p_gizmo, int p_id) const {
+bool EditorSpatialGizmoPlugin::is_handle_highlighted(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
 	if (get_script_instance() && get_script_instance()->has_method("is_handle_highlighted")) {
-		return get_script_instance()->call("is_handle_highlighted", p_gizmo, p_id);
+		return get_script_instance()->call("is_handle_highlighted", p_gizmo, p_id, p_secondary);
 	}
 	return false;
 }
 
-String EditorSpatialGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id) const {
+String EditorSpatialGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
 	if (get_script_instance() && get_script_instance()->has_method("get_handle_name")) {
-		return get_script_instance()->call("get_handle_name", p_gizmo, p_id);
+		return get_script_instance()->call("get_handle_name", p_gizmo, p_id, p_secondary);
 	}
 	return "";
 }
 
-Variant EditorSpatialGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id) const {
+Variant EditorSpatialGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
 	if (get_script_instance() && get_script_instance()->has_method("get_handle_value")) {
-		return get_script_instance()->call("get_handle_value", p_gizmo, p_id);
+		return get_script_instance()->call("get_handle_value", p_gizmo, p_id, p_secondary);
 	}
 	return Variant();
 }
 
-void EditorSpatialGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id, Camera *p_camera, const Point2 &p_point) {
+void EditorSpatialGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point) {
 	if (get_script_instance() && get_script_instance()->has_method("set_handle")) {
-		get_script_instance()->call("set_handle", p_gizmo, p_id, p_camera, p_point);
+		get_script_instance()->call("set_handle", p_gizmo, p_id, p_secondary, p_camera, p_point);
 	}
 }
 
-void EditorSpatialGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, const Variant &p_restore, bool p_cancel) {
+void EditorSpatialGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel) {
 	if (get_script_instance() && get_script_instance()->has_method("commit_handle")) {
-		get_script_instance()->call("commit_handle", p_gizmo, p_id, p_restore, p_cancel);
+		get_script_instance()->call("commit_handle", p_gizmo, p_id, p_secondary, p_restore, p_cancel);
 	}
 }
 
@@ -1349,7 +1352,7 @@ int LightSpatialGizmoPlugin::get_priority() const {
 	return -1;
 }
 
-String LightSpatialGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id) const {
+String LightSpatialGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
 	if (p_id == 0) {
 		return "Radius";
 	} else {
@@ -1357,7 +1360,7 @@ String LightSpatialGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizm
 	}
 }
 
-Variant LightSpatialGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id) const {
+Variant LightSpatialGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
 	Light *light = Object::cast_to<Light>(p_gizmo->get_spatial_node());
 	if (p_id == 0) {
 		return light->get_param(Light::PARAM_RANGE);
@@ -1396,7 +1399,7 @@ static float _find_closest_angle_to_half_pi_arc(const Vector3 &p_from, const Vec
 	return a * 180.0 / Math_PI;
 }
 
-void LightSpatialGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id, Camera *p_camera, const Point2 &p_point) {
+void LightSpatialGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point) {
 	Light *light = Object::cast_to<Light>(p_gizmo->get_spatial_node());
 	Transform gt = light->get_global_transform();
 	Transform gi = gt.affine_inverse();
@@ -1440,7 +1443,7 @@ void LightSpatialGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id, 
 	}
 }
 
-void LightSpatialGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, const Variant &p_restore, bool p_cancel) {
+void LightSpatialGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel) {
 	Light *light = Object::cast_to<Light>(p_gizmo->get_spatial_node());
 	if (p_cancel) {
 		light->set_param(p_id == 0 ? Light::PARAM_RANGE : Light::PARAM_SPOT_ANGLE, p_restore);
@@ -1618,16 +1621,16 @@ int AudioStreamPlayer3DSpatialGizmoPlugin::get_priority() const {
 	return -1;
 }
 
-String AudioStreamPlayer3DSpatialGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id) const {
+String AudioStreamPlayer3DSpatialGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
 	return "Emission Radius";
 }
 
-Variant AudioStreamPlayer3DSpatialGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id) const {
+Variant AudioStreamPlayer3DSpatialGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
 	AudioStreamPlayer3D *player = Object::cast_to<AudioStreamPlayer3D>(p_gizmo->get_spatial_node());
 	return player->get_emission_angle();
 }
 
-void AudioStreamPlayer3DSpatialGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id, Camera *p_camera, const Point2 &p_point) {
+void AudioStreamPlayer3DSpatialGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point) {
 	AudioStreamPlayer3D *player = Object::cast_to<AudioStreamPlayer3D>(p_gizmo->get_spatial_node());
 
 	Transform gt = player->get_global_transform();
@@ -1664,7 +1667,7 @@ void AudioStreamPlayer3DSpatialGizmoPlugin::set_handle(EditorSpatialGizmo *p_giz
 	}
 }
 
-void AudioStreamPlayer3DSpatialGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, const Variant &p_restore, bool p_cancel) {
+void AudioStreamPlayer3DSpatialGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel) {
 	AudioStreamPlayer3D *player = Object::cast_to<AudioStreamPlayer3D>(p_gizmo->get_spatial_node());
 
 	if (p_cancel) {
@@ -1775,7 +1778,7 @@ int CameraSpatialGizmoPlugin::get_priority() const {
 	return -1;
 }
 
-String CameraSpatialGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id) const {
+String CameraSpatialGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
 	Camera *camera = Object::cast_to<Camera>(p_gizmo->get_spatial_node());
 
 	if (camera->get_projection() == Camera::PROJECTION_PERSPECTIVE) {
@@ -1785,7 +1788,7 @@ String CameraSpatialGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_giz
 	}
 }
 
-Variant CameraSpatialGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id) const {
+Variant CameraSpatialGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
 	Camera *camera = Object::cast_to<Camera>(p_gizmo->get_spatial_node());
 
 	if (camera->get_projection() == Camera::PROJECTION_PERSPECTIVE) {
@@ -1795,7 +1798,7 @@ Variant CameraSpatialGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, 
 	}
 }
 
-void CameraSpatialGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id, Camera *p_camera, const Point2 &p_point) {
+void CameraSpatialGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point) {
 	Camera *camera = Object::cast_to<Camera>(p_gizmo->get_spatial_node());
 
 	Transform gt = camera->get_global_transform();
@@ -1824,7 +1827,7 @@ void CameraSpatialGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id,
 	}
 }
 
-void CameraSpatialGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, const Variant &p_restore, bool p_cancel) {
+void CameraSpatialGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel) {
 	Camera *camera = Object::cast_to<Camera>(p_gizmo->get_spatial_node());
 
 	if (camera->get_projection() == Camera::PROJECTION_PERSPECTIVE) {
@@ -2518,21 +2521,21 @@ void SoftBodySpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	p_gizmo->add_collision_triangles(tm);
 }
 
-String SoftBodySpatialGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id) const {
+String SoftBodySpatialGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
 	return "SoftBody pin point";
 }
 
-Variant SoftBodySpatialGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id) const {
+Variant SoftBodySpatialGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
 	SoftBody *soft_body = Object::cast_to<SoftBody>(p_gizmo->get_spatial_node());
 	return Variant(soft_body->is_point_pinned(p_id));
 }
 
-void SoftBodySpatialGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, const Variant &p_restore, bool p_cancel) {
+void SoftBodySpatialGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel) {
 	SoftBody *soft_body = Object::cast_to<SoftBody>(p_gizmo->get_spatial_node());
 	soft_body->pin_point_toggle(p_id);
 }
 
-bool SoftBodySpatialGizmoPlugin::is_handle_highlighted(const EditorSpatialGizmo *p_gizmo, int idx) const {
+bool SoftBodySpatialGizmoPlugin::is_handle_highlighted(const EditorSpatialGizmo *p_gizmo, int idx, bool p_secondary) const {
 	SoftBody *soft_body = Object::cast_to<SoftBody>(p_gizmo->get_spatial_node());
 	return soft_body->is_point_pinned(idx);
 }
@@ -2559,7 +2562,7 @@ int VisibilityNotifierGizmoPlugin::get_priority() const {
 	return -1;
 }
 
-String VisibilityNotifierGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id) const {
+String VisibilityNotifierGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
 	switch (p_id) {
 		case 0:
 			return "Size X";
@@ -2578,11 +2581,11 @@ String VisibilityNotifierGizmoPlugin::get_handle_name(const EditorSpatialGizmo *
 	return "";
 }
 
-Variant VisibilityNotifierGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id) const {
+Variant VisibilityNotifierGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
 	VisibilityNotifier *notifier = Object::cast_to<VisibilityNotifier>(p_gizmo->get_spatial_node());
 	return notifier->get_aabb();
 }
-void VisibilityNotifierGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id, Camera *p_camera, const Point2 &p_point) {
+void VisibilityNotifierGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point) {
 	VisibilityNotifier *notifier = Object::cast_to<VisibilityNotifier>(p_gizmo->get_spatial_node());
 
 	Transform gt = notifier->get_global_transform();
@@ -2634,7 +2637,7 @@ void VisibilityNotifierGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int 
 	}
 }
 
-void VisibilityNotifierGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, const Variant &p_restore, bool p_cancel) {
+void VisibilityNotifierGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel) {
 	VisibilityNotifier *notifier = Object::cast_to<VisibilityNotifier>(p_gizmo->get_spatial_node());
 
 	if (p_cancel) {
@@ -2752,7 +2755,7 @@ int ReflectionProbeGizmoPlugin::get_priority() const {
 	return -1;
 }
 
-String ReflectionProbeGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id) const {
+String ReflectionProbeGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
 	switch (p_id) {
 		case 0:
 			return "Extents X";
@@ -2770,11 +2773,11 @@ String ReflectionProbeGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_g
 
 	return "";
 }
-Variant ReflectionProbeGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id) const {
+Variant ReflectionProbeGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
 	ReflectionProbe *probe = Object::cast_to<ReflectionProbe>(p_gizmo->get_spatial_node());
 	return AABB(probe->get_extents(), probe->get_origin_offset());
 }
-void ReflectionProbeGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id, Camera *p_camera, const Point2 &p_point) {
+void ReflectionProbeGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point) {
 	ReflectionProbe *probe = Object::cast_to<ReflectionProbe>(p_gizmo->get_spatial_node());
 	Transform gt = probe->get_global_transform();
 
@@ -2831,7 +2834,7 @@ void ReflectionProbeGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_i
 	}
 }
 
-void ReflectionProbeGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, const Variant &p_restore, bool p_cancel) {
+void ReflectionProbeGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel) {
 	ReflectionProbe *probe = Object::cast_to<ReflectionProbe>(p_gizmo->get_spatial_node());
 
 	AABB restore = p_restore;
@@ -2985,7 +2988,7 @@ int CollisionShapeSpatialGizmoPlugin::get_priority() const {
 	return -1;
 }
 
-String CollisionShapeSpatialGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id) const {
+String CollisionShapeSpatialGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
 	const CollisionShape *cs = Object::cast_to<CollisionShape>(p_gizmo->get_spatial_node());
 
 	Ref<Shape> s = cs->get_shape();
@@ -3016,7 +3019,7 @@ String CollisionShapeSpatialGizmoPlugin::get_handle_name(const EditorSpatialGizm
 	return "";
 }
 
-Variant CollisionShapeSpatialGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id) const {
+Variant CollisionShapeSpatialGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
 	CollisionShape *cs = Object::cast_to<CollisionShape>(p_gizmo->get_spatial_node());
 
 	Ref<Shape> s = cs->get_shape();
@@ -3051,7 +3054,7 @@ Variant CollisionShapeSpatialGizmoPlugin::get_handle_value(EditorSpatialGizmo *p
 
 	return Variant();
 }
-void CollisionShapeSpatialGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id, Camera *p_camera, const Point2 &p_point) {
+void CollisionShapeSpatialGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point) {
 	CollisionShape *cs = Object::cast_to<CollisionShape>(p_gizmo->get_spatial_node());
 
 	Ref<Shape> s = cs->get_shape();
@@ -3167,7 +3170,7 @@ void CollisionShapeSpatialGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, i
 		}
 	}
 }
-void CollisionShapeSpatialGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, const Variant &p_restore, bool p_cancel) {
+void CollisionShapeSpatialGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel) {
 	CollisionShape *cs = Object::cast_to<CollisionShape>(p_gizmo->get_spatial_node());
 
 	Ref<Shape> s = cs->get_shape();
@@ -4445,11 +4448,11 @@ int RoomGizmoPlugin::get_priority() const {
 
 //////////////////////
 
-String RoomSpatialGizmo::get_handle_name(int p_id) const {
+String RoomSpatialGizmo::get_handle_name(int p_id, bool p_secondary) const {
 	return "Point " + itos(p_id);
 }
 
-Variant RoomSpatialGizmo::get_handle_value(int p_id) {
+Variant RoomSpatialGizmo::get_handle_value(int p_id, bool p_secondary) {
 	if (!_room) {
 		return Vector3(0, 0, 0);
 	}
@@ -4462,7 +4465,7 @@ Variant RoomSpatialGizmo::get_handle_value(int p_id) {
 	return _room->_bound_pts[p_id];
 }
 
-void RoomSpatialGizmo::set_handle(int p_id, Camera *p_camera, const Point2 &p_point) {
+void RoomSpatialGizmo::set_handle(int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point) {
 	if (!_room || (p_id >= _room->_bound_pts.size())) {
 		return;
 	}
@@ -4515,7 +4518,7 @@ void RoomSpatialGizmo::set_handle(int p_id, Camera *p_camera, const Point2 &p_po
 	}
 }
 
-void RoomSpatialGizmo::commit_handle(int p_id, const Variant &p_restore, bool p_cancel) {
+void RoomSpatialGizmo::commit_handle(int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel) {
 	if (!_room || (p_id >= _room->_bound_pts.size())) {
 		return;
 	}
@@ -4652,11 +4655,11 @@ int PortalGizmoPlugin::get_priority() const {
 
 //////////////////////
 
-String PortalSpatialGizmo::get_handle_name(int p_id) const {
+String PortalSpatialGizmo::get_handle_name(int p_id, bool p_secondary) const {
 	return "Point " + itos(p_id);
 }
 
-Variant PortalSpatialGizmo::get_handle_value(int p_id) {
+Variant PortalSpatialGizmo::get_handle_value(int p_id, bool p_secondary) {
 	if (!_portal) {
 		return Vector2(0, 0);
 	}
@@ -4669,7 +4672,7 @@ Variant PortalSpatialGizmo::get_handle_value(int p_id) {
 	return _portal->_pts_local_raw[p_id];
 }
 
-void PortalSpatialGizmo::set_handle(int p_id, Camera *p_camera, const Point2 &p_point) {
+void PortalSpatialGizmo::set_handle(int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point) {
 	if (!_portal || (p_id >= _portal->_pts_local_raw.size())) {
 		return;
 	}
@@ -4709,7 +4712,7 @@ void PortalSpatialGizmo::set_handle(int p_id, Camera *p_camera, const Point2 &p_
 	}
 }
 
-void PortalSpatialGizmo::commit_handle(int p_id, const Variant &p_restore, bool p_cancel) {
+void PortalSpatialGizmo::commit_handle(int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel) {
 	if (!_portal || (p_id >= _portal->_pts_local_raw.size())) {
 		return;
 	}
@@ -4951,7 +4954,7 @@ int OccluderGizmoPlugin::get_priority() const {
 
 //////////////////////
 
-String OccluderSpatialGizmo::get_handle_name(int p_id) const {
+String OccluderSpatialGizmo::get_handle_name(int p_id, bool p_secondary) const {
 	const OccluderShapeSphere *occ_sphere = get_occluder_shape_sphere();
 	if (occ_sphere) {
 		int num_spheres = occ_sphere->get_spheres().size();
@@ -4976,7 +4979,7 @@ String OccluderSpatialGizmo::get_handle_name(int p_id) const {
 	return "Unknown";
 }
 
-Variant OccluderSpatialGizmo::get_handle_value(int p_id) {
+Variant OccluderSpatialGizmo::get_handle_value(int p_id, bool p_secondary) {
 	const OccluderShapeSphere *occ_sphere = get_occluder_shape_sphere();
 	if (occ_sphere) {
 		Vector<Plane> spheres = occ_sphere->get_spheres();
@@ -5006,7 +5009,7 @@ Variant OccluderSpatialGizmo::get_handle_value(int p_id) {
 	return 0;
 }
 
-void OccluderSpatialGizmo::set_handle(int p_id, Camera *p_camera, const Point2 &p_point) {
+void OccluderSpatialGizmo::set_handle(int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point) {
 	if (!_occluder) {
 		return;
 	}
@@ -5134,7 +5137,7 @@ void OccluderSpatialGizmo::set_handle(int p_id, Camera *p_camera, const Point2 &
 	}
 }
 
-void OccluderSpatialGizmo::commit_handle(int p_id, const Variant &p_restore, bool p_cancel) {
+void OccluderSpatialGizmo::commit_handle(int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel) {
 	UndoRedo *ur = SpatialEditor::get_singleton()->get_undo_redo();
 
 	OccluderShapeSphere *occ_sphere = get_occluder_shape_sphere();
