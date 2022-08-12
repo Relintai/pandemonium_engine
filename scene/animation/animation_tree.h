@@ -191,9 +191,12 @@ private:
 		bool loc_used;
 		bool rot_used;
 		bool scale_used;
+		Vector3 init_loc;
+		Quat ref_rot;
+		Quat init_rot;
+		Vector3 init_scale;
 		Vector3 loc;
 		Quat rot;
-		float rot_blend_accum;
 		Vector3 scale;
 
 		TrackCacheTransform() {
@@ -204,6 +207,10 @@ private:
 			loc_used = false;
 			rot_used = false;
 			scale_used = false;
+			init_loc = Vector3(0, 0, 0);
+			ref_rot = Quat(0, 0, 0, 1);
+			init_rot = Quat(0, 0, 0, 0);
+			init_scale = Vector3(1, 1, 1);
 		}
 	};
 

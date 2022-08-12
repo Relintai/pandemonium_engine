@@ -151,6 +151,22 @@ Quat Quat::inverse() const {
 	return Quat(-x, -y, -z, w);
 }
 
+Quat Quat::log() const {
+	Quat src = *this;
+	Vector3 src_v = src.get_axis() * src.get_angle();
+	return Quat(src_v.x, src_v.y, src_v.z, 0);
+}
+
+Quat Quat::exp() const {
+	Quat src = *this;
+	Vector3 src_v = Vector3(src.x, src.y, src.z);
+	float theta = src_v.length();
+	if (theta < CMP_EPSILON) {
+		return Quat(0, 0, 0, 1);
+	}
+	return Quat(src_v.normalized(), theta);
+}
+
 Quat Quat::slerp(const Quat &p_to, const real_t &p_weight) const {
 #ifdef MATH_CHECKS
 	ERR_FAIL_COND_V_MSG(!is_normalized(), Quat(), "The start quaternion must be normalized.");
@@ -232,6 +248,18 @@ Quat Quat::cubic_slerp(const Quat &p_b, const Quat &p_pre_a, const Quat &p_post_
 	Quat sp = this->slerp(p_b, p_weight);
 	Quat sq = p_pre_a.slerpni(p_post_b, p_weight);
 	return sp.slerpni(sq, t2);
+}
+
+Vector3 Quat::get_axis() const {
+	if (Math::abs(w) > 1 - CMP_EPSILON) {
+		return Vector3(x, y, z);
+	}
+	real_t r = ((real_t)1) / Math::sqrt(1 - w * w);
+	return Vector3(x * r, y * r, z * r);
+}
+
+float Quat::get_angle() const {
+	return 2 * Math::acos(w);
 }
 
 Quat::operator String() const {

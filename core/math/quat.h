@@ -46,6 +46,8 @@ public:
 	Quat normalized() const;
 	bool is_normalized() const;
 	Quat inverse() const;
+	Quat log() const;
+	Quat exp() const;
 	_FORCE_INLINE_ real_t dot(const Quat &p_q) const;
 	real_t angle_to(const Quat &p_to) const;
 
@@ -60,6 +62,9 @@ public:
 	Quat slerp(const Quat &p_to, const real_t &p_weight) const;
 	Quat slerpni(const Quat &p_to, const real_t &p_weight) const;
 	Quat cubic_slerp(const Quat &p_b, const Quat &p_pre_a, const Quat &p_post_b, const real_t &p_weight) const;
+
+	Vector3 get_axis() const;
+	float get_angle() const;
 
 	void set_axis_angle(const Vector3 &axis, const real_t &angle);
 	_FORCE_INLINE_ void get_axis_angle(Vector3 &r_axis, real_t &r_angle) const {
@@ -116,9 +121,13 @@ public:
 			z(p_z),
 			w(p_w) {
 	}
-	Quat(const Vector3 &axis, const real_t &angle) { set_axis_angle(axis, angle); }
+	Quat(const Vector3 &axis, const real_t &angle) {
+		set_axis_angle(axis, angle);
+	}
 
-	Quat(const Vector3 &euler) { set_euler(euler); }
+	Quat(const Vector3 &euler) {
+		set_euler(euler);
+	}
 	Quat(const Quat &p_q) :
 			x(p_q.x),
 			y(p_q.y),
