@@ -1340,10 +1340,10 @@ bool SceneSynchronizer::compare(const Variant &p_first, const Variant &p_second,
 		case Variant::VECTOR3: {
 			return compare(Vector3(p_first), Vector3(p_second), p_tolerance);
 		}
-		case Variant::QUAT: {
-			const Quat a = p_first;
-			const Quat b = p_second;
-			const Quat r(a - b); // Element wise subtraction.
+		case Variant::QUATERNION: {
+			const Quaternion a = p_first;
+			const Quaternion b = p_second;
+			const Quaternion r(a - b); // Element wise subtraction.
 			return (r.x * r.x + r.y * r.y + r.z * r.z + r.w * r.w) <= (p_tolerance * p_tolerance);
 		}
 		case Variant::PLANE: {

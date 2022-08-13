@@ -112,9 +112,9 @@ bool Animation::_set(const StringName &p_name, const Variant &p_value) {
 				int64_t count = vcount / 6;
 				rt->rotations.resize(count);
 
-				TKey<Quat> *rw = rt->rotations.ptrw();
+				TKey<Quaternion> *rw = rt->rotations.ptrw();
 				for (int i = 0; i < count; i++) {
-					TKey<Quat> &rk = rw[i];
+					TKey<Quaternion> &rk = rw[i];
 					const real_t *ofs = &r[i * 6];
 					rk.time = ofs[0];
 					rk.transition = ofs[1];
@@ -429,7 +429,7 @@ bool Animation::_get(const StringName &p_name, Variant &r_ret) const {
 
 				int idx = 0;
 				for (int i = 0; i < track_get_key_count(track); i++) {
-					Quat rot;
+					Quaternion rot;
 					rotation_track_get_key(track, i, &rot);
 
 					w[idx++] = track_get_key_time(track, i);
@@ -936,7 +936,7 @@ Error Animation::position_track_interpolate(int p_track, double p_time, Vector3 
 
 ////
 
-int Animation::rotation_track_insert_key(int p_track, double p_time, const Quat &p_rotation) {
+int Animation::rotation_track_insert_key(int p_track, double p_time, const Quaternion &p_rotation) {
 	ERR_FAIL_INDEX_V(p_track, tracks.size(), -1);
 	Track *t = tracks[p_track];
 	ERR_FAIL_COND_V(t->type != TYPE_ROTATION_3D, -1);
@@ -945,7 +945,7 @@ int Animation::rotation_track_insert_key(int p_track, double p_time, const Quat 
 
 	//ERR_FAIL_COND_V(rt->compressed_track >= 0, -1);
 
-	TKey<Quat> tkey;
+	TKey<Quaternion> tkey;
 	tkey.time = p_time;
 	tkey.value = p_rotation;
 
@@ -954,7 +954,7 @@ int Animation::rotation_track_insert_key(int p_track, double p_time, const Quat 
 	return ret;
 }
 
-Error Animation::rotation_track_get_key(int p_track, int p_key, Quat *r_rotation) const {
+Error Animation::rotation_track_get_key(int p_track, int p_key, Quaternion *r_rotation) const {
 	ERR_FAIL_INDEX_V(p_track, tracks.size(), ERR_INVALID_PARAMETER);
 	Track *t = tracks[p_track];
 
@@ -982,7 +982,7 @@ Error Animation::rotation_track_get_key(int p_track, int p_key, Quat *r_rotation
 	return OK;
 }
 
-Error Animation::rotation_track_interpolate(int p_track, double p_time, Quat *r_interpolation) const {
+Error Animation::rotation_track_interpolate(int p_track, double p_time, Quaternion *r_interpolation) const {
 	ERR_FAIL_INDEX_V(p_track, tracks.size(), ERR_INVALID_PARAMETER);
 	Track *t = tracks[p_track];
 	ERR_FAIL_COND_V(t->type != TYPE_ROTATION_3D, ERR_INVALID_PARAMETER);
@@ -1001,7 +1001,7 @@ Error Animation::rotation_track_interpolate(int p_track, double p_time, Quat *r_
 
 	bool ok = false;
 
-	Quat tk = _interpolate(rt->rotations, p_time, rt->interpolation, rt->loop_wrap, &ok);
+	Quaternion tk = _interpolate(rt->rotations, p_time, rt->interpolation, rt->loop_wrap, &ok);
 
 	if (!ok) {
 		return ERR_UNAVAILABLE;
@@ -1328,7 +1328,7 @@ void Animation::track_insert_key(int p_track, float p_time, const Variant &p_key
 
 		} break;
 		case TYPE_ROTATION_3D: {
-			ERR_FAIL_COND((p_key.get_type() != Variant::QUAT) && (p_key.get_type() != Variant::BASIS));
+			ERR_FAIL_COND((p_key.get_type() != Variant::QUATERNION) && (p_key.get_type() != Variant::BASIS));
 			int idx = rotation_track_insert_key(p_track, p_time, p_key);
 			track_set_key_transition(p_track, idx, p_transition);
 
@@ -1478,7 +1478,7 @@ Variant Animation::track_get_key_value(int p_track, int p_key_idx) const {
 			return value;
 		} break;
 		case TYPE_ROTATION_3D: {
-			Quat value;
+			Quaternion value;
 			rotation_track_get_key(p_track, p_key_idx, &value);
 			return value;
 		} break;
@@ -1646,7 +1646,7 @@ void Animation::track_set_key_time(int p_track, int p_key_idx, float p_time) {
 			RotationTrack *tt = static_cast<RotationTrack *>(t);
 			//ERR_FAIL_COND(tt->compressed_track >= 0);
 			ERR_FAIL_INDEX(p_key_idx, tt->rotations.size());
-			TKey<Quat> key = tt->rotations[p_key_idx];
+			TKey<Quaternion> key = tt->rotations[p_key_idx];
 			key.time = p_time;
 			tt->rotations.remove(p_key_idx);
 			_insert(p_time, tt->rotations, key);
@@ -1794,7 +1794,7 @@ void Animation::track_set_key_value(int p_track, int p_key_idx, const Variant &p
 
 		} break;
 		case TYPE_ROTATION_3D: {
-			ERR_FAIL_COND((p_value.get_type() != Variant::QUAT) && (p_value.get_type() != Variant::BASIS));
+			ERR_FAIL_COND((p_value.get_type() != Variant::QUATERNION) && (p_value.get_type() != Variant::BASIS));
 			RotationTrack *rt = static_cast<RotationTrack *>(t);
 			//ERR_FAIL_COND(rt->compressed_track >= 0);
 			ERR_FAIL_INDEX(p_key_idx, rt->rotations.size());
@@ -1957,7 +1957,7 @@ int Animation::_find(const Vector<K> &p_keys, float p_time) const {
 Vector3 Animation::_interpolate(const Vector3 &p_a, const Vector3 &p_b, float p_c) const {
 	return p_a.linear_interpolate(p_b, p_c);
 }
-Quat Animation::_interpolate(const Quat &p_a, const Quat &p_b, float p_c) const {
+Quaternion Animation::_interpolate(const Quaternion &p_a, const Quaternion &p_b, float p_c) const {
 	return p_a.slerp(p_b, p_c);
 }
 Variant Animation::_interpolate(const Variant &p_a, const Variant &p_b, float p_c) const {
@@ -1973,7 +1973,7 @@ float Animation::_interpolate(const float &p_a, const float &p_b, float p_c) con
 Vector3 Animation::_cubic_interpolate(const Vector3 &p_pre_a, const Vector3 &p_a, const Vector3 &p_b, const Vector3 &p_post_b, float p_c) const {
 	return p_a.cubic_interpolate(p_b, p_pre_a, p_post_b, p_c);
 }
-Quat Animation::_cubic_interpolate(const Quat &p_pre_a, const Quat &p_a, const Quat &p_b, const Quat &p_post_b, float p_c) const {
+Quaternion Animation::_cubic_interpolate(const Quaternion &p_pre_a, const Quaternion &p_a, const Quaternion &p_b, const Quaternion &p_post_b, float p_c) const {
 	return p_a.cubic_slerp(p_b, p_pre_a, p_post_b, p_c);
 }
 Variant Animation::_cubic_interpolate(const Variant &p_pre_a, const Variant &p_a, const Variant &p_b, const Variant &p_post_b, float p_c) const {
@@ -2038,11 +2038,11 @@ Variant Animation::_cubic_interpolate(const Variant &p_pre_a, const Variant &p_a
 
 			return a.cubic_interpolate(b, pa, pb, p_c);
 		}
-		case Variant::QUAT: {
-			Quat a = p_a;
-			Quat b = p_b;
-			Quat pa = p_pre_a;
-			Quat pb = p_post_b;
+		case Variant::QUATERNION: {
+			Quaternion a = p_a;
+			Quaternion b = p_b;
+			Quaternion pa = p_pre_a;
+			Quaternion pb = p_post_b;
 
 			return a.cubic_slerp(b, pa, pb, p_c);
 		}
@@ -3230,10 +3230,10 @@ bool Animation::_position_track_optimize_key(const TKey<Vector3> &t0, const TKey
 	return true;
 }
 
-bool Animation::_rotation_track_optimize_key(const TKey<Quat> &t0, const TKey<Quat> &t1, const TKey<Quat> &t2, real_t p_allowed_angular_error, float p_max_optimizable_angle) {
-	const Quat &q0 = t0.value;
-	const Quat &q1 = t1.value;
-	const Quat &q2 = t2.value;
+bool Animation::_rotation_track_optimize_key(const TKey<Quaternion> &t0, const TKey<Quaternion> &t1, const TKey<Quaternion> &t2, real_t p_allowed_angular_error, float p_max_optimizable_angle) {
+	const Quaternion &q0 = t0.value;
+	const Quaternion &q1 = t1.value;
+	const Quaternion &q2 = t2.value;
 
 	//localize both to rotation from q0
 
@@ -3243,8 +3243,8 @@ bool Animation::_rotation_track_optimize_key(const TKey<Quat> &t0, const TKey<Qu
 		}
 
 	} else {
-		Quat r02 = (q0.inverse() * q2).normalized();
-		Quat r01 = (q0.inverse() * q1).normalized();
+		Quaternion r02 = (q0.inverse() * q2).normalized();
+		Quaternion r01 = (q0.inverse() * q1).normalized();
 
 		Vector3 v02, v01;
 		real_t a02, a01;
@@ -3359,12 +3359,12 @@ void Animation::_rotation_track_optimize(int p_idx, real_t p_allowed_angular_err
 	ERR_FAIL_COND(tracks[p_idx]->type != TYPE_ROTATION_3D);
 	RotationTrack *tt = static_cast<RotationTrack *>(tracks[p_idx]);
 	bool prev_erased = false;
-	TKey<Quat> first_erased;
+	TKey<Quaternion> first_erased;
 
 	for (int i = 1; i < tt->rotations.size() - 1; i++) {
-		TKey<Quat> &t0 = tt->rotations.write[i - 1];
-		TKey<Quat> &t1 = tt->rotations.write[i];
-		TKey<Quat> &t2 = tt->rotations.write[i + 1];
+		TKey<Quaternion> &t0 = tt->rotations.write[i - 1];
+		TKey<Quaternion> &t1 = tt->rotations.write[i];
+		TKey<Quaternion> &t2 = tt->rotations.write[i + 1];
 
 		bool erase = _rotation_track_optimize_key(t0, t1, t2, p_allowed_angular_err, p_max_optimizable_angle);
 

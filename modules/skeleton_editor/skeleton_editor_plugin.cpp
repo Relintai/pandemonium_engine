@@ -109,7 +109,7 @@ void BoneTransformEditor::create_editors() {
 	section->get_vbox()->add_child(position_property);
 
 	// Rotation property
-	rotation_property = memnew(EditorPropertyQuat());
+	rotation_property = memnew(EditorPropertyQuaternion());
 	rotation_property->setup(-10000, 10000, 0.001f, true);
 	rotation_property->set_label("Rotation");
 	rotation_property->set_selectable(false);

@@ -3585,7 +3585,7 @@ msgid "Variable is of type [Plane]."
 msgstr ""
 
 #: doc/classes/@GlobalScope.xml
-msgid "Variable is of type [Quat]."
+msgid "Variable is of type [Quaternion]."
 msgstr ""
 
 #: doc/classes/@GlobalScope.xml
@@ -4662,7 +4662,7 @@ msgstr ""
 msgid ""
 "Returns the interpolated value of a transform track at a given time (in "
 "seconds). An array consisting of 3 elements: position ([Vector3]), rotation "
-"([Quat]) and scale ([Vector3])."
+"([Quaternion]) and scale ([Vector3])."
 msgstr ""
 
 #: doc/classes/Animation.xml
@@ -4984,7 +4984,7 @@ msgstr ""
 #: doc/classes/GIProbe.xml doc/classes/GIProbeData.xml
 #: doc/classes/KinematicBody.xml doc/classes/Light.xml doc/classes/Material.xml
 #: doc/classes/Mesh.xml doc/classes/MeshInstance.xml doc/classes/Particles.xml
-#: doc/classes/Quat.xml doc/classes/Skeleton.xml doc/classes/SpotLight.xml
+#: doc/classes/Quaternion.xml doc/classes/Skeleton.xml doc/classes/SpotLight.xml
 #: doc/classes/StaticBody.xml doc/classes/WorldEnvironment.xml
 msgid "Third Person Shooter Demo"
 msgstr ""
@@ -10797,7 +10797,7 @@ msgstr ""
 msgid "Matrices and transforms"
 msgstr ""
 
-#: doc/classes/Basis.xml doc/classes/Quat.xml doc/classes/Transform.xml
+#: doc/classes/Basis.xml doc/classes/Quaternion.xml doc/classes/Transform.xml
 msgid "Using 3D transforms"
 msgstr ""
 
@@ -10832,7 +10832,7 @@ msgid ""
 "Constructs a pure rotation basis matrix from the given Euler angles (in the "
 "YXZ convention: when *composing*, first Y, then X, and Z last), given in the "
 "vector format as (X angle, Y angle, Z angle).\n"
-"Consider using the [Quat] constructor instead, which uses a quaternion "
+"Consider using the [Quaternion] constructor instead, which uses a quaternion "
 "instead of Euler angles."
 msgstr ""
 
@@ -10863,7 +10863,7 @@ msgid ""
 "vector contains the rotation angles in the format (X angle, Y angle, Z "
 "angle).\n"
 "Consider using the [method get_rotation_quat] method instead, which returns "
-"a [Quat] quaternion instead of Euler angles."
+"a [Quaternion] quaternion instead of Euler angles."
 msgstr ""
 
 #: doc/classes/Basis.xml
@@ -47872,44 +47872,44 @@ msgstr ""
 msgid "Size on the X and Y axes."
 msgstr ""
 
-#: doc/classes/Quat.xml
-msgid "Quaternion."
+#: doc/classes/Quaternion.xml
+msgid "Quaternionernion."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid ""
-"A unit quaternion used for representing 3D rotations. Quaternions need to be "
+"A unit quaternion used for representing 3D rotations. Quaternionernions need to be "
 "normalized to be used for rotation.\n"
 "It is similar to Basis, which implements matrix representation of rotations, "
 "and can be parametrized using both an axis-angle pair or Euler angles. Basis "
-"stores rotation, scale, and shearing, while Quat only stores rotation.\n"
+"stores rotation, scale, and shearing, while Quaternion only stores rotation.\n"
 "Due to its compactness and the way it is stored in memory, certain "
 "operations (obtaining axis-angle and performing SLERP, in particular) are "
 "more efficient and robust against floating-point errors."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid "Constructs a quaternion from the given [Basis]."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid ""
 "Constructs a quaternion that will perform a rotation specified by Euler "
 "angles (in the YXZ convention: when decomposing, first Z, then X, and Y "
 "last), given in the vector format as (X angle, Y angle, Z angle)."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid ""
 "Constructs a quaternion that will rotate around the given axis by the "
 "specified angle. The axis must be a normalized vector."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid "Constructs a quaternion defined by the given values."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid ""
 "Returns the angle between this quaternion and [code]to[/code]. This is the "
 "magnitude of the angle you would need to rotate by to get from one to the "
@@ -47919,18 +47919,18 @@ msgid ""
 "reliably."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid ""
 "Performs a cubic spherical interpolation between quaternions [code]pre_a[/"
 "code], this vector, [code]b[/code], and [code]post_b[/code], by the given "
 "amount [code]weight[/code]."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid "Returns the dot product of two quaternions."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid ""
 "Returns Euler angles (in the YXZ convention: when decomposing, first Z, then "
 "X, and Y last) corresponding to the rotation represented by the unit "
@@ -47938,89 +47938,89 @@ msgid ""
 "angle, Y angle, Z angle)."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid "Returns the inverse of the quaternion."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid ""
 "Returns [code]true[/code] if this quaternion and [code]quat[/code] are "
 "approximately equal, by running [method @GDScript.is_equal_approx] on each "
 "component."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid "Returns whether the quaternion is normalized or not."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid "Returns the length of the quaternion."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid "Returns the length of the quaternion, squared."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid "Returns a copy of the quaternion, normalized to unit length."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid ""
 "Sets the quaternion to a rotation which rotates around axis by the specified "
 "angle, in radians. The axis must be a normalized vector."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid ""
 "Sets the quaternion to a rotation specified by Euler angles (in the YXZ "
 "convention: when decomposing, first Z, then X, and Y last), given in the "
 "vector format as (X angle, Y angle, Z angle)."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid ""
 "Returns the result of the spherical linear interpolation between this "
 "quaternion and [code]to[/code] by amount [code]weight[/code].\n"
 "[b]Note:[/b] Both quaternions must be normalized."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid ""
 "Returns the result of the spherical linear interpolation between this "
 "quaternion and [code]to[/code] by amount [code]weight[/code], but without "
 "checking if the rotation path is not bigger than 90 degrees."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid "Returns a vector transformed (multiplied) by this quaternion."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid ""
 "W component of the quaternion (real part).\n"
-"Quaternion components should usually not be manipulated directly."
+"Quaternionernion components should usually not be manipulated directly."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid ""
 "X component of the quaternion (imaginary [code]i[/code] axis part).\n"
-"Quaternion components should usually not be manipulated directly."
+"Quaternionernion components should usually not be manipulated directly."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid ""
 "Y component of the quaternion (imaginary [code]j[/code] axis part).\n"
-"Quaternion components should usually not be manipulated directly."
+"Quaternionernion components should usually not be manipulated directly."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid ""
 "Z component of the quaternion (imaginary [code]k[/code] axis part).\n"
-"Quaternion components should usually not be manipulated directly."
+"Quaternionernion components should usually not be manipulated directly."
 msgstr ""
 
-#: doc/classes/Quat.xml
+#: doc/classes/Quaternion.xml
 msgid ""
 "The identity quaternion, representing no rotation. Equivalent to an identity "
 "[Basis] matrix. If a vector is transformed by an identity quaternion, it "
@@ -55177,7 +55177,7 @@ msgid "Constructs a new String from the given [Plane]."
 msgstr ""
 
 #: doc/classes/String.xml
-msgid "Constructs a new String from the given [Quat]."
+msgid "Constructs a new String from the given [Quaternion]."
 msgstr ""
 
 #: doc/classes/String.xml
@@ -59980,7 +59980,7 @@ msgstr ""
 
 #: doc/classes/Transform.xml
 msgid ""
-"Constructs a Transform from a [Quat]. The origin will be [code]Vector3(0, 0, "
+"Constructs a Transform from a [Quaternion]. The origin will be [code]Vector3(0, 0, "
 "0)[/code]."
 msgstr ""
 

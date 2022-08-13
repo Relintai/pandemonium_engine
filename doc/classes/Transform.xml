@@ -43,9 +43,9 @@
 		</method>
 		<method name="Transform">
 			<return type="Transform" />
-			<argument index="0" name="from" type="Quat" />
+			<argument index="0" name="from" type="Quaternion" />
 			<description>
-				Constructs a Transform from a [Quat]. The origin will be [code]Vector3(0, 0, 0)[/code].
+				Constructs a Transform from a [Quaternion]. The origin will be [code]Vector3(0, 0, 0)[/code].
 			</description>
 		</method>
 		<method name="Transform">

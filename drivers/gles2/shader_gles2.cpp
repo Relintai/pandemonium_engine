@@ -771,8 +771,8 @@ void ShaderGLES2::use_material(void *p_material) {
 					if (V->get().get_type() == Variant::COLOR) {
 						Color value = V->get();
 						glUniform4f(location, value.r, value.g, value.b, value.a);
-					} else if (V->get().get_type() == Variant::QUAT) {
-						Quat value = V->get();
+					} else if (V->get().get_type() == Variant::QUATERNION) {
+						Quaternion value = V->get();
 						glUniform4f(location, value.x, value.y, value.z, value.w);
 					} else {
 						Plane value = V->get();

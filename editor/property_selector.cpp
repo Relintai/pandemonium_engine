@@ -148,7 +148,7 @@ void PropertySelector::_update_search() {
 			Control::get_icon("Vector3", "EditorIcons"),
 			Control::get_icon("Transform2D", "EditorIcons"),
 			Control::get_icon("Plane", "EditorIcons"),
-			Control::get_icon("Quat", "EditorIcons"),
+			Control::get_icon("Quaternion", "EditorIcons"),
 			Control::get_icon("AABB", "EditorIcons"),
 			Control::get_icon("Basis", "EditorIcons"),
 			Control::get_icon("Transform", "EditorIcons"),

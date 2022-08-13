@@ -419,10 +419,10 @@ Variant SceneTreeTween::interpolate_variant(Variant p_initial_val, Variant p_del
 			return r;
 		}
 
-		case Variant::QUAT: {
-			Quat i = p_initial_val;
-			Quat d = p_delta_val;
-			Quat r;
+		case Variant::QUATERNION: {
+			Quaternion i = p_initial_val;
+			Quaternion d = p_delta_val;
+			Quaternion r;
 
 			APPLY_EQUATION(x);
 			APPLY_EQUATION(y);

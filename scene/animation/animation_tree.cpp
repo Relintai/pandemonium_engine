@@ -1038,7 +1038,7 @@ void AnimationTree::_process_graph(float p_delta) {
 								}
 							}
 
-							Quat rot[2];
+							Quaternion rot[2];
 
 							if (prev_time > time) {
 								Error err = a->rotation_track_interpolate(i, prev_time, &rot[0]);
@@ -1067,7 +1067,7 @@ void AnimationTree::_process_graph(float p_delta) {
 							prev_time = 0;
 
 						} else {
-							Quat rot;
+							Quaternion rot;
 
 							Error err = a->rotation_track_interpolate(i, time, &rot);
 							//ERR_CONTINUE(err!=OK); //used for testing, should be removed

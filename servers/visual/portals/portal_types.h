@@ -33,7 +33,7 @@
 #include "core/local_vector.h"
 #include "core/math/aabb.h"
 #include "core/math/plane.h"
-#include "core/math/quat.h"
+#include "core/math/quaternion.h"
 #include "core/math/transform.h"
 #include "core/math/vector3.h"
 #include "core/object_id.h"

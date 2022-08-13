@@ -57,7 +57,7 @@ class VSeparator;
 class EditorPropertyTransform;
 class EditorPropertyVector3;
 class EditorPropertyCheck;
-class EditorPropertyQuat;
+class EditorPropertyQuaternion;
 
 class BoneTransformEditor : public VBoxContainer {
 	GDCLASS(BoneTransformEditor, VBoxContainer);
@@ -66,7 +66,7 @@ class BoneTransformEditor : public VBoxContainer {
 
 	EditorPropertyCheck *enabled_checkbox = nullptr;
 	EditorPropertyVector3 *position_property = nullptr;
-	EditorPropertyQuat *rotation_property = nullptr;
+	EditorPropertyQuaternion *rotation_property = nullptr;
 	EditorPropertyVector3 *scale_property;
 
 	EditorInspectorSection *rest_section = nullptr;
@@ -191,7 +191,7 @@ class SkeletonEditor : public VBoxContainer {
 	Ref<Shader> handle_shader;
 
 	Vector3 bone_original_position;
-	Quat bone_original_rotation;
+	Quaternion bone_original_rotation;
 	Vector3 bone_original_scale;
 
 	void _update_gizmo_visible();
@@ -230,7 +230,7 @@ public:
 
 	void update_bone_original();
 	Vector3 get_bone_original_position() const { return bone_original_position; };
-	Quat get_bone_original_rotation() const { return bone_original_rotation; };
+	Quaternion get_bone_original_rotation() const { return bone_original_rotation; };
 	Vector3 get_bone_original_scale() const { return bone_original_scale; };
 
 	SkeletonEditor(EditorInspectorPluginSkeleton *e_plugin, EditorNode *p_editor, Skeleton *skeleton);

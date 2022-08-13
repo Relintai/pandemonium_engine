@@ -169,7 +169,7 @@ void Skeleton::_get_property_list(List<PropertyInfo> *p_list) const {
 		p_list->push_back(PropertyInfo(Variant::TRANSFORM, prep + "rest"));
 		p_list->push_back(PropertyInfo(Variant::BOOL, prep + "enabled"));
 		p_list->push_back(PropertyInfo(Variant::VECTOR3, prep + "position", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR));
-		p_list->push_back(PropertyInfo(Variant::QUAT, prep + "rotation", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR));
+		p_list->push_back(PropertyInfo(Variant::QUATERNION, prep + "rotation", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR));
 		p_list->push_back(PropertyInfo(Variant::VECTOR3, prep + "scale", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR));
 	}
 
@@ -754,7 +754,7 @@ void Skeleton::set_bone_pose_position(int p_bone, const Vector3 &p_position) {
 		_make_dirty();
 	}
 }
-void Skeleton::set_bone_pose_rotation(int p_bone, const Quat &p_rotation) {
+void Skeleton::set_bone_pose_rotation(int p_bone, const Quaternion &p_rotation) {
 	const int bone_size = bones.size();
 	ERR_FAIL_INDEX(p_bone, bone_size);
 
@@ -790,9 +790,9 @@ Vector3 Skeleton::get_bone_pose_position(int p_bone) const {
 	return bones[p_bone].pose_position;
 }
 
-Quat Skeleton::get_bone_pose_rotation(int p_bone) const {
+Quaternion Skeleton::get_bone_pose_rotation(int p_bone) const {
 	const int bone_size = bones.size();
-	ERR_FAIL_INDEX_V(p_bone, bone_size, Quat());
+	ERR_FAIL_INDEX_V(p_bone, bone_size, Quaternion());
 	return bones[p_bone].pose_rotation;
 }
 

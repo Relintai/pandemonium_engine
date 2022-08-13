@@ -89,15 +89,15 @@ String Variant::get_type_name(Variant::Type p_type) {
 
 		} break;
 		/*
-			case QUAT: {
+			case QUATERNION: {
 
 
 			} break;*/
 		case AABB: {
 			return "AABB";
 		} break;
-		case QUAT: {
-			return "Quat";
+		case QUATERNION: {
+			return "Quaternion";
 
 		} break;
 		case BASIS: {
@@ -297,7 +297,7 @@ bool Variant::can_convert(Variant::Type p_type_from, Variant::Type p_type_to) {
 
 			valid_types = valid;
 		} break;
-		case QUAT: {
+		case QUATERNION: {
 			static const Type valid[] = {
 				BASIS,
 				NIL
@@ -308,7 +308,7 @@ bool Variant::can_convert(Variant::Type p_type_from, Variant::Type p_type_to) {
 		} break;
 		case BASIS: {
 			static const Type valid[] = {
-				QUAT,
+				QUATERNION,
 				VECTOR3,
 				NIL
 			};
@@ -319,7 +319,7 @@ bool Variant::can_convert(Variant::Type p_type_from, Variant::Type p_type_to) {
 		case TRANSFORM: {
 			static const Type valid[] = {
 				TRANSFORM2D,
-				QUAT,
+				QUATERNION,
 				BASIS,
 				NIL
 			};
@@ -604,7 +604,7 @@ bool Variant::can_convert_strict(Variant::Type p_type_from, Variant::Type p_type
 
 			valid_types = valid;
 		} break;
-		case QUAT: {
+		case QUATERNION: {
 			static const Type valid[] = {
 				BASIS,
 				NIL
@@ -615,7 +615,7 @@ bool Variant::can_convert_strict(Variant::Type p_type_from, Variant::Type p_type
 		} break;
 		case BASIS: {
 			static const Type valid[] = {
-				QUAT,
+				QUATERNION,
 				VECTOR3,
 				NIL
 			};
@@ -626,7 +626,7 @@ bool Variant::can_convert_strict(Variant::Type p_type_from, Variant::Type p_type
 		case TRANSFORM: {
 			static const Type valid[] = {
 				TRANSFORM2D,
-				QUAT,
+				QUATERNION,
 				BASIS,
 				NIL
 			};
@@ -900,15 +900,15 @@ bool Variant::is_zero() const {
 
 		} break;
 		/*
-		case QUAT: {
+		case QUATERNION: {
 
 
 		} break;*/
 		case AABB: {
 			return *_data._aabb == ::AABB();
 		} break;
-		case QUAT: {
-			return *reinterpret_cast<const Quat *>(_data._mem) == Quat();
+		case QUATERNION: {
+			return *reinterpret_cast<const Quaternion *>(_data._mem) == Quaternion();
 
 		} break;
 		case BASIS: {
@@ -1128,8 +1128,8 @@ void Variant::reference(const Variant &p_variant) {
 		case AABB: {
 			_data._aabb = memnew(::AABB(*p_variant._data._aabb));
 		} break;
-		case QUAT: {
-			memnew_placement(_data._mem, Quat(*reinterpret_cast<const Quat *>(p_variant._data._mem)));
+		case QUATERNION: {
+			memnew_placement(_data._mem, Quaternion(*reinterpret_cast<const Quaternion *>(p_variant._data._mem)));
 
 		} break;
 		case BASIS: {
@@ -1247,8 +1247,8 @@ void Variant::zero() {
 		case PLANE:
 			*reinterpret_cast<Plane *>(this->_data._mem) = Plane();
 			break;
-		case QUAT:
-			*reinterpret_cast<Quat *>(this->_data._mem) = Quat();
+		case QUATERNION:
+			*reinterpret_cast<Quaternion *>(this->_data._mem) = Quaternion();
 			break;
 		case COLOR:
 			*reinterpret_cast<Color *>(this->_data._mem) = Color();
@@ -1269,7 +1269,7 @@ void Variant::clear() {
 		VECTOR3,
 		VECTOR3i,
 		PLANE,
-		QUAT,
+		QUATERNION,
 		COLOR,
 		VECTOR2,
 		VECTOR2I,
@@ -1659,11 +1659,11 @@ String Variant::stringify(List<const void *> &stack) const {
 			return "(" + operator Vector3i() + ")";
 		case PLANE:
 			return operator Plane();
-		//case QUAT:
+		//case QUATERNION:
 		case AABB:
 			return operator ::AABB();
-		case QUAT:
-			return "(" + operator Quat() + ")";
+		case QUATERNION:
+			return "(" + operator Quaternion() + ")";
 		case BASIS: {
 			Basis mat3 = operator Basis();
 
@@ -1879,8 +1879,8 @@ Variant::operator ::AABB() const {
 Variant::operator Basis() const {
 	if (type == BASIS) {
 		return *_data._basis;
-	} else if (type == QUAT) {
-		return *reinterpret_cast<const Quat *>(_data._mem);
+	} else if (type == QUATERNION) {
+		return *reinterpret_cast<const Quaternion *>(_data._mem);
 	} else if (type == VECTOR3) {
 		return Basis(*reinterpret_cast<const Vector3 *>(_data._mem));
 	} else if (type == TRANSFORM) { // unexposed in Variant::can_convert?
@@ -1890,15 +1890,15 @@ Variant::operator Basis() const {
 	}
 }
 
-Variant::operator Quat() const {
-	if (type == QUAT) {
-		return *reinterpret_cast<const Quat *>(_data._mem);
+Variant::operator Quaternion() const {
+	if (type == QUATERNION) {
+		return *reinterpret_cast<const Quaternion *>(_data._mem);
 	} else if (type == BASIS) {
 		return *_data._basis;
 	} else if (type == TRANSFORM) {
 		return _data._transform->basis;
 	} else {
-		return Quat();
+		return Quaternion();
 	}
 }
 
@@ -1907,8 +1907,8 @@ Variant::operator Transform() const {
 		return *_data._transform;
 	} else if (type == BASIS) {
 		return Transform(*_data._basis, Vector3());
-	} else if (type == QUAT) {
-		return Transform(Basis(*reinterpret_cast<const Quat *>(_data._mem)), Vector3());
+	} else if (type == QUATERNION) {
+		return Transform(Basis(*reinterpret_cast<const Quaternion *>(_data._mem)), Vector3());
 	} else if (type == TRANSFORM2D) {
 		const Transform2D &t = *_data._transform2d;
 		Transform m;
@@ -2503,9 +2503,9 @@ Variant::Variant(const Basis &p_matrix) {
 	_data._basis = memnew(Basis(p_matrix));
 }
 
-Variant::Variant(const Quat &p_quat) {
-	type = QUAT;
-	memnew_placement(_data._mem, Quat(p_quat));
+Variant::Variant(const Quaternion &p_quat) {
+	type = QUATERNION;
+	memnew_placement(_data._mem, Quaternion(p_quat));
 }
 Variant::Variant(const Transform &p_transform) {
 	type = TRANSFORM;
@@ -2856,8 +2856,8 @@ void Variant::operator=(const Variant &p_variant) {
 		case AABB: {
 			*_data._aabb = *(p_variant._data._aabb);
 		} break;
-		case QUAT: {
-			*reinterpret_cast<Quat *>(_data._mem) = *reinterpret_cast<const Quat *>(p_variant._data._mem);
+		case QUATERNION: {
+			*reinterpret_cast<Quaternion *>(_data._mem) = *reinterpret_cast<const Quaternion *>(p_variant._data._mem);
 		} break;
 		case BASIS: {
 			*_data._basis = *(p_variant._data._basis);
@@ -3013,7 +3013,7 @@ uint32_t Variant::hash() const {
 
 		} break;
 		/*
-			case QUAT: {
+			case QUATERNION: {
 
 
 			} break;*/
@@ -3027,11 +3027,11 @@ uint32_t Variant::hash() const {
 			return hash;
 
 		} break;
-		case QUAT: {
-			uint32_t hash = hash_djb2_one_float(reinterpret_cast<const Quat *>(_data._mem)->x);
-			hash = hash_djb2_one_float(reinterpret_cast<const Quat *>(_data._mem)->y, hash);
-			hash = hash_djb2_one_float(reinterpret_cast<const Quat *>(_data._mem)->z, hash);
-			return hash_djb2_one_float(reinterpret_cast<const Quat *>(_data._mem)->w, hash);
+		case QUATERNION: {
+			uint32_t hash = hash_djb2_one_float(reinterpret_cast<const Quaternion *>(_data._mem)->x);
+			hash = hash_djb2_one_float(reinterpret_cast<const Quaternion *>(_data._mem)->y, hash);
+			hash = hash_djb2_one_float(reinterpret_cast<const Quaternion *>(_data._mem)->z, hash);
+			return hash_djb2_one_float(reinterpret_cast<const Quaternion *>(_data._mem)->w, hash);
 
 		} break;
 		case BASIS: {
@@ -3368,9 +3368,9 @@ bool Variant::hash_compare(const Variant &p_variant) const {
 
 		} break;
 
-		case QUAT: {
-			const Quat *l = reinterpret_cast<const Quat *>(_data._mem);
-			const Quat *r = reinterpret_cast<const Quat *>(p_variant._data._mem);
+		case QUATERNION: {
+			const Quaternion *l = reinterpret_cast<const Quaternion *>(_data._mem);
+			const Quaternion *r = reinterpret_cast<const Quaternion *>(p_variant._data._mem);
 
 			return hash_compare_quat(*l, *r);
 		} break;

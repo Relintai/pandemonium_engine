@@ -564,21 +564,21 @@ struct _VariantCall {
 		}
 	}
 
-	VCALL_LOCALMEM0R(Quat, length);
-	VCALL_LOCALMEM0R(Quat, length_squared);
-	VCALL_LOCALMEM0R(Quat, normalized);
-	VCALL_LOCALMEM0R(Quat, is_normalized);
-	VCALL_LOCALMEM1R(Quat, is_equal_approx);
-	VCALL_LOCALMEM0R(Quat, inverse);
-	VCALL_LOCALMEM1R(Quat, angle_to);
-	VCALL_LOCALMEM1R(Quat, dot);
-	VCALL_LOCALMEM1R(Quat, xform);
-	VCALL_LOCALMEM2R(Quat, slerp);
-	VCALL_LOCALMEM2R(Quat, slerpni);
-	VCALL_LOCALMEM4R(Quat, cubic_slerp);
-	VCALL_LOCALMEM0R(Quat, get_euler);
-	VCALL_LOCALMEM1(Quat, set_euler);
-	VCALL_LOCALMEM2(Quat, set_axis_angle);
+	VCALL_LOCALMEM0R(Quaternion, length);
+	VCALL_LOCALMEM0R(Quaternion, length_squared);
+	VCALL_LOCALMEM0R(Quaternion, normalized);
+	VCALL_LOCALMEM0R(Quaternion, is_normalized);
+	VCALL_LOCALMEM1R(Quaternion, is_equal_approx);
+	VCALL_LOCALMEM0R(Quaternion, inverse);
+	VCALL_LOCALMEM1R(Quaternion, angle_to);
+	VCALL_LOCALMEM1R(Quaternion, dot);
+	VCALL_LOCALMEM1R(Quaternion, xform);
+	VCALL_LOCALMEM2R(Quaternion, slerp);
+	VCALL_LOCALMEM2R(Quaternion, slerpni);
+	VCALL_LOCALMEM4R(Quaternion, cubic_slerp);
+	VCALL_LOCALMEM0R(Quaternion, get_euler);
+	VCALL_LOCALMEM1(Quaternion, set_euler);
+	VCALL_LOCALMEM2(Quaternion, set_axis_angle);
 
 	VCALL_LOCALMEM0R(Color, to_argb32);
 	VCALL_LOCALMEM0R(Color, to_abgr32);
@@ -1290,16 +1290,16 @@ struct _VariantCall {
 		r_ret = Plane(p_args[0]->operator Vector3(), p_args[1]->operator Vector3());
 	}
 
-	static void Quat_init1(Variant &r_ret, const Variant **p_args) {
-		r_ret = Quat(*p_args[0], *p_args[1], *p_args[2], *p_args[3]);
+	static void Quaternion_init1(Variant &r_ret, const Variant **p_args) {
+		r_ret = Quaternion(*p_args[0], *p_args[1], *p_args[2], *p_args[3]);
 	}
 
-	static void Quat_init2(Variant &r_ret, const Variant **p_args) {
-		r_ret = Quat(((Vector3)(*p_args[0])), ((real_t)(*p_args[1])));
+	static void Quaternion_init2(Variant &r_ret, const Variant **p_args) {
+		r_ret = Quaternion(((Vector3)(*p_args[0])), ((real_t)(*p_args[1])));
 	}
 
-	static void Quat_init3(Variant &r_ret, const Variant **p_args) {
-		r_ret = Quat(((Vector3)(*p_args[0])));
+	static void Quaternion_init3(Variant &r_ret, const Variant **p_args) {
+		r_ret = Quaternion(((Vector3)(*p_args[0])));
 	}
 
 	static void Color_init1(Variant &r_ret, const Variant **p_args) {
@@ -1506,8 +1506,8 @@ Variant Variant::construct(const Variant::Type p_type, const Variant **p_args, i
 				return Transform2D();
 			case PLANE:
 				return Plane();
-			case QUAT:
-				return Quat();
+			case QUATERNION:
+				return Quaternion();
 			case AABB:
 				return ::AABB(); // 10
 			case BASIS:
@@ -1593,8 +1593,8 @@ Variant Variant::construct(const Variant::Type p_type, const Variant **p_args, i
 				return (Transform2D(p_args[0]->operator Transform2D()));
 			case PLANE:
 				return (Plane(*p_args[0]));
-			case QUAT:
-				return (p_args[0]->operator Quat());
+			case QUATERNION:
+				return (p_args[0]->operator Quaternion());
 			case AABB:
 				return (::AABB(*p_args[0])); // 10
 			case BASIS:
@@ -2202,21 +2202,21 @@ void register_variant_methods() {
 	ADDFUNC2R(PLANE, VECTOR3, Plane, intersects_ray, VECTOR3, "from", VECTOR3, "dir", varray());
 	ADDFUNC2R(PLANE, VECTOR3, Plane, intersects_segment, VECTOR3, "begin", VECTOR3, "end", varray());
 
-	ADDFUNC0R(QUAT, REAL, Quat, length, varray());
-	ADDFUNC0R(QUAT, REAL, Quat, length_squared, varray());
-	ADDFUNC0R(QUAT, QUAT, Quat, normalized, varray());
-	ADDFUNC0R(QUAT, BOOL, Quat, is_normalized, varray());
-	ADDFUNC1R(QUAT, BOOL, Quat, is_equal_approx, QUAT, "quat", varray());
-	ADDFUNC0R(QUAT, QUAT, Quat, inverse, varray());
-	ADDFUNC1R(QUAT, REAL, Quat, angle_to, QUAT, "to", varray());
-	ADDFUNC1R(QUAT, REAL, Quat, dot, QUAT, "b", varray());
-	ADDFUNC1R(QUAT, VECTOR3, Quat, xform, VECTOR3, "v", varray());
-	ADDFUNC2R(QUAT, QUAT, Quat, slerp, QUAT, "to", REAL, "weight", varray());
-	ADDFUNC2R(QUAT, QUAT, Quat, slerpni, QUAT, "to", REAL, "weight", varray());
-	ADDFUNC4R(QUAT, QUAT, Quat, cubic_slerp, QUAT, "b", QUAT, "pre_a", QUAT, "post_b", REAL, "weight", varray());
-	ADDFUNC0R(QUAT, VECTOR3, Quat, get_euler, varray());
-	ADDFUNC1(QUAT, NIL, Quat, set_euler, VECTOR3, "euler", varray());
-	ADDFUNC2(QUAT, NIL, Quat, set_axis_angle, VECTOR3, "axis", REAL, "angle", varray());
+	ADDFUNC0R(QUATERNION, REAL, Quaternion, length, varray());
+	ADDFUNC0R(QUATERNION, REAL, Quaternion, length_squared, varray());
+	ADDFUNC0R(QUATERNION, QUATERNION, Quaternion, normalized, varray());
+	ADDFUNC0R(QUATERNION, BOOL, Quaternion, is_normalized, varray());
+	ADDFUNC1R(QUATERNION, BOOL, Quaternion, is_equal_approx, QUATERNION, "quat", varray());
+	ADDFUNC0R(QUATERNION, QUATERNION, Quaternion, inverse, varray());
+	ADDFUNC1R(QUATERNION, REAL, Quaternion, angle_to, QUATERNION, "to", varray());
+	ADDFUNC1R(QUATERNION, REAL, Quaternion, dot, QUATERNION, "b", varray());
+	ADDFUNC1R(QUATERNION, VECTOR3, Quaternion, xform, VECTOR3, "v", varray());
+	ADDFUNC2R(QUATERNION, QUATERNION, Quaternion, slerp, QUATERNION, "to", REAL, "weight", varray());
+	ADDFUNC2R(QUATERNION, QUATERNION, Quaternion, slerpni, QUATERNION, "to", REAL, "weight", varray());
+	ADDFUNC4R(QUATERNION, QUATERNION, Quaternion, cubic_slerp, QUATERNION, "b", QUATERNION, "pre_a", QUATERNION, "post_b", REAL, "weight", varray());
+	ADDFUNC0R(QUATERNION, VECTOR3, Quaternion, get_euler, varray());
+	ADDFUNC1(QUATERNION, NIL, Quaternion, set_euler, VECTOR3, "euler", varray());
+	ADDFUNC2(QUATERNION, NIL, Quaternion, set_axis_angle, VECTOR3, "axis", REAL, "angle", varray());
 
 	ADDFUNC0R(COLOR, INT, Color, to_argb32, varray());
 	ADDFUNC0R(COLOR, INT, Color, to_abgr32, varray());
@@ -2533,7 +2533,7 @@ void register_variant_methods() {
 	ADDFUNC2R(BASIS, BASIS, Basis, slerp, BASIS, "to", REAL, "weight", varray());
 	// For complicated reasons, the epsilon argument is always discarded. See #45062.
 	ADDFUNC2R(BASIS, BOOL, Basis, is_equal_approx, BASIS, "b", REAL, "epsilon", varray(CMP_EPSILON));
-	ADDFUNC0R(BASIS, QUAT, Basis, get_rotation_quat, varray());
+	ADDFUNC0R(BASIS, QUATERNION, Basis, get_rotation_quat, varray());
 
 	ADDFUNC0R(TRANSFORM, TRANSFORM, Transform, inverse, varray());
 	ADDFUNC0R(TRANSFORM, TRANSFORM, Transform, affine_inverse, varray());
@@ -2567,9 +2567,9 @@ void register_variant_methods() {
 	_VariantCall::add_constructor(_VariantCall::Plane_init2, Variant::PLANE, "v1", Variant::VECTOR3, "v2", Variant::VECTOR3, "v3", Variant::VECTOR3);
 	_VariantCall::add_constructor(_VariantCall::Plane_init3, Variant::PLANE, "normal", Variant::VECTOR3, "d", Variant::REAL);
 
-	_VariantCall::add_constructor(_VariantCall::Quat_init1, Variant::QUAT, "x", Variant::REAL, "y", Variant::REAL, "z", Variant::REAL, "w", Variant::REAL);
-	_VariantCall::add_constructor(_VariantCall::Quat_init2, Variant::QUAT, "axis", Variant::VECTOR3, "angle", Variant::REAL);
-	_VariantCall::add_constructor(_VariantCall::Quat_init3, Variant::QUAT, "euler", Variant::VECTOR3);
+	_VariantCall::add_constructor(_VariantCall::Quaternion_init1, Variant::QUATERNION, "x", Variant::REAL, "y", Variant::REAL, "z", Variant::REAL, "w", Variant::REAL);
+	_VariantCall::add_constructor(_VariantCall::Quaternion_init2, Variant::QUATERNION, "axis", Variant::VECTOR3, "angle", Variant::REAL);
+	_VariantCall::add_constructor(_VariantCall::Quaternion_init3, Variant::QUATERNION, "euler", Variant::VECTOR3);
 
 	_VariantCall::add_constructor(_VariantCall::Color_init1, Variant::COLOR, "r", Variant::REAL, "g", Variant::REAL, "b", Variant::REAL, "a", Variant::REAL);
 	_VariantCall::add_constructor(_VariantCall::Color_init2, Variant::COLOR, "r", Variant::REAL, "g", Variant::REAL, "b", Variant::REAL);
@@ -2663,7 +2663,7 @@ void register_variant_methods() {
 	_VariantCall::add_variant_constant(Variant::PLANE, "PLANE_XZ", Plane(Vector3(0, 1, 0), 0));
 	_VariantCall::add_variant_constant(Variant::PLANE, "PLANE_XY", Plane(Vector3(0, 0, 1), 0));
 
-	_VariantCall::add_variant_constant(Variant::QUAT, "IDENTITY", Quat(0, 0, 0, 1));
+	_VariantCall::add_variant_constant(Variant::QUATERNION, "IDENTITY", Quaternion(0, 0, 0, 1));
 }
 
 void unregister_variant_methods() {

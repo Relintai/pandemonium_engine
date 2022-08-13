@@ -87,7 +87,7 @@ private:
 		Key() { transition = 1; }
 	};
 
-	// transform key holds either Vector3 or Quaternion
+	// transform key holds either Vector3 or Quaternionernion
 	template <class T>
 	struct TKey : public Key {
 		T value;
@@ -95,7 +95,7 @@ private:
 
 	struct TransformKey {
 		Vector3 loc;
-		Quat rot;
+		Quaternion rot;
 		Vector3 scale;
 	};
 
@@ -110,7 +110,7 @@ private:
 	/* ROTATION TRACK */
 
 	struct RotationTrack : public Track {
-		Vector<TKey<Quat>> rotations;
+		Vector<TKey<Quaternion>> rotations;
 		//int32_t compressed_track = -1;
 		RotationTrack() { type = TYPE_ROTATION_3D; }
 	};
@@ -210,12 +210,12 @@ private:
 	inline int _find(const Vector<K> &p_keys, float p_time) const;
 
 	_FORCE_INLINE_ Vector3 _interpolate(const Vector3 &p_a, const Vector3 &p_b, float p_c) const;
-	_FORCE_INLINE_ Quat _interpolate(const Quat &p_a, const Quat &p_b, float p_c) const;
+	_FORCE_INLINE_ Quaternion _interpolate(const Quaternion &p_a, const Quaternion &p_b, float p_c) const;
 	_FORCE_INLINE_ Variant _interpolate(const Variant &p_a, const Variant &p_b, float p_c) const;
 	_FORCE_INLINE_ float _interpolate(const float &p_a, const float &p_b, float p_c) const;
 
 	_FORCE_INLINE_ Vector3 _cubic_interpolate(const Vector3 &p_pre_a, const Vector3 &p_a, const Vector3 &p_b, const Vector3 &p_post_b, float p_c) const;
-	_FORCE_INLINE_ Quat _cubic_interpolate(const Quat &p_pre_a, const Quat &p_a, const Quat &p_b, const Quat &p_post_b, float p_c) const;
+	_FORCE_INLINE_ Quaternion _cubic_interpolate(const Quaternion &p_pre_a, const Quaternion &p_a, const Quaternion &p_b, const Quaternion &p_post_b, float p_c) const;
 	_FORCE_INLINE_ Variant _cubic_interpolate(const Variant &p_pre_a, const Variant &p_a, const Variant &p_b, const Variant &p_post_b, float p_c) const;
 	_FORCE_INLINE_ float _cubic_interpolate(const float &p_pre_a, const float &p_a, const float &p_b, const float &p_post_b, float p_c) const;
 
@@ -257,7 +257,7 @@ private:
 	}
 
 	bool _position_track_optimize_key(const TKey<Vector3> &t0, const TKey<Vector3> &t1, const TKey<Vector3> &t2, real_t p_alowed_linear_err, real_t p_allowed_angular_error, const Vector3 &p_norm);
-	bool _rotation_track_optimize_key(const TKey<Quat> &t0, const TKey<Quat> &t1, const TKey<Quat> &t2, real_t p_allowed_angular_error, float p_max_optimizable_angle);
+	bool _rotation_track_optimize_key(const TKey<Quaternion> &t0, const TKey<Quaternion> &t1, const TKey<Quaternion> &t2, real_t p_allowed_angular_error, float p_max_optimizable_angle);
 	bool _scale_track_optimize_key(const TKey<Vector3> &t0, const TKey<Vector3> &t1, const TKey<Vector3> &t2, real_t p_allowed_linear_error);
 
 	void _position_track_optimize(int p_idx, real_t p_allowed_linear_err, real_t p_allowed_angular_err);
@@ -309,9 +309,9 @@ public:
 	Error position_track_get_key(int p_track, int p_key, Vector3 *r_position) const;
 	Error position_track_interpolate(int p_track, double p_time, Vector3 *r_interpolation) const;
 
-	int rotation_track_insert_key(int p_track, double p_time, const Quat &p_rotation);
-	Error rotation_track_get_key(int p_track, int p_key, Quat *r_rotation) const;
-	Error rotation_track_interpolate(int p_track, double p_time, Quat *r_interpolation) const;
+	int rotation_track_insert_key(int p_track, double p_time, const Quaternion &p_rotation);
+	Error rotation_track_get_key(int p_track, int p_key, Quaternion *r_rotation) const;
+	Error rotation_track_interpolate(int p_track, double p_time, Quaternion *r_interpolation) const;
 
 	int scale_track_insert_key(int p_track, double p_time, const Vector3 &p_scale);
 	Error scale_track_get_key(int p_track, int p_key, Vector3 *r_scale) const;

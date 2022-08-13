@@ -38,7 +38,7 @@
 #include "core/error_macros.h"
 #include "core/math/basis.h"
 #include "core/math/math_funcs.h"
-#include "core/math/quat.h"
+#include "core/math/quaternion.h"
 #include "core/math/transform.h"
 #include "core/math/transform_2d.h"
 #include "core/math/vector3.h"
@@ -1266,7 +1266,7 @@ public:
 					p_list->push_back(PropertyInfo(Variant::VECTOR3, "position"));
 				} break;
 				case Animation::TYPE_ROTATION_3D: {
-					p_list->push_back(PropertyInfo(Variant::QUAT, "scale"));
+					p_list->push_back(PropertyInfo(Variant::QUATERNION, "scale"));
 				} break;
 				case Animation::TYPE_SCALE_3D: {
 					p_list->push_back(PropertyInfo(Variant::VECTOR3, "scale"));
@@ -2607,7 +2607,7 @@ String AnimationTrackEdit::get_tooltip(const Point2 &p_pos) const {
 					text += TTR("Position:") + " " + String(t) + "\n";
 				} break;
 				case Animation::TYPE_ROTATION_3D: {
-					Quat t = animation->track_get_key_value(track, key_idx);
+					Quaternion t = animation->track_get_key_value(track, key_idx);
 					text += TTR("Rotation:") + " " + String(t) + "\n";
 				} break;
 				case Animation::TYPE_SCALE_3D: {
@@ -3540,7 +3540,7 @@ void AnimationTrackEditor::_query_insert(const InsertData &p_id) {
 				case Variant::REAL:
 				case Variant::VECTOR2:
 				case Variant::VECTOR3:
-				case Variant::QUAT:
+				case Variant::QUATERNION:
 				case Variant::PLANE:
 				case Variant::COLOR: {
 					// Valid.
@@ -4038,7 +4038,7 @@ static Vector<String> _get_bezier_subindices_for_type(Variant::Type p_type, bool
 			subindices.push_back(":y");
 			subindices.push_back(":z");
 		} break;
-		case Variant::QUAT: {
+		case Variant::QUATERNION: {
 			subindices.push_back(":x");
 			subindices.push_back(":y");
 			subindices.push_back(":z");
@@ -4104,7 +4104,7 @@ AnimationTrackEditor::TrackIndices AnimationTrackEditor::_confirm_insert(InsertD
 						h.type == Variant::RECT2 ||
 						h.type == Variant::VECTOR3 ||
 						h.type == Variant::AABB ||
-						h.type == Variant::QUAT ||
+						h.type == Variant::QUATERNION ||
 						h.type == Variant::COLOR ||
 						h.type == Variant::PLANE ||
 						h.type == Variant::TRANSFORM2D ||
@@ -4588,7 +4588,7 @@ void AnimationTrackEditor::_new_track_node_selected(NodePath p_path) {
 			filter.push_back(Variant::REAL);
 			filter.push_back(Variant::VECTOR2);
 			filter.push_back(Variant::VECTOR3);
-			filter.push_back(Variant::QUAT);
+			filter.push_back(Variant::QUATERNION);
 			filter.push_back(Variant::PLANE);
 			filter.push_back(Variant::COLOR);
 
@@ -4659,7 +4659,7 @@ void AnimationTrackEditor::_new_track_property_selected(String p_name) {
 					h.type == Variant::RECT2 ||
 					h.type == Variant::VECTOR3 ||
 					h.type == Variant::AABB ||
-					h.type == Variant::QUAT ||
+					h.type == Variant::QUATERNION ||
 					h.type == Variant::COLOR ||
 					h.type == Variant::PLANE ||
 					h.type == Variant::TRANSFORM2D ||
@@ -4775,7 +4775,7 @@ void AnimationTrackEditor::_insert_key_from_track(float p_ofs, int p_track) {
 				return;
 			}
 
-			Quat rot = base->get_transform().basis.operator Quat();
+			Quaternion rot = base->get_transform().basis.operator Quaternion();
 
 			undo_redo->create_action(TTR("Add Rotation Key"));
 			undo_redo->add_do_method(animation.ptr(), "rotation_track_insert_key", p_track, p_ofs, rot);

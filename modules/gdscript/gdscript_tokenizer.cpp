@@ -159,7 +159,7 @@ static const _bit _type_list[] = {
 	{ Variant::VECTOR3I, "Vector3i" },
 	{ Variant::AABB, "AABB" },
 	{ Variant::PLANE, "Plane" },
-	{ Variant::QUAT, "Quat" },
+	{ Variant::QUATERNION, "Quaternion" },
 	{ Variant::BASIS, "Basis" },
 	{ Variant::TRANSFORM, "Transform" },
 	{ Variant::COLOR, "Color" },

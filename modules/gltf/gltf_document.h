@@ -208,7 +208,7 @@ private:
 	Vector<Color> _decode_accessor_as_color(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex);
-	Vector<Quat> _decode_accessor_as_quat(Ref<GLTFState> state,
+	Vector<Quaternion> _decode_accessor_as_quat(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex);
 	Vector<Transform2D> _decode_accessor_as_xform2d(Ref<GLTFState> state,
@@ -275,7 +275,7 @@ private:
 			const float p_time,
 			const GLTFAnimation::Interpolation p_interp);
 	GLTFAccessorIndex _encode_accessor_as_quats(Ref<GLTFState> state,
-			const Vector<Quat> p_attribs,
+			const Vector<Quaternion> p_attribs,
 			const bool p_for_vertex);
 	GLTFAccessorIndex _encode_accessor_as_weights(Ref<GLTFState> state,
 			const Vector<Color> p_attribs,

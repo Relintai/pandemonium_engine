@@ -86,9 +86,9 @@
 		</method>
 		<method name="String">
 			<return type="String" />
-			<argument index="0" name="from" type="Quat" />
+			<argument index="0" name="from" type="Quaternion" />
 			<description>
-				Constructs a new String from the given [Quat].
+				Constructs a new String from the given [Quaternion].
 			</description>
 		</method>
 		<method name="String">

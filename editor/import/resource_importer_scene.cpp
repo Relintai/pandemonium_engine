@@ -679,7 +679,7 @@ void ResourceImporterScene::_create_clips(Node *scene, const Array &p_clips, boo
 								default_anim->position_track_interpolate(j, from, &p);
 								new_anim->position_track_insert_key(dtrack, 0, p);
 							} else if (default_anim->track_get_type(j) == Animation::TYPE_ROTATION_3D) {
-								Quat r;
+								Quaternion r;
 								default_anim->rotation_track_interpolate(j, from, &r);
 								new_anim->rotation_track_insert_key(dtrack, 0, r);
 							} else if (default_anim->track_get_type(j) == Animation::TYPE_SCALE_3D) {
@@ -698,7 +698,7 @@ void ResourceImporterScene::_create_clips(Node *scene, const Array &p_clips, boo
 						default_anim->position_track_get_key(j, k, &p);
 						new_anim->position_track_insert_key(dtrack, kt - from, p);
 					} else if (default_anim->track_get_type(j) == Animation::TYPE_ROTATION_3D) {
-						Quat r;
+						Quaternion r;
 						default_anim->rotation_track_get_key(j, k, &r);
 						new_anim->rotation_track_insert_key(dtrack, kt - from, r);
 					} else if (default_anim->track_get_type(j) == Animation::TYPE_SCALE_3D) {
@@ -717,7 +717,7 @@ void ResourceImporterScene::_create_clips(Node *scene, const Array &p_clips, boo
 						default_anim->position_track_interpolate(j, to, &p);
 						new_anim->position_track_insert_key(dtrack, to - from, p);
 					} else if (default_anim->track_get_type(j) == Animation::TYPE_ROTATION_3D) {
-						Quat r;
+						Quaternion r;
 						default_anim->rotation_track_interpolate(j, to, &r);
 						new_anim->rotation_track_insert_key(dtrack, to - from, r);
 					} else if (default_anim->track_get_type(j) == Animation::TYPE_SCALE_3D) {
@@ -742,7 +742,7 @@ void ResourceImporterScene::_create_clips(Node *scene, const Array &p_clips, boo
 					default_anim->position_track_interpolate(j, to, &p);
 					new_anim->position_track_insert_key(dtrack, to - from, p);
 				} else if (default_anim->track_get_type(j) == Animation::TYPE_ROTATION_3D) {
-					Quat r;
+					Quaternion r;
 					default_anim->rotation_track_interpolate(j, from, &r);
 					new_anim->rotation_track_insert_key(dtrack, 0, r);
 					default_anim->rotation_track_interpolate(j, to, &r);

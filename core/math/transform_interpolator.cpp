@@ -59,7 +59,7 @@ void TransformInterpolator::interpolate_basis_via_method(const Basis &p_prev, co
 	}
 }
 
-Quat TransformInterpolator::_basis_to_quat_unchecked(const Basis &p_basis) {
+Quaternion TransformInterpolator::_basis_to_quat_unchecked(const Basis &p_basis) {
 	Basis m = p_basis;
 	real_t trace = m.elements[0][0] + m.elements[1][1] + m.elements[2][2];
 	real_t temp[4];
@@ -88,11 +88,11 @@ Quat TransformInterpolator::_basis_to_quat_unchecked(const Basis &p_basis) {
 		temp[k] = (m.elements[k][i] + m.elements[i][k]) * s;
 	}
 
-	return Quat(temp[0], temp[1], temp[2], temp[3]);
+	return Quaternion(temp[0], temp[1], temp[2], temp[3]);
 }
 
-Quat TransformInterpolator::_quat_slerp_unchecked(const Quat &p_from, const Quat &p_to, real_t p_fraction) {
-	Quat to1;
+Quaternion TransformInterpolator::_quat_slerp_unchecked(const Quaternion &p_from, const Quaternion &p_to, real_t p_fraction) {
+	Quaternion to1;
 	real_t omega, cosom, sinom, scale0, scale1;
 
 	// calc cosine
@@ -130,7 +130,7 @@ Quat TransformInterpolator::_quat_slerp_unchecked(const Quat &p_from, const Quat
 		scale1 = p_fraction;
 	}
 	// calculate final values
-	return Quat(
+	return Quaternion(
 			scale0 * p_from.x + scale1 * to1.x,
 			scale0 * p_from.y + scale1 * to1.y,
 			scale0 * p_from.z + scale1 * to1.z,
@@ -138,8 +138,8 @@ Quat TransformInterpolator::_quat_slerp_unchecked(const Quat &p_from, const Quat
 }
 
 Basis TransformInterpolator::_basis_slerp_unchecked(Basis p_from, Basis p_to, real_t p_fraction) {
-	Quat from = _basis_to_quat_unchecked(p_from);
-	Quat to = _basis_to_quat_unchecked(p_to);
+	Quaternion from = _basis_to_quat_unchecked(p_from);
+	Quaternion to = _basis_to_quat_unchecked(p_to);
 
 	Basis b(_quat_slerp_unchecked(from, to, p_fraction));
 	return b;
@@ -231,7 +231,7 @@ Vector3 TransformInterpolator::_basis_orthonormalize(Basis &r_basis) {
 	return lengths;
 }
 
-TransformInterpolator::Method TransformInterpolator::_test_basis(Basis p_basis, bool r_needed_normalize, Quat &r_quat) {
+TransformInterpolator::Method TransformInterpolator::_test_basis(Basis p_basis, bool r_needed_normalize, Quaternion &r_quat) {
 	// axis lengths
 	Vector3 al = Vector3(p_basis.get_axis(0).length_squared(),
 			p_basis.get_axis(1).length_squared(),
@@ -344,13 +344,13 @@ bool TransformInterpolator::_basis_is_orthogonal(const Basis &p_basis, real_t p_
 TransformInterpolator::Method TransformInterpolator::find_method(const Basis &p_a, const Basis &p_b) {
 	bool needed_normalize = false;
 
-	Quat q0;
+	Quaternion q0;
 	Method method = _test_basis(p_a, needed_normalize, q0);
 	if (method == INTERP_LERP) {
 		return method;
 	}
 
-	Quat q1;
+	Quaternion q1;
 	method = _test_basis(p_b, needed_normalize, q1);
 	if (method == INTERP_LERP) {
 		return method;

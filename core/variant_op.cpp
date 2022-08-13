@@ -52,7 +52,7 @@
 	CASE_TYPE(PREFIX, OP, VECTOR3I)            \
 	CASE_TYPE(PREFIX, OP, TRANSFORM2D)         \
 	CASE_TYPE(PREFIX, OP, PLANE)               \
-	CASE_TYPE(PREFIX, OP, QUAT)                \
+	CASE_TYPE(PREFIX, OP, QUATERNION)                \
 	CASE_TYPE(PREFIX, OP, AABB)                \
 	CASE_TYPE(PREFIX, OP, BASIS)               \
 	CASE_TYPE(PREFIX, OP, TRANSFORM)           \
@@ -92,7 +92,7 @@
 		TYPE(PREFIX, OP, VECTOR3I),            \
 		TYPE(PREFIX, OP, TRANSFORM2D),         \
 		TYPE(PREFIX, OP, PLANE),               \
-		TYPE(PREFIX, OP, QUAT),                \
+		TYPE(PREFIX, OP, QUATERNION),                \
 		TYPE(PREFIX, OP, AABB),                \
 		TYPE(PREFIX, OP, BASIS),               \
 		TYPE(PREFIX, OP, TRANSFORM),           \
@@ -537,7 +537,7 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			DEFAULT_OP_LOCALMEM_NULL(math, OP_EQUAL, VECTOR3, ==, Vector3);
 			DEFAULT_OP_LOCALMEM_NULL(math, OP_EQUAL, VECTOR3I, ==, Vector3i);
 			DEFAULT_OP_LOCALMEM_NULL(math, OP_EQUAL, PLANE, ==, Plane);
-			DEFAULT_OP_LOCALMEM_NULL(math, OP_EQUAL, QUAT, ==, Quat);
+			DEFAULT_OP_LOCALMEM_NULL(math, OP_EQUAL, QUATERNION, ==, Quaternion);
 			DEFAULT_OP_PTRREF_NULL(math, OP_EQUAL, AABB, ==, _aabb);
 			DEFAULT_OP_PTRREF_NULL(math, OP_EQUAL, BASIS, ==, _basis);
 			DEFAULT_OP_PTRREF_NULL(math, OP_EQUAL, TRANSFORM, ==, _transform);
@@ -634,7 +634,7 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			DEFAULT_OP_LOCALMEM_NULL(math, OP_NOT_EQUAL, VECTOR3, !=, Vector3);
 			DEFAULT_OP_LOCALMEM_NULL(math, OP_NOT_EQUAL, VECTOR3I, !=, Vector3i);
 			DEFAULT_OP_LOCALMEM_NULL(math, OP_NOT_EQUAL, PLANE, !=, Plane);
-			DEFAULT_OP_LOCALMEM_NULL(math, OP_NOT_EQUAL, QUAT, !=, Quat);
+			DEFAULT_OP_LOCALMEM_NULL(math, OP_NOT_EQUAL, QUATERNION, !=, Quaternion);
 			DEFAULT_OP_PTRREF_NULL(math, OP_NOT_EQUAL, AABB, !=, _aabb);
 			DEFAULT_OP_PTRREF_NULL(math, OP_NOT_EQUAL, BASIS, !=, _basis);
 			DEFAULT_OP_PTRREF_NULL(math, OP_NOT_EQUAL, TRANSFORM, !=, _transform);
@@ -715,7 +715,7 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			CASE_TYPE(math, OP_LESS, RECT2I)
 			CASE_TYPE(math, OP_LESS, TRANSFORM2D)
 			CASE_TYPE(math, OP_LESS, PLANE)
-			CASE_TYPE(math, OP_LESS, QUAT)
+			CASE_TYPE(math, OP_LESS, QUATERNION)
 			CASE_TYPE(math, OP_LESS, AABB)
 			CASE_TYPE(math, OP_LESS, BASIS)
 			CASE_TYPE(math, OP_LESS, TRANSFORM)
@@ -748,7 +748,7 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			CASE_TYPE(math, OP_LESS_EQUAL, RECT2I)
 			CASE_TYPE(math, OP_LESS_EQUAL, TRANSFORM2D)
 			CASE_TYPE(math, OP_LESS_EQUAL, PLANE)
-			CASE_TYPE(math, OP_LESS_EQUAL, QUAT)
+			CASE_TYPE(math, OP_LESS_EQUAL, QUATERNION)
 			CASE_TYPE(math, OP_LESS_EQUAL, AABB)
 			CASE_TYPE(math, OP_LESS_EQUAL, BASIS)
 			CASE_TYPE(math, OP_LESS_EQUAL, TRANSFORM)
@@ -831,7 +831,7 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			CASE_TYPE(math, OP_GREATER, RECT2I)
 			CASE_TYPE(math, OP_GREATER, TRANSFORM2D)
 			CASE_TYPE(math, OP_GREATER, PLANE)
-			CASE_TYPE(math, OP_GREATER, QUAT)
+			CASE_TYPE(math, OP_GREATER, QUATERNION)
 			CASE_TYPE(math, OP_GREATER, AABB)
 			CASE_TYPE(math, OP_GREATER, BASIS)
 			CASE_TYPE(math, OP_GREATER, STRING_NAME)
@@ -864,7 +864,7 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			CASE_TYPE(math, OP_GREATER_EQUAL, RECT2I)
 			CASE_TYPE(math, OP_GREATER_EQUAL, TRANSFORM2D)
 			CASE_TYPE(math, OP_GREATER_EQUAL, PLANE)
-			CASE_TYPE(math, OP_GREATER_EQUAL, QUAT)
+			CASE_TYPE(math, OP_GREATER_EQUAL, QUATERNION)
 			CASE_TYPE(math, OP_GREATER_EQUAL, AABB)
 			CASE_TYPE(math, OP_GREATER_EQUAL, BASIS)
 			CASE_TYPE(math, OP_GREATER_EQUAL, TRANSFORM)
@@ -912,7 +912,7 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			DEFAULT_OP_LOCALMEM(math, OP_ADD, VECTOR2I, +, Vector2i);
 			DEFAULT_OP_LOCALMEM(math, OP_ADD, VECTOR3, +, Vector3);
 			DEFAULT_OP_LOCALMEM(math, OP_ADD, VECTOR3I, +, Vector3i);
-			DEFAULT_OP_LOCALMEM(math, OP_ADD, QUAT, +, Quat);
+			DEFAULT_OP_LOCALMEM(math, OP_ADD, QUATERNION, +, Quaternion);
 			DEFAULT_OP_LOCALMEM(math, OP_ADD, COLOR, +, Color);
 
 			DEFAULT_OP_ARRAY_ADD(math, OP_ADD, POOL_BYTE_ARRAY, uint8_t);
@@ -949,7 +949,7 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			DEFAULT_OP_LOCALMEM(math, OP_SUBTRACT, VECTOR2I, -, Vector2i);
 			DEFAULT_OP_LOCALMEM(math, OP_SUBTRACT, VECTOR3, -, Vector3);
 			DEFAULT_OP_LOCALMEM(math, OP_SUBTRACT, VECTOR3I, -, Vector3i);
-			DEFAULT_OP_LOCALMEM(math, OP_SUBTRACT, QUAT, -, Quat);
+			DEFAULT_OP_LOCALMEM(math, OP_SUBTRACT, QUATERNION, -, Quaternion);
 			DEFAULT_OP_LOCALMEM(math, OP_SUBTRACT, COLOR, -, Color);
 
 			CASE_TYPE(math, OP_SUBTRACT, NIL)
@@ -997,19 +997,19 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 				}
 			}
 
-			CASE_TYPE(math, OP_MULTIPLY, QUAT) {
+			CASE_TYPE(math, OP_MULTIPLY, QUATERNION) {
 				switch (p_b.type) {
 					case VECTOR3: {
-						_RETURN(reinterpret_cast<const Quat *>(p_a._data._mem)->xform(*(const Vector3 *)p_b._data._mem));
+						_RETURN(reinterpret_cast<const Quaternion *>(p_a._data._mem)->xform(*(const Vector3 *)p_b._data._mem));
 					}
 					case VECTOR3I: {
-						_RETURN(reinterpret_cast<const Quat *>(p_a._data._mem)->xform(*(const Vector3i *)p_b._data._mem));
+						_RETURN(reinterpret_cast<const Quaternion *>(p_a._data._mem)->xform(*(const Vector3i *)p_b._data._mem));
 					}
-					case QUAT: {
-						_RETURN(*reinterpret_cast<const Quat *>(p_a._data._mem) * *reinterpret_cast<const Quat *>(p_b._data._mem));
+					case QUATERNION: {
+						_RETURN(*reinterpret_cast<const Quaternion *>(p_a._data._mem) * *reinterpret_cast<const Quaternion *>(p_b._data._mem));
 					}
 					case REAL: {
-						_RETURN(*reinterpret_cast<const Quat *>(p_a._data._mem) * p_b._data._real);
+						_RETURN(*reinterpret_cast<const Quaternion *>(p_a._data._mem) * p_b._data._real);
 					}
 					default:
 						_RETURN_FAIL;
@@ -1082,7 +1082,7 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 		}
 
 		SWITCH_OP(math, OP_DIVIDE, p_a.type) {
-			CASE_TYPE(math, OP_DIVIDE, QUAT) {
+			CASE_TYPE(math, OP_DIVIDE, QUATERNION) {
 				if (p_b.type != REAL)
 					_RETURN_FAIL;
 #ifdef DEBUG_ENABLED
@@ -1091,7 +1091,7 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 					_RETURN("Division By Zero");
 				}
 #endif
-				_RETURN(*reinterpret_cast<const Quat *>(p_a._data._mem) / p_b._data._real);
+				_RETURN(*reinterpret_cast<const Quaternion *>(p_a._data._mem) / p_b._data._real);
 			}
 
 			DEFAULT_OP_NUM_DIV(math, OP_DIVIDE, INT, _int);
@@ -1136,7 +1136,7 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			DEFAULT_OP_LOCALMEM_POS(math, OP_POSITIVE, VECTOR3, Vector3);
 			DEFAULT_OP_LOCALMEM_POS(math, OP_POSITIVE, VECTOR3I, Vector3i);
 			DEFAULT_OP_LOCALMEM_POS(math, OP_POSITIVE, PLANE, Plane);
-			DEFAULT_OP_LOCALMEM_POS(math, OP_POSITIVE, QUAT, Quat);
+			DEFAULT_OP_LOCALMEM_POS(math, OP_POSITIVE, QUATERNION, Quaternion);
 			DEFAULT_OP_LOCALMEM_POS(math, OP_POSITIVE, VECTOR2, Vector2);
 			DEFAULT_OP_LOCALMEM_POS(math, OP_POSITIVE, VECTOR2I, Vector2i);
 
@@ -1177,7 +1177,7 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			DEFAULT_OP_LOCALMEM_NEG(math, OP_NEGATE, VECTOR3, Vector3);
 			DEFAULT_OP_LOCALMEM_NEG(math, OP_NEGATE, VECTOR3I, Vector3i);
 			DEFAULT_OP_LOCALMEM_NEG(math, OP_NEGATE, PLANE, Plane);
-			DEFAULT_OP_LOCALMEM_NEG(math, OP_NEGATE, QUAT, Quat);
+			DEFAULT_OP_LOCALMEM_NEG(math, OP_NEGATE, QUATERNION, Quaternion);
 			DEFAULT_OP_LOCALMEM_NEG(math, OP_NEGATE, COLOR, Color);
 
 			CASE_TYPE(math, OP_NEGATE, NIL)
@@ -1250,7 +1250,7 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			CASE_TYPE(math, OP_MODULE, VECTOR3I)
 			CASE_TYPE(math, OP_MODULE, TRANSFORM2D)
 			CASE_TYPE(math, OP_MODULE, PLANE)
-			CASE_TYPE(math, OP_MODULE, QUAT)
+			CASE_TYPE(math, OP_MODULE, QUATERNION)
 			CASE_TYPE(math, OP_MODULE, AABB)
 			CASE_TYPE(math, OP_MODULE, BASIS)
 			CASE_TYPE(math, OP_MODULE, TRANSFORM)
@@ -1618,9 +1618,9 @@ void Variant::set_named(const StringName &p_index, const Variant &p_value, bool 
 			}
 
 		} break;
-		case QUAT: {
+		case QUATERNION: {
 			if (p_value.type == Variant::INT) {
-				Quat *v = reinterpret_cast<Quat *>(_data._mem);
+				Quaternion *v = reinterpret_cast<Quaternion *>(_data._mem);
 				if (p_index == CoreStringNames::singleton->x) {
 					v->x = p_value._data._int;
 					valid = true;
@@ -1635,7 +1635,7 @@ void Variant::set_named(const StringName &p_index, const Variant &p_value, bool 
 					valid = true;
 				}
 			} else if (p_value.type == Variant::REAL) {
-				Quat *v = reinterpret_cast<Quat *>(_data._mem);
+				Quaternion *v = reinterpret_cast<Quaternion *>(_data._mem);
 				if (p_index == CoreStringNames::singleton->x) {
 					v->x = p_value._data._real;
 					valid = true;
@@ -1914,8 +1914,8 @@ Variant Variant::get_named(const StringName &p_index, bool *r_valid) const {
 			}
 
 		} break;
-		case QUAT: {
-			const Quat *v = reinterpret_cast<const Quat *>(_data._mem);
+		case QUATERNION: {
+			const Quaternion *v = reinterpret_cast<const Quaternion *>(_data._mem);
 			if (p_index == CoreStringNames::singleton->x) {
 				return v->x;
 			} else if (p_index == CoreStringNames::singleton->y) {
@@ -2533,14 +2533,14 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 			}
 
 		} break;
-		case QUAT: {
+		case QUATERNION: {
 			if (p_value.type != Variant::INT && p_value.type != Variant::REAL) {
 				return;
 			}
 
 			if (p_index.get_type() == Variant::STRING) {
 				const String *str = reinterpret_cast<const String *>(p_index._data._mem);
-				Quat *v = reinterpret_cast<Quat *>(_data._mem);
+				Quaternion *v = reinterpret_cast<Quaternion *>(_data._mem);
 				if (*str == "x") {
 					valid = true;
 					v->x = p_value;
@@ -2559,7 +2559,7 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 					return;
 				}
 			} else if (p_index.get_type() == Variant::STRING_NAME) {
-				Quat *v = reinterpret_cast<Quat *>(_data._mem);
+				Quaternion *v = reinterpret_cast<Quaternion *>(_data._mem);
 				if (p_index == CoreStringNames::singleton->x) {
 					valid = true;
 					v->x = p_value;
@@ -3247,10 +3247,10 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 			}
 
 		} break;
-		case QUAT: {
+		case QUATERNION: {
 			if (p_index.get_type() == Variant::STRING) {
 				const String *str = reinterpret_cast<const String *>(p_index._data._mem);
-				const Quat *v = reinterpret_cast<const Quat *>(_data._mem);
+				const Quaternion *v = reinterpret_cast<const Quaternion *>(_data._mem);
 				if (*str == "x") {
 					valid = true;
 					return v->x;
@@ -3265,7 +3265,7 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					return v->w;
 				}
 			} else if (p_index.get_type() == Variant::STRING_NAME) {
-				const Quat *v = reinterpret_cast<const Quat *>(_data._mem);
+				const Quaternion *v = reinterpret_cast<const Quaternion *>(_data._mem);
 				if (p_index == CoreStringNames::singleton->x) {
 					valid = true;
 					return v->x;
@@ -3813,7 +3813,7 @@ void Variant::get_property_list(List<PropertyInfo> *p_list) const {
 			p_list->push_back(PropertyInfo(Variant::REAL, "d"));
 
 		} break;
-		case QUAT: {
+		case QUATERNION: {
 			p_list->push_back(PropertyInfo(Variant::REAL, "x"));
 			p_list->push_back(PropertyInfo(Variant::REAL, "y"));
 			p_list->push_back(PropertyInfo(Variant::REAL, "z"));
@@ -4606,10 +4606,10 @@ void Variant::sub(const Variant &a, const Variant &b, Variant &r_dst) {
 			r_dst = ::AABB(ra->position - rb->position, ra->size - rb->size);
 		}
 			return;
-		case QUAT: {
-			Quat empty_rot;
-			const Quat *qa = reinterpret_cast<const Quat *>(a._data._mem);
-			const Quat *qb = reinterpret_cast<const Quat *>(b._data._mem);
+		case QUATERNION: {
+			Quaternion empty_rot;
+			const Quaternion *qa = reinterpret_cast<const Quaternion *>(a._data._mem);
+			const Quaternion *qb = reinterpret_cast<const Quaternion *>(b._data._mem);
 			r_dst = (*qb).inverse() * *qa;
 		}
 			return;
@@ -4697,10 +4697,10 @@ void Variant::blend(const Variant &a, const Variant &b, float c, Variant &r_dst)
 			r_dst = ::AABB(ra->position + rb->position * c, ra->size + rb->size * c);
 		}
 			return;
-		case QUAT: {
-			Quat empty_rot;
-			const Quat *qa = reinterpret_cast<const Quat *>(a._data._mem);
-			const Quat *qb = reinterpret_cast<const Quat *>(b._data._mem);
+		case QUATERNION: {
+			Quaternion empty_rot;
+			const Quaternion *qa = reinterpret_cast<const Quaternion *>(a._data._mem);
+			const Quaternion *qb = reinterpret_cast<const Quaternion *>(b._data._mem);
 			r_dst = *qa * empty_rot.slerp(*qb, c);
 		}
 			return;
@@ -4832,8 +4832,8 @@ void Variant::interpolate(const Variant &a, const Variant &b, float c, Variant &
 			r_dst = a;
 		}
 			return;
-		case QUAT: {
-			r_dst = reinterpret_cast<const Quat *>(a._data._mem)->slerp(*reinterpret_cast<const Quat *>(b._data._mem), c);
+		case QUATERNION: {
+			r_dst = reinterpret_cast<const Quaternion *>(a._data._mem)->slerp(*reinterpret_cast<const Quaternion *>(b._data._mem), c);
 		}
 			return;
 		case AABB: {

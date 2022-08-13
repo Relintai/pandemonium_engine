@@ -348,7 +348,7 @@ void ScriptTextEditor::_set_theme_for_script() {
 	text_edit->add_keyword_color("Basis", basetype_color);
 	text_edit->add_keyword_color("Plane", basetype_color);
 	text_edit->add_keyword_color("Transform", basetype_color);
-	text_edit->add_keyword_color("Quat", basetype_color);
+	text_edit->add_keyword_color("Quaternion", basetype_color);
 	text_edit->add_keyword_color("Color", basetype_color);
 	text_edit->add_keyword_color("Object", basetype_color);
 	text_edit->add_keyword_color("NodePath", basetype_color);

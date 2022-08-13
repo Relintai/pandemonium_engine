@@ -21,7 +21,7 @@
 	<methods>
 		<method name="Basis">
 			<return type="Basis" />
-			<argument index="0" name="from" type="Quat" />
+			<argument index="0" name="from" type="Quaternion" />
 			<description>
 				Constructs a pure rotation basis matrix from the given quaternion.
 			</description>
@@ -31,7 +31,7 @@
 			<argument index="0" name="from" type="Vector3" />
 			<description>
 				Constructs a pure rotation basis matrix from the given Euler angles (in the YXZ convention: when *composing*, first Y, then X, and Z last), given in the vector format as (X angle, Y angle, Z angle).
-				Consider using the [Quat] constructor instead, which uses a quaternion instead of Euler angles.
+				Consider using the [Quaternion] constructor instead, which uses a quaternion instead of Euler angles.
 			</description>
 		</method>
 		<method name="Basis">
@@ -62,7 +62,7 @@
 			<return type="Vector3" />
 			<description>
 				Returns the basis's rotation in the form of Euler angles (in the YXZ convention: when decomposing, first Z, then X, and Y last). The returned vector contains the rotation angles in the format (X angle, Y angle, Z angle).
-				Consider using the [method get_rotation_quat] method instead, which returns a [Quat] quaternion instead of Euler angles.
+				Consider using the [method get_rotation_quat] method instead, which returns a [Quaternion] quaternion instead of Euler angles.
 			</description>
 		</method>
 		<method name="get_orthogonal_index">
@@ -72,7 +72,7 @@
 			</description>
 		</method>
 		<method name="get_rotation_quat">
-			<return type="Quat" />
+			<return type="Quaternion" />
 			<description>
 				Returns the basis's rotation in the form of a quaternion. See [method get_euler] if you need Euler angles, but keep in mind quaternions should generally be preferred to Euler angles.
 			</description>

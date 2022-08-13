@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/math/quat.h"
+#include "core/math/quaternion.h"
 #include "core/math/vector3.h"
 #include "core/math/vector3i.h"
 
@@ -79,13 +79,13 @@ public:
 	void rotate(const Vector3 &p_euler);
 	Basis rotated(const Vector3 &p_euler) const;
 
-	void rotate(const Quat &p_quat);
-	Basis rotated(const Quat &p_quat) const;
+	void rotate(const Quaternion &p_quat);
+	Basis rotated(const Quaternion &p_quat) const;
 
 	Vector3 get_rotation_euler() const;
 	void get_rotation_axis_angle(Vector3 &p_axis, real_t &p_angle) const;
 	void get_rotation_axis_angle_local(Vector3 &p_axis, real_t &p_angle) const;
-	Quat get_rotation_quat() const;
+	Quaternion get_rotation_quat() const;
 	Vector3 get_rotation() const { return get_rotation_euler(); };
 
 	void rotate_to_align(Vector3 p_start_direction, Vector3 p_end_direction);
@@ -110,8 +110,8 @@ public:
 	Vector3 get_euler_zyx() const;
 	void set_euler_zyx(const Vector3 &p_euler);
 
-	Quat get_quat() const;
-	void set_quat(const Quat &p_quat);
+	Quaternion get_quat() const;
+	void set_quat(const Quaternion &p_quat);
 
 	Vector3 get_euler() const { return get_euler_yxz(); }
 	void set_euler(const Vector3 &p_euler) { set_euler_yxz(p_euler); }
@@ -131,7 +131,7 @@ public:
 
 	void set_axis_angle_scale(const Vector3 &p_axis, real_t p_phi, const Vector3 &p_scale);
 	void set_euler_scale(const Vector3 &p_euler, const Vector3 &p_scale);
-	void set_quat_scale(const Quat &p_quat, const Vector3 &p_scale);
+	void set_quat_scale(const Quaternion &p_quat, const Vector3 &p_scale);
 
 	// transposed dot products
 	_FORCE_INLINE_ real_t tdotx(const Vector3 &v) const {
@@ -265,10 +265,10 @@ public:
 	// only be used in cases of single normals, or when the basis changes each time.
 	Vector3 xform_normal(const Vector3 &p_vector) const { return get_normal_xform_basis().xform_normal_fast(p_vector); }
 
-	operator Quat() const { return get_quat(); }
+	operator Quaternion() const { return get_quat(); }
 
-	Basis(const Quat &p_quat) { set_quat(p_quat); }
-	Basis(const Quat &p_quat, const Vector3 &p_scale) { set_quat_scale(p_quat, p_scale); }
+	Basis(const Quaternion &p_quat) { set_quat(p_quat); }
+	Basis(const Quaternion &p_quat, const Vector3 &p_scale) { set_quat_scale(p_quat, p_scale); }
 
 	Basis(const Vector3 &p_euler) { set_euler(p_euler); }
 	Basis(const Vector3 &p_euler, const Vector3 &p_scale) { set_euler_scale(p_euler, p_scale); }

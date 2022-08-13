@@ -112,11 +112,11 @@ Transform Transform::interpolate_with(const Transform &p_transform, real_t p_c) 
 	/* not sure if very "efficient" but good enough? */
 
 	Vector3 src_scale = basis.get_scale();
-	Quat src_rot = basis.get_rotation_quat();
+	Quaternion src_rot = basis.get_rotation_quat();
 	Vector3 src_loc = origin;
 
 	Vector3 dst_scale = p_transform.basis.get_scale();
-	Quat dst_rot = p_transform.basis.get_rotation_quat();
+	Quaternion dst_rot = p_transform.basis.get_rotation_quat();
 	Vector3 dst_loc = p_transform.origin;
 
 	Transform interp;

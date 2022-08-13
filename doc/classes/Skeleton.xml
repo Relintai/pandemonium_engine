@@ -160,7 +160,7 @@
 			</description>
 		</method>
 		<method name="get_bone_pose_rotation" qualifiers="const">
-			<return type="Quaternion" />
+			<return type="Quaternionernion" />
 			<argument index="0" name="bone_idx" type="int" />
 			<description>
 			</description>
@@ -365,7 +365,7 @@
 		<method name="set_bone_pose_rotation">
 			<return type="void" />
 			<argument index="0" name="bone_idx" type="int" />
-			<argument index="1" name="rotation" type="Quaternion" />
+			<argument index="1" name="rotation" type="Quaternionernion" />
 			<description>
 			</description>
 		</method>

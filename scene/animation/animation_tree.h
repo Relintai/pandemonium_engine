@@ -192,11 +192,11 @@ private:
 		bool rot_used;
 		bool scale_used;
 		Vector3 init_loc;
-		Quat ref_rot;
-		Quat init_rot;
+		Quaternion ref_rot;
+		Quaternion init_rot;
 		Vector3 init_scale;
 		Vector3 loc;
-		Quat rot;
+		Quaternion rot;
 		Vector3 scale;
 
 		TrackCacheTransform() {
@@ -208,8 +208,8 @@ private:
 			rot_used = false;
 			scale_used = false;
 			init_loc = Vector3(0, 0, 0);
-			ref_rot = Quat(0, 0, 0, 1);
-			init_rot = Quat(0, 0, 0, 0);
+			ref_rot = Quaternion(0, 0, 0, 1);
+			init_rot = Quaternion(0, 0, 0, 0);
 			init_scale = Vector3(1, 1, 1);
 		}
 	};

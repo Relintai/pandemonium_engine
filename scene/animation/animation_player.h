@@ -110,11 +110,11 @@ private:
 		bool rot_used;
 		bool scale_used;
 		Vector3 init_loc;
-		Quat init_rot;
+		Quaternion init_rot;
 		Vector3 init_scale;
 
 		Vector3 loc_accum;
-		Quat rot_accum;
+		Quaternion rot_accum;
 		Vector3 scale_accum;
 		uint64_t accum_pass;
 
@@ -178,7 +178,7 @@ private:
 			scale_used = false;
 			last_setup_pass = 0;
 			init_loc = Vector3(0, 0, 0);
-			init_rot = Quat(0, 0, 0, 1);
+			init_rot = Quaternion(0, 0, 0, 1);
 			init_scale = Vector3(1, 1, 1);
 		}
 	};

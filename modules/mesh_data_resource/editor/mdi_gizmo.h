@@ -228,7 +228,7 @@ public:
 	PoolVector3Array _drag_op_orig_verices;
 	PoolIntArray _drag_op_indices;
 	Vector3 _drag_op_accumulator;
-	Quat _drag_op_accumulator_quat;
+	Quaternion _drag_op_accumulator_quat;
 	Vector3 _drag_op_pivot;
 
 	EditorPlugin *_editor_plugin;

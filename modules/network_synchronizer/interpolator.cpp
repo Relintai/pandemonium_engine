@@ -403,8 +403,8 @@ Variant Interpolator::interpolate(const Variant &p_v1, const Variant &p_v2, real
 					int(Math::round(Math::lerp(p_v1.operator Vector3i()[0], p_v2.operator Vector3i()[0], p_delta))),
 					int(Math::round(Math::lerp(p_v1.operator Vector3i()[1], p_v2.operator Vector3i()[1], p_delta))),
 					int(Math::round(Math::lerp(p_v1.operator Vector3i()[2], p_v2.operator Vector3i()[2], p_delta))));
-		case Variant::Type::QUAT:
-			return p_v1.operator Quat().slerp(p_v2.operator Quat(), p_delta);
+		case Variant::Type::QUATERNION:
+			return p_v1.operator Quaternion().slerp(p_v2.operator Quaternion(), p_delta);
 		case Variant::Type::BASIS:
 			return p_v1.operator Basis().slerp(p_v2.operator Basis(), p_delta);
 		case Variant::Type::TRANSFORM:

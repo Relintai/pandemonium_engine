@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/math/math_defs.h"
-#include "core/math/quat.h"
+#include "core/math/quaternion.h"
 #include "core/math/transform.h"
 #include "core/math/vector3.h"
 
@@ -59,10 +59,10 @@ private:
 	static real_t _vec3_normalize(Vector3 &p_vec);
 	static Vector3 _basis_orthonormalize(Basis &r_basis);
 	static real_t vec3_sum(const Vector3 &p_pt) { return p_pt.x + p_pt.y + p_pt.z; }
-	static Method _test_basis(Basis p_basis, bool r_needed_normalize, Quat &r_quat);
+	static Method _test_basis(Basis p_basis, bool r_needed_normalize, Quaternion &r_quat);
 	static Basis _basis_slerp_unchecked(Basis p_from, Basis p_to, real_t p_fraction);
-	static Quat _quat_slerp_unchecked(const Quat &p_from, const Quat &p_to, real_t p_fraction);
-	static Quat _basis_to_quat_unchecked(const Basis &p_basis);
+	static Quaternion _quat_slerp_unchecked(const Quaternion &p_from, const Quaternion &p_to, real_t p_fraction);
+	static Quaternion _basis_to_quat_unchecked(const Basis &p_basis);
 	static bool _basis_is_orthogonal(const Basis &p_basis, real_t p_epsilon = 0.01f);
 	static bool _basis_is_orthogonal_any_scale(const Basis &p_basis);
 

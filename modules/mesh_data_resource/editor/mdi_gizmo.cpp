@@ -60,7 +60,7 @@ void MDIGizmo::set_handle(int index, bool secondary, Camera *camera, const Point
 			_drag_op_accumulator = Vector3();
 		}
 
-		_drag_op_accumulator_quat = Quat();
+		_drag_op_accumulator_quat = Quaternion();
 
 		_drag_op_orig_verices = copy_mdr_verts_array();
 		setup_op_drag_indices();
@@ -127,8 +127,8 @@ void MDIGizmo::set_handle(int index, bool secondary, Camera *camera, const Point
 		apply();
 		redraw();
 	} else if (edit_mode == EditMode::EDIT_MODE_ROTATE) {
-		Quat yrot = Quat(Vector3(0, 1, 0), relative.x * 0.01);
-		Quat xrot = Quat(camera->get_global_transform().basis.get_axis(0), relative.y * 0.01);
+		Quaternion yrot = Quaternion(Vector3(0, 1, 0), relative.x * 0.01);
+		Quaternion xrot = Quaternion(camera->get_global_transform().basis.get_axis(0), relative.y * 0.01);
 
 		_drag_op_accumulator_quat *= yrot;
 		_drag_op_accumulator_quat *= xrot;

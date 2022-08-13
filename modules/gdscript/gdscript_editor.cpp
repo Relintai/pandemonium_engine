@@ -2184,7 +2184,7 @@ static void _find_identifiers(const GDScriptCompletionContext &p_context, bool p
 
 	static const char *_type_names[Variant::VARIANT_MAX] = {
 		"null", "bool", "int", "float", "String", "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Plane", 
-		"Quat", "AABB", "Basis", "Transform", "Color", "NodePath", "RID", "Object", "Dictionary", "Array", 
+		"Quaternion", "AABB", "Basis", "Transform", "Color", "NodePath", "RID", "Object", "Dictionary", "Array", 
 		"PoolByteArray", "PoolIntArray", "PoolRealArray", "PoolStringArray",
 		"PoolVector2Array", "PoolVector2iArray", "PoolVector3Array", "PoolVector3iArray", "PoolColorArray"
 	};

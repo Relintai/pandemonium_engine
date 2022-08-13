@@ -646,7 +646,7 @@ Error VariantParser::parse_value(Token &token, Variant &value, Stream *p_stream,
 			}
 
 			value = Plane(args[0], args[1], args[2], args[3]);
-		} else if (id == "Quat") {
+		} else if (id == "Quaternion") {
 			Vector<float> args;
 			Error err = _parse_construct<float>(p_stream, args, line, r_err_str);
 			if (err) {
@@ -658,7 +658,7 @@ Error VariantParser::parse_value(Token &token, Variant &value, Stream *p_stream,
 				return ERR_PARSE_ERROR;
 			}
 
-			value = Quat(args[0], args[1], args[2], args[3]);
+			value = Quaternion(args[0], args[1], args[2], args[3]);
 		} else if (id == "AABB" || id == "Rect3") {
 			Vector<float> args;
 			Error err = _parse_construct<float>(p_stream, args, line, r_err_str);
@@ -1702,9 +1702,9 @@ Error VariantWriter::write(const Variant &p_variant, StoreStringFunc p_store_str
 			p_store_string_func(p_store_string_ud, "AABB( " + rtos_fix(aabb.position.x) + ", " + rtos_fix(aabb.position.y) + ", " + rtos_fix(aabb.position.z) + ", " + rtos_fix(aabb.size.x) + ", " + rtos_fix(aabb.size.y) + ", " + rtos_fix(aabb.size.z) + " )");
 
 		} break;
-		case Variant::QUAT: {
-			Quat quat = p_variant;
-			p_store_string_func(p_store_string_ud, "Quat( " + rtos_fix(quat.x) + ", " + rtos_fix(quat.y) + ", " + rtos_fix(quat.z) + ", " + rtos_fix(quat.w) + " )");
+		case Variant::QUATERNION: {
+			Quaternion quat = p_variant;
+			p_store_string_func(p_store_string_ud, "Quaternion( " + rtos_fix(quat.x) + ", " + rtos_fix(quat.y) + ", " + rtos_fix(quat.z) + ", " + rtos_fix(quat.w) + " )");
 
 		} break;
 		case Variant::TRANSFORM2D: {

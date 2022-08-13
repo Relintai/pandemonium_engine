@@ -6551,7 +6551,7 @@ CScriptParser::DataType CScriptParser::_reduce_node_type(Node *p_node) {
 									case Variant::RECT2:
 									case Variant::RECT2I:
 									case Variant::PLANE:
-									case Variant::QUAT:
+									case Variant::QUATERNION:
 									case Variant::AABB:
 									case Variant::OBJECT: {
 										error = index_type.builtin_type != Variant::STRING;
@@ -6649,7 +6649,7 @@ CScriptParser::DataType CScriptParser::_reduce_node_type(Node *p_node) {
 							case Variant::POOL_REAL_ARRAY:
 							case Variant::VECTOR2:
 							case Variant::VECTOR3:
-							case Variant::QUAT: {
+							case Variant::QUATERNION: {
 								result.builtin_type = Variant::REAL;
 							} break;
 								// Return color

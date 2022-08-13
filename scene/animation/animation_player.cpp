@@ -447,7 +447,7 @@ void AnimationPlayer::_animation_process_animation(AnimationData *p_anim, float 
 					continue;
 				}
 
-				Quat rot;
+				Quaternion rot;
 
 				Error err = a->rotation_track_interpolate(i, p_time, &rot);
 				//ERR_CONTINUE(err!=OK); //used for testing, should be removed

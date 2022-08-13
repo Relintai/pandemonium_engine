@@ -126,7 +126,7 @@ HingeJointSW::HingeJointSW(BodySW *rbA, BodySW *rbB, const Vector3 &pivotInA, co
 			rbAxisA1.y, rbAxisA2.y, axisInA.y,
 			rbAxisA1.z, rbAxisA2.z, axisInA.z);
 
-	Quat rotationArc = Quat(axisInA, axisInB);
+	Quaternion rotationArc = Quaternion(axisInA, axisInB);
 	Vector3 rbAxisB1 = rotationArc.xform(rbAxisA1);
 	Vector3 rbAxisB2 = axisInB.cross(rbAxisB1);
 

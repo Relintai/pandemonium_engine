@@ -96,7 +96,7 @@ private:
 		bool pose_cache_dirty;
 		Transform pose_cache;
 		Vector3 pose_position;
-		Quat pose_rotation;
+		Quaternion pose_rotation;
 		Vector3 pose_scale;
 
 		Transform pose_global;
@@ -226,12 +226,12 @@ public:
 	// posing api
 	void set_bone_pose(int p_bone, const Transform &p_pose);
 	void set_bone_pose_position(int p_bone, const Vector3 &p_position);
-	void set_bone_pose_rotation(int p_bone, const Quat &p_rotation);
+	void set_bone_pose_rotation(int p_bone, const Quaternion &p_rotation);
 	void set_bone_pose_scale(int p_bone, const Vector3 &p_scale);
 
 	Transform get_bone_pose(int p_bone) const;
 	Vector3 get_bone_pose_position(int p_bone) const;
-	Quat get_bone_pose_rotation(int p_bone) const;
+	Quaternion get_bone_pose_rotation(int p_bone) const;
 	Vector3 get_bone_pose_scale(int p_bone) const;
 
 	void clear_bones_global_pose_override();
