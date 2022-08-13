@@ -528,7 +528,7 @@ BSP_Tree::BSP_Tree(const PoolVector<Face3> &p_faces, real_t p_error_radius) {
 		indices.push_back(i);
 	}
 
-	ERR_FAIL_COND(aabb.has_no_area());
+	ERR_FAIL_COND(aabb.has_no_volume());
 
 	int top = _bsp_create_node(faces_r.ptr(), indices, planes, nodes, aabb.get_longest_axis_size() * 0.0001f);
 

@@ -30,9 +30,10 @@
 
 #include "aabb.h"
 
+#include "core/variant.h"
 #include "core/print_string.h"
 
-real_t AABB::get_area() const {
+real_t AABB::get_volume() const {
 	return size.x * size.y * size.z;
 }
 
@@ -406,6 +407,22 @@ void AABB::get_edge(int p_edge, Vector3 &r_from, Vector3 &r_to) const {
 
 		} break;
 	}
+}
+
+Variant AABB::intersects_segmentv(const Vector3 &p_from, const Vector3 &p_to) const {
+	Vector3 inters;
+	if (intersects_segment(p_from, p_to, &inters)) {
+		return inters;
+	}
+	return Variant();
+}
+
+Variant AABB::intersects_rayv(const Vector3 &p_from, const Vector3 &p_dir) const {
+	Vector3 inters;
+	if (intersects_ray(p_from, p_dir, &inters)) {
+		return inters;
+	}
+	return Variant();
 }
 
 AABB::operator String() const {

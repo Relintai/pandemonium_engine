@@ -983,21 +983,21 @@ struct _VariantCall {
 		r_ret = reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0], *p_args[1], *p_args[2], *p_args[3], *p_args[4]); \
 	}
 
-	VCALL_PTR0R(AABB, abs);
-	VCALL_PTR0R(AABB, get_area);
-	VCALL_PTR0R(AABB, get_center);
-	VCALL_PTR0R(AABB, has_no_area);
+	VCALL_PTR0R(AABB, get_volume);
+	VCALL_PTR0R(AABB, has_no_volume);
 	VCALL_PTR0R(AABB, has_no_surface);
-	VCALL_PTR1R(AABB, has_point);
 	VCALL_PTR1R(AABB, is_equal_approx);
 	VCALL_PTR1R(AABB, intersects);
+	VCALL_PTR1R(AABB, intersects_inclusive);
 	VCALL_PTR1R(AABB, encloses);
-	VCALL_PTR1R(AABB, intersects_plane);
-	VCALL_PTR2R(AABB, intersects_segment);
-	VCALL_PTR1R(AABB, intersection);
 	VCALL_PTR1R(AABB, merge);
-	VCALL_PTR1R(AABB, expand);
-	VCALL_PTR1R(AABB, grow);
+	VCALL_PTR1(AABB, merge_with);
+	VCALL_PTR1R(AABB, intersection);
+	VCALL_PTR2R(AABB, intersects_segment);
+	VCALL_PTR2R(AABB, intersects_ray);
+	VCALL_PTR4R(AABB, smits_intersect_ray);
+	VCALL_PTR1R(AABB, intersects_plane);
+	VCALL_PTR1R(AABB, has_point);
 	VCALL_PTR1R(AABB, get_support);
 	VCALL_PTR0R(AABB, get_longest_axis);
 	VCALL_PTR0R(AABB, get_longest_axis_index);
@@ -1005,7 +1005,21 @@ struct _VariantCall {
 	VCALL_PTR0R(AABB, get_shortest_axis);
 	VCALL_PTR0R(AABB, get_shortest_axis_index);
 	VCALL_PTR0R(AABB, get_shortest_axis_size);
+	VCALL_PTR1R(AABB, grow);
+	VCALL_PTR1(AABB, grow_by);
 	VCALL_PTR1R(AABB, get_endpoint);
+	VCALL_PTR1R(AABB, expand);
+	VCALL_PTR1(AABB, expand_to);
+	VCALL_PTR1(AABB, create_from_points);
+	VCALL_PTR0R(AABB, abs);
+	VCALL_PTR2R(AABB, intersects_segmentv);
+	VCALL_PTR2R(AABB, intersects_rayv);
+	VCALL_PTR1(AABB, quantize);
+	VCALL_PTR1R(AABB, quantized);
+	//Property
+	//VCALL_PTR1(AABB, set_end);
+	//VCALL_PTR0R(AABB, get_end);
+	VCALL_PTR0R(AABB, get_center);
 
 	VCALL_PTR0R(Transform2D, inverse);
 	VCALL_PTR0R(Transform2D, affine_inverse);
@@ -2475,22 +2489,21 @@ void register_variant_methods() {
 	ADDFUNC0(POOL_COLOR_ARRAY, NIL, PoolColorArray, sort, varray());
 
 	//pointerbased
-
-	ADDFUNC0R(AABB, AABB, AABB, abs, varray());
-	ADDFUNC0R(AABB, REAL, AABB, get_area, varray());
-	ADDFUNC0R(AABB, VECTOR3, AABB, get_center, varray());
-	ADDFUNC0R(AABB, BOOL, AABB, has_no_area, varray());
+	ADDFUNC0R(AABB, REAL, AABB, get_volume, varray());
+	ADDFUNC0R(AABB, BOOL, AABB, has_no_volume, varray());
 	ADDFUNC0R(AABB, BOOL, AABB, has_no_surface, varray());
-	ADDFUNC1R(AABB, BOOL, AABB, has_point, VECTOR3, "point", varray());
 	ADDFUNC1R(AABB, BOOL, AABB, is_equal_approx, AABB, "aabb", varray());
 	ADDFUNC1R(AABB, BOOL, AABB, intersects, AABB, "with", varray());
+	ADDFUNC1R(AABB, BOOL, AABB, intersects_inclusive, AABB, "aabb", varray());
 	ADDFUNC1R(AABB, BOOL, AABB, encloses, AABB, "with", varray());
-	ADDFUNC1R(AABB, BOOL, AABB, intersects_plane, PLANE, "plane", varray());
-	ADDFUNC2R(AABB, BOOL, AABB, intersects_segment, VECTOR3, "from", VECTOR3, "to", varray());
-	ADDFUNC1R(AABB, AABB, AABB, intersection, AABB, "with", varray());
 	ADDFUNC1R(AABB, AABB, AABB, merge, AABB, "with", varray());
-	ADDFUNC1R(AABB, AABB, AABB, expand, VECTOR3, "to_point", varray());
-	ADDFUNC1R(AABB, AABB, AABB, grow, REAL, "by", varray());
+	ADDFUNC1(AABB, NIL, AABB, merge_with, AABB, "with", varray());
+	ADDFUNC1R(AABB, AABB, AABB, intersection, AABB, "with", varray());
+	ADDFUNC2R(AABB, BOOL, AABB, intersects_segment, VECTOR3, "from", VECTOR3, "to", varray());
+	ADDFUNC2R(AABB, BOOL, AABB, intersects_ray, VECTOR3, "from", VECTOR3, "dir", varray());
+	ADDFUNC4R(AABB, BOOL, AABB, smits_intersect_ray, VECTOR3, "from", VECTOR3, "dir", REAL, "t0", REAL, "t1", varray());
+	ADDFUNC1R(AABB, BOOL, AABB, intersects_plane, PLANE, "plane", varray());
+	ADDFUNC1R(AABB, BOOL, AABB, has_point, VECTOR3, "point", varray());
 	ADDFUNC1R(AABB, VECTOR3, AABB, get_support, VECTOR3, "dir", varray());
 	ADDFUNC0R(AABB, VECTOR3, AABB, get_longest_axis, varray());
 	ADDFUNC0R(AABB, INT, AABB, get_longest_axis_index, varray());
@@ -2498,7 +2511,21 @@ void register_variant_methods() {
 	ADDFUNC0R(AABB, VECTOR3, AABB, get_shortest_axis, varray());
 	ADDFUNC0R(AABB, INT, AABB, get_shortest_axis_index, varray());
 	ADDFUNC0R(AABB, REAL, AABB, get_shortest_axis_size, varray());
+	ADDFUNC1R(AABB, AABB, AABB, grow, REAL, "by", varray());
+	ADDFUNC1(AABB, NIL, AABB, grow_by, REAL, "amount", varray());
 	ADDFUNC1R(AABB, VECTOR3, AABB, get_endpoint, INT, "idx", varray());
+	ADDFUNC1R(AABB, AABB, AABB, expand, VECTOR3, "to_point", varray());
+	ADDFUNC1(AABB, NIL, AABB, expand_to, VECTOR3, "vector", varray());
+	ADDFUNC1R(AABB, BOOL, AABB, create_from_points, POOL_VECTOR3_ARRAY, "points", varray());
+	ADDFUNC0R(AABB, AABB, AABB, abs, varray());
+	ADDFUNC2R(AABB, VECTOR3, AABB, intersects_segmentv, VECTOR3, "from", VECTOR3, "to", varray());
+	ADDFUNC2R(AABB, VECTOR3, AABB, intersects_rayv, VECTOR3, "from", VECTOR3, "dir", varray());
+	ADDFUNC1(AABB, NIL, AABB, quantize, REAL, "unit", varray());
+	ADDFUNC1R(AABB, AABB, AABB, quantized, REAL, "unit", varray());
+	//Property
+	//ADDFUNC1(AABB, NIL, AABB, set_end, VECTOR3, "vector", varray());
+	//ADDFUNC0R(AABB, VECTOR3, AABB, get_end, varray());
+	ADDFUNC0R(AABB, VECTOR3, AABB, get_center, varray());
 
 	ADDFUNC0R(TRANSFORM2D, TRANSFORM2D, Transform2D, inverse, varray());
 	ADDFUNC0R(TRANSFORM2D, TRANSFORM2D, Transform2D, affine_inverse, varray());
