@@ -580,23 +580,44 @@ struct _VariantCall {
 	VCALL_LOCALMEM1(Quaternion, set_euler);
 	VCALL_LOCALMEM2(Quaternion, set_axis_angle);
 
+	VCALL_LOCALMEM0R(Color, to_rgba32);
 	VCALL_LOCALMEM0R(Color, to_argb32);
 	VCALL_LOCALMEM0R(Color, to_abgr32);
-	VCALL_LOCALMEM0R(Color, to_rgba32);
+	VCALL_LOCALMEM0R(Color, to_rgba64);
 	VCALL_LOCALMEM0R(Color, to_argb64);
 	VCALL_LOCALMEM0R(Color, to_abgr64);
-	VCALL_LOCALMEM0R(Color, to_rgba64);
 	VCALL_LOCALMEM0R(Color, gray);
-	VCALL_LOCALMEM0R(Color, get_luminance);
+	VCALL_LOCALMEM0R(Color, get_h);
+	VCALL_LOCALMEM0R(Color, get_s);
+	VCALL_LOCALMEM0R(Color, get_v);
+	VCALL_LOCALMEM4(Color, set_hsv);
+	VCALL_LOCALMEM1R(Color, is_equal_approx);
+	VCALL_LOCALMEM2R(Color, clamp);
+	VCALL_LOCALMEM0(Color, invert);
+	VCALL_LOCALMEM0(Color, contrast);
 	VCALL_LOCALMEM0R(Color, inverted);
 	VCALL_LOCALMEM0R(Color, contrasted);
+	VCALL_LOCALMEM0R(Color, get_luminance);
 	VCALL_LOCALMEM2R(Color, linear_interpolate);
-	VCALL_LOCALMEM1R(Color, blend);
-	VCALL_LOCALMEM1R(Color, lightened);
 	VCALL_LOCALMEM1R(Color, darkened);
+	VCALL_LOCALMEM1R(Color, lightened);
+	VCALL_LOCALMEM0R(Color, to_rgbe9995);
+	VCALL_LOCALMEM1R(Color, blend);
+	VCALL_LOCALMEM0R(Color, to_linear);
+	VCALL_LOCALMEM0R(Color, to_srgb);
 	VCALL_LOCALMEM1R(Color, to_html);
 	VCALL_LOCALMEM4R(Color, from_hsv);
-	VCALL_LOCALMEM1R(Color, is_equal_approx);
+	VCALL_LOCALMEM0R(Color, get_r8);
+	VCALL_LOCALMEM1(Color, set_r8);
+	VCALL_LOCALMEM0R(Color, get_g8);
+	VCALL_LOCALMEM1(Color, set_g8);
+	VCALL_LOCALMEM0R(Color, get_b8);
+	VCALL_LOCALMEM1(Color, set_b8);
+	VCALL_LOCALMEM0R(Color, get_a8);
+	VCALL_LOCALMEM1(Color, set_a8);
+	VCALL_LOCALMEM1(Color, set_h);
+	VCALL_LOCALMEM1(Color, set_s);
+	VCALL_LOCALMEM1(Color, set_v);
 
 	VCALL_LOCALMEM0R(RID, get_id);
 
@@ -1272,14 +1293,6 @@ struct _VariantCall {
 				r_ret = Variant();
 		}
 	}
-
-	/*
-	VCALL_PTR0( Transform, invert );
-	VCALL_PTR0( Transform, affine_invert );
-	VCALL_PTR2( Transform, rotate );
-	VCALL_PTR1( Transform, scale );
-	VCALL_PTR1( Transform, translate );
-	VCALL_PTR0( Transform, orthonormalize ); */
 
 	struct ConstructData {
 		int arg_count;
@@ -2183,22 +2196,6 @@ void register_variant_methods() {
 	ADDFUNC2R(RECT2I, RECT2I, Rect2i, grow_margin, INT, "margin", INT, "by", varray());
 	ADDFUNC4R(RECT2I, RECT2I, Rect2i, grow_individual, INT, "left", INT, "top", INT, "right", INT, " bottom", varray());
 
-	/*
-		int get_area() const;
-		_FORCE_INLINE_ Vector2i get_center() const;
-		_FORCE_INLINE_ bool has_no_area() const;
-		bool has_point(const Point2 &p_point) const;
-		inline bool intersects(const Rect2i &p_rect) const;
-		inline bool encloses(const Rect2i &p_rect) const;
-		inline Rect2i clip(const Rect2i &p_rect) const;
-		inline Rect2i merge(const Rect2i &p_rect) const;
-		_FORCE_INLINE_ Rect2i expand(const Vector2i &p_vector) const;
-		inline void expand_to(const Point2i &p_vector);
-		Rect2i grow(int p_by) const;
-		inline Rect2i grow_margin(Margin p_margin, int p_amount) const;
-		inline Rect2i grow_individual(int p_left, int p_top, int p_right, int p_bottom) const;
-	*/
-
 	ADDFUNC0R(VECTOR3, INT, Vector3, min_axis, varray());
 	ADDFUNC0R(VECTOR3, INT, Vector3, max_axis, varray());
 	ADDFUNC1R(VECTOR3, REAL, Vector3, angle_to, VECTOR3, "to", varray());
@@ -2241,19 +2238,6 @@ void register_variant_methods() {
 	ADDFUNC0R(VECTOR3I, REAL, Vector3, length_squared, varray());
 	ADDFUNC2R(VECTOR3I, VECTOR3I, Vector3, linear_interpolate, VECTOR3I, "to", REAL, "weight", varray());
 
-	/*
-		Vector3i::Axis min_axis_index() const;
-		Vector3i::Axis max_axis_index() const;
-		_FORCE_INLINE_ int64_t length_squared() const;
-		_FORCE_INLINE_ double length() const;
-		//_FORCE_INLINE_ void zero();
-		_FORCE_INLINE_ Vector3i abs() const;
-		_FORCE_INLINE_ Vector3i sign() const;
-		Vector3i clamp(const Vector3i &p_min, const Vector3i &p_max) const;
-
-		_FORCE_INLINE_ Vector3i linear_interpolate(const Vector3i &p_to, real_t p_weight) const;
-	*/
-
 	ADDFUNC0R(PLANE, PLANE, Plane, normalized, varray());
 	ADDFUNC0R(PLANE, VECTOR3, Plane, center, varray());
 	ADDFUNC0R(PLANE, VECTOR3, Plane, get_any_point, varray());
@@ -2282,23 +2266,44 @@ void register_variant_methods() {
 	ADDFUNC1(QUATERNION, NIL, Quaternion, set_euler, VECTOR3, "euler", varray());
 	ADDFUNC2(QUATERNION, NIL, Quaternion, set_axis_angle, VECTOR3, "axis", REAL, "angle", varray());
 
+	ADDFUNC0R(COLOR, INT, Color, to_rgba32, varray());
 	ADDFUNC0R(COLOR, INT, Color, to_argb32, varray());
 	ADDFUNC0R(COLOR, INT, Color, to_abgr32, varray());
-	ADDFUNC0R(COLOR, INT, Color, to_rgba32, varray());
+	ADDFUNC0R(COLOR, INT, Color, to_rgba64, varray());
 	ADDFUNC0R(COLOR, INT, Color, to_argb64, varray());
 	ADDFUNC0R(COLOR, INT, Color, to_abgr64, varray());
-	ADDFUNC0R(COLOR, INT, Color, to_rgba64, varray());
 	ADDFUNC0R(COLOR, REAL, Color, gray, varray());
-	ADDFUNC0R(COLOR, REAL, Color, get_luminance, varray());
+
+	ADDFUNC0R(COLOR, REAL, Color, get_h, varray());
+	ADDFUNC0R(COLOR, REAL, Color, get_s, varray());
+	ADDFUNC0R(COLOR, REAL, Color, get_v, varray());
+	ADDFUNC4(COLOR, NIL, Color, set_hsv, REAL, "h", REAL, "s", REAL, "v", REAL, "a", varray(1.0));
+	ADDFUNC1R(COLOR, BOOL, Color, is_equal_approx, COLOR, "color", varray());
+	ADDFUNC2R(COLOR, COLOR, Color, clamp, COLOR, "min", COLOR, "max", varray(Color(0, 0, 0, 0), Color(1, 1, 1, 1)));
+	ADDFUNC0(COLOR, NIL, Color, invert, varray());
 	ADDFUNC0R(COLOR, COLOR, Color, inverted, varray());
 	ADDFUNC0R(COLOR, COLOR, Color, contrasted, varray());
+	ADDFUNC0R(COLOR, REAL, Color, get_luminance, varray());
 	ADDFUNC2R(COLOR, COLOR, Color, linear_interpolate, COLOR, "to", REAL, "weight", varray());
-	ADDFUNC1R(COLOR, COLOR, Color, blend, COLOR, "over", varray());
-	ADDFUNC1R(COLOR, COLOR, Color, lightened, REAL, "amount", varray());
 	ADDFUNC1R(COLOR, COLOR, Color, darkened, REAL, "amount", varray());
+	ADDFUNC1R(COLOR, COLOR, Color, lightened, REAL, "amount", varray());
+	ADDFUNC0R(COLOR, INT, Color, to_rgbe9995, varray());
+	ADDFUNC1R(COLOR, COLOR, Color, blend, COLOR, "over", varray());
+	ADDFUNC0R(COLOR, COLOR, Color, to_linear, varray());
+	ADDFUNC0R(COLOR, COLOR, Color, to_srgb, varray());
 	ADDFUNC1R(COLOR, STRING, Color, to_html, BOOL, "with_alpha", varray(true));
 	ADDFUNC4R(COLOR, COLOR, Color, from_hsv, REAL, "h", REAL, "s", REAL, "v", REAL, "a", varray(1.0));
-	ADDFUNC1R(COLOR, BOOL, Color, is_equal_approx, COLOR, "color", varray());
+	ADDFUNC0R(COLOR, INT, Color, get_r8, varray());
+	ADDFUNC1(COLOR, NIL, Color, set_r8, INT, "r", varray());
+	ADDFUNC0R(COLOR, INT, Color, get_g8, varray());
+	ADDFUNC1(COLOR, NIL, Color, set_g8, INT, "g", varray());
+	ADDFUNC0R(COLOR, INT, Color, get_b8, varray());
+	ADDFUNC1(COLOR, NIL, Color, set_b8, INT, "b", varray());
+	ADDFUNC0R(COLOR, INT, Color, get_a8, varray());
+	ADDFUNC1(COLOR, NIL, Color, set_a8, INT, "a", varray());
+	ADDFUNC1(COLOR, NIL, Color, set_h, INT, "h", varray());
+	ADDFUNC1(COLOR, NIL, Color, set_s, INT, "s", varray());
+	ADDFUNC1(COLOR, NIL, Color, set_v, INT, "v", varray());
 
 	ADDFUNC0R(_RID, INT, RID, get_id, varray());
 
