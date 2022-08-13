@@ -61,7 +61,7 @@ void TransformInterpolator::interpolate_basis_via_method(const Basis &p_prev, co
 
 Quaternion TransformInterpolator::_basis_to_quat_unchecked(const Basis &p_basis) {
 	Basis m = p_basis;
-	real_t trace = m.elements[0][0] + m.elements[1][1] + m.elements[2][2];
+	real_t trace = m.rows[0][0] + m.rows[1][1] + m.rows[2][2];
 	real_t temp[4];
 
 	if (trace > 0) {
@@ -69,23 +69,23 @@ Quaternion TransformInterpolator::_basis_to_quat_unchecked(const Basis &p_basis)
 		temp[3] = (s * 0.5f);
 		s = 0.5f / s;
 
-		temp[0] = ((m.elements[2][1] - m.elements[1][2]) * s);
-		temp[1] = ((m.elements[0][2] - m.elements[2][0]) * s);
-		temp[2] = ((m.elements[1][0] - m.elements[0][1]) * s);
+		temp[0] = ((m.rows[2][1] - m.rows[1][2]) * s);
+		temp[1] = ((m.rows[0][2] - m.rows[2][0]) * s);
+		temp[2] = ((m.rows[1][0] - m.rows[0][1]) * s);
 	} else {
-		int i = m.elements[0][0] < m.elements[1][1]
-				? (m.elements[1][1] < m.elements[2][2] ? 2 : 1)
-				: (m.elements[0][0] < m.elements[2][2] ? 2 : 0);
+		int i = m.rows[0][0] < m.rows[1][1]
+				? (m.rows[1][1] < m.rows[2][2] ? 2 : 1)
+				: (m.rows[0][0] < m.rows[2][2] ? 2 : 0);
 		int j = (i + 1) % 3;
 		int k = (i + 2) % 3;
 
-		real_t s = Math::sqrt(m.elements[i][i] - m.elements[j][j] - m.elements[k][k] + 1.0f);
+		real_t s = Math::sqrt(m.rows[i][i] - m.rows[j][j] - m.rows[k][k] + 1.0f);
 		temp[i] = s * 0.5f;
 		s = 0.5f / s;
 
-		temp[3] = (m.elements[k][j] - m.elements[j][k]) * s;
-		temp[j] = (m.elements[j][i] + m.elements[i][j]) * s;
-		temp[k] = (m.elements[k][i] + m.elements[i][k]) * s;
+		temp[3] = (m.rows[k][j] - m.rows[j][k]) * s;
+		temp[j] = (m.rows[j][i] + m.rows[i][j]) * s;
+		temp[k] = (m.rows[k][i] + m.rows[i][k]) * s;
 	}
 
 	return Quaternion(temp[0], temp[1], temp[2], temp[3]);
@@ -188,9 +188,9 @@ void TransformInterpolator::interpolate_basis_linear(const Basis &p_prev, const 
 real_t TransformInterpolator::checksum_transform(const Transform &p_transform) {
 	// just a really basic checksum, this can probably be improved
 	real_t sum = vec3_sum(p_transform.origin);
-	sum -= vec3_sum(p_transform.basis.elements[0]);
-	sum += vec3_sum(p_transform.basis.elements[1]);
-	sum -= vec3_sum(p_transform.basis.elements[2]);
+	sum -= vec3_sum(p_transform.basis.rows[0]);
+	sum += vec3_sum(p_transform.basis.rows[1]);
+	sum -= vec3_sum(p_transform.basis.rows[2]);
 	return sum;
 }
 

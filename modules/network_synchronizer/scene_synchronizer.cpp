@@ -1369,9 +1369,9 @@ bool SceneSynchronizer::compare(const Variant &p_first, const Variant &p_second,
 		case Variant::BASIS: {
 			const Basis a = p_first;
 			const Basis b = p_second;
-			if (compare(a.elements[0], b.elements[0], p_tolerance)) {
-				if (compare(a.elements[1], b.elements[1], p_tolerance)) {
-					if (compare(a.elements[2], b.elements[2], p_tolerance)) {
+			if (compare(a.rows[0], b.rows[0], p_tolerance)) {
+				if (compare(a.rows[1], b.rows[1], p_tolerance)) {
+					if (compare(a.rows[2], b.rows[2], p_tolerance)) {
 						return true;
 					}
 				}
@@ -1382,9 +1382,9 @@ bool SceneSynchronizer::compare(const Variant &p_first, const Variant &p_second,
 			const Transform a = p_first;
 			const Transform b = p_second;
 			if (compare(a.origin, b.origin, p_tolerance)) {
-				if (compare(a.basis.elements[0], b.basis.elements[0], p_tolerance)) {
-					if (compare(a.basis.elements[1], b.basis.elements[1], p_tolerance)) {
-						if (compare(a.basis.elements[2], b.basis.elements[2], p_tolerance)) {
+				if (compare(a.basis.rows[0], b.basis.rows[0], p_tolerance)) {
+					if (compare(a.basis.rows[1], b.basis.rows[1], p_tolerance)) {
+						if (compare(a.basis.rows[2], b.basis.rows[2], p_tolerance)) {
 							return true;
 						}
 					}

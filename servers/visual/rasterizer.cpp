@@ -170,43 +170,43 @@ void RasterizerStorage::update_interpolation_frame(bool p_process) {
 					} else {
 						// Silly swizzling, this will slow things down. no idea why it is using this format
 						// .. maybe due to the shader.
-						tp.basis.elements[0][0] = pf_prev[0];
-						tp.basis.elements[0][1] = pf_prev[1];
-						tp.basis.elements[0][2] = pf_prev[2];
-						tp.basis.elements[1][0] = pf_prev[4];
-						tp.basis.elements[1][1] = pf_prev[5];
-						tp.basis.elements[1][2] = pf_prev[6];
-						tp.basis.elements[2][0] = pf_prev[8];
-						tp.basis.elements[2][1] = pf_prev[9];
-						tp.basis.elements[2][2] = pf_prev[10];
+						tp.basis.rows[0][0] = pf_prev[0];
+						tp.basis.rows[0][1] = pf_prev[1];
+						tp.basis.rows[0][2] = pf_prev[2];
+						tp.basis.rows[1][0] = pf_prev[4];
+						tp.basis.rows[1][1] = pf_prev[5];
+						tp.basis.rows[1][2] = pf_prev[6];
+						tp.basis.rows[2][0] = pf_prev[8];
+						tp.basis.rows[2][1] = pf_prev[9];
+						tp.basis.rows[2][2] = pf_prev[10];
 						tp.origin.x = pf_prev[3];
 						tp.origin.y = pf_prev[7];
 						tp.origin.z = pf_prev[11];
 
-						tc.basis.elements[0][0] = pf_curr[0];
-						tc.basis.elements[0][1] = pf_curr[1];
-						tc.basis.elements[0][2] = pf_curr[2];
-						tc.basis.elements[1][0] = pf_curr[4];
-						tc.basis.elements[1][1] = pf_curr[5];
-						tc.basis.elements[1][2] = pf_curr[6];
-						tc.basis.elements[2][0] = pf_curr[8];
-						tc.basis.elements[2][1] = pf_curr[9];
-						tc.basis.elements[2][2] = pf_curr[10];
+						tc.basis.rows[0][0] = pf_curr[0];
+						tc.basis.rows[0][1] = pf_curr[1];
+						tc.basis.rows[0][2] = pf_curr[2];
+						tc.basis.rows[1][0] = pf_curr[4];
+						tc.basis.rows[1][1] = pf_curr[5];
+						tc.basis.rows[1][2] = pf_curr[6];
+						tc.basis.rows[2][0] = pf_curr[8];
+						tc.basis.rows[2][1] = pf_curr[9];
+						tc.basis.rows[2][2] = pf_curr[10];
 						tc.origin.x = pf_curr[3];
 						tc.origin.y = pf_curr[7];
 						tc.origin.z = pf_curr[11];
 
 						TransformInterpolator::interpolate_transform(tp, tc, tr, f);
 
-						pf_int[0] = tr.basis.elements[0][0];
-						pf_int[1] = tr.basis.elements[0][1];
-						pf_int[2] = tr.basis.elements[0][2];
-						pf_int[4] = tr.basis.elements[1][0];
-						pf_int[5] = tr.basis.elements[1][1];
-						pf_int[6] = tr.basis.elements[1][2];
-						pf_int[8] = tr.basis.elements[2][0];
-						pf_int[9] = tr.basis.elements[2][1];
-						pf_int[10] = tr.basis.elements[2][2];
+						pf_int[0] = tr.basis.rows[0][0];
+						pf_int[1] = tr.basis.rows[0][1];
+						pf_int[2] = tr.basis.rows[0][2];
+						pf_int[4] = tr.basis.rows[1][0];
+						pf_int[5] = tr.basis.rows[1][1];
+						pf_int[6] = tr.basis.rows[1][2];
+						pf_int[8] = tr.basis.rows[2][0];
+						pf_int[9] = tr.basis.rows[2][1];
+						pf_int[10] = tr.basis.rows[2][2];
 						pf_int[3] = tr.origin.x;
 						pf_int[7] = tr.origin.y;
 						pf_int[11] = tr.origin.z;
@@ -336,17 +336,17 @@ void RasterizerStorage::multimesh_instance_set_transform(RID p_multimesh, int p_
 			ptr += start;
 
 			const Transform &t = p_transform;
-			ptr[0] = t.basis.elements[0][0];
-			ptr[1] = t.basis.elements[0][1];
-			ptr[2] = t.basis.elements[0][2];
+			ptr[0] = t.basis.rows[0][0];
+			ptr[1] = t.basis.rows[0][1];
+			ptr[2] = t.basis.rows[0][2];
 			ptr[3] = t.origin.x;
-			ptr[4] = t.basis.elements[1][0];
-			ptr[5] = t.basis.elements[1][1];
-			ptr[6] = t.basis.elements[1][2];
+			ptr[4] = t.basis.rows[1][0];
+			ptr[5] = t.basis.rows[1][1];
+			ptr[6] = t.basis.rows[1][2];
 			ptr[7] = t.origin.y;
-			ptr[8] = t.basis.elements[2][0];
-			ptr[9] = t.basis.elements[2][1];
-			ptr[10] = t.basis.elements[2][2];
+			ptr[8] = t.basis.rows[2][0];
+			ptr[9] = t.basis.rows[2][1];
+			ptr[10] = t.basis.rows[2][2];
 			ptr[11] = t.origin.z;
 
 			_multimesh_add_to_interpolation_lists(p_multimesh, *mmi);

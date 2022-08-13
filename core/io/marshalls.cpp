@@ -319,7 +319,7 @@ Error decode_variant(Variant &r_variant, const uint8_t *p_buffer, int p_len, int
 			Basis val;
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 3; j++) {
-					val.elements[i][j] = decode_float(&buf[(i * 3 + j) * 4]);
+					val.rows[i][j] = decode_float(&buf[(i * 3 + j) * 4]);
 				}
 			}
 
@@ -335,7 +335,7 @@ Error decode_variant(Variant &r_variant, const uint8_t *p_buffer, int p_len, int
 			Transform val;
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 3; j++) {
-					val.basis.elements[i][j] = decode_float(&buf[(i * 3 + j) * 4]);
+					val.basis.rows[i][j] = decode_float(&buf[(i * 3 + j) * 4]);
 				}
 			}
 			val.origin[0] = decode_float(&buf[36]);
@@ -1144,7 +1144,7 @@ Error encode_variant(const Variant &p_variant, uint8_t *r_buffer, int &r_len, bo
 				Basis val = p_variant;
 				for (int i = 0; i < 3; i++) {
 					for (int j = 0; j < 3; j++) {
-						memcpy(&buf[(i * 3 + j) * 4], &val.elements[i][j], sizeof(float));
+						memcpy(&buf[(i * 3 + j) * 4], &val.rows[i][j], sizeof(float));
 					}
 				}
 			}
@@ -1157,7 +1157,7 @@ Error encode_variant(const Variant &p_variant, uint8_t *r_buffer, int &r_len, bo
 				Transform val = p_variant;
 				for (int i = 0; i < 3; i++) {
 					for (int j = 0; j < 3; j++) {
-						memcpy(&buf[(i * 3 + j) * 4], &val.basis.elements[i][j], sizeof(float));
+						memcpy(&buf[(i * 3 + j) * 4], &val.basis.rows[i][j], sizeof(float));
 					}
 				}
 

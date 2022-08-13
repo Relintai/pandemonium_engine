@@ -3095,17 +3095,17 @@ void RasterizerStorageGLES2::_multimesh_instance_set_transform(RID p_multimesh, 
 
 	float *dataptr = &multimesh->data.write[stride * p_index];
 
-	dataptr[0] = p_transform.basis.elements[0][0];
-	dataptr[1] = p_transform.basis.elements[0][1];
-	dataptr[2] = p_transform.basis.elements[0][2];
+	dataptr[0] = p_transform.basis.rows[0][0];
+	dataptr[1] = p_transform.basis.rows[0][1];
+	dataptr[2] = p_transform.basis.rows[0][2];
 	dataptr[3] = p_transform.origin.x;
-	dataptr[4] = p_transform.basis.elements[1][0];
-	dataptr[5] = p_transform.basis.elements[1][1];
-	dataptr[6] = p_transform.basis.elements[1][2];
+	dataptr[4] = p_transform.basis.rows[1][0];
+	dataptr[5] = p_transform.basis.rows[1][1];
+	dataptr[6] = p_transform.basis.rows[1][2];
 	dataptr[7] = p_transform.origin.y;
-	dataptr[8] = p_transform.basis.elements[2][0];
-	dataptr[9] = p_transform.basis.elements[2][1];
-	dataptr[10] = p_transform.basis.elements[2][2];
+	dataptr[8] = p_transform.basis.rows[2][0];
+	dataptr[9] = p_transform.basis.rows[2][1];
+	dataptr[10] = p_transform.basis.rows[2][2];
 	dataptr[11] = p_transform.origin.z;
 
 	multimesh->dirty_data = true;
@@ -3224,17 +3224,17 @@ Transform RasterizerStorageGLES2::_multimesh_instance_get_transform(RID p_multim
 
 	Transform xform;
 
-	xform.basis.elements[0][0] = dataptr[0];
-	xform.basis.elements[0][1] = dataptr[1];
-	xform.basis.elements[0][2] = dataptr[2];
+	xform.basis.rows[0][0] = dataptr[0];
+	xform.basis.rows[0][1] = dataptr[1];
+	xform.basis.rows[0][2] = dataptr[2];
 	xform.origin.x = dataptr[3];
-	xform.basis.elements[1][0] = dataptr[4];
-	xform.basis.elements[1][1] = dataptr[5];
-	xform.basis.elements[1][2] = dataptr[6];
+	xform.basis.rows[1][0] = dataptr[4];
+	xform.basis.rows[1][1] = dataptr[5];
+	xform.basis.rows[1][2] = dataptr[6];
 	xform.origin.y = dataptr[7];
-	xform.basis.elements[2][0] = dataptr[8];
-	xform.basis.elements[2][1] = dataptr[9];
-	xform.basis.elements[2][2] = dataptr[10];
+	xform.basis.rows[2][0] = dataptr[8];
+	xform.basis.rows[2][1] = dataptr[9];
+	xform.basis.rows[2][2] = dataptr[10];
 	xform.origin.z = dataptr[11];
 
 	return xform;
@@ -3423,17 +3423,17 @@ void RasterizerStorageGLES2::update_dirty_multimeshes() {
 					float *dataptr = &data[i];
 
 					Transform xform;
-					xform.basis.elements[0][0] = dataptr[0];
-					xform.basis.elements[0][1] = dataptr[1];
-					xform.basis.elements[0][2] = dataptr[2];
+					xform.basis.rows[0][0] = dataptr[0];
+					xform.basis.rows[0][1] = dataptr[1];
+					xform.basis.rows[0][2] = dataptr[2];
 					xform.origin.x = dataptr[3];
-					xform.basis.elements[1][0] = dataptr[4];
-					xform.basis.elements[1][1] = dataptr[5];
-					xform.basis.elements[1][2] = dataptr[6];
+					xform.basis.rows[1][0] = dataptr[4];
+					xform.basis.rows[1][1] = dataptr[5];
+					xform.basis.rows[1][2] = dataptr[6];
 					xform.origin.y = dataptr[7];
-					xform.basis.elements[2][0] = dataptr[8];
-					xform.basis.elements[2][1] = dataptr[9];
-					xform.basis.elements[2][2] = dataptr[10];
+					xform.basis.rows[2][0] = dataptr[8];
+					xform.basis.rows[2][1] = dataptr[9];
+					xform.basis.rows[2][2] = dataptr[10];
 					xform.origin.z = dataptr[11];
 
 					AABB laabb = xform.xform(mesh_aabb);

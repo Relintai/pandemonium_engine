@@ -805,9 +805,9 @@ bool CustomPropertyEditor::edit(Object *p_owner, const String &p_name, Variant::
 			field_names.push_back("oy");
 			config_value_editors(6, 2, 16, field_names);
 
-			Transform2D basis = v;
+			Transform2D t = v;
 			for (int i = 0; i < 6; i++) {
-				value_editor[i]->set_text(String::num(basis.elements[i / 2][i % 2]));
+				value_editor[i]->set_text(String::num(t.elements[i / 2][i % 2]));
 			}
 
 		} break;
@@ -825,7 +825,7 @@ bool CustomPropertyEditor::edit(Object *p_owner, const String &p_name, Variant::
 
 			Basis basis = v;
 			for (int i = 0; i < 9; i++) {
-				value_editor[i]->set_text(String::num(basis.elements[i / 3][i % 3]));
+				value_editor[i]->set_text(String::num(basis.rows[i / 3][i % 3]));
 			}
 
 		} break;
@@ -846,7 +846,7 @@ bool CustomPropertyEditor::edit(Object *p_owner, const String &p_name, Variant::
 
 			Transform tr = v;
 			for (int i = 0; i < 9; i++) {
-				value_editor[(i / 3) * 4 + i % 3]->set_text(String::num(tr.basis.elements[i / 3][i % 3]));
+				value_editor[(i / 3) * 4 + i % 3]->set_text(String::num(tr.basis.rows[i / 3][i % 3]));
 			}
 
 			value_editor[3]->set_text(String::num(tr.origin.x));
@@ -1591,7 +1591,7 @@ void CustomPropertyEditor::_modified(String p_string) {
 		case Variant::BASIS: {
 			Basis m;
 			for (int i = 0; i < 9; i++) {
-				m.elements[i / 3][i % 3] = _parse_real_expression(value_editor[i]->get_text());
+				m.rows[i / 3][i % 3] = _parse_real_expression(value_editor[i]->get_text());
 			}
 
 			v = m;
@@ -1601,7 +1601,7 @@ void CustomPropertyEditor::_modified(String p_string) {
 		case Variant::TRANSFORM: {
 			Basis basis;
 			for (int i = 0; i < 9; i++) {
-				basis.elements[i / 3][i % 3] = _parse_real_expression(value_editor[(i / 3) * 4 + i % 3]->get_text());
+				basis.rows[i / 3][i % 3] = _parse_real_expression(value_editor[(i / 3) * 4 + i % 3]->get_text());
 			}
 
 			Vector3 origin;

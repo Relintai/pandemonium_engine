@@ -222,17 +222,17 @@ private:
 		const Transform &t = p_source.transform;
 
 		if (p_active) {
-			r_dest[0] = t.basis.elements[0][0];
-			r_dest[1] = t.basis.elements[0][1];
-			r_dest[2] = t.basis.elements[0][2];
+			r_dest[0] = t.basis.rows[0][0];
+			r_dest[1] = t.basis.rows[0][1];
+			r_dest[2] = t.basis.rows[0][2];
 			r_dest[3] = t.origin.x;
-			r_dest[4] = t.basis.elements[1][0];
-			r_dest[5] = t.basis.elements[1][1];
-			r_dest[6] = t.basis.elements[1][2];
+			r_dest[4] = t.basis.rows[1][0];
+			r_dest[5] = t.basis.rows[1][1];
+			r_dest[6] = t.basis.rows[1][2];
 			r_dest[7] = t.origin.y;
-			r_dest[8] = t.basis.elements[2][0];
-			r_dest[9] = t.basis.elements[2][1];
-			r_dest[10] = t.basis.elements[2][2];
+			r_dest[8] = t.basis.rows[2][0];
+			r_dest[9] = t.basis.rows[2][1];
+			r_dest[10] = t.basis.rows[2][2];
 			r_dest[11] = t.origin.z;
 		} else {
 			memset(r_dest, 0, sizeof(float) * 12);

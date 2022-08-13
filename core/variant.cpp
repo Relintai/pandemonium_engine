@@ -1680,7 +1680,7 @@ String Variant::stringify(List<const void *> &stack) const {
 						mtx += ", ";
 					}
 
-					mtx += Variant(mat3.elements[i][j]).operator String();
+					mtx += Variant(mat3.rows[i][j]).operator String();
 				}
 
 				mtx += ")";
@@ -1912,10 +1912,10 @@ Variant::operator Transform() const {
 	} else if (type == TRANSFORM2D) {
 		const Transform2D &t = *_data._transform2d;
 		Transform m;
-		m.basis.elements[0][0] = t.elements[0][0];
-		m.basis.elements[1][0] = t.elements[0][1];
-		m.basis.elements[0][1] = t.elements[1][0];
-		m.basis.elements[1][1] = t.elements[1][1];
+		m.basis.rows[0][0] = t.elements[0][0];
+		m.basis.rows[1][0] = t.elements[0][1];
+		m.basis.rows[0][1] = t.elements[1][0];
+		m.basis.rows[1][1] = t.elements[1][1];
 		m.origin[0] = t.elements[2][0];
 		m.origin[1] = t.elements[2][1];
 		return m;
@@ -1930,10 +1930,10 @@ Variant::operator Transform2D() const {
 	} else if (type == TRANSFORM) {
 		const Transform &t = *_data._transform;
 		Transform2D m;
-		m.elements[0][0] = t.basis.elements[0][0];
-		m.elements[0][1] = t.basis.elements[1][0];
-		m.elements[1][0] = t.basis.elements[0][1];
-		m.elements[1][1] = t.basis.elements[1][1];
+		m.elements[0][0] = t.basis.rows[0][0];
+		m.elements[0][1] = t.basis.rows[1][0];
+		m.elements[1][0] = t.basis.rows[0][1];
+		m.elements[1][1] = t.basis.rows[1][1];
 		m.elements[2][0] = t.origin[0];
 		m.elements[2][1] = t.origin[1];
 		return m;
@@ -3038,7 +3038,7 @@ uint32_t Variant::hash() const {
 			uint32_t hash = 5831;
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 3; j++) {
-					hash = hash_djb2_one_float(_data._basis->elements[i][j], hash);
+					hash = hash_djb2_one_float(_data._basis->rows[i][j], hash);
 				}
 			}
 
@@ -3049,7 +3049,7 @@ uint32_t Variant::hash() const {
 			uint32_t hash = 5831;
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 3; j++) {
-					hash = hash_djb2_one_float(_data._transform->basis.elements[i][j], hash);
+					hash = hash_djb2_one_float(_data._transform->basis.rows[i][j], hash);
 				}
 				hash = hash_djb2_one_float(_data._transform->origin[i], hash);
 			}
@@ -3380,7 +3380,7 @@ bool Variant::hash_compare(const Variant &p_variant) const {
 			const Basis *r = p_variant._data._basis;
 
 			for (int i = 0; i < 3; i++) {
-				if (!(hash_compare_vector3(l->elements[i], r->elements[i]))) {
+				if (!(hash_compare_vector3(l->rows[i], r->rows[i]))) {
 					return false;
 				}
 			}
@@ -3393,7 +3393,7 @@ bool Variant::hash_compare(const Variant &p_variant) const {
 			const Transform *r = p_variant._data._transform;
 
 			for (int i = 0; i < 3; i++) {
-				if (!(hash_compare_vector3(l->basis.elements[i], r->basis.elements[i]))) {
+				if (!(hash_compare_vector3(l->basis.rows[i], r->basis.rows[i]))) {
 					return false;
 				}
 			}

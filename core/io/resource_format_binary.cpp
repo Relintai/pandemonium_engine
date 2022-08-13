@@ -239,29 +239,29 @@ Error ResourceInteractiveLoaderBinary::parse_variant(Variant &r_v) {
 		} break;
 		case VARIANT_MATRIX3: {
 			Basis v;
-			v.elements[0].x = f->get_real();
-			v.elements[0].y = f->get_real();
-			v.elements[0].z = f->get_real();
-			v.elements[1].x = f->get_real();
-			v.elements[1].y = f->get_real();
-			v.elements[1].z = f->get_real();
-			v.elements[2].x = f->get_real();
-			v.elements[2].y = f->get_real();
-			v.elements[2].z = f->get_real();
+			v.rows[0].x = f->get_real();
+			v.rows[0].y = f->get_real();
+			v.rows[0].z = f->get_real();
+			v.rows[1].x = f->get_real();
+			v.rows[1].y = f->get_real();
+			v.rows[1].z = f->get_real();
+			v.rows[2].x = f->get_real();
+			v.rows[2].y = f->get_real();
+			v.rows[2].z = f->get_real();
 			r_v = v;
 
 		} break;
 		case VARIANT_TRANSFORM: {
 			Transform v;
-			v.basis.elements[0].x = f->get_real();
-			v.basis.elements[0].y = f->get_real();
-			v.basis.elements[0].z = f->get_real();
-			v.basis.elements[1].x = f->get_real();
-			v.basis.elements[1].y = f->get_real();
-			v.basis.elements[1].z = f->get_real();
-			v.basis.elements[2].x = f->get_real();
-			v.basis.elements[2].y = f->get_real();
-			v.basis.elements[2].z = f->get_real();
+			v.basis.rows[0].x = f->get_real();
+			v.basis.rows[0].y = f->get_real();
+			v.basis.rows[0].z = f->get_real();
+			v.basis.rows[1].x = f->get_real();
+			v.basis.rows[1].y = f->get_real();
+			v.basis.rows[1].z = f->get_real();
+			v.basis.rows[2].x = f->get_real();
+			v.basis.rows[2].y = f->get_real();
+			v.basis.rows[2].z = f->get_real();
 			v.origin.x = f->get_real();
 			v.origin.y = f->get_real();
 			v.origin.z = f->get_real();
@@ -1436,30 +1436,30 @@ void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Varia
 		case Variant::BASIS: {
 			f->store_32(VARIANT_MATRIX3);
 			Basis val = p_property;
-			f->store_real(val.elements[0].x);
-			f->store_real(val.elements[0].y);
-			f->store_real(val.elements[0].z);
-			f->store_real(val.elements[1].x);
-			f->store_real(val.elements[1].y);
-			f->store_real(val.elements[1].z);
-			f->store_real(val.elements[2].x);
-			f->store_real(val.elements[2].y);
-			f->store_real(val.elements[2].z);
+			f->store_real(val.rows[0].x);
+			f->store_real(val.rows[0].y);
+			f->store_real(val.rows[0].z);
+			f->store_real(val.rows[1].x);
+			f->store_real(val.rows[1].y);
+			f->store_real(val.rows[1].z);
+			f->store_real(val.rows[2].x);
+			f->store_real(val.rows[2].y);
+			f->store_real(val.rows[2].z);
 
 		} break;
 
 		case Variant::TRANSFORM: {
 			f->store_32(VARIANT_TRANSFORM);
 			Transform val = p_property;
-			f->store_real(val.basis.elements[0].x);
-			f->store_real(val.basis.elements[0].y);
-			f->store_real(val.basis.elements[0].z);
-			f->store_real(val.basis.elements[1].x);
-			f->store_real(val.basis.elements[1].y);
-			f->store_real(val.basis.elements[1].z);
-			f->store_real(val.basis.elements[2].x);
-			f->store_real(val.basis.elements[2].y);
-			f->store_real(val.basis.elements[2].z);
+			f->store_real(val.basis.rows[0].x);
+			f->store_real(val.basis.rows[0].y);
+			f->store_real(val.basis.rows[0].z);
+			f->store_real(val.basis.rows[1].x);
+			f->store_real(val.basis.rows[1].y);
+			f->store_real(val.basis.rows[1].z);
+			f->store_real(val.basis.rows[2].x);
+			f->store_real(val.basis.rows[2].y);
+			f->store_real(val.basis.rows[2].z);
 			f->store_real(val.origin.x);
 			f->store_real(val.origin.y);
 			f->store_real(val.origin.z);

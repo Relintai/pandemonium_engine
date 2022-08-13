@@ -587,15 +587,15 @@ Variant Tween::_run_equation(InterpolateData &p_data) {
 
 			// Execute the equation on all the basis and mutate the r basis
 			// This uses the custom APPLY_EQUATION macro defined above
-			APPLY_EQUATION(elements[0][0]);
-			APPLY_EQUATION(elements[0][1]);
-			APPLY_EQUATION(elements[0][2]);
-			APPLY_EQUATION(elements[1][0]);
-			APPLY_EQUATION(elements[1][1]);
-			APPLY_EQUATION(elements[1][2]);
-			APPLY_EQUATION(elements[2][0]);
-			APPLY_EQUATION(elements[2][1]);
-			APPLY_EQUATION(elements[2][2]);
+			APPLY_EQUATION(rows[0][0]);
+			APPLY_EQUATION(rows[0][1]);
+			APPLY_EQUATION(rows[0][2]);
+			APPLY_EQUATION(rows[1][0]);
+			APPLY_EQUATION(rows[1][1]);
+			APPLY_EQUATION(rows[1][2]);
+			APPLY_EQUATION(rows[2][0]);
+			APPLY_EQUATION(rows[2][1]);
+			APPLY_EQUATION(rows[2][2]);
 			result = r;
 		} break;
 
@@ -607,15 +607,15 @@ Variant Tween::_run_equation(InterpolateData &p_data) {
 
 			// Execute the equation for each of the transforms and their origin and mutate the r transform
 			// This uses the custom APPLY_EQUATION macro defined above
-			APPLY_EQUATION(basis.elements[0][0]);
-			APPLY_EQUATION(basis.elements[0][1]);
-			APPLY_EQUATION(basis.elements[0][2]);
-			APPLY_EQUATION(basis.elements[1][0]);
-			APPLY_EQUATION(basis.elements[1][1]);
-			APPLY_EQUATION(basis.elements[1][2]);
-			APPLY_EQUATION(basis.elements[2][0]);
-			APPLY_EQUATION(basis.elements[2][1]);
-			APPLY_EQUATION(basis.elements[2][2]);
+			APPLY_EQUATION(basis.rows[0][0]);
+			APPLY_EQUATION(basis.rows[0][1]);
+			APPLY_EQUATION(basis.rows[0][2]);
+			APPLY_EQUATION(basis.rows[1][0]);
+			APPLY_EQUATION(basis.rows[1][1]);
+			APPLY_EQUATION(basis.rows[1][2]);
+			APPLY_EQUATION(basis.rows[2][0]);
+			APPLY_EQUATION(basis.rows[2][1]);
+			APPLY_EQUATION(basis.rows[2][2]);
 			APPLY_EQUATION(origin.x);
 			APPLY_EQUATION(origin.y);
 			APPLY_EQUATION(origin.z);
@@ -1274,15 +1274,15 @@ bool Tween::_calc_delta_val(const Variant &p_initial_val, const Variant &p_final
 			// Build a new basis which is the delta between the initial and final values
 			Basis i = initial_val;
 			Basis f = final_val;
-			delta_val = Basis(f.elements[0][0] - i.elements[0][0],
-					f.elements[0][1] - i.elements[0][1],
-					f.elements[0][2] - i.elements[0][2],
-					f.elements[1][0] - i.elements[1][0],
-					f.elements[1][1] - i.elements[1][1],
-					f.elements[1][2] - i.elements[1][2],
-					f.elements[2][0] - i.elements[2][0],
-					f.elements[2][1] - i.elements[2][1],
-					f.elements[2][2] - i.elements[2][2]);
+			delta_val = Basis(f.rows[0][0] - i.rows[0][0],
+					f.rows[0][1] - i.rows[0][1],
+					f.rows[0][2] - i.rows[0][2],
+					f.rows[1][0] - i.rows[1][0],
+					f.rows[1][1] - i.rows[1][1],
+					f.rows[1][2] - i.rows[1][2],
+					f.rows[2][0] - i.rows[2][0],
+					f.rows[2][1] - i.rows[2][1],
+					f.rows[2][2] - i.rows[2][2]);
 		} break;
 
 		case Variant::TRANSFORM: {
@@ -1290,15 +1290,15 @@ bool Tween::_calc_delta_val(const Variant &p_initial_val, const Variant &p_final
 			Transform i = initial_val;
 			Transform f = final_val;
 			Transform d;
-			d.set(f.basis.elements[0][0] - i.basis.elements[0][0],
-					f.basis.elements[0][1] - i.basis.elements[0][1],
-					f.basis.elements[0][2] - i.basis.elements[0][2],
-					f.basis.elements[1][0] - i.basis.elements[1][0],
-					f.basis.elements[1][1] - i.basis.elements[1][1],
-					f.basis.elements[1][2] - i.basis.elements[1][2],
-					f.basis.elements[2][0] - i.basis.elements[2][0],
-					f.basis.elements[2][1] - i.basis.elements[2][1],
-					f.basis.elements[2][2] - i.basis.elements[2][2],
+			d.set(f.basis.rows[0][0] - i.basis.rows[0][0],
+					f.basis.rows[0][1] - i.basis.rows[0][1],
+					f.basis.rows[0][2] - i.basis.rows[0][2],
+					f.basis.rows[1][0] - i.basis.rows[1][0],
+					f.basis.rows[1][1] - i.basis.rows[1][1],
+					f.basis.rows[1][2] - i.basis.rows[1][2],
+					f.basis.rows[2][0] - i.basis.rows[2][0],
+					f.basis.rows[2][1] - i.basis.rows[2][1],
+					f.basis.rows[2][2] - i.basis.rows[2][2],
 					f.origin.x - i.origin.x,
 					f.origin.y - i.origin.y,
 					f.origin.z - i.origin.z);
