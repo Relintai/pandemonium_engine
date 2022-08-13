@@ -325,7 +325,7 @@ void AnimationPlayer::_ensure_node_caches(AnimationData *p_anim, Node *p_root_ov
 					}
 					Transform rest = node_cache->skeleton->get_bone_rest(bone_idx);
 					node_cache->init_loc = rest.origin;
-					node_cache->init_rot = rest.basis.get_rotation_quat();
+					node_cache->init_rot = rest.basis.get_rotation_quaternion();
 					node_cache->init_scale = rest.basis.get_scale();
 				} else {
 					// no property, just use spatialnode

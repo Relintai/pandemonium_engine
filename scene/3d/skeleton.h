@@ -88,7 +88,7 @@ private:
 
 		_FORCE_INLINE_ void update_pose_cache() {
 			if (pose_cache_dirty) {
-				pose_cache.basis.set_quat_scale(pose_rotation, pose_scale);
+				pose_cache.basis.set_quaternion_scale(pose_rotation, pose_scale);
 				pose_cache.origin = pose_position;
 				pose_cache_dirty = false;
 			}

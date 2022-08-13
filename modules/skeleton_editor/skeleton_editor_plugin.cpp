@@ -330,7 +330,7 @@ void SkeletonEditor::init_pose(const bool p_all_bones) {
 		for (int i = 0; i < bone_len; i++) {
 			Transform rest = skeleton->get_bone_rest(i);
 			ur->add_do_method(skeleton, "set_bone_pose_position", i, rest.origin);
-			ur->add_do_method(skeleton, "set_bone_pose_rotation", i, rest.basis.get_rotation_quat());
+			ur->add_do_method(skeleton, "set_bone_pose_rotation", i, rest.basis.get_rotation_quaternion());
 			ur->add_do_method(skeleton, "set_bone_pose_scale", i, rest.basis.get_scale());
 			ur->add_undo_method(skeleton, "set_bone_pose_position", i, skeleton->get_bone_pose_position(i));
 			ur->add_undo_method(skeleton, "set_bone_pose_rotation", i, skeleton->get_bone_pose_rotation(i));
@@ -344,7 +344,7 @@ void SkeletonEditor::init_pose(const bool p_all_bones) {
 		}
 		Transform rest = skeleton->get_bone_rest(selected_bone);
 		ur->add_do_method(skeleton, "set_bone_pose_position", selected_bone, rest.origin);
-		ur->add_do_method(skeleton, "set_bone_pose_rotation", selected_bone, rest.basis.get_rotation_quat());
+		ur->add_do_method(skeleton, "set_bone_pose_rotation", selected_bone, rest.basis.get_rotation_quaternion());
 		ur->add_do_method(skeleton, "set_bone_pose_scale", selected_bone, rest.basis.get_scale());
 		ur->add_undo_method(skeleton, "set_bone_pose_position", selected_bone, skeleton->get_bone_pose_position(selected_bone));
 		ur->add_undo_method(skeleton, "set_bone_pose_rotation", selected_bone, skeleton->get_bone_pose_rotation(selected_bone));
@@ -1488,7 +1488,7 @@ void SkeletonGizmoPlugin::set_subgizmo_transform(const EditorSpatialGizmo *p_giz
 
 	// Apply transform.
 	skeleton->set_bone_pose_position(p_id, t.origin);
-	skeleton->set_bone_pose_rotation(p_id, t.basis.get_rotation_quat());
+	skeleton->set_bone_pose_rotation(p_id, t.basis.get_rotation_quaternion());
 	skeleton->set_bone_pose_scale(p_id, t.basis.get_scale());
 }
 

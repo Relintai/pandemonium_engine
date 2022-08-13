@@ -42,11 +42,11 @@ public:
 		Vector3(0, 0, 1)
 	};
 
-	_FORCE_INLINE_ const Vector3 &operator[](int axis) const {
-		return rows[axis];
+	_FORCE_INLINE_ const Vector3 &operator[](int p_row) const {
+		return rows[p_row];
 	}
-	_FORCE_INLINE_ Vector3 &operator[](int axis) {
-		return rows[axis];
+	_FORCE_INLINE_ Vector3 &operator[](int p_row) {
+		return rows[p_row];
 	}
 
 	void invert();
@@ -58,17 +58,6 @@ public:
 	_FORCE_INLINE_ real_t determinant() const;
 
 	void from_z(const Vector3 &p_z);
-
-	_FORCE_INLINE_ Vector3 get_axis(int p_axis) const {
-		// get actual basis axis (rows is transposed for performance)
-		return Vector3(rows[0][p_axis], rows[1][p_axis], rows[2][p_axis]);
-	}
-	_FORCE_INLINE_ void set_axis(int p_axis, const Vector3 &p_value) {
-		// get actual basis axis (rows is transposed for performance)
-		rows[0][p_axis] = p_value.x;
-		rows[1][p_axis] = p_value.y;
-		rows[2][p_axis] = p_value.z;
-	}
 
 	void rotate(const Vector3 &p_axis, real_t p_phi);
 	Basis rotated(const Vector3 &p_axis, real_t p_phi) const;
@@ -82,10 +71,15 @@ public:
 	void rotate(const Quaternion &p_quat);
 	Basis rotated(const Quaternion &p_quat) const;
 
+	_FORCE_INLINE_ void rotatev(const Vector3 &p_euler) { rotate(p_euler); }
+	_FORCE_INLINE_ Basis rotatedv(const Vector3 &p_euler) const { return rotated(p_euler); }
+	_FORCE_INLINE_ void rotateq(const Quaternion &p_quat) { rotate(p_quat); }
+	_FORCE_INLINE_ Basis rotatedq(const Quaternion &p_quat) const { return rotated(p_quat); }
+
 	Vector3 get_rotation_euler() const;
 	void get_rotation_axis_angle(Vector3 &p_axis, real_t &p_angle) const;
 	void get_rotation_axis_angle_local(Vector3 &p_axis, real_t &p_angle) const;
-	Quaternion get_rotation_quat() const;
+	Quaternion get_rotation_quaternion() const;
 	Vector3 get_rotation() const { return get_rotation_euler(); };
 
 	void rotate_to_align(Vector3 p_start_direction, Vector3 p_end_direction);
@@ -110,11 +104,11 @@ public:
 	Vector3 get_euler_zyx() const;
 	void set_euler_zyx(const Vector3 &p_euler);
 
-	Quaternion get_quat() const;
-	void set_quat(const Quaternion &p_quat);
-
 	Vector3 get_euler() const { return get_euler_yxz(); }
 	void set_euler(const Vector3 &p_euler) { set_euler_yxz(p_euler); }
+
+	Quaternion get_quaternion() const;
+	void set_quaternion(const Quaternion &p_quat);
 
 	void get_axis_angle(Vector3 &r_axis, real_t &r_angle) const;
 	void set_axis_angle(const Vector3 &p_axis, real_t p_phi);
@@ -125,13 +119,19 @@ public:
 	void scale_local(const Vector3 &p_scale);
 	Basis scaled_local(const Vector3 &p_scale) const;
 
+	void scale_orthogonal(const Vector3 &p_scale);
+	Basis scaled_orthogonal(const Vector3 &p_scale) const;
+
+	void make_scale_uniform();
+	float get_uniform_scale() const;
+
 	Vector3 get_scale() const;
 	Vector3 get_scale_abs() const;
 	Vector3 get_scale_local() const;
 
 	void set_axis_angle_scale(const Vector3 &p_axis, real_t p_phi, const Vector3 &p_scale);
 	void set_euler_scale(const Vector3 &p_euler, const Vector3 &p_scale);
-	void set_quat_scale(const Quaternion &p_quat, const Vector3 &p_scale);
+	void set_quaternion_scale(const Quaternion &p_quat, const Vector3 &p_scale);
 
 	// transposed dot products
 	_FORCE_INLINE_ real_t tdotx(const Vector3 &v) const {
@@ -145,8 +145,6 @@ public:
 	}
 
 	bool is_equal_approx(const Basis &p_basis) const;
-	// For complicated reasons, the second argument is always discarded. See #45062.
-	bool is_equal_approx(const Basis &a, const Basis &b) const { return is_equal_approx(a); }
 	bool is_equal_approx_ratio(const Basis &a, const Basis &b, real_t p_epsilon = UNIT_EPSILON) const;
 
 	bool operator==(const Basis &p_matrix) const;
@@ -178,6 +176,7 @@ public:
 
 	Basis slerp(const Basis &p_to, const real_t &p_weight) const;
 	_FORCE_INLINE_ Basis lerp(const Basis &p_to, const real_t &p_weight) const;
+	void rotate_sh(real_t *p_values);
 
 	operator String() const;
 
@@ -195,10 +194,11 @@ public:
 		rows[2][2] = zz;
 	}
 	_FORCE_INLINE_ void set(const Vector3 &p_x, const Vector3 &p_y, const Vector3 &p_z) {
-		set_axis(0, p_x);
-		set_axis(1, p_y);
-		set_axis(2, p_z);
+		set_column(0, p_x);
+		set_column(1, p_y);
+		set_column(2, p_z);
 	}
+
 	_FORCE_INLINE_ Vector3 get_column(int i) const {
 		return Vector3(rows[0][i], rows[1][i], rows[2][i]);
 	}
@@ -210,17 +210,34 @@ public:
 		rows[2][p_index] = p_value.z;
 	}
 
+	_FORCE_INLINE_ void set_columns(const Vector3 &p_x, const Vector3 &p_y, const Vector3 &p_z) {
+		set_column(0, p_x);
+		set_column(1, p_y);
+		set_column(2, p_z);
+	}
+
 	_FORCE_INLINE_ Vector3 get_row(int i) const {
 		return Vector3(rows[i][0], rows[i][1], rows[i][2]);
 	}
-	_FORCE_INLINE_ Vector3 get_main_diagonal() const {
-		return Vector3(rows[0][0], rows[1][1], rows[2][2]);
-	}
-
 	_FORCE_INLINE_ void set_row(int i, const Vector3 &p_row) {
 		rows[i][0] = p_row.x;
 		rows[i][1] = p_row.y;
 		rows[i][2] = p_row.z;
+	}
+
+	_FORCE_INLINE_ Vector3 get_axis(int i) const {
+		return Vector3(rows[0][i], rows[1][i], rows[2][i]);
+	}
+
+	_FORCE_INLINE_ void set_axis(int p_index, const Vector3 &p_value) {
+		// Set actual basis axis column (we store transposed as rows for performance).
+		rows[0][p_index] = p_value.x;
+		rows[1][p_index] = p_value.y;
+		rows[2][p_index] = p_value.z;
+	}
+
+	_FORCE_INLINE_ Vector3 get_main_diagonal() const {
+		return Vector3(rows[0][0], rows[1][1], rows[2][2]);
 	}
 
 	_FORCE_INLINE_ void set_zero() {
@@ -248,6 +265,9 @@ public:
 	void orthonormalize();
 	Basis orthonormalized() const;
 
+	void orthogonalize();
+	Basis orthogonalized() const;
+
 	bool is_symmetric() const;
 	Basis diagonalize();
 
@@ -265,10 +285,13 @@ public:
 	// only be used in cases of single normals, or when the basis changes each time.
 	Vector3 xform_normal(const Vector3 &p_vector) const { return get_normal_xform_basis().xform_normal_fast(p_vector); }
 
-	operator Quaternion() const { return get_quat(); }
+	static Basis looking_at(const Vector3 &p_target, const Vector3 &p_up = Vector3(0, 1, 0));
+	static Basis from_scale(const Vector3 &p_scale);
 
-	Basis(const Quaternion &p_quat) { set_quat(p_quat); }
-	Basis(const Quaternion &p_quat, const Vector3 &p_scale) { set_quat_scale(p_quat, p_scale); }
+	operator Quaternion() const { return get_quaternion(); }
+
+	Basis(const Quaternion &p_quat) { set_quaternion(p_quat); }
+	Basis(const Quaternion &p_quat, const Vector3 &p_scale) { set_quaternion_scale(p_quat, p_scale); }
 
 	Basis(const Vector3 &p_euler) { set_euler(p_euler); }
 	Basis(const Vector3 &p_euler, const Vector3 &p_scale) { set_euler_scale(p_euler, p_scale); }

@@ -634,7 +634,7 @@ Error GLTFDocument::_parse_nodes(Ref<GLTFState> state) {
 				node->scale = _arr_to_vec3(n["scale"]);
 			}
 
-			node->xform.basis.set_quat_scale(node->rotation, node->scale);
+			node->xform.basis.set_quaternion_scale(node->rotation, node->scale);
 			node->xform.origin = node->translation;
 		}
 
@@ -5277,7 +5277,7 @@ GLTFLightIndex GLTFDocument::_convert_light(Ref<GLTFState> state, Light *p_light
 void GLTFDocument::_convert_spatial(Ref<GLTFState> state, Spatial *p_spatial, Ref<GLTFNode> p_node) {
 	Transform xform = p_spatial->get_transform();
 	p_node->scale = xform.basis.get_scale();
-	p_node->rotation = xform.basis.get_rotation_quat();
+	p_node->rotation = xform.basis.get_rotation_quaternion();
 	p_node->translation = xform.origin;
 }
 
@@ -5402,7 +5402,7 @@ void GLTFDocument::_convert_mult_mesh_instance_to_gltf(MultiMeshInstance *p_mult
 				real_t rotation = xform_2d.get_rotation();
 				Quaternion quat(Vector3(0, 1, 0), rotation);
 				Size2 scale = xform_2d.get_scale();
-				transform.basis.set_quat_scale(quat,
+				transform.basis.set_quaternion_scale(quat,
 						Vector3(scale.x, 0, scale.y));
 				transform =
 						p_multi_mesh_instance->get_transform() * transform;
@@ -5453,7 +5453,7 @@ void GLTFDocument::_convert_skeleton_to_gltf(Skeleton *p_skeleton3d, Ref<GLTFSta
 		joint_node->set_name(_gen_unique_name(state, skeleton->get_bone_name(bone_i)));
 		Transform xform = skeleton->get_bone_pose(bone_i);
 		joint_node->scale = xform.basis.get_scale();
-		joint_node->rotation = xform.basis.get_rotation_quat();
+		joint_node->rotation = xform.basis.get_rotation_quaternion();
 		joint_node->translation = xform.origin;
 		joint_node->joint = true;
 		GLTFNodeIndex current_node_i = state->nodes.size();
@@ -6032,7 +6032,7 @@ void GLTFDocument::_convert_mesh_instances(Ref<GLTFState> state) {
 		ERR_CONTINUE(!mi);
 		Transform mi_xform = mi->get_transform();
 		node->scale = mi_xform.basis.get_scale();
-		node->rotation = mi_xform.basis.get_rotation_quat();
+		node->rotation = mi_xform.basis.get_rotation_quaternion();
 		node->translation = mi_xform.origin;
 
 		Skeleton *skeleton = Object::cast_to<Skeleton>(mi->get_node(mi->get_skeleton_path()));

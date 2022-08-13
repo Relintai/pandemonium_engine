@@ -734,7 +734,7 @@ void Skeleton::set_bone_pose(int p_bone, const Transform &p_pose) {
 	ERR_FAIL_INDEX(p_bone, bone_size);
 
 	bones.write[p_bone].pose_position = p_pose.origin;
-	bones.write[p_bone].pose_rotation = p_pose.basis.get_rotation_quat();
+	bones.write[p_bone].pose_rotation = p_pose.basis.get_rotation_quaternion();
 	bones.write[p_bone].pose_scale = p_pose.basis.get_scale();
 	bones.write[p_bone].pose_cache_dirty = true;
 

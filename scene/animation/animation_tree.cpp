@@ -639,7 +639,7 @@ bool AnimationTree::_update_caches(AnimationPlayer *player) {
 								track_xform->bone_idx = bone_idx;
 								Transform rest = sk->get_bone_rest(bone_idx);
 								track_xform->init_loc = rest.origin;
-								track_xform->ref_rot = rest.basis.get_rotation_quat();
+								track_xform->ref_rot = rest.basis.get_rotation_quaternion();
 								track_xform->init_rot = track_xform->ref_rot.log();
 								track_xform->init_scale = rest.basis.get_scale();
 							}
@@ -1477,7 +1477,7 @@ void AnimationTree::_process_graph(float p_delta) {
 					if (t->root_motion) {
 						Transform xform;
 						xform.origin = t->loc;
-						xform.basis.set_quat_scale(t->rot, t->scale);
+						xform.basis.set_quaternion_scale(t->rot, t->scale);
 
 						root_motion_transform = xform;
 					} else if (t->skeleton && t->bone_idx >= 0) {

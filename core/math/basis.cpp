@@ -73,9 +73,9 @@ void Basis::invert() {
 void Basis::orthonormalize() {
 	// Gram-Schmidt Process
 
-	Vector3 x = get_axis(0);
-	Vector3 y = get_axis(1);
-	Vector3 z = get_axis(2);
+	Vector3 x = get_column(0);
+	Vector3 y = get_column(1);
+	Vector3 z = get_column(2);
 
 	x.normalize();
 	y = (y - x * (x.dot(y)));
@@ -83,9 +83,9 @@ void Basis::orthonormalize() {
 	z = (z - x * (x.dot(z)) - y * (y.dot(z)));
 	z.normalize();
 
-	set_axis(0, x);
-	set_axis(1, y);
-	set_axis(2, z);
+	set_column(0, x);
+	set_column(1, y);
+	set_column(2, z);
 }
 
 Basis Basis::orthonormalized() const {
@@ -99,6 +99,18 @@ bool Basis::is_orthogonal() const {
 	Basis m = (*this) * transposed();
 
 	return m.is_equal_approx(identity);
+}
+
+void Basis::orthogonalize() {
+	Vector3 scl = get_scale();
+	orthonormalize();
+	scale_local(scl);
+}
+
+Basis Basis::orthogonalized() const {
+	Basis c = *this;
+	c.orthogonalize();
+	return c;
 }
 
 bool Basis::is_diagonal() const {
@@ -237,6 +249,36 @@ Basis Basis::scaled_local(const Vector3 &p_scale) const {
 	return (*this) * b;
 }
 
+void Basis::scale_orthogonal(const Vector3 &p_scale) {
+	*this = scaled_orthogonal(p_scale);
+}
+
+Basis Basis::scaled_orthogonal(const Vector3 &p_scale) const {
+	Basis m = *this;
+	Vector3 s = Vector3(-1, -1, -1) + p_scale;
+	Vector3 dots;
+	Basis b;
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			dots[j] += s[i] * abs(m.get_column(i).normalized().dot(b.get_column(j)));
+		}
+	}
+	m.scale_local(Vector3(1, 1, 1) + dots);
+	return m;
+}
+
+float Basis::get_uniform_scale() const {
+	return (rows[0].length() + rows[1].length() + rows[2].length()) / 3.0f;
+}
+
+void Basis::make_scale_uniform() {
+	float l = (rows[0].length() + rows[1].length() + rows[2].length()) / 3.0f;
+	for (int i = 0; i < 3; i++) {
+		rows[i].normalize();
+		rows[i] *= l;
+	}
+}
+
 Vector3 Basis::get_scale_abs() const {
 	return Vector3(
 			Vector3(rows[0][0], rows[1][0], rows[2][0]).length(),
@@ -348,7 +390,7 @@ Vector3 Basis::get_rotation_euler() const {
 	return m.get_euler();
 }
 
-Quaternion Basis::get_rotation_quat() const {
+Quaternion Basis::get_rotation_quaternion() const {
 	// Assumes that the matrix can be decomposed into a proper rotation and scaling matrix as M = R.S,
 	// and returns the Euler angles corresponding to the rotation part, complementing get_scale().
 	// See the comment in get_scale() for further information.
@@ -359,7 +401,7 @@ Quaternion Basis::get_rotation_quat() const {
 		m.scale(Vector3(-1, -1, -1));
 	}
 
-	return m.get_quat();
+	return m.get_quaternion();
 }
 
 void Basis::rotate_to_align(Vector3 p_start_direction, Vector3 p_end_direction) {
@@ -775,9 +817,9 @@ Basis::operator String() const {
 	return mtx;
 }
 
-Quaternion Basis::get_quat() const {
+Quaternion Basis::get_quaternion() const {
 #ifdef MATH_CHECKS
-	ERR_FAIL_COND_V_MSG(!is_rotation(), Quaternion(), "Basis must be normalized in order to be casted to a Quaternionernion. Use get_rotation_quat() or call orthonormalized() if the Basis contains linearly independent vectors.");
+	ERR_FAIL_COND_V_MSG(!is_rotation(), Quaternion(), "Basis must be normalized in order to be casted to a Quaternionernion. Use get_rotation_quaternion() or call orthonormalized() if the Basis contains linearly independent vectors.");
 #endif
 	/* Allow getting a quaternion from an unnormalized transform */
 	Basis m = *this;
@@ -949,7 +991,7 @@ void Basis::get_axis_angle(Vector3 &r_axis, real_t &r_angle) const {
 	r_angle = angle;
 }
 
-void Basis::set_quat(const Quaternion &p_quat) {
+void Basis::set_quaternion(const Quaternion &p_quat) {
 	real_t d = p_quat.length_squared();
 	real_t s = 2 / d;
 	real_t xs = p_quat.x * s, ys = p_quat.y * s, zs = p_quat.z * s;
@@ -1001,7 +1043,7 @@ void Basis::set_euler_scale(const Vector3 &p_euler, const Vector3 &p_scale) {
 	rotate(p_euler);
 }
 
-void Basis::set_quat_scale(const Quaternion &p_quat, const Vector3 &p_scale) {
+void Basis::set_quaternion_scale(const Quaternion &p_quat, const Vector3 &p_scale) {
 	set_diagonal(p_scale);
 	rotate(p_quat);
 }
@@ -1032,3 +1074,132 @@ Basis Basis::slerp(const Basis &p_to, const real_t &p_weight) const {
 
 	return b;
 }
+
+void Basis::rotate_sh(real_t *p_values) {
+	// code by John Hable
+	// http://filmicworlds.com/blog/simple-and-fast-spherical-harmonic-rotation/
+	// this code is Public Domain
+
+	const static real_t s_c3 = 0.94617469575; // (3*sqrt(5))/(4*sqrt(pi))
+	const static real_t s_c4 = -0.31539156525; // (-sqrt(5))/(4*sqrt(pi))
+	const static real_t s_c5 = 0.54627421529; // (sqrt(15))/(4*sqrt(pi))
+
+	const static real_t s_c_scale = 1.0 / 0.91529123286551084;
+	const static real_t s_c_scale_inv = 0.91529123286551084;
+
+	const static real_t s_rc2 = 1.5853309190550713 * s_c_scale;
+	const static real_t s_c4_div_c3 = s_c4 / s_c3;
+	const static real_t s_c4_div_c3_x2 = (s_c4 / s_c3) * 2.0;
+
+	const static real_t s_scale_dst2 = s_c3 * s_c_scale_inv;
+	const static real_t s_scale_dst4 = s_c5 * s_c_scale_inv;
+
+	const real_t src[9] = { p_values[0], p_values[1], p_values[2], p_values[3], p_values[4], p_values[5], p_values[6], p_values[7], p_values[8] };
+
+	real_t m00 = rows[0][0];
+	real_t m01 = rows[0][1];
+	real_t m02 = rows[0][2];
+	real_t m10 = rows[1][0];
+	real_t m11 = rows[1][1];
+	real_t m12 = rows[1][2];
+	real_t m20 = rows[2][0];
+	real_t m21 = rows[2][1];
+	real_t m22 = rows[2][2];
+
+	p_values[0] = src[0];
+	p_values[1] = m11 * src[1] - m12 * src[2] + m10 * src[3];
+	p_values[2] = -m21 * src[1] + m22 * src[2] - m20 * src[3];
+	p_values[3] = m01 * src[1] - m02 * src[2] + m00 * src[3];
+
+	real_t sh0 = src[7] + src[8] + src[8] - src[5];
+	real_t sh1 = src[4] + s_rc2 * src[6] + src[7] + src[8];
+	real_t sh2 = src[4];
+	real_t sh3 = -src[7];
+	real_t sh4 = -src[5];
+
+	// Rotations.  R0 and R1 just use the raw matrix columns
+	real_t r2x = m00 + m01;
+	real_t r2y = m10 + m11;
+	real_t r2z = m20 + m21;
+
+	real_t r3x = m00 + m02;
+	real_t r3y = m10 + m12;
+	real_t r3z = m20 + m22;
+
+	real_t r4x = m01 + m02;
+	real_t r4y = m11 + m12;
+	real_t r4z = m21 + m22;
+
+	// dense matrix multiplication one column at a time
+
+	// column 0
+	real_t sh0_x = sh0 * m00;
+	real_t sh0_y = sh0 * m10;
+	real_t d0 = sh0_x * m10;
+	real_t d1 = sh0_y * m20;
+	real_t d2 = sh0 * (m20 * m20 + s_c4_div_c3);
+	real_t d3 = sh0_x * m20;
+	real_t d4 = sh0_x * m00 - sh0_y * m10;
+
+	// column 1
+	real_t sh1_x = sh1 * m02;
+	real_t sh1_y = sh1 * m12;
+	d0 += sh1_x * m12;
+	d1 += sh1_y * m22;
+	d2 += sh1 * (m22 * m22 + s_c4_div_c3);
+	d3 += sh1_x * m22;
+	d4 += sh1_x * m02 - sh1_y * m12;
+
+	// column 2
+	real_t sh2_x = sh2 * r2x;
+	real_t sh2_y = sh2 * r2y;
+	d0 += sh2_x * r2y;
+	d1 += sh2_y * r2z;
+	d2 += sh2 * (r2z * r2z + s_c4_div_c3_x2);
+	d3 += sh2_x * r2z;
+	d4 += sh2_x * r2x - sh2_y * r2y;
+
+	// column 3
+	real_t sh3_x = sh3 * r3x;
+	real_t sh3_y = sh3 * r3y;
+	d0 += sh3_x * r3y;
+	d1 += sh3_y * r3z;
+	d2 += sh3 * (r3z * r3z + s_c4_div_c3_x2);
+	d3 += sh3_x * r3z;
+	d4 += sh3_x * r3x - sh3_y * r3y;
+
+	// column 4
+	real_t sh4_x = sh4 * r4x;
+	real_t sh4_y = sh4 * r4y;
+	d0 += sh4_x * r4y;
+	d1 += sh4_y * r4z;
+	d2 += sh4 * (r4z * r4z + s_c4_div_c3_x2);
+	d3 += sh4_x * r4z;
+	d4 += sh4_x * r4x - sh4_y * r4y;
+
+	// extra multipliers
+	p_values[4] = d0;
+	p_values[5] = -d1;
+	p_values[6] = d2 * s_scale_dst2;
+	p_values[7] = -d3;
+	p_values[8] = d4 * s_scale_dst4;
+}
+
+Basis Basis::looking_at(const Vector3 &p_target, const Vector3 &p_up) {
+#ifdef MATH_CHECKS
+	ERR_FAIL_COND_V_MSG(p_target.is_equal_approx(Vector3()), Basis(), "The target vector can't be zero.");
+	ERR_FAIL_COND_V_MSG(p_up.is_equal_approx(Vector3()), Basis(), "The up vector can't be zero.");
+#endif
+	Vector3 v_z = -p_target.normalized();
+	Vector3 v_x = p_up.cross(v_z);
+#ifdef MATH_CHECKS
+	ERR_FAIL_COND_V_MSG(v_x.is_equal_approx(Vector3()), Basis(), "The target vector and up vector can't be parallel to each other.");
+#endif
+	v_x.normalize();
+	Vector3 v_y = v_z.cross(v_x);
+
+	Basis basis;
+	basis.set_columns(v_x, v_y, v_z);
+	return basis;
+}
+

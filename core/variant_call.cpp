@@ -1109,13 +1109,24 @@ struct _VariantCall {
 		}
 	}
 
+	VCALL_PTR0(Basis, invert);
 	VCALL_PTR0R(Basis, inverse);
+	VCALL_PTR0(Basis, transpose);
 	VCALL_PTR0R(Basis, transposed);
 	VCALL_PTR0R(Basis, determinant);
+	VCALL_PTR1(Basis, from_z);
+	VCALL_PTR2(Basis, rotate);
 	VCALL_PTR2R(Basis, rotated);
-	VCALL_PTR1R(Basis, scaled);
-	VCALL_PTR0R(Basis, get_scale);
-	VCALL_PTR0R(Basis, get_euler);
+	VCALL_PTR2(Basis, rotate_local);
+	VCALL_PTR2R(Basis, rotated_local);
+	VCALL_PTR1(Basis, rotatev);
+	VCALL_PTR1R(Basis, rotatedv);
+	VCALL_PTR1(Basis, rotateq);
+	VCALL_PTR1R(Basis, rotatedq);
+	VCALL_PTR0R(Basis, get_rotation_euler);
+	VCALL_PTR0R(Basis, get_rotation_quaternion);
+	VCALL_PTR0R(Basis, get_rotation);
+	VCALL_PTR2(Basis, rotate_to_align);
 	VCALL_PTR0R(Basis, get_euler_xyz);
 	VCALL_PTR1(Basis, set_euler_xyz);
 	VCALL_PTR0R(Basis, get_euler_xzy);
@@ -1128,14 +1139,53 @@ struct _VariantCall {
 	VCALL_PTR1(Basis, set_euler_zxy);
 	VCALL_PTR0R(Basis, get_euler_zyx);
 	VCALL_PTR1(Basis, set_euler_zyx);
+	VCALL_PTR0R(Basis, get_euler);
+	VCALL_PTR1(Basis, set_euler);
+	VCALL_PTR0R(Basis, get_quaternion);
+	VCALL_PTR1(Basis, set_quaternion);
+	VCALL_PTR1(Basis, scale);
+	VCALL_PTR1R(Basis, scaled);
+	VCALL_PTR1(Basis, scale_local);
+	VCALL_PTR1R(Basis, scaled_local);
+	VCALL_PTR1(Basis, scale_orthogonal);
+	VCALL_PTR1R(Basis, scaled_orthogonal);
+	VCALL_PTR0(Basis, make_scale_uniform);
+	VCALL_PTR0R(Basis, get_uniform_scale);
+	VCALL_PTR0R(Basis, get_scale);
+	VCALL_PTR0R(Basis, get_scale_abs);
+	VCALL_PTR0R(Basis, get_scale_local);
+	VCALL_PTR3(Basis, set_axis_angle_scale);
+	VCALL_PTR2(Basis, set_euler_scale);
+	VCALL_PTR2(Basis, set_quaternion_scale);
 	VCALL_PTR1R(Basis, tdotx);
 	VCALL_PTR1R(Basis, tdoty);
 	VCALL_PTR1R(Basis, tdotz);
+	VCALL_PTR1R(Basis, is_equal_approx);
+	VCALL_PTR3R(Basis, is_equal_approx_ratio);
 	VCALL_PTR0R(Basis, get_orthogonal_index);
-	VCALL_PTR0R(Basis, orthonormalized);
+	VCALL_PTR1(Basis, set_orthogonal_index);
+	VCALL_PTR1(Basis, set_diagonal);
+	VCALL_PTR0(Basis, is_orthogonal);
+	VCALL_PTR0(Basis, is_diagonal);
+	VCALL_PTR0(Basis, is_rotation);
 	VCALL_PTR2R(Basis, slerp);
-	VCALL_PTR2R(Basis, is_equal_approx);
-	VCALL_PTR0R(Basis, get_rotation_quat);
+	VCALL_PTR2R(Basis, lerp);
+	VCALL_PTR1R(Basis, get_column);
+	VCALL_PTR2(Basis, set_column);
+	VCALL_PTR3(Basis, set_columns);
+	VCALL_PTR1R(Basis, get_row);
+	VCALL_PTR2(Basis, set_row);
+	VCALL_PTR1R(Basis, get_axis);
+	VCALL_PTR2(Basis, set_axis);
+	VCALL_PTR0R(Basis, get_main_diagonal);
+	VCALL_PTR0(Basis, set_zero);
+	VCALL_PTR1R(Basis, transpose_xform);
+	VCALL_PTR0(Basis, orthonormalize);
+	VCALL_PTR0R(Basis, orthonormalized);
+	VCALL_PTR0(Basis, orthogonalize);
+	VCALL_PTR0R(Basis, orthogonalized);
+	VCALL_PTR0R(Basis, is_symmetric);
+	VCALL_PTR0R(Basis, diagonalize);
 
 	static void _call_Basis_xform(Variant &r_ret, Variant &p_self, const Variant **p_args) {
 		switch (p_args[0]->type) {
@@ -1338,9 +1388,9 @@ struct _VariantCall {
 
 	static void Basis_init1(Variant &r_ret, const Variant **p_args) {
 		Basis m;
-		m.set_axis(0, *p_args[0]);
-		m.set_axis(1, *p_args[1]);
-		m.set_axis(2, *p_args[2]);
+		m.set_column(0, *p_args[0]);
+		m.set_column(1, *p_args[1]);
+		m.set_column(2, *p_args[2]);
 		r_ret = m;
 	}
 
@@ -1350,9 +1400,9 @@ struct _VariantCall {
 
 	static void Transform_init1(Variant &r_ret, const Variant **p_args) {
 		Transform t;
-		t.basis.set_axis(0, *p_args[0]);
-		t.basis.set_axis(1, *p_args[1]);
-		t.basis.set_axis(2, *p_args[2]);
+		t.basis.set_column(0, *p_args[0]);
+		t.basis.set_column(1, *p_args[1]);
+		t.basis.set_column(2, *p_args[2]);
 		t.origin = *p_args[3];
 		r_ret = t;
 	}
@@ -2543,24 +2593,85 @@ void register_variant_methods() {
 	ADDFUNC2R(TRANSFORM2D, TRANSFORM2D, Transform2D, interpolate_with, TRANSFORM2D, "transform", REAL, "weight", varray());
 	ADDFUNC1R(TRANSFORM2D, BOOL, Transform2D, is_equal_approx, TRANSFORM2D, "transform", varray());
 
+	ADDFUNC0(BASIS, NIL, Basis, invert, varray());
 	ADDFUNC0R(BASIS, BASIS, Basis, inverse, varray());
+	ADDFUNC0(BASIS, NIL, Basis, transpose, varray());
 	ADDFUNC0R(BASIS, BASIS, Basis, transposed, varray());
-	ADDFUNC0R(BASIS, BASIS, Basis, orthonormalized, varray());
 	ADDFUNC0R(BASIS, REAL, Basis, determinant, varray());
+	ADDFUNC1(BASIS, NIL, Basis, from_z, VECTOR3, "z", varray());
+	ADDFUNC2(BASIS, NIL, Basis, rotate, VECTOR3, "axis", REAL, "phi", varray());
 	ADDFUNC2R(BASIS, BASIS, Basis, rotated, VECTOR3, "axis", REAL, "phi", varray());
-	ADDFUNC1R(BASIS, BASIS, Basis, scaled, VECTOR3, "scale", varray());
-	ADDFUNC0R(BASIS, VECTOR3, Basis, get_scale, varray());
+	ADDFUNC2(BASIS, NIL, Basis, rotate_local, VECTOR3, "axis", REAL, "phi", varray());
+	ADDFUNC2R(BASIS, BASIS, Basis, rotate_local, VECTOR3, "axis", REAL, "phi", varray());
+	ADDFUNC1(BASIS, NIL, Basis, rotatev, VECTOR3, "euler", varray());
+	ADDFUNC1R(BASIS, BASIS, Basis, rotatedv, VECTOR3, "euler", varray());
+	ADDFUNC1(BASIS, NIL, Basis, rotateq, QUATERNION, "quat", varray());
+	ADDFUNC1R(BASIS, BASIS, Basis, rotatedq, QUATERNION, "quat", varray());
+	ADDFUNC0R(BASIS, VECTOR3, Basis, get_rotation_euler, varray());
+	ADDFUNC0R(BASIS, QUATERNION, Basis, get_rotation_quaternion, varray());
+	ADDFUNC0R(BASIS, VECTOR3, Basis, get_rotation, varray());
+	ADDFUNC2(BASIS, NIL, Basis, rotate_to_align, VECTOR3, "direction", VECTOR3, "end_direction", varray());
+	ADDFUNC0R(BASIS, VECTOR3, Basis, get_euler_xyz, varray());
+	ADDFUNC1(BASIS, NIL, Basis, set_euler_xyz, VECTOR3, "euler", varray());
+	ADDFUNC0R(BASIS, VECTOR3, Basis, get_euler_xzy, varray());
+	ADDFUNC1(BASIS, NIL, Basis, set_euler_xzy, VECTOR3, "euler", varray());
+	ADDFUNC0R(BASIS, VECTOR3, Basis, get_euler_xyz, varray());
+	ADDFUNC1(BASIS, NIL, Basis, set_euler_xyz, VECTOR3, "euler", varray());
+	ADDFUNC0R(BASIS, VECTOR3, Basis, get_euler_yxz, varray());
+	ADDFUNC1(BASIS, NIL, Basis, set_euler_yxz, VECTOR3, "euler", varray());
+	ADDFUNC0R(BASIS, VECTOR3, Basis, get_euler_zxy, varray());
+	ADDFUNC1(BASIS, NIL, Basis, set_euler_zxy, VECTOR3, "euler", varray());
+	ADDFUNC0R(BASIS, VECTOR3, Basis, get_euler_zyx, varray());
+	ADDFUNC1(BASIS, NIL, Basis, set_euler_zyx, VECTOR3, "euler", varray());
 	ADDFUNC0R(BASIS, VECTOR3, Basis, get_euler, varray());
+	ADDFUNC1(BASIS, NIL, Basis, set_euler, VECTOR3, "euler", varray());
+	ADDFUNC0R(BASIS, QUATERNION, Basis, get_quaternion, varray());
+	ADDFUNC1(BASIS, NIL, Basis, set_quaternion, QUATERNION, "quaternion", varray());
+	ADDFUNC1(BASIS, NIL, Basis, scale, VECTOR3, "scale", varray());
+	ADDFUNC1R(BASIS, BASIS, Basis, scaled, VECTOR3, "scale", varray());
+	ADDFUNC1(BASIS, NIL, Basis, scale_local, VECTOR3, "scale", varray());
+	ADDFUNC1R(BASIS, BASIS, Basis, scaled_local, VECTOR3, "scale", varray());
+	ADDFUNC1(BASIS, NIL, Basis, scale_orthogonal, VECTOR3, "scale", varray());
+	ADDFUNC1R(BASIS, BASIS, Basis, scaled_orthogonal, VECTOR3, "scale", varray());
+	ADDFUNC0(BASIS, NIL, Basis, make_scale_uniform, varray());
+	ADDFUNC0R(BASIS, REAL, Basis, get_uniform_scale, varray());
+	ADDFUNC0R(BASIS, VECTOR3, Basis, get_scale, varray());
+	ADDFUNC0R(BASIS, VECTOR3, Basis, get_scale_abs, varray());
+	ADDFUNC0R(BASIS, VECTOR3, Basis, get_scale_local, varray());
+	ADDFUNC3(BASIS, NIL, Basis, set_axis_angle_scale, VECTOR3, "axis", REAL, "phi", VECTOR3, "scale", varray());
+	ADDFUNC2(BASIS, NIL, Basis, set_euler_scale, VECTOR3, "euler", VECTOR3, "scale", varray());
+	ADDFUNC2(BASIS, NIL, Basis, set_quaternion_scale, QUATERNION, "quat", VECTOR3, "scale", varray());
 	ADDFUNC1R(BASIS, REAL, Basis, tdotx, VECTOR3, "with", varray());
 	ADDFUNC1R(BASIS, REAL, Basis, tdoty, VECTOR3, "with", varray());
 	ADDFUNC1R(BASIS, REAL, Basis, tdotz, VECTOR3, "with", varray());
-	ADDFUNC1R(BASIS, VECTOR3, Basis, xform, VECTOR3, "v", varray());
-	ADDFUNC1R(BASIS, VECTOR3, Basis, xform_inv, VECTOR3, "v", varray());
+	ADDFUNC1R(BASIS, BOOL, Basis, is_equal_approx, BASIS, "b", varray());
+	ADDFUNC2R(BASIS, BOOL, Basis, is_equal_approx_ratio, BASIS, "b", REAL, "epsilon", varray(CMP_EPSILON));
 	ADDFUNC0R(BASIS, INT, Basis, get_orthogonal_index, varray());
+	ADDFUNC1(BASIS, NIL, Basis, set_orthogonal_index, INT, "index", varray());
+	ADDFUNC1(BASIS, NIL, Basis, set_diagonal, VECTOR3, "diag", varray());
+	ADDFUNC0R(BASIS, BOOL, Basis, is_orthogonal, varray());
+	ADDFUNC0R(BASIS, BOOL, Basis, is_diagonal, varray());
+	ADDFUNC0R(BASIS, BOOL, Basis, is_rotation, varray());
 	ADDFUNC2R(BASIS, BASIS, Basis, slerp, BASIS, "to", REAL, "weight", varray());
-	// For complicated reasons, the epsilon argument is always discarded. See #45062.
-	ADDFUNC2R(BASIS, BOOL, Basis, is_equal_approx, BASIS, "b", REAL, "epsilon", varray(CMP_EPSILON));
-	ADDFUNC0R(BASIS, QUATERNION, Basis, get_rotation_quat, varray());
+	ADDFUNC2R(BASIS, BASIS, Basis, lerp, BASIS, "to", REAL, "weight", varray());
+	ADDFUNC1(BASIS, VECTOR3, Basis, get_column, INT, "i", varray());
+	ADDFUNC2(BASIS, NIL, Basis, set_column, INT, "index", VECTOR3, "value", varray());
+	ADDFUNC3(BASIS, NIL, Basis, set_columns, VECTOR3, "x", VECTOR3, "y", VECTOR3, "z", varray());
+	ADDFUNC1(BASIS, VECTOR3, Basis, get_row, INT, "i", varray());
+	ADDFUNC2(BASIS, NIL, Basis, set_row, INT, "i", VECTOR3, "axis", varray());
+	ADDFUNC1(BASIS, VECTOR3, Basis, get_axis, INT, "i", varray());
+	ADDFUNC2(BASIS, NIL, Basis, set_axis, INT, "i", VECTOR3, "axis", varray());
+	ADDFUNC0R(BASIS, VECTOR3, Basis, get_main_diagonal, varray());
+	ADDFUNC0(BASIS, NIL, Basis, set_zero, varray());
+	ADDFUNC1R(BASIS, BASIS, Basis, transpose_xform, BASIS, "m", varray());
+	ADDFUNC0(BASIS, NIL, Basis, orthonormalize, varray());
+	ADDFUNC0R(BASIS, BASIS, Basis, orthonormalized, varray());
+	ADDFUNC0(BASIS, NIL, Basis, orthogonalize, varray());
+	ADDFUNC0R(BASIS, BASIS, Basis, orthogonalized, varray());
+	ADDFUNC0R(BASIS, BOOL, Basis, is_symmetric, varray());
+	ADDFUNC0R(BASIS, BASIS, Basis, diagonalize, varray());
+	ADDFUNC1R(BASIS, VECTOR3, Basis, xform, NIL, "v3_or_v3i", varray());
+	ADDFUNC1R(BASIS, VECTOR3, Basis, xform_inv, NIL, "v3_or_v3i", varray());
 
 	ADDFUNC0R(TRANSFORM, TRANSFORM, Transform, inverse, varray());
 	ADDFUNC0R(TRANSFORM, TRANSFORM, Transform, affine_inverse, varray());
