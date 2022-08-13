@@ -104,6 +104,12 @@ public:
 	static _ALWAYS_INLINE_ double log(double p_x) { return ::log(p_x); }
 	static _ALWAYS_INLINE_ float log(float p_x) { return ::logf(p_x); }
 
+	static _ALWAYS_INLINE_ double log1p(double p_x) { return ::log1p(p_x); }
+	static _ALWAYS_INLINE_ float log1p(float p_x) { return ::log1pf(p_x); }
+
+	static _ALWAYS_INLINE_ double log2(double p_x) { return ::log2(p_x); }
+	static _ALWAYS_INLINE_ float log2(float p_x) { return ::log2f(p_x); }
+
 	static _ALWAYS_INLINE_ double exp(double p_x) { return ::exp(p_x); }
 	static _ALWAYS_INLINE_ float exp(float p_x) { return ::expf(p_x); }
 
@@ -211,6 +217,24 @@ public:
 		value += 0.0f;
 		return value;
 	}
+
+	static _ALWAYS_INLINE_ float fposmodp(float p_x, float p_y) {
+		float value = Math::fmod(p_x, p_y);
+		if (value < 0) {
+			value += p_y;
+		}
+		value += 0.0f;
+		return value;
+	}
+	static _ALWAYS_INLINE_ double fposmodp(double p_x, double p_y) {
+		double value = Math::fmod(p_x, p_y);
+		if (value < 0) {
+			value += p_y;
+		}
+		value += 0.0;
+		return value;
+	}
+
 	static _ALWAYS_INLINE_ int64_t posmod(int64_t p_x, int64_t p_y) {
 		int64_t value = p_x % p_y;
 		if (((value < 0) && (p_y > 0)) || ((value > 0) && (p_y < 0))) {
@@ -263,6 +287,42 @@ public:
 	}
 	static _ALWAYS_INLINE_ float range_lerp(float p_value, float p_istart, float p_istop, float p_ostart, float p_ostop) {
 		return Math::lerp(p_ostart, p_ostop, Math::inverse_lerp(p_istart, p_istop, p_value));
+	}
+
+	static _ALWAYS_INLINE_ double cubic_interpolate(double p_from, double p_to, double p_pre, double p_post, double p_weight) {
+		return 0.5 *
+				((p_from * 2.0) +
+						(-p_pre + p_to) * p_weight +
+						(2.0 * p_pre - 5.0 * p_from + 4.0 * p_to - p_post) * (p_weight * p_weight) +
+						(-p_pre + 3.0 * p_from - 3.0 * p_to + p_post) * (p_weight * p_weight * p_weight));
+	}
+	static _ALWAYS_INLINE_ float cubic_interpolate(float p_from, float p_to, float p_pre, float p_post, float p_weight) {
+		return 0.5f *
+				((p_from * 2.0f) +
+						(-p_pre + p_to) * p_weight +
+						(2.0f * p_pre - 5.0f * p_from + 4.0f * p_to - p_post) * (p_weight * p_weight) +
+						(-p_pre + 3.0f * p_from - 3.0f * p_to + p_post) * (p_weight * p_weight * p_weight));
+	}
+
+	static _ALWAYS_INLINE_ double bezier_interpolate(double p_start, double p_control_1, double p_control_2, double p_end, double p_t) {
+		/* Formula from Wikipedia article on Bezier curves. */
+		double omt = (1.0 - p_t);
+		double omt2 = omt * omt;
+		double omt3 = omt2 * omt;
+		double t2 = p_t * p_t;
+		double t3 = t2 * p_t;
+
+		return p_start * omt3 + p_control_1 * omt2 * p_t * 3.0 + p_control_2 * omt * t2 * 3.0 + p_end * t3;
+	}
+	static _ALWAYS_INLINE_ float bezier_interpolate(float p_start, float p_control_1, float p_control_2, float p_end, float p_t) {
+		/* Formula from Wikipedia article on Bezier curves. */
+		float omt = (1.0f - p_t);
+		float omt2 = omt * omt;
+		float omt3 = omt2 * omt;
+		float t2 = p_t * p_t;
+		float t3 = t2 * p_t;
+
+		return p_start * omt3 + p_control_1 * omt2 * p_t * 3.0f + p_control_2 * omt * t2 * 3.0f + p_end * t3;
 	}
 
 	static _ALWAYS_INLINE_ double smoothstep(double p_from, double p_to, double p_s) {
@@ -328,6 +388,19 @@ public:
 		return result;
 	}
 
+	static _ALWAYS_INLINE_ float fract(float value) {
+		return value - floor(value);
+	}
+	static _ALWAYS_INLINE_ double fract(double value) {
+		return value - floor(value);
+	}
+	static _ALWAYS_INLINE_ float pingpong(float value, float length) {
+		return (length != 0.0f) ? abs(fract((value - length) / (length * 2.0f)) * length * 2.0f - length) : 0.0f;
+	}
+	static _ALWAYS_INLINE_ double pingpong(double value, double length) {
+		return (length != 0.0) ? abs(fract((value - length) / (length * 2.0)) * length * 2.0 - length) : 0.0;
+	}
+
 	// double only, as these functions are mainly used by the editor and not performance-critical,
 	static double ease(double p_x, double p_c);
 	static int step_decimals(double p_step);
@@ -347,12 +420,12 @@ public:
 	static _ALWAYS_INLINE_ float randf() {
 		return (float)rand() / (float)Math::RANDOM_32BIT_MAX;
 	}
+	static double randfn(double mean, double deviation);
 
 	static double random(double from, double to);
 	static float random(float from, float to);
-	static real_t random(int from, int to) {
-		return (real_t)random((real_t)from, (real_t)to);
-	}
+	static real_t randomr(real_t from, real_t to);
+	static int random(int from, int to);
 
 	static _ALWAYS_INLINE_ bool is_equal_approx_ratio(real_t a, real_t b, real_t epsilon = CMP_EPSILON, real_t min_epsilon = CMP_EPSILON) {
 		// this is an approximate way to check that numbers are close, as a ratio of their average size

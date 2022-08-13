@@ -55,6 +55,10 @@ uint32_t Math::rand() {
 	return default_rand.rand();
 }
 
+double Math::randfn(double mean, double deviation) {
+	return default_rand.randfn(mean, deviation);
+}
+
 int Math::step_decimals(double p_step) {
 	static const int maxn = 10;
 	static const double sd[maxn] = {
@@ -182,5 +186,13 @@ double Math::random(double from, double to) {
 }
 
 float Math::random(float from, float to) {
+	return default_rand.random(from, to);
+}
+
+real_t Math::randomr(real_t from, real_t to) {
+	return default_rand.randomr(from, to);
+}
+
+int Math::random(int from, int to) {
 	return default_rand.random(from, to);
 }
