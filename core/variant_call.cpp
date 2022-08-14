@@ -527,15 +527,16 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(Vector3i, abs);
 	VCALL_LOCALMEM0R(Vector3i, sign);
 
+	VCALL_LOCALMEM1(Plane, set_normal);
+	VCALL_LOCALMEM0R(Plane, get_normal);
+	VCALL_LOCALMEM0(Plane, normalize);
 	VCALL_LOCALMEM0R(Plane, normalized);
 	VCALL_LOCALMEM0R(Plane, center);
 	VCALL_LOCALMEM0R(Plane, get_any_point);
-	VCALL_LOCALMEM1R(Plane, is_equal_approx);
+	VCALL_LOCALMEM0R(Plane, get_any_perpendicular_normal);
 	VCALL_LOCALMEM1R(Plane, is_point_over);
 	VCALL_LOCALMEM1R(Plane, distance_to);
 	VCALL_LOCALMEM2R(Plane, has_point);
-	VCALL_LOCALMEM1R(Plane, project);
-
 	//return vector3 if intersected, nil if not
 	static void _call_Plane_intersect_3(Variant &r_ret, Variant &p_self, const Variant **p_args) {
 		Vector3 result;
@@ -545,7 +546,6 @@ struct _VariantCall {
 			r_ret = Variant();
 		}
 	}
-
 	static void _call_Plane_intersects_ray(Variant &r_ret, Variant &p_self, const Variant **p_args) {
 		Vector3 result;
 		if (reinterpret_cast<Plane *>(p_self._data._mem)->intersects_ray(*p_args[0], *p_args[1], &result)) {
@@ -554,7 +554,6 @@ struct _VariantCall {
 			r_ret = Variant();
 		}
 	}
-
 	static void _call_Plane_intersects_segment(Variant &r_ret, Variant &p_self, const Variant **p_args) {
 		Vector3 result;
 		if (reinterpret_cast<Plane *>(p_self._data._mem)->intersects_segment(*p_args[0], *p_args[1], &result)) {
@@ -563,6 +562,9 @@ struct _VariantCall {
 			r_ret = Variant();
 		}
 	}
+	VCALL_LOCALMEM1R(Plane, project);
+	VCALL_LOCALMEM1R(Plane, is_equal_approx);
+	VCALL_LOCALMEM1R(Plane, is_equal_approx_any_side);
 
 	VCALL_LOCALMEM0R(Quaternion, length);
 	VCALL_LOCALMEM0R(Quaternion, length_squared);
@@ -2238,17 +2240,22 @@ void register_variant_methods() {
 	ADDFUNC0R(VECTOR3I, REAL, Vector3, length_squared, varray());
 	ADDFUNC2R(VECTOR3I, VECTOR3I, Vector3, linear_interpolate, VECTOR3I, "to", REAL, "weight", varray());
 
+	ADDFUNC1(PLANE, NIL, Plane, set_normal, VECTOR3, "normal", varray());
+	ADDFUNC0R(PLANE, VECTOR3, Plane, get_normal, varray());
+	ADDFUNC0(PLANE, NIL, Plane, normalize, varray());
 	ADDFUNC0R(PLANE, PLANE, Plane, normalized, varray());
 	ADDFUNC0R(PLANE, VECTOR3, Plane, center, varray());
 	ADDFUNC0R(PLANE, VECTOR3, Plane, get_any_point, varray());
-	ADDFUNC1R(PLANE, BOOL, Plane, is_equal_approx, PLANE, "plane", varray());
+	ADDFUNC0R(PLANE, VECTOR3, Plane, get_any_perpendicular_normal, varray());
 	ADDFUNC1R(PLANE, BOOL, Plane, is_point_over, VECTOR3, "point", varray());
 	ADDFUNC1R(PLANE, REAL, Plane, distance_to, VECTOR3, "point", varray());
 	ADDFUNC2R(PLANE, BOOL, Plane, has_point, VECTOR3, "point", REAL, "epsilon", varray(CMP_EPSILON));
-	ADDFUNC1R(PLANE, VECTOR3, Plane, project, VECTOR3, "point", varray());
 	ADDFUNC2R(PLANE, VECTOR3, Plane, intersect_3, PLANE, "b", PLANE, "c", varray());
 	ADDFUNC2R(PLANE, VECTOR3, Plane, intersects_ray, VECTOR3, "from", VECTOR3, "dir", varray());
 	ADDFUNC2R(PLANE, VECTOR3, Plane, intersects_segment, VECTOR3, "begin", VECTOR3, "end", varray());
+	ADDFUNC1R(PLANE, VECTOR3, Plane, project, VECTOR3, "point", varray());
+	ADDFUNC1R(PLANE, BOOL, Plane, is_equal_approx, PLANE, "plane", varray());
+	ADDFUNC1R(PLANE, BOOL, Plane, is_equal_approx_any_side, PLANE, "plane", varray());
 
 	ADDFUNC0R(QUATERNION, REAL, Quaternion, length, varray());
 	ADDFUNC0R(QUATERNION, REAL, Quaternion, length_squared, varray());
