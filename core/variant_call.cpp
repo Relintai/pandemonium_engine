@@ -457,18 +457,39 @@ struct _VariantCall {
 
 	VCALL_LOCALMEM0R(Rect2, get_area);
 	VCALL_LOCALMEM0R(Rect2, get_center);
+	VCALL_LOCALMEM2R(Rect2, intersects);
+	VCALL_LOCALMEM1R(Rect2, distance_to);
+	VCALL_LOCALMEM2R(Rect2, intersects_transformed);
+	static void _call_Rect2_intersects_segment(Variant &r_ret, Variant &p_self, const Variant **p_args) {
+		Point2 pos;
+		Point2 normal;
+		if (reinterpret_cast<Rect2 *>(p_self._data._mem)->intersects_segment(*p_args[0], *p_args[1], &pos, &normal)) {
+			Array arr;
+			arr.push_back(pos);
+			arr.push_back(normal);
+			r_ret = arr;
+		} else {
+			r_ret = Variant();
+		}
+	}
+	VCALL_LOCALMEM1R(Rect2, encloses);
 	VCALL_LOCALMEM0R(Rect2, has_no_area);
+	VCALL_LOCALMEM1R(Rect2, clip);
+	VCALL_LOCALMEM1R(Rect2, intersection);
+	VCALL_LOCALMEM1R(Rect2, merge);
 	VCALL_LOCALMEM1R(Rect2, has_point);
 	VCALL_LOCALMEM1R(Rect2, is_equal_approx);
-	VCALL_LOCALMEM2R(Rect2, intersects);
-	VCALL_LOCALMEM1R(Rect2, encloses);
-	VCALL_LOCALMEM1R(Rect2, clip);
-	VCALL_LOCALMEM1R(Rect2, merge);
-	VCALL_LOCALMEM1R(Rect2, expand);
 	VCALL_LOCALMEM1R(Rect2, grow);
+	VCALL_LOCALMEM1(Rect2, grow_by);
 	VCALL_LOCALMEM2R(Rect2, grow_margin);
+	VCALL_LOCALMEM2R(Rect2, grow_side);
 	VCALL_LOCALMEM4R(Rect2, grow_individual);
+	VCALL_LOCALMEM1R(Rect2, expand);
+	VCALL_LOCALMEM1(Rect2, expand_to);
 	VCALL_LOCALMEM0R(Rect2, abs);
+	VCALL_LOCALMEM1R(Rect2, get_support);
+	VCALL_LOCALMEM1(Rect2, set_end);
+	VCALL_LOCALMEM0R(Rect2, get_end);
 
 	VCALL_LOCALMEM0R(Rect2i, get_area);
 	VCALL_LOCALMEM0R(Rect2i, get_center);
@@ -2172,18 +2193,28 @@ void register_variant_methods() {
 
 	ADDFUNC0R(RECT2, REAL, Rect2, get_area, varray());
 	ADDFUNC0R(RECT2, VECTOR2, Rect2, get_center, varray());
+	ADDFUNC2R(RECT2, BOOL, Rect2, intersects, RECT2, "b", BOOL, "include_borders", varray(false));
+	ADDFUNC1R(RECT2, REAL, Rect2, distance_to, VECTOR2, "point", varray());
+	ADDFUNC2R(RECT2, BOOL, Rect2, intersects_transformed, TRANSFORM2D, "xform", RECT2, "rect", varray());
+	ADDFUNC2R(RECT2, NIL, Rect2, intersects_segment, VECTOR2, "from", VECTOR2, "to", varray());
+	ADDFUNC1R(RECT2, BOOL, Rect2, encloses, RECT2, "b", varray());
 	ADDFUNC0R(RECT2, BOOL, Rect2, has_no_area, varray());
+	ADDFUNC1R(RECT2, RECT2, Rect2, clip, RECT2, "b", varray());
+	ADDFUNC1R(RECT2, RECT2, Rect2, intersection, RECT2, "rect", varray());
+	ADDFUNC1R(RECT2, RECT2, Rect2, merge, RECT2, "b", varray());
 	ADDFUNC1R(RECT2, BOOL, Rect2, has_point, VECTOR2, "point", varray());
 	ADDFUNC1R(RECT2, BOOL, Rect2, is_equal_approx, RECT2, "rect", varray());
-	ADDFUNC2R(RECT2, BOOL, Rect2, intersects, RECT2, "b", BOOL, "include_borders", varray(false));
-	ADDFUNC1R(RECT2, BOOL, Rect2, encloses, RECT2, "b", varray());
-	ADDFUNC1R(RECT2, RECT2, Rect2, clip, RECT2, "b", varray());
-	ADDFUNC1R(RECT2, RECT2, Rect2, merge, RECT2, "b", varray());
-	ADDFUNC1R(RECT2, RECT2, Rect2, expand, VECTOR2, "to", varray());
 	ADDFUNC1R(RECT2, RECT2, Rect2, grow, REAL, "by", varray());
+	ADDFUNC1(RECT2, NIL, Rect2, grow_by, REAL, "by", varray());
 	ADDFUNC2R(RECT2, RECT2, Rect2, grow_margin, INT, "margin", REAL, "by", varray());
+	ADDFUNC2R(RECT2, RECT2, Rect2, grow_side, INT, "side", REAL, "by", varray());
 	ADDFUNC4R(RECT2, RECT2, Rect2, grow_individual, REAL, "left", REAL, "top", REAL, "right", REAL, " bottom", varray());
+	ADDFUNC1R(RECT2, RECT2, Rect2, expand, VECTOR2, "to", varray());
+	ADDFUNC1R(RECT2, RECT2, Rect2, expand_to, VECTOR2, "to", varray());
 	ADDFUNC0R(RECT2, RECT2, Rect2, abs, varray());
+	ADDFUNC1R(RECT2, VECTOR2, Rect2, get_support, VECTOR2, "normal", varray());
+	ADDFUNC1(RECT2, NIL, Rect2, set_end, VECTOR2, "end", varray());
+	ADDFUNC0R(RECT2, VECTOR2, Rect2, get_end, varray());
 
 	ADDFUNC0R(RECT2I, INT, Rect2i, get_area, varray());
 	ADDFUNC0R(RECT2I, VECTOR2I, Rect2i, get_center, varray());
@@ -2280,7 +2311,6 @@ void register_variant_methods() {
 	ADDFUNC0R(COLOR, INT, Color, to_argb64, varray());
 	ADDFUNC0R(COLOR, INT, Color, to_abgr64, varray());
 	ADDFUNC0R(COLOR, REAL, Color, gray, varray());
-
 	ADDFUNC0R(COLOR, REAL, Color, get_h, varray());
 	ADDFUNC0R(COLOR, REAL, Color, get_s, varray());
 	ADDFUNC0R(COLOR, REAL, Color, get_v, varray());

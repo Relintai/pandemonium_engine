@@ -2362,6 +2362,9 @@ Variant::operator Vector<Color>() const {
 Variant::operator Margin() const {
 	return (Margin) operator int();
 }
+Variant::operator Side() const {
+	return (Side) operator int();
+}
 Variant::operator Orientation() const {
 	return (Orientation) operator int();
 }

@@ -30,6 +30,8 @@
 
 #include "core/math/transform_2d.h" // Includes rect2.h but Rect2 needs Transform2D
 
+#include "core/math/rect2i.h"
+
 bool Rect2::is_equal_approx(const Rect2 &p_rect) const {
 	return position.is_equal_approx(p_rect.position) && size.is_equal_approx(p_rect.size);
 }
@@ -262,4 +264,8 @@ next4:
 	}
 
 	return true;
+}
+
+Rect2::operator String() const {
+	return "[P: " + position.operator String() + ", S: " + size + "]";
 }

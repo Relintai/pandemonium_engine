@@ -164,6 +164,9 @@ struct _NO_DISCARD_CLASS_ Vector2 {
 	Vector2 snapped(const Vector2 &p_by) const;
 	real_t aspect() const { return width / height; }
 
+	//TODO
+	Vector2 orthogonal() { return Vector2(); }
+
 	operator String() const { return String::num(x) + ", " + String::num(y); }
 
 	_FORCE_INLINE_ Vector2(real_t p_x, real_t p_y) {

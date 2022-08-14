@@ -35,6 +35,7 @@
 #include "core/math/vector2i.h"
 
 struct Transform2D;
+struct Rect2i;
 
 struct _NO_DISCARD_CLASS_ Rect2 {
 	Point2 position;
@@ -146,6 +147,25 @@ struct _NO_DISCARD_CLASS_ Rect2 {
 		return new_rect;
 	}
 
+	inline Rect2 intersection(const Rect2 &p_rect) const {
+		Rect2 new_rect = p_rect;
+
+		if (!intersects(new_rect)) {
+			return Rect2();
+		}
+
+		new_rect.position.x = MAX(p_rect.position.x, position.x);
+		new_rect.position.y = MAX(p_rect.position.y, position.y);
+
+		Point2 p_rect_end = p_rect.position + p_rect.size;
+		Point2 end = position + size;
+
+		new_rect.size.x = MIN(p_rect_end.x, end.x) - new_rect.position.x;
+		new_rect.size.y = MIN(p_rect_end.y, end.y) - new_rect.position.y;
+
+		return new_rect;
+	}
+
 	inline Rect2 merge(const Rect2 &p_rect) const { ///< return a merged rect
 
 		Rect2 new_rect;
@@ -204,6 +224,15 @@ struct _NO_DISCARD_CLASS_ Rect2 {
 		return g;
 	}
 
+	inline Rect2 grow_side(Side p_side, real_t p_amount) const {
+		Rect2 g = *this;
+		g = g.grow_individual((SIDE_LEFT == p_side) ? p_amount : 0,
+				(SIDE_TOP == p_side) ? p_amount : 0,
+				(SIDE_RIGHT == p_side) ? p_amount : 0,
+				(SIDE_BOTTOM == p_side) ? p_amount : 0);
+		return g;
+	}
+
 	inline Rect2 grow_individual(real_t p_left, real_t p_top, real_t p_right, real_t p_bottom) const {
 		Rect2 g = *this;
 		g.position.x -= p_left;
@@ -247,7 +276,78 @@ struct _NO_DISCARD_CLASS_ Rect2 {
 		return Rect2(Point2(position.x + MIN(size.x, 0), position.y + MIN(size.y, 0)), size.abs());
 	}
 
-	operator String() const { return String(position) + ", " + String(size); }
+	Vector2 get_support(const Vector2 &p_normal) const {
+		Vector2 half_extents = size * 0.5f;
+		Vector2 ofs = position + half_extents;
+		return Vector2(
+					   (p_normal.x > 0) ? -half_extents.x : half_extents.x,
+					   (p_normal.y > 0) ? -half_extents.y : half_extents.y) +
+				ofs;
+	}
+
+	_FORCE_INLINE_ bool intersects_filled_polygon(const Vector2 *p_points, int p_point_count) const {
+		Vector2 center = get_center();
+		int side_plus = 0;
+		int side_minus = 0;
+		Vector2 end = position + size;
+
+		int i_f = p_point_count - 1;
+		for (int i = 0; i < p_point_count; i++) {
+			const Vector2 &a = p_points[i_f];
+			const Vector2 &b = p_points[i];
+			i_f = i;
+
+			Vector2 r = (b - a);
+			float l = r.length();
+			if (l == 0.0f) {
+				continue;
+			}
+
+			//check inside
+			Vector2 tg = r.orthogonal();
+			float s = tg.dot(center) - tg.dot(a);
+			if (s < 0.0f) {
+				side_plus++;
+			} else {
+				side_minus++;
+			}
+
+			//check ray box
+			r /= l;
+			Vector2 ir(1.0f / r.x, 1.0f / r.y);
+
+			// lb is the corner of AABB with minimal coordinates - left bottom, rt is maximal corner
+			// r.org is origin of ray
+			Vector2 t13 = (position - a) * ir;
+			Vector2 t24 = (end - a) * ir;
+
+			float tmin = MAX(MIN(t13.x, t24.x), MIN(t13.y, t24.y));
+			float tmax = MIN(MAX(t13.x, t24.x), MAX(t13.y, t24.y));
+
+			// if tmax < 0, ray (line) is intersecting AABB, but the whole AABB is behind us
+			if (tmax < 0 || tmin > tmax || tmin >= l) {
+				continue;
+			}
+
+			return true;
+		}
+
+		if (side_plus * side_minus == 0) {
+			return true; //all inside
+		} else {
+			return false;
+		}
+	}
+
+	_FORCE_INLINE_ void set_end(const Vector2 &p_end) {
+		size = p_end - position;
+	}
+
+	_FORCE_INLINE_ Vector2 get_end() const {
+		return position + size;
+	}
+
+	operator String() const;
 
 	Rect2() {}
 	Rect2(real_t p_x, real_t p_y, real_t p_width, real_t p_height) :
@@ -259,6 +359,5 @@ struct _NO_DISCARD_CLASS_ Rect2 {
 			size(p_size) {
 	}
 };
-
 
 #endif // RECT2_H

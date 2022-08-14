@@ -92,6 +92,13 @@ enum Margin {
 	MARGIN_BOTTOM
 };
 
+enum Side {
+	SIDE_LEFT,
+	SIDE_TOP,
+	SIDE_RIGHT,
+	SIDE_BOTTOM
+};
+
 enum Corner {
 
 	CORNER_TOP_LEFT,
