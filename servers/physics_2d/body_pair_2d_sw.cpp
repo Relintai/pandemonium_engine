@@ -246,7 +246,7 @@ bool BodyPair2DSW::setup(real_t p_step) {
 	Transform2D xform_A = xform_Au * A->get_shape_transform(shape_A);
 
 	Transform2D xform_Bu = B->get_transform();
-	xform_Bu.elements[2] -= A->get_transform().get_origin();
+	xform_Bu.columns[2] -= A->get_transform().get_origin();
 	Transform2D xform_B = xform_Bu * B->get_shape_transform(shape_B);
 
 	Shape2DSW *shape_A_ptr = A->get_shape(shape_A);

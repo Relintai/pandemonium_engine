@@ -538,12 +538,12 @@ Variant Tween::_run_equation(InterpolateData &p_data) {
 
 			// Execute the equation on the transforms and mutate the r transform
 			// This uses the custom APPLY_EQUATION macro defined above
-			APPLY_EQUATION(elements[0][0]);
-			APPLY_EQUATION(elements[0][1]);
-			APPLY_EQUATION(elements[1][0]);
-			APPLY_EQUATION(elements[1][1]);
-			APPLY_EQUATION(elements[2][0]);
-			APPLY_EQUATION(elements[2][1]);
+			APPLY_EQUATION(columns[0][0]);
+			APPLY_EQUATION(columns[0][1]);
+			APPLY_EQUATION(columns[1][0]);
+			APPLY_EQUATION(columns[1][1]);
+			APPLY_EQUATION(columns[2][0]);
+			APPLY_EQUATION(columns[2][1]);
 			result = r;
 		} break;
 
@@ -1249,12 +1249,12 @@ bool Tween::_calc_delta_val(const Variant &p_initial_val, const Variant &p_final
 			Transform2D i = initial_val;
 			Transform2D f = final_val;
 			Transform2D d = Transform2D();
-			d[0][0] = f.elements[0][0] - i.elements[0][0];
-			d[0][1] = f.elements[0][1] - i.elements[0][1];
-			d[1][0] = f.elements[1][0] - i.elements[1][0];
-			d[1][1] = f.elements[1][1] - i.elements[1][1];
-			d[2][0] = f.elements[2][0] - i.elements[2][0];
-			d[2][1] = f.elements[2][1] - i.elements[2][1];
+			d[0][0] = f.columns[0][0] - i.columns[0][0];
+			d[0][1] = f.columns[0][1] - i.columns[0][1];
+			d[1][0] = f.columns[1][0] - i.columns[1][0];
+			d[1][1] = f.columns[1][1] - i.columns[1][1];
+			d[2][0] = f.columns[2][0] - i.columns[2][0];
+			d[2][1] = f.columns[2][1] - i.columns[2][1];
 			delta_val = d;
 		} break;
 

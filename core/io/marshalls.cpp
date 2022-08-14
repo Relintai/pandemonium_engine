@@ -259,7 +259,7 @@ Error decode_variant(Variant &r_variant, const uint8_t *p_buffer, int p_len, int
 			Transform2D val;
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 2; j++) {
-					val.elements[i][j] = decode_float(&buf[(i * 2 + j) * 4]);
+					val.columns[i][j] = decode_float(&buf[(i * 2 + j) * 4]);
 				}
 			}
 
@@ -1093,7 +1093,7 @@ Error encode_variant(const Variant &p_variant, uint8_t *r_buffer, int &r_len, bo
 				Transform2D val = p_variant;
 				for (int i = 0; i < 3; i++) {
 					for (int j = 0; j < 2; j++) {
-						memcpy(&buf[(i * 2 + j) * 4], &val.elements[i][j], sizeof(float));
+						memcpy(&buf[(i * 2 + j) * 4], &val.columns[i][j], sizeof(float));
 					}
 				}
 			}

@@ -611,13 +611,13 @@ protected:
 
 	struct compare_items_x {
 		bool operator()(const CanvasItem *a, const CanvasItem *b) const {
-			return a->get_global_transform().elements[2].x < b->get_global_transform().elements[2].x;
+			return a->get_global_transform().columns[2].x < b->get_global_transform().columns[2].x;
 		}
 	};
 
 	struct compare_items_y {
 		bool operator()(const CanvasItem *a, const CanvasItem *b) const {
-			return a->get_global_transform().elements[2].y < b->get_global_transform().elements[2].y;
+			return a->get_global_transform().columns[2].y < b->get_global_transform().columns[2].y;
 		}
 	};
 

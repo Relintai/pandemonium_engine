@@ -134,7 +134,7 @@ void VisualServerViewport::_draw_viewport(Viewport *p_viewport) {
 						cl->texture_cache = nullptr;
 						Transform2D scale;
 						scale.scale(cl->rect_cache.size);
-						scale.elements[2] = cl->rect_cache.position;
+						scale.columns[2] = cl->rect_cache.position;
 						cl->light_shader_xform = (cl->xform_cache * scale).affine_inverse();
 						cl->light_shader_pos = cl->xform_cache[2];
 						if (cl->shadow_buffer.is_valid()) {

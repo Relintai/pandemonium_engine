@@ -1497,25 +1497,25 @@ void Variant::set_named(const StringName &p_index, const Variant &p_value, bool 
 			if (p_value.type == Variant::VECTOR2) {
 				Transform2D *v = _data._transform2d;
 				if (p_index == CoreStringNames::singleton->x) {
-					v->elements[0] = *reinterpret_cast<const Vector2 *>(p_value._data._mem);
+					v->columns[0] = *reinterpret_cast<const Vector2 *>(p_value._data._mem);
 					valid = true;
 				} else if (p_index == CoreStringNames::singleton->y) {
-					v->elements[1] = *reinterpret_cast<const Vector2 *>(p_value._data._mem);
+					v->columns[1] = *reinterpret_cast<const Vector2 *>(p_value._data._mem);
 					valid = true;
 				} else if (p_index == CoreStringNames::singleton->origin) {
-					v->elements[2] = *reinterpret_cast<const Vector2 *>(p_value._data._mem);
+					v->columns[2] = *reinterpret_cast<const Vector2 *>(p_value._data._mem);
 					valid = true;
 				}
 			} else if (p_value.type == Variant::VECTOR2I) {
 				Transform2D *v = _data._transform2d;
 				if (p_index == CoreStringNames::singleton->x) {
-					v->elements[0] = *reinterpret_cast<const Vector2i *>(p_value._data._mem);
+					v->columns[0] = *reinterpret_cast<const Vector2i *>(p_value._data._mem);
 					valid = true;
 				} else if (p_index == CoreStringNames::singleton->y) {
-					v->elements[1] = *reinterpret_cast<const Vector2i *>(p_value._data._mem);
+					v->columns[1] = *reinterpret_cast<const Vector2i *>(p_value._data._mem);
 					valid = true;
 				} else if (p_index == CoreStringNames::singleton->origin) {
-					v->elements[2] = *reinterpret_cast<const Vector2i *>(p_value._data._mem);
+					v->columns[2] = *reinterpret_cast<const Vector2i *>(p_value._data._mem);
 					valid = true;
 				}
 			}
@@ -1869,11 +1869,11 @@ Variant Variant::get_named(const StringName &p_index, bool *r_valid) const {
 		case TRANSFORM2D: {
 			const Transform2D *v = _data._transform2d;
 			if (p_index == CoreStringNames::singleton->x) {
-				return v->elements[0];
+				return v->columns[0];
 			} else if (p_index == CoreStringNames::singleton->y) {
-				return v->elements[1];
+				return v->columns[1];
 			} else if (p_index == CoreStringNames::singleton->origin) {
-				return v->elements[2];
+				return v->columns[2];
 			}
 
 		} break;
@@ -2299,7 +2299,7 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 					Transform2D *v = _data._transform2d;
 
 					valid = true;
-					v->elements[index] = p_value;
+					v->columns[index] = p_value;
 					return;
 				}
 			} else if (p_index.get_type() == Variant::STRING) {
@@ -2308,15 +2308,15 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 				Transform2D *v = _data._transform2d;
 				if (*str == "x") {
 					valid = true;
-					v->elements[0] = p_value;
+					v->columns[0] = p_value;
 					return;
 				} else if (*str == "y") {
 					valid = true;
-					v->elements[1] = p_value;
+					v->columns[1] = p_value;
 					return;
 				} else if (*str == "origin") {
 					valid = true;
-					v->elements[2] = p_value;
+					v->columns[2] = p_value;
 					return;
 				}
 			} else if (p_index.get_type() == Variant::STRING_NAME) {
@@ -2325,15 +2325,15 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 				Transform2D *v = _data._transform2d;
 				if (p_index == CoreStringNames::singleton->x) {
 					valid = true;
-					v->elements[0] = p_value;
+					v->columns[0] = p_value;
 					return;
 				} else if (p_index == CoreStringNames::singleton->y) {
 					valid = true;
-					v->elements[1] = p_value;
+					v->columns[1] = p_value;
 					return;
 				} else if (p_index == CoreStringNames::singleton->origin) {
 					valid = true;
-					v->elements[2] = p_value;
+					v->columns[2] = p_value;
 					return;
 				}
 			}
@@ -3170,7 +3170,7 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 					const Transform2D *v = _data._transform2d;
 
 					valid = true;
-					return v->elements[index];
+					return v->columns[index];
 				}
 			} else if (p_index.get_type() == Variant::STRING) {
 				//scalar name
@@ -3178,13 +3178,13 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 				const Transform2D *v = _data._transform2d;
 				if (*str == "x") {
 					valid = true;
-					return v->elements[0];
+					return v->columns[0];
 				} else if (*str == "y") {
 					valid = true;
-					return v->elements[1];
+					return v->columns[1];
 				} else if (*str == "origin") {
 					valid = true;
-					return v->elements[2];
+					return v->columns[2];
 				}
 			} else if (p_index.get_type() == Variant::STRING_NAME) {
 				//scalar name
@@ -3192,13 +3192,13 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 				const Transform2D *v = _data._transform2d;
 				if (p_index == CoreStringNames::singleton->x) {
 					valid = true;
-					return v->elements[0];
+					return v->columns[0];
 				} else if (p_index == CoreStringNames::singleton->y) {
 					valid = true;
-					return v->elements[1];
+					return v->columns[1];
 				} else if (p_index == CoreStringNames::singleton->origin) {
 					valid = true;
-					return v->elements[2];
+					return v->columns[2];
 				}
 			}
 

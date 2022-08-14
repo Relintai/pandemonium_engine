@@ -228,12 +228,12 @@ Error ResourceInteractiveLoaderBinary::parse_variant(Variant &r_v) {
 		} break;
 		case VARIANT_MATRIX32: {
 			Transform2D v;
-			v.elements[0].x = f->get_real();
-			v.elements[0].y = f->get_real();
-			v.elements[1].x = f->get_real();
-			v.elements[1].y = f->get_real();
-			v.elements[2].x = f->get_real();
-			v.elements[2].y = f->get_real();
+			v.columns[0].x = f->get_real();
+			v.columns[0].y = f->get_real();
+			v.columns[1].x = f->get_real();
+			v.columns[1].y = f->get_real();
+			v.columns[2].x = f->get_real();
+			v.columns[2].y = f->get_real();
 			r_v = v;
 
 		} break;
@@ -1395,12 +1395,12 @@ void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Varia
 		case Variant::TRANSFORM2D: {
 			f->store_32(VARIANT_MATRIX32);
 			Transform2D val = p_property;
-			f->store_real(val.elements[0].x);
-			f->store_real(val.elements[0].y);
-			f->store_real(val.elements[1].x);
-			f->store_real(val.elements[1].y);
-			f->store_real(val.elements[2].x);
-			f->store_real(val.elements[2].y);
+			f->store_real(val.columns[0].x);
+			f->store_real(val.columns[0].y);
+			f->store_real(val.columns[1].x);
+			f->store_real(val.columns[1].y);
+			f->store_real(val.columns[2].x);
+			f->store_real(val.columns[2].y);
 
 		} break;
 

@@ -1651,7 +1651,7 @@ String Variant::stringify(List<const void *> &stack) const {
 			return "(" + operator Rect2i() + ")";
 		case TRANSFORM2D: {
 			Transform2D mat32 = operator Transform2D();
-			return "(" + Variant(mat32.elements[0]).operator String() + ", " + Variant(mat32.elements[1]).operator String() + ", " + Variant(mat32.elements[2]).operator String() + ")";
+			return "(" + Variant(mat32.columns[0]).operator String() + ", " + Variant(mat32.columns[1]).operator String() + ", " + Variant(mat32.columns[2]).operator String() + ")";
 		} break;
 		case VECTOR3:
 			return "(" + operator Vector3() + ")";
@@ -1912,12 +1912,12 @@ Variant::operator Transform() const {
 	} else if (type == TRANSFORM2D) {
 		const Transform2D &t = *_data._transform2d;
 		Transform m;
-		m.basis.rows[0][0] = t.elements[0][0];
-		m.basis.rows[1][0] = t.elements[0][1];
-		m.basis.rows[0][1] = t.elements[1][0];
-		m.basis.rows[1][1] = t.elements[1][1];
-		m.origin[0] = t.elements[2][0];
-		m.origin[1] = t.elements[2][1];
+		m.basis.rows[0][0] = t.columns[0][0];
+		m.basis.rows[1][0] = t.columns[0][1];
+		m.basis.rows[0][1] = t.columns[1][0];
+		m.basis.rows[1][1] = t.columns[1][1];
+		m.origin[0] = t.columns[2][0];
+		m.origin[1] = t.columns[2][1];
 		return m;
 	} else {
 		return Transform();
@@ -1930,12 +1930,12 @@ Variant::operator Transform2D() const {
 	} else if (type == TRANSFORM) {
 		const Transform &t = *_data._transform;
 		Transform2D m;
-		m.elements[0][0] = t.basis.rows[0][0];
-		m.elements[0][1] = t.basis.rows[1][0];
-		m.elements[1][0] = t.basis.rows[0][1];
-		m.elements[1][1] = t.basis.rows[1][1];
-		m.elements[2][0] = t.origin[0];
-		m.elements[2][1] = t.origin[1];
+		m.columns[0][0] = t.basis.rows[0][0];
+		m.columns[0][1] = t.basis.rows[1][0];
+		m.columns[1][0] = t.basis.rows[0][1];
+		m.columns[1][1] = t.basis.rows[1][1];
+		m.columns[2][0] = t.origin[0];
+		m.columns[2][1] = t.origin[1];
 		return m;
 	} else {
 		return Transform2D();
@@ -2992,7 +2992,7 @@ uint32_t Variant::hash() const {
 			uint32_t hash = 5831;
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 2; j++) {
-					hash = hash_djb2_one_float(_data._transform2d->elements[i][j], hash);
+					hash = hash_djb2_one_float(_data._transform2d->columns[i][j], hash);
 				}
 			}
 
@@ -3332,7 +3332,7 @@ bool Variant::hash_compare(const Variant &p_variant) const {
 			Transform2D *r = p_variant._data._transform2d;
 
 			for (int i = 0; i < 3; i++) {
-				if (!(hash_compare_vector2(l->elements[i], r->elements[i]))) {
+				if (!(hash_compare_vector2(l->columns[i], r->columns[i]))) {
 					return false;
 				}
 			}

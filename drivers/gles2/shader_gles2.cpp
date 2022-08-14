@@ -785,10 +785,10 @@ void ShaderGLES2::use_material(void *p_material) {
 					Transform2D tr = V->get();
 					GLfloat matrix[4] = {
 						/* build a 16x16 matrix */
-						tr.elements[0][0],
-						tr.elements[0][1],
-						tr.elements[1][0],
-						tr.elements[1][1],
+						tr.columns[0][0],
+						tr.columns[0][1],
+						tr.columns[1][0],
+						tr.columns[1][1],
 					};
 					glUniformMatrix2fv(location, 1, GL_FALSE, matrix);
 
@@ -838,20 +838,20 @@ void ShaderGLES2::use_material(void *p_material) {
 					} else {
 						Transform2D tr = V->get();
 						GLfloat matrix[16] = { /* build a 16x16 matrix */
-							tr.elements[0][0],
-							tr.elements[0][1],
+							tr.columns[0][0],
+							tr.columns[0][1],
 							0,
 							0,
-							tr.elements[1][0],
-							tr.elements[1][1],
+							tr.columns[1][0],
+							tr.columns[1][1],
 							0,
 							0,
 							0,
 							0,
 							1,
 							0,
-							tr.elements[2][0],
-							tr.elements[2][1],
+							tr.columns[2][0],
+							tr.columns[2][1],
 							0,
 							1
 						};

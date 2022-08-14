@@ -128,9 +128,9 @@ String get_command_type_string(const RasterizerCanvas::Item::Command &p_command)
 			const Transform2D &mat = transform->xform;
 
 			sz += " ";
-			sz += String(Variant(mat.elements[2]));
-			sz += String(Variant(mat.elements[0]));
-			sz += String(Variant(mat.elements[1]));
+			sz += String(Variant(mat.columns[2]));
+			sz += String(Variant(mat.columns[0]));
+			sz += String(Variant(mat.columns[1]));
 			sz += " ";
 		} break;
 		case RasterizerCanvas::Item::Command::TYPE_CLIP_IGNORE: {

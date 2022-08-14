@@ -1153,8 +1153,8 @@ void MeshTexture::draw(RID p_canvas_item, const Point2 &p_pos, const Color &p_mo
 	Transform2D xform;
 	xform.set_origin(p_pos);
 	if (p_transpose) {
-		SWAP(xform.elements[0][1], xform.elements[1][0]);
-		SWAP(xform.elements[0][0], xform.elements[1][1]);
+		SWAP(xform.columns[0][1], xform.columns[1][0]);
+		SWAP(xform.columns[0][0], xform.columns[1][1]);
 	}
 	RID normal_rid = p_normal_map.is_valid() ? p_normal_map->get_rid() : RID();
 	VisualServer::get_singleton()->canvas_item_add_mesh(p_canvas_item, mesh->get_rid(), xform, p_modulate, base_texture->get_rid(), normal_rid);
@@ -1175,8 +1175,8 @@ void MeshTexture::draw_rect(RID p_canvas_item, const Rect2 &p_rect, bool p_tile,
 	xform.set_scale(p_rect.size / size);
 
 	if (p_transpose) {
-		SWAP(xform.elements[0][1], xform.elements[1][0]);
-		SWAP(xform.elements[0][0], xform.elements[1][1]);
+		SWAP(xform.columns[0][1], xform.columns[1][0]);
+		SWAP(xform.columns[0][0], xform.columns[1][1]);
 	}
 	RID normal_rid = p_normal_map.is_valid() ? p_normal_map->get_rid() : RID();
 	VisualServer::get_singleton()->canvas_item_add_mesh(p_canvas_item, mesh->get_rid(), xform, p_modulate, base_texture->get_rid(), normal_rid);
@@ -1197,8 +1197,8 @@ void MeshTexture::draw_rect_region(RID p_canvas_item, const Rect2 &p_rect, const
 	xform.set_scale(p_rect.size / size);
 
 	if (p_transpose) {
-		SWAP(xform.elements[0][1], xform.elements[1][0]);
-		SWAP(xform.elements[0][0], xform.elements[1][1]);
+		SWAP(xform.columns[0][1], xform.columns[1][0]);
+		SWAP(xform.columns[0][0], xform.columns[1][1]);
 	}
 	RID normal_rid = p_normal_map.is_valid() ? p_normal_map->get_rid() : RID();
 	VisualServer::get_singleton()->canvas_item_add_mesh(p_canvas_item, mesh->get_rid(), xform, p_modulate, base_texture->get_rid(), normal_rid);

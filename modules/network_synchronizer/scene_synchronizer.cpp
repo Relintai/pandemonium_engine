@@ -1328,9 +1328,9 @@ bool SceneSynchronizer::compare(const Variant &p_first, const Variant &p_second,
 		case Variant::TRANSFORM2D: {
 			const Transform2D a(p_first);
 			const Transform2D b(p_second);
-			if (compare(a.elements[0], b.elements[0], p_tolerance)) {
-				if (compare(a.elements[1], b.elements[1], p_tolerance)) {
-					if (compare(a.elements[2], b.elements[2], p_tolerance)) {
+			if (compare(a.columns[0], b.columns[0], p_tolerance)) {
+				if (compare(a.columns[1], b.columns[1], p_tolerance)) {
+					if (compare(a.columns[2], b.columns[2], p_tolerance)) {
 						return true;
 					}
 				}

@@ -271,15 +271,15 @@ void RTileMap::_fix_cell_transform(Transform2D &xform, const Cell &p_cell, const
 	}
 
 	if (p_cell.transpose) {
-		SWAP(xform.elements[0].x, xform.elements[0].y);
-		SWAP(xform.elements[1].x, xform.elements[1].y);
+		SWAP(xform.columns[0].x, xform.columns[0].y);
+		SWAP(xform.columns[1].x, xform.columns[1].y);
 		SWAP(offset.x, offset.y);
 		SWAP(s.x, s.y);
 	}
 
 	if (p_cell.flip_h) {
-		xform.elements[0].x = -xform.elements[0].x;
-		xform.elements[1].x = -xform.elements[1].x;
+		xform.columns[0].x = -xform.columns[0].x;
+		xform.columns[1].x = -xform.columns[1].x;
 		if (compatibility_mode && !centered_textures) {
 			if (tile_origin == TILE_ORIGIN_TOP_LEFT || tile_origin == TILE_ORIGIN_BOTTOM_LEFT) {
 				offset.x = s.x - offset.x;
@@ -292,8 +292,8 @@ void RTileMap::_fix_cell_transform(Transform2D &xform, const Cell &p_cell, const
 	}
 
 	if (p_cell.flip_v) {
-		xform.elements[0].y = -xform.elements[0].y;
-		xform.elements[1].y = -xform.elements[1].y;
+		xform.columns[0].y = -xform.columns[0].y;
+		xform.columns[1].y = -xform.columns[1].y;
 		if (compatibility_mode && !centered_textures) {
 			if (tile_origin == TILE_ORIGIN_TOP_LEFT) {
 				offset.y = s.y - offset.y;
@@ -310,7 +310,7 @@ void RTileMap::_fix_cell_transform(Transform2D &xform, const Cell &p_cell, const
 	if (centered_textures) {
 		offset += cell_size / 2 - s / 2;
 	}
-	xform.elements[2] += offset;
+	xform.columns[2] += offset;
 }
 
 void RTileMap::_add_shape(int &shape_idx, const Quadrant &p_q, const Ref<Shape2D> &p_shape, const RTileSet::ShapeData &p_shape_data, const Transform2D &p_xform, const Vector2 &p_metadata) {

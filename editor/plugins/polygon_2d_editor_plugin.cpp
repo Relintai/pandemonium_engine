@@ -478,7 +478,7 @@ void Polygon2DEditor::_uv_input(const Ref<InputEvent> &p_input) {
 	}
 
 	Transform2D mtx;
-	mtx.elements[2] = -uv_draw_ofs;
+	mtx.columns[2] = -uv_draw_ofs;
 	mtx.scale_basis(Vector2(uv_draw_zoom, uv_draw_zoom));
 
 	Ref<InputEventMouseButton> mb = p_input;
@@ -986,7 +986,7 @@ void Polygon2DEditor::_uv_draw() {
 	String warning;
 
 	Transform2D mtx;
-	mtx.elements[2] = -uv_draw_ofs;
+	mtx.columns[2] = -uv_draw_ofs;
 	mtx.scale_basis(Vector2(uv_draw_zoom, uv_draw_zoom));
 
 	VS::get_singleton()->canvas_item_add_set_transform(uv_edit_draw->get_canvas_item(), mtx);

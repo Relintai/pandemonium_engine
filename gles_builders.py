@@ -329,20 +329,20 @@ def build_legacygl_header(filename, include, class_suffix, output_attribs, gles2
 		const Transform2D &tr = p_transform;
 
 		GLfloat matrix[16]={ /* build a 16x16 matrix */
-			tr.elements[0][0],
-			tr.elements[0][1],
+			tr.columns[0][0],
+			tr.columns[0][1],
 			0,
 			0,
-			tr.elements[1][0],
-			tr.elements[1][1],
+			tr.columns[1][0],
+			tr.columns[1][1],
 			0,
 			0,
 			0,
 			0,
 			1,
 			0,
-			tr.elements[2][0],
-			tr.elements[2][1],
+			tr.columns[2][0],
+			tr.columns[2][1],
 			0,
 			1
 		};

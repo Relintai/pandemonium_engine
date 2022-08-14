@@ -336,7 +336,7 @@ public:
 
 			Transform2D smaller;
 			//smaller.scale(Vector2(0.6,0.6));
-			//smaller.elements[2]=Vector2(100,0);
+			//smaller.columns[2]=Vector2(100,0);
 
 			//view_xform = smaller;
 			vs->viewport_set_canvas_transform(vp, canvas, view_xform);

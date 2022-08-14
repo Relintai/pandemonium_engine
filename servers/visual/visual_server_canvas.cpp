@@ -60,7 +60,7 @@ void _collect_ysort_children(VisualServerCanvas::Item *p_canvas_item, Transform2
 				r_items[r_index] = child_items[i];
 				child_items[i]->ysort_modulate = p_modulate;
 				child_items[i]->ysort_xform = p_transform;
-				child_items[i]->ysort_pos = p_transform.xform(child_items[i]->xform.elements[2]);
+				child_items[i]->ysort_pos = p_transform.xform(child_items[i]->xform.columns[2]);
 				child_items[i]->material_owner = child_items[i]->use_parent_material ? p_material_owner : nullptr;
 				child_items[i]->ysort_index = r_index;
 			}

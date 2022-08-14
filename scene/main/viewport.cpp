@@ -208,7 +208,7 @@ void Viewport::_update_stretch_transform() {
 		stretch_transform = Transform2D();
 		Size2 scale = size / (size_override_size + size_override_margin * 2);
 		stretch_transform.scale(scale);
-		stretch_transform.elements[2] = size_override_margin * scale;
+		stretch_transform.columns[2] = size_override_margin * scale;
 
 	} else {
 		stretch_transform = Transform2D();
@@ -1375,7 +1375,7 @@ Transform2D Viewport::_get_input_pre_xform() const {
 	Transform2D pre_xf;
 
 	if (to_screen_rect != Rect2()) {
-		pre_xf.elements[2] = -to_screen_rect.position;
+		pre_xf.columns[2] = -to_screen_rect.position;
 		pre_xf.scale(size / to_screen_rect.size);
 	}
 

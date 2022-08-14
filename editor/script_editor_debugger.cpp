@@ -1375,7 +1375,7 @@ void ScriptEditorDebugger::_notification(int p_what) {
 					Transform2D transform;
 
 					transform.scale_basis(Size2(zoom, zoom));
-					transform.elements[2] = -offset * zoom;
+					transform.columns[2] = -offset * zoom;
 
 					Array msg;
 					msg.push_back("override_camera_2D:transform");

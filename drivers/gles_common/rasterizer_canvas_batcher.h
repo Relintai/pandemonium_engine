@@ -633,10 +633,10 @@ protected:
 	void _software_transform_vertex(Vector2 &r_v, const Transform2D &p_tr) const;
 	TransformMode _find_transform_mode(const Transform2D &p_tr) const {
 		// decided whether to do translate only for software transform
-		if ((p_tr.elements[0].x == 1.0f) &&
-				(p_tr.elements[0].y == 0.0f) &&
-				(p_tr.elements[1].x == 0.0f) &&
-				(p_tr.elements[1].y == 1.0f)) {
+		if ((p_tr.columns[0].x == 1.0f) &&
+				(p_tr.columns[0].y == 0.0f) &&
+				(p_tr.columns[1].x == 0.0f) &&
+				(p_tr.columns[1].y == 1.0f)) {
 			return TM_TRANSLATE;
 		}
 
@@ -1649,9 +1649,9 @@ bool C_PREAMBLE::_prefill_polygon(RasterizerCanvas::Item::CommandPolygon *p_poly
 		// we store the transform as an attribute in the fvf rather than a uniform
 		const Transform2D &tr = r_fill_state.transform_combined;
 
-		pBT[0].translate.set(tr.elements[2]);
-		pBT[0].basis[0].set(tr.elements[0][0], tr.elements[0][1]);
-		pBT[0].basis[1].set(tr.elements[1][0], tr.elements[1][1]);
+		pBT[0].translate.set(tr.columns[2]);
+		pBT[0].basis[0].set(tr.columns[0][0], tr.columns[0][1]);
+		pBT[0].basis[1].set(tr.columns[1][0], tr.columns[1][1]);
 	}
 	////////////////////////////////////
 
@@ -2168,10 +2168,10 @@ bool C_PREAMBLE::_prefill_rect(RasterizerCanvas::Item::CommandRect *rect, FillSt
 
 		const Transform2D &tr = r_fill_state.transform_combined;
 
-		pBT[0].translate.set(tr.elements[2]);
+		pBT[0].translate.set(tr.columns[2]);
 
-		pBT[0].basis[0].set(tr.elements[0][0], tr.elements[0][1]);
-		pBT[0].basis[1].set(tr.elements[1][0], tr.elements[1][1]);
+		pBT[0].basis[0].set(tr.columns[0][0], tr.columns[0][1]);
+		pBT[0].basis[1].set(tr.columns[1][0], tr.columns[1][1]);
 
 		pBT[1] = pBT[0];
 		pBT[2] = pBT[0];
@@ -2193,11 +2193,11 @@ bool C_PREAMBLE::_prefill_rect(RasterizerCanvas::Item::CommandRect *rect, FillSt
 
 			// apply to an x axis
 			// the x axis and y axis can be taken directly from the transform (no need to xform identity vectors)
-			Vector2 x_axis(tr.elements[0][0], tr.elements[0][1]);
+			Vector2 x_axis(tr.columns[0][0], tr.columns[0][1]);
 
 			// have to do a y axis to check for scaling flips
 			// this is hassle and extra slowness. We could only allow flips via the flags.
-			Vector2 y_axis(tr.elements[1][0], tr.elements[1][1]);
+			Vector2 y_axis(tr.columns[1][0], tr.columns[1][1]);
 
 			// has the x / y axis flipped due to scaling?
 			float cross = x_axis.cross(y_axis);

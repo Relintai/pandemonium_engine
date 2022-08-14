@@ -807,7 +807,7 @@ bool CustomPropertyEditor::edit(Object *p_owner, const String &p_name, Variant::
 
 			Transform2D t = v;
 			for (int i = 0; i < 6; i++) {
-				value_editor[i]->set_text(String::num(t.elements[i / 2][i % 2]));
+				value_editor[i]->set_text(String::num(t.columns[i / 2][i % 2]));
 			}
 
 		} break;
@@ -1581,7 +1581,7 @@ void CustomPropertyEditor::_modified(String p_string) {
 		case Variant::TRANSFORM2D: {
 			Transform2D m;
 			for (int i = 0; i < 6; i++) {
-				m.elements[i / 2][i % 2] = _parse_real_expression(value_editor[i]->get_text());
+				m.columns[i / 2][i % 2] = _parse_real_expression(value_editor[i]->get_text());
 			}
 
 			v = m;

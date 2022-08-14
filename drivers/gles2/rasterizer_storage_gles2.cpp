@@ -3125,14 +3125,14 @@ void RasterizerStorageGLES2::_multimesh_instance_set_transform_2d(RID p_multimes
 	int stride = multimesh->color_floats + multimesh->xform_floats + multimesh->custom_data_floats;
 	float *dataptr = &multimesh->data.write[stride * p_index];
 
-	dataptr[0] = p_transform.elements[0][0];
-	dataptr[1] = p_transform.elements[1][0];
+	dataptr[0] = p_transform.columns[0][0];
+	dataptr[1] = p_transform.columns[1][0];
 	dataptr[2] = 0;
-	dataptr[3] = p_transform.elements[2][0];
-	dataptr[4] = p_transform.elements[0][1];
-	dataptr[5] = p_transform.elements[1][1];
+	dataptr[3] = p_transform.columns[2][0];
+	dataptr[4] = p_transform.columns[0][1];
+	dataptr[5] = p_transform.columns[1][1];
 	dataptr[6] = 0;
-	dataptr[7] = p_transform.elements[2][1];
+	dataptr[7] = p_transform.columns[2][1];
 
 	multimesh->dirty_data = true;
 	multimesh->dirty_aabb = true;
@@ -3251,12 +3251,12 @@ Transform2D RasterizerStorageGLES2::_multimesh_instance_get_transform_2d(RID p_m
 
 	Transform2D xform;
 
-	xform.elements[0][0] = dataptr[0];
-	xform.elements[1][0] = dataptr[1];
-	xform.elements[2][0] = dataptr[3];
-	xform.elements[0][1] = dataptr[4];
-	xform.elements[1][1] = dataptr[5];
-	xform.elements[2][1] = dataptr[7];
+	xform.columns[0][0] = dataptr[0];
+	xform.columns[1][0] = dataptr[1];
+	xform.columns[2][0] = dataptr[3];
+	xform.columns[0][1] = dataptr[4];
+	xform.columns[1][1] = dataptr[5];
+	xform.columns[2][1] = dataptr[7];
 
 	return xform;
 }

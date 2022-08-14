@@ -126,7 +126,7 @@ void Node2D::_edit_set_rect(const Rect2 &p_edit_rect) {
 #endif
 
 void Node2D::_update_xform_values() {
-	pos = _mat.elements[2];
+	pos = _mat.columns[2];
 	angle = _mat.get_rotation();
 	_scale = _mat.get_scale();
 	_xform_dirty = false;
@@ -134,7 +134,7 @@ void Node2D::_update_xform_values() {
 
 void Node2D::_update_transform() {
 	_mat.set_rotation_and_scale(angle, _scale);
-	_mat.elements[2] = pos;
+	_mat.columns[2] = pos;
 
 	VisualServer::get_singleton()->canvas_item_set_transform(get_canvas_item(), _mat);
 

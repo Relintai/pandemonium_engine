@@ -813,7 +813,7 @@ String RigidBody2D::get_configuration_warning() const {
 
 	String warning = CollisionObject2D::get_configuration_warning();
 
-	if ((get_mode() == MODE_RIGID || get_mode() == MODE_CHARACTER) && (ABS(t.elements[0].length() - 1.0) > 0.05 || ABS(t.elements[1].length() - 1.0) > 0.05)) {
+	if ((get_mode() == MODE_RIGID || get_mode() == MODE_CHARACTER) && (ABS(t.columns[0].length() - 1.0) > 0.05 || ABS(t.columns[1].length() - 1.0) > 0.05)) {
 		if (warning != String()) {
 			warning += "\n\n";
 		}
@@ -1028,7 +1028,7 @@ bool KinematicBody2D::separate_raycast_shapes(bool p_infinite_inertia, Collision
 		}
 	}
 
-	gt.elements[2] += recover;
+	gt.columns[2] += recover;
 	set_global_transform(gt);
 
 	if (deepest != -1) {
@@ -1111,7 +1111,7 @@ bool KinematicBody2D::move_and_collide(const Vector2 &p_motion, bool p_infinite_
 	}
 
 	if (!p_test_only) {
-		gt.elements[2] += result.motion;
+		gt.columns[2] += result.motion;
 		set_global_transform(gt);
 	}
 
@@ -1136,7 +1136,7 @@ Vector2 KinematicBody2D::_move_and_slide_internal(const Vector2 &p_linear_veloci
 		Physics2DDirectBodyState *bs = Physics2DServer::get_singleton()->body_get_direct_state(on_floor_body);
 		if (bs) {
 			Transform2D gt = get_global_transform();
-			Vector2 local_position = gt.elements[2] - bs->get_transform().elements[2];
+			Vector2 local_position = gt.columns[2] - bs->get_transform().columns[2];
 			current_floor_velocity = bs->get_velocity_at_local_position(local_position);
 		} else {
 			// Body is removed or destroyed, invalidate floor.
@@ -1198,9 +1198,9 @@ Vector2 KinematicBody2D::_move_and_slide_internal(const Vector2 &p_linear_veloci
 					if ((body_velocity_normal + up_direction).length() < 0.01) {
 						Transform2D gt = get_global_transform();
 						if (collision.travel.length() > margin) {
-							gt.elements[2] -= collision.travel.slide(up_direction);
+							gt.columns[2] -= collision.travel.slide(up_direction);
 						} else {
-							gt.elements[2] -= collision.travel;
+							gt.columns[2] -= collision.travel;
 						}
 						set_global_transform(gt);
 						return Vector2();
@@ -1251,7 +1251,7 @@ Vector2 KinematicBody2D::_move_and_slide_internal(const Vector2 &p_linear_veloci
 			}
 
 			if (apply) {
-				gt.elements[2] += col.travel;
+				gt.columns[2] += col.travel;
 				set_global_transform(gt);
 			}
 		}

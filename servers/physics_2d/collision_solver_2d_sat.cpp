@@ -485,11 +485,11 @@ static void _collision_segment_rectangle(const Shape2DSW *p_a, const Transform2D
 		return;
 	}
 
-	if (!separator.test_axis(p_transform_b.elements[0].normalized())) {
+	if (!separator.test_axis(p_transform_b.columns[0].normalized())) {
 		return;
 	}
 
-	if (!separator.test_axis(p_transform_b.elements[1].normalized())) {
+	if (!separator.test_axis(p_transform_b.columns[1].normalized())) {
 		return;
 	}
 
@@ -556,20 +556,20 @@ static void _collision_segment_capsule(const Shape2DSW *p_a, const Transform2D &
 		return;
 	}
 
-	if (!separator.test_axis(p_transform_b.elements[0].normalized())) {
+	if (!separator.test_axis(p_transform_b.columns[0].normalized())) {
 		return;
 	}
 
-	if (TEST_POINT(p_transform_a.xform(segment_A->get_a()), (p_transform_b.get_origin() + p_transform_b.elements[1] * capsule_B->get_height() * 0.5))) {
+	if (TEST_POINT(p_transform_a.xform(segment_A->get_a()), (p_transform_b.get_origin() + p_transform_b.columns[1] * capsule_B->get_height() * 0.5))) {
 		return;
 	}
-	if (TEST_POINT(p_transform_a.xform(segment_A->get_a()), (p_transform_b.get_origin() + p_transform_b.elements[1] * capsule_B->get_height() * -0.5))) {
+	if (TEST_POINT(p_transform_a.xform(segment_A->get_a()), (p_transform_b.get_origin() + p_transform_b.columns[1] * capsule_B->get_height() * -0.5))) {
 		return;
 	}
-	if (TEST_POINT(p_transform_a.xform(segment_A->get_b()), (p_transform_b.get_origin() + p_transform_b.elements[1] * capsule_B->get_height() * 0.5))) {
+	if (TEST_POINT(p_transform_a.xform(segment_A->get_b()), (p_transform_b.get_origin() + p_transform_b.columns[1] * capsule_B->get_height() * 0.5))) {
 		return;
 	}
-	if (TEST_POINT(p_transform_a.xform(segment_A->get_b()), (p_transform_b.get_origin() + p_transform_b.elements[1] * capsule_B->get_height() * -0.5))) {
+	if (TEST_POINT(p_transform_a.xform(segment_A->get_b()), (p_transform_b.get_origin() + p_transform_b.columns[1] * capsule_B->get_height() * -0.5))) {
 		return;
 	}
 
@@ -652,8 +652,8 @@ static void _collision_circle_rectangle(const Shape2DSW *p_a, const Transform2D 
 		return;
 	}
 
-	const Vector2 &sphere = p_transform_a.elements[2];
-	const Vector2 *axis = &p_transform_b.elements[0];
+	const Vector2 &sphere = p_transform_a.columns[2];
+	const Vector2 *axis = &p_transform_b.columns[0];
 	//const Vector2& half_extents = rectangle_B->get_half_extents();
 
 	if (!separator.test_axis(axis[0].normalized())) {
@@ -711,15 +711,15 @@ static void _collision_circle_capsule(const Shape2DSW *p_a, const Transform2D &p
 	}
 
 	//capsule axis
-	if (!separator.test_axis(p_transform_b.elements[0].normalized())) {
+	if (!separator.test_axis(p_transform_b.columns[0].normalized())) {
 		return;
 	}
 
 	//capsule endpoints
-	if (TEST_POINT(p_transform_a.get_origin(), (p_transform_b.get_origin() + p_transform_b.elements[1] * capsule_B->get_height() * 0.5))) {
+	if (TEST_POINT(p_transform_a.get_origin(), (p_transform_b.get_origin() + p_transform_b.columns[1] * capsule_B->get_height() * 0.5))) {
 		return;
 	}
-	if (TEST_POINT(p_transform_a.get_origin(), (p_transform_b.get_origin() + p_transform_b.elements[1] * capsule_B->get_height() * -0.5))) {
+	if (TEST_POINT(p_transform_a.get_origin(), (p_transform_b.get_origin() + p_transform_b.columns[1] * capsule_B->get_height() * -0.5))) {
 		return;
 	}
 
@@ -773,20 +773,20 @@ static void _collision_rectangle_rectangle(const Shape2DSW *p_a, const Transform
 	}
 
 	//box faces A
-	if (!separator.test_axis(p_transform_a.elements[0].normalized())) {
+	if (!separator.test_axis(p_transform_a.columns[0].normalized())) {
 		return;
 	}
 
-	if (!separator.test_axis(p_transform_a.elements[1].normalized())) {
+	if (!separator.test_axis(p_transform_a.columns[1].normalized())) {
 		return;
 	}
 
 	//box faces B
-	if (!separator.test_axis(p_transform_b.elements[0].normalized())) {
+	if (!separator.test_axis(p_transform_b.columns[0].normalized())) {
 		return;
 	}
 
-	if (!separator.test_axis(p_transform_b.elements[1].normalized())) {
+	if (!separator.test_axis(p_transform_b.columns[1].normalized())) {
 		return;
 	}
 
@@ -800,10 +800,10 @@ static void _collision_rectangle_rectangle(const Shape2DSW *p_a, const Transform
 
 		if (castA || castB) {
 			Transform2D aofs = p_transform_a;
-			aofs.elements[2] += p_motion_a;
+			aofs.columns[2] += p_motion_a;
 
 			Transform2D bofs = p_transform_b;
-			bofs.elements[2] += p_motion_b;
+			bofs.columns[2] += p_motion_b;
 
 			Transform2D aofsinv = aofs.affine_inverse();
 			Transform2D bofsinv = bofs.affine_inverse();
@@ -847,16 +847,16 @@ static void _collision_rectangle_capsule(const Shape2DSW *p_a, const Transform2D
 	}
 
 	//box faces
-	if (!separator.test_axis(p_transform_a.elements[0].normalized())) {
+	if (!separator.test_axis(p_transform_a.columns[0].normalized())) {
 		return;
 	}
 
-	if (!separator.test_axis(p_transform_a.elements[1].normalized())) {
+	if (!separator.test_axis(p_transform_a.columns[1].normalized())) {
 		return;
 	}
 
 	//capsule axis
-	if (!separator.test_axis(p_transform_b.elements[0].normalized())) {
+	if (!separator.test_axis(p_transform_b.columns[0].normalized())) {
 		return;
 	}
 
@@ -866,7 +866,7 @@ static void _collision_rectangle_capsule(const Shape2DSW *p_a, const Transform2D
 
 	for (int i = 0; i < 2; i++) {
 		{
-			Vector2 capsule_endpoint = p_transform_b.get_origin() + p_transform_b.elements[1] * capsule_B->get_height() * (i == 0 ? 0.5 : -0.5);
+			Vector2 capsule_endpoint = p_transform_b.get_origin() + p_transform_b.columns[1] * capsule_B->get_height() * (i == 0 ? 0.5 : -0.5);
 
 			if (!separator.test_axis(rectangle_A->get_circle_axis(p_transform_a, boxinv, capsule_endpoint))) {
 				return;
@@ -874,7 +874,7 @@ static void _collision_rectangle_capsule(const Shape2DSW *p_a, const Transform2D
 		}
 
 		if (castA) {
-			Vector2 capsule_endpoint = p_transform_b.get_origin() + p_transform_b.elements[1] * capsule_B->get_height() * (i == 0 ? 0.5 : -0.5);
+			Vector2 capsule_endpoint = p_transform_b.get_origin() + p_transform_b.columns[1] * capsule_B->get_height() * (i == 0 ? 0.5 : -0.5);
 			capsule_endpoint -= p_motion_a;
 
 			if (!separator.test_axis(rectangle_A->get_circle_axis(p_transform_a, boxinv, capsule_endpoint))) {
@@ -883,7 +883,7 @@ static void _collision_rectangle_capsule(const Shape2DSW *p_a, const Transform2D
 		}
 
 		if (castB) {
-			Vector2 capsule_endpoint = p_transform_b.get_origin() + p_transform_b.elements[1] * capsule_B->get_height() * (i == 0 ? 0.5 : -0.5);
+			Vector2 capsule_endpoint = p_transform_b.get_origin() + p_transform_b.columns[1] * capsule_B->get_height() * (i == 0 ? 0.5 : -0.5);
 			capsule_endpoint += p_motion_b;
 
 			if (!separator.test_axis(rectangle_A->get_circle_axis(p_transform_a, boxinv, capsule_endpoint))) {
@@ -892,7 +892,7 @@ static void _collision_rectangle_capsule(const Shape2DSW *p_a, const Transform2D
 		}
 
 		if (castA && castB) {
-			Vector2 capsule_endpoint = p_transform_b.get_origin() + p_transform_b.elements[1] * capsule_B->get_height() * (i == 0 ? 0.5 : -0.5);
+			Vector2 capsule_endpoint = p_transform_b.get_origin() + p_transform_b.columns[1] * capsule_B->get_height() * (i == 0 ? 0.5 : -0.5);
 			capsule_endpoint -= p_motion_a;
 			capsule_endpoint += p_motion_b;
 
@@ -921,11 +921,11 @@ static void _collision_rectangle_convex_polygon(const Shape2DSW *p_a, const Tran
 	}
 
 	//box faces
-	if (!separator.test_axis(p_transform_a.elements[0].normalized())) {
+	if (!separator.test_axis(p_transform_a.columns[0].normalized())) {
 		return;
 	}
 
-	if (!separator.test_axis(p_transform_a.elements[1].normalized())) {
+	if (!separator.test_axis(p_transform_a.columns[1].normalized())) {
 		return;
 	}
 
@@ -984,21 +984,21 @@ static void _collision_capsule_capsule(const Shape2DSW *p_a, const Transform2D &
 
 	//capsule axis
 
-	if (!separator.test_axis(p_transform_b.elements[0].normalized())) {
+	if (!separator.test_axis(p_transform_b.columns[0].normalized())) {
 		return;
 	}
 
-	if (!separator.test_axis(p_transform_a.elements[0].normalized())) {
+	if (!separator.test_axis(p_transform_a.columns[0].normalized())) {
 		return;
 	}
 
 	//capsule endpoints
 
 	for (int i = 0; i < 2; i++) {
-		Vector2 capsule_endpoint_A = p_transform_a.get_origin() + p_transform_a.elements[1] * capsule_A->get_height() * (i == 0 ? 0.5 : -0.5);
+		Vector2 capsule_endpoint_A = p_transform_a.get_origin() + p_transform_a.columns[1] * capsule_A->get_height() * (i == 0 ? 0.5 : -0.5);
 
 		for (int j = 0; j < 2; j++) {
-			Vector2 capsule_endpoint_B = p_transform_b.get_origin() + p_transform_b.elements[1] * capsule_B->get_height() * (j == 0 ? 0.5 : -0.5);
+			Vector2 capsule_endpoint_B = p_transform_b.get_origin() + p_transform_b.columns[1] * capsule_B->get_height() * (j == 0 ? 0.5 : -0.5);
 
 			if (TEST_POINT(capsule_endpoint_A, capsule_endpoint_B)) {
 				return;
@@ -1026,7 +1026,7 @@ static void _collision_capsule_convex_polygon(const Shape2DSW *p_a, const Transf
 
 	//capsule axis
 
-	if (!separator.test_axis(p_transform_a.elements[0].normalized())) {
+	if (!separator.test_axis(p_transform_a.columns[0].normalized())) {
 		return;
 	}
 
@@ -1035,7 +1035,7 @@ static void _collision_capsule_convex_polygon(const Shape2DSW *p_a, const Transf
 		Vector2 cpoint = p_transform_b.xform(convex_B->get_point(i));
 
 		for (int j = 0; j < 2; j++) {
-			Vector2 capsule_endpoint_A = p_transform_a.get_origin() + p_transform_a.elements[1] * capsule_A->get_height() * (j == 0 ? 0.5 : -0.5);
+			Vector2 capsule_endpoint_A = p_transform_a.get_origin() + p_transform_a.columns[1] * capsule_A->get_height() * (j == 0 ? 0.5 : -0.5);
 
 			if (TEST_POINT(capsule_endpoint_A, cpoint)) {
 				return;
