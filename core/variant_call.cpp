@@ -1079,7 +1079,7 @@ struct _VariantCall {
 	VCALL_PTR0R(Transform2D, orthonormalized);
 	VCALL_PTR1R(Transform2D, rotated);
 	VCALL_PTR1R(Transform2D, scaled);
-	VCALL_PTR1R(Transform2D, translated);
+	VCALL_PTR1R(Transform2D, translated_local);
 	VCALL_PTR2R(Transform2D, interpolate_with);
 	VCALL_PTR1R(Transform2D, is_equal_approx);
 
@@ -2639,7 +2639,7 @@ void register_variant_methods() {
 	ADDFUNC0R(TRANSFORM2D, TRANSFORM2D, Transform2D, orthonormalized, varray());
 	ADDFUNC1R(TRANSFORM2D, TRANSFORM2D, Transform2D, rotated, REAL, "phi", varray());
 	ADDFUNC1R(TRANSFORM2D, TRANSFORM2D, Transform2D, scaled, VECTOR2, "scale", varray());
-	ADDFUNC1R(TRANSFORM2D, TRANSFORM2D, Transform2D, translated, VECTOR2, "offset", varray());
+	ADDFUNC1R(TRANSFORM2D, TRANSFORM2D, Transform2D, translated_local, VECTOR2, "offset", varray());
 	ADDFUNC1R(TRANSFORM2D, NIL, Transform2D, xform, NIL, "v", varray());
 	ADDFUNC1R(TRANSFORM2D, NIL, Transform2D, xform_inv, NIL, "v", varray());
 	ADDFUNC1R(TRANSFORM2D, VECTOR2, Transform2D, basis_xform, VECTOR2, "v", varray());

@@ -412,7 +412,7 @@ void Prop2DInstanceMerger::_prop_preprocess(Transform2D transform, const Ref<Pro
 
 				Transform2D tt = t;
 				//tt.origin += Vector3(hew, heh, 0);
-				tt.translate(hew, heh);
+				tt.translate_local(hew, heh);
 
 				_job->add_collision_shape(tws, tt, true);
 			}

@@ -76,8 +76,8 @@ struct _NO_DISCARD_CLASS_ Transform2D {
 
 	void scale(const Size2 &p_scale);
 	void scale_basis(const Size2 &p_scale);
-	void translate(real_t p_tx, real_t p_ty);
-	void translate(const Vector2 &p_translation);
+	void translate_local(real_t p_tx, real_t p_ty);
+	void translate_local(const Vector2 &p_translation);
 
 	real_t basis_determinant() const;
 
@@ -89,7 +89,7 @@ struct _NO_DISCARD_CLASS_ Transform2D {
 
 	Transform2D scaled(const Size2 &p_scale) const;
 	Transform2D basis_scaled(const Size2 &p_scale) const;
-	Transform2D translated(const Vector2 &p_offset) const;
+	Transform2D translated_local(const Vector2 &p_offset) const;
 	Transform2D rotated(real_t p_phi) const;
 
 	Transform2D untranslated() const;
@@ -133,6 +133,12 @@ struct _NO_DISCARD_CLASS_ Transform2D {
 		elements[1][1] = yy;
 		elements[2][0] = ox;
 		elements[2][1] = oy;
+	}
+
+	Transform2D(const Vector2 &p_x, const Vector2 &p_y, const Vector2 &p_origin) {
+		elements[0] = p_x;
+		elements[1] = p_y;
+		elements[2] = p_origin;
 	}
 
 	Transform2D(real_t p_rot, const Vector2 &p_pos);

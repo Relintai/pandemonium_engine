@@ -133,7 +133,7 @@ void TouchScreenButton::_notification(int p_what) {
 
 				Vector2 size = texture.is_null() ? shape->get_rect().size : texture->get_size();
 				Vector2 pos = shape_centered ? size * 0.5f : Vector2();
-				draw_set_transform_matrix(get_canvas_transform().translated(pos));
+				draw_set_transform_matrix(get_canvas_transform().translated_local(pos));
 				shape->draw(get_canvas_item(), draw_col);
 			}
 
@@ -254,7 +254,7 @@ bool TouchScreenButton::_is_point_inside(const Point2 &p_point) {
 		check_rect = false;
 
 		Vector2 size = texture.is_null() ? shape->get_rect().size : texture->get_size();
-		Transform2D xform = shape_centered ? Transform2D().translated(size * 0.5f) : Transform2D();
+		Transform2D xform = shape_centered ? Transform2D().translated_local(size * 0.5f) : Transform2D();
 		touched = shape->collide(xform, unit_rect, Transform2D(0, coord + Vector2(0.5, 0.5)));
 	}
 
