@@ -33,8 +33,8 @@
 #include "core/math/aabb.h"
 #include "core/math/basis.h"
 #include "core/math/plane.h"
-#include "core/pool_vector.h"
 #include "core/math/vector3i.h"
+#include "core/pool_vector.h"
 
 class _NO_DISCARD_CLASS_ Transform {
 public:
@@ -48,8 +48,10 @@ public:
 	Transform affine_inverse() const;
 
 	Transform rotated(const Vector3 &p_axis, real_t p_phi) const;
+	Transform rotated_local(const Vector3 &p_axis, real_t p_phi) const;
 
 	void rotate(const Vector3 &p_axis, real_t p_phi);
+	void rotate_local(const Vector3 &p_axis, real_t p_phi);
 	void rotate_basis(const Vector3 &p_axis, real_t p_phi);
 
 	void set_look_at(const Vector3 &p_eye, const Vector3 &p_target, const Vector3 &p_up);
@@ -57,10 +59,14 @@ public:
 
 	void scale(const Vector3 &p_scale);
 	Transform scaled(const Vector3 &p_scale) const;
+	Transform scaled_local(const Vector3 &p_scale) const;
 	void scale_basis(const Vector3 &p_scale);
-	void translate(real_t p_tx, real_t p_ty, real_t p_tz);
-	void translate(const Vector3 &p_translation);
-	Transform translated(const Vector3 &p_translation) const;
+
+	void translate_local(real_t p_tx, real_t p_ty, real_t p_tz);
+	void translate_local(const Vector3 &p_translation);
+	//TODO Enable
+	//Transform translated(const Vector3 &p_translation) const;
+	Transform translated_local(const Vector3 &p_translation) const;
 
 	const Basis &get_basis() const { return basis; }
 	void set_basis(const Basis &p_basis) { basis = p_basis; }
@@ -70,6 +76,8 @@ public:
 
 	void orthonormalize();
 	Transform orthonormalized() const;
+	void orthogonalize();
+	Transform orthogonalized() const;
 	bool is_equal_approx(const Transform &p_transform) const;
 
 	bool operator==(const Transform &p_transform) const;
@@ -101,7 +109,10 @@ public:
 
 	void operator*=(const Transform &p_transform);
 	Transform operator*(const Transform &p_transform) const;
+	void operator*=(const real_t p_val);
+	Transform operator*(const real_t p_val) const;
 
+	Transform spherical_interpolate_with(const Transform &p_transform, real_t p_c) const;
 	Transform interpolate_with(const Transform &p_transform, real_t p_c) const;
 
 	_FORCE_INLINE_ Transform inverse_xform(const Transform &t) const {
@@ -121,6 +132,7 @@ public:
 
 	Transform(real_t xx, real_t xy, real_t xz, real_t yx, real_t yy, real_t yz, real_t zx, real_t zy, real_t zz, real_t ox, real_t oy, real_t oz);
 	Transform(const Basis &p_basis, const Vector3 &p_origin = Vector3());
+	Transform(const Vector3 &p_x, const Vector3 &p_y, const Vector3 &p_z, const Vector3 &p_origin);
 	Transform() {}
 };
 

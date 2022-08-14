@@ -144,7 +144,7 @@ public:
 
 			ii.instance = vs->instance_create2(test_cube, scenario);
 
-			ii.base.translate(Math::random(-20, 20), Math::random(-20, 20), Math::random(-20, 18));
+			ii.base.translate_local(Math::random(-20, 20), Math::random(-20, 20), Math::random(-20, 18));
 			ii.base.rotate(Vector3(0, 1, 0), Math::randf() * Math_PI);
 			ii.base.rotate(Vector3(1, 0, 0), Math::randf() * Math_PI);
 			vs->instance_set_transform(ii.instance, ii.base);

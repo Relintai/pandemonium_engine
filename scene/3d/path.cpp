@@ -214,7 +214,7 @@ void PathFollow::_update_transform(bool p_update_xyz_rot) {
 			}
 		}
 
-		t.translate(Vector3(h_offset, v_offset, 0));
+		t.translate_local(Vector3(h_offset, v_offset, 0));
 	} else {
 		t.origin = pos + Vector3(h_offset, v_offset, 0);
 	}

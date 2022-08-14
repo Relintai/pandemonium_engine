@@ -321,7 +321,7 @@ public:
 		Transform cameratr;
 		cameratr.rotate(Vector3(0, 1, 0), ofs_x);
 		cameratr.rotate(Vector3(1, 0, 0), -ofs_y);
-		cameratr.translate(Vector3(0, 2, 8));
+		cameratr.translate_local(Vector3(0, 2, 8));
 		VisualServer *vs = VisualServer::get_singleton();
 		vs->camera_set_transform(camera, cameratr);
 

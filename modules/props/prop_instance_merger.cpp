@@ -624,7 +624,7 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 					Transform et = e->get_transform() * Transform(Basis(), Vector3(0, 0, twd->get_collider_z_offset()));
 					Transform tt = transform * et;
 					//tt.origin += Vector3(hew, heh, 0);
-					tt.translate(hew, heh, 0);
+					tt.translate_local(hew, heh, 0);
 
 					_job->add_collision_shape(tws, tt, true);
 				}

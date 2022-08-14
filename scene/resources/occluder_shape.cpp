@@ -140,7 +140,7 @@ Transform OccluderShapeSphere::center_node(const Transform &p_global_xform, cons
 
 	// new transform with no rotate or scale, centered
 	Transform new_local_xform = Transform();
-	new_local_xform.translate(center.x, center.y, center.z);
+	new_local_xform.translate_local(center.x, center.y, center.z);
 
 	Transform inv_xform = new_local_xform.affine_inverse();
 

@@ -813,7 +813,7 @@ void Spatial::rotate_z(float p_angle) {
 
 void Spatial::translate(const Vector3 &p_offset) {
 	Transform t = get_transform();
-	t.translate(p_offset);
+	t.translate_local(p_offset);
 	set_transform(t);
 }
 
@@ -821,7 +821,7 @@ void Spatial::translate_object_local(const Vector3 &p_offset) {
 	Transform t = get_transform();
 
 	Transform s;
-	s.translate(p_offset);
+	s.translate_local(p_offset);
 	set_transform(t * s);
 }
 

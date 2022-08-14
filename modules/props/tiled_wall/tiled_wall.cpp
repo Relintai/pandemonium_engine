@@ -141,7 +141,7 @@ void TiledWall::refresh() {
 		PhysicsServer::get_singleton()->shape_set_data(_physics_shape_rid, Vector3(_width / 2.0, _height / 2.0, 0.01));
 
 		Transform t = get_global_transform();
-		t.translate(Vector3(_width / 2.0, _height / 2.0, 0));
+		t.translate_local(Vector3(_width / 2.0, _height / 2.0, 0));
 		PhysicsServer::get_singleton()->body_set_state(_physics_body_rid, PhysicsServer::BODY_STATE_TRANSFORM, t);
 	}
 */
@@ -197,7 +197,7 @@ void TiledWall::generate_mesh() {
 		PhysicsServer::get_singleton()->shape_set_data(_physics_shape_rid, Vector3(_width / 2.0, _height / 2.0, 0.01));
 
 		Transform t = get_global_transform();
-		t.translate(Vector3(_width / 2.0, _height / 2.0, 0));
+		t.translate_local(Vector3(_width / 2.0, _height / 2.0, 0));
 		PhysicsServer::get_singleton()->body_set_state(_physics_body_rid, PhysicsServer::BODY_STATE_TRANSFORM, t);
 	}
 */
@@ -300,7 +300,7 @@ void TiledWall::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_WORLD: {
 			Transform t = get_global_transform();
-			t.translate(Vector3(_width / 2.0, _height / 2.0, 0));
+			t.translate_local(Vector3(_width / 2.0, _height / 2.0, 0));
 
 			PhysicsServer::get_singleton()->body_set_state(_physics_body_rid, PhysicsServer::BODY_STATE_TRANSFORM, t);
 
@@ -318,7 +318,7 @@ void TiledWall::_notification(int p_what) {
 		case NOTIFICATION_TRANSFORM_CHANGED: {
 			if (_collision) {
 				Transform t = get_global_transform();
-				t.translate(Vector3(_width / 2.0, _height / 2.0, 0));
+				t.translate_local(Vector3(_width / 2.0, _height / 2.0, 0));
 
 				PhysicsServer::get_singleton()->body_set_state(_physics_body_rid, PhysicsServer::BODY_STATE_TRANSFORM, t);
 			}
