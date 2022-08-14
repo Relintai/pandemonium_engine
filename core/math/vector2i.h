@@ -95,6 +95,8 @@ struct _NO_DISCARD_CLASS_ Vector2i {
 
 	real_t get_aspect() const { return width / (real_t)height; }
 
+	Vector2i abs() const { return Vector2i(ABS(x), ABS(y)); }
+
 	Vector2 to_vector2() const { return Vector2(x, y); }
 
 	operator String() const { return String::num(x) + ", " + String::num(y); }

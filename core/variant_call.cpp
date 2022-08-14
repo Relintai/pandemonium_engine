@@ -493,16 +493,22 @@ struct _VariantCall {
 
 	VCALL_LOCALMEM0R(Rect2i, get_area);
 	VCALL_LOCALMEM0R(Rect2i, get_center);
-	VCALL_LOCALMEM0R(Rect2i, has_no_area);
-	VCALL_LOCALMEM1R(Rect2i, has_point);
 	VCALL_LOCALMEM1R(Rect2i, intersects);
 	VCALL_LOCALMEM1R(Rect2i, encloses);
+	VCALL_LOCALMEM0R(Rect2i, has_no_area);
 	VCALL_LOCALMEM1R(Rect2i, clip);
+	VCALL_LOCALMEM1R(Rect2i, intersection);
 	VCALL_LOCALMEM1R(Rect2i, merge);
-	VCALL_LOCALMEM1R(Rect2i, expand);
+	VCALL_LOCALMEM1R(Rect2i, has_point);
 	VCALL_LOCALMEM1R(Rect2i, grow);
 	VCALL_LOCALMEM2R(Rect2i, grow_margin);
+	VCALL_LOCALMEM2R(Rect2i, grow_side);
 	VCALL_LOCALMEM4R(Rect2i, grow_individual);
+	VCALL_LOCALMEM1R(Rect2i, expand);
+	VCALL_LOCALMEM1(Rect2i, expand_to);
+	VCALL_LOCALMEM0R(Rect2i, abs);
+	VCALL_LOCALMEM1(Rect2i, set_end);
+	VCALL_LOCALMEM0R(Rect2i, get_end);
 
 	VCALL_LOCALMEM0R(Vector3, min_axis);
 	VCALL_LOCALMEM0R(Vector3, max_axis);
@@ -2218,16 +2224,22 @@ void register_variant_methods() {
 
 	ADDFUNC0R(RECT2I, INT, Rect2i, get_area, varray());
 	ADDFUNC0R(RECT2I, VECTOR2I, Rect2i, get_center, varray());
-	ADDFUNC0R(RECT2I, BOOL, Rect2i, has_no_area, varray());
-	ADDFUNC1R(RECT2I, BOOL, Rect2i, has_point, VECTOR2, "point", varray());
 	ADDFUNC1R(RECT2I, BOOL, Rect2i, intersects, RECT2I, "b", varray());
 	ADDFUNC1R(RECT2I, BOOL, Rect2i, encloses, RECT2I, "b", varray());
+	ADDFUNC0R(RECT2I, BOOL, Rect2i, has_no_area, varray());
 	ADDFUNC1R(RECT2I, RECT2I, Rect2i, clip, RECT2I, "b", varray());
+	ADDFUNC1R(RECT2I, RECT2I, Rect2i, intersection, RECT2I, "rect", varray());
 	ADDFUNC1R(RECT2I, RECT2I, Rect2i, merge, RECT2I, "b", varray());
-	ADDFUNC1R(RECT2I, RECT2I, Rect2i, expand, VECTOR2I, "to", varray());
+	ADDFUNC1R(RECT2I, BOOL, Rect2i, has_point, VECTOR2I, "point", varray());
 	ADDFUNC1R(RECT2I, RECT2I, Rect2i, grow, INT, "by", varray());
 	ADDFUNC2R(RECT2I, RECT2I, Rect2i, grow_margin, INT, "margin", INT, "by", varray());
+	ADDFUNC2R(RECT2I, RECT2I, Rect2i, grow_side, INT, "side", INT, "by", varray());
 	ADDFUNC4R(RECT2I, RECT2I, Rect2i, grow_individual, INT, "left", INT, "top", INT, "right", INT, " bottom", varray());
+	ADDFUNC1R(RECT2I, RECT2I, Rect2i, expand, VECTOR2I, "to", varray());
+	ADDFUNC1R(RECT2I, RECT2I, Rect2i, expand_to, VECTOR2I, "to", varray());
+	ADDFUNC0R(RECT2I, RECT2I, Rect2i, abs, varray());
+	ADDFUNC1(RECT2I, NIL, Rect2i, set_end, VECTOR2I, "end", varray());
+	ADDFUNC0R(RECT2I, VECTOR2I, Rect2i, get_end, varray());
 
 	ADDFUNC0R(VECTOR3, INT, Vector3, min_axis, varray());
 	ADDFUNC0R(VECTOR3, INT, Vector3, max_axis, varray());

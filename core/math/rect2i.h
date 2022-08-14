@@ -72,6 +72,7 @@ struct _NO_DISCARD_CLASS_ Rect2i {
 	_FORCE_INLINE_ bool has_no_area() const {
 		return (size.x <= 0 || size.y <= 0);
 	}
+
 	inline Rect2i clip(const Rect2i &p_rect) const { /// return a clipped rect
 
 		Rect2i new_rect = p_rect;
@@ -92,6 +93,26 @@ struct _NO_DISCARD_CLASS_ Rect2i {
 		return new_rect;
 	}
 
+	// Returns the instersection between two Rect2is or an empty Rect2i if there is no intersection
+	inline Rect2i intersection(const Rect2i &p_rect) const {
+		Rect2i new_rect = p_rect;
+
+		if (!intersects(new_rect)) {
+			return Rect2i();
+		}
+
+		new_rect.position.x = MAX(p_rect.position.x, position.x);
+		new_rect.position.y = MAX(p_rect.position.y, position.y);
+
+		Point2i p_rect_end = p_rect.position + p_rect.size;
+		Point2i end = position + size;
+
+		new_rect.size.x = MIN(p_rect_end.x, end.x) - new_rect.position.x;
+		new_rect.size.y = MIN(p_rect_end.y, end.y) - new_rect.position.y;
+
+		return new_rect;
+	}
+
 	inline Rect2i merge(const Rect2i &p_rect) const { ///< return a merged rect
 
 		Rect2i new_rect;
@@ -105,8 +126,9 @@ struct _NO_DISCARD_CLASS_ Rect2i {
 		new_rect.size = new_rect.size - new_rect.position; //make relative again
 
 		return new_rect;
-	};
-	bool has_point(const Point2 &p_point) const {
+	}
+
+	bool has_point(const Point2i &p_point) const {
 		if (p_point.x < position.x) {
 			return false;
 		}
@@ -142,6 +164,15 @@ struct _NO_DISCARD_CLASS_ Rect2i {
 				(MARGIN_TOP == p_margin) ? p_amount : 0,
 				(MARGIN_RIGHT == p_margin) ? p_amount : 0,
 				(MARGIN_BOTTOM == p_margin) ? p_amount : 0);
+		return g;
+	}
+
+	inline Rect2i grow_side(Side p_side, int p_amount) const {
+		Rect2i g = *this;
+		g = g.grow_individual((SIDE_LEFT == p_side) ? p_amount : 0,
+				(SIDE_TOP == p_side) ? p_amount : 0,
+				(SIDE_RIGHT == p_side) ? p_amount : 0,
+				(SIDE_BOTTOM == p_side) ? p_amount : 0);
 		return g;
 	}
 
@@ -183,9 +214,21 @@ struct _NO_DISCARD_CLASS_ Rect2i {
 		size = end - begin;
 	}
 
-	operator String() const { return String(position) + ", " + String(size); }
+	_FORCE_INLINE_ Rect2i abs() const {
+		return Rect2i(Point2i(position.x + MIN(size.x, 0), position.y + MIN(size.y, 0)), size.abs());
+	}
 
+	_FORCE_INLINE_ void set_end(const Vector2i &p_end) {
+		size = p_end - position;
+	}
+
+	_FORCE_INLINE_ Vector2i get_end() const {
+		return position + size;
+	}
+
+	operator String() const;
 	operator Rect2() const { return Rect2(position, size); }
+
 	Rect2i(const Rect2 &p_r2) :
 			position(p_r2.position),
 			size(p_r2.size) {
