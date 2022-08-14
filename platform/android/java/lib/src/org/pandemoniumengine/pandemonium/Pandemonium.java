@@ -723,7 +723,7 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 		mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 		mGyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
-		PandemoniumLib.initialize(activity, this, activity.getAssets(), io, netUtils, directoryAccessHandler, fileAccessHandler, use_apk_expansion);
+		PandemoniumLib.initialize(activity, this, activity.getAssets(), io, netUtils, directoryAccessHandler, fileAccessHandler, use_apk_expansion, tts);
 
 		result_callback = null;
 

@@ -160,7 +160,7 @@ JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_set
 	}
 }
 
-JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_initialize(JNIEnv *env, jclass clazz, jobject p_activity, jobject p_pandemonium_instance, jobject p_asset_manager, jobject p_pandemonium_io, jobject p_net_utils, jobject p_directory_access_handler, jobject p_file_access_handler, jboolean p_use_apk_expansion) {
+JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_initialize(JNIEnv *env, jclass clazz, jobject p_activity, jobject p_pandemonium_instance, jobject p_asset_manager, jobject p_pandemonium_io, jobject p_net_utils, jobject p_directory_access_handler, jobject p_file_access_handler, jboolean p_use_apk_expansion, jobject p_godot_tts) {
 	initialized = true;
 
 	JavaVM *jvm;
@@ -179,7 +179,7 @@ JNIEXPORT void JNICALL Java_org_pandemoniumengine_pandemonium_PandemoniumLib_ini
 	DirAccessJAndroid::setup(p_directory_access_handler);
 	FileAccessFilesystemJAndroid::setup(p_file_access_handler);
 	NetSocketAndroid::setup(p_net_utils);
-	TTS_Android::setup(godot_java->get_member_object("tts", "Lorg/pandemoniumengine/pandemonium/tts/PandemoniumTTS;", env));
+	TTS_Android::setup(p_godot_tts);
 
 	os_android = new OS_Android(pandemonium_java, pandemonium_io_java, p_use_apk_expansion);
 
