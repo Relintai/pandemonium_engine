@@ -51,7 +51,7 @@ struct _NO_DISCARD_CLASS_ Vector4 {
 			real_t z;
 			real_t w;
 		};
-		real_t components[4] = { 0, 0, 0, 0 };
+		real_t components[4];
 	};
 
 	_FORCE_INLINE_ real_t &operator[](const int p_axis) {
@@ -68,8 +68,8 @@ struct _NO_DISCARD_CLASS_ Vector4 {
 	void set_axis(const int p_axis, const real_t p_value);
 	real_t get_axis(const int p_axis) const;
 
-	Vector4::Axis min_axis_index() const;
-	Vector4::Axis max_axis_index() const;
+	Vector4::Axis min_axis() const;
+	Vector4::Axis max_axis() const;
 
 	_FORCE_INLINE_ real_t length_squared() const;
 	bool is_equal_approx(const Vector4 &p_vec4) const;
@@ -79,6 +79,7 @@ struct _NO_DISCARD_CLASS_ Vector4 {
 	bool is_normalized() const;
 
 	real_t distance_to(const Vector4 &p_to) const;
+	real_t distance_squared_to(const Vector4 &p_to) const;
 	Vector4 direction_to(const Vector4 &p_to) const;
 
 	Vector4 abs() const;
@@ -86,13 +87,14 @@ struct _NO_DISCARD_CLASS_ Vector4 {
 	Vector4 floor() const;
 	Vector4 ceil() const;
 	Vector4 round() const;
+
 	Vector4 lerp(const Vector4 &p_to, const real_t p_weight) const;
-	//Vector4 cubic_interpolate(const Vector4 &p_b, const Vector4 &p_pre_a, const Vector4 &p_post_b, const real_t p_weight) const;
+	Vector4 cubic_interpolate(const Vector4 &p_b, const Vector4 &p_pre_a, const Vector4 &p_post_b, const real_t p_weight) const;
 
 	Vector4 posmod(const real_t p_mod) const;
 	Vector4 posmodv(const Vector4 &p_modv) const;
-	//void snap(const Vector4 &p_step);
-	//Vector4 snapped(const Vector4 &p_step) const;
+	void snap(const Vector4 &p_step);
+	Vector4 snapped(const Vector4 &p_step) const;
 	Vector4 clamp(const Vector4 &p_min, const Vector4 &p_max) const;
 
 	Vector4 inverse() const;
@@ -121,7 +123,12 @@ struct _NO_DISCARD_CLASS_ Vector4 {
 
 	operator String() const;
 
-	_FORCE_INLINE_ Vector4() {}
+	_FORCE_INLINE_ Vector4() {
+		x = 0;
+		y = 0;
+		z = 0;
+		w = 0;
+	}
 
 	_FORCE_INLINE_ Vector4(real_t p_x, real_t p_y, real_t p_z, real_t p_w) :
 			x(p_x),

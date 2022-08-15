@@ -53,7 +53,7 @@ struct _NO_DISCARD_CLASS_ Vector4i {
 			int32_t w;
 		};
 
-		int32_t coord[4] = { 0 };
+		int32_t coord[4];
 	};
 
 	_FORCE_INLINE_ const int32_t &operator[](const int p_axis) const {
@@ -69,8 +69,8 @@ struct _NO_DISCARD_CLASS_ Vector4i {
 	void set_axis(const int p_axis, const int32_t p_value);
 	int32_t get_axis(const int p_axis) const;
 
-	Vector4i::Axis min_axis_index() const;
-	Vector4i::Axis max_axis_index() const;
+	Vector4i::Axis min_axis() const;
+	Vector4i::Axis max_axis() const;
 
 	_FORCE_INLINE_ int64_t length_squared() const;
 	_FORCE_INLINE_ double length() const;
@@ -113,8 +113,15 @@ struct _NO_DISCARD_CLASS_ Vector4i {
 	operator String() const;
 	operator Vector4() const;
 
-	_FORCE_INLINE_ Vector4i() {}
+	_FORCE_INLINE_ Vector4i() {
+		x = 0;
+		y = 0;
+		z = 0;
+		w = 0;
+	}
+
 	Vector4i(const Vector4 &p_vec4);
+
 	_FORCE_INLINE_ Vector4i(const int32_t p_x, const int32_t p_y, const int32_t p_z, const int32_t p_w) {
 		x = p_x;
 		y = p_y;

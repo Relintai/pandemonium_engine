@@ -554,8 +554,8 @@ struct _VariantCall {
 	VCALL_LOCALMEM1R(Vector3, limit_length);
 	VCALL_LOCALMEM0R(Vector3, sign);
 
-	VCALL_LOCALMEM0R(Vector3i, min_axis_index);
-	VCALL_LOCALMEM0R(Vector3i, max_axis_index);
+	VCALL_LOCALMEM0R(Vector3i, min_axis);
+	VCALL_LOCALMEM0R(Vector3i, max_axis);
 	VCALL_LOCALMEM0R(Vector3i, length);
 	VCALL_LOCALMEM0R(Vector3i, length_squared);
 	VCALL_LOCALMEM2R(Vector3i, linear_interpolate);
@@ -2358,8 +2358,8 @@ void register_variant_methods() {
 	ADDFUNC1R(VECTOR3, VECTOR3, Vector3, limit_length, REAL, "length", varray(1.0));
 	ADDFUNC0R(VECTOR3, VECTOR3, Vector3, sign, varray());
 
-	ADDFUNC0R(VECTOR3I, INT, Vector3i, min_axis_index, varray());
-	ADDFUNC0R(VECTOR3I, INT, Vector3i, max_axis_index, varray());
+	ADDFUNC0R(VECTOR3I, INT, Vector3i, min_axis, varray());
+	ADDFUNC0R(VECTOR3I, INT, Vector3i, max_axis, varray());
 	ADDFUNC0R(VECTOR3I, REAL, Vector3, length, varray());
 	ADDFUNC0R(VECTOR3I, REAL, Vector3, length_squared, varray());
 	ADDFUNC2R(VECTOR3I, VECTOR3I, Vector3, linear_interpolate, VECTOR3I, "to", REAL, "weight", varray());

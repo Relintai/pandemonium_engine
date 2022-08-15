@@ -32,6 +32,8 @@
 
 #include "core/math/vector2.h"
 
+#include "core/vector.h"
+
 /*
 http://www.flipcode.com/archives/Efficient_Polygon_Triangulation.shtml
 */

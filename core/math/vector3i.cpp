@@ -43,11 +43,11 @@ int32_t Vector3i::get_axis(const int p_axis) const {
 	return operator[](p_axis);
 }
 
-Vector3i::Axis Vector3i::min_axis_index() const {
+Vector3i::Axis Vector3i::min_axis() const {
 	return x < y ? (x < z ? Vector3i::AXIS_X : Vector3i::AXIS_Z) : (y < z ? Vector3i::AXIS_Y : Vector3i::AXIS_Z);
 }
 
-Vector3i::Axis Vector3i::max_axis_index() const {
+Vector3i::Axis Vector3i::max_axis() const {
 	return x < y ? (y < z ? Vector3i::AXIS_Z : Vector3i::AXIS_Y) : (x < z ? Vector3i::AXIS_Z : Vector3i::AXIS_X);
 }
 

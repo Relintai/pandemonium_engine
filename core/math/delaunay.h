@@ -31,6 +31,8 @@
 /*************************************************************************/
 
 #include "core/math/rect2.h"
+#include "core/math/vector2.h"
+#include "core/vector.h"
 
 class Delaunay2D {
 public:

@@ -30,6 +30,8 @@
 
 #include "vector2.h"
 
+#include "core/ustring.h"
+
 real_t Vector2::angle() const {
 	return Math::atan2(y, x);
 }
@@ -150,25 +152,6 @@ Vector2 Vector2::limit_length(const real_t p_len) const {
 	return v;
 }
 
-Vector2 Vector2::cubic_interpolate(const Vector2 &p_b, const Vector2 &p_pre_a, const Vector2 &p_post_b, real_t p_weight) const {
-	Vector2 p0 = p_pre_a;
-	Vector2 p1 = *this;
-	Vector2 p2 = p_b;
-	Vector2 p3 = p_post_b;
-
-	real_t t = p_weight;
-	real_t t2 = t * t;
-	real_t t3 = t2 * t;
-
-	Vector2 out;
-	out = 0.5f *
-			((p1 * 2) +
-					(-p0 + p2) * t +
-					(2 * p0 - 5 * p1 + 4 * p2 - p3) * t2 +
-					(-p0 + 3 * p1 - 3 * p2 + p3) * t3);
-	return out;
-}
-
 Vector2 Vector2::move_toward(const Vector2 &p_to, const real_t p_delta) const {
 	Vector2 v = *this;
 	Vector2 vd = p_to - v;
@@ -199,3 +182,6 @@ bool Vector2::is_equal_approx(const Vector2 &p_v) const {
 	return Math::is_equal_approx(x, p_v.x) && Math::is_equal_approx(y, p_v.y);
 }
 
+Vector2::operator String() const {
+	return "(" + String::num_real(x) + ", " + String::num_real(y) + ")";
+}

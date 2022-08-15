@@ -43,7 +43,7 @@ int32_t Vector4i::get_axis(const int p_axis) const {
 	return operator[](p_axis);
 }
 
-Vector4i::Axis Vector4i::min_axis_index() const {
+Vector4i::Axis Vector4i::min_axis() const {
 	uint32_t min_index = 0;
 	int32_t min_value = x;
 	for (uint32_t i = 1; i < 4; i++) {
@@ -55,7 +55,7 @@ Vector4i::Axis Vector4i::min_axis_index() const {
 	return Vector4i::Axis(min_index);
 }
 
-Vector4i::Axis Vector4i::max_axis_index() const {
+Vector4i::Axis Vector4i::max_axis() const {
 	uint32_t max_index = 0;
 	int32_t max_value = x;
 	for (uint32_t i = 1; i < 4; i++) {

@@ -32,9 +32,11 @@
 /*************************************************************************/
 
 #include "core/math/math_funcs.h"
-#include "core/ustring.h"
+#include "core/error_macros.h"
 
 #include "vector2.h"
+
+class String;
 
 struct _NO_DISCARD_CLASS_ Vector2i {
 	enum Axis {
@@ -66,6 +68,26 @@ struct _NO_DISCARD_CLASS_ Vector2i {
 		return coord[p_idx];
 	}
 
+	_FORCE_INLINE_ void set_all(int p_value) {
+		x = y = p_value;
+	}
+
+	_FORCE_INLINE_ int min_axis() const {
+		return x < y ? 0 : 1;
+	}
+
+	_FORCE_INLINE_ int max_axis() const {
+		return x < y ? 1 : 0;
+	}
+
+	Vector2i min(const Vector2i &p_vector2i) const {
+		return Vector2i(MIN(x, p_vector2i.x), MIN(y, p_vector2i.y));
+	}
+
+	Vector2i max(const Vector2i &p_vector2i) const {
+		return Vector2i(MAX(x, p_vector2i.x), MAX(y, p_vector2i.y));
+	}
+
 	_FORCE_INLINE_ static Vector2i linear_interpolate(const Vector2i &p_a, const Vector2i &p_b, real_t p_weight);
 	_FORCE_INLINE_ Vector2i linear_interpolate(const Vector2i &p_to, real_t p_weight) const;
 
@@ -93,13 +115,17 @@ struct _NO_DISCARD_CLASS_ Vector2i {
 	bool operator==(const Vector2i &p_vec2) const;
 	bool operator!=(const Vector2i &p_vec2) const;
 
-	real_t get_aspect() const { return width / (real_t)height; }
+	int64_t length_squared() const;
+	double length() const;
 
+	real_t aspect() const { return width / (real_t)height; }
+	Vector2i sign() const { return Vector2i(SGN(x), SGN(y)); }
 	Vector2i abs() const { return Vector2i(ABS(x), ABS(y)); }
+	Vector2i clamp(const Vector2i &p_min, const Vector2i &p_max) const;
 
 	Vector2 to_vector2() const { return Vector2(x, y); }
 
-	operator String() const { return String::num(x) + ", " + String::num(y); }
+	operator String() const;
 	operator Vector2() const { return Vector2(x, y); }
 
 	inline Vector2i(const Vector2 &p_vec2) {

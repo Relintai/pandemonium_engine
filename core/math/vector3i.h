@@ -51,7 +51,7 @@ struct _NO_DISCARD_CLASS_ Vector3i {
 			int32_t z;
 		};
 
-		int32_t coord[3] = { 0 };
+		int32_t coord[3];
 	};
 
 	_FORCE_INLINE_ const int32_t &operator[](const int p_axis) const {
@@ -67,8 +67,8 @@ struct _NO_DISCARD_CLASS_ Vector3i {
 	void set_axis(const int p_axis, const int32_t p_value);
 	int32_t get_axis(const int p_axis) const;
 
-	Vector3i::Axis min_axis_index() const;
-	Vector3i::Axis max_axis_index() const;
+	Vector3i::Axis min_axis() const;
+	Vector3i::Axis max_axis() const;
 
 	_FORCE_INLINE_ int64_t length_squared() const;
 	_FORCE_INLINE_ double length() const;
@@ -113,7 +113,11 @@ struct _NO_DISCARD_CLASS_ Vector3i {
 	operator String() const;
 	operator Vector3() const;
 
-	_FORCE_INLINE_ Vector3i() {}
+	_FORCE_INLINE_ Vector3i() {
+		x = 0;
+		y = 0;
+		z = 0;
+	}
 	_FORCE_INLINE_ Vector3i(const int32_t p_x, const int32_t p_y, const int32_t p_z) {
 		x = p_x;
 		y = p_y;

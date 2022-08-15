@@ -32,7 +32,10 @@
 /*************************************************************************/
 
 #include "core/math/math_funcs.h"
-#include "core/ustring.h"
+
+#include "core/error_macros.h"
+
+class String;
 
 struct _NO_DISCARD_CLASS_ Vector2 {
 	static const int AXIS_COUNT = 2;
@@ -84,6 +87,15 @@ struct _NO_DISCARD_CLASS_ Vector2 {
 
 	real_t length() const;
 	real_t length_squared() const;
+	Vector2 limit_length(const real_t p_len = 1.0) const;
+
+	Vector2 min(const Vector2 &p_vector2) const {
+		return Vector2(MIN(x, p_vector2.x), MIN(y, p_vector2.y));
+	}
+
+	Vector2 max(const Vector2 &p_vector2) const {
+		return Vector2(MAX(x, p_vector2.x), MAX(y, p_vector2.y));
+	}
 
 	real_t distance_to(const Vector2 &p_vector2) const;
 	real_t distance_squared_to(const Vector2 &p_vector2) const;
@@ -100,12 +112,13 @@ struct _NO_DISCARD_CLASS_ Vector2 {
 	Vector2 plane_project(real_t p_d, const Vector2 &p_vec) const;
 
 	Vector2 clamped(real_t p_len) const;
-	Vector2 limit_length(const real_t p_len = 1.0) const;
 
 	_FORCE_INLINE_ static Vector2 linear_interpolate(const Vector2 &p_a, const Vector2 &p_b, real_t p_weight);
 	_FORCE_INLINE_ Vector2 linear_interpolate(const Vector2 &p_to, real_t p_weight) const;
 	_FORCE_INLINE_ Vector2 slerp(const Vector2 &p_to, real_t p_weight) const;
-	Vector2 cubic_interpolate(const Vector2 &p_b, const Vector2 &p_pre_a, const Vector2 &p_post_b, real_t p_weight) const;
+	_FORCE_INLINE_ Vector2 cubic_interpolate(const Vector2 &p_b, const Vector2 &p_pre_a, const Vector2 &p_post_b, real_t p_weight) const;
+	_FORCE_INLINE_ Vector2 bezier_interpolate(const Vector2 &p_control_1, const Vector2 &p_control_2, const Vector2 &p_end, const real_t p_t) const;
+
 	Vector2 move_toward(const Vector2 &p_to, const real_t p_delta) const;
 
 	Vector2 slide(const Vector2 &p_normal) const;
@@ -153,7 +166,10 @@ struct _NO_DISCARD_CLASS_ Vector2 {
 	}
 
 	Vector2 rotated(real_t p_by) const;
-	Vector2 tangent() const {
+	_FORCE_INLINE_ Vector2 tangent() const {
+		return Vector2(y, -x);
+	}
+	_FORCE_INLINE_ Vector2 orthogonal() const {
 		return Vector2(y, -x);
 	}
 
@@ -164,10 +180,7 @@ struct _NO_DISCARD_CLASS_ Vector2 {
 	Vector2 snapped(const Vector2 &p_by) const;
 	real_t aspect() const { return width / height; }
 
-	//TODO
-	Vector2 orthogonal() { return Vector2(); }
-
-	operator String() const { return String::num(x) + ", " + String::num(y); }
+	operator String() const;
 
 	_FORCE_INLINE_ Vector2(real_t p_x, real_t p_y) {
 		x = p_x;
@@ -250,6 +263,26 @@ Vector2 Vector2::slerp(const Vector2 &p_to, real_t p_weight) const {
 #endif
 	real_t theta = angle_to(p_to);
 	return rotated(theta * p_weight);
+}
+
+Vector2 Vector2::bezier_interpolate(const Vector2 &p_control_1, const Vector2 &p_control_2, const Vector2 &p_end, const real_t p_t) const {
+	Vector2 res = *this;
+
+	/* Formula from Wikipedia article on Bezier curves. */
+	real_t omt = (1.0 - p_t);
+	real_t omt2 = omt * omt;
+	real_t omt3 = omt2 * omt;
+	real_t t2 = p_t * p_t;
+	real_t t3 = t2 * p_t;
+
+	return res * omt3 + p_control_1 * omt2 * p_t * 3.0 + p_control_2 * omt * t2 * 3.0 + p_end * t3;
+}
+
+Vector2 Vector2::cubic_interpolate(const Vector2 &p_b, const Vector2 &p_pre_a, const Vector2 &p_post_b, const real_t p_weight) const {
+	Vector2 res = *this;
+	res.x = Math::cubic_interpolate(res.x, p_b.x, p_pre_a.x, p_post_b.x, p_weight);
+	res.y = Math::cubic_interpolate(res.y, p_b.y, p_pre_a.y, p_post_b.y, p_weight);
+	return res;
 }
 
 Vector2 Vector2::direction_to(const Vector2 &p_to) const {

@@ -73,59 +73,6 @@ Vector3 Vector3::limit_length(const real_t p_len) const {
 	return v;
 }
 
-Vector3 Vector3::cubic_interpolaten(const Vector3 &p_b, const Vector3 &p_pre_a, const Vector3 &p_post_b, real_t p_weight) const {
-	Vector3 p0 = p_pre_a;
-	Vector3 p1 = *this;
-	Vector3 p2 = p_b;
-	Vector3 p3 = p_post_b;
-
-	{
-		//normalize
-
-		real_t ab = p0.distance_to(p1);
-		real_t bc = p1.distance_to(p2);
-		real_t cd = p2.distance_to(p3);
-
-		if (ab > 0) {
-			p0 = p1 + (p0 - p1) * (bc / ab);
-		}
-		if (cd > 0) {
-			p3 = p2 + (p3 - p2) * (bc / cd);
-		}
-	}
-
-	real_t t = p_weight;
-	real_t t2 = t * t;
-	real_t t3 = t2 * t;
-
-	Vector3 out;
-	out = 0.5f *
-			((p1 * 2) +
-					(-p0 + p2) * t +
-					(2 * p0 - 5 * p1 + 4 * p2 - p3) * t2 +
-					(-p0 + 3 * p1 - 3 * p2 + p3) * t3);
-	return out;
-}
-
-Vector3 Vector3::cubic_interpolate(const Vector3 &p_b, const Vector3 &p_pre_a, const Vector3 &p_post_b, real_t p_weight) const {
-	Vector3 p0 = p_pre_a;
-	Vector3 p1 = *this;
-	Vector3 p2 = p_b;
-	Vector3 p3 = p_post_b;
-
-	real_t t = p_weight;
-	real_t t2 = t * t;
-	real_t t3 = t2 * t;
-
-	Vector3 out;
-	out = 0.5f *
-			((p1 * 2) +
-					(-p0 + p2) * t +
-					(2 * p0 - 5 * p1 + 4 * p2 - p3) * t2 +
-					(-p0 + 3 * p1 - 3 * p2 + p3) * t3);
-	return out;
-}
-
 Vector3 Vector3::move_toward(const Vector3 &p_to, const real_t p_delta) const {
 	Vector3 v = *this;
 	Vector3 vd = p_to - v;
@@ -147,10 +94,17 @@ Basis Vector3::to_diagonal_matrix() const {
 			0, 0, z);
 }
 
+Vector3 Vector3::clamp(const Vector3 &p_min, const Vector3 &p_max) const {
+	return Vector3(
+			CLAMP(x, p_min.x, p_max.x),
+			CLAMP(y, p_min.y, p_max.y),
+			CLAMP(z, p_min.z, p_max.z));
+}
+
 bool Vector3::is_equal_approx(const Vector3 &p_v) const {
 	return Math::is_equal_approx(x, p_v.x) && Math::is_equal_approx(y, p_v.y) && Math::is_equal_approx(z, p_v.z);
 }
 
 Vector3::operator String() const {
-	return (rtos(x) + ", " + rtos(y) + ", " + rtos(z));
+	return "(" + String::num_real(x) + ", " + String::num_real(y) + ", " + String::num_real(z) + ")";
 }
