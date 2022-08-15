@@ -203,7 +203,7 @@ public:
 		VisualServer *vs = VisualServer::get_singleton();
 		//Transform t;
 		//t.rotate(Vector3(0, 1, 0), ofs);
-		//t.translate(Vector3(0,0,20 ));
+		//t.translate_local(Vector3(0,0,20 ));
 		//vs->camera_set_transform(camera, t);
 
 		ofs += p_time * 0.05;

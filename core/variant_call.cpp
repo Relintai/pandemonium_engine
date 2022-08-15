@@ -1293,15 +1293,36 @@ struct _VariantCall {
 		}
 	}
 
+	VCALL_PTR0(Transform, invert);
 	VCALL_PTR0R(Transform, inverse);
+	VCALL_PTR0(Transform, affine_invert);
 	VCALL_PTR0R(Transform, affine_inverse);
 	VCALL_PTR2R(Transform, rotated);
-	VCALL_PTR1R(Transform, scaled);
-	VCALL_PTR1R(Transform, translated_local);
-	VCALL_PTR0R(Transform, orthonormalized);
+	VCALL_PTR2R(Transform, rotated_local);
+	VCALL_PTR2(Transform, rotate);
+	VCALL_PTR2(Transform, rotate_local);
+	VCALL_PTR2(Transform, rotate_basis);
+	VCALL_PTR3(Transform, set_look_at);
 	VCALL_PTR2R(Transform, looking_at);
-	VCALL_PTR2R(Transform, interpolate_with);
+	VCALL_PTR1(Transform, scale);
+	VCALL_PTR1R(Transform, scaled);
+	VCALL_PTR1R(Transform, scaled_local);
+	VCALL_PTR1(Transform, scale_basis);
+	VCALL_PTR3(Transform, translate_localr);
+	VCALL_PTR1(Transform, translate_localv);
+	VCALL_PTR1R(Transform, translated);
+	VCALL_PTR1R(Transform, translated_local);
+	VCALL_PTR0R(Transform, get_basis);
+	VCALL_PTR1(Transform, set_basis);
+	VCALL_PTR0R(Transform, get_origin);
+	VCALL_PTR1(Transform, set_origin);
+	VCALL_PTR0(Transform, orthonormalize);
+	VCALL_PTR0R(Transform, orthonormalized);
+	VCALL_PTR0(Transform, orthogonalize);
+	VCALL_PTR0R(Transform, orthogonalized);
 	VCALL_PTR1R(Transform, is_equal_approx);
+	VCALL_PTR2R(Transform, spherical_interpolate_with);
+	VCALL_PTR2R(Transform, interpolate_with);
 
 	static void _call_Transform_xform(Variant &r_ret, Variant &p_self, const Variant **p_args) {
 		switch (p_args[0]->type) {
@@ -2788,15 +2809,36 @@ void register_variant_methods() {
 	ADDFUNC1R(BASIS, VECTOR3, Basis, xform, NIL, "v3_or_v3i", varray());
 	ADDFUNC1R(BASIS, VECTOR3, Basis, xform_inv, NIL, "v3_or_v3i", varray());
 
+	ADDFUNC0(TRANSFORM, NIL, Transform, invert, varray());
 	ADDFUNC0R(TRANSFORM, TRANSFORM, Transform, inverse, varray());
+	ADDFUNC0(TRANSFORM, NIL, Transform, affine_invert, varray());
 	ADDFUNC0R(TRANSFORM, TRANSFORM, Transform, affine_inverse, varray());
-	ADDFUNC0R(TRANSFORM, TRANSFORM, Transform, orthonormalized, varray());
 	ADDFUNC2R(TRANSFORM, TRANSFORM, Transform, rotated, VECTOR3, "axis", REAL, "phi", varray());
-	ADDFUNC1R(TRANSFORM, TRANSFORM, Transform, scaled, VECTOR3, "scale", varray());
-	ADDFUNC1R(TRANSFORM, TRANSFORM, Transform, translated_local, VECTOR3, "offset", varray());
+	ADDFUNC2R(TRANSFORM, TRANSFORM, Transform, rotated_local, VECTOR3, "axis", REAL, "phi", varray());
+	ADDFUNC2(TRANSFORM, NIL, Transform, rotate, VECTOR3, "axis", REAL, "phi", varray());
+	ADDFUNC2(TRANSFORM, NIL, Transform, rotate_local, VECTOR3, "axis", REAL, "phi", varray());
+	ADDFUNC2(TRANSFORM, NIL, Transform, rotate_basis, VECTOR3, "axis", REAL, "phi", varray());
+	ADDFUNC3(TRANSFORM, NIL, Transform, set_look_at, VECTOR3, "eye", VECTOR3, "target", VECTOR3, "up", varray());
 	ADDFUNC2R(TRANSFORM, TRANSFORM, Transform, looking_at, VECTOR3, "target", VECTOR3, "up", varray());
-	ADDFUNC2R(TRANSFORM, TRANSFORM, Transform, interpolate_with, TRANSFORM, "transform", REAL, "weight", varray());
+	ADDFUNC1(TRANSFORM, NIL, Transform, scale, VECTOR3, "scale", varray());
+	ADDFUNC1R(TRANSFORM, TRANSFORM, Transform, scaled, VECTOR3, "scale", varray());
+	ADDFUNC1R(TRANSFORM, TRANSFORM, Transform, scaled_local, VECTOR3, "scale", varray());
+	ADDFUNC1(TRANSFORM, NIL, Transform, scale_basis, VECTOR3, "scale", varray());
+	ADDFUNC3(TRANSFORM, NIL, Transform, translate_localr, REAL, "tx", REAL, "ty", REAL, "tz", varray());
+	ADDFUNC1(TRANSFORM, NIL, Transform, translate_localv, VECTOR3, "scale", varray());
+	ADDFUNC1R(TRANSFORM, TRANSFORM, Transform, translated, VECTOR3, "translation", varray());
+	ADDFUNC1R(TRANSFORM, TRANSFORM, Transform, translated_local, VECTOR3, "offset", varray());
+	ADDFUNC0R(TRANSFORM, BASIS, Transform, get_basis, varray());
+	ADDFUNC1(TRANSFORM, NIL, Transform, set_basis, BASIS, "basis", varray());
+	ADDFUNC0R(TRANSFORM, VECTOR3, Transform, get_origin, varray());
+	ADDFUNC1(TRANSFORM, NIL, Transform, set_origin, VECTOR3, "origin", varray());
+	ADDFUNC0(TRANSFORM, NIL, Transform, orthonormalize, varray());
+	ADDFUNC0R(TRANSFORM, TRANSFORM, Transform, orthonormalized, varray());
+	ADDFUNC0(TRANSFORM, NIL, Transform, orthogonalize, varray());
+	ADDFUNC0R(TRANSFORM, TRANSFORM, Transform, orthogonalized, varray());
 	ADDFUNC1R(TRANSFORM, BOOL, Transform, is_equal_approx, TRANSFORM, "transform", varray());
+	ADDFUNC2R(TRANSFORM, TRANSFORM, Transform, spherical_interpolate_with, TRANSFORM, "transform", REAL, "c", varray());
+	ADDFUNC2R(TRANSFORM, TRANSFORM, Transform, interpolate_with, TRANSFORM, "transform", REAL, "weight", varray());
 	ADDFUNC1R(TRANSFORM, NIL, Transform, xform, NIL, "v", varray());
 	ADDFUNC1R(TRANSFORM, NIL, Transform, xform_inv, NIL, "v", varray());
 

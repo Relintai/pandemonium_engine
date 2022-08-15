@@ -64,8 +64,9 @@ public:
 
 	void translate_local(real_t p_tx, real_t p_ty, real_t p_tz);
 	void translate_local(const Vector3 &p_translation);
-	//TODO Enable
-	//Transform translated(const Vector3 &p_translation) const;
+	void translate_localr(real_t p_tx, real_t p_ty, real_t p_tz);
+	void translate_localv(const Vector3 &p_translation);
+	Transform translated(const Vector3 &p_translation) const;
 	Transform translated_local(const Vector3 &p_translation) const;
 
 	const Basis &get_basis() const { return basis; }

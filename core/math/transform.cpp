@@ -148,10 +148,19 @@ void Transform::translate_local(const Vector3 &p_translation) {
 	}
 }
 
-//Transform Transform::translated(const Vector3 &p_translation) const {
-//	// Equivalent to left multiplication
-//	return Transform(basis, origin + p_translation);
-//}
+void Transform::translate_localr(real_t p_tx, real_t p_ty, real_t p_tz) {
+	translate_local(Vector3(p_tx, p_ty, p_tz));
+}
+void Transform::translate_localv(const Vector3 &p_translation) {
+	for (int i = 0; i < 3; i++) {
+		origin[i] += basis[i].dot(p_translation);
+	}
+}
+
+Transform Transform::translated(const Vector3 &p_translation) const {
+	// Equivalent to left multiplication
+	return Transform(basis, origin + p_translation);
+}
 
 Transform Transform::translated_local(const Vector3 &p_translation) const {
 	// Equivalent to right multiplication
@@ -209,6 +218,25 @@ Transform Transform::operator*(const real_t p_val) const {
 	Transform ret(*this);
 	ret *= p_val;
 	return ret;
+}
+
+Transform Transform::spherical_interpolate_with(const Transform &p_transform, real_t p_c) const {
+	/* not sure if very "efficient" but good enough? */
+
+	Transform interp;
+
+	Vector3 src_scale = basis.get_scale();
+	Quaternion src_rot = basis.get_rotation_quaternion();
+	Vector3 src_loc = origin;
+
+	Vector3 dst_scale = p_transform.basis.get_scale();
+	Quaternion dst_rot = p_transform.basis.get_rotation_quaternion();
+	Vector3 dst_loc = p_transform.origin;
+
+	interp.basis.set_quaternion_scale(src_rot.slerp(dst_rot, p_c).normalized(), src_scale.linear_interpolate(dst_scale, p_c));
+	interp.origin = src_loc.linear_interpolate(dst_loc, p_c);
+
+	return interp;
 }
 
 Transform Transform::interpolate_with(const Transform &p_transform, real_t p_c) const {
