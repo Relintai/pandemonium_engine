@@ -455,7 +455,6 @@ struct _VariantCall {
 
 	VCALL_LOCALMEM2R(Vector2i, linear_interpolate);
 
-
 	VCALL_LOCALMEM0R(Rect2, get_position);
 	VCALL_LOCALMEM1(Rect2, set_position);
 	VCALL_LOCALMEM0R(Rect2, get_size);
@@ -602,21 +601,31 @@ struct _VariantCall {
 	VCALL_LOCALMEM1R(Plane, is_equal_approx);
 	VCALL_LOCALMEM1R(Plane, is_equal_approx_any_side);
 
-	VCALL_LOCALMEM0R(Quaternion, length);
 	VCALL_LOCALMEM0R(Quaternion, length_squared);
+	VCALL_LOCALMEM1R(Quaternion, is_equal_approx);
+	VCALL_LOCALMEM0R(Quaternion, length);
+	VCALL_LOCALMEM0(Quaternion, normalize);
 	VCALL_LOCALMEM0R(Quaternion, normalized);
 	VCALL_LOCALMEM0R(Quaternion, is_normalized);
-	VCALL_LOCALMEM1R(Quaternion, is_equal_approx);
 	VCALL_LOCALMEM0R(Quaternion, inverse);
-	VCALL_LOCALMEM1R(Quaternion, angle_to);
+	VCALL_LOCALMEM0R(Quaternion, log);
+	VCALL_LOCALMEM0R(Quaternion, exp);
 	VCALL_LOCALMEM1R(Quaternion, dot);
-	VCALL_LOCALMEM1R(Quaternion, xform);
+	VCALL_LOCALMEM1R(Quaternion, angle_to);
+	VCALL_LOCALMEM0R(Quaternion, get_euler_xyz);
+	VCALL_LOCALMEM1(Quaternion, set_euler_xyz);
+	VCALL_LOCALMEM0R(Quaternion, get_euler_yxz);
+	VCALL_LOCALMEM1(Quaternion, set_euler_yxz);
+	VCALL_LOCALMEM0R(Quaternion, get_euler);
+	VCALL_LOCALMEM1(Quaternion, set_euler);
 	VCALL_LOCALMEM2R(Quaternion, slerp);
 	VCALL_LOCALMEM2R(Quaternion, slerpni);
 	VCALL_LOCALMEM4R(Quaternion, cubic_slerp);
-	VCALL_LOCALMEM0R(Quaternion, get_euler);
-	VCALL_LOCALMEM1(Quaternion, set_euler);
+	VCALL_LOCALMEM4R(Quaternion, spherical_cubic_interpolate);
+	VCALL_LOCALMEM0R(Quaternion, get_axis);
+	VCALL_LOCALMEM0R(Quaternion, get_angle);
 	VCALL_LOCALMEM2(Quaternion, set_axis_angle);
+	VCALL_LOCALMEM1R(Quaternion, xform);
 
 	VCALL_LOCALMEM0R(Color, to_rgba32);
 	VCALL_LOCALMEM0R(Color, to_argb32);
@@ -1041,7 +1050,6 @@ struct _VariantCall {
 	static void _call_##m_type##_##m_method(Variant &r_ret, Variant &p_self, const Variant **p_args) {                               \
 		r_ret = reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0], *p_args[1], *p_args[2], *p_args[3], *p_args[4]); \
 	}
-
 
 	VCALL_PTR0R(AABB, get_volume);
 	VCALL_PTR0R(AABB, has_no_volume);
@@ -2373,21 +2381,31 @@ void register_variant_methods() {
 	ADDFUNC1R(PLANE, BOOL, Plane, is_equal_approx, PLANE, "plane", varray());
 	ADDFUNC1R(PLANE, BOOL, Plane, is_equal_approx_any_side, PLANE, "plane", varray());
 
-	ADDFUNC0R(QUATERNION, REAL, Quaternion, length, varray());
 	ADDFUNC0R(QUATERNION, REAL, Quaternion, length_squared, varray());
+	ADDFUNC1R(QUATERNION, BOOL, Quaternion, is_equal_approx, QUATERNION, "quat", varray());
+	ADDFUNC0R(QUATERNION, REAL, Quaternion, length, varray());
+	ADDFUNC0(QUATERNION, NIL, Quaternion, normalize, varray());
 	ADDFUNC0R(QUATERNION, QUATERNION, Quaternion, normalized, varray());
 	ADDFUNC0R(QUATERNION, BOOL, Quaternion, is_normalized, varray());
-	ADDFUNC1R(QUATERNION, BOOL, Quaternion, is_equal_approx, QUATERNION, "quat", varray());
 	ADDFUNC0R(QUATERNION, QUATERNION, Quaternion, inverse, varray());
-	ADDFUNC1R(QUATERNION, REAL, Quaternion, angle_to, QUATERNION, "to", varray());
+	ADDFUNC0R(QUATERNION, QUATERNION, Quaternion, log, varray());
+	ADDFUNC0R(QUATERNION, QUATERNION, Quaternion, exp, varray());
 	ADDFUNC1R(QUATERNION, REAL, Quaternion, dot, QUATERNION, "b", varray());
-	ADDFUNC1R(QUATERNION, VECTOR3, Quaternion, xform, VECTOR3, "v", varray());
+	ADDFUNC1R(QUATERNION, REAL, Quaternion, angle_to, QUATERNION, "to", varray());
+	ADDFUNC0R(QUATERNION, VECTOR3, Quaternion, get_euler_xyz, varray());
+	ADDFUNC1(QUATERNION, NIL, Quaternion, set_euler_xyz, VECTOR3, "euler", varray());
+	ADDFUNC0R(QUATERNION, VECTOR3, Quaternion, get_euler_yxz, varray());
+	ADDFUNC1(QUATERNION, NIL, Quaternion, set_euler_yxz, VECTOR3, "euler", varray());
+	ADDFUNC0R(QUATERNION, VECTOR3, Quaternion, get_euler, varray());
+	ADDFUNC1(QUATERNION, NIL, Quaternion, set_euler, VECTOR3, "euler", varray());
 	ADDFUNC2R(QUATERNION, QUATERNION, Quaternion, slerp, QUATERNION, "to", REAL, "weight", varray());
 	ADDFUNC2R(QUATERNION, QUATERNION, Quaternion, slerpni, QUATERNION, "to", REAL, "weight", varray());
 	ADDFUNC4R(QUATERNION, QUATERNION, Quaternion, cubic_slerp, QUATERNION, "b", QUATERNION, "pre_a", QUATERNION, "post_b", REAL, "weight", varray());
-	ADDFUNC0R(QUATERNION, VECTOR3, Quaternion, get_euler, varray());
-	ADDFUNC1(QUATERNION, NIL, Quaternion, set_euler, VECTOR3, "euler", varray());
+	ADDFUNC4R(QUATERNION, QUATERNION, Quaternion, spherical_cubic_interpolate, QUATERNION, "b", QUATERNION, "pre_a", QUATERNION, "post_b", REAL, "weight", varray());
+	ADDFUNC0R(QUATERNION, VECTOR3, Quaternion, get_axis, varray());
+	ADDFUNC0R(QUATERNION, REAL, Quaternion, get_angle, varray());
 	ADDFUNC2(QUATERNION, NIL, Quaternion, set_axis_angle, VECTOR3, "axis", REAL, "angle", varray());
+	ADDFUNC1R(QUATERNION, VECTOR3, Quaternion, xform, VECTOR3, "v", varray());
 
 	ADDFUNC0R(COLOR, INT, Color, to_rgba32, varray());
 	ADDFUNC0R(COLOR, INT, Color, to_argb32, varray());

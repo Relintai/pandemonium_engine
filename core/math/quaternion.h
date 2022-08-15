@@ -37,7 +37,22 @@
 
 class _NO_DISCARD_CLASS_ Quaternion {
 public:
-	real_t x, y, z, w;
+	union {
+		struct {
+			real_t x;
+			real_t y;
+			real_t z;
+			real_t w;
+		};
+		real_t components[4];
+	};
+
+	_FORCE_INLINE_ real_t &operator[](int idx) {
+		return components[idx];
+	}
+	_FORCE_INLINE_ const real_t &operator[](int idx) const {
+		return components[idx];
+	}
 
 	_FORCE_INLINE_ real_t length_squared() const;
 	bool is_equal_approx(const Quaternion &p_quat) const;
@@ -62,6 +77,7 @@ public:
 	Quaternion slerp(const Quaternion &p_to, const real_t &p_weight) const;
 	Quaternion slerpni(const Quaternion &p_to, const real_t &p_weight) const;
 	Quaternion cubic_slerp(const Quaternion &p_b, const Quaternion &p_pre_a, const Quaternion &p_post_b, const real_t &p_weight) const;
+	Quaternion spherical_cubic_interpolate(const Quaternion &p_b, const Quaternion &p_pre_a, const Quaternion &p_post_b, const real_t &p_weight) const;
 
 	Vector3 get_axis() const;
 	float get_angle() const;
