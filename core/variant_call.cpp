@@ -586,13 +586,17 @@ struct _VariantCall {
 	VCALL_LOCALMEM1R(Vector3, is_equal_approx);
 	VCALL_LOCALMEM2R(Vector3, is_equal_approxt);
 
+	VCALL_LOCALMEM2(Vector3i, set_axis);
+	VCALL_LOCALMEM1R(Vector3i, get_axis);
 	VCALL_LOCALMEM0R(Vector3i, min_axis);
 	VCALL_LOCALMEM0R(Vector3i, max_axis);
-	VCALL_LOCALMEM0R(Vector3i, length);
 	VCALL_LOCALMEM0R(Vector3i, length_squared);
-	VCALL_LOCALMEM2R(Vector3i, linear_interpolate);
+	VCALL_LOCALMEM0R(Vector3i, length);
+	VCALL_LOCALMEM0(Vector3i, zero);
 	VCALL_LOCALMEM0R(Vector3i, abs);
 	VCALL_LOCALMEM0R(Vector3i, sign);
+	VCALL_LOCALMEM2R(Vector3i, clamp);
+	VCALL_LOCALMEM2R(Vector3i, linear_interpolate);
 
 	VCALL_LOCALMEM1(Plane, set_normal);
 	VCALL_LOCALMEM0R(Plane, get_normal);
@@ -2422,11 +2426,17 @@ void register_variant_methods() {
 	ADDFUNC1R(VECTOR3, BOOL, Vector3, is_equal_approx, VECTOR3, "v", varray());
 	ADDFUNC2R(VECTOR3, BOOL, Vector3, is_equal_approxt, VECTOR3, "v", REAL, "tolerance", varray());
 
+	ADDFUNC2(VECTOR3I, NIL, Vector3i, set_axis, INT, "axis", INT, "value", varray());
+	ADDFUNC1R(VECTOR3I, INT, Vector3i, get_axis, INT, "axis", varray());
 	ADDFUNC0R(VECTOR3I, INT, Vector3i, min_axis, varray());
 	ADDFUNC0R(VECTOR3I, INT, Vector3i, max_axis, varray());
-	ADDFUNC0R(VECTOR3I, REAL, Vector3, length, varray());
-	ADDFUNC0R(VECTOR3I, REAL, Vector3, length_squared, varray());
-	ADDFUNC2R(VECTOR3I, VECTOR3I, Vector3, linear_interpolate, VECTOR3I, "to", REAL, "weight", varray());
+	ADDFUNC0R(VECTOR3I, REAL, Vector3i, length_squared, varray());
+	ADDFUNC0R(VECTOR3I, REAL, Vector3i, length, varray());
+	ADDFUNC0(VECTOR3I, NIL, Vector3i, zero, varray());
+	ADDFUNC0R(VECTOR3I, VECTOR3I, Vector3i, abs, varray());
+	ADDFUNC0R(VECTOR3I, VECTOR3I, Vector3i, sign, varray());
+	ADDFUNC2R(VECTOR3I, VECTOR3I, Vector3i, clamp, VECTOR3I, "min", VECTOR3I, "max", varray());
+	ADDFUNC2R(VECTOR3I, VECTOR3I, Vector3i, linear_interpolate, VECTOR3I, "to", REAL, "weight", varray());
 
 	ADDFUNC1(PLANE, NIL, Plane, set_normal, VECTOR3, "normal", varray());
 	ADDFUNC0R(PLANE, VECTOR3, Plane, get_normal, varray());
