@@ -469,7 +469,7 @@ public:
 	// node functions
 	static const String invalid_node_name_characters;
 	String validate_node_name() const;
-	String validate_identifier() const; //!
+	String validate_identifier() const;
 
 	bool is_valid_identifier() const;
 	bool is_valid_integer() const;
@@ -484,11 +484,11 @@ public:
 	/**
 	 * The constructors must not depend on other overloads
 	 */
-	/*	String(CharType p_char);*/
 
+	/*	String(CharType p_char);*/
 	_FORCE_INLINE_ String() {}
 	_FORCE_INLINE_ String(const String &p_str) { _cowdata._ref(p_str._cowdata); }
-	//!!! why void
+
 	void operator=(const String &p_str) {
 		_cowdata._ref(p_str._cowdata);
 	}

@@ -266,15 +266,17 @@ struct _VariantCall {
 
 	// built-in functions of localmem based types
 
+	VCALL_LOCALMEM1(String, remove);
+	VCALL_LOCALMEM0(String, clear);
+	VCALL_LOCALMEM0R(String, size);
+	VCALL_LOCALMEM1R(String, resize);
 	VCALL_LOCALMEM1R(String, casecmp_to);
 	VCALL_LOCALMEM1R(String, nocasecmp_to);
 	VCALL_LOCALMEM1R(String, naturalnocasecmp_to);
 	VCALL_LOCALMEM0R(String, length);
-	VCALL_LOCALMEM3R(String, count);
-	VCALL_LOCALMEM3R(String, countn);
+	VCALL_LOCALMEM0R(String, is_valid_string);
 	VCALL_LOCALMEM2R(String, substr);
 	VCALL_LOCALMEM2R(String, substr_index);
-	VCALL_LOCALMEM2R(String, get_slice);
 	VCALL_LOCALMEM2R(String, find);
 	VCALL_LOCALMEM1R(String, find_last);
 	VCALL_LOCALMEM2R(String, findn);
@@ -286,23 +288,53 @@ struct _VariantCall {
 	VCALL_LOCALMEM1R(String, matchn);
 	VCALL_LOCALMEM1R(String, begins_with);
 	VCALL_LOCALMEM1R(String, ends_with);
+	VCALL_LOCALMEM1R(String, is_enclosed_in);
 	VCALL_LOCALMEM1R(String, is_subsequence_of);
 	VCALL_LOCALMEM1R(String, is_subsequence_ofi);
+	VCALL_LOCALMEM0R(String, is_quoted);
 	VCALL_LOCALMEM0R(String, bigrams);
 	VCALL_LOCALMEM1R(String, similarity);
 	VCALL_LOCALMEM2R(String, format);
+	VCALL_LOCALMEM2R(String, replace_first);
 	VCALL_LOCALMEM2R(String, replace);
 	VCALL_LOCALMEM2R(String, replacen);
 	VCALL_LOCALMEM0R(String, newline_to_br);
 	VCALL_LOCALMEM1R(String, repeat);
 	VCALL_LOCALMEM2R(String, insert);
+	VCALL_LOCALMEM1R(String, pad_decimals);
+	VCALL_LOCALMEM1R(String, pad_zeros);
+	VCALL_LOCALMEM1R(String, trim_prefix);
+	VCALL_LOCALMEM1R(String, trim_suffix);
+	VCALL_LOCALMEM2R(String, lpad);
+	VCALL_LOCALMEM2R(String, rpad);
+	VCALL_LOCALMEM1R(String, quote);
+	VCALL_LOCALMEM0R(String, unquote);
+	VCALL_LOCALMEM0R(String, is_numeric);
+	VCALL_LOCALMEM0R(String, is_zero);
+	VCALL_LOCALMEM0R(String, to_double);
+	VCALL_LOCALMEM0R(String, to_float);
+	VCALL_LOCALMEM0R(String, to_int);
+	VCALL_LOCALMEM0R(String, to_bool);
+	VCALL_LOCALMEM0R(String, to_uint);
+	VCALL_LOCALMEM0R(String, hex_to_int);
+	VCALL_LOCALMEM0RI(String, bin_to_int, bin_to_int64);
 	VCALL_LOCALMEM0R(String, capitalize);
+	VCALL_LOCALMEM1R(String, camelcase_to_underscore);
+	VCALL_LOCALMEM0R(String, get_with_code_lines);
+	VCALL_LOCALMEM1R(String, get_slice_count);
+	VCALL_LOCALMEM2R(String, get_slice);
 	VCALL_LOCALMEM3R(String, split);
 	VCALL_LOCALMEM3R(String, rsplit);
+	VCALL_LOCALMEM0R(String, split_spaces);
 	VCALL_LOCALMEM2R(String, split_floats);
+	VCALL_LOCALMEM2R(String, split_floats_mk);
+	VCALL_LOCALMEM2R(String, split_ints);
+	VCALL_LOCALMEM2R(String, split_ints_mk);
 	VCALL_LOCALMEM1R(String, join);
 	VCALL_LOCALMEM0R(String, to_upper);
 	VCALL_LOCALMEM0R(String, to_lower);
+	VCALL_LOCALMEM3R(String, count);
+	VCALL_LOCALMEM3R(String, countn);
 	VCALL_LOCALMEM1R(String, left);
 	VCALL_LOCALMEM1R(String, right);
 	VCALL_LOCALMEM1R(String, indent);
@@ -314,6 +346,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(String, get_extension);
 	VCALL_LOCALMEM0R(String, get_basename);
 	VCALL_LOCALMEM1R(String, plus_file);
+	VCALL_LOCALMEM1R(String, unicode_at);
 	VCALL_LOCALMEM1R(String, ord_at);
 	VCALL_LOCALMEM2(String, erase);
 	VCALL_LOCALMEM0R(String, hash);
@@ -324,12 +357,17 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(String, sha1_buffer);
 	VCALL_LOCALMEM0R(String, sha256_buffer);
 	VCALL_LOCALMEM0R(String, empty);
-	VCALL_LOCALMEM1R(String, humanize_size);
+	VCALL_LOCALMEM1R(String, contains);
 	VCALL_LOCALMEM0R(String, is_abs_path);
-	VCALL_LOCALMEM0R(String, simplify_path);
 	VCALL_LOCALMEM0R(String, is_rel_path);
+	VCALL_LOCALMEM0R(String, is_resource_file);
+	VCALL_LOCALMEM1R(String, path_to);
+	VCALL_LOCALMEM1R(String, path_to_file);
 	VCALL_LOCALMEM0R(String, get_base_dir);
 	VCALL_LOCALMEM0R(String, get_file);
+	VCALL_LOCALMEM1R(String, humanize_size);
+	VCALL_LOCALMEM0R(String, simplify_path);
+	VCALL_LOCALMEM0R(String, is_network_share_path);
 	VCALL_LOCALMEM1R(String, append_path);
 	VCALL_LOCALMEM0R(String, path_clean_end_slash);
 	VCALL_LOCALMEM0R(String, path_ensure_end_slash);
@@ -338,12 +376,18 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(String, xml_unescape);
 	VCALL_LOCALMEM0R(String, http_escape);
 	VCALL_LOCALMEM0R(String, http_unescape);
+	VCALL_LOCALMEM0R(String, uri_encode);
+	VCALL_LOCALMEM0R(String, uri_decode);
 	VCALL_LOCALMEM0R(String, c_escape);
+	VCALL_LOCALMEM0R(String, c_escape_multiline);
 	VCALL_LOCALMEM0R(String, c_unescape);
 	VCALL_LOCALMEM0R(String, json_escape);
+	VCALL_LOCALMEM1R(String, word_wrap);
 	VCALL_LOCALMEM0R(String, percent_encode);
 	VCALL_LOCALMEM0R(String, percent_decode);
+	VCALL_LOCALMEM0R(String, property_name_encode);
 	VCALL_LOCALMEM0R(String, validate_node_name);
+	VCALL_LOCALMEM0R(String, validate_identifier);
 	VCALL_LOCALMEM0R(String, is_valid_identifier);
 	VCALL_LOCALMEM0R(String, is_valid_integer);
 	VCALL_LOCALMEM0R(String, is_valid_float);
@@ -353,17 +397,6 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(String, is_valid_filename);
 	VCALL_LOCALMEM0R(String, is_valid_bool);
 	VCALL_LOCALMEM0R(String, is_valid_unsigned_integer);
-	VCALL_LOCALMEM0R(String, is_numeric);
-	VCALL_LOCALMEM0R(String, is_zero);
-	VCALL_LOCALMEM0RI(String, to_int, to_int64);
-	VCALL_LOCALMEM0R(String, to_float);
-	VCALL_LOCALMEM0R(String, to_bool);
-	VCALL_LOCALMEM0R(String, to_uint);
-	VCALL_LOCALMEM0RI(String, hex_to_int, hex_to_int64);
-	VCALL_LOCALMEM1R(String, pad_decimals);
-	VCALL_LOCALMEM1R(String, pad_zeros);
-	VCALL_LOCALMEM1R(String, trim_prefix);
-	VCALL_LOCALMEM1R(String, trim_suffix);
 
 	static void _call_String_to_ascii(Variant &r_ret, Variant &p_self, const Variant **p_args) {
 		String *s = reinterpret_cast<String *>(p_self._data._mem);
@@ -825,7 +858,7 @@ struct _VariantCall {
 		String s;
 		if (ba->size() > 0) {
 			PoolByteArray::Read r = ba->read();
-			s.parse_utf16((const char16_t *)r.ptr(), ba->size()/ 2);
+			s.parse_utf16((const char16_t *)r.ptr(), ba->size() / 2);
 		}
 		r_ret = s;
 	}
@@ -2198,40 +2231,42 @@ void register_variant_methods() {
 	_VariantCall::addfunc(false, Variant::m_vtype, Variant::m_ret, false, _scs_create(#m_method), VCALL(m_class, m_method), m_defarg, _VariantCall::Arg(Variant::m_arg1, _scs_create(m_argname1)), _VariantCall::Arg(Variant::m_arg2, _scs_create(m_argname2)), _VariantCall::Arg(Variant::m_arg3, _scs_create(m_argname3)), _VariantCall::Arg(Variant::m_arg4, _scs_create(m_argname4)));
 
 	/* STRING */
+
+	ADDFUNC1(STRING, NIL, String, remove, INT, "index", varray());
+	ADDFUNC0(STRING, NIL, String, clear, varray());
+	ADDFUNC0R(STRING, INT, String, size, varray());
+	ADDFUNC1R(STRING, INT, String, resize, INT, "size", varray());
 	ADDFUNC1R(STRING, INT, String, casecmp_to, STRING, "to", varray());
 	ADDFUNC1R(STRING, INT, String, nocasecmp_to, STRING, "to", varray());
 	ADDFUNC1R(STRING, INT, String, naturalnocasecmp_to, STRING, "to", varray());
 	ADDFUNC0R(STRING, INT, String, length, varray());
 
+	ADDFUNC0R(STRING, BOOL, String, is_valid_string, varray());
+
 	ADDFUNC2R(STRING, STRING, String, substr, INT, "from", INT, "len", varray(-1));
 	ADDFUNC2R(STRING, STRING, String, substr_index, INT, "start_index", INT, "end_index", varray());
-
-	ADDFUNC2R(STRING, STRING, String, get_slice, STRING, "delimiter", INT, "slice", varray());
-
 	ADDFUNC2R(STRING, INT, String, find, STRING, "what", INT, "from", varray(0));
-
-	ADDFUNC3R(STRING, INT, String, count, STRING, "what", INT, "from", INT, "to", varray(0, 0));
-	ADDFUNC3R(STRING, INT, String, countn, STRING, "what", INT, "from", INT, "to", varray(0, 0));
-
 	ADDFUNC1R(STRING, INT, String, find_last, STRING, "what", varray());
 	ADDFUNC2R(STRING, INT, String, findn, STRING, "what", INT, "from", varray(0));
 	ADDFUNC2R(STRING, INT, String, rfind, STRING, "what", INT, "from", varray(-1));
 	ADDFUNC2R(STRING, INT, String, rfindn, STRING, "what", INT, "from", varray(-1));
-
 	ADDFUNC1R(STRING, INT, String, find_first_difference_index, STRING, "what", varray(0));
-
 	ADDFUNC2R(STRING, INT, String, is_word_at, INT, "index", STRING, "str", varray());
 
 	ADDFUNC1R(STRING, BOOL, String, match, STRING, "expr", varray());
 	ADDFUNC1R(STRING, BOOL, String, matchn, STRING, "expr", varray());
 	ADDFUNC1R(STRING, BOOL, String, begins_with, STRING, "text", varray());
 	ADDFUNC1R(STRING, BOOL, String, ends_with, STRING, "text", varray());
+	ADDFUNC1R(STRING, BOOL, String, is_enclosed_in, STRING, "string", varray());
 	ADDFUNC1R(STRING, BOOL, String, is_subsequence_of, STRING, "text", varray());
 	ADDFUNC1R(STRING, BOOL, String, is_subsequence_ofi, STRING, "text", varray());
+	ADDFUNC0R(STRING, BOOL, String, is_quoted, varray());
 	ADDFUNC0R(STRING, POOL_STRING_ARRAY, String, bigrams, varray());
 	ADDFUNC1R(STRING, REAL, String, similarity, STRING, "text", varray());
 
 	ADDFUNC2R(STRING, STRING, String, format, NIL, "values", STRING, "placeholder", varray("{_}"));
+
+	ADDFUNC2R(STRING, STRING, String, replace_first, STRING, "what", STRING, "with", varray());
 	ADDFUNC2R(STRING, STRING, String, replace, STRING, "what", STRING, "forwhat", varray());
 	ADDFUNC2R(STRING, STRING, String, replacen, STRING, "what", STRING, "forwhat", varray());
 
@@ -2239,17 +2274,56 @@ void register_variant_methods() {
 
 	ADDFUNC1R(STRING, STRING, String, repeat, INT, "count", varray());
 	ADDFUNC2R(STRING, STRING, String, insert, INT, "position", STRING, "what", varray());
+
+	ADDFUNC1R(STRING, STRING, String, pad_decimals, INT, "digits", varray());
+	ADDFUNC1R(STRING, STRING, String, pad_zeros, INT, "digits", varray());
+	ADDFUNC1R(STRING, STRING, String, trim_prefix, STRING, "prefix", varray());
+	ADDFUNC1R(STRING, STRING, String, trim_suffix, STRING, "suffix", varray());
+	ADDFUNC2R(STRING, STRING, String, lpad, INT, "min_length", STRING, "character", varray(" "));
+	ADDFUNC2R(STRING, STRING, String, rpad, INT, "min_length", STRING, "character", varray(" "));
+
+	ADDFUNC1R(STRING, STRING, String, quote, STRING, "quotechar", varray("\""));
+	ADDFUNC0R(STRING, STRING, String, unquote, varray());
+
+	ADDFUNC0R(STRING, BOOL, String, is_numeric, varray());
+	ADDFUNC0R(STRING, BOOL, String, is_zero, varray());
+
+	ADDFUNC0R(STRING, REAL, String, to_double, varray());
+	ADDFUNC0R(STRING, REAL, String, to_float, varray());
+	ADDFUNC0R(STRING, INT, String, to_int, varray());
+	ADDFUNC0R(STRING, INT, String, to_bool, varray());
+	ADDFUNC0R(STRING, INT, String, to_uint, varray());
+
+	ADDFUNC1R(STRING, INT, String, hex_to_int, BOOL, "with_prefix", varray(true));
+	ADDFUNC1R(STRING, INT, String, bin_to_int, BOOL, "with_prefix", varray(true));
+
 	ADDFUNC0R(STRING, STRING, String, capitalize, varray());
+	ADDFUNC1R(STRING, STRING, String, camelcase_to_underscore, BOOL, "lowercase", varray(true));
+
+	ADDFUNC0R(STRING, STRING, String, get_with_code_lines, varray());
+
+	ADDFUNC1R(STRING, INT, String, get_slice_count, STRING, "splitter", varray());
+	ADDFUNC2R(STRING, STRING, String, get_slice, STRING, "delimiter", INT, "slice", varray());
+
 	ADDFUNC3R(STRING, POOL_STRING_ARRAY, String, split, STRING, "delimiter", BOOL, "allow_empty", INT, "maxsplit", varray(true, 0));
 	ADDFUNC3R(STRING, POOL_STRING_ARRAY, String, rsplit, STRING, "delimiter", BOOL, "allow_empty", INT, "maxsplit", varray(true, 0));
+
+	ADDFUNC0R(STRING, POOL_STRING_ARRAY, String, split_spaces, varray());
 	ADDFUNC2R(STRING, POOL_REAL_ARRAY, String, split_floats, STRING, "delimiter", BOOL, "allow_empty", varray(true));
+	ADDFUNC2R(STRING, POOL_REAL_ARRAY, String, split_floats_mk, POOL_STRING_ARRAY, "splitters", BOOL, "allow_empty", varray(true));
+	ADDFUNC2R(STRING, POOL_INT_ARRAY, String, split_ints, STRING, "splitter", BOOL, "allow_empty", varray(true));
+	ADDFUNC2R(STRING, POOL_INT_ARRAY, String, split_ints_mk, POOL_STRING_ARRAY, "splitters", BOOL, "allow_empty", varray(true));
 	ADDFUNC1R(STRING, STRING, String, join, POOL_STRING_ARRAY, "parts", varray());
 
 	ADDFUNC0R(STRING, STRING, String, to_upper, varray());
 	ADDFUNC0R(STRING, STRING, String, to_lower, varray());
+	ADDFUNC3R(STRING, INT, String, count, STRING, "what", INT, "from", INT, "to", varray(0, 0));
+	ADDFUNC3R(STRING, INT, String, countn, STRING, "what", INT, "from", INT, "to", varray(0, 0));
 
 	ADDFUNC1R(STRING, STRING, String, left, INT, "position", varray());
 	ADDFUNC1R(STRING, STRING, String, right, INT, "position", varray());
+	ADDFUNC1R(STRING, STRING, String, indent, STRING, "prefix", varray());
+	ADDFUNC0R(STRING, STRING, String, dedent, varray());
 	ADDFUNC2R(STRING, STRING, String, strip_edges, BOOL, "left", BOOL, "right", varray(true, true));
 	ADDFUNC0R(STRING, STRING, String, strip_escapes, varray());
 	ADDFUNC1R(STRING, STRING, String, lstrip, STRING, "chars", varray());
@@ -2257,9 +2331,9 @@ void register_variant_methods() {
 	ADDFUNC0R(STRING, STRING, String, get_extension, varray());
 	ADDFUNC0R(STRING, STRING, String, get_basename, varray());
 	ADDFUNC1R(STRING, STRING, String, plus_file, STRING, "file", varray());
+	ADDFUNC1R(STRING, INT, String, unicode_at, INT, "idx", varray());
 	ADDFUNC1R(STRING, INT, String, ord_at, INT, "at", varray());
-	ADDFUNC1R(STRING, STRING, String, indent, STRING, "prefix", varray());
-	ADDFUNC0R(STRING, STRING, String, dedent, varray());
+
 	ADDFUNC2(STRING, NIL, String, erase, INT, "position", INT, "chars", varray());
 
 	ADDFUNC0R(STRING, INT, String, hash, varray());
@@ -2271,13 +2345,18 @@ void register_variant_methods() {
 	ADDFUNC0R(STRING, POOL_BYTE_ARRAY, String, sha256_buffer, varray());
 
 	ADDFUNC0R(STRING, BOOL, String, empty, varray());
-	ADDFUNC1R(STRING, STRING, String, humanize_size, INT, "size", varray());
+	ADDFUNC1R(STRING, BOOL, String, contains, STRING, "str", varray(true));
 
 	ADDFUNC0R(STRING, BOOL, String, is_abs_path, varray());
-	ADDFUNC0R(STRING, STRING, String, simplify_path, varray());
 	ADDFUNC0R(STRING, BOOL, String, is_rel_path, varray());
+	ADDFUNC0R(STRING, BOOL, String, is_resource_file, varray());
+	ADDFUNC1R(STRING, STRING, String, path_to, STRING, "path", varray());
+	ADDFUNC1R(STRING, STRING, String, path_to_file, STRING, "path", varray());
 	ADDFUNC0R(STRING, STRING, String, get_base_dir, varray());
 	ADDFUNC0R(STRING, STRING, String, get_file, varray());
+	ADDFUNC1R(STRING, STRING, String, humanize_size, INT, "size", varray());
+	ADDFUNC0R(STRING, STRING, String, simplify_path, varray());
+	ADDFUNC0R(STRING, BOOL, String, is_network_share_path, varray());
 	ADDFUNC1R(STRING, STRING, String, append_path, STRING, "path", varray());
 	ADDFUNC0R(STRING, STRING, String, path_clean_end_slash, varray());
 	ADDFUNC0R(STRING, STRING, String, path_ensure_end_slash, varray());
@@ -2287,12 +2366,19 @@ void register_variant_methods() {
 	ADDFUNC0R(STRING, STRING, String, xml_unescape, varray());
 	ADDFUNC0R(STRING, STRING, String, http_escape, varray());
 	ADDFUNC0R(STRING, STRING, String, http_unescape, varray());
+	ADDFUNC0R(STRING, STRING, String, uri_encode, varray());
+	ADDFUNC0R(STRING, STRING, String, uri_decode, varray());
 	ADDFUNC0R(STRING, STRING, String, c_escape, varray());
+	ADDFUNC0R(STRING, STRING, String, c_escape_multiline, varray());
 	ADDFUNC0R(STRING, STRING, String, c_unescape, varray());
 	ADDFUNC0R(STRING, STRING, String, json_escape, varray());
+	ADDFUNC1R(STRING, STRING, String, word_wrap, INT, "chars_per_line", varray());
 	ADDFUNC0R(STRING, STRING, String, percent_encode, varray());
 	ADDFUNC0R(STRING, STRING, String, percent_decode, varray());
+
+	ADDFUNC0R(STRING, STRING, String, property_name_encode, varray());
 	ADDFUNC0R(STRING, STRING, String, validate_node_name, varray());
+	ADDFUNC0R(STRING, STRING, String, validate_identifier, varray());
 
 	ADDFUNC0R(STRING, BOOL, String, is_valid_identifier, varray());
 	ADDFUNC0R(STRING, BOOL, String, is_valid_integer, varray());
@@ -2303,20 +2389,6 @@ void register_variant_methods() {
 	ADDFUNC0R(STRING, BOOL, String, is_valid_filename, varray());
 	ADDFUNC0R(STRING, BOOL, String, is_valid_bool, varray());
 	ADDFUNC0R(STRING, BOOL, String, is_valid_unsigned_integer, varray());
-
-	ADDFUNC0R(STRING, BOOL, String, is_numeric, varray());
-	ADDFUNC0R(STRING, BOOL, String, is_zero, varray());
-
-	ADDFUNC0R(STRING, INT, String, to_int, varray());
-	ADDFUNC0R(STRING, REAL, String, to_float, varray());
-	ADDFUNC0R(STRING, INT, String, to_bool, varray());
-	ADDFUNC0R(STRING, INT, String, to_uint, varray());
-
-	ADDFUNC0R(STRING, INT, String, hex_to_int, varray());
-	ADDFUNC1R(STRING, STRING, String, pad_decimals, INT, "digits", varray());
-	ADDFUNC1R(STRING, STRING, String, pad_zeros, INT, "digits", varray());
-	ADDFUNC1R(STRING, STRING, String, trim_prefix, STRING, "prefix", varray());
-	ADDFUNC1R(STRING, STRING, String, trim_suffix, STRING, "suffix", varray());
 
 	ADDFUNC0R(STRING, POOL_BYTE_ARRAY, String, to_ascii, varray());
 	ADDFUNC0R(STRING, POOL_BYTE_ARRAY, String, to_utf8, varray());
