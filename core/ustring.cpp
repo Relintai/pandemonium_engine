@@ -1230,7 +1230,7 @@ bool String::is_word_at(const int index, const char *p_str) const {
 
 	int i = 0;
 
-	while (str[i] != '\0') {
+	while (p_str[i] != '\0') {
 		int iind = index + i;
 
 		if (iind >= size) {
@@ -1258,7 +1258,7 @@ bool String::is_word_at(const int index, const String &p_str) const {
 	for (int i = 0; i < p_str.length(); ++i) {
 		int iind = index + i;
 
-		if (operator[](iind) != (CharType)p_str[i]) {
+		if (operator[](iind) != p_str[i]) {
 			return false;
 		}
 	}
