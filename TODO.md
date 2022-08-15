@@ -116,6 +116,7 @@
 - Add range http header support.
 - Finish all the todos in the http parser.
 - Fix unicode escape issues.
+- Could add a simple templating language. Probably would not be more than a few hundred lines. WebPageTemplate (Resource), with an importer. Most webnodes could have assignable properties for them. Could be similar to laravel's for exmample. Also it could be pre compiled in an extremely simple fashion. Vector<Statement> StringStatement, IFStatement, LoopStatement, CallStatement etc. Oither than bool evaluation every statement type is extremely trivial. Also bool evaluation logic could be reused elsewhere (Also gdscript already have it implemented).
 
 ## Users
 
