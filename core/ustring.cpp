@@ -1237,7 +1237,7 @@ bool String::is_word_at(const int index, const char *p_str) const {
 			return false;
 		}
 
-		if (operator[](iind) != (CharType)str[i]) {
+		if (operator[](iind) != (CharType)p_str[i]) {
 			return false;
 		}
 
