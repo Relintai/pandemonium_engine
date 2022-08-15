@@ -36,8 +36,13 @@
 #include "core/typedefs.h"
 #include "core/vector.h"
 
+/*************************************************************************/
+/*  CharProxy                                                            */
+/*************************************************************************/
+
 template <class T>
 class CharProxy {
+	friend class Char16String;
 	friend class CharString;
 	friend class String;
 
@@ -75,6 +80,51 @@ public:
 	}
 };
 
+/*************************************************************************/
+/*  Char16String                                                         */
+/*************************************************************************/
+
+class Char16String {
+	CowData<char16_t> _cowdata;
+	static const char16_t _null;
+
+public:
+	_FORCE_INLINE_ char16_t *ptrw() { return _cowdata.ptrw(); }
+	_FORCE_INLINE_ const char16_t *ptr() const { return _cowdata.ptr(); }
+	_FORCE_INLINE_ int size() const { return _cowdata.size(); }
+	Error resize(int p_size) { return _cowdata.resize(p_size); }
+
+	_FORCE_INLINE_ char16_t get(int p_index) const { return _cowdata.get(p_index); }
+	_FORCE_INLINE_ void set(int p_index, const char16_t &p_elem) { _cowdata.set(p_index, p_elem); }
+	_FORCE_INLINE_ const char16_t &operator[](int p_index) const {
+		if (unlikely(p_index == _cowdata.size())) {
+			return _null;
+		}
+
+		return _cowdata.get(p_index);
+	}
+	_FORCE_INLINE_ CharProxy<char16_t> operator[](int p_index) { return CharProxy<char16_t>(p_index, _cowdata); }
+
+	_FORCE_INLINE_ Char16String() {}
+	_FORCE_INLINE_ Char16String(const Char16String &p_str) { _cowdata._ref(p_str._cowdata); }
+	_FORCE_INLINE_ void operator=(const Char16String &p_str) { _cowdata._ref(p_str._cowdata); }
+	_FORCE_INLINE_ Char16String(const char16_t *p_cstr) { copy_from(p_cstr); }
+
+	void operator=(const char16_t *p_cstr);
+	bool operator<(const Char16String &p_right) const;
+	Char16String &operator+=(char16_t p_char);
+	int length() const { return size() ? size() - 1 : 0; }
+	const char16_t *get_data() const;
+	operator const char16_t *() const { return get_data(); };
+
+protected:
+	void copy_from(const char16_t *p_cstr);
+};
+
+/*************************************************************************/
+/*  CharString                                                           */
+/*************************************************************************/
+
 class CharString {
 	CowData<char> _cowdata;
 	static const char _null;
@@ -98,13 +148,10 @@ public:
 
 	_FORCE_INLINE_ CharString() {}
 	_FORCE_INLINE_ CharString(const CharString &p_str) { _cowdata._ref(p_str._cowdata); }
-	_FORCE_INLINE_ CharString operator=(const CharString &p_str) {
-		_cowdata._ref(p_str._cowdata);
-		return *this;
-	}
+	_FORCE_INLINE_ void operator=(const CharString &p_str) { _cowdata._ref(p_str._cowdata); }
 	_FORCE_INLINE_ CharString(const char *p_cstr) { copy_from(p_cstr); }
 
-	CharString &operator=(const char *p_cstr);
+	void operator=(const char *p_cstr);
 	bool operator<(const CharString &p_right) const;
 	CharString &operator+=(char p_char);
 	int length() const { return size() ? size() - 1 : 0; }
@@ -115,7 +162,11 @@ protected:
 	void copy_from(const char *p_cstr);
 };
 
-typedef wchar_t CharType;
+/*************************************************************************/
+/*  String                                                               */
+/*************************************************************************/
+
+typedef char32_t CharType;
 
 struct StrRange {
 	const CharType *c_str;
@@ -128,19 +179,8 @@ struct StrRange {
 };
 
 class String {
-	CowData<CharType> _cowdata;
-	static const CharType _null;
-
-	void copy_from(const char *p_cstr);
-	void copy_from(const CharType *p_cstr, const int p_clip_to = -1);
-	void copy_from(const CharType &p_char);
-	void copy_from_unchecked(const CharType *p_char, const int p_length);
-	bool _base_is_subsequence_of(const String &p_string, bool case_insensitive) const;
-	int _count(const String &p_string, int p_from, int p_to, bool p_case_insensitive) const;
-
 public:
 	enum {
-
 		npos = -1 ///<for "some" compatibility with std::string (npos is a huge value in std::string)
 	};
 
@@ -173,33 +213,50 @@ public:
 	String &operator+=(const String &);
 	String &operator+=(CharType p_char);
 	String &operator+=(const char *p_str);
+	String &operator+=(const wchar_t *p_str);
 	String &operator+=(const CharType *p_str);
 
 	/* Compatibility Operators */
 
 	void operator=(const char *p_str);
+	void operator=(const wchar_t *p_str);
 	void operator=(const CharType *p_str);
+
 	bool operator==(const char *p_str) const;
+	bool operator==(const wchar_t *p_str) const;
 	bool operator==(const CharType *p_str) const;
 	bool operator==(const StrRange &p_str_range) const;
+
 	bool operator!=(const char *p_str) const;
+	bool operator!=(const wchar_t *p_str) const;
 	bool operator!=(const CharType *p_str) const;
+
 	bool operator<(const CharType *p_str) const;
 	bool operator<(const char *p_str) const;
+	bool operator<(const wchar_t *p_str) const;
+
 	bool operator<(const String &p_str) const;
 	bool operator<=(const String &p_str) const;
+	bool operator>(const String &p_str) const;
+	bool operator>=(const String &p_str) const;
 
 	signed char casecmp_to(const String &p_str) const;
 	signed char nocasecmp_to(const String &p_str) const;
 	signed char naturalnocasecmp_to(const String &p_str) const;
 
-	const CharType *c_str() const;
+	const CharType *get_data() const;
+
 	/* standard size stuff */
 
 	_FORCE_INLINE_ int length() const {
 		int s = size();
 		return s ? (s - 1) : 0; // length does not include zero
 	}
+
+	bool is_valid_string() const;
+
+	/* debug, error messages */
+	void print_unicode_error(const String &p_message, bool p_critical = false) const;
 
 	/* complex helpers */
 	String substr(int p_from, int p_chars = -1) const;
@@ -256,7 +313,6 @@ public:
 	String sprintf(const Array &values, bool *error) const;
 
 	String quote(String quotechar = "\"") const;
-
 	String unquote() const;
 
 	static String num(double p_num, int p_decimals = -1);
@@ -264,9 +320,13 @@ public:
 	static String num_real(double p_num);
 	static String num_int64(int64_t p_num, int base = 10, bool capitalize_hex = false);
 	static String num_uint64(uint64_t p_num, int base = 10, bool capitalize_hex = false);
+
 	static String chr(CharType p_char);
+
 	static String md5(const uint8_t *p_md5);
+
 	static String hex_encode_buffer(const uint8_t *p_buffer, int p_len);
+
 	static String bool_num(bool p_val);
 	static String bool_str(bool p_val);
 
@@ -275,21 +335,31 @@ public:
 
 	double to_double() const;
 	float to_float() const;
-	int hex_to_int(bool p_with_prefix = true) const;
 	int to_int() const;
 	bool to_bool() const;
 	uint32_t to_uint() const;
 
+	int hex_to_int(bool p_with_prefix = true) const;
 	int64_t hex_to_int64(bool p_with_prefix = true) const;
 	int64_t bin_to_int64(bool p_with_prefix = true) const;
 	int64_t to_int64() const;
-	static int to_int(const char *p_str, int p_len = -1);
+
+	static int64_t to_int(const char *p_str, int p_len = -1);
+	static int64_t to_int(const wchar_t *p_str, int p_len = -1);
+	static int64_t to_int(const CharType *p_str, int p_len = -1, bool p_clamp = false);
+
+	static double to_float(const char *p_str);
+	static double to_float(const wchar_t *p_str, const wchar_t **r_end = nullptr);
+	static double to_float(const CharType *p_str, const CharType **r_end = nullptr);
+
 	static double to_double(const char *p_str);
+	static double to_double(const wchar_t *p_str, const wchar_t **r_end = nullptr);
 	static double to_double(const CharType *p_str, const CharType **r_end = nullptr);
-	static int64_t to_int(const CharType *p_str, int p_len = -1);
+
 	String capitalize() const;
 	String camelcase_to_underscore(bool lowercase = true) const;
 
+	String get_with_code_lines() const;
 	int get_slice_count(String p_splitter) const;
 	String get_slice(String p_splitter, int p_slice) const;
 	String get_slicec(CharType p_splitter, int p_slice) const;
@@ -316,28 +386,40 @@ public:
 	String right(int p_pos) const;
 	String indent(const String &p_prefix) const;
 	String dedent() const;
+
 	String strip_edges(bool left = true, bool right = true) const;
 	String strip_escapes() const;
 	String lstrip(const String &p_chars) const;
 	String rstrip(const String &p_chars) const;
+
 	String get_extension() const;
 	String get_basename() const;
 	String plus_file(const String &p_file) const;
+
+	CharType unicode_at(int p_idx) const;
 	CharType ord_at(int p_idx) const;
 
 	void erase(int p_pos, int p_chars);
 
 	CharString ascii(bool p_allow_extended = false) const;
 	CharString utf8() const;
-	bool parse_utf8(const char *p_utf8, int p_len = -1, bool p_skip_cr = false); //return true on error
+	Error parse_utf8(const char *p_utf8, int p_len = -1, bool p_skip_cr = false); //return true on error
 	static String utf8(const char *p_utf8, int p_len = -1);
 
-	static uint32_t hash(const CharType *p_cstr, int p_len); /* hash the string */
-	static uint32_t hash(const CharType *p_cstr); /* hash the string */
-	static uint32_t hash(const char *p_cstr, int p_len); /* hash the string */
+	Char16String utf16() const;
+	Error parse_utf16(const char16_t *p_utf16, int p_len = -1);
+	static String utf16(const char16_t *p_utf16, int p_len = -1);
+
 	static uint32_t hash(const char *p_cstr); /* hash the string */
+	static uint32_t hash(const char *p_cstr, int p_len); /* hash the string */
+	static uint32_t hash(const wchar_t *p_cstr); /* hash the string */
+	static uint32_t hash(const wchar_t *p_cstr, int p_len); /* hash the string */
+	static uint32_t hash(const CharType *p_cstr); /* hash the string */
+	static uint32_t hash(const CharType *p_cstr, int p_len); /* hash the string */
+
 	uint32_t hash() const; /* hash the string */
 	uint64_t hash64() const; /* hash the string */
+
 	String md5_text() const;
 	String sha1_text() const;
 	String sha256_text() const;
@@ -387,6 +469,7 @@ public:
 	// node functions
 	static const String invalid_node_name_characters;
 	String validate_node_name() const;
+	String validate_identifier() const; //!
 
 	bool is_valid_identifier() const;
 	bool is_valid_integer() const;
@@ -405,19 +488,50 @@ public:
 
 	_FORCE_INLINE_ String() {}
 	_FORCE_INLINE_ String(const String &p_str) { _cowdata._ref(p_str._cowdata); }
-	String operator=(const String &p_str) {
+	//!!! why void
+	void operator=(const String &p_str) {
 		_cowdata._ref(p_str._cowdata);
-		return *this;
 	}
 
+	Vector<uint8_t> to_ascii_buffer() const;
+	Vector<uint8_t> to_utf8_buffer() const;
+	Vector<uint8_t> to_utf16_buffer() const;
+	Vector<uint8_t> to_utf32_buffer() const;
+
 	String(const char *p_str);
-	String(const CharType *p_str, int p_clip_to_len = -1);
+	String(const wchar_t *p_str);
+	String(const CharType *p_str);
+	String(const char *p_str, int p_clip_to_len);
+	String(const wchar_t *p_str, int p_clip_to_len);
+	String(const CharType *p_str, int p_clip_to_len);
 	String(const StrRange &p_range);
+
+private:
+	CowData<CharType> _cowdata;
+	static const CharType _null;
+
+	void copy_from(const char *p_cstr);
+	void copy_from(const char *p_cstr, const int p_clip_to);
+	void copy_from(const wchar_t *p_cstr);
+	void copy_from(const wchar_t *p_cstr, const int p_clip_to);
+	void copy_from(const CharType *p_cstr);
+	void copy_from(const CharType *p_cstr, const int p_clip_to);
+
+	void copy_from(const CharType &p_char);
+
+	void copy_from_unchecked(const CharType *p_char, const int p_length);
+
+	bool _base_is_subsequence_of(const String &p_string, bool case_insensitive) const;
+	int _count(const String &p_string, int p_from, int p_to, bool p_case_insensitive) const;
 };
 
 bool operator==(const char *p_chr, const String &p_str);
+bool operator==(const wchar_t *p_chr, const String &p_str);
+bool operator!=(const char *p_chr, const String &p_str);
+bool operator!=(const wchar_t *p_chr, const String &p_str);
 
 String operator+(const char *p_chr, const String &p_str);
+String operator+(const wchar_t *p_chr, const String &p_str);
 String operator+(CharType p_chr, const String &p_str);
 
 String itos(int64_t p_val);
@@ -440,15 +554,18 @@ struct NaturalNoCaseComparator {
 template <typename L, typename R>
 _FORCE_INLINE_ bool is_str_less(const L *l_ptr, const R *r_ptr) {
 	while (true) {
-		if (*l_ptr == 0 && *r_ptr == 0) {
+		const CharType l = *l_ptr;
+		const CharType r = *r_ptr;
+
+		if (l == 0 && r == 0) {
 			return false;
-		} else if (*l_ptr == 0) {
+		} else if (l == 0) {
 			return true;
-		} else if (*r_ptr == 0) {
+		} else if (r == 0) {
 			return false;
-		} else if (*l_ptr < *r_ptr) {
+		} else if (l < r) {
 			return true;
-		} else if (*l_ptr > *r_ptr) {
+		} else if (l > r) {
 			return false;
 		}
 
@@ -480,7 +597,6 @@ String DTR(const String &);
 // Runtime translate for the public node API.
 String RTR(const String &);
 
-bool is_symbol(CharType c);
 bool select_word(const String &p_s, int p_col, int &r_beg, int &r_end);
 
 #endif // USTRING_H

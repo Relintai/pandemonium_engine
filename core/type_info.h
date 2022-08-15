@@ -131,7 +131,8 @@ MAKE_TYPE_INFO_WITH_META(uint32_t, Variant::INT, PandemoniumTypeInfo::METADATA_I
 MAKE_TYPE_INFO_WITH_META(int32_t, Variant::INT, PandemoniumTypeInfo::METADATA_INT_IS_INT32)
 MAKE_TYPE_INFO_WITH_META(uint64_t, Variant::INT, PandemoniumTypeInfo::METADATA_INT_IS_UINT64)
 MAKE_TYPE_INFO_WITH_META(int64_t, Variant::INT, PandemoniumTypeInfo::METADATA_INT_IS_INT64)
-MAKE_TYPE_INFO(wchar_t, Variant::INT)
+MAKE_TYPE_INFO(char16_t, Variant::INT)
+MAKE_TYPE_INFO(char32_t, Variant::INT)
 MAKE_TYPE_INFO_WITH_META(float, Variant::REAL, PandemoniumTypeInfo::METADATA_REAL_IS_FLOAT)
 MAKE_TYPE_INFO_WITH_META(double, Variant::REAL, PandemoniumTypeInfo::METADATA_REAL_IS_DOUBLE)
 

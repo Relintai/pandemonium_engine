@@ -288,7 +288,7 @@ void QueryBuilder::run_query() {
 }
 
 void QueryBuilder::print() {
-	//printf("%s\n", query_result.c_str());
+	//printf("%s\n", query_result.get_data());
 	ERR_PRINT(query_result);
 }
 

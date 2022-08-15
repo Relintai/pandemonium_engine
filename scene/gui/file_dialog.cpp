@@ -432,10 +432,11 @@ void FileDialog::update_file_list() {
 	List<String> dirs;
 
 	bool is_hidden;
-	String item;
+	String item = dir_access->get_next();
 
-	while ((item = dir_access->get_next()) != "") {
+	while (!item.empty()) {
 		if (item == "." || item == "..") {
+			item = dir_access->get_next();
 			continue;
 		}
 
@@ -448,6 +449,8 @@ void FileDialog::update_file_list() {
 				dirs.push_back(item);
 			}
 		}
+
+		item = dir_access->get_next();
 	}
 
 	dirs.sort_custom<NaturalNoCaseComparator>();

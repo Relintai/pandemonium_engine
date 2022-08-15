@@ -80,7 +80,7 @@ String SQLite3DatabaseConnection::escape(const String &str) {
 void SQLite3DatabaseConnection::escape_to(const String &str, String *to) {
 	char *ret;
 
-	ret = sqlite3_mprintf("%q", str.c_str());
+	ret = sqlite3_mprintf("%q", str.utf8().get_data());
 
 	if (ret) {
 		to->operator=(ret);

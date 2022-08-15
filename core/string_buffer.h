@@ -91,7 +91,7 @@ StringBuffer<SHORT_BUFFER_SIZE> &StringBuffer<SHORT_BUFFER_SIZE>::append(CharTyp
 
 template <int SHORT_BUFFER_SIZE>
 StringBuffer<SHORT_BUFFER_SIZE> &StringBuffer<SHORT_BUFFER_SIZE>::append(const String &p_string) {
-	return append(p_string.c_str());
+	return append(p_string.get_data());
 }
 
 template <int SHORT_BUFFER_SIZE>

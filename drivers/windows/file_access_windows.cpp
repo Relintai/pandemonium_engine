@@ -61,29 +61,33 @@ void FileAccessWindows::check_errors() const {
 Error FileAccessWindows::_open(const String &p_path, int p_mode_flags) {
 	path_src = p_path;
 	path = fix_path(p_path);
-	if (f)
+
+	if (f) {
 		close();
+	}
 
-	const wchar_t *mode_string;
+	const WCHAR *mode_string;
 
-	if (p_mode_flags == READ)
+	if (p_mode_flags == READ) {
 		mode_string = L"rb";
-	else if (p_mode_flags == WRITE)
+	} else if (p_mode_flags == WRITE) {
 		mode_string = L"wb";
-	else if (p_mode_flags == READ_WRITE)
+	} else if (p_mode_flags == READ_WRITE) {
 		mode_string = L"rb+";
-	else if (p_mode_flags == WRITE_READ)
+	} else if (p_mode_flags == WRITE_READ) {
 		mode_string = L"wb+";
-	else
+	} else {
 		return ERR_INVALID_PARAMETER;
+	}
 
 	/* pretty much every implementation that uses fopen as primary
 	   backend supports utf8 encoding */
 
 	struct _stat st;
-	if (_wstat(path.c_str(), &st) == 0) {
-		if (!S_ISREG(st.st_mode))
+	if (_wstat((LPCWSTR)(path.utf16().get_data()), &st) == 0) {
+		if (!S_ISREG(st.st_mode)) {
 			return ERR_FILE_CANT_OPEN;
+		}
 	};
 
 #ifdef TOOLS_ENABLED
@@ -93,15 +97,18 @@ Error FileAccessWindows::_open(const String &p_path, int p_mode_flags) {
 	// platforms).
 	if (p_mode_flags == READ) {
 		WIN32_FIND_DATAW d;
-		HANDLE f = FindFirstFileW(path.c_str(), &d);
+		HANDLE f = FindFirstFileW((LPCWSTR)(path.utf16().get_data()), &d);
+
 		if (f != INVALID_HANDLE_VALUE) {
-			String fname = d.cFileName;
+			String fname = String::utf16((const char16_t *)(d.cFileName));
+
 			if (fname != String()) {
 				String base_file = path.get_file();
 				if (base_file != fname && base_file.findn(fname) == 0) {
 					WARN_PRINT("Case mismatch opening requested file '" + base_file + "', stored as '" + fname + "' in the filesystem. This file will not open when exported to other case-sensitive platforms.");
 				}
 			}
+
 			FindClose(f);
 		}
 	}
@@ -112,7 +119,7 @@ Error FileAccessWindows::_open(const String &p_path, int p_mode_flags) {
 		path = path + ".tmp";
 	}
 
-	f = _wfsopen((LPCWSTR)(path.c_str()), mode_string, _SH_DENYNO);
+	f = _wfsopen((LPCWSTR)(path.utf16().get_data()), mode_string, _SH_DENYNO);
 
 	if (f == nullptr) {
 		switch (errno) {
@@ -132,8 +139,9 @@ Error FileAccessWindows::_open(const String &p_path, int p_mode_flags) {
 }
 
 void FileAccessWindows::close() {
-	if (!f)
+	if (!f) {
 		return;
+	}
 
 	fclose(f);
 	f = NULL;
@@ -150,16 +158,16 @@ void FileAccessWindows::close() {
 			// UWP has no PathFileExists, so we check attributes instead
 			DWORD fileAttr;
 
-			fileAttr = GetFileAttributesW(save_path.c_str());
+			fileAttr = GetFileAttributesW((LPCWSTR)(save_path.utf16().get_data()));
 			if (INVALID_FILE_ATTRIBUTES == fileAttr) {
 #else
-			if (!PathFileExistsW(save_path.c_str())) {
+			if (!PathFileExistsW((LPCWSTR)(save_path.utf16().get_data()))) {
 #endif
 				//creating new file
-				rename_error = _wrename((save_path + ".tmp").c_str(), save_path.c_str()) != 0;
+				rename_error = _wrename((LPCWSTR)((save_path + ".tmp").utf16().get_data()), (LPCWSTR)(save_path.utf16().get_data())) != 0;
 			} else {
 				//atomic replace for existing file
-				rename_error = !ReplaceFileW(save_path.c_str(), (save_path + ".tmp").c_str(), NULL, 2 | 4, NULL, NULL);
+				rename_error = !ReplaceFileW((LPCWSTR)(save_path.utf16().get_data()), (LPCWSTR)((save_path + ".tmp").utf16().get_data()), NULL, 2 | 4, NULL, NULL);
 			}
 			if (rename_error) {
 				attempts--;
@@ -195,23 +203,31 @@ void FileAccessWindows::seek(uint64_t p_position) {
 	ERR_FAIL_COND(!f);
 
 	last_error = OK;
-	if (_fseeki64(f, p_position, SEEK_SET))
+
+	if (_fseeki64(f, p_position, SEEK_SET)) {
 		check_errors();
+	}
+
 	prev_op = 0;
 }
 
 void FileAccessWindows::seek_end(int64_t p_position) {
 	ERR_FAIL_COND(!f);
-	if (_fseeki64(f, p_position, SEEK_END))
+
+	if (_fseeki64(f, p_position, SEEK_END)) {
 		check_errors();
+	}
+
 	prev_op = 0;
 }
 
 uint64_t FileAccessWindows::get_position() const {
 	int64_t aux_position = _ftelli64(f);
+
 	if (aux_position < 0) {
 		check_errors();
 	}
+
 	return aux_position;
 }
 
@@ -270,8 +286,10 @@ Error FileAccessWindows::get_error() const {
 void FileAccessWindows::flush() {
 	ERR_FAIL_COND(!f);
 	fflush(f);
-	if (prev_op == WRITE)
+
+	if (prev_op == WRITE) {
 		prev_op = 0;
+	}
 }
 
 void FileAccessWindows::store_8(uint8_t p_dest) {
@@ -290,6 +308,7 @@ void FileAccessWindows::store_8(uint8_t p_dest) {
 void FileAccessWindows::store_buffer(const uint8_t *p_src, uint64_t p_length) {
 	ERR_FAIL_COND(!f);
 	ERR_FAIL_COND(!p_src && p_length > 0);
+
 	if (flags == READ_WRITE || flags == WRITE_READ) {
 		if (prev_op == READ) {
 			if (last_error != ERR_FILE_EOF) {
@@ -303,7 +322,9 @@ void FileAccessWindows::store_buffer(const uint8_t *p_src, uint64_t p_length) {
 
 bool FileAccessWindows::file_exists(const String &p_name) {
 	String filename = fix_path(p_name);
-	FILE *g = _wfsopen((LPCWSTR)(filename.c_str()), L"rb", _SH_DENYNO);
+
+	FILE *g = _wfsopen((LPCWSTR)(filename.utf16().get_data()), L"rb", _SH_DENYNO);
+
 	if (g == nullptr) {
 		return false;
 	} else {
@@ -318,7 +339,7 @@ uint64_t FileAccessWindows::_get_modified_time(const String &p_file) {
 		file = file.substr(0, file.length() - 1);
 
 	struct _stat st;
-	int rv = _wstat(file.c_str(), &st);
+	int rv = _wstat((LPCWSTR)(file.utf16().get_data()), &st);
 
 	if (rv == 0) {
 		return st.st_mtime;

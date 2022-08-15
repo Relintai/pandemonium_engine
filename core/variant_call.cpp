@@ -418,6 +418,39 @@ struct _VariantCall {
 		r_ret = retval;
 	}
 
+	static void _call_String_to_utf16(Variant &r_ret, Variant &p_self, const Variant **p_args) {
+		String *s = reinterpret_cast<String *>(p_self._data._mem);
+		if (s->empty()) {
+			r_ret = PoolByteArray();
+			return;
+		}
+		Char16String charstr = s->utf16();
+
+		PoolByteArray retval;
+		size_t len = charstr.length() * 2;
+		retval.resize(len);
+		PoolByteArray::Write w = retval.write();
+		memcpy(w.ptr(), s->ptr(), len);
+
+		r_ret = retval;
+	}
+
+	static void _call_String_to_utf32(Variant &r_ret, Variant &p_self, const Variant **p_args) {
+		String *s = reinterpret_cast<String *>(p_self._data._mem);
+		if (s->empty()) {
+			r_ret = PoolByteArray();
+			return;
+		}
+
+		PoolByteArray retval;
+		size_t len = s->length() * 4;
+		retval.resize(len);
+		PoolByteArray::Write w = retval.write();
+		memcpy(w.ptr(), s->ptr(), len);
+
+		r_ret = retval;
+	}
+
 	VCALL_LOCALMEM1(Vector2, set_all);
 	VCALL_LOCALMEM0R(Vector2, min_axis);
 	VCALL_LOCALMEM0R(Vector2, max_axis);
@@ -783,6 +816,26 @@ struct _VariantCall {
 		if (ba->size() > 0) {
 			PoolByteArray::Read r = ba->read();
 			s.parse_utf8((const char *)r.ptr(), ba->size());
+		}
+		r_ret = s;
+	}
+
+	static void _call_PoolByteArray_get_string_from_utf16(Variant &r_ret, Variant &p_self, const Variant **p_args) {
+		PoolByteArray *ba = reinterpret_cast<PoolByteArray *>(p_self._data._mem);
+		String s;
+		if (ba->size() > 0) {
+			PoolByteArray::Read r = ba->read();
+			s.parse_utf16((const char16_t *)r.ptr(), ba->size()/ 2);
+		}
+		r_ret = s;
+	}
+
+	static void _call_PoolByteArray_get_string_from_utf32(Variant &r_ret, Variant &p_self, const Variant **p_args) {
+		PoolByteArray *ba = reinterpret_cast<PoolByteArray *>(p_self._data._mem);
+		String s;
+		if (ba->size() > 0) {
+			PoolByteArray::Read r = ba->read();
+			s = String((const CharType *)r.ptr(), ba->size() / 4);
 		}
 		r_ret = s;
 	}
@@ -2267,6 +2320,8 @@ void register_variant_methods() {
 
 	ADDFUNC0R(STRING, POOL_BYTE_ARRAY, String, to_ascii, varray());
 	ADDFUNC0R(STRING, POOL_BYTE_ARRAY, String, to_utf8, varray());
+	ADDFUNC0R(STRING, POOL_BYTE_ARRAY, String, to_utf16, varray());
+	ADDFUNC0R(STRING, POOL_BYTE_ARRAY, String, to_utf32, varray());
 	ADDFUNC0R(STRING, POOL_BYTE_ARRAY, String, to_wchar, varray());
 
 	ADDFUNC1(VECTOR2, NIL, Vector2, set_all, REAL, "value", varray());
@@ -2599,6 +2654,8 @@ void register_variant_methods() {
 
 	ADDFUNC0R(POOL_BYTE_ARRAY, STRING, PoolByteArray, get_string_from_ascii, varray());
 	ADDFUNC0R(POOL_BYTE_ARRAY, STRING, PoolByteArray, get_string_from_utf8, varray());
+	ADDFUNC0R(POOL_BYTE_ARRAY, STRING, PoolByteArray, get_string_from_utf16, varray());
+	ADDFUNC0R(POOL_BYTE_ARRAY, STRING, PoolByteArray, get_string_from_utf32, varray());
 	ADDFUNC0R(POOL_BYTE_ARRAY, STRING, PoolByteArray, hex_encode, varray());
 	ADDFUNC1R(POOL_BYTE_ARRAY, POOL_BYTE_ARRAY, PoolByteArray, compress, INT, "compression_mode", varray(0));
 	ADDFUNC2R(POOL_BYTE_ARRAY, POOL_BYTE_ARRAY, PoolByteArray, decompress, INT, "buffer_size", INT, "compression_mode", varray(0));

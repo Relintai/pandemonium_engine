@@ -18,7 +18,7 @@ void MysqlDatabase::connect(const String &connection_str) {
 	String dbname = "testappdb";
 	int port = 3306;
 
-	mysql = mysql_real_connect(mysql, host.c_str(), user.c_str(), password.c_str(), dbname.c_str(), port, NULL, 0);
+	mysql = mysql_real_connect(mysql, host.get_data(), user.get_data(), password.get_data(), dbname.get_data(), port, NULL, 0);
 
 	if (mysql) {
 		printf("mysql connected\n");
@@ -29,9 +29,9 @@ Ref<QueryResult> MysqlDatabase::query(const String &query) {
 	if (!mysql)
 		return nullptr;
 
-	//printf("%s\n", query.c_str());
+	//printf("%s\n", query.get_data());
 
-	int error = mysql_real_query(mysql, query.c_str(), query.capacity());
+	int error = mysql_real_query(mysql, query.get_data(), query.capacity());
 
 	if (error) {
 		const char *merr = mysql_error(mysql);
@@ -55,9 +55,9 @@ void MysqlDatabase::query_run(const String &query) {
 	if (!mysql)
 		return;
 
-	//printf("%s\n", query.c_str());
+	//printf("%s\n", query.get_data());
 
-	int error = mysql_real_query(mysql, query.c_str(), query.capacity());
+	int error = mysql_real_query(mysql, query.get_data(), query.capacity());
 
 	if (error) {
 		const char *merr = mysql_error(mysql);
@@ -104,7 +104,7 @@ String MysqlDatabase::escape(const String str) {
 	//You must allocate the to buffer to be at least length*2+1 bytes long. 
 	res.ensure_capacity(str.size() * 2 + 1);
 
-	mysql_real_escape_string(mysql, res.dataw(), str.c_str(), str.size());
+	mysql_real_escape_string(mysql, res.dataw(), str.get_data(), str.size());
 
 	return res;
 }
@@ -113,7 +113,7 @@ void MysqlDatabase::escape(const String str, String *to) {
 	//You must allocate the to buffer to be at least length*2+1 bytes long. 
 	to->ensure_capacity(str.size() * 2 + 1);
 
-	mysql_real_escape_string(mysql, to->dataw(), str.c_str(), str.size());
+	mysql_real_escape_string(mysql, to->dataw(), str.get_data(), str.size());
 }
 
 MysqlDatabase::MysqlDatabase() :

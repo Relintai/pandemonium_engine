@@ -583,6 +583,17 @@
 				Returns the string's amount of characters.
 			</description>
 		</method>
+		<method name="lpad">
+			<return type="String">
+			</return>
+			<argument index="0" name="min_length" type="int">
+			</argument>
+			<argument index="1" name="character" type="String" default="&quot; &quot;">
+			</argument>
+			<description>
+				Formats a string to be at least [code]min_length[/code] long by adding [code]character[/code]s to the left of the string.
+			</description>
+		</method>
 		<method name="lstrip">
 			<return type="String" />
 			<argument index="0" name="chars" type="String" />
@@ -724,6 +735,17 @@
 				Returns the right side of the string from a given position.
 			</description>
 		</method>
+		<method name="rpad">
+			<return type="String">
+			</return>
+			<argument index="0" name="min_length" type="int">
+			</argument>
+			<argument index="1" name="character" type="String" default="&quot; &quot;">
+			</argument>
+			<description>
+				Formats a string to be at least [code]min_length[/code] long by adding [code]character[/code]s to the right of the string.
+			</description>
+		</method>
 		<method name="rsplit">
 			<return type="PoolStringArray" />
 			<argument index="0" name="delimiter" type="String" />
@@ -848,7 +870,7 @@
 		<method name="to_ascii">
 			<return type="PoolByteArray" />
 			<description>
-				Converts the String (which is a character array) to [PoolByteArray] (which is an array of bytes). The conversion is faster compared to [method to_utf8], as this method assumes that all the characters in the String are ASCII characters.
+				Converts the String (which is a character array) to ASCII/Latin-1 encoded [PoolByteArray] (which is an array of bytes). The conversion is faster compared to [method to_utf8], as this method assumes that all the characters in the String are ASCII/Latin-1 characters, unsupported characters are replaced with spaces.
 			</description>
 		</method>
 		<method name="to_float">
@@ -886,10 +908,24 @@
 				Returns the string converted to uppercase.
 			</description>
 		</method>
+		<method name="to_utf16">
+			<return type="PoolByteArray">
+			</return>
+			<description>
+				Converts the String (which is an array of characters) to UTF-16 encoded [PoolByteArray] (which is an array of bytes).
+			</description>
+		</method>
+		<method name="to_utf32">
+			<return type="PoolByteArray">
+			</return>
+			<description>
+				Converts the String (which is an array of characters) to UTF-32 encoded [PoolByteArray] (which is an array of bytes).
+			</description>
+		</method>
 		<method name="to_utf8">
 			<return type="PoolByteArray" />
 			<description>
-				Converts the String (which is an array of characters) to [PoolByteArray] (which is an array of bytes). The conversion is a bit slower than [method to_ascii], but supports all UTF-8 characters. Therefore, you should prefer this function over [method to_ascii].
+				Converts the String (which is an array of characters) to UTF-8 encode [PoolByteArray] (which is an array of bytes). The conversion is a bit slower than [method to_ascii], but supports all UTF-8 characters. Therefore, you should prefer this function over [method to_ascii].
 			</description>
 		</method>
 		<method name="to_wchar">

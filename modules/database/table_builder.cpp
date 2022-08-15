@@ -102,7 +102,7 @@ void TableBuilder::run_query() {
 }
 
 void TableBuilder::print() {
-	//printf("%s\n", result.c_str());
+	//printf("%s\n", result.get_data());
 	print_error(result);
 }
 

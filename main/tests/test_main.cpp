@@ -53,7 +53,7 @@
 
 const char **tests_get_names() {
 	static const char *test_names[] = {
-		"string",
+		//"string",
 		"math",
 		"basis",
 		"transform",
@@ -78,9 +78,9 @@ const char **tests_get_names() {
 }
 
 MainLoop *test_main(String p_test, const List<String> &p_args) {
-	if (p_test == "string") {
-		return TestString::test();
-	}
+	//if (p_test == "string") {
+	//	return TestString::test();
+	//}
 
 	if (p_test == "math") {
 		return TestMath::test();

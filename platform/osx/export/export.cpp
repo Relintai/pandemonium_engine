@@ -1298,11 +1298,13 @@ void EditorExportPlatformOSX::_zip_folder_recursive(zipFile &p_zip, const String
 
 	DirAccess *da = DirAccess::open(dir);
 	da->list_dir_begin();
-	String f;
-	while ((f = da->get_next()) != "") {
+	String f = da->get_next();
+	while (f.empty()) {
 		if (f == "." || f == "..") {
+			f = da->get_next();
 			continue;
 		}
+		
 		if (da->is_link(f)) {
 			OS::Time time = OS::get_singleton()->get_time();
 			OS::Date date = OS::get_singleton()->get_date();
@@ -1391,6 +1393,7 @@ void EditorExportPlatformOSX::_zip_folder_recursive(zipFile &p_zip, const String
 				add_message(EXPORT_MESSAGE_ERROR, TTR("ZIP Creation"), vformat(TTR("Could not open file to read from path \"%s\"."), dir.plus_file(f)));
 				return;
 			}
+
 			const int bufsize = 16384;
 			uint8_t buf[bufsize];
 
@@ -1404,7 +1407,10 @@ void EditorExportPlatformOSX::_zip_folder_recursive(zipFile &p_zip, const String
 
 			zipCloseFileInZip(p_zip);
 		}
+		
+		f = da->get_next();
 	}
+
 	da->list_dir_end();
 	memdelete(da);
 }

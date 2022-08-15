@@ -241,9 +241,9 @@ Error EditorRun::run(const String &p_scene, const String &p_custom_args, const L
 		}
 	}
 
-	printf("Running: %ls", exec.c_str());
+	printf("Running: %s", exec.utf8().get_data());
 	for (List<String>::Element *E = args.front(); E; E = E->next()) {
-		printf(" %ls", E->get().c_str());
+		printf(" %s", E->get().utf8().get_data());
 	};
 	printf("\n");
 

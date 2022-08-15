@@ -85,9 +85,9 @@ bool test_aabb_regular() {
 
 	if (!pass) {
 		String string = String("bb2 : ") + String(Variant(bb2));
-		OS::get_singleton()->print("\t%ls\n", string.c_str());
+		OS::get_singleton()->print("\t%s\n", string.utf8().get_data());
 		string = String("bb3 : ") + String(Variant(bb3));
-		OS::get_singleton()->print("\t%ls\n", string.c_str());
+		OS::get_singleton()->print("\t%s\n", string.utf8().get_data());
 	}
 
 	return pass;
@@ -133,9 +133,9 @@ bool test_aabb_non_uniform_scale() {
 
 	if (!pass) {
 		String string = String("bb2 : ") + String(Variant(bb2));
-		OS::get_singleton()->print("\t%ls\n", string.c_str());
+		OS::get_singleton()->print("\t%s\n", string.utf8().get_data());
 		string = String("bb3 : ") + String(Variant(bb3));
-		OS::get_singleton()->print("\t%ls\n", string.c_str());
+		OS::get_singleton()->print("\t%s\n", string.utf8().get_data());
 	}
 
 	return pass;

@@ -49,13 +49,13 @@ void MessagePage::_migrate(const bool clear, const bool seed_db) {
 	t->drop_table("message_page");
 	db->query_run(t->result);
 	
-	printf("%s\n", t->result.c_str());
+	//printf("%s\n", t->result.utf8().get_data());
 
 	t->result.clear();
 
 	t->create_table("message_page")->integer("id")->auto_increment()->primary_key()->next_row()->varchar("text", 30)->ccreate_table();
 
-	printf("%s\n", t->result.c_str());
+	//printf("%s\n", t->result.c_str());
 
 	db->query(t->result);
 
@@ -63,14 +63,14 @@ void MessagePage::_migrate(const bool clear, const bool seed_db) {
 
 	b->insert("message_page")->values("default, 'aaewdwd'");
 
-	printf("%s\n", b->query_result.c_str());
+	//printf("%s\n", b->query_result.c_str());
 
 	db->query_run(b->query_result);
 
 	b->query_result.clear();
 	b->insert("message_page")->values("default, 'qqqqq'");
 
-	printf("%s\n", b->query_result.c_str());
+	//printf("%s\n", b->query_result.c_str());
 
 	db->query_run(b->query_result);
 }

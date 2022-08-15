@@ -357,7 +357,7 @@ int RichTextLabel::_process_line(ItemFrame *p_frame, const Vector2 &p_ofs, int &
 					font = p_base_font;
 				}
 
-				const CharType *c = text->text.c_str();
+				const CharType *c = text->text.get_data();
 				const CharType *cf = c;
 				int ascent = font->get_ascent();
 				int descent = font->get_descent();

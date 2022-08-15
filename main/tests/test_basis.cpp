@@ -165,15 +165,15 @@ bool test_rotation(Vector3 deg_original_euler, RotOrder rot_order) {
 	Basis res = to_rotation.inverse() * rotation_from_computed_euler;
 
 	if ((res.get_axis(0) - Vector3(1.0, 0.0, 0.0)).length() > 0.1) {
-		OS::get_singleton()->print("Fail due to X %ls\n", String(res.get_axis(0)).c_str());
+		OS::get_singleton()->print("Fail due to X %s\n", String(res.get_axis(0)).utf8().get_data());
 		pass = false;
 	}
 	if ((res.get_axis(1) - Vector3(0.0, 1.0, 0.0)).length() > 0.1) {
-		OS::get_singleton()->print("Fail due to Y %ls\n", String(res.get_axis(1)).c_str());
+		OS::get_singleton()->print("Fail due to Y %s\n", String(res.get_axis(1)).utf8().get_data());
 		pass = false;
 	}
 	if ((res.get_axis(2) - Vector3(0.0, 0.0, 1.0)).length() > 0.1) {
-		OS::get_singleton()->print("Fail due to Z %ls\n", String(res.get_axis(2)).c_str());
+		OS::get_singleton()->print("Fail due to Z %s\n", String(res.get_axis(2)).utf8().get_data());
 		pass = false;
 	}
 
@@ -186,15 +186,15 @@ bool test_rotation(Vector3 deg_original_euler, RotOrder rot_order) {
 		res = to_rotation.inverse() * rotation_from_xyz_computed_euler;
 
 		if ((res.get_axis(0) - Vector3(1.0, 0.0, 0.0)).length() > 0.1) {
-			OS::get_singleton()->print("Double check with XYZ rot order failed, due to X %ls\n", String(res.get_axis(0)).c_str());
+			OS::get_singleton()->print("Double check with XYZ rot order failed, due to X %s\n", String(res.get_axis(0)).utf8().get_data());
 			pass = false;
 		}
 		if ((res.get_axis(1) - Vector3(0.0, 1.0, 0.0)).length() > 0.1) {
-			OS::get_singleton()->print("Double check with XYZ rot order failed, due to Y %ls\n", String(res.get_axis(1)).c_str());
+			OS::get_singleton()->print("Double check with XYZ rot order failed, due to Y %s\n", String(res.get_axis(1)).utf8().get_data());
 			pass = false;
 		}
 		if ((res.get_axis(2) - Vector3(0.0, 0.0, 1.0)).length() > 0.1) {
-			OS::get_singleton()->print("Double check with XYZ rot order failed, due to Z %ls\n", String(res.get_axis(2)).c_str());
+			OS::get_singleton()->print("Double check with XYZ rot order failed, due to Z %s\n", String(res.get_axis(2)).utf8().get_data());
 			pass = false;
 		}
 	}
@@ -202,9 +202,9 @@ bool test_rotation(Vector3 deg_original_euler, RotOrder rot_order) {
 	if (pass == false) {
 		// Print phase only if not pass.
 		OS *os = OS::get_singleton();
-		os->print("Rotation order: %ls\n.", get_rot_order_name(rot_order).c_str());
-		os->print("Original Rotation: %ls\n", String(deg_original_euler).c_str());
-		os->print("Quaternionernion to rotation order: %ls\n", String(rad2deg(euler_from_rotation)).c_str());
+		os->print("Rotation order: %s\n.", get_rot_order_name(rot_order).utf8().get_data());
+		os->print("Original Rotation: %s\n", String(deg_original_euler).utf8().get_data());
+		os->print("Quaternionernion to rotation order: %s\n", String(rad2deg(euler_from_rotation)).utf8().get_data());
 	}
 
 	return pass;
@@ -302,9 +302,9 @@ void test_euler_conversion() {
 		}
 
 		if (failed == 0) {
-			OS::get_singleton()->print("%i passed tests for rotation order: %ls.\n", passed, get_rot_order_name(rotorder_to_test[h]).c_str());
+			OS::get_singleton()->print("%i passed tests for rotation order: %s.\n", passed, get_rot_order_name(rotorder_to_test[h]).utf8().get_data());
 		} else {
-			OS::get_singleton()->print("%i FAILED tests for rotation order: %ls.\n", failed, get_rot_order_name(rotorder_to_test[h]).c_str());
+			OS::get_singleton()->print("%i FAILED tests for rotation order: %s.\n", failed, get_rot_order_name(rotorder_to_test[h]).utf8().get_data());
 		}
 	}
 

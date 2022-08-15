@@ -59,10 +59,11 @@ void WindowsTerminalLogger::logv(const char *p_format, va_list p_list, bool p_er
 	MultiByteToWideChar(CP_UTF8, 0, buf, len, wbuf, wlen);
 	wbuf[wlen] = 0;
 
-	if (p_err)
+	if (p_err) {
 		fwprintf(stderr, L"%ls", wbuf);
-	else
+	} else {
 		wprintf(L"%ls", wbuf);
+	}
 
 	memfree(wbuf);
 

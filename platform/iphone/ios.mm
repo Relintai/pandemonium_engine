@@ -173,7 +173,7 @@ String iOS::get_rate_url(int p_app_id) const {
 
 	String ret = app_url_path.replace("APP_ID", String::num(p_app_id));
 
-	printf("returning rate url %ls\n", ret.c_str());
+	printf("returning rate url %s\n", ret.utf8().get_data());
 
 	return ret;
 };
