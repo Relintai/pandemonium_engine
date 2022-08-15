@@ -1313,7 +1313,7 @@ bool String::begins_with(const char *p_string) const {
 	int i = 0;
 
 	while (*p_string && i < l) {
-		if (*p_string != str[i]) {
+		if (*p_string != (CharType)str[i]) {
 			return false;
 		}
 		i++;
