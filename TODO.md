@@ -52,6 +52,8 @@
 - Reorganize the project. Except for core, and a few smaller things like main everything should be a module that can be disabled.
 - Module hard dependencies would be a nice thing to have. For example if you turn off module A, and B has a hard dependency on it, B would turn itself off, or warn you.
 - Add more hooks where needed, to let stuff register itself. Like visual server backends, so adding them is simple, as I think this is the best way forward, so you can just create your custom rendering backend, when needed. Like if you want lightmaps, add a module that has the tooling + visualserver that has it implemented.
+- Port the DisplayServer from Godot4, as I think having display and windowing in a DisplayServer singleton instead of in OS is better architecturally.
+- Port the capability to have more that one windows. Multi windowing however should be disabled by default, also I don't want to port the full multi windowing stuff for the editor, as it's a lot leaner the way it is. However multi windowing would be cool for creating tools. Would also make it easier to not have a window at all.
 
 ## Scene folder
 
@@ -78,6 +80,11 @@
 - Add a raw shader type that can be written in the native graphics api language (support per backend shader implementation for it). It will likely need some easily parsable header for shader properties. This might simplify the creation of other backends.
 - Support for adding graphics backends from modules. This will require platform specific creation funcs.
 - Could add an api to query gpus, and optionally to mess with them. Like you could use an off gpu to to do something, maybe like calculations, etc. (Needs more research, not even sure if this is possible or not, or how hard it would be.) 
+- Rename VisualServer to RenderingServer like on Godot 4. I think it's a better long term name for what it does.
+- Port the RenderingDevice API from Godot 4 alongside a RenderingServer implementation that uses it once it's stable. However keep the GLES backends around the same way as they are now, so RenderingServer would be Pluggable aswell: RenderingServer  <- RenderingSreverGLES2, RenderingServer  <- RenderingSreverGLES3 (eventually), RenderingServer  <- RenderingSreverRenderingDevice (This would then just use an available RenderingDevice).
+- Port the newer godot rendering backends once they are stable enough. (With at least some of their features.)
+- Somehow make VisualServer's implementation more modular.
+- Add a scriptable VisualServer implementation. Similar idea as the scriptable networking api. Alongside with a similar interface for GLES. Would help with experimentation.
 
 ## material_maker module
 
