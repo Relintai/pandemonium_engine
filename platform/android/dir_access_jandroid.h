@@ -70,6 +70,7 @@ public:
 	virtual String get_drive(int p_drive);
 
 	virtual Error change_dir(String p_dir); ///< can be relative or absolute, return false on success
+	virtual String get_current_dir() override; ///< return current dir location
 
 	virtual bool file_exists(String p_file);
 	virtual bool dir_exists(String p_dir);
