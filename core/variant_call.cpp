@@ -455,6 +455,11 @@ struct _VariantCall {
 
 	VCALL_LOCALMEM2R(Vector2i, linear_interpolate);
 
+
+	VCALL_LOCALMEM0R(Rect2, get_position);
+	VCALL_LOCALMEM1(Rect2, set_position);
+	VCALL_LOCALMEM0R(Rect2, get_size);
+	VCALL_LOCALMEM1(Rect2, set_size);
 	VCALL_LOCALMEM0R(Rect2, get_area);
 	VCALL_LOCALMEM0R(Rect2, get_center);
 	VCALL_LOCALMEM2R(Rect2, intersects);
@@ -491,6 +496,10 @@ struct _VariantCall {
 	VCALL_LOCALMEM1(Rect2, set_end);
 	VCALL_LOCALMEM0R(Rect2, get_end);
 
+	VCALL_LOCALMEM0R(Rect2i, get_position);
+	VCALL_LOCALMEM1(Rect2i, set_position);
+	VCALL_LOCALMEM0R(Rect2i, get_size);
+	VCALL_LOCALMEM1(Rect2i, set_size);
 	VCALL_LOCALMEM0R(Rect2i, get_area);
 	VCALL_LOCALMEM0R(Rect2i, get_center);
 	VCALL_LOCALMEM1R(Rect2i, intersects);
@@ -1033,9 +1042,14 @@ struct _VariantCall {
 		r_ret = reinterpret_cast<m_type *>(p_self._data._ptr)->m_method(*p_args[0], *p_args[1], *p_args[2], *p_args[3], *p_args[4]); \
 	}
 
+
 	VCALL_PTR0R(AABB, get_volume);
 	VCALL_PTR0R(AABB, has_no_volume);
 	VCALL_PTR0R(AABB, has_no_surface);
+	VCALL_PTR0R(AABB, get_position);
+	VCALL_PTR1(AABB, set_position);
+	VCALL_PTR0R(AABB, get_size);
+	VCALL_PTR1(AABB, set_size);
 	VCALL_PTR1R(AABB, is_equal_approx);
 	VCALL_PTR1R(AABB, intersects);
 	VCALL_PTR1R(AABB, intersects_inclusive);
@@ -2248,6 +2262,10 @@ void register_variant_methods() {
 
 	ADDFUNC2R(VECTOR2I, VECTOR2I, Vector2i, linear_interpolate, VECTOR2, "to", REAL, "weight", varray());
 
+	ADDFUNC0R(RECT2, VECTOR2, Rect2, get_position, varray());
+	ADDFUNC1(RECT2, NIL, Rect2, set_position, VECTOR2, "pos", varray());
+	ADDFUNC0R(RECT2, VECTOR2, Rect2, get_size, varray());
+	ADDFUNC1(RECT2, NIL, Rect2, set_size, VECTOR2, "size", varray());
 	ADDFUNC0R(RECT2, REAL, Rect2, get_area, varray());
 	ADDFUNC0R(RECT2, VECTOR2, Rect2, get_center, varray());
 	ADDFUNC2R(RECT2, BOOL, Rect2, intersects, RECT2, "b", BOOL, "include_borders", varray(false));
@@ -2273,6 +2291,10 @@ void register_variant_methods() {
 	ADDFUNC1(RECT2, NIL, Rect2, set_end, VECTOR2, "end", varray());
 	ADDFUNC0R(RECT2, VECTOR2, Rect2, get_end, varray());
 
+	ADDFUNC0R(RECT2I, VECTOR2I, Rect2i, get_position, varray());
+	ADDFUNC1(RECT2I, NIL, Rect2i, set_position, VECTOR2I, "pos", varray());
+	ADDFUNC0R(RECT2I, VECTOR2I, Rect2i, get_size, varray());
+	ADDFUNC1(RECT2I, NIL, Rect2i, set_size, VECTOR2I, "size", varray());
 	ADDFUNC0R(RECT2I, INT, Rect2i, get_area, varray());
 	ADDFUNC0R(RECT2I, VECTOR2I, Rect2i, get_center, varray());
 	ADDFUNC1R(RECT2I, BOOL, Rect2i, intersects, RECT2I, "b", varray());
@@ -2647,6 +2669,10 @@ void register_variant_methods() {
 	ADDFUNC0R(AABB, REAL, AABB, get_volume, varray());
 	ADDFUNC0R(AABB, BOOL, AABB, has_no_volume, varray());
 	ADDFUNC0R(AABB, BOOL, AABB, has_no_surface, varray());
+	ADDFUNC0R(AABB, VECTOR3, AABB, get_position, varray());
+	ADDFUNC1(AABB, NIL, AABB, set_position, VECTOR3, "value", varray());
+	ADDFUNC0R(AABB, VECTOR3, AABB, get_size, varray());
+	ADDFUNC1(AABB, NIL, AABB, set_size, VECTOR3, "value", varray());
 	ADDFUNC1R(AABB, BOOL, AABB, is_equal_approx, AABB, "aabb", varray());
 	ADDFUNC1R(AABB, BOOL, AABB, intersects, AABB, "with", varray());
 	ADDFUNC1R(AABB, BOOL, AABB, intersects_inclusive, AABB, "aabb", varray());
