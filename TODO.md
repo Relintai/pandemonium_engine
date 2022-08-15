@@ -54,6 +54,7 @@
 - Add more hooks where needed, to let stuff register itself. Like visual server backends, so adding them is simple, as I think this is the best way forward, so you can just create your custom rendering backend, when needed. Like if you want lightmaps, add a module that has the tooling + visualserver that has it implemented.
 - Port the DisplayServer from Godot4, as I think having display and windowing in a DisplayServer singleton instead of in OS is better architecturally.
 - Port the capability to have more that one windows. Multi windowing however should be disabled by default, also I don't want to port the full multi windowing stuff for the editor, as it's a lot leaner the way it is. However multi windowing would be cool for creating tools. Would also make it easier to not have a window at all.
+- The DisplayServer at first could just use stuff in OS, so it doesn't have to be ported all at onece.
 - Should backport the tests and the test suite from Godot4 aswell.
 
 ## Scene folder
