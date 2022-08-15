@@ -3132,7 +3132,7 @@ void TextEdit::_gui_input(const Ref<InputEvent> &p_gui_input) {
 							}
 
 							// No need to move the brace below if we are not taking the text with us.
-							char closing_char = _get_right_pair_symbol(indent_char);
+							CharType closing_char = _get_right_pair_symbol(indent_char);
 							if ((closing_char != 0) && (closing_char == text[cursor.line][cursor.column]) && !k->get_command()) {
 								brace_indent = true;
 								ins += "\n" + ins.substr(1, ins.length() - 2);
