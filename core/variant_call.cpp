@@ -463,7 +463,19 @@ struct _VariantCall {
 	VCALL_LOCALMEM1R(Vector2, snapped);
 	VCALL_LOCALMEM0R(Vector2, aspect);
 
+	VCALL_LOCALMEM1(Vector2i, set_all);
+	VCALL_LOCALMEM0R(Vector2i, min_axis);
+	VCALL_LOCALMEM0R(Vector2i, max_axis);
+	VCALL_LOCALMEM1R(Vector2i, min);
+	VCALL_LOCALMEM1R(Vector2i, max);
 	VCALL_LOCALMEM2R(Vector2i, linear_interpolate);
+	VCALL_LOCALMEM0R(Vector2i, length_squared);
+	VCALL_LOCALMEM0R(Vector2i, length);
+	VCALL_LOCALMEM0R(Vector2i, aspect);
+	VCALL_LOCALMEM0R(Vector2i, sign);
+	VCALL_LOCALMEM0R(Vector2i, abs);
+	VCALL_LOCALMEM2R(Vector2i, clamp);
+	VCALL_LOCALMEM0R(Vector2i, to_vector2);
 
 	VCALL_LOCALMEM0R(Rect2, get_position);
 	VCALL_LOCALMEM1(Rect2, set_position);
@@ -2288,7 +2300,19 @@ void register_variant_methods() {
 	ADDFUNC1R(VECTOR2, VECTOR2, Vector2, snapped, VECTOR2, "by", varray());
 	ADDFUNC0R(VECTOR2, REAL, Vector2, aspect, varray());
 
-	ADDFUNC2R(VECTOR2I, VECTOR2I, Vector2i, linear_interpolate, VECTOR2, "to", REAL, "weight", varray());
+	ADDFUNC1(VECTOR2I, NIL, Vector2i, set_all, INT, "value", varray());
+	ADDFUNC0R(VECTOR2I, INT, Vector2i, min_axis, varray());
+	ADDFUNC0R(VECTOR2I, INT, Vector2i, max_axis, varray());
+	ADDFUNC1R(VECTOR2I, VECTOR2I, Vector2i, min, VECTOR2I, "vector2i", varray());
+	ADDFUNC1R(VECTOR2I, VECTOR2I, Vector2i, max, VECTOR2I, "vector2i", varray());
+	ADDFUNC2R(VECTOR2I, VECTOR2I, Vector2i, linear_interpolate, VECTOR2I, "to", REAL, "weight", varray());
+	ADDFUNC0R(VECTOR2I, INT, Vector2i, length_squared, varray());
+	ADDFUNC0R(VECTOR2I, REAL, Vector2i, length, varray());
+	ADDFUNC0R(VECTOR2I, REAL, Vector2i, aspect, varray());
+	ADDFUNC0R(VECTOR2I, VECTOR2I, Vector2i, sign, varray());
+	ADDFUNC0R(VECTOR2I, VECTOR2I, Vector2i, abs, varray());
+	ADDFUNC2R(VECTOR2I, VECTOR2I, Vector2i, clamp, VECTOR2I, "min", VECTOR2I, "max", varray());
+	ADDFUNC0R(VECTOR2I, VECTOR2, Vector2i, to_vector2, varray());
 
 	ADDFUNC0R(RECT2, VECTOR2, Rect2, get_position, varray());
 	ADDFUNC1(RECT2, NIL, Rect2, set_position, VECTOR2, "pos", varray());
