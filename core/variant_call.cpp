@@ -1648,8 +1648,9 @@ struct _VariantCall {
 	VCALL_PTR6(Projection, set_frustum2);
 	VCALL_PTR1(Projection, adjust_perspective_znear);
 	VCALL_PTR1R(Projection, perspective_znear_adjusted);
-	//TODO figure out why this doesn't work
-	//VCALL_PTR1R(Projection, get_projection_plane);
+	static void _call_Projection_get_projection_plane(Variant &r_ret, Variant &p_self, const Variant **p_args) {
+		r_ret = reinterpret_cast<Projection *>(p_self._data._ptr)->get_projection_plane((Projection::Planes)(p_args[0]->operator int()));     
+	}
 	VCALL_PTR0R(Projection, flipped_y);
 	VCALL_PTR1R(Projection, jitter_offseted);
 	VCALL_PTR2R(Projection, calculate_fovy);
@@ -3380,14 +3381,11 @@ void register_variant_methods() {
 	ADDFUNC2R(TRANSFORM, TRANSFORM, Transform, interpolate_with, TRANSFORM, "transform", REAL, "weight", varray());
 	ADDFUNC1R(TRANSFORM, NIL, Transform, xform, NIL, "v", varray());
 	ADDFUNC1R(TRANSFORM, NIL, Transform, xform_inv, NIL, "v", varray());
-
 	ADDFUNC0R(PROJECTION, REAL, Projection, determinant, varray());
-
 	ADDFUNC0(PROJECTION, NIL, Projection, set_identity, varray());
 	ADDFUNC0(PROJECTION, NIL, Projection, set_zero, varray());
 	ADDFUNC0(PROJECTION, NIL, Projection, set_light_bias, varray());
 	ADDFUNC1(PROJECTION, NIL, Projection, set_depth_correction, BOOL, "flip_y", varray(true));
-
 	ADDFUNC1(PROJECTION, NIL, Projection, set_light_atlas_rect, RECT2, "rect", varray());
 	ADDFUNC5(PROJECTION, NIL, Projection, set_perspective1, REAL, "fovy_degrees", REAL, "aspect", REAL, "z_near", REAL, "z_far", BOOL, "flip_fov", varray(false));
 	ADDFUNC8(PROJECTION, NIL, Projection, set_perspective2, REAL, "fovy_degrees", REAL, "aspect", REAL, "z_near", REAL, "z_far", BOOL, "flip_fov", INT, "eye", REAL, "intraocular_dist", REAL, "convergence_dist", varray());
@@ -3397,38 +3395,27 @@ void register_variant_methods() {
 	ADDFUNC6(PROJECTION, NIL, Projection, set_frustum1, REAL, "left", REAL, "right", REAL, "bottom", REAL, "top", REAL, "near", REAL, "far", varray());
 	ADDFUNC6(PROJECTION, NIL, Projection, set_frustum2, REAL, "size", REAL, "aspect", VECTOR2, "offset", REAL, "near", REAL, "far", BOOL, "flip_fov", varray(false));
 	ADDFUNC1(PROJECTION, NIL, Projection, adjust_perspective_znear, REAL, "new_znear", varray());
-
 	ADDFUNC1R(PROJECTION, PROJECTION, Projection, perspective_znear_adjusted, REAL, "new_znear", varray());
-	//TODO
-	//ADDFUNC1R(PROJECTION, PLANE, Projection, get_projection_plane, INT, "plane", varray());
+	ADDFUNC1R(PROJECTION, PLANE, Projection, get_projection_plane, INT, "plane", varray());
 	ADDFUNC0R(PROJECTION, PROJECTION, Projection, flipped_y, varray());
 	ADDFUNC1R(PROJECTION, PROJECTION, Projection, jitter_offseted, VECTOR2, "offset", varray());
-
 	ADDFUNC2R(PROJECTION, REAL, Projection, calculate_fovy, REAL, "fovx", REAL, "aspect", varray());
-
 	ADDFUNC0R(PROJECTION, REAL, Projection, get_z_far, varray());
 	ADDFUNC0R(PROJECTION, REAL, Projection, get_z_near, varray());
 	ADDFUNC0R(PROJECTION, REAL, Projection, get_aspect, varray());
 	ADDFUNC0R(PROJECTION, REAL, Projection, get_fov, varray());
 	ADDFUNC0R(PROJECTION, BOOL, Projection, is_orthogonal, varray());
-
 	ADDFUNC1R(PROJECTION, ARRAY, Projection, get_projection_planes_array, TRANSFORM, "transform", varray());
-
 	ADDFUNC0R(PROJECTION, VECTOR2, Projection, get_viewport_half_extents, varray());
 	ADDFUNC0R(PROJECTION, VECTOR2, Projection, get_far_plane_half_extents, varray());
-
 	ADDFUNC0(PROJECTION, NIL, Projection, invert, varray());
 	ADDFUNC0R(PROJECTION, PROJECTION, Projection, inverse, varray());
-
 	ADDFUNC1(PROJECTION, NIL, Projection, scale_translate_to_fit, AABB, "aabb", varray());
 	ADDFUNC1(PROJECTION, NIL, Projection, add_jitter_offset, VECTOR2, "offset", varray());
 	ADDFUNC1(PROJECTION, NIL, Projection, make_scale, VECTOR3, "scale", varray());
 	ADDFUNC1R(PROJECTION, INT, Projection, get_pixels_per_meter, INT, "for_pixel_width", varray());
-
 	ADDFUNC0(PROJECTION, NIL, Projection, flip_y, varray());
-
 	ADDFUNC0R(PROJECTION, REAL, Projection, get_lod_multiplier, varray());
-
 	ADDFUNC1R(PROJECTION, NIL, Projection, xform, NIL, "v4_v3_plane", varray());
 	ADDFUNC1R(PROJECTION, NIL, Projection, xform_inv, VECTOR4, "v", varray());
 

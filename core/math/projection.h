@@ -93,7 +93,7 @@ struct _NO_DISCARD_CLASS_ Projection {
 	static Projection create_fit_aabb(const AABB &p_aabb);
 
 	Projection perspective_znear_adjusted(real_t p_new_znear) const;
-	Plane get_projection_plane(Projection::Planes p_plane) const;
+	Plane get_projection_plane(Planes p_plane) const;
 	Projection flipped_y() const;
 	Projection jitter_offseted(const Vector2 &p_offset) const;
 

@@ -145,7 +145,7 @@ Projection Projection::perspective_znear_adjusted(real_t p_new_znear) const {
 	return proj;
 }
 
-Plane Projection::get_projection_plane(Planes p_plane) const {
+Plane Projection::get_projection_plane(Projection::Planes p_plane) const {
 	const real_t *matrix = (const real_t *)this->matrix;
 
 	switch (p_plane) {
