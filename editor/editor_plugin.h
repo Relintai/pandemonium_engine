@@ -77,7 +77,7 @@ class Script;
 class ScriptCreateDialog;
 class Texture;
 class ToolButton;
-class Transform;
+struct Transform;
 class UndoRedo;
 
 class EditorInterface : public Node {

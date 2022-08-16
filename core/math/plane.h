@@ -34,8 +34,7 @@
 
 class Variant;
 
-class _NO_DISCARD_CLASS_ Plane {
-public:
+struct _NO_DISCARD_CLASS_ Plane {
 	Vector3 normal;
 	real_t d;
 

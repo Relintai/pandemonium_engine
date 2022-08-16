@@ -42,7 +42,7 @@
 #include "portal_tracer.h"
 #include "portal_types.h"
 
-class Transform;
+struct Transform;
 
 struct VSStatic {
 	// the lifetime of statics is not strictly monitored like moving objects

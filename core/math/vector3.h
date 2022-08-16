@@ -33,7 +33,7 @@
 #include "core/math/math_funcs.h"
 #include "core/ustring.h"
 
-class Basis;
+struct Basis;
 
 struct _NO_DISCARD_CLASS_ Vector3 {
 	static const int AXIS_COUNT = 3;

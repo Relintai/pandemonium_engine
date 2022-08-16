@@ -36,8 +36,7 @@
 #include "core/math/vector3i.h"
 #include "core/pool_vector.h"
 
-class _NO_DISCARD_CLASS_ Transform {
-public:
+struct _NO_DISCARD_CLASS_ Transform {
 	Basis basis;
 	Vector3 origin;
 

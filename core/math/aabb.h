@@ -41,8 +41,7 @@
 
 class Variant;
 
-class _NO_DISCARD_CLASS_ AABB {
-public:
+struct _NO_DISCARD_CLASS_ AABB {
 	Vector3 position;
 	Vector3 size;
 

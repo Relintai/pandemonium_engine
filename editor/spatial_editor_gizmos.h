@@ -50,7 +50,7 @@
 class Camera;
 class Spatial;
 class Timer;
-class Transform;
+struct Transform;
 class Timer;
 
 class EditorSpatialGizmo : public SpatialGizmo {

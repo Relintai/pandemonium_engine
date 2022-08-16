@@ -50,7 +50,7 @@ class EditorPath;
 class LineEdit;
 class MenuButton;
 class ToolButton;
-class Transform;
+struct Transform;
 
 class InspectorDock : public VBoxContainer {
 	GDCLASS(InspectorDock, VBoxContainer);

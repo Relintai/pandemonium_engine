@@ -63,7 +63,7 @@
 #include "scene/resources/texture.h"
 
 class Container;
-class Transform;
+struct Transform;
 
 void InspectorDock::_menu_option(int p_option) {
 	switch (p_option) {

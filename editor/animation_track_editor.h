@@ -72,7 +72,7 @@ class Spatial;
 class SpinBox;
 class TextureRect;
 class ToolButton;
-class Transform;
+struct Transform;
 class Tree;
 class TreeItem;
 class UndoRedo;

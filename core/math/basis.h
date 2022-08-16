@@ -34,8 +34,7 @@
 #include "core/math/vector3.h"
 #include "core/math/vector3i.h"
 
-class _NO_DISCARD_CLASS_ Basis {
-public:
+struct _NO_DISCARD_CLASS_ Basis {
 	Vector3 rows[3] = {
 		Vector3(1, 0, 0),
 		Vector3(0, 1, 0),

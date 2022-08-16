@@ -37,13 +37,13 @@
 #include "core/vector.h"
 
 class Array;
-class AABB;
-class Plane;
+struct AABB;
+struct Plane;
 struct Rect2;
-class Transform;
+struct Transform;
 struct Vector2;
 
-struct Projection {
+struct _NO_DISCARD_CLASS_ Projection {
 	enum Planes {
 		PLANE_NEAR,
 		PLANE_FAR,

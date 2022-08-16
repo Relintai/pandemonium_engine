@@ -90,7 +90,7 @@ class LineEdit;
 class MenuButton;
 class OptionButton;
 class PanelContainer;
-class Plane;
+struct Plane;
 class PopupMenu;
 class SkinReference;
 class TriangleMesh;
