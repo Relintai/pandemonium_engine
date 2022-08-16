@@ -950,7 +950,7 @@ void RasterizerSceneGLES2::light_instance_set_transform(RID p_light_instance, co
 	light_instance->transform = p_transform;
 }
 
-void RasterizerSceneGLES2::light_instance_set_shadow_transform(RID p_light_instance, const CameraMatrix &p_projection, const Transform &p_transform, float p_far, float p_split, int p_pass, float p_bias_scale) {
+void RasterizerSceneGLES2::light_instance_set_shadow_transform(RID p_light_instance, const Projection &p_projection, const Transform &p_transform, float p_far, float p_split, int p_pass, float p_bias_scale) {
 	LightInstance *light_instance = light_instance_owner.getornull(p_light_instance);
 	ERR_FAIL_COND(!light_instance);
 
@@ -1973,7 +1973,7 @@ void RasterizerSceneGLES2::_setup_light(LightInstance *light, ShadowAtlas *shado
 			Vector3 direction = p_view_transform.basis.xform_inv(light->transform.basis.xform(Vector3(0, 0, -1))).normalized();
 			state.scene_shader.set_uniform(SceneShaderGLES2::LIGHT_DIRECTION, direction);
 
-			CameraMatrix matrices[4];
+			Projection matrices[4];
 
 			if (!state.render_no_shadows && light_ptr->shadow && directional_shadow.depth) {
 				int shadow_count = 0;
@@ -2024,13 +2024,13 @@ void RasterizerSceneGLES2::_setup_light(LightInstance *light, ShadowAtlas *shado
 
 					Transform modelview = (p_view_transform.inverse() * light->shadow_transform[k].transform).affine_inverse();
 
-					CameraMatrix bias;
+					Projection bias;
 					bias.set_light_bias();
-					CameraMatrix rectm;
+					Projection rectm;
 					Rect2 atlas_rect = Rect2(float(x) / directional_shadow.size, float(y) / directional_shadow.size, float(width) / directional_shadow.size, float(height) / directional_shadow.size);
 					rectm.set_light_atlas_rect(atlas_rect);
 
-					CameraMatrix shadow_mtx = rectm * bias * light->shadow_transform[k].camera * modelview;
+					Projection shadow_mtx = rectm * bias * light->shadow_transform[k].camera * modelview;
 					matrices[k] = shadow_mtx;
 
 					/*Color light_clamp;
@@ -2150,13 +2150,13 @@ void RasterizerSceneGLES2::_setup_light(LightInstance *light, ShadowAtlas *shado
 
 				Transform modelview = (p_view_transform.inverse() * light->transform).inverse();
 
-				CameraMatrix bias;
+				Projection bias;
 				bias.set_light_bias();
 
-				CameraMatrix rectm;
+				Projection rectm;
 				rectm.set_light_atlas_rect(rect);
 
-				CameraMatrix shadow_matrix = rectm * bias * light->shadow_transform[0].camera * modelview;
+				Projection shadow_matrix = rectm * bias * light->shadow_transform[0].camera * modelview;
 
 				state.scene_shader.set_uniform(SceneShaderGLES2::SHADOW_PIXEL_SIZE, Size2(1.0 / shadow_atlas->size, 1.0 / shadow_atlas->size));
 				state.scene_shader.set_uniform(SceneShaderGLES2::LIGHT_SHADOW_MATRIX, shadow_matrix);
@@ -2217,7 +2217,7 @@ void RasterizerSceneGLES2::_setup_refprobes(ReflectionProbeInstance *p_refprobe1
 	}
 }
 
-void RasterizerSceneGLES2::_render_render_list(RenderList::Element **p_elements, int p_element_count, const Transform &p_view_transform, const CameraMatrix &p_projection, const int p_eye, RID p_shadow_atlas, Environment *p_env, GLuint p_base_env, float p_shadow_bias, float p_shadow_normal_bias, bool p_reverse_cull, bool p_alpha_pass, bool p_shadow) {
+void RasterizerSceneGLES2::_render_render_list(RenderList::Element **p_elements, int p_element_count, const Transform &p_view_transform, const Projection &p_projection, const int p_eye, RID p_shadow_atlas, Environment *p_env, GLuint p_base_env, float p_shadow_bias, float p_shadow_normal_bias, bool p_reverse_cull, bool p_alpha_pass, bool p_shadow) {
 	ShadowAtlas *shadow_atlas = shadow_atlas_owner.getornull(p_shadow_atlas);
 
 	Vector2 viewport_size = state.viewport_size;
@@ -2244,7 +2244,7 @@ void RasterizerSceneGLES2::_render_render_list(RenderList::Element **p_elements,
 	bool prev_octahedral_compression = false;
 
 	Transform view_transform_inverse = p_view_transform.inverse();
-	CameraMatrix projection_inverse = p_projection.inverse();
+	Projection projection_inverse = p_projection.inverse();
 
 	bool prev_base_pass = false;
 	LightInstance *prev_light = nullptr;
@@ -2596,7 +2596,7 @@ void RasterizerSceneGLES2::_render_render_list(RenderList::Element **p_elements,
 	state.scene_shader.set_conditional(SceneShaderGLES2::USE_DEPTH_PREPASS, false);
 }
 
-void RasterizerSceneGLES2::_draw_sky(RasterizerStorageGLES2::Sky *p_sky, const CameraMatrix &p_projection, const Transform &p_transform, bool p_vflip, float p_custom_fov, float p_energy, const Basis &p_sky_orientation) {
+void RasterizerSceneGLES2::_draw_sky(RasterizerStorageGLES2::Sky *p_sky, const Projection &p_projection, const Transform &p_transform, bool p_vflip, float p_custom_fov, float p_energy, const Basis &p_sky_orientation) {
 	ERR_FAIL_COND(!p_sky);
 
 	RasterizerStorageGLES2::Texture *tex = storage->texture_owner.getornull(p_sky->panorama);
@@ -2614,7 +2614,7 @@ void RasterizerSceneGLES2::_draw_sky(RasterizerStorageGLES2::Sky *p_sky, const C
 	glDepthFunc(GL_LEQUAL);
 
 	// Camera
-	CameraMatrix camera;
+	Projection camera;
 
 	if (p_custom_fov) {
 		float near_plane = p_projection.get_z_near();
@@ -2705,7 +2705,7 @@ void RasterizerSceneGLES2::_draw_sky(RasterizerStorageGLES2::Sky *p_sky, const C
 	storage->shaders.copy.set_conditional(CopyShaderGLES2::OUTPUT_LINEAR, false);
 }
 
-void RasterizerSceneGLES2::_post_process(Environment *env, const CameraMatrix &p_cam_projection) {
+void RasterizerSceneGLES2::_post_process(Environment *env, const Projection &p_cam_projection) {
 	//copy to front buffer
 
 	glDepthMask(GL_FALSE);
@@ -3155,7 +3155,7 @@ void RasterizerSceneGLES2::_post_process(Environment *env, const CameraMatrix &p
 	state.tonemap_shader.set_conditional(TonemapShaderGLES2::DISABLE_ALPHA, false);
 }
 
-void RasterizerSceneGLES2::render_scene(const Transform &p_cam_transform, const CameraMatrix &p_cam_projection, const int p_eye, bool p_cam_ortogonal, InstanceBase **p_cull_result, int p_cull_count, RID *p_light_cull_result, int p_light_cull_count, RID *p_reflection_probe_cull_result, int p_reflection_probe_cull_count, RID p_environment, RID p_shadow_atlas, RID p_reflection_atlas, RID p_reflection_probe, int p_reflection_probe_pass) {
+void RasterizerSceneGLES2::render_scene(const Transform &p_cam_transform, const Projection &p_cam_projection, const int p_eye, bool p_cam_ortogonal, InstanceBase **p_cull_result, int p_cull_count, RID *p_light_cull_result, int p_light_cull_count, RID *p_reflection_probe_cull_result, int p_reflection_probe_cull_count, RID p_environment, RID p_shadow_atlas, RID p_reflection_atlas, RID p_reflection_probe, int p_reflection_probe_pass) {
 	Transform cam_transform = p_cam_transform;
 
 	storage->info.render.object_count += p_cull_count;
@@ -3529,7 +3529,7 @@ void RasterizerSceneGLES2::render_shadow(RID p_light, RID p_shadow_atlas, int p_
 	float bias = 0;
 	float normal_bias = 0;
 
-	CameraMatrix light_projection;
+	Projection light_projection;
 	Transform light_transform;
 
 	// TODO directional light

@@ -36,7 +36,7 @@
 #include "core/io/resource_loader.h"
 #include "core/map.h"
 #include "core/math/basis.h"
-#include "core/math/camera_matrix.h"
+#include "core/math/projection.h"
 #include "core/math/geometry.h"
 #include "core/math/math_funcs.h"
 #include "core/math/plane.h"
@@ -656,7 +656,7 @@ void SpatialEditorViewport::_find_items_at_pos(const Point2 &p_pos, Vector<_RayR
 }
 
 Vector3 SpatialEditorViewport::_get_screen_to_space(const Vector3 &p_vector3) {
-	CameraMatrix cm;
+	Projection cm;
 	if (orthogonal) {
 		cm.set_orthogonal(camera->get_size(), get_size().aspect(), get_znear() + p_vector3.z, get_zfar());
 	} else {

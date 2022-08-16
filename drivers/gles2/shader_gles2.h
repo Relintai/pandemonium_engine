@@ -40,7 +40,7 @@
 
 #include "core/hash_map.h"
 #include "core/map.h"
-#include "core/math/camera_matrix.h"
+#include "core/math/projection.h"
 #include "core/pair.h"
 #include "core/variant.h"
 #include "servers/visual/shader_language.h"

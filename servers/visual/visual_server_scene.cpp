@@ -1701,11 +1701,11 @@ Vector<ObjectID> VisualServerScene::instances_cull_convex(const Vector<Plane> &p
 }
 
 // thin wrapper to allow rooms / portals to take over culling if active
-int VisualServerScene::_cull_convex_from_point(Scenario *p_scenario, const Transform &p_cam_transform, const CameraMatrix &p_cam_projection, const Vector<Plane> &p_convex, Instance **p_result_array, int p_result_max, int32_t &r_previous_room_id_hint, uint32_t p_mask) {
+int VisualServerScene::_cull_convex_from_point(Scenario *p_scenario, const Transform &p_cam_transform, const Projection &p_cam_projection, const Vector<Plane> &p_convex, Instance **p_result_array, int p_result_max, int32_t &r_previous_room_id_hint, uint32_t p_mask) {
 	int res = -1;
 	if (p_scenario->_portal_renderer.is_active()) {
 		// Note that the portal renderer ASSUMES that the planes exactly match the convention in
-		// CameraMatrix of enum Planes (6 planes, in order, near, far etc)
+		// Projection of enum Planes (6 planes, in order, near, far etc)
 		// If this is not the case, it should not be used.
 		res = p_scenario->_portal_renderer.cull_convex(p_cam_transform, p_cam_projection, p_convex, (VSInstance **)p_result_array, p_result_max, p_mask, r_previous_room_id_hint);
 	}
@@ -2058,7 +2058,7 @@ void VisualServerScene::_update_dirty_instance(Instance *p_instance) {
 	p_instance->update_materials = false;
 }
 
-bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, const Transform p_cam_transform, const CameraMatrix &p_cam_projection, bool p_cam_orthogonal, RID p_shadow_atlas, Scenario *p_scenario) {
+bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, const Transform p_cam_transform, const Projection &p_cam_projection, bool p_cam_orthogonal, RID p_shadow_atlas, Scenario *p_scenario) {
 	InstanceLightData *light = static_cast<InstanceLightData *>(p_instance->base_data);
 
 	Transform light_transform = p_instance->transform;
@@ -2151,7 +2151,7 @@ bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 
 			for (int i = 0; i < splits; i++) {
 				// setup a camera matrix for that range!
-				CameraMatrix camera_matrix;
+				Projection camera_matrix;
 
 				float aspect = p_cam_projection.get_aspect();
 
@@ -2310,7 +2310,7 @@ bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 				}
 
 				{
-					CameraMatrix ortho_camera;
+					Projection ortho_camera;
 					real_t half_x = (x_max_cam - x_min_cam) * 0.5;
 					real_t half_y = (y_max_cam - y_min_cam) * 0.5;
 
@@ -2365,13 +2365,13 @@ bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 						}
 					}
 
-					VSG::scene_render->light_instance_set_shadow_transform(light->instance, CameraMatrix(), light_transform, radius, 0, i);
+					VSG::scene_render->light_instance_set_shadow_transform(light->instance, Projection(), light_transform, radius, 0, i);
 					VSG::scene_render->render_shadow(light->instance, p_shadow_atlas, i, (RasterizerScene::InstanceBase **)instance_shadow_cull_result, cull_count);
 				}
 			} else { //shadow cube
 
 				float radius = VSG::storage->light_get_param(p_instance->base, VS::LIGHT_PARAM_RANGE);
-				CameraMatrix cm;
+				Projection cm;
 				cm.set_perspective(90, 1, 0.01, radius);
 
 				for (int i = 0; i < 6; i++) {
@@ -2421,7 +2421,7 @@ bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 				}
 
 				//restore the regular DP matrix
-				VSG::scene_render->light_instance_set_shadow_transform(light->instance, CameraMatrix(), light_transform, radius, 0, 0);
+				VSG::scene_render->light_instance_set_shadow_transform(light->instance, Projection(), light_transform, radius, 0, 0);
 			}
 
 		} break;
@@ -2429,7 +2429,7 @@ bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 			float radius = VSG::storage->light_get_param(p_instance->base, VS::LIGHT_PARAM_RANGE);
 			float angle = VSG::storage->light_get_param(p_instance->base, VS::LIGHT_PARAM_SPOT_ANGLE);
 
-			CameraMatrix cm;
+			Projection cm;
 			cm.set_perspective(angle * 2.0, 1.0, 0.01, radius);
 
 			Vector<Plane> planes = cm.get_projection_planes(light_transform);
@@ -2468,7 +2468,7 @@ void VisualServerScene::render_camera(RID p_camera, RID p_scenario, Size2 p_view
 	ERR_FAIL_COND(!camera);
 
 	/* STEP 1 - SETUP CAMERA */
-	CameraMatrix camera_matrix;
+	Projection camera_matrix;
 	bool ortho = false;
 
 	switch (camera->type) {
@@ -2511,7 +2511,7 @@ void VisualServerScene::render_camera(RID p_camera, RID p_scenario, Size2 p_view
 #endif
 }
 
-void VisualServerScene::_prepare_scene(const Transform p_cam_transform, const CameraMatrix &p_cam_projection, bool p_cam_orthogonal, RID p_force_environment, uint32_t p_visible_layers, RID p_scenario, RID p_shadow_atlas, RID p_reflection_probe, int32_t &r_previous_room_id_hint) {
+void VisualServerScene::_prepare_scene(const Transform p_cam_transform, const Projection &p_cam_projection, bool p_cam_orthogonal, RID p_force_environment, uint32_t p_visible_layers, RID p_scenario, RID p_shadow_atlas, RID p_reflection_probe, int32_t &r_previous_room_id_hint) {
 	// Note, in stereo rendering:
 	// - p_cam_transform will be a transform in the middle of our two eyes
 	// - p_cam_projection is a wider frustrum that encompasses both eyes
@@ -2800,7 +2800,7 @@ void VisualServerScene::_prepare_scene(const Transform p_cam_transform, const Ca
 	}
 }
 
-void VisualServerScene::_render_scene(const Transform p_cam_transform, const CameraMatrix &p_cam_projection, const int p_eye, bool p_cam_orthogonal, RID p_force_environment, RID p_scenario, RID p_shadow_atlas, RID p_reflection_probe, int p_reflection_probe_pass) {
+void VisualServerScene::_render_scene(const Transform p_cam_transform, const Projection &p_cam_projection, const int p_eye, bool p_cam_orthogonal, RID p_force_environment, RID p_scenario, RID p_shadow_atlas, RID p_reflection_probe, int p_reflection_probe_pass) {
 	Scenario *scenario = scenario_owner.getornull(p_scenario);
 
 	/* ENVIRONMENT */
@@ -2830,7 +2830,7 @@ void VisualServerScene::render_empty_scene(RID p_scenario, RID p_shadow_atlas) {
 	} else {
 		environment = scenario->fallback_environment;
 	}
-	VSG::scene_render->render_scene(Transform(), CameraMatrix(), 0, true, nullptr, 0, nullptr, 0, nullptr, 0, environment, p_shadow_atlas, scenario->reflection_atlas, RID(), 0);
+	VSG::scene_render->render_scene(Transform(), Projection(), 0, true, nullptr, 0, nullptr, 0, nullptr, 0, environment, p_shadow_atlas, scenario->reflection_atlas, RID(), 0);
 #endif
 }
 

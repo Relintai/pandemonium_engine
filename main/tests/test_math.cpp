@@ -31,7 +31,7 @@
 #include "test_math.h"
 
 #include "core/math/basis.h"
-#include "core/math/camera_matrix.h"
+#include "core/math/projection.h"
 #include "core/math/math_funcs.h"
 #include "core/math/transform.h"
 #include "core/os/file_access.h"
@@ -356,7 +356,7 @@ public:
 };
 
 void test_vec(Plane p_vec) {
-	CameraMatrix cm;
+	Projection cm;
 	cm.set_perspective(45, 1, 0, 100);
 	Plane v0 = cm.xform4(p_vec);
 

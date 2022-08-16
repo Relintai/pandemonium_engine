@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/math/aabb.h"
-#include "core/math/camera_matrix.h"
+#include "core/math/projection.h"
 #include "core/math/vector3.h"
 
 #include "r128.h"
@@ -215,7 +215,7 @@ class Delaunay3D {
 			return true;
 		}
 
-		CameraMatrix cm;
+		Projection cm;
 
 		cm.matrix[0][0] = p_points[p_simplex.points[0]].x;
 		cm.matrix[0][1] = p_points[p_simplex.points[1]].x;
@@ -240,7 +240,7 @@ class Delaunay3D {
 		return ABS(camera_matrix_determinant(cm)) <= CMP_EPSILON;
 	}
 
-	static float camera_matrix_determinant(const CameraMatrix &m) {
+	static float camera_matrix_determinant(const Projection &m) {
 		return m.matrix[0][3] * m.matrix[1][2] * m.matrix[2][1] * m.matrix[3][0] - m.matrix[0][2] * m.matrix[1][3] * m.matrix[2][1] * m.matrix[3][0] -
 				m.matrix[0][3] * m.matrix[1][1] * m.matrix[2][2] * m.matrix[3][0] + m.matrix[0][1] * m.matrix[1][3] * m.matrix[2][2] * m.matrix[3][0] +
 				m.matrix[0][2] * m.matrix[1][1] * m.matrix[2][3] * m.matrix[3][0] - m.matrix[0][1] * m.matrix[1][2] * m.matrix[2][3] * m.matrix[3][0] -

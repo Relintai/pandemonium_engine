@@ -357,7 +357,7 @@ def build_legacygl_header(filename, include, class_suffix, output_attribs, gles2
     )
 
     fd.write(
-        """_FORCE_INLINE_ void set_uniform(Uniforms p_uniform, const CameraMatrix& p_matrix) {  _FU
+        """_FORCE_INLINE_ void set_uniform(Uniforms p_uniform, const Projection& p_matrix) {  _FU
 
 		GLfloat matrix[16];
 

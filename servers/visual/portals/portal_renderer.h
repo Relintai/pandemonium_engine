@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/math/camera_matrix.h"
+#include "core/math/projection.h"
 #include "core/math/geometry.h"
 #include "core/math/plane.h"
 #include "core/pooled_list.h"
@@ -197,11 +197,11 @@ public:
 	Geometry::MeshData occlusion_debug_get_current_polys() const { return _tracer.get_occlusion_culler().debug_get_current_polys(); }
 
 	// note that this relies on a 'frustum' type cull, from a point, and that the planes are specified as in
-	// CameraMatrix, i.e.
+	// Projection, i.e.
 	// order PLANE_NEAR,PLANE_FAR,PLANE_LEFT,PLANE_TOP,PLANE_RIGHT,PLANE_BOTTOM
-	int cull_convex(const Transform &p_cam_transform, const CameraMatrix &p_cam_projection, const Vector<Plane> &p_convex, VSInstance **p_result_array, int p_result_max, uint32_t p_mask, int32_t &r_previous_room_id_hint) {
+	int cull_convex(const Transform &p_cam_transform, const Projection &p_cam_projection, const Vector<Plane> &p_convex, VSInstance **p_result_array, int p_result_max, uint32_t p_mask, int32_t &r_previous_room_id_hint) {
 		// combined camera matrix
-		CameraMatrix cm = CameraMatrix(p_cam_transform.affine_inverse());
+		Projection cm = Projection(p_cam_transform.affine_inverse());
 		cm = p_cam_projection * cm;
 		Vector3 point = p_cam_transform.origin;
 		Vector3 cam_dir = -p_cam_transform.basis.get_axis(2).normalized();
@@ -213,20 +213,20 @@ public:
 		return cull_convex_implementation(_override_camera_pos, cam_dir, cm, _override_camera_planes, p_result_array, p_result_max, p_mask, r_previous_room_id_hint);
 	}
 
-	int cull_convex_implementation(const Vector3 &p_point, const Vector3 &p_cam_dir, const CameraMatrix &p_cam_matrix, const Vector<Plane> &p_convex, VSInstance **p_result_array, int p_result_max, uint32_t p_mask, int32_t &r_previous_room_id_hint);
+	int cull_convex_implementation(const Vector3 &p_point, const Vector3 &p_cam_dir, const Projection &p_cam_matrix, const Vector<Plane> &p_convex, VSInstance **p_result_array, int p_result_max, uint32_t p_mask, int32_t &r_previous_room_id_hint);
 
 	bool occlusion_is_active() const { return _occluder_instance_pool.active_size() && use_occlusion_culling; }
 
 	// special function for occlusion culling only that does not use portals / rooms,
 	// but allows using occluders with the main scene
-	int occlusion_cull(const Transform &p_cam_transform, const CameraMatrix &p_cam_projection, const Vector<Plane> &p_convex, VSInstance **p_result_array, int p_num_results) {
+	int occlusion_cull(const Transform &p_cam_transform, const Projection &p_cam_projection, const Vector<Plane> &p_convex, VSInstance **p_result_array, int p_num_results) {
 		// inactive?
 		if (!_occluder_instance_pool.active_size() || !use_occlusion_culling) {
 			return p_num_results;
 		}
 
 		// combined camera matrix
-		CameraMatrix cm = CameraMatrix(p_cam_transform.affine_inverse());
+		Projection cm = Projection(p_cam_transform.affine_inverse());
 		cm = p_cam_projection * cm;
 		Vector3 point = p_cam_transform.origin;
 		Vector3 cam_dir = -p_cam_transform.basis.get_axis(2).normalized();

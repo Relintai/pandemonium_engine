@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 class PortalRenderer;
-#include "core/math/camera_matrix.h"
+#include "core/math/projection.h"
 #include "core/math/geometry.h"
 #include "portal_types.h"
 
@@ -77,7 +77,7 @@ class PortalOcclusionCuller {
 public:
 	PortalOcclusionCuller();
 
-	void prepare_camera(const CameraMatrix &p_cam_matrix, const Vector3 &p_cam_dir) {
+	void prepare_camera(const Projection &p_cam_matrix, const Vector3 &p_cam_dir) {
 		_matrix_camera = p_cam_matrix;
 		_pt_cam_dir = p_cam_dir;
 	}
@@ -302,7 +302,7 @@ private:
 	Vector3 _pt_camera;
 	Vector3 _pt_cam_dir;
 
-	CameraMatrix _matrix_camera;
+	Projection _matrix_camera;
 	PortalRenderer *_portal_renderer = nullptr;
 
 	Clipper _clipper;

@@ -30,7 +30,7 @@
 
 #include "world.h"
 
-#include "core/math/camera_matrix.h"
+#include "core/math/projection.h"
 #include "core/math/octree.h"
 #include "core/project_settings.h"
 #include "scene/3d/camera.h"

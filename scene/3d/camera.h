@@ -41,7 +41,7 @@ class Camera : public Spatial {
 	GDCLASS(Camera, Spatial);
 
 public:
-	enum Projection {
+	enum ProjectionMode {
 
 		PROJECTION_PERSPECTIVE,
 		PROJECTION_ORTHOGONAL,
@@ -64,7 +64,7 @@ private:
 	bool current;
 	Viewport *viewport;
 
-	Projection mode;
+	ProjectionMode mode;
 
 	float fov;
 	float size;
@@ -112,7 +112,7 @@ public:
 	void set_perspective(float p_fovy_degrees, float p_z_near, float p_z_far);
 	void set_orthogonal(float p_size, float p_z_near, float p_z_far);
 	void set_frustum(float p_size, Vector2 p_offset, float p_z_near, float p_z_far);
-	void set_projection(Camera::Projection p_mode);
+	void set_projection(Camera::ProjectionMode p_mode);
 
 	void make_current();
 	void clear_current(bool p_enable_next = true);
@@ -127,7 +127,7 @@ public:
 	float get_znear() const;
 	Vector2 get_frustum_offset() const;
 
-	Projection get_projection() const;
+	ProjectionMode get_projection() const;
 
 	void set_fov(float p_fov);
 	void set_size(float p_size);
@@ -175,7 +175,7 @@ public:
 	~Camera();
 };
 
-VARIANT_ENUM_CAST(Camera::Projection);
+VARIANT_ENUM_CAST(Camera::ProjectionMode);
 VARIANT_ENUM_CAST(Camera::KeepAspect);
 VARIANT_ENUM_CAST(Camera::DopplerTracking);
 

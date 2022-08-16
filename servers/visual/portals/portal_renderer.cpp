@@ -1118,7 +1118,7 @@ void PortalRenderer::rooms_update_gameplay_monitor(const Vector<Vector3> &p_came
 	_gameplay_monitor.update_gameplay(*this, source_rooms, num_source_rooms);
 }
 
-int PortalRenderer::cull_convex_implementation(const Vector3 &p_point, const Vector3 &p_cam_dir, const CameraMatrix &p_cam_matrix, const Vector<Plane> &p_convex, VSInstance **p_result_array, int p_result_max, uint32_t p_mask, int32_t &r_previous_room_id_hint) {
+int PortalRenderer::cull_convex_implementation(const Vector3 &p_point, const Vector3 &p_cam_dir, const Projection &p_cam_matrix, const Vector<Plane> &p_convex, VSInstance **p_result_array, int p_result_max, uint32_t p_mask, int32_t &r_previous_room_id_hint) {
 	// start room
 	int start_room_id = find_room_within(p_point, r_previous_room_id_hint);
 
@@ -1132,7 +1132,7 @@ int PortalRenderer::cull_convex_implementation(const Vector3 &p_point, const Vec
 	// set up the occlusion culler once off .. this is a prepare before the prepare is done PER room
 	_tracer.get_occlusion_culler().prepare_camera(p_cam_matrix, p_cam_dir);
 
-	// planes must be in CameraMatrix order
+	// planes must be in Projection order
 	DEV_ASSERT(p_convex.size() == 6);
 
 	LocalVector<Plane> planes;
