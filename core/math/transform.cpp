@@ -258,9 +258,9 @@ Transform Transform::interpolate_with(const Transform &p_transform, real_t p_c) 
 }
 
 Transform::operator String() const {
-	return "[X: " + basis.get_column(0).operator String() +
-			", Y: " + basis.get_column(1).operator String() +
-			", Z: " + basis.get_column(2).operator String() +
+	return "[X: " + basis.get_axis(0).operator String() +
+			", Y: " + basis.get_axis(1).operator String() +
+			", Z: " + basis.get_axis(2).operator String() +
 			", O: " + origin.operator String() + "]";
 }
 

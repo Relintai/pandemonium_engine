@@ -1729,7 +1729,6 @@ String Variant::stringify(List<const void *> &stack) const {
 			return operator Vector4();
 		case VECTOR4I:
 			return operator Vector4i();
-
 		case PLANE:
 			return operator Plane();
 		case QUATERNION:
@@ -1737,40 +1736,17 @@ String Variant::stringify(List<const void *> &stack) const {
 		case AABB:
 			return operator ::AABB();
 		case BASIS: {
-			Basis mat3 = operator Basis();
-
-			String mtx("(");
-			for (int i = 0; i < 3; i++) {
-				if (i != 0) {
-					mtx += ", ";
-				}
-
-				mtx += "(";
-
-				for (int j = 0; j < 3; j++) {
-					if (j != 0) {
-						mtx += ", ";
-					}
-
-					mtx += Variant(mat3.rows[i][j]).operator String();
-				}
-
-				mtx += ")";
-			}
-
-			return mtx + ")";
+			return operator Basis();
 		} break;
 		case TRANSFORM:
 			return operator Transform();
 		case TRANSFORM2D: {
-			Transform2D mat32 = operator Transform2D();
-			return "(" + Variant(mat32.columns[0]).operator String() + ", " + Variant(mat32.columns[1]).operator String() + ", " + Variant(mat32.columns[2]).operator String() + ")";
+			return operator Transform2D();
 		} break;
 		case PROJECTION:
 			return operator Projection();
-
 		case COLOR:
-			return String::num(operator Color().r) + "," + String::num(operator Color().g) + "," + String::num(operator Color().b) + "," + String::num(operator Color().a);
+			return operator Color();
 		case NODE_PATH:
 			return operator NodePath();
 		//RID

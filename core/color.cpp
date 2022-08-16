@@ -463,7 +463,7 @@ float Color::gray() const {
 }
 
 Color::operator String() const {
-	return rtos(r) + ", " + rtos(g) + ", " + rtos(b) + ", " + rtos(a);
+	return "(" + String::num(r, 4) + ", " + String::num(g, 4) + ", " + String::num(b, 4) + ", " + String::num(a, 4) + ")";
 }
 
 Color Color::operator+(const Color &p_color) const {

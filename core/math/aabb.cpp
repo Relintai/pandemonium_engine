@@ -426,5 +426,5 @@ Variant AABB::intersects_rayv(const Vector3 &p_from, const Vector3 &p_dir) const
 }
 
 AABB::operator String() const {
-	return String() + position + " - " + size;
+	return "[P: " + position.operator String() + ", S: " + size + "]";
 }

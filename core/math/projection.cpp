@@ -866,14 +866,10 @@ Plane Projection::xform(const Plane &p_vec4) const {
 }
 
 Projection::operator String() const {
-	String str;
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++) {
-			str += String((j > 0) ? ", " : "\n") + rtos(matrix[i][j]);
-		}
-	}
-
-	return str;
+	return "[ X: " + matrix[0].operator String() +
+			", Y: " + matrix[1].operator String() +
+			", Z: " + matrix[2].operator String() +
+			", W: " + matrix[3].operator String() + " ]";
 }
 
 real_t Projection::get_aspect() const {
