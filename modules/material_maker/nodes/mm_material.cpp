@@ -221,7 +221,7 @@ void MMMaterial::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_nodes"), &MMMaterial::get_nodes);
 	ClassDB::bind_method(D_METHOD("set_nodes", "value"), &MMMaterial::set_nodes);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "nodes", PROPERTY_HINT_NONE, "20/19:MMNode", PROPERTY_USAGE_DEFAULT, "MMNode"), "set_nodes", "get_nodes");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "nodes", PROPERTY_HINT_NONE, "23/19:MMNode", PROPERTY_USAGE_DEFAULT, "MMNode"), "set_nodes", "get_nodes");
 
 	ClassDB::bind_method(D_METHOD("get_initialized"), &MMMaterial::get_initialized);
 	ClassDB::bind_method(D_METHOD("set_initialized", "value"), &MMMaterial::set_initialized);

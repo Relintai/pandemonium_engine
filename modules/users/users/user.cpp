@@ -327,7 +327,7 @@ void User::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_modules"), &User::get_modules);
 	ClassDB::bind_method(D_METHOD("set_modules", "modules"), &User::set_modules);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "modules", PROPERTY_HINT_NONE, "20/19:UserModule", PROPERTY_USAGE_DEFAULT, "UserModule"), "set_modules", "get_modules");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "modules", PROPERTY_HINT_NONE, "23/19:UserModule", PROPERTY_USAGE_DEFAULT, "UserModule"), "set_modules", "get_modules");
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_check_password", PropertyInfo(Variant::STRING, "password")));
 	BIND_VMETHOD(MethodInfo("_create_password", PropertyInfo(Variant::STRING, "password")));

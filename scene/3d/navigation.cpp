@@ -115,7 +115,7 @@ void Navigation::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "edge_connection_margin"), "set_edge_connection_margin", "get_edge_connection_margin");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "navigation_layers", PROPERTY_HINT_LAYERS_3D_NAVIGATION), "set_navigation_layers", "get_navigation_layers");
 
-	ADD_SIGNAL(MethodInfo("map_changed", PropertyInfo(Variant::_RID, "map")));
+	ADD_SIGNAL(MethodInfo("map_changed", PropertyInfo(Variant::RID, "map")));
 }
 
 void Navigation::_notification(int p_what) {

@@ -30,12 +30,14 @@
 
 #include "projection.h"
 
+#include "core/array.h"
 #include "core/math/aabb.h"
 #include "core/math/math_funcs.h"
 #include "core/math/plane.h"
 #include "core/math/rect2.h"
 #include "core/math/transform.h"
 #include "core/print_string.h"
+#include "core/variant.h"
 
 float Projection::determinant() const {
 	return matrix[0][3] * matrix[1][2] * matrix[2][1] * matrix[3][0] - matrix[0][2] * matrix[1][3] * matrix[2][1] * matrix[3][0] -
@@ -66,31 +68,6 @@ void Projection::set_zero() {
 			matrix[i][j] = 0;
 		}
 	}
-}
-
-Plane Projection::xform4(const Plane &p_vec4) const {
-	Plane ret;
-
-	ret.normal.x = matrix[0][0] * p_vec4.normal.x + matrix[1][0] * p_vec4.normal.y + matrix[2][0] * p_vec4.normal.z + matrix[3][0] * p_vec4.d;
-	ret.normal.y = matrix[0][1] * p_vec4.normal.x + matrix[1][1] * p_vec4.normal.y + matrix[2][1] * p_vec4.normal.z + matrix[3][1] * p_vec4.d;
-	ret.normal.z = matrix[0][2] * p_vec4.normal.x + matrix[1][2] * p_vec4.normal.y + matrix[2][2] * p_vec4.normal.z + matrix[3][2] * p_vec4.d;
-	ret.d = matrix[0][3] * p_vec4.normal.x + matrix[1][3] * p_vec4.normal.y + matrix[2][3] * p_vec4.normal.z + matrix[3][3] * p_vec4.d;
-	return ret;
-}
-
-Vector4 Projection::xform(const Vector4 &p_vec4) const {
-	return Vector4(
-			matrix[0][0] * p_vec4.x + matrix[1][0] * p_vec4.y + matrix[2][0] * p_vec4.z + matrix[3][0] * p_vec4.w,
-			matrix[0][1] * p_vec4.x + matrix[1][1] * p_vec4.y + matrix[2][1] * p_vec4.z + matrix[3][1] * p_vec4.w,
-			matrix[0][2] * p_vec4.x + matrix[1][2] * p_vec4.y + matrix[2][2] * p_vec4.z + matrix[3][2] * p_vec4.w,
-			matrix[0][3] * p_vec4.x + matrix[1][3] * p_vec4.y + matrix[2][3] * p_vec4.z + matrix[3][3] * p_vec4.w);
-}
-Vector4 Projection::xform_inv(const Vector4 &p_vec4) const {
-	return Vector4(
-			matrix[0][0] * p_vec4.x + matrix[0][1] * p_vec4.y + matrix[0][2] * p_vec4.z + matrix[0][3] * p_vec4.w,
-			matrix[1][0] * p_vec4.x + matrix[1][1] * p_vec4.y + matrix[1][2] * p_vec4.z + matrix[1][3] * p_vec4.w,
-			matrix[2][0] * p_vec4.x + matrix[2][1] * p_vec4.y + matrix[2][2] * p_vec4.z + matrix[2][3] * p_vec4.w,
-			matrix[3][0] * p_vec4.x + matrix[3][1] * p_vec4.y + matrix[3][2] * p_vec4.z + matrix[3][3] * p_vec4.w);
 }
 
 void Projection::adjust_perspective_znear(real_t p_new_znear) {
@@ -587,6 +564,88 @@ Vector<Plane> Projection::get_projection_planes(const Transform &p_transform) co
 	return planes;
 }
 
+Array Projection::get_projection_planes_array(const Transform &p_transform) const {
+	/** Fast Plane Extraction from combined modelview/projection matrices.
+	 * References:
+	 * https://web.archive.org/web/20011221205252/https://www.markmorley.com/opengl/frustumculling.html
+	 * https://web.archive.org/web/20061020020112/https://www2.ravensoft.com/users/ggribb/plane%20extraction.pdf
+	 */
+
+	Array planes;
+
+	const real_t *matrix = (const real_t *)this->matrix;
+
+	Plane new_plane;
+
+	///////--- Near Plane ---///////
+	new_plane = Plane(matrix[3] + matrix[2],
+			matrix[7] + matrix[6],
+			matrix[11] + matrix[10],
+			matrix[15] + matrix[14]);
+
+	new_plane.normal = -new_plane.normal;
+	new_plane.normalize();
+
+	planes.push_back(p_transform.xform(new_plane));
+
+	///////--- Far Plane ---///////
+	new_plane = Plane(matrix[3] - matrix[2],
+			matrix[7] - matrix[6],
+			matrix[11] - matrix[10],
+			matrix[15] - matrix[14]);
+
+	new_plane.normal = -new_plane.normal;
+	new_plane.normalize();
+
+	planes.push_back(p_transform.xform(new_plane));
+
+	///////--- Left Plane ---///////
+	new_plane = Plane(matrix[3] + matrix[0],
+			matrix[7] + matrix[4],
+			matrix[11] + matrix[8],
+			matrix[15] + matrix[12]);
+
+	new_plane.normal = -new_plane.normal;
+	new_plane.normalize();
+
+	planes.push_back(p_transform.xform(new_plane));
+
+	///////--- Top Plane ---///////
+	new_plane = Plane(matrix[3] - matrix[1],
+			matrix[7] - matrix[5],
+			matrix[11] - matrix[9],
+			matrix[15] - matrix[13]);
+
+	new_plane.normal = -new_plane.normal;
+	new_plane.normalize();
+
+	planes.push_back(p_transform.xform(new_plane));
+
+	///////--- Right Plane ---///////
+	new_plane = Plane(matrix[3] - matrix[0],
+			matrix[7] - matrix[4],
+			matrix[11] - matrix[8],
+			matrix[15] - matrix[12]);
+
+	new_plane.normal = -new_plane.normal;
+	new_plane.normalize();
+
+	planes.push_back(p_transform.xform(new_plane));
+
+	///////--- Bottom Plane ---///////
+	new_plane = Plane(matrix[3] + matrix[1],
+			matrix[7] + matrix[5],
+			matrix[11] + matrix[9],
+			matrix[15] + matrix[13]);
+
+	new_plane.normal = -new_plane.normal;
+	new_plane.normalize();
+
+	planes.push_back(p_transform.xform(new_plane));
+
+	return planes;
+}
+
 Projection Projection::inverse() const {
 	Projection cm = *this;
 	cm.invert();
@@ -780,6 +839,32 @@ void Projection::set_light_atlas_rect(const Rect2 &p_rect) {
 	m[15] = 1.0;
 }
 
+Vector4 Projection::xform(const Vector4 &p_vec4) const {
+	return Vector4(
+			matrix[0][0] * p_vec4.x + matrix[1][0] * p_vec4.y + matrix[2][0] * p_vec4.z + matrix[3][0] * p_vec4.w,
+			matrix[0][1] * p_vec4.x + matrix[1][1] * p_vec4.y + matrix[2][1] * p_vec4.z + matrix[3][1] * p_vec4.w,
+			matrix[0][2] * p_vec4.x + matrix[1][2] * p_vec4.y + matrix[2][2] * p_vec4.z + matrix[3][2] * p_vec4.w,
+			matrix[0][3] * p_vec4.x + matrix[1][3] * p_vec4.y + matrix[2][3] * p_vec4.z + matrix[3][3] * p_vec4.w);
+}
+
+Vector4 Projection::xform_inv(const Vector4 &p_vec4) const {
+	return Vector4(
+			matrix[0][0] * p_vec4.x + matrix[0][1] * p_vec4.y + matrix[0][2] * p_vec4.z + matrix[0][3] * p_vec4.w,
+			matrix[1][0] * p_vec4.x + matrix[1][1] * p_vec4.y + matrix[1][2] * p_vec4.z + matrix[1][3] * p_vec4.w,
+			matrix[2][0] * p_vec4.x + matrix[2][1] * p_vec4.y + matrix[2][2] * p_vec4.z + matrix[2][3] * p_vec4.w,
+			matrix[3][0] * p_vec4.x + matrix[3][1] * p_vec4.y + matrix[3][2] * p_vec4.z + matrix[3][3] * p_vec4.w);
+}
+
+Plane Projection::xform(const Plane &p_vec4) const {
+	Plane ret;
+
+	ret.normal.x = matrix[0][0] * p_vec4.normal.x + matrix[1][0] * p_vec4.normal.y + matrix[2][0] * p_vec4.normal.z + matrix[3][0] * p_vec4.d;
+	ret.normal.y = matrix[0][1] * p_vec4.normal.x + matrix[1][1] * p_vec4.normal.y + matrix[2][1] * p_vec4.normal.z + matrix[3][1] * p_vec4.d;
+	ret.normal.z = matrix[0][2] * p_vec4.normal.x + matrix[1][2] * p_vec4.normal.y + matrix[2][2] * p_vec4.normal.z + matrix[3][2] * p_vec4.d;
+	ret.d = matrix[0][3] * p_vec4.normal.x + matrix[1][3] * p_vec4.normal.y + matrix[2][3] * p_vec4.normal.z + matrix[3][3] * p_vec4.d;
+	return ret;
+}
+
 Projection::operator String() const {
 	String str;
 	for (int i = 0; i < 4; i++) {
@@ -899,6 +984,11 @@ Projection::operator Transform() const {
 
 	return tr;
 }
+
+void Projection::set_frustum2(real_t p_size, real_t p_aspect, Vector2 p_offset, real_t p_near, real_t p_far, bool p_flip_fov) {
+	set_frustum(p_size, p_aspect, p_offset, p_near, p_far, p_flip_fov);
+}
+
 Projection::Projection(const Vector4 &p_x, const Vector4 &p_y, const Vector4 &p_z, const Vector4 &p_w) {
 	matrix[0] = p_x;
 	matrix[1] = p_y;

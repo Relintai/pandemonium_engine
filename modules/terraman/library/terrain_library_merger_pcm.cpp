@@ -1000,12 +1000,12 @@ void TerrainLibraryMergerPCM::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_terra_surfaces"), &TerrainLibraryMergerPCM::get_terra_surfaces);
 	ClassDB::bind_method(D_METHOD("set_terra_surfaces"), &TerrainLibraryMergerPCM::set_terra_surfaces);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "terra_surfaces", PROPERTY_HINT_NONE, "20/19:TerrainSurfaceMerger", PROPERTY_USAGE_DEFAULT, "TerrainSurfaceMerger"), "set_terra_surfaces", "get_terra_surfaces");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "terra_surfaces", PROPERTY_HINT_NONE, "23/19:TerrainSurfaceMerger", PROPERTY_USAGE_DEFAULT, "TerrainSurfaceMerger"), "set_terra_surfaces", "get_terra_surfaces");
 
 #ifdef PROPS_PRESENT
 	ClassDB::bind_method(D_METHOD("get_props"), &TerrainLibraryMergerPCM::get_props);
 	ClassDB::bind_method(D_METHOD("set_props"), &TerrainLibraryMergerPCM::set_props);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "props", PROPERTY_HINT_NONE, "20/19:PropData", PROPERTY_USAGE_DEFAULT, "PropData"), "set_props", "get_props");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "props", PROPERTY_HINT_NONE, "23/19:PropData", PROPERTY_USAGE_DEFAULT, "PropData"), "set_props", "get_props");
 
 	ClassDB::bind_method(D_METHOD("get_prop_uv_rect", "texture"), &TerrainLibraryMergerPCM::get_prop_uv_rect);
 

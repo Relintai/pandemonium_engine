@@ -34,6 +34,8 @@
 
 #include "core/color.h"
 #include "core/math/vector2.h"
+#include "core/math/vector3.h"
+#include "core/math/vector4.h"
 #include "core/node_path.h"
 #include "core/object.h"
 #include "core/reference.h"
@@ -516,6 +518,40 @@ public:
 	EditorPropertyVector3i();
 };
 
+class EditorPropertyVector4 : public EditorProperty {
+	GDCLASS(EditorPropertyVector4, EditorProperty);
+	EditorSpinSlider *spin[4];
+	bool setting;
+	void _value_changed(double p_val, const String &p_name);
+
+protected:
+	void _notification(int p_what);
+	static void _bind_methods();
+
+public:
+	virtual void update_property();
+	virtual void update_using_vector(Vector4 p_vector);
+	virtual Vector4 get_vector();
+	void setup(double p_min, double p_max, double p_step, bool p_no_slider);
+	EditorPropertyVector4();
+};
+
+class EditorPropertyVector4i : public EditorProperty {
+	GDCLASS(EditorPropertyVector4i, EditorProperty);
+	EditorSpinSlider *spin[4];
+	bool setting;
+	void _value_changed(double p_val, const String &p_name);
+
+protected:
+	void _notification(int p_what);
+	static void _bind_methods();
+
+public:
+	virtual void update_property();
+	void setup(int p_min, int p_max, bool p_no_slider);
+	EditorPropertyVector4i();
+};
+
 class EditorPropertyPlane : public EditorProperty {
 	GDCLASS(EditorPropertyPlane, EditorProperty);
 	EditorSpinSlider *spin[4];
@@ -611,6 +647,23 @@ public:
 	virtual void update_using_transform(Transform p_transform);
 	void setup(double p_min, double p_max, double p_step, bool p_no_slider);
 	EditorPropertyTransform();
+};
+
+class EditorPropertyProjection : public EditorProperty {
+	GDCLASS(EditorPropertyProjection, EditorProperty);
+	EditorSpinSlider *spin[16];
+	bool setting;
+	void _value_changed(double p_val, const String &p_name);
+
+protected:
+	void _notification(int p_what);
+	static void _bind_methods();
+
+public:
+	virtual void update_property();
+	virtual void update_using_projection(Projection p_projection);
+	void setup(double p_min, double p_max, double p_step, bool p_no_slider);
+	EditorPropertyProjection();
 };
 
 class EditorPropertyColor : public EditorProperty {

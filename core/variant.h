@@ -38,11 +38,14 @@
 #include "core/math/basis.h"
 #include "core/math/face3.h"
 #include "core/math/plane.h"
+#include "core/math/projection.h"
 #include "core/math/quaternion.h"
 #include "core/math/transform.h"
 #include "core/math/transform_2d.h"
 #include "core/math/vector3.h"
 #include "core/math/vector3i.h"
+#include "core/math/vector4.h"
+#include "core/math/vector4i.h"
 #include "core/node_path.h"
 #include "core/object_id.h"
 #include "core/pool_vector.h"
@@ -66,6 +69,8 @@ typedef PoolVector<Vector2> PoolVector2Array;
 typedef PoolVector<Vector2i> PoolVector2iArray;
 typedef PoolVector<Vector3> PoolVector3Array;
 typedef PoolVector<Vector3i> PoolVector3iArray;
+typedef PoolVector<Vector4> PoolVector4Array;
+typedef PoolVector<Vector4i> PoolVector4iArray;
 typedef PoolVector<Color> PoolColorArray;
 
 // Temporary workaround until c++11 alignas()
@@ -96,41 +101,46 @@ public:
 		STRING,
 
 		// math types
-
-		VECTOR2, // 5
-		VECTOR2I,
-		RECT2,
+		RECT2, // 5
 		RECT2I,
+		VECTOR2,
+		VECTOR2I,
 		VECTOR3,
-		VECTOR3I, //10
-		TRANSFORM2D,
+		VECTOR3I, // 10
+		VECTOR4,
+		VECTOR4I,
+
 		PLANE,
 		QUATERNION,
-		AABB,
-		BASIS, //15
+		AABB, // 15
+		BASIS,
 		TRANSFORM,
+		TRANSFORM2D,
+		PROJECTION,
 
 		// misc types
-		COLOR,
-		NODE_PATH, 
-		_RID,
-		OBJECT, //20
+		COLOR, // 20
+		NODE_PATH,
+		RID,
+		OBJECT,
 		STRING_NAME,
-		DICTIONARY,
+		DICTIONARY, // 25
 		ARRAY,
 
 		// arrays
-		POOL_BYTE_ARRAY, 
-		POOL_INT_ARRAY, //25
-		POOL_REAL_ARRAY, 
-		POOL_STRING_ARRAY,
+		POOL_BYTE_ARRAY,
+		POOL_INT_ARRAY,
+		POOL_REAL_ARRAY,
+		POOL_STRING_ARRAY, //30
 		POOL_VECTOR2_ARRAY,
 		POOL_VECTOR2I_ARRAY,
-		POOL_VECTOR3_ARRAY, //30
-		POOL_VECTOR3I_ARRAY, 
+		POOL_VECTOR3_ARRAY,
+		POOL_VECTOR3I_ARRAY,
+		POOL_VECTOR4_ARRAY, //35
+		POOL_VECTOR4I_ARRAY,
 		POOL_COLOR_ARRAY,
 
-		VARIANT_MAX // 33
+		VARIANT_MAX // 38
 
 	};
 
@@ -166,6 +176,7 @@ private:
 		::AABB *_aabb;
 		Basis *_basis;
 		Transform *_transform;
+		Projection *_projection;
 		void *_ptr; //generic pointer
 		uint8_t _mem[sizeof(ObjData) > (sizeof(real_t) * 4) ? sizeof(ObjData) : (sizeof(real_t) * 4)];
 	} _data GCC_ALIGNED_8;
@@ -210,23 +221,26 @@ public:
 	operator double() const;
 	operator String() const;
 	operator StringName() const;
-	operator Vector2() const;
-	operator Vector2i() const;
 	operator Rect2() const;
 	operator Rect2i() const;
+	operator Vector2() const;
+	operator Vector2i() const;
 	operator Vector3() const;
 	operator Vector3i() const;
+	operator Vector4() const;
+	operator Vector4i() const;
 	operator Plane() const;
 	operator ::AABB() const;
 	operator Quaternion() const;
 	operator Basis() const;
 	operator Transform() const;
 	operator Transform2D() const;
+	operator Projection() const;
 
 	operator Color() const;
 	operator NodePath() const;
 	operator RefPtr() const;
-	operator RID() const;
+	operator ::RID() const;
 
 	operator Object *() const;
 	operator Node *() const;
@@ -243,6 +257,8 @@ public:
 	operator PoolVector<Vector2i>() const;
 	operator PoolVector<Vector3>() const;
 	operator PoolVector<Vector3i>() const;
+	operator PoolVector<Vector4>() const;
+	operator PoolVector<Vector4i>() const;
 	operator PoolVector<Color>() const;
 	operator PoolVector<Plane>() const;
 	operator PoolVector<Face3>() const;
@@ -255,11 +271,13 @@ public:
 	operator Vector<StringName>() const;
 	operator Vector<Vector3>() const;
 	operator Vector<Vector3i>() const;
+	operator Vector<Vector4>() const;
+	operator Vector<Vector4i>() const;
 	operator Vector<Color>() const;
-	operator Vector<RID>() const;
+	operator Vector<::RID>() const;
 	operator Vector<Vector2>() const;
 	operator Vector<Vector2i>() const;
-	
+
 	operator Vector<Plane>() const;
 
 	// some core type enums to convert to
@@ -295,6 +313,9 @@ public:
 	Variant(const Rect2i &p_rect2);
 	Variant(const Vector3 &p_vector3);
 	Variant(const Vector3i &p_vector3);
+	Variant(const Vector4 &p_vector4);
+	Variant(const Vector4i &p_vector4);
+	Variant(const Projection &p_projection);
 	Variant(const Plane &p_plane);
 	Variant(const ::AABB &p_aabb);
 	Variant(const Quaternion &p_quat);
@@ -304,12 +325,12 @@ public:
 	Variant(const Color &p_color);
 	Variant(const NodePath &p_node_path);
 	Variant(const RefPtr &p_resource);
-	Variant(const RID &p_rid);
+	Variant(const ::RID &p_rid);
 	Variant(const Object *p_object);
 	Variant(const Dictionary &p_dictionary);
 
 	Variant(const Array &p_array);
-	Variant(const PoolVector<Plane> &p_array); // helper
+	Variant(const PoolVector<Plane> &p_array);
 	Variant(const PoolVector<uint8_t> &p_raw_array);
 	Variant(const PoolVector<int> &p_int_array);
 	Variant(const PoolVector<real_t> &p_real_array);
@@ -318,8 +339,10 @@ public:
 	Variant(const PoolVector<Vector3i> &p_vector3_array);
 	Variant(const PoolVector<Color> &p_color_array);
 	Variant(const PoolVector<Face3> &p_face_array);
-	Variant(const PoolVector<Vector2> &p_vector2_array); // helper
-	Variant(const PoolVector<Vector2i> &p_vector2_array); // helper
+	Variant(const PoolVector<Vector2> &p_vector2_array);
+	Variant(const PoolVector<Vector2i> &p_vector2_array);
+	Variant(const PoolVector<Vector4> &p_vector4_array);
+	Variant(const PoolVector<Vector4i> &p_vector4_array);
 
 	Variant(const Vector<Variant> &p_array);
 	Variant(const Vector<uint8_t> &p_array);
@@ -330,10 +353,12 @@ public:
 	Variant(const Vector<Vector3> &p_array);
 	Variant(const Vector<Vector3i> &p_array);
 	Variant(const Vector<Color> &p_array);
-	Variant(const Vector<Plane> &p_array); // helper
-	Variant(const Vector<RID> &p_array); // helper
-	Variant(const Vector<Vector2> &p_array); // helper
-	Variant(const Vector<Vector2i> &p_array); // helper
+	Variant(const Vector<Plane> &p_array);
+	Variant(const Vector<::RID> &p_array);
+	Variant(const Vector<Vector2> &p_array);
+	Variant(const Vector<Vector2i> &p_array);
+	Variant(const Vector<Vector4> &p_array);
+	Variant(const Vector<Vector4i> &p_array);
 
 	Variant(const IP_Address &p_address);
 
@@ -458,7 +483,9 @@ public:
 
 	void operator=(const Variant &p_variant); // only this is enough for all the other types
 	Variant(const Variant &p_variant);
-	_FORCE_INLINE_ Variant() { type = NIL; }
+	_FORCE_INLINE_ Variant() {
+		type = NIL;
+	}
 	_FORCE_INLINE_ ~Variant() {
 		if (type != Variant::NIL) {
 			clear();

@@ -48,16 +48,6 @@ Variant fieldwise_assign(const Variant &p_target, const Variant &p_source, const
 
 	switch (p_source.get_type()) {
 
-		case Variant::VECTOR2: {
-
-			SETUP_TYPE(Vector2)
-
-			/**/ TRY_TRANSFER_FIELD("x", x)
-			else TRY_TRANSFER_FIELD("y", y)
-
-			return target;
-		}
-
 		case Variant::RECT2: {
 
 			SETUP_TYPE(Rect2)
@@ -70,6 +60,38 @@ Variant fieldwise_assign(const Variant &p_target, const Variant &p_source, const
 			return target;
 		}
 
+		case Variant::RECT2I: {
+
+			SETUP_TYPE(Rect2i)
+
+			/**/ TRY_TRANSFER_FIELD("x", position.x)
+			else TRY_TRANSFER_FIELD("y", position.y)
+			else TRY_TRANSFER_FIELD("w", size.x)
+			else TRY_TRANSFER_FIELD("h", size.y)
+
+			return target;
+		}
+
+		case Variant::VECTOR2: {
+
+			SETUP_TYPE(Vector2)
+
+			/**/ TRY_TRANSFER_FIELD("x", x)
+			else TRY_TRANSFER_FIELD("y", y)
+
+			return target;
+		}
+
+		case Variant::VECTOR2I: {
+
+			SETUP_TYPE(Vector2i)
+
+			/**/ TRY_TRANSFER_FIELD("x", x)
+			else TRY_TRANSFER_FIELD("y", y)
+
+			return target;
+		}
+
 		case Variant::VECTOR3: {
 
 			SETUP_TYPE(Vector3)
@@ -77,6 +99,39 @@ Variant fieldwise_assign(const Variant &p_target, const Variant &p_source, const
 			/**/ TRY_TRANSFER_FIELD("x", x)
 			else TRY_TRANSFER_FIELD("y", y)
 			else TRY_TRANSFER_FIELD("z", z)
+
+			return target;
+		}
+
+		case Variant::VECTOR3I: {
+
+			SETUP_TYPE(Vector3i)
+
+			/**/ TRY_TRANSFER_FIELD("x", x)
+			else TRY_TRANSFER_FIELD("y", y)
+			else TRY_TRANSFER_FIELD("z", z)
+
+			return target;
+		}
+
+		case Variant::VECTOR4: {
+			SETUP_TYPE(Vector4)
+
+			/**/ TRY_TRANSFER_FIELD("x", x)
+			else TRY_TRANSFER_FIELD("y", y)
+			else TRY_TRANSFER_FIELD("z", z)
+			else TRY_TRANSFER_FIELD("w", w)
+
+			return target;
+		}
+
+		case Variant::VECTOR4I: {
+			SETUP_TYPE(Vector4i)
+
+			/**/ TRY_TRANSFER_FIELD("x", x)
+			else TRY_TRANSFER_FIELD("y", y)
+			else TRY_TRANSFER_FIELD("z", z)
+			else TRY_TRANSFER_FIELD("w", w)
 
 			return target;
 		}
@@ -119,20 +174,6 @@ Variant fieldwise_assign(const Variant &p_target, const Variant &p_source, const
 			return target;
 		}
 
-		case Variant::TRANSFORM2D: {
-
-			SETUP_TYPE(Transform2D)
-
-			/**/ TRY_TRANSFER_FIELD("xx", columns[0][0])
-			else TRY_TRANSFER_FIELD("xy", columns[0][1])
-			else TRY_TRANSFER_FIELD("yx", columns[1][0])
-			else TRY_TRANSFER_FIELD("yy", columns[1][1])
-			else TRY_TRANSFER_FIELD("ox", columns[2][0])
-			else TRY_TRANSFER_FIELD("oy", columns[2][1])
-
-			return target;
-		}
-
 		case Variant::BASIS: {
 
 			SETUP_TYPE(Basis)
@@ -166,6 +207,20 @@ Variant fieldwise_assign(const Variant &p_target, const Variant &p_source, const
 			else TRY_TRANSFER_FIELD("xo", origin.x)
 			else TRY_TRANSFER_FIELD("yo", origin.y)
 			else TRY_TRANSFER_FIELD("zo", origin.z)
+
+			return target;
+		}
+
+		case Variant::TRANSFORM2D: {
+
+			SETUP_TYPE(Transform2D)
+
+			/**/ TRY_TRANSFER_FIELD("xx", columns[0][0])
+			else TRY_TRANSFER_FIELD("xy", columns[0][1])
+			else TRY_TRANSFER_FIELD("yx", columns[1][0])
+			else TRY_TRANSFER_FIELD("yy", columns[1][1])
+			else TRY_TRANSFER_FIELD("ox", columns[2][0])
+			else TRY_TRANSFER_FIELD("oy", columns[2][1])
 
 			return target;
 		}

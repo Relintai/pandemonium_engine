@@ -957,7 +957,7 @@ void PropInstanceMerger::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("materials_get"), &PropInstanceMerger::materials_get);
 	ClassDB::bind_method(D_METHOD("materials_set"), &PropInstanceMerger::materials_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "20/19:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "23/19:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
 
 	//Meshes
 	ClassDB::bind_method(D_METHOD("mesh_get", "index"), &PropInstanceMerger::mesh_get);

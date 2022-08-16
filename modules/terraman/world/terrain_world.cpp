@@ -1149,7 +1149,7 @@ void TerrainWorld::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("voxel_structures_get"), &TerrainWorld::voxel_structures_get);
 	ClassDB::bind_method(D_METHOD("voxel_structures_set"), &TerrainWorld::voxel_structures_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "voxel_structures", PROPERTY_HINT_NONE, "20/19:TerrainStructure", PROPERTY_USAGE_DEFAULT, "TerrainStructure"), "voxel_structures_set", "voxel_structures_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "voxel_structures", PROPERTY_HINT_NONE, "23/19:TerrainStructure", PROPERTY_USAGE_DEFAULT, "TerrainStructure"), "voxel_structures_set", "voxel_structures_get");
 
 	BIND_VMETHOD(MethodInfo("_chunk_added", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "TerrainChunk")));
 
@@ -1166,7 +1166,7 @@ void TerrainWorld::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("chunks_get"), &TerrainWorld::chunks_get);
 	ClassDB::bind_method(D_METHOD("chunks_set"), &TerrainWorld::chunks_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "chunks", PROPERTY_HINT_NONE, "20/19:TerrainChunk", PROPERTY_USAGE_DEFAULT, "TerrainChunk"), "chunks_set", "chunks_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "chunks", PROPERTY_HINT_NONE, "23/19:TerrainChunk", PROPERTY_USAGE_DEFAULT, "TerrainChunk"), "chunks_set", "chunks_get");
 
 	ClassDB::bind_method(D_METHOD("generation_queue_add_to", "chunk"), &TerrainWorld::generation_queue_add_to);
 	ClassDB::bind_method(D_METHOD("generation_queue_get_index", "index"), &TerrainWorld::generation_queue_get_index);

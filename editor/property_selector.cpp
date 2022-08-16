@@ -30,8 +30,6 @@
 
 #include "property_selector.h"
 
-#include "core/os/keyboard.h"
-#include "editor/editor_node.h"
 #include "core/class_db.h"
 #include "core/color.h"
 #include "core/error_macros.h"
@@ -39,12 +37,14 @@
 #include "core/map.h"
 #include "core/method_bind.h"
 #include "core/os/input_event.h"
+#include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/script_language.h"
 #include "core/string_name.h"
 #include "core/typedefs.h"
 #include "editor/doc/doc_data.h"
 #include "editor/editor_help.h"
+#include "editor/editor_node.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/control.h"
@@ -143,19 +143,26 @@ void PropertySelector::_update_search() {
 			Control::get_icon("int", "EditorIcons"),
 			Control::get_icon("float", "EditorIcons"),
 			Control::get_icon("String", "EditorIcons"),
-			Control::get_icon("Vector2", "EditorIcons"),
 			Control::get_icon("Rect2", "EditorIcons"),
+			Control::get_icon("Rect2i", "EditorIcons"),
+			Control::get_icon("Vector2", "EditorIcons"),
+			Control::get_icon("Vector2i", "EditorIcons"),
 			Control::get_icon("Vector3", "EditorIcons"),
-			Control::get_icon("Transform2D", "EditorIcons"),
+			Control::get_icon("Vector3i", "EditorIcons"),
+			Control::get_icon("Vector4", "EditorIcons"),
+			Control::get_icon("Vector4i", "EditorIcons"),
 			Control::get_icon("Plane", "EditorIcons"),
 			Control::get_icon("Quaternion", "EditorIcons"),
 			Control::get_icon("AABB", "EditorIcons"),
 			Control::get_icon("Basis", "EditorIcons"),
 			Control::get_icon("Transform", "EditorIcons"),
+			Control::get_icon("Transform2D", "EditorIcons"),
+			Control::get_icon("Projection", "EditorIcons"),
 			Control::get_icon("Color", "EditorIcons"),
 			Control::get_icon("Path", "EditorIcons"),
 			Control::get_icon("RID", "EditorIcons"),
 			Control::get_icon("Object", "EditorIcons"),
+			Control::get_icon("StringName", "EditorIcons"),
 			Control::get_icon("Dictionary", "EditorIcons"),
 			Control::get_icon("Array", "EditorIcons"),
 			Control::get_icon("PoolByteArray", "EditorIcons"),
@@ -163,7 +170,11 @@ void PropertySelector::_update_search() {
 			Control::get_icon("PoolRealArray", "EditorIcons"),
 			Control::get_icon("PoolStringArray", "EditorIcons"),
 			Control::get_icon("PoolVector2Array", "EditorIcons"),
+			Control::get_icon("PoolVector2iArray", "EditorIcons"),
 			Control::get_icon("PoolVector3Array", "EditorIcons"),
+			Control::get_icon("PoolVector3iArray", "EditorIcons"),
+			Control::get_icon("PoolVector4Array", "EditorIcons"),
+			Control::get_icon("PoolVector4iArray", "EditorIcons"),
 			Control::get_icon("PoolColorArray", "EditorIcons")
 		};
 

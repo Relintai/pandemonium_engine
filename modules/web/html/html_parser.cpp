@@ -571,7 +571,7 @@ void HTMLParserTag::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_child_tags"), &HTMLParserTag::get_child_tags);
 	ClassDB::bind_method(D_METHOD("set_child_tags", "val"), &HTMLParserTag::set_child_tags);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "child_tags", PROPERTY_HINT_NONE, "20/19:HTMLParserTag", PROPERTY_USAGE_DEFAULT, "HTMLParserTag"), "set_child_tags", "get_child_tags");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "child_tags", PROPERTY_HINT_NONE, "23/19:HTMLParserTag", PROPERTY_USAGE_DEFAULT, "HTMLParserTag"), "set_child_tags", "get_child_tags");
 
 	ClassDB::bind_method(D_METHOD("add_child_attribute", "tag"), &HTMLParserTag::add_child_attribute);
 	ClassDB::bind_method(D_METHOD("remote_child_attribute", "index"), &HTMLParserTag::remote_child_attribute);
@@ -581,7 +581,7 @@ void HTMLParserTag::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_attributes"), &HTMLParserTag::get_attributes);
 	ClassDB::bind_method(D_METHOD("set_attributes", "val"), &HTMLParserTag::set_attributes);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "attributes", PROPERTY_HINT_NONE, "20/19:HTMLParserAttribute", PROPERTY_USAGE_DEFAULT, "HTMLParserAttribute"), "set_attributes", "get_attributes");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "attributes", PROPERTY_HINT_NONE, "23/19:HTMLParserAttribute", PROPERTY_USAGE_DEFAULT, "HTMLParserAttribute"), "set_attributes", "get_attributes");
 
 	ClassDB::bind_method(D_METHOD("get_first", "t"), &HTMLParserTag::get_first);
 	ClassDB::bind_method(D_METHOD("get_firstc", "t", "attrib", "val"), &HTMLParserTag::get_firstc);

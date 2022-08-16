@@ -36,6 +36,7 @@
 #include "core/math/vector4.h"
 #include "core/vector.h"
 
+class Array;
 class AABB;
 class Plane;
 struct Rect2;
@@ -90,12 +91,17 @@ struct Projection {
 	static Projection create_frustum(real_t p_left, real_t p_right, real_t p_bottom, real_t p_top, real_t p_near, real_t p_far);
 	static Projection create_frustum_aspect(real_t p_size, real_t p_aspect, Vector2 p_offset, real_t p_near, real_t p_far, bool p_flip_fov = false);
 	static Projection create_fit_aabb(const AABB &p_aabb);
+
 	Projection perspective_znear_adjusted(real_t p_new_znear) const;
-	Plane get_projection_plane(Planes p_plane) const;
+	Plane get_projection_plane(Projection::Planes p_plane) const;
 	Projection flipped_y() const;
 	Projection jitter_offseted(const Vector2 &p_offset) const;
 
 	static real_t get_fovy(real_t p_fovx, real_t p_aspect) {
+		return Math::rad2deg(Math::atan(p_aspect * Math::tan(Math::deg2rad(p_fovx) * 0.5)) * 2.0);
+	}
+
+	real_t calculate_fovy(real_t p_fovx, real_t p_aspect) {
 		return Math::rad2deg(Math::atan(p_aspect * Math::tan(Math::deg2rad(p_fovx) * 0.5)) * 2.0);
 	}
 
@@ -106,6 +112,7 @@ struct Projection {
 	bool is_orthogonal() const;
 
 	Vector<Plane> get_projection_planes(const Transform &p_transform) const;
+	Array get_projection_planes_array(const Transform &p_transform) const;
 
 	bool get_endpoints(const Transform &p_transform, Vector3 *p_8points) const;
 	Vector2 get_viewport_half_extents() const;
@@ -116,11 +123,11 @@ struct Projection {
 
 	Projection operator*(const Projection &p_matrix) const;
 
-	Plane xform4(const Plane &p_vec4) const;
-	_FORCE_INLINE_ Vector3 xform(const Vector3 &p_vec3) const;
-
 	Vector4 xform(const Vector4 &p_vec4) const;
 	Vector4 xform_inv(const Vector4 &p_vec4) const;
+
+	_FORCE_INLINE_ Vector3 xform(const Vector3 &p_vector) const;
+	Plane xform(const Plane &p_plane) const;
 
 	operator String() const;
 
@@ -148,6 +155,24 @@ struct Projection {
 	}
 
 	float get_lod_multiplier() const;
+
+	_FORCE_INLINE_ void set_perspective1(real_t p_fovy_degrees, real_t p_aspect, real_t p_z_near, real_t p_z_far, bool p_flip_fov = false) {
+		set_perspective(p_fovy_degrees, p_aspect, p_z_near, p_z_far, p_flip_fov);
+	}
+	_FORCE_INLINE_ void set_perspective2(real_t p_fovy_degrees, real_t p_aspect, real_t p_z_near, real_t p_z_far, bool p_flip_fov, int p_eye, real_t p_intraocular_dist, real_t p_convergence_dist) {
+		set_perspective(p_fovy_degrees, p_aspect, p_z_near, p_z_far, p_flip_fov, p_eye, p_intraocular_dist, p_convergence_dist);
+	}
+	_FORCE_INLINE_ void set_orthogonal1(real_t p_left, real_t p_right, real_t p_bottom, real_t p_top, real_t p_znear, real_t p_zfar) {
+		set_orthogonal(p_left, p_right, p_bottom, p_top, p_znear, p_zfar);
+	}
+	_FORCE_INLINE_ void set_orthogonal2(real_t p_size, real_t p_aspect, real_t p_znear, real_t p_zfar, bool p_flip_fov = false) {
+		set_orthogonal(p_size, p_aspect, p_znear, p_zfar, p_flip_fov);
+	}
+	_FORCE_INLINE_ void set_frustum1(real_t p_left, real_t p_right, real_t p_bottom, real_t p_top, real_t p_near, real_t p_far) {
+		set_frustum(p_left, p_right, p_bottom, p_top, p_near, p_far);
+	}
+	//Vector2 is incomplete here
+	void set_frustum2(real_t p_size, real_t p_aspect, Vector2 p_offset, real_t p_near, real_t p_far, bool p_flip_fov = false);
 
 	Projection();
 	Projection(const Vector4 &p_x, const Vector4 &p_y, const Vector4 &p_z, const Vector4 &p_w);

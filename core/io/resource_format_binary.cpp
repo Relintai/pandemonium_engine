@@ -79,13 +79,12 @@ enum {
 	VARIANT_VECTOR3I_ARRAY = 45,
 	VARIANT_VECTOR2I_ARRAY = 46,
 	VARIANT_STRING_NAME = 47,
-#ifndef DISABLE_DEPRECATED
-	VARIANT_IMAGE = 21, // - no longer variant type
-	IMAGE_ENCODING_EMPTY = 0,
-	IMAGE_ENCODING_RAW = 1,
-	IMAGE_ENCODING_LOSSLESS = 2,
-	IMAGE_ENCODING_LOSSY = 3,
-#endif
+	VARIANT_VECTOR4 = 48,
+	VARIANT_VECTOR4I = 49,
+	VARIANT_PROJECTION = 50,
+	VARIANT_VECTOR4_ARRAY = 51,
+	VARIANT_VECTOR4I_ARRAY = 52,
+
 	OBJECT_EMPTY = 0,
 	OBJECT_EXTERNAL_RESOURCE = 1,
 	OBJECT_INTERNAL_RESOURCE = 2,
@@ -152,20 +151,6 @@ Error ResourceInteractiveLoaderBinary::parse_variant(Variant &r_v) {
 		case VARIANT_STRING: {
 			r_v = get_unicode_string();
 		} break;
-		case VARIANT_VECTOR2: {
-			Vector2 v;
-			v.x = f->get_real();
-			v.y = f->get_real();
-			r_v = v;
-
-		} break;
-		case VARIANT_VECTOR2I: {
-			Vector2i v;
-			v.x = f->get_32();
-			v.y = f->get_32();
-			r_v = v;
-
-		} break;
 		case VARIANT_RECT2: {
 			Rect2 v;
 			v.position.x = f->get_real();
@@ -184,6 +169,20 @@ Error ResourceInteractiveLoaderBinary::parse_variant(Variant &r_v) {
 			r_v = v;
 
 		} break;
+		case VARIANT_VECTOR2: {
+			Vector2 v;
+			v.x = f->get_real();
+			v.y = f->get_real();
+			r_v = v;
+
+		} break;
+		case VARIANT_VECTOR2I: {
+			Vector2i v;
+			v.x = f->get_32();
+			v.y = f->get_32();
+			r_v = v;
+
+		} break;
 		case VARIANT_VECTOR3: {
 			Vector3 v;
 			v.x = f->get_real();
@@ -196,6 +195,22 @@ Error ResourceInteractiveLoaderBinary::parse_variant(Variant &r_v) {
 			v.x = f->get_32();
 			v.y = f->get_32();
 			v.z = f->get_32();
+			r_v = v;
+		} break;
+		case VARIANT_VECTOR4: {
+			Vector4 v;
+			v.x = f->get_real();
+			v.y = f->get_real();
+			v.z = f->get_real();
+			v.w = f->get_real();
+			r_v = v;
+		} break;
+		case VARIANT_VECTOR4I: {
+			Vector4i v;
+			v.x = f->get_32();
+			v.y = f->get_32();
+			v.z = f->get_32();
+			v.w = f->get_32();
 			r_v = v;
 		} break;
 		case VARIANT_PLANE: {
@@ -223,17 +238,6 @@ Error ResourceInteractiveLoaderBinary::parse_variant(Variant &r_v) {
 			v.size.x = f->get_real();
 			v.size.y = f->get_real();
 			v.size.z = f->get_real();
-			r_v = v;
-
-		} break;
-		case VARIANT_MATRIX32: {
-			Transform2D v;
-			v.columns[0].x = f->get_real();
-			v.columns[0].y = f->get_real();
-			v.columns[1].x = f->get_real();
-			v.columns[1].y = f->get_real();
-			v.columns[2].x = f->get_real();
-			v.columns[2].y = f->get_real();
 			r_v = v;
 
 		} break;
@@ -267,6 +271,37 @@ Error ResourceInteractiveLoaderBinary::parse_variant(Variant &r_v) {
 			v.origin.z = f->get_real();
 			r_v = v;
 		} break;
+		case VARIANT_MATRIX32: {
+			Transform2D v;
+			v.columns[0].x = f->get_real();
+			v.columns[0].y = f->get_real();
+			v.columns[1].x = f->get_real();
+			v.columns[1].y = f->get_real();
+			v.columns[2].x = f->get_real();
+			v.columns[2].y = f->get_real();
+			r_v = v;
+
+		} break;
+		case VARIANT_PROJECTION: {
+			Projection v;
+			v.matrix[0].x = f->get_real();
+			v.matrix[0].y = f->get_real();
+			v.matrix[0].z = f->get_real();
+			v.matrix[0].w = f->get_real();
+			v.matrix[1].x = f->get_real();
+			v.matrix[1].y = f->get_real();
+			v.matrix[1].z = f->get_real();
+			v.matrix[1].w = f->get_real();
+			v.matrix[2].x = f->get_real();
+			v.matrix[2].y = f->get_real();
+			v.matrix[2].z = f->get_real();
+			v.matrix[2].w = f->get_real();
+			v.matrix[3].x = f->get_real();
+			v.matrix[3].y = f->get_real();
+			v.matrix[3].z = f->get_real();
+			v.matrix[3].w = f->get_real();
+			r_v = v;
+		} break;
 		case VARIANT_COLOR: {
 			Color v;
 			v.r = f->get_real();
@@ -276,7 +311,6 @@ Error ResourceInteractiveLoaderBinary::parse_variant(Variant &r_v) {
 			r_v = v;
 
 		} break;
-
 		case VARIANT_NODE_PATH: {
 			Vector<StringName> names;
 			Vector<StringName> subnames;
@@ -571,6 +605,54 @@ Error ResourceInteractiveLoaderBinary::parse_variant(Variant &r_v) {
 			r_v = array;
 
 		} break;
+		case VARIANT_VECTOR4_ARRAY: {
+			uint32_t len = f->get_32();
+
+			PoolVector<Vector4> array;
+			array.resize(len);
+			PoolVector<Vector4>::Write w = array.write();
+			if (sizeof(Vector4) == 16) {
+				f->get_buffer((uint8_t *)w.ptr(), len * sizeof(real_t) * 4);
+#ifdef BIG_ENDIAN_ENABLED
+				{
+					uint32_t *ptr = (uint32_t *)w.ptr();
+					for (int i = 0; i < len * 4; i++) {
+						ptr[i] = BSWAP32(ptr[i]);
+					}
+				}
+
+#endif
+			} else {
+				ERR_FAIL_V_MSG(ERR_UNAVAILABLE, "Vector4 size is NOT 16!");
+			}
+			w.release();
+			r_v = array;
+
+		} break;
+		case VARIANT_VECTOR4I_ARRAY: {
+			uint32_t len = f->get_32();
+
+			PoolVector<Vector4i> array;
+			array.resize(len);
+			PoolVector<Vector4i>::Write w = array.write();
+			if (sizeof(Vector4i) == 16) {
+				f->get_buffer((uint8_t *)w.ptr(), len * sizeof(uint32_t) * 4);
+#ifdef BIG_ENDIAN_ENABLED
+				{
+					uint32_t *ptr = (uint32_t *)w.ptr();
+					for (int i = 0; i < len * 4; i++) {
+						ptr[i] = BSWAP32(ptr[i]);
+					}
+				}
+#endif
+			} else {
+				ERR_FAIL_V_MSG(ERR_UNAVAILABLE, "Vector4i size is NOT 16!");
+			}
+			w.release();
+			r_v = array;
+
+		} break;
+
 		case VARIANT_COLOR_ARRAY: {
 			uint32_t len = f->get_32();
 
@@ -595,66 +677,6 @@ Error ResourceInteractiveLoaderBinary::parse_variant(Variant &r_v) {
 			w.release();
 			r_v = array;
 		} break;
-#ifndef DISABLE_DEPRECATED
-		case VARIANT_IMAGE: {
-			uint32_t encoding = f->get_32();
-			if (encoding == IMAGE_ENCODING_EMPTY) {
-				r_v = Ref<Image>();
-				break;
-			} else if (encoding == IMAGE_ENCODING_RAW) {
-				uint32_t width = f->get_32();
-				uint32_t height = f->get_32();
-				uint32_t mipmaps = f->get_32();
-				uint32_t format = f->get_32();
-				const uint32_t format_version_shift = 24;
-				const uint32_t format_version_mask = format_version_shift - 1;
-
-				uint32_t format_version = format >> format_version_shift;
-
-				const uint32_t current_version = 0;
-				if (format_version > current_version) {
-					ERR_PRINT("Format version for encoded binary image is too new.");
-					return ERR_PARSE_ERROR;
-				}
-
-				Image::Format fmt = Image::Format(format & format_version_mask); //if format changes, we can add a compatibility bit on top
-
-				uint32_t datalen = f->get_32();
-
-				PoolVector<uint8_t> imgdata;
-				imgdata.resize(datalen);
-				PoolVector<uint8_t>::Write w = imgdata.write();
-				f->get_buffer(w.ptr(), datalen);
-				_advance_padding(datalen);
-				w.release();
-
-				Ref<Image> image;
-				image.instance();
-				image->create(width, height, mipmaps, fmt, imgdata);
-				r_v = image;
-
-			} else {
-				//compressed
-				PoolVector<uint8_t> data;
-				data.resize(f->get_32());
-				PoolVector<uint8_t>::Write w = data.write();
-				f->get_buffer(w.ptr(), data.size());
-				w.release();
-
-				Ref<Image> image;
-
-				if (encoding == IMAGE_ENCODING_LOSSY && Image::webp_unpacker) {
-					image = Image::webp_unpacker(data); // IMAGE_ENCODING_LOSSY always meant WebP
-				} else if (encoding == IMAGE_ENCODING_LOSSLESS && Image::png_unpacker) {
-					image = Image::png_unpacker(data); // IMAGE_ENCODING_LOSSLESS always meant png
-				}
-				_advance_padding(data.size());
-
-				r_v = image;
-			}
-
-		} break;
-#endif
 		default: {
 			ERR_FAIL_V(ERR_FILE_CORRUPT);
 		} break;
@@ -1344,20 +1366,6 @@ void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Varia
 			save_unicode_string(f, val);
 
 		} break;
-		case Variant::VECTOR2: {
-			f->store_32(VARIANT_VECTOR2);
-			Vector2 val = p_property;
-			f->store_real(val.x);
-			f->store_real(val.y);
-
-		} break;
-		case Variant::VECTOR2I: {
-			f->store_32(VARIANT_VECTOR2I);
-			Vector2i val = p_property;
-			f->store_32(val.x);
-			f->store_32(val.y);
-
-		} break;
 		case Variant::RECT2: {
 			f->store_32(VARIANT_RECT2);
 			Rect2 val = p_property;
@@ -1376,6 +1384,20 @@ void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Varia
 			f->store_32(val.size.y);
 
 		} break;
+		case Variant::VECTOR2: {
+			f->store_32(VARIANT_VECTOR2);
+			Vector2 val = p_property;
+			f->store_real(val.x);
+			f->store_real(val.y);
+
+		} break;
+		case Variant::VECTOR2I: {
+			f->store_32(VARIANT_VECTOR2I);
+			Vector2i val = p_property;
+			f->store_32(val.x);
+			f->store_32(val.y);
+
+		} break;
 		case Variant::VECTOR3: {
 			f->store_32(VARIANT_VECTOR3);
 			Vector3 val = p_property;
@@ -1392,18 +1414,24 @@ void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Varia
 			f->store_32(val.z);
 
 		} break;
-		case Variant::TRANSFORM2D: {
-			f->store_32(VARIANT_MATRIX32);
-			Transform2D val = p_property;
-			f->store_real(val.columns[0].x);
-			f->store_real(val.columns[0].y);
-			f->store_real(val.columns[1].x);
-			f->store_real(val.columns[1].y);
-			f->store_real(val.columns[2].x);
-			f->store_real(val.columns[2].y);
+		case Variant::VECTOR4: {
+			f->store_32(VARIANT_VECTOR4);
+			Vector4 val = p_property;
+			f->store_real(val.x);
+			f->store_real(val.y);
+			f->store_real(val.z);
+			f->store_real(val.w);
 
 		} break;
+		case Variant::VECTOR4I: {
+			f->store_32(VARIANT_VECTOR4I);
+			Vector4i val = p_property;
+			f->store_32(val.x);
+			f->store_32(val.y);
+			f->store_32(val.z);
+			f->store_32(val.w);
 
+		} break;
 		case Variant::PLANE: {
 			f->store_32(VARIANT_PLANE);
 			Plane val = p_property;
@@ -1447,7 +1475,6 @@ void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Varia
 			f->store_real(val.rows[2].z);
 
 		} break;
-
 		case Variant::TRANSFORM: {
 			f->store_32(VARIANT_TRANSFORM);
 			Transform val = p_property;
@@ -1465,6 +1492,38 @@ void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Varia
 			f->store_real(val.origin.z);
 
 		} break;
+		case Variant::TRANSFORM2D: {
+			f->store_32(VARIANT_MATRIX32);
+			Transform2D val = p_property;
+			f->store_real(val.columns[0].x);
+			f->store_real(val.columns[0].y);
+			f->store_real(val.columns[1].x);
+			f->store_real(val.columns[1].y);
+			f->store_real(val.columns[2].x);
+			f->store_real(val.columns[2].y);
+
+		} break;
+		case Variant::PROJECTION: {
+			f->store_32(VARIANT_PROJECTION);
+			Projection val = p_property;
+			f->store_real(val.matrix[0].x);
+			f->store_real(val.matrix[0].y);
+			f->store_real(val.matrix[0].z);
+			f->store_real(val.matrix[0].w);
+			f->store_real(val.matrix[1].x);
+			f->store_real(val.matrix[1].y);
+			f->store_real(val.matrix[1].z);
+			f->store_real(val.matrix[1].w);
+			f->store_real(val.matrix[2].x);
+			f->store_real(val.matrix[2].y);
+			f->store_real(val.matrix[2].z);
+			f->store_real(val.matrix[2].w);
+			f->store_real(val.matrix[3].x);
+			f->store_real(val.matrix[3].y);
+			f->store_real(val.matrix[3].z);
+			f->store_real(val.matrix[3].w);
+
+		} break;
 		case Variant::COLOR: {
 			f->store_32(VARIANT_COLOR);
 			Color val = p_property;
@@ -1474,7 +1533,6 @@ void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Varia
 			f->store_real(val.a);
 
 		} break;
-
 		case Variant::NODE_PATH: {
 			f->store_32(VARIANT_NODE_PATH);
 			NodePath np = p_property;
@@ -1500,7 +1558,7 @@ void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Varia
 			}
 
 		} break;
-		case Variant::_RID: {
+		case Variant::RID: {
 			f->store_32(VARIANT_RID);
 			WARN_PRINT("Can't save RIDs.");
 			RID val = p_property;
@@ -1653,6 +1711,35 @@ void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Varia
 				f->store_32(r[i].x);
 				f->store_32(r[i].y);
 				f->store_32(r[i].z);
+			}
+
+		} break;
+
+		case Variant::POOL_VECTOR4_ARRAY: {
+			f->store_32(VARIANT_VECTOR4_ARRAY);
+			PoolVector<Vector4> arr = p_property;
+			int len = arr.size();
+			f->store_32(len);
+			PoolVector<Vector4>::Read r = arr.read();
+			for (int i = 0; i < len; i++) {
+				f->store_real(r[i].x);
+				f->store_real(r[i].y);
+				f->store_real(r[i].z);
+				f->store_real(r[i].w);
+			}
+
+		} break;
+		case Variant::POOL_VECTOR4I_ARRAY: {
+			f->store_32(VARIANT_VECTOR4I_ARRAY);
+			PoolVector<Vector4i> arr = p_property;
+			int len = arr.size();
+			f->store_32(len);
+			PoolVector<Vector4i>::Read r = arr.read();
+			for (int i = 0; i < len; i++) {
+				f->store_32(r[i].x);
+				f->store_32(r[i].y);
+				f->store_32(r[i].z);
+				f->store_32(r[i].w);
 			}
 
 		} break;

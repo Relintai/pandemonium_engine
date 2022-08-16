@@ -147,5 +147,5 @@ void TerrainLibrarySimple::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_terra_surfaces"), &TerrainLibrarySimple::get_terra_surfaces);
 	ClassDB::bind_method(D_METHOD("set_terra_surfaces"), &TerrainLibrarySimple::set_terra_surfaces);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "terra_surfaces", PROPERTY_HINT_NONE, "20/19:TerrainSurfaceSimple", PROPERTY_USAGE_DEFAULT, "TerrainSurfaceSimple"), "set_terra_surfaces", "get_terra_surfaces");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "terra_surfaces", PROPERTY_HINT_NONE, "23/19:TerrainSurfaceSimple", PROPERTY_USAGE_DEFAULT, "TerrainSurfaceSimple"), "set_terra_surfaces", "get_terra_surfaces");
 }

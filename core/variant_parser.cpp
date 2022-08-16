@@ -538,32 +538,6 @@ Error VariantParser::parse_value(Token &token, Variant &value, Stream *p_stream,
 			value = -Math_INF;
 		} else if (id == "nan") {
 			value = Math_NAN;
-		} else if (id == "Vector2") {
-			Vector<float> args;
-			Error err = _parse_construct<float>(p_stream, args, line, r_err_str);
-			if (err) {
-				return err;
-			}
-
-			if (args.size() != 2) {
-				r_err_str = "Expected 2 arguments for constructor";
-				return ERR_PARSE_ERROR;
-			}
-
-			value = Vector2(args[0], args[1]);
-		} else if (id == "Vector2i") {
-			Vector<int> args;
-			Error err = _parse_construct<int>(p_stream, args, line, r_err_str);
-			if (err) {
-				return err;
-			}
-
-			if (args.size() != 2) {
-				r_err_str = "Expected 2 arguments for constructor";
-				return ERR_PARSE_ERROR;
-			}
-
-			value = Vector2i(args[0], args[1]);
 		} else if (id == "Rect2") {
 			Vector<float> args;
 			Error err = _parse_construct<float>(p_stream, args, line, r_err_str);
@@ -590,6 +564,32 @@ Error VariantParser::parse_value(Token &token, Variant &value, Stream *p_stream,
 			}
 
 			value = Rect2i(args[0], args[1], args[2], args[3]);
+		} else if (id == "Vector2") {
+			Vector<float> args;
+			Error err = _parse_construct<float>(p_stream, args, line, r_err_str);
+			if (err) {
+				return err;
+			}
+
+			if (args.size() != 2) {
+				r_err_str = "Expected 2 arguments for constructor";
+				return ERR_PARSE_ERROR;
+			}
+
+			value = Vector2(args[0], args[1]);
+		} else if (id == "Vector2i") {
+			Vector<int> args;
+			Error err = _parse_construct<int>(p_stream, args, line, r_err_str);
+			if (err) {
+				return err;
+			}
+
+			if (args.size() != 2) {
+				r_err_str = "Expected 2 arguments for constructor";
+				return ERR_PARSE_ERROR;
+			}
+
+			value = Vector2i(args[0], args[1]);
 		} else if (id == "Vector3") {
 			Vector<float> args;
 			Error err = _parse_construct<float>(p_stream, args, line, r_err_str);
@@ -616,23 +616,32 @@ Error VariantParser::parse_value(Token &token, Variant &value, Stream *p_stream,
 			}
 
 			value = Vector3i(args[0], args[1], args[2]);
-		} else if (id == "Transform2D" || id == "Matrix32") { //compatibility
+		} else if (id == "Vector4") {
 			Vector<float> args;
 			Error err = _parse_construct<float>(p_stream, args, line, r_err_str);
 			if (err) {
 				return err;
 			}
 
-			if (args.size() != 6) {
-				r_err_str = "Expected 6 arguments for constructor";
+			if (args.size() != 4) {
+				r_err_str = "Expected 4 arguments for constructor";
 				return ERR_PARSE_ERROR;
 			}
 
-			Transform2D m;
-			m[0] = Vector2(args[0], args[1]);
-			m[1] = Vector2(args[2], args[3]);
-			m[2] = Vector2(args[4], args[5]);
-			value = m;
+			value = Vector4(args[0], args[1], args[2], args[3]);
+		} else if (id == "Vector4i") {
+			Vector<int> args;
+			Error err = _parse_construct<int>(p_stream, args, line, r_err_str);
+			if (err) {
+				return err;
+			}
+
+			if (args.size() != 4) {
+				r_err_str = "Expected 4 arguments for constructor";
+				return ERR_PARSE_ERROR;
+			}
+
+			value = Vector4i(args[0], args[1], args[2], args[3]);
 		} else if (id == "Plane") {
 			Vector<float> args;
 			Error err = _parse_construct<float>(p_stream, args, line, r_err_str);
@@ -672,7 +681,7 @@ Error VariantParser::parse_value(Token &token, Variant &value, Stream *p_stream,
 			}
 
 			value = AABB(Vector3(args[0], args[1], args[2]), Vector3(args[3], args[4], args[5]));
-		} else if (id == "Basis" || id == "Matrix3") { //compatibility
+		} else if (id == "Basis") {
 			Vector<float> args;
 			Error err = _parse_construct<float>(p_stream, args, line, r_err_str);
 			if (err) {
@@ -698,6 +707,36 @@ Error VariantParser::parse_value(Token &token, Variant &value, Stream *p_stream,
 			}
 
 			value = Transform(Basis(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), Vector3(args[9], args[10], args[11]));
+		} else if (id == "Transform2D") {
+			Vector<float> args;
+			Error err = _parse_construct<float>(p_stream, args, line, r_err_str);
+			if (err) {
+				return err;
+			}
+
+			if (args.size() != 6) {
+				r_err_str = "Expected 6 arguments for constructor";
+				return ERR_PARSE_ERROR;
+			}
+
+			Transform2D m;
+			m[0] = Vector2(args[0], args[1]);
+			m[1] = Vector2(args[2], args[3]);
+			m[2] = Vector2(args[4], args[5]);
+			value = m;
+		} else if (id == "Projection") {
+			Vector<real_t> args;
+			Error err = _parse_construct<real_t>(p_stream, args, line, r_err_str);
+			if (err) {
+				return err;
+			}
+
+			if (args.size() != 16) {
+				r_err_str = "Expected 16 arguments for constructor";
+				return ERR_PARSE_ERROR;
+			}
+
+			value = Projection(Vector4(args[0], args[1], args[2], args[3]), Vector4(args[4], args[5], args[6], args[7]), Vector4(args[8], args[9], args[10], args[11]), Vector4(args[12], args[13], args[14], args[15]));
 		} else if (id == "Color") {
 			Vector<float> args;
 			Error err = _parse_construct<float>(p_stream, args, line, r_err_str);
@@ -900,189 +939,6 @@ Error VariantParser::parse_value(Token &token, Variant &value, Stream *p_stream,
 					return ERR_PARSE_ERROR;
 				}
 			}
-#ifndef DISABLE_DEPRECATED
-		} else if (id == "InputEvent") {
-			get_token(p_stream, token, line, r_err_str);
-			if (token.type != TK_PARENTHESIS_OPEN) {
-				r_err_str = "Expected '('";
-				return ERR_PARSE_ERROR;
-			}
-
-			get_token(p_stream, token, line, r_err_str);
-
-			if (token.type != TK_IDENTIFIER) {
-				r_err_str = "Expected identifier";
-				return ERR_PARSE_ERROR;
-			}
-
-			String id2 = token.value;
-
-			Ref<InputEvent> ie;
-
-			if (id2 == "NONE") {
-				get_token(p_stream, token, line, r_err_str);
-
-				if (token.type != TK_PARENTHESIS_CLOSE) {
-					r_err_str = "Expected ')'";
-					return ERR_PARSE_ERROR;
-				}
-
-			} else if (id2 == "KEY") {
-				Ref<InputEventKey> key;
-				key.instance();
-				ie = key;
-
-				get_token(p_stream, token, line, r_err_str);
-				if (token.type != TK_COMMA) {
-					r_err_str = "Expected ','";
-					return ERR_PARSE_ERROR;
-				}
-
-				get_token(p_stream, token, line, r_err_str);
-				if (token.type == TK_IDENTIFIER) {
-					String name = token.value;
-					key->set_scancode(find_keycode(name));
-				} else if (token.type == TK_NUMBER) {
-					key->set_scancode(token.value);
-				} else {
-					r_err_str = "Expected string or integer for keycode";
-					return ERR_PARSE_ERROR;
-				}
-
-				get_token(p_stream, token, line, r_err_str);
-
-				if (token.type == TK_COMMA) {
-					get_token(p_stream, token, line, r_err_str);
-
-					if (token.type != TK_IDENTIFIER) {
-						r_err_str = "Expected identifier with modifier flas";
-						return ERR_PARSE_ERROR;
-					}
-
-					String mods = token.value;
-
-					if (mods.findn("C") != -1) {
-						key->set_control(true);
-					}
-					if (mods.findn("A") != -1) {
-						key->set_alt(true);
-					}
-					if (mods.findn("S") != -1) {
-						key->set_shift(true);
-					}
-					if (mods.findn("M") != -1) {
-						key->set_metakey(true);
-					}
-
-					get_token(p_stream, token, line, r_err_str);
-					if (token.type != TK_PARENTHESIS_CLOSE) {
-						r_err_str = "Expected ')'";
-						return ERR_PARSE_ERROR;
-					}
-
-				} else if (token.type != TK_PARENTHESIS_CLOSE) {
-					r_err_str = "Expected ')' or modifier flags.";
-					return ERR_PARSE_ERROR;
-				}
-
-			} else if (id2 == "MBUTTON") {
-				Ref<InputEventMouseButton> mb;
-				mb.instance();
-				ie = mb;
-
-				get_token(p_stream, token, line, r_err_str);
-				if (token.type != TK_COMMA) {
-					r_err_str = "Expected ','";
-					return ERR_PARSE_ERROR;
-				}
-
-				get_token(p_stream, token, line, r_err_str);
-				if (token.type != TK_NUMBER) {
-					r_err_str = "Expected button index";
-					return ERR_PARSE_ERROR;
-				}
-
-				mb->set_button_index(token.value);
-
-				get_token(p_stream, token, line, r_err_str);
-				if (token.type != TK_PARENTHESIS_CLOSE) {
-					r_err_str = "Expected ')'";
-					return ERR_PARSE_ERROR;
-				}
-
-			} else if (id2 == "JBUTTON") {
-				Ref<InputEventJoypadButton> jb;
-				jb.instance();
-				ie = jb;
-
-				get_token(p_stream, token, line, r_err_str);
-				if (token.type != TK_COMMA) {
-					r_err_str = "Expected ','";
-					return ERR_PARSE_ERROR;
-				}
-
-				get_token(p_stream, token, line, r_err_str);
-				if (token.type != TK_NUMBER) {
-					r_err_str = "Expected button index";
-					return ERR_PARSE_ERROR;
-				}
-
-				jb->set_button_index(token.value);
-
-				get_token(p_stream, token, line, r_err_str);
-				if (token.type != TK_PARENTHESIS_CLOSE) {
-					r_err_str = "Expected ')'";
-					return ERR_PARSE_ERROR;
-				}
-
-			} else if (id2 == "JAXIS") {
-				Ref<InputEventJoypadMotion> jm;
-				jm.instance();
-				ie = jm;
-
-				get_token(p_stream, token, line, r_err_str);
-				if (token.type != TK_COMMA) {
-					r_err_str = "Expected ','";
-					return ERR_PARSE_ERROR;
-				}
-
-				get_token(p_stream, token, line, r_err_str);
-				if (token.type != TK_NUMBER) {
-					r_err_str = "Expected axis index";
-					return ERR_PARSE_ERROR;
-				}
-
-				jm->set_axis(token.value);
-
-				get_token(p_stream, token, line, r_err_str);
-
-				if (token.type != TK_COMMA) {
-					r_err_str = "Expected ',' after axis index";
-					return ERR_PARSE_ERROR;
-				}
-
-				get_token(p_stream, token, line, r_err_str);
-				if (token.type != TK_NUMBER) {
-					r_err_str = "Expected axis sign";
-					return ERR_PARSE_ERROR;
-				}
-
-				jm->set_axis_value(token.value);
-
-				get_token(p_stream, token, line, r_err_str);
-
-				if (token.type != TK_PARENTHESIS_CLOSE) {
-					r_err_str = "Expected ')' for jaxis";
-					return ERR_PARSE_ERROR;
-				}
-
-			} else {
-				r_err_str = "Invalid input event type.";
-				return ERR_PARSE_ERROR;
-			}
-
-			value = ie;
-#endif
 		} else if (id == "PoolByteArray" || id == "ByteArray") {
 			Vector<uint8_t> args;
 			Error err = _parse_construct<uint8_t>(p_stream, args, line, r_err_str);
@@ -1258,6 +1114,44 @@ Error VariantParser::parse_value(Token &token, Variant &value, Stream *p_stream,
 				PoolVector<Vector3i>::Write w = arr.write();
 				for (int i = 0; i < len; i++) {
 					w[i] = Vector3i(args[i * 3 + 0], args[i * 3 + 1], args[i * 3 + 2]);
+				}
+			}
+
+			value = arr;
+
+		} else if (id == "PoolVector4Array" || id == "Vector4Array") {
+			Vector<float> args;
+			Error err = _parse_construct<float>(p_stream, args, line, r_err_str);
+			if (err) {
+				return err;
+			}
+
+			PoolVector<Vector4> arr;
+			{
+				int len = args.size() / 3;
+				arr.resize(len);
+				PoolVector<Vector4>::Write w = arr.write();
+				for (int i = 0; i < len; i++) {
+					w[i] = Vector4(args[i * 4 + 0], args[i * 4 + 1], args[i * 4 + 2], args[i * 4 + 3]);
+				}
+			}
+
+			value = arr;
+
+		} else if (id == "PoolVector4iArray" || id == "Vector4iArray") {
+			Vector<int> args;
+			Error err = _parse_construct<int>(p_stream, args, line, r_err_str);
+			if (err) {
+				return err;
+			}
+
+			PoolVector<Vector4i> arr;
+			{
+				int len = args.size() / 3;
+				arr.resize(len);
+				PoolVector<Vector4i>::Write w = arr.write();
+				for (int i = 0; i < len; i++) {
+					w[i] = Vector4i(args[i * 4 + 0], args[i * 4 + 1], args[i * 4 + 2], args[i * 4 + 3]);
 				}
 			}
 
@@ -1666,14 +1560,6 @@ Error VariantWriter::write(const Variant &p_variant, StoreStringFunc p_store_str
 			str = "\"" + str.c_escape_multiline() + "\"";
 			p_store_string_func(p_store_string_ud, str);
 		} break;
-		case Variant::VECTOR2: {
-			Vector2 v = p_variant;
-			p_store_string_func(p_store_string_ud, "Vector2( " + rtos_fix(v.x) + ", " + rtos_fix(v.y) + " )");
-		} break;
-		case Variant::VECTOR2I: {
-			Vector2i v = p_variant;
-			p_store_string_func(p_store_string_ud, "Vector2i( " + rtos_fix(v.x) + ", " + rtos_fix(v.y) + " )");
-		} break;
 		case Variant::RECT2: {
 			Rect2 aabb = p_variant;
 			p_store_string_func(p_store_string_ud, "Rect2( " + rtos_fix(aabb.position.x) + ", " + rtos_fix(aabb.position.y) + ", " + rtos_fix(aabb.size.x) + ", " + rtos_fix(aabb.size.y) + " )");
@@ -1684,6 +1570,14 @@ Error VariantWriter::write(const Variant &p_variant, StoreStringFunc p_store_str
 			p_store_string_func(p_store_string_ud, "Rect2i( " + rtos_fix(aabb.position.x) + ", " + rtos_fix(aabb.position.y) + ", " + rtos_fix(aabb.size.x) + ", " + rtos_fix(aabb.size.y) + " )");
 
 		} break;
+		case Variant::VECTOR2: {
+			Vector2 v = p_variant;
+			p_store_string_func(p_store_string_ud, "Vector2( " + rtos_fix(v.x) + ", " + rtos_fix(v.y) + " )");
+		} break;
+		case Variant::VECTOR2I: {
+			Vector2i v = p_variant;
+			p_store_string_func(p_store_string_ud, "Vector2i( " + rtos_fix(v.x) + ", " + rtos_fix(v.y) + " )");
+		} break;
 		case Variant::VECTOR3: {
 			Vector3 v = p_variant;
 			p_store_string_func(p_store_string_ud, "Vector3( " + rtos_fix(v.x) + ", " + rtos_fix(v.y) + ", " + rtos_fix(v.z) + " )");
@@ -1692,14 +1586,17 @@ Error VariantWriter::write(const Variant &p_variant, StoreStringFunc p_store_str
 			Vector3i v = p_variant;
 			p_store_string_func(p_store_string_ud, "Vector3i( " + rtos_fix(v.x) + ", " + rtos_fix(v.y) + ", " + rtos_fix(v.z) + " )");
 		} break;
+		case Variant::VECTOR4: {
+			Vector4 v = p_variant;
+			p_store_string_func(p_store_string_ud, "Vector4( " + rtos_fix(v.x) + ", " + rtos_fix(v.y) + ", " + rtos_fix(v.z) + ", " + rtos_fix(v.w) + " )");
+		} break;
+		case Variant::VECTOR4I: {
+			Vector4i v = p_variant;
+			p_store_string_func(p_store_string_ud, "Vector4i( " + rtos_fix(v.x) + ", " + rtos_fix(v.y) + ", " + rtos_fix(v.z) + ", " + rtos_fix(v.w) + " )");
+		} break;
 		case Variant::PLANE: {
 			Plane p = p_variant;
 			p_store_string_func(p_store_string_ud, "Plane( " + rtos_fix(p.normal.x) + ", " + rtos_fix(p.normal.y) + ", " + rtos_fix(p.normal.z) + ", " + rtos_fix(p.d) + " )");
-
-		} break;
-		case Variant::AABB: {
-			AABB aabb = p_variant;
-			p_store_string_func(p_store_string_ud, "AABB( " + rtos_fix(aabb.position.x) + ", " + rtos_fix(aabb.position.y) + ", " + rtos_fix(aabb.position.z) + ", " + rtos_fix(aabb.size.x) + ", " + rtos_fix(aabb.size.y) + ", " + rtos_fix(aabb.size.z) + " )");
 
 		} break;
 		case Variant::QUATERNION: {
@@ -1707,19 +1604,9 @@ Error VariantWriter::write(const Variant &p_variant, StoreStringFunc p_store_str
 			p_store_string_func(p_store_string_ud, "Quaternion( " + rtos_fix(quat.x) + ", " + rtos_fix(quat.y) + ", " + rtos_fix(quat.z) + ", " + rtos_fix(quat.w) + " )");
 
 		} break;
-		case Variant::TRANSFORM2D: {
-			String s = "Transform2D( ";
-			Transform2D m3 = p_variant;
-			for (int i = 0; i < 3; i++) {
-				for (int j = 0; j < 2; j++) {
-					if (i != 0 || j != 0) {
-						s += ", ";
-					}
-					s += rtos_fix(m3.columns[i][j]);
-				}
-			}
-
-			p_store_string_func(p_store_string_ud, s + " )");
+		case Variant::AABB: {
+			AABB aabb = p_variant;
+			p_store_string_func(p_store_string_ud, "AABB( " + rtos_fix(aabb.position.x) + ", " + rtos_fix(aabb.position.y) + ", " + rtos_fix(aabb.position.z) + ", " + rtos_fix(aabb.size.x) + ", " + rtos_fix(aabb.size.y) + ", " + rtos_fix(aabb.size.z) + " )");
 
 		} break;
 		case Variant::BASIS: {
@@ -1754,6 +1641,35 @@ Error VariantWriter::write(const Variant &p_variant, StoreStringFunc p_store_str
 
 			p_store_string_func(p_store_string_ud, s + " )");
 		} break;
+		case Variant::TRANSFORM2D: {
+			String s = "Transform2D( ";
+			Transform2D m3 = p_variant;
+			for (int i = 0; i < 3; i++) {
+				for (int j = 0; j < 2; j++) {
+					if (i != 0 || j != 0) {
+						s += ", ";
+					}
+					s += rtos_fix(m3.columns[i][j]);
+				}
+			}
+
+			p_store_string_func(p_store_string_ud, s + " )");
+
+		} break;
+		case Variant::PROJECTION: {
+			String s = "Projection(";
+			Projection t = p_variant;
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 4; j++) {
+					if (i != 0 || j != 0) {
+						s += ", ";
+					}
+					s += rtos_fix(t.matrix[i][j]);
+				}
+			}
+
+			p_store_string_func(p_store_string_ud, s + ")");
+		} break;
 
 		// misc types
 		case Variant::COLOR: {
@@ -1768,7 +1684,7 @@ Error VariantWriter::write(const Variant &p_variant, StoreStringFunc p_store_str
 			p_store_string_func(p_store_string_ud, str);
 
 		} break;
-
+		//RID
 		case Variant::OBJECT: {
 			Object *obj = p_variant;
 
@@ -1826,7 +1742,6 @@ Error VariantWriter::write(const Variant &p_variant, StoreStringFunc p_store_str
 			p_store_string_func(p_store_string_ud, ")\n");
 
 		} break;
-
 		case Variant::STRING_NAME: {
 			String str = p_variant;
 
@@ -1834,7 +1749,6 @@ Error VariantWriter::write(const Variant &p_variant, StoreStringFunc p_store_str
 			p_store_string_func(p_store_string_ud, str);
 
 		} break;
-
 		case Variant::DICTIONARY: {
 			Dictionary dict = p_variant;
 
@@ -2011,6 +1925,41 @@ Error VariantWriter::write(const Variant &p_variant, StoreStringFunc p_store_str
 					p_store_string_func(p_store_string_ud, ", ");
 				}
 				p_store_string_func(p_store_string_ud, rtos_fix(ptr[i].x) + ", " + rtos_fix(ptr[i].y) + ", " + rtos_fix(ptr[i].z));
+			}
+
+			p_store_string_func(p_store_string_ud, " )");
+
+		} break;
+
+		case Variant::POOL_VECTOR4_ARRAY: {
+			p_store_string_func(p_store_string_ud, "PoolVector4Array( ");
+			PoolVector<Vector4> data = p_variant;
+			int len = data.size();
+			PoolVector<Vector4>::Read r = data.read();
+			const Vector4 *ptr = r.ptr();
+
+			for (int i = 0; i < len; i++) {
+				if (i > 0) {
+					p_store_string_func(p_store_string_ud, ", ");
+				}
+				p_store_string_func(p_store_string_ud, rtos_fix(ptr[i].x) + ", " + rtos_fix(ptr[i].y) + ", " + rtos_fix(ptr[i].z) + ", " + rtos_fix(ptr[i].w));
+			}
+
+			p_store_string_func(p_store_string_ud, " )");
+
+		} break;
+		case Variant::POOL_VECTOR4I_ARRAY: {
+			p_store_string_func(p_store_string_ud, "PoolVector4iArray( ");
+			PoolVector<Vector4i> data = p_variant;
+			int len = data.size();
+			PoolVector<Vector4i>::Read r = data.read();
+			const Vector4i *ptr = r.ptr();
+
+			for (int i = 0; i < len; i++) {
+				if (i > 0) {
+					p_store_string_func(p_store_string_ud, ", ");
+				}
+				p_store_string_func(p_store_string_ud, rtos_fix(ptr[i].x) + ", " + rtos_fix(ptr[i].y) + ", " + rtos_fix(ptr[i].z) + ", " + rtos_fix(ptr[i].w));
 			}
 
 			p_store_string_func(p_store_string_ud, " )");

@@ -375,7 +375,7 @@ Point2 Camera::unproject_position(const Vector3 &p_pos) const {
 
 	Plane p(get_camera_transform().xform_inv(p_pos), 1.0);
 
-	p = cm.xform4(p);
+	p = cm.xform(p);
 	p.normal /= p.d;
 
 	Point2 res;

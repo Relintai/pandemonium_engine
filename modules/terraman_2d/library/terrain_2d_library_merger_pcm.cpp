@@ -790,12 +790,12 @@ void Terrain2DLibraryMergerPCM::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_terra_surfaces"), &Terrain2DLibraryMergerPCM::get_terra_surfaces);
 	ClassDB::bind_method(D_METHOD("set_terra_surfaces"), &Terrain2DLibraryMergerPCM::set_terra_surfaces);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "terra_surfaces", PROPERTY_HINT_NONE, "20/19:Terrain2DSurfaceMerger", PROPERTY_USAGE_DEFAULT, "Terrain2DSurfaceMerger"), "set_terra_surfaces", "get_terra_surfaces");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "terra_surfaces", PROPERTY_HINT_NONE, "23/19:Terrain2DSurfaceMerger", PROPERTY_USAGE_DEFAULT, "Terrain2DSurfaceMerger"), "set_terra_surfaces", "get_terra_surfaces");
 
 #ifdef PROPS_2D_PRESENT
 	ClassDB::bind_method(D_METHOD("get_props"), &Terrain2DLibraryMergerPCM::get_props);
 	ClassDB::bind_method(D_METHOD("set_props"), &Terrain2DLibraryMergerPCM::set_props);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "props", PROPERTY_HINT_NONE, "20/19:Prop2DData", PROPERTY_USAGE_DEFAULT, "Prop2DData"), "set_props", "get_props");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "props", PROPERTY_HINT_NONE, "23/19:Prop2DData", PROPERTY_USAGE_DEFAULT, "Prop2DData"), "set_props", "get_props");
 
 	ClassDB::bind_method(D_METHOD("get_prop_uv_rect", "texture"), &Terrain2DLibraryMergerPCM::get_prop_uv_rect);
 

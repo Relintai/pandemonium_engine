@@ -796,7 +796,7 @@ void FormField::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_entries"), &FormField::get_entries);
 	ClassDB::bind_method(D_METHOD("set_entries", "array"), &FormField::set_entries);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entries", PROPERTY_HINT_NONE, "20/19:FormFieldEntry", PROPERTY_USAGE_DEFAULT, "FormFieldEntry"), "set_entries", "get_entries");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entries", PROPERTY_HINT_NONE, "23/19:FormFieldEntry", PROPERTY_USAGE_DEFAULT, "FormFieldEntry"), "set_entries", "get_entries");
 
 	ClassDB::bind_method(D_METHOD("need_to_exist"), &FormField::need_to_exist);
 	ClassDB::bind_method(D_METHOD("need_to_be_int"), &FormField::need_to_be_int);
@@ -905,7 +905,7 @@ void FormValidator::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_fields"), &FormValidator::get_fields);
 	ClassDB::bind_method(D_METHOD("set_fields", "array"), &FormValidator::set_fields);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "fields", PROPERTY_HINT_NONE, "20/19:FormField", PROPERTY_USAGE_DEFAULT, "FormField"), "set_fields", "get_fields");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "fields", PROPERTY_HINT_NONE, "23/19:FormField", PROPERTY_USAGE_DEFAULT, "FormField"), "set_fields", "get_fields");
 
 	BIND_VMETHOD(MethodInfo("_validate", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
 	ClassDB::bind_method(D_METHOD("validate", "request"), &FormValidator::validate);

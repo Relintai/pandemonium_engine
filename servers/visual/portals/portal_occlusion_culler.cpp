@@ -690,7 +690,7 @@ bool PortalOcclusionCuller::calculate_poly_goodness_of_fit(const VSOccluder_Poly
 		Plane source(p_opoly.poly.verts[n], 1.0f);
 		Plane &dest = xpoints[n];
 
-		dest = _matrix_camera.xform4(source);
+		dest = _matrix_camera.xform(source);
 	}
 
 	// find screen space area

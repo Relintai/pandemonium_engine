@@ -98,7 +98,7 @@ void NavigationServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_active", "active"), &NavigationServer::set_active);
 	ClassDB::bind_method(D_METHOD("process", "delta_time"), &NavigationServer::process);
 
-	ADD_SIGNAL(MethodInfo("map_changed", PropertyInfo(Variant::_RID, "map")));
+	ADD_SIGNAL(MethodInfo("map_changed", PropertyInfo(Variant::RID, "map")));
 }
 
 const NavigationServer *NavigationServer::get_singleton() {

@@ -139,7 +139,7 @@ void Prop2DData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_props"), &Prop2DData::get_props);
 	ClassDB::bind_method(D_METHOD("set_props", "props"), &Prop2DData::set_props);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "props", PROPERTY_HINT_NONE, "20/19:Prop2DDataEntry", PROPERTY_USAGE_DEFAULT, "Prop2DDataEntry"), "set_props", "get_props");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "props", PROPERTY_HINT_NONE, "23/19:Prop2DDataEntry", PROPERTY_USAGE_DEFAULT, "Prop2DDataEntry"), "set_props", "get_props");
 
 #if TEXTURE_PACKER_PRESENT
 	ClassDB::bind_method(D_METHOD("add_textures_into", "texture_packer"), &Prop2DData::add_textures_into);

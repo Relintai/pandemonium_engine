@@ -33,7 +33,6 @@
 
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"
-#include "core/math/vector3.h"
 #include "core/ustring.h"
 
 struct _NO_DISCARD_CLASS_ Vector4 {

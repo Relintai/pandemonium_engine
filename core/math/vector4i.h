@@ -120,7 +120,7 @@ struct _NO_DISCARD_CLASS_ Vector4i {
 		w = 0;
 	}
 
-	Vector4i(const Vector4 &p_vec4);
+	//Vector4i(const Vector4 &p_vec4);
 
 	_FORCE_INLINE_ Vector4i(const int32_t p_x, const int32_t p_y, const int32_t p_z, const int32_t p_w) {
 		x = p_x;

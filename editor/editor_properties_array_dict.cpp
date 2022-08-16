@@ -30,26 +30,25 @@
 
 #include "editor_properties_array_dict.h"
 
-#include "core/io/marshalls.h"
-#include "core/os/input.h"
-#include "editor/editor_node.h"
-#include "editor/editor_scale.h"
-#include "editor_properties.h"
-#include "scene/main/viewport.h"
 #include "core/class_db.h"
 #include "core/color.h"
 #include "core/error_macros.h"
+#include "core/io/marshalls.h"
 #include "core/io/resource_loader.h"
 #include "core/math/math_defs.h"
 #include "core/math/rect2.h"
+#include "core/os/input.h"
 #include "core/os/input_event.h"
 #include "core/os/memory.h"
 #include "core/resource.h"
 #include "core/typedefs.h"
 #include "core/vector.h"
 #include "editor/editor_file_system.h"
+#include "editor/editor_node.h"
+#include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 #include "editor/editor_spin_slider.h"
+#include "editor_properties.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/control.h"
@@ -57,6 +56,7 @@
 #include "scene/gui/panel_container.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/main/node.h"
+#include "scene/main/viewport.h"
 #include "scene/resources/style_box.h"
 
 bool EditorPropertyArrayObject::_set(const StringName &p_name, const Variant &p_value) {
@@ -266,6 +266,14 @@ void EditorPropertyArray::update_property() {
 		} break;
 		case Variant::POOL_VECTOR3I_ARRAY: {
 			arrtype = "PoolVector3iArray";
+
+		} break;
+		case Variant::POOL_VECTOR4_ARRAY: {
+			arrtype = "PoolVector4Array";
+
+		} break;
+		case Variant::POOL_VECTOR4I_ARRAY: {
+			arrtype = "PoolVector4iArray";
 
 		} break;
 		case Variant::POOL_COLOR_ARRAY: {
@@ -959,19 +967,7 @@ void EditorPropertyDictionary::update_property() {
 
 				} break;
 
-				// Math types.
-				case Variant::VECTOR2: {
-					EditorPropertyVector2 *editor = memnew(EditorPropertyVector2);
-					editor->setup(-100000, 100000, 0.001, true);
-					prop = editor;
-
-				} break;
-				case Variant::VECTOR2I: {
-					EditorPropertyVector2i *editor = memnew(EditorPropertyVector2i);
-					editor->setup(-100000, 100000, true);
-					prop = editor;
-
-				} break;
+					// Math types.
 				case Variant::RECT2: {
 					EditorPropertyRect2 *editor = memnew(EditorPropertyRect2);
 					editor->setup(-100000, 100000, 0.001, true);
@@ -984,6 +980,19 @@ void EditorPropertyDictionary::update_property() {
 					prop = editor;
 
 				} break;
+				case Variant::VECTOR2: {
+					EditorPropertyVector2 *editor = memnew(EditorPropertyVector2);
+					editor->setup(-100000, 100000, 0.001, true);
+					prop = editor;
+
+				} break;
+				case Variant::VECTOR2I: {
+					EditorPropertyVector2i *editor = memnew(EditorPropertyVector2i);
+					editor->setup(-100000, 100000, true);
+					prop = editor;
+
+				} break;
+
 				case Variant::VECTOR3: {
 					EditorPropertyVector3 *editor = memnew(EditorPropertyVector3);
 					editor->setup(-100000, 100000, 0.001, true);
@@ -996,9 +1005,15 @@ void EditorPropertyDictionary::update_property() {
 					prop = editor;
 
 				} break;
-				case Variant::TRANSFORM2D: {
-					EditorPropertyTransform2D *editor = memnew(EditorPropertyTransform2D);
+				case Variant::VECTOR4: {
+					EditorPropertyVector4 *editor = memnew(EditorPropertyVector4);
 					editor->setup(-100000, 100000, 0.001, true);
+					prop = editor;
+
+				} break;
+				case Variant::VECTOR4I: {
+					EditorPropertyVector4i *editor = memnew(EditorPropertyVector4i);
+					editor->setup(-100000, 100000, true);
 					prop = editor;
 
 				} break;
@@ -1032,6 +1047,18 @@ void EditorPropertyDictionary::update_property() {
 					prop = editor;
 
 				} break;
+				case Variant::TRANSFORM2D: {
+					EditorPropertyTransform2D *editor = memnew(EditorPropertyTransform2D);
+					editor->setup(-100000, 100000, 0.001, true);
+					prop = editor;
+
+				} break;
+				case Variant::PROJECTION: {
+					EditorPropertyProjection *editor = memnew(EditorPropertyProjection);
+					editor->setup(-100000, 100000, 0.001, true);
+					prop = editor;
+
+				} break;
 
 				// Miscellaneous types.
 				case Variant::COLOR: {
@@ -1042,7 +1069,7 @@ void EditorPropertyDictionary::update_property() {
 					prop = memnew(EditorPropertyNodePath);
 
 				} break;
-				case Variant::_RID: {
+				case Variant::RID: {
 					prop = memnew(EditorPropertyRID);
 
 				} break;
@@ -1115,6 +1142,16 @@ void EditorPropertyDictionary::update_property() {
 				case Variant::POOL_VECTOR3I_ARRAY: {
 					EditorPropertyArray *editor = memnew(EditorPropertyArray);
 					editor->setup(Variant::POOL_VECTOR3I_ARRAY);
+					prop = editor;
+				} break;
+				case Variant::POOL_VECTOR4_ARRAY: {
+					EditorPropertyArray *editor = memnew(EditorPropertyArray);
+					editor->setup(Variant::POOL_VECTOR4_ARRAY);
+					prop = editor;
+				} break;
+				case Variant::POOL_VECTOR4I_ARRAY: {
+					EditorPropertyArray *editor = memnew(EditorPropertyArray);
+					editor->setup(Variant::POOL_VECTOR4I_ARRAY);
 					prop = editor;
 				} break;
 				case Variant::POOL_COLOR_ARRAY: {

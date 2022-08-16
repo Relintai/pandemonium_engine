@@ -527,7 +527,7 @@ void BBCodeParserTag::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_child_tags"), &BBCodeParserTag::get_child_tags);
 	ClassDB::bind_method(D_METHOD("set_child_tags", "val"), &BBCodeParserTag::set_child_tags);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "child_tags", PROPERTY_HINT_NONE, "20/19:BBCodeParserTag", PROPERTY_USAGE_DEFAULT, "BBCodeParserTag"), "set_child_tags", "get_child_tags");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "child_tags", PROPERTY_HINT_NONE, "23/19:BBCodeParserTag", PROPERTY_USAGE_DEFAULT, "BBCodeParserTag"), "set_child_tags", "get_child_tags");
 
 	ClassDB::bind_method(D_METHOD("add_child_attribute", "tag"), &BBCodeParserTag::add_child_attribute);
 	ClassDB::bind_method(D_METHOD("remote_child_attribute", "index"), &BBCodeParserTag::remote_child_attribute);
@@ -537,7 +537,7 @@ void BBCodeParserTag::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_attributes"), &BBCodeParserTag::get_attributes);
 	ClassDB::bind_method(D_METHOD("set_attributes", "val"), &BBCodeParserTag::set_attributes);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "attributes", PROPERTY_HINT_NONE, "20/19:BBCodeParserAttribute", PROPERTY_USAGE_DEFAULT, "BBCodeParserAttribute"), "set_attributes", "get_attributes");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "attributes", PROPERTY_HINT_NONE, "23/19:BBCodeParserAttribute", PROPERTY_USAGE_DEFAULT, "BBCodeParserAttribute"), "set_attributes", "get_attributes");
 
 	ClassDB::bind_method(D_METHOD("get_first", "t"), &BBCodeParserTag::get_first);
 	ClassDB::bind_method(D_METHOD("get_firstc", "t", "attrib", "val"), &BBCodeParserTag::get_firstc);

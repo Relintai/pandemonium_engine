@@ -83,9 +83,11 @@ Vector4i::operator Vector4() const {
 	return Vector4(x, y, z, w);
 }
 
+/*
 Vector4i::Vector4i(const Vector4 &p_vec4) {
 	x = p_vec4.x;
 	y = p_vec4.y;
 	z = p_vec4.z;
 	w = p_vec4.w;
 }
+*/

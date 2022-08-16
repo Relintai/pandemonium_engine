@@ -6749,6 +6749,8 @@ GDScriptParser::DataType GDScriptParser::_reduce_node_type(Node *p_node) {
 									case Variant::POOL_VECTOR2I_ARRAY:
 									case Variant::POOL_VECTOR3_ARRAY:
 									case Variant::POOL_VECTOR3I_ARRAY:
+									case Variant::POOL_VECTOR4_ARRAY:
+									case Variant::POOL_VECTOR4I_ARRAY:
 									case Variant::ARRAY:
 									case Variant::STRING: {
 										error = index_type.builtin_type != Variant::INT && index_type.builtin_type != Variant::REAL;
@@ -6767,9 +6769,12 @@ GDScriptParser::DataType GDScriptParser::_reduce_node_type(Node *p_node) {
 									case Variant::VECTOR2I:
 									case Variant::VECTOR3:
 									case Variant::VECTOR3I:
+									case Variant::VECTOR4:
+									case Variant::VECTOR4I:
 									case Variant::TRANSFORM2D:
 									case Variant::BASIS:
-									case Variant::TRANSFORM: {
+									case Variant::TRANSFORM:
+									case Variant::PROJECTION: {
 										error = index_type.builtin_type != Variant::INT && index_type.builtin_type != Variant::REAL &&
 												index_type.builtin_type != Variant::STRING;
 									} break;
@@ -6801,7 +6806,11 @@ GDScriptParser::DataType GDScriptParser::_reduce_node_type(Node *p_node) {
 									case Variant::POOL_REAL_ARRAY:
 									case Variant::POOL_STRING_ARRAY:
 									case Variant::POOL_VECTOR2_ARRAY:
-									case Variant::POOL_VECTOR3_ARRAY: {
+									case Variant::POOL_VECTOR2I_ARRAY:
+									case Variant::POOL_VECTOR3_ARRAY:
+									case Variant::POOL_VECTOR3I_ARRAY:
+									case Variant::POOL_VECTOR4_ARRAY:
+									case Variant::POOL_VECTOR4I_ARRAY: {
 										break;
 									}
 									default: {
@@ -6842,12 +6851,15 @@ GDScriptParser::DataType GDScriptParser::_reduce_node_type(Node *p_node) {
 							case Variant::INT:
 							case Variant::REAL:
 							case Variant::NODE_PATH:
-							case Variant::_RID: {
+							case Variant::RID: {
 								_set_error("Can't index on a value of type \"" + base_type.to_string() + "\".", op->line);
 								return DataType();
 							} break;
 								// Return int
 							case Variant::POOL_BYTE_ARRAY:
+							case Variant::VECTOR2I:
+							case Variant::VECTOR3I:
+							case Variant::VECTOR4I:
 							case Variant::POOL_INT_ARRAY: {
 								result.builtin_type = Variant::INT;
 							} break;
@@ -6855,6 +6867,7 @@ GDScriptParser::DataType GDScriptParser::_reduce_node_type(Node *p_node) {
 							case Variant::POOL_REAL_ARRAY:
 							case Variant::VECTOR2:
 							case Variant::VECTOR3:
+							case Variant::VECTOR4:
 							case Variant::QUATERNION: {
 								result.builtin_type = Variant::REAL;
 							} break;
@@ -6873,11 +6886,21 @@ GDScriptParser::DataType GDScriptParser::_reduce_node_type(Node *p_node) {
 							case Variant::RECT2: {
 								result.builtin_type = Variant::VECTOR2;
 							} break;
+							case Variant::POOL_VECTOR2I_ARRAY:
+							case Variant::RECT2I: {
+								result.builtin_type = Variant::VECTOR2I;
+							} break;
 								// Return Vector3
 							case Variant::POOL_VECTOR3_ARRAY:
 							case Variant::AABB:
 							case Variant::BASIS: {
 								result.builtin_type = Variant::VECTOR3;
+							} break;
+							case Variant::POOL_VECTOR3I_ARRAY: {
+								result.builtin_type = Variant::VECTOR3I;
+							} break;
+							case Variant::PROJECTION: {
+								result.builtin_type = Variant::VECTOR4;
 							} break;
 								// Depends on the index
 							case Variant::TRANSFORM:

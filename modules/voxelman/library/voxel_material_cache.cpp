@@ -294,7 +294,7 @@ void VoxelMaterialCache::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("materials_get"), &VoxelMaterialCache::materials_get);
 	ClassDB::bind_method(D_METHOD("materials_set"), &VoxelMaterialCache::materials_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "20/19:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "23/19:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
 
 	ClassDB::bind_method(D_METHOD("surface_get", "index"), &VoxelMaterialCache::surface_get);
 	ClassDB::bind_method(D_METHOD("surface_id_get", "index"), &VoxelMaterialCache::surface_id_get);

@@ -1371,6 +1371,14 @@ void GDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 					PoolVector<Vector3i> d = *p_args[0];
 					r_ret = d.size();
 				} break;
+				case Variant::POOL_VECTOR4_ARRAY: {
+					PoolVector<Vector4> d = *p_args[0];
+					r_ret = d.size();
+				} break;
+				case Variant::POOL_VECTOR4I_ARRAY: {
+					PoolVector<Vector4i> d = *p_args[0];
+					r_ret = d.size();
+				} break;
 				case Variant::POOL_COLOR_ARRAY: {
 					PoolVector<Color> d = *p_args[0];
 					r_ret = d.size();
