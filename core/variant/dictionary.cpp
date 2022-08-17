@@ -31,7 +31,7 @@
 #include "dictionary.h"
 
 #include "core/containers/ordered_hash_map.h"
-#include "core/safe_refcount.h"
+#include "core/os/safe_refcount.h"
 #include "core/variant/variant.h"
 
 struct DictionaryPrivate {

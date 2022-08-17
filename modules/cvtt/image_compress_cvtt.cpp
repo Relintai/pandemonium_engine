@@ -33,7 +33,7 @@
 #include "core/os/os.h"
 #include "core/os/thread.h"
 #include "core/string/print_string.h"
-#include "core/safe_refcount.h"
+#include "core/os/safe_refcount.h"
 
 #include <ConvectionKernels.h>
 

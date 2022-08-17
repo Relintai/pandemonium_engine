@@ -32,7 +32,7 @@
 
 #include "editor/editor_resource_preview.h"
 
-#include "core/safe_refcount.h"
+#include "core/os/safe_refcount.h"
 #include "core/math/vector2.h"
 #include "core/object/object.h"
 #include "core/object/reference.h"

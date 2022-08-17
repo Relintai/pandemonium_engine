@@ -1,7 +1,7 @@
 #ifndef MM_NODE_UNIVERSAL_PROPERTY_H
 #define MM_NODE_UNIVERSAL_PROPERTY_H
 
-#include "core/image.h"
+#include "core/io/image.h"
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
 #include "core/object/method_bind.h"

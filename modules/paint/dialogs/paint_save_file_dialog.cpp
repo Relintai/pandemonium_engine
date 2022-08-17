@@ -27,7 +27,7 @@ SOFTWARE.
 #include "../paint_canvas.h"
 #include "../paint_canvas_layer.h"
 
-#include "core/image.h"
+#include "core/io/image.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 

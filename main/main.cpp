@@ -44,7 +44,7 @@
 #include "core/os/time.h"
 #include "core/config/project_settings.h"
 #include "core/register_core_types.h"
-#include "core/script_debugger_local.h"
+#include "core/object/script_debugger_local.h"
 #include "core/object/script_language.h"
 #include "core/string/translation.h"
 #include "core/version.h"

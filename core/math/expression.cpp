@@ -31,7 +31,7 @@
 #include "expression.h"
 
 #include "core/object/class_db.h"
-#include "core/func_ref.h"
+#include "core/object/func_ref.h"
 #include "core/io/marshalls.h"
 #include "core/math/math_funcs.h"
 #include "core/os/os.h"

@@ -33,7 +33,7 @@
 #include "core/object/class_db.h"
 #include "core/object/object.h"
 #include "core/object/ref_ptr.h"
-#include "core/safe_refcount.h"
+#include "core/os/safe_refcount.h"
 
 class Reference : public Object {
 	GDCLASS(Reference, Object);

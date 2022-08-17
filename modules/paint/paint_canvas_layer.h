@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "core/object/reference.h"
 
-#include "core/image.h"
+#include "core/io/image.h"
 #include "scene/resources/texture.h"
 
 class TextureRect;

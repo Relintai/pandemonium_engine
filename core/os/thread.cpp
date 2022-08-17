@@ -36,7 +36,7 @@
 
 #if !defined(NO_THREADS)
 
-#include "core/safe_refcount.h"
+#include "core/os/safe_refcount.h"
 
 Error (*Thread::set_name_func)(const String &) = nullptr;
 void (*Thread::set_priority_func)(Thread::Priority) = nullptr;

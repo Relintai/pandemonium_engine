@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/image.h"
+#include "core/io/image.h"
 
 void image_compress_squish(Image *p_image, float p_lossy_quality, Image::CompressSource p_source);
 void image_decompress_squish(Image *p_image);

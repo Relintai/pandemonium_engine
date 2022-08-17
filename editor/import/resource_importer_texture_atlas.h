@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/image.h"
+#include "core/io/image.h"
 #include "core/io/resource_importer.h"
 
 class ResourceImporterTextureAtlas : public ResourceImporter {

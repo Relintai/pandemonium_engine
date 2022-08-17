@@ -35,7 +35,7 @@
 #include "scene/main/timer.h"
 #include "core/object/class_db.h"
 #include "core/error/error_macros.h"
-#include "core/image.h"
+#include "core/io/image.h"
 #include "core/math/math_funcs.h"
 #include "core/math/vector2.h"
 #include "core/input/input_event.h"

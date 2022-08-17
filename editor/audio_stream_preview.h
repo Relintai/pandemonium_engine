@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/os/thread.h"
-#include "core/safe_refcount.h"
+#include "core/os/safe_refcount.h"
 
 #include "scene/main/node.h"
 #include "servers/audio/audio_stream.h"

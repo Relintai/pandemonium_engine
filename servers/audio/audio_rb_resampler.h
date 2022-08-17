@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/os/memory.h"
-#include "core/safe_refcount.h"
+#include "core/os/safe_refcount.h"
 #include "core/typedefs.h"
 #include "servers/audio_server.h"
 

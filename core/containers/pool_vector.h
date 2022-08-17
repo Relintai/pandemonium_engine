@@ -33,8 +33,8 @@
 #include "core/os/memory.h"
 #include "core/os/mutex.h"
 #include "core/os/rw_lock.h"
-#include "core/pool_allocator.h"
-#include "core/safe_refcount.h"
+#include "core/os/pool_allocator.h"
+#include "core/os/safe_refcount.h"
 #include "core/string/ustring.h"
 
 struct MemoryPool {

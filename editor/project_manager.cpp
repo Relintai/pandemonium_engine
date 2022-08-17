@@ -35,7 +35,7 @@
 #include "core/config/engine.h"
 #include "core/error/error_list.h"
 #include "core/error/error_macros.h"
-#include "core/image.h"
+#include "core/io/image.h"
 #include "core/io/config_file.h"
 #include "core/io/resource_saver.h"
 #include "core/io/stream_peer_ssl.h"

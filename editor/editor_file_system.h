@@ -36,7 +36,7 @@
 #include "core/os/dir_access.h"
 #include "core/os/thread.h"
 #include "core/os/thread_safe.h"
-#include "core/safe_refcount.h"
+#include "core/os/safe_refcount.h"
 #include "core/containers/set.h"
 #include "core/error/error_list.h"
 #include "core/containers/hash_map.h"

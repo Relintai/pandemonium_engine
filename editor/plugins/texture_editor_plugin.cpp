@@ -34,7 +34,7 @@
 #include "scene/resources/dynamic_font.h"
 #include "core/object/class_db.h"
 #include "core/math/color.h"
-#include "core/image.h"
+#include "core/io/image.h"
 #include "core/math/vector2.h"
 #include "core/os/memory.h"
 #include "scene/gui/control.h"

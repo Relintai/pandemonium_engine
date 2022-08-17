@@ -53,7 +53,7 @@
 #include "core/string/print_string.h"
 #include "core/object/reference.h"
 #include "core/object/resource.h"
-#include "core/safe_refcount.h"
+#include "core/os/safe_refcount.h"
 #include "core/containers/set.h"
 #include "core/string/string_name.h"
 #include "core/typedefs.h"

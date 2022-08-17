@@ -44,7 +44,7 @@
 #include "core/math/color.h"
 #include "core/error/error_list.h"
 #include "core/error/error_macros.h"
-#include "core/image.h"
+#include "core/io/image.h"
 #include "core/containers/list.h"
 #include "core/math/aabb.h"
 #include "core/math/audio_frame.h"

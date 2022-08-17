@@ -2,7 +2,7 @@
 
 #include "scene/resources/texture.h"
 
-#include "core/image.h"
+#include "core/io/image.h"
 
 #if TEXTURE_PACKER_PRESENT
 #include "../../texture_packer/texture_resource/packer_image_resource.h"

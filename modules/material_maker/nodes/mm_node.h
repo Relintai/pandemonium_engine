@@ -1,7 +1,7 @@
 #ifndef MAT_MAKER_NODE_H
 #define MAT_MAKER_NODE_H
 
-#include "core/image.h"
+#include "core/io/image.h"
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
 #include "core/variant/variant.h"

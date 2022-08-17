@@ -37,7 +37,7 @@
 #include "core/math/color.h"
 #include "core/config/engine.h"
 #include "core/error/error_macros.h"
-#include "core/image.h"
+#include "core/io/image.h"
 #include "core/io/config_file.h"
 #include "core/io/image_loader.h"
 #include "core/io/resource_importer.h"

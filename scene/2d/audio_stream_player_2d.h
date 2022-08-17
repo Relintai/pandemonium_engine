@@ -32,7 +32,7 @@
 
 #include "core/math/audio_frame.h"
 #include "core/object/reference.h"
-#include "core/safe_refcount.h"
+#include "core/os/safe_refcount.h"
 #include "scene/2d/node_2d.h"
 
 class AudioStreamPlayback;

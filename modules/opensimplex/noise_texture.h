@@ -32,7 +32,7 @@
 
 #include "open_simplex_noise.h"
 
-#include "core/image.h"
+#include "core/io/image.h"
 #include "core/object/reference.h"
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"

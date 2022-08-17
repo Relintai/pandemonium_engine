@@ -41,7 +41,7 @@
 #include "modules/modules_enabled.gen.h" // For svg.
 #include "core/math/color.h"
 #include "core/variant/dictionary.h"
-#include "core/image.h"
+#include "core/io/image.h"
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"
 #include "core/math/vector2.h"

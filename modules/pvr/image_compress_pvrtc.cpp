@@ -30,7 +30,7 @@
 
 #include "image_compress_pvrtc.h"
 
-#include "core/image.h"
+#include "core/io/image.h"
 #include "core/object/reference.h"
 
 #include <PvrTcEncoder.h>

@@ -30,7 +30,7 @@
 
 #include "shape_sw.h"
 
-#include "core/image.h"
+#include "core/io/image.h"
 #include "core/math/convex_hull.h"
 #include "core/math/geometry.h"
 #include "core/containers/sort_array.h"

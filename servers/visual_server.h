@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/image.h"
+#include "core/io/image.h"
 #include "core/math/bsp_tree.h"
 #include "core/math/geometry.h"
 #include "core/math/transform_2d.h"

@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/math/color.h"
-#include "core/image.h"
+#include "core/io/image.h"
 #include "core/object/reference.h"
 #include "core/string/ustring.h"
 #include "core/containers/vector.h"

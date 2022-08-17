@@ -34,7 +34,7 @@
 
 #include "core/error/error_macros.h"
 #include "core/os/memory.h"
-#include "core/safe_refcount.h"
+#include "core/os/safe_refcount.h"
 
 template <class T>
 class Vector;

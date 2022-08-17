@@ -35,7 +35,7 @@
 
 #include "core/os/semaphore.h"
 #include "core/os/thread.h"
-#include "core/safe_refcount.h"
+#include "core/os/safe_refcount.h"
 #include "core/containers/list.h"
 #include "core/containers/map.h"
 #include "core/math/vector2.h"

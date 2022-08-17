@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/bitfield_dynamic.h"
+#include "core/containers/bitfield_dynamic.h"
 #include "core/containers/local_vector.h"
 #include "core/math/plane.h"
 

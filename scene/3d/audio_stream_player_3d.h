@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/safe_refcount.h"
+#include "core/os/safe_refcount.h"
 #include "scene/3d/spatial.h"
 #include "servers/audio/audio_filter_sw.h"
 #include "servers/audio_server.h"

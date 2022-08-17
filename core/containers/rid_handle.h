@@ -33,7 +33,7 @@
 #include "core/containers/list.h"
 #include "core/os/mutex.h"
 #include "core/containers/pooled_list.h"
-#include "core/safe_refcount.h"
+#include "core/os/safe_refcount.h"
 #include "core/typedefs.h"
 
 #include <typeinfo>

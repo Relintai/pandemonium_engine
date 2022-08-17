@@ -30,7 +30,7 @@
 
 #include "room_manager.h"
 
-#include "core/bitfield_dynamic.h"
+#include "core/containers/bitfield_dynamic.h"
 #include "core/config/engine.h"
 #include "core/math/geometry.h"
 #include "core/math/quick_hull.h"

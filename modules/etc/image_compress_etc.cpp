@@ -30,7 +30,7 @@
 
 #include "image_compress_etc.h"
 
-#include "core/image.h"
+#include "core/io/image.h"
 #include "core/os/os.h"
 #include "core/string/print_string.h"
 

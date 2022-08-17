@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "paint_window.h"
 
-#include "core/image.h"
+#include "core/io/image.h"
 #include "core/input/input.h"
 #include "scene/resources/texture.h"
 

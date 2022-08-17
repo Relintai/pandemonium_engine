@@ -35,7 +35,7 @@
 #include "core/containers/map.h"
 #include "core/object/object_id.h"
 #include "core/os/rw_lock.h"
-#include "core/safe_refcount.h"
+#include "core/os/safe_refcount.h"
 #include "core/containers/set.h"
 #include "core/variant/variant.h"
 #include "core/containers/vmap.h"

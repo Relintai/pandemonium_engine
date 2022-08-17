@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/image.h"
+#include "core/io/image.h"
 
 #include "scene/resources/texture.h"
 

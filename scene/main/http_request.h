@@ -32,7 +32,7 @@
 
 #include "core/io/http_client.h"
 #include "core/os/thread.h"
-#include "core/safe_refcount.h"
+#include "core/os/safe_refcount.h"
 #include "node.h"
 
 class Timer;

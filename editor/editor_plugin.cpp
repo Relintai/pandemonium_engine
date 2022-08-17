@@ -44,7 +44,7 @@
 #include "servers/visual_server.h"
 #include "core/object/class_db.h"
 #include "core/math/color.h"
-#include "core/image.h"
+#include "core/io/image.h"
 #include "core/io/resource_importer.h"
 #include "core/math/aabb.h"
 #include "core/math/basis.h"

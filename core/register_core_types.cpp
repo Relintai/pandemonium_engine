@@ -38,7 +38,7 @@
 #include "core/crypto/crypto.h"
 #include "core/crypto/hashing_context.h"
 #include "core/config/engine.h"
-#include "core/func_ref.h"
+#include "core/object/func_ref.h"
 #include "core/input/input_map.h"
 #include "core/io/config_file.h"
 #include "core/io/dtls_server.h"

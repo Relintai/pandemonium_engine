@@ -30,9 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/command_queue_mt.h"
+#include "core/containers/command_queue_mt.h"
 #include "core/os/thread.h"
-#include "core/safe_refcount.h"
+#include "core/os/safe_refcount.h"
 #include "servers/visual_server.h"
 
 class VisualServerWrapMT : public VisualServer {

@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "paint_layer_button.h"
 
-#include "core/image.h"
+#include "core/io/image.h"
 #include "scene/resources/style_box.h"
 #include "scene/resources/texture.h"
 

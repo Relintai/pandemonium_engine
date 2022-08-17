@@ -34,7 +34,7 @@
 #include "core/io/resource_saver.h"
 #include "core/os/file_access.h"
 #include "scene/resources/texture.h"
-#include "core/image.h"
+#include "core/io/image.h"
 
 String ResourceImporterImage::get_importer_name() const {
 	return "image";

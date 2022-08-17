@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/config/engine.h"
-#include "core/image.h"
+#include "core/io/image.h"
 #include "core/io/logger.h"
 #include "core/containers/list.h"
 #include "core/os/main_loop.h"
