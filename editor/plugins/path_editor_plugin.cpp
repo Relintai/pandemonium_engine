@@ -37,7 +37,7 @@
 #include "core/math/math_defs.h"
 #include "core/math/plane.h"
 #include "core/math/transform.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/containers/pool_vector.h"

@@ -31,7 +31,7 @@
 #include "tile_map_editor_plugin.h"
 
 #include "core/math/math_funcs.h"
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "core/os/keyboard.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"

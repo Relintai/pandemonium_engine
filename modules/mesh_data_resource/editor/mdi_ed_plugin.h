@@ -25,7 +25,7 @@ SOFTWARE.
 
 #include "editor/editor_plugin.h"
 
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 
 //TODO:
 //Remove gizmo registration, it's not needed anymore

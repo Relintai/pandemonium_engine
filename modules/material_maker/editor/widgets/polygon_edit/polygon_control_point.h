@@ -3,7 +3,7 @@
 
 #include "scene/gui/control.h"
 
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 
 class PolygonEditor;
 

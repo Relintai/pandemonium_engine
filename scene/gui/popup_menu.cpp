@@ -29,13 +29,13 @@
 /*************************************************************************/
 
 #include "popup_menu.h"
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
 #include "core/string/print_string.h"
 #include "core/config/project_settings.h"
 #include "core/string/translation.h"
-#include "scene/gui/shortcut.h"
+#include "core/input/shortcut.h"
 #include "scene/main/timer.h"
 
 PopupMenu::Item::Item() {

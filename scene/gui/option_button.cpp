@@ -29,10 +29,10 @@
 /*************************************************************************/
 
 #include "option_button.h"
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "core/string/print_string.h"
 #include "scene/gui/popup_menu.h"
-#include "scene/gui/shortcut.h"
+#include "core/input/shortcut.h"
 
 static const int NONE_SELECTED = -1;
 

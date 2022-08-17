@@ -36,7 +36,7 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "editor/plugins/spatial_editor_plugin.h"
 #include "scene/3d/camera.h"
 #include "scene/gui/slider.h"

@@ -47,7 +47,7 @@
 #include "core/math/vector3.h"
 #include "core/object/object.h"
 #include "core/object/object_id.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/memory.h"
 #include "core/config/project_settings.h"
 #include "core/containers/rid.h"

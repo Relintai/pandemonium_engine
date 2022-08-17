@@ -44,7 +44,7 @@
 #include "core/containers/map.h"
 #include "core/math/math_defs.h"
 #include "core/math/rect2.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/memory.h"
 #include "core/containers/pair.h"
 #include "core/object/ref_ptr.h"

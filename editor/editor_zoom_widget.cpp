@@ -33,7 +33,7 @@
 #include "core/os/keyboard.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "scene/gui/button.h"
 
 void EditorZoomWidget::_update_zoom_label() {

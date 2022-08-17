@@ -32,7 +32,7 @@
 
 #include "core/io/resource_loader.h"
 #include "core/os/file_access.h"
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
 #include "core/config/project_settings.h"
@@ -58,7 +58,7 @@
 #include "core/containers/map.h"
 #include "core/math/math_funcs.h"
 #include "core/math/transform_2d.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/main_loop.h"
 #include "core/os/memory.h"
 #include "core/containers/pair.h"

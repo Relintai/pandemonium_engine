@@ -32,7 +32,7 @@
 
 #include "core/object/resource.h"
 
-#include "scene/gui/shortcut.h"
+#include "core/input/shortcut.h"
 
 #include "core/object/object.h"
 #include "core/io/config_file.h"

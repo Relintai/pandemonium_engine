@@ -26,7 +26,7 @@ SOFTWARE.
 #include "../singleton/prop_2d_utils.h"
 #include "core/os/keyboard.h"
 #include "editor/editor_settings.h"
-#include "core/os/input.h"
+#include "core/input/input.h"
 
 void Prop2DEditorPlugin::convert_active_scene_to_prop_data() {
 	SceneTree *st = SceneTree::get_singleton();

@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/os/input.h"
+#include "core/input/input.h"
 
 class InputDefault : public Input {
 	GDCLASS(InputDefault, Input);

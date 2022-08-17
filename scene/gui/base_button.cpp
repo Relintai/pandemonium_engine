@@ -31,7 +31,7 @@
 #include "base_button.h"
 
 #include "core/os/keyboard.h"
-#include "scene/gui/shortcut.h"
+#include "core/input/shortcut.h"
 #include "scene/main/viewport.h"
 #include "scene/scene_string_names.h"
 

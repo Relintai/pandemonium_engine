@@ -37,7 +37,7 @@
 #include "core/config/project_settings.h"
 #include "scene/gui/label.h"
 #include "scene/gui/panel.h"
-#include "scene/gui/shortcut.h"
+#include "core/input/shortcut.h"
 #include "scene/main/canvas_layer.h"
 #include "scene/main/node.h"
 #include "scene/main/timer.h"

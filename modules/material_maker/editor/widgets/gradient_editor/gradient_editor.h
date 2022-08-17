@@ -2,7 +2,7 @@
 #define MM_GRADIENT_EDITOR_H
 
 #include "core/math/color.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/object/reference.h"
 #include "core/object/undo_redo.h"
 #include "core/variant/variant.h"

@@ -51,7 +51,7 @@
 #include "core/math/math_defs.h"
 #include "core/math/transform.h"
 #include "core/math/vector3.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/containers/pool_vector.h"
 #include "core/object/resource.h"
 #include "core/containers/rid.h"

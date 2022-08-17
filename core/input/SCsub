@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+
+import input_builders
+from platform_methods import run_in_subprocess
+
+Import("env")
+
+env_input = env.Clone()
+
+# Order matters here. Higher index controller database files write on top of lower index database files.
+controller_databases = [
+    "gamecontrollerdb.txt", 
+    "pandemoniumcontrollerdb.txt",
+]
+
+gensource = env_input.CommandNoCache(
+    "default_controller_mappings.gen.cpp",
+    controller_databases,
+    run_in_subprocess(input_builders.make_default_controller_mappings),
+)
+
+env_input.add_source_files(env.core_sources, "*.cpp")
+env_input.add_source_files(env.core_sources, gensource)

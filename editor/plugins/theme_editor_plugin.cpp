@@ -36,7 +36,7 @@
 #include "core/error/error_macros.h"
 #include "core/io/resource_loader.h"
 #include "core/math/vector2.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/typedefs.h"

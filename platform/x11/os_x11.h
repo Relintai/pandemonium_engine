@@ -32,7 +32,7 @@
 
 #include "context_gl_x11.h"
 #include "core/containers/local_vector.h"
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "crash_handler_x11.h"
 #include "drivers/alsa/audio_driver_alsa.h"
 #include "drivers/alsamidi/midi_driver_alsamidi.h"

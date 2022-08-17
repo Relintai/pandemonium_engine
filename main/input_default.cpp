@@ -30,9 +30,9 @@
 
 #include "input_default.h"
 
-#include "core/input_map.h"
+#include "core/input/input_map.h"
 #include "core/os/os.h"
-#include "main/default_controller_mappings.h"
+#include "core/input/default_controller_mappings.h"
 #include "scene/resources/texture.h"
 #include "servers/visual_server.h"
 

@@ -26,7 +26,7 @@ SOFTWARE.
 #include "../singleton/prop_utils.h"
 #include "core/os/keyboard.h"
 
-#include "core/os/input.h"
+#include "core/input/input.h"
 
 #include "scene/gui/separator.h"
 #include "editor/editor_settings.h"

@@ -40,7 +40,7 @@
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"
 #include "core/math/transform_2d.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/memory.h"
 #include "core/containers/pool_vector.h"
 #include "core/typedefs.h"

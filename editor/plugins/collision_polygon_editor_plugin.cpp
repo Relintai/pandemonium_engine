@@ -30,7 +30,7 @@
 
 #include "collision_polygon_editor_plugin.h"
 
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "core/os/keyboard.h"
 #include "editor/editor_settings.h"
 #include "scene/3d/camera.h"
@@ -47,7 +47,7 @@
 #include "core/math/rect2.h"
 #include "core/math/transform.h"
 #include "core/math/vector3.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/memory.h"
 #include "core/containers/pool_vector.h"
 #include "core/object/undo_redo.h"

@@ -32,7 +32,7 @@
 
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "core/os/keyboard.h"
 #include "core/config/project_settings.h"
 #include "editor/animation_track_editor.h"
@@ -52,7 +52,7 @@
 #include "core/containers/list.h"
 #include "core/math/math_funcs.h"
 #include "core/math/rect2.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/memory.h"
 #include "core/object/resource.h"
 #include "core/containers/rid_handle.h"

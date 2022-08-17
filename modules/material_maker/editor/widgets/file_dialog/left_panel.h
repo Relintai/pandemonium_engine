@@ -2,7 +2,7 @@
 #define LEFT_PANEL_H
 
 #include "core/variant/array.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/string/ustring.h"
 
 #include "scene/gui/box_container.h"

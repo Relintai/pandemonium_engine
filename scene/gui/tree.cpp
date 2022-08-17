@@ -31,7 +31,7 @@
 #include "tree.h"
 
 #include "core/math/math_funcs.h"
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
 #include "core/string/print_string.h"
@@ -39,7 +39,7 @@
 #include "scene/gui/line_edit.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/scroll_bar.h"
-#include "scene/gui/shortcut.h"
+#include "core/input/shortcut.h"
 #include "scene/gui/slider.h"
 #include "scene/main/timer.h"
 #include "scene/main/viewport.h"

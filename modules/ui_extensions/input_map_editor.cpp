@@ -42,7 +42,7 @@
 #include "scene/gui/margin_container.h"
 
 #include "scene/gui/label.h"
-#include "core/input_map.h"
+#include "core/input/input_map.h"
 
 static const char *_button_names[JOY_BUTTON_MAX] = {
 	"DualShock Cross, Xbox A, Nintendo B",

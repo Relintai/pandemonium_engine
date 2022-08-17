@@ -32,7 +32,7 @@
 
 #include "core/version.h"
 #include "core/os/os.h"
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "core/os/file_access.h"
 #include "drivers/unix/os_unix.h"
 #include "servers/visual_server.h"

@@ -30,7 +30,7 @@
 
 #include "tile_set_editor_plugin.h"
 
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "core/os/keyboard.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_file_system.h"

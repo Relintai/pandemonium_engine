@@ -190,6 +190,7 @@ SConscript("crypto/SCsub")
 SConscript("io/SCsub")
 SConscript("log/SCsub")
 SConscript("object/SCsub")
+SConscript("input/SCsub")
 SConscript("bind/SCsub")
 
 # Build it all as a library

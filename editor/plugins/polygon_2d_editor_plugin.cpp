@@ -31,7 +31,7 @@
 #include "polygon_2d_editor_plugin.h"
 
 #include "canvas_item_editor_plugin.h"
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "core/os/keyboard.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
@@ -44,7 +44,7 @@
 #include "core/math/rect2.h"
 #include "core/math/transform_2d.h"
 #include "core/string/node_path.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/memory.h"
 #include "core/string/string_name.h"
 #include "core/typedefs.h"

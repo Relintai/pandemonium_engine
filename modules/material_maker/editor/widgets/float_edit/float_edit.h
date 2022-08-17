@@ -1,7 +1,7 @@
 #ifndef FLOAT_EDIT_H
 #define FLOAT_EDIT_H
 
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "scene/gui/line_edit.h"
 
 class ColorRect;

@@ -41,7 +41,7 @@
 #include "core/math/math_funcs.h"
 #include "core/math/rect2.h"
 #include "core/math/transform_2d.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/memory.h"
 #include "core/object/undo_redo.h"
 #include "core/variant/variant.h"

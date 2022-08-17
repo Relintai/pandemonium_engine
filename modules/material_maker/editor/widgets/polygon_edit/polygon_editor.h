@@ -1,7 +1,7 @@
 #ifndef POLYGON_EDITOR_H
 #define POLYGON_EDITOR_H
 
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/object/reference.h"
 
 #include "polygon_view.h"

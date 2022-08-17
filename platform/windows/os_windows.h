@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "context_gl_windows.h"
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "core/os/os.h"
 #include "core/config/project_settings.h"
 #include "crash_handler_windows.h"

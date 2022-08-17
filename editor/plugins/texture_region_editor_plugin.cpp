@@ -31,7 +31,7 @@
 #include "texture_region_editor_plugin.h"
 
 #include "core/core_string_names.h"
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "core/os/keyboard.h"
 #include "editor/editor_scale.h"
 #include "scene/gui/panel.h"
@@ -41,7 +41,7 @@
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"
 #include "core/math/transform_2d.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/main_loop.h"
 #include "core/os/memory.h"
 #include "core/string/string_name.h"

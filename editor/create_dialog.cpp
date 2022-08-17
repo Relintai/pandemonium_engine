@@ -42,7 +42,7 @@
 #include "core/containers/map.h"
 #include "core/math/rect2.h"
 #include "core/os/file_access.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/memory.h"
 #include "core/object/script_language.h"
 #include "core/typedefs.h"

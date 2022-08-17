@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/object/object.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 
 class InputMap : public Object {
 	GDCLASS(InputMap, Object);

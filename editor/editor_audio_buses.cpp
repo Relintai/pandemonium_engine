@@ -31,7 +31,7 @@
 #include "editor_audio_buses.h"
 
 #include "core/io/resource_saver.h"
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "core/os/keyboard.h"
 #include "editor_node.h"
 #include "editor_scale.h"
@@ -47,7 +47,7 @@
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"
 #include "core/math/rect2.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/memory.h"
 #include "core/string/string_name.h"
 #include "core/object/undo_redo.h"

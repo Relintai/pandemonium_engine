@@ -4,7 +4,7 @@
 #include "core/log/logger.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 
 #include "editor/editor_plugin.h"
 #include "editor/project_settings_editor.h"

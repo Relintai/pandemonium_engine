@@ -36,7 +36,7 @@
 #include "core/containers/list.h"
 #include "core/containers/map.h"
 #include "core/object/method_bind.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/object/script_language.h"

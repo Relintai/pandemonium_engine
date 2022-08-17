@@ -33,7 +33,7 @@
 #include "core/os/keyboard.h"
 #include "core/string/print_string.h"
 #include "scene/gui/label.h"
-#include "scene/gui/shortcut.h"
+#include "core/input/shortcut.h"
 
 #include "box_container.h"
 #include "core/os/dir_access.h"

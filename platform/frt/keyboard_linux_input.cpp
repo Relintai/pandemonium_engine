@@ -30,7 +30,7 @@
 
 #define FRT_MOCK_GODOT_INPUT_MODIFIER_STATE
 
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #endif
 
 #include "frt.h"

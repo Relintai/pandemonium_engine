@@ -33,7 +33,7 @@
 #include "scene/gui/dialogs.h"
 
 #include "core/math/vector2.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/object/reference.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"

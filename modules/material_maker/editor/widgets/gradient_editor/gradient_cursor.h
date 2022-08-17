@@ -3,7 +3,7 @@
 #define GRADIENT_CURSOR_H
 
 #include "core/math/color.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/variant/variant.h"
 
 #include "scene/gui/control.h"

@@ -41,7 +41,7 @@
 #include "core/math/math_funcs.h"
 #include "core/math/transform_2d.h"
 #include "core/string/node_path.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/memory.h"
 #include "core/containers/pair.h"
 #include "core/string/string_name.h"
@@ -53,7 +53,7 @@
 #include "scene/gui/option_button.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/range.h"
-#include "scene/gui/shortcut.h"
+#include "core/input/shortcut.h"
 #include "scene/main/node.h"
 #include "scene/resources/font.h"
 

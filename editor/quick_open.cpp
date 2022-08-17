@@ -35,7 +35,7 @@
 #include "scene/gui/button.h"
 #include "scene/gui/line_edit.h"
 #include "core/object/class_db.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/memory.h"
 #include "core/containers/pair.h"
 #include "core/typedefs.h"

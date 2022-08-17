@@ -31,7 +31,7 @@
 #include "editor_spin_slider.h"
 
 #include "core/math/expression.h"
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "core/os/keyboard.h"
 #include "editor_scale.h"
 #include "core/variant/array.h"
@@ -42,7 +42,7 @@
 #include "core/math/math_funcs.h"
 #include "core/math/rect2.h"
 #include "core/math/transform_2d.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/main_loop.h"
 #include "core/os/memory.h"
 #include "core/typedefs.h"

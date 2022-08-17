@@ -42,7 +42,7 @@
 #include "core/math/geometry.h"
 #include "core/math/math_defs.h"
 #include "core/math/transform_2d.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/memory.h"
 #include "core/typedefs.h"
 #include "core/object/undo_redo.h"

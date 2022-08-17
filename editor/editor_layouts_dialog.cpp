@@ -40,7 +40,7 @@
 #include "core/error/error_list.h"
 #include "core/containers/list.h"
 #include "core/math/math_defs.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/memory.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"

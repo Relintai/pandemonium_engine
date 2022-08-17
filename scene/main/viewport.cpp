@@ -31,7 +31,7 @@
 #include "viewport.h"
 
 #include "core/core_string_names.h"
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "core/os/os.h"
 #include "core/config/project_settings.h"
 #include "scene/2d/camera_2d.h"
@@ -48,7 +48,7 @@
 #include "scene/gui/panel.h"
 #include "scene/gui/panel_container.h"
 #include "scene/gui/popup_menu.h"
-#include "scene/gui/shortcut.h"
+#include "core/input/shortcut.h"
 #include "scene/gui/viewport_container.h"
 #include "scene/main/canvas_layer.h"
 #include "scene/main/timer.h"

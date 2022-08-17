@@ -31,7 +31,7 @@
 #include "curve_editor_plugin.h"
 
 #include "core/core_string_names.h"
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "core/os/keyboard.h"
 #include "editor/editor_scale.h"
 #include "core/object/class_db.h"
@@ -41,7 +41,7 @@
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"
 #include "core/math/rect2.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/memory.h"
 #include "core/object/resource.h"
 #include "core/string/string_name.h"

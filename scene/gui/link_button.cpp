@@ -31,7 +31,7 @@
 #include "link_button.h"
 
 #include "core/string/translation.h"
-#include "scene/gui/shortcut.h"
+#include "core/input/shortcut.h"
 
 void LinkButton::set_text(const String &p_text) {
 	if (text == p_text) {

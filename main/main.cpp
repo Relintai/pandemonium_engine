@@ -31,7 +31,7 @@
 #include "main.h"
 
 #include "core/crypto/crypto.h"
-#include "core/input_map.h"
+#include "core/input/input_map.h"
 #include "core/io/file_access_network.h"
 #include "core/io/file_access_pack.h"
 #include "core/io/file_access_zip.h"

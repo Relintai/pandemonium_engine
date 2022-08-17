@@ -32,7 +32,7 @@
 
 #ifdef IPHONE_ENABLED
 
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "drivers/coreaudio/audio_driver_coreaudio.h"
 #include "drivers/unix/os_unix.h"
 #include "joypad_iphone.h"

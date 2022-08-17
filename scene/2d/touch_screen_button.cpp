@@ -30,8 +30,8 @@
 
 #include "touch_screen_button.h"
 
-#include "core/input_map.h"
-#include "core/os/input.h"
+#include "core/input/input_map.h"
+#include "core/input/input.h"
 #include "core/os/os.h"
 #include "scene/resources/bit_map.h"
 #include "scene/resources/rectangle_shape_2d.h"

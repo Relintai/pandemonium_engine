@@ -44,7 +44,7 @@
 #include "core/math/transform.h"
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/memory.h"
 #include "core/variant/variant.h"
 #include "scene/3d/camera.h"

@@ -2,7 +2,7 @@
 #define SLOPE_POINT_H
 
 #include "core/math/vector2.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 
 #include "scene/gui/control.h"
 

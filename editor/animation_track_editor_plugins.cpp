@@ -44,7 +44,7 @@
 #include "core/containers/list.h"
 #include "core/math/math_funcs.h"
 #include "core/string/node_path.h"
-#include "core/os/input_event.h"
+#include "core/input/input_event.h"
 #include "core/os/memory.h"
 #include "core/string/string_name.h"
 #include "core/typedefs.h"
