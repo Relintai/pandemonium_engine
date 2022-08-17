@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/math/projection.h"
-#include "core/self_list.h"
+#include "core/containers/self_list.h"
 #include "scene/resources/mesh.h"
 #include "servers/visual/rasterizer.h"
 #include "servers/visual_server.h"

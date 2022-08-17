@@ -1,7 +1,7 @@
 
 #include "overlapping_wave_form_collapse.h"
 
-#include "core/set.h"
+#include "core/containers/set.h"
 
 bool OverlappingWaveFormCollapse::get_periodic_input() const {
 	return _periodic_input;

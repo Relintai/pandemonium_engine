@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "core/typedefs.h"
 
 class Compression {

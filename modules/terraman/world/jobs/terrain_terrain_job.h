@@ -28,7 +28,7 @@ SOFTWARE.
 
 #include "../../defines.h"
 
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 
 class TerrainMesher;
 

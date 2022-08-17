@@ -1,7 +1,7 @@
 #ifndef OVERLAPPING_WAVE_FORM_COLLAPSE_H
 #define OVERLAPPING_WAVE_FORM_COLLAPSE_H
 
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "array_2d.h"
 #include "wave_form_collapse.h"

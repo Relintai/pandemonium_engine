@@ -22,13 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/hash_map.h"
+#include "core/containers/hash_map.h"
 #include "core/resource.h"
 
 #include "../defines.h"
 
 #include "core/math/aabb.h"
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "voxel_chunk.h"
 
 class VoxelStructure : public Resource {

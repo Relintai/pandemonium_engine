@@ -32,7 +32,7 @@
 
 #include "core/io/stream_peer.h"
 #include "core/object.h"
-#include "core/ring_buffer.h"
+#include "core/containers/ring_buffer.h"
 
 class PacketPeer : public Reference {
 	GDCLASS(PacketPeer, Reference);

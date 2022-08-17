@@ -2,7 +2,7 @@
 #define WEB_NODE_H
 
 #include "../../modules_enabled.gen.h"
-#include "core/hash_map.h"
+#include "core/containers/hash_map.h"
 #include "core/os/rw_lock.h"
 #include "core/reference.h"
 #include "core/variant.h"

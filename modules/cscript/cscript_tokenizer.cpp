@@ -31,7 +31,7 @@
 #include "cscript_tokenizer.h"
 
 #include "core/io/marshalls.h"
-#include "core/map.h"
+#include "core/containers/map.h"
 #include "core/print_string.h"
 #include "cscript_functions.h"
 

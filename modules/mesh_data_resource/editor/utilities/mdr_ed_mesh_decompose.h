@@ -24,10 +24,10 @@ SOFTWARE.
 */
 
 #include "core/array.h"
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "core/reference.h"
 #include "core/variant.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class MeshDataResource;
 

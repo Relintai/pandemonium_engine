@@ -32,7 +32,7 @@
 
 #include "core/io/packet_peer.h"
 #include "core/io/stream_peer_tcp.h"
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/os/os.h"
 #include "core/script_language.h"
 

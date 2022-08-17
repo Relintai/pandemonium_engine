@@ -32,7 +32,7 @@
 
 #include "core/object.h"
 
-#include "core/map.h"
+#include "core/containers/map.h"
 #include "core/node_path.h"
 #include "scene/main/scene_tree.h"
 

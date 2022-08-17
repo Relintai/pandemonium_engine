@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/math/vector2.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 #include "scene/resources/bit_map.h"
 #include "core/reference.h"
 

@@ -34,7 +34,7 @@
 #include "core/pair.h"
 #include "core/reference.h"
 #include "core/script_language.h"
-#include "core/self_list.h"
+#include "core/containers/self_list.h"
 #include "core/string_name.h"
 #include "core/variant.h"
 

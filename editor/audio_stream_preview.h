@@ -36,11 +36,11 @@
 #include "scene/main/node.h"
 #include "servers/audio/audio_stream.h"
 
-#include "core/map.h"
+#include "core/containers/map.h"
 #include "core/object.h"
 #include "core/object_id.h"
 #include "core/reference.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class Thread;
 

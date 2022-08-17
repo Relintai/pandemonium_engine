@@ -1,8 +1,8 @@
 #ifndef FAST_WFC_UTILS_ARRAY2D_HPP_
 #define FAST_WFC_UTILS_ARRAY2D_HPP_
 
-#include "core/vector.h"
-#include "core/pool_vector.h"
+#include "core/containers/vector.h"
+#include "core/containers/pool_vector.h"
 #include "core/variant.h"
 
 template <typename T>

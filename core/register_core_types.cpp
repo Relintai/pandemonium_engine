@@ -68,7 +68,7 @@
 #include "core/os/input.h"
 #include "core/os/main_loop.h"
 #include "core/os/time.h"
-#include "core/packed_data_container.h"
+#include "core/containers/packed_data_container.h"
 #include "core/path_remap.h"
 #include "core/project_settings.h"
 #include "core/translation.h"

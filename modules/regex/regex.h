@@ -32,10 +32,10 @@
 
 #include "core/array.h"
 #include "core/dictionary.h"
-#include "core/map.h"
+#include "core/containers/map.h"
 #include "core/reference.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class RegExMatch : public Reference {
 	GDCLASS(RegExMatch, Reference);

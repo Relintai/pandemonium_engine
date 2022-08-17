@@ -32,7 +32,7 @@
 
 #include "scene/gui/box_container.h"
 
-#include "core/map.h"
+#include "core/containers/map.h"
 #include "core/object.h"
 
 class MenuButton;

@@ -30,10 +30,10 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/math/aabb.h"
 #include "core/math/geometry.h"
-#include "core/set.h"
+#include "core/containers/set.h"
 
 class QuickHull {
 public:

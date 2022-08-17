@@ -33,12 +33,12 @@
 #include "core/reference.h"
 #include "scene/gui/popup.h"
 
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/math/math_defs.h"
 #include "core/node_path.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class PropertyValueEvaluator;
 class CreateDialog;

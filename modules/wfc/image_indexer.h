@@ -4,7 +4,7 @@
 #include "core/image.h"
 #include "core/reference.h"
 #include "core/variant.h"
-#include "core/oa_hash_map.h"
+#include "core/containers/oa_hash_map.h"
 
 class ImageIndexer : public Reference {
 	GDCLASS(ImageIndexer, Reference);

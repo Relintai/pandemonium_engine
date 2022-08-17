@@ -32,7 +32,7 @@
 
 #include "core/os/file_access.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include <stdarg.h>
 

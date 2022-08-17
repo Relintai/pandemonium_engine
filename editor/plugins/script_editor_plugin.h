@@ -40,16 +40,16 @@
 #include "core/script_language.h"
 #include "core/array.h"
 #include "core/error_list.h"
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/reference.h"
 #include "core/resource.h"
-#include "core/set.h"
+#include "core/containers/set.h"
 #include "core/typedefs.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class Button;
 class ConfigFile;

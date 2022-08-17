@@ -34,10 +34,10 @@
 #include "core/io/stream_peer_ssl.h"
 #include "core/io/tcp_server.h"
 #include "core/io/zip_io.h"
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/os/rw_lock.h"
 #include "core/os/semaphore.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "core/project_settings.h"
 

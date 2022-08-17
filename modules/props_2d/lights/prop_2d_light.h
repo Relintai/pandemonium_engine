@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "core/math/color.h"
 #include "core/reference.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class Prop2DLight : public Reference {
 	GDCLASS(Prop2DLight, Reference);

@@ -36,7 +36,7 @@
 */
 
 #include "core/class_db.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class Interpolator : public Object {
 	GDCLASS(Interpolator, Object);

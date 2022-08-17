@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/array.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "../items/item_template.h"
 

@@ -33,7 +33,7 @@
 #include "core/os/file_access.h"
 #include "core/reference.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 /*
   Based on irrXML (see their zlib license). Added mainly for compatibility with their Collada loader.

@@ -30,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/hash_map.h"
-#include "core/list.h"
+#include "core/containers/hash_map.h"
+#include "core/containers/list.h"
 #include "core/pair.h"
 
 /**

@@ -36,19 +36,19 @@
 #include "scene/gui/control.h"
 
 #include "core/math/color.h"
-#include "core/list.h"
-#include "core/map.h"
+#include "core/containers/list.h"
+#include "core/containers/map.h"
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/object_id.h"
 
 #include "core/resource.h"
-#include "core/set.h"
+#include "core/containers/set.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "scene/resources/texture.h"
 

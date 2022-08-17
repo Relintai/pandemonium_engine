@@ -35,7 +35,7 @@
 #ifdef MODULE_REGEX_ENABLED
 
 #include "core/error_macros.h"
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/node_path.h"
 #include "core/object.h"
 #include "core/pair.h"

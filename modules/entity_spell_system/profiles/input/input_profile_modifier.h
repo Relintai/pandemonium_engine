@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "core/reference.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "input_profile_modifier_entry.h"
 

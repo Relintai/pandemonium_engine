@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/os/main_loop.h"
 #include "core/ustring.h"
 

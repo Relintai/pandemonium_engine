@@ -41,7 +41,7 @@
 #include "core/dictionary.h"
 #include "core/error_macros.h"
 #include "core/io/resource_loader.h"
-#include "core/map.h"
+#include "core/containers/map.h"
 #include "core/math/math_defs.h"
 #include "core/math/rect2.h"
 #include "core/os/input_event.h"

@@ -34,7 +34,7 @@
 #include "core/math/transform_interpolator.h"
 #include "servers/visual_server.h"
 
-#include "core/self_list.h"
+#include "core/containers/self_list.h"
 
 class RasterizerScene {
 public:

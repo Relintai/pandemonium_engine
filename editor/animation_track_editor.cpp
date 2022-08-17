@@ -49,7 +49,7 @@
 #include "core/pair.h"
 #include "core/resource.h"
 #include "core/script_language.h"
-#include "core/set.h"
+#include "core/containers/set.h"
 #include "core/string_name.h"
 #include "core/typedefs.h"
 #include "core/undo_redo.h"

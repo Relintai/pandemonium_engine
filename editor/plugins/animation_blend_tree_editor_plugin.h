@@ -33,7 +33,7 @@
 #include "editor/plugins/animation_tree_editor_plugin.h"
 
 #include "core/array.h"
-#include "core/map.h"
+#include "core/containers/map.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/reference.h"
@@ -41,7 +41,7 @@
 #include "core/string_name.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class ProgressBar;
 class AcceptDialog;

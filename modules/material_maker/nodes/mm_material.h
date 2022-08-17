@@ -6,7 +6,7 @@
 #include "core/math/vector3.h"
 #include "core/reference.h"
 #include "core/variant.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "core/resource.h"
 

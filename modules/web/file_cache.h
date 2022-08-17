@@ -1,12 +1,12 @@
 #ifndef FILE_CACHE_H
 #define FILE_CACHE_H
 
-#include "core/hash_map.h"
-#include "core/map.h"
+#include "core/containers/hash_map.h"
+#include "core/containers/map.h"
 #include "core/os/os.h"
 #include "core/os/rw_lock.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "core/reference.h"
 

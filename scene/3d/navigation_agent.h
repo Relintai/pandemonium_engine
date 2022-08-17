@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/vector.h"
+#include "core/containers/vector.h"
 #include "scene/main/node.h"
 
 class Spatial;

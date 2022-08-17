@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/resource.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "mesh_data_resource.h"
 

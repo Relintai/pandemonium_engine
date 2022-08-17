@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/resource.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "../../item_enums.h"
 

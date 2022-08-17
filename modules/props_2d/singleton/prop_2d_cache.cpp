@@ -37,7 +37,7 @@ SOFTWARE.
 #include "../material_cache/prop_2d_material_cache.h"
 #include "../tiled_wall/tiled_wall_2d_data.h"
 
-#include "core/hashfuncs.h"
+#include "core/containers/hashfuncs.h"
 
 #define VARIANT_ARRAY_GET(arr)             \
 	Vector<Variant> r;                     \

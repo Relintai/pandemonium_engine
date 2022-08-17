@@ -34,7 +34,7 @@
 #include "core/string_name.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "core/vmap.h"
+#include "core/containers/vmap.h"
 #include "gdscript_functions.h"
 
 class GDScriptTokenizer {

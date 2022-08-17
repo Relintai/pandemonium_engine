@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/hash_map.h"
+#include "core/containers/hash_map.h"
 
 #include "ess_resource_db.h"
 

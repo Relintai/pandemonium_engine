@@ -6,7 +6,7 @@
 #include "core/reference.h"
 #include "core/undo_redo.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "modules/material_maker/editor/mm_create_name_popup.h"
 #include "scene/gui/margin_container.h"

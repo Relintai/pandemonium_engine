@@ -2,9 +2,9 @@
 #define SIMPLE_WEB_SERVER_REQUEST_H
 
 #include "core/dictionary.h"
-#include "core/hash_map.h"
+#include "core/containers/hash_map.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "../http/web_server_request.h"
 

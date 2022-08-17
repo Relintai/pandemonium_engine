@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/ring_buffer.h"
+#include "core/containers/ring_buffer.h"
 
 template <class T>
 class PacketBuffer {

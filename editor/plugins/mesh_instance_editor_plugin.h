@@ -36,7 +36,7 @@
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 
 class AcceptDialog;

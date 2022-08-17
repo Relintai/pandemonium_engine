@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/object.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "../profiles/player_profile.h"
 

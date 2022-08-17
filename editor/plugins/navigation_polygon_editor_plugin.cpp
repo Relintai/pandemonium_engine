@@ -34,7 +34,7 @@
 #include "core/os/memory.h"
 #include "core/undo_redo.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 #include "scene/2d/navigation_polygon.h"
 #include "scene/main/node.h"
 

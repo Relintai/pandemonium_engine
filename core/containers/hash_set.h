@@ -33,8 +33,8 @@
 
 #include "core/math/math_funcs.h"
 #include "core/os/memory.h"
-#include "core/hash_map.h"
-#include "core/hashfuncs.h"
+#include "core/containers/hash_map.h"
+#include "core/containers/hashfuncs.h"
 
 /**
  * Implementation of Set using a bidi indexed hash map.

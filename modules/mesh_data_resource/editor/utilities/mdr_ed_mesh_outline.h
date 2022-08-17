@@ -26,7 +26,7 @@ SOFTWARE.
 #include "core/reference.h"
 
 #include "core/array.h"
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "core/variant.h"
 
 class MeshDataResource;

@@ -54,7 +54,7 @@
 #include "core/math/vector2.h"
 #include "core/os/file_access.h"
 #include "core/os/memory.h"
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "core/print_string.h"
 #include "core/reference.h"
 #include "core/typedefs.h"

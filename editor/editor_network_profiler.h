@@ -33,7 +33,7 @@
 #include "scene/gui/box_container.h"
 
 #include "core/io/multiplayer_api.h"
-#include "core/map.h"
+#include "core/containers/map.h"
 #include "core/object.h"
 #include "core/object_id.h"
 

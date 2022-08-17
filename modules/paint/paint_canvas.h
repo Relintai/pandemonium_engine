@@ -28,7 +28,7 @@ SOFTWARE.
 #include "core/reference.h"
 #include "scene/gui/margin_container.h"
 
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class PaintCanvasLayer;
 class TextureRect;

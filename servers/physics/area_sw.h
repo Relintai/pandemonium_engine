@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "collision_object_sw.h"
-#include "core/self_list.h"
+#include "core/containers/self_list.h"
 #include "servers/physics_server.h"
 //#include "servers/physics/query_sw.h"
 

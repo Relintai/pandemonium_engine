@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/array.h"
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/ustring.h"
 
 class Variant;

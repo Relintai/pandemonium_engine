@@ -35,7 +35,7 @@
 #include "core/math/color.h"
 #include "core/dictionary.h"
 #include "core/error_macros.h"
-#include "core/hashfuncs.h"
+#include "core/containers/hashfuncs.h"
 #include "core/math/math_defs.h"
 #include "core/math/transform_2d.h"
 #include "core/message_queue.h"

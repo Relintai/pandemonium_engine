@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "broad_phase_sw.h"
-#include "core/self_list.h"
+#include "core/containers/self_list.h"
 #include "servers/physics_server.h"
 #include "shape_sw.h"
 

@@ -38,12 +38,12 @@
 #include "scene/gui/item_list.h"
 
 #include "scene/gui/popup_menu.h"
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/reference.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "scene/resources/texture.h"
 

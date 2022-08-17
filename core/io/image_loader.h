@@ -32,7 +32,7 @@
 
 #include "core/image.h"
 #include "core/io/resource_loader.h"
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/os/file_access.h"
 #include "core/ustring.h"
 

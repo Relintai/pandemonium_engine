@@ -30,7 +30,7 @@
 
 #include "dictionary.h"
 
-#include "core/ordered_hash_map.h"
+#include "core/containers/ordered_hash_map.h"
 #include "core/safe_refcount.h"
 #include "core/variant.h"
 

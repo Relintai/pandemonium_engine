@@ -42,7 +42,7 @@
 #include "core/os/input_event.h"
 #include "core/os/memory.h"
 #include "core/typedefs.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 #include "editor/editor_node.h"
 #include "scene/2d/canvas_item.h"
 #include "scene/audio/audio_stream_player.h"

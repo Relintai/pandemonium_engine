@@ -3,7 +3,7 @@
 
 #include "core/reference.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "modules/web/http/web_node.h"
 #include "user_web_page.h"

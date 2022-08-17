@@ -35,8 +35,8 @@
 #include "scene/gui/box_container.h"
 
 #include "core/dictionary.h"
-#include "core/list.h"
-#include "core/map.h"
+#include "core/containers/list.h"
+#include "core/containers/map.h"
 #include "core/math/math_defs.h"
 #include "core/math/rect2.h"
 #include "core/math/transform_2d.h"
@@ -47,7 +47,7 @@
 #include "core/typedefs.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class CanvasItemEditorViewport;
 class AcceptDialog;

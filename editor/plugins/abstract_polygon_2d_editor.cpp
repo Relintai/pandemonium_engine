@@ -42,7 +42,7 @@
 #include "core/math/transform_2d.h"
 #include "core/os/input_event.h"
 #include "core/os/memory.h"
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "core/typedefs.h"
 #include "core/undo_redo.h"
 #include "editor/editor_node.h"

@@ -44,10 +44,10 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "core/local_vector.h"
+#include "core/containers/local_vector.h"
 #include "core/math/geometry.h"
 #include "core/math/vector3.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 /// Convex hull implementation based on Preparata and Hong
 /// See http://code.google.com/p/bullet/issues/detail?id=275

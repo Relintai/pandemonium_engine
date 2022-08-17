@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/script_language.h"
 
 class ScriptDebuggerLocal : public ScriptDebugger {

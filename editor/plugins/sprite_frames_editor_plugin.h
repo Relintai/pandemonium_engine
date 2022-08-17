@@ -35,9 +35,9 @@
 
 #include "core/math/vector2.h"
 #include "core/object.h"
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "core/reference.h"
-#include "core/set.h"
+#include "core/containers/set.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
 #include "core/variant.h"

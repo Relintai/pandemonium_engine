@@ -36,9 +36,9 @@
 #include "core/math/color.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "core/reference.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class AcceptDialog;
 class Button;

@@ -30,9 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/os/mutex.h"
-#include "core/pooled_list.h"
+#include "core/containers/pooled_list.h"
 #include "core/safe_refcount.h"
 #include "core/typedefs.h"
 

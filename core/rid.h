@@ -30,11 +30,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/os/memory.h"
 #include "core/rid_handle.h"
 #include "core/safe_refcount.h"
-#include "core/set.h"
+#include "core/containers/set.h"
 #include "core/typedefs.h"
 
 #ifndef RID_HANDLES_ENABLED

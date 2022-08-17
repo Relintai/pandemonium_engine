@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/reference.h"
-#include "core/vset.h"
+#include "core/containers/vset.h"
 #include "scene/3d/collision_object.h"
 #include "servers/physics_server.h"
 

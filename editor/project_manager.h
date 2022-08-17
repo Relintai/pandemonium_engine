@@ -33,7 +33,7 @@
 #include "scene/gui/box_container.h"
 #include "scene/gui/control.h"
 
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/object.h"
 #include "core/reference.h"
 #include "core/ustring.h"

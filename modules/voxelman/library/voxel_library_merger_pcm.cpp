@@ -42,7 +42,7 @@ SOFTWARE.
 
 #include "../world/default/voxel_chunk_default.h"
 
-#include "core/hashfuncs.h"
+#include "core/containers/hashfuncs.h"
 
 bool VoxelLibraryMergerPCM::_supports_caching() {
 	return true;

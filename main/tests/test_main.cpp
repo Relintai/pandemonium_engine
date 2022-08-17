@@ -30,7 +30,7 @@
 
 #include "test_main.h"
 
-#include "core/list.h"
+#include "core/containers/list.h"
 
 #ifdef DEBUG_ENABLED
 

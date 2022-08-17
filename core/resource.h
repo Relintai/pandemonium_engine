@@ -35,7 +35,7 @@
 #include "core/ref_ptr.h"
 #include "core/reference.h"
 #include "core/safe_refcount.h"
-#include "core/self_list.h"
+#include "core/containers/self_list.h"
 
 #define RES_BASE_EXTENSION(m_ext)                                                                                   \
 public:                                                                                                             \

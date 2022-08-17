@@ -31,7 +31,7 @@
 #include "mesh.h"
 
 #include "core/crypto/crypto_core.h"
-#include "core/local_vector.h"
+#include "core/containers/local_vector.h"
 #include "core/math/convex_hull.h"
 #include "core/pair.h"
 #include "scene/resources/concave_polygon_shape.h"

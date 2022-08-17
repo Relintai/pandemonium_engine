@@ -49,7 +49,7 @@
 #include "core/error_list.h"
 #include "core/error_macros.h"
 #include "core/image.h"
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/math/math_funcs.h"
 #include "core/math/rect2.h"
 #include "core/os/input_event.h"

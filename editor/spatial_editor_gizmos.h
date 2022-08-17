@@ -38,12 +38,12 @@
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
 #include "core/object.h"
-#include "core/ordered_hash_map.h"
-#include "core/pool_vector.h"
+#include "core/containers/ordered_hash_map.h"
+#include "core/containers/pool_vector.h"
 #include "core/reference.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "scene/resources/mesh.h"
 

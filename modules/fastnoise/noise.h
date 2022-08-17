@@ -6,7 +6,7 @@
 
 #include "lib/FastNoise.h"
 
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 
 typedef fastnoise::FastNoise _FastNoise;
 

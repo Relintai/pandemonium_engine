@@ -6,7 +6,7 @@
 #include "core/reference.h"
 #include "core/undo_redo.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "scene/gui/dialogs.h"
 

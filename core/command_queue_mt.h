@@ -33,7 +33,7 @@
 #include "core/os/memory.h"
 #include "core/os/mutex.h"
 #include "core/os/semaphore.h"
-#include "core/simple_type.h"
+#include "core/containers/simple_type.h"
 #include "core/typedefs.h"
 
 #define COMMA(N) _COMMA_##N

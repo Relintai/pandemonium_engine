@@ -38,14 +38,14 @@
 #include "core/io/config_file.h"
 #include "core/os/thread_safe.h"
 #include "core/translation.h"
-#include "core/hash_map.h"
-#include "core/list.h"
-#include "core/map.h"
+#include "core/containers/hash_map.h"
+#include "core/containers/list.h"
+#include "core/containers/map.h"
 #include "core/reference.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class EditorPlugin;
 class Dictionary;

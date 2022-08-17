@@ -33,7 +33,7 @@
 #ifdef MINIZIP_ENABLED
 
 #include "core/io/file_access_pack.h"
-#include "core/map.h"
+#include "core/containers/map.h"
 
 #include "thirdparty/minizip/unzip.h"
 

@@ -33,7 +33,7 @@
 #include "crypto_mbedtls.h"
 
 #include "core/os/file_access.h"
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "core/reference.h"
 
 #include <mbedtls/config.h>

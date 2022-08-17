@@ -39,7 +39,7 @@
 #include "scene/gui/box_container.h"
 #include "core/math/color.h"
 #include "core/dictionary.h"
-#include "core/map.h"
+#include "core/containers/map.h"
 #include "core/math/rect2.h"
 #include "core/os/file_access.h"
 #include "core/os/input_event.h"

@@ -36,7 +36,7 @@
 */
 
 #include "core/class_db.h"
-#include "core/local_vector.h"
+#include "core/containers/local_vector.h"
 #include "net_utilities.h"
 
 class SceneSynchronizer;

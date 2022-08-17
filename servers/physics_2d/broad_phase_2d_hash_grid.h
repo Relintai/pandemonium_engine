@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "broad_phase_2d_sw.h"
-#include "core/map.h"
+#include "core/containers/map.h"
 
 class BroadPhase2DHashGrid : public BroadPhase2DSW {
 	struct PairData {

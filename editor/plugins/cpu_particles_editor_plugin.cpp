@@ -34,7 +34,7 @@
 #include "core/class_db.h"
 #include "core/math/vector3.h"
 #include "core/os/memory.h"
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_node.h"
 #include "editor/scene_tree_editor.h"

@@ -24,11 +24,11 @@ SOFTWARE.
 
 #include "core/math/color.h"
 #include "core/reference.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "../defines.h"
 
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "scene/3d/mesh_instance.h"
 
 #include "core/math/rect2.h"

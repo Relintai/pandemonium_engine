@@ -41,7 +41,7 @@
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
 #include "core/variant.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 EditorRun::Status EditorRun::get_status() const {
 	return status;

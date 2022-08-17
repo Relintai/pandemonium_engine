@@ -63,7 +63,7 @@
 #include "core/node_path.h"
 #include "core/os/input_event.h"
 #include "core/os/memory.h"
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "core/resource.h"
 #include "core/rid.h"
 #include "core/string_name.h"

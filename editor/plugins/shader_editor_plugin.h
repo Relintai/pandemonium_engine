@@ -36,7 +36,7 @@
 
 #include "scene/resources/shader.h"
 
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/reference.h"

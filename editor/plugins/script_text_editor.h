@@ -34,11 +34,11 @@
 #include "script_editor_plugin.h"
 
 #include "core/reference.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "core/math/color.h"
-#include "core/list.h"
-#include "core/map.h"
+#include "core/containers/list.h"
+#include "core/containers/map.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/resource.h"

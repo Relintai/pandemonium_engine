@@ -33,20 +33,20 @@
 #include "scene/gui/margin_container.h"
 
 #include "core/array.h"
-#include "core/hash_map.h"
-#include "core/list.h"
-#include "core/map.h"
+#include "core/containers/hash_map.h"
+#include "core/containers/list.h"
+#include "core/containers/map.h"
 #include "core/math/vector2.h"
 #include "core/node_path.h"
 #include "core/object.h"
 #include "core/object_id.h"
 #include "core/reference.h"
 #include "core/resource.h"
-#include "core/set.h"
+#include "core/containers/set.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class Tree;
 class EditorNode;

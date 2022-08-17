@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "core/math/transform.h"
 #include "core/reference.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"

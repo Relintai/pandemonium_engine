@@ -32,12 +32,12 @@
 
 #include "scene/gui/dialogs.h"
 
-#include "core/hash_map.h"
-#include "core/list.h"
-#include "core/map.h"
+#include "core/containers/hash_map.h"
+#include "core/containers/list.h"
+#include "core/containers/map.h"
 #include "core/object.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class EditorFileDialog;
 class EditorFileSystemDirectory;

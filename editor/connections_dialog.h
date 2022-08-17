@@ -39,12 +39,12 @@
 #include "scene/gui/box_container.h"
 
 #include "core/undo_redo.h"
-#include "core/map.h"
+#include "core/containers/map.h"
 #include "core/node_path.h"
 #include "core/object.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class PopupMenu;
 class ConnectDialogBinds;

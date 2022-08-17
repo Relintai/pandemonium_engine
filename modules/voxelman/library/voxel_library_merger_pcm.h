@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/map.h"
+#include "core/containers/map.h"
 #include "core/resource.h"
 
 #include "voxel_library.h"

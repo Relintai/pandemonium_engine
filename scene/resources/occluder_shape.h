@@ -32,7 +32,7 @@
 
 #include "core/math/plane.h"
 #include "core/resource.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class OccluderShape : public Resource {
 	GDCLASS(OccluderShape, Resource);

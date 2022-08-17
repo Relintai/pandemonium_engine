@@ -30,10 +30,10 @@
 
 #include "test_ordered_hash_map.h"
 
-#include "core/ordered_hash_map.h"
+#include "core/containers/ordered_hash_map.h"
 #include "core/os/os.h"
 #include "core/pair.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 namespace TestOrderedHashMap {
 

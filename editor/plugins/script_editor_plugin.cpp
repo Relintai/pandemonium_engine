@@ -55,7 +55,7 @@
 #include "core/error_macros.h"
 #include "core/io/config_file.h"
 #include "core/io/resource_saver.h"
-#include "core/map.h"
+#include "core/containers/map.h"
 #include "core/math/math_funcs.h"
 #include "core/math/transform_2d.h"
 #include "core/os/input_event.h"

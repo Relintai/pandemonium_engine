@@ -1,7 +1,7 @@
 #ifndef HTTP_SESSION_H
 #define HTTP_SESSION_H
 
-#include "core/hash_map.h"
+#include "core/containers/hash_map.h"
 
 #include "core/reference.h"
 

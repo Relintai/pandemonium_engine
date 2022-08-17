@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/oa_hash_map.h"
+#include "core/containers/oa_hash_map.h"
 #include "core/reference.h"
 
 /**

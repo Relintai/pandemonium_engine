@@ -42,7 +42,7 @@
 #include "core/os/memory.h"
 #include "core/resource.h"
 #include "core/typedefs.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 #include "editor/editor_file_system.h"
 #include "editor/editor_node.h"
 #include "editor/editor_scale.h"

@@ -33,7 +33,7 @@
 #include "scene/gui/box_container.h"
 #include "scene/gui/popup.h"
 
-#include "core/map.h"
+#include "core/containers/map.h"
 #include "core/os/thread_safe.h"
 #include "core/ustring.h"
 

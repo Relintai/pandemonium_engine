@@ -46,7 +46,7 @@
 #include "core/math/math_funcs.h"
 #include "core/math/vector2.h"
 #include "core/os/memory.h"
-#include "core/set.h"
+#include "core/containers/set.h"
 #include "core/string_name.h"
 #include "core/typedefs.h"
 #include "core/ustring.h"

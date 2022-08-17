@@ -32,9 +32,9 @@
 
 #include "core/array.h"
 #include "core/char_utils.h"
-#include "core/cowdata.h"
+#include "core/containers/cowdata.h"
 #include "core/typedefs.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 /*************************************************************************/
 /*  CharProxy                                                            */

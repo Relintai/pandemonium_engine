@@ -30,10 +30,10 @@
 
 #include "array.h"
 
-#include "core/hashfuncs.h"
+#include "core/containers/hashfuncs.h"
 #include "core/object.h"
 #include "core/variant.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class ArrayPrivate {
 public:

@@ -34,7 +34,7 @@
 #include "core/math/math_defs.h"
 #include "core/math/vector3.h"
 #include "core/math/vector4.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class Array;
 struct AABB;

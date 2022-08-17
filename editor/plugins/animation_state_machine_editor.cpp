@@ -38,7 +38,7 @@
 #include "core/class_db.h"
 #include "core/math/color.h"
 #include "core/error_macros.h"
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/math/geometry.h"
 #include "core/math/math_defs.h"
 #include "core/math/transform_2d.h"

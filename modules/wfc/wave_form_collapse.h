@@ -6,7 +6,7 @@
 
 #include "array_2d.h"
 #include "array_3d.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "core/reference.h"
 

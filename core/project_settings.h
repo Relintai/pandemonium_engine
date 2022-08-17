@@ -32,7 +32,7 @@
 
 #include "core/object.h"
 #include "core/os/thread_safe.h"
-#include "core/set.h"
+#include "core/containers/set.h"
 
 // Querying ProjectSettings is usually done at startup.
 // Additionally, in order to keep track of changes to ProjectSettings,

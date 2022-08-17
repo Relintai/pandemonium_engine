@@ -34,7 +34,7 @@
 #include "core/math/color.h"
 #include "core/dictionary.h"
 #include "core/error_macros.h"
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/math/aabb.h"
 #include "core/math/basis.h"
 #include "core/math/plane.h"

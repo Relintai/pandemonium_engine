@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/map.h"
+#include "core/containers/map.h"
 #include "core/object.h"
 #include "core/script_language.h"
 #include "gdscript_functions.h"

@@ -32,7 +32,7 @@
 
 #include "area_sw.h"
 #include "collision_object_sw.h"
-#include "core/vset.h"
+#include "core/containers/vset.h"
 
 class ConstraintSW;
 class PhysicsDirectBodyStateSW;

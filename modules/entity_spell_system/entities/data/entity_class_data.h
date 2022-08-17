@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "core/resource.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "core/math/math_funcs.h"
 #include "scene/resources/texture.h"

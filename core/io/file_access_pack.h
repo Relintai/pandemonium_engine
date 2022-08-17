@@ -30,13 +30,13 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/list.h"
-#include "core/map.h"
+#include "core/containers/list.h"
+#include "core/containers/map.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 #include "core/print_string.h"
-#include "core/set.h"
-#include "core/hashfuncs.h"
+#include "core/containers/set.h"
+#include "core/containers/hashfuncs.h"
 
 // Pandemonium's packed file magic header ("GDPC" in ASCII).
 #define PACK_HEADER_MAGIC 0x43504447

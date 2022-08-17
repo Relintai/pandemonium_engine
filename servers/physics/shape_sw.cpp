@@ -33,7 +33,7 @@
 #include "core/image.h"
 #include "core/math/convex_hull.h"
 #include "core/math/geometry.h"
-#include "core/sort_array.h"
+#include "core/containers/sort_array.h"
 
 // HeightMapShapeSW is based on Bullet btHeightfieldTerrainShape.
 

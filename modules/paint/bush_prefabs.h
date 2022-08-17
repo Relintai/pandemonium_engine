@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "scene/gui/control.h"
 
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "core/variant.h"
 
 class BrushPrefabs {

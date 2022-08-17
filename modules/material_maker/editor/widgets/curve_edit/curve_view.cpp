@@ -2,7 +2,7 @@
 #include "curve_view.h"
 
 #include "../../../nodes/bases/curve_base.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 bool CurveView::get_show_axes() const {
 	return show_axes;

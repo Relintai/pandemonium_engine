@@ -37,9 +37,9 @@
 #include "core/math/vector3.h"
 #include "core/math/vector2i.h"
 #include "core/object.h"
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "core/print_string.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class Geometry {
 public:

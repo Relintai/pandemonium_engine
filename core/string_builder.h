@@ -32,7 +32,7 @@
 
 #include "core/ustring.h"
 
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class StringBuilder {
 	uint32_t string_length;

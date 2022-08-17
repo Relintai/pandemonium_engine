@@ -26,7 +26,7 @@ SOFTWARE.
 #include "core/dictionary.h"
 #include "core/reference.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "action_bar_entry.h"
 

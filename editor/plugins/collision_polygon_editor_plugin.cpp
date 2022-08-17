@@ -49,7 +49,7 @@
 #include "core/math/vector3.h"
 #include "core/os/input_event.h"
 #include "core/os/memory.h"
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "core/undo_redo.h"
 #include "core/variant.h"
 #include "editor/editor_node.h"

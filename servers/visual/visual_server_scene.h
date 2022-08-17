@@ -38,7 +38,7 @@
 #include "core/os/semaphore.h"
 #include "core/os/thread.h"
 #include "core/safe_refcount.h"
-#include "core/self_list.h"
+#include "core/containers/self_list.h"
 #include "portals/portal_renderer.h"
 
 class VisualServerScene {

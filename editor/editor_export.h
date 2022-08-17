@@ -38,17 +38,17 @@
 #include "scene/resources/texture.h"
 
 #include "core/error_list.h"
-#include "core/list.h"
-#include "core/map.h"
+#include "core/containers/list.h"
+#include "core/containers/map.h"
 #include "core/object.h"
 #include "core/os/dir_access.h"
-#include "core/pool_vector.h"
-#include "core/set.h"
+#include "core/containers/pool_vector.h"
+#include "core/containers/set.h"
 #include "core/string_name.h"
 #include "core/typedefs.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class FileAccess;
 class EditorExportPlatform;

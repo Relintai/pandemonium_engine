@@ -35,7 +35,7 @@
 #include "core/io/xml_parser.h"
 #include "core/os/main_loop.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 namespace TestXMLParser {
 

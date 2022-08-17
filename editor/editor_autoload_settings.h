@@ -32,7 +32,7 @@
 
 #include "scene/gui/box_container.h"
 
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/ustring.h"

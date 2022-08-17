@@ -31,7 +31,7 @@
 #ifndef IMMEDIATE_MESH_H
 #define IMMEDIATE_MESH_H
 
-#include "core/vector.h"
+#include "core/containers/vector.h"
 #include "scene/resources/mesh.h"
 
 class ImmediateMesh : public Mesh {

@@ -47,7 +47,7 @@
 #include "core/os/memory.h"
 #include "core/project_settings.h"
 #include "core/script_language.h"
-#include "core/set.h"
+#include "core/containers/set.h"
 #include "core/string_name.h"
 #include "core/typedefs.h"
 #include "editor/editor_node.h"

@@ -36,7 +36,7 @@
 #include "core/reference.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class EditorFileSystemDirectory;
 class InputEvent;

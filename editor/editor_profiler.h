@@ -33,15 +33,15 @@
 #include "scene/gui/box_container.h"
 
 #include "core/math/color.h"
-#include "core/map.h"
+#include "core/containers/map.h"
 #include "core/object.h"
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "core/reference.h"
-#include "core/set.h"
+#include "core/containers/set.h"
 #include "core/string_name.h"
 #include "core/typedefs.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "scene/resources/texture.h"
 

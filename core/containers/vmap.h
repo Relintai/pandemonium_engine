@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/cowdata.h"
+#include "core/containers/cowdata.h"
 #include "core/typedefs.h"
 
 template <class T, class V>

@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/typedefs.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 template <class T>
 class VSet {

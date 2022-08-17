@@ -37,8 +37,8 @@
 #include "scene/resources/texture.h"
 
 #include "core/dictionary.h"
-#include "core/list.h"
-#include "core/map.h"
+#include "core/containers/list.h"
+#include "core/containers/map.h"
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
 #include "core/object.h"

@@ -48,7 +48,7 @@
 #include "core/math/geometry.h"
 #include "core/math/rect2.h"
 #include "core/os/memory.h"
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "core/reference.h"
 #include "core/undo_redo.h"
 #include "core/variant.h"

@@ -3,7 +3,7 @@
 
 #include "core/dictionary.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "core/object.h"
 #include "core/reference.h"

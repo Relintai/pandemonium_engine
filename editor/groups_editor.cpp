@@ -37,7 +37,7 @@
 #include "scene/gui/label.h"
 #include "scene/resources/packed_scene.h"
 #include "core/class_db.h"
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/math/vector2.h"
 #include "core/node_path.h"
 #include "core/os/memory.h"

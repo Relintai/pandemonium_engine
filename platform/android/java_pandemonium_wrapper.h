@@ -36,7 +36,7 @@
 #include <android/log.h>
 #include <jni.h>
 
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "string_android.h"
 
 // Class that makes functions in java/src/org/pandemoniumengine/pandemonium/Pandemonium.java callable from C++

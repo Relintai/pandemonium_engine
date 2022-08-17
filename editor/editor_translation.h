@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 Vector<String> get_editor_locales();
 void load_editor_translations(const String &p_locale);

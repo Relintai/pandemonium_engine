@@ -37,7 +37,7 @@
 #include "core/math/color.h"
 #include "core/error_macros.h"
 #include "core/io/resource_loader.h"
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/math/math_funcs.h"
 #include "core/math/rect2.h"
 #include "core/math/transform_2d.h"

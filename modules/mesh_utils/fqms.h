@@ -27,10 +27,10 @@ SOFTWARE.
 */
 
 #include "core/math/color.h"
-#include "core/hashfuncs.h"
+#include "core/containers/hashfuncs.h"
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 namespace FQMS {
 

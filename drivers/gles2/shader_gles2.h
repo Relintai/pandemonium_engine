@@ -38,8 +38,8 @@
 #include GLES2_INCLUDE_H
 #endif
 
-#include "core/hash_map.h"
-#include "core/map.h"
+#include "core/containers/hash_map.h"
+#include "core/containers/map.h"
 #include "core/math/projection.h"
 #include "core/pair.h"
 #include "core/variant.h"

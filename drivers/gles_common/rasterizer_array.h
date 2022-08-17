@@ -37,7 +37,7 @@
  */
 
 #include "core/os/memory.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include <string.h>
 

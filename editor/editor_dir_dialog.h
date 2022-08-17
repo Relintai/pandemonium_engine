@@ -34,7 +34,7 @@
 
 #include "core/os/dir_access.h"
 #include "core/object.h"
-#include "core/set.h"
+#include "core/containers/set.h"
 #include "core/ustring.h"
 
 class Button;

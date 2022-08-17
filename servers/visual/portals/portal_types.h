@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/local_vector.h"
+#include "core/containers/local_vector.h"
 #include "core/math/aabb.h"
 #include "core/math/plane.h"
 #include "core/math/quaternion.h"

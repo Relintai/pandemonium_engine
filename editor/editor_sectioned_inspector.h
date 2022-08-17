@@ -32,7 +32,7 @@
 
 #include "scene/gui/split_container.h"
 
-#include "core/map.h"
+#include "core/containers/map.h"
 #include "core/object.h"
 #include "core/object_id.h"
 #include "core/ustring.h"

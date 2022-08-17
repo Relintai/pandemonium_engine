@@ -33,8 +33,8 @@
 #include "scene/gui/box_container.h"
 
 #include "core/io/config_file.h"
-#include "core/list.h"
-#include "core/map.h"
+#include "core/containers/list.h"
+#include "core/containers/map.h"
 #include "core/object.h"
 #include "core/reference.h"
 #include "core/string_name.h"

@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/image.h"
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 
 namespace PNGDriverCommon {
 

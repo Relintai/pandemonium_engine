@@ -28,7 +28,7 @@ SOFTWARE.
 
 #include "voxel_mesher_job_step.h"
 
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 
 class VoxelMesher;
 

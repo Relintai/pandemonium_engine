@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "broad_phase_sw.h"
-#include "core/map.h"
+#include "core/containers/map.h"
 
 class BroadPhaseBasic : public BroadPhaseSW {
 	struct Element {

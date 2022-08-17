@@ -26,7 +26,7 @@ SOFTWARE.
 */
 
 #include "core/object.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "core/os/semaphore.h"
 #include "core/os/thread.h"

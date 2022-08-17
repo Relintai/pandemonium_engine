@@ -34,13 +34,13 @@
 #include "scene/gui/control.h"
 #include "scene/main/node.h"
 
-#include "core/hash_map.h"
-#include "core/map.h"
+#include "core/containers/hash_map.h"
+#include "core/containers/map.h"
 #include "core/object.h"
-#include "core/set.h"
+#include "core/containers/set.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class Button;
 class Label;

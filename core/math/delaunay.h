@@ -32,7 +32,7 @@
 
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class Delaunay2D {
 public:

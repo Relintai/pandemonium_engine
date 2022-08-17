@@ -35,7 +35,7 @@
 #include "core/error_list.h"
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/math/vector2.h"
 #include "core/os/dir_access.h"
 #include "core/os/memory.h"

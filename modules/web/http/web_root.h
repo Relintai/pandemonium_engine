@@ -1,10 +1,10 @@
 #ifndef WEB_ROOT_H
 #define WEB_ROOT_H
 
-#include "core/hash_map.h"
+#include "core/containers/hash_map.h"
 #include "core/os/mutex.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "web_node.h"
 

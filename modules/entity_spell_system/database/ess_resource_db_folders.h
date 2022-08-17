@@ -25,10 +25,10 @@ SOFTWARE.
 #include "core/array.h"
 #include "core/bind/core_bind.h"
 #include "core/engine.h"
-#include "core/hash_map.h"
+#include "core/containers/hash_map.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "ess_resource_db_map.h"
 

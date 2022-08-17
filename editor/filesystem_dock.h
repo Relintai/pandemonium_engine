@@ -36,16 +36,16 @@
 
 #include "core/os/dir_access.h"
 #include "core/os/thread.h"
-#include "core/list.h"
-#include "core/map.h"
+#include "core/containers/list.h"
+#include "core/containers/map.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/reference.h"
-#include "core/set.h"
+#include "core/containers/set.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class EditorNode;
 class Button;

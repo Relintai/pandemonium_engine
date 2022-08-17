@@ -32,7 +32,7 @@
 
 #include "scene/3d/visual_instance.h"
 
-#include "core/local_vector.h"
+#include "core/containers/local_vector.h"
 #include "core/reference.h"
 
 class Mesh;

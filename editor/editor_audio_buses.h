@@ -38,7 +38,7 @@
 #include "scene/gui/line_edit.h"
 
 #include "core/math/color.h"
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/reference.h"

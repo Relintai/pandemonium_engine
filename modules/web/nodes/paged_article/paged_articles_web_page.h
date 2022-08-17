@@ -2,7 +2,7 @@
 #define PAGED_ARTICLES_WEB_PAGE_H
 
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "../../http/web_node.h"
 

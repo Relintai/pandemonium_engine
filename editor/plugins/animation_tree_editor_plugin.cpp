@@ -40,7 +40,7 @@
 #include "scene/scene_string_names.h"
 #include "core/class_db.h"
 #include "core/error_macros.h"
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/math/vector2.h"
 #include "core/os/memory.h"
 #include "core/string_name.h"

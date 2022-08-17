@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/bitfield_dynamic.h"
-#include "core/local_vector.h"
+#include "core/containers/local_vector.h"
 #include "portal_occlusion_culler.h"
 #include "portal_types.h"
 

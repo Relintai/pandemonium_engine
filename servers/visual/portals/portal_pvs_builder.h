@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/bitfield_dynamic.h"
-#include "core/local_vector.h"
+#include "core/containers/local_vector.h"
 #include "core/math/plane.h"
 
 //#define PANDEMONIUM_PVS_SUPPORT_SAVE_FILE

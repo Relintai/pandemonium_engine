@@ -2,7 +2,7 @@
 #define SQLITE3_QUERY_RESULT_H
 
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "../database/query_result.h"
 

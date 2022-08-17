@@ -32,7 +32,7 @@
 
 #include "core/core_string_names.h"
 #include "core/engine.h"
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/math/math_funcs.h"
 #include "core/method_bind_ext.gen.inc"
 #include "core/object.h"

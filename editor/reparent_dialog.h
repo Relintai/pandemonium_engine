@@ -32,7 +32,7 @@
 
 #include "scene/gui/dialogs.h"
 
-#include "core/set.h"
+#include "core/containers/set.h"
 
 class CheckBox;
 class Node;

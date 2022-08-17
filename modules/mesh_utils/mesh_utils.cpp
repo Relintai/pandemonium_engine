@@ -21,7 +21,7 @@ SOFTWARE.
 */
 
 #include "mesh_utils.h"
-#include "core/local_vector.h"
+#include "core/containers/local_vector.h"
 #include "core/variant.h"
 #include "scene/resources/mesh.h"
 

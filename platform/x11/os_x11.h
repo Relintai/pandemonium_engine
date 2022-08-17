@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "context_gl_x11.h"
-#include "core/local_vector.h"
+#include "core/containers/local_vector.h"
 #include "core/os/input.h"
 #include "crash_handler_x11.h"
 #include "drivers/alsa/audio_driver_alsa.h"

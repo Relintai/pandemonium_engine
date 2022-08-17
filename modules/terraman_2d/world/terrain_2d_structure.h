@@ -22,13 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/hash_map.h"
+#include "core/containers/hash_map.h"
 #include "core/resource.h"
 
 #include "../defines.h"
 
 #include "core/math/rect2.h"
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "terrain_2d_chunk.h"
 
 class Terrain2DStructure : public Resource {

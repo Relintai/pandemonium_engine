@@ -43,7 +43,7 @@
 #include "core/script_language.h"
 #include "core/string_builder.h"
 #include "core/typedefs.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 #include "editor/editor_scale.h"
 #include "editor/plugins/script_editor_plugin.h"
 #include "editor_node.h"

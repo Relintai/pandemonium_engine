@@ -33,7 +33,7 @@
 #include "core/math/math_fieldwise.h"
 #include "editor_node.h"
 #include "core/error_macros.h"
-#include "core/hash_map.h"
+#include "core/containers/hash_map.h"
 #include "core/undo_redo.h"
 #include "editor/editor_inspector.h"
 #include "scene/main/node.h"

@@ -52,7 +52,7 @@
 // Compaction can be done but would rely on a more complex method
 // of preferentially giving out lower IDs in the freelist first.
 
-#include "core/local_vector.h"
+#include "core/containers/local_vector.h"
 
 template <class T, class U = uint32_t, bool force_trivial = false, bool zero_on_first_request = false>
 class PooledList {

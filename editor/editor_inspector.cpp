@@ -34,7 +34,7 @@
 #include "core/class_db.h"
 #include "core/dictionary.h"
 #include "core/error_macros.h"
-#include "core/hash_map.h"
+#include "core/containers/hash_map.h"
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"
 #include "core/os/input.h"

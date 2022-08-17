@@ -62,7 +62,7 @@ subject to the following restrictions:
 #include "core/math/aabb.h"
 #include "core/math/math_defs.h"
 #include "core/os/memory.h"
-#include "core/paged_allocator.h"
+#include "core/containers/paged_allocator.h"
 
 #include <string.h>
 

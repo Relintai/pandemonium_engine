@@ -34,9 +34,9 @@
 #include "core/math/face3.h"
 #include "core/math/plane.h"
 #include "core/method_ptrcall.h"
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "core/variant.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class BSP_Tree {
 public:

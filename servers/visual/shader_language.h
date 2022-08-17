@@ -30,9 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/list.h"
-#include "core/map.h"
-#include "core/ordered_hash_map.h"
+#include "core/containers/list.h"
+#include "core/containers/map.h"
+#include "core/containers/ordered_hash_map.h"
 #include "core/script_language.h"
 #include "core/string_name.h"
 #include "core/typedefs.h"

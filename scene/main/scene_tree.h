@@ -33,7 +33,7 @@
 #include "core/io/multiplayer_api.h"
 #include "core/os/main_loop.h"
 #include "core/os/thread_safe.h"
-#include "core/self_list.h"
+#include "core/containers/self_list.h"
 
 class PackedScene;
 class Node;

@@ -1,7 +1,7 @@
 #ifndef FAST_WFC_UTILS_ARRAY3D_HPP_
 #define FAST_WFC_UTILS_ARRAY3D_HPP_
 
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 template <typename T>
 class Array3D {

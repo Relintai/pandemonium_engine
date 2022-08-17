@@ -34,7 +34,7 @@
 #include "core/class_db.h"
 #include "core/os/memory.h"
 #include "core/undo_redo.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 #include "editor/editor_node.h"
 #include "scene/resources/gradient.h"
 

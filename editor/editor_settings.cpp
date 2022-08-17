@@ -53,7 +53,7 @@
 #include "core/os/os.h"
 #include "core/print_string.h"
 #include "core/project_settings.h"
-#include "core/set.h"
+#include "core/containers/set.h"
 #include "core/translation.h"
 #include "core/typedefs.h"
 #include "core/version_generated.gen.h"

@@ -22,13 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "voxel_structure.h"
 
 #include "../defines.h"
 
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 
 #include "voxel_chunk.h"
 

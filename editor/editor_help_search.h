@@ -34,11 +34,11 @@
 #include "scene/gui/dialogs.h"
 
 #include "core/math/color.h"
-#include "core/map.h"
+#include "core/containers/map.h"
 #include "core/object.h"
 #include "core/ustring.h"
-#include "core/vector.h"
-#include "core/ordered_hash_map.h"
+#include "core/containers/vector.h"
+#include "core/containers/ordered_hash_map.h"
 
 #include "editor/doc/doc_data.h"
 #include "scene/resources/texture.h"

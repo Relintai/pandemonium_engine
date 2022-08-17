@@ -31,8 +31,8 @@
 /*************************************************************************/
 
 #include "core/error_macros.h"
-#include "core/hashfuncs.h"
-#include "core/list.h"
+#include "core/containers/hashfuncs.h"
+#include "core/containers/list.h"
 #include "core/math/math_funcs.h"
 #include "core/os/memory.h"
 #include "core/ustring.h"

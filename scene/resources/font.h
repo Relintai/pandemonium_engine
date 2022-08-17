@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/io/resource_loader.h"
-#include "core/map.h"
+#include "core/containers/map.h"
 #include "core/resource.h"
 
 class Texture;

@@ -33,7 +33,7 @@
 #include "scene/gui/button.h"
 
 #include "core/object_id.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class EditorHistory;
 class Label;

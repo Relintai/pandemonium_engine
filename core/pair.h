@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/hashfuncs.h"
+#include "core/containers/hashfuncs.h"
 #include "core/typedefs.h"
 
 template <class F, class S>

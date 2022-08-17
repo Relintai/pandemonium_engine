@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/array.h"
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "core/resource.h"
 #include "core/variant.h"
 

@@ -48,7 +48,7 @@
 #include "core/math/vector4i.h"
 #include "core/node_path.h"
 #include "core/object_id.h"
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "core/ref_ptr.h"
 #include "core/rid.h"
 #include "core/ustring.h"

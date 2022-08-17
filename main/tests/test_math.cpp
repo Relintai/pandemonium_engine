@@ -40,7 +40,7 @@
 #include "core/print_string.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "core/vmap.h"
+#include "core/containers/vmap.h"
 #include "scene/main/node.h"
 #include "scene/resources/texture.h"
 #include "servers/visual/shader_language.h"

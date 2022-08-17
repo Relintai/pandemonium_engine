@@ -34,7 +34,7 @@
 
 #include "core/object.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class Button;
 class PluginConfigDialog;

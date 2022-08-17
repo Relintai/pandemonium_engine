@@ -37,8 +37,8 @@
 
 #include "scene/main/node.h"
 
-#include "core/local_vector.h"
-#include "core/oa_hash_map.h"
+#include "core/containers/local_vector.h"
+#include "core/containers/oa_hash_map.h"
 #include "net_utilities.h"
 #include <deque>
 

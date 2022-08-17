@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/resource.h"
-#include "core/self_list.h"
+#include "core/containers/self_list.h"
 #include "scene/resources/shader.h"
 #include "servers/visual_server.h"
 

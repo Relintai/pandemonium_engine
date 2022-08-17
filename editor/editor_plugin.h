@@ -41,7 +41,7 @@
 #include "core/error_list.h"
 #include "core/error_macros.h"
 #include "core/io/config_file.h"
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/method_bind.h"
 #include "core/object.h"
 #include "core/os/memory.h"
@@ -49,7 +49,7 @@
 #include "core/undo_redo.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 class EditorNode;
 class Spatial;

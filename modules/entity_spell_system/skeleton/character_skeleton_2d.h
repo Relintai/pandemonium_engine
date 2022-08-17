@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "core/node_path.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "scene/2d/node_2d.h"
 

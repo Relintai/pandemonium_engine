@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/io/multiplayer_api.h"
-#include "core/map.h"
+#include "core/containers/map.h"
 #include "core/pair.h"
 #include "core/resource.h"
 

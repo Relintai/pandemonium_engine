@@ -30,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/self_list.h"
-#include "core/vset.h"
+#include "core/containers/self_list.h"
+#include "core/containers/vset.h"
 #include "scene/2d/navigation_2d.h"
 #include "scene/2d/node_2d.h"
 #include "tile_set.h"

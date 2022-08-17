@@ -32,7 +32,7 @@
 #define IMPORTER_MESH_H
 
 #include "core/resource.h"
-#include "core/local_vector.h"
+#include "core/containers/local_vector.h"
 #include "scene/resources/concave_polygon_shape.h"
 #include "scene/resources/convex_polygon_shape.h"
 #include "scene/resources/mesh.h"

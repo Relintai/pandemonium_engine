@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/engine.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "scene/main/node.h"
 

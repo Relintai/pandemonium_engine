@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/ordered_hash_map.h"
+#include "core/containers/ordered_hash_map.h"
 #include "core/os/file_access.h"
 #include "core/reference.h"
 #include "core/variant_parser.h"

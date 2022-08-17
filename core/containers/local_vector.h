@@ -32,9 +32,9 @@
 
 #include "core/error_macros.h"
 #include "core/os/memory.h"
-#include "core/pool_vector.h"
-#include "core/sort_array.h"
-#include "core/vector.h"
+#include "core/containers/pool_vector.h"
+#include "core/containers/sort_array.h"
+#include "core/containers/vector.h"
 
 template <class T, class U = uint32_t, bool force_trivial = false>
 class LocalVector {

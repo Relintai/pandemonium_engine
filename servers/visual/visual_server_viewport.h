@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/self_list.h"
+#include "core/containers/self_list.h"
 #include "rasterizer.h"
 #include "servers/visual_server.h"
 

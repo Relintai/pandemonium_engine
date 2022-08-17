@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/vset.h"
+#include "core/containers/vset.h"
 #include "scene/2d/collision_object_2d.h"
 
 class Area2D : public CollisionObject2D {

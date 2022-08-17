@@ -1,10 +1,10 @@
 #ifndef HTTP_SESSION_MANAGER_H
 #define HTTP_SESSION_MANAGER_H
 
-#include "core/hash_map.h"
+#include "core/containers/hash_map.h"
 #include "core/os/mutex.h"
 #include "core/ustring.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "core/reference.h"
 #include "scene/main/node.h"

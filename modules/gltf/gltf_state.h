@@ -30,9 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/map.h"
+#include "core/containers/map.h"
 #include "core/resource.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 #include "scene/animation/animation_player.h"
 #include "scene/resources/texture.h"
 

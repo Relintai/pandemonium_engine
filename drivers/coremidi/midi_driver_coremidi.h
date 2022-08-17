@@ -33,7 +33,7 @@
 #ifdef COREMIDI_ENABLED
 
 #include "core/os/midi_driver.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include <CoreMIDI/CoreMIDI.h>
 #include <stdio.h>

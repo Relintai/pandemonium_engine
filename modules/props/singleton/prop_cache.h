@@ -24,10 +24,10 @@ SOFTWARE.
 
 #include "core/bind/core_bind.h"
 #include "core/math/color.h"
-#include "core/hash_map.h"
+#include "core/containers/hash_map.h"
 #include "core/object.h"
 #include "core/reference.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 
 #include "scene/resources/material.h"
 

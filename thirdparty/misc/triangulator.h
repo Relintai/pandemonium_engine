@@ -23,9 +23,9 @@
 
 
 
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/math/vector2.h"
-#include "core/set.h"
+#include "core/containers/set.h"
 
 //2D point structure
 

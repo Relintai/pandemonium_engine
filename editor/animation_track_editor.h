@@ -38,15 +38,15 @@
 #include "scene/gui/slider.h"
 
 #include "core/dictionary.h"
-#include "core/list.h"
-#include "core/map.h"
+#include "core/containers/list.h"
+#include "core/containers/map.h"
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
 #include "core/node_path.h"
 #include "core/object.h"
 #include "core/ustring.h"
 #include "core/variant.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 #include "scene/resources/animation.h"
 #include "scene/resources/texture.h"
 

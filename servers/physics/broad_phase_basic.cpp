@@ -29,7 +29,7 @@
 /*************************************************************************/
 
 #include "broad_phase_basic.h"
-#include "core/list.h"
+#include "core/containers/list.h"
 #include "core/print_string.h"
 
 BroadPhaseSW::ID BroadPhaseBasic::create(CollisionObjectSW *p_object, int p_subindex, const AABB &p_aabb, bool p_static) {

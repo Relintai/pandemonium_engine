@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/engine.h"
-#include "core/hash_map.h"
+#include "core/containers/hash_map.h"
 
 #include "../defines.h"
 

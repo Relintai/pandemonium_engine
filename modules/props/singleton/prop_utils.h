@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "core/object.h"
 #include "core/reference.h"
-#include "core/vector.h"
+#include "core/containers/vector.h"
 #include "scene/3d/spatial.h"
 
 #include "scene/main/node.h"

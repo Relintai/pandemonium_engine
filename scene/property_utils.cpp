@@ -32,7 +32,7 @@
 
 #include "core/core_string_names.h"
 #include "core/engine.h"
-#include "core/local_vector.h"
+#include "core/containers/local_vector.h"
 #include "editor/editor_node.h"
 #include "scene/resources/packed_scene.h"
 

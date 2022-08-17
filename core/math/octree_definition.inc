@@ -31,9 +31,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/list.h"
-#include "core/local_vector.h"
-#include "core/map.h"
+#include "core/containers/list.h"
+#include "core/containers/local_vector.h"
+#include "core/containers/map.h"
 #include "core/math/aabb.h"
 #include "core/math/geometry.h"
 #include "core/math/vector3.h"

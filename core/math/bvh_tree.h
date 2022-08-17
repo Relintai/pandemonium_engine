@@ -38,12 +38,12 @@
 // to a simpler tree.
 // Note that MAX_CHILDREN should be fixed at 2 for now.
 
-#include "core/local_vector.h"
+#include "core/containers/local_vector.h"
 #include "core/math/aabb.h"
 #include "core/math/bvh_abb.h"
 #include "core/math/geometry.h"
 #include "core/math/vector3.h"
-#include "core/pooled_list.h"
+#include "core/containers/pooled_list.h"
 #include "core/print_string.h"
 #include <limits.h>
 

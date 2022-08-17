@@ -30,7 +30,7 @@ SOFTWARE.
 #include "core/array.h"
 #include "core/dictionary.h"
 #include "core/math/vector2i.h"
-#include "core/pool_vector.h"
+#include "core/containers/pool_vector.h"
 #include "core/variant.h"
 
 class PaintCanvas;
