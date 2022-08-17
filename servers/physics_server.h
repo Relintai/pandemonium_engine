@@ -30,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/object.h"
-#include "core/resource.h"
+#include "core/object/object.h"
+#include "core/object/resource.h"
 
 class PhysicsDirectSpaceState;
 

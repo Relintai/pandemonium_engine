@@ -38,8 +38,8 @@
 #include "scene/resources/primitive_meshes.h"
 
 #include "scene/resources/material.h"
-#include "core/object.h"
-#include "core/reference.h"
+#include "core/object/object.h"
+#include "core/object/reference.h"
 #include "core/ustring.h"
 
 #include "scene/resources/environment.h"

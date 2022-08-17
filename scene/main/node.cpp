@@ -32,7 +32,7 @@
 
 #include "core/core_string_names.h"
 #include "core/io/resource_loader.h"
-#include "core/message_queue.h"
+#include "core/object/message_queue.h"
 #include "core/print_string.h"
 #include "instance_placeholder.h"
 #include "scene/animation/scene_tree_tween.h"
@@ -40,9 +40,9 @@
 #include "scene/scene_string_names.h"
 #include "viewport.h"
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/project_settings.h"
-#include "core/script_language.h"
+#include "core/object/script_language.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_settings.h"

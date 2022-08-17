@@ -37,7 +37,7 @@
 #include "core/math/transform_2d.h"
 #include "core/math/vector2.h"
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/ustring.h"
 #include "editor/editor_inspector.h"
 #include "scene/gui/control.h"

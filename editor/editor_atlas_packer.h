@@ -33,7 +33,7 @@
 #include "core/math/vector2.h"
 #include "core/containers/vector.h"
 #include "scene/resources/bit_map.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 class BitMap;
 

@@ -32,7 +32,7 @@
 
 #include "thread.h"
 
-#include "core/script_language.h"
+#include "core/object/script_language.h"
 
 #if !defined(NO_THREADS)
 

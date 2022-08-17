@@ -32,7 +32,7 @@
 
 #include "core/math/face3.h"
 #include "core/math/triangle_mesh.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 #include "scene/resources/material.h"
 #include "scene/resources/shape.h"

@@ -33,15 +33,15 @@
 #include "scene/gui/dialogs.h"
 #include "script_editor_plugin.h"
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/containers/vector.h"
 
 #include "core/math/color.h"
 #include "core/containers/list.h"
 #include "core/containers/map.h"
 #include "core/math/vector2.h"
-#include "core/object.h"
-#include "core/resource.h"
+#include "core/object/object.h"
+#include "core/object/resource.h"
 #include "core/ustring.h"
 #include "core/variant/variant.h"
 #include "editor/code_editor.h"

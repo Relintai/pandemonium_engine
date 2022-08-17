@@ -2,7 +2,7 @@
 
 #include "../http/web_server.h"
 #include "../http/web_server_cookie.h"
-#include "core/object.h"
+#include "core/object/object.h"
 
 #include "../http/http_session.h"
 

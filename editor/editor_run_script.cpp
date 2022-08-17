@@ -31,9 +31,9 @@
 #include "editor_run_script.h"
 
 #include "editor_node.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/error_macros.h"
-#include "core/script_language.h"
+#include "core/object/script_language.h"
 #include "core/ustring.h"
 #include "core/variant/variant.h"
 #include "editor/editor_plugin.h"

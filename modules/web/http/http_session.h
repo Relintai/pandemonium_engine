@@ -3,7 +3,7 @@
 
 #include "core/containers/hash_map.h"
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 #include "core/os/mutex.h"
 #include "core/ustring.h"

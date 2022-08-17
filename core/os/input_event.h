@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/math/transform_2d.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "core/typedefs.h"
 #include "core/ustring.h"
 

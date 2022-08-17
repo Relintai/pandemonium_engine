@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/image.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 class GLTFSpecGloss : public Resource {
 	GDCLASS(GLTFSpecGloss, Resource);

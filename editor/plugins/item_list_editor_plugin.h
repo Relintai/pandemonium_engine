@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/object.h"
+#include "core/object/object.h"
 #include "scene/gui/box_container.h"
 #include "editor/editor_plugin.h"
 
@@ -39,7 +39,7 @@
 
 #include "scene/gui/popup_menu.h"
 #include "core/containers/list.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
 #include "core/variant/variant.h"

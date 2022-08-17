@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/containers/list.h"
-#include "core/script_language.h"
+#include "core/object/script_language.h"
 
 class ScriptDebuggerLocal : public ScriptDebugger {
 	bool profiling;

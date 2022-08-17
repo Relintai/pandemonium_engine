@@ -30,7 +30,7 @@
 
 #include "editor_data.h"
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"
 #include "core/io/config_file.h"

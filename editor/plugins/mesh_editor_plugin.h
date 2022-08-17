@@ -34,8 +34,8 @@
 #include "editor/editor_inspector.h"
 #include "scene/gui/viewport_container.h"
 
-#include "core/object.h"
-#include "core/reference.h"
+#include "core/object/object.h"
+#include "core/object/reference.h"
 #include "core/ustring.h"
 
 #include "scene/resources/material.h"

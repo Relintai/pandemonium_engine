@@ -30,7 +30,7 @@
 
 #include "sprite_frames_editor_plugin.h"
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/math/color.h"
 #include "core/variant/dictionary.h"
 #include "core/error_macros.h"
@@ -44,9 +44,9 @@
 #include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/containers/pool_vector.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "core/typedefs.h"
-#include "core/undo_redo.h"
+#include "core/object/undo_redo.h"
 #include "core/containers/vector.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_file_system.h"

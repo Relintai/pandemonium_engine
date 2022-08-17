@@ -31,7 +31,7 @@
 #include "array.h"
 
 #include "core/containers/hashfuncs.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/variant/variant.h"
 #include "core/containers/vector.h"
 

@@ -5,8 +5,8 @@
 #include "core/ustring.h"
 #include "core/containers/vector.h"
 
-#include "core/object.h"
-#include "core/reference.h"
+#include "core/object/object.h"
+#include "core/object/reference.h"
 
 #include "http_server_enums.h"
 

@@ -1,7 +1,7 @@
 #ifndef POLYGON_VIEW_H
 #define POLYGON_VIEW_H
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 #include "scene/gui/control.h"
 

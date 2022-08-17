@@ -34,10 +34,10 @@
 #include "core/core_string_names.h"
 #include "core/crypto/crypto_core.h"
 #include "core/io/compression.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/object_rc.h"
 #include "core/os/os.h"
-#include "core/script_language.h"
+#include "core/object/script_language.h"
 
 typedef void (*VariantFunc)(Variant &r_ret, Variant &p_self, const Variant **p_args);
 typedef void (*VariantConstructFunc)(Variant &r_ret, const Variant **p_args);

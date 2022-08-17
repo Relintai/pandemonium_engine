@@ -34,7 +34,7 @@
 
 #include "core/os/thread.h"
 #include "core/error_macros.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/ustring.h"
 
 class Button;

@@ -31,7 +31,7 @@
 #include "animation_blend_tree_editor_plugin.h"
 
 #include "core/variant/array.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/math/color.h"
 #include "core/error_macros.h"
 #include "core/containers/hash_map.h"
@@ -41,7 +41,7 @@
 #include "core/os/memory.h"
 #include "core/containers/set.h"
 #include "core/typedefs.h"
-#include "core/undo_redo.h"
+#include "core/object/undo_redo.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_inspector.h"
 #include "editor/editor_node.h"

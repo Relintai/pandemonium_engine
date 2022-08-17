@@ -32,7 +32,7 @@
 
 #include "editor/editor_plugin.h"
 
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/ustring.h"
 
 class SkeletonIK;

@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "scene/2d/node_2d.h"
 
 class NavigationMesh;

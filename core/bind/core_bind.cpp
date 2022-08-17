@@ -36,7 +36,7 @@
 #include "core/io/json.h"
 #include "core/io/marshalls.h"
 #include "core/math/geometry.h"
-#include "core/method_bind_ext.gen.inc"
+#include "core/object/method_bind_ext.gen.inc"
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
 #include "core/project_settings.h"

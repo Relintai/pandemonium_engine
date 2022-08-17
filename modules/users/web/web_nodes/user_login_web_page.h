@@ -1,7 +1,7 @@
 #ifndef USER_LOGIN_REQUEST_WEB_PAGE_H
 #define USER_LOGIN_REQUEST_WEB_PAGE_H
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/ustring.h"
 #include "core/containers/vector.h"
 

@@ -1,7 +1,7 @@
 #ifndef PAGED_ARTICLE_WEB_PAGE_H
 #define PAGED_ARTICLE_WEB_PAGE_H
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/ustring.h"
 #include "core/containers/vector.h"
 

@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 class HashingContext : public Reference {
 	GDCLASS(HashingContext, Reference);

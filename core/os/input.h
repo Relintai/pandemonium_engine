@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/math/vector2i.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/os/main_loop.h"
 #include "core/os/thread_safe.h"
 

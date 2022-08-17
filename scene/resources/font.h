@@ -32,7 +32,7 @@
 
 #include "core/io/resource_loader.h"
 #include "core/containers/map.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 class Texture;
 

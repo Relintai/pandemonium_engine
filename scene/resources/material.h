@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "core/containers/self_list.h"
 #include "scene/resources/shader.h"
 #include "servers/visual_server.h"

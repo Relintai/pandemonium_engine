@@ -31,7 +31,7 @@
 #include "export_template_manager.h"
 
 #include "core/variant/array.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/variant/dictionary.h"
 #include "core/error_macros.h"
 #include "core/io/http_client.h"

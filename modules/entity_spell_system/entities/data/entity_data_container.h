@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/variant/dictionary.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 class EntityDataContainer : public Resource {
 	GDCLASS(EntityDataContainer, Resource);

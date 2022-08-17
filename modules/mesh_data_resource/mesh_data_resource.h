@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "core/variant/array.h"
 #include "core/containers/pool_vector.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "core/variant/variant.h"
 
 #include "scene/resources/mesh.h"

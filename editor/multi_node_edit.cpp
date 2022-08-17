@@ -34,7 +34,7 @@
 #include "editor_node.h"
 #include "core/error_macros.h"
 #include "core/containers/hash_map.h"
-#include "core/undo_redo.h"
+#include "core/object/undo_redo.h"
 #include "editor/editor_inspector.h"
 #include "scene/main/node.h"
 

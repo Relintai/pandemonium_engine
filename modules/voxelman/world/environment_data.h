@@ -23,13 +23,13 @@ SOFTWARE.
 */
 
 #include "core/math/color.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 #include "../defines.h"
 
 #include "scene/3d/light.h"
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 #include "scene/3d/world_environment.h"
 #include "scene/main/node.h"

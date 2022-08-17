@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 #include "core/string_name.h"
 #include "core/ustring.h"

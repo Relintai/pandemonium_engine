@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 // y(x) curve
 class Curve : public Resource {

@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/rid.h"
 #include "scene/2d/navigation_polygon.h"
 

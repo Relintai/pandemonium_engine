@@ -31,7 +31,7 @@
 #ifndef SKELETON_MODIFICATION_3D_H
 #define SKELETON_MODIFICATION_3D_H
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "scene/3d/skeleton.h"
 
 class SkeletonModificationStack3D;

@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "scene/main/node.h"
 #include "scene/resources/animation.h"
 

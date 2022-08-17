@@ -4,10 +4,10 @@
 #include "core/image.h"
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
-#include "core/method_bind.h"
+#include "core/object/method_bind.h"
 #include "core/variant/variant.h"
 
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 class MMNode;
 

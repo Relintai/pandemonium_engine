@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 #ifdef ANDROID_ENABLED
 #include <android/log.h>

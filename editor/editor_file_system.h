@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "scene/main/node.h"
-#include "core/object.h"
+#include "core/object/object.h"
 
 #include "core/os/dir_access.h"
 #include "core/os/thread.h"

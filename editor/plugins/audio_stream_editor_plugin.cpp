@@ -34,7 +34,7 @@
 #include "editor/audio_stream_preview.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/math/color.h"
 #include "core/math/math_funcs.h"
 #include "core/math/rect2.h"

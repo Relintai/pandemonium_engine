@@ -31,7 +31,7 @@
 #include "undo_redo.h"
 
 #include "core/os/os.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 void UndoRedo::Operation::delete_reference() {
 	if (type != Operation::TYPE_REFERENCE) {

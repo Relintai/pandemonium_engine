@@ -30,7 +30,7 @@
 
 #include "editor_file_dialog.h"
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/math/color.h"
 #include "core/variant/dictionary.h"
 #include "core/error_list.h"

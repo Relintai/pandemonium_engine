@@ -1,5 +1,5 @@
 #include "user.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/io/json.h"
 
 #include "user_module.h"

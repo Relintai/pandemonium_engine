@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/containers/map.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "core/containers/vector.h"
 #include "scene/animation/animation_player.h"
 #include "scene/resources/texture.h"

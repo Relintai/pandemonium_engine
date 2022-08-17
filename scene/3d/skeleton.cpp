@@ -30,7 +30,7 @@
 
 #include "skeleton.h"
 
-#include "core/message_queue.h"
+#include "core/object/message_queue.h"
 
 #include "core/engine.h"
 #include "core/project_settings.h"

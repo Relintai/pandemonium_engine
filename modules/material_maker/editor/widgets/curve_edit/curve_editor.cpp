@@ -3,7 +3,7 @@
 
 #include "../../../nodes/bases/curve_base.h"
 #include "control_point.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "slope_point.h"
 
 void MMCurveEditor::set_curve(const Ref<CurveBase> &c) {

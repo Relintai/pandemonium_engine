@@ -30,7 +30,7 @@
 
 #include "editor_export.h"
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/crypto/crypto_core.h"
 #include "core/error_macros.h"
 #include "core/io/config_file.h"
@@ -42,7 +42,7 @@
 #include "core/os/memory.h"
 #include "core/os/os.h"
 #include "core/project_settings.h"
-#include "core/script_language.h"
+#include "core/object/script_language.h"
 #include "core/version.h"
 #include "core/version_generated.gen.h"
 #include "editor/editor_file_system.h"

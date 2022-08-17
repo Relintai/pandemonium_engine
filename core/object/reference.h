@@ -30,9 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/class_db.h"
-#include "core/object.h"
-#include "core/ref_ptr.h"
+#include "core/object/class_db.h"
+#include "core/object/object.h"
+#include "core/object/ref_ptr.h"
 #include "core/safe_refcount.h"
 
 class Reference : public Object {

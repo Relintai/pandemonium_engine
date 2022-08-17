@@ -31,8 +31,8 @@
 /*************************************************************************/
 
 #include "core/containers/map.h"
-#include "core/object.h"
-#include "core/script_language.h"
+#include "core/object/object.h"
+#include "core/object/script_language.h"
 #include "gdscript_functions.h"
 #include "gdscript_tokenizer.h"
 

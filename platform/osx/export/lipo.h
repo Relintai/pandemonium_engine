@@ -34,7 +34,7 @@
 #define LIPO_H
 
 #include "core/os/file_access.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "modules/modules_enabled.gen.h" // For regex.
 
 #include "macho.h"

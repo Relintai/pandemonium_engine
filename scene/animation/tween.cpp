@@ -30,7 +30,7 @@
 
 #include "tween.h"
 
-#include "core/method_bind_ext.gen.inc"
+#include "core/object/method_bind_ext.gen.inc"
 #include "scene/animation/easing_equations.h"
 
 Tween::interpolater Tween::interpolaters[Tween::TRANS_COUNT][Tween::EASE_COUNT] = {

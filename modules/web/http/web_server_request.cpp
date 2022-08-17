@@ -1,6 +1,6 @@
 #include "web_server_request.h"
 
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/variant/variant.h"
 #include "web_server.h"
 #include "web_server_cookie.h"

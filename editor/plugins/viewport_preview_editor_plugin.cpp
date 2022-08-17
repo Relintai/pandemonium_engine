@@ -31,7 +31,7 @@
 #include "viewport_preview_editor_plugin.h"
 
 #include "core/os/memory.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "editor/editor_inspector.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/main/viewport.h"

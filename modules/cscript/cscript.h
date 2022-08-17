@@ -32,7 +32,7 @@
 
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"
-#include "core/script_language.h"
+#include "core/object/script_language.h"
 #include "cscript_function.h"
 
 class CScriptNativeClass : public Reference {

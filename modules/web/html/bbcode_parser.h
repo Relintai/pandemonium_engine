@@ -4,7 +4,7 @@
 #include "core/ustring.h"
 #include "core/containers/vector.h"
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 class BBCodeParserAttribute : public Reference {
 	GDCLASS(BBCodeParserAttribute, Reference);

@@ -30,7 +30,7 @@
 
 #include "reference.h"
 
-#include "core/script_language.h"
+#include "core/object/script_language.h"
 
 bool Reference::init_ref() {
 	if (reference()) {

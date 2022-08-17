@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "scene/gui/popup.h"
 
 #include "core/containers/list.h"

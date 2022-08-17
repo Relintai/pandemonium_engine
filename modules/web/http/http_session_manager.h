@@ -6,7 +6,7 @@
 #include "core/ustring.h"
 #include "core/containers/vector.h"
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "scene/main/node.h"
 
 #include "web_server_middleware.h"

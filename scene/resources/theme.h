@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/io/resource_loader.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "scene/resources/font.h"
 #include "scene/resources/shader.h"
 #include "scene/resources/style_box.h"

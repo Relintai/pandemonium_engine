@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/os/file_access.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "core/variant/variant.h"
 
 class VariantParser {

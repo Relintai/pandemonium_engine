@@ -34,7 +34,7 @@
 #include "core/io/resource_loader.h"
 #include "core/os/file_access.h"
 #include "core/os/os.h"
-#include "core/script_language.h"
+#include "core/object/script_language.h"
 #include "scene/main/node.h" //only so casting works
 
 #include <stdio.h>

@@ -31,7 +31,7 @@
 #include "tile_map.h"
 
 #include "core/io/marshalls.h"
-#include "core/method_bind_ext.gen.inc"
+#include "core/object/method_bind_ext.gen.inc"
 #include "core/os/os.h"
 #include "scene/2d/area_2d.h"
 #include "scene/2d/collision_object_2d.h"

@@ -30,14 +30,14 @@
 
 #include "editor_log.h"
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/math/color.h"
 #include "core/math/vector2.h"
 #include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"
-#include "core/reference.h"
-#include "core/undo_redo.h"
+#include "core/object/reference.h"
+#include "core/object/undo_redo.h"
 #include "core/version.h"
 #include "editor/editor_settings.h"
 #include "editor_node.h"

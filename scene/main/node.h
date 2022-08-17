@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/object.h"
+#include "core/object/object.h"
 
 #include "core/containers/map.h"
 #include "core/node_path.h"

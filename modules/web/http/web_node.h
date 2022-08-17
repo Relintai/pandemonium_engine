@@ -4,7 +4,7 @@
 #include "../../modules_enabled.gen.h"
 #include "core/containers/hash_map.h"
 #include "core/os/rw_lock.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/variant/variant.h"
 #include "scene/main/node.h"
 

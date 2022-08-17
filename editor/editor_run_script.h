@@ -30,9 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
-#include "core/object.h"
+#include "core/object/object.h"
 
 class EditorNode;
 class EditorInterface;

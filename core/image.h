@@ -33,7 +33,7 @@
 #include "core/math/color.h"
 #include "core/math/rect2.h"
 #include "core/containers/pool_vector.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 /**
  *	@author Juan Linietsky <reduzio@gmail.com>

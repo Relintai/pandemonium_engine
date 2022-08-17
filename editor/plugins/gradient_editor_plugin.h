@@ -35,8 +35,8 @@
 #include "scene/gui/gradient_edit.h"
 
 #include "core/math/vector2.h"
-#include "core/object.h"
-#include "core/reference.h"
+#include "core/object/object.h"
+#include "core/object/reference.h"
 #include "core/ustring.h"
 
 class Gradient;

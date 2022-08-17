@@ -49,7 +49,7 @@
 #include "core/node_path.h"
 #include "core/object_id.h"
 #include "core/containers/pool_vector.h"
-#include "core/ref_ptr.h"
+#include "core/object/ref_ptr.h"
 #include "core/rid.h"
 #include "core/ustring.h"
 

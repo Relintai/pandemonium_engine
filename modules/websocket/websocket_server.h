@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/crypto/crypto.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "websocket_multiplayer_peer.h"
 #include "websocket_peer.h"
 

@@ -30,12 +30,12 @@
 
 #include "text_edit.h"
 
-#include "core/message_queue.h"
+#include "core/object/message_queue.h"
 #include "core/os/input.h"
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
 #include "core/project_settings.h"
-#include "core/script_language.h"
+#include "core/object/script_language.h"
 #include "label.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/scroll_bar.h"

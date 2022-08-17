@@ -31,7 +31,7 @@
 #include "message_queue.h"
 
 #include "core/project_settings.h"
-#include "core/script_language.h"
+#include "core/object/script_language.h"
 
 MessageQueue *MessageQueue::singleton = nullptr;
 

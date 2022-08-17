@@ -33,7 +33,7 @@
 #include "core/project_settings.h"
 #include "scene/resources/packed_scene.h"
 #include "editor/editor_scale.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/io/resource_loader.h"
 #include "core/math/math_defs.h"
 #include "core/math/rect2.h"

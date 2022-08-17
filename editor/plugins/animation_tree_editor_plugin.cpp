@@ -38,7 +38,7 @@
 #include "scene/animation/animation_blend_tree.h"
 #include "scene/animation/animation_player.h"
 #include "scene/scene_string_names.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/error_macros.h"
 #include "core/containers/list.h"
 #include "core/math/vector2.h"

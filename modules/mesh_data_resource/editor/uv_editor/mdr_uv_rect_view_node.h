@@ -26,7 +26,7 @@ SOFTWARE.
 #include "core/math/color.h"
 #include "core/math/rect2.h"
 #include "core/containers/pool_vector.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 #include "scene/gui/margin_container.h"
 

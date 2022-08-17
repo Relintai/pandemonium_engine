@@ -1,7 +1,7 @@
 #ifndef POLYGON_DIALOG_H
 #define POLYGON_DIALOG_H
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 #include "scene/gui/dialogs.h"
 

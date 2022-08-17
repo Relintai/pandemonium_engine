@@ -3,8 +3,8 @@
 
 #include "core/math/color.h"
 #include "core/os/input_event.h"
-#include "core/reference.h"
-#include "core/undo_redo.h"
+#include "core/object/reference.h"
+#include "core/object/undo_redo.h"
 #include "core/variant/variant.h"
 #include "core/containers/vector.h"
 

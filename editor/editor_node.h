@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/object.h"
+#include "core/object/object.h"
 #include "scene/main/node.h"
 
 #include "editor/editor_folding.h"
@@ -51,8 +51,8 @@
 #include "core/os/os.h"
 #include "core/os/thread.h"
 #include "core/print_string.h"
-#include "core/reference.h"
-#include "core/resource.h"
+#include "core/object/reference.h"
+#include "core/object/resource.h"
 #include "core/safe_refcount.h"
 #include "core/containers/set.h"
 #include "core/string_name.h"

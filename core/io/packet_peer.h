@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/io/stream_peer.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/containers/ring_buffer.h"
 
 class PacketPeer : public Reference {

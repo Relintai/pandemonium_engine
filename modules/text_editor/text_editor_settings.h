@@ -1,7 +1,7 @@
 #ifndef TEXT_EDITOR_SETTINGS_H
 #define TEXT_EDITOR_SETTINGS_H
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 class ItemList;
 

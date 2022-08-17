@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/math/plane.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "core/containers/vector.h"
 
 class OccluderShape : public Resource {

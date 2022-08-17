@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "scene/main/node.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 #include "core/os/semaphore.h"
 #include "core/os/thread.h"
@@ -39,10 +39,10 @@
 #include "core/containers/list.h"
 #include "core/containers/map.h"
 #include "core/math/vector2.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/object_id.h"
 #include "core/os/mutex.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
 #include "core/variant/variant.h"

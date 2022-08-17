@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "scene/gui/scroll_container.h"
 #include "scene/gui/container.h"
 #include "scene/gui/control.h"
@@ -40,10 +40,10 @@
 #include "core/containers/map.h"
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/object_id.h"
 
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "core/containers/set.h"
 #include "core/string_name.h"
 #include "core/ustring.h"

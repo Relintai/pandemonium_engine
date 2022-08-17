@@ -31,7 +31,7 @@
 #include "reparent_dialog.h"
 
 #include "scene/gui/box_container.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/os/memory.h"
 #include "core/ustring.h"
 #include "core/variant/variant.h"

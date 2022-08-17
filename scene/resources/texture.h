@@ -35,7 +35,7 @@
 #include "core/os/mutex.h"
 #include "core/os/rw_lock.h"
 #include "core/os/thread_safe.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "scene/resources/curve.h"
 #include "scene/resources/gradient.h"
 #include "servers/visual_server.h"

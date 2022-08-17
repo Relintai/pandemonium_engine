@@ -33,7 +33,7 @@
 #include <stdlib.h>
 
 #include "core/variant/array.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/math/color.h"
 #include "core/engine.h"
 #include "core/error_macros.h"
@@ -57,9 +57,9 @@
 #include "core/containers/pool_vector.h"
 #include "core/print_string.h"
 #include "core/project_settings.h"
-#include "core/script_language.h"
+#include "core/object/script_language.h"
 #include "core/translation.h"
-#include "core/undo_redo.h"
+#include "core/object/undo_redo.h"
 #include "core/version.h"
 #include "core/version_generated.gen.h"
 #include "editor/animation_track_editor.h"

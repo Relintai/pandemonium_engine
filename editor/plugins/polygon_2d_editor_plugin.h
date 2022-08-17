@@ -35,9 +35,9 @@
 #include "core/variant/array.h"
 #include "core/math/color.h"
 #include "core/math/vector2.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/containers/pool_vector.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/containers/vector.h"
 
 class AcceptDialog;

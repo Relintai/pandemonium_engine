@@ -31,7 +31,7 @@
 #include "style_box_editor_plugin.h"
 
 #include "editor/editor_scale.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
 #include "core/os/memory.h"

@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/os/thread.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 class ResourceInteractiveLoader : public Reference {
 	GDCLASS(ResourceInteractiveLoader, Reference);

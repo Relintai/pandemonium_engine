@@ -2,7 +2,7 @@
 #define TEXT_EDITOR_VANILLA_EDITOR_H
 
 #include "core/os/os.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/ustring.h"
 
 #include "scene/gui/box_container.h"

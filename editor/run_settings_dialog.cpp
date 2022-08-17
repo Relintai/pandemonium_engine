@@ -31,7 +31,7 @@
 #include "run_settings_dialog.h"
 
 #include "scene/gui/option_button.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/math/vector2.h"
 #include "core/os/memory.h"
 #include "scene/gui/box_container.h"

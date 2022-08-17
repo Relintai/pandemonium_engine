@@ -33,7 +33,7 @@
 #include "editor_scale.h"
 #include "scene/gui/line_edit.h"
 #include "scene/main/timer.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/math/color.h"
 #include "core/math/vector2.h"
 #include "core/os/memory.h"

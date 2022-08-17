@@ -1,7 +1,7 @@
 #ifndef USER_SESSION_SETUP_WEB_SERVER_MIDDLEWARE_H
 #define USER_SESSION_SETUP_WEB_SERVER_MIDDLEWARE_H
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/ustring.h"
 
 #include "modules/web/http/web_server_middleware.h"

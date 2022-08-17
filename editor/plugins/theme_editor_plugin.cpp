@@ -31,7 +31,7 @@
 #include "theme_editor_plugin.h"
 
 #include "core/variant/array.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/math/color.h"
 #include "core/error_macros.h"
 #include "core/io/resource_loader.h"

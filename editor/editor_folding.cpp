@@ -39,8 +39,8 @@
 #include "core/io/config_file.h"
 #include "core/containers/list.h"
 #include "core/node_path.h"
-#include "core/object.h"
-#include "core/reference.h"
+#include "core/object/object.h"
+#include "core/object/reference.h"
 #include "core/variant/variant.h"
 #include "scene/main/node.h"
 

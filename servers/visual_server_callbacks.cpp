@@ -30,7 +30,7 @@
 
 #include "visual_server_callbacks.h"
 
-#include "core/object.h"
+#include "core/object/object.h"
 
 void VisualServerCallbacks::lock() {
 	mutex.lock();

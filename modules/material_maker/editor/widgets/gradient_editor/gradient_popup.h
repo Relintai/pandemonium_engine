@@ -1,7 +1,7 @@
 #ifndef GRADIENT_POPUP_H
 #define GRADIENT_POPUP_H
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 #include "scene/gui/popup.h"
 

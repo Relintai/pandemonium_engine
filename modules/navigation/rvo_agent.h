@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/object.h"
+#include "core/object/object.h"
 #include "nav_rid.h"
 
 #include <Agent.h>

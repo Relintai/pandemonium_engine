@@ -25,7 +25,7 @@ SOFTWARE.
 
 #include "scene/gui/control.h"
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 class MeshDataResource;
 class MeshDataInstance;

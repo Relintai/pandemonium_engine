@@ -1,7 +1,7 @@
 #ifndef CURVE_DIALOG_H
 #define CURVE_DIALOG_H
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 #include "scene/gui/dialogs.h"
 

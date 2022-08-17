@@ -36,7 +36,7 @@
 #include "core/crypto/crypto.h"
 #include "core/crypto/crypto_core.h"
 #include "core/os/file_access.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "modules/modules_enabled.gen.h" // For regex.
 
 #ifdef MODULE_REGEX_ENABLED

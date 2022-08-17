@@ -1,5 +1,5 @@
 #include "user_web_page.h"
-#include "core/object.h"
+#include "core/object/object.h"
 
 #include "../../users/user.h"
 #include "modules/web/http/web_server_request.h"

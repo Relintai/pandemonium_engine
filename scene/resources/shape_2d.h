@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 class Shape2D : public Resource {
 	GDCLASS(Shape2D, Resource);

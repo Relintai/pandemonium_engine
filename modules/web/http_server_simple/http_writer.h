@@ -1,7 +1,7 @@
 #ifndef HTTP_WRITER_H
 #define HTTP_WRITER_H
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 class HTTPWriter : public Reference {
 	GDCLASS(HTTPWriter, Reference);

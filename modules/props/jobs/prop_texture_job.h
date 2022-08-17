@@ -28,7 +28,7 @@ SOFTWARE.
 #include "../../thread_pool/thread_pool_job.h"
 #endif
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 #if TEXTURE_PACKER_PRESENT
 class TexturePacker;

@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/control.h"
 #include "scene/gui/range.h"
@@ -43,7 +43,7 @@
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
 #include "core/node_path.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/ustring.h"
 #include "core/variant/variant.h"
 #include "core/containers/vector.h"

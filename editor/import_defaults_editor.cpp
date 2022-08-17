@@ -30,14 +30,14 @@
 
 #include "import_defaults_editor.h"
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/variant/dictionary.h"
 #include "core/io/resource_importer.h"
 #include "core/containers/list.h"
 #include "core/containers/map.h"
 #include "core/os/memory.h"
 #include "core/project_settings.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/string_name.h"
 #include "core/typedefs.h"
 #include "core/ustring.h"

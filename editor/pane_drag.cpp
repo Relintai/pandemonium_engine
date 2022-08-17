@@ -30,7 +30,7 @@
 
 #include "pane_drag.h"
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/os/input_event.h"
 #include "core/variant/variant.h"
 #include "scene/2d/canvas_item.h"

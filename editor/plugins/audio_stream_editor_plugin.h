@@ -34,9 +34,9 @@
 #include "scene/gui/color_rect.h"
 
 #include "core/math/math_defs.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/object_id.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/ustring.h"
 
 class AudioStream;

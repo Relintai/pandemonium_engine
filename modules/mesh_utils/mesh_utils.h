@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "core/variant/variant.h"
 
-#include "core/object.h"
+#include "core/object/object.h"
 
 #include "scene/resources/texture.h"
 

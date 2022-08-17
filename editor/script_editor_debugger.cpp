@@ -30,7 +30,7 @@
 
 #include "script_editor_debugger.h"
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/math/color.h"
 #include "core/variant/dictionary.h"
 #include "core/error_list.h"
@@ -51,10 +51,10 @@
 #include "core/os/memory.h"
 #include "core/os/os.h"
 #include "core/print_string.h"
-#include "core/ref_ptr.h"
-#include "core/script_language.h"
+#include "core/object/ref_ptr.h"
+#include "core/object/script_language.h"
 #include "core/typedefs.h"
-#include "core/undo_redo.h"
+#include "core/object/undo_redo.h"
 #include "core/ustring.h"
 #include "core/version.h"
 #include "editor/editor_data.h"

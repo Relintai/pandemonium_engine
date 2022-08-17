@@ -33,7 +33,7 @@
 #include "core/containers/list.h"
 #include "core/containers/map.h"
 #include "core/containers/ordered_hash_map.h"
-#include "core/script_language.h"
+#include "core/object/script_language.h"
 #include "core/string_name.h"
 #include "core/typedefs.h"
 #include "core/ustring.h"

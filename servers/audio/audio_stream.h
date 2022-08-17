@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/image.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "servers/audio/audio_filter_sw.h"
 #include "servers/audio_server.h"
 

@@ -33,7 +33,7 @@
 #include "core/core_string_names.h"
 #include "core/io/image_loader.h"
 #include "core/math/geometry.h"
-#include "core/method_bind_ext.gen.inc"
+#include "core/object/method_bind_ext.gen.inc"
 #include "core/os/os.h"
 #include "mesh.h"
 #include "scene/resources/bit_map.h"

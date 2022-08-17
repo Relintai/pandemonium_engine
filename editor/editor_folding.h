@@ -33,7 +33,7 @@
 #include "scene/main/node.h"
 
 #include "core/containers/pool_vector.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "core/containers/set.h"
 #include "core/ustring.h"
 

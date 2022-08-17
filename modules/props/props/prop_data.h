@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/math/transform.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/containers/vector.h"
 
 #include "core/math/rect2.h"

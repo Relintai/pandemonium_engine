@@ -30,7 +30,7 @@
 
 #include "register_scene_types.h"
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/os/os.h"
 #include "core/project_settings.h"
 #include "scene/2d/animated_sprite.h"

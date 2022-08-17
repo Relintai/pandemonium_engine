@@ -32,9 +32,9 @@
 
 #include "scene/gui/box_container.h"
 
-#include "core/object.h"
-#include "core/reference.h"
-#include "core/resource.h"
+#include "core/object/object.h"
+#include "core/object/reference.h"
+#include "core/object/resource.h"
 #include "core/ustring.h"
 #include "core/variant/variant.h"
 

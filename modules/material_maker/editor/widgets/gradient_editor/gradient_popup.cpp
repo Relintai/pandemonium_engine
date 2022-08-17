@@ -1,7 +1,7 @@
 
 #include "gradient_popup.h"
 
-#include "core/object.h"
+#include "core/object/object.h"
 #include "gradient_editor.h"
 
 #include "../../../nodes/bases/gradient_base.h"

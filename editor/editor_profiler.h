@@ -34,9 +34,9 @@
 
 #include "core/math/color.h"
 #include "core/containers/map.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/containers/pool_vector.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/containers/set.h"
 #include "core/string_name.h"
 #include "core/typedefs.h"

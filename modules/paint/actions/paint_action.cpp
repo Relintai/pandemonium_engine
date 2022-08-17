@@ -26,7 +26,7 @@ SOFTWARE.
 
 #include "../paint_canvas.h"
 #include "../paint_canvas_layer.h"
-#include "core/object.h"
+#include "core/object/object.h"
 
 Dictionary PaintAction::get_action_data_undo() {
 	return action_data_undo;

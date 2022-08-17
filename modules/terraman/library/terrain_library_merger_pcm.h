@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/containers/map.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 #include "terrain_library.h"
 

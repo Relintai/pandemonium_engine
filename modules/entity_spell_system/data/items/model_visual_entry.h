@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/math/color.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "core/ustring.h"
 
 #include "scene/resources/texture.h"

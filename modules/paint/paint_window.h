@@ -30,7 +30,7 @@ SOFTWARE.
 #include "bush_prefabs.h"
 #include "core/containers/hash_map.h"
 #include "core/os/keyboard.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 class PaintAction;
 class PaintCanvasLayer;

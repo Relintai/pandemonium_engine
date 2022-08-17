@@ -30,7 +30,7 @@
 
 #include "scene_tree_tween.h"
 
-#include "core/method_bind_ext.gen.inc"
+#include "core/object/method_bind_ext.gen.inc"
 #include "scene/animation/tween.h"
 #include "scene/main/node.h"
 #include "scene/scene_string_names.h"

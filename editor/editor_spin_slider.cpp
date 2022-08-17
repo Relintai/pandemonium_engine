@@ -35,7 +35,7 @@
 #include "core/os/keyboard.h"
 #include "editor_scale.h"
 #include "core/variant/array.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"
 #include "core/math/math_defs.h"

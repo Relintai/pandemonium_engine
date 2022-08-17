@@ -3,7 +3,7 @@
 
 #include "core/error_macros.h"
 
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/print_string.h"
 #include "http_server_enums.h"
 #include "modules/database/database_connection.h"

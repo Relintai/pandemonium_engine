@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/variant/dictionary.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/ustring.h"
 
 #include "actionbar/action_bar_profile.h"

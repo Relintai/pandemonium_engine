@@ -32,13 +32,13 @@
 
 #include "modules/modules_enabled.gen.h" // For regex.
 #include "core/variant/array.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/math/color.h"
 #include "core/math/vector2.h"
 #include "core/os/memory.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/string_name.h"
-#include "core/undo_redo.h"
+#include "core/object/undo_redo.h"
 #include "core/variant/variant.h"
 #include "editor/editor_data.h"
 #include "editor/scene_tree_editor.h"

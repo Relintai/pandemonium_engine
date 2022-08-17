@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/math/face3.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 class TriangleMesh : public Reference {
 	GDCLASS(TriangleMesh, Reference);

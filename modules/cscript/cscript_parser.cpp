@@ -36,8 +36,8 @@
 #include "core/os/file_access.h"
 #include "core/print_string.h"
 #include "core/project_settings.h"
-#include "core/reference.h"
-#include "core/script_language.h"
+#include "core/object/reference.h"
+#include "core/object/script_language.h"
 #include "cscript.h"
 
 template <class T>

@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/containers/vset.h"
 #include "scene/3d/collision_object.h"
 #include "servers/physics_server.h"

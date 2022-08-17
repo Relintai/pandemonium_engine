@@ -2,7 +2,7 @@
 #include "core/print_string.h"
 #include "core/ustring.h"
 
-#include "core/method_bind_ext.gen.inc"
+#include "core/object/method_bind_ext.gen.inc"
 
 #include "../http/web_server_request.h"
 

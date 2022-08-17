@@ -34,7 +34,7 @@
 
 #include "core/os/file_access.h"
 #include "core/containers/pool_vector.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 #include <mbedtls/config.h>
 #include <mbedtls/ctr_drbg.h>

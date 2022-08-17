@@ -33,7 +33,7 @@
 #include "scene/gui/box_container.h"
 #include "scene/gui/dialogs.h"
 
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/ustring.h"
 
 class Button;

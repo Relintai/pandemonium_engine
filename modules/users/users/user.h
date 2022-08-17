@@ -4,7 +4,7 @@
 #include "core/os/rw_lock.h"
 #include "core/ustring.h"
 
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 class UserModule;
 

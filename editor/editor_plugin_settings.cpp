@@ -30,7 +30,7 @@
 
 #include "editor_plugin_settings.h"
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"
 #include "core/io/config_file.h"
@@ -38,7 +38,7 @@
 #include "core/os/file_access.h"
 #include "core/os/main_loop.h"
 #include "core/os/memory.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/variant/variant.h"
 #include "editor/plugin_config_dialog.h"
 #include "editor_node.h"

@@ -35,7 +35,7 @@
 #include "core/math/math_funcs.h"
 #include "core/object_rc.h"
 #include "core/print_string.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "core/variant/variant_parser.h"
 #include "scene/gui/control.h"
 #include "scene/main/node.h"

@@ -33,7 +33,7 @@
 #include "core/engine.h"
 #include "core/math/audio_frame.h"
 #include "core/containers/pool_vector.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/containers/ring_buffer.h"
 #include "servers/audio/audio_effect.h"
 #include "servers/audio_server.h"

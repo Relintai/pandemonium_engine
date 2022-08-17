@@ -2,7 +2,7 @@
 #define USER_MANAGER_DB_H
 
 #include "core/os/rw_lock.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/ustring.h"
 #include "core/containers/vector.h"
 

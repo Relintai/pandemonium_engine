@@ -1,7 +1,7 @@
 
 #include "web_server_cookie.h"
-#include "core/class_db.h"
-#include "core/object.h"
+#include "core/object/class_db.h"
+#include "core/object/object.h"
 
 String WebServerCookie::get_domain() {
 	return _domain;

@@ -24,7 +24,7 @@ SOFTWARE.
 */
 
 #include "editor/editor_plugin.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 class PaintWindow;
 class Texture;

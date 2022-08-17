@@ -32,8 +32,8 @@
 
 #include "editor/plugins/abstract_polygon_2d_editor.h"
 
-#include "core/object.h"
-#include "core/reference.h"
+#include "core/object/object.h"
+#include "core/object/reference.h"
 #include "core/variant/variant.h"
 
 class EditorNode;

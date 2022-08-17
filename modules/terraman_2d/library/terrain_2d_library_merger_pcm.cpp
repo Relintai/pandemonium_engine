@@ -39,7 +39,7 @@ SOFTWARE.
 #include "../defines.h"
 #include "../world/default/terrain_2d_chunk_default.h"
 #include "core/containers/hashfuncs.h"
-#include "core/message_queue.h"
+#include "core/object/message_queue.h"
 #include "terrain_2d_material_cache_pcm.h"
 
 bool Terrain2DLibraryMergerPCM::_supports_caching() {

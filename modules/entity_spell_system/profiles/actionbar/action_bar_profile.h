@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "core/variant/array.h"
 #include "core/variant/dictionary.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/ustring.h"
 #include "core/containers/vector.h"
 

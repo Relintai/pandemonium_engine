@@ -32,7 +32,7 @@
 
 #include "scene/gui/box_container.h"
 
-#include "core/object.h"
+#include "core/object/object.h"
 
 
 class ImportDefaultsEditorSettings;

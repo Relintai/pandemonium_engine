@@ -30,7 +30,7 @@
 
 #include "project_manager.h"
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/math/color.h"
 #include "core/engine.h"
 #include "core/error_list.h"

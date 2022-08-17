@@ -25,7 +25,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 #include "core/image.h"
 #include "scene/resources/texture.h"

@@ -33,7 +33,7 @@
 #include "editor/editor_inspector.h"
 
 #include "core/node_path.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/ustring.h"
 #include "core/variant/variant.h"
 

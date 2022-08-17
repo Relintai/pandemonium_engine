@@ -30,7 +30,7 @@
 
 #include "editor_properties_array_dict.h"
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/math/color.h"
 #include "core/error_macros.h"
 #include "core/io/marshalls.h"
@@ -40,7 +40,7 @@
 #include "core/os/input.h"
 #include "core/os/input_event.h"
 #include "core/os/memory.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "core/typedefs.h"
 #include "core/containers/vector.h"
 #include "editor/editor_file_system.h"

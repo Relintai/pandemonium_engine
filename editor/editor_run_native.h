@@ -33,7 +33,7 @@
 #include "scene/gui/box_container.h"
 
 #include "core/containers/map.h"
-#include "core/object.h"
+#include "core/object/object.h"
 
 class MenuButton;
 class RichTextLabel;

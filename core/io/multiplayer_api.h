@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/io/networked_multiplayer_peer.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 class MultiplayerAPI : public Reference {
 	GDCLASS(MultiplayerAPI, Reference);

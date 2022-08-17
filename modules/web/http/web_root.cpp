@@ -1,6 +1,6 @@
 #include "web_root.h"
 
-#include "core/object.h"
+#include "core/object/object.h"
 #include "modules/web/http/http_server_enums.h"
 #include "web_server_request.h"
 

@@ -3,7 +3,7 @@
 #define PLOGGER_BIND_H
 
 #include "core/log/logger_backend.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/typedefs.h"
 #include "core/ustring.h"
 

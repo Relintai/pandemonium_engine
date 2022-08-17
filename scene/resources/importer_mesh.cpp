@@ -32,7 +32,7 @@
 
 #include "core/math/random_pcg.h"
 #include "scene/resources/surface_tool.h"
-#include "core/method_bind_ext.gen.inc"
+#include "core/object/method_bind_ext.gen.inc"
 
 #include <cstdint>
 

@@ -33,7 +33,7 @@
 #include "editor/editor_plugin.h"
 
 #include "scene/resources/material.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/ustring.h"
 
 class EditorNode;

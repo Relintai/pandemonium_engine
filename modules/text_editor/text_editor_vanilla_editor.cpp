@@ -2,7 +2,7 @@
 #include "text_editor_vanilla_editor.h"
 
 #include "core/math/color.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "text_editor_settings.h"
 
 #include "scene/gui/box_container.h"

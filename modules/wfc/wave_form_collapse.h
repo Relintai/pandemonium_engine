@@ -8,7 +8,7 @@
 #include "array_3d.h"
 #include "core/containers/vector.h"
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 class WaveFormCollapse : public Reference {
 	GDCLASS(WaveFormCollapse, Reference);

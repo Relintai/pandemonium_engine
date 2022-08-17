@@ -2,7 +2,7 @@
 #define IMAGE_INDEXER_H
 
 #include "core/image.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/variant/variant.h"
 #include "core/containers/oa_hash_map.h"
 

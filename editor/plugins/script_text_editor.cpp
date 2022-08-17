@@ -31,7 +31,7 @@
 #include "script_text_editor.h"
 
 #include "core/variant/array.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/variant/dictionary.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"
@@ -46,7 +46,7 @@
 #include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/project_settings.h"
-#include "core/script_language.h"
+#include "core/object/script_language.h"
 #include "core/containers/set.h"
 #include "core/string_name.h"
 #include "core/typedefs.h"

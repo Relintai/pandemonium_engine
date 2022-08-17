@@ -30,7 +30,7 @@
 
 #include "graph_node.h"
 
-#include "core/method_bind_ext.gen.inc"
+#include "core/object/method_bind_ext.gen.inc"
 
 struct _MinSizeCache {
 	int min_size;

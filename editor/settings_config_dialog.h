@@ -32,8 +32,8 @@
 
 #include "scene/gui/dialogs.h"
 
-#include "core/object.h"
-#include "core/reference.h"
+#include "core/object/object.h"
+#include "core/object/reference.h"
 #include "core/ustring.h"
 
 class Control;

@@ -32,7 +32,7 @@
 
 #include "core/containers/list.h"
 #include "core/variant/method_ptrcall.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/variant/variant.h"
 
 #include <stdio.h>

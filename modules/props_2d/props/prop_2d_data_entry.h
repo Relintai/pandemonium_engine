@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "core/math/transform.h"
 #include "core/math/transform_2d.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 #include "scene/resources/material.h"
 

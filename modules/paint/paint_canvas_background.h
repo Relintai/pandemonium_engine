@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "scene/gui/texture_rect.h"
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 class ShaderMaterial;
 class Shader;

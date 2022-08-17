@@ -34,7 +34,7 @@
 #include "editor/editor_plugin.h"
 
 #include "core/math/vector2.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/ustring.h"
 #include "core/containers/vector.h"
 

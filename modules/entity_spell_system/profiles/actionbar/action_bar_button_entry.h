@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/variant/dictionary.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 class ActionBarEntry;
 

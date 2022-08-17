@@ -30,7 +30,7 @@
 
 #include "path_editor_plugin.h"
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/math/color.h"
 #include "core/math/basis.h"
 #include "core/math/geometry.h"
@@ -41,7 +41,7 @@
 #include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/containers/pool_vector.h"
-#include "core/undo_redo.h"
+#include "core/object/undo_redo.h"
 #include "core/containers/vector.h"
 #include "editor/editor_node.h"
 #include "editor/editor_settings.h"

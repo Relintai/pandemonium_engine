@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "terrain_world.h"
 
-#include "core/message_queue.h"
+#include "core/object/message_queue.h"
 #include "terrain_chunk.h"
 #include "terrain_structure.h"
 

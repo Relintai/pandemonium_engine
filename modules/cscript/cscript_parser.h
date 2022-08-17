@@ -31,8 +31,8 @@
 /*************************************************************************/
 
 #include "core/containers/map.h"
-#include "core/object.h"
-#include "core/script_language.h"
+#include "core/object/object.h"
+#include "core/object/script_language.h"
 #include "cscript_functions.h"
 #include "cscript_tokenizer.h"
 

@@ -33,7 +33,7 @@
 #include "scene/gui/dialogs.h"
 
 #include "core/os/dir_access.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/containers/set.h"
 #include "core/ustring.h"
 

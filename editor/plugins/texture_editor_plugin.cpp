@@ -32,7 +32,7 @@
 
 #include "editor/editor_scale.h"
 #include "scene/resources/dynamic_font.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/math/color.h"
 #include "core/image.h"
 #include "core/math/vector2.h"

@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/crypto/crypto.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 #include <mbedtls/ctr_drbg.h>
 #include <mbedtls/entropy.h>

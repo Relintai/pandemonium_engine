@@ -30,7 +30,7 @@
 
 #include "script_create_dialog.h"
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/math/color.h"
 #include "core/error_list.h"
 #include "core/io/resource_loader.h"
@@ -40,9 +40,9 @@
 #include "core/os/dir_access.h"
 #include "core/os/memory.h"
 #include "core/project_settings.h"
-#include "core/reference.h"
-#include "core/resource.h"
-#include "core/script_language.h"
+#include "core/object/reference.h"
+#include "core/object/resource.h"
+#include "core/object/script_language.h"
 #include "core/string_builder.h"
 #include "core/typedefs.h"
 #include "core/variant/variant.h"

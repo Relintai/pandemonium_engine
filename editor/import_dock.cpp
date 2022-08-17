@@ -34,7 +34,7 @@
 #include "editor_node.h"
 #include "editor_resource_preview.h"
 #include "editor_scale.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/variant/dictionary.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"

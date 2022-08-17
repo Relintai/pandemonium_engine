@@ -30,12 +30,12 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/method_bind.h"
-#include "core/object.h"
+#include "core/object/method_bind.h"
+#include "core/object/object.h"
 #include "core/print_string.h"
 
 /**	To bind more then 6 parameters include this:
- *  #include "core/method_bind_ext.gen.inc"
+ *  #include "core/object/method_bind_ext.gen.inc"
  */
 
 #define DEFVAL(m_defval) (m_defval)

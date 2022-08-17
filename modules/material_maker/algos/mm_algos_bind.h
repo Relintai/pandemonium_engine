@@ -7,7 +7,7 @@
 #include "core/containers/pool_vector.h"
 #include "core/variant/variant.h"
 
-#include "core/object.h"
+#include "core/object/object.h"
 
 class _MMAlgos : public Object {
 	GDCLASS(_MMAlgos, Object);

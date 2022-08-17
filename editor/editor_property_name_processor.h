@@ -33,7 +33,7 @@
 #include "scene/main/node.h"
 
 #include "core/containers/map.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/ustring.h"
 
 class EditorPropertyNameProcessor : public Node {

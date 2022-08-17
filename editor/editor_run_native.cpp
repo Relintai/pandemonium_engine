@@ -30,11 +30,11 @@
 
 #include "editor_run_native.h"
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/error_macros.h"
 #include "core/image.h"
 #include "core/os/memory.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/typedefs.h"
 #include "core/ustring.h"
 #include "core/variant/variant.h"

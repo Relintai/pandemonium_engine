@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "core/variant/array.h"
 #include "core/variant/dictionary.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 #include "../../spell_enums.h"
 

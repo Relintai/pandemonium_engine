@@ -25,7 +25,7 @@ SOFTWARE.
 */
 
 #include "core/math/color.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/containers/vector.h"
 
 #include "defines.h"

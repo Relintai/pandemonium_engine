@@ -32,11 +32,11 @@
 
 #include "editor/editor_node.h"
 #include "scene/resources/packed_scene.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/error_macros.h"
 #include "core/io/resource_loader.h"
 #include "core/os/memory.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/string_name.h"
 #include "core/variant/variant.h"
 #include "editor/editor_file_dialog.h"

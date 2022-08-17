@@ -30,7 +30,7 @@
 
 #include "create_dialog.h"
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/os/keyboard.h"
 #include "editor_help.h"
 #include "editor_node.h"
@@ -44,7 +44,7 @@
 #include "core/os/file_access.h"
 #include "core/os/input_event.h"
 #include "core/os/memory.h"
-#include "core/script_language.h"
+#include "core/object/script_language.h"
 #include "core/typedefs.h"
 #include "editor/doc/doc_data.h"
 #include "editor/editor_data.h"

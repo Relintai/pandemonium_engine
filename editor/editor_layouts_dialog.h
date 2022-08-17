@@ -32,7 +32,7 @@
 
 #include "scene/gui/dialogs.h"
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 class LineEdit;
 class ItemList;

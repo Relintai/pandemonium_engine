@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/project_settings.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "servers/physics_2d_server.h"
 
 class VisibilityNotifier2D;

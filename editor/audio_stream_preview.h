@@ -37,9 +37,9 @@
 #include "servers/audio/audio_stream.h"
 
 #include "core/containers/map.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/object_id.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/containers/vector.h"
 
 class Thread;

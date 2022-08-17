@@ -31,7 +31,7 @@
 #include "visual_server.h"
 
 #include "core/engine.h"
-#include "core/method_bind_ext.gen.inc"
+#include "core/object/method_bind_ext.gen.inc"
 #include "core/project_settings.h"
 
 #ifdef TOOLS_ENABLED

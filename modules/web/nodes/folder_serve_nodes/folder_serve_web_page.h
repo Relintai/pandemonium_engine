@@ -1,7 +1,7 @@
 #ifndef FOLDER_SERVE_WEB_PAGE_H
 #define FOLDER_SERVE_WEB_PAGE_H
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/ustring.h"
 
 #include "../../http/web_node.h"

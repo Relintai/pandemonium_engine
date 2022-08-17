@@ -31,7 +31,7 @@
 #include "register_core_types.h"
 
 #include "core/bind/core_bind.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/compressed_translation.h"
 #include "core/core_string_names.h"
 #include "core/crypto/aes_context.h"
@@ -72,7 +72,7 @@
 #include "core/path_remap.h"
 #include "core/project_settings.h"
 #include "core/translation.h"
-#include "core/undo_redo.h"
+#include "core/object/undo_redo.h"
 
 #include "core/bind/logger_bind.h"
 #include "core/log/logger_backend.h"

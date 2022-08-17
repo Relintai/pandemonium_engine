@@ -30,7 +30,7 @@
 
 #include "project_export.h"
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/variant/dictionary.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"

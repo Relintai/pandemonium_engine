@@ -27,7 +27,7 @@ SOFTWARE.
 #if THREAD_POOL_PRESENT
 #include "../thread_pool/thread_pool_job.h"
 #else
-#include "core/reference.h"
+#include "core/object/reference.h"
 #endif
 
 class PropData;

@@ -36,7 +36,7 @@
 #include "scene/gui/control.h"
 #include "editor/editor_inspector.h"
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "scene/resources/texture.h"
 
 class Button;

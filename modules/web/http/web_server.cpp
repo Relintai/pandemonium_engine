@@ -1,6 +1,6 @@
 #include "web_server.h"
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "web_node.h"
 #include "web_server_request.h"
 

@@ -32,7 +32,7 @@
 
 #include "scene/resources/texture.h"
 #include "scene/resources/theme.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 class ImageTexture;
 

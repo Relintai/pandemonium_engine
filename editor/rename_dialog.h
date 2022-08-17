@@ -37,7 +37,7 @@
 #include "core/error_macros.h"
 #include "core/containers/list.h"
 #include "core/node_path.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/pair.h"
 #include "core/ustring.h"
 

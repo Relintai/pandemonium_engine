@@ -33,7 +33,7 @@
 #include "core/io/file_access_network.h"
 #include "core/io/packet_peer.h"
 #include "core/io/tcp_server.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/os/thread.h"
 
 class EditorFileServer : public Object {

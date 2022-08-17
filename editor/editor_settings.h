@@ -30,18 +30,18 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 #include "scene/gui/shortcut.h"
 
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/io/config_file.h"
 #include "core/os/thread_safe.h"
 #include "core/translation.h"
 #include "core/containers/hash_map.h"
 #include "core/containers/list.h"
 #include "core/containers/map.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
 #include "core/variant/variant.h"

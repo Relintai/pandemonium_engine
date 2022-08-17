@@ -1,7 +1,7 @@
 #ifndef POLYGON_EDIT_H
 #define POLYGON_EDIT_H
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 #include "scene/gui/button.h"
 

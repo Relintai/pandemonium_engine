@@ -33,7 +33,7 @@
 #include "core/os/keyboard.h"
 #include "editor/editor_node.h"
 #include "core/variant/array.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/variant/dictionary.h"
 #include "core/error_macros.h"
 #include "core/math/transform_2d.h"

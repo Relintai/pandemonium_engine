@@ -1,7 +1,7 @@
 #ifndef FASTNOISE_NOISE_PARAMS_H
 #define FASTNOISE_NOISE_PARAMS_H
 
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 #include "noise.h"
 

@@ -6,7 +6,7 @@
 #include "core/math/vector3.h"
 #include "core/variant/variant.h"
 
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 class Node;
 class MMMaterial;

@@ -40,10 +40,10 @@
 
 #include "core/containers/list.h"
 #include "core/containers/map.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/containers/ordered_hash_map.h"
-#include "core/reference.h"
-#include "core/resource.h"
+#include "core/object/reference.h"
+#include "core/object/resource.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
 #include "core/containers/vector.h"

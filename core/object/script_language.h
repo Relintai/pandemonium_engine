@@ -33,7 +33,7 @@
 #include "core/io/multiplayer_api.h"
 #include "core/containers/map.h"
 #include "core/pair.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 class ScriptLanguage;
 

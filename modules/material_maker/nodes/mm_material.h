@@ -4,11 +4,11 @@
 #include "core/image.h"
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/variant/variant.h"
 #include "core/containers/vector.h"
 
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 class MMNode;
 class ThreadPoolExecuteJob;

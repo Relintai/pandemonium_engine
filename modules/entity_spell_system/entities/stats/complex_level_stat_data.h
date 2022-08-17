@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 #include "../../entity_enums.h"
 #include "level_stat_data.h"

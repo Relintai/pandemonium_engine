@@ -30,7 +30,7 @@
 
 #include "font.h"
 
-#include "core/method_bind_ext.gen.inc"
+#include "core/object/method_bind_ext.gen.inc"
 #include "core/os/file_access.h"
 #include "scene/resources/texture.h"
 

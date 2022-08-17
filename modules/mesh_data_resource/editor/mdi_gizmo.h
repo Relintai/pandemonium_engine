@@ -29,7 +29,7 @@ SOFTWARE.
 #include "core/math/transform.h"
 #include "core/math/vector3.h"
 #include "core/containers/pool_vector.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/variant/variant.h"
 
 class Camera;

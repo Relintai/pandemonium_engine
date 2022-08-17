@@ -30,7 +30,7 @@
 
 #include "control.h"
 
-#include "core/message_queue.h"
+#include "core/object/message_queue.h"
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
 #include "core/print_string.h"

@@ -30,7 +30,7 @@
 
 #include "soft_body.h"
 #include "core/containers/list.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/os/os.h"
 #include "core/rid.h"
 #include "scene/3d/collision_object.h"

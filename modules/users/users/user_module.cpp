@@ -1,7 +1,7 @@
 #include "user_module.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 
-#include "core/object.h"
+#include "core/object/object.h"
 #include "user.h"
 
 int UserModule::get_module_index() const {

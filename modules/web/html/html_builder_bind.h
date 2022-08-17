@@ -1,10 +1,10 @@
 #ifndef HTML_BUILDER_BIND_H
 #define HTML_BUILDER_BIND_H
 
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/ustring.h"
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 class _HTMLBuilder;
 class WebServerRequest;

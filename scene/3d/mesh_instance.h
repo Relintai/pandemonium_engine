@@ -33,7 +33,7 @@
 #include "scene/3d/visual_instance.h"
 
 #include "core/containers/local_vector.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 class Mesh;
 class Skin;

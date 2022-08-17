@@ -1,0 +1,18 @@
+#!/usr/bin/env python
+
+import make_binders
+from platform_methods import run_in_subprocess
+
+Import("env")
+
+env_object = env.Clone()
+
+# Make binders
+env_object.CommandNoCache(
+    ["method_bind.gen.inc", "method_bind_ext.gen.inc", "method_bind_free_func.gen.inc"],
+    "make_binders.py",
+    run_in_subprocess(make_binders.run),
+)
+
+
+env_object.add_source_files(env.core_sources, "*.cpp")

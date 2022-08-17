@@ -7,7 +7,7 @@
 #include "core/containers/pool_vector.h"
 #include "core/variant/variant.h"
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 class MMAlgos : public Reference {
 	GDCLASS(MMAlgos, Reference);

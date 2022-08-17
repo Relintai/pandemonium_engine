@@ -1,11 +1,11 @@
 #include "markdown_renderer.h"
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/error_macros.h"
 #include "core/log/logger.h"
 
 #include "./libs/hoedown/html.h"
-#include "core/object.h"
+#include "core/object/object.h"
 
 MarkdownRenderer::RenderType MarkdownRenderer::get_render_type() {
 	return _render_type;

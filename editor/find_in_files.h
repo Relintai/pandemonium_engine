@@ -36,7 +36,7 @@
 
 #include "core/containers/hash_map.h"
 #include "core/containers/map.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/containers/set.h"
 #include "core/ustring.h"
 #include "core/variant/variant.h"

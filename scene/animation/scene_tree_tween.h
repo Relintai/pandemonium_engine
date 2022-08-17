@@ -31,7 +31,7 @@
 #ifndef SCENE_TREE_TWEEN_H
 #define SCENE_TREE_TWEEN_H
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "scene/animation/tween.h"
 
 class SceneTreeTween;

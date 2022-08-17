@@ -37,14 +37,14 @@
 
 #include "scene/resources/text_file.h"
 
-#include "core/script_language.h"
+#include "core/object/script_language.h"
 #include "core/variant/array.h"
 #include "core/error_list.h"
 #include "core/containers/list.h"
 #include "core/math/vector2.h"
-#include "core/object.h"
-#include "core/reference.h"
-#include "core/resource.h"
+#include "core/object/object.h"
+#include "core/object/reference.h"
+#include "core/object/resource.h"
 #include "core/containers/set.h"
 #include "core/typedefs.h"
 #include "core/ustring.h"

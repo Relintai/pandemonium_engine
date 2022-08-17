@@ -30,10 +30,10 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/class_db.h"
-#include "core/object.h"
-#include "core/ref_ptr.h"
-#include "core/reference.h"
+#include "core/object/class_db.h"
+#include "core/object/object.h"
+#include "core/object/ref_ptr.h"
+#include "core/object/reference.h"
 #include "core/safe_refcount.h"
 #include "core/containers/self_list.h"
 

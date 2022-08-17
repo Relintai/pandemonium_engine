@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/containers/oa_hash_map.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 
 /**
 	A* pathfinding algorithm

@@ -2,7 +2,7 @@
 #ifndef PLOGGER_H
 #define PLOGGER_H
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/typedefs.h"
 #include "core/ustring.h"
 #include "logger_backend.h"

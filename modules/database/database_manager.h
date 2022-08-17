@@ -1,11 +1,11 @@
 #ifndef DATABASE_MANAGER_H
 #define DATABASE_MANAGER_H
 
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/ustring.h"
 #include "core/containers/vector.h"
 
-#include "core/object.h"
+#include "core/object/object.h"
 
 class Database;
 

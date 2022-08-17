@@ -33,8 +33,8 @@
 #include "scene/gui/box_container.h"
 
 #include "core/math/color.h"
-#include "core/object.h"
-#include "core/reference.h"
+#include "core/object/object.h"
+#include "core/object/reference.h"
 #include "core/ustring.h"
 
 #include "scene/resources/theme.h"

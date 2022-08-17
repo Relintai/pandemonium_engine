@@ -30,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/reference.h"
-#include "core/resource.h"
+#include "core/object/reference.h"
+#include "core/object/resource.h"
 #include "scene/main/node.h"
 
 #include "scene/main/timer.h"
@@ -40,7 +40,7 @@
 #include "core/error_list.h"
 #include "core/containers/list.h"
 #include "core/containers/map.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/os/dir_access.h"
 #include "core/containers/pool_vector.h"
 #include "core/containers/set.h"

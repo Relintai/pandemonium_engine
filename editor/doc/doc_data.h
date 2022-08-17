@@ -32,7 +32,7 @@
 
 #include "core/containers/map.h"
 #include "core/variant/variant.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/error_list.h"
 #include "core/ustring.h"
 #include "core/containers/vector.h"

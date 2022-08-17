@@ -859,6 +859,6 @@ public:
 };
 
 //needed by macros
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 
 #endif

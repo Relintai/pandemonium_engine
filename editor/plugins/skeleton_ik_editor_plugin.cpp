@@ -32,7 +32,7 @@
 
 #include "scene/3d/skeleton.h"
 #include "scene/animation/skeleton_ik.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/os/memory.h"
 #include "editor/editor_node.h"
 #include "scene/gui/button.h"

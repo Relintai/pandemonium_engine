@@ -26,7 +26,7 @@ SOFTWARE.
 #include "core/ustring.h"
 #include "core/containers/pool_vector.h"
 #include "core/math/vector3.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/variant/array.h"
 
 class MeshDataResource;

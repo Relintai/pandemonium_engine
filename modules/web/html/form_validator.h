@@ -4,7 +4,7 @@
 #include "core/ustring.h"
 #include "core/containers/vector.h"
 
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 class Request;
 class FormField;

@@ -34,8 +34,8 @@
 #include "scene/gui/box_container.h"
 
 #include "core/math/vector2.h"
-#include "core/object.h"
-#include "core/reference.h"
+#include "core/object/object.h"
+#include "core/object/reference.h"
 #include "core/ustring.h"
 #include "core/containers/vector.h"
 

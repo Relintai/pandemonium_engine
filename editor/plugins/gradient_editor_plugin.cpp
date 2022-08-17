@@ -31,9 +31,9 @@
 #include "gradient_editor_plugin.h"
 
 #include "editor/editor_scale.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/os/memory.h"
-#include "core/undo_redo.h"
+#include "core/object/undo_redo.h"
 #include "core/containers/vector.h"
 #include "editor/editor_node.h"
 #include "scene/resources/gradient.h"

@@ -25,7 +25,7 @@ SOFTWARE.
 #include "prop_2d_material_cache.h"
 
 #include "core/math/color.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "core/containers/vector.h"
 
 #include "core/math/rect2.h"

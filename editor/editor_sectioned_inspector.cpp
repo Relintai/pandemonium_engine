@@ -32,7 +32,7 @@
 
 #include "editor_property_name_processor.h"
 #include "editor_scale.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/containers/list.h"
 #include "core/math/vector2.h"
 #include "core/os/memory.h"

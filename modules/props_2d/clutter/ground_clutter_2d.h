@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 #ifdef TEXTURE_PACKER_PRESENT
 #include "../../texture_packer/texture_packer.h"

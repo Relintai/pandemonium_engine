@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/math/transform.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 class PropData;
 class PropMesher;

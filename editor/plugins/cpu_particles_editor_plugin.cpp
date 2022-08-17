@@ -31,7 +31,7 @@
 #include "cpu_particles_editor_plugin.h"
 
 #include "editor/plugins/spatial_editor_plugin.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/math/vector3.h"
 #include "core/os/memory.h"
 #include "core/containers/pool_vector.h"

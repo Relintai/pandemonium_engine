@@ -2,7 +2,7 @@
 #include "mm_node.h"
 
 #include "../editor/mm_graph_node.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "mm_material.h"
 #include "mm_node_universal_property.h"
 #include "scene/main/node.h"

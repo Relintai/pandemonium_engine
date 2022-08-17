@@ -31,8 +31,8 @@
 /*************************************************************************/
 
 #include "core/os/input_event.h"
-#include "core/reference.h"
-#include "core/script_language.h"
+#include "core/object/reference.h"
+#include "core/object/script_language.h"
 
 class MainLoop : public Object {
 	GDCLASS(MainLoop, Object);

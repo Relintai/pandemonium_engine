@@ -31,7 +31,7 @@
 #include "camera_editor_plugin.h"
 
 #include "spatial_editor_plugin.h"
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "core/math/math_defs.h"
 #include "core/os/memory.h"
 #include "scene/3d/camera.h"

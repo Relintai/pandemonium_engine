@@ -31,9 +31,9 @@
 #include "variant.h"
 
 #include "core/core_string_names.h"
-#include "core/object.h"
+#include "core/object/object.h"
 #include "core/object_rc.h"
-#include "core/script_language.h"
+#include "core/object/script_language.h"
 
 #define CASE_TYPE_ALL(PREFIX, OP) \
 	CASE_TYPE(PREFIX, OP, INT)    \

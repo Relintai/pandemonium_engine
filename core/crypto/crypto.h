@@ -31,8 +31,8 @@
 /*************************************************************************/
 
 #include "core/crypto/hashing_context.h"
-#include "core/reference.h"
-#include "core/resource.h"
+#include "core/object/reference.h"
+#include "core/object/resource.h"
 
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"

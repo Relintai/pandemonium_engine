@@ -31,7 +31,7 @@
 #include "line_2d_editor_plugin.h"
 
 #include "core/os/memory.h"
-#include "core/undo_redo.h"
+#include "core/object/undo_redo.h"
 #include "core/ustring.h"
 #include "scene/2d/line_2d.h"
 #include "scene/2d/node_2d.h"

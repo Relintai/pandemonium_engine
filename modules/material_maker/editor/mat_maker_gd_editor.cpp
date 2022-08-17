@@ -4,7 +4,7 @@
 #include "../algos/mm_algos.h"
 
 #include "core/io/resource_loader.h"
-#include "core/undo_redo.h"
+#include "core/object/undo_redo.h"
 #include "modules/material_maker/editor/mm_create_name_popup.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"

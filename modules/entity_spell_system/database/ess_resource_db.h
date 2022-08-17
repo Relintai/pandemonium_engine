@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "core/bind/core_bind.h"
 #include "core/containers/hash_map.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "core/ustring.h"
 #include "core/variant/variant.h"
 #include "core/containers/vector.h"

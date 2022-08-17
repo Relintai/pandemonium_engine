@@ -32,7 +32,7 @@
 
 #include "core/containers/ordered_hash_map.h"
 #include "core/os/file_access.h"
-#include "core/reference.h"
+#include "core/object/reference.h"
 #include "core/variant/variant_parser.h"
 
 class ConfigFile : public Reference {

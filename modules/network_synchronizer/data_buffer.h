@@ -35,7 +35,7 @@
 	@author AndreaCatania
 */
 
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 
 #include "bit_array.h"
 

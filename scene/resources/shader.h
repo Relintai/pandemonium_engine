@@ -32,7 +32,7 @@
 
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 #include "scene/resources/texture.h"
 
 class Shader : public Resource {

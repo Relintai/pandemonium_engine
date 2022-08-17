@@ -1,6 +1,6 @@
 #include "database_manager.h"
 
-#include "core/object.h"
+#include "core/object/object.h"
 #include "database.h"
 
 Ref<Database> DatabaseManager::get_ddb() {

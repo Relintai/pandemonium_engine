@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/math/audio_frame.h"
-#include "core/resource.h"
+#include "core/object/resource.h"
 
 class AudioEffectInstance : public Reference {
 	GDCLASS(AudioEffectInstance, Reference);
