@@ -26,7 +26,7 @@ SOFTWARE.
 #include "../material_cache/ess_material_cache.h"
 #include "../spawners/ess_entity_spawner.h"
 #include "../utility/entity_create_info.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 ESS *ESS::instance;
 

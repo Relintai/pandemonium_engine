@@ -34,7 +34,7 @@
 #include "core/io/resource_saver.h"
 #include "core/os/input.h"
 #include "core/os/keyboard.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "editor/animation_track_editor.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"

@@ -31,7 +31,7 @@
 #import "pandemonium_view_renderer.h"
 
 #include "core/os/keyboard.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "main/main.h"
 #include "os_iphone.h"
 #include "servers/audio_server.h"

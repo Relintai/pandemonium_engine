@@ -33,7 +33,7 @@
 #include "core/os/file_access.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 String DirAccess::_get_root_path() const {
 	switch (_access_type) {

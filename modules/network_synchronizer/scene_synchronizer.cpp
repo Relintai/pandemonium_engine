@@ -35,7 +35,7 @@
 #include "scene_synchronizer.h"
 
 #include "networked_controller.h"
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/object/class_db.h"
 #include "scene_diff.h"
 #include "scene/main/viewport.h"

@@ -33,7 +33,7 @@
 #include "core/core_string_names.h"
 #include "core/os/input.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "scene/2d/camera_2d.h"
 #include "scene/2d/collision_object_2d.h"
 #include "scene/2d/listener_2d.h"

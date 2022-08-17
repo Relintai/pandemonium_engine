@@ -35,7 +35,7 @@
 #include "core/io/zip_io.h"
 #include "core/os/file_access.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/safe_refcount.h"
 #include "core/version.h"
 #include "editor/editor_export.h"

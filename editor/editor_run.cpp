@@ -34,7 +34,7 @@
 
 #include "plugins/script_editor_plugin.h"
 #include "script_editor_debugger.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "editor_settings.h"
 #include "core/error/error_macros.h"
 #include "core/math/math_funcs.h"

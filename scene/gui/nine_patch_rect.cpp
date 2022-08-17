@@ -30,7 +30,7 @@
 
 #include "nine_patch_rect.h"
 
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "servers/visual_server.h"
 
 void NinePatchRect::_notification(int p_what) {

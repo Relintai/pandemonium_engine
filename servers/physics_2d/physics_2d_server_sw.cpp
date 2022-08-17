@@ -34,7 +34,7 @@
 #include "broad_phase_2d_hash_grid.h"
 #include "collision_solver_2d_sw.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/object/script_language.h"
 
 #define FLUSH_QUERY_CHECK(m_object) \

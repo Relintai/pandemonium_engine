@@ -30,10 +30,10 @@
 
 #include "gdscript.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/global_constants.h"
 #include "core/os/file_access.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "gdscript_compiler.h"
 
 #ifdef TOOLS_ENABLED

@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "register_types.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 
 #include "fast_quadratic_mesh_simplifier.h"
 #include "mesh_merger.h"

@@ -30,7 +30,7 @@
 
 #import "joypad_iphone.h"
 
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "drivers/coreaudio/audio_driver_coreaudio.h"
 #import "pandemonium_view.h"
 #include "main/main.h"

@@ -39,7 +39,7 @@
 #include "core/object/method_bind_ext.gen.inc"
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 /**
  *  Time constants borrowed from loc_time.h

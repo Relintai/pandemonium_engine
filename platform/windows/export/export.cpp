@@ -37,7 +37,7 @@
 #include "editor/editor_settings.h"
 #include "platform/windows/logo.gen.h"
 
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 class EditorExportPlatformWindows : public EditorExportPlatformPC {
 	Error _rcedit_add_data(const Ref<EditorExportPreset> &p_preset, const String &p_path);

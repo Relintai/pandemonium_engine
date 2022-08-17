@@ -29,7 +29,7 @@
 /*************************************************************************/
 
 #include "spatial_velocity_tracker.h"
-#include "core/engine.h"
+#include "core/config/engine.h"
 
 void SpatialVelocityTracker::set_track_physics_step(bool p_track_physics_step) {
 	physics_step = p_track_physics_step;

@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "string_android.h"
-#include <core/engine.h>
+#include <core/config/engine.h>
 #include <core/variant/variant.h>
 #include <jni.h>
 

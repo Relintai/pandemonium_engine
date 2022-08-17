@@ -30,7 +30,7 @@
 
 #include "interpolated_camera.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 
 void InterpolatedCamera::_notification(int p_what) {
 	switch (p_what) {

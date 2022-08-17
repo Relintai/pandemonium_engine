@@ -39,7 +39,7 @@
 
 #include "../http/web_server.h"
 
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 class HTTPServerSimple;
 

@@ -31,11 +31,11 @@
 #include "room_manager.h"
 
 #include "core/bitfield_dynamic.h"
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/math/geometry.h"
 #include "core/math/quick_hull.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "editor/editor_node.h"
 #include "mesh_instance.h"
 #include "multimesh_instance.h"

@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 
 // define these to get more debugging logs for the delta smoothing
 //#define PANDEMONIUM_DEBUG_DELTA_SMOOTHER

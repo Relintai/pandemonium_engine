@@ -31,11 +31,11 @@
 #include "gdscript_parser.h"
 
 #include "core/core_string_names.h"
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/io/resource_loader.h"
 #include "core/os/file_access.h"
 #include "core/string/print_string.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/object/reference.h"
 #include "core/object/script_language.h"
 #include "gdscript.h"

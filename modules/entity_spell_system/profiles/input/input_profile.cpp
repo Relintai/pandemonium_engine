@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "input_profile.h"
 
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/string/ustring.h"
 
 #include "../class_profile.h"

@@ -31,7 +31,7 @@
 #include "rasterizer_canvas_base_gles2.h"
 
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "drivers/gles_common/rasterizer_asserts.h"
 #include "rasterizer_scene_gles2.h"
 #include "servers/visual/visual_server_raster.h"

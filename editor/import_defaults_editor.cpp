@@ -36,7 +36,7 @@
 #include "core/containers/list.h"
 #include "core/containers/map.h"
 #include "core/os/memory.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/object/reference.h"
 #include "core/string/string_name.h"
 #include "core/typedefs.h"

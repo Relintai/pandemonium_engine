@@ -30,7 +30,7 @@
 
 #include "dtls_server.h"
 #include "core/os/file_access.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 DTLSServer *(*DTLSServer::_create)() = nullptr;
 bool DTLSServer::available = false;

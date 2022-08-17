@@ -34,7 +34,7 @@
 #include "core/os/file_access.h"
 #include "core/os/os.h"
 #include "core/string/print_string.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/string/translation.h"
 #include "core/variant/variant_parser.h"
 

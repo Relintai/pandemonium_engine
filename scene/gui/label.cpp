@@ -30,7 +30,7 @@
 
 #include "label.h"
 #include "core/string/print_string.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/string/translation.h"
 
 void Label::set_autowrap(bool p_autowrap) {

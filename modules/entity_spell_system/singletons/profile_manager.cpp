@@ -24,8 +24,8 @@ SOFTWARE.
 #include "core/io/json.h"
 #include "core/os/file_access.h"
 
-#include "core/engine.h"
-#include "core/project_settings.h"
+#include "core/config/engine.h"
+#include "core/config/project_settings.h"
 
 #include "../defines.h"
 

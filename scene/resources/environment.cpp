@@ -30,7 +30,7 @@
 
 #include "environment.h"
 
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "scene/resources/sky.h"
 #include "scene/resources/texture.h"
 #include "servers/visual_server.h"

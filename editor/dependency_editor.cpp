@@ -35,7 +35,7 @@
 #include "editor_node.h"
 #include "editor_scale.h"
 #include "scene/gui/margin_container.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/object/class_db.h"
 #include "core/math/color.h"
 #include "core/error/error_list.h"

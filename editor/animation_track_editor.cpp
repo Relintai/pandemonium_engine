@@ -34,7 +34,7 @@
 #include "core/variant/array.h"
 #include "core/object/class_db.h"
 #include "core/math/color.h"
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/error/error_macros.h"
 #include "core/math/basis.h"
 #include "core/math/math_funcs.h"

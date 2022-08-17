@@ -37,7 +37,7 @@
 #include "core/io/resource_loader.h"
 #include "core/os/file_access.h"
 #include "core/os/memory.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "editor/editor_plugin.h"
 #include "editor/plugins/script_editor_plugin.h"
 #include "editor_node.h"

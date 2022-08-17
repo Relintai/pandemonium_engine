@@ -2,7 +2,7 @@
 
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 #include "../../file_cache.h"
 #include "../../html/markdown_renderer.h"

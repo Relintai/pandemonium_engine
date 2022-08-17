@@ -32,7 +32,7 @@
 
 #include "core/object/class_db.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "scene/2d/animated_sprite.h"
 #include "scene/2d/area_2d.h"
 #include "scene/2d/audio_stream_player_2d.h"

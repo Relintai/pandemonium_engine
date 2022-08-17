@@ -32,7 +32,7 @@
 
 #include "core/variant/array.h"
 #include "core/object/class_db.h"
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/io/resource_loader.h"
 #include "core/containers/map.h"
 #include "core/math/basis.h"
@@ -48,7 +48,7 @@
 #include "core/os/memory.h"
 #include "core/os/os.h"
 #include "core/containers/pool_vector.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/rid_handle.h"
 #include "core/object/script_language.h"
 #include "core/containers/set.h"

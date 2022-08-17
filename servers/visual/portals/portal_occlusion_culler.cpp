@@ -30,9 +30,9 @@
 
 #include "portal_occlusion_culler.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/math/aabb.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "portal_renderer.h"
 #include "servers/visual/visual_server_globals.h"
 #include "servers/visual/visual_server_scene.h"

@@ -30,8 +30,8 @@
 
 #include "shape_2d.h"
 
-#include "core/engine.h"
-#include "core/project_settings.h"
+#include "core/config/engine.h"
+#include "core/config/project_settings.h"
 #include "servers/physics_2d_server.h"
 
 RID Shape2D::get_rid() const {

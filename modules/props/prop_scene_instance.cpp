@@ -1,6 +1,6 @@
 #include "prop_scene_instance.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 
 Ref<PackedScene> PropSceneInstance::get_scene() {
 	return _scene;

@@ -29,7 +29,7 @@
 /*************************************************************************/
 
 #include "spring_arm.h"
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "scene/3d/collision_object.h"
 #include "scene/resources/shape.h"
 #include "scene/resources/sphere_shape.h"

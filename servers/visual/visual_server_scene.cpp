@@ -32,7 +32,7 @@
 
 #include "core/math/transform_interpolator.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "visual_server_globals.h"
 #include "visual_server_raster.h"
 

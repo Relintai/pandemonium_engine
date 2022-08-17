@@ -30,7 +30,7 @@
 
 #include "occluder_shape.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/math/transform.h"
 #include "servers/visual_server.h"
 

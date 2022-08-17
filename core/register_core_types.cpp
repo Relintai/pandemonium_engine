@@ -37,7 +37,7 @@
 #include "core/crypto/aes_context.h"
 #include "core/crypto/crypto.h"
 #include "core/crypto/hashing_context.h"
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/func_ref.h"
 #include "core/input_map.h"
 #include "core/io/config_file.h"
@@ -69,7 +69,7 @@
 #include "core/os/main_loop.h"
 #include "core/os/time.h"
 #include "core/containers/packed_data_container.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/string/translation.h"
 #include "core/object/undo_redo.h"
 

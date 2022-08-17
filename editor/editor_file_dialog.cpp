@@ -44,7 +44,7 @@
 #include "core/os/memory.h"
 #include "core/os/os.h"
 #include "core/containers/pool_vector.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/typedefs.h"
 #include "dependency_editor.h"
 #include "editor_file_system.h"

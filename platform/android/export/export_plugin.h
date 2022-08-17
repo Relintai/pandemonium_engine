@@ -35,7 +35,7 @@
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/safe_refcount.h"
 #include "core/version.h"
 #include "drivers/png/png_driver_common.h"

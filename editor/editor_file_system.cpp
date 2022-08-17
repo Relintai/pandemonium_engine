@@ -35,7 +35,7 @@
 #include "core/io/resource_saver.h"
 #include "core/os/file_access.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/variant/variant_parser.h"
 #include "editor_node.h"
 #include "editor_resource_preview.h"

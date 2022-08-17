@@ -30,7 +30,7 @@
 
 #include "import_dock.h"
 
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "editor_node.h"
 #include "editor_resource_preview.h"
 #include "editor_scale.h"

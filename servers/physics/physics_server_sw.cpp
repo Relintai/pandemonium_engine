@@ -34,7 +34,7 @@
 #include "broad_phase_bvh.h"
 #include "broad_phase_octree.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/object/script_language.h"
 #include "joints/cone_twist_joint_sw.h"
 #include "joints/generic_6dof_joint_sw.h"

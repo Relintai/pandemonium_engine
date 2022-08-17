@@ -32,8 +32,8 @@
 
 #include "core/object/message_queue.h"
 
-#include "core/engine.h"
-#include "core/project_settings.h"
+#include "core/config/engine.h"
+#include "core/config/project_settings.h"
 #include "scene/3d/physics_body.h"
 #include "scene/resources/skeleton_modification_3d.h"
 #include "scene/resources/skeleton_modification_stack_3d.h"

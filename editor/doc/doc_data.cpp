@@ -30,11 +30,11 @@
 
 #include "doc_data.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/global_constants.h"
 #include "core/io/compression.h"
 #include "core/os/dir_access.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/object/script_language.h"
 #include "core/string/translation.h"
 #include "core/version.h"

@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "core/variant/array.h"
 #include "core/bind/core_bind.h"
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/containers/hash_map.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"

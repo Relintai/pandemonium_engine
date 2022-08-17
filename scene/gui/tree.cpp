@@ -35,7 +35,7 @@
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
 #include "core/string/print_string.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/scroll_bar.h"

@@ -32,7 +32,7 @@
 
 #include "core/os/input.h"
 #include "core/os/keyboard.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "editor/editor_node.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
@@ -54,7 +54,7 @@
 #include "core/variant/array.h"
 #include "core/object/class_db.h"
 #include "core/math/color.h"
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/error/error_list.h"
 #include "core/error/error_macros.h"
 #include "core/io/resource_loader.h"

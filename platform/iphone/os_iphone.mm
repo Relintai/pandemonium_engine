@@ -41,7 +41,7 @@
 #include "core/io/file_access_pack.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "drivers/unix/syslog_logger.h"
 
 #import "app_delegate.h"

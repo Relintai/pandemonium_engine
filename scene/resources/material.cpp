@@ -30,8 +30,8 @@
 
 #include "material.h"
 
-#include "core/engine.h"
-#include "core/project_settings.h"
+#include "core/config/engine.h"
+#include "core/config/project_settings.h"
 #include "core/version.h"
 #include "scene/resources/texture.h"
 #include "servers/visual/shader_language.h"

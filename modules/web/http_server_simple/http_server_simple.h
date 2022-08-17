@@ -39,7 +39,7 @@
 #include "core/os/semaphore.h"
 #include "core/containers/vector.h"
 
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 #include "../http/http_server_enums.h"
 

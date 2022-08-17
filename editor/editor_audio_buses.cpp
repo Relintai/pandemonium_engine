@@ -38,7 +38,7 @@
 #include "filesystem_dock.h"
 #include "scene/resources/font.h"
 #include "servers/audio_server.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/object/class_db.h"
 #include "core/variant/dictionary.h"
 #include "core/error/error_list.h"

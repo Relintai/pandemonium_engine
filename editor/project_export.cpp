@@ -38,7 +38,7 @@
 #include "core/math/rect2.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/containers/set.h"
 #include "core/containers/vector.h"
 #include "editor/editor_export.h"

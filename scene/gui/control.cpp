@@ -34,7 +34,7 @@
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
 #include "core/string/print_string.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "scene/gui/label.h"
 #include "scene/gui/panel.h"
 #include "scene/gui/shortcut.h"

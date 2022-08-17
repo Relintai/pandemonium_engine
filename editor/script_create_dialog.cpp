@@ -39,7 +39,7 @@
 #include "core/math/vector2.h"
 #include "core/os/dir_access.h"
 #include "core/os/memory.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/object/reference.h"
 #include "core/object/resource.h"
 #include "core/object/script_language.h"

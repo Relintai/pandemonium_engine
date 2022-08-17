@@ -32,7 +32,7 @@
 
 #include "core/input_map.h"
 #include "core/os/keyboard.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/string/translation.h"
 #include "editor/editor_export.h"
 #include "editor/editor_node.h"

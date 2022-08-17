@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "biome_terrarin_generator.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 
 #include "core/math/math_funcs.h"
 

@@ -44,7 +44,7 @@
 #include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/object/ref_ptr.h"
 #include "core/object/script_language.h"
 #include "core/string/string_name.h"

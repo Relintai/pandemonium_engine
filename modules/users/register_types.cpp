@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "register_types.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 
 #include "users/user.h"
 #include "users/user_module.h"

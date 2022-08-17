@@ -30,7 +30,7 @@
 
 #include "popup.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/os/keyboard.h"
 
 void Popup::_gui_input(Ref<InputEvent> p_event) {

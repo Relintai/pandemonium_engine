@@ -32,7 +32,7 @@
 
 #include "wsl_client.h"
 #include "core/io/ip.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 void WSLClient::_do_handshake() {
 	if (_requested < _request.size() - 1) {

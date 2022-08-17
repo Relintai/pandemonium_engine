@@ -42,7 +42,7 @@
 #include "core/os/dir_access.h"
 #include "core/os/os.h"
 #include "core/os/time.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/register_core_types.h"
 #include "core/script_debugger_local.h"
 #include "core/object/script_language.h"

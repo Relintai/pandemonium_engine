@@ -34,11 +34,11 @@
 
 #include "networked_controller.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/io/marshalls.h"
 #include "scene_synchronizer.h"
 #include <algorithm>
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/os/os.h"
 
 #define METADATA_SIZE 1

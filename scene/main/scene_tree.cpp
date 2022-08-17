@@ -37,7 +37,7 @@
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
 #include "core/string/print_string.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "main/input_default.h"
 #include "node.h"
 #include "scene/3d/spatial.h"

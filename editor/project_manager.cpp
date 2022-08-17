@@ -32,7 +32,7 @@
 
 #include "core/object/class_db.h"
 #include "core/math/color.h"
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/error/error_list.h"
 #include "core/error/error_macros.h"
 #include "core/image.h"
@@ -51,7 +51,7 @@
 #include "core/os/os.h"
 #include "core/containers/pool_vector.h"
 #include "core/string/print_string.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/containers/set.h"
 #include "core/containers/sort_array.h"
 #include "core/string/translation.h"

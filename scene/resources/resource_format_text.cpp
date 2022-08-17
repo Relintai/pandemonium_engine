@@ -32,7 +32,7 @@
 
 #include "core/io/resource_format_binary.h"
 #include "core/os/dir_access.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/version.h"
 
 //version 2: changed names for basis, aabb, poolvectors, etc.

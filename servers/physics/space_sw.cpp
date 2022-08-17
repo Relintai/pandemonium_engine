@@ -31,7 +31,7 @@
 #include "space_sw.h"
 
 #include "collision_solver_sw.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "physics_server_sw.h"
 
 #define TEST_MOTION_MARGIN_MIN_VALUE 0.0001

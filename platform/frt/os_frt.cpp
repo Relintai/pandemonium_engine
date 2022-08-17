@@ -64,7 +64,7 @@ typedef AudioDriver AudioDriverSW;
 #define INPUT_EVENT_REF(t) Ref<t>
 #define joystick_linux JoypadLinux
 
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #define PROJECT_SETTINGS \
 	ProjectSettings *project_settings = ProjectSettings::get_singleton();
 

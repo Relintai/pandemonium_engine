@@ -2,7 +2,7 @@
 
 #include "core/os/dir_access.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 #include "../../html/html_builder.h"
 #include "../../http/web_server_request.h"

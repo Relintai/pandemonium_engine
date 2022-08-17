@@ -7,7 +7,7 @@
 #include "scene/resources/world.h"
 #include "servers/visual_server.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 
 #define VARIANT_ARRAY_GET(arr)             \
 	Vector<Variant> r;                     \

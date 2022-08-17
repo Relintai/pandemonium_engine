@@ -38,7 +38,7 @@
 #include "scene/resources/material.h"
 #include "scene/resources/mesh.h"
 #include "servers/audio/audio_stream.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/variant/array.h"
 #include "core/object/class_db.h"
 #include "core/math/color.h"

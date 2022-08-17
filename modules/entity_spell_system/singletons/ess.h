@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/bind/core_bind.h"
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/object/object.h"
 #include "core/object/resource.h"
 #include "core/string/ustring.h"

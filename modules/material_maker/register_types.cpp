@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "register_types.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 
 #include "algos/mm_algos.h"
 #include "algos/mm_algos_bind.h"

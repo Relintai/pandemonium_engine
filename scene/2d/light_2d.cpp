@@ -30,7 +30,7 @@
 
 #include "light_2d.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "servers/visual_server.h"
 
 #ifdef TOOLS_ENABLED

@@ -32,7 +32,7 @@
 
 #include "core/io/resource_loader.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 // ISO 639-1 language codes (and a couple of three-letter ISO 639-2 codes),
 // with the addition of glibc locales with their regional identifiers.

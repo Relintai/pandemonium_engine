@@ -49,7 +49,7 @@
 #include "core/object_id.h"
 #include "core/os/input_event.h"
 #include "core/os/memory.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/rid.h"
 #include "core/object/script_language.h"
 #include "core/typedefs.h"

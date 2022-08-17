@@ -39,7 +39,7 @@
 #include "networked_controller.h"
 #include "scene_diff.h"
 #include "scene_synchronizer.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 
 void register_network_synchronizer_types() {

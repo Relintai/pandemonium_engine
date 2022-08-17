@@ -25,8 +25,8 @@ SOFTWARE.
 #include "../props/prop_data.h"
 #include "../props/prop_data_entry.h"
 
-#include "core/engine.h"
-#include "core/project_settings.h"
+#include "core/config/engine.h"
+#include "core/config/project_settings.h"
 
 #include "../jobs/prop_texture_job.h"
 

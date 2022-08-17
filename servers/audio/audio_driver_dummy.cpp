@@ -31,7 +31,7 @@
 #include "audio_driver_dummy.h"
 
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 Error AudioDriverDummy::init() {
 	active = false;

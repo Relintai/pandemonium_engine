@@ -31,7 +31,7 @@
 #include "navigation_polygon.h"
 
 #include "core/core_string_names.h"
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/os/mutex.h"
 #include "navigation_2d.h"
 #include "scene/resources/navigation_mesh.h"

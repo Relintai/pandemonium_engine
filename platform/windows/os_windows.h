@@ -33,7 +33,7 @@
 #include "context_gl_windows.h"
 #include "core/os/input.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "crash_handler_windows.h"
 #include "drivers/unix/ip_unix.h"
 #include "drivers/wasapi/audio_driver_wasapi.h"

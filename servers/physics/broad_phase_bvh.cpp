@@ -30,7 +30,7 @@
 
 #include "broad_phase_bvh.h"
 #include "collision_object_sw.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 BroadPhaseSW::ID BroadPhaseBVH::create(CollisionObjectSW *p_object, int p_subindex, const AABB &p_aabb, bool p_static) {
 	uint32_t tree_id = p_static ? TREE_STATIC : TREE_DYNAMIC;

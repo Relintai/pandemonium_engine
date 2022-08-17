@@ -31,7 +31,7 @@
 #include "property_utils.h"
 
 #include "core/core_string_names.h"
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/containers/local_vector.h"
 #include "editor/editor_node.h"
 #include "scene/resources/packed_scene.h"

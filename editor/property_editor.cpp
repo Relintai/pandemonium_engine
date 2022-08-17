@@ -54,7 +54,7 @@
 #include "core/os/main_loop.h"
 #include "core/os/memory.h"
 #include "core/pair.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/object/ref_ptr.h"
 #include "core/object/resource.h"
 #include "core/rid.h"

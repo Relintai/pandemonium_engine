@@ -30,7 +30,7 @@
 
 #import "pandemonium_view.h"
 
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "os_iphone.h"
 #include "servers/audio_server.h"
 

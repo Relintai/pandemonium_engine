@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/containers/hash_map.h"
 
 #include "../defines.h"

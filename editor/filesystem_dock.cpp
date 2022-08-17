@@ -36,7 +36,7 @@
 #include "core/os/input.h"
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "editor_node.h"
 #include "editor_resource_preview.h"
 #include "editor_scale.h"

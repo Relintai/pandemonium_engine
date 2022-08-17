@@ -6,7 +6,7 @@
 #include "scene/resources/world_2d.h"
 #include "servers/physics_server.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 
 #define VARIANT_ARRAY_GET(arr)             \
 	Vector<Variant> r;                     \

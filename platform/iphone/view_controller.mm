@@ -30,7 +30,7 @@
 
 #import "view_controller.h"
 
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #import "pandemonium_view.h"
 #import "pandemonium_view_renderer.h"
 #import "keyboard_input_view.h"

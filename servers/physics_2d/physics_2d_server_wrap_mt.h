@@ -32,7 +32,7 @@
 
 #include "core/command_queue_mt.h"
 #include "core/os/thread.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/safe_refcount.h"
 #include "servers/physics_2d_server.h"
 

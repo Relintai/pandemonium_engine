@@ -32,7 +32,7 @@
 
 #ifdef UNIX_ENABLED
 
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "drivers/unix/dir_access_unix.h"
 #include "drivers/unix/file_access_unix.h"
 #include "drivers/unix/net_socket_posix.h"

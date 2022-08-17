@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/math/audio_frame.h"
 #include "core/containers/pool_vector.h"
 #include "core/object/reference.h"

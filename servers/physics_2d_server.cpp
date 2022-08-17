@@ -32,7 +32,7 @@
 
 #include "core/object/method_bind_ext.gen.inc"
 #include "core/string/print_string.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 Physics2DServer *Physics2DServer::singleton = nullptr;
 

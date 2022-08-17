@@ -2,7 +2,7 @@
 #include "text_file_editor.h"
 
 #include "core/variant/array.h"
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/math/math_defs.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"

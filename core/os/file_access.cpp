@@ -34,7 +34,7 @@
 #include "core/io/file_access_pack.h"
 #include "core/io/marshalls.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 FileAccess::CreateFunc FileAccess::create_func[ACCESS_MAX] = { nullptr, nullptr };
 

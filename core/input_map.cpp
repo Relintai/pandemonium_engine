@@ -32,7 +32,7 @@
 
 #include "core/os/input.h"
 #include "core/os/keyboard.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 InputMap *InputMap::singleton = nullptr;
 

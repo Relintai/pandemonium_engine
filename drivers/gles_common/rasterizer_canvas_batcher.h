@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "rasterizer_array.h"
 #include "rasterizer_asserts.h"
 #include "rasterizer_storage_common.h"

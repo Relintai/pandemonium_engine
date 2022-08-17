@@ -30,7 +30,7 @@
 
 #include "gradle_export_util.h"
 
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 int _get_android_orientation_value(OS::ScreenOrientation screen_orientation) {
 	switch (screen_orientation) {

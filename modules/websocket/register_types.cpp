@@ -30,7 +30,7 @@
 
 #include "register_types.h"
 #include "core/error/error_macros.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #ifdef JAVASCRIPT_ENABLED
 #include "emscripten.h"
 #include "emws_client.h"

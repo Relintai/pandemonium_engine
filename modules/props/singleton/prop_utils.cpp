@@ -36,7 +36,7 @@ SOFTWARE.
 #include "../../mesh_data_resource/nodes/mesh_data_instance.h"
 #endif
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 
 PropUtils *PropUtils::_instance;
 Vector<Ref<PropDataEntry>> PropUtils::_processors;

@@ -30,7 +30,7 @@
 
 #include "pandemonium_plugin_jni.h"
 
-#include <core/engine.h>
+#include <core/config/engine.h>
 #include <core/error_macros.h>
 #include <core/project_settings.h>
 #include <platform/android/api/jni_singleton.h>

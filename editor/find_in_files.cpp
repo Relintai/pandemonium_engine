@@ -32,7 +32,7 @@
 
 #include "core/os/dir_access.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "editor_node.h"
 #include "editor_scale.h"
 #include "scene/gui/box_container.h"

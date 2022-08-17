@@ -30,7 +30,7 @@
 
 #include "animation_player.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/object/message_queue.h"
 #include "scene/2d/node_2d.h"
 #include "scene/3d/skeleton.h"

@@ -30,7 +30,7 @@
 
 #include "scroll_container.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "scene/main/viewport.h"
 #include "scroll_bar.h"
 

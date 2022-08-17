@@ -30,14 +30,14 @@
 
 #include "script_debugger_remote.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/io/ip.h"
 #include "core/io/marshalls.h"
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"
 #include "core/os/input.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/viewport.h"

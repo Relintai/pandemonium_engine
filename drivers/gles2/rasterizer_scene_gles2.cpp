@@ -33,7 +33,7 @@
 #include "core/math/math_funcs.h"
 #include "core/math/transform.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/containers/vmap.h"
 #include "rasterizer_canvas_gles2.h"
 #include "servers/visual/visual_server_raster.h"

@@ -31,7 +31,7 @@
 #include "camera.h"
 
 #include "collision_object.h"
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/math/projection.h"
 #include "scene/3d/spatial_velocity_tracker.h"
 #include "scene/main/viewport.h"

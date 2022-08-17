@@ -1,6 +1,6 @@
 #include "prop_2d_scene_instance.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 
 Ref<PackedScene> Prop2DSceneInstance::get_scene() {
 	return _scene;

@@ -33,7 +33,7 @@
 
 #include "core/error/error_list.h"
 #include "core/io/config_file.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/string/ustring.h"
 
 /*

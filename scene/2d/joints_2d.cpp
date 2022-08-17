@@ -30,7 +30,7 @@
 
 #include "joints_2d.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "physics_body_2d.h"
 #include "scene/scene_string_names.h"
 #include "servers/physics_2d_server.h"

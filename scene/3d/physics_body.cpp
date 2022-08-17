@@ -31,11 +31,11 @@
 #include "physics_body.h"
 
 #include "core/core_string_names.h"
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/containers/list.h"
 #include "core/object/method_bind_ext.gen.inc"
 #include "core/object/object.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/rid.h"
 #include "scene/resources/physics_material.h"
 #include "scene/scene_string_names.h"

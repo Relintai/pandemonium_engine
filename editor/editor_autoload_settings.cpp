@@ -31,7 +31,7 @@
 #include "editor_autoload_settings.h"
 
 #include "core/global_constants.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "editor_node.h"
 #include "editor_scale.h"
 #include "project_settings_editor.h"

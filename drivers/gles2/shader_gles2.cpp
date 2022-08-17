@@ -32,7 +32,7 @@
 
 #include "core/os/memory.h"
 #include "core/string/print_string.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "core/string/string_builder.h"
 #include "rasterizer_gles2.h"
 #include "rasterizer_storage_gles2.h"

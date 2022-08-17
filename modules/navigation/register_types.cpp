@@ -30,7 +30,7 @@
 
 #include "register_types.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "pandemonium_navigation_server.h"
 #include "servers/navigation_server.h"
 

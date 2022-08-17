@@ -33,7 +33,7 @@
 #include "core/io/ip.h"
 #include "core/io/marshalls.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 //#define DEBUG_PRINT(m_p) print_line(m_p)
 //#define DEBUG_TIME(m_what) printf("MS: %s - %lli\n",m_what,OS::get_singleton()->get_ticks_usec());

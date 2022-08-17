@@ -30,8 +30,8 @@
 
 #include "light.h"
 
-#include "core/engine.h"
-#include "core/project_settings.h"
+#include "core/config/engine.h"
+#include "core/config/project_settings.h"
 #include "scene/resources/surface_tool.h"
 
 void Light::set_param(Param p_param, float p_value) {

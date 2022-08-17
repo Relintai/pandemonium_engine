@@ -30,7 +30,7 @@
 
 #include "spatial.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/math/transform_interpolator.h"
 #include "core/object/message_queue.h"
 #include "scene/main/scene_tree.h"

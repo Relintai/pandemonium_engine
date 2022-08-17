@@ -41,7 +41,7 @@
 #include "platform/javascript/logo.gen.h"
 #include "platform/javascript/run_icon.gen.h"
 
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "editor/editor_settings.h"
 
 class EditorHTTPServer : public Reference {

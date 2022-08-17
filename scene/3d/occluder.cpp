@@ -30,7 +30,7 @@
 
 #include "occluder.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "scene/resources/occluder_shape.h"
 #include "scene/resources/world.h"
 #include "servers/visual/portals/portal_occlusion_culler.h"

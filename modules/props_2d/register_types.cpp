@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "register_types.h"
 
-#include "core/engine.h"
+#include "core/config/engine.h"
 
 #include "tiled_wall/tiled_wall_2d.h"
 #include "tiled_wall/tiled_wall_2d_data.h"

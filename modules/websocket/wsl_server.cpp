@@ -32,7 +32,7 @@
 
 #include "wsl_server.h"
 #include "core/os/os.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 WSLServer::PendingPeer::PendingPeer() {
 	use_ssl = false;

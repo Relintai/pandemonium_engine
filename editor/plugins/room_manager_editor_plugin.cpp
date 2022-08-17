@@ -33,7 +33,7 @@
 #include "editor/spatial_editor_gizmos.h"
 #include "scene/resources/occluder_shape.h"
 #include "core/object/class_db.h"
-#include "core/engine.h"
+#include "core/config/engine.h"
 #include "core/containers/local_vector.h"
 #include "core/math/math_defs.h"
 #include "core/math/transform.h"
