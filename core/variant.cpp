@@ -3228,10 +3228,10 @@ uint32_t Variant::hash() const {
 			return _data._bool ? 1 : 0;
 		} break;
 		case INT: {
-			return _data._int;
+			return hash_one_uint64((uint64_t)_data._int);
 		} break;
 		case REAL: {
-			return hash_djb2_one_float(_data._real);
+			return hash_murmur3_one_float(_data._real);
 		} break;
 		case STRING: {
 			return reinterpret_cast<const String *>(_data._mem)->hash();
@@ -3239,34 +3239,22 @@ uint32_t Variant::hash() const {
 
 			// math types
 		case RECT2: {
-			uint32_t hash = hash_djb2_one_float(reinterpret_cast<const Rect2 *>(_data._mem)->position.x);
-			hash = hash_djb2_one_float(reinterpret_cast<const Rect2 *>(_data._mem)->position.y, hash);
-			hash = hash_djb2_one_float(reinterpret_cast<const Rect2 *>(_data._mem)->size.x, hash);
-			return hash_djb2_one_float(reinterpret_cast<const Rect2 *>(_data._mem)->size.y, hash);
+			return HashMapHasherDefault::hash(*reinterpret_cast<const Rect2 *>(_data._mem));
 		} break;
 		case RECT2I: {
-			uint32_t hash = hash_djb2_one_float(reinterpret_cast<const Rect2i *>(_data._mem)->position.x);
-			hash = hash_djb2_one_float(reinterpret_cast<const Rect2i *>(_data._mem)->position.y, hash);
-			hash = hash_djb2_one_float(reinterpret_cast<const Rect2i *>(_data._mem)->size.x, hash);
-			return hash_djb2_one_float(reinterpret_cast<const Rect2i *>(_data._mem)->size.y, hash);
+			return HashMapHasherDefault::hash(*reinterpret_cast<const Rect2i *>(_data._mem));
 		} break;
 		case VECTOR2: {
-			uint32_t hash = hash_djb2_one_float(reinterpret_cast<const Vector2 *>(_data._mem)->x);
-			return hash_djb2_one_float(reinterpret_cast<const Vector2 *>(_data._mem)->y, hash);
+			return HashMapHasherDefault::hash(*reinterpret_cast<const Vector2 *>(_data._mem));
 		} break;
 		case VECTOR2I: {
-			uint32_t hash = hash_djb2_one_float(reinterpret_cast<const Vector2i *>(_data._mem)->x);
-			return hash_djb2_one_float(reinterpret_cast<const Vector2i *>(_data._mem)->y, hash);
+			return HashMapHasherDefault::hash(*reinterpret_cast<const Vector2i *>(_data._mem));
 		} break;
 		case VECTOR3: {
-			uint32_t hash = hash_djb2_one_float(reinterpret_cast<const Vector3 *>(_data._mem)->x);
-			hash = hash_djb2_one_float(reinterpret_cast<const Vector3 *>(_data._mem)->y, hash);
-			return hash_djb2_one_float(reinterpret_cast<const Vector3 *>(_data._mem)->z, hash);
+			return HashMapHasherDefault::hash(*reinterpret_cast<const Vector3 *>(_data._mem));
 		} break;
 		case VECTOR3I: {
-			uint32_t hash = hash_djb2_one_float(reinterpret_cast<const Vector3i *>(_data._mem)->x);
-			hash = hash_djb2_one_float(reinterpret_cast<const Vector3i *>(_data._mem)->y, hash);
-			return hash_djb2_one_float(reinterpret_cast<const Vector3i *>(_data._mem)->z, hash);
+			return HashMapHasherDefault::hash(*reinterpret_cast<const Vector3i *>(_data._mem));
 		} break;
 		case VECTOR4: {
 			return HashMapHasherDefault::hash(*reinterpret_cast<const Vector4 *>(_data._mem));
@@ -3274,60 +3262,69 @@ uint32_t Variant::hash() const {
 		case VECTOR4I: {
 			return HashMapHasherDefault::hash(*reinterpret_cast<const Vector4i *>(_data._mem));
 		} break;
-
 		case PLANE: {
-			uint32_t hash = hash_djb2_one_float(reinterpret_cast<const Plane *>(_data._mem)->normal.x);
-			hash = hash_djb2_one_float(reinterpret_cast<const Plane *>(_data._mem)->normal.y, hash);
-			hash = hash_djb2_one_float(reinterpret_cast<const Plane *>(_data._mem)->normal.z, hash);
-			return hash_djb2_one_float(reinterpret_cast<const Plane *>(_data._mem)->d, hash);
-
+			uint32_t h = HASH_MURMUR3_SEED;
+			const Plane &p = *reinterpret_cast<const Plane *>(_data._mem);
+			h = hash_murmur3_one_real(p.normal.x, h);
+			h = hash_murmur3_one_real(p.normal.y, h);
+			h = hash_murmur3_one_real(p.normal.z, h);
+			h = hash_murmur3_one_real(p.d, h);
+			return hash_fmix32(h);
 		} break;
 		case QUATERNION: {
-			uint32_t hash = hash_djb2_one_float(reinterpret_cast<const Quaternion *>(_data._mem)->x);
-			hash = hash_djb2_one_float(reinterpret_cast<const Quaternion *>(_data._mem)->y, hash);
-			hash = hash_djb2_one_float(reinterpret_cast<const Quaternion *>(_data._mem)->z, hash);
-			return hash_djb2_one_float(reinterpret_cast<const Quaternion *>(_data._mem)->w, hash);
-
+			uint32_t h = HASH_MURMUR3_SEED;
+			const Quaternion &q = *reinterpret_cast<const Quaternion *>(_data._mem);
+			h = hash_murmur3_one_real(q.x, h);
+			h = hash_murmur3_one_real(q.y, h);
+			h = hash_murmur3_one_real(q.z, h);
+			h = hash_murmur3_one_real(q.w, h);
+			return hash_fmix32(h);
 		} break;
 		case AABB: {
-			uint32_t hash = 5831;
-			for (int i = 0; i < 3; i++) {
-				hash = hash_djb2_one_float(_data._aabb->position[i], hash);
-				hash = hash_djb2_one_float(_data._aabb->size[i], hash);
-			}
-
-			return hash;
+			return HashMapHasherDefault::hash(*_data._aabb);
 		} break;
 		case BASIS: {
-			uint32_t hash = 5831;
-			for (int i = 0; i < 3; i++) {
-				for (int j = 0; j < 3; j++) {
-					hash = hash_djb2_one_float(_data._basis->rows[i][j], hash);
-				}
-			}
-
-			return hash;
+			uint32_t h = HASH_MURMUR3_SEED;
+			const Basis &b = *_data._basis;
+			h = hash_murmur3_one_real(b[0].x, h);
+			h = hash_murmur3_one_real(b[0].y, h);
+			h = hash_murmur3_one_real(b[0].z, h);
+			h = hash_murmur3_one_real(b[1].x, h);
+			h = hash_murmur3_one_real(b[1].y, h);
+			h = hash_murmur3_one_real(b[1].z, h);
+			h = hash_murmur3_one_real(b[2].x, h);
+			h = hash_murmur3_one_real(b[2].y, h);
+			h = hash_murmur3_one_real(b[2].z, h);
+			return hash_fmix32(h);
 		} break;
 		case TRANSFORM: {
-			uint32_t hash = 5831;
-			for (int i = 0; i < 3; i++) {
-				for (int j = 0; j < 3; j++) {
-					hash = hash_djb2_one_float(_data._transform->basis.rows[i][j], hash);
-				}
-				hash = hash_djb2_one_float(_data._transform->origin[i], hash);
-			}
-
-			return hash;
+			uint32_t h = HASH_MURMUR3_SEED;
+			const Transform &t = *_data._transform;
+			h = hash_murmur3_one_real(t.basis[0].x, h);
+			h = hash_murmur3_one_real(t.basis[0].y, h);
+			h = hash_murmur3_one_real(t.basis[0].z, h);
+			h = hash_murmur3_one_real(t.basis[1].x, h);
+			h = hash_murmur3_one_real(t.basis[1].y, h);
+			h = hash_murmur3_one_real(t.basis[1].z, h);
+			h = hash_murmur3_one_real(t.basis[2].x, h);
+			h = hash_murmur3_one_real(t.basis[2].y, h);
+			h = hash_murmur3_one_real(t.basis[2].z, h);
+			h = hash_murmur3_one_real(t.origin.x, h);
+			h = hash_murmur3_one_real(t.origin.y, h);
+			h = hash_murmur3_one_real(t.origin.z, h);
+			return hash_fmix32(h);
 		} break;
 		case TRANSFORM2D: {
-			uint32_t hash = 5831;
-			for (int i = 0; i < 3; i++) {
-				for (int j = 0; j < 2; j++) {
-					hash = hash_djb2_one_float(_data._transform2d->columns[i][j], hash);
-				}
-			}
+			uint32_t h = HASH_MURMUR3_SEED;
+			const Transform2D &t = *_data._transform2d;
+			h = hash_murmur3_one_real(t[0].x, h);
+			h = hash_murmur3_one_real(t[0].y, h);
+			h = hash_murmur3_one_real(t[1].x, h);
+			h = hash_murmur3_one_real(t[1].y, h);
+			h = hash_murmur3_one_real(t[2].x, h);
+			h = hash_murmur3_one_real(t[2].y, h);
 
-			return hash;
+			return hash_fmix32(h);
 		} break;
 		case PROJECTION: {
 			uint32_t h = HASH_MURMUR3_SEED;
@@ -3353,19 +3350,22 @@ uint32_t Variant::hash() const {
 
 		// misc types
 		case COLOR: {
-			uint32_t hash = hash_djb2_one_float(reinterpret_cast<const Color *>(_data._mem)->r);
-			hash = hash_djb2_one_float(reinterpret_cast<const Color *>(_data._mem)->g, hash);
-			hash = hash_djb2_one_float(reinterpret_cast<const Color *>(_data._mem)->b, hash);
-			return hash_djb2_one_float(reinterpret_cast<const Color *>(_data._mem)->a, hash);
+			uint32_t h = HASH_MURMUR3_SEED;
+			const Color &c = *reinterpret_cast<const Color *>(_data._mem);
+			h = hash_murmur3_one_float(c.r, h);
+			h = hash_murmur3_one_float(c.g, h);
+			h = hash_murmur3_one_float(c.b, h);
+			h = hash_murmur3_one_float(c.a, h);
+			return hash_fmix32(h);
 		} break;
 		case NODE_PATH: {
 			return reinterpret_cast<const NodePath *>(_data._mem)->hash();
 		} break;
 		case RID: {
-			return hash_djb2_one_64(reinterpret_cast<const ::RID *>(_data._mem)->get_id());
+			return hash_one_uint64(reinterpret_cast<const ::RID *>(_data._mem)->get_id());
 		} break;
 		case OBJECT: {
-			return hash_djb2_one_64(make_uint64_t(_UNSAFE_OBJ_PROXY_PTR(*this)));
+			return hash_one_uint64(hash_make_uint64_t(_UNSAFE_OBJ_PROXY_PTR(*this)));
 		} break;
 		case STRING_NAME: {
 			return reinterpret_cast<const StringName *>(_data._mem)->hash();
@@ -3383,9 +3383,9 @@ uint32_t Variant::hash() const {
 			int len = arr.size();
 			if (likely(len)) {
 				PoolVector<uint8_t>::Read r = arr.read();
-				return hash_djb2_buffer((uint8_t *)&r[0], len);
+				return hash_murmur3_buffer((uint8_t *)&r[0], len);
 			} else {
-				return hash_djb2_one_64(0);
+				return hash_murmur3_one_64(0);
 			}
 
 		} break;
@@ -3394,9 +3394,9 @@ uint32_t Variant::hash() const {
 			int len = arr.size();
 			if (likely(len)) {
 				PoolVector<int>::Read r = arr.read();
-				return hash_djb2_buffer((uint8_t *)&r[0], len * sizeof(int));
+				return hash_murmur3_buffer((uint8_t *)&r[0], len * sizeof(int));
 			} else {
-				return hash_djb2_one_64(0);
+				return hash_murmur3_one_64(0);
 			}
 
 		} break;
@@ -3406,14 +3406,20 @@ uint32_t Variant::hash() const {
 
 			if (likely(len)) {
 				PoolVector<real_t>::Read r = arr.read();
-				return hash_djb2_buffer((uint8_t *)&r[0], len * sizeof(real_t));
+				uint32_t h = HASH_MURMUR3_SEED;
+
+				for (int i = 0; i < len; i++) {
+					h = hash_murmur3_one_real(r[i], h);
+				}
+
+				return hash_fmix32(h);
 			} else {
-				return hash_djb2_one_float(0.0);
+				return hash_murmur3_one_real(0.0);
 			}
 
 		} break;
 		case POOL_STRING_ARRAY: {
-			uint32_t hash = 5831;
+			uint32_t hash = HASH_MURMUR3_SEED;
 			const PoolVector<String> &arr = *reinterpret_cast<const PoolVector<String> *>(_data._mem);
 			int len = arr.size();
 
@@ -3421,14 +3427,16 @@ uint32_t Variant::hash() const {
 				PoolVector<String>::Read r = arr.read();
 
 				for (int i = 0; i < len; i++) {
-					hash = hash_djb2_one_32(r[i].hash(), hash);
+					hash = hash_murmur3_one_32(r[i].hash(), hash);
 				}
+
+				hash = hash_fmix32(hash);
 			}
 
 			return hash;
 		} break;
 		case POOL_VECTOR2_ARRAY: {
-			uint32_t hash = 5831;
+			uint32_t hash = HASH_MURMUR3_SEED;
 			const PoolVector<Vector2> &arr = *reinterpret_cast<const PoolVector<Vector2> *>(_data._mem);
 			int len = arr.size();
 
@@ -3436,15 +3444,17 @@ uint32_t Variant::hash() const {
 				PoolVector<Vector2>::Read r = arr.read();
 
 				for (int i = 0; i < len; i++) {
-					hash = hash_djb2_one_float(r[i].x, hash);
-					hash = hash_djb2_one_float(r[i].y, hash);
+					hash = hash_murmur3_one_real(r[i].x, hash);
+					hash = hash_murmur3_one_real(r[i].y, hash);
 				}
+
+				hash = hash_fmix32(hash);
 			}
 
 			return hash;
 		} break;
 		case POOL_VECTOR2I_ARRAY: {
-			uint32_t hash = 5831;
+			uint32_t hash = HASH_MURMUR3_SEED;
 			const PoolVector<Vector2i> &arr = *reinterpret_cast<const PoolVector<Vector2i> *>(_data._mem);
 			int len = arr.size();
 
@@ -3452,15 +3462,17 @@ uint32_t Variant::hash() const {
 				PoolVector<Vector2i>::Read r = arr.read();
 
 				for (int i = 0; i < len; i++) {
-					hash = hash_djb2_one_float(r[i].x, hash);
-					hash = hash_djb2_one_float(r[i].y, hash);
+					hash = hash_murmur3_one_32(r[i].x, hash);
+					hash = hash_murmur3_one_32(r[i].y, hash);
 				}
+
+				hash = hash_fmix32(hash);
 			}
 
 			return hash;
 		} break;
 		case POOL_VECTOR3_ARRAY: {
-			uint32_t hash = 5831;
+			uint32_t hash = HASH_MURMUR3_SEED;
 			const PoolVector<Vector3> &arr = *reinterpret_cast<const PoolVector<Vector3> *>(_data._mem);
 			int len = arr.size();
 
@@ -3468,16 +3480,18 @@ uint32_t Variant::hash() const {
 				PoolVector<Vector3>::Read r = arr.read();
 
 				for (int i = 0; i < len; i++) {
-					hash = hash_djb2_one_float(r[i].x, hash);
-					hash = hash_djb2_one_float(r[i].y, hash);
-					hash = hash_djb2_one_float(r[i].z, hash);
+					hash = hash_murmur3_one_real(r[i].x, hash);
+					hash = hash_murmur3_one_real(r[i].y, hash);
+					hash = hash_murmur3_one_real(r[i].z, hash);
 				}
+
+				hash = hash_fmix32(hash);
 			}
 
 			return hash;
 		} break;
 		case POOL_VECTOR3I_ARRAY: {
-			uint32_t hash = 5831;
+			uint32_t hash = HASH_MURMUR3_SEED;
 			const PoolVector<Vector3i> &arr = *reinterpret_cast<const PoolVector<Vector3i> *>(_data._mem);
 			int len = arr.size();
 
@@ -3485,16 +3499,18 @@ uint32_t Variant::hash() const {
 				PoolVector<Vector3i>::Read r = arr.read();
 
 				for (int i = 0; i < len; i++) {
-					hash = hash_djb2_one_float(r[i].x, hash);
-					hash = hash_djb2_one_float(r[i].y, hash);
-					hash = hash_djb2_one_float(r[i].z, hash);
+					hash = hash_murmur3_one_32(r[i].x, hash);
+					hash = hash_murmur3_one_32(r[i].y, hash);
+					hash = hash_murmur3_one_32(r[i].z, hash);
 				}
+
+				hash = hash_fmix32(hash);
 			}
 
 			return hash;
 		} break;
 		case POOL_VECTOR4_ARRAY: {
-			uint32_t hash = 5831;
+			uint32_t hash = HASH_MURMUR3_SEED;
 			const PoolVector<Vector4> &arr = *reinterpret_cast<const PoolVector<Vector4> *>(_data._mem);
 			int len = arr.size();
 
@@ -3502,17 +3518,19 @@ uint32_t Variant::hash() const {
 				PoolVector<Vector4>::Read r = arr.read();
 
 				for (int i = 0; i < len; i++) {
-					hash = hash_djb2_one_float(r[i].x, hash);
-					hash = hash_djb2_one_float(r[i].y, hash);
-					hash = hash_djb2_one_float(r[i].z, hash);
-					hash = hash_djb2_one_float(r[i].w, hash);
+					hash = hash_murmur3_one_real(r[i].x, hash);
+					hash = hash_murmur3_one_real(r[i].y, hash);
+					hash = hash_murmur3_one_real(r[i].z, hash);
+					hash = hash_murmur3_one_real(r[i].w, hash);
 				}
+
+				hash = hash_fmix32(hash);
 			}
 
 			return hash;
 		} break;
 		case POOL_VECTOR4I_ARRAY: {
-			uint32_t hash = 5831;
+			uint32_t hash = HASH_MURMUR3_SEED;
 			const PoolVector<Vector4i> &arr = *reinterpret_cast<const PoolVector<Vector4i> *>(_data._mem);
 			int len = arr.size();
 
@@ -3520,17 +3538,19 @@ uint32_t Variant::hash() const {
 				PoolVector<Vector4i>::Read r = arr.read();
 
 				for (int i = 0; i < len; i++) {
-					hash = hash_djb2_one_float(r[i].x, hash);
-					hash = hash_djb2_one_float(r[i].y, hash);
-					hash = hash_djb2_one_float(r[i].z, hash);
-					hash = hash_djb2_one_float(r[i].w, hash);
+					hash = hash_murmur3_one_32(r[i].x, hash);
+					hash = hash_murmur3_one_32(r[i].y, hash);
+					hash = hash_murmur3_one_32(r[i].z, hash);
+					hash = hash_murmur3_one_32(r[i].w, hash);
 				}
+
+				hash = hash_fmix32(hash);
 			}
 
 			return hash;
 		} break;
 		case POOL_COLOR_ARRAY: {
-			uint32_t hash = 5831;
+			uint32_t hash = HASH_MURMUR3_SEED;
 			const PoolVector<Color> &arr = *reinterpret_cast<const PoolVector<Color> *>(_data._mem);
 			int len = arr.size();
 
@@ -3538,11 +3558,13 @@ uint32_t Variant::hash() const {
 				PoolVector<Color>::Read r = arr.read();
 
 				for (int i = 0; i < len; i++) {
-					hash = hash_djb2_one_float(r[i].r, hash);
-					hash = hash_djb2_one_float(r[i].g, hash);
-					hash = hash_djb2_one_float(r[i].b, hash);
-					hash = hash_djb2_one_float(r[i].a, hash);
+					hash = hash_murmur3_one_real(r[i].r, hash);
+					hash = hash_murmur3_one_real(r[i].g, hash);
+					hash = hash_murmur3_one_real(r[i].b, hash);
+					hash = hash_murmur3_one_real(r[i].a, hash);
 				}
+
+				hash = hash_fmix32(hash);
 			}
 
 			return hash;

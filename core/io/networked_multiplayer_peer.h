@@ -72,6 +72,8 @@ public:
 
 	virtual ConnectionStatus get_connection_status() const = 0;
 
+	uint32_t generate_unique_id() const;
+
 	NetworkedMultiplayerPeer();
 };
 

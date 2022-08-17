@@ -117,12 +117,12 @@ bool Array::operator==(const Array &p_array) const {
 }
 
 uint32_t Array::hash() const {
-	uint32_t h = hash_djb2_one_32(0);
+	uint32_t h = hash_murmur3_one_32(0);
 
 	for (int i = 0; i < _p->array.size(); i++) {
-		h = hash_djb2_one_32(_p->array[i].hash(), h);
+		h = hash_murmur3_one_32(_p->array[i].hash(), h);
 	}
-	return h;
+	return hash_fmix32(h);
 }
 void Array::operator=(const Array &p_array) {
 	_ref(p_array);

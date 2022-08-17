@@ -213,14 +213,14 @@ void Dictionary::_unref() const {
 	_p = nullptr;
 }
 uint32_t Dictionary::hash() const {
-	uint32_t h = hash_djb2_one_32(Variant::DICTIONARY);
+	uint32_t h = hash_murmur3_one_32(Variant::DICTIONARY);
 
 	for (OrderedHashMap<Variant, Variant, VariantHasher, VariantComparator>::Element E = _p->variant_map.front(); E; E = E.next()) {
-		h = hash_djb2_one_32(E.key().hash(), h);
-		h = hash_djb2_one_32(E.value().hash(), h);
+		h = hash_murmur3_one_32(E.key().hash(), h);
+		h = hash_murmur3_one_32(E.value().hash(), h);
 	}
 
-	return h;
+	return hash_fmix32(h);
 }
 
 Array Dictionary::keys() const {

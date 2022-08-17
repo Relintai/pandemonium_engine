@@ -262,7 +262,7 @@ void Resource::notify_change_to_owners() {
 #ifdef TOOLS_ENABLED
 
 uint32_t Resource::hash_edited_version() const {
-	uint32_t hash = hash_djb2_one_32(get_edited_version());
+	uint32_t hash = hash_murmur3_one_32(get_edited_version());
 
 	List<PropertyInfo> plist;
 	get_property_list(&plist);
@@ -271,7 +271,7 @@ uint32_t Resource::hash_edited_version() const {
 		if (E->get().usage & PROPERTY_USAGE_STORAGE && E->get().type == Variant::OBJECT && E->get().hint == PROPERTY_HINT_RESOURCE_TYPE) {
 			RES res = get(E->get().name);
 			if (res.is_valid()) {
-				hash = hash_djb2_one_32(res->hash_edited_version(), hash);
+				hash = hash_murmur3_one_32(res->hash_edited_version(), hash);
 			}
 		}
 	}

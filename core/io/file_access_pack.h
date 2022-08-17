@@ -36,6 +36,7 @@
 #include "core/os/file_access.h"
 #include "core/print_string.h"
 #include "core/set.h"
+#include "core/hashfuncs.h"
 
 // Pandemonium's packed file magic header ("GDPC" in ASCII).
 #define PACK_HEADER_MAGIC 0x43504447
@@ -80,6 +81,11 @@ private:
 		bool operator==(const PathMD5 &p_md5) const {
 			return a == p_md5.a && b == p_md5.b;
 		};
+
+		static uint32_t hash(const PathMD5 &p_val) {
+			uint32_t h = hash_murmur3_one_32(p_val.a);
+			return hash_fmix32(hash_murmur3_one_32(p_val.b, h));
+		}
 
 		PathMD5() {
 			a = b = 0;
