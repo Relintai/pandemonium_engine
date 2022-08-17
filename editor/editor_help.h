@@ -36,7 +36,7 @@
 #include "editor/doc/doc_data.h"
 #include "scene/gui/rich_text_label.h"
 
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/error_list.h"
 #include "core/map.h"
 #include "core/object.h"

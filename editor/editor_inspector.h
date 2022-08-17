@@ -35,7 +35,7 @@
 #include "scene/gui/container.h"
 #include "scene/gui/control.h"
 
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/list.h"
 #include "core/map.h"
 #include "core/math/rect2.h"

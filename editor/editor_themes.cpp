@@ -39,7 +39,7 @@
 #include "editor_scale.h"
 #include "editor_settings.h"
 #include "modules/modules_enabled.gen.h" // For svg.
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/dictionary.h"
 #include "core/image.h"
 #include "core/math/math_defs.h"

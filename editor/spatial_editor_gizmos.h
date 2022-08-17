@@ -32,7 +32,7 @@
 
 #include "editor/plugins/spatial_editor_plugin.h"
 
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/math/basis.h"
 #include "core/math/math_defs.h"
 #include "core/math/vector2.h"

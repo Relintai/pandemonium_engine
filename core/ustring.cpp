@@ -34,7 +34,7 @@
 
 #include "ustring.h"
 
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/crypto/crypto_core.h"
 #include "core/math/math_funcs.h"
 #include "core/os/memory.h"

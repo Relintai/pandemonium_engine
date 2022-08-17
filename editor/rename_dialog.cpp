@@ -33,7 +33,7 @@
 #include "modules/modules_enabled.gen.h" // For regex.
 #include "core/array.h"
 #include "core/class_db.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/math/vector2.h"
 #include "core/os/memory.h"
 #include "core/reference.h"

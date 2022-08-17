@@ -31,7 +31,7 @@
 #include "editor_properties_array_dict.h"
 
 #include "core/class_db.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/error_macros.h"
 #include "core/io/marshalls.h"
 #include "core/io/resource_loader.h"

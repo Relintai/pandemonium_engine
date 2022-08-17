@@ -33,7 +33,7 @@
 #include "core/reference.h"
 #include "scene/gui/dialogs.h"
 
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/map.h"
 #include "core/object.h"
 #include "core/ustring.h"

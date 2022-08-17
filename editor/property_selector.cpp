@@ -31,7 +31,7 @@
 #include "property_selector.h"
 
 #include "core/class_db.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/error_macros.h"
 #include "core/list.h"
 #include "core/map.h"

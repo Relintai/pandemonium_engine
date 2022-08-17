@@ -36,7 +36,7 @@
 #include "scene/resources/world.h"
 #include "scene/resources/mesh.h"
 #include "core/class_db.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/math/aabb.h"
 #include "core/math/basis.h"
 #include "core/math/math_defs.h"

@@ -42,7 +42,7 @@
 #include "scene/resources/mesh.h"
 #include "core/array.h"
 #include "core/class_db.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/error_macros.h"
 #include "core/image.h"
 #include "core/math/geometry.h"

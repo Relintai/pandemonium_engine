@@ -38,7 +38,7 @@
 #include "editor_settings.h"
 #include "script_editor_debugger.h"
 #include "core/class_db.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/error_macros.h"
 #include "core/list.h"
 #include "core/map.h"

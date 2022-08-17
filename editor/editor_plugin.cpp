@@ -43,7 +43,7 @@
 #include "scene/gui/popup_menu.h"
 #include "servers/visual_server.h"
 #include "core/class_db.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/image.h"
 #include "core/io/resource_importer.h"
 #include "core/math/aabb.h"

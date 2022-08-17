@@ -36,7 +36,7 @@
 #include "editor/editor_scale.h"
 #include "scene/gui/panel.h"
 #include "core/class_db.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/error_macros.h"
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"

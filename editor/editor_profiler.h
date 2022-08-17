@@ -32,7 +32,7 @@
 
 #include "scene/gui/box_container.h"
 
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/map.h"
 #include "core/object.h"
 #include "core/pool_vector.h"

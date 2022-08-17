@@ -34,7 +34,7 @@
 #include "scene/gui/line_edit.h"
 #include "scene/main/timer.h"
 #include "core/class_db.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/math/vector2.h"
 #include "core/os/memory.h"
 #include "core/typedefs.h"

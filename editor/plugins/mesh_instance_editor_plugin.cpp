@@ -39,7 +39,7 @@
 #include "spatial_editor_plugin.h"
 #include "core/array.h"
 #include "core/class_db.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/error_macros.h"
 #include "core/list.h"
 #include "core/math/math_funcs.h"

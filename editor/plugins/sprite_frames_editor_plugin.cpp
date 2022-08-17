@@ -31,7 +31,7 @@
 #include "sprite_frames_editor_plugin.h"
 
 #include "core/class_db.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/dictionary.h"
 #include "core/error_macros.h"
 #include "core/io/resource_loader.h"

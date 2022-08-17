@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "ess_material_cache.h"
 
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/resource.h"
 #include "core/vector.h"
 

@@ -35,7 +35,7 @@
 #include "core/license.gen.h"
 #include "core/version.h"
 #include "core/class_db.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/math/vector2.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"

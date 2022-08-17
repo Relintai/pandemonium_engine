@@ -32,7 +32,7 @@
 
 #include "editor/editor_inspector.h"
 
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
 #include "core/math/vector4.h"

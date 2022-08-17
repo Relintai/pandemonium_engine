@@ -39,7 +39,7 @@
 #include "scene/resources/sky.h"
 #include "scene/resources/world.h"
 #include "core/class_db.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/error_macros.h"
 #include "core/list.h"
 #include "core/math/basis.h"

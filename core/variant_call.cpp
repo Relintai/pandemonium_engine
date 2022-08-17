@@ -30,7 +30,7 @@
 
 #include "variant.h"
 
-#include "core/color_names.inc"
+#include "core/math/color_names.inc"
 #include "core/core_string_names.h"
 #include "core/crypto/crypto_core.h"
 #include "core/io/compression.h"

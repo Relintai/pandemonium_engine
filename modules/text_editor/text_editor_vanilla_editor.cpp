@@ -1,7 +1,7 @@
 
 #include "text_editor_vanilla_editor.h"
 
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/object.h"
 #include "text_editor_settings.h"
 

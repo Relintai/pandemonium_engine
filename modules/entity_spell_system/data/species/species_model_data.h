@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/resource.h"
 #include "core/ustring.h"
 #include "core/vector.h"

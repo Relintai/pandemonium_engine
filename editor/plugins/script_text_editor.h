@@ -36,7 +36,7 @@
 #include "core/reference.h"
 #include "core/vector.h"
 
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/list.h"
 #include "core/map.h"
 #include "core/math/vector2.h"

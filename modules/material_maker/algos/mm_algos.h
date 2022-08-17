@@ -1,7 +1,7 @@
 #ifndef MM_ALGOS_H
 #define MM_ALGOS_H
 
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
 #include "core/pool_vector.h"

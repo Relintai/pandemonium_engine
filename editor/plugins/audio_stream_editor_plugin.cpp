@@ -35,7 +35,7 @@
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 #include "core/class_db.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/math/math_funcs.h"
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"

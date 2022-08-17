@@ -31,7 +31,7 @@
 #include "editor_log.h"
 
 #include "core/class_db.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/math/vector2.h"
 #include "core/os/keyboard.h"
 #include "core/os/memory.h"

@@ -39,7 +39,7 @@
 #include "scene/3d/skeleton.h"
 #include "scene/gui/spin_box.h"
 
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/dictionary.h"
 #include "core/error_macros.h"
 #include "core/hash_map.h"

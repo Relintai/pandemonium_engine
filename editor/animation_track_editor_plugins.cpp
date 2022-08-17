@@ -38,7 +38,7 @@
 #include "scene/animation/animation_player.h"
 #include "servers/audio/audio_stream.h"
 #include "core/class_db.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/dictionary.h"
 #include "core/io/resource_loader.h"
 #include "core/list.h"

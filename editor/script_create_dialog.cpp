@@ -31,7 +31,7 @@
 #include "script_create_dialog.h"
 
 #include "core/class_db.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/error_list.h"
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"

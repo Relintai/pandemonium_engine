@@ -37,7 +37,7 @@
 #include "editor_scale.h"
 #include "editor_settings.h"
 #include "scene/gui/box_container.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/dictionary.h"
 #include "core/map.h"
 #include "core/math/rect2.h"

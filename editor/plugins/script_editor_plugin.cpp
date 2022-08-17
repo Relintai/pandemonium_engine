@@ -50,7 +50,7 @@
 #include "script_text_editor.h"
 #include "text_editor.h"
 #include "core/class_db.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/dictionary.h"
 #include "core/error_macros.h"
 #include "core/io/config_file.h"

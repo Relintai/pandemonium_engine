@@ -34,7 +34,7 @@
 #include "scene/2d/cpu_particles_2d.h"
 #include "scene/gui/separator.h"
 #include "core/class_db.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"
 #include "core/image.h"

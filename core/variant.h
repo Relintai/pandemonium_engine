@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/array.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/dictionary.h"
 #include "core/io/ip_address.h"
 #include "core/math/aabb.h"

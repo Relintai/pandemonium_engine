@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/bind/core_bind.h"
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/hash_map.h"
 #include "core/object.h"
 #include "core/reference.h"

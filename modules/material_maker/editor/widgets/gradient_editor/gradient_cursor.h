@@ -2,7 +2,7 @@
 #ifndef GRADIENT_CURSOR_H
 #define GRADIENT_CURSOR_H
 
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/os/input_event.h"
 #include "core/variant.h"
 

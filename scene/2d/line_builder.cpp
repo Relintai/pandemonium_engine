@@ -30,7 +30,7 @@
 
 #include "line_builder.h"
 
-#include "core/color.h"
+#include "core/math/color.h"
 #include "core/math/vector2.h"
 #include "scene/resources/gradient.h"
 
