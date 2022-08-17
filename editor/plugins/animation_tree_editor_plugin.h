@@ -34,7 +34,7 @@
 #include "scene/gui/box_container.h"
 
 #include "core/object/object.h"
-#include "core/object_id.h"
+#include "core/object/object_id.h"
 #include "core/object/reference.h"
 #include "core/string/ustring.h"
 #include "core/containers/vector.h"

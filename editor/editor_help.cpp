@@ -49,7 +49,7 @@
 #include "core/os/input_event.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"
-#include "core/pair.h"
+#include "core/containers/pair.h"
 #include "core/containers/set.h"
 #include "core/typedefs.h"
 #include "core/variant/variant.h"

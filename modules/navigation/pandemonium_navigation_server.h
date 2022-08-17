@@ -32,7 +32,7 @@
 
 #include "servers/navigation_server.h"
 
-#include "core/rid.h"
+#include "core/containers/rid.h"
 #include "nav_map.h"
 #include "nav_region.h"
 #include "rvo_agent.h"

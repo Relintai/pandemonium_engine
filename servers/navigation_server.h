@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/object/object.h"
-#include "core/rid.h"
+#include "core/containers/rid.h"
 
 #include "core/object/reference.h"
 

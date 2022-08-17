@@ -30,7 +30,7 @@
 
 #include "compressed_translation.h"
 
-#include "core/pair.h"
+#include "core/containers/pair.h"
 
 extern "C" {
 #include "thirdparty/misc/smaz.h"

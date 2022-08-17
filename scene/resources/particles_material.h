@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/rid.h"
+#include "core/containers/rid.h"
 #include "scene/resources/material.h"
 
 class ParticlesMaterial : public Material {

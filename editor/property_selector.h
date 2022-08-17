@@ -32,7 +32,7 @@
 
 #include "scene/gui/dialogs.h"
 
-#include "core/object_id.h"
+#include "core/object/object_id.h"
 #include "core/object/reference.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"

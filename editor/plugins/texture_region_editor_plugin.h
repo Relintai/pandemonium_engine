@@ -43,7 +43,7 @@
 #include "core/math/vector2.h"
 #include "core/object/object.h"
 #include "core/object/reference.h"
-#include "core/rid.h"
+#include "core/containers/rid.h"
 #include "core/string/ustring.h"
 
 

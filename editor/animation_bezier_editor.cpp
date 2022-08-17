@@ -43,7 +43,7 @@
 #include "core/string/node_path.h"
 #include "core/os/input_event.h"
 #include "core/os/memory.h"
-#include "core/pair.h"
+#include "core/containers/pair.h"
 #include "core/string/string_name.h"
 #include "core/typedefs.h"
 #include "core/object/undo_redo.h"

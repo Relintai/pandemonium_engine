@@ -35,7 +35,7 @@
 #include "core/crypto/crypto_core.h"
 #include "core/io/compression.h"
 #include "core/object/object.h"
-#include "core/object_rc.h"
+#include "core/object/object_rc.h"
 #include "core/os/os.h"
 #include "core/object/script_language.h"
 

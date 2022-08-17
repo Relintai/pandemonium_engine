@@ -49,7 +49,7 @@
 #include "core/os/os.h"
 #include "core/containers/pool_vector.h"
 #include "core/config/project_settings.h"
-#include "core/rid_handle.h"
+#include "core/containers/rid_handle.h"
 #include "core/object/script_language.h"
 #include "core/containers/set.h"
 #include "core/string/string_name.h"

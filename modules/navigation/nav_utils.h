@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/math/vector3.h"
-#include "core/rid.h"
+#include "core/containers/rid.h"
 
 #include <vector>
 

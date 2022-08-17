@@ -32,7 +32,7 @@
 
 #include "core/containers/hash_map.h"
 #include "core/containers/list.h"
-#include "core/pair.h"
+#include "core/containers/pair.h"
 
 /**
  * A hash map which allows to iterate elements in insertion order.

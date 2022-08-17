@@ -33,7 +33,7 @@
 #include "core/object/class_db.h"
 #include "core/core_string_names.h"
 #include "core/object/message_queue.h"
-#include "core/object_rc.h"
+#include "core/object/object_rc.h"
 #include "core/os/os.h"
 #include "core/string/print_string.h"
 #include "core/object/resource.h"

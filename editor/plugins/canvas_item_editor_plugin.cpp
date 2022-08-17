@@ -65,7 +65,7 @@
 #include "core/os/memory.h"
 #include "core/containers/pool_vector.h"
 #include "core/object/resource.h"
-#include "core/rid.h"
+#include "core/containers/rid.h"
 #include "core/string/string_name.h"
 #include "core/object/undo_redo.h"
 #include "editor/animation_track_editor.h"

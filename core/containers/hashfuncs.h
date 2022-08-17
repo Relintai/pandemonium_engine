@@ -41,11 +41,11 @@
 #include "core/math/vector3i.h"
 #include "core/math/vector4.h"
 #include "core/math/vector4i.h"
-#include "core/object_id.h"
+#include "core/object/object_id.h"
 #include "core/string/node_path.h"
 #include "core/string/string_name.h"
 #include "core/string/ustring.h"
-#include "core/rid.h"
+#include "core/containers/rid.h"
 #include "core/typedefs.h"
 
 /**

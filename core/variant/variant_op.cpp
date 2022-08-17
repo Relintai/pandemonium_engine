@@ -32,7 +32,7 @@
 
 #include "core/core_string_names.h"
 #include "core/object/object.h"
-#include "core/object_rc.h"
+#include "core/object/object_rc.h"
 #include "core/object/script_language.h"
 
 #define CASE_TYPE_ALL(PREFIX, OP) \

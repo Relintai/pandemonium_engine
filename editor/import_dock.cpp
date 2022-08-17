@@ -41,7 +41,7 @@
 #include "core/io/resource_importer.h"
 #include "core/math/vector2.h"
 #include "core/os/memory.h"
-#include "core/pair.h"
+#include "core/containers/pair.h"
 #include "core/containers/set.h"
 #include "core/typedefs.h"
 #include "core/containers/vector.h"

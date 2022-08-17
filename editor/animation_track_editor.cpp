@@ -46,7 +46,7 @@
 #include "core/os/input_event.h"
 #include "core/os/keyboard.h"
 #include "core/os/memory.h"
-#include "core/pair.h"
+#include "core/containers/pair.h"
 #include "core/object/resource.h"
 #include "core/object/script_language.h"
 #include "core/containers/set.h"

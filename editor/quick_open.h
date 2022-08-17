@@ -32,7 +32,7 @@
 
 #include "scene/gui/dialogs.h"
 
-#include "core/pair.h"
+#include "core/containers/pair.h"
 #include "core/object/reference.h"
 #include "core/string/string_name.h"
 #include "core/string/ustring.h"

@@ -34,7 +34,7 @@
 
 #include "core/containers/list.h"
 #include "core/object/object.h"
-#include "core/object_id.h"
+#include "core/object/object_id.h"
 #include "core/object/reference.h"
 #include "core/string/string_name.h"
 #include "core/string/ustring.h"

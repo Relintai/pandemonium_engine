@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/pair.h"
+#include "core/containers/pair.h"
 
 #include "core/io/resource_importer.h"
 #include "scene/main/node.h"

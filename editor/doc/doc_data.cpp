@@ -47,7 +47,7 @@
 #include "core/object/object.h"
 #include "core/os/file_access.h"
 #include "core/os/memory.h"
-#include "core/pair.h"
+#include "core/containers/pair.h"
 #include "core/string/print_string.h"
 #include "core/containers/set.h"
 #include "core/string/string_name.h"

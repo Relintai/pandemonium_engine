@@ -48,7 +48,7 @@
 #include "core/string/node_path.h"
 #include "core/os/memory.h"
 #include "core/containers/pool_vector.h"
-#include "core/rid.h"
+#include "core/containers/rid.h"
 #include "core/object/script_language.h"
 #include "core/typedefs.h"
 #include "core/object/undo_redo.h"

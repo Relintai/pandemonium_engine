@@ -32,7 +32,7 @@
 
 #include "core/containers/ordered_hash_map.h"
 #include "core/os/os.h"
-#include "core/pair.h"
+#include "core/containers/pair.h"
 #include "core/containers/vector.h"
 
 namespace TestOrderedHashMap {

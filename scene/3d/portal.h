@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/containers/local_vector.h"
-#include "core/rid.h"
+#include "core/containers/rid.h"
 #include "spatial.h"
 
 class RoomManager;

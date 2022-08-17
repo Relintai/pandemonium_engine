@@ -33,7 +33,7 @@
 #include "core/crypto/crypto_core.h"
 #include "core/containers/local_vector.h"
 #include "core/math/convex_hull.h"
-#include "core/pair.h"
+#include "core/containers/pair.h"
 #include "scene/resources/concave_polygon_shape.h"
 #include "scene/resources/convex_polygon_shape.h"
 #include "surface_tool.h"

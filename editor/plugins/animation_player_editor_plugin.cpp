@@ -55,7 +55,7 @@
 #include "core/os/input_event.h"
 #include "core/os/memory.h"
 #include "core/object/resource.h"
-#include "core/rid_handle.h"
+#include "core/containers/rid_handle.h"
 #include "core/string/string_name.h"
 #include "core/typedefs.h"
 #include "core/object/undo_redo.h"

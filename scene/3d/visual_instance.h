@@ -32,7 +32,7 @@
 
 #include "core/math/face3.h"
 #include "core/object/reference.h"
-#include "core/rid.h"
+#include "core/containers/rid.h"
 #include "scene/3d/cull_instance.h"
 #include "servers/visual_server.h"
 

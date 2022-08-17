@@ -45,7 +45,7 @@
 #include "core/io/resource_saver.h"
 #include "core/math/math_defs.h"
 #include "core/math/vector2.h"
-#include "core/object_id.h"
+#include "core/object/object_id.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 #include "core/os/input.h"

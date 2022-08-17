@@ -35,7 +35,7 @@
 #include "core/io/multiplayer_api.h"
 #include "core/containers/map.h"
 #include "core/object/object.h"
-#include "core/object_id.h"
+#include "core/object/object_id.h"
 
 class Button;
 class LineEdit;

@@ -33,7 +33,7 @@
 #include "core/core_string_names.h"
 #include "core/io/marshalls.h"
 #include "core/math/math_funcs.h"
-#include "core/object_rc.h"
+#include "core/object/object_rc.h"
 #include "core/string/print_string.h"
 #include "core/object/resource.h"
 #include "core/variant/variant_parser.h"

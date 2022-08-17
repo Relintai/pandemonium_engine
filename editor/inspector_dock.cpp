@@ -36,7 +36,7 @@
 #include "core/containers/list.h"
 #include "core/containers/map.h"
 #include "core/object/method_bind.h"
-#include "core/object_id.h"
+#include "core/object/object_id.h"
 #include "core/os/memory.h"
 #include "core/containers/set.h"
 #include "core/string/string_name.h"

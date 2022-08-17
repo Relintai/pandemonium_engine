@@ -32,7 +32,7 @@
 
 #include "core/containers/local_vector.h"
 #include "core/math/geometry.h"
-#include "core/rid.h"
+#include "core/containers/rid.h"
 #include "spatial.h"
 
 class Portal;

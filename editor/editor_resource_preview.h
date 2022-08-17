@@ -40,7 +40,7 @@
 #include "core/containers/map.h"
 #include "core/math/vector2.h"
 #include "core/object/object.h"
-#include "core/object_id.h"
+#include "core/object/object_id.h"
 #include "core/os/mutex.h"
 #include "core/object/resource.h"
 #include "core/string/string_name.h"

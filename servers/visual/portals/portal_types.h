@@ -36,8 +36,8 @@
 #include "core/math/quaternion.h"
 #include "core/math/transform.h"
 #include "core/math/vector3.h"
-#include "core/object_id.h"
-#include "core/rid.h"
+#include "core/object/object_id.h"
+#include "core/containers/rid.h"
 #include "portal_defines.h"
 
 // visual server scene instance.

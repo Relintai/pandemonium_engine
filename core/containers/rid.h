@@ -32,7 +32,7 @@
 
 #include "core/containers/list.h"
 #include "core/os/memory.h"
-#include "core/rid_handle.h"
+#include "core/containers/rid_handle.h"
 #include "core/safe_refcount.h"
 #include "core/containers/set.h"
 #include "core/typedefs.h"

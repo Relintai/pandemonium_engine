@@ -36,7 +36,7 @@
  * It's basically an opaque container of a Reference reference, so Variant can use it.
 */
 
-#include "core/rid.h"
+#include "core/containers/rid.h"
 
 class RefPtr {
 	enum {

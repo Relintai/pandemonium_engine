@@ -32,7 +32,7 @@
 
 #include "scene/gui/button.h"
 
-#include "core/object_id.h"
+#include "core/object/object_id.h"
 #include "core/containers/vector.h"
 
 class EditorHistory;

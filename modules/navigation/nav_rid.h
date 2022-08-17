@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/rid.h"
+#include "core/containers/rid.h"
 
 class NavRid : public RID_Data {
 	RID self;

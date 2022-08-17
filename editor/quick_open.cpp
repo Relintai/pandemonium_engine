@@ -37,7 +37,7 @@
 #include "core/object/class_db.h"
 #include "core/os/input_event.h"
 #include "core/os/memory.h"
-#include "core/pair.h"
+#include "core/containers/pair.h"
 #include "core/typedefs.h"
 #include "editor/editor_file_system.h"
 #include "scene/gui/control.h"

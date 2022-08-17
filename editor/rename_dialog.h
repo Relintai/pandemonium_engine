@@ -38,7 +38,7 @@
 #include "core/containers/list.h"
 #include "core/string/node_path.h"
 #include "core/object/object.h"
-#include "core/pair.h"
+#include "core/containers/pair.h"
 #include "core/string/ustring.h"
 
 #include "scene/gui/dialogs.h"

@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/object/reference.h"
-#include "core/rid.h"
+#include "core/containers/rid.h"
 #include "scene/3d/spatial.h"
 
 #ifndef _3D_DISABLED

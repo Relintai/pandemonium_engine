@@ -41,7 +41,7 @@
 #include "core/containers/hash_map.h"
 #include "core/containers/map.h"
 #include "core/math/projection.h"
-#include "core/pair.h"
+#include "core/containers/pair.h"
 #include "core/variant/variant.h"
 #include "servers/visual/shader_language.h"
 

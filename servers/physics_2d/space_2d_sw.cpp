@@ -32,7 +32,7 @@
 
 #include "collision_solver_2d_sw.h"
 #include "core/os/os.h"
-#include "core/pair.h"
+#include "core/containers/pair.h"
 #include "physics_2d_server_sw.h"
 
 #define TEST_MOTION_MARGIN_MIN_VALUE 0.0001

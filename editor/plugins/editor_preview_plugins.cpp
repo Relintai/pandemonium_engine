@@ -56,7 +56,7 @@
 #include "core/os/file_access.h"
 #include "core/os/memory.h"
 #include "core/containers/pool_vector.h"
-#include "core/rid_handle.h"
+#include "core/containers/rid_handle.h"
 #include "core/object/script_language.h"
 #include "core/containers/set.h"
 #include "core/typedefs.h"

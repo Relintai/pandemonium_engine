@@ -42,7 +42,7 @@
 #include "core/math/transform_2d.h"
 #include "core/math/vector2.h"
 #include "core/object/object.h"
-#include "core/object_id.h"
+#include "core/object/object_id.h"
 #include "core/object/reference.h"
 #include "core/typedefs.h"
 #include "core/string/ustring.h"

@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/containers/local_vector.h"
-#include "core/object_id.h"
+#include "core/object/object_id.h"
 #include "core/os/mutex.h"
 
 class VisualServerCallbacks {

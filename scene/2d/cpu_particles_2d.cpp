@@ -31,7 +31,7 @@
 #include "cpu_particles_2d.h"
 #include "core/core_string_names.h"
 #include "core/os/os.h"
-#include "core/rid.h"
+#include "core/containers/rid.h"
 #include "scene/2d/canvas_item.h"
 #include "scene/resources/particles_material.h"
 #include "scene/resources/texture.h"

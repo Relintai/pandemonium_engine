@@ -36,7 +36,7 @@
 #include "core/io/resource_loader.h"
 #include "core/os/mutex.h"
 #include "core/os/thread_safe.h"
-#include "core/pair.h"
+#include "core/containers/pair.h"
 #include "scene/resources/font.h"
 #include "scene/resources/texture.h"
 

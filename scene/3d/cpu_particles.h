@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/object/reference.h"
-#include "core/rid.h"
+#include "core/containers/rid.h"
 #include "core/safe_refcount.h"
 #include "scene/3d/visual_instance.h"
 

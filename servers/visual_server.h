@@ -35,7 +35,7 @@
 #include "core/math/geometry.h"
 #include "core/math/transform_2d.h"
 #include "core/object/object.h"
-#include "core/rid.h"
+#include "core/containers/rid.h"
 #include "core/variant/variant.h"
 
 class VisualServerCallbacks;

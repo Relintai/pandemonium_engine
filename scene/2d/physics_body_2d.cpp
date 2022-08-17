@@ -37,7 +37,7 @@
 #include "core/object/method_bind_ext.gen.inc"
 #include "core/object/object.h"
 #include "core/config/project_settings.h"
-#include "core/rid.h"
+#include "core/containers/rid.h"
 #include "scene/resources/physics_material.h"
 #include "scene/scene_string_names.h"
 #include "servers/physics_2d_server.h"

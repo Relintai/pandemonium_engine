@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/math/transform_2d.h"
-#include "core/rid.h"
+#include "core/containers/rid.h"
 #include "scene/2d/canvas_item.h"
 #include "scene/resources/theme.h"
 

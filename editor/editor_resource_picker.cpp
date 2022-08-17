@@ -46,7 +46,7 @@
 #include "core/math/rect2.h"
 #include "core/os/input_event.h"
 #include "core/os/memory.h"
-#include "core/pair.h"
+#include "core/containers/pair.h"
 #include "core/object/ref_ptr.h"
 #include "core/object/script_language.h"
 #include "core/string/string_name.h"
