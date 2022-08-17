@@ -56,6 +56,10 @@
 - Port the capability to have more that one windows. Multi windowing however should be disabled by default, also I don't want to port the full multi windowing stuff for the editor, as it's a lot leaner the way it is. However multi windowing would be cool for creating tools. Would also make it easier to not have a window at all.
 - The DisplayServer at first could just use stuff in OS, so it doesn't have to be ported all at onece.
 - Should backport the tests and the test suite from Godot4 aswell.
+- Backport optimizations to the hashmap (or maybe just add it as another option), and also replace usage where applicable (https://github.com/godotengine/godot/commit/8b7c7f5a753b43cec10f72b274bb1d70c253652b), and (https://github.com/godotengine/godot/commit/45af29da8095af16729955117a165d23e77cd740)
+- Make operator='s return void (https://github.com/godotengine/godot/commit/7da392bcc52366740394322728464e724cf20cdf).
+- Switch back to the old c++ version (pre c++11) for the codebase. I'm already targeting low end hardware, I think it will likely come in handy later.
+- Implement something similar to this, so scripting language code can be simplified. (https://github.com/godotengine/godot/commit/5288ff538d75d2ddab257a9e1e40050c9b8fa1cb)(Create Variant built-in functions.) 
 
 ## Scene folder
 
@@ -74,7 +78,7 @@
 
 - Move CPUParticles code into the VisualServer.
 - Add support for generating vertex colors from lights in the VisualServer. (Also do this for 2d)
-- Add LOD support to the visualserver. (Or maybe the meshes) - Add core LOD generation support (probably VisualServer). (This and vertex color baking could drastically reduce the amount of code in Terraman, Voxelman, and terraman 2d, props)
+- Add LOD support to the visualserver. (Or maybe the meshes) - Add core LOD generation support (probably VisualServer). (This and vertex color baking could drastically reduce the amount of code in Terraman, Voxelman, and terraman 2d, props) (https://github.com/godotengine/godot/commit/d2302f53d6ad80943e7f4245ac572003f1681d00)
 - Maybe add a texture (mergedTexture) that makes it easier to handle texture merges.
 - Add gles3 support, but just expand gles2 for it. (Like it could use better multimesh support, better particles etc), but it shouldn't be that different from gles2.
 - Probably add support for other renderers, like vulkan, but unlike godot4 this should be realtively simple, with the visualserver design. (In the same veins as gles2/3)
