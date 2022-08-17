@@ -39,7 +39,7 @@
 #include "core/containers/list.h"
 #include "core/os/memory.h"
 #include "core/object/resource.h"
-#include "core/string_name.h"
+#include "core/string/string_name.h"
 #include "core/object/undo_redo.h"
 #include "core/containers/vector.h"
 #include "editor/editor_file_dialog.h"

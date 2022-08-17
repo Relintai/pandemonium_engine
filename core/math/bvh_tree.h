@@ -44,7 +44,7 @@
 #include "core/math/geometry.h"
 #include "core/math/vector3.h"
 #include "core/containers/pooled_list.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include <limits.h>
 
 #define BVHABB_CLASS BVH_ABB<BOUNDS, POINT>

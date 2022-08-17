@@ -1,7 +1,7 @@
 #ifndef QUERY_BUILDER_H
 #define QUERY_BUILDER_H
 
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "core/object/reference.h"
 

@@ -33,9 +33,9 @@
 #include "scene/gui/control.h"
 #include "editor/editor_plugin.h"
 
-#include "core/node_path.h"
+#include "core/string/node_path.h"
 #include "core/object/object.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 class AcceptDialog;
 class ConfirmationDialog;

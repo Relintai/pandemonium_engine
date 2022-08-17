@@ -32,7 +32,7 @@
 
 #include "core/image.h"
 #include "core/os/os.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 
 #include <Etc.h>
 #include <EtcFilter.h>

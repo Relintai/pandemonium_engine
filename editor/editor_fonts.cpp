@@ -36,7 +36,7 @@
 #include "editor_settings.h"
 #include "scene/resources/dynamic_font.h"
 #include "core/os/memory.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/variant/variant.h"
 #include "scene/resources/font.h"
 #include "scene/resources/theme.h"

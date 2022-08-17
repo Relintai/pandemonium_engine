@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "core/math/color.h"
 #include "core/object/resource.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/containers/vector.h"
 
 #include "scene/resources/packed_scene.h"

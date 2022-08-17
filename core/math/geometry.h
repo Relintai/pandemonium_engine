@@ -38,7 +38,7 @@
 #include "core/math/vector2i.h"
 #include "core/object/object.h"
 #include "core/containers/pool_vector.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "core/containers/vector.h"
 
 class Geometry {

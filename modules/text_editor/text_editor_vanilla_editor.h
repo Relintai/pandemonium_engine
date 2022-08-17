@@ -3,7 +3,7 @@
 
 #include "core/os/os.h"
 #include "core/object/reference.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "scene/gui/box_container.h"
 

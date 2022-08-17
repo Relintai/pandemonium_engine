@@ -32,8 +32,8 @@
 
 #ifdef RID_HANDLES_ENABLED
 #include "core/os/memory.h"
-#include "core/print_string.h"
-#include "core/ustring.h"
+#include "core/string/print_string.h"
+#include "core/string/ustring.h"
 
 // This define will flag up an error when get() or getptr() is called with a NULL object.
 // These calls should more correctly be made as get_or_null().

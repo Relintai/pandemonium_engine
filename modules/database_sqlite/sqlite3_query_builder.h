@@ -1,7 +1,7 @@
 #ifndef SQLITE3_QUERY_BUILDER_H
 #define SQLITE3_QUERY_BUILDER_H
 
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "../database/query_builder.h"
 

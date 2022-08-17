@@ -37,7 +37,7 @@
 #include "core/object/object.h"
 #include "core/object_id.h"
 #include "core/object/reference.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 class AudioStream;
 class AudioStreamPlayer;

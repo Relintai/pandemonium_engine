@@ -33,7 +33,7 @@
 #include "core/object/message_queue.h"
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "core/project_settings.h"
 #include "scene/gui/label.h"
 #include "scene/gui/panel.h"

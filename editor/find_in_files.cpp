@@ -55,7 +55,7 @@
 #include "core/os/file_access.h"
 #include "core/os/memory.h"
 #include "core/containers/pool_vector.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "core/object/reference.h"
 #include "core/typedefs.h"
 #include "scene/2d/canvas_item.h"

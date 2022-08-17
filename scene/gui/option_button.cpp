@@ -30,7 +30,7 @@
 
 #include "option_button.h"
 #include "core/os/input.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/shortcut.h"
 

@@ -1,7 +1,7 @@
 #ifndef STATIC_WEB_PAGE_H
 #define STATIC_WEB_PAGE_H
 
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "../../http/web_node.h"
 

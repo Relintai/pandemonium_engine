@@ -33,7 +33,7 @@
 #include "thread_posix.h"
 
 #include "core/os/thread.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #ifdef PTHREAD_BSD_SET_NAME
 #include <pthread_np.h>

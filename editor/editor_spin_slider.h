@@ -36,7 +36,7 @@
 #include "core/math/vector2.h"
 #include "core/object/object.h"
 #include "core/object/reference.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 class InputEvent;
 class LineEdit;

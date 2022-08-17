@@ -1,6 +1,6 @@
 #include "gradient_cursor.h"
 
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "gradient_editor.h"
 #include "scene/gui/label.h"
 

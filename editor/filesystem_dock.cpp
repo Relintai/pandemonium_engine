@@ -54,7 +54,7 @@
 #include "core/io/resource_saver.h"
 #include "core/os/input_event.h"
 #include "core/os/memory.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "core/object/resource.h"
 #include "core/typedefs.h"
 #include "editor/create_dialog.h"

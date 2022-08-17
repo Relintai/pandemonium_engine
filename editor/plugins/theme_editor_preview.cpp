@@ -41,7 +41,7 @@
 #include "core/math/vector2.h"
 #include "core/os/input_event.h"
 #include "core/os/memory.h"
-#include "core/string_name.h"
+#include "core/string/string_name.h"
 #include "core/typedefs.h"
 #include "core/variant/variant.h"
 #include "editor/editor_node.h"

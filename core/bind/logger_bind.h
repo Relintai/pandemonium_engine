@@ -5,7 +5,7 @@
 #include "core/log/logger_backend.h"
 #include "core/object/reference.h"
 #include "core/typedefs.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 class String;
 

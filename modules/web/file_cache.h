@@ -5,7 +5,7 @@
 #include "core/containers/map.h"
 #include "core/os/os.h"
 #include "core/os/rw_lock.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/containers/vector.h"
 
 #include "core/object/reference.h"

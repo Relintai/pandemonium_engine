@@ -44,7 +44,7 @@
 #include "core/math/vector3.h"
 #include "core/os/memory.h"
 #include "core/typedefs.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/variant/variant.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_node.h"

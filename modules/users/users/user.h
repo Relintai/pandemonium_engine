@@ -2,7 +2,7 @@
 #define USER_H
 
 #include "core/os/rw_lock.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "core/object/resource.h"
 

@@ -2,10 +2,10 @@
 #define MM_CREATE_NAME_POPUP_H
 
 #include "core/math/vector2.h"
-#include "core/node_path.h"
+#include "core/string/node_path.h"
 #include "core/object/reference.h"
 #include "core/object/undo_redo.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/containers/vector.h"
 
 #include "scene/gui/dialogs.h"

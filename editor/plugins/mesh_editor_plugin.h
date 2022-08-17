@@ -36,7 +36,7 @@
 
 #include "core/object/object.h"
 #include "core/object/reference.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "scene/resources/material.h"
 #include "scene/resources/mesh.h"

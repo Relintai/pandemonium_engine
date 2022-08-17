@@ -32,7 +32,7 @@
 
 #include "editor/plugins/particles_editor_plugin.h"
 
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 class CPUParticles;
 class EditorNode;

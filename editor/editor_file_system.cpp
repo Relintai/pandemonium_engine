@@ -47,7 +47,7 @@
 #include "core/io/config_file.h"
 #include "core/os/dir_access.h"
 #include "core/os/memory.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "core/object/reference.h"
 #include "core/object/resource.h"
 #include "core/object/script_language.h"

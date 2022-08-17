@@ -32,8 +32,8 @@
 
 #include "core/os/os.h"
 #include "core/project_settings.h"
-#include "core/string_buffer.h"
-#include "core/string_builder.h"
+#include "core/string/string_buffer.h"
+#include "core/string/string_builder.h"
 
 #define SL ShaderLanguage
 

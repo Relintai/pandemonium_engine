@@ -1,7 +1,7 @@
 #ifndef SQLITE3_TABLE_BUILDER_H
 #define SQLITE3_TABLE_BUILDER_H
 
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "../database/table_builder.h"
 

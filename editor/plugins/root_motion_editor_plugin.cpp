@@ -40,7 +40,7 @@
 #include "core/os/memory.h"
 #include "core/object/reference.h"
 #include "core/containers/set.h"
-#include "core/string_name.h"
+#include "core/string/string_name.h"
 #include "core/typedefs.h"
 #include "scene/animation/animation_player.h"
 #include "scene/animation/animation_tree.h"

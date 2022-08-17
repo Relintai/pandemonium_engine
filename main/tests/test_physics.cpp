@@ -35,7 +35,7 @@
 #include "core/math/math_funcs.h"
 #include "core/os/main_loop.h"
 #include "core/os/os.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "servers/physics_server.h"
 #include "servers/visual_server.h"
 

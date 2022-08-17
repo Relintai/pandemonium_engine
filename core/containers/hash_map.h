@@ -35,7 +35,7 @@
 #include "core/containers/list.h"
 #include "core/math/math_funcs.h"
 #include "core/os/memory.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 /**
  * @class HashMap

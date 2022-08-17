@@ -33,7 +33,7 @@
 #include "core/containers/map.h"
 #include "core/os/main_loop.h"
 #include "core/os/os.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "scene/resources/texture.h"
 #include "servers/physics_2d_server.h"
 #include "servers/visual_server.h"

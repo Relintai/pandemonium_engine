@@ -2,7 +2,7 @@
 #define IMAGE_PICKER_BUTTON_H
 
 #include "core/variant/array.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "scene/gui/texture_button.h"
 

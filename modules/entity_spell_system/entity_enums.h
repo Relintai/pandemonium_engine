@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/object/object.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 class EntityEnums : public Object {
 	GDCLASS(EntityEnums, Object);

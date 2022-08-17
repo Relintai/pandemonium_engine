@@ -33,7 +33,7 @@
 #include "core/math/transform_2d.h"
 #include "core/object/resource.h"
 #include "core/typedefs.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 /**
  * Input Event classes. These are used in the main loop.

@@ -32,7 +32,7 @@
 
 #include "core/object/method_bind.h"
 #include "core/object/object.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 
 /**	To bind more then 6 parameters include this:
  *  #include "core/object/method_bind_ext.gen.inc"

@@ -46,7 +46,7 @@
 #include "core/register_core_types.h"
 #include "core/script_debugger_local.h"
 #include "core/object/script_language.h"
-#include "core/translation.h"
+#include "core/string/translation.h"
 #include "core/version.h"
 #include "drivers/register_driver_types.h"
 #include "main/app_icon.gen.h"

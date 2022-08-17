@@ -34,7 +34,7 @@
 #include "editor/editor_plugin.h"
 
 #include "core/math/face3.h"
-#include "core/node_path.h"
+#include "core/string/node_path.h"
 #include "core/object/object.h"
 #include "core/containers/pool_vector.h"
 

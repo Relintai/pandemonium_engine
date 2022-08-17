@@ -33,7 +33,7 @@
 #include "core/io/resource_loader.h"
 #include "core/os/input_event.h"
 #include "core/os/keyboard.h"
-#include "core/string_buffer.h"
+#include "core/string/string_buffer.h"
 
 CharType VariantParser::StreamFile::get_char() {
 	return f->get_8();

@@ -32,7 +32,7 @@
 
 #include "core/io/marshalls.h"
 #include "core/containers/map.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "cscript_functions.h"
 
 const char *CScriptTokenizer::token_names[TK_MAX] = {

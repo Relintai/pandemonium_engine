@@ -31,7 +31,7 @@
 #include "marshalls.h"
 
 #include "core/os/keyboard.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "core/object/reference.h"
 
 #include <limits.h>

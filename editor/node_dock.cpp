@@ -35,7 +35,7 @@
 #include "core/object/class_db.h"
 #include "core/math/vector2.h"
 #include "core/os/memory.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "editor/connections_dialog.h"
 #include "editor/groups_editor.h"
 #include "scene/gui/control.h"

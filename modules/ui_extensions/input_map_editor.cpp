@@ -32,8 +32,8 @@
 
 #include "core/global_constants.h"
 #include "core/project_settings.h"
-#include "core/translation.h"
-#include "core/ustring.h"
+#include "core/string/translation.h"
+#include "core/string/ustring.h"
 
 #include "core/os/keyboard.h"
 #include "editor/editor_export.h"

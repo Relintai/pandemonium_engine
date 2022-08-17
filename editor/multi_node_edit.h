@@ -32,8 +32,8 @@
 
 #include "core/object/reference.h"
 
-#include "core/string_name.h"
-#include "core/ustring.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
 #include "core/variant/variant.h"
 
 class MultiNodeEdit : public Reference {

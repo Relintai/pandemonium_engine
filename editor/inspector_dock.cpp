@@ -39,7 +39,7 @@
 #include "core/object_id.h"
 #include "core/os/memory.h"
 #include "core/containers/set.h"
-#include "core/string_name.h"
+#include "core/string/string_name.h"
 #include "core/typedefs.h"
 #include "core/object/undo_redo.h"
 #include "editor/animation_track_editor.h"

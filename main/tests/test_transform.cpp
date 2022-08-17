@@ -34,7 +34,7 @@
 #include "core/math/transform.h"
 #include "core/math/vector3.h"
 #include "core/os/os.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 // #define PANDEMONIUM_TEST_TRANSFORM_NON_UNIFORM_SCALE_TESTS_ENABLED
 

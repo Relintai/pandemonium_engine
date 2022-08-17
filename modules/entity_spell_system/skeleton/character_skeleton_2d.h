@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/node_path.h"
-#include "core/ustring.h"
+#include "core/string/node_path.h"
+#include "core/string/ustring.h"
 #include "core/containers/vector.h"
 
 #include "scene/2d/node_2d.h"

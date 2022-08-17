@@ -34,7 +34,7 @@
 
 #include "scene/resources/material.h"
 #include "core/object/object.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 class EditorNode;
 class Occluder;

@@ -33,7 +33,7 @@
 #include "core/math/vector2.h"
 #include "core/os/memory.h"
 #include "core/object/undo_redo.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/containers/vector.h"
 #include "scene/2d/navigation_polygon.h"
 #include "scene/main/node.h"

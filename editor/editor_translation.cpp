@@ -38,7 +38,7 @@
 #include "core/error_macros.h"
 #include "core/os/memory.h"
 #include "core/object/reference.h"
-#include "core/translation.h"
+#include "core/string/translation.h"
 
 Vector<String> get_editor_locales() {
 	Vector<String> locales;

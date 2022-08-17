@@ -41,7 +41,7 @@
 #include "core/os/memory.h"
 #include "core/object/resource.h"
 #include "core/object/script_language.h"
-#include "core/string_builder.h"
+#include "core/string/string_builder.h"
 #include "core/typedefs.h"
 #include "core/containers/vector.h"
 #include "editor/editor_scale.h"

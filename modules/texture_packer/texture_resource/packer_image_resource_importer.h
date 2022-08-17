@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/image.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "core/io/resource_saver.h"
 #include "editor/import/editor_import_plugin.h"

@@ -1,7 +1,7 @@
 #ifndef DATABASE_SINGLE_THREADED_H
 #define DATABASE_SINGLE_THREADED_H
 
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "database.h"
 

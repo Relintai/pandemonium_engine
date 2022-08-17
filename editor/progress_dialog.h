@@ -35,7 +35,7 @@
 
 #include "core/containers/map.h"
 #include "core/os/thread_safe.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 class Button;
 class Label;

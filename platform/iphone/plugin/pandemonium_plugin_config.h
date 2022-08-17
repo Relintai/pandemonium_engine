@@ -32,7 +32,7 @@
 
 #include "core/error_list.h"
 #include "core/io/config_file.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 /*
  The `config` section and fields are required and defined as follow:

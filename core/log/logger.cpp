@@ -1,7 +1,7 @@
 
 #include "logger.h"
 
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "core/typedefs.h"
 
 void PLogger::log_trace(const String &str) {

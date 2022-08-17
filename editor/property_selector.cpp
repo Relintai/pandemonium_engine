@@ -40,7 +40,7 @@
 #include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/object/script_language.h"
-#include "core/string_name.h"
+#include "core/string/string_name.h"
 #include "core/typedefs.h"
 #include "editor/doc/doc_data.h"
 #include "editor/editor_help.h"

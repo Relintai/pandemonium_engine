@@ -35,7 +35,7 @@
 #include "core/os/dir_access.h"
 #include "core/object/object.h"
 #include "core/containers/set.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 class Button;
 class EditorFileSystemDirectory;

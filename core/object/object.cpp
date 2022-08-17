@@ -35,10 +35,10 @@
 #include "core/object/message_queue.h"
 #include "core/object_rc.h"
 #include "core/os/os.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "core/object/resource.h"
 #include "core/object/script_language.h"
-#include "core/translation.h"
+#include "core/string/translation.h"
 
 #ifdef DEBUG_ENABLED
 

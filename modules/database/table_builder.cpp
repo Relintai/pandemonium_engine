@@ -1,6 +1,6 @@
 #include "table_builder.h"
 
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "query_result.h"
 
 String TableBuilder::get_result() {

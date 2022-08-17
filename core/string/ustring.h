@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/variant/array.h"
-#include "core/char_utils.h"
+#include "core/string/char_utils.h"
 #include "core/containers/cowdata.h"
 #include "core/typedefs.h"
 #include "core/containers/vector.h"

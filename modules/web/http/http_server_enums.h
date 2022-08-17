@@ -24,7 +24,7 @@ SOFTWARE.
 */
 
 #include "core/object/object.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 class HTTPServerEnums : public Object {
 	GDCLASS(HTTPServerEnums, Object);

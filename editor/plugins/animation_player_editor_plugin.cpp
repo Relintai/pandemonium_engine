@@ -56,7 +56,7 @@
 #include "core/os/memory.h"
 #include "core/object/resource.h"
 #include "core/rid_handle.h"
-#include "core/string_name.h"
+#include "core/string/string_name.h"
 #include "core/typedefs.h"
 #include "core/object/undo_redo.h"
 #include "core/variant/variant.h"

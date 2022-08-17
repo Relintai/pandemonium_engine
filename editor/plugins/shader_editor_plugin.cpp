@@ -45,7 +45,7 @@
 #include "core/os/main_loop.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"
-#include "core/string_name.h"
+#include "core/string/string_name.h"
 #include "core/variant/variant.h"
 #include "core/containers/vector.h"
 #include "core/version_generated.gen.h"

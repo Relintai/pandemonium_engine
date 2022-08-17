@@ -1,7 +1,7 @@
 #ifndef LOGGER_BACKEND_H
 #define LOGGER_BACKEND_H
 
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/variant/variant.h"
 
 #include "core/object/reference.h"

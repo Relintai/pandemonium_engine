@@ -35,7 +35,7 @@
 #include "core/os/rw_lock.h"
 #include "core/pool_allocator.h"
 #include "core/safe_refcount.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 struct MemoryPool {
 	//avoid accessing these directly, must be public for template access

@@ -31,7 +31,7 @@
 #include "error_macros.h"
 
 #include "core/io/logger.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "os/os.h"
 
 static ErrorHandlerList *error_handler_list = nullptr;

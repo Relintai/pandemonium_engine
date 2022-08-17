@@ -34,7 +34,7 @@
 
 #include "core/error_list.h"
 #include "core/object/object.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/variant/variant.h"
 
 class ExportTemplateVersion;

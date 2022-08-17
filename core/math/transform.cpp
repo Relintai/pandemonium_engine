@@ -31,7 +31,7 @@
 #include "transform.h"
 
 #include "core/math/math_funcs.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 
 void Transform::invert() {
 	basis.transpose();

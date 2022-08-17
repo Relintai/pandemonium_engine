@@ -35,12 +35,12 @@
 #include "core/containers/hash_map.h"
 #include "core/containers/list.h"
 #include "core/containers/map.h"
-#include "core/node_path.h"
+#include "core/string/node_path.h"
 #include "core/object_id.h"
 #include "core/object/reference.h"
 #include "core/object/resource.h"
 #include "core/containers/set.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/containers/vector.h"
 
 #include "modules/modules_enabled.gen.h" // For regex.

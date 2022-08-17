@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 struct IP_Address {
 private:

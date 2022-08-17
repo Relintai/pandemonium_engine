@@ -1,8 +1,8 @@
 #include "sqlite3_query_result.h"
 
 #include "./sqlite/sqlite3.h"
-#include "core/print_string.h"
-#include "core/ustring.h"
+#include "core/string/print_string.h"
+#include "core/string/ustring.h"
 #include <cstdio>
 
 bool Sqlite3QueryResult::next_row() {

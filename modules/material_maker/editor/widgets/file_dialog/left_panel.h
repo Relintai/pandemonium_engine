@@ -3,7 +3,7 @@
 
 #include "core/variant/array.h"
 #include "core/os/input_event.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "scene/gui/box_container.h"
 

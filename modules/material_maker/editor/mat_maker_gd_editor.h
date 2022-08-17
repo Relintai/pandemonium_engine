@@ -2,10 +2,10 @@
 #define MAT_MAKER_GD_EDITOR_H
 
 #include "core/math/vector2.h"
-#include "core/node_path.h"
+#include "core/string/node_path.h"
 #include "core/object/reference.h"
 #include "core/object/undo_redo.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/containers/vector.h"
 
 #include "modules/material_maker/editor/mm_create_name_popup.h"

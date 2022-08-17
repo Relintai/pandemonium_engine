@@ -34,7 +34,7 @@
 #include "editor/editor_plugin.h"
 
 #include "core/object/object.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 class Button;
 class EditorNode;

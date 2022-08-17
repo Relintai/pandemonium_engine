@@ -34,7 +34,7 @@
 #include "core/os/memory.h"
 #include "core/containers/pool_vector.h"
 #include "core/object/undo_redo.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/containers/vector.h"
 #include "scene/2d/light_occluder_2d.h"
 #include "scene/main/node.h"

@@ -1,7 +1,7 @@
 #ifndef HTML_PAGINATOR_H
 #define HTML_PAGINATOR_H
 
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/containers/vector.h"
 
 #include "core/object/reference.h"

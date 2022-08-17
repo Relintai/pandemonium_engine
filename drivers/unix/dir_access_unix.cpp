@@ -34,7 +34,7 @@
 
 #include "core/containers/list.h"
 #include "core/os/memory.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 
 #include <errno.h>
 #include <stdio.h>

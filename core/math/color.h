@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/math/math_funcs.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 struct _NO_DISCARD_CLASS_ Color {
 	union {

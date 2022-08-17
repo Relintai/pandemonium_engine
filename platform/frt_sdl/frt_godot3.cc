@@ -12,7 +12,7 @@
 #include "drivers/gles2/rasterizer_gles2.h"
 //#define FRT_DL_SKIP
 
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "drivers/unix/os_unix.h"
 #pragma GCC diagnostic ignored "-Wvolatile"
 #include "servers/audio_server.h"

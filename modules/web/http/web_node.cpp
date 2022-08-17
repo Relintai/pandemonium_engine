@@ -4,7 +4,7 @@
 #include "core/error_macros.h"
 
 #include "core/object/object.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "http_server_enums.h"
 #include "modules/database/database_connection.h"
 #include "web_server_request.h"

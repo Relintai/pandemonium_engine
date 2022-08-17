@@ -36,7 +36,7 @@
 #include "core/object/object.h"
 #include "core/object_id.h"
 #include "core/object/reference.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/containers/vector.h"
 
 class AnimationNode;

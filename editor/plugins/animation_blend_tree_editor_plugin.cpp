@@ -37,7 +37,7 @@
 #include "core/containers/hash_map.h"
 #include "core/io/resource_loader.h"
 #include "core/containers/list.h"
-#include "core/node_path.h"
+#include "core/string/node_path.h"
 #include "core/os/memory.h"
 #include "core/containers/set.h"
 #include "core/typedefs.h"

@@ -25,7 +25,7 @@ SOFTWARE.
 #include "core/variant/array.h"
 #include "core/engine.h"
 #include "core/object/resource.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "../defines.h"
 

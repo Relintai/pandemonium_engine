@@ -25,7 +25,7 @@ SOFTWARE.
 #include "core/math/color.h"
 #include "core/image.h"
 #include "core/object/reference.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/containers/vector.h"
 
 #include "scene/resources/texture.h"

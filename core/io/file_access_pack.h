@@ -34,7 +34,7 @@
 #include "core/containers/map.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "core/containers/set.h"
 #include "core/containers/hashfuncs.h"
 

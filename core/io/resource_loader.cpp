@@ -33,10 +33,9 @@
 #include "core/io/resource_importer.h"
 #include "core/os/file_access.h"
 #include "core/os/os.h"
-#include "core/path_remap.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "core/project_settings.h"
-#include "core/translation.h"
+#include "core/string/translation.h"
 #include "core/variant/variant_parser.h"
 
 Ref<ResourceFormatLoader> ResourceLoader::loader[ResourceLoader::MAX_LOADERS];

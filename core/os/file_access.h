@@ -33,7 +33,7 @@
 #include "core/math/math_defs.h"
 #include "core/os/memory.h"
 #include "core/typedefs.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 /**
  * Multi-Platform abstraction for accessing to files.

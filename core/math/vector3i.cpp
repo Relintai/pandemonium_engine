@@ -31,7 +31,7 @@
 #include "vector3i.h"
 
 #include "core/math/vector3.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 void Vector3i::set_axis(const int p_axis, const int32_t p_value) {
 	ERR_FAIL_INDEX(p_axis, 3);

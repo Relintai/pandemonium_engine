@@ -1,7 +1,7 @@
 #ifndef TEXT_EDITOR_PREVIEW_H
 #define TEXT_EDITOR_PREVIEW_H
 
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "scene/gui/dialogs.h"
 

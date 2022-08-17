@@ -27,7 +27,7 @@ SOFTWARE.
 #include "../paint_canvas.h"
 #include "../paint_canvas_layer.h"
 #include "../paint_utilities.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 
 void PencilAction::do_action(PaintCanvas *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);

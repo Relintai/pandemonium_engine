@@ -1,7 +1,7 @@
 #ifndef HTML_PARSER_H
 #define HTML_PARSER_H
 
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/variant/variant.h"
 #include "core/containers/vector.h"
 

@@ -1,7 +1,7 @@
 #ifndef QUERY_RESULT_H
 #define QUERY_RESULT_H
 
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "core/object/reference.h"
 

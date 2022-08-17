@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/object/resource.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/containers/vector.h"
 
 #include "../../entity_enums.h"

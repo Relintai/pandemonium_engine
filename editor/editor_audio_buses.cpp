@@ -49,7 +49,7 @@
 #include "core/math/rect2.h"
 #include "core/os/input_event.h"
 #include "core/os/memory.h"
-#include "core/string_name.h"
+#include "core/string/string_name.h"
 #include "core/object/undo_redo.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_settings.h"

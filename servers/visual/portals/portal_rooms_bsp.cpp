@@ -32,7 +32,7 @@
 
 #include "core/math/geometry.h"
 #include "core/math/plane.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "core/variant/variant.h"
 #include "portal_renderer.h"
 

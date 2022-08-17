@@ -32,7 +32,7 @@
 
 #include "core/os/dir_access.h"
 #include "core/os/os.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "core/project_settings.h"
 
 // va_copy was defined in the C99, but not in C++ standards before C++11.

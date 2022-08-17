@@ -181,6 +181,7 @@ env.CommandNoCache(
 # Chain load SCsubs
 SConscript("os/SCsub")
 SConscript("math/SCsub")
+SConscript("string/SCsub")
 SConscript("containers/SCsub")
 SConscript("variant/SCsub")
 SConscript("crypto/SCsub")

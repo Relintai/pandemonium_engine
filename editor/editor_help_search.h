@@ -36,7 +36,7 @@
 #include "core/math/color.h"
 #include "core/containers/map.h"
 #include "core/object/object.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/containers/vector.h"
 #include "core/containers/ordered_hash_map.h"
 

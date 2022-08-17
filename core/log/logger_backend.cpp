@@ -1,7 +1,7 @@
 
 #include "logger_backend.h"
 
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 
 void LoggerBackend::log_trace(const String &str) {
 	call("_log_trace", str);

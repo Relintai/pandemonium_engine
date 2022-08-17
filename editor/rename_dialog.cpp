@@ -37,7 +37,7 @@
 #include "core/math/vector2.h"
 #include "core/os/memory.h"
 #include "core/object/reference.h"
-#include "core/string_name.h"
+#include "core/string/string_name.h"
 #include "core/object/undo_redo.h"
 #include "core/variant/variant.h"
 #include "editor/editor_data.h"

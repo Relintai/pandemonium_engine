@@ -32,7 +32,7 @@
 
 #include "core/containers/list.h"
 #include "core/os/main_loop.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 const char **tests_get_names();
 MainLoop *test_main(String p_test, const List<String> &p_args);

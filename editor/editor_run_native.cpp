@@ -36,7 +36,7 @@
 #include "core/os/memory.h"
 #include "core/object/reference.h"
 #include "core/typedefs.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/variant/variant.h"
 #include "editor_export.h"
 #include "editor_node.h"

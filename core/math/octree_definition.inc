@@ -38,7 +38,7 @@
 #include "core/math/geometry.h"
 #include "core/math/vector3.h"
 #include "core/os/os.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "core/variant/variant.h"
 
 typedef uint32_t OctreeElementID;

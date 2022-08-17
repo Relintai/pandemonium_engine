@@ -2,7 +2,7 @@
 #define TEXT_FILE_EDITOR_H
 
 #include "core/object/reference.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/variant/variant.h"
 #include "core/containers/vector.h"
 

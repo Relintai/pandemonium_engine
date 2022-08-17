@@ -31,7 +31,7 @@
 #include "collision_polygon_2d_editor_plugin.h"
 
 #include "core/os/memory.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "scene/2d/collision_polygon_2d.h"
 #include "scene/main/node.h"
 

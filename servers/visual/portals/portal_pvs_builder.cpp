@@ -32,7 +32,7 @@
 
 #include "core/os/file_access.h"
 #include "core/os/os.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "portal_renderer.h"
 
 bool PVSBuilder::_log_active = true;

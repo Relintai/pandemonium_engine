@@ -31,7 +31,7 @@
 #include "vector4i.h"
 
 #include "core/math/vector4.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 void Vector4i::set_axis(const int p_axis, const int32_t p_value) {
 	ERR_FAIL_INDEX(p_axis, 4);

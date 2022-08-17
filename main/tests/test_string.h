@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/os/main_loop.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 namespace TestString {
 

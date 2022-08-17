@@ -1,7 +1,7 @@
 #ifndef WEB_PERMISSION_H
 #define WEB_PERMISSION_H
 
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/variant/variant.h"
 
 #include "core/object/reference.h"

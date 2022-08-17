@@ -44,7 +44,7 @@
 #include "main/main.h"
 #include "main/input_default.h"
 #include "main/performance.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 
 #define VIDEO_DRIVER_GLES2 0
 #define VIDEO_DRIVER_COUNT 1

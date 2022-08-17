@@ -31,7 +31,7 @@
 #include "aabb.h"
 
 #include "core/variant/variant.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 
 real_t AABB::get_volume() const {
 	return size.x * size.y * size.z;

@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/variant/array.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "../mesh_data_resource_collection.h"
 #include "core/io/resource_saver.h"

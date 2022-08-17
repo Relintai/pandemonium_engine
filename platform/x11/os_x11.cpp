@@ -32,7 +32,7 @@
 
 #include "core/math/vector2i.h"
 #include "core/os/dir_access.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "detect_prime.h"
 #include "drivers/gles2/rasterizer_gles2.h"
 #include "key_mapping_x11.h"

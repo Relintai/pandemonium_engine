@@ -62,7 +62,7 @@
 #include "core/os/main_loop.h"
 #include "core/os/memory.h"
 #include "core/pair.h"
-#include "core/string_name.h"
+#include "core/string/string_name.h"
 #include "core/object/undo_redo.h"
 #include "core/version_generated.gen.h"
 #include "editor/editor_data.h"

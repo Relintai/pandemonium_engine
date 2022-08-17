@@ -32,7 +32,7 @@
 
 #include "core/math/geometry.h"
 #include "core/os/keyboard.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "core/version_generated.gen.h"
 #include "dir_access_osx.h"
 #include "drivers/gles2/rasterizer_gles2.h"

@@ -45,7 +45,7 @@
 #include "core/math/rect2.h"
 #include "core/math/transform.h"
 #include "core/math/triangle_mesh.h"
-#include "core/node_path.h"
+#include "core/string/node_path.h"
 #include "core/os/memory.h"
 #include "core/containers/pool_vector.h"
 #include "core/rid.h"

@@ -1,7 +1,7 @@
 #ifndef DATABASE_CONNECTION_H
 #define DATABASE_CONNECTION_H
 
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "core/object/reference.h"
 

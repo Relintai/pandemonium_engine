@@ -25,7 +25,7 @@ SOFTWARE.
 #include "../../defines.h"
 #include "../../singletons/ess.h"
 
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 int SpeciesModelData::get_id() {
 	return _id;

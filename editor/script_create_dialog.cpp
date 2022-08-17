@@ -43,7 +43,7 @@
 #include "core/object/reference.h"
 #include "core/object/resource.h"
 #include "core/object/script_language.h"
-#include "core/string_builder.h"
+#include "core/string/string_builder.h"
 #include "core/typedefs.h"
 #include "core/variant/variant.h"
 #include "editor/create_dialog.h"

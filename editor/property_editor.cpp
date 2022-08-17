@@ -60,7 +60,7 @@
 #include "core/rid.h"
 #include "core/object/script_language.h"
 #include "core/containers/set.h"
-#include "core/string_name.h"
+#include "core/string/string_name.h"
 #include "core/typedefs.h"
 #include "editor/array_property_edit.h"
 #include "editor/create_dialog.h"

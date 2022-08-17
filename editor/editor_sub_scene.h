@@ -34,7 +34,7 @@
 
 #include "core/containers/list.h"
 #include "core/object/object.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 class EditorFileDialog;
 class LineEdit;

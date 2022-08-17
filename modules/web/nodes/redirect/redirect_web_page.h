@@ -1,7 +1,7 @@
 #ifndef REDIRECT_WEB_PAGE_H
 #define REDIRECT_WEB_PAGE_H
 
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "../../http/web_node.h"
 

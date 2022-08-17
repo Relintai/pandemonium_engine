@@ -32,7 +32,7 @@
 
 #include "core/math/random_number_generator.h"
 #include "core/os/os.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 namespace TestBasis {
 

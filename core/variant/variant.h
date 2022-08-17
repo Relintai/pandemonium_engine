@@ -46,12 +46,12 @@
 #include "core/math/vector3i.h"
 #include "core/math/vector4.h"
 #include "core/math/vector4i.h"
-#include "core/node_path.h"
+#include "core/string/node_path.h"
 #include "core/object_id.h"
 #include "core/containers/pool_vector.h"
 #include "core/object/ref_ptr.h"
 #include "core/rid.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 class Object;
 class ObjectRC;

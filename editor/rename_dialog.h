@@ -36,10 +36,10 @@
 
 #include "core/error_macros.h"
 #include "core/containers/list.h"
-#include "core/node_path.h"
+#include "core/string/node_path.h"
 #include "core/object/object.h"
 #include "core/pair.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "scene/gui/dialogs.h"
 

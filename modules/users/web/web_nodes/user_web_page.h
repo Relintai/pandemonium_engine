@@ -2,7 +2,7 @@
 #define USER_WEB_PAGE_H
 
 #include "core/object/reference.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/containers/vector.h"
 
 #include "modules/web/http/web_node.h"

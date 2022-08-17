@@ -33,7 +33,7 @@
 #include "core/object/object.h"
 
 #include "core/containers/map.h"
-#include "core/node_path.h"
+#include "core/string/node_path.h"
 #include "scene/main/scene_tree.h"
 
 class Viewport;

@@ -30,7 +30,7 @@
 
 #include "broad_phase_basic.h"
 #include "core/containers/list.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 
 BroadPhaseSW::ID BroadPhaseBasic::create(CollisionObjectSW *p_object, int p_subindex, const AABB &p_aabb, bool p_static) {
 	ERR_FAIL_COND_V(p_object == nullptr, 0);

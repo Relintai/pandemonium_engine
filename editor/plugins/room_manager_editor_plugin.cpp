@@ -41,7 +41,7 @@
 #include "core/os/memory.h"
 #include "core/containers/pool_vector.h"
 #include "core/object/reference.h"
-#include "core/string_name.h"
+#include "core/string/string_name.h"
 #include "core/object/undo_redo.h"
 #include "editor/editor_node.h"
 #include "editor/plugins/spatial_editor_plugin.h"

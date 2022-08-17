@@ -26,7 +26,7 @@ SOFTWARE.
 #include "core/engine.h"
 #include "core/object/object.h"
 #include "core/object/resource.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "scene/main/node.h"
 

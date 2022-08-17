@@ -35,7 +35,7 @@
 #include "core/containers/map.h"
 #include "core/object/object.h"
 #include "core/object_id.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 class SectionedInspectorFilter;
 class EditorInspector;

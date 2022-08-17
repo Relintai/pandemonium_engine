@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/variant/array.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "../plugin/mdr_import_plugin_base.h"
 

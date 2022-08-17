@@ -38,7 +38,7 @@
 #include "core/containers/map.h"
 #include "core/object/object.h"
 #include "core/containers/set.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/variant/variant.h"
 #include "core/containers/vector.h"
 

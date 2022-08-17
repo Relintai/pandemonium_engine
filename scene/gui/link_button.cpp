@@ -30,7 +30,7 @@
 
 #include "link_button.h"
 
-#include "core/translation.h"
+#include "core/string/translation.h"
 #include "scene/gui/shortcut.h"
 
 void LinkButton::set_text(const String &p_text) {

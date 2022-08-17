@@ -35,7 +35,7 @@
 #include "core/io/image_loader.h"
 #include "core/io/resource_loader.h"
 #include "core/math/math_funcs.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 
 #include "thirdparty/misc/hq2x.h"
 

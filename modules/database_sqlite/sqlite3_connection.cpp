@@ -1,7 +1,7 @@
 #include "sqlite3_connection.h"
 
-#include "core/print_string.h"
-#include "core/ustring.h"
+#include "core/string/print_string.h"
+#include "core/string/ustring.h"
 #include "sqlite3_query_builder.h"
 #include "sqlite3_query_result.h"
 #include "sqlite3_table_builder.h"

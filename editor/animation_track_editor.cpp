@@ -50,7 +50,7 @@
 #include "core/object/resource.h"
 #include "core/object/script_language.h"
 #include "core/containers/set.h"
-#include "core/string_name.h"
+#include "core/string/string_name.h"
 #include "core/typedefs.h"
 #include "core/object/undo_redo.h"
 #include "editor/animation_bezier_editor.h"

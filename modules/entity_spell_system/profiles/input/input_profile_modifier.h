@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/object/reference.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/containers/vector.h"
 
 #include "input_profile_modifier_entry.h"

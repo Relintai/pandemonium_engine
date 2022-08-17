@@ -34,7 +34,7 @@
 #include "core/io/resource_loader.h"
 #include "core/containers/list.h"
 #include "core/os/file_access.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 class ImageLoader;
 

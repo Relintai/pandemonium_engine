@@ -31,7 +31,7 @@
 #include "physics_server.h"
 
 #include "core/object/method_bind_ext.gen.inc"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "core/project_settings.h"
 
 PhysicsServer *PhysicsServer::singleton = nullptr;

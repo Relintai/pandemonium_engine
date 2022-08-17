@@ -32,7 +32,7 @@
 
 #include "scene/gui/dialogs.h"
 
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 class LineEdit;
 class OptionButton;

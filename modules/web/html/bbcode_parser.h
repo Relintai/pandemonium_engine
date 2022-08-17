@@ -1,7 +1,7 @@
 #ifndef BBCODE_PARSER_H
 #define BBCODE_PARSER_H
 
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/containers/vector.h"
 
 #include "core/object/reference.h"

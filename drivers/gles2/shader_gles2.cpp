@@ -31,9 +31,9 @@
 #include "shader_gles2.h"
 
 #include "core/os/memory.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "core/project_settings.h"
-#include "core/string_builder.h"
+#include "core/string/string_builder.h"
 #include "rasterizer_gles2.h"
 #include "rasterizer_storage_gles2.h"
 

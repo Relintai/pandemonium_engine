@@ -29,7 +29,7 @@
 /*************************************************************************/
 
 #include "theme.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 
 // Universal Theme resources used when no other theme has the item.
 Ref<Theme> Theme::default_theme;

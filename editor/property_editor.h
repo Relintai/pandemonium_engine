@@ -35,8 +35,8 @@
 
 #include "core/containers/list.h"
 #include "core/math/math_defs.h"
-#include "core/node_path.h"
-#include "core/ustring.h"
+#include "core/string/node_path.h"
+#include "core/string/ustring.h"
 #include "core/variant/variant.h"
 #include "core/containers/vector.h"
 

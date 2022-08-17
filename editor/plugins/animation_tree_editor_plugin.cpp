@@ -43,7 +43,7 @@
 #include "core/containers/list.h"
 #include "core/math/vector2.h"
 #include "core/os/memory.h"
-#include "core/string_name.h"
+#include "core/string/string_name.h"
 #include "core/variant/variant.h"
 #include "editor/editor_node.h"
 #include "scene/animation/animation_tree.h"

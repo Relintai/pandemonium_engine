@@ -15,7 +15,7 @@
 // 5/2016: Chris Rorden created minimal version for OSX/Linux/Windows compile
 
 #include "core/variant/array.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"

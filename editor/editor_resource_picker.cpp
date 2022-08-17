@@ -49,7 +49,7 @@
 #include "core/pair.h"
 #include "core/object/ref_ptr.h"
 #include "core/object/script_language.h"
-#include "core/string_name.h"
+#include "core/string/string_name.h"
 #include "core/typedefs.h"
 #include "editor/editor_data.h"
 #include "editor/editor_file_dialog.h"

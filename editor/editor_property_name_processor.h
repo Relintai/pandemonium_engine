@@ -34,7 +34,7 @@
 
 #include "core/containers/map.h"
 #include "core/object/object.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 class EditorPropertyNameProcessor : public Node {
 	GDCLASS(EditorPropertyNameProcessor, Node);

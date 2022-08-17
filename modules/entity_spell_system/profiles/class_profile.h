@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "core/variant/dictionary.h"
 #include "core/object/reference.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "actionbar/action_bar_profile.h"
 #include "input/input_profile.h"

@@ -34,9 +34,9 @@
 #include "core/containers/map.h"
 #include "core/containers/ordered_hash_map.h"
 #include "core/object/script_language.h"
-#include "core/string_name.h"
+#include "core/string/string_name.h"
 #include "core/typedefs.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/variant/variant.h"
 
 class ShaderLanguage {

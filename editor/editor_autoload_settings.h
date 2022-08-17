@@ -35,7 +35,7 @@
 #include "core/containers/list.h"
 #include "core/math/vector2.h"
 #include "core/object/object.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/variant/variant.h"
 
 class Button;

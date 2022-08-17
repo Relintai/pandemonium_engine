@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/containers/pool_vector.h"
 #include "core/math/vector3.h"
 #include "core/object/reference.h"

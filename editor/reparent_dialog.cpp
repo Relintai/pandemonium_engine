@@ -33,7 +33,7 @@
 #include "scene/gui/box_container.h"
 #include "core/object/class_db.h"
 #include "core/os/memory.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "core/variant/variant.h"
 #include "editor/scene_tree_editor.h"
 #include "scene/2d/canvas_item.h"

@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include "core/object/reference.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "scene/main/node.h"
 

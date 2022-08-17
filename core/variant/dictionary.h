@@ -32,7 +32,7 @@
 
 #include "core/variant/array.h"
 #include "core/containers/list.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 class Variant;
 

@@ -45,8 +45,8 @@
 
 #include "core/object/resource.h"
 #include "core/containers/set.h"
-#include "core/string_name.h"
-#include "core/ustring.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
 #include "core/variant/variant.h"
 #include "core/containers/vector.h"
 

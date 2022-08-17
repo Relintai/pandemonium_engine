@@ -33,7 +33,7 @@
 #include "core/math/color_names.inc"
 #include "core/containers/map.h"
 #include "core/math/math_funcs.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 
 uint32_t Color::to_argb32() const {
 	uint32_t c = (uint8_t)Math::round(a * 255);

@@ -1,7 +1,7 @@
 #ifndef STATIC_WEB_PAGE_FOLDER_FILES_H
 #define STATIC_WEB_PAGE_FOLDER_FILES_H
 
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "static_web_page.h"
 

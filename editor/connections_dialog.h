@@ -40,10 +40,10 @@
 
 #include "core/object/undo_redo.h"
 #include "core/containers/map.h"
-#include "core/node_path.h"
+#include "core/string/node_path.h"
 #include "core/object/object.h"
-#include "core/string_name.h"
-#include "core/ustring.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
 #include "core/containers/vector.h"
 
 class PopupMenu;

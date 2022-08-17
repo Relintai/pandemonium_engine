@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/object/object.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 #include "editor/editor_plugin.h"
 
 class PhysicalBone;

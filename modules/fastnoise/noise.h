@@ -2,7 +2,7 @@
 #define FASTNOISE_NOISE_H
 
 #include "core/object/reference.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 #include "lib/FastNoise.h"
 

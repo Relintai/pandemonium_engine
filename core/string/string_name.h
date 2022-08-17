@@ -32,7 +32,7 @@
 
 #include "core/os/mutex.h"
 #include "core/safe_refcount.h"
-#include "core/ustring.h"
+#include "core/string/ustring.h"
 
 struct StaticCString {
 	const char *ptr;

@@ -31,7 +31,7 @@
 #include "bsp_tree.h"
 
 #include "core/error_macros.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 
 void BSP_Tree::from_aabb(const AABB &p_aabb) {
 	planes.clear();

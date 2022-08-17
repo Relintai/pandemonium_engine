@@ -34,7 +34,7 @@
 #include "core/io/marshalls.h"
 #include "core/math/math_funcs.h"
 #include "core/object_rc.h"
-#include "core/print_string.h"
+#include "core/string/print_string.h"
 #include "core/object/resource.h"
 #include "core/variant/variant_parser.h"
 #include "scene/gui/control.h"
