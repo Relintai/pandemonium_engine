@@ -38,8 +38,8 @@
 
 #include "core/variant/array.h"
 #include "core/variant/dictionary.h"
-#include "core/error_list.h"
-#include "core/error_macros.h"
+#include "core/error/error_list.h"
+#include "core/error/error_macros.h"
 #include "core/io/config_file.h"
 #include "core/containers/list.h"
 #include "core/object/method_bind.h"

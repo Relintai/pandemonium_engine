@@ -35,7 +35,7 @@
 #include "scene/resources/multimesh.h"
 #include "spatial_editor_plugin.h"
 #include "core/object/class_db.h"
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/containers/map.h"
 #include "core/math/basis.h"
 #include "core/math/face3.h"

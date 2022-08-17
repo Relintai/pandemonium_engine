@@ -33,7 +33,7 @@
 #include "editor/plugins/spatial_editor_plugin.h"
 #include "scene/3d/physics_body.h"
 #include "core/object/class_db.h"
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/os/memory.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/control.h"

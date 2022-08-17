@@ -32,7 +32,7 @@
 
 #include "safe_refcount.h"
 
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 
 // On C++14 we don't have std::atomic::is_always_lockfree, so this is the best we can do
 void check_lockless_atomics() {

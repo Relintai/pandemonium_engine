@@ -37,7 +37,7 @@
 #include "scene/gui/box_container.h"
 #include "scene/gui/item_list.h"
 #include "scene/gui/line_edit.h"
-#include "core/error_list.h"
+#include "core/error/error_list.h"
 #include "core/containers/list.h"
 #include "core/math/math_defs.h"
 #include "core/os/input_event.h"

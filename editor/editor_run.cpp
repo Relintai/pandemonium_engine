@@ -36,7 +36,7 @@
 #include "script_editor_debugger.h"
 #include "core/project_settings.h"
 #include "editor_settings.h"
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/math/math_funcs.h"
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"

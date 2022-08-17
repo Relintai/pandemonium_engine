@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/os/memory.h"
 
 // based on the very nice implementation of rb-trees by:

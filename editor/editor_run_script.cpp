@@ -32,7 +32,7 @@
 
 #include "editor_node.h"
 #include "core/object/class_db.h"
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/object/script_language.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"

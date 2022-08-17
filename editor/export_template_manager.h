@@ -32,7 +32,7 @@
 
 #include "scene/gui/dialogs.h"
 
-#include "core/error_list.h"
+#include "core/error/error_list.h"
 #include "core/object/object.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"

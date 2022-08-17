@@ -58,7 +58,7 @@ Adapted from corresponding SDL 2.0 code.
 #include <stdio.h>
 #include <unistd.h>
 
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include <dirent.h>
 #include <fcntl.h>
 #include <sys/stat.h>

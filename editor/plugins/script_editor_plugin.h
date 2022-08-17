@@ -39,7 +39,7 @@
 
 #include "core/object/script_language.h"
 #include "core/variant/array.h"
-#include "core/error_list.h"
+#include "core/error/error_list.h"
 #include "core/containers/list.h"
 #include "core/math/vector2.h"
 #include "core/object/object.h"

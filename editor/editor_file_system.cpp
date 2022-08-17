@@ -43,7 +43,7 @@
 #include "core/variant/array.h"
 #include "core/object/class_db.h"
 #include "core/variant/dictionary.h"
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/io/config_file.h"
 #include "core/os/dir_access.h"
 #include "core/os/memory.h"

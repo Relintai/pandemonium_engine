@@ -31,7 +31,7 @@
 #ifndef ANDROID_PANDEMONIUM_PLUGIN_CONFIG_H
 #define ANDROID_PANDEMONIUM_PLUGIN_CONFIG_H
 
-#include "core/error_list.h"
+#include "core/error/error_list.h"
 #include "core/io/config_file.h"
 #include "core/project_settings.h"
 #include "core/string/ustring.h"

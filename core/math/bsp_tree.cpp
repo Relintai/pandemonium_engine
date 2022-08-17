@@ -30,7 +30,7 @@
 
 #include "bsp_tree.h"
 
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/string/print_string.h"
 
 void BSP_Tree::from_aabb(const AABB &p_aabb) {

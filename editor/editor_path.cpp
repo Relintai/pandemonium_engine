@@ -33,7 +33,7 @@
 #include "editor_node.h"
 #include "editor_scale.h"
 #include "core/object/class_db.h"
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/containers/list.h"
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"

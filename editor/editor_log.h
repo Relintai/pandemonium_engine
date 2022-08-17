@@ -33,7 +33,7 @@
 #include "scene/gui/box_container.h"
 
 #include "core/os/thread.h"
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/object/object.h"
 #include "core/string/ustring.h"
 

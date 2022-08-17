@@ -30,7 +30,7 @@
 
 #include "image_loader_tga.h"
 
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/io/file_access_memory.h"
 #include "core/os/os.h"
 #include "core/string/print_string.h"

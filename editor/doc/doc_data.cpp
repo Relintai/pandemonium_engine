@@ -41,7 +41,7 @@
 #include "scene/resources/theme.h"
 #include "core/io/xml_parser.h"
 #include "core/object/class_db.h"
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/containers/list.h"
 #include "core/object/method_bind.h"
 #include "core/object/object.h"

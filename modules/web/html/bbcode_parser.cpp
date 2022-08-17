@@ -1,6 +1,6 @@
 #include "bbcode_parser.h"
 
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/log/logger.h"
 
 String BBCodeParserAttribute::get_attribute() {

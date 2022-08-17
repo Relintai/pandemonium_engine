@@ -43,7 +43,7 @@
 #include "core/variant/array.h"
 #include "core/object/class_db.h"
 #include "core/math/color.h"
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/image.h"
 #include "core/math/geometry.h"
 #include "core/math/rect2.h"

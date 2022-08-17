@@ -55,7 +55,7 @@ Adapted from corresponding SDL 2.0 code.
 
 #include "power_android.h"
 
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 
 static void LocalReferenceHolder_Cleanup(struct LocalReferenceHolder *refholder) {
 	if (refholder->m_env) {

@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/error_list.h"
+#include "core/error/error_list.h"
 #include "core/io/config_file.h"
 #include "core/string/ustring.h"
 

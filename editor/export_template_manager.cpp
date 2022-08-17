@@ -33,7 +33,7 @@
 #include "core/variant/array.h"
 #include "core/object/class_db.h"
 #include "core/variant/dictionary.h"
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/io/http_client.h"
 #include "core/io/json.h"
 #include "core/io/zip_io.h"

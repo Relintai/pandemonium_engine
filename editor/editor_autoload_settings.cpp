@@ -40,7 +40,7 @@
 #include "core/object/class_db.h"
 #include "core/math/color.h"
 #include "core/variant/dictionary.h"
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/io/resource_loader.h"
 #include "core/containers/map.h"
 #include "core/math/math_funcs.h"

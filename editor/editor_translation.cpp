@@ -35,7 +35,7 @@
 #include "core/io/translation_loader_po.h"
 #include "editor/doc_translations.gen.h"
 #include "editor/editor_translations.gen.h"
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/os/memory.h"
 #include "core/object/reference.h"
 #include "core/string/translation.h"

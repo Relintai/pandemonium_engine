@@ -38,8 +38,8 @@
 #include "scene/gui/grid_container.h"
 #include "modules/modules_enabled.gen.h" // For gdscript.
 #include "core/object/class_db.h"
-#include "core/error_list.h"
-#include "core/error_macros.h"
+#include "core/error/error_list.h"
+#include "core/error/error_macros.h"
 #include "core/io/resource_saver.h"
 #include "core/math/vector2.h"
 #include "core/os/memory.h"

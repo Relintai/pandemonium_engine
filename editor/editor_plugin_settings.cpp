@@ -31,8 +31,8 @@
 #include "editor_plugin_settings.h"
 
 #include "core/object/class_db.h"
-#include "core/error_list.h"
-#include "core/error_macros.h"
+#include "core/error/error_list.h"
+#include "core/error/error_macros.h"
 #include "core/io/config_file.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"

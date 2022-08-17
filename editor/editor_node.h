@@ -42,7 +42,7 @@
 #include "scene/gui/split_container.h"
 
 #include "core/variant/dictionary.h"
-#include "core/error_list.h"
+#include "core/error/error_list.h"
 #include "core/containers/list.h"
 #include "core/containers/map.h"
 #include "core/math/rect2.h"

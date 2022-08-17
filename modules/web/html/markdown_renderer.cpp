@@ -1,7 +1,7 @@
 #include "markdown_renderer.h"
 
 #include "core/object/class_db.h"
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/log/logger.h"
 
 #include "./libs/hoedown/html.h"

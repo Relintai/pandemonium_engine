@@ -34,7 +34,7 @@
 #include "scene/3d/skeleton.h"
 #include "scene/main/viewport.h"
 #include "core/object/class_db.h"
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/containers/list.h"
 #include "core/containers/map.h"
 #include "core/os/memory.h"

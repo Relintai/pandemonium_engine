@@ -30,7 +30,7 @@
 
 #include "image.h"
 
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/containers/hash_map.h"
 #include "core/io/image_loader.h"
 #include "core/io/resource_loader.h"

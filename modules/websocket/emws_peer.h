@@ -32,7 +32,7 @@
 
 #ifdef JAVASCRIPT_ENABLED
 
-#include "core/error_list.h"
+#include "core/error/error_list.h"
 #include "core/io/packet_peer.h"
 #include "core/containers/ring_buffer.h"
 #include "emscripten.h"

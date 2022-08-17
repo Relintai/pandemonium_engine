@@ -30,7 +30,7 @@
 
 #include "java_pandemonium_io_wrapper.h"
 #include "core/variant/array.h"
-#include "core/error_list.h"
+#include "core/error/error_list.h"
 #include "core/math/rect2.h"
 #include "core/variant/variant.h"
 

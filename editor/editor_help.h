@@ -37,7 +37,7 @@
 #include "scene/gui/rich_text_label.h"
 
 #include "core/math/color.h"
-#include "core/error_list.h"
+#include "core/error/error_list.h"
 #include "core/containers/map.h"
 #include "core/object/object.h"
 #include "core/object/reference.h"

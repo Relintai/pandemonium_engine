@@ -31,7 +31,7 @@
 #include "editor_run_native.h"
 
 #include "core/object/class_db.h"
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/image.h"
 #include "core/os/memory.h"
 #include "core/object/reference.h"

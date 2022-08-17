@@ -31,7 +31,7 @@
 #include "inspector_dock.h"
 
 #include "core/object/class_db.h"
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/io/resource_loader.h"
 #include "core/containers/list.h"
 #include "core/containers/map.h"

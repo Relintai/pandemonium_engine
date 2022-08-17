@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/crypto/crypto.h"
-#include "core/error_list.h"
+#include "core/error/error_list.h"
 #include "websocket_multiplayer_peer.h"
 #include "websocket_peer.h"
 

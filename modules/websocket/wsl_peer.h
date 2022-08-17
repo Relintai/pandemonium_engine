@@ -32,7 +32,7 @@
 
 #ifndef JAVASCRIPT_ENABLED
 
-#include "core/error_list.h"
+#include "core/error/error_list.h"
 #include "core/io/packet_peer.h"
 #include "core/io/stream_peer_tcp.h"
 #include "core/containers/ring_buffer.h"

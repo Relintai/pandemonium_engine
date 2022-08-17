@@ -32,7 +32,7 @@
 
 #include "core/object/class_db.h"
 #include "core/crypto/crypto_core.h"
-#include "core/error_macros.h"
+#include "core/error/error_macros.h"
 #include "core/io/config_file.h"
 #include "core/io/file_access_pack.h" // PACK_HEADER_MAGIC, PACK_FORMAT_VERSION
 #include "core/io/resource_loader.h"
