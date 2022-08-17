@@ -30,7 +30,7 @@
 
 #include "shader_editor_plugin.h"
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/class_db.h"
 #include "core/math/color.h"
 #include "core/error_list.h"
@@ -46,7 +46,7 @@
 #include "core/os/memory.h"
 #include "core/os/os.h"
 #include "core/string_name.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "core/containers/vector.h"
 #include "core/version_generated.gen.h"
 #include "editor/editor_node.h"

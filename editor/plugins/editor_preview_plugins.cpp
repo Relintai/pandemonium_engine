@@ -39,7 +39,7 @@
 #include "scene/resources/mesh.h"
 #include "servers/audio/audio_stream.h"
 #include "core/project_settings.h"
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/class_db.h"
 #include "core/math/color.h"
 #include "core/error_list.h"

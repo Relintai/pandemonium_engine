@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/char_utils.h"
 #include "core/containers/cowdata.h"
 #include "core/typedefs.h"

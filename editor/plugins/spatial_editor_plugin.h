@@ -40,7 +40,7 @@
 #include "scene/gui/spin_box.h"
 
 #include "core/math/color.h"
-#include "core/dictionary.h"
+#include "core/variant/dictionary.h"
 #include "core/error_macros.h"
 #include "core/containers/hash_map.h"
 #include "core/containers/list.h"
@@ -56,7 +56,7 @@
 #include "core/rid.h"
 #include "core/typedefs.h"
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "core/containers/vector.h"
 #include "editor/editor_scale.h"
 

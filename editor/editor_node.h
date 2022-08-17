@@ -41,7 +41,7 @@
 #include "scene/gui/menu_button.h"
 #include "scene/gui/split_container.h"
 
-#include "core/dictionary.h"
+#include "core/variant/dictionary.h"
 #include "core/error_list.h"
 #include "core/containers/list.h"
 #include "core/containers/map.h"
@@ -58,7 +58,7 @@
 #include "core/string_name.h"
 #include "core/typedefs.h"
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "core/containers/vector.h"
 #include "editor/editor_data.h"
 #include "scene/gui/control.h"

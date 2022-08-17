@@ -27,11 +27,11 @@ SOFTWARE.
 
 #include "core/resource.h"
 
-#include "core/array.h"
-#include "core/dictionary.h"
+#include "core/variant/array.h"
+#include "core/variant/dictionary.h"
 #include "core/math/vector2i.h"
 #include "core/containers/pool_vector.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 class PaintCanvas;
 class PaintCanvasLayer;

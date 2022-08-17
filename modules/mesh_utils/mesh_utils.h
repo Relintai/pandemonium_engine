@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 #include "core/object.h"
 

@@ -32,7 +32,7 @@
 
 #include "core/os/file_access.h"
 #include "core/resource.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 class VariantParser {
 public:

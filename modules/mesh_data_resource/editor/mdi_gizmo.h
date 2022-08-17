@@ -30,7 +30,7 @@ SOFTWARE.
 #include "core/math/vector3.h"
 #include "core/containers/pool_vector.h"
 #include "core/reference.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 class Camera;
 class MeshDataResource;

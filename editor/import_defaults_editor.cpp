@@ -31,7 +31,7 @@
 #include "import_defaults_editor.h"
 
 #include "core/class_db.h"
-#include "core/dictionary.h"
+#include "core/variant/dictionary.h"
 #include "core/io/resource_importer.h"
 #include "core/containers/list.h"
 #include "core/containers/map.h"
@@ -41,7 +41,7 @@
 #include "core/string_name.h"
 #include "core/typedefs.h"
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "core/containers/vector.h"
 #include "editor/editor_inspector.h"
 #include "scene/gui/button.h"

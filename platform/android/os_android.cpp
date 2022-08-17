@@ -30,7 +30,7 @@
 
 #include "os_android.h"
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/project_settings.h"
 #include "drivers/gles2/rasterizer_gles2.h"
 #include "drivers/unix/dir_access_unix.h"

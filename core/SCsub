@@ -190,6 +190,7 @@ env.CommandNoCache(
 SConscript("os/SCsub")
 SConscript("math/SCsub")
 SConscript("containers/SCsub")
+SConscript("variant/SCsub")
 SConscript("crypto/SCsub")
 SConscript("io/SCsub")
 SConscript("log/SCsub")

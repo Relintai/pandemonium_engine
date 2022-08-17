@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/array.h"
-#include "core/dictionary.h"
+#include "core/variant/array.h"
+#include "core/variant/dictionary.h"
 
 #include "voxel_mesher_marching_cubes.h"
 

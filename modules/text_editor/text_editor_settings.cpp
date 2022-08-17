@@ -3,7 +3,7 @@
 
 #include "editor/editor_settings.h"
 
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "scene/gui/item_list.h"
 #include "text_editor_vanilla_editor.h"
 

@@ -32,7 +32,7 @@
 
 #include "scene/gui/margin_container.h"
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/containers/hash_map.h"
 #include "core/containers/list.h"
 #include "core/containers/map.h"
@@ -45,7 +45,7 @@
 #include "core/containers/set.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "core/containers/vector.h"
 
 class Tree;

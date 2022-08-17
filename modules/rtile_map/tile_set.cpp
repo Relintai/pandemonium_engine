@@ -29,7 +29,7 @@
 /*************************************************************************/
 
 #include "tile_set.h"
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/engine.h"
 
 bool RTileSet::_set(const StringName &p_name, const Variant &p_value) {

@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/ustring.h"
 
 #include "../plugin/mdr_import_plugin_base.h"

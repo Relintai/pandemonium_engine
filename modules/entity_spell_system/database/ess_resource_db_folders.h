@@ -22,12 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/bind/core_bind.h"
 #include "core/engine.h"
 #include "core/containers/hash_map.h"
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "core/containers/vector.h"
 
 #include "ess_resource_db_map.h"

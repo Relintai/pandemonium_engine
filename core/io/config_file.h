@@ -33,7 +33,7 @@
 #include "core/containers/ordered_hash_map.h"
 #include "core/os/file_access.h"
 #include "core/reference.h"
-#include "core/variant_parser.h"
+#include "core/variant/variant_parser.h"
 
 class ConfigFile : public Reference {
 	GDCLASS(ConfigFile, Reference);

@@ -32,7 +32,7 @@
 
 #include "core/class_db.h"
 #include "core/math/color.h"
-#include "core/dictionary.h"
+#include "core/variant/dictionary.h"
 #include "core/error_macros.h"
 #include "core/containers/list.h"
 #include "core/math/aabb.h"
@@ -49,7 +49,7 @@
 #include "core/script_language.h"
 #include "core/typedefs.h"
 #include "core/undo_redo.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "editor/doc/doc_data.h"
 #include "editor/editor_help.h"
 #include "editor/editor_inspector.h"

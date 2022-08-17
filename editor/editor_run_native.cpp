@@ -37,7 +37,7 @@
 #include "core/reference.h"
 #include "core/typedefs.h"
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "editor_export.h"
 #include "editor_node.h"
 #include "editor_scale.h"

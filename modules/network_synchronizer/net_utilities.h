@@ -37,7 +37,7 @@
 
 #include "core/math/math_funcs.h"
 #include "core/containers/local_vector.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 #ifdef DEBUG_ENABLED
 #define NET_DEBUG_PRINT(msg) \

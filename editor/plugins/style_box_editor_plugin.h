@@ -37,7 +37,7 @@
 #include "core/object.h"
 #include "core/reference.h"
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 class Control;
 class EditorNode;

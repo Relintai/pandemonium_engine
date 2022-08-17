@@ -32,7 +32,7 @@
 
 #include "core/class_db.h"
 #include "core/math/color.h"
-#include "core/dictionary.h"
+#include "core/variant/dictionary.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"
 #include "core/containers/list.h"

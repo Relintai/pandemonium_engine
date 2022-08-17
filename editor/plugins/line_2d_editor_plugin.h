@@ -33,7 +33,7 @@
 #include "editor/plugins/abstract_polygon_2d_editor.h"
 
 #include "core/object.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 class EditorNode;
 class Line2D;

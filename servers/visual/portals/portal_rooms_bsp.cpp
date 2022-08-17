@@ -33,7 +33,7 @@
 #include "core/math/geometry.h"
 #include "core/math/plane.h"
 #include "core/print_string.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "portal_renderer.h"
 
 // #define PANDEMONIUM_VERBOSE_PORTAL_ROOMS_BSP

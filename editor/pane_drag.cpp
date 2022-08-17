@@ -32,7 +32,7 @@
 
 #include "core/class_db.h"
 #include "core/os/input_event.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "scene/2d/canvas_item.h"
 #include "scene/resources/texture.h"
 

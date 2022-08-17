@@ -33,7 +33,7 @@
 #include "editor/editor_plugin.h"
 #include "scene/gui/box_container.h"
 
-#include "core/dictionary.h"
+#include "core/variant/dictionary.h"
 #include "core/math/vector2.h"
 #include "core/object.h"
 #include "core/reference.h"

@@ -32,9 +32,9 @@
 
 #include "core/os/keyboard.h"
 #include "editor/editor_node.h"
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/class_db.h"
-#include "core/dictionary.h"
+#include "core/variant/dictionary.h"
 #include "core/error_macros.h"
 #include "core/math/transform_2d.h"
 #include "core/math/vector2.h"

@@ -30,7 +30,7 @@
 
 #include "spatial_editor_plugin.h"
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/class_db.h"
 #include "core/engine.h"
 #include "core/io/resource_loader.h"

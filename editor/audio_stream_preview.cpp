@@ -37,7 +37,7 @@
 #include "core/os/memory.h"
 #include "core/os/thread.h"
 #include "core/typedefs.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "servers/audio_server.h"
 
 /////////////////////

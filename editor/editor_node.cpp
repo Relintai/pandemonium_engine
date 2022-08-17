@@ -32,7 +32,7 @@
 
 #include <stdlib.h>
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/class_db.h"
 #include "core/math/color.h"
 #include "core/engine.h"

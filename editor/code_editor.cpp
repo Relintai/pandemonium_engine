@@ -30,9 +30,9 @@
 
 #include "code_editor.h"
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/class_db.h"
-#include "core/dictionary.h"
+#include "core/variant/dictionary.h"
 #include "core/math/math_funcs.h"
 #include "core/math/vector2.h"
 #include "core/os/input.h"

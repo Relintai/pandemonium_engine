@@ -42,7 +42,7 @@
 #include "core/resource.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "editor/editor_data.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/control.h"

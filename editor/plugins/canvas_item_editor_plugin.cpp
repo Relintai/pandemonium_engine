@@ -51,7 +51,7 @@
 #include "scene/main/viewport.h"
 #include "scene/resources/dynamic_font.h"
 #include "scene/resources/packed_scene.h"
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/class_db.h"
 #include "core/math/color.h"
 #include "core/engine.h"

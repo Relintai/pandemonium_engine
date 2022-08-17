@@ -32,7 +32,7 @@
 
 #include "core/io/marshalls.h"
 #include "editor_node.h"
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/class_db.h"
 #include "core/typedefs.h"
 #include "core/undo_redo.h"

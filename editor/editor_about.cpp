@@ -40,7 +40,7 @@
 #include "core/os/memory.h"
 #include "core/os/os.h"
 #include "core/reference.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "editor/editor_scale.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/control.h"

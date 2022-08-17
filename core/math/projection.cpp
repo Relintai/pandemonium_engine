@@ -30,14 +30,14 @@
 
 #include "projection.h"
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/math/aabb.h"
 #include "core/math/math_funcs.h"
 #include "core/math/plane.h"
 #include "core/math/rect2.h"
 #include "core/math/transform.h"
 #include "core/print_string.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 float Projection::determinant() const {
 	return matrix[0][3] * matrix[1][2] * matrix[2][1] * matrix[3][0] - matrix[0][2] * matrix[1][3] * matrix[2][1] * matrix[3][0] -

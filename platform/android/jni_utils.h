@@ -32,7 +32,7 @@
 
 #include "string_android.h"
 #include <core/engine.h>
-#include <core/variant.h>
+#include <core/variant/variant.h>
 #include <jni.h>
 
 struct jvalret {

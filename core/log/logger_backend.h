@@ -2,7 +2,7 @@
 #define LOGGER_BACKEND_H
 
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 #include "core/reference.h"
 

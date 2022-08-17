@@ -30,10 +30,10 @@
 
 #include "editor_settings.h"
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/class_db.h"
 #include "core/math/color.h"
-#include "core/dictionary.h"
+#include "core/variant/dictionary.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"
 #include "core/io/certs_compressed.gen.h"

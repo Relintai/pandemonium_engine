@@ -25,7 +25,7 @@ SOFTWARE.
 
 */
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/reference.h"
 
 #include "simplify.h"

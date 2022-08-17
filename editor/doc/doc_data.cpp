@@ -52,7 +52,7 @@
 #include "core/containers/set.h"
 #include "core/string_name.h"
 #include "core/typedefs.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 static String _get_indent(const String &p_text) {
 	String indent;

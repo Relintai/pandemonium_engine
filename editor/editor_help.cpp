@@ -52,7 +52,7 @@
 #include "core/pair.h"
 #include "core/containers/set.h"
 #include "core/typedefs.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "scene/2d/canvas_item.h"
 #include "scene/gui/control.h"
 #include "scene/gui/label.h"

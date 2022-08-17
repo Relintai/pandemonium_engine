@@ -36,7 +36,7 @@
 #include "core/reference.h"
 #include "core/resource.h"
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 class EditorNode;
 class AcceptDialog;

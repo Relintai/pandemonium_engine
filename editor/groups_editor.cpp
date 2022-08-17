@@ -45,7 +45,7 @@
 #include "core/reference.h"
 #include "core/string_name.h"
 #include "core/undo_redo.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "editor/scene_tree_dock.h"
 #include "scene/gui/button.h"
 #include "scene/gui/control.h"

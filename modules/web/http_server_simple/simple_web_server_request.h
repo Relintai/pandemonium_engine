@@ -1,7 +1,7 @@
 #ifndef SIMPLE_WEB_SERVER_REQUEST_H
 #define SIMPLE_WEB_SERVER_REQUEST_H
 
-#include "core/dictionary.h"
+#include "core/variant/dictionary.h"
 #include "core/containers/hash_map.h"
 #include "core/ustring.h"
 #include "core/containers/vector.h"

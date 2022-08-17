@@ -36,8 +36,8 @@
 
 #include "scene/resources/texture.h"
 
-#include "core/array.h"
-#include "core/dictionary.h"
+#include "core/variant/array.h"
+#include "core/variant/dictionary.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"
 #include "core/io/config_file.h"
@@ -48,7 +48,7 @@
 #include "core/reference.h"
 #include "core/undo_redo.h"
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "core/containers/vector.h"
 
 class EditorNode;

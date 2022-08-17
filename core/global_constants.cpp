@@ -33,7 +33,7 @@
 #include "core/object.h"
 #include "core/os/input_event.h"
 #include "core/os/keyboard.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 struct _GlobalConstant {
 #ifdef DEBUG_METHODS_ENABLED

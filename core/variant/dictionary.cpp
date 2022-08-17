@@ -32,7 +32,7 @@
 
 #include "core/containers/ordered_hash_map.h"
 #include "core/safe_refcount.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 struct DictionaryPrivate {
 	SafeRefCount refcount;

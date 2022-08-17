@@ -1,7 +1,7 @@
 
 #include "text_file_editor.h"
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/engine.h"
 #include "core/math/math_defs.h"
 #include "core/os/dir_access.h"

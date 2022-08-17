@@ -31,9 +31,9 @@
 /*************************************************************************/
 
 #include "core/containers/list.h"
-#include "core/method_ptrcall.h"
+#include "core/variant/method_ptrcall.h"
 #include "core/object.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 #include <stdio.h>
 
@@ -41,7 +41,7 @@
 #define DEBUG_METHODS_ENABLED
 #endif
 
-#include "core/type_info.h"
+#include "core/variant/type_info.h"
 
 enum MethodFlags {
 

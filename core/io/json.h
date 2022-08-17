@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 class JSON {
 	enum TokenType {

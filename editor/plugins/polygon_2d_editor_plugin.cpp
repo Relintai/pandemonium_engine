@@ -50,7 +50,7 @@
 #include "core/typedefs.h"
 #include "core/undo_redo.h"
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "scene/2d/canvas_item.h"
 #include "scene/2d/polygon_2d.h"
 #include "scene/gui/box_container.h"

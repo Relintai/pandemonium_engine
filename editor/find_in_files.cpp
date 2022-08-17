@@ -44,7 +44,7 @@
 #include "scene/gui/line_edit.h"
 #include "scene/gui/progress_bar.h"
 #include "scene/gui/tree.h"
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/class_db.h"
 #include "core/math/color.h"
 #include "core/error_list.h"

@@ -23,10 +23,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/containers/pool_vector.h"
 #include "core/reference.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "core/containers/vector.h"
 
 class MeshDataResource;

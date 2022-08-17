@@ -38,7 +38,7 @@
 #include "core/os/memory.h"
 #include "core/string_name.h"
 #include "core/typedefs.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "core/containers/vector.h"
 #include "editor/editor_inspector.h"
 #include "scene/gui/box_container.h"

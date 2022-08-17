@@ -35,7 +35,7 @@
 #include "core/error_list.h"
 #include "core/object.h"
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 class ExportTemplateVersion;
 class HBoxContainer;

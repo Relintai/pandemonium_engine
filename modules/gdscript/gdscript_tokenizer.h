@@ -33,7 +33,7 @@
 #include "core/pair.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "core/containers/vmap.h"
 #include "gdscript_functions.h"
 

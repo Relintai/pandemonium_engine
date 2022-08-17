@@ -50,7 +50,7 @@
 #include "core/math/vector3.h"
 #include "core/os/memory.h"
 #include "core/resource.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "editor/editor_settings.h"
 #include "scene/2d/canvas_item.h"
 #include "scene/3d/camera.h"

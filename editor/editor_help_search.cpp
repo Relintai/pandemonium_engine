@@ -41,7 +41,7 @@
 #include "core/os/memory.h"
 #include "core/os/os.h"
 #include "core/typedefs.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "editor/editor_help.h"
 #include "editor/editor_settings.h"
 #include "scene/gui/box_container.h"

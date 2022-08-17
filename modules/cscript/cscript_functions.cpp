@@ -37,7 +37,7 @@
 #include "core/math/math_funcs.h"
 #include "core/os/os.h"
 #include "core/reference.h"
-#include "core/variant_parser.h"
+#include "core/variant/variant_parser.h"
 #include "cscript.h"
 
 const char *CScriptFunctions::get_func_name(Function p_func) {

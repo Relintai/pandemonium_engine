@@ -27,7 +27,7 @@ SOFTWARE.
 #include "core/containers/pool_vector.h"
 #include "core/math/vector3.h"
 #include "core/reference.h"
-#include "core/array.h"
+#include "core/variant/array.h"
 
 class MeshDataResource;
 class SurfaceTool;

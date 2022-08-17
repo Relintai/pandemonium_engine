@@ -35,7 +35,7 @@
 	@author AndreaCatania
 */
 
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 class BitArray {
 	PoolByteArray bytes;

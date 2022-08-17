@@ -32,7 +32,7 @@
 
 #include "core/containers/hashfuncs.h"
 #include "core/object.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "core/containers/vector.h"
 
 class ArrayPrivate {

@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/containers/map.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "core/reference.h"
 #include "core/error_list.h"
 #include "core/ustring.h"

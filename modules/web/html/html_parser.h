@@ -2,7 +2,7 @@
 #define HTML_PARSER_H
 
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "core/containers/vector.h"
 
 #include "core/reference.h"

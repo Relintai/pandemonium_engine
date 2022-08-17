@@ -33,7 +33,7 @@
 #include "editor/editor_plugin.h"
 #include "editor/editor_resource_preview.h"
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/math/transform_2d.h"
 #include "core/math/vector2.h"
 

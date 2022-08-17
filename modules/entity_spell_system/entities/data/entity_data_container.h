@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/dictionary.h"
+#include "core/variant/dictionary.h"
 #include "core/resource.h"
 
 class EntityDataContainer : public Resource {

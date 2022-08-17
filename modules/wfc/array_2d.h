@@ -3,7 +3,7 @@
 
 #include "core/containers/vector.h"
 #include "core/containers/pool_vector.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 template <typename T>
 class Array2D {

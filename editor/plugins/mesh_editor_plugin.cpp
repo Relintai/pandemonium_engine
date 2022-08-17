@@ -46,7 +46,7 @@
 #include "core/math/vector3.h"
 #include "core/os/input_event.h"
 #include "core/os/memory.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "scene/3d/camera.h"
 #include "scene/3d/light.h"
 #include "scene/3d/mesh_instance.h"

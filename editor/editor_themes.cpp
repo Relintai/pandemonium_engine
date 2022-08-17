@@ -40,7 +40,7 @@
 #include "editor_settings.h"
 #include "modules/modules_enabled.gen.h" // For svg.
 #include "core/math/color.h"
-#include "core/dictionary.h"
+#include "core/variant/dictionary.h"
 #include "core/image.h"
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"
@@ -50,7 +50,7 @@
 #include "core/string_name.h"
 #include "core/typedefs.h"
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "scene/resources/font.h"
 #include "scene/resources/style_box.h"
 #include "scene/resources/texture.h"

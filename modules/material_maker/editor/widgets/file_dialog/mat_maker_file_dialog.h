@@ -2,7 +2,7 @@
 #define MAT_MAKER_FILE_DIALOG_H
 
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 #include "scene/gui/file_dialog.h"
 

@@ -39,7 +39,7 @@
 #include "core/os/memory.h"
 #include "core/typedefs.h"
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "scene/gui/button.h"
 #include "scene/gui/control.h"
 #include "scene/gui/label.h"

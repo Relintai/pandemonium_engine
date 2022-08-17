@@ -37,7 +37,7 @@
 #include "core/print_string.h"
 #include "core/project_settings.h"
 #include "core/translation.h"
-#include "core/variant_parser.h"
+#include "core/variant/variant_parser.h"
 
 Ref<ResourceFormatLoader> ResourceLoader::loader[ResourceLoader::MAX_LOADERS];
 

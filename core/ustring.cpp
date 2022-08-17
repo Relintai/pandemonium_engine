@@ -41,7 +41,7 @@
 #include "core/print_string.h"
 #include "core/translation.h"
 #include "core/ucaps.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "core/version_generated.gen.h"
 
 #include <wchar.h>

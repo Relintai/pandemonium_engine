@@ -32,7 +32,7 @@
 
 #include "editor/plugins/abstract_polygon_2d_editor.h"
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/math/color.h"
 #include "core/math/vector2.h"
 #include "core/object.h"

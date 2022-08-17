@@ -45,7 +45,7 @@
 #include "core/script_language.h"
 #include "core/string_builder.h"
 #include "core/typedefs.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "editor/create_dialog.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_scale.h"

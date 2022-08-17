@@ -1,7 +1,7 @@
 
 #include "mat_maker_file_dialog.h"
 
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "left_panel.h"
 #include "scene/gui/option_button.h"
 #include "scene/gui/split_container.h"

@@ -1,7 +1,7 @@
 
 #include "text_editor_preview.h"
 
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/grid_container.h"
 #include "scene/gui/label.h"

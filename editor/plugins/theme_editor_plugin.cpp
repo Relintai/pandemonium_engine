@@ -30,7 +30,7 @@
 
 #include "theme_editor_plugin.h"
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/class_db.h"
 #include "core/math/color.h"
 #include "core/error_macros.h"
@@ -40,7 +40,7 @@
 #include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/typedefs.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_node.h"
 #include "editor/editor_resource_picker.h"

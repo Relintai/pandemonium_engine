@@ -39,7 +39,7 @@
 #include "core/os/file_access.h"
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
-#include "core/variant_parser.h"
+#include "core/variant/variant_parser.h"
 
 #include <zlib.h>
 

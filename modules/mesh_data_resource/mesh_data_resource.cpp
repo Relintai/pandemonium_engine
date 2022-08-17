@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "mesh_data_resource.h"
 
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 const String MeshDataResource::BINDING_STRING_COLLIDER_TYPE = "None,Trimesh Collision Shape,Single Convex Collision Shape,Multiple Convex Collision Shapes,Approximated Box,Approximated Capsule,Approximated Cylinder,Approximated Sphere";
 

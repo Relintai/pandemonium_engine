@@ -7,7 +7,7 @@
 
 #include "core/os/mutex.h"
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 //TODO
 //Clean up the api

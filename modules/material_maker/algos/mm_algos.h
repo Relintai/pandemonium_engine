@@ -5,7 +5,7 @@
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
 #include "core/containers/pool_vector.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 #include "core/reference.h"
 

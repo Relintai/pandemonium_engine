@@ -30,9 +30,9 @@
 
 #include "scene_tree_dock.h"
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/class_db.h"
-#include "core/dictionary.h"
+#include "core/variant/dictionary.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"
 #include "core/io/resource_loader.h"
@@ -50,7 +50,7 @@
 #include "core/string_name.h"
 #include "core/typedefs.h"
 #include "core/undo_redo.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "editor/animation_track_editor.h"
 #include "editor/create_dialog.h"
 #include "editor/editor_data.h"

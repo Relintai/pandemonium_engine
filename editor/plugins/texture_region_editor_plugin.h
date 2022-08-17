@@ -36,7 +36,7 @@
 #include "scene/resources/style_box.h"
 #include "scene/resources/texture.h"
 
-#include "core/dictionary.h"
+#include "core/variant/dictionary.h"
 #include "core/containers/list.h"
 #include "core/containers/map.h"
 #include "core/math/rect2.h"

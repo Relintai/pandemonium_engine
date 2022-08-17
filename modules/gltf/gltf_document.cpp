@@ -47,7 +47,7 @@
 #include "core/io/json.h"
 #include "core/math/disjoint_set.h"
 #include "core/os/file_access.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "core/version.h"
 #include "drivers/png/png_driver_common.h"
 #include "scene/2d/node_2d.h"

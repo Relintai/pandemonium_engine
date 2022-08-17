@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "thread_pool_execute_job.h"
 
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 #include "core/os/os.h"
 

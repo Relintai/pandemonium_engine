@@ -35,7 +35,7 @@
 #include "core/error_macros.h"
 #include "core/script_language.h"
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "editor/editor_plugin.h"
 
 class Node;

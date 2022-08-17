@@ -1,7 +1,7 @@
 #ifndef LEFT_PANEL_H
 #define LEFT_PANEL_H
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/os/input_event.h"
 #include "core/ustring.h"
 

@@ -49,7 +49,7 @@
 #include "core/resource.h"
 #include "core/string_name.h"
 #include "core/typedefs.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_file_system.h"
 #include "editor/editor_settings.h"

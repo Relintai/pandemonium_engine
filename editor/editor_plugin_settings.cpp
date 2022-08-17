@@ -39,7 +39,7 @@
 #include "core/os/main_loop.h"
 #include "core/os/memory.h"
 #include "core/reference.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "editor/plugin_config_dialog.h"
 #include "editor_node.h"
 #include "editor_scale.h"

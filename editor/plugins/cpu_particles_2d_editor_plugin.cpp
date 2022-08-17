@@ -43,7 +43,7 @@
 #include "core/os/memory.h"
 #include "core/containers/pool_vector.h"
 #include "core/reference.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "core/containers/vector.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_node.h"

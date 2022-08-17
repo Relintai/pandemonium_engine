@@ -30,8 +30,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/array.h"
-#include "core/dictionary.h"
+#include "core/variant/array.h"
+#include "core/variant/dictionary.h"
 #include "core/containers/map.h"
 #include "core/reference.h"
 #include "core/ustring.h"

@@ -30,9 +30,9 @@
 
 #include "editor_inspector.h"
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/class_db.h"
-#include "core/dictionary.h"
+#include "core/variant/dictionary.h"
 #include "core/error_macros.h"
 #include "core/containers/hash_map.h"
 #include "core/math/math_defs.h"

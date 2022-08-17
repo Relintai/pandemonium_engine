@@ -43,7 +43,7 @@
 #include "core/os/memory.h"
 #include "core/string_name.h"
 #include "core/typedefs.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "editor/editor_node.h"
 #include "scene/gui/button.h"
 #include "scene/gui/check_box.h"

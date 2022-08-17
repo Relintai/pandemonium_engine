@@ -32,7 +32,7 @@
 
 #include "../fastnoise/fastnoise_noise_params.h"
 #include "../fastnoise/noise.h"
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/resource.h"
 #include "scene/2d/light_occluder_2d.h"
 #include "scene/2d/navigation_polygon.h"

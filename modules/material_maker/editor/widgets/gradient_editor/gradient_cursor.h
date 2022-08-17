@@ -4,7 +4,7 @@
 
 #include "core/math/color.h"
 #include "core/os/input_event.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 #include "scene/gui/control.h"
 

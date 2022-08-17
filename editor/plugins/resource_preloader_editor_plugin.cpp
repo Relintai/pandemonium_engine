@@ -34,7 +34,7 @@
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 #include "core/class_db.h"
-#include "core/dictionary.h"
+#include "core/variant/dictionary.h"
 #include "core/error_macros.h"
 #include "core/containers/list.h"
 #include "core/os/memory.h"

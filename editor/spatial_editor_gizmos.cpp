@@ -30,7 +30,7 @@
 
 #include "spatial_editor_gizmos.h"
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/class_db.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"

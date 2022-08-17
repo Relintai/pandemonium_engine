@@ -39,13 +39,13 @@
 #include "core/os/os.h"
 #include "core/print_string.h"
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "core/containers/vmap.h"
 #include "scene/main/node.h"
 #include "scene/resources/texture.h"
 #include "servers/visual/shader_language.h"
 
-#include "core/method_ptrcall.h"
+#include "core/variant/method_ptrcall.h"
 
 namespace TestMath {
 

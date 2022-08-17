@@ -39,7 +39,7 @@
 #include "core/reference.h"
 #include "core/string_name.h"
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 
 class ImportDockParameters;
 class Button;

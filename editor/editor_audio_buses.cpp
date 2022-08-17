@@ -40,7 +40,7 @@
 #include "servers/audio_server.h"
 #include "core/project_settings.h"
 #include "core/class_db.h"
-#include "core/dictionary.h"
+#include "core/variant/dictionary.h"
 #include "core/error_list.h"
 #include "core/error_macros.h"
 #include "core/io/resource_loader.h"

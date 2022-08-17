@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/containers/vector.h"
 
 #include "../items/item_template.h"

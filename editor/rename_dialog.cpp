@@ -31,7 +31,7 @@
 #include "rename_dialog.h"
 
 #include "modules/modules_enabled.gen.h" // For regex.
-#include "core/array.h"
+#include "core/variant/array.h"
 #include "core/class_db.h"
 #include "core/math/color.h"
 #include "core/math/vector2.h"
@@ -39,7 +39,7 @@
 #include "core/reference.h"
 #include "core/string_name.h"
 #include "core/undo_redo.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "editor/editor_data.h"
 #include "editor/scene_tree_editor.h"
 #include "scene/gui/box_container.h"

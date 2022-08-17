@@ -44,7 +44,7 @@
 #include "core/math/vector2.h"
 #include "core/os/memory.h"
 #include "core/string_name.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "editor/editor_node.h"
 #include "scene/animation/animation_tree.h"
 #include "scene/gui/base_button.h"

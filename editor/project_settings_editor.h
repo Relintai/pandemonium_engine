@@ -36,7 +36,7 @@
 #include "core/os/input_event.h"
 #include "core/reference.h"
 #include "core/ustring.h"
-#include "core/variant.h"
+#include "core/variant/variant.h"
 #include "core/containers/vector.h"
 
 class Button;
