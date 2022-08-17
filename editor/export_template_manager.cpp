@@ -128,8 +128,8 @@ void ExportTemplateManager::_update_template_status() {
 		TreeItem *ti = installed_table->create_item(installed_root);
 		ti->set_text(0, version_string);
 
-		ti->add_button(0, get_icon("Folder", "EditorIcons"), OPEN_TEMPLATE_FOLDER, false, TTR("Open the folder containing these templates."));
-		ti->add_button(0, get_icon("Remove", "EditorIcons"), UNINSTALL_TEMPLATE, false, TTR("Uninstall these templates."));
+		ti->add_button(0, get_theme_icon("Folder", "EditorIcons"), OPEN_TEMPLATE_FOLDER, false, TTR("Open the folder containing these templates."));
+		ti->add_button(0, get_theme_icon("Remove", "EditorIcons"), UNINSTALL_TEMPLATE, false, TTR("Uninstall these templates."));
 	}
 
 	minimum_size_changed();
@@ -472,9 +472,9 @@ void ExportTemplateManager::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE:
 		case NOTIFICATION_THEME_CHANGED: {
-			current_value->add_font_override("font", get_font("bold", "EditorFonts"));
-			current_missing_label->add_color_override("font_color", get_color("error_color", "Editor"));
-			current_installed_label->add_color_override("font_color", get_color("disabled_font_color", "Editor"));
+			current_value->add_theme_font_override("font", get_theme_font("bold", "EditorFonts"));
+			current_missing_label->add_theme_color_override("font_color", get_theme_color("error_color", "Editor"));
+			current_installed_label->add_theme_color_override("font_color", get_theme_color("disabled_font_color", "Editor"));
 		} break;
 	}
 }

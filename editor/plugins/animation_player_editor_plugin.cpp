@@ -140,21 +140,21 @@ void AnimationPlayerEditor::_notification(int p_what) {
 
 			get_tree()->connect("node_removed", this, "_node_removed");
 
-			add_style_override("panel", editor->get_gui_base()->get_stylebox("panel", "Panel"));
+			add_theme_style_override("panel", editor->get_gui_base()->get_theme_stylebox("panel", "Panel"));
 		} break;
 		case EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED: {
-			add_style_override("panel", editor->get_gui_base()->get_stylebox("panel", "Panel"));
+			add_theme_style_override("panel", editor->get_gui_base()->get_theme_stylebox("panel", "Panel"));
 		} break;
 		case NOTIFICATION_THEME_CHANGED: {
-			autoplay->set_icon(get_icon("AutoPlay", "EditorIcons"));
+			autoplay->set_icon(get_theme_icon("AutoPlay", "EditorIcons"));
 
-			play->set_icon(get_icon("PlayStart", "EditorIcons"));
-			play_from->set_icon(get_icon("Play", "EditorIcons"));
-			play_bw->set_icon(get_icon("PlayStartBackwards", "EditorIcons"));
-			play_bw_from->set_icon(get_icon("PlayBackwards", "EditorIcons"));
+			play->set_icon(get_theme_icon("PlayStart", "EditorIcons"));
+			play_from->set_icon(get_theme_icon("Play", "EditorIcons"));
+			play_bw->set_icon(get_theme_icon("PlayStartBackwards", "EditorIcons"));
+			play_bw_from->set_icon(get_theme_icon("PlayBackwards", "EditorIcons"));
 
-			autoplay_icon = get_icon("AutoPlay", "EditorIcons");
-			reset_icon = get_icon("Reload", "EditorIcons");
+			autoplay_icon = get_theme_icon("AutoPlay", "EditorIcons");
+			reset_icon = get_theme_icon("Reload", "EditorIcons");
 			{
 				Ref<Image> autoplay_img = autoplay_icon->get_data();
 				Ref<Image> reset_img = reset_icon->get_data();
@@ -169,17 +169,17 @@ void AnimationPlayerEditor::_notification(int p_what) {
 				temp_icon->create_from_image(autoplay_reset_img);
 				autoplay_reset_icon = temp_icon;
 			}
-			stop->set_icon(get_icon("Stop", "EditorIcons"));
+			stop->set_icon(get_theme_icon("Stop", "EditorIcons"));
 
-			onion_toggle->set_icon(get_icon("Onion", "EditorIcons"));
-			onion_skinning->set_icon(get_icon("GuiTabMenuHl", "EditorIcons"));
+			onion_toggle->set_icon(get_theme_icon("Onion", "EditorIcons"));
+			onion_skinning->set_icon(get_theme_icon("GuiTabMenuHl", "EditorIcons"));
 
-			pin->set_icon(get_icon("Pin", "EditorIcons"));
+			pin->set_icon(get_theme_icon("Pin", "EditorIcons"));
 
-			tool_anim->add_style_override("normal", get_stylebox("normal", "Button"));
-			track_editor->get_edit_menu()->add_style_override("normal", get_stylebox("normal", "Button"));
+			tool_anim->add_theme_style_override("normal", get_theme_stylebox("normal", "Button"));
+			track_editor->get_edit_menu()->add_theme_style_override("normal", get_theme_stylebox("normal", "Button"));
 
-#define ITEM_ICON(m_item, m_icon) tool_anim->get_popup()->set_item_icon(tool_anim->get_popup()->get_item_index(m_item), get_icon(m_icon, "EditorIcons"))
+#define ITEM_ICON(m_item, m_icon) tool_anim->get_popup()->set_item_icon(tool_anim->get_popup()->get_item_index(m_item), get_theme_icon(m_icon, "EditorIcons"))
 
 			ITEM_ICON(TOOL_NEW_ANIM, "New");
 			ITEM_ICON(TOOL_LOAD_ANIM, "Load");

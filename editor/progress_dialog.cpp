@@ -146,7 +146,7 @@ ProgressDialog *ProgressDialog::singleton = nullptr;
 void ProgressDialog::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_DRAW: {
-			Ref<StyleBox> style = get_stylebox("panel", "PopupMenu");
+			Ref<StyleBox> style = get_theme_stylebox("panel", "PopupMenu");
 			draw_style_box(style, Rect2(Point2(), get_size()));
 
 		} break;
@@ -157,7 +157,7 @@ void ProgressDialog::_popup() {
 	Size2 ms = main->get_combined_minimum_size();
 	ms.width = MAX(500 * EDSCALE, ms.width);
 
-	Ref<StyleBox> style = get_stylebox("panel", "PopupMenu");
+	Ref<StyleBox> style = get_theme_stylebox("panel", "PopupMenu");
 	ms += style->get_minimum_size();
 	main->set_margin(MARGIN_LEFT, style->get_margin(MARGIN_LEFT));
 	main->set_margin(MARGIN_RIGHT, -style->get_margin(MARGIN_RIGHT));

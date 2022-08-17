@@ -86,7 +86,7 @@
 #define MAX_FOV 179
 
 void BoneTransformEditor::create_editors() {
-	const Color section_color = get_color("prop_subsection", "Editor");
+	const Color section_color = get_theme_color("prop_subsection", "Editor");
 
 	section = memnew(EditorInspectorSection);
 	section->setup("trf_properties", label, this, section_color, true);
@@ -649,7 +649,7 @@ void SkeletonEditor::update_joint_tree() {
 
 	items.insert(-1, root);
 
-	Ref<Texture> bone_icon = get_icon("Bone", "EditorIcons");
+	Ref<Texture> bone_icon = get_theme_icon("Bone", "EditorIcons");
 
 	Vector<int> bones_to_process = skeleton->get_parentless_bones();
 	while (bones_to_process.size() > 0) {
@@ -691,7 +691,7 @@ void SkeletonEditor::update_joint_tree() {
 
 	items.insert(-1, root);
 
-	Ref<Texture> bone_icon = get_icon("Bone", "EditorIcons");
+	Ref<Texture> bone_icon = get_theme_icon("Bone", "EditorIcons");
 
 	Vector<int> bones_to_process = skeleton->get_parentless_bones();
 	while (bones_to_process.size() > 0) {
@@ -724,7 +724,7 @@ void SkeletonEditor::update_editors() {
 
 void SkeletonEditor::create_editors() {
 	set_h_size_flags(SIZE_EXPAND_FILL);
-	add_constant_override("separation", 0);
+	add_theme_constant_override("separation", 0);
 
 	set_focus_mode(FOCUS_ALL);
 
@@ -740,7 +740,7 @@ void SkeletonEditor::create_editors() {
 	ne->add_control_to_menu_panel(skeleton_options);
 
 	skeleton_options->set_text(TTR("Skeleton"));
-	skeleton_options->set_icon(EditorNode::get_singleton()->get_gui_base()->get_icon("Skeleton", "EditorIcons"));
+	skeleton_options->set_icon(EditorNode::get_singleton()->get_gui_base()->get_theme_icon("Skeleton", "EditorIcons"));
 
 	PopupMenu *p = skeleton_options->get_popup();
 	p->add_shortcut(ED_SHORTCUT("skeleton_3d_editor/init_all_poses", TTR("Init all Poses")), SKELETON_OPTION_INIT_ALL_POSES);
@@ -821,7 +821,7 @@ void SkeletonEditor::create_editors() {
 
 	// Bone tree.
 
-	const Color section_color = get_color("prop_subsection", "Editor");
+	const Color section_color = get_theme_color("prop_subsection", "Editor");
 
 	EditorInspectorSection *bones_section = memnew(EditorInspectorSection);
 	bones_section->setup("bones", "Bones", skeleton, section_color, true);
@@ -855,12 +855,12 @@ void SkeletonEditor::create_editors() {
 void SkeletonEditor::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_READY: {
-			edit_mode_button->set_icon(get_icon("ToolBoneSelect", "EditorIcons"));
-			key_loc_button->set_icon(get_icon("KeyPosition", "EditorIcons"));
-			key_rot_button->set_icon(get_icon("KeyRotation", "EditorIcons"));
-			key_scale_button->set_icon(get_icon("KeyScale", "EditorIcons"));
-			key_insert_button->set_icon(get_icon("Key", "EditorIcons"));
-			key_insert_all_button->set_icon(get_icon("NewKey", "EditorIcons"));
+			edit_mode_button->set_icon(get_theme_icon("ToolBoneSelect", "EditorIcons"));
+			key_loc_button->set_icon(get_theme_icon("KeyPosition", "EditorIcons"));
+			key_rot_button->set_icon(get_theme_icon("KeyRotation", "EditorIcons"));
+			key_scale_button->set_icon(get_theme_icon("KeyScale", "EditorIcons"));
+			key_insert_button->set_icon(get_theme_icon("Key", "EditorIcons"));
+			key_insert_all_button->set_icon(get_theme_icon("NewKey", "EditorIcons"));
 
 			get_tree()->connect("node_removed", this, "_node_removed", Vector<Variant>(), Object::CONNECT_ONESHOT);
 			break;
@@ -975,7 +975,7 @@ SkeletonEditor::SkeletonEditor(EditorInspectorPluginSkeleton *e_plugin, EditorNo
 	// handle_material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
 	// handle_material->set_flag(SpatialMaterial::FLAG_USE_POINT_SIZE, true);
 	// handle_material->set_feature(SpatialMaterial::FEATURE_TRANSPARENT, true);
-	Ref<Texture> handle = editor->get_gui_base()->get_icon("EditorBoneHandle", "EditorIcons");
+	Ref<Texture> handle = editor->get_gui_base()->get_theme_icon("EditorBoneHandle", "EditorIcons");
 	handle_material->set_shader_param("point_size", handle->get_width());
 	handle_material->set_shader_param("texture_albedo", handle);
 	//handle_material->set_texture(SpatialMaterial::TEXTURE_ALBEDO, handle);
@@ -1007,7 +1007,7 @@ SkeletonEditor::SkeletonEditor(EditorInspectorPluginSkeleton *e_plugin, EditorNo
 				)");
 
 	handle_material->set_shader(handle_shader);
-	Ref<Texture> handle = editor->get_gui_base()->get_icon("EditorBoneHandle", "EditorIcons");
+	Ref<Texture> handle = editor->get_gui_base()->get_theme_icon("EditorBoneHandle", "EditorIcons");
 	handle_material->set_shader_param("point_size", handle->get_width());
 	handle_material->set_shader_param("texture_albedo", handle);
 
@@ -1542,9 +1542,9 @@ void SkeletonGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	int bone_shape = EditorSettings::get_singleton()->get("editors/3d_gizmos/gizmo_settings/bone_shape");
 
 	LocalVector<Color> axis_colors;
-	axis_colors.push_back(SpatialEditor::get_singleton()->get_color("axis_x_color", "Editor"));
-	axis_colors.push_back(SpatialEditor::get_singleton()->get_color("axis_y_color", "Editor"));
-	axis_colors.push_back(SpatialEditor::get_singleton()->get_color("axis_z_color", "Editor"));
+	axis_colors.push_back(SpatialEditor::get_singleton()->get_theme_color("axis_x_color", "Editor"));
+	axis_colors.push_back(SpatialEditor::get_singleton()->get_theme_color("axis_y_color", "Editor"));
+	axis_colors.push_back(SpatialEditor::get_singleton()->get_theme_color("axis_z_color", "Editor"));
 
 	Ref<SurfaceTool> surface_tool(memnew(SurfaceTool));
 	surface_tool->begin(Mesh::PRIMITIVE_LINES);

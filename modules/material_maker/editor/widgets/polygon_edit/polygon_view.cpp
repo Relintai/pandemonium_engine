@@ -51,8 +51,8 @@ void PolygonView::_draw() {
 	}
 
 	//	var current_theme : Theme = get_node("/root/MainWindow").theme;
-	//	var bg = current_theme.get_stylebox("panel", "Panel").bg_color;
-	//	var fg = current_theme.get_color("font_color", "Label");
+	//	var bg = current_theme.get_theme_stylebox("panel", "Panel").bg_color;
+	//	var fg = current_theme.get_theme_color("font_color", "Label");
 	//	var axes_color : Color = bg.linear_interpolate(fg, 0.25);
 	//	var curve_color : Color = bg.linear_interpolate(fg, 0.75);
 	Color axes_color = Color(0.9, 0.9, 0.9, 1);

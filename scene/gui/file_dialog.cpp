@@ -56,30 +56,30 @@ VBoxContainer *FileDialog::get_vbox() {
 void FileDialog::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
 		if (p_what == NOTIFICATION_ENTER_TREE) {
-			dir_up->set_icon(get_icon("parent_folder"));
-			refresh->set_icon(get_icon("reload"));
-			show_hidden->set_icon(get_icon("toggle_hidden"));
+			dir_up->set_icon(get_theme_icon("parent_folder"));
+			refresh->set_icon(get_theme_icon("reload"));
+			show_hidden->set_icon(get_theme_icon("toggle_hidden"));
 		}
 
-		Color font_color = get_color("font_color", "ToolButton");
-		Color font_color_hover = get_color("font_color_hover", "ToolButton");
-		Color font_color_focus = get_color("font_color_focus", "ToolButton");
-		Color font_color_pressed = get_color("font_color_pressed", "ToolButton");
+		Color font_color = get_theme_color("font_color", "ToolButton");
+		Color font_color_hover = get_theme_color("font_color_hover", "ToolButton");
+		Color font_color_focus = get_theme_color("font_color_focus", "ToolButton");
+		Color font_color_pressed = get_theme_color("font_color_pressed", "ToolButton");
 
-		dir_up->add_color_override("icon_color_normal", font_color);
-		dir_up->add_color_override("icon_color_hover", font_color_hover);
-		dir_up->add_color_override("font_color_focus", font_color_focus);
-		dir_up->add_color_override("icon_color_pressed", font_color_pressed);
+		dir_up->add_theme_color_override("icon_color_normal", font_color);
+		dir_up->add_theme_color_override("icon_color_hover", font_color_hover);
+		dir_up->add_theme_color_override("font_color_focus", font_color_focus);
+		dir_up->add_theme_color_override("icon_color_pressed", font_color_pressed);
 
-		refresh->add_color_override("icon_color_normal", font_color);
-		refresh->add_color_override("icon_color_hover", font_color_hover);
-		refresh->add_color_override("font_color_focus", font_color_focus);
-		refresh->add_color_override("icon_color_pressed", font_color_pressed);
+		refresh->add_theme_color_override("icon_color_normal", font_color);
+		refresh->add_theme_color_override("icon_color_hover", font_color_hover);
+		refresh->add_theme_color_override("font_color_focus", font_color_focus);
+		refresh->add_theme_color_override("icon_color_pressed", font_color_pressed);
 
-		show_hidden->add_color_override("icon_color_normal", font_color);
-		show_hidden->add_color_override("icon_color_hover", font_color_hover);
-		show_hidden->add_color_override("font_color_focus", font_color_focus);
-		show_hidden->add_color_override("icon_color_pressed", font_color_pressed);
+		show_hidden->add_theme_color_override("icon_color_normal", font_color);
+		show_hidden->add_theme_color_override("icon_color_hover", font_color_hover);
+		show_hidden->add_theme_color_override("font_color_focus", font_color_focus);
+		show_hidden->add_theme_color_override("icon_color_pressed", font_color_pressed);
 
 	} else if (p_what == NOTIFICATION_POPUP_HIDE) {
 		set_process_unhandled_input(false);
@@ -424,10 +424,10 @@ void FileDialog::update_file_list() {
 	dir_access->list_dir_begin();
 
 	TreeItem *root = tree->create_item();
-	Ref<Texture> folder = get_icon("folder");
-	Ref<Texture> file_icon = get_icon("file");
-	const Color folder_color = get_color("folder_icon_modulate");
-	const Color file_color = get_color("file_icon_modulate");
+	Ref<Texture> folder = get_theme_icon("folder");
+	Ref<Texture> file_icon = get_theme_icon("file");
+	const Color folder_color = get_theme_color("folder_icon_modulate");
+	const Color file_color = get_theme_color("file_icon_modulate");
 	List<String> files;
 	List<String> dirs;
 
@@ -525,7 +525,7 @@ void FileDialog::update_file_list() {
 			ti->set_icon_modulate(0, file_color);
 
 			if (mode == MODE_OPEN_DIR) {
-				ti->set_custom_color(0, get_color("files_disabled"));
+				ti->set_custom_color(0, get_theme_color("files_disabled"));
 				ti->set_selectable(0, false);
 			}
 			Dictionary d;

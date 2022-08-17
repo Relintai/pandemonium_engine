@@ -395,10 +395,10 @@ void MeshInstanceEditor::_debug_uv_draw() {
 	}
 
 	debug_uv->set_clip_contents(true);
-	debug_uv->draw_rect(Rect2(Vector2(), debug_uv->get_size()), get_color("dark_color_3", "Editor"));
+	debug_uv->draw_rect(Rect2(Vector2(), debug_uv->get_size()), get_theme_color("dark_color_3", "Editor"));
 	debug_uv->draw_set_transform(Vector2(), 0, debug_uv->get_size());
 	// Use a translucent color to allow overlapping triangles to be visible.
-	debug_uv->draw_multiline(uv_lines, get_color("mono_color", "Editor") * Color(1, 1, 1, 0.5), Math::round(EDSCALE));
+	debug_uv->draw_multiline(uv_lines, get_theme_color("mono_color", "Editor") * Color(1, 1, 1, 0.5), Math::round(EDSCALE));
 }
 
 void MeshInstanceEditor::_create_outline_mesh() {
@@ -458,7 +458,7 @@ MeshInstanceEditor::MeshInstanceEditor() {
 	SpatialEditor::get_singleton()->add_control_to_menu_panel(options);
 
 	options->set_text(TTR("Mesh"));
-	options->set_icon(EditorNode::get_singleton()->get_gui_base()->get_icon("MeshInstance", "EditorIcons"));
+	options->set_icon(EditorNode::get_singleton()->get_gui_base()->get_theme_icon("MeshInstance", "EditorIcons"));
 
 	options->get_popup()->add_item(TTR("Create Trimesh Static Body"), MENU_OPTION_CREATE_STATIC_TRIMESH_BODY);
 	options->get_popup()->set_item_tooltip(options->get_popup()->get_item_count() - 1, TTR("Creates a StaticBody and assigns a polygon-based collision shape to it automatically.\nThis is the most accurate (but slowest) option for collision detection."));

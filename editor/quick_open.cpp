@@ -150,8 +150,8 @@ void EditorQuickOpen::_parse_fs(EditorFileSystemDirectory *efsd, Vector<Pair<Str
 			if (ClassDB::is_parent_class(file_type, base_types[j]) && search_text.is_subsequence_ofi(file)) {
 				Pair<String, Ref<Texture>> pair;
 				pair.first = file;
-				StringName icon_name = search_options->has_icon(file_type, ei) ? file_type : ot;
-				pair.second = search_options->get_icon(icon_name, ei);
+				StringName icon_name = search_options->has_theme_icon(file_type, ei) ? file_type : ot;
+				pair.second = search_options->get_theme_icon(icon_name, ei);
 				list.push_back(pair);
 
 				// Stop testing base types as soon as we got a match.
@@ -238,7 +238,7 @@ void EditorQuickOpen::_notification(int p_what) {
 			FALLTHROUGH;
 		}
 		case NOTIFICATION_THEME_CHANGED: {
-			search_box->set_right_icon(get_icon("Search", "EditorIcons"));
+			search_box->set_right_icon(get_theme_icon("Search", "EditorIcons"));
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
 			disconnect("confirmed", this, "_confirmed");
@@ -271,7 +271,7 @@ EditorQuickOpen::EditorQuickOpen() {
 	search_options->connect("item_activated", this, "_confirmed");
 	search_options->set_hide_root(true);
 	search_options->set_hide_folding(true);
-	search_options->add_constant_override("draw_guides", 1);
+	search_options->add_theme_constant_override("draw_guides", 1);
 	vbc->add_margin_child(TTR("Matches:"), search_options, true);
 
 	get_ok()->set_text(TTR("Open"));

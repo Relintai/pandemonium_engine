@@ -225,12 +225,12 @@ void ThemeEditorPreview::_notification(int p_what) {
 			FALLTHROUGH;
 		}
 		case NOTIFICATION_THEME_CHANGED: {
-			picker_button->set_icon(get_icon("ColorPick", "EditorIcons"));
+			picker_button->set_icon(get_theme_icon("ColorPick", "EditorIcons"));
 
-			theme_cache.preview_picker_overlay = get_stylebox("preview_picker_overlay", "ThemeEditor");
-			theme_cache.preview_picker_overlay_color = get_color("preview_picker_overlay_color", "ThemeEditor");
-			theme_cache.preview_picker_label = get_stylebox("preview_picker_label", "ThemeEditor");
-			theme_cache.preview_picker_font = get_font("status_source", "EditorFonts");
+			theme_cache.preview_picker_overlay = get_theme_stylebox("preview_picker_overlay", "ThemeEditor");
+			theme_cache.preview_picker_overlay_color = get_theme_color("preview_picker_overlay_color", "ThemeEditor");
+			theme_cache.preview_picker_label = get_theme_stylebox("preview_picker_label", "ThemeEditor");
+			theme_cache.preview_picker_font = get_theme_font("status_source", "EditorFonts");
 		} break;
 		case NOTIFICATION_PROCESS: {
 			time_left -= get_process_delta_time();
@@ -290,10 +290,10 @@ ThemeEditorPreview::ThemeEditorPreview() {
 
 	preview_content = memnew(MarginContainer);
 	preview_root->add_child(preview_content);
-	preview_content->add_constant_override("margin_right", 4 * EDSCALE);
-	preview_content->add_constant_override("margin_top", 4 * EDSCALE);
-	preview_content->add_constant_override("margin_left", 4 * EDSCALE);
-	preview_content->add_constant_override("margin_bottom", 4 * EDSCALE);
+	preview_content->add_theme_constant_override("margin_right", 4 * EDSCALE);
+	preview_content->add_theme_constant_override("margin_top", 4 * EDSCALE);
+	preview_content->add_theme_constant_override("margin_left", 4 * EDSCALE);
+	preview_content->add_theme_constant_override("margin_bottom", 4 * EDSCALE);
 
 	preview_overlay = memnew(MarginContainer);
 	preview_overlay->set_mouse_filter(MOUSE_FILTER_IGNORE);
@@ -312,20 +312,20 @@ DefaultThemeEditorPreview::DefaultThemeEditorPreview() {
 	preview_content->add_child(main_panel);
 
 	MarginContainer *main_mc = memnew(MarginContainer);
-	main_mc->add_constant_override("margin_right", 4 * EDSCALE);
-	main_mc->add_constant_override("margin_top", 4 * EDSCALE);
-	main_mc->add_constant_override("margin_left", 4 * EDSCALE);
-	main_mc->add_constant_override("margin_bottom", 4 * EDSCALE);
+	main_mc->add_theme_constant_override("margin_right", 4 * EDSCALE);
+	main_mc->add_theme_constant_override("margin_top", 4 * EDSCALE);
+	main_mc->add_theme_constant_override("margin_left", 4 * EDSCALE);
+	main_mc->add_theme_constant_override("margin_bottom", 4 * EDSCALE);
 	preview_content->add_child(main_mc);
 
 	HBoxContainer *main_hb = memnew(HBoxContainer);
 	main_mc->add_child(main_hb);
-	main_hb->add_constant_override("separation", 20 * EDSCALE);
+	main_hb->add_theme_constant_override("separation", 20 * EDSCALE);
 
 	VBoxContainer *first_vb = memnew(VBoxContainer);
 	main_hb->add_child(first_vb);
 	first_vb->set_h_size_flags(SIZE_EXPAND_FILL);
-	first_vb->add_constant_override("separation", 10 * EDSCALE);
+	first_vb->add_theme_constant_override("separation", 10 * EDSCALE);
 
 	first_vb->add_child(memnew(Label("Label")));
 
@@ -386,7 +386,7 @@ DefaultThemeEditorPreview::DefaultThemeEditorPreview() {
 	VBoxContainer *second_vb = memnew(VBoxContainer);
 	second_vb->set_h_size_flags(SIZE_EXPAND_FILL);
 	main_hb->add_child(second_vb);
-	second_vb->add_constant_override("separation", 10 * EDSCALE);
+	second_vb->add_theme_constant_override("separation", 10 * EDSCALE);
 	LineEdit *le = memnew(LineEdit);
 	le->set_text("LineEdit");
 	second_vb->add_child(le);
@@ -426,7 +426,7 @@ DefaultThemeEditorPreview::DefaultThemeEditorPreview() {
 
 	VBoxContainer *third_vb = memnew(VBoxContainer);
 	third_vb->set_h_size_flags(SIZE_EXPAND_FILL);
-	third_vb->add_constant_override("separation", 10 * EDSCALE);
+	third_vb->add_theme_constant_override("separation", 10 * EDSCALE);
 	main_hb->add_child(third_vb);
 
 	TabContainer *tc = memnew(TabContainer);
@@ -504,7 +504,7 @@ void SceneThemeEditorPreview::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE:
 		case NOTIFICATION_THEME_CHANGED: {
-			reload_scene_button->set_icon(get_icon("Reload", "EditorIcons"));
+			reload_scene_button->set_icon(get_theme_icon("Reload", "EditorIcons"));
 		} break;
 	}
 }

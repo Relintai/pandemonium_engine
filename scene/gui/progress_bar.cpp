@@ -31,9 +31,9 @@
 #include "progress_bar.h"
 
 Size2 ProgressBar::get_minimum_size() const {
-	Ref<StyleBox> bg = get_stylebox("bg");
-	Ref<StyleBox> fg = get_stylebox("fg");
-	Ref<Font> font = get_font("font");
+	Ref<StyleBox> bg = get_theme_stylebox("bg");
+	Ref<StyleBox> fg = get_theme_stylebox("fg");
+	Ref<Font> font = get_theme_font("font");
 
 	Size2 minimum_size = bg->get_minimum_size();
 	minimum_size.height = MAX(minimum_size.height, fg->get_minimum_size().height);
@@ -49,10 +49,10 @@ Size2 ProgressBar::get_minimum_size() const {
 
 void ProgressBar::_notification(int p_what) {
 	if (p_what == NOTIFICATION_DRAW) {
-		Ref<StyleBox> bg = get_stylebox("bg");
-		Ref<StyleBox> fg = get_stylebox("fg");
-		Ref<Font> font = get_font("font");
-		Color font_color = get_color("font_color");
+		Ref<StyleBox> bg = get_theme_stylebox("bg");
+		Ref<StyleBox> fg = get_theme_stylebox("fg");
+		Ref<Font> font = get_theme_font("font");
+		Color font_color = get_theme_color("font_color");
 
 		draw_style_box(bg, Rect2(Point2(), get_size()));
 		float r = get_as_ratio();

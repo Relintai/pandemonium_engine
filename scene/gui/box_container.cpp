@@ -43,7 +43,7 @@ void BoxContainer::_resort() {
 
 	Size2i new_size = get_size();
 
-	int sep = get_constant("separation"); //,vertical?"VBoxContainer":"HBoxContainer");
+	int sep = get_theme_constant("separation"); //,vertical?"VBoxContainer":"HBoxContainer");
 
 	bool first = true;
 	int children_count = 0;
@@ -215,7 +215,7 @@ Size2 BoxContainer::get_minimum_size() const {
 	/* Calculate MINIMUM SIZE */
 
 	Size2i minimum;
-	int sep = get_constant("separation"); //,vertical?"VBoxContainer":"HBoxContainer");
+	int sep = get_theme_constant("separation"); //,vertical?"VBoxContainer":"HBoxContainer");
 
 	bool first = true;
 
@@ -317,7 +317,7 @@ MarginContainer *VBoxContainer::add_margin_child(const String &p_label, Control 
 	l->set_text(p_label);
 	add_child(l);
 	MarginContainer *mc = memnew(MarginContainer);
-	mc->add_constant_override("margin_left", 0);
+	mc->add_theme_constant_override("margin_left", 0);
 	mc->add_child(p_control);
 	add_child(mc);
 	if (p_expand) {

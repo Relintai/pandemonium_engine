@@ -33,14 +33,14 @@
 #include "servers/visual_server.h"
 
 Size2 CheckBox::get_icon_size() const {
-	Ref<Texture> checked = Control::get_icon("checked");
-	Ref<Texture> checked_disabled = Control::get_icon("checked_disabled");
-	Ref<Texture> unchecked = Control::get_icon("unchecked");
-	Ref<Texture> unchecked_disabled = Control::get_icon("unchecked_disabled");
-	Ref<Texture> radio_checked = Control::get_icon("radio_checked");
-	Ref<Texture> radio_unchecked = Control::get_icon("radio_unchecked");
-	Ref<Texture> radio_checked_disabled = Control::get_icon("radio_checked_disabled");
-	Ref<Texture> radio_unchecked_disabled = Control::get_icon("radio_unchecked_disabled");
+	Ref<Texture> checked = Control::get_theme_icon("checked");
+	Ref<Texture> checked_disabled = Control::get_theme_icon("checked_disabled");
+	Ref<Texture> unchecked = Control::get_theme_icon("unchecked");
+	Ref<Texture> unchecked_disabled = Control::get_theme_icon("unchecked_disabled");
+	Ref<Texture> radio_checked = Control::get_theme_icon("radio_checked");
+	Ref<Texture> radio_unchecked = Control::get_theme_icon("radio_unchecked");
+	Ref<Texture> radio_checked_disabled = Control::get_theme_icon("radio_checked_disabled");
+	Ref<Texture> radio_unchecked_disabled = Control::get_theme_icon("radio_unchecked_disabled");
 
 	Size2 tex_size = Size2(0, 0);
 	if (!checked.is_null()) {
@@ -75,9 +75,9 @@ Size2 CheckBox::get_minimum_size() const {
 	Size2 tex_size = get_icon_size();
 	minsize.width += tex_size.width;
 	if (get_text().length() > 0) {
-		minsize.width += get_constant("hseparation");
+		minsize.width += get_theme_constant("hseparation");
 	}
-	Ref<StyleBox> sb = get_stylebox("normal");
+	Ref<StyleBox> sb = get_theme_stylebox("normal");
 	minsize.height = MAX(minsize.height, tex_size.height + sb->get_margin(MARGIN_TOP) + sb->get_margin(MARGIN_BOTTOM));
 
 	return minsize;
@@ -89,13 +89,13 @@ void CheckBox::_notification(int p_what) {
 	} else if (p_what == NOTIFICATION_DRAW) {
 		RID ci = get_canvas_item();
 
-		Ref<Texture> on = Control::get_icon(vformat("%s%s", is_radio() ? "radio_checked" : "checked", is_disabled() ? "_disabled" : ""));
-		Ref<Texture> off = Control::get_icon(vformat("%s%s", is_radio() ? "radio_unchecked" : "unchecked", is_disabled() ? "_disabled" : ""));
-		Ref<StyleBox> sb = get_stylebox("normal");
+		Ref<Texture> on = Control::get_theme_icon(vformat("%s%s", is_radio() ? "radio_checked" : "checked", is_disabled() ? "_disabled" : ""));
+		Ref<Texture> off = Control::get_theme_icon(vformat("%s%s", is_radio() ? "radio_unchecked" : "unchecked", is_disabled() ? "_disabled" : ""));
+		Ref<StyleBox> sb = get_theme_stylebox("normal");
 
 		Vector2 ofs;
 		ofs.x = sb->get_margin(MARGIN_LEFT);
-		ofs.y = int((get_size().height - get_icon_size().height) / 2) + get_constant("check_vadjust");
+		ofs.y = int((get_size().height - get_icon_size().height) / 2) + get_theme_constant("check_vadjust");
 
 		if (is_pressed()) {
 			on->draw(ci, ofs);

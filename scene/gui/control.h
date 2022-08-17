@@ -427,40 +427,40 @@ public:
 
 	/* SKINNING */
 
-	void add_icon_override(const StringName &p_name, const Ref<Texture> &p_icon);
-	void add_shader_override(const StringName &p_name, const Ref<Shader> &p_shader);
-	void add_style_override(const StringName &p_name, const Ref<StyleBox> &p_style);
-	void add_font_override(const StringName &p_name, const Ref<Font> &p_font);
-	void add_color_override(const StringName &p_name, const Color &p_color);
-	void add_constant_override(const StringName &p_name, int p_constant);
+	void add_theme_icon_override(const StringName &p_name, const Ref<Texture> &p_icon);
+	void add_theme_shader_override(const StringName &p_name, const Ref<Shader> &p_shader);
+	void add_theme_style_override(const StringName &p_name, const Ref<StyleBox> &p_style);
+	void add_theme_font_override(const StringName &p_name, const Ref<Font> &p_font);
+	void add_theme_color_override(const StringName &p_name, const Color &p_color);
+	void add_theme_constant_override(const StringName &p_name, int p_constant);
 
-	void remove_icon_override(const StringName &p_name);
-	void remove_shader_override(const StringName &p_name);
-	void remove_stylebox_override(const StringName &p_name);
-	void remove_font_override(const StringName &p_name);
-	void remove_color_override(const StringName &p_name);
-	void remove_constant_override(const StringName &p_name);
+	void remove_theme_icon_override(const StringName &p_name);
+	void remove_theme_shader_override(const StringName &p_name);
+	void remove_theme_stylebox_override(const StringName &p_name);
+	void remove_theme_font_override(const StringName &p_name);
+	void remove_theme_color_override(const StringName &p_name);
+	void remove_theme_constant_override(const StringName &p_name);
 
-	Ref<Texture> get_icon(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
-	Ref<Shader> get_shader(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
-	Ref<StyleBox> get_stylebox(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
-	Ref<Font> get_font(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
-	Color get_color(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
-	int get_constant(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
+	Ref<Texture> get_theme_icon(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
+	Ref<Shader> get_theme_shader(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
+	Ref<StyleBox> get_theme_stylebox(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
+	Ref<Font> get_theme_font(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
+	Color get_theme_color(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
+	int get_theme_constant(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
 
-	bool has_icon_override(const StringName &p_name) const;
-	bool has_shader_override(const StringName &p_name) const;
-	bool has_stylebox_override(const StringName &p_name) const;
-	bool has_font_override(const StringName &p_name) const;
-	bool has_color_override(const StringName &p_name) const;
-	bool has_constant_override(const StringName &p_name) const;
+	bool has_theme_icon_override(const StringName &p_name) const;
+	bool has_theme_shader_override(const StringName &p_name) const;
+	bool has_theme_stylebox_override(const StringName &p_name) const;
+	bool has_theme_font_override(const StringName &p_name) const;
+	bool has_theme_color_override(const StringName &p_name) const;
+	bool has_theme_constant_override(const StringName &p_name) const;
 
-	bool has_icon(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
-	bool has_shader(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
-	bool has_stylebox(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
-	bool has_font(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
-	bool has_color(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
-	bool has_constant(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
+	bool has_theme_icon(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
+	bool has_theme_shader(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
+	bool has_theme_stylebox(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
+	bool has_theme_font(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
+	bool has_theme_color(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
+	bool has_theme_constant(const StringName &p_name, const StringName &p_theme_type = StringName()) const;
 
 	Ref<Font> get_theme_default_font() const;
 

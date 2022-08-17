@@ -122,10 +122,10 @@ void MDRUVRectEditor::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE:
 		case NOTIFICATION_THEME_CHANGED: {
-			horizontal_mirror_button->set_icon(get_icon("MirrorX", "EditorIcons"));
-			vertical_mirror_button->set_icon(get_icon("MirrorY", "EditorIcons"));
-			rotate_left_button->set_icon(get_icon("RotateLeft", "EditorIcons"));
-			rotate_right_button->set_icon(get_icon("RotateRight", "EditorIcons"));
+			horizontal_mirror_button->set_icon(get_theme_icon("MirrorX", "EditorIcons"));
+			vertical_mirror_button->set_icon(get_theme_icon("MirrorY", "EditorIcons"));
+			rotate_left_button->set_icon(get_theme_icon("RotateLeft", "EditorIcons"));
+			rotate_right_button->set_icon(get_theme_icon("RotateRight", "EditorIcons"));
 		} break;
 	}
 }

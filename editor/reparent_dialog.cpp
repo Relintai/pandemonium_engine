@@ -53,7 +53,7 @@ void ReparentDialog::_notification(int p_what) {
 
 	if (p_what == NOTIFICATION_DRAW) {
 		//RID ci = get_canvas_item();
-		//get_stylebox("panel","PopupMenu")->draw(ci,Rect2(Point2(),get_size()));
+		//get_theme_stylebox("panel","PopupMenu")->draw(ci,Rect2(Point2(),get_size()));
 	}
 }
 

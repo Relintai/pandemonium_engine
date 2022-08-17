@@ -69,8 +69,8 @@ void ScrollBar::_gui_input(Ref<InputEvent> p_event) {
 
 		if (b->is_pressed()) {
 			double ofs = orientation == VERTICAL ? b->get_position().y : b->get_position().x;
-			Ref<Texture> decr = get_icon("decrement");
-			Ref<Texture> incr = get_icon("increment");
+			Ref<Texture> decr = get_theme_icon("decrement");
+			Ref<Texture> incr = get_theme_icon("increment");
 
 			double decr_size = orientation == VERTICAL ? decr->get_height() : decr->get_width();
 			double incr_size = orientation == VERTICAL ? incr->get_height() : incr->get_width();
@@ -145,7 +145,7 @@ void ScrollBar::_gui_input(Ref<InputEvent> p_event) {
 
 		if (drag.active) {
 			double ofs = orientation == VERTICAL ? m->get_position().y : m->get_position().x;
-			Ref<Texture> decr = get_icon("decrement");
+			Ref<Texture> decr = get_theme_icon("decrement");
 
 			double decr_size = orientation == VERTICAL ? decr->get_height() : decr->get_width();
 			ofs -= decr_size;
@@ -155,8 +155,8 @@ void ScrollBar::_gui_input(Ref<InputEvent> p_event) {
 			set_as_ratio(drag.value_at_click + diff);
 		} else {
 			double ofs = orientation == VERTICAL ? m->get_position().y : m->get_position().x;
-			Ref<Texture> decr = get_icon("decrement");
-			Ref<Texture> incr = get_icon("increment");
+			Ref<Texture> decr = get_theme_icon("decrement");
+			Ref<Texture> incr = get_theme_icon("increment");
 
 			double decr_size = orientation == VERTICAL ? decr->get_height() : decr->get_width();
 			double incr_size = orientation == VERTICAL ? incr->get_height() : incr->get_width();
@@ -223,30 +223,30 @@ void ScrollBar::_notification(int p_what) {
 		Ref<Texture> decr, incr;
 
 		if (decr_active) {
-			decr = get_icon("decrement_pressed");
+			decr = get_theme_icon("decrement_pressed");
 		} else if (highlight == HIGHLIGHT_DECR) {
-			decr = get_icon("decrement_highlight");
+			decr = get_theme_icon("decrement_highlight");
 		} else {
-			decr = get_icon("decrement");
+			decr = get_theme_icon("decrement");
 		}
 
 		if (incr_active) {
-			incr = get_icon("increment_pressed");
+			incr = get_theme_icon("increment_pressed");
 		} else if (highlight == HIGHLIGHT_INCR) {
-			incr = get_icon("increment_highlight");
+			incr = get_theme_icon("increment_highlight");
 		} else {
-			incr = get_icon("increment");
+			incr = get_theme_icon("increment");
 		}
 
-		Ref<StyleBox> bg = has_focus() ? get_stylebox("scroll_focus") : get_stylebox("scroll");
+		Ref<StyleBox> bg = has_focus() ? get_theme_stylebox("scroll_focus") : get_theme_stylebox("scroll");
 
 		Ref<StyleBox> grabber;
 		if (drag.active) {
-			grabber = get_stylebox("grabber_pressed");
+			grabber = get_theme_stylebox("grabber_pressed");
 		} else if (highlight == HIGHLIGHT_RANGE) {
-			grabber = get_stylebox("grabber_highlight");
+			grabber = get_theme_stylebox("grabber_highlight");
 		} else {
-			grabber = get_stylebox("grabber");
+			grabber = get_theme_stylebox("grabber");
 		}
 
 		Point2 ofs;
@@ -410,7 +410,7 @@ void ScrollBar::_notification(int p_what) {
 }
 
 double ScrollBar::get_grabber_min_size() const {
-	Ref<StyleBox> grabber = get_stylebox("grabber");
+	Ref<StyleBox> grabber = get_theme_stylebox("grabber");
 	Size2 gminsize = grabber->get_minimum_size() + grabber->get_center_size();
 	return (orientation == VERTICAL) ? gminsize.height : gminsize.width;
 }
@@ -436,17 +436,17 @@ double ScrollBar::get_area_size() const {
 	switch (orientation) {
 		case VERTICAL: {
 			double area = get_size().height;
-			area -= get_stylebox("scroll")->get_minimum_size().height;
-			area -= get_icon("increment")->get_height();
-			area -= get_icon("decrement")->get_height();
+			area -= get_theme_stylebox("scroll")->get_minimum_size().height;
+			area -= get_theme_icon("increment")->get_height();
+			area -= get_theme_icon("decrement")->get_height();
 			area -= get_grabber_min_size();
 			return area;
 		} break;
 		case HORIZONTAL: {
 			double area = get_size().width;
-			area -= get_stylebox("scroll")->get_minimum_size().width;
-			area -= get_icon("increment")->get_width();
-			area -= get_icon("decrement")->get_width();
+			area -= get_theme_stylebox("scroll")->get_minimum_size().width;
+			area -= get_theme_icon("increment")->get_width();
+			area -= get_theme_icon("decrement")->get_width();
 			area -= get_grabber_min_size();
 			return area;
 		} break;
@@ -460,13 +460,13 @@ double ScrollBar::get_area_offset() const {
 	double ofs = 0;
 
 	if (orientation == VERTICAL) {
-		ofs += get_stylebox("hscroll")->get_margin(MARGIN_TOP);
-		ofs += get_icon("decrement")->get_height();
+		ofs += get_theme_stylebox("hscroll")->get_margin(MARGIN_TOP);
+		ofs += get_theme_icon("decrement")->get_height();
 	}
 
 	if (orientation == HORIZONTAL) {
-		ofs += get_stylebox("hscroll")->get_margin(MARGIN_LEFT);
-		ofs += get_icon("decrement")->get_width();
+		ofs += get_theme_stylebox("hscroll")->get_margin(MARGIN_LEFT);
+		ofs += get_theme_icon("decrement")->get_width();
 	}
 
 	return ofs;
@@ -489,9 +489,9 @@ double ScrollBar::get_grabber_offset() const {
 }
 
 Size2 ScrollBar::get_minimum_size() const {
-	Ref<Texture> incr = get_icon("increment");
-	Ref<Texture> decr = get_icon("decrement");
-	Ref<StyleBox> bg = get_stylebox("scroll");
+	Ref<Texture> incr = get_theme_icon("increment");
+	Ref<Texture> decr = get_theme_icon("decrement");
+	Ref<StyleBox> bg = get_theme_stylebox("scroll");
 	Size2 minsize;
 
 	if (orientation == VERTICAL) {

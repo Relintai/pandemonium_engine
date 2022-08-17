@@ -116,7 +116,7 @@ void EditorResourcePicker::_update_resource_preview(const String &p_path, const 
 	}
 
 	if (p_preview.is_valid()) {
-		preview_rect->set_margin(MARGIN_LEFT, assign_button->get_icon()->get_width() + assign_button->get_stylebox("normal")->get_default_margin(MARGIN_LEFT) + get_constant("hseparation", "Button"));
+		preview_rect->set_margin(MARGIN_LEFT, assign_button->get_icon()->get_width() + assign_button->get_theme_stylebox("normal")->get_default_margin(MARGIN_LEFT) + get_theme_constant("hseparation", "Button"));
 
 		if (type == "GradientTexture") {
 			preview_rect->set_stretch_mode(TextureRect::STRETCH_SCALE);
@@ -191,17 +191,17 @@ void EditorResourcePicker::_update_menu_items() {
 	set_create_options(edit_menu);
 
 	// Add an option to load a resource from a file using the QuickOpen dialog.
-	edit_menu->add_icon_item(get_icon("Load", "EditorIcons"), TTR("Quick Load"), OBJ_MENU_QUICKLOAD);
+	edit_menu->add_icon_item(get_theme_icon("Load", "EditorIcons"), TTR("Quick Load"), OBJ_MENU_QUICKLOAD);
 
 	// Add an option to load a resource from a file using the regular file dialog.
-	edit_menu->add_icon_item(get_icon("Load", "EditorIcons"), TTR("Load"), OBJ_MENU_LOAD);
+	edit_menu->add_icon_item(get_theme_icon("Load", "EditorIcons"), TTR("Load"), OBJ_MENU_LOAD);
 
 	// Add options for changing existing value of the resource.
 	if (edited_resource.is_valid()) {
-		edit_menu->add_icon_item(get_icon("Edit", "EditorIcons"), TTR("Edit"), OBJ_MENU_EDIT);
-		edit_menu->add_icon_item(get_icon("Clear", "EditorIcons"), TTR("Clear"), OBJ_MENU_CLEAR);
-		edit_menu->add_icon_item(get_icon("Duplicate", "EditorIcons"), TTR("Make Unique"), OBJ_MENU_MAKE_UNIQUE);
-		edit_menu->add_icon_item(get_icon("Save", "EditorIcons"), TTR("Save"), OBJ_MENU_SAVE);
+		edit_menu->add_icon_item(get_theme_icon("Edit", "EditorIcons"), TTR("Edit"), OBJ_MENU_EDIT);
+		edit_menu->add_icon_item(get_theme_icon("Clear", "EditorIcons"), TTR("Clear"), OBJ_MENU_CLEAR);
+		edit_menu->add_icon_item(get_theme_icon("Duplicate", "EditorIcons"), TTR("Make Unique"), OBJ_MENU_MAKE_UNIQUE);
+		edit_menu->add_icon_item(get_theme_icon("Save", "EditorIcons"), TTR("Save"), OBJ_MENU_SAVE);
 
 		if (edited_resource->get_path().is_resource_file()) {
 			edit_menu->add_separator();
@@ -246,10 +246,10 @@ void EditorResourcePicker::_update_menu_items() {
 		for (int i = 0; i < conversions.size(); i++) {
 			String what = conversions[i]->converts_to();
 			Ref<Texture> icon;
-			if (has_icon(what, "EditorIcons")) {
-				icon = get_icon(what, "EditorIcons");
+			if (has_theme_icon(what, "EditorIcons")) {
+				icon = get_theme_icon(what, "EditorIcons");
 			} else {
-				icon = get_icon(what, "Resource");
+				icon = get_theme_icon(what, "Resource");
 			}
 
 			edit_menu->add_icon_item(icon, vformat(TTR("Convert to %s"), what), CONVERT_BASE_ID + i);
@@ -460,7 +460,7 @@ void EditorResourcePicker::set_create_options(Object *p_menu_node) {
 			inheritors_array.push_back(t);
 
 			if (!icon.is_valid()) {
-				icon = get_icon(has_icon(t, "EditorIcons") ? t : "Object", "EditorIcons");
+				icon = get_theme_icon(has_theme_icon(t, "EditorIcons") ? t : "Object", "EditorIcons");
 			}
 
 			int id = TYPE_BASE_ID + idx;
@@ -485,7 +485,7 @@ bool EditorResourcePicker::handle_menu_selected(int p_which) {
 
 void EditorResourcePicker::_button_draw() {
 	if (dropping) {
-		Color color = get_color("accent_color", "Editor");
+		Color color = get_theme_color("accent_color", "Editor");
 		assign_button->draw_rect(Rect2(Point2(), assign_button->get_size()), color, false);
 	}
 }
@@ -737,11 +737,11 @@ void EditorResourcePicker::_notification(int p_what) {
 			FALLTHROUGH;
 		}
 		case NOTIFICATION_THEME_CHANGED: {
-			edit_button->set_icon(get_icon("select_arrow", "Tree"));
+			edit_button->set_icon(get_theme_icon("select_arrow", "Tree"));
 		} break;
 
 		case NOTIFICATION_DRAW: {
-			draw_style_box(get_stylebox("bg", "Tree"), Rect2(Point2(), get_size()));
+			draw_style_box(get_theme_stylebox("bg", "Tree"), Rect2(Point2(), get_size()));
 		} break;
 
 		case NOTIFICATION_DRAG_BEGIN: {
@@ -897,7 +897,7 @@ EditorResourcePicker::EditorResourcePicker() {
 	edit_menu->connect("id_pressed", this, "_edit_menu_cbk");
 	edit_menu->connect("popup_hide", edit_button, "set_pressed", varray(false));
 
-	add_constant_override("separation", 0);
+	add_theme_constant_override("separation", 0);
 }
 
 void EditorScriptPicker::set_create_options(Object *p_menu_node) {
@@ -906,11 +906,11 @@ void EditorScriptPicker::set_create_options(Object *p_menu_node) {
 		return;
 	}
 
-	menu_node->add_icon_item(get_icon("ScriptCreate", "EditorIcons"), TTR("New Script"), OBJ_MENU_NEW_SCRIPT);
+	menu_node->add_icon_item(get_theme_icon("ScriptCreate", "EditorIcons"), TTR("New Script"), OBJ_MENU_NEW_SCRIPT);
 	if (script_owner) {
 		Ref<Script> script = script_owner->get_script();
 		if (script.is_valid()) {
-			menu_node->add_icon_item(get_icon("ScriptExtend", "EditorIcons"), TTR("Extend Script"), OBJ_MENU_EXTEND_SCRIPT);
+			menu_node->add_icon_item(get_theme_icon("ScriptExtend", "EditorIcons"), TTR("Extend Script"), OBJ_MENU_EXTEND_SCRIPT);
 		}
 	}
 	menu_node->add_separator();

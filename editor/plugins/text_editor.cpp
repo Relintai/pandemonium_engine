@@ -69,10 +69,10 @@ void TextEditor::set_syntax_highlighter(SyntaxHighlighter *p_highlighter) {
 	// so to remove all colours we need to set and unset them here.
 	if (p_highlighter == nullptr) { // standard
 		TextEdit *text_edit = code_editor->get_text_edit();
-		text_edit->add_color_override("number_color", colors_cache.font_color);
-		text_edit->add_color_override("function_color", colors_cache.font_color);
-		text_edit->add_color_override("number_color", colors_cache.font_color);
-		text_edit->add_color_override("member_variable_color", colors_cache.font_color);
+		text_edit->add_theme_color_override("number_color", colors_cache.font_color);
+		text_edit->add_theme_color_override("function_color", colors_cache.font_color);
+		text_edit->add_theme_color_override("number_color", colors_cache.font_color);
+		text_edit->add_theme_color_override("member_variable_color", colors_cache.font_color);
 	} else {
 		_load_theme_settings();
 	}
@@ -125,35 +125,35 @@ void TextEditor::_load_theme_settings() {
 	Color comment_color = EDITOR_GET("text_editor/highlighting/comment_color");
 	Color string_color = EDITOR_GET("text_editor/highlighting/string_color");
 
-	text_edit->add_color_override("background_color", background_color);
-	text_edit->add_color_override("completion_background_color", completion_background_color);
-	text_edit->add_color_override("completion_selected_color", completion_selected_color);
-	text_edit->add_color_override("completion_existing_color", completion_existing_color);
-	text_edit->add_color_override("completion_scroll_color", completion_scroll_color);
-	text_edit->add_color_override("completion_font_color", completion_font_color);
-	text_edit->add_color_override("font_color", text_color);
-	text_edit->add_color_override("line_number_color", line_number_color);
-	text_edit->add_color_override("caret_color", caret_color);
-	text_edit->add_color_override("caret_background_color", caret_background_color);
-	text_edit->add_color_override("font_color_selected", text_selected_color);
-	text_edit->add_color_override("selection_color", selection_color);
-	text_edit->add_color_override("brace_mismatch_color", brace_mismatch_color);
-	text_edit->add_color_override("current_line_color", current_line_color);
-	text_edit->add_color_override("line_length_guideline_color", line_length_guideline_color);
-	text_edit->add_color_override("word_highlighted_color", word_highlighted_color);
-	text_edit->add_color_override("number_color", number_color);
-	text_edit->add_color_override("function_color", function_color);
-	text_edit->add_color_override("member_variable_color", member_variable_color);
-	text_edit->add_color_override("breakpoint_color", breakpoint_color);
-	text_edit->add_color_override("executing_line_color", executing_line_color);
-	text_edit->add_color_override("mark_color", mark_color);
-	text_edit->add_color_override("bookmark_color", bookmark_color);
-	text_edit->add_color_override("code_folding_color", code_folding_color);
-	text_edit->add_color_override("search_result_color", search_result_color);
-	text_edit->add_color_override("search_result_border_color", search_result_border_color);
-	text_edit->add_color_override("symbol_color", symbol_color);
+	text_edit->add_theme_color_override("background_color", background_color);
+	text_edit->add_theme_color_override("completion_background_color", completion_background_color);
+	text_edit->add_theme_color_override("completion_selected_color", completion_selected_color);
+	text_edit->add_theme_color_override("completion_existing_color", completion_existing_color);
+	text_edit->add_theme_color_override("completion_scroll_color", completion_scroll_color);
+	text_edit->add_theme_color_override("completion_font_color", completion_font_color);
+	text_edit->add_theme_color_override("font_color", text_color);
+	text_edit->add_theme_color_override("line_number_color", line_number_color);
+	text_edit->add_theme_color_override("caret_color", caret_color);
+	text_edit->add_theme_color_override("caret_background_color", caret_background_color);
+	text_edit->add_theme_color_override("font_color_selected", text_selected_color);
+	text_edit->add_theme_color_override("selection_color", selection_color);
+	text_edit->add_theme_color_override("brace_mismatch_color", brace_mismatch_color);
+	text_edit->add_theme_color_override("current_line_color", current_line_color);
+	text_edit->add_theme_color_override("line_length_guideline_color", line_length_guideline_color);
+	text_edit->add_theme_color_override("word_highlighted_color", word_highlighted_color);
+	text_edit->add_theme_color_override("number_color", number_color);
+	text_edit->add_theme_color_override("function_color", function_color);
+	text_edit->add_theme_color_override("member_variable_color", member_variable_color);
+	text_edit->add_theme_color_override("breakpoint_color", breakpoint_color);
+	text_edit->add_theme_color_override("executing_line_color", executing_line_color);
+	text_edit->add_theme_color_override("mark_color", mark_color);
+	text_edit->add_theme_color_override("bookmark_color", bookmark_color);
+	text_edit->add_theme_color_override("code_folding_color", code_folding_color);
+	text_edit->add_theme_color_override("search_result_color", search_result_color);
+	text_edit->add_theme_color_override("search_result_border_color", search_result_border_color);
+	text_edit->add_theme_color_override("symbol_color", symbol_color);
 
-	text_edit->add_constant_override("line_spacing", EDITOR_DEF("text_editor/theme/line_spacing", 6));
+	text_edit->add_theme_constant_override("line_spacing", EDITOR_DEF("text_editor/theme/line_spacing", 6));
 
 	colors_cache.font_color = text_color;
 	colors_cache.symbol_color = symbol_color;
@@ -616,7 +616,7 @@ TextEditor::TextEditor() {
 
 	code_editor = memnew(CodeTextEditor);
 	add_child(code_editor);
-	code_editor->add_constant_override("separation", 0);
+	code_editor->add_theme_constant_override("separation", 0);
 	code_editor->connect("load_theme_settings", this, "_load_theme_settings");
 	code_editor->connect("validate_script", this, "_validate_script");
 	code_editor->set_anchors_and_margins_preset(Control::PRESET_WIDE);

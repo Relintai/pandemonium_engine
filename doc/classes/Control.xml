@@ -11,7 +11,7 @@
 		Only one [Control] node can be in keyboard focus. Only the node in focus will receive keyboard events. To get the focus, call [method grab_focus]. [Control] nodes lose focus when another node grabs it, or if you hide the node in focus.
 		Sets [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] to tell a [Control] node to ignore mouse or touch events. You'll need it if you place an icon on top of a button.
 		[Theme] resources change the Control's appearance. If you change the [Theme] on a [Control] node, it affects all of its children. To override some of the theme's parameters, call one of the [code]add_*_override[/code] methods, like [method add_font_override]. You can override the theme with the inspector.
-		[b]Note:[/b] Theme items are [i]not[/i] [Object] properties. This means you can't access their values using [method Object.get] and [method Object.set]. Instead, use [method get_color], [method get_constant], [method get_font], [method get_icon], [method get_stylebox], and the [code]add_*_override[/code] methods provided by this class.
+		[b]Note:[/b] Theme items are [i]not[/i] [Object] properties. This means you can't access their values using [method Object.get] and [method Object.set]. Instead, use [method get_theme_color], [method get_theme_constant], [method get_theme_font], [method get_theme_icon], [method get_theme_stylebox], and the [code]add_*_override[/code] methods provided by this class.
 	</description>
 	<tutorials>
 		<link title="GUI tutorial index">$DOCS_URL/tutorials/ui/index.html</link>
@@ -86,42 +86,42 @@
 				Marks an input event as handled. Once you accept an input event, it stops propagating, even to nodes listening to [method Node._unhandled_input] or [method Node._unhandled_key_input].
 			</description>
 		</method>
-		<method name="add_color_override">
+		<method name="add_theme_color_override">
 			<return type="void" />
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="color" type="Color" />
 			<description>
 			</description>
 		</method>
-		<method name="add_constant_override">
+		<method name="add_theme_constant_override">
 			<return type="void" />
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="constant" type="int" />
 			<description>
 			</description>
 		</method>
-		<method name="add_font_override">
+		<method name="add_theme_font_override">
 			<return type="void" />
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="font" type="Font" />
 			<description>
 			</description>
 		</method>
-		<method name="add_icon_override">
+		<method name="add_theme_icon_override">
 			<return type="void" />
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="texture" type="Texture" />
 			<description>
 			</description>
 		</method>
-		<method name="add_shader_override">
+		<method name="add_theme_shader_override">
 			<return type="void" />
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="shader" type="Shader" />
 			<description>
 			</description>
 		</method>
-		<method name="add_stylebox_override">
+		<method name="add_theme_stylebox_override">
 			<return type="void" />
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="stylebox" type="StyleBox" />
@@ -192,7 +192,7 @@
 				Returns [member margin_left] and [member margin_top]. See also [member rect_position].
 			</description>
 		</method>
-		<method name="get_color" qualifiers="const">
+		<method name="get_theme_color" qualifiers="const">
 			<return type="Color" />
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="theme_type" type="StringName" default="&quot;&quot;" />
@@ -205,7 +205,7 @@
 				Returns combined minimum size from [member rect_min_size] and [method get_minimum_size].
 			</description>
 		</method>
-		<method name="get_constant" qualifiers="const">
+		<method name="get_theme_constant" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="theme_type" type="StringName" default="&quot;&quot;" />
@@ -252,7 +252,7 @@
 				Returns the control that has the keyboard focus or [code]null[/code] if none.
 			</description>
 		</method>
-		<method name="get_font" qualifiers="const">
+		<method name="get_theme_font" qualifiers="const">
 			<return type="Font" />
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="theme_type" type="StringName" default="&quot;&quot;" />
@@ -265,7 +265,7 @@
 				Returns the position and size of the control relative to the top-left corner of the screen. See [member rect_position] and [member rect_size].
 			</description>
 		</method>
-		<method name="get_icon" qualifiers="const">
+		<method name="get_theme_icon" qualifiers="const">
 			<return type="Texture" />
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="theme_type" type="StringName" default="&quot;&quot;" />
@@ -309,7 +309,7 @@
 				Returns the rotation (in radians).
 			</description>
 		</method>
-		<method name="get_stylebox" qualifiers="const">
+		<method name="get_theme_stylebox" qualifiers="const">
 			<return type="StyleBox" />
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="theme_type" type="StringName" default="&quot;&quot;" />
@@ -346,27 +346,27 @@
 				Steal the focus from another control and become the focused control (see [member focus_mode]).
 			</description>
 		</method>
-		<method name="has_color" qualifiers="const">
+		<method name="has_theme_color" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="theme_type" type="StringName" default="&quot;&quot;" />
 			<description>
 			</description>
 		</method>
-		<method name="has_color_override" qualifiers="const">
+		<method name="has_theme_color_override" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
 			</description>
 		</method>
-		<method name="has_constant" qualifiers="const">
+		<method name="has_theme_constant" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="theme_type" type="StringName" default="&quot;&quot;" />
 			<description>
 			</description>
 		</method>
-		<method name="has_constant_override" qualifiers="const">
+		<method name="has_theme_constant_override" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
@@ -378,27 +378,27 @@
 				Returns [code]true[/code] if this is the current focused control. See [member focus_mode].
 			</description>
 		</method>
-		<method name="has_font" qualifiers="const">
+		<method name="has_theme_font" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="theme_type" type="StringName" default="&quot;&quot;" />
 			<description>
 			</description>
 		</method>
-		<method name="has_font_override" qualifiers="const">
+		<method name="has_theme_font_override" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
 			</description>
 		</method>
-		<method name="has_icon" qualifiers="const">
+		<method name="has_theme_icon" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="theme_type" type="StringName" default="&quot;&quot;" />
 			<description>
 			</description>
 		</method>
-		<method name="has_icon_override" qualifiers="const">
+		<method name="has_theme_icon_override" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
@@ -413,20 +413,20 @@
 				[b]Note:[/b] If you want to check if a point is inside the control, you can use [code]get_rect().has_point(point)[/code].
 			</description>
 		</method>
-		<method name="has_shader_override" qualifiers="const">
+		<method name="has_theme_shader_override" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
 			</description>
 		</method>
-		<method name="has_stylebox" qualifiers="const">
+		<method name="has_theme_stylebox" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="theme_type" type="StringName" default="&quot;&quot;" />
 			<description>
 			</description>
 		</method>
-		<method name="has_stylebox_override" qualifiers="const">
+		<method name="has_theme_stylebox_override" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
@@ -451,37 +451,37 @@
 				Give up the focus. No other control will be able to receive keyboard input.
 			</description>
 		</method>
-		<method name="remove_color_override">
+		<method name="remove_theme_color_override">
 			<return type="void" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
 			</description>
 		</method>
-		<method name="remove_constant_override">
+		<method name="remove_theme_constant_override">
 			<return type="void" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
 			</description>
 		</method>
-		<method name="remove_font_override">
+		<method name="remove_theme_font_override">
 			<return type="void" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
 			</description>
 		</method>
-		<method name="remove_icon_override">
+		<method name="remove_theme_icon_override">
 			<return type="void" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
 			</description>
 		</method>
-		<method name="remove_shader_override">
+		<method name="remove_theme_shader_override">
 			<return type="void" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
 			</description>
 		</method>
-		<method name="remove_stylebox_override">
+		<method name="remove_theme_stylebox_override">
 			<return type="void" />
 			<argument index="0" name="name" type="StringName" />
 			<description>

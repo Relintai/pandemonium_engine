@@ -1588,7 +1588,7 @@ void Viewport::_gui_show_tooltip() {
 		gui.tooltip_label = memnew(TooltipLabel);
 		gui.tooltip_popup->add_child(gui.tooltip_label);
 
-		Ref<StyleBox> ttp = gui.tooltip_label->get_stylebox("panel", "TooltipPanel");
+		Ref<StyleBox> ttp = gui.tooltip_label->get_theme_stylebox("panel", "TooltipPanel");
 
 		gui.tooltip_label->set_anchor_and_margin(MARGIN_LEFT, Control::ANCHOR_BEGIN, ttp->get_margin(MARGIN_LEFT));
 		gui.tooltip_label->set_anchor_and_margin(MARGIN_TOP, Control::ANCHOR_BEGIN, ttp->get_margin(MARGIN_TOP));

@@ -73,7 +73,7 @@ void CreateDialog::popup_create(bool p_dont_clear, bool p_replace_mode, const St
 	if (f) {
 		TreeItem *root = recent->create_item();
 
-		String icon_fallback = has_icon(base_type, "EditorIcons") ? base_type : "Object";
+		String icon_fallback = has_theme_icon(base_type, "EditorIcons") ? base_type : "Object";
 
 		while (!f->eof_reached()) {
 			String l = f->get_line().strip_edges();
@@ -209,7 +209,7 @@ void CreateDialog::add_type(const String &p_type, HashMap<String, TreeItem *> &p
 		item->set_text(0, p_type + " (" + ScriptServer::get_global_class_path(p_type).get_file() + ")");
 	}
 	if (!can_instance) {
-		item->set_custom_color(0, get_color("disabled_font_color", "Editor"));
+		item->set_custom_color(0, get_theme_color("disabled_font_color", "Editor"));
 		item->set_selectable(0, false);
 	} else if (!(*to_select && (*to_select)->get_text(0) == search_box->get_text())) {
 		String search_term = search_box->get_text().to_lower();
@@ -267,7 +267,7 @@ void CreateDialog::add_type(const String &p_type, HashMap<String, TreeItem *> &p
 	const String &description = DTR(EditorHelp::get_doc_data()->class_list[p_type].brief_description);
 	item->set_tooltip(0, description);
 
-	String icon_fallback = has_icon(base_type, "EditorIcons") ? base_type : "Object";
+	String icon_fallback = has_theme_icon(base_type, "EditorIcons") ? base_type : "Object";
 	item->set_icon(0, EditorNode::get_singleton()->get_class_icon(p_type, icon_fallback));
 
 	p_types[p_type] = item;
@@ -317,8 +317,8 @@ void CreateDialog::_update_search() {
 	EditorData &ed = EditorNode::get_editor_data();
 
 	root->set_text(0, base_type);
-	String base_icon = has_icon(base_type, "EditorIcons") ? base_type : "Object";
-	root->set_icon(0, get_icon(base_icon, "EditorIcons"));
+	String base_icon = has_theme_icon(base_type, "EditorIcons") ? base_type : "Object";
+	root->set_icon(0, get_theme_icon(base_icon, "EditorIcons"));
 
 	TreeItem *to_select = search_box->get_text() == base_type ? root : nullptr;
 
@@ -403,7 +403,7 @@ void CreateDialog::_update_search() {
 				TreeItem *item = search_options->create_item(ti);
 				item->set_metadata(0, type);
 				item->set_text(0, ct[i].name);
-				item->set_icon(0, ct[i].icon.is_valid() ? ct[i].icon : get_icon(base_icon, "EditorIcons"));
+				item->set_icon(0, ct[i].icon.is_valid() ? ct[i].icon : get_theme_icon(base_icon, "EditorIcons"));
 
 				if (!to_select || ct[i].name == search_box->get_text()) {
 					to_select = item;
@@ -465,9 +465,9 @@ void CreateDialog::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
 			connect("confirmed", this, "_confirmed");
-			search_box->set_right_icon(get_icon("Search", "EditorIcons"));
+			search_box->set_right_icon(get_theme_icon("Search", "EditorIcons"));
 			search_box->set_clear_button_enabled(true);
-			favorite->set_icon(get_icon("Favorites", "EditorIcons"));
+			favorite->set_icon(get_theme_icon("Favorites", "EditorIcons"));
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
 			disconnect("confirmed", this, "_confirmed");
@@ -615,7 +615,7 @@ void CreateDialog::_update_favorite_list() {
 
 	TreeItem *root = favorites->create_item();
 
-	String icon_fallback = has_icon(base_type, "EditorIcons") ? base_type : "Object";
+	String icon_fallback = has_theme_icon(base_type, "EditorIcons") ? base_type : "Object";
 
 	for (int i = 0; i < favorite_list.size(); i++) {
 		String l = favorite_list[i];
@@ -783,7 +783,7 @@ CreateDialog::CreateDialog() {
 	favorites->connect("cell_selected", this, "_favorite_selected");
 	favorites->connect("item_activated", this, "_favorite_activated");
 	favorites->set_drag_forwarding(this);
-	favorites->add_constant_override("draw_guides", 1);
+	favorites->add_theme_constant_override("draw_guides", 1);
 
 	VBoxContainer *rec_vb = memnew(VBoxContainer);
 	vsc->add_child(rec_vb);
@@ -797,7 +797,7 @@ CreateDialog::CreateDialog() {
 	recent->set_allow_reselect(true);
 	recent->connect("cell_selected", this, "_history_selected");
 	recent->connect("item_activated", this, "_history_activated");
-	recent->add_constant_override("draw_guides", 1);
+	recent->add_theme_constant_override("draw_guides", 1);
 
 	VBoxContainer *vbc = memnew(VBoxContainer);
 	hsc->add_child(vbc);

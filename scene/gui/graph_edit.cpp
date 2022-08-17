@@ -167,7 +167,7 @@ void GraphEditMinimap::_gui_input(const Ref<InputEvent> &p_ev) {
 		if (mb->is_pressed()) {
 			is_pressing = true;
 
-			Ref<Texture> resizer = get_icon("resizer");
+			Ref<Texture> resizer = get_theme_icon("resizer");
 			Rect2 resizer_hitbox = Rect2(Point2(), resizer->get_size());
 			if (resizer_hitbox.has_point(mb->get_position())) {
 				is_resizing = true;
@@ -451,14 +451,14 @@ void GraphEdit::remove_child_notify(Node *p_child) {
 
 void GraphEdit::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
-		port_grab_distance_horizontal = get_constant("port_grab_distance_horizontal");
-		port_grab_distance_vertical = get_constant("port_grab_distance_vertical");
+		port_grab_distance_horizontal = get_theme_constant("port_grab_distance_horizontal");
+		port_grab_distance_vertical = get_theme_constant("port_grab_distance_vertical");
 
-		zoom_minus->set_icon(get_icon("minus"));
-		zoom_reset->set_icon(get_icon("reset"));
-		zoom_plus->set_icon(get_icon("more"));
-		snap_button->set_icon(get_icon("snap"));
-		minimap_button->set_icon(get_icon("minimap"));
+		zoom_minus->set_icon(get_theme_icon("minus"));
+		zoom_reset->set_icon(get_theme_icon("reset"));
+		zoom_plus->set_icon(get_theme_icon("more"));
+		snap_button->set_icon(get_theme_icon("snap"));
+		minimap_button->set_icon(get_theme_icon("minimap"));
 	}
 	if (p_what == NOTIFICATION_READY) {
 		Size2 hmin = h_scroll->get_combined_minimum_size();
@@ -475,7 +475,7 @@ void GraphEdit::_notification(int p_what) {
 		v_scroll->set_anchor_and_margin(MARGIN_BOTTOM, ANCHOR_END, 0);
 	}
 	if (p_what == NOTIFICATION_DRAW) {
-		draw_style_box(get_stylebox("bg"), Rect2(Point2(), get_size()));
+		draw_style_box(get_theme_stylebox("bg"), Rect2(Point2(), get_size()));
 
 		if (is_using_snap()) {
 			//draw grid
@@ -488,8 +488,8 @@ void GraphEdit::_notification(int p_what) {
 			Point2i from = (offset / float(snap)).floor();
 			Point2i len = (size / float(snap)).floor() + Vector2(1, 1);
 
-			Color grid_minor = get_color("grid_minor");
-			Color grid_major = get_color("grid_major");
+			Color grid_minor = get_theme_color("grid_minor");
+			Color grid_major = get_theme_color("grid_major");
 
 			for (int i = from.x; i < from.x + len.x; i++) {
 				Color color;
@@ -527,7 +527,7 @@ void GraphEdit::_notification(int p_what) {
 }
 
 bool GraphEdit::_filter_input(const Point2 &p_point) {
-	Ref<Texture> port = get_icon("port", "GraphNode");
+	Ref<Texture> port = get_theme_icon("port", "GraphNode");
 	Vector2i port_size = Vector2i(port->get_width(), port->get_height());
 
 	for (int i = get_child_count() - 1; i >= 0; i--) {
@@ -557,7 +557,7 @@ bool GraphEdit::_filter_input(const Point2 &p_point) {
 void GraphEdit::_top_layer_input(const Ref<InputEvent> &p_ev) {
 	Ref<InputEventMouseButton> mb = p_ev;
 	if (mb.is_valid() && mb->get_button_index() == BUTTON_LEFT && mb->is_pressed()) {
-		Ref<Texture> port = get_icon("port", "GraphNode");
+		Ref<Texture> port = get_theme_icon("port", "GraphNode");
 		Vector2i port_size = Vector2i(port->get_width(), port->get_height());
 
 		connecting_valid = false;
@@ -664,7 +664,7 @@ void GraphEdit::_top_layer_input(const Ref<InputEvent> &p_ev) {
 		connecting_valid = just_disconnected || click_pos.distance_to(connecting_to / zoom) > 20.0;
 
 		if (connecting_valid) {
-			Ref<Texture> port = get_icon("port", "GraphNode");
+			Ref<Texture> port = get_theme_icon("port", "GraphNode");
 			Vector2i port_size = Vector2i(port->get_width(), port->get_height());
 
 			Vector2 mpos = mm->get_position() / zoom;
@@ -849,8 +849,8 @@ void GraphEdit::_draw_cos_line(CanvasItem *p_where, const Vector2 &p_from, const
 	//cubic bezier code
 	float diff = p_to.x - p_from.x;
 	float cp_offset;
-	int cp_len = get_constant("bezier_len_pos") * p_bezier_ratio;
-	int cp_neg_len = get_constant("bezier_len_neg") * p_bezier_ratio;
+	int cp_len = get_theme_constant("bezier_len_pos") * p_bezier_ratio;
+	int cp_neg_len = get_theme_constant("bezier_len_neg") * p_bezier_ratio;
 
 	if (diff > 0) {
 		cp_offset = MIN(cp_len, diff * 0.5);
@@ -879,7 +879,7 @@ void GraphEdit::_draw_cos_line(CanvasItem *p_where, const Vector2 &p_from, const
 }
 
 void GraphEdit::_connections_layer_draw() {
-	Color activity_color = get_color("activity");
+	Color activity_color = get_theme_color("activity");
 	//draw connections
 	List<List<Connection>::Element *> to_erase;
 	for (List<Connection>::Element *E = connections.front(); E; E = E->next()) {
@@ -964,8 +964,8 @@ void GraphEdit::_top_layer_draw() {
 	}
 
 	if (box_selecting) {
-		top_layer->draw_rect(box_selecting_rect, get_color("selection_fill"));
-		top_layer->draw_rect(box_selecting_rect, get_color("selection_stroke"), false);
+		top_layer->draw_rect(box_selecting_rect, get_theme_color("selection_fill"));
+		top_layer->draw_rect(box_selecting_rect, get_theme_color("selection_stroke"), false);
 	}
 }
 
@@ -978,7 +978,7 @@ void GraphEdit::_minimap_draw() {
 
 	// Draw the minimap background.
 	Rect2 minimap_rect = Rect2(Point2(), minimap->get_size());
-	minimap->draw_style_box(minimap->get_stylebox("bg"), minimap_rect);
+	minimap->draw_style_box(minimap->get_theme_stylebox("bg"), minimap_rect);
 
 	Vector2 graph_offset = minimap->_get_graph_offset();
 	Vector2 minimap_offset = minimap->minimap_offset;
@@ -994,10 +994,10 @@ void GraphEdit::_minimap_draw() {
 		Vector2 node_size = minimap->_convert_from_graph_position(gn->get_size() * zoom);
 		Rect2 node_rect = Rect2(node_position, node_size);
 
-		Ref<StyleBoxFlat> sb_minimap = minimap->get_stylebox("node")->duplicate();
+		Ref<StyleBoxFlat> sb_minimap = minimap->get_theme_stylebox("node")->duplicate();
 
 		// Override default values with colors provided by the GraphNode's stylebox, if possible.
-		Ref<StyleBoxFlat> sbf = gn->get_stylebox(gn->is_selected() ? "commentfocus" : "comment");
+		Ref<StyleBoxFlat> sbf = gn->get_theme_stylebox(gn->is_selected() ? "commentfocus" : "comment");
 		if (sbf.is_valid()) {
 			Color node_color = sbf->get_bg_color();
 			sb_minimap->set_bg_color(node_color);
@@ -1017,10 +1017,10 @@ void GraphEdit::_minimap_draw() {
 		Vector2 node_size = minimap->_convert_from_graph_position(gn->get_size() * zoom);
 		Rect2 node_rect = Rect2(node_position, node_size);
 
-		Ref<StyleBoxFlat> sb_minimap = minimap->get_stylebox("node")->duplicate();
+		Ref<StyleBoxFlat> sb_minimap = minimap->get_theme_stylebox("node")->duplicate();
 
 		// Override default values with colors provided by the GraphNode's stylebox, if possible.
-		Ref<StyleBoxFlat> sbf = gn->get_stylebox(gn->is_selected() ? "selectedframe" : "frame");
+		Ref<StyleBoxFlat> sbf = gn->get_theme_stylebox(gn->is_selected() ? "selectedframe" : "frame");
 		if (sbf.is_valid()) {
 			Color node_color = sbf->get_border_color();
 			sb_minimap->set_bg_color(node_color);
@@ -1030,7 +1030,7 @@ void GraphEdit::_minimap_draw() {
 	}
 
 	// Draw node connections.
-	Color activity_color = get_color("activity");
+	Color activity_color = get_theme_color("activity");
 	for (List<Connection>::Element *E = connections.front(); E; E = E->next()) {
 		NodePath fromnp(E->get().from);
 
@@ -1069,11 +1069,11 @@ void GraphEdit::_minimap_draw() {
 
 	// Draw the "camera" viewport.
 	Rect2 camera_rect = minimap->get_camera_rect();
-	minimap->draw_style_box(minimap->get_stylebox("camera"), camera_rect);
+	minimap->draw_style_box(minimap->get_theme_stylebox("camera"), camera_rect);
 
 	// Draw the resizer control.
-	Ref<Texture> resizer = minimap->get_icon("resizer");
-	Color resizer_color = minimap->get_color("resizer_color");
+	Ref<Texture> resizer = minimap->get_theme_icon("resizer");
+	Color resizer_color = minimap->get_theme_color("resizer_color");
 	minimap->draw_texture(resizer, Point2(), resizer_color);
 }
 

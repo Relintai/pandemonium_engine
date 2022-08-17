@@ -2883,9 +2883,9 @@ void CanvasItemEditor::_gui_input_viewport(const Ref<InputEvent> &p_event) {
 }
 
 void CanvasItemEditor::_draw_text_at_position(Point2 p_position, String p_string, Margin p_side) {
-	Color color = get_color("font_color", "Editor");
+	Color color = get_theme_color("font_color", "Editor");
 	color.a = 0.8;
-	Ref<Font> font = get_font("font", "Label");
+	Ref<Font> font = get_theme_font("font", "Label");
 	Size2 text_size = font->get_string_size(p_string);
 	switch (p_side) {
 		case MARGIN_LEFT:
@@ -2921,7 +2921,7 @@ void CanvasItemEditor::_draw_percentage_at_position(float p_value, Point2 p_posi
 void CanvasItemEditor::_draw_focus() {
 	// Draw the focus around the base viewport
 	if (viewport->has_focus()) {
-		get_stylebox("Focus", "EditorStyles")->draw(viewport->get_canvas_item(), Rect2(Point2(), viewport->get_size()));
+		get_theme_stylebox("Focus", "EditorStyles")->draw(viewport->get_canvas_item(), Rect2(Point2(), viewport->get_size()));
 	}
 }
 
@@ -2953,18 +2953,18 @@ void CanvasItemEditor::_draw_guides() {
 	}
 
 	// Dragged guide
-	Color text_color = get_color("font_color", "Editor");
+	Color text_color = get_theme_color("font_color", "Editor");
 	text_color.a = 0.5;
 	if (drag_type == DRAG_DOUBLE_GUIDE || drag_type == DRAG_V_GUIDE) {
 		String str = vformat("%d px", Math::round(xform.affine_inverse().xform(dragged_guide_pos).x));
-		Ref<Font> font = get_font("font", "Label");
+		Ref<Font> font = get_theme_font("font", "Label");
 		Size2 text_size = font->get_string_size(str);
 		viewport->draw_string(font, Point2(dragged_guide_pos.x + 10, RULER_WIDTH + text_size.y / 2 + 10), str, text_color);
 		viewport->draw_line(Point2(dragged_guide_pos.x, 0), Point2(dragged_guide_pos.x, viewport->get_size().y), guide_color, Math::round(EDSCALE));
 	}
 	if (drag_type == DRAG_DOUBLE_GUIDE || drag_type == DRAG_H_GUIDE) {
 		String str = vformat("%d px", Math::round(xform.affine_inverse().xform(dragged_guide_pos).y));
-		Ref<Font> font = get_font("font", "Label");
+		Ref<Font> font = get_theme_font("font", "Label");
 		Size2 text_size = font->get_string_size(str);
 		viewport->draw_string(font, Point2(RULER_WIDTH + 10, dragged_guide_pos.y + text_size.y / 2 + 10), str, text_color);
 		viewport->draw_line(Point2(0, dragged_guide_pos.y), Point2(viewport->get_size().x, dragged_guide_pos.y), guide_color, Math::round(EDSCALE));
@@ -2986,11 +2986,11 @@ void CanvasItemEditor::_draw_smart_snapping() {
 }
 
 void CanvasItemEditor::_draw_rulers() {
-	Color bg_color = get_color("dark_color_2", "Editor");
-	Color graduation_color = get_color("font_color", "Editor").linear_interpolate(bg_color, 0.5);
-	Color font_color = get_color("font_color", "Editor");
+	Color bg_color = get_theme_color("dark_color_2", "Editor");
+	Color graduation_color = get_theme_color("font_color", "Editor").linear_interpolate(bg_color, 0.5);
+	Color font_color = get_theme_color("font_color", "Editor");
 	font_color.a = 0.8;
-	Ref<Font> font = get_font("rulers", "EditorFonts");
+	Ref<Font> font = get_theme_font("rulers", "EditorFonts");
 
 	// The rule transform
 	Transform2D ruler_transform = Transform2D();
@@ -3151,7 +3151,7 @@ void CanvasItemEditor::_draw_ruler_tool() {
 	}
 
 	if (ruler_tool_active) {
-		Color ruler_primary_color = get_color("accent_color", "Editor");
+		Color ruler_primary_color = get_theme_color("accent_color", "Editor");
 		Color ruler_secondary_color = ruler_primary_color;
 		ruler_secondary_color.a = 0.5;
 
@@ -3160,8 +3160,8 @@ void CanvasItemEditor::_draw_ruler_tool() {
 		Point2 corner = Point2(begin.x, end.y);
 		Vector2 length_vector = (begin - end).abs() / zoom;
 
-		Ref<Font> font = get_font("bold", "EditorFonts");
-		Color font_color = get_color("font_color", "Editor");
+		Ref<Font> font = get_theme_font("bold", "EditorFonts");
+		Color font_color = get_theme_color("font_color", "Editor");
 		Color font_secondary_color = font_color;
 		font_secondary_color.a = 0.5;
 		float text_height = font->get_height();
@@ -3174,8 +3174,8 @@ void CanvasItemEditor::_draw_ruler_tool() {
 
 		if (begin.is_equal_approx(end)) {
 			viewport->draw_string(font, text_pos, (String)ruler_tool_origin, font_color);
-			Ref<Texture> position_icon = get_icon("EditorPosition", "EditorIcons");
-			viewport->draw_texture(get_icon("EditorPosition", "EditorIcons"), (ruler_tool_origin - view_offset) * zoom - position_icon->get_size() / 2);
+			Ref<Texture> position_icon = get_theme_icon("EditorPosition", "EditorIcons");
+			viewport->draw_texture(get_theme_icon("EditorPosition", "EditorIcons"), (ruler_tool_origin - view_offset) * zoom - position_icon->get_size() / 2);
 			return;
 		}
 
@@ -3273,8 +3273,8 @@ void CanvasItemEditor::_draw_ruler_tool() {
 		}
 	} else {
 		if (grid_snap_active) {
-			Ref<Texture> position_icon = get_icon("EditorPosition", "EditorIcons");
-			viewport->draw_texture(get_icon("EditorPosition", "EditorIcons"), (ruler_tool_origin - view_offset) * zoom - position_icon->get_size() / 2);
+			Ref<Texture> position_icon = get_theme_icon("EditorPosition", "EditorIcons");
+			viewport->draw_texture(get_theme_icon("EditorPosition", "EditorIcons"), (ruler_tool_origin - view_offset) * zoom - position_icon->get_size() / 2);
 		}
 	}
 }
@@ -3485,9 +3485,9 @@ void CanvasItemEditor::_draw_control_helpers(Control *control) {
 }
 
 void CanvasItemEditor::_draw_selection() {
-	Ref<Texture> pivot_icon = get_icon("EditorPivot", "EditorIcons");
-	Ref<Texture> position_icon = get_icon("EditorPosition", "EditorIcons");
-	Ref<Texture> previous_position_icon = get_icon("EditorPositionPrevious", "EditorIcons");
+	Ref<Texture> pivot_icon = get_theme_icon("EditorPivot", "EditorIcons");
+	Ref<Texture> position_icon = get_theme_icon("EditorPosition", "EditorIcons");
+	Ref<Texture> previous_position_icon = get_theme_icon("EditorPositionPrevious", "EditorIcons");
 
 	RID ci = viewport->get_canvas_item();
 
@@ -3624,12 +3624,12 @@ void CanvasItemEditor::_draw_selection() {
 
 					viewport->draw_set_transform_matrix(simple_xform);
 					Rect2 x_handle_rect = Rect2(scale_factor.x * EDSCALE, -5 * EDSCALE, 10 * EDSCALE, 10 * EDSCALE);
-					viewport->draw_rect(x_handle_rect, get_color("axis_x_color", "Editor"));
-					viewport->draw_line(Point2(), Point2(scale_factor.x * EDSCALE, 0), get_color("axis_x_color", "Editor"), Math::round(EDSCALE), true);
+					viewport->draw_rect(x_handle_rect, get_theme_color("axis_x_color", "Editor"));
+					viewport->draw_line(Point2(), Point2(scale_factor.x * EDSCALE, 0), get_theme_color("axis_x_color", "Editor"), Math::round(EDSCALE), true);
 
 					Rect2 y_handle_rect = Rect2(-5 * EDSCALE, -(scale_factor.y + 10) * EDSCALE, 10 * EDSCALE, 10 * EDSCALE);
-					viewport->draw_rect(y_handle_rect, get_color("axis_y_color", "Editor"));
-					viewport->draw_line(Point2(), Point2(0, -scale_factor.y * EDSCALE), get_color("axis_y_color", "Editor"), Math::round(EDSCALE), true);
+					viewport->draw_rect(y_handle_rect, get_theme_color("axis_y_color", "Editor"));
+					viewport->draw_line(Point2(), Point2(0, -scale_factor.y * EDSCALE), get_theme_color("axis_y_color", "Editor"), Math::round(EDSCALE), true);
 
 					viewport->draw_set_transform_matrix(viewport->get_transform());
 				}
@@ -3644,11 +3644,11 @@ void CanvasItemEditor::_draw_selection() {
 
 		viewport->draw_rect(
 				Rect2(bsfrom, bsto - bsfrom),
-				get_color("box_selection_fill_color", "Editor"));
+				get_theme_color("box_selection_fill_color", "Editor"));
 
 		viewport->draw_rect(
 				Rect2(bsfrom, bsto - bsfrom),
-				get_color("box_selection_stroke_color", "Editor"),
+				get_theme_color("box_selection_stroke_color", "Editor"),
 				false,
 				Math::round(EDSCALE));
 	}
@@ -3658,7 +3658,7 @@ void CanvasItemEditor::_draw_selection() {
 		viewport->draw_line(
 				transform.xform(drag_rotation_center),
 				transform.xform(drag_to),
-				get_color("accent_color", "Editor") * Color(1, 1, 1, 0.6),
+				get_theme_color("accent_color", "Editor") * Color(1, 1, 1, 0.6),
 				Math::round(2 * EDSCALE),
 				true);
 	}
@@ -3707,8 +3707,8 @@ void CanvasItemEditor::_draw_straight_line(Point2 p_from, Point2 p_to, Color p_c
 
 void CanvasItemEditor::_draw_axis() {
 	if (show_origin) {
-		_draw_straight_line(Point2(), Point2(1, 0), get_color("axis_x_color", "Editor") * Color(1, 1, 1, 0.75));
-		_draw_straight_line(Point2(), Point2(0, 1), get_color("axis_y_color", "Editor") * Color(1, 1, 1, 0.75));
+		_draw_straight_line(Point2(), Point2(1, 0), get_theme_color("axis_x_color", "Editor") * Color(1, 1, 1, 0.75));
+		_draw_straight_line(Point2(), Point2(0, 1), get_theme_color("axis_y_color", "Editor") * Color(1, 1, 1, 0.75));
 	}
 
 	if (show_viewport) {
@@ -3822,7 +3822,7 @@ void CanvasItemEditor::_draw_invisible_nodes_positions(Node *p_node, const Trans
 		Transform2D xform = transform * canvas_xform * parent_xform;
 
 		// Draw the node's position
-		Ref<Texture> position_icon = get_icon("EditorPositionUnselected", "EditorIcons");
+		Ref<Texture> position_icon = get_theme_icon("EditorPositionUnselected", "EditorIcons");
 		Transform2D unscaled_transform = (xform * canvas_item->get_transform().affine_inverse() * canvas_item->_edit_get_transform()).orthonormalized();
 		Transform2D simple_xform = viewport->get_transform() * unscaled_transform;
 		viewport->draw_set_transform_matrix(simple_xform);
@@ -3838,7 +3838,7 @@ void CanvasItemEditor::_draw_hover() {
 		Ref<Texture> node_icon = hovering_results[i].icon;
 		String node_name = hovering_results[i].name;
 
-		Ref<Font> font = get_font("font", "Label");
+		Ref<Font> font = get_theme_font("font", "Label");
 		Size2 node_name_size = font->get_string_size(node_name);
 		Size2 item_size = Size2(node_icon->get_size().x + 4 + node_name_size.x, MAX(node_icon->get_size().y, node_name_size.y - 3));
 
@@ -3891,13 +3891,13 @@ void CanvasItemEditor::_draw_locks_and_groups(Node *p_node, const Transform2D &p
 	if (canvas_item) {
 		float offset = 0;
 
-		Ref<Texture> lock = get_icon("LockViewport", "EditorIcons");
+		Ref<Texture> lock = get_theme_icon("LockViewport", "EditorIcons");
 		if (p_node->has_meta("_edit_lock_") && show_edit_locks) {
 			lock->draw(viewport_canvas_item, (transform * canvas_xform * parent_xform).xform(Point2(0, 0)) + Point2(offset, 0));
 			offset += lock->get_size().x;
 		}
 
-		Ref<Texture> group = get_icon("GroupViewport", "EditorIcons");
+		Ref<Texture> group = get_theme_icon("GroupViewport", "EditorIcons");
 		if (canvas_item->has_meta("_edit_group_") && show_edit_locks) {
 			group->draw(viewport_canvas_item, (transform * canvas_xform * parent_xform).xform(Point2(0, 0)) + Point2(offset, 0));
 			//offset += group->get_size().x;
@@ -4164,7 +4164,7 @@ void CanvasItemEditor::_notification(int p_what) {
 	}
 
 	if (p_what == NOTIFICATION_ENTER_TREE) {
-		select_sb->set_texture(get_icon("EditorRect2D", "EditorIcons"));
+		select_sb->set_texture(get_theme_icon("EditorRect2D", "EditorIcons"));
 		for (int i = 0; i < 4; i++) {
 			select_sb->set_margin_size(Margin(i), 4);
 			select_sb->set_default_margin(Margin(i), 4);
@@ -4176,7 +4176,7 @@ void CanvasItemEditor::_notification(int p_what) {
 		get_tree()->connect("node_removed", this, "_tree_changed", varray());
 
 	} else if (p_what == EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED) {
-		select_sb->set_texture(get_icon("EditorRect2D", "EditorIcons"));
+		select_sb->set_texture(get_theme_icon("EditorRect2D", "EditorIcons"));
 	}
 
 	if (p_what == NOTIFICATION_EXIT_TREE) {
@@ -4185,106 +4185,106 @@ void CanvasItemEditor::_notification(int p_what) {
 	}
 
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED) {
-		select_button->set_icon(get_icon("ToolSelect", "EditorIcons"));
-		list_select_button->set_icon(get_icon("ListSelect", "EditorIcons"));
-		move_button->set_icon(get_icon("ToolMove", "EditorIcons"));
-		scale_button->set_icon(get_icon("ToolScale", "EditorIcons"));
-		rotate_button->set_icon(get_icon("ToolRotate", "EditorIcons"));
-		smart_snap_button->set_icon(get_icon("Snap", "EditorIcons"));
-		grid_snap_button->set_icon(get_icon("SnapGrid", "EditorIcons"));
-		snap_config_menu->set_icon(get_icon("GuiTabMenuHl", "EditorIcons"));
-		skeleton_menu->set_icon(get_icon("Bone", "EditorIcons"));
-		override_camera_button->set_icon(get_icon("Camera2D", "EditorIcons"));
-		pan_button->set_icon(get_icon("ToolPan", "EditorIcons"));
-		ruler_button->set_icon(get_icon("Ruler", "EditorIcons"));
-		pivot_button->set_icon(get_icon("EditPivot", "EditorIcons"));
-		select_handle = get_icon("EditorHandle", "EditorIcons");
-		anchor_handle = get_icon("EditorControlAnchor", "EditorIcons");
-		lock_button->set_icon(get_icon("Lock", "EditorIcons"));
-		unlock_button->set_icon(get_icon("Unlock", "EditorIcons"));
-		group_button->set_icon(get_icon("Group", "EditorIcons"));
-		ungroup_button->set_icon(get_icon("Ungroup", "EditorIcons"));
-		key_loc_button->set_icon(get_icon("KeyPosition", "EditorIcons"));
-		key_rot_button->set_icon(get_icon("KeyRotation", "EditorIcons"));
-		key_scale_button->set_icon(get_icon("KeyScale", "EditorIcons"));
-		key_insert_button->set_icon(get_icon("Key", "EditorIcons"));
-		key_auto_insert_button->set_icon(get_icon("AutoKey", "EditorIcons"));
+		select_button->set_icon(get_theme_icon("ToolSelect", "EditorIcons"));
+		list_select_button->set_icon(get_theme_icon("ListSelect", "EditorIcons"));
+		move_button->set_icon(get_theme_icon("ToolMove", "EditorIcons"));
+		scale_button->set_icon(get_theme_icon("ToolScale", "EditorIcons"));
+		rotate_button->set_icon(get_theme_icon("ToolRotate", "EditorIcons"));
+		smart_snap_button->set_icon(get_theme_icon("Snap", "EditorIcons"));
+		grid_snap_button->set_icon(get_theme_icon("SnapGrid", "EditorIcons"));
+		snap_config_menu->set_icon(get_theme_icon("GuiTabMenuHl", "EditorIcons"));
+		skeleton_menu->set_icon(get_theme_icon("Bone", "EditorIcons"));
+		override_camera_button->set_icon(get_theme_icon("Camera2D", "EditorIcons"));
+		pan_button->set_icon(get_theme_icon("ToolPan", "EditorIcons"));
+		ruler_button->set_icon(get_theme_icon("Ruler", "EditorIcons"));
+		pivot_button->set_icon(get_theme_icon("EditPivot", "EditorIcons"));
+		select_handle = get_theme_icon("EditorHandle", "EditorIcons");
+		anchor_handle = get_theme_icon("EditorControlAnchor", "EditorIcons");
+		lock_button->set_icon(get_theme_icon("Lock", "EditorIcons"));
+		unlock_button->set_icon(get_theme_icon("Unlock", "EditorIcons"));
+		group_button->set_icon(get_theme_icon("Group", "EditorIcons"));
+		ungroup_button->set_icon(get_theme_icon("Ungroup", "EditorIcons"));
+		key_loc_button->set_icon(get_theme_icon("KeyPosition", "EditorIcons"));
+		key_rot_button->set_icon(get_theme_icon("KeyRotation", "EditorIcons"));
+		key_scale_button->set_icon(get_theme_icon("KeyScale", "EditorIcons"));
+		key_insert_button->set_icon(get_theme_icon("Key", "EditorIcons"));
+		key_auto_insert_button->set_icon(get_theme_icon("AutoKey", "EditorIcons"));
 		// Use a different color for the active autokey icon to make them easier
 		// to distinguish from the other key icons at the top. On a light theme,
 		// the icon will be dark, so we need to lighten it before blending it
 		// with the red color.
 		const Color key_auto_color = EditorSettings::get_singleton()->is_dark_theme() ? Color(1, 1, 1) : Color(4.25, 4.25, 4.25);
-		key_auto_insert_button->add_color_override("icon_color_pressed", key_auto_color.linear_interpolate(Color(1, 0, 0), 0.55));
-		animation_menu->set_icon(get_icon("GuiTabMenuHl", "EditorIcons"));
+		key_auto_insert_button->add_theme_color_override("icon_color_pressed", key_auto_color.linear_interpolate(Color(1, 0, 0), 0.55));
+		animation_menu->set_icon(get_theme_icon("GuiTabMenuHl", "EditorIcons"));
 
-		zoom_minus->set_icon(get_icon("ZoomLess", "EditorIcons"));
-		zoom_plus->set_icon(get_icon("ZoomMore", "EditorIcons"));
+		zoom_minus->set_icon(get_theme_icon("ZoomLess", "EditorIcons"));
+		zoom_plus->set_icon(get_theme_icon("ZoomMore", "EditorIcons"));
 
 		_update_context_menu_stylebox();
 
-		presets_menu->set_icon(get_icon("ControlLayout", "EditorIcons"));
+		presets_menu->set_icon(get_theme_icon("ControlLayout", "EditorIcons"));
 
 		PopupMenu *p = presets_menu->get_popup();
 
 		p->clear();
-		p->add_icon_item(get_icon("ControlAlignTopLeft", "EditorIcons"), TTR("Top Left"), ANCHORS_AND_MARGINS_PRESET_TOP_LEFT);
-		p->add_icon_item(get_icon("ControlAlignTopRight", "EditorIcons"), TTR("Top Right"), ANCHORS_AND_MARGINS_PRESET_TOP_RIGHT);
-		p->add_icon_item(get_icon("ControlAlignBottomRight", "EditorIcons"), TTR("Bottom Right"), ANCHORS_AND_MARGINS_PRESET_BOTTOM_RIGHT);
-		p->add_icon_item(get_icon("ControlAlignBottomLeft", "EditorIcons"), TTR("Bottom Left"), ANCHORS_AND_MARGINS_PRESET_BOTTOM_LEFT);
+		p->add_icon_item(get_theme_icon("ControlAlignTopLeft", "EditorIcons"), TTR("Top Left"), ANCHORS_AND_MARGINS_PRESET_TOP_LEFT);
+		p->add_icon_item(get_theme_icon("ControlAlignTopRight", "EditorIcons"), TTR("Top Right"), ANCHORS_AND_MARGINS_PRESET_TOP_RIGHT);
+		p->add_icon_item(get_theme_icon("ControlAlignBottomRight", "EditorIcons"), TTR("Bottom Right"), ANCHORS_AND_MARGINS_PRESET_BOTTOM_RIGHT);
+		p->add_icon_item(get_theme_icon("ControlAlignBottomLeft", "EditorIcons"), TTR("Bottom Left"), ANCHORS_AND_MARGINS_PRESET_BOTTOM_LEFT);
 		p->add_separator();
-		p->add_icon_item(get_icon("ControlAlignLeftCenter", "EditorIcons"), TTR("Center Left"), ANCHORS_AND_MARGINS_PRESET_CENTER_LEFT);
-		p->add_icon_item(get_icon("ControlAlignTopCenter", "EditorIcons"), TTR("Center Top"), ANCHORS_AND_MARGINS_PRESET_CENTER_TOP);
-		p->add_icon_item(get_icon("ControlAlignRightCenter", "EditorIcons"), TTR("Center Right"), ANCHORS_AND_MARGINS_PRESET_CENTER_RIGHT);
-		p->add_icon_item(get_icon("ControlAlignBottomCenter", "EditorIcons"), TTR("Center Bottom"), ANCHORS_AND_MARGINS_PRESET_CENTER_BOTTOM);
-		p->add_icon_item(get_icon("ControlAlignCenter", "EditorIcons"), TTR("Center"), ANCHORS_AND_MARGINS_PRESET_CENTER);
+		p->add_icon_item(get_theme_icon("ControlAlignLeftCenter", "EditorIcons"), TTR("Center Left"), ANCHORS_AND_MARGINS_PRESET_CENTER_LEFT);
+		p->add_icon_item(get_theme_icon("ControlAlignTopCenter", "EditorIcons"), TTR("Center Top"), ANCHORS_AND_MARGINS_PRESET_CENTER_TOP);
+		p->add_icon_item(get_theme_icon("ControlAlignRightCenter", "EditorIcons"), TTR("Center Right"), ANCHORS_AND_MARGINS_PRESET_CENTER_RIGHT);
+		p->add_icon_item(get_theme_icon("ControlAlignBottomCenter", "EditorIcons"), TTR("Center Bottom"), ANCHORS_AND_MARGINS_PRESET_CENTER_BOTTOM);
+		p->add_icon_item(get_theme_icon("ControlAlignCenter", "EditorIcons"), TTR("Center"), ANCHORS_AND_MARGINS_PRESET_CENTER);
 		p->add_separator();
-		p->add_icon_item(get_icon("ControlAlignLeftWide", "EditorIcons"), TTR("Left Wide"), ANCHORS_AND_MARGINS_PRESET_LEFT_WIDE);
-		p->add_icon_item(get_icon("ControlAlignTopWide", "EditorIcons"), TTR("Top Wide"), ANCHORS_AND_MARGINS_PRESET_TOP_WIDE);
-		p->add_icon_item(get_icon("ControlAlignRightWide", "EditorIcons"), TTR("Right Wide"), ANCHORS_AND_MARGINS_PRESET_RIGHT_WIDE);
-		p->add_icon_item(get_icon("ControlAlignBottomWide", "EditorIcons"), TTR("Bottom Wide"), ANCHORS_AND_MARGINS_PRESET_BOTTOM_WIDE);
-		p->add_icon_item(get_icon("ControlVcenterWide", "EditorIcons"), TTR("VCenter Wide"), ANCHORS_AND_MARGINS_PRESET_VCENTER_WIDE);
-		p->add_icon_item(get_icon("ControlHcenterWide", "EditorIcons"), TTR("HCenter Wide"), ANCHORS_AND_MARGINS_PRESET_HCENTER_WIDE);
+		p->add_icon_item(get_theme_icon("ControlAlignLeftWide", "EditorIcons"), TTR("Left Wide"), ANCHORS_AND_MARGINS_PRESET_LEFT_WIDE);
+		p->add_icon_item(get_theme_icon("ControlAlignTopWide", "EditorIcons"), TTR("Top Wide"), ANCHORS_AND_MARGINS_PRESET_TOP_WIDE);
+		p->add_icon_item(get_theme_icon("ControlAlignRightWide", "EditorIcons"), TTR("Right Wide"), ANCHORS_AND_MARGINS_PRESET_RIGHT_WIDE);
+		p->add_icon_item(get_theme_icon("ControlAlignBottomWide", "EditorIcons"), TTR("Bottom Wide"), ANCHORS_AND_MARGINS_PRESET_BOTTOM_WIDE);
+		p->add_icon_item(get_theme_icon("ControlVcenterWide", "EditorIcons"), TTR("VCenter Wide"), ANCHORS_AND_MARGINS_PRESET_VCENTER_WIDE);
+		p->add_icon_item(get_theme_icon("ControlHcenterWide", "EditorIcons"), TTR("HCenter Wide"), ANCHORS_AND_MARGINS_PRESET_HCENTER_WIDE);
 		p->add_separator();
-		p->add_icon_item(get_icon("ControlAlignWide", "EditorIcons"), TTR("Full Rect"), ANCHORS_AND_MARGINS_PRESET_WIDE);
-		p->add_icon_item(get_icon("Anchor", "EditorIcons"), TTR("Keep Ratio"), ANCHORS_AND_MARGINS_PRESET_KEEP_RATIO);
+		p->add_icon_item(get_theme_icon("ControlAlignWide", "EditorIcons"), TTR("Full Rect"), ANCHORS_AND_MARGINS_PRESET_WIDE);
+		p->add_icon_item(get_theme_icon("Anchor", "EditorIcons"), TTR("Keep Ratio"), ANCHORS_AND_MARGINS_PRESET_KEEP_RATIO);
 		p->add_separator();
 		p->add_submenu_item(TTR("Anchors only"), "Anchors");
-		p->set_item_icon(21, get_icon("Anchor", "EditorIcons"));
+		p->set_item_icon(21, get_theme_icon("Anchor", "EditorIcons"));
 
 		anchors_popup->clear();
-		anchors_popup->add_icon_item(get_icon("ControlAlignTopLeft", "EditorIcons"), TTR("Top Left"), ANCHORS_PRESET_TOP_LEFT);
-		anchors_popup->add_icon_item(get_icon("ControlAlignTopRight", "EditorIcons"), TTR("Top Right"), ANCHORS_PRESET_TOP_RIGHT);
-		anchors_popup->add_icon_item(get_icon("ControlAlignBottomRight", "EditorIcons"), TTR("Bottom Right"), ANCHORS_PRESET_BOTTOM_RIGHT);
-		anchors_popup->add_icon_item(get_icon("ControlAlignBottomLeft", "EditorIcons"), TTR("Bottom Left"), ANCHORS_PRESET_BOTTOM_LEFT);
+		anchors_popup->add_icon_item(get_theme_icon("ControlAlignTopLeft", "EditorIcons"), TTR("Top Left"), ANCHORS_PRESET_TOP_LEFT);
+		anchors_popup->add_icon_item(get_theme_icon("ControlAlignTopRight", "EditorIcons"), TTR("Top Right"), ANCHORS_PRESET_TOP_RIGHT);
+		anchors_popup->add_icon_item(get_theme_icon("ControlAlignBottomRight", "EditorIcons"), TTR("Bottom Right"), ANCHORS_PRESET_BOTTOM_RIGHT);
+		anchors_popup->add_icon_item(get_theme_icon("ControlAlignBottomLeft", "EditorIcons"), TTR("Bottom Left"), ANCHORS_PRESET_BOTTOM_LEFT);
 		anchors_popup->add_separator();
-		anchors_popup->add_icon_item(get_icon("ControlAlignLeftCenter", "EditorIcons"), TTR("Center Left"), ANCHORS_PRESET_CENTER_LEFT);
-		anchors_popup->add_icon_item(get_icon("ControlAlignTopCenter", "EditorIcons"), TTR("Center Top"), ANCHORS_PRESET_CENTER_TOP);
-		anchors_popup->add_icon_item(get_icon("ControlAlignRightCenter", "EditorIcons"), TTR("Center Right"), ANCHORS_PRESET_CENTER_RIGHT);
-		anchors_popup->add_icon_item(get_icon("ControlAlignBottomCenter", "EditorIcons"), TTR("Center Bottom"), ANCHORS_PRESET_CENTER_BOTTOM);
-		anchors_popup->add_icon_item(get_icon("ControlAlignCenter", "EditorIcons"), TTR("Center"), ANCHORS_PRESET_CENTER);
+		anchors_popup->add_icon_item(get_theme_icon("ControlAlignLeftCenter", "EditorIcons"), TTR("Center Left"), ANCHORS_PRESET_CENTER_LEFT);
+		anchors_popup->add_icon_item(get_theme_icon("ControlAlignTopCenter", "EditorIcons"), TTR("Center Top"), ANCHORS_PRESET_CENTER_TOP);
+		anchors_popup->add_icon_item(get_theme_icon("ControlAlignRightCenter", "EditorIcons"), TTR("Center Right"), ANCHORS_PRESET_CENTER_RIGHT);
+		anchors_popup->add_icon_item(get_theme_icon("ControlAlignBottomCenter", "EditorIcons"), TTR("Center Bottom"), ANCHORS_PRESET_CENTER_BOTTOM);
+		anchors_popup->add_icon_item(get_theme_icon("ControlAlignCenter", "EditorIcons"), TTR("Center"), ANCHORS_PRESET_CENTER);
 		anchors_popup->add_separator();
-		anchors_popup->add_icon_item(get_icon("ControlAlignLeftWide", "EditorIcons"), TTR("Left Wide"), ANCHORS_PRESET_LEFT_WIDE);
-		anchors_popup->add_icon_item(get_icon("ControlAlignTopWide", "EditorIcons"), TTR("Top Wide"), ANCHORS_PRESET_TOP_WIDE);
-		anchors_popup->add_icon_item(get_icon("ControlAlignRightWide", "EditorIcons"), TTR("Right Wide"), ANCHORS_PRESET_RIGHT_WIDE);
-		anchors_popup->add_icon_item(get_icon("ControlAlignBottomWide", "EditorIcons"), TTR("Bottom Wide"), ANCHORS_PRESET_BOTTOM_WIDE);
-		anchors_popup->add_icon_item(get_icon("ControlVcenterWide", "EditorIcons"), TTR("VCenter Wide"), ANCHORS_PRESET_VCENTER_WIDE);
-		anchors_popup->add_icon_item(get_icon("ControlHcenterWide", "EditorIcons"), TTR("HCenter Wide"), ANCHORS_PRESET_HCENTER_WIDE);
+		anchors_popup->add_icon_item(get_theme_icon("ControlAlignLeftWide", "EditorIcons"), TTR("Left Wide"), ANCHORS_PRESET_LEFT_WIDE);
+		anchors_popup->add_icon_item(get_theme_icon("ControlAlignTopWide", "EditorIcons"), TTR("Top Wide"), ANCHORS_PRESET_TOP_WIDE);
+		anchors_popup->add_icon_item(get_theme_icon("ControlAlignRightWide", "EditorIcons"), TTR("Right Wide"), ANCHORS_PRESET_RIGHT_WIDE);
+		anchors_popup->add_icon_item(get_theme_icon("ControlAlignBottomWide", "EditorIcons"), TTR("Bottom Wide"), ANCHORS_PRESET_BOTTOM_WIDE);
+		anchors_popup->add_icon_item(get_theme_icon("ControlVcenterWide", "EditorIcons"), TTR("VCenter Wide"), ANCHORS_PRESET_VCENTER_WIDE);
+		anchors_popup->add_icon_item(get_theme_icon("ControlHcenterWide", "EditorIcons"), TTR("HCenter Wide"), ANCHORS_PRESET_HCENTER_WIDE);
 		anchors_popup->add_separator();
-		anchors_popup->add_icon_item(get_icon("ControlAlignWide", "EditorIcons"), TTR("Full Rect"), ANCHORS_PRESET_WIDE);
+		anchors_popup->add_icon_item(get_theme_icon("ControlAlignWide", "EditorIcons"), TTR("Full Rect"), ANCHORS_PRESET_WIDE);
 
-		anchor_mode_button->set_icon(get_icon("Anchor", "EditorIcons"));
+		anchor_mode_button->set_icon(get_theme_icon("Anchor", "EditorIcons"));
 
-		Ref<DynamicFont> font = zoom_reset->get_font("font")->duplicate(false);
+		Ref<DynamicFont> font = zoom_reset->get_theme_font("font")->duplicate(false);
 		if (font.is_valid()) {
 			font->set_outline_size(1);
 			font->set_outline_color(Color(0, 0, 0));
 		}
-		zoom_reset->add_font_override("font", font);
-		zoom_reset->add_color_override("font_color", Color(1, 1, 1));
+		zoom_reset->add_theme_font_override("font", font);
+		zoom_reset->add_theme_color_override("font_color", Color(1, 1, 1));
 
-		info_overlay->get_theme()->set_stylebox("normal", "Label", get_stylebox("CanvasItemInfoOverlay", "EditorStyles"));
-		warning_child_of_container->add_color_override("font_color", get_color("warning_color", "Editor"));
-		warning_child_of_container->add_font_override("font", get_font("main", "EditorFonts"));
+		info_overlay->get_theme()->set_stylebox("normal", "Label", get_theme_stylebox("CanvasItemInfoOverlay", "EditorStyles"));
+		warning_child_of_container->add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"));
+		warning_child_of_container->add_theme_font_override("font", get_theme_font("main", "EditorFonts"));
 	}
 
 	if (p_what == NOTIFICATION_VISIBILITY_CHANGED) {
@@ -4379,13 +4379,13 @@ void CanvasItemEditor::_tree_changed(Node *) {
 void CanvasItemEditor::_update_context_menu_stylebox() {
 	// This must be called when the theme changes to follow the new accent color.
 	Ref<StyleBoxFlat> context_menu_stylebox = memnew(StyleBoxFlat);
-	const Color accent_color = EditorNode::get_singleton()->get_gui_base()->get_color("accent_color", "Editor");
+	const Color accent_color = EditorNode::get_singleton()->get_gui_base()->get_theme_color("accent_color", "Editor");
 	context_menu_stylebox->set_bg_color(accent_color * Color(1, 1, 1, 0.1));
 	// Add an underline to the StyleBox, but prevent its minimum vertical size from changing.
 	context_menu_stylebox->set_border_color(accent_color);
 	context_menu_stylebox->set_border_width(MARGIN_BOTTOM, Math::round(2 * EDSCALE));
 	context_menu_stylebox->set_default_margin(MARGIN_BOTTOM, 0);
-	context_menu_container->add_style_override("panel", context_menu_stylebox);
+	context_menu_container->add_theme_style_override("panel", context_menu_stylebox);
 }
 
 void CanvasItemEditor::_update_scrollbars() {
@@ -5893,7 +5893,7 @@ CanvasItemEditor::CanvasItemEditor(EditorNode *p_editor) {
 
 	zoom_hb = memnew(HBoxContainer);
 	// Bring the zoom percentage closer to the zoom buttons
-	zoom_hb->add_constant_override("separation", Math::round(-8 * EDSCALE));
+	zoom_hb->add_theme_constant_override("separation", Math::round(-8 * EDSCALE));
 	controls_vb->add_child(zoom_hb);
 
 	viewport = memnew(CanvasItemEditorViewport(p_editor, this));
@@ -5910,7 +5910,7 @@ CanvasItemEditor::CanvasItemEditor(EditorNode *p_editor) {
 	info_overlay->set_margin(MARGIN_LEFT, 10);
 	info_overlay->set_margin(MARGIN_BOTTOM, -15);
 	info_overlay->set_v_grow_direction(Control::GROW_DIRECTION_BEGIN);
-	info_overlay->add_constant_override("separation", 10);
+	info_overlay->add_theme_constant_override("separation", 10);
 	viewport_scrollable->add_child(info_overlay);
 
 	// Make sure all labels inside of the container are styled the same.
@@ -6245,8 +6245,8 @@ CanvasItemEditor::CanvasItemEditor(EditorNode *p_editor) {
 
 	add_node_menu = memnew(PopupMenu);
 	add_child(add_node_menu);
-	add_node_menu->add_icon_item(editor->get_scene_tree_dock()->get_icon("Add", "EditorIcons"), TTR("Add Node Here"));
-	add_node_menu->add_icon_item(editor->get_scene_tree_dock()->get_icon("Instance", "EditorIcons"), TTR("Instance Scene Here"));
+	add_node_menu->add_icon_item(editor->get_scene_tree_dock()->get_theme_icon("Add", "EditorIcons"), TTR("Add Node Here"));
+	add_node_menu->add_icon_item(editor->get_scene_tree_dock()->get_theme_icon("Instance", "EditorIcons"), TTR("Instance Scene Here"));
 	add_node_menu->connect("id_pressed", this, "_add_node_pressed");
 
 	multiply_grid_step_shortcut = ED_SHORTCUT("canvas_item_editor/multiply_grid_step", TTR("Multiply grid step by 2"), KEY_KP_MULTIPLY);
@@ -6725,7 +6725,7 @@ void CanvasItemEditorViewport::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
 			connect("mouse_exited", this, "_on_mouse_exit");
-			label->add_color_override("font_color", get_color("warning_color", "Editor"));
+			label->add_theme_color_override("font_color", get_theme_color("warning_color", "Editor"));
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
 			disconnect("mouse_exited", this, "_on_mouse_exit");
@@ -6790,17 +6790,17 @@ CanvasItemEditorViewport::CanvasItemEditorViewport(EditorNode *p_node, CanvasIte
 	}
 
 	label = memnew(Label);
-	label->add_color_override("font_color_shadow", Color(0, 0, 0, 1));
-	label->add_constant_override("shadow_as_outline", 1 * EDSCALE);
+	label->add_theme_color_override("font_color_shadow", Color(0, 0, 0, 1));
+	label->add_theme_constant_override("shadow_as_outline", 1 * EDSCALE);
 	label->hide();
 	canvas_item_editor->get_controls_container()->add_child(label);
 
 	label_desc = memnew(Label);
 	label_desc->set_text(TTR("Drag & drop + Shift : Add node as sibling\nDrag & drop + Alt : Change node type"));
-	label_desc->add_color_override("font_color", Color(0.6f, 0.6f, 0.6f, 1));
-	label_desc->add_color_override("font_color_shadow", Color(0.2f, 0.2f, 0.2f, 1));
-	label_desc->add_constant_override("shadow_as_outline", 1 * EDSCALE);
-	label_desc->add_constant_override("line_spacing", 0);
+	label_desc->add_theme_color_override("font_color", Color(0.6f, 0.6f, 0.6f, 1));
+	label_desc->add_theme_color_override("font_color_shadow", Color(0.2f, 0.2f, 0.2f, 1));
+	label_desc->add_theme_constant_override("shadow_as_outline", 1 * EDSCALE);
+	label_desc->add_theme_constant_override("line_spacing", 0);
 	label_desc->hide();
 	canvas_item_editor->get_controls_container()->add_child(label_desc);
 

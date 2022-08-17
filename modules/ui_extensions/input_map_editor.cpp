@@ -608,7 +608,7 @@ void InputMapEditor::_update_actions() {
 		TreeItem *item = input_editor->create_item(root);
 		item->set_text(0, name);
 
-		item->set_custom_bg_color(0, get_color("prop_subsection", "Editor"));
+		item->set_custom_bg_color(0, get_theme_color("prop_subsection", "Editor"));
 
 		if (collapsed.has(name))
 			item->set_collapsed(collapsed[name]);
@@ -618,7 +618,7 @@ void InputMapEditor::_update_actions() {
 		item->set_range_config(1, 0.0, 1.0, 0.01);
 		item->set_range(1, action["deadzone"]);
 
-		item->set_custom_bg_color(1, get_color("prop_subsection", "Editor"));
+		item->set_custom_bg_color(1, get_theme_color("prop_subsection", "Editor"));
 
 		item->add_button(2, _add_texture, 1, false, "Add Event");
 

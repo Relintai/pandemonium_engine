@@ -39,7 +39,7 @@ bool ScrollContainer::clips_input() const {
 }
 
 Size2 ScrollContainer::get_minimum_size() const {
-	Ref<StyleBox> sb = get_stylebox("bg");
+	Ref<StyleBox> sb = get_theme_stylebox("bg");
 	Size2 min_size;
 
 	for (int i = 0; i < get_child_count(); i++) {
@@ -258,7 +258,7 @@ void ScrollContainer::_update_dimensions() {
 	Size2 size = get_size();
 	Point2 ofs;
 
-	Ref<StyleBox> sb = get_stylebox("bg");
+	Ref<StyleBox> sb = get_theme_stylebox("bg");
 	size -= sb->get_minimum_size();
 	ofs += sb->get_offset();
 
@@ -326,7 +326,7 @@ void ScrollContainer::_notification(int p_what) {
 	};
 
 	if (p_what == NOTIFICATION_DRAW) {
-		Ref<StyleBox> sb = get_stylebox("bg");
+		Ref<StyleBox> sb = get_theme_stylebox("bg");
 		draw_style_box(sb, Rect2(Vector2(), get_size()));
 
 		update_scrollbars();
@@ -403,7 +403,7 @@ void ScrollContainer::_notification(int p_what) {
 
 void ScrollContainer::update_scrollbars() {
 	Size2 size = get_size();
-	Ref<StyleBox> sb = get_stylebox("bg");
+	Ref<StyleBox> sb = get_theme_stylebox("bg");
 	size -= sb->get_minimum_size();
 
 	Size2 hmin;

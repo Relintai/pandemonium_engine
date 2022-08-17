@@ -246,10 +246,10 @@ void MDRUVRectView::apply_zoom() {
 
 	MarginContainer *p = Object::cast_to<MarginContainer>(get_parent());
 
-	p->add_constant_override("margin_left", MIN(rect.size.x / 4.0, 50 * _rect_scale));
-	p->add_constant_override("margin_right", MIN(rect.size.x / 4.0, 50 * _rect_scale));
-	p->add_constant_override("margin_top", MIN(rect.size.y / 4.0, 50 * _rect_scale));
-	p->add_constant_override("margin_bottom", MIN(rect.size.y / 4.0, 50 * _rect_scale));
+	p->add_theme_constant_override("margin_left", MIN(rect.size.x / 4.0, 50 * _rect_scale));
+	p->add_theme_constant_override("margin_right", MIN(rect.size.x / 4.0, 50 * _rect_scale));
+	p->add_theme_constant_override("margin_top", MIN(rect.size.y / 4.0, 50 * _rect_scale));
+	p->add_theme_constant_override("margin_bottom", MIN(rect.size.y / 4.0, 50 * _rect_scale));
 
 	for (int i = 0; i < get_child_count(); ++i) {
 		MDRUVRectViewNode *c = Object::cast_to<MDRUVRectViewNode>(get_child(i));

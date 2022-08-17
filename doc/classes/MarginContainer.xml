@@ -9,10 +9,10 @@
 		[codeblock]
 		# This code sample assumes the current script is extending MarginContainer.
 		var margin_value = 100
-		add_constant_override("margin_top", margin_value)
-		add_constant_override("margin_left", margin_value)
-		add_constant_override("margin_bottom", margin_value)
-		add_constant_override("margin_right", margin_value)
+		add_theme_constant_override("margin_top", margin_value)
+		add_theme_constant_override("margin_left", margin_value)
+		add_theme_constant_override("margin_bottom", margin_value)
+		add_theme_constant_override("margin_right", margin_value)
 		[/codeblock]
 	</description>
 	<tutorials>

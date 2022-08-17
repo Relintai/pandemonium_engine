@@ -75,14 +75,14 @@ void draw_margin_line(Control *edit_draw, Vector2 from, Vector2 to) {
 	edit_draw->draw_line(
 			from,
 			to,
-			EditorNode::get_singleton()->get_theme_base()->get_color("mono_color", "Editor").inverted() * Color(1, 1, 1, 0.5),
+			EditorNode::get_singleton()->get_theme_base()->get_theme_color("mono_color", "Editor").inverted() * Color(1, 1, 1, 0.5),
 			Math::round(2 * EDSCALE));
 
 	while ((to - from).length_squared() > 200) {
 		edit_draw->draw_line(
 				from,
 				from + line,
-				EditorNode::get_singleton()->get_theme_base()->get_color("mono_color", "Editor"),
+				EditorNode::get_singleton()->get_theme_base()->get_theme_color("mono_color", "Editor"),
 				Math::round(2 * EDSCALE));
 
 		from += line * 2;
@@ -115,7 +115,7 @@ void TextureRegionEditor::_region_draw() {
 	edit_draw->draw_texture(base_tex, Point2());
 	VS::get_singleton()->canvas_item_add_set_transform(edit_draw->get_canvas_item(), Transform2D());
 
-	const Color color = get_color("mono_color", "Editor");
+	const Color color = get_theme_color("mono_color", "Editor");
 
 	if (snap_mode == SNAP_GRID) {
 		const Color grid_color = Color(color.r, color.g, color.b, color.a * 0.15);
@@ -189,7 +189,7 @@ void TextureRegionEditor::_region_draw() {
 		}
 	}
 
-	Ref<Texture> select_handle = get_icon("EditorHandle", "EditorIcons");
+	Ref<Texture> select_handle = get_theme_icon("EditorHandle", "EditorIcons");
 
 	Rect2 scroll_rect(Point2(), base_tex->get_size());
 
@@ -827,12 +827,12 @@ void TextureRegionEditor::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE:
 		case NOTIFICATION_THEME_CHANGED: {
-			edit_draw->add_style_override("panel", get_stylebox("bg", "Tree"));
+			edit_draw->add_theme_style_override("panel", get_theme_stylebox("bg", "Tree"));
 		} break;
 		case NOTIFICATION_READY: {
-			zoom_out->set_icon(get_icon("ZoomLess", "EditorIcons"));
-			zoom_reset->set_icon(get_icon("ZoomReset", "EditorIcons"));
-			zoom_in->set_icon(get_icon("ZoomMore", "EditorIcons"));
+			zoom_out->set_icon(get_theme_icon("ZoomLess", "EditorIcons"));
+			zoom_reset->set_icon(get_theme_icon("ZoomReset", "EditorIcons"));
+			zoom_in->set_icon(get_theme_icon("ZoomMore", "EditorIcons"));
 
 			vscroll->set_anchors_and_margins_preset(PRESET_RIGHT_WIDE);
 			hscroll->set_anchors_and_margins_preset(PRESET_BOTTOM_WIDE);

@@ -91,7 +91,7 @@ RoomManagerEditorPlugin::RoomManagerEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
 	button_flip_portals = memnew(ToolButton);
-	button_flip_portals->set_icon(editor->get_gui_base()->get_icon("Portal", "EditorIcons"));
+	button_flip_portals->set_icon(editor->get_gui_base()->get_theme_icon("Portal", "EditorIcons"));
 	button_flip_portals->set_text(TTR("Flip Portals"));
 	button_flip_portals->hide();
 	button_flip_portals->connect("pressed", this, "_flip_portals");
@@ -168,7 +168,7 @@ RoomEditorPlugin::RoomEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
 	button_generate = memnew(ToolButton);
-	button_generate->set_icon(editor->get_gui_base()->get_icon("Room", "EditorIcons"));
+	button_generate->set_icon(editor->get_gui_base()->get_theme_icon("Room", "EditorIcons"));
 	button_generate->set_text(TTR("Generate Points"));
 	button_generate->hide();
 	button_generate->connect("pressed", this, "_generate_points");
@@ -220,7 +220,7 @@ PortalEditorPlugin::PortalEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
 	button_flip = memnew(ToolButton);
-	button_flip->set_icon(editor->get_gui_base()->get_icon("Portal", "EditorIcons"));
+	button_flip->set_icon(editor->get_gui_base()->get_theme_icon("Portal", "EditorIcons"));
 	button_flip->set_text(TTR("Flip Portal"));
 	button_flip->hide();
 	button_flip->connect("pressed", this, "_flip_portal");
@@ -293,7 +293,7 @@ OccluderEditorPlugin::OccluderEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
 	button_center = memnew(ToolButton);
-	button_center->set_icon(editor->get_gui_base()->get_icon("EditorPosition", "EditorIcons"));
+	button_center->set_icon(editor->get_gui_base()->get_theme_icon("EditorPosition", "EditorIcons"));
 	button_center->set_text(TTR("Center Node"));
 	button_center->hide();
 	button_center->connect("pressed", this, "_center");

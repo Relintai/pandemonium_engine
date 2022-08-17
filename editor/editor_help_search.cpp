@@ -55,11 +55,11 @@
 #include "scene/main/node.h"
 
 void EditorHelpSearch::_update_icons() {
-	search_box->set_right_icon(get_icon("Search", "EditorIcons"));
+	search_box->set_right_icon(get_theme_icon("Search", "EditorIcons"));
 	search_box->set_clear_button_enabled(true);
-	search_box->add_icon_override("right_icon", get_icon("Search", "EditorIcons"));
-	case_sensitive_button->set_icon(get_icon("MatchCase", "EditorIcons"));
-	hierarchy_button->set_icon(get_icon("ClassList", "EditorIcons"));
+	search_box->add_theme_icon_override("right_icon", get_theme_icon("Search", "EditorIcons"));
+	case_sensitive_button->set_icon(get_theme_icon("MatchCase", "EditorIcons"));
+	hierarchy_button->set_icon(get_theme_icon("ClassList", "EditorIcons"));
 
 	if (is_visible_in_tree()) {
 		_update_results();
@@ -486,10 +486,10 @@ TreeItem *EditorHelpSearch::Runner::_create_class_hierarchy(const ClassMatch &p_
 
 TreeItem *EditorHelpSearch::Runner::_create_class_item(TreeItem *p_parent, const DocData::ClassDoc *p_doc, bool p_gray) {
 	Ref<Texture> icon = empty_icon;
-	if (ui_service->has_icon(p_doc->name, "EditorIcons")) {
-		icon = ui_service->get_icon(p_doc->name, "EditorIcons");
+	if (ui_service->has_theme_icon(p_doc->name, "EditorIcons")) {
+		icon = ui_service->get_theme_icon(p_doc->name, "EditorIcons");
 	} else if (ClassDB::class_exists(p_doc->name) && ClassDB::is_parent_class(p_doc->name, "Object")) {
-		icon = ui_service->get_icon("Object", "EditorIcons");
+		icon = ui_service->get_theme_icon("Object", "EditorIcons");
 	}
 	String tooltip = DTR(p_doc->brief_description.strip_edges());
 
@@ -563,15 +563,15 @@ TreeItem *EditorHelpSearch::Runner::_create_member_item(TreeItem *p_parent, cons
 	Ref<Texture> icon;
 	String text;
 	if (search_flags & SEARCH_SHOW_HIERARCHY) {
-		icon = ui_service->get_icon(p_icon, "EditorIcons");
+		icon = ui_service->get_theme_icon(p_icon, "EditorIcons");
 		text = p_name;
 	} else {
-		icon = ui_service->get_icon(p_icon, "EditorIcons");
+		icon = ui_service->get_theme_icon(p_icon, "EditorIcons");
 		/*// In flat mode, show the class icon.
 		if (ui_service->has_icon(p_class_name, "EditorIcons"))
-			icon = ui_service->get_icon(p_class_name, "EditorIcons");
+			icon = ui_service->get_theme_icon(p_class_name, "EditorIcons");
 		else if (ClassDB::is_parent_class(p_class_name, "Object"))
-			icon = ui_service->get_icon("Object", "EditorIcons");*/
+			icon = ui_service->get_theme_icon("Object", "EditorIcons");*/
 		text = p_class_name + "." + p_name;
 	}
 
@@ -605,6 +605,6 @@ EditorHelpSearch::Runner::Runner(Control *p_icon_service, Tree *p_results_tree, 
 		results_tree(p_results_tree),
 		term((p_search_flags & SEARCH_CASE_SENSITIVE) == 0 ? p_term.strip_edges().to_lower() : p_term.strip_edges()),
 		search_flags(p_search_flags),
-		empty_icon(ui_service->get_icon("ArrowRight", "EditorIcons")),
-		disabled_color(ui_service->get_color("disabled_font_color", "Editor")) {
+		empty_icon(ui_service->get_theme_icon("ArrowRight", "EditorIcons")),
+		disabled_color(ui_service->get_theme_color("disabled_font_color", "Editor")) {
 }

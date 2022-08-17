@@ -382,7 +382,7 @@ void EditorPropertyArray::update_property() {
 			vbox->add_child(hbox);
 
 			Button *reorder_button = memnew(Button);
-			reorder_button->set_icon(get_icon("TripleBar", "EditorIcons"));
+			reorder_button->set_icon(get_theme_icon("TripleBar", "EditorIcons"));
 			reorder_button->set_default_cursor_shape(Control::CURSOR_MOVE);
 			reorder_button->connect("gui_input", this, "_reorder_button_gui_input");
 			reorder_button->connect("button_down", this, "_reorder_button_down", varray(i + offset));
@@ -420,12 +420,12 @@ void EditorPropertyArray::update_property() {
 
 			if (is_untyped_array) {
 				Button *edit = memnew(Button);
-				edit->set_icon(get_icon("Edit", "EditorIcons"));
+				edit->set_icon(get_theme_icon("Edit", "EditorIcons"));
 				hbox->add_child(edit);
 				edit->connect("pressed", this, "_change_type", varray(edit, i + offset));
 			} else {
 				Button *remove = memnew(Button);
-				remove->set_icon(get_icon("Remove", "EditorIcons"));
+				remove->set_icon(get_theme_icon("Remove", "EditorIcons"));
 				remove->connect("pressed", this, "_remove_pressed", varray(i + offset));
 				hbox->add_child(remove);
 			}
@@ -458,7 +458,7 @@ void EditorPropertyArray::_remove_pressed(int p_index) {
 
 void EditorPropertyArray::_button_draw() {
 	if (dropping) {
-		Color color = get_color("accent_color", "Editor");
+		Color color = get_theme_color("accent_color", "Editor");
 		edit->draw_rect(Rect2(Point2(), edit->get_size()), color, false);
 	}
 }
@@ -545,10 +545,10 @@ void EditorPropertyArray::_notification(int p_what) {
 			change_type->clear();
 			for (int i = 0; i < Variant::VARIANT_MAX; i++) {
 				String type = Variant::get_type_name(Variant::Type(i));
-				change_type->add_icon_item(get_icon(type, "EditorIcons"), type, i);
+				change_type->add_icon_item(get_theme_icon(type, "EditorIcons"), type, i);
 			}
 			change_type->add_separator();
-			change_type->add_icon_item(get_icon("Remove", "EditorIcons"), TTR("Remove Item"), Variant::VARIANT_MAX);
+			change_type->add_icon_item(get_theme_icon("Remove", "EditorIcons"), TTR("Remove Item"), Variant::VARIANT_MAX);
 		} break;
 
 		case NOTIFICATION_DRAG_BEGIN: {
@@ -1171,9 +1171,9 @@ void EditorPropertyDictionary::update_property() {
 				for (int j = 0; j < 4; j++) {
 					flat->set_default_margin(Margin(j), 2 * EDSCALE);
 				}
-				flat->set_bg_color(get_color("prop_subsection", "Editor"));
+				flat->set_bg_color(get_theme_color("prop_subsection", "Editor"));
 
-				pc->add_style_override("panel", flat);
+				pc->add_theme_style_override("panel", flat);
 				add_vbox = memnew(VBoxContainer);
 				pc->add_child(add_vbox);
 			}
@@ -1206,7 +1206,7 @@ void EditorPropertyDictionary::update_property() {
 			hbox->add_child(prop);
 			prop->set_h_size_flags(SIZE_EXPAND_FILL);
 			Button *edit = memnew(Button);
-			edit->set_icon(get_icon("Edit", "EditorIcons"));
+			edit->set_icon(get_theme_icon("Edit", "EditorIcons"));
 			hbox->add_child(edit);
 			edit->connect("pressed", this, "_change_type", varray(edit, change_index));
 
@@ -1215,7 +1215,7 @@ void EditorPropertyDictionary::update_property() {
 			if (i == amount + 1) {
 				button_add_item = memnew(Button);
 				button_add_item->set_text(TTR("Add Key/Value Pair"));
-				button_add_item->set_icon(get_icon("Add", "EditorIcons"));
+				button_add_item->set_icon(get_theme_icon("Add", "EditorIcons"));
 				button_add_item->connect("pressed", this, "_add_key_value");
 				add_vbox->add_child(button_add_item);
 			}
@@ -1244,13 +1244,13 @@ void EditorPropertyDictionary::_notification(int p_what) {
 			change_type->clear();
 			for (int i = 0; i < Variant::VARIANT_MAX; i++) {
 				String type = Variant::get_type_name(Variant::Type(i));
-				change_type->add_icon_item(get_icon(type, "EditorIcons"), type, i);
+				change_type->add_icon_item(get_theme_icon(type, "EditorIcons"), type, i);
 			}
 			change_type->add_separator();
-			change_type->add_icon_item(get_icon("Remove", "EditorIcons"), TTR("Remove Item"), Variant::VARIANT_MAX);
+			change_type->add_icon_item(get_theme_icon("Remove", "EditorIcons"), TTR("Remove Item"), Variant::VARIANT_MAX);
 
 			if (Object::cast_to<Button>(button_add_item)) {
-				button_add_item->set_icon(get_icon("Add", "EditorIcons"));
+				button_add_item->set_icon(get_theme_icon("Add", "EditorIcons"));
 			}
 		} break;
 	}

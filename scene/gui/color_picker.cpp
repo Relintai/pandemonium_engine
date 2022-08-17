@@ -58,14 +58,14 @@ List<Color> ColorPicker::preset_cache;
 void ColorPicker::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_THEME_CHANGED: {
-			btn_pick->set_icon(get_icon("screen_picker", "ColorPicker"));
-			btn_add_preset->set_icon(get_icon("add_preset"));
+			btn_pick->set_icon(get_theme_icon("screen_picker", "ColorPicker"));
+			btn_add_preset->set_icon(get_theme_icon("add_preset"));
 			_update_presets();
 			_update_controls();
 		} break;
 		case NOTIFICATION_ENTER_TREE: {
-			btn_pick->set_icon(get_icon("screen_picker", "ColorPicker"));
-			btn_add_preset->set_icon(get_icon("add_preset"));
+			btn_pick->set_icon(get_theme_icon("screen_picker", "ColorPicker"));
+			btn_add_preset->set_icon(get_theme_icon("add_preset"));
 
 			_update_controls();
 			_update_color();
@@ -87,13 +87,13 @@ void ColorPicker::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_PARENTED: {
 			for (int i = 0; i < 4; i++) {
-				set_margin((Margin)i, get_margin((Margin)i) + get_constant("margin"));
+				set_margin((Margin)i, get_margin((Margin)i) + get_theme_constant("margin"));
 			}
 		} break;
 		case NOTIFICATION_VISIBILITY_CHANGED: {
 			Popup *p = Object::cast_to<Popup>(get_parent());
 			if (p) {
-				p->set_size(Size2(get_combined_minimum_size().width + get_constant("margin") * 2, get_combined_minimum_size().height + get_constant("margin") * 2));
+				p->set_size(Size2(get_combined_minimum_size().width + get_theme_constant("margin") * 2, get_combined_minimum_size().height + get_theme_constant("margin") * 2));
 			}
 		} break;
 		case MainLoop::NOTIFICATION_WM_QUIT_REQUEST: {
@@ -282,7 +282,7 @@ void ColorPicker::_text_type_toggled() {
 	text_is_constructor = !text_is_constructor;
 	if (text_is_constructor) {
 		text_type->set_text("");
-		text_type->set_icon(get_icon("Script", "EditorIcons"));
+		text_type->set_icon(get_theme_icon("Script", "EditorIcons"));
 
 		c_text->set_editable(false);
 	} else {
@@ -299,7 +299,7 @@ Color ColorPicker::get_pick_color() const {
 }
 
 inline int ColorPicker::_get_preset_size() {
-	return (int(get_size().width) - (preset_container->get_constant("hseparation") * (preset_column_count - 1))) / preset_column_count;
+	return (int(get_size().width) - (preset_container->get_theme_constant("hseparation") * (preset_column_count - 1))) / preset_column_count;
 }
 
 void ColorPicker::_add_preset_button(int p_size, const Color &p_color) {
@@ -470,28 +470,28 @@ void ColorPicker::_sample_draw() {
 		const Rect2 rect_old = Rect2(Point2(), Size2(uv_edit->get_size().width * 0.5, sample->get_size().height * 0.95));
 
 		if (display_old_color && old_color.a < 1.0) {
-			sample->draw_texture_rect(get_icon("preset_bg", "ColorPicker"), rect_old, true);
+			sample->draw_texture_rect(get_theme_icon("preset_bg", "ColorPicker"), rect_old, true);
 		}
 
 		sample->draw_rect(rect_old, old_color);
 
 		if (old_color.r > 1 || old_color.g > 1 || old_color.b > 1) {
 			// Draw an indicator to denote that the old color is "overbright" and can't be displayed accurately in the preview.
-			sample->draw_texture(get_icon("overbright_indicator", "ColorPicker"), Point2());
+			sample->draw_texture(get_theme_icon("overbright_indicator", "ColorPicker"), Point2());
 		}
 	} else {
 		rect_new = Rect2(Point2(), Size2(uv_edit->get_size().width, sample->get_size().height * 0.95));
 	}
 
 	if (color.a < 1.0) {
-		sample->draw_texture_rect(get_icon("preset_bg", "ColorPicker"), rect_new, true);
+		sample->draw_texture_rect(get_theme_icon("preset_bg", "ColorPicker"), rect_new, true);
 	}
 
 	sample->draw_rect(rect_new, color);
 
 	if (color.r > 1 || color.g > 1 || color.b > 1) {
 		// Draw an indicator to denote that the new color is "overbright" and can't be displayed accurately in the preview
-		sample->draw_texture(get_icon("overbright_indicator", "ColorPicker"), Point2(uv_edit->get_size().width * 0.5, 0));
+		sample->draw_texture(get_theme_icon("overbright_indicator", "ColorPicker"), Point2(uv_edit->get_size().width * 0.5, 0));
 	}
 }
 
@@ -531,7 +531,7 @@ void ColorPicker::_hsv_draw(int p_which, Control *c) {
 		c->draw_line(Point2(0, y), Point2(c->get_size().x, y), col.inverted());
 		c->draw_line(Point2(x, y), Point2(x, y), Color(1, 1, 1), 2);
 	} else if (p_which == 1) {
-		Ref<Texture> hue = get_icon("color_hue", "ColorPicker");
+		Ref<Texture> hue = get_theme_icon("color_hue", "ColorPicker");
 		c->draw_texture_rect(hue, Rect2(Point2(), c->get_size()));
 		int y = c->get_size().y - c->get_size().y * (1.0 - h);
 		Color col = Color();
@@ -826,12 +826,12 @@ ColorPicker::ColorPicker() :
 	uv_edit->set_mouse_filter(MOUSE_FILTER_PASS);
 	uv_edit->set_h_size_flags(SIZE_EXPAND_FILL);
 	uv_edit->set_v_size_flags(SIZE_EXPAND_FILL);
-	uv_edit->set_custom_minimum_size(Size2(get_constant("sv_width"), get_constant("sv_height")));
+	uv_edit->set_custom_minimum_size(Size2(get_theme_constant("sv_width"), get_theme_constant("sv_height")));
 	uv_edit->connect("draw", this, "_hsv_draw", make_binds(0, uv_edit));
 
 	w_edit = memnew(Control);
 	hb_edit->add_child(w_edit);
-	w_edit->set_custom_minimum_size(Size2(get_constant("h_width"), 0));
+	w_edit->set_custom_minimum_size(Size2(get_theme_constant("h_width"), 0));
 	w_edit->set_h_size_flags(SIZE_FILL);
 	w_edit->set_v_size_flags(SIZE_EXPAND_FILL);
 	w_edit->connect("gui_input", this, "_w_input");
@@ -865,7 +865,7 @@ ColorPicker::ColorPicker() :
 		HBoxContainer *hbc = memnew(HBoxContainer);
 
 		labels[i] = memnew(Label());
-		labels[i]->set_custom_minimum_size(Size2(get_constant("label_width"), 0));
+		labels[i]->set_custom_minimum_size(Size2(get_theme_constant("label_width"), 0));
 		labels[i]->set_v_size_flags(SIZE_SHRINK_CENTER);
 		hbc->add_child(labels[i]);
 
@@ -973,14 +973,14 @@ void ColorPickerButton::pressed() {
 void ColorPickerButton::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_DRAW: {
-			const Ref<StyleBox> normal = get_stylebox("normal");
+			const Ref<StyleBox> normal = get_theme_stylebox("normal");
 			const Rect2 r = Rect2(normal->get_offset(), get_size() - normal->get_minimum_size());
-			draw_texture_rect(Control::get_icon("bg", "ColorPickerButton"), r, true);
+			draw_texture_rect(Control::get_theme_icon("bg", "ColorPickerButton"), r, true);
 			draw_rect(r, color);
 
 			if (color.r > 1 || color.g > 1 || color.b > 1) {
 				// Draw an indicator to denote that the color is "overbright" and can't be displayed accurately in the preview
-				draw_texture(Control::get_icon("overbright_indicator", "ColorPicker"), normal->get_offset());
+				draw_texture(Control::get_theme_icon("overbright_indicator", "ColorPicker"), normal->get_offset());
 			}
 		} break;
 		case MainLoop::NOTIFICATION_WM_QUIT_REQUEST: {
@@ -1094,7 +1094,7 @@ void ColorPresetButton::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_DRAW: {
 			const Rect2 r = Rect2(Point2(0, 0), get_size());
-			Ref<StyleBox> sb_raw = get_stylebox("preset_fg", "ColorPresetButton")->duplicate();
+			Ref<StyleBox> sb_raw = get_theme_stylebox("preset_fg", "ColorPresetButton")->duplicate();
 			Ref<StyleBoxFlat> sb_flat = sb_raw;
 			Ref<StyleBoxTexture> sb_texture = sb_raw;
 
@@ -1109,7 +1109,7 @@ void ColorPresetButton::_notification(int p_what) {
 					bg_texture_rect = bg_texture_rect.grow_margin(MARGIN_TOP, -sb_flat->get_margin(MARGIN_TOP));
 					bg_texture_rect = bg_texture_rect.grow_margin(MARGIN_BOTTOM, -sb_flat->get_margin(MARGIN_BOTTOM));
 
-					draw_texture_rect(get_icon("preset_bg_icon", "ColorPresetButton"), bg_texture_rect, true);
+					draw_texture_rect(get_theme_icon("preset_bg_icon", "ColorPresetButton"), bg_texture_rect, true);
 					sb_flat->set_bg_color(preset_color);
 				}
 				sb_flat->set_bg_color(preset_color);
@@ -1118,7 +1118,7 @@ void ColorPresetButton::_notification(int p_what) {
 				if (preset_color.a < 1) {
 					// Draw a background pattern when the color is transparent.
 					bool use_tile_texture = (sb_texture->get_h_axis_stretch_mode() == StyleBoxTexture::AxisStretchMode::AXIS_STRETCH_MODE_TILE) || (sb_texture->get_h_axis_stretch_mode() == StyleBoxTexture::AxisStretchMode::AXIS_STRETCH_MODE_TILE_FIT);
-					draw_texture_rect(get_icon("preset_bg_icon", "ColorPresetButton"), r, use_tile_texture);
+					draw_texture_rect(get_theme_icon("preset_bg_icon", "ColorPresetButton"), r, use_tile_texture);
 				}
 				sb_texture->set_modulate(preset_color);
 				sb_texture->draw(get_canvas_item(), r);
@@ -1127,7 +1127,7 @@ void ColorPresetButton::_notification(int p_what) {
 			}
 			if (preset_color.r > 1 || preset_color.g > 1 || preset_color.b > 1) {
 				// Draw an indicator to denote that the color is "overbright" and can't be displayed accurately in the preview.
-				draw_texture(Control::get_icon("overbright_indicator", "ColorPresetButton"), Vector2(0, 0));
+				draw_texture(Control::get_theme_icon("overbright_indicator", "ColorPresetButton"), Vector2(0, 0));
 			}
 
 		} break;

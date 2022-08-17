@@ -1054,7 +1054,7 @@ void EditorSpatialGizmoPlugin::create_handle_material(const String &p_name, bool
 	handle_material->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
 	handle_material->set_flag(SpatialMaterial::FLAG_USE_POINT_SIZE, true);
 
-	Ref<Texture> handle_t = p_icon != nullptr ? p_icon : SpatialEditor::get_singleton()->get_icon("Editor3DHandle", "EditorIcons");
+	Ref<Texture> handle_t = p_icon != nullptr ? p_icon : SpatialEditor::get_singleton()->get_theme_icon("Editor3DHandle", "EditorIcons");
 	handle_material->set_point_size(handle_t->get_width());
 	handle_material->set_texture(SpatialMaterial::TEXTURE_ALBEDO, handle_t);
 	handle_material->set_albedo(Color(1, 1, 1));
@@ -1332,9 +1332,9 @@ LightSpatialGizmoPlugin::LightSpatialGizmoPlugin() {
 	create_material("lines_secondary", Color(1, 1, 1, 0.35), false, false, true);
 	create_material("lines_billboard", Color(1, 1, 1), true, false, true);
 
-	create_icon_material("light_directional_icon", SpatialEditor::get_singleton()->get_icon("GizmoDirectionalLight", "EditorIcons"));
-	create_icon_material("light_omni_icon", SpatialEditor::get_singleton()->get_icon("GizmoLight", "EditorIcons"));
-	create_icon_material("light_spot_icon", SpatialEditor::get_singleton()->get_icon("GizmoSpotLight", "EditorIcons"));
+	create_icon_material("light_directional_icon", SpatialEditor::get_singleton()->get_theme_icon("GizmoDirectionalLight", "EditorIcons"));
+	create_icon_material("light_omni_icon", SpatialEditor::get_singleton()->get_theme_icon("GizmoLight", "EditorIcons"));
+	create_icon_material("light_spot_icon", SpatialEditor::get_singleton()->get_theme_icon("GizmoSpotLight", "EditorIcons"));
 
 	create_handle_material("handles");
 	create_handle_material("handles_billboard", true);
@@ -1603,7 +1603,7 @@ void LightSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 AudioStreamPlayer3DSpatialGizmoPlugin::AudioStreamPlayer3DSpatialGizmoPlugin() {
 	Color gizmo_color = EDITOR_DEF("editors/3d_gizmos/gizmo_colors/stream_player_3d", Color(0.4, 0.8, 1));
 
-	create_icon_material("stream_player_3d_icon", SpatialEditor::get_singleton()->get_icon("GizmoSpatialSamplePlayer", "EditorIcons"));
+	create_icon_material("stream_player_3d_icon", SpatialEditor::get_singleton()->get_theme_icon("GizmoSpatialSamplePlayer", "EditorIcons"));
 	create_material("stream_player_3d_material_primary", gizmo_color);
 	create_material("stream_player_3d_material_secondary", gizmo_color * Color(1, 1, 1, 0.35));
 	create_handle_material("handles");
@@ -1737,7 +1737,7 @@ void AudioStreamPlayer3DSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) 
 //////
 
 ListenerSpatialGizmoPlugin::ListenerSpatialGizmoPlugin() {
-	create_icon_material("listener_icon", SpatialEditor::get_singleton()->get_icon("GizmoListener", "EditorIcons"));
+	create_icon_material("listener_icon", SpatialEditor::get_singleton()->get_theme_icon("GizmoListener", "EditorIcons"));
 }
 
 bool ListenerSpatialGizmoPlugin::has_gizmo(Spatial *p_spatial) {
@@ -2127,7 +2127,7 @@ Position3DSpatialGizmoPlugin::Position3DSpatialGizmoPlugin() {
 	// Use a darkened axis color for the negative axis.
 	// This makes it possible to see in which direction the Position3D node is rotated
 	// (which can be important depending on how it's used).
-	const Color color_x = EditorNode::get_singleton()->get_gui_base()->get_color("axis_x_color", "Editor");
+	const Color color_x = EditorNode::get_singleton()->get_gui_base()->get_theme_color("axis_x_color", "Editor");
 	cursor_colors.push_back(color_x);
 	cursor_colors.push_back(color_x);
 	// FIXME: Use less strong darkening factor once GH-48573 is fixed.
@@ -2135,13 +2135,13 @@ Position3DSpatialGizmoPlugin::Position3DSpatialGizmoPlugin() {
 	cursor_colors.push_back(color_x.linear_interpolate(Color(0, 0, 0), 0.75));
 	cursor_colors.push_back(color_x.linear_interpolate(Color(0, 0, 0), 0.75));
 
-	const Color color_y = EditorNode::get_singleton()->get_gui_base()->get_color("axis_y_color", "Editor");
+	const Color color_y = EditorNode::get_singleton()->get_gui_base()->get_theme_color("axis_y_color", "Editor");
 	cursor_colors.push_back(color_y);
 	cursor_colors.push_back(color_y);
 	cursor_colors.push_back(color_y.linear_interpolate(Color(0, 0, 0), 0.75));
 	cursor_colors.push_back(color_y.linear_interpolate(Color(0, 0, 0), 0.75));
 
-	const Color color_z = EditorNode::get_singleton()->get_gui_base()->get_color("axis_z_color", "Editor");
+	const Color color_z = EditorNode::get_singleton()->get_gui_base()->get_theme_color("axis_z_color", "Editor");
 	cursor_colors.push_back(color_z);
 	cursor_colors.push_back(color_z);
 	cursor_colors.push_back(color_z.linear_interpolate(Color(0, 0, 0), 0.75));
@@ -2702,7 +2702,7 @@ void VisibilityNotifierGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 ////
 
 CPUParticlesGizmoPlugin::CPUParticlesGizmoPlugin() {
-	create_icon_material("particles_icon", SpatialEditor::get_singleton()->get_icon("GizmoCPUParticles", "EditorIcons"));
+	create_icon_material("particles_icon", SpatialEditor::get_singleton()->get_theme_icon("GizmoCPUParticles", "EditorIcons"));
 }
 
 bool CPUParticlesGizmoPlugin::has_gizmo(Spatial *p_spatial) {
@@ -2739,7 +2739,7 @@ ReflectionProbeGizmoPlugin::ReflectionProbeGizmoPlugin() {
 	gizmo_color.a = 0.1;
 	create_material("reflection_probe_solid_material", gizmo_color);
 
-	create_icon_material("reflection_probe_icon", SpatialEditor::get_singleton()->get_icon("GizmoReflectionProbe", "EditorIcons"));
+	create_icon_material("reflection_probe_icon", SpatialEditor::get_singleton()->get_theme_icon("GizmoReflectionProbe", "EditorIcons"));
 	create_handle_material("handles");
 }
 
@@ -4617,7 +4617,7 @@ PortalGizmoPlugin::PortalGizmoPlugin() {
 	Color color_portal_edge = EDITOR_DEF("editors/3d_gizmos/gizmo_colors/portal_edge", Color(0.0, 0.0, 0.0, 0.3));
 	Color color_portal_arrow = EDITOR_DEF("editors/3d_gizmos/gizmo_colors/portal_arrow", Color(1.0, 1.0, 1.0, 1.0));
 
-	create_icon_material("portal_icon", SpatialEditor::get_singleton()->get_icon("GizmoPortal", "EditorIcons"), true);
+	create_icon_material("portal_icon", SpatialEditor::get_singleton()->get_theme_icon("GizmoPortal", "EditorIcons"), true);
 	create_material("portal", Color(1.0, 1.0, 1.0, 1.0), false, false, true);
 	create_material("portal_margin", color_portal_margin, false, false, false);
 	create_material("portal_edge", color_portal_edge, false, false, false);
@@ -4922,7 +4922,7 @@ OccluderGizmoPlugin::OccluderGizmoPlugin() {
 	create_material("occluder_poly", Color(1, 1, 1, 1), false, false, true);
 
 	create_handle_material("occluder_handle");
-	create_handle_material("extra_handle", false, SpatialEditor::get_singleton()->get_icon("EditorInternalHandle", "EditorIcons"));
+	create_handle_material("extra_handle", false, SpatialEditor::get_singleton()->get_theme_icon("EditorInternalHandle", "EditorIcons"));
 }
 
 Ref<EditorSpatialGizmo> OccluderGizmoPlugin::create_gizmo(Spatial *p_spatial) {

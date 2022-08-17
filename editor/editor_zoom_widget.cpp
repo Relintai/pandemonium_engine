@@ -147,8 +147,8 @@ void EditorZoomWidget::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE:
 		case NOTIFICATION_THEME_CHANGED: {
-			zoom_minus->set_icon(get_icon("ZoomLess", "EditorIcons"));
-			zoom_plus->set_icon(get_icon("ZoomMore", "EditorIcons"));
+			zoom_minus->set_icon(get_theme_icon("ZoomLess", "EditorIcons"));
+			zoom_plus->set_icon(get_theme_icon("ZoomMore", "EditorIcons"));
 		} break;
 	}
 }
@@ -180,9 +180,9 @@ EditorZoomWidget::EditorZoomWidget() {
 	zoom_reset = memnew(Button);
 	zoom_reset->set_flat(true);
 	add_child(zoom_reset);
-	zoom_reset->add_constant_override("outline_size", 1);
-	zoom_reset->add_color_override("font_outline_color", Color(0, 0, 0));
-	zoom_reset->add_color_override("font_color", Color(1, 1, 1));
+	zoom_reset->add_theme_constant_override("outline_size", 1);
+	zoom_reset->add_theme_color_override("font_outline_color", Color(0, 0, 0));
+	zoom_reset->add_theme_color_override("font_color", Color(1, 1, 1));
 	zoom_reset->connect("pressed", this, "_button_zoom_reset");
 	zoom_reset->set_shortcut(ED_SHORTCUT("canvas_item_editor/zoom_reset", TTR("Zoom Reset"), KEY_MASK_CMD | KEY_0));
 	//zoom_reset->set_shortcut_context(this);
@@ -202,5 +202,5 @@ EditorZoomWidget::EditorZoomWidget() {
 
 	_update_zoom_label();
 
-	add_constant_override("separation", Math::round(-8 * EDSCALE));
+	add_theme_constant_override("separation", Math::round(-8 * EDSCALE));
 }

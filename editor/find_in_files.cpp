@@ -599,7 +599,7 @@ FindInFilesPanel::FindInFilesPanel() {
 		hbc->add_child(find_label);
 
 		_search_text_label = memnew(Label);
-		_search_text_label->add_font_override("font", EditorNode::get_singleton()->get_gui_base()->get_font("source", "EditorFonts"));
+		_search_text_label->add_theme_font_override("font", EditorNode::get_singleton()->get_gui_base()->get_theme_font("source", "EditorFonts"));
 		hbc->add_child(_search_text_label);
 
 		_progress_bar = memnew(ProgressBar);
@@ -627,7 +627,7 @@ FindInFilesPanel::FindInFilesPanel() {
 	}
 
 	_results_display = memnew(Tree);
-	_results_display->add_font_override("font", EditorNode::get_singleton()->get_gui_base()->get_font("source", "EditorFonts"));
+	_results_display->add_theme_font_override("font", EditorNode::get_singleton()->get_gui_base()->get_theme_font("source", "EditorFonts"));
 	_results_display->set_v_size_flags(SIZE_EXPAND_FILL);
 	_results_display->connect("item_selected", this, "_on_result_selected");
 	_results_display->connect("item_edited", this, "_on_item_edited");
@@ -720,8 +720,8 @@ void FindInFilesPanel::_notification(int p_what) {
 	if (p_what == NOTIFICATION_PROCESS) {
 		_progress_bar->set_as_ratio(_finder->get_progress());
 	} else if (p_what == NOTIFICATION_THEME_CHANGED) {
-		_search_text_label->add_font_override("font", get_font("source", "EditorFonts"));
-		_results_display->add_font_override("font", get_font("source", "EditorFonts"));
+		_search_text_label->add_theme_font_override("font", get_theme_font("source", "EditorFonts"));
+		_results_display->add_theme_font_override("font", get_theme_font("source", "EditorFonts"));
 	}
 }
 
@@ -786,7 +786,7 @@ void FindInFilesPanel::draw_result_text(Object *item_obj, Rect2 rect) {
 	}
 	Result r = E->value();
 	String item_text = item->get_text(_with_replace ? 1 : 0);
-	Ref<Font> font = _results_display->get_font("font");
+	Ref<Font> font = _results_display->get_theme_font("font");
 
 	Rect2 match_rect = rect;
 	match_rect.position.x += font->get_string_size(item_text.left(r.begin_trimmed)).x;
@@ -795,7 +795,7 @@ void FindInFilesPanel::draw_result_text(Object *item_obj, Rect2 rect) {
 	match_rect.size.y -= 2 * EDSCALE;
 
 	// Use the inverted accent color to help match rectangles stand out even on the currently selected line.
-	_results_display->draw_rect(match_rect, get_color("accent_color", "Editor").inverted() * Color(1, 1, 1, 0.5));
+	_results_display->draw_rect(match_rect, get_theme_color("accent_color", "Editor").inverted() * Color(1, 1, 1, 0.5));
 
 	// Text is drawn by Tree already.
 }
@@ -804,11 +804,11 @@ void FindInFilesPanel::_on_item_edited() {
 	TreeItem *item = _results_display->get_selected();
 
 	if (item->is_checked(0)) {
-		item->set_custom_color(1, _results_display->get_color("font_color"));
+		item->set_custom_color(1, _results_display->get_theme_color("font_color"));
 
 	} else {
 		// Grey out
-		Color color = _results_display->get_color("font_color");
+		Color color = _results_display->get_theme_color("font_color");
 		color.a /= 2.0;
 		item->set_custom_color(1, color);
 	}

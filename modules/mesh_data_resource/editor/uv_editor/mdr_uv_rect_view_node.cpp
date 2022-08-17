@@ -484,7 +484,7 @@ void MDRUVRectViewNode::_gui_input(const Ref<InputEvent> &p_event) {
 int MDRUVRectViewNode::_drag_hit_test(const Vector2 &pos) {
 	int drag_type = DragType::DRAG_NONE;
 
-	int scaleborder_size = get_constant("scaleborder_size", "WindowDialog");
+	int scaleborder_size = get_theme_constant("scaleborder_size", "WindowDialog");
 
 	Rect2 rect = get_rect();
 

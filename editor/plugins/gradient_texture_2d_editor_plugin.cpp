@@ -109,7 +109,7 @@ void GradientTexture2DEditorRect::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE:
 		case NOTIFICATION_THEME_CHANGED: {
-			checkerboard->set_texture(get_icon("GuiMiniCheckerboard", "EditorIcons"));
+			checkerboard->set_texture(get_theme_icon("GuiMiniCheckerboard", "EditorIcons"));
 		} break;
 
 		case NOTIFICATION_DRAW: {
@@ -117,8 +117,8 @@ void GradientTexture2DEditorRect::_notification(int p_what) {
 				return;
 			}
 
-			const Ref<Texture> fill_from_icon = get_icon("EditorPathSmoothHandle", "EditorIcons");
-			const Ref<Texture> fill_to_icon = get_icon("EditorPathSharpHandle", "EditorIcons");
+			const Ref<Texture> fill_from_icon = get_theme_icon("EditorPathSmoothHandle", "EditorIcons");
+			const Ref<Texture> fill_to_icon = get_theme_icon("EditorPathSharpHandle", "EditorIcons");
 			handle_size = fill_from_icon->get_size();
 
 			const int MAX_HEIGHT = 250 * EDSCALE;
@@ -224,8 +224,8 @@ void GradientTexture2DEditor::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE:
 		case NOTIFICATION_THEME_CHANGED: {
-			reverse_button->set_icon(get_icon("ReverseGradient", "EditorIcons"));
-			snap_button->set_icon(get_icon("SnapGrid", "EditorIcons"));
+			reverse_button->set_icon(get_theme_icon("ReverseGradient", "EditorIcons"));
+			snap_button->set_icon(get_theme_icon("SnapGrid", "EditorIcons"));
 		} break;
 	}
 }

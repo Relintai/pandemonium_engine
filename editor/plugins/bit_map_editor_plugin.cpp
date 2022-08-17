@@ -59,7 +59,7 @@ BitMapEditor::BitMapEditor() {
 	Ref<StyleBoxEmpty> stylebox;
 	stylebox.instance();
 	stylebox->set_default_margin(MARGIN_RIGHT, 4 * EDSCALE);
-	size_label->add_style_override("normal", stylebox);
+	size_label->add_theme_style_override("normal", stylebox);
 }
 
 ///////////////////////

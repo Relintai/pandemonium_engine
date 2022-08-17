@@ -40,7 +40,7 @@ PluginRefresherEditorPlugin::PluginRefresherEditorPlugin(EditorNode *p_node) {
 	_enable_check_box->set_text(TTR("Show Refresher"));
 
 	_plugin_refresher = memnew(PluginRefresher);
-	_plugin_refresher->set_icon(get_editor_interface()->get_base_control()->get_icon("Reload", "EditorIcons"));
+	_plugin_refresher->set_icon(get_editor_interface()->get_base_control()->get_theme_icon("Reload", "EditorIcons"));
 
 	_plugin_refresher->set_enabler_check_box(_enable_check_box);
 

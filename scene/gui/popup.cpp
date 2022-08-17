@@ -244,7 +244,7 @@ Popup::~Popup() {
 }
 
 Size2 PopupPanel::get_minimum_size() const {
-	Ref<StyleBox> p = get_stylebox("panel");
+	Ref<StyleBox> p = get_theme_stylebox("panel");
 
 	Size2 ms;
 
@@ -267,7 +267,7 @@ Size2 PopupPanel::get_minimum_size() const {
 }
 
 void PopupPanel::_update_child_rects() {
-	Ref<StyleBox> p = get_stylebox("panel");
+	Ref<StyleBox> p = get_theme_stylebox("panel");
 
 	Vector2 cpos(p->get_offset());
 	Vector2 csize(get_size() - p->get_minimum_size());
@@ -289,7 +289,7 @@ void PopupPanel::_update_child_rects() {
 
 void PopupPanel::_notification(int p_what) {
 	if (p_what == NOTIFICATION_DRAW) {
-		get_stylebox("panel")->draw(get_canvas_item(), Rect2(Point2(), get_size()));
+		get_theme_stylebox("panel")->draw(get_canvas_item(), Rect2(Point2(), get_size()));
 	} else if (p_what == NOTIFICATION_READY) {
 		_update_child_rects();
 	} else if (p_what == NOTIFICATION_RESIZED) {

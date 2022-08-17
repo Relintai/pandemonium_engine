@@ -107,7 +107,7 @@ void RayCast2DEditor::forward_canvas_draw_over_viewport(Control *p_overlay) {
 
 	Transform2D gt = canvas_item_editor->get_canvas_transform() * node->get_global_transform();
 
-	const Ref<Texture> handle = get_icon("EditorHandle", "EditorIcons");
+	const Ref<Texture> handle = get_theme_icon("EditorHandle", "EditorIcons");
 	p_overlay->draw_texture(handle, gt.xform(node->get_cast_to()) - handle->get_size() / 2);
 }
 

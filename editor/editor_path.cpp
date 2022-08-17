@@ -200,8 +200,8 @@ void EditorPath::_notification(int p_what) {
 			update_path();
 
 			// Button overrides Control's method, so we have to improvise.
-			sub_objects_icon->set_texture(sub_objects_icon->get_icon("select_arrow", "Tree"));
-			current_object_label->add_font_override("font", get_font("main", "EditorFonts"));
+			sub_objects_icon->set_texture(sub_objects_icon->get_theme_icon("select_arrow", "Tree"));
+			current_object_label->add_theme_font_override("font", get_theme_font("main", "EditorFonts"));
 		} break;
 
 		case NOTIFICATION_READY: {
@@ -221,8 +221,8 @@ EditorPath::EditorPath(EditorHistory *p_history) {
 
 	MarginContainer *main_mc = memnew(MarginContainer);
 	main_mc->set_anchors_and_margins_preset(PRESET_WIDE);
-	main_mc->add_constant_override("margin_left", 4 * EDSCALE);
-	main_mc->add_constant_override("margin_right", 6 * EDSCALE);
+	main_mc->add_theme_constant_override("margin_left", 4 * EDSCALE);
+	main_mc->add_theme_constant_override("margin_right", 6 * EDSCALE);
 	main_mc->set_mouse_filter(MOUSE_FILTER_PASS);
 	add_child(main_mc);
 

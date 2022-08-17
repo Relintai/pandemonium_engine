@@ -137,7 +137,7 @@ RichTextLabel::Item *RichTextLabel::_get_prev_item(Item *p_item, bool p_free) {
 }
 
 Rect2 RichTextLabel::_get_text_rect() {
-	Ref<StyleBox> style = get_stylebox("normal");
+	Ref<StyleBox> style = get_theme_stylebox("normal");
 	return Rect2(style->get_offset(), get_size() - style->get_minimum_size());
 }
 
@@ -245,7 +245,7 @@ int RichTextLabel::_process_line(ItemFrame *p_frame, const Vector2 &p_ofs, int &
 			l.space_caches.push_back(spaces);                                                                                                                               \
 		}                                                                                                                                                                   \
 		line_wrapped = false;                                                                                                                                               \
-		y += line_height + get_constant(SceneStringNames::get_singleton()->line_separation);                                                                                \
+		y += line_height + get_theme_constant(SceneStringNames::get_singleton()->line_separation);                                                                                \
 		line_height = 0;                                                                                                                                                    \
 		line_ascent = 0;                                                                                                                                                    \
 		line_descent = 0;                                                                                                                                                   \
@@ -319,8 +319,8 @@ int RichTextLabel::_process_line(ItemFrame *p_frame, const Vector2 &p_ofs, int &
 	Color selection_bg;
 
 	if (p_mode == PROCESS_DRAW) {
-		selection_fg = get_color("font_color_selected");
-		selection_bg = get_color("selection_color");
+		selection_fg = get_theme_color("font_color_selected");
+		selection_bg = get_theme_color("selection_color");
 	}
 
 	int rchar = 0;
@@ -721,13 +721,13 @@ int RichTextLabel::_process_line(ItemFrame *p_frame, const Vector2 &p_ofs, int &
 			case ITEM_TABLE: {
 				lh = 0;
 				ItemTable *table = static_cast<ItemTable *>(it);
-				int hseparation = get_constant("table_hseparation");
-				int vseparation = get_constant("table_vseparation");
+				int hseparation = get_theme_constant("table_hseparation");
+				int vseparation = get_theme_constant("table_vseparation");
 				Color ccolor = _find_color(table, p_base_color);
 				Vector2 draw_ofs = Point2(wofs, y);
-				Color font_color_shadow = get_color("font_color_shadow");
-				bool use_outline = get_constant("shadow_as_outline");
-				Point2 shadow_ofs2(get_constant("shadow_offset_x"), get_constant("shadow_offset_y"));
+				Color font_color_shadow = get_theme_color("font_color_shadow");
+				bool use_outline = get_theme_constant("shadow_as_outline");
+				Point2 shadow_ofs2(get_theme_constant("shadow_offset_x"), get_theme_constant("shadow_offset_y"));
 
 				if (p_mode == PROCESS_CACHE) {
 					int idx = 0;
@@ -1035,11 +1035,11 @@ void RichTextLabel::_notification(int p_what) {
 			Size2 size = get_size();
 			Rect2 text_rect = _get_text_rect();
 
-			draw_style_box(get_stylebox("normal"), Rect2(Point2(), size));
+			draw_style_box(get_theme_stylebox("normal"), Rect2(Point2(), size));
 
 			if (has_focus()) {
 				VisualServer::get_singleton()->canvas_item_add_clip_ignore(ci, true);
-				draw_style_box(get_stylebox("focus"), Rect2(Point2(), size));
+				draw_style_box(get_theme_stylebox("focus"), Rect2(Point2(), size));
 				VisualServer::get_singleton()->canvas_item_add_clip_ignore(ci, false);
 			}
 
@@ -1061,11 +1061,11 @@ void RichTextLabel::_notification(int p_what) {
 				break; //nothing to draw
 			}
 			int y = (main->lines[from_line].height_accum_cache - main->lines[from_line].height_cache) - ofs;
-			Ref<Font> base_font = get_font("normal_font");
-			Color base_color = get_color("default_color");
-			Color font_color_shadow = get_color("font_color_shadow");
-			bool use_outline = get_constant("shadow_as_outline");
-			Point2 shadow_ofs(get_constant("shadow_offset_x"), get_constant("shadow_offset_y"));
+			Ref<Font> base_font = get_theme_font("normal_font");
+			Color base_color = get_theme_color("default_color");
+			Color font_color_shadow = get_theme_color("font_color_shadow");
+			bool use_outline = get_theme_constant("shadow_as_outline");
+			Point2 shadow_ofs(get_theme_constant("shadow_offset_x"), get_theme_constant("shadow_offset_y"));
 
 			visible_line_count = 0;
 			while (y < size.height && from_line < main->lines.size()) {
@@ -1100,9 +1100,9 @@ void RichTextLabel::_find_click(ItemFrame *p_frame, const Point2i &p_click, Item
 
 	Rect2 text_rect = _get_text_rect();
 	int ofs = vscroll->get_value();
-	Color font_color_shadow = get_color("font_color_shadow");
-	bool use_outline = get_constant("shadow_as_outline");
-	Point2 shadow_ofs(get_constant("shadow_offset_x"), get_constant("shadow_offset_y"));
+	Color font_color_shadow = get_theme_color("font_color_shadow");
+	bool use_outline = get_theme_constant("shadow_as_outline");
+	Point2 shadow_ofs(get_theme_constant("shadow_offset_x"), get_theme_constant("shadow_offset_y"));
 
 	//todo, change to binary search
 	int from_line = 0;
@@ -1119,8 +1119,8 @@ void RichTextLabel::_find_click(ItemFrame *p_frame, const Point2i &p_click, Item
 	}
 
 	int y = (p_frame->lines[from_line].height_accum_cache - p_frame->lines[from_line].height_cache) - ofs;
-	Ref<Font> base_font = get_font("normal_font");
-	Color base_color = get_color("default_color");
+	Ref<Font> base_font = get_theme_font("normal_font");
+	Color base_color = get_theme_color("default_color");
 
 	while (y < text_rect.get_size().height && from_line < p_frame->lines.size()) {
 		_process_line(p_frame, text_rect.get_position(), y, text_rect.get_size().width - scroll_w, from_line, PROCESS_POINTER, base_font, base_color, font_color_shadow, use_outline, shadow_ofs, p_click, r_click_item, r_click_char, r_outside);
@@ -1307,13 +1307,13 @@ void RichTextLabel::_gui_input(Ref<InputEvent> p_event) {
 				} break;
 				case KEY_UP: {
 					if (vscroll->is_visible_in_tree()) {
-						vscroll->set_value(vscroll->get_value() - get_font("normal_font")->get_height());
+						vscroll->set_value(vscroll->get_value() - get_theme_font("normal_font")->get_height());
 						handled = true;
 					}
 				} break;
 				case KEY_DOWN: {
 					if (vscroll->is_visible_in_tree()) {
-						vscroll->set_value(vscroll->get_value() + get_font("normal_font")->get_height());
+						vscroll->set_value(vscroll->get_value() + get_theme_font("normal_font")->get_height());
 						handled = true;
 					}
 				} break;
@@ -1585,11 +1585,11 @@ void RichTextLabel::_validate_line_caches(ItemFrame *p_frame) {
 		size.width = fixed_width;
 	}
 	Rect2 text_rect = _get_text_rect();
-	Color font_color_shadow = get_color("font_color_shadow");
-	bool use_outline = get_constant("shadow_as_outline");
-	Point2 shadow_ofs(get_constant("shadow_offset_x"), get_constant("shadow_offset_y"));
+	Color font_color_shadow = get_theme_color("font_color_shadow");
+	bool use_outline = get_theme_constant("shadow_as_outline");
+	Point2 shadow_ofs(get_theme_constant("shadow_offset_x"), get_theme_constant("shadow_offset_y"));
 
-	Ref<Font> base_font = get_font("normal_font");
+	Ref<Font> base_font = get_theme_font("normal_font");
 
 	for (int i = p_frame->first_invalid_line; i < p_frame->lines.size(); i++) {
 		int y = 0;
@@ -1604,7 +1604,7 @@ void RichTextLabel::_validate_line_caches(ItemFrame *p_frame) {
 
 	int total_height = 0;
 	if (p_frame->lines.size()) {
-		total_height = p_frame->lines[p_frame->lines.size() - 1].height_accum_cache + get_stylebox("normal")->get_minimum_size().height;
+		total_height = p_frame->lines[p_frame->lines.size() - 1].height_accum_cache + get_theme_stylebox("normal")->get_minimum_size().height;
 	}
 
 	main->first_invalid_line = p_frame->lines.size();
@@ -1832,35 +1832,35 @@ void RichTextLabel::push_font(const Ref<Font> &p_font) {
 }
 
 void RichTextLabel::push_normal() {
-	Ref<Font> normal_font = get_font("normal_font");
+	Ref<Font> normal_font = get_theme_font("normal_font");
 	ERR_FAIL_COND(normal_font.is_null());
 
 	push_font(normal_font);
 }
 
 void RichTextLabel::push_bold() {
-	Ref<Font> bold_font = get_font("bold_font");
+	Ref<Font> bold_font = get_theme_font("bold_font");
 	ERR_FAIL_COND(bold_font.is_null());
 
 	push_font(bold_font);
 }
 
 void RichTextLabel::push_bold_italics() {
-	Ref<Font> bold_italics_font = get_font("bold_italics_font");
+	Ref<Font> bold_italics_font = get_theme_font("bold_italics_font");
 	ERR_FAIL_COND(bold_italics_font.is_null());
 
 	push_font(bold_italics_font);
 }
 
 void RichTextLabel::push_italics() {
-	Ref<Font> italics_font = get_font("italics_font");
+	Ref<Font> italics_font = get_theme_font("italics_font");
 	ERR_FAIL_COND(italics_font.is_null());
 
 	push_font(italics_font);
 }
 
 void RichTextLabel::push_mono() {
-	Ref<Font> mono_font = get_font("mono_font");
+	Ref<Font> mono_font = get_theme_font("mono_font");
 	ERR_FAIL_COND(mono_font.is_null());
 
 	push_font(mono_font);
@@ -2109,13 +2109,13 @@ Error RichTextLabel::append_bbcode(const String &p_bbcode) {
 	int pos = 0;
 
 	List<String> tag_stack;
-	Ref<Font> normal_font = get_font("normal_font");
-	Ref<Font> bold_font = get_font("bold_font");
-	Ref<Font> italics_font = get_font("italics_font");
-	Ref<Font> bold_italics_font = get_font("bold_italics_font");
-	Ref<Font> mono_font = get_font("mono_font");
+	Ref<Font> normal_font = get_theme_font("normal_font");
+	Ref<Font> bold_font = get_theme_font("bold_font");
+	Ref<Font> italics_font = get_theme_font("italics_font");
+	Ref<Font> bold_italics_font = get_theme_font("bold_italics_font");
+	Ref<Font> mono_font = get_theme_font("mono_font");
 
-	Color base_color = get_color("default_color");
+	Color base_color = get_theme_color("default_color");
 
 	int indent_level = 0;
 
@@ -2615,7 +2615,7 @@ bool RichTextLabel::search(const String &p_string, bool p_from_selection, bool p
 
 				_validate_line_caches(main);
 
-				int fh = _find_font(t).is_valid() ? _find_font(t)->get_height() : get_font("normal_font")->get_height();
+				int fh = _find_font(t).is_valid() ? _find_font(t)->get_height() : get_theme_font("normal_font")->get_height();
 
 				float offset = 0;
 
@@ -2806,7 +2806,7 @@ int RichTextLabel::get_content_height() const {
 	int total_height = 0;
 	const_cast<RichTextLabel *>(this)->_validate_line_caches(main);
 	if (main->lines.size()) {
-		total_height = main->lines[main->lines.size() - 1].height_accum_cache + get_stylebox("normal")->get_minimum_size().height;
+		total_height = main->lines[main->lines.size() - 1].height_accum_cache + get_theme_stylebox("normal")->get_minimum_size().height;
 	}
 	return total_height;
 }

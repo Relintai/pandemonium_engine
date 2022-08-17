@@ -113,7 +113,7 @@ void GroupDialog::_load_nodes(Node *p_current) {
 
 		if (!_can_edit(p_current, selected_group)) {
 			node->set_selectable(0, false);
-			node->set_custom_color(0, get_color("disabled_font_color", "Editor"));
+			node->set_custom_color(0, get_theme_color("disabled_font_color", "Editor"));
 		}
 	}
 
@@ -227,8 +227,8 @@ void GroupDialog::_add_group(String p_name) {
 
 	TreeItem *new_group = groups->create_item(groups_root);
 	new_group->set_text(0, name);
-	new_group->add_button(0, get_icon("Remove", "EditorIcons"), DELETE_GROUP);
-	new_group->add_button(0, get_icon("ActionCopy", "EditorIcons"), COPY_GROUP);
+	new_group->add_button(0, get_theme_icon("Remove", "EditorIcons"), DELETE_GROUP);
+	new_group->add_button(0, get_theme_icon("ActionCopy", "EditorIcons"), COPY_GROUP);
 	new_group->set_editable(0, true);
 	new_group->select(0);
 	groups->ensure_cursor_is_visible();
@@ -394,12 +394,12 @@ void GroupDialog::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_THEME_CHANGED:
 		case NOTIFICATION_ENTER_TREE: {
-			add_button->set_icon(get_icon("Forward", "EditorIcons"));
-			remove_button->set_icon(get_icon("Back", "EditorIcons"));
+			add_button->set_icon(get_theme_icon("Forward", "EditorIcons"));
+			remove_button->set_icon(get_theme_icon("Back", "EditorIcons"));
 
-			add_filter->set_right_icon(get_icon("Search", "EditorIcons"));
+			add_filter->set_right_icon(get_theme_icon("Search", "EditorIcons"));
 			add_filter->set_clear_button_enabled(true);
-			remove_filter->set_right_icon(get_icon("Search", "EditorIcons"));
+			remove_filter->set_right_icon(get_theme_icon("Search", "EditorIcons"));
 			remove_filter->set_clear_button_enabled(true);
 		} break;
 	}
@@ -469,7 +469,7 @@ GroupDialog::GroupDialog() {
 	groups->set_allow_reselect(true);
 	groups->set_allow_rmb_select(true);
 	groups->set_v_size_flags(SIZE_EXPAND_FILL);
-	groups->add_constant_override("draw_guides", 1);
+	groups->add_theme_constant_override("draw_guides", 1);
 	groups->connect("item_selected", this, "_group_selected");
 	groups->connect("button_pressed", this, "_modify_group_pressed");
 	groups->connect("item_edited", this, "_group_renamed");
@@ -503,11 +503,11 @@ GroupDialog::GroupDialog() {
 	nodes_to_add->set_hide_folding(true);
 	nodes_to_add->set_select_mode(Tree::SELECT_MULTI);
 	nodes_to_add->set_v_size_flags(SIZE_EXPAND_FILL);
-	nodes_to_add->add_constant_override("draw_guides", 1);
+	nodes_to_add->add_theme_constant_override("draw_guides", 1);
 	nodes_to_add->connect("item_selected", this, "_nodes_to_add_selected");
 
 	HBoxContainer *add_filter_hbc = memnew(HBoxContainer);
-	add_filter_hbc->add_constant_override("separate", 0);
+	add_filter_hbc->add_theme_constant_override("separate", 0);
 	vbc_add->add_child(add_filter_hbc);
 
 	add_filter = memnew(LineEdit);
@@ -550,11 +550,11 @@ GroupDialog::GroupDialog() {
 	nodes_to_remove->set_hide_root(true);
 	nodes_to_remove->set_hide_folding(true);
 	nodes_to_remove->set_select_mode(Tree::SELECT_MULTI);
-	nodes_to_remove->add_constant_override("draw_guides", 1);
+	nodes_to_remove->add_theme_constant_override("draw_guides", 1);
 	nodes_to_remove->connect("item_selected", this, "_node_to_remove_selected");
 
 	HBoxContainer *remove_filter_hbc = memnew(HBoxContainer);
-	remove_filter_hbc->add_constant_override("separate", 0);
+	remove_filter_hbc->add_theme_constant_override("separate", 0);
 	vbc_remove->add_child(remove_filter_hbc);
 
 	remove_filter = memnew(LineEdit);
@@ -697,8 +697,8 @@ void GroupsEditor::update_tree() {
 		TreeItem *item = tree->create_item(root);
 		item->set_text(0, gi.name);
 		if (can_be_deleted) {
-			item->add_button(0, get_icon("Remove", "EditorIcons"), DELETE_GROUP);
-			item->add_button(0, get_icon("ActionCopy", "EditorIcons"), COPY_GROUP);
+			item->add_button(0, get_theme_icon("Remove", "EditorIcons"), DELETE_GROUP);
+			item->add_button(0, get_theme_icon("ActionCopy", "EditorIcons"), COPY_GROUP);
 		} else {
 			item->set_selectable(0, false);
 		}
@@ -758,8 +758,8 @@ GroupsEditor::GroupsEditor() {
 	tree->set_v_size_flags(SIZE_EXPAND_FILL);
 	vbc->add_child(tree);
 	tree->connect("button_pressed", this, "_modify_group");
-	tree->add_constant_override("draw_guides", 1);
-	add_constant_override("separation", 3 * EDSCALE);
+	tree->add_theme_constant_override("draw_guides", 1);
+	add_theme_constant_override("separation", 3 * EDSCALE);
 
 	_group_name_changed("");
 }

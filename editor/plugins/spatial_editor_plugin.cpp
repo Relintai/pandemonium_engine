@@ -132,9 +132,9 @@ void ViewportRotationControl::_notification(int p_what) {
 		axis_menu_options.push_back(SpatialEditorViewport::VIEW_FRONT);
 
 		axis_colors.clear();
-		axis_colors.push_back(get_color("axis_x_color", "Editor"));
-		axis_colors.push_back(get_color("axis_y_color", "Editor"));
-		axis_colors.push_back(get_color("axis_z_color", "Editor"));
+		axis_colors.push_back(get_theme_color("axis_x_color", "Editor"));
+		axis_colors.push_back(get_theme_color("axis_y_color", "Editor"));
+		axis_colors.push_back(get_theme_color("axis_z_color", "Editor"));
 		update();
 
 		if (!is_connected("mouse_exited", this, "_on_mouse_exited")) {
@@ -180,7 +180,7 @@ void ViewportRotationControl::_draw_axis(const Axis2D &p_axis) {
 
 		// Draw the axis letter for the positive axes.
 		const String axis_name = direction == 0 ? "X" : (direction == 1 ? "Y" : "Z");
-		draw_char(get_font("rotation_control", "EditorFonts"), p_axis.screen_point + Vector2(-4.0, 5.0) * EDSCALE, axis_name, "", Color(0.0, 0.0, 0.0, alpha));
+		draw_char(get_theme_font("rotation_control", "EditorFonts"), p_axis.screen_point + Vector2(-4.0, 5.0) * EDSCALE, axis_name, "", Color(0.0, 0.0, 0.0, alpha));
 	} else {
 		// Draw an outline around the negative axes.
 		draw_circle(p_axis.screen_point, AXIS_CIRCLE_RADIUS, c);
@@ -2955,7 +2955,7 @@ void SpatialEditorViewport::_notification(int p_what) {
 			const float fps = Engine::get_singleton()->get_frames_per_second();
 			fps_label->set_text(vformat(TTR("FPS: %d (%s ms)"), fps, rtos(1000.0f / fps).pad_decimals(2)));
 			// Middle point is at 60 FPS.
-			fps_label->add_color_override(
+			fps_label->add_theme_color_override(
 					"font_color",
 					frame_time_gradient->get_color_at_offset(
 							Math::range_lerp(fps, 110, 10, 0, 1)));
@@ -2997,29 +2997,29 @@ void SpatialEditorViewport::_notification(int p_what) {
 	}
 
 	if (p_what == NOTIFICATION_THEME_CHANGED) {
-		view_menu->set_icon(get_icon("GuiTabMenuHl", "EditorIcons"));
-		preview_camera->set_icon(get_icon("Camera", "EditorIcons"));
+		view_menu->set_icon(get_theme_icon("GuiTabMenuHl", "EditorIcons"));
+		preview_camera->set_icon(get_theme_icon("Camera", "EditorIcons"));
 
-		view_menu->add_style_override("normal", editor->get_gui_base()->get_stylebox("Information3dViewport", "EditorStyles"));
-		view_menu->add_style_override("hover", editor->get_gui_base()->get_stylebox("Information3dViewport", "EditorStyles"));
-		view_menu->add_style_override("pressed", editor->get_gui_base()->get_stylebox("Information3dViewport", "EditorStyles"));
-		view_menu->add_style_override("focus", editor->get_gui_base()->get_stylebox("Information3dViewport", "EditorStyles"));
-		view_menu->add_style_override("disabled", editor->get_gui_base()->get_stylebox("Information3dViewport", "EditorStyles"));
+		view_menu->add_theme_style_override("normal", editor->get_gui_base()->get_theme_stylebox("Information3dViewport", "EditorStyles"));
+		view_menu->add_theme_style_override("hover", editor->get_gui_base()->get_theme_stylebox("Information3dViewport", "EditorStyles"));
+		view_menu->add_theme_style_override("pressed", editor->get_gui_base()->get_theme_stylebox("Information3dViewport", "EditorStyles"));
+		view_menu->add_theme_style_override("focus", editor->get_gui_base()->get_theme_stylebox("Information3dViewport", "EditorStyles"));
+		view_menu->add_theme_style_override("disabled", editor->get_gui_base()->get_theme_stylebox("Information3dViewport", "EditorStyles"));
 
-		preview_camera->add_style_override("normal", editor->get_gui_base()->get_stylebox("Information3dViewport", "EditorStyles"));
-		preview_camera->add_style_override("hover", editor->get_gui_base()->get_stylebox("Information3dViewport", "EditorStyles"));
-		preview_camera->add_style_override("pressed", editor->get_gui_base()->get_stylebox("Information3dViewport", "EditorStyles"));
-		preview_camera->add_style_override("focus", editor->get_gui_base()->get_stylebox("Information3dViewport", "EditorStyles"));
-		preview_camera->add_style_override("disabled", editor->get_gui_base()->get_stylebox("Information3dViewport", "EditorStyles"));
+		preview_camera->add_theme_style_override("normal", editor->get_gui_base()->get_theme_stylebox("Information3dViewport", "EditorStyles"));
+		preview_camera->add_theme_style_override("hover", editor->get_gui_base()->get_theme_stylebox("Information3dViewport", "EditorStyles"));
+		preview_camera->add_theme_style_override("pressed", editor->get_gui_base()->get_theme_stylebox("Information3dViewport", "EditorStyles"));
+		preview_camera->add_theme_style_override("focus", editor->get_gui_base()->get_theme_stylebox("Information3dViewport", "EditorStyles"));
+		preview_camera->add_theme_style_override("disabled", editor->get_gui_base()->get_theme_stylebox("Information3dViewport", "EditorStyles"));
 
-		info_label->add_style_override("normal", editor->get_gui_base()->get_stylebox("Information3dViewport", "EditorStyles"));
-		fps_label->add_style_override("normal", editor->get_gui_base()->get_stylebox("Information3dViewport", "EditorStyles"));
-		cinema_label->add_style_override("normal", editor->get_gui_base()->get_stylebox("Information3dViewport", "EditorStyles"));
-		locked_label->add_style_override("normal", editor->get_gui_base()->get_stylebox("Information3dViewport", "EditorStyles"));
+		info_label->add_theme_style_override("normal", editor->get_gui_base()->get_theme_stylebox("Information3dViewport", "EditorStyles"));
+		fps_label->add_theme_style_override("normal", editor->get_gui_base()->get_theme_stylebox("Information3dViewport", "EditorStyles"));
+		cinema_label->add_theme_style_override("normal", editor->get_gui_base()->get_theme_stylebox("Information3dViewport", "EditorStyles"));
+		locked_label->add_theme_style_override("normal", editor->get_gui_base()->get_theme_stylebox("Information3dViewport", "EditorStyles"));
 
-		frame_time_gradient->set_color(0, get_color("success_color", "Editor"));
-		frame_time_gradient->set_color(1, get_color("warning_color", "Editor"));
-		frame_time_gradient->set_color(2, get_color("error_color", "Editor"));
+		frame_time_gradient->set_color(0, get_theme_color("success_color", "Editor"));
+		frame_time_gradient->set_color(1, get_theme_color("warning_color", "Editor"));
+		frame_time_gradient->set_color(2, get_theme_color("error_color", "Editor"));
 	}
 }
 
@@ -3062,7 +3062,7 @@ void SpatialEditorViewport::_draw() {
 	if (surface->has_focus()) {
 		Size2 size = surface->get_size();
 		Rect2 r = Rect2(Point2(), size);
-		get_stylebox("Focus", "EditorStyles")->draw(surface->get_canvas_item(), r);
+		get_theme_stylebox("Focus", "EditorStyles")->draw(surface->get_canvas_item(), r);
 	}
 
 	if (cursor.region_select) {
@@ -3070,11 +3070,11 @@ void SpatialEditorViewport::_draw() {
 
 		surface->draw_rect(
 				selection_rect,
-				get_color("box_selection_fill_color", "Editor"));
+				get_theme_color("box_selection_fill_color", "Editor"));
 
 		surface->draw_rect(
 				selection_rect,
-				get_color("box_selection_stroke_color", "Editor"),
+				get_theme_color("box_selection_stroke_color", "Editor"),
 				false,
 				Math::round(EDSCALE));
 	}
@@ -3082,7 +3082,7 @@ void SpatialEditorViewport::_draw() {
 	RID ci = surface->get_canvas_item();
 
 	if (message_time > 0) {
-		Ref<Font> font = get_font("font", "Label");
+		Ref<Font> font = get_theme_font("font", "Label");
 		Point2 msgpos = Point2(5, get_size().y - 20);
 		font->draw(ci, msgpos + Point2(1, 1), message, Color(0, 0, 0, 0.8));
 		font->draw(ci, msgpos + Point2(-1, -1), message, Color(0, 0, 0, 0.8));
@@ -3095,16 +3095,16 @@ void SpatialEditorViewport::_draw() {
 		Color handle_color;
 		switch (_edit.plane) {
 			case TRANSFORM_X_AXIS:
-				handle_color = get_color("axis_x_color", "Editor");
+				handle_color = get_theme_color("axis_x_color", "Editor");
 				break;
 			case TRANSFORM_Y_AXIS:
-				handle_color = get_color("axis_y_color", "Editor");
+				handle_color = get_theme_color("axis_y_color", "Editor");
 				break;
 			case TRANSFORM_Z_AXIS:
-				handle_color = get_color("axis_z_color", "Editor");
+				handle_color = get_theme_color("axis_z_color", "Editor");
 				break;
 			default:
-				handle_color = get_color("accent_color", "Editor");
+				handle_color = get_theme_color("accent_color", "Editor");
 				break;
 		}
 		handle_color = handle_color.from_hsv(handle_color.get_h(), 0.25, 1.0, 1);
@@ -3160,8 +3160,8 @@ void SpatialEditorViewport::_draw() {
 					draw_indicator_bar(
 							*surface,
 							1.0 - logscale_t,
-							get_icon("ViewportSpeed", "EditorIcons"),
-							get_font("font", "Label"),
+							get_theme_icon("ViewportSpeed", "EditorIcons"),
+							get_theme_font("font", "Label"),
 							vformat("%s u/s", String::num(freelook_speed).pad_decimals(precision)),
 							Color(1.0, 0.95, 0.7));
 				}
@@ -3182,8 +3182,8 @@ void SpatialEditorViewport::_draw() {
 					draw_indicator_bar(
 							*surface,
 							logscale_t,
-							get_icon("ViewportZoom", "EditorIcons"),
-							get_font("font", "Label"),
+							get_theme_icon("ViewportZoom", "EditorIcons"),
+							get_theme_font("font", "Label"),
 							vformat("%s u", String::num(cursor.distance).pad_decimals(precision)),
 							Color(0.7, 0.95, 1.0));
 				}
@@ -4544,7 +4544,7 @@ SpatialEditorViewport::SpatialEditorViewport(SpatialEditor *p_spatial_editor, Ed
 	zoom_limit_label->set_margin(Margin::MARGIN_TOP, -28 * EDSCALE);
 	zoom_limit_label->set_text(TTR("To zoom further, change the camera's clipping planes (View -> Settings...)"));
 	zoom_limit_label->set_name("ZoomLimitMessageLabel");
-	zoom_limit_label->add_color_override("font_color", Color(1, 1, 1, 1));
+	zoom_limit_label->add_theme_color_override("font_color", Color(1, 1, 1, 1));
 	zoom_limit_label->hide();
 	surface->add_child(zoom_limit_label);
 
@@ -4619,8 +4619,8 @@ void SpatialEditorViewportContainer::_gui_input(const Ref<InputEvent> &p_event) 
 		if (mb->is_pressed()) {
 			Vector2 size = get_size();
 
-			int h_sep = get_constant("separation", "HSplitContainer");
-			int v_sep = get_constant("separation", "VSplitContainer");
+			int h_sep = get_theme_constant("separation", "HSplitContainer");
+			int v_sep = get_theme_constant("separation", "VSplitContainer");
 
 			int mid_w = size.width * ratio_h;
 			int mid_h = size.height * ratio_v;
@@ -4665,8 +4665,8 @@ void SpatialEditorViewportContainer::_gui_input(const Ref<InputEvent> &p_event) 
 		if (view == VIEW_USE_3_VIEWPORTS || view == VIEW_USE_3_VIEWPORTS_ALT || view == VIEW_USE_4_VIEWPORTS) {
 			Vector2 size = get_size();
 
-			int h_sep = get_constant("separation", "HSplitContainer");
-			int v_sep = get_constant("separation", "VSplitContainer");
+			int h_sep = get_theme_constant("separation", "HSplitContainer");
+			int v_sep = get_theme_constant("separation", "VSplitContainer");
 
 			int mid_w = size.width * ratio_h;
 			int mid_h = size.height * ratio_v;
@@ -4705,18 +4705,18 @@ void SpatialEditorViewportContainer::_notification(int p_what) {
 	}
 
 	if (p_what == NOTIFICATION_DRAW && mouseover) {
-		Ref<Texture> h_grabber = get_icon("grabber", "HSplitContainer");
-		Ref<Texture> v_grabber = get_icon("grabber", "VSplitContainer");
+		Ref<Texture> h_grabber = get_theme_icon("grabber", "HSplitContainer");
+		Ref<Texture> v_grabber = get_theme_icon("grabber", "VSplitContainer");
 
-		Ref<Texture> hdiag_grabber = get_icon("GuiViewportHdiagsplitter", "EditorIcons");
-		Ref<Texture> vdiag_grabber = get_icon("GuiViewportVdiagsplitter", "EditorIcons");
-		Ref<Texture> vh_grabber = get_icon("GuiViewportVhsplitter", "EditorIcons");
+		Ref<Texture> hdiag_grabber = get_theme_icon("GuiViewportHdiagsplitter", "EditorIcons");
+		Ref<Texture> vdiag_grabber = get_theme_icon("GuiViewportVdiagsplitter", "EditorIcons");
+		Ref<Texture> vh_grabber = get_theme_icon("GuiViewportVhsplitter", "EditorIcons");
 
 		Vector2 size = get_size();
 
-		int h_sep = get_constant("separation", "HSplitContainer");
+		int h_sep = get_theme_constant("separation", "HSplitContainer");
 
-		int v_sep = get_constant("separation", "VSplitContainer");
+		int v_sep = get_theme_constant("separation", "VSplitContainer");
 
 		int mid_w = size.width * ratio_h;
 		int mid_h = size.height * ratio_v;
@@ -4802,9 +4802,9 @@ void SpatialEditorViewportContainer::_notification(int p_what) {
 			}
 			return;
 		}
-		int h_sep = get_constant("separation", "HSplitContainer");
+		int h_sep = get_theme_constant("separation", "HSplitContainer");
 
-		int v_sep = get_constant("separation", "VSplitContainer");
+		int v_sep = get_theme_constant("separation", "VSplitContainer");
 
 		int mid_w = size.width * ratio_h;
 		int mid_h = size.height * ratio_v;
@@ -5509,13 +5509,13 @@ void SpatialEditor::_menu_gizmo_toggled(int p_option) {
 	const int state = gizmos_menu->get_item_state(idx);
 	switch (state) {
 		case EditorSpatialGizmoPlugin::VISIBLE:
-			gizmos_menu->set_item_icon(idx, view_menu->get_popup()->get_icon("visibility_visible"));
+			gizmos_menu->set_item_icon(idx, view_menu->get_popup()->get_theme_icon("visibility_visible"));
 			break;
 		case EditorSpatialGizmoPlugin::ON_TOP:
-			gizmos_menu->set_item_icon(idx, view_menu->get_popup()->get_icon("visibility_xray"));
+			gizmos_menu->set_item_icon(idx, view_menu->get_popup()->get_theme_icon("visibility_xray"));
 			break;
 		case EditorSpatialGizmoPlugin::HIDDEN:
-			gizmos_menu->set_item_icon(idx, view_menu->get_popup()->get_icon("visibility_hidden"));
+			gizmos_menu->set_item_icon(idx, view_menu->get_popup()->get_theme_icon("visibility_hidden"));
 			break;
 	}
 
@@ -5821,13 +5821,13 @@ void SpatialEditor::_init_indicators() {
 			Color origin_color;
 			switch (i) {
 				case 0:
-					origin_color = get_color("axis_x_color", "Editor");
+					origin_color = get_theme_color("axis_x_color", "Editor");
 					break;
 				case 1:
-					origin_color = get_color("axis_y_color", "Editor");
+					origin_color = get_theme_color("axis_y_color", "Editor");
 					break;
 				case 2:
-					origin_color = get_color("axis_z_color", "Editor");
+					origin_color = get_theme_color("axis_z_color", "Editor");
 					break;
 				default:
 					origin_color = Color();
@@ -5921,13 +5921,13 @@ void SpatialEditor::_init_indicators() {
 			Color col;
 			switch (i) {
 				case 0:
-					col = get_color("axis_x_color", "Editor");
+					col = get_theme_color("axis_x_color", "Editor");
 					break;
 				case 1:
-					col = get_color("axis_y_color", "Editor");
+					col = get_theme_color("axis_y_color", "Editor");
 					break;
 				case 2:
-					col = get_color("axis_z_color", "Editor");
+					col = get_theme_color("axis_z_color", "Editor");
 					break;
 				default:
 					col = Color();
@@ -6267,13 +6267,13 @@ void SpatialEditor::_init_indicators() {
 void SpatialEditor::_update_context_menu_stylebox() {
 	// This must be called when the theme changes to follow the new accent color.
 	Ref<StyleBoxFlat> context_menu_stylebox = memnew(StyleBoxFlat);
-	const Color accent_color = EditorNode::get_singleton()->get_gui_base()->get_color("accent_color", "Editor");
+	const Color accent_color = EditorNode::get_singleton()->get_gui_base()->get_theme_color("accent_color", "Editor");
 	context_menu_stylebox->set_bg_color(accent_color * Color(1, 1, 1, 0.1));
 	// Add an underline to the StyleBox, but prevent its minimum vertical size from changing.
 	context_menu_stylebox->set_border_color(accent_color);
 	context_menu_stylebox->set_border_width(MARGIN_BOTTOM, Math::round(2 * EDSCALE));
 	context_menu_stylebox->set_default_margin(MARGIN_BOTTOM, 0);
-	context_menu_container->add_style_override("panel", context_menu_stylebox);
+	context_menu_container->add_theme_style_override("panel", context_menu_stylebox);
 }
 
 void SpatialEditor::_update_gizmos_menu() {
@@ -6292,13 +6292,13 @@ void SpatialEditor::_update_gizmos_menu() {
 				TTR("Click to toggle between visibility states.\n\nOpen eye: Gizmo is visible.\nClosed eye: Gizmo is hidden.\nHalf-open eye: Gizmo is also visible through opaque surfaces (\"x-ray\")."));
 		switch (plugin_state) {
 			case EditorSpatialGizmoPlugin::VISIBLE:
-				gizmos_menu->set_item_icon(idx, gizmos_menu->get_icon("visibility_visible"));
+				gizmos_menu->set_item_icon(idx, gizmos_menu->get_theme_icon("visibility_visible"));
 				break;
 			case EditorSpatialGizmoPlugin::ON_TOP:
-				gizmos_menu->set_item_icon(idx, gizmos_menu->get_icon("visibility_xray"));
+				gizmos_menu->set_item_icon(idx, gizmos_menu->get_theme_icon("visibility_xray"));
 				break;
 			case EditorSpatialGizmoPlugin::HIDDEN:
-				gizmos_menu->set_item_icon(idx, gizmos_menu->get_icon("visibility_hidden"));
+				gizmos_menu->set_item_icon(idx, gizmos_menu->get_theme_icon("visibility_hidden"));
 				break;
 		}
 	}
@@ -6313,13 +6313,13 @@ void SpatialEditor::_update_gizmos_menu_theme() {
 		const int idx = gizmos_menu->get_item_index(i);
 		switch (plugin_state) {
 			case EditorSpatialGizmoPlugin::VISIBLE:
-				gizmos_menu->set_item_icon(idx, gizmos_menu->get_icon("visibility_visible"));
+				gizmos_menu->set_item_icon(idx, gizmos_menu->get_theme_icon("visibility_visible"));
 				break;
 			case EditorSpatialGizmoPlugin::ON_TOP:
-				gizmos_menu->set_item_icon(idx, gizmos_menu->get_icon("visibility_xray"));
+				gizmos_menu->set_item_icon(idx, gizmos_menu->get_theme_icon("visibility_xray"));
 				break;
 			case EditorSpatialGizmoPlugin::HIDDEN:
-				gizmos_menu->set_item_icon(idx, gizmos_menu->get_icon("visibility_hidden"));
+				gizmos_menu->set_item_icon(idx, gizmos_menu->get_theme_icon("visibility_hidden"));
 				break;
 		}
 	}
@@ -6732,27 +6732,27 @@ void SpatialEditor::_unhandled_key_input(Ref<InputEvent> p_event) {
 }
 void SpatialEditor::_notification(int p_what) {
 	if (p_what == NOTIFICATION_READY) {
-		tool_button[SpatialEditor::TOOL_MODE_SELECT]->set_icon(get_icon("ToolSelect", "EditorIcons"));
-		tool_button[SpatialEditor::TOOL_MODE_MOVE]->set_icon(get_icon("ToolMove", "EditorIcons"));
-		tool_button[SpatialEditor::TOOL_MODE_ROTATE]->set_icon(get_icon("ToolRotate", "EditorIcons"));
-		tool_button[SpatialEditor::TOOL_MODE_SCALE]->set_icon(get_icon("ToolScale", "EditorIcons"));
-		tool_button[SpatialEditor::TOOL_MODE_LIST_SELECT]->set_icon(get_icon("ListSelect", "EditorIcons"));
-		tool_button[SpatialEditor::TOOL_LOCK_SELECTED]->set_icon(get_icon("Lock", "EditorIcons"));
-		tool_button[SpatialEditor::TOOL_UNLOCK_SELECTED]->set_icon(get_icon("Unlock", "EditorIcons"));
-		tool_button[SpatialEditor::TOOL_GROUP_SELECTED]->set_icon(get_icon("Group", "EditorIcons"));
-		tool_button[SpatialEditor::TOOL_UNGROUP_SELECTED]->set_icon(get_icon("Ungroup", "EditorIcons"));
-		tool_button[SpatialEditor::TOOL_CONVERT_ROOMS]->set_icon(get_icon("RoomGroup", "EditorIcons"));
+		tool_button[SpatialEditor::TOOL_MODE_SELECT]->set_icon(get_theme_icon("ToolSelect", "EditorIcons"));
+		tool_button[SpatialEditor::TOOL_MODE_MOVE]->set_icon(get_theme_icon("ToolMove", "EditorIcons"));
+		tool_button[SpatialEditor::TOOL_MODE_ROTATE]->set_icon(get_theme_icon("ToolRotate", "EditorIcons"));
+		tool_button[SpatialEditor::TOOL_MODE_SCALE]->set_icon(get_theme_icon("ToolScale", "EditorIcons"));
+		tool_button[SpatialEditor::TOOL_MODE_LIST_SELECT]->set_icon(get_theme_icon("ListSelect", "EditorIcons"));
+		tool_button[SpatialEditor::TOOL_LOCK_SELECTED]->set_icon(get_theme_icon("Lock", "EditorIcons"));
+		tool_button[SpatialEditor::TOOL_UNLOCK_SELECTED]->set_icon(get_theme_icon("Unlock", "EditorIcons"));
+		tool_button[SpatialEditor::TOOL_GROUP_SELECTED]->set_icon(get_theme_icon("Group", "EditorIcons"));
+		tool_button[SpatialEditor::TOOL_UNGROUP_SELECTED]->set_icon(get_theme_icon("Ungroup", "EditorIcons"));
+		tool_button[SpatialEditor::TOOL_CONVERT_ROOMS]->set_icon(get_theme_icon("RoomGroup", "EditorIcons"));
 
-		tool_option_button[SpatialEditor::TOOL_OPT_LOCAL_COORDS]->set_icon(get_icon("Object", "EditorIcons"));
-		tool_option_button[SpatialEditor::TOOL_OPT_USE_SNAP]->set_icon(get_icon("Snap", "EditorIcons"));
-		tool_option_button[SpatialEditor::TOOL_OPT_OVERRIDE_CAMERA]->set_icon(get_icon("Camera", "EditorIcons"));
+		tool_option_button[SpatialEditor::TOOL_OPT_LOCAL_COORDS]->set_icon(get_theme_icon("Object", "EditorIcons"));
+		tool_option_button[SpatialEditor::TOOL_OPT_USE_SNAP]->set_icon(get_theme_icon("Snap", "EditorIcons"));
+		tool_option_button[SpatialEditor::TOOL_OPT_OVERRIDE_CAMERA]->set_icon(get_theme_icon("Camera", "EditorIcons"));
 
-		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_1_VIEWPORT), get_icon("Panels1", "EditorIcons"));
-		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_2_VIEWPORTS), get_icon("Panels2", "EditorIcons"));
-		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_2_VIEWPORTS_ALT), get_icon("Panels2Alt", "EditorIcons"));
-		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_3_VIEWPORTS), get_icon("Panels3", "EditorIcons"));
-		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_3_VIEWPORTS_ALT), get_icon("Panels3Alt", "EditorIcons"));
-		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_4_VIEWPORTS), get_icon("Panels4", "EditorIcons"));
+		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_1_VIEWPORT), get_theme_icon("Panels1", "EditorIcons"));
+		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_2_VIEWPORTS), get_theme_icon("Panels2", "EditorIcons"));
+		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_2_VIEWPORTS_ALT), get_theme_icon("Panels2Alt", "EditorIcons"));
+		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_3_VIEWPORTS), get_theme_icon("Panels3", "EditorIcons"));
+		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_3_VIEWPORTS_ALT), get_theme_icon("Panels3Alt", "EditorIcons"));
+		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_4_VIEWPORTS), get_theme_icon("Panels4", "EditorIcons"));
 
 		_menu_item_pressed(MENU_VIEW_USE_1_VIEWPORT);
 
@@ -6774,25 +6774,25 @@ void SpatialEditor::_notification(int p_what) {
 	} else if (p_what == NOTIFICATION_EXIT_TREE) {
 		_finish_indicators();
 	} else if (p_what == EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED) {
-		tool_button[SpatialEditor::TOOL_MODE_SELECT]->set_icon(get_icon("ToolSelect", "EditorIcons"));
-		tool_button[SpatialEditor::TOOL_MODE_MOVE]->set_icon(get_icon("ToolMove", "EditorIcons"));
-		tool_button[SpatialEditor::TOOL_MODE_ROTATE]->set_icon(get_icon("ToolRotate", "EditorIcons"));
-		tool_button[SpatialEditor::TOOL_MODE_SCALE]->set_icon(get_icon("ToolScale", "EditorIcons"));
-		tool_button[SpatialEditor::TOOL_MODE_LIST_SELECT]->set_icon(get_icon("ListSelect", "EditorIcons"));
-		tool_button[SpatialEditor::TOOL_LOCK_SELECTED]->set_icon(get_icon("Lock", "EditorIcons"));
-		tool_button[SpatialEditor::TOOL_UNLOCK_SELECTED]->set_icon(get_icon("Unlock", "EditorIcons"));
-		tool_button[SpatialEditor::TOOL_GROUP_SELECTED]->set_icon(get_icon("Group", "EditorIcons"));
-		tool_button[SpatialEditor::TOOL_UNGROUP_SELECTED]->set_icon(get_icon("Ungroup", "EditorIcons"));
+		tool_button[SpatialEditor::TOOL_MODE_SELECT]->set_icon(get_theme_icon("ToolSelect", "EditorIcons"));
+		tool_button[SpatialEditor::TOOL_MODE_MOVE]->set_icon(get_theme_icon("ToolMove", "EditorIcons"));
+		tool_button[SpatialEditor::TOOL_MODE_ROTATE]->set_icon(get_theme_icon("ToolRotate", "EditorIcons"));
+		tool_button[SpatialEditor::TOOL_MODE_SCALE]->set_icon(get_theme_icon("ToolScale", "EditorIcons"));
+		tool_button[SpatialEditor::TOOL_MODE_LIST_SELECT]->set_icon(get_theme_icon("ListSelect", "EditorIcons"));
+		tool_button[SpatialEditor::TOOL_LOCK_SELECTED]->set_icon(get_theme_icon("Lock", "EditorIcons"));
+		tool_button[SpatialEditor::TOOL_UNLOCK_SELECTED]->set_icon(get_theme_icon("Unlock", "EditorIcons"));
+		tool_button[SpatialEditor::TOOL_GROUP_SELECTED]->set_icon(get_theme_icon("Group", "EditorIcons"));
+		tool_button[SpatialEditor::TOOL_UNGROUP_SELECTED]->set_icon(get_theme_icon("Ungroup", "EditorIcons"));
 
-		tool_option_button[SpatialEditor::TOOL_OPT_LOCAL_COORDS]->set_icon(get_icon("Object", "EditorIcons"));
-		tool_option_button[SpatialEditor::TOOL_OPT_USE_SNAP]->set_icon(get_icon("Snap", "EditorIcons"));
+		tool_option_button[SpatialEditor::TOOL_OPT_LOCAL_COORDS]->set_icon(get_theme_icon("Object", "EditorIcons"));
+		tool_option_button[SpatialEditor::TOOL_OPT_USE_SNAP]->set_icon(get_theme_icon("Snap", "EditorIcons"));
 
-		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_1_VIEWPORT), get_icon("Panels1", "EditorIcons"));
-		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_2_VIEWPORTS), get_icon("Panels2", "EditorIcons"));
-		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_2_VIEWPORTS_ALT), get_icon("Panels2Alt", "EditorIcons"));
-		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_3_VIEWPORTS), get_icon("Panels3", "EditorIcons"));
-		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_3_VIEWPORTS_ALT), get_icon("Panels3Alt", "EditorIcons"));
-		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_4_VIEWPORTS), get_icon("Panels4", "EditorIcons"));
+		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_1_VIEWPORT), get_theme_icon("Panels1", "EditorIcons"));
+		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_2_VIEWPORTS), get_theme_icon("Panels2", "EditorIcons"));
+		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_2_VIEWPORTS_ALT), get_theme_icon("Panels2Alt", "EditorIcons"));
+		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_3_VIEWPORTS), get_theme_icon("Panels3", "EditorIcons"));
+		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_3_VIEWPORTS_ALT), get_theme_icon("Panels3Alt", "EditorIcons"));
+		view_menu->get_popup()->set_item_icon(view_menu->get_popup()->get_item_index(MENU_VIEW_USE_4_VIEWPORTS), get_theme_icon("Panels4", "EditorIcons"));
 
 		// Update grid color by rebuilding grid.
 		_finish_grid();

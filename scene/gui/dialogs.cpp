@@ -61,7 +61,7 @@ void WindowDialog::_fix_size() {
 	Size2i viewport_size = get_viewport_rect().size;
 
 	// Windows require additional padding to keep the window chrome visible.
-	Ref<StyleBox> panel = get_stylebox("panel", "WindowDialog");
+	Ref<StyleBox> panel = get_theme_stylebox("panel", "WindowDialog");
 	float top = 0;
 	float left = 0;
 	float bottom = 0;
@@ -96,13 +96,13 @@ bool WindowDialog::has_point(const Point2 &p_point) const {
 	Rect2 r(Point2(), get_size());
 
 	// Enlarge upwards for title bar.
-	int title_height = get_constant("title_height", "WindowDialog");
+	int title_height = get_theme_constant("title_height", "WindowDialog");
 	r.position.y -= title_height;
 	r.size.y += title_height;
 
 	// Inflate by the resizable border thickness.
 	if (resizable) {
-		int scaleborder_size = get_constant("scaleborder_size", "WindowDialog");
+		int scaleborder_size = get_theme_constant("scaleborder_size", "WindowDialog");
 		r.position.x -= scaleborder_size;
 		r.size.width += scaleborder_size * 2;
 		r.position.y -= scaleborder_size;
@@ -200,14 +200,14 @@ void WindowDialog::_notification(int p_what) {
 			RID canvas = get_canvas_item();
 
 			// Draw the background.
-			Ref<StyleBox> panel = get_stylebox("panel");
+			Ref<StyleBox> panel = get_theme_stylebox("panel");
 			Size2 size = get_size();
 			panel->draw(canvas, Rect2(0, 0, size.x, size.y));
 
 			// Draw the title bar text.
-			Ref<Font> title_font = get_font("title_font", "WindowDialog");
-			Color title_color = get_color("title_color", "WindowDialog");
-			int title_height = get_constant("title_height", "WindowDialog");
+			Ref<Font> title_font = get_theme_font("title_font", "WindowDialog");
+			Color title_color = get_theme_color("title_color", "WindowDialog");
+			int title_height = get_theme_constant("title_height", "WindowDialog");
 			int font_height = title_font->get_height() - title_font->get_descent() * 2;
 			int x = (size.x - title_font->get_string_size(xl_title).x) / 2;
 			int y = (-title_height + font_height) / 2;
@@ -216,11 +216,11 @@ void WindowDialog::_notification(int p_what) {
 
 		case NOTIFICATION_THEME_CHANGED:
 		case NOTIFICATION_ENTER_TREE: {
-			close_button->set_normal_texture(get_icon("close", "WindowDialog"));
-			close_button->set_pressed_texture(get_icon("close", "WindowDialog"));
-			close_button->set_hover_texture(get_icon("close_highlight", "WindowDialog"));
+			close_button->set_normal_texture(get_theme_icon("close", "WindowDialog"));
+			close_button->set_pressed_texture(get_theme_icon("close", "WindowDialog"));
+			close_button->set_hover_texture(get_theme_icon("close_highlight", "WindowDialog"));
 			close_button->set_anchor(MARGIN_LEFT, ANCHOR_END);
-			close_button->set_begin(Point2(-get_constant("close_h_ofs", "WindowDialog"), -get_constant("close_v_ofs", "WindowDialog")));
+			close_button->set_begin(Point2(-get_theme_constant("close_h_ofs", "WindowDialog"), -get_theme_constant("close_v_ofs", "WindowDialog")));
 		} break;
 
 		case NOTIFICATION_TRANSLATION_CHANGED: {
@@ -268,8 +268,8 @@ int WindowDialog::_drag_hit_test(const Point2 &pos) const {
 	int drag_type = DRAG_NONE;
 
 	if (resizable) {
-		int title_height = get_constant("title_height", "WindowDialog");
-		int scaleborder_size = get_constant("scaleborder_size", "WindowDialog");
+		int title_height = get_theme_constant("title_height", "WindowDialog");
+		int scaleborder_size = get_theme_constant("scaleborder_size", "WindowDialog");
 
 		Rect2 rect = get_rect();
 
@@ -312,7 +312,7 @@ bool WindowDialog::get_resizable() const {
 }
 
 Size2 WindowDialog::get_minimum_size() const {
-	Ref<Font> font = get_font("title_font", "WindowDialog");
+	Ref<Font> font = get_theme_font("title_font", "WindowDialog");
 
 	const int button_width = close_button->get_combined_minimum_size().x;
 	const int title_width = font->get_string_size(xl_title).x;
@@ -363,7 +363,7 @@ WindowDialog::~WindowDialog() {
 void PopupDialog::_notification(int p_what) {
 	if (p_what == NOTIFICATION_DRAW) {
 		RID ci = get_canvas_item();
-		get_stylebox("panel")->draw(ci, Rect2(Point2(), get_size()));
+		get_theme_stylebox("panel")->draw(ci, Rect2(Point2(), get_size()));
 	}
 }
 
@@ -444,7 +444,7 @@ void AcceptDialog::_update_child_rects() {
 	if (label->get_text().empty()) {
 		label_size.height = 0;
 	}
-	int margin = get_constant("margin", "Dialogs");
+	int margin = get_theme_constant("margin", "Dialogs");
 	Size2 size = get_size();
 	Size2 hminsize = hbc->get_combined_minimum_size();
 
@@ -473,7 +473,7 @@ void AcceptDialog::_update_child_rects() {
 }
 
 Size2 AcceptDialog::get_minimum_size() const {
-	int margin = get_constant("margin", "Dialogs");
+	int margin = get_theme_constant("margin", "Dialogs");
 	Size2 minsize = label->get_combined_minimum_size();
 
 	for (int i = 0; i < get_child_count(); i++) {
@@ -590,8 +590,8 @@ void AcceptDialog::set_swap_ok_cancel(bool p_swap) {
 }
 
 AcceptDialog::AcceptDialog() {
-	int margin = get_constant("margin", "Dialogs");
-	int button_margin = get_constant("button_margin", "Dialogs");
+	int margin = get_theme_constant("margin", "Dialogs");
+	int button_margin = get_theme_constant("button_margin", "Dialogs");
 
 	label = memnew(Label);
 	label->set_anchor(MARGIN_RIGHT, ANCHOR_END);

@@ -218,7 +218,7 @@
 				# If using this method in a script that redraws constantly, move the
 				# `default_font` declaration to a member variable assigned in `_ready()`
 				# so the Control is only created once.
-				var default_font = Control.new().get_font("font")
+				var default_font = Control.new().get_theme_font("font")
 				draw_string(default_font, Vector2(64, 64), "Hello world")
 				[/codeblock]
 				See also [method Font.draw].

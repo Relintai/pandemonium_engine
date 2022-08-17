@@ -56,11 +56,11 @@
 
 /// BOOL ///
 int AnimationTrackEditBool::get_key_height() const {
-	Ref<Texture> checked = get_icon("checked", "CheckBox");
+	Ref<Texture> checked = get_theme_icon("checked", "CheckBox");
 	return checked->get_height();
 }
 Rect2 AnimationTrackEditBool::get_key_rect(int p_index, float p_pixels_sec) {
-	Ref<Texture> checked = get_icon("checked", "CheckBox");
+	Ref<Texture> checked = get_theme_icon("checked", "CheckBox");
 	return Rect2(-checked->get_width() / 2, 0, checked->get_width(), get_size().height);
 }
 
@@ -69,7 +69,7 @@ bool AnimationTrackEditBool::is_key_selectable_by_distance() const {
 }
 void AnimationTrackEditBool::draw_key(int p_index, float p_pixels_sec, int p_x, bool p_selected, int p_clip_left, int p_clip_right) {
 	bool checked = get_animation()->track_get_key_value(get_track(), p_index);
-	Ref<Texture> icon = get_icon(checked ? "checked" : "unchecked", "CheckBox");
+	Ref<Texture> icon = get_theme_icon(checked ? "checked" : "unchecked", "CheckBox");
 
 	Vector2 ofs(p_x - icon->get_width() / 2, int(get_size().height - icon->get_height()) / 2);
 
@@ -84,7 +84,7 @@ void AnimationTrackEditBool::draw_key(int p_index, float p_pixels_sec, int p_x, 
 	draw_texture(icon, ofs);
 
 	if (p_selected) {
-		Color color = get_color("accent_color", "Editor");
+		Color color = get_theme_color("accent_color", "Editor");
 		draw_rect_clipped(Rect2(ofs, icon->get_size()), color, false);
 	}
 }
@@ -92,11 +92,11 @@ void AnimationTrackEditBool::draw_key(int p_index, float p_pixels_sec, int p_x, 
 /// COLOR ///
 
 int AnimationTrackEditColor::get_key_height() const {
-	Ref<Font> font = get_font("font", "Label");
+	Ref<Font> font = get_theme_font("font", "Label");
 	return font->get_height() * 0.8;
 }
 Rect2 AnimationTrackEditColor::get_key_rect(int p_index, float p_pixels_sec) {
-	Ref<Font> font = get_font("font", "Label");
+	Ref<Font> font = get_theme_font("font", "Label");
 	int fh = font->get_height() * 0.8;
 	return Rect2(-fh / 2, 0, fh, get_size().height);
 }
@@ -106,7 +106,7 @@ bool AnimationTrackEditColor::is_key_selectable_by_distance() const {
 }
 
 void AnimationTrackEditColor::draw_key_link(int p_index, float p_pixels_sec, int p_x, int p_next_x, int p_clip_left, int p_clip_right) {
-	Ref<Font> font = get_font("font", "Label");
+	Ref<Font> font = get_theme_font("font", "Label");
 	int fh = (font->get_height() * 0.8);
 
 	fh /= 3;
@@ -175,7 +175,7 @@ void AnimationTrackEditColor::draw_key_link(int p_index, float p_pixels_sec, int
 void AnimationTrackEditColor::draw_key(int p_index, float p_pixels_sec, int p_x, bool p_selected, int p_clip_left, int p_clip_right) {
 	Color color = get_animation()->track_get_key_value(get_track(), p_index);
 
-	Ref<Font> font = get_font("font", "Label");
+	Ref<Font> font = get_theme_font("font", "Label");
 	int fh = font->get_height() * 0.8;
 
 	Rect2 rect(Vector2(p_x - fh / 2, int(get_size().height - fh) / 2), Size2(fh, fh));
@@ -187,7 +187,7 @@ void AnimationTrackEditColor::draw_key(int p_index, float p_pixels_sec, int p_x,
 	draw_rect_clipped(rect, color);
 
 	if (p_selected) {
-		Color accent = get_color("accent_color", "Editor");
+		Color accent = get_theme_color("accent_color", "Editor");
 		draw_rect_clipped(rect, accent, false);
 	}
 }
@@ -213,7 +213,7 @@ int AnimationTrackEditAudio::get_key_height() const {
 		return AnimationTrackEdit::get_key_height();
 	}
 
-	Ref<Font> font = get_font("font", "Label");
+	Ref<Font> font = get_theme_font("font", "Label");
 	return int(font->get_height() * 1.5);
 }
 Rect2 AnimationTrackEditAudio::get_key_rect(int p_index, float p_pixels_sec) {
@@ -244,7 +244,7 @@ Rect2 AnimationTrackEditAudio::get_key_rect(int p_index, float p_pixels_sec) {
 
 		return Rect2(0, 0, len * p_pixels_sec, get_size().height);
 	} else {
-		Ref<Font> font = get_font("font", "Label");
+		Ref<Font> font = get_theme_font("font", "Label");
 		int fh = font->get_height() * 0.8;
 		return Rect2(0, 0, fh, get_size().height);
 	}
@@ -306,7 +306,7 @@ void AnimationTrackEditAudio::draw_key(int p_index, float p_pixels_sec, int p_x,
 			return;
 		}
 
-		Ref<Font> font = get_font("font", "Label");
+		Ref<Font> font = get_theme_font("font", "Label");
 		float fh = int(font->get_height() * 1.5);
 		Rect2 rect = Rect2(from_x, (get_size().height - fh) / 2, to_x - from_x, fh);
 		draw_rect(rect, Color(0.25, 0.25, 0.25));
@@ -332,19 +332,19 @@ void AnimationTrackEditAudio::draw_key(int p_index, float p_pixels_sec, int p_x,
 		VS::get_singleton()->canvas_item_add_multiline(get_canvas_item(), lines, color);
 
 		if (p_selected) {
-			Color accent = get_color("accent_color", "Editor");
+			Color accent = get_theme_color("accent_color", "Editor");
 			draw_rect(rect, accent, false);
 		}
 	} else {
-		Ref<Font> font = get_font("font", "Label");
+		Ref<Font> font = get_theme_font("font", "Label");
 		int fh = font->get_height() * 0.8;
 		Rect2 rect(Vector2(p_x, int(get_size().height - fh) / 2), Size2(fh, fh));
 
-		Color color = get_color("font_color", "Label");
+		Color color = get_theme_color("font_color", "Label");
 		draw_rect_clipped(rect, color);
 
 		if (p_selected) {
-			Color accent = get_color("accent_color", "Editor");
+			Color accent = get_theme_color("accent_color", "Editor");
 			draw_rect_clipped(rect, accent, false);
 		}
 	}
@@ -369,7 +369,7 @@ int AnimationTrackEditSpriteFrame::get_key_height() const {
 		return AnimationTrackEdit::get_key_height();
 	}
 
-	Ref<Font> font = get_font("font", "Label");
+	Ref<Font> font = get_theme_font("font", "Label");
 	return int(font->get_height() * 2);
 }
 Rect2 AnimationTrackEditSpriteFrame::get_key_rect(int p_index, float p_pixels_sec) {
@@ -435,7 +435,7 @@ Rect2 AnimationTrackEditSpriteFrame::get_key_rect(int p_index, float p_pixels_se
 
 	size = size.floor();
 
-	Ref<Font> font = get_font("font", "Label");
+	Ref<Font> font = get_theme_font("font", "Label");
 	int height = int(font->get_height() * 2);
 	int width = height * size.width / size.height;
 
@@ -524,7 +524,7 @@ void AnimationTrackEditSpriteFrame::draw_key(int p_index, float p_pixels_sec, in
 		region.size = texture->get_size();
 	}
 
-	Ref<Font> font = get_font("font", "Label");
+	Ref<Font> font = get_theme_font("font", "Label");
 	int height = int(font->get_height() * 2);
 
 	int width = height * region.size.width / region.size.height;
@@ -539,7 +539,7 @@ void AnimationTrackEditSpriteFrame::draw_key(int p_index, float p_pixels_sec, in
 		return;
 	}
 
-	Color accent = get_color("accent_color", "Editor");
+	Color accent = get_theme_color("accent_color", "Editor");
 	Color bg = accent;
 	bg.a = 0.15;
 
@@ -567,7 +567,7 @@ int AnimationTrackEditSubAnim::get_key_height() const {
 		return AnimationTrackEdit::get_key_height();
 	}
 
-	Ref<Font> font = get_font("font", "Label");
+	Ref<Font> font = get_theme_font("font", "Label");
 	return int(font->get_height() * 1.5);
 }
 Rect2 AnimationTrackEditSubAnim::get_key_rect(int p_index, float p_pixels_sec) {
@@ -594,7 +594,7 @@ Rect2 AnimationTrackEditSubAnim::get_key_rect(int p_index, float p_pixels_sec) {
 
 		return Rect2(0, 0, len * p_pixels_sec, get_size().height);
 	} else {
-		Ref<Font> font = get_font("font", "Label");
+		Ref<Font> font = get_theme_font("font", "Label");
 		int fh = font->get_height() * 0.8;
 		return Rect2(0, 0, fh, get_size().height);
 	}
@@ -647,12 +647,12 @@ void AnimationTrackEditSubAnim::draw_key(int p_index, float p_pixels_sec, int p_
 			return;
 		}
 
-		Ref<Font> font = get_font("font", "Label");
+		Ref<Font> font = get_theme_font("font", "Label");
 		int fh = font->get_height() * 1.5;
 
 		Rect2 rect(from_x, int(get_size().height - fh) / 2, to_x - from_x, fh);
 
-		Color color = get_color("font_color", "Label");
+		Color color = get_theme_color("font_color", "Label");
 		Color bg = color;
 		bg.r = 1 - color.r;
 		bg.g = 1 - color.g;
@@ -695,19 +695,19 @@ void AnimationTrackEditSubAnim::draw_key(int p_index, float p_pixels_sec, int p_
 		}
 
 		if (p_selected) {
-			Color accent = get_color("accent_color", "Editor");
+			Color accent = get_theme_color("accent_color", "Editor");
 			draw_rect(rect, accent, false);
 		}
 	} else {
-		Ref<Font> font = get_font("font", "Label");
+		Ref<Font> font = get_theme_font("font", "Label");
 		int fh = font->get_height() * 0.8;
 		Rect2 rect(Vector2(p_x, int(get_size().height - fh) / 2), Size2(fh, fh));
 
-		Color color = get_color("font_color", "Label");
+		Color color = get_theme_color("font_color", "Label");
 		draw_rect_clipped(rect, color);
 
 		if (p_selected) {
-			Color accent = get_color("accent_color", "Editor");
+			Color accent = get_theme_color("accent_color", "Editor");
 			draw_rect_clipped(rect, accent, false);
 		}
 	}
@@ -720,12 +720,12 @@ void AnimationTrackEditSubAnim::set_node(Object *p_object) {
 //// VOLUME DB ////
 
 int AnimationTrackEditVolumeDB::get_key_height() const {
-	Ref<Texture> volume_texture = get_icon("ColorTrackVu", "EditorIcons");
+	Ref<Texture> volume_texture = get_theme_icon("ColorTrackVu", "EditorIcons");
 	return volume_texture->get_height() * 1.2;
 }
 
 void AnimationTrackEditVolumeDB::draw_bg(int p_clip_left, int p_clip_right) {
-	Ref<Texture> volume_texture = get_icon("ColorTrackVu", "EditorIcons");
+	Ref<Texture> volume_texture = get_theme_icon("ColorTrackVu", "EditorIcons");
 	int tex_h = volume_texture->get_height();
 
 	int y_from = (get_size().height - tex_h) / 2;
@@ -736,7 +736,7 @@ void AnimationTrackEditVolumeDB::draw_bg(int p_clip_left, int p_clip_right) {
 }
 
 void AnimationTrackEditVolumeDB::draw_fg(int p_clip_left, int p_clip_right) {
-	Ref<Texture> volume_texture = get_icon("ColorTrackVu", "EditorIcons");
+	Ref<Texture> volume_texture = get_theme_icon("ColorTrackVu", "EditorIcons");
 	int tex_h = volume_texture->get_height();
 	int y_from = (get_size().height - tex_h) / 2;
 	int db0 = y_from + (24 / 80.0) * tex_h;
@@ -771,12 +771,12 @@ void AnimationTrackEditVolumeDB::draw_key_link(int p_index, float p_pixels_sec, 
 		to_x = p_clip_right;
 	}
 
-	Ref<Texture> volume_texture = get_icon("ColorTrackVu", "EditorIcons");
+	Ref<Texture> volume_texture = get_theme_icon("ColorTrackVu", "EditorIcons");
 	int tex_h = volume_texture->get_height();
 
 	int y_from = (get_size().height - tex_h) / 2;
 
-	Color color = get_color("font_color", "Label");
+	Color color = get_theme_color("font_color", "Label");
 	color.a *= 0.7;
 
 	draw_line(Point2(from_x, y_from + h * tex_h), Point2(to_x, y_from + h_n * tex_h), color, 2);
@@ -797,7 +797,7 @@ void AnimationTrackEditTypeAudio::_preview_changed(ObjectID p_which) {
 }
 
 int AnimationTrackEditTypeAudio::get_key_height() const {
-	Ref<Font> font = get_font("font", "Label");
+	Ref<Font> font = get_theme_font("font", "Label");
 	return int(font->get_height() * 1.5);
 }
 Rect2 AnimationTrackEditTypeAudio::get_key_rect(int p_index, float p_pixels_sec) {
@@ -859,7 +859,7 @@ void AnimationTrackEditTypeAudio::draw_key(int p_index, float p_pixels_sec, int 
 		}
 	}
 
-	Ref<Font> font = get_font("font", "Label");
+	Ref<Font> font = get_theme_font("font", "Label");
 	float fh = int(font->get_height() * 1.5);
 
 	float len = stream->get_length();
@@ -934,7 +934,7 @@ void AnimationTrackEditTypeAudio::draw_key(int p_index, float p_pixels_sec, int 
 
 	VS::get_singleton()->canvas_item_add_multiline(get_canvas_item(), lines, color);
 
-	Color cut_color = get_color("accent_color", "Editor");
+	Color cut_color = get_theme_color("accent_color", "Editor");
 	cut_color.a = 0.7;
 	if (start_ofs > 0 && pixel_begin > p_clip_left) {
 		draw_rect(Rect2(pixel_begin, rect.position.y, 1, rect.size.y), cut_color);
@@ -944,7 +944,7 @@ void AnimationTrackEditTypeAudio::draw_key(int p_index, float p_pixels_sec, int 
 	}
 
 	if (p_selected) {
-		Color accent = get_color("accent_color", "Editor");
+		Color accent = get_theme_color("accent_color", "Editor");
 		draw_rect(rect, accent, false);
 	}
 }
@@ -1131,7 +1131,7 @@ int AnimationTrackEditTypeAnimation::get_key_height() const {
 		return AnimationTrackEdit::get_key_height();
 	}
 
-	Ref<Font> font = get_font("font", "Label");
+	Ref<Font> font = get_theme_font("font", "Label");
 	return int(font->get_height() * 1.5);
 }
 Rect2 AnimationTrackEditTypeAnimation::get_key_rect(int p_index, float p_pixels_sec) {
@@ -1158,7 +1158,7 @@ Rect2 AnimationTrackEditTypeAnimation::get_key_rect(int p_index, float p_pixels_
 
 		return Rect2(0, 0, len * p_pixels_sec, get_size().height);
 	} else {
-		Ref<Font> font = get_font("font", "Label");
+		Ref<Font> font = get_theme_font("font", "Label");
 		int fh = font->get_height() * 0.8;
 		return Rect2(0, 0, fh, get_size().height);
 	}
@@ -1211,12 +1211,12 @@ void AnimationTrackEditTypeAnimation::draw_key(int p_index, float p_pixels_sec, 
 			return;
 		}
 
-		Ref<Font> font = get_font("font", "Label");
+		Ref<Font> font = get_theme_font("font", "Label");
 		int fh = font->get_height() * 1.5;
 
 		Rect2 rect(from_x, int(get_size().height - fh) / 2, to_x - from_x, fh);
 
-		Color color = get_color("font_color", "Label");
+		Color color = get_theme_color("font_color", "Label");
 		Color bg = color;
 		bg.r = 1 - color.r;
 		bg.g = 1 - color.g;
@@ -1259,19 +1259,19 @@ void AnimationTrackEditTypeAnimation::draw_key(int p_index, float p_pixels_sec, 
 		}
 
 		if (p_selected) {
-			Color accent = get_color("accent_color", "Editor");
+			Color accent = get_theme_color("accent_color", "Editor");
 			draw_rect(rect, accent, false);
 		}
 	} else {
-		Ref<Font> font = get_font("font", "Label");
+		Ref<Font> font = get_theme_font("font", "Label");
 		int fh = font->get_height() * 0.8;
 		Rect2 rect(Vector2(p_x, int(get_size().height - fh) / 2), Size2(fh, fh));
 
-		Color color = get_color("font_color", "Label");
+		Color color = get_theme_color("font_color", "Label");
 		draw_rect_clipped(rect, color);
 
 		if (p_selected) {
-			Color accent = get_color("accent_color", "Editor");
+			Color accent = get_theme_color("accent_color", "Editor");
 			draw_rect_clipped(rect, accent, false);
 		}
 	}

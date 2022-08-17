@@ -1439,7 +1439,7 @@
 			Deprecated hint, unused.
 		</constant>
 		<constant name="PROPERTY_HINT_BUTTON" value="6" enum="PropertyHint">
-			Use a button in the inspector for this property. The property's type has to be Variant::NIL. The hint string has to contain a method that you want called. [code]"my_method"[/code] will call [code]my_method()[/code] on press. Optionally it can also contain a theme icon like: [code]"my_method:name/theme_type"[/code] -> [code]get_icon("name", "theme_type")[/code]
+			Use a button in the inspector for this property. The property's type has to be Variant::NIL. The hint string has to contain a method that you want called. [code]"my_method"[/code] will call [code]my_method()[/code] on press. Optionally it can also contain a theme icon like: [code]"my_method:name/theme_type"[/code] -> [code]get_theme_icon("name", "theme_type")[/code]
 		</constant>
 		<constant name="PROPERTY_HINT_KEY_ACCEL" value="7" enum="PropertyHint">
 			Deprecated hint, unused.

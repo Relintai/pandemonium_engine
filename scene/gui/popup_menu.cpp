@@ -67,16 +67,16 @@ String PopupMenu::_get_accel_text(int p_item) const {
 }
 
 Size2 PopupMenu::get_minimum_size() const {
-	int vseparation = get_constant("vseparation");
-	int hseparation = get_constant("hseparation");
+	int vseparation = get_theme_constant("vseparation");
+	int hseparation = get_theme_constant("hseparation");
 
-	Size2 minsize = get_stylebox("panel")->get_minimum_size();
-	Ref<Font> font = get_font("font");
-	Ref<Font> font_separator = get_font("font_separator");
+	Size2 minsize = get_theme_stylebox("panel")->get_minimum_size();
+	Ref<Font> font = get_theme_font("font");
+	Ref<Font> font_separator = get_theme_font("font_separator");
 
 	float max_w = 0;
 	float icon_w = 0;
-	int check_w = MAX(get_icon("checked")->get_width(), get_icon("radio_checked")->get_width()) + hseparation;
+	int check_w = MAX(get_theme_icon("checked")->get_width(), get_theme_icon("radio_checked")->get_width()) + hseparation;
 	int accel_max_w = 0;
 	bool has_check = false;
 
@@ -109,7 +109,7 @@ Size2 PopupMenu::get_minimum_size() const {
 		}
 
 		if (items[i].submenu != "") {
-			size.width += get_icon("submenu")->get_width();
+			size.width += get_theme_icon("submenu")->get_width();
 		}
 
 		max_w = MAX(max_w, size.width);
@@ -130,7 +130,7 @@ int PopupMenu::_get_mouse_over(const Point2 &p_over) const {
 		return -1;
 	}
 
-	Ref<StyleBox> style = get_stylebox("panel");
+	Ref<StyleBox> style = get_theme_stylebox("panel");
 
 	Point2 ofs = style->get_offset();
 
@@ -138,9 +138,9 @@ int PopupMenu::_get_mouse_over(const Point2 &p_over) const {
 		return -1;
 	}
 
-	Ref<Font> font = get_font("font");
-	Ref<Font> font_separator = get_font("font_separator");
-	int vseparation = get_constant("vseparation");
+	Ref<Font> font = get_theme_font("font");
+	Ref<Font> font_separator = get_theme_font("font_separator");
+	int vseparation = get_theme_constant("vseparation");
 
 	for (int i = 0; i < items.size(); i++) {
 		String text = items[i].xl_text;
@@ -176,7 +176,7 @@ void PopupMenu::_activate_submenu(int over) {
 
 	Point2 p = get_global_position();
 	Rect2 pr(p, get_size());
-	Ref<StyleBox> style = get_stylebox("panel");
+	Ref<StyleBox> style = get_theme_stylebox("panel");
 
 	Point2 pos = p + Point2(get_size().width, items[over]._ofs_cache - style->get_offset().y) * get_global_transform().get_scale();
 	Size2 size = pm->get_size();
@@ -218,8 +218,8 @@ void PopupMenu::_submenu_timeout() {
 }
 
 void PopupMenu::_scroll(float p_factor, const Point2 &p_over) {
-	int vseparation = get_constant("vseparation");
-	Ref<Font> font = get_font("font");
+	int vseparation = get_theme_constant("vseparation");
+	Ref<Font> font = get_theme_font("font");
 
 	float dy = (vseparation + font->get_height()) * 3 * p_factor * get_global_transform().get_scale().y;
 	if (dy > 0) {
@@ -507,27 +507,27 @@ void PopupMenu::_notification(int p_what) {
 			RID ci = get_canvas_item();
 			Size2 size = get_size();
 
-			Ref<StyleBox> style = get_stylebox("panel");
-			Ref<StyleBox> hover = get_stylebox("hover");
-			Ref<Font> font = get_font("font");
-			Ref<Font> font_separator = get_font("font_separator");
+			Ref<StyleBox> style = get_theme_stylebox("panel");
+			Ref<StyleBox> hover = get_theme_stylebox("hover");
+			Ref<Font> font = get_theme_font("font");
+			Ref<Font> font_separator = get_theme_font("font_separator");
 			// In Item::checkable_type enum order (less the non-checkable member)
-			Ref<Texture> check[] = { get_icon("checked"), get_icon("radio_checked") };
-			Ref<Texture> uncheck[] = { get_icon("unchecked"), get_icon("radio_unchecked") };
-			Ref<Texture> submenu = get_icon("submenu");
-			Ref<StyleBox> separator = get_stylebox("separator");
-			Ref<StyleBox> labeled_separator_left = get_stylebox("labeled_separator_left");
-			Ref<StyleBox> labeled_separator_right = get_stylebox("labeled_separator_right");
+			Ref<Texture> check[] = { get_theme_icon("checked"), get_theme_icon("radio_checked") };
+			Ref<Texture> uncheck[] = { get_theme_icon("unchecked"), get_theme_icon("radio_unchecked") };
+			Ref<Texture> submenu = get_theme_icon("submenu");
+			Ref<StyleBox> separator = get_theme_stylebox("separator");
+			Ref<StyleBox> labeled_separator_left = get_theme_stylebox("labeled_separator_left");
+			Ref<StyleBox> labeled_separator_right = get_theme_stylebox("labeled_separator_right");
 
 			style->draw(ci, Rect2(Point2(), size));
 			Point2 ofs = style->get_offset();
-			int vseparation = get_constant("vseparation");
-			int hseparation = get_constant("hseparation");
-			Color font_color = get_color("font_color");
-			Color font_color_disabled = get_color("font_color_disabled");
-			Color font_color_accel = get_color("font_color_accel");
-			Color font_color_hover = get_color("font_color_hover");
-			Color font_color_separator = get_color("font_color_separator");
+			int vseparation = get_theme_constant("vseparation");
+			int hseparation = get_theme_constant("hseparation");
+			Color font_color = get_theme_color("font_color");
+			Color font_color_disabled = get_theme_color("font_color_disabled");
+			Color font_color_accel = get_theme_color("font_color_accel");
+			Color font_color_hover = get_theme_color("font_color_hover");
+			Color font_color_separator = get_theme_color("font_color_separator");
 
 			// Add the check and the wider icon to the offset of all items.
 			float icon_ofs = 0.0;
@@ -547,7 +547,7 @@ void PopupMenu::_notification(int p_what) {
 
 			float check_ofs = 0.0;
 			if (has_check) {
-				check_ofs = MAX(get_icon("checked")->get_width(), get_icon("radio_checked")->get_width()) + hseparation;
+				check_ofs = MAX(get_theme_icon("checked")->get_width(), get_theme_icon("radio_checked")->get_width()) + hseparation;
 			}
 
 			for (int i = 0; i < items.size(); i++) {

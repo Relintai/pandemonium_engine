@@ -47,7 +47,7 @@ PaintEditorPlugin::PaintEditorPlugin(EditorNode *p_node) {
 	get_editor_interface()->get_editor_viewport()->add_child(window);
 	window->set_owner(get_editor_interface()->get_editor_viewport());
 	make_visible(false);
-	_icon = get_editor_interface()->get_base_control()->get_icon("CanvasModulate", "EditorIcons");
+	_icon = get_editor_interface()->get_base_control()->get_theme_icon("CanvasModulate", "EditorIcons");
 }
 
 PaintEditorPlugin::~PaintEditorPlugin() {

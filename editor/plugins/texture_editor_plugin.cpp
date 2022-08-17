@@ -63,14 +63,14 @@ void TexturePreview::_notification(int p_what) {
 			}
 
 			if (metadata_label) {
-				Ref<DynamicFont> metadata_label_font = get_font("expression", "EditorFonts")->duplicate();
+				Ref<DynamicFont> metadata_label_font = get_theme_font("expression", "EditorFonts")->duplicate();
 				metadata_label_font->set_size(16 * EDSCALE);
 				metadata_label_font->set_outline_size(2 * EDSCALE);
 				metadata_label_font->set_outline_color(Color::named("black"));
-				metadata_label->add_font_override("font", metadata_label_font);
+				metadata_label->add_theme_font_override("font", metadata_label_font);
 			}
 
-			checkerboard->set_texture(get_icon("Checkerboard", "EditorIcons"));
+			checkerboard->set_texture(get_theme_icon("Checkerboard", "EditorIcons"));
 		} break;
 	}
 }
@@ -114,10 +114,10 @@ TexturePreview::TexturePreview(Ref<Texture> p_texture, bool p_show_metadata) {
 		p_texture->connect("changed", this, "_update_metadata_label_text");
 
 		// It's okay that these colors are static since the grid color is static too.
-		metadata_label->add_color_override("font_color", Color::named("white"));
-		metadata_label->add_color_override("font_color_shadow", Color::named("black"));
+		metadata_label->add_theme_color_override("font_color", Color::named("white"));
+		metadata_label->add_theme_color_override("font_color_shadow", Color::named("black"));
 
-		metadata_label->add_constant_override("shadow_as_outline", 1);
+		metadata_label->add_theme_constant_override("shadow_as_outline", 1);
 		metadata_label->set_h_size_flags(Control::SIZE_SHRINK_END);
 		metadata_label->set_v_size_flags(Control::SIZE_SHRINK_END);
 

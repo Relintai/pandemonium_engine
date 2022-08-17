@@ -390,7 +390,7 @@ void ConnectDialog::init(Connection c, bool bEdit) {
 
 void ConnectDialog::popup_dialog(const String &p_for_signal) {
 	from_signal->set_text(p_for_signal);
-	error_label->add_color_override("font_color", get_color("error_color", "Editor"));
+	error_label->add_theme_color_override("font_color", get_theme_color("error_color", "Editor"));
 	if (!advanced->is_pressed()) {
 		error_label->set_visible(!_find_first_script(get_tree()->get_edited_scene_root(), get_tree()->get_edited_scene_root()));
 	}
@@ -541,7 +541,7 @@ ConnectDialog::~ConnectDialog() {
 // Originally copied and adapted from EditorProperty, try to keep style in sync.
 Control *ConnectionsDockTree::make_custom_tooltip(const String &p_text) const {
 	EditorHelpBit *help_bit = memnew(EditorHelpBit);
-	help_bit->add_style_override("panel", get_stylebox("panel", "TooltipPanel"));
+	help_bit->add_theme_style_override("panel", get_theme_stylebox("panel", "TooltipPanel"));
 	help_bit->get_rich_text()->set_fixed_size_to_width(360 * EDSCALE);
 
 	String text = TTR("Signal:") + " [u][b]" + p_text.get_slice("::", 0) + "[/b][/u]";
@@ -951,20 +951,20 @@ void ConnectionsDock::update_tree() {
 					name = scr->get_class();
 				}
 
-				if (has_icon(scr->get_class(), "EditorIcons")) {
-					icon = get_icon(scr->get_class(), "EditorIcons");
+				if (has_theme_icon(scr->get_class(), "EditorIcons")) {
+					icon = get_theme_icon(scr->get_class(), "EditorIcons");
 				}
 			}
 		} else {
 			ClassDB::get_signal_list(base, &node_signals2, true);
-			if (has_icon(base, "EditorIcons")) {
-				icon = get_icon(base, "EditorIcons");
+			if (has_theme_icon(base, "EditorIcons")) {
+				icon = get_theme_icon(base, "EditorIcons");
 			}
 			name = base;
 		}
 
 		if (!icon.is_valid()) {
-			icon = get_icon("Object", "EditorIcons");
+			icon = get_theme_icon("Object", "EditorIcons");
 		}
 
 		TreeItem *section_item = nullptr;
@@ -976,7 +976,7 @@ void ConnectionsDock::update_tree() {
 			section_item->set_icon(0, icon);
 			section_item->set_selectable(0, false);
 			section_item->set_editable(0, false);
-			section_item->set_custom_bg_color(0, get_color("prop_subsection", "Editor"));
+			section_item->set_custom_bg_color(0, get_theme_color("prop_subsection", "Editor"));
 			node_signals2.sort();
 		}
 
@@ -1018,7 +1018,7 @@ void ConnectionsDock::update_tree() {
 			sinfo["name"] = signal_name;
 			sinfo["args"] = argnames;
 			signal_item->set_metadata(0, sinfo);
-			signal_item->set_icon(0, get_icon("Signal", "EditorIcons"));
+			signal_item->set_icon(0, get_theme_icon("Signal", "EditorIcons"));
 
 			// Set tooltip with the signal's documentation.
 			{
@@ -1094,7 +1094,7 @@ void ConnectionsDock::update_tree() {
 				connection_item->set_text(0, path);
 				Connection cd = c;
 				connection_item->set_metadata(0, cd);
-				connection_item->set_icon(0, get_icon("Slot", "EditorIcons"));
+				connection_item->set_icon(0, get_theme_icon("Slot", "EditorIcons"));
 			}
 		}
 
@@ -1118,7 +1118,7 @@ ConnectionsDock::ConnectionsDock(EditorNode *p_editor) {
 	search_box = memnew(LineEdit);
 	search_box->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	search_box->set_placeholder(TTR("Filter signals"));
-	search_box->set_right_icon(get_icon("Search", "EditorIcons"));
+	search_box->set_right_icon(get_theme_icon("Search", "EditorIcons"));
 	search_box->set_clear_button_enabled(true);
 	search_box->connect("text_changed", this, "_filter_changed");
 	vbc->add_child(search_box);
@@ -1166,7 +1166,7 @@ ConnectionsDock::ConnectionsDock(EditorNode *p_editor) {
 	tree->connect("item_activated", this, "_tree_item_activated");
 	tree->connect("item_rmb_selected", this, "_rmb_pressed");
 
-	add_constant_override("separation", 3 * EDSCALE);
+	add_theme_constant_override("separation", 3 * EDSCALE);
 }
 
 ConnectionsDock::~ConnectionsDock() {

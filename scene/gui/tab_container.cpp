@@ -42,14 +42,14 @@ int TabContainer::_get_top_margin() const {
 	}
 
 	// Respect the minimum tab height.
-	Ref<StyleBox> tab_bg = get_stylebox("tab_bg");
-	Ref<StyleBox> tab_fg = get_stylebox("tab_fg");
-	Ref<StyleBox> tab_disabled = get_stylebox("tab_disabled");
+	Ref<StyleBox> tab_bg = get_theme_stylebox("tab_bg");
+	Ref<StyleBox> tab_fg = get_theme_stylebox("tab_fg");
+	Ref<StyleBox> tab_disabled = get_theme_stylebox("tab_disabled");
 
 	int tab_height = MAX(MAX(tab_bg->get_minimum_size().height, tab_fg->get_minimum_size().height), tab_disabled->get_minimum_size().height);
 
 	// Font height or higher icon wins.
-	Ref<Font> font = get_font("font");
+	Ref<Font> font = get_theme_font("font");
 	int content_height = font->get_height();
 
 	Vector<Control *> tabs = _get_tabs();
@@ -84,7 +84,7 @@ void TabContainer::_gui_input(const Ref<InputEvent> &p_event) {
 		}
 
 		// Handle menu button.
-		Ref<Texture> menu = get_icon("menu");
+		Ref<Texture> menu = get_theme_icon("menu");
 		if (popup && pos.x > size.width - menu->get_width()) {
 			emit_signal("pre_popup_pressed");
 
@@ -111,8 +111,8 @@ void TabContainer::_gui_input(const Ref<InputEvent> &p_event) {
 				popup_ofs = menu->get_width();
 			}
 
-			Ref<Texture> increment = get_icon("increment");
-			Ref<Texture> decrement = get_icon("decrement");
+			Ref<Texture> increment = get_theme_icon("increment");
+			Ref<Texture> decrement = get_theme_icon("decrement");
 			if (pos.x > size.width - increment->get_width() - popup_ofs) {
 				if (last_tab_cache < tabs.size() - 1) {
 					first_tab_cache += 1;
@@ -161,7 +161,7 @@ void TabContainer::_gui_input(const Ref<InputEvent> &p_event) {
 			return;
 		}
 
-		Ref<Texture> menu = get_icon("menu");
+		Ref<Texture> menu = get_theme_icon("menu");
 		if (popup) {
 			if (pos.x >= size.width - menu->get_width()) {
 				if (!menu_hovered) {
@@ -192,8 +192,8 @@ void TabContainer::_gui_input(const Ref<InputEvent> &p_event) {
 			popup_ofs = menu->get_width();
 		}
 
-		Ref<Texture> increment = get_icon("increment");
-		Ref<Texture> decrement = get_icon("decrement");
+		Ref<Texture> increment = get_theme_icon("increment");
+		Ref<Texture> decrement = get_theme_icon("decrement");
 		if (pos.x >= size.width - increment->get_width() - popup_ofs) {
 			if (highlight_arrow != 1) {
 				highlight_arrow = 1;
@@ -219,10 +219,10 @@ void TabContainer::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_RESIZED: {
 			Vector<Control *> tabs = _get_tabs();
-			int side_margin = get_constant("side_margin");
-			Ref<Texture> menu = get_icon("menu");
-			Ref<Texture> increment = get_icon("increment");
-			Ref<Texture> decrement = get_icon("decrement");
+			int side_margin = get_theme_constant("side_margin");
+			Ref<Texture> menu = get_theme_icon("menu");
+			Ref<Texture> increment = get_theme_icon("increment");
+			Ref<Texture> decrement = get_theme_icon("decrement");
 			int header_width = get_size().width - side_margin * 2;
 
 			// Find the width of the header area.
@@ -261,27 +261,27 @@ void TabContainer::_notification(int p_what) {
 			Size2 size = get_size();
 
 			// Draw only the tab area if the header is hidden.
-			Ref<StyleBox> panel = get_stylebox("panel");
+			Ref<StyleBox> panel = get_theme_stylebox("panel");
 			if (!tabs_visible) {
 				panel->draw(canvas, Rect2(0, 0, size.width, size.height));
 				return;
 			}
 
 			Vector<Control *> tabs = _get_tabs();
-			Ref<StyleBox> tab_bg = get_stylebox("tab_bg");
-			Ref<StyleBox> tab_fg = get_stylebox("tab_fg");
-			Ref<StyleBox> tab_disabled = get_stylebox("tab_disabled");
-			Ref<Texture> increment = get_icon("increment");
-			Ref<Texture> increment_hl = get_icon("increment_highlight");
-			Ref<Texture> decrement = get_icon("decrement");
-			Ref<Texture> decrement_hl = get_icon("decrement_highlight");
-			Ref<Texture> menu = get_icon("menu");
-			Ref<Texture> menu_hl = get_icon("menu_highlight");
-			Ref<Font> font = get_font("font");
-			Color font_color_fg = get_color("font_color_fg");
-			Color font_color_bg = get_color("font_color_bg");
-			Color font_color_disabled = get_color("font_color_disabled");
-			int side_margin = get_constant("side_margin");
+			Ref<StyleBox> tab_bg = get_theme_stylebox("tab_bg");
+			Ref<StyleBox> tab_fg = get_theme_stylebox("tab_fg");
+			Ref<StyleBox> tab_disabled = get_theme_stylebox("tab_disabled");
+			Ref<Texture> increment = get_theme_icon("increment");
+			Ref<Texture> increment_hl = get_theme_icon("increment_highlight");
+			Ref<Texture> decrement = get_theme_icon("decrement");
+			Ref<Texture> decrement_hl = get_theme_icon("decrement_highlight");
+			Ref<Texture> menu = get_theme_icon("menu");
+			Ref<Texture> menu_hl = get_theme_icon("menu_highlight");
+			Ref<Font> font = get_theme_font("font");
+			Color font_color_fg = get_theme_color("font_color_fg");
+			Color font_color_bg = get_theme_color("font_color_bg");
+			Color font_color_disabled = get_theme_color("font_color_disabled");
+			int side_margin = get_theme_constant("side_margin");
 
 			// Find out start and width of the header area.
 			int header_x = side_margin;
@@ -425,8 +425,8 @@ void TabContainer::_notification(int p_what) {
 void TabContainer::_draw_tab(Ref<StyleBox> &p_tab_style, Color &p_font_color, int p_index, float p_x) {
 	Control *control = get_tab_control(p_index);
 	RID canvas = get_canvas_item();
-	Ref<Font> font = get_font("font");
-	int icon_text_distance = get_constant("hseparation");
+	Ref<Font> font = get_theme_font("font");
+	int icon_text_distance = get_theme_constant("hseparation");
 	int tab_width = _get_tab_width(p_index);
 	int header_height = _get_top_margin();
 
@@ -466,7 +466,7 @@ void TabContainer::_on_theme_changed() {
 }
 
 void TabContainer::_repaint() {
-	Ref<StyleBox> sb = get_stylebox("panel");
+	Ref<StyleBox> sb = get_theme_stylebox("panel");
 	Vector<Control *> tabs = _get_tabs();
 	for (int i = 0; i < tabs.size(); i++) {
 		Control *c = tabs[i];
@@ -503,7 +503,7 @@ int TabContainer::_get_tab_width(int p_index) const {
 	}
 
 	// Get the width of the text displayed on the tab.
-	Ref<Font> font = get_font("font");
+	Ref<Font> font = get_theme_font("font");
 	String text = control->has_meta("_tab_name") ? String(tr(String(control->get_meta("_tab_name")))) : String(tr(control->get_name()));
 	int width = font->get_string_size(text).width;
 
@@ -513,15 +513,15 @@ int TabContainer::_get_tab_width(int p_index) const {
 		if (icon.is_valid()) {
 			width += icon->get_width();
 			if (text != "") {
-				width += get_constant("hseparation");
+				width += get_theme_constant("hseparation");
 			}
 		}
 	}
 
 	// Respect a minimum size.
-	Ref<StyleBox> tab_bg = get_stylebox("tab_bg");
-	Ref<StyleBox> tab_fg = get_stylebox("tab_fg");
-	Ref<StyleBox> tab_disabled = get_stylebox("tab_disabled");
+	Ref<StyleBox> tab_bg = get_theme_stylebox("tab_bg");
+	Ref<StyleBox> tab_fg = get_theme_stylebox("tab_fg");
+	Ref<StyleBox> tab_disabled = get_theme_stylebox("tab_disabled");
 	if (get_tab_disabled(p_index)) {
 		width += tab_disabled->get_minimum_size().width;
 	} else if (p_index == current) {
@@ -774,12 +774,12 @@ int TabContainer::get_tab_idx_at_point(const Point2 &p_point) const {
 
 	Popup *popup = get_popup();
 	if (popup) {
-		Ref<Texture> menu = get_icon("menu");
+		Ref<Texture> menu = get_theme_icon("menu");
 		right_ofs += menu->get_width();
 	}
 	if (buttons_visible_cache) {
-		Ref<Texture> increment = get_icon("increment");
-		Ref<Texture> decrement = get_icon("decrement");
+		Ref<Texture> increment = get_theme_icon("increment");
+		Ref<Texture> decrement = get_theme_icon("decrement");
 		right_ofs += increment->get_width() + decrement->get_width();
 	}
 	if (p_point.x > size.width - right_ofs) {
@@ -963,17 +963,17 @@ Size2 TabContainer::get_minimum_size() const {
 		ms.y = MAX(ms.y, cms.y);
 	}
 
-	Ref<StyleBox> tab_bg = get_stylebox("tab_bg");
-	Ref<StyleBox> tab_fg = get_stylebox("tab_fg");
-	Ref<StyleBox> tab_disabled = get_stylebox("tab_disabled");
-	Ref<Font> font = get_font("font");
+	Ref<StyleBox> tab_bg = get_theme_stylebox("tab_bg");
+	Ref<StyleBox> tab_fg = get_theme_stylebox("tab_fg");
+	Ref<StyleBox> tab_disabled = get_theme_stylebox("tab_disabled");
+	Ref<Font> font = get_theme_font("font");
 
 	if (tabs_visible) {
 		ms.y += MAX(MAX(tab_bg->get_minimum_size().y, tab_fg->get_minimum_size().y), tab_disabled->get_minimum_size().y);
 		ms.y += font->get_height();
 	}
 
-	Ref<StyleBox> sb = get_stylebox("panel");
+	Ref<StyleBox> sb = get_theme_stylebox("panel");
 	ms += sb->get_minimum_size();
 
 	return ms;

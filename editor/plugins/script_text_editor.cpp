@@ -98,7 +98,7 @@ void ConnectionInfoDialog::popup_connections(String p_method, Vector<Node *> p_n
 			node_item->set_editable(0, false);
 
 			node_item->set_text(1, connection.signal);
-			node_item->set_icon(1, get_parent_control()->get_icon("Slot", "EditorIcons"));
+			node_item->set_icon(1, get_parent_control()->get_theme_icon("Slot", "EditorIcons"));
 			node_item->set_selectable(1, false);
 			node_item->set_editable(1, false);
 
@@ -272,36 +272,36 @@ void ScriptTextEditor::_load_theme_settings() {
 	Color comment_color = EDITOR_GET("text_editor/highlighting/comment_color");
 	Color string_color = EDITOR_GET("text_editor/highlighting/string_color");
 
-	text_edit->add_color_override("background_color", background_color);
-	text_edit->add_color_override("completion_background_color", completion_background_color);
-	text_edit->add_color_override("completion_selected_color", completion_selected_color);
-	text_edit->add_color_override("completion_existing_color", completion_existing_color);
-	text_edit->add_color_override("completion_scroll_color", completion_scroll_color);
-	text_edit->add_color_override("completion_font_color", completion_font_color);
-	text_edit->add_color_override("font_color", text_color);
-	text_edit->add_color_override("line_number_color", line_number_color);
-	text_edit->add_color_override("safe_line_number_color", safe_line_number_color);
-	text_edit->add_color_override("caret_color", caret_color);
-	text_edit->add_color_override("caret_background_color", caret_background_color);
-	text_edit->add_color_override("font_color_selected", text_selected_color);
-	text_edit->add_color_override("selection_color", selection_color);
-	text_edit->add_color_override("brace_mismatch_color", brace_mismatch_color);
-	text_edit->add_color_override("current_line_color", current_line_color);
-	text_edit->add_color_override("line_length_guideline_color", line_length_guideline_color);
-	text_edit->add_color_override("word_highlighted_color", word_highlighted_color);
-	text_edit->add_color_override("number_color", number_color);
-	text_edit->add_color_override("function_color", function_color);
-	text_edit->add_color_override("member_variable_color", member_variable_color);
-	text_edit->add_color_override("bookmark_color", bookmark_color);
-	text_edit->add_color_override("breakpoint_color", breakpoint_color);
-	text_edit->add_color_override("executing_line_color", executing_line_color);
-	text_edit->add_color_override("mark_color", mark_color);
-	text_edit->add_color_override("code_folding_color", code_folding_color);
-	text_edit->add_color_override("search_result_color", search_result_color);
-	text_edit->add_color_override("search_result_border_color", search_result_border_color);
-	text_edit->add_color_override("symbol_color", symbol_color);
+	text_edit->add_theme_color_override("background_color", background_color);
+	text_edit->add_theme_color_override("completion_background_color", completion_background_color);
+	text_edit->add_theme_color_override("completion_selected_color", completion_selected_color);
+	text_edit->add_theme_color_override("completion_existing_color", completion_existing_color);
+	text_edit->add_theme_color_override("completion_scroll_color", completion_scroll_color);
+	text_edit->add_theme_color_override("completion_font_color", completion_font_color);
+	text_edit->add_theme_color_override("font_color", text_color);
+	text_edit->add_theme_color_override("line_number_color", line_number_color);
+	text_edit->add_theme_color_override("safe_line_number_color", safe_line_number_color);
+	text_edit->add_theme_color_override("caret_color", caret_color);
+	text_edit->add_theme_color_override("caret_background_color", caret_background_color);
+	text_edit->add_theme_color_override("font_color_selected", text_selected_color);
+	text_edit->add_theme_color_override("selection_color", selection_color);
+	text_edit->add_theme_color_override("brace_mismatch_color", brace_mismatch_color);
+	text_edit->add_theme_color_override("current_line_color", current_line_color);
+	text_edit->add_theme_color_override("line_length_guideline_color", line_length_guideline_color);
+	text_edit->add_theme_color_override("word_highlighted_color", word_highlighted_color);
+	text_edit->add_theme_color_override("number_color", number_color);
+	text_edit->add_theme_color_override("function_color", function_color);
+	text_edit->add_theme_color_override("member_variable_color", member_variable_color);
+	text_edit->add_theme_color_override("bookmark_color", bookmark_color);
+	text_edit->add_theme_color_override("breakpoint_color", breakpoint_color);
+	text_edit->add_theme_color_override("executing_line_color", executing_line_color);
+	text_edit->add_theme_color_override("mark_color", mark_color);
+	text_edit->add_theme_color_override("code_folding_color", code_folding_color);
+	text_edit->add_theme_color_override("search_result_color", search_result_color);
+	text_edit->add_theme_color_override("search_result_border_color", search_result_border_color);
+	text_edit->add_theme_color_override("symbol_color", symbol_color);
 
-	text_edit->add_constant_override("line_spacing", EDITOR_DEF("text_editor/theme/line_spacing", 6));
+	text_edit->add_theme_constant_override("line_spacing", EDITOR_DEF("text_editor/theme/line_spacing", 6));
 
 	colors_cache.symbol_color = symbol_color;
 	colors_cache.keyword_color = keyword_color;
@@ -577,8 +577,8 @@ String ScriptTextEditor::get_name() {
 }
 
 Ref<Texture> ScriptTextEditor::get_icon() {
-	if (get_parent_control() && get_parent_control()->has_icon(script->get_class(), "EditorIcons")) {
-		return get_parent_control()->get_icon(script->get_class(), "EditorIcons");
+	if (get_parent_control() && get_parent_control()->has_theme_icon(script->get_class(), "EditorIcons")) {
+		return get_parent_control()->get_theme_icon(script->get_class(), "EditorIcons");
 	}
 
 	return Ref<Texture>();
@@ -632,7 +632,7 @@ void ScriptTextEditor::_validate_script() {
 				String target_path = base == connection.target ? base_path : base_path + "/" + base->get_path_to(Object::cast_to<Node>(connection.target));
 
 				warnings_panel->push_cell();
-				warnings_panel->push_color(warnings_panel->get_color("warning_color", "Editor"));
+				warnings_panel->push_color(warnings_panel->get_theme_color("warning_color", "Editor"));
 				warnings_panel->add_text(vformat(TTR("Missing connected method '%s' for signal '%s' from node '%s' to node '%s'."), connection.method, connection.signal, source_path, target_path));
 				warnings_panel->pop(); // Color.
 				warnings_panel->pop(); // Cell.
@@ -656,7 +656,7 @@ void ScriptTextEditor::_validate_script() {
 		warnings_panel->push_cell();
 		warnings_panel->push_meta(ignore_meta);
 		warnings_panel->push_color(
-				warnings_panel->get_color("accent_color", "Editor").linear_interpolate(warnings_panel->get_color("mono_color", "Editor"), 0.5));
+				warnings_panel->get_theme_color("accent_color", "Editor").linear_interpolate(warnings_panel->get_theme_color("mono_color", "Editor"), 0.5));
 		warnings_panel->add_text(TTR("[Ignore]"));
 		warnings_panel->pop(); // Color.
 		warnings_panel->pop(); // Meta ignore.
@@ -664,7 +664,7 @@ void ScriptTextEditor::_validate_script() {
 
 		warnings_panel->push_cell();
 		warnings_panel->push_meta(w.line - 1);
-		warnings_panel->push_color(warnings_panel->get_color("warning_color", "Editor"));
+		warnings_panel->push_color(warnings_panel->get_theme_color("warning_color", "Editor"));
 		warnings_panel->add_text(TTR("Line") + " " + itos(w.line));
 		warnings_panel->add_text(" (" + w.string_code + "):");
 		warnings_panel->pop(); // Color.
@@ -1066,7 +1066,7 @@ void ScriptTextEditor::_update_connected_methods() {
 					String name = functions[j].get_slice(":", 0);
 					if (name == connection.method) {
 						line = functions[j].get_slice(":", 1).to_int();
-						text_edit->set_line_info_icon(line - 1, get_parent_control()->get_icon("Slot", "EditorIcons"), connection.method);
+						text_edit->set_line_info_icon(line - 1, get_parent_control()->get_theme_icon("Slot", "EditorIcons"), connection.method);
 						methods_found.insert(connection.method);
 						break;
 					}
@@ -1814,8 +1814,8 @@ void ScriptTextEditor::_enable_code_editor() {
 	code_editor->show_toggle_scripts_button();
 
 	editor_box->add_child(warnings_panel);
-	warnings_panel->add_font_override(
-			"normal_font", EditorNode::get_singleton()->get_gui_base()->get_font("main", "EditorFonts"));
+	warnings_panel->add_theme_font_override(
+			"normal_font", EditorNode::get_singleton()->get_gui_base()->get_theme_font("main", "EditorFonts"));
 	warnings_panel->connect("meta_clicked", this, "_warning_clicked");
 
 	add_child(context_menu);
@@ -1928,7 +1928,7 @@ ScriptTextEditor::ScriptTextEditor() {
 	editor_enabled = false;
 
 	code_editor = memnew(CodeTextEditor);
-	code_editor->add_constant_override("separation", 2);
+	code_editor->add_theme_constant_override("separation", 2);
 	code_editor->set_anchors_and_margins_preset(Control::PRESET_WIDE);
 	code_editor->set_code_complete_func(_code_complete_scripts, this);
 	code_editor->set_v_size_flags(SIZE_EXPAND_FILL);

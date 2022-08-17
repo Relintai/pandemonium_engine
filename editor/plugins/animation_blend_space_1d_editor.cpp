@@ -105,7 +105,7 @@ void AnimationNodeBlendSpace1DEditor::_blend_space_gui_input(const Ref<InputEven
 				ap->get_animation_list(&names);
 
 				for (List<StringName>::Element *E = names.front(); E; E = E->next()) {
-					animations_menu->add_icon_item(get_icon("Animation", "EditorIcons"), E->get());
+					animations_menu->add_icon_item(get_theme_icon("Animation", "EditorIcons"), E->get());
 					animations_to_add.push_back(E->get());
 				}
 			}
@@ -228,18 +228,18 @@ void AnimationNodeBlendSpace1DEditor::_blend_space_gui_input(const Ref<InputEven
 }
 
 void AnimationNodeBlendSpace1DEditor::_blend_space_draw() {
-	Color linecolor = get_color("font_color", "Label");
+	Color linecolor = get_theme_color("font_color", "Label");
 	Color linecolor_soft = linecolor;
 	linecolor_soft.a *= 0.5;
 
-	Ref<Font> font = get_font("font", "Label");
-	Ref<Texture> icon = get_icon("KeyValue", "EditorIcons");
-	Ref<Texture> icon_selected = get_icon("KeySelected", "EditorIcons");
+	Ref<Font> font = get_theme_font("font", "Label");
+	Ref<Texture> icon = get_theme_icon("KeyValue", "EditorIcons");
+	Ref<Texture> icon_selected = get_theme_icon("KeySelected", "EditorIcons");
 
 	Size2 s = blend_space_draw->get_size();
 
 	if (blend_space_draw->has_focus()) {
-		Color color = get_color("accent_color", "Editor");
+		Color color = get_theme_color("accent_color", "Editor");
 		blend_space_draw->draw_rect(Rect2(Point2(), s), color, false);
 	}
 
@@ -310,7 +310,7 @@ void AnimationNodeBlendSpace1DEditor::_blend_space_draw() {
 	{
 		Color color;
 		if (tool_blend->is_pressed()) {
-			color = get_color("accent_color", "Editor");
+			color = get_theme_color("accent_color", "Editor");
 		} else {
 			color = linecolor;
 			color.a *= 0.5;
@@ -560,15 +560,15 @@ void AnimationNodeBlendSpace1DEditor::_open_editor() {
 
 void AnimationNodeBlendSpace1DEditor::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
-		error_panel->add_style_override("panel", get_stylebox("bg", "Tree"));
-		error_label->add_color_override("font_color", get_color("error_color", "Editor"));
-		panel->add_style_override("panel", get_stylebox("bg", "Tree"));
-		tool_blend->set_icon(get_icon("EditPivot", "EditorIcons"));
-		tool_select->set_icon(get_icon("ToolSelect", "EditorIcons"));
-		tool_create->set_icon(get_icon("EditKey", "EditorIcons"));
-		tool_erase->set_icon(get_icon("Remove", "EditorIcons"));
-		snap->set_icon(get_icon("SnapGrid", "EditorIcons"));
-		open_editor->set_icon(get_icon("Edit", "EditorIcons"));
+		error_panel->add_theme_style_override("panel", get_theme_stylebox("bg", "Tree"));
+		error_label->add_theme_color_override("font_color", get_theme_color("error_color", "Editor"));
+		panel->add_theme_style_override("panel", get_theme_stylebox("bg", "Tree"));
+		tool_blend->set_icon(get_theme_icon("EditPivot", "EditorIcons"));
+		tool_select->set_icon(get_theme_icon("ToolSelect", "EditorIcons"));
+		tool_create->set_icon(get_theme_icon("EditKey", "EditorIcons"));
+		tool_erase->set_icon(get_theme_icon("Remove", "EditorIcons"));
+		snap->set_icon(get_theme_icon("SnapGrid", "EditorIcons"));
+		open_editor->set_icon(get_theme_icon("Edit", "EditorIcons"));
 	}
 
 	if (p_what == NOTIFICATION_PROCESS) {

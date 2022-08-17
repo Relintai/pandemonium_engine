@@ -138,44 +138,44 @@ void PropertySelector::_update_search() {
 		bool found = false;
 
 		Ref<Texture> type_icons[Variant::VARIANT_MAX] = {
-			Control::get_icon("Variant", "EditorIcons"),
-			Control::get_icon("bool", "EditorIcons"),
-			Control::get_icon("int", "EditorIcons"),
-			Control::get_icon("float", "EditorIcons"),
-			Control::get_icon("String", "EditorIcons"),
-			Control::get_icon("Rect2", "EditorIcons"),
-			Control::get_icon("Rect2i", "EditorIcons"),
-			Control::get_icon("Vector2", "EditorIcons"),
-			Control::get_icon("Vector2i", "EditorIcons"),
-			Control::get_icon("Vector3", "EditorIcons"),
-			Control::get_icon("Vector3i", "EditorIcons"),
-			Control::get_icon("Vector4", "EditorIcons"),
-			Control::get_icon("Vector4i", "EditorIcons"),
-			Control::get_icon("Plane", "EditorIcons"),
-			Control::get_icon("Quaternion", "EditorIcons"),
-			Control::get_icon("AABB", "EditorIcons"),
-			Control::get_icon("Basis", "EditorIcons"),
-			Control::get_icon("Transform", "EditorIcons"),
-			Control::get_icon("Transform2D", "EditorIcons"),
-			Control::get_icon("Projection", "EditorIcons"),
-			Control::get_icon("Color", "EditorIcons"),
-			Control::get_icon("Path", "EditorIcons"),
-			Control::get_icon("RID", "EditorIcons"),
-			Control::get_icon("Object", "EditorIcons"),
-			Control::get_icon("StringName", "EditorIcons"),
-			Control::get_icon("Dictionary", "EditorIcons"),
-			Control::get_icon("Array", "EditorIcons"),
-			Control::get_icon("PoolByteArray", "EditorIcons"),
-			Control::get_icon("PoolIntArray", "EditorIcons"),
-			Control::get_icon("PoolRealArray", "EditorIcons"),
-			Control::get_icon("PoolStringArray", "EditorIcons"),
-			Control::get_icon("PoolVector2Array", "EditorIcons"),
-			Control::get_icon("PoolVector2iArray", "EditorIcons"),
-			Control::get_icon("PoolVector3Array", "EditorIcons"),
-			Control::get_icon("PoolVector3iArray", "EditorIcons"),
-			Control::get_icon("PoolVector4Array", "EditorIcons"),
-			Control::get_icon("PoolVector4iArray", "EditorIcons"),
-			Control::get_icon("PoolColorArray", "EditorIcons")
+			Control::get_theme_icon("Variant", "EditorIcons"),
+			Control::get_theme_icon("bool", "EditorIcons"),
+			Control::get_theme_icon("int", "EditorIcons"),
+			Control::get_theme_icon("float", "EditorIcons"),
+			Control::get_theme_icon("String", "EditorIcons"),
+			Control::get_theme_icon("Rect2", "EditorIcons"),
+			Control::get_theme_icon("Rect2i", "EditorIcons"),
+			Control::get_theme_icon("Vector2", "EditorIcons"),
+			Control::get_theme_icon("Vector2i", "EditorIcons"),
+			Control::get_theme_icon("Vector3", "EditorIcons"),
+			Control::get_theme_icon("Vector3i", "EditorIcons"),
+			Control::get_theme_icon("Vector4", "EditorIcons"),
+			Control::get_theme_icon("Vector4i", "EditorIcons"),
+			Control::get_theme_icon("Plane", "EditorIcons"),
+			Control::get_theme_icon("Quaternion", "EditorIcons"),
+			Control::get_theme_icon("AABB", "EditorIcons"),
+			Control::get_theme_icon("Basis", "EditorIcons"),
+			Control::get_theme_icon("Transform", "EditorIcons"),
+			Control::get_theme_icon("Transform2D", "EditorIcons"),
+			Control::get_theme_icon("Projection", "EditorIcons"),
+			Control::get_theme_icon("Color", "EditorIcons"),
+			Control::get_theme_icon("Path", "EditorIcons"),
+			Control::get_theme_icon("RID", "EditorIcons"),
+			Control::get_theme_icon("Object", "EditorIcons"),
+			Control::get_theme_icon("StringName", "EditorIcons"),
+			Control::get_theme_icon("Dictionary", "EditorIcons"),
+			Control::get_theme_icon("Array", "EditorIcons"),
+			Control::get_theme_icon("PoolByteArray", "EditorIcons"),
+			Control::get_theme_icon("PoolIntArray", "EditorIcons"),
+			Control::get_theme_icon("PoolRealArray", "EditorIcons"),
+			Control::get_theme_icon("PoolStringArray", "EditorIcons"),
+			Control::get_theme_icon("PoolVector2Array", "EditorIcons"),
+			Control::get_theme_icon("PoolVector2iArray", "EditorIcons"),
+			Control::get_theme_icon("PoolVector3Array", "EditorIcons"),
+			Control::get_theme_icon("PoolVector3iArray", "EditorIcons"),
+			Control::get_theme_icon("PoolVector4Array", "EditorIcons"),
+			Control::get_theme_icon("PoolVector4iArray", "EditorIcons"),
+			Control::get_theme_icon("PoolColorArray", "EditorIcons")
 		};
 
 		for (List<PropertyInfo>::Element *E = props.front(); E; E = E->next()) {
@@ -189,7 +189,7 @@ void PropertySelector::_update_search() {
 
 				Ref<Texture> icon;
 				if (E->get().name == "Script Variables") {
-					icon = get_icon("Script", "EditorIcons");
+					icon = get_theme_icon("Script", "EditorIcons");
 				} else {
 					icon = EditorNode::get_singleton()->get_class_icon(E->get().name);
 				}
@@ -266,7 +266,7 @@ void PropertySelector::_update_search() {
 				script_methods = false;
 				String rep = E->get().name.replace("*", "");
 				if (E->get().name == "*Script Methods") {
-					icon = get_icon("Script", "EditorIcons");
+					icon = get_theme_icon("Script", "EditorIcons");
 					script_methods = true;
 				} else {
 					icon = EditorNode::get_singleton()->get_class_icon(rep);

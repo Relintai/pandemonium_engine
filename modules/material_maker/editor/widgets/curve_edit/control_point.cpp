@@ -47,7 +47,7 @@ void ControlPoint::set_max_y(const float val) {
 
 void ControlPoint::_draw() {
 	//	var current_theme : Theme = get_node("/root/MainWindow").theme;
-	//	var color : Color = current_theme.get_color("font_color", "Label");
+	//	var color : Color = current_theme.get_theme_color("font_color", "Label");
 	Color color = Color(1, 1, 1, 1);
 
 	for (int i = 0; i < get_child_count(); ++i) {

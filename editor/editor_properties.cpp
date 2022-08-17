@@ -197,9 +197,9 @@ void EditorPropertyMultilineText::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_THEME_CHANGED:
 		case NOTIFICATION_ENTER_TREE: {
-			Ref<Texture> df = get_icon("DistractionFree", "EditorIcons");
+			Ref<Texture> df = get_theme_icon("DistractionFree", "EditorIcons");
 			open_big_text->set_icon(df);
-			Ref<Font> font = get_font("font", "Label");
+			Ref<Font> font = get_theme_font("font", "Label");
 			text->set_custom_minimum_size(Vector2(0, font->get_height() * 6));
 
 		} break;
@@ -214,7 +214,7 @@ void EditorPropertyMultilineText::_bind_methods() {
 
 EditorPropertyMultilineText::EditorPropertyMultilineText() {
 	HBoxContainer *hb = memnew(HBoxContainer);
-	hb->add_constant_override("separation", 0);
+	hb->add_theme_constant_override("separation", 0);
 	add_child(hb);
 	set_bottom_editor(hb);
 	text = memnew(TextEdit);
@@ -334,9 +334,9 @@ void EditorPropertyTextEnum::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE:
 		case NOTIFICATION_THEME_CHANGED:
-			edit_button->set_icon(get_icon("Edit", "EditorIcons"));
-			accept_button->set_icon(get_icon("ImportCheck", "EditorIcons"));
-			cancel_button->set_icon(get_icon("ImportFail", "EditorIcons"));
+			edit_button->set_icon(get_theme_icon("Edit", "EditorIcons"));
+			accept_button->set_icon(get_theme_icon("ImportCheck", "EditorIcons"));
+			cancel_button->set_icon(get_theme_icon("ImportFail", "EditorIcons"));
 			break;
 	}
 }
@@ -445,7 +445,7 @@ void EditorPropertyPath::set_save_mode() {
 
 void EditorPropertyPath::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
-		path_edit->set_icon(get_icon("Folder", "EditorIcons"));
+		path_edit->set_icon(get_theme_icon("Folder", "EditorIcons"));
 	}
 }
 
@@ -671,7 +671,7 @@ void EditorPropertyButton::_notification(int p_what) {
 		case NOTIFICATION_THEME_CHANGED:
 		case NOTIFICATION_ENTER_TREE: {
 			if (_icon_name != "") {
-				_button->set_icon(get_icon(_icon_name, _icon_theme_type));
+				_button->set_icon(get_theme_icon(_icon_name, _icon_theme_type));
 			}
 		} break;
 	}
@@ -814,7 +814,7 @@ private:
 	int hovered_index = -1;
 
 	Size2 get_grid_size() const {
-		Ref<Font> font = get_font("font", "Label");
+		Ref<Font> font = get_theme_font("font", "Label");
 		return Size2(0, font->get_height() * 3);
 	}
 
@@ -912,12 +912,12 @@ public:
 				const int bsize = (grid_size.height * 80 / 100) / 2;
 				const int h = bsize * 2 + 1;
 
-				Color color = get_color("highlight_color", "Editor");
+				Color color = get_theme_color("highlight_color", "Editor");
 
-				Color text_color = get_color("font_color", "Editor");
+				Color text_color = get_theme_color("font_color", "Editor");
 				text_color.a *= 0.5;
 
-				Color text_color_on = get_color("dark_color_3", "Editor");
+				Color text_color_on = get_theme_color("dark_color_3", "Editor");
 				text_color_on.a *= 0.8;
 
 				const int vofs = (grid_size.height - h) / 2;
@@ -946,7 +946,7 @@ public:
 							draw_rect(rect2, color);
 							flag_rects.push_back(rect2);
 
-							Ref<Font> font = get_font("font", "Label");
+							Ref<Font> font = get_theme_font("font", "Label");
 							Vector2 offset;
 							if (layer_index + 1 > 9) {
 								// Offset for double digit numbers.
@@ -1008,10 +1008,10 @@ public:
 					break;
 				}
 
-				Ref<Texture> arrow = get_icon("arrow", "Tree");
+				Ref<Texture> arrow = get_theme_icon("arrow", "Tree");
 				ERR_FAIL_COND(arrow.is_null());
 
-				Color arrow_color = get_color("highlight_color", "Editor");
+				Color arrow_color = get_theme_color("highlight_color", "Editor");
 				arrow_color.a = expand_hovered ? 1.0 : 0.6;
 
 				arrow_pos.x += 2.0;
@@ -1397,13 +1397,13 @@ void EditorPropertyEasing::_draw_easing() {
 
 	const float exp = get_edited_object()->get(get_edited_property());
 
-	const Ref<Font> f = get_font("font", "Label");
-	const Color font_color = get_color("font_color", "Label");
+	const Ref<Font> f = get_theme_font("font", "Label");
+	const Color font_color = get_theme_color("font_color", "Label");
 	Color line_color;
 	if (dragging) {
-		line_color = get_color("accent_color", "Editor");
+		line_color = get_theme_color("accent_color", "Editor");
 	} else {
-		line_color = get_color("font_color", "Label") * Color(1, 1, 1, 0.9);
+		line_color = get_theme_color("font_color", "Label") * Color(1, 1, 1, 0.9);
 	}
 
 	Vector<Point2> points;
@@ -1489,15 +1489,15 @@ void EditorPropertyEasing::_notification(int p_what) {
 		case NOTIFICATION_THEME_CHANGED:
 		case NOTIFICATION_ENTER_TREE: {
 			preset->clear();
-			preset->add_icon_item(get_icon("CurveConstant", "EditorIcons"), "Zero", EASING_ZERO);
-			preset->add_icon_item(get_icon("CurveLinear", "EditorIcons"), "Linear", EASING_LINEAR);
-			preset->add_icon_item(get_icon("CurveIn", "EditorIcons"), "In", EASING_IN);
-			preset->add_icon_item(get_icon("CurveOut", "EditorIcons"), "Out", EASING_OUT);
+			preset->add_icon_item(get_theme_icon("CurveConstant", "EditorIcons"), "Zero", EASING_ZERO);
+			preset->add_icon_item(get_theme_icon("CurveLinear", "EditorIcons"), "Linear", EASING_LINEAR);
+			preset->add_icon_item(get_theme_icon("CurveIn", "EditorIcons"), "In", EASING_IN);
+			preset->add_icon_item(get_theme_icon("CurveOut", "EditorIcons"), "Out", EASING_OUT);
 			if (full) {
-				preset->add_icon_item(get_icon("CurveInOut", "EditorIcons"), "In-Out", EASING_IN_OUT);
-				preset->add_icon_item(get_icon("CurveOutIn", "EditorIcons"), "Out-In", EASING_OUT_IN);
+				preset->add_icon_item(get_theme_icon("CurveInOut", "EditorIcons"), "In-Out", EASING_IN_OUT);
+				preset->add_icon_item(get_theme_icon("CurveOutIn", "EditorIcons"), "Out-In", EASING_OUT_IN);
 			}
-			easing_draw->set_custom_minimum_size(Size2(0, get_font("font", "Label")->get_height() * 2));
+			easing_draw->set_custom_minimum_size(Size2(0, get_theme_font("font", "Label")->get_height() * 2));
 		} break;
 	}
 }
@@ -1563,7 +1563,7 @@ void EditorPropertyVector2::update_property() {
 
 void EditorPropertyVector2::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
-		Color base = get_color("accent_color", "Editor");
+		Color base = get_theme_color("accent_color", "Editor");
 		for (int i = 0; i < 2; i++) {
 			Color c = base;
 			c.set_hsv(float(i) / 3.0 + 0.05, c.get_s() * 0.75, c.get_v());
@@ -1643,7 +1643,7 @@ void EditorPropertyVector2i::update_property() {
 
 void EditorPropertyVector2i::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
-		Color base = get_color("accent_color", "Editor");
+		Color base = get_theme_color("accent_color", "Editor");
 		for (int i = 0; i < 2; i++) {
 			Color c = base;
 			c.set_hsv(float(i) / 3.0 + 0.05, c.get_s() * 0.75, c.get_v());
@@ -1726,7 +1726,7 @@ void EditorPropertyRect2::update_property() {
 }
 void EditorPropertyRect2::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
-		Color base = get_color("accent_color", "Editor");
+		Color base = get_theme_color("accent_color", "Editor");
 		for (int i = 0; i < 4; i++) {
 			Color c = base;
 			c.set_hsv(float(i % 2) / 3.0 + 0.05, c.get_s() * 0.75, c.get_v());
@@ -1808,7 +1808,7 @@ void EditorPropertyRect2i::update_property() {
 }
 void EditorPropertyRect2i::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
-		Color base = get_color("accent_color", "Editor");
+		Color base = get_theme_color("accent_color", "Editor");
 		for (int i = 0; i < 4; i++) {
 			Color c = base;
 			c.set_hsv(float(i % 2) / 3.0 + 0.05, c.get_s() * 0.75, c.get_v());
@@ -1900,7 +1900,7 @@ Vector3 EditorPropertyVector3::get_vector() {
 
 void EditorPropertyVector3::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
-		Color base = get_color("accent_color", "Editor");
+		Color base = get_theme_color("accent_color", "Editor");
 		for (int i = 0; i < 3; i++) {
 			Color c = base;
 			c.set_hsv(float(i) / 3.0 + 0.05, c.get_s() * 0.75, c.get_v());
@@ -1980,7 +1980,7 @@ void EditorPropertyVector3i::update_property() {
 }
 void EditorPropertyVector3i::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
-		Color base = get_color("accent_color", "Editor");
+		Color base = get_theme_color("accent_color", "Editor");
 		for (int i = 0; i < 3; i++) {
 			Color c = base;
 			c.set_hsv(float(i) / 3.0 + 0.05, c.get_s() * 0.75, c.get_v());
@@ -2075,7 +2075,7 @@ Vector4 EditorPropertyVector4::get_vector() {
 
 void EditorPropertyVector4::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
-		Color base = get_color("accent_color", "Editor");
+		Color base = get_theme_color("accent_color", "Editor");
 		for (int i = 0; i < 4; i++) {
 			Color c = base;
 			c.set_hsv(float(i) / 3.0 + 0.05, c.get_s() * 0.75, c.get_v());
@@ -2157,7 +2157,7 @@ void EditorPropertyVector4i::update_property() {
 }
 void EditorPropertyVector4i::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
-		Color base = get_color("accent_color", "Editor");
+		Color base = get_theme_color("accent_color", "Editor");
 		for (int i = 0; i < 4; i++) {
 			Color c = base;
 			c.set_hsv(float(i) / 3.0 + 0.05, c.get_s() * 0.75, c.get_v());
@@ -2239,7 +2239,7 @@ void EditorPropertyPlane::update_property() {
 }
 void EditorPropertyPlane::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
-		Color base = get_color("accent_color", "Editor");
+		Color base = get_theme_color("accent_color", "Editor");
 		for (int i = 0; i < 3; i++) {
 			Color c = base;
 			c.set_hsv(float(i) / 3.0 + 0.05, c.get_s() * 0.75, c.get_v());
@@ -2321,7 +2321,7 @@ void EditorPropertyQuaternion::update_property() {
 }
 void EditorPropertyQuaternion::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
-		Color base = get_color("accent_color", "Editor");
+		Color base = get_theme_color("accent_color", "Editor");
 		for (int i = 0; i < 3; i++) {
 			Color c = base;
 			c.set_hsv(float(i) / 3.0 + 0.05, c.get_s() * 0.75, c.get_v());
@@ -2409,7 +2409,7 @@ void EditorPropertyAABB::update_property() {
 }
 void EditorPropertyAABB::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
-		Color base = get_color("accent_color", "Editor");
+		Color base = get_theme_color("accent_color", "Editor");
 		for (int i = 0; i < 6; i++) {
 			Color c = base;
 			c.set_hsv(float(i % 3) / 3.0 + 0.05, c.get_s() * 0.75, c.get_v());
@@ -2484,7 +2484,7 @@ void EditorPropertyTransform2D::update_property() {
 }
 void EditorPropertyTransform2D::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
-		Color base = get_color("accent_color", "Editor");
+		Color base = get_theme_color("accent_color", "Editor");
 		for (int i = 0; i < 6; i++) {
 			Color c = base;
 			c.set_hsv(float(i % 2) / 3.0 + 0.05, c.get_s() * 0.75, c.get_v());
@@ -2564,7 +2564,7 @@ void EditorPropertyBasis::update_property() {
 }
 void EditorPropertyBasis::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
-		Color base = get_color("accent_color", "Editor");
+		Color base = get_theme_color("accent_color", "Editor");
 		for (int i = 0; i < 9; i++) {
 			Color c = base;
 			c.set_hsv(float(i % 3) / 3.0 + 0.05, c.get_s() * 0.75, c.get_v());
@@ -2654,7 +2654,7 @@ void EditorPropertyTransform::update_using_transform(Transform p_transform) {
 
 void EditorPropertyTransform::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
-		Color base = get_color("accent_color", "Editor");
+		Color base = get_theme_color("accent_color", "Editor");
 		for (int i = 0; i < 12; i++) {
 			Color c = base;
 			c.set_hsv(float(i % 3) / 3.0 + 0.05, c.get_s() * 0.75, c.get_v());
@@ -2753,7 +2753,7 @@ void EditorPropertyProjection::update_using_projection(Projection p_projection) 
 
 void EditorPropertyProjection::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
-		Color base = get_color("accent_color", "Editor");
+		Color base = get_theme_color("accent_color", "Editor");
 		for (int i = 0; i < 16; i++) {
 			Color c = base;
 			c.set_hsv(float(i % 3) / 3.0 + 0.05, c.get_s() * 0.75, c.get_v());
@@ -2992,7 +2992,7 @@ void EditorPropertyNodePath::setup(const NodePath &p_base_hint, Vector<StringNam
 
 void EditorPropertyNodePath::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_THEME_CHANGED) {
-		Ref<Texture> t = get_icon("Clear", "EditorIcons");
+		Ref<Texture> t = get_theme_icon("Clear", "EditorIcons");
 		clear->set_icon(t);
 	}
 }
@@ -3007,7 +3007,7 @@ void EditorPropertyNodePath::_bind_methods() {
 
 EditorPropertyNodePath::EditorPropertyNodePath() {
 	HBoxContainer *hbc = memnew(HBoxContainer);
-	hbc->add_constant_override("separation", 0);
+	hbc->add_theme_constant_override("separation", 0);
 	add_child(hbc);
 	assign = memnew(Button);
 	assign->set_flat(true);
@@ -3174,18 +3174,18 @@ void EditorPropertyResource::_update_property_bg() {
 		}
 		count_subinspectors = MIN(15, count_subinspectors);
 
-		add_color_override("property_color", get_color("sub_inspector_property_color", "Editor"));
-		add_style_override("bg_selected", get_stylebox("sub_inspector_property_bg_selected" + itos(count_subinspectors), "Editor"));
-		add_style_override("bg", get_stylebox("sub_inspector_property_bg" + itos(count_subinspectors), "Editor"));
+		add_theme_color_override("property_color", get_theme_color("sub_inspector_property_color", "Editor"));
+		add_theme_style_override("bg_selected", get_theme_stylebox("sub_inspector_property_bg_selected" + itos(count_subinspectors), "Editor"));
+		add_theme_style_override("bg", get_theme_stylebox("sub_inspector_property_bg" + itos(count_subinspectors), "Editor"));
 
-		add_constant_override("font_offset", get_constant("sub_inspector_font_offset", "Editor"));
-		add_constant_override("vseparation", 0);
+		add_theme_constant_override("font_offset", get_theme_constant("sub_inspector_font_offset", "Editor"));
+		add_theme_constant_override("vseparation", 0);
 	} else {
-		add_color_override("property_color", get_color("property_color", "EditorProperty"));
-		add_style_override("bg_selected", get_stylebox("bg_selected", "EditorProperty"));
-		add_style_override("bg", get_stylebox("bg", "EditorProperty"));
-		add_constant_override("vseparation", get_constant("vseparation", "EditorProperty"));
-		add_constant_override("font_offset", get_constant("font_offset", "EditorProperty"));
+		add_theme_color_override("property_color", get_theme_color("property_color", "EditorProperty"));
+		add_theme_style_override("bg_selected", get_theme_stylebox("bg_selected", "EditorProperty"));
+		add_theme_style_override("bg", get_theme_stylebox("bg", "EditorProperty"));
+		add_theme_constant_override("vseparation", get_theme_constant("vseparation", "EditorProperty"));
+		add_theme_constant_override("font_offset", get_theme_constant("font_offset", "EditorProperty"));
 	}
 
 	updating_theme = false;

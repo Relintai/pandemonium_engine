@@ -69,7 +69,7 @@ void ScriptCreateDialog::_notification(int p_what) {
 		case NOTIFICATION_ENTER_TREE: {
 			for (int i = 0; i < ScriptServer::get_language_count(); i++) {
 				String lang = ScriptServer::get_language(i)->get_type();
-				Ref<Texture> lang_icon = get_icon(lang, "EditorIcons");
+				Ref<Texture> lang_icon = get_theme_icon(lang, "EditorIcons");
 				if (lang_icon.is_valid()) {
 					language_menu->set_item_icon(i, lang_icon);
 				}
@@ -88,10 +88,10 @@ void ScriptCreateDialog::_notification(int p_what) {
 				language_menu->select(default_language);
 			}
 
-			path_button->set_icon(get_icon("Folder", "EditorIcons"));
-			parent_browse_button->set_icon(get_icon("Folder", "EditorIcons"));
-			parent_search_button->set_icon(get_icon("ClassList", "EditorIcons"));
-			status_panel->add_style_override("panel", get_stylebox("bg", "Tree"));
+			path_button->set_icon(get_theme_icon("Folder", "EditorIcons"));
+			parent_browse_button->set_icon(get_theme_icon("Folder", "EditorIcons"));
+			parent_search_button->set_icon(get_theme_icon("ClassList", "EditorIcons"));
+			status_panel->add_theme_style_override("panel", get_theme_stylebox("bg", "Tree"));
 		} break;
 	}
 }
@@ -473,7 +473,7 @@ void ScriptCreateDialog::_lang_changed(int l) {
 					override_info += ", ";
 				}
 			}
-			template_menu->set_item_icon(extended.id, get_icon("Override", "EditorIcons"));
+			template_menu->set_item_icon(extended.id, get_theme_icon("Override", "EditorIcons"));
 			template_menu->get_popup()->set_item_tooltip(extended.id, override_info.as_string());
 		}
 		// Reselect last selected template
@@ -629,18 +629,18 @@ void ScriptCreateDialog::_path_entered(const String &p_path) {
 void ScriptCreateDialog::_msg_script_valid(bool valid, const String &p_msg) {
 	error_label->set_text(String::utf8("• ") + TTR(p_msg));
 	if (valid) {
-		error_label->add_color_override("font_color", get_color("success_color", "Editor"));
+		error_label->add_theme_color_override("font_color", get_theme_color("success_color", "Editor"));
 	} else {
-		error_label->add_color_override("font_color", get_color("error_color", "Editor"));
+		error_label->add_theme_color_override("font_color", get_theme_color("error_color", "Editor"));
 	}
 }
 
 void ScriptCreateDialog::_msg_path_valid(bool valid, const String &p_msg) {
 	path_error_label->set_text(String::utf8("• ") + TTR(p_msg));
 	if (valid) {
-		path_error_label->add_color_override("font_color", get_color("success_color", "Editor"));
+		path_error_label->add_theme_color_override("font_color", get_theme_color("success_color", "Editor"));
 	} else {
-		path_error_label->add_color_override("font_color", get_color("error_color", "Editor"));
+		path_error_label->add_theme_color_override("font_color", get_theme_color("error_color", "Editor"));
 	}
 }
 
@@ -810,7 +810,7 @@ ScriptCreateDialog::ScriptCreateDialog() {
 	script_name_warning_label->set_text(
 			TTR("Warning: Having the script name be the same as a built-in type is usually not desired."));
 	vb->add_child(script_name_warning_label);
-	script_name_warning_label->add_color_override("font_color", Color(1, 0.85, 0.4));
+	script_name_warning_label->add_theme_color_override("font_color", Color(1, 0.85, 0.4));
 	script_name_warning_label->set_autowrap(true);
 	script_name_warning_label->hide();
 
