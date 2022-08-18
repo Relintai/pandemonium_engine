@@ -94,6 +94,7 @@ env_base.__class__.add_library = methods.add_library
 env_base.__class__.add_program = methods.add_program
 env_base.__class__.CommandNoCache = methods.CommandNoCache
 env_base.__class__.disable_warnings = methods.disable_warnings
+env_base.__class__.module_check_dependencies = methods.module_check_dependencies
 
 env_base["x86_libtheora_opt_gcc"] = False
 env_base["x86_libtheora_opt_vc"] = False
@@ -576,19 +577,7 @@ if selected_platform in platform_list:
         env.current_module = name
         import config
 
-        # can_build changed number of arguments between 3.0 (1) and 3.1 (2),
-        # so try both to preserve compatibility for 3.0 modules
-        can_build = False
-        try:
-            can_build = config.can_build(env, selected_platform)
-        except TypeError:
-            print(
-                "Warning: module '%s' uses a deprecated `can_build` "
-                "signature in its config.py file, it should be "
-                "`can_build(env, platform)`." % x
-            )
-            can_build = config.can_build(selected_platform)
-        if can_build:
+        if config.can_build(env, selected_platform):
             config.configure(env)
             # Get doc classes paths (if present)
             try:
@@ -635,6 +624,7 @@ if selected_platform in platform_list:
         env.Append(CPPDEFINES=["PTRCALL_ENABLED"])
     if env["tools"]:
         env.Append(CPPDEFINES=["TOOLS_ENABLED"])
+
     if env["disable_3d"]:
         if env["tools"]:
             print(
@@ -644,6 +634,7 @@ if selected_platform in platform_list:
             sys.exit(255)
         else:
             env.Append(CPPDEFINES=["_3D_DISABLED"])
+
     if env["disable_advanced_gui"]:
         if env["tools"]:
             print(
@@ -657,14 +648,9 @@ if selected_platform in platform_list:
         env.Append(CPPDEFINES=["MINIZIP_ENABLED"])
 
     editor_module_list = ["freetype"]
-    for x in editor_module_list:
-        if not env["module_" + x + "_enabled"]:
-            if env["tools"]:
-                print(
-                    "Build option 'module_" + x + "_enabled=no' cannot be used with 'tools=yes' (editor), "
-                    "only with 'tools=no' (export template)."
-                )
-                sys.exit(255)
+    if env["tools"] and not env.module_check_dependencies("tools", editor_module_list):
+        print("The editor (tools=yes) can't be built if it's dependencies are not satisfied! Stopping.")
+        sys.exit(255)
 
     if not env["verbose"]:
         methods.no_verbose(sys, env)
@@ -694,8 +680,10 @@ if selected_platform in platform_list:
     SConscript("core/SCsub")
     SConscript("servers/SCsub")
     SConscript("scene/SCsub")
+
     if env["tools"]:
         SConscript("editor/SCsub")
+
     SConscript("drivers/SCsub")
 
     SConscript("platform/SCsub")
