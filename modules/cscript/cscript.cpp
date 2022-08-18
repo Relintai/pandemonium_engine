@@ -1269,15 +1269,6 @@ ScriptLanguage *CScriptInstance::get_language() {
 	return CScriptLanguage::get_singleton();
 }
 
-MultiplayerAPI::RPCMode CScriptInstance::get_rpc_mode(const StringName &p_method) const {
-	//note that methods set up using rpc_config should still work, even if they are declared in scripts.
-	return MultiplayerAPI::RPC_MODE_DISABLED;
-}
-
-MultiplayerAPI::RPCMode CScriptInstance::get_rset_mode(const StringName &p_variable) const {
-	return MultiplayerAPI::RPC_MODE_DISABLED;
-}
-
 void CScriptInstance::reload_members() {
 #ifdef DEBUG_ENABLED
 

@@ -196,9 +196,6 @@ public:
 	virtual void property_set_fallback(const StringName &p_name, const Variant &p_value, bool *r_valid);
 	virtual Variant property_get_fallback(const StringName &p_name, bool *r_valid);
 
-	virtual MultiplayerAPI::RPCMode get_rpc_mode(const StringName &p_method) const = 0;
-	virtual MultiplayerAPI::RPCMode get_rset_mode(const StringName &p_variable) const = 0;
-
 	virtual ScriptLanguage *get_language() = 0;
 	virtual ~ScriptInstance();
 };
@@ -409,9 +406,6 @@ public:
 
 	virtual void property_set_fallback(const StringName &p_name, const Variant &p_value, bool *r_valid = nullptr);
 	virtual Variant property_get_fallback(const StringName &p_name, bool *r_valid = nullptr);
-
-	virtual MultiplayerAPI::RPCMode get_rpc_mode(const StringName &p_method) const { return MultiplayerAPI::RPC_MODE_DISABLED; }
-	virtual MultiplayerAPI::RPCMode get_rset_mode(const StringName &p_variable) const { return MultiplayerAPI::RPC_MODE_DISABLED; }
 
 	PlaceHolderScriptInstance(ScriptLanguage *p_language, Ref<Script> p_script, Object *p_owner);
 	~PlaceHolderScriptInstance();

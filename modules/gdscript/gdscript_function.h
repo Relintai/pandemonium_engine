@@ -246,7 +246,6 @@ private:
 	int _call_size;
 	int _initial_line;
 	bool _static;
-	MultiplayerAPI::RPCMode rpc_mode;
 
 	GDScript *_script;
 
@@ -345,7 +344,6 @@ public:
 
 	Variant call(GDScriptInstance *p_instance, const Variant **p_args, int p_argcount, Variant::CallError &r_err, CallState *p_state = nullptr);
 
-	_FORCE_INLINE_ MultiplayerAPI::RPCMode get_rpc_mode() const { return rpc_mode; }
 	GDScriptFunction();
 	~GDScriptFunction();
 };

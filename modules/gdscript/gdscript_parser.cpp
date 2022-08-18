@@ -4035,8 +4035,6 @@ void GDScriptParser::_parse_class(ClassNode *p_class) {
 #ifdef DEBUG_ENABLED
 				function->arguments_usage = arguments_usage;
 #endif // DEBUG_ENABLED
-				function->rpc_mode = rpc_mode;
-				rpc_mode = MultiplayerAPI::RPC_MODE_DISABLED;
 
 				if (name == "_init") {
 					if (_static) {
@@ -4730,9 +4728,9 @@ void GDScriptParser::_parse_class(ClassNode *p_class) {
 #undef _ADVANCE_AND_CONSUME_NEWLINES
 				}
 
-				if (tokenizer->get_token() != GDScriptTokenizer::TK_PR_VAR && tokenizer->get_token() != GDScriptTokenizer::TK_PR_ONREADY && tokenizer->get_token() != GDScriptTokenizer::TK_PR_REMOTE && tokenizer->get_token() != GDScriptTokenizer::TK_PR_MASTER && tokenizer->get_token() != GDScriptTokenizer::TK_PR_PUPPET && tokenizer->get_token() != GDScriptTokenizer::TK_PR_SYNC && tokenizer->get_token() != GDScriptTokenizer::TK_PR_REMOTESYNC && tokenizer->get_token() != GDScriptTokenizer::TK_PR_MASTERSYNC && tokenizer->get_token() != GDScriptTokenizer::TK_PR_PUPPETSYNC && tokenizer->get_token() != GDScriptTokenizer::TK_PR_SLAVE) {
+				if (tokenizer->get_token() != GDScriptTokenizer::TK_PR_VAR && tokenizer->get_token() != GDScriptTokenizer::TK_PR_ONREADY) {
 					current_export = PropertyInfo();
-					_set_error("Expected \"var\", \"onready\", \"remote\", \"master\", \"puppet\", \"sync\", \"remotesync\", \"mastersync\", \"puppetsync\".");
+					_set_error("Expected \"var\", \"onready\".");
 					return;
 				}
 
@@ -4746,114 +4744,6 @@ void GDScriptParser::_parse_class(ClassNode *p_class) {
 					return;
 				}
 
-				continue;
-			} break;
-			case GDScriptTokenizer::TK_PR_REMOTE: {
-				//may be fallthrough from export, ignore if so
-				tokenizer->advance();
-				if (current_export.type) {
-					if (tokenizer->get_token() != GDScriptTokenizer::TK_PR_VAR) {
-						_set_error("Expected \"var\".");
-						return;
-					}
-
-				} else {
-					if (tokenizer->get_token() != GDScriptTokenizer::TK_PR_VAR && tokenizer->get_token() != GDScriptTokenizer::TK_PR_FUNCTION) {
-						_set_error("Expected \"var\" or \"func\".");
-						return;
-					}
-				}
-				rpc_mode = MultiplayerAPI::RPC_MODE_REMOTE;
-
-				continue;
-			} break;
-			case GDScriptTokenizer::TK_PR_MASTER: {
-				//may be fallthrough from export, ignore if so
-				tokenizer->advance();
-				if (current_export.type) {
-					if (tokenizer->get_token() != GDScriptTokenizer::TK_PR_VAR) {
-						_set_error("Expected \"var\".");
-						return;
-					}
-
-				} else {
-					if (tokenizer->get_token() != GDScriptTokenizer::TK_PR_VAR && tokenizer->get_token() != GDScriptTokenizer::TK_PR_FUNCTION) {
-						_set_error("Expected \"var\" or \"func\".");
-						return;
-					}
-				}
-
-				rpc_mode = MultiplayerAPI::RPC_MODE_MASTER;
-				continue;
-			} break;
-			case GDScriptTokenizer::TK_PR_SLAVE:
-#ifdef DEBUG_ENABLED
-				_add_warning(GDScriptWarning::DEPRECATED_KEYWORD, tokenizer->get_token_line(), "slave", "puppet");
-#endif
-				FALLTHROUGH;
-			case GDScriptTokenizer::TK_PR_PUPPET: {
-				//may be fallthrough from export, ignore if so
-				tokenizer->advance();
-				if (current_export.type) {
-					if (tokenizer->get_token() != GDScriptTokenizer::TK_PR_VAR) {
-						_set_error("Expected \"var\".");
-						return;
-					}
-
-				} else {
-					if (tokenizer->get_token() != GDScriptTokenizer::TK_PR_VAR && tokenizer->get_token() != GDScriptTokenizer::TK_PR_FUNCTION) {
-						_set_error("Expected \"var\" or \"func\".");
-						return;
-					}
-				}
-
-				rpc_mode = MultiplayerAPI::RPC_MODE_PUPPET;
-				continue;
-			} break;
-			case GDScriptTokenizer::TK_PR_REMOTESYNC:
-			case GDScriptTokenizer::TK_PR_SYNC: {
-				//may be fallthrough from export, ignore if so
-				tokenizer->advance();
-				if (tokenizer->get_token() != GDScriptTokenizer::TK_PR_VAR && tokenizer->get_token() != GDScriptTokenizer::TK_PR_FUNCTION) {
-					if (current_export.type) {
-						_set_error("Expected \"var\".");
-					} else {
-						_set_error("Expected \"var\" or \"func\".");
-					}
-					return;
-				}
-
-				rpc_mode = MultiplayerAPI::RPC_MODE_REMOTESYNC;
-				continue;
-			} break;
-			case GDScriptTokenizer::TK_PR_MASTERSYNC: {
-				//may be fallthrough from export, ignore if so
-				tokenizer->advance();
-				if (tokenizer->get_token() != GDScriptTokenizer::TK_PR_VAR && tokenizer->get_token() != GDScriptTokenizer::TK_PR_FUNCTION) {
-					if (current_export.type) {
-						_set_error("Expected \"var\".");
-					} else {
-						_set_error("Expected \"var\" or \"func\".");
-					}
-					return;
-				}
-
-				rpc_mode = MultiplayerAPI::RPC_MODE_MASTERSYNC;
-				continue;
-			} break;
-			case GDScriptTokenizer::TK_PR_PUPPETSYNC: {
-				//may be fallthrough from export, ignore if so
-				tokenizer->advance();
-				if (tokenizer->get_token() != GDScriptTokenizer::TK_PR_VAR && tokenizer->get_token() != GDScriptTokenizer::TK_PR_FUNCTION) {
-					if (current_export.type) {
-						_set_error("Expected \"var\".");
-					} else {
-						_set_error("Expected \"var\" or \"func\".");
-					}
-					return;
-				}
-
-				rpc_mode = MultiplayerAPI::RPC_MODE_PUPPETSYNC;
 				continue;
 			} break;
 			case GDScriptTokenizer::TK_PR_VAR: {
@@ -4880,7 +4770,6 @@ void GDScriptParser::_parse_class(ClassNode *p_class) {
 				member._export.name = member.identifier;
 				member.line = tokenizer->get_token_line();
 				member.usages = 0;
-				member.rpc_mode = rpc_mode;
 
 				if (current_class->constant_expressions.has(member.identifier)) {
 					_set_error("A constant named \"" + String(member.identifier) + "\" already exists in this class (at line: " +
@@ -4917,8 +4806,6 @@ void GDScriptParser::_parse_class(ClassNode *p_class) {
 				}
 #endif // DEBUG_ENABLED
 				tokenizer->advance();
-
-				rpc_mode = MultiplayerAPI::RPC_MODE_DISABLED;
 
 				if (tokenizer->get_token() == GDScriptTokenizer::TK_COLON) {
 					if (tokenizer->get_token(1) == GDScriptTokenizer::TK_OP_ASSIGN) {
@@ -8894,7 +8781,6 @@ void GDScriptParser::clear() {
 	current_class = nullptr;
 
 	completion_found = false;
-	rpc_mode = MultiplayerAPI::RPC_MODE_DISABLED;
 
 	current_function = nullptr;
 

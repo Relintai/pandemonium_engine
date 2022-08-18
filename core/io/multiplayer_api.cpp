@@ -270,8 +270,6 @@ void MultiplayerAPI::_process_rpc(Node *p_node, const StringName &p_name, int p_
 	const Map<StringName, RPCMode>::Element *E = p_node->get_node_rpc_mode(p_name);
 	if (E) {
 		rpc_mode = E->get();
-	} else if (p_node->get_script_instance()) {
-		rpc_mode = p_node->get_script_instance()->get_rpc_mode(p_name);
 	}
 
 	bool can_call = _can_call_mode(p_node, rpc_mode, p_from);
@@ -572,8 +570,7 @@ void MultiplayerAPI::rpcp(Node *p_node, int p_peer_id, bool p_unreliable, const 
 
 	int node_id = network_peer->get_unique_id();
 	bool skip_rpc = node_id == p_peer_id;
-	bool call_local_native = false;
-	bool call_local_script = false;
+	bool call_local = false;
 	bool is_master = p_node->is_network_master();
 
 	if (p_peer_id == 0 || p_peer_id == node_id || (p_peer_id < 0 && p_peer_id != -node_id)) {
@@ -581,15 +578,7 @@ void MultiplayerAPI::rpcp(Node *p_node, int p_peer_id, bool p_unreliable, const 
 
 		const Map<StringName, RPCMode>::Element *E = p_node->get_node_rpc_mode(p_method);
 		if (E) {
-			call_local_native = _should_call_local(E->get(), is_master, skip_rpc);
-		}
-
-		if (call_local_native) {
-			// Done below.
-		} else if (p_node->get_script_instance()) {
-			// Attempt with script.
-			RPCMode rpc_mode = p_node->get_script_instance()->get_rpc_mode(p_method);
-			call_local_script = _should_call_local(rpc_mode, is_master, skip_rpc);
+			call_local = _should_call_local(E->get(), is_master, skip_rpc);
 		}
 	}
 
@@ -605,7 +594,7 @@ void MultiplayerAPI::rpcp(Node *p_node, int p_peer_id, bool p_unreliable, const 
 		_send_rpc(p_node, p_peer_id, p_unreliable, p_method, p_arg, p_argcount);
 	}
 
-	if (call_local_native) {
+	if (call_local) {
 		int temp_id = rpc_sender_id;
 		rpc_sender_id = get_network_unique_id();
 		Variant::CallError ce;
@@ -619,22 +608,7 @@ void MultiplayerAPI::rpcp(Node *p_node, int p_peer_id, bool p_unreliable, const 
 		}
 	}
 
-	if (call_local_script) {
-		int temp_id = rpc_sender_id;
-		rpc_sender_id = get_network_unique_id();
-		Variant::CallError ce;
-		ce.error = Variant::CallError::CALL_OK;
-		p_node->get_script_instance()->call(p_method, p_arg, p_argcount, ce);
-		rpc_sender_id = temp_id;
-		if (ce.error != Variant::CallError::CALL_OK) {
-			String error = Variant::get_call_error_text(p_node, p_method, p_arg, p_argcount, ce);
-			error = "rpc() aborted in script local call:  - " + error + ".";
-			ERR_PRINT(error);
-			return;
-		}
-	}
-
-	ERR_FAIL_COND_MSG(skip_rpc && !(call_local_native || call_local_script), "RPC '" + p_method + "' on yourself is not allowed by selected mode.");
+	ERR_FAIL_COND_MSG(skip_rpc && !(call_local), "RPC '" + p_method + "' on yourself is not allowed by selected mode.");
 }
 
 Error MultiplayerAPI::send_bytes(PoolVector<uint8_t> p_data, int p_to, NetworkedMultiplayerPeer::TransferMode p_mode) {
