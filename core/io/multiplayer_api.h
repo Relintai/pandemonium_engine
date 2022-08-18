@@ -98,23 +98,20 @@ protected:
 	void _process_confirm_path(int p_from, const uint8_t *p_packet, int p_packet_len);
 	Node *_process_get_node(int p_from, const uint8_t *p_packet, int p_packet_len);
 	void _process_rpc(Node *p_node, const StringName &p_name, int p_from, const uint8_t *p_packet, int p_packet_len, int p_offset);
-	void _process_rset(Node *p_node, const StringName &p_name, int p_from, const uint8_t *p_packet, int p_packet_len, int p_offset);
 	void _process_raw(int p_from, const uint8_t *p_packet, int p_packet_len);
 
-	void _send_rpc(Node *p_from, int p_to, bool p_unreliable, bool p_set, const StringName &p_name, const Variant **p_arg, int p_argcount);
+	void _send_rpc(Node *p_from, int p_to, bool p_unreliable, const StringName &p_name, const Variant **p_arg, int p_argcount);
 	bool _send_confirm_path(NodePath p_path, PathSentCache *psc, int p_target);
 
 public:
 	enum NetworkCommands {
 		NETWORK_COMMAND_REMOTE_CALL,
-		NETWORK_COMMAND_REMOTE_SET,
 		NETWORK_COMMAND_SIMPLIFY_PATH,
 		NETWORK_COMMAND_CONFIRM_PATH,
 		NETWORK_COMMAND_RAW,
 	};
 
 	enum RPCMode {
-
 		RPC_MODE_DISABLED, // No rpc for this method, calls to this will be blocked (default)
 		RPC_MODE_REMOTE, // Using rpc() on it will call method / set property in all remote peers
 		RPC_MODE_MASTER, // Using rpc() on it will call method on wherever the master is, be it local or remote
@@ -136,8 +133,6 @@ public:
 
 	// Called by Node.rpc
 	void rpcp(Node *p_node, int p_peer_id, bool p_unreliable, const StringName &p_method, const Variant **p_arg, int p_argcount);
-	// Called by Node.rset
-	void rsetp(Node *p_node, int p_peer_id, bool p_unreliable, const StringName &p_property, const Variant &p_value);
 
 	void _add_peer(int p_id);
 	void _del_peer(int p_id);

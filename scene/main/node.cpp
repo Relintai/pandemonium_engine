@@ -587,14 +587,6 @@ void Node::rpc_config(const StringName &p_method, MultiplayerAPI::RPCMode p_mode
 	};
 }
 
-void Node::rset_config(const StringName &p_property, MultiplayerAPI::RPCMode p_mode) {
-	if (p_mode == MultiplayerAPI::RPC_MODE_DISABLED) {
-		data.rpc_properties.erase(p_property);
-	} else {
-		data.rpc_properties[p_property] = p_mode;
-	};
-}
-
 /***** RPC FUNCTIONS ********/
 
 void Node::rpc(const StringName &p_method, VARIANT_ARG_DECLARE) {
@@ -762,28 +754,6 @@ void Node::rpcp(int p_peer_id, bool p_unreliable, const StringName &p_method, co
 	get_multiplayer()->rpcp(this, p_peer_id, p_unreliable, p_method, p_arg, p_argcount);
 }
 
-void Node::rsetp(int p_peer_id, bool p_unreliable, const StringName &p_property, const Variant &p_value) {
-	ERR_FAIL_COND(!is_inside_tree());
-	get_multiplayer()->rsetp(this, p_peer_id, p_unreliable, p_property, p_value);
-}
-
-/******** RSET *********/
-void Node::rset(const StringName &p_property, const Variant &p_value) {
-	rsetp(0, false, p_property, p_value);
-}
-
-void Node::rset_id(int p_peer_id, const StringName &p_property, const Variant &p_value) {
-	rsetp(p_peer_id, false, p_property, p_value);
-}
-
-void Node::rset_unreliable(const StringName &p_property, const Variant &p_value) {
-	rsetp(0, true, p_property, p_value);
-}
-
-void Node::rset_unreliable_id(int p_peer_id, const StringName &p_property, const Variant &p_value) {
-	rsetp(p_peer_id, true, p_property, p_value);
-}
-
 //////////// end of rpc
 Ref<MultiplayerAPI> Node::get_multiplayer() const {
 	if (multiplayer.is_valid()) {
@@ -805,10 +775,6 @@ void Node::set_custom_multiplayer(Ref<MultiplayerAPI> p_multiplayer) {
 
 const Map<StringName, MultiplayerAPI::RPCMode>::Element *Node::get_node_rpc_mode(const StringName &p_method) {
 	return data.rpc_methods.find(p_method);
-}
-
-const Map<StringName, MultiplayerAPI::RPCMode>::Element *Node::get_node_rset_mode(const StringName &p_property) {
-	return data.rpc_properties.find(p_property);
 }
 
 bool Node::can_process_notification(int p_what) const {
@@ -3083,7 +3049,6 @@ void Node::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_custom_multiplayer"), &Node::get_custom_multiplayer);
 	ClassDB::bind_method(D_METHOD("set_custom_multiplayer", "api"), &Node::set_custom_multiplayer);
 	ClassDB::bind_method(D_METHOD("rpc_config", "method", "mode"), &Node::rpc_config);
-	ClassDB::bind_method(D_METHOD("rset_config", "property", "mode"), &Node::rset_config);
 
 	ClassDB::bind_method(D_METHOD("_set_editor_description", "editor_description"), &Node::set_editor_description);
 	ClassDB::bind_method(D_METHOD("_get_editor_description"), &Node::get_editor_description);
@@ -3117,11 +3082,6 @@ void Node::_bind_methods() {
 		mi.name = "rpc_unreliable_id";
 		ClassDB::bind_vararg_method(METHOD_FLAGS_DEFAULT, "rpc_unreliable_id", &Node::_rpc_unreliable_id_bind, mi);
 	}
-
-	ClassDB::bind_method(D_METHOD("rset", "property", "value"), &Node::rset);
-	ClassDB::bind_method(D_METHOD("rset_id", "peer_id", "property", "value"), &Node::rset_id);
-	ClassDB::bind_method(D_METHOD("rset_unreliable", "property", "value"), &Node::rset_unreliable);
-	ClassDB::bind_method(D_METHOD("rset_unreliable_id", "peer_id", "property", "value"), &Node::rset_unreliable_id);
 
 	ClassDB::bind_method(D_METHOD("update_configuration_warning"), &Node::update_configuration_warning);
 
