@@ -1,5 +1,5 @@
-#ifndef TEXT_EDITOR_EDITOR_PLUGIN_H
-#define TEXT_EDITOR_EDITOR_PLUGIN_H
+#ifndef TEXT_EDITOR_FORMAT_LOADER_H
+#define TEXT_EDITOR_FORMAT_LOADER_H
 
 /*
 Copyright (c) 2019-2022 Péter Magyar
@@ -23,35 +23,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/io/resource_importer.h"
-#include "core/object/reference.h"
-#include "editor/editor_plugin.h"
+#include "core/io/resource_loader.h"
 
 class TextFileEditor;
 class Texture;
 
-class TextEditorEditorPlugin : public EditorPlugin {
-	GDCLASS(TextEditorEditorPlugin, EditorPlugin);
+class TextEditorTextLoader : public ResourceFormatLoader {
+	GDCLASS(TextEditorTextLoader, ResourceFormatLoader);
 
 public:
-	void make_visible(const bool visible);
-	const Ref<Texture> get_icon() const;
-	bool has_main_screen() const;
-	String get_name() const;
-	void edit(Object *p_object);
-	bool handles(Object *p_object) const;
-
-	TextEditorEditorPlugin(EditorNode *p_node);
-	~TextEditorEditorPlugin();
-
-	EditorNode *editor;
-
-	TextFileEditor *window;
-
-protected:
-	static void _bind_methods();
-
-	Ref<Texture> _icon;
+	virtual RES load(const String &p_path, const String &p_original_path = "", Error *r_error = nullptr);
+	virtual void get_recognized_extensions(List<String> *p_extensions) const;
+	virtual bool handles_type(const String &p_type) const;
+	virtual String get_resource_type(const String &p_path) const;
+	virtual void get_dependencies(const String &p_path, List<String> *p_dependencies, bool p_add_types = false);
 };
 
 #endif

@@ -22,12 +22,20 @@ SOFTWARE.
 
 #include "register_types.h"
 
+#include "text_editor_file.h"
+#include "text_editor_format_loader.h"
+
 #ifdef TOOLS_ENABLED
 #include "text_editor_plugin.h"
+#include "editor/editor_plugin.h"
 #endif
 
 void register_text_editor_types() {
-	//ClassDB::register_class<PaintWindow>();
+	ClassDB::register_class<TextEditorFile>();
+
+	Ref<TextEditorTextLoader> loader;
+	loader.instance();
+	ResourceLoader::add_resource_format_loader(loader);
 
 #ifdef TOOLS_ENABLED
 	EditorPlugins::add_by_type<TextEditorEditorPlugin>();

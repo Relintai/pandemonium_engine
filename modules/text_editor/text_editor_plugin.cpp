@@ -22,6 +22,7 @@ SOFTWARE.
 
 #include "text_editor_plugin.h"
 
+#include "text_editor_file.h"
 #include "text_file_editor.h"
 
 void TextEditorEditorPlugin::make_visible(const bool visible) {
@@ -35,8 +36,21 @@ String TextEditorEditorPlugin::get_name() const {
 const Ref<Texture> TextEditorEditorPlugin::get_icon() const {
 	return _icon;
 }
+
 bool TextEditorEditorPlugin::has_main_screen() const {
 	return true;
+}
+
+void TextEditorEditorPlugin::edit(Object *p_object) {
+	Ref<TextEditorFile> f = Object::cast_to<TextEditorFile>(p_object);
+
+	if (f.is_valid()) {
+		window->open_file(f->get_path());
+	}
+}
+
+bool TextEditorEditorPlugin::handles(Object *p_object) const {
+	return p_object->is_class("TextEditorFile");
 }
 
 TextEditorEditorPlugin::TextEditorEditorPlugin(EditorNode *p_node) {
