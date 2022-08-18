@@ -62,7 +62,7 @@
 - Implement something similar to this, so scripting language code can be simplified. (https://github.com/godotengine/godot/commit/5288ff538d75d2ddab257a9e1e40050c9b8fa1cb)(Create Variant built-in functions.) 
 - Move DynamicFont to a module, and make tools depend on that.
 - Maybe backport the TextServer from Godot4?
-- Make modules from everything under the thisdparty folder.
+- Make modules from everything under the thirdparty folder.
 - Collect license information from modules and merge it back and handle it like the current thirdparty.md file.
 - Clean up the third party licenses.
 
