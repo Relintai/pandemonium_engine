@@ -131,6 +131,12 @@
 
 - Clean / flesh out the api of UserManager / UserDB. Also make UserManager register itself into UserDB.
 
+## Networking
+
+- Maybe port https://github.com/godotengine/godot/pull/50710 ? It adds some lower level stuff which should be useful. It also adds mesh networking which I'm not really sure about that it's really that useful for most games, as you probably want want authoritative servers in most cases.
+- Rename the networking keywords (puppet, master etc) to something that is a lot easier to understand at a glance. Maybe something like CLINET_CAN_CALL_SERVER etc. Should call local maybe could be made a separate bool param like in Godot 4, although I think I like the current solution better.
+- Somehow add helper methods that do what the RPC macros do in Entity.
+
 ## Ground Clutter
 
 - Add new ground clutter module. It should have classes that help with spawning clutter like small objects, or foliage.
