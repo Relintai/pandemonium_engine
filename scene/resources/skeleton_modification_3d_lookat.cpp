@@ -29,8 +29,8 @@
 /*************************************************************************/
 
 #include "scene/resources/skeleton_modification_3d_lookat.h"
-#include "scene/3d/skeleton_3d.h"
-#include "scene/resources/skeleton_modification_3d.h"
+#include "scene/3d/skeleton.h"
+#include "scene/resources/skeleton_modification_stack_3d.h"
 
 bool SkeletonModification3DLookAt::_set(const StringName &p_path, const Variant &p_value) {
 	if (p_path == "lock_rotation_to_plane") {
@@ -79,7 +79,7 @@ void SkeletonModification3DLookAt::_execute(real_t p_delta) {
 		return;
 	}
 
-	if (target_node_cache.is_null()) {
+	if (target_node_cache == 0) {
 		_print_execution_error(true, "Target cache is out of date. Attempting to update...");
 		update_cache();
 		return;
@@ -89,15 +89,15 @@ void SkeletonModification3DLookAt::_execute(real_t p_delta) {
 		bone_idx = stack->skeleton->find_bone(bone_name);
 	}
 
-	Node3D *target = Object::cast_to<Node3D>(ObjectDB::get_instance(target_node_cache));
+	Spatial *target = Object::cast_to<Spatial>(ObjectDB::get_instance(target_node_cache));
 	if (_print_execution_error(!target || !target->is_inside_tree(), "Target node is not in the scene tree. Cannot execute modification!")) {
 		return;
 	}
 	if (_print_execution_error(bone_idx <= -1, "Bone index is invalid. Cannot execute modification!")) {
 		return;
 	}
-	Transform3D new_bone_trans = stack->skeleton->get_bone_local_pose_override(bone_idx);
-	if (new_bone_trans == Transform3D()) {
+	Transform new_bone_trans = stack->skeleton->get_bone_local_pose_override(bone_idx);
+	if (new_bone_trans == Transform()) {
 		new_bone_trans = stack->skeleton->get_bone_pose(bone_idx);
 	}
 	Vector3 target_pos = stack->skeleton->global_pose_to_local_pose(bone_idx, stack->skeleton->world_transform_to_global_pose(target->get_global_transform())).origin;
@@ -131,8 +131,8 @@ void SkeletonModification3DLookAt::_execute(real_t p_delta) {
 	execution_error_found = false;
 }
 
-void SkeletonModification3DLookAt::_setup_modification(SkeletonModificationStack3D *p_stack) {
-	stack = p_stack;
+void SkeletonModification3DLookAt::_setup_modification(Ref<SkeletonModificationStack3D> p_stack) {
+	stack = p_stack.ptr();
 
 	if (stack != nullptr) {
 		is_setup = true;
@@ -149,7 +149,7 @@ void SkeletonModification3DLookAt::set_bone_name(String p_name) {
 		}
 	}
 	execution_error_found = false;
-	notify_property_list_changed();
+	property_list_changed_notify();
 }
 
 String SkeletonModification3DLookAt::get_bone_name() const {
@@ -170,7 +170,7 @@ void SkeletonModification3DLookAt::set_bone_index(int p_bone_idx) {
 		}
 	}
 	execution_error_found = false;
-	notify_property_list_changed();
+	property_list_changed_notify();
 }
 
 void SkeletonModification3DLookAt::update_cache() {
@@ -219,7 +219,7 @@ bool SkeletonModification3DLookAt::get_lock_rotation_to_plane() const {
 
 void SkeletonModification3DLookAt::set_lock_rotation_to_plane(bool p_lock_rotation) {
 	lock_rotation_to_plane = p_lock_rotation;
-	notify_property_list_changed();
+	property_list_changed_notify();
 }
 
 int SkeletonModification3DLookAt::get_lock_rotation_plane() const {
@@ -250,17 +250,19 @@ void SkeletonModification3DLookAt::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::STRING_NAME, "bone_name"), "set_bone_name", "get_bone_name");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "bone_index"), "set_bone_index", "get_bone_index");
-	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "target_nodepath", PROPERTY_HINT_NODE_PATH_VALID_TYPES, "Node3D"), "set_target_node", "get_target_node");
+	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "target_nodepath", PROPERTY_HINT_NODE_PATH_VALID_TYPES, "Spatial"), "set_target_node", "get_target_node");
 }
 
 SkeletonModification3DLookAt::SkeletonModification3DLookAt() {
 	stack = nullptr;
 	is_setup = false;
-	bone_name = "";
-	bone_idx = -2;
-	additional_rotation = Vector3();
+
+	bone_idx = -1;
+	target_node_cache = 0;
+	additional_rotation = Vector3(1, 0, 0);
 	lock_rotation_to_plane = false;
 	enabled = true;
+	lock_rotation_plane = ROTATION_PLANE_X;
 }
 
 SkeletonModification3DLookAt::~SkeletonModification3DLookAt() {

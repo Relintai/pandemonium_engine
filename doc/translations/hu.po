@@ -47873,12 +47873,12 @@ msgid "Size on the X and Y axes."
 msgstr ""
 
 #: doc/classes/Quaternion.xml
-msgid "Quaternionernion."
+msgid "Quaternion."
 msgstr ""
 
 #: doc/classes/Quaternion.xml
 msgid ""
-"A unit quaternion used for representing 3D rotations. Quaternionernions need to be "
+"A unit quaternion used for representing 3D rotations. Quaternions need to be "
 "normalized to be used for rotation.\n"
 "It is similar to Basis, which implements matrix representation of rotations, "
 "and can be parametrized using both an axis-angle pair or Euler angles. Basis "
@@ -47999,25 +47999,25 @@ msgstr ""
 #: doc/classes/Quaternion.xml
 msgid ""
 "W component of the quaternion (real part).\n"
-"Quaternionernion components should usually not be manipulated directly."
+"Quaternion components should usually not be manipulated directly."
 msgstr ""
 
 #: doc/classes/Quaternion.xml
 msgid ""
 "X component of the quaternion (imaginary [code]i[/code] axis part).\n"
-"Quaternionernion components should usually not be manipulated directly."
+"Quaternion components should usually not be manipulated directly."
 msgstr ""
 
 #: doc/classes/Quaternion.xml
 msgid ""
 "Y component of the quaternion (imaginary [code]j[/code] axis part).\n"
-"Quaternionernion components should usually not be manipulated directly."
+"Quaternion components should usually not be manipulated directly."
 msgstr ""
 
 #: doc/classes/Quaternion.xml
 msgid ""
 "Z component of the quaternion (imaginary [code]k[/code] axis part).\n"
-"Quaternionernion components should usually not be manipulated directly."
+"Quaternion components should usually not be manipulated directly."
 msgstr ""
 
 #: doc/classes/Quaternion.xml

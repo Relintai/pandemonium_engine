@@ -1,3 +1,6 @@
+#ifndef SKELETON_MODIFICATION_3D_STACKHOLDER_H
+#define SKELETON_MODIFICATION_3D_STACKHOLDER_H
+
 /*************************************************************************/
 /*  skeleton_modification_3d_stackholder.h                               */
 /*************************************************************************/
@@ -28,11 +31,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/3d/skeleton_3d.h"
 #include "scene/resources/skeleton_modification_3d.h"
-
-#ifndef SKELETON_MODIFICATION_3D_STACKHOLDER_H
-#define SKELETON_MODIFICATION_3D_STACKHOLDER_H
 
 class SkeletonModification3DStackHolder : public SkeletonModification3D {
 	GDCLASS(SkeletonModification3DStackHolder, SkeletonModification3D);
@@ -46,8 +45,8 @@ protected:
 public:
 	Ref<SkeletonModificationStack3D> held_modification_stack;
 
-	virtual void _execute(real_t p_delta) override;
-	virtual void _setup_modification(SkeletonModificationStack3D *p_stack) override;
+	virtual void _execute(real_t p_delta);
+	virtual void _setup_modification(Ref<SkeletonModificationStack3D> p_stack);
 
 	void set_held_modification_stack(Ref<SkeletonModificationStack3D> p_held_stack);
 	Ref<SkeletonModificationStack3D> get_held_modification_stack() const;

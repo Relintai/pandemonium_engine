@@ -29,8 +29,8 @@
 /*************************************************************************/
 
 #include "scene/resources/skeleton_modification_3d_stackholder.h"
-#include "scene/3d/skeleton_3d.h"
-#include "scene/resources/skeleton_modification_3d.h"
+#include "scene/3d/skeleton.h"
+#include "scene/resources/skeleton_modification_stack_3d.h"
 
 bool SkeletonModification3DStackHolder::_set(const StringName &p_path, const Variant &p_value) {
 	String path = p_path;
@@ -55,16 +55,15 @@ void SkeletonModification3DStackHolder::_get_property_list(List<PropertyInfo> *p
 }
 
 void SkeletonModification3DStackHolder::_execute(real_t p_delta) {
-	ERR_FAIL_COND_MSG(!stack || !is_setup || stack->skeleton == nullptr,
-			"Modification is not setup and therefore cannot execute!");
+	ERR_FAIL_COND_MSG(!stack || !is_setup || stack->skeleton == nullptr, "Modification is not setup and therefore cannot execute!");
 
 	if (held_modification_stack.is_valid()) {
 		held_modification_stack->execute(p_delta, execution_mode);
 	}
 }
 
-void SkeletonModification3DStackHolder::_setup_modification(SkeletonModificationStack3D *p_stack) {
-	stack = p_stack;
+void SkeletonModification3DStackHolder::_setup_modification(Ref<SkeletonModificationStack3D> p_stack) {
+	stack = p_stack.ptr();
 
 	if (stack != nullptr) {
 		is_setup = true;

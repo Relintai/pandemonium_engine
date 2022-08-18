@@ -87,7 +87,7 @@ private:
 		Key() { transition = 1; }
 	};
 
-	// transform key holds either Vector3 or Quaternionernion
+	// transform key holds either Vector3 or Quaternion
 	template <class T>
 	struct TKey : public Key {
 		T value;

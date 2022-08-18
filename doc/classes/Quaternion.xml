@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="Quaternion" version="3.5">
 	<brief_description>
-		Quaternionernion.
+		Quaternion.
 	</brief_description>
 	<description>
-		A unit quaternion used for representing 3D rotations. Quaternionernions need to be normalized to be used for rotation.
+		A unit quaternion used for representing 3D rotations. Quaternions need to be normalized to be used for rotation.
 		It is similar to Basis, which implements matrix representation of rotations, and can be parametrized using both an axis-angle pair or Euler angles. Basis stores rotation, scale, and shearing, while Quaternion only stores rotation.
 		Due to its compactness and the way it is stored in memory, certain operations (obtaining axis-angle and performing SLERP, in particular) are more efficient and robust against floating-point errors.
 	</description>
@@ -71,7 +71,7 @@
 			</description>
 		</method>
 		<method name="exp" qualifiers="const">
-			<return type="Quaternionernion" />
+			<return type="Quaternion" />
 			<description>
 			</description>
 		</method>
@@ -113,7 +113,7 @@
 			</description>
 		</method>
 		<method name="log" qualifiers="const">
-			<return type="Quaternionernion" />
+			<return type="Quaternion" />
 			<description>
 			</description>
 		</method>
@@ -164,19 +164,19 @@
 	<members>
 		<member name="w" type="float" setter="" getter="" default="1.0">
 			W component of the quaternion (real part).
-			Quaternionernion components should usually not be manipulated directly.
+			Quaternion components should usually not be manipulated directly.
 		</member>
 		<member name="x" type="float" setter="" getter="" default="0.0">
 			X component of the quaternion (imaginary [code]i[/code] axis part).
-			Quaternionernion components should usually not be manipulated directly.
+			Quaternion components should usually not be manipulated directly.
 		</member>
 		<member name="y" type="float" setter="" getter="" default="0.0">
 			Y component of the quaternion (imaginary [code]j[/code] axis part).
-			Quaternionernion components should usually not be manipulated directly.
+			Quaternion components should usually not be manipulated directly.
 		</member>
 		<member name="z" type="float" setter="" getter="" default="0.0">
 			Z component of the quaternion (imaginary [code]k[/code] axis part).
-			Quaternionernion components should usually not be manipulated directly.
+			Quaternion components should usually not be manipulated directly.
 		</member>
 	</members>
 	<constants>

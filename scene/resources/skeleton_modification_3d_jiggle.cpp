@@ -29,8 +29,10 @@
 /*************************************************************************/
 
 #include "scene/resources/skeleton_modification_3d_jiggle.h"
-#include "scene/3d/skeleton_3d.h"
-#include "scene/resources/skeleton_modification_3d.h"
+#include "scene/3d/skeleton.h"
+#include "scene/resources/skeleton_modification_stack_3d.h"
+#include "servers/physics_server.h"
+#include "scene/resources/world.h"
 
 bool SkeletonModification3DJiggle::_set(const StringName &p_path, const Variant &p_value) {
 	String path = p_path;
@@ -123,13 +125,13 @@ void SkeletonModification3DJiggle::_get_property_list(List<PropertyInfo> *p_list
 
 		p_list->push_back(PropertyInfo(Variant::STRING_NAME, base_string + "bone_name", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
 		p_list->push_back(PropertyInfo(Variant::INT, base_string + "bone_index", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
-		p_list->push_back(PropertyInfo(Variant::FLOAT, base_string + "roll", PROPERTY_HINT_RANGE, "-360,360,0.01", PROPERTY_USAGE_DEFAULT));
+		p_list->push_back(PropertyInfo(Variant::REAL, base_string + "roll", PROPERTY_HINT_RANGE, "-360,360,0.01", PROPERTY_USAGE_DEFAULT));
 		p_list->push_back(PropertyInfo(Variant::BOOL, base_string + "override_defaults", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
 
 		if (jiggle_data_chain[i].override_defaults) {
-			p_list->push_back(PropertyInfo(Variant::FLOAT, base_string + "stiffness", PROPERTY_HINT_RANGE, "0, 1000, 0.01", PROPERTY_USAGE_DEFAULT));
-			p_list->push_back(PropertyInfo(Variant::FLOAT, base_string + "mass", PROPERTY_HINT_RANGE, "0, 1000, 0.01", PROPERTY_USAGE_DEFAULT));
-			p_list->push_back(PropertyInfo(Variant::FLOAT, base_string + "damping", PROPERTY_HINT_RANGE, "0, 1, 0.01", PROPERTY_USAGE_DEFAULT));
+			p_list->push_back(PropertyInfo(Variant::REAL, base_string + "stiffness", PROPERTY_HINT_RANGE, "0, 1000, 0.01", PROPERTY_USAGE_DEFAULT));
+			p_list->push_back(PropertyInfo(Variant::REAL, base_string + "mass", PROPERTY_HINT_RANGE, "0, 1000, 0.01", PROPERTY_USAGE_DEFAULT));
+			p_list->push_back(PropertyInfo(Variant::REAL, base_string + "damping", PROPERTY_HINT_RANGE, "0, 1, 0.01", PROPERTY_USAGE_DEFAULT));
 			p_list->push_back(PropertyInfo(Variant::BOOL, base_string + "use_gravity", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
 			if (jiggle_data_chain[i].use_gravity) {
 				p_list->push_back(PropertyInfo(Variant::VECTOR3, base_string + "gravity", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
@@ -144,12 +146,12 @@ void SkeletonModification3DJiggle::_execute(real_t p_delta) {
 	if (!enabled) {
 		return;
 	}
-	if (target_node_cache.is_null()) {
+	if (target_node_cache == 0) {
 		_print_execution_error(true, "Target cache is out of date. Attempting to update...");
 		update_cache();
 		return;
 	}
-	Node3D *target = Object::cast_to<Node3D>(ObjectDB::get_instance(target_node_cache));
+	Spatial *target = Object::cast_to<Spatial>(ObjectDB::get_instance(target_node_cache));
 	_print_execution_error(!target || !target->is_inside_tree(), "Target node is not in the scene tree. Cannot execute modification!");
 
 	for (uint32_t i = 0; i < jiggle_data_chain.size(); i++) {
@@ -159,7 +161,7 @@ void SkeletonModification3DJiggle::_execute(real_t p_delta) {
 	execution_error_found = false;
 }
 
-void SkeletonModification3DJiggle::_execute_jiggle_joint(int p_joint_idx, Node3D *p_target, real_t p_delta) {
+void SkeletonModification3DJiggle::_execute_jiggle_joint(int p_joint_idx, Spatial *p_target, real_t p_delta) {
 	// Adopted from: https://wiki.unity3d.com/index.php/JiggleBone
 	// With modifications by TwistedTwigleg.
 
@@ -172,12 +174,12 @@ void SkeletonModification3DJiggle::_execute_jiggle_joint(int p_joint_idx, Node3D
 		return;
 	}
 
-	Transform3D bone_local_pos = stack->skeleton->get_bone_local_pose_override(jiggle_data_chain[p_joint_idx].bone_idx);
-	if (bone_local_pos == Transform3D()) {
+	Transform bone_local_pos = stack->skeleton->get_bone_local_pose_override(jiggle_data_chain[p_joint_idx].bone_idx);
+	if (bone_local_pos == Transform()) {
 		bone_local_pos = stack->skeleton->get_bone_pose(jiggle_data_chain[p_joint_idx].bone_idx);
 	}
 
-	Transform3D new_bone_trans = stack->skeleton->local_pose_to_global_pose(jiggle_data_chain[p_joint_idx].bone_idx, bone_local_pos);
+	Transform new_bone_trans = stack->skeleton->local_pose_to_global_pose(jiggle_data_chain[p_joint_idx].bone_idx, bone_local_pos);
 	Vector3 target_position = stack->skeleton->world_transform_to_global_pose(p_target->get_global_transform()).origin;
 
 	jiggle_data_chain[p_joint_idx].force = (target_position - jiggle_data_chain[p_joint_idx].dynamic_position) * jiggle_data_chain[p_joint_idx].stiffness * p_delta;
@@ -197,21 +199,16 @@ void SkeletonModification3DJiggle::_execute_jiggle_joint(int p_joint_idx, Node3D
 	// Collision detection/response
 	if (use_colliders) {
 		if (execution_mode == SkeletonModificationStack3D::EXECUTION_MODE::execution_mode_physics_process) {
-			Ref<World3D> world_3d = stack->skeleton->get_world_3d();
+			Ref<World> world_3d = stack->skeleton->get_world();
 			ERR_FAIL_COND(world_3d.is_null());
-			PhysicsDirectSpaceState3D *space_state = PhysicsServer3D::get_singleton()->space_get_direct_state(world_3d->get_space());
-			PhysicsDirectSpaceState3D::RayResult ray_result;
+			PhysicsDirectSpaceState *space_state = PhysicsServer::get_singleton()->space_get_direct_state(world_3d->get_space());
+			PhysicsDirectSpaceState::RayResult ray_result;
 
 			// Convert to world transforms, which is what the physics server needs
-			Transform3D new_bone_trans_world = stack->skeleton->global_pose_to_world_transform(new_bone_trans);
-			Transform3D dynamic_position_world = stack->skeleton->global_pose_to_world_transform(Transform3D(Basis(), jiggle_data_chain[p_joint_idx].dynamic_position));
+			Transform new_bone_trans_world = stack->skeleton->global_pose_to_world_transform(new_bone_trans);
+			Transform dynamic_position_world = stack->skeleton->global_pose_to_world_transform(Transform(Basis(), jiggle_data_chain[p_joint_idx].dynamic_position));
 
-			PhysicsDirectSpaceState3D::RayParameters ray_params;
-			ray_params.from = new_bone_trans_world.origin;
-			ray_params.to = dynamic_position_world.get_origin();
-			ray_params.collision_mask = collision_mask;
-
-			bool ray_hit = space_state->intersect_ray(ray_params, ray_result);
+			bool ray_hit = space_state->intersect_ray(new_bone_trans_world.origin, dynamic_position_world.get_origin(), ray_result, Set<RID>(), collision_mask);
 
 			if (ray_hit) {
 				jiggle_data_chain[p_joint_idx].dynamic_position = jiggle_data_chain[p_joint_idx].last_noncollision_position;
@@ -253,8 +250,8 @@ void SkeletonModification3DJiggle::_update_jiggle_joint_data() {
 	}
 }
 
-void SkeletonModification3DJiggle::_setup_modification(SkeletonModificationStack3D *p_stack) {
-	stack = p_stack;
+void SkeletonModification3DJiggle::_setup_modification(Ref<SkeletonModificationStack3D> p_stack) {
+	stack = p_stack.ptr();
 
 	if (stack) {
 		is_setup = true;
@@ -356,7 +353,7 @@ Vector3 SkeletonModification3DJiggle::get_gravity() const {
 
 void SkeletonModification3DJiggle::set_use_colliders(bool p_use_collider) {
 	use_colliders = p_use_collider;
-	notify_property_list_changed();
+	property_list_changed_notify();
 }
 
 bool SkeletonModification3DJiggle::get_use_colliders() const {
@@ -380,7 +377,7 @@ void SkeletonModification3DJiggle::set_jiggle_data_chain_length(int p_length) {
 	ERR_FAIL_COND(p_length < 0);
 	jiggle_data_chain.resize(p_length);
 	execution_error_found = false;
-	notify_property_list_changed();
+	property_list_changed_notify();
 }
 
 void SkeletonModification3DJiggle::set_jiggle_joint_bone_name(int p_joint_idx, String p_name) {
@@ -392,7 +389,7 @@ void SkeletonModification3DJiggle::set_jiggle_joint_bone_name(int p_joint_idx, S
 		jiggle_data_chain[p_joint_idx].bone_idx = stack->skeleton->find_bone(p_name);
 	}
 	execution_error_found = false;
-	notify_property_list_changed();
+	property_list_changed_notify();
 }
 
 String SkeletonModification3DJiggle::get_jiggle_joint_bone_name(int p_joint_idx) const {
@@ -419,7 +416,7 @@ void SkeletonModification3DJiggle::set_jiggle_joint_bone_index(int p_joint_idx, 
 		}
 	}
 	execution_error_found = false;
-	notify_property_list_changed();
+	property_list_changed_notify();
 }
 
 void SkeletonModification3DJiggle::set_jiggle_joint_override(int p_joint_idx, bool p_override) {
@@ -427,7 +424,7 @@ void SkeletonModification3DJiggle::set_jiggle_joint_override(int p_joint_idx, bo
 	ERR_FAIL_INDEX(p_joint_idx, bone_chain_size);
 	jiggle_data_chain[p_joint_idx].override_defaults = p_override;
 	_update_jiggle_joint_data();
-	notify_property_list_changed();
+	property_list_changed_notify();
 }
 
 bool SkeletonModification3DJiggle::get_jiggle_joint_override(int p_joint_idx) const {
@@ -479,7 +476,7 @@ void SkeletonModification3DJiggle::set_jiggle_joint_use_gravity(int p_joint_idx,
 	const int bone_chain_size = jiggle_data_chain.size();
 	ERR_FAIL_INDEX(p_joint_idx, bone_chain_size);
 	jiggle_data_chain[p_joint_idx].use_gravity = p_use_gravity;
-	notify_property_list_changed();
+	property_list_changed_notify();
 }
 
 bool SkeletonModification3DJiggle::get_jiggle_joint_use_gravity(int p_joint_idx) const {
@@ -555,12 +552,12 @@ void SkeletonModification3DJiggle::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_jiggle_joint_roll", "joint_idx", "roll"), &SkeletonModification3DJiggle::set_jiggle_joint_roll);
 	ClassDB::bind_method(D_METHOD("get_jiggle_joint_roll", "joint_idx"), &SkeletonModification3DJiggle::get_jiggle_joint_roll);
 
-	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "target_nodepath", PROPERTY_HINT_NODE_PATH_VALID_TYPES, "Node3D"), "set_target_node", "get_target_node");
+	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "target_nodepath", PROPERTY_HINT_NODE_PATH_VALID_TYPES, "Spatial"), "set_target_node", "get_target_node");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "jiggle_data_chain_length", PROPERTY_HINT_RANGE, "0,100,1"), "set_jiggle_data_chain_length", "get_jiggle_data_chain_length");
 	ADD_GROUP("Default Joint Settings", "");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "stiffness"), "set_stiffness", "get_stiffness");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "mass"), "set_mass", "get_mass");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "damping", PROPERTY_HINT_RANGE, "0, 1, 0.01"), "set_damping", "get_damping");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "stiffness"), "set_stiffness", "get_stiffness");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "mass"), "set_mass", "get_mass");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "damping", PROPERTY_HINT_RANGE, "0, 1, 0.01"), "set_damping", "get_damping");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_gravity"), "set_use_gravity", "get_use_gravity");
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "gravity"), "set_gravity", "get_gravity");
 	ADD_GROUP("", "");
@@ -569,13 +566,16 @@ void SkeletonModification3DJiggle::_bind_methods() {
 SkeletonModification3DJiggle::SkeletonModification3DJiggle() {
 	stack = nullptr;
 	is_setup = false;
-	jiggle_data_chain = Vector<Jiggle_Joint_Data>();
+	target_node_cache = 0;
 	stiffness = 3;
 	mass = 0.75;
 	damping = 0.75;
 	use_gravity = false;
 	gravity = Vector3(0, -6.0, 0);
 	enabled = true;
+
+	use_colliders = false;
+	collision_mask = 1;
 }
 
 SkeletonModification3DJiggle::~SkeletonModification3DJiggle() {

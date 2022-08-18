@@ -29,8 +29,8 @@
 /*************************************************************************/
 
 #include "scene/resources/skeleton_modification_3d_twoboneik.h"
-#include "scene/3d/skeleton_3d.h"
-#include "scene/resources/skeleton_modification_3d.h"
+#include "scene/3d/skeleton.h"
+#include "scene/resources/skeleton_modification_stack_3d.h"
 
 bool SkeletonModification3DTwoBoneIK::_set(const StringName &p_path, const Variant &p_value) {
 	String path = p_path;
@@ -103,32 +103,31 @@ bool SkeletonModification3DTwoBoneIK::_get(const StringName &p_path, Variant &r_
 void SkeletonModification3DTwoBoneIK::_get_property_list(List<PropertyInfo> *p_list) const {
 	p_list->push_back(PropertyInfo(Variant::BOOL, "use_tip_node", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
 	if (use_tip_node) {
-		p_list->push_back(PropertyInfo(Variant::NODE_PATH, "tip_node", PROPERTY_HINT_NODE_PATH_VALID_TYPES, "Node3D", PROPERTY_USAGE_DEFAULT));
+		p_list->push_back(PropertyInfo(Variant::NODE_PATH, "tip_node", PROPERTY_HINT_NODE_PATH_VALID_TYPES, "Spatial", PROPERTY_USAGE_DEFAULT));
 	}
 
 	p_list->push_back(PropertyInfo(Variant::BOOL, "auto_calculate_joint_length", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
 	if (!auto_calculate_joint_length) {
-		p_list->push_back(PropertyInfo(Variant::FLOAT, "joint_one_length", PROPERTY_HINT_RANGE, "-1, 10000, 0.001", PROPERTY_USAGE_DEFAULT));
-		p_list->push_back(PropertyInfo(Variant::FLOAT, "joint_two_length", PROPERTY_HINT_RANGE, "-1, 10000, 0.001", PROPERTY_USAGE_DEFAULT));
+		p_list->push_back(PropertyInfo(Variant::REAL, "joint_one_length", PROPERTY_HINT_RANGE, "-1, 10000, 0.001", PROPERTY_USAGE_DEFAULT));
+		p_list->push_back(PropertyInfo(Variant::REAL, "joint_two_length", PROPERTY_HINT_RANGE, "-1, 10000, 0.001", PROPERTY_USAGE_DEFAULT));
 	}
 
 	p_list->push_back(PropertyInfo(Variant::BOOL, "use_pole_node", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
 	if (use_pole_node) {
-		p_list->push_back(PropertyInfo(Variant::NODE_PATH, "pole_node", PROPERTY_HINT_NODE_PATH_VALID_TYPES, "Node3D", PROPERTY_USAGE_DEFAULT));
+		p_list->push_back(PropertyInfo(Variant::NODE_PATH, "pole_node", PROPERTY_HINT_NODE_PATH_VALID_TYPES, "Spatial", PROPERTY_USAGE_DEFAULT));
 	}
 
 	p_list->push_back(PropertyInfo(Variant::STRING_NAME, "joint_one/bone_name", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
 	p_list->push_back(PropertyInfo(Variant::INT, "joint_one/bone_idx", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
-	p_list->push_back(PropertyInfo(Variant::FLOAT, "joint_one/roll", PROPERTY_HINT_RANGE, "-360, 360, 0.01", PROPERTY_USAGE_DEFAULT));
+	p_list->push_back(PropertyInfo(Variant::REAL, "joint_one/roll", PROPERTY_HINT_RANGE, "-360, 360, 0.01", PROPERTY_USAGE_DEFAULT));
 
 	p_list->push_back(PropertyInfo(Variant::STRING_NAME, "joint_two/bone_name", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
 	p_list->push_back(PropertyInfo(Variant::INT, "joint_two/bone_idx", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT));
-	p_list->push_back(PropertyInfo(Variant::FLOAT, "joint_two/roll", PROPERTY_HINT_RANGE, "-360, 360, 0.01", PROPERTY_USAGE_DEFAULT));
+	p_list->push_back(PropertyInfo(Variant::REAL, "joint_two/roll", PROPERTY_HINT_RANGE, "-360, 360, 0.01", PROPERTY_USAGE_DEFAULT));
 }
 
 void SkeletonModification3DTwoBoneIK::_execute(real_t p_delta) {
-	ERR_FAIL_COND_MSG(!stack || !is_setup || stack->skeleton == nullptr,
-			"Modification is not setup and therefore cannot execute!");
+	ERR_FAIL_COND_MSG(!stack || !is_setup || stack->skeleton == nullptr, "Modification is not setup and therefore cannot execute!");
 
 	if (!enabled) {
 		return;
@@ -139,7 +138,7 @@ void SkeletonModification3DTwoBoneIK::_execute(real_t p_delta) {
 		return;
 	}
 
-	if (target_node_cache.is_null()) {
+	if (target_node_cache == 0) {
 		_print_execution_error(true, "Target cache is out of date. Attempting to update...");
 		update_cache_target();
 		return;
@@ -154,36 +153,39 @@ void SkeletonModification3DTwoBoneIK::_execute(real_t p_delta) {
 	// http://theorangeduck.com/page/simple-two-joint
 	// https://www.alanzucconi.com/2018/05/02/ik-2d-2/
 	// With modifications by TwistedTwigleg
-	Node3D *target = Object::cast_to<Node3D>(ObjectDB::get_instance(target_node_cache));
+	Spatial *target = Object::cast_to<Spatial>(ObjectDB::get_instance(target_node_cache));
 	if (_print_execution_error(!target || !target->is_inside_tree(), "Target node is not in the scene tree. Cannot execute modification!")) {
 		return;
 	}
-	Transform3D target_trans = stack->skeleton->world_transform_to_global_pose(target->get_global_transform());
 
-	Transform3D bone_one_trans;
-	Transform3D bone_two_trans;
+	Transform target_trans = stack->skeleton->world_transform_to_global_pose(target->get_global_transform());
+
+	Transform bone_one_trans;
+	Transform bone_two_trans;
 
 	// Make the first joint look at the pole, and the second look at the target. That way, the
 	// TwoBoneIK solver has to really only handle extension/contraction, which should make it align with the pole.
 	if (use_pole_node) {
-		if (pole_node_cache.is_null()) {
+		if (pole_node_cache == 0) {
 			_print_execution_error(true, "Pole cache is out of date. Attempting to update...");
 			update_cache_pole();
 			return;
 		}
 
-		Node3D *pole = Object::cast_to<Node3D>(ObjectDB::get_instance(pole_node_cache));
+		Spatial *pole = Object::cast_to<Spatial>(ObjectDB::get_instance(pole_node_cache));
 		if (_print_execution_error(!pole || !pole->is_inside_tree(), "Pole node is not in the scene tree. Cannot execute modification!")) {
 			return;
 		}
-		Transform3D pole_trans = stack->skeleton->world_transform_to_global_pose(pole->get_global_transform());
 
-		Transform3D bone_one_local_pos = stack->skeleton->get_bone_local_pose_override(joint_one_bone_idx);
-		if (bone_one_local_pos == Transform3D()) {
+		Transform pole_trans = stack->skeleton->world_transform_to_global_pose(pole->get_global_transform());
+
+		Transform bone_one_local_pos = stack->skeleton->get_bone_local_pose_override(joint_one_bone_idx);
+		if (bone_one_local_pos == Transform()) {
 			bone_one_local_pos = stack->skeleton->get_bone_pose(joint_one_bone_idx);
 		}
-		Transform3D bone_two_local_pos = stack->skeleton->get_bone_local_pose_override(joint_two_bone_idx);
-		if (bone_two_local_pos == Transform3D()) {
+
+		Transform bone_two_local_pos = stack->skeleton->get_bone_local_pose_override(joint_two_bone_idx);
+		if (bone_two_local_pos == Transform()) {
 			bone_two_local_pos = stack->skeleton->get_bone_pose(joint_two_bone_idx);
 		}
 
@@ -203,12 +205,12 @@ void SkeletonModification3DTwoBoneIK::_execute(real_t p_delta) {
 		stack->skeleton->set_bone_local_pose_override(joint_two_bone_idx, stack->skeleton->global_pose_to_local_pose(joint_two_bone_idx, bone_two_trans), stack->strength, true);
 		stack->skeleton->force_update_bone_children_transforms(joint_two_bone_idx);
 	} else {
-		Transform3D bone_one_local_pos = stack->skeleton->get_bone_local_pose_override(joint_one_bone_idx);
-		if (bone_one_local_pos == Transform3D()) {
+		Transform bone_one_local_pos = stack->skeleton->get_bone_local_pose_override(joint_one_bone_idx);
+		if (bone_one_local_pos == Transform()) {
 			bone_one_local_pos = stack->skeleton->get_bone_pose(joint_one_bone_idx);
 		}
-		Transform3D bone_two_local_pos = stack->skeleton->get_bone_local_pose_override(joint_two_bone_idx);
-		if (bone_two_local_pos == Transform3D()) {
+		Transform bone_two_local_pos = stack->skeleton->get_bone_local_pose_override(joint_two_bone_idx);
+		if (bone_two_local_pos == Transform()) {
 			bone_two_local_pos = stack->skeleton->get_bone_pose(joint_two_bone_idx);
 		}
 
@@ -216,17 +218,19 @@ void SkeletonModification3DTwoBoneIK::_execute(real_t p_delta) {
 		bone_two_trans = stack->skeleton->local_pose_to_global_pose(joint_two_bone_idx, bone_two_local_pos);
 	}
 
-	Transform3D bone_two_tip_trans;
+	Transform bone_two_tip_trans;
 	if (use_tip_node) {
-		if (tip_node_cache.is_null()) {
+		if (tip_node_cache == 0) {
 			_print_execution_error(true, "Tip cache is out of date. Attempting to update...");
 			update_cache_tip();
 			return;
 		}
-		Node3D *tip = Object::cast_to<Node3D>(ObjectDB::get_instance(tip_node_cache));
+
+		Spatial *tip = Object::cast_to<Spatial>(ObjectDB::get_instance(tip_node_cache));
 		if (_print_execution_error(!tip || !tip->is_inside_tree(), "Tip node is not in the scene tree. Cannot execute modification!")) {
 			return;
 		}
+
 		bone_two_tip_trans = stack->skeleton->world_transform_to_global_pose(tip->get_global_transform());
 	} else {
 		stack->skeleton->update_bone_rest_forward_vector(joint_two_bone_idx);
@@ -258,9 +262,9 @@ void SkeletonModification3DTwoBoneIK::_execute(real_t p_delta) {
 	Vector3 axis_1 = bone_one_trans.origin.direction_to(bone_two_tip_trans.origin).cross(bone_one_trans.origin.direction_to(target_trans.origin));
 
 	// Make a quaternion with the delta rotation needed to rotate the first joint into alignment and apply it to the transform.
-	Quaternionernion bone_one_quat = bone_one_trans.basis.get_rotation_quaternion();
-	Quaternionernion rot_0 = Quaternionernion(bone_one_quat.inverse().xform(axis_0).normalized(), (ac_ab_1 - ac_ab_0));
-	Quaternionernion rot_2 = Quaternionernion(bone_one_quat.inverse().xform(axis_1).normalized(), ac_at_0);
+	Quaternion bone_one_quat = bone_one_trans.basis.get_rotation_quaternion();
+	Quaternion rot_0 = Quaternion(bone_one_quat.inverse().xform(axis_0).normalized(), (ac_ab_1 - ac_ab_0));
+	Quaternion rot_2 = Quaternion(bone_one_quat.inverse().xform(axis_1).normalized(), ac_at_0);
 	bone_one_trans.basis.set_quaternion(bone_one_quat * (rot_0 * rot_2));
 
 	stack->skeleton->update_bone_rest_forward_vector(joint_one_bone_idx);
@@ -290,8 +294,8 @@ void SkeletonModification3DTwoBoneIK::_execute(real_t p_delta) {
 		// alignment, and then apply it to the second joint.
 		real_t ba_bc_0 = Math::acos(CLAMP(bone_two_trans.origin.direction_to(bone_one_trans.origin).dot(bone_two_trans.origin.direction_to(bone_two_tip_trans.origin)), -1, 1));
 		real_t ba_bc_1 = Math::acos(CLAMP((sqr_three_length - sqr_one_length - sqr_two_length) / (-2.0 * joint_one_length * joint_two_length), -1, 1));
-		Quaternionernion bone_two_quat = bone_two_trans.basis.get_rotation_quaternion();
-		Quaternionernion rot_1 = Quaternionernion(bone_two_quat.inverse().xform(axis_0).normalized(), (ba_bc_1 - ba_bc_0));
+		Quaternion bone_two_quat = bone_two_trans.basis.get_rotation_quaternion();
+		Quaternion rot_1 = Quaternion(bone_two_quat.inverse().xform(axis_0).normalized(), (ba_bc_1 - ba_bc_0));
 		bone_two_trans.basis.set_quaternion(bone_two_quat * rot_1);
 
 		stack->skeleton->update_bone_rest_forward_vector(joint_two_bone_idx);
@@ -304,8 +308,8 @@ void SkeletonModification3DTwoBoneIK::_execute(real_t p_delta) {
 	}
 }
 
-void SkeletonModification3DTwoBoneIK::_setup_modification(SkeletonModificationStack3D *p_stack) {
-	stack = p_stack;
+void SkeletonModification3DTwoBoneIK::_setup_modification(Ref<SkeletonModificationStack3D> p_stack) {
+	stack = p_stack.ptr();
 
 	if (stack != nullptr) {
 		is_setup = true;
@@ -395,7 +399,7 @@ NodePath SkeletonModification3DTwoBoneIK::get_target_node() const {
 
 void SkeletonModification3DTwoBoneIK::set_use_tip_node(const bool p_use_tip_node) {
 	use_tip_node = p_use_tip_node;
-	notify_property_list_changed();
+	property_list_changed_notify();
 }
 
 bool SkeletonModification3DTwoBoneIK::get_use_tip_node() const {
@@ -413,7 +417,7 @@ NodePath SkeletonModification3DTwoBoneIK::get_tip_node() const {
 
 void SkeletonModification3DTwoBoneIK::set_use_pole_node(const bool p_use_pole_node) {
 	use_pole_node = p_use_pole_node;
-	notify_property_list_changed();
+	property_list_changed_notify();
 }
 
 bool SkeletonModification3DTwoBoneIK::get_use_pole_node() const {
@@ -434,7 +438,7 @@ void SkeletonModification3DTwoBoneIK::set_auto_calculate_joint_length(bool p_cal
 	if (p_calculate) {
 		calculate_joint_lengths();
 	}
-	notify_property_list_changed();
+	property_list_changed_notify();
 }
 
 bool SkeletonModification3DTwoBoneIK::get_auto_calculate_joint_length() const {
@@ -450,20 +454,20 @@ void SkeletonModification3DTwoBoneIK::calculate_joint_lengths() {
 	ERR_FAIL_COND_MSG(joint_one_bone_idx <= -1 || joint_two_bone_idx <= -1,
 			"One of the bones in the TwoBoneIK modification are not set! Cannot calculate joint lengths!");
 
-	Transform3D bone_one_rest_trans = stack->skeleton->get_bone_global_pose(joint_one_bone_idx);
-	Transform3D bone_two_rest_trans = stack->skeleton->get_bone_global_pose(joint_two_bone_idx);
+	Transform bone_one_rest_trans = stack->skeleton->get_bone_global_pose(joint_one_bone_idx);
+	Transform bone_two_rest_trans = stack->skeleton->get_bone_global_pose(joint_two_bone_idx);
 
 	joint_one_length = bone_one_rest_trans.origin.distance_to(bone_two_rest_trans.origin);
 
 	if (use_tip_node) {
-		if (tip_node_cache.is_null()) {
+		if (tip_node_cache == 0) {
 			update_cache_tip();
 			WARN_PRINT("Tip cache is out of date. Updating...");
 		}
 
-		Node3D *tip = Object::cast_to<Node3D>(ObjectDB::get_instance(tip_node_cache));
+		Spatial *tip = Object::cast_to<Spatial>(ObjectDB::get_instance(tip_node_cache));
 		if (tip) {
-			Transform3D bone_tip_trans = stack->skeleton->world_transform_to_global_pose(tip->get_global_transform());
+			Transform bone_tip_trans = stack->skeleton->world_transform_to_global_pose(tip->get_global_transform());
 			joint_two_length = bone_two_rest_trans.origin.distance_to(bone_tip_trans.origin);
 		}
 	} else {
@@ -490,7 +494,7 @@ void SkeletonModification3DTwoBoneIK::set_joint_one_bone_name(String p_bone_name
 		joint_one_bone_idx = stack->skeleton->find_bone(p_bone_name);
 	}
 	execution_error_found = false;
-	notify_property_list_changed();
+	property_list_changed_notify();
 }
 
 String SkeletonModification3DTwoBoneIK::get_joint_one_bone_name() const {
@@ -503,7 +507,7 @@ void SkeletonModification3DTwoBoneIK::set_joint_one_bone_idx(int p_bone_idx) {
 		joint_one_bone_name = stack->skeleton->get_bone_name(p_bone_idx);
 	}
 	execution_error_found = false;
-	notify_property_list_changed();
+	property_list_changed_notify();
 }
 
 int SkeletonModification3DTwoBoneIK::get_joint_one_bone_idx() const {
@@ -524,7 +528,7 @@ void SkeletonModification3DTwoBoneIK::set_joint_two_bone_name(String p_bone_name
 		joint_two_bone_idx = stack->skeleton->find_bone(p_bone_name);
 	}
 	execution_error_found = false;
-	notify_property_list_changed();
+	property_list_changed_notify();
 }
 
 String SkeletonModification3DTwoBoneIK::get_joint_two_bone_name() const {
@@ -537,7 +541,7 @@ void SkeletonModification3DTwoBoneIK::set_joint_two_bone_idx(int p_bone_idx) {
 		joint_two_bone_name = stack->skeleton->get_bone_name(p_bone_idx);
 	}
 	execution_error_found = false;
-	notify_property_list_changed();
+	property_list_changed_notify();
 }
 
 int SkeletonModification3DTwoBoneIK::get_joint_two_bone_idx() const {
@@ -604,13 +608,31 @@ void SkeletonModification3DTwoBoneIK::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_joint_two_roll", "roll"), &SkeletonModification3DTwoBoneIK::set_joint_two_roll);
 	ClassDB::bind_method(D_METHOD("get_joint_two_roll"), &SkeletonModification3DTwoBoneIK::get_joint_two_roll);
 
-	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "target_nodepath", PROPERTY_HINT_NODE_PATH_VALID_TYPES, "Node3D"), "set_target_node", "get_target_node");
+	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "target_nodepath", PROPERTY_HINT_NODE_PATH_VALID_TYPES, "Spatial"), "set_target_node", "get_target_node");
 	ADD_GROUP("", "");
 }
 
 SkeletonModification3DTwoBoneIK::SkeletonModification3DTwoBoneIK() {
 	stack = nullptr;
 	is_setup = false;
+
+	target_node_cache = 0;
+
+	use_tip_node = false;
+	tip_node_cache = 0;
+
+	use_pole_node = false;
+	pole_node_cache = 0;
+
+	joint_one_bone_idx = -1;
+	joint_two_bone_idx = -1;
+
+	auto_calculate_joint_length = false;
+	joint_one_length = -1;
+	joint_two_length = -1;
+
+	joint_one_roll = 0;
+	joint_two_roll = 0;
 }
 
 SkeletonModification3DTwoBoneIK::~SkeletonModification3DTwoBoneIK() {

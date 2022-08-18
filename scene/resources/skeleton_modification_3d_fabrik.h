@@ -1,3 +1,6 @@
+#ifndef SKELETON_MODIFICATION_3D_FABRIK_H
+#define SKELETON_MODIFICATION_3D_FABRIK_H
+
 /*************************************************************************/
 /*  skeleton_modification_3d_fabrik.h                                    */
 /*************************************************************************/
@@ -28,48 +31,56 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/templates/local_vector.h"
-#include "scene/3d/skeleton_3d.h"
+#include "core/containers/local_vector.h"
 #include "scene/resources/skeleton_modification_3d.h"
-
-#ifndef SKELETON_MODIFICATION_3D_FABRIK_H
-#define SKELETON_MODIFICATION_3D_FABRIK_H
 
 class SkeletonModification3DFABRIK : public SkeletonModification3D {
 	GDCLASS(SkeletonModification3DFABRIK, SkeletonModification3D);
 
 private:
 	struct FABRIK_Joint_Data {
-		String bone_name = "";
-		int bone_idx = -1;
-		real_t length = -1;
-		Vector3 magnet_position = Vector3(0, 0, 0);
+		String bone_name;
+		int bone_idx;
+		real_t length;
+		Vector3 magnet_position;
 
-		bool auto_calculate_length = true;
-		bool use_tip_node = false;
-		NodePath tip_node = NodePath();
+		bool auto_calculate_length;
+		bool use_tip_node;
+		NodePath tip_node;
 		ObjectID tip_node_cache;
 
-		bool use_target_basis = false;
-		real_t roll = 0;
+		bool use_target_basis;
+		real_t roll;
+
+		FABRIK_Joint_Data() {
+			bone_idx = -1;
+			length = -1;
+
+			auto_calculate_length = true;
+			use_tip_node = false;
+			tip_node_cache = 0;
+
+			use_target_basis = false;
+			roll = 0;
+		}
 	};
 
 	LocalVector<FABRIK_Joint_Data> fabrik_data_chain;
-	LocalVector<Transform3D> fabrik_transforms;
+	LocalVector<Transform> fabrik_transforms;
 
 	NodePath target_node;
 	ObjectID target_node_cache;
 
-	real_t chain_tolerance = 0.01;
-	int chain_max_iterations = 10;
-	int chain_iterations = 0;
+	real_t chain_tolerance;
+	int chain_max_iterations;
+	int chain_iterations;
 
 	void update_target_cache();
 	void update_joint_tip_cache(int p_joint_idx);
 
-	int final_joint_idx = 0;
-	Transform3D target_global_pose = Transform3D();
-	Transform3D origin_global_pose = Transform3D();
+	int final_joint_idx;
+	Transform target_global_pose;
+	Transform origin_global_pose;
 
 	void chain_backwards();
 	void chain_forwards();
@@ -82,8 +93,8 @@ protected:
 	void _get_property_list(List<PropertyInfo> *p_list) const;
 
 public:
-	virtual void _execute(real_t p_delta) override;
-	virtual void _setup_modification(SkeletonModificationStack3D *p_stack) override;
+	virtual void _execute(real_t p_delta);
+	virtual void _setup_modification(Ref<SkeletonModificationStack3D> p_stack);
 
 	void set_target_node(const NodePath &p_target_node);
 	NodePath get_target_node() const;

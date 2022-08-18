@@ -407,13 +407,13 @@ struct ServerController : public Controller {
 
 	void process(real_t p_delta);
 	uint32_t last_known_input() const;
-	virtual uint32_t get_current_input_id() const override;
+	virtual uint32_t get_current_input_id() const;
 
 	void set_enabled(bool p_enable);
 
-	virtual void clear_peers() override;
-	virtual void activate_peer(int p_peer) override;
-	virtual void deactivate_peer(int p_peer) override;
+	virtual void clear_peers();
+	virtual void activate_peer(int p_peer);
+	virtual void deactivate_peer(int p_peer);
 
 	void receive_inputs(const PoolVector<uint8_t> &p_data);
 	int get_inputs_count() const;
@@ -459,7 +459,7 @@ struct PlayerController : public Controller {
 	int notify_input_checked(uint32_t p_input_id);
 	uint32_t last_known_input() const;
 	uint32_t get_stored_input_id(int p_i) const;
-	virtual uint32_t get_current_input_id() const override;
+	virtual uint32_t get_current_input_id() const;
 
 	bool process_instant(int p_i, real_t p_delta);
 	real_t get_pretended_delta(real_t p_iteration_per_second) const;
@@ -499,10 +499,10 @@ struct DollController : public Controller {
 
 	DollController(NetworkedController *p_node);
 
-	virtual void ready() override;
+	virtual void ready();
 	void process(real_t p_delta);
 	// TODO consider make this non virtual
-	virtual uint32_t get_current_input_id() const override;
+	virtual uint32_t get_current_input_id() const;
 
 	void receive_batch(const PoolVector<uint8_t> &p_data);
 	uint32_t receive_epoch(const PoolVector<uint8_t> &p_data);
@@ -520,7 +520,7 @@ struct NoNetController : public Controller {
 	NoNetController(NetworkedController *p_node);
 
 	void process(real_t p_delta);
-	virtual uint32_t get_current_input_id() const override;
+	virtual uint32_t get_current_input_id() const;
 };
 
 #endif

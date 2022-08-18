@@ -1,3 +1,6 @@
+#ifndef SKELETON_MODIFICATION_3D_JIGGLE_H
+#define SKELETON_MODIFICATION_3D_JIGGLE_H
+
 /*************************************************************************/
 /*  skeleton_modification_3d_jiggle.h                                    */
 /*************************************************************************/
@@ -28,54 +31,61 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/templates/local_vector.h"
-#include "scene/3d/skeleton_3d.h"
+#include "core/containers/local_vector.h"
 #include "scene/resources/skeleton_modification_3d.h"
-
-#ifndef SKELETON_MODIFICATION_3D_JIGGLE_H
-#define SKELETON_MODIFICATION_3D_JIGGLE_H
 
 class SkeletonModification3DJiggle : public SkeletonModification3D {
 	GDCLASS(SkeletonModification3DJiggle, SkeletonModification3D);
 
 private:
 	struct Jiggle_Joint_Data {
-		String bone_name = "";
-		int bone_idx = -1;
+		String bone_name;
+		int bone_idx;
 
-		bool override_defaults = false;
-		real_t stiffness = 3;
-		real_t mass = 0.75;
-		real_t damping = 0.75;
-		bool use_gravity = false;
-		Vector3 gravity = Vector3(0, -6.0, 0);
-		real_t roll = 0;
+		bool override_defaults;
+		real_t stiffness;
+		real_t mass;
+		real_t damping;
+		bool use_gravity;
+		Vector3 gravity;
+		real_t roll;
 
-		Vector3 cached_rotation = Vector3(0, 0, 0);
-		Vector3 force = Vector3(0, 0, 0);
-		Vector3 acceleration = Vector3(0, 0, 0);
-		Vector3 velocity = Vector3(0, 0, 0);
-		Vector3 last_position = Vector3(0, 0, 0);
-		Vector3 dynamic_position = Vector3(0, 0, 0);
+		Vector3 cached_rotation;
+		Vector3 force;
+		Vector3 acceleration;
+		Vector3 velocity;
+		Vector3 last_position;
+		Vector3 dynamic_position;
 
-		Vector3 last_noncollision_position = Vector3(0, 0, 0);
+		Vector3 last_noncollision_position;
+
+		Jiggle_Joint_Data() {
+			bone_idx = -1;
+			override_defaults = false;
+			stiffness = 3;
+			mass = 0.75;
+			damping = 0.75;
+			use_gravity = false;
+			gravity = Vector3(0, -6.0, 0);
+			roll = 0;
+		}
 	};
 
 	NodePath target_node;
 	ObjectID target_node_cache;
 	LocalVector<Jiggle_Joint_Data> jiggle_data_chain;
 
-	real_t stiffness = 3;
-	real_t mass = 0.75;
-	real_t damping = 0.75;
-	bool use_gravity = false;
-	Vector3 gravity = Vector3(0, -6.0, 0);
+	real_t stiffness;
+	real_t mass;
+	real_t damping;
+	bool use_gravity;
+	Vector3 gravity;
 
-	bool use_colliders = false;
-	uint32_t collision_mask = 1;
+	bool use_colliders;
+	uint32_t collision_mask;
 
 	void update_cache();
-	void _execute_jiggle_joint(int p_joint_idx, Node3D *p_target, real_t p_delta);
+	void _execute_jiggle_joint(int p_joint_idx, Spatial *p_target, real_t p_delta);
 	void _update_jiggle_joint_data();
 
 protected:
@@ -85,8 +95,8 @@ protected:
 	void _get_property_list(List<PropertyInfo> *p_list) const;
 
 public:
-	virtual void _execute(real_t p_delta) override;
-	virtual void _setup_modification(SkeletonModificationStack3D *p_stack) override;
+	virtual void _execute(real_t p_delta);
+	virtual void _setup_modification(Ref<SkeletonModificationStack3D> p_stack);
 
 	void set_target_node(const NodePath &p_target_node);
 	NodePath get_target_node() const;

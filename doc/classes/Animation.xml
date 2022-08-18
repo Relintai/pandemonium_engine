@@ -260,7 +260,7 @@
 			<return type="int" />
 			<argument index="0" name="track_idx" type="int" />
 			<argument index="1" name="time" type="float" />
-			<argument index="2" name="rotation" type="Quaternionernion" />
+			<argument index="2" name="rotation" type="Quaternion" />
 			<description>
 			</description>
 		</method>

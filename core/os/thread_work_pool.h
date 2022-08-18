@@ -52,7 +52,7 @@ class ThreadWorkPool {
 		C *instance;
 		M method;
 		U userdata;
-		virtual void work() override {
+		virtual void work() {
 			while (true) {
 				uint32_t work_index = index->fetch_add(1, std::memory_order_relaxed);
 				if (work_index >= max_elements) {

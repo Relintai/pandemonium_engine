@@ -161,4 +161,9 @@ void SkeletonModification3D::_bind_methods() {
 SkeletonModification3D::SkeletonModification3D() {
 	stack = nullptr;
 	is_setup = false;
+
+	execution_mode = 0; // 0 = process
+
+	enabled = true;
+	execution_error_found = false;
 }

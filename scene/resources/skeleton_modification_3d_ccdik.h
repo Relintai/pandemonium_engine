@@ -1,3 +1,7 @@
+
+#ifndef SKELETON_MODIFICATION_3D_CCDIK_H
+#define SKELETON_MODIFICATION_3D_CCDIK_H
+
 /*************************************************************************/
 /*  skeleton_modification_3d_ccdik.h                                     */
 /*************************************************************************/
@@ -28,12 +32,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/templates/local_vector.h"
-#include "scene/3d/skeleton_3d.h"
+#include "core/containers/local_vector.h"
+#include "scene/3d/skeleton.h"
 #include "scene/resources/skeleton_modification_3d.h"
-
-#ifndef SKELETON_MODIFICATION_3D_CCDIK_H
-#define SKELETON_MODIFICATION_3D_CCDIK_H
 
 class SkeletonModification3DCCDIK : public SkeletonModification3D {
 	GDCLASS(SkeletonModification3DCCDIK, SkeletonModification3D);
@@ -46,14 +47,24 @@ private:
 	};
 
 	struct CCDIK_Joint_Data {
-		String bone_name = "";
-		int bone_idx = -1;
-		int ccdik_axis = 0;
+		String bone_name;
+		int bone_idx;
+		int ccdik_axis;
 
-		bool enable_constraint = false;
-		real_t constraint_angle_min = 0;
-		real_t constraint_angle_max = (2.0 * Math_PI);
-		bool constraint_angles_invert = false;
+		bool enable_constraint;
+		real_t constraint_angle_min;
+		real_t constraint_angle_max;
+		bool constraint_angles_invert;
+
+		CCDIK_Joint_Data() {
+			bone_idx = -1;
+			ccdik_axis = 0;
+
+			enable_constraint = false;
+			constraint_angle_min = 0;
+			constraint_angle_max = (2.0 * Math_PI);
+			constraint_angles_invert = false;
+		}
 	};
 
 	LocalVector<CCDIK_Joint_Data> ccdik_data_chain;
@@ -63,12 +74,12 @@ private:
 	NodePath tip_node;
 	ObjectID tip_node_cache;
 
-	bool use_high_quality_solve = true;
+	bool use_high_quality_solve;
 
 	void update_target_cache();
 	void update_tip_cache();
 
-	void _execute_ccdik_joint(int p_joint_idx, Node3D *p_target, Node3D *p_tip);
+	void _execute_ccdik_joint(int p_joint_idx, Spatial *p_target, Spatial *p_tip);
 
 protected:
 	static void _bind_methods();
@@ -77,8 +88,8 @@ protected:
 	void _get_property_list(List<PropertyInfo> *p_list) const;
 
 public:
-	virtual void _execute(real_t p_delta) override;
-	virtual void _setup_modification(SkeletonModificationStack3D *p_stack) override;
+	virtual void _execute(real_t p_delta);
+	virtual void _setup_modification(Ref<SkeletonModificationStack3D> p_stack);
 
 	void set_target_node(const NodePath &p_target_node);
 	NodePath get_target_node() const;

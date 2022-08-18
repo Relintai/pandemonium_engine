@@ -35,7 +35,7 @@
 			<description>
 				Override this method to commit a handle being edited (handles must have been previously added by [method EditorSpatialGizmo.add_handles] during [method _redraw]). This usually means creating an [UndoRedo] action for the change, using the current handle value as "do" and the [code]restore[/code] argument as "undo".
 				If the [code]cancel[/code] argument is [code]true[/code], the [code]restore[/code] value should be directly set, without any [UndoRedo] action.
-				The [code]secondary[/code] argument is [code]true[/code] when the committed handle is secondary (see [method EditorNode3DGizmo.add_handles] for more information).
+				The [code]secondary[/code] argument is [code]true[/code] when the committed handle is secondary (see [method EditorSpatialGizmo.add_handles] for more information).
 				Called for this plugin's active gizmos.
 			</description>
 		</method>
@@ -99,7 +99,7 @@
 			<argument index="1" name="id" type="int" />
 			<argument index="2" name="secondary" type="bool" />
 			<description>
-				Override this method to provide gizmo's handle names. The [code]secondary[/code] argument is [code]true[/code] when the requested handle is secondary (see [method EditorNode3DGizmo.add_handles] for more information). Called for this plugin's active gizmos.
+				Override this method to provide gizmo's handle names. The [code]secondary[/code] argument is [code]true[/code] when the requested handle is secondary (see [method EditorSpatialGizmo.add_handles] for more information). Called for this plugin's active gizmos.
 			</description>
 		</method>
 		<method name="get_handle_value" qualifiers="virtual">
@@ -109,7 +109,7 @@
 			<argument index="2" name="secondary" type="bool" />
 			<description>
 				Override this method to return the current value of a handle. This value will be requested at the start of an edit and used as the [code]restore[/code] argument in [method _commit_handle].
-				The [code]secondary[/code] argument is [code]true[/code] when the requested handle is secondary (see [method EditorNode3DGizmo.add_handles] for more information).
+				The [code]secondary[/code] argument is [code]true[/code] when the requested handle is secondary (see [method EditorSpatialGizmo.add_handles] for more information).
 				Called for this plugin's active gizmos.
 			</description>
 		</method>
@@ -142,7 +142,7 @@
 			<argument index="1" name="id" type="int">
 			</argument>
 			<description>
-				Override this method to return the current transform of a subgizmo. As with all subgizmo methods, the transform should be in local space respect to the gizmo's Node3D. This transform will be requested at the start of an edit and used in the [code]restore[/code] argument in [method _commit_subgizmos]. Called for this plugin's active gizmos.
+				Override this method to return the current transform of a subgizmo. As with all subgizmo methods, the transform should be in local space respect to the gizmo's Spatial. This transform will be requested at the start of an edit and used in the [code]restore[/code] argument in [method _commit_subgizmos]. Called for this plugin's active gizmos.
 			</description>
 		</method>
 		<method name="has_gizmo" qualifiers="virtual">
@@ -158,7 +158,7 @@
 			<argument index="1" name="id" type="int" />
 			<argument index="2" name="secondary" type="bool" />
 			<description>
-				Override this method to return [code]true[/code] whenever to given handle should be highlighted in the editor. The [code]secondary[/code] argument is [code]true[/code] when the requested handle is secondary (see [method EditorNode3DGizmo.add_handles] for more information). Called for this plugin's active gizmos.
+				Override this method to return [code]true[/code] whenever to given handle should be highlighted in the editor. The [code]secondary[/code] argument is [code]true[/code] when the requested handle is secondary (see [method EditorSpatialGizmo.add_handles] for more information). Called for this plugin's active gizmos.
 			</description>
 		</method>
 		<method name="is_selectable_when_hidden" qualifiers="virtual">
@@ -182,8 +182,8 @@
 			<argument index="3" name="camera" type="Camera" />
 			<argument index="4" name="point" type="Vector2" />
 			<description>
-				Override this method to update the node's properties when the user drags a gizmo handle (previously added with [method EditorNode3DGizmo.add_handles]). The provided [code]point[/code] is the mouse position in screen coordinates and the [code]camera[/code] can be used to convert it to raycasts.
-				The [code]secondary[/code] argument is [code]true[/code] when the edited handle is secondary (see [method EditorNode3DGizmo.add_handles] for more information).
+				Override this method to update the node's properties when the user drags a gizmo handle (previously added with [method EditorSpatialGizmo.add_handles]). The provided [code]point[/code] is the mouse position in screen coordinates and the [code]camera[/code] can be used to convert it to raycasts.
+				The [code]secondary[/code] argument is [code]true[/code] when the edited handle is secondary (see [method EditorSpatialGizmo.add_handles] for more information).
 				Called for this plugin's active gizmos.
 			</description>
 		</method>

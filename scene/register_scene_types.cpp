@@ -177,12 +177,12 @@
 #include "scene/scene_string_names.h"
 
 #include "scene/resources/skeleton_modification_3d.h"
-//#include "scene/resources/skeleton_modification_3d_ccdik.h"
-//#include "scene/resources/skeleton_modification_3d_fabrik.h"
-//#include "scene/resources/skeleton_modification_3d_jiggle.h"
-//#include "scene/resources/skeleton_modification_3d_lookat.h"
-//#include "scene/resources/skeleton_modification_3d_stackholder.h"
-//#include "scene/resources/skeleton_modification_3d_twoboneik.h"
+#include "scene/resources/skeleton_modification_3d_ccdik.h"
+#include "scene/resources/skeleton_modification_3d_fabrik.h"
+#include "scene/resources/skeleton_modification_3d_jiggle.h"
+#include "scene/resources/skeleton_modification_3d_lookat.h"
+#include "scene/resources/skeleton_modification_3d_stackholder.h"
+#include "scene/resources/skeleton_modification_3d_twoboneik.h"
 #include "scene/resources/skeleton_modification_stack_3d.h"
 
 #ifndef _3D_DISABLED
@@ -617,12 +617,12 @@ void register_scene_types() {
 
 	ClassDB::register_class<SkeletonModificationStack3D>();
 	ClassDB::register_class<SkeletonModification3D>();
-	//ClassDB::register_class<SkeletonModification3DLookAt>();
-	//ClassDB::register_class<SkeletonModification3DCCDIK>();
-	//ClassDB::register_class<SkeletonModification3DFABRIK>();
-	//ClassDB::register_class<SkeletonModification3DJiggle>();
-	//ClassDB::register_class<SkeletonModification3DTwoBoneIK>();
-	//ClassDB::register_class<SkeletonModification3DStackHolder>();
+	ClassDB::register_class<SkeletonModification3DLookAt>();
+	ClassDB::register_class<SkeletonModification3DCCDIK>();
+	ClassDB::register_class<SkeletonModification3DFABRIK>();
+	ClassDB::register_class<SkeletonModification3DJiggle>();
+	ClassDB::register_class<SkeletonModification3DTwoBoneIK>();
+	ClassDB::register_class<SkeletonModification3DStackHolder>();
 
 	OS::get_singleton()->yield(); //may take time to init
 

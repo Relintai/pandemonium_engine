@@ -162,13 +162,13 @@ public:
 
 	Vector<String> parse_requirements() const;
 
-	virtual PoolByteArray get_hash_sha1() const override;
-	virtual PoolByteArray get_hash_sha256() const override;
+	virtual PoolByteArray get_hash_sha1() const;
+	virtual PoolByteArray get_hash_sha256() const;
 
-	virtual int get_size() const override;
+	virtual int get_size() const;
 
-	virtual uint32_t get_index_type() const override { return 0x00000002; };
-	virtual void write_to_file(FileAccess *p_file) const override;
+	virtual uint32_t get_index_type() const { return 0x00000002; };
+	virtual void write_to_file(FileAccess *p_file) const;
 };
 
 /*************************************************************************/
@@ -184,13 +184,13 @@ public:
 	CodeSignEntitlementsText();
 	CodeSignEntitlementsText(const String &p_string);
 
-	virtual PoolByteArray get_hash_sha1() const override;
-	virtual PoolByteArray get_hash_sha256() const override;
+	virtual PoolByteArray get_hash_sha1() const;
+	virtual PoolByteArray get_hash_sha256() const;
 
-	virtual int get_size() const override;
+	virtual int get_size() const;
 
-	virtual uint32_t get_index_type() const override { return 0x00000005; };
-	virtual void write_to_file(FileAccess *p_file) const override;
+	virtual uint32_t get_index_type() const { return 0x00000005; };
+	virtual void write_to_file(FileAccess *p_file) const;
 };
 
 /*************************************************************************/
@@ -206,13 +206,13 @@ public:
 	CodeSignEntitlementsBinary();
 	CodeSignEntitlementsBinary(const String &p_string);
 
-	virtual PoolByteArray get_hash_sha1() const override;
-	virtual PoolByteArray get_hash_sha256() const override;
+	virtual PoolByteArray get_hash_sha1() const;
+	virtual PoolByteArray get_hash_sha256() const;
 
-	virtual int get_size() const override;
+	virtual int get_size() const;
 
-	virtual uint32_t get_index_type() const override { return 0x00000007; };
-	virtual void write_to_file(FileAccess *p_file) const override;
+	virtual uint32_t get_index_type() const { return 0x00000007; };
+	virtual void write_to_file(FileAccess *p_file) const;
 };
 
 /*************************************************************************/
@@ -308,13 +308,13 @@ public:
 
 	bool set_hash_in_slot(const PoolByteArray &p_hash, int p_slot);
 
-	virtual PoolByteArray get_hash_sha1() const override;
-	virtual PoolByteArray get_hash_sha256() const override;
+	virtual PoolByteArray get_hash_sha1() const;
+	virtual PoolByteArray get_hash_sha256() const;
 
-	virtual int get_size() const override;
-	virtual uint32_t get_index_type() const override { return 0x00000000; };
+	virtual int get_size() const;
+	virtual uint32_t get_index_type() const { return 0x00000000; };
 
-	virtual void write_to_file(FileAccess *p_file) const override;
+	virtual void write_to_file(FileAccess *p_file) const;
 };
 
 /*************************************************************************/
@@ -327,13 +327,13 @@ class CodeSignSignature : public CodeSignBlob {
 public:
 	CodeSignSignature();
 
-	virtual PoolByteArray get_hash_sha1() const override;
-	virtual PoolByteArray get_hash_sha256() const override;
+	virtual PoolByteArray get_hash_sha1() const;
+	virtual PoolByteArray get_hash_sha256() const;
 
-	virtual int get_size() const override;
-	virtual uint32_t get_index_type() const override { return 0x00010000; };
+	virtual int get_size() const;
+	virtual uint32_t get_index_type() const { return 0x00010000; };
 
-	virtual void write_to_file(FileAccess *p_file) const override;
+	virtual void write_to_file(FileAccess *p_file) const;
 };
 
 /*************************************************************************/

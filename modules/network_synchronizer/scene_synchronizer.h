@@ -351,8 +351,8 @@ class NoNetSynchronizer : public Synchronizer {
 public:
 	NoNetSynchronizer(SceneSynchronizer *p_node);
 
-	virtual void clear() override;
-	virtual void process() override;
+	virtual void clear();
+	virtual void process();
 
 	void set_enabled(bool p_enabled);
 	bool is_enabled() const;
@@ -375,11 +375,11 @@ class ServerSynchronizer : public Synchronizer {
 public:
 	ServerSynchronizer(SceneSynchronizer *p_node);
 
-	virtual void clear() override;
-	virtual void process() override;
-	virtual void on_node_added(NetUtility::NodeData *p_node_data) override;
-	virtual void on_variable_added(NetUtility::NodeData *p_node_data, const StringName &p_var_name) override;
-	virtual void on_variable_changed(NetUtility::NodeData *p_node_data, NetVarId p_var_id, const Variant &p_old_value, int p_flag) override;
+	virtual void clear();
+	virtual void process();
+	virtual void on_node_added(NetUtility::NodeData *p_node_data);
+	virtual void on_variable_added(NetUtility::NodeData *p_node_data, const StringName &p_var_name);
+	virtual void on_variable_changed(NetUtility::NodeData *p_node_data, NetVarId p_var_id, const Variant &p_old_value, int p_flag);
 
 	void process_snapshot_notificator(real_t p_delta);
 	Vector<Variant> global_nodes_generate_snapshot(bool p_force_full_snapshot) const;
@@ -421,13 +421,13 @@ class ClientSynchronizer : public Synchronizer {
 public:
 	ClientSynchronizer(SceneSynchronizer *p_node);
 
-	virtual void clear() override;
+	virtual void clear();
 
-	virtual void process() override;
-	virtual void on_node_added(NetUtility::NodeData *p_node_data) override;
-	virtual void on_node_removed(NetUtility::NodeData *p_node_data) override;
-	virtual void on_variable_changed(NetUtility::NodeData *p_node_data, NetVarId p_var_id, const Variant &p_old_value, int p_flag) override;
-	virtual void on_controller_reset(NetUtility::NodeData *p_node_data) override;
+	virtual void process();
+	virtual void on_node_added(NetUtility::NodeData *p_node_data);
+	virtual void on_node_removed(NetUtility::NodeData *p_node_data);
+	virtual void on_variable_changed(NetUtility::NodeData *p_node_data, NetVarId p_var_id, const Variant &p_old_value, int p_flag);
+	virtual void on_controller_reset(NetUtility::NodeData *p_node_data);
 
 	void receive_snapshot(Variant p_snapshot);
 	bool parse_sync_data(

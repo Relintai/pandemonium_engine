@@ -1,5 +1,9 @@
+
+#ifndef SKELETON_MODIFICATION_3D_TWOBONEIK_H
+#define SKELETON_MODIFICATION_3D_TWOBONEIK_H
+
 /*************************************************************************/
-/*  skeleton_modification_3d_lookat.h                                    */
+/*  skeleton_modification_3d_twoboneik.h                                 */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,26 +32,40 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/3d/skeleton_3d.h"
 #include "scene/resources/skeleton_modification_3d.h"
 
-#ifndef SKELETON_MODIFICATION_3D_LOOKAT_H
-#define SKELETON_MODIFICATION_3D_LOOKAT_H
+class Skeleton;
 
-class SkeletonModification3DLookAt : public SkeletonModification3D {
-	GDCLASS(SkeletonModification3DLookAt, SkeletonModification3D);
+class SkeletonModification3DTwoBoneIK : public SkeletonModification3D {
+	GDCLASS(SkeletonModification3DTwoBoneIK, SkeletonModification3D);
 
 private:
-	String bone_name = "";
-	int bone_idx = -1;
 	NodePath target_node;
 	ObjectID target_node_cache;
 
-	Vector3 additional_rotation = Vector3(1, 0, 0);
-	bool lock_rotation_to_plane = false;
-	int lock_rotation_plane = ROTATION_PLANE_X;
+	bool use_tip_node;
+	NodePath tip_node;
+	ObjectID tip_node_cache;
 
-	void update_cache();
+	bool use_pole_node;
+	NodePath pole_node;
+	ObjectID pole_node_cache;
+
+	String joint_one_bone_name;
+	int joint_one_bone_idx;
+	String joint_two_bone_name;
+	int joint_two_bone_idx;
+
+	bool auto_calculate_joint_length;
+	real_t joint_one_length;
+	real_t joint_two_length;
+
+	real_t joint_one_roll;
+	real_t joint_two_roll;
+
+	void update_cache_target();
+	void update_cache_tip();
+	void update_cache_pole();
 
 protected:
 	static void _bind_methods();
@@ -56,34 +74,47 @@ protected:
 	void _get_property_list(List<PropertyInfo> *p_list) const;
 
 public:
-	enum ROTATION_PLANE {
-		ROTATION_PLANE_X,
-		ROTATION_PLANE_Y,
-		ROTATION_PLANE_Z
-	};
-
-	virtual void _execute(real_t p_delta) override;
-	virtual void _setup_modification(SkeletonModificationStack3D *p_stack) override;
-
-	void set_bone_name(String p_name);
-	String get_bone_name() const;
-
-	void set_bone_index(int p_idx);
-	int get_bone_index() const;
+	virtual void _execute(real_t p_delta);
+	virtual void _setup_modification(Ref<SkeletonModificationStack3D> p_stack);
 
 	void set_target_node(const NodePath &p_target_node);
 	NodePath get_target_node() const;
 
-	void set_additional_rotation(Vector3 p_offset);
-	Vector3 get_additional_rotation() const;
+	void set_use_tip_node(const bool p_use_tip_node);
+	bool get_use_tip_node() const;
+	void set_tip_node(const NodePath &p_tip_node);
+	NodePath get_tip_node() const;
 
-	void set_lock_rotation_to_plane(bool p_lock_to_plane);
-	bool get_lock_rotation_to_plane() const;
-	void set_lock_rotation_plane(int p_plane);
-	int get_lock_rotation_plane() const;
+	void set_use_pole_node(const bool p_use_pole_node);
+	bool get_use_pole_node() const;
+	void set_pole_node(const NodePath &p_pole_node);
+	NodePath get_pole_node() const;
 
-	SkeletonModification3DLookAt();
-	~SkeletonModification3DLookAt();
+	void set_auto_calculate_joint_length(bool p_calculate);
+	bool get_auto_calculate_joint_length() const;
+	void calculate_joint_lengths();
+
+	void set_joint_one_bone_name(String p_bone_name);
+	String get_joint_one_bone_name() const;
+	void set_joint_one_bone_idx(int p_bone_idx);
+	int get_joint_one_bone_idx() const;
+	void set_joint_one_length(real_t p_length);
+	real_t get_joint_one_length() const;
+
+	void set_joint_two_bone_name(String p_bone_name);
+	String get_joint_two_bone_name() const;
+	void set_joint_two_bone_idx(int p_bone_idx);
+	int get_joint_two_bone_idx() const;
+	void set_joint_two_length(real_t p_length);
+	real_t get_joint_two_length() const;
+
+	void set_joint_one_roll(real_t p_roll);
+	real_t get_joint_one_roll() const;
+	void set_joint_two_roll(real_t p_roll);
+	real_t get_joint_two_roll() const;
+
+	SkeletonModification3DTwoBoneIK();
+	~SkeletonModification3DTwoBoneIK();
 };
 
-#endif // SKELETON_MODIFICATION_3D_LOOKAT_H
+#endif // SKELETON_MODIFICATION_3D_TWOBONEIK_H

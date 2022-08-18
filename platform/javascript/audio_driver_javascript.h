@@ -76,12 +76,12 @@ public:
 	virtual void start() final;
 	virtual void finish() final;
 
-	virtual float get_latency() override;
-	virtual int get_mix_rate() const override;
-	virtual SpeakerMode get_speaker_mode() const override;
+	virtual float get_latency();
+	virtual int get_mix_rate() const;
+	virtual SpeakerMode get_speaker_mode() const;
 
-	virtual Error capture_start() override;
-	virtual Error capture_stop() override;
+	virtual Error capture_start();
+	virtual Error capture_stop();
 
 	static void resume();
 
@@ -96,14 +96,14 @@ private:
 	static AudioDriverScriptProcessor *singleton;
 
 protected:
-	Error create(int &p_buffer_samples, int p_channels) override;
-	void start(float *p_out_buf, int p_out_buf_size, float *p_in_buf, int p_in_buf_size) override;
+	Error create(int &p_buffer_samples, int p_channels);
+	void start(float *p_out_buf, int p_out_buf_size, float *p_in_buf, int p_in_buf_size);
 
 public:
-	virtual const char *get_name() const override { return "ScriptProcessor"; }
+	virtual const char *get_name() const { return "ScriptProcessor"; }
 
-	virtual void lock() override {}
-	virtual void unlock() override {}
+	virtual void lock() {}
+	virtual void unlock() {}
 
 	AudioDriverScriptProcessor() { singleton = this; }
 };
@@ -116,14 +116,14 @@ private:
 	static AudioDriverWorklet *singleton;
 
 protected:
-	virtual Error create(int &p_buffer_size, int p_output_channels) override;
-	virtual void start(float *p_out_buf, int p_out_buf_size, float *p_in_buf, int p_in_buf_size) override;
+	virtual Error create(int &p_buffer_size, int p_output_channels);
+	virtual void start(float *p_out_buf, int p_out_buf_size, float *p_in_buf, int p_in_buf_size);
 
 public:
-	virtual const char *get_name() const override { return "AudioWorklet"; }
+	virtual const char *get_name() const { return "AudioWorklet"; }
 
-	virtual void lock() override {}
-	virtual void unlock() override {}
+	virtual void lock() {}
+	virtual void unlock() {}
 
 	AudioDriverWorklet() { singleton = this; }
 };
@@ -145,15 +145,15 @@ private:
 	static void _audio_thread_func(void *p_data);
 
 protected:
-	virtual Error create(int &p_buffer_size, int p_output_channels) override;
-	virtual void start(float *p_out_buf, int p_out_buf_size, float *p_in_buf, int p_in_buf_size) override;
-	virtual void finish_driver() override;
+	virtual Error create(int &p_buffer_size, int p_output_channels);
+	virtual void start(float *p_out_buf, int p_out_buf_size, float *p_in_buf, int p_in_buf_size);
+	virtual void finish_driver();
 
 public:
-	virtual const char *get_name() const override { return "AudioWorklet"; }
+	virtual const char *get_name() const { return "AudioWorklet"; }
 
-	void lock() override;
-	void unlock() override;
+	void lock();
+	void unlock();
 };
 #endif
 

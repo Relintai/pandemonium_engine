@@ -160,7 +160,7 @@
 			</description>
 		</method>
 		<method name="get_bone_pose_rotation" qualifiers="const">
-			<return type="Quaternionernion" />
+			<return type="Quaternion" />
 			<argument index="0" name="bone_idx" type="int" />
 			<description>
 			</description>
@@ -193,18 +193,18 @@
 		<method name="global_pose_to_local_pose">
 			<return type="Transform" />
 			<argument index="0" name="bone_idx" type="int" />
-			<argument index="1" name="global_pose" type="Transform3D" />
+			<argument index="1" name="global_pose" type="Transform" />
 			<description>
 				Takes the passed-in global pose and converts it to local pose transform.
 				This can be used to easily convert a global pose from [method get_bone_global_pose] to a global transform in [method set_bone_local_pose_override].
 			</description>
 		</method>
 		<method name="global_pose_to_world_transform">
-			<return type="Transform3D" />
-			<argument index="0" name="global_pose" type="Transform3D" />
+			<return type="Transform" />
+			<argument index="0" name="global_pose" type="Transform" />
 			<description>
 				Takes the passed-in global pose and converts it to a world transform.
-				This can be used to easily convert a global pose from [method get_bone_global_pose] to a global transform usable with a node's transform, like [member Node3D.global_transform] for example.
+				This can be used to easily convert a global pose from [method get_bone_global_pose] to a global transform usable with a node's transform, like [member Spatial.global_transform] for example.
 			</description>
 		</method>
 		<method name="global_pose_z_forward_to_bone_forward">
@@ -224,9 +224,9 @@
 			</description>
 		</method>
 		<method name="local_pose_to_global_pose">
-			<return type="Transform3D" />
+			<return type="Transform" />
 			<argument index="0" name="bone_idx" type="int" />
-			<argument index="1" name="local_pose" type="Transform3D" />
+			<argument index="1" name="local_pose" type="Transform" />
 			<description>
 				Converts the passed-in local pose to a global pose relative to the inputted bone, [code]bone_idx[/code].
 				This could be used to convert [method get_bone_pose] for use with the [method set_bone_global_pose_override] function.
@@ -315,13 +315,13 @@
 			<description>
 				Sets the global pose transform, [code]pose[/code], for the bone at [code]bone_idx[/code].
 				[code]amount[/code] is the interpolation strengh that will be used when applying the pose, and [code]persistent[/code] determines if the applied pose will remain.
-				[b]Note:[/b] The pose transform needs to be a global pose! Use [method world_transform_to_global_pose] to convert a world transform, like one you can get from a [Node3D], to a global pose.
+				[b]Note:[/b] The pose transform needs to be a global pose! Use [method world_transform_to_global_pose] to convert a world transform, like one you can get from a [Spatial], to a global pose.
 			</description>
 		</method>
 		<method name="set_bone_local_pose_override">
 			<return type="void" />
 			<argument index="0" name="bone_idx" type="int" />
-			<argument index="1" name="pose" type="Transform3D" />
+			<argument index="1" name="pose" type="Transform" />
 			<argument index="2" name="amount" type="float" />
 			<argument index="3" name="persistent" type="bool" default="false" />
 			<description>
@@ -352,7 +352,7 @@
 			<argument index="1" name="pose" type="Transform" />
 			<description>
 				Sets the pose transform for bone [code]bone_idx[/code]. Prefer set_bone_pose_position, set_bone_pose_rotation, or set_bone_pose_scale instead.
-				[b]Note:[/b] The pose transform needs to be in bone space. Use [method world_transform_to_global_pose] to convert a world transform, like one you can get from a [Node3D], to bone space.
+				[b]Note:[/b] The pose transform needs to be in bone space. Use [method world_transform_to_global_pose] to convert a world transform, like one you can get from a [Spatial], to bone space.
 			</description>
 		</method>
 		<method name="set_bone_pose_position">
@@ -365,7 +365,7 @@
 		<method name="set_bone_pose_rotation">
 			<return type="void" />
 			<argument index="0" name="bone_idx" type="int" />
-			<argument index="1" name="rotation" type="Quaternionernion" />
+			<argument index="1" name="rotation" type="Quaternion" />
 			<description>
 			</description>
 		</method>
@@ -375,7 +375,7 @@
 			<argument index="1" name="scale" type="Vector3" />
 			<description>
 				Sets the pose transform for bone [code]bone_idx[/code].
-				[b]Note:[/b] The pose transform needs to be in bone space. Use [method world_transform_to_global_pose] to convert a world transform, like one you can get from a [Node3D], to bone space.
+				[b]Note:[/b] The pose transform needs to be in bone space. Use [method world_transform_to_global_pose] to convert a world transform, like one you can get from a [Spatial], to bone space.
 			</description>
 		</method>
 		<method name="set_bone_rest">
@@ -407,7 +407,7 @@
 			</argument>
 			<description>
 				Takes the passed-in global transform and converts it to a global pose.
-				This can be used to easily convert a global transform from [member Node3D.global_transform] to a global pose usable with [method set_bone_global_pose_override], for example.
+				This can be used to easily convert a global transform from [member Spatial.global_transform] to a global pose usable with [method set_bone_global_pose_override], for example.
 			</description>
 		</method>
 	</methods>

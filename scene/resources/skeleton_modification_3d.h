@@ -44,12 +44,12 @@ class SkeletonModification3D : public Resource {
 protected:
 	static void _bind_methods();
 
-	SkeletonModificationStack3D *stack = nullptr;
-	int execution_mode = 0; // 0 = process
+	SkeletonModificationStack3D *stack;
+	int execution_mode; // 0 = process
 
-	bool enabled = true;
-	bool is_setup = false;
-	bool execution_error_found = false;
+	bool enabled;
+	bool is_setup;
+	bool execution_error_found;
 
 	bool _print_execution_error(bool p_condition, String p_message);
 

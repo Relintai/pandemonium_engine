@@ -204,7 +204,7 @@ bool test_rotation(Vector3 deg_original_euler, RotOrder rot_order) {
 		OS *os = OS::get_singleton();
 		os->print("Rotation order: %s\n.", get_rot_order_name(rot_order).utf8().get_data());
 		os->print("Original Rotation: %s\n", String(deg_original_euler).utf8().get_data());
-		os->print("Quaternionernion to rotation order: %s\n", String(rad2deg(euler_from_rotation)).utf8().get_data());
+		os->print("Quaternion to rotation order: %s\n", String(rad2deg(euler_from_rotation)).utf8().get_data());
 	}
 
 	return pass;
