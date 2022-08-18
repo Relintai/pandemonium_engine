@@ -1,13 +1,13 @@
 
 #include "text_file_editor.h"
 
-#include "core/variant/array.h"
 #include "core/config/engine.h"
 #include "core/math/math_defs.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
+#include "core/variant/array.h"
 #include "text_editor_preview.h"
 #include "text_editor_settings.h"
 #include "text_editor_vanilla_editor.h"
@@ -226,6 +226,21 @@ void TextFileEditor::_on_fileitem_pressed(const int index) {
 
 void TextFileEditor::open_file(const String &path, const String &font) {
 	if (current_file_path != path) {
+		for (int i = 0; i < _open_file_list->get_item_count(); ++i) {
+			Array selected_item_metadata = _open_file_list->get_item_metadata(i);
+
+			Control *c = selected_item_metadata[0];
+			TextEditorVanillaEditor *e = Object::cast_to<TextEditorVanillaEditor>(c);
+
+			if (e) {
+				if (e->get_current_path() == path) {
+					_open_file_list->select(i);
+					_on_fileitem_pressed(i);
+					return;
+				}
+			}
+		}
+
 		current_file_path = path;
 		TextEditorVanillaEditor *vanilla_editor = open_in_vanillaeditor(path);
 
