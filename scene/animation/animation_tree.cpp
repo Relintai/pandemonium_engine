@@ -367,6 +367,9 @@ bool AnimationNode::is_path_filtered(const NodePath &p_path) const {
 }
 
 bool AnimationNode::has_filter() const {
+	if (get_script_instance()) {
+		return get_script_instance()->call("has_filter");
+	}
 	return false;
 }
 
@@ -437,7 +440,7 @@ void AnimationNode::_bind_methods() {
 	}
 	BIND_VMETHOD(MethodInfo("process", PropertyInfo(Variant::REAL, "time"), PropertyInfo(Variant::BOOL, "seek")));
 	BIND_VMETHOD(MethodInfo(Variant::STRING, "get_caption"));
-	BIND_VMETHOD(MethodInfo(Variant::STRING, "has_filter"));
+	BIND_VMETHOD(MethodInfo(Variant::BOOL, "has_filter"));
 
 	ADD_SIGNAL(MethodInfo("removed_from_graph"));
 
