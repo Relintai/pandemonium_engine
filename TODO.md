@@ -205,3 +205,11 @@ Not sure, if I end up porting it, I'll likely simplify it.
 https://github.com/godotengine/godot/commit/d9acd21b46352a0c6fe09b42d03bbdb6a749687d
 
 
+###  Use parameter classes instead of arguments for all physics queries
+
+Seems like a good idea to have eventually.
+
+Also it should be expanded on, for the apis that returns arrays and dicts. Maybe those could
+just write results directly to the passed parameter classes, so no allocations occur.
+
+https://github.com/godotengine/godot/commit/acbd24ea842cb90ab49cd66d5dc7220e57c73f29
