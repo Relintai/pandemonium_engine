@@ -4,6 +4,8 @@ import sys
 
 
 def can_build(env, platform):
+    env.module_add_dependencies("database_sqlite", ["database"], False)
+
     return True
 
 def _can_build():
@@ -51,8 +53,3 @@ def get_doc_classes():
 
 def get_doc_path():
     return "doc_classes"
-
-def get_module_dependencies():
-    return [
-        "database",
-    ]
