@@ -60,6 +60,11 @@
 - Make operator='s return void (https://github.com/godotengine/godot/commit/7da392bcc52366740394322728464e724cf20cdf).
 - Switch back to the old c++ version (pre c++11) for the codebase. I'm already targeting low end hardware, I think it will likely come in handy later.
 - Implement something similar to this, so scripting language code can be simplified. (https://github.com/godotengine/godot/commit/5288ff538d75d2ddab257a9e1e40050c9b8fa1cb)(Create Variant built-in functions.) 
+- Move DynamicFont to a module, and make tools depend on that.
+- Maybe backport the TextServer from Godot4?
+- Make modules from everything under the thisdparty folder.
+- Collect license information from modules and merge it back and handle it like the current thirdparty.md file.
+- Clean up the third party licenses.
 
 ## Scene folder
 
