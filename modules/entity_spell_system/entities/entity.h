@@ -22,9 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#include "core/containers/vector.h"
 #include "core/object/object.h"
 #include "core/string/ustring.h"
-#include "core/containers/vector.h"
 
 #include "core/io/networked_multiplayer_peer.h"
 
@@ -131,20 +131,20 @@ struct EntityStat {
 #define SET_RPC_PUPPETSYNC(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_PUPPETSYNC);
 
 // f.e.   RPC(method, arg0, arg1, etc)
-#define RPC(func, ...)                                                                           \
-	if (is_inside_tree() && get_tree()->has_network_peer() && get_tree()->is_network_server()) { \
-		rpc(#func, ##__VA_ARGS__);                                                               \
-	}                                                                                            \
+#define RPC(func, ...)             \
+	if (is_network_server()) {     \
+		rpc(#func, ##__VA_ARGS__); \
+	}                              \
 	func(__VA_ARGS__);
 
-#define VRPC(func, ...)                                                                          \
-	if (is_inside_tree() && get_tree()->has_network_peer() && get_tree()->is_network_server()) { \
-		vrpc(#func, ##__VA_ARGS__);                                                              \
-	}                                                                                            \
+#define VRPC(func, ...)             \
+	if (is_network_server()) {      \
+		vrpc(#func, ##__VA_ARGS__); \
+	}                               \
 	func(__VA_ARGS__);
 
 #define ORPC(func, ...)                                             \
-	if (is_inside_tree() && get_tree()->has_network_peer()) {       \
+	if (has_network_peer()) {                                       \
 		if (get_tree()->is_network_server()) {                      \
 			if (get_network_master() != 1) {                        \
 				rpc_id(get_network_master(), #func, ##__VA_ARGS__); \
@@ -156,74 +156,67 @@ struct EntityStat {
 		func(__VA_ARGS__);                                          \
 	}
 
-#define RPCS(func, ...)                                       \
-	if (is_inside_tree() && get_tree()->has_network_peer()) { \
-		if (get_tree()->is_network_server()) {                \
-			func(__VA_ARGS__);                                \
-		} else {                                              \
-			rpc_id(1, #func, ##__VA_ARGS__);                  \
-		}                                                     \
-	} else {                                                  \
-		func(__VA_ARGS__);                                    \
+#define RPCS(func, ...)                        \
+	if (has_network_peer()) {                  \
+		if (get_tree()->is_network_server()) { \
+			func(__VA_ARGS__);                 \
+		} else {                               \
+			rpc_id(1, #func, ##__VA_ARGS__);   \
+		}                                      \
+	} else {                                   \
+		func(__VA_ARGS__);                     \
 	}
 
 //RPC Objects
 
-#define RPCOBJ(rpcfunc, rpc_var, normalfunc, normal_var)      \
-	if (is_inside_tree() && get_tree()->has_network_peer()) { \
-		rpc(#rpcfunc, rpc_var);                               \
-	}                                                         \
+#define RPCOBJ(rpcfunc, rpc_var, normalfunc, normal_var) \
+	if (has_network_peer()) {                            \
+		rpc(#rpcfunc, rpc_var);                          \
+	}                                                    \
 	normalfunc(normal_var);
 
-#define VRPCOBJ(rpcfunc, rpc_var, normalfunc, normal_var)     \
-	if (is_inside_tree() && get_tree()->has_network_peer()) { \
-		vrpc(#rpcfunc, rpc_var);                              \
-	}                                                         \
+#define VRPCOBJ(rpcfunc, rpc_var, normalfunc, normal_var) \
+	if (has_network_peer()) {                             \
+		vrpc(#rpcfunc, rpc_var);                          \
+	}                                                     \
 	normalfunc(normal_var);
 
-#define VRPCOBJ12(rpcfunc, rpc_var, normalfunc, normal_var1, normal_var2)                        \
-	if (is_inside_tree() && get_tree()->has_network_peer() && get_tree()->is_network_server()) { \
-		vrpc(#rpcfunc, rpc_var);                                                                 \
-	}                                                                                            \
+#define VRPCOBJ12(rpcfunc, rpc_var, normalfunc, normal_var1, normal_var2) \
+	if (is_network_server()) {                                            \
+		vrpc(#rpcfunc, rpc_var);                                          \
+	}                                                                     \
 	normalfunc(normal_var1, normal_var2);
 
-#define VRPCOBJP(rpcfunc, rpc_var1, rpc_var2, normalfunc, normal_var1, normal_var2)              \
-	if (is_inside_tree() && get_tree()->has_network_peer() && get_tree()->is_network_server()) { \
-		vrpc(#rpcfunc, rpc_var1, rpc_var2);                                                      \
-	}                                                                                            \
+#define VRPCOBJP(rpcfunc, rpc_var1, rpc_var2, normalfunc, normal_var1, normal_var2) \
+	if (is_network_server()) {                                                      \
+		vrpc(#rpcfunc, rpc_var1, rpc_var2);                                         \
+	}                                                                               \
 	normalfunc(normal_var1, normal_var2);
 
 #define ORPCOBJ(rpcfunc, rpc_var, normalfunc, normal_var)                 \
-	if (is_inside_tree() && get_tree()->has_network_peer()) {             \
+	if (has_network_peer()) {                                             \
 		if (get_tree()->is_network_server() && get_network_master() != 1) \
 			rpc_id(get_network_master(), #rpcfunc, rpc_var);              \
 	}                                                                     \
 	normalfunc(normal_var);
 
-#define RPCSOBJ(rpcfunc, rpc_var, normalfunc, normal_var)     \
-	if (is_inside_tree() && get_tree()->has_network_peer()) { \
-		if (get_tree()->is_network_server()) {                \
-			normalfunc(normal_var);                           \
-		} else {                                              \
-			rpc_id(1, #rpcfunc, rpc_var);                     \
-		}                                                     \
-	} else {                                                  \
-		normalfunc(normal_var);                               \
+#define RPCSOBJ(rpcfunc, rpc_var, normalfunc, normal_var) \
+	if (has_network_peer()) {                             \
+		if (get_tree()->is_network_server()) {            \
+			normalfunc(normal_var);                       \
+		} else {                                          \
+			rpc_id(1, #rpcfunc, rpc_var);                 \
+		}                                                 \
+	} else {                                              \
+		normalfunc(normal_var);                           \
 	}
 
 #define ORPCOBJP(rpcfunc, rpc_var1, rpc_var2, normalfunc, normal_var1, normal_var2) \
-	if (is_inside_tree() && get_tree()->has_network_peer()) {                       \
+	if (has_network_peer()) {                                                       \
 		if (get_tree()->is_network_server() && get_network_master() != 1)           \
 			rpc_id(get_network_master(), #rpcfunc, rpc_var1, rpc_var2);             \
 	}                                                                               \
 	normalfunc(normal_var1, normal_var2);
-
-// f.e. RSET(rset("property", "value"), property, value)
-#define RSET(rset_func, variable, value)                                                         \
-	if (is_inside_tree() && get_tree()->has_network_peer() && get_tree()->is_network_server()) { \
-		rset_func;                                                                               \
-	}                                                                                            \
-	variable = value;
 
 class Entity : public Node {
 	GDCLASS(Entity, Node);

@@ -3289,6 +3289,10 @@ void Node::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_set_property_pinned", "property", "pinned"), &Node::set_property_pinned);
 #endif
 
+	ClassDB::bind_method(D_METHOD("has_network_peer"), &Node::has_network_peer);
+	ClassDB::bind_method(D_METHOD("is_network_server"), &Node::is_network_server);
+	ClassDB::bind_method(D_METHOD("is_network_client"), &Node::is_network_client);
+
 	ClassDB::bind_method(D_METHOD("sees_get", "index"), &Node::sees_get);
 	ClassDB::bind_method(D_METHOD("sees_remove_index", "index"), &Node::sees_remove_index);
 	ClassDB::bind_method(D_METHOD("sees_remove", "entity"), &Node::sees_remove);

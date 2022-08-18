@@ -512,6 +512,15 @@ public:
 	bool is_displayed_folded() const;
 
 	/* NETWORK */
+	_FORCE_INLINE_ bool has_network_peer() {
+		return is_inside_tree() && get_tree()->has_network_peer();
+	}
+	_FORCE_INLINE_ bool is_network_server() {
+		return is_inside_tree() && get_tree()->has_network_peer() && get_tree()->is_network_server();
+	}
+	_FORCE_INLINE_ bool is_network_client() {
+		return is_inside_tree() && get_tree()->has_network_peer() && !get_tree()->is_network_server();
+	}
 
 	Node *sees_get(int p_index);
 	void sees_remove_index(int p_index);
@@ -536,7 +545,7 @@ public:
 	void rpc_id(int p_peer_id, const StringName &p_method, VARIANT_ARG_LIST); //rpc call, honors RPCMode
 	void rpc_unreliable_id(int p_peer_id, const StringName &p_method, VARIANT_ARG_LIST); //rpc call, honors RPCMode
 	void vrpc(const StringName &p_method, VARIANT_ARG_LIST); //visibility rpc. Useful for implementing fog of war
-	void vrpc_unreliable(const StringName &p_method, VARIANT_ARG_LIST); 
+	void vrpc_unreliable(const StringName &p_method, VARIANT_ARG_LIST);
 
 	void rpcp(int p_peer_id, bool p_unreliable, const StringName &p_method, const Variant **p_arg, int p_argcount);
 
