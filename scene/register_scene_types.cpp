@@ -30,9 +30,10 @@
 
 #include "register_scene_types.h"
 
+#include "core/config/project_settings.h"
+#include "core/input/shortcut.h"
 #include "core/object/class_db.h"
 #include "core/os/os.h"
-#include "core/config/project_settings.h"
 #include "scene/2d/animated_sprite.h"
 #include "scene/2d/area_2d.h"
 #include "scene/2d/audio_stream_player_2d.h"
@@ -57,6 +58,7 @@
 #include "scene/2d/parallax_background.h"
 #include "scene/2d/parallax_layer.h"
 #include "scene/2d/path_2d.h"
+#include "scene/2d/physical_bone_2d.h"
 #include "scene/2d/physics_body_2d.h"
 #include "scene/2d/polygon_2d.h"
 #include "scene/2d/position_2d.h"
@@ -113,7 +115,6 @@
 #include "scene/gui/scroll_bar.h"
 #include "scene/gui/scroll_container.h"
 #include "scene/gui/separator.h"
-#include "core/input/shortcut.h"
 #include "scene/gui/slider.h"
 #include "scene/gui/spin_box.h"
 #include "scene/gui/split_container.h"
@@ -149,10 +150,10 @@
 #include "scene/resources/dynamic_font.h"
 #include "scene/resources/gradient.h"
 #include "scene/resources/height_map_shape.h"
+#include "scene/resources/immediate_mesh.h"
 #include "scene/resources/line_shape_2d.h"
 #include "scene/resources/material.h"
 #include "scene/resources/mesh.h"
-#include "scene/resources/immediate_mesh.h"
 #include "scene/resources/mesh_data_tool.h"
 #include "scene/resources/navigation_mesh.h"
 #include "scene/resources/packed_scene.h"
@@ -165,6 +166,15 @@
 #include "scene/resources/rectangle_shape_2d.h"
 #include "scene/resources/resource_format_text.h"
 #include "scene/resources/segment_shape_2d.h"
+#include "scene/resources/skeleton_modification_2d.h"
+#include "scene/resources/skeleton_modification_2d_ccdik.h"
+#include "scene/resources/skeleton_modification_2d_fabrik.h"
+#include "scene/resources/skeleton_modification_2d_jiggle.h"
+#include "scene/resources/skeleton_modification_2d_lookat.h"
+#include "scene/resources/skeleton_modification_2d_physicalbones.h"
+#include "scene/resources/skeleton_modification_2d_stackholder.h"
+#include "scene/resources/skeleton_modification_2d_twoboneik.h"
+#include "scene/resources/skeleton_modification_stack_2d.h"
 #include "scene/resources/skin.h"
 #include "scene/resources/sky.h"
 #include "scene/resources/sphere_shape.h"
@@ -564,6 +574,18 @@ void register_scene_types() {
 	ClassDB::register_class<ParallaxLayer>();
 	ClassDB::register_class<TouchScreenButton>();
 	ClassDB::register_class<RemoteTransform2D>();
+
+	ClassDB::register_class<SkeletonModificationStack2D>();
+	ClassDB::register_class<SkeletonModification2D>();
+	ClassDB::register_class<SkeletonModification2DLookAt>();
+	ClassDB::register_class<SkeletonModification2DCCDIK>();
+	ClassDB::register_class<SkeletonModification2DFABRIK>();
+	ClassDB::register_class<SkeletonModification2DJiggle>();
+	ClassDB::register_class<SkeletonModification2DTwoBoneIK>();
+	ClassDB::register_class<SkeletonModification2DStackHolder>();
+
+	ClassDB::register_class<PhysicalBone2D>();
+	ClassDB::register_class<SkeletonModification2DPhysicalBones>();
 
 	OS::get_singleton()->yield(); //may take time to init
 

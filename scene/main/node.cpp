@@ -40,8 +40,8 @@
 #include "scene/scene_string_names.h"
 #include "viewport.h"
 
-#include "core/object/class_db.h"
 #include "core/config/project_settings.h"
+#include "core/object/class_db.h"
 #include "core/object/script_language.h"
 
 #ifdef TOOLS_ENABLED
@@ -3143,6 +3143,9 @@ void Node::_bind_methods() {
 	BIND_CONSTANT(NOTIFICATION_INTERNAL_PHYSICS_PROCESS);
 	BIND_CONSTANT(NOTIFICATION_POST_ENTER_TREE);
 	BIND_CONSTANT(NOTIFICATION_RESET_PHYSICS_INTERPOLATION);
+
+	BIND_CONSTANT(NOTIFICATION_EDITOR_PRE_SAVE);
+	BIND_CONSTANT(NOTIFICATION_EDITOR_POST_SAVE);
 
 	BIND_CONSTANT(NOTIFICATION_WM_MOUSE_ENTER);
 	BIND_CONSTANT(NOTIFICATION_WM_MOUSE_EXIT);

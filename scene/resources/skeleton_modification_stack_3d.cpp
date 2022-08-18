@@ -223,6 +223,7 @@ void SkeletonModificationStack3D::_bind_methods() {
 }
 
 SkeletonModificationStack3D::SkeletonModificationStack3D() {
+	modifications_count = 0;
 }
 
 SkeletonModificationStack3D::~SkeletonModificationStack3D() {
