@@ -49,9 +49,12 @@ public:
 	TextFileEditor *window;
 
 protected:
+	void _on_filesystem_dock_entry_pressed(int id);
+
 	static void _bind_methods();
 
 	Ref<Texture> _icon;
+	int _filesystem_dock_entry_id;
 };
 
 #endif
