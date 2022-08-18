@@ -30,33 +30,26 @@
 
 #include "filesystem_dock.h"
 
-#include "core/io/resource_loader.h"
-#include "core/os/dir_access.h"
-#include "core/os/file_access.h"
-#include "core/input/input.h"
-#include "core/os/keyboard.h"
-#include "core/os/os.h"
 #include "core/config/project_settings.h"
-#include "editor_node.h"
-#include "editor_resource_preview.h"
-#include "editor_scale.h"
-#include "editor_settings.h"
-#include "import_dock.h"
-#include "scene/main/viewport.h"
-#include "scene/resources/packed_scene.h"
-#include "core/variant/array.h"
-#include "core/object/class_db.h"
-#include "core/math/color.h"
-#include "core/variant/dictionary.h"
 #include "core/error/error_list.h"
 #include "core/error/error_macros.h"
-#include "core/io/config_file.h"
-#include "core/io/resource_saver.h"
+#include "core/input/input.h"
 #include "core/input/input_event.h"
-#include "core/os/memory.h"
-#include "core/string/print_string.h"
+#include "core/io/config_file.h"
+#include "core/io/resource_loader.h"
+#include "core/io/resource_saver.h"
+#include "core/math/color.h"
+#include "core/object/class_db.h"
 #include "core/object/resource.h"
+#include "core/os/dir_access.h"
+#include "core/os/file_access.h"
+#include "core/os/keyboard.h"
+#include "core/os/memory.h"
+#include "core/os/os.h"
+#include "core/string/print_string.h"
 #include "core/typedefs.h"
+#include "core/variant/array.h"
+#include "core/variant/dictionary.h"
 #include "editor/create_dialog.h"
 #include "editor/dependency_editor.h"
 #include "editor/editor_data.h"
@@ -64,6 +57,11 @@
 #include "editor/editor_file_system.h"
 #include "editor/scene_tree_dock.h"
 #include "editor/script_create_dialog.h"
+#include "editor_node.h"
+#include "editor_resource_preview.h"
+#include "editor_scale.h"
+#include "editor_settings.h"
+#include "import_dock.h"
 #include "scene/gui/button.h"
 #include "scene/gui/control.h"
 #include "scene/gui/dialogs.h"
@@ -78,6 +76,8 @@
 #include "scene/gui/tree.h"
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
+#include "scene/main/viewport.h"
+#include "scene/resources/packed_scene.h"
 #include "scene/resources/texture.h"
 
 Ref<Texture> FileSystemDock::_get_tree_item_icon(bool p_is_valid, String p_file_type) {
@@ -1946,6 +1946,12 @@ void FileSystemDock::_file_option(int p_option, const Vector<String> &p_selected
 		case FILE_NEW_RESOURCE: {
 			new_resource_dialog->popup_create(true);
 		} break;
+
+		default: {
+			if (p_option >= FILE_NEW_CUSTOM_ENTRY_START) {
+				emit_signal("custom_popup_creation_entry_pressed", p_option);
+			}
+		} break;
 	}
 }
 
@@ -2038,6 +2044,36 @@ void FileSystemDock::set_file_list_display_mode(FileListDisplayMode p_mode) {
 	}
 
 	_toggle_file_display();
+}
+
+int FileSystemDock::add_custom_popup_creation_entry(const String &entry_text, const String &theme_icon_name, const String &theme_icon_category) {
+	int current_max_id = FILE_NEW_CUSTOM_ENTRY_START;
+
+	for (int i = 0; i < _custom_popup_creation_entries.size(); ++i) {
+		if (_custom_popup_creation_entries[i].id > current_max_id) {
+			current_max_id = _custom_popup_creation_entries[i].id;
+		}
+	}
+
+	++current_max_id;
+
+	CustomPopupCreationEntry e;
+	e.entry_text = entry_text;
+	e.theme_icon_name = theme_icon_name;
+	e.theme_icon_category = theme_icon_category;
+	e.id = current_max_id;
+
+	_custom_popup_creation_entries.push_back(e);
+
+	return current_max_id;
+}
+void FileSystemDock::remove_custom_popup_creation_entry(const int id) {
+	for (int i = 0; i < _custom_popup_creation_entries.size(); ++i) {
+		if (_custom_popup_creation_entries[i].id == id) {
+			_custom_popup_creation_entries.remove(i);
+			return;
+		}
+	}
 }
 
 Variant FileSystemDock::get_drag_data_fw(const Point2 &p_point, Control *p_from) {
@@ -2469,6 +2505,17 @@ void FileSystemDock::_file_and_folders_fill_popup(PopupMenu *p_popup, Vector<Str
 			p_popup->add_icon_item(get_theme_icon("PackedScene", "EditorIcons"), TTR("New Scene..."), FILE_NEW_SCENE);
 			p_popup->add_icon_item(get_theme_icon("Script", "EditorIcons"), TTR("New Script..."), FILE_NEW_SCRIPT);
 			p_popup->add_icon_item(get_theme_icon("Object", "EditorIcons"), TTR("New Resource..."), FILE_NEW_RESOURCE);
+
+			for (int i = 0; i < _custom_popup_creation_entries.size(); ++i) {
+				CustomPopupCreationEntry e = _custom_popup_creation_entries[i];
+
+				if (!e.theme_icon_name.empty()) {
+					p_popup->add_icon_item(get_theme_icon(e.theme_icon_name, e.theme_icon_category), TTR(e.entry_text), e.id);
+				} else {
+					p_popup->add_icon_item(get_theme_icon("Object", "EditorIcons"), TTR(e.entry_text), e.id);
+				}
+			}
+
 			p_popup->add_separator();
 		}
 
@@ -2803,6 +2850,8 @@ void FileSystemDock::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("folder_moved", PropertyInfo(Variant::STRING, "old_folder"), PropertyInfo(Variant::STRING, "new_file")));
 
 	ADD_SIGNAL(MethodInfo("display_mode_changed"));
+
+	ADD_SIGNAL(MethodInfo("custom_popup_creation_entry_pressed", PropertyInfo(Variant::INT, "id")));
 }
 
 FileSystemDock::FileSystemDock(EditorNode *p_editor) {

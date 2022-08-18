@@ -34,18 +34,18 @@
 
 #include "scene/gui/split_container.h"
 
-#include "core/os/dir_access.h"
-#include "core/os/thread.h"
 #include "core/containers/list.h"
 #include "core/containers/map.h"
+#include "core/containers/set.h"
+#include "core/containers/vector.h"
 #include "core/math/vector2.h"
 #include "core/object/object.h"
 #include "core/object/reference.h"
-#include "core/containers/set.h"
+#include "core/os/dir_access.h"
+#include "core/os/thread.h"
 #include "core/string/string_name.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
-#include "core/containers/vector.h"
 
 class EditorNode;
 class Button;
@@ -95,7 +95,7 @@ public:
 
 private:
 	enum FileMenu {
-		FILE_OPEN,
+		FILE_OPEN = 0,
 		FILE_INHERIT,
 		FILE_MAIN_SCENE,
 		FILE_INSTANCE,
@@ -117,6 +117,7 @@ private:
 		FILE_NEW_RESOURCE,
 		FOLDER_EXPAND_ALL,
 		FOLDER_COLLAPSE_ALL,
+		FILE_NEW_CUSTOM_ENTRY_START,
 	};
 
 	FileSortOption file_sort = FILE_SORT_NAME;
@@ -187,6 +188,7 @@ private:
 				path(p_path),
 				is_file(p_is_file) {}
 	};
+
 	FileOrFolder to_rename;
 	FileOrFolder to_duplicate;
 	Vector<FileOrFolder> to_move;
@@ -314,6 +316,15 @@ private:
 
 	Vector<String> _remove_self_included_paths(Vector<String> selected_strings);
 
+	struct CustomPopupCreationEntry {
+		String entry_text;
+		String theme_icon_name;
+		String theme_icon_category;
+		int id;
+	};
+
+	Vector<CustomPopupCreationEntry> _custom_popup_creation_entries;
+
 protected:
 	void _notification(int p_what);
 	static void _bind_methods();
@@ -338,7 +349,10 @@ public:
 	FileSortOption get_file_sort() { return file_sort; }
 
 	void set_file_list_display_mode(FileListDisplayMode p_mode);
-	FileListDisplayMode get_file_list_display_mode() { return file_list_display_mode; };
+	FileListDisplayMode get_file_list_display_mode() { return file_list_display_mode; }
+
+	int add_custom_popup_creation_entry(const String &entry_text, const String &theme_icon_name = "", const String &theme_icon_category = "");
+	void remove_custom_popup_creation_entry(const int id);
 
 	FileSystemDock(EditorNode *p_editor);
 	~FileSystemDock();
