@@ -118,8 +118,12 @@ private:
 
 		Node *pause_owner;
 
+		// Networking
 		int network_master;
 		Map<StringName, MultiplayerAPI::RPCMode> rpc_methods;
+		//Used by vrpc
+		Vector<Node *> _sees;
+		Vector<Node *> _seen_by;
 
 		int process_priority;
 
@@ -210,6 +214,8 @@ private:
 	Variant _rpc_unreliable_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error);
 	Variant _rpc_id_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error);
 	Variant _rpc_unreliable_id_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error);
+	Variant _vrpc_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error);
+	Variant _vrpc_unreliable_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error);
 
 	friend class SceneTree;
 
@@ -504,7 +510,20 @@ public:
 
 	void set_display_folded(bool p_folded);
 	bool is_displayed_folded() const;
+
 	/* NETWORK */
+
+	Node *sees_get(int p_index);
+	void sees_remove_index(int p_index);
+	void sees_remove(Node *p_node);
+	void sees_add(Node *p_node);
+	int sees_get_count();
+
+	Node *seen_by_get(int p_index);
+	void seen_by_remove_index(int p_index);
+	void seen_by_remove(Node *p_node);
+	void seen_by_add(Node *p_node);
+	int seen_by_get_count();
 
 	void set_network_master(int p_peer_id, bool p_recursive = true);
 	int get_network_master() const;
@@ -516,6 +535,8 @@ public:
 	void rpc_unreliable(const StringName &p_method, VARIANT_ARG_LIST); //rpc call, honors RPCMode
 	void rpc_id(int p_peer_id, const StringName &p_method, VARIANT_ARG_LIST); //rpc call, honors RPCMode
 	void rpc_unreliable_id(int p_peer_id, const StringName &p_method, VARIANT_ARG_LIST); //rpc call, honors RPCMode
+	void vrpc(const StringName &p_method, VARIANT_ARG_LIST); //visibility rpc. Useful for implementing fog of war
+	void vrpc_unreliable(const StringName &p_method, VARIANT_ARG_LIST); 
 
 	void rpcp(int p_peer_id, bool p_unreliable, const StringName &p_method, const Variant **p_arg, int p_argcount);
 

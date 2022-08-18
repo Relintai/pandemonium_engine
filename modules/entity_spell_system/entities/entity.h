@@ -1060,25 +1060,6 @@ public:
 	virtual void _from_dict(const Dictionary &dict);
 
 	// Networking
-	Entity *sees_gets(int index);
-	void sees_removes_index(int index);
-	void sees_removes(Entity *entity);
-	void sees_removes_bind(Node *entity);
-	void sees_adds(Entity *entity);
-	void sees_adds_bind(Node *entity);
-	int sees_gets_count();
-
-	Entity *seen_by_gets(int index);
-	void seen_by_removes_index(int index);
-	void seen_by_removes(Entity *entity);
-	void seen_by_removes_bind(Node *entity);
-	void seen_by_adds(Entity *entity);
-	void seen_by_adds_bind(Node *entity);
-	int seen_by_gets_count();
-
-	void vrpc(const StringName &p_method, VARIANT_ARG_LIST);
-	Variant _vrpc_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error);
-
 	Dictionary data_as_dict(String &data);
 
 	void register_for_physics_process(Ref<SpellCastInfo> info);
@@ -1325,11 +1306,6 @@ private:
 
 	Vector<Entity *> _s_pets;
 	Vector<Entity *> _c_pets;
-
-	// Networking
-
-	Vector<Entity *> _s_sees;
-	Vector<Entity *> _s_seen_by;
 
 	// Callbacks
 

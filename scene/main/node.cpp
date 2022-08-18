@@ -113,6 +113,17 @@ void Node::_notification(int p_notification) {
 			get_tree()->node_count--;
 			orphan_node_count++;
 
+			for (int i = 0; i < data._seen_by.size(); ++i) {
+				Node *n = data._seen_by.get(i);
+
+				if (ObjectDB::instance_validate(n)) {
+					n->sees_remove(this);
+				}
+			}
+
+			data._seen_by.clear();
+			data._sees.clear();
+
 			if (data.input) {
 				remove_from_group("_vp_input" + itos(get_viewport()->get_instance_id()));
 			}
@@ -557,6 +568,78 @@ void Node::_propagate_groups_dirty() {
 	}
 }
 
+Node *Node::sees_get(int p_index) {
+	ERR_FAIL_INDEX_V(p_index, data._sees.size(), NULL);
+
+	return data._sees.get(p_index);
+}
+void Node::sees_remove_index(int p_index) {
+	ERR_FAIL_INDEX(p_index, data._sees.size());
+
+	Node *e = data._sees.get(p_index);
+
+	if (unlikely(!ObjectDB::instance_validate(e))) {
+		data._sees.remove(p_index);
+		return;
+	}
+
+	e->seen_by_remove(this);
+
+	data._sees.remove(p_index);
+}
+void Node::sees_remove(Node *p_node) {
+	if (unlikely(!ObjectDB::instance_validate(p_node))) {
+		data._sees.erase(p_node);
+		return;
+	}
+
+	p_node->seen_by_remove(this);
+
+	data._sees.erase(p_node);
+}
+void Node::sees_add(Node *p_node) {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(p_node));
+
+	p_node->seen_by_add(this);
+
+	for (int i = 0; i < data._sees.size(); ++i) {
+		if (data._sees.get(i) == p_node)
+			return;
+	}
+
+	data._sees.push_back(p_node);
+}
+int Node::sees_get_count() {
+	return data._sees.size();
+}
+
+Node *Node::seen_by_get(int p_index) {
+	ERR_FAIL_INDEX_V(p_index, data._seen_by.size(), NULL);
+
+	return data._seen_by.get(p_index);
+}
+void Node::seen_by_remove_index(int p_index) {
+	ERR_FAIL_INDEX(p_index, data._sees.size());
+
+	data._seen_by.remove(p_index);
+}
+void Node::seen_by_remove(Node *p_node) {
+	data._seen_by.erase(p_node);
+}
+void Node::seen_by_add(Node *p_node) {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(p_node));
+
+	for (int i = 0; i < data._seen_by.size(); ++i) {
+		if (data._seen_by.get(i) == p_node)
+			return;
+	}
+
+	data._seen_by.push_back(p_node);
+}
+int Node::seen_by_get_count() {
+	return data._seen_by.size();
+}
+
 void Node::set_network_master(int p_peer_id, bool p_recursive) {
 	data.network_master = p_peer_id;
 
@@ -643,6 +726,68 @@ void Node::rpc_unreliable_id(int p_peer_id, const StringName &p_method, VARIANT_
 	}
 
 	rpcp(p_peer_id, true, p_method, argptr, argc);
+}
+
+void Node::vrpc(const StringName &p_method, VARIANT_ARG_DECLARE) {
+	VARIANT_ARGPTRS;
+
+	int argc = 0;
+	for (int i = 0; i < VARIANT_ARG_MAX; i++) {
+		if (argptr[i]->get_type() == Variant::NIL)
+			break;
+		argc++;
+	}
+
+	for (int i = 0; i < data._seen_by.size(); ++i) {
+		Node *e = data._seen_by.get(i);
+
+		if (unlikely(!ObjectDB::instance_validate(e))) {
+			data._seen_by.remove(i);
+			--i;
+			continue;
+		}
+
+		int netm = e->get_network_master();
+
+		if (netm != 1) {
+			rpcp(netm, false, p_method, argptr, argc);
+		}
+	}
+
+	if (get_network_master() != 1) {
+		rpcp(get_network_master(), false, p_method, argptr, argc);
+	}
+}
+
+void Node::vrpc_unreliable(const StringName &p_method, VARIANT_ARG_DECLARE) {
+	VARIANT_ARGPTRS;
+
+	int argc = 0;
+	for (int i = 0; i < VARIANT_ARG_MAX; i++) {
+		if (argptr[i]->get_type() == Variant::NIL)
+			break;
+		argc++;
+	}
+
+	for (int i = 0; i < data._seen_by.size(); ++i) {
+		Node *e = data._seen_by.get(i);
+
+		if (unlikely(!ObjectDB::instance_validate(e))) {
+			data._seen_by.remove(i);
+			--i;
+			continue;
+		}
+
+		int netm = e->get_network_master();
+
+		if (netm != 1) {
+			rpcp(netm, true, p_method, argptr, argc);
+		}
+	}
+
+	if (get_network_master() != 1) {
+		rpcp(get_network_master(), true, p_method, argptr, argc);
+	}
 }
 
 Variant Node::_rpc_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
@@ -746,6 +891,88 @@ Variant Node::_rpc_unreliable_id_bind(const Variant **p_args, int p_argcount, Va
 	rpcp(peer_id, true, method, &p_args[2], p_argcount - 2);
 
 	r_error.error = Variant::CallError::CALL_OK;
+	return Variant();
+}
+
+Variant Node::_vrpc_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
+	if (p_argcount < 1) {
+		r_error.error = Variant::CallError::CALL_ERROR_TOO_FEW_ARGUMENTS;
+
+		r_error.argument = 1;
+		return Variant();
+	}
+
+	if (p_args[0]->get_type() != Variant::STRING) {
+		r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
+
+		r_error.argument = 0;
+		r_error.expected = Variant::STRING;
+		return Variant();
+	}
+
+	StringName method = *p_args[0];
+
+	for (int i = 0; i < data._seen_by.size(); ++i) {
+		Node *e = data._seen_by.get(i);
+
+		if (unlikely(!ObjectDB::instance_validate(e))) {
+			data._seen_by.remove(i);
+			--i;
+			continue;
+		}
+
+		int netm = e->get_network_master();
+
+		if (netm != 1) {
+			rpcp(netm, false, method, &p_args[1], p_argcount - 1);
+		}
+	}
+
+	//call(method, &p_args[1], p_argcount - 1);
+
+	r_error.error = Variant::CallError::CALL_OK;
+
+	return Variant();
+}
+
+Variant Node::_vrpc_unreliable_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
+	if (p_argcount < 1) {
+		r_error.error = Variant::CallError::CALL_ERROR_TOO_FEW_ARGUMENTS;
+
+		r_error.argument = 1;
+		return Variant();
+	}
+
+	if (p_args[0]->get_type() != Variant::STRING) {
+		r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
+
+		r_error.argument = 0;
+		r_error.expected = Variant::STRING;
+		return Variant();
+	}
+
+	StringName method = *p_args[0];
+
+	for (int i = 0; i < data._seen_by.size(); ++i) {
+		Node *e = data._seen_by.get(i);
+
+		if (unlikely(!ObjectDB::instance_validate(e))) {
+			data._seen_by.remove(i);
+			--i;
+			continue;
+		}
+
+		int netm = e->get_network_master();
+
+		if (netm != 1) {
+			rpcp(netm, true, method, &p_args[1], p_argcount - 1);
+		}
+	}
+
+	//call(method, &p_args[1], p_argcount - 1);
+
+	r_error.error = Variant::CallError::CALL_OK;
+
 	return Variant();
 }
 
@@ -3062,6 +3289,18 @@ void Node::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_set_property_pinned", "property", "pinned"), &Node::set_property_pinned);
 #endif
 
+	ClassDB::bind_method(D_METHOD("sees_get", "index"), &Node::sees_get);
+	ClassDB::bind_method(D_METHOD("sees_remove_index", "index"), &Node::sees_remove_index);
+	ClassDB::bind_method(D_METHOD("sees_remove", "entity"), &Node::sees_remove);
+	ClassDB::bind_method(D_METHOD("sees_add", "entity"), &Node::sees_add);
+	ClassDB::bind_method(D_METHOD("sees_get_count"), &Node::sees_get_count);
+
+	ClassDB::bind_method(D_METHOD("seen_by_get", "index"), &Node::seen_by_get);
+	ClassDB::bind_method(D_METHOD("seen_by_remove_index", "index"), &Node::seen_by_remove_index);
+	ClassDB::bind_method(D_METHOD("seen_by_remove", "entity"), &Node::seen_by_remove);
+	ClassDB::bind_method(D_METHOD("seen_by_add", "entity"), &Node::seen_by_add);
+	ClassDB::bind_method(D_METHOD("seen_by_get_count"), &Node::seen_by_get_count);
+
 	ClassDB::bind_method(D_METHOD("set_unique_name_in_owner", "enable"), &Node::set_unique_name_in_owner);
 	ClassDB::bind_method(D_METHOD("is_unique_name_in_owner"), &Node::is_unique_name_in_owner);
 
@@ -3074,6 +3313,10 @@ void Node::_bind_methods() {
 		ClassDB::bind_vararg_method(METHOD_FLAGS_DEFAULT, "rpc", &Node::_rpc_bind, mi);
 		mi.name = "rpc_unreliable";
 		ClassDB::bind_vararg_method(METHOD_FLAGS_DEFAULT, "rpc_unreliable", &Node::_rpc_unreliable_bind, mi);
+		mi.name = "vrpc";
+		ClassDB::bind_vararg_method(METHOD_FLAGS_DEFAULT, "vrpc", &Node::_vrpc_bind, mi);
+		mi.name = "vrpc_unreliable";
+		ClassDB::bind_vararg_method(METHOD_FLAGS_DEFAULT, "vrpc_unreliable", &Node::_vrpc_bind, mi);
 
 		mi.arguments.push_front(PropertyInfo(Variant::INT, "peer_id"));
 
@@ -3228,6 +3471,9 @@ Node::~Node() {
 	data.grouped.clear();
 	data.owned.clear();
 	data.children.clear();
+
+	data._sees.clear();
+	data._seen_by.clear();
 
 	ERR_FAIL_COND(data.parent);
 	ERR_FAIL_COND(data.children.size());

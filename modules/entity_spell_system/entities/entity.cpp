@@ -961,8 +961,8 @@ void Entity::pet_adds(Entity *entity) {
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	//the owner always want to see his pet, and you pet will always want to see the owner
-	sees_adds(entity);
-	entity->sees_adds(this);
+	sees_add(entity);
+	entity->sees_add(this);
 
 	entity->pet_sets_owner(this);
 
@@ -995,7 +995,7 @@ void Entity::pet_removes_index(int index) {
 
 	_s_pets.remove(index);
 
-	sees_removes(entity);
+	sees_remove(entity);
 
 	for (int i = 0; i < _s_pets.size(); ++i) {
 		Entity *pet = _s_pets.get(index);
@@ -3316,7 +3316,7 @@ void Entity::aura_removes(Ref<AuraData> aura) {
 
 	if (removed) {
 		notification_saura(SpellEnums::NOTIFICATION_AURA_REMOVED, a);
-		
+
 		ERR_FAIL_COND(!aura->get_aura().is_valid());
 		if (!aura->get_aura()->aura_get_hide()) {
 			VRPCOBJ(aura_removec_rpc, JSON::print(aura->to_dict()), aura_removec, aura);
@@ -5702,176 +5702,6 @@ String Entity::random_name() {
 
 //Networking
 
-Entity *Entity::sees_gets(int index) {
-	ERR_FAIL_INDEX_V(index, _s_sees.size(), NULL);
-
-	return _s_sees.get(index);
-}
-void Entity::sees_removes_index(int index) {
-	ERR_FAIL_INDEX(index, _s_sees.size());
-
-	Entity *e = _s_sees.get(index);
-
-	if (unlikely(!ObjectDB::instance_validate(e))) {
-		_s_sees.remove(index);
-		return;
-	}
-
-	e->seen_by_removes(this);
-
-	_s_sees.remove(index);
-}
-void Entity::sees_removes(Entity *entity) {
-	if (unlikely(!ObjectDB::instance_validate(entity))) {
-		_s_sees.erase(entity);
-		return;
-	}
-
-	entity->seen_by_removes(this);
-
-	_s_sees.erase(entity);
-}
-void Entity::sees_removes_bind(Node *entity) {
-	Entity *e = Object::cast_to<Entity>(entity);
-
-	ERR_FAIL_COND(!e);
-
-	sees_removes(e);
-}
-void Entity::sees_adds(Entity *entity) {
-	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
-
-	entity->seen_by_adds(this);
-
-	for (int i = 0; i < _s_sees.size(); ++i) {
-		if (_s_sees.get(i) == entity)
-			return;
-	}
-
-	_s_sees.push_back(entity);
-}
-void Entity::sees_adds_bind(Node *entity) {
-	Entity *e = Object::cast_to<Entity>(entity);
-
-	ERR_FAIL_COND(!e);
-
-	sees_adds(e);
-}
-int Entity::sees_gets_count() {
-	return _s_sees.size();
-}
-
-Entity *Entity::seen_by_gets(int index) {
-	ERR_FAIL_INDEX_V(index, _s_seen_by.size(), NULL);
-
-	return _s_seen_by.get(index);
-}
-void Entity::seen_by_removes_index(int index) {
-	ERR_FAIL_INDEX(index, _s_sees.size());
-	
-	_s_seen_by.remove(index);
-}
-void Entity::seen_by_removes(Entity *entity) {
-	_s_seen_by.erase(entity);
-}
-void Entity::seen_by_removes_bind(Node *entity) {
-	Entity *e = Object::cast_to<Entity>(entity);
-
-	ERR_FAIL_COND(!e);
-
-	seen_by_removes(e);
-}
-void Entity::seen_by_adds(Entity *entity) {
-	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
-
-	for (int i = 0; i < _s_seen_by.size(); ++i) {
-		if (_s_seen_by.get(i) == entity)
-			return;
-	}
-
-	_s_seen_by.push_back(entity);
-}
-void Entity::seen_by_adds_bind(Node *entity) {
-	Entity *e = Object::cast_to<Entity>(entity);
-
-	ERR_FAIL_COND(!e);
-
-	seen_by_adds(e);
-}
-
-int Entity::seen_by_gets_count() {
-	return _s_seen_by.size();
-}
-
-void Entity::vrpc(const StringName &p_method, VARIANT_ARG_DECLARE) {
-	VARIANT_ARGPTRS;
-
-	int argc = 0;
-	for (int i = 0; i < VARIANT_ARG_MAX; i++) {
-		if (argptr[i]->get_type() == Variant::NIL)
-			break;
-		argc++;
-	}
-
-	for (int i = 0; i < _s_seen_by.size(); ++i) {
-		Entity *e = _s_seen_by.get(i);
-
-		if (unlikely(!ObjectDB::instance_validate(e))) {
-			_s_seen_by.remove(i);
-			--i;
-			continue;
-		}
-
-		int netm = e->get_network_master();
-
-		if (netm != 1)
-			rpcp(netm, false, p_method, argptr, argc);
-	}
-
-	if (get_network_master() != 1)
-		rpcp(get_network_master(), false, p_method, argptr, argc);
-}
-
-Variant Entity::_vrpc_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
-	if (p_argcount < 1) {
-		r_error.error = Variant::CallError::CALL_ERROR_TOO_FEW_ARGUMENTS;
-
-		r_error.argument = 1;
-		return Variant();
-	}
-
-	if (p_args[0]->get_type() != Variant::STRING) {
-		r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
-
-		r_error.argument = 0;
-		r_error.expected = Variant::STRING;
-		return Variant();
-	}
-
-	StringName method = *p_args[0];
-
-	for (int i = 0; i < _s_seen_by.size(); ++i) {
-		Entity *e = _s_seen_by.get(i);
-
-		if (unlikely(!ObjectDB::instance_validate(e))) {
-			_s_seen_by.remove(i);
-			--i;
-			continue;
-		}
-
-		int netm = e->get_network_master();
-
-		if (netm != 1)
-			rpcp(netm, false, method, &p_args[1], p_argcount - 1);
-	}
-
-	//call(method, &p_args[1], p_argcount - 1);
-
-	r_error.error = Variant::CallError::CALL_OK;
-
-	return Variant();
-}
-
 Dictionary Entity::data_as_dict(String &data) {
 	Error err;
 	String err_txt;
@@ -6229,9 +6059,6 @@ Entity::~Entity() {
 	_c_equipment.clear();
 
 	_action_bar_profile.unref();
-
-	_s_sees.clear();
-	_s_seen_by.clear();
 
 	_s_ai.unref();
 
@@ -6622,14 +6449,6 @@ void Entity::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_PHYSICS_PROCESS: {
 			son_physics_process(get_physics_process_delta_time());
-		} break;
-		case NOTIFICATION_EXIT_TREE: {
-			for (int i = 0; i < _s_seen_by.size(); ++i) {
-				Entity *e = _s_seen_by.get(i);
-
-				if (ObjectDB::instance_validate(e))
-					e->sees_removes(this);
-			}
 		} break;
 	}
 }
@@ -7838,26 +7657,6 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &Entity::_from_dict);
 	ClassDB::bind_method(D_METHOD("_to_dict"), &Entity::_to_dict);
-
-	//Networking
-	ClassDB::bind_method(D_METHOD("sees_gets", "index"), &Entity::sees_gets);
-	ClassDB::bind_method(D_METHOD("sees_removes_index", "index"), &Entity::sees_removes_index);
-	ClassDB::bind_method(D_METHOD("sees_removes", "entity"), &Entity::sees_removes_bind);
-	ClassDB::bind_method(D_METHOD("sees_adds", "entity"), &Entity::sees_adds_bind);
-	ClassDB::bind_method(D_METHOD("sees_gets_count"), &Entity::sees_gets_count);
-
-	ClassDB::bind_method(D_METHOD("seen_by_gets", "index"), &Entity::seen_by_gets);
-	ClassDB::bind_method(D_METHOD("seen_by_removes_index", "index"), &Entity::seen_by_removes_index);
-	ClassDB::bind_method(D_METHOD("seen_by_removes", "entity"), &Entity::seen_by_removes_bind);
-	ClassDB::bind_method(D_METHOD("seen_by_adds", "entity"), &Entity::seen_by_adds_bind);
-	ClassDB::bind_method(D_METHOD("seen_by_gets_count"), &Entity::seen_by_gets_count);
-
-	MethodInfo mi;
-
-	mi.arguments.push_back(PropertyInfo(Variant::STRING, "method"));
-
-	mi.name = "vrpc";
-	ClassDB::bind_vararg_method(METHOD_FLAGS_DEFAULT, "vrpc", &Entity::_vrpc_bind, mi);
 
 	ClassDB::bind_method(D_METHOD("register_for_physics_process", "info"), &Entity::register_for_physics_process);
 
