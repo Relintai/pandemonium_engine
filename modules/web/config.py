@@ -60,8 +60,6 @@ def get_doc_classes():
 
 	    "MarkdownRenderer",
 
-        "WebServerSimple",
-
         "StaticWebPage",
         "StaticWebPageFile",
         "StaticWebPageFolderFiles",

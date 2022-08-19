@@ -37,7 +37,7 @@
 #include "core/io/zip_io.h"
 #include "core/os/mutex.h"
 
-#include "../http/web_server.h"
+#include "modules/web/http/web_server.h"
 
 #include "core/config/project_settings.h"
 

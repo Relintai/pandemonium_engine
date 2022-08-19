@@ -40,13 +40,6 @@ sources = [
     "html/libs/hoedown/version.c",
     "html/markdown_renderer.cpp",
 
-    "http_server_simple/http_server_simple.cpp",
-    "http_server_simple/web_server_simple.cpp",
-    "http_server_simple/simple_web_server_request.cpp",
-    "http_server_simple/http_parser.cpp",
-    "http_server_simple/http_writer.cpp",
-    "http_server_simple/http_parser/http_parser.c",
-
     "nodes/static_pages/static_web_page.cpp",
     "nodes/static_pages/static_web_page_file.cpp",
     "nodes/static_pages/static_web_page_folder_files.cpp",

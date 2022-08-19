@@ -41,7 +41,7 @@
 
 #include "core/config/project_settings.h"
 
-#include "../http/http_server_enums.h"
+#include "modules/web/http/http_server_enums.h"
 
 class HTTPParser;
 class WebServerSimple;

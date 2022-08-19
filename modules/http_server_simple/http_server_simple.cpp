@@ -30,7 +30,7 @@
 
 #include "http_server_simple.h"
 
-#include "../http/web_server_cookie.h"
+#include "modules/web/http/web_server_cookie.h"
 #include "http_parser.h"
 #include "simple_web_server_request.h"
 #include "web_server_simple.h"

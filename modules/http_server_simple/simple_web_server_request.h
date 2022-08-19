@@ -6,9 +6,9 @@
 #include "core/string/ustring.h"
 #include "core/containers/vector.h"
 
-#include "../http/web_server_request.h"
+#include "modules/web/http/web_server_request.h"
 
-#include "../http/http_server_enums.h"
+#include "modules/web/http/http_server_enums.h"
 
 class WebServer;
 class WebServerCookie;
