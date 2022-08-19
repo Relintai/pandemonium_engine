@@ -219,3 +219,16 @@ Also it should be expanded on, for the apis that returns arrays and dicts. Maybe
 just write results directly to the passed parameter classes, so no allocations occur.
 
 https://github.com/godotengine/godot/commit/acbd24ea842cb90ab49cd66d5dc7220e57c73f29
+
+##  Remove redundant thread sync counter draw_pending
+
+The functions that used it already use a threadsafe FIFO queue
+to communicate between threads and a sync to have the main thread
+wait for the render thread.
+
+Fixes #35718
+
+The bugfix is likely needed, however I did not move physics interpolation out of scenario, 
+so this one needs more thought.
+
+https://github.com/godotengine/godot/commit/9fbdace917026b04d638c03b2f991ae4ace33a9d
