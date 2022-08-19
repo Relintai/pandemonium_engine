@@ -65,6 +65,7 @@ void MDIEdPlugin::set_gizmo_visible(const bool visible) {
 	if (current_mesh_data_instance) {
 		Ref<MDIGizmo> g = get_gizmo_from(current_mesh_data_instance);
 		g->set_visible(visible);
+		current_mesh_data_instance->set_transform_gizmo_visible(!visible);
 	}
 }
 
