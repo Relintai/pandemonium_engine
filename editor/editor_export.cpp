@@ -30,19 +30,19 @@
 
 #include "editor_export.h"
 
-#include "core/object/class_db.h"
+#include "core/config/project_settings.h"
 #include "core/crypto/crypto_core.h"
 #include "core/error/error_macros.h"
 #include "core/io/config_file.h"
 #include "core/io/file_access_pack.h" // PACK_HEADER_MAGIC, PACK_FORMAT_VERSION
 #include "core/io/resource_loader.h"
 #include "core/io/zip_io.h"
+#include "core/object/class_db.h"
+#include "core/object/script_language.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"
-#include "core/config/project_settings.h"
-#include "core/object/script_language.h"
 #include "core/version.h"
 #include "core/version_generated.gen.h"
 #include "editor/editor_file_system.h"
@@ -1668,7 +1668,7 @@ Ref<Texture> EditorExportPlatformPC::get_logo() const {
 	return logo;
 }
 
-bool EditorExportPlatformPC::can_export(const Ref<EditorExportPreset> &p_preset, String &r_error, bool &r_missing_templates) const {
+bool EditorExportPlatformPC::has_valid_export_configuration(const Ref<EditorExportPreset> &p_preset, String &r_error, bool &r_missing_templates) const {
 	String err;
 	bool valid = false;
 
@@ -1698,6 +1698,28 @@ bool EditorExportPlatformPC::can_export(const Ref<EditorExportPreset> &p_preset,
 		r_error = err;
 	}
 	return valid;
+}
+
+bool EditorExportPlatformPC::has_valid_project_configuration(const Ref<EditorExportPreset> &p_preset, String &r_error) const {
+	return true;
+}
+
+bool EditorExportPlatform::can_export(const Ref<EditorExportPreset> &p_preset, String &r_error, bool &r_missing_templates) const {
+	String templates_error;
+	bool valid_export_configuration = has_valid_export_configuration(p_preset, templates_error, r_missing_templates);
+
+	String project_configuration_error;
+	bool valid_project_configuration = has_valid_project_configuration(p_preset, project_configuration_error);
+
+	if (!templates_error.empty()) {
+		r_error += templates_error;
+	}
+
+	if (!project_configuration_error.empty()) {
+		r_error += project_configuration_error;
+	}
+
+	return valid_export_configuration && valid_project_configuration;
 }
 
 List<String> EditorExportPlatformPC::get_binary_extensions(const Ref<EditorExportPreset> &p_preset) const {
