@@ -544,8 +544,6 @@ public:
 		TOOL_UNGROUP_SELECTED,
 		TOOL_CONVERT_ROOMS,
 
-		TOOL_MODE_EXTERNAL,
-
 		TOOL_MAX
 	};
 
@@ -556,15 +554,6 @@ public:
 		TOOL_OPT_OVERRIDE_CAMERA,
 		TOOL_OPT_MAX
 
-	};
-
-	enum ExternalToolMode {
-
-		EX_TOOL_MODE_SELECT,
-		EX_TOOL_MODE_MOVE,
-		EX_TOOL_MODE_ROTATE,
-		EX_TOOL_MODE_SCALE,
-		EX_TOOL_MAX
 	};
 
 private:
@@ -640,7 +629,6 @@ private:
 		MENU_GROUP_SELECTED,
 		MENU_UNGROUP_SELECTED,
 		MENU_TOOL_CONVERT_ROOMS,
-		MENU_TOOL_EXTERNAL,
 		MENU_TOOL_LOCAL_COORDS,
 		MENU_TOOL_USE_SNAP,
 		MENU_TOOL_OVERRIDE_CAMERA,
@@ -840,22 +828,6 @@ public:
 
 	SpatialEditor(EditorNode *p_editor);
 	~SpatialEditor();
-
-private:
-	ExternalToolMode external_tool_mode = EX_TOOL_MODE_SELECT;
-	Vector<Transform> externals;
-
-public:
-	void set_tool_mode(ToolMode p_tool_mode);
-
-	bool is_tool_external() const { return tool_mode == TOOL_MODE_EXTERNAL; }
-	ExternalToolMode get_external_tool_mode() const { return external_tool_mode; }
-	void set_external_tool_mode(ExternalToolMode p_external_tool_mode) { external_tool_mode = p_external_tool_mode; }
-
-	void append_to_externals(Transform p_transform) { externals.push_back(p_transform); }
-	void append_array_to_externals(Vector<Transform> p_transforms) { externals.append_array(p_transforms); }
-	void clear_externals() { externals.clear(); }
-	Vector<Transform> get_externals() const { return externals; }
 
 public:
 	Ref<EditorSpatialGizmoPlugin> get_gizmo_plugin(const String &p_plugin);
