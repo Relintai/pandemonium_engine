@@ -39,12 +39,13 @@
 #include "scene/3d/skeleton.h"
 #include "scene/gui/spin_box.h"
 
-#include "core/math/color.h"
-#include "core/variant/dictionary.h"
-#include "core/error/error_macros.h"
 #include "core/containers/hash_map.h"
 #include "core/containers/list.h"
+#include "core/containers/rid.h"
+#include "core/containers/vector.h"
+#include "core/error/error_macros.h"
 #include "core/math/aabb.h"
+#include "core/math/color.h"
 #include "core/math/math_defs.h"
 #include "core/math/transform.h"
 #include "core/math/vector2.h"
@@ -53,11 +54,10 @@
 #include "core/object/object_id.h"
 #include "core/object/reference.h"
 #include "core/object/resource.h"
-#include "core/containers/rid.h"
-#include "core/typedefs.h"
 #include "core/string/ustring.h"
+#include "core/typedefs.h"
+#include "core/variant/dictionary.h"
 #include "core/variant/variant.h"
-#include "core/containers/vector.h"
 #include "editor/editor_scale.h"
 
 #include "editor/spatial_editor_gizmos.h"
@@ -699,11 +699,10 @@ private:
 	void _update_camera_override_button(bool p_game_running);
 	void _update_camera_override_viewport(Object *p_viewport);
 
-	HBoxContainer *hbc_menu;
 	// Used for secondary menu items which are displayed depending on the currently selected node
 	// (such as MeshInstance's "Mesh" menu).
-	PanelContainer *context_menu_container;
-	HBoxContainer *hbc_context_menu;
+	PanelContainer *context_menu_panel;
+	HBoxContainer *context_menu_hbox;
 
 	void _generate_selection_boxes();
 	UndoRedo *undo_redo;
