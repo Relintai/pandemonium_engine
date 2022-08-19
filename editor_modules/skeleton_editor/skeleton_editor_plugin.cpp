@@ -637,6 +637,8 @@ void SkeletonEditor::_update_properties() {
 }
 
 void SkeletonEditor::update_joint_tree() {
+	skeleton->force_update_all_bone_transforms();
+
 	joint_tree->clear();
 
 	if (!skeleton) {
@@ -675,49 +677,6 @@ void SkeletonEditor::update_joint_tree() {
 		}
 	}
 }
-
-/*
-void SkeletonEditor::update_joint_tree() {
-	skeleton->force_update_all_bone_transforms();
-
-	joint_tree->clear();
-
-	if (skeleton == nullptr)
-		return;
-
-	TreeItem *root = joint_tree->create_item();
-
-	Map<int, TreeItem *> items;
-
-	items.insert(-1, root);
-
-	Ref<Texture> bone_icon = get_theme_icon("Bone", "EditorIcons");
-
-	Vector<int> bones_to_process = skeleton->get_parentless_bones();
-	while (bones_to_process.size() > 0) {
-		int current_bone_idx = bones_to_process[0];
-		bones_to_process.erase(current_bone_idx);
-
-		const int parent_idx = skeleton->get_bone_parent(current_bone_idx);
-		TreeItem *parent_item = items.find(parent_idx)->get();
-
-		TreeItem *joint_item = joint_tree->create_item(parent_item);
-		items.insert(current_bone_idx, joint_item);
-
-		joint_item->set_text(0, skeleton->get_bone_name(current_bone_idx));
-		joint_item->set_icon(0, bone_icon);
-		joint_item->set_selectable(0, true);
-		joint_item->set_metadata(0, "bones/" + itos(current_bone_idx));
-
-		// Add the bone's children to the list of bones to be processed
-		Vector<int> current_bone_child_bones = skeleton->get_bone_children(current_bone_idx);
-		int child_bone_size = current_bone_child_bones.size();
-		for (int i = 0; i < child_bone_size; i++) {
-			bones_to_process.push_back(current_bone_child_bones[i]);
-		}
-	}
-}
-*/
 
 void SkeletonEditor::update_editors() {
 }
