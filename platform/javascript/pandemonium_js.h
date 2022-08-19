@@ -110,7 +110,7 @@ extern void pandemonium_js_display_notification_cb(void (*p_callback)(int p_noti
 // Display Virtual Keyboard
 extern int pandemonium_js_display_vk_available();
 extern void pandemonium_js_display_vk_cb(void (*p_input)(const char *p_text, int p_cursor));
-extern void pandemonium_js_display_vk_show(const char *p_text, int p_multiline, int p_start, int p_end);
+extern void pandemonium_js_display_vk_show(const char *p_text, int p_type, int p_start, int p_end);
 extern void pandemonium_js_display_vk_hide();
 
 #ifdef __cplusplus
