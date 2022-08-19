@@ -219,7 +219,7 @@ void PandemoniumIOJavaWrapper::show_vk(const String &p_existing, int p_type, int
 		JNIEnv *env = get_jni_env();
 		ERR_FAIL_COND(env == nullptr);
 		jstring jStr = env->NewStringUTF(p_existing.utf8().get_data());
-		env->CallVoidMethod(godot_io_instance, _show_keyboard, jStr, p_type, p_max_input_length, p_cursor_start, p_cursor_end);
+		env->CallVoidMethod(pandemonium_io_instance, _show_keyboard, jStr, p_type, p_max_input_length, p_cursor_start, p_cursor_end);
 	}
 }
 
