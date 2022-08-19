@@ -68,7 +68,7 @@
 #include "servers/physics_2d_server.h"
 #include "servers/physics_server.h"
 #include "servers/register_server_types.h"
-#include "servers/visual_server_callbacks.h"
+#include "servers/rendering_server_callbacks.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/doc/doc_data.h"
@@ -107,7 +107,7 @@ static MessageQueue *message_queue = nullptr;
 static AudioServer *audio_server = nullptr;
 static PhysicsServer *physics_server = nullptr;
 static Physics2DServer *physics_2d_server = nullptr;
-static RenderingServerCallbacks *visual_server_callbacks = nullptr;
+static RenderingServerCallbacks *rendering_server_callbacks = nullptr;
 static NavigationServer *navigation_server = nullptr;
 static Navigation2DServer *navigation_2d_server = nullptr;
 
@@ -1359,7 +1359,7 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 	audio_server = memnew(AudioServer);
 	audio_server->init();
 
-	// and finally setup this property under visual_server
+	// and finally setup this property under rendering_server
 	RenderingServer::get_singleton()->set_render_loop_enabled(!disable_render_loop);
 
 	register_core_singletons();
@@ -1540,8 +1540,8 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 		script_debugger->profiling_start();
 	}
 
-	visual_server_callbacks = memnew(RenderingServerCallbacks);
-	RenderingServer::get_singleton()->callbacks_register(visual_server_callbacks);
+	rendering_server_callbacks = memnew(RenderingServerCallbacks);
+	RenderingServer::get_singleton()->callbacks_register(rendering_server_callbacks);
 
 	_start_success = true;
 
@@ -2255,7 +2255,7 @@ bool Main::iteration() {
 	if (OS::get_singleton()->get_main_loop()->idle(step * time_scale)) {
 		exit = true;
 	}
-	visual_server_callbacks->flush();
+	rendering_server_callbacks->flush();
 	message_queue->flush();
 
 	RenderingServer::get_singleton()->sync(); //sync if still drawing from previous frames.
@@ -2461,8 +2461,8 @@ void Main::cleanup(bool p_force) {
 	message_queue->flush();
 	memdelete(message_queue);
 
-	if (visual_server_callbacks) {
-		memdelete(visual_server_callbacks);
+	if (rendering_server_callbacks) {
+		memdelete(rendering_server_callbacks);
 	}
 
 	unregister_core_driver_types();

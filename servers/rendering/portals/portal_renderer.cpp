@@ -31,8 +31,8 @@
 #include "portal_renderer.h"
 
 #include "portal_pvs_builder.h"
-#include "servers/visual/visual_server_globals.h"
-#include "servers/visual/visual_server_scene.h"
+#include "servers/rendering/rendering_server_globals.h"
+#include "servers/rendering/rendering_server_scene.h"
 #include "core/config/project_settings.h"
 
 bool PortalRenderer::use_occlusion_culling = true;

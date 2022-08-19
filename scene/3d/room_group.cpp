@@ -35,7 +35,7 @@
 #include "room_manager.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/world.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 void RoomGroup::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_roomgroup_priority", "p_priority"), &RoomGroup::set_roomgroup_priority);

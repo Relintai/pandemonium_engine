@@ -93,7 +93,7 @@
 #include "scene/resources/font.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/theme.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 // Min and Max are power of two in order to play nicely with successive increment.
 // That way, we can naturally reach a 100% zoom from boundaries.

@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "scene/resources/mesh.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 class MultiMesh : public Resource {
 	GDCLASS(MultiMesh, Resource);

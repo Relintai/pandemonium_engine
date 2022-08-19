@@ -41,13 +41,13 @@
 #include "platform/x11/power_x11.h"
 #endif
 #include "servers/audio_server.h"
-#include "servers/visual/rasterizer.h"
-#include "servers/visual_server.h"
+#include "servers/rendering/rasterizer.h"
+#include "servers/rendering_server.h"
 
 #undef CursorShape
 
 class OS_Server : public OS_Unix {
-	RenderingServer *visual_server;
+	RenderingServer *rendering_server;
 	VideoMode current_videomode;
 	List<String> args;
 	MainLoop *main_loop;

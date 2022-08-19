@@ -33,8 +33,8 @@
 #include "core/containers/pool_vector.h"
 #include "core/containers/self_list.h"
 #include "drivers/gles_common/rasterizer_asserts.h"
-#include "servers/visual/rasterizer.h"
-#include "servers/visual/shader_language.h"
+#include "servers/rendering/rasterizer.h"
+#include "servers/rendering/shader_language.h"
 #include "shader_compiler_gles2.h"
 #include "shader_gles2.h"
 

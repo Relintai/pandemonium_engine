@@ -32,9 +32,9 @@
 
 #include "core/containers/pair.h"
 #include "core/string/string_builder.h"
-#include "servers/visual/shader_language.h"
-#include "servers/visual/shader_types.h"
-#include "servers/visual_server.h"
+#include "servers/rendering/shader_language.h"
+#include "servers/rendering/shader_types.h"
+#include "servers/rendering_server.h"
 
 class ShaderCompilerGLES2 {
 public:

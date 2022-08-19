@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  visual_server_callbacks.cpp                                          */
+/*  rendering_server_callbacks.cpp                                          */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "visual_server_callbacks.h"
+#include "rendering_server_callbacks.h"
 
 #include "core/object/object.h"
 

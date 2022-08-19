@@ -27,7 +27,7 @@
 #include <map>
 #include <vector>
 
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 namespace Simplify {
 

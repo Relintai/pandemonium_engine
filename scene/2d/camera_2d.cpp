@@ -34,7 +34,7 @@
 #include "core/math/math_funcs.h"
 #include "scene/main/viewport.h"
 #include "scene/scene_string_names.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 void Camera2D::_update_scroll() {
 	if (!is_inside_tree()) {

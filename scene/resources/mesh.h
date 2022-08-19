@@ -36,7 +36,7 @@
 
 #include "scene/resources/material.h"
 #include "scene/resources/shape.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 class Mesh : public Resource {
 	GDCLASS(Mesh, Resource);

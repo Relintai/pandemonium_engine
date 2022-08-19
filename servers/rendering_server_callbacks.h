@@ -1,7 +1,7 @@
-#ifndef VISUAL_SERVER_GLOBALS_H
-#define VISUAL_SERVER_GLOBALS_H
+#ifndef RENDERING_SERVER_CALLBACKS_H
+#define RENDERING_SERVER_CALLBACKS_H
 /*************************************************************************/
-/*  visual_server_globals.h                                              */
+/*  rendering_server_callbacks.h                                            */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -30,24 +30,36 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "rasterizer.h"
+#include "core/containers/local_vector.h"
+#include "core/object/object_id.h"
+#include "core/os/mutex.h"
 
-class RenderingServerCanvas;
-class RenderingServerViewport;
-class RenderingServerScene;
-
-class RenderingServerGlobals {
+class RenderingServerCallbacks {
 public:
-	static RasterizerStorage *storage;
-	static RasterizerCanvas *canvas_render;
-	static RasterizerScene *scene_render;
-	static Rasterizer *rasterizer;
+	enum CallbackType {
+		CALLBACK_NOTIFICATION_ENTER_GAMEPLAY,
+		CALLBACK_NOTIFICATION_EXIT_GAMEPLAY,
+		CALLBACK_SIGNAL_ENTER_GAMEPLAY,
+		CALLBACK_SIGNAL_EXIT_GAMEPLAY,
+	};
 
-	static RenderingServerCanvas *canvas;
-	static RenderingServerViewport *viewport;
-	static RenderingServerScene *scene;
+	struct Message {
+		CallbackType type;
+		ObjectID object_id;
+	};
+
+	void lock();
+	void unlock();
+	void flush();
+
+	void push_message(const Message &p_message) { messages.push_back(p_message); }
+	int32_t get_num_messages() const { return messages.size(); }
+	const Message &get_message(int p_index) const { return messages[p_index]; }
+	void clear() { messages.clear(); }
+
+private:
+	LocalVector<Message, int32_t> messages;
+	Mutex mutex;
 };
 
-#define RSG RenderingServerGlobals
-
-#endif // VISUAL_SERVER_GLOBALS_H
+#endif // RENDERING_SERVER_CALLBACKS_H

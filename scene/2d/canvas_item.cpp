@@ -41,8 +41,8 @@
 #include "scene/resources/world.h"
 #include "scene/resources/world_2d.h"
 #include "scene/scene_string_names.h"
-#include "servers/visual/visual_server_raster.h"
-#include "servers/visual_server.h"
+#include "servers/rendering/rendering_server_raster.h"
+#include "servers/rendering_server.h"
 
 #include "scene/main/scene_tree.h"
 #include "scene/resources/multimesh.h"

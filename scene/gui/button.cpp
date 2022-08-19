@@ -31,7 +31,7 @@
 #include "button.h"
 
 #include "core/string/translation.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 Size2 Button::get_minimum_size() const {
 	Size2 minsize = get_theme_font("font")->get_string_size(xl_text);

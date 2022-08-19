@@ -42,8 +42,8 @@
 #include "main/input_default.h"
 #include "power_x11.h"
 #include "servers/audio_server.h"
-#include "servers/visual/rasterizer.h"
-#include "servers/visual_server.h"
+#include "servers/rendering/rasterizer.h"
+#include "servers/rendering_server.h"
 
 #include <X11/Xcursor/Xcursor.h>
 #include <X11/Xlib.h>
@@ -93,7 +93,7 @@ class OS_X11 : public OS_Unix {
 	ContextGL_X11 *context_gl;
 #endif
 	//Rasterizer *rasterizer;
-	RenderingServer *visual_server;
+	RenderingServer *rendering_server;
 	VideoMode current_videomode;
 	List<String> args;
 	Window x11_window;

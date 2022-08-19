@@ -446,8 +446,8 @@ void SoftBody::_draw_soft_mesh() {
 		PhysicsServer::get_singleton()->soft_body_set_mesh(physics_rid, mesh);
 	}
 
-	if (!visual_server_handler.is_ready(mesh_rid)) {
-		visual_server_handler.prepare(mesh_rid, 0);
+	if (!rendering_server_handler.is_ready(mesh_rid)) {
+		rendering_server_handler.prepare(mesh_rid, 0);
 
 		/// Necessary in order to render the mesh correctly (Soft body nodes are in global space)
 		simulation_started = true;
@@ -457,11 +457,11 @@ void SoftBody::_draw_soft_mesh() {
 
 	_update_physics_server();
 
-	visual_server_handler.open();
-	PhysicsServer::get_singleton()->soft_body_update_visual_server(physics_rid, &visual_server_handler);
-	visual_server_handler.close();
+	rendering_server_handler.open();
+	PhysicsServer::get_singleton()->soft_body_update_rendering_server(physics_rid, &rendering_server_handler);
+	rendering_server_handler.close();
 
-	visual_server_handler.commit_changes();
+	rendering_server_handler.commit_changes();
 }
 
 void SoftBody::_prepare_physics_server() {

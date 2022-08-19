@@ -52,7 +52,7 @@
 #include "scene/gui/tool_button.h"
 #include "scene/main/node.h"
 #include "scene/resources/texture.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 #include "servers/audio/audio_stream.h"
 
 void AudioStreamEditor::_notification(int p_what) {

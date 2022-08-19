@@ -42,8 +42,8 @@
 #include "main/main.h"
 #include "scene/resources/texture.h"
 #include "servers/audio_server.h"
-#include "servers/visual/visual_server_raster.h"
-#include "servers/visual/visual_server_wrap_mt.h"
+#include "servers/rendering/rendering_server_raster.h"
+#include "servers/rendering/rendering_server_wrap_mt.h"
 #include "windows_terminal_logger.h"
 
 #include <avrt.h>
@@ -1568,12 +1568,12 @@ Error OS_Windows::initialize(const VideoMode &p_desired, int p_video_driver, int
 	set_vsync_via_compositor(video_mode.vsync_via_compositor);
 #endif
 
-	visual_server = memnew(RenderingServerRaster);
+	rendering_server = memnew(RenderingServerRaster);
 	if (get_render_thread_mode() != RENDER_THREAD_UNSAFE) {
-		visual_server = memnew(RenderingServerWrapMT(visual_server, get_render_thread_mode() == RENDER_SEPARATE_THREAD));
+		rendering_server = memnew(RenderingServerWrapMT(rendering_server, get_render_thread_mode() == RENDER_SEPARATE_THREAD));
 	}
 
-	visual_server->init();
+	rendering_server->init();
 
 	input = memnew(InputDefault);
 	joypad = memnew(JoypadWindows(input, &hWnd));
@@ -1746,8 +1746,8 @@ void OS_Windows::finalize() {
 
 	icon.unref();
 	cursors_cache.clear();
-	visual_server->finish();
-	memdelete(visual_server);
+	rendering_server->finish();
+	memdelete(rendering_server);
 #ifdef OPENGL_ENABLED
 	if (gl_context)
 		memdelete(gl_context);

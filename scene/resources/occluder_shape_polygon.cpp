@@ -30,7 +30,7 @@
 
 #include "occluder_shape_polygon.h"
 
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 #ifdef TOOLS_ENABLED
 void OccluderShapePolygon::_update_aabb() {
@@ -108,7 +108,7 @@ void OccluderShapePolygon::set_polygon_point(int p_idx, const Vector2 &p_point) 
 
 	_poly_pts_local_raw.set(p_idx, p_point);
 	_sanitize_points();
-	update_shape_to_visual_server();
+	update_shape_to_rendering_server();
 	notify_change_to_owners();
 }
 
@@ -119,21 +119,21 @@ void OccluderShapePolygon::set_hole_point(int p_idx, const Vector2 &p_point) {
 
 	_hole_pts_local_raw.set(p_idx, p_point);
 	_sanitize_points();
-	update_shape_to_visual_server();
+	update_shape_to_rendering_server();
 	notify_change_to_owners();
 }
 
 void OccluderShapePolygon::set_polygon_points(const PoolVector<Vector2> &p_points) {
 	_poly_pts_local_raw = p_points;
 	_sanitize_points();
-	update_shape_to_visual_server();
+	update_shape_to_rendering_server();
 	notify_change_to_owners();
 }
 
 void OccluderShapePolygon::set_hole_points(const PoolVector<Vector2> &p_points) {
 	_hole_pts_local_raw = p_points;
 	_sanitize_points();
-	update_shape_to_visual_server();
+	update_shape_to_rendering_server();
 	notify_change_to_owners();
 }
 
@@ -145,7 +145,7 @@ PoolVector<Vector2> OccluderShapePolygon::get_hole_points() const {
 	return _hole_pts_local_raw;
 }
 
-void OccluderShapePolygon::update_shape_to_visual_server() {
+void OccluderShapePolygon::update_shape_to_rendering_server() {
 	if (_poly_pts_local.size() < 3)
 		return;
 
@@ -184,7 +184,7 @@ void OccluderShapePolygon::update_shape_to_visual_server() {
 
 void OccluderShapePolygon::set_two_way(bool p_two_way) {
 	_settings_two_way = p_two_way;
-	update_shape_to_visual_server();
+	update_shape_to_rendering_server();
 	notify_change_to_owners();
 }
 

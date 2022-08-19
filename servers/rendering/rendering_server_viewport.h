@@ -1,7 +1,7 @@
-#ifndef VISUALSERVERVIEWPORT_H
-#define VISUALSERVERVIEWPORT_H
+#ifndef RENDERINGSERVERVIEWPORT_H
+#define RENDERINGSERVERVIEWPORT_H
 /*************************************************************************/
-/*  visual_server_viewport.h                                             */
+/*  rendering_server_viewport.h                                             */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -32,7 +32,7 @@
 
 #include "core/containers/self_list.h"
 #include "rasterizer.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 class RenderingServerViewport {
 public:
@@ -198,4 +198,4 @@ public:
 	virtual ~RenderingServerViewport() {}
 };
 
-#endif // VISUALSERVERVIEWPORT_H
+#endif // RENDERINGSERVERVIEWPORT_H

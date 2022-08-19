@@ -34,7 +34,7 @@
 #include "drivers/unix/os_unix.h"
 #include "main/input_default.h"
 #include "servers/audio_server.h"
-#include "servers/visual/rasterizer.h"
+#include "servers/rendering/rasterizer.h"
 
 #include <emscripten/html5.h>
 
@@ -71,7 +71,7 @@ private:
 	MainLoop *main_loop;
 	int video_driver_index;
 	List<AudioDriverJavaScript *> audio_drivers;
-	RenderingServer *visual_server;
+	RenderingServer *rendering_server;
 
 	bool swap_ok_cancel;
 	bool idb_available;

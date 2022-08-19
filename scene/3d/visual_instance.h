@@ -34,7 +34,7 @@
 #include "core/object/reference.h"
 #include "core/containers/rid.h"
 #include "scene/3d/cull_instance.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 class Material;
 

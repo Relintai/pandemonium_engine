@@ -35,7 +35,7 @@
 #include "rasterizer_array.h"
 #include "rasterizer_asserts.h"
 #include "rasterizer_storage_common.h"
-#include "servers/visual/rasterizer.h"
+#include "servers/rendering/rasterizer.h"
 
 // We are using the curiously recurring template pattern
 // https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern

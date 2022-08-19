@@ -34,7 +34,7 @@
 #include "core/input/input_map.h"
 #include "core/os/os.h"
 #include "scene/resources/texture.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 void InputDefault::SpeedTrack::update(const Vector2 &p_delta_p) {
 	uint64_t tick = OS::get_singleton()->get_ticks_usec();

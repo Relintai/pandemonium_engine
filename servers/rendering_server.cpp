@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  visual_server.cpp                                                    */
+/*  rendering_server.cpp                                                    */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "visual_server.h"
+#include "rendering_server.h"
 
 #include "core/config/engine.h"
 #include "core/object/method_bind_ext.gen.inc"

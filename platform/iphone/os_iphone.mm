@@ -33,8 +33,8 @@
 #include "os_iphone.h"
 
 #include "drivers/gles2/rasterizer_gles2.h"
-#include "servers/visual/visual_server_raster.h"
-#include "servers/visual/visual_server_wrap_mt.h"
+#include "servers/rendering/rendering_server_raster.h"
+#include "servers/rendering/rendering_server_wrap_mt.h"
 
 #include "main/main.h"
 
@@ -142,16 +142,16 @@ Error OSIPhone::initialize(const VideoMode &p_desired, int p_video_driver, int p
 	}
 
 	video_driver_index = p_video_driver;
-	visual_server = memnew(RenderingServerRaster);
+	rendering_server = memnew(RenderingServerRaster);
 	// FIXME: Reimplement threaded rendering
 	if (get_render_thread_mode() != RENDER_THREAD_UNSAFE) {
-		visual_server = memnew(RenderingServerWrapMT(visual_server, false));
+		rendering_server = memnew(RenderingServerWrapMT(rendering_server, false));
 	}
 
-	visual_server->init();
-	//visual_server->cursor_set_visible(false, 0);
+	rendering_server->init();
+	//rendering_server->cursor_set_visible(false, 0);
 
-	// reset this to what it should be, it will have been set to 0 after visual_server->init() is called
+	// reset this to what it should be, it will have been set to 0 after rendering_server->init() is called
 	//if (use_gl3) {
 	//	RasterizerStorageGLES3::system_fbo = gl_view_base_fb;
 	//} else {
@@ -323,8 +323,8 @@ void OSIPhone::finalize() {
 		memdelete(ios);
 	}
 
-	visual_server->finish();
-	memdelete(visual_server);
+	rendering_server->finish();
+	memdelete(rendering_server);
 	//	memdelete(rasterizer);
 }
 
@@ -738,7 +738,7 @@ OSIPhone::OSIPhone(String p_data_dir, String p_cache_dir) {
 	ios_init_callbacks_capacity = 0;
 
 	main_loop = NULL;
-	visual_server = NULL;
+	rendering_server = NULL;
 	offscreen_gl_context = NULL;
 
 	// can't call set_data_dir from here, since it requires DirAccess

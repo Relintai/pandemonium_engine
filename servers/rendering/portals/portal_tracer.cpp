@@ -31,8 +31,8 @@
 #include "portal_tracer.h"
 
 #include "portal_renderer.h"
-#include "servers/visual/visual_server_globals.h"
-#include "servers/visual/visual_server_scene.h"
+#include "servers/rendering/rendering_server_globals.h"
+#include "servers/rendering/rendering_server_scene.h"
 
 PortalTracer::PlanesPool::PlanesPool() {
 	reset();

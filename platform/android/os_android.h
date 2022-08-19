@@ -35,7 +35,7 @@
 #include "drivers/unix/os_unix.h"
 #include "main/input_default.h"
 #include "servers/audio_server.h"
-#include "servers/visual/rasterizer.h"
+#include "servers/rendering/rasterizer.h"
 
 class PandemoniumJavaWrapper;
 class PandemoniumIOJavaWrapper;
@@ -46,7 +46,7 @@ class OS_Android : public OS_Unix {
 
 	bool secondary_gl_available = false;
 
-	RenderingServer *visual_server;
+	RenderingServer *rendering_server;
 
 	mutable String data_dir_cache;
 	mutable String cache_dir_cache;

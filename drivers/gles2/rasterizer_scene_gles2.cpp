@@ -36,7 +36,7 @@
 #include "core/config/project_settings.h"
 #include "core/containers/vmap.h"
 #include "rasterizer_canvas_gles2.h"
-#include "servers/visual/visual_server_raster.h"
+#include "servers/rendering/rendering_server_raster.h"
 
 #ifndef GLES_OVER_GL
 #define glClearDepth glClearDepthf

@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "core/containers/local_vector.h"
-#include "servers/visual_server_callbacks.h"
+#include "servers/rendering_server_callbacks.h"
 
 #include <stdint.h>
 

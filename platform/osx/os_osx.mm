@@ -38,7 +38,7 @@
 #include "drivers/gles2/rasterizer_gles2.h"
 #include "main/main.h"
 #include "scene/resources/texture.h"
-#include "servers/visual/visual_server_raster.h"
+#include "servers/rendering/rendering_server_raster.h"
 
 #include <mach-o/dyld.h>
 #include <os/log.h>
@@ -1777,12 +1777,12 @@ Error OS_OSX::initialize(const VideoMode &p_desired, int p_video_driver, int p_a
 
 	video_driver_index = p_video_driver;
 
-	visual_server = memnew(RenderingServerRaster);
+	rendering_server = memnew(RenderingServerRaster);
 	if (get_render_thread_mode() != RENDER_THREAD_UNSAFE) {
-		visual_server = memnew(RenderingServerWrapMT(visual_server, get_render_thread_mode() == RENDER_SEPARATE_THREAD));
+		rendering_server = memnew(RenderingServerWrapMT(rendering_server, get_render_thread_mode() == RENDER_SEPARATE_THREAD));
 	}
 
-	visual_server->init();
+	rendering_server->init();
 	AudioDriverManager::initialize(p_audio_driver);
 
 	input = memnew(InputDefault);
@@ -1819,8 +1819,8 @@ void OS_OSX::finalize() {
 	memdelete(input);
 
 	cursors_cache.clear();
-	visual_server->finish();
-	memdelete(visual_server);
+	rendering_server->finish();
+	memdelete(rendering_server);
 	//memdelete(rasterizer);
 }
 

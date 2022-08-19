@@ -97,7 +97,7 @@
 #include "scene/resources/font.h"
 #include "scene/resources/style_box.h"
 #include "scene/resources/texture.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 void EditorResourceConversionPlugin::_bind_methods() {
 	MethodInfo mi;

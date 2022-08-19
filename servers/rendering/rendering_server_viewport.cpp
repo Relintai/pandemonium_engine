@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  visual_server_viewport.cpp                                           */
+/*  rendering_server_viewport.cpp                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,12 +28,12 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "visual_server_viewport.h"
+#include "rendering_server_viewport.h"
 
 #include "core/config/project_settings.h"
-#include "visual_server_canvas.h"
-#include "visual_server_globals.h"
-#include "visual_server_scene.h"
+#include "rendering_server_canvas.h"
+#include "rendering_server_globals.h"
+#include "rendering_server_scene.h"
 
 static Transform2D _canvas_get_transform(RenderingServerViewport::Viewport *p_viewport, RenderingServerCanvas::Canvas *p_canvas, RenderingServerViewport::Viewport::CanvasData *p_canvas_data, const Vector2 &p_vp_size) {
 	Transform2D xf = p_viewport->global_transform;

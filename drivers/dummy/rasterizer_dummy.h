@@ -33,8 +33,8 @@
 #include "core/math/projection.h"
 #include "core/containers/self_list.h"
 #include "scene/resources/mesh.h"
-#include "servers/visual/rasterizer.h"
-#include "servers/visual_server.h"
+#include "servers/rendering/rasterizer.h"
+#include "servers/rendering_server.h"
 
 class RasterizerSceneDummy : public RasterizerScene {
 public:

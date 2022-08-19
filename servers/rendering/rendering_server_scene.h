@@ -1,7 +1,7 @@
-#ifndef VISUALSERVERSCENE_H
-#define VISUALSERVERSCENE_H
+#ifndef RENDERINGSERVERSCENE_H
+#define RENDERINGSERVERSCENE_H
 /*************************************************************************/
-/*  visual_server_scene.h                                                */
+/*  rendering_server_scene.h                                                */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -30,7 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "servers/visual/rasterizer.h"
+#include "servers/rendering/rasterizer.h"
 
 #include "core/math/bvh.h"
 #include "core/math/geometry.h"
@@ -679,7 +679,7 @@ public:
 	virtual bool rooms_is_loaded(RID p_scenario) const;
 
 	virtual void callbacks_register(RenderingServerCallbacks *p_callbacks);
-	RenderingServerCallbacks *get_callbacks() const { return _visual_server_callbacks; }
+	RenderingServerCallbacks *get_callbacks() const { return _rendering_server_callbacks; }
 
 	// don't use these in a game!
 	virtual Vector<ObjectID> instances_cull_aabb(const AABB &p_aabb, RID p_scenario = RID()) const;
@@ -719,7 +719,7 @@ public:
 
 private:
 	bool _use_bvh;
-	RenderingServerCallbacks *_visual_server_callbacks;
+	RenderingServerCallbacks *_rendering_server_callbacks;
 	PortalResources _portal_resources;
 
 public:
@@ -727,4 +727,4 @@ public:
 	virtual ~RenderingServerScene();
 };
 
-#endif // VISUALSERVERSCENE_H
+#endif // RENDERINGSERVERSCENE_H

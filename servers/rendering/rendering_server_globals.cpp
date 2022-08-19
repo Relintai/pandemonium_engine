@@ -1,7 +1,5 @@
-#ifndef VISUAL_SERVER_CALLBACKS_H
-#define VISUAL_SERVER_CALLBACKS_H
 /*************************************************************************/
-/*  visual_server_callbacks.h                                            */
+/*  rendering_server_globals.cpp                                            */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -30,36 +28,13 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/containers/local_vector.h"
-#include "core/object/object_id.h"
-#include "core/os/mutex.h"
+#include "rendering_server_globals.h"
 
-class RenderingServerCallbacks {
-public:
-	enum CallbackType {
-		CALLBACK_NOTIFICATION_ENTER_GAMEPLAY,
-		CALLBACK_NOTIFICATION_EXIT_GAMEPLAY,
-		CALLBACK_SIGNAL_ENTER_GAMEPLAY,
-		CALLBACK_SIGNAL_EXIT_GAMEPLAY,
-	};
+RasterizerStorage *RenderingServerGlobals::storage = nullptr;
+RasterizerCanvas *RenderingServerGlobals::canvas_render = nullptr;
+RasterizerScene *RenderingServerGlobals::scene_render = nullptr;
+Rasterizer *RenderingServerGlobals::rasterizer = nullptr;
 
-	struct Message {
-		CallbackType type;
-		ObjectID object_id;
-	};
-
-	void lock();
-	void unlock();
-	void flush();
-
-	void push_message(const Message &p_message) { messages.push_back(p_message); }
-	int32_t get_num_messages() const { return messages.size(); }
-	const Message &get_message(int p_index) const { return messages[p_index]; }
-	void clear() { messages.clear(); }
-
-private:
-	LocalVector<Message, int32_t> messages;
-	Mutex mutex;
-};
-
-#endif // VISUAL_SERVER_CALLBACKS_H
+RenderingServerCanvas *RenderingServerGlobals::canvas = nullptr;
+RenderingServerViewport *RenderingServerGlobals::viewport = nullptr;
+RenderingServerScene *RenderingServerGlobals::scene = nullptr;

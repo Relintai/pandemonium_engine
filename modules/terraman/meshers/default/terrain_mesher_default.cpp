@@ -27,7 +27,7 @@ SOFTWARE.
 #include "../../defines.h"
 
 #include "scene/3d/mesh_instance.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 _FORCE_INLINE_ int TerrainMesherDefault::get_build_flags() const {
 	return _build_flags;

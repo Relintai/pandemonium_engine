@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "scene/3d/visual_instance.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 class Light : public VisualInstance {
 	GDCLASS(Light, VisualInstance);

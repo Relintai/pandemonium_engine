@@ -32,7 +32,7 @@
 
 #include "core/config/engine.h"
 #include "core/math/transform.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_node.h"
@@ -92,7 +92,7 @@ AABB OccluderShapeSphere::get_fallback_gizmo_aabb() const {
 
 #endif
 
-void OccluderShapeSphere::update_shape_to_visual_server() {
+void OccluderShapeSphere::update_shape_to_rendering_server() {
 	RenderingServer::get_singleton()->occluder_resource_spheres_update(get_shape(), _spheres);
 }
 
@@ -205,7 +205,7 @@ void OccluderShapeSphere::set_spheres(const Vector<Plane> &p_spheres) {
 	_update_aabb();
 #endif
 
-	update_shape_to_visual_server();
+	update_shape_to_rendering_server();
 	notify_change_to_owners();
 }
 
@@ -217,7 +217,7 @@ void OccluderShapeSphere::set_sphere_position(int p_idx, const Vector3 &p_positi
 #ifdef TOOLS_ENABLED
 		_update_aabb();
 #endif
-		update_shape_to_visual_server();
+		update_shape_to_rendering_server();
 		notify_change_to_owners();
 	}
 }
@@ -230,7 +230,7 @@ void OccluderShapeSphere::set_sphere_radius(int p_idx, real_t p_radius) {
 #ifdef TOOLS_ENABLED
 		_update_aabb();
 #endif
-		update_shape_to_visual_server();
+		update_shape_to_rendering_server();
 		notify_change_to_owners();
 	}
 }

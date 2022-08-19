@@ -39,7 +39,7 @@
 // Some notes on the use of BVH / Octree from Godot 3.2.
 // This is not well explained elsewhere.
 // The rendering tree mask and types that are sent to the BVH are NOT layer masks.
-// They are INSTANCE_TYPES (defined in visual_server.h), e.g. MESH, MULTIMESH, PARTICLES etc.
+// They are INSTANCE_TYPES (defined in rendering_server.h), e.g. MESH, MULTIMESH, PARTICLES etc.
 // Thus the lights do no cull by layer mask in the BVH.
 
 // Layer masks are implemented in the renderers as a later step, and light_cull_mask appears to be

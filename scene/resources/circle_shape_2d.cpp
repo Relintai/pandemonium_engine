@@ -31,7 +31,7 @@
 #include "circle_shape_2d.h"
 
 #include "servers/physics_2d_server.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 bool CircleShape2D::_edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const {
 	return p_point.length() < get_radius() + p_tolerance;

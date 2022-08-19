@@ -31,7 +31,7 @@
 #include "capsule_shape_2d.h"
 
 #include "servers/physics_2d_server.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 Vector<Vector2> CapsuleShape2D::_get_points() const {
 	Vector<Vector2> points;

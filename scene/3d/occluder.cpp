@@ -33,8 +33,8 @@
 #include "core/config/engine.h"
 #include "scene/resources/occluder_shape.h"
 #include "scene/resources/world.h"
-#include "servers/visual/portals/portal_occlusion_culler.h"
-#include "servers/visual_server.h"
+#include "servers/rendering/portals/portal_occlusion_culler.h"
+#include "servers/rendering_server.h"
 
 void Occluder::resource_changed(RES res) {
 	update_gizmos();

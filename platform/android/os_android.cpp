@@ -37,8 +37,8 @@
 #include "drivers/unix/file_access_unix.h"
 #include "main/main.h"
 #include "scene/main/scene_tree.h"
-#include "servers/visual/visual_server_raster.h"
-#include "servers/visual/visual_server_wrap_mt.h"
+#include "servers/rendering/rendering_server_raster.h"
+#include "servers/rendering/rendering_server_wrap_mt.h"
 
 #include "dir_access_jandroid.h"
 #include "file_access_android.h"
@@ -172,12 +172,12 @@ Error OS_Android::initialize(const VideoMode &p_desired, int p_video_driver, int
 
 	video_driver_index = p_video_driver;
 
-	visual_server = memnew(RenderingServerRaster);
+	rendering_server = memnew(RenderingServerRaster);
 	if (get_render_thread_mode() != RENDER_THREAD_UNSAFE) {
-		visual_server = memnew(RenderingServerWrapMT(visual_server, false));
+		rendering_server = memnew(RenderingServerWrapMT(rendering_server, false));
 	}
 
-	visual_server->init();
+	rendering_server->init();
 
 	AudioDriverManager::initialize(p_audio_driver);
 

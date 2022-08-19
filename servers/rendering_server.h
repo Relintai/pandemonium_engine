@@ -1,7 +1,7 @@
-#ifndef VISUAL_SERVER_H
-#define VISUAL_SERVER_H
+#ifndef RENDERING_SERVER_H
+#define RENDERING_SERVER_H
 /*************************************************************************/
-/*  visual_server.h                                                      */
+/*  rendering_server.h                                                      */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */

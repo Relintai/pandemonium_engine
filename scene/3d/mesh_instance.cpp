@@ -39,7 +39,7 @@
 #include "scene/resources/mesh.h"
 #include "scene/resources/skin.h"
 #include "scene/scene_string_names.h"
-#include "servers/visual/visual_server_globals.h"
+#include "servers/rendering/rendering_server_globals.h"
 #include "skeleton.h"
 
 bool MeshInstance::_set(const StringName &p_name, const Variant &p_value) {
@@ -213,7 +213,7 @@ void MeshInstance::_initialize_skinning(bool p_force_reset, bool p_call_attach_s
 		return;
 	}
 
-	RenderingServer *visual_server = RenderingServer::get_singleton();
+	RenderingServer *rendering_server = RenderingServer::get_singleton();
 
 	bool update_mesh = false;
 
@@ -304,7 +304,7 @@ void MeshInstance::_initialize_skinning(bool p_force_reset, bool p_call_attach_s
 					// 1. Temporarily add surface with bone data to create the read buffer.
 					software_mesh->add_surface_from_arrays(Mesh::PRIMITIVE_TRIANGLES, read_arrays, Array(), format);
 
-					PoolByteArray buffer_read = visual_server->mesh_surface_get_array(mesh_rid, surface_index);
+					PoolByteArray buffer_read = rendering_server->mesh_surface_get_array(mesh_rid, surface_index);
 					surface_data.source_buffer.append_array(buffer_read);
 					surface_data.source_format = software_mesh->surface_get_format(surface_index);
 
@@ -316,7 +316,7 @@ void MeshInstance::_initialize_skinning(bool p_force_reset, bool p_call_attach_s
 					Ref<Material> material = mesh->surface_get_material(surface_index);
 					software_mesh->surface_set_material(surface_index, material);
 
-					surface_data.buffer = visual_server->mesh_surface_get_array(mesh_rid, surface_index);
+					surface_data.buffer = rendering_server->mesh_surface_get_array(mesh_rid, surface_index);
 					surface_data.buffer_write = surface_data.buffer.write();
 				}
 
@@ -325,7 +325,7 @@ void MeshInstance::_initialize_skinning(bool p_force_reset, bool p_call_attach_s
 			}
 
 			if (p_call_attach_skeleton) {
-				visual_server->instance_attach_skeleton(get_instance(), RID());
+				rendering_server->instance_attach_skeleton(get_instance(), RID());
 			}
 
 			if (is_visible_in_tree() && (software_skinning_flags & SoftwareSkinning::FLAG_BONES_READY)) {
@@ -339,7 +339,7 @@ void MeshInstance::_initialize_skinning(bool p_force_reset, bool p_call_attach_s
 			}
 
 			if (p_call_attach_skeleton) {
-				visual_server->instance_attach_skeleton(get_instance(), skin_ref->get_skeleton());
+				rendering_server->instance_attach_skeleton(get_instance(), skin_ref->get_skeleton());
 			}
 
 			if (software_skinning) {
@@ -350,7 +350,7 @@ void MeshInstance::_initialize_skinning(bool p_force_reset, bool p_call_attach_s
 		}
 	} else {
 		if (p_call_attach_skeleton) {
-			visual_server->instance_attach_skeleton(get_instance(), RID());
+			rendering_server->instance_attach_skeleton(get_instance(), RID());
 		}
 		if (software_skinning) {
 			memdelete(software_skinning);
@@ -367,7 +367,7 @@ void MeshInstance::_initialize_skinning(bool p_force_reset, bool p_call_attach_s
 		int surface_count = mesh->get_surface_count();
 		for (int surface_index = 0; surface_index < surface_count; ++surface_index) {
 			if (materials[surface_index].is_valid()) {
-				visual_server->instance_set_surface_material(get_instance(), surface_index, materials[surface_index]->get_rid());
+				rendering_server->instance_set_surface_material(get_instance(), surface_index, materials[surface_index]->get_rid());
 			}
 		}
 	}
@@ -398,14 +398,14 @@ void MeshInstance::_update_skinning() {
 	Vector3 aabb_min = Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
 	Vector3 aabb_max = Vector3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 
-	RenderingServer *visual_server = RenderingServer::get_singleton();
+	RenderingServer *rendering_server = RenderingServer::get_singleton();
 
 	// Prepare bone transforms.
-	const int num_bones = visual_server->skeleton_get_bone_count(skeleton);
+	const int num_bones = rendering_server->skeleton_get_bone_count(skeleton);
 	ERR_FAIL_COND(num_bones <= 0);
 	Transform *bone_transforms = (Transform *)alloca(sizeof(Transform) * num_bones);
 	for (int bone_index = 0; bone_index < num_bones; ++bone_index) {
-		bone_transforms[bone_index] = visual_server->skeleton_bone_get_transform(skeleton, bone_index);
+		bone_transforms[bone_index] = rendering_server->skeleton_bone_get_transform(skeleton, bone_index);
 	}
 
 	// Apply skinning.
@@ -423,7 +423,7 @@ void MeshInstance::_update_skinning() {
 
 		uint32_t array_offsets_write[Mesh::ARRAY_MAX];
 		uint32_t array_strides_write[Mesh::ARRAY_MAX];
-		visual_server->mesh_surface_make_offsets_from_format(format_write, vertex_count_write, index_count_write, array_offsets_write, array_strides_write);
+		rendering_server->mesh_surface_make_offsets_from_format(format_write, vertex_count_write, index_count_write, array_offsets_write, array_strides_write);
 		ERR_FAIL_COND(array_strides_write[Mesh::ARRAY_VERTEX] != array_strides_write[Mesh::ARRAY_NORMAL]);
 		const uint32_t stride_write = array_strides_write[Mesh::ARRAY_VERTEX];
 		const uint32_t offset_vertices_write = array_offsets_write[Mesh::ARRAY_VERTEX];
@@ -445,7 +445,7 @@ void MeshInstance::_update_skinning() {
 
 		uint32_t array_offsets[Mesh::ARRAY_MAX];
 		uint32_t array_strides[Mesh::ARRAY_MAX];
-		visual_server->mesh_surface_make_offsets_from_format(format_read, vertex_count, index_count, array_offsets, array_strides);
+		rendering_server->mesh_surface_make_offsets_from_format(format_read, vertex_count, index_count, array_offsets, array_strides);
 		ERR_FAIL_COND(array_strides[Mesh::ARRAY_VERTEX] != array_strides[Mesh::ARRAY_NORMAL]);
 		const uint32_t stride = array_strides[Mesh::ARRAY_VERTEX];
 		const uint32_t offset_vertices = array_offsets[Mesh::ARRAY_VERTEX];
@@ -516,10 +516,10 @@ void MeshInstance::_update_skinning() {
 			aabb_max.z = MAX(aabb_max.z, vertex.z);
 		}
 
-		visual_server->mesh_surface_update_region(mesh_rid, surface_index, 0, buffer);
+		rendering_server->mesh_surface_update_region(mesh_rid, surface_index, 0, buffer);
 	}
 
-	visual_server->mesh_set_custom_aabb(mesh_rid, AABB(aabb_min, aabb_max - aabb_min));
+	rendering_server->mesh_set_custom_aabb(mesh_rid, AABB(aabb_min, aabb_max - aabb_min));
 
 	software_skinning_flags |= SoftwareSkinning::FLAG_BONES_READY;
 }

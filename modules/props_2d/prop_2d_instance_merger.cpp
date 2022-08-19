@@ -15,7 +15,7 @@
 	}                                      \
 	return r;
 
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 #if MESH_DATA_RESOURCE_PRESENT
 //define PROPS_PRESENT, so things compile. That module's scsub will define this too while compiling,

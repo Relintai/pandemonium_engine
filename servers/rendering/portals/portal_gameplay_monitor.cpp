@@ -32,8 +32,8 @@
 
 #include "portal_renderer.h"
 #include "portal_types.h"
-#include "servers/visual/visual_server_globals.h"
-#include "servers/visual/visual_server_scene.h"
+#include "servers/rendering/rendering_server_globals.h"
+#include "servers/rendering/rendering_server_scene.h"
 
 PortalGameplayMonitor::PortalGameplayMonitor() {
 	_active_moving_pool_ids_prev = &_active_moving_pool_ids[0];

@@ -104,7 +104,7 @@
 #include "scene/resources/sphere_shape.h"
 #include "scene/resources/surface_tool.h"
 #include "scene/resources/world.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 #define HANDLE_HALF_SIZE 9.5
 

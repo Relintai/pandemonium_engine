@@ -49,7 +49,7 @@
 #include "core/object/script_language.h"
 #include "core/typedefs.h"
 #include "scene/gui/control.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 bool EditorResourcePreviewGenerator::handles(const String &p_type) const {
 	if (get_script_instance() && get_script_instance()->has_method("handles")) {

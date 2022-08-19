@@ -38,8 +38,8 @@
 #include "scene/gui/control.h"
 #include "core/input/shortcut.h"
 #include "scene/gui/text_edit.h"
-#include "servers/visual/shader_language.h"
-#include "servers/visual/shader_types.h"
+#include "servers/rendering/shader_language.h"
+#include "servers/rendering/shader_types.h"
 
 typedef ShaderLanguage SL;
 

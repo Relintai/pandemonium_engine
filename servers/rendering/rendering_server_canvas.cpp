@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  visual_server_canvas.cpp                                             */
+/*  rendering_server_canvas.cpp                                             */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,10 +28,10 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "visual_server_canvas.h"
-#include "visual_server_globals.h"
-#include "visual_server_raster.h"
-#include "visual_server_viewport.h"
+#include "rendering_server_canvas.h"
+#include "rendering_server_globals.h"
+#include "rendering_server_raster.h"
+#include "rendering_server_viewport.h"
 
 static const int z_range = RS::CANVAS_ITEM_Z_MAX - RS::CANVAS_ITEM_Z_MIN + 1;
 

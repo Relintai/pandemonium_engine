@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  visual_server_scene.cpp                                              */
+/*  rendering_server_scene.cpp                                              */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,13 +28,13 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "visual_server_scene.h"
+#include "rendering_server_scene.h"
 
 #include "core/math/transform_interpolator.h"
 #include "core/os/os.h"
 #include "core/config/project_settings.h"
-#include "visual_server_globals.h"
-#include "visual_server_raster.h"
+#include "rendering_server_globals.h"
+#include "rendering_server_raster.h"
 
 #include <new>
 
@@ -1475,7 +1475,7 @@ Geometry::MeshData RenderingServerScene::occlusion_debug_get_current_polys(RID p
 
 // Rooms
 void RenderingServerScene::callbacks_register(RenderingServerCallbacks *p_callbacks) {
-	_visual_server_callbacks = p_callbacks;
+	_rendering_server_callbacks = p_callbacks;
 }
 
 // the room has to be associated with a scenario, this is assumed to be
@@ -2941,7 +2941,7 @@ RenderingServerScene::RenderingServerScene() {
 	GLOBAL_DEF("rendering/quality/spatial_partitioning/bvh_collision_margin", 0.1);
 	ProjectSettings::get_singleton()->set_custom_property_info("rendering/quality/spatial_partitioning/bvh_collision_margin", PropertyInfo(Variant::REAL, "rendering/quality/spatial_partitioning/bvh_collision_margin", PROPERTY_HINT_RANGE, "0.0,2.0,0.01"));
 
-	_visual_server_callbacks = nullptr;
+	_rendering_server_callbacks = nullptr;
 }
 
 RenderingServerScene::~RenderingServerScene() {

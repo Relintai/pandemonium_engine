@@ -61,9 +61,9 @@
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/text_edit.h"
 #include "scene/gui/tool_button.h"
-#include "servers/visual/shader_language.h"
-#include "servers/visual/shader_types.h"
-#include "servers/visual_server.h"
+#include "servers/rendering/shader_language.h"
+#include "servers/rendering/shader_types.h"
+#include "servers/rendering_server.h"
 
 struct ScriptCodeCompletionOption;
 

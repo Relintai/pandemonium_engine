@@ -81,7 +81,7 @@ public:
 	void set_sphere_position(int p_idx, const Vector3 &p_position);
 	void set_sphere_radius(int p_idx, real_t p_radius);
 
-	void update_shape_to_visual_server();
+	void update_shape_to_rendering_server();
 	virtual Transform center_node(const Transform &p_global_xform, const Transform &p_parent_xform, real_t p_snap);
 
 #ifdef TOOLS_ENABLED

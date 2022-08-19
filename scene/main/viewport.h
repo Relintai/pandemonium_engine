@@ -33,7 +33,7 @@
 #include "core/math/transform_2d.h"
 #include "scene/main/node.h"
 #include "scene/resources/texture.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 class Camera;
 class Camera2D;

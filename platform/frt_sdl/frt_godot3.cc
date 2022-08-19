@@ -17,10 +17,10 @@
 #pragma GCC diagnostic ignored "-Wvolatile"
 #include "servers/audio_server.h"
 #pragma GCC diagnostic pop
-#include "servers/visual_server.h"
-#include "servers/visual/visual_server_wrap_mt.h"
-#include "servers/visual/rasterizer.h"
-#include "servers/visual/visual_server_raster.h"
+#include "servers/rendering_server.h"
+#include "servers/rendering/rendering_server_wrap_mt.h"
+#include "servers/rendering/rasterizer.h"
+#include "servers/rendering/rendering_server_raster.h"
 #include "main/main.h"
 
 namespace frt {
@@ -90,19 +90,19 @@ private:
 	bool quit_;
 	OS_FRT os_;
 	int video_driver_;
-	RenderingServer *visual_server_;
+	RenderingServer *rendering_server_;
 	void init_video() {
 		//if (video_driver_ == VIDEO_DRIVER_GLES2) {
 		frt_resolve_symbols_gles2(get_proc_address);
 		RasterizerGLES2::register_config();
 		RasterizerGLES2::make_current();
 		//} 
-		visual_server_ = memnew(RenderingServerRaster);
-		visual_server_->init();
+		rendering_server_ = memnew(RenderingServerRaster);
+		rendering_server_->init();
 	}
 	void cleanup_video() {
-		visual_server_->finish();
-		memdelete(visual_server_);
+		rendering_server_->finish();
+		memdelete(rendering_server_);
 	}
 	AudioDriverSDL2 audio_driver_;
 	void init_audio(int id) {

@@ -37,7 +37,7 @@
 #include "servers/audio_server.h"
 #include "servers/physics_2d_server.h"
 #include "servers/physics_server.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 Performance *Performance::singleton = nullptr;
 

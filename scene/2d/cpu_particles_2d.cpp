@@ -35,7 +35,7 @@
 #include "scene/2d/canvas_item.h"
 #include "scene/resources/particles_material.h"
 #include "scene/resources/texture.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 void CPUParticles2D::set_emitting(bool p_emitting) {
 	if (emitting == p_emitting) {

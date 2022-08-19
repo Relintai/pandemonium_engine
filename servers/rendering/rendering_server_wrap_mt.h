@@ -1,7 +1,7 @@
-#ifndef VISUAL_SERVER_WRAP_MT_H
-#define VISUAL_SERVER_WRAP_MT_H
+#ifndef RENDERING_SERVER_WRAP_MT_H
+#define RENDERING_SERVER_WRAP_MT_H
 /*************************************************************************/
-/*  visual_server_wrap_mt.h                                              */
+/*  rendering_server_wrap_mt.h                                              */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -33,11 +33,11 @@
 #include "core/containers/command_queue_mt.h"
 #include "core/os/thread.h"
 #include "core/os/safe_refcount.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 class RenderingServerWrapMT : public RenderingServer {
 	// the real visual server
-	mutable RenderingServer *visual_server;
+	mutable RenderingServer *rendering_server;
 
 	mutable CommandQueueMT command_queue;
 
@@ -75,7 +75,7 @@ class RenderingServerWrapMT : public RenderingServer {
 public:
 #define ServerName RenderingServer
 #define ServerNameWrapMT RenderingServerWrapMT
-#define server_name visual_server
+#define server_name rendering_server
 #include "servers/server_wrap_mt_common.h"
 
 	/* EVENT QUEUING */
@@ -345,7 +345,7 @@ public:
 
 	//this passes directly to avoid stalling, but it's pretty dangerous, so don't call after freeing a viewport
 	virtual int viewport_get_render_info(RID p_viewport, ViewportRenderInfo p_info) {
-		return visual_server->viewport_get_render_info(p_viewport, p_info);
+		return rendering_server->viewport_get_render_info(p_viewport, p_info);
 	}
 
 	FUNC2(viewport_set_debug_draw, RID, ViewportDebugDraw)
@@ -589,15 +589,15 @@ public:
 
 	//this passes directly to avoid stalling
 	virtual uint64_t get_render_info(RenderInfo p_info) {
-		return visual_server->get_render_info(p_info);
+		return rendering_server->get_render_info(p_info);
 	}
 
 	virtual String get_video_adapter_name() const {
-		return visual_server->get_video_adapter_name();
+		return rendering_server->get_video_adapter_name();
 	}
 
 	virtual String get_video_adapter_vendor() const {
-		return visual_server->get_video_adapter_vendor();
+		return rendering_server->get_video_adapter_vendor();
 	}
 
 	FUNC4(set_boot_image, const Ref<Image> &, const Color &, bool, bool)
@@ -608,15 +608,15 @@ public:
 
 	FUNC1(set_debug_generate_wireframes, bool)
 
-	virtual bool has_feature(Features p_feature) const { return visual_server->has_feature(p_feature); }
-	virtual bool has_os_feature(const String &p_feature) const { return visual_server->has_os_feature(p_feature); }
+	virtual bool has_feature(Features p_feature) const { return rendering_server->has_feature(p_feature); }
+	virtual bool has_os_feature(const String &p_feature) const { return rendering_server->has_os_feature(p_feature); }
 
 	FUNC1(call_set_use_vsync, bool)
 
 	static void set_use_vsync_callback(bool p_enable);
 
 	virtual bool is_low_end() const {
-		return visual_server->is_low_end();
+		return rendering_server->is_low_end();
 	}
 
 	RenderingServerWrapMT(RenderingServer *p_contained, bool p_create_thread);

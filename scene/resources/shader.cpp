@@ -31,8 +31,8 @@
 #include "shader.h"
 #include "core/os/file_access.h"
 #include "scene/scene_string_names.h"
-#include "servers/visual/shader_language.h"
-#include "servers/visual_server.h"
+#include "servers/rendering/shader_language.h"
+#include "servers/rendering_server.h"
 #include "texture.h"
 
 Shader::Mode Shader::get_mode() const {

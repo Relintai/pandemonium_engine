@@ -43,7 +43,7 @@
 #include "core/math/projection.h"
 #include "core/containers/pair.h"
 #include "core/variant/variant.h"
-#include "servers/visual/shader_language.h"
+#include "servers/rendering/shader_language.h"
 
 #include <stdio.h>
 

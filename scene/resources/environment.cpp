@@ -33,7 +33,7 @@
 #include "core/config/project_settings.h"
 #include "scene/resources/sky.h"
 #include "scene/resources/texture.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 #include "texture.h"
 
 RID Environment::get_rid() const {

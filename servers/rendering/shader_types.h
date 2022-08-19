@@ -1,5 +1,7 @@
+#ifndef SHADERTYPES_H
+#define SHADERTYPES_H
 /*************************************************************************/
-/*  visual_server_globals.cpp                                            */
+/*  shader_types.h                                                       */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,13 +30,30 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "visual_server_globals.h"
+#include "core/containers/ordered_hash_map.h"
+#include "servers/rendering_server.h"
+#include "shader_language.h"
 
-RasterizerStorage *RenderingServerGlobals::storage = nullptr;
-RasterizerCanvas *RenderingServerGlobals::canvas_render = nullptr;
-RasterizerScene *RenderingServerGlobals::scene_render = nullptr;
-Rasterizer *RenderingServerGlobals::rasterizer = nullptr;
+class ShaderTypes {
+	struct Type {
+		Map<StringName, ShaderLanguage::FunctionInfo> functions;
+		Vector<StringName> modes;
+	};
 
-RenderingServerCanvas *RenderingServerGlobals::canvas = nullptr;
-RenderingServerViewport *RenderingServerGlobals::viewport = nullptr;
-RenderingServerScene *RenderingServerGlobals::scene = nullptr;
+	Map<RS::ShaderMode, Type> shader_modes;
+
+	static ShaderTypes *singleton;
+
+	Set<String> shader_types;
+
+public:
+	static ShaderTypes *get_singleton() { return singleton; }
+
+	const Map<StringName, ShaderLanguage::FunctionInfo> &get_functions(RS::ShaderMode p_mode);
+	const Vector<StringName> &get_modes(RS::ShaderMode p_mode);
+	const Set<String> &get_types();
+
+	ShaderTypes();
+};
+
+#endif // SHADERTYPES_H

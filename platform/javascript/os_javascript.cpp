@@ -35,9 +35,9 @@
 #include "drivers/unix/dir_access_unix.h"
 #include "drivers/unix/file_access_unix.h"
 #include "main/main.h"
-#include "servers/visual/visual_server_raster.h"
+#include "servers/rendering/rendering_server_raster.h"
 #ifndef NO_THREADS
-#include "servers/visual/visual_server_wrap_mt.h"
+#include "servers/rendering/rendering_server_wrap_mt.h"
 #endif
 #include "scene/resources/texture.h"
 
@@ -729,9 +729,9 @@ Error OS_JavaScript::initialize(const VideoMode &p_desired, int p_video_driver, 
 	video_driver_index = p_video_driver;
 
 	AudioDriverManager::initialize(p_audio_driver);
-	visual_server = memnew(RenderingServerRaster());
+	rendering_server = memnew(RenderingServerRaster());
 #ifndef NO_THREADS
-	visual_server = memnew(RenderingServerWrapMT(visual_server, false));
+	rendering_server = memnew(RenderingServerWrapMT(rendering_server, false));
 #endif
 	input = memnew(InputDefault);
 
@@ -755,7 +755,7 @@ Error OS_JavaScript::initialize(const VideoMode &p_desired, int p_video_driver, 
 			MainLoop::NOTIFICATION_WM_FOCUS_OUT);
 	pandemonium_js_display_vk_cb(&input_text_callback);
 
-	visual_server->init();
+	rendering_server->init();
 
 	return OK;
 }
@@ -853,9 +853,9 @@ void OS_JavaScript::delete_main_loop() {
 
 void OS_JavaScript::finalize() {
 	memdelete(input);
-	visual_server->finish();
+	rendering_server->finish();
 	emscripten_webgl_commit_frame();
-	memdelete(visual_server);
+	memdelete(rendering_server);
 	emscripten_webgl_destroy_context(webgl_ctx);
 	for (int i = 0; i < audio_drivers.size(); i++) {
 		memdelete(audio_drivers[i]);
@@ -1067,7 +1067,7 @@ OS_JavaScript::OS_JavaScript() {
 	transparency_enabled = false;
 
 	main_loop = NULL;
-	visual_server = NULL;
+	rendering_server = NULL;
 
 	swap_ok_cancel = false;
 	idb_available = pandemonium_js_os_fs_is_persistent() != 0;

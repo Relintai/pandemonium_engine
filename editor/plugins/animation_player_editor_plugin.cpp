@@ -42,7 +42,7 @@
 #include "editor/plugins/canvas_item_editor_plugin.h"
 #include "editor/plugins/spatial_editor_plugin.h"
 #include "scene/main/viewport.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 #include "core/variant/array.h"
 #include "core/object/class_db.h"
 #include "core/math/color.h"

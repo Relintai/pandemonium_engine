@@ -41,7 +41,7 @@
 #include "plugins/spatial_editor_plugin.h"
 #include "scene/3d/camera.h"
 #include "scene/gui/popup_menu.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 #include "core/object/class_db.h"
 #include "core/math/color.h"
 #include "core/io/image.h"

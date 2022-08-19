@@ -1,7 +1,7 @@
-#ifndef VISUAL_SERVER_RASTER_H
-#define VISUAL_SERVER_RASTER_H
+#ifndef RENDERING_SERVER_RASTER_H
+#define RENDERING_SERVER_RASTER_H
 /*************************************************************************/
-/*  visual_server_raster.h                                               */
+/*  rendering_server_raster.h                                               */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -31,12 +31,12 @@
 /*************************************************************************/
 
 #include "core/math/octree.h"
-#include "servers/visual/rasterizer.h"
-#include "servers/visual_server.h"
-#include "visual_server_canvas.h"
-#include "visual_server_globals.h"
-#include "visual_server_scene.h"
-#include "visual_server_viewport.h"
+#include "servers/rendering/rasterizer.h"
+#include "servers/rendering_server.h"
+#include "rendering_server_canvas.h"
+#include "rendering_server_globals.h"
+#include "rendering_server_scene.h"
+#include "rendering_server_viewport.h"
 
 class RenderingServerRaster : public RenderingServer {
 	enum {

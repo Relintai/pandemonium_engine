@@ -80,7 +80,7 @@ public:
 
 	void clear();
 
-	void update_shape_to_visual_server();
+	void update_shape_to_rendering_server();
 	virtual Transform center_node(const Transform &p_global_xform, const Transform &p_parent_xform, real_t p_snap);
 
 #ifdef TOOLS_ENABLED

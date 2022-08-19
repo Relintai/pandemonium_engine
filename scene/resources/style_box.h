@@ -32,7 +32,7 @@
 
 #include "core/object/resource.h"
 #include "scene/resources/texture.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 class CanvasItem;
 

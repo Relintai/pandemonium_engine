@@ -1,7 +1,7 @@
-#ifndef VISUALSERVERCANVAS_H
-#define VISUALSERVERCANVAS_H
+#ifndef RENDERINGSERVERCANVAS_H
+#define RENDERINGSERVERCANVAS_H
 /*************************************************************************/
-/*  visual_server_canvas.h                                               */
+/*  rendering_server_canvas.h                                               */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -31,7 +31,7 @@
 /*************************************************************************/
 
 #include "rasterizer.h"
-#include "visual_server_viewport.h"
+#include "rendering_server_viewport.h"
 
 class RenderingServerCanvas {
 public:
@@ -256,4 +256,4 @@ public:
 	~RenderingServerCanvas();
 };
 
-#endif // VISUALSERVERCANVAS_H
+#endif // RENDERINGSERVERCANVAS_H

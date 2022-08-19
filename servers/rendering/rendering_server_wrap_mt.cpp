@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  visual_server_wrap_mt.cpp                                            */
+/*  rendering_server_wrap_mt.cpp                                            */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "visual_server_wrap_mt.h"
+#include "rendering_server_wrap_mt.h"
 #include "core/os/os.h"
 #include "core/config/project_settings.h"
 
@@ -38,19 +38,19 @@ void RenderingServerWrapMT::thread_exit() {
 
 void RenderingServerWrapMT::thread_scenario_tick(RID p_scenario) {
 	if (!draw_pending.decrement()) {
-		visual_server->scenario_tick(p_scenario);
+		rendering_server->scenario_tick(p_scenario);
 	}
 }
 
 void RenderingServerWrapMT::thread_scenario_pre_draw(RID p_scenario, bool p_will_draw) {
 	if (!draw_pending.decrement()) {
-		visual_server->scenario_pre_draw(p_scenario, p_will_draw);
+		rendering_server->scenario_pre_draw(p_scenario, p_will_draw);
 	}
 }
 
 void RenderingServerWrapMT::thread_draw(bool p_swap_buffers, double frame_step) {
 	if (!draw_pending.decrement()) {
-		visual_server->draw(p_swap_buffers, frame_step);
+		rendering_server->draw(p_swap_buffers, frame_step);
 	}
 }
 
@@ -69,7 +69,7 @@ void RenderingServerWrapMT::thread_loop() {
 
 	OS::get_singleton()->make_rendering_thread();
 
-	visual_server->init();
+	rendering_server->init();
 
 	exit.clear();
 	draw_thread_up.set();
@@ -80,7 +80,7 @@ void RenderingServerWrapMT::thread_loop() {
 
 	command_queue.flush_all(); // flush all
 
-	visual_server->finish();
+	rendering_server->finish();
 }
 
 /* EVENT QUEUING */
@@ -99,7 +99,7 @@ void RenderingServerWrapMT::scenario_tick(RID p_scenario) {
 		draw_pending.increment();
 		command_queue.push(this, &RenderingServerWrapMT::thread_scenario_tick, p_scenario);
 	} else {
-		visual_server->scenario_tick(p_scenario);
+		rendering_server->scenario_tick(p_scenario);
 	}
 }
 
@@ -108,7 +108,7 @@ void RenderingServerWrapMT::scenario_pre_draw(RID p_scenario, bool p_will_draw) 
 		draw_pending.increment();
 		command_queue.push(this, &RenderingServerWrapMT::thread_scenario_pre_draw, p_scenario, p_will_draw);
 	} else {
-		visual_server->scenario_pre_draw(p_scenario, p_will_draw);
+		rendering_server->scenario_pre_draw(p_scenario, p_will_draw);
 	}
 }
 
@@ -117,7 +117,7 @@ void RenderingServerWrapMT::draw(bool p_swap_buffers, double frame_step) {
 		draw_pending.increment();
 		command_queue.push(this, &RenderingServerWrapMT::thread_draw, p_swap_buffers, frame_step);
 	} else {
-		visual_server->draw(p_swap_buffers, frame_step);
+		rendering_server->draw(p_swap_buffers, frame_step);
 	}
 }
 
@@ -134,7 +134,7 @@ void RenderingServerWrapMT::init() {
 		}
 		print_verbose("RenderingServerWrapMT: Finished render thread");
 	} else {
-		visual_server->init();
+		rendering_server->init();
 	}
 }
 
@@ -143,7 +143,7 @@ void RenderingServerWrapMT::finish() {
 		command_queue.push(this, &RenderingServerWrapMT::thread_exit);
 		thread.wait_to_finish();
 	} else {
-		visual_server->finish();
+		rendering_server->finish();
 	}
 
 	texture_free_cached_ids();
@@ -186,7 +186,7 @@ RenderingServerWrapMT::RenderingServerWrapMT(RenderingServer *p_contained, bool 
 	singleton_mt = this;
 	OS::switch_vsync_function = set_use_vsync_callback; //as this goes to another thread, make sure it goes properly
 
-	visual_server = p_contained;
+	rendering_server = p_contained;
 	create_thread = p_create_thread;
 	pool_max_size = GLOBAL_GET("memory/limits/multithreaded_server/rid_pool_prealloc");
 
@@ -198,6 +198,6 @@ RenderingServerWrapMT::RenderingServerWrapMT(RenderingServer *p_contained, bool 
 }
 
 RenderingServerWrapMT::~RenderingServerWrapMT() {
-	memdelete(visual_server);
+	memdelete(rendering_server);
 	//finish();
 }

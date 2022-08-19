@@ -35,10 +35,10 @@
 #include "core/input/input.h"
 #include "core/os/file_access.h"
 #include "drivers/unix/os_unix.h"
-#include "servers/visual_server.h"
-#include "servers/visual/rasterizer.h"
+#include "servers/rendering_server.h"
+#include "servers/rendering/rasterizer.h"
 #include "servers/audio/audio_driver_dummy.h"
-#include "servers/visual/visual_server_raster.h"
+#include "servers/rendering/rendering_server_raster.h"
 #include "drivers/alsa/audio_driver_alsa.h"
 #include "drivers/pulseaudio/audio_driver_pulseaudio.h"
 #include "main/main.h"
@@ -132,7 +132,7 @@ private:
 	Env *env;
 	Vec2 screen_size;
 	ContextGL *context_gl;
-	RenderingServer *visual_server;
+	RenderingServer *rendering_server;
 	VideoMode current_videomode;
 	int current_video_driver;
 	List<String> args;
@@ -291,7 +291,7 @@ public:
 		RasterizerGLES2::make_current();
 		current_video_driver = VIDEO_DRIVER_GLES2;
 
-		visual_server = memnew(RenderingServerRaster);
+		rendering_server = memnew(RenderingServerRaster);
 
 		// TODO: Audio Module
 		AudioDriverManagerSW::get_driver(audio_driver)->set_singleton();
@@ -309,10 +309,10 @@ public:
 			}
 		}
 
-		if (!visual_server)
+		if (!rendering_server)
 			return FAILED;
 
-		visual_server->init();
+		rendering_server->init();
 
 		input = memnew(InputDefault);
 
@@ -331,7 +331,7 @@ public:
 		for (int i = 0; i < get_audio_driver_count(); i++)
 			AudioDriverManager::get_driver(i)->finish();
 
-		memdelete(visual_server);
+		memdelete(rendering_server);
 
 #ifdef JOYDEV_ENABLED
 		memdelete(joystick);
