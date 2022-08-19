@@ -35,6 +35,7 @@
 #include "core/os/midi_driver.h"
 #include "core/os/mutex.h"
 #include "core/os/thread.h"
+#include "core/os/safe_refcount.h"
 #include "core/containers/vector.h"
 
 #include "../alsa/asound-so_wrap.h"
@@ -46,7 +47,7 @@ class MIDIDriverALSAMidi : public MIDIDriver {
 
 	Vector<snd_rawmidi_t *> connected_inputs;
 
-	bool exit_thread;
+	SafeFlag exit_thread;
 
 	static void thread_func(void *p_udata);
 
