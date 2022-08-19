@@ -30,8 +30,8 @@
 
 #include "rasterizer_storage_gles2.h"
 
-#include "core/math/transform.h"
 #include "core/config/project_settings.h"
+#include "core/math/transform.h"
 #include "rasterizer_canvas_gles2.h"
 #include "rasterizer_scene_gles2.h"
 #include "servers/visual/shader_language.h"
@@ -6096,32 +6096,45 @@ void RasterizerStorageGLES2::initialize() {
 	}
 
 	{
-		//default textures
+		// Generate default textures.
 
+		// Opaque white color.
 		glGenTextures(1, &resources.white_tex);
 		unsigned char whitetexdata[8 * 8 * 3];
 		for (int i = 0; i < 8 * 8 * 3; i++) {
 			whitetexdata[i] = 255;
 		}
-
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, resources.white_tex);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 8, 8, 0, GL_RGB, GL_UNSIGNED_BYTE, whitetexdata);
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
+		// Opaque black color.
 		glGenTextures(1, &resources.black_tex);
 		unsigned char blacktexdata[8 * 8 * 3];
 		for (int i = 0; i < 8 * 8 * 3; i++) {
 			blacktexdata[i] = 0;
 		}
-
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, resources.black_tex);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 8, 8, 0, GL_RGB, GL_UNSIGNED_BYTE, blacktexdata);
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
+		// Transparent black color.
+		glGenTextures(1, &resources.transparent_tex);
+		unsigned char transparenttexdata[8 * 8 * 4];
+		for (int i = 0; i < 8 * 8 * 4; i++) {
+			transparenttexdata[i] = 0;
+		}
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, resources.transparent_tex);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 8, 8, 0, GL_RGBA, GL_UNSIGNED_BYTE, transparenttexdata);
+		glGenerateMipmap(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		// Opaque "flat" normal map color.
 		glGenTextures(1, &resources.normal_tex);
 		unsigned char normaltexdata[8 * 8 * 3];
 		for (int i = 0; i < 8 * 8 * 3; i += 3) {
@@ -6129,13 +6142,13 @@ void RasterizerStorageGLES2::initialize() {
 			normaltexdata[i + 1] = 128;
 			normaltexdata[i + 2] = 255;
 		}
-
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, resources.normal_tex);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 8, 8, 0, GL_RGB, GL_UNSIGNED_BYTE, normaltexdata);
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
+		// Opaque "flat" flowmap color.
 		glGenTextures(1, &resources.aniso_tex);
 		unsigned char anisotexdata[8 * 8 * 3];
 		for (int i = 0; i < 8 * 8 * 3; i += 3) {
@@ -6143,7 +6156,6 @@ void RasterizerStorageGLES2::initialize() {
 			anisotexdata[i + 1] = 128;
 			anisotexdata[i + 2] = 0;
 		}
-
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, resources.aniso_tex);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 8, 8, 0, GL_RGB, GL_UNSIGNED_BYTE, anisotexdata);

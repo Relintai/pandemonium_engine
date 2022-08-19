@@ -35,8 +35,8 @@
 #include "core/containers/ordered_hash_map.h"
 #include "core/object/script_language.h"
 #include "core/string/string_name.h"
-#include "core/typedefs.h"
 #include "core/string/ustring.h"
+#include "core/typedefs.h"
 #include "core/variant/variant.h"
 
 class ShaderLanguage {
@@ -156,6 +156,7 @@ public:
 		TK_RENDER_MODE,
 		TK_HINT_WHITE_TEXTURE,
 		TK_HINT_BLACK_TEXTURE,
+		TK_HINT_TRANSPARENT_TEXTURE,
 		TK_HINT_NORMAL_TEXTURE,
 		TK_HINT_ANISO_TEXTURE,
 		TK_HINT_ALBEDO_TEXTURE,
@@ -642,6 +643,7 @@ public:
 				HINT_NORMAL,
 				HINT_BLACK,
 				HINT_WHITE,
+				HINT_TRANSPARENT,
 				HINT_ANISO,
 				HINT_MAX
 			};
