@@ -30,10 +30,10 @@
 
 #include "visual_server_raster.h"
 
-#include "core/io/marshalls.h"
-#include "core/os/os.h"
 #include "core/config/project_settings.h"
 #include "core/containers/sort_array.h"
+#include "core/io/marshalls.h"
+#include "core/os/os.h"
 #include "visual_server_canvas.h"
 #include "visual_server_globals.h"
 #include "visual_server_scene.h"
@@ -65,6 +65,11 @@ void VisualServerRaster::_draw_margins() {
 /* FREE */
 
 void VisualServerRaster::free(RID p_rid) {
+	if (!p_rid.is_valid()) {
+		ERR_FAIL_MSG("Invalid RID.");
+		return;
+	}
+
 	if (VSG::storage->free(p_rid)) {
 		return;
 	}
@@ -80,6 +85,8 @@ void VisualServerRaster::free(RID p_rid) {
 	if (VSG::scene_render->free(p_rid)) {
 		return;
 	}
+
+	ERR_FAIL_MSG("Invalid RID.");
 }
 
 /* EVENT QUEUING */

@@ -33,9 +33,9 @@
 #include "broad_phase_basic.h"
 #include "broad_phase_bvh.h"
 #include "broad_phase_octree.h"
-#include "core/os/os.h"
 #include "core/config/project_settings.h"
 #include "core/object/script_language.h"
+#include "core/os/os.h"
 #include "joints/cone_twist_joint_sw.h"
 #include "joints/generic_6dof_joint_sw.h"
 #include "joints/hinge_joint_sw.h"
@@ -1199,6 +1199,11 @@ bool PhysicsServerSW::generic_6dof_joint_get_flag(RID p_joint, Vector3::Axis p_a
 }
 
 void PhysicsServerSW::free(RID p_rid) {
+	if (!p_rid.is_valid()) {
+		ERR_FAIL_MSG("Invalid RID.");
+		return;
+	}
+
 	_update_shapes(); //just in case
 
 	if (shape_owner.owns(p_rid)) {
@@ -1271,7 +1276,7 @@ void PhysicsServerSW::free(RID p_rid) {
 		memdelete(joint);
 
 	} else {
-		ERR_FAIL_MSG("Invalid ID.");
+		ERR_FAIL_MSG("Invalid RID.");
 	}
 };
 
