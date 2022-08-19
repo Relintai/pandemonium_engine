@@ -27,12 +27,28 @@ SOFTWARE.
 #include "./uv_editor/mdr_uv_rect_editor.h"
 #include "./uv_editor/mdr_uv_rect_editor_popup.h"
 #include "core/os/keyboard.h"
+#include "editor/plugins/spatial_editor_plugin.h"
 #include "mdi_ed_plugin.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/label.h"
 #include "scene/gui/scroll_container.h"
 #include "scene/gui/separator.h"
+
+bool MDIEd::is_editing() {
+	return _editing;
+}
+
+void MDIEd::make_visible(const bool visible) {
+	_edit_mode_button->set_visible(visible);
+
+	if (!visible) {
+		hide();
+	} else {
+		set_visible(_editing);
+		_plugin->set_gizmo_visible(_editing);
+	}
+}
 
 void MDIEd::set_plugin(MDIEdPlugin *plugin) {
 	_plugin = plugin;
@@ -871,9 +887,34 @@ MDIEd::MDIEd() {
 	uv_editor->set_resizable(true);
 	uv_editor->hide();
 	popups_node->add_child(uv_editor);
+
+	_edit_mode_button = memnew(Button);
+	_edit_mode_button->set_flat(true);
+	_edit_mode_button->set_toggle_mode(true);
+	_edit_mode_button->set_focus_mode(BaseButton::FOCUS_NONE);
+	_edit_mode_button->set_text("Edit");
+	_edit_mode_button->set_tooltip(TTR("Edit MeshDataResource."));
+	_edit_mode_button->connect("toggled", this, "_edit_mode_toggled");
+	SpatialEditor::get_singleton()->add_control_to_menu_panel(_edit_mode_button);
+
+	_editing = false;
 }
 
 MDIEd::~MDIEd() {
+}
+
+void MDIEd::_notification(int p_what) {
+	switch (p_what) {
+		case NOTIFICATION_ENTER_TREE: {
+			_edit_mode_button->set_icon(get_theme_icon("MeshInstance", "EditorIcons"));
+		} break;
+	}
+}
+
+void MDIEd::_edit_mode_toggled(const bool pressed) {
+	_editing = pressed;
+
+	make_visible(_editing);
 }
 
 void MDIEd::_bind_methods() {
@@ -936,4 +977,6 @@ void MDIEd::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("on_add_box_pressed"), &MDIEd::on_add_box_pressed);
 	ClassDB::bind_method(D_METHOD("on_add_triangle_pressed"), &MDIEd::on_add_triangle_pressed);
 	ClassDB::bind_method(D_METHOD("on_add_quad_pressed"), &MDIEd::on_add_quad_pressed);
+
+	ClassDB::bind_method(D_METHOD("_edit_mode_toggled"), &MDIEd::_edit_mode_toggled);
 }

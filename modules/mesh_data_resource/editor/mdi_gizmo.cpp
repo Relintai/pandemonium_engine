@@ -32,6 +32,11 @@ SOFTWARE.
 #include "modules/mesh_utils/mesh_utils.h"
 #include "scene/3d/camera.h"
 
+void MDIGizmo::set_visible(const bool visible) {
+	_visible = visible;
+	redraw();
+}
+
 void MDIGizmo::setup() {
 	MeshDataInstance *mdi = Object::cast_to<MeshDataInstance>(get_spatial_node());
 
@@ -150,6 +155,10 @@ void MDIGizmo::set_handle(int index, bool secondary, Camera *camera, const Point
 
 void MDIGizmo::redraw() {
 	clear();
+
+	if (!_visible) {
+		return;
+	}
 
 	if (!_mdr.is_valid()) {
 		return;
@@ -606,7 +615,7 @@ EditorPlugin::AfterGUIInput MDIGizmo::forward_spatial_gui_input(Camera *camera, 
 
 				// Dont consume the event here, because the handles will get stuck
 				// to the mouse pointer if we return true
-				return EditorPlugin::AFTER_GUI_INPUT_PASS;
+				return EditorPlugin::AFTER_GUI_INPUT_NO_DESELECT;
 			}
 
 			if (!event_button->is_pressed()) {
@@ -625,13 +634,13 @@ EditorPlugin::AfterGUIInput MDIGizmo::forward_spatial_gui_input(Camera *camera, 
 					if (selection_click(camera, event)) {
 						return EditorPlugin::AFTER_GUI_INPUT_STOP;
 					} else {
-						return EditorPlugin::AFTER_GUI_INPUT_PASS;
+						return EditorPlugin::AFTER_GUI_INPUT_NO_DESELECT;
 					}
 
 				} else {
 					selection_drag(camera, event_button);
 					// Always return false here, so the drag rect thing disappears in the editor
-					return EditorPlugin::AFTER_GUI_INPUT_PASS;
+					return EditorPlugin::AFTER_GUI_INPUT_NO_DESELECT;
 				}
 			} else {
 				// event is pressed
@@ -641,7 +650,7 @@ EditorPlugin::AfterGUIInput MDIGizmo::forward_spatial_gui_input(Camera *camera, 
 		}
 	}
 
-	return EditorPlugin::AFTER_GUI_INPUT_PASS;
+	return EditorPlugin::AFTER_GUI_INPUT_NO_DESELECT;
 }
 void MDIGizmo::add_to_all_selected(const Vector3 &ofs) {
 	for (int i = 0; i < _selected_points.size(); ++i) {
@@ -2204,6 +2213,8 @@ MDIGizmo::MDIGizmo() {
 
 	_editor_plugin = nullptr;
 	_undo_redo = nullptr;
+
+	_visible = false;
 }
 
 MDIGizmo::~MDIGizmo() {

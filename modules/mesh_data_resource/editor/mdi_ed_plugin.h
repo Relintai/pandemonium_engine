@@ -27,9 +27,6 @@ SOFTWARE.
 
 #include "core/input/input_event.h"
 
-//TODO:
-//Remove gizmo registration, it's not needed anymore
-
 class Camera;
 class MDIGizmo;
 class MeshDataResource;
@@ -46,6 +43,8 @@ public:
 	void make_visible(bool visible);
 
 	String get_name() const;
+
+	void set_gizmo_visible(const bool visible);
 
 	void set_translate();
 	void set_scale();

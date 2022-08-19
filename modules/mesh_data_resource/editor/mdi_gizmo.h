@@ -74,6 +74,8 @@ public:
 		HANDLE_SELECTION_TYPE_ALL = 2,
 	};
 
+	void set_visible(const bool visible);
+
 	void setup();
 	void set_editor_plugin(EditorPlugin *editor_plugin);
 
@@ -233,6 +235,8 @@ public:
 
 	EditorPlugin *_editor_plugin;
 	UndoRedo *_undo_redo;
+
+	bool _visible;
 
 protected:
 	static void _bind_methods();

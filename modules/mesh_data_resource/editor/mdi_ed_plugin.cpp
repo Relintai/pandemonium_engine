@@ -54,16 +54,18 @@ void MDIEdPlugin::edit(Object *object) {
 	current_mesh_data_instance = mdi;
 }
 void MDIEdPlugin::make_visible(bool visible) {
-	if (visible) {
-		mdi_ed_gui->show();
-	}
-	//else
-	//mdi_ed_gui.hide()
-	//figure out how to hide it when something else gets selected, don't hide on unselect
+	mdi_ed_gui->make_visible(visible);
 }
 
 String MDIEdPlugin::get_name() const {
 	return "MeshDataResourceEditor";
+}
+
+void MDIEdPlugin::set_gizmo_visible(const bool visible) {
+	if (current_mesh_data_instance) {
+		Ref<MDIGizmo> g = get_gizmo_from(current_mesh_data_instance);
+		g->set_visible(visible);
+	}
 }
 
 void MDIEdPlugin::set_translate() {
@@ -137,9 +139,14 @@ EditorPlugin::AfterGUIInput MDIEdPlugin::forward_spatial_gui_input(Camera *camer
 	}
 
 	if (current_mesh_data_instance) {
-		Ref<MDIGizmo> g = get_gizmo_from(current_mesh_data_instance);
-		if (g.is_valid()) {
-			return g->forward_spatial_gui_input(camera, p_event);
+		if (mdi_ed_gui->is_editing()) {
+			Ref<MDIGizmo> g = get_gizmo_from(current_mesh_data_instance);
+
+			if (g.is_valid()) {
+				return g->forward_spatial_gui_input(camera, p_event);
+			}
+
+			return EditorPlugin::AFTER_GUI_INPUT_NO_DESELECT;
 		}
 	}
 

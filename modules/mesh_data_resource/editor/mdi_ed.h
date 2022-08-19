@@ -38,6 +38,9 @@ class MDIEd : public PanelContainer {
 	GDCLASS(MDIEd, PanelContainer);
 
 public:
+	bool is_editing();
+	void make_visible(const bool visible);
+
 	void set_plugin(MDIEdPlugin *plugin);
 	void set_mesh_data_resource(const Ref<MeshDataResource> &a);
 	void set_mesh_data_instance(MeshDataInstance *a);
@@ -147,8 +150,15 @@ public:
 	Button *_selection_mode_edge_button;
 	Button *_selection_mode_face_button;
 
+	Button *_edit_mode_button;
+
 protected:
+	void _notification(int p_what);
 	static void _bind_methods();
+
+	void _edit_mode_toggled(const bool pressed);
+
+	bool _editing;
 };
 
 #endif
