@@ -1,6 +1,9 @@
 
 
 def can_build(env, platform):
+  if not env["tools"]:
+    return False
+
   env.module_add_dependencies("text_editor", ["freetype"], True)
 
   return True

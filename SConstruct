@@ -273,7 +273,11 @@ env_base["platform"] = selected_platform  # Must always be re-set after calling 
 
 # Detect modules.
 modules_detected = OrderedDict()
-module_search_paths = ["modules"]  # Built-in path.
+module_search_paths = [ "modules", methods.convert_custom_modules_path("editor_modules") ]  # Built-in path.
+
+# maybe?
+#if env_base["tools"]:
+#    module_search_paths.append(methods.convert_custom_modules_path("editor_modules"))
 
 if env_base["custom_modules"]:
     paths = env_base["custom_modules"].split(",")

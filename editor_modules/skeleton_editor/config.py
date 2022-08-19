@@ -1,12 +1,9 @@
 
-
 def can_build(env, platform):
-  return True
-
+    return env["tools"]
 
 def configure(env):
-	pass
-
+    pass
 
 def get_doc_classes():
     return [

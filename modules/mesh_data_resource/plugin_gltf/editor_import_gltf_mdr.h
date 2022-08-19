@@ -37,7 +37,7 @@ SOFTWARE.
 
 #include "core/math/transform.h"
 
-#include "../../gltf/editor_scene_importer_gltf.h"
+#include "gltf/editor_scene_importer_gltf.h"
 #include "scene/3d/mesh_instance.h"
 
 class EditorImportGLTFMdr : public MDRImportPluginBase {
