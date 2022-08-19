@@ -30,12 +30,12 @@
 
 #include "spatial_editor_gizmos.h"
 
-#include "core/variant/array.h"
-#include "core/object/class_db.h"
-#include "core/error/error_list.h"
-#include "core/error/error_macros.h"
 #include "core/containers/list.h"
 #include "core/containers/map.h"
+#include "core/containers/pool_vector.h"
+#include "core/containers/rid.h"
+#include "core/error/error_list.h"
+#include "core/error/error_macros.h"
 #include "core/math/aabb.h"
 #include "core/math/convex_hull.h"
 #include "core/math/face3.h"
@@ -45,13 +45,13 @@
 #include "core/math/rect2.h"
 #include "core/math/transform.h"
 #include "core/math/triangle_mesh.h"
-#include "core/string/node_path.h"
-#include "core/os/memory.h"
-#include "core/containers/pool_vector.h"
-#include "core/containers/rid.h"
+#include "core/object/class_db.h"
 #include "core/object/script_language.h"
-#include "core/typedefs.h"
 #include "core/object/undo_redo.h"
+#include "core/os/memory.h"
+#include "core/string/node_path.h"
+#include "core/typedefs.h"
+#include "core/variant/array.h"
 #include "editor/editor_node.h"
 #include "editor/editor_settings.h"
 #include "scene/3d/audio_stream_player_3d.h"
@@ -73,6 +73,7 @@
 #include "scene/3d/ray_cast.h"
 #include "scene/3d/reflection_probe.h"
 #include "scene/3d/room.h"
+#include "scene/3d/shape_cast.h"
 #include "scene/3d/skeleton.h"
 #include "scene/3d/soft_body.h"
 #include "scene/3d/spatial.h"
@@ -714,7 +715,8 @@ void EditorSpatialGizmo::handles_intersect_ray(Camera *p_camera, const Vector2 &
 					r_id = i;
 				} else {
 					r_id = handle_ids[i];
-					r_secondary = false;				}
+					r_secondary = false;
+				}
 			}
 		}
 	}
@@ -1157,7 +1159,7 @@ void EditorSpatialGizmoPlugin::_bind_methods() {
 	hvget.return_val.usage |= PROPERTY_USAGE_NIL_IS_VARIANT;
 	BIND_VMETHOD(hvget);
 
-	BIND_VMETHOD(MethodInfo("set_handle", GIZMO_REF, PropertyInfo(Variant::INT, "id") , PropertyInfo(Variant::BOOL, "secondary"), PropertyInfo(Variant::OBJECT, "camera", PROPERTY_HINT_RESOURCE_TYPE, "Camera"), PropertyInfo(Variant::VECTOR2, "point")));
+	BIND_VMETHOD(MethodInfo("set_handle", GIZMO_REF, PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::BOOL, "secondary"), PropertyInfo(Variant::OBJECT, "camera", PROPERTY_HINT_RESOURCE_TYPE, "Camera"), PropertyInfo(Variant::VECTOR2, "point")));
 	MethodInfo cm = MethodInfo("commit_handle", GIZMO_REF, PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::BOOL, "secondary"), PropertyInfo(Variant::NIL, "restore"), PropertyInfo(Variant::BOOL, "cancel"));
 	cm.default_arguments.push_back(false);
 	BIND_VMETHOD(cm);
@@ -2348,6 +2350,44 @@ void RayCastSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	}
 
 	p_gizmo->add_collision_segments(raycast->get_debug_line_vertices());
+}
+
+/////
+
+ShapeCastGizmoPlugin::ShapeCastGizmoPlugin() {
+	const Color gizmo_color = EDITOR_GET("editors/3d_gizmos/gizmo_colors/shape");
+	create_material("shape_material", gizmo_color);
+	const float gizmo_value = gizmo_color.get_v();
+	const Color gizmo_color_disabled = Color(gizmo_value, gizmo_value, gizmo_value, 0.65);
+	create_material("shape_material_disabled", gizmo_color_disabled);
+}
+
+bool ShapeCastGizmoPlugin::has_gizmo(Spatial *p_spatial) {
+	return Object::cast_to<ShapeCast>(p_spatial) != nullptr;
+}
+
+String ShapeCastGizmoPlugin::get_name() const {
+	return "ShapeCast";
+}
+
+int ShapeCastGizmoPlugin::get_priority() const {
+	return -1;
+}
+
+void ShapeCastGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
+	ShapeCast *shapecast = Object::cast_to<ShapeCast>(p_gizmo->get_spatial_node());
+
+	p_gizmo->clear();
+
+	const Ref<SpatialMaterial> material = shapecast->is_enabled() ? shapecast->get_debug_material() : get_material("shape_material_disabled");
+
+	p_gizmo->add_lines(shapecast->get_debug_line_vertices(), material);
+
+	if (shapecast->get_shape().is_valid()) {
+		p_gizmo->add_lines(shapecast->get_debug_shape_vertices(), material);
+	}
+
+	p_gizmo->add_collision_segments(shapecast->get_debug_line_vertices());
 }
 
 /////
@@ -4339,12 +4379,12 @@ void JointSpatialGizmoPlugin::CreateGeneric6DOFJointGizmo(
 				break;
 		}
 
-#define ADD_VTX(x, y, z)                                   \
-	{                                                      \
-		Vector3 v;                                         \
-		v[a1] = (x);                                       \
-		v[a2] = (y);                                       \
-		v[a3] = (z);                                       \
+#define ADD_VTX(x, y, z)                                         \
+	{                                                            \
+		Vector3 v;                                               \
+		v[a1] = (x);                                             \
+		v[a2] = (y);                                             \
+		v[a3] = (z);                                             \
 		r_points.push_back(p_offset.translated_local(v).origin); \
 	}
 

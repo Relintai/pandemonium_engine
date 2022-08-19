@@ -32,18 +32,18 @@
 
 #include "editor/plugins/spatial_editor_plugin.h"
 
-#include "core/math/color.h"
+#include "core/containers/ordered_hash_map.h"
+#include "core/containers/pool_vector.h"
+#include "core/containers/vector.h"
 #include "core/math/basis.h"
+#include "core/math/color.h"
 #include "core/math/math_defs.h"
 #include "core/math/vector2.h"
 #include "core/math/vector3.h"
 #include "core/object/object.h"
-#include "core/containers/ordered_hash_map.h"
-#include "core/containers/pool_vector.h"
 #include "core/object/reference.h"
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
-#include "core/containers/vector.h"
 
 #include "scene/resources/mesh.h"
 
@@ -182,13 +182,12 @@ public:
 	virtual Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
 	virtual void set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point);
 	virtual void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel = false);
-	
+
 	virtual int subgizmos_intersect_ray(const EditorSpatialGizmo *p_gizmo, Camera *p_camera, const Vector2 &p_point) const;
 	virtual Vector<int> subgizmos_intersect_frustum(const EditorSpatialGizmo *p_gizmo, const Camera *p_camera, const Vector<Plane> &p_frustum) const;
 	virtual Transform get_subgizmo_transform(const EditorSpatialGizmo *p_gizmo, int p_id) const;
 	virtual void set_subgizmo_transform(const EditorSpatialGizmo *p_gizmo, int p_id, Transform p_transform);
 	virtual void commit_subgizmos(const EditorSpatialGizmo *p_gizmo, const Vector<int> &p_ids, const Vector<Transform> &p_restore, bool p_cancel = false);
-
 
 	Ref<EditorSpatialGizmo> get_gizmo(Spatial *p_spatial);
 	void set_state(int p_state);
@@ -339,6 +338,18 @@ public:
 	void redraw(EditorSpatialGizmo *p_gizmo);
 
 	RayCastSpatialGizmoPlugin();
+};
+
+class ShapeCastGizmoPlugin : public EditorSpatialGizmoPlugin {
+	GDCLASS(ShapeCastGizmoPlugin, EditorSpatialGizmoPlugin);
+
+public:
+	bool has_gizmo(Spatial *p_spatial);
+	String get_name() const;
+	int get_priority() const;
+	void redraw(EditorSpatialGizmo *p_gizmo);
+
+	ShapeCastGizmoPlugin();
 };
 
 class SpringArmSpatialGizmoPlugin : public EditorSpatialGizmoPlugin {

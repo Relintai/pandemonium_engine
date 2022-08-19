@@ -64,6 +64,7 @@
 #include "scene/2d/position_2d.h"
 #include "scene/2d/ray_cast_2d.h"
 #include "scene/2d/remote_transform_2d.h"
+#include "scene/2d/shape_cast_2d.h"
 #include "scene/2d/skeleton_2d.h"
 #include "scene/2d/sprite.h"
 #include "scene/2d/touch_screen_button.h"
@@ -226,6 +227,7 @@
 #include "scene/3d/room.h"
 #include "scene/3d/room_group.h"
 #include "scene/3d/room_manager.h"
+#include "scene/3d/shape_cast.h"
 #include "scene/3d/skeleton.h"
 #include "scene/3d/soft_body.h"
 #include "scene/3d/spatial_velocity_tracker.h"
@@ -494,6 +496,7 @@ void register_scene_types() {
 	ClassDB::register_class<CollisionShape>();
 	ClassDB::register_class<CollisionPolygon>();
 	ClassDB::register_class<RayCast>();
+	ClassDB::register_class<ShapeCast>();
 	ClassDB::register_class<MultiMeshInstance>();
 
 	ClassDB::register_class<Curve3D>();
@@ -551,6 +554,7 @@ void register_scene_types() {
 	ClassDB::register_class<CollisionShape2D>();
 	ClassDB::register_class<CollisionPolygon2D>();
 	ClassDB::register_class<RayCast2D>();
+	ClassDB::register_class<ShapeCast2D>();
 	ClassDB::register_class<VisibilityNotifier2D>();
 	ClassDB::register_class<VisibilityEnabler2D>();
 	ClassDB::register_class<Polygon2D>();

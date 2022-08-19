@@ -30,30 +30,31 @@
 
 #include "spatial_editor_plugin.h"
 
-#include "core/variant/array.h"
-#include "core/object/class_db.h"
 #include "core/config/engine.h"
-#include "core/io/resource_loader.h"
+#include "core/config/project_settings.h"
 #include "core/containers/map.h"
+#include "core/containers/pool_vector.h"
+#include "core/containers/rid_handle.h"
+#include "core/containers/set.h"
+#include "core/input/input.h"
+#include "core/input/input_event.h"
+#include "core/input/shortcut.h"
+#include "core/io/resource_loader.h"
 #include "core/math/basis.h"
-#include "core/math/projection.h"
 #include "core/math/geometry.h"
 #include "core/math/math_funcs.h"
 #include "core/math/plane.h"
+#include "core/math/projection.h"
 #include "core/math/rect2.h"
-#include "core/string/node_path.h"
-#include "core/input/input.h"
-#include "core/input/input_event.h"
+#include "core/object/class_db.h"
+#include "core/object/script_language.h"
+#include "core/object/undo_redo.h"
 #include "core/os/keyboard.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"
-#include "core/containers/pool_vector.h"
-#include "core/config/project_settings.h"
-#include "core/containers/rid_handle.h"
-#include "core/object/script_language.h"
-#include "core/containers/set.h"
+#include "core/string/node_path.h"
 #include "core/string/string_name.h"
-#include "core/object/undo_redo.h"
+#include "core/variant/array.h"
 #include "editor/animation_track_editor.h"
 #include "editor/editor_data.h"
 #include "editor/editor_node.h"
@@ -82,7 +83,6 @@
 #include "scene/gui/panel_container.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/separator.h"
-#include "core/input/shortcut.h"
 #include "scene/gui/split_container.h"
 #include "scene/gui/tool_button.h"
 #include "scene/gui/viewport_container.h"
@@ -7056,6 +7056,7 @@ void SpatialEditor::_register_all_gizmos() {
 	add_gizmo_plugin(Ref<Label3DSpatialGizmoPlugin>(memnew(Label3DSpatialGizmoPlugin)));
 	add_gizmo_plugin(Ref<Position3DSpatialGizmoPlugin>(memnew(Position3DSpatialGizmoPlugin)));
 	add_gizmo_plugin(Ref<RayCastSpatialGizmoPlugin>(memnew(RayCastSpatialGizmoPlugin)));
+	add_gizmo_plugin(Ref<ShapeCastGizmoPlugin>(memnew(ShapeCastGizmoPlugin)));
 	add_gizmo_plugin(Ref<SpringArmSpatialGizmoPlugin>(memnew(SpringArmSpatialGizmoPlugin)));
 	add_gizmo_plugin(Ref<VehicleWheelSpatialGizmoPlugin>(memnew(VehicleWheelSpatialGizmoPlugin)));
 	add_gizmo_plugin(Ref<VisibilityNotifierGizmoPlugin>(memnew(VisibilityNotifierGizmoPlugin)));
