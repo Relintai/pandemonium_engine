@@ -104,7 +104,7 @@ void Button::_notification(int p_what) {
 					}
 				} break;
 				case DRAW_HOVER_PRESSED: {
-					if (has_theme_stylebox("hover_pressed") && has_theme_stylebox_override("hover_pressed")) {
+					if (has_theme_stylebox("hover_pressed")) {
 						style = get_theme_stylebox("hover_pressed");
 						if (!flat) {
 							style->draw(ci, Rect2(Point2(0, 0), size));
