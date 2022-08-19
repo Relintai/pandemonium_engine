@@ -786,7 +786,7 @@ bool OS_JavaScript::has_virtual_keyboard() const {
 }
 
 void OS_JavaScript::show_virtual_keyboard(const String &p_existing_text, const Rect2 &p_screen_rect, VirtualKeyboardType p_type, int p_max_input_length, int p_cursor_start, int p_cursor_end) {
-	godot_js_display_vk_show(p_existing_text.utf8().get_data(), p_type, p_cursor_start, p_cursor_end);
+	pandemonium_js_display_vk_show(p_existing_text.utf8().get_data(), p_type, p_cursor_start, p_cursor_end);
 }
 
 void OS_JavaScript::hide_virtual_keyboard() {
@@ -973,7 +973,7 @@ bool OS_JavaScript::can_draw() const {
 }
 
 void OS_JavaScript::vibrate_handheld(int p_duration_ms) {
-	godot_js_input_vibrate_handheld(p_duration_ms);
+	pandemonium_js_input_vibrate_handheld(p_duration_ms);
 }
 
 String OS_JavaScript::get_user_data_dir() const {

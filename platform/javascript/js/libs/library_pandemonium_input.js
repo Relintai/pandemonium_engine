@@ -541,14 +541,14 @@ const PandemoniumInput = {
         }, false);
     },
 
-  godot_js_input_vibrate_handheld__sig: 'vi',
-	godot_js_input_vibrate_handheld: function (p_duration_ms) {
-		if (typeof navigator.vibrate !== 'function') {
-			GodotRuntime.print('This browser does not support vibration.');
-		} else {
-			navigator.vibrate(p_duration_ms);
-		}
-	},
+    pandemonium_js_input_vibrate_handheld__sig: 'vi',
+    pandemonium_js_input_vibrate_handheld: function(p_duration_ms) {
+        if (typeof navigator.vibrate !== 'function') {
+            GodotRuntime.print('This browser does not support vibration.');
+        } else {
+            navigator.vibrate(p_duration_ms);
+        }
+    },
 };
 
 autoAddDeps(PandemoniumInput, '$PandemoniumInput');
