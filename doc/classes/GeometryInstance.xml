@@ -82,7 +82,7 @@
 			In other words, the actual mesh will not be visible, only the shadows casted from the mesh will be.
 		</constant>
 		<constant name="FLAG_DRAW_NEXT_FRAME_IF_VISIBLE" value="0" enum="Flags">
-			Unused in this class, exposed for consistency with [enum VisualServer.InstanceFlags].
+			Unused in this class, exposed for consistency with [enum RenderingServer.InstanceFlags].
 		</constant>
 		<constant name="FLAG_MAX" value="1" enum="Flags">
 			Represents the size of the [enum Flags] enum.

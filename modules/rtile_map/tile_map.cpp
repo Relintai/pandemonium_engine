@@ -102,7 +102,7 @@ void RTileMap::_notification(int p_what) {
 
 				for (Map<PosKey, Quadrant::Occluder>::Element *F = q.occluder_instances.front(); F; F = F->next()) {
 					if (F->get().id.is_valid()) {
-						VS::get_singleton()->free(F->get().id);
+						RS::get_singleton()->free(F->get().id);
 					}
 				}
 				q.occluder_instances.clear();
@@ -128,7 +128,7 @@ void RTileMap::_notification(int p_what) {
 		case NOTIFICATION_VISIBILITY_CHANGED: {
 			for (Map<PosKey, Quadrant>::Element *E = quadrant_map.front(); E; E = E->next()) {
 				for (Map<PosKey, Quadrant::Occluder>::Element *F = E->get().occluder_instances.front(); F; F = F->next()) {
-					VS::get_singleton()->canvas_light_occluder_set_enabled(F->get().id, is_visible());
+					RS::get_singleton()->canvas_light_occluder_set_enabled(F->get().id, is_visible());
 				}
 			}
 
@@ -183,7 +183,7 @@ void RTileMap::_update_quadrant_transform() {
 		}
 
 		for (Map<PosKey, Quadrant::Occluder>::Element *F = q.occluder_instances.front(); F; F = F->next()) {
-			VS::get_singleton()->canvas_light_occluder_set_transform(F->get().id, global_transform * F->get().xform);
+			RS::get_singleton()->canvas_light_occluder_set_transform(F->get().id, global_transform * F->get().xform);
 		}
 	}
 }
@@ -354,7 +354,7 @@ void RTileMap::update_dirty_quadrants() {
 		return;
 	}
 
-	VisualServer *vs = VisualServer::get_singleton();
+	RenderingServer *vs = RenderingServer::get_singleton();
 	Physics2DServer *ps = Physics2DServer::get_singleton();
 	Vector2 tofs = get_cell_draw_offset();
 	Transform2D nav_rel;
@@ -413,7 +413,7 @@ void RTileMap::update_dirty_quadrants() {
 
 		for (Map<PosKey, Quadrant::Occluder>::Element *E = q.occluder_instances.front(); E; E = E->next()) {
 			if (E->get().id.is_valid()) {
-				VS::get_singleton()->free(E->get().id);
+				RS::get_singleton()->free(E->get().id);
 			}
 		}
 		q.occluder_instances.clear();
@@ -468,7 +468,7 @@ void RTileMap::update_dirty_quadrants() {
 					debug_canvas_item = RID_PRIME(vs->canvas_item_create());
 					vs->canvas_item_set_parent(debug_canvas_item, canvas_item);
 					vs->canvas_item_set_z_as_relative_to_parent(debug_canvas_item, false);
-					vs->canvas_item_set_z_index(debug_canvas_item, VS::CANVAS_ITEM_Z_MAX - 1);
+					vs->canvas_item_set_z_index(debug_canvas_item, RS::CANVAS_ITEM_Z_MAX - 1);
 					q.canvas_items.push_back(debug_canvas_item);
 					prev_debug_canvas_item = debug_canvas_item;
 				}
@@ -671,7 +671,7 @@ void RTileMap::update_dirty_quadrants() {
 						RID debug_navigation_item = RID_PRIME(vs->canvas_item_create());
 						vs->canvas_item_set_parent(debug_navigation_item, canvas_item);
 						vs->canvas_item_set_z_as_relative_to_parent(debug_navigation_item, false);
-						vs->canvas_item_set_z_index(debug_navigation_item, VS::CANVAS_ITEM_Z_MAX - 2); // Display one below collision debug
+						vs->canvas_item_set_z_index(debug_navigation_item, RS::CANVAS_ITEM_Z_MAX - 2); // Display one below collision debug
 
 						if (debug_navigation_item.is_valid()) {
 							PoolVector<Vector2> navigation_polygon_vertices = navpoly->get_vertices();
@@ -728,12 +728,12 @@ void RTileMap::update_dirty_quadrants() {
 				xform.set_origin(offset.floor() + q.pos);
 				_fix_cell_transform(xform, c, occluder_ofs, s);
 
-				RID orid = RID_PRIME(VS::get_singleton()->canvas_light_occluder_create());
-				VS::get_singleton()->canvas_light_occluder_set_transform(orid, get_global_transform() * xform);
-				VS::get_singleton()->canvas_light_occluder_set_polygon(orid, occluder->get_rid());
-				VS::get_singleton()->canvas_light_occluder_attach_to_canvas(orid, get_canvas());
-				VS::get_singleton()->canvas_light_occluder_set_light_mask(orid, occluder_light_mask);
-				VS::get_singleton()->canvas_light_occluder_set_enabled(orid, is_visible());
+				RID orid = RID_PRIME(RS::get_singleton()->canvas_light_occluder_create());
+				RS::get_singleton()->canvas_light_occluder_set_transform(orid, get_global_transform() * xform);
+				RS::get_singleton()->canvas_light_occluder_set_polygon(orid, occluder->get_rid());
+				RS::get_singleton()->canvas_light_occluder_attach_to_canvas(orid, get_canvas());
+				RS::get_singleton()->canvas_light_occluder_set_light_mask(orid, occluder_light_mask);
+				RS::get_singleton()->canvas_light_occluder_set_enabled(orid, is_visible());
 				Quadrant::Occluder oc;
 				oc.xform = xform;
 				oc.id = orid;
@@ -752,7 +752,7 @@ void RTileMap::update_dirty_quadrants() {
 		for (Map<PosKey, Quadrant>::Element *E = quadrant_map.front(); E; E = E->next()) {
 			Quadrant &q = E->get();
 			for (List<RID>::Element *F = q.canvas_items.front(); F; F = F->next()) {
-				VS::get_singleton()->canvas_item_set_draw_index(F->get(), index++);
+				RS::get_singleton()->canvas_item_set_draw_index(F->get(), index++);
 			}
 		}
 
@@ -804,7 +804,7 @@ Map<RTileMap::PosKey, RTileMap::Quadrant>::Element *RTileMap::_create_quadrant(c
 	}
 
 	xform.set_origin(q.pos);
-	//q.canvas_item = VisualServer::get_singleton()->canvas_item_create();
+	//q.canvas_item = RenderingServer::get_singleton()->canvas_item_create();
 	if (!use_parent) {
 		q.body = RID_PRIME(Physics2DServer::get_singleton()->body_create());
 		Physics2DServer::get_singleton()->body_set_mode(q.body, use_kinematic ? Physics2DServer::BODY_MODE_KINEMATIC : Physics2DServer::BODY_MODE_STATIC);
@@ -847,7 +847,7 @@ void RTileMap::_erase_quadrant(Map<PosKey, Quadrant>::Element *Q) {
 
 	for (List<RID>::Element *E = q.canvas_items.front(); E; E = E->next()) {
 		if (E->get().is_valid()) {
-			VisualServer::get_singleton()->free(E->get());
+			RenderingServer::get_singleton()->free(E->get());
 		}
 	}
 	q.canvas_items.clear();
@@ -861,7 +861,7 @@ void RTileMap::_erase_quadrant(Map<PosKey, Quadrant>::Element *Q) {
 
 	for (Map<PosKey, Quadrant::Occluder>::Element *E = q.occluder_instances.front(); E; E = E->next()) {
 		if (E->get().id.is_valid()) {
-			VS::get_singleton()->free(E->get().id);
+			RS::get_singleton()->free(E->get().id);
 		}
 	}
 	q.occluder_instances.clear();
@@ -1227,7 +1227,7 @@ void RTileMap::_update_all_items_material_state() {
 }
 
 void RTileMap::_update_item_material_state(const RID &p_canvas_item) {
-	VS::get_singleton()->canvas_item_set_use_parent_material(p_canvas_item, get_use_parent_material() || get_material().is_valid());
+	RS::get_singleton()->canvas_item_set_use_parent_material(p_canvas_item, get_use_parent_material() || get_material().is_valid());
 }
 
 void RTileMap::clear() {
@@ -1674,7 +1674,7 @@ Vector2 RTileMap::world_to_map(const Vector2 &p_pos) const {
 void RTileMap::set_y_sort_mode(bool p_enable) {
 	_clear_quadrants();
 	y_sort_mode = p_enable;
-	VS::get_singleton()->canvas_item_set_sort_children_by_y(get_canvas_item(), y_sort_mode);
+	RS::get_singleton()->canvas_item_set_sort_children_by_y(get_canvas_item(), y_sort_mode);
 	_recreate_quadrants();
 	emit_signal("settings_changed");
 }
@@ -1754,7 +1754,7 @@ void RTileMap::set_occluder_light_mask(int p_mask) {
 	occluder_light_mask = p_mask;
 	for (Map<PosKey, Quadrant>::Element *E = quadrant_map.front(); E; E = E->next()) {
 		for (Map<PosKey, Quadrant::Occluder>::Element *F = E->get().occluder_instances.front(); F; F = F->next()) {
-			VisualServer::get_singleton()->canvas_light_occluder_set_light_mask(F->get().id, occluder_light_mask);
+			RenderingServer::get_singleton()->canvas_light_occluder_set_light_mask(F->get().id, occluder_light_mask);
 		}
 	}
 }
@@ -1767,7 +1767,7 @@ void RTileMap::set_light_mask(int p_light_mask) {
 	CanvasItem::set_light_mask(p_light_mask);
 	for (Map<PosKey, Quadrant>::Element *E = quadrant_map.front(); E; E = E->next()) {
 		for (List<RID>::Element *F = E->get().canvas_items.front(); F; F = F->next()) {
-			VisualServer::get_singleton()->canvas_item_set_light_mask(F->get(), get_light_mask());
+			RenderingServer::get_singleton()->canvas_item_set_light_mask(F->get(), get_light_mask());
 		}
 	}
 }

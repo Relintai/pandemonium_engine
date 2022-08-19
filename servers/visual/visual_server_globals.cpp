@@ -30,11 +30,11 @@
 
 #include "visual_server_globals.h"
 
-RasterizerStorage *VisualServerGlobals::storage = nullptr;
-RasterizerCanvas *VisualServerGlobals::canvas_render = nullptr;
-RasterizerScene *VisualServerGlobals::scene_render = nullptr;
-Rasterizer *VisualServerGlobals::rasterizer = nullptr;
+RasterizerStorage *RenderingServerGlobals::storage = nullptr;
+RasterizerCanvas *RenderingServerGlobals::canvas_render = nullptr;
+RasterizerScene *RenderingServerGlobals::scene_render = nullptr;
+Rasterizer *RenderingServerGlobals::rasterizer = nullptr;
 
-VisualServerCanvas *VisualServerGlobals::canvas = nullptr;
-VisualServerViewport *VisualServerGlobals::viewport = nullptr;
-VisualServerScene *VisualServerGlobals::scene = nullptr;
+RenderingServerCanvas *RenderingServerGlobals::canvas = nullptr;
+RenderingServerViewport *RenderingServerGlobals::viewport = nullptr;
+RenderingServerScene *RenderingServerGlobals::scene = nullptr;

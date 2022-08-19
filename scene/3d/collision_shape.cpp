@@ -200,7 +200,7 @@ bool CollisionShape::is_disabled() const {
 }
 
 CollisionShape::CollisionShape() {
-	//indicator = RID_PRIME(VisualServer::get_singleton()->mesh_create());
+	//indicator = RID_PRIME(RenderingServer::get_singleton()->mesh_create());
 	disabled = false;
 	parent = nullptr;
 	owner_id = 0;
@@ -211,5 +211,5 @@ CollisionShape::~CollisionShape() {
 	if (!shape.is_null()) {
 		shape->unregister_owner(this);
 	}
-	//VisualServer::get_singleton()->free(indicator);
+	//RenderingServer::get_singleton()->free(indicator);
 }

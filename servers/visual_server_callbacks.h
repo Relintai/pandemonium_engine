@@ -34,7 +34,7 @@
 #include "core/object/object_id.h"
 #include "core/os/mutex.h"
 
-class VisualServerCallbacks {
+class RenderingServerCallbacks {
 public:
 	enum CallbackType {
 		CALLBACK_NOTIFICATION_ENTER_GAMEPLAY,

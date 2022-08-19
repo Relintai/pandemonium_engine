@@ -172,9 +172,9 @@ Error OS_Android::initialize(const VideoMode &p_desired, int p_video_driver, int
 
 	video_driver_index = p_video_driver;
 
-	visual_server = memnew(VisualServerRaster);
+	visual_server = memnew(RenderingServerRaster);
 	if (get_render_thread_mode() != RENDER_THREAD_UNSAFE) {
-		visual_server = memnew(VisualServerWrapMT(visual_server, false));
+		visual_server = memnew(RenderingServerWrapMT(visual_server, false));
 	}
 
 	visual_server->init();

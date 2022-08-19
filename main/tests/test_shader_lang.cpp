@@ -397,14 +397,14 @@ MainLoop *test() {
 		String type = sl.get_shader_type(code);
 
 		if (type == "canvas_item") {
-			dt_list.push_back(ShaderTypes::get_singleton()->get_functions(VisualServer::ShaderMode::SHADER_CANVAS_ITEM));
-			rm_list.push_back(ShaderTypes::get_singleton()->get_modes(VisualServer::ShaderMode::SHADER_CANVAS_ITEM));
+			dt_list.push_back(ShaderTypes::get_singleton()->get_functions(RenderingServer::ShaderMode::SHADER_CANVAS_ITEM));
+			rm_list.push_back(ShaderTypes::get_singleton()->get_modes(RenderingServer::ShaderMode::SHADER_CANVAS_ITEM));
 		} else if (type == "spatial") {
-			dt_list.push_back(ShaderTypes::get_singleton()->get_functions(VisualServer::ShaderMode::SHADER_SPATIAL));
-			rm_list.push_back(ShaderTypes::get_singleton()->get_modes(VisualServer::ShaderMode::SHADER_SPATIAL));
+			dt_list.push_back(ShaderTypes::get_singleton()->get_functions(RenderingServer::ShaderMode::SHADER_SPATIAL));
+			rm_list.push_back(ShaderTypes::get_singleton()->get_modes(RenderingServer::ShaderMode::SHADER_SPATIAL));
 		} else if (type == "particles") {
-			dt_list.push_back(ShaderTypes::get_singleton()->get_functions(VisualServer::ShaderMode::SHADER_PARTICLES));
-			rm_list.push_back(ShaderTypes::get_singleton()->get_modes(VisualServer::ShaderMode::SHADER_PARTICLES));
+			dt_list.push_back(ShaderTypes::get_singleton()->get_functions(RenderingServer::ShaderMode::SHADER_PARTICLES));
+			rm_list.push_back(ShaderTypes::get_singleton()->get_modes(RenderingServer::ShaderMode::SHADER_PARTICLES));
 		}
 		types_list.push_back(ShaderTypes::get_singleton()->get_types());
 

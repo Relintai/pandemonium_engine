@@ -164,15 +164,15 @@ _FORCE_INLINE_ void PropMesher::set_build_flags(const int flags) {
 	_build_flags = flags;
 
 	if ((_build_flags & PropMesher::BUILD_FLAG_USE_LIGHTING) != 0) {
-		_format |= VisualServer::ARRAY_FORMAT_COLOR;
+		_format |= RenderingServer::ARRAY_FORMAT_COLOR;
 	} else {
-		_format ^= VisualServer::ARRAY_FORMAT_COLOR;
+		_format ^= RenderingServer::ARRAY_FORMAT_COLOR;
 	}
 }
 
 Array PropMesher::build_mesh() {
 	Array a;
-	a.resize(VisualServer::ARRAY_MAX);
+	a.resize(RenderingServer::ARRAY_MAX);
 
 	if (_vertices.size() == 0) {
 		//Nothing to do
@@ -190,10 +190,10 @@ Array PropMesher::build_mesh() {
 
 		w.release();
 
-		a[VisualServer::ARRAY_VERTEX] = array;
+		a[RenderingServer::ARRAY_VERTEX] = array;
 	}
 
-	if ((_format & VisualServer::ARRAY_FORMAT_NORMAL) == 0) {
+	if ((_format & RenderingServer::ARRAY_FORMAT_NORMAL) == 0) {
 		generate_normals();
 	}
 
@@ -208,10 +208,10 @@ Array PropMesher::build_mesh() {
 
 		w.release();
 
-		a[VisualServer::ARRAY_NORMAL] = array;
+		a[RenderingServer::ARRAY_NORMAL] = array;
 	}
 
-	if ((_format & VisualServer::ARRAY_FORMAT_COLOR) != 0) {
+	if ((_format & RenderingServer::ARRAY_FORMAT_COLOR) != 0) {
 		PoolVector<Color> array;
 		array.resize(_vertices.size());
 
@@ -223,10 +223,10 @@ Array PropMesher::build_mesh() {
 
 		w.release();
 
-		a[VisualServer::ARRAY_COLOR] = array;
+		a[RenderingServer::ARRAY_COLOR] = array;
 	}
 
-	if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV) != 0) {
+	if ((_format & RenderingServer::ARRAY_FORMAT_TEX_UV) != 0) {
 		PoolVector<Vector2> array;
 		array.resize(_vertices.size());
 
@@ -238,10 +238,10 @@ Array PropMesher::build_mesh() {
 
 		w.release();
 
-		a[VisualServer::ARRAY_TEX_UV] = array;
+		a[RenderingServer::ARRAY_TEX_UV] = array;
 	}
 
-	if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV2) != 0) {
+	if ((_format & RenderingServer::ARRAY_FORMAT_TEX_UV2) != 0) {
 		PoolVector<Vector2> array;
 		array.resize(_vertices.size());
 
@@ -253,7 +253,7 @@ Array PropMesher::build_mesh() {
 
 		w.release();
 
-		a[VisualServer::ARRAY_TEX_UV2] = array;
+		a[RenderingServer::ARRAY_TEX_UV2] = array;
 	}
 
 	if (_indices.size() > 0) {
@@ -268,7 +268,7 @@ Array PropMesher::build_mesh() {
 
 		w.release();
 
-		a[VisualServer::ARRAY_INDEX] = array;
+		a[RenderingServer::ARRAY_INDEX] = array;
 	}
 
 	return a;
@@ -277,7 +277,7 @@ Array PropMesher::build_mesh() {
 void PropMesher::build_mesh_into(RID mesh) {
 	ERR_FAIL_COND(mesh == RID());
 
-	VS::get_singleton()->mesh_clear(mesh);
+	RS::get_singleton()->mesh_clear(mesh);
 
 	if (_vertices.size() == 0) {
 		//Nothing to do
@@ -286,15 +286,15 @@ void PropMesher::build_mesh_into(RID mesh) {
 
 	Array arr = build_mesh();
 
-	VS::get_singleton()->mesh_add_surface_from_arrays(mesh, VisualServer::PRIMITIVE_TRIANGLES, arr);
+	RS::get_singleton()->mesh_add_surface_from_arrays(mesh, RenderingServer::PRIMITIVE_TRIANGLES, arr);
 
 	if (_material.is_valid()) {
-		VS::get_singleton()->mesh_surface_set_material(mesh, 0, _material->get_rid());
+		RS::get_singleton()->mesh_surface_set_material(mesh, 0, _material->get_rid());
 	}
 }
 
 void PropMesher::generate_normals(bool p_flip) {
-	_format = _format | VisualServer::ARRAY_FORMAT_NORMAL;
+	_format = _format | RenderingServer::ARRAY_FORMAT_NORMAL;
 
 	for (int i = 0; i < _indices.size(); i += 3) {
 		int i0 = _indices[i];
@@ -1421,7 +1421,7 @@ PropMesher::PropMesher() {
 
 	_build_flags = 0;
 
-	_format = VisualServer::ARRAY_FORMAT_NORMAL | VisualServer::ARRAY_FORMAT_TEX_UV;
+	_format = RenderingServer::ARRAY_FORMAT_NORMAL | RenderingServer::ARRAY_FORMAT_TEX_UV;
 
 	_noise.instance();
 	//todo add properties for these if needed

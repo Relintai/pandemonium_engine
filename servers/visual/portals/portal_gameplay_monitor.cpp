@@ -78,7 +78,7 @@ void PortalGameplayMonitor::unload(PortalRenderer &p_portal_renderer) {
 	// First : send gameplay exit signals for any objects still in gameplay
 	////////////////////////////////////////////////////////////////////
 	// lock output
-	VisualServerCallbacks *callbacks = VSG::scene->get_callbacks();
+	RenderingServerCallbacks *callbacks = RSG::scene->get_callbacks();
 	callbacks->lock();
 
 	// Remove any movings
@@ -87,8 +87,8 @@ void PortalGameplayMonitor::unload(PortalRenderer &p_portal_renderer) {
 		PortalRenderer::Moving &moving = p_portal_renderer.get_pool_moving(pool_id);
 		moving.last_gameplay_tick_hit = 0;
 
-		VisualServerCallbacks::Message msg;
-		msg.object_id = VSG::scene->_instance_get_object_ID(moving.instance);
+		RenderingServerCallbacks::Message msg;
+		msg.object_id = RSG::scene->_instance_get_object_ID(moving.instance);
 		msg.type = _exit_callback_type;
 		callbacks->push_message(msg);
 	}
@@ -99,9 +99,9 @@ void PortalGameplayMonitor::unload(PortalRenderer &p_portal_renderer) {
 		PortalRenderer::RGhost &moving = p_portal_renderer.get_pool_rghost(pool_id);
 		moving.last_gameplay_tick_hit = 0;
 
-		VisualServerCallbacks::Message msg;
+		RenderingServerCallbacks::Message msg;
 		msg.object_id = moving.object_id;
-		msg.type = VisualServerCallbacks::CALLBACK_NOTIFICATION_EXIT_GAMEPLAY;
+		msg.type = RenderingServerCallbacks::CALLBACK_NOTIFICATION_EXIT_GAMEPLAY;
 		callbacks->push_message(msg);
 	}
 
@@ -111,7 +111,7 @@ void PortalGameplayMonitor::unload(PortalRenderer &p_portal_renderer) {
 		VSRoom &room = p_portal_renderer.get_room(room_id);
 		room.last_room_tick_hit = 0;
 
-		VisualServerCallbacks::Message msg;
+		RenderingServerCallbacks::Message msg;
 		msg.object_id = room._pandemonium_instance_ID;
 		msg.type = _exit_callback_type;
 		callbacks->push_message(msg);
@@ -123,7 +123,7 @@ void PortalGameplayMonitor::unload(PortalRenderer &p_portal_renderer) {
 		VSRoomGroup &roomgroup = p_portal_renderer.get_roomgroup(roomgroup_id);
 		roomgroup.last_room_tick_hit = 0;
 
-		VisualServerCallbacks::Message msg;
+		RenderingServerCallbacks::Message msg;
 		msg.object_id = roomgroup._pandemonium_instance_ID;
 		msg.type = _exit_callback_type;
 		callbacks->push_message(msg);
@@ -135,9 +135,9 @@ void PortalGameplayMonitor::unload(PortalRenderer &p_portal_renderer) {
 		VSStaticGhost &ghost = p_portal_renderer.get_static_ghost(id);
 		ghost.last_room_tick_hit = 0;
 
-		VisualServerCallbacks::Message msg;
+		RenderingServerCallbacks::Message msg;
 		msg.object_id = ghost.object_id;
-		msg.type = VisualServerCallbacks::CALLBACK_NOTIFICATION_EXIT_GAMEPLAY;
+		msg.type = RenderingServerCallbacks::CALLBACK_NOTIFICATION_EXIT_GAMEPLAY;
 		callbacks->push_message(msg);
 	}
 
@@ -168,11 +168,11 @@ void PortalGameplayMonitor::set_params(bool p_use_secondary_pvs, bool p_use_sign
 	_use_signals = p_use_signals;
 
 	if (_use_signals) {
-		_enter_callback_type = VisualServerCallbacks::CALLBACK_SIGNAL_ENTER_GAMEPLAY;
-		_exit_callback_type = VisualServerCallbacks::CALLBACK_SIGNAL_EXIT_GAMEPLAY;
+		_enter_callback_type = RenderingServerCallbacks::CALLBACK_SIGNAL_ENTER_GAMEPLAY;
+		_exit_callback_type = RenderingServerCallbacks::CALLBACK_SIGNAL_EXIT_GAMEPLAY;
 	} else {
-		_enter_callback_type = VisualServerCallbacks::CALLBACK_NOTIFICATION_ENTER_GAMEPLAY;
-		_exit_callback_type = VisualServerCallbacks::CALLBACK_NOTIFICATION_EXIT_GAMEPLAY;
+		_enter_callback_type = RenderingServerCallbacks::CALLBACK_NOTIFICATION_ENTER_GAMEPLAY;
+		_exit_callback_type = RenderingServerCallbacks::CALLBACK_NOTIFICATION_EXIT_GAMEPLAY;
 	}
 }
 
@@ -190,7 +190,7 @@ void PortalGameplayMonitor::update_gameplay(PortalRenderer &p_portal_renderer, c
 	}
 
 	// lock output
-	VisualServerCallbacks *callbacks = VSG::scene->get_callbacks();
+	RenderingServerCallbacks *callbacks = RSG::scene->get_callbacks();
 	callbacks->lock();
 
 	for (int n = 0; n < p_num_source_rooms; n++) {
@@ -222,8 +222,8 @@ void PortalGameplayMonitor::update_gameplay(PortalRenderer &p_portal_renderer, c
 
 		// gone out of view
 		if (moving.last_gameplay_tick_hit != _gameplay_tick) {
-			VisualServerCallbacks::Message msg;
-			msg.object_id = VSG::scene->_instance_get_object_ID(moving.instance);
+			RenderingServerCallbacks::Message msg;
+			msg.object_id = RSG::scene->_instance_get_object_ID(moving.instance);
 			msg.type = _exit_callback_type;
 
 			callbacks->push_message(msg);
@@ -237,9 +237,9 @@ void PortalGameplayMonitor::update_gameplay(PortalRenderer &p_portal_renderer, c
 
 		// gone out of view
 		if (moving.last_gameplay_tick_hit != _gameplay_tick) {
-			VisualServerCallbacks::Message msg;
+			RenderingServerCallbacks::Message msg;
 			msg.object_id = moving.object_id;
-			msg.type = VisualServerCallbacks::CALLBACK_NOTIFICATION_EXIT_GAMEPLAY;
+			msg.type = RenderingServerCallbacks::CALLBACK_NOTIFICATION_EXIT_GAMEPLAY;
 
 			callbacks->push_message(msg);
 		}
@@ -253,7 +253,7 @@ void PortalGameplayMonitor::update_gameplay(PortalRenderer &p_portal_renderer, c
 
 			// gone out of view
 			if (room.last_room_tick_hit != _room_tick) {
-				VisualServerCallbacks::Message msg;
+				RenderingServerCallbacks::Message msg;
 				msg.object_id = room._pandemonium_instance_ID;
 				msg.type = _exit_callback_type;
 
@@ -268,7 +268,7 @@ void PortalGameplayMonitor::update_gameplay(PortalRenderer &p_portal_renderer, c
 
 			// gone out of view
 			if (roomgroup.last_room_tick_hit != _room_tick) {
-				VisualServerCallbacks::Message msg;
+				RenderingServerCallbacks::Message msg;
 				msg.object_id = roomgroup._pandemonium_instance_ID;
 				msg.type = _exit_callback_type;
 
@@ -283,9 +283,9 @@ void PortalGameplayMonitor::update_gameplay(PortalRenderer &p_portal_renderer, c
 
 			// gone out of view
 			if (ghost.last_room_tick_hit != _room_tick) {
-				VisualServerCallbacks::Message msg;
+				RenderingServerCallbacks::Message msg;
 				msg.object_id = ghost.object_id;
-				msg.type = VisualServerCallbacks::CALLBACK_NOTIFICATION_EXIT_GAMEPLAY;
+				msg.type = RenderingServerCallbacks::CALLBACK_NOTIFICATION_EXIT_GAMEPLAY;
 
 				callbacks->push_message(msg);
 			}
@@ -305,7 +305,7 @@ void PortalGameplayMonitor::_update_gameplay_room(PortalRenderer &p_portal_rende
 
 	int num_roamers = room._roamer_pool_ids.size();
 
-	VisualServerCallbacks *callbacks = VSG::scene->get_callbacks();
+	RenderingServerCallbacks *callbacks = RSG::scene->get_callbacks();
 
 	for (int n = 0; n < num_roamers; n++) {
 		uint32_t pool_id = room._roamer_pool_ids[n];
@@ -321,8 +321,8 @@ void PortalGameplayMonitor::_update_gameplay_room(PortalRenderer &p_portal_rende
 
 		// if wasn't present in the tick before, add the notification to enter
 		if (moving.last_gameplay_tick_hit != (_gameplay_tick - 1)) {
-			VisualServerCallbacks::Message msg;
-			msg.object_id = VSG::scene->_instance_get_object_ID(moving.instance);
+			RenderingServerCallbacks::Message msg;
+			msg.object_id = RSG::scene->_instance_get_object_ID(moving.instance);
 			msg.type = _enter_callback_type;
 
 			callbacks->push_message(msg);
@@ -349,9 +349,9 @@ void PortalGameplayMonitor::_update_gameplay_room(PortalRenderer &p_portal_rende
 
 		// if wasn't present in the tick before, add the notification to enter
 		if (moving.last_gameplay_tick_hit != (_gameplay_tick - 1)) {
-			VisualServerCallbacks::Message msg;
+			RenderingServerCallbacks::Message msg;
 			msg.object_id = moving.object_id;
-			msg.type = VisualServerCallbacks::CALLBACK_NOTIFICATION_ENTER_GAMEPLAY;
+			msg.type = RenderingServerCallbacks::CALLBACK_NOTIFICATION_ENTER_GAMEPLAY;
 
 			callbacks->push_message(msg);
 		}
@@ -378,7 +378,7 @@ void PortalGameplayMonitor::_update_gameplay_room(PortalRenderer &p_portal_rende
 
 		// if wasn't present in the tick before, add the notification to enter
 		if (room.last_room_tick_hit != (_room_tick - 1)) {
-			VisualServerCallbacks::Message msg;
+			RenderingServerCallbacks::Message msg;
 			msg.object_id = room._pandemonium_instance_ID;
 			msg.type = _enter_callback_type;
 
@@ -407,7 +407,7 @@ void PortalGameplayMonitor::_update_gameplay_room(PortalRenderer &p_portal_rende
 
 			// if wasn't present in the tick before, add the notification to enter
 			if (roomgroup.last_room_tick_hit != (_room_tick - 1)) {
-				VisualServerCallbacks::Message msg;
+				RenderingServerCallbacks::Message msg;
 				msg.object_id = roomgroup._pandemonium_instance_ID;
 				msg.type = _enter_callback_type;
 
@@ -436,9 +436,9 @@ void PortalGameplayMonitor::_update_gameplay_room(PortalRenderer &p_portal_rende
 
 		// if wasn't present in the tick before, add the notification to enter
 		if (ghost.last_room_tick_hit != (_room_tick - 1)) {
-			VisualServerCallbacks::Message msg;
+			RenderingServerCallbacks::Message msg;
 			msg.object_id = ghost.object_id;
-			msg.type = VisualServerCallbacks::CALLBACK_NOTIFICATION_ENTER_GAMEPLAY;
+			msg.type = RenderingServerCallbacks::CALLBACK_NOTIFICATION_ENTER_GAMEPLAY;
 
 			callbacks->push_message(msg);
 		}

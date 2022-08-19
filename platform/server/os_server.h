@@ -47,7 +47,7 @@
 #undef CursorShape
 
 class OS_Server : public OS_Unix {
-	VisualServer *visual_server;
+	RenderingServer *visual_server;
 	VideoMode current_videomode;
 	List<String> args;
 	MainLoop *main_loop;

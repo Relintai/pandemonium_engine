@@ -45,13 +45,13 @@ NoiseTexture::NoiseTexture() {
 
 	noise = Ref<OpenSimplexNoise>();
 
-	texture = RID_PRIME(VS::get_singleton()->texture_create());
+	texture = RID_PRIME(RS::get_singleton()->texture_create());
 
 	_queue_update();
 }
 
 NoiseTexture::~NoiseTexture() {
-	VS::get_singleton()->free(texture);
+	RS::get_singleton()->free(texture);
 	noise_thread.wait_to_finish();
 }
 
@@ -99,8 +99,8 @@ void NoiseTexture::_validate_property(PropertyInfo &property) const {
 void NoiseTexture::_set_texture_data(const Ref<Image> &p_image) {
 	data = p_image;
 	if (data.is_valid()) {
-		VS::get_singleton()->texture_allocate(texture, size.x, size.y, 0, p_image->get_format(), VS::TEXTURE_TYPE_2D, flags);
-		VS::get_singleton()->texture_set_data(texture, p_image);
+		RS::get_singleton()->texture_allocate(texture, size.x, size.y, 0, p_image->get_format(), RS::TEXTURE_TYPE_2D, flags);
+		RS::get_singleton()->texture_set_data(texture, p_image);
 	}
 	emit_changed();
 }
@@ -270,7 +270,7 @@ Vector2 NoiseTexture::get_noise_offset() const {
 
 void NoiseTexture::set_flags(uint32_t p_flags) {
 	flags = p_flags;
-	VS::get_singleton()->texture_set_flags(texture, flags);
+	RS::get_singleton()->texture_set_flags(texture, flags);
 }
 
 uint32_t NoiseTexture::get_flags() const {

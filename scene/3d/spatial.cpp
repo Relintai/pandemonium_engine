@@ -126,16 +126,16 @@ void Spatial::notification_callback(int p_message_type) {
 	switch (p_message_type) {
 		default:
 			break;
-		case VisualServerCallbacks::CALLBACK_NOTIFICATION_ENTER_GAMEPLAY: {
+		case RenderingServerCallbacks::CALLBACK_NOTIFICATION_ENTER_GAMEPLAY: {
 			notification(NOTIFICATION_ENTER_GAMEPLAY);
 		} break;
-		case VisualServerCallbacks::CALLBACK_NOTIFICATION_EXIT_GAMEPLAY: {
+		case RenderingServerCallbacks::CALLBACK_NOTIFICATION_EXIT_GAMEPLAY: {
 			notification(NOTIFICATION_EXIT_GAMEPLAY);
 		} break;
-		case VisualServerCallbacks::CALLBACK_SIGNAL_ENTER_GAMEPLAY: {
+		case RenderingServerCallbacks::CALLBACK_SIGNAL_ENTER_GAMEPLAY: {
 			emit_signal("gameplay_entered");
 		} break;
-		case VisualServerCallbacks::CALLBACK_SIGNAL_EXIT_GAMEPLAY: {
+		case RenderingServerCallbacks::CALLBACK_SIGNAL_EXIT_GAMEPLAY: {
 			emit_signal("gameplay_exited");
 		} break;
 	}

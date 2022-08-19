@@ -82,7 +82,7 @@ public:
 	bool is_resizing = false;
 	//  rasterizer seems to no longer be given to visual server, its using GLES3 directly?
 	//Rasterizer *rasterizer;
-	VisualServer *visual_server;
+	RenderingServer *visual_server;
 
 	List<String> args;
 	MainLoop *main_loop;

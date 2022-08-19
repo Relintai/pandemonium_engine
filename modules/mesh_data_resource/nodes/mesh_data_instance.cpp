@@ -111,12 +111,12 @@ void MeshDataInstance::refresh() {
 	}
 
 	if (_mesh_rid == RID()) {
-		_mesh_rid = VisualServer::get_singleton()->mesh_create();
+		_mesh_rid = RenderingServer::get_singleton()->mesh_create();
 
-		VS::get_singleton()->instance_set_base(get_instance(), _mesh_rid);
+		RS::get_singleton()->instance_set_base(get_instance(), _mesh_rid);
 	}
 
-	VisualServer::get_singleton()->mesh_clear(_mesh_rid);
+	RenderingServer::get_singleton()->mesh_clear(_mesh_rid);
 
 	if (!_mesh.is_valid()) {
 		return;
@@ -134,10 +134,10 @@ void MeshDataInstance::refresh() {
 		return;
 	}
 
-	VisualServer::get_singleton()->mesh_add_surface_from_arrays(_mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, arr);
+	RenderingServer::get_singleton()->mesh_add_surface_from_arrays(_mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, arr);
 
 	if (_material.is_valid()) {
-		VisualServer::get_singleton()->mesh_surface_set_material(_mesh_rid, 0, _material->get_rid());
+		RenderingServer::get_singleton()->mesh_surface_set_material(_mesh_rid, 0, _material->get_rid());
 	}
 }
 
@@ -189,7 +189,7 @@ void MeshDataInstance::setup_material_texture() {
 
 void MeshDataInstance::free_meshes() {
 	if (_mesh_rid != RID()) {
-		VS::get_singleton()->free(_mesh_rid);
+		RS::get_singleton()->free(_mesh_rid);
 		_mesh_rid = RID();
 	}
 }
@@ -222,7 +222,7 @@ void MeshDataInstance::_notification(int p_what) {
 		}
 			/*
 		case NOTIFICATION_TRANSFORM_CHANGED: {
-			VisualServer *vs = VisualServer::get_singleton();
+			RenderingServer *vs = RenderingServer::get_singleton();
 
 			vs->instance_set_transform(get_instance(), get_global_transform());
 

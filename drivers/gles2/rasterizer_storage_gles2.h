@@ -248,7 +248,7 @@ public:
 		int width, height, depth;
 		int alloc_width, alloc_height;
 		Image::Format format;
-		VS::TextureType type;
+		RS::TextureType type;
 
 		GLenum target;
 		GLenum gl_format_cache;
@@ -278,13 +278,13 @@ public:
 
 		bool redraw_if_visible;
 
-		VisualServer::TextureDetectCallback detect_3d;
+		RenderingServer::TextureDetectCallback detect_3d;
 		void *detect_3d_ud;
 
-		VisualServer::TextureDetectCallback detect_srgb;
+		RenderingServer::TextureDetectCallback detect_srgb;
 		void *detect_srgb_ud;
 
-		VisualServer::TextureDetectCallback detect_normal;
+		RenderingServer::TextureDetectCallback detect_normal;
 		void *detect_normal_ud;
 
 		Texture() :
@@ -295,7 +295,7 @@ public:
 				alloc_width(0),
 				alloc_height(0),
 				format(Image::FORMAT_L8),
-				type(VS::TEXTURE_TYPE_2D),
+				type(RS::TEXTURE_TYPE_2D),
 				target(0),
 				data_size(0),
 				total_data_size(0),
@@ -344,14 +344,14 @@ public:
 	Ref<Image> _get_gl_image_and_format(const Ref<Image> &p_image, Image::Format p_format, uint32_t p_flags, Image::Format &r_real_format, GLenum &r_gl_format, GLenum &r_gl_internal_format, GLenum &r_gl_type, bool &r_compressed, bool p_force_decompress) const;
 
 	virtual RID texture_create();
-	virtual void texture_allocate(RID p_texture, int p_width, int p_height, int p_depth_3d, Image::Format p_format, VS::TextureType p_type, uint32_t p_flags = VS::TEXTURE_FLAGS_DEFAULT);
+	virtual void texture_allocate(RID p_texture, int p_width, int p_height, int p_depth_3d, Image::Format p_format, RS::TextureType p_type, uint32_t p_flags = RS::TEXTURE_FLAGS_DEFAULT);
 	virtual void texture_set_data(RID p_texture, const Ref<Image> &p_image, int p_layer = 0);
 	virtual void texture_set_data_partial(RID p_texture, const Ref<Image> &p_image, int src_x, int src_y, int src_w, int src_h, int dst_x, int dst_y, int p_dst_mip, int p_layer = 0);
 	virtual Ref<Image> texture_get_data(RID p_texture, int p_layer = 0) const;
 	virtual void texture_set_flags(RID p_texture, uint32_t p_flags);
 	virtual uint32_t texture_get_flags(RID p_texture) const;
 	virtual Image::Format texture_get_format(RID p_texture) const;
-	virtual VS::TextureType texture_get_type(RID p_texture) const;
+	virtual RS::TextureType texture_get_type(RID p_texture) const;
 	virtual uint32_t texture_get_texid(RID p_texture) const;
 	virtual uint32_t texture_get_width(RID p_texture) const;
 	virtual uint32_t texture_get_height(RID p_texture) const;
@@ -364,7 +364,7 @@ public:
 
 	virtual void texture_set_shrink_all_x2_on_set_data(bool p_enable);
 
-	virtual void texture_debug_usage(List<VS::TextureInfo> *r_info);
+	virtual void texture_debug_usage(List<RS::TextureInfo> *r_info);
 
 	virtual RID texture_create_radiance_cubemap(RID p_source, int p_resolution = -1) const;
 
@@ -373,9 +373,9 @@ public:
 	virtual void texture_set_proxy(RID p_texture, RID p_proxy);
 	virtual Size2 texture_size_with_proxy(RID p_texture) const;
 
-	virtual void texture_set_detect_3d_callback(RID p_texture, VisualServer::TextureDetectCallback p_callback, void *p_userdata);
-	virtual void texture_set_detect_srgb_callback(RID p_texture, VisualServer::TextureDetectCallback p_callback, void *p_userdata);
-	virtual void texture_set_detect_normal_callback(RID p_texture, VisualServer::TextureDetectCallback p_callback, void *p_userdata);
+	virtual void texture_set_detect_3d_callback(RID p_texture, RenderingServer::TextureDetectCallback p_callback, void *p_userdata);
+	virtual void texture_set_detect_srgb_callback(RID p_texture, RenderingServer::TextureDetectCallback p_callback, void *p_userdata);
+	virtual void texture_set_detect_normal_callback(RID p_texture, RenderingServer::TextureDetectCallback p_callback, void *p_userdata);
 
 	virtual void texture_set_force_redraw_if_visible(RID p_texture, bool p_enable);
 
@@ -399,7 +399,7 @@ public:
 	struct Shader : public RID_Data {
 		RID self;
 
-		VS::ShaderMode mode;
+		RS::ShaderMode mode;
 		ShaderGLES2 *shader;
 		String code;
 		SelfList<Material>::List materials;
@@ -633,7 +633,7 @@ public:
 			uint32_t offset;
 		};
 
-		Attrib attribs[VS::ARRAY_MAX];
+		Attrib attribs[RS::ARRAY_MAX];
 
 		Mesh *mesh;
 		uint32_t format;
@@ -650,7 +650,7 @@ public:
 		int array_byte_size;
 		int index_array_byte_size;
 
-		VS::PrimitiveType primitive;
+		RS::PrimitiveType primitive;
 
 		Vector<AABB> skeleton_bone_aabb;
 		Vector<bool> skeleton_bone_used;
@@ -673,7 +673,7 @@ public:
 				index_array_len(0),
 				array_byte_size(0),
 				index_array_byte_size(0),
-				primitive(VS::PRIMITIVE_POINTS),
+				primitive(RS::PRIMITIVE_POINTS),
 				active(false),
 				total_data_size(0) {
 		}
@@ -687,7 +687,7 @@ public:
 		Vector<Surface *> surfaces;
 
 		int blend_shape_count;
-		VS::BlendShapeMode blend_shape_mode;
+		RS::BlendShapeMode blend_shape_mode;
 		PoolRealArray blend_shape_values;
 
 		SelfList<Mesh> update_list;
@@ -709,7 +709,7 @@ public:
 
 		Mesh() :
 				blend_shape_count(0),
-				blend_shape_mode(VS::BLEND_SHAPE_MODE_NORMALIZED),
+				blend_shape_mode(RS::BLEND_SHAPE_MODE_NORMALIZED),
 				blend_shape_values(PoolRealArray()),
 				update_list(this) {
 		}
@@ -720,13 +720,13 @@ public:
 
 	virtual RID mesh_create();
 
-	virtual void mesh_add_surface(RID p_mesh, uint32_t p_format, VS::PrimitiveType p_primitive, const PoolVector<uint8_t> &p_array, int p_vertex_count, const PoolVector<uint8_t> &p_index_array, int p_index_count, const AABB &p_aabb, const Vector<PoolVector<uint8_t>> &p_blend_shapes = Vector<PoolVector<uint8_t>>(), const Vector<AABB> &p_bone_aabbs = Vector<AABB>());
+	virtual void mesh_add_surface(RID p_mesh, uint32_t p_format, RS::PrimitiveType p_primitive, const PoolVector<uint8_t> &p_array, int p_vertex_count, const PoolVector<uint8_t> &p_index_array, int p_index_count, const AABB &p_aabb, const Vector<PoolVector<uint8_t>> &p_blend_shapes = Vector<PoolVector<uint8_t>>(), const Vector<AABB> &p_bone_aabbs = Vector<AABB>());
 
 	virtual void mesh_set_blend_shape_count(RID p_mesh, int p_amount);
 	virtual int mesh_get_blend_shape_count(RID p_mesh) const;
 
-	virtual void mesh_set_blend_shape_mode(RID p_mesh, VS::BlendShapeMode p_mode);
-	virtual VS::BlendShapeMode mesh_get_blend_shape_mode(RID p_mesh) const;
+	virtual void mesh_set_blend_shape_mode(RID p_mesh, RS::BlendShapeMode p_mode);
+	virtual RS::BlendShapeMode mesh_get_blend_shape_mode(RID p_mesh) const;
 
 	virtual void mesh_set_blend_shape_values(RID p_mesh, PoolVector<float> p_values);
 	virtual PoolVector<float> mesh_get_blend_shape_values(RID p_mesh) const;
@@ -743,7 +743,7 @@ public:
 	virtual PoolVector<uint8_t> mesh_surface_get_index_array(RID p_mesh, int p_surface) const;
 
 	virtual uint32_t mesh_surface_get_format(RID p_mesh, int p_surface) const;
-	virtual VS::PrimitiveType mesh_surface_get_primitive_type(RID p_mesh, int p_surface) const;
+	virtual RS::PrimitiveType mesh_surface_get_primitive_type(RID p_mesh, int p_surface) const;
 
 	virtual AABB mesh_surface_get_aabb(RID p_mesh, int p_surface) const;
 	virtual Vector<PoolVector<uint8_t>> mesh_surface_get_blend_shapes(RID p_mesh, int p_surface) const;
@@ -766,9 +766,9 @@ public:
 		RID mesh;
 		int size;
 
-		VS::MultimeshTransformFormat transform_format;
-		VS::MultimeshColorFormat color_format;
-		VS::MultimeshCustomDataFormat custom_data_format;
+		RS::MultimeshTransformFormat transform_format;
+		RS::MultimeshColorFormat color_format;
+		RS::MultimeshCustomDataFormat custom_data_format;
 
 		Vector<float> data;
 
@@ -790,9 +790,9 @@ public:
 
 		MultiMesh() :
 				size(0),
-				transform_format(VS::MULTIMESH_TRANSFORM_2D),
-				color_format(VS::MULTIMESH_COLOR_NONE),
-				custom_data_format(VS::MULTIMESH_CUSTOM_DATA_NONE),
+				transform_format(RS::MULTIMESH_TRANSFORM_2D),
+				color_format(RS::MULTIMESH_COLOR_NONE),
+				custom_data_format(RS::MULTIMESH_CUSTOM_DATA_NONE),
 				update_list(this),
 				mesh_list(this),
 				visible_instances(-1),
@@ -810,7 +810,7 @@ public:
 
 	virtual RID _multimesh_create();
 
-	virtual void _multimesh_allocate(RID p_multimesh, int p_instances, VS::MultimeshTransformFormat p_transform_format, VS::MultimeshColorFormat p_color_format, VS::MultimeshCustomDataFormat p_data = VS::MULTIMESH_CUSTOM_DATA_NONE);
+	virtual void _multimesh_allocate(RID p_multimesh, int p_instances, RS::MultimeshTransformFormat p_transform_format, RS::MultimeshColorFormat p_color_format, RS::MultimeshCustomDataFormat p_data = RS::MULTIMESH_CUSTOM_DATA_NONE);
 	virtual int _multimesh_get_instance_count(RID p_multimesh) const;
 
 	virtual void _multimesh_set_mesh(RID p_multimesh, RID p_mesh);
@@ -841,7 +841,7 @@ public:
 	struct Immediate : public Geometry {
 		struct Chunk {
 			RID texture;
-			VS::PrimitiveType primitive;
+			RS::PrimitiveType primitive;
 			Vector<Vector3> vertices;
 			Vector<Vector3> normals;
 			Vector<Plane> tangents;
@@ -870,7 +870,7 @@ public:
 	mutable RID_Owner<Immediate> immediate_owner;
 
 	virtual RID immediate_create();
-	virtual void immediate_begin(RID p_immediate, VS::PrimitiveType p_primitive, RID p_texture = RID());
+	virtual void immediate_begin(RID p_immediate, RS::PrimitiveType p_primitive, RID p_texture = RID());
 	virtual void immediate_vertex(RID p_immediate, const Vector3 &p_vertex);
 	virtual void immediate_normal(RID p_immediate, const Vector3 &p_normal);
 	virtual void immediate_tangent(RID p_immediate, const Plane &p_tangent);
@@ -932,8 +932,8 @@ public:
 	/* Light API */
 
 	struct Light : Instantiable {
-		VS::LightType type;
-		float param[VS::LIGHT_PARAM_MAX];
+		RS::LightType type;
+		float param[RS::LIGHT_PARAM_MAX];
 
 		Color color;
 		Color shadow_color;
@@ -946,11 +946,11 @@ public:
 
 		uint32_t cull_mask;
 
-		VS::LightOmniShadowMode omni_shadow_mode;
-		VS::LightOmniShadowDetail omni_shadow_detail;
+		RS::LightOmniShadowMode omni_shadow_mode;
+		RS::LightOmniShadowDetail omni_shadow_detail;
 
-		VS::LightDirectionalShadowMode directional_shadow_mode;
-		VS::LightDirectionalShadowDepthRangeMode directional_range_mode;
+		RS::LightDirectionalShadowMode directional_shadow_mode;
+		RS::LightDirectionalShadowDepthRangeMode directional_range_mode;
 
 		bool directional_blend_splits;
 
@@ -959,10 +959,10 @@ public:
 
 	mutable RID_Owner<Light> light_owner;
 
-	virtual RID light_create(VS::LightType p_type);
+	virtual RID light_create(RS::LightType p_type);
 
 	virtual void light_set_color(RID p_light, const Color &p_color);
-	virtual void light_set_param(RID p_light, VS::LightParam p_param, float p_value);
+	virtual void light_set_param(RID p_light, RS::LightParam p_param, float p_value);
 	virtual void light_set_shadow(RID p_light, bool p_enabled);
 	virtual void light_set_shadow_color(RID p_light, const Color &p_color);
 	virtual void light_set_projector(RID p_light, RID p_texture);
@@ -970,23 +970,23 @@ public:
 	virtual void light_set_cull_mask(RID p_light, uint32_t p_mask);
 	virtual void light_set_reverse_cull_face_mode(RID p_light, bool p_enabled);
 
-	virtual void light_omni_set_shadow_mode(RID p_light, VS::LightOmniShadowMode p_mode);
-	virtual void light_omni_set_shadow_detail(RID p_light, VS::LightOmniShadowDetail p_detail);
+	virtual void light_omni_set_shadow_mode(RID p_light, RS::LightOmniShadowMode p_mode);
+	virtual void light_omni_set_shadow_detail(RID p_light, RS::LightOmniShadowDetail p_detail);
 
-	virtual void light_directional_set_shadow_mode(RID p_light, VS::LightDirectionalShadowMode p_mode);
+	virtual void light_directional_set_shadow_mode(RID p_light, RS::LightDirectionalShadowMode p_mode);
 	virtual void light_directional_set_blend_splits(RID p_light, bool p_enable);
 	virtual bool light_directional_get_blend_splits(RID p_light) const;
 
-	virtual VS::LightDirectionalShadowMode light_directional_get_shadow_mode(RID p_light);
-	virtual VS::LightOmniShadowMode light_omni_get_shadow_mode(RID p_light);
+	virtual RS::LightDirectionalShadowMode light_directional_get_shadow_mode(RID p_light);
+	virtual RS::LightOmniShadowMode light_omni_get_shadow_mode(RID p_light);
 
-	virtual void light_directional_set_shadow_depth_range_mode(RID p_light, VS::LightDirectionalShadowDepthRangeMode p_range_mode);
-	virtual VS::LightDirectionalShadowDepthRangeMode light_directional_get_shadow_depth_range_mode(RID p_light) const;
+	virtual void light_directional_set_shadow_depth_range_mode(RID p_light, RS::LightDirectionalShadowDepthRangeMode p_range_mode);
+	virtual RS::LightDirectionalShadowDepthRangeMode light_directional_get_shadow_depth_range_mode(RID p_light) const;
 
 	virtual bool light_has_shadow(RID p_light) const;
 
-	virtual VS::LightType light_get_type(RID p_light) const;
-	virtual float light_get_param(RID p_light, VS::LightParam p_param);
+	virtual RS::LightType light_get_type(RID p_light) const;
+	virtual float light_get_param(RID p_light, RS::LightParam p_param);
 	virtual Color light_get_color(RID p_light);
 
 	virtual AABB light_get_aabb(RID p_light) const;
@@ -995,7 +995,7 @@ public:
 	/* PROBE API */
 
 	struct ReflectionProbe : Instantiable {
-		VS::ReflectionProbeUpdateMode update_mode;
+		RS::ReflectionProbeUpdateMode update_mode;
 		float intensity;
 		Color interior_ambient;
 		float interior_ambient_energy;
@@ -1014,7 +1014,7 @@ public:
 
 	virtual RID reflection_probe_create();
 
-	virtual void reflection_probe_set_update_mode(RID p_probe, VS::ReflectionProbeUpdateMode p_mode);
+	virtual void reflection_probe_set_update_mode(RID p_probe, RS::ReflectionProbeUpdateMode p_mode);
 	virtual void reflection_probe_set_intensity(RID p_probe, float p_intensity);
 	virtual void reflection_probe_set_interior_ambient(RID p_probe, const Color &p_ambient);
 	virtual void reflection_probe_set_interior_ambient_energy(RID p_probe, float p_energy);
@@ -1029,7 +1029,7 @@ public:
 	virtual void reflection_probe_set_resolution(RID p_probe, int p_resolution);
 
 	virtual AABB reflection_probe_get_aabb(RID p_probe) const;
-	virtual VS::ReflectionProbeUpdateMode reflection_probe_get_update_mode(RID p_probe) const;
+	virtual RS::ReflectionProbeUpdateMode reflection_probe_get_update_mode(RID p_probe) const;
 	virtual uint32_t reflection_probe_get_cull_mask(RID p_probe) const;
 
 	virtual int reflection_probe_get_resolution(RID p_probe) const;
@@ -1115,7 +1115,7 @@ public:
 		bool flags[RENDER_TARGET_FLAG_MAX];
 
 		bool used_in_frame;
-		VS::ViewportMSAA msaa;
+		RS::ViewportMSAA msaa;
 
 		bool use_fxaa;
 		bool use_debanding;
@@ -1139,7 +1139,7 @@ public:
 				width(0),
 				height(0),
 				used_in_frame(false),
-				msaa(VS::VIEWPORT_MSAA_DISABLED),
+				msaa(RS::VIEWPORT_MSAA_DISABLED),
 				use_fxaa(false),
 				use_debanding(false),
 				sharpen_intensity(0.0),
@@ -1167,7 +1167,7 @@ public:
 	virtual void render_target_set_flag(RID p_render_target, RenderTargetFlags p_flag, bool p_value);
 	virtual bool render_target_was_used(RID p_render_target);
 	virtual void render_target_clear_used(RID p_render_target);
-	virtual void render_target_set_msaa(RID p_render_target, VS::ViewportMSAA p_msaa);
+	virtual void render_target_set_msaa(RID p_render_target, RS::ViewportMSAA p_msaa);
 	virtual void render_target_set_use_fxaa(RID p_render_target, bool p_fxaa);
 	virtual void render_target_set_use_debanding(RID p_render_target, bool p_debanding);
 	virtual void render_target_set_sharpen_intensity(RID p_render_target, float p_intensity);
@@ -1200,7 +1200,7 @@ public:
 	virtual RID canvas_light_occluder_create();
 	virtual void canvas_light_occluder_set_polylines(RID p_occluder, const PoolVector<Vector2> &p_lines);
 
-	virtual VS::InstanceType get_base_type(RID p_rid) const;
+	virtual RS::InstanceType get_base_type(RID p_rid) const;
 
 	virtual bool free(RID p_rid);
 
@@ -1228,9 +1228,9 @@ public:
 
 	virtual void render_info_begin_capture();
 	virtual void render_info_end_capture();
-	virtual int get_captured_render_info(VS::RenderInfo p_info);
+	virtual int get_captured_render_info(RS::RenderInfo p_info);
 
-	virtual uint64_t get_render_info(VS::RenderInfo p_info);
+	virtual uint64_t get_render_info(RS::RenderInfo p_info);
 	virtual String get_video_adapter_name() const;
 	virtual String get_video_adapter_vendor() const;
 

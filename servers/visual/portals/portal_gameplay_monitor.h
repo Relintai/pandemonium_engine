@@ -85,8 +85,8 @@ private:
 
 	LocalVector<uint32_t, int32_t> _source_rooms_prev;
 
-	VisualServerCallbacks::CallbackType _enter_callback_type = VisualServerCallbacks::CALLBACK_NOTIFICATION_ENTER_GAMEPLAY;
-	VisualServerCallbacks::CallbackType _exit_callback_type = VisualServerCallbacks::CALLBACK_NOTIFICATION_EXIT_GAMEPLAY;
+	RenderingServerCallbacks::CallbackType _enter_callback_type = RenderingServerCallbacks::CALLBACK_NOTIFICATION_ENTER_GAMEPLAY;
+	RenderingServerCallbacks::CallbackType _exit_callback_type = RenderingServerCallbacks::CALLBACK_NOTIFICATION_EXIT_GAMEPLAY;
 
 	bool _use_secondary_pvs = false;
 	bool _use_signals = false;

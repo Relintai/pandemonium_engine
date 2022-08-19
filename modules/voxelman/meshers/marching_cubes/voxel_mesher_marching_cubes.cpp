@@ -543,7 +543,7 @@ Vector3 VoxelMesherMarchingCubes::get_regular_vertex_direction(int index1, int i
 }
 
 VoxelMesherMarchingCubes::VoxelMesherMarchingCubes() {
-	_format = VisualServer::ARRAY_FORMAT_NORMAL | VisualServer::ARRAY_FORMAT_COLOR | VisualServer::ARRAY_FORMAT_TEX_UV | VisualServer::ARRAY_FORMAT_TEX_UV2;
+	_format = RenderingServer::ARRAY_FORMAT_NORMAL | RenderingServer::ARRAY_FORMAT_COLOR | RenderingServer::ARRAY_FORMAT_TEX_UV | RenderingServer::ARRAY_FORMAT_TEX_UV2;
 
 	for (int i = 0; i < 16; ++i) {
 		_regular_cell_datas[i] = Ref<MarchingCubesCellData>(memnew(MarchingCubesCellData(regularCellData[i])));

@@ -71,7 +71,7 @@ SkinReference::~SkinReference() {
 		skeleton_node->skin_bindings.erase(this);
 	}
 
-	VS::get_singleton()->free(skeleton);
+	RS::get_singleton()->free(skeleton);
 }
 
 bool Skeleton::_set(const StringName &p_path, const Variant &p_value) {
@@ -263,7 +263,7 @@ void Skeleton::_notification(int p_what) {
 			// Update bone transforms
 			force_update_all_bone_transforms();
 
-			VisualServer *vs = VisualServer::get_singleton();
+			RenderingServer *vs = RenderingServer::get_singleton();
 
 			Bone *bonesptr = bones.ptrw();
 
@@ -277,7 +277,7 @@ void Skeleton::_notification(int p_what) {
 				uint32_t bind_count = skin->get_bind_count();
 
 				if (E->get()->bind_count != bind_count) {
-					VS::get_singleton()->skeleton_allocate(skeleton, bind_count);
+					RS::get_singleton()->skeleton_allocate(skeleton, bind_count);
 					E->get()->bind_count = bind_count;
 					E->get()->skin_bone_indices.resize(bind_count);
 					E->get()->skin_bone_indices_ptrs = E->get()->skin_bone_indices.ptrw();
@@ -1062,7 +1062,7 @@ Ref<SkinReference> Skeleton::register_skin(const Ref<Skin> &p_skin) {
 
 	skin_ref->skeleton_node = this;
 	skin_ref->bind_count = 0;
-	skin_ref->skeleton = RID_PRIME(VisualServer::get_singleton()->skeleton_create());
+	skin_ref->skeleton = RID_PRIME(RenderingServer::get_singleton()->skeleton_create());
 	skin_ref->skeleton_node = this;
 	skin_ref->skin = p_skin;
 

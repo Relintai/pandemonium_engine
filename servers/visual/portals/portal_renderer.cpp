@@ -495,7 +495,7 @@ void PortalRenderer::occluder_instance_link(OccluderInstanceHandle p_handle, Occ
 	}
 
 	p_resource_handle--;
-	VSOccluder_Resource &res = VSG::scene->get_portal_resources().get_pool_occluder_resource(p_resource_handle);
+	VSOccluder_Resource &res = RSG::scene->get_portal_resources().get_pool_occluder_resource(p_resource_handle);
 
 	occ.resource_pool_id = p_resource_handle;
 	occ.type = res.type;
@@ -1152,9 +1152,9 @@ int PortalRenderer::cull_convex_implementation(const Vector3 &p_point, const Vec
 	for (int n = 0; n < num_results; n++) {
 		uint32_t static_id = _trace_results.visible_static_ids[n];
 		RID static_rid = _statics[static_id].instance;
-		VSInstance *instance = VSG::scene->_instance_get_from_rid(static_rid);
+		VSInstance *instance = RSG::scene->_instance_get_from_rid(static_rid);
 
-		if (VSG::scene->_instance_cull_check(instance, p_mask)) {
+		if (RSG::scene->_instance_cull_check(instance, p_mask)) {
 			p_result_array[out_count++] = instance;
 			if (out_count >= p_result_max) {
 				break;
@@ -1176,7 +1176,7 @@ int PortalRenderer::cull_convex_implementation(const Vector3 &p_point, const Vec
 	for (int n = 0; n < num_roam_hits; n++) {
 		const Moving &moving = get_pool_moving(_trace_results.visible_roamer_pool_ids[n]);
 
-		if (VSG::scene->_instance_cull_check(moving.instance, p_mask)) {
+		if (RSG::scene->_instance_cull_check(moving.instance, p_mask)) {
 			p_result_array[out_count++] = moving.instance;
 			if (out_count >= p_result_max) {
 				break;

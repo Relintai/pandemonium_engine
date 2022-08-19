@@ -90,7 +90,7 @@ void Prop2DInstanceMerger::meshes_create(const int num) {
 	free_meshes();
 
 	for (int i = 0; i < num; ++i) {
-		RID mesh_rid = VS::get_singleton()->mesh_create();
+		RID mesh_rid = RS::get_singleton()->mesh_create();
 
 		_meshes.push_back(mesh_rid);
 	}
@@ -186,12 +186,12 @@ void Prop2DInstanceMerger::colliders_set(const Vector<Variant> &colliders) {
 
 void Prop2DInstanceMerger::debug_mesh_allocate() {
 	if (_debug_mesh_rid == RID()) {
-		_debug_mesh_rid = VisualServer::get_singleton()->mesh_create();
+		_debug_mesh_rid = RenderingServer::get_singleton()->mesh_create();
 	}
 }
 void Prop2DInstanceMerger::debug_mesh_free() {
 	if (_debug_mesh_rid != RID()) {
-		VisualServer::get_singleton()->free(_debug_mesh_rid);
+		RenderingServer::get_singleton()->free(_debug_mesh_rid);
 	}
 }
 bool Prop2DInstanceMerger::debug_mesh_has() {
@@ -199,7 +199,7 @@ bool Prop2DInstanceMerger::debug_mesh_has() {
 }
 void Prop2DInstanceMerger::debug_mesh_clear() {
 	if (_debug_mesh_rid != RID()) {
-		VisualServer::get_singleton()->mesh_clear(_debug_mesh_rid);
+		RenderingServer::get_singleton()->mesh_clear(_debug_mesh_rid);
 	}
 }
 void Prop2DInstanceMerger::debug_mesh_array_clear() {
@@ -222,10 +222,10 @@ void Prop2DInstanceMerger::debug_mesh_send() {
 	//SceneTree *st = SceneTree::get_singleton();
 
 	Array arr;
-	arr.resize(VisualServer::ARRAY_MAX);
-	arr[VisualServer::ARRAY_VERTEX] = _debug_mesh_array;
+	arr.resize(RenderingServer::ARRAY_MAX);
+	arr[RenderingServer::ARRAY_VERTEX] = _debug_mesh_array;
 
-	VisualServer::get_singleton()->mesh_add_surface_from_arrays(_debug_mesh_rid, VisualServer::PRIMITIVE_LINES, arr);
+	RenderingServer::get_singleton()->mesh_add_surface_from_arrays(_debug_mesh_rid, RenderingServer::PRIMITIVE_LINES, arr);
 
 	debug_mesh_array_clear();
 }
@@ -244,9 +244,9 @@ void Prop2DInstanceMerger::draw_debug_mdr_colliders() {
 
 		Transform2D t = collider_local_transform_get(i);
 
-		VisualServer::get_singleton()->canvas_item_add_set_transform(get_canvas_item(), t);
+		RenderingServer::get_singleton()->canvas_item_add_set_transform(get_canvas_item(), t);
 		shape->draw(get_canvas_item(), Color(1, 1, 1, 1));
-		VisualServer::get_singleton()->canvas_item_add_set_transform(get_canvas_item(), Transform2D());
+		RenderingServer::get_singleton()->canvas_item_add_set_transform(get_canvas_item(), Transform2D());
 	}
 
 	debug_mesh_send();
@@ -259,7 +259,7 @@ void Prop2DInstanceMerger::free_meshes() {
 		RID &e = _meshes.write[i];
 
 		if (e != rid) {
-			VS::get_singleton()->free(e);
+			RS::get_singleton()->free(e);
 		}
 
 		e = rid;

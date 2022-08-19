@@ -99,8 +99,8 @@
 		<member name="TranslationServer" type="TranslationServer" setter="" getter="">
 			The [TranslationServer] singleton.
 		</member>
-		<member name="VisualServer" type="VisualServer" setter="" getter="">
-			The [VisualServer] singleton.
+		<member name="RenderingServer" type="RenderingServer" setter="" getter="">
+			The [RenderingServer] singleton.
 		</member>
 	</members>
 	<constants>

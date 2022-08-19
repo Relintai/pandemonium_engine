@@ -2232,7 +2232,7 @@ bool ShaderLanguage::_validate_function_call(BlockNode *p_block, OperatorNode *p
 				}
 
 				if (!fail) {
-					if (VisualServer::get_singleton()->is_low_end()) {
+					if (RenderingServer::get_singleton()->is_low_end()) {
 						if (builtin_func_defs[idx].high_end) {
 							fail = true;
 							unsupported_builtin = true;
@@ -4759,7 +4759,7 @@ Error ShaderLanguage::_parse_block(BlockNode *p_block, const Map<StringName, Bui
 				if (tk.type == TK_BRACKET_OPEN) {
 					bool unknown_size = false;
 
-					if (VisualServer::get_singleton()->is_low_end() && is_const) {
+					if (RenderingServer::get_singleton()->is_low_end() && is_const) {
 						_set_error("Local const arrays are only supported on the GLES3 backend, but your project is using GLES2.");
 						return ERR_PARSE_ERROR;
 					}
@@ -4803,7 +4803,7 @@ Error ShaderLanguage::_parse_block(BlockNode *p_block, const Map<StringName, Bui
 
 					tk = _get_token();
 					if (tk.type == TK_OP_ASSIGN) {
-						if (VisualServer::get_singleton()->is_low_end()) {
+						if (RenderingServer::get_singleton()->is_low_end()) {
 							_set_error("Array initialization is only supported on the GLES3 backend, but your project is using GLES2.");
 							return ERR_PARSE_ERROR;
 						}
@@ -5120,7 +5120,7 @@ Error ShaderLanguage::_parse_block(BlockNode *p_block, const Map<StringName, Bui
 				_set_tkpos(pos); //rollback
 			}
 		} else if (tk.type == TK_CF_SWITCH) {
-			if (VisualServer::get_singleton()->is_low_end()) {
+			if (RenderingServer::get_singleton()->is_low_end()) {
 				_set_error("\"switch\" operator is only supported on the GLES3 backend, but your project is using GLES2.");
 				return ERR_PARSE_ERROR;
 			}
@@ -5613,7 +5613,7 @@ String ShaderLanguage::_get_qualifier_str(ArgumentQualifier p_qualifier) const {
 }
 
 Error ShaderLanguage::_validate_datatype(DataType p_type) {
-	if (VisualServer::get_singleton()->is_low_end()) {
+	if (RenderingServer::get_singleton()->is_low_end()) {
 		bool invalid_type = false;
 
 		switch (p_type) {
@@ -6246,7 +6246,7 @@ Error ShaderLanguage::_parse_shader(const Map<StringName, FunctionInfo> &p_funct
 						bool unknown_size = false;
 
 						if (tk.type == TK_BRACKET_OPEN) {
-							if (VisualServer::get_singleton()->is_low_end()) {
+							if (RenderingServer::get_singleton()->is_low_end()) {
 								_set_error("Global const arrays are supported only on high-end platform!");
 								return ERR_PARSE_ERROR;
 							}
@@ -7025,7 +7025,7 @@ Error ShaderLanguage::complete(const String &p_code, const Map<StringName, Funct
 				}
 
 				int idx = 0;
-				bool low_end = VisualServer::get_singleton()->is_low_end();
+				bool low_end = RenderingServer::get_singleton()->is_low_end();
 
 				while (builtin_func_defs[idx].name) {
 					if (low_end && builtin_func_defs[idx].high_end) {
@@ -7038,7 +7038,7 @@ Error ShaderLanguage::complete(const String &p_code, const Map<StringName, Funct
 
 			} else { // sub-class
 				int idx = 0;
-				bool low_end = VisualServer::get_singleton()->is_low_end();
+				bool low_end = RenderingServer::get_singleton()->is_low_end();
 
 				while (builtin_func_defs[idx].name) {
 					if (low_end && builtin_func_defs[idx].high_end) {
@@ -7112,7 +7112,7 @@ Error ShaderLanguage::complete(const String &p_code, const Map<StringName, Funct
 			int idx = 0;
 
 			String calltip;
-			bool low_end = VisualServer::get_singleton()->is_low_end();
+			bool low_end = RenderingServer::get_singleton()->is_low_end();
 
 			while (builtin_func_defs[idx].name) {
 				if (low_end && builtin_func_defs[idx].high_end) {

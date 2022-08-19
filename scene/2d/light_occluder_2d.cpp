@@ -87,7 +87,7 @@ bool OccluderPolygon2D::_edit_is_selected_on_click(const Point2 &p_point, double
 void OccluderPolygon2D::set_polygon(const PoolVector<Vector2> &p_polygon) {
 	polygon = p_polygon;
 	rect_cache_dirty = true;
-	VS::get_singleton()->canvas_occluder_polygon_set_shape(occ_polygon, p_polygon, closed);
+	RS::get_singleton()->canvas_occluder_polygon_set_shape(occ_polygon, p_polygon, closed);
 	emit_changed();
 }
 
@@ -101,7 +101,7 @@ void OccluderPolygon2D::set_closed(bool p_closed) {
 	}
 	closed = p_closed;
 	if (polygon.size()) {
-		VS::get_singleton()->canvas_occluder_polygon_set_shape(occ_polygon, polygon, closed);
+		RS::get_singleton()->canvas_occluder_polygon_set_shape(occ_polygon, polygon, closed);
 	}
 	emit_changed();
 }
@@ -112,7 +112,7 @@ bool OccluderPolygon2D::is_closed() const {
 
 void OccluderPolygon2D::set_cull_mode(CullMode p_mode) {
 	cull = p_mode;
-	VS::get_singleton()->canvas_occluder_polygon_set_cull_mode(occ_polygon, VS::CanvasOccluderPolygonCullMode(p_mode));
+	RS::get_singleton()->canvas_occluder_polygon_set_cull_mode(occ_polygon, RS::CanvasOccluderPolygonCullMode(p_mode));
 }
 
 OccluderPolygon2D::CullMode OccluderPolygon2D::get_cull_mode() const {
@@ -143,14 +143,14 @@ void OccluderPolygon2D::_bind_methods() {
 }
 
 OccluderPolygon2D::OccluderPolygon2D() {
-	occ_polygon = RID_PRIME(VS::get_singleton()->canvas_occluder_polygon_create());
+	occ_polygon = RID_PRIME(RS::get_singleton()->canvas_occluder_polygon_create());
 	closed = true;
 	cull = CULL_DISABLED;
 	rect_cache_dirty = true;
 }
 
 OccluderPolygon2D::~OccluderPolygon2D() {
-	VS::get_singleton()->free(occ_polygon);
+	RS::get_singleton()->free(occ_polygon);
 }
 
 void LightOccluder2D::_poly_changed() {
@@ -161,15 +161,15 @@ void LightOccluder2D::_poly_changed() {
 
 void LightOccluder2D::_notification(int p_what) {
 	if (p_what == NOTIFICATION_ENTER_CANVAS) {
-		VS::get_singleton()->canvas_light_occluder_attach_to_canvas(occluder, get_canvas());
-		VS::get_singleton()->canvas_light_occluder_set_transform(occluder, get_global_transform());
-		VS::get_singleton()->canvas_light_occluder_set_enabled(occluder, is_visible_in_tree());
+		RS::get_singleton()->canvas_light_occluder_attach_to_canvas(occluder, get_canvas());
+		RS::get_singleton()->canvas_light_occluder_set_transform(occluder, get_global_transform());
+		RS::get_singleton()->canvas_light_occluder_set_enabled(occluder, is_visible_in_tree());
 	}
 	if (p_what == NOTIFICATION_TRANSFORM_CHANGED) {
-		VS::get_singleton()->canvas_light_occluder_set_transform(occluder, get_global_transform());
+		RS::get_singleton()->canvas_light_occluder_set_transform(occluder, get_global_transform());
 	}
 	if (p_what == NOTIFICATION_VISIBILITY_CHANGED) {
-		VS::get_singleton()->canvas_light_occluder_set_enabled(occluder, is_visible_in_tree());
+		RS::get_singleton()->canvas_light_occluder_set_enabled(occluder, is_visible_in_tree());
 	}
 
 	if (p_what == NOTIFICATION_DRAW) {
@@ -195,7 +195,7 @@ void LightOccluder2D::_notification(int p_what) {
 	}
 
 	if (p_what == NOTIFICATION_EXIT_CANVAS) {
-		VS::get_singleton()->canvas_light_occluder_attach_to_canvas(occluder, RID());
+		RS::get_singleton()->canvas_light_occluder_attach_to_canvas(occluder, RID());
 	}
 }
 
@@ -218,9 +218,9 @@ void LightOccluder2D::set_occluder_polygon(const Ref<OccluderPolygon2D> &p_polyg
 	occluder_polygon = p_polygon;
 
 	if (occluder_polygon.is_valid()) {
-		VS::get_singleton()->canvas_light_occluder_set_polygon(occluder, occluder_polygon->get_rid());
+		RS::get_singleton()->canvas_light_occluder_set_polygon(occluder, occluder_polygon->get_rid());
 	} else {
-		VS::get_singleton()->canvas_light_occluder_set_polygon(occluder, RID());
+		RS::get_singleton()->canvas_light_occluder_set_polygon(occluder, RID());
 	}
 
 #ifdef DEBUG_ENABLED
@@ -237,7 +237,7 @@ Ref<OccluderPolygon2D> LightOccluder2D::get_occluder_polygon() const {
 
 void LightOccluder2D::set_occluder_light_mask(int p_mask) {
 	mask = p_mask;
-	VS::get_singleton()->canvas_light_occluder_set_light_mask(occluder, mask);
+	RS::get_singleton()->canvas_light_occluder_set_light_mask(occluder, mask);
 }
 
 int LightOccluder2D::get_occluder_light_mask() const {
@@ -277,11 +277,11 @@ void LightOccluder2D::_bind_methods() {
 }
 
 LightOccluder2D::LightOccluder2D() {
-	occluder = RID_PRIME(VS::get_singleton()->canvas_light_occluder_create());
+	occluder = RID_PRIME(RS::get_singleton()->canvas_light_occluder_create());
 	mask = 1;
 	set_notify_transform(true);
 }
 
 LightOccluder2D::~LightOccluder2D() {
-	VS::get_singleton()->free(occluder);
+	RS::get_singleton()->free(occluder);
 }

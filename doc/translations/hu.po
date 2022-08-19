@@ -1528,7 +1528,7 @@ msgid "The [VisualScriptEditor] singleton."
 msgstr ""
 
 #: doc/classes/@GlobalScope.xml
-msgid "The [VisualServer] singleton."
+msgid "The [RenderingServer] singleton."
 msgstr ""
 
 #: doc/classes/@GlobalScope.xml
@@ -7418,7 +7418,7 @@ msgid ""
 "the start and end of each line."
 msgstr ""
 
-#: doc/classes/ArrayMesh.xml doc/classes/Mesh.xml doc/classes/VisualServer.xml
+#: doc/classes/ArrayMesh.xml doc/classes/Mesh.xml doc/classes/RenderingServer.xml
 msgid "Represents the size of the [enum ArrayType] enum."
 msgstr ""
 
@@ -8019,7 +8019,7 @@ msgstr ""
 #: doc/classes/ARVRServer.xml
 msgid ""
 "Returns the absolute timestamp (in μs) of the last [ARVRServer] commit of "
-"the AR/VR eyes to [VisualServer]. The value comes from an internal call to "
+"the AR/VR eyes to [RenderingServer]. The value comes from an internal call to "
 "[method OS.get_ticks_usec]."
 msgstr ""
 
@@ -11523,7 +11523,7 @@ msgid ""
 msgstr ""
 
 #: doc/classes/Camera.xml
-msgid "Returns the camera's RID from the [VisualServer]."
+msgid "Returns the camera's RID from the [RenderingServer]."
 msgstr ""
 
 #: doc/classes/Camera.xml
@@ -12429,7 +12429,7 @@ msgid "Returns the [RID] of the [World2D] canvas where this item is in."
 msgstr ""
 
 #: doc/classes/CanvasItem.xml
-msgid "Returns the canvas item RID used by [VisualServer] for this item."
+msgid "Returns the canvas item RID used by [RenderingServer] for this item."
 msgstr ""
 
 #: doc/classes/CanvasItem.xml
@@ -25362,7 +25362,7 @@ msgstr ""
 
 #: doc/classes/GeometryInstance.xml
 msgid ""
-"Unused in this class, exposed for consistency with [enum VisualServer."
+"Unused in this class, exposed for consistency with [enum RenderingServer."
 "InstanceFlags]."
 msgstr ""
 
@@ -28792,7 +28792,7 @@ msgid ""
 "new texture each time."
 msgstr ""
 
-#: doc/classes/ImageTexture.xml doc/classes/VisualServer.xml
+#: doc/classes/ImageTexture.xml doc/classes/RenderingServer.xml
 msgid "Resizes the texture to the specified dimensions."
 msgstr ""
 
@@ -33478,11 +33478,11 @@ msgstr ""
 msgid "Render array as triangle fans."
 msgstr ""
 
-#: doc/classes/Mesh.xml doc/classes/VisualServer.xml
+#: doc/classes/Mesh.xml doc/classes/RenderingServer.xml
 msgid "Blend shapes are normalized."
 msgstr ""
 
-#: doc/classes/Mesh.xml doc/classes/VisualServer.xml
+#: doc/classes/Mesh.xml doc/classes/RenderingServer.xml
 msgid "Blend shapes are relative to base weight."
 msgstr ""
 
@@ -33530,53 +33530,53 @@ msgid ""
 "values. Do not use."
 msgstr ""
 
-#: doc/classes/Mesh.xml doc/classes/VisualServer.xml
+#: doc/classes/Mesh.xml doc/classes/RenderingServer.xml
 msgid "Flag used to mark a compressed (half float) vertex array."
 msgstr ""
 
-#: doc/classes/Mesh.xml doc/classes/VisualServer.xml
+#: doc/classes/Mesh.xml doc/classes/RenderingServer.xml
 msgid "Flag used to mark a compressed (half float) normal array."
 msgstr ""
 
-#: doc/classes/Mesh.xml doc/classes/VisualServer.xml
+#: doc/classes/Mesh.xml doc/classes/RenderingServer.xml
 msgid "Flag used to mark a compressed (half float) tangent array."
 msgstr ""
 
-#: doc/classes/Mesh.xml doc/classes/VisualServer.xml
+#: doc/classes/Mesh.xml doc/classes/RenderingServer.xml
 msgid "Flag used to mark a compressed (half float) color array."
 msgstr ""
 
-#: doc/classes/Mesh.xml doc/classes/VisualServer.xml
+#: doc/classes/Mesh.xml doc/classes/RenderingServer.xml
 msgid "Flag used to mark a compressed (half float) UV coordinates array."
 msgstr ""
 
-#: doc/classes/Mesh.xml doc/classes/VisualServer.xml
+#: doc/classes/Mesh.xml doc/classes/RenderingServer.xml
 msgid ""
 "Flag used to mark a compressed (half float) UV coordinates array for the "
 "second UV coordinates."
 msgstr ""
 
-#: doc/classes/Mesh.xml doc/classes/VisualServer.xml
+#: doc/classes/Mesh.xml doc/classes/RenderingServer.xml
 msgid "Flag used to mark a compressed bone array."
 msgstr ""
 
-#: doc/classes/Mesh.xml doc/classes/VisualServer.xml
+#: doc/classes/Mesh.xml doc/classes/RenderingServer.xml
 msgid "Flag used to mark a compressed (half float) weight array."
 msgstr ""
 
-#: doc/classes/Mesh.xml doc/classes/VisualServer.xml
+#: doc/classes/Mesh.xml doc/classes/RenderingServer.xml
 msgid "Flag used to mark a compressed index array."
 msgstr ""
 
-#: doc/classes/Mesh.xml doc/classes/VisualServer.xml
+#: doc/classes/Mesh.xml doc/classes/RenderingServer.xml
 msgid "Flag used to mark that the array contains 2D vertices."
 msgstr ""
 
-#: doc/classes/Mesh.xml doc/classes/VisualServer.xml
+#: doc/classes/Mesh.xml doc/classes/RenderingServer.xml
 msgid "Flag used to mark that the array uses 16-bit bones instead of 8-bit."
 msgstr ""
 
-#: doc/classes/Mesh.xml doc/classes/VisualServer.xml
+#: doc/classes/Mesh.xml doc/classes/RenderingServer.xml
 msgid ""
 "Flag used to mark that the array uses an octahedral representation of normal "
 "and tangent vectors rather than cartesian."
@@ -37371,7 +37371,7 @@ msgstr ""
 msgid ""
 "Z index. Controls the order in which the nodes render. A node with a higher "
 "Z index will display in front of others. Must be between [constant "
-"VisualServer.CANVAS_ITEM_Z_MIN] and [constant VisualServer."
+"RenderingServer.CANVAS_ITEM_Z_MIN] and [constant RenderingServer."
 "CANVAS_ITEM_Z_MAX] (inclusive)."
 msgstr ""
 
@@ -41258,20 +41258,20 @@ msgstr ""
 msgid "Draw calls per frame."
 msgstr ""
 
-#: doc/classes/Performance.xml doc/classes/VisualServer.xml
+#: doc/classes/Performance.xml doc/classes/RenderingServer.xml
 msgid ""
 "The amount of video memory used, i.e. texture and vertex memory combined."
 msgstr ""
 
-#: doc/classes/Performance.xml doc/classes/VisualServer.xml
+#: doc/classes/Performance.xml doc/classes/RenderingServer.xml
 msgid "The amount of texture memory used."
 msgstr ""
 
-#: doc/classes/Performance.xml doc/classes/VisualServer.xml
+#: doc/classes/Performance.xml doc/classes/RenderingServer.xml
 msgid "The amount of vertex memory used."
 msgstr ""
 
-#: doc/classes/Performance.xml doc/classes/VisualServer.xml
+#: doc/classes/Performance.xml doc/classes/RenderingServer.xml
 msgid ""
 "Unimplemented in the GLES2 and GLES3 rendering backends, always returns 0."
 msgstr ""
@@ -47083,7 +47083,7 @@ msgid ""
 "Default background clear color. Overridable per [Viewport] using its "
 "[Environment]. See [member Environment.background_mode] and [member "
 "Environment.background_color] in particular. To change this default color "
-"programmatically, use [method VisualServer.set_default_clear_color]."
+"programmatically, use [method RenderingServer.set_default_clear_color]."
 msgstr ""
 
 #: doc/classes/ProjectSettings.xml
@@ -50011,7 +50011,7 @@ msgid ""
 "The RID type is used to access the unique integer ID of a resource. They are "
 "opaque, which means they do not grant access to the associated resource by "
 "themselves. They are used by and with the low-level Server classes such as "
-"[VisualServer]."
+"[RenderingServer]."
 msgstr ""
 
 #: doc/classes/RID.xml
@@ -52157,7 +52157,7 @@ msgstr ""
 
 #: doc/classes/Shape2D.xml
 msgid ""
-"Draws a solid shape onto a [CanvasItem] with the [VisualServer] API filled "
+"Draws a solid shape onto a [CanvasItem] with the [RenderingServer] API filled "
 "with the specified [code]color[/code]. The exact drawing method is specific "
 "for each shape and cannot be configured."
 msgstr ""
@@ -57718,22 +57718,22 @@ msgstr ""
 
 #: doc/classes/Texture.xml
 msgid ""
-"Draws the texture using a [CanvasItem] with the [VisualServer] API at the "
-"specified [code]position[/code]. Equivalent to [method VisualServer."
+"Draws the texture using a [CanvasItem] with the [RenderingServer] API at the "
+"specified [code]position[/code]. Equivalent to [method RenderingServer."
 "canvas_item_add_texture_rect] with a rect at [code]position[/code] and the "
 "size of this [Texture]."
 msgstr ""
 
 #: doc/classes/Texture.xml
 msgid ""
-"Draws the texture using a [CanvasItem] with the [VisualServer] API. "
-"Equivalent to [method VisualServer.canvas_item_add_texture_rect]."
+"Draws the texture using a [CanvasItem] with the [RenderingServer] API. "
+"Equivalent to [method RenderingServer.canvas_item_add_texture_rect]."
 msgstr ""
 
 #: doc/classes/Texture.xml
 msgid ""
-"Draws a part of the texture using a [CanvasItem] with the [VisualServer] "
-"API. Equivalent to [method VisualServer.canvas_item_add_texture_rect_region]."
+"Draws a part of the texture using a [CanvasItem] with the [RenderingServer] "
+"API. Equivalent to [method RenderingServer.canvas_item_add_texture_rect_region]."
 msgstr ""
 
 #: doc/classes/Texture.xml
@@ -57770,7 +57770,7 @@ msgid ""
 "FLAG_FILTER] are enabled."
 msgstr ""
 
-#: doc/classes/Texture.xml doc/classes/VisualServer.xml
+#: doc/classes/Texture.xml doc/classes/RenderingServer.xml
 msgid ""
 "Generates mipmaps, which are smaller versions of the same texture to use "
 "when zoomed out, keeping the aspect ratio."
@@ -57783,19 +57783,19 @@ msgid ""
 "repetition."
 msgstr ""
 
-#: doc/classes/Texture.xml doc/classes/VisualServer.xml
+#: doc/classes/Texture.xml doc/classes/RenderingServer.xml
 msgid "Uses a magnifying filter, to enable smooth zooming in of the texture."
 msgstr ""
 
 #: doc/classes/Texture.xml doc/classes/TextureLayered.xml
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Uses anisotropic mipmap filtering. Generates smaller versions of the same "
 "texture with different aspect ratios.\n"
 "This results in better-looking textures when viewed from oblique angles."
 msgstr ""
 
-#: doc/classes/Texture.xml doc/classes/VisualServer.xml
+#: doc/classes/Texture.xml doc/classes/RenderingServer.xml
 msgid "Converts the texture to the sRGB color space."
 msgstr ""
 
@@ -57806,7 +57806,7 @@ msgid ""
 "repetition."
 msgstr ""
 
-#: doc/classes/Texture.xml doc/classes/VisualServer.xml
+#: doc/classes/Texture.xml doc/classes/RenderingServer.xml
 msgid "Texture is a video surface."
 msgstr ""
 
@@ -63199,7 +63199,7 @@ msgid ""
 msgstr ""
 
 #: doc/classes/Viewport.xml
-msgid "Returns the viewport's RID from the [VisualServer]."
+msgid "Returns the viewport's RID from the [RenderingServer]."
 msgstr ""
 
 #: doc/classes/Viewport.xml
@@ -63383,7 +63383,7 @@ msgid ""
 "to the root viewport. Only available in GLES2. This is a low-level "
 "optimization and should not be used in most cases. If used, reading from the "
 "Viewport or from [code]SCREEN_TEXTURE[/code] becomes unavailable. For more "
-"information see [method VisualServer.viewport_set_render_direct_to_screen]."
+"information see [method RenderingServer.viewport_set_render_direct_to_screen]."
 msgstr ""
 
 #: doc/classes/Viewport.xml
@@ -63917,7 +63917,7 @@ msgid ""
 "general, you should not access the [VisualInstance] properties directly as "
 "they are accessed and managed by the nodes that inherit from "
 "[VisualInstance]. [VisualInstance] is the node representation of the "
-"[VisualServer] instance."
+"[RenderingServer] instance."
 msgstr ""
 
 #: doc/classes/VisualInstance.xml
@@ -63936,8 +63936,8 @@ msgstr ""
 #: doc/classes/VisualInstance.xml
 msgid ""
 "Returns the RID of this instance. This RID is the same as the RID returned "
-"by [method VisualServer.instance_create]. This RID is needed if you want to "
-"call [VisualServer] functions directly on this [VisualInstance]."
+"by [method RenderingServer.instance_create]. This RID is needed if you want to "
+"call [RenderingServer] functions directly on this [VisualInstance]."
 msgstr ""
 
 #: doc/classes/VisualInstance.xml
@@ -63958,7 +63958,7 @@ msgstr ""
 msgid ""
 "Sets the resource that is instantiated by this [VisualInstance], which "
 "changes how the engine handles the [VisualInstance] under the hood. "
-"Equivalent to [method VisualServer.instance_set_base]."
+"Equivalent to [method RenderingServer.instance_set_base]."
 msgstr ""
 
 #: doc/classes/VisualInstance.xml
@@ -65706,11 +65706,11 @@ msgstr ""
 msgid "A signal from an instanced node with the given type will be used."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Server for anything visible."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Server for anything visible. The visual server is the API backend for "
 "everything visible. The whole scene system mounts on it to display.\n"
@@ -65740,62 +65740,62 @@ msgid ""
 "eventually attached to the canvas."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets images to be rendered in the window margin."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets margin size, where black bars (or images, if [method "
 "black_bars_set_images] was used) are rendered."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates a camera and adds it to the VisualServer. It can be accessed with "
+"Creates a camera and adds it to the RenderingServer. It can be accessed with "
 "the RID that is returned. This RID will be used in all [code]camera_*[/code] "
-"VisualServer functions.\n"
+"RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method."
+"RenderingServer's [method free_rid] static method."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the cull mask associated with this camera. The cull mask describes "
 "which 3D layers are rendered by this camera. Equivalent to [member Camera."
 "cull_mask]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the environment used by this camera. Equivalent to [member Camera."
 "environment]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets camera to use frustum projection. This mode allows adjusting the "
 "[code]offset[/code] argument to create \"tilted frustum\" effects."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets camera to use orthogonal projection, also known as orthographic "
 "projection. Objects remain the same size on the screen no matter how far "
 "away they are."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets camera to use perspective projection. Objects on the screen becomes "
 "smaller when they are far away."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets [Transform] of camera."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]true[/code], preserves the horizontal aspect ratio which is "
 "equivalent to [constant Camera.KEEP_WIDTH]. If [code]false[/code], preserves "
@@ -65803,493 +65803,493 @@ msgid ""
 "KEEP_HEIGHT]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Creates a canvas and returns the assigned [RID]. It can be accessed with the "
 "RID that is returned. This RID will be used in all [code]canvas_*[/code] "
-"VisualServer functions.\n"
+"RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method."
+"RenderingServer's [method free_rid] static method."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Adds a circle command to the [CanvasItem]'s draw commands."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"If ignore is [code]true[/code], the VisualServer does not perform clipping."
+"If ignore is [code]true[/code], the RenderingServer does not perform clipping."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Adds a line command to the [CanvasItem]'s draw commands."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Adds a mesh command to the [CanvasItem]'s draw commands."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Adds a [MultiMesh] to the [CanvasItem]'s draw commands. Only affects its "
 "aabb at the moment."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Adds a nine patch image to the [CanvasItem]'s draw commands.\n"
 "See [NinePatchRect] for more explanation."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Adds a particle system to the [CanvasItem]'s draw commands."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Adds a polygon to the [CanvasItem]'s draw commands."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Adds a polyline, which is a line from multiple points with a width, to the "
 "[CanvasItem]'s draw commands."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Adds a primitive to the [CanvasItem]'s draw commands."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Adds a rectangle to the [CanvasItem]'s draw commands."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Adds a [Transform2D] command to the [CanvasItem]'s draw commands.\n"
 "This sets the extra_matrix uniform when executed. This affects the later "
 "commands of the canvas item."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Adds a textured rect to the [CanvasItem]'s draw commands."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Adds a texture rect with region setting to the [CanvasItem]'s draw commands."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Adds a triangle array to the [CanvasItem]'s draw commands."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Clears the [CanvasItem] and removes all commands in it."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Creates a new [CanvasItem] and returns its [RID]. It can be accessed with "
 "the RID that is returned. This RID will be used in all [code]canvas_item_*[/"
-"code] VisualServer functions.\n"
+"code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method."
+"RenderingServer's [method free_rid] static method."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets clipping for the [CanvasItem]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the [CanvasItem] to copy a rect to the backbuffer."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Defines a custom drawing rectangle for the [CanvasItem]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Enables the use of distance fields for GUI elements that are rendering "
 "distance field based fonts."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets [CanvasItem] to be drawn behind its parent."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the index for the [CanvasItem]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "The light mask. See [LightOccluder2D] for more information on light masks."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets a new material to the [CanvasItem]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the color that modulates the [CanvasItem] and its children."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the parent for the [CanvasItem]. The parent can be another canvas item, "
 "or it can be the root canvas that is attached to the viewport."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the color that modulates the [CanvasItem] without children."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets if [CanvasItem]'s children should be sorted by y-position."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the [CanvasItem]'s [Transform2D]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets if the [CanvasItem] uses its parent's material."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets if the canvas item (including its children) is visible."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If this is enabled, the Z index of the parent will be added to the "
 "children's Z index."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the [CanvasItem]'s Z index, i.e. its draw order (lower indexes are "
 "drawn first)."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Attaches the canvas light to the canvas. Removes it from its previous canvas."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates a canvas light and adds it to the VisualServer. It can be accessed "
+"Creates a canvas light and adds it to the RenderingServer. It can be accessed "
 "with the RID that is returned. This RID will be used in all "
-"[code]canvas_light_*[/code] VisualServer functions.\n"
+"[code]canvas_light_*[/code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method."
+"RenderingServer's [method free_rid] static method."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Attaches a light occluder to the canvas. Removes it from its previous canvas."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates a light occluder and adds it to the VisualServer. It can be accessed "
+"Creates a light occluder and adds it to the RenderingServer. It can be accessed "
 "with the RID that is returned. This RID will be used in all "
-"[code]canvas_light_ocluder_*[/code] VisualServer functions.\n"
+"[code]canvas_light_ocluder_*[/code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method."
+"RenderingServer's [method free_rid] static method."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Enables or disables light occluder."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets a light occluder's polygon."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets a light occluder's [Transform2D]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the color for a light."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Enables or disables a canvas light."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets a canvas light's energy."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets a canvas light's height."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "The binary mask used to determine which layers this canvas light's shadows "
 "affects. See [LightOccluder2D] for more information on light masks."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The layer range that gets rendered with this light."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The mode of the light, see [enum CanvasLightMode] constants."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the texture's scale factor of the light. Equivalent to [member Light2D."
 "texture_scale]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the width of the shadow buffer, size gets scaled to the next power of "
 "two for this."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the color of the canvas light's shadow."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Enables or disables the canvas light's shadow."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the canvas light's shadow's filter, see [enum CanvasLightShadowFilter] "
 "constants."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the length of the shadow's gradient."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Smoothens the shadow. The lower, the smoother."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets texture to be used by light. Equivalent to [member Light2D.texture]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the offset of the light's texture. Equivalent to [member Light2D."
 "offset]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the canvas light's [Transform2D]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the Z range of objects that will be affected by this light. Equivalent "
 "to [member Light2D.range_z_min] and [member Light2D.range_z_max]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates a new light occluder polygon and adds it to the VisualServer. It can "
+"Creates a new light occluder polygon and adds it to the RenderingServer. It can "
 "be accessed with the RID that is returned. This RID will be used in all "
-"[code]canvas_occluder_polygon_*[/code] VisualServer functions.\n"
+"[code]canvas_occluder_polygon_*[/code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method."
+"RenderingServer's [method free_rid] static method."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets an occluder polygons cull mode. See [enum "
 "CanvasOccluderPolygonCullMode] constants."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the shape of the occluder polygon."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the shape of the occluder polygon as lines."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "A copy of the canvas item will be drawn with a local offset of the mirroring "
 "[Vector2]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Modulates all colors in the given canvas."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates a directional light and adds it to the VisualServer. It can be "
+"Creates a directional light and adds it to the RenderingServer. It can be "
 "accessed with the RID that is returned. This RID can be used in most "
-"[code]light_*[/code] VisualServer functions.\n"
+"[code]light_*[/code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method.\n"
+"RenderingServer's [method free_rid] static method.\n"
 "To place in a scene, attach this directional light to an instance using "
 "[method instance_set_base] using the returned RID."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Draws a frame. [i]This method is deprecated[/i], please use [method "
 "force_draw] instead."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates an environment and adds it to the VisualServer. It can be accessed "
+"Creates an environment and adds it to the RenderingServer. It can be accessed "
 "with the RID that is returned. This RID will be used in all "
-"[code]environment_*[/code] VisualServer functions.\n"
+"[code]environment_*[/code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method."
+"RenderingServer's [method free_rid] static method."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the values to be used with the \"Adjustment\" post-process effect. See "
 "[Environment] for more details."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the ambient light parameters. See [Environment] for more details."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the [i]BGMode[/i] of the environment. Equivalent to [member Environment."
 "background_mode]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Color displayed for clear areas of the scene (if using Custom color or "
 "Color+Sky background modes)."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the intensity of the background color."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the maximum layer to use if using Canvas background mode."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the values to be used with the \"DoF Far Blur\" post-process effect. "
 "See [Environment] for more details."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the values to be used with the \"DoF Near Blur\" post-process effect. "
 "See [Environment] for more details."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the variables to be used with the scene fog. See [Environment] for more "
 "details."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the variables to be used with the fog depth effect. See [Environment] "
 "for more details."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the variables to be used with the fog height effect. See [Environment] "
 "for more details."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the variables to be used with the \"glow\" post-process effect. See "
 "[Environment] for more details."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the [Sky] to be used as the environment's background when using "
 "[i]BGMode[/i] sky. Equivalent to [member Environment.background_sky]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets a custom field of view for the background [Sky]. Equivalent to [member "
 "Environment.background_sky_custom_fov]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the rotation of the background [Sky] expressed as a [Basis]. Equivalent "
 "to [member Environment.background_sky_orientation]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the variables to be used with the \"Screen Space Ambient Occlusion "
 "(SSAO)\" post-process effect. See [Environment] for more details."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the variables to be used with the \"screen space reflections\" post-"
 "process effect. See [Environment] for more details."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the variables to be used with the \"tonemap\" post-process effect. See "
 "[Environment] for more details."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Removes buffers and clears testcubes."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Forces a frame to be drawn when the function is called. Drawing a frame "
 "updates all [Viewport]s that are set to update. Use with extreme caution."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Synchronizes threads."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
-msgid "Tries to free an object in the VisualServer."
+#: doc/classes/RenderingServer.xml
+msgid "Tries to free an object in the RenderingServer."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns a certain information, see [enum RenderInfo] for options."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the id of the test cube. Creates one if none exists."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the id of the test texture. Creates one if none exists."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns the name of the video adapter (e.g. \"GeForce GTX 1080/PCIe/"
 "SSE2\").\n"
@@ -66297,169 +66297,169 @@ msgid ""
 "an empty string."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns the vendor of the video adapter (e.g. \"NVIDIA Corporation\").\n"
 "[b]Note:[/b] When running a headless or server binary, this function returns "
 "an empty string."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the id of a white texture. Creates one if none exists."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates a GI probe and adds it to the VisualServer. It can be accessed with "
+"Creates a GI probe and adds it to the RenderingServer. It can be accessed with "
 "the RID that is returned. This RID will be used in all [code]gi_probe_*[/"
-"code] VisualServer functions.\n"
+"code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method.\n"
+"RenderingServer's [method free_rid] static method.\n"
 "To place in a scene, attach this GI probe to an instance using [method "
 "instance_set_base] using the returned RID."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns the bias value for the GI probe. Bias is used to avoid self "
 "occlusion. Equivalent to [member GIProbeData.bias]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns the axis-aligned bounding box that covers the full extent of the GI "
 "probe."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the cell size set by [method gi_probe_set_cell_size]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the data used by the GI probe."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns the dynamic range set for this GI probe. Equivalent to [member "
 "GIProbe.dynamic_range]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns the energy multiplier for this GI probe. Equivalent to [member "
 "GIProbe.energy]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns the normal bias for this GI probe. Equivalent to [member GIProbe."
 "normal_bias]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns the propagation value for this GI probe. Equivalent to [member "
 "GIProbe.propagation]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the Transform set by [method gi_probe_set_to_cell_xform]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns [code]true[/code] if the GI probe data associated with this GI probe "
 "is compressed. Equivalent to [member GIProbe.compress]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns [code]true[/code] if the GI probe is set to interior, meaning it "
 "does not account for sky light. Equivalent to [member GIProbe.interior]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the bias value to avoid self-occlusion. Equivalent to [member GIProbe."
 "bias]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the axis-aligned bounding box that covers the extent of the GI probe."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the size of individual cells within the GI probe."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the compression setting for the GI probe data. Compressed data will "
 "take up less space but may look worse. Equivalent to [member GIProbe."
 "compress]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the data to be used in the GI probe for lighting calculations. Normally "
 "this is created and called internally within the [GIProbe] node. You should "
 "not try to set this yourself."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the dynamic range of the GI probe. Dynamic range sets the limit for how "
 "bright lights can be. A smaller range captures greater detail but limits how "
 "bright lights can be. Equivalent to [member GIProbe.dynamic_range]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the energy multiplier for this GI probe. A higher energy makes the "
 "indirect light from the GI probe brighter. Equivalent to [member GIProbe."
 "energy]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the interior value of this GI probe. A GI probe set to interior does "
 "not include the sky when calculating lighting. Equivalent to [member GIProbe."
 "interior]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the normal bias for this GI probe. Normal bias behaves similar to the "
 "other form of bias and may help reduce self-occlusion. Equivalent to [member "
 "GIProbe.normal_bias]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the propagation of light within this GI probe. Equivalent to [member "
 "GIProbe.propagation]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the to cell [Transform] for this GI probe."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Returns [code]true[/code] if changes have been made to the VisualServer's "
+"Returns [code]true[/code] if changes have been made to the RenderingServer's "
 "data. [method draw] is usually called if this happens.\n"
 "As changes are registered as either high or low priority (e.g. dynamic "
 "shaders), this function takes an optional argument to query either low or "
 "high priority changes, or any changes."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Not yet implemented. Always returns [code]false[/code]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns [code]true[/code] if the OS supports a certain feature. Features "
 "might be [code]s3tc[/code], [code]etc[/code], [code]etc2[/code], "
@@ -66469,222 +66469,222 @@ msgid ""
 "default GPU skinning process."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets up [ImmediateGeometry] internals to prepare for drawing. Equivalent to "
 "[method ImmediateGeometry.begin]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Clears everything that was set up between [method immediate_begin] and "
 "[method immediate_end]. Equivalent to [method ImmediateGeometry.clear]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the color to be used with next vertex. Equivalent to [method "
 "ImmediateGeometry.set_color]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates an immediate geometry and adds it to the VisualServer. It can be "
+"Creates an immediate geometry and adds it to the RenderingServer. It can be "
 "accessed with the RID that is returned. This RID will be used in all "
-"[code]immediate_*[/code] VisualServer functions.\n"
+"[code]immediate_*[/code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method.\n"
+"RenderingServer's [method free_rid] static method.\n"
 "To place in a scene, attach this immediate geometry to an instance using "
 "[method instance_set_base] using the returned RID."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Ends drawing the [ImmediateGeometry] and displays it. Equivalent to [method "
 "ImmediateGeometry.end]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the material assigned to the [ImmediateGeometry]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the normal to be used with next vertex. Equivalent to [method "
 "ImmediateGeometry.set_normal]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the material to be used to draw the [ImmediateGeometry]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the tangent to be used with next vertex. Equivalent to [method "
 "ImmediateGeometry.set_tangent]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the UV to be used with next vertex. Equivalent to [method "
 "ImmediateGeometry.set_uv]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the UV2 to be used with next vertex. Equivalent to [method "
 "ImmediateGeometry.set_uv2]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Adds the next vertex using the information provided in advance. Equivalent "
 "to [method ImmediateGeometry.add_vertex]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Adds the next vertex using the information provided in advance. This is a "
 "helper class that calls [method immediate_vertex] under the hood. Equivalent "
 "to [method ImmediateGeometry.add_vertex]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Initializes the visual server. This function is called internally by "
 "platform-dependent code during engine initialization. If called from a "
 "running game, it will not do anything."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Attaches a unique Object ID to instance. Object ID must be attached to "
 "instance for proper culling with [method instances_cull_aabb], [method "
 "instances_cull_convex], and [method instances_cull_ray]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Attaches a skeleton to an instance. Removes the previous skeleton from the "
 "instance."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates a visual instance and adds it to the VisualServer. It can be "
+"Creates a visual instance and adds it to the RenderingServer. It can be "
 "accessed with the RID that is returned. This RID will be used in all "
-"[code]instance_*[/code] VisualServer functions.\n"
+"[code]instance_*[/code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method.\n"
+"RenderingServer's [method free_rid] static method.\n"
 "An instance is a way of placing a 3D object in the scenario. Objects like "
 "particles, meshes, and reflection probes need to be associated with an "
 "instance to be visible in the scenario using [method instance_set_base]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates a visual instance, adds it to the VisualServer, and sets both base "
+"Creates a visual instance, adds it to the RenderingServer, and sets both base "
 "and scenario. It can be accessed with the RID that is returned. This RID "
-"will be used in all [code]instance_*[/code] VisualServer functions.\n"
+"will be used in all [code]instance_*[/code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method."
+"RenderingServer's [method free_rid] static method."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Not implemented in Godot 3.x."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the shadow casting setting to one of [enum ShadowCastingSetting]. "
 "Equivalent to [member GeometryInstance.cast_shadow]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the flag for a given [enum InstanceFlags]. See [enum InstanceFlags] for "
 "more details."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets a material that will be rendered for all surfaces on top of active "
 "materials for the mesh associated with this instance. Equivalent to [member "
 "GeometryInstance.material_overlay]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets a material that will override the material for all surfaces on the mesh "
 "associated with this instance. Equivalent to [member GeometryInstance."
 "material_override]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the base of the instance. A base can be any of the 3D objects that are "
-"created in the VisualServer that can be displayed. For example, any of the "
+"created in the RenderingServer that can be displayed. For example, any of the "
 "light types, mesh, multimesh, immediate geometry, particle system, "
 "reflection probe, lightmap capture, and the GI probe are all types that can "
 "be set as the base of an instance in order to be displayed in the scenario."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the weight for a given blend shape associated with this instance."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets a custom AABB to use when culling objects from the view frustum. "
 "Equivalent to [method GeometryInstance.set_custom_aabb]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Function not implemented in Godot 3.x."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets a margin to increase the size of the AABB when culling objects from the "
 "view frustum. This allows you to avoid culling objects that fall outside the "
 "view frustum. Equivalent to [member GeometryInstance.extra_cull_margin]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the render layers that this instance will be drawn to. Equivalent to "
 "[member VisualInstance.layers]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the scenario that the instance is in. The scenario is the 3D world that "
 "the objects will be displayed in."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the material of a specific surface. Equivalent to [method MeshInstance."
 "set_surface_material]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the world space transform of the instance. Equivalent to [member "
 "Spatial.transform]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the lightmap to use with this instance."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets whether an instance is drawn or not. Equivalent to [member Spatial."
 "visible]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns an array of object IDs intersecting with the provided AABB. Only "
 "visual 3D nodes are considered, such as [MeshInstance] or "
@@ -66696,7 +66696,7 @@ msgid ""
 "game use cases, prefer physics collision."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns an array of object IDs intersecting with the provided convex shape. "
 "Only visual 3D nodes are considered, such as [MeshInstance] or "
@@ -66708,7 +66708,7 @@ msgid ""
 "game use cases, prefer physics collision."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns an array of object IDs intersecting with the provided 3D ray. Only "
 "visual 3D nodes are considered, such as [MeshInstance] or "
@@ -66720,71 +66720,71 @@ msgid ""
 "game use cases, prefer physics collision."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]true[/code], this directional light will blend between shadow map "
 "splits resulting in a smoother transition between them. Equivalent to "
 "[member DirectionalLight.directional_shadow_blend_splits]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the shadow depth range mode for this directional light. Equivalent to "
 "[member DirectionalLight.directional_shadow_depth_range]. See [enum "
 "LightDirectionalShadowDepthRangeMode] for options."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the shadow mode for this directional light. Equivalent to [member "
 "DirectionalLight.directional_shadow_mode]. See [enum "
 "LightDirectionalShadowMode] for options."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets whether to use vertical or horizontal detail for this omni light. This "
 "can be used to alleviate artifacts in the shadow map. Equivalent to [member "
 "OmniLight.omni_shadow_detail]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets whether to use a dual paraboloid or a cubemap for the shadow map. Dual "
 "paraboloid is faster but may suffer from artifacts. Equivalent to [member "
 "OmniLight.omni_shadow_mode]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the bake mode for this light, see [enum LightBakeMode] for options. The "
 "bake mode affects how the light will be baked in [BakedLightmap]s and "
 "[GIProbe]s."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the color of the light. Equivalent to [member Light.light_color]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the cull mask for this Light. Lights only affect objects in the "
 "selected layers. Equivalent to [member Light.light_cull_mask]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]true[/code], light will subtract light instead of adding light. "
 "Equivalent to [member Light.light_negative]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the specified light parameter. See [enum LightParam] for options. "
 "Equivalent to [method Light.set_param]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]true[/code], reverses the backface culling of the mesh. This can be "
 "useful when you have a flat mesh that has a light behind it. If you need to "
@@ -66793,19 +66793,19 @@ msgid ""
 "to [member Light.shadow_reverse_cull_face]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]true[/code], light will cast shadows. Equivalent to [member Light."
 "shadow_enabled]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the color of the shadow cast by the light. Equivalent to [member Light."
 "shadow_color]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets whether GI probes capture light information from this light. "
 "[i]Deprecated method.[/i] Use [method light_set_bake_mode] instead. This "
@@ -66815,243 +66815,243 @@ msgid ""
 "given parameter."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates a lightmap capture and adds it to the VisualServer. It can be "
+"Creates a lightmap capture and adds it to the RenderingServer. It can be "
 "accessed with the RID that is returned. This RID will be used in all "
-"[code]lightmap_capture_*[/code] VisualServer functions.\n"
+"[code]lightmap_capture_*[/code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method.\n"
+"RenderingServer's [method free_rid] static method.\n"
 "To place in a scene, attach this lightmap capture to an instance using "
 "[method instance_set_base] using the returned RID."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the size of the lightmap capture area."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the energy multiplier used by the lightmap capture."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the octree used by the lightmap capture."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns the cell subdivision amount used by this lightmap capture's octree."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the cell transform for this lightmap capture's octree."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns [code]true[/code] if capture is in \"interior\" mode."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the size of the area covered by the lightmap capture. Equivalent to "
 "[member BakedLightmapData.bounds]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the energy multiplier for this lightmap capture. Equivalent to [member "
 "BakedLightmapData.energy]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the \"interior\" mode for this lightmap capture. Equivalent to [member "
 "BakedLightmapData.interior]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the octree to be used by this lightmap capture. This function is "
 "normally used by the [BakedLightmap] node. Equivalent to [member "
 "BakedLightmapData.octree]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the subdivision level of this lightmap capture's octree. Equivalent to "
 "[member BakedLightmapData.cell_subdiv]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the octree cell transform for this lightmap capture's octree. "
 "Equivalent to [member BakedLightmapData.cell_space_transform]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns a mesh of a sphere with the given amount of horizontal and vertical "
 "subdivisions."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates an empty material and adds it to the VisualServer. It can be "
+"Creates an empty material and adds it to the RenderingServer. It can be "
 "accessed with the RID that is returned. This RID will be used in all "
-"[code]material_*[/code] VisualServer functions.\n"
+"[code]material_*[/code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method."
+"RenderingServer's [method free_rid] static method."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the value of a certain material's parameter."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns the default value for the param if available. Otherwise returns an "
 "empty [Variant]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns the shader of a certain material's shader. Returns an empty RID if "
 "the material doesn't have a shader."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets a material's line width."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets an object's next material."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets a material's parameter."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets a material's render priority."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets a shader material's shader."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Adds a surface generated from the Arrays to a mesh. See [enum PrimitiveType] "
 "constants for types."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Removes all surfaces from a mesh."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates a new mesh and adds it to the VisualServer. It can be accessed with "
+"Creates a new mesh and adds it to the RenderingServer. It can be accessed with "
 "the RID that is returned. This RID will be used in all [code]mesh_*[/code] "
-"VisualServer functions.\n"
+"RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method.\n"
+"RenderingServer's [method free_rid] static method.\n"
 "To place in a scene, attach this mesh to an instance using [method "
 "instance_set_base] using the returned RID."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns a mesh's blend shape count."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns a mesh's blend shape mode."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns a mesh's custom aabb."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns a mesh's number of surfaces."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Removes a mesh's surface."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets a mesh's blend shape count."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets a mesh's blend shape mode."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets a mesh's custom aabb."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns a mesh's surface's aabb."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns a mesh's surface's vertex buffer."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns a mesh's surface's amount of indices."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns a mesh's surface's amount of vertices."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns a mesh's surface's buffer arrays."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns a mesh's surface's arrays for blend shapes."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the format of a mesh's surface."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Function is unused in Godot 3.x."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns a mesh's surface's index buffer."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns a mesh's surface's material."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the primitive type of a mesh's surface."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the aabb of a mesh's surface's skeleton."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets a mesh's surface's material."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Updates a specific region of a vertex buffer for the specified surface. "
 "Warning: this function alters the vertex buffer directly with no safety "
 "mechanisms, you can easily corrupt your mesh."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Allocates space for the multimesh data. Format parameters determine how the "
 "data will be stored by OpenGL. See [enum MultimeshTransformFormat], [enum "
@@ -67059,80 +67059,80 @@ msgid ""
 "Equivalent to [member MultiMesh.instance_count]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates a new multimesh on the VisualServer and returns an [RID] handle. "
-"This RID will be used in all [code]multimesh_*[/code] VisualServer "
+"Creates a new multimesh on the RenderingServer and returns an [RID] handle. "
+"This RID will be used in all [code]multimesh_*[/code] RenderingServer "
 "functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method.\n"
+"RenderingServer's [method free_rid] static method.\n"
 "To place in a scene, attach this multimesh to an instance using [method "
 "instance_set_base] using the returned RID."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Calculates and returns the axis-aligned bounding box that encloses all "
 "instances within the multimesh."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the number of instances allocated for this multimesh."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns the RID of the mesh that will be used in drawing this multimesh."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the number of visible instances for this multimesh."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the color by which the specified instance will be modulated."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the custom data associated with the specified instance."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the [Transform] of the specified instance."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns the [Transform2D] of the specified instance. For use when the "
 "multimesh is set to use 2D transforms."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the color by which this instance will be modulated. Equivalent to "
 "[method MultiMesh.set_instance_color]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the custom data for this instance. Custom data is passed as a [Color], "
 "but is interpreted as a [code]vec4[/code] in the shader. Equivalent to "
 "[method MultiMesh.set_instance_custom_data]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the [Transform] for this instance. Equivalent to [method MultiMesh."
 "set_instance_transform]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the [Transform2D] for this instance. For use when multimesh is used in "
 "2D. Equivalent to [method MultiMesh.set_instance_transform_2d]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets all data related to the instances in one go. This is especially useful "
 "when loading the data from disk or preparing the data from GDNative.\n"
@@ -67147,58 +67147,58 @@ msgid ""
 "code] is stored as 4 floats."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the mesh to be drawn by the multimesh. Equivalent to [member MultiMesh."
 "mesh]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the number of instances visible at a given time. If -1, all instances "
 "that have been allocated are drawn. Equivalent to [member MultiMesh."
 "visible_instance_count]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates a new omni light and adds it to the VisualServer. It can be accessed "
+"Creates a new omni light and adds it to the RenderingServer. It can be accessed "
 "with the RID that is returned. This RID can be used in most [code]light_*[/"
-"code] VisualServer functions.\n"
+"code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method.\n"
+"RenderingServer's [method free_rid] static method.\n"
 "To place in a scene, attach this omni light to an instance using [method "
 "instance_set_base] using the returned RID."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates a particle system and adds it to the VisualServer. It can be "
+"Creates a particle system and adds it to the RenderingServer. It can be "
 "accessed with the RID that is returned. This RID will be used in all "
-"[code]particles_*[/code] VisualServer functions.\n"
+"[code]particles_*[/code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method.\n"
+"RenderingServer's [method free_rid] static method.\n"
 "To place in a scene, attach these particles to an instance using [method "
 "instance_set_base] using the returned RID."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Calculates and returns the axis-aligned bounding box that contains all the "
 "particles. Equivalent to [method Particles.capture_aabb]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns [code]true[/code] if particles are currently set to emitting."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns [code]true[/code] if particles are not emitting and particles are "
 "set to inactive."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Add particle system to list of particle systems that need to be updated. "
 "Update will take place on the next frame, or on the next call to [method "
@@ -67206,181 +67206,181 @@ msgid ""
 "instances_cull_ray]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Reset the particles on the next update. Equivalent to [method Particles."
 "restart]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the number of particles to be drawn and allocates the memory for them. "
 "Equivalent to [member Particles.amount]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets a custom axis-aligned bounding box for the particle system. Equivalent "
 "to [member Particles.visibility_aabb]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the draw order of the particles to one of the named enums from [enum "
 "ParticlesDrawOrder]. See [enum ParticlesDrawOrder] for options. Equivalent "
 "to [member Particles.draw_order]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the mesh to be used for the specified draw pass. Equivalent to [member "
 "Particles.draw_pass_1], [member Particles.draw_pass_2], [member Particles."
 "draw_pass_3], and [member Particles.draw_pass_4]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the number of draw passes to use. Equivalent to [member Particles."
 "draw_passes]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the [Transform] that will be used by the particles when they first emit."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]true[/code], particles will emit over time. Setting to false does "
 "not reset the particles, but only stops their emission. Equivalent to "
 "[member Particles.emitting]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the explosiveness ratio. Equivalent to [member Particles.explosiveness]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the frame rate that the particle system rendering will be fixed to. "
 "Equivalent to [member Particles.fixed_fps]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]true[/code], uses fractional delta which smooths the movement of "
 "the particles. Equivalent to [member Particles.fract_delta]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the lifetime of each particle in the system. Equivalent to [member "
 "Particles.lifetime]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]true[/code], particles will emit once and then stop. Equivalent to "
 "[member Particles.one_shot]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the preprocess time for the particles' animation. This lets you delay "
 "starting an animation until after the particles have begun emitting. "
 "Equivalent to [member Particles.preprocess]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the material for processing the particles.\n"
 "[b]Note:[/b] This is not the material used to draw the materials. Equivalent "
 "to [member Particles.process_material]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the emission randomness ratio. This randomizes the emission of "
 "particles within their phase. Equivalent to [member Particles.randomness]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the speed scale of the particle system. Equivalent to [member Particles."
 "speed_scale]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]true[/code], particles use local coordinates. If [code]false[/code] "
 "they use global coordinates. Equivalent to [member Particles.local_coords]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates a reflection probe and adds it to the VisualServer. It can be "
+"Creates a reflection probe and adds it to the RenderingServer. It can be "
 "accessed with the RID that is returned. This RID will be used in all "
-"[code]reflection_probe_*[/code] VisualServer functions.\n"
+"[code]reflection_probe_*[/code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method.\n"
+"RenderingServer's [method free_rid] static method.\n"
 "To place in a scene, attach this reflection probe to an instance using "
 "[method instance_set_base] using the returned RID."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]true[/code], reflections will ignore sky contribution. Equivalent "
 "to [member ReflectionProbe.interior_enable]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the render cull mask for this reflection probe. Only instances with a "
 "matching cull mask will be rendered by this probe. Equivalent to [member "
 "ReflectionProbe.cull_mask]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]true[/code], uses box projection. This can make reflections look "
 "more correct in certain situations. Equivalent to [member ReflectionProbe."
 "box_projection]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]true[/code], computes shadows in the reflection probe. This makes "
 "the reflection much slower to compute. Equivalent to [member ReflectionProbe."
 "enable_shadows]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the size of the area that the reflection probe will capture. Equivalent "
 "to [member ReflectionProbe.extents]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the intensity of the reflection probe. Intensity modulates the strength "
 "of the reflection. Equivalent to [member ReflectionProbe.intensity]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the ambient light color for this reflection probe when set to interior "
 "mode. Equivalent to [member ReflectionProbe.interior_ambient_color]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the energy multiplier for this reflection probes ambient light "
 "contribution when set to interior mode. Equivalent to [member "
 "ReflectionProbe.interior_ambient_energy]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the contribution value for how much the reflection affects the ambient "
 "light for this reflection probe when set to interior mode. Useful so that "
@@ -67388,25 +67388,25 @@ msgid ""
 "ReflectionProbe.interior_ambient_contrib]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the max distance away from the probe an object can be before it is "
 "culled. Equivalent to [member ReflectionProbe.max_distance]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the origin offset to be used when this reflection probe is in box "
 "project mode. Equivalent to [member ReflectionProbe.origin_offset]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets how often the reflection probe updates. Can either be once or every "
 "frame. See [enum ReflectionProbeUpdateMode] for options."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Schedules a callback to the corresponding named [code]method[/code] on "
 "[code]where[/code] after a frame has been drawn.\n"
@@ -67414,40 +67414,40 @@ msgid ""
 "[code]userdata[/code]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates a scenario and adds it to the VisualServer. It can be accessed with "
+"Creates a scenario and adds it to the RenderingServer. It can be accessed with "
 "the RID that is returned. This RID will be used in all [code]scenario_*[/"
-"code] VisualServer functions.\n"
+"code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method.\n"
+"RenderingServer's [method free_rid] static method.\n"
 "The scenario is the 3D world that all the visual instances exist in."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the [enum ScenarioDebugMode] for this scenario. See [enum "
 "ScenarioDebugMode] for options."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the environment that will be used with this scenario."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the fallback environment to be used by this scenario. The fallback "
 "environment is used if no environment is set. Internally, this is used by "
 "the editor to provide a default environment."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the size of the reflection atlas shared by all reflection probes in "
 "this scenario."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets a boot image. The color defines the background color. If [code]scale[/"
 "code] is [code]true[/code], the image will be scaled to fit the screen size. "
@@ -67456,19 +67456,19 @@ msgid ""
 "the image will be scaled with nearest-neighbor interpolation."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]true[/code], the engine will generate wireframes for use with the "
 "wireframe debug mode."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the default clear color which is used when a specific clear color has "
 "not been selected."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If asynchronous shader compilation is enabled, this controls whether "
 "[constant SpatialMaterial.ASYNC_MODE_HIDDEN] is obeyed.\n"
@@ -67479,7 +67479,7 @@ msgid ""
 "regardless the shaders are ready or not."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the scale to apply to the passage of time for the shaders' [code]TIME[/"
 "code] builtin.\n"
@@ -67487,202 +67487,202 @@ msgid ""
 "count the real time as it goes by, without narrowing or stretching it."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Enables or disables occlusion culling."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates an empty shader and adds it to the VisualServer. It can be accessed "
+"Creates an empty shader and adds it to the RenderingServer. It can be accessed "
 "with the RID that is returned. This RID will be used in all [code]shader_*[/"
-"code] VisualServer functions.\n"
+"code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method."
+"RenderingServer's [method free_rid] static method."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns a shader's code."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns a default texture from a shader searched by name."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the parameters of a shader."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets a shader's code."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets a shader's default texture. Overwrites the texture given by name."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Allocates the GPU buffers for this skeleton."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the [Transform] set for a specific bone of this skeleton."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the [Transform2D] set for a specific bone of this skeleton."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the [Transform] for a specific bone of this skeleton."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the [Transform2D] for a specific bone of this skeleton."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates a skeleton and adds it to the VisualServer. It can be accessed with "
+"Creates a skeleton and adds it to the RenderingServer. It can be accessed with "
 "the RID that is returned. This RID will be used in all [code]skeleton_*[/"
-"code] VisualServer functions.\n"
+"code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method."
+"RenderingServer's [method free_rid] static method."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the number of bones allocated for this skeleton."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates an empty sky and adds it to the VisualServer. It can be accessed "
+"Creates an empty sky and adds it to the RenderingServer. It can be accessed "
 "with the RID that is returned. This RID will be used in all [code]sky_*[/"
-"code] VisualServer functions.\n"
+"code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method."
+"RenderingServer's [method free_rid] static method."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets a sky's texture."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates a spot light and adds it to the VisualServer. It can be accessed "
+"Creates a spot light and adds it to the RenderingServer. It can be accessed "
 "with the RID that is returned. This RID can be used in most [code]light_*[/"
-"code] VisualServer functions.\n"
+"code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method.\n"
+"RenderingServer's [method free_rid] static method.\n"
 "To place in a scene, attach this spot light to an instance using [method "
 "instance_set_base] using the returned RID."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Allocates the GPU memory for the texture."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Binds the texture to a texture slot."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates an empty texture and adds it to the VisualServer. It can be accessed "
+"Creates an empty texture and adds it to the RenderingServer. It can be accessed "
 "with the RID that is returned. This RID will be used in all [code]texture_*[/"
-"code] VisualServer functions.\n"
+"code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method."
+"RenderingServer's [method free_rid] static method."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Creates a texture, allocates the space for an image, and fills in the image."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns a list of all the textures and their information."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns a copy of a texture's image unless it's a CubeMap, in which case it "
 "returns the [RID] of the image at one of the cubes sides."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the depth of the texture."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the flags of a texture."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the format of the texture's image."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the texture's height."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the texture's path."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the opengl id of the texture's image."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the type of the texture, can be any of the [enum TextureType]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the texture's width."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the texture's image data. If it's a CubeMap, it sets the image data at "
 "a cube side."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets a part of the data for a texture. Warning: this function calls the "
 "underlying graphics API directly and may corrupt your texture if used "
 "improperly."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the texture's flags. See [enum TextureFlags] for options."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the texture's path."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]true[/code], sets internal processes to shrink all image data to "
 "half the size."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]true[/code], the image will be stored in the texture's images array "
 "if overwritten."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets a viewport's camera."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets a viewport's canvas."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Copies viewport to a region of the screen specified by [code]rect[/code]. If "
 "[member Viewport.render_direct_to_screen] is [code]true[/code], then "
@@ -67704,93 +67704,93 @@ msgid ""
 "viewport_set_render_direct_to_screen]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Creates an empty viewport and adds it to the VisualServer. It can be "
+"Creates an empty viewport and adds it to the RenderingServer. It can be "
 "accessed with the RID that is returned. This RID will be used in all "
-"[code]viewport_*[/code] VisualServer functions.\n"
+"[code]viewport_*[/code] RenderingServer functions.\n"
 "Once finished with your RID, you will want to free the RID using the "
-"VisualServer's [method free_rid] static method."
+"RenderingServer's [method free_rid] static method."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Detaches the viewport from the screen."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Returns a viewport's render information. For options, see the [enum "
 "ViewportRenderInfo] constants."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Returns the viewport's last rendered frame."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Detaches a viewport from a canvas and vice versa."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "If [code]true[/code], sets the viewport active, else sets it inactive."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the stacking order for a viewport's canvas.\n"
 "[code]layer[/code] is the actual canvas layer, while [code]sublayer[/code] "
 "specifies the stacking order of the canvas among those in the same layer."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the transformation of a viewport's canvas."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the clear mode of a viewport. See [enum ViewportClearMode] for options."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the debug draw mode of a viewport. See [enum ViewportDebugDraw] for "
 "options."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "If [code]true[/code], a viewport's 3D rendering is disabled."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]true[/code], rendering of a viewport's environment is disabled."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the viewport's global transformation matrix."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "If [code]true[/code], the viewport renders to hdr."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "If [code]true[/code], the viewport's canvas is not rendered."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Currently unimplemented in Godot 3.x."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the anti-aliasing mode. See [enum ViewportMSAA] for options."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the viewport's parent to another viewport."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]true[/code], render the contents of the viewport directly to "
 "screen. This allows a low-level optimization where you can skip drawing a "
@@ -67806,24 +67806,24 @@ msgid ""
 "significantly larger than the window size."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets a viewport's scenario.\n"
 "The scenario contains information about the [enum ScenarioDebugMode], "
 "environment information, reflection atlas etc."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the shadow atlas quadrant's subdivision."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the size of the shadow atlas's images (used for omni and spot lights). "
 "The value will be rounded up to the nearest power of 2."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the sharpening [code]intensity[/code] for the [code]viewport[/code]. If "
 "set to a value greater than [code]0.0[/code], contrast-adaptive sharpening "
@@ -67833,34 +67833,34 @@ msgid ""
 "viewport_set_use_fxaa]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sets the viewport's width and height."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]true[/code], the viewport renders its background as transparent."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets when the viewport should be updated. See [enum ViewportUpdateMode] "
 "constants for options."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the viewport's 2D/3D mode. See [enum ViewportUsage] constants for "
 "options."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]true[/code], the viewport uses augmented or virtual reality "
 "technologies. See [ARVRInterface]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]true[/code], uses a fast post-processing filter to make banding "
 "significantly less visible. In some cases, debanding may introduce a "
@@ -67871,7 +67871,7 @@ msgid ""
 "also be [code]true[/code] for debanding to be effective."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Enables fast approximate antialiasing for this viewport. FXAA is a popular "
 "screen-space antialiasing method, which is fast but will make the image look "
@@ -67881,208 +67881,208 @@ msgid ""
 "viewport_set_sharpen_intensity])."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "If [code]true[/code], the viewport's rendering is flipped vertically."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "If [code]false[/code], disables rendering completely, but the engine logic "
 "is still being processed. You can call [method force_draw] to draw a frame "
 "even with rendering disabled."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Emitted at the end of the frame, after the VisualServer has finished "
+"Emitted at the end of the frame, after the RenderingServer has finished "
 "updating all the Viewports."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
-"Emitted at the beginning of the frame, before the VisualServer updates all "
+"Emitted at the beginning of the frame, before the RenderingServer updates all "
 "the Viewports."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Marks an error that shows that the index array is empty."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Number of weights/bones per vertex."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The minimum Z-layer for canvas items."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The maximum Z-layer for canvas items."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Max number of glow levels that can be used with glow post-process effect."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Unused enum in Godot 3.x."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The minimum renderpriority of all materials."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The maximum renderpriority of all materials."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Marks the left side of a cubemap."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Marks the right side of a cubemap."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Marks the bottom side of a cubemap."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Marks the top side of a cubemap."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Marks the front side of a cubemap."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Marks the back side of a cubemap."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Normal texture with 2 dimensions, width and height."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Texture made up of six faces, can be looked up with a [code]vec3[/code] in "
 "shader."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "An array of 2-dimensional textures."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "A 3-dimensional texture with width, height, and depth."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Repeats the texture (instead of clamp to edge)."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Repeats the texture with alternate sections mirrored."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Default flags. [constant TEXTURE_FLAG_MIPMAPS], [constant "
 "TEXTURE_FLAG_REPEAT] and [constant TEXTURE_FLAG_FILTER] are enabled."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Shader is a 3D shader."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Shader is a 2D shader."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Shader is a particle shader."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Represents the size of the [enum ShaderMode] enum."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Array is a vertex array."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Array is a normal array."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Array is a tangent array."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Array is a color array."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Array is an UV coordinates array."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Array is an UV coordinates array for the second UV coordinates."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Array contains bone information."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Array is weight information."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Array is index array."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Flag used to mark a vertex array."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Flag used to mark a normal array."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Flag used to mark a tangent array."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Flag used to mark a color array."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Flag used to mark an UV coordinates array."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Flag used to mark an UV coordinates array for the second UV coordinates."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Flag used to mark a bone information array."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Flag used to mark a weights array."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Flag used to mark an index array."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Used to set flags [constant ARRAY_COMPRESS_NORMAL], [constant "
 "ARRAY_COMPRESS_TANGENT], [constant ARRAY_COMPRESS_COLOR], [constant "
@@ -68091,688 +68091,688 @@ msgid ""
 "ARRAY_FLAG_USE_OCTAHEDRAL_COMPRESSION] quickly."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Primitive to draw consists of points."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Primitive to draw consists of lines."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Primitive to draw consists of a line strip from start to end."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Primitive to draw consists of a line loop (a line strip with a line between "
 "the last and the first vertex)."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Primitive to draw consists of triangles."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Primitive to draw consists of a triangle strip (the last 3 vertices are "
 "always combined to make a triangle)."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Primitive to draw consists of a triangle strip (the last 2 vertices are "
 "always combined with the first to make a triangle)."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Represents the size of the [enum PrimitiveType] enum."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Is a directional (sun) light."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Is an omni light."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Is a spot light."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The light's energy."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Secondary multiplier used with indirect light (light bounces)."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "The light's size, currently only used for soft shadows in baked lightmaps."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The light's influence on specularity."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The light's range."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The light's attenuation."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The spotlight's angle."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The spotlight's attenuation."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Scales the shadow color."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Max distance that shadows will be rendered."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Proportion of shadow atlas occupied by the first split."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Proportion of shadow atlas occupied by the second split."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Proportion of shadow atlas occupied by the third split. The fourth split "
 "occupies the rest."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Normal bias used to offset shadow lookup by object normal. Can be used to "
 "fix self-shadowing artifacts."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Bias the shadow lookup to fix self-shadowing artifacts."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Increases bias on further splits to fix self-shadowing that only occurs far "
 "away from the camera."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Represents the size of the [enum LightParam] enum."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use a dual paraboloid shadow map for omni lights."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Use a cubemap shadow map for omni lights. Slower but better quality than "
 "dual paraboloid."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use more detail vertically when computing shadow map."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use more detail horizontally when computing shadow map."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use orthogonal shadow projection for directional light."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use 2 splits for shadow projection when using directional light."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use 4 splits for shadow projection when using directional light."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Keeps shadows stable as camera moves but has lower effective resolution."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Optimize use of shadow maps, increasing the effective resolution. But may "
 "result in shadows moving or flickering slightly."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Do not update the viewport."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Update the viewport once then set to disabled."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Update the viewport whenever it is visible."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Always update the viewport."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The viewport is always cleared before drawing."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The viewport is never cleared before drawing."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "The viewport is cleared once, then the clear mode is set to [constant "
 "VIEWPORT_CLEAR_NEVER]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Multisample antialiasing is disabled."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Multisample antialiasing is set to 2×."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Multisample antialiasing is set to 4×."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Multisample antialiasing is set to 8×."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Multisample antialiasing is set to 16×."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Multisample antialiasing is set to 2× on external texture. Special mode for "
 "GLES2 Android VR (Oculus Quest and Go)."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Multisample antialiasing is set to 4× on external texture. Special mode for "
 "GLES2 Android VR (Oculus Quest and Go)."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The Viewport does not render 3D but samples."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The Viewport does not render 3D and does not sample."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The Viewport renders 3D with effects."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The Viewport renders 3D but without effects."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Number of objects drawn in a single frame."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Number of vertices drawn in a single frame."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Number of material changes during this frame."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Number of shader changes during this frame."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Number of surface changes during this frame."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Number of draw calls during this frame."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Number of 2d items drawn this frame."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Number of 2d draw calls during this frame."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Represents the size of the [enum ViewportRenderInfo] enum."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Debug draw is disabled. Default setting."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Debug draw sets objects to unshaded."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Overwrites clear color to [code](0,0,0,0)[/code]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Debug draw draws objects in wireframe."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Do not use a debug mode."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Draw all objects as wireframe models."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Draw all objects in a way that displays how much overdraw is occurring. "
 "Overdraw occurs when a section of pixels is drawn and shaded and then "
 "another object covers it up. To optimize a scene, you should reduce overdraw."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Draw all objects without shading. Equivalent to setting all objects shaders "
 "to [code]unshaded[/code]."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The instance does not have a type."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The instance is a mesh."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The instance is a multimesh."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The instance is an immediate geometry."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The instance is a particle emitter."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The instance is a light."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The instance is a reflection probe."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The instance is a GI probe."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The instance is a lightmap capture."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Represents the size of the [enum InstanceType] enum."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "A combination of the flags of geometry instances (mesh, multimesh, immediate "
 "and particles)."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Allows the instance to be used in baked lighting."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "When set, manually requests to draw geometry on next frame."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Represents the size of the [enum InstanceFlags] enum."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Disable shadows from this instance."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Cast shadows from this instance."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Disable backface culling when rendering the shadow of the object. This is "
 "slightly slower but may result in more correct shadows."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Only render the shadows from the object. The object itself will not be drawn."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The nine patch gets stretched where needed."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The nine patch gets filled with tiles where needed."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "The nine patch gets filled with tiles where needed and stretches them a bit "
 "if needed."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Adds light color additive to the canvas."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Adds light color subtractive to the canvas."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The light adds color depending on transparency."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The light adds color depending on mask."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Do not apply a filter to canvas light shadows."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use PCF3 filtering to filter canvas light shadows."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use PCF5 filtering to filter canvas light shadows."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use PCF7 filtering to filter canvas light shadows."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use PCF9 filtering to filter canvas light shadows."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use PCF13 filtering to filter canvas light shadows."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Culling of the canvas occluder is disabled."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Culling of the canvas occluder is clockwise."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Culling of the canvas occluder is counterclockwise."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The amount of objects in the frame."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The amount of vertices in the frame."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The amount of modified materials in the frame."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The amount of shader rebinds in the frame."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The amount of surface changes in the frame."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The amount of draw calls in frame."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The amount of 2d items in the frame."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "The amount of 2d draw calls in frame."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Hardware supports shaders. This enum is currently unused in Godot 3.x."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Hardware supports multithreading. This enum is currently unused in Godot 3.x."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use [Transform2D] to store MultiMesh transform."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use [Transform] to store MultiMesh transform."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "MultiMesh does not use per-instance color."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "MultiMesh color uses 8 bits per component. This packs the color into a "
 "single float."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "MultiMesh color uses a float per channel."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "MultiMesh does not use custom data."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "MultiMesh custom data uses 8 bits per component. This packs the 4-component "
 "custom data into a single float."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "MultiMesh custom data uses a float per component."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Reflection probe will update reflections once and then stop."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Reflection probe will update each frame. This mode is necessary to capture "
 "moving objects."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Draw particles in the order that they appear in the particles array."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sort particles based on their lifetime."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Sort particles based on their distance to the camera."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use the clear color as background."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use a specified color as the background."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use a sky resource for the background."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Use a custom color for background, but use a sky for shading and reflections."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Use a specified canvas layer as the background. This can be useful for "
 "instantiating a 2D scene in a 3D world."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Do not clear the background, use whatever was rendered last frame as the "
 "background."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Represents the size of the [enum EnvironmentBG] enum."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use lowest blur quality. Fastest, but may look bad."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use medium blur quality."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Used highest blur quality. Looks the best, but is the slowest."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Add the effect of the glow on top of the scene."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Blends the glow effect with the screen. Does not get as bright as additive."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Produces a subtle color disturbance around objects."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Shows the glow effect by itself without the underlying scene."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Output color as they came in."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use the Reinhard tonemapper."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use the filmic tonemapper."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use the ACES tonemapper."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Use the ACES Fitted tonemapper."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Lowest quality of screen space ambient occlusion."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Medium quality screen space ambient occlusion."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Highest quality screen space ambient occlusion."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Disables the blur set for SSAO. Will make SSAO look noisier."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Perform a 1x1 blur on the SSAO output."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Performs a 2x2 blur on the SSAO output."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Performs a 3x3 blur on the SSAO output. Use this for smoothest SSAO."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Used to query for any changes that request a redraw, whatever the priority."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid ""
 "Registered changes which have low priority can be optionally prevented from "
 "causing editor redraws. Examples might include dynamic shaders (typically "
 "using the [code]TIME[/code] built-in)."
 msgstr ""
 
-#: doc/classes/VisualServer.xml
+#: doc/classes/RenderingServer.xml
 msgid "Registered changes which can cause a redraw default to high priority."
 msgstr ""
 
@@ -71770,7 +71770,7 @@ msgstr ""
 
 #: doc/classes/World2D.xml
 msgid ""
-"The [RID] of this world's canvas resource. Used by the [VisualServer] for 2D "
+"The [RID] of this world's canvas resource. Used by the [RenderingServer] for 2D "
 "drawing."
 msgstr ""
 

@@ -1525,7 +1525,7 @@ void EditorInspector::update_tree() {
 			continue;
 		}
 
-		if (p.usage & PROPERTY_USAGE_HIGH_END_GFX && VS::get_singleton()->is_low_end()) {
+		if (p.usage & PROPERTY_USAGE_HIGH_END_GFX && RS::get_singleton()->is_low_end()) {
 			continue; //do not show this property in low end gfx
 		}
 

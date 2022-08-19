@@ -63,7 +63,7 @@ void CPUParticles2D::set_amount(int p_amount) {
 	}
 
 	particle_data.resize((8 + 4 + 1) * p_amount);
-	VS::get_singleton()->multimesh_allocate(multimesh, p_amount, VS::MULTIMESH_TRANSFORM_2D, VS::MULTIMESH_COLOR_8BIT, VS::MULTIMESH_CUSTOM_DATA_FLOAT);
+	RS::get_singleton()->multimesh_allocate(multimesh, p_amount, RS::MULTIMESH_TRANSFORM_2D, RS::MULTIMESH_COLOR_8BIT, RS::MULTIMESH_CUSTOM_DATA_FLOAT);
 
 	particle_order.resize(p_amount);
 }
@@ -180,14 +180,14 @@ void CPUParticles2D::_update_mesh_texture() {
 	indices.push_back(0);
 
 	Array arr;
-	arr.resize(VS::ARRAY_MAX);
-	arr[VS::ARRAY_VERTEX] = vertices;
-	arr[VS::ARRAY_TEX_UV] = uvs;
-	arr[VS::ARRAY_COLOR] = colors;
-	arr[VS::ARRAY_INDEX] = indices;
+	arr.resize(RS::ARRAY_MAX);
+	arr[RS::ARRAY_VERTEX] = vertices;
+	arr[RS::ARRAY_TEX_UV] = uvs;
+	arr[RS::ARRAY_COLOR] = colors;
+	arr[RS::ARRAY_INDEX] = indices;
 
-	VS::get_singleton()->mesh_clear(mesh);
-	VS::get_singleton()->mesh_add_surface_from_arrays(mesh, VS::PRIMITIVE_TRIANGLES, arr);
+	RS::get_singleton()->mesh_clear(mesh);
+	RS::get_singleton()->mesh_add_surface_from_arrays(mesh, RS::PRIMITIVE_TRIANGLES, arr);
 }
 
 void CPUParticles2D::set_texture(const Ref<Texture> &p_texture) {
@@ -1013,17 +1013,17 @@ void CPUParticles2D::_set_redraw(bool p_redraw) {
 	redraw = p_redraw;
 	update_mutex.lock();
 	if (redraw) {
-		VS::get_singleton()->connect("frame_pre_draw", this, "_update_render_thread");
-		VS::get_singleton()->canvas_item_set_update_when_visible(get_canvas_item(), true);
+		RS::get_singleton()->connect("frame_pre_draw", this, "_update_render_thread");
+		RS::get_singleton()->canvas_item_set_update_when_visible(get_canvas_item(), true);
 
-		VS::get_singleton()->multimesh_set_visible_instances(multimesh, -1);
+		RS::get_singleton()->multimesh_set_visible_instances(multimesh, -1);
 	} else {
-		if (VS::get_singleton()->is_connected("frame_pre_draw", this, "_update_render_thread")) {
-			VS::get_singleton()->disconnect("frame_pre_draw", this, "_update_render_thread");
+		if (RS::get_singleton()->is_connected("frame_pre_draw", this, "_update_render_thread")) {
+			RS::get_singleton()->disconnect("frame_pre_draw", this, "_update_render_thread");
 		}
-		VS::get_singleton()->canvas_item_set_update_when_visible(get_canvas_item(), false);
+		RS::get_singleton()->canvas_item_set_update_when_visible(get_canvas_item(), false);
 
-		VS::get_singleton()->multimesh_set_visible_instances(multimesh, 0);
+		RS::get_singleton()->multimesh_set_visible_instances(multimesh, 0);
 	}
 	update_mutex.unlock();
 	update(); // redraw to update render list
@@ -1032,7 +1032,7 @@ void CPUParticles2D::_set_redraw(bool p_redraw) {
 void CPUParticles2D::_update_render_thread() {
 	if (OS::get_singleton()->is_update_pending(true)) {
 		update_mutex.lock();
-		VS::get_singleton()->multimesh_set_as_bulk_array(multimesh, particle_data);
+		RS::get_singleton()->multimesh_set_as_bulk_array(multimesh, particle_data);
 		update_mutex.unlock();
 	}
 }
@@ -1066,7 +1066,7 @@ void CPUParticles2D::_notification(int p_what) {
 			normrid = normalmap->get_rid();
 		}
 
-		VS::get_singleton()->canvas_item_add_multimesh(get_canvas_item(), multimesh, texrid, normrid);
+		RS::get_singleton()->canvas_item_add_multimesh(get_canvas_item(), multimesh, texrid, normrid);
 	}
 
 	if (p_what == NOTIFICATION_INTERNAL_PROCESS) {
@@ -1321,9 +1321,9 @@ CPUParticles2D::CPUParticles2D() {
 	redraw = false;
 	emitting = false;
 
-	mesh = RID_PRIME(VisualServer::get_singleton()->mesh_create());
-	multimesh = RID_PRIME(VisualServer::get_singleton()->multimesh_create());
-	VisualServer::get_singleton()->multimesh_set_mesh(multimesh, mesh);
+	mesh = RID_PRIME(RenderingServer::get_singleton()->mesh_create());
+	multimesh = RID_PRIME(RenderingServer::get_singleton()->multimesh_create());
+	RenderingServer::get_singleton()->multimesh_set_mesh(multimesh, mesh);
 
 	set_emitting(true);
 	set_one_shot(false);
@@ -1374,6 +1374,6 @@ CPUParticles2D::CPUParticles2D() {
 }
 
 CPUParticles2D::~CPUParticles2D() {
-	VS::get_singleton()->free(multimesh);
-	VS::get_singleton()->free(mesh);
+	RS::get_singleton()->free(multimesh);
+	RS::get_singleton()->free(mesh);
 }

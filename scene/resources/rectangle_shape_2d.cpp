@@ -47,7 +47,7 @@ Vector2 RectangleShape2D::get_extents() const {
 }
 
 void RectangleShape2D::draw(const RID &p_to_rid, const Color &p_color) {
-	VisualServer::get_singleton()->canvas_item_add_rect(p_to_rid, Rect2(-extents, extents * 2.0), p_color);
+	RenderingServer::get_singleton()->canvas_item_add_rect(p_to_rid, Rect2(-extents, extents * 2.0), p_color);
 	if (is_collision_outline_enabled()) {
 		// Draw an outlined rectangle to make individual shapes easier to distinguish.
 		Vector<Vector2> stroke_points;
@@ -64,7 +64,7 @@ void RectangleShape2D::draw(const RID &p_to_rid, const Color &p_color) {
 			stroke_colors.write[i] = p_color;
 		}
 
-		VisualServer::get_singleton()->canvas_item_add_polyline(p_to_rid, stroke_points, stroke_colors, 1.0, true);
+		RenderingServer::get_singleton()->canvas_item_add_polyline(p_to_rid, stroke_points, stroke_colors, 1.0, true);
 	}
 }
 

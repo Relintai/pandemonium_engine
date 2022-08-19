@@ -63,7 +63,7 @@
 			<argument index="0" name="canvas_item" type="RID" />
 			<argument index="1" name="color" type="Color" />
 			<description>
-				Draws a solid shape onto a [CanvasItem] with the [VisualServer] API filled with the specified [code]color[/code]. The exact drawing method is specific for each shape and cannot be configured.
+				Draws a solid shape onto a [CanvasItem] with the [RenderingServer] API filled with the specified [code]color[/code]. The exact drawing method is specific for each shape and cannot be configured.
 			</description>
 		</method>
 	</methods>

@@ -226,7 +226,7 @@ void Node::_propagate_physics_interpolated(bool p_interpolated) {
 
 	data.physics_interpolated = p_interpolated;
 
-	// allow a call to the VisualServer etc in derived classes
+	// allow a call to the RenderingServer etc in derived classes
 	_physics_interpolated_changed();
 
 	data.blocked++;

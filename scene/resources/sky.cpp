@@ -71,7 +71,7 @@ void PanoramaSky::_radiance_changed() {
 		static const int size[RADIANCE_SIZE_MAX] = {
 			32, 64, 128, 256, 512, 1024, 2048
 		};
-		VS::get_singleton()->sky_set_texture(sky, panorama->get_rid(), size[get_radiance_size()]);
+		RS::get_singleton()->sky_set_texture(sky, panorama->get_rid(), size[get_radiance_size()]);
 	}
 }
 
@@ -82,7 +82,7 @@ void PanoramaSky::set_panorama(const Ref<Texture> &p_panorama) {
 		_radiance_changed();
 
 	} else {
-		VS::get_singleton()->sky_set_texture(sky, RID(), 0);
+		RS::get_singleton()->sky_set_texture(sky, RID(), 0);
 	}
 }
 
@@ -102,11 +102,11 @@ void PanoramaSky::_bind_methods() {
 }
 
 PanoramaSky::PanoramaSky() {
-	sky = VS::get_singleton()->sky_create();
+	sky = RS::get_singleton()->sky_create();
 }
 
 PanoramaSky::~PanoramaSky() {
-	VS::get_singleton()->free(sky);
+	RS::get_singleton()->free(sky);
 }
 //////////////////////////////////
 
@@ -118,7 +118,7 @@ void ProceduralSky::_radiance_changed() {
 	static const int size[RADIANCE_SIZE_MAX] = {
 		32, 64, 128, 256, 512, 1024, 2048
 	};
-	VS::get_singleton()->sky_set_texture(sky, texture, size[get_radiance_size()]);
+	RS::get_singleton()->sky_set_texture(sky, texture, size[get_radiance_size()]);
 }
 
 Ref<Image> ProceduralSky::_generate_sky() {
@@ -374,8 +374,8 @@ void ProceduralSky::_update_sky() {
 
 	} else {
 		panorama = _generate_sky();
-		VS::get_singleton()->texture_allocate(texture, panorama->get_width(), panorama->get_height(), 0, Image::FORMAT_RGBE9995, VS::TEXTURE_TYPE_2D, VS::TEXTURE_FLAG_FILTER | VS::TEXTURE_FLAG_REPEAT);
-		VS::get_singleton()->texture_set_data(texture, panorama);
+		RS::get_singleton()->texture_allocate(texture, panorama->get_width(), panorama->get_height(), 0, Image::FORMAT_RGBE9995, RS::TEXTURE_TYPE_2D, RS::TEXTURE_FLAG_FILTER | RS::TEXTURE_FLAG_REPEAT);
+		RS::get_singleton()->texture_set_data(texture, panorama);
 		_radiance_changed();
 	}
 }
@@ -393,8 +393,8 @@ void ProceduralSky::_thread_done(const Ref<Image> &p_image) {
 	ERR_FAIL_COND(p_image.is_null());
 
 	panorama = p_image;
-	VS::get_singleton()->texture_allocate(texture, panorama->get_width(), panorama->get_height(), 0, Image::FORMAT_RGBE9995, VS::TEXTURE_TYPE_2D, VS::TEXTURE_FLAG_FILTER | VS::TEXTURE_FLAG_REPEAT);
-	VS::get_singleton()->texture_set_data(texture, panorama);
+	RS::get_singleton()->texture_allocate(texture, panorama->get_width(), panorama->get_height(), 0, Image::FORMAT_RGBE9995, RS::TEXTURE_TYPE_2D, RS::TEXTURE_FLAG_FILTER | RS::TEXTURE_FLAG_REPEAT);
+	RS::get_singleton()->texture_set_data(texture, panorama);
 	_radiance_changed();
 	sky_thread.wait_to_finish();
 	if (regen_queued) {
@@ -494,8 +494,8 @@ void ProceduralSky::_bind_methods() {
 }
 
 ProceduralSky::ProceduralSky(bool p_desaturate) {
-	sky = VS::get_singleton()->sky_create();
-	texture = RID_PRIME(VS::get_singleton()->texture_create());
+	sky = RS::get_singleton()->sky_create();
+	texture = RID_PRIME(RS::get_singleton()->texture_create());
 
 	update_queued = false;
 	sky_top_color = Color::hex(0xa5d6f1ff);
@@ -533,6 +533,6 @@ ProceduralSky::~ProceduralSky() {
 	if (sky_thread.is_started()) {
 		sky_thread.wait_to_finish();
 	}
-	VS::get_singleton()->free(sky);
-	VS::get_singleton()->free(texture);
+	RS::get_singleton()->free(sky);
+	RS::get_singleton()->free(texture);
 }

@@ -152,15 +152,15 @@ private:
 		bool physics_interpolation_reset_requested : 1;
 
 		// Most nodes need not be interpolated in the scene tree, physics interpolation
-		// is normally only needed in the VisualServer. However if we need to read the
+		// is normally only needed in the RenderingServer. However if we need to read the
 		// interpolated transform of a node in the SceneTree, it is necessary to duplicate
-		// the interpolation logic client side, in order to prevent stalling the VisualServer
+		// the interpolation logic client side, in order to prevent stalling the RenderingServer
 		// by reading back.
 		bool physics_interpolated_client_side : 1;
 
 		// For certain nodes (e.g. CPU Particles in global mode)
 		// It can be useful to not send the instance transform to the
-		// VisualServer, and specify the mesh in world space.
+		// RenderingServer, and specify the mesh in world space.
 		bool use_identity_transform : 1;
 
 		bool parent_owned : 1;

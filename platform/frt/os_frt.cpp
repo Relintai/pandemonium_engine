@@ -132,7 +132,7 @@ private:
 	Env *env;
 	Vec2 screen_size;
 	ContextGL *context_gl;
-	VisualServer *visual_server;
+	RenderingServer *visual_server;
 	VideoMode current_videomode;
 	int current_video_driver;
 	List<String> args;
@@ -291,7 +291,7 @@ public:
 		RasterizerGLES2::make_current();
 		current_video_driver = VIDEO_DRIVER_GLES2;
 
-		visual_server = memnew(VisualServerRaster);
+		visual_server = memnew(RenderingServerRaster);
 
 		// TODO: Audio Module
 		AudioDriverManagerSW::get_driver(audio_driver)->set_singleton();

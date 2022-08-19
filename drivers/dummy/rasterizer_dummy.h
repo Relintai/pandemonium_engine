@@ -52,7 +52,7 @@ public:
 
 	RID environment_create() { return RID(); }
 
-	void environment_set_background(RID p_env, VS::EnvironmentBG p_bg) {}
+	void environment_set_background(RID p_env, RS::EnvironmentBG p_bg) {}
 	void environment_set_sky(RID p_env, RID p_sky) {}
 	void environment_set_sky_custom_fov(RID p_env, float p_scale) {}
 	void environment_set_sky_orientation(RID p_env, const Basis &p_orientation) {}
@@ -61,16 +61,16 @@ public:
 	void environment_set_canvas_max_layer(RID p_env, int p_max_layer) {}
 	void environment_set_ambient_light(RID p_env, const Color &p_color, float p_energy = 1.0, float p_sky_contribution = 0.0) {}
 
-	void environment_set_dof_blur_near(RID p_env, bool p_enable, float p_distance, float p_transition, float p_far_amount, VS::EnvironmentDOFBlurQuality p_quality) {}
-	void environment_set_dof_blur_far(RID p_env, bool p_enable, float p_distance, float p_transition, float p_far_amount, VS::EnvironmentDOFBlurQuality p_quality) {}
-	void environment_set_glow(RID p_env, bool p_enable, int p_level_flags, float p_intensity, float p_strength, float p_bloom_threshold, VS::EnvironmentGlowBlendMode p_blend_mode, float p_hdr_bleed_threshold, float p_hdr_bleed_scale, float p_hdr_luminance_cap, bool p_bicubic_upscale, bool p_high_quality) {}
+	void environment_set_dof_blur_near(RID p_env, bool p_enable, float p_distance, float p_transition, float p_far_amount, RS::EnvironmentDOFBlurQuality p_quality) {}
+	void environment_set_dof_blur_far(RID p_env, bool p_enable, float p_distance, float p_transition, float p_far_amount, RS::EnvironmentDOFBlurQuality p_quality) {}
+	void environment_set_glow(RID p_env, bool p_enable, int p_level_flags, float p_intensity, float p_strength, float p_bloom_threshold, RS::EnvironmentGlowBlendMode p_blend_mode, float p_hdr_bleed_threshold, float p_hdr_bleed_scale, float p_hdr_luminance_cap, bool p_bicubic_upscale, bool p_high_quality) {}
 
 	void environment_set_fog(RID p_env, bool p_enable, float p_begin, float p_end, RID p_gradient_texture) {}
 
 	void environment_set_ssr(RID p_env, bool p_enable, int p_max_steps, float p_fade_int, float p_fade_out, float p_depth_tolerance, bool p_roughness) {}
-	void environment_set_ssao(RID p_env, bool p_enable, float p_radius, float p_intensity, float p_radius2, float p_intensity2, float p_bias, float p_light_affect, float p_ao_channel_affect, const Color &p_color, VS::EnvironmentSSAOQuality p_quality, VS::EnvironmentSSAOBlur p_blur, float p_bilateral_sharpness) {}
+	void environment_set_ssao(RID p_env, bool p_enable, float p_radius, float p_intensity, float p_radius2, float p_intensity2, float p_bias, float p_light_affect, float p_ao_channel_affect, const Color &p_color, RS::EnvironmentSSAOQuality p_quality, RS::EnvironmentSSAOBlur p_blur, float p_bilateral_sharpness) {}
 
-	void environment_set_tonemap(RID p_env, VS::EnvironmentToneMapper p_tone_mapper, float p_exposure, float p_white, bool p_auto_exposure, float p_min_luminance, float p_max_luminance, float p_auto_exp_speed, float p_auto_exp_scale) {}
+	void environment_set_tonemap(RID p_env, RS::EnvironmentToneMapper p_tone_mapper, float p_exposure, float p_white, bool p_auto_exposure, float p_min_luminance, float p_max_luminance, float p_auto_exp_speed, float p_auto_exp_scale) {}
 
 	void environment_set_adjustment(RID p_env, bool p_enable, float p_brightness, float p_contrast, float p_saturation, RID p_ramp) {}
 
@@ -79,7 +79,7 @@ public:
 	void environment_set_fog_height(RID p_env, bool p_enable, float p_min_height, float p_max_height, float p_height_curve) {}
 
 	bool is_environment(RID p_env) { return false; }
-	VS::EnvironmentBG environment_get_background(RID p_env) { return VS::ENV_BG_KEEP; }
+	RS::EnvironmentBG environment_get_background(RID p_env) { return RS::ENV_BG_KEEP; }
 	int environment_get_canvas_max_layer(RID p_env) { return 0; }
 
 	RID light_instance_create(RID p_light) { return RID(); }
@@ -103,7 +103,7 @@ public:
 	void render_shadow(RID p_light, RID p_shadow_atlas, int p_pass, InstanceBase **p_cull_result, int p_cull_count) {}
 
 	void set_scene_pass(uint64_t p_pass) {}
-	void set_debug_draw_mode(VS::ViewportDebugDraw p_debug_draw) {}
+	void set_debug_draw_mode(RS::ViewportDebugDraw p_debug_draw) {}
 
 	bool free(RID p_rid) { return true; }
 
@@ -125,7 +125,7 @@ public:
 
 	struct DummySurface {
 		uint32_t format;
-		VS::PrimitiveType primitive;
+		RS::PrimitiveType primitive;
 		PoolVector<uint8_t> array;
 		int vertex_count;
 		PoolVector<uint8_t> index_array;
@@ -138,7 +138,7 @@ public:
 	struct DummyMesh : public RID_Data {
 		Vector<DummySurface> surfaces;
 		int blend_shape_count;
-		VS::BlendShapeMode blend_shape_mode;
+		RS::BlendShapeMode blend_shape_mode;
 		PoolRealArray blend_shape_values;
 	};
 
@@ -151,7 +151,7 @@ public:
 		return texture_owner.make_rid(texture);
 	}
 
-	void texture_allocate(RID p_texture, int p_width, int p_height, int p_depth_3d, Image::Format p_format, VisualServer::TextureType p_type = VS::TEXTURE_TYPE_2D, uint32_t p_flags = VS::TEXTURE_FLAGS_DEFAULT) {
+	void texture_allocate(RID p_texture, int p_width, int p_height, int p_depth_3d, Image::Format p_format, RenderingServer::TextureType p_type = RS::TEXTURE_TYPE_2D, uint32_t p_flags = RS::TEXTURE_FLAGS_DEFAULT) {
 		DummyTexture *t = texture_owner.getornull(p_texture);
 		ERR_FAIL_COND(!t);
 		t->width = p_width;
@@ -204,7 +204,7 @@ public:
 		return t->format;
 	}
 
-	VisualServer::TextureType texture_get_type(RID p_texture) const { return VS::TEXTURE_TYPE_2D; }
+	RenderingServer::TextureType texture_get_type(RID p_texture) const { return RS::TEXTURE_TYPE_2D; }
 	uint32_t texture_get_texid(RID p_texture) const { return 0; }
 	uint32_t texture_get_width(RID p_texture) const { return 0; }
 	uint32_t texture_get_height(RID p_texture) const { return 0; }
@@ -225,13 +225,13 @@ public:
 
 	void texture_set_shrink_all_x2_on_set_data(bool p_enable) {}
 
-	void texture_debug_usage(List<VS::TextureInfo> *r_info) {}
+	void texture_debug_usage(List<RS::TextureInfo> *r_info) {}
 
 	RID texture_create_radiance_cubemap(RID p_source, int p_resolution = -1) const { return RID(); }
 
-	void texture_set_detect_3d_callback(RID p_texture, VisualServer::TextureDetectCallback p_callback, void *p_userdata) {}
-	void texture_set_detect_srgb_callback(RID p_texture, VisualServer::TextureDetectCallback p_callback, void *p_userdata) {}
-	void texture_set_detect_normal_callback(RID p_texture, VisualServer::TextureDetectCallback p_callback, void *p_userdata) {}
+	void texture_set_detect_3d_callback(RID p_texture, RenderingServer::TextureDetectCallback p_callback, void *p_userdata) {}
+	void texture_set_detect_srgb_callback(RID p_texture, RenderingServer::TextureDetectCallback p_callback, void *p_userdata) {}
+	void texture_set_detect_normal_callback(RID p_texture, RenderingServer::TextureDetectCallback p_callback, void *p_userdata) {}
 
 	void textures_keep_original(bool p_enable) {}
 
@@ -290,11 +290,11 @@ public:
 		DummyMesh *mesh = memnew(DummyMesh);
 		ERR_FAIL_COND_V(!mesh, RID());
 		mesh->blend_shape_count = 0;
-		mesh->blend_shape_mode = VS::BLEND_SHAPE_MODE_NORMALIZED;
+		mesh->blend_shape_mode = RS::BLEND_SHAPE_MODE_NORMALIZED;
 		return mesh_owner.make_rid(mesh);
 	}
 
-	void mesh_add_surface(RID p_mesh, uint32_t p_format, VS::PrimitiveType p_primitive, const PoolVector<uint8_t> &p_array, int p_vertex_count, const PoolVector<uint8_t> &p_index_array, int p_index_count, const AABB &p_aabb, const Vector<PoolVector<uint8_t>> &p_blend_shapes = Vector<PoolVector<uint8_t>>(), const Vector<AABB> &p_bone_aabbs = Vector<AABB>()) {
+	void mesh_add_surface(RID p_mesh, uint32_t p_format, RS::PrimitiveType p_primitive, const PoolVector<uint8_t> &p_array, int p_vertex_count, const PoolVector<uint8_t> &p_index_array, int p_index_count, const AABB &p_aabb, const Vector<PoolVector<uint8_t>> &p_blend_shapes = Vector<PoolVector<uint8_t>>(), const Vector<AABB> &p_bone_aabbs = Vector<AABB>()) {
 		DummyMesh *m = mesh_owner.getornull(p_mesh);
 		ERR_FAIL_COND(!m);
 
@@ -322,14 +322,14 @@ public:
 		return m->blend_shape_count;
 	}
 
-	void mesh_set_blend_shape_mode(RID p_mesh, VS::BlendShapeMode p_mode) {
+	void mesh_set_blend_shape_mode(RID p_mesh, RS::BlendShapeMode p_mode) {
 		DummyMesh *m = mesh_owner.getornull(p_mesh);
 		ERR_FAIL_COND(!m);
 		m->blend_shape_mode = p_mode;
 	}
-	VS::BlendShapeMode mesh_get_blend_shape_mode(RID p_mesh) const {
+	RS::BlendShapeMode mesh_get_blend_shape_mode(RID p_mesh) const {
 		DummyMesh *m = mesh_owner.getornull(p_mesh);
-		ERR_FAIL_COND_V(!m, VS::BLEND_SHAPE_MODE_NORMALIZED);
+		ERR_FAIL_COND_V(!m, RS::BLEND_SHAPE_MODE_NORMALIZED);
 		return m->blend_shape_mode;
 	}
 
@@ -381,9 +381,9 @@ public:
 
 		return m->surfaces[p_surface].format;
 	}
-	VS::PrimitiveType mesh_surface_get_primitive_type(RID p_mesh, int p_surface) const {
+	RS::PrimitiveType mesh_surface_get_primitive_type(RID p_mesh, int p_surface) const {
 		DummyMesh *m = mesh_owner.getornull(p_mesh);
-		ERR_FAIL_COND_V(!m, VS::PRIMITIVE_POINTS);
+		ERR_FAIL_COND_V(!m, RS::PRIMITIVE_POINTS);
 
 		return m->surfaces[p_surface].primitive;
 	}
@@ -430,7 +430,7 @@ public:
 
 	virtual RID _multimesh_create() { return RID(); }
 
-	void _multimesh_allocate(RID p_multimesh, int p_instances, VS::MultimeshTransformFormat p_transform_format, VS::MultimeshColorFormat p_color_format, VS::MultimeshCustomDataFormat p_data = VS::MULTIMESH_CUSTOM_DATA_NONE) {}
+	void _multimesh_allocate(RID p_multimesh, int p_instances, RS::MultimeshTransformFormat p_transform_format, RS::MultimeshColorFormat p_color_format, RS::MultimeshCustomDataFormat p_data = RS::MULTIMESH_CUSTOM_DATA_NONE) {}
 	int _multimesh_get_instance_count(RID p_multimesh) const { return 0; }
 	void _multimesh_set_mesh(RID p_multimesh, RID p_mesh) {}
 	void _multimesh_instance_set_transform(RID p_multimesh, int p_index, const Transform &p_transform) {}
@@ -452,7 +452,7 @@ public:
 	/* IMMEDIATE API */
 
 	RID immediate_create() { return RID(); }
-	void immediate_begin(RID p_immediate, VS::PrimitiveType p_rimitive, RID p_texture = RID()) {}
+	void immediate_begin(RID p_immediate, RS::PrimitiveType p_rimitive, RID p_texture = RID()) {}
 	void immediate_vertex(RID p_immediate, const Vector3 &p_vertex) {}
 	void immediate_normal(RID p_immediate, const Vector3 &p_normal) {}
 	void immediate_tangent(RID p_immediate, const Plane &p_tangent) {}
@@ -480,14 +480,14 @@ public:
 
 	/* Light API */
 
-	RID light_create(VS::LightType p_type) { return RID(); }
+	RID light_create(RS::LightType p_type) { return RID(); }
 
-	RID directional_light_create() { return light_create(VS::LIGHT_DIRECTIONAL); }
-	RID omni_light_create() { return light_create(VS::LIGHT_OMNI); }
-	RID spot_light_create() { return light_create(VS::LIGHT_SPOT); }
+	RID directional_light_create() { return light_create(RS::LIGHT_DIRECTIONAL); }
+	RID omni_light_create() { return light_create(RS::LIGHT_OMNI); }
+	RID spot_light_create() { return light_create(RS::LIGHT_SPOT); }
 
 	void light_set_color(RID p_light, const Color &p_color) {}
-	void light_set_param(RID p_light, VS::LightParam p_param, float p_value) {}
+	void light_set_param(RID p_light, RS::LightParam p_param, float p_value) {}
 	void light_set_shadow(RID p_light, bool p_enabled) {}
 	void light_set_shadow_color(RID p_light, const Color &p_color) {}
 	void light_set_projector(RID p_light, RID p_texture) {}
@@ -495,23 +495,23 @@ public:
 	void light_set_cull_mask(RID p_light, uint32_t p_mask) {}
 	void light_set_reverse_cull_face_mode(RID p_light, bool p_enabled) {}
 
-	void light_omni_set_shadow_mode(RID p_light, VS::LightOmniShadowMode p_mode) {}
-	void light_omni_set_shadow_detail(RID p_light, VS::LightOmniShadowDetail p_detail) {}
+	void light_omni_set_shadow_mode(RID p_light, RS::LightOmniShadowMode p_mode) {}
+	void light_omni_set_shadow_detail(RID p_light, RS::LightOmniShadowDetail p_detail) {}
 
-	void light_directional_set_shadow_mode(RID p_light, VS::LightDirectionalShadowMode p_mode) {}
+	void light_directional_set_shadow_mode(RID p_light, RS::LightDirectionalShadowMode p_mode) {}
 	void light_directional_set_blend_splits(RID p_light, bool p_enable) {}
 	bool light_directional_get_blend_splits(RID p_light) const { return false; }
-	void light_directional_set_shadow_depth_range_mode(RID p_light, VS::LightDirectionalShadowDepthRangeMode p_range_mode) {}
-	VS::LightDirectionalShadowDepthRangeMode light_directional_get_shadow_depth_range_mode(RID p_light) const { return VS::LIGHT_DIRECTIONAL_SHADOW_DEPTH_RANGE_STABLE; }
+	void light_directional_set_shadow_depth_range_mode(RID p_light, RS::LightDirectionalShadowDepthRangeMode p_range_mode) {}
+	RS::LightDirectionalShadowDepthRangeMode light_directional_get_shadow_depth_range_mode(RID p_light) const { return RS::LIGHT_DIRECTIONAL_SHADOW_DEPTH_RANGE_STABLE; }
 
-	VS::LightDirectionalShadowMode light_directional_get_shadow_mode(RID p_light) { return VS::LIGHT_DIRECTIONAL_SHADOW_ORTHOGONAL; }
-	VS::LightOmniShadowMode light_omni_get_shadow_mode(RID p_light) { return VS::LIGHT_OMNI_SHADOW_DUAL_PARABOLOID; }
+	RS::LightDirectionalShadowMode light_directional_get_shadow_mode(RID p_light) { return RS::LIGHT_DIRECTIONAL_SHADOW_ORTHOGONAL; }
+	RS::LightOmniShadowMode light_omni_get_shadow_mode(RID p_light) { return RS::LIGHT_OMNI_SHADOW_DUAL_PARABOLOID; }
 
 	bool light_has_shadow(RID p_light) const { return false; }
 
-	VS::LightType light_get_type(RID p_light) const { return VS::LIGHT_OMNI; }
+	RS::LightType light_get_type(RID p_light) const { return RS::LIGHT_OMNI; }
 	AABB light_get_aabb(RID p_light) const { return AABB(); }
-	float light_get_param(RID p_light, VS::LightParam p_param) { return 0.0; }
+	float light_get_param(RID p_light, RS::LightParam p_param) { return 0.0; }
 	Color light_get_color(RID p_light) { return Color(); }
 	uint64_t light_get_version(RID p_light) const { return 0; }
 
@@ -519,7 +519,7 @@ public:
 
 	RID reflection_probe_create() { return RID(); }
 
-	void reflection_probe_set_update_mode(RID p_probe, VS::ReflectionProbeUpdateMode p_mode) {}
+	void reflection_probe_set_update_mode(RID p_probe, RS::ReflectionProbeUpdateMode p_mode) {}
 	void reflection_probe_set_intensity(RID p_probe, float p_intensity) {}
 	void reflection_probe_set_interior_ambient(RID p_probe, const Color &p_ambient) {}
 	void reflection_probe_set_interior_ambient_energy(RID p_probe, float p_energy) {}
@@ -534,7 +534,7 @@ public:
 	void reflection_probe_set_resolution(RID p_probe, int p_resolution) {}
 
 	AABB reflection_probe_get_aabb(RID p_probe) const { return AABB(); }
-	VS::ReflectionProbeUpdateMode reflection_probe_get_update_mode(RID p_probe) const { return VisualServer::REFLECTION_PROBE_UPDATE_ONCE; }
+	RS::ReflectionProbeUpdateMode reflection_probe_get_update_mode(RID p_probe) const { return RenderingServer::REFLECTION_PROBE_UPDATE_ONCE; }
 	uint32_t reflection_probe_get_cull_mask(RID p_probe) const { return 0; }
 	Vector3 reflection_probe_get_extents(RID p_probe) const { return Vector3(); }
 	Vector3 reflection_probe_get_origin_offset(RID p_probe) const { return Vector3(); }
@@ -558,7 +558,7 @@ public:
 	void render_target_set_flag(RID p_render_target, RenderTargetFlags p_flag, bool p_value) {}
 	bool render_target_was_used(RID p_render_target) { return false; }
 	void render_target_clear_used(RID p_render_target) {}
-	void render_target_set_msaa(RID p_render_target, VS::ViewportMSAA p_msaa) {}
+	void render_target_set_msaa(RID p_render_target, RS::ViewportMSAA p_msaa) {}
 	void render_target_set_use_fxaa(RID p_render_target, bool p_fxaa) {}
 	void render_target_set_use_debanding(RID p_render_target, bool p_debanding) {}
 	void render_target_set_sharpen_intensity(RID p_render_target, float p_intensity) {}
@@ -572,12 +572,12 @@ public:
 	RID canvas_light_occluder_create() { return RID(); }
 	void canvas_light_occluder_set_polylines(RID p_occluder, const PoolVector<Vector2> &p_lines) {}
 
-	VS::InstanceType get_base_type(RID p_rid) const {
+	RS::InstanceType get_base_type(RID p_rid) const {
 		if (mesh_owner.owns(p_rid)) {
-			return VS::INSTANCE_MESH;
+			return RS::INSTANCE_MESH;
 		}
 
-		return VS::INSTANCE_NONE;
+		return RS::INSTANCE_NONE;
 	}
 
 	bool free(RID p_rid) {
@@ -606,9 +606,9 @@ public:
 
 	void render_info_begin_capture() {}
 	void render_info_end_capture() {}
-	int get_captured_render_info(VS::RenderInfo p_info) { return 0; }
+	int get_captured_render_info(RS::RenderInfo p_info) { return 0; }
 
-	uint64_t get_render_info(VS::RenderInfo p_info) { return 0; }
+	uint64_t get_render_info(RS::RenderInfo p_info) { return 0; }
 	String get_video_adapter_name() const { return String(); }
 	String get_video_adapter_vendor() const { return String(); }
 

@@ -16,7 +16,7 @@
 			<argument index="1" name="rect" type="Rect2" />
 			<description>
 				Draws this stylebox using a canvas item identified by the given [RID].
-				The [RID] value can either be the result of [method CanvasItem.get_canvas_item] called on an existing [CanvasItem]-derived node, or directly from creating a canvas item in the [VisualServer] with [method VisualServer.canvas_item_create].
+				The [RID] value can either be the result of [method CanvasItem.get_canvas_item] called on an existing [CanvasItem]-derived node, or directly from creating a canvas item in the [RenderingServer] with [method RenderingServer.canvas_item_create].
 			</description>
 		</method>
 		<method name="get_center_size" qualifiers="const">

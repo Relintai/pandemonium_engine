@@ -69,7 +69,7 @@ void ConcavePolygonShape2D::draw(const RID &p_to_rid, const Color &p_color) {
 
 	PoolVector<Vector2>::Read r = s.read();
 	for (int i = 0; i < len; i += 2) {
-		VisualServer::get_singleton()->canvas_item_add_line(p_to_rid, r[i], r[i + 1], p_color, 2);
+		RenderingServer::get_singleton()->canvas_item_add_line(p_to_rid, r[i], r[i + 1], p_color, 2);
 	}
 }
 

@@ -100,7 +100,7 @@
 		<method name="get_viewport_rid" qualifiers="const">
 			<return type="RID" />
 			<description>
-				Returns the viewport's RID from the [VisualServer].
+				Returns the viewport's RID from the [RenderingServer].
 			</description>
 		</method>
 		<method name="get_visible_rect" qualifiers="const">
@@ -253,7 +253,7 @@
 			If [code]true[/code], the objects rendered by viewport become subjects of mouse picking process.
 		</member>
 		<member name="render_direct_to_screen" type="bool" setter="set_use_render_direct_to_screen" getter="is_using_render_direct_to_screen" default="false">
-			If [code]true[/code], renders the Viewport directly to the screen instead of to the root viewport. Only available in GLES2. This is a low-level optimization and should not be used in most cases. If used, reading from the Viewport or from [code]SCREEN_TEXTURE[/code] becomes unavailable. For more information see [method VisualServer.viewport_set_render_direct_to_screen].
+			If [code]true[/code], renders the Viewport directly to the screen instead of to the root viewport. Only available in GLES2. This is a low-level optimization and should not be used in most cases. If used, reading from the Viewport or from [code]SCREEN_TEXTURE[/code] becomes unavailable. For more information see [method RenderingServer.viewport_set_render_direct_to_screen].
 		</member>
 		<member name="render_target_clear_mode" type="int" setter="set_clear_mode" getter="get_clear_mode" enum="Viewport.ClearMode" default="0">
 			The clear mode when viewport used as a render target.

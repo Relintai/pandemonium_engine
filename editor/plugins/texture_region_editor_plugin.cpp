@@ -111,9 +111,9 @@ void TextureRegionEditor::_region_draw() {
 	mtx.columns[2] = -draw_ofs * draw_zoom;
 	mtx.scale_basis(Vector2(draw_zoom, draw_zoom));
 
-	VS::get_singleton()->canvas_item_add_set_transform(edit_draw->get_canvas_item(), mtx);
+	RS::get_singleton()->canvas_item_add_set_transform(edit_draw->get_canvas_item(), mtx);
 	edit_draw->draw_texture(base_tex, Point2());
-	VS::get_singleton()->canvas_item_add_set_transform(edit_draw->get_canvas_item(), Transform2D());
+	RS::get_singleton()->canvas_item_add_set_transform(edit_draw->get_canvas_item(), Transform2D());
 
 	const Color color = get_theme_color("mono_color", "Editor");
 

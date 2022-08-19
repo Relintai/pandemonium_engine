@@ -32,22 +32,22 @@
 
 #include "rasterizer.h"
 
-class VisualServerCanvas;
-class VisualServerViewport;
-class VisualServerScene;
+class RenderingServerCanvas;
+class RenderingServerViewport;
+class RenderingServerScene;
 
-class VisualServerGlobals {
+class RenderingServerGlobals {
 public:
 	static RasterizerStorage *storage;
 	static RasterizerCanvas *canvas_render;
 	static RasterizerScene *scene_render;
 	static Rasterizer *rasterizer;
 
-	static VisualServerCanvas *canvas;
-	static VisualServerViewport *viewport;
-	static VisualServerScene *scene;
+	static RenderingServerCanvas *canvas;
+	static RenderingServerViewport *viewport;
+	static RenderingServerScene *scene;
 };
 
-#define VSG VisualServerGlobals
+#define RSG RenderingServerGlobals
 
 #endif // VISUAL_SERVER_GLOBALS_H

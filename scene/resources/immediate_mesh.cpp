@@ -256,16 +256,16 @@ void ImmediateMesh::surface_end() {
 		}
 	}
 
-	int sc = VisualServer::get_singleton()->mesh_get_surface_count(mesh);
+	int sc = RenderingServer::get_singleton()->mesh_get_surface_count(mesh);
 
 	for (int i = 0; i < sc; ++i) {
-		VisualServer::get_singleton()->mesh_remove_surface(mesh, 0);
+		RenderingServer::get_singleton()->mesh_remove_surface(mesh, 0);
 	}
 
-	VisualServer::get_singleton()->mesh_add_surface(mesh, format, static_cast<VS::PrimitiveType>(active_surface_data.primitive), surface_array_create_cache, vertices.size(), PoolByteArray(), 0, aabb);
+	RenderingServer::get_singleton()->mesh_add_surface(mesh, format, static_cast<RS::PrimitiveType>(active_surface_data.primitive), surface_array_create_cache, vertices.size(), PoolByteArray(), 0, aabb);
 
 	if (active_surface_data.material.is_valid()) {
-		VisualServer::get_singleton()->mesh_surface_set_material(mesh, surfaces.size(), active_surface_data.material->get_rid());
+		RenderingServer::get_singleton()->mesh_surface_set_material(mesh, surfaces.size(), active_surface_data.material->get_rid());
 	}
 
 	active_surface_data.aabb = aabb;
@@ -292,7 +292,7 @@ void ImmediateMesh::surface_end() {
 }
 
 void ImmediateMesh::clear_surfaces() {
-	VS::get_singleton()->mesh_clear(mesh);
+	RS::get_singleton()->mesh_clear(mesh);
 	surfaces.clear();
 	surface_active = false;
 
@@ -322,7 +322,7 @@ int ImmediateMesh::surface_get_array_index_len(int p_idx) const {
 }
 Array ImmediateMesh::surface_get_arrays(int p_surface) const {
 	ERR_FAIL_INDEX_V(p_surface, int(surfaces.size()), Array());
-	return VS::get_singleton()->mesh_surface_get_arrays(mesh, p_surface);
+	return RS::get_singleton()->mesh_surface_get_arrays(mesh, p_surface);
 }
 Array ImmediateMesh::surface_get_blend_shape_arrays(int p_surface) const {
 	return Array();
@@ -345,7 +345,7 @@ void ImmediateMesh::surface_set_material(int p_idx, const Ref<Material> &p_mater
 	if (p_material.is_valid()) {
 		mat = p_material->get_rid();
 	}
-	VS::get_singleton()->mesh_surface_set_material(mesh, p_idx, mat);
+	RS::get_singleton()->mesh_surface_set_material(mesh, p_idx, mat);
 }
 Ref<Material> ImmediateMesh::surface_get_material(int p_idx) const {
 	ERR_FAIL_INDEX_V(p_idx, int(surfaces.size()), Ref<Material>());
@@ -391,8 +391,8 @@ RID ImmediateMesh::get_rid() const {
 }
 
 ImmediateMesh::ImmediateMesh() {
-	mesh = VS::get_singleton()->mesh_create();
+	mesh = RS::get_singleton()->mesh_create();
 }
 ImmediateMesh::~ImmediateMesh() {
-	VS::get_singleton()->free(mesh);
+	RS::get_singleton()->free(mesh);
 }

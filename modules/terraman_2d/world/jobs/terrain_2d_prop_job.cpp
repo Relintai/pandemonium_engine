@@ -334,8 +334,8 @@ void Terrain2DProp2DJob::phase_steps() {
 		} else {
 			mesh_rid = chunk->mesh_rid_get(Terrain2DChunkDefault::MESH_INDEX_PROP, Terrain2DChunkDefault::MESH_TYPE_INDEX_MESH);
 
-			if (VS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
-				VS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
+			if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
+				RS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
 		}
 	}
 
@@ -357,7 +357,7 @@ void Terrain2DProp2DJob::step_type_normal() {
 
 	RID mesh_rid = chunk->mesh_rid_get(Terrain2DChunkDefault::MESH_INDEX_PROP, Terrain2DChunkDefault::MESH_TYPE_INDEX_MESH);
 
-	VS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
+	RS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 }
 
 Terrain2DProp2DJob::Terrain2DProp2DJob() {

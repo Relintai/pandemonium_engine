@@ -279,8 +279,8 @@ void Terrain2DTerrain2DJob::phase_terrain_mesh() {
 			for (int i = 0; i < count; ++i) {
 				mesh_rid = chunk->mesh_rid_get_index(Terrain2DChunkDefault::MESH_INDEX_TERRAIN, Terrain2DChunkDefault::MESH_TYPE_INDEX_MESH, i);
 
-				if (VS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
-					VS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
+				if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
+					RS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
 
 				chunk->_mesh_transforms.write[i] = Transform2D();
 			}
@@ -307,15 +307,15 @@ void Terrain2DTerrain2DJob::phase_terrain_mesh() {
 				mesh_rid = chunk->mesh_rid_get(Terrain2DChunkDefault::MESH_INDEX_LIQUID, Terrain2DChunkDefault::MESH_TYPE_INDEX_MESH);
 			}
 
-			if (VS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
-				VS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
+			if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
+				RS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
 
 			if (should_return()) {
 				return;
 			}
 		}
 
-		VS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
+		RS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 	}
 
 	reset_stages();
@@ -394,16 +394,16 @@ void Terrain2DTerrain2DJob::step_type_normal() {
 
 	temp_mesh_arr = _mesher->build_mesh();
 	RID mesh_rid = chunk->mesh_rid_get_index(Terrain2DChunkDefault::MESH_INDEX_TERRAIN, Terrain2DChunkDefault::MESH_TYPE_INDEX_MESH, 0);
-	VS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
+	RS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
 	for (int i = 0; i < _mesher->get_stored_mesh_count(); ++i) {
 		Array arr = _mesher->build_stored_mesh(i);
 		mesh_rid = chunk->mesh_rid_get_index(Terrain2DChunkDefault::MESH_INDEX_TERRAIN, Terrain2DChunkDefault::MESH_TYPE_INDEX_MESH, i + 1);
-		VS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, arr);
+		RS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, arr);
 
 		chunk->_mesh_transforms.write[i + 1] = _mesher->get_stored_mesh_transform(i);
 		//AABB aabb = _mesher->calculate_stored_mesh_aabb(i);
-		//VS::get_singleton()->mesh_set_custom_aabb(mesh_rid, aabb);
+		//RS::get_singleton()->mesh_set_custom_aabb(mesh_rid, aabb);
 	}
 }
 

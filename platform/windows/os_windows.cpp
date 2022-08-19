@@ -1568,9 +1568,9 @@ Error OS_Windows::initialize(const VideoMode &p_desired, int p_video_driver, int
 	set_vsync_via_compositor(video_mode.vsync_via_compositor);
 #endif
 
-	visual_server = memnew(VisualServerRaster);
+	visual_server = memnew(RenderingServerRaster);
 	if (get_render_thread_mode() != RENDER_THREAD_UNSAFE) {
-		visual_server = memnew(VisualServerWrapMT(visual_server, get_render_thread_mode() == RENDER_SEPARATE_THREAD));
+		visual_server = memnew(RenderingServerWrapMT(visual_server, get_render_thread_mode() == RENDER_SEPARATE_THREAD));
 	}
 
 	visual_server->init();

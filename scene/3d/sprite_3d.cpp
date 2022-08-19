@@ -135,7 +135,7 @@ Color SpriteBase3D::get_modulate() const {
 }
 
 void SpriteBase3D::set_render_priority(int p_priority) {
-	ERR_FAIL_COND(p_priority < VS::MATERIAL_RENDER_PRIORITY_MIN || p_priority > VS::MATERIAL_RENDER_PRIORITY_MAX);
+	ERR_FAIL_COND(p_priority < RS::MATERIAL_RENDER_PRIORITY_MIN || p_priority > RS::MATERIAL_RENDER_PRIORITY_MAX);
 	render_priority = p_priority;
 	_queue_update();
 }
@@ -365,7 +365,7 @@ void SpriteBase3D::_bind_methods() {
 	ADD_PROPERTYI(PropertyInfo(Variant::BOOL, "no_depth_test"), "set_draw_flag", "get_draw_flag", FLAG_DISABLE_DEPTH_TEST);
 	ADD_PROPERTYI(PropertyInfo(Variant::BOOL, "fixed_size"), "set_draw_flag", "get_draw_flag", FLAG_FIXED_SIZE);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "alpha_cut", PROPERTY_HINT_ENUM, "Disabled,Discard,Opaque Pre-Pass"), "set_alpha_cut_mode", "get_alpha_cut_mode");
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "render_priority", PROPERTY_HINT_RANGE, itos(VS::MATERIAL_RENDER_PRIORITY_MIN) + "," + itos(VS::MATERIAL_RENDER_PRIORITY_MAX) + ",1"), "set_render_priority", "get_render_priority");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "render_priority", PROPERTY_HINT_RANGE, itos(RS::MATERIAL_RENDER_PRIORITY_MIN) + "," + itos(RS::MATERIAL_RENDER_PRIORITY_MAX) + ",1"), "set_render_priority", "get_render_priority");
 
 	BIND_ENUM_CONSTANT(FLAG_TRANSPARENT);
 	BIND_ENUM_CONSTANT(FLAG_SHADED);
@@ -399,19 +399,19 @@ SpriteBase3D::SpriteBase3D() {
 	pending_update = false;
 	opacity = 1.0;
 
-	material = RID_PRIME(VisualServer::get_singleton()->material_create());
+	material = RID_PRIME(RenderingServer::get_singleton()->material_create());
 	// Set defaults for material, names need to match up those in SpatialMaterial
-	VS::get_singleton()->material_set_param(material, "albedo", Color(1, 1, 1, 1));
-	VS::get_singleton()->material_set_param(material, "specular", 0.5);
-	VS::get_singleton()->material_set_param(material, "metallic", 0.0);
-	VS::get_singleton()->material_set_param(material, "roughness", 1.0);
-	VS::get_singleton()->material_set_param(material, "uv1_offset", Vector3(0, 0, 0));
-	VS::get_singleton()->material_set_param(material, "uv1_scale", Vector3(1, 1, 1));
-	VS::get_singleton()->material_set_param(material, "uv2_offset", Vector3(0, 0, 0));
-	VS::get_singleton()->material_set_param(material, "uv2_scale", Vector3(1, 1, 1));
-	VS::get_singleton()->material_set_param(material, "alpha_scissor_threshold", 0.98);
+	RS::get_singleton()->material_set_param(material, "albedo", Color(1, 1, 1, 1));
+	RS::get_singleton()->material_set_param(material, "specular", 0.5);
+	RS::get_singleton()->material_set_param(material, "metallic", 0.0);
+	RS::get_singleton()->material_set_param(material, "roughness", 1.0);
+	RS::get_singleton()->material_set_param(material, "uv1_offset", Vector3(0, 0, 0));
+	RS::get_singleton()->material_set_param(material, "uv1_scale", Vector3(1, 1, 1));
+	RS::get_singleton()->material_set_param(material, "uv2_offset", Vector3(0, 0, 0));
+	RS::get_singleton()->material_set_param(material, "uv2_scale", Vector3(1, 1, 1));
+	RS::get_singleton()->material_set_param(material, "alpha_scissor_threshold", 0.98);
 
-	mesh = RID_PRIME(VisualServer::get_singleton()->mesh_create());
+	mesh = RID_PRIME(RenderingServer::get_singleton()->mesh_create());
 
 	PoolVector3Array mesh_vertices;
 	PoolVector3Array mesh_normals;
@@ -438,28 +438,28 @@ SpriteBase3D::SpriteBase3D() {
 	}
 
 	Array mesh_array;
-	mesh_array.resize(VS::ARRAY_MAX);
-	mesh_array[VS::ARRAY_VERTEX] = mesh_vertices;
-	mesh_array[VS::ARRAY_NORMAL] = mesh_normals;
-	mesh_array[VS::ARRAY_TANGENT] = mesh_tangents;
-	mesh_array[VS::ARRAY_COLOR] = mesh_colors;
-	mesh_array[VS::ARRAY_TEX_UV] = mesh_uvs;
+	mesh_array.resize(RS::ARRAY_MAX);
+	mesh_array[RS::ARRAY_VERTEX] = mesh_vertices;
+	mesh_array[RS::ARRAY_NORMAL] = mesh_normals;
+	mesh_array[RS::ARRAY_TANGENT] = mesh_tangents;
+	mesh_array[RS::ARRAY_COLOR] = mesh_colors;
+	mesh_array[RS::ARRAY_TEX_UV] = mesh_uvs;
 
-	uint32_t compress_format = (VS::ARRAY_COMPRESS_DEFAULT & ~VS::ARRAY_COMPRESS_TEX_UV) & ~VS::ARRAY_COMPRESS_COLOR;
-	compress_format |= VS::ARRAY_FLAG_USE_DYNAMIC_UPDATE;
-	VS::get_singleton()->mesh_add_surface_from_arrays(mesh, VS::PRIMITIVE_TRIANGLE_FAN, mesh_array, Array(), compress_format);
-	const int surface_vertex_len = VS::get_singleton()->mesh_surface_get_array_len(mesh, 0);
-	const int surface_index_len = VS::get_singleton()->mesh_surface_get_array_index_len(mesh, 0);
+	uint32_t compress_format = (RS::ARRAY_COMPRESS_DEFAULT & ~RS::ARRAY_COMPRESS_TEX_UV) & ~RS::ARRAY_COMPRESS_COLOR;
+	compress_format |= RS::ARRAY_FLAG_USE_DYNAMIC_UPDATE;
+	RS::get_singleton()->mesh_add_surface_from_arrays(mesh, RS::PRIMITIVE_TRIANGLE_FAN, mesh_array, Array(), compress_format);
+	const int surface_vertex_len = RS::get_singleton()->mesh_surface_get_array_len(mesh, 0);
+	const int surface_index_len = RS::get_singleton()->mesh_surface_get_array_index_len(mesh, 0);
 
-	mesh_surface_format = VS::get_singleton()->mesh_surface_get_format(mesh, 0);
-	mesh_buffer = VS::get_singleton()->mesh_surface_get_array(mesh, 0);
-	VS::get_singleton()->mesh_surface_make_offsets_from_format(mesh_surface_format, surface_vertex_len, surface_index_len, mesh_surface_offsets, mesh_stride);
+	mesh_surface_format = RS::get_singleton()->mesh_surface_get_format(mesh, 0);
+	mesh_buffer = RS::get_singleton()->mesh_surface_get_array(mesh, 0);
+	RS::get_singleton()->mesh_surface_make_offsets_from_format(mesh_surface_format, surface_vertex_len, surface_index_len, mesh_surface_offsets, mesh_stride);
 	set_base(mesh);
 }
 
 SpriteBase3D::~SpriteBase3D() {
-	VisualServer::get_singleton()->free(mesh);
-	VisualServer::get_singleton()->free(material);
+	RenderingServer::get_singleton()->free(mesh);
+	RenderingServer::get_singleton()->free(material);
 }
 
 ///////////////////////////////////////////
@@ -577,13 +577,13 @@ void Sprite3D::_draw() {
 	// Everything except position, color, and UV is compressed
 	PoolVector<uint8_t>::Write write_buffer = mesh_buffer.write();
 
-	Vector2 normal_oct = VisualServer::get_singleton()->norm_to_oct(normal);
+	Vector2 normal_oct = RenderingServer::get_singleton()->norm_to_oct(normal);
 	int8_t v_normal[2] = {
 		(int8_t)CLAMP(normal_oct.x * 127, -128, 127),
 		(int8_t)CLAMP(normal_oct.y * 127, -128, 127),
 	};
 
-	Vector2 tangent_oct = VisualServer::get_singleton()->tangent_to_oct(tangent.normal, tangent.d, false);
+	Vector2 tangent_oct = RenderingServer::get_singleton()->tangent_to_oct(tangent.normal, tangent.d, false);
 	int8_t v_tangent[2] = {
 		(int8_t)CLAMP(tangent_oct.x * 127, -128, 127),
 		(int8_t)CLAMP(tangent_oct.y * 127, -128, 127),
@@ -601,30 +601,30 @@ void Sprite3D::_draw() {
 		}
 
 		float v_uv[2] = { uvs[i].x, uvs[i].y };
-		memcpy(&write_buffer[i * mesh_stride[VS::ARRAY_TEX_UV] + mesh_surface_offsets[VS::ARRAY_TEX_UV]], v_uv, 8);
+		memcpy(&write_buffer[i * mesh_stride[RS::ARRAY_TEX_UV] + mesh_surface_offsets[RS::ARRAY_TEX_UV]], v_uv, 8);
 
 		float v_vertex[3] = { vtx.x, vtx.y, vtx.z };
-		memcpy(&write_buffer[i * mesh_stride[VS::ARRAY_VERTEX] + mesh_surface_offsets[VS::ARRAY_VERTEX]], &v_vertex, sizeof(float) * 3);
-		memcpy(&write_buffer[i * mesh_stride[VS::ARRAY_NORMAL] + mesh_surface_offsets[VS::ARRAY_NORMAL]], v_normal, 2);
-		memcpy(&write_buffer[i * mesh_stride[VS::ARRAY_TANGENT] + mesh_surface_offsets[VS::ARRAY_TANGENT]], v_tangent, 2);
-		memcpy(&write_buffer[i * mesh_stride[VS::ARRAY_COLOR] + mesh_surface_offsets[VS::ARRAY_COLOR]], color.components, 4 * 4);
+		memcpy(&write_buffer[i * mesh_stride[RS::ARRAY_VERTEX] + mesh_surface_offsets[RS::ARRAY_VERTEX]], &v_vertex, sizeof(float) * 3);
+		memcpy(&write_buffer[i * mesh_stride[RS::ARRAY_NORMAL] + mesh_surface_offsets[RS::ARRAY_NORMAL]], v_normal, 2);
+		memcpy(&write_buffer[i * mesh_stride[RS::ARRAY_TANGENT] + mesh_surface_offsets[RS::ARRAY_TANGENT]], v_tangent, 2);
+		memcpy(&write_buffer[i * mesh_stride[RS::ARRAY_COLOR] + mesh_surface_offsets[RS::ARRAY_COLOR]], color.components, 4 * 4);
 	}
 
 	write_buffer.release();
 
 	RID mesh = get_mesh();
-	VS::get_singleton()->mesh_surface_update_region(mesh, 0, 0, mesh_buffer);
+	RS::get_singleton()->mesh_surface_update_region(mesh, 0, 0, mesh_buffer);
 
-	VS::get_singleton()->mesh_set_custom_aabb(mesh, aabb);
+	RS::get_singleton()->mesh_set_custom_aabb(mesh, aabb);
 	set_aabb(aabb);
 
 	RID mat = SpatialMaterial::get_material_rid_for_2d(get_draw_flag(FLAG_SHADED), get_draw_flag(FLAG_TRANSPARENT), get_draw_flag(FLAG_DOUBLE_SIDED), get_alpha_cut_mode() == ALPHA_CUT_DISCARD, get_alpha_cut_mode() == ALPHA_CUT_OPAQUE_PREPASS, get_billboard_mode() == SpatialMaterial::BILLBOARD_ENABLED, get_billboard_mode() == SpatialMaterial::BILLBOARD_FIXED_Y, get_draw_flag(FLAG_DISABLE_DEPTH_TEST), get_draw_flag(FLAG_FIXED_SIZE));
-	VS::get_singleton()->material_set_shader(get_material(), VS::get_singleton()->material_get_shader(mat));
-	VS::get_singleton()->material_set_param(get_material(), "texture_albedo", texture->get_rid());
+	RS::get_singleton()->material_set_shader(get_material(), RS::get_singleton()->material_get_shader(mat));
+	RS::get_singleton()->material_set_param(get_material(), "texture_albedo", texture->get_rid());
 	if (get_alpha_cut_mode() == ALPHA_CUT_DISABLED) {
-		VS::get_singleton()->material_set_render_priority(get_material(), get_render_priority());
+		RS::get_singleton()->material_set_render_priority(get_material(), get_render_priority());
 	}
-	VS::get_singleton()->instance_set_surface_material(get_instance(), 0, get_material());
+	RS::get_singleton()->instance_set_surface_material(get_instance(), 0, get_material());
 }
 
 void Sprite3D::set_texture(const Ref<Texture> &p_texture) {
@@ -923,13 +923,13 @@ void AnimatedSprite3D::_draw() {
 	// Everything except position, color, and UV is compressed
 	PoolVector<uint8_t>::Write write_buffer = mesh_buffer.write();
 
-	Vector2 normal_oct = VisualServer::get_singleton()->norm_to_oct(normal);
+	Vector2 normal_oct = RenderingServer::get_singleton()->norm_to_oct(normal);
 	int8_t v_normal[2] = {
 		(int8_t)CLAMP(normal_oct.x * 127, -128, 127),
 		(int8_t)CLAMP(normal_oct.y * 127, -128, 127),
 	};
 
-	Vector2 tangent_oct = VisualServer::get_singleton()->tangent_to_oct(tangent.normal, tangent.d, false);
+	Vector2 tangent_oct = RenderingServer::get_singleton()->tangent_to_oct(tangent.normal, tangent.d, false);
 	int8_t v_tangent[2] = {
 		(int8_t)CLAMP(tangent_oct.x * 127, -128, 127),
 		(int8_t)CLAMP(tangent_oct.y * 127, -128, 127),
@@ -947,30 +947,30 @@ void AnimatedSprite3D::_draw() {
 		}
 
 		float v_uv[2] = { uvs[i].x, uvs[i].y };
-		memcpy(&write_buffer[i * mesh_stride[VS::ARRAY_TEX_UV] + mesh_surface_offsets[VS::ARRAY_TEX_UV]], v_uv, 8);
+		memcpy(&write_buffer[i * mesh_stride[RS::ARRAY_TEX_UV] + mesh_surface_offsets[RS::ARRAY_TEX_UV]], v_uv, 8);
 
 		float v_vertex[3] = { vtx.x, vtx.y, vtx.z };
-		memcpy(&write_buffer[i * mesh_stride[VS::ARRAY_VERTEX] + mesh_surface_offsets[VS::ARRAY_VERTEX]], &v_vertex, sizeof(float) * 3);
-		memcpy(&write_buffer[i * mesh_stride[VS::ARRAY_NORMAL] + mesh_surface_offsets[VS::ARRAY_NORMAL]], v_normal, 2);
-		memcpy(&write_buffer[i * mesh_stride[VS::ARRAY_TANGENT] + mesh_surface_offsets[VS::ARRAY_TANGENT]], v_tangent, 2);
-		memcpy(&write_buffer[i * mesh_stride[VS::ARRAY_COLOR] + mesh_surface_offsets[VS::ARRAY_COLOR]], color.components, 4 * 4);
+		memcpy(&write_buffer[i * mesh_stride[RS::ARRAY_VERTEX] + mesh_surface_offsets[RS::ARRAY_VERTEX]], &v_vertex, sizeof(float) * 3);
+		memcpy(&write_buffer[i * mesh_stride[RS::ARRAY_NORMAL] + mesh_surface_offsets[RS::ARRAY_NORMAL]], v_normal, 2);
+		memcpy(&write_buffer[i * mesh_stride[RS::ARRAY_TANGENT] + mesh_surface_offsets[RS::ARRAY_TANGENT]], v_tangent, 2);
+		memcpy(&write_buffer[i * mesh_stride[RS::ARRAY_COLOR] + mesh_surface_offsets[RS::ARRAY_COLOR]], color.components, 4 * 4);
 	}
 
 	write_buffer.release();
 
 	RID mesh = get_mesh();
-	VS::get_singleton()->mesh_surface_update_region(mesh, 0, 0, mesh_buffer);
+	RS::get_singleton()->mesh_surface_update_region(mesh, 0, 0, mesh_buffer);
 
-	VS::get_singleton()->mesh_set_custom_aabb(mesh, aabb);
+	RS::get_singleton()->mesh_set_custom_aabb(mesh, aabb);
 	set_aabb(aabb);
 
 	RID mat = SpatialMaterial::get_material_rid_for_2d(get_draw_flag(FLAG_SHADED), get_draw_flag(FLAG_TRANSPARENT), get_draw_flag(FLAG_DOUBLE_SIDED), get_alpha_cut_mode() == ALPHA_CUT_DISCARD, get_alpha_cut_mode() == ALPHA_CUT_OPAQUE_PREPASS, get_billboard_mode() == SpatialMaterial::BILLBOARD_ENABLED, get_billboard_mode() == SpatialMaterial::BILLBOARD_FIXED_Y, get_draw_flag(FLAG_DISABLE_DEPTH_TEST), get_draw_flag(FLAG_FIXED_SIZE));
-	VS::get_singleton()->material_set_shader(get_material(), VS::get_singleton()->material_get_shader(mat));
-	VS::get_singleton()->material_set_param(get_material(), "texture_albedo", texture->get_rid());
+	RS::get_singleton()->material_set_shader(get_material(), RS::get_singleton()->material_get_shader(mat));
+	RS::get_singleton()->material_set_param(get_material(), "texture_albedo", texture->get_rid());
 	if (get_alpha_cut_mode() == ALPHA_CUT_DISABLED) {
-		VS::get_singleton()->material_set_render_priority(get_material(), get_render_priority());
+		RS::get_singleton()->material_set_render_priority(get_material(), get_render_priority());
 	}
-	VS::get_singleton()->instance_set_surface_material(get_instance(), 0, get_material());
+	RS::get_singleton()->instance_set_surface_material(get_instance(), 0, get_material());
 }
 
 void AnimatedSprite3D::_validate_property(PropertyInfo &property) const {

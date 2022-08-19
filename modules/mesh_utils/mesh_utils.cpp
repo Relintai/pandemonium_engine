@@ -38,15 +38,15 @@ MeshUtils *MeshUtils::get_singleton() {
 }
 
 Array MeshUtils::merge_mesh_array(Array arr) const {
-	ERR_FAIL_COND_V(arr.size() != VisualServer::ARRAY_MAX, arr);
+	ERR_FAIL_COND_V(arr.size() != RenderingServer::ARRAY_MAX, arr);
 
-	PoolVector3Array verts = arr[VisualServer::ARRAY_VERTEX];
-	PoolVector3Array normals = arr[VisualServer::ARRAY_NORMAL];
-	PoolVector2Array uvs = arr[VisualServer::ARRAY_TEX_UV];
-	PoolColorArray colors = arr[VisualServer::ARRAY_COLOR];
-	PoolIntArray indices = arr[VisualServer::ARRAY_INDEX];
-	PoolIntArray bones = arr[VisualServer::ARRAY_BONES];
-	PoolRealArray weights = arr[VisualServer::ARRAY_WEIGHTS];
+	PoolVector3Array verts = arr[RenderingServer::ARRAY_VERTEX];
+	PoolVector3Array normals = arr[RenderingServer::ARRAY_NORMAL];
+	PoolVector2Array uvs = arr[RenderingServer::ARRAY_TEX_UV];
+	PoolColorArray colors = arr[RenderingServer::ARRAY_COLOR];
+	PoolIntArray indices = arr[RenderingServer::ARRAY_INDEX];
+	PoolIntArray bones = arr[RenderingServer::ARRAY_BONES];
+	PoolRealArray weights = arr[RenderingServer::ARRAY_WEIGHTS];
 
 	ERR_FAIL_COND_V(normals.size() != 0 && normals.size() != verts.size(), Array());
 	ERR_FAIL_COND_V(uvs.size() != 0 && uvs.size() != verts.size(), Array());
@@ -107,25 +107,25 @@ Array MeshUtils::merge_mesh_array(Array arr) const {
 		++i;
 	}
 
-	arr[VisualServer::ARRAY_VERTEX] = verts;
+	arr[RenderingServer::ARRAY_VERTEX] = verts;
 
 	if (normals.size() > 0)
-		arr[VisualServer::ARRAY_NORMAL] = normals;
+		arr[RenderingServer::ARRAY_NORMAL] = normals;
 	if (uvs.size() > 0)
-		arr[VisualServer::ARRAY_TEX_UV] = uvs;
+		arr[RenderingServer::ARRAY_TEX_UV] = uvs;
 	if (colors.size() > 0)
-		arr[VisualServer::ARRAY_COLOR] = colors;
+		arr[RenderingServer::ARRAY_COLOR] = colors;
 	if (bones.size() > 0)
-		arr[VisualServer::ARRAY_BONES] = bones;
+		arr[RenderingServer::ARRAY_BONES] = bones;
 	if (weights.size() > 0)
-		arr[VisualServer::ARRAY_WEIGHTS] = weights;
+		arr[RenderingServer::ARRAY_WEIGHTS] = weights;
 	if (indices.size() > 0)
-		arr[VisualServer::ARRAY_INDEX] = indices;
+		arr[RenderingServer::ARRAY_INDEX] = indices;
 
 	return arr;
 }
 Array MeshUtils::bake_mesh_array_uv(Array arr, Ref<Texture> tex, float mul_color) const {
-	ERR_FAIL_COND_V(arr.size() != VisualServer::ARRAY_MAX, arr);
+	ERR_FAIL_COND_V(arr.size() != RenderingServer::ARRAY_MAX, arr);
 	ERR_FAIL_COND_V(!tex.is_valid(), arr);
 
 	Ref<Image> img = tex->get_data();
@@ -134,8 +134,8 @@ Array MeshUtils::bake_mesh_array_uv(Array arr, Ref<Texture> tex, float mul_color
 
 	Vector2 imgsize = img->get_size();
 
-	PoolVector2Array uvs = arr[VisualServer::ARRAY_TEX_UV];
-	PoolColorArray colors = arr[VisualServer::ARRAY_COLOR];
+	PoolVector2Array uvs = arr[RenderingServer::ARRAY_TEX_UV];
+	PoolColorArray colors = arr[RenderingServer::ARRAY_COLOR];
 
 	img->lock();
 
@@ -150,22 +150,22 @@ Array MeshUtils::bake_mesh_array_uv(Array arr, Ref<Texture> tex, float mul_color
 
 	img->unlock();
 
-	arr[VisualServer::ARRAY_COLOR] = colors;
+	arr[RenderingServer::ARRAY_COLOR] = colors;
 
 	return arr;
 }
 
 //If normals are present they need to match too to be removed
 Array MeshUtils::remove_doubles(Array arr) const {
-	ERR_FAIL_COND_V(arr.size() != VisualServer::ARRAY_MAX, arr);
+	ERR_FAIL_COND_V(arr.size() != RenderingServer::ARRAY_MAX, arr);
 
-	PoolVector3Array verts = arr[VisualServer::ARRAY_VERTEX];
-	PoolVector3Array normals = arr[VisualServer::ARRAY_NORMAL];
-	PoolVector2Array uvs = arr[VisualServer::ARRAY_TEX_UV];
-	PoolColorArray colors = arr[VisualServer::ARRAY_COLOR];
-	PoolIntArray indices = arr[VisualServer::ARRAY_INDEX];
-	PoolIntArray bones = arr[VisualServer::ARRAY_BONES];
-	PoolRealArray weights = arr[VisualServer::ARRAY_WEIGHTS];
+	PoolVector3Array verts = arr[RenderingServer::ARRAY_VERTEX];
+	PoolVector3Array normals = arr[RenderingServer::ARRAY_NORMAL];
+	PoolVector2Array uvs = arr[RenderingServer::ARRAY_TEX_UV];
+	PoolColorArray colors = arr[RenderingServer::ARRAY_COLOR];
+	PoolIntArray indices = arr[RenderingServer::ARRAY_INDEX];
+	PoolIntArray bones = arr[RenderingServer::ARRAY_BONES];
+	PoolRealArray weights = arr[RenderingServer::ARRAY_WEIGHTS];
 
 	ERR_FAIL_COND_V(normals.size() != 0 && normals.size() != verts.size(), Array());
 	ERR_FAIL_COND_V(uvs.size() != 0 && uvs.size() != verts.size(), Array());
@@ -297,37 +297,37 @@ Array MeshUtils::remove_doubles(Array arr) const {
 	}
 
 	Array retarr;
-	retarr.resize(VisualServer::ARRAY_MAX);
+	retarr.resize(RenderingServer::ARRAY_MAX);
 
-	retarr[VisualServer::ARRAY_VERTEX] = verts;
+	retarr[RenderingServer::ARRAY_VERTEX] = verts;
 
 	if (normals.size() > 0)
-		retarr[VisualServer::ARRAY_NORMAL] = normals;
+		retarr[RenderingServer::ARRAY_NORMAL] = normals;
 	if (uvs.size() > 0)
-		retarr[VisualServer::ARRAY_TEX_UV] = uvs;
+		retarr[RenderingServer::ARRAY_TEX_UV] = uvs;
 	if (colors.size() > 0)
-		retarr[VisualServer::ARRAY_COLOR] = colors;
+		retarr[RenderingServer::ARRAY_COLOR] = colors;
 	if (indices.size() > 0)
-		retarr[VisualServer::ARRAY_INDEX] = indices;
+		retarr[RenderingServer::ARRAY_INDEX] = indices;
 	if (bones.size() > 0)
-		retarr[VisualServer::ARRAY_BONES] = bones;
+		retarr[RenderingServer::ARRAY_BONES] = bones;
 	if (weights.size() > 0)
-		retarr[VisualServer::ARRAY_WEIGHTS] = weights;
+		retarr[RenderingServer::ARRAY_WEIGHTS] = weights;
 
 	return retarr;
 }
 
 //Normals are always interpolated, merged
 Array MeshUtils::remove_doubles_interpolate_normals(Array arr) const {
-	ERR_FAIL_COND_V(arr.size() != VisualServer::ARRAY_MAX, arr);
+	ERR_FAIL_COND_V(arr.size() != RenderingServer::ARRAY_MAX, arr);
 
-	PoolVector3Array verts = arr[VisualServer::ARRAY_VERTEX];
-	PoolVector3Array normals = arr[VisualServer::ARRAY_NORMAL];
-	PoolVector2Array uvs = arr[VisualServer::ARRAY_TEX_UV];
-	PoolColorArray colors = arr[VisualServer::ARRAY_COLOR];
-	PoolIntArray indices = arr[VisualServer::ARRAY_INDEX];
-	PoolIntArray bones = arr[VisualServer::ARRAY_BONES];
-	PoolRealArray weights = arr[VisualServer::ARRAY_WEIGHTS];
+	PoolVector3Array verts = arr[RenderingServer::ARRAY_VERTEX];
+	PoolVector3Array normals = arr[RenderingServer::ARRAY_NORMAL];
+	PoolVector2Array uvs = arr[RenderingServer::ARRAY_TEX_UV];
+	PoolColorArray colors = arr[RenderingServer::ARRAY_COLOR];
+	PoolIntArray indices = arr[RenderingServer::ARRAY_INDEX];
+	PoolIntArray bones = arr[RenderingServer::ARRAY_BONES];
+	PoolRealArray weights = arr[RenderingServer::ARRAY_WEIGHTS];
 
 	ERR_FAIL_COND_V(normals.size() != 0 && normals.size() != verts.size(), Array());
 	ERR_FAIL_COND_V(uvs.size() != 0 && normals.size() != verts.size(), Array());
@@ -456,22 +456,22 @@ Array MeshUtils::remove_doubles_interpolate_normals(Array arr) const {
 	}
 
 	Array retarr;
-	retarr.resize(VisualServer::ARRAY_MAX);
+	retarr.resize(RenderingServer::ARRAY_MAX);
 
-	retarr[VisualServer::ARRAY_VERTEX] = verts;
+	retarr[RenderingServer::ARRAY_VERTEX] = verts;
 
 	if (normals.size() > 0)
-		retarr[VisualServer::ARRAY_NORMAL] = normals;
+		retarr[RenderingServer::ARRAY_NORMAL] = normals;
 	if (uvs.size() > 0)
-		retarr[VisualServer::ARRAY_TEX_UV] = uvs;
+		retarr[RenderingServer::ARRAY_TEX_UV] = uvs;
 	if (colors.size() > 0)
-		retarr[VisualServer::ARRAY_COLOR] = colors;
+		retarr[RenderingServer::ARRAY_COLOR] = colors;
 	if (indices.size() > 0)
-		retarr[VisualServer::ARRAY_INDEX] = indices;
+		retarr[RenderingServer::ARRAY_INDEX] = indices;
 	if (bones.size() > 0)
-		retarr[VisualServer::ARRAY_BONES] = bones;
+		retarr[RenderingServer::ARRAY_BONES] = bones;
 	if (weights.size() > 0)
-		retarr[VisualServer::ARRAY_WEIGHTS] = weights;
+		retarr[RenderingServer::ARRAY_WEIGHTS] = weights;
 
 	return retarr;
 }

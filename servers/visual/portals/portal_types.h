@@ -388,7 +388,7 @@ struct VSOccluder_Resource {
 		list_ids.clear();
 	}
 
-	// these should match the values in VisualServer::OccluderType
+	// these should match the values in RenderingServer::OccluderType
 	enum Type : uint32_t {
 		OT_UNDEFINED,
 		OT_SPHERE,

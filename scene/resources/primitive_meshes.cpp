@@ -42,10 +42,10 @@
 */
 void PrimitiveMesh::_update() const {
 	Array arr;
-	arr.resize(VS::ARRAY_MAX);
+	arr.resize(RS::ARRAY_MAX);
 	_create_mesh_array(arr);
 
-	PoolVector<Vector3> points = arr[VS::ARRAY_VERTEX];
+	PoolVector<Vector3> points = arr[RS::ARRAY_VERTEX];
 
 	aabb = AABB();
 
@@ -63,8 +63,8 @@ void PrimitiveMesh::_update() const {
 	}
 
 	if (flip_faces) {
-		PoolVector<Vector3> normals = arr[VS::ARRAY_NORMAL];
-		PoolVector<int> indices = arr[VS::ARRAY_INDEX];
+		PoolVector<Vector3> normals = arr[RS::ARRAY_NORMAL];
+		PoolVector<int> indices = arr[RS::ARRAY_INDEX];
 		if (normals.size() && indices.size()) {
 			{
 				int nc = normals.size();
@@ -81,15 +81,15 @@ void PrimitiveMesh::_update() const {
 					SWAP(w[i + 0], w[i + 1]);
 				}
 			}
-			arr[VS::ARRAY_NORMAL] = normals;
-			arr[VS::ARRAY_INDEX] = indices;
+			arr[RS::ARRAY_NORMAL] = normals;
+			arr[RS::ARRAY_INDEX] = indices;
 		}
 	}
 
 	// in with the new
-	VisualServer::get_singleton()->mesh_clear(mesh);
-	VisualServer::get_singleton()->mesh_add_surface_from_arrays(mesh, (VisualServer::PrimitiveType)primitive_type, arr);
-	VisualServer::get_singleton()->mesh_surface_set_material(mesh, 0, material.is_null() ? RID() : material->get_rid());
+	RenderingServer::get_singleton()->mesh_clear(mesh);
+	RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh, (RenderingServer::PrimitiveType)primitive_type, arr);
+	RenderingServer::get_singleton()->mesh_surface_set_material(mesh, 0, material.is_null() ? RID() : material->get_rid());
 
 	pending_request = false;
 
@@ -118,7 +118,7 @@ int PrimitiveMesh::surface_get_array_len(int p_idx) const {
 		_update();
 	}
 
-	return VisualServer::get_singleton()->mesh_surface_get_array_len(mesh, 0);
+	return RenderingServer::get_singleton()->mesh_surface_get_array_len(mesh, 0);
 }
 
 int PrimitiveMesh::surface_get_array_index_len(int p_idx) const {
@@ -127,7 +127,7 @@ int PrimitiveMesh::surface_get_array_index_len(int p_idx) const {
 		_update();
 	}
 
-	return VisualServer::get_singleton()->mesh_surface_get_array_index_len(mesh, 0);
+	return RenderingServer::get_singleton()->mesh_surface_get_array_index_len(mesh, 0);
 }
 
 Array PrimitiveMesh::surface_get_arrays(int p_surface) const {
@@ -136,7 +136,7 @@ Array PrimitiveMesh::surface_get_arrays(int p_surface) const {
 		_update();
 	}
 
-	return VisualServer::get_singleton()->mesh_surface_get_arrays(mesh, 0);
+	return RenderingServer::get_singleton()->mesh_surface_get_arrays(mesh, 0);
 }
 
 Array PrimitiveMesh::surface_get_blend_shape_arrays(int p_surface) const {
@@ -154,7 +154,7 @@ uint32_t PrimitiveMesh::surface_get_format(int p_idx) const {
 		_update();
 	}
 
-	return VisualServer::get_singleton()->mesh_surface_get_format(mesh, 0);
+	return RenderingServer::get_singleton()->mesh_surface_get_format(mesh, 0);
 }
 
 Mesh::PrimitiveType PrimitiveMesh::surface_get_primitive_type(int p_idx) const {
@@ -222,7 +222,7 @@ void PrimitiveMesh::set_material(const Ref<Material> &p_material) {
 	material = p_material;
 	if (!pending_request) {
 		// just apply it, else it'll happen when _update is called.
-		VisualServer::get_singleton()->mesh_surface_set_material(mesh, 0, material.is_null() ? RID() : material->get_rid());
+		RenderingServer::get_singleton()->mesh_surface_set_material(mesh, 0, material.is_null() ? RID() : material->get_rid());
 		_change_notify();
 		emit_changed();
 	};
@@ -238,7 +238,7 @@ Array PrimitiveMesh::get_mesh_arrays() const {
 
 void PrimitiveMesh::set_custom_aabb(const AABB &p_custom) {
 	custom_aabb = p_custom;
-	VS::get_singleton()->mesh_set_custom_aabb(mesh, custom_aabb);
+	RS::get_singleton()->mesh_set_custom_aabb(mesh, custom_aabb);
 	emit_changed();
 }
 
@@ -258,7 +258,7 @@ bool PrimitiveMesh::get_flip_faces() const {
 PrimitiveMesh::PrimitiveMesh() {
 	flip_faces = false;
 	// defaults
-	mesh = RID_PRIME(VisualServer::get_singleton()->mesh_create());
+	mesh = RID_PRIME(RenderingServer::get_singleton()->mesh_create());
 
 	// assume primitive triangles as the type, correct for all but one and it will change this :)
 	primitive_type = Mesh::PRIMITIVE_TRIANGLES;
@@ -268,7 +268,7 @@ PrimitiveMesh::PrimitiveMesh() {
 }
 
 PrimitiveMesh::~PrimitiveMesh() {
-	VisualServer::get_singleton()->free(mesh);
+	RenderingServer::get_singleton()->free(mesh);
 }
 
 /**
@@ -418,11 +418,11 @@ void CapsuleMesh::create_mesh_array(Array &p_arr, const float radius, const floa
 		thisrow = point;
 	};
 
-	p_arr[VS::ARRAY_VERTEX] = points;
-	p_arr[VS::ARRAY_NORMAL] = normals;
-	p_arr[VS::ARRAY_TANGENT] = tangents;
-	p_arr[VS::ARRAY_TEX_UV] = uvs;
-	p_arr[VS::ARRAY_INDEX] = indices;
+	p_arr[RS::ARRAY_VERTEX] = points;
+	p_arr[RS::ARRAY_NORMAL] = normals;
+	p_arr[RS::ARRAY_TANGENT] = tangents;
+	p_arr[RS::ARRAY_TEX_UV] = uvs;
+	p_arr[RS::ARRAY_INDEX] = indices;
 }
 
 void CapsuleMesh::_bind_methods() {
@@ -679,11 +679,11 @@ void CubeMesh::create_mesh_array(Array &p_arr, const Vector3 size, const int sub
 		thisrow = point;
 	};
 
-	p_arr[VS::ARRAY_VERTEX] = points;
-	p_arr[VS::ARRAY_NORMAL] = normals;
-	p_arr[VS::ARRAY_TANGENT] = tangents;
-	p_arr[VS::ARRAY_TEX_UV] = uvs;
-	p_arr[VS::ARRAY_INDEX] = indices;
+	p_arr[RS::ARRAY_VERTEX] = points;
+	p_arr[RS::ARRAY_NORMAL] = normals;
+	p_arr[RS::ARRAY_TANGENT] = tangents;
+	p_arr[RS::ARRAY_TEX_UV] = uvs;
+	p_arr[RS::ARRAY_INDEX] = indices;
 }
 
 void CubeMesh::_bind_methods() {
@@ -884,11 +884,11 @@ void CylinderMesh::create_mesh_array(Array &p_arr, float top_radius, float botto
 		};
 	};
 
-	p_arr[VS::ARRAY_VERTEX] = points;
-	p_arr[VS::ARRAY_NORMAL] = normals;
-	p_arr[VS::ARRAY_TANGENT] = tangents;
-	p_arr[VS::ARRAY_TEX_UV] = uvs;
-	p_arr[VS::ARRAY_INDEX] = indices;
+	p_arr[RS::ARRAY_VERTEX] = points;
+	p_arr[RS::ARRAY_NORMAL] = normals;
+	p_arr[RS::ARRAY_TANGENT] = tangents;
+	p_arr[RS::ARRAY_TEX_UV] = uvs;
+	p_arr[RS::ARRAY_INDEX] = indices;
 }
 
 void CylinderMesh::_bind_methods() {
@@ -1023,11 +1023,11 @@ void PlaneMesh::_create_mesh_array(Array &p_arr) const {
 		thisrow = point;
 	};
 
-	p_arr[VS::ARRAY_VERTEX] = points;
-	p_arr[VS::ARRAY_NORMAL] = normals;
-	p_arr[VS::ARRAY_TANGENT] = tangents;
-	p_arr[VS::ARRAY_TEX_UV] = uvs;
-	p_arr[VS::ARRAY_INDEX] = indices;
+	p_arr[RS::ARRAY_VERTEX] = points;
+	p_arr[RS::ARRAY_NORMAL] = normals;
+	p_arr[RS::ARRAY_TANGENT] = tangents;
+	p_arr[RS::ARRAY_TEX_UV] = uvs;
+	p_arr[RS::ARRAY_INDEX] = indices;
 }
 
 void PlaneMesh::_bind_methods() {
@@ -1296,11 +1296,11 @@ void PrismMesh::_create_mesh_array(Array &p_arr) const {
 		thisrow = point;
 	};
 
-	p_arr[VS::ARRAY_VERTEX] = points;
-	p_arr[VS::ARRAY_NORMAL] = normals;
-	p_arr[VS::ARRAY_TANGENT] = tangents;
-	p_arr[VS::ARRAY_TEX_UV] = uvs;
-	p_arr[VS::ARRAY_INDEX] = indices;
+	p_arr[RS::ARRAY_VERTEX] = points;
+	p_arr[RS::ARRAY_NORMAL] = normals;
+	p_arr[RS::ARRAY_TANGENT] = tangents;
+	p_arr[RS::ARRAY_TEX_UV] = uvs;
+	p_arr[RS::ARRAY_INDEX] = indices;
 }
 
 void PrismMesh::_bind_methods() {
@@ -1426,10 +1426,10 @@ void QuadMesh::_create_mesh_array(Array &p_arr) const {
 		uvs.set(i, quad_uv[j]);
 	}
 
-	p_arr[VS::ARRAY_VERTEX] = faces;
-	p_arr[VS::ARRAY_NORMAL] = normals;
-	p_arr[VS::ARRAY_TANGENT] = tangents;
-	p_arr[VS::ARRAY_TEX_UV] = uvs;
+	p_arr[RS::ARRAY_VERTEX] = faces;
+	p_arr[RS::ARRAY_NORMAL] = normals;
+	p_arr[RS::ARRAY_TANGENT] = tangents;
+	p_arr[RS::ARRAY_TEX_UV] = uvs;
 }
 
 void QuadMesh::_bind_methods() {
@@ -1540,11 +1540,11 @@ void SphereMesh::create_mesh_array(Array &p_arr, float radius, float height, int
 		thisrow = point;
 	};
 
-	p_arr[VS::ARRAY_VERTEX] = points;
-	p_arr[VS::ARRAY_NORMAL] = normals;
-	p_arr[VS::ARRAY_TANGENT] = tangents;
-	p_arr[VS::ARRAY_TEX_UV] = uvs;
-	p_arr[VS::ARRAY_INDEX] = indices;
+	p_arr[RS::ARRAY_VERTEX] = points;
+	p_arr[RS::ARRAY_NORMAL] = normals;
+	p_arr[RS::ARRAY_TANGENT] = tangents;
+	p_arr[RS::ARRAY_TEX_UV] = uvs;
+	p_arr[RS::ARRAY_INDEX] = indices;
 }
 
 void SphereMesh::_bind_methods() {
@@ -1631,7 +1631,7 @@ void PointMesh::_create_mesh_array(Array &p_arr) const {
 	faces.resize(1);
 	faces.set(0, Vector3(0.0, 0.0, 0.0));
 
-	p_arr[VS::ARRAY_VERTEX] = faces;
+	p_arr[RS::ARRAY_VERTEX] = faces;
 }
 
 PointMesh::PointMesh() {
@@ -2023,11 +2023,11 @@ void TextMesh::_create_mesh_array(Array &p_arr) const {
 		indices.push_back(0);
 	}
 
-	p_arr[VS::ARRAY_VERTEX] = vertices;
-	p_arr[VS::ARRAY_NORMAL] = normals;
-	p_arr[VS::ARRAY_TANGENT] = tangents;
-	p_arr[VS::ARRAY_TEX_UV] = uvs;
-	p_arr[VS::ARRAY_INDEX] = indices;
+	p_arr[RS::ARRAY_VERTEX] = vertices;
+	p_arr[RS::ARRAY_NORMAL] = normals;
+	p_arr[RS::ARRAY_TANGENT] = tangents;
+	p_arr[RS::ARRAY_TEX_UV] = uvs;
+	p_arr[RS::ARRAY_INDEX] = indices;
 }
 
 void TextMesh::_bind_methods() {

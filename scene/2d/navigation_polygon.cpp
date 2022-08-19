@@ -509,7 +509,7 @@ void NavigationPolygonInstance::_notification(int p_what) {
 					Vector<Color> colors;
 					colors.push_back(random_variation_color);
 
-					VS::get_singleton()->canvas_item_add_polygon(get_canvas_item(), vertices, colors);
+					RS::get_singleton()->canvas_item_add_polygon(get_canvas_item(), vertices, colors);
 				}
 
 				// Draw the region

@@ -40,9 +40,9 @@
 #include "scene/resources/world.h"
 #include "servers/physics_server.h"
 
-SoftBodyVisualServerHandler::SoftBodyVisualServerHandler() {}
+SoftBodyRenderingServerHandler::SoftBodyRenderingServerHandler() {}
 
-void SoftBodyVisualServerHandler::prepare(RID p_mesh, int p_surface) {
+void SoftBodyRenderingServerHandler::prepare(RID p_mesh, int p_surface) {
 	clear();
 
 	ERR_FAIL_COND(!p_mesh.is_valid());
@@ -50,21 +50,21 @@ void SoftBodyVisualServerHandler::prepare(RID p_mesh, int p_surface) {
 	mesh = p_mesh;
 	surface = p_surface;
 
-	const uint32_t surface_format = VS::get_singleton()->mesh_surface_get_format(mesh, surface);
-	const int surface_vertex_len = VS::get_singleton()->mesh_surface_get_array_len(mesh, p_surface);
-	const int surface_index_len = VS::get_singleton()->mesh_surface_get_array_index_len(mesh, p_surface);
-	uint32_t surface_offsets[VS::ARRAY_MAX];
-	uint32_t surface_strides[VS::ARRAY_MAX];
+	const uint32_t surface_format = RS::get_singleton()->mesh_surface_get_format(mesh, surface);
+	const int surface_vertex_len = RS::get_singleton()->mesh_surface_get_array_len(mesh, p_surface);
+	const int surface_index_len = RS::get_singleton()->mesh_surface_get_array_index_len(mesh, p_surface);
+	uint32_t surface_offsets[RS::ARRAY_MAX];
+	uint32_t surface_strides[RS::ARRAY_MAX];
 
-	buffer = VS::get_singleton()->mesh_surface_get_array(mesh, surface);
-	VS::get_singleton()->mesh_surface_make_offsets_from_format(surface_format, surface_vertex_len, surface_index_len, surface_offsets, surface_strides);
-	ERR_FAIL_COND(surface_strides[VS::ARRAY_VERTEX] != surface_strides[VS::ARRAY_NORMAL]);
-	stride = surface_strides[VS::ARRAY_VERTEX];
-	offset_vertices = surface_offsets[VS::ARRAY_VERTEX];
-	offset_normal = surface_offsets[VS::ARRAY_NORMAL];
+	buffer = RS::get_singleton()->mesh_surface_get_array(mesh, surface);
+	RS::get_singleton()->mesh_surface_make_offsets_from_format(surface_format, surface_vertex_len, surface_index_len, surface_offsets, surface_strides);
+	ERR_FAIL_COND(surface_strides[RS::ARRAY_VERTEX] != surface_strides[RS::ARRAY_NORMAL]);
+	stride = surface_strides[RS::ARRAY_VERTEX];
+	offset_vertices = surface_offsets[RS::ARRAY_VERTEX];
+	offset_normal = surface_offsets[RS::ARRAY_NORMAL];
 }
 
-void SoftBodyVisualServerHandler::clear() {
+void SoftBodyRenderingServerHandler::clear() {
 	if (mesh.is_valid()) {
 		buffer.resize(0);
 	}
@@ -72,24 +72,24 @@ void SoftBodyVisualServerHandler::clear() {
 	mesh = RID();
 }
 
-void SoftBodyVisualServerHandler::open() {
+void SoftBodyRenderingServerHandler::open() {
 	write_buffer = buffer.write();
 }
 
-void SoftBodyVisualServerHandler::close() {
+void SoftBodyRenderingServerHandler::close() {
 	write_buffer.release();
 }
 
-void SoftBodyVisualServerHandler::commit_changes() {
-	VS::get_singleton()->mesh_surface_update_region(mesh, surface, 0, buffer);
+void SoftBodyRenderingServerHandler::commit_changes() {
+	RS::get_singleton()->mesh_surface_update_region(mesh, surface, 0, buffer);
 }
 
-void SoftBodyVisualServerHandler::set_vertex(int p_vertex_id, const void *p_vector3) {
+void SoftBodyRenderingServerHandler::set_vertex(int p_vertex_id, const void *p_vector3) {
 	memcpy(&write_buffer[p_vertex_id * stride + offset_vertices], p_vector3, sizeof(float) * 3);
 }
 
-void SoftBodyVisualServerHandler::set_normal(int p_vertex_id, const void *p_vector3) {
-	Vector2 normal_oct = VisualServer::get_singleton()->norm_to_oct(*(Vector3 *)p_vector3);
+void SoftBodyRenderingServerHandler::set_normal(int p_vertex_id, const void *p_vector3) {
+	Vector2 normal_oct = RenderingServer::get_singleton()->norm_to_oct(*(Vector3 *)p_vector3);
 	int16_t v_normal[2] = {
 		(int16_t)CLAMP(normal_oct.x * 32767, -32768, 32767),
 		(int16_t)CLAMP(normal_oct.y * 32767, -32768, 32767),
@@ -97,8 +97,8 @@ void SoftBodyVisualServerHandler::set_normal(int p_vertex_id, const void *p_vect
 	memcpy(&write_buffer[p_vertex_id * stride + offset_normal], v_normal, sizeof(uint16_t) * 2);
 }
 
-void SoftBodyVisualServerHandler::set_aabb(const AABB &p_aabb) {
-	VS::get_singleton()->mesh_set_custom_aabb(mesh, p_aabb);
+void SoftBodyRenderingServerHandler::set_aabb(const AABB &p_aabb) {
+	RS::get_singleton()->mesh_set_custom_aabb(mesh, p_aabb);
 }
 
 SoftBody::PinnedPoint::PinnedPoint() :
@@ -288,7 +288,7 @@ void SoftBody::_notification(int p_what) {
 			PhysicsServer::get_singleton()->soft_body_set_transform(physics_rid, get_global_transform());
 
 			set_notify_transform(false);
-			// Required to be top level with Transform at center of world in order to modify VisualServer only to support custom Transform
+			// Required to be top level with Transform at center of world in order to modify RenderingServer only to support custom Transform
 			set_as_toplevel(true);
 			set_transform(Transform());
 			set_notify_transform(true);
@@ -480,11 +480,11 @@ void SoftBody::_prepare_physics_server() {
 			_become_mesh_owner();
 		}
 		PhysicsServer::get_singleton()->soft_body_set_mesh(physics_rid, mesh);
-		VS::get_singleton()->connect("frame_pre_draw", this, "_draw_soft_mesh");
+		RS::get_singleton()->connect("frame_pre_draw", this, "_draw_soft_mesh");
 	} else {
 		PhysicsServer::get_singleton()->soft_body_set_mesh(physics_rid, nullptr);
-		if (VS::get_singleton()->is_connected("frame_pre_draw", this, "_draw_soft_mesh")) {
-			VS::get_singleton()->disconnect("frame_pre_draw", this, "_draw_soft_mesh");
+		if (RS::get_singleton()->is_connected("frame_pre_draw", this, "_draw_soft_mesh")) {
+			RS::get_singleton()->disconnect("frame_pre_draw", this, "_draw_soft_mesh");
 		}
 	}
 }

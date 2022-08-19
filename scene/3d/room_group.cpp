@@ -45,12 +45,12 @@ void RoomGroup::_bind_methods() {
 }
 
 RoomGroup::RoomGroup() {
-	_room_group_rid = RID_PRIME(VisualServer::get_singleton()->roomgroup_create());
+	_room_group_rid = RID_PRIME(RenderingServer::get_singleton()->roomgroup_create());
 }
 
 RoomGroup::~RoomGroup() {
 	if (_room_group_rid != RID()) {
-		VisualServer::get_singleton()->free(_room_group_rid);
+		RenderingServer::get_singleton()->free(_room_group_rid);
 	}
 }
 
@@ -72,7 +72,7 @@ void RoomGroup::clear() {
 }
 
 void RoomGroup::add_room(Room *p_room) {
-	VisualServer::get_singleton()->roomgroup_add_room(_room_group_rid, p_room->_room_rid);
+	RenderingServer::get_singleton()->roomgroup_add_room(_room_group_rid, p_room->_room_rid);
 }
 
 // extra editor links to the room manager to allow unloading
@@ -92,10 +92,10 @@ void RoomGroup::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_WORLD: {
 			ERR_FAIL_COND(get_world().is_null());
-			VisualServer::get_singleton()->roomgroup_set_scenario(_room_group_rid, get_world()->get_scenario());
+			RenderingServer::get_singleton()->roomgroup_set_scenario(_room_group_rid, get_world()->get_scenario());
 		} break;
 		case NOTIFICATION_EXIT_WORLD: {
-			VisualServer::get_singleton()->roomgroup_set_scenario(_room_group_rid, RID());
+			RenderingServer::get_singleton()->roomgroup_set_scenario(_room_group_rid, RID());
 		} break;
 	}
 }

@@ -54,7 +54,7 @@ private:
 	String shader_custom_defines;
 
 	// hack the name of performance
-	// shaders keep a list of ShaderMaterial -> VisualServer name translations, to make
+	// shaders keep a list of ShaderMaterial -> RenderingServer name translations, to make
 	// conversion fast and save memory.
 	mutable bool params_cache_dirty;
 	mutable Map<StringName, StringName> params_cache; //map a shader param to a material param..

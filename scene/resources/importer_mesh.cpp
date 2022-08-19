@@ -45,16 +45,16 @@ void ImporterMesh::Surface::split_normals(const LocalVector<int> &p_indices, con
 }
 
 void ImporterMesh::Surface::_split_normals(Array &r_arrays, const LocalVector<int> &p_indices, const LocalVector<Vector3> &p_normals) {
-	ERR_FAIL_COND(r_arrays.size() != VS::ARRAY_MAX);
+	ERR_FAIL_COND(r_arrays.size() != RS::ARRAY_MAX);
 
-	const PoolVector3Array &vertices = r_arrays[VS::ARRAY_VERTEX];
+	const PoolVector3Array &vertices = r_arrays[RS::ARRAY_VERTEX];
 	int current_vertex_count = vertices.size();
 	int new_vertex_count = p_indices.size();
 	int final_vertex_count = current_vertex_count + new_vertex_count;
 	const int *indices_ptr = p_indices.ptr();
 
 	for (int i = 0; i < r_arrays.size(); i++) {
-		if (i == VS::ARRAY_INDEX) {
+		if (i == RS::ARRAY_INDEX) {
 			continue;
 		}
 
@@ -68,7 +68,7 @@ void ImporterMesh::Surface::_split_normals(Array &r_arrays, const LocalVector<in
 				data.resize(final_vertex_count);
 				PoolVector3Array::Write w = data.write();
 				Vector3 *data_ptr = w.ptr();
-				if (i == VS::ARRAY_NORMAL) {
+				if (i == RS::ARRAY_NORMAL) {
 					const Vector3 *normals_ptr = p_normals.ptr();
 					memcpy(&data_ptr[current_vertex_count], normals_ptr, sizeof(Vector3) * new_vertex_count);
 				} else {

@@ -355,7 +355,7 @@ Physics2DDirectSpaceState *World2D::get_direct_space_state() {
 }
 
 World2D::World2D() {
-	canvas = RID_PRIME(VisualServer::get_singleton()->canvas_create());
+	canvas = RID_PRIME(RenderingServer::get_singleton()->canvas_create());
 	space = RID_PRIME(Physics2DServer::get_singleton()->space_create());
 
 	//set space2D to be more friendly with pixels than meters, by adjusting some constants
@@ -378,7 +378,7 @@ World2D::World2D() {
 }
 
 World2D::~World2D() {
-	VisualServer::get_singleton()->free(canvas);
+	RenderingServer::get_singleton()->free(canvas);
 	Physics2DServer::get_singleton()->free(space);
 	Navigation2DServer::get_singleton()->free(navigation_map);
 	memdelete(indexer);

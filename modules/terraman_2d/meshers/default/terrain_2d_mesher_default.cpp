@@ -40,9 +40,9 @@ _FORCE_INLINE_ void Terrain2DMesherDefault::set_build_flags(const int flags) {
 	_build_flags = flags;
 
 	if ((_build_flags & Terrain2DChunkDefault::BUILD_FLAG_USE_LIGHTING) != 0) {
-		_format |= VisualServer::ARRAY_FORMAT_COLOR;
+		_format |= RenderingServer::ARRAY_FORMAT_COLOR;
 	} else {
-		_format ^= VisualServer::ARRAY_FORMAT_COLOR;
+		_format ^= RenderingServer::ARRAY_FORMAT_COLOR;
 	}
 }
 
@@ -269,7 +269,7 @@ void Terrain2DMesherDefault::_bake_liquid_colors(Ref<Terrain2DChunk> chunk) {
 Terrain2DMesherDefault::Terrain2DMesherDefault() {
 	_build_flags = Terrain2DChunkDefault::BUILD_FLAG_CREATE_COLLIDER;
 
-	_format = VisualServer::ARRAY_FORMAT_NORMAL | VisualServer::ARRAY_FORMAT_TEX_UV;
+	_format = RenderingServer::ARRAY_FORMAT_NORMAL | RenderingServer::ARRAY_FORMAT_TEX_UV;
 }
 
 Terrain2DMesherDefault::~Terrain2DMesherDefault() {

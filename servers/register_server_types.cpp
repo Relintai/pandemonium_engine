@@ -64,10 +64,10 @@
 #include "visual_server.h"
 
 static void _debugger_get_resource_usage(List<ScriptDebuggerRemote::ResourceUsage> *r_usage) {
-	List<VS::TextureInfo> tinfo;
-	VS::get_singleton()->texture_debug_usage(&tinfo);
+	List<RS::TextureInfo> tinfo;
+	RS::get_singleton()->texture_debug_usage(&tinfo);
 
-	for (List<VS::TextureInfo>::Element *E = tinfo.front(); E; E = E->next()) {
+	for (List<RS::TextureInfo>::Element *E = tinfo.front(); E; E = E->next()) {
 		ScriptDebuggerRemote::ResourceUsage usage;
 		usage.path = E->get().path;
 		usage.vram = E->get().bytes;
@@ -93,8 +93,8 @@ Physics2DServer *_createPandemoniumPhysics2DCallback() {
 }
 
 static bool has_server_feature_callback(const String &p_feature) {
-	if (VisualServer::get_singleton()) {
-		if (VisualServer::get_singleton()->has_os_feature(p_feature)) {
+	if (RenderingServer::get_singleton()) {
+		if (RenderingServer::get_singleton()->has_os_feature(p_feature)) {
 			return true;
 		}
 	}
@@ -105,7 +105,7 @@ static bool has_server_feature_callback(const String &p_feature) {
 void register_server_types() {
 	OS::get_singleton()->set_has_server_feature_callback(has_server_feature_callback);
 
-	ClassDB::register_virtual_class<VisualServer>();
+	ClassDB::register_virtual_class<RenderingServer>();
 	ClassDB::register_class<AudioServer>();
 	ClassDB::register_virtual_class<PhysicsServer>();
 	ClassDB::register_virtual_class<Physics2DServer>();
@@ -197,7 +197,7 @@ void unregister_server_types() {
 }
 
 void register_server_singletons() {
-	Engine::get_singleton()->add_singleton(Engine::Singleton("VisualServer", VisualServer::get_singleton()));
+	Engine::get_singleton()->add_singleton(Engine::Singleton("RenderingServer", RenderingServer::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("AudioServer", AudioServer::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("PhysicsServer", PhysicsServer::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("Physics2DServer", Physics2DServer::get_singleton()));

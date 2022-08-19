@@ -39,7 +39,7 @@ void BitMapEditor::setup(const Ref<BitMap> &p_bitmap) {
 	Ref<ImageTexture> texture;
 	texture.instance();
 	texture->create_from_image(p_bitmap->convert_to_image());
-	texture->set_flags(texture->get_flags() & (~VisualServer::TEXTURE_FLAG_FILTER));
+	texture->set_flags(texture->get_flags() & (~RenderingServer::TEXTURE_FLAG_FILTER));
 	texture_rect->set_texture(texture);
 
 	size_label->set_text(vformat(String::utf8("%s×%s"), p_bitmap->get_size().width, p_bitmap->get_size().height));

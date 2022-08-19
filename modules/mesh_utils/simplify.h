@@ -464,12 +464,12 @@ public:
 						if (flipped(p, i1, i0, v1, v0, deleted1))
 							continue;
 
-						if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV) != 0) {
+						if ((_format & RenderingServer::ARRAY_FORMAT_TEX_UV) != 0) {
 							update_uvs(i0, v0, p, deleted0);
 							update_uvs(i0, v1, p, deleted1);
 						}
 
-						if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV2) != 0) {
+						if ((_format & RenderingServer::ARRAY_FORMAT_TEX_UV2) != 0) {
 							update_uv2s(i0, v0, p, deleted0);
 							update_uv2s(i0, v1, p, deleted1);
 						}
@@ -574,12 +574,12 @@ public:
 						if (flipped(p, i1, i0, v1, v0, deleted1))
 							continue;
 
-						if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV) != 0) {
+						if ((_format & RenderingServer::ARRAY_FORMAT_TEX_UV) != 0) {
 							update_uvs(i0, v0, p, deleted0);
 							update_uvs(i0, v1, p, deleted1);
 						}
 
-						if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV2) != 0) {
+						if ((_format & RenderingServer::ARRAY_FORMAT_TEX_UV2) != 0) {
 							update_uv2s(i0, v0, p, deleted0);
 							update_uv2s(i0, v1, p, deleted1);
 						}
@@ -1049,16 +1049,16 @@ public:
 		_format = 0;
 
 		if (pnormals.size() > 0)
-			_format |= VisualServer::ARRAY_FORMAT_NORMAL;
+			_format |= RenderingServer::ARRAY_FORMAT_NORMAL;
 
 		if (pcolors.size() > 0)
-			_format |= VisualServer::ARRAY_FORMAT_COLOR;
+			_format |= RenderingServer::ARRAY_FORMAT_COLOR;
 
 		if (puvs.size() > 0)
-			_format |= VisualServer::ARRAY_FORMAT_TEX_UV;
+			_format |= RenderingServer::ARRAY_FORMAT_TEX_UV;
 
 		if (puv2s.size() > 0)
-			_format |= VisualServer::ARRAY_FORMAT_TEX_UV2;
+			_format |= RenderingServer::ARRAY_FORMAT_TEX_UV2;
 
 		//_vertices.resize(vertices.size());
 		for (int i = 0; i < pvertices.size(); ++i) {
@@ -1104,13 +1104,13 @@ public:
 			t.v[1] = i1;
 			t.v[2] = i2;
 
-			if ((_format & VisualServer::ARRAY_FORMAT_COLOR) != 0) {
+			if ((_format & RenderingServer::ARRAY_FORMAT_COLOR) != 0) {
 				t.color[0] = pcolors[i0];
 				t.color[1] = pcolors[i1];
 				t.color[2] = pcolors[i2];
 			}
 
-			if ((_format & VisualServer::ARRAY_FORMAT_NORMAL) != 0) {
+			if ((_format & RenderingServer::ARRAY_FORMAT_NORMAL) != 0) {
 				Vector3 v = pnormals[i0];
 
 				vec3f vn(v.x, v.y, v.z);
@@ -1118,7 +1118,7 @@ public:
 				t.n = vn;
 			}
 
-			if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV) != 0) {
+			if ((_format & RenderingServer::ARRAY_FORMAT_TEX_UV) != 0) {
 				Vector2 tv0 = puvs[i0];
 				Vector2 tv1 = puvs[i1];
 				Vector2 tv2 = puvs[i2];
@@ -1128,7 +1128,7 @@ public:
 				t.uvs[2] = vec3f(tv2.x, tv2.y, 0);
 			}
 
-			if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV2) != 0) {
+			if ((_format & RenderingServer::ARRAY_FORMAT_TEX_UV2) != 0) {
 				Vector2 tv0 = puvs[i0];
 				Vector2 tv1 = puvs[i1];
 				Vector2 tv2 = puvs[i2];
@@ -1179,7 +1179,7 @@ public:
 			pvertices.set(i, v);
 		}
 
-		if ((_format & VisualServer::ARRAY_FORMAT_COLOR) != 0) {
+		if ((_format & RenderingServer::ARRAY_FORMAT_COLOR) != 0) {
 			pcolors.resize(pvertices.size());
 
 			for (unsigned int i = 0; i < triangles.size(); ++i) {
@@ -1195,7 +1195,7 @@ public:
 			arr.set(ArrayMesh::ARRAY_COLOR, pcolors);
 		}
 
-		if ((_format & VisualServer::ARRAY_FORMAT_NORMAL) != 0) {
+		if ((_format & RenderingServer::ARRAY_FORMAT_NORMAL) != 0) {
 			pnormals.resize(pvertices.size());
 
 			for (unsigned int i = 0; i < triangles.size(); ++i) {
@@ -1213,7 +1213,7 @@ public:
 			arr.set(ArrayMesh::ARRAY_NORMAL, pnormals);
 		}
 
-		if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV) != 0) {
+		if ((_format & RenderingServer::ARRAY_FORMAT_TEX_UV) != 0) {
 			puvs.resize(pvertices.size());
 
 			for (unsigned int i = 0; i < triangles.size(); ++i) {
@@ -1233,7 +1233,7 @@ public:
 			arr.set(ArrayMesh::ARRAY_TEX_UV, puvs);
 		}
 
-		if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV2) != 0) {
+		if ((_format & RenderingServer::ARRAY_FORMAT_TEX_UV2) != 0) {
 			puv2s.resize(pvertices.size());
 
 			for (unsigned int i = 0; i < triangles.size(); ++i) {

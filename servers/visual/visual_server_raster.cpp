@@ -40,49 +40,49 @@
 
 // careful, these may run in different threads than the visual server
 
-int VisualServerRaster::changes[2] = { 0 };
+int RenderingServerRaster::changes[2] = { 0 };
 
 /* BLACK BARS */
 
-void VisualServerRaster::black_bars_set_margins(int p_left, int p_top, int p_right, int p_bottom) {
+void RenderingServerRaster::black_bars_set_margins(int p_left, int p_top, int p_right, int p_bottom) {
 	black_margin[MARGIN_LEFT] = p_left;
 	black_margin[MARGIN_TOP] = p_top;
 	black_margin[MARGIN_RIGHT] = p_right;
 	black_margin[MARGIN_BOTTOM] = p_bottom;
 }
 
-void VisualServerRaster::black_bars_set_images(RID p_left, RID p_top, RID p_right, RID p_bottom) {
+void RenderingServerRaster::black_bars_set_images(RID p_left, RID p_top, RID p_right, RID p_bottom) {
 	black_image[MARGIN_LEFT] = p_left;
 	black_image[MARGIN_TOP] = p_top;
 	black_image[MARGIN_RIGHT] = p_right;
 	black_image[MARGIN_BOTTOM] = p_bottom;
 }
 
-void VisualServerRaster::_draw_margins() {
-	VSG::canvas_render->draw_window_margins(black_margin, black_image);
+void RenderingServerRaster::_draw_margins() {
+	RSG::canvas_render->draw_window_margins(black_margin, black_image);
 };
 
 /* FREE */
 
-void VisualServerRaster::free(RID p_rid) {
+void RenderingServerRaster::free(RID p_rid) {
 	if (!p_rid.is_valid()) {
 		ERR_FAIL_MSG("Invalid RID.");
 		return;
 	}
 
-	if (VSG::storage->free(p_rid)) {
+	if (RSG::storage->free(p_rid)) {
 		return;
 	}
-	if (VSG::canvas->free(p_rid)) {
+	if (RSG::canvas->free(p_rid)) {
 		return;
 	}
-	if (VSG::viewport->free(p_rid)) {
+	if (RSG::viewport->free(p_rid)) {
 		return;
 	}
-	if (VSG::scene->free(p_rid)) {
+	if (RSG::scene->free(p_rid)) {
 		return;
 	}
-	if (VSG::scene_render->free(p_rid)) {
+	if (RSG::scene_render->free(p_rid)) {
 		return;
 	}
 
@@ -91,7 +91,7 @@ void VisualServerRaster::free(RID p_rid) {
 
 /* EVENT QUEUING */
 
-void VisualServerRaster::request_frame_drawn_callback(Object *p_where, const StringName &p_method, const Variant &p_userdata) {
+void RenderingServerRaster::request_frame_drawn_callback(Object *p_where, const StringName &p_method, const Variant &p_userdata) {
 	ERR_FAIL_NULL(p_where);
 	FrameDrawnCallbacks fdc;
 	fdc.object = p_where->get_instance_id();
@@ -101,28 +101,28 @@ void VisualServerRaster::request_frame_drawn_callback(Object *p_where, const Str
 	frame_drawn_callbacks.push_back(fdc);
 }
 
-void VisualServerRaster::scenario_tick(RID p_scenario) {
-	VSG::scene->_scenario_tick(p_scenario);
+void RenderingServerRaster::scenario_tick(RID p_scenario) {
+	RSG::scene->_scenario_tick(p_scenario);
 }
 
-void VisualServerRaster::scenario_pre_draw(RID p_scenario, bool p_will_draw) {
-	VSG::scene->_scenario_pre_draw(p_scenario, p_will_draw);
+void RenderingServerRaster::scenario_pre_draw(RID p_scenario, bool p_will_draw) {
+	RSG::scene->_scenario_pre_draw(p_scenario, p_will_draw);
 }
 
-void VisualServerRaster::draw(bool p_swap_buffers, double frame_step) {
+void RenderingServerRaster::draw(bool p_swap_buffers, double frame_step) {
 	//needs to be done before changes is reset to 0, to not force the editor to redraw
-	VS::get_singleton()->emit_signal("frame_pre_draw");
+	RS::get_singleton()->emit_signal("frame_pre_draw");
 
 	changes[0] = 0;
 	changes[1] = 0;
 
-	VSG::rasterizer->begin_frame(frame_step);
+	RSG::rasterizer->begin_frame(frame_step);
 
-	VSG::scene->update_dirty_instances(); //update scene stuff
+	RSG::scene->update_dirty_instances(); //update scene stuff
 
-	VSG::viewport->draw_viewports();
+	RSG::viewport->draw_viewports();
 	_draw_margins();
-	VSG::rasterizer->end_frame(p_swap_buffers);
+	RSG::rasterizer->end_frame(p_swap_buffers);
 
 	while (frame_drawn_callbacks.front()) {
 		Object *obj = ObjectDB::get_instance(frame_drawn_callbacks.front()->get().object);
@@ -138,12 +138,12 @@ void VisualServerRaster::draw(bool p_swap_buffers, double frame_step) {
 
 		frame_drawn_callbacks.pop_front();
 	}
-	VS::get_singleton()->emit_signal("frame_post_draw");
+	RS::get_singleton()->emit_signal("frame_post_draw");
 }
-void VisualServerRaster::sync() {
+void RenderingServerRaster::sync() {
 }
 
-bool VisualServerRaster::has_changed(ChangedPriority p_priority) const {
+bool RenderingServerRaster::has_changed(ChangedPriority p_priority) const {
 	switch (p_priority) {
 		default: {
 			return (changes[0] > 0) || (changes[1] > 0);
@@ -156,79 +156,79 @@ bool VisualServerRaster::has_changed(ChangedPriority p_priority) const {
 		} break;
 	}
 }
-void VisualServerRaster::init() {
-	VSG::rasterizer->initialize();
+void RenderingServerRaster::init() {
+	RSG::rasterizer->initialize();
 }
-void VisualServerRaster::finish() {
+void RenderingServerRaster::finish() {
 	if (test_cube.is_valid()) {
 		free(test_cube);
 	}
 
-	VSG::rasterizer->finalize();
+	RSG::rasterizer->finalize();
 }
 
 /* STATUS INFORMATION */
 
-uint64_t VisualServerRaster::get_render_info(RenderInfo p_info) {
-	return VSG::storage->get_render_info(p_info);
+uint64_t RenderingServerRaster::get_render_info(RenderInfo p_info) {
+	return RSG::storage->get_render_info(p_info);
 }
 
-String VisualServerRaster::get_video_adapter_name() const {
-	return VSG::storage->get_video_adapter_name();
+String RenderingServerRaster::get_video_adapter_name() const {
+	return RSG::storage->get_video_adapter_name();
 }
 
-String VisualServerRaster::get_video_adapter_vendor() const {
-	return VSG::storage->get_video_adapter_vendor();
+String RenderingServerRaster::get_video_adapter_vendor() const {
+	return RSG::storage->get_video_adapter_vendor();
 }
 
 /* TESTING */
 
-void VisualServerRaster::set_boot_image(const Ref<Image> &p_image, const Color &p_color, bool p_scale, bool p_use_filter) {
+void RenderingServerRaster::set_boot_image(const Ref<Image> &p_image, const Color &p_color, bool p_scale, bool p_use_filter) {
 	redraw_request();
-	VSG::rasterizer->set_boot_image(p_image, p_color, p_scale, p_use_filter);
+	RSG::rasterizer->set_boot_image(p_image, p_color, p_scale, p_use_filter);
 }
-void VisualServerRaster::set_default_clear_color(const Color &p_color) {
-	VSG::viewport->set_default_clear_color(p_color);
-}
-
-void VisualServerRaster::set_shader_time_scale(float p_scale) {
-	VSG::rasterizer->set_shader_time_scale(p_scale);
+void RenderingServerRaster::set_default_clear_color(const Color &p_color) {
+	RSG::viewport->set_default_clear_color(p_color);
 }
 
-bool VisualServerRaster::has_feature(Features p_feature) const {
+void RenderingServerRaster::set_shader_time_scale(float p_scale) {
+	RSG::rasterizer->set_shader_time_scale(p_scale);
+}
+
+bool RenderingServerRaster::has_feature(Features p_feature) const {
 	return false;
 }
 
-RID VisualServerRaster::get_test_cube() {
+RID RenderingServerRaster::get_test_cube() {
 	if (!test_cube.is_valid()) {
 		test_cube = _make_test_cube();
 	}
 	return test_cube;
 }
 
-bool VisualServerRaster::has_os_feature(const String &p_feature) const {
-	return VSG::storage->has_os_feature(p_feature);
+bool RenderingServerRaster::has_os_feature(const String &p_feature) const {
+	return RSG::storage->has_os_feature(p_feature);
 }
 
-void VisualServerRaster::set_debug_generate_wireframes(bool p_generate) {
-	VSG::storage->set_debug_generate_wireframes(p_generate);
+void RenderingServerRaster::set_debug_generate_wireframes(bool p_generate) {
+	RSG::storage->set_debug_generate_wireframes(p_generate);
 }
 
-void VisualServerRaster::call_set_use_vsync(bool p_enable) {
+void RenderingServerRaster::call_set_use_vsync(bool p_enable) {
 	OS::get_singleton()->_set_use_vsync(p_enable);
 }
 
-bool VisualServerRaster::is_low_end() const {
-	return VSG::rasterizer->is_low_end();
+bool RenderingServerRaster::is_low_end() const {
+	return RSG::rasterizer->is_low_end();
 }
-VisualServerRaster::VisualServerRaster() {
-	VSG::canvas = memnew(VisualServerCanvas);
-	VSG::viewport = memnew(VisualServerViewport);
-	VSG::scene = memnew(VisualServerScene);
-	VSG::rasterizer = Rasterizer::create();
-	VSG::storage = VSG::rasterizer->get_storage();
-	VSG::canvas_render = VSG::rasterizer->get_canvas();
-	VSG::scene_render = VSG::rasterizer->get_scene();
+RenderingServerRaster::RenderingServerRaster() {
+	RSG::canvas = memnew(RenderingServerCanvas);
+	RSG::viewport = memnew(RenderingServerViewport);
+	RSG::scene = memnew(RenderingServerScene);
+	RSG::rasterizer = Rasterizer::create();
+	RSG::storage = RSG::rasterizer->get_storage();
+	RSG::canvas_render = RSG::rasterizer->get_canvas();
+	RSG::scene_render = RSG::rasterizer->get_scene();
 
 	for (int i = 0; i < 4; i++) {
 		black_margin[i] = 0;
@@ -236,9 +236,9 @@ VisualServerRaster::VisualServerRaster() {
 	}
 }
 
-VisualServerRaster::~VisualServerRaster() {
-	memdelete(VSG::canvas);
-	memdelete(VSG::viewport);
-	memdelete(VSG::rasterizer);
-	memdelete(VSG::scene);
+RenderingServerRaster::~RenderingServerRaster() {
+	memdelete(RSG::canvas);
+	memdelete(RSG::viewport);
+	memdelete(RSG::rasterizer);
+	memdelete(RSG::scene);
 }

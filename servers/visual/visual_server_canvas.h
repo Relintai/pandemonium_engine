@@ -33,7 +33,7 @@
 #include "rasterizer.h"
 #include "visual_server_viewport.h"
 
-class VisualServerCanvas {
+class RenderingServerCanvas {
 public:
 	struct Item : public RasterizerCanvas::Item {
 		RID parent; // canvas it belongs to
@@ -90,13 +90,13 @@ public:
 	struct LightOccluderPolygon : RID_Data {
 		bool active;
 		Rect2 aabb;
-		VS::CanvasOccluderPolygonCullMode cull_mode;
+		RS::CanvasOccluderPolygonCullMode cull_mode;
 		RID occluder;
 		Set<RasterizerCanvas::LightOccluderInstance *> owners;
 
 		LightOccluderPolygon() {
 			active = false;
-			cull_mode = VS::CANVAS_OCCLUDER_POLYGON_CULL_DISABLED;
+			cull_mode = RS::CANVAS_OCCLUDER_POLYGON_CULL_DISABLED;
 		}
 	};
 
@@ -104,7 +104,7 @@ public:
 
 	RID_Owner<RasterizerCanvas::LightOccluderInstance> canvas_light_occluder_owner;
 
-	struct Canvas : public VisualServerViewport::CanvasBase {
+	struct Canvas : public RenderingServerViewport::CanvasBase {
 		Set<RID> viewports;
 		struct ChildItem {
 			Point2 mirror;
@@ -193,7 +193,7 @@ public:
 	void canvas_item_add_circle(RID p_item, const Point2 &p_pos, float p_radius, const Color &p_color);
 	void canvas_item_add_texture_rect(RID p_item, const Rect2 &p_rect, RID p_texture, bool p_tile = false, const Color &p_modulate = Color(1, 1, 1), bool p_transpose = false, RID p_normal_map = RID());
 	void canvas_item_add_texture_rect_region(RID p_item, const Rect2 &p_rect, RID p_texture, const Rect2 &p_src_rect, const Color &p_modulate = Color(1, 1, 1), bool p_transpose = false, RID p_normal_map = RID(), bool p_clip_uv = false);
-	void canvas_item_add_nine_patch(RID p_item, const Rect2 &p_rect, const Rect2 &p_source, RID p_texture, const Vector2 &p_topleft, const Vector2 &p_bottomright, VS::NinePatchAxisMode p_x_axis_mode = VS::NINE_PATCH_STRETCH, VS::NinePatchAxisMode p_y_axis_mode = VS::NINE_PATCH_STRETCH, bool p_draw_center = true, const Color &p_modulate = Color(1, 1, 1), RID p_normal_map = RID());
+	void canvas_item_add_nine_patch(RID p_item, const Rect2 &p_rect, const Rect2 &p_source, RID p_texture, const Vector2 &p_topleft, const Vector2 &p_bottomright, RS::NinePatchAxisMode p_x_axis_mode = RS::NINE_PATCH_STRETCH, RS::NinePatchAxisMode p_y_axis_mode = RS::NINE_PATCH_STRETCH, bool p_draw_center = true, const Color &p_modulate = Color(1, 1, 1), RID p_normal_map = RID());
 	void canvas_item_add_primitive(RID p_item, const Vector<Point2> &p_points, const Vector<Color> &p_colors, const Vector<Point2> &p_uvs, RID p_texture, float p_width = 1.0, RID p_normal_map = RID());
 	void canvas_item_add_polygon(RID p_item, const Vector<Point2> &p_points, const Vector<Color> &p_colors, const Vector<Point2> &p_uvs = Vector<Point2>(), RID p_texture = RID(), RID p_normal_map = RID(), bool p_antialiased = false);
 	void canvas_item_add_triangle_array(RID p_item, const Vector<int> &p_indices, const Vector<Point2> &p_points, const Vector<Color> &p_colors, const Vector<Point2> &p_uvs = Vector<Point2>(), const Vector<int> &p_bones = Vector<int>(), const Vector<float> &p_weights = Vector<float>(), RID p_texture = RID(), int p_count = -1, RID p_normal_map = RID(), bool p_antialiased = false, bool p_antialiasing_use_indices = false);
@@ -229,12 +229,12 @@ public:
 	void canvas_light_set_item_cull_mask(RID p_light, int p_mask);
 	void canvas_light_set_item_shadow_cull_mask(RID p_light, int p_mask);
 
-	void canvas_light_set_mode(RID p_light, VS::CanvasLightMode p_mode);
+	void canvas_light_set_mode(RID p_light, RS::CanvasLightMode p_mode);
 
 	void canvas_light_set_shadow_enabled(RID p_light, bool p_enabled);
 	void canvas_light_set_shadow_buffer_size(RID p_light, int p_size);
 	void canvas_light_set_shadow_gradient_length(RID p_light, float p_length);
-	void canvas_light_set_shadow_filter(RID p_light, VS::CanvasLightShadowFilter p_filter);
+	void canvas_light_set_shadow_filter(RID p_light, RS::CanvasLightShadowFilter p_filter);
 	void canvas_light_set_shadow_color(RID p_light, const Color &p_color);
 	void canvas_light_set_shadow_smooth(RID p_light, float p_smooth);
 
@@ -249,11 +249,11 @@ public:
 	void canvas_occluder_polygon_set_shape(RID p_occluder_polygon, const PoolVector<Vector2> &p_shape, bool p_closed);
 	void canvas_occluder_polygon_set_shape_as_lines(RID p_occluder_polygon, const PoolVector<Vector2> &p_shape);
 
-	void canvas_occluder_polygon_set_cull_mode(RID p_occluder_polygon, VS::CanvasOccluderPolygonCullMode p_mode);
+	void canvas_occluder_polygon_set_cull_mode(RID p_occluder_polygon, RS::CanvasOccluderPolygonCullMode p_mode);
 
 	bool free(RID p_rid);
-	VisualServerCanvas();
-	~VisualServerCanvas();
+	RenderingServerCanvas();
+	~RenderingServerCanvas();
 };
 
 #endif // VISUALSERVERCANVAS_H

@@ -75,7 +75,7 @@ Error OS_Server::initialize(const VideoMode &p_desired, int p_video_driver, int 
 
 	video_driver_index = p_video_driver; // unused in server platform, but should still be initialized
 
-	visual_server = memnew(VisualServerRaster);
+	visual_server = memnew(RenderingServerRaster);
 	visual_server->init();
 
 	AudioDriverManager::initialize(p_audio_driver);

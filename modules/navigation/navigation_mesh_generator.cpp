@@ -204,7 +204,7 @@ void NavigationMeshGenerator::_parse_geometry(const Transform &p_navmesh_xform, 
 					BoxShape *box = Object::cast_to<BoxShape>(*s);
 					if (box) {
 						Array arr;
-						arr.resize(VS::ARRAY_MAX);
+						arr.resize(RS::ARRAY_MAX);
 						CubeMesh::create_mesh_array(arr, box->get_extents() * 2.0);
 						_add_mesh_array(arr, transform, p_vertices, p_indices);
 					}
@@ -212,7 +212,7 @@ void NavigationMeshGenerator::_parse_geometry(const Transform &p_navmesh_xform, 
 					CapsuleShape *capsule = Object::cast_to<CapsuleShape>(*s);
 					if (capsule) {
 						Array arr;
-						arr.resize(VS::ARRAY_MAX);
+						arr.resize(RS::ARRAY_MAX);
 						CapsuleMesh::create_mesh_array(arr, capsule->get_radius(), capsule->get_height() / 2.0);
 						_add_mesh_array(arr, transform, p_vertices, p_indices);
 					}
@@ -220,7 +220,7 @@ void NavigationMeshGenerator::_parse_geometry(const Transform &p_navmesh_xform, 
 					CylinderShape *cylinder = Object::cast_to<CylinderShape>(*s);
 					if (cylinder) {
 						Array arr;
-						arr.resize(VS::ARRAY_MAX);
+						arr.resize(RS::ARRAY_MAX);
 						CylinderMesh::create_mesh_array(arr, cylinder->get_radius(), cylinder->get_radius(), cylinder->get_height());
 						_add_mesh_array(arr, transform, p_vertices, p_indices);
 					}
@@ -228,7 +228,7 @@ void NavigationMeshGenerator::_parse_geometry(const Transform &p_navmesh_xform, 
 					SphereShape *sphere = Object::cast_to<SphereShape>(*s);
 					if (sphere) {
 						Array arr;
-						arr.resize(VS::ARRAY_MAX);
+						arr.resize(RS::ARRAY_MAX);
 						SphereMesh::create_mesh_array(arr, sphere->get_radius(), sphere->get_radius() * 2.0);
 						_add_mesh_array(arr, transform, p_vertices, p_indices);
 					}

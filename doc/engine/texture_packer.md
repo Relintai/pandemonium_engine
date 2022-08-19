@@ -73,7 +73,7 @@ It has an exposed Array, so you can assign textures to it in the editor.
 
 This is a simple Texture, which just contains an imported Image. It has no logic for drawing.
 
-Useful for textures you only need for baking, as this class will not register it's data into the VisualServer.
+Useful for textures you only need for baking, as this class will not register it's data into the RenderingServer.
 
 The module also contains an editor plugin which can import textures as `PackerImageResource` Resource.
 

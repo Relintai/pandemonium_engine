@@ -132,7 +132,7 @@ void MeshMerger::set_uv_margin(const Rect2 margin) {
 
 Array MeshMerger::build_mesh() {
 	Array a;
-	a.resize(VisualServer::ARRAY_MAX);
+	a.resize(RenderingServer::ARRAY_MAX);
 
 	if (_vertices.size() == 0) {
 		//Nothing to do
@@ -150,10 +150,10 @@ Array MeshMerger::build_mesh() {
 
 		w.release();
 
-		a[VisualServer::ARRAY_VERTEX] = array;
+		a[RenderingServer::ARRAY_VERTEX] = array;
 	}
 
-	if ((_format & VisualServer::ARRAY_FORMAT_NORMAL) != 0) {
+	if ((_format & RenderingServer::ARRAY_FORMAT_NORMAL) != 0) {
 		PoolVector<Vector3> array;
 		array.resize(_vertices.size());
 		PoolVector<Vector3>::Write w = array.write();
@@ -164,10 +164,10 @@ Array MeshMerger::build_mesh() {
 
 		w.release();
 
-		a[VisualServer::ARRAY_NORMAL] = array;
+		a[RenderingServer::ARRAY_NORMAL] = array;
 	}
 
-	if ((_format & VisualServer::ARRAY_FORMAT_COLOR) != 0) {
+	if ((_format & RenderingServer::ARRAY_FORMAT_COLOR) != 0) {
 		PoolVector<Color> array;
 		array.resize(_vertices.size());
 		PoolVector<Color>::Write w = array.write();
@@ -178,10 +178,10 @@ Array MeshMerger::build_mesh() {
 
 		w.release();
 
-		a[VisualServer::ARRAY_COLOR] = array;
+		a[RenderingServer::ARRAY_COLOR] = array;
 	}
 
-	if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV) != 0) {
+	if ((_format & RenderingServer::ARRAY_FORMAT_TEX_UV) != 0) {
 		PoolVector<Vector2> array;
 		array.resize(_vertices.size());
 		PoolVector<Vector2>::Write w = array.write();
@@ -192,10 +192,10 @@ Array MeshMerger::build_mesh() {
 
 		w.release();
 
-		a[VisualServer::ARRAY_TEX_UV] = array;
+		a[RenderingServer::ARRAY_TEX_UV] = array;
 	}
 
-	if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV2) != 0) {
+	if ((_format & RenderingServer::ARRAY_FORMAT_TEX_UV2) != 0) {
 		PoolVector<Vector2> array;
 		array.resize(_vertices.size());
 		PoolVector<Vector2>::Write w = array.write();
@@ -206,10 +206,10 @@ Array MeshMerger::build_mesh() {
 
 		w.release();
 
-		a[VisualServer::ARRAY_TEX_UV2] = array;
+		a[RenderingServer::ARRAY_TEX_UV2] = array;
 	}
 
-	if ((_format & VisualServer::ARRAY_FORMAT_BONES) != 0) {
+	if ((_format & RenderingServer::ARRAY_FORMAT_BONES) != 0) {
 		int size = _vertices.size() * 4;
 
 		PoolVector<int> bone_array;
@@ -228,10 +228,10 @@ Array MeshMerger::build_mesh() {
 
 		wb.release();
 
-		a[VisualServer::ARRAY_BONES] = bone_array;
+		a[RenderingServer::ARRAY_BONES] = bone_array;
 	}
 
-	if ((_format & VisualServer::ARRAY_FORMAT_WEIGHTS) != 0) {
+	if ((_format & RenderingServer::ARRAY_FORMAT_WEIGHTS) != 0) {
 		int size = _vertices.size() * 4;
 
 		PoolVector<float> bone_weights_array;
@@ -250,7 +250,7 @@ Array MeshMerger::build_mesh() {
 
 		wbw.release();
 
-		a[VisualServer::ARRAY_WEIGHTS] = bone_weights_array;
+		a[RenderingServer::ARRAY_WEIGHTS] = bone_weights_array;
 	}
 
 	if (_indices.size() > 0) {
@@ -265,7 +265,7 @@ Array MeshMerger::build_mesh() {
 
 		w.release();
 
-		a[VisualServer::ARRAY_INDEX] = array;
+		a[RenderingServer::ARRAY_INDEX] = array;
 	}
 
 	return a;
@@ -274,7 +274,7 @@ Array MeshMerger::build_mesh() {
 void MeshMerger::build_mesh_into(RID mesh) {
 	ERR_FAIL_COND(mesh == RID());
 
-	VS::get_singleton()->mesh_clear(mesh);
+	RS::get_singleton()->mesh_clear(mesh);
 
 	if (_vertices.size() == 0) {
 		//Nothing to do
@@ -283,14 +283,14 @@ void MeshMerger::build_mesh_into(RID mesh) {
 
 	Array arr = build_mesh();
 
-	VS::get_singleton()->mesh_add_surface_from_arrays(mesh, VisualServer::PRIMITIVE_TRIANGLES, arr);
+	RS::get_singleton()->mesh_add_surface_from_arrays(mesh, RenderingServer::PRIMITIVE_TRIANGLES, arr);
 
 	if (_material.is_valid())
-		VS::get_singleton()->mesh_surface_set_material(mesh, 0, get_material()->get_rid());
+		RS::get_singleton()->mesh_surface_set_material(mesh, 0, get_material()->get_rid());
 }
 
 void MeshMerger::generate_normals(bool p_flip) {
-	_format = _format | VisualServer::ARRAY_FORMAT_NORMAL;
+	_format = _format | RenderingServer::ARRAY_FORMAT_NORMAL;
 
 	for (int i = 0; i < _indices.size(); i += 3) {
 		int i0 = _indices[i];

@@ -36,9 +36,9 @@ _FORCE_INLINE_ void TerrainMesherDefault::set_build_flags(const int flags) {
 	_build_flags = flags;
 
 	if ((_build_flags & TerrainChunkDefault::BUILD_FLAG_USE_LIGHTING) != 0) {
-		_format |= VisualServer::ARRAY_FORMAT_COLOR;
+		_format |= RenderingServer::ARRAY_FORMAT_COLOR;
 	} else {
-		_format ^= VisualServer::ARRAY_FORMAT_COLOR;
+		_format ^= RenderingServer::ARRAY_FORMAT_COLOR;
 	}
 }
 
@@ -173,7 +173,7 @@ void TerrainMesherDefault::_bake_liquid_colors(Ref<TerrainChunk> chunk) {
 TerrainMesherDefault::TerrainMesherDefault() {
 	_build_flags = TerrainChunkDefault::BUILD_FLAG_CREATE_COLLIDER | TerrainChunkDefault::BUILD_FLAG_CREATE_LODS;
 
-	_format = VisualServer::ARRAY_FORMAT_NORMAL | VisualServer::ARRAY_FORMAT_TEX_UV;
+	_format = RenderingServer::ARRAY_FORMAT_NORMAL | RenderingServer::ARRAY_FORMAT_TEX_UV;
 }
 
 TerrainMesherDefault::~TerrainMesherDefault() {

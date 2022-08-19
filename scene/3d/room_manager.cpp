@@ -88,7 +88,7 @@ bool RoomManager::static_rooms_get_active_and_loaded() {
 		if (active_room_manager->rooms_get_active()) {
 			Ref<World> world = active_room_manager->get_world();
 			RID scenario = world->get_scenario();
-			return active_room_manager->rooms_get_active() && VisualServer::get_singleton()->rooms_is_loaded(scenario);
+			return active_room_manager->rooms_get_active() && RenderingServer::get_singleton()->rooms_is_loaded(scenario);
 		}
 	}
 
@@ -187,7 +187,7 @@ void RoomManager::_preview_camera_update() {
 			if (changed) {
 				_pandemonium_camera_pos = camera_pos;
 				_pandemonium_camera_planes = planes;
-				VisualServer::get_singleton()->rooms_override_camera(scenario, true, camera_pos, &planes);
+				RenderingServer::get_singleton()->rooms_override_camera(scenario, true, camera_pos, &planes);
 			}
 		}
 	}
@@ -249,7 +249,7 @@ void RoomManager::_notification(int p_what) {
 					positions.push_back(cameras[n]->get_global_transform().origin);
 				}
 
-				VisualServer::get_singleton()->rooms_update_gameplay_monitor(scenario, positions);
+				RenderingServer::get_singleton()->rooms_update_gameplay_monitor(scenario, positions);
 			}
 
 		} break;
@@ -363,7 +363,7 @@ void RoomManager::set_preview_camera_path(const NodePath &p_path) {
 
 	// if we are turning camera override off, must inform visual server
 	if (!camera_on && is_inside_world() && get_world().is_valid() && get_world()->get_scenario().is_valid()) {
-		VisualServer::get_singleton()->rooms_override_camera(get_world()->get_scenario(), false, Vector3(), nullptr);
+		RenderingServer::get_singleton()->rooms_override_camera(get_world()->get_scenario(), false, Vector3(), nullptr);
 	}
 
 	// we couldn't resolve the path, let's set it to null
@@ -384,7 +384,7 @@ void RoomManager::set_portal_depth_limit(int p_limit) {
 	_settings_portal_depth_limit = p_limit;
 
 	if (is_inside_world() && get_world().is_valid()) {
-		VisualServer::get_singleton()->rooms_set_params(get_world()->get_scenario(), p_limit, _settings_roaming_expansion_margin);
+		RenderingServer::get_singleton()->rooms_set_params(get_world()->get_scenario(), p_limit, _settings_roaming_expansion_margin);
 	}
 }
 
@@ -392,7 +392,7 @@ void RoomManager::set_roaming_expansion_margin(real_t p_dist) {
 	_settings_roaming_expansion_margin = p_dist;
 
 	if (is_inside_world() && get_world().is_valid()) {
-		VisualServer::get_singleton()->rooms_set_params(get_world()->get_scenario(), _settings_portal_depth_limit, _settings_roaming_expansion_margin);
+		RenderingServer::get_singleton()->rooms_set_params(get_world()->get_scenario(), _settings_portal_depth_limit, _settings_roaming_expansion_margin);
 	}
 }
 
@@ -446,7 +446,7 @@ bool RoomManager::get_show_margins() const {
 
 void RoomManager::set_debug_sprawl(bool p_enable) {
 	if (is_inside_world() && get_world().is_valid()) {
-		VisualServer::get_singleton()->rooms_set_debug_feature(get_world()->get_scenario(), VisualServer::ROOMS_DEBUG_SPRAWL, p_enable);
+		RenderingServer::get_singleton()->rooms_set_debug_feature(get_world()->get_scenario(), RenderingServer::ROOMS_DEBUG_SPRAWL, p_enable);
 		_debug_sprawl = p_enable;
 	}
 }
@@ -489,7 +489,7 @@ void RoomManager::debug_print_line(String p_string, int p_priority) {
 
 void RoomManager::rooms_set_active(bool p_active) {
 	if (is_inside_world() && get_world().is_valid()) {
-		VisualServer::get_singleton()->rooms_set_active(get_world()->get_scenario(), p_active);
+		RenderingServer::get_singleton()->rooms_set_active(get_world()->get_scenario(), p_active);
 		_active = p_active;
 
 #ifdef TOOLS_ENABLED
@@ -526,14 +526,14 @@ String RoomManager::get_pvs_filename() const {
 void RoomManager::_rooms_changed(String p_reason) {
 	_rooms.clear();
 	if (is_inside_world() && get_world().is_valid()) {
-		VisualServer::get_singleton()->rooms_unload(get_world()->get_scenario(), p_reason);
+		RenderingServer::get_singleton()->rooms_unload(get_world()->get_scenario(), p_reason);
 	}
 }
 
 void RoomManager::rooms_clear() {
 	_rooms.clear();
 	if (is_inside_world() && get_world().is_valid()) {
-		VisualServer::get_singleton()->rooms_and_portals_clear(get_world()->get_scenario());
+		RenderingServer::get_singleton()->rooms_and_portals_clear(get_world()->get_scenario());
 	}
 }
 
@@ -633,7 +633,7 @@ void RoomManager::rooms_convert() {
 		} break;
 	}
 
-	VisualServer::get_singleton()->rooms_finalize(get_world()->get_scenario(), generate_pvs, pvs_cull, _settings_use_secondary_pvs, _settings_use_signals, _pvs_filename, _settings_use_simple_pvs, _settings_log_pvs_generation);
+	RenderingServer::get_singleton()->rooms_finalize(get_world()->get_scenario(), generate_pvs, pvs_cull, _settings_use_secondary_pvs, _settings_use_signals, _pvs_filename, _settings_use_simple_pvs, _settings_log_pvs_generation);
 
 	// refresh portal depth limit
 	set_portal_depth_limit(get_portal_depth_limit());
@@ -1007,7 +1007,7 @@ void RoomManager::_autolink_portals(Spatial *p_roomlist, LocalVector<Portal *> &
 				room->_portals.push_back(n);
 
 				// send complete link to visual server so the portal will be active in the visual server room system
-				VisualServer::get_singleton()->portal_link(portal->_portal_rid, source_room->_room_rid, room->_room_rid, portal->_settings_two_way);
+				RenderingServer::get_singleton()->portal_link(portal->_portal_rid, source_room->_room_rid, room->_room_rid, portal->_settings_two_way);
 
 				// make the portal internal if necessary
 				// (this prevents the portal plane clipping the room bound)
@@ -1085,7 +1085,7 @@ int RoomManager::_convert_roomgroup(Spatial *p_node, LocalVector<RoomGroup *> &r
 	roomgroup->clear();
 
 	// make sure the object ID is sent to the visual server
-	VisualServer::get_singleton()->roomgroup_prepare(roomgroup->_room_group_rid, roomgroup->get_instance_id());
+	RenderingServer::get_singleton()->roomgroup_prepare(roomgroup->_room_group_rid, roomgroup->get_instance_id());
 
 	// mark so as only to convert once
 	roomgroup->_conversion_tick = _conversion_tick;
@@ -1125,7 +1125,7 @@ void RoomManager::_convert_room(Spatial *p_node, LocalVector<Portal *> &r_portal
 		room->_roomgroups.push_back(p_roomgroup);
 		room->_room_priority = p_roomgroups[p_roomgroup]->_settings_priority;
 
-		VisualServer::get_singleton()->room_prepare(room->_room_rid, room->_room_priority);
+		RenderingServer::get_singleton()->room_prepare(room->_room_rid, room->_room_priority);
 	}
 
 	// add to the list of rooms
@@ -1310,7 +1310,7 @@ void RoomManager::_process_static(Room *p_room, Spatial *p_node, Vector<Vector3>
 			// lights (don't affect bound, so aren't added in first pass)
 			if (p_add_to_portal_renderer) {
 				Vector<Vector3> dummy_pts;
-				VisualServer::get_singleton()->room_add_instance(p_room->_room_rid, light->get_instance(), light->get_transformed_aabb(), dummy_pts);
+				RenderingServer::get_singleton()->room_add_instance(p_room->_room_rid, light->get_instance(), light->get_transformed_aabb(), dummy_pts);
 				convert_log("\t\t\tLIGT\t" + light->get_name());
 			}
 		}
@@ -1342,7 +1342,7 @@ void RoomManager::_process_static(Room *p_room, Spatial *p_node, Vector<Vector3>
 					if (p_add_to_portal_renderer) {
 						// We are sending the VisualInstance AABB rather than the manually calced AABB, maybe we don't need to calc the AABB.
 						// If this works okay we can maybe later remove the manual AABB calculation in _bound_findpoints_mesh_instance().
-						VisualServer::get_singleton()->room_add_instance(p_room->_room_rid, mi->get_instance(), mi->get_transformed_aabb().grow(mi->get_extra_cull_margin()), object_pts);
+						RenderingServer::get_singleton()->room_add_instance(p_room->_room_rid, mi->get_instance(), mi->get_transformed_aabb().grow(mi->get_extra_cull_margin()), object_pts);
 						added = true;
 					}
 				} // if bound found points
@@ -1379,7 +1379,7 @@ void RoomManager::_process_static(Room *p_room, Spatial *p_node, Vector<Vector3>
 						}
 
 						aabb.grow_by(gi->get_extra_cull_margin());
-						VisualServer::get_singleton()->room_add_instance(p_room->_room_rid, gi->get_instance(), aabb, object_pts);
+						RenderingServer::get_singleton()->room_add_instance(p_room->_room_rid, gi->get_instance(), aabb, object_pts);
 						added = true;
 					}
 				} // if bound found points
@@ -1400,7 +1400,7 @@ void RoomManager::_process_static(Room *p_room, Spatial *p_node, Vector<Vector3>
 
 			if (p_add_to_portal_renderer) {
 				AABB world_aabb = vn->get_global_transform().xform(vn->get_aabb());
-				VisualServer::get_singleton()->room_add_ghost(p_room->_room_rid, vn->get_instance_id(), world_aabb);
+				RenderingServer::get_singleton()->room_add_ghost(p_room->_room_rid, vn->get_instance_id(), world_aabb);
 				convert_log("\t\t\tVIS \t" + vn->get_name());
 			}
 		}
@@ -1585,7 +1585,7 @@ bool RoomManager::_convert_room_hull_final(Room *p_room, const LocalVector<Porta
 	p_room->_bound_mesh_data = md_simplified;
 
 	// send bound to visual server
-	VisualServer::get_singleton()->room_set_bound(p_room->_room_rid, p_room->get_instance_id(), p_room->_planes, p_room->_aabb, md_simplified.vertices);
+	RenderingServer::get_singleton()->room_set_bound(p_room->_room_rid, p_room->get_instance_id(), p_room->_planes, p_room->_aabb, md_simplified.vertices);
 
 	return true;
 }
@@ -1752,7 +1752,7 @@ bool RoomManager::_bound_findpoints_geom_instance(GeometryInstance *p_gi, Vector
 				continue;
 			}
 
-			const PoolVector<Vector3> &vertices = arrays[VS::ARRAY_VERTEX];
+			const PoolVector<Vector3> &vertices = arrays[RS::ARRAY_VERTEX];
 
 			int count = local_verts.size();
 			local_verts.resize(local_verts.size() + vertices.size());
@@ -1852,7 +1852,7 @@ bool RoomManager::_bound_findpoints_mesh_instance(MeshInstance *p_mi, Vector<Vec
 
 		success = true;
 
-		PoolVector<Vector3> vertices = arrays[VS::ARRAY_VERTEX];
+		PoolVector<Vector3> vertices = arrays[RS::ARRAY_VERTEX];
 
 		// convert to world space
 		for (int n = 0; n < vertices.size(); n++) {

@@ -84,7 +84,7 @@ void Camera::_update_camera() {
 		return;
 	}
 
-	VisualServer::get_singleton()->camera_set_transform(camera, get_camera_transform());
+	RenderingServer::get_singleton()->camera_set_transform(camera, get_camera_transform());
 
 	// here goes listener stuff
 	/*
@@ -104,7 +104,7 @@ void Camera::_update_camera() {
 }
 
 void Camera::_physics_interpolated_changed() {
-	VisualServer::get_singleton()->camera_set_interpolated(camera, is_physics_interpolated());
+	RenderingServer::get_singleton()->camera_set_interpolated(camera, is_physics_interpolated());
 }
 
 void Camera::_notification(int p_what) {
@@ -122,7 +122,7 @@ void Camera::_notification(int p_what) {
 			}
 
 			ERR_FAIL_COND(get_world().is_null());
-			VisualServer::get_singleton()->camera_set_scenario(camera, get_world()->get_scenario());
+			RenderingServer::get_singleton()->camera_set_scenario(camera, get_world()->get_scenario());
 
 		} break;
 		case NOTIFICATION_TRANSFORM_CHANGED: {
@@ -133,11 +133,11 @@ void Camera::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_RESET_PHYSICS_INTERPOLATION: {
 			if (is_physics_interpolated()) {
-				VisualServer::get_singleton()->camera_reset_physics_interpolation(camera);
+				RenderingServer::get_singleton()->camera_reset_physics_interpolation(camera);
 			}
 		} break;
 		case NOTIFICATION_EXIT_WORLD: {
-			VisualServer::get_singleton()->camera_set_scenario(camera, RID());
+			RenderingServer::get_singleton()->camera_set_scenario(camera, RID());
 
 			if (!get_tree()->is_node_being_edited(this)) {
 				if (is_current()) {
@@ -185,7 +185,7 @@ void Camera::set_perspective(float p_fovy_degrees, float p_z_near, float p_z_far
 	far = p_z_far;
 	mode = PROJECTION_PERSPECTIVE;
 
-	VisualServer::get_singleton()->camera_set_perspective(camera, fov, near, far);
+	RenderingServer::get_singleton()->camera_set_perspective(camera, fov, near, far);
 	update_gizmos();
 	force_change = false;
 }
@@ -201,7 +201,7 @@ void Camera::set_orthogonal(float p_size, float p_z_near, float p_z_far) {
 	mode = PROJECTION_ORTHOGONAL;
 	force_change = false;
 
-	VisualServer::get_singleton()->camera_set_orthogonal(camera, size, near, far);
+	RenderingServer::get_singleton()->camera_set_orthogonal(camera, size, near, far);
 	update_gizmos();
 }
 
@@ -218,7 +218,7 @@ void Camera::set_frustum(float p_size, Vector2 p_offset, float p_z_near, float p
 	mode = PROJECTION_FRUSTUM;
 	force_change = false;
 
-	VisualServer::get_singleton()->camera_set_frustum(camera, size, frustum_offset, near, far);
+	RenderingServer::get_singleton()->camera_set_frustum(camera, size, frustum_offset, near, far);
 	update_gizmos();
 }
 
@@ -418,12 +418,12 @@ void Camera::_camera_make_current(Node *p_camera) {
 
 
 	if (p_camera==this) {
-		VisualServer::get_singleton()->viewport_attach_camera(viewport_id,camera);
+		RenderingServer::get_singleton()->viewport_attach_camera(viewport_id,camera);
 		active=true;
 	} else {
 		if (active && p_camera==NULL) {
 			//detech camera because no one else will claim it
-			VisualServer::get_singleton()->viewport_attach_camera(viewport_id,RID());
+			RenderingServer::get_singleton()->viewport_attach_camera(viewport_id,RID());
 		}
 		active=false;
 	}
@@ -433,9 +433,9 @@ void Camera::_camera_make_current(Node *p_camera) {
 void Camera::set_environment(const Ref<Environment> &p_environment) {
 	environment = p_environment;
 	if (environment.is_valid()) {
-		VS::get_singleton()->camera_set_environment(camera, environment->get_rid());
+		RS::get_singleton()->camera_set_environment(camera, environment->get_rid());
 	} else {
-		VS::get_singleton()->camera_set_environment(camera, RID());
+		RS::get_singleton()->camera_set_environment(camera, RID());
 	}
 	_update_camera_mode();
 }
@@ -446,7 +446,7 @@ Ref<Environment> Camera::get_environment() const {
 
 void Camera::set_keep_aspect_mode(KeepAspect p_aspect) {
 	keep_aspect = p_aspect;
-	VisualServer::get_singleton()->camera_set_use_vertical_aspect(camera, p_aspect == KEEP_WIDTH);
+	RenderingServer::get_singleton()->camera_set_use_vertical_aspect(camera, p_aspect == KEEP_WIDTH);
 	_update_camera_mode();
 	_change_notify();
 }
@@ -602,7 +602,7 @@ void Camera::set_zfar(float p_zfar) {
 
 void Camera::set_cull_mask(uint32_t p_layers) {
 	layers = p_layers;
-	VisualServer::get_singleton()->camera_set_cull_mask(camera, layers);
+	RenderingServer::get_singleton()->camera_set_cull_mask(camera, layers);
 	_update_camera_mode();
 }
 
@@ -664,7 +664,7 @@ Vector3 Camera::get_doppler_tracked_velocity() const {
 	}
 }
 Camera::Camera() {
-	camera = RID_PRIME(VisualServer::get_singleton()->camera_create());
+	camera = RID_PRIME(RenderingServer::get_singleton()->camera_create());
 	size = 1;
 	fov = 0;
 	frustum_offset = Vector2();
@@ -679,7 +679,7 @@ Camera::Camera() {
 	layers = 0xfffff;
 	v_offset = 0;
 	h_offset = 0;
-	VisualServer::get_singleton()->camera_set_cull_mask(camera, layers);
+	RenderingServer::get_singleton()->camera_set_cull_mask(camera, layers);
 	//active=false;
 	velocity_tracker.instance();
 	doppler_tracking = DOPPLER_TRACKING_DISABLED;
@@ -688,7 +688,7 @@ Camera::Camera() {
 }
 
 Camera::~Camera() {
-	VisualServer::get_singleton()->free(camera);
+	RenderingServer::get_singleton()->free(camera);
 }
 
 ////////////////////////////////////////

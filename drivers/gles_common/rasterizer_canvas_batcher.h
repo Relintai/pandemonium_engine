@@ -785,7 +785,7 @@ PREAMBLE(void)::batch_canvas_render_items_begin(const Color &p_modulate, Rasteri
 	while (p_light) {
 		light_count++;
 
-		if ((p_light->z_min != VS::CANVAS_ITEM_Z_MIN) || (p_light->z_max != VS::CANVAS_ITEM_Z_MAX)) {
+		if ((p_light->z_min != RS::CANVAS_ITEM_Z_MIN) || (p_light->z_max != RS::CANVAS_ITEM_Z_MAX)) {
 			// prevent joining across z indices. This would have caused visual regressions
 			bdata.join_across_z_indices = false;
 		}
@@ -1398,11 +1398,11 @@ PREAMBLE(bool)::_prefill_line(RasterizerCanvas::Item::CommandLine *p_line, FillS
 //	switch (p_np->axis_x) {
 //		default:
 //			break;
-//		case VisualServer::NINE_PATCH_TILE: {
+//		case RenderingServer::NINE_PATCH_TILE: {
 //			r_source.size.x = p_np->rect.size.x;
 //			rect_flags = RasterizerCanvas::CANVAS_RECT_TILE;
 //		} break;
-//		case VisualServer::NINE_PATCH_TILE_FIT: {
+//		case RenderingServer::NINE_PATCH_TILE_FIT: {
 //			// prevent divide by zero (may never happen)
 //			if (r_source.size.x) {
 //				int units = p_np->rect.size.x / r_source.size.x;
@@ -1417,11 +1417,11 @@ PREAMBLE(bool)::_prefill_line(RasterizerCanvas::Item::CommandLine *p_line, FillS
 //	switch (p_np->axis_y) {
 //		default:
 //			break;
-//		case VisualServer::NINE_PATCH_TILE: {
+//		case RenderingServer::NINE_PATCH_TILE: {
 //			r_source.size.y = p_np->rect.size.y;
 //			rect_flags = RasterizerCanvas::CANVAS_RECT_TILE;
 //		} break;
-//		case VisualServer::NINE_PATCH_TILE_FIT: {
+//		case RenderingServer::NINE_PATCH_TILE_FIT: {
 //			// prevent divide by zero (may never happen)
 //			if (r_source.size.y) {
 //				int units = p_np->rect.size.y / r_source.size.y;
@@ -1684,7 +1684,7 @@ bool C_PREAMBLE::_prefill_polygon(RasterizerCanvas::Item::CommandPolygon *p_poly
 		batchtex.tex_pixel_size.to(r_fill_state.texpixel_size);
 
 		if (bdata.settings_uv_contract) {
-			r_fill_state.contract_uvs = (batchtex.flags & VS::TEXTURE_FLAG_FILTER) == 0;
+			r_fill_state.contract_uvs = (batchtex.flags & RS::TEXTURE_FLAG_FILTER) == 0;
 		}
 
 		// open new batch (this should never fail, it dynamically grows)
@@ -2022,7 +2022,7 @@ bool C_PREAMBLE::_prefill_rect(RasterizerCanvas::Item::CommandRect *rect, FillSt
 		batchtex.tex_pixel_size.to(r_fill_state.texpixel_size);
 
 		if (bdata.settings_uv_contract) {
-			r_fill_state.contract_uvs = (batchtex.flags & VS::TEXTURE_FLAG_FILTER) == 0;
+			r_fill_state.contract_uvs = (batchtex.flags & RS::TEXTURE_FLAG_FILTER) == 0;
 		}
 
 		// need to preserve texpixel_size between items
@@ -2341,7 +2341,7 @@ PREAMBLE(bool)::prefill_joined_item(FillState &r_fill_state, int &r_command_star
 			case RasterizerCanvas::Item::Command::TYPE_NINEPATCH: {
 				RasterizerCanvas::Item::CommandNinePatch *np = static_cast<RasterizerCanvas::Item::CommandNinePatch *>(command);
 
-				if ((np->axis_x != VisualServer::NINE_PATCH_STRETCH) || (np->axis_y != VisualServer::NINE_PATCH_STRETCH)) {
+				if ((np->axis_x != RenderingServer::NINE_PATCH_STRETCH) || (np->axis_y != RenderingServer::NINE_PATCH_STRETCH)) {
 					// not accelerated
 					_prefill_default_batch(r_fill_state, command_num, *p_item);
 					continue;
@@ -2664,7 +2664,7 @@ PREAMBLE(void)::record_items(RasterizerCanvas::Item *p_item_list, int p_z) {
 PREAMBLE(void)::join_sorted_items() {
 	sort_items();
 
-	int z = VS::CANVAS_ITEM_Z_MIN;
+	int z = RS::CANVAS_ITEM_Z_MIN;
 	_render_item_state.item_group_z = z;
 
 	for (int s = 0; s < bdata.sort_items.size(); s++) {
@@ -3217,7 +3217,7 @@ PREAMBLE(bool)::_detect_item_batch_break(RenderItemState &r_ris, RasterizerCanva
 				case RasterizerCanvas::Item::Command::TYPE_NINEPATCH: {
 					// do not handle tiled ninepatches, these can't be batched and need to use legacy method
 					RasterizerCanvas::Item::CommandNinePatch *np = static_cast<RasterizerCanvas::Item::CommandNinePatch *>(command);
-					if ((np->axis_x != VisualServer::NINE_PATCH_STRETCH) || (np->axis_y != VisualServer::NINE_PATCH_STRETCH)) {
+					if ((np->axis_x != RenderingServer::NINE_PATCH_STRETCH) || (np->axis_y != RenderingServer::NINE_PATCH_STRETCH)) {
 						return true;
 					}
 

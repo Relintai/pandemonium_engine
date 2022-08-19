@@ -319,7 +319,7 @@ class OS_Windows : public OS {
 #if defined(OPENGL_ENABLED)
 	ContextGL_Windows *gl_context;
 #endif
-	VisualServer *visual_server;
+	RenderingServer *visual_server;
 	int pressrc;
 	HINSTANCE hInstance; // Holds The Instance Of The Application
 	HWND hWnd;

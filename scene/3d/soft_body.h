@@ -34,7 +34,7 @@
 
 class SoftBody;
 
-class SoftBodyVisualServerHandler {
+class SoftBodyRenderingServerHandler {
 	friend class SoftBody;
 
 	RID mesh;
@@ -47,7 +47,7 @@ class SoftBodyVisualServerHandler {
 	PoolVector<uint8_t>::Write write_buffer;
 
 private:
-	SoftBodyVisualServerHandler();
+	SoftBodyRenderingServerHandler();
 	bool is_ready(RID p_mesh_rid) const { return mesh.is_valid() && mesh == p_mesh_rid; }
 	void prepare(RID p_mesh_rid, int p_surface);
 	void clear();
@@ -77,7 +77,7 @@ public:
 	};
 
 private:
-	SoftBodyVisualServerHandler visual_server_handler;
+	SoftBodyRenderingServerHandler visual_server_handler;
 
 	RID physics_rid;
 

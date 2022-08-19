@@ -145,7 +145,7 @@ void Terrain2DMesher::set_uv_margin(const Rect2 margin) {
 
 Array Terrain2DMesher::build_mesh() {
 	Array a;
-	a.resize(VisualServer::ARRAY_MAX);
+	a.resize(RenderingServer::ARRAY_MAX);
 
 	if (_vertices.size() == 0) {
 		//Nothing to do
@@ -163,10 +163,10 @@ Array Terrain2DMesher::build_mesh() {
 
 		w.release();
 
-		a[VisualServer::ARRAY_VERTEX] = array;
+		a[RenderingServer::ARRAY_VERTEX] = array;
 	}
 
-	if ((_format & VisualServer::ARRAY_FORMAT_COLOR) != 0) {
+	if ((_format & RenderingServer::ARRAY_FORMAT_COLOR) != 0) {
 		PoolVector<Color> array;
 		array.resize(_vertices.size());
 		PoolVector<Color>::Write w = array.write();
@@ -176,10 +176,10 @@ Array Terrain2DMesher::build_mesh() {
 		}
 
 		w.release();
-		a[VisualServer::ARRAY_COLOR] = array;
+		a[RenderingServer::ARRAY_COLOR] = array;
 	}
 
-	if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV) != 0) {
+	if ((_format & RenderingServer::ARRAY_FORMAT_TEX_UV) != 0) {
 		PoolVector<Vector2> array;
 		array.resize(_vertices.size());
 
@@ -191,7 +191,7 @@ Array Terrain2DMesher::build_mesh() {
 
 		w.release();
 
-		a[VisualServer::ARRAY_TEX_UV] = array;
+		a[RenderingServer::ARRAY_TEX_UV] = array;
 	}
 
 	if (_indices.size() > 0) {
@@ -204,7 +204,7 @@ Array Terrain2DMesher::build_mesh() {
 		}
 
 		w.release();
-		a[VisualServer::ARRAY_INDEX] = array;
+		a[RenderingServer::ARRAY_INDEX] = array;
 	}
 
 	return a;
@@ -213,7 +213,7 @@ Array Terrain2DMesher::build_mesh() {
 void Terrain2DMesher::build_mesh_into(RID mesh) {
 	ERR_FAIL_COND(mesh == RID());
 
-	VS::get_singleton()->mesh_clear(mesh);
+	RS::get_singleton()->mesh_clear(mesh);
 
 	if (_vertices.size() == 0) {
 		//Nothing to do
@@ -222,7 +222,7 @@ void Terrain2DMesher::build_mesh_into(RID mesh) {
 
 	Array arr = build_mesh();
 
-	VS::get_singleton()->mesh_add_surface_from_arrays(mesh, VisualServer::PRIMITIVE_TRIANGLES, arr);
+	RS::get_singleton()->mesh_add_surface_from_arrays(mesh, RenderingServer::PRIMITIVE_TRIANGLES, arr);
 }
 
 void Terrain2DMesher::remove_doubles() {
@@ -344,7 +344,7 @@ Array Terrain2DMesher::build_stored_mesh(const int index) {
 	ERR_FAIL_INDEX_V(index, _stored_meshes.size(), Array());
 
 	Array a;
-	a.resize(VisualServer::ARRAY_MAX);
+	a.resize(RenderingServer::ARRAY_MAX);
 
 	const Terrain2DMesherStoredMesh &md = _stored_meshes[index];
 
@@ -365,10 +365,10 @@ Array Terrain2DMesher::build_stored_mesh(const int index) {
 
 		w.release();
 
-		a[VisualServer::ARRAY_VERTEX] = array;
+		a[RenderingServer::ARRAY_VERTEX] = array;
 	}
 
-	if ((_format & VisualServer::ARRAY_FORMAT_COLOR) != 0) {
+	if ((_format & RenderingServer::ARRAY_FORMAT_COLOR) != 0) {
 		PoolVector<Color> array;
 		array.resize(md.vertices.size());
 		PoolVector<Color>::Write w = array.write();
@@ -378,10 +378,10 @@ Array Terrain2DMesher::build_stored_mesh(const int index) {
 		}
 
 		w.release();
-		a[VisualServer::ARRAY_COLOR] = array;
+		a[RenderingServer::ARRAY_COLOR] = array;
 	}
 
-	if ((_format & VisualServer::ARRAY_FORMAT_TEX_UV) != 0) {
+	if ((_format & RenderingServer::ARRAY_FORMAT_TEX_UV) != 0) {
 		PoolVector<Vector2> array;
 		array.resize(md.vertices.size());
 		PoolVector<Vector2>::Write w = array.write();
@@ -392,7 +392,7 @@ Array Terrain2DMesher::build_stored_mesh(const int index) {
 		}
 
 		w.release();
-		a[VisualServer::ARRAY_TEX_UV] = array;
+		a[RenderingServer::ARRAY_TEX_UV] = array;
 	}
 
 	if (md.indices.size() > 0) {
@@ -405,7 +405,7 @@ Array Terrain2DMesher::build_stored_mesh(const int index) {
 		}
 
 		w.release();
-		a[VisualServer::ARRAY_INDEX] = array;
+		a[RenderingServer::ARRAY_INDEX] = array;
 	}
 
 	return a;
@@ -420,7 +420,7 @@ Transform2D Terrain2DMesher::get_stored_mesh_transform(const int index) {
 void Terrain2DMesher::build_stored_mesh_into(const int index, RID mesh) {
 	ERR_FAIL_COND(mesh == RID());
 
-	VS::get_singleton()->mesh_clear(mesh);
+	RS::get_singleton()->mesh_clear(mesh);
 
 	if (_vertices.size() == 0) {
 		//Nothing to do
@@ -429,7 +429,7 @@ void Terrain2DMesher::build_stored_mesh_into(const int index, RID mesh) {
 
 	Array arr = build_stored_mesh(index);
 
-	VS::get_singleton()->mesh_add_surface_from_arrays(mesh, VisualServer::PRIMITIVE_TRIANGLES, arr);
+	RS::get_singleton()->mesh_add_surface_from_arrays(mesh, RenderingServer::PRIMITIVE_TRIANGLES, arr);
 }
 
 AABB Terrain2DMesher::calculate_stored_mesh_aabb(const int index) {

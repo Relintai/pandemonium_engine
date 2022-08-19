@@ -100,12 +100,12 @@ void Room::clear() {
 }
 
 Room::Room() {
-	_room_rid = RID_PRIME(VisualServer::get_singleton()->room_create());
+	_room_rid = RID_PRIME(RenderingServer::get_singleton()->room_create());
 }
 
 Room::~Room() {
 	if (_room_rid != RID()) {
-		VisualServer::get_singleton()->free(_room_rid);
+		RenderingServer::get_singleton()->free(_room_rid);
 	}
 }
 
@@ -268,10 +268,10 @@ void Room::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_WORLD: {
 			ERR_FAIL_COND(get_world().is_null());
-			VisualServer::get_singleton()->room_set_scenario(_room_rid, get_world()->get_scenario());
+			RenderingServer::get_singleton()->room_set_scenario(_room_rid, get_world()->get_scenario());
 		} break;
 		case NOTIFICATION_EXIT_WORLD: {
-			VisualServer::get_singleton()->room_set_scenario(_room_rid, RID());
+			RenderingServer::get_singleton()->room_set_scenario(_room_rid, RID());
 		} break;
 	}
 }

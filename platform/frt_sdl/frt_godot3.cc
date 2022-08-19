@@ -90,14 +90,14 @@ private:
 	bool quit_;
 	OS_FRT os_;
 	int video_driver_;
-	VisualServer *visual_server_;
+	RenderingServer *visual_server_;
 	void init_video() {
 		//if (video_driver_ == VIDEO_DRIVER_GLES2) {
 		frt_resolve_symbols_gles2(get_proc_address);
 		RasterizerGLES2::register_config();
 		RasterizerGLES2::make_current();
 		//} 
-		visual_server_ = memnew(VisualServerRaster);
+		visual_server_ = memnew(RenderingServerRaster);
 		visual_server_->init();
 	}
 	void cleanup_video() {

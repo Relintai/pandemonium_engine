@@ -20,7 +20,7 @@
 			<argument index="3" name="transpose" type="bool" default="false" />
 			<argument index="4" name="normal_map" type="Texture" default="null" />
 			<description>
-				Draws the texture using a [CanvasItem] with the [VisualServer] API at the specified [code]position[/code]. Equivalent to [method VisualServer.canvas_item_add_texture_rect] with a rect at [code]position[/code] and the size of this [Texture].
+				Draws the texture using a [CanvasItem] with the [RenderingServer] API at the specified [code]position[/code]. Equivalent to [method RenderingServer.canvas_item_add_texture_rect] with a rect at [code]position[/code] and the size of this [Texture].
 			</description>
 		</method>
 		<method name="draw_rect" qualifiers="const">
@@ -32,7 +32,7 @@
 			<argument index="4" name="transpose" type="bool" default="false" />
 			<argument index="5" name="normal_map" type="Texture" default="null" />
 			<description>
-				Draws the texture using a [CanvasItem] with the [VisualServer] API. Equivalent to [method VisualServer.canvas_item_add_texture_rect].
+				Draws the texture using a [CanvasItem] with the [RenderingServer] API. Equivalent to [method RenderingServer.canvas_item_add_texture_rect].
 			</description>
 		</method>
 		<method name="draw_rect_region" qualifiers="const">
@@ -45,7 +45,7 @@
 			<argument index="5" name="normal_map" type="Texture" default="null" />
 			<argument index="6" name="clip_uv" type="bool" default="true" />
 			<description>
-				Draws a part of the texture using a [CanvasItem] with the [VisualServer] API. Equivalent to [method VisualServer.canvas_item_add_texture_rect_region].
+				Draws a part of the texture using a [CanvasItem] with the [RenderingServer] API. Equivalent to [method RenderingServer.canvas_item_add_texture_rect_region].
 			</description>
 		</method>
 		<method name="get_data" qualifiers="const">

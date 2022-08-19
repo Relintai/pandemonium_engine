@@ -40,7 +40,7 @@ class ShaderTypes {
 		Vector<StringName> modes;
 	};
 
-	Map<VS::ShaderMode, Type> shader_modes;
+	Map<RS::ShaderMode, Type> shader_modes;
 
 	static ShaderTypes *singleton;
 
@@ -49,8 +49,8 @@ class ShaderTypes {
 public:
 	static ShaderTypes *get_singleton() { return singleton; }
 
-	const Map<StringName, ShaderLanguage::FunctionInfo> &get_functions(VS::ShaderMode p_mode);
-	const Vector<StringName> &get_modes(VS::ShaderMode p_mode);
+	const Map<StringName, ShaderLanguage::FunctionInfo> &get_functions(RS::ShaderMode p_mode);
+	const Vector<StringName> &get_modes(RS::ShaderMode p_mode);
 	const Set<String> &get_types();
 
 	ShaderTypes();

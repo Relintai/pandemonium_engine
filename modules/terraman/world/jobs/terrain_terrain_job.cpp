@@ -326,8 +326,8 @@ void TerrainTerrainJob::phase_terrain_mesh() {
 			for (int i = 0; i < count; ++i) {
 				mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, i);
 
-				if (VS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
-					VS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
+				if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
+					RS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
 			}
 		}
 	}
@@ -386,15 +386,15 @@ void TerrainTerrainJob::phase_terrain_mesh() {
 				mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_LIQUID, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, 0);
 			}
 
-			if (VS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
-				VS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
+			if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0)
+				RS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
 
 			if (should_return()) {
 				return;
 			}
 		}
 
-		VS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
+		RS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
 		Ref<Material> lmat;
 
@@ -405,7 +405,7 @@ void TerrainTerrainJob::phase_terrain_mesh() {
 		}
 
 		if (lmat.is_valid()) {
-			VisualServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
+			RenderingServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
 		}
 	}
 
@@ -493,7 +493,7 @@ void TerrainTerrainJob::step_type_normal() {
 
 	RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, _current_mesh);
 
-	VS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
+	RS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
 	Ref<Material> lmat;
 
@@ -504,7 +504,7 @@ void TerrainTerrainJob::step_type_normal() {
 	}
 
 	if (lmat.is_valid()) {
-		VisualServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
+		RenderingServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
 	}
 
 	++_current_mesh;
@@ -530,7 +530,7 @@ void TerrainTerrainJob::step_type_normal_lod() {
 
 	RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, _current_mesh);
 
-	VS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
+	RS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
 	Ref<Material> lmat;
 
@@ -541,7 +541,7 @@ void TerrainTerrainJob::step_type_normal_lod() {
 	}
 
 	if (lmat.is_valid()) {
-		VisualServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
+		RenderingServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
 	}
 
 	++_current_mesh;
@@ -552,9 +552,9 @@ void TerrainTerrainJob::step_type_drop_uv2() {
 
 	RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, _current_mesh);
 
-	temp_mesh_arr[VisualServer::ARRAY_TEX_UV2] = Variant();
+	temp_mesh_arr[RenderingServer::ARRAY_TEX_UV2] = Variant();
 
-	VisualServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
+	RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
 	Ref<Material> lmat;
 
@@ -565,7 +565,7 @@ void TerrainTerrainJob::step_type_drop_uv2() {
 	}
 
 	if (lmat.is_valid()) {
-		VisualServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
+		RenderingServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
 	}
 
 	++_current_mesh;
@@ -578,7 +578,7 @@ void TerrainTerrainJob::step_type_merge_verts() {
 	Ref<TerrainChunkDefault> chunk = _chunk;
 	RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, _current_mesh);
 
-	VisualServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
+	RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
 	Ref<Material> lmat;
 
@@ -589,7 +589,7 @@ void TerrainTerrainJob::step_type_merge_verts() {
 	}
 
 	if (lmat.is_valid()) {
-		VisualServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
+		RenderingServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
 	}
 
 	++_current_mesh;
@@ -618,14 +618,14 @@ void TerrainTerrainJob::step_type_bake_texture() {
 
 	if (tex.is_valid()) {
 		temp_mesh_arr = bake_mesh_array_uv(temp_mesh_arr, tex);
-		temp_mesh_arr[VisualServer::ARRAY_TEX_UV] = Variant();
+		temp_mesh_arr[RenderingServer::ARRAY_TEX_UV] = Variant();
 
 		RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, _current_mesh);
 
-		VisualServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
+		RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
 		if (lmat.is_valid()) {
-			VisualServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
+			RenderingServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
 		}
 	}
 
@@ -649,7 +649,7 @@ void TerrainTerrainJob::step_type_simplify_mesh() {
 
 		RID mesh_rid = chunk->mesh_rid_get_index(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_MESH, _current_mesh);
 
-		VisualServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
+		RenderingServer::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
 		Ref<Material> lmat;
 
@@ -660,7 +660,7 @@ void TerrainTerrainJob::step_type_simplify_mesh() {
 		}
 
 		if (lmat.is_valid()) {
-			VisualServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
+			RenderingServer::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
 		}
 
 		++_current_mesh;

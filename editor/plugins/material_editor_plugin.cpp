@@ -287,14 +287,14 @@ Ref<Resource> SpatialMaterialConversionPlugin::convert(const Ref<Resource> &p_re
 	Ref<Shader> shader;
 	shader.instance();
 
-	String code = VS::get_singleton()->shader_get_code(mat->get_shader_rid());
+	String code = RS::get_singleton()->shader_get_code(mat->get_shader_rid());
 
 	shader->set_code(code);
 
 	smat->set_shader(shader);
 
 	List<PropertyInfo> params;
-	VS::get_singleton()->shader_get_param_list(mat->get_shader_rid(), &params);
+	RS::get_singleton()->shader_get_param_list(mat->get_shader_rid(), &params);
 
 	for (List<PropertyInfo>::Element *E = params.front(); E; E = E->next()) {
 		// Texture parameter has to be treated specially since SpatialMaterial saved it
@@ -303,7 +303,7 @@ Ref<Resource> SpatialMaterialConversionPlugin::convert(const Ref<Resource> &p_re
 		if (texture.is_valid()) {
 			smat->set_shader_param(E->get().name, texture);
 		} else {
-			Variant value = VS::get_singleton()->material_get_param(mat->get_rid(), E->get().name);
+			Variant value = RS::get_singleton()->material_get_param(mat->get_rid(), E->get().name);
 			smat->set_shader_param(E->get().name, value);
 		}
 	}
@@ -331,17 +331,17 @@ Ref<Resource> ParticlesMaterialConversionPlugin::convert(const Ref<Resource> &p_
 	Ref<Shader> shader;
 	shader.instance();
 
-	String code = VS::get_singleton()->shader_get_code(mat->get_shader_rid());
+	String code = RS::get_singleton()->shader_get_code(mat->get_shader_rid());
 
 	shader->set_code(code);
 
 	smat->set_shader(shader);
 
 	List<PropertyInfo> params;
-	VS::get_singleton()->shader_get_param_list(mat->get_shader_rid(), &params);
+	RS::get_singleton()->shader_get_param_list(mat->get_shader_rid(), &params);
 
 	for (List<PropertyInfo>::Element *E = params.front(); E; E = E->next()) {
-		Variant value = VS::get_singleton()->material_get_param(mat->get_rid(), E->get().name);
+		Variant value = RS::get_singleton()->material_get_param(mat->get_rid(), E->get().name);
 		smat->set_shader_param(E->get().name, value);
 	}
 
@@ -368,17 +368,17 @@ Ref<Resource> CanvasItemMaterialConversionPlugin::convert(const Ref<Resource> &p
 	Ref<Shader> shader;
 	shader.instance();
 
-	String code = VS::get_singleton()->shader_get_code(mat->get_shader_rid());
+	String code = RS::get_singleton()->shader_get_code(mat->get_shader_rid());
 
 	shader->set_code(code);
 
 	smat->set_shader(shader);
 
 	List<PropertyInfo> params;
-	VS::get_singleton()->shader_get_param_list(mat->get_shader_rid(), &params);
+	RS::get_singleton()->shader_get_param_list(mat->get_shader_rid(), &params);
 
 	for (List<PropertyInfo>::Element *E = params.front(); E; E = E->next()) {
-		Variant value = VS::get_singleton()->material_get_param(mat->get_rid(), E->get().name);
+		Variant value = RS::get_singleton()->material_get_param(mat->get_rid(), E->get().name);
 		smat->set_shader_param(E->get().name, value);
 	}
 

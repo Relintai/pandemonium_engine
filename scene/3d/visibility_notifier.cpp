@@ -119,23 +119,23 @@ void VisibilityNotifier::_refresh_portal_mode() {
 	if (get_portal_mode() == PORTAL_MODE_ROAMING) {
 		if (is_inside_world()) {
 			if (_cull_instance_rid == RID()) {
-				_cull_instance_rid = RID_PRIME(VisualServer::get_singleton()->ghost_create());
+				_cull_instance_rid = RID_PRIME(RenderingServer::get_singleton()->ghost_create());
 			}
 
 			if (is_inside_world() && get_world().is_valid() && get_world()->get_scenario().is_valid() && is_inside_tree()) {
 				AABB world_aabb = get_global_transform().xform(aabb);
-				VisualServer::get_singleton()->ghost_set_scenario(_cull_instance_rid, get_world()->get_scenario(), get_instance_id(), world_aabb);
+				RenderingServer::get_singleton()->ghost_set_scenario(_cull_instance_rid, get_world()->get_scenario(), get_instance_id(), world_aabb);
 			}
 		} else {
 			if (_cull_instance_rid != RID()) {
-				VisualServer::get_singleton()->free(_cull_instance_rid);
+				RenderingServer::get_singleton()->free(_cull_instance_rid);
 				_cull_instance_rid = RID();
 			}
 		}
 
 	} else {
 		if (_cull_instance_rid != RID()) {
-			VisualServer::get_singleton()->free(_cull_instance_rid);
+			RenderingServer::get_singleton()->free(_cull_instance_rid);
 			_cull_instance_rid = RID();
 		}
 	}
@@ -160,7 +160,7 @@ void VisibilityNotifier::_notification(int p_what) {
 			}
 
 			if (_cull_instance_rid != RID()) {
-				VisualServer::get_singleton()->ghost_update(_cull_instance_rid, world_aabb);
+				RenderingServer::get_singleton()->ghost_update(_cull_instance_rid, world_aabb);
 			}
 		} break;
 		case NOTIFICATION_EXIT_WORLD: {
@@ -168,7 +168,7 @@ void VisibilityNotifier::_notification(int p_what) {
 			world->_remove_notifier(this);
 
 			if (_cull_instance_rid != RID()) {
-				VisualServer::get_singleton()->ghost_set_scenario(_cull_instance_rid, RID(), get_instance_id(), AABB());
+				RenderingServer::get_singleton()->ghost_set_scenario(_cull_instance_rid, RID(), get_instance_id(), AABB());
 			}
 		} break;
 		case NOTIFICATION_ENTER_GAMEPLAY: {
@@ -225,7 +225,7 @@ VisibilityNotifier::VisibilityNotifier() {
 
 VisibilityNotifier::~VisibilityNotifier() {
 	if (_cull_instance_rid != RID()) {
-		VisualServer::get_singleton()->free(_cull_instance_rid);
+		RenderingServer::get_singleton()->free(_cull_instance_rid);
 	}
 }
 

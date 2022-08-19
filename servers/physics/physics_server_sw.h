@@ -239,7 +239,7 @@ public:
 
 	virtual RID soft_body_create(bool p_init_sleeping = false) { return RID(); }
 
-	virtual void soft_body_update_visual_server(RID p_body, class SoftBodyVisualServerHandler *p_visual_server_handler) {}
+	virtual void soft_body_update_visual_server(RID p_body, class SoftBodyRenderingServerHandler *p_visual_server_handler) {}
 
 	virtual void soft_body_set_space(RID p_body, RID p_space) {}
 	virtual RID soft_body_get_space(RID p_body) const { return RID(); }

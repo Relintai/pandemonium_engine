@@ -1111,10 +1111,10 @@ bool Terrain2DChunk::is_safe_to_delete() {
 void Terrain2DChunk::setup_canvas_items_size(const int amount) {
 	if (amount > _canvas_items.size()) {
 		while (amount > _canvas_items.size()) {
-			RID ci = VisualServer::get_singleton()->canvas_item_create();
+			RID ci = RenderingServer::get_singleton()->canvas_item_create();
 
 			if (_voxel_world) {
-				VisualServer::get_singleton()->canvas_item_set_parent(ci, get_voxel_world()->get_canvas_item());
+				RenderingServer::get_singleton()->canvas_item_set_parent(ci, get_voxel_world()->get_canvas_item());
 			}
 
 			_canvas_items.push_back(ci);
@@ -1125,7 +1125,7 @@ void Terrain2DChunk::setup_canvas_items_size(const int amount) {
 		while (amount != _canvas_items.size()) {
 			RID ci = _canvas_items[_canvas_items.size() - 1];
 
-			VisualServer::get_singleton()->free(ci);
+			RenderingServer::get_singleton()->free(ci);
 
 			_canvas_items.resize(_canvas_items.size() - 1);
 		}
@@ -1209,7 +1209,7 @@ Terrain2DChunk::~Terrain2DChunk() {
 void Terrain2DChunk::_enter_tree() {
 	if (_voxel_world) {
 		for (int i = 0; i < _canvas_items.size(); ++i) {
-			VisualServer::get_singleton()->canvas_item_set_parent(_canvas_items[i], get_voxel_world()->get_canvas_item());
+			RenderingServer::get_singleton()->canvas_item_set_parent(_canvas_items[i], get_voxel_world()->get_canvas_item());
 		}
 	}
 
@@ -1313,12 +1313,12 @@ void Terrain2DChunk::_world_transform_changed() {
 	set_transform(t);
 
 	if (get_canvas_item_count() > 0) {
-		VisualServer::get_singleton()->canvas_item_set_transform(get_canvas_item(0), t);
+		RenderingServer::get_singleton()->canvas_item_set_transform(get_canvas_item(0), t);
 	}
 
 #if TOOLS_ENABLED
 	if (_debug_canvas_item.is_valid()) {
-		VisualServer::get_singleton()->canvas_item_set_transform(_debug_canvas_item, t);
+		RenderingServer::get_singleton()->canvas_item_set_transform(_debug_canvas_item, t);
 	}
 #endif
 }

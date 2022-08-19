@@ -107,7 +107,7 @@ static MessageQueue *message_queue = nullptr;
 static AudioServer *audio_server = nullptr;
 static PhysicsServer *physics_server = nullptr;
 static Physics2DServer *physics_2d_server = nullptr;
-static VisualServerCallbacks *visual_server_callbacks = nullptr;
+static RenderingServerCallbacks *visual_server_callbacks = nullptr;
 static NavigationServer *navigation_server = nullptr;
 static Navigation2DServer *navigation_2d_server = nullptr;
 
@@ -1360,7 +1360,7 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 	audio_server->init();
 
 	// and finally setup this property under visual_server
-	VisualServer::get_singleton()->set_render_loop_enabled(!disable_render_loop);
+	RenderingServer::get_singleton()->set_render_loop_enabled(!disable_render_loop);
 
 	register_core_singletons();
 
@@ -1391,7 +1391,7 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 	MAIN_PRINT("Main: Load Boot Image");
 
 	Color clear = GLOBAL_DEF("rendering/environment/default_clear_color", Color(0.3, 0.3, 0.3));
-	VisualServer::get_singleton()->set_default_clear_color(clear);
+	RenderingServer::get_singleton()->set_default_clear_color(clear);
 
 	if (show_logo) { //boot logo!
 		const bool boot_logo_image = GLOBAL_DEF("application/boot_splash/show_image", true);
@@ -1427,7 +1427,7 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 #endif
 		if (boot_logo.is_valid()) {
 			OS::get_singleton()->_msec_splash = OS::get_singleton()->get_ticks_msec();
-			VisualServer::get_singleton()->set_boot_image(boot_logo, boot_bg_color, boot_logo_scale, boot_logo_filter);
+			RenderingServer::get_singleton()->set_boot_image(boot_logo, boot_bg_color, boot_logo_scale, boot_logo_filter);
 
 		} else {
 #ifndef NO_DEFAULT_BOOT_LOGO
@@ -1439,9 +1439,9 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 #endif
 
 			MAIN_PRINT("Main: ClearColor");
-			VisualServer::get_singleton()->set_default_clear_color(boot_bg_color);
+			RenderingServer::get_singleton()->set_default_clear_color(boot_bg_color);
 			MAIN_PRINT("Main: Image");
-			VisualServer::get_singleton()->set_boot_image(splash, boot_bg_color, false);
+			RenderingServer::get_singleton()->set_boot_image(splash, boot_bg_color, false);
 #endif
 		}
 
@@ -1454,7 +1454,7 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 	}
 
 	MAIN_PRINT("Main: DCC");
-	VisualServer::get_singleton()->set_default_clear_color(GLOBAL_DEF("rendering/environment/default_clear_color", Color(0.3, 0.3, 0.3)));
+	RenderingServer::get_singleton()->set_default_clear_color(GLOBAL_DEF("rendering/environment/default_clear_color", Color(0.3, 0.3, 0.3)));
 
 	GLOBAL_DEF("application/config/icon", String());
 	ProjectSettings::get_singleton()->set_custom_property_info("application/config/icon",
@@ -1540,8 +1540,8 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 		script_debugger->profiling_start();
 	}
 
-	visual_server_callbacks = memnew(VisualServerCallbacks);
-	VisualServer::get_singleton()->callbacks_register(visual_server_callbacks);
+	visual_server_callbacks = memnew(RenderingServerCallbacks);
+	RenderingServer::get_singleton()->callbacks_register(visual_server_callbacks);
 
 	_start_success = true;
 
@@ -2258,25 +2258,25 @@ bool Main::iteration() {
 	visual_server_callbacks->flush();
 	message_queue->flush();
 
-	VisualServer::get_singleton()->sync(); //sync if still drawing from previous frames.
+	RenderingServer::get_singleton()->sync(); //sync if still drawing from previous frames.
 
-	if (OS::get_singleton()->can_draw() && VisualServer::get_singleton()->is_render_loop_enabled()) {
+	if (OS::get_singleton()->can_draw() && RenderingServer::get_singleton()->is_render_loop_enabled()) {
 		if ((!force_redraw_requested) && OS::get_singleton()->is_in_low_processor_usage_mode()) {
 			// We can choose whether to redraw as a result of any redraw request, or redraw only for vital requests.
-			VisualServer::ChangedPriority priority = (OS::get_singleton()->is_update_pending() ? VisualServer::CHANGED_PRIORITY_ANY : VisualServer::CHANGED_PRIORITY_HIGH);
+			RenderingServer::ChangedPriority priority = (OS::get_singleton()->is_update_pending() ? RenderingServer::CHANGED_PRIORITY_ANY : RenderingServer::CHANGED_PRIORITY_HIGH);
 
 			// Determine whether the scene has changed, to know whether to draw.
 			// If it has changed, inform the update pending system so it can keep
 			// particle systems etc updating when running in vital updates only mode.
-			bool has_changed = VisualServer::get_singleton()->has_changed(priority);
+			bool has_changed = RenderingServer::get_singleton()->has_changed(priority);
 			OS::get_singleton()->set_update_pending(has_changed);
 
 			if (has_changed) {
-				VisualServer::get_singleton()->draw(true, scaled_step); // flush visual commands
+				RenderingServer::get_singleton()->draw(true, scaled_step); // flush visual commands
 				Engine::get_singleton()->frames_drawn++;
 			}
 		} else {
-			VisualServer::get_singleton()->draw(true, scaled_step); // flush visual commands
+			RenderingServer::get_singleton()->draw(true, scaled_step); // flush visual commands
 			Engine::get_singleton()->frames_drawn++;
 			force_redraw_requested = false;
 		}
@@ -2400,7 +2400,7 @@ void Main::cleanup(bool p_force) {
 	ScriptServer::finish_languages();
 
 	// Sync pending commands that may have been queued from a different thread during ScriptServer finalization
-	VisualServer::get_singleton()->sync();
+	RenderingServer::get_singleton()->sync();
 
 #ifdef TOOLS_ENABLED
 	EditorNode::unregister_editor_types();

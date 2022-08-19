@@ -4,7 +4,7 @@
 		Parent of all visual 3D nodes.
 	</brief_description>
 	<description>
-		The [VisualInstance] is used to connect a resource to a visual representation. All visual 3D nodes inherit from the [VisualInstance]. In general, you should not access the [VisualInstance] properties directly as they are accessed and managed by the nodes that inherit from [VisualInstance]. [VisualInstance] is the node representation of the [VisualServer] instance.
+		The [VisualInstance] is used to connect a resource to a visual representation. All visual 3D nodes inherit from the [VisualInstance]. In general, you should not access the [VisualInstance] properties directly as they are accessed and managed by the nodes that inherit from [VisualInstance]. [VisualInstance] is the node representation of the [RenderingServer] instance.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -24,7 +24,7 @@
 		<method name="get_instance" qualifiers="const">
 			<return type="RID" />
 			<description>
-				Returns the RID of this instance. This RID is the same as the RID returned by [method VisualServer.instance_create]. This RID is needed if you want to call [VisualServer] functions directly on this [VisualInstance].
+				Returns the RID of this instance. This RID is the same as the RID returned by [method RenderingServer.instance_create]. This RID is needed if you want to call [RenderingServer] functions directly on this [VisualInstance].
 			</description>
 		</method>
 		<method name="get_layer_mask_bit" qualifiers="const">
@@ -45,7 +45,7 @@
 			<return type="void" />
 			<argument index="0" name="base" type="RID" />
 			<description>
-				Sets the resource that is instantiated by this [VisualInstance], which changes how the engine handles the [VisualInstance] under the hood. Equivalent to [method VisualServer.instance_set_base].
+				Sets the resource that is instantiated by this [VisualInstance], which changes how the engine handles the [VisualInstance] under the hood. Equivalent to [method RenderingServer.instance_set_base].
 			</description>
 		</method>
 		<method name="set_layer_mask_bit">

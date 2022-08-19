@@ -179,7 +179,7 @@ void OccluderShapePolygon::update_shape_to_visual_server() {
 
 	face.plane = Plane(Vector3(0, 0, 0), Vector3(0, 0, -1));
 
-	VisualServer::get_singleton()->occluder_resource_mesh_update(get_shape(), md);
+	RenderingServer::get_singleton()->occluder_resource_mesh_update(get_shape(), md);
 }
 
 void OccluderShapePolygon::set_two_way(bool p_two_way) {
@@ -224,7 +224,7 @@ void OccluderShapePolygon::_bind_methods() {
 
 OccluderShapePolygon::OccluderShapePolygon() {
 	if (get_shape().is_valid()) {
-		VisualServer::get_singleton()->occluder_resource_prepare(get_shape(), VisualServer::OCCLUDER_TYPE_MESH);
+		RenderingServer::get_singleton()->occluder_resource_prepare(get_shape(), RenderingServer::OCCLUDER_TYPE_MESH);
 	}
 
 	clear();

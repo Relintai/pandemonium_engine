@@ -32,15 +32,15 @@
 
 #include "core/object/object.h"
 
-void VisualServerCallbacks::lock() {
+void RenderingServerCallbacks::lock() {
 	mutex.lock();
 }
 
-void VisualServerCallbacks::unlock() {
+void RenderingServerCallbacks::unlock() {
 	mutex.unlock();
 }
 
-void VisualServerCallbacks::flush() {
+void RenderingServerCallbacks::flush() {
 	// should be ok without a lock ..
 	// is the most common case and should be quicker
 	if (!messages.size()) {

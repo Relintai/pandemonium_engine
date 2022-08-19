@@ -273,9 +273,9 @@ void World::set_environment(const Ref<Environment> &p_environment) {
 
 	environment = p_environment;
 	if (environment.is_valid()) {
-		VS::get_singleton()->scenario_set_environment(scenario, environment->get_rid());
+		RS::get_singleton()->scenario_set_environment(scenario, environment->get_rid());
 	} else {
-		VS::get_singleton()->scenario_set_environment(scenario, RID());
+		RS::get_singleton()->scenario_set_environment(scenario, RID());
 	}
 
 	emit_changed();
@@ -292,9 +292,9 @@ void World::set_fallback_environment(const Ref<Environment> &p_environment) {
 
 	fallback_environment = p_environment;
 	if (fallback_environment.is_valid()) {
-		VS::get_singleton()->scenario_set_fallback_environment(scenario, p_environment->get_rid());
+		RS::get_singleton()->scenario_set_fallback_environment(scenario, p_environment->get_rid());
 	} else {
-		VS::get_singleton()->scenario_set_fallback_environment(scenario, RID());
+		RS::get_singleton()->scenario_set_fallback_environment(scenario, RID());
 	}
 
 	emit_changed();
@@ -333,7 +333,7 @@ void World::_bind_methods() {
 
 World::World() {
 	space = RID_PRIME(PhysicsServer::get_singleton()->space_create());
-	scenario = RID_PRIME(VisualServer::get_singleton()->scenario_create());
+	scenario = RID_PRIME(RenderingServer::get_singleton()->scenario_create());
 
 	PhysicsServer::get_singleton()->space_set_active(space, true);
 	PhysicsServer::get_singleton()->area_set_param(space, PhysicsServer::AREA_PARAM_GRAVITY, GLOBAL_DEF("physics/3d/default_gravity", 9.8));
@@ -360,7 +360,7 @@ World::World() {
 
 World::~World() {
 	PhysicsServer::get_singleton()->free(space);
-	VisualServer::get_singleton()->free(scenario);
+	RenderingServer::get_singleton()->free(scenario);
 	NavigationServer::get_singleton()->free(navigation_map);
 
 #ifndef _3D_DISABLED

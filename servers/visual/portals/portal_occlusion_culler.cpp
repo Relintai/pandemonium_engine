@@ -277,7 +277,7 @@ void PortalOcclusionCuller::prepare_generic(PortalRenderer &p_portal_renderer, c
 	uint32_t polycount = 0;
 #endif
 
-	const PortalResources &resources = VSG::scene->get_portal_resources();
+	const PortalResources &resources = RSG::scene->get_portal_resources();
 
 	// find occluders
 	for (unsigned int o = 0; o < p_occluder_pool_ids.size(); o++) {

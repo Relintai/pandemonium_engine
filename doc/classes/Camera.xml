@@ -20,7 +20,7 @@
 		<method name="get_camera_rid" qualifiers="const">
 			<return type="RID" />
 			<description>
-				Returns the camera's RID from the [VisualServer].
+				Returns the camera's RID from the [RenderingServer].
 			</description>
 		</method>
 		<method name="get_camera_transform" qualifiers="const">

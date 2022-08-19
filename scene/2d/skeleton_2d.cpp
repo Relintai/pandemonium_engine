@@ -197,12 +197,12 @@ void Bone2D::_notification(int p_what) {
 		}
 
 		if (!editor_gizmo_rid.is_valid()) {
-			editor_gizmo_rid = VisualServer::get_singleton()->canvas_item_create();
-			VisualServer::get_singleton()->canvas_item_set_parent(editor_gizmo_rid, get_canvas_item());
-			VisualServer::get_singleton()->canvas_item_set_z_as_relative_to_parent(editor_gizmo_rid, true);
-			VisualServer::get_singleton()->canvas_item_set_z_index(editor_gizmo_rid, 10);
+			editor_gizmo_rid = RenderingServer::get_singleton()->canvas_item_create();
+			RenderingServer::get_singleton()->canvas_item_set_parent(editor_gizmo_rid, get_canvas_item());
+			RenderingServer::get_singleton()->canvas_item_set_z_as_relative_to_parent(editor_gizmo_rid, true);
+			RenderingServer::get_singleton()->canvas_item_set_z_index(editor_gizmo_rid, 10);
 		}
-		VisualServer::get_singleton()->canvas_item_clear(editor_gizmo_rid);
+		RenderingServer::get_singleton()->canvas_item_clear(editor_gizmo_rid);
 
 		if (!_editor_show_bone_gizmo) {
 			return;
@@ -211,7 +211,7 @@ void Bone2D::_notification(int p_what) {
 		// Undo scaling
 		Transform2D editor_gizmo_trans = Transform2D();
 		editor_gizmo_trans.set_scale(Vector2(1, 1) / get_global_scale());
-		VisualServer::get_singleton()->canvas_item_set_transform(editor_gizmo_rid, editor_gizmo_trans);
+		RenderingServer::get_singleton()->canvas_item_set_transform(editor_gizmo_rid, editor_gizmo_trans);
 
 		Color bone_color1 = EditorSettings::get_singleton()->get("editors/2d/bone_color1");
 		Color bone_color2 = EditorSettings::get_singleton()->get("editors/2d/bone_color2");
@@ -263,8 +263,8 @@ void Bone2D::_notification(int p_what) {
 				outline_colors.push_back(bone_outline_color);
 			}
 
-			VisualServer::get_singleton()->canvas_item_add_polygon(editor_gizmo_rid, bone_shape_outline, outline_colors);
-			VisualServer::get_singleton()->canvas_item_add_polygon(editor_gizmo_rid, bone_shape, colors);
+			RenderingServer::get_singleton()->canvas_item_add_polygon(editor_gizmo_rid, bone_shape_outline, outline_colors);
+			RenderingServer::get_singleton()->canvas_item_add_polygon(editor_gizmo_rid, bone_shape, colors);
 		}
 
 		if (!Bone2D_found) {
@@ -303,8 +303,8 @@ void Bone2D::_notification(int p_what) {
 				outline_colors.push_back(bone_outline_color);
 			}
 
-			VisualServer::get_singleton()->canvas_item_add_polygon(editor_gizmo_rid, bone_shape_outline, outline_colors);
-			VisualServer::get_singleton()->canvas_item_add_polygon(editor_gizmo_rid, bone_shape, colors);
+			RenderingServer::get_singleton()->canvas_item_add_polygon(editor_gizmo_rid, bone_shape_outline, outline_colors);
+			RenderingServer::get_singleton()->canvas_item_add_polygon(editor_gizmo_rid, bone_shape, colors);
 		}
 	}
 #endif // TOOLS_ENALBED
@@ -533,7 +533,7 @@ Bone2D::Bone2D() {
 Bone2D::~Bone2D() {
 #ifdef TOOLS_ENABLED
 	if (editor_gizmo_rid.is_valid()) {
-		VisualServer::get_singleton()->free(editor_gizmo_rid);
+		RenderingServer::get_singleton()->free(editor_gizmo_rid);
 	}
 #endif // TOOLS_ENABLED
 }
@@ -584,7 +584,7 @@ void Skeleton2D::_update_bone_setup() {
 	}
 
 	bone_setup_dirty = false;
-	VS::get_singleton()->skeleton_allocate(skeleton, bones.size(), true);
+	RS::get_singleton()->skeleton_allocate(skeleton, bones.size(), true);
 
 	bones.sort(); //sorty so they are always in the same order/index
 
@@ -640,7 +640,7 @@ void Skeleton2D::_update_transform() {
 
 	for (int i = 0; i < bones.size(); i++) {
 		Transform2D final_xform = bones[i].accum_transform * bones[i].rest_inverse;
-		VS::get_singleton()->skeleton_bone_set_transform_2d(skeleton, i, final_xform);
+		RS::get_singleton()->skeleton_bone_set_transform_2d(skeleton, i, final_xform);
 	}
 }
 
@@ -674,7 +674,7 @@ void Skeleton2D::_notification(int p_what) {
 	}
 
 	if (p_what == NOTIFICATION_TRANSFORM_CHANGED) {
-		VS::get_singleton()->skeleton_set_base_transform_2d(skeleton, get_global_transform());
+		RS::get_singleton()->skeleton_set_base_transform_2d(skeleton, get_global_transform());
 	} else if (p_what == NOTIFICATION_INTERNAL_PROCESS) {
 		if (modification_stack.is_valid()) {
 			execute_modifications(get_process_delta_time(), SkeletonModificationStack2D::EXECUTION_MODE::execution_mode_process);
@@ -808,10 +808,10 @@ Skeleton2D::Skeleton2D() {
 	bone_setup_dirty = true;
 	transform_dirty = true;
 
-	skeleton = RID_PRIME(VS::get_singleton()->skeleton_create());
+	skeleton = RID_PRIME(RS::get_singleton()->skeleton_create());
 	set_notify_transform(true);
 }
 
 Skeleton2D::~Skeleton2D() {
-	VS::get_singleton()->free(skeleton);
+	RS::get_singleton()->free(skeleton);
 }

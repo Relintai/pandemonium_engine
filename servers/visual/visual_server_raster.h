@@ -38,7 +38,7 @@
 #include "visual_server_scene.h"
 #include "visual_server_viewport.h"
 
-class VisualServerRaster : public VisualServer {
+class RenderingServerRaster : public RenderingServer {
 	enum {
 
 		MAX_INSTANCE_CULL = 8192,
@@ -145,7 +145,7 @@ public:
 	void m_name(m_type1 arg1, m_type2 arg2, m_type3 arg3, m_type4 arg4, m_type5 arg5, m_type6 arg6, m_type7 arg7, m_type8 arg8, m_type9 arg9, m_type10 arg10, m_type11 arg11, m_type12 arg12, m_type13 arg13) { DISPLAY_CHANGED BINDBASE->m_name(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13); }
 
 //from now on, calls forwarded to this singleton
-#define BINDBASE VSG::storage
+#define BINDBASE RSG::storage
 
 	/* TEXTURE API */
 
@@ -355,7 +355,7 @@ public:
 
 #undef BINDBASE
 //from now on, calls forwarded to this singleton
-#define BINDBASE VSG::scene
+#define BINDBASE RSG::scene
 
 	/* CAMERA API */
 
@@ -373,7 +373,7 @@ public:
 
 #undef BINDBASE
 //from now on, calls forwarded to this singleton
-#define BINDBASE VSG::viewport
+#define BINDBASE RSG::viewport
 
 	/* VIEWPORT TARGET API */
 
@@ -428,7 +428,7 @@ public:
 
 #undef BINDBASE
 //from now on, calls forwarded to this singleton
-#define BINDBASE VSG::scene_render
+#define BINDBASE RSG::scene_render
 
 	BIND0R(RID, environment_create)
 
@@ -458,7 +458,7 @@ public:
 	/* SCENARIO API */
 
 #undef BINDBASE
-#define BINDBASE VSG::scene
+#define BINDBASE RSG::scene
 
 	BIND0R(RID, scenario_create)
 
@@ -542,7 +542,7 @@ public:
 	BIND1RC(bool, rooms_is_loaded, RID)
 
 	// Callbacks
-	BIND1(callbacks_register, VisualServerCallbacks *)
+	BIND1(callbacks_register, RenderingServerCallbacks *)
 
 	// don't use these in a game!
 	BIND2RC(Vector<ObjectID>, instances_cull_aabb, const AABB &, RID)
@@ -559,7 +559,7 @@ public:
 
 #undef BINDBASE
 //from now on, calls forwarded to this singleton
-#define BINDBASE VSG::canvas
+#define BINDBASE RSG::canvas
 
 	/* CANVAS (2D) */
 
@@ -695,8 +695,8 @@ public:
 
 	virtual bool is_low_end() const;
 
-	VisualServerRaster();
-	~VisualServerRaster();
+	RenderingServerRaster();
+	~RenderingServerRaster();
 
 #undef DISPLAY_CHANGED
 

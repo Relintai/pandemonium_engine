@@ -54,7 +54,7 @@ class Spatial : public Node {
 	OBJ_CATEGORY("3D");
 
 	// optionally stored if we need to do interpolation
-	// client side (i.e. not in VisualServer) so interpolated transforms
+	// client side (i.e. not in RenderingServer) so interpolated transforms
 	// can be read back with get_global_transform_interpolated()
 	struct ClientPhysicsInterpolationData {
 		Transform global_xform_curr;

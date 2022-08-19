@@ -220,7 +220,7 @@ void CollisionObject::_shape_changed(const Ref<Shape> &p_shape) {
 			ShapeData::ShapeBase &s = shapes[i];
 			if (s.shape == p_shape && s.debug_shape.is_valid()) {
 				Ref<Mesh> mesh = s.shape->get_debug_mesh();
-				VS::get_singleton()->instance_set_base(s.debug_shape, mesh->get_rid());
+				RS::get_singleton()->instance_set_base(s.debug_shape, mesh->get_rid());
 			}
 		}
 	}
@@ -240,14 +240,14 @@ void CollisionObject::_update_debug_shapes() {
 				ShapeData::ShapeBase &s = shapes[i];
 				if (s.shape.is_null() || shapedata.disabled) {
 					if (s.debug_shape.is_valid()) {
-						VS::get_singleton()->free(s.debug_shape);
+						RS::get_singleton()->free(s.debug_shape);
 						s.debug_shape = RID();
 						--debug_shapes_count;
 					}
 				}
 				if (!s.debug_shape.is_valid()) {
-					s.debug_shape = RID_PRIME(VS::get_singleton()->instance_create());
-					VS::get_singleton()->instance_set_scenario(s.debug_shape, get_world()->get_scenario());
+					s.debug_shape = RID_PRIME(RS::get_singleton()->instance_create());
+					RS::get_singleton()->instance_set_scenario(s.debug_shape, get_world()->get_scenario());
 
 					if (!s.shape->is_connected("changed", this, "_shape_changed")) {
 						s.shape->connect("changed", this, "_shape_changed", varray(s.shape), CONNECT_DEFERRED);
@@ -257,9 +257,9 @@ void CollisionObject::_update_debug_shapes() {
 				}
 
 				Ref<Mesh> mesh = s.shape->get_debug_mesh();
-				VS::get_singleton()->instance_set_base(s.debug_shape, mesh->get_rid());
-				VS::get_singleton()->instance_set_transform(s.debug_shape, get_global_transform() * shapedata.xform);
-				VS::get_singleton()->instance_set_portal_mode(s.debug_shape, VisualServer::INSTANCE_PORTAL_MODE_GLOBAL);
+				RS::get_singleton()->instance_set_base(s.debug_shape, mesh->get_rid());
+				RS::get_singleton()->instance_set_transform(s.debug_shape, get_global_transform() * shapedata.xform);
+				RS::get_singleton()->instance_set_portal_mode(s.debug_shape, RenderingServer::INSTANCE_PORTAL_MODE_GLOBAL);
 			}
 		}
 	}
@@ -273,7 +273,7 @@ void CollisionObject::_clear_debug_shapes() {
 		for (int i = 0; i < shapedata.shapes.size(); i++) {
 			ShapeData::ShapeBase &s = shapes[i];
 			if (s.debug_shape.is_valid()) {
-				VS::get_singleton()->free(s.debug_shape);
+				RS::get_singleton()->free(s.debug_shape);
 				s.debug_shape = RID();
 				if (s.shape.is_valid() && s.shape->is_connected("changed", this, "_shape_changed")) {
 					s.shape->disconnect("changed", this, "_shape_changed");
@@ -292,7 +292,7 @@ void CollisionObject::_on_transform_changed() {
 			ShapeData &shapedata = E->get();
 			const ShapeData::ShapeBase *shapes = shapedata.shapes.ptr();
 			for (int i = 0; i < shapedata.shapes.size(); i++) {
-				VS::get_singleton()->instance_set_transform(shapes[i].debug_shape, debug_shape_old_transform * shapedata.xform);
+				RS::get_singleton()->instance_set_transform(shapes[i].debug_shape, debug_shape_old_transform * shapedata.xform);
 			}
 		}
 	}
@@ -499,7 +499,7 @@ void CollisionObject::shape_owner_remove_shape(uint32_t p_owner, int p_shape) {
 	}
 
 	if (s.debug_shape.is_valid()) {
-		VS::get_singleton()->free(s.debug_shape);
+		RS::get_singleton()->free(s.debug_shape);
 		if (s.shape.is_valid() && s.shape->is_connected("changed", this, "_shape_changed")) {
 			s.shape->disconnect("changed", this, "_shape_changed");
 		}

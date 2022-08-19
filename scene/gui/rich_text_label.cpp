@@ -642,7 +642,7 @@ int RichTextLabel::_process_line(ItemFrame *p_frame, const Vector2 &p_ofs, int &
 							const int line_y = y + lh - (line_descent - 2);
 							const Point2 from = p_ofs + Point2(align_ofs + wofs, line_y);
 							const Point2 to = from + Point2(line_length + (is_at_line_wrap ? 0 : align_spacing), 0);
-							VS::get_singleton()->canvas_item_add_line(ci, from, to, uc, line_width);
+							RS::get_singleton()->canvas_item_add_line(ci, from, to, uc, line_width);
 						}
 						if (strikethrough) {
 							Color uc = color;
@@ -651,7 +651,7 @@ int RichTextLabel::_process_line(ItemFrame *p_frame, const Vector2 &p_ofs, int &
 							const int line_y = y + lh - (line_ascent + line_descent) / 2;
 							const Point2 from = p_ofs + Point2(align_ofs + wofs, line_y);
 							const Point2 to = from + Point2(line_length + (is_at_line_wrap ? 0 : align_spacing), 0);
-							VS::get_singleton()->canvas_item_add_line(ci, from, to, uc, line_width);
+							RS::get_singleton()->canvas_item_add_line(ci, from, to, uc, line_width);
 						}
 					}
 
@@ -1038,9 +1038,9 @@ void RichTextLabel::_notification(int p_what) {
 			draw_style_box(get_theme_stylebox("normal"), Rect2(Point2(), size));
 
 			if (has_focus()) {
-				VisualServer::get_singleton()->canvas_item_add_clip_ignore(ci, true);
+				RenderingServer::get_singleton()->canvas_item_add_clip_ignore(ci, true);
 				draw_style_box(get_theme_stylebox("focus"), Rect2(Point2(), size));
-				VisualServer::get_singleton()->canvas_item_add_clip_ignore(ci, false);
+				RenderingServer::get_singleton()->canvas_item_add_clip_ignore(ci, false);
 			}
 
 			int ofs = vscroll->get_value();

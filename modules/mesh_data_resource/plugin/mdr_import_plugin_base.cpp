@@ -412,7 +412,7 @@ Vector<Ref<MeshDataResource>> MDRImportPluginBase::get_meshes(MeshInstance *mi, 
 }
 
 Ref<MeshDataResource> MDRImportPluginBase::get_mesh_arrays(Array &arrs, const Map<StringName, Variant> &p_options, MeshDataResource::ColliderType collider_type, Vector3 scale) {
-	ERR_FAIL_COND_V(arrs.size() < VS::ARRAY_MAX, Ref<MeshDataResource>());
+	ERR_FAIL_COND_V(arrs.size() < RS::ARRAY_MAX, Ref<MeshDataResource>());
 
 	Ref<ArrayMesh> mesh;
 	mesh.instance();
@@ -554,7 +554,7 @@ void MDRImportPluginBase::add_colliders(Ref<MeshDataResource> mdr, Ref<ArrayMesh
 Vector<Array> MDRImportPluginBase::split_mesh_bones(Ref<ArrayMesh> mesh) {
 	Array arr = mesh->surface_get_arrays(0);
 
-	PoolVector<int> barr = arr[VS::ARRAY_BONES];
+	PoolVector<int> barr = arr[RS::ARRAY_BONES];
 
 	Vector<Array> resarrs;
 
@@ -573,8 +573,8 @@ Vector<Array> MDRImportPluginBase::split_mesh_bones(Ref<ArrayMesh> mesh) {
 
 		Array carr = slice_mesh_bone(arr, bi);
 
-		if (carr.size() == VS::ARRAY_MAX) {
-			PoolVector<Vector3> vcarr = carr[VS::ARRAY_VERTEX];
+		if (carr.size() == RS::ARRAY_MAX) {
+			PoolVector<Vector3> vcarr = carr[RS::ARRAY_VERTEX];
 
 			if (vcarr.size() != 0)
 				resarrs.push_back(slice_mesh_bone(carr, bi));
@@ -586,18 +586,18 @@ Vector<Array> MDRImportPluginBase::split_mesh_bones(Ref<ArrayMesh> mesh) {
 
 Array MDRImportPluginBase::slice_mesh_bone(const Array &arr, int bone_idx) {
 	Array resarrs;
-	resarrs.resize(VS::ARRAY_MAX);
+	resarrs.resize(RS::ARRAY_MAX);
 
-	PoolVector<Vector3> varr = arr[VS::ARRAY_VERTEX];
-	PoolVector<Vector3> narr = arr[VS::ARRAY_NORMAL];
-	PoolVector<float> tarr = arr[VS::ARRAY_TANGENT];
-	PoolVector<Color> carr = arr[VS::ARRAY_COLOR];
-	PoolVector<Vector2> uvarr = arr[VS::ARRAY_TEX_UV];
-	PoolVector<Vector2> uv2arr = arr[VS::ARRAY_TEX_UV2];
-	PoolVector<int> barr = arr[VS::ARRAY_BONES];
-	PoolVector<float> warr = arr[VS::ARRAY_WEIGHTS];
+	PoolVector<Vector3> varr = arr[RS::ARRAY_VERTEX];
+	PoolVector<Vector3> narr = arr[RS::ARRAY_NORMAL];
+	PoolVector<float> tarr = arr[RS::ARRAY_TANGENT];
+	PoolVector<Color> carr = arr[RS::ARRAY_COLOR];
+	PoolVector<Vector2> uvarr = arr[RS::ARRAY_TEX_UV];
+	PoolVector<Vector2> uv2arr = arr[RS::ARRAY_TEX_UV2];
+	PoolVector<int> barr = arr[RS::ARRAY_BONES];
+	PoolVector<float> warr = arr[RS::ARRAY_WEIGHTS];
 
-	PoolVector<int> iarr = arr[VS::ARRAY_INDEX];
+	PoolVector<int> iarr = arr[RS::ARRAY_INDEX];
 
 	PoolVector<Vector3> rvarr;
 	PoolVector<Vector3> rnarr;
@@ -689,30 +689,30 @@ Array MDRImportPluginBase::slice_mesh_bone(const Array &arr, int bone_idx) {
 		riarr.push_back(new_indx);
 	}
 
-	resarrs[VS::ARRAY_VERTEX] = rvarr;
+	resarrs[RS::ARRAY_VERTEX] = rvarr;
 
 	if (rnarr.size() > 0)
-		resarrs[VS::ARRAY_NORMAL] = rnarr;
+		resarrs[RS::ARRAY_NORMAL] = rnarr;
 
 	if (rtarr.size() > 0)
-		resarrs[VS::ARRAY_TANGENT] = rtarr;
+		resarrs[RS::ARRAY_TANGENT] = rtarr;
 
 	if (rcarr.size() > 0)
-		resarrs[VS::ARRAY_COLOR] = rcarr;
+		resarrs[RS::ARRAY_COLOR] = rcarr;
 
 	if (ruvarr.size() > 0)
-		resarrs[VS::ARRAY_TEX_UV] = ruvarr;
+		resarrs[RS::ARRAY_TEX_UV] = ruvarr;
 
 	if (ruv2arr.size() > 0)
-		resarrs[VS::ARRAY_TEX_UV2] = ruv2arr;
+		resarrs[RS::ARRAY_TEX_UV2] = ruv2arr;
 
 	if (rbarr.size() > 0)
-		resarrs[VS::ARRAY_BONES] = rbarr;
+		resarrs[RS::ARRAY_BONES] = rbarr;
 
 	if (rwarr.size() > 0)
-		resarrs[VS::ARRAY_WEIGHTS] = rwarr;
+		resarrs[RS::ARRAY_WEIGHTS] = rwarr;
 
-	resarrs[VS::ARRAY_INDEX] = riarr;
+	resarrs[RS::ARRAY_INDEX] = riarr;
 
 	return resarrs;
 }
@@ -722,7 +722,7 @@ Array MDRImportPluginBase::apply_transforms(Array &array, const Map<StringName, 
 	Vector3 rotation = p_options["rotation"];
 	Vector3 scale = p_options["scale"];
 
-	ERR_FAIL_COND_V(array.size() < VS::ARRAY_MAX, array);
+	ERR_FAIL_COND_V(array.size() < RS::ARRAY_MAX, array);
 
 	Transform transform = Transform(Basis(rotation).scaled(scale), offset);
 

@@ -38,12 +38,12 @@
 #include "core/containers/rid.h"
 #include "core/variant/variant.h"
 
-class VisualServerCallbacks;
+class RenderingServerCallbacks;
 
-class VisualServer : public Object {
-	GDCLASS(VisualServer, Object);
+class RenderingServer : public Object {
+	GDCLASS(RenderingServer, Object);
 
-	static VisualServer *singleton;
+	static RenderingServer *singleton;
 
 	int mm_policy;
 	bool render_loop_enabled = true;
@@ -64,12 +64,12 @@ protected:
 
 	Error _surface_set_data(Array p_arrays, uint32_t p_format, uint32_t *p_offsets, uint32_t *p_stride, PoolVector<uint8_t> &r_vertex_array, int p_vertex_array_len, PoolVector<uint8_t> &r_index_array, int p_index_array_len, AABB &r_aabb, Vector<AABB> &r_bone_aabb);
 
-	static VisualServer *(*create_func)();
+	static RenderingServer *(*create_func)();
 	static void _bind_methods();
 
 public:
-	static VisualServer *get_singleton();
-	static VisualServer *create();
+	static RenderingServer *get_singleton();
+	static RenderingServer *create();
 	static Vector2 norm_to_oct(const Vector3 v);
 	static Vector2 tangent_to_oct(const Vector3 v, const float sign, const bool high_precision);
 	static Vector3 oct_to_norm(const Vector2 v);
@@ -816,7 +816,7 @@ public:
 	virtual void occluder_instance_set_active(RID p_occluder_instance, bool p_active) = 0;
 
 	virtual RID occluder_resource_create() = 0;
-	virtual void occluder_resource_prepare(RID p_occluder_resource, VisualServer::OccluderType p_type) = 0;
+	virtual void occluder_resource_prepare(RID p_occluder_resource, RenderingServer::OccluderType p_type) = 0;
 	virtual void occluder_resource_spheres_update(RID p_occluder_resource, const Vector<Plane> &p_spheres) = 0;
 	virtual void occluder_resource_mesh_update(RID p_occluder_resource, const Geometry::OccluderMeshData &p_mesh_data) = 0;
 
@@ -847,7 +847,7 @@ public:
 	virtual bool rooms_is_loaded(RID p_scenario) const = 0;
 
 	// callbacks are used to send messages back from the visual server to scene tree in thread friendly manner
-	virtual void callbacks_register(VisualServerCallbacks *p_callbacks) = 0;
+	virtual void callbacks_register(RenderingServerCallbacks *p_callbacks) = 0;
 
 	// don't use these in a game!
 	virtual Vector<ObjectID> instances_cull_aabb(const AABB &p_aabb, RID p_scenario = RID()) const = 0;
@@ -1088,55 +1088,55 @@ public:
 	void set_force_shader_fallbacks_enabled(bool p_enabled);
 #endif
 
-	VisualServer();
-	virtual ~VisualServer();
+	RenderingServer();
+	virtual ~RenderingServer();
 };
 
 // make variant understand the enums
-VARIANT_ENUM_CAST(VisualServer::CubeMapSide);
-VARIANT_ENUM_CAST(VisualServer::TextureFlags);
-VARIANT_ENUM_CAST(VisualServer::ShaderMode);
-VARIANT_ENUM_CAST(VisualServer::ArrayType);
-VARIANT_ENUM_CAST(VisualServer::ArrayFormat);
-VARIANT_ENUM_CAST(VisualServer::PrimitiveType);
-VARIANT_ENUM_CAST(VisualServer::BlendShapeMode);
-VARIANT_ENUM_CAST(VisualServer::LightType);
-VARIANT_ENUM_CAST(VisualServer::LightParam);
-VARIANT_ENUM_CAST(VisualServer::ViewportUpdateMode);
-VARIANT_ENUM_CAST(VisualServer::ViewportClearMode);
-VARIANT_ENUM_CAST(VisualServer::ViewportMSAA);
-VARIANT_ENUM_CAST(VisualServer::ViewportUsage);
-VARIANT_ENUM_CAST(VisualServer::ViewportRenderInfo);
-VARIANT_ENUM_CAST(VisualServer::ViewportDebugDraw);
-VARIANT_ENUM_CAST(VisualServer::ScenarioDebugMode);
-VARIANT_ENUM_CAST(VisualServer::InstanceType);
-VARIANT_ENUM_CAST(VisualServer::InstancePortalMode);
-VARIANT_ENUM_CAST(VisualServer::NinePatchAxisMode);
-VARIANT_ENUM_CAST(VisualServer::CanvasLightMode);
-VARIANT_ENUM_CAST(VisualServer::CanvasLightShadowFilter);
-VARIANT_ENUM_CAST(VisualServer::CanvasOccluderPolygonCullMode);
-VARIANT_ENUM_CAST(VisualServer::RenderInfo);
-VARIANT_ENUM_CAST(VisualServer::Features);
-VARIANT_ENUM_CAST(VisualServer::MultimeshTransformFormat);
-VARIANT_ENUM_CAST(VisualServer::MultimeshColorFormat);
-VARIANT_ENUM_CAST(VisualServer::MultimeshCustomDataFormat);
-VARIANT_ENUM_CAST(VisualServer::LightOmniShadowMode);
-VARIANT_ENUM_CAST(VisualServer::LightOmniShadowDetail);
-VARIANT_ENUM_CAST(VisualServer::LightDirectionalShadowMode);
-VARIANT_ENUM_CAST(VisualServer::LightDirectionalShadowDepthRangeMode);
-VARIANT_ENUM_CAST(VisualServer::ReflectionProbeUpdateMode);
-VARIANT_ENUM_CAST(VisualServer::EnvironmentBG);
-VARIANT_ENUM_CAST(VisualServer::EnvironmentDOFBlurQuality);
-VARIANT_ENUM_CAST(VisualServer::EnvironmentGlowBlendMode);
-VARIANT_ENUM_CAST(VisualServer::EnvironmentToneMapper);
-VARIANT_ENUM_CAST(VisualServer::EnvironmentSSAOQuality);
-VARIANT_ENUM_CAST(VisualServer::EnvironmentSSAOBlur);
-VARIANT_ENUM_CAST(VisualServer::InstanceFlags);
-VARIANT_ENUM_CAST(VisualServer::ShadowCastingSetting);
-VARIANT_ENUM_CAST(VisualServer::TextureType);
-VARIANT_ENUM_CAST(VisualServer::ChangedPriority);
+VARIANT_ENUM_CAST(RenderingServer::CubeMapSide);
+VARIANT_ENUM_CAST(RenderingServer::TextureFlags);
+VARIANT_ENUM_CAST(RenderingServer::ShaderMode);
+VARIANT_ENUM_CAST(RenderingServer::ArrayType);
+VARIANT_ENUM_CAST(RenderingServer::ArrayFormat);
+VARIANT_ENUM_CAST(RenderingServer::PrimitiveType);
+VARIANT_ENUM_CAST(RenderingServer::BlendShapeMode);
+VARIANT_ENUM_CAST(RenderingServer::LightType);
+VARIANT_ENUM_CAST(RenderingServer::LightParam);
+VARIANT_ENUM_CAST(RenderingServer::ViewportUpdateMode);
+VARIANT_ENUM_CAST(RenderingServer::ViewportClearMode);
+VARIANT_ENUM_CAST(RenderingServer::ViewportMSAA);
+VARIANT_ENUM_CAST(RenderingServer::ViewportUsage);
+VARIANT_ENUM_CAST(RenderingServer::ViewportRenderInfo);
+VARIANT_ENUM_CAST(RenderingServer::ViewportDebugDraw);
+VARIANT_ENUM_CAST(RenderingServer::ScenarioDebugMode);
+VARIANT_ENUM_CAST(RenderingServer::InstanceType);
+VARIANT_ENUM_CAST(RenderingServer::InstancePortalMode);
+VARIANT_ENUM_CAST(RenderingServer::NinePatchAxisMode);
+VARIANT_ENUM_CAST(RenderingServer::CanvasLightMode);
+VARIANT_ENUM_CAST(RenderingServer::CanvasLightShadowFilter);
+VARIANT_ENUM_CAST(RenderingServer::CanvasOccluderPolygonCullMode);
+VARIANT_ENUM_CAST(RenderingServer::RenderInfo);
+VARIANT_ENUM_CAST(RenderingServer::Features);
+VARIANT_ENUM_CAST(RenderingServer::MultimeshTransformFormat);
+VARIANT_ENUM_CAST(RenderingServer::MultimeshColorFormat);
+VARIANT_ENUM_CAST(RenderingServer::MultimeshCustomDataFormat);
+VARIANT_ENUM_CAST(RenderingServer::LightOmniShadowMode);
+VARIANT_ENUM_CAST(RenderingServer::LightOmniShadowDetail);
+VARIANT_ENUM_CAST(RenderingServer::LightDirectionalShadowMode);
+VARIANT_ENUM_CAST(RenderingServer::LightDirectionalShadowDepthRangeMode);
+VARIANT_ENUM_CAST(RenderingServer::ReflectionProbeUpdateMode);
+VARIANT_ENUM_CAST(RenderingServer::EnvironmentBG);
+VARIANT_ENUM_CAST(RenderingServer::EnvironmentDOFBlurQuality);
+VARIANT_ENUM_CAST(RenderingServer::EnvironmentGlowBlendMode);
+VARIANT_ENUM_CAST(RenderingServer::EnvironmentToneMapper);
+VARIANT_ENUM_CAST(RenderingServer::EnvironmentSSAOQuality);
+VARIANT_ENUM_CAST(RenderingServer::EnvironmentSSAOBlur);
+VARIANT_ENUM_CAST(RenderingServer::InstanceFlags);
+VARIANT_ENUM_CAST(RenderingServer::ShadowCastingSetting);
+VARIANT_ENUM_CAST(RenderingServer::TextureType);
+VARIANT_ENUM_CAST(RenderingServer::ChangedPriority);
 
-//typedef VisualServer VS; // makes it easier to use
-#define VS VisualServer
+//typedef RenderingServer RS; // makes it easier to use
+#define RS RenderingServer
 
 #endif

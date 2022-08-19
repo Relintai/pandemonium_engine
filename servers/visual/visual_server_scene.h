@@ -41,7 +41,7 @@
 #include "core/containers/self_list.h"
 #include "portals/portal_renderer.h"
 
-class VisualServerScene {
+class RenderingServerScene {
 public:
 	enum {
 
@@ -53,7 +53,7 @@ public:
 	};
 
 	uint64_t render_pass;
-	static VisualServerScene *singleton;
+	static RenderingServerScene *singleton;
 
 	/* CAMERA API */
 	struct Scenario;
@@ -254,7 +254,7 @@ public:
 	};
 
 	struct Scenario : RID_Data {
-		VS::ScenarioDebugMode debug;
+		RS::ScenarioDebugMode debug;
 		RID self;
 
 		SpatialPartitioningScene *sps;
@@ -299,7 +299,7 @@ public:
 
 	virtual RID scenario_create();
 
-	virtual void scenario_set_debug(RID p_scenario, VS::ScenarioDebugMode p_debug_mode);
+	virtual void scenario_set_debug(RID p_scenario, RS::ScenarioDebugMode p_debug_mode);
 	virtual void scenario_set_environment(RID p_scenario, RID p_environment);
 	virtual void scenario_set_fallback_environment(RID p_scenario, RID p_environment);
 	virtual void scenario_set_reflection_atlas_size(RID p_scenario, int p_size, int p_subdiv);
@@ -320,7 +320,7 @@ public:
 
 		// rooms & portals
 		OcclusionHandle occlusion_handle; // handle of instance in occlusion system (or 0)
-		VisualServer::InstancePortalMode portal_mode;
+		RenderingServer::InstancePortalMode portal_mode;
 
 		Scenario *scenario;
 		SelfList<Instance> scenario_item;
@@ -380,7 +380,7 @@ public:
 			visible = true;
 
 			occlusion_handle = 0;
-			portal_mode = VisualServer::InstancePortalMode::INSTANCE_PORTAL_MODE_STATIC;
+			portal_mode = RenderingServer::InstancePortalMode::INSTANCE_PORTAL_MODE_STATIC;
 
 			lod_begin = 0;
 			lod_end = 0;
@@ -512,11 +512,11 @@ public:
 	virtual void instance_set_extra_visibility_margin(RID p_instance, real_t p_margin);
 
 	// Portals
-	virtual void instance_set_portal_mode(RID p_instance, VisualServer::InstancePortalMode p_mode);
+	virtual void instance_set_portal_mode(RID p_instance, RenderingServer::InstancePortalMode p_mode);
 	bool _instance_get_transformed_aabb(RID p_instance, AABB &r_aabb);
 	bool _instance_get_transformed_aabb_for_occlusion(VSInstance *p_instance, AABB &r_aabb) const {
 		r_aabb = ((Instance *)p_instance)->transformed_aabb;
-		return ((Instance *)p_instance)->portal_mode != VisualServer::INSTANCE_PORTAL_MODE_GLOBAL;
+		return ((Instance *)p_instance)->portal_mode != RenderingServer::INSTANCE_PORTAL_MODE_GLOBAL;
 	}
 	void *_instance_get_from_rid(RID p_instance);
 	bool _instance_cull_check(VSInstance *p_instance, uint32_t p_cull_mask) const {
@@ -635,7 +635,7 @@ public:
 	virtual void occluder_instance_set_active(RID p_occluder_instance, bool p_active);
 
 	virtual RID occluder_resource_create();
-	virtual void occluder_resource_prepare(RID p_occluder_resource, VisualServer::OccluderType p_type);
+	virtual void occluder_resource_prepare(RID p_occluder_resource, RenderingServer::OccluderType p_type);
 	virtual void occluder_resource_spheres_update(RID p_occluder_resource, const Vector<Plane> &p_spheres);
 	virtual void occluder_resource_mesh_update(RID p_occluder_resource, const Geometry::OccluderMeshData &p_mesh_data);
 	virtual void set_use_occlusion_culling(bool p_enable);
@@ -672,14 +672,14 @@ public:
 	virtual void rooms_override_camera(RID p_scenario, bool p_override, const Vector3 &p_point, const Vector<Plane> *p_convex);
 	virtual void rooms_set_active(RID p_scenario, bool p_active);
 	virtual void rooms_set_params(RID p_scenario, int p_portal_depth_limit, real_t p_roaming_expansion_margin);
-	virtual void rooms_set_debug_feature(RID p_scenario, VisualServer::RoomsDebugFeature p_feature, bool p_active);
+	virtual void rooms_set_debug_feature(RID p_scenario, RenderingServer::RoomsDebugFeature p_feature, bool p_active);
 	virtual void rooms_update_gameplay_monitor(RID p_scenario, const Vector<Vector3> &p_camera_positions);
 
 	// don't use this in a game
 	virtual bool rooms_is_loaded(RID p_scenario) const;
 
-	virtual void callbacks_register(VisualServerCallbacks *p_callbacks);
-	VisualServerCallbacks *get_callbacks() const { return _visual_server_callbacks; }
+	virtual void callbacks_register(RenderingServerCallbacks *p_callbacks);
+	RenderingServerCallbacks *get_callbacks() const { return _visual_server_callbacks; }
 
 	// don't use these in a game!
 	virtual Vector<ObjectID> instances_cull_aabb(const AABB &p_aabb, RID p_scenario = RID()) const;
@@ -690,8 +690,8 @@ public:
 	int _cull_convex_from_point(Scenario *p_scenario, const Transform &p_cam_transform, const Projection &p_cam_projection, const Vector<Plane> &p_convex, Instance **p_result_array, int p_result_max, int32_t &r_previous_room_id_hint, uint32_t p_mask = 0xFFFFFFFF);
 	void _rooms_instance_update(Instance *p_instance, const AABB &p_aabb);
 
-	virtual void instance_geometry_set_flag(RID p_instance, VS::InstanceFlags p_flags, bool p_enabled);
-	virtual void instance_geometry_set_cast_shadows_setting(RID p_instance, VS::ShadowCastingSetting p_shadow_casting_setting);
+	virtual void instance_geometry_set_flag(RID p_instance, RS::InstanceFlags p_flags, bool p_enabled);
+	virtual void instance_geometry_set_cast_shadows_setting(RID p_instance, RS::ShadowCastingSetting p_shadow_casting_setting);
 	virtual void instance_geometry_set_material_override(RID p_instance, RID p_material);
 	virtual void instance_geometry_set_material_overlay(RID p_instance, RID p_material);
 
@@ -719,12 +719,12 @@ public:
 
 private:
 	bool _use_bvh;
-	VisualServerCallbacks *_visual_server_callbacks;
+	RenderingServerCallbacks *_visual_server_callbacks;
 	PortalResources _portal_resources;
 
 public:
-	VisualServerScene();
-	virtual ~VisualServerScene();
+	RenderingServerScene();
+	virtual ~RenderingServerScene();
 };
 
 #endif // VISUALSERVERSCENE_H

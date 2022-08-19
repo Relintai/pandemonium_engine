@@ -82,7 +82,7 @@ void CanvasItemMaterial::_update_shader() {
 		shader_map[current_key].users--;
 		if (shader_map[current_key].users == 0) {
 			//deallocate shader, as it's no longer in use
-			VS::get_singleton()->free(shader_map[current_key].shader);
+			RS::get_singleton()->free(shader_map[current_key].shader);
 			shader_map.erase(current_key);
 		}
 	}
@@ -90,7 +90,7 @@ void CanvasItemMaterial::_update_shader() {
 	current_key = mk;
 
 	if (shader_map.has(mk)) {
-		VS::get_singleton()->material_set_shader(_get_material(), shader_map[mk].shader);
+		RS::get_singleton()->material_set_shader(_get_material(), shader_map[mk].shader);
 		shader_map[mk].users++;
 		return;
 	}
@@ -160,14 +160,14 @@ void CanvasItemMaterial::_update_shader() {
 	}
 
 	ShaderData shader_data;
-	shader_data.shader = VS::get_singleton()->shader_create();
+	shader_data.shader = RS::get_singleton()->shader_create();
 	shader_data.users = 1;
 
-	VS::get_singleton()->shader_set_code(shader_data.shader, code);
+	RS::get_singleton()->shader_set_code(shader_data.shader, code);
 
 	shader_map[mk] = shader_data;
 
-	VS::get_singleton()->material_set_shader(_get_material(), shader_data.shader);
+	RS::get_singleton()->material_set_shader(_get_material(), shader_data.shader);
 }
 
 void CanvasItemMaterial::flush_changes() {
@@ -231,7 +231,7 @@ bool CanvasItemMaterial::get_particles_animation() const {
 
 void CanvasItemMaterial::set_particles_anim_h_frames(int p_frames) {
 	particles_anim_h_frames = p_frames;
-	VS::get_singleton()->material_set_param(_get_material(), shader_names->particles_anim_h_frames, p_frames);
+	RS::get_singleton()->material_set_param(_get_material(), shader_names->particles_anim_h_frames, p_frames);
 }
 
 int CanvasItemMaterial::get_particles_anim_h_frames() const {
@@ -239,7 +239,7 @@ int CanvasItemMaterial::get_particles_anim_h_frames() const {
 }
 void CanvasItemMaterial::set_particles_anim_v_frames(int p_frames) {
 	particles_anim_v_frames = p_frames;
-	VS::get_singleton()->material_set_param(_get_material(), shader_names->particles_anim_v_frames, p_frames);
+	RS::get_singleton()->material_set_param(_get_material(), shader_names->particles_anim_v_frames, p_frames);
 }
 
 int CanvasItemMaterial::get_particles_anim_v_frames() const {
@@ -248,7 +248,7 @@ int CanvasItemMaterial::get_particles_anim_v_frames() const {
 
 void CanvasItemMaterial::set_particles_anim_loop(bool p_loop) {
 	particles_anim_loop = p_loop;
-	VS::get_singleton()->material_set_param(_get_material(), shader_names->particles_anim_loop, particles_anim_loop);
+	RS::get_singleton()->material_set_param(_get_material(), shader_names->particles_anim_loop, particles_anim_loop);
 }
 
 bool CanvasItemMaterial::get_particles_anim_loop() const {
@@ -331,11 +331,11 @@ CanvasItemMaterial::~CanvasItemMaterial() {
 		shader_map[current_key].users--;
 		if (shader_map[current_key].users == 0) {
 			//deallocate shader, as it's no longer in use
-			VS::get_singleton()->free(shader_map[current_key].shader);
+			RS::get_singleton()->free(shader_map[current_key].shader);
 			shader_map.erase(current_key);
 		}
 
-		VS::get_singleton()->material_set_shader(_get_material(), RID());
+		RS::get_singleton()->material_set_shader(_get_material(), RID());
 	}
 
 	material_mutex.unlock();
@@ -378,7 +378,7 @@ bool CanvasItem::is_visible_in_tree() const {
 }
 
 void CanvasItem::_toplevel_visibility_changed(bool p_visible) {
-	VisualServer::get_singleton()->canvas_item_set_visible(canvas_item, visible && p_visible);
+	RenderingServer::get_singleton()->canvas_item_set_visible(canvas_item, visible && p_visible);
 
 	if (visible) {
 		_propagate_visibility_changed(p_visible);
@@ -417,7 +417,7 @@ void CanvasItem::set_visible(bool p_visible) {
 	}
 
 	visible = p_visible;
-	VisualServer::get_singleton()->canvas_item_set_visible(canvas_item, p_visible);
+	RenderingServer::get_singleton()->canvas_item_set_visible(canvas_item, p_visible);
 
 	if (!is_inside_tree()) {
 		return;
@@ -450,7 +450,7 @@ void CanvasItem::_update_callback() {
 		return;
 	}
 
-	VisualServer::get_singleton()->canvas_item_clear(get_canvas_item());
+	RenderingServer::get_singleton()->canvas_item_clear(get_canvas_item());
 	//todo updating = true - only allow drawing here
 	if (is_visible_in_tree()) { // Todo optimize this!!
 		if (first_draw) {
@@ -505,9 +505,9 @@ void CanvasItem::_toplevel_raise_self() {
 	}
 
 	if (canvas_layer) {
-		VisualServer::get_singleton()->canvas_item_set_draw_index(canvas_item, canvas_layer->get_sort_index());
+		RenderingServer::get_singleton()->canvas_item_set_draw_index(canvas_item, canvas_layer->get_sort_index());
 	} else {
-		VisualServer::get_singleton()->canvas_item_set_draw_index(canvas_item, get_viewport()->gui_get_canvas_sort_index());
+		RenderingServer::get_singleton()->canvas_item_set_draw_index(canvas_item, get_viewport()->gui_get_canvas_sort_index());
 	}
 }
 
@@ -535,7 +535,7 @@ void CanvasItem::_enter_canvas() {
 			canvas = get_viewport()->find_world_2d()->get_canvas();
 		}
 
-		VisualServer::get_singleton()->canvas_item_set_parent(canvas_item, canvas);
+		RenderingServer::get_singleton()->canvas_item_set_parent(canvas_item, canvas);
 
 		canvas_group = "root_canvas" + itos(canvas.get_id());
 
@@ -551,8 +551,8 @@ void CanvasItem::_enter_canvas() {
 	} else {
 		CanvasItem *parent = get_parent_item();
 		canvas_layer = parent->canvas_layer;
-		VisualServer::get_singleton()->canvas_item_set_parent(canvas_item, parent->get_canvas_item());
-		VisualServer::get_singleton()->canvas_item_set_draw_index(canvas_item, get_index());
+		RenderingServer::get_singleton()->canvas_item_set_parent(canvas_item, parent->get_canvas_item());
+		RenderingServer::get_singleton()->canvas_item_set_draw_index(canvas_item, get_index());
 	}
 
 	pending_update = false;
@@ -563,7 +563,7 @@ void CanvasItem::_enter_canvas() {
 
 void CanvasItem::_exit_canvas() {
 	notification(NOTIFICATION_EXIT_CANVAS, true); //reverse the notification
-	VisualServer::get_singleton()->canvas_item_set_parent(canvas_item, RID());
+	RenderingServer::get_singleton()->canvas_item_set_parent(canvas_item, RID());
 	canvas_layer = nullptr;
 	if (canvas_group != "") {
 		remove_from_group(canvas_group);
@@ -599,7 +599,7 @@ void CanvasItem::_notification(int p_what) {
 			} else {
 				CanvasItem *p = get_parent_item();
 				ERR_FAIL_COND(!p);
-				VisualServer::get_singleton()->canvas_item_set_draw_index(canvas_item, get_index());
+				RenderingServer::get_singleton()->canvas_item_set_draw_index(canvas_item, get_index());
 			}
 
 		} break;
@@ -642,7 +642,7 @@ void CanvasItem::set_modulate(const Color &p_modulate) {
 	}
 
 	modulate = p_modulate;
-	VisualServer::get_singleton()->canvas_item_set_modulate(canvas_item, modulate);
+	RenderingServer::get_singleton()->canvas_item_set_modulate(canvas_item, modulate);
 }
 Color CanvasItem::get_modulate() const {
 	return modulate;
@@ -683,7 +683,7 @@ void CanvasItem::set_self_modulate(const Color &p_self_modulate) {
 	}
 
 	self_modulate = p_self_modulate;
-	VisualServer::get_singleton()->canvas_item_set_self_modulate(canvas_item, self_modulate);
+	RenderingServer::get_singleton()->canvas_item_set_self_modulate(canvas_item, self_modulate);
 }
 Color CanvasItem::get_self_modulate() const {
 	return self_modulate;
@@ -695,7 +695,7 @@ void CanvasItem::set_light_mask(int p_light_mask) {
 	}
 
 	light_mask = p_light_mask;
-	VS::get_singleton()->canvas_item_set_light_mask(canvas_item, p_light_mask);
+	RS::get_singleton()->canvas_item_set_light_mask(canvas_item, p_light_mask);
 }
 
 int CanvasItem::get_light_mask() const {
@@ -712,7 +712,7 @@ void CanvasItem::item_rect_changed(bool p_size_changed) {
 void CanvasItem::draw_line(const Point2 &p_from, const Point2 &p_to, const Color &p_color, float p_width, bool p_antialiased) {
 	ERR_FAIL_COND_MSG(!drawing, "Drawing is only allowed inside NOTIFICATION_DRAW, _draw() function or 'draw' signal.");
 
-	VisualServer::get_singleton()->canvas_item_add_line(canvas_item, p_from, p_to, p_color, p_width, p_antialiased);
+	RenderingServer::get_singleton()->canvas_item_add_line(canvas_item, p_from, p_to, p_color, p_width, p_antialiased);
 }
 
 void CanvasItem::draw_polyline(const Vector<Point2> &p_points, const Color &p_color, float p_width, bool p_antialiased) {
@@ -720,13 +720,13 @@ void CanvasItem::draw_polyline(const Vector<Point2> &p_points, const Color &p_co
 
 	Vector<Color> colors;
 	colors.push_back(p_color);
-	VisualServer::get_singleton()->canvas_item_add_polyline(canvas_item, p_points, colors, p_width, p_antialiased);
+	RenderingServer::get_singleton()->canvas_item_add_polyline(canvas_item, p_points, colors, p_width, p_antialiased);
 }
 
 void CanvasItem::draw_polyline_colors(const Vector<Point2> &p_points, const Vector<Color> &p_colors, float p_width, bool p_antialiased) {
 	ERR_FAIL_COND_MSG(!drawing, "Drawing is only allowed inside NOTIFICATION_DRAW, _draw() function or 'draw' signal.");
 
-	VisualServer::get_singleton()->canvas_item_add_polyline(canvas_item, p_points, p_colors, p_width, p_antialiased);
+	RenderingServer::get_singleton()->canvas_item_add_polyline(canvas_item, p_points, p_colors, p_width, p_antialiased);
 }
 
 void CanvasItem::draw_arc(const Vector2 &p_center, float p_radius, float p_start_angle, float p_end_angle, int p_point_count, const Color &p_color, float p_width, bool p_antialiased) {
@@ -746,13 +746,13 @@ void CanvasItem::draw_multiline(const Vector<Point2> &p_points, const Color &p_c
 
 	Vector<Color> colors;
 	colors.push_back(p_color);
-	VisualServer::get_singleton()->canvas_item_add_multiline(canvas_item, p_points, colors, p_width, p_antialiased);
+	RenderingServer::get_singleton()->canvas_item_add_multiline(canvas_item, p_points, colors, p_width, p_antialiased);
 }
 
 void CanvasItem::draw_multiline_colors(const Vector<Point2> &p_points, const Vector<Color> &p_colors, float p_width, bool p_antialiased) {
 	ERR_FAIL_COND_MSG(!drawing, "Drawing is only allowed inside NOTIFICATION_DRAW, _draw() function or 'draw' signal.");
 
-	VisualServer::get_singleton()->canvas_item_add_multiline(canvas_item, p_points, p_colors, p_width, p_antialiased);
+	RenderingServer::get_singleton()->canvas_item_add_multiline(canvas_item, p_points, p_colors, p_width, p_antialiased);
 }
 
 void CanvasItem::draw_rect(const Rect2 &p_rect, const Color &p_color, bool p_filled, float p_width, bool p_antialiased) {
@@ -767,7 +767,7 @@ void CanvasItem::draw_rect(const Rect2 &p_rect, const Color &p_color, bool p_fil
 			WARN_PRINT("The draw_rect() \"antialiased\" argument has no effect when \"filled\" is \"true\".");
 		}
 
-		VisualServer::get_singleton()->canvas_item_add_rect(canvas_item, p_rect, p_color);
+		RenderingServer::get_singleton()->canvas_item_add_rect(canvas_item, p_rect, p_color);
 	} else {
 		// Thick lines are offset depending on their width to avoid partial overlapping.
 		// Thin lines don't require an offset, so don't apply one in this case
@@ -778,28 +778,28 @@ void CanvasItem::draw_rect(const Rect2 &p_rect, const Color &p_color, bool p_fil
 			offset = 0.0;
 		}
 
-		VisualServer::get_singleton()->canvas_item_add_line(
+		RenderingServer::get_singleton()->canvas_item_add_line(
 				canvas_item,
 				p_rect.position + Size2(-offset, 0),
 				p_rect.position + Size2(p_rect.size.width + offset, 0),
 				p_color,
 				p_width,
 				p_antialiased);
-		VisualServer::get_singleton()->canvas_item_add_line(
+		RenderingServer::get_singleton()->canvas_item_add_line(
 				canvas_item,
 				p_rect.position + Size2(p_rect.size.width, offset),
 				p_rect.position + Size2(p_rect.size.width, p_rect.size.height - offset),
 				p_color,
 				p_width,
 				p_antialiased);
-		VisualServer::get_singleton()->canvas_item_add_line(
+		RenderingServer::get_singleton()->canvas_item_add_line(
 				canvas_item,
 				p_rect.position + Size2(p_rect.size.width + offset, p_rect.size.height),
 				p_rect.position + Size2(-offset, p_rect.size.height),
 				p_color,
 				p_width,
 				p_antialiased);
-		VisualServer::get_singleton()->canvas_item_add_line(
+		RenderingServer::get_singleton()->canvas_item_add_line(
 				canvas_item,
 				p_rect.position + Size2(0, p_rect.size.height - offset),
 				p_rect.position + Size2(0, offset),
@@ -812,7 +812,7 @@ void CanvasItem::draw_rect(const Rect2 &p_rect, const Color &p_color, bool p_fil
 void CanvasItem::draw_circle(const Point2 &p_pos, float p_radius, const Color &p_color) {
 	ERR_FAIL_COND_MSG(!drawing, "Drawing is only allowed inside NOTIFICATION_DRAW, _draw() function or 'draw' signal.");
 
-	VisualServer::get_singleton()->canvas_item_add_circle(canvas_item, p_pos, p_radius, p_color);
+	RenderingServer::get_singleton()->canvas_item_add_circle(canvas_item, p_pos, p_radius, p_color);
 }
 
 void CanvasItem::draw_texture(const Ref<Texture> &p_texture, const Point2 &p_pos, const Color &p_modulate, const Ref<Texture> &p_normal_map) {
@@ -848,20 +848,20 @@ void CanvasItem::draw_primitive(const Vector<Point2> &p_points, const Vector<Col
 	RID rid = p_texture.is_valid() ? p_texture->get_rid() : RID();
 	RID rid_normal = p_normal_map.is_valid() ? p_normal_map->get_rid() : RID();
 
-	VisualServer::get_singleton()->canvas_item_add_primitive(canvas_item, p_points, p_colors, p_uvs, rid, p_width, rid_normal);
+	RenderingServer::get_singleton()->canvas_item_add_primitive(canvas_item, p_points, p_colors, p_uvs, rid, p_width, rid_normal);
 }
 void CanvasItem::draw_set_transform(const Point2 &p_offset, float p_rot, const Size2 &p_scale) {
 	ERR_FAIL_COND_MSG(!drawing, "Drawing is only allowed inside NOTIFICATION_DRAW, _draw() function or 'draw' signal.");
 
 	Transform2D xform(p_rot, p_offset);
 	xform.scale_basis(p_scale);
-	VisualServer::get_singleton()->canvas_item_add_set_transform(canvas_item, xform);
+	RenderingServer::get_singleton()->canvas_item_add_set_transform(canvas_item, xform);
 }
 
 void CanvasItem::draw_set_transform_matrix(const Transform2D &p_matrix) {
 	ERR_FAIL_COND_MSG(!drawing, "Drawing is only allowed inside NOTIFICATION_DRAW, _draw() function or 'draw' signal.");
 
-	VisualServer::get_singleton()->canvas_item_add_set_transform(canvas_item, p_matrix);
+	RenderingServer::get_singleton()->canvas_item_add_set_transform(canvas_item, p_matrix);
 }
 
 void CanvasItem::draw_polygon(const Vector<Point2> &p_points, const Vector<Color> &p_colors, const Vector<Point2> &p_uvs, Ref<Texture> p_texture, const Ref<Texture> &p_normal_map, bool p_antialiased) {
@@ -870,7 +870,7 @@ void CanvasItem::draw_polygon(const Vector<Point2> &p_points, const Vector<Color
 	RID rid = p_texture.is_valid() ? p_texture->get_rid() : RID();
 	RID rid_normal = p_normal_map.is_valid() ? p_normal_map->get_rid() : RID();
 
-	VisualServer::get_singleton()->canvas_item_add_polygon(canvas_item, p_points, p_colors, p_uvs, rid, rid_normal, p_antialiased);
+	RenderingServer::get_singleton()->canvas_item_add_polygon(canvas_item, p_points, p_colors, p_uvs, rid, rid_normal, p_antialiased);
 }
 
 void CanvasItem::draw_colored_polygon(const Vector<Point2> &p_points, const Color &p_color, const Vector<Point2> &p_uvs, Ref<Texture> p_texture, const Ref<Texture> &p_normal_map, bool p_antialiased) {
@@ -881,7 +881,7 @@ void CanvasItem::draw_colored_polygon(const Vector<Point2> &p_points, const Colo
 	RID rid = p_texture.is_valid() ? p_texture->get_rid() : RID();
 	RID rid_normal = p_normal_map.is_valid() ? p_normal_map->get_rid() : RID();
 
-	VisualServer::get_singleton()->canvas_item_add_polygon(canvas_item, p_points, colors, p_uvs, rid, rid_normal, p_antialiased);
+	RenderingServer::get_singleton()->canvas_item_add_polygon(canvas_item, p_points, colors, p_uvs, rid, rid_normal, p_antialiased);
 }
 
 void CanvasItem::draw_mesh(const Ref<Mesh> &p_mesh, const Ref<Texture> &p_texture, const Ref<Texture> &p_normal_map, const Transform2D &p_transform, const Color &p_modulate) {
@@ -889,13 +889,13 @@ void CanvasItem::draw_mesh(const Ref<Mesh> &p_mesh, const Ref<Texture> &p_textur
 	RID texture_rid = p_texture.is_valid() ? p_texture->get_rid() : RID();
 	RID normal_map_rid = p_normal_map.is_valid() ? p_normal_map->get_rid() : RID();
 
-	VisualServer::get_singleton()->canvas_item_add_mesh(canvas_item, p_mesh->get_rid(), p_transform, p_modulate, texture_rid, normal_map_rid);
+	RenderingServer::get_singleton()->canvas_item_add_mesh(canvas_item, p_mesh->get_rid(), p_transform, p_modulate, texture_rid, normal_map_rid);
 }
 void CanvasItem::draw_multimesh(const Ref<MultiMesh> &p_multimesh, const Ref<Texture> &p_texture, const Ref<Texture> &p_normal_map) {
 	ERR_FAIL_COND(p_multimesh.is_null());
 	RID texture_rid = p_texture.is_valid() ? p_texture->get_rid() : RID();
 	RID normal_map_rid = p_normal_map.is_valid() ? p_normal_map->get_rid() : RID();
-	VisualServer::get_singleton()->canvas_item_add_multimesh(canvas_item, p_multimesh->get_rid(), texture_rid, normal_map_rid);
+	RenderingServer::get_singleton()->canvas_item_add_multimesh(canvas_item, p_multimesh->get_rid(), texture_rid, normal_map_rid);
 }
 
 void CanvasItem::draw_string(const Ref<Font> &p_font, const Point2 &p_pos, const String &p_text, const Color &p_modulate, int p_clip_w) {
@@ -1009,7 +1009,7 @@ void CanvasItem::set_draw_behind_parent(bool p_enable) {
 		return;
 	}
 	behind = p_enable;
-	VisualServer::get_singleton()->canvas_item_set_draw_behind_parent(canvas_item, behind);
+	RenderingServer::get_singleton()->canvas_item_set_draw_behind_parent(canvas_item, behind);
 }
 
 bool CanvasItem::is_draw_behind_parent_enabled() const {
@@ -1022,13 +1022,13 @@ void CanvasItem::set_material(const Ref<Material> &p_material) {
 	if (material.is_valid()) {
 		rid = material->get_rid();
 	}
-	VS::get_singleton()->canvas_item_set_material(canvas_item, rid);
+	RS::get_singleton()->canvas_item_set_material(canvas_item, rid);
 	_change_notify(); //properties for material exposed
 }
 
 void CanvasItem::set_use_parent_material(bool p_use_parent_material) {
 	use_parent_material = p_use_parent_material;
-	VS::get_singleton()->canvas_item_set_use_parent_material(canvas_item, p_use_parent_material);
+	RS::get_singleton()->canvas_item_set_use_parent_material(canvas_item, p_use_parent_material);
 }
 
 bool CanvasItem::get_use_parent_material() const {
@@ -1278,7 +1278,7 @@ int CanvasItem::get_canvas_layer() const {
 
 CanvasItem::CanvasItem() :
 		xform_change(this) {
-	canvas_item = RID_PRIME(VisualServer::get_singleton()->canvas_item_create());
+	canvas_item = RID_PRIME(RenderingServer::get_singleton()->canvas_item_create());
 	visible = true;
 	pending_update = false;
 	modulate = Color(1, 1, 1, 1);
@@ -1300,5 +1300,5 @@ CanvasItem::CanvasItem() :
 }
 
 CanvasItem::~CanvasItem() {
-	VisualServer::get_singleton()->free(canvas_item);
+	RenderingServer::get_singleton()->free(canvas_item);
 }

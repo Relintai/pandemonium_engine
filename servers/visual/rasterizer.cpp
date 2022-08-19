@@ -270,7 +270,7 @@ RID RasterizerStorage::multimesh_create() {
 	return _multimesh_create();
 }
 
-void RasterizerStorage::multimesh_allocate(RID p_multimesh, int p_instances, VS::MultimeshTransformFormat p_transform_format, VS::MultimeshColorFormat p_color_format, VS::MultimeshCustomDataFormat p_data) {
+void RasterizerStorage::multimesh_allocate(RID p_multimesh, int p_instances, RS::MultimeshTransformFormat p_transform_format, RS::MultimeshColorFormat p_color_format, RS::MultimeshCustomDataFormat p_data) {
 	MMInterpolator *mmi = _multimesh_get_interpolator(p_multimesh);
 	if (mmi) {
 		mmi->_transform_format = p_transform_format;
@@ -278,15 +278,15 @@ void RasterizerStorage::multimesh_allocate(RID p_multimesh, int p_instances, VS:
 		mmi->_data_format = p_data;
 		mmi->_num_instances = p_instances;
 
-		mmi->_vf_size_xform = p_transform_format == VS::MULTIMESH_TRANSFORM_3D ? 12 : 8;
+		mmi->_vf_size_xform = p_transform_format == RS::MULTIMESH_TRANSFORM_3D ? 12 : 8;
 		switch (p_color_format) {
 			default: {
 				mmi->_vf_size_color = 0;
 			} break;
-			case VS::MULTIMESH_COLOR_8BIT: {
+			case RS::MULTIMESH_COLOR_8BIT: {
 				mmi->_vf_size_color = 1;
 			} break;
-			case VS::MULTIMESH_COLOR_FLOAT: {
+			case RS::MULTIMESH_COLOR_FLOAT: {
 				mmi->_vf_size_color = 4;
 			} break;
 		}
@@ -295,10 +295,10 @@ void RasterizerStorage::multimesh_allocate(RID p_multimesh, int p_instances, VS:
 			default: {
 				mmi->_vf_size_data = 0;
 			} break;
-			case VS::MULTIMESH_CUSTOM_DATA_8BIT: {
+			case RS::MULTIMESH_CUSTOM_DATA_8BIT: {
 				mmi->_vf_size_data = 1;
 			} break;
-			case VS::MULTIMESH_CUSTOM_DATA_FLOAT: {
+			case RS::MULTIMESH_CUSTOM_DATA_FLOAT: {
 				mmi->_vf_size_data = 4;
 			} break;
 		}

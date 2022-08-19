@@ -188,7 +188,7 @@ void PortalTracer::cull_statics_debug_sprawl(const VSRoom &p_room) {
 
 		// deal with dynamic stats
 		// if (stat.dynamic) {
-		// VSG::scene->_instance_get_transformed_aabb(stat.instance, stat.aabb);
+		// RSG::scene->_instance_get_transformed_aabb(stat.instance, stat.aabb);
 		// }
 
 		// set the visible bit if not set
@@ -208,7 +208,7 @@ void PortalTracer::cull_statics(const VSRoom &p_room, const LocalVector<Plane> &
 
 		// deal with dynamic stats
 		if (stat.dynamic) {
-			VSG::scene->_instance_get_transformed_aabb(stat.instance, stat.aabb);
+			RSG::scene->_instance_get_transformed_aabb(stat.instance, stat.aabb);
 		}
 
 		// estimate the radius .. for now
@@ -244,12 +244,12 @@ int PortalTracer::trace_globals(const LocalVector<Plane> &p_planes, VSInstance *
 
 #ifdef PORTAL_RENDERER_STORE_MOVING_RIDS
 			// debug check the instance is valid
-			void *vss_instance = VSG::scene->_instance_get_from_rid(moving.instance_rid);
+			void *vss_instance = RSG::scene->_instance_get_from_rid(moving.instance_rid);
 
 			if (vss_instance) {
 #endif
 				if (test_cull_inside(moving.exact_aabb, p_planes, false)) {
-					if (VSG::scene->_instance_cull_check(moving.instance, p_mask)) {
+					if (RSG::scene->_instance_cull_check(moving.instance, p_mask)) {
 						p_result_array[current_result++] = moving.instance;
 
 						// full up?
@@ -274,7 +274,7 @@ int PortalTracer::trace_globals(const LocalVector<Plane> &p_planes, VSInstance *
 		for (uint32_t n = 0; n < num_globals; n++) {
 			const PortalRenderer::Moving &moving = _portal_renderer->get_moving_global(n);
 
-			if (VSG::scene->_instance_cull_check(moving.instance, p_mask)) {
+			if (RSG::scene->_instance_cull_check(moving.instance, p_mask)) {
 				p_result_array[current_result++] = moving.instance;
 
 				// full up?
@@ -556,7 +556,7 @@ int PortalTracer::occlusion_cull(PortalRenderer &p_portal_renderer, const Vector
 		VSInstance *instance = p_result_array[n];
 
 		// this will return false for GLOBAL instances, so we don't occlusion cull gizmos
-		if (VSG::scene->_instance_get_transformed_aabb_for_occlusion(instance, bb)) {
+		if (RSG::scene->_instance_get_transformed_aabb_for_occlusion(instance, bb)) {
 			if (_occlusion_culler.cull_aabb(bb)) {
 				// remove from list with unordered swap from the end of list
 				p_result_array[n] = p_result_array[count - 1];

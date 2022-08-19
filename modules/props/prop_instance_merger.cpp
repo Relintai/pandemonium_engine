@@ -179,19 +179,19 @@ void PropInstanceMerger::meshes_create(const int num) {
 	free_meshes();
 
 	for (int i = 0; i < num; ++i) {
-		RID mesh_instance_rid = VS::get_singleton()->instance_create();
+		RID mesh_instance_rid = RS::get_singleton()->instance_create();
 
 		if (get_world().is_valid()) {
-			VS::get_singleton()->instance_set_scenario(mesh_instance_rid, get_world()->get_scenario());
+			RS::get_singleton()->instance_set_scenario(mesh_instance_rid, get_world()->get_scenario());
 		}
 
-		RID mesh_rid = VS::get_singleton()->mesh_create();
+		RID mesh_rid = RS::get_singleton()->mesh_create();
 
-		VS::get_singleton()->instance_set_base(mesh_instance_rid, mesh_rid);
+		RS::get_singleton()->instance_set_base(mesh_instance_rid, mesh_rid);
 
-		VS::get_singleton()->instance_set_transform(mesh_instance_rid, get_transform());
+		RS::get_singleton()->instance_set_transform(mesh_instance_rid, get_transform());
 
-		VS::get_singleton()->instance_set_visible(mesh_instance_rid, false);
+		RS::get_singleton()->instance_set_visible(mesh_instance_rid, false);
 
 		MeshEntry e;
 		e.mesh = mesh_rid;
@@ -329,7 +329,7 @@ void PropInstanceMerger::apply_lod_level() {
 		return;
 	}
 
-	VisualServer *vs = VisualServer::get_singleton();
+	RenderingServer *vs = RenderingServer::get_singleton();
 
 	for (int i = 0; i < _meshes.size(); ++i) {
 		RID mi = _meshes[i].mesh_instance;
@@ -366,28 +366,28 @@ void PropInstanceMerger::apply_lod_level() {
 
 void PropInstanceMerger::debug_mesh_allocate() {
 	if (_debug_mesh_rid == RID()) {
-		_debug_mesh_rid = VisualServer::get_singleton()->mesh_create();
+		_debug_mesh_rid = RenderingServer::get_singleton()->mesh_create();
 	}
 
 	if (_debug_mesh_instance == RID()) {
-		_debug_mesh_instance = VisualServer::get_singleton()->instance_create();
+		_debug_mesh_instance = RenderingServer::get_singleton()->instance_create();
 
 		if (get_world().is_valid()) {
-			VS::get_singleton()->instance_set_scenario(_debug_mesh_instance, get_world()->get_scenario());
+			RS::get_singleton()->instance_set_scenario(_debug_mesh_instance, get_world()->get_scenario());
 		}
 
-		VS::get_singleton()->instance_set_base(_debug_mesh_instance, _debug_mesh_rid);
-		VS::get_singleton()->instance_set_transform(_debug_mesh_instance, get_transform());
-		VS::get_singleton()->instance_set_visible(_debug_mesh_instance, true);
+		RS::get_singleton()->instance_set_base(_debug_mesh_instance, _debug_mesh_rid);
+		RS::get_singleton()->instance_set_transform(_debug_mesh_instance, get_transform());
+		RS::get_singleton()->instance_set_visible(_debug_mesh_instance, true);
 	}
 }
 void PropInstanceMerger::debug_mesh_free() {
 	if (_debug_mesh_instance != RID()) {
-		VisualServer::get_singleton()->free(_debug_mesh_instance);
+		RenderingServer::get_singleton()->free(_debug_mesh_instance);
 	}
 
 	if (_debug_mesh_rid != RID()) {
-		VisualServer::get_singleton()->free(_debug_mesh_rid);
+		RenderingServer::get_singleton()->free(_debug_mesh_rid);
 	}
 }
 bool PropInstanceMerger::debug_mesh_has() {
@@ -395,7 +395,7 @@ bool PropInstanceMerger::debug_mesh_has() {
 }
 void PropInstanceMerger::debug_mesh_clear() {
 	if (_debug_mesh_rid != RID()) {
-		VisualServer::get_singleton()->mesh_clear(_debug_mesh_rid);
+		RenderingServer::get_singleton()->mesh_clear(_debug_mesh_rid);
 	}
 }
 void PropInstanceMerger::debug_mesh_array_clear() {
@@ -419,13 +419,13 @@ void PropInstanceMerger::debug_mesh_send() {
 	SceneTree *st = SceneTree::get_singleton();
 
 	Array arr;
-	arr.resize(VisualServer::ARRAY_MAX);
-	arr[VisualServer::ARRAY_VERTEX] = _debug_mesh_array;
+	arr.resize(RenderingServer::ARRAY_MAX);
+	arr[RenderingServer::ARRAY_VERTEX] = _debug_mesh_array;
 
-	VisualServer::get_singleton()->mesh_add_surface_from_arrays(_debug_mesh_rid, VisualServer::PRIMITIVE_LINES, arr);
+	RenderingServer::get_singleton()->mesh_add_surface_from_arrays(_debug_mesh_rid, RenderingServer::PRIMITIVE_LINES, arr);
 
 	if (st) {
-		VisualServer::get_singleton()->mesh_surface_set_material(_debug_mesh_rid, 0, SceneTree::get_singleton()->get_debug_collision_material()->get_rid());
+		RenderingServer::get_singleton()->mesh_surface_set_material(_debug_mesh_rid, 0, SceneTree::get_singleton()->get_debug_collision_material()->get_rid());
 	}
 
 	debug_mesh_array_clear();
@@ -458,11 +458,11 @@ void PropInstanceMerger::free_meshes() {
 		MeshEntry &e = _meshes.write[i];
 
 		if (e.mesh_instance != rid) {
-			VS::get_singleton()->free(e.mesh_instance);
+			RS::get_singleton()->free(e.mesh_instance);
 		}
 
 		if (e.mesh != rid) {
-			VS::get_singleton()->free(e.mesh);
+			RS::get_singleton()->free(e.mesh);
 		}
 
 		e.mesh_instance = rid;
@@ -894,7 +894,7 @@ void PropInstanceMerger::_notification(int p_what) {
 
 			_last_transform = new_transform;
 
-			VisualServer *vs = VisualServer::get_singleton();
+			RenderingServer *vs = RenderingServer::get_singleton();
 
 			for (int i = 0; i < _meshes.size(); ++i) {
 				RID mir = _meshes[i].mesh_instance;

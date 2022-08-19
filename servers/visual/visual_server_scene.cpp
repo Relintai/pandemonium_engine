@@ -40,7 +40,7 @@
 
 /* CAMERA API */
 
-Transform VisualServerScene::Camera::get_transform() const {
+Transform RenderingServerScene::Camera::get_transform() const {
 	if (!is_currently_interpolated()) {
 		return transform;
 	}
@@ -50,12 +50,12 @@ Transform VisualServerScene::Camera::get_transform() const {
 	return final;
 }
 
-RID VisualServerScene::camera_create() {
+RID RenderingServerScene::camera_create() {
 	Camera *camera = memnew(Camera);
 	return camera_owner.make_rid(camera);
 }
 
-void VisualServerScene::camera_set_scenario(RID p_camera, RID p_scenario) {
+void RenderingServerScene::camera_set_scenario(RID p_camera, RID p_scenario) {
 	Camera *camera = camera_owner.get(p_camera);
 	ERR_FAIL_COND(!camera);
 
@@ -74,7 +74,7 @@ void VisualServerScene::camera_set_scenario(RID p_camera, RID p_scenario) {
 	}
 }
 
-void VisualServerScene::camera_set_perspective(RID p_camera, float p_fovy_degrees, float p_z_near, float p_z_far) {
+void RenderingServerScene::camera_set_perspective(RID p_camera, float p_fovy_degrees, float p_z_near, float p_z_far) {
 	Camera *camera = camera_owner.get(p_camera);
 	ERR_FAIL_COND(!camera);
 	camera->type = Camera::PERSPECTIVE;
@@ -83,7 +83,7 @@ void VisualServerScene::camera_set_perspective(RID p_camera, float p_fovy_degree
 	camera->zfar = p_z_far;
 }
 
-void VisualServerScene::camera_set_orthogonal(RID p_camera, float p_size, float p_z_near, float p_z_far) {
+void RenderingServerScene::camera_set_orthogonal(RID p_camera, float p_size, float p_z_near, float p_z_far) {
 	Camera *camera = camera_owner.get(p_camera);
 	ERR_FAIL_COND(!camera);
 	camera->type = Camera::ORTHOGONAL;
@@ -92,7 +92,7 @@ void VisualServerScene::camera_set_orthogonal(RID p_camera, float p_size, float 
 	camera->zfar = p_z_far;
 }
 
-void VisualServerScene::camera_set_frustum(RID p_camera, float p_size, Vector2 p_offset, float p_z_near, float p_z_far) {
+void RenderingServerScene::camera_set_frustum(RID p_camera, float p_size, Vector2 p_offset, float p_z_near, float p_z_far) {
 	Camera *camera = camera_owner.get(p_camera);
 	ERR_FAIL_COND(!camera);
 	camera->type = Camera::FRUSTUM;
@@ -102,7 +102,7 @@ void VisualServerScene::camera_set_frustum(RID p_camera, float p_size, Vector2 p
 	camera->zfar = p_z_far;
 }
 
-void VisualServerScene::camera_reset_physics_interpolation(RID p_camera) {
+void RenderingServerScene::camera_reset_physics_interpolation(RID p_camera) {
 	Camera *camera = camera_owner.get(p_camera);
 	ERR_FAIL_COND(!camera);
 
@@ -111,13 +111,13 @@ void VisualServerScene::camera_reset_physics_interpolation(RID p_camera) {
 	}
 }
 
-void VisualServerScene::camera_set_interpolated(RID p_camera, bool p_interpolated) {
+void RenderingServerScene::camera_set_interpolated(RID p_camera, bool p_interpolated) {
 	Camera *camera = camera_owner.get(p_camera);
 	ERR_FAIL_COND(!camera);
 	camera->interpolated = p_interpolated;
 }
 
-void VisualServerScene::camera_set_transform(RID p_camera, const Transform &p_transform) {
+void RenderingServerScene::camera_set_transform(RID p_camera, const Transform &p_transform) {
 	Camera *camera = camera_owner.get(p_camera);
 	ERR_FAIL_COND(!camera);
 
@@ -134,20 +134,20 @@ void VisualServerScene::camera_set_transform(RID p_camera, const Transform &p_tr
 	}
 }
 
-void VisualServerScene::camera_set_cull_mask(RID p_camera, uint32_t p_layers) {
+void RenderingServerScene::camera_set_cull_mask(RID p_camera, uint32_t p_layers) {
 	Camera *camera = camera_owner.get(p_camera);
 	ERR_FAIL_COND(!camera);
 
 	camera->visible_layers = p_layers;
 }
 
-void VisualServerScene::camera_set_environment(RID p_camera, RID p_env) {
+void RenderingServerScene::camera_set_environment(RID p_camera, RID p_env) {
 	Camera *camera = camera_owner.get(p_camera);
 	ERR_FAIL_COND(!camera);
 	camera->env = p_env;
 }
 
-void VisualServerScene::camera_set_use_vertical_aspect(RID p_camera, bool p_enable) {
+void RenderingServerScene::camera_set_use_vertical_aspect(RID p_camera, bool p_enable) {
 	Camera *camera = camera_owner.get(p_camera);
 	ERR_FAIL_COND(!camera);
 	camera->vaspect = p_enable;
@@ -155,21 +155,21 @@ void VisualServerScene::camera_set_use_vertical_aspect(RID p_camera, bool p_enab
 
 /* SPATIAL PARTITIONING */
 
-VisualServerScene::SpatialPartitioningScene_BVH::SpatialPartitioningScene_BVH() {
+RenderingServerScene::SpatialPartitioningScene_BVH::SpatialPartitioningScene_BVH() {
 	_bvh.params_set_thread_safe(GLOBAL_GET("rendering/threads/thread_safe_bvh"));
 	_bvh.params_set_pairing_expansion(GLOBAL_GET("rendering/quality/spatial_partitioning/bvh_collision_margin"));
 
 	_dummy_cull_object = memnew(Instance);
 }
 
-VisualServerScene::SpatialPartitioningScene_BVH::~SpatialPartitioningScene_BVH() {
+RenderingServerScene::SpatialPartitioningScene_BVH::~SpatialPartitioningScene_BVH() {
 	if (_dummy_cull_object) {
 		memdelete(_dummy_cull_object);
 		_dummy_cull_object = nullptr;
 	}
 }
 
-VisualServerScene::SpatialPartitionID VisualServerScene::SpatialPartitioningScene_BVH::create(Instance *p_userdata, const AABB &p_aabb, int p_subindex, bool p_pairable, uint32_t p_pairable_type, uint32_t p_pairable_mask) {
+RenderingServerScene::SpatialPartitionID RenderingServerScene::SpatialPartitioningScene_BVH::create(Instance *p_userdata, const AABB &p_aabb, int p_subindex, bool p_pairable, uint32_t p_pairable_type, uint32_t p_pairable_mask) {
 #if defined(DEBUG_ENABLED) && defined(TOOLS_ENABLED)
 	// we are relying on this instance to be valid in order to pass
 	// the visible flag to the bvh.
@@ -187,38 +187,38 @@ VisualServerScene::SpatialPartitionID VisualServerScene::SpatialPartitioningScen
 	return _bvh.create(p_userdata, p_userdata->visible, tree_id, tree_collision_mask, p_aabb, p_subindex) + 1;
 }
 
-void VisualServerScene::SpatialPartitioningScene_BVH::erase(SpatialPartitionID p_handle) {
+void RenderingServerScene::SpatialPartitioningScene_BVH::erase(SpatialPartitionID p_handle) {
 	_bvh.erase(p_handle - 1);
 }
 
-void VisualServerScene::SpatialPartitioningScene_BVH::move(SpatialPartitionID p_handle, const AABB &p_aabb) {
+void RenderingServerScene::SpatialPartitioningScene_BVH::move(SpatialPartitionID p_handle, const AABB &p_aabb) {
 	_bvh.move(p_handle - 1, p_aabb);
 }
 
-void VisualServerScene::SpatialPartitioningScene_BVH::activate(SpatialPartitionID p_handle, const AABB &p_aabb) {
+void RenderingServerScene::SpatialPartitioningScene_BVH::activate(SpatialPartitionID p_handle, const AABB &p_aabb) {
 	// be very careful here, we are deferring the collision check, expecting a set_pairable to be called
 	// immediately after.
 	// see the notes in the BVH function.
 	_bvh.activate(p_handle - 1, p_aabb, true);
 }
 
-void VisualServerScene::SpatialPartitioningScene_BVH::deactivate(SpatialPartitionID p_handle) {
+void RenderingServerScene::SpatialPartitioningScene_BVH::deactivate(SpatialPartitionID p_handle) {
 	_bvh.deactivate(p_handle - 1);
 }
 
-void VisualServerScene::SpatialPartitioningScene_BVH::force_collision_check(SpatialPartitionID p_handle) {
+void RenderingServerScene::SpatialPartitioningScene_BVH::force_collision_check(SpatialPartitionID p_handle) {
 	_bvh.force_collision_check(p_handle - 1);
 }
 
-void VisualServerScene::SpatialPartitioningScene_BVH::update() {
+void RenderingServerScene::SpatialPartitioningScene_BVH::update() {
 	_bvh.update();
 }
 
-void VisualServerScene::SpatialPartitioningScene_BVH::update_collisions() {
+void RenderingServerScene::SpatialPartitioningScene_BVH::update_collisions() {
 	_bvh.update_collisions();
 }
 
-void VisualServerScene::SpatialPartitioningScene_BVH::set_pairable(Instance *p_instance, bool p_pairable, uint32_t p_pairable_type, uint32_t p_pairable_mask) {
+void RenderingServerScene::SpatialPartitioningScene_BVH::set_pairable(Instance *p_instance, bool p_pairable, uint32_t p_pairable_type, uint32_t p_pairable_mask) {
 	SpatialPartitionID handle = p_instance->spatial_partition_id;
 
 	p_instance->bvh_pairable_mask = p_pairable_mask;
@@ -230,79 +230,79 @@ void VisualServerScene::SpatialPartitioningScene_BVH::set_pairable(Instance *p_i
 	_bvh.set_tree(handle - 1, tree_id, tree_collision_mask);
 }
 
-int VisualServerScene::SpatialPartitioningScene_BVH::cull_convex(const Vector<Plane> &p_convex, Instance **p_result_array, int p_result_max, uint32_t p_mask) {
+int RenderingServerScene::SpatialPartitioningScene_BVH::cull_convex(const Vector<Plane> &p_convex, Instance **p_result_array, int p_result_max, uint32_t p_mask) {
 	_dummy_cull_object->bvh_pairable_mask = p_mask;
 	_dummy_cull_object->bvh_pairable_type = 0;
 	return _bvh.cull_convex(p_convex, p_result_array, p_result_max, _dummy_cull_object);
 }
 
-int VisualServerScene::SpatialPartitioningScene_BVH::cull_aabb(const AABB &p_aabb, Instance **p_result_array, int p_result_max, int *p_subindex_array, uint32_t p_mask) {
+int RenderingServerScene::SpatialPartitioningScene_BVH::cull_aabb(const AABB &p_aabb, Instance **p_result_array, int p_result_max, int *p_subindex_array, uint32_t p_mask) {
 	_dummy_cull_object->bvh_pairable_mask = p_mask;
 	_dummy_cull_object->bvh_pairable_type = 0;
 	return _bvh.cull_aabb(p_aabb, p_result_array, p_result_max, _dummy_cull_object, 0xFFFFFFFF, p_subindex_array);
 }
 
-int VisualServerScene::SpatialPartitioningScene_BVH::cull_segment(const Vector3 &p_from, const Vector3 &p_to, Instance **p_result_array, int p_result_max, int *p_subindex_array, uint32_t p_mask) {
+int RenderingServerScene::SpatialPartitioningScene_BVH::cull_segment(const Vector3 &p_from, const Vector3 &p_to, Instance **p_result_array, int p_result_max, int *p_subindex_array, uint32_t p_mask) {
 	_dummy_cull_object->bvh_pairable_mask = p_mask;
 	_dummy_cull_object->bvh_pairable_type = 0;
 	return _bvh.cull_segment(p_from, p_to, p_result_array, p_result_max, _dummy_cull_object, 0xFFFFFFFF, p_subindex_array);
 }
 
-void VisualServerScene::SpatialPartitioningScene_BVH::set_pair_callback(PairCallback p_callback, void *p_userdata) {
+void RenderingServerScene::SpatialPartitioningScene_BVH::set_pair_callback(PairCallback p_callback, void *p_userdata) {
 	_bvh.set_pair_callback(p_callback, p_userdata);
 }
 
-void VisualServerScene::SpatialPartitioningScene_BVH::set_unpair_callback(UnpairCallback p_callback, void *p_userdata) {
+void RenderingServerScene::SpatialPartitioningScene_BVH::set_unpair_callback(UnpairCallback p_callback, void *p_userdata) {
 	_bvh.set_unpair_callback(p_callback, p_userdata);
 }
 
 ///////////////////////
 
-VisualServerScene::SpatialPartitionID VisualServerScene::SpatialPartitioningScene_Octree::create(Instance *p_userdata, const AABB &p_aabb, int p_subindex, bool p_pairable, uint32_t p_pairable_type, uint32_t p_pairable_mask) {
+RenderingServerScene::SpatialPartitionID RenderingServerScene::SpatialPartitioningScene_Octree::create(Instance *p_userdata, const AABB &p_aabb, int p_subindex, bool p_pairable, uint32_t p_pairable_type, uint32_t p_pairable_mask) {
 	return _octree.create(p_userdata, p_aabb, p_subindex, p_pairable, p_pairable_type, p_pairable_mask);
 }
 
-void VisualServerScene::SpatialPartitioningScene_Octree::erase(SpatialPartitionID p_handle) {
+void RenderingServerScene::SpatialPartitioningScene_Octree::erase(SpatialPartitionID p_handle) {
 	_octree.erase(p_handle);
 }
 
-void VisualServerScene::SpatialPartitioningScene_Octree::move(SpatialPartitionID p_handle, const AABB &p_aabb) {
+void RenderingServerScene::SpatialPartitioningScene_Octree::move(SpatialPartitionID p_handle, const AABB &p_aabb) {
 	_octree.move(p_handle, p_aabb);
 }
 
-void VisualServerScene::SpatialPartitioningScene_Octree::set_pairable(Instance *p_instance, bool p_pairable, uint32_t p_pairable_type, uint32_t p_pairable_mask) {
+void RenderingServerScene::SpatialPartitioningScene_Octree::set_pairable(Instance *p_instance, bool p_pairable, uint32_t p_pairable_type, uint32_t p_pairable_mask) {
 	SpatialPartitionID handle = p_instance->spatial_partition_id;
 	_octree.set_pairable(handle, p_pairable, p_pairable_type, p_pairable_mask);
 }
 
-int VisualServerScene::SpatialPartitioningScene_Octree::cull_convex(const Vector<Plane> &p_convex, Instance **p_result_array, int p_result_max, uint32_t p_mask) {
+int RenderingServerScene::SpatialPartitioningScene_Octree::cull_convex(const Vector<Plane> &p_convex, Instance **p_result_array, int p_result_max, uint32_t p_mask) {
 	return _octree.cull_convex(p_convex, p_result_array, p_result_max, p_mask);
 }
 
-int VisualServerScene::SpatialPartitioningScene_Octree::cull_aabb(const AABB &p_aabb, Instance **p_result_array, int p_result_max, int *p_subindex_array, uint32_t p_mask) {
+int RenderingServerScene::SpatialPartitioningScene_Octree::cull_aabb(const AABB &p_aabb, Instance **p_result_array, int p_result_max, int *p_subindex_array, uint32_t p_mask) {
 	return _octree.cull_aabb(p_aabb, p_result_array, p_result_max, p_subindex_array, p_mask);
 }
 
-int VisualServerScene::SpatialPartitioningScene_Octree::cull_segment(const Vector3 &p_from, const Vector3 &p_to, Instance **p_result_array, int p_result_max, int *p_subindex_array, uint32_t p_mask) {
+int RenderingServerScene::SpatialPartitioningScene_Octree::cull_segment(const Vector3 &p_from, const Vector3 &p_to, Instance **p_result_array, int p_result_max, int *p_subindex_array, uint32_t p_mask) {
 	return _octree.cull_segment(p_from, p_to, p_result_array, p_result_max, p_subindex_array, p_mask);
 }
 
-void VisualServerScene::SpatialPartitioningScene_Octree::set_pair_callback(PairCallback p_callback, void *p_userdata) {
+void RenderingServerScene::SpatialPartitioningScene_Octree::set_pair_callback(PairCallback p_callback, void *p_userdata) {
 	_octree.set_pair_callback(p_callback, p_userdata);
 }
 
-void VisualServerScene::SpatialPartitioningScene_Octree::set_unpair_callback(UnpairCallback p_callback, void *p_userdata) {
+void RenderingServerScene::SpatialPartitioningScene_Octree::set_unpair_callback(UnpairCallback p_callback, void *p_userdata) {
 	_octree.set_unpair_callback(p_callback, p_userdata);
 }
 
-void VisualServerScene::SpatialPartitioningScene_Octree::set_balance(float p_balance) {
+void RenderingServerScene::SpatialPartitioningScene_Octree::set_balance(float p_balance) {
 	_octree.set_balance(p_balance);
 }
 
 /* SCENARIO API */
 
-VisualServerScene::Scenario::Scenario() {
-	debug = VS::SCENARIO_DEBUG_DISABLED;
+RenderingServerScene::Scenario::Scenario() {
+	debug = RS::SCENARIO_DEBUG_DISABLED;
 	_interpolation_data.interpolation_enabled = false;
 
 	bool use_bvh_or_octree = GLOBAL_GET("rendering/quality/spatial_partitioning/use_bvh");
@@ -314,8 +314,8 @@ VisualServerScene::Scenario::Scenario() {
 	}
 }
 
-void *VisualServerScene::_instance_pair(void *p_self, SpatialPartitionID, Instance *p_A, int, SpatialPartitionID, Instance *p_B, int) {
-	//VisualServerScene *self = (VisualServerScene*)p_self;
+void *RenderingServerScene::_instance_pair(void *p_self, SpatialPartitionID, Instance *p_A, int, SpatialPartitionID, Instance *p_B, int) {
+	//RenderingServerScene *self = (RenderingServerScene*)p_self;
 	Instance *A = p_A;
 	Instance *B = p_B;
 
@@ -324,7 +324,7 @@ void *VisualServerScene::_instance_pair(void *p_self, SpatialPartitionID, Instan
 		SWAP(A, B); //lesser always first
 	}
 
-	if (B->base_type == VS::INSTANCE_LIGHT && ((1 << A->base_type) & VS::INSTANCE_GEOMETRY_MASK)) {
+	if (B->base_type == RS::INSTANCE_LIGHT && ((1 << A->base_type) & RS::INSTANCE_GEOMETRY_MASK)) {
 		InstanceLightData *light = static_cast<InstanceLightData *>(B->base_data);
 		InstanceGeometryData *geom = static_cast<InstanceGeometryData *>(A->base_data);
 
@@ -340,7 +340,7 @@ void *VisualServerScene::_instance_pair(void *p_self, SpatialPartitionID, Instan
 		geom->lighting_dirty = true;
 
 		return E; //this element should make freeing faster
-	} else if (B->base_type == VS::INSTANCE_REFLECTION_PROBE && ((1 << A->base_type) & VS::INSTANCE_GEOMETRY_MASK)) {
+	} else if (B->base_type == RS::INSTANCE_REFLECTION_PROBE && ((1 << A->base_type) & RS::INSTANCE_GEOMETRY_MASK)) {
 		InstanceReflectionProbeData *reflection_probe = static_cast<InstanceReflectionProbeData *>(B->base_data);
 		InstanceGeometryData *geom = static_cast<InstanceGeometryData *>(A->base_data);
 
@@ -358,8 +358,8 @@ void *VisualServerScene::_instance_pair(void *p_self, SpatialPartitionID, Instan
 	return nullptr;
 }
 
-void VisualServerScene::_instance_unpair(void *p_self, SpatialPartitionID, Instance *p_A, int, SpatialPartitionID, Instance *p_B, int, void *udata) {
-	//VisualServerScene *self = (VisualServerScene*)p_self;
+void RenderingServerScene::_instance_unpair(void *p_self, SpatialPartitionID, Instance *p_A, int, SpatialPartitionID, Instance *p_B, int, void *udata) {
+	//RenderingServerScene *self = (RenderingServerScene*)p_self;
 	Instance *A = p_A;
 	Instance *B = p_B;
 
@@ -368,7 +368,7 @@ void VisualServerScene::_instance_unpair(void *p_self, SpatialPartitionID, Insta
 		SWAP(A, B); //lesser always first
 	}
 
-	if (B->base_type == VS::INSTANCE_LIGHT && ((1 << A->base_type) & VS::INSTANCE_GEOMETRY_MASK)) {
+	if (B->base_type == RS::INSTANCE_LIGHT && ((1 << A->base_type) & RS::INSTANCE_GEOMETRY_MASK)) {
 		InstanceLightData *light = static_cast<InstanceLightData *>(B->base_data);
 		InstanceGeometryData *geom = static_cast<InstanceGeometryData *>(A->base_data);
 
@@ -382,7 +382,7 @@ void VisualServerScene::_instance_unpair(void *p_self, SpatialPartitionID, Insta
 		}
 		geom->lighting_dirty = true;
 
-	} else if (B->base_type == VS::INSTANCE_REFLECTION_PROBE && ((1 << A->base_type) & VS::INSTANCE_GEOMETRY_MASK)) {
+	} else if (B->base_type == RS::INSTANCE_REFLECTION_PROBE && ((1 << A->base_type) & RS::INSTANCE_GEOMETRY_MASK)) {
 		InstanceReflectionProbeData *reflection_probe = static_cast<InstanceReflectionProbeData *>(B->base_data);
 		InstanceGeometryData *geom = static_cast<InstanceGeometryData *>(A->base_data);
 
@@ -395,7 +395,7 @@ void VisualServerScene::_instance_unpair(void *p_self, SpatialPartitionID, Insta
 	}
 }
 
-RID VisualServerScene::scenario_create() {
+RID RenderingServerScene::scenario_create() {
 	Scenario *scenario = memnew(Scenario);
 	ERR_FAIL_COND_V(!scenario, RID());
 	RID scenario_rid = scenario_owner.make_rid(scenario);
@@ -405,24 +405,24 @@ RID VisualServerScene::scenario_create() {
 	scenario->sps->set_pair_callback(_instance_pair, this);
 	scenario->sps->set_unpair_callback(_instance_unpair, this);
 
-	scenario->reflection_probe_shadow_atlas = VSG::scene_render->shadow_atlas_create();
-	VSG::scene_render->shadow_atlas_set_size(scenario->reflection_probe_shadow_atlas, 1024); //make enough shadows for close distance, don't bother with rest
-	VSG::scene_render->shadow_atlas_set_quadrant_subdivision(scenario->reflection_probe_shadow_atlas, 0, 4);
-	VSG::scene_render->shadow_atlas_set_quadrant_subdivision(scenario->reflection_probe_shadow_atlas, 1, 4);
-	VSG::scene_render->shadow_atlas_set_quadrant_subdivision(scenario->reflection_probe_shadow_atlas, 2, 4);
-	VSG::scene_render->shadow_atlas_set_quadrant_subdivision(scenario->reflection_probe_shadow_atlas, 3, 8);
-	scenario->reflection_atlas = VSG::scene_render->reflection_atlas_create();
+	scenario->reflection_probe_shadow_atlas = RSG::scene_render->shadow_atlas_create();
+	RSG::scene_render->shadow_atlas_set_size(scenario->reflection_probe_shadow_atlas, 1024); //make enough shadows for close distance, don't bother with rest
+	RSG::scene_render->shadow_atlas_set_quadrant_subdivision(scenario->reflection_probe_shadow_atlas, 0, 4);
+	RSG::scene_render->shadow_atlas_set_quadrant_subdivision(scenario->reflection_probe_shadow_atlas, 1, 4);
+	RSG::scene_render->shadow_atlas_set_quadrant_subdivision(scenario->reflection_probe_shadow_atlas, 2, 4);
+	RSG::scene_render->shadow_atlas_set_quadrant_subdivision(scenario->reflection_probe_shadow_atlas, 3, 8);
+	scenario->reflection_atlas = RSG::scene_render->reflection_atlas_create();
 
 	return scenario_rid;
 }
 
-void VisualServerScene::scenario_set_physics_interpolation_enabled(RID p_scenario, bool p_enabled) {
+void RenderingServerScene::scenario_set_physics_interpolation_enabled(RID p_scenario, bool p_enabled) {
 	Scenario *scenario = scenario_owner.get(p_scenario);
 	ERR_FAIL_COND(!scenario);
 	scenario->_interpolation_data.interpolation_enabled = p_enabled;
 }
 
-void VisualServerScene::_scenario_tick(RID p_scenario) {
+void RenderingServerScene::_scenario_tick(RID p_scenario) {
 	Scenario *scenario = scenario_owner.get(p_scenario);
 	ERR_FAIL_COND(!scenario);
 
@@ -431,7 +431,7 @@ void VisualServerScene::_scenario_tick(RID p_scenario) {
 	}
 }
 
-void VisualServerScene::_scenario_pre_draw(RID p_scenario, bool p_will_draw) {
+void RenderingServerScene::_scenario_pre_draw(RID p_scenario, bool p_will_draw) {
 	Scenario *scenario = scenario_owner.get(p_scenario);
 	ERR_FAIL_COND(!scenario);
 
@@ -443,34 +443,34 @@ void VisualServerScene::_scenario_pre_draw(RID p_scenario, bool p_will_draw) {
 	}
 }
 
-void VisualServerScene::scenario_set_debug(RID p_scenario, VS::ScenarioDebugMode p_debug_mode) {
+void RenderingServerScene::scenario_set_debug(RID p_scenario, RS::ScenarioDebugMode p_debug_mode) {
 	Scenario *scenario = scenario_owner.get(p_scenario);
 	ERR_FAIL_COND(!scenario);
 	scenario->debug = p_debug_mode;
 }
 
-void VisualServerScene::scenario_set_environment(RID p_scenario, RID p_environment) {
+void RenderingServerScene::scenario_set_environment(RID p_scenario, RID p_environment) {
 	Scenario *scenario = scenario_owner.get(p_scenario);
 	ERR_FAIL_COND(!scenario);
 	scenario->environment = p_environment;
 }
 
-void VisualServerScene::scenario_set_fallback_environment(RID p_scenario, RID p_environment) {
+void RenderingServerScene::scenario_set_fallback_environment(RID p_scenario, RID p_environment) {
 	Scenario *scenario = scenario_owner.get(p_scenario);
 	ERR_FAIL_COND(!scenario);
 	scenario->fallback_environment = p_environment;
 }
 
-void VisualServerScene::scenario_set_reflection_atlas_size(RID p_scenario, int p_size, int p_subdiv) {
+void RenderingServerScene::scenario_set_reflection_atlas_size(RID p_scenario, int p_size, int p_subdiv) {
 	Scenario *scenario = scenario_owner.get(p_scenario);
 	ERR_FAIL_COND(!scenario);
-	VSG::scene_render->reflection_atlas_set_size(scenario->reflection_atlas, p_size);
-	VSG::scene_render->reflection_atlas_set_subdivision(scenario->reflection_atlas, p_subdiv);
+	RSG::scene_render->reflection_atlas_set_size(scenario->reflection_atlas, p_size);
+	RSG::scene_render->reflection_atlas_set_subdivision(scenario->reflection_atlas, p_subdiv);
 }
 
 /* INSTANCING API */
 
-void VisualServerScene::_instance_queue_update(Instance *p_instance, bool p_update_aabb, bool p_update_materials) {
+void RenderingServerScene::_instance_queue_update(Instance *p_instance, bool p_update_aabb, bool p_update_materials) {
 	if (p_update_aabb) {
 		p_instance->update_aabb = true;
 	}
@@ -485,7 +485,7 @@ void VisualServerScene::_instance_queue_update(Instance *p_instance, bool p_upda
 	_instance_update_list.add(&p_instance->update_item);
 }
 
-RID VisualServerScene::instance_create() {
+RID RenderingServerScene::instance_create() {
 	Instance *instance = memnew(Instance);
 	ERR_FAIL_COND_V(!instance, RID());
 
@@ -495,16 +495,16 @@ RID VisualServerScene::instance_create() {
 	return instance_rid;
 }
 
-void VisualServerScene::instance_set_base(RID p_instance, RID p_base) {
+void RenderingServerScene::instance_set_base(RID p_instance, RID p_base) {
 	Instance *instance = instance_owner.get(p_instance);
 	ERR_FAIL_COND(!instance);
 
 	Scenario *scenario = instance->scenario;
 
-	if (instance->base_type != VS::INSTANCE_NONE) {
+	if (instance->base_type != RS::INSTANCE_NONE) {
 		//free anything related to that base
 
-		VSG::storage->instance_remove_dependency(instance->base, instance);
+		RSG::storage->instance_remove_dependency(instance->base, instance);
 
 		if (scenario && instance->spatial_partition_id) {
 			scenario->sps->erase(instance->spatial_partition_id);
@@ -512,18 +512,18 @@ void VisualServerScene::instance_set_base(RID p_instance, RID p_base) {
 		}
 
 		switch (instance->base_type) {
-			case VS::INSTANCE_LIGHT: {
+			case RS::INSTANCE_LIGHT: {
 				InstanceLightData *light = static_cast<InstanceLightData *>(instance->base_data);
 
 				if (instance->scenario && light->D) {
 					instance->scenario->directional_lights.erase(light->D);
 					light->D = nullptr;
 				}
-				VSG::scene_render->free(light->instance);
+				RSG::scene_render->free(light->instance);
 			} break;
-			case VS::INSTANCE_REFLECTION_PROBE: {
+			case RS::INSTANCE_REFLECTION_PROBE: {
 				InstanceReflectionProbeData *reflection_probe = static_cast<InstanceReflectionProbeData *>(instance->base_data);
-				VSG::scene_render->free(reflection_probe->instance);
+				RSG::scene_render->free(reflection_probe->instance);
 				if (reflection_probe->update_list.in_list()) {
 					reflection_probe_render_list.remove(&reflection_probe->update_list);
 				}
@@ -541,53 +541,53 @@ void VisualServerScene::instance_set_base(RID p_instance, RID p_base) {
 
 		for (int i = 0; i < instance->materials.size(); i++) {
 			if (instance->materials[i].is_valid()) {
-				VSG::storage->material_remove_instance_owner(instance->materials[i], instance);
+				RSG::storage->material_remove_instance_owner(instance->materials[i], instance);
 			}
 		}
 		instance->materials.clear();
 	}
 
-	instance->base_type = VS::INSTANCE_NONE;
+	instance->base_type = RS::INSTANCE_NONE;
 	instance->base = RID();
 
 	if (p_base.is_valid()) {
-		instance->base_type = VSG::storage->get_base_type(p_base);
-		ERR_FAIL_COND(instance->base_type == VS::INSTANCE_NONE);
+		instance->base_type = RSG::storage->get_base_type(p_base);
+		ERR_FAIL_COND(instance->base_type == RS::INSTANCE_NONE);
 
 		switch (instance->base_type) {
-			case VS::INSTANCE_LIGHT: {
+			case RS::INSTANCE_LIGHT: {
 				InstanceLightData *light = memnew(InstanceLightData);
 
-				if (scenario && VSG::storage->light_get_type(p_base) == VS::LIGHT_DIRECTIONAL) {
+				if (scenario && RSG::storage->light_get_type(p_base) == RS::LIGHT_DIRECTIONAL) {
 					light->D = scenario->directional_lights.push_back(instance);
 				}
 
-				light->instance = VSG::scene_render->light_instance_create(p_base);
+				light->instance = RSG::scene_render->light_instance_create(p_base);
 
 				instance->base_data = light;
 			} break;
-			case VS::INSTANCE_MESH:
-			case VS::INSTANCE_MULTIMESH:
-			case VS::INSTANCE_IMMEDIATE: {
+			case RS::INSTANCE_MESH:
+			case RS::INSTANCE_MULTIMESH:
+			case RS::INSTANCE_IMMEDIATE: {
 				InstanceGeometryData *geom = memnew(InstanceGeometryData);
 				instance->base_data = geom;
-				if (instance->base_type == VS::INSTANCE_MESH) {
-					instance->blend_values.resize(VSG::storage->mesh_get_blend_shape_count(p_base));
+				if (instance->base_type == RS::INSTANCE_MESH) {
+					instance->blend_values.resize(RSG::storage->mesh_get_blend_shape_count(p_base));
 				}
 			} break;
-			case VS::INSTANCE_REFLECTION_PROBE: {
+			case RS::INSTANCE_REFLECTION_PROBE: {
 				InstanceReflectionProbeData *reflection_probe = memnew(InstanceReflectionProbeData);
 				reflection_probe->owner = instance;
 				instance->base_data = reflection_probe;
 
-				reflection_probe->instance = VSG::scene_render->reflection_probe_instance_create(p_base);
+				reflection_probe->instance = RSG::scene_render->reflection_probe_instance_create(p_base);
 			} break;
 
 			default: {
 			}
 		}
 
-		VSG::storage->instance_add_dependency(p_base, instance);
+		RSG::storage->instance_add_dependency(p_base, instance);
 
 		instance->base = p_base;
 
@@ -596,7 +596,7 @@ void VisualServerScene::instance_set_base(RID p_instance, RID p_base) {
 		}
 	}
 }
-void VisualServerScene::instance_set_scenario(RID p_instance, RID p_scenario) {
+void RenderingServerScene::instance_set_scenario(RID p_instance, RID p_scenario) {
 	Instance *instance = instance_owner.get(p_instance);
 	ERR_FAIL_COND(!instance);
 
@@ -617,7 +617,7 @@ void VisualServerScene::instance_set_scenario(RID p_instance, RID p_scenario) {
 		instance->scenario->_interpolation_data.notify_free_instance(p_instance, *instance);
 
 		switch (instance->base_type) {
-			case VS::INSTANCE_LIGHT: {
+			case RS::INSTANCE_LIGHT: {
 				InstanceLightData *light = static_cast<InstanceLightData *>(instance->base_data);
 
 				if (light->D) {
@@ -625,9 +625,9 @@ void VisualServerScene::instance_set_scenario(RID p_instance, RID p_scenario) {
 					light->D = nullptr;
 				}
 			} break;
-			case VS::INSTANCE_REFLECTION_PROBE: {
+			case RS::INSTANCE_REFLECTION_PROBE: {
 				InstanceReflectionProbeData *reflection_probe = static_cast<InstanceReflectionProbeData *>(instance->base_data);
-				VSG::scene_render->reflection_probe_release_atlas_index(reflection_probe->instance);
+				RSG::scene_render->reflection_probe_release_atlas_index(reflection_probe->instance);
 			} break;
 			default: {
 			}
@@ -645,10 +645,10 @@ void VisualServerScene::instance_set_scenario(RID p_instance, RID p_scenario) {
 		scenario->instances.add(&instance->scenario_item);
 
 		switch (instance->base_type) {
-			case VS::INSTANCE_LIGHT: {
+			case RS::INSTANCE_LIGHT: {
 				InstanceLightData *light = static_cast<InstanceLightData *>(instance->base_data);
 
-				if (VSG::storage->light_get_type(instance->base) == VS::LIGHT_DIRECTIONAL) {
+				if (RSG::storage->light_get_type(instance->base) == RS::LIGHT_DIRECTIONAL) {
 					light->D = scenario->directional_lights.push_back(instance);
 				}
 			} break;
@@ -662,14 +662,14 @@ void VisualServerScene::instance_set_scenario(RID p_instance, RID p_scenario) {
 		_instance_queue_update(instance, true, true);
 	}
 }
-void VisualServerScene::instance_set_layer_mask(RID p_instance, uint32_t p_mask) {
+void RenderingServerScene::instance_set_layer_mask(RID p_instance, uint32_t p_mask) {
 	Instance *instance = instance_owner.get(p_instance);
 	ERR_FAIL_COND(!instance);
 
 	instance->layer_mask = p_mask;
 }
 
-void VisualServerScene::instance_reset_physics_interpolation(RID p_instance) {
+void RenderingServerScene::instance_reset_physics_interpolation(RID p_instance) {
 	Instance *instance = instance_owner.get(p_instance);
 	ERR_FAIL_COND(!instance);
 
@@ -678,13 +678,13 @@ void VisualServerScene::instance_reset_physics_interpolation(RID p_instance) {
 	}
 }
 
-void VisualServerScene::instance_set_interpolated(RID p_instance, bool p_interpolated) {
+void RenderingServerScene::instance_set_interpolated(RID p_instance, bool p_interpolated) {
 	Instance *instance = instance_owner.get(p_instance);
 	ERR_FAIL_COND(!instance);
 	instance->interpolated = p_interpolated;
 }
 
-void VisualServerScene::instance_set_transform(RID p_instance, const Transform &p_transform) {
+void RenderingServerScene::instance_set_transform(RID p_instance, const Transform &p_transform) {
 	Instance *instance = instance_owner.get(p_instance);
 	ERR_FAIL_COND(!instance);
 
@@ -760,7 +760,7 @@ void VisualServerScene::instance_set_transform(RID p_instance, const Transform &
 
 	// If the instance is invisible, then we are simply updating the data flow, there is no need to calculate the interpolated
 	// transform or anything else.
-	// Ideally we would not even call the VisualServer::set_transform() when invisible but that would entail having logic
+	// Ideally we would not even call the RenderingServer::set_transform() when invisible but that would entail having logic
 	// to keep track of the previous transform on the SceneTree side. The "early out" below is less efficient but a lot cleaner codewise.
 	if (!instance->visible) {
 		return;
@@ -779,7 +779,7 @@ void VisualServerScene::instance_set_transform(RID p_instance, const Transform &
 	_instance_queue_update(instance, true);
 }
 
-void VisualServerScene::Scenario::InterpolationData::notify_free_camera(RID p_rid, Camera &r_camera) {
+void RenderingServerScene::Scenario::InterpolationData::notify_free_camera(RID p_rid, Camera &r_camera) {
 	r_camera.on_interpolate_transform_list = false;
 
 	if (!interpolation_enabled) {
@@ -792,7 +792,7 @@ void VisualServerScene::Scenario::InterpolationData::notify_free_camera(RID p_ri
 	camera_teleport_list.erase_multiple_unordered(p_rid);
 }
 
-void VisualServerScene::Scenario::InterpolationData::notify_free_instance(RID p_rid, Instance &r_instance) {
+void RenderingServerScene::Scenario::InterpolationData::notify_free_instance(RID p_rid, Instance &r_instance) {
 	r_instance.on_interpolate_list = false;
 	r_instance.on_interpolate_transform_list = false;
 
@@ -807,9 +807,9 @@ void VisualServerScene::Scenario::InterpolationData::notify_free_instance(RID p_
 	instance_teleport_list.erase_multiple_unordered(p_rid);
 }
 
-void VisualServerScene::update_interpolation_tick(Scenario::InterpolationData &r_interpolation_data, bool p_process) {
+void RenderingServerScene::update_interpolation_tick(Scenario::InterpolationData &r_interpolation_data, bool p_process) {
 	// update interpolation in storage
-	VSG::storage->update_interpolation_tick(p_process);
+	RSG::storage->update_interpolation_tick(p_process);
 
 	// detect any that were on the previous transform list that are no longer active,
 	// we should remove them from the interpolate list
@@ -895,9 +895,9 @@ void VisualServerScene::update_interpolation_tick(Scenario::InterpolationData &r
 	r_interpolation_data.camera_transform_update_list_curr->clear();
 }
 
-void VisualServerScene::update_interpolation_frame(Scenario::InterpolationData &r_interpolation_data, bool p_process) {
+void RenderingServerScene::update_interpolation_frame(Scenario::InterpolationData &r_interpolation_data, bool p_process) {
 	// update interpolation in storage
-	VSG::storage->update_interpolation_frame(p_process);
+	RSG::storage->update_interpolation_frame(p_process);
 
 	// teleported instances
 	for (unsigned int n = 0; n < r_interpolation_data.instance_teleport_list.size(); n++) {
@@ -938,13 +938,13 @@ void VisualServerScene::update_interpolation_frame(Scenario::InterpolationData &
 	}
 }
 
-void VisualServerScene::instance_attach_object_instance_id(RID p_instance, ObjectID p_id) {
+void RenderingServerScene::instance_attach_object_instance_id(RID p_instance, ObjectID p_id) {
 	Instance *instance = instance_owner.get(p_instance);
 	ERR_FAIL_COND(!instance);
 
 	instance->object_id = p_id;
 }
-void VisualServerScene::instance_set_blend_shape_weight(RID p_instance, int p_shape, float p_weight) {
+void RenderingServerScene::instance_set_blend_shape_weight(RID p_instance, int p_shape, float p_weight) {
 	Instance *instance = instance_owner.get(p_instance);
 	ERR_FAIL_COND(!instance);
 
@@ -954,32 +954,32 @@ void VisualServerScene::instance_set_blend_shape_weight(RID p_instance, int p_sh
 
 	ERR_FAIL_INDEX(p_shape, instance->blend_values.size());
 	instance->blend_values.write().ptr()[p_shape] = p_weight;
-	VSG::storage->mesh_set_blend_shape_values(instance->base, instance->blend_values);
+	RSG::storage->mesh_set_blend_shape_values(instance->base, instance->blend_values);
 }
 
-void VisualServerScene::instance_set_surface_material(RID p_instance, int p_surface, RID p_material) {
+void RenderingServerScene::instance_set_surface_material(RID p_instance, int p_surface, RID p_material) {
 	Instance *instance = instance_owner.get(p_instance);
 	ERR_FAIL_COND(!instance);
 
-	if (instance->base_type == VS::INSTANCE_MESH) {
+	if (instance->base_type == RS::INSTANCE_MESH) {
 		//may not have been updated yet
-		instance->materials.resize(VSG::storage->mesh_get_surface_count(instance->base));
+		instance->materials.resize(RSG::storage->mesh_get_surface_count(instance->base));
 	}
 
 	ERR_FAIL_INDEX(p_surface, instance->materials.size());
 
 	if (instance->materials[p_surface].is_valid()) {
-		VSG::storage->material_remove_instance_owner(instance->materials[p_surface], instance);
+		RSG::storage->material_remove_instance_owner(instance->materials[p_surface], instance);
 	}
 	instance->materials.write[p_surface] = p_material;
 	instance->base_changed(false, true);
 
 	if (instance->materials[p_surface].is_valid()) {
-		VSG::storage->material_add_instance_owner(instance->materials[p_surface], instance);
+		RSG::storage->material_add_instance_owner(instance->materials[p_surface], instance);
 	}
 }
 
-void VisualServerScene::instance_set_visible(RID p_instance, bool p_visible) {
+void RenderingServerScene::instance_set_visible(RID p_instance, bool p_visible) {
 	Instance *instance = instance_owner.get(p_instance);
 	ERR_FAIL_COND(!instance);
 
@@ -1025,7 +1025,7 @@ void VisualServerScene::instance_set_visible(RID p_instance, bool p_visible) {
 	}
 
 	// when showing or hiding geometry, lights must be kept up to date to show / hide shadows
-	if ((1 << instance->base_type) & VS::INSTANCE_GEOMETRY_MASK) {
+	if ((1 << instance->base_type) & RS::INSTANCE_GEOMETRY_MASK) {
 		InstanceGeometryData *geom = static_cast<InstanceGeometryData *>(instance->base_data);
 
 		if (geom->can_cast_shadows) {
@@ -1037,15 +1037,15 @@ void VisualServerScene::instance_set_visible(RID p_instance, bool p_visible) {
 	}
 
 	switch (instance->base_type) {
-		case VS::INSTANCE_LIGHT: {
-			if (VSG::storage->light_get_type(instance->base) != VS::LIGHT_DIRECTIONAL && instance->spatial_partition_id && instance->scenario) {
-				instance->scenario->sps->set_pairable(instance, p_visible, 1 << VS::INSTANCE_LIGHT, p_visible ? VS::INSTANCE_GEOMETRY_MASK : 0);
+		case RS::INSTANCE_LIGHT: {
+			if (RSG::storage->light_get_type(instance->base) != RS::LIGHT_DIRECTIONAL && instance->spatial_partition_id && instance->scenario) {
+				instance->scenario->sps->set_pairable(instance, p_visible, 1 << RS::INSTANCE_LIGHT, p_visible ? RS::INSTANCE_GEOMETRY_MASK : 0);
 			}
 
 		} break;
-		case VS::INSTANCE_REFLECTION_PROBE: {
+		case RS::INSTANCE_REFLECTION_PROBE: {
 			if (instance->spatial_partition_id && instance->scenario) {
-				instance->scenario->sps->set_pairable(instance, p_visible, 1 << VS::INSTANCE_REFLECTION_PROBE, p_visible ? VS::INSTANCE_GEOMETRY_MASK : 0);
+				instance->scenario->sps->set_pairable(instance, p_visible, 1 << RS::INSTANCE_REFLECTION_PROBE, p_visible ? RS::INSTANCE_GEOMETRY_MASK : 0);
 			}
 
 		} break;
@@ -1058,11 +1058,11 @@ void VisualServerScene::instance_set_visible(RID p_instance, bool p_visible) {
 		}
 	}
 }
-inline bool is_geometry_instance(VisualServer::InstanceType p_type) {
-	return p_type == VS::INSTANCE_MESH || p_type == VS::INSTANCE_MULTIMESH || p_type == VS::INSTANCE_IMMEDIATE;
+inline bool is_geometry_instance(RenderingServer::InstanceType p_type) {
+	return p_type == RS::INSTANCE_MESH || p_type == RS::INSTANCE_MULTIMESH || p_type == RS::INSTANCE_IMMEDIATE;
 }
 
-void VisualServerScene::instance_set_custom_aabb(RID p_instance, AABB p_aabb) {
+void RenderingServerScene::instance_set_custom_aabb(RID p_instance, AABB p_aabb) {
 	Instance *instance = instance_owner.get(p_instance);
 	ERR_FAIL_COND(!instance);
 	ERR_FAIL_COND(!is_geometry_instance(instance->base_type));
@@ -1087,7 +1087,7 @@ void VisualServerScene::instance_set_custom_aabb(RID p_instance, AABB p_aabb) {
 	}
 }
 
-void VisualServerScene::instance_attach_skeleton(RID p_instance, RID p_skeleton) {
+void RenderingServerScene::instance_attach_skeleton(RID p_instance, RID p_skeleton) {
 	Instance *instance = instance_owner.get(p_instance);
 	ERR_FAIL_COND(!instance);
 
@@ -1096,22 +1096,22 @@ void VisualServerScene::instance_attach_skeleton(RID p_instance, RID p_skeleton)
 	}
 
 	if (instance->skeleton.is_valid()) {
-		VSG::storage->instance_remove_skeleton(instance->skeleton, instance);
+		RSG::storage->instance_remove_skeleton(instance->skeleton, instance);
 	}
 
 	instance->skeleton = p_skeleton;
 
 	if (instance->skeleton.is_valid()) {
-		VSG::storage->instance_add_skeleton(instance->skeleton, instance);
+		RSG::storage->instance_add_skeleton(instance->skeleton, instance);
 	}
 
 	_instance_queue_update(instance, true);
 }
 
-void VisualServerScene::instance_set_exterior(RID p_instance, bool p_enabled) {
+void RenderingServerScene::instance_set_exterior(RID p_instance, bool p_enabled) {
 }
 
-void VisualServerScene::instance_set_extra_visibility_margin(RID p_instance, real_t p_margin) {
+void RenderingServerScene::instance_set_extra_visibility_margin(RID p_instance, real_t p_margin) {
 	Instance *instance = instance_owner.get(p_instance);
 	ERR_FAIL_COND(!instance);
 
@@ -1120,7 +1120,7 @@ void VisualServerScene::instance_set_extra_visibility_margin(RID p_instance, rea
 }
 
 // Portals
-void VisualServerScene::instance_set_portal_mode(RID p_instance, VisualServer::InstancePortalMode p_mode) {
+void RenderingServerScene::instance_set_portal_mode(RID p_instance, RenderingServer::InstancePortalMode p_mode) {
 	Instance *instance = instance_owner.get(p_instance);
 	ERR_FAIL_COND(!instance);
 
@@ -1141,7 +1141,7 @@ void VisualServerScene::instance_set_portal_mode(RID p_instance, VisualServer::I
 	_instance_create_occlusion_rep(instance);
 }
 
-void VisualServerScene::_instance_create_occlusion_rep(Instance *p_instance) {
+void RenderingServerScene::_instance_create_occlusion_rep(Instance *p_instance) {
 	ERR_FAIL_COND(!p_instance);
 	ERR_FAIL_COND(!p_instance->scenario);
 
@@ -1149,16 +1149,16 @@ void VisualServerScene::_instance_create_occlusion_rep(Instance *p_instance) {
 		default: {
 			p_instance->occlusion_handle = 0;
 		} break;
-		case VisualServer::InstancePortalMode::INSTANCE_PORTAL_MODE_ROAMING: {
+		case RenderingServer::InstancePortalMode::INSTANCE_PORTAL_MODE_ROAMING: {
 			p_instance->occlusion_handle = p_instance->scenario->_portal_renderer.instance_moving_create(p_instance, p_instance->self, false, p_instance->transformed_aabb);
 		} break;
-		case VisualServer::InstancePortalMode::INSTANCE_PORTAL_MODE_GLOBAL: {
+		case RenderingServer::InstancePortalMode::INSTANCE_PORTAL_MODE_GLOBAL: {
 			p_instance->occlusion_handle = p_instance->scenario->_portal_renderer.instance_moving_create(p_instance, p_instance->self, true, p_instance->transformed_aabb);
 		} break;
 	}
 }
 
-void VisualServerScene::_instance_destroy_occlusion_rep(Instance *p_instance) {
+void RenderingServerScene::_instance_destroy_occlusion_rep(Instance *p_instance) {
 	ERR_FAIL_COND(!p_instance);
 	ERR_FAIL_COND(!p_instance->scenario);
 
@@ -1173,12 +1173,12 @@ void VisualServerScene::_instance_destroy_occlusion_rep(Instance *p_instance) {
 	p_instance->occlusion_handle = 0;
 }
 
-void *VisualServerScene::_instance_get_from_rid(RID p_instance) {
+void *RenderingServerScene::_instance_get_from_rid(RID p_instance) {
 	Instance *instance = instance_owner.get(p_instance);
 	return instance;
 }
 
-bool VisualServerScene::_instance_get_transformed_aabb(RID p_instance, AABB &r_aabb) {
+bool RenderingServerScene::_instance_get_transformed_aabb(RID p_instance, AABB &r_aabb) {
 	Instance *instance = instance_owner.get(p_instance);
 	ERR_FAIL_NULL_V(instance, false);
 
@@ -1189,7 +1189,7 @@ bool VisualServerScene::_instance_get_transformed_aabb(RID p_instance, AABB &r_a
 
 // the portal has to be associated with a scenario, this is assumed to be
 // the same scenario as the portal node
-RID VisualServerScene::portal_create() {
+RID RenderingServerScene::portal_create() {
 	Portal *portal = memnew(Portal);
 	ERR_FAIL_COND_V(!portal, RID());
 	RID portal_rid = portal_owner.make_rid(portal);
@@ -1197,7 +1197,7 @@ RID VisualServerScene::portal_create() {
 }
 
 // should not be called multiple times, different scenarios etc, but just in case, we will support this
-void VisualServerScene::portal_set_scenario(RID p_portal, RID p_scenario) {
+void RenderingServerScene::portal_set_scenario(RID p_portal, RID p_scenario) {
 	Portal *portal = portal_owner.getornull(p_portal);
 	ERR_FAIL_COND(!portal);
 	Scenario *scenario = scenario_owner.getornull(p_scenario);
@@ -1223,14 +1223,14 @@ void VisualServerScene::portal_set_scenario(RID p_portal, RID p_scenario) {
 	}
 }
 
-void VisualServerScene::portal_set_geometry(RID p_portal, const Vector<Vector3> &p_points, real_t p_margin) {
+void RenderingServerScene::portal_set_geometry(RID p_portal, const Vector<Vector3> &p_points, real_t p_margin) {
 	Portal *portal = portal_owner.getornull(p_portal);
 	ERR_FAIL_COND(!portal);
 	ERR_FAIL_COND(!portal->scenario);
 	portal->scenario->_portal_renderer.portal_set_geometry(portal->scenario_portal_id, p_points, p_margin);
 }
 
-void VisualServerScene::portal_link(RID p_portal, RID p_room_from, RID p_room_to, bool p_two_way) {
+void RenderingServerScene::portal_link(RID p_portal, RID p_room_from, RID p_room_to, bool p_two_way) {
 	Portal *portal = portal_owner.getornull(p_portal);
 	ERR_FAIL_COND(!portal);
 	ERR_FAIL_COND(!portal->scenario);
@@ -1243,21 +1243,21 @@ void VisualServerScene::portal_link(RID p_portal, RID p_room_from, RID p_room_to
 	portal->scenario->_portal_renderer.portal_link(portal->scenario_portal_id, room_from->scenario_room_id, room_to->scenario_room_id, p_two_way);
 }
 
-void VisualServerScene::portal_set_active(RID p_portal, bool p_active) {
+void RenderingServerScene::portal_set_active(RID p_portal, bool p_active) {
 	Portal *portal = portal_owner.getornull(p_portal);
 	ERR_FAIL_COND(!portal);
 	ERR_FAIL_COND(!portal->scenario);
 	portal->scenario->_portal_renderer.portal_set_active(portal->scenario_portal_id, p_active);
 }
 
-RID VisualServerScene::ghost_create() {
+RID RenderingServerScene::ghost_create() {
 	Ghost *ci = memnew(Ghost);
 	ERR_FAIL_COND_V(!ci, RID());
 	RID ci_rid = ghost_owner.make_rid(ci);
 	return ci_rid;
 }
 
-void VisualServerScene::ghost_set_scenario(RID p_ghost, RID p_scenario, ObjectID p_id, const AABB &p_aabb) {
+void RenderingServerScene::ghost_set_scenario(RID p_ghost, RID p_scenario, ObjectID p_id, const AABB &p_aabb) {
 	Ghost *ci = ghost_owner.getornull(p_ghost);
 	ERR_FAIL_COND(!ci);
 
@@ -1286,7 +1286,7 @@ void VisualServerScene::ghost_set_scenario(RID p_ghost, RID p_scenario, ObjectID
 	}
 }
 
-void VisualServerScene::ghost_update(RID p_ghost, const AABB &p_aabb) {
+void RenderingServerScene::ghost_update(RID p_ghost, const AABB &p_aabb) {
 	Ghost *ci = ghost_owner.getornull(p_ghost);
 	ERR_FAIL_COND(!ci);
 	ERR_FAIL_COND(!ci->scenario);
@@ -1298,7 +1298,7 @@ void VisualServerScene::ghost_update(RID p_ghost, const AABB &p_aabb) {
 	}
 }
 
-void VisualServerScene::_ghost_create_occlusion_rep(Ghost *p_ghost) {
+void RenderingServerScene::_ghost_create_occlusion_rep(Ghost *p_ghost) {
 	ERR_FAIL_COND(!p_ghost);
 	ERR_FAIL_COND(!p_ghost->scenario);
 
@@ -1307,7 +1307,7 @@ void VisualServerScene::_ghost_create_occlusion_rep(Ghost *p_ghost) {
 	}
 }
 
-void VisualServerScene::_ghost_destroy_occlusion_rep(Ghost *p_ghost) {
+void RenderingServerScene::_ghost_destroy_occlusion_rep(Ghost *p_ghost) {
 	ERR_FAIL_COND(!p_ghost);
 	ERR_FAIL_COND(!p_ghost->scenario);
 
@@ -1320,21 +1320,21 @@ void VisualServerScene::_ghost_destroy_occlusion_rep(Ghost *p_ghost) {
 	p_ghost->rghost_handle = 0;
 }
 
-RID VisualServerScene::roomgroup_create() {
+RID RenderingServerScene::roomgroup_create() {
 	RoomGroup *rg = memnew(RoomGroup);
 	ERR_FAIL_COND_V(!rg, RID());
 	RID roomgroup_rid = roomgroup_owner.make_rid(rg);
 	return roomgroup_rid;
 }
 
-void VisualServerScene::roomgroup_prepare(RID p_roomgroup, ObjectID p_roomgroup_object_id) {
+void RenderingServerScene::roomgroup_prepare(RID p_roomgroup, ObjectID p_roomgroup_object_id) {
 	RoomGroup *roomgroup = roomgroup_owner.getornull(p_roomgroup);
 	ERR_FAIL_COND(!roomgroup);
 	ERR_FAIL_COND(!roomgroup->scenario);
 	roomgroup->scenario->_portal_renderer.roomgroup_prepare(roomgroup->scenario_roomgroup_id, p_roomgroup_object_id);
 }
 
-void VisualServerScene::roomgroup_set_scenario(RID p_roomgroup, RID p_scenario) {
+void RenderingServerScene::roomgroup_set_scenario(RID p_roomgroup, RID p_scenario) {
 	RoomGroup *rg = roomgroup_owner.getornull(p_roomgroup);
 	ERR_FAIL_COND(!rg);
 	Scenario *scenario = scenario_owner.getornull(p_scenario);
@@ -1360,7 +1360,7 @@ void VisualServerScene::roomgroup_set_scenario(RID p_roomgroup, RID p_scenario) 
 	}
 }
 
-void VisualServerScene::roomgroup_add_room(RID p_roomgroup, RID p_room) {
+void RenderingServerScene::roomgroup_add_room(RID p_roomgroup, RID p_room) {
 	RoomGroup *roomgroup = roomgroup_owner.getornull(p_roomgroup);
 	ERR_FAIL_COND(!roomgroup);
 	ERR_FAIL_COND(!roomgroup->scenario);
@@ -1374,14 +1374,14 @@ void VisualServerScene::roomgroup_add_room(RID p_roomgroup, RID p_room) {
 }
 
 // Occluders
-RID VisualServerScene::occluder_instance_create() {
+RID RenderingServerScene::occluder_instance_create() {
 	OccluderInstance *ro = memnew(OccluderInstance);
 	ERR_FAIL_COND_V(!ro, RID());
 	RID occluder_rid = occluder_instance_owner.make_rid(ro);
 	return occluder_rid;
 }
 
-void VisualServerScene::occluder_instance_link_resource(RID p_occluder_instance, RID p_occluder_resource) {
+void RenderingServerScene::occluder_instance_link_resource(RID p_occluder_instance, RID p_occluder_resource) {
 	OccluderInstance *oi = occluder_instance_owner.getornull(p_occluder_instance);
 	ERR_FAIL_COND(!oi);
 	ERR_FAIL_COND(!oi->scenario);
@@ -1392,7 +1392,7 @@ void VisualServerScene::occluder_instance_link_resource(RID p_occluder_instance,
 	oi->scenario->_portal_renderer.occluder_instance_link(oi->scenario_occluder_id, res->occluder_resource_id);
 }
 
-void VisualServerScene::occluder_instance_set_scenario(RID p_occluder_instance, RID p_scenario) {
+void RenderingServerScene::occluder_instance_set_scenario(RID p_occluder_instance, RID p_scenario) {
 	OccluderInstance *oi = occluder_instance_owner.getornull(p_occluder_instance);
 	ERR_FAIL_COND(!oi);
 	Scenario *scenario = scenario_owner.getornull(p_scenario);
@@ -1416,21 +1416,21 @@ void VisualServerScene::occluder_instance_set_scenario(RID p_occluder_instance, 
 	}
 }
 
-void VisualServerScene::occluder_instance_set_active(RID p_occluder_instance, bool p_active) {
+void RenderingServerScene::occluder_instance_set_active(RID p_occluder_instance, bool p_active) {
 	OccluderInstance *oi = occluder_instance_owner.getornull(p_occluder_instance);
 	ERR_FAIL_COND(!oi);
 	ERR_FAIL_COND(!oi->scenario);
 	oi->scenario->_portal_renderer.occluder_instance_set_active(oi->scenario_occluder_id, p_active);
 }
 
-void VisualServerScene::occluder_instance_set_transform(RID p_occluder_instance, const Transform &p_xform) {
+void RenderingServerScene::occluder_instance_set_transform(RID p_occluder_instance, const Transform &p_xform) {
 	OccluderInstance *oi = occluder_instance_owner.getornull(p_occluder_instance);
 	ERR_FAIL_COND(!oi);
 	ERR_FAIL_COND(!oi->scenario);
 	oi->scenario->_portal_renderer.occluder_instance_set_transform(oi->scenario_occluder_id, p_xform);
 }
 
-RID VisualServerScene::occluder_resource_create() {
+RID RenderingServerScene::occluder_resource_create() {
 	OccluderResource *res = memnew(OccluderResource);
 	ERR_FAIL_COND_V(!res, RID());
 
@@ -1440,31 +1440,31 @@ RID VisualServerScene::occluder_resource_create() {
 	return occluder_resource_rid;
 }
 
-void VisualServerScene::occluder_resource_prepare(RID p_occluder_resource, VisualServer::OccluderType p_type) {
+void RenderingServerScene::occluder_resource_prepare(RID p_occluder_resource, RenderingServer::OccluderType p_type) {
 	OccluderResource *res = occluder_resource_owner.getornull(p_occluder_resource);
 	ERR_FAIL_COND(!res);
 	_portal_resources.occluder_resource_prepare(res->occluder_resource_id, (VSOccluder_Instance::Type)p_type);
 }
 
-void VisualServerScene::occluder_resource_spheres_update(RID p_occluder_resource, const Vector<Plane> &p_spheres) {
+void RenderingServerScene::occluder_resource_spheres_update(RID p_occluder_resource, const Vector<Plane> &p_spheres) {
 	OccluderResource *res = occluder_resource_owner.getornull(p_occluder_resource);
 	ERR_FAIL_COND(!res);
 	_portal_resources.occluder_resource_update_spheres(res->occluder_resource_id, p_spheres);
 }
 
-void VisualServerScene::occluder_resource_mesh_update(RID p_occluder_resource, const Geometry::OccluderMeshData &p_mesh_data) {
+void RenderingServerScene::occluder_resource_mesh_update(RID p_occluder_resource, const Geometry::OccluderMeshData &p_mesh_data) {
 	OccluderResource *res = occluder_resource_owner.getornull(p_occluder_resource);
 	ERR_FAIL_COND(!res);
 	_portal_resources.occluder_resource_update_mesh(res->occluder_resource_id, p_mesh_data);
 }
 
-void VisualServerScene::set_use_occlusion_culling(bool p_enable) {
+void RenderingServerScene::set_use_occlusion_culling(bool p_enable) {
 	// this is not scenario specific, and is global
 	// (mainly for debugging)
 	PortalRenderer::use_occlusion_culling = p_enable;
 }
 
-Geometry::MeshData VisualServerScene::occlusion_debug_get_current_polys(RID p_scenario) const {
+Geometry::MeshData RenderingServerScene::occlusion_debug_get_current_polys(RID p_scenario) const {
 	Scenario *scenario = scenario_owner.getornull(p_scenario);
 	if (!scenario) {
 		return Geometry::MeshData();
@@ -1474,13 +1474,13 @@ Geometry::MeshData VisualServerScene::occlusion_debug_get_current_polys(RID p_sc
 }
 
 // Rooms
-void VisualServerScene::callbacks_register(VisualServerCallbacks *p_callbacks) {
+void RenderingServerScene::callbacks_register(RenderingServerCallbacks *p_callbacks) {
 	_visual_server_callbacks = p_callbacks;
 }
 
 // the room has to be associated with a scenario, this is assumed to be
 // the same scenario as the room node
-RID VisualServerScene::room_create() {
+RID RenderingServerScene::room_create() {
 	Room *room = memnew(Room);
 	ERR_FAIL_COND_V(!room, RID());
 	RID room_rid = room_owner.make_rid(room);
@@ -1488,7 +1488,7 @@ RID VisualServerScene::room_create() {
 }
 
 // should not be called multiple times, different scenarios etc, but just in case, we will support this
-void VisualServerScene::room_set_scenario(RID p_room, RID p_scenario) {
+void RenderingServerScene::room_set_scenario(RID p_room, RID p_scenario) {
 	Room *room = room_owner.getornull(p_room);
 	ERR_FAIL_COND(!room);
 	Scenario *scenario = scenario_owner.getornull(p_scenario);
@@ -1514,7 +1514,7 @@ void VisualServerScene::room_set_scenario(RID p_room, RID p_scenario) {
 	}
 }
 
-void VisualServerScene::room_add_ghost(RID p_room, ObjectID p_object_id, const AABB &p_aabb) {
+void RenderingServerScene::room_add_ghost(RID p_room, ObjectID p_object_id, const AABB &p_aabb) {
 	Room *room = room_owner.getornull(p_room);
 	ERR_FAIL_COND(!room);
 	ERR_FAIL_COND(!room->scenario);
@@ -1522,7 +1522,7 @@ void VisualServerScene::room_add_ghost(RID p_room, ObjectID p_object_id, const A
 	room->scenario->_portal_renderer.room_add_ghost(room->scenario_room_id, p_object_id, p_aabb);
 }
 
-void VisualServerScene::room_add_instance(RID p_room, RID p_instance, const AABB &p_aabb, const Vector<Vector3> &p_object_pts) {
+void RenderingServerScene::room_add_instance(RID p_room, RID p_instance, const AABB &p_aabb, const Vector<Vector3> &p_object_pts) {
 	Room *room = room_owner.getornull(p_room);
 	ERR_FAIL_COND(!room);
 	ERR_FAIL_COND(!room->scenario);
@@ -1546,10 +1546,10 @@ void VisualServerScene::room_add_instance(RID p_room, RID p_instance, const AABB
 		default: {
 			return; // this should be taken care of by the calling function, but just in case
 		} break;
-		case VisualServer::InstancePortalMode::INSTANCE_PORTAL_MODE_DYNAMIC: {
+		case RenderingServer::InstancePortalMode::INSTANCE_PORTAL_MODE_DYNAMIC: {
 			dynamic = true;
 		} break;
-		case VisualServer::InstancePortalMode::INSTANCE_PORTAL_MODE_STATIC: {
+		case RenderingServer::InstancePortalMode::INSTANCE_PORTAL_MODE_STATIC: {
 			dynamic = false;
 		} break;
 	}
@@ -1557,86 +1557,86 @@ void VisualServerScene::room_add_instance(RID p_room, RID p_instance, const AABB
 	instance->occlusion_handle = room->scenario->_portal_renderer.room_add_instance(room->scenario_room_id, p_instance, bb, dynamic, p_object_pts);
 }
 
-void VisualServerScene::room_prepare(RID p_room, int32_t p_priority) {
+void RenderingServerScene::room_prepare(RID p_room, int32_t p_priority) {
 	Room *room = room_owner.getornull(p_room);
 	ERR_FAIL_COND(!room);
 	ERR_FAIL_COND(!room->scenario);
 	room->scenario->_portal_renderer.room_prepare(room->scenario_room_id, p_priority);
 }
 
-void VisualServerScene::room_set_bound(RID p_room, ObjectID p_room_object_id, const Vector<Plane> &p_convex, const AABB &p_aabb, const Vector<Vector3> &p_verts) {
+void RenderingServerScene::room_set_bound(RID p_room, ObjectID p_room_object_id, const Vector<Plane> &p_convex, const AABB &p_aabb, const Vector<Vector3> &p_verts) {
 	Room *room = room_owner.getornull(p_room);
 	ERR_FAIL_COND(!room);
 	ERR_FAIL_COND(!room->scenario);
 	room->scenario->_portal_renderer.room_set_bound(room->scenario_room_id, p_room_object_id, p_convex, p_aabb, p_verts);
 }
 
-void VisualServerScene::rooms_unload(RID p_scenario, String p_reason) {
+void RenderingServerScene::rooms_unload(RID p_scenario, String p_reason) {
 	Scenario *scenario = scenario_owner.getornull(p_scenario);
 	ERR_FAIL_COND(!scenario);
 	scenario->_portal_renderer.rooms_unload(p_reason);
 }
 
-void VisualServerScene::rooms_and_portals_clear(RID p_scenario) {
+void RenderingServerScene::rooms_and_portals_clear(RID p_scenario) {
 	Scenario *scenario = scenario_owner.getornull(p_scenario);
 	ERR_FAIL_COND(!scenario);
 	scenario->_portal_renderer.rooms_and_portals_clear();
 }
 
-void VisualServerScene::rooms_finalize(RID p_scenario, bool p_generate_pvs, bool p_cull_using_pvs, bool p_use_secondary_pvs, bool p_use_signals, String p_pvs_filename, bool p_use_simple_pvs, bool p_log_pvs_generation) {
+void RenderingServerScene::rooms_finalize(RID p_scenario, bool p_generate_pvs, bool p_cull_using_pvs, bool p_use_secondary_pvs, bool p_use_signals, String p_pvs_filename, bool p_use_simple_pvs, bool p_log_pvs_generation) {
 	Scenario *scenario = scenario_owner.getornull(p_scenario);
 	ERR_FAIL_COND(!scenario);
 	scenario->_portal_renderer.rooms_finalize(p_generate_pvs, p_cull_using_pvs, p_use_secondary_pvs, p_use_signals, p_pvs_filename, p_use_simple_pvs, p_log_pvs_generation);
 }
 
-void VisualServerScene::rooms_override_camera(RID p_scenario, bool p_override, const Vector3 &p_point, const Vector<Plane> *p_convex) {
+void RenderingServerScene::rooms_override_camera(RID p_scenario, bool p_override, const Vector3 &p_point, const Vector<Plane> *p_convex) {
 	Scenario *scenario = scenario_owner.getornull(p_scenario);
 	ERR_FAIL_COND(!scenario);
 	scenario->_portal_renderer.rooms_override_camera(p_override, p_point, p_convex);
 }
 
-void VisualServerScene::rooms_set_active(RID p_scenario, bool p_active) {
+void RenderingServerScene::rooms_set_active(RID p_scenario, bool p_active) {
 	Scenario *scenario = scenario_owner.getornull(p_scenario);
 	ERR_FAIL_COND(!scenario);
 	scenario->_portal_renderer.rooms_set_active(p_active);
 }
 
-void VisualServerScene::rooms_set_params(RID p_scenario, int p_portal_depth_limit, real_t p_roaming_expansion_margin) {
+void RenderingServerScene::rooms_set_params(RID p_scenario, int p_portal_depth_limit, real_t p_roaming_expansion_margin) {
 	Scenario *scenario = scenario_owner.getornull(p_scenario);
 	ERR_FAIL_COND(!scenario);
 	scenario->_portal_renderer.rooms_set_params(p_portal_depth_limit, p_roaming_expansion_margin);
 }
 
-void VisualServerScene::rooms_set_debug_feature(RID p_scenario, VisualServer::RoomsDebugFeature p_feature, bool p_active) {
+void RenderingServerScene::rooms_set_debug_feature(RID p_scenario, RenderingServer::RoomsDebugFeature p_feature, bool p_active) {
 	Scenario *scenario = scenario_owner.getornull(p_scenario);
 	ERR_FAIL_COND(!scenario);
 	switch (p_feature) {
 		default: {
 		} break;
-		case VisualServer::ROOMS_DEBUG_SPRAWL: {
+		case RenderingServer::ROOMS_DEBUG_SPRAWL: {
 			scenario->_portal_renderer.set_debug_sprawl(p_active);
 		} break;
 	}
 }
 
-void VisualServerScene::rooms_update_gameplay_monitor(RID p_scenario, const Vector<Vector3> &p_camera_positions) {
+void RenderingServerScene::rooms_update_gameplay_monitor(RID p_scenario, const Vector<Vector3> &p_camera_positions) {
 	Scenario *scenario = scenario_owner.getornull(p_scenario);
 	ERR_FAIL_COND(!scenario);
 	scenario->_portal_renderer.rooms_update_gameplay_monitor(p_camera_positions);
 }
 
-bool VisualServerScene::rooms_is_loaded(RID p_scenario) const {
+bool RenderingServerScene::rooms_is_loaded(RID p_scenario) const {
 	Scenario *scenario = scenario_owner.getornull(p_scenario);
 	ERR_FAIL_COND_V(!scenario, false);
 	return scenario->_portal_renderer.rooms_is_loaded();
 }
 
-Vector<ObjectID> VisualServerScene::instances_cull_aabb(const AABB &p_aabb, RID p_scenario) const {
+Vector<ObjectID> RenderingServerScene::instances_cull_aabb(const AABB &p_aabb, RID p_scenario) const {
 	Vector<ObjectID> instances;
 	Scenario *scenario = scenario_owner.get(p_scenario);
 	ERR_FAIL_COND_V(!scenario, instances);
 
-	const_cast<VisualServerScene *>(this)->update_dirty_instances(); // check dirty instances before culling
+	const_cast<RenderingServerScene *>(this)->update_dirty_instances(); // check dirty instances before culling
 
 	int culled = 0;
 	Instance *cull[1024];
@@ -1654,11 +1654,11 @@ Vector<ObjectID> VisualServerScene::instances_cull_aabb(const AABB &p_aabb, RID 
 
 	return instances;
 }
-Vector<ObjectID> VisualServerScene::instances_cull_ray(const Vector3 &p_from, const Vector3 &p_to, RID p_scenario) const {
+Vector<ObjectID> RenderingServerScene::instances_cull_ray(const Vector3 &p_from, const Vector3 &p_to, RID p_scenario) const {
 	Vector<ObjectID> instances;
 	Scenario *scenario = scenario_owner.get(p_scenario);
 	ERR_FAIL_COND_V(!scenario, instances);
-	const_cast<VisualServerScene *>(this)->update_dirty_instances(); // check dirty instances before culling
+	const_cast<RenderingServerScene *>(this)->update_dirty_instances(); // check dirty instances before culling
 
 	int culled = 0;
 	Instance *cull[1024];
@@ -1676,11 +1676,11 @@ Vector<ObjectID> VisualServerScene::instances_cull_ray(const Vector3 &p_from, co
 
 	return instances;
 }
-Vector<ObjectID> VisualServerScene::instances_cull_convex(const Vector<Plane> &p_convex, RID p_scenario) const {
+Vector<ObjectID> RenderingServerScene::instances_cull_convex(const Vector<Plane> &p_convex, RID p_scenario) const {
 	Vector<ObjectID> instances;
 	Scenario *scenario = scenario_owner.get(p_scenario);
 	ERR_FAIL_COND_V(!scenario, instances);
-	const_cast<VisualServerScene *>(this)->update_dirty_instances(); // check dirty instances before culling
+	const_cast<RenderingServerScene *>(this)->update_dirty_instances(); // check dirty instances before culling
 
 	int culled = 0;
 	Instance *cull[1024];
@@ -1701,7 +1701,7 @@ Vector<ObjectID> VisualServerScene::instances_cull_convex(const Vector<Plane> &p
 }
 
 // thin wrapper to allow rooms / portals to take over culling if active
-int VisualServerScene::_cull_convex_from_point(Scenario *p_scenario, const Transform &p_cam_transform, const Projection &p_cam_projection, const Vector<Plane> &p_convex, Instance **p_result_array, int p_result_max, int32_t &r_previous_room_id_hint, uint32_t p_mask) {
+int RenderingServerScene::_cull_convex_from_point(Scenario *p_scenario, const Transform &p_cam_transform, const Projection &p_cam_projection, const Vector<Plane> &p_convex, Instance **p_result_array, int p_result_max, int32_t &r_previous_room_id_hint, uint32_t p_mask) {
 	int res = -1;
 	if (p_scenario->_portal_renderer.is_active()) {
 		// Note that the portal renderer ASSUMES that the planes exactly match the convention in
@@ -1722,10 +1722,10 @@ int VisualServerScene::_cull_convex_from_point(Scenario *p_scenario, const Trans
 	return res;
 }
 
-void VisualServerScene::_rooms_instance_update(Instance *p_instance, const AABB &p_aabb) {
+void RenderingServerScene::_rooms_instance_update(Instance *p_instance, const AABB &p_aabb) {
 	// magic number for instances in the room / portal system, but not requiring an update
 	// (due to being a STATIC or DYNAMIC object within a room)
-	// Must match the value in PortalRenderer in VisualServer
+	// Must match the value in PortalRenderer in RenderingServer
 	const uint32_t OCCLUSION_HANDLE_ROOM_BIT = 1 << 31;
 
 	// if the instance is a moving object in the room / portal system, update it
@@ -1739,12 +1739,12 @@ void VisualServerScene::_rooms_instance_update(Instance *p_instance, const AABB 
 	}
 }
 
-void VisualServerScene::instance_geometry_set_flag(RID p_instance, VS::InstanceFlags p_flags, bool p_enabled) {
+void RenderingServerScene::instance_geometry_set_flag(RID p_instance, RS::InstanceFlags p_flags, bool p_enabled) {
 	Instance *instance = instance_owner.get(p_instance);
 	ERR_FAIL_COND(!instance);
 
 	switch (p_flags) {
-		case VS::INSTANCE_FLAG_DRAW_NEXT_FRAME_IF_VISIBLE: {
+		case RS::INSTANCE_FLAG_DRAW_NEXT_FRAME_IF_VISIBLE: {
 			instance->redraw_if_visible = p_enabled;
 
 		} break;
@@ -1752,48 +1752,48 @@ void VisualServerScene::instance_geometry_set_flag(RID p_instance, VS::InstanceF
 		}
 	}
 }
-void VisualServerScene::instance_geometry_set_cast_shadows_setting(RID p_instance, VS::ShadowCastingSetting p_shadow_casting_setting) {
+void RenderingServerScene::instance_geometry_set_cast_shadows_setting(RID p_instance, RS::ShadowCastingSetting p_shadow_casting_setting) {
 	Instance *instance = instance_owner.get(p_instance);
 	ERR_FAIL_COND(!instance);
 
 	instance->cast_shadows = p_shadow_casting_setting;
 	instance->base_changed(false, true); // to actually compute if shadows are visible or not
 }
-void VisualServerScene::instance_geometry_set_material_override(RID p_instance, RID p_material) {
+void RenderingServerScene::instance_geometry_set_material_override(RID p_instance, RID p_material) {
 	Instance *instance = instance_owner.get(p_instance);
 	ERR_FAIL_COND(!instance);
 
 	if (instance->material_override.is_valid()) {
-		VSG::storage->material_remove_instance_owner(instance->material_override, instance);
+		RSG::storage->material_remove_instance_owner(instance->material_override, instance);
 	}
 	instance->material_override = p_material;
 	instance->base_changed(false, true);
 
 	if (instance->material_override.is_valid()) {
-		VSG::storage->material_add_instance_owner(instance->material_override, instance);
+		RSG::storage->material_add_instance_owner(instance->material_override, instance);
 	}
 }
-void VisualServerScene::instance_geometry_set_material_overlay(RID p_instance, RID p_material) {
+void RenderingServerScene::instance_geometry_set_material_overlay(RID p_instance, RID p_material) {
 	Instance *instance = instance_owner.get(p_instance);
 	ERR_FAIL_COND(!instance);
 
 	if (instance->material_overlay.is_valid()) {
-		VSG::storage->material_remove_instance_owner(instance->material_overlay, instance);
+		RSG::storage->material_remove_instance_owner(instance->material_overlay, instance);
 	}
 	instance->material_overlay = p_material;
 	instance->base_changed(false, true);
 
 	if (instance->material_overlay.is_valid()) {
-		VSG::storage->material_add_instance_owner(instance->material_overlay, instance);
+		RSG::storage->material_add_instance_owner(instance->material_overlay, instance);
 	}
 }
 
-void VisualServerScene::instance_geometry_set_draw_range(RID p_instance, float p_min, float p_max, float p_min_margin, float p_max_margin) {
+void RenderingServerScene::instance_geometry_set_draw_range(RID p_instance, float p_min, float p_max, float p_min_margin, float p_max_margin) {
 }
-void VisualServerScene::instance_geometry_set_as_instance_lod(RID p_instance, RID p_as_lod_of_instance) {
+void RenderingServerScene::instance_geometry_set_as_instance_lod(RID p_instance, RID p_as_lod_of_instance) {
 }
 
-void VisualServerScene::_update_instance(Instance *p_instance) {
+void RenderingServerScene::_update_instance(Instance *p_instance) {
 	p_instance->version++;
 
 	// when not using interpolation the transform is used straight
@@ -1807,17 +1807,17 @@ void VisualServerScene::_update_instance(Instance *p_instance) {
 	// However it does seem that using the interpolated transform (transform) works for keeping AABBs
 	// up to date to avoid culling errors.
 
-	if (p_instance->base_type == VS::INSTANCE_LIGHT) {
+	if (p_instance->base_type == RS::INSTANCE_LIGHT) {
 		InstanceLightData *light = static_cast<InstanceLightData *>(p_instance->base_data);
 
-		VSG::scene_render->light_instance_set_transform(light->instance, *instance_xform);
+		RSG::scene_render->light_instance_set_transform(light->instance, *instance_xform);
 		light->shadow_dirty = true;
 	}
 
-	if (p_instance->base_type == VS::INSTANCE_REFLECTION_PROBE) {
+	if (p_instance->base_type == RS::INSTANCE_REFLECTION_PROBE) {
 		InstanceReflectionProbeData *reflection_probe = static_cast<InstanceReflectionProbeData *>(p_instance->base_data);
 
-		VSG::scene_render->reflection_probe_instance_set_transform(reflection_probe->instance, *instance_xform);
+		RSG::scene_render->reflection_probe_instance_set_transform(reflection_probe->instance, *instance_xform);
 		reflection_probe->reflection_dirty = true;
 	}
 
@@ -1825,7 +1825,7 @@ void VisualServerScene::_update_instance(Instance *p_instance) {
 		return;
 	}
 
-	if ((1 << p_instance->base_type) & VS::INSTANCE_GEOMETRY_MASK) {
+	if ((1 << p_instance->base_type) & RS::INSTANCE_GEOMETRY_MASK) {
 		InstanceGeometryData *geom = static_cast<InstanceGeometryData *>(p_instance->base_data);
 		//make sure lights are updated if it casts shadow
 
@@ -1854,8 +1854,8 @@ void VisualServerScene::_update_instance(Instance *p_instance) {
 		uint32_t pairable_mask = 0;
 		bool pairable = false;
 
-		if (p_instance->base_type == VS::INSTANCE_LIGHT || p_instance->base_type == VS::INSTANCE_REFLECTION_PROBE) {
-			pairable_mask = p_instance->visible ? VS::INSTANCE_GEOMETRY_MASK : 0;
+		if (p_instance->base_type == RS::INSTANCE_LIGHT || p_instance->base_type == RS::INSTANCE_REFLECTION_PROBE) {
+			pairable_mask = p_instance->visible ? RS::INSTANCE_GEOMETRY_MASK : 0;
 			pairable = true;
 		}
 
@@ -1875,46 +1875,46 @@ void VisualServerScene::_update_instance(Instance *p_instance) {
 	_rooms_instance_update(p_instance, new_aabb);
 }
 
-void VisualServerScene::_update_instance_aabb(Instance *p_instance) {
+void RenderingServerScene::_update_instance_aabb(Instance *p_instance) {
 	AABB new_aabb;
 
-	ERR_FAIL_COND(p_instance->base_type != VS::INSTANCE_NONE && !p_instance->base.is_valid());
+	ERR_FAIL_COND(p_instance->base_type != RS::INSTANCE_NONE && !p_instance->base.is_valid());
 
 	switch (p_instance->base_type) {
-		case VisualServer::INSTANCE_NONE: {
+		case RenderingServer::INSTANCE_NONE: {
 			// do nothing
 		} break;
-		case VisualServer::INSTANCE_MESH: {
+		case RenderingServer::INSTANCE_MESH: {
 			if (p_instance->custom_aabb) {
 				new_aabb = *p_instance->custom_aabb;
 			} else {
-				new_aabb = VSG::storage->mesh_get_aabb(p_instance->base, p_instance->skeleton);
+				new_aabb = RSG::storage->mesh_get_aabb(p_instance->base, p_instance->skeleton);
 			}
 
 		} break;
 
-		case VisualServer::INSTANCE_MULTIMESH: {
+		case RenderingServer::INSTANCE_MULTIMESH: {
 			if (p_instance->custom_aabb) {
 				new_aabb = *p_instance->custom_aabb;
 			} else {
-				new_aabb = VSG::storage->multimesh_get_aabb(p_instance->base);
+				new_aabb = RSG::storage->multimesh_get_aabb(p_instance->base);
 			}
 
 		} break;
-		case VisualServer::INSTANCE_IMMEDIATE: {
+		case RenderingServer::INSTANCE_IMMEDIATE: {
 			if (p_instance->custom_aabb) {
 				new_aabb = *p_instance->custom_aabb;
 			} else {
-				new_aabb = VSG::storage->immediate_get_aabb(p_instance->base);
+				new_aabb = RSG::storage->immediate_get_aabb(p_instance->base);
 			}
 
 		} break;
-		case VisualServer::INSTANCE_LIGHT: {
-			new_aabb = VSG::storage->light_get_aabb(p_instance->base);
+		case RenderingServer::INSTANCE_LIGHT: {
+			new_aabb = RSG::storage->light_get_aabb(p_instance->base);
 
 		} break;
-		case VisualServer::INSTANCE_REFLECTION_PROBE: {
-			new_aabb = VSG::storage->reflection_probe_get_aabb(p_instance->base);
+		case RenderingServer::INSTANCE_REFLECTION_PROBE: {
+			new_aabb = RSG::storage->reflection_probe_get_aabb(p_instance->base);
 
 		} break;
 		default: {
@@ -1929,24 +1929,24 @@ void VisualServerScene::_update_instance_aabb(Instance *p_instance) {
 	p_instance->aabb = new_aabb;
 }
 
-void VisualServerScene::_update_dirty_instance(Instance *p_instance) {
+void RenderingServerScene::_update_dirty_instance(Instance *p_instance) {
 	if (p_instance->update_aabb) {
 		_update_instance_aabb(p_instance);
 	}
 
 	if (p_instance->update_materials) {
-		if (p_instance->base_type == VS::INSTANCE_MESH) {
+		if (p_instance->base_type == RS::INSTANCE_MESH) {
 			//remove materials no longer used and un-own them
 
-			int new_mat_count = VSG::storage->mesh_get_surface_count(p_instance->base);
+			int new_mat_count = RSG::storage->mesh_get_surface_count(p_instance->base);
 			for (int i = p_instance->materials.size() - 1; i >= new_mat_count; i--) {
 				if (p_instance->materials[i].is_valid()) {
-					VSG::storage->material_remove_instance_owner(p_instance->materials[i], p_instance);
+					RSG::storage->material_remove_instance_owner(p_instance->materials[i], p_instance);
 				}
 			}
 			p_instance->materials.resize(new_mat_count);
 
-			int new_blend_shape_count = VSG::storage->mesh_get_blend_shape_count(p_instance->base);
+			int new_blend_shape_count = RSG::storage->mesh_get_blend_shape_count(p_instance->base);
 			if (new_blend_shape_count != p_instance->blend_values.size()) {
 				p_instance->blend_values.resize(new_blend_shape_count);
 				for (int i = 0; i < new_blend_shape_count; i++) {
@@ -1955,35 +1955,35 @@ void VisualServerScene::_update_dirty_instance(Instance *p_instance) {
 			}
 		}
 
-		if ((1 << p_instance->base_type) & VS::INSTANCE_GEOMETRY_MASK) {
+		if ((1 << p_instance->base_type) & RS::INSTANCE_GEOMETRY_MASK) {
 			InstanceGeometryData *geom = static_cast<InstanceGeometryData *>(p_instance->base_data);
 
 			bool can_cast_shadows = true;
 			bool is_animated = false;
 
-			if (p_instance->cast_shadows == VS::SHADOW_CASTING_SETTING_OFF) {
+			if (p_instance->cast_shadows == RS::SHADOW_CASTING_SETTING_OFF) {
 				can_cast_shadows = false;
 			} else if (p_instance->material_override.is_valid()) {
-				can_cast_shadows = VSG::storage->material_casts_shadows(p_instance->material_override);
-				is_animated = VSG::storage->material_is_animated(p_instance->material_override);
+				can_cast_shadows = RSG::storage->material_casts_shadows(p_instance->material_override);
+				is_animated = RSG::storage->material_is_animated(p_instance->material_override);
 			} else {
-				if (p_instance->base_type == VS::INSTANCE_MESH) {
+				if (p_instance->base_type == RS::INSTANCE_MESH) {
 					RID mesh = p_instance->base;
 
 					if (mesh.is_valid()) {
 						bool cast_shadows = false;
 
 						for (int i = 0; i < p_instance->materials.size(); i++) {
-							RID mat = p_instance->materials[i].is_valid() ? p_instance->materials[i] : VSG::storage->mesh_surface_get_material(mesh, i);
+							RID mat = p_instance->materials[i].is_valid() ? p_instance->materials[i] : RSG::storage->mesh_surface_get_material(mesh, i);
 
 							if (!mat.is_valid()) {
 								cast_shadows = true;
 							} else {
-								if (VSG::storage->material_casts_shadows(mat)) {
+								if (RSG::storage->material_casts_shadows(mat)) {
 									cast_shadows = true;
 								}
 
-								if (VSG::storage->material_is_animated(mat)) {
+								if (RSG::storage->material_is_animated(mat)) {
 									is_animated = true;
 								}
 							}
@@ -1994,23 +1994,23 @@ void VisualServerScene::_update_dirty_instance(Instance *p_instance) {
 						}
 					}
 
-				} else if (p_instance->base_type == VS::INSTANCE_MULTIMESH) {
-					RID mesh = VSG::storage->multimesh_get_mesh(p_instance->base);
+				} else if (p_instance->base_type == RS::INSTANCE_MULTIMESH) {
+					RID mesh = RSG::storage->multimesh_get_mesh(p_instance->base);
 					if (mesh.is_valid()) {
 						bool cast_shadows = false;
 
-						int sc = VSG::storage->mesh_get_surface_count(mesh);
+						int sc = RSG::storage->mesh_get_surface_count(mesh);
 						for (int i = 0; i < sc; i++) {
-							RID mat = VSG::storage->mesh_surface_get_material(mesh, i);
+							RID mat = RSG::storage->mesh_surface_get_material(mesh, i);
 
 							if (!mat.is_valid()) {
 								cast_shadows = true;
 
 							} else {
-								if (VSG::storage->material_casts_shadows(mat)) {
+								if (RSG::storage->material_casts_shadows(mat)) {
 									cast_shadows = true;
 								}
-								if (VSG::storage->material_is_animated(mat)) {
+								if (RSG::storage->material_is_animated(mat)) {
 									is_animated = true;
 								}
 							}
@@ -2020,20 +2020,20 @@ void VisualServerScene::_update_dirty_instance(Instance *p_instance) {
 							can_cast_shadows = false;
 						}
 					}
-				} else if (p_instance->base_type == VS::INSTANCE_IMMEDIATE) {
-					RID mat = VSG::storage->immediate_get_material(p_instance->base);
+				} else if (p_instance->base_type == RS::INSTANCE_IMMEDIATE) {
+					RID mat = RSG::storage->immediate_get_material(p_instance->base);
 
-					can_cast_shadows = !mat.is_valid() || VSG::storage->material_casts_shadows(mat);
+					can_cast_shadows = !mat.is_valid() || RSG::storage->material_casts_shadows(mat);
 
-					if (mat.is_valid() && VSG::storage->material_is_animated(mat)) {
+					if (mat.is_valid() && RSG::storage->material_is_animated(mat)) {
 						is_animated = true;
 					}
 				}
 			}
 
 			if (p_instance->material_overlay.is_valid()) {
-				can_cast_shadows = can_cast_shadows || VSG::storage->material_casts_shadows(p_instance->material_overlay);
-				is_animated = is_animated || VSG::storage->material_is_animated(p_instance->material_overlay);
+				can_cast_shadows = can_cast_shadows || RSG::storage->material_casts_shadows(p_instance->material_overlay);
+				is_animated = is_animated || RSG::storage->material_is_animated(p_instance->material_overlay);
 			}
 
 			if (can_cast_shadows != geom->can_cast_shadows) {
@@ -2058,7 +2058,7 @@ void VisualServerScene::_update_dirty_instance(Instance *p_instance) {
 	p_instance->update_materials = false;
 }
 
-bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, const Transform p_cam_transform, const Projection &p_cam_projection, bool p_cam_orthogonal, RID p_shadow_atlas, Scenario *p_scenario) {
+bool RenderingServerScene::_light_instance_update_shadow(Instance *p_instance, const Transform p_cam_transform, const Projection &p_cam_projection, bool p_cam_orthogonal, RID p_shadow_atlas, Scenario *p_scenario) {
 	InstanceLightData *light = static_cast<InstanceLightData *>(p_instance->base_data);
 
 	Transform light_transform = p_instance->transform;
@@ -2066,22 +2066,22 @@ bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 
 	bool animated_material_found = false;
 
-	switch (VSG::storage->light_get_type(p_instance->base)) {
-		case VS::LIGHT_DIRECTIONAL: {
+	switch (RSG::storage->light_get_type(p_instance->base)) {
+		case RS::LIGHT_DIRECTIONAL: {
 			float max_distance = p_cam_projection.get_z_far();
-			float shadow_max = VSG::storage->light_get_param(p_instance->base, VS::LIGHT_PARAM_SHADOW_MAX_DISTANCE);
+			float shadow_max = RSG::storage->light_get_param(p_instance->base, RS::LIGHT_PARAM_SHADOW_MAX_DISTANCE);
 			if (shadow_max > 0 && !p_cam_orthogonal) { //its impractical (and leads to unwanted behaviors) to set max distance in orthogonal camera
 				max_distance = MIN(shadow_max, max_distance);
 			}
 			max_distance = MAX(max_distance, p_cam_projection.get_z_near() + 0.001);
 			float min_distance = MIN(p_cam_projection.get_z_near(), max_distance);
 
-			VS::LightDirectionalShadowDepthRangeMode depth_range_mode = VSG::storage->light_directional_get_shadow_depth_range_mode(p_instance->base);
+			RS::LightDirectionalShadowDepthRangeMode depth_range_mode = RSG::storage->light_directional_get_shadow_depth_range_mode(p_instance->base);
 
-			if (depth_range_mode == VS::LIGHT_DIRECTIONAL_SHADOW_DEPTH_RANGE_OPTIMIZED) {
+			if (depth_range_mode == RS::LIGHT_DIRECTIONAL_SHADOW_DEPTH_RANGE_OPTIMIZED) {
 				//optimize min/max
 				Vector<Plane> planes = p_cam_projection.get_projection_planes(p_cam_transform);
-				int cull_count = p_scenario->sps->cull_convex(planes, instance_shadow_cull_result, MAX_INSTANCE_CULL, VS::INSTANCE_GEOMETRY_MASK);
+				int cull_count = p_scenario->sps->cull_convex(planes, instance_shadow_cull_result, MAX_INSTANCE_CULL, RS::INSTANCE_GEOMETRY_MASK);
 				Plane base(p_cam_transform.origin, -p_cam_transform.basis.get_axis(2));
 				//check distance max and min
 
@@ -2091,7 +2091,7 @@ bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 
 				for (int i = 0; i < cull_count; i++) {
 					Instance *instance = instance_shadow_cull_result[i];
-					if (!instance->visible || !((1 << instance->base_type) & VS::INSTANCE_GEOMETRY_MASK) || !static_cast<InstanceGeometryData *>(instance->base_data)->can_cast_shadows) {
+					if (!instance->visible || !((1 << instance->base_type) & RS::INSTANCE_GEOMETRY_MASK) || !static_cast<InstanceGeometryData *>(instance->base_data)->can_cast_shadows) {
 						continue;
 					}
 
@@ -2122,14 +2122,14 @@ bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 			float range = max_distance - min_distance;
 
 			int splits = 0;
-			switch (VSG::storage->light_directional_get_shadow_mode(p_instance->base)) {
-				case VS::LIGHT_DIRECTIONAL_SHADOW_ORTHOGONAL:
+			switch (RSG::storage->light_directional_get_shadow_mode(p_instance->base)) {
+				case RS::LIGHT_DIRECTIONAL_SHADOW_ORTHOGONAL:
 					splits = 1;
 					break;
-				case VS::LIGHT_DIRECTIONAL_SHADOW_PARALLEL_2_SPLITS:
+				case RS::LIGHT_DIRECTIONAL_SHADOW_PARALLEL_2_SPLITS:
 					splits = 2;
 					break;
-				case VS::LIGHT_DIRECTIONAL_SHADOW_PARALLEL_4_SPLITS:
+				case RS::LIGHT_DIRECTIONAL_SHADOW_PARALLEL_4_SPLITS:
 					splits = 4;
 					break;
 			}
@@ -2138,14 +2138,14 @@ bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 
 			distances[0] = min_distance;
 			for (int i = 0; i < splits; i++) {
-				distances[i + 1] = min_distance + VSG::storage->light_get_param(p_instance->base, VS::LightParam(VS::LIGHT_PARAM_SHADOW_SPLIT_1_OFFSET + i)) * range;
+				distances[i + 1] = min_distance + RSG::storage->light_get_param(p_instance->base, RS::LightParam(RS::LIGHT_PARAM_SHADOW_SPLIT_1_OFFSET + i)) * range;
 			};
 
 			distances[splits] = max_distance;
 
-			float texture_size = VSG::scene_render->get_directional_light_shadow_size(light->instance);
+			float texture_size = RSG::scene_render->get_directional_light_shadow_size(light->instance);
 
-			bool overlap = VSG::storage->light_directional_get_blend_splits(p_instance->base);
+			bool overlap = RSG::storage->light_directional_get_blend_splits(p_instance->base);
 
 			float first_radius = 0.0;
 
@@ -2257,7 +2257,7 @@ bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 					//z_max_cam = z_vec.dot(center) + radius;
 					z_min_cam = z_vec.dot(center) - radius;
 
-					if (depth_range_mode == VS::LIGHT_DIRECTIONAL_SHADOW_DEPTH_RANGE_STABLE) {
+					if (depth_range_mode == RS::LIGHT_DIRECTIONAL_SHADOW_DEPTH_RANGE_STABLE) {
 						//this trick here is what stabilizes the shadow (make potential jaggies to not move)
 						//at the cost of some wasted resolution. Still the quality increase is very well worth it
 
@@ -2285,7 +2285,7 @@ bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 				light_frustum_planes.write[4] = Plane(z_vec, z_max + 1e6);
 				light_frustum_planes.write[5] = Plane(-z_vec, -z_min); // z_min is ok, since casters further than far-light plane are not needed
 
-				int cull_count = p_scenario->sps->cull_convex(light_frustum_planes, instance_shadow_cull_result, MAX_INSTANCE_CULL, VS::INSTANCE_GEOMETRY_MASK);
+				int cull_count = p_scenario->sps->cull_convex(light_frustum_planes, instance_shadow_cull_result, MAX_INSTANCE_CULL, RS::INSTANCE_GEOMETRY_MASK);
 
 				// a pre pass will need to be needed to determine the actual z-near to be used
 
@@ -2294,7 +2294,7 @@ bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 				for (int j = 0; j < cull_count; j++) {
 					float min, max;
 					Instance *instance = instance_shadow_cull_result[j];
-					if (!instance->visible || !((1 << instance->base_type) & VS::INSTANCE_GEOMETRY_MASK) || !static_cast<InstanceGeometryData *>(instance->base_data)->can_cast_shadows) {
+					if (!instance->visible || !((1 << instance->base_type) & RS::INSTANCE_GEOMETRY_MASK) || !static_cast<InstanceGeometryData *>(instance->base_data)->can_cast_shadows) {
 						cull_count--;
 						SWAP(instance_shadow_cull_result[j], instance_shadow_cull_result[cull_count]);
 						j--;
@@ -2320,21 +2320,21 @@ bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 					ortho_transform.basis = transform.basis;
 					ortho_transform.origin = x_vec * (x_min_cam + half_x) + y_vec * (y_min_cam + half_y) + z_vec * z_max;
 
-					VSG::scene_render->light_instance_set_shadow_transform(light->instance, ortho_camera, ortho_transform, 0, distances[i + 1], i, bias_scale);
+					RSG::scene_render->light_instance_set_shadow_transform(light->instance, ortho_camera, ortho_transform, 0, distances[i + 1], i, bias_scale);
 				}
 
-				VSG::scene_render->render_shadow(light->instance, p_shadow_atlas, i, (RasterizerScene::InstanceBase **)instance_shadow_cull_result, cull_count);
+				RSG::scene_render->render_shadow(light->instance, p_shadow_atlas, i, (RasterizerScene::InstanceBase **)instance_shadow_cull_result, cull_count);
 			}
 
 		} break;
-		case VS::LIGHT_OMNI: {
-			VS::LightOmniShadowMode shadow_mode = VSG::storage->light_omni_get_shadow_mode(p_instance->base);
+		case RS::LIGHT_OMNI: {
+			RS::LightOmniShadowMode shadow_mode = RSG::storage->light_omni_get_shadow_mode(p_instance->base);
 
-			if (shadow_mode == VS::LIGHT_OMNI_SHADOW_DUAL_PARABOLOID || !VSG::scene_render->light_instances_can_render_shadow_cube()) {
+			if (shadow_mode == RS::LIGHT_OMNI_SHADOW_DUAL_PARABOLOID || !RSG::scene_render->light_instances_can_render_shadow_cube()) {
 				for (int i = 0; i < 2; i++) {
 					//using this one ensures that raster deferred will have it
 
-					float radius = VSG::storage->light_get_param(p_instance->base, VS::LIGHT_PARAM_RANGE);
+					float radius = RSG::storage->light_get_param(p_instance->base, RS::LIGHT_PARAM_RANGE);
 
 					float z = i == 0 ? -1 : 1;
 					Vector<Plane> planes;
@@ -2346,12 +2346,12 @@ bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 					planes.write[4] = light_transform.xform(Plane(Vector3(0, -1, z).normalized(), radius));
 					planes.write[5] = light_transform.xform(Plane(Vector3(0, 0, -z), 0));
 
-					int cull_count = p_scenario->sps->cull_convex(planes, instance_shadow_cull_result, MAX_INSTANCE_CULL, VS::INSTANCE_GEOMETRY_MASK);
+					int cull_count = p_scenario->sps->cull_convex(planes, instance_shadow_cull_result, MAX_INSTANCE_CULL, RS::INSTANCE_GEOMETRY_MASK);
 					Plane near_plane(light_transform.origin, light_transform.basis.get_axis(2) * z);
 
 					for (int j = 0; j < cull_count; j++) {
 						Instance *instance = instance_shadow_cull_result[j];
-						if (!instance->visible || !((1 << instance->base_type) & VS::INSTANCE_GEOMETRY_MASK) || !static_cast<InstanceGeometryData *>(instance->base_data)->can_cast_shadows) {
+						if (!instance->visible || !((1 << instance->base_type) & RS::INSTANCE_GEOMETRY_MASK) || !static_cast<InstanceGeometryData *>(instance->base_data)->can_cast_shadows) {
 							cull_count--;
 							SWAP(instance_shadow_cull_result[j], instance_shadow_cull_result[cull_count]);
 							j--;
@@ -2365,12 +2365,12 @@ bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 						}
 					}
 
-					VSG::scene_render->light_instance_set_shadow_transform(light->instance, Projection(), light_transform, radius, 0, i);
-					VSG::scene_render->render_shadow(light->instance, p_shadow_atlas, i, (RasterizerScene::InstanceBase **)instance_shadow_cull_result, cull_count);
+					RSG::scene_render->light_instance_set_shadow_transform(light->instance, Projection(), light_transform, radius, 0, i);
+					RSG::scene_render->render_shadow(light->instance, p_shadow_atlas, i, (RasterizerScene::InstanceBase **)instance_shadow_cull_result, cull_count);
 				}
 			} else { //shadow cube
 
-				float radius = VSG::storage->light_get_param(p_instance->base, VS::LIGHT_PARAM_RANGE);
+				float radius = RSG::storage->light_get_param(p_instance->base, RS::LIGHT_PARAM_RANGE);
 				Projection cm;
 				cm.set_perspective(90, 1, 0.01, radius);
 
@@ -2398,12 +2398,12 @@ bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 
 					Vector<Plane> planes = cm.get_projection_planes(xform);
 
-					int cull_count = _cull_convex_from_point(p_scenario, light_transform, cm, planes, instance_shadow_cull_result, MAX_INSTANCE_CULL, light->previous_room_id_hint, VS::INSTANCE_GEOMETRY_MASK);
+					int cull_count = _cull_convex_from_point(p_scenario, light_transform, cm, planes, instance_shadow_cull_result, MAX_INSTANCE_CULL, light->previous_room_id_hint, RS::INSTANCE_GEOMETRY_MASK);
 
 					Plane near_plane(xform.origin, -xform.basis.get_axis(2));
 					for (int j = 0; j < cull_count; j++) {
 						Instance *instance = instance_shadow_cull_result[j];
-						if (!instance->visible || !((1 << instance->base_type) & VS::INSTANCE_GEOMETRY_MASK) || !static_cast<InstanceGeometryData *>(instance->base_data)->can_cast_shadows) {
+						if (!instance->visible || !((1 << instance->base_type) & RS::INSTANCE_GEOMETRY_MASK) || !static_cast<InstanceGeometryData *>(instance->base_data)->can_cast_shadows) {
 							cull_count--;
 							SWAP(instance_shadow_cull_result[j], instance_shadow_cull_result[cull_count]);
 							j--;
@@ -2416,29 +2416,29 @@ bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 						}
 					}
 
-					VSG::scene_render->light_instance_set_shadow_transform(light->instance, cm, xform, radius, 0, i);
-					VSG::scene_render->render_shadow(light->instance, p_shadow_atlas, i, (RasterizerScene::InstanceBase **)instance_shadow_cull_result, cull_count);
+					RSG::scene_render->light_instance_set_shadow_transform(light->instance, cm, xform, radius, 0, i);
+					RSG::scene_render->render_shadow(light->instance, p_shadow_atlas, i, (RasterizerScene::InstanceBase **)instance_shadow_cull_result, cull_count);
 				}
 
 				//restore the regular DP matrix
-				VSG::scene_render->light_instance_set_shadow_transform(light->instance, Projection(), light_transform, radius, 0, 0);
+				RSG::scene_render->light_instance_set_shadow_transform(light->instance, Projection(), light_transform, radius, 0, 0);
 			}
 
 		} break;
-		case VS::LIGHT_SPOT: {
-			float radius = VSG::storage->light_get_param(p_instance->base, VS::LIGHT_PARAM_RANGE);
-			float angle = VSG::storage->light_get_param(p_instance->base, VS::LIGHT_PARAM_SPOT_ANGLE);
+		case RS::LIGHT_SPOT: {
+			float radius = RSG::storage->light_get_param(p_instance->base, RS::LIGHT_PARAM_RANGE);
+			float angle = RSG::storage->light_get_param(p_instance->base, RS::LIGHT_PARAM_SPOT_ANGLE);
 
 			Projection cm;
 			cm.set_perspective(angle * 2.0, 1.0, 0.01, radius);
 
 			Vector<Plane> planes = cm.get_projection_planes(light_transform);
-			int cull_count = _cull_convex_from_point(p_scenario, light_transform, cm, planes, instance_shadow_cull_result, MAX_INSTANCE_CULL, light->previous_room_id_hint, VS::INSTANCE_GEOMETRY_MASK);
+			int cull_count = _cull_convex_from_point(p_scenario, light_transform, cm, planes, instance_shadow_cull_result, MAX_INSTANCE_CULL, light->previous_room_id_hint, RS::INSTANCE_GEOMETRY_MASK);
 
 			Plane near_plane(light_transform.origin, -light_transform.basis.get_axis(2));
 			for (int j = 0; j < cull_count; j++) {
 				Instance *instance = instance_shadow_cull_result[j];
-				if (!instance->visible || !((1 << instance->base_type) & VS::INSTANCE_GEOMETRY_MASK) || !static_cast<InstanceGeometryData *>(instance->base_data)->can_cast_shadows) {
+				if (!instance->visible || !((1 << instance->base_type) & RS::INSTANCE_GEOMETRY_MASK) || !static_cast<InstanceGeometryData *>(instance->base_data)->can_cast_shadows) {
 					cull_count--;
 					SWAP(instance_shadow_cull_result[j], instance_shadow_cull_result[cull_count]);
 					j--;
@@ -2451,8 +2451,8 @@ bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 				}
 			}
 
-			VSG::scene_render->light_instance_set_shadow_transform(light->instance, cm, light_transform, radius, 0, 0);
-			VSG::scene_render->render_shadow(light->instance, p_shadow_atlas, 0, (RasterizerScene::InstanceBase **)instance_shadow_cull_result, cull_count);
+			RSG::scene_render->light_instance_set_shadow_transform(light->instance, cm, light_transform, radius, 0, 0);
+			RSG::scene_render->render_shadow(light->instance, p_shadow_atlas, 0, (RasterizerScene::InstanceBase **)instance_shadow_cull_result, cull_count);
 
 		} break;
 	}
@@ -2460,7 +2460,7 @@ bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 	return animated_material_found;
 }
 
-void VisualServerScene::render_camera(RID p_camera, RID p_scenario, Size2 p_viewport_size, RID p_shadow_atlas) {
+void RenderingServerScene::render_camera(RID p_camera, RID p_scenario, Size2 p_viewport_size, RID p_shadow_atlas) {
 // render to mono camera
 #ifndef _3D_DISABLED
 
@@ -2511,7 +2511,7 @@ void VisualServerScene::render_camera(RID p_camera, RID p_scenario, Size2 p_view
 #endif
 }
 
-void VisualServerScene::_prepare_scene(const Transform p_cam_transform, const Projection &p_cam_projection, bool p_cam_orthogonal, RID p_force_environment, uint32_t p_visible_layers, RID p_scenario, RID p_shadow_atlas, RID p_reflection_probe, int32_t &r_previous_room_id_hint) {
+void RenderingServerScene::_prepare_scene(const Transform p_cam_transform, const Projection &p_cam_projection, bool p_cam_orthogonal, RID p_force_environment, uint32_t p_visible_layers, RID p_scenario, RID p_shadow_atlas, RID p_reflection_probe, int32_t &r_previous_room_id_hint) {
 	// Note, in stereo rendering:
 	// - p_cam_transform will be a transform in the middle of our two eyes
 	// - p_cam_projection is a wider frustrum that encompasses both eyes
@@ -2521,7 +2521,7 @@ void VisualServerScene::_prepare_scene(const Transform p_cam_transform, const Pr
 	render_pass++;
 	uint32_t camera_layer_mask = p_visible_layers;
 
-	VSG::scene_render->set_scene_pass(render_pass);
+	RSG::scene_render->set_scene_pass(render_pass);
 
 	//rasterizer->set_camera(camera->transform, camera_matrix,ortho);
 
@@ -2557,7 +2557,7 @@ void VisualServerScene::_prepare_scene(const Transform p_cam_transform, const Pr
 
 		if ((camera_layer_mask & ins->layer_mask) == 0) {
 			//failure
-		} else if (ins->base_type == VS::INSTANCE_LIGHT && ins->visible) {
+		} else if (ins->base_type == RS::INSTANCE_LIGHT && ins->visible) {
 			if (light_cull_count < MAX_LIGHTS_CULLED) {
 				InstanceLightData *light = static_cast<InstanceLightData *>(ins->base_data);
 
@@ -2565,14 +2565,14 @@ void VisualServerScene::_prepare_scene(const Transform p_cam_transform, const Pr
 					//do not add this light if no geometry is affected by it..
 					light_cull_result[light_cull_count] = ins;
 					light_instance_cull_result[light_cull_count] = light->instance;
-					if (p_shadow_atlas.is_valid() && VSG::storage->light_has_shadow(ins->base)) {
-						VSG::scene_render->light_instance_mark_visible(light->instance); //mark it visible for shadow allocation later
+					if (p_shadow_atlas.is_valid() && RSG::storage->light_has_shadow(ins->base)) {
+						RSG::scene_render->light_instance_mark_visible(light->instance); //mark it visible for shadow allocation later
 					}
 
 					light_cull_count++;
 				}
 			}
-		} else if (ins->base_type == VS::INSTANCE_REFLECTION_PROBE && ins->visible) {
+		} else if (ins->base_type == RS::INSTANCE_REFLECTION_PROBE && ins->visible) {
 			if (reflection_probe_cull_count < MAX_REFLECTION_PROBES_CULLED) {
 				InstanceReflectionProbeData *reflection_probe = static_cast<InstanceReflectionProbeData *>(ins->base_data);
 
@@ -2582,7 +2582,7 @@ void VisualServerScene::_prepare_scene(const Transform p_cam_transform, const Pr
 					if (!reflection_probe->geometries.empty()) {
 						//do not add this light if no geometry is affected by it..
 
-						if (reflection_probe->reflection_dirty || VSG::scene_render->reflection_probe_instance_needs_redraw(reflection_probe->instance)) {
+						if (reflection_probe->reflection_dirty || RSG::scene_render->reflection_probe_instance_needs_redraw(reflection_probe->instance)) {
 							if (!reflection_probe->update_list.in_list()) {
 								reflection_probe->render_step = 0;
 								reflection_probe_render_list.add_last(&reflection_probe->update_list);
@@ -2591,7 +2591,7 @@ void VisualServerScene::_prepare_scene(const Transform p_cam_transform, const Pr
 							reflection_probe->reflection_dirty = false;
 						}
 
-						if (VSG::scene_render->reflection_probe_instance_has_reflection(reflection_probe->instance)) {
+						if (RSG::scene_render->reflection_probe_instance_has_reflection(reflection_probe->instance)) {
 							reflection_probe_instance_cull_result[reflection_probe_cull_count] = reflection_probe->instance;
 							reflection_probe_cull_count++;
 						}
@@ -2599,13 +2599,13 @@ void VisualServerScene::_prepare_scene(const Transform p_cam_transform, const Pr
 				}
 			}
 
-		} else if (((1 << ins->base_type) & VS::INSTANCE_GEOMETRY_MASK) && ins->visible && ins->cast_shadows != VS::SHADOW_CASTING_SETTING_SHADOWS_ONLY) {
+		} else if (((1 << ins->base_type) & RS::INSTANCE_GEOMETRY_MASK) && ins->visible && ins->cast_shadows != RS::SHADOW_CASTING_SETTING_SHADOWS_ONLY) {
 			keep = true;
 
 			InstanceGeometryData *geom = static_cast<InstanceGeometryData *>(ins->base_data);
 
 			if (ins->redraw_if_visible) {
-				VisualServerRaster::redraw_request(false);
+				RenderingServerRaster::redraw_request(false);
 			}
 
 			if (geom->lighting_dirty) {
@@ -2672,7 +2672,7 @@ void VisualServerScene::_prepare_scene(const Transform p_cam_transform, const Pr
 			//check shadow..
 
 			if (light) {
-				if (p_shadow_atlas.is_valid() && VSG::storage->light_has_shadow(E->get()->base)) {
+				if (p_shadow_atlas.is_valid() && RSG::storage->light_has_shadow(E->get()->base)) {
 					lights_with_shadow[directional_shadow_count++] = E->get();
 				}
 				//add to list
@@ -2680,7 +2680,7 @@ void VisualServerScene::_prepare_scene(const Transform p_cam_transform, const Pr
 			}
 		}
 
-		VSG::scene_render->set_directional_shadow_count(directional_shadow_count);
+		RSG::scene_render->set_directional_shadow_count(directional_shadow_count);
 
 		for (int i = 0; i < directional_shadow_count; i++) {
 			_light_instance_update_shadow(lights_with_shadow[i], p_cam_transform, p_cam_projection, p_cam_orthogonal, p_shadow_atlas, scenario);
@@ -2694,7 +2694,7 @@ void VisualServerScene::_prepare_scene(const Transform p_cam_transform, const Pr
 		for (int i = 0; i < light_cull_count; i++) {
 			Instance *ins = light_cull_result[i];
 
-			if (!p_shadow_atlas.is_valid() || !VSG::storage->light_has_shadow(ins->base)) {
+			if (!p_shadow_atlas.is_valid() || !RSG::storage->light_has_shadow(ins->base)) {
 				continue;
 			}
 
@@ -2711,9 +2711,9 @@ void VisualServerScene::_prepare_scene(const Transform p_cam_transform, const Pr
 				// near plane half width and height
 				Vector2 vp_half_extents = p_cam_projection.get_viewport_half_extents();
 
-				switch (VSG::storage->light_get_type(ins->base)) {
-					case VS::LIGHT_OMNI: {
-						float radius = VSG::storage->light_get_param(ins->base, VS::LIGHT_PARAM_RANGE);
+				switch (RSG::storage->light_get_type(ins->base)) {
+					case RS::LIGHT_OMNI: {
+						float radius = RSG::storage->light_get_param(ins->base, RS::LIGHT_PARAM_RANGE);
 
 						//get two points parallel to near plane
 						Vector3 points[2] = {
@@ -2735,9 +2735,9 @@ void VisualServerScene::_prepare_scene(const Transform p_cam_transform, const Pr
 						float screen_diameter = points[0].distance_to(points[1]) * 2;
 						coverage = screen_diameter / (vp_half_extents.x + vp_half_extents.y);
 					} break;
-					case VS::LIGHT_SPOT: {
-						float radius = VSG::storage->light_get_param(ins->base, VS::LIGHT_PARAM_RANGE);
-						float angle = VSG::storage->light_get_param(ins->base, VS::LIGHT_PARAM_SPOT_ANGLE);
+					case RS::LIGHT_SPOT: {
+						float radius = RSG::storage->light_get_param(ins->base, RS::LIGHT_PARAM_RANGE);
+						float angle = RSG::storage->light_get_param(ins->base, RS::LIGHT_PARAM_SPOT_ANGLE);
 
 						float w = radius * Math::sin(Math::deg2rad(angle));
 						float d = radius * Math::cos(Math::deg2rad(angle));
@@ -2775,7 +2775,7 @@ void VisualServerScene::_prepare_scene(const Transform p_cam_transform, const Pr
 				light->shadow_dirty = false;
 			}
 
-			bool redraw = VSG::scene_render->shadow_atlas_update_light(p_shadow_atlas, light->instance, coverage, light->last_version);
+			bool redraw = RSG::scene_render->shadow_atlas_update_light(p_shadow_atlas, light->instance, coverage, light->last_version);
 
 			if (redraw) {
 				//must redraw!
@@ -2788,7 +2788,7 @@ void VisualServerScene::_prepare_scene(const Transform p_cam_transform, const Pr
 	for (int i = 0; i < instance_cull_count; i++) {
 		Instance *ins = instance_cull_result[i];
 
-		if (((1 << ins->base_type) & VS::INSTANCE_GEOMETRY_MASK) && ins->visible && ins->cast_shadows != VS::SHADOW_CASTING_SETTING_SHADOWS_ONLY) {
+		if (((1 << ins->base_type) & RS::INSTANCE_GEOMETRY_MASK) && ins->visible && ins->cast_shadows != RS::SHADOW_CASTING_SETTING_SHADOWS_ONLY) {
 			Vector3 aabb_center = ins->transformed_aabb.position + (ins->transformed_aabb.size * 0.5);
 			if (p_cam_orthogonal) {
 				ins->depth = near_plane.distance_to(aabb_center);
@@ -2800,7 +2800,7 @@ void VisualServerScene::_prepare_scene(const Transform p_cam_transform, const Pr
 	}
 }
 
-void VisualServerScene::_render_scene(const Transform p_cam_transform, const Projection &p_cam_projection, const int p_eye, bool p_cam_orthogonal, RID p_force_environment, RID p_scenario, RID p_shadow_atlas, RID p_reflection_probe, int p_reflection_probe_pass) {
+void RenderingServerScene::_render_scene(const Transform p_cam_transform, const Projection &p_cam_projection, const int p_eye, bool p_cam_orthogonal, RID p_force_environment, RID p_scenario, RID p_shadow_atlas, RID p_reflection_probe, int p_reflection_probe_pass) {
 	Scenario *scenario = scenario_owner.getornull(p_scenario);
 
 	/* ENVIRONMENT */
@@ -2816,10 +2816,10 @@ void VisualServerScene::_render_scene(const Transform p_cam_transform, const Pro
 
 	/* PROCESS GEOMETRY AND DRAW SCENE */
 
-	VSG::scene_render->render_scene(p_cam_transform, p_cam_projection, p_eye, p_cam_orthogonal, (RasterizerScene::InstanceBase **)instance_cull_result, instance_cull_count, light_instance_cull_result, light_cull_count + directional_light_count, reflection_probe_instance_cull_result, reflection_probe_cull_count, environment, p_shadow_atlas, scenario->reflection_atlas, p_reflection_probe, p_reflection_probe_pass);
+	RSG::scene_render->render_scene(p_cam_transform, p_cam_projection, p_eye, p_cam_orthogonal, (RasterizerScene::InstanceBase **)instance_cull_result, instance_cull_count, light_instance_cull_result, light_cull_count + directional_light_count, reflection_probe_instance_cull_result, reflection_probe_cull_count, environment, p_shadow_atlas, scenario->reflection_atlas, p_reflection_probe, p_reflection_probe_pass);
 }
 
-void VisualServerScene::render_empty_scene(RID p_scenario, RID p_shadow_atlas) {
+void RenderingServerScene::render_empty_scene(RID p_scenario, RID p_shadow_atlas) {
 #ifndef _3D_DISABLED
 
 	Scenario *scenario = scenario_owner.getornull(p_scenario);
@@ -2830,12 +2830,12 @@ void VisualServerScene::render_empty_scene(RID p_scenario, RID p_shadow_atlas) {
 	} else {
 		environment = scenario->fallback_environment;
 	}
-	VSG::scene_render->render_scene(Transform(), Projection(), 0, true, nullptr, 0, nullptr, 0, nullptr, 0, environment, p_shadow_atlas, scenario->reflection_atlas, RID(), 0);
+	RSG::scene_render->render_scene(Transform(), Projection(), 0, true, nullptr, 0, nullptr, 0, nullptr, 0, environment, p_shadow_atlas, scenario->reflection_atlas, RID(), 0);
 #endif
 }
 
-void VisualServerScene::update_dirty_instances() {
-	VSG::storage->update_dirty_resources();
+void RenderingServerScene::update_dirty_instances() {
+	RSG::storage->update_dirty_resources();
 
 	// this is just to get access to scenario so we can update the spatial partitioning scheme
 	Scenario *scenario = nullptr;
@@ -2852,7 +2852,7 @@ void VisualServerScene::update_dirty_instances() {
 	}
 }
 
-bool VisualServerScene::free(RID p_rid) {
+bool RenderingServerScene::free(RID p_rid) {
 	if (camera_owner.owns(p_rid)) {
 		Camera *camera = camera_owner.get(p_rid);
 
@@ -2868,8 +2868,8 @@ bool VisualServerScene::free(RID p_rid) {
 		while (scenario->instances.first()) {
 			instance_set_scenario(scenario->instances.first()->self()->self, RID());
 		}
-		VSG::scene_render->free(scenario->reflection_probe_shadow_atlas);
-		VSG::scene_render->free(scenario->reflection_atlas);
+		RSG::scene_render->free(scenario->reflection_probe_shadow_atlas);
+		RSG::scene_render->free(scenario->reflection_atlas);
 		scenario_owner.free(p_rid);
 		memdelete(scenario);
 
@@ -2932,9 +2932,9 @@ bool VisualServerScene::free(RID p_rid) {
 	return true;
 }
 
-VisualServerScene *VisualServerScene::singleton = nullptr;
+RenderingServerScene *RenderingServerScene::singleton = nullptr;
 
-VisualServerScene::VisualServerScene() {
+RenderingServerScene::RenderingServerScene() {
 	render_pass = 1;
 	singleton = this;
 	_use_bvh = GLOBAL_DEF("rendering/quality/spatial_partitioning/use_bvh", true);
@@ -2944,5 +2944,5 @@ VisualServerScene::VisualServerScene() {
 	_visual_server_callbacks = nullptr;
 }
 
-VisualServerScene::~VisualServerScene() {
+RenderingServerScene::~RenderingServerScene() {
 }

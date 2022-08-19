@@ -729,9 +729,9 @@ Error OS_JavaScript::initialize(const VideoMode &p_desired, int p_video_driver, 
 	video_driver_index = p_video_driver;
 
 	AudioDriverManager::initialize(p_audio_driver);
-	visual_server = memnew(VisualServerRaster());
+	visual_server = memnew(RenderingServerRaster());
 #ifndef NO_THREADS
-	visual_server = memnew(VisualServerWrapMT(visual_server, false));
+	visual_server = memnew(RenderingServerWrapMT(visual_server, false));
 #endif
 	input = memnew(InputDefault);
 

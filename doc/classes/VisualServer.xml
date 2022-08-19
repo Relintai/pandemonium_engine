@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="VisualServer" inherits="Object" version="3.5">
+<class name="RenderingServer" inherits="Object" version="3.5">
 	<brief_description>
 		Server for anything visible.
 	</brief_description>
@@ -41,8 +41,8 @@
 		<method name="camera_create">
 			<return type="RID" />
 			<description>
-				Creates a camera and adds it to the VisualServer. It can be accessed with the RID that is returned. This RID will be used in all [code]camera_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates a camera and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]camera_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 			</description>
 		</method>
 		<method name="camera_set_cull_mask">
@@ -111,8 +111,8 @@
 		<method name="canvas_create">
 			<return type="RID" />
 			<description>
-				Creates a canvas and returns the assigned [RID]. It can be accessed with the RID that is returned. This RID will be used in all [code]canvas_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates a canvas and returns the assigned [RID]. It can be accessed with the RID that is returned. This RID will be used in all [code]canvas_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 			</description>
 		</method>
 		<method name="canvas_item_add_circle">
@@ -130,7 +130,7 @@
 			<argument index="0" name="item" type="RID" />
 			<argument index="1" name="ignore" type="bool" />
 			<description>
-				If ignore is [code]true[/code], the VisualServer does not perform clipping.
+				If ignore is [code]true[/code], the RenderingServer does not perform clipping.
 			</description>
 		</method>
 		<method name="canvas_item_add_line">
@@ -175,8 +175,8 @@
 			<argument index="3" name="texture" type="RID" />
 			<argument index="4" name="topleft" type="Vector2" />
 			<argument index="5" name="bottomright" type="Vector2" />
-			<argument index="6" name="x_axis_mode" type="int" enum="VisualServer.NinePatchAxisMode" default="0" />
-			<argument index="7" name="y_axis_mode" type="int" enum="VisualServer.NinePatchAxisMode" default="0" />
+			<argument index="6" name="x_axis_mode" type="int" enum="RenderingServer.NinePatchAxisMode" default="0" />
+			<argument index="7" name="y_axis_mode" type="int" enum="RenderingServer.NinePatchAxisMode" default="0" />
 			<argument index="8" name="draw_center" type="bool" default="true" />
 			<argument index="9" name="modulate" type="Color" default="Color( 1, 1, 1, 1 )" />
 			<argument index="10" name="normal_map" type="RID" />
@@ -295,8 +295,8 @@
 		<method name="canvas_item_create">
 			<return type="RID" />
 			<description>
-				Creates a new [CanvasItem] and returns its [RID]. It can be accessed with the RID that is returned. This RID will be used in all [code]canvas_item_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates a new [CanvasItem] and returns its [RID]. It can be accessed with the RID that is returned. This RID will be used in all [code]canvas_item_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 			</description>
 		</method>
 		<method name="canvas_item_set_clip">
@@ -448,8 +448,8 @@
 		<method name="canvas_light_create">
 			<return type="RID" />
 			<description>
-				Creates a canvas light and adds it to the VisualServer. It can be accessed with the RID that is returned. This RID will be used in all [code]canvas_light_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates a canvas light and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]canvas_light_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 			</description>
 		</method>
 		<method name="canvas_light_occluder_attach_to_canvas">
@@ -463,8 +463,8 @@
 		<method name="canvas_light_occluder_create">
 			<return type="RID" />
 			<description>
-				Creates a light occluder and adds it to the VisualServer. It can be accessed with the RID that is returned. This RID will be used in all [code]canvas_light_ocluder_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates a light occluder and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]canvas_light_ocluder_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 			</description>
 		</method>
 		<method name="canvas_light_occluder_set_enabled">
@@ -559,7 +559,7 @@
 		<method name="canvas_light_set_mode">
 			<return type="void" />
 			<argument index="0" name="light" type="RID" />
-			<argument index="1" name="mode" type="int" enum="VisualServer.CanvasLightMode" />
+			<argument index="1" name="mode" type="int" enum="RenderingServer.CanvasLightMode" />
 			<description>
 				The mode of the light, see [enum CanvasLightMode] constants.
 			</description>
@@ -599,7 +599,7 @@
 		<method name="canvas_light_set_shadow_filter">
 			<return type="void" />
 			<argument index="0" name="light" type="RID" />
-			<argument index="1" name="filter" type="int" enum="VisualServer.CanvasLightShadowFilter" />
+			<argument index="1" name="filter" type="int" enum="RenderingServer.CanvasLightShadowFilter" />
 			<description>
 				Sets the canvas light's shadow's filter, see [enum CanvasLightShadowFilter] constants.
 			</description>
@@ -656,14 +656,14 @@
 		<method name="canvas_occluder_polygon_create">
 			<return type="RID" />
 			<description>
-				Creates a new light occluder polygon and adds it to the VisualServer. It can be accessed with the RID that is returned. This RID will be used in all [code]canvas_occluder_polygon_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates a new light occluder polygon and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]canvas_occluder_polygon_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 			</description>
 		</method>
 		<method name="canvas_occluder_polygon_set_cull_mode">
 			<return type="void" />
 			<argument index="0" name="occluder_polygon" type="RID" />
-			<argument index="1" name="mode" type="int" enum="VisualServer.CanvasOccluderPolygonCullMode" />
+			<argument index="1" name="mode" type="int" enum="RenderingServer.CanvasOccluderPolygonCullMode" />
 			<description>
 				Sets an occluder polygons cull mode. See [enum CanvasOccluderPolygonCullMode] constants.
 			</description>
@@ -705,8 +705,8 @@
 		<method name="directional_light_create">
 			<return type="RID" />
 			<description>
-				Creates a directional light and adds it to the VisualServer. It can be accessed with the RID that is returned. This RID can be used in most [code]light_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates a directional light and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID can be used in most [code]light_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 				To place in a scene, attach this directional light to an instance using [method instance_set_base] using the returned RID.
 			</description>
 		</method>
@@ -721,8 +721,8 @@
 		<method name="environment_create">
 			<return type="RID" />
 			<description>
-				Creates an environment and adds it to the VisualServer. It can be accessed with the RID that is returned. This RID will be used in all [code]environment_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates an environment and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]environment_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 			</description>
 		</method>
 		<method name="environment_set_adjustment">
@@ -750,7 +750,7 @@
 		<method name="environment_set_background">
 			<return type="void" />
 			<argument index="0" name="env" type="RID" />
-			<argument index="1" name="bg" type="int" enum="VisualServer.EnvironmentBG" />
+			<argument index="1" name="bg" type="int" enum="RenderingServer.EnvironmentBG" />
 			<description>
 				Sets the [i]BGMode[/i] of the environment. Equivalent to [member Environment.background_mode].
 			</description>
@@ -786,7 +786,7 @@
 			<argument index="2" name="distance" type="float" />
 			<argument index="3" name="transition" type="float" />
 			<argument index="4" name="far_amount" type="float" />
-			<argument index="5" name="quality" type="int" enum="VisualServer.EnvironmentDOFBlurQuality" />
+			<argument index="5" name="quality" type="int" enum="RenderingServer.EnvironmentDOFBlurQuality" />
 			<description>
 				Sets the values to be used with the "DoF Far Blur" post-process effect. See [Environment] for more details.
 			</description>
@@ -798,7 +798,7 @@
 			<argument index="2" name="distance" type="float" />
 			<argument index="3" name="transition" type="float" />
 			<argument index="4" name="far_amount" type="float" />
-			<argument index="5" name="quality" type="int" enum="VisualServer.EnvironmentDOFBlurQuality" />
+			<argument index="5" name="quality" type="int" enum="RenderingServer.EnvironmentDOFBlurQuality" />
 			<description>
 				Sets the values to be used with the "DoF Near Blur" post-process effect. See [Environment] for more details.
 			</description>
@@ -846,7 +846,7 @@
 			<argument index="3" name="intensity" type="float" />
 			<argument index="4" name="strength" type="float" />
 			<argument index="5" name="bloom_threshold" type="float" />
-			<argument index="6" name="blend_mode" type="int" enum="VisualServer.EnvironmentGlowBlendMode" />
+			<argument index="6" name="blend_mode" type="int" enum="RenderingServer.EnvironmentGlowBlendMode" />
 			<argument index="7" name="hdr_bleed_threshold" type="float" />
 			<argument index="8" name="hdr_bleed_scale" type="float" />
 			<argument index="9" name="hdr_luminance_cap" type="float" />
@@ -892,8 +892,8 @@
 			<argument index="7" name="light_affect" type="float" />
 			<argument index="8" name="ao_channel_affect" type="float" />
 			<argument index="9" name="color" type="Color" />
-			<argument index="10" name="quality" type="int" enum="VisualServer.EnvironmentSSAOQuality" />
-			<argument index="11" name="blur" type="int" enum="VisualServer.EnvironmentSSAOBlur" />
+			<argument index="10" name="quality" type="int" enum="RenderingServer.EnvironmentSSAOQuality" />
+			<argument index="11" name="blur" type="int" enum="RenderingServer.EnvironmentSSAOBlur" />
 			<argument index="12" name="bilateral_sharpness" type="float" />
 			<description>
 				Sets the variables to be used with the "Screen Space Ambient Occlusion (SSAO)" post-process effect. See [Environment] for more details.
@@ -915,7 +915,7 @@
 		<method name="environment_set_tonemap">
 			<return type="void" />
 			<argument index="0" name="env" type="RID" />
-			<argument index="1" name="tone_mapper" type="int" enum="VisualServer.EnvironmentToneMapper" />
+			<argument index="1" name="tone_mapper" type="int" enum="RenderingServer.EnvironmentToneMapper" />
 			<argument index="2" name="exposure" type="float" />
 			<argument index="3" name="white" type="float" />
 			<argument index="4" name="auto_exposure" type="bool" />
@@ -951,12 +951,12 @@
 			<return type="void" />
 			<argument index="0" name="rid" type="RID" />
 			<description>
-				Tries to free an object in the VisualServer.
+				Tries to free an object in the RenderingServer.
 			</description>
 		</method>
 		<method name="get_render_info">
 			<return type="int" />
-			<argument index="0" name="info" type="int" enum="VisualServer.RenderInfo" />
+			<argument index="0" name="info" type="int" enum="RenderingServer.RenderInfo" />
 			<description>
 				Returns a certain information, see [enum RenderInfo] for options.
 			</description>
@@ -995,15 +995,15 @@
 		</method>
 		<method name="has_changed" qualifiers="const">
 			<return type="bool" />
-			<argument index="0" name="queried_priority" type="int" enum="VisualServer.ChangedPriority" default="0" />
+			<argument index="0" name="queried_priority" type="int" enum="RenderingServer.ChangedPriority" default="0" />
 			<description>
-				Returns [code]true[/code] if changes have been made to the VisualServer's data. [method draw] is usually called if this happens.
+				Returns [code]true[/code] if changes have been made to the RenderingServer's data. [method draw] is usually called if this happens.
 				As changes are registered as either high or low priority (e.g. dynamic shaders), this function takes an optional argument to query either low or high priority changes, or any changes.
 			</description>
 		</method>
 		<method name="has_feature" qualifiers="const">
 			<return type="bool" />
-			<argument index="0" name="feature" type="int" enum="VisualServer.Features" />
+			<argument index="0" name="feature" type="int" enum="RenderingServer.Features" />
 			<description>
 				Not yet implemented. Always returns [code]false[/code].
 			</description>
@@ -1019,7 +1019,7 @@
 		<method name="immediate_begin">
 			<return type="void" />
 			<argument index="0" name="immediate" type="RID" />
-			<argument index="1" name="primitive" type="int" enum="VisualServer.PrimitiveType" />
+			<argument index="1" name="primitive" type="int" enum="RenderingServer.PrimitiveType" />
 			<argument index="2" name="texture" type="RID" />
 			<description>
 				Sets up [ImmediateGeometry] internals to prepare for drawing. Equivalent to [method ImmediateGeometry.begin].
@@ -1043,8 +1043,8 @@
 		<method name="immediate_create">
 			<return type="RID" />
 			<description>
-				Creates an immediate geometry and adds it to the VisualServer. It can be accessed with the RID that is returned. This RID will be used in all [code]immediate_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates an immediate geometry and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]immediate_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 				To place in a scene, attach this immediate geometry to an instance using [method instance_set_base] using the returned RID.
 			</description>
 		</method>
@@ -1143,8 +1143,8 @@
 		<method name="instance_create">
 			<return type="RID" />
 			<description>
-				Creates a visual instance and adds it to the VisualServer. It can be accessed with the RID that is returned. This RID will be used in all [code]instance_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates a visual instance and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]instance_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 				An instance is a way of placing a 3D object in the scenario. Objects like particles, meshes, and reflection probes need to be associated with an instance to be visible in the scenario using [method instance_set_base].
 			</description>
 		</method>
@@ -1153,8 +1153,8 @@
 			<argument index="0" name="base" type="RID" />
 			<argument index="1" name="scenario" type="RID" />
 			<description>
-				Creates a visual instance, adds it to the VisualServer, and sets both base and scenario. It can be accessed with the RID that is returned. This RID will be used in all [code]instance_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates a visual instance, adds it to the RenderingServer, and sets both base and scenario. It can be accessed with the RID that is returned. This RID will be used in all [code]instance_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 			</description>
 		</method>
 		<method name="instance_geometry_set_as_instance_lod">
@@ -1168,7 +1168,7 @@
 		<method name="instance_geometry_set_cast_shadows_setting">
 			<return type="void" />
 			<argument index="0" name="instance" type="RID" />
-			<argument index="1" name="shadow_casting_setting" type="int" enum="VisualServer.ShadowCastingSetting" />
+			<argument index="1" name="shadow_casting_setting" type="int" enum="RenderingServer.ShadowCastingSetting" />
 			<description>
 				Sets the shadow casting setting to one of [enum ShadowCastingSetting]. Equivalent to [member GeometryInstance.cast_shadow].
 			</description>
@@ -1187,7 +1187,7 @@
 		<method name="instance_geometry_set_flag">
 			<return type="void" />
 			<argument index="0" name="instance" type="RID" />
-			<argument index="1" name="flag" type="int" enum="VisualServer.InstanceFlags" />
+			<argument index="1" name="flag" type="int" enum="RenderingServer.InstanceFlags" />
 			<argument index="2" name="enabled" type="bool" />
 			<description>
 				Sets the flag for a given [enum InstanceFlags]. See [enum InstanceFlags] for more details.
@@ -1214,7 +1214,7 @@
 			<argument index="0" name="instance" type="RID" />
 			<argument index="1" name="base" type="RID" />
 			<description>
-				Sets the base of the instance. A base can be any of the 3D objects that are created in the VisualServer that can be displayed. For example, any of the light types, mesh, multimesh, immediate geometry, particle system, reflection probe, lightmap capture, and the GI probe are all types that can be set as the base of an instance in order to be displayed in the scenario.
+				Sets the base of the instance. A base can be any of the 3D objects that are created in the RenderingServer that can be displayed. For example, any of the light types, mesh, multimesh, immediate geometry, particle system, reflection probe, lightmap capture, and the GI probe are all types that can be set as the base of an instance in order to be displayed in the scenario.
 			</description>
 		</method>
 		<method name="instance_set_blend_shape_weight">
@@ -1330,7 +1330,7 @@
 		<method name="light_directional_set_shadow_depth_range_mode">
 			<return type="void" />
 			<argument index="0" name="light" type="RID" />
-			<argument index="1" name="range_mode" type="int" enum="VisualServer.LightDirectionalShadowDepthRangeMode" />
+			<argument index="1" name="range_mode" type="int" enum="RenderingServer.LightDirectionalShadowDepthRangeMode" />
 			<description>
 				Sets the shadow depth range mode for this directional light. Equivalent to [member DirectionalLight.directional_shadow_depth_range]. See [enum LightDirectionalShadowDepthRangeMode] for options.
 			</description>
@@ -1338,7 +1338,7 @@
 		<method name="light_directional_set_shadow_mode">
 			<return type="void" />
 			<argument index="0" name="light" type="RID" />
-			<argument index="1" name="mode" type="int" enum="VisualServer.LightDirectionalShadowMode" />
+			<argument index="1" name="mode" type="int" enum="RenderingServer.LightDirectionalShadowMode" />
 			<description>
 				Sets the shadow mode for this directional light. Equivalent to [member DirectionalLight.directional_shadow_mode]. See [enum LightDirectionalShadowMode] for options.
 			</description>
@@ -1346,7 +1346,7 @@
 		<method name="light_omni_set_shadow_detail">
 			<return type="void" />
 			<argument index="0" name="light" type="RID" />
-			<argument index="1" name="detail" type="int" enum="VisualServer.LightOmniShadowDetail" />
+			<argument index="1" name="detail" type="int" enum="RenderingServer.LightOmniShadowDetail" />
 			<description>
 				Sets whether to use vertical or horizontal detail for this omni light. This can be used to alleviate artifacts in the shadow map. Equivalent to [member OmniLight.omni_shadow_detail].
 			</description>
@@ -1354,7 +1354,7 @@
 		<method name="light_omni_set_shadow_mode">
 			<return type="void" />
 			<argument index="0" name="light" type="RID" />
-			<argument index="1" name="mode" type="int" enum="VisualServer.LightOmniShadowMode" />
+			<argument index="1" name="mode" type="int" enum="RenderingServer.LightOmniShadowMode" />
 			<description>
 				Sets whether to use a dual paraboloid or a cubemap for the shadow map. Dual paraboloid is faster but may suffer from artifacts. Equivalent to [member OmniLight.omni_shadow_mode].
 			</description>
@@ -1386,7 +1386,7 @@
 		<method name="light_set_param">
 			<return type="void" />
 			<argument index="0" name="light" type="RID" />
-			<argument index="1" name="param" type="int" enum="VisualServer.LightParam" />
+			<argument index="1" name="param" type="int" enum="RenderingServer.LightParam" />
 			<argument index="2" name="value" type="float" />
 			<description>
 				Sets the specified light parameter. See [enum LightParam] for options. Equivalent to [method Light.set_param].
@@ -1436,8 +1436,8 @@
 		<method name="material_create">
 			<return type="RID" />
 			<description>
-				Creates an empty material and adds it to the VisualServer. It can be accessed with the RID that is returned. This RID will be used in all [code]material_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates an empty material and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]material_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 			</description>
 		</method>
 		<method name="material_get_param" qualifiers="const">
@@ -1504,7 +1504,7 @@
 		<method name="mesh_add_surface_from_arrays">
 			<return type="void" />
 			<argument index="0" name="mesh" type="RID" />
-			<argument index="1" name="primitive" type="int" enum="VisualServer.PrimitiveType" />
+			<argument index="1" name="primitive" type="int" enum="RenderingServer.PrimitiveType" />
 			<argument index="2" name="arrays" type="Array" />
 			<argument index="3" name="blend_shapes" type="Array" default="[  ]" />
 			<argument index="4" name="compress_format" type="int" default="2194432" />
@@ -1522,8 +1522,8 @@
 		<method name="mesh_create">
 			<return type="RID" />
 			<description>
-				Creates a new mesh and adds it to the VisualServer. It can be accessed with the RID that is returned. This RID will be used in all [code]mesh_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates a new mesh and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]mesh_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 				To place in a scene, attach this mesh to an instance using [method instance_set_base] using the returned RID.
 			</description>
 		</method>
@@ -1535,7 +1535,7 @@
 			</description>
 		</method>
 		<method name="mesh_get_blend_shape_mode" qualifiers="const">
-			<return type="int" enum="VisualServer.BlendShapeMode" />
+			<return type="int" enum="RenderingServer.BlendShapeMode" />
 			<argument index="0" name="mesh" type="RID" />
 			<description>
 				Returns a mesh's blend shape mode.
@@ -1574,7 +1574,7 @@
 		<method name="mesh_set_blend_shape_mode">
 			<return type="void" />
 			<argument index="0" name="mesh" type="RID" />
-			<argument index="1" name="mode" type="int" enum="VisualServer.BlendShapeMode" />
+			<argument index="1" name="mode" type="int" enum="RenderingServer.BlendShapeMode" />
 			<description>
 				Sets a mesh's blend shape mode.
 			</description>
@@ -1679,7 +1679,7 @@
 			</description>
 		</method>
 		<method name="mesh_surface_get_primitive_type" qualifiers="const">
-			<return type="int" enum="VisualServer.PrimitiveType" />
+			<return type="int" enum="RenderingServer.PrimitiveType" />
 			<argument index="0" name="mesh" type="RID" />
 			<argument index="1" name="surface" type="int" />
 			<description>
@@ -1717,9 +1717,9 @@
 			<return type="void" />
 			<argument index="0" name="multimesh" type="RID" />
 			<argument index="1" name="instances" type="int" />
-			<argument index="2" name="transform_format" type="int" enum="VisualServer.MultimeshTransformFormat" />
-			<argument index="3" name="color_format" type="int" enum="VisualServer.MultimeshColorFormat" />
-			<argument index="4" name="custom_data_format" type="int" enum="VisualServer.MultimeshCustomDataFormat" default="0" />
+			<argument index="2" name="transform_format" type="int" enum="RenderingServer.MultimeshTransformFormat" />
+			<argument index="3" name="color_format" type="int" enum="RenderingServer.MultimeshColorFormat" />
+			<argument index="4" name="custom_data_format" type="int" enum="RenderingServer.MultimeshCustomDataFormat" default="0" />
 			<description>
 				Allocates space for the multimesh data. Format parameters determine how the data will be stored by OpenGL. See [enum MultimeshTransformFormat], [enum MultimeshColorFormat], and [enum MultimeshCustomDataFormat] for usage. Equivalent to [member MultiMesh.instance_count].
 			</description>
@@ -1727,8 +1727,8 @@
 		<method name="multimesh_create">
 			<return type="RID" />
 			<description>
-				Creates a new multimesh on the VisualServer and returns an [RID] handle. This RID will be used in all [code]multimesh_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates a new multimesh on the RenderingServer and returns an [RID] handle. This RID will be used in all [code]multimesh_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 				To place in a scene, attach this multimesh to an instance using [method instance_set_base] using the returned RID.
 			</description>
 		</method>
@@ -1859,16 +1859,16 @@
 		<method name="omni_light_create">
 			<return type="RID" />
 			<description>
-				Creates a new omni light and adds it to the VisualServer. It can be accessed with the RID that is returned. This RID can be used in most [code]light_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates a new omni light and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID can be used in most [code]light_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 				To place in a scene, attach this omni light to an instance using [method instance_set_base] using the returned RID.
 			</description>
 		</method>
 		<method name="reflection_probe_create">
 			<return type="RID" />
 			<description>
-				Creates a reflection probe and adds it to the VisualServer. It can be accessed with the RID that is returned. This RID will be used in all [code]reflection_probe_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates a reflection probe and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]reflection_probe_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 				To place in a scene, attach this reflection probe to an instance using [method instance_set_base] using the returned RID.
 			</description>
 		</method>
@@ -1963,7 +1963,7 @@
 		<method name="reflection_probe_set_update_mode">
 			<return type="void" />
 			<argument index="0" name="probe" type="RID" />
-			<argument index="1" name="mode" type="int" enum="VisualServer.ReflectionProbeUpdateMode" />
+			<argument index="1" name="mode" type="int" enum="RenderingServer.ReflectionProbeUpdateMode" />
 			<description>
 				Sets how often the reflection probe updates. Can either be once or every frame. See [enum ReflectionProbeUpdateMode] for options.
 			</description>
@@ -1979,15 +1979,15 @@
 		<method name="scenario_create">
 			<return type="RID" />
 			<description>
-				Creates a scenario and adds it to the VisualServer. It can be accessed with the RID that is returned. This RID will be used in all [code]scenario_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates a scenario and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]scenario_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 				The scenario is the 3D world that all the visual instances exist in.
 			</description>
 		</method>
 		<method name="scenario_set_debug">
 			<return type="void" />
 			<argument index="0" name="scenario" type="RID" />
-			<argument index="1" name="debug_mode" type="int" enum="VisualServer.ScenarioDebugMode" />
+			<argument index="1" name="debug_mode" type="int" enum="RenderingServer.ScenarioDebugMode" />
 			<description>
 				Sets the [enum ScenarioDebugMode] for this scenario. See [enum ScenarioDebugMode] for options.
 			</description>
@@ -2068,8 +2068,8 @@
 		<method name="shader_create">
 			<return type="RID" />
 			<description>
-				Creates an empty shader and adds it to the VisualServer. It can be accessed with the RID that is returned. This RID will be used in all [code]shader_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates an empty shader and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]shader_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 			</description>
 		</method>
 		<method name="shader_get_code" qualifiers="const">
@@ -2155,8 +2155,8 @@
 		<method name="skeleton_create">
 			<return type="RID" />
 			<description>
-				Creates a skeleton and adds it to the VisualServer. It can be accessed with the RID that is returned. This RID will be used in all [code]skeleton_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates a skeleton and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]skeleton_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 			</description>
 		</method>
 		<method name="skeleton_get_bone_count" qualifiers="const">
@@ -2169,8 +2169,8 @@
 		<method name="sky_create">
 			<return type="RID" />
 			<description>
-				Creates an empty sky and adds it to the VisualServer. It can be accessed with the RID that is returned. This RID will be used in all [code]sky_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates an empty sky and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]sky_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 			</description>
 		</method>
 		<method name="sky_set_texture">
@@ -2185,8 +2185,8 @@
 		<method name="spot_light_create">
 			<return type="RID" />
 			<description>
-				Creates a spot light and adds it to the VisualServer. It can be accessed with the RID that is returned. This RID can be used in most [code]light_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates a spot light and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID can be used in most [code]light_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 				To place in a scene, attach this spot light to an instance using [method instance_set_base] using the returned RID.
 			</description>
 		</method>
@@ -2203,7 +2203,7 @@
 			<argument index="2" name="height" type="int" />
 			<argument index="3" name="depth_3d" type="int" />
 			<argument index="4" name="format" type="int" enum="Image.Format" />
-			<argument index="5" name="type" type="int" enum="VisualServer.TextureType" />
+			<argument index="5" name="type" type="int" enum="RenderingServer.TextureType" />
 			<argument index="6" name="flags" type="int" default="7" />
 			<description>
 				Allocates the GPU memory for the texture.
@@ -2220,8 +2220,8 @@
 		<method name="texture_create">
 			<return type="RID" />
 			<description>
-				Creates an empty texture and adds it to the VisualServer. It can be accessed with the RID that is returned. This RID will be used in all [code]texture_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates an empty texture and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]texture_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 			</description>
 		</method>
 		<method name="texture_create_from_image">
@@ -2289,7 +2289,7 @@
 			</description>
 		</method>
 		<method name="texture_get_type" qualifiers="const">
-			<return type="int" enum="VisualServer.TextureType" />
+			<return type="int" enum="RenderingServer.TextureType" />
 			<argument index="0" name="texture" type="RID" />
 			<description>
 				Returns the type of the texture, can be any of the [enum TextureType].
@@ -2349,18 +2349,18 @@
 			<argument index="1" name="base" type="RID" />
 			<description>
 				Creates an update link between two textures, similar to how [ViewportTexture]s operate. When the base texture is the texture of a [Viewport], every time the viewport renders a new frame, the proxy texture automatically receives an update.
-				For example, this code links a generic [ImageTexture] to the texture output of the [Viewport] using the VisualServer API:
+				For example, this code links a generic [ImageTexture] to the texture output of the [Viewport] using the RenderingServer API:
 				[codeblock]
 				func _ready():
 				    var viewport_rid = get_viewport().get_viewport_rid()
-				    var viewport_texture_rid = VisualServer.viewport_get_texture(viewport_rid)
+				    var viewport_texture_rid = RenderingServer.viewport_get_texture(viewport_rid)
 
 				    var proxy_texture = ImageTexture.new()
-				    var viewport_texture_image_data = VisualServer.texture_get_data(viewport_texture_rid)
+				    var viewport_texture_image_data = RenderingServer.texture_get_data(viewport_texture_rid)
 
 				    proxy_texture.create_from_image(viewport_texture_image_data)
 				    var proxy_texture_rid = proxy_texture.get_rid()
-				    VisualServer.texture_set_proxy(proxy_texture_rid, viewport_texture_rid)
+				    RenderingServer.texture_set_proxy(proxy_texture_rid, viewport_texture_rid)
 
 				    $TextureRect.texture = proxy_texture
 				[/codeblock]
@@ -2425,8 +2425,8 @@
 		<method name="viewport_create">
 			<return type="RID" />
 			<description>
-				Creates an empty viewport and adds it to the VisualServer. It can be accessed with the RID that is returned. This RID will be used in all [code]viewport_*[/code] VisualServer functions.
-				Once finished with your RID, you will want to free the RID using the VisualServer's [method free_rid] static method.
+				Creates an empty viewport and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]viewport_*[/code] RenderingServer functions.
+				Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] static method.
 			</description>
 		</method>
 		<method name="viewport_detach">
@@ -2439,7 +2439,7 @@
 		<method name="viewport_get_render_info">
 			<return type="int" />
 			<argument index="0" name="viewport" type="RID" />
-			<argument index="1" name="info" type="int" enum="VisualServer.ViewportRenderInfo" />
+			<argument index="1" name="info" type="int" enum="RenderingServer.ViewportRenderInfo" />
 			<description>
 				Returns a viewport's render information. For options, see the [enum ViewportRenderInfo] constants.
 			</description>
@@ -2490,7 +2490,7 @@
 		<method name="viewport_set_clear_mode">
 			<return type="void" />
 			<argument index="0" name="viewport" type="RID" />
-			<argument index="1" name="clear_mode" type="int" enum="VisualServer.ViewportClearMode" />
+			<argument index="1" name="clear_mode" type="int" enum="RenderingServer.ViewportClearMode" />
 			<description>
 				Sets the clear mode of a viewport. See [enum ViewportClearMode] for options.
 			</description>
@@ -2498,7 +2498,7 @@
 		<method name="viewport_set_debug_draw">
 			<return type="void" />
 			<argument index="0" name="viewport" type="RID" />
-			<argument index="1" name="draw" type="int" enum="VisualServer.ViewportDebugDraw" />
+			<argument index="1" name="draw" type="int" enum="RenderingServer.ViewportDebugDraw" />
 			<description>
 				Sets the debug draw mode of a viewport. See [enum ViewportDebugDraw] for options.
 			</description>
@@ -2555,7 +2555,7 @@
 		<method name="viewport_set_msaa">
 			<return type="void" />
 			<argument index="0" name="viewport" type="RID" />
-			<argument index="1" name="msaa" type="int" enum="VisualServer.ViewportMSAA" />
+			<argument index="1" name="msaa" type="int" enum="RenderingServer.ViewportMSAA" />
 			<description>
 				Sets the anti-aliasing mode. See [enum ViewportMSAA] for options.
 			</description>
@@ -2630,7 +2630,7 @@
 		<method name="viewport_set_update_mode">
 			<return type="void" />
 			<argument index="0" name="viewport" type="RID" />
-			<argument index="1" name="update_mode" type="int" enum="VisualServer.ViewportUpdateMode" />
+			<argument index="1" name="update_mode" type="int" enum="RenderingServer.ViewportUpdateMode" />
 			<description>
 				Sets when the viewport should be updated. See [enum ViewportUpdateMode] constants for options.
 			</description>
@@ -2638,7 +2638,7 @@
 		<method name="viewport_set_usage">
 			<return type="void" />
 			<argument index="0" name="viewport" type="RID" />
-			<argument index="1" name="usage" type="int" enum="VisualServer.ViewportUsage" />
+			<argument index="1" name="usage" type="int" enum="RenderingServer.ViewportUsage" />
 			<description>
 				Sets the viewport's 2D/3D mode. See [enum ViewportUsage] constants for options.
 			</description>
@@ -2686,12 +2686,12 @@
 	<signals>
 		<signal name="frame_post_draw">
 			<description>
-				Emitted at the end of the frame, after the VisualServer has finished updating all the Viewports.
+				Emitted at the end of the frame, after the RenderingServer has finished updating all the Viewports.
 			</description>
 		</signal>
 		<signal name="frame_pre_draw">
 			<description>
-				Emitted at the beginning of the frame, before the VisualServer updates all the Viewports.
+				Emitted at the beginning of the frame, before the RenderingServer updates all the Viewports.
 			</description>
 		</signal>
 	</signals>

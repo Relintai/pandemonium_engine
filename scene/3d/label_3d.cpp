@@ -107,8 +107,8 @@ void Label3D::_bind_methods() {
 	ADD_PROPERTYI(PropertyInfo(Variant::BOOL, "fixed_size"), "set_draw_flag", "get_draw_flag", FLAG_FIXED_SIZE);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "alpha_cut", PROPERTY_HINT_ENUM, "Disabled,Discard,Opaque Pre-Pass"), "set_alpha_cut_mode", "get_alpha_cut_mode");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "alpha_scissor_threshold", PROPERTY_HINT_RANGE, "0,1,0.01"), "set_alpha_scissor_threshold", "get_alpha_scissor_threshold");
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "render_priority", PROPERTY_HINT_RANGE, itos(VS::MATERIAL_RENDER_PRIORITY_MIN) + "," + itos(VS::MATERIAL_RENDER_PRIORITY_MAX) + ",1"), "set_render_priority", "get_render_priority");
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "outline_render_priority", PROPERTY_HINT_RANGE, itos(VS::MATERIAL_RENDER_PRIORITY_MIN) + "," + itos(VS::MATERIAL_RENDER_PRIORITY_MAX) + ",1"), "set_outline_render_priority", "get_outline_render_priority");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "render_priority", PROPERTY_HINT_RANGE, itos(RS::MATERIAL_RENDER_PRIORITY_MIN) + "," + itos(RS::MATERIAL_RENDER_PRIORITY_MAX) + ",1"), "set_render_priority", "get_render_priority");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "outline_render_priority", PROPERTY_HINT_RANGE, itos(RS::MATERIAL_RENDER_PRIORITY_MIN) + "," + itos(RS::MATERIAL_RENDER_PRIORITY_MAX) + ",1"), "set_outline_render_priority", "get_outline_render_priority");
 
 	ADD_GROUP("Text", "");
 	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "modulate"), "set_modulate", "get_modulate");
@@ -539,24 +539,24 @@ float Label3D::_generate_glyph_surfaces(const Ref<Font> &p_font, CharType p_char
 	SurfaceKey key = SurfaceKey(tex.get_id(), p_priority);
 	if (!surfaces.has(key)) {
 		SurfaceData surf;
-		surf.material = RID_PRIME(VisualServer::get_singleton()->material_create());
+		surf.material = RID_PRIME(RenderingServer::get_singleton()->material_create());
 		// Set defaults for material, names need to match up those in SpatialMaterial
-		VS::get_singleton()->material_set_param(surf.material, "albedo", Color(1, 1, 1, 1));
-		VS::get_singleton()->material_set_param(surf.material, "specular", 0.5);
-		VS::get_singleton()->material_set_param(surf.material, "metallic", 0.0);
-		VS::get_singleton()->material_set_param(surf.material, "roughness", 1.0);
-		VS::get_singleton()->material_set_param(surf.material, "uv1_offset", Vector3(0, 0, 0));
-		VS::get_singleton()->material_set_param(surf.material, "uv1_scale", Vector3(1, 1, 1));
-		VS::get_singleton()->material_set_param(surf.material, "uv2_offset", Vector3(0, 0, 0));
-		VS::get_singleton()->material_set_param(surf.material, "uv2_scale", Vector3(1, 1, 1));
-		VS::get_singleton()->material_set_param(surf.material, "alpha_scissor_threshold", alpha_scissor_threshold);
+		RS::get_singleton()->material_set_param(surf.material, "albedo", Color(1, 1, 1, 1));
+		RS::get_singleton()->material_set_param(surf.material, "specular", 0.5);
+		RS::get_singleton()->material_set_param(surf.material, "metallic", 0.0);
+		RS::get_singleton()->material_set_param(surf.material, "roughness", 1.0);
+		RS::get_singleton()->material_set_param(surf.material, "uv1_offset", Vector3(0, 0, 0));
+		RS::get_singleton()->material_set_param(surf.material, "uv1_scale", Vector3(1, 1, 1));
+		RS::get_singleton()->material_set_param(surf.material, "uv2_offset", Vector3(0, 0, 0));
+		RS::get_singleton()->material_set_param(surf.material, "uv2_scale", Vector3(1, 1, 1));
+		RS::get_singleton()->material_set_param(surf.material, "alpha_scissor_threshold", alpha_scissor_threshold);
 
 		RID shader_rid = SpatialMaterial::get_material_rid_for_2d(get_draw_flag(FLAG_SHADED), true, get_draw_flag(FLAG_DOUBLE_SIDED), get_alpha_cut_mode() == ALPHA_CUT_DISCARD, get_alpha_cut_mode() == ALPHA_CUT_OPAQUE_PREPASS, get_billboard_mode() == SpatialMaterial::BILLBOARD_ENABLED, get_billboard_mode() == SpatialMaterial::BILLBOARD_FIXED_Y, get_draw_flag(FLAG_DISABLE_DEPTH_TEST), get_draw_flag(FLAG_FIXED_SIZE), p_font->is_distance_field_hint());
 
-		VS::get_singleton()->material_set_shader(surf.material, VS::get_singleton()->material_get_shader(shader_rid));
-		VS::get_singleton()->material_set_param(surf.material, "texture_albedo", tex);
+		RS::get_singleton()->material_set_shader(surf.material, RS::get_singleton()->material_get_shader(shader_rid));
+		RS::get_singleton()->material_set_param(surf.material, "texture_albedo", tex);
 		if (get_alpha_cut_mode() == ALPHA_CUT_DISABLED) {
-			VS::get_singleton()->material_set_render_priority(surf.material, p_priority);
+			RS::get_singleton()->material_set_render_priority(surf.material, p_priority);
 		} else {
 			surf.z_shift = p_priority;
 		}
@@ -613,14 +613,14 @@ float Label3D::_generate_glyph_surfaces(const Ref<Font> &p_font, CharType p_char
 
 void Label3D::_shape() {
 	// Clear mesh.
-	VS::get_singleton()->mesh_clear(mesh);
+	RS::get_singleton()->mesh_clear(mesh);
 	aabb = AABB();
 
 	// Clear materials.
 	{
 		const SurfaceKey *k = nullptr;
 		while ((k = surfaces.next(k))) {
-			VS::get_singleton()->free(surfaces[*k].material);
+			RS::get_singleton()->free(surfaces[*k].material);
 		}
 		surfaces.clear();
 	}
@@ -753,16 +753,16 @@ void Label3D::_shape() {
 	while ((k = surfaces.next(k))) {
 		const SurfaceData &surf = surfaces[*k];
 		Array mesh_array;
-		mesh_array.resize(VS::ARRAY_MAX);
-		mesh_array[VS::ARRAY_VERTEX] = surf.mesh_vertices;
-		mesh_array[VS::ARRAY_NORMAL] = surf.mesh_normals;
-		mesh_array[VS::ARRAY_TANGENT] = surf.mesh_tangents;
-		mesh_array[VS::ARRAY_COLOR] = surf.mesh_colors;
-		mesh_array[VS::ARRAY_TEX_UV] = surf.mesh_uvs;
-		mesh_array[VS::ARRAY_INDEX] = surf.indices;
+		mesh_array.resize(RS::ARRAY_MAX);
+		mesh_array[RS::ARRAY_VERTEX] = surf.mesh_vertices;
+		mesh_array[RS::ARRAY_NORMAL] = surf.mesh_normals;
+		mesh_array[RS::ARRAY_TANGENT] = surf.mesh_tangents;
+		mesh_array[RS::ARRAY_COLOR] = surf.mesh_colors;
+		mesh_array[RS::ARRAY_TEX_UV] = surf.mesh_uvs;
+		mesh_array[RS::ARRAY_INDEX] = surf.indices;
 
-		VS::get_singleton()->mesh_add_surface_from_arrays(mesh, VS::PRIMITIVE_TRIANGLES, mesh_array);
-		VS::get_singleton()->instance_set_surface_material(get_instance(), idx++, surf.material);
+		RS::get_singleton()->mesh_add_surface_from_arrays(mesh, RS::PRIMITIVE_TRIANGLES, mesh_array);
+		RS::get_singleton()->instance_set_surface_material(get_instance(), idx++, surf.material);
 	}
 }
 
@@ -814,7 +814,7 @@ bool Label3D::is_uppercase() const {
 }
 
 void Label3D::set_render_priority(int p_priority) {
-	ERR_FAIL_COND(p_priority < VS::MATERIAL_RENDER_PRIORITY_MIN || p_priority > VS::MATERIAL_RENDER_PRIORITY_MAX);
+	ERR_FAIL_COND(p_priority < RS::MATERIAL_RENDER_PRIORITY_MIN || p_priority > RS::MATERIAL_RENDER_PRIORITY_MAX);
 	if (render_priority != p_priority) {
 		render_priority = p_priority;
 		_queue_update();
@@ -826,7 +826,7 @@ int Label3D::get_render_priority() const {
 }
 
 void Label3D::set_outline_render_priority(int p_priority) {
-	ERR_FAIL_COND(p_priority < VS::MATERIAL_RENDER_PRIORITY_MIN || p_priority > VS::MATERIAL_RENDER_PRIORITY_MAX);
+	ERR_FAIL_COND(p_priority < RS::MATERIAL_RENDER_PRIORITY_MIN || p_priority > RS::MATERIAL_RENDER_PRIORITY_MAX);
 	if (outline_render_priority != p_priority) {
 		outline_render_priority = p_priority;
 		_queue_update();
@@ -1044,7 +1044,7 @@ Label3D::Label3D() {
 		flags[i] = (i == FLAG_DOUBLE_SIDED);
 	}
 
-	mesh = RID_PRIME(VisualServer::get_singleton()->mesh_create());
+	mesh = RID_PRIME(RenderingServer::get_singleton()->mesh_create());
 
 	set_base(mesh);
 }
@@ -1056,10 +1056,10 @@ Label3D::~Label3D() {
 		memdelete(current);
 	}
 
-	VS::get_singleton()->free(mesh);
+	RS::get_singleton()->free(mesh);
 	const SurfaceKey *k = nullptr;
 	while ((k = surfaces.next(k))) {
-		VS::get_singleton()->free(surfaces[*k].material);
+		RS::get_singleton()->free(surfaces[*k].material);
 	}
 	surfaces.clear();
 }

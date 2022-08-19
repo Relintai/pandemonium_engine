@@ -35,9 +35,9 @@
 #include "core/os/safe_refcount.h"
 #include "servers/visual_server.h"
 
-class VisualServerWrapMT : public VisualServer {
+class RenderingServerWrapMT : public RenderingServer {
 	// the real visual server
-	mutable VisualServer *visual_server;
+	mutable RenderingServer *visual_server;
 
 	mutable CommandQueueMT command_queue;
 
@@ -64,7 +64,7 @@ class VisualServerWrapMT : public VisualServer {
 
 	//#define DEBUG_SYNC
 
-	static VisualServerWrapMT *singleton_mt;
+	static RenderingServerWrapMT *singleton_mt;
 
 #ifdef DEBUG_SYNC
 #define SYNC_DEBUG print_line("sync on: " + String(__FUNCTION__));
@@ -73,8 +73,8 @@ class VisualServerWrapMT : public VisualServer {
 #endif
 
 public:
-#define ServerName VisualServer
-#define ServerNameWrapMT VisualServerWrapMT
+#define ServerName RenderingServer
+#define ServerNameWrapMT RenderingServerWrapMT
 #define server_name visual_server
 #include "servers/server_wrap_mt_common.h"
 
@@ -459,7 +459,7 @@ public:
 	FUNC1RC(bool, rooms_is_loaded, RID)
 
 	// Callbacks
-	FUNC1(callbacks_register, VisualServerCallbacks *)
+	FUNC1(callbacks_register, RenderingServerCallbacks *)
 
 	// don't use these in a game!
 	FUNC2RC(Vector<ObjectID>, instances_cull_aabb, const AABB &, RID)
@@ -619,8 +619,8 @@ public:
 		return visual_server->is_low_end();
 	}
 
-	VisualServerWrapMT(VisualServer *p_contained, bool p_create_thread);
-	~VisualServerWrapMT();
+	RenderingServerWrapMT(RenderingServer *p_contained, bool p_create_thread);
+	~RenderingServerWrapMT();
 
 #undef ServerName
 #undef ServerNameWrapMT

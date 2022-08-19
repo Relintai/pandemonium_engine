@@ -89,10 +89,10 @@ private:
 	Set<StringName> internal_functions;
 	Set<StringName> fragment_varyings;
 
-	DefaultIdentifierActions actions[VS::SHADER_MAX];
+	DefaultIdentifierActions actions[RS::SHADER_MAX];
 
 public:
-	Error compile(VS::ShaderMode p_mode, const String &p_code, IdentifierActions *p_actions, const String &p_path, GeneratedCode &r_gen_code);
+	Error compile(RS::ShaderMode p_mode, const String &p_code, IdentifierActions *p_actions, const String &p_path, GeneratedCode &r_gen_code);
 
 	ShaderCompilerGLES2();
 };

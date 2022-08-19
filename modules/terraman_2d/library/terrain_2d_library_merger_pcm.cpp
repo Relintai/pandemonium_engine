@@ -201,7 +201,7 @@ Ref<Terrain2DMaterialCache> Terrain2DLibraryMergerPCM::_material_cache_get(const
 void Terrain2DLibraryMergerPCM::_material_cache_unref(const int key) {
 	if (_material_cache_mutex.try_lock() != OK) {
 		// If we don't get the lock try again later
-		// This is needed, because when duplicating materials the VisualServer apparently
+		// This is needed, because when duplicating materials the RenderingServer apparently
 		// needs synchronization with the main thread. So if _material_cache_unref holds the mutex
 		// and is duplicating the materials, trying to get the lock from the main thread will deadlock
 		// the game. This can happen when chungs are spawned and despawned really fast.
@@ -382,7 +382,7 @@ Ref<Terrain2DMaterialCache> Terrain2DLibraryMergerPCM::_prop_material_cache_get(
 void Terrain2DLibraryMergerPCM::_prop_material_cache_unref(const int key) {
 	if (_prop_material_cache_mutex.try_lock() != OK) {
 		// If we don't get the lock try again later
-		// This is needed, because when duplicating materials the VisualServer apparently
+		// This is needed, because when duplicating materials the RenderingServer apparently
 		// needs synchronization with the main thread. So if _prop_material_cache_get_key holds the mutex
 		// and is duplicating the materials, trying to get the lock from the main thread will deadlock
 		// the game. This can happen when chungs are spawned and despawned really fast.

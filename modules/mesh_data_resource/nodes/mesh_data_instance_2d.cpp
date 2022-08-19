@@ -64,7 +64,7 @@ void MeshDataInstance2D::refresh() {
 		return;
 	}
 
-	VisualServer::get_singleton()->mesh_clear(_mesh_rid);
+	RenderingServer::get_singleton()->mesh_clear(_mesh_rid);
 
 	if (!_mesh.is_valid()) {
 		return;
@@ -82,7 +82,7 @@ void MeshDataInstance2D::refresh() {
 		return;
 	}
 
-	VisualServer::get_singleton()->mesh_add_surface_from_arrays(_mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, arr);
+	RenderingServer::get_singleton()->mesh_add_surface_from_arrays(_mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, arr);
 }
 
 #ifdef TOOLS_ENABLED
@@ -101,14 +101,14 @@ bool MeshDataInstance2D::_edit_use_rect() const {
 #endif
 
 MeshDataInstance2D::MeshDataInstance2D() {
-	_mesh_rid = VisualServer::get_singleton()->mesh_create();
+	_mesh_rid = RenderingServer::get_singleton()->mesh_create();
 }
 MeshDataInstance2D::~MeshDataInstance2D() {
 	_mesh.unref();
 	_texture.unref();
 
 	if (_mesh_rid != RID()) {
-		VS::get_singleton()->free(_mesh_rid);
+		RS::get_singleton()->free(_mesh_rid);
 		_mesh_rid = RID();
 	}
 }
@@ -123,7 +123,7 @@ void MeshDataInstance2D::_notification(int p_what) {
 				RID texture_rid = _texture.is_valid() ? _texture->get_rid() : RID();
 				RID normal_map_rid = _normal_map.is_valid() ? _normal_map->get_rid() : RID();
 
-				VisualServer::get_singleton()->canvas_item_add_mesh(get_canvas_item(), _mesh_rid, Transform2D(), get_modulate(), texture_rid, normal_map_rid);
+				RenderingServer::get_singleton()->canvas_item_add_mesh(get_canvas_item(), _mesh_rid, Transform2D(), get_modulate(), texture_rid, normal_map_rid);
 			}
 		} break;
 	}

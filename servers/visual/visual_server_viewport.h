@@ -34,7 +34,7 @@
 #include "rasterizer.h"
 #include "servers/visual_server.h"
 
-class VisualServerViewport {
+class RenderingServerViewport {
 public:
 	struct CanvasBase : public RID_Data {
 	};
@@ -47,7 +47,7 @@ public:
 		RID camera;
 		RID scenario;
 
-		VS::ViewportUpdateMode update_mode;
+		RS::ViewportUpdateMode update_mode;
 		RID render_target;
 		RID render_target_texture;
 
@@ -65,10 +65,10 @@ public:
 		RID shadow_atlas;
 		int shadow_atlas_size;
 
-		int render_info[VS::VIEWPORT_RENDER_INFO_MAX];
-		VS::ViewportDebugDraw debug_draw;
+		int render_info[RS::VIEWPORT_RENDER_INFO_MAX];
+		RS::ViewportDebugDraw debug_draw;
 
-		VS::ViewportClearMode clear_mode;
+		RS::ViewportClearMode clear_mode;
 
 		bool transparent_bg;
 
@@ -104,8 +104,8 @@ public:
 		Map<RID, CanvasData> canvas_map;
 
 		Viewport() {
-			update_mode = VS::VIEWPORT_UPDATE_WHEN_VISIBLE;
-			clear_mode = VS::VIEWPORT_CLEAR_ALWAYS;
+			update_mode = RS::VIEWPORT_UPDATE_WHEN_VISIBLE;
+			clear_mode = RS::VIEWPORT_CLEAR_ALWAYS;
 			transparent_bg = false;
 			disable_environment = false;
 			viewport_to_screen = 0;
@@ -113,8 +113,8 @@ public:
 			disable_3d = false;
 			disable_3d_by_usage = false;
 			keep_3d_linear = false;
-			debug_draw = VS::VIEWPORT_DEBUG_DRAW_DISABLED;
-			for (int i = 0; i < VS::VIEWPORT_RENDER_INFO_MAX; i++) {
+			debug_draw = RS::VIEWPORT_DEBUG_DRAW_DISABLED;
+			for (int i = 0; i < RS::VIEWPORT_RENDER_INFO_MAX; i++) {
 				render_info[i] = 0;
 			}
 		}
@@ -152,10 +152,10 @@ public:
 
 	void viewport_set_active(RID p_viewport, bool p_active);
 	void viewport_set_parent_viewport(RID p_viewport, RID p_parent_viewport);
-	void viewport_set_update_mode(RID p_viewport, VS::ViewportUpdateMode p_mode);
+	void viewport_set_update_mode(RID p_viewport, RS::ViewportUpdateMode p_mode);
 	void viewport_set_vflip(RID p_viewport, bool p_enable);
 
-	void viewport_set_clear_mode(RID p_viewport, VS::ViewportClearMode p_clear_mode);
+	void viewport_set_clear_mode(RID p_viewport, RS::ViewportClearMode p_clear_mode);
 
 	RID viewport_get_texture(RID p_viewport) const;
 
@@ -178,24 +178,24 @@ public:
 	void viewport_set_shadow_atlas_size(RID p_viewport, int p_size);
 	void viewport_set_shadow_atlas_quadrant_subdivision(RID p_viewport, int p_quadrant, int p_subdiv);
 
-	void viewport_set_msaa(RID p_viewport, VS::ViewportMSAA p_msaa);
+	void viewport_set_msaa(RID p_viewport, RS::ViewportMSAA p_msaa);
 	void viewport_set_use_fxaa(RID p_viewport, bool p_fxaa);
 	void viewport_set_use_debanding(RID p_viewport, bool p_debanding);
 	void viewport_set_sharpen_intensity(RID p_viewport, float p_intensity);
 	void viewport_set_hdr(RID p_viewport, bool p_enabled);
 	void viewport_set_use_32_bpc_depth(RID p_viewport, bool p_enabled);
-	void viewport_set_usage(RID p_viewport, VS::ViewportUsage p_usage);
+	void viewport_set_usage(RID p_viewport, RS::ViewportUsage p_usage);
 
-	virtual int viewport_get_render_info(RID p_viewport, VS::ViewportRenderInfo p_info);
-	virtual void viewport_set_debug_draw(RID p_viewport, VS::ViewportDebugDraw p_draw);
+	virtual int viewport_get_render_info(RID p_viewport, RS::ViewportRenderInfo p_info);
+	virtual void viewport_set_debug_draw(RID p_viewport, RS::ViewportDebugDraw p_draw);
 
 	void set_default_clear_color(const Color &p_color);
 	void draw_viewports();
 
 	bool free(RID p_rid);
 
-	VisualServerViewport();
-	virtual ~VisualServerViewport() {}
+	RenderingServerViewport();
+	virtual ~RenderingServerViewport() {}
 };
 
 #endif // VISUALSERVERVIEWPORT_H

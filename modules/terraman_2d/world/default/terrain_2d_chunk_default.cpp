@@ -258,7 +258,7 @@ void Terrain2DChunkDefault::meshes_create(const int mesh_index, const int mesh_c
 	Array am;
 
 	for (int i = 0; i < mesh_count; ++i) {
-		RID mesh_rid = VS::get_singleton()->mesh_create();
+		RID mesh_rid = RS::get_singleton()->mesh_create();
 
 		am.push_back(mesh_rid);
 	}
@@ -281,7 +281,7 @@ void Terrain2DChunkDefault::meshes_free(const int mesh_index) {
 			RID r = a[i];
 
 			if (r != rid) {
-				VS::get_singleton()->free(r);
+				RS::get_singleton()->free(r);
 			}
 		}
 	}
@@ -300,7 +300,7 @@ void Terrain2DChunkDefault::mesh_create(const int mesh_index) {
 
 	ERR_FAIL_COND(m.has(MESH_TYPE_INDEX_MESH));
 
-	RID mesh_rid = VS::get_singleton()->mesh_create();
+	RID mesh_rid = RS::get_singleton()->mesh_create();
 
 	m[MESH_TYPE_INDEX_MESH] = mesh_rid;
 
@@ -317,7 +317,7 @@ void Terrain2DChunkDefault::mesh_free(const int mesh_index) {
 		RID r = m[MESH_TYPE_INDEX_MESH];
 
 		if (r != rid) {
-			VS::get_singleton()->free(r);
+			RS::get_singleton()->free(r);
 		}
 	}
 
@@ -471,7 +471,7 @@ void Terrain2DChunkDefault::update_transforms() {
 	}
 
 	//if (_debug_mesh_instance != RID()) {
-	//	VS::get_singleton()->instance_set_transform(_debug_mesh_instance, get_transform());
+	//	RS::get_singleton()->instance_set_transform(_debug_mesh_instance, get_transform());
 	//}
 }
 
@@ -487,27 +487,27 @@ int Terrain2DChunkDefault::get_light_count() const {
 
 void Terrain2DChunkDefault::debug_mesh_allocate() {
 	if (_debug_mesh_rid == RID()) {
-		_debug_mesh_rid = VisualServer::get_singleton()->mesh_create();
+		_debug_mesh_rid = RenderingServer::get_singleton()->mesh_create();
 	}
 
 	if (_debug_mesh_instance == RID()) {
-		_debug_mesh_instance = VisualServer::get_singleton()->instance_create();
+		_debug_mesh_instance = RenderingServer::get_singleton()->instance_create();
 
 		//if (get_voxel_world()->get_world().is_valid())
-		//	VS::get_singleton()->instance_set_scenario(_debug_mesh_instance, get_voxel_world()->get_world()->get_scenario());
+		//	RS::get_singleton()->instance_set_scenario(_debug_mesh_instance, get_voxel_world()->get_world()->get_scenario());
 
-		VS::get_singleton()->instance_set_base(_debug_mesh_instance, _debug_mesh_rid);
-		//VS::get_singleton()->instance_set_transform(_debug_mesh_instance, get_transform());
-		VS::get_singleton()->instance_set_visible(_debug_mesh_instance, true);
+		RS::get_singleton()->instance_set_base(_debug_mesh_instance, _debug_mesh_rid);
+		//RS::get_singleton()->instance_set_transform(_debug_mesh_instance, get_transform());
+		RS::get_singleton()->instance_set_visible(_debug_mesh_instance, true);
 	}
 }
 void Terrain2DChunkDefault::debug_mesh_free() {
 	if (_debug_mesh_instance != RID()) {
-		VisualServer::get_singleton()->free(_debug_mesh_instance);
+		RenderingServer::get_singleton()->free(_debug_mesh_instance);
 	}
 
 	if (_debug_mesh_rid != RID()) {
-		VisualServer::get_singleton()->free(_debug_mesh_rid);
+		RenderingServer::get_singleton()->free(_debug_mesh_rid);
 	}
 }
 bool Terrain2DChunkDefault::debug_mesh_has() {
@@ -515,7 +515,7 @@ bool Terrain2DChunkDefault::debug_mesh_has() {
 }
 void Terrain2DChunkDefault::debug_mesh_clear() {
 	if (_debug_mesh_rid != RID()) {
-		VisualServer::get_singleton()->mesh_clear(_debug_mesh_rid);
+		RenderingServer::get_singleton()->mesh_clear(_debug_mesh_rid);
 	}
 }
 void Terrain2DChunkDefault::debug_mesh_array_clear() {
@@ -538,13 +538,13 @@ void Terrain2DChunkDefault::debug_mesh_send() {
 	SceneTree *st = SceneTree::get_singleton();
 
 	Array arr;
-	arr.resize(VisualServer::ARRAY_MAX);
-	arr[VisualServer::ARRAY_VERTEX] = _debug_mesh_array;
+	arr.resize(RenderingServer::ARRAY_MAX);
+	arr[RenderingServer::ARRAY_VERTEX] = _debug_mesh_array;
 
-	VisualServer::get_singleton()->mesh_add_surface_from_arrays(_debug_mesh_rid, VisualServer::PRIMITIVE_LINES, arr);
+	RenderingServer::get_singleton()->mesh_add_surface_from_arrays(_debug_mesh_rid, RenderingServer::PRIMITIVE_LINES, arr);
 
 	if (st) {
-		VisualServer::get_singleton()->mesh_surface_set_material(_debug_mesh_rid, 0, SceneTree::get_singleton()->get_debug_collision_material()->get_rid());
+		RenderingServer::get_singleton()->mesh_surface_set_material(_debug_mesh_rid, 0, SceneTree::get_singleton()->get_debug_collision_material()->get_rid());
 	}
 
 	debug_mesh_array_clear();
@@ -675,7 +675,7 @@ void Terrain2DChunkDefault::_draw() {
 	setup_canvas_items_size(mesh_rid_get_count(MESH_INDEX_TERRAIN, MESH_TYPE_INDEX_MESH));
 
 	for (int i = 0; i < get_canvas_item_count(); ++i) {
-		VisualServer::get_singleton()->canvas_item_clear(get_canvas_item(i));
+		RenderingServer::get_singleton()->canvas_item_clear(get_canvas_item(i));
 	}
 
 	Terrain2DWorld *world = get_voxel_world();
@@ -688,18 +688,18 @@ void Terrain2DChunkDefault::_draw() {
 		if (terrain_mesh_rid != RID()) {
 			RID terrain_texture_rid = mesh_rid_get(MESH_INDEX_TERRAIN, MESH_TYPE_INDEX_TEXTURE_RID);
 
-			VisualServer::get_singleton()->canvas_item_clear(get_canvas_item(i));
+			RenderingServer::get_singleton()->canvas_item_clear(get_canvas_item(i));
 
 			Transform2D t = get_transform() * _mesh_transforms[i];
 
-			VisualServer::get_singleton()->canvas_item_set_transform(get_canvas_item(i), t);
+			RenderingServer::get_singleton()->canvas_item_set_transform(get_canvas_item(i), t);
 
 			//if (i != 0) {
-			//	VisualServer::get_singleton()->canvas_item_set_custom_rect(get_canvas_item(i), true, Rect2(t.xform(Vector2()), Vector2(128, 128)));
+			//	RenderingServer::get_singleton()->canvas_item_set_custom_rect(get_canvas_item(i), true, Rect2(t.xform(Vector2()), Vector2(128, 128)));
 			//}
 
 			//Note: the transform parameter is not implemented in gles2
-			VisualServer::get_singleton()->canvas_item_add_mesh(get_canvas_item(i), terrain_mesh_rid, Transform2D(), Color(1, 1, 1, 1), terrain_texture_rid, RID());
+			RenderingServer::get_singleton()->canvas_item_add_mesh(get_canvas_item(i), terrain_mesh_rid, Transform2D(), Color(1, 1, 1, 1), terrain_texture_rid, RID());
 		}
 	}
 
@@ -709,7 +709,7 @@ void Terrain2DChunkDefault::_draw() {
 		RID liquid_texture_rid = mesh_rid_get(MESH_INDEX_LIQUID, MESH_TYPE_INDEX_TEXTURE_RID);
 
 		//Note: the transform parameter is not implemented in gles2
-		VisualServer::get_singleton()->canvas_item_add_mesh(get_canvas_item(0), liquid_mesh_rid, Transform2D(), Color(1, 1, 1, 1), liquid_texture_rid, RID());
+		RenderingServer::get_singleton()->canvas_item_add_mesh(get_canvas_item(0), liquid_mesh_rid, Transform2D(), Color(1, 1, 1, 1), liquid_texture_rid, RID());
 	}
 
 	RID prop_mesh_rid = mesh_rid_get(MESH_INDEX_PROP, MESH_TYPE_INDEX_MESH);
@@ -718,7 +718,7 @@ void Terrain2DChunkDefault::_draw() {
 		RID prop_texture_rid = mesh_rid_get(MESH_INDEX_PROP, MESH_TYPE_INDEX_TEXTURE_RID);
 
 		//Note: the transform parameter is not implemented in gles2
-		VisualServer::get_singleton()->canvas_item_add_mesh(get_canvas_item(0), prop_mesh_rid, Transform2D(), Color(1, 1, 1, 1), prop_texture_rid, RID());
+		RenderingServer::get_singleton()->canvas_item_add_mesh(get_canvas_item(0), prop_mesh_rid, Transform2D(), Color(1, 1, 1, 1), prop_texture_rid, RID());
 	}
 
 #if TOOLS_ENABLED
@@ -735,24 +735,24 @@ void Terrain2DChunkDefault::_draw() {
 
 	if (debug_shapes) {
 		if (_debug_canvas_item == RID()) {
-			_debug_canvas_item = VisualServer::get_singleton()->canvas_item_create();
+			_debug_canvas_item = RenderingServer::get_singleton()->canvas_item_create();
 
 			if (_voxel_world) {
-				VisualServer::get_singleton()->canvas_item_set_parent(_debug_canvas_item, get_voxel_world()->get_canvas_item());
+				RenderingServer::get_singleton()->canvas_item_set_parent(_debug_canvas_item, get_voxel_world()->get_canvas_item());
 			}
 
-			VisualServer::get_singleton()->canvas_item_set_transform(_debug_canvas_item, get_transform());
-			VisualServer::get_singleton()->canvas_item_set_z_index(_debug_canvas_item, 1);
+			RenderingServer::get_singleton()->canvas_item_set_transform(_debug_canvas_item, get_transform());
+			RenderingServer::get_singleton()->canvas_item_set_z_index(_debug_canvas_item, 1);
 		}
 
-		VisualServer::get_singleton()->canvas_item_clear(_debug_canvas_item);
+		RenderingServer::get_singleton()->canvas_item_clear(_debug_canvas_item);
 
 		Color debug_collision_color = st->get_debug_collisions_color();
 
 		Ref<Shape2D> shape = get_default_tile_shape();
 
 		for (int i = 0; i < _debug_terrain_collider_transforms.size(); ++i) {
-			VisualServer::get_singleton()->canvas_item_add_set_transform(_debug_canvas_item, _debug_terrain_collider_transforms[i]);
+			RenderingServer::get_singleton()->canvas_item_add_set_transform(_debug_canvas_item, _debug_terrain_collider_transforms[i]);
 			shape->draw(_debug_canvas_item, debug_collision_color);
 		}
 	}

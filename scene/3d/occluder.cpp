@@ -53,7 +53,7 @@ void Occluder::set_shape(const Ref<OccluderShape> &p_shape) {
 
 		if (is_inside_world() && get_world().is_valid()) {
 			if (_occluder_instance.is_valid()) {
-				VisualServer::get_singleton()->occluder_instance_link_resource(_occluder_instance, p_shape->get_rid());
+				RenderingServer::get_singleton()->occluder_instance_link_resource(_occluder_instance, p_shape->get_rid());
 			}
 		}
 	}
@@ -109,12 +109,12 @@ void Occluder::_notification(int p_what) {
 			ERR_FAIL_COND(get_world().is_null());
 
 			if (_occluder_instance.is_valid()) {
-				VisualServer::get_singleton()->occluder_instance_set_scenario(_occluder_instance, get_world()->get_scenario());
+				RenderingServer::get_singleton()->occluder_instance_set_scenario(_occluder_instance, get_world()->get_scenario());
 				if (get_shape().is_valid()) {
-					VisualServer::get_singleton()->occluder_instance_link_resource(_occluder_instance, get_shape()->get_rid());
+					RenderingServer::get_singleton()->occluder_instance_link_resource(_occluder_instance, get_shape()->get_rid());
 				}
-				VisualServer::get_singleton()->occluder_instance_set_active(_occluder_instance, is_visible_in_tree());
-				VisualServer::get_singleton()->occluder_instance_set_transform(_occluder_instance, get_global_transform());
+				RenderingServer::get_singleton()->occluder_instance_set_active(_occluder_instance, is_visible_in_tree());
+				RenderingServer::get_singleton()->occluder_instance_set_transform(_occluder_instance, get_global_transform());
 			}
 
 #ifdef TOOLS_ENABLED
@@ -125,7 +125,7 @@ void Occluder::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_EXIT_WORLD: {
 			if (_occluder_instance.is_valid()) {
-				VisualServer::get_singleton()->occluder_instance_set_scenario(_occluder_instance, RID());
+				RenderingServer::get_singleton()->occluder_instance_set_scenario(_occluder_instance, RID());
 			}
 #ifdef TOOLS_ENABLED
 			if (Engine::get_singleton()->is_editor_hint()) {
@@ -135,12 +135,12 @@ void Occluder::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_VISIBILITY_CHANGED: {
 			if (_occluder_instance.is_valid() && is_inside_tree()) {
-				VisualServer::get_singleton()->occluder_instance_set_active(_occluder_instance, is_visible_in_tree());
+				RenderingServer::get_singleton()->occluder_instance_set_active(_occluder_instance, is_visible_in_tree());
 			}
 		} break;
 		case NOTIFICATION_TRANSFORM_CHANGED: {
 			if (_occluder_instance.is_valid()) {
-				VisualServer::get_singleton()->occluder_instance_set_transform(_occluder_instance, get_global_transform());
+				RenderingServer::get_singleton()->occluder_instance_set_transform(_occluder_instance, get_global_transform());
 #ifdef TOOLS_ENABLED
 				if (Engine::get_singleton()->is_editor_hint()) {
 					update_configuration_warning();
@@ -166,13 +166,13 @@ void Occluder::_bind_methods() {
 }
 
 Occluder::Occluder() {
-	_occluder_instance = RID_PRIME(VisualServer::get_singleton()->occluder_instance_create());
+	_occluder_instance = RID_PRIME(RenderingServer::get_singleton()->occluder_instance_create());
 	set_notify_transform(true);
 }
 
 Occluder::~Occluder() {
 	if (_occluder_instance != RID()) {
-		VisualServer::get_singleton()->free(_occluder_instance);
+		RenderingServer::get_singleton()->free(_occluder_instance);
 	}
 
 	if (!_shape.is_null()) {

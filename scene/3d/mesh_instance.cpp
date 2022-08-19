@@ -53,7 +53,7 @@ bool MeshInstance::_set(const StringName &p_name, const Variant &p_value) {
 	Map<StringName, BlendShapeTrack>::Element *E = blend_shape_tracks.find(p_name);
 	if (E) {
 		E->get().value = p_value;
-		VisualServer::get_singleton()->instance_set_blend_shape_weight(get_instance(), E->get().idx, E->get().value);
+		RenderingServer::get_singleton()->instance_set_blend_shape_weight(get_instance(), E->get().idx, E->get().value);
 		return true;
 	}
 
@@ -198,7 +198,7 @@ bool MeshInstance::_is_global_software_skinning_enabled() {
 	}
 
 	// Check if requested by renderer settings.
-	return VSG::storage->has_os_feature("skinning_fallback");
+	return RSG::storage->has_os_feature("skinning_fallback");
 }
 
 bool MeshInstance::_is_software_skinning_enabled() const {
@@ -213,7 +213,7 @@ void MeshInstance::_initialize_skinning(bool p_force_reset, bool p_call_attach_s
 		return;
 	}
 
-	VisualServer *visual_server = VisualServer::get_singleton();
+	RenderingServer *visual_server = RenderingServer::get_singleton();
 
 	bool update_mesh = false;
 
@@ -288,8 +288,8 @@ void MeshInstance::_initialize_skinning(bool p_force_reset, bool p_call_attach_s
 								surface_data.ensure_correct_normals = spatial_mat->get_flag(SpatialMaterial::FLAG_ENSURE_CORRECT_NORMALS);
 							} else {
 								// Custom shader, must check for compiled flags.
-								surface_data.transform_tangents = VSG::storage->material_uses_tangents(mat->get_rid());
-								surface_data.ensure_correct_normals = VSG::storage->material_uses_ensure_correct_normals(mat->get_rid());
+								surface_data.transform_tangents = RSG::storage->material_uses_tangents(mat->get_rid());
+								surface_data.ensure_correct_normals = RSG::storage->material_uses_ensure_correct_normals(mat->get_rid());
 							}
 						}
 
@@ -398,7 +398,7 @@ void MeshInstance::_update_skinning() {
 	Vector3 aabb_min = Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
 	Vector3 aabb_max = Vector3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 
-	VisualServer *visual_server = VisualServer::get_singleton();
+	RenderingServer *visual_server = RenderingServer::get_singleton();
 
 	// Prepare bone transforms.
 	const int num_bones = visual_server->skeleton_get_bone_count(skeleton);
@@ -691,9 +691,9 @@ void MeshInstance::set_surface_material(int p_surface, const Ref<Material> &p_ma
 	materials.write[p_surface] = p_material;
 
 	if (materials[p_surface].is_valid()) {
-		VS::get_singleton()->instance_set_surface_material(get_instance(), p_surface, materials[p_surface]->get_rid());
+		RS::get_singleton()->instance_set_surface_material(get_instance(), p_surface, materials[p_surface]->get_rid());
 	} else {
-		VS::get_singleton()->instance_set_surface_material(get_instance(), p_surface, RID());
+		RS::get_singleton()->instance_set_surface_material(get_instance(), p_surface, RID());
 	}
 
 	if (software_skinning) {
@@ -963,18 +963,18 @@ void MeshInstance::_merge_into_mesh_data(const MeshInstance &p_mi, const Transfo
 
 	Array arrays = rmesh->surface_get_arrays(p_surface_id);
 
-	LocalVector<Vector3> verts = PoolVector<Vector3>(arrays[VS::ARRAY_VERTEX]);
+	LocalVector<Vector3> verts = PoolVector<Vector3>(arrays[RS::ARRAY_VERTEX]);
 	if (!verts.size()) {
 		// early out if there are no vertices, no point in doing anything else
 		return;
 	}
 
-	LocalVector<Vector3> normals = PoolVector<Vector3>(arrays[VS::ARRAY_NORMAL]);
-	LocalVector<real_t> tangents = PoolVector<real_t>(arrays[VS::ARRAY_TANGENT]);
-	LocalVector<Color> colors = PoolVector<Color>(arrays[VS::ARRAY_COLOR]);
-	LocalVector<Vector2> uvs = PoolVector<Vector2>(arrays[VS::ARRAY_TEX_UV]);
-	LocalVector<Vector2> uv2s = PoolVector<Vector2>(arrays[VS::ARRAY_TEX_UV2]);
-	LocalVector<int> indices = PoolVector<int>(arrays[VS::ARRAY_INDEX]);
+	LocalVector<Vector3> normals = PoolVector<Vector3>(arrays[RS::ARRAY_NORMAL]);
+	LocalVector<real_t> tangents = PoolVector<real_t>(arrays[RS::ARRAY_TANGENT]);
+	LocalVector<Color> colors = PoolVector<Color>(arrays[RS::ARRAY_COLOR]);
+	LocalVector<Vector2> uvs = PoolVector<Vector2>(arrays[RS::ARRAY_TEX_UV]);
+	LocalVector<Vector2> uv2s = PoolVector<Vector2>(arrays[RS::ARRAY_TEX_UV2]);
+	LocalVector<int> indices = PoolVector<int>(arrays[RS::ARRAY_INDEX]);
 
 	// The attributes present must match the first mesh for the attributes
 	// to remain in sync. Here we reject meshes with different attributes.

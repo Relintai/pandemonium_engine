@@ -155,13 +155,13 @@ void Terrain2DJob::generate_random_ao(int seed, int octaves, int period, float p
 }
 
 Array Terrain2DJob::merge_mesh_array(Array arr) const {
-	ERR_FAIL_COND_V(arr.size() != VisualServer::ARRAY_MAX, arr);
+	ERR_FAIL_COND_V(arr.size() != RenderingServer::ARRAY_MAX, arr);
 
-	PoolVector3Array verts = arr[VisualServer::ARRAY_VERTEX];
-	PoolVector3Array normals = arr[VisualServer::ARRAY_NORMAL];
-	PoolVector2Array uvs = arr[VisualServer::ARRAY_TEX_UV];
-	PoolColorArray colors = arr[VisualServer::ARRAY_COLOR];
-	PoolIntArray indices = arr[VisualServer::ARRAY_INDEX];
+	PoolVector3Array verts = arr[RenderingServer::ARRAY_VERTEX];
+	PoolVector3Array normals = arr[RenderingServer::ARRAY_NORMAL];
+	PoolVector2Array uvs = arr[RenderingServer::ARRAY_TEX_UV];
+	PoolColorArray colors = arr[RenderingServer::ARRAY_COLOR];
+	PoolIntArray indices = arr[RenderingServer::ARRAY_INDEX];
 
 	bool has_normals = normals.size() > 0;
 	bool has_uvs = uvs.size() > 0;
@@ -205,21 +205,21 @@ Array Terrain2DJob::merge_mesh_array(Array arr) const {
 		++i;
 	}
 
-	arr[VisualServer::ARRAY_VERTEX] = verts;
+	arr[RenderingServer::ARRAY_VERTEX] = verts;
 
 	if (has_normals)
-		arr[VisualServer::ARRAY_NORMAL] = normals;
+		arr[RenderingServer::ARRAY_NORMAL] = normals;
 	if (has_uvs)
-		arr[VisualServer::ARRAY_TEX_UV] = uvs;
+		arr[RenderingServer::ARRAY_TEX_UV] = uvs;
 	if (has_colors)
-		arr[VisualServer::ARRAY_COLOR] = colors;
+		arr[RenderingServer::ARRAY_COLOR] = colors;
 
-	arr[VisualServer::ARRAY_INDEX] = indices;
+	arr[RenderingServer::ARRAY_INDEX] = indices;
 
 	return arr;
 }
 Array Terrain2DJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const float mul_color) const {
-	ERR_FAIL_COND_V(arr.size() != VisualServer::ARRAY_MAX, arr);
+	ERR_FAIL_COND_V(arr.size() != RenderingServer::ARRAY_MAX, arr);
 	ERR_FAIL_COND_V(!tex.is_valid(), arr);
 
 	Ref<Image> img = tex->get_data();
@@ -228,8 +228,8 @@ Array Terrain2DJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const float 
 
 	Vector2 imgsize = img->get_size();
 
-	PoolVector2Array uvs = arr[VisualServer::ARRAY_TEX_UV];
-	PoolColorArray colors = arr[VisualServer::ARRAY_COLOR];
+	PoolVector2Array uvs = arr[RenderingServer::ARRAY_TEX_UV];
+	PoolColorArray colors = arr[RenderingServer::ARRAY_COLOR];
 
 	if (colors.size() < uvs.size())
 		colors.resize(uvs.size());
@@ -250,7 +250,7 @@ Array Terrain2DJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const float 
 
 	img->unlock();
 
-	arr[VisualServer::ARRAY_COLOR] = colors;
+	arr[RenderingServer::ARRAY_COLOR] = colors;
 
 	return arr;
 }

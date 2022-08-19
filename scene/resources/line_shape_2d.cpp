@@ -76,9 +76,9 @@ void LineShape2D::draw(const RID &p_to_rid, const Color &p_color) {
 	Vector2 point = get_d() * get_normal();
 
 	Vector2 l1[2] = { point - get_normal().tangent() * 100, point + get_normal().tangent() * 100 };
-	VS::get_singleton()->canvas_item_add_line(p_to_rid, l1[0], l1[1], p_color, 3);
+	RS::get_singleton()->canvas_item_add_line(p_to_rid, l1[0], l1[1], p_color, 3);
 	Vector2 l2[2] = { point, point + get_normal() * 30 };
-	VS::get_singleton()->canvas_item_add_line(p_to_rid, l2[0], l2[1], p_color, 3);
+	RS::get_singleton()->canvas_item_add_line(p_to_rid, l2[0], l2[1], p_color, 3);
 }
 Rect2 LineShape2D::get_rect() const {
 	Vector2 point = get_d() * get_normal();

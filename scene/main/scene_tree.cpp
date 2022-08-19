@@ -516,7 +516,7 @@ void SceneTree::set_physics_interpolation_enabled(bool p_enabled) {
 	if (root->get_world().is_valid()) {
 		RID scenario = root->get_world()->get_scenario();
 		if (scenario.is_valid()) {
-			VisualServer::get_singleton()->scenario_set_physics_interpolation_enabled(scenario, p_enabled);
+			RenderingServer::get_singleton()->scenario_set_physics_interpolation_enabled(scenario, p_enabled);
 		}
 	}
 }
@@ -537,7 +537,7 @@ void SceneTree::client_physics_interpolation_remove_spatial(SelfList<Spatial> *p
 
 void SceneTree::iteration_end() {
 	// When physics interpolation is active, we want all pending transforms
-	// to be flushed to the VisualServer before finishing a physics tick.
+	// to be flushed to the RenderingServer before finishing a physics tick.
 	if (_physics_interpolation_enabled) {
 		flush_transform_notifications();
 	}
@@ -551,7 +551,7 @@ bool SceneTree::iteration(float p_time) {
 	if (root->get_world().is_valid()) {
 		RID scenario = root->get_world()->get_scenario();
 		if (scenario.is_valid()) {
-			VisualServer::get_singleton()->scenario_tick(scenario);
+			RenderingServer::get_singleton()->scenario_tick(scenario);
 		}
 	}
 
@@ -599,7 +599,7 @@ void SceneTree::_update_font_oversampling(float p_ratio) {
 bool SceneTree::idle(float p_time) {
 	//print_line("ram: "+itos(OS::get_singleton()->get_static_memory_usage())+" sram: "+itos(OS::get_singleton()->get_dynamic_memory_usage()));
 	//print_line("node count: "+itos(get_node_count()));
-	//print_line("TEXTURE RAM: "+itos(VS::get_singleton()->get_render_info(VS::INFO_TEXTURE_MEM_USED)));
+	//print_line("TEXTURE RAM: "+itos(RS::get_singleton()->get_render_info(RS::INFO_TEXTURE_MEM_USED)));
 
 	root_lock++;
 
@@ -707,7 +707,7 @@ bool SceneTree::idle(float p_time) {
 	if (root->get_world().is_valid()) {
 		RID scenario = root->get_world()->get_scenario();
 		if (scenario.is_valid()) {
-			VisualServer::get_singleton()->scenario_pre_draw(scenario, true);
+			RenderingServer::get_singleton()->scenario_pre_draw(scenario, true);
 		}
 	}
 
@@ -1317,14 +1317,14 @@ void SceneTree::_update_root_rect() {
 	//black bars and margin
 	if (stretch_aspect != STRETCH_ASPECT_EXPAND && screen_size.x < video_mode.x) {
 		margin.x = Math::round((video_mode.x - screen_size.x) / 2.0);
-		VisualServer::get_singleton()->black_bars_set_margins(margin.x, 0, margin.x, 0);
+		RenderingServer::get_singleton()->black_bars_set_margins(margin.x, 0, margin.x, 0);
 		offset.x = Math::round(margin.x * viewport_size.y / screen_size.y);
 	} else if (stretch_aspect != STRETCH_ASPECT_EXPAND && screen_size.y < video_mode.y) {
 		margin.y = Math::round((video_mode.y - screen_size.y) / 2.0);
-		VisualServer::get_singleton()->black_bars_set_margins(0, margin.y, 0, margin.y);
+		RenderingServer::get_singleton()->black_bars_set_margins(0, margin.y, 0, margin.y);
 		offset.y = Math::round(margin.y * viewport_size.x / screen_size.x);
 	} else {
-		VisualServer::get_singleton()->black_bars_set_margins(0, 0, 0, 0);
+		RenderingServer::get_singleton()->black_bars_set_margins(0, 0, 0, 0);
 	}
 
 	switch (stretch_mode) {
@@ -2255,7 +2255,7 @@ SceneTree::SceneTree() {
 	const bool use_32_bpc_depth = GLOBAL_GET("rendering/quality/depth/use_32_bpc_depth");
 	root->set_use_32_bpc_depth(use_32_bpc_depth);
 
-	VS::get_singleton()->scenario_set_reflection_atlas_size(root->get_world()->get_scenario(), ref_atlas_size, ref_atlas_subdiv);
+	RS::get_singleton()->scenario_set_reflection_atlas_size(root->get_world()->get_scenario(), ref_atlas_size, ref_atlas_subdiv);
 
 	{ //load default fallback environment
 		//get possible extensions

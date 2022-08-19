@@ -102,8 +102,8 @@ void RasterizerCanvasBaseGLES2::canvas_begin() {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, storage->resources.white_tex);
 
-	glVertexAttrib4f(VS::ARRAY_COLOR, 1, 1, 1, 1);
-	glDisableVertexAttribArray(VS::ARRAY_COLOR);
+	glVertexAttrib4f(RS::ARRAY_COLOR, 1, 1, 1, 1);
+	glDisableVertexAttribArray(RS::ARRAY_COLOR);
 
 	// set up default uniforms
 
@@ -136,7 +136,7 @@ void RasterizerCanvasBaseGLES2::canvas_begin() {
 void RasterizerCanvasBaseGLES2::canvas_end() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	for (int i = 0; i < VS::ARRAY_MAX; i++) {
+	for (int i = 0; i < RS::ARRAY_MAX; i++) {
 		glDisableVertexAttribArray(i);
 	}
 
@@ -196,7 +196,7 @@ RasterizerStorageGLES2::Texture *RasterizerCanvasBaseGLES2::_bind_canvas_texture
 
 		} else {
 			if (texture->redraw_if_visible) {
-				VisualServerRaster::redraw_request(false);
+				RenderingServerRaster::redraw_request(false);
 			}
 
 			texture = texture->get_ptr();
@@ -236,7 +236,7 @@ RasterizerStorageGLES2::Texture *RasterizerCanvasBaseGLES2::_bind_canvas_texture
 
 		} else {
 			if (normal_map->redraw_if_visible) { //check before proxy, because this is usually used with proxies
-				VisualServerRaster::redraw_request(false);
+				RenderingServerRaster::redraw_request(false);
 			}
 
 			normal_map = normal_map->get_ptr();
@@ -323,8 +323,8 @@ void RasterizerCanvasBaseGLES2::draw_window_margins(int *black_margin, RID *blac
 
 void RasterizerCanvasBaseGLES2::_bind_quad_buffer() {
 	glBindBuffer(GL_ARRAY_BUFFER, data.canvas_quad_vertices);
-	glEnableVertexAttribArray(VS::ARRAY_VERTEX);
-	glVertexAttribPointer(VS::ARRAY_VERTEX, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+	glEnableVertexAttribArray(RS::ARRAY_VERTEX);
+	glVertexAttribPointer(RS::ARRAY_VERTEX, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 }
 
 void RasterizerCanvasBaseGLES2::_set_uniforms() {
@@ -360,7 +360,7 @@ void RasterizerCanvasBaseGLES2::_set_uniforms() {
 		state.canvas_shader.set_uniform(CanvasShaderGLES2::LIGHT_COLOR, light->color * light->energy);
 		state.canvas_shader.set_uniform(CanvasShaderGLES2::LIGHT_POS, light->light_shader_pos);
 		state.canvas_shader.set_uniform(CanvasShaderGLES2::LIGHT_HEIGHT, light->height);
-		state.canvas_shader.set_uniform(CanvasShaderGLES2::LIGHT_OUTSIDE_ALPHA, light->mode == VS::CANVAS_LIGHT_MODE_MASK ? 1.0 : 0.0);
+		state.canvas_shader.set_uniform(CanvasShaderGLES2::LIGHT_OUTSIDE_ALPHA, light->mode == RS::CANVAS_LIGHT_MODE_MASK ? 1.0 : 0.0);
 
 		if (state.using_shadow) {
 			RasterizerStorageGLES2::CanvasLightShadow *cls = storage->canvas_light_shadow_owner.get(light->shadow_buffer);
@@ -436,47 +436,47 @@ void RasterizerCanvasBaseGLES2::_draw_polygon(const int *p_indices, int p_index_
 
 	storage->buffer_orphan_and_upload(data.polygon_buffer_size, 0, sizeof(Vector2) * p_vertex_count, p_vertices, GL_ARRAY_BUFFER, _buffer_upload_usage_flag, true);
 
-	glEnableVertexAttribArray(VS::ARRAY_VERTEX);
-	glVertexAttribPointer(VS::ARRAY_VERTEX, 2, GL_FLOAT, GL_FALSE, sizeof(Vector2), nullptr);
+	glEnableVertexAttribArray(RS::ARRAY_VERTEX);
+	glVertexAttribPointer(RS::ARRAY_VERTEX, 2, GL_FLOAT, GL_FALSE, sizeof(Vector2), nullptr);
 	buffer_ofs = buffer_ofs_after;
 
 	if (p_singlecolor) {
-		glDisableVertexAttribArray(VS::ARRAY_COLOR);
+		glDisableVertexAttribArray(RS::ARRAY_COLOR);
 		Color m = *p_colors;
-		glVertexAttrib4f(VS::ARRAY_COLOR, m.r, m.g, m.b, m.a);
+		glVertexAttrib4f(RS::ARRAY_COLOR, m.r, m.g, m.b, m.a);
 	} else if (!p_colors) {
-		glDisableVertexAttribArray(VS::ARRAY_COLOR);
-		glVertexAttrib4f(VS::ARRAY_COLOR, 1, 1, 1, 1);
+		glDisableVertexAttribArray(RS::ARRAY_COLOR);
+		glVertexAttrib4f(RS::ARRAY_COLOR, 1, 1, 1, 1);
 	} else {
 		RAST_FAIL_COND(!storage->safe_buffer_sub_data(data.polygon_buffer_size, GL_ARRAY_BUFFER, buffer_ofs, sizeof(Color) * p_vertex_count, p_colors, buffer_ofs_after));
-		glEnableVertexAttribArray(VS::ARRAY_COLOR);
-		glVertexAttribPointer(VS::ARRAY_COLOR, 4, GL_FLOAT, GL_FALSE, sizeof(Color), CAST_INT_TO_UCHAR_PTR(buffer_ofs));
+		glEnableVertexAttribArray(RS::ARRAY_COLOR);
+		glVertexAttribPointer(RS::ARRAY_COLOR, 4, GL_FLOAT, GL_FALSE, sizeof(Color), CAST_INT_TO_UCHAR_PTR(buffer_ofs));
 		buffer_ofs = buffer_ofs_after;
 	}
 
 	if (p_uvs) {
 		RAST_FAIL_COND(!storage->safe_buffer_sub_data(data.polygon_buffer_size, GL_ARRAY_BUFFER, buffer_ofs, sizeof(Vector2) * p_vertex_count, p_uvs, buffer_ofs_after));
-		glEnableVertexAttribArray(VS::ARRAY_TEX_UV);
-		glVertexAttribPointer(VS::ARRAY_TEX_UV, 2, GL_FLOAT, GL_FALSE, sizeof(Vector2), CAST_INT_TO_UCHAR_PTR(buffer_ofs));
+		glEnableVertexAttribArray(RS::ARRAY_TEX_UV);
+		glVertexAttribPointer(RS::ARRAY_TEX_UV, 2, GL_FLOAT, GL_FALSE, sizeof(Vector2), CAST_INT_TO_UCHAR_PTR(buffer_ofs));
 		buffer_ofs = buffer_ofs_after;
 	} else {
-		glDisableVertexAttribArray(VS::ARRAY_TEX_UV);
+		glDisableVertexAttribArray(RS::ARRAY_TEX_UV);
 	}
 
 	if (p_weights && p_bones) {
 		RAST_FAIL_COND(!storage->safe_buffer_sub_data(data.polygon_buffer_size, GL_ARRAY_BUFFER, buffer_ofs, sizeof(float) * 4 * p_vertex_count, p_weights, buffer_ofs_after));
-		glEnableVertexAttribArray(VS::ARRAY_WEIGHTS);
-		glVertexAttribPointer(VS::ARRAY_WEIGHTS, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 4, CAST_INT_TO_UCHAR_PTR(buffer_ofs));
+		glEnableVertexAttribArray(RS::ARRAY_WEIGHTS);
+		glVertexAttribPointer(RS::ARRAY_WEIGHTS, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 4, CAST_INT_TO_UCHAR_PTR(buffer_ofs));
 		buffer_ofs = buffer_ofs_after;
 
 		RAST_FAIL_COND(!storage->safe_buffer_sub_data(data.polygon_buffer_size, GL_ARRAY_BUFFER, buffer_ofs, sizeof(int) * 4 * p_vertex_count, p_bones, buffer_ofs_after));
-		glEnableVertexAttribArray(VS::ARRAY_BONES);
-		glVertexAttribPointer(VS::ARRAY_BONES, 4, GL_UNSIGNED_INT, GL_FALSE, sizeof(int) * 4, CAST_INT_TO_UCHAR_PTR(buffer_ofs));
+		glEnableVertexAttribArray(RS::ARRAY_BONES);
+		glVertexAttribPointer(RS::ARRAY_BONES, 4, GL_UNSIGNED_INT, GL_FALSE, sizeof(int) * 4, CAST_INT_TO_UCHAR_PTR(buffer_ofs));
 		buffer_ofs = buffer_ofs_after;
 
 	} else {
-		glDisableVertexAttribArray(VS::ARRAY_WEIGHTS);
-		glDisableVertexAttribArray(VS::ARRAY_BONES);
+		glDisableVertexAttribArray(RS::ARRAY_WEIGHTS);
+		glDisableVertexAttribArray(RS::ARRAY_BONES);
 	}
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data.polygon_index_buffer);
@@ -515,31 +515,31 @@ void RasterizerCanvasBaseGLES2::_draw_generic(GLuint p_primitive, int p_vertex_c
 #endif
 	storage->buffer_orphan_and_upload(data.polygon_buffer_size, 0, sizeof(Vector2) * p_vertex_count, p_vertices, GL_ARRAY_BUFFER, _buffer_upload_usage_flag, true);
 
-	glEnableVertexAttribArray(VS::ARRAY_VERTEX);
-	glVertexAttribPointer(VS::ARRAY_VERTEX, 2, GL_FLOAT, GL_FALSE, sizeof(Vector2), nullptr);
+	glEnableVertexAttribArray(RS::ARRAY_VERTEX);
+	glVertexAttribPointer(RS::ARRAY_VERTEX, 2, GL_FLOAT, GL_FALSE, sizeof(Vector2), nullptr);
 	buffer_ofs = buffer_ofs_after;
 
 	if (p_singlecolor) {
-		glDisableVertexAttribArray(VS::ARRAY_COLOR);
+		glDisableVertexAttribArray(RS::ARRAY_COLOR);
 		Color m = *p_colors;
-		glVertexAttrib4f(VS::ARRAY_COLOR, m.r, m.g, m.b, m.a);
+		glVertexAttrib4f(RS::ARRAY_COLOR, m.r, m.g, m.b, m.a);
 	} else if (!p_colors) {
-		glDisableVertexAttribArray(VS::ARRAY_COLOR);
-		glVertexAttrib4f(VS::ARRAY_COLOR, 1, 1, 1, 1);
+		glDisableVertexAttribArray(RS::ARRAY_COLOR);
+		glVertexAttrib4f(RS::ARRAY_COLOR, 1, 1, 1, 1);
 	} else {
 		RAST_FAIL_COND(!storage->safe_buffer_sub_data(data.polygon_buffer_size, GL_ARRAY_BUFFER, buffer_ofs, sizeof(Color) * p_vertex_count, p_colors, buffer_ofs_after));
-		glEnableVertexAttribArray(VS::ARRAY_COLOR);
-		glVertexAttribPointer(VS::ARRAY_COLOR, 4, GL_FLOAT, GL_FALSE, sizeof(Color), CAST_INT_TO_UCHAR_PTR(buffer_ofs));
+		glEnableVertexAttribArray(RS::ARRAY_COLOR);
+		glVertexAttribPointer(RS::ARRAY_COLOR, 4, GL_FLOAT, GL_FALSE, sizeof(Color), CAST_INT_TO_UCHAR_PTR(buffer_ofs));
 		buffer_ofs = buffer_ofs_after;
 	}
 
 	if (p_uvs) {
 		RAST_FAIL_COND(!storage->safe_buffer_sub_data(data.polygon_buffer_size, GL_ARRAY_BUFFER, buffer_ofs, sizeof(Vector2) * p_vertex_count, p_uvs, buffer_ofs_after));
-		glEnableVertexAttribArray(VS::ARRAY_TEX_UV);
-		glVertexAttribPointer(VS::ARRAY_TEX_UV, 2, GL_FLOAT, GL_FALSE, sizeof(Vector2), CAST_INT_TO_UCHAR_PTR(buffer_ofs));
+		glEnableVertexAttribArray(RS::ARRAY_TEX_UV);
+		glVertexAttribPointer(RS::ARRAY_TEX_UV, 2, GL_FLOAT, GL_FALSE, sizeof(Vector2), CAST_INT_TO_UCHAR_PTR(buffer_ofs));
 		buffer_ofs = buffer_ofs_after;
 	} else {
-		glDisableVertexAttribArray(VS::ARRAY_TEX_UV);
+		glDisableVertexAttribArray(RS::ARRAY_TEX_UV);
 	}
 
 	glDrawArrays(p_primitive, 0, p_vertex_count);
@@ -558,31 +558,31 @@ void RasterizerCanvasBaseGLES2::_draw_generic_indices(GLuint p_primitive, const 
 #endif
 	storage->buffer_orphan_and_upload(data.polygon_buffer_size, 0, sizeof(Vector2) * p_vertex_count, p_vertices, GL_ARRAY_BUFFER, _buffer_upload_usage_flag, true);
 
-	glEnableVertexAttribArray(VS::ARRAY_VERTEX);
-	glVertexAttribPointer(VS::ARRAY_VERTEX, 2, GL_FLOAT, GL_FALSE, sizeof(Vector2), nullptr);
+	glEnableVertexAttribArray(RS::ARRAY_VERTEX);
+	glVertexAttribPointer(RS::ARRAY_VERTEX, 2, GL_FLOAT, GL_FALSE, sizeof(Vector2), nullptr);
 	buffer_ofs = buffer_ofs_after;
 
 	if (p_singlecolor) {
-		glDisableVertexAttribArray(VS::ARRAY_COLOR);
+		glDisableVertexAttribArray(RS::ARRAY_COLOR);
 		Color m = *p_colors;
-		glVertexAttrib4f(VS::ARRAY_COLOR, m.r, m.g, m.b, m.a);
+		glVertexAttrib4f(RS::ARRAY_COLOR, m.r, m.g, m.b, m.a);
 	} else if (!p_colors) {
-		glDisableVertexAttribArray(VS::ARRAY_COLOR);
-		glVertexAttrib4f(VS::ARRAY_COLOR, 1, 1, 1, 1);
+		glDisableVertexAttribArray(RS::ARRAY_COLOR);
+		glVertexAttrib4f(RS::ARRAY_COLOR, 1, 1, 1, 1);
 	} else {
 		RAST_FAIL_COND(!storage->safe_buffer_sub_data(data.polygon_buffer_size, GL_ARRAY_BUFFER, buffer_ofs, sizeof(Color) * p_vertex_count, p_colors, buffer_ofs_after));
-		glEnableVertexAttribArray(VS::ARRAY_COLOR);
-		glVertexAttribPointer(VS::ARRAY_COLOR, 4, GL_FLOAT, GL_FALSE, sizeof(Color), CAST_INT_TO_UCHAR_PTR(buffer_ofs));
+		glEnableVertexAttribArray(RS::ARRAY_COLOR);
+		glVertexAttribPointer(RS::ARRAY_COLOR, 4, GL_FLOAT, GL_FALSE, sizeof(Color), CAST_INT_TO_UCHAR_PTR(buffer_ofs));
 		buffer_ofs = buffer_ofs_after;
 	}
 
 	if (p_uvs) {
 		RAST_FAIL_COND(!storage->safe_buffer_sub_data(data.polygon_buffer_size, GL_ARRAY_BUFFER, buffer_ofs, sizeof(Vector2) * p_vertex_count, p_uvs, buffer_ofs_after));
-		glEnableVertexAttribArray(VS::ARRAY_TEX_UV);
-		glVertexAttribPointer(VS::ARRAY_TEX_UV, 2, GL_FLOAT, GL_FALSE, sizeof(Vector2), CAST_INT_TO_UCHAR_PTR(buffer_ofs));
+		glEnableVertexAttribArray(RS::ARRAY_TEX_UV);
+		glVertexAttribPointer(RS::ARRAY_TEX_UV, 2, GL_FLOAT, GL_FALSE, sizeof(Vector2), CAST_INT_TO_UCHAR_PTR(buffer_ofs));
 		buffer_ofs = buffer_ofs_after;
 	} else {
-		glDisableVertexAttribArray(VS::ARRAY_TEX_UV);
+		glDisableVertexAttribArray(RS::ARRAY_TEX_UV);
 	}
 
 #ifdef RASTERIZER_EXTRA_CHECKS
@@ -674,21 +674,21 @@ void RasterizerCanvasBaseGLES2::_draw_gui_primitive(int p_points, const Vector2 
 	glBindBuffer(GL_ARRAY_BUFFER, data.polygon_buffer);
 	storage->buffer_orphan_and_upload(data.polygon_buffer_size, 0, p_points * stride * sizeof(float), buffer_data, GL_ARRAY_BUFFER, _buffer_upload_usage_flag, true);
 
-	glVertexAttribPointer(VS::ARRAY_VERTEX, 2, GL_FLOAT, GL_FALSE, stride * sizeof(float), nullptr);
+	glVertexAttribPointer(RS::ARRAY_VERTEX, 2, GL_FLOAT, GL_FALSE, stride * sizeof(float), nullptr);
 
 	if (p_colors) {
-		glVertexAttribPointer(VS::ARRAY_COLOR, 4, GL_FLOAT, GL_FALSE, stride * sizeof(float), CAST_INT_TO_UCHAR_PTR(color_offset * sizeof(float)));
-		glEnableVertexAttribArray(VS::ARRAY_COLOR);
+		glVertexAttribPointer(RS::ARRAY_COLOR, 4, GL_FLOAT, GL_FALSE, stride * sizeof(float), CAST_INT_TO_UCHAR_PTR(color_offset * sizeof(float)));
+		glEnableVertexAttribArray(RS::ARRAY_COLOR);
 	}
 
 	if (p_uvs) {
-		glVertexAttribPointer(VS::ARRAY_TEX_UV, 2, GL_FLOAT, GL_FALSE, stride * sizeof(float), CAST_INT_TO_UCHAR_PTR(uv_offset * sizeof(float)));
-		glEnableVertexAttribArray(VS::ARRAY_TEX_UV);
+		glVertexAttribPointer(RS::ARRAY_TEX_UV, 2, GL_FLOAT, GL_FALSE, stride * sizeof(float), CAST_INT_TO_UCHAR_PTR(uv_offset * sizeof(float)));
+		glEnableVertexAttribArray(RS::ARRAY_TEX_UV);
 	}
 
 	if (p_light_angles) {
-		glVertexAttribPointer(VS::ARRAY_TANGENT, 1, GL_FLOAT, GL_FALSE, stride * sizeof(float), CAST_INT_TO_UCHAR_PTR(light_angle_offset * sizeof(float)));
-		glEnableVertexAttribArray(VS::ARRAY_TANGENT);
+		glVertexAttribPointer(RS::ARRAY_TANGENT, 1, GL_FLOAT, GL_FALSE, stride * sizeof(float), CAST_INT_TO_UCHAR_PTR(light_angle_offset * sizeof(float)));
+		glEnableVertexAttribArray(RS::ARRAY_TANGENT);
 	}
 
 	glDrawArrays(prim[p_points], 0, p_points);
@@ -696,7 +696,7 @@ void RasterizerCanvasBaseGLES2::_draw_gui_primitive(int p_points, const Vector2 
 
 	if (p_light_angles) {
 		// may not be needed
-		glDisableVertexAttribArray(VS::ARRAY_TANGENT);
+		glDisableVertexAttribArray(RS::ARRAY_TANGENT);
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -779,7 +779,7 @@ void RasterizerCanvasBaseGLES2::canvas_light_shadow_buffer_update(RID p_buffer, 
 	glClearColor(1, 1, 1, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	VS::CanvasOccluderPolygonCullMode cull = VS::CANVAS_OCCLUDER_POLYGON_CULL_DISABLED;
+	RS::CanvasOccluderPolygonCullMode cull = RS::CANVAS_OCCLUDER_POLYGON_CULL_DISABLED;
 
 	for (int i = 0; i < 4; i++) {
 		//make sure it remains orthogonal, makes easy to read angle later
@@ -834,27 +834,27 @@ void RasterizerCanvasBaseGLES2::canvas_light_shadow_buffer_update(RID p_buffer, 
 
 			state.canvas_shadow_shader.set_uniform(CanvasShadowShaderGLES2::WORLD_MATRIX, instance->xform_cache);
 
-			VS::CanvasOccluderPolygonCullMode transformed_cull_cache = instance->cull_cache;
+			RS::CanvasOccluderPolygonCullMode transformed_cull_cache = instance->cull_cache;
 
-			if (transformed_cull_cache != VS::CANVAS_OCCLUDER_POLYGON_CULL_DISABLED &&
+			if (transformed_cull_cache != RS::CANVAS_OCCLUDER_POLYGON_CULL_DISABLED &&
 					(p_light_xform.basis_determinant() * instance->xform_cache.basis_determinant()) < 0) {
-				transformed_cull_cache = (transformed_cull_cache == VS::CANVAS_OCCLUDER_POLYGON_CULL_CLOCKWISE)
-						? VS::CANVAS_OCCLUDER_POLYGON_CULL_COUNTER_CLOCKWISE
-						: VS::CANVAS_OCCLUDER_POLYGON_CULL_CLOCKWISE;
+				transformed_cull_cache = (transformed_cull_cache == RS::CANVAS_OCCLUDER_POLYGON_CULL_CLOCKWISE)
+						? RS::CANVAS_OCCLUDER_POLYGON_CULL_COUNTER_CLOCKWISE
+						: RS::CANVAS_OCCLUDER_POLYGON_CULL_CLOCKWISE;
 			}
 
 			if (cull != transformed_cull_cache) {
 				cull = transformed_cull_cache;
 				switch (cull) {
-					case VS::CANVAS_OCCLUDER_POLYGON_CULL_DISABLED: {
+					case RS::CANVAS_OCCLUDER_POLYGON_CULL_DISABLED: {
 						glDisable(GL_CULL_FACE);
 
 					} break;
-					case VS::CANVAS_OCCLUDER_POLYGON_CULL_CLOCKWISE: {
+					case RS::CANVAS_OCCLUDER_POLYGON_CULL_CLOCKWISE: {
 						glEnable(GL_CULL_FACE);
 						glCullFace(GL_FRONT);
 					} break;
-					case VS::CANVAS_OCCLUDER_POLYGON_CULL_COUNTER_CLOCKWISE: {
+					case RS::CANVAS_OCCLUDER_POLYGON_CULL_COUNTER_CLOCKWISE: {
 						glEnable(GL_CULL_FACE);
 						glCullFace(GL_BACK);
 
@@ -863,8 +863,8 @@ void RasterizerCanvasBaseGLES2::canvas_light_shadow_buffer_update(RID p_buffer, 
 			}
 
 			glBindBuffer(GL_ARRAY_BUFFER, cc->vertex_id);
-			glEnableVertexAttribArray(VS::ARRAY_VERTEX);
-			glVertexAttribPointer(VS::ARRAY_VERTEX, 3, GL_FLOAT, false, 0, nullptr);
+			glEnableVertexAttribArray(RS::ARRAY_VERTEX);
+			glVertexAttribPointer(RS::ARRAY_VERTEX, 3, GL_FLOAT, false, 0, nullptr);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cc->index_id);
 
 			glDrawElements(GL_TRIANGLES, cc->len * 3, GL_UNSIGNED_SHORT, nullptr);
@@ -909,7 +909,7 @@ void RasterizerCanvasBaseGLES2::draw_lens_distortion_rect(const Rect2 &p_rect, f
 	// and cleanup
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	for (int i = 0; i < VS::ARRAY_MAX; i++) {
+	for (int i = 0; i < RS::ARRAY_MAX; i++) {
 		glDisableVertexAttribArray(i);
 	}
 }

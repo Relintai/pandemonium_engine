@@ -88,7 +88,7 @@ void CPUParticles::set_amount(int p_amount) {
 
 	particle_data.resize((12 + 4 + 1) * p_amount);
 	particle_data_prev.resize(particle_data.size());
-	VS::get_singleton()->multimesh_allocate(multimesh, p_amount, VS::MULTIMESH_TRANSFORM_3D, VS::MULTIMESH_COLOR_8BIT, VS::MULTIMESH_CUSTOM_DATA_FLOAT);
+	RS::get_singleton()->multimesh_allocate(multimesh, p_amount, RS::MULTIMESH_TRANSFORM_3D, RS::MULTIMESH_COLOR_8BIT, RS::MULTIMESH_CUSTOM_DATA_FLOAT);
 
 	particle_order.resize(p_amount);
 }
@@ -169,9 +169,9 @@ CPUParticles::DrawOrder CPUParticles::get_draw_order() const {
 void CPUParticles::set_mesh(const Ref<Mesh> &p_mesh) {
 	mesh = p_mesh;
 	if (mesh.is_valid()) {
-		VS::get_singleton()->multimesh_set_mesh(multimesh, mesh->get_rid());
+		RS::get_singleton()->multimesh_set_mesh(multimesh, mesh->get_rid());
 	} else {
-		VS::get_singleton()->multimesh_set_mesh(multimesh, RID());
+		RS::get_singleton()->multimesh_set_mesh(multimesh, RID());
 	}
 }
 
@@ -606,7 +606,7 @@ void CPUParticles::_update_internal(bool p_on_physics_tick) {
 		_update_particle_data_buffer();
 	}
 
-	// If we are interpolating, we send the data to the VisualServer
+	// If we are interpolating, we send the data to the RenderingServer
 	// right away on a physics tick instead of waiting until a render frame.
 	if (p_on_physics_tick && redraw) {
 		_update_render_thread();
@@ -1239,20 +1239,20 @@ void CPUParticles::_set_redraw(bool p_redraw) {
 
 	if (!_interpolated) {
 		if (redraw) {
-			VS::get_singleton()->connect("frame_pre_draw", this, "_update_render_thread");
+			RS::get_singleton()->connect("frame_pre_draw", this, "_update_render_thread");
 		} else {
-			if (VS::get_singleton()->is_connected("frame_pre_draw", this, "_update_render_thread")) {
-				VS::get_singleton()->disconnect("frame_pre_draw", this, "_update_render_thread");
+			if (RS::get_singleton()->is_connected("frame_pre_draw", this, "_update_render_thread")) {
+				RS::get_singleton()->disconnect("frame_pre_draw", this, "_update_render_thread");
 			}
 		}
 	}
 
 	if (redraw) {
-		VS::get_singleton()->instance_geometry_set_flag(get_instance(), VS::INSTANCE_FLAG_DRAW_NEXT_FRAME_IF_VISIBLE, true);
-		VS::get_singleton()->multimesh_set_visible_instances(multimesh, -1);
+		RS::get_singleton()->instance_geometry_set_flag(get_instance(), RS::INSTANCE_FLAG_DRAW_NEXT_FRAME_IF_VISIBLE, true);
+		RS::get_singleton()->multimesh_set_visible_instances(multimesh, -1);
 	} else {
-		VS::get_singleton()->instance_geometry_set_flag(get_instance(), VS::INSTANCE_FLAG_DRAW_NEXT_FRAME_IF_VISIBLE, false);
-		VS::get_singleton()->multimesh_set_visible_instances(multimesh, 0);
+		RS::get_singleton()->instance_geometry_set_flag(get_instance(), RS::INSTANCE_FLAG_DRAW_NEXT_FRAME_IF_VISIBLE, false);
+		RS::get_singleton()->multimesh_set_visible_instances(multimesh, 0);
 	}
 	update_mutex.unlock();
 }
@@ -1263,9 +1263,9 @@ void CPUParticles::_update_render_thread() {
 
 		if (can_update.is_set()) {
 			if (_interpolated) {
-				VS::get_singleton()->multimesh_set_as_bulk_array_interpolated(multimesh, particle_data, particle_data_prev);
+				RS::get_singleton()->multimesh_set_as_bulk_array_interpolated(multimesh, particle_data, particle_data_prev);
 			} else {
-				VS::get_singleton()->multimesh_set_as_bulk_array(multimesh, particle_data);
+				RS::get_singleton()->multimesh_set_as_bulk_array(multimesh, particle_data);
 			}
 			can_update.clear(); //wait for next time
 		}
@@ -1540,8 +1540,8 @@ CPUParticles::CPUParticles() {
 
 	set_notify_transform(true);
 
-	multimesh = RID_PRIME(VisualServer::get_singleton()->multimesh_create());
-	VisualServer::get_singleton()->multimesh_set_visible_instances(multimesh, 0);
+	multimesh = RID_PRIME(RenderingServer::get_singleton()->multimesh_create());
+	RenderingServer::get_singleton()->multimesh_set_visible_instances(multimesh, 0);
 	set_base(multimesh);
 
 	set_emitting(true);
@@ -1596,5 +1596,5 @@ CPUParticles::CPUParticles() {
 }
 
 CPUParticles::~CPUParticles() {
-	VS::get_singleton()->free(multimesh);
+	RS::get_singleton()->free(multimesh);
 }

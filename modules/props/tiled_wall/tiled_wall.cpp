@@ -150,9 +150,9 @@ void TiledWall::refresh() {
 	}
 
 	if (_mesh_rid == RID()) {
-		_mesh_rid = VisualServer::get_singleton()->mesh_create();
+		_mesh_rid = RenderingServer::get_singleton()->mesh_create();
 
-		VS::get_singleton()->instance_set_base(get_instance(), _mesh_rid);
+		RS::get_singleton()->instance_set_base(get_instance(), _mesh_rid);
 	}
 
 	Ref<PropMaterialCache> old_cache;
@@ -215,12 +215,12 @@ void TiledWall::generate_mesh() {
 		return;
 	}
 
-	VisualServer::get_singleton()->mesh_add_surface_from_arrays(_mesh_rid, VisualServer::PRIMITIVE_TRIANGLES, _mesh_array);
+	RenderingServer::get_singleton()->mesh_add_surface_from_arrays(_mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, _mesh_array);
 
 	Ref<Material> material = _cache->material_lod_get(0);
 
 	if (material.is_valid()) {
-		VisualServer::get_singleton()->mesh_surface_set_material(_mesh_rid, 0, material->get_rid());
+		RenderingServer::get_singleton()->mesh_surface_set_material(_mesh_rid, 0, material->get_rid());
 	}
 
 	_aabb.size = Vector3(_width, _height, 0);
@@ -232,16 +232,16 @@ void TiledWall::clear_mesh() {
 	_mesh_array.clear();
 
 	if (_mesh_rid != RID()) {
-		if (VS::get_singleton()->mesh_get_surface_count(_mesh_rid) > 0) {
-			VS::get_singleton()->mesh_remove_surface(_mesh_rid, 0);
+		if (RS::get_singleton()->mesh_get_surface_count(_mesh_rid) > 0) {
+			RS::get_singleton()->mesh_remove_surface(_mesh_rid, 0);
 		}
 	}
 }
 
 void TiledWall::free_mesh() {
 	if (_mesh_rid != RID()) {
-		VS::get_singleton()->instance_set_base(get_instance(), RID());
-		VS::get_singleton()->free(_mesh_rid);
+		RS::get_singleton()->instance_set_base(get_instance(), RID());
+		RS::get_singleton()->free(_mesh_rid);
 		_mesh_rid = RID();
 	}
 }

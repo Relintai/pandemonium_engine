@@ -93,7 +93,7 @@ class OS_X11 : public OS_Unix {
 	ContextGL_X11 *context_gl;
 #endif
 	//Rasterizer *rasterizer;
-	VisualServer *visual_server;
+	RenderingServer *visual_server;
 	VideoMode current_videomode;
 	List<String> args;
 	Window x11_window;

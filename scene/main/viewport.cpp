@@ -79,10 +79,10 @@ void ViewportTexture::setup_local_to_scene() {
 
 	vp->viewport_textures.insert(this);
 
-	VS::get_singleton()->texture_set_proxy(proxy, vp->texture_rid);
+	RS::get_singleton()->texture_set_proxy(proxy, vp->texture_rid);
 
 	vp->texture_flags = flags;
-	VS::get_singleton()->texture_set_flags(vp->texture_rid, flags);
+	RS::get_singleton()->texture_set_flags(vp->texture_rid, flags);
 }
 
 void ViewportTexture::set_viewport_path_in_scene(const NodePath &p_path) {
@@ -123,7 +123,7 @@ bool ViewportTexture::has_alpha() const {
 }
 Ref<Image> ViewportTexture::get_data() const {
 	ERR_FAIL_COND_V_MSG(!vp, Ref<Image>(), "Viewport Texture must be set to use it.");
-	return VS::get_singleton()->texture_get_data(vp->texture_rid);
+	return RS::get_singleton()->texture_get_data(vp->texture_rid);
 }
 void ViewportTexture::set_flags(uint32_t p_flags) {
 	flags = p_flags;
@@ -133,7 +133,7 @@ void ViewportTexture::set_flags(uint32_t p_flags) {
 	}
 
 	vp->texture_flags = flags;
-	VS::get_singleton()->texture_set_flags(vp->texture_rid, flags);
+	RS::get_singleton()->texture_set_flags(vp->texture_rid, flags);
 }
 
 uint32_t ViewportTexture::get_flags() const {
@@ -151,7 +151,7 @@ ViewportTexture::ViewportTexture() {
 	vp = nullptr;
 	flags = 0;
 	set_local_to_scene(true);
-	proxy = RID_PRIME(VS::get_singleton()->texture_create());
+	proxy = RID_PRIME(RS::get_singleton()->texture_create());
 }
 
 ViewportTexture::~ViewportTexture() {
@@ -159,7 +159,7 @@ ViewportTexture::~ViewportTexture() {
 		vp->viewport_textures.erase(this);
 	}
 
-	VS::get_singleton()->free(proxy);
+	RS::get_singleton()->free(proxy);
 }
 
 /////////////////////////////////////
@@ -263,7 +263,7 @@ void Viewport::_own_world_changed() {
 	}
 
 	if (is_inside_tree()) {
-		VisualServer::get_singleton()->viewport_set_scenario(viewport, find_world()->get_scenario());
+		RenderingServer::get_singleton()->viewport_set_scenario(viewport, find_world()->get_scenario());
 	}
 
 	_update_listener();
@@ -274,14 +274,14 @@ void Viewport::_notification(int p_what) {
 		case NOTIFICATION_ENTER_TREE: {
 			if (get_parent()) {
 				parent = get_parent()->get_viewport();
-				VisualServer::get_singleton()->viewport_set_parent_viewport(viewport, parent->get_viewport_rid());
+				RenderingServer::get_singleton()->viewport_set_parent_viewport(viewport, parent->get_viewport_rid());
 			} else {
 				parent = nullptr;
 			}
 
 			current_canvas = find_world_2d()->get_canvas();
-			VisualServer::get_singleton()->viewport_set_scenario(viewport, find_world()->get_scenario());
-			VisualServer::get_singleton()->viewport_attach_canvas(viewport, current_canvas);
+			RenderingServer::get_singleton()->viewport_set_scenario(viewport, find_world()->get_scenario());
+			RenderingServer::get_singleton()->viewport_attach_canvas(viewport, current_canvas);
 
 			_update_listener();
 			_update_listener_2d();
@@ -292,21 +292,21 @@ void Viewport::_notification(int p_what) {
 			if (get_tree()->is_debugging_collisions_hint()) {
 				//2D
 				Physics2DServer::get_singleton()->space_set_debug_contacts(find_world_2d()->get_space(), get_tree()->get_collision_debug_contact_count());
-				contact_2d_debug = RID_PRIME(VisualServer::get_singleton()->canvas_item_create());
-				VisualServer::get_singleton()->canvas_item_set_parent(contact_2d_debug, find_world_2d()->get_canvas());
+				contact_2d_debug = RID_PRIME(RenderingServer::get_singleton()->canvas_item_create());
+				RenderingServer::get_singleton()->canvas_item_set_parent(contact_2d_debug, find_world_2d()->get_canvas());
 				//3D
 				PhysicsServer::get_singleton()->space_set_debug_contacts(find_world()->get_space(), get_tree()->get_collision_debug_contact_count());
-				contact_3d_debug_multimesh = RID_PRIME(VisualServer::get_singleton()->multimesh_create());
-				VisualServer::get_singleton()->multimesh_allocate(contact_3d_debug_multimesh, get_tree()->get_collision_debug_contact_count(), VS::MULTIMESH_TRANSFORM_3D, VS::MULTIMESH_COLOR_8BIT);
-				VisualServer::get_singleton()->multimesh_set_visible_instances(contact_3d_debug_multimesh, 0);
-				VisualServer::get_singleton()->multimesh_set_mesh(contact_3d_debug_multimesh, get_tree()->get_debug_contact_mesh()->get_rid());
-				contact_3d_debug_instance = RID_PRIME(VisualServer::get_singleton()->instance_create());
-				VisualServer::get_singleton()->instance_set_base(contact_3d_debug_instance, contact_3d_debug_multimesh);
-				VisualServer::get_singleton()->instance_set_scenario(contact_3d_debug_instance, find_world()->get_scenario());
-				//VisualServer::get_singleton()->instance_geometry_set_flag(contact_3d_debug_instance, VS::INSTANCE_FLAG_VISIBLE_IN_ALL_ROOMS, true);
+				contact_3d_debug_multimesh = RID_PRIME(RenderingServer::get_singleton()->multimesh_create());
+				RenderingServer::get_singleton()->multimesh_allocate(contact_3d_debug_multimesh, get_tree()->get_collision_debug_contact_count(), RS::MULTIMESH_TRANSFORM_3D, RS::MULTIMESH_COLOR_8BIT);
+				RenderingServer::get_singleton()->multimesh_set_visible_instances(contact_3d_debug_multimesh, 0);
+				RenderingServer::get_singleton()->multimesh_set_mesh(contact_3d_debug_multimesh, get_tree()->get_debug_contact_mesh()->get_rid());
+				contact_3d_debug_instance = RID_PRIME(RenderingServer::get_singleton()->instance_create());
+				RenderingServer::get_singleton()->instance_set_base(contact_3d_debug_instance, contact_3d_debug_multimesh);
+				RenderingServer::get_singleton()->instance_set_scenario(contact_3d_debug_instance, find_world()->get_scenario());
+				//RenderingServer::get_singleton()->instance_geometry_set_flag(contact_3d_debug_instance, RS::INSTANCE_FLAG_VISIBLE_IN_ALL_ROOMS, true);
 			}
 
-			VS::get_singleton()->viewport_set_active(viewport, true);
+			RS::get_singleton()->viewport_set_active(viewport, true);
 		} break;
 		case NOTIFICATION_READY: {
 #ifndef _3D_DISABLED
@@ -348,24 +348,24 @@ void Viewport::_notification(int p_what) {
 				world_2d->_remove_viewport(this);
 			}
 
-			VisualServer::get_singleton()->viewport_set_scenario(viewport, RID());
+			RenderingServer::get_singleton()->viewport_set_scenario(viewport, RID());
 			//			SpatialSoundServer::get_singleton()->listener_set_space(internal_listener, RID());
-			VisualServer::get_singleton()->viewport_remove_canvas(viewport, current_canvas);
+			RenderingServer::get_singleton()->viewport_remove_canvas(viewport, current_canvas);
 			if (contact_2d_debug.is_valid()) {
-				VisualServer::get_singleton()->free(contact_2d_debug);
+				RenderingServer::get_singleton()->free(contact_2d_debug);
 				contact_2d_debug = RID();
 			}
 
 			if (contact_3d_debug_multimesh.is_valid()) {
-				VisualServer::get_singleton()->free(contact_3d_debug_multimesh);
-				VisualServer::get_singleton()->free(contact_3d_debug_instance);
+				RenderingServer::get_singleton()->free(contact_3d_debug_multimesh);
+				RenderingServer::get_singleton()->free(contact_3d_debug_instance);
 				contact_3d_debug_instance = RID();
 				contact_3d_debug_multimesh = RID();
 			}
 
 			remove_from_group("_viewports");
 
-			VS::get_singleton()->viewport_set_active(viewport, false);
+			RS::get_singleton()->viewport_set_active(viewport, false);
 		} break;
 		case NOTIFICATION_INTERNAL_PHYSICS_PROCESS: {
 			if (!get_tree()) {
@@ -373,15 +373,15 @@ void Viewport::_notification(int p_what) {
 			}
 
 			if (get_tree()->is_debugging_collisions_hint() && contact_2d_debug.is_valid()) {
-				VisualServer::get_singleton()->canvas_item_clear(contact_2d_debug);
-				VisualServer::get_singleton()->canvas_item_set_draw_index(contact_2d_debug, 0xFFFFF); //very high index
+				RenderingServer::get_singleton()->canvas_item_clear(contact_2d_debug);
+				RenderingServer::get_singleton()->canvas_item_set_draw_index(contact_2d_debug, 0xFFFFF); //very high index
 
 				Vector<Vector2> points = Physics2DServer::get_singleton()->space_get_contacts(find_world_2d()->get_space());
 				int point_count = Physics2DServer::get_singleton()->space_get_contact_count(find_world_2d()->get_space());
 				Color ccol = get_tree()->get_debug_collision_contact_color();
 
 				for (int i = 0; i < point_count; i++) {
-					VisualServer::get_singleton()->canvas_item_add_rect(contact_2d_debug, Rect2(points[i] - Vector2(2, 2), Vector2(5, 5)), ccol);
+					RenderingServer::get_singleton()->canvas_item_add_rect(contact_2d_debug, Rect2(points[i] - Vector2(2, 2), Vector2(5, 5)), ccol);
 				}
 			}
 
@@ -389,12 +389,12 @@ void Viewport::_notification(int p_what) {
 				Vector<Vector3> points = PhysicsServer::get_singleton()->space_get_contacts(find_world()->get_space());
 				int point_count = PhysicsServer::get_singleton()->space_get_contact_count(find_world()->get_space());
 
-				VS::get_singleton()->multimesh_set_visible_instances(contact_3d_debug_multimesh, point_count);
+				RS::get_singleton()->multimesh_set_visible_instances(contact_3d_debug_multimesh, point_count);
 
 				for (int i = 0; i < point_count; i++) {
 					Transform point_transform;
 					point_transform.origin = points[i];
-					VS::get_singleton()->multimesh_instance_set_transform(contact_3d_debug_multimesh, i, point_transform);
+					RS::get_singleton()->multimesh_instance_set_transform(contact_3d_debug_multimesh, i, point_transform);
 				}
 			}
 
@@ -708,7 +708,7 @@ void Viewport::set_size(const Size2 &p_size) {
 		return;
 	}
 	size = p_size.floor();
-	VS::get_singleton()->viewport_set_size(viewport, size.width, size.height);
+	RS::get_singleton()->viewport_set_size(viewport, size.width, size.height);
 
 	ViewportContainer *c = Object::cast_to<ViewportContainer>(get_parent());
 	if (c) {
@@ -797,9 +797,9 @@ void Viewport::enable_canvas_transform_override(bool p_enable) {
 
 	override_canvas_transform = p_enable;
 	if (p_enable) {
-		VisualServer::get_singleton()->viewport_set_canvas_transform(viewport, find_world_2d()->get_canvas(), canvas_transform_override);
+		RenderingServer::get_singleton()->viewport_set_canvas_transform(viewport, find_world_2d()->get_canvas(), canvas_transform_override);
 	} else {
-		VisualServer::get_singleton()->viewport_set_canvas_transform(viewport, find_world_2d()->get_canvas(), canvas_transform);
+		RenderingServer::get_singleton()->viewport_set_canvas_transform(viewport, find_world_2d()->get_canvas(), canvas_transform);
 	}
 }
 
@@ -814,7 +814,7 @@ void Viewport::set_canvas_transform_override(const Transform2D &p_transform) {
 
 	canvas_transform_override = p_transform;
 	if (override_canvas_transform) {
-		VisualServer::get_singleton()->viewport_set_canvas_transform(viewport, find_world_2d()->get_canvas(), canvas_transform_override);
+		RenderingServer::get_singleton()->viewport_set_canvas_transform(viewport, find_world_2d()->get_canvas(), canvas_transform_override);
 	}
 }
 
@@ -826,7 +826,7 @@ void Viewport::set_canvas_transform(const Transform2D &p_transform) {
 	canvas_transform = p_transform;
 
 	if (!override_canvas_transform) {
-		VisualServer::get_singleton()->viewport_set_canvas_transform(viewport, find_world_2d()->get_canvas(), canvas_transform);
+		RenderingServer::get_singleton()->viewport_set_canvas_transform(viewport, find_world_2d()->get_canvas(), canvas_transform);
 	}
 }
 
@@ -837,7 +837,7 @@ Transform2D Viewport::get_canvas_transform() const {
 void Viewport::_update_global_transform() {
 	Transform2D sxform = stretch_transform * global_canvas_transform;
 
-	VisualServer::get_singleton()->viewport_set_global_canvas_transform(viewport, sxform);
+	RenderingServer::get_singleton()->viewport_set_global_canvas_transform(viewport, sxform);
 }
 
 void Viewport::set_global_canvas_transform(const Transform2D &p_transform) {
@@ -930,9 +930,9 @@ void Viewport::_camera_set(Camera *p_camera) {
 	camera = p_camera;
 	if (!camera_override) {
 		if (camera) {
-			VisualServer::get_singleton()->viewport_attach_camera(viewport, camera->get_camera());
+			RenderingServer::get_singleton()->viewport_attach_camera(viewport, camera->get_camera());
 		} else {
-			VisualServer::get_singleton()->viewport_attach_camera(viewport, RID());
+			RenderingServer::get_singleton()->viewport_attach_camera(viewport, RID());
 		}
 	}
 
@@ -1005,7 +1005,7 @@ void Viewport::_canvas_layer_remove(CanvasLayer *p_canvas_layer) {
 
 void Viewport::set_transparent_background(bool p_enable) {
 	transparent_bg = p_enable;
-	VS::get_singleton()->viewport_set_transparent_background(viewport, p_enable);
+	RS::get_singleton()->viewport_set_transparent_background(viewport, p_enable);
 }
 
 bool Viewport::has_transparent_background() const {
@@ -1024,7 +1024,7 @@ void Viewport::set_world_2d(const Ref<World2D> &p_world_2d) {
 
 	if (is_inside_tree()) {
 		find_world_2d()->_remove_viewport(this);
-		VisualServer::get_singleton()->viewport_remove_canvas(viewport, current_canvas);
+		RenderingServer::get_singleton()->viewport_remove_canvas(viewport, current_canvas);
 	}
 
 	if (p_world_2d.is_valid()) {
@@ -1038,7 +1038,7 @@ void Viewport::set_world_2d(const Ref<World2D> &p_world_2d) {
 
 	if (is_inside_tree()) {
 		current_canvas = find_world_2d()->get_canvas();
-		VisualServer::get_singleton()->viewport_attach_canvas(viewport, current_canvas);
+		RenderingServer::get_singleton()->viewport_attach_canvas(viewport, current_canvas);
 		find_world_2d()->_register_viewport(this, Rect2());
 	}
 }
@@ -1139,7 +1139,7 @@ void Viewport::set_world(const Ref<World> &p_world) {
 	}
 
 	if (is_inside_tree()) {
-		VisualServer::get_singleton()->viewport_set_scenario(viewport, find_world()->get_scenario());
+		RenderingServer::get_singleton()->viewport_set_scenario(viewport, find_world()->get_scenario());
 	}
 
 	_update_listener();
@@ -1184,18 +1184,18 @@ void Viewport::enable_camera_override(bool p_enable) {
 	}
 
 	if (p_enable) {
-		camera_override.rid = RID_PRIME(VisualServer::get_singleton()->camera_create());
+		camera_override.rid = RID_PRIME(RenderingServer::get_singleton()->camera_create());
 	} else {
-		VisualServer::get_singleton()->free(camera_override.rid);
+		RenderingServer::get_singleton()->free(camera_override.rid);
 		camera_override.rid = RID();
 	}
 
 	if (p_enable) {
-		VisualServer::get_singleton()->viewport_attach_camera(viewport, camera_override.rid);
+		RenderingServer::get_singleton()->viewport_attach_camera(viewport, camera_override.rid);
 	} else if (camera) {
-		VisualServer::get_singleton()->viewport_attach_camera(viewport, camera->get_camera());
+		RenderingServer::get_singleton()->viewport_attach_camera(viewport, camera->get_camera());
 	} else {
-		VisualServer::get_singleton()->viewport_attach_camera(viewport, RID());
+		RenderingServer::get_singleton()->viewport_attach_camera(viewport, RID());
 	}
 #endif
 }
@@ -1207,7 +1207,7 @@ bool Viewport::is_camera_override_enabled() const {
 void Viewport::set_camera_override_transform(const Transform &p_transform) {
 	if (camera_override) {
 		camera_override.transform = p_transform;
-		VisualServer::get_singleton()->camera_set_transform(camera_override.rid, p_transform);
+		RenderingServer::get_singleton()->camera_set_transform(camera_override.rid, p_transform);
 	}
 }
 
@@ -1231,7 +1231,7 @@ void Viewport::set_camera_override_perspective(float p_fovy_degrees, float p_z_n
 		camera_override.z_far = p_z_far;
 		camera_override.projection = CameraOverrideData::PROJECTION_PERSPECTIVE;
 
-		VisualServer::get_singleton()->camera_set_perspective(camera_override.rid, camera_override.fov, camera_override.z_near, camera_override.z_far);
+		RenderingServer::get_singleton()->camera_set_perspective(camera_override.rid, camera_override.fov, camera_override.z_near, camera_override.z_far);
 	}
 }
 
@@ -1247,7 +1247,7 @@ void Viewport::set_camera_override_orthogonal(float p_size, float p_z_near, floa
 		camera_override.z_far = p_z_far;
 		camera_override.projection = CameraOverrideData::PROJECTION_ORTHOGONAL;
 
-		VisualServer::get_singleton()->camera_set_orthogonal(camera_override.rid, camera_override.size, camera_override.z_near, camera_override.z_far);
+		RenderingServer::get_singleton()->camera_set_orthogonal(camera_override.rid, camera_override.size, camera_override.z_near, camera_override.z_far);
 	}
 }
 
@@ -1312,7 +1312,7 @@ bool Viewport::is_size_override_stretch_enabled() const {
 
 void Viewport::set_update_mode(UpdateMode p_mode) {
 	update_mode = p_mode;
-	VS::get_singleton()->viewport_set_update_mode(viewport, VS::ViewportUpdateMode(p_mode));
+	RS::get_singleton()->viewport_set_update_mode(viewport, RS::ViewportUpdateMode(p_mode));
 }
 Viewport::UpdateMode Viewport::get_update_mode() const {
 	return update_mode;
@@ -1324,7 +1324,7 @@ Ref<ViewportTexture> Viewport::get_texture() const {
 
 void Viewport::set_vflip(bool p_enable) {
 	vflip = p_enable;
-	VisualServer::get_singleton()->viewport_set_vflip(viewport, p_enable);
+	RenderingServer::get_singleton()->viewport_set_vflip(viewport, p_enable);
 }
 
 bool Viewport::get_vflip() const {
@@ -1333,7 +1333,7 @@ bool Viewport::get_vflip() const {
 
 void Viewport::set_clear_mode(ClearMode p_mode) {
 	clear_mode = p_mode;
-	VS::get_singleton()->viewport_set_clear_mode(viewport, VS::ViewportClearMode(p_mode));
+	RS::get_singleton()->viewport_set_clear_mode(viewport, RS::ViewportClearMode(p_mode));
 }
 
 Viewport::ClearMode Viewport::get_clear_mode() const {
@@ -1346,7 +1346,7 @@ void Viewport::set_shadow_atlas_size(int p_size) {
 	}
 
 	shadow_atlas_size = p_size;
-	VS::get_singleton()->viewport_set_shadow_atlas_size(viewport, p_size);
+	RS::get_singleton()->viewport_set_shadow_atlas_size(viewport, p_size);
 }
 
 int Viewport::get_shadow_atlas_size() const {
@@ -1364,7 +1364,7 @@ void Viewport::set_shadow_atlas_quadrant_subdiv(int p_quadrant, ShadowAtlasQuadr
 	shadow_atlas_quadrant_subdiv[p_quadrant] = p_subdiv;
 	static const int subdiv[SHADOW_ATLAS_QUADRANT_SUBDIV_MAX] = { 0, 1, 4, 16, 64, 256, 1024 };
 
-	VS::get_singleton()->viewport_set_shadow_atlas_quadrant_subdivision(viewport, p_quadrant, subdiv[p_subdiv]);
+	RS::get_singleton()->viewport_set_shadow_atlas_quadrant_subdivision(viewport, p_quadrant, subdiv[p_subdiv]);
 }
 Viewport::ShadowAtlasQuadrantSubdiv Viewport::get_shadow_atlas_quadrant_subdiv(int p_quadrant) const {
 	ERR_FAIL_INDEX_V(p_quadrant, 4, SHADOW_ATLAS_QUADRANT_SUBDIV_DISABLED);
@@ -2925,7 +2925,7 @@ void Viewport::set_use_own_world(bool p_use_own_world) {
 	}
 
 	if (is_inside_tree()) {
-		VisualServer::get_singleton()->viewport_set_scenario(viewport, find_world()->get_scenario());
+		RenderingServer::get_singleton()->viewport_set_scenario(viewport, find_world()->get_scenario());
 	}
 
 	_update_listener();
@@ -2936,7 +2936,7 @@ bool Viewport::is_using_own_world() const {
 }
 
 void Viewport::set_attach_to_screen_rect(const Rect2 &p_rect) {
-	VS::get_singleton()->viewport_attach_to_screen(viewport, p_rect);
+	RS::get_singleton()->viewport_attach_to_screen(viewport, p_rect);
 	to_screen_rect = p_rect;
 }
 
@@ -2950,7 +2950,7 @@ void Viewport::set_use_render_direct_to_screen(bool p_render_direct_to_screen) {
 	}
 
 	render_direct_to_screen = p_render_direct_to_screen;
-	VS::get_singleton()->viewport_set_render_direct_to_screen(viewport, p_render_direct_to_screen);
+	RS::get_singleton()->viewport_set_render_direct_to_screen(viewport, p_render_direct_to_screen);
 }
 
 bool Viewport::is_using_render_direct_to_screen() const {
@@ -2991,7 +2991,7 @@ bool Viewport::is_input_disabled() const {
 
 void Viewport::set_disable_3d(bool p_disable) {
 	disable_3d = p_disable;
-	VS::get_singleton()->viewport_set_disable_3d(viewport, p_disable);
+	RS::get_singleton()->viewport_set_disable_3d(viewport, p_disable);
 }
 
 bool Viewport::is_3d_disabled() const {
@@ -3000,7 +3000,7 @@ bool Viewport::is_3d_disabled() const {
 
 void Viewport::set_keep_3d_linear(bool p_keep_3d_linear) {
 	keep_3d_linear = p_keep_3d_linear;
-	VS::get_singleton()->viewport_set_keep_3d_linear(viewport, keep_3d_linear);
+	RS::get_singleton()->viewport_set_keep_3d_linear(viewport, keep_3d_linear);
 }
 
 bool Viewport::get_keep_3d_linear() const {
@@ -3048,7 +3048,7 @@ void Viewport::set_msaa(MSAA p_msaa) {
 		return;
 	}
 	msaa = p_msaa;
-	VS::get_singleton()->viewport_set_msaa(viewport, VS::ViewportMSAA(p_msaa));
+	RS::get_singleton()->viewport_set_msaa(viewport, RS::ViewportMSAA(p_msaa));
 }
 
 Viewport::MSAA Viewport::get_msaa() const {
@@ -3060,7 +3060,7 @@ void Viewport::set_use_fxaa(bool p_fxaa) {
 		return;
 	}
 	use_fxaa = p_fxaa;
-	VS::get_singleton()->viewport_set_use_fxaa(viewport, use_fxaa);
+	RS::get_singleton()->viewport_set_use_fxaa(viewport, use_fxaa);
 }
 
 bool Viewport::get_use_fxaa() const {
@@ -3072,7 +3072,7 @@ void Viewport::set_use_debanding(bool p_debanding) {
 		return;
 	}
 	use_debanding = p_debanding;
-	VS::get_singleton()->viewport_set_use_debanding(viewport, use_debanding);
+	RS::get_singleton()->viewport_set_use_debanding(viewport, use_debanding);
 }
 
 bool Viewport::get_use_debanding() const {
@@ -3084,7 +3084,7 @@ void Viewport::set_sharpen_intensity(float p_intensity) {
 		return;
 	}
 	sharpen_intensity = p_intensity;
-	VS::get_singleton()->viewport_set_sharpen_intensity(viewport, sharpen_intensity);
+	RS::get_singleton()->viewport_set_sharpen_intensity(viewport, sharpen_intensity);
 }
 
 float Viewport::get_sharpen_intensity() const {
@@ -3097,7 +3097,7 @@ void Viewport::set_hdr(bool p_hdr) {
 	}
 
 	hdr = p_hdr;
-	VS::get_singleton()->viewport_set_hdr(viewport, p_hdr);
+	RS::get_singleton()->viewport_set_hdr(viewport, p_hdr);
 	update_configuration_warning();
 }
 
@@ -3111,7 +3111,7 @@ void Viewport::set_use_32_bpc_depth(bool p_enable) {
 	}
 
 	use_32_bpc_depth = p_enable;
-	VS::get_singleton()->viewport_set_use_32_bpc_depth(viewport, p_enable);
+	RS::get_singleton()->viewport_set_use_32_bpc_depth(viewport, p_enable);
 }
 
 bool Viewport::is_using_32_bpc_depth() const {
@@ -3124,7 +3124,7 @@ void Viewport::set_usage(Usage p_usage) {
 	}
 
 	usage = p_usage;
-	VS::get_singleton()->viewport_set_usage(viewport, VS::ViewportUsage(p_usage));
+	RS::get_singleton()->viewport_set_usage(viewport, RS::ViewportUsage(p_usage));
 	update_configuration_warning();
 }
 
@@ -3134,7 +3134,7 @@ Viewport::Usage Viewport::get_usage() const {
 
 void Viewport::set_debug_draw(DebugDraw p_debug_draw) {
 	debug_draw = p_debug_draw;
-	VS::get_singleton()->viewport_set_debug_draw(viewport, VS::ViewportDebugDraw(p_debug_draw));
+	RS::get_singleton()->viewport_set_debug_draw(viewport, RS::ViewportDebugDraw(p_debug_draw));
 }
 
 Viewport::DebugDraw Viewport::get_debug_draw() const {
@@ -3142,7 +3142,7 @@ Viewport::DebugDraw Viewport::get_debug_draw() const {
 }
 
 int Viewport::get_render_info(RenderInfo p_info) {
-	return VS::get_singleton()->viewport_get_render_info(viewport, VS::ViewportRenderInfo(p_info));
+	return RS::get_singleton()->viewport_get_render_info(viewport, RS::ViewportRenderInfo(p_info));
 }
 
 void Viewport::set_snap_controls_to_pixels(bool p_enable) {
@@ -3189,7 +3189,7 @@ bool Viewport::is_handling_input_locally() const {
 }
 
 void Viewport::_validate_property(PropertyInfo &property) const {
-	if (VisualServer::get_singleton()->is_low_end() && (property.name == "hdr" || property.name == "use_32_bpc_depth")) {
+	if (RenderingServer::get_singleton()->is_low_end() && (property.name == "hdr" || property.name == "use_32_bpc_depth")) {
 		property.usage = PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL;
 	}
 }
@@ -3427,8 +3427,8 @@ void Viewport::_subwindow_visibility_changed() {
 Viewport::Viewport() {
 	world_2d = Ref<World2D>(memnew(World2D));
 
-	viewport = RID_PRIME(VisualServer::get_singleton()->viewport_create());
-	texture_rid = VisualServer::get_singleton()->viewport_get_texture(viewport);
+	viewport = RID_PRIME(RenderingServer::get_singleton()->viewport_create());
+	texture_rid = RenderingServer::get_singleton()->viewport_get_texture(viewport);
 	texture_flags = 0;
 
 	render_direct_to_screen = false;
@@ -3436,7 +3436,7 @@ Viewport::Viewport() {
 	default_texture.instance();
 	default_texture->vp = const_cast<Viewport *>(this);
 	viewport_textures.insert(default_texture.ptr());
-	VS::get_singleton()->texture_set_proxy(default_texture->proxy, texture_rid);
+	RS::get_singleton()->texture_set_proxy(default_texture->proxy, texture_rid);
 
 	//internal_listener = SpatialSoundServer::get_singleton()->listener_create();
 	audio_listener = false;
@@ -3527,7 +3527,7 @@ Viewport::~Viewport() {
 	for (Set<ViewportTexture *>::Element *E = viewport_textures.front(); E; E = E->next()) {
 		E->get()->vp = nullptr;
 	}
-	VisualServer::get_singleton()->free(viewport);
+	RenderingServer::get_singleton()->free(viewport);
 	//SpatialSoundServer::get_singleton()->free(internal_listener);
 	//SpatialSound2DServer::get_singleton()->free(internal_listener_2d);
 }

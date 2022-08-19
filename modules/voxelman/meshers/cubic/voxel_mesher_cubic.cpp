@@ -143,7 +143,7 @@ void VoxelMesherCubic::_add_chunk(Ref<VoxelChunk> p_chunk) {
 }
 
 VoxelMesherCubic::VoxelMesherCubic() {
-	_format = VisualServer::ARRAY_FORMAT_NORMAL | VisualServer::ARRAY_FORMAT_COLOR | VisualServer::ARRAY_FORMAT_TEX_UV;
+	_format = RenderingServer::ARRAY_FORMAT_NORMAL | RenderingServer::ARRAY_FORMAT_COLOR | RenderingServer::ARRAY_FORMAT_TEX_UV;
 
 	_texture_scale = 1;
 }

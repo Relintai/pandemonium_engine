@@ -101,9 +101,9 @@ protected:
 	_FORCE_INLINE_ RID &get_mesh() { return mesh; }
 	_FORCE_INLINE_ RID &get_material() { return material; }
 
-	uint32_t mesh_surface_offsets[VS::ARRAY_MAX];
+	uint32_t mesh_surface_offsets[RS::ARRAY_MAX];
 	PoolByteArray mesh_buffer;
-	uint32_t mesh_stride[VS::ARRAY_MAX];
+	uint32_t mesh_stride[RS::ARRAY_MAX];
 	uint32_t mesh_surface_format;
 
 	void _queue_update();

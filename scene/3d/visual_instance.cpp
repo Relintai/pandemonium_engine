@@ -41,7 +41,7 @@ AABB VisualInstance::get_transformed_aabb() const {
 }
 
 void VisualInstance::_refresh_portal_mode() {
-	VisualServer::get_singleton()->instance_set_portal_mode(instance, (VisualServer::InstancePortalMode)get_portal_mode());
+	RenderingServer::get_singleton()->instance_set_portal_mode(instance, (RenderingServer::InstancePortalMode)get_portal_mode());
 }
 
 void VisualInstance::_update_visibility() {
@@ -61,12 +61,12 @@ void VisualInstance::_update_visibility() {
 	if (visible && (!already_visible)) {
 		if (!_is_using_identity_transform()) {
 			Transform gt = get_global_transform();
-			VisualServer::get_singleton()->instance_set_transform(instance, gt);
+			RenderingServer::get_singleton()->instance_set_transform(instance, gt);
 		}
 	}
 
 	_change_notify("visible");
-	VS::get_singleton()->instance_set_visible(get_instance(), visible);
+	RS::get_singleton()->instance_set_visible(get_instance(), visible);
 }
 
 void VisualInstance::set_instance_use_identity_transform(bool p_enable) {
@@ -76,10 +76,10 @@ void VisualInstance::set_instance_use_identity_transform(bool p_enable) {
 	if (is_inside_tree()) {
 		if (p_enable) {
 			// want to make sure instance is using identity transform
-			VisualServer::get_singleton()->instance_set_transform(instance, get_global_transform());
+			RenderingServer::get_singleton()->instance_set_transform(instance, get_global_transform());
 		} else {
 			// want to make sure instance is up to date
-			VisualServer::get_singleton()->instance_set_transform(instance, Transform());
+			RenderingServer::get_singleton()->instance_set_transform(instance, Transform());
 		}
 	}
 }
@@ -91,10 +91,10 @@ void VisualInstance::_notification(int p_what) {
 			/*
 			Skeleton *skeleton=Object::cast_to<Skeleton>(get_parent());
 			if (skeleton)
-				VisualServer::get_singleton()->instance_attach_skeleton( instance, skeleton->get_skeleton() );
+				RenderingServer::get_singleton()->instance_attach_skeleton( instance, skeleton->get_skeleton() );
 			*/
 			ERR_FAIL_COND(get_world().is_null());
-			VisualServer::get_singleton()->instance_set_scenario(instance, get_world()->get_scenario());
+			RenderingServer::get_singleton()->instance_set_scenario(instance, get_world()->get_scenario());
 			_update_visibility();
 
 		} break;
@@ -102,7 +102,7 @@ void VisualInstance::_notification(int p_what) {
 			if (_is_vi_visible() || is_physics_interpolated_and_enabled()) {
 				if (!_is_using_identity_transform()) {
 					Transform gt = get_global_transform();
-					VisualServer::get_singleton()->instance_set_transform(instance, gt);
+					RenderingServer::get_singleton()->instance_set_transform(instance, gt);
 
 					// For instance when first adding to the tree, when the previous transform is
 					// unset, to prevent streaking from the origin.
@@ -117,12 +117,12 @@ void VisualInstance::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_RESET_PHYSICS_INTERPOLATION: {
 			if (_is_vi_visible() && is_physics_interpolated()) {
-				VisualServer::get_singleton()->instance_reset_physics_interpolation(instance);
+				RenderingServer::get_singleton()->instance_reset_physics_interpolation(instance);
 			}
 		} break;
 		case NOTIFICATION_EXIT_WORLD: {
-			VisualServer::get_singleton()->instance_set_scenario(instance, RID());
-			VisualServer::get_singleton()->instance_attach_skeleton(instance, RID());
+			RenderingServer::get_singleton()->instance_set_scenario(instance, RID());
+			RenderingServer::get_singleton()->instance_attach_skeleton(instance, RID());
 
 			// the vi visible flag is always set to invisible when outside the tree,
 			// so it can detect re-entering the tree and becoming visible, and send
@@ -136,7 +136,7 @@ void VisualInstance::_notification(int p_what) {
 }
 
 void VisualInstance::_physics_interpolated_changed() {
-	VisualServer::get_singleton()->instance_set_interpolated(instance, is_physics_interpolated());
+	RenderingServer::get_singleton()->instance_set_interpolated(instance, is_physics_interpolated());
 }
 
 RID VisualInstance::get_instance() const {
@@ -149,7 +149,7 @@ RID VisualInstance::_get_visual_instance_rid() const {
 
 void VisualInstance::set_layer_mask(uint32_t p_mask) {
 	layers = p_mask;
-	VisualServer::get_singleton()->instance_set_layer_mask(instance, p_mask);
+	RenderingServer::get_singleton()->instance_set_layer_mask(instance, p_mask);
 }
 
 uint32_t VisualInstance::get_layer_mask() const {
@@ -185,7 +185,7 @@ void VisualInstance::_bind_methods() {
 }
 
 void VisualInstance::set_base(const RID &p_base) {
-	VisualServer::get_singleton()->instance_set_base(instance, p_base);
+	RenderingServer::get_singleton()->instance_set_base(instance, p_base);
 	base = p_base;
 }
 
@@ -194,19 +194,19 @@ RID VisualInstance::get_base() const {
 }
 
 VisualInstance::VisualInstance() {
-	instance = RID_PRIME(VisualServer::get_singleton()->instance_create());
-	VisualServer::get_singleton()->instance_attach_object_instance_id(instance, get_instance_id());
+	instance = RID_PRIME(RenderingServer::get_singleton()->instance_create());
+	RenderingServer::get_singleton()->instance_attach_object_instance_id(instance, get_instance_id());
 	layers = 1;
 	set_notify_transform(true);
 }
 
 VisualInstance::~VisualInstance() {
-	VisualServer::get_singleton()->free(instance);
+	RenderingServer::get_singleton()->free(instance);
 }
 
 void GeometryInstance::set_material_override(const Ref<Material> &p_material) {
 	material_override = p_material;
-	VS::get_singleton()->instance_geometry_set_material_override(get_instance(), p_material.is_valid() ? p_material->get_rid() : RID());
+	RS::get_singleton()->instance_geometry_set_material_override(get_instance(), p_material.is_valid() ? p_material->get_rid() : RID());
 }
 
 Ref<Material> GeometryInstance::get_material_override() const {
@@ -215,7 +215,7 @@ Ref<Material> GeometryInstance::get_material_override() const {
 
 void GeometryInstance::set_material_overlay(const Ref<Material> &p_material) {
 	material_overlay = p_material;
-	VS::get_singleton()->instance_geometry_set_material_overlay(get_instance(), p_material.is_valid() ? p_material->get_rid() : RID());
+	RS::get_singleton()->instance_geometry_set_material_overlay(get_instance(), p_material.is_valid() ? p_material->get_rid() : RID());
 }
 
 Ref<Material> GeometryInstance::get_material_overlay() const {
@@ -224,7 +224,7 @@ Ref<Material> GeometryInstance::get_material_overlay() const {
 
 void GeometryInstance::set_lod_min_distance(float p_dist) {
 	lod_min_distance = p_dist;
-	VS::get_singleton()->instance_geometry_set_draw_range(get_instance(), lod_min_distance, lod_max_distance, lod_min_hysteresis, lod_max_hysteresis);
+	RS::get_singleton()->instance_geometry_set_draw_range(get_instance(), lod_min_distance, lod_max_distance, lod_min_hysteresis, lod_max_hysteresis);
 }
 
 float GeometryInstance::get_lod_min_distance() const {
@@ -233,7 +233,7 @@ float GeometryInstance::get_lod_min_distance() const {
 
 void GeometryInstance::set_lod_max_distance(float p_dist) {
 	lod_max_distance = p_dist;
-	VS::get_singleton()->instance_geometry_set_draw_range(get_instance(), lod_min_distance, lod_max_distance, lod_min_hysteresis, lod_max_hysteresis);
+	RS::get_singleton()->instance_geometry_set_draw_range(get_instance(), lod_min_distance, lod_max_distance, lod_min_hysteresis, lod_max_hysteresis);
 }
 
 float GeometryInstance::get_lod_max_distance() const {
@@ -242,7 +242,7 @@ float GeometryInstance::get_lod_max_distance() const {
 
 void GeometryInstance::set_lod_min_hysteresis(float p_dist) {
 	lod_min_hysteresis = p_dist;
-	VS::get_singleton()->instance_geometry_set_draw_range(get_instance(), lod_min_distance, lod_max_distance, lod_min_hysteresis, lod_max_hysteresis);
+	RS::get_singleton()->instance_geometry_set_draw_range(get_instance(), lod_min_distance, lod_max_distance, lod_min_hysteresis, lod_max_hysteresis);
 }
 
 float GeometryInstance::get_lod_min_hysteresis() const {
@@ -251,7 +251,7 @@ float GeometryInstance::get_lod_min_hysteresis() const {
 
 void GeometryInstance::set_lod_max_hysteresis(float p_dist) {
 	lod_max_hysteresis = p_dist;
-	VS::get_singleton()->instance_geometry_set_draw_range(get_instance(), lod_min_distance, lod_max_distance, lod_min_hysteresis, lod_max_hysteresis);
+	RS::get_singleton()->instance_geometry_set_draw_range(get_instance(), lod_min_distance, lod_max_distance, lod_min_hysteresis, lod_max_hysteresis);
 }
 
 float GeometryInstance::get_lod_max_hysteresis() const {
@@ -268,7 +268,7 @@ void GeometryInstance::set_flag(Flags p_flag, bool p_value) {
 	}
 
 	flags[p_flag] = p_value;
-	VS::get_singleton()->instance_geometry_set_flag(get_instance(), (VS::InstanceFlags)p_flag, p_value);
+	RS::get_singleton()->instance_geometry_set_flag(get_instance(), (RS::InstanceFlags)p_flag, p_value);
 }
 
 bool GeometryInstance::get_flag(Flags p_flag) const {
@@ -280,7 +280,7 @@ bool GeometryInstance::get_flag(Flags p_flag) const {
 void GeometryInstance::set_cast_shadows_setting(ShadowCastingSetting p_shadow_casting_setting) {
 	shadow_casting_setting = p_shadow_casting_setting;
 
-	VS::get_singleton()->instance_geometry_set_cast_shadows_setting(get_instance(), (VS::ShadowCastingSetting)p_shadow_casting_setting);
+	RS::get_singleton()->instance_geometry_set_cast_shadows_setting(get_instance(), (RS::ShadowCastingSetting)p_shadow_casting_setting);
 }
 
 GeometryInstance::ShadowCastingSetting GeometryInstance::get_cast_shadows_setting() const {
@@ -290,7 +290,7 @@ GeometryInstance::ShadowCastingSetting GeometryInstance::get_cast_shadows_settin
 void GeometryInstance::set_extra_cull_margin(float p_margin) {
 	ERR_FAIL_COND(p_margin < 0);
 	extra_cull_margin = p_margin;
-	VS::get_singleton()->instance_set_extra_visibility_margin(get_instance(), extra_cull_margin);
+	RS::get_singleton()->instance_set_extra_visibility_margin(get_instance(), extra_cull_margin);
 }
 
 float GeometryInstance::get_extra_cull_margin() const {
@@ -298,7 +298,7 @@ float GeometryInstance::get_extra_cull_margin() const {
 }
 
 void GeometryInstance::set_custom_aabb(AABB aabb) {
-	VS::get_singleton()->instance_set_custom_aabb(get_instance(), aabb);
+	RS::get_singleton()->instance_set_custom_aabb(get_instance(), aabb);
 }
 
 void GeometryInstance::_bind_methods() {

@@ -46,7 +46,7 @@ class OS_Android : public OS_Unix {
 
 	bool secondary_gl_available = false;
 
-	VisualServer *visual_server;
+	RenderingServer *visual_server;
 
 	mutable String data_dir_cache;
 	mutable String cache_dir_cache;

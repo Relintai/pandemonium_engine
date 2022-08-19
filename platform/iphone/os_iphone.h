@@ -48,7 +48,7 @@ private:
 	static HashMap<String, void *> dynamic_symbol_lookup_table;
 	friend void register_dynamic_symbol(char *name, void *address);
 
-	VisualServer *visual_server;
+	RenderingServer *visual_server;
 
 	AudioDriverCoreAudio audio_driver;
 

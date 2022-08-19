@@ -60,7 +60,7 @@ Portal::Portal() {
 	_use_default_margin = true;
 
 	// the visual server portal lifetime is linked to the lifetime of this object
-	_portal_rid = RID_PRIME(VisualServer::get_singleton()->portal_create());
+	_portal_rid = RID_PRIME(RenderingServer::get_singleton()->portal_create());
 
 #ifdef TOOLS_ENABLED
 	_room_manager_pandemonium_ID = 0;
@@ -81,7 +81,7 @@ Portal::Portal() {
 
 Portal::~Portal() {
 	if (_portal_rid != RID()) {
-		VisualServer::get_singleton()->free(_portal_rid);
+		RenderingServer::get_singleton()->free(_portal_rid);
 	}
 }
 
@@ -166,7 +166,7 @@ void Portal::_notification(int p_what) {
 			ERR_FAIL_COND(get_world().is_null());
 
 			// defer full creation of the visual server portal to when the editor portal is in the scene tree
-			VisualServer::get_singleton()->portal_set_scenario(_portal_rid, get_world()->get_scenario());
+			RenderingServer::get_singleton()->portal_set_scenario(_portal_rid, get_world()->get_scenario());
 
 			// we can't calculate world points until we have entered the tree
 			portal_update();
@@ -175,7 +175,7 @@ void Portal::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_EXIT_WORLD: {
 			// partially destroy  the visual server portal when the editor portal exits the scene tree
-			VisualServer::get_singleton()->portal_set_scenario(_portal_rid, RID());
+			RenderingServer::get_singleton()->portal_set_scenario(_portal_rid, RID());
 		} break;
 		case NOTIFICATION_TRANSFORM_CHANGED: {
 			// keep the world points and the visual server up to date
@@ -195,7 +195,7 @@ void Portal::_notification(int p_what) {
 
 void Portal::set_portal_active(bool p_active) {
 	_settings_active = p_active;
-	VisualServer::get_singleton()->portal_set_active(_portal_rid, p_active);
+	RenderingServer::get_singleton()->portal_set_active(_portal_rid, p_active);
 }
 
 bool Portal::get_portal_active() const {
@@ -250,7 +250,7 @@ void Portal::resolve_links(const LocalVector<Room *, int32_t> &p_rooms, const RI
 		_linkedroom_ID[1] = linkedroom->_room_ID;
 
 		// send to visual server
-		VisualServer::get_singleton()->portal_link(_portal_rid, p_from_room_rid, linkedroom->_room_rid, _settings_two_way);
+		RenderingServer::get_singleton()->portal_link(_portal_rid, p_from_room_rid, linkedroom->_room_rid, _settings_two_way);
 	} else {
 		_linkedroom_ID[1] = -1;
 	}
@@ -361,8 +361,8 @@ bool Portal::create_from_mesh_instance(const MeshInstance *p_mi) {
 	}
 
 	Array arrays = rmesh->surface_get_arrays(0);
-	PoolVector<Vector3> vertices = arrays[VS::ARRAY_VERTEX];
-	PoolVector<int> indices = arrays[VS::ARRAY_INDEX];
+	PoolVector<Vector3> vertices = arrays[RS::ARRAY_VERTEX];
+	PoolVector<int> indices = arrays[RS::ARRAY_INDEX];
 
 	// get the model space verts and find center
 	int num_source_points = vertices.size();
@@ -531,7 +531,7 @@ void Portal::portal_update() {
 
 	// extension margin to prevent objects too easily sprawling
 	real_t margin = get_active_portal_margin();
-	VisualServer::get_singleton()->portal_set_geometry(_portal_rid, _pts_world, margin);
+	RenderingServer::get_singleton()->portal_set_geometry(_portal_rid, _pts_world, margin);
 }
 
 real_t Portal::get_active_portal_margin() const {
