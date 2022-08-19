@@ -1277,7 +1277,7 @@ EditorPlugin::AfterGUIInput SkeletonEditorPlugin::forward_spatial_gui_input(Came
 				se->update_bone_original();
 			}
 		}
-		return EditorPlugin::AFTER_GUI_INPUT_DESELECT;
+		return EditorPlugin::AFTER_GUI_INPUT_NO_DESELECT;
 	}
 	return EditorPlugin::AFTER_GUI_INPUT_PASS;
 }

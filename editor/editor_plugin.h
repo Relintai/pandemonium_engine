@@ -194,7 +194,7 @@ public:
 	enum AfterGUIInput {
 		AFTER_GUI_INPUT_PASS,
 		AFTER_GUI_INPUT_STOP,
-		AFTER_GUI_INPUT_DESELECT
+		AFTER_GUI_INPUT_NO_DESELECT
 	};
 
 	//TODO: send a resource for editing to the editor node?

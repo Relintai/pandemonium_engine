@@ -1376,8 +1376,8 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 				return;
 			}
 
-			if (discard == EditorPlugin::AFTER_GUI_INPUT_DESELECT) {
-				after = EditorPlugin::AFTER_GUI_INPUT_DESELECT;
+			if (discard == EditorPlugin::AFTER_GUI_INPUT_NO_DESELECT) {
+				after = EditorPlugin::AFTER_GUI_INPUT_NO_DESELECT;
 			}
 		}
 	}
@@ -1391,8 +1391,8 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 				return;
 			}
 
-			if (discard == EditorPlugin::AFTER_GUI_INPUT_DESELECT) {
-				after = EditorPlugin::AFTER_GUI_INPUT_DESELECT;
+			if (discard == EditorPlugin::AFTER_GUI_INPUT_NO_DESELECT) {
+				after = EditorPlugin::AFTER_GUI_INPUT_NO_DESELECT;
 			}
 		}
 	}
@@ -1673,7 +1673,7 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 						break;
 					}
 
-					if (after != EditorPlugin::AFTER_GUI_INPUT_DESELECT) {
+					if (after != EditorPlugin::AFTER_GUI_INPUT_NO_DESELECT) {
 						clicked = _select_ray(b->get_position());
 
 						//TODO is this needed?
@@ -1699,7 +1699,7 @@ void SpatialEditorViewport::_sinput(const Ref<InputEvent> &p_event) {
 						break;
 					}
 
-					if (after != EditorPlugin::AFTER_GUI_INPUT_DESELECT) {
+					if (after != EditorPlugin::AFTER_GUI_INPUT_NO_DESELECT) {
 						if (clicked) {
 							_select_clicked(false);
 						}

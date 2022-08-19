@@ -7037,8 +7037,8 @@ EditorPlugin::AfterGUIInput EditorPluginList::forward_spatial_gui_input(Camera *
 			after = EditorPlugin::AFTER_GUI_INPUT_STOP;
 		}
 		
-		if (after != EditorPlugin::AFTER_GUI_INPUT_STOP && current_after == EditorPlugin::AFTER_GUI_INPUT_DESELECT) {
-			after = EditorPlugin::AFTER_GUI_INPUT_DESELECT;
+		if (after != EditorPlugin::AFTER_GUI_INPUT_STOP && current_after == EditorPlugin::AFTER_GUI_INPUT_NO_DESELECT) {
+			after = EditorPlugin::AFTER_GUI_INPUT_NO_DESELECT;
 		}
 	}
 
