@@ -28,6 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/config/project_settings.h"
 #include "core/io/image_loader.h"
 #include "core/io/json.h"
 #include "core/io/marshalls.h"
@@ -35,7 +36,6 @@
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 #include "core/os/os.h"
-#include "core/config/project_settings.h"
 #include "core/os/safe_refcount.h"
 #include "core/version.h"
 #include "drivers/png/png_driver_common.h"
@@ -95,10 +95,13 @@ class EditorExportPlatformAndroid : public EditorExportPlatform {
 	Vector<Device> devices;
 	SafeFlag devices_changed;
 	Mutex device_lock;
+
+#ifndef ANDROID_ENABLED
 	Thread check_for_changes_thread;
 	SafeFlag quit_request;
 
 	static void _check_for_changes_poll_thread(void *ud);
+#endif
 
 	String get_project_name(const String &p_name) const;
 

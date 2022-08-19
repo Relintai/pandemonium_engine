@@ -29,13 +29,13 @@
 /*************************************************************************/
 
 #include "export.h"
+#include "core/config/project_settings.h"
 #include "core/io/image_loader.h"
 #include "core/io/marshalls.h"
 #include "core/io/resource_saver.h"
 #include "core/io/zip_io.h"
 #include "core/os/file_access.h"
 #include "core/os/os.h"
-#include "core/config/project_settings.h"
 #include "core/os/safe_refcount.h"
 #include "core/version.h"
 #include "editor/editor_export.h"
@@ -57,8 +57,10 @@ class EditorExportPlatformIOS : public EditorExportPlatform {
 
 	// Plugins
 	SafeFlag plugins_changed;
+#ifndef ANDROID_ENABLED
 	Thread check_for_changes_thread;
 	SafeFlag quit_request;
+#endif
 	Mutex plugins_lock;
 	Vector<PluginConfigIOS> plugins;
 
@@ -141,6 +143,7 @@ class EditorExportPlatformIOS : public EditorExportPlatform {
 		return true;
 	}
 
+#ifndef ANDROID_ENABLED
 	static void _check_for_changes_poll_thread(void *ud) {
 		EditorExportPlatformIOS *ea = (EditorExportPlatformIOS *)ud;
 
@@ -176,15 +179,22 @@ class EditorExportPlatformIOS : public EditorExportPlatform {
 			}
 		}
 	}
+#endif
 
 protected:
 	virtual void get_preset_features(const Ref<EditorExportPreset> &p_preset, List<String> *r_features);
 	virtual void get_export_options(List<ExportOption> *r_options);
 
 public:
-	virtual String get_name() const { return "iOS"; }
-	virtual String get_os_name() const { return "iOS"; }
-	virtual Ref<Texture> get_logo() const { return logo; }
+	virtual String get_name() const {
+		return "iOS";
+	}
+	virtual String get_os_name() const {
+		return "iOS";
+	}
+	virtual Ref<Texture> get_logo() const {
+		return logo;
+	}
 
 	virtual bool should_update_export_options() {
 		bool export_options_changed = plugins_changed.is_set();
@@ -2126,12 +2136,16 @@ EditorExportPlatformIOS::EditorExportPlatformIOS() {
 
 	plugins_changed.set();
 
+#ifndef ANDROID_ENABLED
 	check_for_changes_thread.start(_check_for_changes_poll_thread, this);
+#endif
 }
 
 EditorExportPlatformIOS::~EditorExportPlatformIOS() {
+#ifndef ANDROID_ENABLED
 	quit_request.set();
 	check_for_changes_thread.wait_to_finish();
+#endif
 }
 
 void register_iphone_exporter() {

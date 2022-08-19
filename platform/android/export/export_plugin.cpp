@@ -229,6 +229,7 @@ static const int DEFAULT_MIN_SDK_VERSION = 19; // Should match the value in 'pla
 static const int DEFAULT_TARGET_SDK_VERSION = 32; // Should match the value in 'platform/android/java/app/config.gradle#targetSdk'
 const String SDK_VERSION_RANGE = vformat("%s,%s,1", DEFAULT_MIN_SDK_VERSION, DEFAULT_TARGET_SDK_VERSION);
 
+#ifndef ANDROID_ENABLED
 void EditorExportPlatformAndroid::_check_for_changes_poll_thread(void *ud) {
 	EditorExportPlatformAndroid *ea = (EditorExportPlatformAndroid *)ud;
 
@@ -260,7 +261,6 @@ void EditorExportPlatformAndroid::_check_for_changes_poll_thread(void *ud) {
 			}
 		}
 
-#ifndef ANDROID_ENABLED
 		// Check for devices updates
 		String adb = get_adb_path();
 		if (FileAccess::exists(adb)) {
@@ -374,7 +374,6 @@ void EditorExportPlatformAndroid::_check_for_changes_poll_thread(void *ud) {
 
 			ea->device_lock.unlock();
 		}
-#endif
 
 		uint64_t sleep = 300'000;
 		uint64_t wait = 3'000'000;
@@ -387,7 +386,6 @@ void EditorExportPlatformAndroid::_check_for_changes_poll_thread(void *ud) {
 		}
 	}
 
-#ifndef ANDROID_ENABLED
 	if (EditorSettings::get_singleton()->get("export/android/shutdown_adb_on_exit")) {
 		String adb = get_adb_path();
 		if (!FileAccess::exists(adb)) {
@@ -398,8 +396,8 @@ void EditorExportPlatformAndroid::_check_for_changes_poll_thread(void *ud) {
 		args.push_back("kill-server");
 		OS::get_singleton()->execute(adb, args, true);
 	}
-#endif
 }
+#endif
 
 String EditorExportPlatformAndroid::get_project_name(const String &p_name) const {
 	String aname;
@@ -3302,10 +3300,14 @@ EditorExportPlatformAndroid::EditorExportPlatformAndroid() {
 
 	devices_changed.set();
 	plugins_changed.set();
+#ifndef ANDROID_ENABLED
 	check_for_changes_thread.start(_check_for_changes_poll_thread, this);
+#endif
 }
 
 EditorExportPlatformAndroid::~EditorExportPlatformAndroid() {
+#ifndef ANDROID_ENABLED
 	quit_request.set();
 	check_for_changes_thread.wait_to_finish();
+#endif
 }
