@@ -34,12 +34,16 @@ class WebEditorPlugin : public EditorPlugin {
 	GDCLASS(WebEditorPlugin, EditorPlugin);
 
 public:
-	void make_visible(const bool visible);
+	void make_visible(bool visible);
 	const Ref<Texture> get_icon() const;
 	bool has_main_screen() const;
 	String get_name() const;
 	void edit(Object *p_object);
 	bool handles(Object *p_object) const;
+	void edited_scene_changed();
+
+	bool scene_has_webnode(Node *p_node);
+	bool scene_has_webnode_skip(Node *p_node, Node *skip);
 
 	WebEditorPlugin(EditorNode *p_node);
 	~WebEditorPlugin();
@@ -49,11 +53,14 @@ public:
 	WebEditor *window;
 
 protected:
+	void on_node_removed(Node *p_child);
+
 	void _notification(int p_what);
 
 	static void _bind_methods();
 
 	Ref<Texture> _icon;
+	bool _scene_has_webnode;
 };
 
 #endif
