@@ -896,6 +896,7 @@ MDIEd::MDIEd() {
 	_edit_mode_button->set_tooltip(TTR("Edit MeshDataResource."));
 	_edit_mode_button->connect("toggled", this, "_edit_mode_toggled");
 	SpatialEditor::get_singleton()->add_control_to_menu_panel(_edit_mode_button);
+	_edit_mode_button->hide();
 
 	_editing = false;
 }
