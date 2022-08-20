@@ -36,20 +36,20 @@
 
 #include "scene/resources/texture.h"
 
-#include "core/variant/array.h"
-#include "core/variant/dictionary.h"
+#include "core/containers/list.h"
+#include "core/containers/vector.h"
 #include "core/error/error_list.h"
 #include "core/error/error_macros.h"
 #include "core/io/config_file.h"
-#include "core/containers/list.h"
 #include "core/object/method_bind.h"
 #include "core/object/object.h"
-#include "core/os/memory.h"
 #include "core/object/reference.h"
 #include "core/object/undo_redo.h"
+#include "core/os/memory.h"
 #include "core/string/ustring.h"
+#include "core/variant/array.h"
+#include "core/variant/dictionary.h"
 #include "core/variant/variant.h"
-#include "core/containers/vector.h"
 
 class EditorNode;
 class Spatial;
@@ -138,6 +138,7 @@ public:
 	Vector<Ref<Texture>> make_mesh_previews(const Vector<Ref<Mesh>> &p_meshes, Vector<Transform> *p_transforms, int p_preview_size);
 
 	void set_main_screen_editor(const String &p_name);
+	void set_main_screen_editor_tab_button_visible(const String &p_name, const bool p_visible);
 	void set_distraction_free_mode(bool p_enter);
 	bool is_distraction_free_mode_enabled() const;
 

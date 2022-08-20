@@ -32,34 +32,35 @@
 
 #include <stdlib.h>
 
-#include "core/variant/array.h"
-#include "core/object/class_db.h"
-#include "core/math/color.h"
 #include "core/config/engine.h"
+#include "core/config/project_settings.h"
+#include "core/containers/pool_vector.h"
 #include "core/error/error_macros.h"
-#include "core/io/image.h"
+#include "core/input/input.h"
+#include "core/input/input_event.h"
+#include "core/input/shortcut.h"
 #include "core/io/config_file.h"
+#include "core/io/image.h"
 #include "core/io/image_loader.h"
 #include "core/io/resource_importer.h"
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"
+#include "core/math/color.h"
 #include "core/math/math_defs.h"
 #include "core/math/vector2.h"
+#include "core/object/class_db.h"
 #include "core/object/object_id.h"
+#include "core/object/script_language.h"
+#include "core/object/undo_redo.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
-#include "core/input/input.h"
-#include "core/input/input_event.h"
 #include "core/os/keyboard.h"
 #include "core/os/main_loop.h"
 #include "core/os/memory.h"
 #include "core/os/os.h"
-#include "core/containers/pool_vector.h"
 #include "core/string/print_string.h"
-#include "core/config/project_settings.h"
-#include "core/object/script_language.h"
 #include "core/string/translation.h"
-#include "core/object/undo_redo.h"
+#include "core/variant/array.h"
 #include "core/version.h"
 #include "core/version_generated.gen.h"
 #include "editor/animation_track_editor.h"
@@ -177,7 +178,6 @@
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/rich_text_label.h"
 #include "scene/gui/scroll_bar.h"
-#include "core/input/shortcut.h"
 #include "scene/gui/split_container.h"
 #include "scene/gui/tab_container.h"
 #include "scene/gui/tabs.h"
@@ -3071,7 +3071,21 @@ void EditorNode::select_editor_by_name(const String &p_name) {
 
 	for (int i = 0; i < main_editor_buttons.size(); i++) {
 		if (main_editor_buttons[i]->get_text() == p_name) {
+			main_editor_buttons[i]->set_visible(true);
 			_editor_select(i);
+			return;
+		}
+	}
+
+	ERR_FAIL_MSG("The editor name '" + p_name + "' was not found.");
+}
+
+void EditorNode::editor_set_visible_by_name(const String &p_name, const bool p_visible) {
+	ERR_FAIL_COND(p_name == "");
+
+	for (int i = 0; i < main_editor_buttons.size(); i++) {
+		if (main_editor_buttons[i]->get_text() == p_name) {
+			main_editor_buttons[i]->set_visible(p_visible);
 			return;
 		}
 	}
@@ -7036,7 +7050,7 @@ EditorPlugin::AfterGUIInput EditorPluginList::forward_spatial_gui_input(Camera *
 		if (current_after == EditorPlugin::AFTER_GUI_INPUT_STOP) {
 			after = EditorPlugin::AFTER_GUI_INPUT_STOP;
 		}
-		
+
 		if (after != EditorPlugin::AFTER_GUI_INPUT_STOP && current_after == EditorPlugin::AFTER_GUI_INPUT_NO_DESELECT) {
 			after = EditorPlugin::AFTER_GUI_INPUT_NO_DESELECT;
 		}

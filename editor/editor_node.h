@@ -230,6 +230,7 @@ public:
 	void hide_top_editors();
 
 	void select_editor_by_name(const String &p_name);
+	void editor_set_visible_by_name(const String &p_name, const bool p_visible);
 
 	void open_request(const String &p_path);
 

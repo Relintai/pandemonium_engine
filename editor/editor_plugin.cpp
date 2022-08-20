@@ -30,50 +30,50 @@
 
 #include "editor_plugin.h"
 
+#include "core/containers/pool_vector.h"
+#include "core/containers/rid.h"
+#include "core/containers/rid_handle.h"
+#include "core/input/input_event.h"
+#include "core/io/image.h"
+#include "core/io/resource_importer.h"
+#include "core/math/aabb.h"
+#include "core/math/basis.h"
+#include "core/math/color.h"
+#include "core/math/math_defs.h"
+#include "core/math/transform.h"
+#include "core/math/vector3.h"
+#include "core/object/class_db.h"
+#include "core/object/resource.h"
+#include "core/object/script_language.h"
+#include "core/typedefs.h"
+#include "editor/editor_autoload_settings.h"
+#include "editor/editor_data.h"
 #include "editor/editor_export.h"
+#include "editor/editor_file_system.h"
+#include "editor/editor_inspector.h"
 #include "editor/editor_node.h"
+#include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 #include "editor/filesystem_dock.h"
+#include "editor/import/editor_import_plugin.h"
+#include "editor/import/resource_importer_scene.h"
+#include "editor/plugins/script_editor_plugin.h"
 #include "editor/project_settings_editor.h"
+#include "editor/script_create_dialog.h"
 #include "editor_resource_preview.h"
 #include "main/main.h"
 #include "plugins/canvas_item_editor_plugin.h"
 #include "plugins/spatial_editor_plugin.h"
 #include "scene/3d/camera.h"
-#include "scene/gui/popup_menu.h"
-#include "servers/rendering_server.h"
-#include "core/object/class_db.h"
-#include "core/math/color.h"
-#include "core/io/image.h"
-#include "core/io/resource_importer.h"
-#include "core/math/aabb.h"
-#include "core/math/basis.h"
-#include "core/math/math_defs.h"
-#include "core/math/transform.h"
-#include "core/math/vector3.h"
-#include "core/input/input_event.h"
-#include "core/containers/pool_vector.h"
-#include "core/object/resource.h"
-#include "core/containers/rid.h"
-#include "core/containers/rid_handle.h"
-#include "core/object/script_language.h"
-#include "core/typedefs.h"
-#include "editor/editor_autoload_settings.h"
-#include "editor/editor_data.h"
-#include "editor/editor_file_system.h"
-#include "editor/editor_inspector.h"
-#include "editor/editor_scale.h"
-#include "editor/import/editor_import_plugin.h"
-#include "editor/import/resource_importer_scene.h"
-#include "editor/plugins/script_editor_plugin.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/container.h"
 #include "scene/gui/control.h"
+#include "scene/gui/popup_menu.h"
 #include "scene/gui/split_container.h"
 #include "scene/gui/tab_container.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/texture.h"
-#include "editor/script_create_dialog.h"
+#include "servers/rendering_server.h"
 
 class ConfigFile;
 class ScriptCreateDialog;
@@ -187,6 +187,10 @@ Vector<Ref<Texture>> EditorInterface::make_mesh_previews(const Vector<Ref<Mesh>>
 
 void EditorInterface::set_main_screen_editor(const String &p_name) {
 	EditorNode::get_singleton()->select_editor_by_name(p_name);
+}
+
+void EditorInterface::set_main_screen_editor_tab_button_visible(const String &p_name, const bool p_visible) {
+	EditorNode::get_singleton()->editor_set_visible_by_name(p_name, p_visible);
 }
 
 Control *EditorInterface::get_editor_viewport() {
@@ -387,6 +391,7 @@ void EditorInterface::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("save_scene_as", "path", "with_preview"), &EditorInterface::save_scene_as, DEFVAL(true));
 
 	ClassDB::bind_method(D_METHOD("set_main_screen_editor", "name"), &EditorInterface::set_main_screen_editor);
+	ClassDB::bind_method(D_METHOD("set_main_screen_editor_tab_button_visible", "name", "visible"), &EditorInterface::set_main_screen_editor_tab_button_visible);
 	ClassDB::bind_method(D_METHOD("set_distraction_free_mode", "enter"), &EditorInterface::set_distraction_free_mode);
 	ClassDB::bind_method(D_METHOD("is_distraction_free_mode_enabled"), &EditorInterface::is_distraction_free_mode_enabled);
 

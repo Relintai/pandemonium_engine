@@ -219,7 +219,15 @@
 			<return type="void" />
 			<argument index="0" name="name" type="String" />
 			<description>
-				Sets the editor's current main screen to the one specified in [code]name[/code]. [code]name[/code] must match the text of the tab in question exactly ([code]2D[/code], [code]3D[/code], [code]Script[/code], [code]AssetLib[/code]).
+				Sets the editor's current main screen to the one specified in [code]name[/code]. It will also make the editor's tab button at the top to be visible if it weren't. [code]name[/code] must match the text of the tab in question exactly like: [code]2D[/code], [code]3D[/code], [code]Script[/code].
+			</description>
+		</method>
+		<method name="set_main_screen_editor_tab_button_visible">
+			<return type="void" />
+			<argument index="0" name="name" type="String" />
+			<argument index="1" name="visible" type="bool" />
+			<description>
+				Sets whether the specified main screen's button is visible or not. Will not change the main screen. [code]name[/code] must match the text of the tab in question exactly like: [code]2D[/code], [code]3D[/code], [code]Script[/code], [code]AssetLib[/code].
 			</description>
 		</method>
 		<method name="set_plugin_enabled">
