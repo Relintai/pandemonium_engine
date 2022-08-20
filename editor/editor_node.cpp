@@ -2071,10 +2071,6 @@ void EditorNode::_edit_current(bool p_skip_foreign) {
 		int plugin_index = 0;
 		for (; plugin_index < editor_table.size(); plugin_index++) {
 			if (editor_table[plugin_index] == main_plugin) {
-				if (!main_editor_buttons[plugin_index]->is_visible()) {
-					main_plugin = nullptr; //if button is not visible, then no plugin active
-				}
-
 				break;
 			}
 		}
