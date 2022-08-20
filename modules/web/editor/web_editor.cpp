@@ -172,7 +172,7 @@ void WebEditor::_notification(int p_what) {
 }
 
 WebEditor::WebEditor() {
-	_prettify_html = false;
+	_prettify_html = true;
 
 	_web_server = memnew(WebEditorWebServer);
 	add_child(_web_server);
