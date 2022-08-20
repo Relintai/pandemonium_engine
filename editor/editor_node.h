@@ -41,25 +41,25 @@
 #include "scene/gui/menu_button.h"
 #include "scene/gui/split_container.h"
 
-#include "core/variant/dictionary.h"
-#include "core/error/error_list.h"
 #include "core/containers/list.h"
 #include "core/containers/map.h"
+#include "core/containers/set.h"
+#include "core/containers/vector.h"
+#include "core/error/error_list.h"
 #include "core/math/rect2.h"
-#include "core/string/node_path.h"
-#include "core/os/mutex.h"
-#include "core/os/os.h"
-#include "core/os/thread.h"
-#include "core/string/print_string.h"
 #include "core/object/reference.h"
 #include "core/object/resource.h"
+#include "core/os/mutex.h"
+#include "core/os/os.h"
 #include "core/os/safe_refcount.h"
-#include "core/containers/set.h"
+#include "core/os/thread.h"
+#include "core/string/node_path.h"
+#include "core/string/print_string.h"
 #include "core/string/string_name.h"
-#include "core/typedefs.h"
 #include "core/string/ustring.h"
+#include "core/typedefs.h"
+#include "core/variant/dictionary.h"
 #include "core/variant/variant.h"
-#include "core/containers/vector.h"
 #include "editor/editor_data.h"
 #include "scene/gui/control.h"
 
@@ -163,6 +163,226 @@ public:
 		int exitcode;
 		SafeFlag done;
 	};
+
+public:
+	bool call_build();
+
+	static void add_plugin_init_callback(EditorPluginInitializeCallback p_callback);
+
+	enum EditorTable {
+		EDITOR_2D = 0,
+		EDITOR_3D,
+		EDITOR_SCRIPT
+	};
+
+	void set_visible_editor(EditorTable p_table) { _editor_select(p_table); }
+	static EditorNode *get_singleton() { return singleton; }
+
+	EditorPlugin *get_editor_plugin_screen() { return editor_plugin_screen; }
+	EditorPluginList *get_editor_plugins_over() { return editor_plugins_over; }
+	EditorPluginList *get_editor_plugins_force_over() { return editor_plugins_force_over; }
+	EditorPluginList *get_editor_plugins_force_input_forwarding() { return editor_plugins_force_input_forwarding; }
+	EditorInspector *get_inspector() { return inspector_dock->get_inspector(); }
+	Container *get_inspector_dock_addon_area() { return inspector_dock->get_addon_area(); }
+	ScriptCreateDialog *get_script_create_dialog() { return scene_tree_dock->get_script_create_dialog(); }
+
+	ProjectSettingsEditor *get_project_settings() { return project_settings; }
+
+	static void add_editor_plugin(EditorPlugin *p_editor, bool p_config_changed = false);
+	static void remove_editor_plugin(EditorPlugin *p_editor, bool p_config_changed = false);
+
+	static void disambiguate_filenames(const Vector<String> p_full_paths, Vector<String> &r_filenames);
+
+	void new_inherited_scene() { _menu_option_confirm(FILE_NEW_INHERITED_SCENE, false); }
+
+	void set_docks_visible(bool p_show);
+	bool get_docks_visible() const;
+
+	void set_distraction_free_mode(bool p_enter);
+	bool is_distraction_free_mode_enabled() const;
+
+	void add_control_to_dock(DockSlot p_slot, Control *p_control);
+	void remove_control_from_dock(Control *p_control);
+
+	void set_addon_plugin_enabled(String p_addon, bool p_enabled, bool p_config_changed = false);
+	bool is_addon_plugin_enabled(const String &p_addon) const;
+
+	void edit_node(Node *p_node);
+	void edit_resource(const Ref<Resource> &p_resource) { inspector_dock->edit_resource(p_resource); };
+	void open_resource(const String &p_type) { inspector_dock->open_resource(p_type); };
+
+	void save_resource_in_path(const Ref<Resource> &p_resource, const String &p_path);
+	void save_resource(const Ref<Resource> &p_resource);
+	void save_resource_as(const Ref<Resource> &p_resource, const String &p_at_path = String());
+
+	void merge_from_scene() { _menu_option_confirm(FILE_IMPORT_SUBSCENE, false); }
+
+	void show_about() { _menu_option_confirm(HELP_ABOUT, false); }
+
+	static bool has_unsaved_changes() { return singleton->unsaved_cache; }
+
+	static HBoxContainer *get_menu_hb() { return singleton->menu_hb; }
+
+	void push_item(Object *p_object, const String &p_property = "", bool p_inspector_only = false);
+	void edit_item(Object *p_object);
+	void edit_item_resource(RES p_resource);
+	bool item_has_editor(Object *p_object);
+	void hide_top_editors();
+
+	void select_editor_by_name(const String &p_name);
+
+	void open_request(const String &p_path);
+
+	bool is_changing_scene() const;
+
+	static EditorLog *get_log() { return singleton->log; }
+	Control *get_viewport();
+
+	void set_edited_scene(Node *p_scene);
+
+	Node *get_edited_scene() { return editor_data.get_edited_scene_root(); }
+
+	Viewport *get_scene_root() { return scene_root; } //root of the scene being edited
+
+	void fix_dependencies(const String &p_for_file);
+	int new_scene();
+	Error load_scene(const String &p_scene, bool p_ignore_broken_deps = false, bool p_set_inherited = false, bool p_clear_errors = true, bool p_force_open_imported = false, bool p_silent_change_tab = false);
+	Error load_resource(const String &p_resource, bool p_ignore_broken_deps = false);
+
+	bool is_scene_open(const String &p_path);
+
+	void set_current_version(uint64_t p_version);
+	void set_current_scene(int p_idx);
+
+	static EditorData &get_editor_data() { return singleton->editor_data; }
+	static EditorFolding &get_editor_folding() { return singleton->editor_folding; }
+	EditorHistory *get_editor_history() { return &editor_history; }
+
+	static VSplitContainer *get_top_split() { return singleton->top_split; }
+
+	void request_instance_scene(const String &p_path);
+	void request_instance_scenes(const Vector<String> &p_files);
+	FileSystemDock *get_filesystem_dock();
+	ImportDock *get_import_dock();
+	SceneTreeDock *get_scene_tree_dock();
+	InspectorDock *get_inspector_dock();
+	static UndoRedo *get_undo_redo() { return &singleton->editor_data.get_undo_redo(); }
+
+	EditorSelection *get_editor_selection() { return editor_selection; }
+
+	void set_convert_old_scene(bool p_old) { convert_old = p_old; }
+
+	void notify_child_process_exited();
+
+	OS::ProcessID get_child_process_id() const { return editor_run.get_pid(); }
+	void stop_child_process();
+
+	Ref<Theme> get_editor_theme() const { return theme; }
+	Ref<Script> get_object_custom_type_base(const Object *p_object) const;
+	StringName get_object_custom_type_name(const Object *p_object) const;
+	Ref<Texture> get_object_icon(const Object *p_object, const String &p_fallback = "Object");
+	Ref<Texture> get_class_icon(const String &p_class, const String &p_fallback = "Object") const;
+
+	void show_accept(const String &p_text, const String &p_title);
+	void show_save_accept(const String &p_text, const String &p_title);
+	void show_warning(const String &p_text, const String &p_title = TTR("Warning!"));
+
+	void _copy_warning(const String &p_str);
+
+	Error export_preset(const String &p_preset, const String &p_path, bool p_debug, bool p_pack_only);
+
+	static void register_editor_types();
+	static void unregister_editor_types();
+
+	Control *get_gui_base() { return gui_base; }
+	Control *get_theme_base() { return gui_base->get_parent_control(); }
+
+	static void add_io_error(const String &p_error);
+
+	static void progress_add_task(const String &p_task, const String &p_label, int p_steps, bool p_can_cancel = false);
+	static bool progress_task_step(const String &p_task, const String &p_state, int p_step = -1, bool p_force_refresh = true);
+	static void progress_end_task(const String &p_task);
+
+	static void progress_add_task_bg(const String &p_task, const String &p_label, int p_steps);
+	static void progress_task_step_bg(const String &p_task, int p_step = -1);
+	static void progress_end_task_bg(const String &p_task);
+
+	void save_scene_to_path(String p_file, bool p_with_preview = true) {
+		if (p_with_preview) {
+			_save_scene_with_preview(p_file);
+		} else {
+			_save_scene(p_file);
+		}
+	}
+
+	bool is_scene_in_use(const String &p_path);
+
+	void save_layout();
+
+	void open_export_template_manager();
+
+	void reload_scene(const String &p_path);
+
+	bool is_exiting() const { return exiting; }
+
+	ToolButton *get_pause_button() { return pause_button; }
+
+	ToolButton *add_bottom_panel_item(String p_text, Control *p_item);
+	bool are_bottom_panels_hidden() const;
+	void make_bottom_panel_item_visible(Control *p_item);
+	void raise_bottom_panel_item(Control *p_item);
+	void hide_bottom_panel();
+	void remove_bottom_panel_item(Control *p_item);
+
+	Variant drag_resource(const Ref<Resource> &p_res, Control *p_from);
+	Variant drag_files_and_dirs(const Vector<String> &p_paths, Control *p_from);
+
+	void add_tool_menu_item(const String &p_name, Object *p_handler, const String &p_callback, const Variant &p_ud = Variant());
+	void add_tool_submenu_item(const String &p_name, PopupMenu *p_submenu);
+	void remove_tool_menu_item(const String &p_name);
+
+	void save_all_scenes();
+	void save_scene_list(Vector<String> p_scene_filenames);
+	void restart_editor();
+
+	void dim_editor(bool p_dimming, bool p_force_dim = false);
+	bool is_editor_dimmed() const;
+
+	void edit_current() { _edit_current(); };
+
+	void update_keying() const { inspector_dock->update_keying(); };
+	bool has_scenes_in_session();
+
+	int execute_and_show_output(const String &p_title, const String &p_path, const List<String> &p_arguments, bool p_close_on_ok = true, bool p_close_on_errors = false);
+
+	EditorNode();
+	~EditorNode();
+
+	void add_resource_conversion_plugin(const Ref<EditorResourceConversionPlugin> &p_plugin);
+	void remove_resource_conversion_plugin(const Ref<EditorResourceConversionPlugin> &p_plugin);
+	Vector<Ref<EditorResourceConversionPlugin>> find_resource_conversion_plugin(const Ref<Resource> &p_for_resource);
+
+	static void add_init_callback(EditorNodeInitCallback p_callback) { _init_callbacks.push_back(p_callback); }
+	static void add_build_callback(EditorBuildCallback p_callback);
+
+	bool ensure_main_scene(bool p_from_native);
+
+	void run_play();
+	void run_play_current();
+	void run_play_custom(const String &p_custom);
+	void run_stop();
+	bool is_run_playing() const;
+	String get_run_playing_scene() const;
+
+protected:
+	void _notification(int p_what);
+
+	static void _bind_methods();
+
+	friend class FileSystemDock;
+
+	int get_current_tab();
+	void set_current_tab(int p_tab);
 
 private:
 	enum {
@@ -711,227 +931,6 @@ private:
 	static String _to_absolute_plugin_path(const String &p_path);
 
 	void _pick_main_scene_custom_action(const String &p_custom_action_name);
-
-protected:
-	void _notification(int p_what);
-
-	static void _bind_methods();
-
-protected:
-	friend class FileSystemDock;
-
-	int get_current_tab();
-	void set_current_tab(int p_tab);
-
-public:
-	bool call_build();
-
-	static void add_plugin_init_callback(EditorPluginInitializeCallback p_callback);
-
-	enum EditorTable {
-		EDITOR_2D = 0,
-		EDITOR_3D,
-		EDITOR_SCRIPT
-	};
-
-	void set_visible_editor(EditorTable p_table) { _editor_select(p_table); }
-	static EditorNode *get_singleton() { return singleton; }
-
-	EditorPlugin *get_editor_plugin_screen() { return editor_plugin_screen; }
-	EditorPluginList *get_editor_plugins_over() { return editor_plugins_over; }
-	EditorPluginList *get_editor_plugins_force_over() { return editor_plugins_force_over; }
-	EditorPluginList *get_editor_plugins_force_input_forwarding() { return editor_plugins_force_input_forwarding; }
-	EditorInspector *get_inspector() { return inspector_dock->get_inspector(); }
-	Container *get_inspector_dock_addon_area() { return inspector_dock->get_addon_area(); }
-	ScriptCreateDialog *get_script_create_dialog() { return scene_tree_dock->get_script_create_dialog(); }
-
-	ProjectSettingsEditor *get_project_settings() { return project_settings; }
-
-	static void add_editor_plugin(EditorPlugin *p_editor, bool p_config_changed = false);
-	static void remove_editor_plugin(EditorPlugin *p_editor, bool p_config_changed = false);
-
-	static void disambiguate_filenames(const Vector<String> p_full_paths, Vector<String> &r_filenames);
-
-	void new_inherited_scene() { _menu_option_confirm(FILE_NEW_INHERITED_SCENE, false); }
-
-	void set_docks_visible(bool p_show);
-	bool get_docks_visible() const;
-
-	void set_distraction_free_mode(bool p_enter);
-	bool is_distraction_free_mode_enabled() const;
-
-	void add_control_to_dock(DockSlot p_slot, Control *p_control);
-	void remove_control_from_dock(Control *p_control);
-
-	void set_addon_plugin_enabled(String p_addon, bool p_enabled, bool p_config_changed = false);
-	bool is_addon_plugin_enabled(const String &p_addon) const;
-
-	void edit_node(Node *p_node);
-	void edit_resource(const Ref<Resource> &p_resource) { inspector_dock->edit_resource(p_resource); };
-	void open_resource(const String &p_type) { inspector_dock->open_resource(p_type); };
-
-	void save_resource_in_path(const Ref<Resource> &p_resource, const String &p_path);
-	void save_resource(const Ref<Resource> &p_resource);
-	void save_resource_as(const Ref<Resource> &p_resource, const String &p_at_path = String());
-
-	void merge_from_scene() { _menu_option_confirm(FILE_IMPORT_SUBSCENE, false); }
-
-	void show_about() { _menu_option_confirm(HELP_ABOUT, false); }
-
-	static bool has_unsaved_changes() { return singleton->unsaved_cache; }
-
-	static HBoxContainer *get_menu_hb() { return singleton->menu_hb; }
-
-	void push_item(Object *p_object, const String &p_property = "", bool p_inspector_only = false);
-	void edit_item(Object *p_object);
-	void edit_item_resource(RES p_resource);
-	bool item_has_editor(Object *p_object);
-	void hide_top_editors();
-
-	void select_editor_by_name(const String &p_name);
-
-	void open_request(const String &p_path);
-
-	bool is_changing_scene() const;
-
-	static EditorLog *get_log() { return singleton->log; }
-	Control *get_viewport();
-
-	void set_edited_scene(Node *p_scene);
-
-	Node *get_edited_scene() { return editor_data.get_edited_scene_root(); }
-
-	Viewport *get_scene_root() { return scene_root; } //root of the scene being edited
-
-	void fix_dependencies(const String &p_for_file);
-	int new_scene();
-	Error load_scene(const String &p_scene, bool p_ignore_broken_deps = false, bool p_set_inherited = false, bool p_clear_errors = true, bool p_force_open_imported = false, bool p_silent_change_tab = false);
-	Error load_resource(const String &p_resource, bool p_ignore_broken_deps = false);
-
-	bool is_scene_open(const String &p_path);
-
-	void set_current_version(uint64_t p_version);
-	void set_current_scene(int p_idx);
-
-	static EditorData &get_editor_data() { return singleton->editor_data; }
-	static EditorFolding &get_editor_folding() { return singleton->editor_folding; }
-	EditorHistory *get_editor_history() { return &editor_history; }
-
-	static VSplitContainer *get_top_split() { return singleton->top_split; }
-
-	void request_instance_scene(const String &p_path);
-	void request_instance_scenes(const Vector<String> &p_files);
-	FileSystemDock *get_filesystem_dock();
-	ImportDock *get_import_dock();
-	SceneTreeDock *get_scene_tree_dock();
-	InspectorDock *get_inspector_dock();
-	static UndoRedo *get_undo_redo() { return &singleton->editor_data.get_undo_redo(); }
-
-	EditorSelection *get_editor_selection() { return editor_selection; }
-
-	void set_convert_old_scene(bool p_old) { convert_old = p_old; }
-
-	void notify_child_process_exited();
-
-	OS::ProcessID get_child_process_id() const { return editor_run.get_pid(); }
-	void stop_child_process();
-
-	Ref<Theme> get_editor_theme() const { return theme; }
-	Ref<Script> get_object_custom_type_base(const Object *p_object) const;
-	StringName get_object_custom_type_name(const Object *p_object) const;
-	Ref<Texture> get_object_icon(const Object *p_object, const String &p_fallback = "Object");
-	Ref<Texture> get_class_icon(const String &p_class, const String &p_fallback = "Object") const;
-
-	void show_accept(const String &p_text, const String &p_title);
-	void show_save_accept(const String &p_text, const String &p_title);
-	void show_warning(const String &p_text, const String &p_title = TTR("Warning!"));
-
-	void _copy_warning(const String &p_str);
-
-	Error export_preset(const String &p_preset, const String &p_path, bool p_debug, bool p_pack_only);
-
-	static void register_editor_types();
-	static void unregister_editor_types();
-
-	Control *get_gui_base() { return gui_base; }
-	Control *get_theme_base() { return gui_base->get_parent_control(); }
-
-	static void add_io_error(const String &p_error);
-
-	static void progress_add_task(const String &p_task, const String &p_label, int p_steps, bool p_can_cancel = false);
-	static bool progress_task_step(const String &p_task, const String &p_state, int p_step = -1, bool p_force_refresh = true);
-	static void progress_end_task(const String &p_task);
-
-	static void progress_add_task_bg(const String &p_task, const String &p_label, int p_steps);
-	static void progress_task_step_bg(const String &p_task, int p_step = -1);
-	static void progress_end_task_bg(const String &p_task);
-
-	void save_scene_to_path(String p_file, bool p_with_preview = true) {
-		if (p_with_preview) {
-			_save_scene_with_preview(p_file);
-		} else {
-			_save_scene(p_file);
-		}
-	}
-
-	bool is_scene_in_use(const String &p_path);
-
-	void save_layout();
-
-	void open_export_template_manager();
-
-	void reload_scene(const String &p_path);
-
-	bool is_exiting() const { return exiting; }
-
-	ToolButton *get_pause_button() { return pause_button; }
-
-	ToolButton *add_bottom_panel_item(String p_text, Control *p_item);
-	bool are_bottom_panels_hidden() const;
-	void make_bottom_panel_item_visible(Control *p_item);
-	void raise_bottom_panel_item(Control *p_item);
-	void hide_bottom_panel();
-	void remove_bottom_panel_item(Control *p_item);
-
-	Variant drag_resource(const Ref<Resource> &p_res, Control *p_from);
-	Variant drag_files_and_dirs(const Vector<String> &p_paths, Control *p_from);
-
-	void add_tool_menu_item(const String &p_name, Object *p_handler, const String &p_callback, const Variant &p_ud = Variant());
-	void add_tool_submenu_item(const String &p_name, PopupMenu *p_submenu);
-	void remove_tool_menu_item(const String &p_name);
-
-	void save_all_scenes();
-	void save_scene_list(Vector<String> p_scene_filenames);
-	void restart_editor();
-
-	void dim_editor(bool p_dimming, bool p_force_dim = false);
-	bool is_editor_dimmed() const;
-
-	void edit_current() { _edit_current(); };
-
-	void update_keying() const { inspector_dock->update_keying(); };
-	bool has_scenes_in_session();
-
-	int execute_and_show_output(const String &p_title, const String &p_path, const List<String> &p_arguments, bool p_close_on_ok = true, bool p_close_on_errors = false);
-
-	EditorNode();
-	~EditorNode();
-
-	void add_resource_conversion_plugin(const Ref<EditorResourceConversionPlugin> &p_plugin);
-	void remove_resource_conversion_plugin(const Ref<EditorResourceConversionPlugin> &p_plugin);
-	Vector<Ref<EditorResourceConversionPlugin>> find_resource_conversion_plugin(const Ref<Resource> &p_for_resource);
-
-	static void add_init_callback(EditorNodeInitCallback p_callback) { _init_callbacks.push_back(p_callback); }
-	static void add_build_callback(EditorBuildCallback p_callback);
-
-	bool ensure_main_scene(bool p_from_native);
-
-	void run_play();
-	void run_play_current();
-	void run_play_custom(const String &p_custom);
-	void run_stop();
-	bool is_run_playing() const;
-	String get_run_playing_scene() const;
 };
 
 struct EditorProgress {
@@ -945,9 +944,6 @@ struct EditorProgress {
 };
 
 class EditorPluginList : public Object {
-private:
-	Vector<EditorPlugin *> plugins_list;
-
 public:
 	void set_plugins_list(Vector<EditorPlugin *> p_plugins_list) {
 		plugins_list = p_plugins_list;
@@ -972,6 +968,9 @@ public:
 
 	EditorPluginList();
 	~EditorPluginList();
+
+private:
+	Vector<EditorPlugin *> plugins_list;
 };
 
 struct EditorProgressBG {
