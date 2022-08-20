@@ -10,6 +10,20 @@ def configure(env):
 
 def get_doc_classes():
     return [
+      "BrightenAction",
+      "BrushAction",
+      "BucketAction",
+      "CutAction",
+      "DarkenAction",
+      "LineAction",
+      "MultiLineAction",
+      "PaintAction",
+      "PasteCutAction",
+      "PencilAction",
+      "RainbowAction",
+      "RectAction",
+
+      "PaintWindow",
     ]
 
 def get_doc_path():

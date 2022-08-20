@@ -12,9 +12,9 @@ def get_doc_classes():
     return [
         "MMAlgos",
         "MMNode",
-        "CurveBase ",
+        "CurveBase",
         "GradientBase",
-        "PolygonBase ",
+        "PolygonBase",
         "MMNodeUniversalProperty",
         "MMMaterial",
         "MMGraphNode",

@@ -48,7 +48,7 @@ def _configure(env):
         
 def get_doc_classes():
     return [
-        "SQLite3Database ",
+        "SQLite3Database",
     ]
 
 def get_doc_path():
