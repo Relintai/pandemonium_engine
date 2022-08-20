@@ -26,16 +26,17 @@ SOFTWARE.
 #include "text_editor_format_loader.h"
 
 #ifdef TOOLS_ENABLED
-#include "text_editor_plugin.h"
 #include "editor/editor_plugin.h"
+#include "text_editor_plugin.h"
 #endif
+
+Ref<TextEditorTextLoader> text_editor_text_resource_loader;
 
 void register_text_editor_types() {
 	ClassDB::register_class<TextEditorFile>();
 
-	Ref<TextEditorTextLoader> loader;
-	loader.instance();
-	ResourceLoader::add_resource_format_loader(loader);
+	text_editor_text_resource_loader.instance();
+	ResourceLoader::add_resource_format_loader(text_editor_text_resource_loader);
 
 #ifdef TOOLS_ENABLED
 	EditorPlugins::add_by_type<TextEditorEditorPlugin>();
@@ -43,4 +44,6 @@ void register_text_editor_types() {
 }
 
 void unregister_text_editor_types() {
+	ResourceLoader::remove_resource_format_loader(text_editor_text_resource_loader);
+	text_editor_text_resource_loader.unref();
 }
