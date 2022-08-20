@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="FormEmailFieldEntry" inherits="FormFieldEntry" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="email_format_error" type="String" setter="set_email_format_error" getter="get_email_format_error" default="&quot; is invalid!&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

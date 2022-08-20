@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CSRFTokenWebServerMiddleware" inherits="WebServerMiddleware" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="create_token">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="ignored_urls" type="PoolStringArray" setter="set_ignored_urls" getter="get_ignored_urls" default="PoolStringArray(  )">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="StaticWebPage" inherits="WebNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="load_and_process_file">
+			<return type="void" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="load_file">
+			<return type="void" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="load_md_file">
+			<return type="void" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_data_md">
+			<return type="void" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="data" type="String" setter="set_data" getter="get_data" default="&quot;&quot;">
+		</member>
+		<member name="preview_data" type="String" setter="set_preview_data" getter="get_preview_data" default="&quot;&quot;">
+		</member>
+		<member name="should_render_menu" type="bool" setter="set_should_render_menu" getter="get_should_render_menu" default="true">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

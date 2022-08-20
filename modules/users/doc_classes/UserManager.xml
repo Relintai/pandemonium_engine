@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="UserManager" inherits="Node" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_create_user" qualifiers="virtual">
+			<return type="User" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_user" qualifiers="virtual">
+			<return type="User" />
+			<argument index="0" name="id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_user_name" qualifiers="virtual">
+			<return type="User" />
+			<argument index="0" name="user_name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_is_email_taken" qualifiers="virtual">
+			<return type="bool" />
+			<argument index="0" name="email" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_is_username_taken" qualifiers="virtual">
+			<return type="bool" />
+			<argument index="0" name="user_name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_save_user" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="user" type="User" />
+			<description>
+			</description>
+		</method>
+		<method name="create_user">
+			<return type="User" />
+			<description>
+			</description>
+		</method>
+		<method name="get_user">
+			<return type="User" />
+			<argument index="0" name="id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_user_name">
+			<return type="User" />
+			<argument index="0" name="user_name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="is_email_taken">
+			<return type="bool" />
+			<argument index="0" name="email" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="is_username_taken">
+			<return type="bool" />
+			<argument index="0" name="user_name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="save_user">
+			<return type="void" />
+			<argument index="0" name="user" type="User" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

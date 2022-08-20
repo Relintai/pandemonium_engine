@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="TextEditorFile" inherits="Resource" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_file_path">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_file_path">
+			<return type="void" />
+			<argument index="0" name="file_path" type="String" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

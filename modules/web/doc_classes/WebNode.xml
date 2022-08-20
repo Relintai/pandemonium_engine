@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="WebNode" inherits="Node" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_create_default_entries" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_create_table" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="_drop_table" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="_handle_error_send_request" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<argument index="1" name="error_code" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_handle_request" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="_handle_request_main" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="_migrate" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="clear" type="bool" />
+			<argument index="1" name="should_seed" type="bool" />
+			<argument index="2" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_render_index" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="_render_main_menu" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="_render_menu" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="_render_preview" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="_udpate_table" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="current_table_version" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="build_handler_map">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="clear_handlers">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="create_default_entries">
+			<return type="void" />
+			<argument index="0" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="create_table">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="drop_table">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_database_connection">
+			<return type="DatabaseConnection" />
+			<description>
+			</description>
+		</method>
+		<method name="get_full_uri">
+			<return type="String" />
+			<argument index="0" name="slash_at_the_end " type="bool" default="true" />
+			<description>
+			</description>
+		</method>
+		<method name="get_full_uri_parent">
+			<return type="String" />
+			<argument index="0" name="slash_at_the_end " type="bool" default="true" />
+			<description>
+			</description>
+		</method>
+		<method name="get_migrations_enabled">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="get_parent_webnode">
+			<return type="WebNode" />
+			<description>
+			</description>
+		</method>
+		<method name="get_query_builder">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="get_request_handler_child">
+			<return type="WebNode" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="get_server">
+			<return type="WebServer" />
+			<description>
+			</description>
+		</method>
+		<method name="get_table_builder">
+			<return type="TableBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="get_web_root">
+			<return type="WebNode" />
+			<description>
+			</description>
+		</method>
+		<method name="handle_error_send_request">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<argument index="1" name="error_code" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="handle_request">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="handle_request_main">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="migrate">
+			<return type="void" />
+			<argument index="0" name="clear" type="bool" />
+			<argument index="1" name="pseed" type="bool" />
+			<argument index="2" name="arg2" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="render_index">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="render_main_menu">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="render_menu">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="render_preview">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="request_write_lock">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="set_migrations_enabled">
+			<return type="void" />
+			<argument index="0" name="val" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="try_route_request_to_children">
+			<return type="bool" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="udpate_table">
+			<return type="void" />
+			<argument index="0" name="current_table_version" type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="database" type="Database" setter="set_database" getter="get_database">
+		</member>
+		<member name="database_table_name" type="String" setter="set_database_table_name" getter="get_database_table_name" default="&quot;&quot;">
+		</member>
+		<member name="routing_enabled" type="bool" setter="set_routing_enabled" getter="get_routing_enabled" default="true">
+		</member>
+		<member name="uri_segment" type="String" setter="set_uri_segment" getter="get_uri_segment" default="&quot;&quot;">
+		</member>
+		<member name="web_permission" type="WebPermission" setter="set_web_permission" getter="get_web_permission">
+		</member>
+	</members>
+	<constants>
+		<constant name="NOTIFICATION_WEB_NODE_WRITE_LOCKED" value="2100">
+		</constant>
+	</constants>
+</class>

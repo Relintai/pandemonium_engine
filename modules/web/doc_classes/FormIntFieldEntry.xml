@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="FormIntFieldEntry" inherits="FormFieldEntry" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="not_int_error" type="String" setter="set_not_int_error" getter="get_not_int_error" default="&quot; needs to be an integer.&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

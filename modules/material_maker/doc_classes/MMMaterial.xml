@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMMaterial" inherits="Resource" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_node">
+			<return type="void" />
+			<argument index="0" name="node" type="MMNode" />
+			<description>
+			</description>
+		</method>
+		<method name="cancel_render_and_wait">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="initialize">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="on_node_changed">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_node">
+			<return type="void" />
+			<argument index="0" name="node" type="MMNode" />
+			<description>
+			</description>
+		</method>
+		<method name="render">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="render_non_threaded">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="render_threaded">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="image_size" type="Vector2" setter="set_image_size" getter="get_image_size" default="Vector2( 128, 128 )">
+		</member>
+		<member name="initialized" type="bool" setter="set_initialized" getter="get_initialized">
+		</member>
+		<member name="nodes" type="Array" setter="set_nodes" getter="get_nodes" default="[  ]">
+		</member>
+		<member name="queued_render" type="bool" setter="set_queued_render" getter="get_queued_render">
+		</member>
+		<member name="rendering" type="bool" setter="set_rendering" getter="get_rendering">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

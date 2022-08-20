@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="FormValidator" inherits="Resource" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_validate" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="add_field">
+			<return type="void" />
+			<argument index="0" name="field" type="FormField" />
+			<description>
+			</description>
+		</method>
+		<method name="clear_fields">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_field">
+			<return type="FormField" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_field_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="new_field">
+			<return type="FormField" />
+			<argument index="0" name="name" type="String" />
+			<argument index="1" name="human_name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_field">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="validate">
+			<return type="PoolStringArray" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="fields" type="Array" setter="set_fields" getter="get_fields" default="[  ]">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

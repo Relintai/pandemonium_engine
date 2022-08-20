@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMSdOpRepeat" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="output" type="MMNodeUniversalProperty" setter="set_output" getter="get_output">
+		</member>
+		<member name="random_rotation" type="float" setter="set_random_rotation" getter="get_random_rotation" default="0.5">
+		</member>
+		<member name="x" type="int" setter="set_x" getter="get_x" default="3">
+		</member>
+		<member name="y" type="int" setter="set_y" getter="get_y" default="3">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="WaveFormCollapse" inherits="Reference" version="3.5">
+<class name="WaveFormCollapse" inherits="Reference" version="3.7">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -7,7 +7,56 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="generate_image_index_data">
+			<return type="PoolIntArray" />
+			<description>
+			</description>
+		</method>
+		<method name="initialize">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="propagate">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="set_input">
+			<return type="void" />
+			<argument index="0" name="data" type="PoolIntArray" />
+			<argument index="1" name="width" type="int" />
+			<argument index="2" name="height" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_seed">
+			<return type="void" />
+			<argument index="0" name="seed" type="int" />
+			<description>
+			</description>
+		</method>
 	</methods>
+	<members>
+		<member name="periodic_output" type="bool" setter="set_periodic_output" getter="get_periodic_output" default="true">
+		</member>
+		<member name="wave_height" type="int" setter="set_wave_height" getter="get_wave_height" default="0">
+		</member>
+		<member name="wave_width" type="int" setter="set_wave_width" getter="get_wave_width" default="0">
+		</member>
+	</members>
 	<constants>
+		<constant name="SYMMETRY_X" value="0" enum="Symmetry">
+		</constant>
+		<constant name="SYMMETRY_T" value="1" enum="Symmetry">
+		</constant>
+		<constant name="SYMMETRY_I" value="2" enum="Symmetry">
+		</constant>
+		<constant name="SYMMETRY_L" value="3" enum="Symmetry">
+		</constant>
+		<constant name="SYMMETRY_BACKSLASH" value="4" enum="Symmetry">
+		</constant>
+		<constant name="SYMMETRY_P" value="5" enum="Symmetry">
+		</constant>
 	</constants>
 </class>

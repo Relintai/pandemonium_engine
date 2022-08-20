@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PaintAction" inherits="Resource" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="action_data" type="Dictionary" setter="set_action_data" getter="get_action_data" default="{}">
+		</member>
+		<member name="action_data_preview" type="Dictionary" setter="set_action_data_preview" getter="get_action_data_preview" default="{}">
+		</member>
+		<member name="action_data_redo" type="Dictionary" setter="set_action_data_redo" getter="get_action_data_redo" default="{}">
+		</member>
+		<member name="action_data_undo" type="Dictionary" setter="set_action_data_undo" getter="get_action_data_undo" default="{}">
+		</member>
+		<member name="preview_cells" type="PoolVector2iArray" setter="set_preview_cells" getter="get_preview_cells" default="PoolVector2iArray(  )">
+		</member>
+		<member name="preview_colors" type="PoolColorArray" setter="set_preview_colors" getter="get_preview_colors" default="PoolColorArray(  )">
+		</member>
+		<member name="redo_cells" type="PoolVector2iArray" setter="set_redo_cells" getter="get_redo_cells" default="PoolVector2iArray(  )">
+		</member>
+		<member name="redo_colors" type="PoolColorArray" setter="set_redo_colors" getter="get_redo_colors" default="PoolColorArray(  )">
+		</member>
+		<member name="undo_cells" type="PoolVector2iArray" setter="set_undo_cells" getter="get_undo_cells" default="PoolVector2iArray(  )">
+		</member>
+		<member name="undo_colors" type="PoolColorArray" setter="set_undo_colors" getter="get_undo_colors" default="PoolColorArray(  )">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

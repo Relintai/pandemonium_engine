@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="FormExistsFieldEntry" inherits="FormFieldEntry" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="not_exists_error" type="String" setter="set_not_exists_error" getter="get_not_exists_error" default="&quot; field need to exists!&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMMakeTileable" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="make_tileable">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="w" type="float" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="image" type="MMNodeUniversalProperty" setter="set_image" getter="get_image">
+		</member>
+		<member name="input" type="MMNodeUniversalProperty" setter="set_input" getter="get_input">
+		</member>
+		<member name="size" type="int" setter="set_size" getter="get_size" default="0">
+		</member>
+		<member name="width" type="float" setter="set_width" getter="get_width" default="0.1">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TilingWaveFormCollapse" inherits="WaveFormCollapse" version="3.5">
+<class name="TilingWaveFormCollapse" inherits="WaveFormCollapse" version="3.7">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -7,6 +7,222 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="neighbour_data_add">
+			<return type="int" />
+			<argument index="0" name="left" type="int" />
+			<argument index="1" name="left_orientation" type="int" />
+			<argument index="2" name="right" type="int" />
+			<argument index="3" name="right_orientation" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="neighbour_data_add_str">
+			<return type="int" />
+			<argument index="0" name="left" type="String" />
+			<argument index="1" name="left_orientation" type="int" />
+			<argument index="2" name="right" type="String" />
+			<argument index="3" name="right_orientation" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="neighbour_data_get">
+			<return type="PoolIntArray" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="neighbour_data_remove">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="neighbour_data_set">
+			<return type="void" />
+			<argument index="0" name="tile_index" type="int" />
+			<argument index="1" name="left" type="int" />
+			<argument index="2" name="left_orientation" type="int" />
+			<argument index="3" name="right" type="int" />
+			<argument index="4" name="right_orientation" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="neighbour_data_set_str">
+			<return type="void" />
+			<argument index="0" name="tile_index" type="int" />
+			<argument index="1" name="left" type="String" />
+			<argument index="2" name="left_orientation" type="int" />
+			<argument index="3" name="right" type="String" />
+			<argument index="4" name="right_orientation" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="neighbour_data_validate">
+			<return type="bool" />
+			<argument index="0" name="tile_index" type="int" />
+			<argument index="1" name="orientation" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="neighbour_data_validate_str">
+			<return type="bool" />
+			<argument index="0" name="tile_name" type="String" />
+			<argument index="1" name="orientation" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_add">
+			<return type="int" />
+			<argument index="0" name="symmetry" type="int" enum="WaveFormCollapse.Symmetry" />
+			<argument index="1" name="weight" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_add_generated">
+			<return type="int" />
+			<argument index="0" name="data" type="PoolIntArray" />
+			<argument index="1" name="width" type="int" />
+			<argument index="2" name="height" type="int" />
+			<argument index="3" name="symmetry" type="int" enum="WaveFormCollapse.Symmetry" />
+			<argument index="4" name="weight" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_count_get">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_create">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_data_add">
+			<return type="void" />
+			<argument index="0" name="tile_index" type="int" />
+			<argument index="1" name="data" type="PoolIntArray" />
+			<argument index="2" name="width" type="int" />
+			<argument index="3" name="height" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_data_clear">
+			<return type="void" />
+			<argument index="0" name="tile_index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_data_count_get">
+			<return type="int" />
+			<argument index="0" name="tile_index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_data_generated_add">
+			<return type="void" />
+			<argument index="0" name="tile_index" type="int" />
+			<argument index="1" name="data" type="PoolIntArray" />
+			<argument index="2" name="width" type="int" />
+			<argument index="3" name="height" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_data_get">
+			<return type="PoolIntArray" />
+			<argument index="0" name="tile_index" type="int" />
+			<argument index="1" name="data_index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_data_remove">
+			<return type="void" />
+			<argument index="0" name="tile_index" type="int" />
+			<argument index="1" name="data_index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_data_required_count_get">
+			<return type="int" />
+			<argument index="0" name="tile_index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_data_set">
+			<return type="void" />
+			<argument index="0" name="tile_index" type="int" />
+			<argument index="1" name="data_index" type="int" />
+			<argument index="2" name="data" type="PoolIntArray" />
+			<argument index="3" name="width" type="int" />
+			<argument index="4" name="height" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_height_get">
+			<return type="int" />
+			<argument index="0" name="tile_index" type="int" />
+			<argument index="1" name="data_index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_index_get">
+			<return type="int" />
+			<argument index="0" name="tile_name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_name_get">
+			<return type="String" />
+			<argument index="0" name="tile_index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_name_set">
+			<return type="void" />
+			<argument index="0" name="tile_index" type="int" />
+			<argument index="1" name="val" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_remove">
+			<return type="void" />
+			<argument index="0" name="tile_index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_symmetry_get">
+			<return type="int" enum="WaveFormCollapse.Symmetry" />
+			<argument index="0" name="tile_index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_symmetry_set">
+			<return type="void" />
+			<argument index="0" name="tile_index" type="int" />
+			<argument index="1" name="val" type="int" enum="WaveFormCollapse.Symmetry" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_weight_get">
+			<return type="float" />
+			<argument index="0" name="tile_index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_weight_set">
+			<return type="void" />
+			<argument index="0" name="tile_index" type="int" />
+			<argument index="1" name="val" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="tile_width_get">
+			<return type="int" />
+			<argument index="0" name="tile_index" type="int" />
+			<argument index="1" name="data_index" type="int" />
+			<description>
+			</description>
+		</method>
 	</methods>
 	<constants>
 	</constants>

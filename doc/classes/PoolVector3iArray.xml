@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="PoolVector3iArray" version="3.5">
+<class name="PoolVector3iArray" version="3.7">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -23,8 +23,42 @@
 			<description>
 			</description>
 		</method>
+		<method name="clear">
+			<description>
+			</description>
+		</method>
+		<method name="contains">
+			<return type="bool" />
+			<argument index="0" name="value" type="Vector3i" />
+			<description>
+			</description>
+		</method>
+		<method name="count">
+			<return type="int" />
+			<argument index="0" name="value" type="Vector3i" />
+			<description>
+			</description>
+		</method>
 		<method name="empty">
 			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="fill">
+			<argument index="0" name="vector3i" type="Vector3i" />
+			<description>
+			</description>
+		</method>
+		<method name="find">
+			<return type="int" />
+			<argument index="0" name="value" type="Vector3i" />
+			<argument index="1" name="from" type="int" default="0" />
+			<description>
+			</description>
+		</method>
+		<method name="has">
+			<return type="bool" />
+			<argument index="0" name="value" type="Vector3i" />
 			<description>
 			</description>
 		</method>
@@ -51,6 +85,13 @@
 		</method>
 		<method name="resize">
 			<argument index="0" name="idx" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="rfind">
+			<return type="int" />
+			<argument index="0" name="value" type="Vector3i" />
+			<argument index="1" name="from" type="int" default="-1" />
 			<description>
 			</description>
 		</method>

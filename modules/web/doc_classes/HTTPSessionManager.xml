@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="HTTPSessionManager" inherits="Node" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_session">
+			<return type="void" />
+			<argument index="0" name="session" type="HTTPSession" />
+			<description>
+			</description>
+		</method>
+		<method name="clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="create_session">
+			<return type="HTTPSession" />
+			<description>
+			</description>
+		</method>
+		<method name="delete_session">
+			<return type="void" />
+			<argument index="0" name="session_id" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="generate_session_id">
+			<return type="String" />
+			<argument index="0" name="base" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="get_session">
+			<return type="HTTPSession" />
+			<argument index="0" name="session_id" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="load_sessions">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_session">
+			<return type="void" />
+			<argument index="0" name="session" type="HTTPSession" />
+			<description>
+			</description>
+		</method>
+		<method name="save_session">
+			<return type="void" />
+			<argument index="0" name="session" type="HTTPSession" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

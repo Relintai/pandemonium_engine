@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="UserManagerStatic" inherits="UserManager" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="create_user" type="bool" setter="set_create_user" getter="get_create_user" default="false">
+		</member>
+		<member name="create_user_email" type="String" setter="set_create_user_email" getter="get_create_user_email" default="&quot;&quot;">
+		</member>
+		<member name="create_user_name" type="String" setter="set_create_user_name" getter="get_create_user_name" default="&quot;&quot;">
+		</member>
+		<member name="create_user_password" type="String" setter="set_create_user_password" getter="get_create_user_password" default="&quot;&quot;">
+		</member>
+		<member name="users" type="Array" setter="set_users" getter="get_users" default="[  ]">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

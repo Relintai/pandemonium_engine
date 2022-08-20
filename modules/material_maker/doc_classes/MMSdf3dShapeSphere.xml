@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMSdf3dShapeSphere" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="output" type="MMNodeUniversalProperty" setter="set_output" getter="get_output">
+		</member>
+		<member name="radius" type="float" setter="set_radius" getter="get_radius" default="0.5">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

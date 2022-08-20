@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Rect2i" version="3.5">
+<class name="Rect2i" version="3.7">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -10,6 +10,11 @@
 		<method name="Rect2i">
 			<return type="Rect2i" />
 			<argument index="0" name="from" type="Rect2" />
+			<description>
+			</description>
+		</method>
+		<method name="abs">
+			<return type="Rect2i" />
 			<description>
 			</description>
 		</method>
@@ -31,12 +36,33 @@
 			<description>
 			</description>
 		</method>
+		<method name="expand_to">
+			<return type="Rect2i" />
+			<argument index="0" name="to" type="Vector2i" />
+			<description>
+			</description>
+		</method>
 		<method name="get_area">
 			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_center">
+			<return type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="get_end">
+			<return type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="get_position">
+			<return type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="get_size">
 			<return type="Vector2i" />
 			<description>
 			</description>
@@ -63,6 +89,13 @@
 			<description>
 			</description>
 		</method>
+		<method name="grow_side">
+			<return type="Rect2i" />
+			<argument index="0" name="side" type="int" />
+			<argument index="1" name="by" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="has_no_area">
 			<return type="bool" />
 			<description>
@@ -70,7 +103,13 @@
 		</method>
 		<method name="has_point">
 			<return type="bool" />
-			<argument index="0" name="point" type="Vector2" />
+			<argument index="0" name="point" type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="intersection">
+			<return type="Rect2i" />
+			<argument index="0" name="rect" type="Rect2i" />
 			<description>
 			</description>
 		</method>
@@ -83,6 +122,21 @@
 		<method name="merge">
 			<return type="Rect2i" />
 			<argument index="0" name="b" type="Rect2i" />
+			<description>
+			</description>
+		</method>
+		<method name="set_end">
+			<argument index="0" name="end" type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="set_position">
+			<argument index="0" name="pos" type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="set_size">
+			<argument index="0" name="size" type="Vector2i" />
 			<description>
 			</description>
 		</method>

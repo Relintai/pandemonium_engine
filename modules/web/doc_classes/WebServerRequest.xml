@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="WebServerRequest" inherits="Reference" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="can_create" qualifiers="const">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="can_delete" qualifiers="const">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="can_edit" qualifiers="const">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="can_view" qualifiers="const">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="compile_and_send_body">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="compile_body">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_cookie">
+			<return type="String" />
+			<argument index="0" name="key" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_csrf_token">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_current_path_segment" qualifiers="const">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_current_segment_index" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_file_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_file_data" qualifiers="const">
+			<return type="PoolByteArray" />
+			<argument index="0" name="arg0" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_file_data_str" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="arg0" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_file_file_name" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_file_key" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_file_length" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_host" qualifiers="const">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_method" qualifiers="const">
+			<return type="int" enum="HTTPServerEnums.HTTPMethod" />
+			<description>
+			</description>
+		</method>
+		<method name="get_next_path_segment" qualifiers="const">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_or_create_session">
+			<return type="HTTPSession" />
+			<description>
+			</description>
+		</method>
+		<method name="get_parameter" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="key" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_path" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="beginning_slash" type="bool" default="false" />
+			<argument index="1" name="end_slash " type="bool" default="true" />
+			<description>
+			</description>
+		</method>
+		<method name="get_path_full" qualifiers="const">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_path_segment" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="i" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_path_segment_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_remaining_segment_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_server">
+			<return type="WebServer" />
+			<description>
+			</description>
+		</method>
+		<method name="get_url_root" qualifiers="const">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_url_root_add" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="add" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_url_root_current" qualifiers="const">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_url_root_parent" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="parent" type="int" default="1" />
+			<description>
+			</description>
+		</method>
+		<method name="get_url_root_parent_add" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="add" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_url_site" qualifiers="const">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_url_site_add" qualifiers="const">
+			<return type="String" />
+			<argument index="0" name="add" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_web_root">
+			<return type="WebNode" />
+			<description>
+			</description>
+		</method>
+		<method name="has_csrf_token">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="parse_files">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="parser_get_path">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="pop_path">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="push_path">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="response_add_cookie">
+			<return type="void" />
+			<argument index="0" name="cookie" type="WebServerCookie" />
+			<description>
+			</description>
+		</method>
+		<method name="response_get_cookie">
+			<return type="WebServerCookie" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="response_get_cookie_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="response_remove_cookie">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="response_remove_cookie_simple">
+			<return type="void" />
+			<argument index="0" name="key" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="send">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="send_error">
+			<return type="void" />
+			<argument index="0" name="error_code" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="send_file">
+			<return type="void" />
+			<argument index="0" name="file_path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="send_redirect">
+			<return type="void" />
+			<argument index="0" name="location" type="String" />
+			<argument index="1" name="status_code " type="int" enum="HTTPServerEnums.HTTPStatusCode" />
+			<description>
+			</description>
+		</method>
+		<method name="set_csrf_token">
+			<return type="void" />
+			<argument index="0" name="value" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="setup_url_stack">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="validate_csrf_token">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="active_permission" type="WebPermission" setter="set_active_permission" getter="get_active_permission">
+		</member>
+		<member name="body" type="String" setter="set_body" getter="get_body" default="&quot;&quot;">
+		</member>
+		<member name="compiled_body" type="String" setter="set_compiled_body" getter="get_compiled_body" default="&quot;&quot;">
+		</member>
+		<member name="connection_closed" type="bool" setter="set_connection_closed" getter="get_connection_closed" default="false">
+		</member>
+		<member name="footer" type="String" setter="set_footer" getter="get_footer" default="&quot;&quot;">
+		</member>
+		<member name="head" type="String" setter="set_head" getter="get_head" default="&quot;&quot;">
+		</member>
+		<member name="permissions" type="int" setter="set_permissions" getter="get_permissions" default="15">
+		</member>
+		<member name="session" type="HTTPSession" setter="set_session" getter="get_session">
+		</member>
+		<member name="status_code" type="int" setter="set_status_code" getter="get_status_code" enum="HTTPServerEnums.HTTPStatusCode" default="200">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

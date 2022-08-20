@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Theme" inherits="Resource" version="3.5">
+<class name="Theme" inherits="Resource" version="3.7">
 	<brief_description>
 		Theme for controls.
 	</brief_description>
@@ -13,10 +13,8 @@
 	<methods>
 		<method name="add_type">
 			<return type="void" />
-			<argument index="0" name="theme_type" type="String" />
+			<argument index="0" name="theme_type" type="StringName" />
 			<description>
-				Adds an empty theme type for every valid data type.
-				[b]Note:[/b] Empty types are not saved with the theme. This method only exists to perform in-memory changes to the resource. Use available [code]set_*[/code] methods to add theme items.
 			</description>
 		</method>
 		<method name="clear">
@@ -298,9 +296,8 @@
 		</method>
 		<method name="remove_type">
 			<return type="void" />
-			<argument index="0" name="theme_type" type="String" />
+			<argument index="0" name="theme_type" type="StringName" />
 			<description>
-				Removes the theme type, gracefully discarding defined theme items. If the type is a variation, this information is also erased. If the type is a base for type variations, those variations lose their base.
 			</description>
 		</method>
 		<method name="rename_color">

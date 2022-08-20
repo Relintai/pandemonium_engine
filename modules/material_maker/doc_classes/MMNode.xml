@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMNode" inherits="Resource" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_get_property_value" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="uv" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_property_value_sdf3d" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="uv3" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_value_for" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_init_properties" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="_register_methods" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="mm_graph_node" type="Object" />
+			<description>
+			</description>
+		</method>
+		<method name="_render" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="material" type="MMMaterial" />
+			<description>
+			</description>
+		</method>
+		<method name="_render_image" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="material" type="MMMaterial" />
+			<description>
+			</description>
+		</method>
+		<method name="get_property_value">
+			<return type="Variant" />
+			<argument index="0" name="uv" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="get_property_value_sdf3d">
+			<return type="Vector2" />
+			<argument index="0" name="uv3" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="get_value_for">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="init_properties">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="on_input_property_changed">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="register_input_property">
+			<return type="void" />
+			<argument index="0" name="prop" type="MMNodeUniversalProperty" />
+			<description>
+			</description>
+		</method>
+		<method name="register_methods">
+			<return type="void" />
+			<argument index="0" name="mm_graph_node" type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="register_output_property">
+			<return type="void" />
+			<argument index="0" name="prop" type="MMNodeUniversalProperty" />
+			<description>
+			</description>
+		</method>
+		<method name="render">
+			<return type="bool" />
+			<argument index="0" name="material" type="MMMaterial" />
+			<description>
+			</description>
+		</method>
+		<method name="render_image">
+			<return type="Image" />
+			<argument index="0" name="material" type="MMMaterial" />
+			<description>
+			</description>
+		</method>
+		<method name="unregister_input_property">
+			<return type="void" />
+			<argument index="0" name="prop" type="MMNodeUniversalProperty" />
+			<description>
+			</description>
+		</method>
+		<method name="unregister_output_property">
+			<return type="void" />
+			<argument index="0" name="prop" type="MMNodeUniversalProperty" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="dirty" type="bool" setter="set_dirty" getter="get_dirty">
+		</member>
+		<member name="graph_position" type="Vector2" setter="set_graph_position" getter="get_graph_position" default="Vector2( 0, 0 )">
+		</member>
+		<member name="input_properties" type="Array" setter="set_input_properties" getter="get_input_properties" default="[  ]">
+		</member>
+		<member name="output_properties" type="Array" setter="set_output_properties" getter="get_output_properties" default="[  ]">
+		</member>
+		<member name="properties_initialized" type="bool" setter="set_properties_initialized" getter="get_properties_initialized">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

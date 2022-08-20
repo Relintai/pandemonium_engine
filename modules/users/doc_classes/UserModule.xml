@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="UserModule" inherits="Resource" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_from_dict" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="_to_dict" qualifiers="virtual">
+			<return type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="from_dict">
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="get_module_index" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_user">
+			<return type="User" />
+			<description>
+			</description>
+		</method>
+		<method name="read_lock">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="read_unlock">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="to_dict">
+			<return type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="write_lock">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="write_unlock">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="module_name" type="String" setter="set_module_name" getter="get_module_name" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

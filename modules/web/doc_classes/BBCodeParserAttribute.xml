@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="BBCodeParserAttribute" inherits="Reference" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="contains_data">
+			<return type="bool" />
+			<argument index="0" name="data" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="convert_to_string" qualifiers="const">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="match_all_data">
+			<return type="bool" />
+			<argument index="0" name="data" type="PoolStringArray" />
+			<description>
+			</description>
+		</method>
+		<method name="match_attrib">
+			<return type="bool" />
+			<argument index="0" name="attrib" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="match_data">
+			<return type="bool" />
+			<argument index="0" name="data" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="print" qualifiers="const">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="attribute" type="String" setter="set_attribute" getter="get_attribute" default="&quot;&quot;">
+		</member>
+		<member name="data" type="String" setter="set_data" getter="get_data" default="&quot;&quot;">
+		</member>
+		<member name="single" type="bool" setter="set_single" getter="get_single" default="false">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

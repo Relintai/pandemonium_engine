@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="StaticWebPageFolderFiles" inherits="StaticWebPage" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="append_data">
+			<return type="void" />
+			<argument index="0" name="val" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="load">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="dir_path" type="String" setter="set_dir_path" getter="get_dir_path" default="&quot;&quot;">
+		</member>
+		<member name="process_if_can" type="bool" setter="set_process_if_can" getter="get_process_if_can" default="true">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="@GlobalScope" version="3.5">
+<class name="@GlobalScope" version="3.7">
 	<brief_description>
 		Global scope constants and variables.
 	</brief_description>
@@ -17,6 +17,8 @@
 		</member>
 		<member name="ClassDB" type="ClassDB" setter="" getter="">
 			The [ClassDB] singleton.
+		</member>
+		<member name="DatabaseManager" type="DatabaseManager" setter="" getter="">
 		</member>
 		<member name="ESS" type="ESS" setter="" getter="">
 		</member>
@@ -46,6 +48,8 @@
 			The [JavaScript] singleton.
 			[b]Note:[/b] Only implemented on HTML5.
 		</member>
+		<member name="MMAlgos" type="MMAlgos" setter="" getter="">
+		</member>
 		<member name="Marshalls" type="Marshalls" setter="" getter="">
 			The [Marshalls] singleton.
 		</member>
@@ -62,6 +66,8 @@
 		</member>
 		<member name="OS" type="OS" setter="" getter="">
 			The [OS] singleton.
+		</member>
+		<member name="PLogger" type="PLogger" setter="" getter="">
 		</member>
 		<member name="Performance" type="Performance" setter="" getter="">
 			The [Performance] singleton.
@@ -85,6 +91,9 @@
 		</member>
 		<member name="PropUtils" type="PropUtils" setter="" getter="">
 		</member>
+		<member name="RenderingServer" type="RenderingServer" setter="" getter="">
+			The [RenderingServer] singleton.
+		</member>
 		<member name="ResourceLoader" type="ResourceLoader" setter="" getter="">
 			The [ResourceLoader] singleton.
 		</member>
@@ -99,8 +108,7 @@
 		<member name="TranslationServer" type="TranslationServer" setter="" getter="">
 			The [TranslationServer] singleton.
 		</member>
-		<member name="RenderingServer" type="RenderingServer" setter="" getter="">
-			The [RenderingServer] singleton.
+		<member name="UserDB" type="UserDB" setter="" getter="">
 		</member>
 	</members>
 	<constants>
@@ -115,6 +123,14 @@
 		</constant>
 		<constant name="MARGIN_BOTTOM" value="3" enum="Margin">
 			Bottom margin, usually used for [Control] or [StyleBox]-derived classes.
+		</constant>
+		<constant name="SIDE_LEFT" value="0" enum="Side">
+		</constant>
+		<constant name="SIDE_TOP" value="1" enum="Side">
+		</constant>
+		<constant name="SIDE_RIGHT" value="2" enum="Side">
+		</constant>
+		<constant name="SIDE_BOTTOM" value="3" enum="Side">
 		</constant>
 		<constant name="CORNER_TOP_LEFT" value="0" enum="Corner">
 			Top-left corner.
@@ -1439,7 +1455,7 @@
 			Deprecated hint, unused.
 		</constant>
 		<constant name="PROPERTY_HINT_BUTTON" value="6" enum="PropertyHint">
-			Use a button in the inspector for this property. The property's type has to be Variant::NIL. The hint string has to contain a method that you want called. [code]"my_method"[/code] will call [code]my_method()[/code] on press. Optionally it can also contain a theme icon like: [code]"my_method:name/theme_type"[/code] -> [code]get_theme_icon("name", "theme_type")[/code]
+			Use a button in the inspector for this property. The property's type has to be Variant::NIL. The hint string has to contain a method that you want called. [code]"my_method"[/code] will call [code]my_method()[/code] on press. Optionally it can also contain a theme icon like: [code]"my_method:name/theme_type"[/code] -&gt; [code]get_theme_icon("name", "theme_type")[/code]
 		</constant>
 		<constant name="PROPERTY_HINT_KEY_ACCEL" value="7" enum="PropertyHint">
 			Deprecated hint, unused.
@@ -1581,85 +1597,95 @@
 		<constant name="TYPE_STRING" value="4" enum="Variant.Type">
 			Variable is of type [String].
 		</constant>
-		<constant name="TYPE_VECTOR2" value="5" enum="Variant.Type">
-			Variable is of type [Vector2].
-		</constant>
-		<constant name="TYPE_VECTOR2I" value="6" enum="Variant.Type">
-		</constant>
-		<constant name="TYPE_RECT2" value="7" enum="Variant.Type">
+		<constant name="TYPE_RECT2" value="5" enum="Variant.Type">
 			Variable is of type [Rect2].
 		</constant>
-		<constant name="TYPE_RECT2I" value="8" enum="Variant.Type">
+		<constant name="TYPE_RECT2I" value="6" enum="Variant.Type">
+		</constant>
+		<constant name="TYPE_VECTOR2" value="7" enum="Variant.Type">
+			Variable is of type [Vector2].
+		</constant>
+		<constant name="TYPE_VECTOR2I" value="8" enum="Variant.Type">
 		</constant>
 		<constant name="TYPE_VECTOR3" value="9" enum="Variant.Type">
 			Variable is of type [Vector3].
 		</constant>
 		<constant name="TYPE_VECTOR3I" value="10" enum="Variant.Type">
 		</constant>
-		<constant name="TYPE_TRANSFORM2D" value="11" enum="Variant.Type">
-			Variable is of type [Transform2D].
+		<constant name="TYPE_VECTOR4" value="11" enum="Variant.Type">
 		</constant>
-		<constant name="TYPE_PLANE" value="12" enum="Variant.Type">
+		<constant name="TYPE_VECTOR4I" value="12" enum="Variant.Type">
+		</constant>
+		<constant name="TYPE_PLANE" value="13" enum="Variant.Type">
 			Variable is of type [Plane].
 		</constant>
-		<constant name="TYPE_QUATERNION" value="13" enum="Variant.Type">
+		<constant name="TYPE_QUATERNION" value="14" enum="Variant.Type">
 			Variable is of type [Quaternion].
 		</constant>
-		<constant name="TYPE_AABB" value="14" enum="Variant.Type">
+		<constant name="TYPE_AABB" value="15" enum="Variant.Type">
 			Variable is of type [AABB].
 		</constant>
-		<constant name="TYPE_BASIS" value="15" enum="Variant.Type">
+		<constant name="TYPE_BASIS" value="16" enum="Variant.Type">
 			Variable is of type [Basis].
 		</constant>
-		<constant name="TYPE_TRANSFORM" value="16" enum="Variant.Type">
+		<constant name="TYPE_TRANSFORM" value="17" enum="Variant.Type">
 			Variable is of type [Transform].
 		</constant>
-		<constant name="TYPE_COLOR" value="17" enum="Variant.Type">
+		<constant name="TYPE_TRANSFORM2D" value="18" enum="Variant.Type">
+			Variable is of type [Transform2D].
+		</constant>
+		<constant name="TYPE_PROJECTION" value="19" enum="Variant.Type">
+		</constant>
+		<constant name="TYPE_COLOR" value="20" enum="Variant.Type">
 			Variable is of type [Color].
 		</constant>
-		<constant name="TYPE_NODE_PATH" value="18" enum="Variant.Type">
+		<constant name="TYPE_NODE_PATH" value="21" enum="Variant.Type">
 			Variable is of type [NodePath].
 		</constant>
-		<constant name="TYPE_RID" value="19" enum="Variant.Type">
+		<constant name="TYPE_RID" value="22" enum="Variant.Type">
 			Variable is of type [RID].
 		</constant>
-		<constant name="TYPE_OBJECT" value="20" enum="Variant.Type">
+		<constant name="TYPE_OBJECT" value="23" enum="Variant.Type">
 			Variable is of type [Object].
 		</constant>
-		<constant name="TYPE_STRING_NAME" value="21" enum="Variant.Type">
+		<constant name="TYPE_STRING_NAME" value="24" enum="Variant.Type">
 		</constant>
-		<constant name="TYPE_DICTIONARY" value="22" enum="Variant.Type">
+		<constant name="TYPE_DICTIONARY" value="25" enum="Variant.Type">
 			Variable is of type [Dictionary].
 		</constant>
-		<constant name="TYPE_ARRAY" value="23" enum="Variant.Type">
+		<constant name="TYPE_ARRAY" value="26" enum="Variant.Type">
 			Variable is of type [Array].
 		</constant>
-		<constant name="TYPE_RAW_ARRAY" value="24" enum="Variant.Type">
+		<constant name="TYPE_RAW_ARRAY" value="27" enum="Variant.Type">
 			Variable is of type [PoolByteArray].
 		</constant>
-		<constant name="TYPE_INT_ARRAY" value="25" enum="Variant.Type">
+		<constant name="TYPE_INT_ARRAY" value="28" enum="Variant.Type">
 			Variable is of type [PoolIntArray].
 		</constant>
-		<constant name="TYPE_REAL_ARRAY" value="26" enum="Variant.Type">
+		<constant name="TYPE_REAL_ARRAY" value="29" enum="Variant.Type">
 			Variable is of type [PoolRealArray].
 		</constant>
-		<constant name="TYPE_STRING_ARRAY" value="27" enum="Variant.Type">
+		<constant name="TYPE_STRING_ARRAY" value="30" enum="Variant.Type">
 			Variable is of type [PoolStringArray].
 		</constant>
-		<constant name="TYPE_VECTOR2_ARRAY" value="28" enum="Variant.Type">
+		<constant name="TYPE_VECTOR2_ARRAY" value="31" enum="Variant.Type">
 			Variable is of type [PoolVector2Array].
 		</constant>
-		<constant name="TYPE_VECTOR2I_ARRAY" value="29" enum="Variant.Type">
+		<constant name="TYPE_VECTOR2I_ARRAY" value="32" enum="Variant.Type">
 		</constant>
-		<constant name="TYPE_VECTOR3_ARRAY" value="30" enum="Variant.Type">
+		<constant name="TYPE_VECTOR3_ARRAY" value="33" enum="Variant.Type">
 			Variable is of type [PoolVector3Array].
 		</constant>
-		<constant name="TYPE_VECTOR3I_ARRAY" value="31" enum="Variant.Type">
+		<constant name="TYPE_VECTOR3I_ARRAY" value="34" enum="Variant.Type">
 		</constant>
-		<constant name="TYPE_COLOR_ARRAY" value="32" enum="Variant.Type">
+		<constant name="TYPE_VECTOR4_ARRAY" value="35" enum="Variant.Type">
+		</constant>
+		<constant name="TYPE_VECTOR4I_ARRAY" value="36" enum="Variant.Type">
+		</constant>
+		<constant name="TYPE_COLOR_ARRAY" value="37" enum="Variant.Type">
 			Variable is of type [PoolColorArray].
 		</constant>
-		<constant name="TYPE_MAX" value="33" enum="Variant.Type">
+		<constant name="TYPE_MAX" value="38" enum="Variant.Type">
 			Represents the size of the [enum Variant.Type] enum.
 		</constant>
 		<constant name="OP_EQUAL" value="0" enum="Variant.Operator">

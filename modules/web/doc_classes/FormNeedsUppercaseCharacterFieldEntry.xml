@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="FormNeedsUppercaseCharacterFieldEntry" inherits="FormFieldEntry" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="does_not_have_uppercase_error" type="String" setter="set_does_not_have_uppercase_error" getter="get_does_not_have_uppercase_error" default="&quot; needs at least one uppercase character!&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

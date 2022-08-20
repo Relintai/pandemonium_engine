@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="PoolVector2Array" version="3.5">
+<class name="PoolVector2Array" version="3.7">
 	<brief_description>
 		A pooled Array of [Vector2]s.
 	</brief_description>
@@ -41,6 +41,16 @@
 			<argument index="0" name="array" type="PoolVector2Array" />
 			<description>
 				Appends a [PoolVector2Array] at the end of this array.
+			</description>
+		</method>
+		<method name="clear">
+			<description>
+			</description>
+		</method>
+		<method name="contains">
+			<return type="bool" />
+			<argument index="0" name="value" type="Vector2" />
+			<description>
 			</description>
 		</method>
 		<method name="count">

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CutAction" inherits="PaintAction" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="action_data" type="Dictionary" setter="set_action_data" getter="get_action_data" overrides="PaintAction" default="{}" />
+		<member name="action_data_preview" type="Dictionary" setter="set_action_data_preview" getter="get_action_data_preview" overrides="PaintAction" default="{}" />
+		<member name="action_data_redo" type="Dictionary" setter="set_action_data_redo" getter="get_action_data_redo" overrides="PaintAction" default="{}" />
+		<member name="action_data_undo" type="Dictionary" setter="set_action_data_undo" getter="get_action_data_undo" overrides="PaintAction" default="{}" />
+		<member name="mouse_end_pos" type="Vector2i" setter="set_mouse_end_pos" getter="get_mouse_end_pos" default="Vector2i( 0, 0 )">
+		</member>
+		<member name="mouse_start_pos" type="Vector2i" setter="set_mouse_start_pos" getter="get_mouse_start_pos" default="Vector2i( 0, 0 )">
+		</member>
+		<member name="mouse_start_pos_set" type="bool" setter="set_mouse_start_pos_set" getter="get_mouse_start_pos_set" default="false">
+		</member>
+		<member name="selection_color" type="Color" setter="set_selection_color" getter="get_selection_color" default="Color( 0.8, 0.8, 0.8, 0.5 )">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

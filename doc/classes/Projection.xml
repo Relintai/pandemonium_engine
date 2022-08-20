@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="Projection" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="Projection">
+			<return type="Projection" />
+			<argument index="0" name="from" type="Transform" />
+			<description>
+			</description>
+		</method>
+		<method name="add_jitter_offset">
+			<argument index="0" name="offset" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="adjust_perspective_znear">
+			<argument index="0" name="new_znear" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="calculate_fovy">
+			<return type="float" />
+			<argument index="0" name="fovx" type="float" />
+			<argument index="1" name="aspect" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="determinant">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="flip_y">
+			<description>
+			</description>
+		</method>
+		<method name="flipped_y">
+			<return type="Projection" />
+			<description>
+			</description>
+		</method>
+		<method name="get_aspect">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_far_plane_half_extents">
+			<return type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="get_fov">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_lod_multiplier">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_pixels_per_meter">
+			<return type="int" />
+			<argument index="0" name="for_pixel_width" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_projection_plane">
+			<return type="Plane" />
+			<argument index="0" name="plane" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_projection_planes_array">
+			<return type="Array" />
+			<argument index="0" name="transform" type="Transform" />
+			<description>
+			</description>
+		</method>
+		<method name="get_viewport_half_extents">
+			<return type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="get_z_far">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_z_near">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="inverse">
+			<return type="Projection" />
+			<description>
+			</description>
+		</method>
+		<method name="invert">
+			<description>
+			</description>
+		</method>
+		<method name="is_orthogonal">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="jitter_offseted">
+			<return type="Projection" />
+			<argument index="0" name="offset" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="make_scale">
+			<argument index="0" name="scale" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="perspective_znear_adjusted">
+			<return type="Projection" />
+			<argument index="0" name="new_znear" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="scale_translate_to_fit">
+			<argument index="0" name="aabb" type="AABB" />
+			<description>
+			</description>
+		</method>
+		<method name="set_depth_correction">
+			<argument index="0" name="flip_y" type="bool" default="true" />
+			<description>
+			</description>
+		</method>
+		<method name="set_for_hmd">
+			<argument index="0" name="eye" type="int" />
+			<argument index="1" name="aspect" type="float" />
+			<argument index="2" name="intraocular_dist" type="float" />
+			<argument index="3" name="display_width" type="float" />
+			<argument index="4" name="display_to_lens" type="float" />
+			<argument index="5" name="oversample" type="float" />
+			<argument index="6" name="z_near" type="float" />
+			<argument index="7" name="z_far" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_frustum1">
+			<argument index="0" name="left" type="float" />
+			<argument index="1" name="right" type="float" />
+			<argument index="2" name="bottom" type="float" />
+			<argument index="3" name="top" type="float" />
+			<argument index="4" name="near" type="float" />
+			<argument index="5" name="far" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_frustum2">
+			<argument index="0" name="size" type="float" />
+			<argument index="1" name="aspect" type="float" />
+			<argument index="2" name="offset" type="Vector2" />
+			<argument index="3" name="near" type="float" />
+			<argument index="4" name="far" type="float" />
+			<argument index="5" name="flip_fov" type="bool" default="false" />
+			<description>
+			</description>
+		</method>
+		<method name="set_identity">
+			<description>
+			</description>
+		</method>
+		<method name="set_light_atlas_rect">
+			<argument index="0" name="rect" type="Rect2" />
+			<description>
+			</description>
+		</method>
+		<method name="set_light_bias">
+			<description>
+			</description>
+		</method>
+		<method name="set_orthogonal1">
+			<argument index="0" name="left" type="float" />
+			<argument index="1" name="right" type="float" />
+			<argument index="2" name="bottom" type="float" />
+			<argument index="3" name="top" type="float" />
+			<argument index="4" name="znear" type="float" />
+			<argument index="5" name="zfar" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_orthogonal2">
+			<argument index="0" name="size" type="float" />
+			<argument index="1" name="aspect" type="float" />
+			<argument index="2" name="znear" type="float" />
+			<argument index="3" name="zfar" type="float" />
+			<argument index="4" name="flip_fov" type="bool" default="false" />
+			<description>
+			</description>
+		</method>
+		<method name="set_perspective1">
+			<argument index="0" name="fovy_degrees" type="float" />
+			<argument index="1" name="aspect" type="float" />
+			<argument index="2" name="z_near" type="float" />
+			<argument index="3" name="z_far" type="float" />
+			<argument index="4" name="flip_fov" type="bool" default="false" />
+			<description>
+			</description>
+		</method>
+		<method name="set_perspective2">
+			<argument index="0" name="fovy_degrees" type="float" />
+			<argument index="1" name="aspect" type="float" />
+			<argument index="2" name="z_near" type="float" />
+			<argument index="3" name="z_far" type="float" />
+			<argument index="4" name="flip_fov" type="bool" />
+			<argument index="5" name="eye" type="int" />
+			<argument index="6" name="intraocular_dist" type="float" />
+			<argument index="7" name="convergence_dist" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_zero">
+			<description>
+			</description>
+		</method>
+		<method name="xform">
+			<return type="Variant" />
+			<argument index="0" name="v4_v3_plane" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="xform_inv">
+			<return type="Variant" />
+			<argument index="0" name="v" type="Vector4" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="w" type="Vector4" setter="" getter="" default="Vector4( 0, 0, 0, 1 )">
+		</member>
+		<member name="x" type="Vector4" setter="" getter="" default="Vector4( 1, 0, 0, 0 )">
+		</member>
+		<member name="y" type="Vector4" setter="" getter="" default="Vector4( 0, 1, 0, 0 )">
+		</member>
+		<member name="z" type="Vector4" setter="" getter="" default="Vector4( 0, 0, 1, 0 )">
+		</member>
+	</members>
+	<constants>
+		<constant name="PLANE_NEAR" value="0">
+		</constant>
+		<constant name="PLANE_FAR" value="1">
+		</constant>
+		<constant name="PLANE_LEFT" value="2">
+		</constant>
+		<constant name="PLANE_TOP" value="3">
+		</constant>
+		<constant name="PLANE_RIGHT" value="4">
+		</constant>
+		<constant name="PLANE_BOTTOM" value="5">
+		</constant>
+		<constant name="IDENTITY" value="Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)">
+		</constant>
+		<constant name="ZERO" value="Projection(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)">
+		</constant>
+	</constants>
+</class>

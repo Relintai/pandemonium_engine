@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CurveBase" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_curve_changed" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="add_point">
+			<return type="void" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="y" type="float" />
+			<argument index="2" name="ls" type="float" default="inf" />
+			<argument index="3" name="rs" type="float" default="inf" />
+			<description>
+			</description>
+		</method>
+		<method name="clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="curve_changed">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_point_arr">
+			<return type="PoolRealArray" />
+			<argument index="0" name="i" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_point_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="init_points_01">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="init_points_11">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_point">
+			<return type="bool" />
+			<argument index="0" name="i" type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="points_array" type="PoolRealArray" setter="set_points_array" getter="get_points_array" default="PoolRealArray(  )">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

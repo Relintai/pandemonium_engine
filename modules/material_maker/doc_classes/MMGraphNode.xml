@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMGraphNode" inherits="GraphNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_slot">
+			<return type="int" />
+			<argument index="0" name="input_type" type="int" />
+			<argument index="1" name="output_type" type="int" />
+			<argument index="2" name="getter" type="String" />
+			<argument index="3" name="setter" type="String" />
+			<argument index="4" name="control" type="Control" />
+			<description>
+			</description>
+		</method>
+		<method name="add_slot_bool">
+			<return type="int" />
+			<argument index="0" name="getter" type="String" />
+			<argument index="1" name="setter" type="String" />
+			<argument index="2" name="slot_name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="add_slot_color">
+			<return type="int" />
+			<argument index="0" name="getter" type="String" />
+			<argument index="1" name="setter" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="add_slot_color_universal">
+			<return type="int" />
+			<argument index="0" name="property" type="MMNodeUniversalProperty" />
+			<description>
+			</description>
+		</method>
+		<method name="add_slot_curve">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="add_slot_enum">
+			<return type="int" />
+			<argument index="0" name="getter" type="String" />
+			<argument index="1" name="setter" type="String" />
+			<argument index="2" name="slot_name" type="String" />
+			<argument index="3" name="values" type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="add_slot_float">
+			<return type="int" />
+			<argument index="0" name="getter" type="String" />
+			<argument index="1" name="setter" type="String" />
+			<argument index="2" name="slot_name" type="String" />
+			<argument index="3" name="step" type="float" default="0.1" />
+			<argument index="4" name="prange" type="Vector2" default="Vector2( -1000, 1000 )" />
+			<description>
+			</description>
+		</method>
+		<method name="add_slot_float_universal">
+			<return type="int" />
+			<argument index="0" name="property" type="MMNodeUniversalProperty" />
+			<description>
+			</description>
+		</method>
+		<method name="add_slot_gradient">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="add_slot_image_path_universal">
+			<return type="int" />
+			<argument index="0" name="property" type="MMNodeUniversalProperty" />
+			<argument index="1" name="getter" type="String" />
+			<argument index="2" name="setter" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="add_slot_int">
+			<return type="int" />
+			<argument index="0" name="getter" type="String" />
+			<argument index="1" name="setter" type="String" />
+			<argument index="2" name="slot_name" type="String" />
+			<argument index="3" name="prange" type="Vector2" default="Vector2( -1000, 1000 )" />
+			<description>
+			</description>
+		</method>
+		<method name="add_slot_int_universal">
+			<return type="int" />
+			<argument index="0" name="property" type="MMNodeUniversalProperty" />
+			<description>
+			</description>
+		</method>
+		<method name="add_slot_label">
+			<return type="int" />
+			<argument index="0" name="getter" type="String" />
+			<argument index="1" name="setter" type="String" />
+			<argument index="2" name="slot_name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="add_slot_label_universal">
+			<return type="int" />
+			<argument index="0" name="property" type="MMNodeUniversalProperty" />
+			<description>
+			</description>
+		</method>
+		<method name="add_slot_line_edit">
+			<return type="int" />
+			<argument index="0" name="getter" type="String" />
+			<argument index="1" name="setter" type="String" />
+			<argument index="2" name="slot_name" type="String" />
+			<argument index="3" name="placeholder" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="add_slot_polygon">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="add_slot_texture">
+			<return type="int" />
+			<argument index="0" name="getter" type="String" />
+			<argument index="1" name="setter" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="add_slot_texture_universal">
+			<return type="int" />
+			<argument index="0" name="property" type="MMNodeUniversalProperty" />
+			<description>
+			</description>
+		</method>
+		<method name="add_slot_vector2">
+			<return type="int" />
+			<argument index="0" name="getter" type="String" />
+			<argument index="1" name="setter" type="String" />
+			<argument index="2" name="slot_name" type="String" />
+			<argument index="3" name="step" type="float" default="0.1" />
+			<argument index="4" name="prange" type="Vector2" default="Vector2( -1000, 1000 )" />
+			<description>
+			</description>
+		</method>
+		<method name="add_slot_vector2_universal">
+			<return type="int" />
+			<argument index="0" name="property" type="MMNodeUniversalProperty" />
+			<description>
+			</description>
+		</method>
+		<method name="add_slot_vector3">
+			<return type="int" />
+			<argument index="0" name="getter" type="String" />
+			<argument index="1" name="setter" type="String" />
+			<argument index="2" name="slot_name" type="String" />
+			<argument index="3" name="step" type="float" default="0.1" />
+			<argument index="4" name="prange" type="Vector2" default="Vector2( -1000, 1000 )" />
+			<description>
+			</description>
+		</method>
+		<method name="connect_slot">
+			<return type="bool" />
+			<argument index="0" name="slot_idx" type="int" />
+			<argument index="1" name="to_node" type="Node" />
+			<argument index="2" name="to_slot_idx" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="disconnect_slot">
+			<return type="bool" />
+			<argument index="0" name="slot_idx" type="int" />
+			<argument index="1" name="to_node" type="Node" />
+			<argument index="2" name="to_slot_idx" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_input_property_graph_node_slot_index">
+			<return type="int" />
+			<argument index="0" name="property" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="get_material_node">
+			<return type="MMNode" />
+			<description>
+			</description>
+		</method>
+		<method name="get_output_property_graph_node_slot_index">
+			<return type="int" />
+			<argument index="0" name="property" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="get_property_control">
+			<return type="Control" />
+			<argument index="0" name="slot_idx" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_slot_color">
+			<return type="Color" />
+			<argument index="0" name="slot_type" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="ignore_changes">
+			<return type="void" />
+			<argument index="0" name="val" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="on_close_request">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="on_color_picker_popup_closed">
+			<return type="void" />
+			<argument index="0" name="slot_idx" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="on_dragged">
+			<return type="void" />
+			<argument index="0" name="from" type="Vector2" />
+			<argument index="1" name="to" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="on_float_spinbox_value_changed">
+			<return type="void" />
+			<argument index="0" name="val" type="float" />
+			<argument index="1" name=" slot_idx" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="on_float_universal_spinbox_value_changed">
+			<return type="void" />
+			<argument index="0" name="val" type="float" />
+			<argument index="1" name=" slot_idx" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="on_int_spinbox_value_changed">
+			<return type="void" />
+			<argument index="0" name="val" type="float" />
+			<argument index="1" name=" slot_idx" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="on_int_universal_spinbox_value_changed">
+			<return type="void" />
+			<argument index="0" name="val" type="float" />
+			<argument index="1" name=" slot_idx" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="on_slot_enum_item_selected">
+			<return type="void" />
+			<argument index="0" name="val" type="int" />
+			<argument index="1" name="slot_idx" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="on_slot_line_edit_text_entered">
+			<return type="void" />
+			<argument index="0" name="text" type="String" />
+			<argument index="1" name="slot_idx" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="on_universal_color_changed">
+			<return type="void" />
+			<argument index="0" name="c" type="Color" />
+			<argument index="1" name="slot_idx" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="on_universal_image_path_changed">
+			<return type="void" />
+			<argument index="0" name="f" type="String" />
+			<argument index="1" name="slot_idx" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="on_universal_texture_changed">
+			<return type="void" />
+			<argument index="0" name="slot_idx" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="on_universal_texture_changed_image_picker">
+			<return type="void" />
+			<argument index="0" name="slot_idx" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="on_vector2_spinbox_value_changed">
+			<return type="void" />
+			<argument index="0" name="val" type="float" />
+			<argument index="1" name=" slot_idx" type="int" />
+			<argument index="2" name=" spinbox_x" type="Node" />
+			<argument index="3" name=" spinbox_y" type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="on_vector2_universal_spinbox_value_changed">
+			<return type="void" />
+			<argument index="0" name="val" type="float" />
+			<argument index="1" name=" slot_idx" type="int" />
+			<argument index="2" name=" spinbox_x" type="Node" />
+			<argument index="3" name=" spinbox_y" type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="on_vector3_spinbox_value_changed">
+			<return type="void" />
+			<argument index="0" name="val" type="float" />
+			<argument index="1" name=" slot_idx" type="int" />
+			<argument index="2" name=" spinbox_x" type="Node" />
+			<argument index="3" name=" spinbox_y" type="Node" />
+			<argument index="4" name=" spinbox_z" type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="propagate_node_change">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="set_node">
+			<return type="void" />
+			<argument index="0" name="material" type="MMMaterial" />
+			<argument index="1" name="node" type="MMNode" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="_ignore_change_event" type="bool" setter="set_ignore_change_event" getter="get_ignore_change_event" default="false">
+		</member>
+		<member name="curve_edit_scene" type="PackedScene" setter="set_curve_edit_scene" getter="get_curve_edit_scene">
+		</member>
+		<member name="gradient_editor_scene" type="PackedScene" setter="set_gradient_editor_scene" getter="get_gradient_editor_scene">
+		</member>
+		<member name="mm_material" type="MMMaterial" setter="set_mm_material" getter="get_mm_material">
+		</member>
+		<member name="mm_node" type="MMNode" setter="set_mm_node" getter="get_mm_node">
+		</member>
+		<member name="polygon_edit_scene" type="PackedScene" setter="set_polygon_edit_scene" getter="get_polygon_edit_scene">
+		</member>
+		<member name="show_close" type="bool" setter="set_show_close_button" getter="is_close_button_visible" overrides="GraphNode" default="true" />
+	</members>
+	<constants>
+	</constants>
+</class>

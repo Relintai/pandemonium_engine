@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PLogger" inherits="Object" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="log_error">
+			<return type="void" />
+			<argument index="0" name="str" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="log_message">
+			<return type="void" />
+			<argument index="0" name="str" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="log_trace">
+			<return type="void" />
+			<argument index="0" name="str" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="log_warning">
+			<return type="void" />
+			<argument index="0" name="str" type="String" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="backend" type="LoggerBackend" setter="set_backend" getter="get_backend">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="FileCache" inherits="Reference" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_cached_body">
+			<return type="String" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="has_cached_body">
+			<return type="bool" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_cached_body">
+			<return type="void" />
+			<argument index="0" name="path" type="String" />
+			<argument index="1" name="body" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="wwwroot_deregister_file">
+			<return type="void" />
+			<argument index="0" name="file_path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="wwwroot_evaluate_dir">
+			<return type="void" />
+			<argument index="0" name="file_path" type="String" />
+			<argument index="1" name="should_exist " type="bool" default="true" />
+			<description>
+			</description>
+		</method>
+		<method name="wwwroot_has_file">
+			<return type="bool" />
+			<argument index="0" name="file_path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="wwwroot_refresh_cache">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="wwwroot_register_file">
+			<return type="void" />
+			<argument index="0" name="file_path" type="String" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="cache_invalidation_time" type="int" setter="set_cache_invalidation_time" getter="get_cache_invalidation_time" default="0">
+		</member>
+		<member name="wwwroot" type="String" setter="set_wwwroot" getter="get_wwwroot" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

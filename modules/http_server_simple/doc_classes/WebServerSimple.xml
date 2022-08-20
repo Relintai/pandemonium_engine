@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="WebServerSimple" inherits="WebServer" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_mime_type">
+			<return type="void" />
+			<argument index="0" name="file_extension" type="String" />
+			<argument index="1" name="mime_type" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="is_running" qualifiers="const">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_mime_type">
+			<return type="void" />
+			<argument index="0" name="file_extension" type="String" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="bind_host" type="String" setter="set_bind_host" getter="get_bind_host" default="&quot;127.0.0.1&quot;">
+		</member>
+		<member name="bind_port" type="int" setter="set_bind_port" getter="get_bind_port" default="8080">
+		</member>
+		<member name="ssl_cert" type="String" setter="set_ssl_cert" getter="get_ssl_cert" default="&quot;&quot;">
+		</member>
+		<member name="ssl_key" type="String" setter="set_ssl_key" getter="get_ssl_key" default="&quot;&quot;">
+		</member>
+		<member name="use_poll_thread" type="bool" setter="set_use_poll_thread" getter="get_use_poll_thread" default="true">
+		</member>
+		<member name="use_ssl" type="bool" setter="set_use_ssl" getter="get_use_ssl" default="false">
+		</member>
+		<member name="use_worker_threads" type="bool" setter="set_use_worker_threads" getter="get_use_worker_threads" default="true">
+		</member>
+		<member name="worker_thread_count" type="int" setter="set_worker_thread_count" getter="get_worker_thread_count" default="4">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

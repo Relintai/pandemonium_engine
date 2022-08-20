@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Basis" version="3.5">
+<class name="Basis" version="3.7">
 	<brief_description>
 		3×3 matrix datatype.
 	</brief_description>
@@ -58,11 +58,63 @@
 				A negative determinant means the basis has a negative scale. A zero determinant means the basis isn't invertible, and is usually considered invalid.
 			</description>
 		</method>
+		<method name="diagonalize">
+			<return type="Basis" />
+			<description>
+			</description>
+		</method>
+		<method name="from_z">
+			<argument index="0" name="z" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="get_axis">
+			<return type="Vector3" />
+			<argument index="0" name="i" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_column">
+			<return type="Vector3" />
+			<argument index="0" name="i" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="get_euler">
 			<return type="Vector3" />
 			<description>
 				Returns the basis's rotation in the form of Euler angles (in the YXZ convention: when decomposing, first Z, then X, and Y last). The returned vector contains the rotation angles in the format (X angle, Y angle, Z angle).
 				Consider using the [method get_rotation_quaternion] method instead, which returns a [Quaternion] quaternion instead of Euler angles.
+			</description>
+		</method>
+		<method name="get_euler_xyz">
+			<return type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="get_euler_xzy">
+			<return type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="get_euler_yxz">
+			<return type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="get_euler_zxy">
+			<return type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="get_euler_zyx">
+			<return type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="get_main_diagonal">
+			<return type="Vector3" />
+			<description>
 			</description>
 		</method>
 		<method name="get_orthogonal_index">
@@ -71,10 +123,31 @@
 				This function considers a discretization of rotations into 24 points on unit sphere, lying along the vectors (x,y,z) with each component being either -1, 0, or 1, and returns the index of the point best representing the orientation of the object. It is mainly used by the [GridMap] editor. For further details, refer to the Godot source code.
 			</description>
 		</method>
+		<method name="get_quaternion">
+			<return type="Quaternion" />
+			<description>
+			</description>
+		</method>
+		<method name="get_rotation">
+			<return type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="get_rotation_euler">
+			<return type="Vector3" />
+			<description>
+			</description>
+		</method>
 		<method name="get_rotation_quaternion">
 			<return type="Quaternion" />
 			<description>
 				Returns the basis's rotation in the form of a quaternion. See [method get_euler] if you need Euler angles, but keep in mind quaternions should generally be preferred to Euler angles.
+			</description>
+		</method>
+		<method name="get_row">
+			<return type="Vector3" />
+			<argument index="0" name="i" type="int" />
+			<description>
 			</description>
 		</method>
 		<method name="get_scale">
@@ -83,25 +156,111 @@
 				Assuming that the matrix is the combination of a rotation and scaling, return the absolute value of scaling factors along each axis.
 			</description>
 		</method>
+		<method name="get_scale_abs">
+			<return type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="get_scale_local">
+			<return type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="get_uniform_scale">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
 		<method name="inverse">
 			<return type="Basis" />
 			<description>
 				Returns the inverse of the matrix.
 			</description>
 		</method>
+		<method name="invert">
+			<description>
+			</description>
+		</method>
+		<method name="is_diagonal">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
 		<method name="is_equal_approx">
+			<return type="bool" />
+			<argument index="0" name="b" type="Basis" />
+			<description>
+			</description>
+		</method>
+		<method name="is_equal_approx_ratio">
 			<return type="bool" />
 			<argument index="0" name="b" type="Basis" />
 			<argument index="1" name="epsilon" type="float" default="1e-05" />
 			<description>
-				Returns [code]true[/code] if this basis and [code]b[/code] are approximately equal, by calling [code]is_equal_approx[/code] on each component.
-				[b]Note:[/b] For complicated reasons, the epsilon argument is always discarded. Don't use the epsilon argument, it does nothing.
+			</description>
+		</method>
+		<method name="is_orthogonal">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="is_rotation">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="is_symmetric">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="lerp">
+			<return type="Basis" />
+			<argument index="0" name="to" type="Basis" />
+			<argument index="1" name="weight" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="make_scale_uniform">
+			<description>
+			</description>
+		</method>
+		<method name="orthogonalize">
+			<description>
+			</description>
+		</method>
+		<method name="orthogonalized">
+			<return type="Basis" />
+			<description>
+			</description>
+		</method>
+		<method name="orthonormalize">
+			<description>
 			</description>
 		</method>
 		<method name="orthonormalized">
 			<return type="Basis" />
 			<description>
 				Returns the orthonormalized version of the matrix (useful to call from time to time to avoid rounding error for orthogonal matrices). This performs a Gram-Schmidt orthonormalization on the basis of the matrix.
+			</description>
+		</method>
+		<method name="rotate">
+			<argument index="0" name="axis" type="Vector3" />
+			<argument index="1" name="phi" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="rotate_local">
+			<return type="Basis" />
+			<argument index="0" name="axis" type="Vector3" />
+			<argument index="1" name="phi" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="rotate_to_align">
+			<argument index="0" name="direction" type="Vector3" />
+			<argument index="1" name="end_direction" type="Vector3" />
+			<description>
 			</description>
 		</method>
 		<method name="rotated">
@@ -112,11 +271,153 @@
 				Introduce an additional rotation around the given axis by phi (radians). The axis must be a normalized vector.
 			</description>
 		</method>
+		<method name="rotatedq">
+			<return type="Basis" />
+			<argument index="0" name="quat" type="Quaternion" />
+			<description>
+			</description>
+		</method>
+		<method name="rotatedv">
+			<return type="Basis" />
+			<argument index="0" name="euler" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="rotateq">
+			<argument index="0" name="quat" type="Quaternion" />
+			<description>
+			</description>
+		</method>
+		<method name="rotatev">
+			<argument index="0" name="euler" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="scale">
+			<argument index="0" name="scale" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="scale_local">
+			<argument index="0" name="scale" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="scale_orthogonal">
+			<argument index="0" name="scale" type="Vector3" />
+			<description>
+			</description>
+		</method>
 		<method name="scaled">
 			<return type="Basis" />
 			<argument index="0" name="scale" type="Vector3" />
 			<description>
 				Introduce an additional scaling specified by the given 3D scaling factor.
+			</description>
+		</method>
+		<method name="scaled_local">
+			<return type="Basis" />
+			<argument index="0" name="scale" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="scaled_orthogonal">
+			<return type="Basis" />
+			<argument index="0" name="scale" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="set_axis">
+			<argument index="0" name="i" type="int" />
+			<argument index="1" name="axis" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="set_axis_angle_scale">
+			<argument index="0" name="axis" type="Vector3" />
+			<argument index="1" name="phi" type="float" />
+			<argument index="2" name="scale" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="set_column">
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="set_columns">
+			<argument index="0" name="x" type="Vector3" />
+			<argument index="1" name="y" type="Vector3" />
+			<argument index="2" name="z" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="set_diagonal">
+			<argument index="0" name="diag" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="set_euler">
+			<argument index="0" name="euler" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="set_euler_scale">
+			<argument index="0" name="euler" type="Vector3" />
+			<argument index="1" name="scale" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="set_euler_xyz">
+			<argument index="0" name="euler" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="set_euler_xzy">
+			<argument index="0" name="euler" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="set_euler_yxz">
+			<argument index="0" name="euler" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="set_euler_zxy">
+			<argument index="0" name="euler" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="set_euler_zyx">
+			<argument index="0" name="euler" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="set_orthogonal_index">
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_quaternion">
+			<argument index="0" name="quaternion" type="Quaternion" />
+			<description>
+			</description>
+		</method>
+		<method name="set_quaternion_scale">
+			<argument index="0" name="quat" type="Quaternion" />
+			<argument index="1" name="scale" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="set_row">
+			<argument index="0" name="i" type="int" />
+			<argument index="1" name="axis" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="set_zero">
+			<description>
 			</description>
 		</method>
 		<method name="slerp">
@@ -148,6 +449,16 @@
 				Transposed dot product with the Z axis of the matrix.
 			</description>
 		</method>
+		<method name="transpose">
+			<description>
+			</description>
+		</method>
+		<method name="transpose_xform">
+			<return type="Basis" />
+			<argument index="0" name="m" type="Basis" />
+			<description>
+			</description>
+		</method>
 		<method name="transposed">
 			<return type="Basis" />
 			<description>
@@ -156,17 +467,14 @@
 		</method>
 		<method name="xform">
 			<return type="Vector3" />
-			<argument index="0" name="v" type="Vector3" />
+			<argument index="0" name="v3_or_v3i" type="Variant" />
 			<description>
-				Returns a vector transformed (multiplied) by the matrix.
 			</description>
 		</method>
 		<method name="xform_inv">
 			<return type="Vector3" />
-			<argument index="0" name="v" type="Vector3" />
+			<argument index="0" name="v3_or_v3i" type="Variant" />
 			<description>
-				Returns a vector transformed (multiplied) by the transposed basis matrix.
-				[b]Note:[/b] This results in a multiplication by the inverse of the matrix only if it represents a rotation-reflection.
 			</description>
 		</method>
 	</methods>

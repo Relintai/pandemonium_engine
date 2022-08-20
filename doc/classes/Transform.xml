@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Transform" version="3.5">
+<class name="Transform" version="3.7">
 	<brief_description>
 		3D transformation (3×4 matrix).
 	</brief_description>
@@ -18,12 +18,23 @@
 	<methods>
 		<method name="Transform">
 			<return type="Transform" />
-			<argument index="0" name="x_axis" type="Vector3" />
-			<argument index="1" name="y_axis" type="Vector3" />
-			<argument index="2" name="z_axis" type="Vector3" />
-			<argument index="3" name="origin" type="Vector3" />
+			<argument index="0" name="from" type="Transform2D" />
 			<description>
-				Constructs a Transform from four [Vector3] values (matrix columns). Each axis corresponds to local basis vectors (some of which may be scaled).
+				Constructs a Transform from a [Transform2D].
+			</description>
+		</method>
+		<method name="Transform">
+			<return type="Transform" />
+			<argument index="0" name="from" type="Basis" />
+			<description>
+				Constructs the Transform from a [Basis]. The origin will be Vector3(0, 0, 0).
+			</description>
+		</method>
+		<method name="Transform">
+			<return type="Transform" />
+			<argument index="0" name="from" type="Quaternion" />
+			<description>
+				Constructs a Transform from a [Quaternion]. The origin will be [code]Vector3(0, 0, 0)[/code].
 			</description>
 		</method>
 		<method name="Transform">
@@ -36,29 +47,32 @@
 		</method>
 		<method name="Transform">
 			<return type="Transform" />
-			<argument index="0" name="from" type="Transform2D" />
+			<argument index="0" name="x_axis" type="Vector3" />
+			<argument index="1" name="y_axis" type="Vector3" />
+			<argument index="2" name="z_axis" type="Vector3" />
+			<argument index="3" name="origin" type="Vector3" />
 			<description>
-				Constructs a Transform from a [Transform2D].
-			</description>
-		</method>
-		<method name="Transform">
-			<return type="Transform" />
-			<argument index="0" name="from" type="Quaternion" />
-			<description>
-				Constructs a Transform from a [Quaternion]. The origin will be [code]Vector3(0, 0, 0)[/code].
-			</description>
-		</method>
-		<method name="Transform">
-			<return type="Transform" />
-			<argument index="0" name="from" type="Basis" />
-			<description>
-				Constructs the Transform from a [Basis]. The origin will be Vector3(0, 0, 0).
+				Constructs a Transform from four [Vector3] values (matrix columns). Each axis corresponds to local basis vectors (some of which may be scaled).
 			</description>
 		</method>
 		<method name="affine_inverse">
 			<return type="Transform" />
 			<description>
 				Returns the inverse of the transform, under the assumption that the transformation is composed of rotation, scaling and translation.
+			</description>
+		</method>
+		<method name="affine_invert">
+			<description>
+			</description>
+		</method>
+		<method name="get_basis">
+			<return type="Basis" />
+			<description>
+			</description>
+		</method>
+		<method name="get_origin">
+			<return type="Vector3" />
+			<description>
 			</description>
 		</method>
 		<method name="interpolate_with">
@@ -73,6 +87,10 @@
 			<return type="Transform" />
 			<description>
 				Returns the inverse of the transform, under the assumption that the transformation is composed of rotation and translation (no scaling, use [method affine_inverse] for transforms with scaling).
+			</description>
+		</method>
+		<method name="invert">
+			<description>
 			</description>
 		</method>
 		<method name="is_equal_approx">
@@ -92,10 +110,41 @@
 				Operations take place in global space.
 			</description>
 		</method>
+		<method name="orthogonalize">
+			<description>
+			</description>
+		</method>
+		<method name="orthogonalized">
+			<return type="Transform" />
+			<description>
+			</description>
+		</method>
+		<method name="orthonormalize">
+			<description>
+			</description>
+		</method>
 		<method name="orthonormalized">
 			<return type="Transform" />
 			<description>
 				Returns the transform with the basis orthogonal (90 degrees), and normalized axis vectors (scale of 1 or -1).
+			</description>
+		</method>
+		<method name="rotate">
+			<argument index="0" name="axis" type="Vector3" />
+			<argument index="1" name="phi" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="rotate_basis">
+			<argument index="0" name="axis" type="Vector3" />
+			<argument index="1" name="phi" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="rotate_local">
+			<argument index="0" name="axis" type="Vector3" />
+			<argument index="1" name="phi" type="float" />
+			<description>
 			</description>
 		</method>
 		<method name="rotated">
@@ -110,16 +159,26 @@
 				This can be seen as transforming with respect to the global/parent frame.
 			</description>
 		</method>
-		<method name="rotated_local" qualifiers="const">
+		<method name="rotated_local">
 			<return type="Transform" />
 			<argument index="0" name="axis" type="Vector3" />
-			<argument index="1" name="angle" type="float" />
+			<argument index="1" name="phi" type="float" />
 			<description>
 				Returns a copy of the transform rotated around the given [code]axis[/code] by the given [code]angle[/code] (in radians).
 				The [code]axis[/code] must be a normalized vector.
 				This method is an optimized version of multiplying the given transform [code]X[/code]
 				with a corresponding rotation transform [code]R[/code] from the right, i.e., [code]X * R[/code].
 				This can be seen as transforming with respect to the local frame.
+			</description>
+		</method>
+		<method name="scale">
+			<argument index="0" name="scale" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="scale_basis">
+			<argument index="0" name="scale" type="Vector3" />
+			<description>
 			</description>
 		</method>
 		<method name="scaled">
@@ -132,7 +191,7 @@
 				This can be seen as transforming with respect to the global/parent frame.
 			</description>
 		</method>
-		<method name="scaled_local" qualifiers="const">
+		<method name="scaled_local">
 			<return type="Transform" />
 			<argument index="0" name="scale" type="Vector3" />
 			<description>
@@ -142,9 +201,45 @@
 				This can be seen as transforming with respect to the local frame.
 			</description>
 		</method>
-		<method name="translated" qualifiers="const">
+		<method name="set_basis">
+			<argument index="0" name="basis" type="Basis" />
+			<description>
+			</description>
+		</method>
+		<method name="set_look_at">
+			<argument index="0" name="eye" type="Vector3" />
+			<argument index="1" name="target" type="Vector3" />
+			<argument index="2" name="up" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="set_origin">
+			<argument index="0" name="origin" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="spherical_interpolate_with">
 			<return type="Transform" />
-			<argument index="0" name="offset" type="Vector3" />
+			<argument index="0" name="transform" type="Transform" />
+			<argument index="1" name="c" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="translate_localr">
+			<argument index="0" name="tx" type="float" />
+			<argument index="1" name="ty" type="float" />
+			<argument index="2" name="tz" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="translate_localv">
+			<argument index="0" name="scale" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="translated">
+			<return type="Transform" />
+			<argument index="0" name="translation" type="Vector3" />
 			<description>
 				Returns a copy of the transform translated by the given [code]offset[/code].
 				This method is an optimized version of multiplying the given transform [code]X[/code]

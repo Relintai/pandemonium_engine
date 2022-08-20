@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="NavigationPolygonInstance" inherits="Node2D" version="3.5">
+<class name="NavigationPolygonInstance" inherits="Node2D" version="3.7">
 	<brief_description>
 		A region of the 2D navigation map.
 	</brief_description>
@@ -33,7 +33,7 @@
 			A bitfield determining all navigation map layers the [NavigationPolygon] belongs to. On path requests with [method Navigation2DServer.map_get_path] navmeshes without matching layers will be ignored and the navigation map will only proximity merge different navmeshes with matching layers.
 		</member>
 		<member name="navpoly" type="NavigationPolygon" setter="set_navigation_polygon" getter="get_navigation_polygon">
-		The [NavigationPolygon] resource to use.
+			The [NavigationPolygon] resource to use.
 		</member>
 		<member name="travel_cost" type="float" setter="set_travel_cost" getter="get_travel_cost" default="1.0">
 			When pathfinding moves inside this regions navmesh the traveled distances are multiplied with [code]travel_cost[/code] for determining the shortest path.

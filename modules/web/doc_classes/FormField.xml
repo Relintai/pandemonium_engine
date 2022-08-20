@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="FormField" inherits="Resource" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_validate" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="add_entry">
+			<return type="void" />
+			<argument index="0" name="field" type="FormFieldEntry" />
+			<description>
+			</description>
+		</method>
+		<method name="clear_entries">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entry">
+			<return type="FormFieldEntry" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_entry_count" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="ignore_if_not_exists">
+			<return type="FormField" />
+			<description>
+			</description>
+		</method>
+		<method name="ignore_if_other_field_not_exists">
+			<return type="FormField" />
+			<argument index="0" name="other" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="need_maximum_length">
+			<return type="FormField" />
+			<argument index="0" name="max_length" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="need_minimum_length">
+			<return type="FormField" />
+			<argument index="0" name="min_length" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="need_to_be_alpha">
+			<return type="FormField" />
+			<description>
+			</description>
+		</method>
+		<method name="need_to_be_alpha_numeric">
+			<return type="FormField" />
+			<description>
+			</description>
+		</method>
+		<method name="need_to_be_email">
+			<return type="FormField" />
+			<description>
+			</description>
+		</method>
+		<method name="need_to_be_float">
+			<return type="FormField" />
+			<description>
+			</description>
+		</method>
+		<method name="need_to_be_int">
+			<return type="FormField" />
+			<description>
+			</description>
+		</method>
+		<method name="need_to_exist">
+			<return type="FormField" />
+			<description>
+			</description>
+		</method>
+		<method name="need_to_have_lowercase_character">
+			<return type="FormField" />
+			<description>
+			</description>
+		</method>
+		<method name="need_to_have_other_character">
+			<return type="FormField" />
+			<description>
+			</description>
+		</method>
+		<method name="need_to_have_uppercase_character">
+			<return type="FormField" />
+			<description>
+			</description>
+		</method>
+		<method name="need_to_match">
+			<return type="FormField" />
+			<argument index="0" name="other" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_entry">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="validate">
+			<return type="PoolStringArray" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="entries" type="Array" setter="set_entries" getter="get_entries" default="[  ]">
+		</member>
+		<member name="field_name" type="String" setter="set_field_name" getter="get_field_name" default="&quot;&quot;">
+		</member>
+		<member name="human_name" type="String" setter="set_human_name" getter="get_human_name" default="&quot;&quot;">
+		</member>
+		<member name="ignore_if_not_exists" type="bool" setter="set_ignore_if_not_exists" getter="get_ignore_if_not_exists" default="false">
+		</member>
+		<member name="ignore_if_other_field_not_exist_field" type="String" setter="set_ignore_if_other_field_not_exist_field" getter="get_ignore_if_other_field_not_exist_field" default="&quot;&quot;">
+		</member>
+		<member name="ignore_if_other_field_not_exists" type="bool" setter="set_ignore_if_other_field_not_exists" getter="get_ignore_if_other_field_not_exists" default="false">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

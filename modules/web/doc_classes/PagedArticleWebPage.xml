@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PagedArticleWebPage" inherits="WebNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="generate_summary">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_index_page">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_summary">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="load">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="articles_folder" type="String" setter="set_articles_folder" getter="get_articles_folder" default="&quot;&quot;">
+		</member>
+		<member name="serve_folder" type="String" setter="set_serve_folder" getter="get_serve_folder" default="&quot;files&quot;">
+		</member>
+		<member name="serve_folder_relative" type="bool" setter="set_serve_folder_relative" getter="get_serve_folder_relative" default="true">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

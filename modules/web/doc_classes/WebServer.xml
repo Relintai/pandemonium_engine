@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="WebServer" inherits="Node" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_start" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="_stop" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_session_manager">
+			<return type="HTTPSessionManager" />
+			<description>
+			</description>
+		</method>
+		<method name="get_web_root">
+			<return type="WebNode" />
+			<description>
+			</description>
+		</method>
+		<method name="request_write_lock">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="server_handle_request">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="start">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="stop">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+		<constant name="NOTIFICATION_WEB_SERVER_STARTED" value="2000">
+		</constant>
+		<constant name="NOTIFICATION_WEB_SERVER_STOPPED" value="2001">
+		</constant>
+		<constant name="NOTIFICATION_WEB_SERVER_WRITE_LOCK_ACQUIRED" value="2002">
+		</constant>
+	</constants>
+</class>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Skeleton" inherits="Spatial" version="3.5">
+<class name="Skeleton" inherits="Spatial" version="3.7">
 	<brief_description>
 		Skeleton for characters and animated objects.
 	</brief_description>
@@ -79,7 +79,7 @@
 			</description>
 		</method>
 		<method name="get_bone_children">
-			<return type="PackedInt32Array" />
+			<return type="PoolIntArray" />
 			<argument index="0" name="bone_idx" type="int" />
 			<description>
 				Returns an array containing the bone indexes of all the children node of the passed in bone, [code]bone_idx[/code].
@@ -89,11 +89,6 @@
 			<return type="int" />
 			<description>
 				Returns the amount of bones in the skeleton.
-			</description>
-		</method>
-		<method name="create_skin_from_rest_transforms">
-			<return type="Skin" />
-			<description>
 			</description>
 		</method>
 		<method name="get_bone_global_pose" qualifiers="const">
@@ -275,6 +270,12 @@
 				Binds the given Skin to the Skeleton.
 			</description>
 		</method>
+		<method name="remove_bone">
+			<return type="void" />
+			<argument index="0" name="bone_idx" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="remove_bone_child">
 			<return type="void" />
 			<argument index="0" name="bone_idx" type="int" />
@@ -287,14 +288,7 @@
 		<method name="set_bone_children">
 			<return type="void" />
 			<argument index="0" name="bone_idx" type="int" />
-			<argument index="1" name="bone_children" type="PackedInt32Array" />
-			<description>
-				Sets the children for the passed in bone, [code]bone_idx[/code], to the passed-in array of bone indexes, [code]bone_children[/code].
-			</description>
-		</method>
-		<method name="remove_bone">
-			<return type="void" />
-			<argument index="0" name="bone_idx" type="int" />
+			<argument index="1" name="bone_children" type="PoolIntArray" />
 			<description>
 			</description>
 		</method>
@@ -401,10 +395,8 @@
 			</description>
 		</method>
 		<method name="world_transform_to_global_pose">
-			<return type="Transform">
-			</return>
-			<argument index="0" name="world_transform" type="Transform">
-			</argument>
+			<return type="Transform" />
+			<argument index="0" name="world_transform" type="Transform" />
 			<description>
 				Takes the passed-in global transform and converts it to a global pose.
 				This can be used to easily convert a global transform from [member Spatial.global_transform] to a global pose usable with [method set_bone_global_pose_override], for example.
@@ -427,6 +419,10 @@
 			<argument index="0" name="bone_idx" type="int" />
 			<description>
 				This signal is emitted when one of the bones in the Skeleton3D node have changed their pose. This is used to inform nodes that rely on bone positions that one of the bones in the Skeleton3D have changed their transform/pose.
+			</description>
+		</signal>
+		<signal name="bones_updated">
+			<description>
 			</description>
 		</signal>
 		<signal name="pose_updated">

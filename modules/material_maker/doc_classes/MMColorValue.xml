@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMColorValue" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="image" type="MMNodeUniversalProperty" setter="set_image" getter="get_image">
+		</member>
+		<member name="iterations" type="int" setter="set_iterations" getter="get_iterations" default="3">
+		</member>
+		<member name="persistence" type="float" setter="set_persistence" getter="get_persistence" default="0.5">
+		</member>
+		<member name="scale" type="Vector2" setter="set_scale" getter="get_scale" default="Vector2( 4, 4 )">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

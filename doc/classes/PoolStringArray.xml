@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="PoolStringArray" version="3.5">
+<class name="PoolStringArray" version="3.7">
 	<brief_description>
 		A pooled Array of [String].
 	</brief_description>
@@ -41,6 +41,16 @@
 			<argument index="0" name="array" type="PoolStringArray" />
 			<description>
 				Appends a [PoolStringArray] at the end of this array.
+			</description>
+		</method>
+		<method name="clear">
+			<description>
+			</description>
+		</method>
+		<method name="contains">
+			<return type="bool" />
+			<argument index="0" name="value" type="String" />
+			<description>
 			</description>
 		</method>
 		<method name="count">

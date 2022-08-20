@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="PhysicalBone" inherits="PhysicsBody" version="3.5">
+<class name="PhysicalBone" inherits="PhysicsBody" version="3.7">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -31,11 +31,6 @@
 			</description>
 		</method>
 		<method name="is_simulating_physics">
-			<return type="bool" />
-			<description>
-			</description>
-		</method>
-		<method name="is_static_body">
 			<return type="bool" />
 			<description>
 			</description>

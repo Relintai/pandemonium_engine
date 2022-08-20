@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="User" inherits="Resource" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_check_password" qualifiers="virtual">
+			<return type="bool" />
+			<argument index="0" name="password" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_create_password" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="password" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_from_dict" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="_hash_password" qualifiers="virtual">
+			<return type="String" />
+			<argument index="0" name="password" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_to_dict" qualifiers="virtual">
+			<return type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="add_module">
+			<return type="void" />
+			<argument index="0" name="module" type="UserModule" />
+			<description>
+			</description>
+		</method>
+		<method name="check_password">
+			<return type="bool" />
+			<argument index="0" name="password" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="create_password">
+			<return type="void" />
+			<argument index="0" name="password" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="from_dict">
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="from_json">
+			<return type="void" />
+			<argument index="0" name="data" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_module">
+			<return type="UserModule" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_module_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_module_named">
+			<return type="UserModule" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="hash_password">
+			<return type="String" />
+			<argument index="0" name="password" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="read_lock">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="read_unlock">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_module">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="save">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="to_dict">
+			<return type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="to_json">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="write_lock">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="write_unlock">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="banned" type="bool" setter="set_banned" getter="get_banned" default="false">
+		</member>
+		<member name="email" type="String" setter="set_email" getter="get_email" default="&quot;&quot;">
+		</member>
+		<member name="locked" type="bool" setter="set_locked" getter="get_locked" default="false">
+		</member>
+		<member name="modules" type="Array" setter="set_modules" getter="get_modules" default="[  ]">
+		</member>
+		<member name="password_hash" type="String" setter="set_password_hash" getter="get_password_hash" default="&quot;&quot;">
+		</member>
+		<member name="password_reset_token" type="String" setter="set_password_reset_token" getter="get_password_reset_token" default="&quot;&quot;">
+		</member>
+		<member name="post_salt" type="String" setter="set_post_salt" getter="get_post_salt" default="&quot;&quot;">
+		</member>
+		<member name="pre_salt" type="String" setter="set_pre_salt" getter="get_pre_salt" default="&quot;&quot;">
+		</member>
+		<member name="rank" type="int" setter="set_rank" getter="get_rank" default="0">
+		</member>
+		<member name="user_id" type="int" setter="set_user_id" getter="get_user_id" default="-1">
+		</member>
+		<member name="user_name" type="String" setter="set_user_name" getter="get_user_name" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+		<constant name="PERMISSION_CREATE" value="1" enum="Permissions">
+		</constant>
+		<constant name="PERMISSION_READ" value="2" enum="Permissions">
+		</constant>
+		<constant name="PERMISSION_UPDATE" value="4" enum="Permissions">
+		</constant>
+		<constant name="PERMISSION_DELETE" value="8" enum="Permissions">
+		</constant>
+		<constant name="PERMISSION_ALL" value="15" enum="Permissions">
+		</constant>
+		<constant name="PERMISSION_NONE" value="0" enum="Permissions">
+		</constant>
+	</constants>
+</class>

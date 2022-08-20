@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMSdf3dOpMorph" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="on_input_changed">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="amount" type="float" setter="set_amount" getter="get_amount" default="0.5">
+		</member>
+		<member name="input1" type="MMNodeUniversalProperty" setter="set_input1" getter="get_input1">
+		</member>
+		<member name="input2" type="MMNodeUniversalProperty" setter="set_input2" getter="get_input2">
+		</member>
+		<member name="output" type="MMNodeUniversalProperty" setter="set_output" getter="get_output">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMBrightnessContrast" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="brightness" type="float" setter="set_brightness" getter="get_brightness" default="0.0">
+		</member>
+		<member name="contrast" type="float" setter="set_contrast" getter="get_contrast" default="1.0">
+		</member>
+		<member name="image" type="MMNodeUniversalProperty" setter="set_image" getter="get_image">
+		</member>
+		<member name="input" type="MMNodeUniversalProperty" setter="set_input" getter="get_input">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

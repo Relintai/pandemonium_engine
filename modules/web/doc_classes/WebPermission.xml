@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="WebPermission" inherits="Reference" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_activate" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="_get_permissions" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="_handle_view_permission_missing" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="activate">
+			<return type="bool" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="get_permissions">
+			<return type="int" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="handle_view_permission_missing">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+		<constant name="WEB_PERMISSION_VIEW" value="1" enum="WebPermissions">
+		</constant>
+		<constant name="WEB_PERMISSION_CREATE" value="2" enum="WebPermissions">
+		</constant>
+		<constant name="WEB_PERMISSION_EDIT" value="4" enum="WebPermissions">
+		</constant>
+		<constant name="WEB_PERMISSION_DELETE" value="8" enum="WebPermissions">
+		</constant>
+		<constant name="WEB_PERMISSION_ALL" value="15" enum="WebPermissions">
+		</constant>
+		<constant name="WEB_PERMISSION_NONE" value="0" enum="WebPermissions">
+		</constant>
+	</constants>
+</class>

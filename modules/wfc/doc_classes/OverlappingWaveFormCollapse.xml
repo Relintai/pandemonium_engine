@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="OverlappingWaveFormCollapse" inherits="WaveFormCollapse" version="3.5">
+<class name="OverlappingWaveFormCollapse" inherits="WaveFormCollapse" version="3.7">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -8,6 +8,20 @@
 	</tutorials>
 	<methods>
 	</methods>
+	<members>
+		<member name="ground" type="bool" setter="set_ground" getter="get_ground" default="false">
+		</member>
+		<member name="out_height" type="int" setter="set_out_height" getter="get_out_height" default="0">
+		</member>
+		<member name="out_width" type="int" setter="set_out_width" getter="get_out_width" default="0">
+		</member>
+		<member name="pattern_size" type="int" setter="set_pattern_size" getter="get_pattern_size" default="0">
+		</member>
+		<member name="periodic_input" type="bool" setter="set_periodic_input" getter="get_periodic_input" default="true">
+		</member>
+		<member name="symmetry" type="int" setter="set_symmetry" getter="get_symmetry" default="8">
+		</member>
+	</members>
 	<constants>
 	</constants>
 </class>

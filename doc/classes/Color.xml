@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Color" version="3.5">
+<class name="Color" version="3.7">
 	<brief_description>
 		Color in RGBA format using floats on the range of 0 to 1.
 	</brief_description>
@@ -77,6 +77,13 @@
 				[/codeblock]
 			</description>
 		</method>
+		<method name="clamp">
+			<return type="Color" />
+			<argument index="0" name="min" type="Color" default="Color( 0, 0, 0, 0 )" />
+			<argument index="1" name="max" type="Color" default="Color( 1, 1, 1, 1 )" />
+			<description>
+			</description>
+		</method>
 		<method name="contrasted">
 			<return type="Color" />
 			<description>
@@ -111,11 +118,46 @@
 				[/codeblock]
 			</description>
 		</method>
+		<method name="get_a8">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_b8">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_g8">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_h">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
 		<method name="get_luminance">
 			<return type="float" />
 			<description>
 				Returns the luminance of the color in the [code][0.0, 1.0][/code] range.
 				This is useful when determining light or dark color. Colors with a luminance smaller than 0.5 can be generally considered dark.
+			</description>
+		</method>
+		<method name="get_r8">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_s">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_v">
+			<return type="float" />
+			<description>
 			</description>
 		</method>
 		<method name="gray">
@@ -127,6 +169,10 @@
 				var c = Color(0.2, 0.45, 0.82)
 				var gray = c.gray() # A value of 0.466667
 				[/codeblock]
+			</description>
+		</method>
+		<method name="invert">
+			<description>
 			</description>
 		</method>
 		<method name="inverted">
@@ -168,6 +214,49 @@
 				var c2 = Color(0.0, 1.0, 0.0)
 				var li_c = c1.linear_interpolate(c2, 0.5) # Equivalent to Color(0.5, 0.5, 0.0)
 				[/codeblock]
+			</description>
+		</method>
+		<method name="set_a8">
+			<argument index="0" name="a" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_b8">
+			<argument index="0" name="b" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_g8">
+			<argument index="0" name="g" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_h">
+			<argument index="0" name="h" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_hsv">
+			<argument index="0" name="h" type="float" />
+			<argument index="1" name="s" type="float" />
+			<argument index="2" name="v" type="float" />
+			<argument index="3" name="a" type="float" default="1.0" />
+			<description>
+			</description>
+		</method>
+		<method name="set_r8">
+			<argument index="0" name="r" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_s">
+			<argument index="0" name="s" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_v">
+			<argument index="0" name="v" type="int" />
+			<description>
 			</description>
 		</method>
 		<method name="to_abgr32">
@@ -223,6 +312,11 @@
 				[/codeblock]
 			</description>
 		</method>
+		<method name="to_linear">
+			<return type="Color" />
+			<description>
+			</description>
+		</method>
 		<method name="to_rgba32">
 			<return type="int" />
 			<description>
@@ -241,6 +335,16 @@
 				var color = Color(1, 0.5, 0.2)
 				print(color.to_rgba64()) # Prints -140736629309441
 				[/codeblock]
+			</description>
+		</method>
+		<method name="to_rgbe9995">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="to_srgb">
+			<return type="Color" />
+			<description>
 			</description>
 		</method>
 	</methods>

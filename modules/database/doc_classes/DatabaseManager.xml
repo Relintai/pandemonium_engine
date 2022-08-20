@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="DatabaseManager" inherits="Object" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_database">
+			<return type="void" />
+			<argument index="0" name="db" type="Database" />
+			<argument index="1" name="set_as_default" type="bool" default="true" />
+			<description>
+			</description>
+		</method>
+		<method name="get_database">
+			<return type="Database" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_database_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_databases">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="load">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="migrate">
+			<return type="void" />
+			<argument index="0" name="clear" type="bool" />
+			<argument index="1" name="should_seed" type="bool" />
+			<argument index="2" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_database">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="unset_if_default" type="bool" default="true" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="ddb" type="Database" setter="set_ddb" getter="get_ddb">
+		</member>
+	</members>
+	<signals>
+		<signal name="database_added">
+			<argument index="0" name="db" type="Database" />
+			<description>
+			</description>
+		</signal>
+		<signal name="database_removed">
+			<argument index="0" name="db" type="Database" />
+			<description>
+			</description>
+		</signal>
+		<signal name="default_database_changed">
+			<argument index="0" name="db" type="Database" />
+			<description>
+			</description>
+		</signal>
+		<signal name="migration">
+			<argument index="0" name="clear" type="bool" />
+			<argument index="1" name="should_seed" type="bool" />
+			<argument index="2" name="pseed" type="int" />
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+	</constants>
+</class>

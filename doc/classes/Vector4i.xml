@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="Vector4i" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="Vector4i">
+			<return type="Vector4i" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="y" type="int" />
+			<argument index="2" name="z" type="int" />
+			<argument index="3" name="w" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="Vector4i">
+			<return type="Vector4i" />
+			<argument index="0" name="from" type="Vector4" />
+			<description>
+			</description>
+		</method>
+		<method name="abs">
+			<return type="Vector4i" />
+			<description>
+			</description>
+		</method>
+		<method name="clamp">
+			<return type="Vector4i" />
+			<argument index="0" name="min" type="Vector4i" />
+			<argument index="1" name="max" type="Vector4i" />
+			<description>
+			</description>
+		</method>
+		<method name="get_axis">
+			<return type="int" />
+			<argument index="0" name="axis" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="length">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="length_squared">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="max_axis">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="min_axis">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_axis">
+			<argument index="0" name="axis" type="int" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="sign">
+			<return type="Vector4i" />
+			<description>
+			</description>
+		</method>
+		<method name="zero">
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="w" type="int" setter="" getter="" default="0">
+		</member>
+		<member name="x" type="int" setter="" getter="" default="0">
+		</member>
+		<member name="y" type="int" setter="" getter="" default="0">
+		</member>
+		<member name="z" type="int" setter="" getter="" default="0">
+		</member>
+	</members>
+	<constants>
+		<constant name="AXIS_X" value="0">
+		</constant>
+		<constant name="AXIS_Y" value="1">
+		</constant>
+		<constant name="AXIS_Z" value="2">
+		</constant>
+		<constant name="AXIS_W" value="3">
+		</constant>
+	</constants>
+</class>

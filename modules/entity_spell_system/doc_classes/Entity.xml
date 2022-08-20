@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Entity" inherits="Node" version="3.5">
+<class name="Entity" inherits="Node" version="3.7">
 	<brief_description>
 		Represents an [Entity] inside the world. Entities can be players, mobs, chests, or any kind of interactable things.
 	</brief_description>
@@ -1599,13 +1599,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="notification_ccategory_cooldown_added">
-			<return type="void" />
-			<argument index="0" name="category_cooldown" type="int" />
-			<argument index="1" name="arg1" type="float" />
-			<description>
-			</description>
-		</method>
 		<method name="notification_ccategory_cooldown_added" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="id" type="int" />
@@ -1613,7 +1606,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="notification_ccategory_cooldown_removed">
+		<method name="notification_ccategory_cooldown_added">
 			<return type="void" />
 			<argument index="0" name="category_cooldown" type="int" />
 			<argument index="1" name="arg1" type="float" />
@@ -1624,6 +1617,13 @@
 			<return type="void" />
 			<argument index="0" name="id" type="int" />
 			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_ccategory_cooldown_removed">
+			<return type="void" />
+			<argument index="0" name="category_cooldown" type="int" />
+			<argument index="1" name="arg1" type="float" />
 			<description>
 			</description>
 		</method>
@@ -1641,17 +1641,17 @@
 			<description>
 			</description>
 		</method>
-		<method name="notification_ccooldown_removed">
-			<return type="void" />
-			<argument index="0" name="cooldown" type="int" />
-			<argument index="1" name="arg1" type="float" />
-			<description>
-			</description>
-		</method>
 		<method name="notification_ccooldown_removed" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="id" type="int" />
 			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_ccooldown_removed">
+			<return type="void" />
+			<argument index="0" name="cooldown" type="int" />
+			<argument index="1" name="arg1" type="float" />
 			<description>
 			</description>
 		</method>
@@ -1823,17 +1823,17 @@
 			<description>
 			</description>
 		</method>
-		<method name="notification_scooldown_removed">
-			<return type="void" />
-			<argument index="0" name="cooldown" type="int" />
-			<argument index="1" name="arg1" type="float" />
-			<description>
-			</description>
-		</method>
 		<method name="notification_scooldown_removed" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="id" type="int" />
 			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_scooldown_removed">
+			<return type="void" />
+			<argument index="0" name="cooldown" type="int" />
+			<argument index="1" name="arg1" type="float" />
 			<description>
 			</description>
 		</method>
@@ -2163,64 +2163,6 @@
 		<method name="sdeal_heal_to">
 			<return type="void" />
 			<argument index="0" name="data" type="SpellHealInfo" />
-			<description>
-			</description>
-		</method>
-		<method name="seen_by_adds">
-			<return type="void" />
-			<argument index="0" name="entity" type="Node" />
-			<description>
-			</description>
-		</method>
-		<method name="seen_by_gets">
-			<return type="Entity" />
-			<argument index="0" name="index" type="int" />
-			<description>
-			</description>
-		</method>
-		<method name="seen_by_gets_count">
-			<return type="int" />
-			<description>
-			</description>
-		</method>
-		<method name="seen_by_removes">
-			<return type="void" />
-			<argument index="0" name="entity" type="Node" />
-			<description>
-			</description>
-		</method>
-		<method name="seen_by_removes_index">
-			<return type="void" />
-			<argument index="0" name="index" type="int" />
-			<description>
-			</description>
-		</method>
-		<method name="sees_adds">
-			<return type="void" />
-			<argument index="0" name="entity" type="Node" />
-			<description>
-			</description>
-		</method>
-		<method name="sees_gets">
-			<return type="Entity" />
-			<argument index="0" name="index" type="int" />
-			<description>
-			</description>
-		</method>
-		<method name="sees_gets_count">
-			<return type="int" />
-			<description>
-			</description>
-		</method>
-		<method name="sees_removes">
-			<return type="void" />
-			<argument index="0" name="entity" type="Node" />
-			<description>
-			</description>
-		</method>
-		<method name="sees_removes_index">
-			<return type="void" />
-			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
@@ -2771,12 +2713,6 @@
 		<method name="vendor_item_ssell">
 			<return type="void" />
 			<argument index="0" name="slot_id" type="int" />
-			<description>
-			</description>
-		</method>
-		<method name="vrpc" qualifiers="vararg">
-			<return type="Variant" />
-			<argument index="0" name="method" type="String" />
 			<description>
 			</description>
 		</method>

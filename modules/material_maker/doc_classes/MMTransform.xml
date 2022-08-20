@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMTransform" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="image" type="MMNodeUniversalProperty" setter="set_image" getter="get_image">
+		</member>
+		<member name="input" type="MMNodeUniversalProperty" setter="set_input" getter="get_input">
+		</member>
+		<member name="mode" type="int" setter="set_mode" getter="get_mode" default="0">
+		</member>
+		<member name="rotate" type="MMNodeUniversalProperty" setter="set_rotate" getter="get_rotate">
+		</member>
+		<member name="scale_x" type="MMNodeUniversalProperty" setter="set_scale_x" getter="get_scale_x">
+		</member>
+		<member name="scale_y" type="MMNodeUniversalProperty" setter="set_scale_y" getter="get_scale_y">
+		</member>
+		<member name="translate_x" type="MMNodeUniversalProperty" setter="set_translate_x" getter="get_translate_x">
+		</member>
+		<member name="translate_y" type="MMNodeUniversalProperty" setter="set_translate_y" getter="get_translate_y">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

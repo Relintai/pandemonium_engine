@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMVoronoi" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="intensity" type="float" setter="set_intensity" getter="get_intensity" default="1.0">
+		</member>
+		<member name="out_borders" type="MMNodeUniversalProperty" setter="set_out_borders" getter="get_out_borders">
+		</member>
+		<member name="out_fill" type="MMNodeUniversalProperty" setter="set_out_fill" getter="get_out_fill">
+		</member>
+		<member name="out_nodes" type="MMNodeUniversalProperty" setter="set_out_nodes" getter="get_out_nodes">
+		</member>
+		<member name="out_random_color" type="MMNodeUniversalProperty" setter="set_out_random_color" getter="get_out_random_color">
+		</member>
+		<member name="randomness" type="float" setter="set_randomness" getter="get_randomness" default="0.85">
+		</member>
+		<member name="scale" type="Vector2" setter="set_scale" getter="get_scale" default="Vector2( 4, 4 )">
+		</member>
+		<member name="stretch" type="Vector2" setter="set_stretch" getter="get_stretch" default="Vector2( 1, 1 )">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

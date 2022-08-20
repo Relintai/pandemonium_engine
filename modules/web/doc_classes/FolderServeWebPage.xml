@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="FolderServeWebPage" inherits="WebNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="load">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="serve_folder" type="String" setter="set_serve_folder" getter="get_serve_folder" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

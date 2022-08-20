@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SkeletonModification3DLookAt" inherits="SkeletonModification3D" version="4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+<class name="SkeletonModification3DLookAt" inherits="SkeletonModification3D" version="3.7">
 	<brief_description>
 		A modification that rotates a bone to look at a target.
 	</brief_description>
@@ -49,7 +49,7 @@
 		</method>
 	</methods>
 	<members>
-		<member name="bone_index" type="int" setter="set_bone_index" getter="get_bone_index" default="-2">
+		<member name="bone_index" type="int" setter="set_bone_index" getter="get_bone_index" default="-1">
 			The bone index of the bone that should be operated on by this modification.
 			When possible, this will also update the [member bone_name] based on data provided by the [Skeleton3D].
 		</member>
@@ -61,4 +61,6 @@
 			The NodePath to the node that is the target for the modification.
 		</member>
 	</members>
+	<constants>
+	</constants>
 </class>

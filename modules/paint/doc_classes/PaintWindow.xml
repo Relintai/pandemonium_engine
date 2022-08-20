@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PaintWindow" inherits="Control" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="change_color">
+			<return type="void" />
+			<argument index="0" name="color" type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="lock_layer">
+			<return type="void" />
+			<argument index="0" name="arg0" type="Node" />
+			<argument index="1" name="arg1" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="move_down">
+			<return type="void" />
+			<argument index="0" name="n" type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="move_up">
+			<return type="void" />
+			<argument index="0" name="n" type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="select_layer">
+			<return type="void" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="toggle_layer_visibility">
+			<return type="void" />
+			<argument index="0" name="arg0" type="Node" />
+			<argument index="1" name="arg1" type="String" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="rect_clip_content" type="bool" setter="set_clip_contents" getter="is_clipping_contents" overrides="Control" default="true" />
+		<member name="size_flags_horizontal" type="int" setter="set_h_size_flags" getter="get_h_size_flags" overrides="Control" default="3" />
+		<member name="size_flags_vertical" type="int" setter="set_v_size_flags" getter="get_v_size_flags" overrides="Control" default="3" />
+	</members>
+	<constants>
+	</constants>
+</class>

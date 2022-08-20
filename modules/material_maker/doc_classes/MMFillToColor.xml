@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMFillToColor" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="color_map" type="MMNodeUniversalProperty" setter="set_color_map" getter="get_color_map">
+		</member>
+		<member name="edge_color" type="Color" setter="set_edge_color" getter="get_edge_color" default="Color( 1, 1, 1, 1 )">
+		</member>
+		<member name="image" type="MMNodeUniversalProperty" setter="set_image" getter="get_image">
+		</member>
+		<member name="input" type="MMNodeUniversalProperty" setter="set_input" getter="get_input">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

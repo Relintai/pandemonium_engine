@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Viewport" inherits="Node" version="3.5">
+<class name="Viewport" inherits="Node" version="3.7">
 	<brief_description>
 		Creates a sub-view into the screen.
 	</brief_description>
@@ -35,17 +35,16 @@
 				Returns the first valid [World2D] for this viewport, searching the [member world_2d] property of itself and any Viewport ancestor.
 			</description>
 		</method>
-		<method name="get_camera_2d" qualifiers="const">
-			<return type="Camera2D">
-			</return>
-			<description>
-				Returns the currently active 2D camera. Returns null if there are no active cameras.
-			</description>
-		</method>
 		<method name="get_camera" qualifiers="const">
 			<return type="Camera" />
 			<description>
 				Returns the active 3D camera.
+			</description>
+		</method>
+		<method name="get_camera_2d" qualifiers="const">
+			<return type="Camera2D" />
+			<description>
+				Returns the currently active 2D camera. Returns null if there are no active cameras.
 			</description>
 		</method>
 		<method name="get_final_transform" qualifiers="const">

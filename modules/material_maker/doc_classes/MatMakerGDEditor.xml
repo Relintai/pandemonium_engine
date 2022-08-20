@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MatMakerGDEditor" inherits="MarginContainer" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_graph_edit">
+			<return type="GraphEdit" />
+			<description>
+			</description>
+		</method>
+		<method name="get_ignore_material_change_event" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="ignore_changes">
+			<return type="void" />
+			<argument index="0" name="val" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="on_graph_edit_connection_request">
+			<return type="void" />
+			<argument index="0" name="from" type="String" />
+			<argument index="1" name="from_slot" type="int" />
+			<argument index="2" name="to" type="String" />
+			<argument index="3" name="to_slot" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="on_graph_edit_disconnection_request">
+			<return type="void" />
+			<argument index="0" name="from" type="String" />
+			<argument index="1" name="from_slot" type="int" />
+			<argument index="2" name="to" type="String" />
+			<argument index="3" name="to_slot" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="on_graph_node_close_request">
+			<return type="void" />
+			<argument index="0" name="node" type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="on_material_changed">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="recreate">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="set_ignore_material_change_event">
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="anchor_bottom" type="float" setter="_set_anchor" getter="get_anchor" overrides="Control" default="1.0" />
+		<member name="anchor_right" type="float" setter="_set_anchor" getter="get_anchor" overrides="Control" default="1.0" />
+		<member name="mm_material" type="MMMaterial" setter="set_mm_material" getter="get_mm_material">
+		</member>
+		<member name="recreation_in_progress" type="bool" setter="set_recreation_in_progress" getter="get_recreation_in_progress" default="false">
+		</member>
+		<member name="rect_min_size" type="Vector2" setter="set_custom_minimum_size" getter="get_custom_minimum_size" overrides="Control" default="Vector2( 0, 200 )" />
+		<member name="rect_size" type="Vector2" setter="_set_size" getter="get_size" overrides="Control" default="Vector2( 0, 200 )" />
+		<member name="size_flags_horizontal" type="int" setter="set_h_size_flags" getter="get_h_size_flags" overrides="Control" default="3" />
+		<member name="size_flags_vertical" type="int" setter="set_v_size_flags" getter="get_v_size_flags" overrides="Control" default="3" />
+	</members>
+	<constants>
+	</constants>
+</class>

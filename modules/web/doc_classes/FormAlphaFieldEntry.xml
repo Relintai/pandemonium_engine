@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="FormAlphaFieldEntry" inherits="FormFieldEntry" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="not_alpha_error" type="String" setter="set_not_alpha_error" getter="get_not_alpha_error" default="&quot; needs to only contain caharcters.&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

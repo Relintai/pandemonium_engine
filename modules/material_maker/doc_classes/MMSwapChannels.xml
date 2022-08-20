@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMSwapChannels" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="apply">
+			<return type="float" />
+			<argument index="0" name="op" type="int" />
+			<argument index="1" name="val" type="Color" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="image" type="MMNodeUniversalProperty" setter="set_image" getter="get_image">
+		</member>
+		<member name="input" type="MMNodeUniversalProperty" setter="set_input" getter="get_input">
+		</member>
+		<member name="op_a" type="int" setter="set_op_a" getter="get_op_a" default="8">
+		</member>
+		<member name="op_b" type="int" setter="set_op_b" getter="get_op_b" default="6">
+		</member>
+		<member name="op_g" type="int" setter="set_op_g" getter="get_op_g" default="4">
+		</member>
+		<member name="op_r" type="int" setter="set_op_r" getter="get_op_r" default="2">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

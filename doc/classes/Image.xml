@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Image" inherits="Resource" version="3.5">
+<class name="Image" inherits="Resource" version="3.7">
 	<brief_description>
 		Image datatype.
 	</brief_description>
@@ -77,6 +77,16 @@
 			<argument index="0" name="format" type="int" enum="Image.Format" />
 			<description>
 				Converts the image's format. See [enum Format] constants.
+			</description>
+		</method>
+		<method name="convert_ra_rgba8_to_rg">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="convert_rg_to_ra_rgba8">
+			<return type="void" />
+			<description>
 			</description>
 		</method>
 		<method name="copy_from">

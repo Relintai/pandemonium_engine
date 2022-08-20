@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ImmediateMesh" inherits="Mesh" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="clear_surfaces">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="surface_add_vertex">
+			<return type="void" />
+			<argument index="0" name="vertex" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="surface_add_vertex_2d">
+			<return type="void" />
+			<argument index="0" name="vertex" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="surface_begin">
+			<return type="void" />
+			<argument index="0" name="primitive" type="int" enum="Mesh.PrimitiveType" />
+			<argument index="1" name="material" type="Material" default="null" />
+			<description>
+			</description>
+		</method>
+		<method name="surface_end">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="surface_set_color">
+			<return type="void" />
+			<argument index="0" name="color" type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="surface_set_normal">
+			<return type="void" />
+			<argument index="0" name="normal" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="surface_set_tangent">
+			<return type="void" />
+			<argument index="0" name="tangent" type="Plane" />
+			<description>
+			</description>
+		</method>
+		<method name="surface_set_uv">
+			<return type="void" />
+			<argument index="0" name="uv" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="surface_set_uv2">
+			<return type="void" />
+			<argument index="0" name="uv2" type="Vector2" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

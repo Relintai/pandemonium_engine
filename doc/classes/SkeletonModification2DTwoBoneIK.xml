@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SkeletonModification2DTwoBoneIK" inherits="SkeletonModification2D" version="4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+<class name="SkeletonModification2DTwoBoneIK" inherits="SkeletonModification2D" version="3.7">
 	<brief_description>
 		A modification that rotates two bones using the law of cosigns to reach the target.
 	</brief_description>
@@ -36,30 +36,26 @@
 		</method>
 		<method name="set_joint_one_bone2d_node">
 			<return type="void" />
-			<param index="0" name="bone2d_node" type="NodePath" />
+			<argument index="0" name="bone2d_node" type="NodePath" />
 			<description>
-				Sets the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 			</description>
 		</method>
 		<method name="set_joint_one_bone_idx">
 			<return type="void" />
-			<param index="0" name="bone_idx" type="int" />
+			<argument index="0" name="bone_idx" type="int" />
 			<description>
-				Sets the index of the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 			</description>
 		</method>
 		<method name="set_joint_two_bone2d_node">
 			<return type="void" />
-			<param index="0" name="bone2d_node" type="NodePath" />
+			<argument index="0" name="bone2d_node" type="NodePath" />
 			<description>
-				Sets the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 			</description>
 		</method>
 		<method name="set_joint_two_bone_idx">
 			<return type="void" />
-			<param index="0" name="bone_idx" type="int" />
+			<argument index="0" name="bone_idx" type="int" />
 			<description>
-				Sets the index of the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 			</description>
 		</method>
 	</methods>
@@ -77,4 +73,6 @@
 			The NodePath to the node that is the target for the TwoBoneIK modification. This node is what the modification will use when bending the [Bone2D] nodes.
 		</member>
 	</members>
+	<constants>
+	</constants>
 </class>

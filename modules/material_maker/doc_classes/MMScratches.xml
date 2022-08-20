@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMScratches" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="angle" type="int" setter="set_angle" getter="get_angle" default="0">
+		</member>
+		<member name="image" type="MMNodeUniversalProperty" setter="set_image" getter="get_image">
+		</member>
+		<member name="layers" type="int" setter="set_layers" getter="get_layers" default="4">
+		</member>
+		<member name="randomness" type="float" setter="set_randomness" getter="get_randomness" default="0.44">
+		</member>
+		<member name="size" type="Vector2" setter="set_size" getter="get_size" default="Vector2( 0.25, 0.4 )">
+		</member>
+		<member name="waviness" type="float" setter="set_waviness" getter="get_waviness" default="0.51">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

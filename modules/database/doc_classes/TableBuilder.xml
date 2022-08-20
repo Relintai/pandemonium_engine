@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="TableBuilder" inherits="Reference" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="auto_increment">
+			<return type="TableBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ccreate_table">
+			<return type="TableBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cdrop_table">
+			<return type="TableBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="create_table">
+			<return type="TableBuilder" />
+			<argument index="0" name="value" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="date">
+			<return type="TableBuilder" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="defval">
+			<return type="TableBuilder" />
+			<argument index="0" name="val" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="drop_table">
+			<return type="TableBuilder" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="drop_table_if_exists">
+			<return type="TableBuilder" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="foreign_key">
+			<return type="TableBuilder" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="integer">
+			<return type="TableBuilder" />
+			<argument index="0" name="name" type="String" />
+			<argument index="1" name="length" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="next_row">
+			<return type="TableBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="not_null">
+			<return type="TableBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="null">
+			<return type="TableBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="primary_key">
+			<return type="TableBuilder" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="real_double">
+			<return type="TableBuilder" />
+			<argument index="0" name="name" type="String" />
+			<argument index="1" name="size" type="int" default="-1" />
+			<argument index="2" name="d" type="int" default="-1" />
+			<description>
+			</description>
+		</method>
+		<method name="real_float">
+			<return type="TableBuilder" />
+			<argument index="0" name="name" type="String" />
+			<argument index="1" name="size" type="int" default="-1" />
+			<argument index="2" name="d" type="int" default="-1" />
+			<description>
+			</description>
+		</method>
+		<method name="references">
+			<return type="TableBuilder" />
+			<argument index="0" name="table" type="String" />
+			<argument index="1" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="run">
+			<return type="QueryResult" />
+			<description>
+			</description>
+		</method>
+		<method name="run_query">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="small_integer">
+			<return type="TableBuilder" />
+			<argument index="0" name="name" type="String" />
+			<argument index="1" name="length" type="int" default="-1" />
+			<description>
+			</description>
+		</method>
+		<method name="text">
+			<return type="TableBuilder" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="tiny_integer">
+			<return type="TableBuilder" />
+			<argument index="0" name="name" type="String" />
+			<argument index="1" name="length" type="int" default="-1" />
+			<description>
+			</description>
+		</method>
+		<method name="varchar">
+			<return type="TableBuilder" />
+			<argument index="0" name="name" type="String" />
+			<argument index="1" name="length" type="int" default="-1" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="result" type="String" setter="set_result" getter="get_result" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

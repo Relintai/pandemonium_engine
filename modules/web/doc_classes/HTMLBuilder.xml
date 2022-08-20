@@ -1,0 +1,1625 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="HTMLBuilder" inherits="Reference" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="a">
+			<return type="_HTMLTag" />
+			<argument index="0" name="href" type="String" default="&quot;&quot;" />
+			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="2" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="abbr">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="acronym">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="address">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="applet">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="area">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="article">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="aside">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="audio">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="b">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="basefont">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="bdi">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="bdo">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="big">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="blockquote">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="body">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="br">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="button">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="c_ol">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ca">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cabbr">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cacronym">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="caddress">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="canvas">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="capplet">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="caption">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="carea">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="carticle">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="caside">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="caudio">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cb">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cbasefont">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cbdi">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cbdo">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cbig">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cblockquote">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cbody">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cbutton">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ccanvas">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ccaption">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ccenter">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ccite">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ccode">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ccol">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ccolgroup">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cdata">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cdatalist">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cdd">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cdel">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cdetails">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cdfn">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cdialog">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cdir">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cdiv">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cdl">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cdt">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cembed">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="center">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="cfieldset">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cfigcaption">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cfigure">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cfont">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cfooter">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cform">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cframe">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cframeset">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ch1">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ch2">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ch3">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ch4">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ch5">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ch6">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="chead">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cheader">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="chr">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="chtml">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ci">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ciframe">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cimg">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cinput">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cins">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cite">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="ckbd">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="clabel">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="clegend">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cli">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="clink">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cmain">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cmap">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cmark">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cmeta">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cmeter">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cnav">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cnoframes">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cnoscript">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cobject">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="code">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="col">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="colgroup">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="comment">
+			<return type="_HTMLBuilder" />
+			<argument index="0" name="val" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="coptgroup">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="coption">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="coutput">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cp">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cparam">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cpicture">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cpre">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cprogress">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cq">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="crp">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="crt">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cruby">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cs">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="csamp">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cscript">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="csection">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cselect">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="csmall">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="csource">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cspan">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="csrf_token">
+			<return type="_HTMLBuilder" />
+			<argument index="0" name="token" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="csrf_tokenr">
+			<return type="_HTMLBuilder" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="cstrike">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cstrong">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cstyle">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="csub">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="csummary">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="csup">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="csvg">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ctable">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ctbody">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ctd">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ctemplateh">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ctextarea">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ctfoot">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cth">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cthead">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ctime">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ctitle">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ctr">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ctrack">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ctt">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cu">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cul">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cvar">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cvideo">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cwbr">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="data">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="datalist">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="dd">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="del">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="details">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="dfn">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="dialog">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="dir">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="div">
+			<return type="_HTMLTag" />
+			<argument index="0" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="1" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="dl">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="doctype">
+			<return type="_HTMLTag" />
+			<argument index="0" name="val" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="dt">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="em">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="embed">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="f">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="fa">
+			<return type="_HTMLBuilder" />
+			<argument index="0" name="href" type="String" />
+			<argument index="1" name="body" type="String" />
+			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="3" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="fdiv">
+			<return type="_HTMLBuilder" />
+			<argument index="0" name="body" type="String" />
+			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="2" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="fieldset">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="figcaption">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="figure">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="flabel">
+			<return type="_HTMLBuilder" />
+			<argument index="0" name="pfor" type="String" />
+			<argument index="1" name="plabel" type="String" />
+			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="3" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="font">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="footer">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="foption">
+			<return type="_HTMLBuilder" />
+			<argument index="0" name="value" type="String" />
+			<argument index="1" name="body" type="String" />
+			<argument index="2" name="selected" type="bool" default="false" />
+			<description>
+			</description>
+		</method>
+		<method name="form">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="form_get">
+			<return type="_HTMLTag" />
+			<argument index="0" name="action" type="String" default="&quot;&quot;" />
+			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="2" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="form_post">
+			<return type="_HTMLTag" />
+			<argument index="0" name="action" type="String" default="&quot;&quot;" />
+			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="2" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="form_postr">
+			<return type="_HTMLBuilder" />
+			<argument index="0" name="action" type="String" />
+			<argument index="1" name="request" type="WebServerRequest" />
+			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="3" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="frame">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="frameset">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="ftextarea">
+			<return type="_HTMLBuilder" />
+			<argument index="0" name="name" type="String" />
+			<argument index="1" name="body" type="String" />
+			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="3" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="h1">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="h2">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="h3">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="h4">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="h5">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="h6">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="head">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="header">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="hr">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="html">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="i">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="iframe">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="img">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="input">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="input_button">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="value" type="String" default="&quot;&quot;" />
+			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="3" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="input_checkbox">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="value" type="String" default="&quot;&quot;" />
+			<argument index="2" name="checked" type="bool" default="false" />
+			<argument index="3" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="4" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="input_color">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="value" type="String" default="&quot;&quot;" />
+			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="3" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="input_date">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="value" type="String" default="&quot;&quot;" />
+			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="3" name="id" type="String" default="&quot;&quot;" />
+			<argument index="4" name="date_min" type="String" default="&quot;&quot;" />
+			<argument index="5" name="date_max" type="String" default="&quot;&quot;" />
+			<argument index="6" name="date_step" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="input_datetime_local">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="value" type="String" default="&quot;&quot;" />
+			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="3" name="id" type="String" default="&quot;&quot;" />
+			<argument index="4" name="date_min" type="String" default="&quot;&quot;" />
+			<argument index="5" name="date_max" type="String" default="&quot;&quot;" />
+			<argument index="6" name="date_step" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="input_email">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="value" type="String" default="&quot;&quot;" />
+			<argument index="2" name="placeholder " type="String" default="&quot;&quot;" />
+			<argument index="3" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="4" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="input_file">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="accept " type="String" default="&quot;&quot;" />
+			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="3" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="input_hidden">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="value" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="input_image">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="src" type="String" default="&quot;&quot;" />
+			<argument index="2" name="alt" type="String" default="&quot;&quot;" />
+			<argument index="3" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="4" name="id" type="String" default="&quot;&quot;" />
+			<argument index="5" name="width" type="int" default="0" />
+			<argument index="6" name="height" type="int" default="0" />
+			<description>
+			</description>
+		</method>
+		<method name="input_month">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="2" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="input_number">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="vmin" type="String" default="&quot;&quot;" />
+			<argument index="2" name="vmax" type="String" default="&quot;&quot;" />
+			<argument index="3" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="4" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="input_password">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="value" type="String" default="&quot;&quot;" />
+			<argument index="2" name="placeholder" type="String" default="&quot;&quot;" />
+			<argument index="3" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="4" name="id" type="String" default="&quot;&quot;" />
+			<argument index="5" name="minlength" type="String" default="&quot;&quot;" />
+			<argument index="6" name="maxlength" type="String" default="&quot;&quot;" />
+			<argument index="7" name="size" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="input_radio">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="value" type="String" default="&quot;&quot;" />
+			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="3" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="input_range">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="value" type="String" default="&quot;&quot;" />
+			<argument index="2" name="vmin" type="String" default="&quot;&quot;" />
+			<argument index="3" name="vmax" type="String" default="&quot;&quot;" />
+			<argument index="4" name="vstep" type="String" default="&quot;&quot;" />
+			<argument index="5" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="6" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="input_reset">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="value" type="String" default="&quot;&quot;" />
+			<argument index="2" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="3" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="input_search">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" />
+			<argument index="1" name="value" type="String" default="&quot;&quot;" />
+			<argument index="2" name="placeholder " type="String" default="&quot;&quot;" />
+			<argument index="3" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="4" name="id" type="String" default="&quot;&quot;" />
+			<argument index="5" name="minlength" type="String" default="&quot;&quot;" />
+			<argument index="6" name="maxlength" type="String" default="&quot;&quot;" />
+			<argument index="7" name="size" type="String" default="&quot;&quot;" />
+			<argument index="8" name="arg8" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="input_submit">
+			<return type="_HTMLTag" />
+			<argument index="0" name="value" type="String" default="&quot;&quot;" />
+			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="2" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="input_tel">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" />
+			<argument index="1" name="value" type="String" default="&quot;&quot;" />
+			<argument index="2" name="placeholder" type="String" default="&quot;&quot;" />
+			<argument index="3" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="4" name="id" type="String" default="&quot;&quot;" />
+			<argument index="5" name="minlength" type="String" default="&quot;&quot;" />
+			<argument index="6" name="maxlength" type="String" default="&quot;&quot;" />
+			<argument index="7" name="size" type="String" default="&quot;&quot;" />
+			<argument index="8" name="arg8" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="input_text">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="value" type="String" default="&quot;&quot;" />
+			<argument index="2" name="placeholder" type="String" default="&quot;&quot;" />
+			<argument index="3" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="4" name="id" type="String" default="&quot;&quot;" />
+			<argument index="5" name="minlength" type="String" default="&quot;&quot;" />
+			<argument index="6" name="maxlength" type="String" default="&quot;&quot;" />
+			<argument index="7" name="size" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="input_time">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="2" name="id" type="String" default="&quot;&quot;" />
+			<argument index="3" name="vmin" type="String" default="&quot;&quot;" />
+			<argument index="4" name="vmax" type="String" default="&quot;&quot;" />
+			<argument index="5" name="vstep" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="input_url">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="value" type="String" default="&quot;&quot;" />
+			<argument index="2" name="placeholder " type="String" default="&quot;&quot;" />
+			<argument index="3" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="4" name="id" type="String" default="&quot;&quot;" />
+			<argument index="5" name="minlength" type="String" default="&quot;&quot;" />
+			<argument index="6" name="maxlength" type="String" default="&quot;&quot;" />
+			<argument index="7" name="size" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="input_week">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="2" name="id" type="String" default="&quot;&quot;" />
+			<argument index="3" name="vmin" type="String" default="&quot;&quot;" />
+			<argument index="4" name="vmax" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="ins">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="kbd">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="label">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="legend">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="li">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="link">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="main">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="map">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="mark">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="meta">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="meter">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="nav">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="noframes">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="noscript">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="object">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="ol">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="optgroup">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="option">
+			<return type="_HTMLTag" />
+			<argument index="0" name="val" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="output">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="p">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="param">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="picture">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="pre">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="progress">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="q">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="rp">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="rt">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="ruby">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="s">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="samp">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="script">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="section">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="select">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="2" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="small">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="source">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="span">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="strike">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="strong">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="style">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="sub">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="summary">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="sup">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="svg">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="table">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="tbody">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="td">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="templateh">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="textarea">
+			<return type="_HTMLTag" />
+			<argument index="0" name="name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="cls" type="String" default="&quot;&quot;" />
+			<argument index="2" name="id" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="tfoot">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="th">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="thead">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="time">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="title">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="tra">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="track">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="tt">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="u">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="ul">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="var">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="video">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="w">
+			<return type="_HTMLBuilder" />
+			<argument index="0" name="val" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="wbn">
+			<return type="_HTMLBuilder" />
+			<argument index="0" name="val" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="wbr">
+			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="wbs">
+			<return type="_HTMLBuilder" />
+			<argument index="0" name="val" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="we">
+			<return type="_HTMLBuilder" />
+			<argument index="0" name="val" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="wi">
+			<return type="_HTMLBuilder" />
+			<argument index="0" name="val" type="int" />
+			<argument index="1" name="base" type="int" default="10" />
+			<argument index="2" name="capitalize_hex" type="bool" default="false" />
+			<description>
+			</description>
+		</method>
+		<method name="wn">
+			<return type="_HTMLBuilder" />
+			<argument index="0" name="val" type="float" />
+			<argument index="1" name="decimals " type="int" default="-1" />
+			<description>
+			</description>
+		</method>
+		<method name="wns">
+			<return type="_HTMLBuilder" />
+			<argument index="0" name="val" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="wr">
+			<return type="_HTMLBuilder" />
+			<argument index="0" name="val" type="float" />
+			<argument index="1" name="trailing " type="bool" default="true" />
+			<description>
+			</description>
+		</method>
+		<method name="write_tag">
+			<return type="_HTMLBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="wui">
+			<return type="_HTMLBuilder" />
+			<argument index="0" name="val" type="int" />
+			<argument index="1" name="base" type="int" default="10" />
+			<argument index="2" name="capitalize_hex" type="bool" default="false" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="result" type="String" setter="set_result" getter="get_result" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

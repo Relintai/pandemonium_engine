@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Vector3i" version="3.5">
+<class name="Vector3i" version="3.7">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -21,6 +21,24 @@
 			<description>
 			</description>
 		</method>
+		<method name="abs">
+			<return type="Vector3i" />
+			<description>
+			</description>
+		</method>
+		<method name="clamp">
+			<return type="Vector3i" />
+			<argument index="0" name="min" type="Vector3i" />
+			<argument index="1" name="max" type="Vector3i" />
+			<description>
+			</description>
+		</method>
+		<method name="get_axis">
+			<return type="int" />
+			<argument index="0" name="axis" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="length">
 			<return type="float" />
 			<description>
@@ -38,13 +56,28 @@
 			<description>
 			</description>
 		</method>
-		<method name="max_axis_index">
+		<method name="max_axis">
 			<return type="int" />
 			<description>
 			</description>
 		</method>
-		<method name="min_axis_index">
+		<method name="min_axis">
 			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_axis">
+			<argument index="0" name="axis" type="int" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="sign">
+			<return type="Vector3i" />
+			<description>
+			</description>
+		</method>
+		<method name="zero">
 			<description>
 			</description>
 		</method>

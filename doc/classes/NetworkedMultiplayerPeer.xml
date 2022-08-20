@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="NetworkedMultiplayerPeer" inherits="PacketPeer" version="3.5">
+<class name="NetworkedMultiplayerPeer" inherits="PacketPeer" version="3.7">
 	<brief_description>
 		A high-level network interface to simplify multiplayer interactions.
 	</brief_description>
@@ -12,6 +12,11 @@
 		<link title="WebRTC Signaling Demo">https://godotengine.org/asset-library/asset/537</link>
 	</tutorials>
 	<methods>
+		<method name="generate_unique_id" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="get_connection_status" qualifiers="const">
 			<return type="int" enum="NetworkedMultiplayerPeer.ConnectionStatus" />
 			<description>

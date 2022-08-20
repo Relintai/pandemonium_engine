@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="Database" inherits="Reference" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_connection">
+			<return type="DatabaseConnection" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="connection_string" type="String" setter="set_connection_string" getter="get_connection_string" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

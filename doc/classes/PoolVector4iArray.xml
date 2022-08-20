@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PoolVector4iArray" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="PoolVector4iArray">
+			<return type="PoolVector4iArray" />
+			<argument index="0" name="from" type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="append">
+			<argument index="0" name="vector4i" type="Vector4i" />
+			<description>
+			</description>
+		</method>
+		<method name="append_array">
+			<argument index="0" name="array" type="PoolVector4iArray" />
+			<description>
+			</description>
+		</method>
+		<method name="clear">
+			<description>
+			</description>
+		</method>
+		<method name="contains">
+			<return type="bool" />
+			<argument index="0" name="value" type="Vector4i" />
+			<description>
+			</description>
+		</method>
+		<method name="count">
+			<return type="int" />
+			<argument index="0" name="value" type="Vector4i" />
+			<description>
+			</description>
+		</method>
+		<method name="empty">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="fill">
+			<argument index="0" name="vector4i" type="Vector4i" />
+			<description>
+			</description>
+		</method>
+		<method name="find">
+			<return type="int" />
+			<argument index="0" name="value" type="Vector4i" />
+			<argument index="1" name="from" type="int" default="0" />
+			<description>
+			</description>
+		</method>
+		<method name="has">
+			<return type="bool" />
+			<argument index="0" name="value" type="Vector4i" />
+			<description>
+			</description>
+		</method>
+		<method name="insert">
+			<return type="int" />
+			<argument index="0" name="idx" type="int" />
+			<argument index="1" name="vector4i" type="Vector4i" />
+			<description>
+			</description>
+		</method>
+		<method name="invert">
+			<description>
+			</description>
+		</method>
+		<method name="push_back">
+			<argument index="0" name="vector4i" type="Vector4i" />
+			<description>
+			</description>
+		</method>
+		<method name="remove">
+			<argument index="0" name="idx" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="resize">
+			<argument index="0" name="idx" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="rfind">
+			<return type="int" />
+			<argument index="0" name="value" type="Vector4i" />
+			<argument index="1" name="from" type="int" default="-1" />
+			<description>
+			</description>
+		</method>
+		<method name="set">
+			<argument index="0" name="idx" type="int" />
+			<argument index="1" name="vector4i" type="Vector4i" />
+			<description>
+			</description>
+		</method>
+		<method name="size">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="sort">
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

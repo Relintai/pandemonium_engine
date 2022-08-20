@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMBricks" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="bevel" type="MMNodeUniversalProperty" setter="set_bevel" getter="get_bevel">
+		</member>
+		<member name="col_row" type="Vector2" setter="set_col_row" getter="get_col_row" default="Vector2( 4, 4 )">
+		</member>
+		<member name="corner" type="float" setter="set_corner" getter="get_corner" default="0.3">
+		</member>
+		<member name="mortar" type="MMNodeUniversalProperty" setter="set_mortar" getter="get_mortar">
+		</member>
+		<member name="offset" type="float" setter="set_offset" getter="get_offset" default="0.5">
+		</member>
+		<member name="out_brick_uv" type="MMNodeUniversalProperty" setter="set_out_brick_uv" getter="get_out_brick_uv">
+		</member>
+		<member name="out_bricks_pattern" type="MMNodeUniversalProperty" setter="set_out_bricks_pattern" getter="get_out_bricks_pattern">
+		</member>
+		<member name="out_corner_uv" type="MMNodeUniversalProperty" setter="set_out_corner_uv" getter="get_out_corner_uv">
+		</member>
+		<member name="out_direction" type="MMNodeUniversalProperty" setter="set_out_direction" getter="get_out_direction">
+		</member>
+		<member name="out_position_x" type="MMNodeUniversalProperty" setter="set_out_position_x" getter="get_out_position_x">
+		</member>
+		<member name="out_position_y" type="MMNodeUniversalProperty" setter="set_out_position_y" getter="get_out_position_y">
+		</member>
+		<member name="out_random_color" type="MMNodeUniversalProperty" setter="set_out_random_color" getter="get_out_random_color">
+		</member>
+		<member name="repeat" type="int" setter="set_repeat" getter="get_repeat" default="1">
+		</member>
+		<member name="roundness" type="MMNodeUniversalProperty" setter="set_roundness" getter="get_roundness">
+		</member>
+		<member name="type" type="int" setter="set_type" getter="get_type" default="0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Node" inherits="Object" version="3.5">
+<class name="Node" inherits="Object" version="3.7">
 	<brief_description>
 		Base class for all [i]scene[/i] objects.
 	</brief_description>
@@ -332,6 +332,11 @@
 				Returns the node's [Viewport].
 			</description>
 		</method>
+		<method name="has_network_peer">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
 		<method name="has_node" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="path" type="NodePath" />
@@ -378,10 +383,20 @@
 				Returns [code]true[/code] if this node is currently inside a [SceneTree].
 			</description>
 		</method>
+		<method name="is_network_client">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
 		<method name="is_network_master" qualifiers="const">
 			<return type="bool" />
 			<description>
 				Returns [code]true[/code] if the local system is the master of this node.
+			</description>
+		</method>
+		<method name="is_network_server">
+			<return type="bool" />
+			<description>
 			</description>
 		</method>
 		<method name="is_physics_interpolated" qualifiers="const">
@@ -591,40 +606,61 @@
 			<description>
 			</description>
 		</method>
-		<method name="rset">
+		<method name="seen_by_add">
 			<return type="void" />
-			<argument index="0" name="property" type="StringName" />
-			<argument index="1" name="value" type="Variant" />
+			<argument index="0" name="entity" type="Node" />
 			<description>
 			</description>
 		</method>
-		<method name="rset_config">
-			<return type="void" />
-			<argument index="0" name="property" type="StringName" />
-			<argument index="1" name="mode" type="int" enum="MultiplayerAPI.RPCMode" />
+		<method name="seen_by_get">
+			<return type="Node" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
-		<method name="rset_id">
-			<return type="void" />
-			<argument index="0" name="peer_id" type="int" />
-			<argument index="1" name="property" type="StringName" />
-			<argument index="2" name="value" type="Variant" />
+		<method name="seen_by_get_count">
+			<return type="int" />
 			<description>
 			</description>
 		</method>
-		<method name="rset_unreliable">
+		<method name="seen_by_remove">
 			<return type="void" />
-			<argument index="0" name="property" type="StringName" />
-			<argument index="1" name="value" type="Variant" />
+			<argument index="0" name="entity" type="Node" />
 			<description>
 			</description>
 		</method>
-		<method name="rset_unreliable_id">
+		<method name="seen_by_remove_index">
 			<return type="void" />
-			<argument index="0" name="peer_id" type="int" />
-			<argument index="1" name="property" type="StringName" />
-			<argument index="2" name="value" type="Variant" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="sees_add">
+			<return type="void" />
+			<argument index="0" name="entity" type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="sees_get">
+			<return type="Node" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="sees_get_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="sees_remove">
+			<return type="void" />
+			<argument index="0" name="entity" type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="sees_remove_index">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
@@ -708,6 +744,18 @@
 				Use [method _get_configuration_warning] to setup the warning message to display.
 			</description>
 		</method>
+		<method name="vrpc" qualifiers="vararg">
+			<return type="Variant" />
+			<argument index="0" name="method" type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="vrpc_unreliable" qualifiers="vararg">
+			<return type="Variant" />
+			<argument index="0" name="method" type="StringName" />
+			<description>
+			</description>
+		</method>
 	</methods>
 	<members>
 		<member name="custom_multiplayer" type="MultiplayerAPI" setter="set_custom_multiplayer" getter="get_custom_multiplayer">
@@ -727,12 +775,12 @@
 			The node owner. A node can have any other node as owner (as long as it is a valid parent, grandparent, etc. ascending in the tree). When saving a node (using [PackedScene]), all the nodes it owns will be saved with it. This allows for the creation of complex [SceneTree]s, with instancing and subinstancing.
 			[b]Note:[/b] If you want a child to be persisted to a [PackedScene], you must set [member owner] in addition to calling [method add_child]. This is typically relevant for [url=$DOCS_URL/tutorials/plugins/running_code_in_the_editor.html]tool scripts[/url] and [url=$DOCS_URL/tutorials/plugins/editor/index.html]editor plugins[/url]. If [method add_child] is called without setting [member owner], the newly added [Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
 		</member>
+		<member name="pause_mode" type="int" setter="set_pause_mode" getter="get_pause_mode" enum="Node.PauseMode" default="0">
+			Pause mode. How the node will behave if the [SceneTree] is paused.
+		</member>
 		<member name="physics_interpolation_mode" type="int" setter="set_physics_interpolation_mode" getter="get_physics_interpolation_mode" enum="Node.PhysicsInterpolationMode" default="0">
 			Allows enabling or disabling physics interpolation per node, offering a finer grain of control than turning physics interpolation on and off globally.
 			[b]Note:[/b] This can be especially useful for [Camera]s, where custom interpolation can sometimes give superior results.
-		</member>
-		<member name="pause_mode" type="int" setter="set_pause_mode" getter="get_pause_mode" enum="Node.PauseMode" default="0">
-			Pause mode. How the node will behave if the [SceneTree] is paused.
 		</member>
 		<member name="process_priority" type="int" setter="set_process_priority" getter="get_process_priority" default="0">
 			The node's priority in the execution order of the enabled processing callbacks (i.e. [constant NOTIFICATION_PROCESS], [constant NOTIFICATION_PHYSICS_PROCESS] and their internal counterparts). Nodes whose process priority value is [i]lower[/i] will have their processing callbacks executed first.
@@ -843,14 +891,14 @@
 		<constant name="NOTIFICATION_POST_ENTER_TREE" value="27">
 			Notification received when the node is ready, just before [constant NOTIFICATION_READY] is received. Unlike the latter, it's sent every time the node enters tree, instead of only once.
 		</constant>
+		<constant name="NOTIFICATION_RESET_PHYSICS_INTERPOLATION" value="28">
+			Notification received when [method reset_physics_interpolation] is called on the node or parent nodes.
+		</constant>
 		<constant name="NOTIFICATION_EDITOR_PRE_SAVE" value="9001">
 			Notification received right before the scene with the node is saved in the editor. This notification is only sent in the Godot editor and will not occur in exported projects.
 		</constant>
 		<constant name="NOTIFICATION_EDITOR_POST_SAVE" value="9002">
 			Notification received right after the scene with the node is saved in the editor. This notification is only sent in the Godot editor and will not occur in exported projects.
-		</constant>
-		<constant name="NOTIFICATION_RESET_PHYSICS_INTERPOLATION" value="28">
-			Notification received when [method reset_physics_interpolation] is called on the node or parent nodes.
 		</constant>
 		<constant name="NOTIFICATION_WM_MOUSE_ENTER" value="1002">
 			Notification received from the OS when the mouse enters the game window.

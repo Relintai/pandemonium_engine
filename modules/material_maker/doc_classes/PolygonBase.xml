@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PolygonBase" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_polygon_changed" qualifiers="virtual">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="add_point">
+			<return type="void" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="y" type="float" />
+			<argument index="2" name="closed" type="bool" default="true" />
+			<description>
+			</description>
+		</method>
+		<method name="clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_point">
+			<return type="Vector2" />
+			<argument index="0" name="i" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_point_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="polygon_changed">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_point">
+			<return type="bool" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_point">
+			<return type="void" />
+			<argument index="0" name="i" type="int" />
+			<argument index="1" name="v" type="Vector2" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="points" type="PoolVector2Array" setter="set_points" getter="get_points" default="PoolVector2Array( 0.2, 0.2, 0.7, 0.4, 0.4, 0.7 )">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

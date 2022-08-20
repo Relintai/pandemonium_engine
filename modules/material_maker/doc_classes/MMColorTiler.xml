@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMColorTiler" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="tiler_calc">
+			<return type="PoolColorArray" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="tile" type="Vector2" />
+			<argument index="2" name="overlap" type="int" />
+			<argument index="3" name="_seed" type="Vector2" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="fixed_offset" type="float" setter="set_fixed_offset" getter="get_fixed_offset" default="0.0">
+		</member>
+		<member name="in_mask" type="MMNodeUniversalProperty" setter="set_in_mask" getter="get_in_mask">
+		</member>
+		<member name="input" type="MMNodeUniversalProperty" setter="set_input" getter="get_input">
+		</member>
+		<member name="instance_map" type="MMNodeUniversalProperty" setter="set_instance_map" getter="get_instance_map">
+		</member>
+		<member name="output" type="MMNodeUniversalProperty" setter="set_output" getter="get_output">
+		</member>
+		<member name="overlap" type="float" setter="set_overlap" getter="get_overlap" default="1.0">
+		</member>
+		<member name="rnd_offset" type="float" setter="set_rnd_offset" getter="get_rnd_offset" default="0.25">
+		</member>
+		<member name="rnd_opacity" type="float" setter="set_rnd_opacity" getter="get_rnd_opacity" default="0.0">
+		</member>
+		<member name="rnd_rotate" type="float" setter="set_rnd_rotate" getter="get_rnd_rotate" default="45.0">
+		</member>
+		<member name="rnd_scale" type="float" setter="set_rnd_scale" getter="get_rnd_scale" default="0.2">
+		</member>
+		<member name="scale" type="Vector2" setter="set_scale" getter="get_scale" default="Vector2( 0.5, 0.5 )">
+		</member>
+		<member name="select_inputs" type="int" setter="set_select_inputs" getter="get_select_inputs" default="0">
+		</member>
+		<member name="tile" type="Vector2" setter="set_tile" getter="get_tile" default="Vector2( 4, 4 )">
+		</member>
+		<member name="variations" type="bool" setter="set_variations" getter="get_variations" default="false">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

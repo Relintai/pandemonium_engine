@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="FileSystemDock" inherits="VBoxContainer" version="3.5">
+<class name="FileSystemDock" inherits="VBoxContainer" version="3.7">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -38,6 +38,11 @@
 		</method>
 	</methods>
 	<signals>
+		<signal name="custom_popup_creation_entry_pressed">
+			<argument index="0" name="id" type="int" />
+			<description>
+			</description>
+		</signal>
 		<signal name="display_mode_changed">
 			<description>
 			</description>

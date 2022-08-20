@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="BrushAction" inherits="PaintAction" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="action_data" type="Dictionary" setter="set_action_data" getter="get_action_data" overrides="PaintAction" default="{}" />
+		<member name="action_data_preview" type="Dictionary" setter="set_action_data_preview" getter="get_action_data_preview" overrides="PaintAction" default="{}" />
+		<member name="action_data_redo" type="Dictionary" setter="set_action_data_redo" getter="get_action_data_redo" overrides="PaintAction" default="{}" />
+		<member name="action_data_undo" type="Dictionary" setter="set_action_data_undo" getter="get_action_data_undo" overrides="PaintAction" default="{}" />
+	</members>
+	<constants>
+	</constants>
+</class>

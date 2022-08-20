@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="TiledWallData" inherits="Resource" version="3.5">
+<class name="TiledWallData" inherits="Resource" version="3.7">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -13,9 +13,12 @@
 			<description>
 			</description>
 		</method>
-		<method name="add_texture">
+		<method name="add_flavour_tile">
 			<return type="void" />
 			<argument index="0" name="texture" type="Texture" />
+			<argument index="1" name="y_size" type="float" default="1" />
+			<argument index="2" name="z_offset" type="float" default="0" />
+			<argument index="3" name="texture_scale" type="int" default="1" />
 			<description>
 			</description>
 		</method>
@@ -25,9 +28,12 @@
 			<description>
 			</description>
 		</method>
-		<method name="add_tflavour_exture">
+		<method name="add_tile">
 			<return type="void" />
 			<argument index="0" name="texture" type="Texture" />
+			<argument index="1" name="y_size" type="float" default="1" />
+			<argument index="2" name="z_offset" type="float" default="0" />
+			<argument index="3" name="texture_scale" type="int" default="1" />
 			<description>
 			</description>
 		</method>
@@ -37,25 +43,51 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_flavour_texture" qualifiers="const">
+		<method name="get_flavour_tile_texture" qualifiers="const">
 			<return type="Texture" />
 			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
-		<method name="get_flavour_texture_count" qualifiers="const">
+		<method name="get_flavour_tile_texture_scale" qualifiers="const">
 			<return type="int" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
-		<method name="get_texture" qualifiers="const">
+		<method name="get_flavour_tile_y_size" qualifiers="const">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_flavour_tile_z_offset" qualifiers="const">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_tile_texture" qualifiers="const">
 			<return type="Texture" />
 			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
-		<method name="get_texture_count" qualifiers="const">
+		<method name="get_tile_texture_scale" qualifiers="const">
 			<return type="int" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_tile_y_size" qualifiers="const">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_tile_z_offset" qualifiers="const">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
@@ -88,29 +120,71 @@
 			<description>
 			</description>
 		</method>
-		<method name="remove_flavour_texture">
+		<method name="remove_flavour_tile">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
-		<method name="remove_texture">
+		<method name="remove_tile">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
-		<method name="set_flavour_texture">
+		<method name="set_flavour_tile_texture">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="texture" type="Texture" />
 			<description>
 			</description>
 		</method>
-		<method name="set_texture">
+		<method name="set_flavour_tile_texture_scale">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="val" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_flavour_tile_y_size">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="val" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_flavour_tile_z_offset">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="val" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_tile_texture">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="texture" type="Texture" />
+			<description>
+			</description>
+		</method>
+		<method name="set_tile_texture_scale">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="val" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_tile_y_size">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="val" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_tile_z_offset">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="val" type="float" />
 			<description>
 			</description>
 		</method>
@@ -122,13 +196,17 @@
 		</method>
 	</methods>
 	<members>
-		<member name="flavour_chance" type="float" setter="set_flavour_chance" getter="get_flavour_chance" default="0.15">
+		<member name="collider_type" type="int" setter="set_collider_type" getter="get_collider_type" enum="TiledWallData.TiledWallColliderType" default="1">
 		</member>
-		<member name="flavour_textures" type="Array" setter="set_flavour_textures" getter="get_flavour_textures" default="[  ]">
+		<member name="collider_z_offset" type="float" setter="set_collider_z_offset" getter="get_collider_z_offset" default="0.0">
+		</member>
+		<member name="flavour_tile_chance" type="float" setter="set_flavour_tile_chance" getter="get_flavour_tile_chance" default="0.15">
+		</member>
+		<member name="flavour_tile_count" type="int" setter="set_flavour_tile_count" getter="get_flavour_tile_count" default="0">
 		</member>
 		<member name="materials" type="Array" setter="materials_set" getter="materials_get" default="[  ]">
 		</member>
-		<member name="textures" type="Array" setter="set_textures" getter="get_textures" default="[  ]">
+		<member name="set_tile_count" type="int" setter="set_tile_count" getter="get_tile_count" default="0">
 		</member>
 		<member name="tiling_type" type="int" setter="set_tiling_type" getter="get_tiling_type" enum="TiledWallData.TiledWallTilingType" default="0">
 		</member>

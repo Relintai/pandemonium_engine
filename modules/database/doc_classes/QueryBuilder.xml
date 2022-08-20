@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="QueryBuilder" inherits="Reference" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="asc">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="begin_transaction">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="commit">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="corder_by">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cset">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cstr">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="cvalues">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="del">
+			<return type="QueryBuilder" />
+			<argument index="0" name="params" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="desc">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="end_command">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="escape">
+			<return type="String" />
+			<argument index="0" name="param" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="ew">
+			<return type="QueryBuilder" />
+			<argument index="0" name="str" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="from">
+			<return type="QueryBuilder" />
+			<argument index="0" name="params" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="insert">
+			<return type="QueryBuilder" />
+			<argument index="0" name="table_name" type="String" default="&quot;&quot;" />
+			<argument index="1" name="colums" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="land">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="like">
+			<return type="QueryBuilder" />
+			<argument index="0" name="str" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="limit">
+			<return type="QueryBuilder" />
+			<argument index="0" name="num" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="lor">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="ndel">
+			<return type="QueryBuilder" />
+			<argument index="0" name="params" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="next_value">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="nfrom">
+			<return type="QueryBuilder" />
+			<argument index="0" name="params" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="nl">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="nlike">
+			<return type="QueryBuilder" />
+			<argument index="0" name="str" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="nselect">
+			<return type="QueryBuilder" />
+			<argument index="0" name="params" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="nsetp">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" />
+			<argument index="1" name="escape_param" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="nupdate">
+			<return type="QueryBuilder" />
+			<argument index="0" name="params" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="nval">
+			<return type="QueryBuilder" />
+			<argument index="0" name="param" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="nvalues">
+			<return type="QueryBuilder" />
+			<argument index="0" name="params_str" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="nwhere">
+			<return type="QueryBuilder" />
+			<argument index="0" name="params" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="nwp">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" />
+			<argument index="1" name="escape_param" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="offset">
+			<return type="QueryBuilder" />
+			<argument index="0" name="num" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="order_by">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="order_by_add_col">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="order_by_asc">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="order_by_desc">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="prepare">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="reset">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="run">
+			<return type="QueryResult" />
+			<description>
+			</description>
+		</method>
+		<method name="run_query">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="select">
+			<return type="QueryBuilder" />
+			<argument index="0" name="params" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="select_last_insert_id">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="set_paramf">
+			<return type="QueryBuilder" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_parami">
+			<return type="QueryBuilder" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_params">
+			<return type="QueryBuilder" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="setpb">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" />
+			<argument index="1" name="param" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="setpd">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" />
+			<argument index="1" name="param" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="setpf">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" />
+			<argument index="1" name="param" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="setpi">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" />
+			<argument index="1" name="param" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="setps">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" />
+			<argument index="1" name="param" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="sets">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="str">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="update">
+			<return type="QueryBuilder" />
+			<argument index="0" name="params" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="val">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="valb">
+			<return type="QueryBuilder" />
+			<argument index="0" name="param" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="vald">
+			<return type="QueryBuilder" />
+			<argument index="0" name="param" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="valf">
+			<return type="QueryBuilder" />
+			<argument index="0" name="param" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="vali">
+			<return type="QueryBuilder" />
+			<argument index="0" name="param" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="vals">
+			<return type="QueryBuilder" />
+			<argument index="0" name="param" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="values">
+			<return type="QueryBuilder" />
+			<argument index="0" name="params_str" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="w">
+			<return type="QueryBuilder" />
+			<argument index="0" name="str" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="where">
+			<return type="QueryBuilder" />
+			<argument index="0" name="params" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="wildcard">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="wpb">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" />
+			<argument index="1" name="param" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="wpi">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" />
+			<argument index="1" name="param" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="wps">
+			<return type="QueryBuilder" />
+			<argument index="0" name="col" type="String" />
+			<argument index="1" name="param" type="String" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="result" type="String" setter="set_result" getter="get_result" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

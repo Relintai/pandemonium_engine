@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="FormMaximumLengthFieldEntry" inherits="FormFieldEntry" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="does_not_have_max_length_errorf" type="String" setter="set_does_not_have_max_length_errorf" getter="get_does_not_have_max_length_errorf" default="&quot; needs at most &quot;">
+		</member>
+		<member name="does_not_have_max_length_errors" type="String" setter="set_does_not_have_max_length_errors" getter="get_does_not_have_max_length_errors" default="&quot; characters!&quot;">
+		</member>
+		<member name="max_length" type="int" setter="set_max_length" getter="get_max_length" default="10">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

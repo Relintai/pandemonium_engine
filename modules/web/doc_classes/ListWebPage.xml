@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ListWebPage" inherits="WebNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="load">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="empty_div_class" type="String" setter="set_empty_div_class" getter="get_empty_div_class" default="&quot;list_entry_empty&quot;">
+		</member>
+		<member name="entry_div_class" type="String" setter="set_entry_div_class" getter="get_entry_div_class" default="&quot;list_entry&quot;">
+		</member>
+		<member name="entry_per_page" type="int" setter="set_entry_per_page" getter="get_entry_per_page" default="4">
+		</member>
+		<member name="folder" type="String" setter="set_folder" getter="get_folder" default="&quot;&quot;">
+		</member>
+		<member name="main_div_class" type="String" setter="set_main_div_class" getter="get_main_div_class" default="&quot;list_page&quot;">
+		</member>
+		<member name="max_visible_navigation_links" type="int" setter="set_max_visible_navigation_links" getter="get_max_visible_navigation_links" default="6">
+		</member>
+		<member name="paginate" type="bool" setter="set_paginate" getter="get_paginate" default="true">
+		</member>
+		<member name="placeholder_text" type="String" setter="set_placeholder_text" getter="get_placeholder_text" default="&quot;No content yet!&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

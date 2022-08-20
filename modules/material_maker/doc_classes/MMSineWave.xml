@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMSineWave" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="amplitude" type="float" setter="set_amplitude" getter="get_amplitude" default="0.5">
+		</member>
+		<member name="frequency" type="float" setter="set_frequency" getter="get_frequency" default="2.0">
+		</member>
+		<member name="image" type="MMNodeUniversalProperty" setter="set_image" getter="get_image">
+		</member>
+		<member name="phase" type="float" setter="set_phase" getter="get_phase" default="0.0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

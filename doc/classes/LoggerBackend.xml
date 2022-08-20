@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="LoggerBackend" inherits="Reference" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_log_error" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="str" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_log_message" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="str" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_log_trace" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="str" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="_log_warning" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="str" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="log_error">
+			<return type="void" />
+			<argument index="0" name="str" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="log_message">
+			<return type="void" />
+			<argument index="0" name="str" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="log_trace">
+			<return type="void" />
+			<argument index="0" name="str" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="log_warning">
+			<return type="void" />
+			<argument index="0" name="str" type="String" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

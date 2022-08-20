@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SkeletonModification3DTwoBoneIK" inherits="SkeletonModification3D" version="4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+<class name="SkeletonModification3DTwoBoneIK" inherits="SkeletonModification3D" version="3.7">
 	<brief_description>
 		A modification that moves two bones to reach the target.
 	</brief_description>
@@ -188,4 +188,6 @@
 			The NodePath to the node that is the target for the TwoBoneIK modification. This node is what the modification will attempt to rotate the bones to reach.
 		</member>
 	</members>
+	<constants>
+	</constants>
 </class>

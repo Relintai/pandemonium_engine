@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MarkdownRenderer" inherits="Reference" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="render_to_html">
+			<return type="String" />
+			<argument index="0" name="markdown" type="String" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="html_flags" type="int" setter="set_html_flags" getter="get_html_flags" default="0">
+		</member>
+		<member name="markdown_extensions" type="int" setter="set_markdown_extensions" getter="get_markdown_extensions" default="1051">
+		</member>
+		<member name="max_nesting" type="int" setter="set_max_nesting" getter="get_max_nesting" default="16">
+		</member>
+		<member name="render_type" type="int" setter="set_render_type" getter="get_render_type" enum="MarkdownRenderer.RenderType" default="0">
+		</member>
+		<member name="toc_level" type="int" setter="set_toc_level" getter="get_toc_level" default="0">
+		</member>
+		<member name="use_smartypants" type="bool" setter="set_use_smartypants" getter="get_use_smartypants" default="false">
+		</member>
+	</members>
+	<constants>
+		<constant name="RENDER_TYPE_HTML" value="0" enum="RenderType">
+		</constant>
+		<constant name="RENDER_TYPE_HTML_TOC" value="1" enum="RenderType">
+		</constant>
+		<constant name="HTML_FLAG_SKIP_HTML" value="1" enum="HTMLFlags">
+		</constant>
+		<constant name="HTML_FLAG_ESCAPE" value="2" enum="HTMLFlags">
+		</constant>
+		<constant name="HTML_FLAG_HARD_WRAP" value="4" enum="HTMLFlags">
+		</constant>
+		<constant name="HTML_FLAG_USE_XHTML" value="8" enum="HTMLFlags">
+		</constant>
+		<constant name="EXTENSION_TABLES" value="1" enum="MarkdownExtensions">
+		</constant>
+		<constant name="EXTENSION_FENCED_CODE" value="2" enum="MarkdownExtensions">
+		</constant>
+		<constant name="EXTENSION_FOOTNOTES" value="4" enum="MarkdownExtensions">
+		</constant>
+		<constant name="EXTENSION_AUTOLINK" value="8" enum="MarkdownExtensions">
+		</constant>
+		<constant name="EXTENSION_STRKIETHROUGH" value="16" enum="MarkdownExtensions">
+		</constant>
+		<constant name="EXTENSION_UNDERLINE" value="32" enum="MarkdownExtensions">
+		</constant>
+		<constant name="EXTENSION_HIGHLIGHT" value="64" enum="MarkdownExtensions">
+		</constant>
+		<constant name="EXTENSION_QUOTE" value="128" enum="MarkdownExtensions">
+		</constant>
+		<constant name="EXTENSION_SUPERSCRIPT" value="256" enum="MarkdownExtensions">
+		</constant>
+		<constant name="EXTENSION_MATH" value="512" enum="MarkdownExtensions">
+		</constant>
+		<constant name="EXTENSION_NO_INTRA_EMPHASIS" value="1024" enum="MarkdownExtensions">
+		</constant>
+		<constant name="EXTENSION_SPACE_HEADERS" value="2048" enum="MarkdownExtensions">
+		</constant>
+		<constant name="EXTENSION_MATH_EXPLICIT" value="4096" enum="MarkdownExtensions">
+		</constant>
+		<constant name="EXTENSION_DISABLE_INDENTED_CODE" value="8192" enum="MarkdownExtensions">
+		</constant>
+	</constants>
+</class>

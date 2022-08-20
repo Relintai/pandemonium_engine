@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="RichTextLabel" inherits="Control" version="3.5">
+<class name="RichTextLabel" inherits="Control" version="3.7">
 	<brief_description>
 		Label that displays rich text.
 	</brief_description>
@@ -324,18 +324,6 @@
 		</signal>
 	</signals>
 	<constants>
-		<constant name="INLINE_ALIGN_TOP" value="0" enum="InlineAlign">
-			Aligns top of the inline image to the top of the text.
-		</constant>
-		<constant name="INLINE_ALIGN_CENTER" value="1" enum="InlineAlign">
-			Aligns center of the inline image to the center of the text.
-		</constant>
-		<constant name="INLINE_ALIGN_BASELINE" value="2" enum="InlineAlign">
-			Aligns bottom of the inline image to the baseline of the text.
-		</constant>
-		<constant name="INLINE_ALIGN_BOTTOM" value="3" enum="InlineAlign">
-			Aligns bottom of the inline image to the bottom of the text.
-		</constant>
 		<constant name="ALIGN_LEFT" value="0" enum="Align">
 			Makes text left aligned.
 		</constant>
@@ -347,6 +335,18 @@
 		</constant>
 		<constant name="ALIGN_FILL" value="3" enum="Align">
 			Makes text fill width.
+		</constant>
+		<constant name="INLINE_ALIGN_TOP" value="0" enum="InlineAlign">
+			Aligns top of the inline image to the top of the text.
+		</constant>
+		<constant name="INLINE_ALIGN_CENTER" value="1" enum="InlineAlign">
+			Aligns center of the inline image to the center of the text.
+		</constant>
+		<constant name="INLINE_ALIGN_BASELINE" value="2" enum="InlineAlign">
+			Aligns bottom of the inline image to the baseline of the text.
+		</constant>
+		<constant name="INLINE_ALIGN_BOTTOM" value="3" enum="InlineAlign">
+			Aligns bottom of the inline image to the bottom of the text.
 		</constant>
 		<constant name="LIST_NUMBERS" value="0" enum="ListType">
 			Each list item has a number marker.

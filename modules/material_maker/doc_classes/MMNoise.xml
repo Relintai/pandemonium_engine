@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMNoise" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="density" type="float" setter="set_density" getter="get_density" default="0.5">
+		</member>
+		<member name="grid_size" type="int" setter="set_grid_size" getter="get_grid_size" default="16">
+		</member>
+		<member name="image" type="MMNodeUniversalProperty" setter="set_image" getter="get_image">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

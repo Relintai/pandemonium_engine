@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMDecompose" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="input" type="MMNodeUniversalProperty" setter="set_input" getter="get_input">
+		</member>
+		<member name="out_a" type="MMNodeUniversalProperty" setter="set_out_a" getter="get_out_a">
+		</member>
+		<member name="out_b" type="MMNodeUniversalProperty" setter="set_out_b" getter="get_out_b">
+		</member>
+		<member name="out_g" type="MMNodeUniversalProperty" setter="set_out_g" getter="get_out_g">
+		</member>
+		<member name="out_r" type="MMNodeUniversalProperty" setter="set_out_r" getter="get_out_r">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

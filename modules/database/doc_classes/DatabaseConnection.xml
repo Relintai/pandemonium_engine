@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="DatabaseConnection" inherits="Reference" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="database_connect">
+			<return type="void" />
+			<argument index="0" name="connection_str" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="ensure_version_table_exists">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="escape">
+			<return type="String" />
+			<argument index="0" name="str" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_owner">
+			<return type="Database" />
+			<description>
+			</description>
+		</method>
+		<method name="get_query_builder">
+			<return type="QueryBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="get_table_builder">
+			<return type="TableBuilder" />
+			<description>
+			</description>
+		</method>
+		<method name="get_table_version">
+			<return type="int" />
+			<argument index="0" name="table" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="query">
+			<return type="QueryResult" />
+			<argument index="0" name="query" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="query_run">
+			<return type="void" />
+			<argument index="0" name="query" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_table_version">
+			<return type="void" />
+			<argument index="0" name="table" type="String" />
+			<argument index="1" name="version" type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

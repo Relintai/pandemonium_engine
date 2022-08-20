@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMShear" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="amount" type="float" setter="set_amount" getter="get_amount" default="1.0">
+		</member>
+		<member name="center" type="float" setter="set_center" getter="get_center" default="0.0">
+		</member>
+		<member name="direction" type="int" setter="set_direction" getter="get_direction" default="0">
+		</member>
+		<member name="image" type="MMNodeUniversalProperty" setter="set_image" getter="get_image">
+		</member>
+		<member name="input" type="MMNodeUniversalProperty" setter="set_input" getter="get_input">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

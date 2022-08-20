@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="WebRoot" inherits="WebNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="process_middlewares">
+			<return type="bool" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="register_request_update">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="send_file">
+			<return type="void" />
+			<argument index="0" name="path" type="String" />
+			<argument index="1" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="try_send_wwwroot_file">
+			<return type="bool" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+		<method name="unregister_request_update">
+			<return type="void" />
+			<argument index="0" name="request" type="WebServerRequest" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="middlewares" type="Array" setter="set_middlewares" getter="get_middlewares" default="[  ]">
+		</member>
+		<member name="www_root_file_cache" type="FileCache" setter="" getter="get_www_root_file_cache">
+		</member>
+		<member name="www_root_path" type="String" setter="set_www_root_path" getter="get_www_root_path" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

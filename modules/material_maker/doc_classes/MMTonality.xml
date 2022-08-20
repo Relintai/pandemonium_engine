@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMTonality" inherits="CurveBase" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="image" type="MMNodeUniversalProperty" setter="set_image" getter="get_image">
+		</member>
+		<member name="input" type="MMNodeUniversalProperty" setter="set_input" getter="get_input">
+		</member>
+		<member name="points_array" type="PoolRealArray" setter="set_points_array" getter="get_points_array" overrides="CurveBase" default="PoolRealArray( 0, 0, 0, 1, 1, 1, 1, 0 )" />
+	</members>
+	<constants>
+	</constants>
+</class>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="HTTPSession" inherits="Reference" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add">
+			<return type="void" />
+			<argument index="0" name="key" type="String" />
+			<argument index="1" name="value" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_value">
+			<return type="Variant" />
+			<argument index="0" name="key" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="has">
+			<return type="bool" />
+			<argument index="0" name="key" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="remove">
+			<return type="void" />
+			<argument index="0" name="key" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="reset">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+		</member>
+		<member name="session_id" type="String" setter="set_session_id" getter="get_session_id" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

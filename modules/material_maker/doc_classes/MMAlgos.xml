@@ -1,0 +1,2089 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMAlgos" inherits="Object" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="IChing">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="IChingc">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="row_col" type="Vector2" />
+			<argument index="2" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="ThickLine">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="posA" type="Vector2" />
+			<argument index="2" name="posB" type="Vector2" />
+			<argument index="3" name="radiusInv" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="absv2">
+			<return type="Vector2" />
+			<argument index="0" name="v" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="absv3">
+			<return type="Vector3" />
+			<argument index="0" name="v" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="adjust_hsv">
+			<return type="Color" />
+			<argument index="0" name="color" type="Color" />
+			<argument index="1" name="hue" type="float" />
+			<argument index="2" name="saturation" type="float" />
+			<argument index="3" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="anisotropic">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="pseed" type="float" />
+			<argument index="3" name="smoothness" type="float" />
+			<argument index="4" name="interpolation" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="anisotropicc">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="pseed" type="float" />
+			<argument index="3" name="smoothness" type="float" />
+			<argument index="4" name="interpolation" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="beehive_1c">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="beehive_2c">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="beehive_3c">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="beehive_center">
+			<return type="Color" />
+			<argument index="0" name="p" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="beehive_dist">
+			<return type="float" />
+			<argument index="0" name="p" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="blend_burn">
+			<return type="Vector3" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="c1" type="Vector3" />
+			<argument index="2" name="c2" type="Vector3" />
+			<argument index="3" name="opacity" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="blend_burn_f">
+			<return type="float" />
+			<argument index="0" name="c1" type="float" />
+			<argument index="1" name="c2" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="blend_darken">
+			<return type="Vector3" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="c1" type="Vector3" />
+			<argument index="2" name="c2" type="Vector3" />
+			<argument index="3" name="opacity" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="blend_difference">
+			<return type="Vector3" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="c1" type="Vector3" />
+			<argument index="2" name="c2" type="Vector3" />
+			<argument index="3" name="opacity" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="blend_dissolve">
+			<return type="Vector3" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="c1" type="Vector3" />
+			<argument index="2" name="c2" type="Vector3" />
+			<argument index="3" name="opacity" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="blend_dodge">
+			<return type="Vector3" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="c1" type="Vector3" />
+			<argument index="2" name="c2" type="Vector3" />
+			<argument index="3" name="opacity" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="blend_dodge_f">
+			<return type="float" />
+			<argument index="0" name="c1" type="float" />
+			<argument index="1" name="c2" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="blend_hard_light">
+			<return type="Vector3" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="c1" type="Vector3" />
+			<argument index="2" name="c2" type="Vector3" />
+			<argument index="3" name="opacity" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="blend_lighten">
+			<return type="Vector3" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="c1" type="Vector3" />
+			<argument index="2" name="c2" type="Vector3" />
+			<argument index="3" name="opacity" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="blend_multiply">
+			<return type="Vector3" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="c1" type="Vector3" />
+			<argument index="2" name="c2" type="Vector3" />
+			<argument index="3" name="opacity" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="blend_normal">
+			<return type="Vector3" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="c1" type="Vector3" />
+			<argument index="2" name="c2" type="Vector3" />
+			<argument index="3" name="opacity" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="blend_overlay">
+			<return type="Vector3" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="c1" type="Vector3" />
+			<argument index="2" name="c2" type="Vector3" />
+			<argument index="3" name="opacity" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="blend_overlay_f">
+			<return type="float" />
+			<argument index="0" name="c1" type="float" />
+			<argument index="1" name="c2" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="blend_screen">
+			<return type="Vector3" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="c1" type="Vector3" />
+			<argument index="2" name="c2" type="Vector3" />
+			<argument index="3" name="opacity" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="blend_soft_light">
+			<return type="Vector3" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="c1" type="Vector3" />
+			<argument index="2" name="c2" type="Vector3" />
+			<argument index="3" name="opacity" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="blend_soft_light_f">
+			<return type="float" />
+			<argument index="0" name="c1" type="float" />
+			<argument index="1" name="c2" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="brick">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="bmin" type="Vector2" />
+			<argument index="2" name="bmax" type="Vector2" />
+			<argument index="3" name="mortar" type="float" />
+			<argument index="4" name="pround" type="float" />
+			<argument index="5" name="bevel" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="brick2">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="bmin" type="Vector2" />
+			<argument index="2" name="bmax" type="Vector2" />
+			<argument index="3" name="mortar" type="float" />
+			<argument index="4" name="pround" type="float" />
+			<argument index="5" name="bevel" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="brick_corner_uv">
+			<return type="Vector3" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="bmin" type="Vector2" />
+			<argument index="2" name="bmax" type="Vector2" />
+			<argument index="3" name="mortar" type="float" />
+			<argument index="4" name="corner" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="brick_random_color">
+			<return type="Vector3" />
+			<argument index="0" name="bmin" type="Vector2" />
+			<argument index="1" name="bmax" type="Vector2" />
+			<argument index="2" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="brick_uv">
+			<return type="Vector3" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="bmin" type="Vector2" />
+			<argument index="2" name="bmax" type="Vector2" />
+			<argument index="3" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="bricks_bw">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="count" type="Vector2" />
+			<argument index="2" name="repeat" type="float" />
+			<argument index="3" name="offset" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="bricks_hb">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="count" type="Vector2" />
+			<argument index="2" name="repeat" type="float" />
+			<argument index="3" name="offset" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="bricks_rb">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="count" type="Vector2" />
+			<argument index="2" name="repeat" type="float" />
+			<argument index="3" name="offset" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="bricks_rb2">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="count" type="Vector2" />
+			<argument index="2" name="repeat" type="float" />
+			<argument index="3" name="offset" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="bricks_sb">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="count" type="Vector2" />
+			<argument index="2" name="repeat" type="float" />
+			<argument index="3" name="offset" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="bricks_uneven">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="iterations" type="int" />
+			<argument index="2" name="min_size" type="float" />
+			<argument index="3" name="randomness" type="float" />
+			<argument index="4" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="brightness_contrast">
+			<return type="Color" />
+			<argument index="0" name="color" type="Color" />
+			<argument index="1" name="brightness" type="float" />
+			<argument index="2" name="contrast" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="cellular">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="folds" type="int" />
+			<argument index="3" name="octaves" type="int" />
+			<argument index="4" name="persistence" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="cellular2">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="folds" type="int" />
+			<argument index="3" name="octaves" type="int" />
+			<argument index="4" name="persistence" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="cellular2f">
+			<return type="float" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="folds" type="int" />
+			<argument index="3" name="octaves" type="int" />
+			<argument index="4" name="persistence" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="cellular3">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="folds" type="int" />
+			<argument index="3" name="octaves" type="int" />
+			<argument index="4" name="persistence" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="cellular3f">
+			<return type="float" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="folds" type="int" />
+			<argument index="3" name="octaves" type="int" />
+			<argument index="4" name="persistence" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="cellular4">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="folds" type="int" />
+			<argument index="3" name="octaves" type="int" />
+			<argument index="4" name="persistence" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="cellular4f">
+			<return type="float" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="folds" type="int" />
+			<argument index="3" name="octaves" type="int" />
+			<argument index="4" name="persistence" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="cellular5">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="folds" type="int" />
+			<argument index="3" name="octaves" type="int" />
+			<argument index="4" name="persistence" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="cellular5f">
+			<return type="float" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="folds" type="int" />
+			<argument index="3" name="octaves" type="int" />
+			<argument index="4" name="persistence" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="cellular6">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="folds" type="int" />
+			<argument index="3" name="octaves" type="int" />
+			<argument index="4" name="persistence" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="cellular6f">
+			<return type="float" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="folds" type="int" />
+			<argument index="3" name="octaves" type="int" />
+			<argument index="4" name="persistence" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="cellularf">
+			<return type="float" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="folds" type="int" />
+			<argument index="3" name="octaves" type="int" />
+			<argument index="4" name="persistence" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="circle_repeat_transform">
+			<return type="Vector3" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="count" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="circle_repeat_transform_2d">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector2" />
+			<argument index="1" name="count" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="circular_gradient_type_1">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="repeat" type="float" />
+			<argument index="2" name="data" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="circular_gradient_type_2">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="repeat" type="float" />
+			<argument index="2" name="data" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="circular_gradient_type_3">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="repeat" type="float" />
+			<argument index="2" name="data" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="circular_gradient_type_4">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="repeat" type="float" />
+			<argument index="2" name="data" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="clampv2">
+			<return type="Vector2" />
+			<argument index="0" name="v" type="Vector2" />
+			<argument index="1" name="pmin" type="Vector2" />
+			<argument index="2" name="pmax" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="clampv3">
+			<return type="Vector3" />
+			<argument index="0" name="v" type="Vector3" />
+			<argument index="1" name="mi" type="Vector3" />
+			<argument index="2" name="ma" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="color_dots">
+			<return type="Vector3" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="float" />
+			<argument index="2" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="cosv2">
+			<return type="Vector2" />
+			<argument index="0" name="v" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="cosv3">
+			<return type="Vector3" />
+			<argument index="0" name="v" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="curve">
+			<return type="float" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="points" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="custom_uv_transform">
+			<return type="Vector2" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="cst_scale" type="Vector2" />
+			<argument index="2" name="rnd_rotate" type="float" />
+			<argument index="3" name="rnd_scale" type="float" />
+			<argument index="4" name="pseed" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="dots">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="float" />
+			<argument index="2" name="density" type="float" />
+			<argument index="3" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="fbm_cellular">
+			<return type="float" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="fbm_cellular2">
+			<return type="float" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="fbm_cellular3">
+			<return type="float" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="fbm_cellular4">
+			<return type="float" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="fbm_cellular5">
+			<return type="float" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="fbm_cellular6">
+			<return type="float" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="fbm_perlin">
+			<return type="float" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="fbm_perlinabs">
+			<return type="float" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="fbm_simplex">
+			<return type="float" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="fbm_simplexf">
+			<return type="float" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="folds" type="int" />
+			<argument index="3" name="octaves" type="int" />
+			<argument index="4" name="persistence" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="fbm_value">
+			<return type="float" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="fbmf">
+			<return type="float" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="folds" type="int" />
+			<argument index="3" name="octaves" type="int" />
+			<argument index="4" name="persistence" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="fbmval">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="folds" type="int" />
+			<argument index="3" name="octaves" type="int" />
+			<argument index="4" name="persistence" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="fill_to_uv_square">
+			<return type="Vector3" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="bb" type="Color" />
+			<argument index="2" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="fill_to_uv_stretch">
+			<return type="Vector3" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="bb" type="Color" />
+			<argument index="2" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="flood_fill_preprocess">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="c" type="float" />
+			<argument index="2" name="s" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="floorc">
+			<return type="Color" />
+			<argument index="0" name="a" type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="floorv2">
+			<return type="Vector2" />
+			<argument index="0" name="a" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="floorv3">
+			<return type="Vector3" />
+			<argument index="0" name="a" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="fract">
+			<return type="float" />
+			<argument index="0" name="f" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="fractf">
+			<return type="float" />
+			<argument index="0" name="x" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="fractv2">
+			<return type="Vector2" />
+			<argument index="0" name="v" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="fractv3">
+			<return type="Vector3" />
+			<argument index="0" name="v" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="get_data_color">
+			<return type="Color" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="data" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="get_data_pos">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="data" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="get_from_tileset">
+			<return type="Vector2" />
+			<argument index="0" name="count" type="float" />
+			<argument index="1" name="pseed" type="float" />
+			<argument index="2" name="uv" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="gradient_type_1">
+			<return type="Color" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="data" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="gradient_type_2">
+			<return type="Color" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="data" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="gradient_type_3">
+			<return type="Color" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="data" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="gradient_type_4">
+			<return type="Color" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="data" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="gradient_type_5">
+			<return type="Color" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="data" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="grayscale_average">
+			<return type="float" />
+			<argument index="0" name="c" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="grayscale_lightness">
+			<return type="float" />
+			<argument index="0" name="c" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="grayscale_luminosity">
+			<return type="float" />
+			<argument index="0" name="c" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="grayscale_max">
+			<return type="float" />
+			<argument index="0" name="c" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="grayscale_min">
+			<return type="float" />
+			<argument index="0" name="c" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="hsv_to_rgb">
+			<return type="Vector3" />
+			<argument index="0" name="c" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="invert">
+			<return type="Color" />
+			<argument index="0" name="color" type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="kal_rotate">
+			<return type="Vector2" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="count" type="float" />
+			<argument index="2" name="offset" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="maxv2">
+			<return type="Vector2" />
+			<argument index="0" name="a" type="Vector2" />
+			<argument index="1" name="b" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="maxv3">
+			<return type="Vector3" />
+			<argument index="0" name="a" type="Vector3" />
+			<argument index="1" name="b" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="minv2">
+			<return type="Vector2" />
+			<argument index="0" name="v1" type="Vector2" />
+			<argument index="1" name="v2" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="minv3">
+			<return type="Vector3" />
+			<argument index="0" name="v1" type="Vector3" />
+			<argument index="1" name="v2" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="mix_add">
+			<return type="float" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="y" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="mix_max">
+			<return type="float" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="y" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="mix_min">
+			<return type="float" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="y" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="mix_mul">
+			<return type="float" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="y" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="mix_pow">
+			<return type="float" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="y" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="mix_xor">
+			<return type="float" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="y" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="modf">
+			<return type="float" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="y" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="modv2">
+			<return type="Vector2" />
+			<argument index="0" name="a" type="Vector2" />
+			<argument index="1" name="b" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="modv3">
+			<return type="Vector3" />
+			<argument index="0" name="a" type="Vector3" />
+			<argument index="1" name="b" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="noise_color">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="float" />
+			<argument index="2" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="normal_gradient_type_1">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="repeat" type="float" />
+			<argument index="2" name="rotate" type="float" />
+			<argument index="3" name="data" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="normal_gradient_type_2">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="repeat" type="float" />
+			<argument index="2" name="rotate" type="float" />
+			<argument index="3" name="data" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="normal_gradient_type_3">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="repeat" type="float" />
+			<argument index="2" name="rotate" type="float" />
+			<argument index="3" name="data" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="normal_gradient_type_4">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="repeat" type="float" />
+			<argument index="2" name="rotate" type="float" />
+			<argument index="3" name="data" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="pattern">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="x_scale" type="float" />
+			<argument index="2" name="y_scale" type="float" />
+			<argument index="3" name="ct" type="int" />
+			<argument index="4" name="catx" type="int" />
+			<argument index="5" name="caty" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="perlin">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="folds" type="int" />
+			<argument index="3" name="octaves" type="int" />
+			<argument index="4" name="persistence" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="perlin2c">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="iterations" type="int" />
+			<argument index="3" name="persistence" type="float" />
+			<argument index="4" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="perlin_color">
+			<return type="Vector3" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="iterations" type="int" />
+			<argument index="3" name="persistence" type="float" />
+			<argument index="4" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="perlin_colorc">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="iterations" type="int" />
+			<argument index="3" name="persistence" type="float" />
+			<argument index="4" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="perlin_warp_1">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="iterations" type="int" />
+			<argument index="3" name="persistence" type="float" />
+			<argument index="4" name="pseed" type="int" />
+			<argument index="5" name="translate" type="Vector2" />
+			<argument index="6" name="rotate" type="float" />
+			<argument index="7" name="size2" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="perlin_warp_2">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="iterations" type="int" />
+			<argument index="3" name="persistence" type="float" />
+			<argument index="4" name="pseed" type="int" />
+			<argument index="5" name="translate" type="Vector2" />
+			<argument index="6" name="rotate" type="float" />
+			<argument index="7" name="size2" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="perlinabs">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="folds" type="int" />
+			<argument index="3" name="octaves" type="int" />
+			<argument index="4" name="persistence" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="perlinabsf">
+			<return type="float" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="folds" type="int" />
+			<argument index="3" name="octaves" type="int" />
+			<argument index="4" name="persistence" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="perlinc">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="iterations" type="int" />
+			<argument index="3" name="persistence" type="float" />
+			<argument index="4" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="perlinf">
+			<return type="float" />
+			<argument index="0" name="coord" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="folds" type="int" />
+			<argument index="3" name="octaves" type="int" />
+			<argument index="4" name="persistence" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="powv2">
+			<return type="Vector2" />
+			<argument index="0" name="x" type="Vector2" />
+			<argument index="1" name="y" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="radial_gradient_type_1">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="repeat" type="float" />
+			<argument index="2" name="data" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="radial_gradient_type_2">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="repeat" type="float" />
+			<argument index="2" name="data" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="radial_gradient_type_3">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="repeat" type="float" />
+			<argument index="2" name="data" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="radial_gradient_type_4">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="repeat" type="float" />
+			<argument index="2" name="data" type="PoolRealArray" />
+			<description>
+			</description>
+		</method>
+		<method name="rand">
+			<return type="float" />
+			<argument index="0" name="x" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="rand2">
+			<return type="Vector2" />
+			<argument index="0" name="x" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="rand3">
+			<return type="Vector3" />
+			<argument index="0" name="x" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="raymarch">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="raymarch2">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="raymarch3">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="register_node_class">
+			<return type="void" />
+			<argument index="0" name="category" type="String" />
+			<argument index="1" name="cls" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="register_node_script">
+			<return type="void" />
+			<argument index="0" name="category" type="String" />
+			<argument index="1" name="file_path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="repeat">
+			<return type="Vector3" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="r" type="Vector3" />
+			<argument index="2" name="pseed" type="float" />
+			<argument index="3" name="randomness" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="repeat_2d">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector2" />
+			<argument index="1" name="r" type="Vector2" />
+			<argument index="2" name="pseed" type="float" />
+			<argument index="3" name="randomness" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="rgb_to_hsv">
+			<return type="Vector3" />
+			<argument index="0" name="c" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="rgrad2">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector2" />
+			<argument index="1" name="rot" type="float" />
+			<argument index="2" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="rotate">
+			<return type="Vector2" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="center" type="Vector2" />
+			<argument index="2" name="rotate" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="rotate3d">
+			<return type="Vector3" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="a" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="rune">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="runesc">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="col_row" type="Vector2" />
+			<argument index="2" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="runesf">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="col_row" type="Vector2" />
+			<argument index="2" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="scale">
+			<return type="Vector2" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="center" type="Vector2" />
+			<argument index="2" name="scale" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="scratch">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="waviness" type="float" />
+			<argument index="3" name="angle" type="float" />
+			<argument index="4" name="randomness" type="float" />
+			<argument index="5" name="pseed" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="scratches">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="layers" type="int" />
+			<argument index="2" name="size" type="Vector2" />
+			<argument index="3" name="waviness" type="float" />
+			<argument index="4" name="angle" type="float" />
+			<argument index="5" name="randomness" type="float" />
+			<argument index="6" name="pseed" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="scratchesc">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="layers" type="int" />
+			<argument index="2" name="size" type="Vector2" />
+			<argument index="3" name="waviness" type="float" />
+			<argument index="4" name="angle" type="float" />
+			<argument index="5" name="randomness" type="float" />
+			<argument index="6" name="pseed" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="sdArc">
+			<return type="float" />
+			<argument index="0" name="p" type="Vector2" />
+			<argument index="1" name="a1" type="float" />
+			<argument index="2" name="a2" type="float" />
+			<argument index="3" name="ra" type="float" />
+			<argument index="4" name="rb" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdBezier">
+			<return type="Vector2" />
+			<argument index="0" name="pos" type="Vector2" />
+			<argument index="1" name="A" type="Vector2" />
+			<argument index="2" name="B" type="Vector2" />
+			<argument index="3" name="C" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="sdLine">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector2" />
+			<argument index="1" name="a" type="Vector2" />
+			<argument index="2" name="b" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="sdNgon">
+			<return type="Vector2" />
+			<argument index="0" name="pos" type="Vector2" />
+			<argument index="1" name="r" type="float" />
+			<argument index="2" name="n" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdPolygon">
+			<return type="float" />
+			<argument index="0" name="p" type="Vector2" />
+			<argument index="1" name="v" type="PoolVector2Array" />
+			<description>
+			</description>
+		</method>
+		<method name="sdRhombus">
+			<return type="float" />
+			<argument index="0" name="p" type="Vector2" />
+			<argument index="1" name="b" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="sdRipples">
+			<return type="float" />
+			<argument index="0" name="d" type="float" />
+			<argument index="1" name="w" type="float" />
+			<argument index="2" name="r" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="sdSmoothIntersection">
+			<return type="float" />
+			<argument index="0" name="d1" type="float" />
+			<argument index="1" name="d2" type="float" />
+			<argument index="2" name="k" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdSmoothSubtraction">
+			<return type="float" />
+			<argument index="0" name="d1" type="float" />
+			<argument index="1" name="d2" type="float" />
+			<argument index="2" name="k" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdSmoothUnion">
+			<return type="float" />
+			<argument index="0" name="d1" type="float" />
+			<argument index="1" name="d2" type="float" />
+			<argument index="2" name="k" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf2d_rotate">
+			<return type="Vector2" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="a" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_box">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="sx" type="float" />
+			<argument index="2" name="sy" type="float" />
+			<argument index="3" name="sz" type="float" />
+			<argument index="4" name="r" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_capsule_x">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="r" type="float" />
+			<argument index="2" name="l" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_capsule_y">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="r" type="float" />
+			<argument index="2" name="l" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_capsule_z">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="r" type="float" />
+			<argument index="2" name="l" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_cone_nx">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="a" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_cone_ny">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="a" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_cone_nz">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="a" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_cone_px">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="a" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_cone_py">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="a" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_cone_pz">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="a" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_cylinder_x">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="r" type="float" />
+			<argument index="2" name="l" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_cylinder_y">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="r" type="float" />
+			<argument index="2" name="l" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_cylinder_z">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="r" type="float" />
+			<argument index="2" name="l" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_elongation">
+			<return type="Vector3" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="v" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_input">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_normal">
+			<return type="Vector3" />
+			<argument index="0" name="p" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_raymarch">
+			<return type="Vector2" />
+			<argument index="0" name="uv" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_repeat">
+			<return type="Vector3" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="r" type="Vector2" />
+			<argument index="2" name="randomness" type="float" />
+			<argument index="3" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_rounded">
+			<return type="Vector2" />
+			<argument index="0" name="v" type="Vector2" />
+			<argument index="1" name="r" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_smooth_intersection">
+			<return type="Vector2" />
+			<argument index="0" name="d1" type="Vector2" />
+			<argument index="1" name="d2" type="Vector2" />
+			<argument index="2" name="k" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_smooth_subtraction">
+			<return type="Vector2" />
+			<argument index="0" name="d1" type="Vector2" />
+			<argument index="1" name="d2" type="Vector2" />
+			<argument index="2" name="k" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_smooth_union">
+			<return type="Vector2" />
+			<argument index="0" name="d1" type="Vector2" />
+			<argument index="1" name="d2" type="Vector2" />
+			<argument index="2" name="k" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_sphere">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="r" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_torus_x">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="R" type="float" />
+			<argument index="2" name="r" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_torus_y">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="R" type="float" />
+			<argument index="2" name="r" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_torus_z">
+			<return type="Vector2" />
+			<argument index="0" name="p" type="Vector3" />
+			<argument index="1" name="R" type="float" />
+			<argument index="2" name="r" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3dc_inter">
+			<return type="Vector2" />
+			<argument index="0" name="a" type="Vector2" />
+			<argument index="1" name="b" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3dc_sub">
+			<return type="Vector2" />
+			<argument index="0" name="a" type="Vector2" />
+			<argument index="1" name="b" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3dc_union">
+			<return type="Vector2" />
+			<argument index="0" name="a" type="Vector2" />
+			<argument index="1" name="b" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf_annular_shape">
+			<return type="float" />
+			<argument index="0" name="a" type="float" />
+			<argument index="1" name="r" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf_arc">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="a" type="Vector2" />
+			<argument index="2" name="r" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf_boolean_intersection">
+			<return type="float" />
+			<argument index="0" name="a" type="float" />
+			<argument index="1" name="b" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf_boolean_substraction">
+			<return type="float" />
+			<argument index="0" name="a" type="float" />
+			<argument index="1" name="b" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf_boolean_union">
+			<return type="float" />
+			<argument index="0" name="a" type="float" />
+			<argument index="1" name="b" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf_box">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="c" type="Vector2" />
+			<argument index="2" name="wh" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf_circle">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="c" type="Vector2" />
+			<argument index="2" name="r" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf_line">
+			<return type="Vector2" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="a" type="Vector2" />
+			<argument index="2" name="b" type="Vector2" />
+			<argument index="3" name="r" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf_morph">
+			<return type="float" />
+			<argument index="0" name="a" type="float" />
+			<argument index="1" name="b" type="float" />
+			<argument index="2" name="amount" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf_rhombus">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="c" type="Vector2" />
+			<argument index="2" name="wh" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf_rounded_shape">
+			<return type="float" />
+			<argument index="0" name="a" type="float" />
+			<argument index="1" name="r" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf_show">
+			<return type="Color" />
+			<argument index="0" name="val" type="float" />
+			<argument index="1" name="bevel" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf_smooth_boolean_intersection">
+			<return type="float" />
+			<argument index="0" name="d1" type="float" />
+			<argument index="1" name="d2" type="float" />
+			<argument index="2" name="k" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf_smooth_boolean_substraction">
+			<return type="float" />
+			<argument index="0" name="d1" type="float" />
+			<argument index="1" name="d2" type="float" />
+			<argument index="2" name="k" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf_smooth_boolean_union">
+			<return type="float" />
+			<argument index="0" name="d1" type="float" />
+			<argument index="1" name="d2" type="float" />
+			<argument index="2" name="k" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sdr_ndot">
+			<return type="float" />
+			<argument index="0" name="a" type="Vector2" />
+			<argument index="1" name="b" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="shape_circle">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="sides" type="float" />
+			<argument index="2" name="size" type="float" />
+			<argument index="3" name="edge" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="shape_curved_star">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="sides" type="float" />
+			<argument index="2" name="size" type="float" />
+			<argument index="3" name="edge" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="shape_polygon">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="sides" type="float" />
+			<argument index="2" name="size" type="float" />
+			<argument index="3" name="edge" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="shape_rays">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="sides" type="float" />
+			<argument index="2" name="size" type="float" />
+			<argument index="3" name="edge" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="shape_star">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="sides" type="float" />
+			<argument index="2" name="size" type="float" />
+			<argument index="3" name="edge" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="signv2">
+			<return type="Vector2" />
+			<argument index="0" name="x" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="simplex">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="folds" type="int" />
+			<argument index="3" name="octaves" type="int" />
+			<argument index="4" name="persistence" type="float" />
+			<argument index="5" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sinewave">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="amplitude" type="float" />
+			<argument index="2" name="frequency" type="float" />
+			<argument index="3" name="phase" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sinewavec">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="amplitude" type="float" />
+			<argument index="2" name="frequency" type="float" />
+			<argument index="3" name="phase" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="sinewavef">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="amplitude" type="float" />
+			<argument index="2" name="frequency" type="float" />
+			<argument index="3" name="phase" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="smoothstepv2">
+			<return type="Vector2" />
+			<argument index="0" name="a" type="float" />
+			<argument index="1" name="b" type="float" />
+			<argument index="2" name="c" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="sphere">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="c" type="Vector2" />
+			<argument index="2" name="r" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="step">
+			<return type="float" />
+			<argument index="0" name="edge" type="float" />
+			<argument index="1" name="x" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="stepv2">
+			<return type="Vector2" />
+			<argument index="0" name="edge" type="Vector2" />
+			<argument index="1" name="x" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="transform">
+			<return type="Vector2" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="translate" type="Vector2" />
+			<argument index="2" name="rotate" type="float" />
+			<argument index="3" name="scale" type="Vector2" />
+			<argument index="4" name="repeat" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="transform2">
+			<return type="Vector2" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="translate" type="Vector2" />
+			<argument index="2" name="rotate" type="float" />
+			<argument index="3" name="scale" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="transform2_clamp">
+			<return type="Vector2" />
+			<argument index="0" name="uv" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="truchet1">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="pseed" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="truchet1c">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="float" />
+			<argument index="2" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="truchet2">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="pseed" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="truchet2c">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="float" />
+			<argument index="2" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="truchet_generic_uv">
+			<return type="Vector2" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="pseed" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="unregister_node_class">
+			<return type="void" />
+			<argument index="0" name="category" type="String" />
+			<argument index="1" name="cls" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="unregister_node_script">
+			<return type="void" />
+			<argument index="0" name="category" type="String" />
+			<argument index="1" name="file_path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="uvmirror_h">
+			<return type="Vector2" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="offset" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="uvmirror_v">
+			<return type="Vector2" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="offset" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="voronoi">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="stretch" type="Vector2" />
+			<argument index="3" name="intensity" type="float" />
+			<argument index="4" name="randomness" type="float" />
+			<argument index="5" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="voronoi_1">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="stretch" type="Vector2" />
+			<argument index="3" name="intensity" type="float" />
+			<argument index="4" name="randomness" type="float" />
+			<argument index="5" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="voronoi_2">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="stretch" type="Vector2" />
+			<argument index="3" name="intensity" type="float" />
+			<argument index="4" name="randomness" type="float" />
+			<argument index="5" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="voronoi_3">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="size" type="Vector2" />
+			<argument index="2" name="stretch" type="Vector2" />
+			<argument index="3" name="intensity" type="float" />
+			<argument index="4" name="randomness" type="float" />
+			<argument index="5" name="pseed" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="wave_bounce">
+			<return type="float" />
+			<argument index="0" name="x" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="wave_constant">
+			<return type="float" />
+			<argument index="0" name="x" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="wave_sawtooth">
+			<return type="float" />
+			<argument index="0" name="x" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="wave_sine">
+			<return type="float" />
+			<argument index="0" name="x" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="wave_square">
+			<return type="float" />
+			<argument index="0" name="x" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="wave_triangle">
+			<return type="float" />
+			<argument index="0" name="x" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="weave">
+			<return type="float" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="count" type="Vector2" />
+			<argument index="2" name="width" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="weave2">
+			<return type="Vector3" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="count" type="Vector2" />
+			<argument index="2" name="stitch" type="float" />
+			<argument index="3" name="width_x" type="float" />
+			<argument index="4" name="width_y" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="weavec">
+			<return type="Color" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="count" type="Vector2" />
+			<argument index="2" name="width" type="float" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

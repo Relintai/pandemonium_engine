@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="UserManagerFile" inherits="UserManager" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="save_folder_path" type="String" setter="set_save_folder_path" getter="get_save_folder_path" default="&quot;users&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

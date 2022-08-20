@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="PhysicalBone2D" inherits="RigidDynamicBody2D" version="4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+<class name="PhysicalBone2D" inherits="RigidBody2D" version="3.7">
 	<brief_description>
 		A 2D node that can be used for physically aware bones in 2D.
 	</brief_description>
@@ -42,4 +42,6 @@
 			[b]Note:[/b] To have the Bone2D nodes visually follow the [code]PhysicalBone2D[/code] node, use a [SkeletonModification2DPhysicalBones] modification on the [Skeleton2D] node with the [Bone2D] nodes.
 		</member>
 	</members>
+	<constants>
+	</constants>
 </class>

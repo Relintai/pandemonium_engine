@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Control" inherits="CanvasItem" version="3.5">
+<class name="Control" inherits="CanvasItem" version="3.7">
 	<brief_description>
 		All user interface nodes inherit from Control. A control's anchors and margins adapt its position and size relative to its parent.
 	</brief_description>
@@ -192,24 +192,10 @@
 				Returns [member margin_left] and [member margin_top]. See also [member rect_position].
 			</description>
 		</method>
-		<method name="get_theme_color" qualifiers="const">
-			<return type="Color" />
-			<argument index="0" name="name" type="StringName" />
-			<argument index="1" name="theme_type" type="StringName" default="&quot;&quot;" />
-			<description>
-			</description>
-		</method>
 		<method name="get_combined_minimum_size" qualifiers="const">
 			<return type="Vector2" />
 			<description>
 				Returns combined minimum size from [member rect_min_size] and [method get_minimum_size].
-			</description>
-		</method>
-		<method name="get_theme_constant" qualifiers="const">
-			<return type="int" />
-			<argument index="0" name="name" type="StringName" />
-			<argument index="1" name="theme_type" type="StringName" default="&quot;&quot;" />
-			<description>
 			</description>
 		</method>
 		<method name="get_cursor_shape" qualifiers="const">
@@ -252,24 +238,10 @@
 				Returns the control that has the keyboard focus or [code]null[/code] if none.
 			</description>
 		</method>
-		<method name="get_theme_font" qualifiers="const">
-			<return type="Font" />
-			<argument index="0" name="name" type="StringName" />
-			<argument index="1" name="theme_type" type="StringName" default="&quot;&quot;" />
-			<description>
-			</description>
-		</method>
 		<method name="get_global_rect" qualifiers="const">
 			<return type="Rect2" />
 			<description>
 				Returns the position and size of the control relative to the top-left corner of the screen. See [member rect_position] and [member rect_size].
-			</description>
-		</method>
-		<method name="get_theme_icon" qualifiers="const">
-			<return type="Texture" />
-			<argument index="0" name="name" type="StringName" />
-			<argument index="1" name="theme_type" type="StringName" default="&quot;&quot;" />
-			<description>
 			</description>
 		</method>
 		<method name="get_margin" qualifiers="const">
@@ -309,8 +281,15 @@
 				Returns the rotation (in radians).
 			</description>
 		</method>
-		<method name="get_theme_stylebox" qualifiers="const">
-			<return type="StyleBox" />
+		<method name="get_theme_color" qualifiers="const">
+			<return type="Color" />
+			<argument index="0" name="name" type="StringName" />
+			<argument index="1" name="theme_type" type="StringName" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="get_theme_constant" qualifiers="const">
+			<return type="int" />
 			<argument index="0" name="name" type="StringName" />
 			<argument index="1" name="theme_type" type="StringName" default="&quot;&quot;" />
 			<description>
@@ -321,6 +300,27 @@
 			<description>
 				Returns the default font from the first matching [Theme] in the tree if that [Theme] has a valid [member Theme.default_font] value.
 				See [method get_color] for details.
+			</description>
+		</method>
+		<method name="get_theme_font" qualifiers="const">
+			<return type="Font" />
+			<argument index="0" name="name" type="StringName" />
+			<argument index="1" name="theme_type" type="StringName" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="get_theme_icon" qualifiers="const">
+			<return type="Texture" />
+			<argument index="0" name="name" type="StringName" />
+			<argument index="1" name="theme_type" type="StringName" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="get_theme_stylebox" qualifiers="const">
+			<return type="StyleBox" />
+			<argument index="0" name="name" type="StringName" />
+			<argument index="1" name="theme_type" type="StringName" default="&quot;&quot;" />
+			<description>
 			</description>
 		</method>
 		<method name="get_tooltip" qualifiers="const">
@@ -344,6 +344,21 @@
 			<return type="void" />
 			<description>
 				Steal the focus from another control and become the focused control (see [member focus_mode]).
+			</description>
+		</method>
+		<method name="has_focus" qualifiers="const">
+			<return type="bool" />
+			<description>
+				Returns [code]true[/code] if this is the current focused control. See [member focus_mode].
+			</description>
+		</method>
+		<method name="has_point" qualifiers="virtual">
+			<return type="bool" />
+			<argument index="0" name="point" type="Vector2" />
+			<description>
+				Virtual method to be implemented by the user. Returns whether the given [code]point[/code] is inside this control.
+				If not overridden, default behavior is checking if the point is within control's Rect.
+				[b]Note:[/b] If you want to check if a point is inside the control, you can use [code]get_rect().has_point(point)[/code].
 			</description>
 		</method>
 		<method name="has_theme_color" qualifiers="const">
@@ -372,12 +387,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="has_focus" qualifiers="const">
-			<return type="bool" />
-			<description>
-				Returns [code]true[/code] if this is the current focused control. See [member focus_mode].
-			</description>
-		</method>
 		<method name="has_theme_font" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="name" type="StringName" />
@@ -402,15 +411,6 @@
 			<return type="bool" />
 			<argument index="0" name="name" type="StringName" />
 			<description>
-			</description>
-		</method>
-		<method name="has_point" qualifiers="virtual">
-			<return type="bool" />
-			<argument index="0" name="point" type="Vector2" />
-			<description>
-				Virtual method to be implemented by the user. Returns whether the given [code]point[/code] is inside this control.
-				If not overridden, default behavior is checking if the point is within control's Rect.
-				[b]Note:[/b] If you want to check if a point is inside the control, you can use [code]get_rect().has_point(point)[/code].
 			</description>
 		</method>
 		<method name="has_theme_shader_override" qualifiers="const">

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMCombine" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="image" type="MMNodeUniversalProperty" setter="set_image" getter="get_image">
+		</member>
+		<member name="input_a" type="MMNodeUniversalProperty" setter="set_input_a" getter="get_input_a">
+		</member>
+		<member name="input_b" type="MMNodeUniversalProperty" setter="set_input_b" getter="get_input_b">
+		</member>
+		<member name="input_g" type="MMNodeUniversalProperty" setter="set_input_g" getter="get_input_g">
+		</member>
+		<member name="input_r" type="MMNodeUniversalProperty" setter="set_input_r" getter="get_input_r">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

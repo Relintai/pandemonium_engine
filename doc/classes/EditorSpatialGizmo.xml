@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="EditorSpatialGizmo" inherits="SpatialGizmo" version="3.5">
+<class name="EditorSpatialGizmo" inherits="SpatialGizmo" version="3.7">
 	<brief_description>
 		Gizmo for editing Spatial objects.
 	</brief_description>
@@ -27,7 +27,7 @@
 			<return type="void" />
 			<argument index="0" name="handles" type="PoolVector3Array" />
 			<argument index="1" name="material" type="Material" />
-			<argument index="2" name="ids" type="PoolIntArray">
+			<argument index="2" name="ids" type="PoolIntArray" />
 			<argument index="3" name="billboard" type="bool" default="false" />
 			<argument index="4" name="secondary" type="bool" default="false" />
 			<description>
@@ -50,7 +50,7 @@
 			<return type="void" />
 			<argument index="0" name="mesh" type="Mesh" />
 			<argument index="1" name="material" type="Material" default="null" />
-			<argument index="2" name="transform" type="Transform" default="Transform(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)" />
+			<argument index="2" name="transform" type="Transform" default="Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )" />
 			<argument index="3" name="skeleton" type="SkinReference" default="null" />
 			<description>
 				Adds a mesh to the gizmo with the specified [code]material[/code], local [code]transform[/code] and [code]skeleton[/code]. Call this method during [method _redraw].
@@ -76,7 +76,7 @@
 			<argument index="0" name="id" type="int" />
 			<argument index="1" name="secondary" type="bool" />
 			<argument index="2" name="restore" type="Variant" />
-			<argument index="3" name="cancel" type="bool" />
+			<argument index="3" name="cancel" type="bool" default="false" />
 			<description>
 				Override this method to commit a handle being edited (handles must have been previously added by [method add_handles]). This usually means creating an [UndoRedo] action for the change, using the current handle value as "do" and the [code]restore[/code] argument as "undo".
 				If the [code]cancel[/code] argument is [code]true[/code], the [code]restore[/code] value should be directly set, without any [UndoRedo] action.
@@ -84,14 +84,10 @@
 			</description>
 		</method>
 		<method name="commit_subgizmos" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="ids" type="PoolIntArray">
-			</argument>
-			<argument index="1" name="restore" type="Array">
-			</argument>
-			<argument index="2" name="cancel" type="bool" default="false">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="ids" type="PoolIntArray" />
+			<argument index="1" name="restore" type="Array" />
+			<argument index="2" name="cancel" type="bool" default="false" />
 			<description>
 				Override this method to commit a group of subgizmos being edited (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). This usually means creating an [UndoRedo] action for the change, using the current transforms as "do" and the [code]restore[/code] transforms as "undo".
 				If the [code]cancel[/code] argument is [code]true[/code], the [code]restore[/code] transforms should be directly set, without any [UndoRedo] action.
@@ -115,15 +111,6 @@
 				The [code]secondary[/code] argument is [code]true[/code] when the requested handle is secondary (see [method add_handles] for more information).
 			</description>
 		</method>
-		<method name="get_subgizmo_transform" qualifiers="virtual">
-			<return type="Transform">
-			</return>
-			<argument index="0" name="id" type="int">
-			</argument>
-			<description>
-				Override this method to return the current transform of a subgizmo. This transform will be requested at the start of an edit and used as the [code]restore[/code] argument in [method _commit_subgizmos].
-			</description>
-		</method>
 		<method name="get_plugin" qualifiers="const">
 			<return type="EditorSpatialGizmoPlugin" />
 			<description>
@@ -136,6 +123,19 @@
 				Returns the Spatial node associated with this gizmo.
 			</description>
 		</method>
+		<method name="get_subgizmo_selection" qualifiers="const">
+			<return type="PoolIntArray" />
+			<description>
+				Returns a list of the currently selected subgizmos. Can be used to highlight selected elements during [method _redraw].
+			</description>
+		</method>
+		<method name="get_subgizmo_transform" qualifiers="virtual">
+			<return type="Transform" />
+			<argument index="0" name="id" type="int" />
+			<description>
+				Override this method to return the current transform of a subgizmo. This transform will be requested at the start of an edit and used as the [code]restore[/code] argument in [method _commit_subgizmos].
+			</description>
+		</method>
 		<method name="is_handle_highlighted" qualifiers="virtual">
 			<return type="bool" />
 			<argument index="0" name="id" type="int" />
@@ -143,6 +143,13 @@
 			<description>
 				Override this method to return [code]true[/code] whenever the given handle should be highlighted in the editor.
 				The [code]secondary[/code] argument is [code]true[/code] when the requested handle is secondary (see [method add_handles] for more information).
+			</description>
+		</method>
+		<method name="is_subgizmo_selected" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="arg0" type="int" />
+			<description>
+				Returns [code]true[/code] if the given subgizmo is currently selected. Can be used to highlight selected elements during [method _redraw].
 			</description>
 		</method>
 		<method name="redraw" qualifiers="virtual">
@@ -162,55 +169,6 @@
 				The [code]secondary[/code] argument is [code]true[/code] when the edited handle is secondary (see [method add_handles] for more information).
 			</description>
 		</method>
-		<method name="set_subgizmo_transform" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="id" type="int">
-			</argument>
-			<argument index="1" name="transform" type="Transform">
-			</argument>
-			<description>
-				Override this method to update the node properties during subgizmo editing (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). The [code]transform[/code] is given in the Spatial's local coordinate system.
-			</description>
-		</method>
-		<method name="subgizmos_intersect_frustum" qualifiers="virtual">
-			<return type="PoolIntArray">
-			</return>
-			<argument index="0" name="camera" type="Camera">
-			</argument>
-			<argument index="1" name="frustum" type="Array">
-			</argument>
-			<description>
-				Override this method to allow selecting subgizmos using mouse drag box selection. Given a [code]camera[/code] and a [code]frustum[/code], this method should return which subgizmos are contained within the frustum. The [code]frustum[/code] argument consists of an [code]Array[/code] with all the [code]Plane[/code]s that make up the selection frustum. The returned value should contain a list of unique subgizmo identifiers, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
-			</description>
-		</method>
-		<method name="subgizmos_intersect_ray" qualifiers="virtual">
-			<return type="int">
-			</return>
-			<argument index="0" name="camera" type="Camera">
-			</argument>
-			<argument index="1" name="point" type="Vector2">
-			</argument>
-			<description>
-				Override this method to allow selecting subgizmos using mouse clicks. Given a [code]camera[/code] and a [code]point[/code] in screen coordinates, this method should return which subgizmo should be selected. The returned value should be a unique subgizmo identifier, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
-			</description>
-		</method>
-		<method name="get_subgizmo_selection" qualifiers="const">
-			<return type="PoolIntArray">
-			</return>
-			<description>
-				Returns a list of the currently selected subgizmos. Can be used to highlight selected elements during [method _redraw].
-			</description>
-		</method>
-		<method name="is_subgizmo_selected" qualifiers="const">
-			<return type="bool">
-			</return>
-			<argument index="0" name="arg0" type="int">
-			</argument>
-			<description>
-				Returns [code]true[/code] if the given subgizmo is currently selected. Can be used to highlight selected elements during [method _redraw].
-			</description>
-		</method>
 		<method name="set_hidden">
 			<return type="void" />
 			<argument index="0" name="hidden" type="bool" />
@@ -223,6 +181,30 @@
 			<argument index="0" name="node" type="Node" />
 			<description>
 				Sets the reference [Spatial] node for the gizmo. [code]node[/code] must inherit from [Spatial].
+			</description>
+		</method>
+		<method name="set_subgizmo_transform" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="id" type="int" />
+			<argument index="1" name="transform" type="Transform" />
+			<description>
+				Override this method to update the node properties during subgizmo editing (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). The [code]transform[/code] is given in the Spatial's local coordinate system.
+			</description>
+		</method>
+		<method name="subgizmos_intersect_frustum" qualifiers="virtual">
+			<return type="PoolIntArray" />
+			<argument index="0" name="camera" type="Camera" />
+			<argument index="1" name="frustum" type="Array" />
+			<description>
+				Override this method to allow selecting subgizmos using mouse drag box selection. Given a [code]camera[/code] and a [code]frustum[/code], this method should return which subgizmos are contained within the frustum. The [code]frustum[/code] argument consists of an [code]Array[/code] with all the [code]Plane[/code]s that make up the selection frustum. The returned value should contain a list of unique subgizmo identifiers, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
+			</description>
+		</method>
+		<method name="subgizmos_intersect_ray" qualifiers="virtual">
+			<return type="int" />
+			<argument index="0" name="camera" type="Camera" />
+			<argument index="1" name="point" type="Vector2" />
+			<description>
+				Override this method to allow selecting subgizmos using mouse clicks. Given a [code]camera[/code] and a [code]point[/code] in screen coordinates, this method should return which subgizmo should be selected. The returned value should be a unique subgizmo identifier, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
 			</description>
 		</method>
 	</methods>

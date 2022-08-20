@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="UserDB" inherits="Object" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="create_user">
+			<return type="User" />
+			<description>
+			</description>
+		</method>
+		<method name="get_user">
+			<return type="User" />
+			<argument index="0" name="id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_user_manager">
+			<return type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="get_user_name">
+			<return type="User" />
+			<argument index="0" name="user_name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="is_email_taken">
+			<return type="bool" />
+			<argument index="0" name="email" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="is_username_taken">
+			<return type="bool" />
+			<argument index="0" name="user_name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="save_user">
+			<return type="void" />
+			<argument index="0" name="user" type="User" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

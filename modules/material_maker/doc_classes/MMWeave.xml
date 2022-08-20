@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMWeave" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="out_horizontal_map" type="MMNodeUniversalProperty" setter="set_out_horizontal_map" getter="get_out_horizontal_map">
+		</member>
+		<member name="out_main" type="MMNodeUniversalProperty" setter="set_out_main" getter="get_out_main">
+		</member>
+		<member name="out_vertical_map" type="MMNodeUniversalProperty" setter="set_out_vertical_map" getter="get_out_vertical_map">
+		</member>
+		<member name="size" type="Vector2" setter="set_size" getter="get_size" default="Vector2( 4, 4 )">
+		</member>
+		<member name="stitch" type="int" setter="set_stitch" getter="get_stitch" default="1">
+		</member>
+		<member name="width" type="MMNodeUniversalProperty" setter="set_width" getter="get_width">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

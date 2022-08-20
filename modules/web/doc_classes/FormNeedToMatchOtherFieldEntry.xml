@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="FormNeedToMatchOtherFieldEntry" inherits="FormFieldEntry" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="does_not_match_error" type="String" setter="set_does_not_match_error" getter="get_does_not_match_error" default="&quot; does not match &quot;">
+		</member>
+		<member name="other_field" type="String" setter="set_other_field" getter="get_other_field" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMSdf3dRender" inherits="MMNode" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="sdf3d_normal">
+			<return type="Vector3" />
+			<argument index="0" name="p" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="sdf3d_raymarch">
+			<return type="Vector2" />
+			<argument index="0" name="uv" type="Vector2" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="input" type="MMNodeUniversalProperty" setter="set_input" getter="get_input">
+		</member>
+		<member name="out_color_map" type="MMNodeUniversalProperty" setter="set_out_color_map" getter="get_out_color_map">
+		</member>
+		<member name="out_height_map" type="MMNodeUniversalProperty" setter="set_out_height_map" getter="get_out_height_map">
+		</member>
+		<member name="out_normal_map" type="MMNodeUniversalProperty" setter="set_out_normal_map" getter="get_out_normal_map">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

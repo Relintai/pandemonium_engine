@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MMNodeUniversalProperty" inherits="Resource" version="3.7">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="do_emit_changed">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_active_image">
+			<return type="Image" />
+			<description>
+			</description>
+		</method>
+		<method name="get_default_value">
+			<return type="Variant" />
+			<argument index="0" name="uv" type="Vector2" default="Vector2( 0, 0 )" />
+			<description>
+			</description>
+		</method>
+		<method name="get_owner_value">
+			<return type="Variant" />
+			<argument index="0" name="uv" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="get_value">
+			<return type="Variant" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="skip_owner_val" type="bool" default="false" />
+			<description>
+			</description>
+		</method>
+		<method name="get_value_or_zero">
+			<return type="Variant" />
+			<argument index="0" name="uv" type="Vector2" />
+			<argument index="1" name="skip_owner_val" type="bool" default="false" />
+			<description>
+			</description>
+		</method>
+		<method name="get_value_sdf3d">
+			<return type="Vector2" />
+			<argument index="0" name="uv3" type="Vector3" />
+			<argument index="1" name="skip_owner_val" type="bool" default="false" />
+			<description>
+			</description>
+		</method>
+		<method name="get_zero_value">
+			<return type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="on_input_property_changed">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="set_default_value">
+			<return type="void" />
+			<argument index="0" name="val" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="set_value">
+			<return type="void" />
+			<argument index="0" name="val" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="to_color">
+			<return type="Color" />
+			<argument index="0" name="val" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="to_float">
+			<return type="float" />
+			<argument index="0" name="val" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="to_int">
+			<return type="int" />
+			<argument index="0" name="val" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="to_vector2">
+			<return type="Vector2" />
+			<argument index="0" name="val" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="to_vector3">
+			<return type="Vector3" />
+			<argument index="0" name="val" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="unset_input_property">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="default_color" type="Color" setter="set_default_color" getter="get_default_color" default="Color( 0, 0, 0, 1 )">
+		</member>
+		<member name="default_float" type="float" setter="set_default_float" getter="get_default_float" default="0.0">
+		</member>
+		<member name="default_image" type="Image" setter="set_default_image" getter="get_default_image">
+		</member>
+		<member name="default_int" type="int" setter="set_default_int" getter="get_default_int" default="0">
+		</member>
+		<member name="default_type" type="int" setter="set_default_type" getter="get_default_type" default="0">
+		</member>
+		<member name="default_vector2" type="Vector2" setter="set_default_vector2" getter="get_default_vector2" default="Vector2( 0, 0 )">
+		</member>
+		<member name="default_vector3" type="Vector3" setter="set_default_vector3" getter="get_default_vector3" default="Vector3( 0, 0, 0 )">
+		</member>
+		<member name="force_override" type="bool" setter="set_force_override" getter="get_force_override" default="false">
+		</member>
+		<member name="get_value_from_owner" type="bool" setter="set_get_value_from_owner" getter="get_get_value_from_owner" default="false">
+		</member>
+		<member name="input_property" type="MMNodeUniversalProperty" setter="set_input_property" getter="get_input_property">
+		</member>
+		<member name="input_slot_type" type="int" setter="set_input_slot_type" getter="get_input_slot_type" default="-1">
+		</member>
+		<member name="output_slot_type" type="int" setter="set_output_slot_type" getter="get_output_slot_type" default="-1">
+		</member>
+		<member name="override_image" type="Image" setter="set_override_image" getter="get_override_image">
+		</member>
+		<member name="owner" type="MMNode" setter="set_owner" getter="get_owner">
+		</member>
+		<member name="slot_name" type="String" setter="set_slot_name" getter="get_slot_name" default="&quot;&quot;">
+		</member>
+		<member name="value_range" type="Vector2" setter="set_value_range" getter="get_value_range" default="Vector2( -1000, 1000 )">
+		</member>
+		<member name="value_step" type="float" setter="set_value_step" getter="get_value_step" default="0.1">
+		</member>
+	</members>
+	<constants>
+		<constant name="SLOT_TYPE_NONE" value="-1" enum="SlotTypes">
+		</constant>
+		<constant name="SLOT_TYPE_IMAGE" value="0" enum="SlotTypes">
+		</constant>
+		<constant name="SLOT_TYPE_INT" value="1" enum="SlotTypes">
+		</constant>
+		<constant name="SLOT_TYPE_FLOAT" value="2" enum="SlotTypes">
+		</constant>
+		<constant name="SLOT_TYPE_VECTOR2" value="3" enum="SlotTypes">
+		</constant>
+		<constant name="SLOT_TYPE_VECTOR3" value="4" enum="SlotTypes">
+		</constant>
+		<constant name="SLOT_TYPE_COLOR" value="5" enum="SlotTypes">
+		</constant>
+		<constant name="SLOT_TYPE_UNIVERSAL" value="6" enum="SlotTypes">
+		</constant>
+		<constant name="DEFAULT_TYPE_INT" value="0" enum="MMNodeUniversalPropertyDefaultType">
+		</constant>
+		<constant name="DEFAULT_TYPE_FLOAT" value="1" enum="MMNodeUniversalPropertyDefaultType">
+		</constant>
+		<constant name="DEFAULT_TYPE_VECTOR2" value="2" enum="MMNodeUniversalPropertyDefaultType">
+		</constant>
+		<constant name="DEFAULT_TYPE_VECTOR3" value="3" enum="MMNodeUniversalPropertyDefaultType">
+		</constant>
+		<constant name="DEFAULT_TYPE_COLOR" value="4" enum="MMNodeUniversalPropertyDefaultType">
+		</constant>
+		<constant name="DEFAULT_TYPE_IMAGE" value="5" enum="MMNodeUniversalPropertyDefaultType">
+		</constant>
+	</constants>
+</class>
