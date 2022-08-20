@@ -1,8 +1,8 @@
 #include "html_parser.h"
 
-#include "core/object/class_db.h"
 #include "core/error/error_macros.h"
 #include "core/log/logger.h"
+#include "core/object/class_db.h"
 
 String HTMLParserAttribute::get_attribute() {
 	return _attribute;
@@ -314,15 +314,13 @@ void HTMLParserTag::process() {
 		}
 
 		// test for doctype. <!doctype >
-		int doctype_start_index = _data.find("doctype ", 2);
-
-		if (doctype_start_index == -1) {
+		if (_data.substr(2, 8).to_lower() != "doctype ") {
 			return;
 		}
 
 		_type = HTMLParserTag::HTML_PARSER_TAG_TYPE_DOCTYPE;
 
-		_tag = _data.substr(doctype_start_index + 8, _data.length() - doctype_start_index - 8 - 1);
+		_tag = _data.substr(2 + 8, _data.length() - 2 - 8 - 1);
 	} else {
 		String tag_text;
 
@@ -529,6 +527,7 @@ String HTMLParserTag::convert_to_string(const int level) const {
 			}
 		}
 	} else if (_type == HTML_PARSER_TAG_TYPE_NONE) {
+		s += _data + "\n";
 		for (int i = 0; i < _tags.size(); ++i) {
 			s += _tags[i]->convert_to_string(level) + "\n";
 			s += String(" ").repeat(level);
@@ -737,7 +736,9 @@ void HTMLParser::parse(const String &data) {
 		ERR_CONTINUE(!t.is_valid());
 
 		if (t->get_type() == HTMLParserTag::HTML_PARSER_TAG_TYPE_NONE) {
-			ERR_PRINT("HTMLParser::parse: t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_NONE!");
+			ERR_PRINT("HTMLParser::parse: t->type == HTMLParserTag::HTML_PARSER_TAG_TYPE_NONE! Tag content:");
+			ERR_PRINT(tags[i]->convert_to_string());
+
 			//memdelete(t);
 			tags.write[i].unref();
 			continue;
