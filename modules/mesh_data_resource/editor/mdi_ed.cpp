@@ -892,7 +892,7 @@ MDIEd::MDIEd() {
 	_edit_mode_button->set_flat(true);
 	_edit_mode_button->set_toggle_mode(true);
 	_edit_mode_button->set_focus_mode(BaseButton::FOCUS_NONE);
-	_edit_mode_button->set_text("Edit");
+	//_edit_mode_button->set_text("Edit");
 	_edit_mode_button->set_tooltip(TTR("Edit MeshDataResource."));
 	_edit_mode_button->connect("toggled", this, "_edit_mode_toggled");
 	SpatialEditor::get_singleton()->add_control_to_menu_panel(_edit_mode_button);
@@ -907,7 +907,7 @@ MDIEd::~MDIEd() {
 void MDIEd::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
-			_edit_mode_button->set_icon(get_theme_icon("MeshInstance", "EditorIcons"));
+			_edit_mode_button->set_icon(get_theme_icon("MeshDataResourceEdit", "EditorIcons"));
 		} break;
 	}
 }
