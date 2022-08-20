@@ -277,12 +277,12 @@ void BBCodeParserTag::process() {
 		return;
 	}
 
-	if (_data.size() < 2) {
+	if (_data.length() < 2) {
 		return;
 	}
 
 	ERR_FAIL_COND(_data[0] != '[');
-	ERR_FAIL_COND(_data[_data.size() - 1] != ']');
+	ERR_FAIL_COND(_data[_data.length() - 1] != ']');
 
 	int start_index = 1;
 	if (_data[1] == '/') {
@@ -292,17 +292,17 @@ void BBCodeParserTag::process() {
 	} else {
 		String tag_text;
 
-		if (_data[_data.size() - 2] == '/') {
+		if (_data[_data.length() - 2] == '/') {
 			// will catch all that looks like <br/>
 			// tags that look like <br> will be caught later in a post process, in a way
 			// which also tries to catch erroneously not closed tags that supposed to be closed
 			_type = BBCodeParserTag::BBCODE_PARSER_TAG_TYPE_SELF_CLOSING_TAG;
 
-			tag_text = _data.substr(1, _data.size() - 3);
+			tag_text = _data.substr(1, _data.length() - 3);
 		} else {
 			_type = BBCodeParserTag::BBCODE_PARSER_TAG_TYPE_OPENING_TAG;
 
-			tag_text = _data.substr(1, _data.size() - 2);
+			tag_text = _data.substr(1, _data.length() - 2);
 		}
 
 		int fspc_index = tag_text.find_char(' ');
@@ -329,12 +329,12 @@ void BBCodeParserTag::process() {
 		// grab the tag itself
 		_tag = tag_text.substr(0, fspc_index);
 
-		if (fspc_index + 1 == tag_text.size()) {
+		if (fspc_index + 1 == tag_text.length()) {
 			// no args, but had a space like <br />
 			return;
 		}
 
-		String args = tag_text.substr(fspc_index + 1, tag_text.size() - fspc_index - 1);
+		String args = tag_text.substr(fspc_index + 1, tag_text.length() - fspc_index - 1);
 		parse_args(args);
 	}
 
@@ -342,7 +342,7 @@ void BBCodeParserTag::process() {
 
 	if (tag_end_index == -1) {
 		// simple tag
-		_tag = _data.substr(start_index, _data.size() - start_index - 1);
+		_tag = _data.substr(start_index, _data.length() - start_index - 1);
 		return;
 	}
 }
@@ -351,7 +351,7 @@ void BBCodeParserTag::parse_args(const String &args) {
 	_attributes.clear();
 
 	int i = 0;
-	while (i < args.size()) {
+	while (i < args.length()) {
 		if (args[i] == ' ') {
 			//"trim"
 			++i;
@@ -364,7 +364,7 @@ void BBCodeParserTag::parse_args(const String &args) {
 		a.instance();
 
 		if (equals_index == -1) {
-			a->set_attribute(args.substr(i, args.size() - i));
+			a->set_attribute(args.substr(i, args.length() - i));
 			a->set_single(true);
 			_attributes.push_back(a);
 
@@ -378,7 +378,7 @@ void BBCodeParserTag::parse_args(const String &args) {
 
 		int next_char_index = equals_index + 1;
 
-		if (next_char_index >= args.size()) {
+		if (next_char_index >= args.length()) {
 			// an attribute looks like this "... attrib="
 			_attributes.push_back(a);
 			return;
@@ -388,7 +388,7 @@ void BBCodeParserTag::parse_args(const String &args) {
 		while (args[next_char_index] == ' ') {
 			++next_char_index;
 
-			if (next_char_index >= args.size()) {
+			if (next_char_index >= args.length()) {
 				// an attribute looks like this "... attrib=     "
 				_attributes.push_back(a);
 				return;
@@ -409,7 +409,7 @@ void BBCodeParserTag::parse_args(const String &args) {
 			// missing closing ' or " if c is ' or "
 			// else missing parameter
 
-			a->set_data(args.substr(next_char_index, args.size() - next_char_index));
+			a->set_data(args.substr(next_char_index, args.length() - next_char_index));
 			_attributes.push_back(a);
 			return;
 		}
@@ -571,10 +571,10 @@ void BBCodeParser::parse(const String &data) {
 	Vector<Ref<BBCodeParserTag>> tags;
 
 	// split into tags
-	for (int i = 0; i < data.size(); ++i) {
+	for (int i = 0; i < data.length(); ++i) {
 		if (data[i] == '[') {
 			// tag
-			for (int j = i + 1; j < data.size(); ++j) {
+			for (int j = i + 1; j < data.length(); ++j) {
 				if (data[j] == ']') {
 					Ref<BBCodeParserTag> t;
 					t.instance();
@@ -591,7 +591,7 @@ void BBCodeParser::parse(const String &data) {
 		} else {
 			// content
 
-			for (int j = i + 1; j < data.size(); ++j) {
+			for (int j = i + 1; j < data.length(); ++j) {
 				if (data[j] == '[') {
 					Ref<BBCodeParserTag> t;
 					t.instance();

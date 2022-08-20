@@ -278,12 +278,12 @@ void HTMLParserTag::process() {
 		return;
 	}
 
-	if (_data.size() < 2) {
+	if (_data.length() < 2) {
 		return;
 	}
 
 	ERR_FAIL_COND(_data[0] != '<');
-	ERR_FAIL_COND(_data[_data.size() - 1] != '>');
+	ERR_FAIL_COND(_data[_data.length() - 1] != '>');
 
 	int start_index = 1;
 	if (_data[1] == '/') {
@@ -291,7 +291,7 @@ void HTMLParserTag::process() {
 
 		_type = HTMLParserTag::HTML_PARSER_TAG_TYPE_CLOSING_TAG;
 	} else if (_data[1] == '!') {
-		if (_data.size() < 8) {
+		if (_data.length() < 8) {
 			return;
 		}
 
@@ -306,10 +306,10 @@ void HTMLParserTag::process() {
 				comment_start_index = 4;
 			}
 
-			_tag = _data.substr(comment_start_index, _data.size() - comment_start_index - 3);
+			_tag = _data.substr(comment_start_index, _data.length() - comment_start_index - 3);
 		}
 
-		if (_data.size() < 11) {
+		if (_data.length() < 11) {
 			return;
 		}
 
@@ -322,21 +322,21 @@ void HTMLParserTag::process() {
 
 		_type = HTMLParserTag::HTML_PARSER_TAG_TYPE_DOCTYPE;
 
-		_tag = _data.substr(doctype_start_index + 8, _data.size() - doctype_start_index - 8 - 1);
+		_tag = _data.substr(doctype_start_index + 8, _data.length() - doctype_start_index - 8 - 1);
 	} else {
 		String tag_text;
 
-		if (_data[_data.size() - 2] == '/') {
+		if (_data[_data.length() - 2] == '/') {
 			// will catch all that looks like <br/>
 			// tags that look like <br> will be caught later in a post process, in a way
 			// which also tries to catch erroneously not closed tags that supposed to be closed
 			_type = HTMLParserTag::HTML_PARSER_TAG_TYPE_SELF_CLOSING_TAG;
 
-			tag_text = _data.substr(1, _data.size() - 3);
+			tag_text = _data.substr(1, _data.length() - 3);
 		} else {
 			_type = HTMLParserTag::HTML_PARSER_TAG_TYPE_OPENING_TAG;
 
-			tag_text = _data.substr(1, _data.size() - 2);
+			tag_text = _data.substr(1, _data.length() - 2);
 		}
 
 		int fspc_index = tag_text.find_char(' ');
@@ -350,12 +350,12 @@ void HTMLParserTag::process() {
 		// grab the tag itself
 		_tag = tag_text.substr(0, fspc_index);
 
-		if (fspc_index + 1 == tag_text.size()) {
+		if (fspc_index + 1 == tag_text.length()) {
 			// no args, but had a space like <br />
 			return;
 		}
 
-		String args = tag_text.substr(fspc_index + 1, tag_text.size() - fspc_index - 1);
+		String args = tag_text.substr(fspc_index + 1, tag_text.length() - fspc_index - 1);
 		parse_args(args);
 	}
 
@@ -363,7 +363,7 @@ void HTMLParserTag::process() {
 
 	if (tag_end_index == -1) {
 		// simple tag
-		_tag = _data.substr(start_index, _data.size() - start_index - 1);
+		_tag = _data.substr(start_index, _data.length() - start_index - 1);
 		return;
 	}
 }
@@ -372,7 +372,7 @@ void HTMLParserTag::parse_args(const String &args) {
 	_attributes.clear();
 
 	int i = 0;
-	while (i < args.size()) {
+	while (i < args.length()) {
 		if (args[i] == ' ') {
 			//"trim"
 			++i;
@@ -385,7 +385,7 @@ void HTMLParserTag::parse_args(const String &args) {
 		a.instance();
 
 		if (equals_index == -1) {
-			a->set_attribute(args.substr(i, args.size() - i));
+			a->set_attribute(args.substr(i, args.length() - i));
 			a->set_single(true);
 			_attributes.push_back(a);
 
@@ -399,7 +399,7 @@ void HTMLParserTag::parse_args(const String &args) {
 
 		int next_char_index = equals_index + 1;
 
-		if (next_char_index >= args.size()) {
+		if (next_char_index >= args.length()) {
 			// an attribute looks like this "... attrib="
 			_attributes.push_back(a);
 			return;
@@ -409,7 +409,7 @@ void HTMLParserTag::parse_args(const String &args) {
 		while (args[next_char_index] == ' ') {
 			++next_char_index;
 
-			if (next_char_index >= args.size()) {
+			if (next_char_index >= args.length()) {
 				// an attribute looks like this "... attrib=     "
 				_attributes.push_back(a);
 				return;
@@ -430,7 +430,7 @@ void HTMLParserTag::parse_args(const String &args) {
 			// missing closing ' or " if c is ' or "
 			// else missing parameter
 
-			a->set_data(args.substr(next_char_index, args.size() - next_char_index - 1));
+			a->set_data(args.substr(next_char_index, args.length() - next_char_index - 1));
 			_attributes.push_back(a);
 			return;
 		}
@@ -625,7 +625,7 @@ void HTMLParser::parse(const String &data) {
 	int state = STATE_NONE;
 
 	// split into tags
-	for (int i = 0; i < data.size(); ++i) {
+	for (int i = 0; i < data.length(); ++i) {
 		if (state == STATE_NONE) {
 			if (data[i] == '<') {
 				// tag
@@ -636,7 +636,7 @@ void HTMLParser::parse(const String &data) {
 					// no else, we need to process the tag istelf!
 				}
 
-				for (int j = i + 1; j < data.size(); ++j) {
+				for (int j = i + 1; j < data.length(); ++j) {
 					if (data[j] == '>') {
 						Ref<HTMLParserTag> t;
 						t.instance();
@@ -653,7 +653,7 @@ void HTMLParser::parse(const String &data) {
 			} else {
 				// content
 
-				for (int j = i + 1; j < data.size(); ++j) {
+				for (int j = i + 1; j < data.length(); ++j) {
 					if (data[j] == '<') {
 						Ref<HTMLParserTag> t;
 						t.instance();
@@ -672,7 +672,7 @@ void HTMLParser::parse(const String &data) {
 			// script tag content
 
 			bool done = false;
-			for (int j = i; j < data.size(); ++j) {
+			for (int j = i; j < data.length(); ++j) {
 				char c = data[j];
 
 				if (c != '<' && c != '-') {
