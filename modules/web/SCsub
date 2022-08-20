@@ -57,6 +57,10 @@ sources = [
     "nodes/redirect/alias_web_page.cpp",
 ]
 
+if env["tools"]:
+    sources.append("editor/web_editor.cpp")
+    sources.append("editor/web_editor_plugin.cpp")
+
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
     # Shared lib compilation
     module_env.Append(CCFLAGS=['-fPIC'])

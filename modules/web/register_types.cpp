@@ -61,6 +61,10 @@ SOFTWARE.
 #include "nodes/redirect/alias_web_page.h"
 #include "nodes/redirect/redirect_web_page.h"
 
+#if TOOLS_ENABLED
+#include "editor/web_editor_plugin.h"
+#endif
+
 void register_web_types() {
 	ClassDB::register_class<_HTMLBuilder>();
 	ClassDB::register_class<_HTMLTag>();
@@ -124,6 +128,10 @@ void register_web_types() {
 
 	ClassDB::register_class<RedirectWebPage>();
 	ClassDB::register_class<AliasWebPage>();
+
+#if TOOLS_ENABLED
+	EditorPlugins::add_by_type<WebEditorPlugin>();
+#endif
 }
 
 void unregister_web_types() {
