@@ -27,16 +27,34 @@ SOFTWARE.
 
 #include "scene/gui/box_container.h"
 
-class WebEditor : public HBoxContainer {
-	GDCLASS(WebEditor, HBoxContainer);
+class WebNode;
+class WebEditorWebServer;
+class RichTextLabel;
+class TextEdit;
+
+class WebEditor : public VBoxContainer {
+	GDCLASS(WebEditor, VBoxContainer);
 
 public:
+	void edit(WebNode *web_node);
+	void refresh();
+	void clear();
+
 	WebEditor();
 	~WebEditor();
 
 protected:
 	void _notification(int p_what);
 	static void _bind_methods();
+
+	bool _prettify_html;
+
+	WebNode *_edited_node;
+	WebEditorWebServer *_web_server;
+	HBoxContainer *_toolbar;
+
+	RichTextLabel *_result_info_label;
+	TextEdit *_results_label;
 };
 
 #endif

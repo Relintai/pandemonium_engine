@@ -54,7 +54,7 @@ void WebEditorPlugin::edit(Object *p_object) {
 	WebNode *wn = Object::cast_to<WebNode>(p_object);
 
 	if (wn) {
-		//	window->set_node(wn);
+		window->edit(wn);
 
 		get_editor_interface()->set_main_screen_editor("Web");
 	}
