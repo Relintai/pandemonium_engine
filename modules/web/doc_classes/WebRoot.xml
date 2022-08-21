@@ -3,6 +3,9 @@
 	<brief_description>
 	</brief_description>
 	<description>
+		It adds some functionality over [WebNode]s that you need for functional websites, like wwwroot handling, Middleware support, and also requests can register themselves to be notified in case they need to do some special tasks.
+		When a request is received, WebRoot goes through all it's registered [WebServerMiddleware] in order, and call their on_before_handle_request_main() method. If it returns true that means the middleware ended up handling that request, which means the request should not be processed further. This usually means that the Middleware sent an error.
+		If none of the [WebServerMiddleware]s handled the request, then routing begins. At first it will check if the request matches a file from the given wwwroot, if not, then it will use the default [WebNode] routing, except the only difference, is that if a [WebRoot]s has a [WebNode] child with it's uri_segment set to "/" (withot quotes), that will be used as the root [WebNode], instead of itself.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,12 +14,14 @@
 			<return type="bool" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				Precesses the [WebServerRequest] using registered [WebServerMiddleware].
 			</description>
 		</method>
 		<method name="register_request_update">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				Registers the [WebServerRequest], to receive update notifications.
 			</description>
 		</method>
 		<method name="send_file">
@@ -24,27 +29,33 @@
 			<argument index="0" name="path" type="String" />
 			<argument index="1" name="request" type="WebServerRequest" />
 			<description>
+				Helper method to easily sends files from the wwwroot.
 			</description>
 		</method>
 		<method name="try_send_wwwroot_file">
 			<return type="bool" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				Helper method that tries to send files from the wwwroot, if the file doesn't exists, returns false.
 			</description>
 		</method>
 		<method name="unregister_request_update">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				unregisters the [WebServerRequest], so it doesn't receive update notifications anymore.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="middlewares" type="Array" setter="set_middlewares" getter="get_middlewares" default="[  ]">
+			The registered [WebServerMiddleware]s.
 		</member>
 		<member name="www_root_file_cache" type="FileCache" setter="" getter="get_www_root_file_cache">
+			You can get the underlying [FileCache], that is used for handling the wwwroot.
 		</member>
 		<member name="www_root_path" type="String" setter="set_www_root_path" getter="get_www_root_path" default="&quot;&quot;">
+			The wwwroot's path.
 		</member>
 	</members>
 	<constants>
