@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="BrowsableFolderServeWebPage" inherits="FolderServeWebPage" version="3.7">
 	<brief_description>
+		The [BrowsableFolderServeWebPage] class adds folder listing functionality on top of [FolderServeWebPage].
 	</brief_description>
 	<description>
+		The [BrowsableFolderServeWebPage] class adds folder listing functionality on top of [FolderServeWebPage]. Fundamentally it's the same as the Apache webserver's directory listing.
+		As an example let's take this folder:
+		[code]content_folder/
+		-- ct/
+		---- ctf.jpg
+		-- file1.md
+		-- test.jpg[/code]
+		A [FolderServeWebPage] is pointed to the [code]content_folder[/code] folder, it's set as a child of a [WebRoot], and it's uri segment is [code]served_files[/code]:
+		[code]Opening: http://127.0.0.1/served_files will send a generated html directory listing.
+		Opening: http://127.0.0.1/served_files/file1.md will send page1.md.
+		Opening: http://127.0.0.1/served_files/test.jpg will send page2.md.
+		Opening: http://127.0.0.1/served_files/ct will send a generated html directory listing.
+		Opening: http://127.0.0.1/served_files/ct/ctf.jpg will send ctf.jpg.[/code]
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,6 +24,7 @@
 	</methods>
 	<members>
 		<member name="should_render_menu" type="bool" setter="set_should_render_menu" getter="get_should_render_menu" default="true">
+			Whether to call [code]render_menu()[/code] when a directory listing is returned.
 		</member>
 	</members>
 	<constants>

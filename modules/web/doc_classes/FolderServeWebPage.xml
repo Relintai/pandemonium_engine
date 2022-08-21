@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="FolderServeWebPage" inherits="WebNode" version="3.7">
 	<brief_description>
+		The [FolderServeWebPage] class serves files.
 	</brief_description>
 	<description>
+		The [FolderServeWebPage] class just serves files found in [code]serve_folder[/code], and it's subfolders. If a file does not exists, it sends a 404 error.
+		As an example let's take this folder:
+		[code]content_folder/
+		-- ct/
+		---- ctf.jpg
+		-- file1.md
+		-- test.jpg[/code]
+		A [FolderServeWebPage] is pointed to the [code]content_folder[/code] folder, it's set as a child of a [WebRoot], and it's uri segment is [code]served_files[/code]:
+		[code]Opening: http://127.0.0.1/served_files will send a 404 error.
+		Opening: http://127.0.0.1/served_files/file1.md will send page1.md.
+		Opening: http://127.0.0.1/served_files/test.jpg will send page2.md.
+		Opening: http://127.0.0.1/served_files/ct will send a 404 error.
+		Opening: http://127.0.0.1/served_files/ct/ctf.jpg will send ctf.jpg.[/code]
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,11 +24,13 @@
 		<method name="load">
 			<return type="void" />
 			<description>
+				Refresh the internal [FileCache].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="serve_folder" type="String" setter="set_serve_folder" getter="get_serve_folder" default="&quot;&quot;">
+			The folder that will get served.
 		</member>
 	</members>
 	<constants>
