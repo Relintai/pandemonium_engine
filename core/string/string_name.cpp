@@ -118,6 +118,8 @@ void StringName::cleanup() {
 		print_verbose("StringName: " + itos(lost_strings) + " unclaimed string names at exit.");
 	}
 
+	configured = false;
+
 	lock.unlock();
 }
 

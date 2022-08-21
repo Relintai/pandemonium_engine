@@ -41,8 +41,7 @@ struct StaticCString {
 
 class StringName {
 	enum {
-
-		STRING_TABLE_BITS = 12,
+		STRING_TABLE_BITS = 14,
 		STRING_TABLE_LEN = 1 << STRING_TABLE_BITS,
 		STRING_TABLE_MASK = STRING_TABLE_LEN - 1
 	};
@@ -60,16 +59,19 @@ class StringName {
 		String get_name() const {
 			return cname ? String(cname) : name;
 		}
+
 		int idx;
 		uint32_t hash;
 		_Data *prev;
 		_Data *next;
+
 		_Data() {
 #ifdef DEBUG_ENABLED
 			debug_references = 0;
 #endif
 			cname = nullptr;
-			next = prev = nullptr;
+			prev = nullptr;
+			next = nullptr;
 			idx = 0;
 			hash = 0;
 		}
@@ -82,6 +84,10 @@ class StringName {
 	union _HashUnion {
 		_Data *ptr;
 		uint32_t hash;
+
+		_HashUnion() {
+			ptr = nullptr;
+		}
 	};
 
 	void unref();
@@ -119,6 +125,7 @@ public:
 		if (!_data) {
 			return false;
 		}
+
 		if (_data->cname != nullptr) {
 			return _data->cname[0] == '%';
 		} else {
@@ -218,6 +225,5 @@ StringName _scs_create(const char *p_chr, bool p_static = false);
  */
 
 //#define SNAME(m_arg) ([]() -> const StringName & { static StringName sname = _scs_create(m_arg, true); return sname; })()
-
 
 #endif // STRING_NAME_H
