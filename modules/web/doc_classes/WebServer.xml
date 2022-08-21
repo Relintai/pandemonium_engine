@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="WebServer" inherits="Node" version="3.7">
 	<brief_description>
+		The WebServer class can be used as a base for Webserver implementations.
 	</brief_description>
 	<description>
+		The WebServer class can be used as a base for Webserver implementations.
+		When the actual server implementation receives an HTTP request it needs to take it's [WebServerRequest] implementation, set it up properly, then it needs to call the [code]server_handle_request()[/code] method with it, to start handling it.
+		It sould have one [WebNode] (or a derived class) as a child, it will be set as the web root. If you add more than one, only the first one will be used. Requests will be sent to this [WebNode]'s [code]handle_request_main()[/code].
+		If a [HTTPSessionManager] is added as a child, it will be picked up automatically, and then it can be used by [WebNodes]s to store session information.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,51 +15,64 @@
 		<method name="_start" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				The default implementation of start().
 			</description>
 		</method>
 		<method name="_stop" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				The default implementation of stop().
 			</description>
 		</method>
 		<method name="get_session_manager">
 			<return type="HTTPSessionManager" />
 			<description>
+				Returns the active [HTTPSessionManager].
 			</description>
 		</method>
 		<method name="get_web_root">
 			<return type="WebNode" />
 			<description>
+				Returns the root [WebNode].
 			</description>
 		</method>
 		<method name="request_write_lock">
 			<return type="void" />
 			<description>
+				Request a write lock, in order to be able to change your active [WebNode] tree. Actually change the tree in _notification, when you receive NOTIFICATION_WEB_SERVER_WRITE_LOCK_ACQUIRED.
+				Note that HTTP servers are highly asynchronous, and due to how the system works adding and even removing [WebNode]s from the tree is not that big of a deal, however deallocating [WebNode]s while they are processing requests will crash your app sooner or later. Just to be safe I recommended that you lock your [WebNode] tree branch before touching it.
+				Do not forget to make your nodes refresh their internal handler map when you change the tree using other helper methods like build_handler_map().
 			</description>
 		</method>
 		<method name="server_handle_request">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				The default request handler method that your implementations can use.
 			</description>
 		</method>
 		<method name="start">
 			<return type="void" />
 			<description>
+				Start the server.
 			</description>
 		</method>
 		<method name="stop">
 			<return type="void" />
 			<description>
+				Stop the server.
 			</description>
 		</method>
 	</methods>
 	<constants>
 		<constant name="NOTIFICATION_WEB_SERVER_STARTED" value="2000">
+			This notification will be sent after the server is started.
 		</constant>
 		<constant name="NOTIFICATION_WEB_SERVER_STOPPED" value="2001">
+			This notification will be sent after the server is stopped.
 		</constant>
 		<constant name="NOTIFICATION_WEB_SERVER_WRITE_LOCK_ACQUIRED" value="2002">
+			This is sent to self, and children when a write lock is acquired. Only change the tree in _notification if you get this.
 		</constant>
 	</constants>
 </class>
