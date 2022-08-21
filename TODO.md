@@ -43,17 +43,15 @@
 ## Editor
 
 - Add support for enabling / disabling editor plugins, and also add a gui for this. (Like how the gdscript addons can be enabled/disabled, but for built in c++ stuff.) It will need support for either exlusion, or dependencies. (Dependencies would be better.)
-- Modularize the editor. Should probably add a new editor_modules folder (Just normal modules, but they won't get compiled if tools are disabled).
+- Modularize the editor.
 
 ## Engine
 
-- Organize the core folder a bit better.
 - (Maybe) add an SDL backend.
 - Reorganize the project. Except for core, and a few smaller things like main everything should be a module that can be disabled.
-- Module hard dependencies would be a nice thing to have. For example if you turn off module A, and B has a hard dependency on it, B would turn itself off, or warn you.
 - Add more hooks where needed, to let stuff register itself. Like visual server backends, so adding them is simple, as I think this is the best way forward, so you can just create your custom rendering backend, when needed. Like if you want lightmaps, add a module that has the tooling + visualserver that has it implemented.
 - Port the DisplayServer from Godot4, as I think having display and windowing in a DisplayServer singleton instead of in OS is better architecturally.
-- Port the capability to have more that one windows. Multi windowing however should be disabled by default, also I don't want to port the full multi windowing stuff for the editor, as it's a lot leaner the way it is. However multi windowing would be cool for creating tools. Would also make it easier to not have a window at all.
+- Port the capability to have more than one windows. Multi windowing however should be disabled by default, also I don't want to port the full multi windowing stuff for the editor, as it's a lot leaner the way it is. However multi windowing would be cool for creating tools. Would also make it easier to not have a window at all.
 - The DisplayServer at first could just use stuff in OS, so it doesn't have to be ported all at onece.
 - Should backport the tests and the test suite from Godot4 aswell.
 - Backport optimizations to the hashmap (or maybe just add it as another option), and also replace usage where applicable (https://github.com/godotengine/godot/commit/8b7c7f5a753b43cec10f72b274bb1d70c253652b), and (https://github.com/godotengine/godot/commit/45af29da8095af16729955117a165d23e77cd740)
@@ -124,8 +122,7 @@
 - Add epoll api support to sockets, and make the web server use it.
 - Add range http header support.
 - Finish all the todos in the http parser.
-- Fix unicode escape issues.
-- Could add a simple templating language. Probably would not be more than a few hundred lines. WebPageTemplate (Resource), with an importer. Most webnodes could have assignable properties for them. Could be similar to laravel's for exmample. Also it could be pre compiled in an extremely simple fashion. Vector<Statement> StringStatement, IFStatement, LoopStatement, CallStatement etc. Oither than bool evaluation every statement type is extremely trivial. Also bool evaluation logic could be reused elsewhere (Also gdscript already have it implemented).
+- Could add a simple templating language. Probably would not be more than a few hundred lines. WebPageTemplate (Resource), with an importer. Most webnodes could have assignable properties for them. Could be similar to laravel's for example. Also it could be pre compiled in an extremely simple fashion. Vector<Statement> StringStatement, IFStatement, LoopStatement, CallStatement etc. Other than bool evaluation every statement type is extremely trivial. Also bool evaluation logic could be reused elsewhere (Also gdscript already have it implemented).
 
 ## Users
 
