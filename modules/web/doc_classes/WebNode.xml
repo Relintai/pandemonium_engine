@@ -1,8 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="WebNode" inherits="Node" version="3.7">
 	<brief_description>
+		WebNodes are Nodes that can be used to create HTTP based guis for games / applications, using a [WebNode] tree for routing. They only work when they are a child of a [WebServer].
 	</brief_description>
 	<description>
+		Their main purpose is to route [WebServerRequest]s, and then to send responses when the proper node was found (or to send errors if it wasn't). The handle_request_main() method is responsible for routing. It can be overridden if the default behaviour needs to be customized. Processing a request and sending a response should take place in the _handle_request() method. This will get called when a request's handler node is found. 
+		As mentioned in [WebServerRequest]'s documentation, this framework uses a stack like url routing model, where the http path is split along forward slashes, and then these get handled going deeper into the given [WebServer]'s [WebNode] hierarchy, effectively using the node structure as a pseudo filesystem. The HTTP uri can be set using the [code]uri_segment[/code] property. Of course [WebNode]s can override this behaviour. For an example look at [WebRoot], or [BrowsableFolderServeWebPage].
+		When the [WebServer] receives an HTTP request, it creates a [WebServerRequest] from it, and then passes this request to the root [WebNode]'s handle_request_main() method. Note that [WebRoot] types will handle request a bit differently than normal [WebNodes], as they will not try handle the request by themselves, if they are matched, instead they try to pass it to a child node which has it's uri segment set to "/", if they can't they send a 404.
+		It will contain convenience methods for working with [Database]s if the database module was enabled when the engine was compiled (default).
+		For a concrete example Let's say we have the following WebNode structure:
+		[code]WebServer
+		- [WebRoot]
+		-- [StaticPageFile] (uri_segment = "/")
+		-- [BrowsableFolderServeNode] (uri_segment = "downloads")
+		-- [StaticPageFile] (uri_segment = "school")
+		--- [StaticPageFile] (uri_segment = "mathematics")
+		--- [StaticPageFile] (uri_segment = "programming")[/code]
+		When this structure gets a HTTP GET request that looks like: "http://127.0.0.1/school/programming" the query will be routed the following way:
+		[code]WebServer
+		- (0)[WebRoot]
+		-- [StaticPageFile] (uri_segment = "/")
+		-- [BrowsableFolderServeNode] (uri_segment = "downloads")
+		-- (1)[StaticPageFile] (uri_segment = "school")
+		--- [StaticPageFile] (uri_segment = "mathematics")
+		--- (2)[StaticPageFile] (uri_segment = "programming")[/code]
+		So [WebRoot] will look at the current segment of the request, which is going to be "school". It has a WebNode child with "school" set as it's uri segment, so it will call push_path() on the request, and then call the selected WebNode's handle_request_main() method. The school WebNode will now look at the request, and notice that the current segment is "programming", so it will try to route the request to it's children. If it can't it will send an error. In this example it can, so it will call push_path() on the request, and pass it to the matching WebNode's  handle_request_main(). The "programming" WebNode will now look at the Request, and notice that now the current uri segment is "/", and thus will call it's own _handle_request_main(), which will render and send back the contents that it's supposed to. 
+		Since the routing was successful, if the selected WebNode (if it's set up that way), will also try to render the HTML menu using WebNode's render_menu() helper method.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,16 +34,19 @@
 			<return type="void" />
 			<argument index="0" name="pseed" type="int" />
 			<description>
+				The default implementation of create_default_entries().
 			</description>
 		</method>
 		<method name="_create_table" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				The default implementation of create_table().
 			</description>
 		</method>
 		<method name="_drop_table" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				The default implementation of drop_table().
 			</description>
 		</method>
 		<method name="_handle_error_send_request" qualifiers="virtual">
@@ -28,18 +54,21 @@
 			<argument index="0" name="request" type="WebServerRequest" />
 			<argument index="1" name="error_code" type="int" />
 			<description>
+				The default implementation of handle_error_send_request().
 			</description>
 		</method>
 		<method name="_handle_request" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				The default implementation of handle_request().
 			</description>
 		</method>
 		<method name="_handle_request_main" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				The default implementation of handle_request_main().
 			</description>
 		</method>
 		<method name="_migrate" qualifiers="virtual">
@@ -48,115 +77,136 @@
 			<argument index="1" name="should_seed" type="bool" />
 			<argument index="2" name="pseed" type="int" />
 			<description>
+				The default implementation of migrate().
 			</description>
 		</method>
 		<method name="_render_index" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				The default implementation of render_index().
 			</description>
 		</method>
 		<method name="_render_main_menu" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				The default implementation of render_main_menu().
 			</description>
 		</method>
 		<method name="_render_menu" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				The default implementation of render_menu().
 			</description>
 		</method>
 		<method name="_render_preview" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				The default implementation of render_preview().
 			</description>
 		</method>
 		<method name="_udpate_table" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="current_table_version" type="int" />
 			<description>
+				The default implementation of udpate_table().
 			</description>
 		</method>
 		<method name="build_handler_map">
 			<return type="void" />
 			<description>
+				In order to be efficient [WebNode]s have a HashMap that is used to look up it's children  when routing. This method refreshes it.
 			</description>
 		</method>
 		<method name="clear_handlers">
 			<return type="void" />
 			<description>
+				In order to be efficient [WebNode]s have a HashMap that is used to look up it's children  when routing. This method clears it.
 			</description>
 		</method>
 		<method name="create_default_entries">
 			<return type="void" />
 			<argument index="0" name="pseed" type="int" />
 			<description>
+				Migration: Create default entries for your table. (Seeding.)
 			</description>
 		</method>
 		<method name="create_table">
 			<return type="void" />
 			<description>
+				Migration: Create your table.
 			</description>
 		</method>
 		<method name="drop_table">
 			<return type="void" />
 			<description>
+				Migration: Delete your table.
 			</description>
 		</method>
 		<method name="get_database_connection">
 			<return type="DatabaseConnection" />
 			<description>
+				Convenience method for getting the active [DatabaseConnection] for this [WebNode].
 			</description>
 		</method>
 		<method name="get_full_uri">
 			<return type="String" />
 			<argument index="0" name="slash_at_the_end " type="bool" default="true" />
 			<description>
+				Get the full uri of this [WebNode]. Goes up the [WebNode] tree and creates the full uri for you.
 			</description>
 		</method>
 		<method name="get_full_uri_parent">
 			<return type="String" />
 			<argument index="0" name="slash_at_the_end " type="bool" default="true" />
 			<description>
+				Same as get_full_uri(), but it starts from the parent [WebNode].
 			</description>
 		</method>
 		<method name="get_migrations_enabled">
 			<return type="bool" />
 			<description>
+				Returns whether this [WebNode] should listen to migration events from the [DatabaseManager] or not.
 			</description>
 		</method>
 		<method name="get_parent_webnode">
 			<return type="WebNode" />
 			<description>
+				Returns the parens cast to a WebNode.
 			</description>
 		</method>
 		<method name="get_query_builder">
 			<return type="QueryBuilder" />
 			<description>
+				Convenience method for getting a [QueryBuilder] from the active [Database] for this [WebNode].
 			</description>
 		</method>
 		<method name="get_request_handler_child">
 			<return type="WebNode" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				Helper method that returns the child [WebNode] that should handle the giver [WebServerRequest]. Useful when when overriding _handle_request_main().
 			</description>
 		</method>
 		<method name="get_server">
 			<return type="WebServer" />
 			<description>
+				Convenience method for getting the parent [WebServer].
 			</description>
 		</method>
 		<method name="get_table_builder">
 			<return type="TableBuilder" />
 			<description>
+				Convenience method for getting a [TableBuilder] from the active [Database] for this [WebNode].
 			</description>
 		</method>
 		<method name="get_web_root">
 			<return type="WebNode" />
 			<description>
+				Convenience method for getting the parent [WebServer]'s root [WebNode].
 			</description>
 		</method>
 		<method name="handle_error_send_request">
@@ -164,18 +214,22 @@
 			<argument index="0" name="request" type="WebServerRequest" />
 			<argument index="1" name="error_code" type="int" />
 			<description>
+				This method is where you should render your error pages. If an error happens during processing a request, by default you should call send_error() in the given [WebServerRequest], that in turn will call this method on your root [WebNode].
 			</description>
 		</method>
 		<method name="handle_request">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				This method is called when a WebNode was selected by handle_request_main() to handle a [WebServerRequest]. This is where you should implement your HTML rendering, error handling, and even POST request processing logic for a [WebNode].
 			</description>
 		</method>
 		<method name="handle_request_main">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				This is where routing happens. If you need to implement custom routing logic, that's when you should override this method. you can look at [WebRoot], or [BrowsableFolderServeWebPage] for as simpler examples.
+				The [WebServer] passes [WebServerRequest]s to it's root [WebNode]'s handle_request_main().
 			</description>
 		</method>
 		<method name="migrate">
@@ -184,66 +238,84 @@
 			<argument index="1" name="pseed" type="bool" />
 			<argument index="2" name="arg2" type="int" />
 			<description>
+				Migrations are used for updating / creating the database table structure / data initially (or after an update for example). Only this method needs to be called, it will properly call the other migration related methods using the supplied parameters.
+				If you want to trigger an app-wide migration, call the [DatabaseManager] singleton's migrate method. It will notify all [WebNode]s.
 			</description>
 		</method>
 		<method name="render_index">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				You can use override this for a default render of the page. It is for convenience, by default it's not used. For example [UserWebPage]s use these in their _handle_request() methods to simplify drawing logic a lot.
 			</description>
 		</method>
 		<method name="render_main_menu">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				Call this method on a [WebNode] to make it actually render a menu into the given [WebServerRequest]. This is where you implement your HTML menu rendering logic.
 			</description>
 		</method>
 		<method name="render_menu">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				Call this method on a [WebNode] to render a menu into the given [WebServerRequest]. When your [WebNode] wants to render a menu, call this method. The default implementaion will call render_main_menu() on the [WebServer]'s root [WebNode], so that's where you should create your site wide menu rendering logic.
+				If you want more control over menu rendering for some of your [WebNode]s, like they need to render a custom menu, that's when you override this method.
 			</description>
 		</method>
 		<method name="render_preview">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				Rendering a preview can be requested using this method. Implement your preview drawing logic here. THink like on a Blog when listing entries you want to render a small preview of each article.
 			</description>
 		</method>
 		<method name="request_write_lock">
 			<return type="void" />
 			<description>
+				Request a write lock, in order to be able to change your active [WebNode] tree (children). Actually change the tree in _notification, when you receive NOTIFICATION_WEB_NODE_WRITE_LOCKED.
+				Note that HTTP servers are highly asynchronous, and due to how the system works adding and even removing [WebNode]s from the tree is not that big of a deal, however deallocating [WebNode]s while they are processing requests will crash your app sooner or later. Just to be safe I recommended that you lock your [WebNode] tree branch before touching it.
+				Do not forget to make your nodes refresh their internal handler map when you change the tree using other helper methods like build_handler_map().
 			</description>
 		</method>
 		<method name="set_migrations_enabled">
 			<return type="void" />
 			<argument index="0" name="val" type="bool" />
 			<description>
+				Sets whether this [WebNode] should listen to migration events from the [DatabaseManager] or not.
 			</description>
 		</method>
 		<method name="try_route_request_to_children">
 			<return type="bool" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				Helper method that will try to route requests to child [WebNode]s. Useful when when overriding _handle_request_main().
 			</description>
 		</method>
 		<method name="udpate_table">
 			<return type="void" />
 			<argument index="0" name="current_table_version" type="int" />
 			<description>
+				Migration: Update your table structure.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="database" type="Database" setter="set_database" getter="get_database">
+			This allows you to set different database connections to different branches of the [WebNode] tree. If a [Database] instance is set to a [WebNode] it's children will automatically also use that particular Database instance. 
 		</member>
 		<member name="database_table_name" type="String" setter="set_database_table_name" getter="get_database_table_name" default="&quot;&quot;">
+			Set the database table's name that this [WebNode] should use, if it supports databases.
 		</member>
 		<member name="routing_enabled" type="bool" setter="set_routing_enabled" getter="get_routing_enabled" default="true">
+			Controls whether this [WebNode] will try to route [WebServerRequest]s to it's children, or not.
 		</member>
 		<member name="uri_segment" type="String" setter="set_uri_segment" getter="get_uri_segment" default="&quot;&quot;">
+			 The HTTP uri segment of this node used when routing a [WebServerRequest]. For example if we take this url: "http://127.0.0.1/atest/btest/ctest", "atest" is uri_segment 1, "btest" is uri_segment 2, "atest" is uri_segment 3.
 		</member>
 		<member name="web_permission" type="WebPermission" setter="set_web_permission" getter="get_web_permission">
+			This allows you to set different permission sets to different branches of the [WebNode] tree. They could allow a user with certain traits to edit the contents of a certain branch. If a [WebPermission] instance is set to a [WebNode] it's children will automatically also use that particular Database instance. 
 		</member>
 	</members>
 	<constants>
