@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="HTTPSession" inherits="Reference" version="3.7">
 	<brief_description>
+		The HTTPSession class represents a user's session.
 	</brief_description>
 	<description>
+		The HTTPSession class represents a user's session. It can store any kind data thanks to Variants. It's used by [HTTPSessionManager] in tandem with cookies to provide per session data storage facilities. 
+		It contains a mutex, because a session / user can make more than one queries to a server at once  (For example by opening multiple tabs in a browser), and these are handled by the framework asynchronously.
 	</description>
 	<tutorials>
 	</tutorials>
