@@ -410,7 +410,9 @@ String WebServerRequest::get_url_root_current() const {
 String WebServerRequest::get_url_site() const {
 	String path = get_host();
 
-	for (int i = _path_stack_pointer; i < _path_stack.size(); ++i) {
+	int s = MIN(_path_stack_pointer + 1, _path_stack.size());
+
+	for (int i = 0; i < s; ++i) {
 		path += _path_stack[i];
 		path += "/";
 	}
@@ -535,8 +537,8 @@ void WebServerRequest::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_file_file_name", "index"), &WebServerRequest::get_file_file_name);
 	ClassDB::bind_method(D_METHOD("get_file_key", "index"), &WebServerRequest::get_file_key);
 	ClassDB::bind_method(D_METHOD("get_file_length", "index"), &WebServerRequest::get_file_length);
-	ClassDB::bind_method(D_METHOD("get_file_data"), &WebServerRequest::get_file_data);
-	ClassDB::bind_method(D_METHOD("get_file_data_str"), &WebServerRequest::get_file_data_str);
+	ClassDB::bind_method(D_METHOD("get_file_data", "index"), &WebServerRequest::get_file_data);
+	ClassDB::bind_method(D_METHOD("get_file_data_str", "index"), &WebServerRequest::get_file_data_str);
 
 	ClassDB::bind_method(D_METHOD("get_parameter", "key"), &WebServerRequest::get_parameter);
 
