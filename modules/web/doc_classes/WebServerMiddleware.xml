@@ -3,6 +3,8 @@
 	<brief_description>
 	</brief_description>
 	<description>
+		[WebRoot] uses these to preprocess requests. They can do various tasks ranging from setting up session variables, querying data from a database, collect usage information, or to block a non admin user from accessing an admin only section of the site (Note that [WebPermission]s are better suited for this purpose though.)
+		When a request is received [WebRoot] (if it's used for a particular server) will go through all of it's registered Middlewares in order, and call their on_before_handle_request_main() method. If it returns true that means the middleware ended up handling that request, which means the request should not be processed further. This usually means that the Middleware sent an error.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,12 +13,14 @@
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				The default implementation of on_before_handle_request_main(). This is where you can implement your middleware's logic. 
 			</description>
 		</method>
 		<method name="on_before_handle_request_main">
 			<return type="bool" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				This method is used to process the given [WebServerRequest]. Return false if you want the processing to continue, return true to signal to the caller [WebRoot] that this [WebServerRequest] handled the request, and no further processing should be done. If you do this, you need to actually send something back in your implementation using the [WebServerRequest], othrewise the [WebServerRequest] will just get kept alive hanging until a timeout occurs.
 			</description>
 		</method>
 	</methods>
