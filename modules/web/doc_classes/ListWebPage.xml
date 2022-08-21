@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="ListWebPage" inherits="WebNode" version="3.7">
 	<brief_description>
+		The ListPage WebNode can be pointed to a folder using it's folder variable, and then it will load all files in that folder, process them as markdown in alphabetical order, and put them onto a page, one after the other. It also supports pagination.
 	</brief_description>
 	<description>
+		The ListPage WebNode can be pointed to a folder using it's folder variable, and then it will load all files in that folder, process them as markdown in alphabetical order, and put them onto a page, one after the other. It also supports pagination.
+		This class will load and generate pages from a folder of md files. It supports pagination, it will put entry_per_page md files per page. It generates html on enter tree, and caches everything. Each md file gets rendered into a div with a class of "list_entry"
+		HTML (If there are entries):
+		[code]render_menu()
+		&lt;div class="main_div_class(list_page)"&gt;
+		  &lt;div class="entry_div_class(list_entry)"&gt;md file 1&lt;/div&gt;
+		  &lt;div class="entry_div_class(list_entry)"&gt;md file 2&lt;/div&gt;
+		  ...
+		  ... pagination ...
+		&lt;/div&gt;[/code]
+		HTML (If there are no entries):
+		[code]render_menu()
+		&lt;div class="main_div_class(list_page)"&gt;
+		  &lt;div class="empty_div_class(list_entry_empty)"&gt;placeholder_text(No content yet!)&lt;/div&gt;
+		&lt;/div&gt;[/code]
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,25 +26,34 @@
 		<method name="load">
 			<return type="void" />
 			<description>
+				Maunally load everything.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="empty_div_class" type="String" setter="set_empty_div_class" getter="get_empty_div_class" default="&quot;list_entry_empty&quot;">
+			This is going to be the class of the div of the placeholder_text if it's rendered.
 		</member>
 		<member name="entry_div_class" type="String" setter="set_entry_div_class" getter="get_entry_div_class" default="&quot;list_entry&quot;">
+			Every file will be in a div with this class.
 		</member>
 		<member name="entry_per_page" type="int" setter="set_entry_per_page" getter="get_entry_per_page" default="4">
+			This many entries will be at max rendered per page.
 		</member>
 		<member name="folder" type="String" setter="set_folder" getter="get_folder" default="&quot;&quot;">
+			The path of the folder to load files from.
 		</member>
 		<member name="main_div_class" type="String" setter="set_main_div_class" getter="get_main_div_class" default="&quot;list_page&quot;">
+			The main div's class that contains everything.
 		</member>
 		<member name="max_visible_navigation_links" type="int" setter="set_max_visible_navigation_links" getter="get_max_visible_navigation_links" default="6">
+			This many pagination links will be visible max.
 		</member>
 		<member name="paginate" type="bool" setter="set_paginate" getter="get_paginate" default="true">
+			Whether to allow pagination or not.
 		</member>
 		<member name="placeholder_text" type="String" setter="set_placeholder_text" getter="get_placeholder_text" default="&quot;No content yet!&quot;">
+			If there are no files this text will be displayed.
 		</member>
 	</members>
 	<constants>
