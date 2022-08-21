@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="StaticWebPage" inherits="WebNode" version="3.7">
 	<brief_description>
+		Sends what's in it's [code]data[/code] property when it handles a [WebServerRequest], and what's in it's [code]preview_data[/code] property when [code]render_preview()[/code] is called.
 	</brief_description>
 	<description>
+		The StaticPage WebNode just renders what's set into it's [code]data[/code] property. 
+		If it's [code]should_render_menu[/code] property is set to true (default) then it will also call [code]render_menu()[/code]. 
+		Also supports loading data from files through the [code]load_file()[/code] helper method, and can also render markdown files to HTML.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,33 +15,40 @@
 			<return type="void" />
 			<argument index="0" name="path" type="String" />
 			<description>
+				Loads a file, and processes it if it can. (if it's a markdown file, it will get rendered as html.)
 			</description>
 		</method>
 		<method name="load_file">
 			<return type="void" />
 			<argument index="0" name="path" type="String" />
 			<description>
+				Sets the contentds of the given file to the [code]data[/code] property
 			</description>
 		</method>
 		<method name="load_md_file">
 			<return type="void" />
 			<argument index="0" name="path" type="String" />
 			<description>
+				Loads and processes a markdown file.
 			</description>
 		</method>
 		<method name="set_data_md">
 			<return type="void" />
 			<argument index="0" name="path" type="String" />
 			<description>
+				Process the given [String] as a markdown, and set it to the [code]data[/code] property.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="data" type="String" setter="set_data" getter="get_data" default="&quot;&quot;">
+			The data that will be sent back to a request.
 		</member>
 		<member name="preview_data" type="String" setter="set_preview_data" getter="get_preview_data" default="&quot;&quot;">
+			The preview that can be used by other WebNodes if you set it.
 		</member>
 		<member name="should_render_menu" type="bool" setter="set_should_render_menu" getter="get_should_render_menu" default="true">
+			Whether to call [code]render_menu()[/code] when it handles a request.
 		</member>
 	</members>
 	<constants>

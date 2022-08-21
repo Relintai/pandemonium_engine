@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="StaticWebPageFile" inherits="StaticWebPage" version="3.7">
 	<brief_description>
+		A [StaticWebPage] that loads a file to [StaticWebPage]'s [code]data[/code] proeprty when entering the [SceneTree].
 	</brief_description>
 	<description>
+		A [StaticWebPage] that loads a file to [StaticWebPage]'s [code]data[/code] proeprty when entering the [SceneTree].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,13 +12,16 @@
 		<method name="load">
 			<return type="void" />
 			<description>
+				Load the file manually.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="file_path" type="String" setter="set_file_path" getter="get_file_path" default="&quot;&quot;">
+			The path to the file.
 		</member>
 		<member name="process_if_can" type="bool" setter="set_process_if_can" getter="get_process_if_can" default="true">
+			Whenther to try to process the file. (Renders markdown.)
 		</member>
 	</members>
 	<constants>
