@@ -3,6 +3,10 @@
 	<brief_description>
 	</brief_description>
 	<description>
+		The WebPermission class can be used to easily implement and query permissions for a web application. It has view, create, edit, delete permissions built in. These should be enough for most use cases. When not, then of course it can be expanded for that particular scenario.
+		If the View permission doesn't exists for a particular user, then that scenario is handled by the virtual handle_view_permission_missing() method. Usually sending a 404 error is probably the best, however sometimes redirections might be preferred. For example if a user's session has expired, it's likely better to just redirect that user to the login page rather than displaying an error message.
+		[WebServerRequest]s will have the active [WebPermission] set into them as they are routed, so you can have different permissions for different parts of a [WebNode] tree. This means that if you have an admin section, you can create an admin only [WebPermission], and set that into that branch's root [WebNode]. This [WebPermission] could send 404 for users that does not have the required levels to access that particular area, while for the rest of the site you have a different one which allows everyone to view (has view permission set to true).
+		Note that [WebNode]s have convenience getters for checking permissions when rendering a web page. For example when rendering html you can use request.can_edit() to determine whether to display edit links or not. It will actually ask this class.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,36 +15,42 @@
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				The default implementation for activate().
 			</description>
 		</method>
 		<method name="_get_permissions" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				The default implementation for get_permissions().
 			</description>
 		</method>
 		<method name="_handle_view_permission_missing" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				The default implementation for handle_view_permission_missing().
 			</description>
 		</method>
 		<method name="activate">
 			<return type="bool" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				The [WebPermission] needs to make itself active for a given [WebServerRequest]. If you set a [WebPermission] into a [WebNode], when that [WebNode] gets the [WebServerRequest] for routing, it will set the [WebPermission] into the [WebServerRequest] as active, then call this method. For example you can use this to look up permissions from a database if you want to in this method.
 			</description>
 		</method>
 		<method name="get_permissions">
 			<return type="int" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				Returns the permissions for a particular [WebServerRequest]. (As flags)
 			</description>
 		</method>
 		<method name="handle_view_permission_missing">
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
+				Will get called during routing if a [WebNode] is encountered where the View permission is missing. If this is called, then a response need to be be sent, otherwise the connection will just stay open until a timeout.
 			</description>
 		</method>
 	</methods>
