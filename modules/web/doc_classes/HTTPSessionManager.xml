@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="HTTPSessionManager" inherits="Node" version="3.7">
 	<brief_description>
+		The [HTTPSessionManager] class stores active sessions on a server.
 	</brief_description>
 	<description>
+		The [HTTPSessionManager] class stores active sessions on a server, and also has helper methods to create, save and delete sessions.
+		It should be placed as a child of a [WebServer], which will automatically pick it up. [WebNode]s should access it using the helper methods in [WebServerRequest].
+		The [SessionSetupWebServerMiddleware] is meant to be used alongside this class, which will automatically take session id from a request's cookie (if exists), and if it exists it will set the HTTPSession belonging to that id to the Request's session variable. Note that this will not create sessions automatically.
+		Although sessions can be created and set up manually, the [WebServerRequest] class also offers helper methods to do this.
+		Note that this class won't save the created sessions. Use one of it's inheritors, or inherit from it to implement your own serialization.
 	</description>
 	<tutorials>
 	</tutorials>
