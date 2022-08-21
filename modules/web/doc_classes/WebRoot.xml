@@ -14,7 +14,7 @@
 			<return type="bool" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
-				Precesses the [WebServerRequest] using registered [WebServerMiddleware].
+				Processes the [WebServerRequest] using registered [WebServerMiddleware].
 			</description>
 		</method>
 		<method name="register_request_update">
@@ -43,7 +43,7 @@
 			<return type="void" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
-				unregisters the [WebServerRequest], so it doesn't receive update notifications anymore.
+				Unregisters the [WebServerRequest], so it doesn't receive update notifications anymore.
 			</description>
 		</method>
 	</methods>

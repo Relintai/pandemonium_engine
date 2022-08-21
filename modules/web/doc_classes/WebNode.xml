@@ -320,6 +320,7 @@
 	</members>
 	<constants>
 		<constant name="NOTIFICATION_WEB_NODE_WRITE_LOCKED" value="2100">
+			This is sent to self, and children when a write lock is acquired. Only change the tree in _notification if you get this.
 		</constant>
 	</constants>
 </class>
