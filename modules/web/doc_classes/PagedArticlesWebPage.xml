@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="PagedArticlesWebPage" inherits="WebNode" version="3.7">
 	<brief_description>
+		The [PagedArticlesWebPage] class creates [PagedArticleWebPage] for all folders found inside [code]folder[/code].
 	</brief_description>
 	<description>
+		The [PagedArticlesWebPage] class enumarates all folders found inside the folder set to it's [code]folder[/code] property, and then creates and sets up [PagedArticleWebPage] classes for each one, and add them as it's children.
+		It will also generate an index page from the available articles.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,6 +13,7 @@
 	</methods>
 	<members>
 		<member name="folder" type="String" setter="set_folder" getter="get_folder" default="&quot;&quot;">
+			The folder to evaluate.
 		</member>
 	</members>
 	<constants>
