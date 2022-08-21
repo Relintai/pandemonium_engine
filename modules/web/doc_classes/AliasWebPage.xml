@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="AliasWebPage" inherits="WebNode" version="3.7">
 	<brief_description>
+		Creates an alias web uri.
 	</brief_description>
 	<description>
+		Essentially when it handles a request it calls an another [WebNode]'s [code]handle_request()[/code] method.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,6 +12,7 @@
 	</methods>
 	<members>
 		<member name="alias_path" type="NodePath" setter="set_alias_path" getter="get_alias_path" default="NodePath(&quot;&quot;)">
+			The path to the target [Webnode].
 		</member>
 	</members>
 	<constants>

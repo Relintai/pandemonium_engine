@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="RedirectWebPage" inherits="WebNode" version="3.7">
 	<brief_description>
+		Sends a redirect when it needs to handle a request.
 	</brief_description>
 	<description>
+		It handles a request by sending a redirect to the [code]redirect_path[/code].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,8 +12,10 @@
 	</methods>
 	<members>
 		<member name="code" type="int" setter="set_code" getter="get_code" default="302">
+			The response code.
 		</member>
 		<member name="redirect_path" type="String" setter="set_redirect_path" getter="get_redirect_path" default="&quot;&quot;">
+			The http path to redirect to.
 		</member>
 	</members>
 	<constants>
