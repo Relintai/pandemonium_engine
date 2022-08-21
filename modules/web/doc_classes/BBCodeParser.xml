@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="BBCodeParser" inherits="Reference" version="3.7">
 	<brief_description>
+		A class that parses bbcode into a class structure for easy manipulation, or processing.
 	</brief_description>
 	<description>
+		The BBCodeParser class works the same way as the HTMLParser class, except it parses BBCode, which is a bit simpler, so some complexity was removed.
+		BBCode was created for providing a safer and simpler format for formatting post on forums. It is very similar to html.
+		For example: [code][b]This text should would be bold if this bbcode was interpreted.[/b] [size=14]This text would have a font size of 14.[/size] etc.[/code]
 	</description>
 	<tutorials>
 	</tutorials>

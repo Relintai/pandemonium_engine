@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="SessionSetupWebServerMiddleware" inherits="WebServerMiddleware" version="3.7">
 	<brief_description>
+		The [SessionSetupWebServerMiddleware] will look up [HTTPSession]s for a particular request using the stored session id.
 	</brief_description>
 	<description>
+		The [SessionSetupWebServerMiddleware] will look up [HTTPSession]s for a particular request from the stored session id automatically.
+		It will take session id ([code]session_id[/code] key) from a request's cookie (if exists), and it will set the HTTPSession belonging to that id to the Request's session variable. Note that it will not create sessions automatically.
 	</description>
 	<tutorials>
 	</tutorials>

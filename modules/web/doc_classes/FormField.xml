@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="FormField" inherits="Resource" version="3.7">
 	<brief_description>
+		[FormField] represents one field in a html form, like a password or user name input.
 	</brief_description>
 	<description>
+		[FormField] represents one field in a html form, like a password or user name input.
+		It contains a list of FormFieldEntries that actually check constraints using polymorphism.
+		It also contains helper methods to allow for simpler construction.
 	</description>
 	<tutorials>
 	</tutorials>

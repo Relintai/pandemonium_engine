@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="HTMLTag" inherits="Reference" version="3.7">
 	<brief_description>
+		The HTMLTag class helps with the creation of HTML tags. HTMLBuilder uses it internally.
 	</brief_description>
 	<description>
+		The HTMLTag class helps with the creation of HTML tags. HTMLBuilder uses it internally.
+		It has helper methods for most of the available HTML attributes, some of these were omitted from the UML diagram, to improve readability. It supports simple and complex tags. Self-closing tags are considered simple (like 	&lt;br&gt;).
+		If an attribute is not directly implemented, the [code]attrib(attr, val)[/code] helper method is available.
+		It also contains the f() helper method that returns the owner [HTMLBuilder], for ease of use.
+		[code]var b : HTMLBuilder = HTMLBuilder.new()
+		#&lt;a href="/main" class="main_link"&gt;link text&lt;/a&gt;:
+		b.a().href("/main").cls("main_link").f().w("link").ca()
+		request.body += b.result[/code]
 	</description>
 	<tutorials>
 	</tutorials>

@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="FileCache" inherits="Reference" version="3.7">
 	<brief_description>
+		The FileCache class provide functionality for file and directory caching for the web module.
 	</brief_description>
 	<description>
+		The FileCache class provide functionality for file and directory caching for the web module.
+		It can evaluate a folder, and save all file paths into memory.
+		Using this functionality can increase performance in certain scenarios, as the application does not have to use a syscall to evaluate whether a file exists or not, and also helps with avoiding directory traversal attacks, as relative paths are not going to be expanded by accident.
+		(A directory traversal attach would be if an application receives this get request: [code]server.net/../../../etc/passwd[/code], and it would result in success, if the app then returns the contents of the "passwd" file, which is outside of the root folder of the server.)
+		[FileCache] has a drawback for now, as it doesn't yet watch for changes in the folder, so if files change it needs to be manually refreshed.
+		It can also save contents of files into memory if needed using the [code]set_cached_body()[/code] helper method.
 	</description>
 	<tutorials>
 	</tutorials>

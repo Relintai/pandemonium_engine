@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="HTMLBuilder" inherits="Reference" version="3.7">
 	<brief_description>
+		A class that can be used to easily build html from code.
 	</brief_description>
 	<description>
+		A class that can be used to easily build html from code.
+		This class has helper methods for all valid HTML tags. It have an another set, but with a c prefix, these methods write the closing tag. All of these helpers return an [HTMLTag], this allows for the addition of arguments into the tags. This [HTMLTag] should not be stored, it's reused internally. Some of these methods also have alternates with parameters for the most common attributes, like the link tag (a) has a helper method that takes the link, class, id as an argument for convenience.
+		Other helper methods, like [code]input_*[/code] are also available, these should simplify the creation of forms.
+		The [code]w()[/code] helper method is provided for appending strings directly at the end. The [code]wn[/code], [code]wns[/code], etc. helpers can be used to append numbers (converted to string) to the output.
+		Helper methods are also provided for the easy addition of csrf tokens to forms. These can protect from forged form submissions.
+		[code]var a : float = _model.predict()
+		va b : HTMLBuilder = HTMLBuilder.new()
+		
+		b.h5().attrib("align", "center")
+		b.w("The model predicted:").br()
+		b.w("Current: ").wn(a).w(" Units")
+		b.w(".").br()
+		b.ch5()
+		
+		request.body += b.result[/code]
 	</description>
 	<tutorials>
 	</tutorials>

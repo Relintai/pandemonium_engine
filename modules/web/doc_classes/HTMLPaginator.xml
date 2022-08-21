@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="HTMLPaginator" inherits="Reference" version="3.7">
 	<brief_description>
+		A class that can be used to generate html pagination.
 	</brief_description>
 	<description>
+		A class that can be used to generate html pagination.
+		Pagination means page selection links on HTML pages when more than one page is available.
+		The [code]get_current()[/code] helper can be used to get the generated HTML for the current page. [code]start()[/code] and [code]next()[/code] helpers are also provided as an enumerator like interface. They are convenient if pages can be built and cached during startup for example.
+		A Renderer [HTMLPaginator] can be set to an another [HTMLPaginator] class. If a renderer [HTMLPaginator] is set, then it's render methods will be used to render the links instead of the built in of the current class. This enables customization of styles for core classes, in a relatively simple and in a less error prone way.
 	</description>
 	<tutorials>
 	</tutorials>

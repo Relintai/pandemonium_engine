@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="MarkdownRenderer" inherits="Reference" version="3.7">
 	<brief_description>
+		Renders markdown as HTML.
 	</brief_description>
 	<description>
+		Renders markdown as HTML.
 	</description>
 	<tutorials>
 	</tutorials>

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="FormFieldEntry" inherits="Resource" version="3.7">
 	<brief_description>
+		Used by [FormField]s to implement html form validation capabilities.
 	</brief_description>
 	<description>
+		Used by [FormField]s to implement html form validation capabilities.
 	</description>
 	<tutorials>
 	</tutorials>

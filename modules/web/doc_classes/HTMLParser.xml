@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="HTMLParser" inherits="Reference" version="3.7">
 	<brief_description>
+		A class that parses html into a class structure for easy manipulation, or processing.
 	</brief_description>
 	<description>
+		A class that parses html into a class structure for easy manipulation, or processing.
+		The HTMLParser class parses HTML using a simple algorithm in one pass into a simple class structure. It handles erroneous HTML documents relatively well. It does not know and check HTML tag validity, it will just handles all of them in a generic way.
+		A String containing HTML data can ba parsed using it's parse() method. The resulting class structure can then be accessed via it's root member variable.
+		[code]var p : HTMLParser = HTMLParser.new()
+		p.parse(data)
+		var article_tag : HTMLParserTag = p.root.get_first("article")
+		save_data(article_tag.to_string())
+		var n_link_tag : HTMLParserTag = p.root.get_first("a", "rel", "next")
+		String next_link = n_link_tag.get_attribute_value("href")[/code]
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,22 +20,26 @@
 		<method name="convert_to_string" qualifiers="const">
 			<return type="String" />
 			<description>
+				The HTML document can be turned back into well formatted HTML using this method.
 			</description>
 		</method>
 		<method name="get_root">
 			<return type="HTMLParserTag" />
 			<description>
+				The resulting root [HTMLParserTag].
 			</description>
 		</method>
 		<method name="parse">
 			<return type="void" />
 			<argument index="0" name="data" type="String" />
 			<description>
+				Parses the given data as html.
 			</description>
 		</method>
 		<method name="print" qualifiers="const">
 			<return type="void" />
 			<description>
+				Equivalent to [code]print(convert_to_string())[/code].
 			</description>
 		</method>
 	</methods>

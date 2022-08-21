@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="HTMLParserAttribute" inherits="Reference" version="3.7">
 	<brief_description>
+		[HTMLParser] stores html attributes using this class.
 	</brief_description>
 	<description>
+		[HTMLParser] stores html attributes using this class.
+		It has helper methods for searching and modifying data.
 	</description>
 	<tutorials>
 	</tutorials>
