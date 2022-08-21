@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="PagedArticleWebPage" inherits="WebNode" version="3.7">
 	<brief_description>
+		Using this class, a small self contained multi page article can be created. 
 	</brief_description>
 	<description>
+		Using this class, a small self contained multi page article can be created. 
+		It will load every file from a folder ([code]articles_folder[/code]) in alpahbetical order, parse them as markdown, and create a paginated page from every single one of them. Additionally it will also serve a folder if it's [code]serve_folder[/code] property points to an existing folder. These can be accessed at [code]...articles_url/files/[/code]. If [code]serve_folder_relative[/code] is true (default), then this folder is relative to the [code]articles_folder[/code]. This makes it possible to serve images, videos, custom css, javascript, etc. for a PagedArticle, while all of the article's data can reside in one folder.
+		If it finds a summary.md, it will serve it as the root, else it will generate one.
+		The links is generates currently look like: [code]/01_test.md[/code]
+		As an example let's take this folder:
+		[code]article/
+		-- article_files/
+		---- test.jpg
+		-- page1.md
+		-- page2.md
+		-- summary.md[/code]
+		A [PagedArticleWebPage] is pointed to the [code]article[/code] folder, it's [code]serve_folder[/code] property is set to [code]article_files[/code], and is accesible at [code]http://127.0.0.1/test_article[/code]:
+		[code]Opening: http://127.0.0.1/test_article will send summary.md rendered as html.
+		Opening: http://127.0.0.1/test_article/page1.md will send page1.md rendered as html.
+		Opening: http://127.0.0.1/test_article/page2.md will send page2.md rendered as html.
+		Opening: http://127.0.0.1/test_article/files/test.jpg will send test.jpg.[/code]
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,30 +27,37 @@
 		<method name="generate_summary">
 			<return type="void" />
 			<description>
+				generates a summary page containing all article links. This is used as the index if summary.md is unavailable.
 			</description>
 		</method>
 		<method name="get_index_page">
 			<return type="String" />
 			<description>
+				Returns the index page's data.
 			</description>
 		</method>
 		<method name="get_summary">
 			<return type="String" />
 			<description>
+				Returns the summary page's data.
 			</description>
 		</method>
 		<method name="load">
 			<return type="void" />
 			<description>
+				Manually loads everything.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="articles_folder" type="String" setter="set_articles_folder" getter="get_articles_folder" default="&quot;&quot;">
+			The folder containing the articles.
 		</member>
 		<member name="serve_folder" type="String" setter="set_serve_folder" getter="get_serve_folder" default="&quot;files&quot;">
+			The folder that should be served. It could contain images, css, etc. These files are accessible under [code]...articles_url/files/[/code].
 		</member>
 		<member name="serve_folder_relative" type="bool" setter="set_serve_folder_relative" getter="get_serve_folder_relative" default="true">
+			Whether this folder is relative or not to the articles_folder.
 		</member>
 	</members>
 	<constants>
