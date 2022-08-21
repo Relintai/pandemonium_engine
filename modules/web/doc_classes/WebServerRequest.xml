@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="WebServerRequest" inherits="Reference" version="3.7">
 	<brief_description>
+		The [WebServerRequest] class represents one incoming HTTP request. It also contains the proper helper methods for sending a response.
 	</brief_description>
 	<description>
+		The [WebServerRequest] class represents one incoming HTTP request. It also contains the proper helper methods for sending a response.
+		Since HTML documents has a relatively fixed structure, this class contains head, body, footer properties, the response HTML can be added to these, and then these can be compiled and sent using [code]compile_body()[/code] or the [code]compile_and_send_body()[/code] helpers into the [code]compiled_body[/code] property. This adds an html5 type declaration then the opening [code]html[/code] tag, then the contents of the head variable to the [code]head[/code] section of the response, and then the contents of the body then footer variable into the [code]body[/code] section of the response, then it closes the main [code]html[/code] tag. It also contains helper methods for sending files, handling cookies, storing sessions, storing custom data etc.
+		CSRF tokens are also supported. These are generated string tokens that are stored in HTTPSessions, but since they are universally needed, helper methods were added directly into [WebServerRequest]. They can be used to validate that a form was actually submitted by the user from a page rendered by the application's server itself, in order to mitigate attacks that use the technique called [C]ross [S]ite [R]equest [F]orgery.
+		This framework uses a stack like url routing model, where the http path is split along forward slashes, and then these get handled going deeper into the given [WebServer]'s [WebNode] hierarchy, effectively using the node structure as a pseudo filesystem. Of course [WebNode]s can decide on handling the request's parameters themselves instead of letting the default hierarchy based routing to take place. For example [BrowsableFolderServeWebPage] uses this to implement a web based file browser. The currently handled segment can be queried using the [code]get_current_path_segment()[/code]. The [code]pop_path()[/code] and [code]push_path()[/code] helper methods can be used to switch segments.
 	</description>
 	<tutorials>
 	</tutorials>
