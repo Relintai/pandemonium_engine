@@ -6,6 +6,122 @@ All notable changes to this project will be documented in this file.
 
 - Nothing since the last changeset.
 
+## [3.8.0]
+
+### Added
+
+#### Engine
+
+Backported everything up to and including https://github.com/godotengine/godot/commit/989d5990ad704fe97a341cb5883d4725479ea09b
+
+##### Core
+
+- Added a new templated WeakRef (WRef) class.
+- Added hash_set from godot4.
+- Added RBMap and RBSet from godot4.
+- Backported helper classes to pair.h from Godot4. 
+- Ported the improvements to the hash funcs from Godot4.
+- Backported the improvements to the Math class from Godot4.
+- Added Vector4, Vector4i, and projection classes from Godot4.
+- Backported almost all improvements to core math classes from Godot4. Also bound all eligible methods.
+- Now Vector4, Vector4i, Projection, PoolVector4Array, PoolVector4iArray, are built in variant types. Also reordered the Variant's Type enum, renamed - _RID in it to RID, fixed a few smaller issues and removed some very old compat code.
+- Backported the improvements to StringName from Godot4.
+- Backported convert_rg_to_ra_rgba8 and convert_ra_rgba8_to_rg from Godot4's Image.
+- Added more helper methods to DirAccessRef and FileAccessRef. Also smaller cleanups.
+
+##### SceneTree
+
+- Backported from Godot4: Node3D gizmo improvements, including subgizmos.
+- Backported: returning AfterGUIInput from forward_spatial_gui_input from Godot4. Also removed the first index parameter.
+- Renamed AFTER_GUI_INPUT_DESELECT to AFTER_GUI_INPUT_NO_DESELECT.
+- Backported: add viewport.get_camera_2d()
+
+##### Editor
+
+- Now full screen editor plugins have the ability to hide their tab button in the top bar.
+- Now the editor won't treat a hidden main button as an indicator that their editor plugin is disabled. This behavior was used to be a part of editor feature profiles, which I removed a long time ago.
+
+##### Nodes
+
+- Backported ImporterMesh and ImporterMeshInstance3D from Godot4. 
+- Backported ImmediateMesh from Godot4.
+
+##### Skeletons
+
+- Backported some of the improvements to BoneAttachment from Godot4.
+- Backported most improvements to Skeleton from Godot4.
+- Backported: "Remove animation 3D transform track, replace by loc/rot/scale tracks" from Godot4.
+- Backported Godot4's skeleton editor.
+- Backported from Godot 4: New and improved IK system for Skeleton3D.
+- Backported from Godot 4: New and improved IK system for Skeleton2D.
+- Ported from Godot4: Remove REST transform influence in skeleton bones. (This means that: Animations and Skeletons are now pose-only. Rest transform is kept as reference (when it exists) and for IK. Improves 3D model compatibility (non uniform transforms will properly work, as well as all animations coming from Autodesk products).)
+
+##### Networking
+
+- Removed rsets.
+- Moved visibility rpcs (vrpc) from Entity to Node. Also added an unreliable variant.
+- Added a few small networking related helper methods to Node. Made the rpc macros in Entity use them.
+- Removed deprecated enum values from multiplayerPeer.
+- Removed additional direct script rpc mode query when sending rpcs, in order to simplify that codepath as much as possible. Also removed the remote, remotesync etc. keywords from gdscript, as now they won't work anymore. Node's rpc_config() method should be used instead of marking methods with keywords in scripts.
+
+#### Modules
+
+- Backported: [Scons] Implement module dependency sorting.
+- Moved http server simple to it's own module.
+- Moved the editor only modules to a new editor_modules folder.
+- Removed stub module.
+
+##### TextEditor
+
+- Now text files will show up in the editor if the text editor plugin is enabled. Also clicking them will open them in the text editor.
+- Now custom file creation entries can be added to the editor's FilesystemDock.
+- Now the TextEditor addon will add it's own "create file" entry to the editor's filesystem dock.
+- Now the TextEditor won't open a file multiple times, instead it will just switch to the proper tab.
+
+##### Web
+
+- Added web node editor plugin.
+- Added icons for web nodes.
+- Also created full documentation for most of the classes in the web module, and added descriptions and brief descriptions everything, except a few small helper utilities.
+
+##### Users
+
+Added icons for User, and user web pages.
+Added icons for the UserManagers.
+Added an icon for UserModule.
+
+##### MeshDataResource
+
+- Added an icon for MeshDataResource, MeshDataInstance, and for the meshDataInstance editor toggle.
+- Now in order to edit MeshDataInstance a new edit mode has to be togged from the top bar. While this mode is enabled the edited MeshDataInstace can't be deselected. Also now Mesh Data Editor's sidebar will only be visible in this mode, along with the editor gizmo.
+- The transform gizmo is hidden now while editing a mesh data resource.
+
+### Changed
+
+- Renamed Quat to Quaternion for consistency with the other engine math classes.
+- Removed CameraMatrix, and switched to Projection.
+- Now all Variant math types are structs.
+- Ported form godot4: Reformat structure string operators.
+- Backported from Godot4: Cleaned up Hash Functions. Clean up and do fixes to hash functions and newly introduced murmur3 hashes.
+- Restructured the core folder's directory.
+- Added _theme_ infix to the theme helper methods in Control.
+- Renamed the VisualServer to RenderingServer like in Godot4, as I think it's a lot better name for it. I did not yet rename the files.
+
+### Fixed
+
+- Actually check whether modules are enabled, not just for their existence in mesh_data_resource's SCsub.
+- Check whether the gltf module is enabled or not before trying to use it.
+- Main build script: Properly set module_ name _enabled in environment to false for modules that get disabled using can_build().
+- Fix serializing variants into binary files.
+- Use AnimationPlayer's root property instead of just getting it's parent when exprting a GLTFDocument.
+- Use string length() instead of size() as it was intended in HTMLParser, and BBCodeParser.
+- HTMLParser now properly parses doctype in a case insensitive way. Also improved an error message a bit.
+
+### Removed
+
+- Removed AnimationTreePlayer, as it was deprecated (and also practically unusable).
+
+
 ## [3.7.0]
 
 ### Added
