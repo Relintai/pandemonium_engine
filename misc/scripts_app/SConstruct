@@ -392,6 +392,9 @@ if len(sys.argv) > 1:
     if arg[0] == 'b':
         build_string = get_exports_for('global') + get_additional_commands_for('global') + 'scons '
 
+        if module_config.custom_module_folders != "":
+            build_string += 'custom_modules=' + module_config.custom_module_folders + " "
+
         build_string += 'tools='
         if 'e' in arg:
             build_string += 'yes'
