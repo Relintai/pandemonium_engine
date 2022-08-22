@@ -2,12 +2,15 @@
 #define HTTP_PARSER_H
 
 #include "core/string/ustring.h"
+#include "core/containers/vector.h"
 
 #include "core/object/reference.h"
 
 class SimpleWebServerRequest;
 struct http_parser;
 struct http_parser_settings;
+struct multipart_parser;
+struct multipart_parser_settings;
 
 class HTTPParser : public Reference {
 	GDCLASS(HTTPParser, Reference);
@@ -44,12 +47,28 @@ protected:
 
 	bool _is_ready;
 
+	HTTPRequestContentType _content_type;
+	bool _in_header;
+	String _queued_header_field;
+
+	String _multipart_boundary;
+
+	String _queued_multipart_header_field;
+	Vector<char> _queued_multipart_form_data;
+
+	String _multipart_form_name;
+	String _multipart_form_filename;
+	String _multipart_form_content_type;
+	bool _multipart_form_is_file;
+	Vector<char> _multipart_form_data;
+
 private:
 	String chr_len_to_str(const char *at, size_t length);
 
-	void process_multipart_data();
-	void _process_multipart_header(const String &header);
+	int process_multipart_data(const char *at, size_t length);
+	void _process_multipart_header_value(const String &val);
 	void process_urlenc_data();
+	bool is_boundary_at(const char *at, size_t length);
 
 	int on_message_begin();
 	int on_url(const char *at, size_t length);
@@ -73,20 +92,27 @@ private:
 	static int _on_chunk_header_cb(http_parser *parser);
 	static int _on_chunk_complete_cb(http_parser *parser);
 
+	int on_multipart_header_field_cb(const char *at, size_t length);
+	int on_multipart_header_value_cb(const char *at, size_t length);
+	int on_multipart_part_data_cb(const char *at, size_t length);
+	int on_multipart_part_data_begin_cb();
+	int on_multipart_headers_complete_cb();
+	int on_multipart_part_data_end_cb();
+	int on_multipart_body_end_cb();
+
+	static int _on_multipart_header_field_cb(multipart_parser *parser, const char *at, size_t length);
+	static int _on_multipart_header_value_cb(multipart_parser *parser, const char *at, size_t length);
+	static int _on_multipart_part_data_cb(multipart_parser *parser, const char *at, size_t length);
+	static int _on_multipart_part_data_begin_cb(multipart_parser *parser);
+	static int _on_multipart_headers_complete_cb(multipart_parser *parser);
+	static int _on_multipart_part_data_end_cb(multipart_parser *parser);
+	static int _on_multipart_body_end_cb(multipart_parser *parser);
+
 	http_parser *parser;
 	http_parser_settings *settings;
 
-	HTTPRequestContentType _content_type;
-	String _multipart_boundary;
-	bool _in_header;
-	String _queued_header_field;
-	bool _in_multipart_boundary;
-	bool _in_boundary_header;
-
-	String _multipart_form_name;
-	String _multipart_form_filename;
-	String _multipart_form_content_type;
-	bool _multipart_form_is_file;
+	multipart_parser *_multipart_parser;
+	multipart_parser_settings *_multipart_parser_settings;
 };
 
 #endif

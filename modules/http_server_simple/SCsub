@@ -13,6 +13,7 @@ sources = [
     "http_parser.cpp",
     "http_writer.cpp",
     "http_parser/http_parser.c",
+    "multipart_parser_c/multipart_parser.c",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
