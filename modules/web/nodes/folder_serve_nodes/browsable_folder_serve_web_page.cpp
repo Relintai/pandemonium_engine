@@ -25,7 +25,7 @@ void BrowsableFolderServeWebPage::_handle_request(Ref<WebServerRequest> request)
 
 		if (e.uri == file_name) {
 			if (_should_render_menu) {
-				render_main_menu(request);
+				render_menu(request);
 			}
 
 			request->body += e.data;

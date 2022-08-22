@@ -27,7 +27,7 @@ void StaticWebPage::set_should_render_menu(const bool &val) {
 
 void StaticWebPage::_handle_request(Ref<WebServerRequest> request) {
 	if (_should_render_menu) {
-		render_main_menu(request);
+		render_menu(request);
 	}
 
 	render_index(request);
