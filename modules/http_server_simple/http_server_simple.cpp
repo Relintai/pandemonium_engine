@@ -179,7 +179,7 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 	String ctype;
 	String req_ext = p_file_path.get_extension();
 
-	if (!_http_server->mimes.has(req_ext)) {
+	if (_http_server->mimes.has(req_ext)) {
 		ctype = _http_server->mimes[req_ext];
 	} else {
 		ctype = "text/plain";
@@ -385,7 +385,10 @@ HTTPServerSimple::HTTPServerSimple() {
 	mimes["pck"] = "application/octet-stream";
 	mimes["png"] = "image/png";
 	mimes["svg"] = "image/svg";
+	mimes["jpg"] = "image/jpeg";
+	mimes["jpeg"] = "image/jpeg";
 	mimes["wasm"] = "application/wasm";
+	mimes["css"] = "text/css";
 
 	server.instance();
 	stop();
