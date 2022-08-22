@@ -363,8 +363,9 @@ int HTTPParser::on_headers_complete() {
 
 	return 0;
 }
-int HTTPParser::on_body(const char *at, size_t length) {
+int HTTPParser::on_body(const char *at, size_t p_length) {
 	ERR_FAIL_COND_V(!_request.is_valid(), 0);
+	int length = static_cast<int>(p_length);
 
 	if (_content_type == REQUEST_CONTENT_MULTIPART_FORM_DATA) {
 		int wofs = _queued_multipart_form_data.size();
