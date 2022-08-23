@@ -2063,7 +2063,7 @@ CScriptLanguage::CScriptLanguage() {
 	GLOBAL_DEF("debug/cscript/completion/autocomplete_setters_and_getters", false);
 	for (int i = 0; i < (int)CScriptWarning::WARNING_MAX; i++) {
 		String warning = CScriptWarning::get_name_from_code((CScriptWarning::Code)i).to_lower();
-		bool default_enabled = !warning.begins_with("unsafe_") && i != CScriptWarning::UNUSED_CLASS_VARIABLE;
+		bool default_enabled = !warning.begins_with("unsafe_") && i != CScriptWarning::UNUSED_CLASS_VARIABLE && i != CScriptWarning::RETURN_VALUE_DISCARDED;
 		GLOBAL_DEF("debug/cscript/warnings/" + warning, default_enabled);
 	}
 #endif // DEBUG_ENABLED
