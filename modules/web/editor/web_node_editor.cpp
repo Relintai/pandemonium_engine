@@ -24,6 +24,8 @@ SOFTWARE.
 
 #include "../http/web_node.h"
 #include "../http/web_server_cookie.h"
+#include "scene/gui/button.h"
+#include "scene/gui/margin_container.h"
 #include "scene/gui/rich_text_label.h"
 #include "scene/gui/text_edit.h"
 
@@ -31,21 +33,62 @@ SOFTWARE.
 #include "web_node_editor_web_server.h"
 #include "web_node_editor_web_server_request.h"
 
+void WebNodeEditor::add_control_to_tool_bar(Control *control) {
+	_toolbar->add_child(control);
+}
+void WebNodeEditor::remove_control_from_tool_bar(Control *control) {
+	_toolbar->remove_child(control);
+}
+
+void WebNodeEditor::add_main_screen_tab(Control *control) {
+	_main_container->add_child(control);
+}
+void WebNodeEditor::remove_main_screen_tab(Control *control) {
+	_main_container->remove_child(control);
+}
+void WebNodeEditor::switch_to_main_screen_tab(Control *control) {
+	int cc = _main_container->get_child_count();
+	for (int i = 0; i < cc; ++i) {
+		Control *c = Object::cast_to<Control>(_main_container->get_child(i));
+
+		if (!c) {
+			continue;
+		}
+
+		if (c == control) {
+			c->set_visible(true);
+		} else {
+			c->set_visible(false);
+		}
+	}
+}
+
+Ref<ButtonGroup> WebNodeEditor::get_main_button_group() {
+	return _main_button_group;
+}
+
 void WebNodeEditor::edit(WebNode *web_node) {
 	_edited_node = web_node;
 
-	refresh();
+	refresh_html_preview();
+
+	emit_signal("edited_node_changed", _edited_node);
 }
 
-void WebNodeEditor::refresh() {
+void WebNodeEditor::refresh_html_preview() {
 	if (_edited_node && !ObjectDB::instance_validate(_edited_node)) {
 		_edited_node = nullptr;
 	}
 
 	clear();
 
+	if (!_html_previewer->is_visible_in_tree()) {
+		return;
+	}
+
 	if (_edited_node == nullptr) {
-		//Add "Select a node" text
+		_result_info_label->set_bbcode("");
+		_results_label->set_text("Select a WebNode to view it's output.");
 		return;
 	}
 
@@ -153,6 +196,18 @@ void WebNodeEditor::clear() {
 	_results_label->clear();
 }
 
+void WebNodeEditor::_on_html_previewer_tool_button_toggled(bool on) {
+	if (on) {
+		switch_to_main_screen_tab(_html_previewer);
+	}
+}
+
+void WebNodeEditor::_on_html_previewer_visibility_changed() {
+	if (_html_previewer->is_visible_in_tree()) {
+		refresh_html_preview();
+	}
+}
+
 void WebNodeEditor::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
@@ -162,7 +217,7 @@ void WebNodeEditor::_notification(int p_what) {
 				return;
 			}
 
-			refresh();
+			refresh_html_preview();
 		} break;
 		case NOTIFICATION_POSTINITIALIZE: {
 		} break;
@@ -183,8 +238,17 @@ WebNodeEditor::WebNodeEditor() {
 
 	_toolbar = memnew(HBoxContainer);
 	_toolbar->set_h_size_flags(SIZE_EXPAND_FILL);
-	//TODO
 	add_child(_toolbar);
+
+	_main_container = memnew(MarginContainer);
+	_main_container->set_h_size_flags(SIZE_EXPAND_FILL);
+	_main_container->set_v_size_flags(SIZE_EXPAND_FILL);
+	add_child(_main_container);
+
+	_html_previewer = memnew(VBoxContainer);
+	_html_previewer->set_h_size_flags(SIZE_EXPAND_FILL);
+	_html_previewer->set_v_size_flags(SIZE_EXPAND_FILL);
+	_main_container->add_child(_html_previewer);
 
 	_result_info_label = memnew(RichTextLabel);
 	_result_info_label->set_h_size_flags(SIZE_EXPAND_FILL);
@@ -192,7 +256,7 @@ WebNodeEditor::WebNodeEditor() {
 	_result_info_label->set_scroll_active(false);
 	_result_info_label->set_selection_enabled(true);
 	_result_info_label->set_use_bbcode(true);
-	add_child(_result_info_label);
+	_html_previewer->add_child(_result_info_label);
 
 	_results_label = memnew(TextEdit);
 	_results_label->set_h_size_flags(SIZE_EXPAND_FILL);
@@ -205,8 +269,7 @@ WebNodeEditor::WebNodeEditor() {
 	_results_label->set_highlight_all_occurrences(true);
 	_results_label->set_draw_minimap(true);
 	_results_label->set_right_click_moves_caret(false);
-
-	add_child(_results_label);
+	_html_previewer->add_child(_results_label);
 
 	//todo add all
 	_results_label->add_color_region("<b>", "</b>", Color::color8(153, 153, 255, 255), false);
@@ -218,11 +281,35 @@ WebNodeEditor::WebNodeEditor() {
 	_results_label->add_color_region("<pre>", "</pre>", Color::color8(192, 192, 192, 255), false);
 	_results_label->add_color_region("<center>", "</center>", Color::color8(175, 238, 238, 255), false);
 	_results_label->add_color_region("<right>", "</right>", Color::color8(135, 206, 235, 255), false);
+
+	_main_button_group.instance();
+
+	_html_previewer_tool_button = memnew(Button);
+	_html_previewer_tool_button->set_text("HTML");
+	_html_previewer_tool_button->set_tooltip("HTML preview");
+	_html_previewer_tool_button->set_toggle_mode(true);
+	_html_previewer_tool_button->set_pressed(true);
+	_html_previewer_tool_button->set_button_group(_main_button_group);
+	_html_previewer_tool_button->set_keep_pressed_outside(true);
+	_html_previewer_tool_button->connect("toggled", this, "_on_html_previewer_tool_button_toggled");
+	_toolbar->add_child(_html_previewer_tool_button);
 }
 
 WebNodeEditor::~WebNodeEditor() {
 }
 
 void WebNodeEditor::_bind_methods() {
-	//ClassDB::bind_method(D_METHOD("_input", "event"), &WebNodeEditor::_input);
+	ADD_SIGNAL(MethodInfo("edited_node_changed", PropertyInfo(Variant::OBJECT, "web_node", PROPERTY_HINT_RESOURCE_TYPE, "WebNode")));
+
+	ClassDB::bind_method(D_METHOD("add_control_to_tool_bar", "control"), &WebNodeEditor::add_control_to_tool_bar);
+	ClassDB::bind_method(D_METHOD("remove_control_from_tool_bar", "control"), &WebNodeEditor::remove_control_from_tool_bar);
+
+	ClassDB::bind_method(D_METHOD("add_main_screen_tab", "control"), &WebNodeEditor::add_main_screen_tab);
+	ClassDB::bind_method(D_METHOD("remove_main_screen_tab", "control"), &WebNodeEditor::remove_main_screen_tab);
+	ClassDB::bind_method(D_METHOD("switch_to_main_screen_tab", "control"), &WebNodeEditor::switch_to_main_screen_tab);
+
+	ClassDB::bind_method(D_METHOD("get_main_button_group"), &WebNodeEditor::get_main_button_group);
+
+	ClassDB::bind_method(D_METHOD("_on_html_previewer_tool_button_toggled", "on"), &WebNodeEditor::_on_html_previewer_tool_button_toggled);
+	ClassDB::bind_method(D_METHOD("_on_html_previewer_visibility_changed"), &WebNodeEditor::_on_html_previewer_visibility_changed);
 }
