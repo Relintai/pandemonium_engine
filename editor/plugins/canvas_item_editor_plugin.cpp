@@ -5818,9 +5818,12 @@ CanvasItemEditorPlugin::CanvasItemEditorPlugin(EditorNode *p_node) {
 	editor->get_viewport()->add_child(canvas_item_editor);
 	canvas_item_editor->set_anchors_and_margins_preset(Control::PRESET_WIDE);
 	canvas_item_editor->hide();
+
+	Engine::get_singleton()->add_global("CanvasItemEditor", canvas_item_editor);
 }
 
 CanvasItemEditorPlugin::~CanvasItemEditorPlugin() {
+	Engine::get_singleton()->remove_global("CanvasItemEditor");
 }
 
 void CanvasItemEditorViewport::_on_mouse_exit() {

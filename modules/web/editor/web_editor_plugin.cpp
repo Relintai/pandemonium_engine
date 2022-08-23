@@ -21,6 +21,7 @@ SOFTWARE.
 */
 
 #include "web_editor_plugin.h"
+#include "core/config/engine.h"
 
 #include "../http/web_node.h"
 #include "web_editor.h"
@@ -139,9 +140,12 @@ WebEditorPlugin::WebEditorPlugin(EditorNode *p_node) {
 	make_visible(false);
 
 	_scene_has_webnode = false;
+
+	Engine::get_singleton()->add_global("WebNodeEditor", window);
 }
 
 WebEditorPlugin::~WebEditorPlugin() {
+	Engine::get_singleton()->remove_global("WebNodeEditor");
 }
 
 void WebEditorPlugin::_notification(int p_what) {

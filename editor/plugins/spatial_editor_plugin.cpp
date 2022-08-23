@@ -7590,7 +7590,10 @@ SpatialEditorPlugin::SpatialEditorPlugin(EditorNode *p_node) {
 
 	spatial_editor->hide();
 	spatial_editor->connect("transform_key_request", editor->get_inspector_dock(), "_transform_keyed");
+
+	Engine::get_singleton()->add_global("SpatialEditor", spatial_editor);
 }
 
 SpatialEditorPlugin::~SpatialEditorPlugin() {
+	Engine::get_singleton()->remove_global("SpatialEditor");
 }

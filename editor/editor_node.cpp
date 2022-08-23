@@ -6786,6 +6786,7 @@ EditorNode::EditorNode() {
 
 	editor_interface = memnew(EditorInterface);
 	add_child(editor_interface);
+	Engine::get_singleton()->add_global("EditorInterface", editor_interface);
 
 	//more visually meaningful to have this later
 	raise_bottom_panel_item(AnimationPlayerEditor::get_singleton());
@@ -6992,6 +6993,8 @@ EditorNode::EditorNode() {
 }
 
 EditorNode::~EditorNode() {
+	Engine::get_singleton()->remove_global("EditorInterface");
+
 	EditorInspector::cleanup_plugins();
 
 	remove_print_handler(&print_handler);
