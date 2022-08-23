@@ -1,7 +1,7 @@
-#include "web_editor_web_server.h"
+#include "web_node_editor_web_server.h"
 
 #include "../http/web_node.h"
-#include "web_editor_web_server_request.h"
+#include "web_node_editor_web_server_request.h"
 
 
 void WebEditorWebServer::web_editor_request(WebNode *node, Ref<WebEditorWebServerRequest> request) {

@@ -1,5 +1,5 @@
-#ifndef WEB_EDITOR_WEB_SERVER_REQUEST_H
-#define WEB_EDITOR_WEB_SERVER_REQUEST_H
+#ifndef WEB_NODE_EDITOR_WEB_SERVER_REQUEST_H
+#define WEB_NODE_EDITOR_WEB_SERVER_REQUEST_H
 
 #include "core/containers/vector.h"
 #include "core/string/ustring.h"

@@ -1,5 +1,5 @@
-#ifndef WEB_EDITOR_H
-#define WEB_EDITOR_H
+#ifndef WEB_NODE_EDITOR_H
+#define WEB_NODE_EDITOR_H
 
 /*
 Copyright (c) 2022 Péter Magyar

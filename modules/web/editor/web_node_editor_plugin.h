@@ -1,5 +1,5 @@
-#ifndef WEB_EDITOR_PLUGIN_H
-#define WEB_EDITOR_PLUGIN_H
+#ifndef WEB_NODE_EDITOR_PLUGIN_H
+#define WEB_NODE_EDITOR_PLUGIN_H
 
 /*
 Copyright (c) 2019-2022 Péter Magyar

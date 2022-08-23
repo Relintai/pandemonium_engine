@@ -20,11 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "web_editor_plugin.h"
+#include "web_node_editor_plugin.h"
 #include "core/config/engine.h"
 
 #include "../http/web_node.h"
-#include "web_editor.h"
+#include "web_node_editor.h"
 
 #include "editor/editor_node.h"
 

@@ -62,7 +62,7 @@ SOFTWARE.
 #include "nodes/redirect/redirect_web_page.h"
 
 #if TOOLS_ENABLED
-#include "editor/web_editor_plugin.h"
+#include "editor/web_node_editor_plugin.h"
 #endif
 
 void register_web_types() {

@@ -58,10 +58,10 @@ sources = [
 ]
 
 if env["tools"]:
-    sources.append("editor/web_editor.cpp")
-    sources.append("editor/web_editor_plugin.cpp")
-    sources.append("editor/web_editor_web_server.cpp")
-    sources.append("editor/web_editor_web_server_request.cpp")
+    sources.append("editor/web_node_editor.cpp")
+    sources.append("editor/web_node_editor_plugin.cpp")
+    sources.append("editor/web_node_editor_web_server.cpp")
+    sources.append("editor/web_node_editor_web_server_request.cpp")
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
     # Shared lib compilation

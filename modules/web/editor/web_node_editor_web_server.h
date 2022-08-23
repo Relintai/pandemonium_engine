@@ -1,5 +1,5 @@
-#ifndef WEB_EDITOR_WEB_SERVER_H
-#define WEB_EDITOR_WEB_SERVER_H
+#ifndef WEB_NODE_EDITOR_WEB_SERVER_H
+#define WEB_NODE_EDITOR_WEB_SERVER_H
 
 #include "core/object/reference.h"
 

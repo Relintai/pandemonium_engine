@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "web_editor.h"
+#include "web_node_editor.h"
 
 #include "../http/web_node.h"
 #include "../http/web_server_cookie.h"
@@ -28,8 +28,8 @@ SOFTWARE.
 #include "scene/gui/text_edit.h"
 
 #include "../html/html_parser.h"
-#include "web_editor_web_server.h"
-#include "web_editor_web_server_request.h"
+#include "web_node_editor_web_server.h"
+#include "web_node_editor_web_server_request.h"
 
 void WebEditor::edit(WebNode *web_node) {
 	_edited_node = web_node;
