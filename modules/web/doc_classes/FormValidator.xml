@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="FormValidator" inherits="Resource" version="3.7">
+<class name="FormValidator" inherits="Resource" version="3.8">
 	<brief_description>
 		The [FormValidator] implements html form validation capabilities.
 	</brief_description>
@@ -7,10 +7,10 @@
 		The [FormValidator] implements html form validation capabilities. This helps with forcing constraints to input provided by users through HTML forms. [FormValidator] is the main class, it contains helper methods for adding form fields, and validations.
 		Construction of a simple validator:
 		[code]var lv : FormValidator = FormValidator.new()
-		
+
 		lv.new_field("username", "Username").need_to_exist()
 		.need_to_be_alpha_numeric().need_minimum_length(5).need_maximum_length(20)
-		
+
 		var pw : FormField = lv.new_field("password", "Password")
 		pw.need_to_exist()
 		pw.need_to_have_lowercase_character().need_to_have_uppercase_character()

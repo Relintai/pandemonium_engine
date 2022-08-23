@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="BBCodeParserTag" inherits="Reference" version="3.7">
+<class name="BBCodeParserTag" inherits="Reference" version="3.8">
 	<brief_description>
-		[BBCodeParser] stores bbcode tags using this class. 
+		[BBCodeParser] stores bbcode tags using this class.
 	</brief_description>
 	<description>
 		[BBCodeParser] stores bbcode tags using this class. 

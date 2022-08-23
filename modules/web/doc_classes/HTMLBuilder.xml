@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="HTMLBuilder" inherits="Reference" version="3.7">
+<class name="HTMLBuilder" inherits="Reference" version="3.8">
 	<brief_description>
 		A class that can be used to easily build html from code.
 	</brief_description>
@@ -11,13 +11,13 @@
 		Helper methods are also provided for the easy addition of csrf tokens to forms. These can protect from forged form submissions.
 		[code]var a : float = _model.predict()
 		va b : HTMLBuilder = HTMLBuilder.new()
-		
+
 		b.h5().attrib("align", "center")
 		b.w("The model predicted:").br()
 		b.w("Current: ").wn(a).w(" Units")
 		b.w(".").br()
 		b.ch5()
-		
+
 		request.body += b.result[/code]
 	</description>
 	<tutorials>

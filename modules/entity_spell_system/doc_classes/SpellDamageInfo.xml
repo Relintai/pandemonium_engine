@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SpellDamageInfo" inherits="Reference" version="3.7">
+<class name="SpellDamageInfo" inherits="Reference" version="3.8">
 	<brief_description>
 		Contains damage information. It is passed around in callbacks, so things can modify values. (absorbs, immunities etc.)
 	</brief_description>
@@ -15,7 +15,7 @@
 		</method>
 	</methods>
 	<members>
-		<member name="amount_absorbed" type="int" setter="amount_absorbed_set" getter="amount_absorbed_get" default="0">
+		<member name="amount_absorbed" type="int" setter="amount_absorbed_set" getter="amount_absorbed_get" default="-2004318072">
 		</member>
 		<member name="aura_source" type="Spell" setter="aura_source_set" getter="aura_source_get">
 		</member>

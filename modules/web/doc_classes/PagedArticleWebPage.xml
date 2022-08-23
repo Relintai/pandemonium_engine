@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="PagedArticleWebPage" inherits="WebNode" version="3.7">
+<class name="PagedArticleWebPage" inherits="WebNode" version="3.8">
 	<brief_description>
-		Using this class, a small self contained multi page article can be created. 
+		Using this class, a small self contained multi page article can be created.
 	</brief_description>
 	<description>
 		Using this class, a small self contained multi page article can be created. 

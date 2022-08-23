@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="HTMLParserTag" inherits="Reference" version="3.7">
+<class name="HTMLParserTag" inherits="Reference" version="3.8">
 	<brief_description>
-		[HTMLParser] stores html tags using this class. 
+		[HTMLParser] stores html tags using this class.
 	</brief_description>
 	<description>
 		[HTMLParser] stores html tags using this class. 

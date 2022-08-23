@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="NavigationObstacle" inherits="Node" version="3.7">
+<class name="NavigationObstacle" inherits="Node" version="3.8">
 	<brief_description>
 		3D obstacle used in navigation for collision avoidance.
 	</brief_description>

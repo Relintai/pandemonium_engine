@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="WebNode" inherits="Node" version="3.7">
+<class name="WebNode" inherits="Node" version="3.8">
 	<brief_description>
 		WebNodes are Nodes that can be used to create HTTP based guis for games / applications, using a [WebNode] tree for routing. They only work when they are a child of a [WebServer].
 	</brief_description>
@@ -303,7 +303,7 @@
 	</methods>
 	<members>
 		<member name="database" type="Database" setter="set_database" getter="get_database">
-			This allows you to set different database connections to different branches of the [WebNode] tree. If a [Database] instance is set to a [WebNode] it's children will automatically also use that particular Database instance. 
+			This allows you to set different database connections to different branches of the [WebNode] tree. If a [Database] instance is set to a [WebNode] it's children will automatically also use that particular Database instance.
 		</member>
 		<member name="database_table_name" type="String" setter="set_database_table_name" getter="get_database_table_name" default="&quot;&quot;">
 			Set the database table's name that this [WebNode] should use, if it supports databases.
@@ -312,10 +312,10 @@
 			Controls whether this [WebNode] will try to route [WebServerRequest]s to it's children, or not.
 		</member>
 		<member name="uri_segment" type="String" setter="set_uri_segment" getter="get_uri_segment" default="&quot;&quot;">
-			 The HTTP uri segment of this node used when routing a [WebServerRequest]. For example if we take this url: "http://127.0.0.1/atest/btest/ctest", "atest" is uri_segment 1, "btest" is uri_segment 2, "atest" is uri_segment 3.
+			The HTTP uri segment of this node used when routing a [WebServerRequest]. For example if we take this url: "http://127.0.0.1/atest/btest/ctest", "atest" is uri_segment 1, "btest" is uri_segment 2, "atest" is uri_segment 3.
 		</member>
 		<member name="web_permission" type="WebPermission" setter="set_web_permission" getter="get_web_permission">
-			This allows you to set different permission sets to different branches of the [WebNode] tree. They could allow a user with certain traits to edit the contents of a certain branch. If a [WebPermission] instance is set to a [WebNode] it's children will automatically also use that particular Database instance. 
+			This allows you to set different permission sets to different branches of the [WebNode] tree. They could allow a user with certain traits to edit the contents of a certain branch. If a [WebPermission] instance is set to a [WebNode] it's children will automatically also use that particular Database instance.
 		</member>
 	</members>
 	<constants>
