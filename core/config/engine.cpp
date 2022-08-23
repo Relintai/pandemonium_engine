@@ -86,6 +86,38 @@ void Engine::set_portals_active(bool p_active) {
 	_portals_active = p_active;
 }
 
+void Engine::add_global(const String &p_name, const Variant &p_global) {
+	ERR_FAIL_COND(_globals.has(p_name));
+
+	_globals.set(p_name, p_global);
+}
+Variant Engine::get_global(const String &p_name) {
+	ERR_FAIL_COND_V(!_globals.has(p_name), Variant());
+
+	return _globals[p_name];
+}
+void Engine::remove_global(const String &p_name) {
+	ERR_FAIL_COND(!_globals.has(p_name));
+
+	_globals.erase(p_name);
+}
+bool Engine::has_global(const String &p_name) {
+	return _globals.has(p_name);
+}
+Dictionary Engine::get_globals() {
+	Dictionary dict;
+
+	const String *k = NULL;
+
+	while ((k = _globals.next(k))) {
+		String key = *k;
+
+		dict[key] = _globals[key];
+	}
+
+	return dict;
+}
+
 Dictionary Engine::get_version_info() const {
 	Dictionary dict;
 	dict["major"] = VERSION_MAJOR;

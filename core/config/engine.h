@@ -30,6 +30,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/containers/hash_map.h"
 #include "core/containers/list.h"
 #include "core/containers/vector.h"
 #include "core/os/main_loop.h"
@@ -97,6 +98,12 @@ public:
 	}
 #endif
 
+	void add_global(const String &p_name, const Variant &p_global);
+	Variant get_global(const String &p_name);
+	void remove_global(const String &p_name);
+	bool has_global(const String &p_name);
+	Dictionary get_globals();
+
 	Dictionary get_version_info() const;
 	Dictionary get_author_info() const;
 	Array get_copyright_info() const;
@@ -133,6 +140,8 @@ private:
 	Map<StringName, Object *> singleton_ptrs;
 
 	bool editor_hint;
+
+	HashMap<String, Variant> _globals;
 
 	static Engine *singleton;
 };

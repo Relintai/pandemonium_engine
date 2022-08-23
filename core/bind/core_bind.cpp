@@ -3155,6 +3155,22 @@ bool _Engine::is_editor_hint() const {
 	return Engine::get_singleton()->is_editor_hint();
 }
 
+void _Engine::add_global(const String &p_name, const Variant &p_global) {
+	return Engine::get_singleton()->add_global(p_name, p_global);
+}
+Variant _Engine::get_global(const String &p_name) {
+	return Engine::get_singleton()->get_global(p_name);
+}
+void _Engine::remove_global(const String &p_name) {
+	return Engine::get_singleton()->remove_global(p_name);
+}
+bool _Engine::has_global(const String &p_name) {
+	return Engine::get_singleton()->has_global(p_name);
+}
+Dictionary _Engine::get_globals() {
+	return Engine::get_singleton()->get_globals();
+}
+
 void _Engine::set_print_error_messages(bool p_enabled) {
 	Engine::get_singleton()->set_print_error_messages(p_enabled);
 }
@@ -3196,6 +3212,12 @@ void _Engine::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_editor_hint", "enabled"), &_Engine::set_editor_hint);
 	ClassDB::bind_method(D_METHOD("is_editor_hint"), &_Engine::is_editor_hint);
+
+	ClassDB::bind_method(D_METHOD("add_global", "name", "global"), &_Engine::add_global);
+	ClassDB::bind_method(D_METHOD("get_global", "name"), &_Engine::get_global);
+	ClassDB::bind_method(D_METHOD("remove_global", "name"), &_Engine::remove_global);
+	ClassDB::bind_method(D_METHOD("has_global", "name"), &_Engine::has_global);
+	ClassDB::bind_method(D_METHOD("get_globals"), &_Engine::get_globals);
 
 	ClassDB::bind_method(D_METHOD("set_print_error_messages", "enabled"), &_Engine::set_print_error_messages);
 	ClassDB::bind_method(D_METHOD("is_printing_error_messages"), &_Engine::is_printing_error_messages);

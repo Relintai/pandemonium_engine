@@ -825,6 +825,12 @@ public:
 	void set_editor_hint(bool p_enabled);
 	bool is_editor_hint() const;
 
+	void add_global(const String &p_name, const Variant &p_global);
+	Variant get_global(const String &p_name);
+	void remove_global(const String &p_name);
+	bool has_global(const String &p_name);
+	Dictionary get_globals();
+
 	void set_print_error_messages(bool p_enabled);
 	bool is_printing_error_messages() const;
 
