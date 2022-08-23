@@ -27,11 +27,11 @@ SOFTWARE.
 
 #include "editor/editor_plugin.h"
 
-class WebEditor;
+class WebNodeEditor;
 class Texture;
 
-class WebEditorPlugin : public EditorPlugin {
-	GDCLASS(WebEditorPlugin, EditorPlugin);
+class WebNodeEditorPlugin : public EditorPlugin {
+	GDCLASS(WebNodeEditorPlugin, EditorPlugin);
 
 public:
 	void make_visible(bool visible);
@@ -45,12 +45,12 @@ public:
 	bool scene_has_webnode(Node *p_node);
 	bool scene_has_webnode_skip(Node *p_node, Node *skip);
 
-	WebEditorPlugin(EditorNode *p_node);
-	~WebEditorPlugin();
+	WebNodeEditorPlugin(EditorNode *p_node);
+	~WebNodeEditorPlugin();
 
 	EditorNode *editor;
 
-	WebEditor *window;
+	WebNodeEditor *window;
 
 protected:
 	void on_node_removed(Node *p_child);

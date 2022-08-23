@@ -6,79 +6,79 @@
 #include "../http/web_server.h"
 #include "../http/web_node.h"
 
-String WebEditorWebServerRequest::get_cookie(const String &key) {
+String WebNodeEditorWebServerRequest::get_cookie(const String &key) {
 	return "";
 }
 
-HTTPServerEnums::HTTPMethod WebEditorWebServerRequest::get_method() const {
+HTTPServerEnums::HTTPMethod WebNodeEditorWebServerRequest::get_method() const {
 	return HTTPServerEnums::HTTP_METHOD_GET;
 }
 
-void WebEditorWebServerRequest::parse_files() {
+void WebNodeEditorWebServerRequest::parse_files() {
 }
-int WebEditorWebServerRequest::get_file_count() const {
+int WebNodeEditorWebServerRequest::get_file_count() const {
 	return 0;
 }
-String WebEditorWebServerRequest::get_file_file_name(const int index) const {
+String WebNodeEditorWebServerRequest::get_file_file_name(const int index) const {
 	return "";
 }
-String WebEditorWebServerRequest::get_file_key(const int index) const {
+String WebNodeEditorWebServerRequest::get_file_key(const int index) const {
 	return "";
 }
-int WebEditorWebServerRequest::get_file_length(const int index) const {
+int WebNodeEditorWebServerRequest::get_file_length(const int index) const {
 	return 0;
 }
-PoolByteArray WebEditorWebServerRequest::get_file_data(const int index) const {
+PoolByteArray WebNodeEditorWebServerRequest::get_file_data(const int index) const {
 	return PoolByteArray();
 }
-String WebEditorWebServerRequest::get_file_data_str(const int index) const {
+String WebNodeEditorWebServerRequest::get_file_data_str(const int index) const {
 	return "";
 }
 
-String WebEditorWebServerRequest::get_parameter(const String &key) const {
+String WebNodeEditorWebServerRequest::get_parameter(const String &key) const {
 	return "";
 }
 
-void WebEditorWebServerRequest::send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
+void WebNodeEditorWebServerRequest::send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code) {
 	_response_type = RESPONSE_TYPE_REDIRECT;
 	_status_code = status_code;
 	_sent_message = location;
 }
 
-void WebEditorWebServerRequest::send() {
+void WebNodeEditorWebServerRequest::send() {
 	_response_type = RESPONSE_TYPE_NORMAL;
 	_sent_message = get_compiled_body();
 }
 
-void WebEditorWebServerRequest::send_file(const String &p_file_path) {
+void WebNodeEditorWebServerRequest::send_file(const String &p_file_path) {
 	_response_type = RESPONSE_TYPE_FILE;
 	_sent_message = p_file_path;
 }
 
-void WebEditorWebServerRequest::send_error(int error_code) {
+void WebNodeEditorWebServerRequest::send_error(int error_code) {
 	_error_handler_called = true;
 
 	_server->get_web_root()->handle_error_send_request(this, error_code);
 }
 
-String WebEditorWebServerRequest::parser_get_path() {
+String WebNodeEditorWebServerRequest::parser_get_path() {
 	return "";
 }
 
-String WebEditorWebServerRequest::get_host() const {
+String WebNodeEditorWebServerRequest::get_host() const {
 	return "";
 }
 
-void WebEditorWebServerRequest::update() {
+void WebNodeEditorWebServerRequest::update() {
 }
 
-WebEditorWebServerRequest::WebEditorWebServerRequest() {
+WebNodeEditorWebServerRequest::WebNodeEditorWebServerRequest() {
 	_response_type = RESPONSE_TYPE_NONE;
 	_error_handler_called = false;
 }
 
-WebEditorWebServerRequest::~WebEditorWebServerRequest() {
+WebNodeEditorWebServerRequest::~WebNodeEditorWebServerRequest() {
 }
 
-void WebEditorWebServerRequest::_bind_methods() {
+void WebNodeEditorWebServerRequest::_bind_methods() {
 }

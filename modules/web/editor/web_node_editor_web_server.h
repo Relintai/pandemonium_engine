@@ -6,18 +6,18 @@
 #include "../http/web_server.h"
 
 class WebNode;
-class WebEditorWebServerRequest;
+class WebNodeEditorWebServerRequest;
 
-class WebEditorWebServer : public WebServer {
-	GDCLASS(WebEditorWebServer, WebServer);
+class WebNodeEditorWebServer : public WebServer {
+	GDCLASS(WebNodeEditorWebServer, WebServer);
 
 public:
-	void web_editor_request(WebNode *node, Ref<WebEditorWebServerRequest> request);
+	void web_editor_request(WebNode *node, Ref<WebNodeEditorWebServerRequest> request);
 
-	WebEditorWebServer();
-	~WebEditorWebServer();
+	WebNodeEditorWebServer();
+	~WebNodeEditorWebServer();
 
-	Ref<WebEditorWebServerRequest> _last_request;
+	Ref<WebNodeEditorWebServerRequest> _last_request;
 
 protected:
 	static void _bind_methods();

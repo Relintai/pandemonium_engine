@@ -28,7 +28,7 @@ SOFTWARE.
 
 #include "editor/editor_node.h"
 
-void WebEditorPlugin::make_visible(bool visible) {
+void WebNodeEditorPlugin::make_visible(bool visible) {
 	if (visible) {
 		if (is_inside_tree()) {
 			_scene_has_webnode = true;
@@ -39,19 +39,19 @@ void WebEditorPlugin::make_visible(bool visible) {
 	window->set_visible(visible);
 }
 
-String WebEditorPlugin::get_name() const {
+String WebNodeEditorPlugin::get_name() const {
 	return "Web";
 }
 
-const Ref<Texture> WebEditorPlugin::get_icon() const {
+const Ref<Texture> WebNodeEditorPlugin::get_icon() const {
 	return _icon;
 }
 
-bool WebEditorPlugin::has_main_screen() const {
+bool WebNodeEditorPlugin::has_main_screen() const {
 	return true;
 }
 
-void WebEditorPlugin::edit(Object *p_object) {
+void WebNodeEditorPlugin::edit(Object *p_object) {
 	WebNode *wn = Object::cast_to<WebNode>(p_object);
 
 	if (wn) {
@@ -61,18 +61,18 @@ void WebEditorPlugin::edit(Object *p_object) {
 	}
 }
 
-bool WebEditorPlugin::handles(Object *p_object) const {
+bool WebNodeEditorPlugin::handles(Object *p_object) const {
 	return p_object->is_class("WebNode");
 }
 
-void WebEditorPlugin::edited_scene_changed() {
+void WebNodeEditorPlugin::edited_scene_changed() {
 	Node *edited_scene = editor->get_edited_scene();
 
 	_scene_has_webnode = scene_has_webnode(edited_scene);
 	editor->editor_set_visible_by_name("Web", _scene_has_webnode);
 }
 
-bool WebEditorPlugin::scene_has_webnode(Node *p_node) {
+bool WebNodeEditorPlugin::scene_has_webnode(Node *p_node) {
 	if (!p_node) {
 		return false;
 	}
@@ -92,7 +92,7 @@ bool WebEditorPlugin::scene_has_webnode(Node *p_node) {
 	return false;
 }
 
-bool WebEditorPlugin::scene_has_webnode_skip(Node *p_node, Node *skip) {
+bool WebNodeEditorPlugin::scene_has_webnode_skip(Node *p_node, Node *skip) {
 	if (!p_node) {
 		return false;
 	}
@@ -116,7 +116,7 @@ bool WebEditorPlugin::scene_has_webnode_skip(Node *p_node, Node *skip) {
 	return false;
 }
 
-void WebEditorPlugin::on_node_removed(Node *p_node) {
+void WebNodeEditorPlugin::on_node_removed(Node *p_node) {
 	if (!_scene_has_webnode) {
 		return;
 	}
@@ -129,10 +129,10 @@ void WebEditorPlugin::on_node_removed(Node *p_node) {
 	}
 }
 
-WebEditorPlugin::WebEditorPlugin(EditorNode *p_node) {
+WebNodeEditorPlugin::WebNodeEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
-	window = memnew(WebEditor);
+	window = memnew(WebNodeEditor);
 
 	editor->get_viewport()->add_child(window);
 	_icon = get_editor_interface()->get_base_control()->get_theme_icon("WebNodeEditor", "EditorIcons");
@@ -144,11 +144,11 @@ WebEditorPlugin::WebEditorPlugin(EditorNode *p_node) {
 	Engine::get_singleton()->add_global("WebNodeEditor", window);
 }
 
-WebEditorPlugin::~WebEditorPlugin() {
+WebNodeEditorPlugin::~WebNodeEditorPlugin() {
 	Engine::get_singleton()->remove_global("WebNodeEditor");
 }
 
-void WebEditorPlugin::_notification(int p_what) {
+void WebNodeEditorPlugin::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_POST_ENTER_TREE: {
 			editor->editor_set_visible_by_name("Web", false);
@@ -160,6 +160,6 @@ void WebEditorPlugin::_notification(int p_what) {
 	}
 }
 
-void WebEditorPlugin::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("on_node_removed", "node"), &WebEditorPlugin::on_node_removed);
+void WebNodeEditorPlugin::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("on_node_removed", "node"), &WebNodeEditorPlugin::on_node_removed);
 }

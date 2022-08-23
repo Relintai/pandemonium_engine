@@ -4,7 +4,7 @@
 #include "web_node_editor_web_server_request.h"
 
 
-void WebEditorWebServer::web_editor_request(WebNode *node, Ref<WebEditorWebServerRequest> request) {
+void WebNodeEditorWebServer::web_editor_request(WebNode *node, Ref<WebNodeEditorWebServerRequest> request) {
 	_web_root = node;
 	_last_request = request;
 
@@ -16,12 +16,12 @@ void WebEditorWebServer::web_editor_request(WebNode *node, Ref<WebEditorWebServe
 	node->handle_request(request);
 }
 
-WebEditorWebServer::WebEditorWebServer() {
+WebNodeEditorWebServer::WebNodeEditorWebServer() {
 	_is_running = true;
 }
 
-WebEditorWebServer::~WebEditorWebServer() {
+WebNodeEditorWebServer::~WebNodeEditorWebServer() {
 }
 
-void WebEditorWebServer::_bind_methods() {
+void WebNodeEditorWebServer::_bind_methods() {
 }

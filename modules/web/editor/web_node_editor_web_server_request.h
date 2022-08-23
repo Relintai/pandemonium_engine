@@ -15,8 +15,8 @@ class HTTPSession;
 class WebPermission;
 class WebNode;
 
-class WebEditorWebServerRequest : public WebServerRequest {
-	GDCLASS(WebEditorWebServerRequest, WebServerRequest);
+class WebNodeEditorWebServerRequest : public WebServerRequest {
+	GDCLASS(WebNodeEditorWebServerRequest, WebServerRequest);
 
 public:
 	enum ResponseType {
@@ -49,8 +49,8 @@ public:
 
 	void update();
 
-	WebEditorWebServerRequest();
-	~WebEditorWebServerRequest();
+	WebNodeEditorWebServerRequest();
+	~WebNodeEditorWebServerRequest();
 
 	ResponseType _response_type;
 	String _sent_message;

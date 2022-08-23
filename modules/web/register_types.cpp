@@ -130,7 +130,7 @@ void register_web_types() {
 	ClassDB::register_class<AliasWebPage>();
 
 #if TOOLS_ENABLED
-	EditorPlugins::add_by_type<WebEditorPlugin>();
+	EditorPlugins::add_by_type<WebNodeEditorPlugin>();
 #endif
 }
 

@@ -31,13 +31,13 @@ SOFTWARE.
 #include "web_node_editor_web_server.h"
 #include "web_node_editor_web_server_request.h"
 
-void WebEditor::edit(WebNode *web_node) {
+void WebNodeEditor::edit(WebNode *web_node) {
 	_edited_node = web_node;
 
 	refresh();
 }
 
-void WebEditor::refresh() {
+void WebNodeEditor::refresh() {
 	if (_edited_node && !ObjectDB::instance_validate(_edited_node)) {
 		_edited_node = nullptr;
 	}
@@ -49,7 +49,7 @@ void WebEditor::refresh() {
 		return;
 	}
 
-	Ref<WebEditorWebServerRequest> request;
+	Ref<WebNodeEditorWebServerRequest> request;
 	request.instance();
 
 	_web_server->web_editor_request(_edited_node, request);
@@ -58,16 +58,16 @@ void WebEditor::refresh() {
 
 	request_info += "Response type: ";
 	switch (request->_response_type) {
-		case WebEditorWebServerRequest::RESPONSE_TYPE_NONE: {
+		case WebNodeEditorWebServerRequest::RESPONSE_TYPE_NONE: {
 			request_info += "NONE";
 		} break;
-		case WebEditorWebServerRequest::RESPONSE_TYPE_NORMAL: {
+		case WebNodeEditorWebServerRequest::RESPONSE_TYPE_NORMAL: {
 			request_info += "NORMAL";
 		} break;
-		case WebEditorWebServerRequest::RESPONSE_TYPE_FILE: {
+		case WebNodeEditorWebServerRequest::RESPONSE_TYPE_FILE: {
 			request_info += "FILE";
 		} break;
-		case WebEditorWebServerRequest::RESPONSE_TYPE_REDIRECT: {
+		case WebNodeEditorWebServerRequest::RESPONSE_TYPE_REDIRECT: {
 			request_info += "REDIRECT";
 		} break;
 		default: {
@@ -115,10 +115,10 @@ void WebEditor::refresh() {
 	}
 
 	switch (request->_response_type) {
-		case WebEditorWebServerRequest::RESPONSE_TYPE_NONE: {
+		case WebNodeEditorWebServerRequest::RESPONSE_TYPE_NONE: {
 			body += request->_sent_message;
 		} break;
-		case WebEditorWebServerRequest::RESPONSE_TYPE_NORMAL: {
+		case WebNodeEditorWebServerRequest::RESPONSE_TYPE_NORMAL: {
 			if (_prettify_html) {
 				HTMLParser p;
 				p.parse(request->_sent_message);
@@ -127,11 +127,11 @@ void WebEditor::refresh() {
 				body += request->_sent_message;
 			}
 		} break;
-		case WebEditorWebServerRequest::RESPONSE_TYPE_FILE: {
+		case WebNodeEditorWebServerRequest::RESPONSE_TYPE_FILE: {
 			body += "Sent file:\n";
 			body += request->_sent_message;
 		} break;
-		case WebEditorWebServerRequest::RESPONSE_TYPE_REDIRECT: {
+		case WebNodeEditorWebServerRequest::RESPONSE_TYPE_REDIRECT: {
 			if (_prettify_html) {
 				HTMLParser p;
 				p.parse(request->_sent_message);
@@ -148,12 +148,12 @@ void WebEditor::refresh() {
 	_results_label->set_text(body);
 }
 
-void WebEditor::clear() {
+void WebNodeEditor::clear() {
 	_result_info_label->clear();
 	_results_label->clear();
 }
 
-void WebEditor::_notification(int p_what) {
+void WebNodeEditor::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
 		} break;
@@ -171,10 +171,10 @@ void WebEditor::_notification(int p_what) {
 	}
 }
 
-WebEditor::WebEditor() {
+WebNodeEditor::WebNodeEditor() {
 	_prettify_html = true;
 
-	_web_server = memnew(WebEditorWebServer);
+	_web_server = memnew(WebNodeEditorWebServer);
 	add_child(_web_server);
 
 	set_h_size_flags(SIZE_EXPAND_FILL);
@@ -220,9 +220,9 @@ WebEditor::WebEditor() {
 	_results_label->add_color_region("<right>", "</right>", Color::color8(135, 206, 235, 255), false);
 }
 
-WebEditor::~WebEditor() {
+WebNodeEditor::~WebNodeEditor() {
 }
 
-void WebEditor::_bind_methods() {
-	//ClassDB::bind_method(D_METHOD("_input", "event"), &WebEditor::_input);
+void WebNodeEditor::_bind_methods() {
+	//ClassDB::bind_method(D_METHOD("_input", "event"), &WebNodeEditor::_input);
 }
