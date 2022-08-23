@@ -31,9 +31,9 @@
 /*************************************************************************/
 
 #include "core/containers/list.h"
+#include "core/containers/vector.h"
 #include "core/os/main_loop.h"
 #include "core/string/ustring.h"
-#include "core/containers/vector.h"
 
 class Engine {
 public:
@@ -43,36 +43,6 @@ public:
 		Singleton(const StringName &p_name = StringName(), Object *p_ptr = nullptr);
 	};
 
-private:
-	friend class Main;
-
-	uint64_t frames_drawn;
-	uint32_t _frame_delay;
-	uint64_t _frame_ticks;
-	float _frame_step;
-
-	int ips;
-	float physics_jitter_fix;
-	float _fps;
-	int _target_fps;
-	float _time_scale;
-	bool _gpu_pixel_snap;
-	uint64_t _physics_frames;
-	float _physics_interpolation_fraction;
-	bool _portals_active;
-	bool _occlusion_culling_active;
-
-	uint64_t _idle_frames;
-	bool _in_physics;
-
-	List<Singleton> singletons;
-	Map<StringName, Object *> singleton_ptrs;
-
-	bool editor_hint;
-
-	static Engine *singleton;
-
-public:
 	static Engine *get_singleton();
 
 	virtual void set_physics_ticks_per_second(int p_ips);
@@ -114,11 +84,17 @@ public:
 	void set_portals_active(bool p_active);
 
 #ifdef TOOLS_ENABLED
-	_FORCE_INLINE_ void set_editor_hint(bool p_enabled) { editor_hint = p_enabled; }
-	_FORCE_INLINE_ bool is_editor_hint() const { return editor_hint; }
+	_FORCE_INLINE_ void set_editor_hint(bool p_enabled) {
+		editor_hint = p_enabled;
+	}
+	_FORCE_INLINE_ bool is_editor_hint() const {
+		return editor_hint;
+	}
 #else
 	_FORCE_INLINE_ void set_editor_hint(bool p_enabled) {}
-	_FORCE_INLINE_ bool is_editor_hint() const { return false; }
+	_FORCE_INLINE_ bool is_editor_hint() const {
+		return false;
+	}
 #endif
 
 	Dictionary get_version_info() const;
@@ -130,6 +106,35 @@ public:
 
 	Engine();
 	virtual ~Engine() {}
+
+private:
+	friend class Main;
+
+	uint64_t frames_drawn;
+	uint32_t _frame_delay;
+	uint64_t _frame_ticks;
+	float _frame_step;
+
+	int ips;
+	float physics_jitter_fix;
+	float _fps;
+	int _target_fps;
+	float _time_scale;
+	bool _gpu_pixel_snap;
+	uint64_t _physics_frames;
+	float _physics_interpolation_fraction;
+	bool _portals_active;
+	bool _occlusion_culling_active;
+
+	uint64_t _idle_frames;
+	bool _in_physics;
+
+	List<Singleton> singletons;
+	Map<StringName, Object *> singleton_ptrs;
+
+	bool editor_hint;
+
+	static Engine *singleton;
 };
 
 #endif // ENGINE_H
