@@ -227,6 +227,8 @@ void WebNodeEditor::_notification(int p_what) {
 }
 
 WebNodeEditor::WebNodeEditor() {
+	_singleton = this;
+
 	_prettify_html = true;
 
 	_web_server = memnew(WebNodeEditorWebServer);
@@ -296,6 +298,7 @@ WebNodeEditor::WebNodeEditor() {
 }
 
 WebNodeEditor::~WebNodeEditor() {
+	_singleton = NULL;
 }
 
 void WebNodeEditor::_bind_methods() {
@@ -313,3 +316,5 @@ void WebNodeEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_on_html_previewer_tool_button_toggled", "on"), &WebNodeEditor::_on_html_previewer_tool_button_toggled);
 	ClassDB::bind_method(D_METHOD("_on_html_previewer_visibility_changed"), &WebNodeEditor::_on_html_previewer_visibility_changed);
 }
+
+WebNodeEditor* WebNodeEditor::_singleton = NULL;

@@ -52,6 +52,8 @@ public:
 	void refresh_html_preview();
 	void clear();
 
+	static WebNodeEditor *get_singleton() { return _singleton; }
+
 	WebNodeEditor();
 	~WebNodeEditor();
 
@@ -74,6 +76,9 @@ protected:
 	VBoxContainer *_html_previewer;
 	RichTextLabel *_result_info_label;
 	TextEdit *_results_label;
+
+private:
+	static WebNodeEditor *_singleton;
 };
 
 #endif
