@@ -252,15 +252,18 @@ void Camera2D::_notification(int p_what) {
 			_setup_viewport();
 			_update_process_mode();
 
-			// if a camera enters the tree that is set to current,
-			// it should take over as the current camera, and mark
-			// all other cameras as non current
-			first = true;
-
 			if (is_current()) {
-				viewport->_camera_2d_set(this);
+				// if a camera enters the tree that is set to current,
+				// it should take over as the current camera, and mark
+				// all other cameras as non current
+				if (viewport->get_camera_2d() == NULL) {
+					first = true;
+					viewport->_camera_2d_set(this);
+				} else {
+					first = false;
+					make_current();
+				}
 			}
-
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
 			const bool viewport_valid = !custom_viewport || ObjectDB::get_instance(custom_viewport_id);
@@ -403,13 +406,11 @@ Camera2D::Camera2DProcessMode Camera2D::get_process_mode() const {
 
 void Camera2D::_make_current(Object *p_which) {
 	if (p_which == this) {
-		current = true;
 		if (is_inside_tree()) {
 			get_viewport()->_camera_2d_set(this);
 			update();
 		}
 	} else {
-		current = false;
 		if (is_inside_tree()) {
 			if (get_viewport()->get_camera_2d() == this) {
 				get_viewport()->_camera_2d_set(nullptr);
@@ -420,24 +421,30 @@ void Camera2D::_make_current(Object *p_which) {
 }
 
 void Camera2D::set_current(bool p_current) {
-	if (p_current) {
-		make_current();
-	} else {
-		if (current) {
-			clear_current();
+	current = p_current;
+
+	if (is_inside_tree()) {
+		if (p_current) {
+			make_current();
+		} else {
+			if (get_viewport()->get_camera_2d() == this) {
+				clear_current();
+			}
 		}
 	}
 }
 
 bool Camera2D::is_current() const {
+	if (is_inside_tree()) {
+		return (get_viewport()->get_camera_2d() == this);
+	}
+
 	return current;
 }
 
 void Camera2D::make_current() {
 	if (is_inside_tree()) {
 		get_tree()->call_group_flags(SceneTree::GROUP_CALL_REALTIME, group_name, "_make_current", this);
-	} else {
-		current = true;
 	}
 
 	_update_scroll();
@@ -446,8 +453,6 @@ void Camera2D::make_current() {
 void Camera2D::clear_current() {
 	if (is_inside_tree()) {
 		get_tree()->call_group_flags(SceneTree::GROUP_CALL_REALTIME, group_name, "_make_current", (Object *)nullptr);
-	} else {
-		current = false;
 	}
 }
 
