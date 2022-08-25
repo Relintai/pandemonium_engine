@@ -546,7 +546,7 @@ void WebServerRequest::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_status_code", "val"), &WebServerRequest::set_status_code);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "status_code"), "set_status_code", "get_status_code");
 
-	ClassDB::bind_method(D_METHOD("send_redirect", "location", "status_code "), &WebServerRequest::send_redirect);
+	ClassDB::bind_method(D_METHOD("send_redirect", "location", "status_code"), &WebServerRequest::send_redirect, HTTPServerEnums::HTTP_STATUS_CODE_302_FOUND);
 	ClassDB::bind_method(D_METHOD("compile_body"), &WebServerRequest::compile_body);
 	ClassDB::bind_method(D_METHOD("compile_and_send_body"), &WebServerRequest::compile_and_send_body);
 	ClassDB::bind_method(D_METHOD("send"), &WebServerRequest::send);
