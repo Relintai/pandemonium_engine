@@ -479,7 +479,6 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	_initial_set("text_editor/files/restore_scripts_on_load", true);
 
 	// Tools
-	_initial_set("text_editor/tools/create_signal_callbacks", true);
 	_initial_set("text_editor/tools/sort_members_outline_alphabetically", false);
 
 	// Cursor
