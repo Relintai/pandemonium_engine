@@ -92,9 +92,13 @@ void Engine::add_global(const String &p_name, const Variant &p_global) {
 	_globals.set(p_name, p_global);
 }
 Variant Engine::get_global(const String &p_name) {
-	ERR_FAIL_COND_V(!_globals.has(p_name), Variant());
+	Variant *vptr = _globals.getptr(p_name);
 
-	return _globals[p_name];
+	if (!vptr) {
+		return Variant();
+	}
+
+	return *vptr;
 }
 void Engine::remove_global(const String &p_name) {
 	ERR_FAIL_COND(!_globals.has(p_name));
