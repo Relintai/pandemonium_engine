@@ -4,12 +4,12 @@
 #include "core/string/ustring.h"
 #include "core/variant/variant.h"
 
-#include "core/object/reference.h"
+#include "core/object/resource.h"
 
 class WebServerRequest;
 
-class WebPermission : public Reference {
-	GDCLASS(WebPermission, Reference);
+class WebPermission : public Resource {
+	GDCLASS(WebPermission, Resource);
 
 public:
 	enum WebPermissions {
