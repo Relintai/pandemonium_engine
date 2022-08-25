@@ -65,7 +65,7 @@
 			<return type="String" />
 			<description>
 				Returns the currently active path segment. For example if you have [code]http://127.0.0.1/a/b/c[/code], and the current path segment is [code]b[/code], then this will return [code]b[/code].
-				If you reach the end, it will return [code]/[/code]! For example if you have [code]http://127.0.0.1/a/b/c[/code], and the current path segment reached beyond [code]c[/code] (we are at the [WebNode] that has it's [code]uri_segment[/code] set to [code]c[/code]), then this will return [code]/[/code]. Actually this is how [WebNode]s check whether they need to handle a request themselves or not ([code]if request.get_current_path_segment() == "/": handle_request(request)[/code]).
+				If you reach the end, it will return an empty String! For example if you have [code]http://127.0.0.1/a/b/c[/code], and the current path segment reached beyond [code]c[/code] (we are at the [WebNode] that has it's [code]uri_segment[/code] set to [code]c[/code]), then this will return empty String. Actually this is how [WebNode]s check whether they need to handle a request themselves or not ([code]if request.get_current_path_segment() == "/": handle_request(request)[/code]).
 			</description>
 		</method>
 		<method name="get_current_segment_index" qualifiers="const">
@@ -264,7 +264,7 @@
 		<method name="push_path">
 			<return type="void" />
 			<description>
-				Moves the path stack pointer forward once. For example if you have [code]http://127.0.0.1/a/b/c[/code], and the current segment is [code]b[/code], the current segment will become [code]c[/code]. Note that if you have [code]http://127.0.0.1/a/b/c[/code], and the current segment is [code]c[/code], the current segment will become [code]/[/code].
+				Moves the path stack pointer forward once. For example if you have [code]http://127.0.0.1/a/b/c[/code], and the current segment is [code]b[/code], the current segment will become [code]c[/code]. Note that if you have [code]http://127.0.0.1/a/b/c[/code], and the current segment is [code]c[/code], the current segment will become empty String.
 			</description>
 		</method>
 		<method name="response_add_cookie">
