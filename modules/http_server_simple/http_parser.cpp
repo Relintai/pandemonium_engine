@@ -550,20 +550,23 @@ int HTTPParser::on_multipart_part_data_end_cb() {
 #endif
 
 	if (_multipart_form_is_file) {
-		PoolByteArray file_data;
-		int len = _multipart_form_data.size();
-		file_data.resize(len);
-		PoolByteArray::Write w = file_data.write();
-		const char *r = _multipart_form_data.ptr();
-		for (int i = 0; i < len; i++) {
-			w[i] = r[i];
+		if (_multipart_form_data.size() > 0) {
+			PoolByteArray file_data;
+			int len = _multipart_form_data.size();
+			file_data.resize(len);
+			PoolByteArray::Write w = file_data.write();
+			const char *r = _multipart_form_data.ptr();
+			for (int i = 0; i < len; i++) {
+				w[i] = r[i];
+			}
+
+			w.release();
+
+			_request->add_file(_multipart_form_name, _multipart_form_filename, file_data);
 		}
-
-		w.release();
-
-		_request->add_file(_multipart_form_name, _multipart_form_filename, file_data);
 	} else {
-		_request->add_parameter(_multipart_form_name, String(_multipart_form_data.ptr()));
+		String s = _multipart_form_data.ptr();
+		_request->add_parameter(_multipart_form_name, s);
 	}
 
 	_multipart_form_is_file = false;
