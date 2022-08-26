@@ -440,10 +440,9 @@ void WebNode::_notification(const int what) {
 		case NOTIFICATION_INTERNAL_PROCESS: {
 			if (_write_lock_requested) {
 				_rw_lock.write_lock();
+				_write_lock_requested = false;
 				notification(NOTIFICATION_WEB_NODE_WRITE_LOCKED);
 				_rw_lock.write_unlock();
-
-				_write_lock_requested = false;
 			}
 		} break;
 		default:
@@ -464,6 +463,9 @@ WebNode::WebNode() {
 #ifdef MODULE_DATABASE_ENABLED
 	_migrations_enabled = false;
 #endif
+
+	_write_lock_requested = false;
+	set_process_internal(true);
 }
 
 WebNode::~WebNode() {
