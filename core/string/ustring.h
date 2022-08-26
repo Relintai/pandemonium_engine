@@ -30,11 +30,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/variant/array.h"
-#include "core/string/char_utils.h"
 #include "core/containers/cowdata.h"
-#include "core/typedefs.h"
 #include "core/containers/vector.h"
+#include "core/string/char_utils.h"
+#include "core/typedefs.h"
+#include "core/variant/array.h"
 
 /*************************************************************************/
 /*  CharProxy                                                            */
@@ -92,7 +92,16 @@ public:
 	_FORCE_INLINE_ char16_t *ptrw() { return _cowdata.ptrw(); }
 	_FORCE_INLINE_ const char16_t *ptr() const { return _cowdata.ptr(); }
 	_FORCE_INLINE_ int size() const { return _cowdata.size(); }
-	Error resize(int p_size) { return _cowdata.resize(p_size); }
+	Error resize(int p_size) {
+		Error err = _cowdata.resize(p_size);
+
+		//Ensure null terminator
+		if (err == OK && _cowdata.size() > 0) {
+			_cowdata.set(_cowdata.size() - 1, '\0');
+		}
+
+		return err;
+	}
 
 	_FORCE_INLINE_ char16_t get(int p_index) const { return _cowdata.get(p_index); }
 	_FORCE_INLINE_ void set(int p_index, const char16_t &p_elem) { _cowdata.set(p_index, p_elem); }
@@ -133,7 +142,16 @@ public:
 	_FORCE_INLINE_ char *ptrw() { return _cowdata.ptrw(); }
 	_FORCE_INLINE_ const char *ptr() const { return _cowdata.ptr(); }
 	_FORCE_INLINE_ int size() const { return _cowdata.size(); }
-	Error resize(int p_size) { return _cowdata.resize(p_size); }
+	Error resize(int p_size) {
+		Error err = _cowdata.resize(p_size);
+
+		//Ensure null terminator
+		if (err == OK && _cowdata.size() > 0) {
+			_cowdata.set(_cowdata.size() - 1, '\0');
+		}
+
+		return err;
+	}
 
 	_FORCE_INLINE_ char get(int p_index) const { return _cowdata.get(p_index); }
 	_FORCE_INLINE_ void set(int p_index, const char &p_elem) { _cowdata.set(p_index, p_elem); }
@@ -187,14 +205,30 @@ public:
 	_FORCE_INLINE_ CharType *ptrw() { return _cowdata.ptrw(); }
 	_FORCE_INLINE_ const CharType *ptr() const { return _cowdata.ptr(); }
 
-	void remove(int p_index) { _cowdata.remove(p_index); }
+	_FORCE_INLINE_ void remove(int p_index) {
+		_cowdata.remove(p_index);
+
+		//Ensure null terminator
+		if (_cowdata.size() > 0) {
+			_cowdata.set(_cowdata.size() - 1, '\0');
+		}
+	}
 
 	_FORCE_INLINE_ void clear() { resize(0); }
 
 	_FORCE_INLINE_ CharType get(int p_index) const { return _cowdata.get(p_index); }
 	_FORCE_INLINE_ void set(int p_index, const CharType &p_elem) { _cowdata.set(p_index, p_elem); }
 	_FORCE_INLINE_ int size() const { return _cowdata.size(); }
-	Error resize(int p_size) { return _cowdata.resize(p_size); }
+	Error resize(int p_size) {
+		Error err = _cowdata.resize(p_size);
+
+		//Ensure null terminator
+		if (err == OK && _cowdata.size() > 0) {
+			_cowdata.set(_cowdata.size() - 1, '\0');
+		}
+
+		return err;
+	}
 
 	_FORCE_INLINE_ const CharType &operator[](int p_index) const {
 		if (unlikely(p_index == _cowdata.size())) {
