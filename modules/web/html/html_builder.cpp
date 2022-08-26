@@ -90,6 +90,17 @@ HTMLTag *HTMLTag::cols(const String &val) {
 	return this;
 }
 
+HTMLTag *HTMLTag::enctype(const String &val) {
+	attrib("enctype", val);
+
+	return this;
+}
+
+HTMLTag *HTMLTag::enctype_multipart_form_data() {
+	attrib("enctype", "multipart/form-data");
+
+	return this;
+}
 
 HTMLTag *HTMLTag::autocomplete(const String &val) {
 	attrib("autocomplete", val);

@@ -108,6 +108,18 @@ Ref<_HTMLTag> _HTMLTag::cols(const String &val) {
 	return Ref<_HTMLTag>(this);
 }
 
+Ref<_HTMLTag> _HTMLTag::enctype(const String &val) {
+	attrib("enctype", val);
+
+	return Ref<_HTMLTag>(this);
+}
+
+Ref<_HTMLTag> _HTMLTag::enctype_multipart_form_data() {
+	attrib("enctype", "multipart/form-data");
+
+	return Ref<_HTMLTag>(this);
+}
+
 Ref<_HTMLTag> _HTMLTag::autocomplete(const String &val) {
 	attrib("autocomplete", val);
 
@@ -905,8 +917,12 @@ void _HTMLTag::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("alt", "val"), &_HTMLTag::alt);
 	ClassDB::bind_method(D_METHOD("inputmode", "val"), &_HTMLTag::inputmode);
 	ClassDB::bind_method(D_METHOD("list", "val"), &_HTMLTag::list);
+
 	ClassDB::bind_method(D_METHOD("rows", "val"), &_HTMLTag::rows);
 	ClassDB::bind_method(D_METHOD("cols", "val"), &_HTMLTag::cols);
+
+	ClassDB::bind_method(D_METHOD("enctype", "val"), &_HTMLTag::enctype);
+	ClassDB::bind_method(D_METHOD("enctype_multipart_form_data"), &_HTMLTag::enctype_multipart_form_data);
 
 	ClassDB::bind_method(D_METHOD("autocomplete", "val"), &_HTMLTag::autocomplete);
 

@@ -33,8 +33,12 @@ public:
 	Ref<_HTMLTag> alt(const String &val);
 	Ref<_HTMLTag> inputmode(const String &val);
 	Ref<_HTMLTag> list(const String &val);
+
 	Ref<_HTMLTag> rows(const String &val);
 	Ref<_HTMLTag> cols(const String &val);
+
+	Ref<_HTMLTag> enctype(const String &val);
+	Ref<_HTMLTag> enctype_multipart_form_data();
 
 	Ref<_HTMLTag> autocomplete(const String &val);
 
