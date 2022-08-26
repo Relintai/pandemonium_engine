@@ -78,6 +78,19 @@ HTMLTag *HTMLTag::alt(const String &val) {
 	return this;
 }
 
+HTMLTag *HTMLTag::rows(const String &val) {
+	attrib("rows", val);
+
+	return this;
+}
+
+HTMLTag *HTMLTag::cols(const String &val) {
+	attrib("cols", val);
+
+	return this;
+}
+
+
 HTMLTag *HTMLTag::autocomplete(const String &val) {
 	attrib("autocomplete", val);
 

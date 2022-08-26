@@ -28,6 +28,8 @@ public:
 	HTMLTag *alt(const String &val);
 	HTMLTag *inputmode(const String &val);
 	HTMLTag *list(const String &val);
+	HTMLTag *rows(const String &val);
+	HTMLTag *cols(const String &val);
 
 	HTMLTag *autocomplete(const String &val);
 
