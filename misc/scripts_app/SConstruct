@@ -245,7 +245,7 @@ def update_engine():
 def update_modules():
     for rep in module_config.module_repositories:
         update_repository(rep, module_clone_path)
-        copy_repository(rep, './pandemonium_engine/modules/', '.' + module_clone_path)
+        copy_repository(rep, module_config.module_install_folder, '.' + module_clone_path)
 
 def update_addons():
     for rep in module_config.addon_repositories:
@@ -273,10 +273,10 @@ def setup_engine():
 def setup_modules():
     for rep in module_config.module_repositories:
         setup_repository(rep, module_clone_path)
-        copy_repository(rep, './pandemonium_engine/modules/', '.' + module_clone_path)
+        copy_repository(rep, module_config.module_install_folder, '.' + module_clone_path)
 
     for rep in module_config.removed_modules:
-        remove_repository(rep, './pandemonium_engine/modules/')
+        remove_repository(rep, module_config.module_install_folder)
 
 
 def setup_addons():
@@ -618,6 +618,9 @@ if env['t']:
 
 if not os.path.isdir('./modules'):
     os.mkdir('./modules')
+
+if len(module_config.module_repositories) > 0 and not os.path.isdir(module_config.module_install_folder):
+    os.mkdir(module_config.module_install_folder)
 
 if 'm' in action:
     pandemonium_branch = 'master'
