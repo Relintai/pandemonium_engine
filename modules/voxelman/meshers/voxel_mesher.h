@@ -29,7 +29,6 @@ SOFTWARE.
 #include "../defines.h"
 
 #include "core/containers/pool_vector.h"
-#include "scene/3d/mesh_instance.h"
 
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
@@ -49,6 +48,7 @@ const double PI = 3.141592653589793238463;
 
 class VoxelLibrary;
 class VoxelChunk;
+class MeshInstance;
 
 class VoxelMesher : public Reference {
 	GDCLASS(VoxelMesher, Reference);
