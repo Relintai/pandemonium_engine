@@ -35,13 +35,17 @@ void GLTFSkeleton::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_joints", "joints"), &GLTFSkeleton::set_joints);
 	ClassDB::bind_method(D_METHOD("get_roots"), &GLTFSkeleton::get_roots);
 	ClassDB::bind_method(D_METHOD("set_roots", "roots"), &GLTFSkeleton::set_roots);
+	
+#ifdef MODULE_SKELETON_3D_ENABLED
 	ClassDB::bind_method(D_METHOD("get_pandemonium_skeleton"), &GLTFSkeleton::get_pandemonium_skeleton);
+	ClassDB::bind_method(D_METHOD("get_bone_attachment", "idx"), &GLTFSkeleton::get_bone_attachment);
+#endif
+
 	ClassDB::bind_method(D_METHOD("get_unique_names"), &GLTFSkeleton::get_unique_names);
 	ClassDB::bind_method(D_METHOD("set_unique_names", "unique_names"), &GLTFSkeleton::set_unique_names);
 	ClassDB::bind_method(D_METHOD("get_pandemonium_bone_node"), &GLTFSkeleton::get_pandemonium_bone_node);
 	ClassDB::bind_method(D_METHOD("set_pandemonium_bone_node", "pandemonium_bone_node"), &GLTFSkeleton::set_pandemonium_bone_node);
 	ClassDB::bind_method(D_METHOD("get_bone_attachment_count"), &GLTFSkeleton::get_bone_attachment_count);
-	ClassDB::bind_method(D_METHOD("get_bone_attachment", "idx"), &GLTFSkeleton::get_bone_attachment);
 
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "joints"), "set_joints", "get_joints"); // PoolVector<GLTFNodeIndex>
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "roots"), "set_roots", "get_roots"); // PoolVector<GLTFNodeIndex>
@@ -65,9 +69,15 @@ void GLTFSkeleton::set_roots(PoolVector<GLTFNodeIndex> p_roots) {
 	roots = p_roots;
 }
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 Skeleton *GLTFSkeleton::get_pandemonium_skeleton() {
 	return pandemonium_skeleton;
 }
+BoneAttachment *GLTFSkeleton::get_bone_attachment(int idx) {
+	ERR_FAIL_INDEX_V(idx, bone_attachments.size(), nullptr);
+	return bone_attachments[idx];
+}
+#endif
 
 Array GLTFSkeleton::get_unique_names() {
 	return GLTFDocument::to_array(unique_names);
@@ -85,11 +95,10 @@ void GLTFSkeleton::set_pandemonium_bone_node(Dictionary p_indict) {
 	GLTFDocument::set_from_dict(pandemonium_bone_node, p_indict);
 }
 
-BoneAttachment *GLTFSkeleton::get_bone_attachment(int idx) {
-	ERR_FAIL_INDEX_V(idx, bone_attachments.size(), nullptr);
-	return bone_attachments[idx];
-}
-
 int32_t GLTFSkeleton::get_bone_attachment_count() {
+#ifdef MODULE_SKELETON_3D_ENABLED
 	return bone_attachments.size();
+#else
+	return 0;
+#endif
 }

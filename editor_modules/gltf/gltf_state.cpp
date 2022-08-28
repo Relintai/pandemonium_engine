@@ -30,8 +30,6 @@
 
 #include "gltf_state.h"
 
-#include "scene/resources/skin.h"
-
 void GLTFState::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_json"), &GLTFState::get_json);
 	ClassDB::bind_method(D_METHOD("set_json", "json"), &GLTFState::set_json);

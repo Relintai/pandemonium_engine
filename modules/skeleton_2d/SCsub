@@ -9,7 +9,6 @@ module_env.add_source_files(env.modules_sources,"register_types.cpp")
 module_env.add_source_files(env.modules_sources,"nodes/skeleton_2d.cpp")
 module_env.add_source_files(env.modules_sources,"nodes/physical_bone_2d.cpp")
 
-
 module_env.add_source_files(env.modules_sources,"resources/skeleton_modification_2d.cpp")
 module_env.add_source_files(env.modules_sources,"resources/skeleton_modification_2d_ccdik.cpp")
 module_env.add_source_files(env.modules_sources,"resources/skeleton_modification_2d_fabrik.cpp")

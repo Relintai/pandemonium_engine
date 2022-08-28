@@ -1,8 +1,0 @@
-.import
-*.d
-*.o
-*.meta
-*.pyc
-*.obj
-*.bc
-

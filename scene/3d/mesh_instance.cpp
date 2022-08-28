@@ -31,16 +31,20 @@
 #include "mesh_instance.h"
 
 #include "collision_shape.h"
-#include "core/core_string_names.h"
 #include "core/config/project_settings.h"
+#include "core/core_string_names.h"
 #include "physics_body.h"
-#include "scene/3d/skeleton.h"
 #include "scene/resources/material.h"
 #include "scene/resources/mesh.h"
-#include "scene/resources/skin.h"
 #include "scene/scene_string_names.h"
 #include "servers/rendering/rendering_server_globals.h"
-#include "skeleton.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_SKELETON_3D_ENABLED
+#include "modules/skeleton_3d/nodes/skeleton.h"
+#include "modules/skeleton_3d/resources/skin.h"
+#endif
 
 bool MeshInstance::_set(const StringName &p_name, const Variant &p_value) {
 	//this is not _too_ bad performance wise, really. it only arrives here if the property was not set anywhere else.
@@ -125,10 +129,12 @@ void MeshInstance::set_mesh(const Ref<Mesh> &p_mesh) {
 		skin_ref->get_skeleton_node()->disconnect("pose_updated", this, "_update_skinning");
 	}
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 	if (software_skinning) {
 		memdelete(software_skinning);
 		software_skinning = nullptr;
 	}
+#endif
 
 	mesh = p_mesh;
 
@@ -144,7 +150,9 @@ void MeshInstance::set_mesh(const Ref<Mesh> &p_mesh) {
 		mesh->connect(CoreStringNames::get_singleton()->changed, this, SceneStringNames::get_singleton()->_mesh_changed);
 		materials.resize(mesh->get_surface_count());
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 		_initialize_skinning(false, true);
+#endif
 	} else {
 		set_base(RID());
 	}
@@ -157,6 +165,7 @@ Ref<Mesh> MeshInstance::get_mesh() const {
 	return mesh;
 }
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 void MeshInstance::_resolve_skeleton_path() {
 	Ref<SkinReference> new_skin_reference;
 
@@ -523,7 +532,9 @@ void MeshInstance::_update_skinning() {
 
 	software_skinning_flags |= SoftwareSkinning::FLAG_BONES_READY;
 }
+#endif
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 void MeshInstance::set_skin(const Ref<Skin> &p_skin) {
 	skin_internal = p_skin;
 	skin = p_skin;
@@ -548,6 +559,7 @@ void MeshInstance::set_skeleton_path(const NodePath &p_skeleton) {
 NodePath MeshInstance::get_skeleton_path() {
 	return skeleton_path;
 }
+#endif
 
 AABB MeshInstance::get_aabb() const {
 	if (!mesh.is_null()) {
@@ -665,6 +677,7 @@ void MeshInstance::create_convex_collision(bool p_clean, bool p_simplify) {
 }
 
 void MeshInstance::_notification(int p_what) {
+#ifdef MODULE_SKELETON_3D_ENABLED
 	if (p_what == NOTIFICATION_ENTER_TREE) {
 		_resolve_skeleton_path();
 	}
@@ -679,6 +692,7 @@ void MeshInstance::_notification(int p_what) {
 			}
 		}
 	}
+#endif
 }
 
 int MeshInstance::get_surface_material_count() const {
@@ -696,9 +710,11 @@ void MeshInstance::set_surface_material(int p_surface, const Ref<Material> &p_ma
 		RS::get_singleton()->instance_set_surface_material(get_instance(), p_surface, RID());
 	}
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 	if (software_skinning) {
 		_initialize_skinning(true);
 	}
+#endif
 }
 
 Ref<Material> MeshInstance::get_surface_material(int p_surface) const {
@@ -746,6 +762,7 @@ void MeshInstance::set_material_overlay(const Ref<Material> &p_material) {
 	GeometryInstance::set_material_overlay(p_material);
 }
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 void MeshInstance::set_software_skinning_transform_normals(bool p_enabled) {
 	if (p_enabled == is_software_skinning_transform_normals_enabled()) {
 		return;
@@ -765,14 +782,17 @@ void MeshInstance::set_software_skinning_transform_normals(bool p_enabled) {
 bool MeshInstance::is_software_skinning_transform_normals_enabled() const {
 	return 0 != (software_skinning_flags & SoftwareSkinning::FLAG_TRANSFORM_NORMALS);
 }
+#endif
 
 void MeshInstance::_mesh_changed() {
 	ERR_FAIL_COND(mesh.is_null());
 	materials.resize(mesh->get_surface_count());
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 	if (software_skinning) {
 		_initialize_skinning(true);
 	}
+#endif
 }
 
 void MeshInstance::create_debug_tangents() {
@@ -1343,18 +1363,29 @@ void MeshInstance::_merge_log(String p_string) const {
 void MeshInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_mesh", "mesh"), &MeshInstance::set_mesh);
 	ClassDB::bind_method(D_METHOD("get_mesh"), &MeshInstance::get_mesh);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "mesh", PROPERTY_HINT_RESOURCE_TYPE, "Mesh"), "set_mesh", "get_mesh");
+
+#ifdef MODULE_SKELETON_3D_ENABLED
 	ClassDB::bind_method(D_METHOD("set_skeleton_path", "skeleton_path"), &MeshInstance::set_skeleton_path);
 	ClassDB::bind_method(D_METHOD("get_skeleton_path"), &MeshInstance::get_skeleton_path);
+	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "skeleton", PROPERTY_HINT_NODE_PATH_VALID_TYPES, "Skeleton"), "set_skeleton_path", "get_skeleton_path");
+
 	ClassDB::bind_method(D_METHOD("set_skin", "skin"), &MeshInstance::set_skin);
 	ClassDB::bind_method(D_METHOD("get_skin"), &MeshInstance::get_skin);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "skin", PROPERTY_HINT_RESOURCE_TYPE, "Skin"), "set_skin", "get_skin");
+#endif
 
 	ClassDB::bind_method(D_METHOD("get_surface_material_count"), &MeshInstance::get_surface_material_count);
 	ClassDB::bind_method(D_METHOD("set_surface_material", "surface", "material"), &MeshInstance::set_surface_material);
 	ClassDB::bind_method(D_METHOD("get_surface_material", "surface"), &MeshInstance::get_surface_material);
 	ClassDB::bind_method(D_METHOD("get_active_material", "surface"), &MeshInstance::get_active_material);
 
+#ifdef MODULE_SKELETON_3D_ENABLED
+	ADD_GROUP("Software Skinning", "software_skinning");
 	ClassDB::bind_method(D_METHOD("set_software_skinning_transform_normals", "enabled"), &MeshInstance::set_software_skinning_transform_normals);
 	ClassDB::bind_method(D_METHOD("is_software_skinning_transform_normals_enabled"), &MeshInstance::is_software_skinning_transform_normals_enabled);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "software_skinning_transform_normals"), "set_software_skinning_transform_normals", "is_software_skinning_transform_normals_enabled");
+#endif
 
 	ClassDB::bind_method(D_METHOD("create_trimesh_collision"), &MeshInstance::create_trimesh_collision);
 	ClassDB::set_method_flags("MeshInstance", "create_trimesh_collision", METHOD_FLAGS_DEFAULT);
@@ -1363,7 +1394,10 @@ void MeshInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("create_convex_collision", "clean", "simplify"), &MeshInstance::create_convex_collision, DEFVAL(true), DEFVAL(false));
 	ClassDB::set_method_flags("MeshInstance", "create_convex_collision", METHOD_FLAGS_DEFAULT);
 	ClassDB::bind_method(D_METHOD("_mesh_changed"), &MeshInstance::_mesh_changed);
+
+#ifdef MODULE_SKELETON_3D_ENABLED
 	ClassDB::bind_method(D_METHOD("_update_skinning"), &MeshInstance::_update_skinning);
+#endif
 
 	ClassDB::bind_method(D_METHOD("create_debug_tangents"), &MeshInstance::create_debug_tangents);
 	ClassDB::set_method_flags("MeshInstance", "create_debug_tangents", METHOD_FLAGS_DEFAULT | METHOD_FLAG_EDITOR);
@@ -1371,24 +1405,21 @@ void MeshInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("is_mergeable_with", "other_mesh_instance"), &MeshInstance::is_mergeable_with);
 	ClassDB::bind_method(D_METHOD("merge_meshes", "mesh_instances", "use_global_space", "check_compatibility"), &MeshInstance::merge_meshes, DEFVAL(Vector<Variant>()), DEFVAL(false), DEFVAL(true));
 	ClassDB::set_method_flags("MeshInstance", "merge_meshes", METHOD_FLAGS_DEFAULT);
-
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "mesh", PROPERTY_HINT_RESOURCE_TYPE, "Mesh"), "set_mesh", "get_mesh");
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "skin", PROPERTY_HINT_RESOURCE_TYPE, "Skin"), "set_skin", "get_skin");
-	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "skeleton", PROPERTY_HINT_NODE_PATH_VALID_TYPES, "Skeleton"), "set_skeleton_path", "get_skeleton_path");
-
-	ADD_GROUP("Software Skinning", "software_skinning");
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "software_skinning_transform_normals"), "set_software_skinning_transform_normals", "is_software_skinning_transform_normals_enabled");
 }
 
 MeshInstance::MeshInstance() {
+#ifdef MODULE_SKELETON_3D_ENABLED
 	skeleton_path = NodePath("..");
 	software_skinning = nullptr;
 	software_skinning_flags = SoftwareSkinning::FLAG_TRANSFORM_NORMALS;
+#endif
 }
 
 MeshInstance::~MeshInstance() {
+#ifdef MODULE_SKELETON_3D_ENABLED
 	if (software_skinning) {
 		memdelete(software_skinning);
 		software_skinning = nullptr;
 	}
+#endif
 }

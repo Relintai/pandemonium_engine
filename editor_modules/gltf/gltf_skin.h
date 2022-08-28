@@ -34,7 +34,13 @@
 
 #include "gltf_document.h"
 
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_SKELETON_3D_ENABLED
 class Skin;
+#endif
+
+
 
 class GLTFSkin : public Resource {
 	GDCLASS(GLTFSkin, Resource);
@@ -70,9 +76,11 @@ private:
 	Map<int, int> joint_i_to_bone_i;
 	Map<int, StringName> joint_i_to_name;
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 	// The Actual Skin that will be created as a mapping between the IBM's of
 	// this skin to the generated skeleton for the mesh instances.
 	Ref<Skin> pandemonium_skin;
+#endif
 
 protected:
 	static void _bind_methods();
@@ -105,8 +113,10 @@ public:
 	Dictionary get_joint_i_to_name();
 	void set_joint_i_to_name(Dictionary p_joint_i_to_name);
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 	Ref<Skin> get_pandemonium_skin();
 	void set_pandemonium_skin(Ref<Skin> p_pandemonium_skin);
+#endif
 
 	GLTFSkin();
 	~GLTFSkin();

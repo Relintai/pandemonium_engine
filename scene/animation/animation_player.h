@@ -33,10 +33,14 @@
 #include "core/object/reference.h"
 #include "scene/main/node.h"
 
+#include "modules/modules_enabled.gen.h"
+
 class Resource;
 class Spatial;
 class Node2D;
+#ifdef MODULE_SKELETON_3D_ENABLED
 class Skeleton;
+#endif
 class Animation;
 
 #ifdef TOOLS_ENABLED
@@ -102,7 +106,9 @@ private:
 		Node *node;
 		Spatial *spatial;
 		Node2D *node_2d;
+#ifdef MODULE_SKELETON_3D_ENABLED
 		Skeleton *skeleton;
+#endif
 		int bone_idx;
 		// accumulated transforms
 

@@ -30,6 +30,14 @@
 
 #include "gltf_document.h"
 
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_SKELETON_3D_ENABLED
+#include "modules/skeleton_3d/nodes/bone_attachment.h"
+#include "modules/skeleton_3d/nodes/skeleton.h"
+#include "modules/skeleton_3d/resources/skin.h"
+#endif
+
 #include "gltf_accessor.h"
 #include "gltf_animation.h"
 #include "gltf_camera.h"
@@ -51,7 +59,7 @@
 #include "core/version.h"
 #include "drivers/png/png_driver_common.h"
 #include "scene/2d/node_2d.h"
-#include "scene/3d/bone_attachment.h"
+
 #include "scene/3d/mesh_instance.h"
 #include "scene/3d/multimesh_instance.h"
 #include "scene/3d/spatial.h"
@@ -59,7 +67,6 @@
 #include "scene/main/node.h"
 #include "scene/resources/animation.h"
 #include "scene/resources/multimesh.h"
-#include "scene/resources/skin.h"
 #include "scene/resources/surface_tool.h"
 
 #include "modules/modules_enabled.gen.h" // For csg, gridmap, regex.
@@ -4308,6 +4315,7 @@ Error GLTFDocument::_determine_skeleton_roots(Ref<GLTFState> state, const GLTFSk
 	return OK;
 }
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 Error GLTFDocument::_create_skeletons(Ref<GLTFState> state) {
 	for (GLTFSkeletonIndex skel_i = 0; skel_i < state->skeletons.size(); ++skel_i) {
 		Ref<GLTFSkeleton> gltf_skeleton = state->skeletons.write[skel_i];
@@ -4380,6 +4388,7 @@ Error GLTFDocument::_create_skeletons(Ref<GLTFState> state) {
 
 	return OK;
 }
+#endif
 
 Error GLTFDocument::_map_skin_joints_indices_to_skeleton_bone_indices(Ref<GLTFState> state) {
 	for (GLTFSkinIndex skin_i = 0; skin_i < state->skins.size(); ++skin_i) {
@@ -5058,6 +5067,7 @@ void GLTFDocument::_assign_scene_names(Ref<GLTFState> state) {
 	state->scene_name = _gen_unique_name(state, state->scene_name);
 }
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 BoneAttachment *GLTFDocument::_generate_bone_attachment(Ref<GLTFState> state, Skeleton *skeleton, const GLTFNodeIndex node_index, const GLTFNodeIndex bone_index) {
 	Ref<GLTFNode> gltf_node = state->nodes[node_index];
 	Ref<GLTFNode> bone_node = state->nodes[bone_index];
@@ -5071,6 +5081,7 @@ BoneAttachment *GLTFDocument::_generate_bone_attachment(Ref<GLTFState> state, Sk
 
 	return bone_attachment;
 }
+#endif
 
 GLTFMeshIndex GLTFDocument::_convert_mesh_to_gltf(Ref<GLTFState> state, MeshInstance *p_mesh_instance) {
 	ERR_FAIL_NULL_V(p_mesh_instance, -1);
@@ -5309,11 +5320,13 @@ void GLTFDocument::_convert_scene_node(Ref<GLTFState> state, Node *p_current, co
 		BoneAttachment *bone = cast_to<BoneAttachment>(p_current);
 		_convert_bone_attachment_to_gltf(bone, state, p_gltf_parent, p_gltf_root, gltf_node);
 		return;
+#ifdef MODULE_SKELETON_3D_ENABLED
 	} else if (cast_to<Skeleton>(p_current)) {
 		Skeleton *skel = cast_to<Skeleton>(p_current);
 		_convert_skeleton_to_gltf(skel, state, p_gltf_parent, p_gltf_root, gltf_node);
 		// We ignore the Pandemonium Engine node that is the skeleton.
 		return;
+#endif
 	} else if (cast_to<MultiMeshInstance>(p_current)) {
 		MultiMeshInstance *multi = cast_to<MultiMeshInstance>(p_current);
 		_convert_mult_mesh_instance_to_gltf(multi, p_gltf_parent, p_gltf_root, gltf_node, state);
@@ -5433,6 +5446,7 @@ void GLTFDocument::_convert_mult_mesh_instance_to_gltf(MultiMeshInstance *p_mult
 	}
 }
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 void GLTFDocument::_convert_skeleton_to_gltf(Skeleton *p_skeleton3d, Ref<GLTFState> state, GLTFNodeIndex p_parent_node_index, GLTFNodeIndex p_root_node_index, Ref<GLTFNode> gltf_node) {
 	Skeleton *skeleton = p_skeleton3d;
 	Ref<GLTFSkeleton> gltf_skeleton;
@@ -5486,7 +5500,9 @@ void GLTFDocument::_convert_skeleton_to_gltf(Skeleton *p_skeleton3d, Ref<GLTFSta
 		_convert_scene_node(state, skeleton->get_child(node_i), p_parent_node_index, p_root_node_index);
 	}
 }
+#endif
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 void GLTFDocument::_convert_bone_attachment_to_gltf(BoneAttachment *p_bone_attachment, Ref<GLTFState> state, GLTFNodeIndex p_parent_node_index, GLTFNodeIndex p_root_node_index, Ref<GLTFNode> gltf_node) {
 	Skeleton *skeleton;
 	// Note that relative transforms to external skeletons and pose overrides are not supported.
@@ -5517,6 +5533,7 @@ void GLTFDocument::_convert_bone_attachment_to_gltf(BoneAttachment *p_bone_attac
 		_convert_scene_node(state, p_bone_attachment->get_child(node_i), par_node_index, p_root_node_index);
 	}
 }
+#endif
 
 void GLTFDocument::_convert_mesh_instance_to_gltf(MeshInstance *p_scene_parent, Ref<GLTFState> state, Ref<GLTFNode> gltf_node) {
 	GLTFMeshIndex gltf_mesh_index = _convert_mesh_to_gltf(state, p_scene_parent);
@@ -5535,6 +5552,7 @@ void GLTFDocument::_generate_scene_node(Ref<GLTFState> state, Node *scene_parent
 
 	Spatial *current_node = nullptr;
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 	// Is our parent a skeleton
 	Skeleton *active_skeleton = Object::cast_to<Skeleton>(scene_parent);
 
@@ -5555,6 +5573,8 @@ void GLTFDocument::_generate_scene_node(Ref<GLTFState> state, Node *scene_parent
 		// and attach it to the bone_attachment
 		scene_parent = bone_attachment;
 	}
+#endif
+
 	if (gltf_node->mesh >= 0) {
 		current_node = _generate_mesh_instance(state, scene_parent, node_index);
 	} else if (gltf_node->camera >= 0) {
@@ -5582,6 +5602,7 @@ void GLTFDocument::_generate_scene_node(Ref<GLTFState> state, Node *scene_parent
 	}
 }
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 void GLTFDocument::_generate_skeleton_bone_node(Ref<GLTFState> state, Node *scene_parent, Spatial *scene_root, const GLTFNodeIndex node_index) {
 	Ref<GLTFNode> gltf_node = state->nodes[node_index];
 
@@ -5664,6 +5685,7 @@ void GLTFDocument::_generate_skeleton_bone_node(Ref<GLTFState> state, Node *scen
 		_generate_scene_node(state, active_skeleton, scene_root, gltf_node->children[i]);
 	}
 }
+#endif
 
 template <class T>
 struct EditorSceneImporterGLTFInterpolate {
@@ -5823,12 +5845,14 @@ void GLTFDocument::_import_animation(Ref<GLTFState> state, AnimationPlayer *ap, 
 		node_path = root->get_path_to(node_element->get());
 
 		if (gltf_node->skeleton >= 0) {
+#ifdef MODULE_SKELETON_3D_ENABLED
 			const Skeleton *sk = state->skeletons[gltf_node->skeleton]->pandemonium_skeleton;
 			ERR_FAIL_COND(sk == nullptr);
 
 			const String path = root->get_path_to(sk);
 			const String bone = gltf_node->get_name();
 			transform_node_path = path + ":" + bone;
+#endif
 		} else {
 			transform_node_path = node_path;
 		}
@@ -6035,6 +6059,7 @@ void GLTFDocument::_convert_mesh_instances(Ref<GLTFState> state) {
 		node->rotation = mi_xform.basis.get_rotation_quaternion();
 		node->translation = mi_xform.origin;
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 		Skeleton *skeleton = Object::cast_to<Skeleton>(mi->get_node(mi->get_skeleton_path()));
 		if (!skeleton) {
 			continue;
@@ -6116,6 +6141,7 @@ void GLTFDocument::_convert_mesh_instances(Ref<GLTFState> state) {
 			node->skeleton = skeleton_gltf_i;
 		}
 	}
+#endif
 }
 
 float GLTFDocument::solve_metallic(float p_dielectric_specular, float diffuse, float specular, float p_one_minus_specular_strength) {
@@ -6150,6 +6176,7 @@ float GLTFDocument::get_max_component(const Color &p_color) {
 }
 
 void GLTFDocument::_process_mesh_instances(Ref<GLTFState> state, Node *scene_root) {
+#ifdef MODULE_SKELETON_3D_ENABLED
 	for (GLTFNodeIndex node_i = 0; node_i < state->nodes.size(); ++node_i) {
 		Ref<GLTFNode> node = state->nodes[node_i];
 
@@ -6176,6 +6203,7 @@ void GLTFDocument::_process_mesh_instances(Ref<GLTFState> state, Node *scene_roo
 			mi->set_transform(Transform());
 		}
 	}
+#endif
 }
 
 GLTFAnimation::Track GLTFDocument::_convert_animation_track(Ref<GLTFState> state, GLTFAnimation::Track p_track, Ref<Animation> p_animation, int32_t p_track_i, GLTFNodeIndex p_node_i) {
@@ -6487,6 +6515,7 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 				}
 				tracks[mesh_index] = track;
 			}
+#ifdef MODULE_SKELETON_3D_ENABLED
 		} else if (String(orig_track_path).find(":") != -1) {
 			//Process skeleton
 			const Vector<String> node_suffix = String(orig_track_path).split(":");
@@ -6521,6 +6550,7 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 					gltf_animation->get_tracks()[node_i] = track;
 				}
 			}
+#endif
 		} else if (String(orig_track_path).find(":") == -1) {
 			Node *ap_root = ap->get_node_or_null(ap->get_root());
 			ERR_CONTINUE(!ap_root);

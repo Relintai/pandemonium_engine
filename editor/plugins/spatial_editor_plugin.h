@@ -36,7 +36,6 @@
 #include "scene/gui/container.h"
 #include "scene/gui/control.h"
 
-#include "scene/3d/skeleton.h"
 #include "scene/gui/spin_box.h"
 
 #include "core/containers/hash_map.h"

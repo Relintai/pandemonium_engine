@@ -39,12 +39,14 @@ Ref<ImporterMesh> ImporterMeshInstance3D::get_mesh() const {
 	return mesh;
 }
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 void ImporterMeshInstance3D::set_skin(const Ref<Skin> &p_skin) {
 	skin = p_skin;
 }
 Ref<Skin> ImporterMeshInstance3D::get_skin() const {
 	return skin;
 }
+#endif
 
 void ImporterMeshInstance3D::set_surface_material(int p_idx, const Ref<Material> &p_material) {
 	ERR_FAIL_COND(p_idx < 0);
@@ -72,14 +74,15 @@ NodePath ImporterMeshInstance3D::get_skeleton_path() const {
 void ImporterMeshInstance3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_mesh", "mesh"), &ImporterMeshInstance3D::set_mesh);
 	ClassDB::bind_method(D_METHOD("get_mesh"), &ImporterMeshInstance3D::get_mesh);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "mesh", PROPERTY_HINT_RESOURCE_TYPE, "ImporterMesh"), "set_mesh", "get_mesh");
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 	ClassDB::bind_method(D_METHOD("set_skin", "skin"), &ImporterMeshInstance3D::set_skin);
 	ClassDB::bind_method(D_METHOD("get_skin"), &ImporterMeshInstance3D::get_skin);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "skin", PROPERTY_HINT_RESOURCE_TYPE, "Skin"), "set_skin", "get_skin");
+#endif
 
 	ClassDB::bind_method(D_METHOD("set_skeleton_path", "skeleton_path"), &ImporterMeshInstance3D::set_skeleton_path);
 	ClassDB::bind_method(D_METHOD("get_skeleton_path"), &ImporterMeshInstance3D::get_skeleton_path);
-
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "mesh", PROPERTY_HINT_RESOURCE_TYPE, "ImporterMesh"), "set_mesh", "get_mesh");
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "skin", PROPERTY_HINT_RESOURCE_TYPE, "Skin"), "set_skin", "get_skin");
 	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "skeleton_path", PROPERTY_HINT_NODE_PATH_VALID_TYPES, "Skeleton"), "set_skeleton_path", "get_skeleton_path");
 }

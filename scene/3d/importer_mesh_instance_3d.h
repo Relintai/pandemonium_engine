@@ -32,7 +32,12 @@
 #define IMPORTER_MESH_INSTANCE_3D_H
 
 #include "scene/3d/spatial.h"
-#include "scene/resources/skin.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_SKELETON_3D_ENABLED
+#include "modules/skeleton_3d/resources/skin.h"
+#endif
 
 class ImporterMesh;
 
@@ -51,8 +56,10 @@ public:
 	void set_mesh(const Ref<ImporterMesh> &p_mesh);
 	Ref<ImporterMesh> get_mesh() const;
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 	void set_skin(const Ref<Skin> &p_skin);
 	Ref<Skin> get_skin() const;
+#endif
 
 	void set_surface_material(int p_idx, const Ref<Material> &p_material);
 	Ref<Material> get_surface_material(int p_idx) const;

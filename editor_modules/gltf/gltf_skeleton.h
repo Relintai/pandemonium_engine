@@ -34,6 +34,13 @@
 
 #include "gltf_document.h"
 
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_SKELETON_3D_ENABLED
+#include "modules/skeleton_3d/nodes/bone_attachment.h"
+#include "modules/skeleton_3d/nodes/skeleton.h"
+#endif
+
 class GLTFSkeleton : public Resource {
 	GDCLASS(GLTFSkeleton, Resource);
 	friend class GLTFDocument;
@@ -54,7 +61,9 @@ private:
 
 	Map<int32_t, GLTFNodeIndex> pandemonium_bone_node;
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 	PoolVector<BoneAttachment *> bone_attachments;
+#endif
 
 protected:
 	static void _bind_methods();
@@ -66,15 +75,16 @@ public:
 	PoolVector<GLTFNodeIndex> get_roots();
 	void set_roots(PoolVector<GLTFNodeIndex> p_roots);
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 	Skeleton *get_pandemonium_skeleton();
+	BoneAttachment *get_bone_attachment(int idx);
+#endif
 
 	Array get_unique_names();
 	void set_unique_names(Array p_unique_names);
 
 	Dictionary get_pandemonium_bone_node();
 	void set_pandemonium_bone_node(Dictionary p_indict);
-
-	BoneAttachment *get_bone_attachment(int idx);
 
 	int32_t get_bone_attachment_count();
 };

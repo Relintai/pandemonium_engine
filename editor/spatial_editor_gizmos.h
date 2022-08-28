@@ -47,11 +47,16 @@
 
 #include "scene/resources/mesh.h"
 
+#include "modules/modules_enabled.gen.h"
+
 class Camera;
 class Spatial;
 class Timer;
 struct Transform;
 class Timer;
+#ifdef MODULE_SKELETON_3D_ENABLED
+class SkinReference;
+#endif
 
 class EditorSpatialGizmo : public SpatialGizmo {
 	GDCLASS(EditorSpatialGizmo, SpatialGizmo);
@@ -61,7 +66,9 @@ public:
 		RID instance;
 		Ref<Mesh> mesh;
 		Ref<Material> material;
+#ifdef MODULE_SKELETON_3D_ENABLED
 		Ref<SkinReference> skin_reference;
+#endif
 		bool extra_margin;
 		Transform xform;
 
@@ -90,7 +97,9 @@ public:
 	Vector<Instance> instances;
 	Spatial *spatial_node;
 
-	void _set_spatial_node(Node *p_node) { set_spatial_node(Object::cast_to<Spatial>(p_node)); }
+	void _set_spatial_node(Node *p_node) {
+		set_spatial_node(Object::cast_to<Spatial>(p_node));
+	}
 
 protected:
 	static void _bind_methods();
@@ -100,7 +109,11 @@ protected:
 public:
 	void add_lines(const Vector<Vector3> &p_lines, const Ref<Material> &p_material, bool p_billboard = false, const Color &p_modulate = Color(1, 1, 1));
 	void add_vertices(const Vector<Vector3> &p_vertices, const Ref<Material> &p_material, Mesh::PrimitiveType p_primitive_type, bool p_billboard = false, const Color &p_modulate = Color(1, 1, 1));
+#ifdef MODULE_SKELETON_3D_ENABLED
 	void add_mesh(const Ref<Mesh> &p_mesh, const Ref<Material> &p_material = Ref<Material>(), const Transform &p_xform = Transform(), const Ref<SkinReference> &p_skin_reference = Ref<SkinReference>());
+#else
+	void add_mesh(const Ref<Mesh> &p_mesh, const Ref<Material> &p_material = Ref<Material>(), const Transform &p_xform = Transform());
+#endif
 	void add_collision_segments(const Vector<Vector3> &p_lines);
 	void add_collision_triangles(const Ref<TriangleMesh> &p_tmesh);
 	void add_unscaled_billboard(const Ref<Material> &p_material, float p_scale = 1, const Color &p_modulate = Color(1, 1, 1));
@@ -119,12 +132,20 @@ public:
 	virtual void set_subgizmo_transform(int p_id, Transform p_transform) const;
 	virtual void commit_subgizmos(const Vector<int> &p_ids, const Vector<Transform> &p_restore, bool p_cancel = false) const;
 
-	void set_selected(bool p_selected) { selected = p_selected; }
-	bool is_selected() const { return selected; }
+	void set_selected(bool p_selected) {
+		selected = p_selected;
+	}
+	bool is_selected() const {
+		return selected;
+	}
 
 	void set_spatial_node(Spatial *p_node);
-	Spatial *get_spatial_node() const { return spatial_node; }
-	Ref<EditorSpatialGizmoPlugin> get_plugin() const { return gizmo_plugin; }
+	Spatial *get_spatial_node() const {
+		return spatial_node;
+	}
+	Ref<EditorSpatialGizmoPlugin> get_plugin() const {
+		return gizmo_plugin;
+	}
 	bool intersect_frustum(const Camera *p_camera, const Vector<Plane> &p_frustum);
 	void handles_intersect_ray(Camera *p_camera, const Vector2 &p_point, bool p_shift_pressed, int &r_id, bool &r_secondary);
 	bool intersect_ray(Camera *p_camera, const Point2 &p_point, Vector3 &r_pos, Vector3 &r_normal);
@@ -314,18 +335,6 @@ public:
 	void redraw(EditorSpatialGizmo *p_gizmo);
 
 	Position3DSpatialGizmoPlugin();
-};
-
-class PhysicalBoneSpatialGizmoPlugin : public EditorSpatialGizmoPlugin {
-	GDCLASS(PhysicalBoneSpatialGizmoPlugin, EditorSpatialGizmoPlugin);
-
-public:
-	bool has_gizmo(Spatial *p_spatial);
-	String get_gizmo_name() const;
-	int get_priority() const;
-	void redraw(EditorSpatialGizmo *p_gizmo);
-
-	PhysicalBoneSpatialGizmoPlugin();
 };
 
 class RayCastSpatialGizmoPlugin : public EditorSpatialGizmoPlugin {

@@ -12,6 +12,7 @@ def get_doc_classes():
     return [
         "Skeleton2D",
         "PhysicalBone2D",
+	"Bone2D",
 
         "SkeletonModificationStack2D",
         

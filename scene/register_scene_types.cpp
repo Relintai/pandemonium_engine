@@ -166,7 +166,6 @@
 #include "scene/resources/resource_format_text.h"
 #include "scene/resources/segment_shape_2d.h"
 
-#include "scene/resources/skin.h"
 #include "scene/resources/sky.h"
 #include "scene/resources/sphere_shape.h"
 #include "scene/resources/surface_tool.h"
@@ -177,19 +176,10 @@
 #include "scene/resources/world_2d.h"
 #include "scene/scene_string_names.h"
 
-#include "scene/resources/skeleton_modification_3d.h"
-#include "scene/resources/skeleton_modification_3d_ccdik.h"
-#include "scene/resources/skeleton_modification_3d_fabrik.h"
-#include "scene/resources/skeleton_modification_3d_jiggle.h"
-#include "scene/resources/skeleton_modification_3d_lookat.h"
-#include "scene/resources/skeleton_modification_3d_stackholder.h"
-#include "scene/resources/skeleton_modification_3d_twoboneik.h"
-#include "scene/resources/skeleton_modification_stack_3d.h"
 
 #ifndef _3D_DISABLED
 #include "scene/3d/area.h"
 #include "scene/3d/audio_stream_player_3d.h"
-#include "scene/3d/bone_attachment.h"
 #include "scene/3d/camera.h"
 #include "scene/3d/collision_polygon.h"
 #include "scene/3d/collision_shape.h"
@@ -218,14 +208,12 @@
 #include "scene/3d/room_group.h"
 #include "scene/3d/room_manager.h"
 #include "scene/3d/shape_cast.h"
-#include "scene/3d/skeleton.h"
 #include "scene/3d/soft_body.h"
 #include "scene/3d/spatial_velocity_tracker.h"
 #include "scene/3d/spring_arm.h"
 #include "scene/3d/sprite_3d.h"
 #include "scene/3d/vehicle_body.h"
 #include "scene/3d/visibility_notifier.h"
-#include "scene/animation/skeleton_ik.h"
 #include "scene/resources/environment.h"
 #include "scene/resources/multimesh.h"
 #include "scene/resources/occluder_shape.h"
@@ -392,12 +380,8 @@ void register_scene_types() {
 
 	/* REGISTER 3D */
 
-	ClassDB::register_class<Skin>();
-	ClassDB::register_virtual_class<SkinReference>();
-
 	ClassDB::register_class<Spatial>();
 	ClassDB::register_virtual_class<SpatialGizmo>();
-	ClassDB::register_class<Skeleton>();
 	ClassDB::register_class<AnimationPlayer>();
 	ClassDB::register_class<Tween>();
 	ClassDB::register_class<SceneTreeTween>();
@@ -473,11 +457,7 @@ void register_scene_types() {
 	ClassDB::register_class<KinematicBody>();
 	ClassDB::register_class<SpringArm>();
 
-	ClassDB::register_class<PhysicalBone>();
 	ClassDB::register_class<SoftBody>();
-
-	ClassDB::register_class<SkeletonIK>();
-	ClassDB::register_class<BoneAttachment>();
 
 	ClassDB::register_class<VehicleBody>();
 	ClassDB::register_class<VehicleWheel>();
@@ -614,17 +594,6 @@ void register_scene_types() {
 	ClassDB::register_virtual_class<OccluderShape>();
 	ClassDB::register_class<OccluderShapeSphere>();
 	ClassDB::register_class<OccluderShapePolygon>();
-
-	OS::get_singleton()->yield(); //may take time to init
-
-	ClassDB::register_class<SkeletonModificationStack3D>();
-	ClassDB::register_class<SkeletonModification3D>();
-	ClassDB::register_class<SkeletonModification3DLookAt>();
-	ClassDB::register_class<SkeletonModification3DCCDIK>();
-	ClassDB::register_class<SkeletonModification3DFABRIK>();
-	ClassDB::register_class<SkeletonModification3DJiggle>();
-	ClassDB::register_class<SkeletonModification3DTwoBoneIK>();
-	ClassDB::register_class<SkeletonModification3DStackHolder>();
 
 	OS::get_singleton()->yield(); //may take time to init
 

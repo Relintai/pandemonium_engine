@@ -30,8 +30,6 @@
 
 #include "animation_blend_space_1d.h"
 
-#include "scene/3d/skeleton.h"
-
 void AnimationNodeBlendSpace1D::get_parameter_list(List<PropertyInfo> *r_list) const {
 	r_list->push_back(PropertyInfo(Variant::REAL, blend_position));
 }

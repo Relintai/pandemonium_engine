@@ -33,7 +33,6 @@
 #include "core/config/engine.h"
 #include "core/object/message_queue.h"
 #include "scene/2d/node_2d.h"
-#include "scene/3d/skeleton.h"
 #include "scene/3d/spatial.h"
 #include "scene/resources/animation.h"
 #include "scene/scene_string_names.h"
@@ -43,17 +42,21 @@
 #include "editor/editor_node.h"
 #include "editor/editor_settings.h"
 
-#include "modules/modules_enabled.gen.h"
-
 #ifdef MODULE_SKELETON_2D_ENABLED
 #include "modules/skeleton_2d/nodes/skeleton_2d.h"
+#endif
+
+#ifdef MODULE_SKELETON_3D_ENABLED
+#include "modules/skeleton_3d/nodes/skeleton.h"
 #endif
 
 void AnimatedValuesBackup::update_skeletons() {
 	for (int i = 0; i < entries.size(); i++) {
 		if (entries[i].bone_idx != -1) {
+#ifdef MODULE_SKELETON_3D_ENABLED
 			// 3D bone
 			Object::cast_to<Skeleton>(entries[i].object)->notification(Skeleton::NOTIFICATION_UPDATE_SKELETON);
+#endif
 		} else {
 #ifdef MODULE_SKELETON_2D_ENABLED
 			Bone2D *bone = Object::cast_to<Bone2D>(entries[i].object);
@@ -71,7 +74,9 @@ void AnimatedValuesBackup::restore() const {
 		const AnimatedValuesBackup::Entry *entry = &entries[i];
 		if (entry->bone_idx == -1) {
 			entry->object->set_indexed(entry->subpath, entry->value);
-		} else {
+		}
+#ifdef MODULE_SKELETON_3D_ENABLED
+		else {
 			Array arr = entry->value;
 			if (arr.size() == 3) {
 				Object::cast_to<Skeleton>(entry->object)->set_bone_pose_position(entry->bone_idx, arr[0]);
@@ -79,6 +84,7 @@ void AnimatedValuesBackup::restore() const {
 				Object::cast_to<Skeleton>(entry->object)->set_bone_pose_scale(entry->bone_idx, arr[2]);
 			}
 		}
+#endif
 	}
 }
 
@@ -275,6 +281,7 @@ void AnimationPlayer::_ensure_node_caches(AnimationData *p_anim, Node *p_root_ov
 		uint32_t id = resource.is_valid() ? resource->get_instance_id() : child->get_instance_id();
 		int bone_idx = -1;
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 		if (a->track_get_path(i).get_subname_count() == 1 && Object::cast_to<Skeleton>(child)) {
 			Skeleton *sk = Object::cast_to<Skeleton>(child);
 			bone_idx = sk->find_bone(a->track_get_path(i).get_subname(0));
@@ -282,6 +289,7 @@ void AnimationPlayer::_ensure_node_caches(AnimationData *p_anim, Node *p_root_ov
 				continue;
 			}
 		}
+#endif
 
 		{
 			if (!child->is_connected("tree_exiting", this, "_node_removed")) {
@@ -317,6 +325,8 @@ void AnimationPlayer::_ensure_node_caches(AnimationData *p_anim, Node *p_root_ov
 
 			// cache spatial
 			node_cache->spatial = Object::cast_to<Spatial>(child);
+
+#ifdef MODULE_SKELETON_3D_ENABLED
 			// cache skeleton
 			node_cache->skeleton = Object::cast_to<Skeleton>(child);
 			if (node_cache->skeleton) {
@@ -339,6 +349,7 @@ void AnimationPlayer::_ensure_node_caches(AnimationData *p_anim, Node *p_root_ov
 					node_cache->skeleton = nullptr;
 				}
 			}
+#endif
 
 			switch (a->track_get_type(i)) {
 				case Animation::TYPE_POSITION_3D: {
@@ -958,6 +969,7 @@ void AnimationPlayer::_animation_update_transforms() {
 
 #ifndef _3D_DISABLED
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 			if (nc->skeleton && nc->bone_idx >= 0) {
 				if (nc->loc_used) {
 					nc->skeleton->set_bone_pose_position(nc->bone_idx, nc->loc_accum);
@@ -969,7 +981,9 @@ void AnimationPlayer::_animation_update_transforms() {
 					nc->skeleton->set_bone_pose_scale(nc->bone_idx, nc->scale_accum);
 				}
 
-			} else if (nc->spatial) {
+			} else
+#endif
+					if (nc->spatial) {
 				if (nc->loc_used) {
 					nc->spatial->set_translation(nc->loc_accum);
 				}
@@ -1649,6 +1663,7 @@ Ref<AnimatedValuesBackup> AnimationPlayer::backup_animated_values(Node *p_root_o
 			continue;
 		}
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 		if (nc->skeleton) {
 			if (nc->bone_idx == -1) {
 				continue;
@@ -1664,7 +1679,9 @@ Ref<AnimatedValuesBackup> AnimationPlayer::backup_animated_values(Node *p_root_o
 			entry.value = nc;
 
 			backup->entries.push_back(entry);
-		} else {
+		} else
+#endif
+		{
 			if (nc->spatial) {
 				AnimatedValuesBackup::Entry entry;
 				entry.object = nc->spatial;

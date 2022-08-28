@@ -1,0 +1,31 @@
+import os
+
+Import('env')
+
+module_env = env.Clone()
+
+module_env.add_source_files(env.modules_sources,"register_types.cpp")
+
+module_env.add_source_files(env.modules_sources,"nodes/skeleton.cpp")
+module_env.add_source_files(env.modules_sources,"resources/skin.cpp")
+
+module_env.add_source_files(env.modules_sources,"nodes/physical_bone.cpp")
+
+module_env.add_source_files(env.modules_sources,"nodes/bone_attachment.cpp")
+
+module_env.add_source_files(env.modules_sources,"nodes/skeleton_ik.cpp")
+
+module_env.add_source_files(env.modules_sources,"resources/skeleton_modification_3d.cpp")
+module_env.add_source_files(env.modules_sources,"resources/skeleton_modification_3d_ccdik.cpp")
+module_env.add_source_files(env.modules_sources,"resources/skeleton_modification_3d_fabrik.cpp")
+module_env.add_source_files(env.modules_sources,"resources/skeleton_modification_3d_jiggle.cpp")
+module_env.add_source_files(env.modules_sources,"resources/skeleton_modification_3d_lookat.cpp")
+module_env.add_source_files(env.modules_sources,"resources/skeleton_modification_3d_stackholder.cpp")
+module_env.add_source_files(env.modules_sources,"resources/skeleton_modification_3d_twoboneik.cpp")
+module_env.add_source_files(env.modules_sources,"resources/skeleton_modification_stack_3d.cpp")
+
+if env["tools"]:
+    env.add_source_files(env.modules_sources, "editor/physical_bone_editor_plugin.cpp")
+    env.add_source_files(env.modules_sources, "editor/skeleton_editor_plugin.cpp")
+    env.add_source_files(env.modules_sources, "editor/skeleton_ik_editor_plugin.cpp")
+    env.add_source_files(env.modules_sources, "editor/physical_bone_plugin.cpp")

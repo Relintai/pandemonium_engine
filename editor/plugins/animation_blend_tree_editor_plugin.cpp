@@ -30,25 +30,24 @@
 
 #include "animation_blend_tree_editor_plugin.h"
 
-#include "core/variant/array.h"
-#include "core/object/class_db.h"
-#include "core/math/color.h"
-#include "core/error/error_macros.h"
 #include "core/containers/hash_map.h"
-#include "core/io/resource_loader.h"
 #include "core/containers/list.h"
-#include "core/string/node_path.h"
-#include "core/os/memory.h"
 #include "core/containers/set.h"
-#include "core/typedefs.h"
+#include "core/error/error_macros.h"
+#include "core/io/resource_loader.h"
+#include "core/math/color.h"
+#include "core/object/class_db.h"
 #include "core/object/undo_redo.h"
+#include "core/os/memory.h"
+#include "core/string/node_path.h"
+#include "core/typedefs.h"
+#include "core/variant/array.h"
 #include "editor/editor_file_dialog.h"
 #include "editor/editor_inspector.h"
 #include "editor/editor_node.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 #include "scene/2d/canvas_item.h"
-#include "scene/3d/skeleton.h"
 #include "scene/animation/animation_blend_tree.h"
 #include "scene/animation/animation_player.h"
 #include "scene/gui/box_container.h"
@@ -69,6 +68,12 @@
 #include "scene/main/node.h"
 #include "scene/resources/animation.h"
 #include "scene/resources/style_box.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_SKELETON_3D_ENABLED
+#include "modules/skeleton_3d/nodes/skeleton.h"
+#endif
 
 void AnimationNodeBlendTreeEditor::add_custom_type(const String &p_name, const Ref<Script> &p_script) {
 	for (int i = 0; i < add_options.size(); i++) {
@@ -662,6 +667,7 @@ bool AnimationNodeBlendTreeEditor::_update_filters(const Ref<AnimationNode> &ano
 		}
 
 		if (path.get_subname_count()) {
+#ifdef MODULE_SKELETON_3D_ENABLED
 			String concat = path.get_concatenated_subnames();
 
 			Skeleton *skeleton = Object::cast_to<Skeleton>(node);
@@ -701,7 +707,7 @@ bool AnimationNodeBlendTreeEditor::_update_filters(const Ref<AnimationNode> &ano
 				ti->set_checked(0, anode->is_path_filtered(path));
 				ti->set_icon(0, get_theme_icon("BoneAttachment", "EditorIcons"));
 				ti->set_metadata(0, path);
-
+#endif
 			} else {
 				//just a property
 				ti = filters->create_item(ti);

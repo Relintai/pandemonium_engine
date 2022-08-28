@@ -34,10 +34,13 @@
 #include "animation_player.h"
 #include "core/config/engine.h"
 #include "core/object/method_bind_ext.gen.inc"
-#include "scene/3d/skeleton.h"
 #include "scene/3d/spatial.h"
 #include "scene/scene_string_names.h"
 #include "servers/audio/audio_stream.h"
+
+#ifdef MODULE_SKELETON_3D_ENABLED
+#include "modules/skeleton_3d/nodes/skeleton.h"
+#endif
 
 void AnimationNode::get_parameter_list(List<PropertyInfo> *r_list) const {
 	if (get_script_instance()) {
@@ -626,10 +629,14 @@ bool AnimationTree::_update_caches(AnimationPlayer *player) {
 						TrackCacheTransform *track_xform = memnew(TrackCacheTransform);
 
 						track_xform->spatial = spatial;
+#ifdef MODULE_SKELETON_3D_ENABLED
 						track_xform->skeleton = nullptr;
 						track_xform->bone_idx = -1;
+#endif
 
 						bool has_rest = false;
+
+#ifdef MODULE_SKELETON_3D_ENABLED
 						if (path.get_subname_count() == 1 && Object::cast_to<Skeleton>(spatial)) {
 							Skeleton *sk = Object::cast_to<Skeleton>(spatial);
 							track_xform->skeleton = sk;
@@ -644,6 +651,7 @@ bool AnimationTree::_update_caches(AnimationPlayer *player) {
 								track_xform->init_scale = rest.basis.get_scale();
 							}
 						}
+#endif
 
 						track_xform->object = spatial;
 						track_xform->object_id = track_xform->object->get_instance_id();
@@ -1480,7 +1488,9 @@ void AnimationTree::_process_graph(float p_delta) {
 						xform.basis.set_quaternion_scale(t->rot, t->scale);
 
 						root_motion_transform = xform;
-					} else if (t->skeleton && t->bone_idx >= 0) {
+					}
+#ifdef MODULE_SKELETON_3D_ENABLED
+					else if (t->skeleton && t->bone_idx >= 0) {
 						if (t->loc_used) {
 							t->skeleton->set_bone_pose_position(t->bone_idx, t->loc);
 						}
@@ -1502,6 +1512,7 @@ void AnimationTree::_process_graph(float p_delta) {
 							t->spatial->set_scale(t->scale);
 						}
 					}
+#endif
 #endif // _3D_DISABLED
 				} break;
 				case Animation::TYPE_VALUE: {

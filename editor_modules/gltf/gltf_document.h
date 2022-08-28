@@ -30,11 +30,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/3d/bone_attachment.h"
 #include "scene/3d/camera.h"
 #include "scene/3d/light.h"
 #include "scene/3d/mesh_instance.h"
-#include "scene/3d/skeleton.h"
 #include "scene/3d/spatial.h"
 #include "scene/animation/animation_player.h"
 #include "scene/resources/material.h"
@@ -43,6 +41,9 @@
 #include "gltf_animation.h"
 
 #include "modules/modules_enabled.gen.h" // For csg, gridmap.
+
+class Skeleton;
+class BoneAttachment;
 
 class GLTFState;
 class GLTFSkin;
@@ -243,12 +244,13 @@ private:
 	Error _verify_skin(Ref<GLTFState> state, Ref<GLTFSkin> skin);
 	Error _parse_skins(Ref<GLTFState> state);
 	Error _determine_skeletons(Ref<GLTFState> state);
-	Error _reparent_non_joint_skeleton_subtrees(
-			Ref<GLTFState> state, Ref<GLTFSkeleton> skeleton,
-			const Vector<GLTFNodeIndex> &non_joints);
-	Error _determine_skeleton_roots(Ref<GLTFState> state,
-			const GLTFSkeletonIndex skel_i);
+	Error _reparent_non_joint_skeleton_subtrees(Ref<GLTFState> state, Ref<GLTFSkeleton> skeleton, const Vector<GLTFNodeIndex> &non_joints);
+	Error _determine_skeleton_roots(Ref<GLTFState> state, const GLTFSkeletonIndex skel_i);
+
+#ifdef MODULE_SKELETON_3D_ENABLED
 	Error _create_skeletons(Ref<GLTFState> state);
+#endif
+
 	Error _map_skin_joints_indices_to_skeleton_bone_indices(Ref<GLTFState> state);
 	Error _serialize_skins(Ref<GLTFState> state);
 	Error _create_skins(Ref<GLTFState> state);
@@ -259,10 +261,11 @@ private:
 	Error _parse_lights(Ref<GLTFState> state);
 	Error _parse_animations(Ref<GLTFState> state);
 	Error _serialize_animations(Ref<GLTFState> state);
-	BoneAttachment *_generate_bone_attachment(Ref<GLTFState> state,
-			Skeleton *skeleton,
-			const GLTFNodeIndex node_index,
-			const GLTFNodeIndex bone_index);
+
+#ifdef MODULE_SKELETON_3D_ENABLED
+	BoneAttachment *_generate_bone_attachment(Ref<GLTFState> state, Skeleton *skeleton, const GLTFNodeIndex node_index, const GLTFNodeIndex bone_index);
+#endif
+
 	Spatial *_generate_mesh_instance(Ref<GLTFState> state, Node *scene_parent, const GLTFNodeIndex node_index);
 	Camera *_generate_camera(Ref<GLTFState> state, Node *scene_parent,
 			const GLTFNodeIndex node_index);
@@ -367,7 +370,11 @@ public:
 	void _generate_scene_node(Ref<GLTFState> state, Node *scene_parent,
 			Spatial *scene_root,
 			const GLTFNodeIndex node_index);
+
+#ifdef MODULE_SKELETON_3D_ENABLED
 	void _generate_skeleton_bone_node(Ref<GLTFState> state, Node *scene_parent, Spatial *scene_root, const GLTFNodeIndex node_index);
+#endif
+
 	void _import_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 			const GLTFAnimationIndex index, const int bake_fps);
 	void _convert_mesh_instances(Ref<GLTFState> state);
@@ -398,16 +405,19 @@ public:
 			GLTFNodeIndex p_parent_node_index,
 			GLTFNodeIndex p_root_node_index,
 			Ref<GLTFNode> gltf_node, Ref<GLTFState> state);
-	void _convert_skeleton_to_gltf(
-			Skeleton *p_scene_parent, Ref<GLTFState> state,
-			GLTFNodeIndex p_parent_node_index,
-			GLTFNodeIndex p_root_node_index,
-			Ref<GLTFNode> gltf_node);
+
+#ifdef MODULE_SKELETON_3D_ENABLED
+	void _convert_skeleton_to_gltf(Skeleton *p_scene_parent, Ref<GLTFState> state, GLTFNodeIndex p_parent_node_index, GLTFNodeIndex p_root_node_index, Ref<GLTFNode> gltf_node);
+#endif
+
+#ifdef MODULE_SKELETON_3D_ENABLED
 	void _convert_bone_attachment_to_gltf(BoneAttachment *p_bone_attachment,
 			Ref<GLTFState> state,
 			GLTFNodeIndex p_parent_node_index,
 			GLTFNodeIndex p_root_node_index,
 			Ref<GLTFNode> gltf_node);
+#endif
+
 	void _convert_mesh_instance_to_gltf(MeshInstance *p_mesh_instance,
 			Ref<GLTFState> state,
 			Ref<GLTFNode> gltf_node);

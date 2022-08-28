@@ -74,7 +74,6 @@
 #include "scene/3d/reflection_probe.h"
 #include "scene/3d/room.h"
 #include "scene/3d/shape_cast.h"
-#include "scene/3d/skeleton.h"
 #include "scene/3d/soft_body.h"
 #include "scene/3d/spatial.h"
 #include "scene/3d/spring_arm.h"
@@ -100,11 +99,14 @@
 #include "scene/resources/primitive_meshes.h"
 #include "scene/resources/ray_shape.h"
 #include "scene/resources/shape.h"
-#include "scene/resources/skin.h"
 #include "scene/resources/sphere_shape.h"
 #include "scene/resources/surface_tool.h"
 #include "scene/resources/world.h"
 #include "servers/rendering_server.h"
+
+#ifdef MODULE_SKELETON_3D_ENABLED
+#include "modules/skeleton_3d/nodes/skeleton.h"
+#endif
 
 #define HANDLE_HALF_SIZE 9.5
 
@@ -278,25 +280,36 @@ void EditorSpatialGizmo::Instance::create_instance(Spatial *p_base, bool p_hidde
 	instance = RS::get_singleton()->instance_create2(mesh->get_rid(), p_base->get_world()->get_scenario());
 	RS::get_singleton()->instance_set_portal_mode(instance, RenderingServer::INSTANCE_PORTAL_MODE_GLOBAL);
 	RS::get_singleton()->instance_attach_object_instance_id(instance, p_base->get_instance_id());
+
+#ifdef MODULE_SKELETON_3D_ENABLED
 	if (skin_reference.is_valid()) {
 		RS::get_singleton()->instance_attach_skeleton(instance, skin_reference->get_skeleton());
 	}
+#endif
+
 	if (extra_margin) {
 		RS::get_singleton()->instance_set_extra_visibility_margin(instance, 1);
 	}
+
 	RS::get_singleton()->instance_geometry_set_cast_shadows_setting(instance, RS::SHADOW_CASTING_SETTING_OFF);
 	int layer = p_hidden ? 0 : 1 << SpatialEditorViewport::GIZMO_EDIT_LAYER;
 	RS::get_singleton()->instance_set_layer_mask(instance, layer); //gizmos are 26
 }
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 void EditorSpatialGizmo::add_mesh(const Ref<Mesh> &p_mesh, const Ref<Material> &p_material, const Transform &p_xform, const Ref<SkinReference> &p_skin_reference) {
+#else
+void EditorSpatialGizmo::add_mesh(const Ref<Mesh> &p_mesh, const Ref<Material> &p_material, const Transform &p_xform) {
+#endif
 	ERR_FAIL_COND(!spatial_node);
 	ERR_FAIL_COND_MSG(!p_mesh.is_valid(), "EditorSpatialGizmo.add_mesh() requires a valid Mesh resource.");
 
 	Instance ins;
 
 	ins.mesh = p_mesh;
+#ifdef MODULE_SKELETON_3D_ENABLED
 	ins.skin_reference = p_skin_reference;
+#endif
 	ins.material = p_material;
 	ins.xform = p_xform;
 
@@ -2179,139 +2192,6 @@ void Position3DSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	p_gizmo->clear();
 	p_gizmo->add_mesh(pos3d_mesh);
 	p_gizmo->add_collision_segments(cursor_points);
-}
-
-////
-
-PhysicalBoneSpatialGizmoPlugin::PhysicalBoneSpatialGizmoPlugin() {
-	create_material("joint_material", EDITOR_DEF("editors/3d_gizmos/gizmo_colors/joint", Color(0.5, 0.8, 1)));
-}
-
-bool PhysicalBoneSpatialGizmoPlugin::has_gizmo(Spatial *p_spatial) {
-	return Object::cast_to<PhysicalBone>(p_spatial) != nullptr;
-}
-
-String PhysicalBoneSpatialGizmoPlugin::get_gizmo_name() const {
-	return "PhysicalBones";
-}
-
-int PhysicalBoneSpatialGizmoPlugin::get_priority() const {
-	return -1;
-}
-
-void PhysicalBoneSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
-	p_gizmo->clear();
-
-	PhysicalBone *physical_bone = Object::cast_to<PhysicalBone>(p_gizmo->get_spatial_node());
-
-	if (!physical_bone) {
-		return;
-	}
-
-	Skeleton *sk(physical_bone->find_skeleton_parent());
-	if (!sk) {
-		return;
-	}
-
-	PhysicalBone *pb(sk->get_physical_bone(physical_bone->get_bone_id()));
-	if (!pb) {
-		return;
-	}
-
-	PhysicalBone *pbp(sk->get_physical_bone_parent(physical_bone->get_bone_id()));
-	if (!pbp) {
-		return;
-	}
-
-	Vector<Vector3> points;
-
-	switch (physical_bone->get_joint_type()) {
-		case PhysicalBone::JOINT_TYPE_PIN: {
-			JointSpatialGizmoPlugin::CreatePinJointGizmo(physical_bone->get_joint_offset(), points);
-		} break;
-		case PhysicalBone::JOINT_TYPE_CONE: {
-			const PhysicalBone::ConeJointData *cjd(static_cast<const PhysicalBone::ConeJointData *>(physical_bone->get_joint_data()));
-			JointSpatialGizmoPlugin::CreateConeTwistJointGizmo(
-					physical_bone->get_joint_offset(),
-					physical_bone->get_global_transform() * physical_bone->get_joint_offset(),
-					pb->get_global_transform(),
-					pbp->get_global_transform(),
-					cjd->swing_span,
-					cjd->twist_span,
-					&points,
-					&points);
-		} break;
-		case PhysicalBone::JOINT_TYPE_HINGE: {
-			const PhysicalBone::HingeJointData *hjd(static_cast<const PhysicalBone::HingeJointData *>(physical_bone->get_joint_data()));
-			JointSpatialGizmoPlugin::CreateHingeJointGizmo(
-					physical_bone->get_joint_offset(),
-					physical_bone->get_global_transform() * physical_bone->get_joint_offset(),
-					pb->get_global_transform(),
-					pbp->get_global_transform(),
-					hjd->angular_limit_lower,
-					hjd->angular_limit_upper,
-					hjd->angular_limit_enabled,
-					points,
-					&points,
-					&points);
-		} break;
-		case PhysicalBone::JOINT_TYPE_SLIDER: {
-			const PhysicalBone::SliderJointData *sjd(static_cast<const PhysicalBone::SliderJointData *>(physical_bone->get_joint_data()));
-			JointSpatialGizmoPlugin::CreateSliderJointGizmo(
-					physical_bone->get_joint_offset(),
-					physical_bone->get_global_transform() * physical_bone->get_joint_offset(),
-					pb->get_global_transform(),
-					pbp->get_global_transform(),
-					sjd->angular_limit_lower,
-					sjd->angular_limit_upper,
-					sjd->linear_limit_lower,
-					sjd->linear_limit_upper,
-					points,
-					&points,
-					&points);
-		} break;
-		case PhysicalBone::JOINT_TYPE_6DOF: {
-			const PhysicalBone::SixDOFJointData *sdofjd(static_cast<const PhysicalBone::SixDOFJointData *>(physical_bone->get_joint_data()));
-			JointSpatialGizmoPlugin::CreateGeneric6DOFJointGizmo(
-					physical_bone->get_joint_offset(),
-
-					physical_bone->get_global_transform() * physical_bone->get_joint_offset(),
-					pb->get_global_transform(),
-					pbp->get_global_transform(),
-
-					sdofjd->axis_data[0].angular_limit_lower,
-					sdofjd->axis_data[0].angular_limit_upper,
-					sdofjd->axis_data[0].linear_limit_lower,
-					sdofjd->axis_data[0].linear_limit_upper,
-					sdofjd->axis_data[0].angular_limit_enabled,
-					sdofjd->axis_data[0].linear_limit_enabled,
-
-					sdofjd->axis_data[1].angular_limit_lower,
-					sdofjd->axis_data[1].angular_limit_upper,
-					sdofjd->axis_data[1].linear_limit_lower,
-					sdofjd->axis_data[1].linear_limit_upper,
-					sdofjd->axis_data[1].angular_limit_enabled,
-					sdofjd->axis_data[1].linear_limit_enabled,
-
-					sdofjd->axis_data[2].angular_limit_lower,
-					sdofjd->axis_data[2].angular_limit_upper,
-					sdofjd->axis_data[2].linear_limit_lower,
-					sdofjd->axis_data[2].linear_limit_upper,
-					sdofjd->axis_data[2].angular_limit_enabled,
-					sdofjd->axis_data[2].linear_limit_enabled,
-
-					points,
-					&points,
-					&points);
-		} break;
-		default:
-			return;
-	}
-
-	Ref<Material> material = get_material("joint_material", p_gizmo);
-
-	p_gizmo->add_collision_segments(points);
-	p_gizmo->add_lines(points, material);
 }
 
 /////

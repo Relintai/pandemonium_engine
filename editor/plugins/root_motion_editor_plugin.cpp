@@ -30,18 +30,16 @@
 
 #include "root_motion_editor_plugin.h"
 
-#include "editor/editor_node.h"
-#include "scene/3d/skeleton.h"
-#include "scene/main/viewport.h"
-#include "core/object/class_db.h"
-#include "core/error/error_macros.h"
 #include "core/containers/list.h"
 #include "core/containers/map.h"
-#include "core/os/memory.h"
-#include "core/object/reference.h"
 #include "core/containers/set.h"
+#include "core/error/error_macros.h"
+#include "core/object/class_db.h"
+#include "core/object/reference.h"
+#include "core/os/memory.h"
 #include "core/string/string_name.h"
 #include "core/typedefs.h"
+#include "editor/editor_node.h"
 #include "scene/animation/animation_player.h"
 #include "scene/animation/animation_tree.h"
 #include "scene/gui/box_container.h"
@@ -51,8 +49,15 @@
 #include "scene/gui/tree.h"
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
+#include "scene/main/viewport.h"
 #include "scene/resources/animation.h"
 #include "scene/resources/texture.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_SKELETON_3D_ENABLED
+#include "modules/skeleton_3d/nodes/skeleton.h"
+#endif
 
 void EditorPropertyRootMotion::_confirmed() {
 	TreeItem *ti = filters->get_selected();
@@ -145,6 +150,7 @@ void EditorPropertyRootMotion::_node_assign() {
 		}
 
 		if (path.get_subname_count()) {
+#ifdef MODULE_SKELETON_3D_ENABLED
 			String concat = path.get_concatenated_subnames();
 
 			Skeleton *skeleton = Object::cast_to<Skeleton>(node);
@@ -196,6 +202,7 @@ void EditorPropertyRootMotion::_node_assign() {
 					ti->select(0);
 				}
 			}
+#endif
 		} else {
 			if (ti) {
 				//just a node, likely call or animation track
