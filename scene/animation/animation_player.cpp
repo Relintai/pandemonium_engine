@@ -38,16 +38,16 @@
 #include "scene/scene_string_names.h"
 #include "servers/audio/audio_stream.h"
 
+#ifdef MODULE_SKELETON_3D_ENABLED
+#include "modules/skeleton_3d/nodes/skeleton.h"
+#endif
+
 #ifdef TOOLS_ENABLED
 #include "editor/editor_node.h"
 #include "editor/editor_settings.h"
 
 #ifdef MODULE_SKELETON_2D_ENABLED
 #include "modules/skeleton_2d/nodes/skeleton_2d.h"
-#endif
-
-#ifdef MODULE_SKELETON_3D_ENABLED
-#include "modules/skeleton_3d/nodes/skeleton.h"
 #endif
 
 void AnimatedValuesBackup::update_skeletons() {
