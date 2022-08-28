@@ -31,7 +31,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "scene/resources/skeleton_modification_2d.h"
+#include "skeleton_modification_2d.h"
 
 ///////////////////////////////////////
 // SkeletonModification2DJIGGLE

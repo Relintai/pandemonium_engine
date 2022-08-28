@@ -30,12 +30,12 @@
 
 #include "skeleton_2d_editor_plugin.h"
 
-#include "canvas_item_editor_plugin.h"
+#include "editor/plugins/canvas_item_editor_plugin.h"
 #include "core/object/class_db.h"
 #include "core/os/memory.h"
 #include "core/object/undo_redo.h"
 #include "editor/editor_node.h"
-#include "scene/2d/skeleton_2d.h"
+#include "../nodes/skeleton_2d.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/menu_button.h"
 #include "scene/gui/popup_menu.h"

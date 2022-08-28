@@ -31,7 +31,12 @@
 #include "polygon_2d.h"
 
 #include "core/math/geometry.h"
-#include "skeleton_2d.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_SKELETON_2D_ENABLED
+#include "modules/skeleton_2d/nodes/skeleton_2d.h"
+#endif
 
 #ifdef TOOLS_ENABLED
 Dictionary Polygon2D::_edit_get_state() const {
@@ -101,6 +106,7 @@ void Polygon2D::_notification(int p_what) {
 				return;
 			}
 
+#ifdef MODULE_SKELETON_2D_ENABLED
 			Skeleton2D *skeleton_node = nullptr;
 			if (has_node(skeleton)) {
 				skeleton_node = Object::cast_to<Skeleton2D>(get_node(skeleton));
@@ -127,6 +133,7 @@ void Polygon2D::_notification(int p_what) {
 
 				current_skeleton_id = new_skeleton_id;
 			}
+#endif
 
 			Vector<Vector2> points;
 			Vector<Vector2> uvs;
@@ -223,6 +230,7 @@ void Polygon2D::_notification(int p_what) {
 				}
 			}
 
+#ifdef MODULE_SKELETON_2D_ENABLED
 			if (skeleton_node && !invert && bone_weights.size()) {
 				//a skeleton is set! fill indices and weights
 				int vc = len;
@@ -287,6 +295,7 @@ void Polygon2D::_notification(int p_what) {
 					}
 				}
 			}
+#endif
 
 			Vector<Color> colors;
 			if (vertex_colors.size() == points.size()) {

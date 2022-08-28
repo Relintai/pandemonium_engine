@@ -30,8 +30,8 @@
 
 #include "skeleton_2d.h"
 
-#include "scene/resources/skeleton_modification_2d.h"
-#include "scene/resources/skeleton_modification_stack_2d.h"
+#include "../resources/skeleton_modification_2d.h"
+#include "../resources/skeleton_modification_stack_2d.h"
 #include "core/config/engine.h"
 
 #ifdef TOOLS_ENABLED

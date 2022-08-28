@@ -58,14 +58,12 @@
 #include "scene/2d/parallax_background.h"
 #include "scene/2d/parallax_layer.h"
 #include "scene/2d/path_2d.h"
-#include "scene/2d/physical_bone_2d.h"
 #include "scene/2d/physics_body_2d.h"
 #include "scene/2d/polygon_2d.h"
 #include "scene/2d/position_2d.h"
 #include "scene/2d/ray_cast_2d.h"
 #include "scene/2d/remote_transform_2d.h"
 #include "scene/2d/shape_cast_2d.h"
-#include "scene/2d/skeleton_2d.h"
 #include "scene/2d/sprite.h"
 #include "scene/2d/touch_screen_button.h"
 #include "scene/2d/visibility_notifier_2d.h"
@@ -167,15 +165,7 @@
 #include "scene/resources/rectangle_shape_2d.h"
 #include "scene/resources/resource_format_text.h"
 #include "scene/resources/segment_shape_2d.h"
-#include "scene/resources/skeleton_modification_2d.h"
-#include "scene/resources/skeleton_modification_2d_ccdik.h"
-#include "scene/resources/skeleton_modification_2d_fabrik.h"
-#include "scene/resources/skeleton_modification_2d_jiggle.h"
-#include "scene/resources/skeleton_modification_2d_lookat.h"
-#include "scene/resources/skeleton_modification_2d_physicalbones.h"
-#include "scene/resources/skeleton_modification_2d_stackholder.h"
-#include "scene/resources/skeleton_modification_2d_twoboneik.h"
-#include "scene/resources/skeleton_modification_stack_2d.h"
+
 #include "scene/resources/skin.h"
 #include "scene/resources/sky.h"
 #include "scene/resources/sphere_shape.h"
@@ -558,8 +548,6 @@ void register_scene_types() {
 	ClassDB::register_class<VisibilityNotifier2D>();
 	ClassDB::register_class<VisibilityEnabler2D>();
 	ClassDB::register_class<Polygon2D>();
-	ClassDB::register_class<Skeleton2D>();
-	ClassDB::register_class<Bone2D>();
 	ClassDB::register_class<Light2D>();
 	ClassDB::register_class<LightOccluder2D>();
 	ClassDB::register_class<OccluderPolygon2D>();
@@ -578,18 +566,6 @@ void register_scene_types() {
 	ClassDB::register_class<ParallaxLayer>();
 	ClassDB::register_class<TouchScreenButton>();
 	ClassDB::register_class<RemoteTransform2D>();
-
-	ClassDB::register_class<SkeletonModificationStack2D>();
-	ClassDB::register_class<SkeletonModification2D>();
-	ClassDB::register_class<SkeletonModification2DLookAt>();
-	ClassDB::register_class<SkeletonModification2DCCDIK>();
-	ClassDB::register_class<SkeletonModification2DFABRIK>();
-	ClassDB::register_class<SkeletonModification2DJiggle>();
-	ClassDB::register_class<SkeletonModification2DTwoBoneIK>();
-	ClassDB::register_class<SkeletonModification2DStackHolder>();
-
-	ClassDB::register_class<PhysicalBone2D>();
-	ClassDB::register_class<SkeletonModification2DPhysicalBones>();
 
 	OS::get_singleton()->yield(); //may take time to init
 

@@ -29,12 +29,12 @@
 /*************************************************************************/
 
 #include "skeleton_modification_2d.h"
-#include "scene/2d/skeleton_2d.h"
+#include "../nodes/skeleton_2d.h"
 
 #include "core/config/engine.h"
 #include "scene/2d/collision_object_2d.h"
 #include "scene/2d/collision_shape_2d.h"
-#include "scene/2d/physical_bone_2d.h"
+#include "../nodes/physical_bone_2d.h"
 
 #include "skeleton_modification_stack_2d.h"
 

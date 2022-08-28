@@ -30,27 +30,31 @@
 
 #include "polygon_2d_editor_plugin.h"
 
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_SKELETON_2D_ENABLED
+#include "modules/skeleton_2d/nodes/skeleton_2d.h"
+#endif
+
 #include "canvas_item_editor_plugin.h"
 #include "core/input/input.h"
-#include "core/os/keyboard.h"
-#include "editor/editor_scale.h"
-#include "editor/editor_settings.h"
-#include "scene/2d/skeleton_2d.h"
-#include "scene/gui/panel.h"
-#include "core/object/class_db.h"
+#include "core/input/input_event.h"
 #include "core/math/geometry.h"
 #include "core/math/math_defs.h"
 #include "core/math/math_funcs.h"
 #include "core/math/rect2.h"
 #include "core/math/transform_2d.h"
-#include "core/string/node_path.h"
-#include "core/input/input_event.h"
-#include "core/os/memory.h"
-#include "core/string/string_name.h"
-#include "core/typedefs.h"
+#include "core/object/class_db.h"
 #include "core/object/undo_redo.h"
+#include "core/os/keyboard.h"
+#include "core/os/memory.h"
+#include "core/string/node_path.h"
+#include "core/string/string_name.h"
 #include "core/string/ustring.h"
+#include "core/typedefs.h"
 #include "core/variant/variant.h"
+#include "editor/editor_scale.h"
+#include "editor/editor_settings.h"
 #include "scene/2d/canvas_item.h"
 #include "scene/2d/polygon_2d.h"
 #include "scene/gui/box_container.h"
@@ -60,6 +64,7 @@
 #include "scene/gui/dialogs.h"
 #include "scene/gui/label.h"
 #include "scene/gui/menu_button.h"
+#include "scene/gui/panel.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/scroll_bar.h"
 #include "scene/gui/scroll_container.h"
@@ -135,6 +140,7 @@ void Polygon2DEditor::_notification(int p_what) {
 }
 
 void Polygon2DEditor::_sync_bones() {
+#ifdef MODULE_SKELETON_2D_ENABLED
 	Skeleton2D *skeleton = nullptr;
 	if (!node->has_node(node->get_skeleton())) {
 		error->set_text(TTR("The skeleton property of the Polygon2D does not point to a Skeleton2D node"));
@@ -186,6 +192,7 @@ void Polygon2DEditor::_sync_bones() {
 	undo_redo->add_do_method(uv_edit_draw, "update");
 	undo_redo->add_undo_method(uv_edit_draw, "update");
 	undo_redo->commit_action();
+#endif
 }
 
 void Polygon2DEditor::_update_bone_list() {
@@ -1139,6 +1146,7 @@ void Polygon2DEditor::_uv_draw() {
 		}
 	}
 
+#ifdef MODULE_SKELETON_2D_ENABLED
 	if (uv_mode == UV_MODE_PAINT_WEIGHT || uv_mode == UV_MODE_CLEAR_WEIGHT) {
 		NodePath bone_path;
 		for (int i = 0; i < bone_scroll_vb->get_child_count(); i++) {
@@ -1196,6 +1204,7 @@ void Polygon2DEditor::_uv_draw() {
 		//draw paint circle
 		uv_edit_draw->draw_circle(bone_paint_pos, bone_paint_radius->get_value() * EDSCALE, Color(1, 1, 1, 0.1));
 	}
+#endif
 
 	rect.position -= uv_edit_draw->get_size();
 	rect.size += uv_edit_draw->get_size() * 2.0;

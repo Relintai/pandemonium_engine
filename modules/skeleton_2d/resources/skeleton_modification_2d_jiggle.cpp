@@ -31,7 +31,7 @@
 #include "skeleton_modification_2d_jiggle.h"
 
 #include "scene/2d/node_2d.h"
-#include "scene/2d/skeleton_2d.h"
+#include "../nodes/skeleton_2d.h"
 #include "scene/resources/world_2d.h"
 #include "skeleton_modification_stack_2d.h"
 

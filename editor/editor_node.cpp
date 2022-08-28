@@ -137,7 +137,6 @@
 #include "editor/plugins/script_editor_plugin.h"
 #include "editor/plugins/script_text_editor.h"
 #include "editor/plugins/shader_editor_plugin.h"
-#include "editor/plugins/skeleton_2d_editor_plugin.h"
 #include "editor/plugins/skeleton_ik_editor_plugin.h"
 #include "editor/plugins/spatial_editor_plugin.h"
 #include "editor/plugins/sprite_editor_plugin.h"
@@ -6800,7 +6799,6 @@ EditorNode::EditorNode() {
 	add_editor_plugin(memnew(AnimationTreeEditorPlugin(this)));
 	add_editor_plugin(memnew(StyleBoxEditorPlugin(this)));
 	add_editor_plugin(memnew(SpriteEditorPlugin(this)));
-	add_editor_plugin(memnew(Skeleton2DEditorPlugin(this)));
 	add_editor_plugin(memnew(CPUParticles2DEditorPlugin(this)));
 	add_editor_plugin(memnew(CPUParticlesEditorPlugin(this)));
 	add_editor_plugin(memnew(ResourcePreloaderEditorPlugin(this)));

@@ -30,6 +30,12 @@
 
 #include "canvas_item_editor_plugin.h"
 
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_SKELETON_2D_ENABLED
+#include "modules/skeleton_2d/nodes/skeleton_2d.h"
+#endif
+
 #include "core/config/engine.h"
 #include "core/config/project_settings.h"
 #include "core/containers/pool_vector.h"
@@ -62,7 +68,7 @@
 #include "scene/2d/light_2d.h"
 #include "scene/2d/node_2d.h"
 #include "scene/2d/polygon_2d.h"
-#include "scene/2d/skeleton_2d.h"
+
 #include "scene/2d/sprite.h"
 #include "scene/2d/touch_screen_button.h"
 #include "scene/gui/base_button.h"
@@ -3749,6 +3755,7 @@ void CanvasItemEditor::_notification(int p_what) {
 			anchor_mode_button->set_visible(false);
 		}
 
+#ifdef MODULE_SKELETON_2D_ENABLED
 		// Update the viewport if bones changes
 		for (Map<BoneKey, BoneList>::Element *E = bone_list.front(); E; E = E->next()) {
 			Object *b = ObjectDB::get_instance(E->key().from);
@@ -3775,6 +3782,7 @@ void CanvasItemEditor::_notification(int p_what) {
 				viewport->update();
 			}
 		}
+#endif
 	}
 
 	if (p_what == NOTIFICATION_ENTER_TREE) {
@@ -4520,6 +4528,7 @@ void CanvasItemEditor::_popup_callback(int p_op) {
 			snap_dialog->popup_centered(Size2(220, 160) * EDSCALE);
 		} break;
 		case SKELETON_SHOW_BONES: {
+#ifdef MODULE_SKELETON_2D_ENABLED
 			List<Node *> selection = editor_selection->get_selected_node_list();
 			for (List<Node *>::Element *E = selection.front(); E; E = E->next()) {
 				// Add children nodes so they are processed
@@ -4533,6 +4542,7 @@ void CanvasItemEditor::_popup_callback(int p_op) {
 				}
 				bone_2d->_editor_set_show_bone_gizmo(!bone_2d->_editor_get_show_bone_gizmo());
 			}
+#endif
 		} break;
 		case SHOW_HELPERS: {
 			show_helpers = !show_helpers;
@@ -4876,6 +4886,7 @@ void CanvasItemEditor::_popup_callback(int p_op) {
 
 		} break;
 		case SKELETON_MAKE_BONES: {
+#ifdef MODULE_SKELETON_2D_ENABLED
 			Map<Node *, Object *> &selection = editor_selection->get_selection();
 			Node *editor_root = EditorNode::get_singleton()->get_edited_scene()->get_tree()->get_edited_scene_root();
 
@@ -4908,7 +4919,7 @@ void CanvasItemEditor::_popup_callback(int p_op) {
 			}
 
 			undo_redo->commit_action();
-
+#endif
 		} break;
 	}
 }

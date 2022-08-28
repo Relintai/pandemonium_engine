@@ -29,7 +29,7 @@
 /*************************************************************************/
 
 #include "skeleton_modification_2d_fabrik.h"
-#include "scene/2d/skeleton_2d.h"
+#include "../nodes/skeleton_2d.h"
 #include "skeleton_modification_stack_2d.h"
 
 #ifdef TOOLS_ENABLED

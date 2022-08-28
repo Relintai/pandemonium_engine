@@ -32,7 +32,7 @@
 #define PHYSICAL_BONE_2D_H
 
 #include "scene/2d/physics_body_2d.h"
-#include "scene/2d/skeleton_2d.h"
+#include "skeleton_2d.h"
 
 class Joint2D;
 

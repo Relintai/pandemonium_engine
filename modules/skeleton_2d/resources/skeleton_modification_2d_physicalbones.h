@@ -1,7 +1,9 @@
-#ifndef SKELETON_2D_EDITOR_PLUGIN_H
-#define SKELETON_2D_EDITOR_PLUGIN_H
+
+#ifndef SKELETON_MODIFICATION_2D_PHYSICALBONES_H
+#define SKELETON_MODIFICATION_2D_PHYSICALBONES_H
+
 /*************************************************************************/
-/*  skeleton_2d_editor_plugin.h                                          */
+/*  skeleton_modification_2d_physicalbones.h                             */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -30,60 +32,61 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor/editor_plugin.h"
-#include "scene/gui/control.h"
+#include "core/containers/vector.h"
+#include "core/object/object_id.h"
 
-#include "core/object/object.h"
-#include "core/string/ustring.h"
+#include "skeleton_modification_2d.h"
 
-class AcceptDialog;
-class EditorNode;
-class MenuButton;
-class Node;
-class Skeleton2D;
+///////////////////////////////////////
+// SkeletonModification2DJIGGLE
+///////////////////////////////////////
 
-class Skeleton2DEditor : public Control {
-	GDCLASS(Skeleton2DEditor, Control);
+class SkeletonModificationStack2D;
 
-	enum Menu {
-		MENU_OPTION_SET_REST,
-		MENU_OPTION_MAKE_REST,
+class SkeletonModification2DPhysicalBones : public SkeletonModification2D {
+	GDCLASS(SkeletonModification2DPhysicalBones, SkeletonModification2D);
+
+private:
+	struct PhysicalBone_Data2D {
+		NodePath physical_bone_node;
+		ObjectID physical_bone_node_cache;
+
+		PhysicalBone_Data2D() {
+			physical_bone_node_cache = 0;
+		}
 	};
+	
+	Vector<PhysicalBone_Data2D> physical_bone_chain;
 
-	Skeleton2D *node;
+	void _physical_bone_update_cache(int p_joint_idx);
 
-	MenuButton *options;
-	AcceptDialog *err_dialog;
-
-	void _menu_option(int p_option);
-
-	//void _create_uv_lines();
-	friend class Skeleton2DEditorPlugin;
+	bool _simulation_state_dirty = false;
+	Vector<StringName> _simulation_state_dirty_names;
+	bool _simulation_state_dirty_process = false;
+	void _update_simulation_state();
 
 protected:
-	void _node_removed(Node *p_node);
 	static void _bind_methods();
+	bool _get(const StringName &p_path, Variant &r_ret) const;
+	bool _set(const StringName &p_path, const Variant &p_value);
+	void _get_property_list(List<PropertyInfo> *p_list) const;
 
 public:
-	void edit(Skeleton2D *p_sprite);
-	Skeleton2DEditor();
+	void _execute(float p_delta);
+	void _setup_modification(Ref<SkeletonModificationStack2D> p_stack);
+
+	int get_physical_bone_chain_length();
+	void set_physical_bone_chain_length(int p_new_length);
+
+	void set_physical_bone_node(int p_joint_idx, const NodePath &p_path);
+	NodePath get_physical_bone_node(int p_joint_idx) const;
+
+	void fetch_physical_bones();
+	void start_simulation(const Vector<StringName> &p_bones);
+	void stop_simulation(const Vector<StringName> &p_bones);
+
+	SkeletonModification2DPhysicalBones();
+	~SkeletonModification2DPhysicalBones();
 };
 
-class Skeleton2DEditorPlugin : public EditorPlugin {
-	GDCLASS(Skeleton2DEditorPlugin, EditorPlugin);
-
-	Skeleton2DEditor *sprite_editor;
-	EditorNode *editor;
-
-public:
-	virtual String get_name() const { return "Skeleton2D"; }
-	bool has_main_screen() const { return false; }
-	virtual void edit(Object *p_object);
-	virtual bool handles(Object *p_object) const;
-	virtual void make_visible(bool p_visible);
-
-	Skeleton2DEditorPlugin(EditorNode *p_node);
-	~Skeleton2DEditorPlugin();
-};
-
-#endif // SKELETON_2D_EDITOR_PLUGIN_H
+#endif // SKELETON_MODIFICATION_2D_PHYSICALBONES_H

@@ -42,7 +42,12 @@
 #ifdef TOOLS_ENABLED
 #include "editor/editor_node.h"
 #include "editor/editor_settings.h"
-#include "scene/2d/skeleton_2d.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_SKELETON_2D_ENABLED
+#include "modules/skeleton_2d/nodes/skeleton_2d.h"
+#endif
 
 void AnimatedValuesBackup::update_skeletons() {
 	for (int i = 0; i < entries.size(); i++) {
@@ -50,11 +55,13 @@ void AnimatedValuesBackup::update_skeletons() {
 			// 3D bone
 			Object::cast_to<Skeleton>(entries[i].object)->notification(Skeleton::NOTIFICATION_UPDATE_SKELETON);
 		} else {
+#ifdef MODULE_SKELETON_2D_ENABLED
 			Bone2D *bone = Object::cast_to<Bone2D>(entries[i].object);
 			if (bone && bone->skeleton) {
 				// 2D bone
 				bone->skeleton->_update_transform();
 			}
+#endif
 		}
 	}
 }

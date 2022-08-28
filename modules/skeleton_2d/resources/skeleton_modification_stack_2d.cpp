@@ -29,8 +29,8 @@
 /*************************************************************************/
 
 #include "skeleton_modification_stack_2d.h"
-#include "scene/2d/skeleton_2d.h"
-#include "scene/resources/skeleton_modification_2d.h"
+#include "../nodes/skeleton_2d.h"
+#include "skeleton_modification_2d.h"
 
 void SkeletonModificationStack2D::_get_property_list(List<PropertyInfo> *p_list) const {
 	for (int i = 0; i < modifications.size(); i++) {

@@ -1,5 +1,6 @@
 #ifndef SKELETON_2D_H
 #define SKELETON_2D_H
+
 /*************************************************************************/
 /*  skeleton_2d.h                                                        */
 /*************************************************************************/
@@ -31,7 +32,7 @@
 /*************************************************************************/
 
 #include "scene/2d/node_2d.h"
-#include "scene/resources/skeleton_modification_2d.h"
+#include "../resources/skeleton_modification_2d.h"
 
 class Skeleton2D;
 
