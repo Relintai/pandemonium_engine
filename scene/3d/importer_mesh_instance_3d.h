@@ -45,8 +45,10 @@ class ImporterMeshInstance3D : public Spatial {
 	GDCLASS(ImporterMeshInstance3D, Spatial)
 
 	Ref<ImporterMesh> mesh;
+#ifdef MODULE_SKELETON_3D_ENABLED
 	Ref<Skin> skin;
 	NodePath skeleton_path;
+#endif
 	Vector<Ref<Material>> surface_materials;
 
 protected:
@@ -64,8 +66,10 @@ public:
 	void set_surface_material(int p_idx, const Ref<Material> &p_material);
 	Ref<Material> get_surface_material(int p_idx) const;
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 	void set_skeleton_path(const NodePath &p_path);
 	NodePath get_skeleton_path() const;
+#endif
 };
 
 #endif // IMPORTER_MESH_INSTANCE_3D_H

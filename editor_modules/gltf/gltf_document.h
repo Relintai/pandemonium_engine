@@ -42,8 +42,10 @@
 
 #include "modules/modules_enabled.gen.h" // For csg, gridmap.
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 class Skeleton;
 class BoneAttachment;
+#endif
 
 class GLTFState;
 class GLTFSkin;
@@ -254,7 +256,9 @@ private:
 	Error _map_skin_joints_indices_to_skeleton_bone_indices(Ref<GLTFState> state);
 	Error _serialize_skins(Ref<GLTFState> state);
 	Error _create_skins(Ref<GLTFState> state);
+#ifdef MODULE_SKELETON_3D_ENABLED
 	bool _skins_are_same(const Ref<Skin> skin_a, const Ref<Skin> skin_b);
+#endif
 	void _remove_duplicate_skins(Ref<GLTFState> state);
 	Error _serialize_cameras(Ref<GLTFState> state);
 	Error _parse_cameras(Ref<GLTFState> state);

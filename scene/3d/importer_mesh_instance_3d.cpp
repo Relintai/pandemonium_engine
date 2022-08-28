@@ -64,12 +64,14 @@ Ref<Material> ImporterMeshInstance3D::get_surface_material(int p_idx) const {
 	return surface_materials[p_idx];
 }
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 void ImporterMeshInstance3D::set_skeleton_path(const NodePath &p_path) {
 	skeleton_path = p_path;
 }
 NodePath ImporterMeshInstance3D::get_skeleton_path() const {
 	return skeleton_path;
 }
+#endif
 
 void ImporterMeshInstance3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_mesh", "mesh"), &ImporterMeshInstance3D::set_mesh);
@@ -82,7 +84,9 @@ void ImporterMeshInstance3D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "skin", PROPERTY_HINT_RESOURCE_TYPE, "Skin"), "set_skin", "get_skin");
 #endif
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 	ClassDB::bind_method(D_METHOD("set_skeleton_path", "skeleton_path"), &ImporterMeshInstance3D::set_skeleton_path);
 	ClassDB::bind_method(D_METHOD("get_skeleton_path"), &ImporterMeshInstance3D::get_skeleton_path);
 	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "skeleton_path", PROPERTY_HINT_NODE_PATH_VALID_TYPES, "Skeleton"), "set_skeleton_path", "get_skeleton_path");
+#endif
 }

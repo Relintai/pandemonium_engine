@@ -172,7 +172,9 @@ private:
 				node(nullptr),
 				spatial(nullptr),
 				node_2d(nullptr),
+#ifdef MODULE_SKELETON_3D_ENABLED
 				skeleton(nullptr),
+#endif
 				bone_idx(-1),
 				accum_pass(0),
 				audio_playing(false),

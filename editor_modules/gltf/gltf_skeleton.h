@@ -53,8 +53,10 @@ private:
 	// same parent (ie roots are siblings)
 	PoolVector<GLTFNodeIndex> roots;
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 	// The created Skeleton for the scene
 	Skeleton *pandemonium_skeleton = nullptr;
+#endif
 
 	// Set of unique bone names for the skeleton
 	Set<String> unique_names;

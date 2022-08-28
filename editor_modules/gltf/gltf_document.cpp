@@ -4391,6 +4391,7 @@ Error GLTFDocument::_create_skeletons(Ref<GLTFState> state) {
 #endif
 
 Error GLTFDocument::_map_skin_joints_indices_to_skeleton_bone_indices(Ref<GLTFState> state) {
+#ifdef MODULE_SKELETON_3D_ENABLED
 	for (GLTFSkinIndex skin_i = 0; skin_i < state->skins.size(); ++skin_i) {
 		Ref<GLTFSkin> skin = state->skins.write[skin_i];
 
@@ -4406,6 +4407,7 @@ Error GLTFDocument::_map_skin_joints_indices_to_skeleton_bone_indices(Ref<GLTFSt
 			skin->joint_i_to_bone_i.insert(joint_index, bone_index);
 		}
 	}
+#endif
 
 	return OK;
 }
@@ -4430,6 +4432,7 @@ Error GLTFDocument::_serialize_skins(Ref<GLTFState> state) {
 }
 
 Error GLTFDocument::_create_skins(Ref<GLTFState> state) {
+#ifdef MODULE_SKELETON_3D_ENABLED
 	for (GLTFSkinIndex skin_i = 0; skin_i < state->skins.size(); ++skin_i) {
 		Ref<GLTFSkin> gltf_skin = state->skins.write[skin_i];
 
@@ -4470,10 +4473,12 @@ Error GLTFDocument::_create_skins(Ref<GLTFState> state) {
 			skin->set_name(_gen_unique_name(state, "Skin"));
 		}
 	}
+#endif
 
 	return OK;
 }
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 bool GLTFDocument::_skins_are_same(const Ref<Skin> skin_a, const Ref<Skin> skin_b) {
 	if (skin_a->get_bind_count() != skin_b->get_bind_count()) {
 		return false;
@@ -4497,8 +4502,10 @@ bool GLTFDocument::_skins_are_same(const Ref<Skin> skin_a, const Ref<Skin> skin_
 
 	return true;
 }
+#endif
 
 void GLTFDocument::_remove_duplicate_skins(Ref<GLTFState> state) {
+#ifdef MODULE_SKELETON_3D_ENABLED
 	for (int i = 0; i < state->skins.size(); ++i) {
 		for (int j = i + 1; j < state->skins.size(); ++j) {
 			const Ref<Skin> skin_i = state->skins[i]->pandemonium_skin;
@@ -4510,6 +4517,7 @@ void GLTFDocument::_remove_duplicate_skins(Ref<GLTFState> state) {
 			}
 		}
 	}
+#endif
 }
 
 Error GLTFDocument::_serialize_lights(Ref<GLTFState> state) {
@@ -5316,11 +5324,11 @@ void GLTFDocument::_convert_scene_node(Ref<GLTFState> state, Node *p_current, co
 	if (cast_to<MeshInstance>(p_current)) {
 		MeshInstance *mi = cast_to<MeshInstance>(p_current);
 		_convert_mesh_instance_to_gltf(mi, state, gltf_node);
+#ifdef MODULE_SKELETON_3D_ENABLED
 	} else if (cast_to<BoneAttachment>(p_current)) {
 		BoneAttachment *bone = cast_to<BoneAttachment>(p_current);
 		_convert_bone_attachment_to_gltf(bone, state, p_gltf_parent, p_gltf_root, gltf_node);
 		return;
-#ifdef MODULE_SKELETON_3D_ENABLED
 	} else if (cast_to<Skeleton>(p_current)) {
 		Skeleton *skel = cast_to<Skeleton>(p_current);
 		_convert_skeleton_to_gltf(skel, state, p_gltf_parent, p_gltf_root, gltf_node);
@@ -5546,7 +5554,9 @@ void GLTFDocument::_generate_scene_node(Ref<GLTFState> state, Node *scene_parent
 	Ref<GLTFNode> gltf_node = state->nodes[node_index];
 
 	if (gltf_node->skeleton >= 0) {
+#ifdef MODULE_SKELETON_3D_ENABLED
 		_generate_skeleton_bone_node(state, scene_parent, scene_root, node_index);
+#endif
 		return;
 	}
 
@@ -6140,8 +6150,8 @@ void GLTFDocument::_convert_mesh_instances(Ref<GLTFState> state) {
 			node->skin = skin_gltf_i;
 			node->skeleton = skeleton_gltf_i;
 		}
-	}
 #endif
+	}
 }
 
 float GLTFDocument::solve_metallic(float p_dielectric_specular, float diffuse, float specular, float p_one_minus_specular_strength) {
@@ -6682,6 +6692,7 @@ Error GLTFDocument::parse(Ref<GLTFState> state, String p_path, bool p_read_binar
 		return Error::FAILED;
 	}
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 	/* CREATE SKELETONS */
 	err = _create_skeletons(state);
 	if (err != OK) {
@@ -6693,6 +6704,7 @@ Error GLTFDocument::parse(Ref<GLTFState> state, String p_path, bool p_read_binar
 	if (err != OK) {
 		return Error::FAILED;
 	}
+#endif
 
 	/* PARSE MESHES (we have enough info now) */
 	err = _parse_meshes(state);

@@ -927,7 +927,13 @@ void EditorSpatialGizmo::set_plugin(EditorSpatialGizmoPlugin *p_plugin) {
 
 void EditorSpatialGizmo::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_lines", "lines", "material", "billboard", "modulate"), &EditorSpatialGizmo::add_lines, DEFVAL(false), DEFVAL(Color(1, 1, 1)));
+
+#ifdef MODULE_SKELETON_3D_ENABLED
 	ClassDB::bind_method(D_METHOD("add_mesh", "mesh", "material", "transform", "skeleton"), &EditorSpatialGizmo::add_mesh, DEFVAL(Variant()), DEFVAL(Transform()), DEFVAL(Ref<SkinReference>()));
+#else
+	ClassDB::bind_method(D_METHOD("add_mesh", "mesh", "material", "transform"), &EditorSpatialGizmo::add_mesh, DEFVAL(Variant()), DEFVAL(Transform()));
+#endif
+
 	ClassDB::bind_method(D_METHOD("add_collision_segments", "segments"), &EditorSpatialGizmo::add_collision_segments);
 	ClassDB::bind_method(D_METHOD("add_collision_triangles", "triangles"), &EditorSpatialGizmo::add_collision_triangles);
 	ClassDB::bind_method(D_METHOD("add_unscaled_billboard", "material", "default_scale", "modulate"), &EditorSpatialGizmo::add_unscaled_billboard, DEFVAL(1), DEFVAL(Color(1, 1, 1)));

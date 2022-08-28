@@ -208,8 +208,10 @@ private:
 		TrackCacheTransform() {
 			type = Animation::TYPE_POSITION_3D;
 			spatial = nullptr;
+#ifdef MODULE_SKELETON_3D_ENABLED
 			bone_idx = -1;
 			skeleton = nullptr;
+#endif
 			loc_used = false;
 			rot_used = false;
 			scale_used = false;

@@ -124,10 +124,12 @@ void MeshInstance::set_mesh(const Ref<Mesh> &p_mesh) {
 		mesh->disconnect(CoreStringNames::get_singleton()->changed, this, SceneStringNames::get_singleton()->_mesh_changed);
 	}
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 	if (skin_ref.is_valid() && mesh.is_valid() && _is_software_skinning_enabled() && is_visible_in_tree()) {
 		ERR_FAIL_COND(!skin_ref->get_skeleton_node());
 		skin_ref->get_skeleton_node()->disconnect("pose_updated", this, "_update_skinning");
 	}
+#endif
 
 #ifdef MODULE_SKELETON_3D_ENABLED
 	if (software_skinning) {
@@ -749,9 +751,11 @@ void MeshInstance::set_material_override(const Ref<Material> &p_material) {
 
 	GeometryInstance::set_material_override(p_material);
 
+#ifdef MODULE_SKELETON_3D_ENABLED
 	if (software_skinning) {
 		_initialize_skinning(true);
 	}
+#endif
 }
 
 void MeshInstance::set_material_overlay(const Ref<Material> &p_material) {
