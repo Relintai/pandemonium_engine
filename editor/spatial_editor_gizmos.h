@@ -49,14 +49,15 @@
 
 #include "modules/modules_enabled.gen.h"
 
+#ifdef MODULE_SKELETON_3D_ENABLED
+#include "modules/skeleton_3d/nodes/skeleton.h"
+#endif
+
 class Camera;
 class Spatial;
 class Timer;
 struct Transform;
 class Timer;
-#ifdef MODULE_SKELETON_3D_ENABLED
-class SkinReference;
-#endif
 
 class EditorSpatialGizmo : public SpatialGizmo {
 	GDCLASS(EditorSpatialGizmo, SpatialGizmo);
