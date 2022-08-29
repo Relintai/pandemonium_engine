@@ -37,6 +37,7 @@
 #include "scene/main/scene_tree.h"
 
 class Viewport;
+class World;
 class SceneState;
 class SceneTreeTween;
 
@@ -111,6 +112,7 @@ private:
 #endif
 
 		Viewport *viewport;
+		World *world;
 
 		Map<StringName, GroupData> grouped;
 		List<Node *>::Element *OW; // owned element
@@ -502,6 +504,10 @@ public:
 
 	_FORCE_INLINE_ Viewport *get_viewport() const {
 		return data.viewport;
+	}
+
+	_FORCE_INLINE_ World *get_world() const {
+		return data.world;
 	}
 
 	virtual String get_configuration_warning() const;

@@ -30,10 +30,11 @@
 
 #include "viewport.h"
 
+#include "core/config/project_settings.h"
 #include "core/core_string_names.h"
 #include "core/input/input.h"
+#include "core/input/shortcut.h"
 #include "core/os/os.h"
-#include "core/config/project_settings.h"
 #include "scene/2d/camera_2d.h"
 #include "scene/2d/collision_object_2d.h"
 #include "scene/2d/listener_2d.h"
@@ -41,20 +42,18 @@
 #include "scene/3d/collision_object.h"
 #include "scene/3d/listener.h"
 #include "scene/3d/spatial.h"
-#include "scene/3d/world_environment_3d.h"
 #include "scene/gui/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/menu_button.h"
 #include "scene/gui/panel.h"
 #include "scene/gui/panel_container.h"
 #include "scene/gui/popup_menu.h"
-#include "core/input/shortcut.h"
 #include "scene/gui/viewport_container.h"
 #include "scene/main/canvas_layer.h"
 #include "scene/main/timer.h"
 #include "scene/resources/mesh.h"
-#include "scene/resources/world_3d.h"
 #include "scene/resources/world_2d.h"
+#include "scene/resources/world_3d.h"
 #include "scene/scene_string_names.h"
 #include "servers/physics_2d_server.h"
 
@@ -252,21 +251,44 @@ void Viewport::_own_world_3d_changed() {
 	ERR_FAIL_COND(world_3d.is_null());
 	ERR_FAIL_COND(own_world_3d.is_null());
 
-	if (is_inside_tree()) {
-		_propagate_exit_world(this);
-	}
-
-	own_world_3d = world_3d->duplicate();
-
-	if (is_inside_tree()) {
-		_propagate_enter_world(this);
-	}
+	World::_own_world_3d_changed();
 
 	if (is_inside_tree()) {
 		RenderingServer::get_singleton()->viewport_set_scenario(viewport, find_world_3d()->get_scenario());
 	}
 
 	_update_listener();
+}
+
+void Viewport::_on_set_use_own_world_3d(bool p_use_own_world_3d) {
+	if (is_inside_tree()) {
+		RenderingServer::get_singleton()->viewport_set_scenario(viewport, find_world_3d()->get_scenario());
+	}
+
+	_update_listener();
+}
+
+void Viewport::_on_set_world_3d(const Ref<World3D> &p_old_world) {
+	if (is_inside_tree()) {
+		RenderingServer::get_singleton()->viewport_set_scenario(viewport, find_world_3d()->get_scenario());
+	}
+
+	_update_listener();
+}
+void Viewport::_on_set_world_2d(const Ref<World2D> &p_old_world_2d) {
+	if (is_inside_tree() && p_old_world_2d.is_valid()) {
+		Ref<World2D> old_world_2d = p_old_world_2d;
+		old_world_2d->_remove_viewport(this);
+		RenderingServer::get_singleton()->viewport_remove_canvas(viewport, current_canvas);
+	}
+
+	_update_listener_2d();
+
+	if (is_inside_tree()) {
+		current_canvas = find_world_2d()->get_canvas();
+		RenderingServer::get_singleton()->viewport_attach_canvas(viewport, current_canvas);
+		find_world_2d()->_register_viewport(this, Rect2());
+	}
 }
 
 void Viewport::_notification(int p_what) {
@@ -1012,70 +1034,6 @@ bool Viewport::has_transparent_background() const {
 	return transparent_bg;
 }
 
-void Viewport::set_world_2d(const Ref<World2D> &p_world_2d) {
-	if (world_2d == p_world_2d) {
-		return;
-	}
-
-	if (parent && parent->find_world_2d() == p_world_2d) {
-		WARN_PRINT("Unable to use parent world as world_2d");
-		return;
-	}
-
-	if (is_inside_tree()) {
-		find_world_2d()->_remove_viewport(this);
-		RenderingServer::get_singleton()->viewport_remove_canvas(viewport, current_canvas);
-	}
-
-	if (p_world_2d.is_valid()) {
-		world_2d = p_world_2d;
-	} else {
-		WARN_PRINT("Invalid world");
-		world_2d = Ref<World2D>(memnew(World2D));
-	}
-
-	_update_listener_2d();
-
-	if (is_inside_tree()) {
-		current_canvas = find_world_2d()->get_canvas();
-		RenderingServer::get_singleton()->viewport_attach_canvas(viewport, current_canvas);
-		find_world_2d()->_register_viewport(this, Rect2());
-	}
-}
-
-Ref<World2D> Viewport::find_world_2d() const {
-	if (world_2d.is_valid()) {
-		return world_2d;
-	} else if (parent) {
-		return parent->find_world_2d();
-	} else {
-		return Ref<World2D>();
-	}
-}
-
-void Viewport::_propagate_enter_world(Node *p_node) {
-	if (p_node != this) {
-		if (!p_node->is_inside_tree()) { //may not have entered scene yet
-			return;
-		}
-
-		if (Object::cast_to<Spatial>(p_node) || Object::cast_to<WorldEnvironment3D>(p_node)) {
-			p_node->notification(Spatial::NOTIFICATION_ENTER_WORLD);
-		} else {
-			Viewport *v = Object::cast_to<Viewport>(p_node);
-			if (v) {
-				if (v->world_3d.is_valid() || v->own_world_3d.is_valid()) {
-					return;
-				}
-			}
-		}
-	}
-
-	for (int i = 0; i < p_node->get_child_count(); i++) {
-		_propagate_enter_world(p_node->get_child(i));
-	}
-}
-
 void Viewport::_propagate_viewport_notification(Node *p_node, int p_what) {
 	p_node->notification(p_what);
 	for (int i = 0; i < p_node->get_child_count(); i++) {
@@ -1084,84 +1042,6 @@ void Viewport::_propagate_viewport_notification(Node *p_node, int p_what) {
 			continue;
 		}
 		_propagate_viewport_notification(c, p_what);
-	}
-}
-
-void Viewport::_propagate_exit_world(Node *p_node) {
-	if (p_node != this) {
-		if (!p_node->is_inside_tree()) { //may have exited scene already
-			return;
-		}
-
-		if (Object::cast_to<Spatial>(p_node) || Object::cast_to<WorldEnvironment3D>(p_node)) {
-			p_node->notification(Spatial::NOTIFICATION_EXIT_WORLD);
-		} else {
-			Viewport *v = Object::cast_to<Viewport>(p_node);
-			if (v) {
-				if (v->world_3d.is_valid() || v->own_world_3d.is_valid()) {
-					return;
-				}
-			}
-		}
-	}
-
-	for (int i = 0; i < p_node->get_child_count(); i++) {
-		_propagate_exit_world(p_node->get_child(i));
-	}
-}
-
-void Viewport::set_world_3d(const Ref<World3D> &p_world_3d) {
-	if (world_3d == p_world_3d) {
-		return;
-	}
-
-	if (is_inside_tree()) {
-		_propagate_exit_world(this);
-	}
-
-	if (own_world_3d.is_valid() && world_3d.is_valid()) {
-		world_3d->disconnect(CoreStringNames::get_singleton()->changed, this, "_own_world_3d_changed");
-	}
-
-	world_3d = p_world_3d;
-
-	if (own_world_3d.is_valid()) {
-		if (world_3d.is_valid()) {
-			own_world_3d = world_3d->duplicate();
-			world_3d->connect(CoreStringNames::get_singleton()->changed, this, "_own_world_3d_changed");
-		} else {
-			own_world_3d = Ref<World3D>(memnew(World3D));
-		}
-	}
-
-	if (is_inside_tree()) {
-		_propagate_enter_world(this);
-	}
-
-	if (is_inside_tree()) {
-		RenderingServer::get_singleton()->viewport_set_scenario(viewport, find_world_3d()->get_scenario());
-	}
-
-	_update_listener();
-}
-
-Ref<World3D> Viewport::get_world_3d() const {
-	return world_3d;
-}
-
-Ref<World2D> Viewport::get_world_2d() const {
-	return world_2d;
-}
-
-Ref<World3D> Viewport::find_world_3d() const {
-	if (own_world_3d.is_valid()) {
-		return own_world_3d;
-	} else if (world_3d.is_valid()) {
-		return world_3d;
-	} else if (parent) {
-		return parent->find_world_3d();
-	} else {
-		return Ref<World3D>();
 	}
 }
 
@@ -2897,44 +2777,6 @@ void Viewport::unhandled_input(const Ref<InputEvent> &p_event) {
 	}
 }
 
-void Viewport::set_use_own_world_3d(bool p_use_own_world_3d) {
-	if (p_use_own_world_3d == own_world_3d.is_valid()) {
-		return;
-	}
-
-	if (is_inside_tree()) {
-		_propagate_exit_world(this);
-	}
-
-	if (p_use_own_world_3d) {
-		if (world_3d.is_valid()) {
-			own_world_3d = world_3d->duplicate();
-			world_3d->connect(CoreStringNames::get_singleton()->changed, this, "_own_world_3d_changed");
-		} else {
-			own_world_3d = Ref<World3D>(memnew(World3D));
-		}
-	} else {
-		own_world_3d = Ref<World3D>();
-		if (world_3d.is_valid()) {
-			world_3d->disconnect(CoreStringNames::get_singleton()->changed, this, "_own_world_3d_changed");
-		}
-	}
-
-	if (is_inside_tree()) {
-		_propagate_enter_world(this);
-	}
-
-	if (is_inside_tree()) {
-		RenderingServer::get_singleton()->viewport_set_scenario(viewport, find_world_3d()->get_scenario());
-	}
-
-	_update_listener();
-}
-
-bool Viewport::is_using_own_world_3d() const {
-	return own_world_3d.is_valid();
-}
-
 void Viewport::set_attach_to_screen_rect(const Rect2 &p_rect) {
 	RS::get_singleton()->viewport_attach_to_screen(viewport, p_rect);
 	to_screen_rect = p_rect;
@@ -3197,12 +3039,6 @@ void Viewport::_validate_property(PropertyInfo &property) const {
 void Viewport::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_size", "size"), &Viewport::set_size);
 	ClassDB::bind_method(D_METHOD("get_size"), &Viewport::get_size);
-	ClassDB::bind_method(D_METHOD("set_world_2d", "world_2d"), &Viewport::set_world_2d);
-	ClassDB::bind_method(D_METHOD("get_world_2d"), &Viewport::get_world_2d);
-	ClassDB::bind_method(D_METHOD("find_world_2d"), &Viewport::find_world_2d);
-	ClassDB::bind_method(D_METHOD("set_world_3d", "world"), &Viewport::set_world_3d);
-	ClassDB::bind_method(D_METHOD("get_world_3d"), &Viewport::get_world_3d);
-	ClassDB::bind_method(D_METHOD("find_world_3d"), &Viewport::find_world_3d);
 
 	ClassDB::bind_method(D_METHOD("set_canvas_transform", "xform"), &Viewport::set_canvas_transform);
 	ClassDB::bind_method(D_METHOD("get_canvas_transform"), &Viewport::get_canvas_transform);
@@ -3271,9 +3107,6 @@ void Viewport::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("update_worlds"), &Viewport::update_worlds);
 
-	ClassDB::bind_method(D_METHOD("set_use_own_world_3d", "enable"), &Viewport::set_use_own_world_3d);
-	ClassDB::bind_method(D_METHOD("is_using_own_world_3d"), &Viewport::is_using_own_world_3d);
-
 	ClassDB::bind_method(D_METHOD("get_camera"), &Viewport::get_camera);
 	ClassDB::bind_method(D_METHOD("get_camera_2d"), &Viewport::get_camera_2d);
 
@@ -3326,15 +3159,11 @@ void Viewport::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_subwindow_visibility_changed"), &Viewport::_subwindow_visibility_changed);
 
-	ClassDB::bind_method(D_METHOD("_own_world_3d_changed"), &Viewport::_own_world_3d_changed);
-
 	ClassDB::bind_method(D_METHOD("_process_picking", "ignore_paused"), &Viewport::_process_picking);
 
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "size"), "set_size", "get_size");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "size_override_stretch"), "set_size_override_stretch", "is_size_override_stretch_enabled");
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "own_world_3d"), "set_use_own_world_3d", "is_using_own_world_3d");
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "world", PROPERTY_HINT_RESOURCE_TYPE, "World3D"), "set_world_3d", "get_world_3d");
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "world_2d", PROPERTY_HINT_RESOURCE_TYPE, "World2D", 0), "set_world_2d", "get_world_2d");
+
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "transparent_bg"), "set_transparent_background", "has_transparent_background");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "handle_input_locally"), "set_handle_input_locally", "is_handling_input_locally");
 	ADD_GROUP("Rendering", "");
@@ -3425,8 +3254,6 @@ void Viewport::_subwindow_visibility_changed() {
 }
 
 Viewport::Viewport() {
-	world_2d = Ref<World2D>(memnew(World2D));
-
 	viewport = RID_PRIME(RenderingServer::get_singleton()->viewport_create());
 	texture_rid = RenderingServer::get_singleton()->viewport_get_texture(viewport);
 	texture_flags = 0;

@@ -38,6 +38,7 @@
 #include "scene/animation/scene_tree_tween.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/scene_string_names.h"
+#include "world.h"
 #include "viewport.h"
 
 #include "core/config/project_settings.h"
@@ -72,6 +73,7 @@ void Node::_notification(int p_notification) {
 		} break;
 		case NOTIFICATION_ENTER_TREE: {
 			ERR_FAIL_COND(!get_viewport());
+			ERR_FAIL_COND(!get_world());
 			ERR_FAIL_COND(!get_tree());
 
 			if (data.pause_mode == PAUSE_MODE_INHERIT) {
@@ -108,6 +110,7 @@ void Node::_notification(int p_notification) {
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
 			ERR_FAIL_COND(!get_viewport());
+			ERR_FAIL_COND(!get_world());
 			ERR_FAIL_COND(!get_tree());
 
 			get_tree()->node_count--;
@@ -263,6 +266,11 @@ void Node::_propagate_enter_tree() {
 		data.viewport = data.parent->data.viewport;
 	}
 
+	data.world = Object::cast_to<World>(this);
+	if (!data.world && data.parent) {
+		data.world = data.parent->data.world;
+	}
+
 	data.inside_tree = true;
 
 	for (Map<StringName, GroupData>::Element *E = data.grouped.front(); E; E = E->next()) {
@@ -397,6 +405,7 @@ void Node::_propagate_exit_tree() {
 	}
 
 	data.viewport = nullptr;
+	data.world = nullptr;
 
 	if (data.tree) {
 		data.tree->tree_changed();
@@ -3262,6 +3271,7 @@ void Node::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_scene_instance_load_placeholder"), &Node::get_scene_instance_load_placeholder);
 
 	ClassDB::bind_method(D_METHOD("get_viewport"), &Node::get_viewport);
+	ClassDB::bind_method(D_METHOD("get_world"), &Node::get_world);
 
 	ClassDB::bind_method(D_METHOD("queue_free"), &Node::queue_delete);
 
@@ -3463,6 +3473,7 @@ Node::Node() {
 	data.parent_owned = false;
 	data.in_constructor = true;
 	data.viewport = nullptr;
+	data.world = nullptr;
 	data.use_placeholder = false;
 	data.display_folded = false;
 	data.ready_first = true;
