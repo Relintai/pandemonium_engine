@@ -4955,12 +4955,12 @@ msgstr ""
 #: doc/classes/AnimationNodeTransition.xml doc/classes/AnimationPlayer.xml
 #: doc/classes/AnimationTree.xml doc/classes/AudioEffectReverb.xml
 #: doc/classes/Camera.xml doc/classes/CollisionShape.xml
-#: doc/classes/CylinderShape.xml doc/classes/Environment.xml
+#: doc/classes/CylinderShape.xml doc/classes/Environment3D.xml
 #: doc/classes/GIProbe.xml doc/classes/GIProbeData.xml
 #: doc/classes/KinematicBody.xml doc/classes/Light.xml doc/classes/Material.xml
 #: doc/classes/Mesh.xml doc/classes/MeshInstance.xml doc/classes/Particles.xml
 #: doc/classes/Quaternion.xml doc/classes/Skeleton.xml doc/classes/SpotLight.xml
-#: doc/classes/StaticBody.xml doc/classes/WorldEnvironment.xml
+#: doc/classes/StaticBody.xml doc/classes/WorldEnvironment3D.xml
 msgid "Third Person Shooter Demo"
 msgstr ""
 
@@ -11638,7 +11638,7 @@ msgid ""
 msgstr ""
 
 #: doc/classes/Camera.xml
-msgid "The [Environment] to use for this camera."
+msgid "The [Environment3D3D] to use for this camera."
 msgstr ""
 
 #: doc/classes/Camera.xml
@@ -11782,8 +11782,8 @@ msgstr ""
 msgid "2D Isometric Demo"
 msgstr ""
 
-#: doc/classes/Camera2D.xml doc/classes/Environment.xml
-#: doc/classes/WorldEnvironment.xml
+#: doc/classes/Camera2D.xml doc/classes/Environment3D.xml
+#: doc/classes/WorldEnvironment3D.xml
 msgid "2D HDR Demo"
 msgstr ""
 
@@ -22674,15 +22674,15 @@ msgid ""
 "speed."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
-"Resource for environment nodes (like [WorldEnvironment]) that define "
+"Resource for environment nodes (like [WorldEnvironment3D3D]) that define "
 "multiple rendering options."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
-"Resource for environment nodes (like [WorldEnvironment]) that define "
+"Resource for environment nodes (like [WorldEnvironment3D3D]) that define "
 "multiple environment operations (such as background [Sky] or [Color], "
 "ambient light, fog, depth-of-field...). These parameters affect the final "
 "render of the scene. The order of these operations is:\n"
@@ -22704,26 +22704,26 @@ msgid ""
 "the same time affects the screen display on mobile devices."
 msgstr ""
 
-#: doc/classes/Environment.xml doc/classes/WorldEnvironment.xml
-msgid "Environment and post-processing"
+#: doc/classes/Environment3D.xml doc/classes/WorldEnvironment3D.xml
+msgid "Environment3D and post-processing"
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "Light transport in game engines"
 msgstr ""
 
-#: doc/classes/Environment.xml doc/classes/Material.xml doc/classes/Mesh.xml
-#: doc/classes/MeshInstance.xml doc/classes/WorldEnvironment.xml
+#: doc/classes/Environment3D.xml doc/classes/Material.xml doc/classes/Mesh.xml
+#: doc/classes/MeshInstance.xml doc/classes/WorldEnvironment3D.xml
 msgid "3D Material Testers Demo"
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "Returns [code]true[/code] if the glow level [code]idx[/code] is specified, "
 "[code]false[/code] otherwise."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "Enables or disables the glow level at index [code]idx[/code]. Each level "
 "relies on the previous level. This means that enabling higher glow levels "
@@ -22731,26 +22731,26 @@ msgid ""
 "enabled."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The global brightness value of the rendered scene. Effective only if "
 "[code]adjustment_enabled[/code] is [code]true[/code]."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "Applies the provided [Texture] resource to affect the global color aspect of "
 "the rendered scene. Effective only if [code]adjustment_enabled[/code] is "
 "[code]true[/code]."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The global contrast value of the rendered scene (default value is 1). "
 "Effective only if [code]adjustment_enabled[/code] is [code]true[/code]."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "If [code]true[/code], enables the [code]adjustment_*[/code] properties "
 "provided by this resource. If [code]false[/code], modifications to the "
@@ -22758,22 +22758,22 @@ msgid ""
 "scene."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The global color saturation value of the rendered scene (default value is "
 "1). Effective only if [code]adjustment_enabled[/code] is [code]true[/code]."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The ambient light's [Color]."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The ambient light's energy. The higher the value, the stronger the light."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "Defines the amount of light that the sky brings on the scene. A value of "
 "[code]0.0[/code] means that the sky's light emission has no effect on the "
@@ -22785,7 +22785,7 @@ msgid ""
 "between [code]0.0[/code] and [code]1.0[/code] (inclusive)."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "If [code]true[/code], enables the tonemapping auto exposure mode of the "
 "scene renderer. If [code]true[/code], the renderer will automatically "
@@ -22793,156 +22793,156 @@ msgid ""
 "observed light."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The maximum luminance value for the auto exposure."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The minimum luminance value for the auto exposure."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The scale of the auto exposure effect. Affects the intensity of auto "
 "exposure."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The speed of the auto exposure effect. Affects the time needed for the "
 "camera to perform auto exposure."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The ID of the camera feed to show in the background."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The maximum layer ID to display. Only effective when using the [constant "
 "BG_CANVAS] background mode."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The [Color] displayed for clear areas of the scene. Only effective when "
 "using the [constant BG_COLOR] or [constant BG_COLOR_SKY] background modes)."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The power of the light emitted by the background."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The background mode. See [enum BGMode] for possible values."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The [Sky] resource defined as background."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The [Sky] resource's custom field of view."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The [Sky] resource's rotation expressed as a [Basis]."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The [Sky] resource's rotation expressed as Euler angles in radians."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The [Sky] resource's rotation expressed as Euler angles in degrees."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The amount of far blur for the depth-of-field effect."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The distance from the camera where the far blur effect affects the rendering."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "If [code]true[/code], enables the depth-of-field far blur effect."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The depth-of-field far blur's quality. Higher values can mitigate the "
 "visible banding effect seen at higher strengths, but are much slower."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The length of the transition between the no-blur area and far blur."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The amount of near blur for the depth-of-field effect."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "Distance from the camera where the near blur effect affects the rendering."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "If [code]true[/code], enables the depth-of-field near blur effect."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The depth-of-field near blur's quality. Higher values can mitigate the "
 "visible banding effect seen at higher strengths, but are much slower."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The length of the transition between the near blur and no-blur area."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The fog's [Color]."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The fog's depth starting distance from the camera."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The fog depth's intensity curve. A number of presets are available in the "
 "[b]Inspector[/b] by right-clicking the curve."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "If [code]true[/code], the depth fog effect is enabled. When enabled, fog "
 "will appear in the distance (relative to the camera)."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The fog's depth end distance from the camera. If this value is set to 0, it "
 "will be equal to the current camera's [member Camera.far] value."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "If [code]true[/code], fog effects are enabled. [member fog_height_enabled] "
 "and/or [member fog_depth_enabled] must be set to [code]true[/code] to "
 "actually display fog."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The height fog's intensity. A number of presets are available in the "
 "[b]Inspector[/b] by right-clicking the curve."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "If [code]true[/code], the height fog effect is enabled. When enabled, fog "
 "will appear in a defined height range, regardless of the distance from the "
@@ -22950,44 +22950,44 @@ msgid ""
 "performance cost compared to a dedicated shader."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The Y coordinate where the height fog will be the most intense. If this "
 "value is greater than [member fog_height_min], fog will be displayed from "
 "bottom to top. Otherwise, it will be displayed from top to bottom."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The Y coordinate where the height fog will be the least intense. If this "
 "value is greater than [member fog_height_max], fog will be displayed from "
 "top to bottom. Otherwise, it will be displayed from bottom to top."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The intensity of the depth fog color transition when looking towards the "
 "sun. The sun's direction is determined automatically using the "
 "DirectionalLight node in the scene."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The depth fog's [Color] when looking towards the sun."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The intensity of the fog light transmittance effect. Amount of light that "
 "the fog transmits."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "Enables fog's light transmission effect. If [code]true[/code], light will be "
 "more visible in the fog to simulate light scattering as in real life."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "Smooths out the blockiness created by sampling higher levels, at the cost of "
 "performance.\n"
@@ -22995,17 +22995,17 @@ msgid ""
 "GPU supports the [code]GL_EXT_gpu_shader4[/code] extension."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The glow blending mode."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The bloom's intensity. If set to a value higher than [code]0[/code], this "
 "will make glow visible in areas darker than the [member glow_hdr_threshold]."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "If [code]true[/code], the glow effect is enabled.\n"
 "[b]Note:[/b] Only effective if [member ProjectSettings.rendering/quality/"
@@ -23024,24 +23024,24 @@ msgid ""
 "override."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The higher threshold of the HDR glow. Areas brighter than this threshold "
 "will be clamped for the purposes of the glow effect."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The bleed scale of the HDR glow."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The lower threshold of the HDR glow. When using the GLES2 renderer (which "
 "doesn't support HDR), this needs to be below [code]1.0[/code] for glow to be "
 "visible. A value of [code]0.9[/code] works well in this case."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "Takes more samples during downsample pass of glow. This ensures that single "
 "pixels are captured by glow which makes the glow look smoother and more "
@@ -23049,55 +23049,55 @@ msgid ""
 "post process take twice as long."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The glow intensity. When using the GLES2 renderer, this should be increased "
 "to 1.5 to compensate for the lack of HDR rendering."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "If [code]true[/code], the 1st level of glow is enabled. This is the most "
 "\"local\" level (least blurry)."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "If [code]true[/code], the 2th level of glow is enabled."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "If [code]true[/code], the 3th level of glow is enabled."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "If [code]true[/code], the 4th level of glow is enabled."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "If [code]true[/code], the 5th level of glow is enabled."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "If [code]true[/code], the 6th level of glow is enabled."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "If [code]true[/code], the 7th level of glow is enabled. This is the most "
 "\"global\" level (blurriest)."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The glow strength. When using the GLES2 renderer, this should be increased "
 "to 1.3 to compensate for the lack of HDR rendering."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The depth tolerance for screen-space reflections."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "If [code]true[/code], screen-space reflections are enabled. Screen-space "
 "reflections are more accurate than reflections from [GIProbe]s or "
@@ -23105,58 +23105,58 @@ msgid ""
 "others."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The fade-in distance for screen-space reflections. Affects the area from the "
 "reflected material to the screen-space reflection)."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The fade-out distance for screen-space reflections. Affects the area from "
 "the screen-space reflection to the \"global\" reflection."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The maximum number of steps for screen-space reflections. Higher values are "
 "slower."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "If [code]true[/code], screen-space reflections will take the material "
 "roughness into account."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The screen-space ambient occlusion intensity on materials that have an AO "
 "texture defined. Values higher than [code]0[/code] will make the SSAO effect "
 "visible in areas darkened by AO textures."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The screen-space ambient occlusion bias. This should be kept high enough to "
 "prevent \"smooth\" curves from being affected by ambient occlusion."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The screen-space ambient occlusion blur quality. See [enum SSAOBlur] for "
 "possible values."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The screen-space ambient occlusion color."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The screen-space ambient occlusion edge sharpness."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "If [code]true[/code], the screen-space ambient occlusion effect is enabled. "
 "This darkens objects' corners and cavities to simulate ambient light not "
@@ -23167,19 +23167,19 @@ msgid ""
 "issues."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The primary screen-space ambient occlusion intensity. See also [member "
 "ssao_radius]."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The secondary screen-space ambient occlusion intensity. See also [member "
 "ssao_radius2]."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The screen-space ambient occlusion intensity in direct light. In real life, "
 "ambient occlusion only applies to indirect light, which means its effects "
@@ -23187,17 +23187,17 @@ msgid ""
 "the SSAO effect visible in direct light."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The screen-space ambient occlusion quality. Higher qualities will make "
 "better use of small objects for ambient occlusion, but are slower."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The primary screen-space ambient occlusion radius."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The secondary screen-space ambient occlusion radius. If set to a value "
 "higher than [code]0[/code], enables the secondary screen-space ambient "
@@ -23205,24 +23205,24 @@ msgid ""
 "the cost of performance)."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "The default exposure used for tonemapping."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The tonemapping mode to use. Tonemapping is the process that \"converts\" "
 "HDR values to be suitable for rendering on a LDR display. (Pandemonium doesn't "
 "support rendering on HDR displays yet.)"
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "The white reference value for tonemapping. Only effective if the [member "
 "tonemap_mode] isn't set to [constant TONE_MAPPER_LINEAR]."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "Keeps on screen every pixel drawn in the background. This is the fastest "
 "background mode, but it can only be safely used in fully-interior scenes (no "
@@ -23230,21 +23230,21 @@ msgid ""
 "is visible, \"ghost trail\" artifacts will be visible when moving the camera."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "Clears the background using the clear color defined in [member "
 "ProjectSettings.rendering/environment/default_clear_color]."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "Clears the background using a custom clear color."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "Displays a user-defined sky in the background."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "Clears the background using a custom clear color and allows defining a sky "
 "for shading and reflection. This mode is slightly faster than [constant "
@@ -23252,65 +23252,65 @@ msgid ""
 "but the sky itself never is (e.g. top-down camera)."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "Displays a [CanvasLayer] in the background."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "Displays a camera feed in the background."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "Represents the size of the [enum BGMode] enum."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "Additive glow blending mode. Mostly used for particles, glows (bloom), lens "
 "flare, bright sources."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "Screen glow blending mode. Increases brightness, used frequently with bloom."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "Soft light glow blending mode. Modifies contrast, exposes shadows and "
 "highlights (vivid bloom)."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "Replace glow blending mode. Replaces all pixels' color by the glow value. "
 "This can be used to simulate a full-screen blur effect by tweaking the glow "
 "parameters to match the original image's brightness."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "Linear tonemapper operator. Reads the linear data and passes it on "
 "unmodified."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "Reinhardt tonemapper operator. Performs a variation on rendered pixels' "
 "colors by this formula: [code]color = color / (1 + color)[/code]."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "Filmic tonemapper operator."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "Academy Color Encoding System tonemapper operator. Performs an approximation "
 "of the ACES tonemapping curve."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid ""
 "High quality Academy Color Encoding System tonemapper operator that matches "
 "the industry standard. Performs a more physically accurate curve fit which "
@@ -23320,43 +23320,43 @@ msgid ""
 "camera sensor."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "Low depth-of-field blur quality (fastest)."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "Medium depth-of-field blur quality."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "High depth-of-field blur quality (slowest)."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "No blur for the screen-space ambient occlusion effect (fastest)."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "1×1 blur for the screen-space ambient occlusion effect."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "2×2 blur for the screen-space ambient occlusion effect."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "3×3 blur for the screen-space ambient occlusion effect (slowest)."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "Low quality for the screen-space ambient occlusion effect (fastest)."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "Low quality for the screen-space ambient occlusion effect."
 msgstr ""
 
-#: doc/classes/Environment.xml
+#: doc/classes/Environment3D.xml
 msgid "Low quality for the screen-space ambient occlusion effect (slowest)."
 msgstr ""
 
@@ -25671,7 +25671,7 @@ msgstr ""
 msgid ""
 "If [code]true[/code], the generated texture will support high dynamic range "
 "([constant Image.FORMAT_RGBAF] format). This allows for glow effects to work "
-"if [member Environment.glow_enabled] is [code]true[/code]. If [code]false[/"
+"if [member Environment3D.glow_enabled] is [code]true[/code]. If [code]false[/"
 "code], the generated texture will use low dynamic range; overbright colors "
 "will be clamped ([constant Image.FORMAT_RGBA8] format)."
 msgstr ""
@@ -38766,7 +38766,7 @@ msgstr ""
 msgid ""
 "Returns the value of an environment variable. Returns an empty string if the "
 "environment variable doesn't exist.\n"
-"[b]Note:[/b] Double-check the casing of [code]variable[/code]. Environment "
+"[b]Note:[/b] Double-check the casing of [code]variable[/code]. Environment3D "
 "variable names are case-sensitive on all platforms except Windows."
 msgstr ""
 
@@ -39174,7 +39174,7 @@ msgstr ""
 msgid ""
 "Returns [code]true[/code] if the environment variable with the name "
 "[code]variable[/code] exists.\n"
-"[b]Note:[/b] Double-check the casing of [code]variable[/code]. Environment "
+"[b]Note:[/b] Double-check the casing of [code]variable[/code]. Environment3D "
 "variable names are case-sensitive on all platforms except Windows."
 msgstr ""
 
@@ -39392,7 +39392,7 @@ msgid ""
 "process and any process executed with [method execute] after running [method "
 "set_environment]. The environment variable will [i]not[/i] persist to "
 "processes run after the Pandemonium process was terminated.\n"
-"[b]Note:[/b] Double-check the casing of [code]variable[/code]. Environment "
+"[b]Note:[/b] Double-check the casing of [code]variable[/code]. Environment3D "
 "variable names are case-sensitive on all platforms except Windows."
 msgstr ""
 
@@ -40262,7 +40262,7 @@ msgstr ""
 
 #: doc/classes/PanoramaSky.xml
 msgid ""
-"A resource referenced in an [Environment] that is used to draw a background. "
+"A resource referenced in an [Environment3D3D] that is used to draw a background. "
 "The Panorama sky functions similar to skyboxes in other engines, except it "
 "uses an equirectangular sky map instead of a cube map.\n"
 "Using an HDR panorama is strongly recommended for accurate, high-quality "
@@ -46996,14 +46996,14 @@ msgstr ""
 #: doc/classes/ProjectSettings.xml
 msgid ""
 "Default background clear color. Overridable per [Viewport] using its "
-"[Environment]. See [member Environment.background_mode] and [member "
-"Environment.background_color] in particular. To change this default color "
+"[Environment3D3D]. See [member Environment3D.background_mode] and [member "
+"Environment3D.background_color] in particular. To change this default color "
 "programmatically, use [method RenderingServer.set_default_clear_color]."
 msgstr ""
 
 #: doc/classes/ProjectSettings.xml
 msgid ""
-"[Environment] that will be used as a fallback environment in case a scene "
+"[Environment3D3D] that will be used as a fallback environment in case a scene "
 "does not specify its own environment. The default environment is loaded in "
 "at scene load time regardless of whether you have set an environment or not. "
 "If you do not rely on the fallback environment, it is best to delete "
@@ -47288,7 +47288,7 @@ msgid ""
 "If [code]true[/code], allocates the root [Viewport]'s framebuffer with high "
 "dynamic range. High dynamic range allows the use of [Color] values greater "
 "than 1. This must be set to [code]true[/code] for glow rendering to work if "
-"[member Environment.glow_hdr_threshold] is greater than or equal to "
+"[member Environment3D.glow_hdr_threshold] is greater than or equal to "
 "[code]1.0[/code].\n"
 "[b]Note:[/b] Only available on the GLES3 backend."
 msgstr ""
@@ -47297,7 +47297,7 @@ msgstr ""
 msgid ""
 "Lower-end override for [member rendering/quality/depth/hdr] on mobile "
 "devices, due to performance concerns or driver support. This must be set to "
-"[code]true[/code] for glow rendering to work if [member Environment."
+"[code]true[/code] for glow rendering to work if [member Environment3D."
 "glow_hdr_threshold] is greater than or equal to [code]1.0[/code].\n"
 "[b]Note:[/b] Only available on the GLES3 backend."
 msgstr ""
@@ -47429,7 +47429,7 @@ msgid ""
 "Without Sampling\" or \"3D Without Effects\", sample buffers will not be "
 "allocated. This means [code]SCREEN_TEXTURE[/code] and [code]DEPTH_TEXTURE[/"
 "code] will not be available in shaders and post-processing effects such as "
-"glow will not be available in [Environment]."
+"glow will not be available in [Environment3D3D]."
 msgstr ""
 
 #: doc/classes/ProjectSettings.xml
@@ -48572,13 +48572,13 @@ msgid ""
 "performance cost (when [member update_mode] is [constant UPDATE_ONCE]). "
 "[ReflectionProbe]s can be blended together and with the rest of the scene "
 "smoothly. [ReflectionProbe]s can also be combined with [GIProbe] and screen-"
-"space reflections ([member Environment.ss_reflections_enabled]) to get more "
+"space reflections ([member Environment3D.ss_reflections_enabled]) to get more "
 "accurate reflections in specific areas. [ReflectionProbe]s render all "
 "objects within their [member cull_mask], so updating them can be quite "
 "expensive. It is best to update them once with the important static objects "
 "and then leave them as-is.\n"
 "[b]Note:[/b] Unlike [GIProbe], [ReflectionProbe]s only source their "
-"environment from a [WorldEnvironment] node. If you specify an [Environment] "
+"environment from a [WorldEnvironment3D3D] node. If you specify an [Environment3D3D] "
 "resource within a [Camera] node, it will be ignored by the "
 "[ReflectionProbe]. This can lead to incorrect lighting within the "
 "[ReflectionProbe].\n"
@@ -54497,7 +54497,7 @@ msgstr ""
 
 #: doc/classes/SpriteBase3D.xml
 msgid ""
-"If [code]true[/code], the [Light] in the [Environment] has effects on the "
+"If [code]true[/code], the [Light] in the [Environment3D3D] has effects on the "
 "sprite."
 msgstr ""
 
@@ -66075,16 +66075,16 @@ msgstr ""
 #: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the values to be used with the \"Adjustment\" post-process effect. See "
-"[Environment] for more details."
+"[Environment3D3D] for more details."
 msgstr ""
 
 #: doc/classes/RenderingServer.xml
-msgid "Sets the ambient light parameters. See [Environment] for more details."
+msgid "Sets the ambient light parameters. See [Environment3D3D] for more details."
 msgstr ""
 
 #: doc/classes/RenderingServer.xml
 msgid ""
-"Sets the [i]BGMode[/i] of the environment. Equivalent to [member Environment."
+"Sets the [i]BGMode[/i] of the environment. Equivalent to [member Environment3D."
 "background_mode]."
 msgstr ""
 
@@ -66105,73 +66105,73 @@ msgstr ""
 #: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the values to be used with the \"DoF Far Blur\" post-process effect. "
-"See [Environment] for more details."
+"See [Environment3D3D] for more details."
 msgstr ""
 
 #: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the values to be used with the \"DoF Near Blur\" post-process effect. "
-"See [Environment] for more details."
+"See [Environment3D3D] for more details."
 msgstr ""
 
 #: doc/classes/RenderingServer.xml
 msgid ""
-"Sets the variables to be used with the scene fog. See [Environment] for more "
+"Sets the variables to be used with the scene fog. See [Environment3D3D] for more "
 "details."
 msgstr ""
 
 #: doc/classes/RenderingServer.xml
 msgid ""
-"Sets the variables to be used with the fog depth effect. See [Environment] "
+"Sets the variables to be used with the fog depth effect. See [Environment3D3D] "
 "for more details."
 msgstr ""
 
 #: doc/classes/RenderingServer.xml
 msgid ""
-"Sets the variables to be used with the fog height effect. See [Environment] "
+"Sets the variables to be used with the fog height effect. See [Environment3D3D] "
 "for more details."
 msgstr ""
 
 #: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the variables to be used with the \"glow\" post-process effect. See "
-"[Environment] for more details."
+"[Environment3D3D] for more details."
 msgstr ""
 
 #: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the [Sky] to be used as the environment's background when using "
-"[i]BGMode[/i] sky. Equivalent to [member Environment.background_sky]."
+"[i]BGMode[/i] sky. Equivalent to [member Environment3D.background_sky]."
 msgstr ""
 
 #: doc/classes/RenderingServer.xml
 msgid ""
 "Sets a custom field of view for the background [Sky]. Equivalent to [member "
-"Environment.background_sky_custom_fov]."
+"Environment3D.background_sky_custom_fov]."
 msgstr ""
 
 #: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the rotation of the background [Sky] expressed as a [Basis]. Equivalent "
-"to [member Environment.background_sky_orientation]."
+"to [member Environment3D.background_sky_orientation]."
 msgstr ""
 
 #: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the variables to be used with the \"Screen Space Ambient Occlusion "
-"(SSAO)\" post-process effect. See [Environment] for more details."
+"(SSAO)\" post-process effect. See [Environment3D3D] for more details."
 msgstr ""
 
 #: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the variables to be used with the \"screen space reflections\" post-"
-"process effect. See [Environment] for more details."
+"process effect. See [Environment3D3D] for more details."
 msgstr ""
 
 #: doc/classes/RenderingServer.xml
 msgid ""
 "Sets the variables to be used with the \"tonemap\" post-process effect. See "
-"[Environment] for more details."
+"[Environment3D3D] for more details."
 msgstr ""
 
 #: doc/classes/RenderingServer.xml
@@ -68595,7 +68595,7 @@ msgid ""
 msgstr ""
 
 #: doc/classes/RenderingServer.xml
-msgid "Represents the size of the [enum EnvironmentBG] enum."
+msgid "Represents the size of the [enum Environment3DBG] enum."
 msgstr ""
 
 #: doc/classes/RenderingServer.xml
@@ -71655,12 +71655,12 @@ msgid ""
 msgstr ""
 
 #: doc/classes/World.xml
-msgid "The World's [Environment]."
+msgid "The World's [Environment3D3D]."
 msgstr ""
 
 #: doc/classes/World.xml
 msgid ""
-"The World's fallback_environment will be used if the World's [Environment] "
+"The World's fallback_environment will be used if the World's [Environment3D3D] "
 "fails or is missing."
 msgstr ""
 
@@ -71702,29 +71702,29 @@ msgid ""
 "[Physics2DServer] for 2D physics, treating it as both a space and an area."
 msgstr ""
 
-#: doc/classes/WorldEnvironment.xml
+#: doc/classes/WorldEnvironment3D.xml
 msgid ""
 "Default environment properties for the entire scene (post-processing "
 "effects, lighting and background settings)."
 msgstr ""
 
-#: doc/classes/WorldEnvironment.xml
+#: doc/classes/WorldEnvironment3D.xml
 msgid ""
-"The [WorldEnvironment] node is used to configure the default [Environment] "
+"The [WorldEnvironment3D3D] node is used to configure the default [Environment3D3D] "
 "for the scene.\n"
-"The parameters defined in the [WorldEnvironment] can be overridden by an "
-"[Environment] node set on the current [Camera]. Additionally, only one "
-"[WorldEnvironment] may be instanced in a given scene at a time.\n"
-"The [WorldEnvironment] allows the user to specify default lighting "
+"The parameters defined in the [WorldEnvironment3D3D] can be overridden by an "
+"[Environment3D3D] node set on the current [Camera]. Additionally, only one "
+"[WorldEnvironment3D3D] may be instanced in a given scene at a time.\n"
+"The [WorldEnvironment3D3D] allows the user to specify default lighting "
 "parameters (e.g. ambient lighting), various post-processing effects (e.g. "
 "SSAO, DOF, Tonemapping), and how to draw the background (e.g. solid color, "
 "skybox). Usually, these are added in order to improve the realism/color "
 "balance of the scene."
 msgstr ""
 
-#: doc/classes/WorldEnvironment.xml
+#: doc/classes/WorldEnvironment3D.xml
 msgid ""
-"The [Environment] resource used by this [WorldEnvironment], defining the "
+"The [Environment3D3D] resource used by this [WorldEnvironment3D3D], defining the "
 "default properties."
 msgstr ""
 

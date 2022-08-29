@@ -33,24 +33,24 @@
 #include "core/object/reference.h"
 #include "scene/main/node.h"
 
-class Environment;
+class Environment3D;
 
-class WorldEnvironment : public Node {
-	GDCLASS(WorldEnvironment, Node);
+class WorldEnvironment3D : public Node {
+	GDCLASS(WorldEnvironment3D, Node);
 
-	Ref<Environment> environment;
+	Ref<Environment3D> environment;
 
 protected:
 	void _notification(int p_what);
 	static void _bind_methods();
 
 public:
-	void set_environment(const Ref<Environment> &p_environment);
-	Ref<Environment> get_environment() const;
+	void set_environment(const Ref<Environment3D> &p_environment);
+	Ref<Environment3D> get_environment() const;
 
 	String get_configuration_warning() const;
 
-	WorldEnvironment();
+	WorldEnvironment3D();
 };
 
 #endif

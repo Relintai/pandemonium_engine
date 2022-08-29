@@ -94,7 +94,7 @@ void MaterialEditor::_notification(int p_what) {
 	}
 }
 
-void MaterialEditor::edit(Ref<Material> p_material, const Ref<Environment> &p_env) {
+void MaterialEditor::edit(Ref<Material> p_material, const Ref<Environment3D> &p_env) {
 	material = p_material;
 	camera->set_environment(p_env);
 	if (!material.is_null()) {
@@ -261,7 +261,7 @@ EditorInspectorPluginMaterial::EditorInspectorPluginMaterial() {
 	env.instance();
 	Ref<ProceduralSky> proc_sky = memnew(ProceduralSky(true));
 	env->set_sky(proc_sky);
-	env->set_background(Environment::BG_COLOR_SKY);
+	env->set_background(Environment3D::BG_COLOR_SKY);
 }
 
 MaterialEditorPlugin::MaterialEditorPlugin(EditorNode *p_node) {

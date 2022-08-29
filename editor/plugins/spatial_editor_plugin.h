@@ -71,7 +71,7 @@ class EditorSpatialGizmoPlugin;
 class EditorSpatialGizmo;
 class ViewportContainer;
 class SpatialEditorViewport;
-class Environment;
+class Environment3D;
 class AcceptDialog;
 class CheckBox;
 class ConfirmationDialog;
@@ -710,7 +710,7 @@ private:
 
 	Object *_get_editor_data(Object *p_what);
 
-	Ref<Environment> viewport_environment;
+	Ref<Environment3D> viewport_environment;
 
 	Spatial *selected;
 
@@ -775,7 +775,7 @@ public:
 	Dictionary get_state() const;
 	void set_state(const Dictionary &p_state);
 
-	Ref<Environment> get_viewport_environment();
+	Ref<Environment3D> get_viewport_environment();
 
 	UndoRedo *get_undo_redo() { return undo_redo; }
 

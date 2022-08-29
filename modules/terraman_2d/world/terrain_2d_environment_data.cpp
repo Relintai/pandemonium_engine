@@ -24,10 +24,10 @@ SOFTWARE.
 
 #include "scene/resources/environment.h"
 
-Ref<Environment> Terrain2DEnvironmentData::get_environment() {
+Ref<Environment3D> Terrain2DEnvironmentData::get_environment() {
 	return _environment;
 }
-void Terrain2DEnvironmentData::set_environment(const Ref<Environment> &value) {
+void Terrain2DEnvironmentData::set_environment(const Ref<Environment3D> &value) {
 	_environment = value;
 }
 
@@ -62,13 +62,13 @@ void Terrain2DEnvironmentData::set_indirect_energy(const int index, const float 
 	_indirect_energies[index] = value;
 }
 
-void Terrain2DEnvironmentData::setup(WorldEnvironment *world_environment, DirectionalLight *primary_light, DirectionalLight *secondary_light) {
+void Terrain2DEnvironmentData::setup(WorldEnvironment3D *world_environment, DirectionalLight *primary_light, DirectionalLight *secondary_light) {
 	if (has_method("_setup")) {
 		call("_setup", world_environment, primary_light, secondary_light);
 	}
 }
 void Terrain2DEnvironmentData::setup_bind(Node *world_environment, Node *primary_light, Node *secondary_light) {
-	setup(Object::cast_to<WorldEnvironment>(world_environment), Object::cast_to<DirectionalLight>(primary_light), Object::cast_to<DirectionalLight>(secondary_light));
+	setup(Object::cast_to<WorldEnvironment3D>(world_environment), Object::cast_to<DirectionalLight>(primary_light), Object::cast_to<DirectionalLight>(secondary_light));
 }
 
 Terrain2DEnvironmentData::Terrain2DEnvironmentData() {
@@ -87,11 +87,11 @@ Terrain2DEnvironmentData::~Terrain2DEnvironmentData() {
 }
 
 void Terrain2DEnvironmentData::_bind_methods() {
-	BIND_VMETHOD(MethodInfo("_setup", PropertyInfo(Variant::OBJECT, "world_environment", PROPERTY_HINT_RESOURCE_TYPE, "WorldEnvironment"), PropertyInfo(Variant::OBJECT, "primary_light", PROPERTY_HINT_RESOURCE_TYPE, "DirectionalLight"), PropertyInfo(Variant::OBJECT, "secondary_light", PROPERTY_HINT_RESOURCE_TYPE, "DirectionalLight")));
+	BIND_VMETHOD(MethodInfo("_setup", PropertyInfo(Variant::OBJECT, "world_environment", PROPERTY_HINT_RESOURCE_TYPE, "WorldEnvironment3D"), PropertyInfo(Variant::OBJECT, "primary_light", PROPERTY_HINT_RESOURCE_TYPE, "DirectionalLight"), PropertyInfo(Variant::OBJECT, "secondary_light", PROPERTY_HINT_RESOURCE_TYPE, "DirectionalLight")));
 
 	ClassDB::bind_method(D_METHOD("get_environment"), &Terrain2DEnvironmentData::get_environment);
 	ClassDB::bind_method(D_METHOD("set_environment", "value"), &Terrain2DEnvironmentData::set_environment);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "environment", PROPERTY_HINT_RESOURCE_TYPE, "Environment"), "set_environment", "get_environment");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "environment", PROPERTY_HINT_RESOURCE_TYPE, "Environment3D"), "set_environment", "get_environment");
 
 	ClassDB::bind_method(D_METHOD("get_color", "index"), &Terrain2DEnvironmentData::get_color);
 	ClassDB::bind_method(D_METHOD("set_color", "index", "value"), &Terrain2DEnvironmentData::set_color);

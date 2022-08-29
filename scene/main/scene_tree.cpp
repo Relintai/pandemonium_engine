@@ -684,7 +684,7 @@ bool SceneTree::idle(float p_time) {
 		String env_path = ProjectSettings::get_singleton()->get("rendering/environment/default_environment");
 		env_path = env_path.strip_edges(); //user may have added a space or two
 		String cpath;
-		Ref<Environment> fallback = get_root()->get_world()->get_fallback_environment();
+		Ref<Environment3D> fallback = get_root()->get_world()->get_fallback_environment();
 		if (fallback.is_valid()) {
 			cpath = fallback->get_path();
 		}
@@ -2260,7 +2260,7 @@ SceneTree::SceneTree() {
 	{ //load default fallback environment
 		//get possible extensions
 		List<String> exts;
-		ResourceLoader::get_recognized_extensions_for_type("Environment", &exts);
+		ResourceLoader::get_recognized_extensions_for_type("Environment3D", &exts);
 		String ext_hint;
 		for (List<String>::Element *E = exts.front(); E; E = E->next()) {
 			if (ext_hint != String()) {
@@ -2274,7 +2274,7 @@ SceneTree::SceneTree() {
 		ProjectSettings::get_singleton()->set_custom_property_info("rendering/environment/default_environment", PropertyInfo(Variant::STRING, "rendering/viewport/default_environment", PROPERTY_HINT_FILE, ext_hint));
 		env_path = env_path.strip_edges();
 		if (env_path != String()) {
-			Ref<Environment> env = ResourceLoader::load(env_path);
+			Ref<Environment3D> env = ResourceLoader::load(env_path);
 			if (env.is_valid()) {
 				root->get_world()->set_fallback_environment(env);
 			} else {

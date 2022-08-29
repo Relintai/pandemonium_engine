@@ -1059,7 +1059,7 @@ void Viewport::_propagate_enter_world(Node *p_node) {
 			return;
 		}
 
-		if (Object::cast_to<Spatial>(p_node) || Object::cast_to<WorldEnvironment>(p_node)) {
+		if (Object::cast_to<Spatial>(p_node) || Object::cast_to<WorldEnvironment3D>(p_node)) {
 			p_node->notification(Spatial::NOTIFICATION_ENTER_WORLD);
 		} else {
 			Viewport *v = Object::cast_to<Viewport>(p_node);
@@ -1093,7 +1093,7 @@ void Viewport::_propagate_exit_world(Node *p_node) {
 			return;
 		}
 
-		if (Object::cast_to<Spatial>(p_node) || Object::cast_to<WorldEnvironment>(p_node)) {
+		if (Object::cast_to<Spatial>(p_node) || Object::cast_to<WorldEnvironment3D>(p_node)) {
 			p_node->notification(Spatial::NOTIFICATION_EXIT_WORLD);
 		} else {
 			Viewport *v = Object::cast_to<Viewport>(p_node);

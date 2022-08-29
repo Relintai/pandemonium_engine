@@ -474,7 +474,7 @@ void register_scene_types() {
 	ClassDB::register_class<PathFollow>();
 	ClassDB::register_class<VisibilityNotifier>();
 	ClassDB::register_class<VisibilityEnabler>();
-	ClassDB::register_class<WorldEnvironment>();
+	ClassDB::register_class<WorldEnvironment3D>();
 	ClassDB::register_class<RemoteTransform>();
 
 	ClassDB::register_virtual_class<Joint>();
@@ -602,7 +602,7 @@ void register_scene_types() {
 #endif
 	ClassDB::register_class<PhysicsMaterial>();
 	ClassDB::register_class<World3D>();
-	ClassDB::register_class<Environment>();
+	ClassDB::register_class<Environment3D>();
 	ClassDB::register_class<World2D>();
 	ClassDB::register_virtual_class<Texture>();
 	ClassDB::register_virtual_class<Sky>();

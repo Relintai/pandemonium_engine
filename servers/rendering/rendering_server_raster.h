@@ -432,7 +432,7 @@ public:
 
 	BIND0R(RID, environment_create)
 
-	BIND2(environment_set_background, RID, EnvironmentBG)
+	BIND2(environment_set_background, RID, Environment3DBG)
 	BIND2(environment_set_sky, RID, RID)
 	BIND2(environment_set_sky_custom_fov, RID, float)
 	BIND2(environment_set_sky_orientation, RID, const Basis &)
@@ -441,13 +441,13 @@ public:
 	BIND2(environment_set_canvas_max_layer, RID, int)
 	BIND4(environment_set_ambient_light, RID, const Color &, float, float)
 	BIND7(environment_set_ssr, RID, bool, int, float, float, float, bool)
-	BIND13(environment_set_ssao, RID, bool, float, float, float, float, float, float, float, const Color &, EnvironmentSSAOQuality, EnvironmentSSAOBlur, float)
+	BIND13(environment_set_ssao, RID, bool, float, float, float, float, float, float, float, const Color &, Environment3DSSAOQuality, Environment3DSSAOBlur, float)
 
-	BIND6(environment_set_dof_blur_near, RID, bool, float, float, float, EnvironmentDOFBlurQuality)
-	BIND6(environment_set_dof_blur_far, RID, bool, float, float, float, EnvironmentDOFBlurQuality)
-	BIND12(environment_set_glow, RID, bool, int, float, float, float, EnvironmentGlowBlendMode, float, float, float, bool, bool)
+	BIND6(environment_set_dof_blur_near, RID, bool, float, float, float, Environment3DDOFBlurQuality)
+	BIND6(environment_set_dof_blur_far, RID, bool, float, float, float, Environment3DDOFBlurQuality)
+	BIND12(environment_set_glow, RID, bool, int, float, float, float, Environment3DGlowBlendMode, float, float, float, bool, bool)
 
-	BIND9(environment_set_tonemap, RID, EnvironmentToneMapper, float, float, bool, float, float, float, float)
+	BIND9(environment_set_tonemap, RID, Environment3DToneMapper, float, float, bool, float, float, float, float)
 
 	BIND6(environment_set_adjustment, RID, bool, float, float, float, RID)
 

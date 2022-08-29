@@ -148,8 +148,8 @@
 			If not [constant DOPPLER_TRACKING_DISABLED], this camera will simulate the [url=https://en.wikipedia.org/wiki/Doppler_effect]Doppler effect[/url] for objects changed in particular [code]_process[/code] methods. The Doppler effect is only simulated for [AudioStreamPlayer3D] nodes that have [member AudioStreamPlayer3D.doppler_tracking] set to a value other than [constant AudioStreamPlayer3D.DOPPLER_TRACKING_DISABLED].
 			[b]Note:[/b] To toggle the Doppler effect preview in the editor, use the Perspective menu in the top-left corner of the 3D viewport and toggle [b]Enable Doppler[/b].
 		</member>
-		<member name="environment" type="Environment" setter="set_environment" getter="get_environment">
-			The [Environment] to use for this camera.
+		<member name="environment" type="Environment3D" setter="set_environment" getter="get_environment">
+			The [Environment3D] to use for this camera.
 		</member>
 		<member name="far" type="float" setter="set_zfar" getter="get_zfar" default="100.0">
 			The distance to the far culling boundary for this camera relative to its local Z axis.

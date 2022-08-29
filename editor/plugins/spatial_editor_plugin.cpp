@@ -4426,7 +4426,7 @@ SpatialEditorViewport::SpatialEditorViewport(SpatialEditor *p_spatial_editor, Ed
 	view_menu->get_popup()->add_radio_check_shortcut(ED_SHORTCUT("spatial_editor/view_display_unshaded", TTR("Display Unshaded")), VIEW_DISPLAY_SHADELESS);
 	view_menu->get_popup()->set_item_checked(view_menu->get_popup()->get_item_index(VIEW_DISPLAY_NORMAL), true);
 	view_menu->get_popup()->add_separator();
-	view_menu->get_popup()->add_check_shortcut(ED_SHORTCUT("spatial_editor/view_environment", TTR("View Environment")), VIEW_ENVIRONMENT);
+	view_menu->get_popup()->add_check_shortcut(ED_SHORTCUT("spatial_editor/view_environment", TTR("View Environment3D")), VIEW_ENVIRONMENT);
 	view_menu->get_popup()->set_item_checked(view_menu->get_popup()->get_item_index(VIEW_ENVIRONMENT), true);
 	view_menu->get_popup()->add_check_shortcut(ED_SHORTCUT("spatial_editor/view_gizmos", TTR("View Gizmos")), VIEW_GIZMOS);
 	view_menu->get_popup()->set_item_checked(view_menu->get_popup()->get_item_index(VIEW_GIZMOS), true);
@@ -5292,7 +5292,7 @@ void SpatialEditor::set_state(const Dictionary &p_state) {
 	}
 }
 
-Ref<Environment> SpatialEditor::get_viewport_environment() {
+Ref<Environment3D> SpatialEditor::get_viewport_environment() {
 	return viewport_environment;
 }
 
@@ -7042,7 +7042,7 @@ SpatialEditor::SpatialEditor(EditorNode *p_editor) {
 	gizmo.visible = true;
 	gizmo.scale = 1.0;
 
-	viewport_environment = Ref<Environment>(memnew(Environment));
+	viewport_environment = Ref<Environment3D>(memnew(Environment3D));
 	undo_redo = p_editor->get_undo_redo();
 	VBoxContainer *vbc = this;
 

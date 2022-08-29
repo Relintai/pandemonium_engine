@@ -31,7 +31,7 @@
 			The gradient repeat type, one of the [enum Repeat] values. The texture is filled starting from [member fill_from] to [member fill_to] offsets by default, but the gradient fill can be repeated to cover the entire texture.
 		</member>
 		<member name="use_hdr" type="bool" setter="set_use_hdr" getter="is_using_hdr" default="false">
-			If [code]true[/code], the generated texture will support high dynamic range ([constant Image.FORMAT_RGBAF] format). This allows for glow effects to work if [member Environment.glow_enabled] is [code]true[/code]. If [code]false[/code], the generated texture will use low dynamic range; overbright colors will be clamped ([constant Image.FORMAT_RGBA8] format).
+			If [code]true[/code], the generated texture will support high dynamic range ([constant Image.FORMAT_RGBAF] format). This allows for glow effects to work if [member Environment3D.glow_enabled] is [code]true[/code]. If [code]false[/code], the generated texture will use low dynamic range; overbright colors will be clamped ([constant Image.FORMAT_RGBA8] format).
 		</member>
 		<member name="width" type="int" setter="set_width" getter="get_width" default="64">
 			The number of horizontal color samples that will be obtained from the [Gradient], which also represents the texture's width.

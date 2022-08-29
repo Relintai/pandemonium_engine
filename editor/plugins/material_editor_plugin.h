@@ -85,14 +85,14 @@ protected:
 	static void _bind_methods();
 
 public:
-	void edit(Ref<Material> p_material, const Ref<Environment> &p_env);
+	void edit(Ref<Material> p_material, const Ref<Environment3D> &p_env);
 	MaterialEditor();
 	~MaterialEditor();
 };
 
 class EditorInspectorPluginMaterial : public EditorInspectorPlugin {
 	GDCLASS(EditorInspectorPluginMaterial, EditorInspectorPlugin);
-	Ref<Environment> env;
+	Ref<Environment3D> env;
 
 public:
 	virtual bool can_handle(Object *p_object);

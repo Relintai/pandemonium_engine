@@ -49,8 +49,8 @@ private:
 	RID scenario;
 	RID navigation_map;
 	SpatialIndexer *indexer;
-	Ref<Environment> environment;
-	Ref<Environment> fallback_environment;
+	Ref<Environment3D> environment;
+	Ref<Environment3D> fallback_environment;
 
 protected:
 	static void _bind_methods();
@@ -73,11 +73,11 @@ public:
 	RID get_scenario() const;
 	RID get_navigation_map() const;
 
-	void set_environment(const Ref<Environment> &p_environment);
-	Ref<Environment> get_environment() const;
+	void set_environment(const Ref<Environment3D> &p_environment);
+	Ref<Environment3D> get_environment() const;
 
-	void set_fallback_environment(const Ref<Environment> &p_environment);
-	Ref<Environment> get_fallback_environment() const;
+	void set_fallback_environment(const Ref<Environment3D> &p_environment);
+	Ref<Environment3D> get_fallback_environment() const;
 
 	void get_camera_list(List<Camera *> *r_cameras);
 

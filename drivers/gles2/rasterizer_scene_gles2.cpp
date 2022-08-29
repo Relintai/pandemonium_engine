@@ -738,61 +738,61 @@ bool RasterizerSceneGLES2::reflection_probe_instance_postprocess_step(RID p_inst
 /* ENVIRONMENT API */
 
 RID RasterizerSceneGLES2::environment_create() {
-	Environment *env = memnew(Environment);
+	Environment3D *env = memnew(Environment3D);
 
 	return environment_owner.make_rid(env);
 }
 
-void RasterizerSceneGLES2::environment_set_background(RID p_env, RS::EnvironmentBG p_bg) {
-	Environment *env = environment_owner.getornull(p_env);
+void RasterizerSceneGLES2::environment_set_background(RID p_env, RS::Environment3DBG p_bg) {
+	Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND(!env);
 	env->bg_mode = p_bg;
 }
 
 void RasterizerSceneGLES2::environment_set_sky(RID p_env, RID p_sky) {
-	Environment *env = environment_owner.getornull(p_env);
+	Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND(!env);
 
 	env->sky = p_sky;
 }
 
 void RasterizerSceneGLES2::environment_set_sky_custom_fov(RID p_env, float p_scale) {
-	Environment *env = environment_owner.getornull(p_env);
+	Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND(!env);
 
 	env->sky_custom_fov = p_scale;
 }
 
 void RasterizerSceneGLES2::environment_set_sky_orientation(RID p_env, const Basis &p_orientation) {
-	Environment *env = environment_owner.getornull(p_env);
+	Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND(!env);
 
 	env->sky_orientation = p_orientation;
 }
 
 void RasterizerSceneGLES2::environment_set_bg_color(RID p_env, const Color &p_color) {
-	Environment *env = environment_owner.getornull(p_env);
+	Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND(!env);
 
 	env->bg_color = p_color;
 }
 
 void RasterizerSceneGLES2::environment_set_bg_energy(RID p_env, float p_energy) {
-	Environment *env = environment_owner.getornull(p_env);
+	Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND(!env);
 
 	env->bg_energy = p_energy;
 }
 
 void RasterizerSceneGLES2::environment_set_canvas_max_layer(RID p_env, int p_max_layer) {
-	Environment *env = environment_owner.getornull(p_env);
+	Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND(!env);
 
 	env->canvas_max_layer = p_max_layer;
 }
 
 void RasterizerSceneGLES2::environment_set_ambient_light(RID p_env, const Color &p_color, float p_energy, float p_sky_contribution) {
-	Environment *env = environment_owner.getornull(p_env);
+	Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND(!env);
 
 	env->ambient_color = p_color;
@@ -800,8 +800,8 @@ void RasterizerSceneGLES2::environment_set_ambient_light(RID p_env, const Color 
 	env->ambient_sky_contribution = p_sky_contribution;
 }
 
-void RasterizerSceneGLES2::environment_set_dof_blur_far(RID p_env, bool p_enable, float p_distance, float p_transition, float p_amount, RS::EnvironmentDOFBlurQuality p_quality) {
-	Environment *env = environment_owner.getornull(p_env);
+void RasterizerSceneGLES2::environment_set_dof_blur_far(RID p_env, bool p_enable, float p_distance, float p_transition, float p_amount, RS::Environment3DDOFBlurQuality p_quality) {
+	Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND(!env);
 
 	env->dof_blur_far_enabled = p_enable;
@@ -811,8 +811,8 @@ void RasterizerSceneGLES2::environment_set_dof_blur_far(RID p_env, bool p_enable
 	env->dof_blur_far_quality = p_quality;
 }
 
-void RasterizerSceneGLES2::environment_set_dof_blur_near(RID p_env, bool p_enable, float p_distance, float p_transition, float p_amount, RS::EnvironmentDOFBlurQuality p_quality) {
-	Environment *env = environment_owner.getornull(p_env);
+void RasterizerSceneGLES2::environment_set_dof_blur_near(RID p_env, bool p_enable, float p_distance, float p_transition, float p_amount, RS::Environment3DDOFBlurQuality p_quality) {
+	Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND(!env);
 
 	env->dof_blur_near_enabled = p_enable;
@@ -822,8 +822,8 @@ void RasterizerSceneGLES2::environment_set_dof_blur_near(RID p_env, bool p_enabl
 	env->dof_blur_near_quality = p_quality;
 }
 
-void RasterizerSceneGLES2::environment_set_glow(RID p_env, bool p_enable, int p_level_flags, float p_intensity, float p_strength, float p_bloom_threshold, RS::EnvironmentGlowBlendMode p_blend_mode, float p_hdr_bleed_threshold, float p_hdr_bleed_scale, float p_hdr_luminance_cap, bool p_bicubic_upscale, bool p_high_quality) {
-	Environment *env = environment_owner.getornull(p_env);
+void RasterizerSceneGLES2::environment_set_glow(RID p_env, bool p_enable, int p_level_flags, float p_intensity, float p_strength, float p_bloom_threshold, RS::Environment3DGlowBlendMode p_blend_mode, float p_hdr_bleed_threshold, float p_hdr_bleed_scale, float p_hdr_luminance_cap, bool p_bicubic_upscale, bool p_high_quality) {
+	Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND(!env);
 
 	env->glow_enabled = p_enable;
@@ -840,27 +840,27 @@ void RasterizerSceneGLES2::environment_set_glow(RID p_env, bool p_enable, int p_
 }
 
 void RasterizerSceneGLES2::environment_set_fog(RID p_env, bool p_enable, float p_begin, float p_end, RID p_gradient_texture) {
-	Environment *env = environment_owner.getornull(p_env);
+	Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND(!env);
 }
 
 void RasterizerSceneGLES2::environment_set_ssr(RID p_env, bool p_enable, int p_max_steps, float p_fade_in, float p_fade_out, float p_depth_tolerance, bool p_roughness) {
-	Environment *env = environment_owner.getornull(p_env);
+	Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND(!env);
 }
 
-void RasterizerSceneGLES2::environment_set_ssao(RID p_env, bool p_enable, float p_radius, float p_intensity, float p_radius2, float p_intensity2, float p_bias, float p_light_affect, float p_ao_channel_affect, const Color &p_color, RS::EnvironmentSSAOQuality p_quality, RenderingServer::EnvironmentSSAOBlur p_blur, float p_bilateral_sharpness) {
-	Environment *env = environment_owner.getornull(p_env);
+void RasterizerSceneGLES2::environment_set_ssao(RID p_env, bool p_enable, float p_radius, float p_intensity, float p_radius2, float p_intensity2, float p_bias, float p_light_affect, float p_ao_channel_affect, const Color &p_color, RS::Environment3DSSAOQuality p_quality, RenderingServer::Environment3DSSAOBlur p_blur, float p_bilateral_sharpness) {
+	Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND(!env);
 }
 
-void RasterizerSceneGLES2::environment_set_tonemap(RID p_env, RS::EnvironmentToneMapper p_tone_mapper, float p_exposure, float p_white, bool p_auto_exposure, float p_min_luminance, float p_max_luminance, float p_auto_exp_speed, float p_auto_exp_scale) {
-	Environment *env = environment_owner.getornull(p_env);
+void RasterizerSceneGLES2::environment_set_tonemap(RID p_env, RS::Environment3DToneMapper p_tone_mapper, float p_exposure, float p_white, bool p_auto_exposure, float p_min_luminance, float p_max_luminance, float p_auto_exp_speed, float p_auto_exp_scale) {
+	Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND(!env);
 }
 
 void RasterizerSceneGLES2::environment_set_adjustment(RID p_env, bool p_enable, float p_brightness, float p_contrast, float p_saturation, RID p_ramp) {
-	Environment *env = environment_owner.getornull(p_env);
+	Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND(!env);
 
 	env->adjustments_enabled = p_enable;
@@ -871,7 +871,7 @@ void RasterizerSceneGLES2::environment_set_adjustment(RID p_env, bool p_enable, 
 }
 
 void RasterizerSceneGLES2::environment_set_fog(RID p_env, bool p_enable, const Color &p_color, const Color &p_sun_color, float p_sun_amount) {
-	Environment *env = environment_owner.getornull(p_env);
+	Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND(!env);
 
 	env->fog_enabled = p_enable;
@@ -881,7 +881,7 @@ void RasterizerSceneGLES2::environment_set_fog(RID p_env, bool p_enable, const C
 }
 
 void RasterizerSceneGLES2::environment_set_fog_depth(RID p_env, bool p_enable, float p_depth_begin, float p_depth_end, float p_depth_curve, bool p_transmit, float p_transmit_curve) {
-	Environment *env = environment_owner.getornull(p_env);
+	Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND(!env);
 
 	env->fog_depth_enabled = p_enable;
@@ -893,7 +893,7 @@ void RasterizerSceneGLES2::environment_set_fog_depth(RID p_env, bool p_enable, f
 }
 
 void RasterizerSceneGLES2::environment_set_fog_height(RID p_env, bool p_enable, float p_min_height, float p_max_height, float p_height_curve) {
-	Environment *env = environment_owner.getornull(p_env);
+	Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND(!env);
 
 	env->fog_height_enabled = p_enable;
@@ -905,15 +905,15 @@ bool RasterizerSceneGLES2::is_environment(RID p_env) {
 	return environment_owner.owns(p_env);
 }
 
-RS::EnvironmentBG RasterizerSceneGLES2::environment_get_background(RID p_env) {
-	const Environment *env = environment_owner.getornull(p_env);
+RS::Environment3DBG RasterizerSceneGLES2::environment_get_background(RID p_env) {
+	const Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND_V(!env, RS::ENV_BG_MAX);
 
 	return env->bg_mode;
 }
 
 int RasterizerSceneGLES2::environment_get_canvas_max_layer(RID p_env) {
-	const Environment *env = environment_owner.getornull(p_env);
+	const Environment3D *env = environment_owner.getornull(p_env);
 	ERR_FAIL_COND_V(!env, -1);
 
 	return env->canvas_max_layer;
@@ -2172,7 +2172,7 @@ void RasterizerSceneGLES2::_setup_light(LightInstance *light, ShadowAtlas *shado
 	}
 }
 
-void RasterizerSceneGLES2::_setup_refprobes(ReflectionProbeInstance *p_refprobe1, ReflectionProbeInstance *p_refprobe2, const Transform &p_view_transform, Environment *p_env) {
+void RasterizerSceneGLES2::_setup_refprobes(ReflectionProbeInstance *p_refprobe1, ReflectionProbeInstance *p_refprobe2, const Transform &p_view_transform, Environment3D *p_env) {
 	if (p_refprobe1) {
 		state.scene_shader.set_uniform(SceneShaderGLES2::REFPROBE1_USE_BOX_PROJECT, p_refprobe1->probe_ptr->box_projection);
 		state.scene_shader.set_uniform(SceneShaderGLES2::REFPROBE1_BOX_EXTENTS, p_refprobe1->probe_ptr->extents);
@@ -2220,7 +2220,7 @@ void RasterizerSceneGLES2::_setup_refprobes(ReflectionProbeInstance *p_refprobe1
 	}
 }
 
-void RasterizerSceneGLES2::_render_render_list(RenderList::Element **p_elements, int p_element_count, const Transform &p_view_transform, const Projection &p_projection, const int p_eye, RID p_shadow_atlas, Environment *p_env, GLuint p_base_env, float p_shadow_bias, float p_shadow_normal_bias, bool p_reverse_cull, bool p_alpha_pass, bool p_shadow) {
+void RasterizerSceneGLES2::_render_render_list(RenderList::Element **p_elements, int p_element_count, const Transform &p_view_transform, const Projection &p_projection, const int p_eye, RID p_shadow_atlas, Environment3D *p_env, GLuint p_base_env, float p_shadow_bias, float p_shadow_normal_bias, bool p_reverse_cull, bool p_alpha_pass, bool p_shadow) {
 	ShadowAtlas *shadow_atlas = shadow_atlas_owner.getornull(p_shadow_atlas);
 
 	Vector2 viewport_size = state.viewport_size;
@@ -2708,7 +2708,7 @@ void RasterizerSceneGLES2::_draw_sky(RasterizerStorageGLES2::Sky *p_sky, const P
 	storage->shaders.copy.set_conditional(CopyShaderGLES2::OUTPUT_LINEAR, false);
 }
 
-void RasterizerSceneGLES2::_post_process(Environment *env, const Projection &p_cam_projection) {
+void RasterizerSceneGLES2::_post_process(Environment3D *env, const Projection &p_cam_projection) {
 	//copy to front buffer
 
 	glDepthMask(GL_FALSE);
@@ -3164,7 +3164,7 @@ void RasterizerSceneGLES2::render_scene(const Transform &p_cam_transform, const 
 	storage->info.render.object_count += p_cull_count;
 
 	GLuint current_fb = 0;
-	Environment *env = nullptr;
+	Environment3D *env = nullptr;
 
 	int viewport_width, viewport_height;
 	int viewport_x = 0;
@@ -3831,7 +3831,7 @@ bool RasterizerSceneGLES2::free(RID p_rid) {
 		memdelete(reflection_instance);
 
 	} else if (environment_owner.owns(p_rid)) {
-		Environment *environment = environment_owner.get(p_rid);
+		Environment3D *environment = environment_owner.get(p_rid);
 
 		environment_owner.free(p_rid);
 		memdelete(environment);

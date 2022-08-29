@@ -35,7 +35,7 @@
 
 class SpatialVelocityTracker;
 class Viewport;
-class Environment;
+class Environment3D;
 
 class Camera : public Spatial {
 	GDCLASS(Camera, Spatial);
@@ -81,7 +81,7 @@ private:
 
 	uint32_t layers;
 
-	Ref<Environment> environment;
+	Ref<Environment3D> environment;
 
 	//void _camera_make_current(Node *p_camera);
 	friend class Viewport;
@@ -154,8 +154,8 @@ public:
 
 	virtual Vector<Plane> get_frustum() const;
 
-	void set_environment(const Ref<Environment> &p_environment);
-	Ref<Environment> get_environment() const;
+	void set_environment(const Ref<Environment3D> &p_environment);
+	Ref<Environment3D> get_environment() const;
 
 	void set_keep_aspect_mode(KeepAspect p_aspect);
 	KeepAspect get_keep_aspect_mode() const;

@@ -513,7 +513,7 @@ private:
 						if (!f) {
 							set_message(TTR("Couldn't create project.pandemonium in project path."), MESSAGE_ERROR);
 						} else {
-							f->store_line("[gd_resource type=\"Environment\" load_steps=2 format=2]");
+							f->store_line("[gd_resource type=\"Environment3D\" load_steps=2 format=2]");
 							f->store_line("");
 							f->store_line("[sub_resource type=\"ProceduralSky\" id=1]");
 							f->store_line("");
@@ -2248,7 +2248,7 @@ void ProjectManager::_language_selected(int p_id) {
 	String lang = language_btn->get_item_metadata(p_id);
 	EditorSettings::get_singleton()->set("interface/editor/editor_language", lang);
 	language_btn->set_text(lang);
-	language_btn->set_icon(get_theme_icon("Environment", "EditorIcons"));
+	language_btn->set_icon(get_theme_icon("Environment3D", "EditorIcons"));
 
 	language_restart_ask->set_text(TTR("Language changed.\nThe interface will update after restarting the editor or project manager."));
 	language_restart_ask->popup_centered();
@@ -2653,7 +2653,7 @@ ProjectManager::ProjectManager() {
 			language_btn->set_text(lang);
 		}
 	}
-	language_btn->set_icon(get_theme_icon("Environment", "EditorIcons"));
+	language_btn->set_icon(get_theme_icon("Environment3D", "EditorIcons"));
 
 	settings_hb->add_child(language_btn);
 	language_btn->connect("item_selected", this, "_language_selected");

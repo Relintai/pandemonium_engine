@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="WorldEnvironment" inherits="Node" version="3.8">
+<class name="WorldEnvironment3D" inherits="Node" version="3.8">
 	<brief_description>
 		Default environment properties for the entire scene (post-processing effects, lighting and background settings).
 	</brief_description>
 	<description>
-		The [WorldEnvironment] node is used to configure the default [Environment] for the scene.
-		The parameters defined in the [WorldEnvironment] can be overridden by an [Environment] node set on the current [Camera]. Additionally, only one [WorldEnvironment] may be instanced in a given scene at a time.
-		The [WorldEnvironment] allows the user to specify default lighting parameters (e.g. ambient lighting), various post-processing effects (e.g. SSAO, DOF, Tonemapping), and how to draw the background (e.g. solid color, skybox). Usually, these are added in order to improve the realism/color balance of the scene.
+		The [WorldEnvironment3D] node is used to configure the default [Environment3D] for the scene.
+		The parameters defined in the [WorldEnvironment3D] can be overridden by an [Environment3D] node set on the current [Camera]. Additionally, only one [WorldEnvironment3D] may be instanced in a given scene at a time.
+		The [WorldEnvironment3D] allows the user to specify default lighting parameters (e.g. ambient lighting), various post-processing effects (e.g. SSAO, DOF, Tonemapping), and how to draw the background (e.g. solid color, skybox). Usually, these are added in order to improve the realism/color balance of the scene.
 	</description>
 	<tutorials>
 		<link title="Environment and post-processing">$DOCS_URL/tutorials/3d/environment_and_post_processing.html</link>
@@ -17,8 +17,8 @@
 	<methods>
 	</methods>
 	<members>
-		<member name="environment" type="Environment" setter="set_environment" getter="get_environment">
-			The [Environment] resource used by this [WorldEnvironment], defining the default properties.
+		<member name="environment" type="Environment3D" setter="set_environment" getter="get_environment">
+			The [Environment3D] resource used by this [WorldEnvironment3D], defining the default properties.
 		</member>
 	</members>
 	<constants>

@@ -24,10 +24,10 @@ SOFTWARE.
 
 #include "scene/resources/environment.h"
 
-Ref<Environment> EnvironmentData::get_environment() {
+Ref<Environment3D> EnvironmentData::get_environment() {
 	return _environment;
 }
-void EnvironmentData::set_environment(const Ref<Environment> &value) {
+void EnvironmentData::set_environment(const Ref<Environment3D> &value) {
 	_environment = value;
 }
 
@@ -62,13 +62,13 @@ void EnvironmentData::set_indirect_energy(const int index, const float value) {
 	_indirect_energies[index] = value;
 }
 
-void EnvironmentData::setup(WorldEnvironment *world_environment, DirectionalLight *primary_light, DirectionalLight *secondary_light) {
+void EnvironmentData::setup(WorldEnvironment3D *world_environment, DirectionalLight *primary_light, DirectionalLight *secondary_light) {
 	if (has_method("_setup")) {
 		call("_setup", world_environment, primary_light, secondary_light);
 	}
 }
 void EnvironmentData::setup_bind(Node *world_environment, Node *primary_light, Node *secondary_light) {
-	setup(Object::cast_to<WorldEnvironment>(world_environment), Object::cast_to<DirectionalLight>(primary_light), Object::cast_to<DirectionalLight>(secondary_light));
+	setup(Object::cast_to<WorldEnvironment3D>(world_environment), Object::cast_to<DirectionalLight>(primary_light), Object::cast_to<DirectionalLight>(secondary_light));
 }
 
 EnvironmentData::EnvironmentData() {
@@ -87,11 +87,11 @@ EnvironmentData::~EnvironmentData() {
 }
 
 void EnvironmentData::_bind_methods() {
-	BIND_VMETHOD(MethodInfo("_setup", PropertyInfo(Variant::OBJECT, "world_environment", PROPERTY_HINT_RESOURCE_TYPE, "WorldEnvironment"), PropertyInfo(Variant::OBJECT, "primary_light", PROPERTY_HINT_RESOURCE_TYPE, "DirectionalLight"), PropertyInfo(Variant::OBJECT, "secondary_light", PROPERTY_HINT_RESOURCE_TYPE, "DirectionalLight")));
+	BIND_VMETHOD(MethodInfo("_setup", PropertyInfo(Variant::OBJECT, "world_environment", PROPERTY_HINT_RESOURCE_TYPE, "WorldEnvironment3D"), PropertyInfo(Variant::OBJECT, "primary_light", PROPERTY_HINT_RESOURCE_TYPE, "DirectionalLight"), PropertyInfo(Variant::OBJECT, "secondary_light", PROPERTY_HINT_RESOURCE_TYPE, "DirectionalLight")));
 
 	ClassDB::bind_method(D_METHOD("get_environment"), &EnvironmentData::get_environment);
 	ClassDB::bind_method(D_METHOD("set_environment", "value"), &EnvironmentData::set_environment);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "environment", PROPERTY_HINT_RESOURCE_TYPE, "Environment"), "set_environment", "get_environment");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "environment", PROPERTY_HINT_RESOURCE_TYPE, "Environment3D"), "set_environment", "get_environment");
 
 	ClassDB::bind_method(D_METHOD("get_color", "index"), &EnvironmentData::get_color);
 	ClassDB::bind_method(D_METHOD("set_color", "index", "value"), &EnvironmentData::set_color);

@@ -430,7 +430,7 @@ void Camera::_camera_make_current(Node *p_camera) {
 }
 */
 
-void Camera::set_environment(const Ref<Environment> &p_environment) {
+void Camera::set_environment(const Ref<Environment3D> &p_environment) {
 	environment = p_environment;
 	if (environment.is_valid()) {
 		RS::get_singleton()->camera_set_environment(camera, environment->get_rid());
@@ -440,7 +440,7 @@ void Camera::set_environment(const Ref<Environment> &p_environment) {
 	_update_camera_mode();
 }
 
-Ref<Environment> Camera::get_environment() const {
+Ref<Environment3D> Camera::get_environment() const {
 	return environment;
 }
 
@@ -523,7 +523,7 @@ void Camera::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "keep_aspect", PROPERTY_HINT_ENUM, "Keep Width,Keep Height"), "set_keep_aspect_mode", "get_keep_aspect_mode");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cull_mask", PROPERTY_HINT_LAYERS_3D_RENDER), "set_cull_mask", "get_cull_mask");
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "environment", PROPERTY_HINT_RESOURCE_TYPE, "Environment"), "set_environment", "get_environment");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "environment", PROPERTY_HINT_RESOURCE_TYPE, "Environment3D"), "set_environment", "get_environment");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "h_offset"), "set_h_offset", "get_h_offset");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "v_offset"), "set_v_offset", "get_v_offset");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "doppler_tracking", PROPERTY_HINT_ENUM, "Disabled,Idle,Physics"), "set_doppler_tracking", "get_doppler_tracking");

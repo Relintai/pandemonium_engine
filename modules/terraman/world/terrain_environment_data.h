@@ -36,8 +36,8 @@ class TerrainEnvironmentData : public Resource {
 	GDCLASS(TerrainEnvironmentData, Resource);
 
 public:
-	Ref<Environment> get_environment();
-	void set_environment(const Ref<Environment> &value);
+	Ref<Environment3D> get_environment();
+	void set_environment(const Ref<Environment3D> &value);
 
 	Color get_color(const int index);
 	void set_color(const int index, const Color &value);
@@ -46,7 +46,7 @@ public:
 	float get_indirect_energy(const int index);
 	void set_indirect_energy(const int index, const float value);
 
-	void setup(WorldEnvironment *world_environment, DirectionalLight *primary_light, DirectionalLight *secondary_light);
+	void setup(WorldEnvironment3D *world_environment, DirectionalLight *primary_light, DirectionalLight *secondary_light);
 	void setup_bind(Node *world_environment, Node *primary_light, Node *secondary_light);
 
 	TerrainEnvironmentData();
@@ -61,7 +61,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	Ref<Environment> _environment;
+	Ref<Environment3D> _environment;
 
 	Color _colors[LIGHT_COUNT];
 	float _energies[LIGHT_COUNT];

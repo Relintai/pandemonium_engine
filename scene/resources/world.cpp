@@ -266,7 +266,7 @@ RID World3D::get_navigation_map() const {
 	return navigation_map;
 }
 
-void World3D::set_environment(const Ref<Environment> &p_environment) {
+void World3D::set_environment(const Ref<Environment3D> &p_environment) {
 	if (environment == p_environment) {
 		return;
 	}
@@ -281,11 +281,11 @@ void World3D::set_environment(const Ref<Environment> &p_environment) {
 	emit_changed();
 }
 
-Ref<Environment> World3D::get_environment() const {
+Ref<Environment3D> World3D::get_environment() const {
 	return environment;
 }
 
-void World3D::set_fallback_environment(const Ref<Environment> &p_environment) {
+void World3D::set_fallback_environment(const Ref<Environment3D> &p_environment) {
 	if (fallback_environment == p_environment) {
 		return;
 	}
@@ -300,7 +300,7 @@ void World3D::set_fallback_environment(const Ref<Environment> &p_environment) {
 	emit_changed();
 }
 
-Ref<Environment> World3D::get_fallback_environment() const {
+Ref<Environment3D> World3D::get_fallback_environment() const {
 	return fallback_environment;
 }
 
@@ -323,8 +323,8 @@ void World3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_fallback_environment", "env"), &World3D::set_fallback_environment);
 	ClassDB::bind_method(D_METHOD("get_fallback_environment"), &World3D::get_fallback_environment);
 	ClassDB::bind_method(D_METHOD("get_direct_space_state"), &World3D::get_direct_space_state);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "environment", PROPERTY_HINT_RESOURCE_TYPE, "Environment"), "set_environment", "get_environment");
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "fallback_environment", PROPERTY_HINT_RESOURCE_TYPE, "Environment"), "set_fallback_environment", "get_fallback_environment");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "environment", PROPERTY_HINT_RESOURCE_TYPE, "Environment3D"), "set_environment", "get_environment");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "fallback_environment", PROPERTY_HINT_RESOURCE_TYPE, "Environment3D"), "set_fallback_environment", "get_fallback_environment");
 	ADD_PROPERTY(PropertyInfo(Variant::RID, "space", PROPERTY_HINT_NONE, "", 0), "", "get_space");
 	ADD_PROPERTY(PropertyInfo(Variant::RID, "scenario", PROPERTY_HINT_NONE, "", 0), "", "get_scenario");
 	ADD_PROPERTY(PropertyInfo(Variant::RID, "navigation_map", PROPERTY_HINT_NONE, "", 0), "", "get_navigation_map");

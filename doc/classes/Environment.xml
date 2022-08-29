@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Environment" inherits="Resource" version="3.8">
+<class name="Environment3D" inherits="Resource" version="3.8">
 	<brief_description>
-		Resource for environment nodes (like [WorldEnvironment]) that define multiple rendering options.
+		Resource for environment nodes (like [WorldEnvironment3D]) that define multiple rendering options.
 	</brief_description>
 	<description>
-		Resource for environment nodes (like [WorldEnvironment]) that define multiple environment operations (such as background [Sky] or [Color], ambient light, fog, depth-of-field...). These parameters affect the final render of the scene. The order of these operations is:
+		Resource for environment nodes (like [WorldEnvironment3D]) that define multiple environment operations (such as background [Sky] or [Color], ambient light, fog, depth-of-field...). These parameters affect the final render of the scene. The order of these operations is:
 		- Depth of Field Blur
 		- Glow
 		- Tonemap (Auto Exposure)
@@ -16,7 +16,7 @@
 		Note that [member ProjectSettings.rendering/quality/intended_usage/framebuffer_allocation] has a mobile platform override to use "3D Without Effects" by default. It improves the performance on mobile devices, but at the same time affects the screen display on mobile devices.
 	</description>
 	<tutorials>
-		<link title="Environment and post-processing">$DOCS_URL/tutorials/3d/environment_and_post_processing.html</link>
+		<link title="Environment3D and post-processing">$DOCS_URL/tutorials/3d/environment_and_post_processing.html</link>
 		<link title="Light transport in game engines">$DOCS_URL/tutorials/3d/high_dynamic_range.html</link>
 		<link title="3D Material Testers Demo">https://godotengine.org/asset-library/asset/123</link>
 		<link title="2D HDR Demo">https://godotengine.org/asset-library/asset/110</link>
@@ -89,7 +89,7 @@
 		<member name="background_energy" type="float" setter="set_bg_energy" getter="get_bg_energy" default="1.0">
 			The power of the light emitted by the background.
 		</member>
-		<member name="background_mode" type="int" setter="set_background" getter="get_background" enum="Environment.BGMode" default="0">
+		<member name="background_mode" type="int" setter="set_background" getter="get_background" enum="Environment3D.BGMode" default="0">
 			The background mode. See [enum BGMode] for possible values.
 		</member>
 		<member name="background_sky" type="Sky" setter="set_sky" getter="get_sky">
@@ -116,7 +116,7 @@
 		<member name="dof_blur_far_enabled" type="bool" setter="set_dof_blur_far_enabled" getter="is_dof_blur_far_enabled" default="false">
 			If [code]true[/code], enables the depth-of-field far blur effect.
 		</member>
-		<member name="dof_blur_far_quality" type="int" setter="set_dof_blur_far_quality" getter="get_dof_blur_far_quality" enum="Environment.DOFBlurQuality" default="1">
+		<member name="dof_blur_far_quality" type="int" setter="set_dof_blur_far_quality" getter="get_dof_blur_far_quality" enum="Environment3D.DOFBlurQuality" default="1">
 			The depth-of-field far blur's quality. Higher values can mitigate the visible banding effect seen at higher strengths, but are much slower.
 		</member>
 		<member name="dof_blur_far_transition" type="float" setter="set_dof_blur_far_transition" getter="get_dof_blur_far_transition" default="5.0">
@@ -131,7 +131,7 @@
 		<member name="dof_blur_near_enabled" type="bool" setter="set_dof_blur_near_enabled" getter="is_dof_blur_near_enabled" default="false">
 			If [code]true[/code], enables the depth-of-field near blur effect.
 		</member>
-		<member name="dof_blur_near_quality" type="int" setter="set_dof_blur_near_quality" getter="get_dof_blur_near_quality" enum="Environment.DOFBlurQuality" default="1">
+		<member name="dof_blur_near_quality" type="int" setter="set_dof_blur_near_quality" getter="get_dof_blur_near_quality" enum="Environment3D.DOFBlurQuality" default="1">
 			The depth-of-field near blur's quality. Higher values can mitigate the visible banding effect seen at higher strengths, but are much slower.
 		</member>
 		<member name="dof_blur_near_transition" type="float" setter="set_dof_blur_near_transition" getter="get_dof_blur_near_transition" default="1.0">
@@ -183,7 +183,7 @@
 			Smooths out the blockiness created by sampling higher levels, at the cost of performance.
 			[b]Note:[/b] When using the GLES2 renderer, this is only available if the GPU supports the [code]GL_EXT_gpu_shader4[/code] extension.
 		</member>
-		<member name="glow_blend_mode" type="int" setter="set_glow_blend_mode" getter="get_glow_blend_mode" enum="Environment.GlowBlendMode" default="2">
+		<member name="glow_blend_mode" type="int" setter="set_glow_blend_mode" getter="get_glow_blend_mode" enum="Environment3D.GlowBlendMode" default="2">
 			The glow blending mode.
 		</member>
 		<member name="glow_bloom" type="float" setter="set_glow_bloom" getter="get_glow_bloom" default="0.0">
@@ -257,7 +257,7 @@
 		<member name="ssao_bias" type="float" setter="set_ssao_bias" getter="get_ssao_bias" default="0.01">
 			The screen-space ambient occlusion bias. This should be kept high enough to prevent "smooth" curves from being affected by ambient occlusion.
 		</member>
-		<member name="ssao_blur" type="int" setter="set_ssao_blur" getter="get_ssao_blur" enum="Environment.SSAOBlur" default="3">
+		<member name="ssao_blur" type="int" setter="set_ssao_blur" getter="get_ssao_blur" enum="Environment3D.SSAOBlur" default="3">
 			The screen-space ambient occlusion blur quality. See [enum SSAOBlur] for possible values.
 		</member>
 		<member name="ssao_color" type="Color" setter="set_ssao_color" getter="get_ssao_color" default="Color( 0, 0, 0, 1 )">
@@ -278,7 +278,7 @@
 		<member name="ssao_light_affect" type="float" setter="set_ssao_direct_light_affect" getter="get_ssao_direct_light_affect" default="0.0">
 			The screen-space ambient occlusion intensity in direct light. In real life, ambient occlusion only applies to indirect light, which means its effects can't be seen in direct light. Values higher than [code]0[/code] will make the SSAO effect visible in direct light.
 		</member>
-		<member name="ssao_quality" type="int" setter="set_ssao_quality" getter="get_ssao_quality" enum="Environment.SSAOQuality" default="1">
+		<member name="ssao_quality" type="int" setter="set_ssao_quality" getter="get_ssao_quality" enum="Environment3D.SSAOQuality" default="1">
 			The screen-space ambient occlusion quality. Higher qualities will make better use of small objects for ambient occlusion, but are slower.
 		</member>
 		<member name="ssao_radius" type="float" setter="set_ssao_radius" getter="get_ssao_radius" default="1.0">
@@ -290,7 +290,7 @@
 		<member name="tonemap_exposure" type="float" setter="set_tonemap_exposure" getter="get_tonemap_exposure" default="1.0">
 			The default exposure used for tonemapping.
 		</member>
-		<member name="tonemap_mode" type="int" setter="set_tonemapper" getter="get_tonemapper" enum="Environment.ToneMapper" default="0">
+		<member name="tonemap_mode" type="int" setter="set_tonemapper" getter="get_tonemapper" enum="Environment3D.ToneMapper" default="0">
 			The tonemapping mode to use. Tonemapping is the process that "converts" HDR values to be suitable for rendering on a SDR display. (Godot doesn't support rendering on HDR displays yet.)
 		</member>
 		<member name="tonemap_white" type="float" setter="set_tonemap_white" getter="get_tonemap_white" default="1.0">

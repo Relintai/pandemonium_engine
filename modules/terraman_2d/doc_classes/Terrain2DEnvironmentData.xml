@@ -9,7 +9,7 @@
 	<methods>
 		<method name="_setup" qualifiers="virtual">
 			<return type="void" />
-			<argument index="0" name="world_environment" type="WorldEnvironment" />
+			<argument index="0" name="world_environment" type="WorldEnvironment3D" />
 			<argument index="1" name="primary_light" type="DirectionalLight" />
 			<argument index="2" name="secondary_light" type="DirectionalLight" />
 			<description>
@@ -64,7 +64,7 @@
 		</method>
 	</methods>
 	<members>
-		<member name="environment" type="Environment" setter="set_environment" getter="get_environment">
+		<member name="environment" type="Environment3D" setter="set_environment" getter="get_environment">
 		</member>
 		<member name="primary_light_color" type="Color" setter="set_color" getter="get_color" default="Color( 1, 1, 1, 1 )">
 		</member>

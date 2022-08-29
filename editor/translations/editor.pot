@@ -7824,7 +7824,7 @@ msgid "Display Unshaded"
 msgstr ""
 
 #: editor/plugins/spatial_editor_plugin.cpp
-msgid "View Environment"
+msgid "View Environment3D"
 msgstr ""
 
 #: editor/plugins/spatial_editor_plugin.cpp
@@ -14415,18 +14415,18 @@ msgstr ""
 
 #: scene/3d/world_environment.cpp
 msgid ""
-"WorldEnvironment requires its \"Environment\" property to contain an "
-"Environment to have a visible effect."
+"WorldEnvironment3D requires its \"Environment3D\" property to contain an "
+"Environment3D to have a visible effect."
 msgstr ""
 
 #: scene/3d/world_environment.cpp
 msgid ""
-"Only one WorldEnvironment is allowed per scene (or set of instanced scenes)."
+"Only one WorldEnvironment3D is allowed per scene (or set of instanced scenes)."
 msgstr ""
 
 #: scene/3d/world_environment.cpp
 msgid ""
-"This WorldEnvironment is ignored. Either add a Camera (for 3D scenes) or set "
+"This WorldEnvironment3D is ignored. Either add a Camera (for 3D scenes) or set "
 "this environment's Background Mode to Canvas (for 2D scenes)."
 msgstr ""
 
@@ -14562,8 +14562,8 @@ msgstr ""
 
 #: scene/main/scene_tree.cpp
 msgid ""
-"Default Environment as specified in Project Settings (Rendering -> "
-"Environment -> Default Environment) could not be loaded."
+"Default Environment3D as specified in Project Settings (Rendering -> "
+"Environment3D -> Default Environment3D) could not be loaded."
 msgstr ""
 
 #: scene/main/timer.cpp

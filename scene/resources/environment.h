@@ -35,8 +35,8 @@
 class Sky;
 class Texture;
 
-class Environment : public Resource {
-	GDCLASS(Environment, Resource);
+class Environment3D : public Resource {
+	GDCLASS(Environment3D, Resource);
 
 public:
 	enum BGMode {
@@ -407,15 +407,15 @@ public:
 
 	virtual RID get_rid() const;
 
-	Environment();
-	~Environment();
+	Environment3D();
+	~Environment3D();
 };
 
-VARIANT_ENUM_CAST(Environment::BGMode)
-VARIANT_ENUM_CAST(Environment::ToneMapper)
-VARIANT_ENUM_CAST(Environment::GlowBlendMode)
-VARIANT_ENUM_CAST(Environment::DOFBlurQuality)
-VARIANT_ENUM_CAST(Environment::SSAOQuality)
-VARIANT_ENUM_CAST(Environment::SSAOBlur)
+VARIANT_ENUM_CAST(Environment3D::BGMode)
+VARIANT_ENUM_CAST(Environment3D::ToneMapper)
+VARIANT_ENUM_CAST(Environment3D::GlowBlendMode)
+VARIANT_ENUM_CAST(Environment3D::DOFBlurQuality)
+VARIANT_ENUM_CAST(Environment3D::SSAOQuality)
+VARIANT_ENUM_CAST(Environment3D::SSAOBlur)
 
 #endif // ENVIRONMENT_H
