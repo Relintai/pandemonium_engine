@@ -1,5 +1,6 @@
 #include "world.h"
 
+#include "core/config/engine.h"
 #include "core/core_string_names.h"
 #include "scene/3d/spatial.h"
 #include "scene/3d/world_environment_3d.h"
@@ -116,7 +117,7 @@ void World::set_override_in_parent_viewport(const bool value) {
 		return;
 	}
 
-	if (is_inside_tree()) {
+	if (!Engine::get_singleton()->is_editor_hint() && is_inside_tree()) {
 		World *w = get_viewport();
 
 		if (w) {
@@ -174,6 +175,10 @@ World *World::get_override_world_or_this() {
 	return _override_world;
 }
 void World::set_override_world(World *p_world) {
+	if (Engine::get_singleton()->is_editor_hint()) {
+		return;
+	}
+
 	if (p_world == _override_world || p_world == this) {
 		return;
 	}
@@ -431,7 +436,7 @@ void World::_notification(int p_what) {
 			}
 		} break;
 		case NOTIFICATION_READY: {
-			if (_override_in_parent_viewport) {
+			if (_override_in_parent_viewport && !Engine::get_singleton()->is_editor_hint()) {
 				if (get_parent()) {
 					World *w = get_parent()->get_viewport();
 
@@ -442,12 +447,14 @@ void World::_notification(int p_what) {
 			}
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
-			set_override_world(NULL);
+			if (!Engine::get_singleton()->is_editor_hint()) {
+				set_override_world(NULL);
 
-			while (_overriding_worlds.size() > 0) {
-				World *w = _overriding_worlds[0];
+				while (_overriding_worlds.size() > 0) {
+					World *w = _overriding_worlds[0];
 
-				w->set_override_world(NULL);
+					w->set_override_world(NULL);
+				}
 			}
 		} break;
 	}
