@@ -36,16 +36,6 @@ void World::set_world_2d(const Ref<World2D> &p_world_2d) {
 	_on_set_world_2d(old_world);
 }
 
-Ref<World2D> World::find_world_2d() const {
-	if (world_2d.is_valid()) {
-		return world_2d;
-	} else if (_parent_world) {
-		return _parent_world->find_world_2d();
-	} else {
-		return Ref<World2D>();
-	}
-}
-
 Ref<World3D> World::get_world_3d() const {
 	return world_3d;
 }
@@ -83,18 +73,6 @@ void World::set_world_3d(const Ref<World3D> &p_world_3d) {
 	_on_set_world_3d(old_world);
 }
 
-Ref<World3D> World::find_world_3d() const {
-	if (own_world_3d.is_valid()) {
-		return own_world_3d;
-	} else if (world_3d.is_valid()) {
-		return world_3d;
-	} else if (_parent_world) {
-		return _parent_world->find_world_3d();
-	} else {
-		return Ref<World3D>();
-	}
-}
-
 bool World::is_using_own_world_3d() const {
 	return own_world_3d.is_valid();
 }
@@ -127,6 +105,28 @@ void World::set_use_own_world_3d(bool p_use_own_world_3d) {
 	}
 
 	_on_set_use_own_world_3d(p_use_own_world_3d);
+}
+
+Ref<World2D> World::find_world_2d() const {
+	if (world_2d.is_valid()) {
+		return world_2d;
+	} else if (_parent_world) {
+		return _parent_world->find_world_2d();
+	} else {
+		return Ref<World2D>();
+	}
+}
+
+Ref<World3D> World::find_world_3d() const {
+	if (own_world_3d.is_valid()) {
+		return own_world_3d;
+	} else if (world_3d.is_valid()) {
+		return world_3d;
+	} else if (_parent_world) {
+		return _parent_world->find_world_3d();
+	} else {
+		return Ref<World3D>();
+	}
 }
 
 World::World() {
