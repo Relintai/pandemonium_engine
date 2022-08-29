@@ -5,6 +5,7 @@
 #include "scene/3d/world_environment_3d.h"
 #include "scene/resources/world_2d.h"
 #include "scene/resources/world_3d.h"
+#include "viewport.h"
 
 Ref<World2D> World::get_world_2d() const {
 	return world_2d;
@@ -107,7 +108,18 @@ void World::set_use_own_world_3d(bool p_use_own_world_3d) {
 	_on_set_use_own_world_3d(p_use_own_world_3d);
 }
 
+bool World::get_override_in_parent_viewport() {
+	return _override_in_parent_viewport;
+}
+void World::set_override_in_parent_viewport(const bool value) {
+	_override_in_parent_viewport = value;
+}
+
 Ref<World2D> World::find_world_2d() const {
+	if (_override_world) {
+		return _override_world->find_world_2d();
+	}
+
 	if (world_2d.is_valid()) {
 		return world_2d;
 	} else if (_parent_world) {
@@ -118,6 +130,10 @@ Ref<World2D> World::find_world_2d() const {
 }
 
 Ref<World3D> World::find_world_3d() const {
+	if (_override_world) {
+		return _override_world->find_world_3d();
+	}
+
 	if (own_world_3d.is_valid()) {
 		return own_world_3d;
 	} else if (world_3d.is_valid()) {
@@ -129,8 +145,47 @@ Ref<World3D> World::find_world_3d() const {
 	}
 }
 
+World *World::get_override_world() {
+	return _override_world;
+}
+World *World::get_override_world_or_this() {
+	if (!_override_world) {
+		return this;
+	}
+
+	return _override_world;
+}
+void World::set_override_world(World *p_world) {
+	if (p_world == _override_world) {
+		return;
+	}
+
+	World *old_world = _override_world;
+
+	if (old_world) {
+		old_world->_remove_overridden_world(this);
+	}
+
+	_override_world = p_world;
+
+	if (_override_world) {
+		_override_world->_add_overridden_world(this);
+	}
+
+	_on_world_override_changed(old_world);
+}
+void World::set_override_world_bind(Node *p_world) {
+	World *w = Object::cast_to<World>(p_world);
+
+	ERR_FAIL_COND(p_world && !w);
+
+	set_override_world(w);
+}
+
 World::World() {
 	world_2d = Ref<World2D>(memnew(World2D));
+	_override_world = NULL;
+	_override_in_parent_viewport = false;
 }
 World::~World() {
 }
@@ -181,6 +236,26 @@ void World::_propagate_exit_world(Node *p_node) {
 	}
 }
 
+void World::_add_overridden_world(World *p_world) {
+	ERR_FAIL_COND(!p_world);
+
+	_overriding_worlds.push_back(p_world);
+}
+void World::_remove_overridden_world(World *p_world) {
+	ERR_FAIL_COND(!p_world);
+
+	for (int i = 0; i < _overriding_worlds.size(); ++i) {
+		World *w = _overriding_worlds[i];
+
+		if (w == p_world) {
+			_overriding_worlds.remove(i);
+			return;
+		}
+	}
+
+	ERR_FAIL();
+}
+
 void World::_own_world_3d_changed() {
 	ERR_FAIL_COND(world_3d.is_null());
 	ERR_FAIL_COND(own_world_3d.is_null());
@@ -204,6 +279,9 @@ void World::_on_set_world_3d(const Ref<World3D> &p_old_world) {
 void World::_on_set_world_2d(const Ref<World2D> &p_old_world_2d) {
 }
 
+void World::_on_world_override_changed(World *p_old_world) {
+}
+
 void World::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
@@ -212,6 +290,27 @@ void World::_notification(int p_what) {
 			} else {
 				_parent_world = nullptr;
 			}
+		} break;
+		case NOTIFICATION_READY: {
+			if (_override_in_parent_viewport) {
+				if (get_parent()) {
+					World *w = get_parent()->get_viewport();
+
+					if (w) {
+						w->set_override_world(this);
+					}
+				}
+			}
+		} break;
+		case NOTIFICATION_EXIT_TREE: {
+			for (int i = 0; i < _overriding_worlds.size(); ++i) {
+				World *w = _overriding_worlds[i];
+
+				w->set_override_world(NULL);
+			}
+
+			_override_world = NULL;
+
 		} break;
 	}
 }
@@ -225,12 +324,20 @@ void World::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_world_3d", "world"), &World::set_world_3d);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "world", PROPERTY_HINT_RESOURCE_TYPE, "World3D"), "set_world_3d", "get_world_3d");
 
-	ClassDB::bind_method(D_METHOD("set_use_own_world_3d", "enable"), &World::set_use_own_world_3d);
 	ClassDB::bind_method(D_METHOD("is_using_own_world_3d"), &World::is_using_own_world_3d);
+	ClassDB::bind_method(D_METHOD("set_use_own_world_3d", "enable"), &World::set_use_own_world_3d);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "own_world_3d"), "set_use_own_world_3d", "is_using_own_world_3d");
+
+	ClassDB::bind_method(D_METHOD("get_override_in_parent_viewport"), &World::get_override_in_parent_viewport);
+	ClassDB::bind_method(D_METHOD("set_override_in_parent_viewport", "enable"), &World::set_override_in_parent_viewport);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "override_in_parent_viewport"), "set_override_in_parent_viewport", "get_override_in_parent_viewport");
 
 	ClassDB::bind_method(D_METHOD("find_world_2d"), &World::find_world_2d);
 	ClassDB::bind_method(D_METHOD("find_world_3d"), &World::find_world_3d);
+
+	ClassDB::bind_method(D_METHOD("get_override_world"), &World::get_override_world);
+	ClassDB::bind_method(D_METHOD("get_override_world_or_this"), &World::get_override_world_or_this);
+	ClassDB::bind_method(D_METHOD("set_override_world", "world"), &World::set_override_world_bind);
 
 	ClassDB::bind_method(D_METHOD("_own_world_3d_changed"), &World::_own_world_3d_changed);
 }
