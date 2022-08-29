@@ -35,6 +35,7 @@
 #include "scene/2d/physics_body_2d.h"
 #include "scene/animation/animation_player.h"
 #include "scene/main/viewport.h"
+#include "scene/main/world.h"
 #include "scene/resources/world_2d.h"
 #include "scene/scene_string_names.h"
 
@@ -48,32 +49,32 @@ bool VisibilityNotifier2D::_edit_use_rect() const {
 }
 #endif
 
-void VisibilityNotifier2D::_enter_viewport(Viewport *p_viewport) {
-	ERR_FAIL_COND(viewports.has(p_viewport));
-	viewports.insert(p_viewport);
+void VisibilityNotifier2D::_enter_world(World *p_world) {
+	ERR_FAIL_COND(worlds.has(p_world));
+	worlds.insert(p_world);
 
 	if (is_inside_tree() && Engine::get_singleton()->is_editor_hint()) {
 		return;
 	}
 
-	if (viewports.size() == 1) {
+	if (worlds.size() == 1) {
 		emit_signal(SceneStringNames::get_singleton()->screen_entered);
 
 		_screen_enter();
 	}
-	emit_signal(SceneStringNames::get_singleton()->viewport_entered, p_viewport);
+	emit_signal(SceneStringNames::get_singleton()->viewport_entered, p_world);
 }
 
-void VisibilityNotifier2D::_exit_viewport(Viewport *p_viewport) {
-	ERR_FAIL_COND(!viewports.has(p_viewport));
-	viewports.erase(p_viewport);
+void VisibilityNotifier2D::_exit_world(World *p_world) {
+	ERR_FAIL_COND(!worlds.has(p_world));
+	worlds.erase(p_world);
 
 	if (is_inside_tree() && Engine::get_singleton()->is_editor_hint()) {
 		return;
 	}
 
-	emit_signal(SceneStringNames::get_singleton()->viewport_exited, p_viewport);
-	if (viewports.size() == 0) {
+	emit_signal(SceneStringNames::get_singleton()->viewport_exited, p_world);
+	if (worlds.size() == 0) {
 		emit_signal(SceneStringNames::get_singleton()->screen_exited);
 
 		_screen_exit();
@@ -119,7 +120,7 @@ void VisibilityNotifier2D::_notification(int p_what) {
 }
 
 bool VisibilityNotifier2D::is_on_screen() const {
-	return viewports.size() > 0;
+	return worlds.size() > 0;
 }
 
 void VisibilityNotifier2D::_bind_methods() {
@@ -129,8 +130,8 @@ void VisibilityNotifier2D::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::RECT2, "rect"), "set_rect", "get_rect");
 
-	ADD_SIGNAL(MethodInfo("viewport_entered", PropertyInfo(Variant::OBJECT, "viewport", PROPERTY_HINT_RESOURCE_TYPE, "Viewport")));
-	ADD_SIGNAL(MethodInfo("viewport_exited", PropertyInfo(Variant::OBJECT, "viewport", PROPERTY_HINT_RESOURCE_TYPE, "Viewport")));
+	ADD_SIGNAL(MethodInfo("viewport_entered", PropertyInfo(Variant::OBJECT, "world", PROPERTY_HINT_RESOURCE_TYPE, "World")));
+	ADD_SIGNAL(MethodInfo("viewport_exited", PropertyInfo(Variant::OBJECT, "world", PROPERTY_HINT_RESOURCE_TYPE, "World")));
 	ADD_SIGNAL(MethodInfo("screen_entered"));
 	ADD_SIGNAL(MethodInfo("screen_exited"));
 }

@@ -475,7 +475,7 @@ Transform2D CanvasItem::get_global_transform_with_canvas() const {
 	if (canvas_layer) {
 		return canvas_layer->get_transform() * get_global_transform();
 	} else if (is_inside_tree()) {
-		return get_viewport()->get_canvas_transform() * get_global_transform();
+		return get_world()->get_canvas_transform() * get_global_transform();
 	} else {
 		return get_global_transform();
 	}
@@ -507,7 +507,7 @@ void CanvasItem::_toplevel_raise_self() {
 	if (canvas_layer) {
 		RenderingServer::get_singleton()->canvas_item_set_draw_index(canvas_item, canvas_layer->get_sort_index());
 	} else {
-		RenderingServer::get_singleton()->canvas_item_set_draw_index(canvas_item, get_viewport()->gui_get_canvas_sort_index());
+		RenderingServer::get_singleton()->canvas_item_set_draw_index(canvas_item, get_world()->gui_get_canvas_sort_index());
 	}
 }
 
@@ -532,7 +532,7 @@ void CanvasItem::_enter_canvas() {
 		if (canvas_layer) {
 			canvas = canvas_layer->get_canvas();
 		} else {
-			canvas = get_viewport()->find_world_2d()->get_canvas();
+			canvas = get_world()->find_world_2d()->get_canvas();
 		}
 
 		RenderingServer::get_singleton()->canvas_item_set_parent(canvas_item, canvas);
@@ -543,7 +543,7 @@ void CanvasItem::_enter_canvas() {
 		if (canvas_layer) {
 			canvas_layer->reset_sort_index();
 		} else {
-			get_viewport()->gui_reset_canvas_sort_index();
+			get_world()->gui_reset_canvas_sort_index();
 		}
 
 		get_tree()->call_group_flags(SceneTree::GROUP_CALL_UNIQUE, canvas_group, "_toplevel_raise_self");
@@ -949,7 +949,7 @@ void CanvasItem::_notify_transform(CanvasItem *p_node) {
 
 Rect2 CanvasItem::get_viewport_rect() const {
 	ERR_FAIL_COND_V(!is_inside_tree(), Rect2());
-	return get_viewport()->get_visible_rect();
+	return get_world()->get_visible_rect();
 }
 
 RID CanvasItem::get_canvas() const {
@@ -958,7 +958,7 @@ RID CanvasItem::get_canvas() const {
 	if (canvas_layer) {
 		return canvas_layer->get_canvas();
 	} else {
-		return get_viewport()->find_world_2d()->get_canvas();
+		return get_world()->find_world_2d()->get_canvas();
 	}
 }
 
@@ -984,8 +984,8 @@ Ref<World2D> CanvasItem::get_world_2d() const {
 
 	CanvasItem *tl = get_toplevel();
 
-	if (tl->get_viewport()) {
-		return tl->get_viewport()->find_world_2d();
+	if (tl->get_world()) {
+		return tl->get_world()->find_world_2d();
 	} else {
 		return Ref<World2D>();
 	}
@@ -993,7 +993,7 @@ Ref<World2D> CanvasItem::get_world_2d() const {
 
 RID CanvasItem::get_viewport_rid() const {
 	ERR_FAIL_COND_V(!is_inside_tree(), RID());
-	return get_viewport()->get_viewport_rid();
+	return get_world()->get_viewport_rid();
 }
 
 void CanvasItem::set_block_transform_notify(bool p_enable) {
@@ -1224,7 +1224,7 @@ Transform2D CanvasItem::get_canvas_transform() const {
 	} else if (Object::cast_to<CanvasItem>(get_parent())) {
 		return Object::cast_to<CanvasItem>(get_parent())->get_canvas_transform();
 	} else {
-		return get_viewport()->get_canvas_transform();
+		return get_world()->get_canvas_transform();
 	}
 }
 
@@ -1232,14 +1232,14 @@ Transform2D CanvasItem::get_viewport_transform() const {
 	ERR_FAIL_COND_V(!is_inside_tree(), Transform2D());
 
 	if (canvas_layer) {
-		if (get_viewport()) {
-			return get_viewport()->get_final_transform() * canvas_layer->get_transform();
+		if (get_world()) {
+			return get_world()->get_final_transform() * canvas_layer->get_transform();
 		} else {
 			return canvas_layer->get_transform();
 		}
 
 	} else {
-		return get_viewport()->get_final_transform() * get_viewport()->get_canvas_transform();
+		return get_world()->get_final_transform() * get_world()->get_canvas_transform();
 	}
 }
 

@@ -36,15 +36,15 @@ class Viewport;
 class VisibilityNotifier2D : public Node2D {
 	GDCLASS(VisibilityNotifier2D, Node2D);
 
-	Set<Viewport *> viewports;
+	Set<World *> worlds;
 
 	Rect2 rect;
 
 protected:
 	friend struct SpatialIndexer2D;
 
-	void _enter_viewport(Viewport *p_viewport);
-	void _exit_viewport(Viewport *p_viewport);
+	void _enter_world(World *p_world);
+	void _exit_world(World *p_world);
 
 	virtual void _screen_enter() {}
 	virtual void _screen_exit() {}

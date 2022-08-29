@@ -36,6 +36,7 @@
 
 class VisibilityNotifier2D;
 class Viewport;
+class World;
 struct SpatialIndexer2D;
 
 class World2D : public Resource {
@@ -50,11 +51,12 @@ class World2D : public Resource {
 protected:
 	static void _bind_methods();
 	friend class Viewport;
+	friend class World;
 	friend class VisibilityNotifier2D;
 
-	void _register_viewport(Viewport *p_viewport, const Rect2 &p_rect);
-	void _update_viewport(Viewport *p_viewport, const Rect2 &p_rect);
-	void _remove_viewport(Viewport *p_viewport);
+	void _register_world(World *p_world, const Rect2 &p_rect);
+	void _update_world(World *p_world, const Rect2 &p_rect);
+	void _remove_world(World *p_world);
 
 	void _register_notifier(VisibilityNotifier2D *p_notifier, const Rect2 &p_rect);
 	void _update_notifier(VisibilityNotifier2D *p_notifier, const Rect2 &p_rect);
@@ -69,7 +71,8 @@ public:
 
 	Physics2DDirectSpaceState *get_direct_space_state();
 
-	void get_viewport_list(List<Viewport *> *r_viewports);
+	void get_world_list(List<World *> *r_worlds);
+	void get_viewport_list(List<Viewport *> *r_worlds);
 
 	World2D();
 	~World2D();

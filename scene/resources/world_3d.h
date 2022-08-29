@@ -66,6 +66,7 @@ protected:
 	void _update_notifier(VisibilityNotifier *p_notifier, const AABB &p_rect);
 	void _remove_notifier(VisibilityNotifier *p_notifier);
 	friend class Viewport;
+	friend class World;
 	void _update(uint64_t p_frame);
 
 public:

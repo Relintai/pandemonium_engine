@@ -217,6 +217,108 @@ void World::set_override_world_bind(Node *p_world) {
 	set_override_world(w);
 }
 
+void World::gui_reset_canvas_sort_index() {
+	if (_override_world) {
+		_override_world->gui_reset_canvas_sort_index();
+	}
+}
+int World::gui_get_canvas_sort_index() {
+	if (_override_world) {
+		return _override_world->gui_get_canvas_sort_index();
+	}
+
+	return 0;
+}
+void World::enable_canvas_transform_override(bool p_enable) {
+	if (_override_world) {
+		_override_world->enable_canvas_transform_override(p_enable);
+	}
+}
+bool World::is_canvas_transform_override_enbled() const {
+	if (_override_world) {
+		return _override_world->is_canvas_transform_override_enbled();
+	}
+
+	return false;
+}
+void World::set_canvas_transform_override(const Transform2D &p_transform) {
+	if (_override_world) {
+		_override_world->set_canvas_transform_override(p_transform);
+	}
+}
+Transform2D World::get_canvas_transform_override() const {
+	if (_override_world) {
+		return _override_world->get_canvas_transform_override();
+	}
+
+	return Transform2D();
+}
+
+void World::set_canvas_transform(const Transform2D &p_transform) {
+	if (_override_world) {
+		_override_world->set_canvas_transform(p_transform);
+	}
+}
+
+Transform2D World::get_canvas_transform() const {
+	if (_override_world) {
+		return _override_world->get_canvas_transform();
+	}
+
+	return Transform2D();
+}
+
+void World::set_global_canvas_transform(const Transform2D &p_transform) {
+	if (_override_world) {
+		_override_world->set_global_canvas_transform(p_transform);
+	}
+}
+
+Transform2D World::get_global_canvas_transform() const {
+	if (_override_world) {
+		return _override_world->get_global_canvas_transform();
+	}
+
+	return Transform2D();
+}
+
+Transform2D World::get_final_transform() const {
+	if (_override_world) {
+		return _override_world->get_final_transform();
+	}
+
+	return Transform2D();
+}
+
+Rect2 World::get_visible_rect() const {
+	if (_override_world) {
+		return _override_world->get_visible_rect();
+	}
+
+	return Rect2();
+}
+
+RID World::get_viewport_rid() const {
+	if (_override_world) {
+		return _override_world->get_viewport_rid();
+	}
+
+	return RID();
+}
+
+void World::update_worlds() {
+	if (!is_inside_tree()) {
+		return;
+	}
+
+	Rect2 abstracted_rect = Rect2(Vector2(), get_visible_rect().size);
+	Rect2 xformed_rect = (get_global_canvas_transform() * get_canvas_transform()).affine_inverse().xform(abstracted_rect);
+	find_world_2d()->_update_world(this, xformed_rect);
+	find_world_2d()->_update();
+
+	find_world_3d()->_update(get_tree()->get_frame());
+}
+
 World::World() {
 	world_2d = Ref<World2D>(memnew(World2D));
 	_override_world = NULL;
@@ -376,4 +478,19 @@ void World::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_override_world", "world"), &World::set_override_world_bind);
 
 	ClassDB::bind_method(D_METHOD("_own_world_3d_changed"), &World::_own_world_3d_changed);
+
+	ClassDB::bind_method(D_METHOD("set_canvas_transform", "xform"), &World::set_canvas_transform);
+	ClassDB::bind_method(D_METHOD("get_canvas_transform"), &World::get_canvas_transform);
+	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM2D, "canvas_transform", PROPERTY_HINT_NONE, "", 0), "set_canvas_transform", "get_canvas_transform");
+
+	ClassDB::bind_method(D_METHOD("set_global_canvas_transform", "xform"), &World::set_global_canvas_transform);
+	ClassDB::bind_method(D_METHOD("get_global_canvas_transform"), &World::get_global_canvas_transform);
+	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM2D, "global_canvas_transform", PROPERTY_HINT_NONE, "", 0), "set_global_canvas_transform", "get_global_canvas_transform");
+
+	ClassDB::bind_method(D_METHOD("get_final_transform"), &World::get_final_transform);
+
+	ClassDB::bind_method(D_METHOD("get_visible_rect"), &World::get_visible_rect);
+	ClassDB::bind_method(D_METHOD("get_viewport_rid"), &World::get_viewport_rid);
+
+	ClassDB::bind_method(D_METHOD("update_worlds"), &World::update_worlds);
 }

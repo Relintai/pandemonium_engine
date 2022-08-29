@@ -33,6 +33,29 @@ public:
 	void set_override_world(World *p_world);
 	void set_override_world_bind(Node *p_world);
 
+	virtual void gui_reset_canvas_sort_index();
+	virtual int gui_get_canvas_sort_index();
+
+	virtual void enable_canvas_transform_override(bool p_enable);
+	virtual bool is_canvas_transform_override_enbled() const;
+
+	virtual void set_canvas_transform_override(const Transform2D &p_transform);
+	virtual Transform2D get_canvas_transform_override() const;
+
+	virtual void set_canvas_transform(const Transform2D &p_transform);
+	virtual Transform2D get_canvas_transform() const;
+
+	virtual void set_global_canvas_transform(const Transform2D &p_transform);
+	virtual Transform2D get_global_canvas_transform() const;
+
+	virtual Transform2D get_final_transform() const;
+
+	virtual Rect2 get_visible_rect() const;
+
+	virtual RID get_viewport_rid() const;
+
+	void update_worlds();
+
 	World();
 	~World();
 

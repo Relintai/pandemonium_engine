@@ -34,6 +34,7 @@
 #include "scene/2d/camera_2d.h"
 #include "scene/2d/visibility_notifier_2d.h"
 #include "scene/main/viewport.h"
+#include "scene/main/world.h"
 #include "servers/navigation_2d_server.h"
 #include "servers/physics_2d_server.h"
 #include "servers/rendering_server.h"
@@ -80,12 +81,12 @@ struct SpatialIndexer2D {
 
 	Map<VisibilityNotifier2D *, Rect2> notifiers;
 
-	struct ViewportData {
+	struct WorldData {
 		Map<VisibilityNotifier2D *, uint64_t> notifiers;
 		Rect2 rect;
 	};
 
-	Map<Viewport *, ViewportData> viewports;
+	Map<World *, WorldData> worlds;
 
 	bool changed;
 
@@ -147,8 +148,8 @@ struct SpatialIndexer2D {
 		_notifier_update_cells(p_notifier, E->get(), false);
 		notifiers.erase(p_notifier);
 
-		List<Viewport *> removed;
-		for (Map<Viewport *, ViewportData>::Element *F = viewports.front(); F; F = F->next()) {
+		List<World *> removed;
+		for (Map<World *, WorldData>::Element *F = worlds.front(); F; F = F->next()) {
 			Map<VisibilityNotifier2D *, uint64_t>::Element *G = F->get().notifiers.find(p_notifier);
 
 			if (G) {
@@ -158,23 +159,23 @@ struct SpatialIndexer2D {
 		}
 
 		while (!removed.empty()) {
-			p_notifier->_exit_viewport(removed.front()->get());
+			p_notifier->_exit_world(removed.front()->get());
 			removed.pop_front();
 		}
 
 		changed = true;
 	}
 
-	void _add_viewport(Viewport *p_viewport, const Rect2 &p_rect) {
-		ERR_FAIL_COND(viewports.has(p_viewport));
-		ViewportData vd;
+	void _add_world(World *p_world, const Rect2 &p_rect) {
+		ERR_FAIL_COND(worlds.has(p_world));
+		WorldData vd;
 		vd.rect = p_rect;
-		viewports[p_viewport] = vd;
+		worlds[p_world] = vd;
 		changed = true;
 	}
 
-	void _update_viewport(Viewport *p_viewport, const Rect2 &p_rect) {
-		Map<Viewport *, ViewportData>::Element *E = viewports.find(p_viewport);
+	void _update_world(World *p_world, const Rect2 &p_rect) {
+		Map<World *, WorldData>::Element *E = worlds.find(p_world);
 		ERR_FAIL_COND(!E);
 		if (E->get().rect == p_rect) {
 			return;
@@ -183,19 +184,19 @@ struct SpatialIndexer2D {
 		changed = true;
 	}
 
-	void _remove_viewport(Viewport *p_viewport) {
-		ERR_FAIL_COND(!viewports.has(p_viewport));
+	void _remove_world(World *p_world) {
+		ERR_FAIL_COND(!worlds.has(p_world));
 		List<VisibilityNotifier2D *> removed;
-		for (Map<VisibilityNotifier2D *, uint64_t>::Element *E = viewports[p_viewport].notifiers.front(); E; E = E->next()) {
+		for (Map<VisibilityNotifier2D *, uint64_t>::Element *E = worlds[p_world].notifiers.front(); E; E = E->next()) {
 			removed.push_back(E->key());
 		}
 
 		while (!removed.empty()) {
-			removed.front()->get()->_exit_viewport(p_viewport);
+			removed.front()->get()->_exit_world(p_world);
 			removed.pop_front();
 		}
 
-		viewports.erase(p_viewport);
+		worlds.erase(p_world);
 	}
 
 	void _update() {
@@ -203,7 +204,7 @@ struct SpatialIndexer2D {
 			return;
 		}
 
-		for (Map<Viewport *, ViewportData>::Element *E = viewports.front(); E; E = E->next()) {
+		for (Map<World *, WorldData>::Element *E = worlds.front(); E; E = E->next()) {
 			Point2i begin = E->get().rect.position;
 			begin /= cell_size;
 			Point2i end = E->get().rect.position + E->get().rect.size;
@@ -273,13 +274,13 @@ struct SpatialIndexer2D {
 			}
 
 			while (!added.empty()) {
-				added.front()->get()->_enter_viewport(E->key());
+				added.front()->get()->_enter_world(E->key());
 				added.pop_front();
 			}
 
 			while (!removed.empty()) {
 				E->get().notifiers.erase(removed.front()->get());
-				removed.front()->get()->_exit_viewport(E->key());
+				removed.front()->get()->_exit_world(E->key());
 				removed.pop_front();
 			}
 		}
@@ -294,15 +295,15 @@ struct SpatialIndexer2D {
 	}
 };
 
-void World2D::_register_viewport(Viewport *p_viewport, const Rect2 &p_rect) {
-	indexer->_add_viewport(p_viewport, p_rect);
+void World2D::_register_world(World *p_world, const Rect2 &p_rect) {
+	indexer->_add_world(p_world, p_rect);
 }
 
-void World2D::_update_viewport(Viewport *p_viewport, const Rect2 &p_rect) {
-	indexer->_update_viewport(p_viewport, p_rect);
+void World2D::_update_world(World *p_world, const Rect2 &p_rect) {
+	indexer->_update_world(p_world, p_rect);
 }
-void World2D::_remove_viewport(Viewport *p_viewport) {
-	indexer->_remove_viewport(p_viewport);
+void World2D::_remove_world(World *p_world) {
+	indexer->_remove_world(p_world);
 }
 
 void World2D::_register_notifier(VisibilityNotifier2D *p_notifier, const Rect2 &p_rect) {
@@ -331,9 +332,19 @@ RID World2D::get_navigation_map() const {
 	return navigation_map;
 }
 
+void World2D::get_world_list(List<World *> *r_worlds) {
+	for (Map<World *, SpatialIndexer2D::WorldData>::Element *E = indexer->worlds.front(); E; E = E->next()) {
+		r_worlds->push_back(E->key());
+	}
+}
+
 void World2D::get_viewport_list(List<Viewport *> *r_viewports) {
-	for (Map<Viewport *, SpatialIndexer2D::ViewportData>::Element *E = indexer->viewports.front(); E; E = E->next()) {
-		r_viewports->push_back(E->key());
+	for (Map<World *, SpatialIndexer2D::WorldData>::Element *E = indexer->worlds.front(); E; E = E->next()) {
+		Viewport *w = Object::cast_to<Viewport>(E->key());
+
+		if (w) {
+			r_viewports->push_back(w);
+		}
 	}
 }
 

@@ -216,19 +216,6 @@ void Viewport::_update_stretch_transform() {
 	_update_global_transform();
 }
 
-void Viewport::update_worlds() {
-	if (!is_inside_tree()) {
-		return;
-	}
-
-	Rect2 abstracted_rect = Rect2(Vector2(), get_visible_rect().size);
-	Rect2 xformed_rect = (global_canvas_transform * canvas_transform).affine_inverse().xform(abstracted_rect);
-	find_world_2d()->_update_viewport(this, xformed_rect);
-	find_world_2d()->_update();
-
-	find_world_3d()->_update(get_tree()->get_frame());
-}
-
 void Viewport::_collision_object_input_event(CollisionObject *p_object, Camera *p_camera, const Ref<InputEvent> &p_input_event, const Vector3 &p_pos, const Vector3 &p_normal, int p_shape) {
 	Transform object_transform = p_object->get_global_transform();
 	Transform camera_transform = p_camera->get_global_transform();
@@ -278,7 +265,7 @@ void Viewport::_on_set_world_3d(const Ref<World3D> &p_old_world) {
 void Viewport::_on_set_world_2d(const Ref<World2D> &p_old_world_2d) {
 	if (is_inside_tree() && p_old_world_2d.is_valid()) {
 		Ref<World2D> old_world_2d = p_old_world_2d;
-		old_world_2d->_remove_viewport(this);
+		old_world_2d->_remove_world(this);
 		RenderingServer::get_singleton()->viewport_remove_canvas(viewport, current_canvas);
 	}
 
@@ -287,7 +274,7 @@ void Viewport::_on_set_world_2d(const Ref<World2D> &p_old_world_2d) {
 	if (is_inside_tree()) {
 		current_canvas = find_world_2d()->get_canvas();
 		RenderingServer::get_singleton()->viewport_attach_canvas(viewport, current_canvas);
-		find_world_2d()->_register_viewport(this, Rect2());
+		find_world_2d()->_register_world(this, Rect2());
 	}
 }
 
@@ -344,7 +331,7 @@ void Viewport::_notification(int p_what) {
 		case NOTIFICATION_EXIT_TREE: {
 			_gui_cancel_tooltip();
 			if (world_2d.is_valid()) {
-				world_2d->_remove_viewport(this);
+				world_2d->_remove_world(this);
 			}
 
 			RenderingServer::get_singleton()->viewport_set_scenario(viewport, RID());
@@ -691,6 +678,10 @@ void Viewport::_process_picking(bool p_ignore_paused) {
 }
 
 RID Viewport::get_viewport_rid() const {
+	if (_override_world) {
+		return _override_world->get_viewport_rid();
+	}
+
 	return viewport;
 }
 
@@ -721,6 +712,10 @@ void Viewport::set_size(const Size2 &p_size) {
 }
 
 Rect2 Viewport::get_visible_rect() const {
+	if (_override_world) {
+		return _override_world->get_visible_rect();
+	}
+
 	Rect2 r;
 
 	if (size == Size2()) {
@@ -795,7 +790,7 @@ void Viewport::_on_before_world_override_changed() {
 	if (w) {
 		RenderingServer::get_singleton()->viewport_set_scenario(viewport, RID());
 		RenderingServer::get_singleton()->viewport_remove_canvas(viewport, current_canvas);
-		w->find_world_2d()->_remove_viewport(this);
+		w->find_world_2d()->_remove_world(this);
 	}
 }
 
@@ -807,7 +802,7 @@ void Viewport::_on_after_world_override_changed() {
 	_update_listener();
 	_update_listener_2d();
 
-	find_world_2d()->_register_viewport(this, Rect2());
+	find_world_2d()->_register_world(this, Rect2());
 
 	if (get_tree()->is_debugging_collisions_hint()) {
 		//2D
@@ -841,6 +836,10 @@ void Viewport::_on_after_world_override_changed() {
 }
 
 void Viewport::enable_canvas_transform_override(bool p_enable) {
+	if (_override_world) {
+		_override_world->enable_canvas_transform_override(p_enable);
+	}
+
 	if (override_canvas_transform == p_enable) {
 		return;
 	}
@@ -854,10 +853,18 @@ void Viewport::enable_canvas_transform_override(bool p_enable) {
 }
 
 bool Viewport::is_canvas_transform_override_enbled() const {
+	if (_override_world) {
+		return _override_world->is_canvas_transform_override_enbled();
+	}
+
 	return override_canvas_transform;
 }
 
 void Viewport::set_canvas_transform_override(const Transform2D &p_transform) {
+	if (_override_world) {
+		_override_world->set_canvas_transform_override(p_transform);
+	}
+
 	if (canvas_transform_override == p_transform) {
 		return;
 	}
@@ -869,10 +876,22 @@ void Viewport::set_canvas_transform_override(const Transform2D &p_transform) {
 }
 
 Transform2D Viewport::get_canvas_transform_override() const {
+	if (_override_world) {
+		return _override_world->get_canvas_transform_override();
+	}
+
+	if (_override_world) {
+		return _override_world->get_canvas_transform_override();
+	}
+
 	return canvas_transform_override;
 }
 
 void Viewport::set_canvas_transform(const Transform2D &p_transform) {
+	if (_override_world) {
+		_override_world->set_canvas_transform(p_transform);
+	}
+
 	canvas_transform = p_transform;
 
 	if (!override_canvas_transform) {
@@ -881,6 +900,10 @@ void Viewport::set_canvas_transform(const Transform2D &p_transform) {
 }
 
 Transform2D Viewport::get_canvas_transform() const {
+	if (_override_world) {
+		return _override_world->get_canvas_transform();
+	}
+
 	return canvas_transform;
 }
 
@@ -891,12 +914,20 @@ void Viewport::_update_global_transform() {
 }
 
 void Viewport::set_global_canvas_transform(const Transform2D &p_transform) {
+	if (_override_world) {
+		_override_world->set_global_canvas_transform(p_transform);
+	}
+
 	global_canvas_transform = p_transform;
 
 	_update_global_transform();
 }
 
 Transform2D Viewport::get_global_canvas_transform() const {
+	if (_override_world) {
+		return _override_world->get_global_canvas_transform();
+	}
+
 	return global_canvas_transform;
 }
 
@@ -1160,6 +1191,10 @@ void Viewport::set_camera_override_orthogonal(float p_size, float p_z_near, floa
 }
 
 Transform2D Viewport::get_final_transform() const {
+	if (_override_world) {
+		return _override_world->get_final_transform();
+	}
+
 	return stretch_transform * global_canvas_transform;
 }
 
@@ -2906,9 +2941,17 @@ String Viewport::get_configuration_warning() const {
 }
 
 void Viewport::gui_reset_canvas_sort_index() {
+	if (_override_world) {
+		_override_world->gui_reset_canvas_sort_index();
+	}
+
 	gui.canvas_sort_index = 0;
 }
 int Viewport::gui_get_canvas_sort_index() {
+	if (_override_world) {
+		return _override_world->gui_get_canvas_sort_index();
+	}
+
 	return gui.canvas_sort_index++;
 }
 
@@ -3068,14 +3111,6 @@ void Viewport::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_size", "size"), &Viewport::set_size);
 	ClassDB::bind_method(D_METHOD("get_size"), &Viewport::get_size);
 
-	ClassDB::bind_method(D_METHOD("set_canvas_transform", "xform"), &Viewport::set_canvas_transform);
-	ClassDB::bind_method(D_METHOD("get_canvas_transform"), &Viewport::get_canvas_transform);
-
-	ClassDB::bind_method(D_METHOD("set_global_canvas_transform", "xform"), &Viewport::set_global_canvas_transform);
-	ClassDB::bind_method(D_METHOD("get_global_canvas_transform"), &Viewport::get_global_canvas_transform);
-	ClassDB::bind_method(D_METHOD("get_final_transform"), &Viewport::get_final_transform);
-
-	ClassDB::bind_method(D_METHOD("get_visible_rect"), &Viewport::get_visible_rect);
 	ClassDB::bind_method(D_METHOD("set_transparent_background", "enable"), &Viewport::set_transparent_background);
 	ClassDB::bind_method(D_METHOD("has_transparent_background"), &Viewport::has_transparent_background);
 
@@ -3129,11 +3164,8 @@ void Viewport::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_physics_object_picking", "enable"), &Viewport::set_physics_object_picking);
 	ClassDB::bind_method(D_METHOD("get_physics_object_picking"), &Viewport::get_physics_object_picking);
 
-	ClassDB::bind_method(D_METHOD("get_viewport_rid"), &Viewport::get_viewport_rid);
 	ClassDB::bind_method(D_METHOD("input", "local_event"), &Viewport::input);
 	ClassDB::bind_method(D_METHOD("unhandled_input", "local_event"), &Viewport::unhandled_input);
-
-	ClassDB::bind_method(D_METHOD("update_worlds"), &Viewport::update_worlds);
 
 	ClassDB::bind_method(D_METHOD("get_camera"), &Viewport::get_camera);
 	ClassDB::bind_method(D_METHOD("get_camera_2d"), &Viewport::get_camera_2d);
@@ -3224,8 +3256,6 @@ void Viewport::_bind_methods() {
 	ADD_PROPERTYI(PropertyInfo(Variant::INT, "shadow_atlas_quad_1", PROPERTY_HINT_ENUM, "Disabled,1 Shadow,4 Shadows,16 Shadows,64 Shadows,256 Shadows,1024 Shadows"), "set_shadow_atlas_quadrant_subdiv", "get_shadow_atlas_quadrant_subdiv", 1);
 	ADD_PROPERTYI(PropertyInfo(Variant::INT, "shadow_atlas_quad_2", PROPERTY_HINT_ENUM, "Disabled,1 Shadow,4 Shadows,16 Shadows,64 Shadows,256 Shadows,1024 Shadows"), "set_shadow_atlas_quadrant_subdiv", "get_shadow_atlas_quadrant_subdiv", 2);
 	ADD_PROPERTYI(PropertyInfo(Variant::INT, "shadow_atlas_quad_3", PROPERTY_HINT_ENUM, "Disabled,1 Shadow,4 Shadows,16 Shadows,64 Shadows,256 Shadows,1024 Shadows"), "set_shadow_atlas_quadrant_subdiv", "get_shadow_atlas_quadrant_subdiv", 3);
-	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM2D, "canvas_transform", PROPERTY_HINT_NONE, "", 0), "set_canvas_transform", "get_canvas_transform");
-	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM2D, "global_canvas_transform", PROPERTY_HINT_NONE, "", 0), "set_global_canvas_transform", "get_global_canvas_transform");
 
 	ADD_SIGNAL(MethodInfo("size_changed"));
 	ADD_SIGNAL(MethodInfo("gui_focus_changed", PropertyInfo(Variant::OBJECT, "node", PROPERTY_HINT_RESOURCE_TYPE, "Control")));
