@@ -35,7 +35,7 @@
 #include "core/object/message_queue.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/viewport.h"
-#include "scene/resources/world.h"
+#include "scene/resources/world_3d.h"
 #include "scene/scene_string_names.h"
 #include "servers/rendering_server_callbacks.h"
 

@@ -33,7 +33,7 @@ SOFTWARE.
 
 #include "../library/terrain_library.h"
 #include "../library/terrain_surface.h"
-#include "scene/resources/world.h"
+#include "scene/resources/world_3d.h"
 #include "servers/physics_server.h"
 
 #include "../defines.h"

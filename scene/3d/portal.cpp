@@ -37,7 +37,7 @@
 #include "room_manager.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/mesh.h"
-#include "scene/resources/world.h"
+#include "scene/resources/world_3d.h"
 #include "servers/rendering_server.h"
 
 bool Portal::_portal_plane_convention = false;

@@ -36,7 +36,7 @@
 #include "scene/3d/spatial_velocity_tracker.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/shape.h"
-#include "scene/resources/world.h"
+#include "scene/resources/world_3d.h"
 #include "servers/audio/audio_stream.h"
 #include "servers/physics_server.h"
 

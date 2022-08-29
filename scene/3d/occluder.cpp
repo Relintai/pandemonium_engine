@@ -32,7 +32,7 @@
 
 #include "core/config/engine.h"
 #include "scene/resources/occluder_shape.h"
-#include "scene/resources/world.h"
+#include "scene/resources/world_3d.h"
 #include "servers/rendering/portals/portal_occlusion_culler.h"
 #include "servers/rendering_server.h"
 

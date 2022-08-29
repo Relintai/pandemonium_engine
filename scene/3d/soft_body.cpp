@@ -36,7 +36,7 @@
 #include "scene/3d/collision_object.h"
 #include "scene/3d/physics_body.h"
 #include "scene/resources/mesh.h"
-#include "scene/resources/world.h"
+#include "scene/resources/world_3d.h"
 #include "servers/physics_server.h"
 
 SoftBodyRenderingServerHandler::SoftBodyRenderingServerHandler() {}

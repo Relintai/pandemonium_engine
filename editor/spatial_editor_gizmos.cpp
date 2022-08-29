@@ -101,7 +101,7 @@
 #include "scene/resources/shape.h"
 #include "scene/resources/sphere_shape.h"
 #include "scene/resources/surface_tool.h"
-#include "scene/resources/world.h"
+#include "scene/resources/world_3d.h"
 #include "servers/rendering_server.h"
 
 #ifdef MODULE_SKELETON_3D_ENABLED

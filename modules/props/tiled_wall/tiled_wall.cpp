@@ -13,7 +13,7 @@
 #include "../singleton/prop_cache.h"
 
 #include "core/core_string_names.h"
-#include "scene/resources/world.h"
+#include "scene/resources/world_3d.h"
 #include "servers/physics_server.h"
 #include "tiled_wall_data.h"
 

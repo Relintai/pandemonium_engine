@@ -31,7 +31,7 @@ SOFTWARE.
 #include "../../meshers/default/terrain_mesher_default.h"
 #include "../../meshers/terrain_mesher.h"
 #include "../default/terrain_chunk_default.h"
-#include "scene/resources/world.h"
+#include "scene/resources/world_3d.h"
 #include "servers/physics_server.h"
 
 #ifdef MESH_DATA_RESOURCE_PRESENT

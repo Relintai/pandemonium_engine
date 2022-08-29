@@ -33,7 +33,7 @@
 #include "core/config/engine.h"
 #include "core/math/geometry.h"
 #include "scene/3d/navigation.h"
-#include "scene/resources/world.h"
+#include "scene/resources/world_3d.h"
 #include "servers/navigation_server.h"
 
 void NavigationAgent::_bind_methods() {

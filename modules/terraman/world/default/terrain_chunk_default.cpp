@@ -38,7 +38,7 @@ SOFTWARE.
 #include "../jobs/terrain_light_job.h"
 #include "../jobs/terrain_prop_job.h"
 #include "../jobs/terrain_terrain_job.h"
-#include "scene/resources/world.h"
+#include "scene/resources/world_3d.h"
 
 const String TerrainChunkDefault::BINDING_STRING_BUILD_FLAGS = "Use Isolevel,Use Lighting,Use AO,Use RAO,Generate AO,Generate RAO,Bake Lights,Create Collider,Create Lods";
 

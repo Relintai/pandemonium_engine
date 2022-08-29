@@ -36,7 +36,7 @@
 #include "scene/animation/animation_player.h"
 #include "scene/animation/animation_tree.h"
 #include "scene/resources/shape.h"
-#include "scene/resources/world.h"
+#include "scene/resources/world_3d.h"
 #include "scene/scene_string_names.h"
 
 void VisibilityNotifier::_enter_camera(Camera *p_camera) {

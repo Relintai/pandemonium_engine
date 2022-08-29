@@ -33,7 +33,7 @@
 #include "scene/3d/collision_object.h"
 #include "scene/resources/shape.h"
 #include "scene/resources/sphere_shape.h"
-#include "scene/resources/world.h"
+#include "scene/resources/world_3d.h"
 #include "servers/physics_server.h"
 
 SpringArm::SpringArm() :

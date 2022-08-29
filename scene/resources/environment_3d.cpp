@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "environment.h"
+#include "environment_3d.h"
 
 #include "core/config/project_settings.h"
 #include "scene/resources/sky.h"

@@ -38,7 +38,7 @@ SOFTWARE.
 #include "../jobs/terrain_2d_light_job.h"
 #include "../jobs/terrain_2d_prop_job.h"
 #include "../jobs/terrain_2d_terrain_job.h"
-#include "scene/resources/world.h"
+#include "scene/resources/world_3d.h"
 #include "scene/resources/world_2d.h"
 #include "servers/physics_2d_server.h"
 

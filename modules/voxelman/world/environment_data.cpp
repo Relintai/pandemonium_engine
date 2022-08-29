@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "environment_data.h"
 
-#include "scene/resources/environment.h"
+#include "scene/resources/environment_3d.h"
 
 Ref<Environment3D> EnvironmentData::get_environment() {
 	return _environment;

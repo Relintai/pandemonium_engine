@@ -45,7 +45,7 @@
 #include "scene/3d/light.h"
 #include "scene/3d/sprite_3d.h"
 #include "scene/resources/multimesh.h"
-#include "scene/resources/world.h"
+#include "scene/resources/world_3d.h"
 #include "visibility_notifier.h"
 
 #ifdef TOOLS_ENABLED

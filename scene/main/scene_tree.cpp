@@ -55,7 +55,7 @@
 
 #include "modules/modules_enabled.gen.h" // For freetype.
 #include "scene/resources/mesh.h"
-#include "scene/resources/world.h"
+#include "scene/resources/world_3d.h"
 #include "scene/resources/world_2d.h"
 
 #include <stdio.h>

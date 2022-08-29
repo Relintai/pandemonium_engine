@@ -32,7 +32,7 @@
 /*************************************************************************/
 
 #include "core/object/resource.h"
-#include "scene/resources/environment.h"
+#include "scene/resources/environment_3d.h"
 #include "servers/physics_server.h"
 #include "servers/rendering_server.h"
 

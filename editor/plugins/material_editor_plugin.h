@@ -42,7 +42,7 @@
 #include "core/object/reference.h"
 #include "core/string/ustring.h"
 
-#include "scene/resources/environment.h"
+#include "scene/resources/environment_3d.h"
 
 class ViewportContainer;
 class Camera;

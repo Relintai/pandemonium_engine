@@ -35,10 +35,10 @@
 #include "core/math/projection.h"
 #include "scene/3d/spatial_velocity_tracker.h"
 #include "scene/main/viewport.h"
-#include "scene/resources/environment.h"
+#include "scene/resources/environment_3d.h"
 #include "scene/resources/material.h"
 #include "scene/resources/surface_tool.h"
-#include "scene/resources/world.h"
+#include "scene/resources/world_3d.h"
 
 void Camera::_update_audio_listener_state() {
 }

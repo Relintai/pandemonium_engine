@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "world.h"
+#include "world_3d.h"
 
 #include "core/math/projection.h"
 #include "core/math/octree.h"

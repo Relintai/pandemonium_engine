@@ -28,12 +28,12 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "world_environment.h"
+#include "world_environment_3d.h"
 #include "scene/3d/spatial.h"
 #include "scene/main/viewport.h"
 
-#include "scene/resources/environment.h"
-#include "scene/resources/world.h"
+#include "scene/resources/environment_3d.h"
+#include "scene/resources/world_3d.h"
 
 void WorldEnvironment3D::_notification(int p_what) {
 	if (p_what == Spatial::NOTIFICATION_ENTER_WORLD || p_what == Spatial::NOTIFICATION_ENTER_TREE) {

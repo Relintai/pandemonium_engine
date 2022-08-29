@@ -33,7 +33,7 @@
 #include "editor/editor_scale.h"
 #include "scene/gui/texture_button.h"
 #include "scene/main/viewport.h"
-#include "scene/resources/world.h"
+#include "scene/resources/world_3d.h"
 #include "scene/resources/mesh.h"
 #include "core/object/class_db.h"
 #include "core/math/color.h"

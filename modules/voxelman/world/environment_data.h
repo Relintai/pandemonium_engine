@@ -31,7 +31,7 @@ SOFTWARE.
 
 #include "core/object/reference.h"
 
-#include "scene/3d/world_environment.h"
+#include "scene/3d/world_environment_3d.h"
 #include "scene/main/node.h"
 
 class Environment;

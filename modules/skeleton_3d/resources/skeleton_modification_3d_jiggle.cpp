@@ -32,7 +32,7 @@
 #include "../nodes/skeleton.h"
 #include "skeleton_modification_stack_3d.h"
 #include "servers/physics_server.h"
-#include "scene/resources/world.h"
+#include "scene/resources/world_3d.h"
 
 bool SkeletonModification3DJiggle::_set(const StringName &p_path, const Variant &p_value) {
 	String path = p_path;

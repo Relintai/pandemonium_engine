@@ -34,7 +34,7 @@
 #include "room.h"
 #include "room_manager.h"
 #include "scene/resources/mesh.h"
-#include "scene/resources/world.h"
+#include "scene/resources/world_3d.h"
 #include "servers/rendering_server.h"
 
 void RoomGroup::_bind_methods() {
