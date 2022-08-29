@@ -133,6 +133,7 @@
 #include "scene/main/resource_preloader.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/timer.h"
+#include "scene/main/world.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/audio_stream_sample.h"
 #include "scene/resources/bit_map.h"
@@ -277,6 +278,7 @@ void register_scene_types() {
 	ClassDB::register_class<Node>();
 	ClassDB::register_virtual_class<InstancePlaceholder>();
 
+	ClassDB::register_class<World>();
 	ClassDB::register_class<Viewport>();
 	ClassDB::register_class<ViewportTexture>();
 	ClassDB::register_class<HTTPRequest>();

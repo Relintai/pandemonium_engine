@@ -87,4 +87,4 @@ public:
 	~World3D();
 };
 
-#endif // WORLD_H
+#endif // WORLD_3D_H

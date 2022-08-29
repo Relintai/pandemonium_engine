@@ -1,5 +1,6 @@
-#ifndef ENVIRONMENT_H
-#define ENVIRONMENT_H
+#ifndef ENVIRONMENT_3D_H
+#define ENVIRONMENT_3D_H
+
 /*************************************************************************/
 /*  environment.h                                                        */
 /*************************************************************************/
@@ -418,4 +419,4 @@ VARIANT_ENUM_CAST(Environment3D::DOFBlurQuality)
 VARIANT_ENUM_CAST(Environment3D::SSAOQuality)
 VARIANT_ENUM_CAST(Environment3D::SSAOBlur)
 
-#endif // ENVIRONMENT_H
+#endif // ENVIRONMENT_3D_H

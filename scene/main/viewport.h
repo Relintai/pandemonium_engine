@@ -1,5 +1,6 @@
 #ifndef VIEWPORT_H
 #define VIEWPORT_H
+
 /*************************************************************************/
 /*  viewport.h                                                           */
 /*************************************************************************/
@@ -30,6 +31,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "world.h"
 #include "core/math/transform_2d.h"
 #include "scene/main/node.h"
 #include "scene/resources/texture.h"
@@ -87,8 +89,8 @@ public:
 	~ViewportTexture();
 };
 
-class Viewport : public Node {
-	GDCLASS(Viewport, Node);
+class Viewport : public World {
+	GDCLASS(Viewport, World);
 
 public:
 	enum UpdateMode {
