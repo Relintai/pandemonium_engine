@@ -31,11 +31,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "world.h"
 #include "core/math/transform_2d.h"
 #include "scene/main/node.h"
 #include "scene/resources/texture.h"
 #include "servers/rendering_server.h"
+#include "world.h"
 
 class Camera;
 class Camera2D;
@@ -55,14 +55,6 @@ class World2D;
 
 class ViewportTexture : public Texture {
 	GDCLASS(ViewportTexture, Texture);
-
-	NodePath path;
-
-	friend class Viewport;
-	Viewport *vp;
-	uint32_t flags;
-
-	RID proxy;
 
 protected:
 	static void _bind_methods();
@@ -87,6 +79,15 @@ public:
 
 	ViewportTexture();
 	~ViewportTexture();
+
+private:
+	NodePath path;
+
+	friend class Viewport;
+	Viewport *vp;
+	uint32_t flags;
+
+	RID proxy;
 };
 
 class Viewport : public World {
@@ -153,6 +154,171 @@ public:
 		CLEAR_MODE_NEVER,
 		CLEAR_MODE_ONLY_NEXT_FRAME
 	};
+
+public:
+	Listener *get_listener() const;
+	Camera *get_camera() const;
+	Camera2D *get_camera_2d() const;
+
+	void enable_camera_override(bool p_enable);
+	bool is_camera_override_enabled() const;
+
+	void set_camera_override_transform(const Transform &p_transform);
+	Transform get_camera_override_transform() const;
+
+	void set_camera_override_perspective(float p_fovy_degrees, float p_z_near, float p_z_far);
+	void set_camera_override_orthogonal(float p_size, float p_z_near, float p_z_far);
+
+	void set_as_audio_listener(bool p_enable);
+	bool is_audio_listener() const;
+
+	Listener2D *get_listener_2d() const;
+	void set_as_audio_listener_2d(bool p_enable);
+	bool is_audio_listener_2d() const;
+
+	void set_size(const Size2 &p_size);
+	void update_canvas_items();
+
+	Size2 get_size() const;
+	Rect2 get_visible_rect() const;
+	RID get_viewport_rid() const;
+
+	void set_world_3d(const Ref<World3D> &p_world);
+	void set_world_2d(const Ref<World2D> &p_world_2d);
+	Ref<World3D> get_world_3d() const;
+	Ref<World3D> find_world_3d() const;
+
+	Ref<World2D> get_world_2d() const;
+	Ref<World2D> find_world_2d() const;
+
+	void enable_canvas_transform_override(bool p_enable);
+	bool is_canvas_transform_override_enbled() const;
+
+	void set_canvas_transform_override(const Transform2D &p_transform);
+	Transform2D get_canvas_transform_override() const;
+
+	void set_canvas_transform(const Transform2D &p_transform);
+	Transform2D get_canvas_transform() const;
+
+	void set_global_canvas_transform(const Transform2D &p_transform);
+	Transform2D get_global_canvas_transform() const;
+
+	Transform2D get_final_transform() const;
+
+	void set_transparent_background(bool p_enable);
+	bool has_transparent_background() const;
+
+	void set_size_override(bool p_enable, const Size2 &p_size = Size2(-1, -1), const Vector2 &p_margin = Vector2());
+	Size2 get_size_override() const;
+
+	bool is_size_override_enabled() const;
+	void set_size_override_stretch(bool p_enable);
+	bool is_size_override_stretch_enabled() const;
+
+	void set_vflip(bool p_enable);
+	bool get_vflip() const;
+
+	void set_clear_mode(ClearMode p_mode);
+	ClearMode get_clear_mode() const;
+
+	void set_update_mode(UpdateMode p_mode);
+	UpdateMode get_update_mode() const;
+	Ref<ViewportTexture> get_texture() const;
+
+	void set_shadow_atlas_size(int p_size);
+	int get_shadow_atlas_size() const;
+
+	void set_shadow_atlas_quadrant_subdiv(int p_quadrant, ShadowAtlasQuadrantSubdiv p_subdiv);
+	ShadowAtlasQuadrantSubdiv get_shadow_atlas_quadrant_subdiv(int p_quadrant) const;
+
+	void set_msaa(MSAA p_msaa);
+	MSAA get_msaa() const;
+
+	void set_use_fxaa(bool p_fxaa);
+	bool get_use_fxaa() const;
+
+	void set_use_debanding(bool p_debanding);
+	bool get_use_debanding() const;
+
+	void set_sharpen_intensity(float p_intensity);
+	float get_sharpen_intensity() const;
+
+	void set_hdr(bool p_hdr);
+	bool get_hdr() const;
+
+	void set_use_32_bpc_depth(bool p_enable);
+	bool is_using_32_bpc_depth() const;
+
+	Vector2 get_camera_coords(const Vector2 &p_viewport_coords) const;
+	Vector2 get_camera_rect_size() const;
+
+	void set_use_own_world_3d(bool p_use_own_world_3d);
+	bool is_using_own_world_3d() const;
+
+	void input(const Ref<InputEvent> &p_event);
+	void unhandled_input(const Ref<InputEvent> &p_event);
+
+	void set_disable_input(bool p_disable);
+	bool is_input_disabled() const;
+
+	void set_disable_3d(bool p_disable);
+	bool is_3d_disabled() const;
+
+	void set_keep_3d_linear(bool p_keep_3d_linear);
+	bool get_keep_3d_linear() const;
+
+	void set_attach_to_screen_rect(const Rect2 &p_rect);
+	Rect2 get_attach_to_screen_rect() const;
+
+	void set_use_render_direct_to_screen(bool p_render_direct_to_screen);
+	bool is_using_render_direct_to_screen() const;
+
+	Vector2 get_mouse_position() const;
+	void warp_mouse(const Vector2 &p_pos);
+
+	void set_physics_object_picking(bool p_enable);
+	bool get_physics_object_picking();
+
+	bool gui_has_modal_stack() const;
+
+	Variant gui_get_drag_data() const;
+	Control *get_modal_stack_top() const;
+
+	void gui_reset_canvas_sort_index();
+	int gui_get_canvas_sort_index();
+
+	virtual String get_configuration_warning() const;
+
+	void set_usage(Usage p_usage);
+	Usage get_usage() const;
+
+	void set_debug_draw(DebugDraw p_debug_draw);
+	DebugDraw get_debug_draw() const;
+
+	int get_render_info(RenderInfo p_info);
+
+	void set_snap_controls_to_pixels(bool p_enable);
+	bool is_snap_controls_to_pixels_enabled() const;
+
+	void _subwindow_visibility_changed();
+
+	void set_input_as_handled();
+	bool is_input_handled() const;
+
+	void set_handle_input_locally(bool p_enable);
+	bool is_handling_input_locally() const;
+
+	bool gui_is_dragging() const;
+	bool gui_is_drag_successful() const;
+
+	Viewport();
+	~Viewport();
+
+protected:
+	void _notification(int p_what);
+	void _process_picking(bool p_ignore_paused);
+	static void _bind_methods();
+	virtual void _validate_property(PropertyInfo &property) const;
 
 private:
 	friend class ViewportTexture;
@@ -426,171 +592,6 @@ private:
 	void _update_canvas_items(Node *p_node);
 
 	void _own_world_3d_changed();
-
-protected:
-	void _notification(int p_what);
-	void _process_picking(bool p_ignore_paused);
-	static void _bind_methods();
-	virtual void _validate_property(PropertyInfo &property) const;
-
-public:
-	Listener *get_listener() const;
-	Camera *get_camera() const;
-	Camera2D *get_camera_2d() const;
-
-	void enable_camera_override(bool p_enable);
-	bool is_camera_override_enabled() const;
-
-	void set_camera_override_transform(const Transform &p_transform);
-	Transform get_camera_override_transform() const;
-
-	void set_camera_override_perspective(float p_fovy_degrees, float p_z_near, float p_z_far);
-	void set_camera_override_orthogonal(float p_size, float p_z_near, float p_z_far);
-
-	void set_as_audio_listener(bool p_enable);
-	bool is_audio_listener() const;
-
-	Listener2D *get_listener_2d() const;
-	void set_as_audio_listener_2d(bool p_enable);
-	bool is_audio_listener_2d() const;
-
-	void set_size(const Size2 &p_size);
-	void update_canvas_items();
-
-	Size2 get_size() const;
-	Rect2 get_visible_rect() const;
-	RID get_viewport_rid() const;
-
-	void set_world_3d(const Ref<World3D> &p_world);
-	void set_world_2d(const Ref<World2D> &p_world_2d);
-	Ref<World3D> get_world_3d() const;
-	Ref<World3D> find_world_3d() const;
-
-	Ref<World2D> get_world_2d() const;
-	Ref<World2D> find_world_2d() const;
-
-	void enable_canvas_transform_override(bool p_enable);
-	bool is_canvas_transform_override_enbled() const;
-
-	void set_canvas_transform_override(const Transform2D &p_transform);
-	Transform2D get_canvas_transform_override() const;
-
-	void set_canvas_transform(const Transform2D &p_transform);
-	Transform2D get_canvas_transform() const;
-
-	void set_global_canvas_transform(const Transform2D &p_transform);
-	Transform2D get_global_canvas_transform() const;
-
-	Transform2D get_final_transform() const;
-
-	void set_transparent_background(bool p_enable);
-	bool has_transparent_background() const;
-
-	void set_size_override(bool p_enable, const Size2 &p_size = Size2(-1, -1), const Vector2 &p_margin = Vector2());
-	Size2 get_size_override() const;
-
-	bool is_size_override_enabled() const;
-	void set_size_override_stretch(bool p_enable);
-	bool is_size_override_stretch_enabled() const;
-
-	void set_vflip(bool p_enable);
-	bool get_vflip() const;
-
-	void set_clear_mode(ClearMode p_mode);
-	ClearMode get_clear_mode() const;
-
-	void set_update_mode(UpdateMode p_mode);
-	UpdateMode get_update_mode() const;
-	Ref<ViewportTexture> get_texture() const;
-
-	void set_shadow_atlas_size(int p_size);
-	int get_shadow_atlas_size() const;
-
-	void set_shadow_atlas_quadrant_subdiv(int p_quadrant, ShadowAtlasQuadrantSubdiv p_subdiv);
-	ShadowAtlasQuadrantSubdiv get_shadow_atlas_quadrant_subdiv(int p_quadrant) const;
-
-	void set_msaa(MSAA p_msaa);
-	MSAA get_msaa() const;
-
-	void set_use_fxaa(bool p_fxaa);
-	bool get_use_fxaa() const;
-
-	void set_use_debanding(bool p_debanding);
-	bool get_use_debanding() const;
-
-	void set_sharpen_intensity(float p_intensity);
-	float get_sharpen_intensity() const;
-
-	void set_hdr(bool p_hdr);
-	bool get_hdr() const;
-
-	void set_use_32_bpc_depth(bool p_enable);
-	bool is_using_32_bpc_depth() const;
-
-	Vector2 get_camera_coords(const Vector2 &p_viewport_coords) const;
-	Vector2 get_camera_rect_size() const;
-
-	void set_use_own_world_3d(bool p_use_own_world_3d);
-	bool is_using_own_world_3d() const;
-
-	void input(const Ref<InputEvent> &p_event);
-	void unhandled_input(const Ref<InputEvent> &p_event);
-
-	void set_disable_input(bool p_disable);
-	bool is_input_disabled() const;
-
-	void set_disable_3d(bool p_disable);
-	bool is_3d_disabled() const;
-
-	void set_keep_3d_linear(bool p_keep_3d_linear);
-	bool get_keep_3d_linear() const;
-
-	void set_attach_to_screen_rect(const Rect2 &p_rect);
-	Rect2 get_attach_to_screen_rect() const;
-
-	void set_use_render_direct_to_screen(bool p_render_direct_to_screen);
-	bool is_using_render_direct_to_screen() const;
-
-	Vector2 get_mouse_position() const;
-	void warp_mouse(const Vector2 &p_pos);
-
-	void set_physics_object_picking(bool p_enable);
-	bool get_physics_object_picking();
-
-	bool gui_has_modal_stack() const;
-
-	Variant gui_get_drag_data() const;
-	Control *get_modal_stack_top() const;
-
-	void gui_reset_canvas_sort_index();
-	int gui_get_canvas_sort_index();
-
-	virtual String get_configuration_warning() const;
-
-	void set_usage(Usage p_usage);
-	Usage get_usage() const;
-
-	void set_debug_draw(DebugDraw p_debug_draw);
-	DebugDraw get_debug_draw() const;
-
-	int get_render_info(RenderInfo p_info);
-
-	void set_snap_controls_to_pixels(bool p_enable);
-	bool is_snap_controls_to_pixels_enabled() const;
-
-	void _subwindow_visibility_changed();
-
-	void set_input_as_handled();
-	bool is_input_handled() const;
-
-	void set_handle_input_locally(bool p_enable);
-	bool is_handling_input_locally() const;
-
-	bool gui_is_dragging() const;
-	bool gui_is_drag_successful() const;
-
-	Viewport();
-	~Viewport();
 };
 
 VARIANT_ENUM_CAST(Viewport::UpdateMode);
