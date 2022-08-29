@@ -163,10 +163,10 @@ void Portal::clear() {
 void Portal::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_WORLD: {
-			ERR_FAIL_COND(get_world().is_null());
+			ERR_FAIL_COND(get_world_3d().is_null());
 
 			// defer full creation of the visual server portal to when the editor portal is in the scene tree
-			RenderingServer::get_singleton()->portal_set_scenario(_portal_rid, get_world()->get_scenario());
+			RenderingServer::get_singleton()->portal_set_scenario(_portal_rid, get_world_3d()->get_scenario());
 
 			// we can't calculate world points until we have entered the tree
 			portal_update();

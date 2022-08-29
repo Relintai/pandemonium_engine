@@ -251,8 +251,8 @@ private:
 	Map<ObjectID, uint64_t> physics_2d_mouseover;
 
 	Ref<World2D> world_2d;
-	Ref<World3D> world;
-	Ref<World3D> own_world;
+	Ref<World3D> world_3d;
+	Ref<World3D> own_world_3d;
 
 	StringName input_group;
 	StringName gui_input_group;
@@ -423,7 +423,7 @@ private:
 
 	void _update_canvas_items(Node *p_node);
 
-	void _own_world_changed();
+	void _own_world_3d_changed();
 
 protected:
 	void _notification(int p_what);
@@ -459,10 +459,10 @@ public:
 	Rect2 get_visible_rect() const;
 	RID get_viewport_rid() const;
 
-	void set_world(const Ref<World3D> &p_world);
+	void set_world_3d(const Ref<World3D> &p_world);
 	void set_world_2d(const Ref<World2D> &p_world_2d);
-	Ref<World3D> get_world() const;
-	Ref<World3D> find_world() const;
+	Ref<World3D> get_world_3d() const;
+	Ref<World3D> find_world_3d() const;
 
 	Ref<World2D> get_world_2d() const;
 	Ref<World2D> find_world_2d() const;
@@ -528,8 +528,8 @@ public:
 	Vector2 get_camera_coords(const Vector2 &p_viewport_coords) const;
 	Vector2 get_camera_rect_size() const;
 
-	void set_use_own_world(bool p_use_own_world);
-	bool is_using_own_world() const;
+	void set_use_own_world_3d(bool p_use_own_world_3d);
+	bool is_using_own_world_3d() const;
 
 	void input(const Ref<InputEvent> &p_event);
 	void unhandled_input(const Ref<InputEvent> &p_event);

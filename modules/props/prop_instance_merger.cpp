@@ -181,8 +181,8 @@ void PropInstanceMerger::meshes_create(const int num) {
 	for (int i = 0; i < num; ++i) {
 		RID mesh_instance_rid = RS::get_singleton()->instance_create();
 
-		if (get_world().is_valid()) {
-			RS::get_singleton()->instance_set_scenario(mesh_instance_rid, get_world()->get_scenario());
+		if (get_world_3d().is_valid()) {
+			RS::get_singleton()->instance_set_scenario(mesh_instance_rid, get_world_3d()->get_scenario());
 		}
 
 		RID mesh_rid = RS::get_singleton()->mesh_create();
@@ -372,8 +372,8 @@ void PropInstanceMerger::debug_mesh_allocate() {
 	if (_debug_mesh_instance == RID()) {
 		_debug_mesh_instance = RenderingServer::get_singleton()->instance_create();
 
-		if (get_world().is_valid()) {
-			RS::get_singleton()->instance_set_scenario(_debug_mesh_instance, get_world()->get_scenario());
+		if (get_world_3d().is_valid()) {
+			RS::get_singleton()->instance_set_scenario(_debug_mesh_instance, get_world_3d()->get_scenario());
 		}
 
 		RS::get_singleton()->instance_set_base(_debug_mesh_instance, _debug_mesh_rid);
@@ -493,7 +493,7 @@ void PropInstanceMerger::_build() {
 		return;
 	}
 
-	if (!is_inside_tree() || !get_world().is_valid()) {
+	if (!is_inside_tree() || !get_world_3d().is_valid()) {
 		queue_build();
 		return;
 	}

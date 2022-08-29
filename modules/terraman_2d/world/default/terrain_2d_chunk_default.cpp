@@ -493,8 +493,8 @@ void Terrain2DChunkDefault::debug_mesh_allocate() {
 	if (_debug_mesh_instance == RID()) {
 		_debug_mesh_instance = RenderingServer::get_singleton()->instance_create();
 
-		//if (get_voxel_world()->get_world().is_valid())
-		//	RS::get_singleton()->instance_set_scenario(_debug_mesh_instance, get_voxel_world()->get_world()->get_scenario());
+		//if (get_voxel_world()->get_world_3d().is_valid())
+		//	RS::get_singleton()->instance_set_scenario(_debug_mesh_instance, get_voxel_world()->get_world_3d()->get_scenario());
 
 		RS::get_singleton()->instance_set_base(_debug_mesh_instance, _debug_mesh_rid);
 		//RS::get_singleton()->instance_set_transform(_debug_mesh_instance, get_transform());

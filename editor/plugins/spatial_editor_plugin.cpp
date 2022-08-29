@@ -539,7 +539,7 @@ ObjectID SpatialEditorViewport::_select_ray(const Point2 &p_pos) {
 	Vector3 pos = _get_ray_pos(p_pos);
 	Vector2 shrinked_pos = p_pos / viewport_container->get_stretch_shrink();
 
-	Vector<ObjectID> instances = RenderingServer::get_singleton()->instances_cull_ray(pos, ray, get_tree()->get_root()->get_world()->get_scenario());
+	Vector<ObjectID> instances = RenderingServer::get_singleton()->instances_cull_ray(pos, ray, get_tree()->get_root()->get_world_3d()->get_scenario());
 	Set<Ref<EditorSpatialGizmo>> found_gizmos;
 
 	Node *edited_scene = get_tree()->get_edited_scene_root();
@@ -602,7 +602,7 @@ void SpatialEditorViewport::_find_items_at_pos(const Point2 &p_pos, Vector<_RayR
 	Vector3 ray = _get_ray(p_pos);
 	Vector3 pos = _get_ray_pos(p_pos);
 
-	Vector<ObjectID> instances = RenderingServer::get_singleton()->instances_cull_ray(pos, ray, get_tree()->get_root()->get_world()->get_scenario());
+	Vector<ObjectID> instances = RenderingServer::get_singleton()->instances_cull_ray(pos, ray, get_tree()->get_root()->get_world_3d()->get_scenario());
 	Set<Spatial *> found_nodes;
 
 	for (int i = 0; i < instances.size(); i++) {
@@ -783,7 +783,7 @@ void SpatialEditorViewport::_select_region() {
 		_clear_selected();
 	}
 
-	Vector<ObjectID> instances = RenderingServer::get_singleton()->instances_cull_convex(frustum, get_tree()->get_root()->get_world()->get_scenario());
+	Vector<ObjectID> instances = RenderingServer::get_singleton()->instances_cull_convex(frustum, get_tree()->get_root()->get_world_3d()->get_scenario());
 	Set<Spatial *> found_nodes;
 	Vector<Node *> selected;
 
@@ -3454,7 +3454,7 @@ void SpatialEditorViewport::_menu_option(int p_option) {
 		} break;
 		case VIEW_DISPLAY_OVERDRAW: {
 			viewport->set_debug_draw(Viewport::DEBUG_DRAW_OVERDRAW);
-			RenderingServer::get_singleton()->scenario_set_debug(get_tree()->get_root()->get_world()->get_scenario(), RenderingServer::SCENARIO_DEBUG_OVERDRAW);
+			RenderingServer::get_singleton()->scenario_set_debug(get_tree()->get_root()->get_world_3d()->get_scenario(), RenderingServer::SCENARIO_DEBUG_OVERDRAW);
 			view_menu->get_popup()->set_item_checked(view_menu->get_popup()->get_item_index(VIEW_DISPLAY_NORMAL), false);
 			view_menu->get_popup()->set_item_checked(view_menu->get_popup()->get_item_index(VIEW_DISPLAY_WIREFRAME), false);
 			view_menu->get_popup()->set_item_checked(view_menu->get_popup()->get_item_index(VIEW_DISPLAY_OVERDRAW), true);
@@ -3463,7 +3463,7 @@ void SpatialEditorViewport::_menu_option(int p_option) {
 		} break;
 		case VIEW_DISPLAY_SHADELESS: {
 			viewport->set_debug_draw(Viewport::DEBUG_DRAW_UNSHADED);
-			RenderingServer::get_singleton()->scenario_set_debug(get_tree()->get_root()->get_world()->get_scenario(), RenderingServer::SCENARIO_DEBUG_SHADELESS);
+			RenderingServer::get_singleton()->scenario_set_debug(get_tree()->get_root()->get_world_3d()->get_scenario(), RenderingServer::SCENARIO_DEBUG_SHADELESS);
 			view_menu->get_popup()->set_item_checked(view_menu->get_popup()->get_item_index(VIEW_DISPLAY_NORMAL), false);
 			view_menu->get_popup()->set_item_checked(view_menu->get_popup()->get_item_index(VIEW_DISPLAY_WIREFRAME), false);
 			view_menu->get_popup()->set_item_checked(view_menu->get_popup()->get_item_index(VIEW_DISPLAY_OVERDRAW), false);
@@ -3494,7 +3494,7 @@ void SpatialEditorViewport::_init_gizmo_instance(int p_idx) {
 	for (int i = 0; i < 3; i++) {
 		move_gizmo_instance[i] = RID_PRIME(RS::get_singleton()->instance_create());
 		RS::get_singleton()->instance_set_base(move_gizmo_instance[i], spatial_editor->get_move_gizmo(i)->get_rid());
-		RS::get_singleton()->instance_set_scenario(move_gizmo_instance[i], get_tree()->get_root()->get_world()->get_scenario());
+		RS::get_singleton()->instance_set_scenario(move_gizmo_instance[i], get_tree()->get_root()->get_world_3d()->get_scenario());
 		RS::get_singleton()->instance_set_visible(move_gizmo_instance[i], false);
 		RS::get_singleton()->instance_geometry_set_cast_shadows_setting(move_gizmo_instance[i], RS::SHADOW_CASTING_SETTING_OFF);
 		RS::get_singleton()->instance_set_layer_mask(move_gizmo_instance[i], layer);
@@ -3502,7 +3502,7 @@ void SpatialEditorViewport::_init_gizmo_instance(int p_idx) {
 
 		move_plane_gizmo_instance[i] = RID_PRIME(RS::get_singleton()->instance_create());
 		RS::get_singleton()->instance_set_base(move_plane_gizmo_instance[i], spatial_editor->get_move_plane_gizmo(i)->get_rid());
-		RS::get_singleton()->instance_set_scenario(move_plane_gizmo_instance[i], get_tree()->get_root()->get_world()->get_scenario());
+		RS::get_singleton()->instance_set_scenario(move_plane_gizmo_instance[i], get_tree()->get_root()->get_world_3d()->get_scenario());
 		RS::get_singleton()->instance_set_visible(move_plane_gizmo_instance[i], false);
 		RS::get_singleton()->instance_geometry_set_cast_shadows_setting(move_plane_gizmo_instance[i], RS::SHADOW_CASTING_SETTING_OFF);
 		RS::get_singleton()->instance_set_layer_mask(move_plane_gizmo_instance[i], layer);
@@ -3510,7 +3510,7 @@ void SpatialEditorViewport::_init_gizmo_instance(int p_idx) {
 
 		rotate_gizmo_instance[i] = RID_PRIME(RS::get_singleton()->instance_create());
 		RS::get_singleton()->instance_set_base(rotate_gizmo_instance[i], spatial_editor->get_rotate_gizmo(i)->get_rid());
-		RS::get_singleton()->instance_set_scenario(rotate_gizmo_instance[i], get_tree()->get_root()->get_world()->get_scenario());
+		RS::get_singleton()->instance_set_scenario(rotate_gizmo_instance[i], get_tree()->get_root()->get_world_3d()->get_scenario());
 		RS::get_singleton()->instance_set_visible(rotate_gizmo_instance[i], false);
 		RS::get_singleton()->instance_geometry_set_cast_shadows_setting(rotate_gizmo_instance[i], RS::SHADOW_CASTING_SETTING_OFF);
 		RS::get_singleton()->instance_set_layer_mask(rotate_gizmo_instance[i], layer);
@@ -3518,7 +3518,7 @@ void SpatialEditorViewport::_init_gizmo_instance(int p_idx) {
 
 		scale_gizmo_instance[i] = RID_PRIME(RS::get_singleton()->instance_create());
 		RS::get_singleton()->instance_set_base(scale_gizmo_instance[i], spatial_editor->get_scale_gizmo(i)->get_rid());
-		RS::get_singleton()->instance_set_scenario(scale_gizmo_instance[i], get_tree()->get_root()->get_world()->get_scenario());
+		RS::get_singleton()->instance_set_scenario(scale_gizmo_instance[i], get_tree()->get_root()->get_world_3d()->get_scenario());
 		RS::get_singleton()->instance_set_visible(scale_gizmo_instance[i], false);
 		RS::get_singleton()->instance_geometry_set_cast_shadows_setting(scale_gizmo_instance[i], RS::SHADOW_CASTING_SETTING_OFF);
 		RS::get_singleton()->instance_set_layer_mask(scale_gizmo_instance[i], layer);
@@ -3526,7 +3526,7 @@ void SpatialEditorViewport::_init_gizmo_instance(int p_idx) {
 
 		scale_plane_gizmo_instance[i] = RID_PRIME(RS::get_singleton()->instance_create());
 		RS::get_singleton()->instance_set_base(scale_plane_gizmo_instance[i], spatial_editor->get_scale_plane_gizmo(i)->get_rid());
-		RS::get_singleton()->instance_set_scenario(scale_plane_gizmo_instance[i], get_tree()->get_root()->get_world()->get_scenario());
+		RS::get_singleton()->instance_set_scenario(scale_plane_gizmo_instance[i], get_tree()->get_root()->get_world_3d()->get_scenario());
 		RS::get_singleton()->instance_set_visible(scale_plane_gizmo_instance[i], false);
 		RS::get_singleton()->instance_geometry_set_cast_shadows_setting(scale_plane_gizmo_instance[i], RS::SHADOW_CASTING_SETTING_OFF);
 		RS::get_singleton()->instance_set_layer_mask(scale_plane_gizmo_instance[i], layer);
@@ -3536,7 +3536,7 @@ void SpatialEditorViewport::_init_gizmo_instance(int p_idx) {
 	// Rotation white outline
 	rotate_gizmo_instance[3] = RID_PRIME(RS::get_singleton()->instance_create());
 	RS::get_singleton()->instance_set_base(rotate_gizmo_instance[3], spatial_editor->get_rotate_gizmo(3)->get_rid());
-	RS::get_singleton()->instance_set_scenario(rotate_gizmo_instance[3], get_tree()->get_root()->get_world()->get_scenario());
+	RS::get_singleton()->instance_set_scenario(rotate_gizmo_instance[3], get_tree()->get_root()->get_world_3d()->get_scenario());
 	RS::get_singleton()->instance_set_visible(rotate_gizmo_instance[3], false);
 	RS::get_singleton()->instance_geometry_set_cast_shadows_setting(rotate_gizmo_instance[3], RS::SHADOW_CASTING_SETTING_OFF);
 	RS::get_singleton()->instance_set_layer_mask(rotate_gizmo_instance[3], layer);
@@ -3962,7 +3962,7 @@ Vector3 SpatialEditorViewport::_get_instance_position(const Point2 &p_pos) const
 
 	Vector3 point = world_pos + world_ray * MAX_DISTANCE;
 
-	PhysicsDirectSpaceState *ss = get_tree()->get_root()->get_world()->get_direct_space_state();
+	PhysicsDirectSpaceState *ss = get_tree()->get_root()->get_world_3d()->get_direct_space_state();
 	PhysicsDirectSpaceState::RayResult result;
 
 	if (ss->intersect_ray(world_pos, world_pos + world_ray * MAX_DISTANCE, result)) {
@@ -3979,7 +3979,7 @@ Vector3 SpatialEditorViewport::_get_instance_position(const Point2 &p_pos) const
 	Vector3 world_ray = _get_ray(p_pos);
 	Vector3 world_pos = _get_ray_pos(p_pos);
 
-	Vector<ObjectID> instances = RenderingServer::get_singleton()->instances_cull_ray(world_pos, world_ray, get_tree()->get_root()->get_world()->get_scenario());
+	Vector<ObjectID> instances = RenderingServer::get_singleton()->instances_cull_ray(world_pos, world_ray, get_tree()->get_root()->get_world_3d()->get_scenario());
 	Set<Ref<EditorSpatialGizmo>> found_gizmos;
 
 	float closest_dist = MAX_DISTANCE;
@@ -5062,10 +5062,10 @@ Object *SpatialEditor::_get_editor_data(Object *p_what) {
 	si->sp = sp;
 	si->sbox_instance = RenderingServer::get_singleton()->instance_create2(
 			selection_box->get_rid(),
-			sp->get_world()->get_scenario());
+			sp->get_world_3d()->get_scenario());
 	si->sbox_instance_offset = RenderingServer::get_singleton()->instance_create2(
 			selection_box->get_rid(),
-			sp->get_world()->get_scenario());
+			sp->get_world_3d()->get_scenario());
 	RS::get_singleton()->instance_geometry_set_cast_shadows_setting(
 			si->sbox_instance,
 			RS::SHADOW_CASTING_SETTING_OFF);
@@ -5075,10 +5075,10 @@ Object *SpatialEditor::_get_editor_data(Object *p_what) {
 	RS::get_singleton()->instance_set_layer_mask(si->sbox_instance_offset, 1 << SpatialEditorViewport::GIZMO_EDIT_LAYER);
 	si->sbox_instance_xray = RenderingServer::get_singleton()->instance_create2(
 			selection_box_xray->get_rid(),
-			sp->get_world()->get_scenario());
+			sp->get_world_3d()->get_scenario());
 	si->sbox_instance_xray_offset = RenderingServer::get_singleton()->instance_create2(
 			selection_box_xray->get_rid(),
-			sp->get_world()->get_scenario());
+			sp->get_world_3d()->get_scenario());
 	RS::get_singleton()->instance_geometry_set_cast_shadows_setting(
 			si->sbox_instance_xray,
 			RS::SHADOW_CASTING_SETTING_OFF);
@@ -5828,7 +5828,7 @@ void SpatialEditor::_init_indicators() {
 		RenderingServer::get_singleton()->mesh_add_surface_from_arrays(origin, RenderingServer::PRIMITIVE_LINES, d);
 		RenderingServer::get_singleton()->mesh_surface_set_material(origin, 0, indicator_mat->get_rid());
 
-		origin_instance = RenderingServer::get_singleton()->instance_create2(origin, get_tree()->get_root()->get_world()->get_scenario());
+		origin_instance = RenderingServer::get_singleton()->instance_create2(origin, get_tree()->get_root()->get_world_3d()->get_scenario());
 		RS::get_singleton()->instance_set_layer_mask(origin_instance, 1 << SpatialEditorViewport::GIZMO_GRID_LAYER);
 
 		RenderingServer::get_singleton()->instance_geometry_set_cast_shadows_setting(origin_instance, RS::SHADOW_CASTING_SETTING_OFF);
@@ -6390,7 +6390,7 @@ void SpatialEditor::_init_grid() {
 		d[RenderingServer::ARRAY_NORMAL] = grid_normals[c];
 		RenderingServer::get_singleton()->mesh_add_surface_from_arrays(grid[c], RenderingServer::PRIMITIVE_LINES, d);
 		RenderingServer::get_singleton()->mesh_surface_set_material(grid[c], 0, grid_mat[c]->get_rid());
-		grid_instance[c] = RenderingServer::get_singleton()->instance_create2(grid[c], get_tree()->get_root()->get_world()->get_scenario());
+		grid_instance[c] = RenderingServer::get_singleton()->instance_create2(grid[c], get_tree()->get_root()->get_world_3d()->get_scenario());
 
 		// Yes, the end of this line is supposed to be a.
 		RenderingServer::get_singleton()->instance_set_visible(grid_instance[c], grid_visible[a]);
@@ -6583,7 +6583,7 @@ void SpatialEditor::snap_selected_nodes_to_floor() {
 		}
 	}
 
-	PhysicsDirectSpaceState *ss = get_tree()->get_root()->get_world()->get_direct_space_state();
+	PhysicsDirectSpaceState *ss = get_tree()->get_root()->get_world_3d()->get_direct_space_state();
 	PhysicsDirectSpaceState::RayResult result;
 
 	Array keys = snap_data.keys();

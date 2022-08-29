@@ -513,8 +513,8 @@ void SceneTree::set_physics_interpolation_enabled(bool p_enabled) {
 
 	_physics_interpolation_enabled = p_enabled;
 
-	if (root->get_world().is_valid()) {
-		RID scenario = root->get_world()->get_scenario();
+	if (root->get_world_3d().is_valid()) {
+		RID scenario = root->get_world_3d()->get_scenario();
 		if (scenario.is_valid()) {
 			RenderingServer::get_singleton()->scenario_set_physics_interpolation_enabled(scenario, p_enabled);
 		}
@@ -548,8 +548,8 @@ bool SceneTree::iteration(float p_time) {
 
 	current_frame++;
 
-	if (root->get_world().is_valid()) {
-		RID scenario = root->get_world()->get_scenario();
+	if (root->get_world_3d().is_valid()) {
+		RID scenario = root->get_world_3d()->get_scenario();
 		if (scenario.is_valid()) {
 			RenderingServer::get_singleton()->scenario_tick(scenario);
 		}
@@ -684,7 +684,7 @@ bool SceneTree::idle(float p_time) {
 		String env_path = ProjectSettings::get_singleton()->get("rendering/environment/default_environment");
 		env_path = env_path.strip_edges(); //user may have added a space or two
 		String cpath;
-		Ref<Environment3D> fallback = get_root()->get_world()->get_fallback_environment();
+		Ref<Environment3D> fallback = get_root()->get_world_3d()->get_fallback_environment();
 		if (fallback.is_valid()) {
 			cpath = fallback->get_path();
 		}
@@ -698,14 +698,14 @@ bool SceneTree::idle(float p_time) {
 			} else {
 				fallback.unref();
 			}
-			get_root()->get_world()->set_fallback_environment(fallback);
+			get_root()->get_world_3d()->set_fallback_environment(fallback);
 		}
 	}
 
 #endif
 
-	if (root->get_world().is_valid()) {
-		RID scenario = root->get_world()->get_scenario();
+	if (root->get_world_3d().is_valid()) {
+		RID scenario = root->get_world_3d()->get_scenario();
 		if (scenario.is_valid()) {
 			RenderingServer::get_singleton()->scenario_pre_draw(scenario, true);
 		}
@@ -2207,8 +2207,8 @@ SceneTree::SceneTree() {
 	root = memnew(Viewport);
 	root->set_name("root");
 	root->set_handle_input_locally(false);
-	if (!root->get_world().is_valid()) {
-		root->set_world(Ref<World3D>(memnew(World3D)));
+	if (!root->get_world_3d().is_valid()) {
+		root->set_world_3d(Ref<World3D>(memnew(World3D)));
 	}
 
 	set_physics_interpolation_enabled(GLOBAL_DEF("physics/common/physics_interpolation", false));
@@ -2255,7 +2255,7 @@ SceneTree::SceneTree() {
 	const bool use_32_bpc_depth = GLOBAL_GET("rendering/quality/depth/use_32_bpc_depth");
 	root->set_use_32_bpc_depth(use_32_bpc_depth);
 
-	RS::get_singleton()->scenario_set_reflection_atlas_size(root->get_world()->get_scenario(), ref_atlas_size, ref_atlas_subdiv);
+	RS::get_singleton()->scenario_set_reflection_atlas_size(root->get_world_3d()->get_scenario(), ref_atlas_size, ref_atlas_subdiv);
 
 	{ //load default fallback environment
 		//get possible extensions
@@ -2276,7 +2276,7 @@ SceneTree::SceneTree() {
 		if (env_path != String()) {
 			Ref<Environment3D> env = ResourceLoader::load(env_path);
 			if (env.is_valid()) {
-				root->get_world()->set_fallback_environment(env);
+				root->get_world_3d()->set_fallback_environment(env);
 			} else {
 				if (Engine::get_singleton()->is_editor_hint()) {
 					//file was erased, clear the field.

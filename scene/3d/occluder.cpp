@@ -51,7 +51,7 @@ void Occluder::set_shape(const Ref<OccluderShape> &p_shape) {
 	if (_shape.is_valid()) {
 		_shape->register_owner(this);
 
-		if (is_inside_world() && get_world().is_valid()) {
+		if (is_inside_world() && get_world_3d().is_valid()) {
 			if (_occluder_instance.is_valid()) {
 				RenderingServer::get_singleton()->occluder_instance_link_resource(_occluder_instance, p_shape->get_rid());
 			}
@@ -106,10 +106,10 @@ String Occluder::get_configuration_warning() const {
 void Occluder::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_WORLD: {
-			ERR_FAIL_COND(get_world().is_null());
+			ERR_FAIL_COND(get_world_3d().is_null());
 
 			if (_occluder_instance.is_valid()) {
-				RenderingServer::get_singleton()->occluder_instance_set_scenario(_occluder_instance, get_world()->get_scenario());
+				RenderingServer::get_singleton()->occluder_instance_set_scenario(_occluder_instance, get_world_3d()->get_scenario());
 				if (get_shape().is_valid()) {
 					RenderingServer::get_singleton()->occluder_instance_link_resource(_occluder_instance, get_shape()->get_rid());
 				}

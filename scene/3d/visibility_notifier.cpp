@@ -99,7 +99,7 @@ void VisibilityNotifier::set_aabb(const AABB &p_aabb) {
 
 	if (is_inside_world()) {
 		AABB world_aabb = get_global_transform().xform(aabb);
-		get_world()->_update_notifier(this, world_aabb);
+		get_world_3d()->_update_notifier(this, world_aabb);
 		_world_aabb_center = world_aabb.get_center();
 	}
 
@@ -122,9 +122,9 @@ void VisibilityNotifier::_refresh_portal_mode() {
 				_cull_instance_rid = RID_PRIME(RenderingServer::get_singleton()->ghost_create());
 			}
 
-			if (is_inside_world() && get_world().is_valid() && get_world()->get_scenario().is_valid() && is_inside_tree()) {
+			if (is_inside_world() && get_world_3d().is_valid() && get_world_3d()->get_scenario().is_valid() && is_inside_tree()) {
 				AABB world_aabb = get_global_transform().xform(aabb);
-				RenderingServer::get_singleton()->ghost_set_scenario(_cull_instance_rid, get_world()->get_scenario(), get_instance_id(), world_aabb);
+				RenderingServer::get_singleton()->ghost_set_scenario(_cull_instance_rid, get_world_3d()->get_scenario(), get_instance_id(), world_aabb);
 			}
 		} else {
 			if (_cull_instance_rid != RID()) {
@@ -144,7 +144,7 @@ void VisibilityNotifier::_refresh_portal_mode() {
 void VisibilityNotifier::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_WORLD: {
-			world = get_world();
+			world = get_world_3d();
 			ERR_FAIL_COND(!world.is_valid());
 
 			AABB world_aabb = get_global_transform().xform(aabb);

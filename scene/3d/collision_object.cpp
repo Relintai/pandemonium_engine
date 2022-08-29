@@ -62,7 +62,7 @@ void CollisionObject::_notification(int p_what) {
 				PhysicsServer::get_singleton()->body_set_state(rid, PhysicsServer::BODY_STATE_TRANSFORM, get_global_transform());
 			}
 
-			Ref<World3D> world_ref = get_world();
+			Ref<World3D> world_ref = get_world_3d();
 			ERR_FAIL_COND(!world_ref.is_valid());
 			RID space = world_ref->get_space();
 			if (area) {
@@ -247,7 +247,7 @@ void CollisionObject::_update_debug_shapes() {
 				}
 				if (!s.debug_shape.is_valid()) {
 					s.debug_shape = RID_PRIME(RS::get_singleton()->instance_create());
-					RS::get_singleton()->instance_set_scenario(s.debug_shape, get_world()->get_scenario());
+					RS::get_singleton()->instance_set_scenario(s.debug_shape, get_world_3d()->get_scenario());
 
 					if (!s.shape->is_connected("changed", this, "_shape_changed")) {
 						s.shape->connect("changed", this, "_shape_changed", varray(s.shape), CONNECT_DEFERRED);

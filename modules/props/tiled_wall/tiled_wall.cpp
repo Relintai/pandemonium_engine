@@ -253,7 +253,7 @@ void TiledWall::create_colliders() {
 
 	free_colliders();
 
-	ERR_FAIL_COND(!get_world().is_valid() && get_world()->get_space() == RID());
+	ERR_FAIL_COND(!get_world_3d().is_valid() && get_world_3d()->get_space() == RID());
 
 	_physics_shape_rid = PhysicsServer::get_singleton()->shape_create(PhysicsServer::SHAPE_BOX);
 
@@ -304,7 +304,7 @@ void TiledWall::_notification(int p_what) {
 
 			PhysicsServer::get_singleton()->body_set_state(_physics_body_rid, PhysicsServer::BODY_STATE_TRANSFORM, t);
 
-			RID space = get_world()->get_space();
+			RID space = get_world_3d()->get_space();
 			PhysicsServer::get_singleton()->body_set_space(_physics_body_rid, space);
 
 			refresh();

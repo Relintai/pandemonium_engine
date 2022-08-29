@@ -268,7 +268,7 @@ void NavigationAgent::set_agent_parent(Node *p_agent_parent) {
 			NavigationServer::get_singleton()->agent_set_map(get_rid(), navigation->get_rid());
 		} else {
 			// no navigation node found in parent nodes, use default navigation map from world resource
-			NavigationServer::get_singleton()->agent_set_map(get_rid(), agent_parent->get_world()->get_navigation_map());
+			NavigationServer::get_singleton()->agent_set_map(get_rid(), agent_parent->get_world_3d()->get_navigation_map());
 		}
 
 		// create new avoidance callback if enabled
@@ -301,7 +301,7 @@ RID NavigationAgent::get_navigation_map() const {
 	if (map_override.is_valid()) {
 		return map_override;
 	} else if (agent_parent != nullptr) {
-		return agent_parent->get_world()->get_navigation_map();
+		return agent_parent->get_world_3d()->get_navigation_map();
 	}
 	return RID();
 }
@@ -475,7 +475,7 @@ void NavigationAgent::update_navigation() {
 		} else if (navigation != nullptr) {
 			navigation_path = NavigationServer::get_singleton()->map_get_path(navigation->get_rid(), o, target_location, true, navigation_layers);
 		} else {
-			navigation_path = NavigationServer::get_singleton()->map_get_path(agent_parent->get_world()->get_navigation_map(), o, target_location, true, navigation_layers);
+			navigation_path = NavigationServer::get_singleton()->map_get_path(agent_parent->get_world_3d()->get_navigation_map(), o, target_location, true, navigation_layers);
 		}
 
 		navigation_finished = false;

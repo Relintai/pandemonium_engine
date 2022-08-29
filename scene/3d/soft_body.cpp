@@ -268,7 +268,7 @@ void SoftBody::_notification(int p_what) {
 				add_change_receptor(this);
 			}
 
-			RID space = get_world()->get_space();
+			RID space = get_world_3d()->get_space();
 			PhysicsServer::get_singleton()->soft_body_set_space(physics_rid, space);
 			_prepare_physics_server();
 		} break;

@@ -83,7 +83,7 @@ EditorPlugin::AfterGUIInput TerrainWorldEditor::do_input_action(Camera *p_camera
 	from = local_xform.xform(from);
 	to = local_xform.xform(to);
 
-	PhysicsDirectSpaceState *ss = _world->get_world()->get_direct_space_state();
+	PhysicsDirectSpaceState *ss = _world->get_world_3d()->get_direct_space_state();
 
 	PhysicsDirectSpaceState::RayResult res;
 

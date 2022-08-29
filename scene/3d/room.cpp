@@ -267,8 +267,8 @@ void Room::_changed(bool p_regenerate_bounds) {
 void Room::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_WORLD: {
-			ERR_FAIL_COND(get_world().is_null());
-			RenderingServer::get_singleton()->room_set_scenario(_room_rid, get_world()->get_scenario());
+			ERR_FAIL_COND(get_world_3d().is_null());
+			RenderingServer::get_singleton()->room_set_scenario(_room_rid, get_world_3d()->get_scenario());
 		} break;
 		case NOTIFICATION_EXIT_WORLD: {
 			RenderingServer::get_singleton()->room_set_scenario(_room_rid, RID());

@@ -277,7 +277,7 @@ EditorSpatialGizmo::Instance::~Instance() {
 }
 
 void EditorSpatialGizmo::Instance::create_instance(Spatial *p_base, bool p_hidden) {
-	instance = RS::get_singleton()->instance_create2(mesh->get_rid(), p_base->get_world()->get_scenario());
+	instance = RS::get_singleton()->instance_create2(mesh->get_rid(), p_base->get_world_3d()->get_scenario());
 	RS::get_singleton()->instance_set_portal_mode(instance, RenderingServer::INSTANCE_PORTAL_MODE_GLOBAL);
 	RS::get_singleton()->instance_attach_object_instance_id(instance, p_base->get_instance_id());
 

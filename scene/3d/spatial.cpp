@@ -701,11 +701,11 @@ bool Spatial::is_set_as_toplevel() const {
 	return data.toplevel;
 }
 
-Ref<World3D> Spatial::get_world() const {
+Ref<World3D> Spatial::get_world_3d() const {
 	ERR_FAIL_COND_V(!is_inside_world(), Ref<World3D>());
 	ERR_FAIL_COND_V(!data.viewport, Ref<World3D>());
 
-	return data.viewport->find_world();
+	return data.viewport->find_world_3d();
 }
 
 void Spatial::_propagate_visibility_changed() {
@@ -944,7 +944,7 @@ void Spatial::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("is_set_as_toplevel"), &Spatial::is_set_as_toplevel);
 	ClassDB::bind_method(D_METHOD("set_disable_scale", "disable"), &Spatial::set_disable_scale);
 	ClassDB::bind_method(D_METHOD("is_scale_disabled"), &Spatial::is_scale_disabled);
-	ClassDB::bind_method(D_METHOD("get_world"), &Spatial::get_world);
+	ClassDB::bind_method(D_METHOD("get_world_3d"), &Spatial::get_world_3d);
 
 	ClassDB::bind_method(D_METHOD("force_update_transform"), &Spatial::force_update_transform);
 

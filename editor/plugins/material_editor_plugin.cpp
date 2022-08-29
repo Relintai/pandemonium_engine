@@ -143,7 +143,7 @@ MaterialEditor::MaterialEditor() {
 	viewport = memnew(Viewport);
 	Ref<World3D> world;
 	world.instance();
-	viewport->set_world(world); //use own world
+	viewport->set_world_3d(world); //use own world
 	vc->add_child(viewport);
 	viewport->set_disable_input(true);
 	viewport->set_transparent_background(true);

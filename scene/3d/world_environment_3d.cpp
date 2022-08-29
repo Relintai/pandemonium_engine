@@ -38,35 +38,35 @@
 void WorldEnvironment3D::_notification(int p_what) {
 	if (p_what == Spatial::NOTIFICATION_ENTER_WORLD || p_what == Spatial::NOTIFICATION_ENTER_TREE) {
 		if (environment.is_valid()) {
-			if (get_viewport()->find_world()->get_environment().is_valid()) {
+			if (get_viewport()->find_world_3d()->get_environment().is_valid()) {
 				WARN_PRINT("World already has an environment (Another WorldEnvironment3D?), overriding.");
 			}
-			get_viewport()->find_world()->set_environment(environment);
-			add_to_group("_world_environment_" + itos(get_viewport()->find_world()->get_scenario().get_id()));
+			get_viewport()->find_world_3d()->set_environment(environment);
+			add_to_group("_world_environment_" + itos(get_viewport()->find_world_3d()->get_scenario().get_id()));
 		}
 
 	} else if (p_what == Spatial::NOTIFICATION_EXIT_WORLD || p_what == Spatial::NOTIFICATION_EXIT_TREE) {
-		if (environment.is_valid() && get_viewport()->find_world()->get_environment() == environment) {
-			get_viewport()->find_world()->set_environment(Ref<Environment3D>());
-			remove_from_group("_world_environment_" + itos(get_viewport()->find_world()->get_scenario().get_id()));
+		if (environment.is_valid() && get_viewport()->find_world_3d()->get_environment() == environment) {
+			get_viewport()->find_world_3d()->set_environment(Ref<Environment3D>());
+			remove_from_group("_world_environment_" + itos(get_viewport()->find_world_3d()->get_scenario().get_id()));
 		}
 	}
 }
 
 void WorldEnvironment3D::set_environment(const Ref<Environment3D> &p_environment) {
-	if (is_inside_tree() && environment.is_valid() && get_viewport()->find_world()->get_environment() == environment) {
-		get_viewport()->find_world()->set_environment(Ref<Environment3D>());
-		remove_from_group("_world_environment_" + itos(get_viewport()->find_world()->get_scenario().get_id()));
+	if (is_inside_tree() && environment.is_valid() && get_viewport()->find_world_3d()->get_environment() == environment) {
+		get_viewport()->find_world_3d()->set_environment(Ref<Environment3D>());
+		remove_from_group("_world_environment_" + itos(get_viewport()->find_world_3d()->get_scenario().get_id()));
 		//clean up
 	}
 
 	environment = p_environment;
 	if (is_inside_tree() && environment.is_valid()) {
-		if (get_viewport()->find_world()->get_environment().is_valid()) {
+		if (get_viewport()->find_world_3d()->get_environment().is_valid()) {
 			WARN_PRINT("World already has an environment (Another WorldEnvironment3D?), overriding.");
 		}
-		get_viewport()->find_world()->set_environment(environment);
-		add_to_group("_world_environment_" + itos(get_viewport()->find_world()->get_scenario().get_id()));
+		get_viewport()->find_world_3d()->set_environment(environment);
+		add_to_group("_world_environment_" + itos(get_viewport()->find_world_3d()->get_scenario().get_id()));
 	}
 
 	update_configuration_warning();
@@ -91,7 +91,7 @@ String WorldEnvironment3D::get_configuration_warning() const {
 	}
 
 	List<Node *> nodes;
-	get_tree()->get_nodes_in_group("_world_environment_" + itos(get_viewport()->find_world()->get_scenario().get_id()), &nodes);
+	get_tree()->get_nodes_in_group("_world_environment_" + itos(get_viewport()->find_world_3d()->get_scenario().get_id()), &nodes);
 
 	if (nodes.size() > 1) {
 		if (warning != String()) {

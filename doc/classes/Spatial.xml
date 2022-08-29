@@ -57,7 +57,7 @@
 				Returns the parent [Spatial], or an empty [Object] if no parent exists or parent is not of type [Spatial].
 			</description>
 		</method>
-		<method name="get_world" qualifiers="const">
+		<method name="get_world_3d" qualifiers="const">
 			<return type="World3D" />
 			<description>
 				Returns the current [World3D] resource this [Spatial] node is registered to.

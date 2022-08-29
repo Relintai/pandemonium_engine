@@ -86,7 +86,7 @@ bool RoomManager::static_rooms_get_active() {
 bool RoomManager::static_rooms_get_active_and_loaded() {
 	if (active_room_manager) {
 		if (active_room_manager->rooms_get_active()) {
-			Ref<World3D> world = active_room_manager->get_world();
+			Ref<World3D> world = active_room_manager->get_world_3d();
 			RID scenario = world->get_scenario();
 			return active_room_manager->rooms_get_active() && RenderingServer::get_singleton()->rooms_is_loaded(scenario);
 		}
@@ -148,7 +148,7 @@ String RoomManager::get_configuration_warning() const {
 }
 
 void RoomManager::_preview_camera_update() {
-	Ref<World3D> world = get_world();
+	Ref<World3D> world = get_world_3d();
 	RID scenario = world->get_scenario();
 
 	if (_pandemonium_preview_camera_ID != (ObjectID)-1) {
@@ -237,7 +237,7 @@ void RoomManager::_notification(int p_what) {
 			}
 
 			if (_settings_gameplay_monitor_enabled) {
-				Ref<World3D> world = get_world();
+				Ref<World3D> world = get_world_3d();
 				RID scenario = world->get_scenario();
 
 				List<Camera *> cameras;
@@ -362,8 +362,8 @@ void RoomManager::set_preview_camera_path(const NodePath &p_path) {
 	}
 
 	// if we are turning camera override off, must inform visual server
-	if (!camera_on && is_inside_world() && get_world().is_valid() && get_world()->get_scenario().is_valid()) {
-		RenderingServer::get_singleton()->rooms_override_camera(get_world()->get_scenario(), false, Vector3(), nullptr);
+	if (!camera_on && is_inside_world() && get_world_3d().is_valid() && get_world_3d()->get_scenario().is_valid()) {
+		RenderingServer::get_singleton()->rooms_override_camera(get_world_3d()->get_scenario(), false, Vector3(), nullptr);
 	}
 
 	// we couldn't resolve the path, let's set it to null
@@ -383,16 +383,16 @@ real_t RoomManager::get_room_simplify() const {
 void RoomManager::set_portal_depth_limit(int p_limit) {
 	_settings_portal_depth_limit = p_limit;
 
-	if (is_inside_world() && get_world().is_valid()) {
-		RenderingServer::get_singleton()->rooms_set_params(get_world()->get_scenario(), p_limit, _settings_roaming_expansion_margin);
+	if (is_inside_world() && get_world_3d().is_valid()) {
+		RenderingServer::get_singleton()->rooms_set_params(get_world_3d()->get_scenario(), p_limit, _settings_roaming_expansion_margin);
 	}
 }
 
 void RoomManager::set_roaming_expansion_margin(real_t p_dist) {
 	_settings_roaming_expansion_margin = p_dist;
 
-	if (is_inside_world() && get_world().is_valid()) {
-		RenderingServer::get_singleton()->rooms_set_params(get_world()->get_scenario(), _settings_portal_depth_limit, _settings_roaming_expansion_margin);
+	if (is_inside_world() && get_world_3d().is_valid()) {
+		RenderingServer::get_singleton()->rooms_set_params(get_world_3d()->get_scenario(), _settings_portal_depth_limit, _settings_roaming_expansion_margin);
 	}
 }
 
@@ -445,8 +445,8 @@ bool RoomManager::get_show_margins() const {
 }
 
 void RoomManager::set_debug_sprawl(bool p_enable) {
-	if (is_inside_world() && get_world().is_valid()) {
-		RenderingServer::get_singleton()->rooms_set_debug_feature(get_world()->get_scenario(), RenderingServer::ROOMS_DEBUG_SPRAWL, p_enable);
+	if (is_inside_world() && get_world_3d().is_valid()) {
+		RenderingServer::get_singleton()->rooms_set_debug_feature(get_world_3d()->get_scenario(), RenderingServer::ROOMS_DEBUG_SPRAWL, p_enable);
 		_debug_sprawl = p_enable;
 	}
 }
@@ -488,8 +488,8 @@ void RoomManager::debug_print_line(String p_string, int p_priority) {
 }
 
 void RoomManager::rooms_set_active(bool p_active) {
-	if (is_inside_world() && get_world().is_valid()) {
-		RenderingServer::get_singleton()->rooms_set_active(get_world()->get_scenario(), p_active);
+	if (is_inside_world() && get_world_3d().is_valid()) {
+		RenderingServer::get_singleton()->rooms_set_active(get_world_3d()->get_scenario(), p_active);
 		_active = p_active;
 
 #ifdef TOOLS_ENABLED
@@ -525,15 +525,15 @@ String RoomManager::get_pvs_filename() const {
 
 void RoomManager::_rooms_changed(String p_reason) {
 	_rooms.clear();
-	if (is_inside_world() && get_world().is_valid()) {
-		RenderingServer::get_singleton()->rooms_unload(get_world()->get_scenario(), p_reason);
+	if (is_inside_world() && get_world_3d().is_valid()) {
+		RenderingServer::get_singleton()->rooms_unload(get_world_3d()->get_scenario(), p_reason);
 	}
 }
 
 void RoomManager::rooms_clear() {
 	_rooms.clear();
-	if (is_inside_world() && get_world().is_valid()) {
-		RenderingServer::get_singleton()->rooms_and_portals_clear(get_world()->get_scenario());
+	if (is_inside_world() && get_world_3d().is_valid()) {
+		RenderingServer::get_singleton()->rooms_and_portals_clear(get_world_3d()->get_scenario());
 	}
 }
 
@@ -567,7 +567,7 @@ void RoomManager::rooms_convert() {
 		return;
 	}
 
-	ERR_FAIL_COND(!is_inside_world() || !get_world().is_valid());
+	ERR_FAIL_COND(!is_inside_world() || !get_world_3d().is_valid());
 
 	// every time we run convert we increment this,
 	// to prevent individual rooms / portals being converted
@@ -633,7 +633,7 @@ void RoomManager::rooms_convert() {
 		} break;
 	}
 
-	RenderingServer::get_singleton()->rooms_finalize(get_world()->get_scenario(), generate_pvs, pvs_cull, _settings_use_secondary_pvs, _settings_use_signals, _pvs_filename, _settings_use_simple_pvs, _settings_log_pvs_generation);
+	RenderingServer::get_singleton()->rooms_finalize(get_world_3d()->get_scenario(), generate_pvs, pvs_cull, _settings_use_secondary_pvs, _settings_use_signals, _pvs_filename, _settings_use_simple_pvs, _settings_log_pvs_generation);
 
 	// refresh portal depth limit
 	set_portal_depth_limit(get_portal_depth_limit());

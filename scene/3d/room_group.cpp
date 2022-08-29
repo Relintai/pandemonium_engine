@@ -91,8 +91,8 @@ void RoomGroup::_changed() {
 void RoomGroup::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_WORLD: {
-			ERR_FAIL_COND(get_world().is_null());
-			RenderingServer::get_singleton()->roomgroup_set_scenario(_room_group_rid, get_world()->get_scenario());
+			ERR_FAIL_COND(get_world_3d().is_null());
+			RenderingServer::get_singleton()->roomgroup_set_scenario(_room_group_rid, get_world_3d()->get_scenario());
 		} break;
 		case NOTIFICATION_EXIT_WORLD: {
 			RenderingServer::get_singleton()->roomgroup_set_scenario(_room_group_rid, RID());

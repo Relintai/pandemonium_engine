@@ -54,7 +54,7 @@ void NavigationMeshInstance::set_enabled(bool p_enabled) {
 		if (navigation) {
 			NavigationServer::get_singleton()->region_set_map(region, navigation->get_rid());
 		} else {
-			NavigationServer::get_singleton()->region_set_map(region, get_world()->get_navigation_map());
+			NavigationServer::get_singleton()->region_set_map(region, get_world_3d()->get_navigation_map());
 		}
 	}
 
@@ -127,7 +127,7 @@ void NavigationMeshInstance::_notification(int p_what) {
 
 			if (enabled && navigation == nullptr) {
 				// did not find a valid navigation node parent, fallback to default navigation map on world resource
-				NavigationServer::get_singleton()->region_set_map(region, get_world()->get_navigation_map());
+				NavigationServer::get_singleton()->region_set_map(region, get_world_3d()->get_navigation_map());
 			}
 
 			if (navmesh.is_valid() && get_tree()->is_debugging_navigation_hint()) {
