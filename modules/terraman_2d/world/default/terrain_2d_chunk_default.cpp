@@ -348,7 +348,7 @@ void Terrain2DChunkDefault::colliders_create(const int mesh_index, const int lay
 	Physics2DServer::get_singleton()->body_set_state(body_rid, Physics2DServer::BODY_STATE_TRANSFORM, get_transform());
 
 	if (get_voxel_world()->is_inside_tree()) {
-		Ref<World> world = get_voxel_world()->get_world_2d();
+		Ref<World3D> world = get_voxel_world()->get_world_2d();
 
 		if (world.is_valid() && world->get_space() != RID())
 			Physics2DServer::get_singleton()->body_set_space(body_rid, world->get_space());

@@ -2208,7 +2208,7 @@ SceneTree::SceneTree() {
 	root->set_name("root");
 	root->set_handle_input_locally(false);
 	if (!root->get_world().is_valid()) {
-		root->set_world(Ref<World>(memnew(World)));
+		root->set_world(Ref<World3D>(memnew(World3D)));
 	}
 
 	set_physics_interpolation_enabled(GLOBAL_DEF("physics/common/physics_interpolation", false));

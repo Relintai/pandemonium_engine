@@ -199,7 +199,7 @@ void SkeletonModification3DJiggle::_execute_jiggle_joint(int p_joint_idx, Spatia
 	// Collision detection/response
 	if (use_colliders) {
 		if (execution_mode == SkeletonModificationStack3D::EXECUTION_MODE::execution_mode_physics_process) {
-			Ref<World> world_3d = stack->skeleton->get_world();
+			Ref<World3D> world_3d = stack->skeleton->get_world();
 			ERR_FAIL_COND(world_3d.is_null());
 			PhysicsDirectSpaceState *space_state = PhysicsServer::get_singleton()->space_get_direct_state(world_3d->get_space());
 			PhysicsDirectSpaceState::RayResult ray_result;

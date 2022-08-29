@@ -24,9 +24,9 @@
 	</tutorials>
 	<methods>
 		<method name="find_world" qualifiers="const">
-			<return type="World" />
+			<return type="World3D" />
 			<description>
-				Returns the first valid [World] for this viewport, searching the [member world] property of itself and any Viewport ancestor.
+				Returns the first valid [World3D] for this viewport, searching the [member world] property of itself and any Viewport ancestor.
 			</description>
 		</method>
 		<method name="find_world_2d" qualifiers="const">
@@ -246,7 +246,7 @@
 			The multisample anti-aliasing mode. A higher number results in smoother edges at the cost of significantly worse performance. A value of 4 is best unless targeting very high-end systems.
 		</member>
 		<member name="own_world" type="bool" setter="set_use_own_world" getter="is_using_own_world" default="false">
-			If [code]true[/code], the viewport will use a unique copy of the [World] defined in [member world].
+			If [code]true[/code], the viewport will use a unique copy of the [World3D] defined in [member world].
 		</member>
 		<member name="physics_object_picking" type="bool" setter="set_physics_object_picking" getter="get_physics_object_picking" default="false">
 			If [code]true[/code], the objects rendered by viewport become subjects of mouse picking process.
@@ -301,8 +301,8 @@
 			[b]Note:[/b] Enabling this setting does not improve rendering quality. Using full floating-point precision is slower, and is generally only needed for advanced shaders that require a high level of precision. To reduce banding, enable [member debanding] instead.
 			[b]Note:[/b] Only available on the GLES3 backend.
 		</member>
-		<member name="world" type="World" setter="set_world" getter="get_world">
-			The custom [World] which can be used as 3D environment source.
+		<member name="world" type="World3D" setter="set_world" getter="get_world">
+			The custom [World3D] which can be used as 3D environment source.
 		</member>
 		<member name="world_2d" type="World2D" setter="set_world_2d" getter="get_world_2d">
 			The custom [World2D] which can be used as 2D environment source.

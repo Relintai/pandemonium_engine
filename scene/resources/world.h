@@ -1,5 +1,6 @@
-#ifndef WORLD_H
-#define WORLD_H
+#ifndef WORLD_3D_H
+#define WORLD_3D_H
+
 /*************************************************************************/
 /*  world.h                                                              */
 /*************************************************************************/
@@ -39,9 +40,9 @@ class Camera;
 class VisibilityNotifier;
 struct SpatialIndexer;
 
-class World : public Resource {
-	GDCLASS(World, Resource);
-	RES_BASE_EXTENSION("world");
+class World3D : public Resource {
+	GDCLASS(World3D, Resource);
+	RES_BASE_EXTENSION("world3d");
 
 private:
 	RID space;
@@ -82,8 +83,8 @@ public:
 
 	PhysicsDirectSpaceState *get_direct_space_state();
 
-	World();
-	~World();
+	World3D();
+	~World3D();
 };
 
 #endif // WORLD_H

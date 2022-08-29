@@ -52729,7 +52729,7 @@ msgstr ""
 
 #: doc/classes/Spatial.xml
 msgid ""
-"Returns the current [World] resource this [Spatial] node is registered to."
+"Returns the current [World3D] resource this [Spatial] node is registered to."
 msgstr ""
 
 #: doc/classes/Spatial.xml
@@ -52990,13 +52990,13 @@ msgstr ""
 #: doc/classes/Spatial.xml
 msgid ""
 "Spatial nodes receives this notification when they are registered to new "
-"[World] resource."
+"[World3D] resource."
 msgstr ""
 
 #: doc/classes/Spatial.xml
 msgid ""
 "Spatial nodes receives this notification when they are unregistered from "
-"current [World] resource."
+"current [World3D] resource."
 msgstr ""
 
 #: doc/classes/Spatial.xml
@@ -63146,7 +63146,7 @@ msgstr ""
 
 #: doc/classes/Viewport.xml
 msgid ""
-"Returns the first valid [World] for this viewport, searching the [member "
+"Returns the first valid [World3D] for this viewport, searching the [member "
 "world] property of itself and any Viewport ancestor."
 msgstr ""
 
@@ -63367,7 +63367,7 @@ msgstr ""
 
 #: doc/classes/Viewport.xml
 msgid ""
-"If [code]true[/code], the viewport will use [World] defined in [code]world[/"
+"If [code]true[/code], the viewport will use [World3D] defined in [code]world[/"
 "code] property."
 msgstr ""
 
@@ -63470,7 +63470,7 @@ msgid ""
 msgstr ""
 
 #: doc/classes/Viewport.xml
-msgid "The custom [World] which can be used as 3D environment source."
+msgid "The custom [World3D] which can be used as 3D environment source."
 msgstr ""
 
 #: doc/classes/Viewport.xml
@@ -66690,7 +66690,7 @@ msgid ""
 "visual 3D nodes are considered, such as [MeshInstance] or "
 "[DirectionalLight]. Use [method @GDScript.instance_from_id] to obtain the "
 "actual nodes. A scenario RID must be provided, which is available in the "
-"[World] you want to query. This forces an update for all resources queued to "
+"[World3D] you want to query. This forces an update for all resources queued to "
 "update.\n"
 "[b]Warning:[/b] This function is primarily intended for editor usage. For in-"
 "game use cases, prefer physics collision."
@@ -66702,7 +66702,7 @@ msgid ""
 "Only visual 3D nodes are considered, such as [MeshInstance] or "
 "[DirectionalLight]. Use [method @GDScript.instance_from_id] to obtain the "
 "actual nodes. A scenario RID must be provided, which is available in the "
-"[World] you want to query. This forces an update for all resources queued to "
+"[World3D] you want to query. This forces an update for all resources queued to "
 "update.\n"
 "[b]Warning:[/b] This function is primarily intended for editor usage. For in-"
 "game use cases, prefer physics collision."
@@ -66714,7 +66714,7 @@ msgid ""
 "visual 3D nodes are considered, such as [MeshInstance] or "
 "[DirectionalLight]. Use [method @GDScript.instance_from_id] to obtain the "
 "actual nodes. A scenario RID must be provided, which is available in the "
-"[World] you want to query. This forces an update for all resources queued to "
+"[World3D] you want to query. This forces an update for all resources queued to "
 "update.\n"
 "[b]Warning:[/b] This function is primarily intended for editor usage. For in-"
 "game use cases, prefer physics collision."

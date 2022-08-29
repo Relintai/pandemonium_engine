@@ -214,59 +214,59 @@ struct SpatialIndexer {
 	}
 };
 
-void World::_register_camera(Camera *p_camera) {
+void World3D::_register_camera(Camera *p_camera) {
 #ifndef _3D_DISABLED
 	indexer->_add_camera(p_camera);
 #endif
 }
 
-void World::_update_camera(Camera *p_camera) {
+void World3D::_update_camera(Camera *p_camera) {
 #ifndef _3D_DISABLED
 	indexer->_update_camera(p_camera);
 #endif
 }
-void World::_remove_camera(Camera *p_camera) {
+void World3D::_remove_camera(Camera *p_camera) {
 #ifndef _3D_DISABLED
 	indexer->_remove_camera(p_camera);
 #endif
 }
 
-void World::_register_notifier(VisibilityNotifier *p_notifier, const AABB &p_rect) {
+void World3D::_register_notifier(VisibilityNotifier *p_notifier, const AABB &p_rect) {
 #ifndef _3D_DISABLED
 	indexer->_notifier_add(p_notifier, p_rect);
 #endif
 }
 
-void World::_update_notifier(VisibilityNotifier *p_notifier, const AABB &p_rect) {
+void World3D::_update_notifier(VisibilityNotifier *p_notifier, const AABB &p_rect) {
 #ifndef _3D_DISABLED
 	indexer->_notifier_update(p_notifier, p_rect);
 #endif
 }
 
-void World::_remove_notifier(VisibilityNotifier *p_notifier) {
+void World3D::_remove_notifier(VisibilityNotifier *p_notifier) {
 #ifndef _3D_DISABLED
 	indexer->_notifier_remove(p_notifier);
 #endif
 }
 
-void World::_update(uint64_t p_frame) {
+void World3D::_update(uint64_t p_frame) {
 #ifndef _3D_DISABLED
 	indexer->_update(p_frame);
 #endif
 }
 
-RID World::get_space() const {
+RID World3D::get_space() const {
 	return space;
 }
-RID World::get_scenario() const {
+RID World3D::get_scenario() const {
 	return scenario;
 }
 
-RID World::get_navigation_map() const {
+RID World3D::get_navigation_map() const {
 	return navigation_map;
 }
 
-void World::set_environment(const Ref<Environment> &p_environment) {
+void World3D::set_environment(const Ref<Environment> &p_environment) {
 	if (environment == p_environment) {
 		return;
 	}
@@ -281,11 +281,11 @@ void World::set_environment(const Ref<Environment> &p_environment) {
 	emit_changed();
 }
 
-Ref<Environment> World::get_environment() const {
+Ref<Environment> World3D::get_environment() const {
 	return environment;
 }
 
-void World::set_fallback_environment(const Ref<Environment> &p_environment) {
+void World3D::set_fallback_environment(const Ref<Environment> &p_environment) {
 	if (fallback_environment == p_environment) {
 		return;
 	}
@@ -300,29 +300,29 @@ void World::set_fallback_environment(const Ref<Environment> &p_environment) {
 	emit_changed();
 }
 
-Ref<Environment> World::get_fallback_environment() const {
+Ref<Environment> World3D::get_fallback_environment() const {
 	return fallback_environment;
 }
 
-PhysicsDirectSpaceState *World::get_direct_space_state() {
+PhysicsDirectSpaceState *World3D::get_direct_space_state() {
 	return PhysicsServer::get_singleton()->space_get_direct_state(space);
 }
 
-void World::get_camera_list(List<Camera *> *r_cameras) {
+void World3D::get_camera_list(List<Camera *> *r_cameras) {
 	for (Map<Camera *, SpatialIndexer::CameraData>::Element *E = indexer->cameras.front(); E; E = E->next()) {
 		r_cameras->push_back(E->key());
 	}
 }
 
-void World::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_space"), &World::get_space);
-	ClassDB::bind_method(D_METHOD("get_scenario"), &World::get_scenario);
-	ClassDB::bind_method(D_METHOD("get_navigation_map"), &World::get_navigation_map);
-	ClassDB::bind_method(D_METHOD("set_environment", "env"), &World::set_environment);
-	ClassDB::bind_method(D_METHOD("get_environment"), &World::get_environment);
-	ClassDB::bind_method(D_METHOD("set_fallback_environment", "env"), &World::set_fallback_environment);
-	ClassDB::bind_method(D_METHOD("get_fallback_environment"), &World::get_fallback_environment);
-	ClassDB::bind_method(D_METHOD("get_direct_space_state"), &World::get_direct_space_state);
+void World3D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_space"), &World3D::get_space);
+	ClassDB::bind_method(D_METHOD("get_scenario"), &World3D::get_scenario);
+	ClassDB::bind_method(D_METHOD("get_navigation_map"), &World3D::get_navigation_map);
+	ClassDB::bind_method(D_METHOD("set_environment", "env"), &World3D::set_environment);
+	ClassDB::bind_method(D_METHOD("get_environment"), &World3D::get_environment);
+	ClassDB::bind_method(D_METHOD("set_fallback_environment", "env"), &World3D::set_fallback_environment);
+	ClassDB::bind_method(D_METHOD("get_fallback_environment"), &World3D::get_fallback_environment);
+	ClassDB::bind_method(D_METHOD("get_direct_space_state"), &World3D::get_direct_space_state);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "environment", PROPERTY_HINT_RESOURCE_TYPE, "Environment"), "set_environment", "get_environment");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "fallback_environment", PROPERTY_HINT_RESOURCE_TYPE, "Environment"), "set_fallback_environment", "get_fallback_environment");
 	ADD_PROPERTY(PropertyInfo(Variant::RID, "space", PROPERTY_HINT_NONE, "", 0), "", "get_space");
@@ -331,7 +331,7 @@ void World::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "direct_space_state", PROPERTY_HINT_RESOURCE_TYPE, "PhysicsDirectSpaceState", 0), "", "get_direct_space_state");
 }
 
-World::World() {
+World3D::World3D() {
 	space = RID_PRIME(PhysicsServer::get_singleton()->space_create());
 	scenario = RID_PRIME(RenderingServer::get_singleton()->scenario_create());
 
@@ -358,7 +358,7 @@ World::World() {
 #endif
 }
 
-World::~World() {
+World3D::~World3D() {
 	PhysicsServer::get_singleton()->free(space);
 	RenderingServer::get_singleton()->free(scenario);
 	NavigationServer::get_singleton()->free(navigation_map);

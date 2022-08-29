@@ -2,7 +2,7 @@
 <class name="NavigationMeshInstance" inherits="Spatial" version="3.8">
 	<brief_description>
 		An instance of a [NavigationMesh]. It tells the [Navigation] node what can be navigated and what cannot, based on the [NavigationMesh] resource.
-		By default this node will register to the default [World] navigation map. If this node is a child of a [Navigation] node it will register to the navigation map of the navigation node.
+		By default this node will register to the default [World3D] navigation map. If this node is a child of a [Navigation] node it will register to the navigation map of the navigation node.
 		Two regions can be connected to each other if they share a similar edge. You can set the minimum distance between two vertices required to connect two edges by using [method NavigationServer.map_set_edge_connection_margin].
 		[b]Note:[/b] Overlapping two regions' navmeshes is not enough for connecting two regions. They must share a similar edge.
 		The cost of entering this region from another region can be controlled with the [member enter_cost] value.

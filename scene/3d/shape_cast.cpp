@@ -378,7 +378,7 @@ void ShapeCast::_update_shapecast_state() {
 
 	ERR_FAIL_COND_MSG(shape.is_null(), "Null reference to shape. ShapeCast requires a Shape3D to sweep for collisions.");
 
-	Ref<World> w3d = get_world();
+	Ref<World3D> w3d = get_world();
 	ERR_FAIL_COND(w3d.is_null());
 
 	PhysicsDirectSpaceState *dss = PhysicsServer::get_singleton()->space_get_direct_state(w3d->get_space());

@@ -62,7 +62,7 @@ void CollisionObject::_notification(int p_what) {
 				PhysicsServer::get_singleton()->body_set_state(rid, PhysicsServer::BODY_STATE_TRANSFORM, get_global_transform());
 			}
 
-			Ref<World> world_ref = get_world();
+			Ref<World3D> world_ref = get_world();
 			ERR_FAIL_COND(!world_ref.is_valid());
 			RID space = world_ref->get_space();
 			if (area) {

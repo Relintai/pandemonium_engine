@@ -4,7 +4,7 @@
 		3D agent used in navigation for collision avoidance.
 	</brief_description>
 	<description>
-		3D agent that is used in navigation to reach a location while avoiding static and dynamic obstacles. The dynamic obstacles are avoided using RVO (Reciprocal Velocity Obstacles) collision avoidance. The agent needs navigation data to work correctly. By default this node will register to the default [World] navigation map. If this node is a child of a [Navigation] node it will register to the navigation map of the navigation node or the function [method set_navigation] can be used to set the navigation node directly. [NavigationAgent] is physics safe.
+		3D agent that is used in navigation to reach a location while avoiding static and dynamic obstacles. The dynamic obstacles are avoided using RVO (Reciprocal Velocity Obstacles) collision avoidance. The agent needs navigation data to work correctly. By default this node will register to the default [World3D] navigation map. If this node is a child of a [Navigation] node it will register to the navigation map of the navigation node or the function [method set_navigation] can be used to set the navigation node directly. [NavigationAgent] is physics safe.
 		[b]Note:[/b] After [method set_target_location] is used it is required to use the [method get_next_location] function once every physics frame to update the internal path logic of the NavigationAgent. The returned vector position from this function should be used as the next movement position for the agent's parent Node.
 	</description>
 	<tutorials>

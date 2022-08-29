@@ -133,7 +133,7 @@ void MeshEditor::_bind_methods() {
 
 MeshEditor::MeshEditor() {
 	viewport = memnew(Viewport);
-	Ref<World> world;
+	Ref<World3D> world;
 	world.instance();
 	viewport->set_world(world); //use own world
 	add_child(viewport);

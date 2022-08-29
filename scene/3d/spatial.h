@@ -33,7 +33,7 @@
 #include "scene/main/node.h"
 #include "scene/main/scene_tree.h"
 
-class World;
+class World3D;
 
 class SpatialGizmo : public Reference {
 	GDCLASS(SpatialGizmo, Reference);
@@ -152,7 +152,7 @@ public:
 	virtual void notification_callback(int p_message_type);
 	Spatial *get_parent_spatial() const;
 
-	Ref<World> get_world() const;
+	Ref<World3D> get_world() const;
 
 	void set_translation(const Vector3 &p_translation);
 	void set_rotation(const Vector3 &p_euler_rad);

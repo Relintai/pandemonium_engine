@@ -86,7 +86,7 @@ bool RoomManager::static_rooms_get_active() {
 bool RoomManager::static_rooms_get_active_and_loaded() {
 	if (active_room_manager) {
 		if (active_room_manager->rooms_get_active()) {
-			Ref<World> world = active_room_manager->get_world();
+			Ref<World3D> world = active_room_manager->get_world();
 			RID scenario = world->get_scenario();
 			return active_room_manager->rooms_get_active() && RenderingServer::get_singleton()->rooms_is_loaded(scenario);
 		}
@@ -148,7 +148,7 @@ String RoomManager::get_configuration_warning() const {
 }
 
 void RoomManager::_preview_camera_update() {
-	Ref<World> world = get_world();
+	Ref<World3D> world = get_world();
 	RID scenario = world->get_scenario();
 
 	if (_pandemonium_preview_camera_ID != (ObjectID)-1) {
@@ -237,7 +237,7 @@ void RoomManager::_notification(int p_what) {
 			}
 
 			if (_settings_gameplay_monitor_enabled) {
-				Ref<World> world = get_world();
+				Ref<World3D> world = get_world();
 				RID scenario = world->get_scenario();
 
 				List<Camera *> cameras;

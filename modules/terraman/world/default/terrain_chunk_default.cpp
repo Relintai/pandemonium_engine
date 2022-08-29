@@ -382,7 +382,7 @@ void TerrainChunkDefault::colliders_create(const int mesh_index, const int layer
 	PhysicsServer::get_singleton()->body_set_state(body_rid, PhysicsServer::BODY_STATE_TRANSFORM, get_transform());
 
 	if (get_voxel_world()->is_inside_tree() && get_voxel_world()->is_inside_world()) {
-		Ref<World> world = get_voxel_world()->get_world();
+		Ref<World3D> world = get_voxel_world()->get_world();
 
 		if (world.is_valid() && world->get_space() != RID())
 			PhysicsServer::get_singleton()->body_set_space(body_rid, world->get_space());
@@ -420,7 +420,7 @@ void TerrainChunkDefault::colliders_create_area(const int mesh_index, const int 
 	PhysicsServer::get_singleton()->area_set_collision_mask(area_rid, layer_mask);
 
 	if (get_voxel_world()->is_inside_tree() && get_voxel_world()->is_inside_world()) {
-		Ref<World> world = get_voxel_world()->get_world();
+		Ref<World3D> world = get_voxel_world()->get_world();
 
 		if (world.is_valid() && world->get_space() != RID())
 			PhysicsServer::get_singleton()->area_set_space(area_rid, world->get_space());

@@ -118,7 +118,7 @@ MainLoop *test() {
 		OAHashMap<String, int> map;
 
 		map.set("Hello", 1);
-		map.set("World", 2);
+		map.set("World3D", 2);
 		map.set("Pandemonium rocks", 42);
 
 		for (OAHashMap<String, int>::Iterator it = map.iter(); it.valid; it = map.next_iter(it)) {

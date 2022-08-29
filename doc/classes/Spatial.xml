@@ -58,9 +58,9 @@
 			</description>
 		</method>
 		<method name="get_world" qualifiers="const">
-			<return type="World" />
+			<return type="World3D" />
 			<description>
-				Returns the current [World] resource this [Spatial] node is registered to.
+				Returns the current [World3D] resource this [Spatial] node is registered to.
 			</description>
 		</method>
 		<method name="global_rotate">
@@ -338,10 +338,10 @@
 			In order for [constant NOTIFICATION_TRANSFORM_CHANGED] to work, users first need to ask for it, with [method set_notify_transform]. The notification is also sent if the node is in the editor context and it has at least one valid gizmo.
 		</constant>
 		<constant name="NOTIFICATION_ENTER_WORLD" value="41">
-			Spatial nodes receives this notification when they are registered to new [World] resource.
+			Spatial nodes receives this notification when they are registered to new [World3D] resource.
 		</constant>
 		<constant name="NOTIFICATION_EXIT_WORLD" value="42">
-			Spatial nodes receives this notification when they are unregistered from current [World] resource.
+			Spatial nodes receives this notification when they are unregistered from current [World3D] resource.
 		</constant>
 		<constant name="NOTIFICATION_VISIBILITY_CHANGED" value="43">
 			Spatial nodes receives this notification when their visibility changes.

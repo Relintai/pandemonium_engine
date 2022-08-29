@@ -32,13 +32,13 @@
 
 #include "scene/3d/cull_instance.h"
 
-class World;
+class World3D;
 class Camera;
 
 class VisibilityNotifier : public CullInstance {
 	GDCLASS(VisibilityNotifier, CullInstance);
 
-	Ref<World> world;
+	Ref<World3D> world;
 	Set<Camera *> cameras;
 
 	AABB aabb;

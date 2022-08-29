@@ -235,7 +235,7 @@ void PropInstancePropJob::phase_physics_process() {
 		PhysicsServer::get_singleton()->body_set_collision_mask(body, _prop_instace->get_collision_mask());
 
 		if (_prop_instace->is_inside_tree() && _prop_instace->is_inside_world()) {
-			Ref<World> world = _prop_instace->get_world();
+			Ref<World3D> world = _prop_instace->get_world();
 
 			if (world.is_valid() && world->get_space() != RID()) {
 				PhysicsServer::get_singleton()->body_set_space(body, world->get_space());
