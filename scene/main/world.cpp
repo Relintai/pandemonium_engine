@@ -6,38 +6,8 @@
 #include "scene/resources/world_2d.h"
 #include "scene/resources/world_3d.h"
 
-void World::set_use_own_world_3d(bool p_use_own_world_3d) {
-	if (p_use_own_world_3d == own_world_3d.is_valid()) {
-		return;
-	}
-
-	if (is_inside_tree()) {
-		_propagate_exit_world(this);
-	}
-
-	if (p_use_own_world_3d) {
-		if (world_3d.is_valid()) {
-			own_world_3d = world_3d->duplicate();
-			world_3d->connect(CoreStringNames::get_singleton()->changed, this, "_own_world_3d_changed");
-		} else {
-			own_world_3d = Ref<World3D>(memnew(World3D));
-		}
-	} else {
-		own_world_3d = Ref<World3D>();
-		if (world_3d.is_valid()) {
-			world_3d->disconnect(CoreStringNames::get_singleton()->changed, this, "_own_world_3d_changed");
-		}
-	}
-
-	if (is_inside_tree()) {
-		_propagate_enter_world(this);
-	}
-
-	_on_set_use_own_world_3d(p_use_own_world_3d);
-}
-
-bool World::is_using_own_world_3d() const {
-	return own_world_3d.is_valid();
+Ref<World2D> World::get_world_2d() const {
+	return world_2d;
 }
 
 void World::set_world_2d(const Ref<World2D> &p_world_2d) {
@@ -76,6 +46,10 @@ Ref<World2D> World::find_world_2d() const {
 	}
 }
 
+Ref<World3D> World::get_world_3d() const {
+	return world_3d;
+}
+
 void World::set_world_3d(const Ref<World3D> &p_world_3d) {
 	if (world_3d == p_world_3d) {
 		return;
@@ -109,14 +83,6 @@ void World::set_world_3d(const Ref<World3D> &p_world_3d) {
 	_on_set_world_3d(old_world);
 }
 
-Ref<World3D> World::get_world_3d() const {
-	return world_3d;
-}
-
-Ref<World2D> World::get_world_2d() const {
-	return world_2d;
-}
-
 Ref<World3D> World::find_world_3d() const {
 	if (own_world_3d.is_valid()) {
 		return own_world_3d;
@@ -127,6 +93,46 @@ Ref<World3D> World::find_world_3d() const {
 	} else {
 		return Ref<World3D>();
 	}
+}
+
+bool World::is_using_own_world_3d() const {
+	return own_world_3d.is_valid();
+}
+
+void World::set_use_own_world_3d(bool p_use_own_world_3d) {
+	if (p_use_own_world_3d == own_world_3d.is_valid()) {
+		return;
+	}
+
+	if (is_inside_tree()) {
+		_propagate_exit_world(this);
+	}
+
+	if (p_use_own_world_3d) {
+		if (world_3d.is_valid()) {
+			own_world_3d = world_3d->duplicate();
+			world_3d->connect(CoreStringNames::get_singleton()->changed, this, "_own_world_3d_changed");
+		} else {
+			own_world_3d = Ref<World3D>(memnew(World3D));
+		}
+	} else {
+		own_world_3d = Ref<World3D>();
+		if (world_3d.is_valid()) {
+			world_3d->disconnect(CoreStringNames::get_singleton()->changed, this, "_own_world_3d_changed");
+		}
+	}
+
+	if (is_inside_tree()) {
+		_propagate_enter_world(this);
+	}
+
+	_on_set_use_own_world_3d(p_use_own_world_3d);
+}
+
+World::World() {
+	world_2d = Ref<World2D>(memnew(World2D));
+}
+World::~World() {
 }
 
 void World::_propagate_enter_world(Node *p_node) {
@@ -196,12 +202,6 @@ void World::_on_set_use_own_world_3d(bool p_use_own_world_3d) {
 void World::_on_set_world_3d(const Ref<World3D> &p_old_world) {
 }
 void World::_on_set_world_2d(const Ref<World2D> &p_old_world_2d) {
-}
-
-World::World() {
-	world_2d = Ref<World2D>(memnew(World2D));
-}
-World::~World() {
 }
 
 void World::_notification(int p_what) {

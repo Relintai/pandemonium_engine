@@ -12,14 +12,15 @@ class World : public Node {
 	GDCLASS(World, Node);
 
 public:
-	void set_world_3d(const Ref<World3D> &p_world);
+	Ref<World2D> get_world_2d() const;
 	void set_world_2d(const Ref<World2D> &p_world_2d);
 
-	Ref<World3D> get_world_3d() const;
-	Ref<World3D> find_world_3d() const;
-
-	Ref<World2D> get_world_2d() const;
 	Ref<World2D> find_world_2d() const;
+
+	Ref<World3D> get_world_3d() const;
+	void set_world_3d(const Ref<World3D> &p_world);
+
+	Ref<World3D> find_world_3d() const;
 
 	void set_use_own_world_3d(bool p_use_own_world_3d);
 	bool is_using_own_world_3d() const;
