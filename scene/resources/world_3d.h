@@ -83,6 +83,8 @@ public:
 
 	PhysicsDirectSpaceState *get_direct_space_state();
 
+	void move_cameras_into(Ref<World3D> target);
+
 	World3D();
 	~World3D();
 };

@@ -314,6 +314,20 @@ void World3D::get_camera_list(List<Camera *> *r_cameras) {
 	}
 }
 
+void World3D::move_cameras_into(Ref<World3D> target) {
+	ERR_FAIL_COND(!target.is_valid());
+
+	List<Camera *> cameras;
+	get_camera_list(&cameras);
+
+	for (List<Camera *>::Element *E = cameras.front(); E; E = E->next()) {
+		Camera *cam = E->get();
+
+		_remove_camera(cam);
+		target->_register_camera(cam);
+	}
+}
+
 void World3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_space"), &World3D::get_space);
 	ClassDB::bind_method(D_METHOD("get_scenario"), &World3D::get_scenario);

@@ -178,9 +178,10 @@ void World::set_override_world(World *p_world) {
 		return;
 	}
 
-	_on_before_world_override_changed();
-
 	World *old_world = get_override_world();
+	Ref<World3D> old_world_3d = find_world_3d();
+
+	_on_before_world_override_changed();
 
 	if (old_world) {
 		old_world->_remove_overridden_world(this);
@@ -190,6 +191,20 @@ void World::set_override_world(World *p_world) {
 
 	if (_override_world) {
 		_override_world->_add_overridden_world(this);
+	}
+
+	if (old_world_3d.is_valid()) {
+		Ref<World3D> new_world_3d = find_world_3d();
+
+		if (old_world_3d != new_world_3d) {
+			if (new_world_3d.is_valid()) {
+				old_world_3d->move_cameras_into(new_world_3d);
+			} else {
+				ERR_PRINT("!new_world_3d.is_valid()");
+			}
+		}
+	} else {
+		ERR_PRINT("!old_world_3d.is_valid()");
 	}
 
 	_on_after_world_override_changed();
@@ -325,14 +340,13 @@ void World::_notification(int p_what) {
 			}
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
-			for (int i = 0; i < _overriding_worlds.size(); ++i) {
-				World *w = _overriding_worlds[i];
+			set_override_world(NULL);
+
+			while (_overriding_worlds.size() > 0) {
+				World *w = _overriding_worlds[0];
 
 				w->set_override_world(NULL);
 			}
-
-			_override_world = NULL;
-
 		} break;
 	}
 }
