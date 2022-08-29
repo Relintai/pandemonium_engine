@@ -311,7 +311,9 @@ protected:
 	void _on_set_use_own_world_3d(bool p_use_own_world_3d);
 	void _on_set_world_3d(const Ref<World3D> &p_old_world);
 	void _on_set_world_2d(const Ref<World2D> &p_old_world_2d);
-	void _on_world_override_changed(World *p_old_world);
+
+	void _on_before_world_override_changed();
+	void _on_after_world_override_changed();
 
 private:
 	friend class ViewportTexture;

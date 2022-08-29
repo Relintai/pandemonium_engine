@@ -301,7 +301,7 @@ void Viewport::_notification(int p_what) {
 				parent = nullptr;
 			}
 
-			_on_world_override_changed(this);
+			_on_after_world_override_changed();
 
 			add_to_group("_viewports");
 
@@ -788,15 +788,18 @@ bool Viewport::is_audio_listener_2d() const {
 Listener2D *Viewport::get_listener_2d() const {
 	return listener_2d;
 }
-void Viewport::_on_world_override_changed(World *p_old_world) {
-	//ERR_FAIL_COND(!p_old_world);
 
-	//World *active_world = get_active_world();
+void Viewport::_on_before_world_override_changed() {
+	World *w = get_override_world_or_this();
 
-	//if (!active_world) {
-	//	return;
-	//}
+	if (w) {
+		RenderingServer::get_singleton()->viewport_set_scenario(viewport, RID());
+		RenderingServer::get_singleton()->viewport_remove_canvas(viewport, current_canvas);
+		w->find_world_2d()->_remove_viewport(this);
+	}
+}
 
+void Viewport::_on_after_world_override_changed() {
 	current_canvas = find_world_2d()->get_canvas();
 	RenderingServer::get_singleton()->viewport_set_scenario(viewport, find_world_3d()->get_scenario());
 	RenderingServer::get_singleton()->viewport_attach_canvas(viewport, current_canvas);
@@ -809,18 +812,28 @@ void Viewport::_on_world_override_changed(World *p_old_world) {
 	if (get_tree()->is_debugging_collisions_hint()) {
 		//2D
 		Physics2DServer::get_singleton()->space_set_debug_contacts(find_world_2d()->get_space(), get_tree()->get_collision_debug_contact_count());
-		contact_2d_debug = RID_PRIME(RenderingServer::get_singleton()->canvas_item_create());
+
+		if (contact_2d_debug != RID()) {
+			contact_2d_debug = RID_PRIME(RenderingServer::get_singleton()->canvas_item_create());
+		}
+
 		RenderingServer::get_singleton()->canvas_item_set_parent(contact_2d_debug, find_world_2d()->get_canvas());
 
 		//3D
 		PhysicsServer::get_singleton()->space_set_debug_contacts(find_world_3d()->get_space(), get_tree()->get_collision_debug_contact_count());
 
-		contact_3d_debug_multimesh = RID_PRIME(RenderingServer::get_singleton()->multimesh_create());
+		if (contact_3d_debug_multimesh != RID()) {
+			contact_3d_debug_multimesh = RID_PRIME(RenderingServer::get_singleton()->multimesh_create());
+		}
+
 		RenderingServer::get_singleton()->multimesh_allocate(contact_3d_debug_multimesh, get_tree()->get_collision_debug_contact_count(), RS::MULTIMESH_TRANSFORM_3D, RS::MULTIMESH_COLOR_8BIT);
 		RenderingServer::get_singleton()->multimesh_set_visible_instances(contact_3d_debug_multimesh, 0);
 		RenderingServer::get_singleton()->multimesh_set_mesh(contact_3d_debug_multimesh, get_tree()->get_debug_contact_mesh()->get_rid());
 
-		contact_3d_debug_instance = RID_PRIME(RenderingServer::get_singleton()->instance_create());
+		if (contact_3d_debug_instance != RID()) {
+			contact_3d_debug_instance = RID_PRIME(RenderingServer::get_singleton()->instance_create());
+		}
+
 		RenderingServer::get_singleton()->instance_set_base(contact_3d_debug_instance, contact_3d_debug_multimesh);
 		RenderingServer::get_singleton()->instance_set_scenario(contact_3d_debug_instance, find_world_3d()->get_scenario());
 		//RenderingServer::get_singleton()->instance_geometry_set_flag(contact_3d_debug_instance, RS::INSTANCE_FLAG_VISIBLE_IN_ALL_ROOMS, true);

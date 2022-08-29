@@ -81,8 +81,6 @@ class Spatial : public Node {
 
 		mutable int dirty;
 
-		Viewport *viewport;
-
 		bool toplevel_active : 1;
 		bool toplevel : 1;
 		bool inside_world : 1;

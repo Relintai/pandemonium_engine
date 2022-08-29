@@ -34,7 +34,7 @@
 #include "core/math/transform_interpolator.h"
 #include "core/object/message_queue.h"
 #include "scene/main/scene_tree.h"
-#include "scene/main/viewport.h"
+#include "scene/main/world.h"
 #include "scene/resources/world_3d.h"
 #include "scene/scene_string_names.h"
 #include "servers/rendering_server_callbacks.h"
@@ -186,14 +186,6 @@ void Spatial::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_ENTER_WORLD: {
 			data.inside_world = true;
-			data.viewport = nullptr;
-			Node *parent = get_parent();
-			while (parent && !data.viewport) {
-				data.viewport = Object::cast_to<Viewport>(parent);
-				parent = parent->get_parent();
-			}
-
-			ERR_FAIL_COND(!data.viewport);
 
 			if (get_script_instance()) {
 				get_script_instance()->call_multilevel(SceneStringNames::get_singleton()->_enter_world, nullptr, 0);
@@ -225,7 +217,6 @@ void Spatial::_notification(int p_what) {
 				get_script_instance()->call_multilevel(SceneStringNames::get_singleton()->_exit_world, nullptr, 0);
 			}
 
-			data.viewport = nullptr;
 			data.inside_world = false;
 
 		} break;
@@ -703,9 +694,9 @@ bool Spatial::is_set_as_toplevel() const {
 
 Ref<World3D> Spatial::get_world_3d() const {
 	ERR_FAIL_COND_V(!is_inside_world(), Ref<World3D>());
-	ERR_FAIL_COND_V(!data.viewport, Ref<World3D>());
+	ERR_FAIL_COND_V(!get_world(), Ref<World3D>());
 
-	return data.viewport->find_world_3d();
+	return get_world()->find_world_3d();
 }
 
 void Spatial::_propagate_visibility_changed() {
@@ -1024,7 +1015,6 @@ Spatial::Spatial() :
 	data.toplevel = false;
 	data.toplevel_active = false;
 	data.scale = Vector3(1, 1, 1);
-	data.viewport = nullptr;
 	data.inside_world = false;
 	data.visible = true;
 	data.disable_scale = false;

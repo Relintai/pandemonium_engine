@@ -112,6 +112,24 @@ bool World::get_override_in_parent_viewport() {
 	return _override_in_parent_viewport;
 }
 void World::set_override_in_parent_viewport(const bool value) {
+	if (_override_in_parent_viewport == value) {
+		return;
+	}
+
+	if (is_inside_tree()) {
+		World *w = get_viewport();
+
+		if (w) {
+			if (_override_in_parent_viewport) {
+				if (w->get_override_world() == this) {
+					w->set_override_world(NULL);
+				}
+			} else {
+				w->set_override_world(this);
+			}
+		}
+	}
+
 	_override_in_parent_viewport = value;
 }
 
@@ -156,11 +174,13 @@ World *World::get_override_world_or_this() {
 	return _override_world;
 }
 void World::set_override_world(World *p_world) {
-	if (p_world == _override_world) {
+	if (p_world == _override_world || p_world == this) {
 		return;
 	}
 
-	World *old_world = _override_world;
+	_on_before_world_override_changed();
+
+	World *old_world = get_override_world();
 
 	if (old_world) {
 		old_world->_remove_overridden_world(this);
@@ -172,7 +192,7 @@ void World::set_override_world(World *p_world) {
 		_override_world->_add_overridden_world(this);
 	}
 
-	_on_world_override_changed(old_world);
+	_on_after_world_override_changed();
 }
 void World::set_override_world_bind(Node *p_world) {
 	World *w = Object::cast_to<World>(p_world);
@@ -279,7 +299,9 @@ void World::_on_set_world_3d(const Ref<World3D> &p_old_world) {
 void World::_on_set_world_2d(const Ref<World2D> &p_old_world_2d) {
 }
 
-void World::_on_world_override_changed(World *p_old_world) {
+void World::_on_before_world_override_changed() {
+}
+void World::_on_after_world_override_changed() {
 }
 
 void World::_notification(int p_what) {
