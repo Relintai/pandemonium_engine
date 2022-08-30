@@ -92,6 +92,9 @@ public:
 	DirAccessJAndroid();
 	~DirAccessJAndroid();
 
+protected:
+	String _get_root_string() const override;
+
 private:
 	int id;
 
