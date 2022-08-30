@@ -990,14 +990,6 @@ void Viewport::_listener_make_next_current(Listener *p_exclude) {
 }
 #endif
 
-void Viewport::_camera_transform_changed_notify() {
-#ifndef _3D_DISABLED
-// If there is an active listener in the scene, it takes priority over the camera
-//	if (camera && !listener)
-//		SpatialSoundServer::get_singleton()->listener_set_transform(internal_listener, camera->get_camera_transform());
-#endif
-}
-
 void Viewport::_camera_set(Camera *p_camera) {
 #ifndef _3D_DISABLED
 
@@ -1029,37 +1021,6 @@ void Viewport::_camera_set(Camera *p_camera) {
 void Viewport::_camera_2d_set(Camera2D *p_camera_2d) {
 	camera_2d = p_camera_2d;
 }
-
-bool Viewport::_camera_add(Camera *p_camera) {
-	cameras.insert(p_camera);
-	return cameras.size() == 1;
-}
-
-void Viewport::_camera_remove(Camera *p_camera) {
-	cameras.erase(p_camera);
-	if (camera == p_camera) {
-		camera->notification(Camera::NOTIFICATION_LOST_CURRENT);
-		camera = nullptr;
-	}
-}
-
-#ifndef _3D_DISABLED
-void Viewport::_camera_make_next_current(Camera *p_exclude) {
-	for (Set<Camera *>::Element *E = cameras.front(); E; E = E->next()) {
-		if (p_exclude == E->get()) {
-			continue;
-		}
-		if (!E->get()->is_inside_tree()) {
-			continue;
-		}
-		if (camera != nullptr) {
-			return;
-		}
-
-		E->get()->make_current();
-	}
-}
-#endif
 
 void Viewport::_listener_2d_set(Listener2D *p_listener) {
 	if (listener_2d == p_listener) {
@@ -1106,10 +1067,6 @@ void Viewport::_propagate_viewport_notification(Node *p_node, int p_what) {
 
 Listener *Viewport::get_listener() const {
 	return listener;
-}
-
-Camera *Viewport::get_camera() const {
-	return camera;
 }
 
 Camera2D *Viewport::get_camera_2d() const {
@@ -2873,15 +2830,6 @@ bool Viewport::get_physics_object_picking() {
 	return physics_object_picking;
 }
 
-Vector2 Viewport::get_camera_coords(const Vector2 &p_viewport_coords) const {
-	Transform2D xf = get_final_transform();
-	return xf.xform(p_viewport_coords);
-}
-
-Vector2 Viewport::get_camera_rect_size() const {
-	return size;
-}
-
 bool Viewport::gui_has_modal_stack() const {
 	return gui.modal_stack.size();
 }
@@ -3167,7 +3115,6 @@ void Viewport::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("input", "local_event"), &Viewport::input);
 	ClassDB::bind_method(D_METHOD("unhandled_input", "local_event"), &Viewport::unhandled_input);
 
-	ClassDB::bind_method(D_METHOD("get_camera"), &Viewport::get_camera);
 	ClassDB::bind_method(D_METHOD("get_camera_2d"), &Viewport::get_camera_2d);
 
 	ClassDB::bind_method(D_METHOD("set_as_audio_listener", "enable"), &Viewport::set_as_audio_listener);
@@ -3330,7 +3277,6 @@ Viewport::Viewport() {
 	transparent_bg = false;
 	parent = nullptr;
 	listener = nullptr;
-	camera = nullptr;
 	camera_2d = nullptr;
 	override_canvas_transform = false;
 	canvas_layers.insert(NULL); // This eases picking code (interpreted as the canvas of the Viewport)

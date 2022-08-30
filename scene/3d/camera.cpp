@@ -89,14 +89,14 @@ void Camera::_update_camera() {
 	// here goes listener stuff
 	/*
 	if (viewport_ptr && is_inside_scene() && is_current())
-		get_viewport()->_camera_transform_changed_notify();
+		get_world()->_camera_transform_changed_notify();
 	*/
 
 	if (get_tree()->is_node_being_edited(this) || !is_current()) {
 		return;
 	}
 
-	get_viewport()->_camera_transform_changed_notify();
+	get_world()->_camera_transform_changed_notify();
 
 	if (get_world_3d().is_valid()) {
 		get_world_3d()->_update_camera(this);
@@ -113,12 +113,12 @@ void Camera::_notification(int p_what) {
 			// Needs to track the Viewport  because it's needed on NOTIFICATION_EXIT_WORLD
 			// and Spatial will handle it first, including clearing its reference to the Viewport,
 			// therefore making it impossible to subclasses to access it
-			viewport = get_viewport();
-			ERR_FAIL_COND(!viewport);
+			world = get_world();
+			ERR_FAIL_COND(!world);
 
-			bool first_camera = viewport->_camera_add(this);
+			bool first_camera = world->_camera_add(this);
 			if (current || first_camera) {
-				viewport->_camera_set(this);
+				world->_camera_set(this);
 			}
 
 			ERR_FAIL_COND(get_world_3d().is_null());
@@ -149,20 +149,20 @@ void Camera::_notification(int p_what) {
 				}
 			}
 
-			if (viewport) {
-				viewport->_camera_remove(this);
-				viewport = nullptr;
+			if (world) {
+				world->_camera_remove(this);
+				world = nullptr;
 			}
 
 		} break;
 		case NOTIFICATION_BECAME_CURRENT: {
-			if (viewport) {
-				viewport->_world_3d_register_camera(this);
+			if (world) {
+				world->_world_3d_register_camera(this);
 			}
 		} break;
 		case NOTIFICATION_LOST_CURRENT: {
-			if (viewport) {
-				viewport->_world_3d_remove_camera(this);
+			if (world) {
+				world->_world_3d_remove_camera(this);
 			}
 		} break;
 	}
@@ -241,7 +241,7 @@ void Camera::make_current() {
 		return;
 	}
 
-	get_viewport()->_camera_set(this);
+	get_world()->_camera_set(this);
 
 	//get_scene()->call_group(SceneMainLoop::GROUP_CALL_REALTIME,camera_group,"_camera_make_current",this);
 }
@@ -252,11 +252,11 @@ void Camera::clear_current(bool p_enable_next) {
 		return;
 	}
 
-	if (get_viewport()->get_camera() == this) {
-		get_viewport()->_camera_set(nullptr);
+	if (get_world()->get_camera() == this) {
+		get_world()->_camera_set(nullptr);
 
 		if (p_enable_next) {
-			get_viewport()->_camera_make_next_current(this);
+			get_world()->_camera_make_next_current(this);
 		}
 	}
 }
@@ -271,7 +271,7 @@ void Camera::set_current(bool p_current) {
 
 bool Camera::is_current() const {
 	if (is_inside_tree() && !get_tree()->is_node_being_edited(this)) {
-		return get_viewport()->get_camera() == this;
+		return get_world()->get_camera() == this;
 	} else {
 		return current;
 	}
@@ -285,8 +285,8 @@ Vector3 Camera::project_ray_normal(const Point2 &p_pos) const {
 Vector3 Camera::project_local_ray_normal(const Point2 &p_pos) const {
 	ERR_FAIL_COND_V_MSG(!is_inside_tree(), Vector3(), "Camera is not inside scene.");
 
-	Size2 viewport_size = get_viewport()->get_camera_rect_size();
-	Vector2 cpos = get_viewport()->get_camera_coords(p_pos);
+	Size2 viewport_size = get_world()->get_camera_rect_size();
+	Vector2 cpos = get_world()->get_camera_coords(p_pos);
 	Vector3 ray;
 
 	if (mode == PROJECTION_ORTHOGONAL) {
@@ -304,8 +304,8 @@ Vector3 Camera::project_local_ray_normal(const Point2 &p_pos) const {
 Vector3 Camera::project_ray_origin(const Point2 &p_pos) const {
 	ERR_FAIL_COND_V_MSG(!is_inside_tree(), Vector3(), "Camera is not inside scene.");
 
-	Size2 viewport_size = get_viewport()->get_camera_rect_size();
-	Vector2 cpos = get_viewport()->get_camera_coords(p_pos);
+	Size2 viewport_size = get_world()->get_camera_rect_size();
+	Vector2 cpos = get_world()->get_camera_coords(p_pos);
 	ERR_FAIL_COND_V(viewport_size.y == 0, Vector3());
 
 	if (mode == PROJECTION_PERSPECTIVE) {
@@ -339,7 +339,7 @@ bool Camera::is_position_behind(const Vector3 &p_pos) const {
 Vector<Vector3> Camera::get_near_plane_points() const {
 	ERR_FAIL_COND_V_MSG(!is_inside_tree(), Vector<Vector3>(), "Camera is not inside scene.");
 
-	Size2 viewport_size = get_viewport()->get_visible_rect().size;
+	Size2 viewport_size = get_world()->get_visible_rect().size;
 
 	Projection cm;
 
@@ -363,7 +363,7 @@ Vector<Vector3> Camera::get_near_plane_points() const {
 Point2 Camera::unproject_position(const Vector3 &p_pos) const {
 	ERR_FAIL_COND_V_MSG(!is_inside_tree(), Vector2(), "Camera is not inside scene.");
 
-	Size2 viewport_size = get_viewport()->get_visible_rect().size;
+	Size2 viewport_size = get_world()->get_visible_rect().size;
 
 	Projection cm;
 
@@ -391,7 +391,7 @@ Vector3 Camera::project_position(const Point2 &p_point, float p_z_depth) const {
 	if (p_z_depth == 0 && mode != PROJECTION_ORTHOGONAL) {
 		return get_global_transform().origin;
 	}
-	Size2 viewport_size = get_viewport()->get_visible_rect().size;
+	Size2 viewport_size = get_world()->get_visible_rect().size;
 
 	Projection cm;
 
@@ -627,7 +627,7 @@ bool Camera::get_cull_mask_bit(int p_layer) const {
 Vector<Plane> Camera::get_frustum() const {
 	ERR_FAIL_COND_V(!is_inside_world(), Vector<Plane>());
 
-	Size2 viewport_size = get_viewport()->get_visible_rect().size;
+	Size2 viewport_size = get_world()->get_visible_rect().size;
 	Projection cm;
 	if (mode == PROJECTION_PERSPECTIVE) {
 		cm.set_perspective(fov, viewport_size.aspect(), near, far, keep_aspect == KEEP_WIDTH);
@@ -671,7 +671,7 @@ Camera::Camera() {
 	near = 0;
 	far = 0;
 	current = false;
-	viewport = nullptr;
+	world = nullptr;
 	force_change = false;
 	mode = PROJECTION_PERSPECTIVE;
 	set_perspective(70.0, 0.05, 100.0);

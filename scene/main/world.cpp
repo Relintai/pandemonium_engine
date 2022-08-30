@@ -9,6 +9,10 @@
 #include "scene/resources/world_3d.h"
 #include "viewport.h"
 
+Camera *World::get_camera() const {
+	return camera;
+}
+
 Ref<World2D> World::get_world_2d() const {
 	return world_2d;
 }
@@ -341,6 +345,15 @@ RID World::get_viewport_rid() const {
 	return RID();
 }
 
+Vector2 World::get_camera_coords(const Vector2 &p_viewport_coords) const {
+	Transform2D xf = get_final_transform();
+	return xf.xform(p_viewport_coords);
+}
+
+Vector2 World::get_camera_rect_size() const {
+	return size;
+}
+
 void World::update_worlds() {
 	if (!is_inside_tree()) {
 		return;
@@ -415,9 +428,83 @@ World::World() {
 	world_2d = Ref<World2D>(memnew(World2D));
 	_override_world = NULL;
 	_override_in_parent_viewport = false;
+	camera = nullptr;
 }
 World::~World() {
 }
+
+void World::_camera_transform_changed_notify() {
+#ifndef _3D_DISABLED
+// If there is an active listener in the scene, it takes priority over the camera
+//	if (camera && !listener)
+//		SpatialSoundServer::get_singleton()->listener_set_transform(internal_listener, camera->get_camera_transform());
+#endif
+}
+
+void World::_camera_set(Camera *p_camera) {
+#ifndef _3D_DISABLED
+
+	if (camera == p_camera) {
+		return;
+	}
+
+	if (camera) {
+		camera->notification(Camera::NOTIFICATION_LOST_CURRENT);
+	}
+	camera = p_camera;
+
+	/*
+	if (!camera_override) {
+		if (camera) {
+			RenderingServer::get_singleton()->viewport_attach_camera(viewport, camera->get_camera());
+		} else {
+			RenderingServer::get_singleton()->viewport_attach_camera(viewport, RID());
+		}
+	}
+	*/
+
+	if (camera) {
+		camera->notification(Camera::NOTIFICATION_BECAME_CURRENT);
+	}
+
+	_update_listener();
+	_camera_transform_changed_notify();
+#endif
+}
+
+bool World::_camera_add(Camera *p_camera) {
+	cameras.insert(p_camera);
+	return cameras.size() == 1;
+}
+
+void World::_camera_remove(Camera *p_camera) {
+	cameras.erase(p_camera);
+	if (camera == p_camera) {
+		camera->notification(Camera::NOTIFICATION_LOST_CURRENT);
+		camera = nullptr;
+	}
+}
+
+#ifndef _3D_DISABLED
+void World::_camera_make_next_current(Camera *p_exclude) {
+	for (Set<Camera *>::Element *E = cameras.front(); E; E = E->next()) {
+		if (p_exclude == E->get()) {
+			continue;
+		}
+		if (!E->get()->is_inside_tree()) {
+			continue;
+		}
+		if (camera != nullptr) {
+			return;
+		}
+
+		E->get()->make_current();
+	}
+}
+#endif
+
+void World::_update_listener() {}
+void World::_update_listener_2d() {}
 
 void World::_propagate_enter_world(Node *p_node) {
 	if (p_node != this) {
@@ -548,6 +635,8 @@ void World::_notification(int p_what) {
 }
 
 void World::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_camera"), &World::get_camera);
+
 	ClassDB::bind_method(D_METHOD("get_world_2d"), &World::get_world_2d);
 	ClassDB::bind_method(D_METHOD("set_world_2d", "world_2d"), &World::set_world_2d);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "world_2d", PROPERTY_HINT_RESOURCE_TYPE, "World2D", 0), "set_world_2d", "get_world_2d");

@@ -36,6 +36,7 @@
 class SpatialVelocityTracker;
 class Viewport;
 class Environment3D;
+class World;
 
 class Camera : public Spatial {
 	GDCLASS(Camera, Spatial);
@@ -62,7 +63,7 @@ public:
 private:
 	bool force_change;
 	bool current;
-	Viewport *viewport;
+	World *world;
 
 	ProjectionMode mode;
 

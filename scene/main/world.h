@@ -14,6 +14,8 @@ class World : public Node {
 	GDCLASS(World, Node);
 
 public:
+	Camera *get_camera() const;
+
 	Ref<World2D> get_world_2d() const;
 	void set_world_2d(const Ref<World2D> &p_world_2d);
 
@@ -57,6 +59,9 @@ public:
 
 	virtual RID get_viewport_rid() const;
 
+	Vector2 get_camera_coords(const Vector2 &p_viewport_coords) const;
+	Vector2 get_camera_rect_size() const;
+
 	void update_worlds();
 
 	void _world_3d_register_camera(Camera *p_camera);
@@ -70,6 +75,16 @@ public:
 
 	World();
 	~World();
+
+	//friend class Camera;
+	void _camera_transform_changed_notify();
+	virtual void _camera_set(Camera *p_camera);
+	bool _camera_add(Camera *p_camera); //true if first
+	void _camera_remove(Camera *p_camera);
+	void _camera_make_next_current(Camera *p_exclude);
+
+	virtual void _update_listener();
+	virtual void _update_listener_2d();
 
 protected:
 	void _add_overridden_world(World *p_world);
@@ -101,6 +116,11 @@ protected:
 
 	Vector<World *> _overriding_worlds;
 	Vector<Camera *> _override_cameras;
+
+	Camera *camera;
+	Set<Camera *> cameras;
+
+	Size2 size;
 };
 
 #endif

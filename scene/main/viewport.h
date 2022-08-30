@@ -155,7 +155,6 @@ public:
 
 public:
 	Listener *get_listener() const;
-	Camera *get_camera() const;
 	Camera2D *get_camera_2d() const;
 
 	void enable_camera_override(bool p_enable);
@@ -239,9 +238,6 @@ public:
 	void set_use_32_bpc_depth(bool p_enable);
 	bool is_using_32_bpc_depth() const;
 
-	Vector2 get_camera_coords(const Vector2 &p_viewport_coords) const;
-	Vector2 get_camera_rect_size() const;
-
 	void input(const Ref<InputEvent> &p_event);
 	void unhandled_input(const Ref<InputEvent> &p_event);
 
@@ -301,6 +297,8 @@ public:
 	Viewport();
 	~Viewport();
 
+	void _camera_set(Camera *p_camera);
+
 protected:
 	void _notification(int p_what);
 	void _process_picking(bool p_ignore_paused);
@@ -343,9 +341,7 @@ private:
 		}
 	} camera_override;
 
-	Camera *camera;
 	Camera2D *camera_2d;
-	Set<Camera *> cameras;
 	Listener2D *listener_2d = nullptr;
 	Set<CanvasLayer *> canvas_layers;
 
@@ -365,7 +361,6 @@ private:
 	Transform2D global_canvas_transform;
 	Transform2D stretch_transform;
 
-	Size2 size;
 	Rect2 to_screen_rect;
 	bool render_direct_to_screen;
 
@@ -554,13 +549,6 @@ private:
 	bool _listener_add(Listener *p_listener); //true if first
 	void _listener_remove(Listener *p_listener);
 	void _listener_make_next_current(Listener *p_exclude);
-
-	friend class Camera;
-	void _camera_transform_changed_notify();
-	void _camera_set(Camera *p_camera);
-	bool _camera_add(Camera *p_camera); //true if first
-	void _camera_remove(Camera *p_camera);
-	void _camera_make_next_current(Camera *p_exclude);
 
 	friend class Camera2D;
 	void _camera_2d_set(Camera2D *p_camera_2d);
