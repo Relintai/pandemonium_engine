@@ -1,4 +1,5 @@
 # Godot auto generated files
+misc/hooks/pre-commit-custom-*
 *.gen.*
 .import/
 
