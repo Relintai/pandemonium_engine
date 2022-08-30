@@ -223,7 +223,7 @@ void World::set_override_world(World *p_world) {
 
 	if (_override_world) {
 		_override_world->_overriding_world = this;
-		_add_override_cameras_into(_override_world);
+		_add_override_cameras(_override_world);
 	}
 
 	_on_after_world_override_changed();
@@ -380,7 +380,7 @@ void World::_world_3d_remove_camera_no_override(Camera *p_camera) {
 }
 
 void World::_world_3d_register_camera_as_override(Camera *p_camera) {
-	find_world_3d_no_override()->_register_camera(p_camera);
+	//find_world_3d_no_override()->_register_camera(p_camera);
 
 	_override_cameras.push_back(p_camera);
 
@@ -388,7 +388,7 @@ void World::_world_3d_register_camera_as_override(Camera *p_camera) {
 }
 
 void World::_world_3d_remove_camera_as_override(Camera *p_camera) {
-	find_world_3d_no_override()->_remove_camera(p_camera);
+	//find_world_3d_no_override()->_remove_camera(p_camera);
 
 	_override_cameras.erase(p_camera);
 
@@ -404,10 +404,10 @@ void World::_clear_override_cameras() {
 	_own_active_camera = NULL;
 }
 
-void World::_add_override_cameras_into(World *p_from) {
+void World::_add_override_cameras(World *p_from) {
 	_own_active_camera = camera;
 
-	Ref<World3D> w3d = find_world_3d_no_override();
+	Ref<World3D> w3d = p_from->find_world_3d_no_override();
 
 	ERR_FAIL_COND(!w3d.is_valid());
 

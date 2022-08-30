@@ -44,7 +44,7 @@ public:
 
 	// Viewport root
 	// -- World w1
-	// ---- PanelContainer pc 
+	// ---- PanelContainer pc
 
 	// w1 is set as override for the root.
 	// pc's CanvasItem will use the canvas in w1, and will likely call gui_reset_canvas_sort_index() in w1 at least some point.
@@ -85,7 +85,7 @@ public:
 	void _world_3d_register_camera_as_override(Camera *p_camera);
 	void _world_3d_remove_camera_as_override(Camera *p_camera);
 	void _clear_override_cameras();
-	void _add_override_cameras_into(World *p_from);
+	void _add_override_cameras(World *p_from);
 
 	World();
 	~World();
@@ -126,11 +126,12 @@ protected:
 	World *_override_world;
 	World *_overriding_world;
 
-	Vector<Camera *> _override_cameras;
-
 	Camera *camera;
 	Set<Camera *> cameras;
 	Camera *_own_active_camera;
+	Vector<Camera *> _override_cameras;
+
+	//override canvas layers vec remove /add on override set, and unset
 
 	Size2 size;
 };
