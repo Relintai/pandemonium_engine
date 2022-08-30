@@ -678,8 +678,8 @@ void Viewport::_process_picking(bool p_ignore_paused) {
 }
 
 RID Viewport::get_viewport_rid() const {
-	if (_override_world) {
-		return _override_world->get_viewport_rid();
+	if (_overriding_world) {
+		return _overriding_world->get_viewport_rid();
 	}
 
 	return viewport;
@@ -712,8 +712,8 @@ void Viewport::set_size(const Size2 &p_size) {
 }
 
 Rect2 Viewport::get_visible_rect() const {
-	if (_override_world) {
-		return _override_world->get_visible_rect();
+	if (_overriding_world) {
+		return _overriding_world->get_visible_rect();
 	}
 
 	Rect2 r;
@@ -836,8 +836,9 @@ void Viewport::_on_after_world_override_changed() {
 }
 
 void Viewport::enable_canvas_transform_override(bool p_enable) {
-	if (_override_world) {
-		_override_world->enable_canvas_transform_override(p_enable);
+	if (_overriding_world) {
+		_overriding_world->enable_canvas_transform_override(p_enable);
+		return;
 	}
 
 	if (override_canvas_transform == p_enable) {
@@ -853,16 +854,17 @@ void Viewport::enable_canvas_transform_override(bool p_enable) {
 }
 
 bool Viewport::is_canvas_transform_override_enbled() const {
-	if (_override_world) {
-		return _override_world->is_canvas_transform_override_enbled();
+	if (_overriding_world) {
+		return _overriding_world->is_canvas_transform_override_enbled();
 	}
 
 	return override_canvas_transform;
 }
 
 void Viewport::set_canvas_transform_override(const Transform2D &p_transform) {
-	if (_override_world) {
-		_override_world->set_canvas_transform_override(p_transform);
+	if (_overriding_world) {
+		_overriding_world->set_canvas_transform_override(p_transform);
+		return;
 	}
 
 	if (canvas_transform_override == p_transform) {
@@ -876,20 +878,17 @@ void Viewport::set_canvas_transform_override(const Transform2D &p_transform) {
 }
 
 Transform2D Viewport::get_canvas_transform_override() const {
-	if (_override_world) {
-		return _override_world->get_canvas_transform_override();
-	}
-
-	if (_override_world) {
-		return _override_world->get_canvas_transform_override();
+	if (_overriding_world) {
+		return _overriding_world->get_canvas_transform_override();
 	}
 
 	return canvas_transform_override;
 }
 
 void Viewport::set_canvas_transform(const Transform2D &p_transform) {
-	if (_override_world) {
-		_override_world->set_canvas_transform(p_transform);
+	if (_overriding_world) {
+		_overriding_world->set_canvas_transform(p_transform);
+		return;
 	}
 
 	canvas_transform = p_transform;
@@ -900,8 +899,8 @@ void Viewport::set_canvas_transform(const Transform2D &p_transform) {
 }
 
 Transform2D Viewport::get_canvas_transform() const {
-	if (_override_world) {
-		return _override_world->get_canvas_transform();
+	if (_overriding_world) {
+		return _overriding_world->get_canvas_transform();
 	}
 
 	return canvas_transform;
@@ -914,8 +913,9 @@ void Viewport::_update_global_transform() {
 }
 
 void Viewport::set_global_canvas_transform(const Transform2D &p_transform) {
-	if (_override_world) {
-		_override_world->set_global_canvas_transform(p_transform);
+	if (_overriding_world) {
+		_overriding_world->set_global_canvas_transform(p_transform);
+		return;
 	}
 
 	global_canvas_transform = p_transform;
@@ -924,8 +924,8 @@ void Viewport::set_global_canvas_transform(const Transform2D &p_transform) {
 }
 
 Transform2D Viewport::get_global_canvas_transform() const {
-	if (_override_world) {
-		return _override_world->get_global_canvas_transform();
+	if (_overriding_world) {
+		return _overriding_world->get_global_canvas_transform();
 	}
 
 	return global_canvas_transform;
@@ -1148,8 +1148,8 @@ void Viewport::set_camera_override_orthogonal(float p_size, float p_z_near, floa
 }
 
 Transform2D Viewport::get_final_transform() const {
-	if (_override_world) {
-		return _override_world->get_final_transform();
+	if (_overriding_world) {
+		return _overriding_world->get_final_transform();
 	}
 
 	return stretch_transform * global_canvas_transform;
@@ -2889,15 +2889,16 @@ String Viewport::get_configuration_warning() const {
 }
 
 void Viewport::gui_reset_canvas_sort_index() {
-	if (_override_world) {
-		_override_world->gui_reset_canvas_sort_index();
+	if (_overriding_world) {
+		_overriding_world->gui_reset_canvas_sort_index();
+		return;
 	}
 
 	gui.canvas_sort_index = 0;
 }
 int Viewport::gui_get_canvas_sort_index() {
-	if (_override_world) {
-		return _override_world->gui_get_canvas_sort_index();
+	if (_overriding_world) {
+		return _overriding_world->gui_get_canvas_sort_index();
 	}
 
 	return gui.canvas_sort_index++;

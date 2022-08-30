@@ -210,13 +210,11 @@ void World::set_override_world(World *p_world) {
 		return;
 	}
 
-	World *old_world = get_override_world();
-	Ref<World3D> old_world_3d = find_world_3d();
-
 	_on_before_world_override_changed();
 
-	if (old_world) {
-		old_world->_remove_overridden_world(this);
+	if (_overriding_world) {
+		_overriding_world->set_override_world(NULL);
+		_overriding_world = NULL;
 	}
 
 	_clear_override_cameras();
@@ -224,25 +222,7 @@ void World::set_override_world(World *p_world) {
 	_override_world = p_world;
 
 	if (_override_world) {
-		_override_world->_add_overridden_world(this);
-	}
-
-	if (old_world_3d.is_valid()) {
-		Ref<World3D> new_world_3d = find_world_3d();
-
-		if (old_world_3d != new_world_3d) {
-			if (new_world_3d.is_valid()) {
-				old_world_3d->move_cameras_into(new_world_3d);
-
-			} else {
-				ERR_PRINT("!new_world_3d.is_valid()");
-			}
-		}
-	} else {
-		ERR_PRINT("!old_world_3d.is_valid()");
-	}
-
-	if (_override_world) {
+		_override_world->_overriding_world = this;
 		_add_override_cameras_into(_override_world);
 	}
 
@@ -257,97 +237,97 @@ void World::set_override_world_bind(Node *p_world) {
 }
 
 void World::gui_reset_canvas_sort_index() {
-	if (_override_world) {
-		_override_world->gui_reset_canvas_sort_index();
+	if (_overriding_world) {
+		_overriding_world->gui_reset_canvas_sort_index();
 	}
 }
 int World::gui_get_canvas_sort_index() {
-	if (_override_world) {
-		return _override_world->gui_get_canvas_sort_index();
+	if (_overriding_world) {
+		return _overriding_world->gui_get_canvas_sort_index();
 	}
 
 	return 0;
 }
 void World::enable_canvas_transform_override(bool p_enable) {
-	if (_override_world) {
-		_override_world->enable_canvas_transform_override(p_enable);
+	if (_overriding_world) {
+		_overriding_world->enable_canvas_transform_override(p_enable);
 	}
 }
 bool World::is_canvas_transform_override_enbled() const {
-	if (_override_world) {
-		return _override_world->is_canvas_transform_override_enbled();
+	if (_overriding_world) {
+		return _overriding_world->is_canvas_transform_override_enbled();
 	}
 
 	return false;
 }
 void World::set_canvas_transform_override(const Transform2D &p_transform) {
-	if (_override_world) {
-		_override_world->set_canvas_transform_override(p_transform);
+	if (_overriding_world) {
+		_overriding_world->set_canvas_transform_override(p_transform);
 	}
 }
 Transform2D World::get_canvas_transform_override() const {
-	if (_override_world) {
-		return _override_world->get_canvas_transform_override();
+	if (_overriding_world) {
+		return _overriding_world->get_canvas_transform_override();
 	}
 
 	return Transform2D();
 }
 
 void World::set_canvas_transform(const Transform2D &p_transform) {
-	if (_override_world) {
-		_override_world->set_canvas_transform(p_transform);
+	if (_overriding_world) {
+		_overriding_world->set_canvas_transform(p_transform);
 	}
 }
 
 Transform2D World::get_canvas_transform() const {
-	if (_override_world) {
-		return _override_world->get_canvas_transform();
+	if (_overriding_world) {
+		return _overriding_world->get_canvas_transform();
 	}
 
 	return Transform2D();
 }
 
 void World::set_global_canvas_transform(const Transform2D &p_transform) {
-	if (_override_world) {
-		_override_world->set_global_canvas_transform(p_transform);
+	if (_overriding_world) {
+		_overriding_world->set_global_canvas_transform(p_transform);
 	}
 }
 
 Transform2D World::get_global_canvas_transform() const {
-	if (_override_world) {
-		return _override_world->get_global_canvas_transform();
+	if (_overriding_world) {
+		return _overriding_world->get_global_canvas_transform();
 	}
 
 	return Transform2D();
 }
 
 Transform2D World::get_final_transform() const {
-	if (_override_world) {
-		return _override_world->get_final_transform();
+	if (_overriding_world) {
+		return _overriding_world->get_final_transform();
 	}
 
 	return Transform2D();
 }
 
 Rect2 World::get_visible_rect() const {
-	if (_override_world) {
-		return _override_world->get_visible_rect();
+	if (_overriding_world) {
+		return _overriding_world->get_visible_rect();
 	}
 
 	return Rect2();
 }
 
 RID World::get_viewport_rid() const {
-	if (_override_world) {
-		return _override_world->get_viewport_rid();
+	if (_overriding_world) {
+		return _overriding_world->get_viewport_rid();
 	}
 
 	return RID();
 }
 
 Vector2 World::get_camera_coords(const Vector2 &p_viewport_coords) const {
-	if (_override_world) {
-		return _override_world->get_camera_coords(p_viewport_coords);
+	if (_overriding_world) {
+		return _overriding_world->get_camera_coords(p_viewport_coords);
 	}
 
 	Transform2D xf = get_final_transform();
@@ -355,8 +335,8 @@ Vector2 World::get_camera_coords(const Vector2 &p_viewport_coords) const {
 }
 
 Vector2 World::get_camera_rect_size() const {
-	if (_override_world) {
-		return _override_world->get_camera_rect_size();
+	if (_overriding_world) {
+		return _overriding_world->get_camera_rect_size();
 	}
 
 	return size;
@@ -448,6 +428,7 @@ void World::_add_override_cameras_into(World *p_from) {
 World::World() {
 	world_2d = Ref<World2D>(memnew(World2D));
 	_override_world = NULL;
+	_overriding_world = NULL;
 	_override_in_parent_viewport = false;
 	camera = NULL;
 	_own_active_camera = NULL;
@@ -574,26 +555,6 @@ void World::_propagate_exit_world(Node *p_node) {
 	}
 }
 
-void World::_add_overridden_world(World *p_world) {
-	ERR_FAIL_COND(!p_world);
-
-	_overriding_worlds.push_back(p_world);
-}
-void World::_remove_overridden_world(World *p_world) {
-	ERR_FAIL_COND(!p_world);
-
-	for (int i = 0; i < _overriding_worlds.size(); ++i) {
-		World *w = _overriding_worlds[i];
-
-		if (w == p_world) {
-			_overriding_worlds.remove(i);
-			return;
-		}
-	}
-
-	ERR_FAIL();
-}
-
 void World::_own_world_3d_changed() {
 	ERR_FAIL_COND(world_3d.is_null());
 	ERR_FAIL_COND(own_world_3d.is_null());
@@ -645,12 +606,6 @@ void World::_notification(int p_what) {
 		case NOTIFICATION_EXIT_TREE: {
 			if (!Engine::get_singleton()->is_editor_hint()) {
 				set_override_world(NULL);
-
-				while (_overriding_worlds.size() > 0) {
-					World *w = _overriding_worlds[0];
-
-					w->set_override_world(NULL);
-				}
 			}
 		} break;
 	}
