@@ -2,6 +2,7 @@
 
 #include "core/config/engine.h"
 #include "core/core_string_names.h"
+#include "scene/3d/camera.h"
 #include "scene/3d/spatial.h"
 #include "scene/3d/world_environment_3d.h"
 #include "scene/resources/world_2d.h"
@@ -164,6 +165,28 @@ Ref<World3D> World::find_world_3d() const {
 	}
 }
 
+Ref<World2D> World::find_world_2d_no_override() const {
+	if (world_2d.is_valid()) {
+		return world_2d;
+	} else if (_parent_world) {
+		return _parent_world->find_world_2d();
+	} else {
+		return Ref<World2D>();
+	}
+}
+
+Ref<World3D> World::find_world_3d_no_override() const {
+	if (own_world_3d.is_valid()) {
+		return own_world_3d;
+	} else if (world_3d.is_valid()) {
+		return world_3d;
+	} else if (_parent_world) {
+		return _parent_world->find_world_3d();
+	} else {
+		return Ref<World3D>();
+	}
+}
+
 World *World::get_override_world() {
 	return _override_world;
 }
@@ -192,6 +215,8 @@ void World::set_override_world(World *p_world) {
 		old_world->_remove_overridden_world(this);
 	}
 
+	_clear_override_cameras();
+
 	_override_world = p_world;
 
 	if (_override_world) {
@@ -204,12 +229,17 @@ void World::set_override_world(World *p_world) {
 		if (old_world_3d != new_world_3d) {
 			if (new_world_3d.is_valid()) {
 				old_world_3d->move_cameras_into(new_world_3d);
+
 			} else {
 				ERR_PRINT("!new_world_3d.is_valid()");
 			}
 		}
 	} else {
 		ERR_PRINT("!old_world_3d.is_valid()");
+	}
+
+	if (_override_world) {
+		_add_override_cameras_into(_override_world);
 	}
 
 	_on_after_world_override_changed();
@@ -322,6 +352,63 @@ void World::update_worlds() {
 	find_world_2d()->_update();
 
 	find_world_3d()->_update(get_tree()->get_frame());
+}
+
+void World::_world_3d_register_camera(Camera *p_camera) {
+	if (_override_world) {
+		_override_world->_world_3d_register_camera_as_override(p_camera);
+	}
+
+	_world_3d_register_camera_no_override(p_camera);
+}
+
+void World::_world_3d_remove_camera(Camera *p_camera) {
+	if (_override_world) {
+		_override_world->_world_3d_remove_camera_as_override(p_camera);
+	}
+
+	_world_3d_remove_camera_no_override(p_camera);
+}
+
+void World::_world_3d_register_camera_no_override(Camera *p_camera) {
+	find_world_3d_no_override()->_register_camera(p_camera);
+}
+
+void World::_world_3d_remove_camera_no_override(Camera *p_camera) {
+	find_world_3d_no_override()->_remove_camera(p_camera);
+}
+
+void World::_world_3d_register_camera_as_override(Camera *p_camera) {
+	find_world_3d_no_override()->_register_camera(p_camera);
+
+	_override_cameras.push_back(p_camera);
+}
+
+void World::_world_3d_remove_camera_as_override(Camera *p_camera) {
+	find_world_3d_no_override()->_remove_camera(p_camera);
+
+	_override_cameras.erase(p_camera);
+}
+
+void World::_clear_override_cameras() {
+	while (_override_cameras.size() > 0) {
+		_world_3d_remove_camera_as_override(_override_cameras[0]);
+	}
+}
+
+void World::_add_override_cameras_into(World *p_from) {
+	Ref<World3D> w3d = find_world_3d_no_override();
+
+	ERR_FAIL_COND(!w3d.is_valid());
+
+	List<Camera *> cameras;
+	w3d->get_camera_list(&cameras);
+
+	for (List<Camera *>::Element *E = cameras.front(); E; E = E->next()) {
+		Camera *cam = E->get();
+
+		_world_3d_register_camera_as_override(cam);
+	}
 }
 
 World::World() {

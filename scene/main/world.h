@@ -6,6 +6,7 @@
 
 #include "node.h"
 
+class Camera;
 class World3D;
 class World2D;
 
@@ -27,6 +28,8 @@ public:
 
 	Ref<World2D> find_world_2d() const;
 	Ref<World3D> find_world_3d() const;
+	Ref<World2D> find_world_2d_no_override() const;
+	Ref<World3D> find_world_3d_no_override() const;
 
 	World *get_override_world();
 	World *get_override_world_or_this();
@@ -55,6 +58,15 @@ public:
 	virtual RID get_viewport_rid() const;
 
 	void update_worlds();
+
+	void _world_3d_register_camera(Camera *p_camera);
+	void _world_3d_remove_camera(Camera *p_camera);
+	void _world_3d_register_camera_no_override(Camera *p_camera);
+	void _world_3d_remove_camera_no_override(Camera *p_camera);
+	void _world_3d_register_camera_as_override(Camera *p_camera);
+	void _world_3d_remove_camera_as_override(Camera *p_camera);
+	void _clear_override_cameras();
+	void _add_override_cameras_into(World *p_from);
 
 	World();
 	~World();
@@ -88,6 +100,7 @@ protected:
 	World *_override_world;
 
 	Vector<World *> _overriding_worlds;
+	Vector<Camera *> _override_cameras;
 };
 
 #endif

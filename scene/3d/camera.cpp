@@ -157,12 +157,12 @@ void Camera::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_BECAME_CURRENT: {
 			if (viewport) {
-				viewport->find_world_3d()->_register_camera(this);
+				viewport->_world_3d_register_camera(this);
 			}
 		} break;
 		case NOTIFICATION_LOST_CURRENT: {
 			if (viewport) {
-				viewport->find_world_3d()->_remove_camera(this);
+				viewport->_world_3d_remove_camera(this);
 			}
 		} break;
 	}

@@ -30,9 +30,9 @@
 
 #include "world_3d.h"
 
-#include "core/math/projection.h"
-#include "core/math/octree.h"
 #include "core/config/project_settings.h"
+#include "core/math/octree.h"
+#include "core/math/projection.h"
 #include "scene/3d/camera.h"
 #include "scene/3d/visibility_notifier.h"
 #include "scene/scene_string_names.h"
