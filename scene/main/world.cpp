@@ -346,11 +346,19 @@ RID World::get_viewport_rid() const {
 }
 
 Vector2 World::get_camera_coords(const Vector2 &p_viewport_coords) const {
+	if (_override_world) {
+		return _override_world->get_camera_coords(p_viewport_coords);
+	}
+
 	Transform2D xf = get_final_transform();
 	return xf.xform(p_viewport_coords);
 }
 
 Vector2 World::get_camera_rect_size() const {
+	if (_override_world) {
+		return _override_world->get_camera_rect_size();
+	}
+
 	return size;
 }
 
@@ -395,21 +403,30 @@ void World::_world_3d_register_camera_as_override(Camera *p_camera) {
 	find_world_3d_no_override()->_register_camera(p_camera);
 
 	_override_cameras.push_back(p_camera);
+
+	_camera_add(p_camera);
 }
 
 void World::_world_3d_remove_camera_as_override(Camera *p_camera) {
 	find_world_3d_no_override()->_remove_camera(p_camera);
 
 	_override_cameras.erase(p_camera);
+
+	_camera_remove(p_camera);
 }
 
 void World::_clear_override_cameras() {
 	while (_override_cameras.size() > 0) {
 		_world_3d_remove_camera_as_override(_override_cameras[0]);
 	}
+
+	_camera_set(_own_active_camera);
+	_own_active_camera = NULL;
 }
 
 void World::_add_override_cameras_into(World *p_from) {
+	_own_active_camera = camera;
+
 	Ref<World3D> w3d = find_world_3d_no_override();
 
 	ERR_FAIL_COND(!w3d.is_valid());
@@ -422,13 +439,18 @@ void World::_add_override_cameras_into(World *p_from) {
 
 		_world_3d_register_camera_as_override(cam);
 	}
+
+	if (p_from->get_camera()) {
+		_camera_set(p_from->get_camera());
+	}
 }
 
 World::World() {
 	world_2d = Ref<World2D>(memnew(World2D));
 	_override_world = NULL;
 	_override_in_parent_viewport = false;
-	camera = nullptr;
+	camera = NULL;
+	_own_active_camera = NULL;
 }
 World::~World() {
 }

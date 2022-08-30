@@ -119,6 +119,7 @@ protected:
 
 	Camera *camera;
 	Set<Camera *> cameras;
+	Camera *_own_active_camera;
 
 	Size2 size;
 };
