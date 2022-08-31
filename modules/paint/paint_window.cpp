@@ -250,6 +250,33 @@ void PaintWindow::_input(const Ref<InputEvent> &event) {
 	Ref<InputEventMouseButton> iemb = event;
 
 	if (iemb.is_valid()) {
+		if (iemb->get_device() == InputEvent::DEVICE_ID_TOUCH_MOUSE) {
+			Vector2 mouse_position = paint_canvas->get_local_mouse_position();
+			Rect2 rect = Rect2(Vector2(0, 0), paint_canvas->get_size());
+			bool has_point = rect.has_point(mouse_position);
+
+			if (has_point && !paint_canvas->mouse_in_region) {
+				paint_canvas->mouse_in_region = true;
+				_on_PaintCanvasContainer_mouse_entered();
+				paint_canvas->_on_mouse_entered();
+				//_process(0.0000001);
+
+				int grid_size = paint_canvas->get_pixel_size();
+				mouse_position = get_global_mouse_position();
+				canvas_position = paint_canvas->get_global_position();
+				canvas_mouse_position = Vector2(mouse_position.x - canvas_position.x, mouse_position.y - canvas_position.y);
+				cell_mouse_position = Vector2(floor(canvas_mouse_position.x / grid_size), floor(canvas_mouse_position.y / grid_size));
+				cell_color = paint_canvas->get_pixel(cell_mouse_position.x, cell_mouse_position.y);
+				last_mouse_position = mouse_position;
+				last_canvas_position = canvas_position;
+				last_canvas_mouse_position = canvas_mouse_position;
+				last_cell_mouse_position = cell_mouse_position;
+				last_cell_color = cell_color;
+
+				_last_mouse_pos_canvas_area = get_global_mouse_position(); //paint_canvas_container_node.get_local_mouse_position()
+			}
+		}
+
 		if (brush_mode == Tools::CUT) {
 			if (iemb->get_button_index() == BUTTON_LEFT && !iemb->is_pressed()) {
 				commit_action();
@@ -304,6 +331,19 @@ void PaintWindow::_input(const Ref<InputEvent> &event) {
 				} break;
 				default:
 					break;
+			}
+		}
+
+		if (iemb->get_device() == InputEvent::DEVICE_ID_TOUCH_MOUSE) {
+			Vector2 mouse_position = paint_canvas->get_local_mouse_position();
+			Rect2 rect = Rect2(Vector2(0, 0), paint_canvas->get_size());
+			bool has_point = rect.has_point(mouse_position);
+
+			if (!has_point && paint_canvas->mouse_in_region) {
+				paint_canvas->mouse_in_region = false;
+				_on_PaintCanvasContainer_mouse_exited();
+				paint_canvas->_on_mouse_exited();
+				//_process(0.0000001);
 			}
 		}
 	}
@@ -1234,6 +1274,7 @@ PaintWindow::PaintWindow() {
 
 	mouse_in_region = false;
 	mouse_on_top = false;
+	mouse_from_touch = false;
 
 	_picked_color = false;
 

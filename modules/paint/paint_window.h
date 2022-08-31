@@ -249,6 +249,7 @@ public:
 
 	bool mouse_in_region;
 	bool mouse_on_top;
+	bool mouse_from_touch;
 
 	Vector2 _middle_mouse_pressed_pos;
 	Vector2 _middle_mouse_pressed_start_pos;
