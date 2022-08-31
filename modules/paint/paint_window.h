@@ -29,8 +29,8 @@ SOFTWARE.
 
 #include "bush_prefabs.h"
 #include "core/containers/hash_map.h"
-#include "core/os/keyboard.h"
 #include "core/object/reference.h"
+#include "core/os/keyboard.h"
 
 class PaintAction;
 class PaintCanvasLayer;
@@ -52,6 +52,7 @@ class Button;
 class ColorPickerButton;
 class VBoxContainer;
 class PaintLayerButton;
+class PanelContainer;
 
 class PaintWindow : public Control {
 	GDCLASS(PaintWindow, Control);
@@ -90,8 +91,37 @@ public:
 		max_zoom_in = 50,
 	};
 
+	Control *get_navbar();
+	Control *get_left_content_panel();
+	Control *get_paint_canvas();
+	Control *get_right_panel_container();
+	Control *get_bottom_content_panel();
+	Control *get_text_info_control();
+
+	bool get_allow_canvas_zoom();
+	void set_allow_canvas_zoom(const bool val);
+
+	bool get_allow_canvas_move();
+	void set_allow_canvas_move(const bool val);
+
 	Color get_selected_color();
 	void set_selected_color(const Color &color);
+
+	int get_tool();
+	void set_tool(const int val);
+
+	int get_brush_type();
+	void set_brush_type(const int val);
+
+	int get_brush_size();
+	void set_brush_size(const int val);
+
+	Ref<Image> get_image();
+	void new_image(const int x, const int y);
+	void clear_image();
+
+	void center_paint_canvas();
+	void window_fit_paint_canvas(const float ratio = 0.8);
 
 	void _input(const Ref<InputEvent> &event);
 	void _process(float delta);
@@ -192,6 +222,10 @@ public:
 	CheckButton *x_symmetry_button;
 	CheckButton *y_symmetry_button;
 
+	PanelContainer *left_content_panel;
+	PanelContainer *mid_right_panel_container;
+	PanelContainer *bottom_content_panel;
+
 	Control *paint_canvas_container;
 	PaintCanvas *paint_canvas;
 
@@ -260,7 +294,10 @@ public:
 	Color other_layer_highlight;
 	Color locked_layer_highlight;
 
-	int big_grid_pixels = 4;
+	int big_grid_pixels;
+
+	bool _allow_canvas_zoom;
+	bool _allow_canvas_move;
 
 protected:
 	void _notification(int p_what);
@@ -268,5 +305,7 @@ protected:
 
 	Color _selected_color;
 };
+
+VARIANT_ENUM_CAST(PaintWindow::Tools);
 
 #endif

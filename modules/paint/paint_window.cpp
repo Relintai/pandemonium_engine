@@ -24,8 +24,8 @@ SOFTWARE.
 
 #include "paint_window.h"
 
-#include "core/io/image.h"
 #include "core/input/input.h"
+#include "core/io/image.h"
 #include "scene/resources/texture.h"
 
 #include "actions/brighten_action.h"
@@ -93,12 +93,134 @@ static Ref<Texture> make_icon(T p_src) {
 	return texture;
 }
 
+Control *PaintWindow::get_navbar() {
+	return navbar;
+}
+Control *PaintWindow::get_left_content_panel() {
+	return left_content_panel;
+}
+Control *PaintWindow::get_paint_canvas() {
+	return paint_canvas;
+}
+Control *PaintWindow::get_right_panel_container() {
+	return mid_right_panel_container;
+}
+Control *PaintWindow::get_bottom_content_panel() {
+	return bottom_content_panel;
+}
+Control *PaintWindow::get_text_info_control() {
+	return text_info;
+}
+
+bool PaintWindow::get_allow_canvas_zoom() {
+	return _allow_canvas_zoom;
+}
+void PaintWindow::set_allow_canvas_zoom(const bool val) {
+	_allow_canvas_zoom = val;
+}
+
+bool PaintWindow::get_allow_canvas_move() {
+	return _allow_canvas_move;
+}
+void PaintWindow::set_allow_canvas_move(const bool val) {
+	_allow_canvas_move = val;
+}
+
 Color PaintWindow::get_selected_color() {
 	return _selected_color;
 }
-
 void PaintWindow::set_selected_color(const Color &color) {
+	if (color.a == 0) {
+		return;
+	}
+
 	_selected_color = color;
+
+	color_picker_button->set_pick_color(_selected_color);
+}
+
+int PaintWindow::get_tool() {
+	return static_cast<int>(brush_mode);
+}
+void PaintWindow::set_tool(const int val) {
+	set_brush(static_cast<Tools>(val));
+}
+
+int PaintWindow::get_brush_type() {
+	return static_cast<int>(selected_brush_prefab);
+}
+void PaintWindow::set_brush_type(const int val) {
+	selected_brush_prefab = static_cast<BrushPrefabs::Type>(val);
+}
+
+int PaintWindow::get_brush_size() {
+	return brush_size_slider->get_value();
+}
+void PaintWindow::set_brush_size(const int val) {
+	brush_size_slider->set_value(val);
+	brush_size_label->set_text(rtos(val));
+}
+
+Ref<Image> PaintWindow::get_image() {
+	Ref<Image> image;
+	image.instance();
+
+	image->create(paint_canvas->get_canvas_width(), paint_canvas->get_canvas_height(), true, Image::FORMAT_RGBA8);
+	image->lock();
+
+	for (int i = 0; i < paint_canvas->layers.size(); ++i) {
+		Ref<PaintCanvasLayer> layer = paint_canvas->layers[i];
+
+		if (!layer->get_visible()) {
+			continue;
+		}
+
+		for (int x = 0; x < layer->layer_width; ++x) {
+			for (int y = 0; y < layer->layer_height; ++y) {
+				Color color = layer->get_pixel(x, y);
+				Color image_color = image->get_pixel(x, y);
+
+				if (color.a < 0.999998) {
+					image->set_pixel(x, y, image_color.blend(color));
+				} else {
+					image->set_pixel(x, y, color);
+				}
+			}
+		}
+	}
+
+	image->unlock();
+
+	return image;
+}
+
+void PaintWindow::new_image(const int x, const int y) {
+	delete_all_layers();
+	add_new_layer();
+	paint_canvas->resize(x, y);
+}
+void PaintWindow::clear_image() {
+	delete_all_layers();
+	add_new_layer();
+}
+
+void PaintWindow::center_paint_canvas() {
+	Vector2 csize = paint_canvas_container->get_rect().size;
+	Vector2 psize = paint_canvas->get_rect().size;
+
+	Vector2 pos;
+
+	pos.x = (csize.x - psize.x) / 2.0;
+	pos.y = (csize.y - psize.y) / 2.0;
+
+	paint_canvas->set_position(pos);
+}
+void PaintWindow::window_fit_paint_canvas(const float ratio) {
+	Vector2 csize = paint_canvas_container->get_rect().size;
+	Vector2 psize = csize;
+	psize *= Vector2(ratio, ratio);
+
+	paint_canvas->set_size(psize);
 }
 
 void PaintWindow::_input(const Ref<InputEvent> &event) {
@@ -117,7 +239,7 @@ void PaintWindow::_input(const Ref<InputEvent> &event) {
 		return;
 	}
 
-	if (is_mouse_in_canvas() && paint_canvas->mouse_on_top) {
+	if (_allow_canvas_zoom && is_mouse_in_canvas() && paint_canvas->mouse_on_top) {
 		_handle_zoom(event);
 	}
 
@@ -195,7 +317,7 @@ void PaintWindow::_process(float delta) {
 		return;
 	}
 
-	if (is_mouse_in_canvas()) {
+	if (_allow_canvas_move && is_mouse_in_canvas()) {
 		_handle_scroll();
 	}
 
@@ -732,13 +854,7 @@ void PaintWindow::set_brush(const PaintWindow::Tools new_mode) {
 }
 
 void PaintWindow::change_color(const Color &new_color) {
-	if (new_color.a == 0) {
-		return;
-	}
-
-	_selected_color = new_color;
-
-	color_picker_button->set_pick_color(_selected_color);
+	set_selected_color(new_color);
 }
 
 void PaintWindow::_on_ColorPicker_color_changed(const Color &color) {
@@ -1135,6 +1251,9 @@ PaintWindow::PaintWindow() {
 
 	big_grid_pixels = 4;
 
+	_allow_canvas_zoom = true;
+	_allow_canvas_move = true;
+
 	set_clip_contents(true);
 	set_h_size_flags(SIZE_EXPAND_FILL);
 	set_v_size_flags(SIZE_EXPAND_FILL);
@@ -1160,7 +1279,7 @@ PaintWindow::PaintWindow() {
 	main_content_container->add_child(app_mid_container);
 
 	//Main Content Mid (App) -- Left Panel
-	PanelContainer *left_content_panel = memnew(PanelContainer);
+	left_content_panel = memnew(PanelContainer);
 	left_content_panel->set_h_size_flags(SIZE_EXPAND_FILL);
 	left_content_panel->set_v_size_flags(SIZE_EXPAND_FILL);
 	app_mid_container->add_child(left_content_panel);
@@ -1292,7 +1411,7 @@ PaintWindow::PaintWindow() {
 	navbar->canvas = paint_canvas;
 
 	//Main Content Mid (App) -- Right Panel
-	PanelContainer *mid_right_panel_container = memnew(PanelContainer);
+	mid_right_panel_container = memnew(PanelContainer);
 	mid_right_panel_container->set_h_size_flags(SIZE_EXPAND_FILL);
 	mid_right_panel_container->set_v_size_flags(SIZE_EXPAND_FILL);
 	app_mid_container->add_child(mid_right_panel_container);
@@ -1429,7 +1548,7 @@ PaintWindow::PaintWindow() {
 	main_layers_box_container->add_child(add_layer_button);
 
 	//Main Content Bottom (Text display)
-	PanelContainer *bottom_content_panel = memnew(PanelContainer);
+	bottom_content_panel = memnew(PanelContainer);
 	bottom_content_panel->set_h_size_flags(SIZE_EXPAND_FILL);
 	bottom_content_panel->set_custom_minimum_size(Size2(0, 50));
 	main_content_container->add_child(bottom_content_panel);
@@ -1485,10 +1604,47 @@ PaintWindow::~PaintWindow() {
 }
 
 void PaintWindow::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_input", "event"), &PaintWindow::_input);
+	ClassDB::bind_method(D_METHOD("get_navbar"), &PaintWindow::get_navbar);
+	ClassDB::bind_method(D_METHOD("get_left_content_panel"), &PaintWindow::get_left_content_panel);
+	ClassDB::bind_method(D_METHOD("get_paint_canvas"), &PaintWindow::get_paint_canvas);
+	ClassDB::bind_method(D_METHOD("get_right_panel_container"), &PaintWindow::get_right_panel_container);
+	ClassDB::bind_method(D_METHOD("get_bottom_content_panel"), &PaintWindow::get_bottom_content_panel);
+	ClassDB::bind_method(D_METHOD("get_text_info_control"), &PaintWindow::get_text_info_control);
+
+	ClassDB::bind_method(D_METHOD("get_allow_canvas_zoom"), &PaintWindow::get_allow_canvas_zoom);
+	ClassDB::bind_method(D_METHOD("set_allow_canvas_zoom", "value"), &PaintWindow::set_allow_canvas_zoom);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "allow_canvas_zoom"), "set_allow_canvas_zoom", "get_allow_canvas_zoom");
+
+	ClassDB::bind_method(D_METHOD("get_allow_canvas_move"), &PaintWindow::get_allow_canvas_move);
+	ClassDB::bind_method(D_METHOD("set_allow_canvas_move", "value"), &PaintWindow::set_allow_canvas_move);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "allow_canvas_move"), "set_allow_canvas_move", "get_allow_canvas_move");
+
+	ClassDB::bind_method(D_METHOD("get_selected_color"), &PaintWindow::get_selected_color);
+	ClassDB::bind_method(D_METHOD("set_selected_color", "value"), &PaintWindow::set_selected_color);
+	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "selected_color"), "set_selected_color", "get_selected_color");
+
+	ClassDB::bind_method(D_METHOD("get_tool"), &PaintWindow::get_tool);
+	ClassDB::bind_method(D_METHOD("set_tool", "value"), &PaintWindow::set_tool);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "tool"), "set_tool", "get_tool");
+
+	ClassDB::bind_method(D_METHOD("get_brush_type"), &PaintWindow::get_brush_type);
+	ClassDB::bind_method(D_METHOD("set_brush_type", "value"), &PaintWindow::set_brush_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "brush_type"), "set_brush_type", "get_brush_type");
+
+	ClassDB::bind_method(D_METHOD("get_brush_size"), &PaintWindow::get_brush_size);
+	ClassDB::bind_method(D_METHOD("set_brush_size", "value"), &PaintWindow::set_brush_size);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "brush_size"), "set_brush_size", "get_brush_size");
+
+	ClassDB::bind_method(D_METHOD("get_image"), &PaintWindow::get_image);
+	ClassDB::bind_method(D_METHOD("clear_image"), &PaintWindow::clear_image);
+	ClassDB::bind_method(D_METHOD("new_image", "x", "y"), &PaintWindow::new_image);
+
+	ClassDB::bind_method(D_METHOD("center_paint_canvas"), &PaintWindow::center_paint_canvas);
+	ClassDB::bind_method(D_METHOD("window_fit_paint_canvas", "ratio"), &PaintWindow::window_fit_paint_canvas, 0.8);
 
 	ClassDB::bind_method(D_METHOD("change_color", "color"), &PaintWindow::change_color);
 
+	ClassDB::bind_method(D_METHOD("_input", "event"), &PaintWindow::_input);
 	ClassDB::bind_method(D_METHOD("_on_Save_pressed"), &PaintWindow::_on_Save_pressed);
 
 	ClassDB::bind_method(D_METHOD("_on_ColorPicker_color_changed", "color"), &PaintWindow::_on_ColorPicker_color_changed);
@@ -1526,4 +1682,16 @@ void PaintWindow::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("select_layer", "name"), &PaintWindow::select_layer);
 	ClassDB::bind_method(D_METHOD("move_up", "n"), &PaintWindow::move_up);
 	ClassDB::bind_method(D_METHOD("move_down", "n"), &PaintWindow::move_down);
+
+	BIND_ENUM_CONSTANT(PAINT);
+	BIND_ENUM_CONSTANT(BRUSH);
+	BIND_ENUM_CONSTANT(BUCKET);
+	BIND_ENUM_CONSTANT(RAINBOW);
+	BIND_ENUM_CONSTANT(LINE);
+	BIND_ENUM_CONSTANT(RECT);
+	BIND_ENUM_CONSTANT(DARKEN);
+	BIND_ENUM_CONSTANT(BRIGHTEN);
+	BIND_ENUM_CONSTANT(COLORPICKER);
+	BIND_ENUM_CONSTANT(CUT);
+	BIND_ENUM_CONSTANT(PASTECUT);
 }
