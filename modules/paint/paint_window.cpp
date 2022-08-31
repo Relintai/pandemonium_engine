@@ -255,7 +255,7 @@ void PaintWindow::_input(const Ref<InputEvent> &event) {
 			Rect2 rect = Rect2(Vector2(0, 0), paint_canvas->get_size());
 			bool has_point = rect.has_point(mouse_position);
 
-			if (has_point && !paint_canvas->mouse_in_region) {
+			if ((has_point && !paint_canvas->mouse_in_region)  || iemb->is_pressed()) {
 				paint_canvas->mouse_in_region = true;
 				_on_PaintCanvasContainer_mouse_entered();
 				paint_canvas->_on_mouse_entered();
@@ -274,6 +274,7 @@ void PaintWindow::_input(const Ref<InputEvent> &event) {
 				last_cell_color = cell_color;
 
 				_last_mouse_pos_canvas_area = get_global_mouse_position(); //paint_canvas_container_node.get_local_mouse_position()
+				paint_canvas->clear_preview_layer();
 			}
 		}
 
@@ -339,7 +340,7 @@ void PaintWindow::_input(const Ref<InputEvent> &event) {
 			Rect2 rect = Rect2(Vector2(0, 0), paint_canvas->get_size());
 			bool has_point = rect.has_point(mouse_position);
 
-			if (!has_point && paint_canvas->mouse_in_region) {
+			if ((!has_point && paint_canvas->mouse_in_region) || !iemb->is_pressed()) {
 				paint_canvas->mouse_in_region = false;
 				_on_PaintCanvasContainer_mouse_exited();
 				paint_canvas->_on_mouse_exited();
