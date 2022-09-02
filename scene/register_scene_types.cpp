@@ -166,6 +166,7 @@
 #include "scene/resources/rectangle_shape_2d.h"
 #include "scene/resources/resource_format_text.h"
 #include "scene/resources/segment_shape_2d.h"
+#include "scene/resources/multimesh.h"
 
 #include "scene/resources/sky.h"
 #include "scene/resources/sphere_shape.h"
