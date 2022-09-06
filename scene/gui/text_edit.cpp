@@ -5425,7 +5425,7 @@ void TextEdit::_update_caches() {
 	cache.folded_icon = get_theme_icon("folded");
 	cache.can_fold_icon = get_theme_icon("fold");
 	cache.folded_eol_icon = get_theme_icon("GuiEllipsis", "EditorIcons");
-	cache.executing_icon = get_theme_icon("MainPlay", "EditorIcons");
+	cache.executing_icon = get_theme_icon("TextEditorPlay", "EditorIcons");
 	text.set_font(cache.font);
 
 	if (syntax_highlighter) {
