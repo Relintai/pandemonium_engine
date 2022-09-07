@@ -57,8 +57,11 @@ class Viewport;
 class MaterialEditor : public Control {
 	GDCLASS(MaterialEditor, Control);
 
+	Vector2 rot = Vector2();
+
 	ViewportContainer *vc;
 	Viewport *viewport;
+	Spatial *rotation;
 	MeshInstance *sphere_instance;
 	MeshInstance *box_instance;
 	DirectionalLight *light1;
@@ -81,6 +84,8 @@ class MaterialEditor : public Control {
 
 protected:
 	void _notification(int p_what);
+	void _gui_input(const Ref<InputEvent> &p_event);
+	void _update_rotation();
 
 	static void _bind_methods();
 
