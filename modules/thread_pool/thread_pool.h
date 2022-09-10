@@ -27,6 +27,7 @@ SOFTWARE.
 
 #include "core/object/object.h"
 #include "core/containers/vector.h"
+#include "core/containers/list.h"
 
 #include "core/os/semaphore.h"
 #include "core/os/thread.h"
@@ -100,15 +101,7 @@ private:
 
 	Vector<ThreadPoolContext *> _threads;
 
-	Vector<Ref<ThreadPoolJob>> _queue;
-	int _current_queue_head;
-	int _current_queue_tail;
-
-	int _queue_start_size;
-	int _queue_grow_size;
-
-	//todo
-	//Vector<Ref<ThreadPoolJob> > _job_pool;
+	List<Ref<ThreadPoolJob>> _queue;
 };
 
 #endif
