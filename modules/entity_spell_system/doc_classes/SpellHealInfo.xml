@@ -15,7 +15,7 @@
 		</method>
 	</methods>
 	<members>
-		<member name="amount_absorbed" type="int" setter="amount_absorbed_set" getter="amount_absorbed_get" default="-2004318072">
+		<member name="amount_absorbed" type="int" setter="amount_absorbed_set" getter="amount_absorbed_get" default="0">
 		</member>
 		<member name="aura_source" type="Spell" setter="aura_source_set" getter="aura_source_get">
 		</member>

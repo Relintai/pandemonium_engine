@@ -357,6 +357,12 @@
 			<description>
 			</description>
 		</method>
+		<method name="cols">
+			<return type="_HTMLTag" />
+			<argument index="0" name="val" type="String" />
+			<description>
+			</description>
+		</method>
 		<method name="content">
 			<return type="_HTMLTag" />
 			<argument index="0" name="val" type="String" />
@@ -366,6 +372,17 @@
 		<method name="disabled">
 			<return type="_HTMLTag" />
 			<argument index="0" name="val" type="bool" default="true" />
+			<description>
+			</description>
+		</method>
+		<method name="enctype">
+			<return type="_HTMLTag" />
+			<argument index="0" name="val" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="enctype_multipart_form_data">
+			<return type="_HTMLTag" />
 			<description>
 			</description>
 		</method>
@@ -737,6 +754,12 @@
 		</method>
 		<method name="reset">
 			<return type="_HTMLTag" />
+			<description>
+			</description>
+		</method>
+		<method name="rows">
+			<return type="_HTMLTag" />
+			<argument index="0" name="val" type="String" />
 			<description>
 			</description>
 		</method>

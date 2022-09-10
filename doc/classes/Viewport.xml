@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Viewport" inherits="Node" version="3.8">
+<class name="Viewport" inherits="World" version="3.8">
 	<brief_description>
 		Creates a sub-view into the screen.
 	</brief_description>
@@ -23,34 +23,10 @@
 		<link title="3D Viewport Scaling Demo">https://godotengine.org/asset-library/asset/586</link>
 	</tutorials>
 	<methods>
-		<method name="find_world_3d" qualifiers="const">
-			<return type="World3D" />
-			<description>
-				Returns the first valid [World3D] for this viewport, searching the [member world] property of itself and any Viewport ancestor.
-			</description>
-		</method>
-		<method name="find_world_2d" qualifiers="const">
-			<return type="World2D" />
-			<description>
-				Returns the first valid [World2D] for this viewport, searching the [member world_2d] property of itself and any Viewport ancestor.
-			</description>
-		</method>
-		<method name="get_camera" qualifiers="const">
-			<return type="Camera" />
-			<description>
-				Returns the active 3D camera.
-			</description>
-		</method>
 		<method name="get_camera_2d" qualifiers="const">
 			<return type="Camera2D" />
 			<description>
 				Returns the currently active 2D camera. Returns null if there are no active cameras.
-			</description>
-		</method>
-		<method name="get_final_transform" qualifiers="const">
-			<return type="Transform2D" />
-			<description>
-				Returns the total transform of the viewport.
 			</description>
 		</method>
 		<method name="get_modal_stack_top" qualifiers="const">
@@ -94,18 +70,6 @@
 				var img = get_viewport().get_texture().get_data()
 				img.flip_y()
 				[/codeblock]
-			</description>
-		</method>
-		<method name="get_viewport_rid" qualifiers="const">
-			<return type="RID" />
-			<description>
-				Returns the viewport's RID from the [RenderingServer].
-			</description>
-		</method>
-		<method name="get_visible_rect" qualifiers="const">
-			<return type="Rect2" />
-			<description>
-				Returns the visible rectangle in global screen coordinates.
 			</description>
 		</method>
 		<method name="gui_get_drag_data" qualifiers="const">
@@ -186,12 +150,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="update_worlds">
-			<return type="void" />
-			<description>
-				Forces update of the 2D and 3D worlds.
-			</description>
-		</method>
 		<method name="warp_mouse">
 			<return type="void" />
 			<argument index="0" name="to_position" type="Vector2" />
@@ -207,9 +165,6 @@
 		<member name="audio_listener_enable_3d" type="bool" setter="set_as_audio_listener" getter="is_audio_listener" default="false">
 			If [code]true[/code], the viewport will process 3D audio streams.
 		</member>
-		<member name="canvas_transform" type="Transform2D" setter="set_canvas_transform" getter="get_canvas_transform">
-			The canvas transform of the viewport, useful for changing the on-screen positions of all child [CanvasItem]s. This is relative to the global canvas transform of the viewport.
-		</member>
 		<member name="debanding" type="bool" setter="set_use_debanding" getter="get_use_debanding" default="false">
 			If [code]true[/code], uses a fast post-processing filter to make banding significantly less visible. In some cases, debanding may introduce a slightly noticeable dithering pattern. It's recommended to enable debanding only when actually needed since the dithering pattern will make lossless-compressed screenshots larger.
 			[b]Note:[/b] Only available on the GLES3 backend. [member hdr] must also be [code]true[/code] for debanding to be effective.
@@ -222,9 +177,6 @@
 		</member>
 		<member name="fxaa" type="bool" setter="set_use_fxaa" getter="get_use_fxaa" default="false">
 			Enables fast approximate antialiasing. FXAA is a popular screen-space antialiasing method, which is fast but will make the image look blurry, especially at lower resolutions. It can still work relatively well at large resolutions such as 1440p and 4K. Some of the lost sharpness can be recovered by enabling contrast-adaptive sharpening (see [member sharpen_intensity]).
-		</member>
-		<member name="global_canvas_transform" type="Transform2D" setter="set_global_canvas_transform" getter="get_global_canvas_transform">
-			The global canvas transform of the viewport. The canvas transform is relative to this.
 		</member>
 		<member name="gui_disable_input" type="bool" setter="set_disable_input" getter="is_input_disabled" default="false">
 			If [code]true[/code], the viewport will not receive input events.
@@ -244,9 +196,6 @@
 		</member>
 		<member name="msaa" type="int" setter="set_msaa" getter="get_msaa" enum="Viewport.MSAA" default="0">
 			The multisample anti-aliasing mode. A higher number results in smoother edges at the cost of significantly worse performance. A value of 4 is best unless targeting very high-end systems.
-		</member>
-		<member name="own_world_3d" type="bool" setter="set_use_own_world_3d" getter="is_using_own_world_3d" default="false">
-			If [code]true[/code], the viewport will use a unique copy of the [World3D] defined in [member world].
 		</member>
 		<member name="physics_object_picking" type="bool" setter="set_physics_object_picking" getter="get_physics_object_picking" default="false">
 			If [code]true[/code], the objects rendered by viewport become subjects of mouse picking process.
@@ -300,12 +249,6 @@
 			If [code]true[/code], allocates the viewport's framebuffer with full floating-point precision (32-bit) instead of half floating-point precision (16-bit). Only effective when [member hdr] is also enabled.
 			[b]Note:[/b] Enabling this setting does not improve rendering quality. Using full floating-point precision is slower, and is generally only needed for advanced shaders that require a high level of precision. To reduce banding, enable [member debanding] instead.
 			[b]Note:[/b] Only available on the GLES3 backend.
-		</member>
-		<member name="world" type="World3D" setter="set_world_3d" getter="get_world_3d">
-			The custom [World3D] which can be used as 3D environment source.
-		</member>
-		<member name="world_2d" type="World2D" setter="set_world_2d" getter="get_world_2d">
-			The custom [World2D] which can be used as 2D environment source.
 		</member>
 	</members>
 	<signals>

@@ -49,7 +49,7 @@
 		<member name="max_visible_navigation_links" type="int" setter="set_max_visible_navigation_links" getter="get_max_visible_navigation_links" default="6">
 			This many pagination links will be visible max.
 		</member>
-		<member name="paginate" type="bool" setter="set_paginate" getter="get_paginate" default="true">
+		<member name="paginate" type="bool" setter="set_paginate" getter="get_paginate" default="false">
 			Whether to allow pagination or not.
 		</member>
 		<member name="placeholder_text" type="String" setter="set_placeholder_text" getter="get_placeholder_text" default="&quot;No content yet!&quot;">

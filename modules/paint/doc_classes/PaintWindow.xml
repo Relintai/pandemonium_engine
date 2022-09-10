@@ -7,9 +7,54 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="center_paint_canvas">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
 		<method name="change_color">
 			<return type="void" />
 			<argument index="0" name="color" type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="clear_image">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_bottom_content_panel">
+			<return type="Control" />
+			<description>
+			</description>
+		</method>
+		<method name="get_image">
+			<return type="Image" />
+			<description>
+			</description>
+		</method>
+		<method name="get_left_content_panel">
+			<return type="Control" />
+			<description>
+			</description>
+		</method>
+		<method name="get_navbar">
+			<return type="Control" />
+			<description>
+			</description>
+		</method>
+		<method name="get_paint_canvas">
+			<return type="Control" />
+			<description>
+			</description>
+		</method>
+		<method name="get_right_panel_container">
+			<return type="Control" />
+			<description>
+			</description>
+		</method>
+		<method name="get_text_info_control">
+			<return type="Control" />
 			<description>
 			</description>
 		</method>
@@ -32,6 +77,13 @@
 			<description>
 			</description>
 		</method>
+		<method name="new_image">
+			<return type="void" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="y" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="select_layer">
 			<return type="void" />
 			<argument index="0" name="name" type="String" />
@@ -45,12 +97,52 @@
 			<description>
 			</description>
 		</method>
+		<method name="window_fit_paint_canvas">
+			<return type="void" />
+			<argument index="0" name="ratio" type="float" default="0.8" />
+			<description>
+			</description>
+		</method>
 	</methods>
 	<members>
+		<member name="allow_canvas_move" type="bool" setter="set_allow_canvas_move" getter="get_allow_canvas_move" default="true">
+		</member>
+		<member name="allow_canvas_zoom" type="bool" setter="set_allow_canvas_zoom" getter="get_allow_canvas_zoom" default="true">
+		</member>
+		<member name="brush_size" type="int" setter="set_brush_size" getter="get_brush_size" default="1">
+		</member>
+		<member name="brush_type" type="int" setter="set_brush_type" getter="get_brush_type" default="3">
+		</member>
 		<member name="rect_clip_content" type="bool" setter="set_clip_contents" getter="is_clipping_contents" overrides="Control" default="true" />
+		<member name="selected_color" type="Color" setter="set_selected_color" getter="get_selected_color" default="Color( 1, 1, 1, 1 )">
+		</member>
 		<member name="size_flags_horizontal" type="int" setter="set_h_size_flags" getter="get_h_size_flags" overrides="Control" default="3" />
 		<member name="size_flags_vertical" type="int" setter="set_v_size_flags" getter="get_v_size_flags" overrides="Control" default="3" />
+		<member name="tool" type="int" setter="set_tool" getter="get_tool" default="0">
+		</member>
 	</members>
 	<constants>
+		<constant name="PAINT" value="0" enum="Tools">
+		</constant>
+		<constant name="BRUSH" value="1" enum="Tools">
+		</constant>
+		<constant name="BUCKET" value="2" enum="Tools">
+		</constant>
+		<constant name="RAINBOW" value="3" enum="Tools">
+		</constant>
+		<constant name="LINE" value="4" enum="Tools">
+		</constant>
+		<constant name="RECT" value="5" enum="Tools">
+		</constant>
+		<constant name="DARKEN" value="6" enum="Tools">
+		</constant>
+		<constant name="BRIGHTEN" value="7" enum="Tools">
+		</constant>
+		<constant name="COLORPICKER" value="8" enum="Tools">
+		</constant>
+		<constant name="CUT" value="9" enum="Tools">
+		</constant>
+		<constant name="PASTECUT" value="10" enum="Tools">
+		</constant>
 	</constants>
 </class>

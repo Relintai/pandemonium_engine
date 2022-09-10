@@ -332,6 +332,11 @@
 				Returns the node's [Viewport].
 			</description>
 		</method>
+		<method name="get_world" qualifiers="const">
+			<return type="World" />
+			<description>
+			</description>
+		</method>
 		<method name="has_network_peer">
 			<return type="bool" />
 			<description>

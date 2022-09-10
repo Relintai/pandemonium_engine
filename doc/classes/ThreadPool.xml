@@ -31,8 +31,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="register_update">
-			<return type="void" />
+		<method name="is_working" qualifiers="const">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="is_working_no_lock" qualifiers="const">
+			<return type="bool" />
 			<description>
 			</description>
 		</method>

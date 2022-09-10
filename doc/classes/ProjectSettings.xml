@@ -1898,10 +1898,6 @@
 		</member>
 		<member name="thread_pool/max_work_per_frame_percent" type="int" setter="" getter="" default="25">
 		</member>
-		<member name="thread_pool/queue_grow_size" type="int" setter="" getter="" default="10">
-		</member>
-		<member name="thread_pool/queue_start_size" type="int" setter="" getter="" default="20">
-		</member>
 		<member name="thread_pool/thread_count" type="int" setter="" getter="" default="-1">
 		</member>
 		<member name="thread_pool/thread_fallback_count" type="int" setter="" getter="" default="4">

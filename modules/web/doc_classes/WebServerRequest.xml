@@ -324,7 +324,7 @@
 		<method name="send_redirect">
 			<return type="void" />
 			<argument index="0" name="location" type="String" />
-			<argument index="1" name="status_code " type="int" enum="HTTPServerEnums.HTTPStatusCode" />
+			<argument index="1" name="status_code" type="int" enum="HTTPServerEnums.HTTPStatusCode" default="302" />
 			<description>
 				Sends a redirect http header.
 			</description>
