@@ -40,7 +40,8 @@ bool ThreadPool::get_use_threads() const {
 	return _use_threads;
 }
 void ThreadPool::set_use_threads(const bool value) {
-	_use_threads = value;
+	// Will be applied later in update, so current jobs can be finished first
+	_use_threads_new = value;
 	_dirty = true;
 }
 
@@ -295,6 +296,8 @@ void ThreadPool::register_core_settings() {
 		}
 	}
 
+	_use_threads_new = _use_threads;
+
 	_dirty = true;
 
 	apply_settings();
@@ -328,6 +331,8 @@ void ThreadPool::apply_settings() {
 	}
 
 	_threads.resize(0);
+
+	_use_threads = _use_threads_new;
 
 	if (_use_threads) {
 		_threads.resize(_thread_count);

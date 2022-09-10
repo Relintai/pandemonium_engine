@@ -101,6 +101,7 @@ private:
 
 	bool _dirty;
 	bool _use_threads;
+	bool _use_threads_new;
 	int _thread_count;
 	int _thread_fallback_count;
 	float _max_work_per_frame_percent;
