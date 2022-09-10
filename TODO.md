@@ -114,7 +114,6 @@
 ## Web
 
 - Move simple web server to a new module.
-- Implement multi threading for the simple web server.
 - Implement big (or not in-memory) file upload support.
 - Move HTMLParser, BBCodeParser, and MarkDownRenderer to a new (parsers?) module.
 - BlogWebPage <- BlogWepBageFile, BlogWebPageDB
