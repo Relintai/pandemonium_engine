@@ -60,7 +60,7 @@ void TerrainJob::set_build_done(const bool val) {
 
 void TerrainJob::next_job() {
 	ERR_FAIL_COND(!_chunk.is_valid());
-	
+
 	_chunk->job_next();
 	set_build_done(true);
 }
@@ -295,17 +295,6 @@ TerrainJob::TerrainJob() {
 	_build_phase_type = BUILD_PHASE_TYPE_NORMAL;
 	_build_done = true;
 	_phase = 0;
-
-#if !THREAD_POOL_PRESENT
-	_complete = true;
-	_cancelled = false;
-
-	_max_allocated_time = 0;
-	_start_time = 0;
-
-	_current_run_stage = 0;
-	_stage = 0;
-#endif
 }
 
 TerrainJob::~TerrainJob() {
@@ -347,102 +336,4 @@ void TerrainJob::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("generate_random_ao", "seed", "octaves", "period", "persistence", "scale_factor"), &TerrainJob::generate_random_ao, DEFVAL(4), DEFVAL(30), DEFVAL(0.3), DEFVAL(0.6));
 
 	ClassDB::bind_method(D_METHOD("chunk_exit_tree"), &TerrainJob::chunk_exit_tree);
-
-#if !THREAD_POOL_PRESENT
-	ClassDB::bind_method(D_METHOD("get_complete"), &TerrainJob::get_complete);
-	ClassDB::bind_method(D_METHOD("set_complete", "value"), &TerrainJob::set_complete);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "complete"), "set_complete", "get_complete");
-
-	ClassDB::bind_method(D_METHOD("get_start_time"), &TerrainJob::get_start_time);
-	ClassDB::bind_method(D_METHOD("set_start_time", "value"), &TerrainJob::set_start_time);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "start_time"), "set_start_time", "get_start_time");
-
-	ClassDB::bind_method(D_METHOD("get_current_run_stage"), &TerrainJob::get_current_run_stage);
-	ClassDB::bind_method(D_METHOD("set_current_run_stage", "value"), &TerrainJob::set_current_run_stage);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "current_run_stage"), "set_current_run_stage", "get_current_run_stage");
-
-	ClassDB::bind_method(D_METHOD("get_stage"), &TerrainJob::get_stage);
-	ClassDB::bind_method(D_METHOD("set_stage", "value"), &TerrainJob::set_stage);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "stage"), "set_stage", "get_stage");
-
-	ClassDB::bind_method(D_METHOD("get_current_execution_time"), &TerrainJob::get_current_execution_time);
-
-	ClassDB::bind_method(D_METHOD("should_do", "just_check"), &TerrainJob::should_do, DEFVAL(false));
-	ClassDB::bind_method(D_METHOD("should_return"), &TerrainJob::should_return);
-
-	BIND_VMETHOD(MethodInfo("_execute"));
-	ClassDB::bind_method(D_METHOD("execute"), &TerrainJob::execute);
-
-	ADD_SIGNAL(MethodInfo("completed"));
-#endif
 }
-
-#if !THREAD_POOL_PRESENT
-bool TerrainJob::get_complete() const {
-	return _complete;
-}
-void TerrainJob::set_complete(const bool value) {
-	_complete = value;
-}
-
-bool TerrainJob::get_cancelled() const {
-	return _cancelled;
-}
-void TerrainJob::set_cancelled(const bool value) {
-	_cancelled = value;
-}
-
-float TerrainJob::get_max_allocated_time() const {
-	return _max_allocated_time;
-}
-void TerrainJob::set_max_allocated_time(const float value) {
-	_max_allocated_time = value;
-}
-
-int TerrainJob::get_start_time() const {
-	return _start_time;
-}
-void TerrainJob::set_start_time(const int value) {
-	_start_time = value;
-}
-
-int TerrainJob::get_current_run_stage() const {
-	return _current_run_stage;
-}
-void TerrainJob::set_current_run_stage(const int value) {
-	_current_run_stage = value;
-}
-
-int TerrainJob::get_stage() const {
-	return _stage;
-}
-void TerrainJob::set_stage(const int value) {
-	_stage = value;
-}
-
-void TerrainJob::reset_stages() {
-	_current_run_stage = 0;
-	_stage = 0;
-}
-
-float TerrainJob::get_current_execution_time() {
-	return 0;
-}
-
-bool TerrainJob::should_do(const bool just_check) {
-	return true;
-}
-bool TerrainJob::should_return() {
-	if (_cancelled)
-		return true;
-
-	return false;
-}
-
-void TerrainJob::execute() {
-	ERR_FAIL_COND(!has_method("_execute"));
-
-	call("_execute");
-}
-
-#endif

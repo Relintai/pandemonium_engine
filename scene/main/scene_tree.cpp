@@ -36,6 +36,7 @@
 #include "core/os/dir_access.h"
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
+#include "core/os/thread_pool.h"
 #include "core/string/print_string.h"
 #include "core/config/project_settings.h"
 #include "main/input_default.h"
@@ -610,6 +611,8 @@ bool SceneTree::idle(float p_time) {
 	if (multiplayer_poll) {
 		multiplayer->poll();
 	}
+	
+	ThreadPool::get_singleton()->update();
 
 	emit_signal("idle_frame");
 

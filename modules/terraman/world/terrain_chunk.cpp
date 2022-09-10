@@ -33,9 +33,7 @@ SOFTWARE.
 #include "servers/physics_server.h"
 #include "terrain_structure.h"
 
-#if THREAD_POOL_PRESENT
-#include "../../thread_pool/thread_pool.h"
-#endif
+#include "core/os/thread_pool.h"
 
 _FORCE_INLINE_ bool TerrainChunk::get_process() const {
 	return _is_processing;
@@ -302,11 +300,7 @@ void TerrainChunk::job_next() {
 	j->set_complete(false);
 
 	if (j->get_build_phase_type() == TerrainJob::BUILD_PHASE_TYPE_NORMAL) {
-#if THREAD_POOL_PRESENT
 		ThreadPool::get_singleton()->add_job(j);
-#else
-		j->execute();
-#endif
 	}
 }
 Ref<TerrainJob> TerrainChunk::job_get_current() {
@@ -682,7 +676,6 @@ void TerrainChunk::cancel_build() {
 
 	_abort_build = true;
 
-#if THREAD_POOL_PRESENT
 	if (_is_generating) {
 		Ref<TerrainJob> job = job_get_current();
 
@@ -690,7 +683,6 @@ void TerrainChunk::cancel_build() {
 			ThreadPool::get_singleton()->cancel_job(job);
 		}
 	}
-#endif
 }
 
 void TerrainChunk::bake_lights() {
@@ -1038,7 +1030,6 @@ Vector3 TerrainChunk::to_global(Vector3 p_local) const {
 }
 
 bool TerrainChunk::is_safe_to_delete() {
-#if THREAD_POOL_PRESENT
 	if (!_is_generating) {
 		return true;
 	}
@@ -1050,9 +1041,6 @@ bool TerrainChunk::is_safe_to_delete() {
 	}
 
 	return !ThreadPool::get_singleton()->has_job(job);
-#else
-	return true;
-#endif
 }
 
 TerrainChunk::TerrainChunk() {
@@ -1179,11 +1167,7 @@ void TerrainChunk::_generation_process(const float delta) {
 		job->process(delta);
 
 		if (job->get_build_phase_type() == TerrainJob::BUILD_PHASE_TYPE_NORMAL) {
-#if THREAD_POOL_PRESENT
 			ThreadPool::get_singleton()->add_job(job);
-#else
-			job->execute();
-#endif
 		}
 	}
 }
@@ -1208,11 +1192,7 @@ void TerrainChunk::_generation_physics_process(const float delta) {
 		job->physics_process(delta);
 
 		if (job->get_build_phase_type() == TerrainJob::BUILD_PHASE_TYPE_NORMAL) {
-#if THREAD_POOL_PRESENT
 			ThreadPool::get_singleton()->add_job(job);
-#else
-			job->execute();
-#endif
 		}
 	}
 }

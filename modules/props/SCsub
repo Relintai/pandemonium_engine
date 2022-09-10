@@ -21,10 +21,6 @@ if os.path.isdir('../terraman'):
 if os.path.isdir('../mesh_utils'):
     module_env.Append(CPPDEFINES=['MESH_UTILS_PRESENT'])
 
-
-if os.path.isdir('../thread_pool'):
-    module_env.Append(CPPDEFINES=['THREAD_POOL_PRESENT'])
-
 sources = [
 
     "register_types.cpp",

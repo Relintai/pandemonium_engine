@@ -3,8 +3,8 @@
 
 #include "mm_node.h"
 #include "mm_node_universal_property.h"
-#include "modules/thread_pool/thread_pool.h"
-#include "modules/thread_pool/thread_pool_job.h"
+#include "core/os/thread_pool.h"
+#include "core/os/thread_pool_job.h"
 
 Vector2 MMMaterial::get_image_size() {
 	return image_size;

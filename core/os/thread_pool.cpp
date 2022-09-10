@@ -41,6 +41,7 @@ bool ThreadPool::get_use_threads() const {
 }
 void ThreadPool::set_use_threads(const bool value) {
 	_use_threads = value;
+	_dirty = true;
 }
 
 int ThreadPool::get_thread_count() const {
@@ -48,6 +49,7 @@ int ThreadPool::get_thread_count() const {
 }
 void ThreadPool::set_thread_count(const bool value) {
 	_thread_count = value;
+	_dirty = true;
 }
 
 int ThreadPool::get_thread_fallback_count() const {
@@ -55,6 +57,7 @@ int ThreadPool::get_thread_fallback_count() const {
 }
 void ThreadPool::set_thread_fallback_count(const bool value) {
 	_thread_fallback_count = value;
+	_dirty = true;
 }
 
 float ThreadPool::get_max_work_per_frame_percent() const {
@@ -62,6 +65,7 @@ float ThreadPool::get_max_work_per_frame_percent() const {
 }
 void ThreadPool::set_max_work_per_frame_percent(const bool value) {
 	_max_work_per_frame_percent = value;
+	_dirty = true;
 }
 
 float ThreadPool::get_max_time_per_frame() const {
@@ -69,6 +73,42 @@ float ThreadPool::get_max_time_per_frame() const {
 }
 void ThreadPool::set_max_time_per_frame(const bool value) {
 	_max_time_per_frame = value;
+	_dirty = true;
+}
+
+bool ThreadPool::is_working() const {
+	_THREAD_SAFE_LOCK_
+
+	if (_queue.size() > 0) {
+		_THREAD_SAFE_UNLOCK_
+
+		return true;
+	}
+
+	for (int i = 0; i < _threads.size(); ++i) {
+		if (_threads[i]->job.is_valid()) {
+			_THREAD_SAFE_UNLOCK_
+			return true;
+		}
+	}
+
+	_THREAD_SAFE_UNLOCK_
+
+	return false;
+}
+
+bool ThreadPool::is_working_no_lock() const {
+	if (_queue.size() > 0) {
+		return true;
+	}
+
+	for (int i = 0; i < _threads.size(); ++i) {
+		if (_threads[i]->job.is_valid()) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 bool ThreadPool::has_job(const Ref<ThreadPoolJob> &job) {
@@ -189,11 +229,15 @@ void ThreadPool::_worker_thread_func(void *user_data) {
 	}
 }
 
-void ThreadPool::register_update() {
-	SceneTree::get_singleton()->connect("idle_frame", this, "update");
-}
-
 void ThreadPool::update() {
+	if (_dirty) {
+		apply_settings();
+	}
+
+	if (_use_threads) {
+		return;
+	}
+
 	if (_queue.size() == 0) {
 		return;
 	}
@@ -219,9 +263,7 @@ void ThreadPool::update() {
 	}
 }
 
-ThreadPool::ThreadPool() {
-	_instance = this;
-
+void ThreadPool::register_core_settings() {
 	_use_threads = GLOBAL_DEF("thread_pool/use_threads", true);
 	_thread_count = GLOBAL_DEF("thread_pool/thread_count", -1);
 	_thread_fallback_count = GLOBAL_DEF("thread_pool/thread_fallback_count", 4);
@@ -251,7 +293,43 @@ ThreadPool::ThreadPool() {
 		if (_thread_count <= 0) {
 			_thread_count = _thread_fallback_count;
 		}
+	}
 
+	_dirty = true;
+
+	apply_settings();
+}
+
+void ThreadPool::apply_settings() {
+	if (!_dirty) {
+		return;
+	}
+
+	_THREAD_SAFE_LOCK_
+
+	if (is_working_no_lock()) {
+		_THREAD_SAFE_UNLOCK_
+		return;
+	}
+
+	_dirty = false;
+
+	for (int i = 0; i < _threads.size(); ++i) {
+		ThreadPoolContext *context = _threads[i];
+
+		CRASH_COND(context->job.is_valid());
+
+		context->running = false;
+		context->semaphore->post();
+		context->thread->wait_to_finish();
+		memdelete(context->thread);
+		memdelete(context->semaphore);
+		memdelete(context);
+	}
+
+	_threads.resize(0);
+
+	if (_use_threads) {
 		_threads.resize(_thread_count);
 
 		for (int i = 0; i < _threads.size(); ++i) {
@@ -265,9 +343,14 @@ ThreadPool::ThreadPool() {
 
 			_threads.write[i] = context;
 		}
-	} else {
-		call_deferred("register_update");
 	}
+
+	_THREAD_SAFE_UNLOCK_
+}
+
+ThreadPool::ThreadPool() {
+	_instance = this;
+	_dirty = false;
 }
 
 ThreadPool::~ThreadPool() {
@@ -315,12 +398,14 @@ void ThreadPool::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_max_time_per_frame", "value"), &ThreadPool::set_max_time_per_frame);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "max_time_per_frame"), "set_max_time_per_frame", "get_max_time_per_frame");
 
+	ClassDB::bind_method(D_METHOD("is_working"), &ThreadPool::is_working);
+	ClassDB::bind_method(D_METHOD("is_working_no_lock"), &ThreadPool::is_working_no_lock);
+
 	ClassDB::bind_method(D_METHOD("has_job", "job"), &ThreadPool::has_job);
 	ClassDB::bind_method(D_METHOD("add_job", "job"), &ThreadPool::add_job);
 
 	ClassDB::bind_method(D_METHOD("cancel_job", "job"), &ThreadPool::cancel_job);
 	ClassDB::bind_method(D_METHOD("cancel_job_wait", "job"), &ThreadPool::cancel_job_wait);
 
-	ClassDB::bind_method(D_METHOD("register_update"), &ThreadPool::register_update);
 	ClassDB::bind_method(D_METHOD("update"), &ThreadPool::update);
 }

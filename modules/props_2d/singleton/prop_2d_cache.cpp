@@ -30,9 +30,7 @@ SOFTWARE.
 
 #include "../jobs/prop_2d_texture_job.h"
 
-#if THREAD_POOL_PRESENT
-#include "../../thread_pool/thread_pool.h"
-#endif
+#include "core/os/thread_pool.h"
 
 #include "../material_cache/prop_2d_material_cache.h"
 #include "../tiled_wall/tiled_wall_2d_data.h"

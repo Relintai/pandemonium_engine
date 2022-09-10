@@ -60,7 +60,7 @@ void VoxelJob::set_build_done(const bool val) {
 
 void VoxelJob::next_job() {
 	ERR_FAIL_COND(!_chunk.is_valid());
-	
+
 	_chunk->job_next();
 	set_build_done(true);
 }
@@ -308,17 +308,6 @@ VoxelJob::VoxelJob() {
 	_build_phase_type = BUILD_PHASE_TYPE_NORMAL;
 	_build_done = true;
 	_phase = 0;
-
-#if !THREAD_POOL_PRESENT
-	_complete = true;
-	_cancelled = false;
-
-	_max_allocated_time = 0;
-	_start_time = 0;
-
-	_current_run_stage = 0;
-	_stage = 0;
-#endif
 }
 
 VoxelJob::~VoxelJob() {
@@ -360,103 +349,4 @@ void VoxelJob::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("generate_random_ao", "seed", "octaves", "period", "persistence", "scale_factor"), &VoxelJob::generate_random_ao, DEFVAL(4), DEFVAL(30), DEFVAL(0.3), DEFVAL(0.6));
 
 	ClassDB::bind_method(D_METHOD("chunk_exit_tree"), &VoxelJob::chunk_exit_tree);
-
-#if !THREAD_POOL_PRESENT
-	ClassDB::bind_method(D_METHOD("get_complete"), &VoxelJob::get_complete);
-	ClassDB::bind_method(D_METHOD("set_complete", "value"), &VoxelJob::set_complete);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "complete"), "set_complete", "get_complete");
-
-	ClassDB::bind_method(D_METHOD("get_start_time"), &VoxelJob::get_start_time);
-	ClassDB::bind_method(D_METHOD("set_start_time", "value"), &VoxelJob::set_start_time);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "start_time"), "set_start_time", "get_start_time");
-
-	ClassDB::bind_method(D_METHOD("get_current_run_stage"), &VoxelJob::get_current_run_stage);
-	ClassDB::bind_method(D_METHOD("set_current_run_stage", "value"), &VoxelJob::set_current_run_stage);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "current_run_stage"), "set_current_run_stage", "get_current_run_stage");
-
-	ClassDB::bind_method(D_METHOD("get_stage"), &VoxelJob::get_stage);
-	ClassDB::bind_method(D_METHOD("set_stage", "value"), &VoxelJob::set_stage);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "stage"), "set_stage", "get_stage");
-
-	ClassDB::bind_method(D_METHOD("get_current_execution_time"), &VoxelJob::get_current_execution_time);
-
-	ClassDB::bind_method(D_METHOD("should_do", "just_check"), &VoxelJob::should_do, DEFVAL(false));
-	ClassDB::bind_method(D_METHOD("should_return"), &VoxelJob::should_return);
-
-	BIND_VMETHOD(MethodInfo("_execute"));
-
-	ClassDB::bind_method(D_METHOD("execute"), &VoxelJob::execute);
-
-	ADD_SIGNAL(MethodInfo("completed"));
-#endif
 }
-
-#if !THREAD_POOL_PRESENT
-bool VoxelJob::get_complete() const {
-	return _complete;
-}
-void VoxelJob::set_complete(const bool value) {
-	_complete = value;
-}
-
-bool VoxelJob::get_cancelled() const {
-	return _cancelled;
-}
-void VoxelJob::set_cancelled(const bool value) {
-	_cancelled = value;
-}
-
-float VoxelJob::get_max_allocated_time() const {
-	return _max_allocated_time;
-}
-void VoxelJob::set_max_allocated_time(const float value) {
-	_max_allocated_time = value;
-}
-
-int VoxelJob::get_start_time() const {
-	return _start_time;
-}
-void VoxelJob::set_start_time(const int value) {
-	_start_time = value;
-}
-
-int VoxelJob::get_current_run_stage() const {
-	return _current_run_stage;
-}
-void VoxelJob::set_current_run_stage(const int value) {
-	_current_run_stage = value;
-}
-
-int VoxelJob::get_stage() const {
-	return _stage;
-}
-void VoxelJob::set_stage(const int value) {
-	_stage = value;
-}
-
-void VoxelJob::reset_stages() {
-	_current_run_stage = 0;
-	_stage = 0;
-}
-
-float VoxelJob::get_current_execution_time() {
-	return 0;
-}
-
-bool VoxelJob::should_do(const bool just_check) {
-	return true;
-}
-bool VoxelJob::should_return() {
-	if (_cancelled)
-		return true;
-
-	return false;
-}
-
-void VoxelJob::execute() {
-	ERR_FAIL_COND(!has_method("_execute"));
-
-	call("_execute");
-}
-
-#endif

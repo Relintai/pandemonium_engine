@@ -19,7 +19,6 @@ If compile breaks, and I don't notice please report.
 
 ## Optional Dependencies
 
-`https://github.com/Relintai/thread_pool`: Threaded chunk generation. Without this Voxelman is single threaded! \
 `https://github.com/Relintai/texture_packer`: You get access to [VoxelLibraryMerger](#voxellibrarymerger) and [VoxelLibraryMergerPCM](#voxellibrarymergerpcm). \
 `https://github.com/Relintai/mesh_data_resource`: You get access to a bunch of properties, and methods that can manipulate meshes.\
 `https://github.com/Relintai/props`: You get access to a bunch of properties, and methods that can manipulate, and use props.\
@@ -179,7 +178,7 @@ You can look at the world implementations for more examples: [VoxelWorldBlocky](
 
 Stores terrain data, prop data. And mesh data (VoxelChunkDefault), and the mesh generation jobs.
 
-When it starts building meshes it will start submitting jobs to thread_pool (if present) one by one.
+When it starts building meshes it will start submitting jobs to thread_pool one by one.
 
 #### VoxelMesher
 

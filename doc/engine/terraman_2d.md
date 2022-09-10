@@ -173,7 +173,7 @@ You can look at the world implementations for more examples: [TerraWorldBlocky](
 
 Stores terrain data, prop data. And mesh data (TerraChunkDefault), and the mesh generation jobs.
 
-When it starts building meshes it will start submitting jobs to thread_pool (if present) one by one.
+When it starts building meshes it will start submitting jobs to thread_pool one by one.
 
 #### TerraMesher
 

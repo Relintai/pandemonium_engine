@@ -15,8 +15,7 @@ repo, should you want to. It contains all my modules.
 # Optional Dependencies
 
 [Mesh Data Resource](https://github.com/Relintai/mesh_data_resource): Support for merged meshes, even in gles2.\
-[Texture Packer](https://github.com/Relintai/texture_packer): Prop2D Instance will use this to merge textures.\
-[Thread Pool](https://github.com/Relintai/thread_pool): Prop2D Instance will use this for multithreaded generation.
+[Texture Packer](https://github.com/Relintai/texture_packer): Prop2D Instance will use this to merge textures.
 
 # Prop2DData
 

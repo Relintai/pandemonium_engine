@@ -50,16 +50,6 @@ void Prop2DTextureJob::_execute() {
 }
 
 Prop2DTextureJob::Prop2DTextureJob() {
-#if !THREAD_POOL_PRESENT
-	_complete = true;
-	_cancelled = false;
-
-	_max_allocated_time = 0;
-	_start_time = 0;
-
-	_current_run_stage = 0;
-	_stage = 0;
-#endif
 }
 
 Prop2DTextureJob::~Prop2DTextureJob() {
@@ -73,102 +63,4 @@ void Prop2DTextureJob::_bind_methods() {
 #endif
 
 	ClassDB::bind_method(D_METHOD("_execute"), &Prop2DTextureJob::_execute);
-
-#if !THREAD_POOL_PRESENT
-	ClassDB::bind_method(D_METHOD("get_complete"), &Prop2DTextureJob::get_complete);
-	ClassDB::bind_method(D_METHOD("set_complete", "value"), &Prop2DTextureJob::set_complete);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "complete"), "set_complete", "get_complete");
-
-	ClassDB::bind_method(D_METHOD("get_start_time"), &Prop2DTextureJob::get_start_time);
-	ClassDB::bind_method(D_METHOD("set_start_time", "value"), &Prop2DTextureJob::set_start_time);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "start_time"), "set_start_time", "get_start_time");
-
-	ClassDB::bind_method(D_METHOD("get_current_run_stage"), &Prop2DTextureJob::get_current_run_stage);
-	ClassDB::bind_method(D_METHOD("set_current_run_stage", "value"), &Prop2DTextureJob::set_current_run_stage);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "current_run_stage"), "set_current_run_stage", "get_current_run_stage");
-
-	ClassDB::bind_method(D_METHOD("get_stage"), &Prop2DTextureJob::get_stage);
-	ClassDB::bind_method(D_METHOD("set_stage", "value"), &Prop2DTextureJob::set_stage);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "stage"), "set_stage", "get_stage");
-
-	ClassDB::bind_method(D_METHOD("get_current_execution_time"), &Prop2DTextureJob::get_current_execution_time);
-
-	ClassDB::bind_method(D_METHOD("should_do", "just_check"), &Prop2DTextureJob::should_do, DEFVAL(false));
-	ClassDB::bind_method(D_METHOD("should_return"), &Prop2DTextureJob::should_return);
-
-	BIND_VMETHOD(MethodInfo("_execute"));
-	ClassDB::bind_method(D_METHOD("execute"), &Prop2DTextureJob::execute);
-
-	ADD_SIGNAL(MethodInfo("completed"));
-#endif
 }
-
-#if !THREAD_POOL_PRESENT
-bool Prop2DTextureJob::get_complete() const {
-	return _complete;
-}
-void Prop2DTextureJob::set_complete(const bool value) {
-	_complete = value;
-}
-
-bool Prop2DTextureJob::get_cancelled() const {
-	return _cancelled;
-}
-void Prop2DTextureJob::set_cancelled(const bool value) {
-	_cancelled = value;
-}
-
-float Prop2DTextureJob::get_max_allocated_time() const {
-	return _max_allocated_time;
-}
-void Prop2DTextureJob::set_max_allocated_time(const float value) {
-	_max_allocated_time = value;
-}
-
-int Prop2DTextureJob::get_start_time() const {
-	return _start_time;
-}
-void Prop2DTextureJob::set_start_time(const int value) {
-	_start_time = value;
-}
-
-int Prop2DTextureJob::get_current_run_stage() const {
-	return _current_run_stage;
-}
-void Prop2DTextureJob::set_current_run_stage(const int value) {
-	_current_run_stage = value;
-}
-
-int Prop2DTextureJob::get_stage() const {
-	return _stage;
-}
-void Prop2DTextureJob::set_stage(const int value) {
-	_stage = value;
-}
-
-void Prop2DTextureJob::reset_stages() {
-	_current_run_stage = 0;
-	_stage = 0;
-}
-
-float Prop2DTextureJob::get_current_execution_time() {
-	return 0;
-}
-
-bool Prop2DTextureJob::should_do(const bool just_check) {
-	return true;
-}
-bool Prop2DTextureJob::should_return() {
-	if (_cancelled)
-		return true;
-
-	return false;
-}
-
-void Prop2DTextureJob::execute() {
-	ERR_FAIL_COND(!has_method("_execute"));
-
-	call("_execute");
-}
-
-#endif

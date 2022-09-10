@@ -22,7 +22,6 @@ You can grab pre-built binaries (even editor + export templates) from the [Broke
 
 ## Optional Dependencies
 
-`https://github.com/Relintai/thread_pool`: Threaded chunk generation. Without this terraman is single threaded! \
 `https://github.com/Relintai/texture_packer`: You get access to [TerraLibraryMerger](#voxellibrarymerger) and [TerraLibraryMergerPCM](#voxellibrarymergerpcm). \
 `https://github.com/Relintai/mesh_data_resource`: You get access to a bunch of properties, and methods that can manipulate meshes.\
 `https://github.com/Relintai/props`: You get access to a bunch of properties, and methods that can manipulate, and use props.\
@@ -107,8 +106,7 @@ They also provide a way to easily modularize mesh and lod generation.
 
 Base class for jobs.
 
-If the [thread pool](https://github.com/Relintai/thread_pool) module is present, this is inherited from `ThreadPoolJob`,
-else it implements the same api as `ThreadPoolJob`, but it's not going to use threading.
+This is inherited from `ThreadPoolJob`.
 
 A job has a reference to it's owner chunk.
 

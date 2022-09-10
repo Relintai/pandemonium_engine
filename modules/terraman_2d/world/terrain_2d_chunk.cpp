@@ -32,9 +32,7 @@ SOFTWARE.
 #include "jobs/terrain_2d_job.h"
 #include "terrain_2d_structure.h"
 
-#if THREAD_POOL_PRESENT
-#include "../../thread_pool/thread_pool.h"
-#endif
+#include "core/os/thread_pool.h"
 
 _FORCE_INLINE_ bool Terrain2DChunk::get_process() const {
 	return _is_processing;
@@ -338,11 +336,7 @@ void Terrain2DChunk::job_next() {
 	j->set_complete(false);
 
 	if (j->get_build_phase_type() == Terrain2DJob::BUILD_PHASE_TYPE_NORMAL) {
-#if THREAD_POOL_PRESENT
 		ThreadPool::get_singleton()->add_job(j);
-#else
-		j->execute();
-#endif
 	}
 }
 Ref<Terrain2DJob> Terrain2DChunk::job_get_current() {
@@ -718,7 +712,6 @@ void Terrain2DChunk::cancel_build() {
 
 	_abort_build = true;
 
-#if THREAD_POOL_PRESENT
 	if (_is_generating) {
 		Ref<Terrain2DJob> job = job_get_current();
 
@@ -726,7 +719,6 @@ void Terrain2DChunk::cancel_build() {
 			ThreadPool::get_singleton()->cancel_job(job);
 		}
 	}
-#endif
 }
 
 void Terrain2DChunk::bake_lights() {
@@ -1091,7 +1083,6 @@ Vector2 Terrain2DChunk::to_global(Vector2 p_local) const {
 }
 
 bool Terrain2DChunk::is_safe_to_delete() {
-#if THREAD_POOL_PRESENT
 	if (!_is_generating) {
 		return true;
 	}
@@ -1103,9 +1094,6 @@ bool Terrain2DChunk::is_safe_to_delete() {
 	}
 
 	return !ThreadPool::get_singleton()->has_job(job);
-#else
-	return true;
-#endif
 }
 
 void Terrain2DChunk::setup_canvas_items_size(const int amount) {
@@ -1263,11 +1251,7 @@ void Terrain2DChunk::_generation_process(const float delta) {
 		job->process(delta);
 
 		if (job->get_build_phase_type() == Terrain2DJob::BUILD_PHASE_TYPE_NORMAL) {
-#if THREAD_POOL_PRESENT
 			ThreadPool::get_singleton()->add_job(job);
-#else
-			job->execute();
-#endif
 		}
 	}
 }
@@ -1292,11 +1276,7 @@ void Terrain2DChunk::_generation_physics_process(const float delta) {
 		job->physics_process(delta);
 
 		if (job->get_build_phase_type() == Terrain2DJob::BUILD_PHASE_TYPE_NORMAL) {
-#if THREAD_POOL_PRESENT
 			ThreadPool::get_singleton()->add_job(job);
-#else
-			job->execute();
-#endif
 		}
 	}
 }

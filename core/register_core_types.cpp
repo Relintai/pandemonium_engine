@@ -31,14 +31,14 @@
 #include "register_core_types.h"
 
 #include "core/bind/core_bind.h"
-#include "core/object/class_db.h"
-#include "core/string/compressed_translation.h"
+#include "core/config/engine.h"
+#include "core/config/project_settings.h"
+#include "core/containers/packed_data_container.h"
 #include "core/core_string_names.h"
 #include "core/crypto/aes_context.h"
 #include "core/crypto/crypto.h"
 #include "core/crypto/hashing_context.h"
-#include "core/config/engine.h"
-#include "core/object/func_ref.h"
+#include "core/input/input.h"
 #include "core/input/input_map.h"
 #include "core/io/config_file.h"
 #include "core/io/dtls_server.h"
@@ -65,13 +65,17 @@
 #include "core/math/geometry.h"
 #include "core/math/random_number_generator.h"
 #include "core/math/triangle_mesh.h"
-#include "core/input/input.h"
+#include "core/object/class_db.h"
+#include "core/object/func_ref.h"
+#include "core/object/undo_redo.h"
 #include "core/os/main_loop.h"
 #include "core/os/time.h"
-#include "core/containers/packed_data_container.h"
-#include "core/config/project_settings.h"
+#include "core/string/compressed_translation.h"
 #include "core/string/translation.h"
-#include "core/object/undo_redo.h"
+
+#include "core/os/thread_pool.h"
+#include "core/os/thread_pool_execute_job.h"
+#include "core/os/thread_pool_job.h"
 
 #include "core/bind/logger_bind.h"
 #include "core/log/logger_backend.h"
@@ -92,6 +96,7 @@ static _ClassDB *_classdb = nullptr;
 static _Marshalls *_marshalls = nullptr;
 static _JSON *_json = nullptr;
 static _PLogger *_plogger = nullptr;
+static ThreadPool *thread_pool = NULL;
 
 static IP *ip = nullptr;
 
@@ -232,6 +237,8 @@ void register_core_types() {
 	_marshalls = memnew(_Marshalls);
 	_json = memnew(_JSON);
 	_plogger = memnew(_PLogger);
+
+	thread_pool = memnew(ThreadPool);
 }
 
 void register_core_settings() {
@@ -243,6 +250,8 @@ void register_core_settings() {
 
 	GLOBAL_DEF("network/ssl/certificates", "");
 	ProjectSettings::get_singleton()->set_custom_property_info("network/ssl/certificates", PropertyInfo(Variant::STRING, "network/ssl/certificates", PROPERTY_HINT_FILE, "*.crt"));
+
+	ThreadPool::get_singleton()->register_core_settings();
 }
 
 void register_core_singletons() {
@@ -262,6 +271,9 @@ void register_core_singletons() {
 	ClassDB::register_class<Expression>();
 	ClassDB::register_class<Time>();
 	ClassDB::register_class<_PLogger>();
+	ClassDB::register_class<ThreadPoolJob>();
+	ClassDB::register_class<ThreadPoolExecuteJob>();
+	ClassDB::register_class<ThreadPool>();
 
 	Engine::get_singleton()->add_singleton(Engine::Singleton("ProjectSettings", ProjectSettings::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("IP", IP::get_singleton()));
@@ -278,6 +290,7 @@ void register_core_singletons() {
 	Engine::get_singleton()->add_singleton(Engine::Singleton("JSON", _JSON::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("Time", Time::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("PLogger", _PLogger::get_singleton()));
+	Engine::get_singleton()->add_singleton(Engine::Singleton("ThreadPool", ThreadPool::get_singleton()));
 }
 
 void unregister_core_types() {
@@ -291,6 +304,7 @@ void unregister_core_types() {
 	memdelete(_plogger);
 
 	memdelete(_geometry);
+	memdelete(thread_pool);
 
 	ResourceLoader::remove_resource_format_loader(resource_format_image);
 	resource_format_image.unref();

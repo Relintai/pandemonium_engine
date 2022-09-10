@@ -25,9 +25,9 @@ SOFTWARE.
 
 */
 
-#include "core/object/object.h"
-#include "core/containers/vector.h"
 #include "core/containers/list.h"
+#include "core/containers/vector.h"
+#include "core/object/object.h"
 
 #include "core/os/semaphore.h"
 #include "core/os/thread.h"
@@ -72,6 +72,9 @@ public:
 	float get_max_time_per_frame() const;
 	void set_max_time_per_frame(const bool value);
 
+	bool is_working() const;
+	bool is_working_no_lock() const;
+
 	bool has_job(const Ref<ThreadPoolJob> &job);
 	void add_job(const Ref<ThreadPoolJob> &job);
 
@@ -81,8 +84,11 @@ public:
 	void _thread_finished(ThreadPoolContext *context);
 	static void _worker_thread_func(void *user_data);
 
-	void register_update();
 	void update();
+
+	void register_core_settings();
+
+	void apply_settings();
 
 	ThreadPool();
 	~ThreadPool();
@@ -93,6 +99,7 @@ protected:
 private:
 	static ThreadPool *_instance;
 
+	bool _dirty;
 	bool _use_threads;
 	int _thread_count;
 	int _thread_fallback_count;

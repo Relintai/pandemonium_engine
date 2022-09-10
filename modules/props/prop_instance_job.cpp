@@ -130,17 +130,6 @@ PropInstanceJob::PropInstanceJob() {
 	_build_phase_type = BUILD_PHASE_TYPE_NORMAL;
 	_build_done = true;
 	_phase = 0;
-
-#if !THREAD_POOL_PRESENT
-	_complete = true;
-	_cancelled = false;
-
-	_max_allocated_time = 0;
-	_start_time = 0;
-
-	_current_run_stage = 0;
-	_stage = 0;
-#endif
 }
 
 PropInstanceJob::~PropInstanceJob() {
@@ -181,102 +170,5 @@ void PropInstanceJob::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_execute_phase"), &PropInstanceJob::_execute_phase);
 
 	ClassDB::bind_method(D_METHOD("prop_instance_exit_tree"), &PropInstanceJob::prop_instance_exit_tree);
-
-#if !THREAD_POOL_PRESENT
-	ClassDB::bind_method(D_METHOD("get_complete"), &PropInstanceJob::get_complete);
-	ClassDB::bind_method(D_METHOD("set_complete", "value"), &PropInstanceJob::set_complete);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "complete"), "set_complete", "get_complete");
-
-	ClassDB::bind_method(D_METHOD("get_start_time"), &PropInstanceJob::get_start_time);
-	ClassDB::bind_method(D_METHOD("set_start_time", "value"), &PropInstanceJob::set_start_time);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "start_time"), "set_start_time", "get_start_time");
-
-	ClassDB::bind_method(D_METHOD("get_current_run_stage"), &PropInstanceJob::get_current_run_stage);
-	ClassDB::bind_method(D_METHOD("set_current_run_stage", "value"), &PropInstanceJob::set_current_run_stage);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "current_run_stage"), "set_current_run_stage", "get_current_run_stage");
-
-	ClassDB::bind_method(D_METHOD("get_stage"), &PropInstanceJob::get_stage);
-	ClassDB::bind_method(D_METHOD("set_stage", "value"), &PropInstanceJob::set_stage);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "stage"), "set_stage", "get_stage");
-
-	ClassDB::bind_method(D_METHOD("get_current_execution_time"), &PropInstanceJob::get_current_execution_time);
-
-	ClassDB::bind_method(D_METHOD("should_do", "just_check"), &PropInstanceJob::should_do, DEFVAL(false));
-	ClassDB::bind_method(D_METHOD("should_return"), &PropInstanceJob::should_return);
-
-	BIND_VMETHOD(MethodInfo("_execute"));
-	ClassDB::bind_method(D_METHOD("execute"), &PropInstanceJob::execute);
-
-	ADD_SIGNAL(MethodInfo("completed"));
-#endif
 }
 
-#if !THREAD_POOL_PRESENT
-bool PropInstanceJob::get_complete() const {
-	return _complete;
-}
-void PropInstanceJob::set_complete(const bool value) {
-	_complete = value;
-}
-
-bool PropInstanceJob::get_cancelled() const {
-	return _cancelled;
-}
-void PropInstanceJob::set_cancelled(const bool value) {
-	_cancelled = value;
-}
-
-float PropInstanceJob::get_max_allocated_time() const {
-	return _max_allocated_time;
-}
-void PropInstanceJob::set_max_allocated_time(const float value) {
-	_max_allocated_time = value;
-}
-
-int PropInstanceJob::get_start_time() const {
-	return _start_time;
-}
-void PropInstanceJob::set_start_time(const int value) {
-	_start_time = value;
-}
-
-int PropInstanceJob::get_current_run_stage() const {
-	return _current_run_stage;
-}
-void PropInstanceJob::set_current_run_stage(const int value) {
-	_current_run_stage = value;
-}
-
-int PropInstanceJob::get_stage() const {
-	return _stage;
-}
-void PropInstanceJob::set_stage(const int value) {
-	_stage = value;
-}
-
-void PropInstanceJob::reset_stages() {
-	_current_run_stage = 0;
-	_stage = 0;
-}
-
-float PropInstanceJob::get_current_execution_time() {
-	return 0;
-}
-
-bool PropInstanceJob::should_do(const bool just_check) {
-	return true;
-}
-bool PropInstanceJob::should_return() {
-	if (_cancelled)
-		return true;
-
-	return false;
-}
-
-void PropInstanceJob::execute() {
-	ERR_FAIL_COND(!has_method("_execute"));
-
-	call("_execute");
-}
-
-#endif

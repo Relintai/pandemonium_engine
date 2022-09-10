@@ -39,9 +39,7 @@
 #include "./singleton/prop_cache.h"
 #endif
 
-#if THREAD_POOL_PRESENT
-#include "../thread_pool/thread_pool.h"
-#endif
+#include "core/os/thread_pool.h"
 
 #include "./props/prop_data_tiled_wall.h"
 
@@ -556,11 +554,7 @@ void PropInstanceMerger::_build() {
 
 Don't submit here, as it starts in physics process mode
 
-#if THREAD_POOL_PRESENT
 	ThreadPool::get_singleton()->add_job(_job);
-#else
-	_job->execute();
-#endif
 */
 }
 
@@ -803,11 +797,7 @@ void PropInstanceMerger::_notification(int p_what) {
 					_job->physics_process(get_physics_process_delta_time());
 
 					if (_job->get_build_phase_type() == PropInstanceJob::BUILD_PHASE_TYPE_NORMAL) {
-#if THREAD_POOL_PRESENT
 						ThreadPool::get_singleton()->add_job(_job);
-#else
-						job->execute();
-#endif
 					}
 				}
 			}
@@ -824,11 +814,7 @@ void PropInstanceMerger::_notification(int p_what) {
 					_job->process(get_process_delta_time());
 
 					if (_job->get_build_phase_type() == PropInstanceJob::BUILD_PHASE_TYPE_NORMAL) {
-#if THREAD_POOL_PRESENT
 						ThreadPool::get_singleton()->add_job(_job);
-#else
-						job->execute();
-#endif
 					}
 				}
 			} else {

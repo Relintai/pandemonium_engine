@@ -32,9 +32,7 @@ SOFTWARE.
 #include "servers/physics_server.h"
 #include "voxel_structure.h"
 
-#if THREAD_POOL_PRESENT
-#include "../../thread_pool/thread_pool.h"
-#endif
+#include "core/os/thread_pool.h"
 
 _FORCE_INLINE_ bool VoxelChunk::get_is_build_threaded() const {
 	return _is_build_threaded;
@@ -308,11 +306,7 @@ void VoxelChunk::job_next() {
 	j->set_complete(false);
 
 	if (j->get_build_phase_type() == VoxelJob::BUILD_PHASE_TYPE_NORMAL) {
-#if THREAD_POOL_PRESENT
 		ThreadPool::get_singleton()->add_job(j);
-#else
-		j->execute();
-#endif
 	}
 }
 Ref<VoxelJob> VoxelChunk::job_get_current() {
@@ -1157,11 +1151,7 @@ void VoxelChunk::_generation_process(const float delta) {
 		job->process(delta);
 
 		if (job->get_build_phase_type() == VoxelJob::BUILD_PHASE_TYPE_NORMAL) {
-#if THREAD_POOL_PRESENT
 			ThreadPool::get_singleton()->add_job(job);
-#else
-			job->execute();
-#endif
 		}
 	}
 }
@@ -1182,11 +1172,7 @@ void VoxelChunk::_generation_physics_process(const float delta) {
 		job->physics_process(delta);
 
 		if (job->get_build_phase_type() == VoxelJob::BUILD_PHASE_TYPE_NORMAL) {
-#if THREAD_POOL_PRESENT
 			ThreadPool::get_singleton()->add_job(job);
-#else
-			job->execute();
-#endif
 		}
 	}
 }

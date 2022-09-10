@@ -9,9 +9,6 @@ if os.path.isdir('../texture_packer'):
     module_env.Append(CPPDEFINES=['TEXTURE_PACKER_PRESENT'])
     has_texture_packer = True
 
-if os.path.isdir('../thread_pool'):
-    module_env.Append(CPPDEFINES=['THREAD_POOL_PRESENT'])
-
 if os.path.isdir('../mesh_data_resource'):
     module_env.Append(CPPDEFINES=['MESH_DATA_RESOURCE_PRESENT'])
 

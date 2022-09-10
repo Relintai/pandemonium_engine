@@ -24,23 +24,14 @@ SOFTWARE.
 
 #include "scene/resources/texture.h"
 
-#if THREAD_POOL_PRESENT
-#include "../../../thread_pool/thread_pool_job.h"
-#else
-#include "core/object/reference.h"
-#endif
+#include "core/os/thread_pool_job.h"
 
 #include "../../defines.h"
 
 class Terrain2DChunk;
 
-#if THREAD_POOL_PRESENT
 class Terrain2DJob : public ThreadPoolJob {
 	GDCLASS(Terrain2DJob, ThreadPoolJob);
-#else
-class Terrain2DJob : public Reference {
-	GDCLASS(Terrain2DJob, Reference);
-#endif
 
 public:
 	static const String BINDING_STRING_ACTIVE_BUILD_PHASE_TYPE;
@@ -95,46 +86,6 @@ protected:
 	int _phase;
 	bool _in_tree;
 	Ref<Terrain2DChunk> _chunk;
-
-public:
-#if !THREAD_POOL_PRESENT
-	bool get_complete() const;
-	void set_complete(const bool value);
-
-	bool get_cancelled() const;
-	void set_cancelled(const bool value);
-
-	float get_max_allocated_time() const;
-	void set_max_allocated_time(const float value);
-
-	int get_start_time() const;
-	void set_start_time(const int value);
-
-	int get_current_run_stage() const;
-	void set_current_run_stage(const int value);
-
-	int get_stage() const;
-	void set_stage(const int value);
-
-	void reset_stages();
-
-	float get_current_execution_time();
-
-	bool should_do(const bool just_check = false);
-	bool should_return();
-
-	void execute();
-
-private:
-	bool _complete;
-	bool _cancelled;
-
-	float _max_allocated_time;
-	uint64_t _start_time;
-
-	int _current_run_stage;
-	int _stage;
-#endif
 };
 
 VARIANT_ENUM_CAST(Terrain2DJob::ActiveBuildPhaseType);
