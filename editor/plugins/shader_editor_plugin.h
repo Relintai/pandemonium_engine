@@ -32,7 +32,7 @@
 
 #include "editor/code_editor.h"
 #include "editor/editor_plugin.h"
-#include "scene/gui/panel_container.h"
+#include "scene/gui/margin_container.h"
 
 #include "scene/resources/shader.h"
 
@@ -73,8 +73,8 @@ public:
 	ShaderTextEditor();
 };
 
-class ShaderEditor : public PanelContainer {
-	GDCLASS(ShaderEditor, PanelContainer);
+class ShaderEditor : public MarginContainer {
+	GDCLASS(ShaderEditor, MarginContainer);
 
 	enum {
 
