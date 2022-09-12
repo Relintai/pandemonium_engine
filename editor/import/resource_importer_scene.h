@@ -42,6 +42,7 @@ class Shape;
 class Animation;
 class Mesh;
 class ArrayMesh;
+class AnimationPlayer;
 
 class EditorSceneImporter : public Reference {
 	GDCLASS(EditorSceneImporter, Reference);
@@ -151,6 +152,7 @@ public:
 	virtual int get_import_order() const { return ResourceImporter::IMPORT_ORDER_SCENE; }
 
 	void _find_meshes(Node *p_node, RBMap<Ref<ArrayMesh>, Transform> &meshes);
+	AnimationPlayer *_find_animation_player(Node *p_node);
 
 	void _make_external_resources(Node *p_node, const String &p_base_path, bool p_make_animations, bool p_animations_as_text, bool p_keep_animations, bool p_make_materials, bool p_materials_as_text, bool p_keep_materials, bool p_make_meshes, bool p_meshes_as_text, RBMap<Ref<Animation>, Ref<Animation>> &p_animations, RBMap<Ref<Material>, Ref<Material>> &p_materials, RBMap<Ref<ArrayMesh>, Ref<ArrayMesh>> &p_meshes);
 
