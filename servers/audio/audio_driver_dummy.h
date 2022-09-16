@@ -34,7 +34,7 @@
 
 #include "core/os/mutex.h"
 #include "core/os/thread.h"
-#include "core/safe_refcount.h"
+#include "core/os/safe_refcount.h"
 
 class AudioDriverDummy : public AudioDriver {
 	Thread thread;
