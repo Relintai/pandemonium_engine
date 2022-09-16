@@ -1,5 +1,3 @@
-#ifndef ZSTD_LDM_H
-#define ZSTD_LDM_H
 /*
  * Copyright (c) Yann Collet, Facebook, Inc.
  * All rights reserved.
@@ -10,8 +8,8 @@
  * You may select, at your option, one of the above-listed licenses.
  */
 
-
-
+#ifndef ZSTD_LDM_H
+#define ZSTD_LDM_H
 
 #if defined (__cplusplus)
 extern "C" {
@@ -68,7 +66,7 @@ size_t ZSTD_ldm_generateSequences(
  */
 size_t ZSTD_ldm_blockCompress(rawSeqStore_t* rawSeqStore,
             ZSTD_matchState_t* ms, seqStore_t* seqStore, U32 rep[ZSTD_REP_NUM],
-            ZSTD_useRowMatchFinderMode_e useRowMatchFinder,
+            ZSTD_paramSwitch_e useRowMatchFinder,
             void const* src, size_t srcSize);
 
 /**

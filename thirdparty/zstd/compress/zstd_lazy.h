@@ -1,5 +1,3 @@
-#ifndef ZSTD_LAZY_H
-#define ZSTD_LAZY_H
 /*
  * Copyright (c) Yann Collet, Facebook, Inc.
  * All rights reserved.
@@ -10,8 +8,8 @@
  * You may select, at your option, one of the above-listed licenses.
  */
 
-
-
+#ifndef ZSTD_LAZY_H
+#define ZSTD_LAZY_H
 
 #if defined (__cplusplus)
 extern "C" {

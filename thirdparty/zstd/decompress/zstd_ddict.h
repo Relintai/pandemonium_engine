@@ -1,5 +1,3 @@
-#ifndef ZSTD_DDICT_H
-#define ZSTD_DDICT_H
 /*
  * Copyright (c) Yann Collet, Facebook, Inc.
  * All rights reserved.
@@ -11,8 +9,8 @@
  */
 
 
-
-
+#ifndef ZSTD_DDICT_H
+#define ZSTD_DDICT_H
 
 /*-*******************************************************
  *  Dependencies

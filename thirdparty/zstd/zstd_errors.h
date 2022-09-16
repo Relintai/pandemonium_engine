@@ -1,5 +1,3 @@
-#ifndef ZSTD_ERRORS_H_398273423
-#define ZSTD_ERRORS_H_398273423
 /*
  * Copyright (c) Yann Collet, Facebook, Inc.
  * All rights reserved.
@@ -10,8 +8,8 @@
  * You may select, at your option, one of the above-listed licenses.
  */
 
-
-
+#ifndef ZSTD_ERRORS_H_398273423
+#define ZSTD_ERRORS_H_398273423
 
 #if defined (__cplusplus)
 extern "C" {

@@ -1,5 +1,3 @@
-#ifndef ZSTD_DEPS_COMMON
-#define ZSTD_DEPS_COMMON
 /*
  * Copyright (c) Facebook, Inc.
  * All rights reserved.
@@ -23,8 +21,8 @@
  * ZSTD_memset()
  * ZSTD_memmove()
  */
-
-
+#ifndef ZSTD_DEPS_COMMON
+#define ZSTD_DEPS_COMMON
 
 #include <limits.h>
 #include <stddef.h>
