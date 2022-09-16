@@ -1316,11 +1316,11 @@ static void _add_text_to_rt(const String &p_bbcode, RichTextLabel *p_rt) {
 	Ref<Font> doc_font = p_rt->get_theme_font("doc", "EditorFonts");
 	Ref<Font> doc_bold_font = p_rt->get_theme_font("doc_bold", "EditorFonts");
 	Ref<Font> doc_code_font = p_rt->get_theme_font("doc_source", "EditorFonts");
-	Ref<Font> doc_kbd_font = p_rt->get_font("doc_keyboard", "EditorFonts");
+	Ref<Font> doc_kbd_font = p_rt->get_theme_font("doc_keyboard", "EditorFonts");
 
 	Color font_color_hl = p_rt->get_theme_color("headline_color", "EditorHelp");
 	Color accent_color = p_rt->get_theme_color("accent_color", "Editor");
-	Color property_color = p_rt->get_color("property_color", "Editor");
+	Color property_color = p_rt->get_theme_color("property_color", "Editor");
 	Color link_color = accent_color.linear_interpolate(font_color_hl, 0.8);
 	Color code_color = accent_color.linear_interpolate(font_color_hl, 0.6);
 	Color kbd_color = accent_color.linear_interpolate(property_color, 0.6);
