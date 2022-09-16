@@ -31,7 +31,7 @@
 #include "audio_stream_player_2d.h"
 
 #include "core/config/engine.h"
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 #include "scene/2d/area_2d.h"
 #include "scene/2d/listener_2d.h"
 #include "scene/main/viewport.h"
