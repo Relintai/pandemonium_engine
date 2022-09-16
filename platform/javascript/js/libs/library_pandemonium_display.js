@@ -335,27 +335,12 @@ const PandemoniumDisplay = {
     $PandemoniumDisplay__deps: ['$PandemoniumConfig', '$PandemoniumRuntime', '$PandemoniumDisplayCursor', '$PandemoniumEventListeners', '$PandemoniumDisplayScreen', '$PandemoniumDisplayVK'],
     $PandemoniumDisplay: {
         window_icon: '',
-        findDPI: function() {
-            function testDPI(dpi) {
-                return window.matchMedia(`(max-resolution: ${dpi}dpi)`).matches;
-            }
-
-            function bisect(low, high, func) {
-                const mid = parseInt(((high - low) / 2) + low, 10);
-                if (high - low <= 1) {
-                    return func(high) ? high : low;
-                }
-                if (func(mid)) {
-                    return bisect(low, mid, func);
-                }
-                return bisect(mid, high, func);
-            }
-            try {
-                const dpi = bisect(0, 800, testDPI);
-                return dpi >= 96 ? dpi : 96;
-            } catch (e) {
-                return 96;
-            }
+        getDPI: function() {
+            // devicePixelRatio is given in dppx
+            // https://drafts.csswg.org/css-values/#resolution
+            // > due to the 1:96 fixed ratio of CSS *in* to CSS *px*, 1dppx is equivalent to 96dpi.
+            const dpi = Math.round(window.devicePixelRatio * 96);
+            return dpi >= 96 ? dpi : 96;
         },
     },
 
@@ -388,7 +373,7 @@ const PandemoniumDisplay = {
 
     pandemonium_js_display_screen_dpi_get__sig: 'i',
     pandemonium_js_display_screen_dpi_get: function() {
-        return PandemoniumDisplay.findDPI();
+        return PandemoniumDisplay.getDPI();
     },
 
     pandemonium_js_display_pixel_ratio_get__sig: 'f',
