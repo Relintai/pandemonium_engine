@@ -34,8 +34,8 @@
 
 #include "ustring.h"
 
-#include "core/math/color.h"
 #include "core/crypto/crypto_core.h"
+#include "core/math/color.h"
 #include "core/math/math_funcs.h"
 #include "core/os/memory.h"
 #include "core/string/print_string.h"
@@ -1537,17 +1537,19 @@ String String::newline_to_br() const {
 String String::repeat(int p_count) const {
 	ERR_FAIL_COND_V_MSG(p_count < 0, "", "Parameter count should be a positive number.");
 
-	String new_string;
-	const CharType *src = this->get_data();
+	int len = length();
+	String new_string = *this;
+	new_string.resize(p_count * len + 1);
 
-	new_string.resize(length() * p_count + 1);
-	new_string[length() * p_count] = 0;
-
-	for (int i = 0; i < p_count; i++) {
-		for (int j = 0; j < length(); j++) {
-			new_string[i * length() + j] = src[j];
-		}
+	CharType *dst = new_string.ptrw();
+	int offset = 1;
+	int stride = 1;
+	while (offset < p_count) {
+		memcpy(dst + offset * len, dst, stride * len * sizeof(CharType));
+		offset += stride;
+		stride = MIN(stride * 2, p_count - offset);
 	}
+	dst[p_count * len] = _null;
 
 	return new_string;
 }
