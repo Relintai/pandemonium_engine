@@ -93,7 +93,7 @@ public:
 	~DirAccessJAndroid();
 
 protected:
-	String _get_root_string() const override;
+	String _get_root_string() const;
 
 private:
 	int id;
