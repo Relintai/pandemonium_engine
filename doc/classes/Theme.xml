@@ -96,7 +96,7 @@
 			<return type="PoolStringArray" />
 			<argument index="0" name="theme_type" type="String" />
 			<description>
-				Returns all the [Color]s as a [PoolStringArray] filled with each [Color]'s name, for use in [method get_color], if the theme has [code]node_type[/code].
+				Returns all the [Color]s as a [PoolStringArray] filled with each [Color]'s name, for use in [method get_color], if the theme has [code]theme_type[/code].
 			</description>
 		</method>
 		<method name="get_color_types" qualifiers="const">
@@ -116,7 +116,7 @@
 			<return type="PoolStringArray" />
 			<argument index="0" name="theme_type" type="String" />
 			<description>
-				Returns all the constants as a [PoolStringArray] filled with each constant's name, for use in [method get_constant], if the theme has [code]node_type[/code].
+				Returns all the constants as a [PoolStringArray] filled with each constant's name, for use in [method get_constant], if the theme has [code]theme_type[/code].
 			</description>
 		</method>
 		<method name="get_constant_types" qualifiers="const">
@@ -136,7 +136,7 @@
 			<return type="PoolStringArray" />
 			<argument index="0" name="theme_type" type="String" />
 			<description>
-				Returns all the [Font]s as a [PoolStringArray] filled with each [Font]'s name, for use in [method get_font], if the theme has [code]node_type[/code].
+				Returns all the [Font]s as a [PoolStringArray] filled with each [Font]'s name, for use in [method get_font], if the theme has [code]theme_type[/code].
 			</description>
 		</method>
 		<method name="get_font_types" qualifiers="const">
@@ -156,7 +156,7 @@
 			<return type="PoolStringArray" />
 			<argument index="0" name="theme_type" type="String" />
 			<description>
-				Returns all the icons as a [PoolStringArray] filled with each [Texture]'s name, for use in [method get_icon], if the theme has [code]node_type[/code].
+				Returns all the icons as a [PoolStringArray] filled with each [Texture]'s name, for use in [method get_icon], if the theme has [code]theme_type[/code].
 			</description>
 		</method>
 		<method name="get_icon_types" qualifiers="const">
@@ -176,8 +176,8 @@
 			<return type="PoolStringArray" />
 			<argument index="0" name="theme_type" type="String" />
 			<description>
-				Returns all the [StyleBox]s as a [PoolStringArray] filled with each [StyleBox]'s name, for use in [method get_stylebox], if the theme has [code]node_type[/code].
-				Valid [code]node_type[/code]s may be found using [method get_stylebox_types].
+				Returns all the [StyleBox]s as a [PoolStringArray] filled with each [StyleBox]'s name, for use in [method get_stylebox], if the theme has [code]theme_type[/code].
+				Valid [code]theme_type[/code]s may be found using [method get_stylebox_types].
 			</description>
 		</method>
 		<method name="get_stylebox_types" qualifiers="const">
@@ -199,8 +199,8 @@
 			<argument index="0" name="data_type" type="int" enum="Theme.DataType" />
 			<argument index="1" name="theme_type" type="String" />
 			<description>
-				Returns all the theme items of [code]data_type[/code] as a [PoolStringArray] filled with each theme items's name, for use in [method get_theme_item] or a data type specific method, if the theme has [code]node_type[/code].
-				Valid [code]node_type[/code]s may be found using [method get_theme_item_types] or a data type specific method.
+				Returns all the theme items of [code]data_type[/code] as a [PoolStringArray] filled with each theme items's name, for use in [method get_theme_item] or a data type specific method, if the theme has [code]theme_type[/code].
+				Valid [code]theme_type[/code]s may be found using [method get_theme_item_types] or a data type specific method.
 			</description>
 		</method>
 		<method name="get_theme_item_types" qualifiers="const">
@@ -215,7 +215,7 @@
 			<argument index="0" name="theme_type" type="String" />
 			<description>
 				Returns all the theme types as a [PoolStringArray] filled with unique type names, for use in other [code]get_*[/code] functions of this theme.
-				[b]Note:[/b] [code]node_type[/code] has no effect and will be removed in future version.
+				[b]Note:[/b] [code]theme_type[/code] has no effect and will be removed in future version.
 			</description>
 		</method>
 		<method name="get_type_variation_base" qualifiers="const">
