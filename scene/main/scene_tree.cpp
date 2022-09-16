@@ -44,7 +44,7 @@
 #include "scene/3d/spatial.h"
 #include "scene/animation/scene_tree_tween.h"
 #include "scene/debugger/script_debugger_remote.h"
-#include "scene/gui/shortcut.h"
+#include "core/input/shortcut.h"
 #include "scene/resources/dynamic_font.h"
 #include "scene/resources/material.h"
 #include "scene/resources/mesh.h"
