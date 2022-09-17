@@ -55,6 +55,7 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.ConfigurationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.Sensor;
@@ -69,6 +70,7 @@ import android.os.Looper;
 import android.os.Messenger;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -86,6 +88,7 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.vending.expansion.downloader.DownloadProgressInfo;
@@ -110,6 +113,8 @@ import java.util.Locale;
 import javax.microedition.khronos.opengles.GL10;
 
 public class Pandemonium extends Fragment implements SensorEventListener, IDownloaderClient {
+	private static final String TAG = Pandemonium.class.getSimpleName();
+
 	static final int MAX_SINGLETONS = 64;
 	private IStub mDownloaderClientStub;
 	private TextView mStatusText;
@@ -372,7 +377,12 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 
 		final String[] current_command_line = command_line;
 		mView.queueEvent(() -> {
-			PandemoniumLib.setup(current_command_line);
+			if (!PandemoniumLib.setup(current_command_line)) {
+				pandemonium_initialized = false;
+				Log.e(TAG, "Unable to setup the Pandemonium engine! Aborting...");
+				alert(R.string.error_engine_setup_message, R.string.text_error_title, this::forceQuit);
+				return;
+			}
 
 			// Must occur after PandemoniumLib.setup has completed.
 			for (PandemoniumPlugin plugin : pluginRegistry.getAllPlugins()) {
@@ -464,13 +474,27 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 	}
 
 	public void alert(final String message, final String title) {
+		alert(message, title, null);
+	}
+
+	private void alert(@StringRes int messageResId, @StringRes int titleResId, @Nullable Runnable okCallback) {
+		Resources res = getResources();
+		alert(res.getString(messageResId), res.getString(titleResId), okCallback);
+	}
+
+	private void alert(final String message, final String title, @Nullable Runnable okCallback) {
 		final Activity activity = getActivity();
 		runOnUiThread(() -> {
 			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 			builder.setMessage(message).setTitle(title);
 			builder.setPositiveButton(
 					"OK",
-					(dialog, id) -> dialog.cancel());
+					(dialog, id) -> {
+						if (okCallback != null) {
+							okCallback.run();
+						}
+						dialog.cancel();
+					});
 			AlertDialog dialog = builder.create();
 			dialog.show();
 		});

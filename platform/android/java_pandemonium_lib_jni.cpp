@@ -168,7 +168,7 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 	}
 }
 
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_setup(JNIEnv *env, jclass clazz, jobjectArray p_cmdline) {
+JNIEXPORT jboolean JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_setup(JNIEnv *env, jclass clazz, jobjectArray p_cmdline) {
 	setup_android_thread();
 
 	const char **cmdline = NULL;
@@ -178,10 +178,10 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 		cmdlen = env->GetArrayLength(p_cmdline);
 		if (cmdlen) {
 			cmdline = (const char **)memalloc((cmdlen + 1) * sizeof(const char *));
-			ERR_FAIL_NULL_MSG(cmdline, "Out of memory.");
+			ERR_FAIL_NULL_V_MSG(cmdline, false, "Out of memory.");
 			cmdline[cmdlen] = NULL;
 			j_cmdline = (jstring *)memalloc(cmdlen * sizeof(jstring));
-			ERR_FAIL_NULL_MSG(j_cmdline, "Out of memory.");
+			ERR_FAIL_NULL_V_MSG(j_cmdline, false, "Out of memory.");
 
 			for (int i = 0; i < cmdlen; i++) {
 				jstring string = (jstring)env->GetObjectArrayElement(p_cmdline, i);
@@ -206,12 +206,13 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 
 	// Note: --help and --version return ERR_HELP, but this should be translated to 0 if exit codes are propagated.
 	if (err != OK) {
-		return; // should exit instead and print the error
+		return false;
 	}
 
 	java_class_wrapper = memnew(JavaClassWrapper(pandemonium_java->get_activity()));
 	ClassDB::register_class<JNISingleton>();
 	_initialize_java_modules();
+	return true;
 }
 
 JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_resize(JNIEnv *env, jclass clazz, jint width, jint height) {

@@ -63,7 +63,7 @@ public class PandemoniumLib {
 	 * Invoked on the GL thread to complete setup for the Pandemonium native layer logic.
 	 * @param p_cmdline Command line arguments used to configure Pandemonium native layer components.
 	 */
-	public static native void setup(String[] p_cmdline);
+	public static native boolean setup(String[] p_cmdline);
 
 	/**
 	 * Invoked on the GL thread when the underlying Android surface has changed size.
