@@ -30,18 +30,18 @@
 
 #include "progress_dialog.h"
 
-#include "core/object/message_queue.h"
-#include "core/os/os.h"
-#include "editor_scale.h"
-#include "main/main.h"
-#include "core/object/class_db.h"
 #include "core/error/error_macros.h"
 #include "core/math/math_defs.h"
 #include "core/math/rect2.h"
 #include "core/math/vector2.h"
-#include "core/os/memory.h"
+#include "core/object/class_db.h"
+#include "core/object/message_queue.h"
 #include "core/object/reference.h"
+#include "core/os/memory.h"
+#include "core/os/os.h"
 #include "core/typedefs.h"
+#include "editor_scale.h"
+#include "main/main.h"
 #include "scene/2d/canvas_item.h"
 #include "scene/gui/button.h"
 #include "scene/gui/control.h"
@@ -226,7 +226,10 @@ bool ProgressDialog::task_step(const String &p_task, const String &p_state, int 
 		OS::get_singleton()->force_process_input();
 	}
 
+#ifndef ANDROID_ENABLED
 	Main::iteration(); // this will not work on a lot of platforms, so it's only meant for the editor
+#endif
+
 	return cancelled;
 }
 

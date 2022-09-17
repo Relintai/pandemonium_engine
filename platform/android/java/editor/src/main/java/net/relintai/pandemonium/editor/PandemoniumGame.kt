@@ -35,4 +35,8 @@ package net.relintai.pandemonium.editor
  */
 class PandemoniumGame : PandemoniumEditor() {
   override fun overrideOrientationRequest() = false
+
+  override fun enableLongPressGestures() = false
+
+  override fun enablePanAndScaleGestures() = false
 }

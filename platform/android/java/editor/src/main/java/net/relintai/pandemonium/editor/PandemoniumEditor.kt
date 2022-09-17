@@ -63,7 +63,7 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 
   	private const val EDITOR_ARG = "--editor"
 	  private const val PROJECT_MANAGER_ARG = "--project-manager"
-  }
+  	}
 
 	private val commandLineParams = ArrayList<String>()
 
@@ -79,9 +79,15 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		}
 
 		super.onCreate(savedInstanceState);
+
+		// Enable long press, panning and scaling gestures
+		godotFragment?.mView?.inputHandler?.apply {
+			enableLongPress(enableLongPressGestures())
+			enablePanningAndScalingGestures(enablePanAndScaleGestures())
+		}
 	}
 
-  private fun updateCommandLineParams(args: Array<String>?) {
+  	private fun updateCommandLineParams(args: Array<String>?) {
 		// Update the list of command line params with the new args
 		commandLineParams.clear()
 		if (args != null && args.isNotEmpty()) {
@@ -89,7 +95,7 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		}
 	}
 
-  override fun onNewPandemoniumInstanceRequested(args: Array<String>) {
+  	override fun onNewPandemoniumInstanceRequested(args: Array<String>) {
 		// Parse the arguments to figure out which activity to start.
 		var targetClass: Class<*> = PandemoniumGame::class.java
 
@@ -122,7 +128,7 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		startActivity(newInstance)
 	}
 
-  // Get the screen's density scale
+  	// Get the screen's density scale
 	protected val isLargeScreen: Boolean
 		// Get the minimum window size // Correspond to the EXPANDED window size class.
 		get() {
@@ -137,7 +143,7 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 			return minSizeDp >= 840f // Correspond to the EXPANDED window size class.
 		}
 
-  override fun setRequestedOrientation(requestedOrientation: Int) {
+  	override fun setRequestedOrientation(requestedOrientation: Int) {
 		if (!overrideOrientationRequest()) {
 			super.setRequestedOrientation(requestedOrientation)
 		}
@@ -146,9 +152,19 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 	/**
 	 * The Android Editor sets its own orientation via its AndroidManifest
 	 */
-  protected open fun overrideOrientationRequest() = true
+  	protected open fun overrideOrientationRequest() = true
 
-  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+  	/**
+	 * Enable long press gestures for the Godot Android editor.
+	 */
+	protected open fun enableLongPressGestures() = true
+
+	/**
+	 * Enable pan and scale gestures for the Godot Android editor.
+	 */
+	protected open fun enablePanAndScaleGestures() = true
+
+  	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 		super.onActivityResult(requestCode, resultCode, data)
 		// Check if we got the MANAGE_EXTERNAL_STORAGE permission
 		if (requestCode == PermissionsUtil.REQUEST_MANAGE_EXTERNAL_STORAGE_REQ_CODE) {
