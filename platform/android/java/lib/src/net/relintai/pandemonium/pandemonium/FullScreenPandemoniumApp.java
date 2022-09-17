@@ -59,16 +59,13 @@ public abstract class FullScreenPandemoniumApp extends FragmentActivity implemen
 		setContentView(R.layout.pandemonium_app_layout);
 
 		Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.pandemonium_fragment_container);
+
 		if (currentFragment instanceof Pandemonium) {
 			Log.v(TAG, "Reusing existing Pandemonium fragment instance.");
 			pandemoniumFragment = (Pandemonium)currentFragment;
 		} else {
 			Log.v(TAG, "Creating new Pandemonium fragment instance.");
 			pandemoniumFragment = initPandemoniumInstance();
-			if (pandemoniumFragment == null) {
-				throw new IllegalStateException("Pandemonium instance must be non-null.");
-			}
-
 			getSupportFragmentManager().beginTransaction().replace(R.id.pandemonium_fragment_container, pandemoniumFragment).setPrimaryNavigationFragment(pandemoniumFragment).commitNowAllowingStateLoss();
 		}
 	}

@@ -58,11 +58,11 @@ import kotlin.math.min
  */
 open class PandemoniumEditor : FullScreenPandemoniumApp() {
  	companion object {
-	  private const val WAIT_FOR_DEBUGGER = false
-	  private const val COMMAND_LINE_PARAMS = "command_line_params"
+		private const val WAIT_FOR_DEBUGGER = false
+		private const val COMMAND_LINE_PARAMS = "command_line_params"
 
-  	private const val EDITOR_ARG = "--editor"
-	  private const val PROJECT_MANAGER_ARG = "--project-manager"
+  		private const val EDITOR_ARG = "--editor"
+		private const val PROJECT_MANAGER_ARG = "--project-manager"
   	}
 
 	private val commandLineParams = ArrayList<String>()
@@ -70,11 +70,11 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 	override fun onCreate(savedInstanceState : Bundle?) {
 		PermissionsUtil.requestManifestPermissions(this);
 
-    //String[]
-		val params = getIntent().getStringArrayExtra(COMMAND_LINE_PARAMS);
+		val params : Array<String>? = getIntent().getStringArrayExtra(COMMAND_LINE_PARAMS);
+
 		updateCommandLineParams(params);
 
-    if (BuildConfig.BUILD_TYPE == "dev" && WAIT_FOR_DEBUGGER) {
+    	if (BuildConfig.BUILD_TYPE == "dev" && WAIT_FOR_DEBUGGER) {
 			Debug.waitForDebugger();
 		}
 
@@ -95,14 +95,15 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		}
 	}
 
+	override fun getCommandLine() = commandLineParams
+
   	override fun onNewPandemoniumInstanceRequested(args: Array<String>) {
 		// Parse the arguments to figure out which activity to start.
 		var targetClass: Class<*> = PandemoniumGame::class.java
 
 		// Whether we should launch the new godot instance in an adjacent window
 		// https://developer.android.com/reference/android/content/Intent#FLAG_ACTIVITY_LAUNCH_ADJACENT
-		var launchAdjacent =
-			Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && (isInMultiWindowMode || isLargeScreen)
+		var launchAdjacent = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && (isInMultiWindowMode || isLargeScreen)
 
 		for (arg in args) {
 			if (EDITOR_ARG == arg) {
@@ -119,12 +120,12 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		}
 
 		// Launch a new activity
-		val newInstance = Intent(this, targetClass)
-			.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-			.putExtra(COMMAND_LINE_PARAMS, args)
+		val newInstance = Intent(this, targetClass).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra(COMMAND_LINE_PARAMS, args)
+
 		if (launchAdjacent) {
 			newInstance.addFlags(Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT)
 		}
+
 		startActivity(newInstance)
 	}
 

@@ -510,6 +510,7 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 	protected String[] getCommandLine() {
 		String[] original = parseCommandLine();
 		String[] updated;
+
 		List<String> hostCommandLine = pandemoniumHost != null ? pandemoniumHost.getCommandLine() : null;
 		if (hostCommandLine == null || hostCommandLine.isEmpty()) {
 			updated = original;
@@ -519,6 +520,7 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 				updated[original.length + i] = hostCommandLine.get(i);
 			}
 		}
+
 		return updated;
 	}
 
@@ -606,8 +608,8 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 		io = new PandemoniumIO(activity);
 		netUtils = new PandemoniumNetUtils(activity);
 
-    Context context = getContext();
-    DirectoryAccessHandler directoryAccessHandler = new DirectoryAccessHandler(context);
+    	Context context = getContext();
+   		DirectoryAccessHandler directoryAccessHandler = new DirectoryAccessHandler(context);
 		FileAccessHandler fileAccessHandler = new FileAccessHandler(context);
 
 		mSensorManager = (SensorManager)activity.getSystemService(Context.SENSOR_SERVICE);
