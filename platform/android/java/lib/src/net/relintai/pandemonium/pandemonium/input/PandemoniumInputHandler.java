@@ -34,7 +34,6 @@ import static net.relintai.pandemonium.pandemonium.utils.GLUtils.DEBUG;
 
 import net.relintai.pandemonium.pandemonium.PandemoniumLib;
 import net.relintai.pandemonium.pandemonium.PandemoniumView;
-import net.relintai.pandemonium.pandemonium.input.InputManagerCompat.InputDeviceListener;
 
 import android.os.Build;
 import android.util.Log;
