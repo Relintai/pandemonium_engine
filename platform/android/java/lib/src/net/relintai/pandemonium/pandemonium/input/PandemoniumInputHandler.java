@@ -45,6 +45,8 @@ import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
+import android.content.Context;
+import android.hardware.input.InputManager;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -53,14 +55,14 @@ import java.util.Set;
 /**
  * Handles input related events for the {@link PandemoniumView} view.
  */
-public class PandemoniumInputHandler implements InputDeviceListener {
+public class PandemoniumInputHandler implements InputManager.InputDeviceListener {
 	private static final String TAG = PandemoniumInputHandler.class.getSimpleName();
 
 	private final SparseIntArray mJoystickIds = new SparseIntArray(4);
 	private final SparseArray<Joystick> mJoysticksDevices = new SparseArray<>(4);
 
 	private final PandemoniumView pandemoniumView;
-	private final InputManagerCompat inputManager;
+	private final InputManager inputManager;
 	private final GestureDetector gestureDetector;
 	private final ScaleGestureDetector scaleGestureDetector;
 	private final PandemoniumGestureHandler pandemoniumGestureHandler;

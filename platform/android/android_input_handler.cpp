@@ -237,7 +237,7 @@ void AndroidInputHandler::_release_mouse_event_info() {
 }
 
 void AndroidInputHandler::process_mouse_event(int p_event_action, int p_event_android_buttons_mask, Point2 p_event_pos, Vector2 p_delta, bool p_double_click) {
-	int event_buttons_mask = _android_button_mask_to_godot_button_mask(p_event_android_buttons_mask);
+	int event_buttons_mask = _android_button_mask_to_pandemonium_button_mask(p_event_android_buttons_mask);
 	switch (p_event_action) {
 		case AMOTION_EVENT_ACTION_HOVER_MOVE: // hover move
 		case AMOTION_EVENT_ACTION_HOVER_ENTER: // hover enter
