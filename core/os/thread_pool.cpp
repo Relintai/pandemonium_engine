@@ -48,7 +48,7 @@ void ThreadPool::set_use_threads(const bool value) {
 int ThreadPool::get_thread_count() const {
 	return _thread_count;
 }
-void ThreadPool::set_thread_count(const bool value) {
+void ThreadPool::set_thread_count(const int value) {
 	_thread_count = value;
 	_dirty = true;
 }
@@ -56,7 +56,7 @@ void ThreadPool::set_thread_count(const bool value) {
 int ThreadPool::get_thread_fallback_count() const {
 	return _thread_fallback_count;
 }
-void ThreadPool::set_thread_fallback_count(const bool value) {
+void ThreadPool::set_thread_fallback_count(const int value) {
 	_thread_fallback_count = value;
 	_dirty = true;
 }
@@ -64,7 +64,7 @@ void ThreadPool::set_thread_fallback_count(const bool value) {
 float ThreadPool::get_max_work_per_frame_percent() const {
 	return _max_work_per_frame_percent;
 }
-void ThreadPool::set_max_work_per_frame_percent(const bool value) {
+void ThreadPool::set_max_work_per_frame_percent(const float value) {
 	_max_work_per_frame_percent = value;
 	_dirty = true;
 }
@@ -72,7 +72,7 @@ void ThreadPool::set_max_work_per_frame_percent(const bool value) {
 float ThreadPool::get_max_time_per_frame() const {
 	return _max_time_per_frame;
 }
-void ThreadPool::set_max_time_per_frame(const bool value) {
+void ThreadPool::set_max_time_per_frame(const float value) {
 	_max_time_per_frame = value;
 	_dirty = true;
 }

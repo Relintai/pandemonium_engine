@@ -61,16 +61,16 @@ public:
 	void set_use_threads(const bool value);
 
 	int get_thread_count() const;
-	void set_thread_count(const bool value);
+	void set_thread_count(const int value);
 
 	int get_thread_fallback_count() const;
-	void set_thread_fallback_count(const bool value);
+	void set_thread_fallback_count(const int value);
 
 	float get_max_work_per_frame_percent() const;
-	void set_max_work_per_frame_percent(const bool value);
+	void set_max_work_per_frame_percent(const float value);
 
 	float get_max_time_per_frame() const;
-	void set_max_time_per_frame(const bool value);
+	void set_max_time_per_frame(const float value);
 
 	bool is_working() const;
 	bool is_working_no_lock() const;
