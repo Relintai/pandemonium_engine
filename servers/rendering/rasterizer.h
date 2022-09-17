@@ -370,7 +370,7 @@ public:
 
 	virtual void multimesh_set_as_bulk_array_interpolated(RID p_multimesh, const PoolVector<float> &p_array, const PoolVector<float> &p_array_prev);
 	virtual void multimesh_set_physics_interpolated(RID p_multimesh, bool p_interpolated);
-	virtual void multimesh_set_physics_interpolation_quality(RID p_multimesh, int p_quality);
+	virtual void multimesh_set_physics_interpolation_quality(RID p_multimesh, RS::MultimeshPhysicsInterpolationQuality p_quality);
 	virtual void multimesh_instance_reset_physics_interpolation(RID p_multimesh, int p_index);
 
 	virtual void multimesh_set_visible_instances(RID p_multimesh, int p_visible);
