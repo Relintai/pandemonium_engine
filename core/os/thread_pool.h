@@ -66,11 +66,16 @@ public:
 	int get_thread_fallback_count() const;
 	void set_thread_fallback_count(const int value);
 
+	float get_max_time_per_frame() const;
+	void set_max_time_per_frame(const float value);
+
 	float get_max_work_per_frame_percent() const;
 	void set_max_work_per_frame_percent(const float value);
 
-	float get_max_time_per_frame() const;
-	void set_max_time_per_frame(const float value);
+	float get_target_fps() const;
+	void set_target_fps(const float value);
+
+	void apply_max_work_per_frame_percent();
 
 	bool is_working() const;
 	bool is_working_no_lock() const;
@@ -106,6 +111,7 @@ private:
 	int _thread_fallback_count;
 	float _max_work_per_frame_percent;
 	float _max_time_per_frame;
+	float _target_fps;
 
 	Vector<ThreadPoolContext *> _threads;
 

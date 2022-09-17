@@ -61,20 +61,33 @@ void ThreadPool::set_thread_fallback_count(const int value) {
 	_dirty = true;
 }
 
-float ThreadPool::get_max_work_per_frame_percent() const {
-	return _max_work_per_frame_percent;
-}
-void ThreadPool::set_max_work_per_frame_percent(const float value) {
-	_max_work_per_frame_percent = value;
-	_dirty = true;
-}
-
 float ThreadPool::get_max_time_per_frame() const {
 	return _max_time_per_frame;
 }
 void ThreadPool::set_max_time_per_frame(const float value) {
 	_max_time_per_frame = value;
-	_dirty = true;
+}
+
+float ThreadPool::get_max_work_per_frame_percent() const {
+	return _max_work_per_frame_percent;
+}
+void ThreadPool::set_max_work_per_frame_percent(const float value) {
+	_max_work_per_frame_percent = value;
+
+	apply_max_work_per_frame_percent();
+}
+
+float ThreadPool::get_target_fps() const {
+	return _target_fps;
+}
+void ThreadPool::set_target_fps(const float value) {
+	_target_fps = value;
+
+	apply_max_work_per_frame_percent();
+}
+
+void ThreadPool::apply_max_work_per_frame_percent() {
+	_max_time_per_frame = (1.0 / _target_fps) * (_max_work_per_frame_percent / 100.0);
 }
 
 bool ThreadPool::is_working() const {
@@ -276,11 +289,11 @@ void ThreadPool::register_core_settings() {
 		_thread_fallback_count = 1;
 	}
 
+	_target_fps = GLOBAL_DEF("thread_pool/target_fps", 60);
 	//Todo Add help text, as this will only come into play if threading is disabled, or not available
 	_max_work_per_frame_percent = GLOBAL_DEF("thread_pool/max_work_per_frame_percent", 25);
 
-	//Todo this should be recalculated constantly to smooth out performance better
-	_max_time_per_frame = (1 / 60.0) * (_max_work_per_frame_percent / 100.0);
+	apply_max_work_per_frame_percent();
 
 	if (!OS::get_singleton()->can_use_threads()) {
 		_use_threads = false;
@@ -396,13 +409,19 @@ void ThreadPool::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_thread_fallback_count", "value"), &ThreadPool::set_thread_fallback_count);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "thread_fallback_count"), "set_thread_fallback_count", "get_thread_fallback_count");
 
+	ClassDB::bind_method(D_METHOD("get_max_time_per_frame"), &ThreadPool::get_max_time_per_frame);
+	ClassDB::bind_method(D_METHOD("set_max_time_per_frame", "value"), &ThreadPool::set_max_time_per_frame);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "max_time_per_frame"), "set_max_time_per_frame", "get_max_time_per_frame");
+
 	ClassDB::bind_method(D_METHOD("get_max_work_per_frame_percent"), &ThreadPool::get_max_work_per_frame_percent);
 	ClassDB::bind_method(D_METHOD("set_max_work_per_frame_percent", "value"), &ThreadPool::set_max_work_per_frame_percent);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "max_work_per_frame_percent"), "set_max_work_per_frame_percent", "get_max_work_per_frame_percent");
 
-	ClassDB::bind_method(D_METHOD("get_max_time_per_frame"), &ThreadPool::get_max_time_per_frame);
-	ClassDB::bind_method(D_METHOD("set_max_time_per_frame", "value"), &ThreadPool::set_max_time_per_frame);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "max_time_per_frame"), "set_max_time_per_frame", "get_max_time_per_frame");
+	ClassDB::bind_method(D_METHOD("get_target_fps"), &ThreadPool::get_target_fps);
+	ClassDB::bind_method(D_METHOD("set_target_fps", "value"), &ThreadPool::set_target_fps);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "target_fps"), "set_target_fps", "get_target_fps");
+
+	ClassDB::bind_method(D_METHOD("apply_max_work_per_frame_percent"), &ThreadPool::apply_max_work_per_frame_percent);
 
 	ClassDB::bind_method(D_METHOD("is_working"), &ThreadPool::is_working);
 	ClassDB::bind_method(D_METHOD("is_working_no_lock"), &ThreadPool::is_working_no_lock);
