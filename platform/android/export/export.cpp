@@ -35,6 +35,7 @@
 #include "editor/editor_settings.h"
 
 void register_android_exporter() {
+#ifndef ANDROID_ENABLED
 	String exe_ext;
 	if (OS::get_singleton()->get_name() == "Windows") {
 		exe_ext = "*.exe";
@@ -49,6 +50,7 @@ void register_android_exporter() {
 	EDITOR_DEF("export/android/force_system_user", false);
 
 	EDITOR_DEF("export/android/shutdown_adb_on_exit", true);
+#endif
 
 	Ref<EditorExportPlatformAndroid> exporter = Ref<EditorExportPlatformAndroid>(memnew(EditorExportPlatformAndroid));
 	EditorExport::get_singleton()->add_export_platform(exporter);
