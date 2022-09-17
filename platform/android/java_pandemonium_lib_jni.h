@@ -44,12 +44,10 @@ JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_
 JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_newcontext(JNIEnv *env, jclass clazz);
 JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_step(JNIEnv *env, jclass clazz);
 JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_back(JNIEnv *env, jclass clazz);
-void touch_preprocessing(JNIEnv *env, jclass clazz, jint input_device, jint ev, jint pointer, jint pointer_count, jfloatArray positions, jint buttons_mask = 0, jfloat vertical_factor = 0, jfloat horizontal_factor = 0);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_touch__IIII_3F(JNIEnv *env, jclass clazz, jint input_device, jint ev, jint pointer, jint pointer_count, jfloatArray positions);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_touch__IIII_3FI(JNIEnv *env, jclass clazz, jint input_device, jint ev, jint pointer, jint pointer_count, jfloatArray positions, jint buttons_mask);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_touch__IIII_3FIFF(JNIEnv *env, jclass clazz, jint input_device, jint ev, jint pointer, jint pointer_count, jfloatArray positions, jint buttons_mask, jfloat vertical_factor, jfloat horizontal_factor);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_hover(JNIEnv *env, jclass clazz, jint p_type, jfloat p_x, jfloat p_y);
-JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_doubleTap(JNIEnv *env, jclass clazz, jint p_button_mask, jint p_x, jint p_y);
+JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_dispatchMouseEvent(JNIEnv *env, jclass clazz, jint p_event_type, jint p_button_mask, jfloat p_x, jfloat p_y, jfloat p_delta_x, jfloat p_delta_y, jboolean p_double_click);
+JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_dispatchTouchEvent(JNIEnv *env, jclass clazz, jint ev, jint pointer, jint pointer_count, jfloatArray positions);
+JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_magnify(JNIEnv *env, jclass clazz, jfloat p_x, jfloat p_y, jfloat p_factor);
+JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_pan(JNIEnv *env, jclass clazz, jfloat p_x, jfloat p_y, jfloat p_delta_x, jfloat p_delta_y);
 JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_key(JNIEnv *env, jclass clazz, jint p_keycode, jint p_scancode, jint p_unicode_char, jboolean p_pressed);
 JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_joybutton(JNIEnv *env, jclass clazz, jint p_device, jint p_button, jboolean p_pressed);
 JNIEXPORT void JNICALL Java_net_relintai_pandemonium_pandemonium_PandemoniumLib_joyaxis(JNIEnv *env, jclass clazz, jint p_device, jint p_axis, jfloat p_value);

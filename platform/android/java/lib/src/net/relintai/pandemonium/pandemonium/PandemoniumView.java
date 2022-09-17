@@ -31,8 +31,6 @@
 package net.relintai.pandemonium.pandemonium;
 
 import net.relintai.pandemonium.pandemonium.gl.PandemoniumGLSurfaceView;
-
-import net.relintai.pandemonium.pandemonium.input.PandemoniumGestureHandler;
 import net.relintai.pandemonium.pandemonium.input.PandemoniumInputHandler;
 import net.relintai.pandemonium.pandemonium.utils.GLUtils;
 import net.relintai.pandemonium.pandemonium.config.RegularConfigChooser;
@@ -42,7 +40,6 @@ import net.relintai.pandemonium.pandemonium.config.RegularFallbackConfigChooser;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PixelFormat;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
@@ -73,7 +70,6 @@ public class PandemoniumView extends PandemoniumGLSurfaceView {
 
 	private final Pandemonium pandemonium;
 	private final PandemoniumInputHandler inputHandler;
-	private final GestureDetector detector;
 	private final PandemoniumRenderer pandemoniumRenderer;
 
 	private EGLConfigChooser eglConfigChooser;
@@ -87,7 +83,6 @@ public class PandemoniumView extends PandemoniumGLSurfaceView {
 
 		this.pandemonium = pandemonium;
 		this.inputHandler = new PandemoniumInputHandler(this);
-		this.detector = new GestureDetector(context, new PandemoniumGestureHandler(this));
 		this.pandemoniumRenderer = new PandemoniumRenderer();
 
 		init(p_translucent);
@@ -101,7 +96,6 @@ public class PandemoniumView extends PandemoniumGLSurfaceView {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		super.onTouchEvent(event);
-		this.detector.onTouchEvent(event);
 		return inputHandler.onTouchEvent(event);
 	}
 
