@@ -148,7 +148,7 @@ String DirAccessJAndroid::_get_root_string() const {
 String DirAccessJAndroid::get_current_dir() {
 	String base = _get_root_path();
 	String bd = current_dir;
-	if (base != "") {
+	if (!base.empty()) {
 		bd = current_dir.replace_first(base, "");
 	}
 

@@ -43,17 +43,23 @@ String FileAccessAndroid::get_path_absolute() const {
 
 Error FileAccessAndroid::_open(const String &p_path, int p_mode_flags) {
 	path_src = p_path;
+
 	String path = fix_path(p_path).simplify_path();
 	absolute_path = path;
-	if (path.begins_with("/"))
+
+	if (path.begins_with("/")) {
 		path = path.substr(1, path.length());
-	else if (path.begins_with("res://"))
+	} else if (path.begins_with("res://")) {
 		path = path.substr(6, path.length());
+	}
 
 	ERR_FAIL_COND_V(p_mode_flags & FileAccess::WRITE, ERR_UNAVAILABLE); //can't write on android..
 	a = AAssetManager_open(asset_manager, path.utf8().get_data(), AASSET_MODE_STREAMING);
-	if (!a)
+
+	if (!a) {
 		return ERR_CANT_OPEN;
+	}
+
 	//ERR_FAIL_COND_V(!a,ERR_FILE_NOT_FOUND);
 	len = AAsset_getLength(a);
 	pos = 0;
@@ -63,8 +69,10 @@ Error FileAccessAndroid::_open(const String &p_path, int p_mode_flags) {
 }
 
 void FileAccessAndroid::close() {
-	if (!a)
+	if (!a) {
 		return;
+	}
+	
 	AAsset_close(a);
 	a = NULL;
 }

@@ -96,7 +96,8 @@ class FileAccessHandler(val context: Context) {
 	private fun hasFileId(fileId: Int) = files.indexOfKey(fileId) >= 0
 
 	fun fileOpen(path: String?, modeFlags: Int): Int {
-    val storageScope = storageScopeIdentifier.identifyStorageScope(path)
+    	val storageScope = storageScopeIdentifier.identifyStorageScope(path)
+
 		if (storageScope == StorageScope.UNKNOWN) {
 			return INVALID_FILE_ID
 		}
