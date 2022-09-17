@@ -30,7 +30,7 @@ jobs:
             tools: false
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Pandemonium build cache
         uses: ./.github/actions/pandemonium-cache
@@ -48,6 +48,11 @@ jobs:
           platform: osx
           target: ${{ matrix.target }}
           tools: ${{ matrix.tools }}
+
+      - name: Prepare artifact
+        run: |
+          strip bin/pandemonium.*
+          chmod +x bin/pandemonium.*
 
       - name: Upload artifact
         uses: ./.github/actions/upload-artifact

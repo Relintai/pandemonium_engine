@@ -33,7 +33,7 @@ jobs:
             artifact: true
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Linux dependencies
         shell: bash
@@ -68,6 +68,7 @@ jobs:
         if: ${{ matrix.artifact }}
         run: |
           strip bin/pandemonium.*
+          chmod +x bin/pandemonium.*
 
       - name: Upload artifact
         uses: ./.github/actions/upload-artifact

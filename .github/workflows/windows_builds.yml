@@ -34,7 +34,7 @@ jobs:
             tools: false
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Pandemonium build cache
         uses: ./.github/actions/pandemonium-cache
@@ -52,7 +52,10 @@ jobs:
           platform: windows
           target: ${{ matrix.target }}
           tools: ${{ matrix.tools }}
-          scons-cache-limit: 3072
+
+      - name: Prepare artifact
+        run: |
+          Remove-Item bin/* -Include *.exp,*.lib,*.pdb -Force
 
       - name: Upload artifact
         uses: ./.github/actions/upload-artifact
