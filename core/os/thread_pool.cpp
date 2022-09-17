@@ -113,15 +113,16 @@ bool ThreadPool::is_working_no_lock() const {
 }
 
 bool ThreadPool::has_job(const Ref<ThreadPoolJob> &job) {
+	_THREAD_SAFE_LOCK_
+
 	for (int i = 0; i < _threads.size(); ++i) {
 		ThreadPoolContext *context = _threads.get(i);
 
 		if (context->job == job) {
+			_THREAD_SAFE_UNLOCK_
 			return true;
 		}
 	}
-
-	_THREAD_SAFE_LOCK_
 
 	List<Ref<ThreadPoolJob>>::Element *E = _queue.find(job);
 
