@@ -31,8 +31,8 @@
 /*************************************************************************/
 
 #include "core/containers/command_queue_mt.h"
-#include "core/os/thread.h"
 #include "core/os/safe_refcount.h"
+#include "core/os/thread.h"
 #include "servers/rendering_server.h"
 
 class RenderingServerWrapMT : public RenderingServer {
@@ -391,6 +391,7 @@ public:
 	FUNC2(instance_set_base, RID, RID)
 	FUNC2(instance_set_scenario, RID, RID)
 	FUNC2(instance_set_layer_mask, RID, uint32_t)
+	FUNC3(instance_set_pivot_data, RID, float, bool)
 	FUNC2(instance_set_transform, RID, const Transform &)
 	FUNC2(instance_set_interpolated, RID, bool)
 	FUNC1(instance_reset_physics_interpolation, RID)
@@ -608,8 +609,12 @@ public:
 
 	FUNC1(set_debug_generate_wireframes, bool)
 
-	virtual bool has_feature(Features p_feature) const { return rendering_server->has_feature(p_feature); }
-	virtual bool has_os_feature(const String &p_feature) const { return rendering_server->has_os_feature(p_feature); }
+	virtual bool has_feature(Features p_feature) const {
+		return rendering_server->has_feature(p_feature);
+	}
+	virtual bool has_os_feature(const String &p_feature) const {
+		return rendering_server->has_os_feature(p_feature);
+	}
 
 	FUNC1(call_set_use_vsync, bool)
 
