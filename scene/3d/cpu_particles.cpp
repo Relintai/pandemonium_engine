@@ -88,7 +88,14 @@ void CPUParticles::set_amount(int p_amount) {
 
 	particle_data.resize((12 + 4 + 1) * p_amount);
 	particle_data_prev.resize(particle_data.size());
-	RS::get_singleton()->multimesh_allocate(multimesh, p_amount, RS::MULTIMESH_TRANSFORM_3D, RS::MULTIMESH_COLOR_8BIT, RS::MULTIMESH_CUSTOM_DATA_FLOAT);
+
+	// We must fill immediately to prevent garbage data and Nans
+	// being sent to the visual server with set_as_bulk_array,
+	// if this is sent before being regularly updated.
+	particle_data.fill(0);
+	particle_data_prev.fill(0);
+
+	RS::get_singleton()->multimesh_allocate(multimesh, p_amount, RS::MULTIMESH_TRANSFORM_2D, RS::MULTIMESH_COLOR_8BIT, RS::MULTIMESH_CUSTOM_DATA_FLOAT);
 
 	particle_order.resize(p_amount);
 }
