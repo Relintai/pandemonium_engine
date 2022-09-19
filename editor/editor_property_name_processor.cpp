@@ -75,6 +75,7 @@ EditorPropertyNameProcessor::EditorPropertyNameProcessor() {
 	capitalize_string_remaps["Adb"] = "ADB";
 	capitalize_string_remaps["Ao"] = "AO";
 	capitalize_string_remaps["Bptc"] = "BPTC";
+	capitalize_string_remaps["api"] = "API";
 	capitalize_string_remaps["Bvh"] = "BVH";
 	capitalize_string_remaps["Csg"] = "CSG";
 	capitalize_string_remaps["Cpu"] = "CPU";
@@ -131,6 +132,11 @@ EditorPropertyNameProcessor::EditorPropertyNameProcessor() {
 	capitalize_string_remaps["Webrtc"] = "WebRTC";
 	capitalize_string_remaps["Websocket"] = "WebSocket";
 	capitalize_string_remaps["Xr"] = "XR";
+	capitalize_string_remaps["osslsigncode"] = "osslsigncode";
+	capitalize_string_remaps["rcedit"] = "rcedit";
+	capitalize_string_remaps["rcodesign"] = "rcodesign";
+	capitalize_string_remaps["signtool"] = "signtool";
+	capitalize_string_remaps["wine"] = "wine";
 }
 
 EditorPropertyNameProcessor::~EditorPropertyNameProcessor() {
