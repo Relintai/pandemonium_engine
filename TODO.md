@@ -229,3 +229,9 @@ The bugfix is likely needed, however I did not move physics interpolation out of
 so this one needs more thought.
 
 https://github.com/godotengine/godot/commit/9fbdace917026b04d638c03b2f991ae4ace33a9d
+
+## [Core] Use std type traits to check operations triviality. 
+
+https://github.com/godotengine/godot/commit/4e33610fb0ab762b49bcbb86c0be5ea0c227b73f
+
+
