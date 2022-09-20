@@ -232,6 +232,19 @@ https://github.com/godotengine/godot/commit/9fbdace917026b04d638c03b2f991ae4ace3
 
 ## [Core] Use std type traits to check operations triviality. 
 
+possibly
+
 https://github.com/godotengine/godot/commit/4e33610fb0ab762b49bcbb86c0be5ea0c227b73f
 
+## Added support for building shared libraries on linuxbsd
+
+possibly
+
+This adds shared build support for the scons build.
+
+The build can now be built shared by passing shared=True in the scons command. This does drastically speed up the link time for the godot bin (anecdotally for my machine from 5 seconds to less than a second).
+
+This PR mainly is to aid in faster development as outlined in godotengine/godot-proposals#1796
+
+https://github.com/godotengine/godot/pull/52566
 
