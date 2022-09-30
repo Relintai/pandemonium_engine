@@ -267,7 +267,6 @@ void ScriptEditorDebugger::debug_next() {
 	msg.push_back("next");
 	ppeer->put_var(msg);
 	_clear_execution();
-	stack_dump->clear();
 }
 void ScriptEditorDebugger::debug_step() {
 	ERR_FAIL_COND(!breaked);
@@ -278,7 +277,6 @@ void ScriptEditorDebugger::debug_step() {
 	msg.push_back("step");
 	ppeer->put_var(msg);
 	_clear_execution();
-	stack_dump->clear();
 }
 
 void ScriptEditorDebugger::debug_break() {
@@ -1593,6 +1591,7 @@ void ScriptEditorDebugger::_clear_execution() {
 	stack_script = ResourceLoader::load(d["file"]);
 	emit_signal("clear_execution", stack_script);
 	stack_script.unref();
+	stack_dump->clear();
 }
 
 void ScriptEditorDebugger::start(int p_port, const IP_Address &p_bind_address) {
