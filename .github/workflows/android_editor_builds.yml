@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  android-template:
+  android-editor:
     runs-on: "ubuntu-20.04"
 
     name: Android Editor (target=release_debug, tools=yes)
