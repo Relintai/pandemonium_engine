@@ -706,8 +706,23 @@ private:
 	LinkButton *version_btn;
 	ToolButton *bottom_panel_raise;
 
+	enum FileChangedActions {
+		FILE_CHANGED_ACTION_ASK = 0,
+		FILE_CHANGED_ACTION_ALWAYS_RELOAD,
+		FILE_CHANGED_ACTION_ALWAYS_SAVE,
+		FILE_CHANGED_ACTION_ALWAYS_RELOAD_THIS_SESSION,
+		FILE_CHANGED_ACTION_ALWAYS_SAVE_THIS_SESSION,
+	};
+
+	enum FileChangedActionRemember {
+		FILE_CHANGED_ACTION_REMEMBER_NO = 0,
+		FILE_CHANGED_ACTION_REMEMBER_YES_FOR_THIS_SESSION,
+		FILE_CHANGED_ACTION_REMEMBER_YES,
+	};
+
 	Tree *disk_changed_list;
 	ConfirmationDialog *disk_changed;
+	OptionButton *remember_disk_changed;
 
 	void _bottom_panel_raise_toggled(bool);
 
@@ -921,6 +936,7 @@ private:
 	static void _resource_loaded(RES p_resource, const String &p_path);
 
 	void _resources_changed(const PoolVector<String> &p_resources);
+	void _try_apply_remember_disk_changed_setting(int type);
 	void _scan_external_changes();
 	void _reload_modified_scenes();
 	void _reload_project_settings();

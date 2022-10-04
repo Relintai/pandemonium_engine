@@ -870,10 +870,45 @@ void EditorNode::_sources_changed(bool p_exist) {
 	}
 }
 
+void EditorNode::_try_apply_remember_disk_changed_setting(int type) {
+	int should_remember = remember_disk_changed->get_selected_id();
+
+	if (should_remember == FILE_CHANGED_ACTION_REMEMBER_NO) {
+		return;
+	}
+
+	FileChangedActions new_default_action = FILE_CHANGED_ACTION_ASK;
+
+	if (type == 0) {
+		//confirmed button
+		if (should_remember == FILE_CHANGED_ACTION_REMEMBER_YES_FOR_THIS_SESSION) {
+			new_default_action = FILE_CHANGED_ACTION_ALWAYS_RELOAD_THIS_SESSION;
+		} else {
+			new_default_action = FILE_CHANGED_ACTION_ALWAYS_RELOAD;
+		}
+	} else if (type == 1) {
+		//resave button
+		if (should_remember == FILE_CHANGED_ACTION_REMEMBER_YES_FOR_THIS_SESSION) {
+			new_default_action = FILE_CHANGED_ACTION_ALWAYS_SAVE_THIS_SESSION;
+		} else {
+			new_default_action = FILE_CHANGED_ACTION_ALWAYS_SAVE;
+		}
+	}
+
+	EditorSettings::get_singleton()->set("interface/editor/file_changed_action", static_cast<int>(new_default_action));
+}
+
 void EditorNode::_scan_external_changes() {
-	disk_changed_list->clear();
-	TreeItem *r = disk_changed_list->create_item();
-	disk_changed_list->set_hide_root(true);
+	int default_action = EditorSettings::get_singleton()->get("interface/editor/file_changed_action");
+
+	TreeItem *r = NULL;
+
+	if (default_action == FILE_CHANGED_ACTION_ASK) {
+		disk_changed_list->clear();
+		r = disk_changed_list->create_item();
+		disk_changed_list->set_hide_root(true);
+	}
+
 	bool need_reload = false;
 
 	// Check if any edited scene has changed.
@@ -888,21 +923,44 @@ void EditorNode::_scan_external_changes() {
 		uint64_t date = FileAccess::get_modified_time(editor_data.get_scene_path(i));
 
 		if (date > last_date) {
-			TreeItem *ti = disk_changed_list->create_item(r);
-			ti->set_text(0, editor_data.get_scene_path(i).get_file());
 			need_reload = true;
+
+			if (default_action == FILE_CHANGED_ACTION_ASK) {
+				TreeItem *ti = disk_changed_list->create_item(r);
+				ti->set_text(0, editor_data.get_scene_path(i).get_file());
+			} else {
+				break;
+			}
 		}
 	}
 
 	String project_settings_path = ProjectSettings::get_singleton()->get_resource_path().plus_file("project.pandemonium");
 	if (FileAccess::get_modified_time(project_settings_path) > ProjectSettings::get_singleton()->get_last_saved_time()) {
-		TreeItem *ti = disk_changed_list->create_item(r);
-		ti->set_text(0, "project.pandemonium");
+		if (default_action == FILE_CHANGED_ACTION_ASK) {
+			TreeItem *ti = disk_changed_list->create_item(r);
+			ti->set_text(0, "project.pandemonium");
+		}
 		need_reload = true;
 	}
 
 	if (need_reload) {
-		disk_changed->call_deferred("popup_centered_ratio", 0.5);
+		switch (default_action) {
+			case (FILE_CHANGED_ACTION_ASK):
+				remember_disk_changed->select(static_cast<int>(FILE_CHANGED_ACTION_ASK));
+				disk_changed->call_deferred("popup_centered_ratio", 0.5);
+				break;
+			case (FILE_CHANGED_ACTION_ALWAYS_RELOAD):
+			case (FILE_CHANGED_ACTION_ALWAYS_RELOAD_THIS_SESSION):
+				_reload_modified_scenes();
+				_reload_project_settings();
+				break;
+			case (FILE_CHANGED_ACTION_ALWAYS_SAVE):
+			case (FILE_CHANGED_ACTION_ALWAYS_SAVE_THIS_SESSION):
+				_resave_scenes("");
+				break;
+			default:
+				break;
+		}
 	}
 }
 
@@ -5592,6 +5650,7 @@ void EditorNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_reload_project_settings"), &EditorNode::_reload_project_settings);
 	ClassDB::bind_method(D_METHOD("_resave_scenes"), &EditorNode::_resave_scenes);
 	ClassDB::bind_method(D_METHOD("_project_settings_changed"), &EditorNode::_project_settings_changed);
+	ClassDB::bind_method(D_METHOD("_try_apply_remember_disk_changed_setting"), &EditorNode::_try_apply_remember_disk_changed_setting);
 
 	ClassDB::bind_method("_screenshot", &EditorNode::_screenshot);
 	ClassDB::bind_method("_request_screenshot", &EditorNode::_request_screenshot);
@@ -5846,10 +5905,12 @@ EditorNode::EditorNode() {
 	EDITOR_DEF_RST("interface/scene_tabs/always_show_close_button", false);
 	EDITOR_DEF_RST("interface/scene_tabs/resize_if_many_tabs", true);
 	EDITOR_DEF_RST("interface/scene_tabs/minimum_width", 50);
+
 	EDITOR_DEF("run/output/always_clear_output_on_play", true);
 	EDITOR_DEF("run/output/always_open_output_on_play", true);
 	EDITOR_DEF("run/output/always_close_output_on_stop", true);
 	EDITOR_DEF("run/auto_save/save_before_running", true);
+
 	EDITOR_DEF("interface/editor/save_on_focus_loss", false);
 	EDITOR_DEF_RST("interface/editor/save_each_scene_on_quit", true);
 	EDITOR_DEF("interface/editor/quit_confirmation", true);
@@ -5857,8 +5918,18 @@ EditorNode::EditorNode() {
 	EDITOR_DEF("interface/editor/update_continuously", false);
 	EDITOR_DEF("interface/editor/update_vital_only", false);
 	EDITOR_DEF("interface/editor/translate_properties", true);
+	int file_changed_action = EDITOR_DEF("interface/editor/file_changed_action", 0);
+	EditorSettings::get_singleton()->add_property_hint(PropertyInfo(Variant::INT, "interface/editor/file_changed_action", PROPERTY_HINT_ENUM, "Ask,Always Reload,Always Save,Always Reload (For This Session),Always Save (For This Session)", PROPERTY_USAGE_DEFAULT));
+
+	if (file_changed_action >= FILE_CHANGED_ACTION_ALWAYS_RELOAD_THIS_SESSION) {
+		file_changed_action = FILE_CHANGED_ACTION_ASK;
+
+		EditorSettings::get_singleton()->set("", file_changed_action);
+	}
+
 	EDITOR_DEF_RST("interface/scene_tabs/restore_scenes_on_load", false);
 	EDITOR_DEF_RST("interface/scene_tabs/show_thumbnail_on_hover", true);
+
 	EDITOR_DEF_RST("interface/inspector/capitalize_properties", true);
 	EDITOR_DEF_RST("interface/inspector/default_float_step", 0.001);
 	EditorSettings::get_singleton()->add_property_hint(PropertyInfo(Variant::REAL, "interface/inspector/default_float_step", PROPERTY_HINT_RANGE, "0,1,0"));
@@ -5870,6 +5941,7 @@ EditorNode::EditorNode() {
 	EDITOR_DEF("interface/inspector/resources_to_open_in_new_inspector", "Script");
 	EDITOR_DEF("interface/inspector/default_color_picker_mode", 0);
 	EditorSettings::get_singleton()->add_property_hint(PropertyInfo(Variant::INT, "interface/inspector/default_color_picker_mode", PROPERTY_HINT_ENUM, "RGB,HSV,RAW", PROPERTY_USAGE_DEFAULT));
+
 	EDITOR_DEF("run/auto_save/save_before_running", true);
 
 	theme_base = memnew(Control);
@@ -6757,11 +6829,29 @@ EditorNode::EditorNode() {
 		vbc->add_child(disk_changed_list);
 		disk_changed_list->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 
+		HBoxContainer *hbc = memnew(HBoxContainer);
+		vbc->add_child(hbc);
+		hbc->set_h_size_flags(Control::SIZE_EXPAND_FILL);
+
+		Label *remember_label = memnew(Label);
+		hbc->add_child(remember_label);
+		remember_label->set_text(TTR("Remember my choice"));
+		remember_label->set_align(Label::ALIGN_RIGHT);
+		remember_label->set_h_size_flags(Control::SIZE_EXPAND_FILL);
+
+		remember_disk_changed = memnew(OptionButton);
+		remember_disk_changed->add_item(TTR("No"), static_cast<int>(FILE_CHANGED_ACTION_REMEMBER_NO));
+		remember_disk_changed->add_item(TTR("Yes (For this session.)"), static_cast<int>(FILE_CHANGED_ACTION_REMEMBER_YES_FOR_THIS_SESSION));
+		remember_disk_changed->add_item(TTR("Yes"), static_cast<int>(FILE_CHANGED_ACTION_REMEMBER_YES));
+		hbc->add_child(remember_disk_changed);
+
+		disk_changed->connect("confirmed", this, "_try_apply_remember_disk_changed_setting", varray(0));
 		disk_changed->connect("confirmed", this, "_reload_modified_scenes");
 		disk_changed->connect("confirmed", this, "_reload_project_settings");
 		disk_changed->get_ok()->set_text(TTR("Reload"));
 
 		disk_changed->add_button(TTR("Resave"), !OS::get_singleton()->get_swap_ok_cancel(), "resave");
+		disk_changed->connect("custom_action", this, "_try_apply_remember_disk_changed_setting", varray(1));
 		disk_changed->connect("custom_action", this, "_resave_scenes");
 	}
 
