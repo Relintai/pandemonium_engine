@@ -62,7 +62,7 @@ void PluginRefresher::_refresh() {
 	dir->list_dir_begin();
 
 	String file = dir->get_next();
-	while (file != "") {
+	while (!file.empty()) {
 		if (file == "." || file == "..") {
 			file = dir->get_next();
 			continue;
@@ -211,6 +211,7 @@ PluginRefresher::PluginRefresher() {
 	add_child(_selector_dialog);
 	_selector_dialog->set_title("Plugin refresher");
 	_selector_dialog->set_custom_minimum_size(Size2(300, 0));
+	_selector_dialog->connect("confirmed", this, "_on_popup_confirmed");
 
 	VBoxContainer *main_container = memnew(VBoxContainer);
 	_selector_dialog->add_child(main_container);
