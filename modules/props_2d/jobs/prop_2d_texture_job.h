@@ -28,7 +28,9 @@ SOFTWARE.
 
 #include "core/object/reference.h"
 
-#if TEXTURE_PACKER_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 class TexturePacker;
 #endif
 
@@ -36,7 +38,7 @@ class Prop2DTextureJob : public ThreadPoolJob {
 	GDCLASS(Prop2DTextureJob, ThreadPoolJob);
 
 public:
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	Ref<TexturePacker> get_merger();
 	void set_merger(const Ref<TexturePacker> &merger);
 #endif
@@ -49,7 +51,7 @@ public:
 protected:
 	static void _bind_methods();
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	Ref<TexturePacker> _merger;
 #endif
 };

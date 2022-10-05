@@ -4,9 +4,6 @@ Import('env')
 
 module_env = env.Clone()
 
-if env["module_texture_packer_enabled"]:
-    module_env.Append(CPPDEFINES=['TEXTURE_PACKER_PRESENT'])
-
 if env["module_props_enabled"]:
     module_env.Append(CPPDEFINES=['PROPS_PRESENT'])
 

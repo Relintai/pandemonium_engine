@@ -131,7 +131,12 @@ SOFTWARE.
 #include "database/ess_resource_db_static.h"
 
 #include "material_cache/ess_material_cache.h"
+
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 #include "material_cache/ess_material_cache_pcm.h"
+#endif
 
 #if PROPS_PRESENT
 #include "props/prop_data_entity.h"
@@ -265,7 +270,10 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<ESSEntitySpawner>();
 
 	ClassDB::register_class<ESSMaterialCache>();
+
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	ClassDB::register_class<ESSMaterialCachePCM>();
+#endif
 
 	entity_data_manager = memnew(ESS);
 	ClassDB::register_class<ESS>();

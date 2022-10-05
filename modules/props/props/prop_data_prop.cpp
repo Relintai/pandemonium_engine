@@ -25,6 +25,8 @@ SOFTWARE.
 #include "../prop_instance.h"
 #include "prop_data.h"
 
+#include "modules/modules_enabled.gen.h"
+
 Ref<PropData> PropDataProp::get_prop() const {
 	return _prop;
 }
@@ -46,7 +48,7 @@ void PropDataProp::set_snap_axis(Vector3 value) {
 	_snap_axis = value;
 }
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 void PropDataProp::_add_textures_into(Ref<TexturePacker> texture_packer) {
 	if (get_prop().is_valid()) {
 		get_prop()->add_textures_into(texture_packer);
@@ -103,7 +105,7 @@ void PropDataProp::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_snap_axis", "value"), &PropDataProp::set_snap_axis);
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "snap_axis"), "set_snap_axis", "get_snap_axis");
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	ClassDB::bind_method(D_METHOD("_add_textures_into", "texture_packer"), &PropDataProp::_add_textures_into);
 #endif
 }

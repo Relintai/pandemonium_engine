@@ -28,6 +28,8 @@ SOFTWARE.
 #include "../utility/entity_create_info.h"
 #include "core/config/project_settings.h"
 
+#include "modules/modules_enabled.gen.h"
+
 ESS *ESS::instance;
 
 ESS *ESS::get_singleton() {
@@ -495,7 +497,7 @@ void ESS::set_class_xp_data(const PoolIntArray &data) {
 	_class_xps = data;
 }
 
-#ifdef TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 int ESS::get_texture_flags() const {
 	return _texture_flags;
 }
@@ -814,7 +816,7 @@ void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_class_xp_data", "data"), &ESS::set_character_xp_data);
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "class_xp_data"), "set_class_xp_data", "get_class_xp_data");
 
-#ifdef TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	ClassDB::bind_method(D_METHOD("get_texture_flags"), &ESS::get_texture_flags);
 	ClassDB::bind_method(D_METHOD("set_texture_flags", "flags"), &ESS::set_texture_flags);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "texture_flags", PROPERTY_HINT_FLAGS, "Mipmaps,Repeat,Filter,Anisotropic Linear,Convert to Linear,Mirrored Repeat,Video Surface"), "set_texture_flags", "get_texture_flags");
@@ -899,13 +901,13 @@ ESS::ESS() {
 	_class_xps = GLOBAL_DEF("ess/xp/class_xps", PoolIntArray());
 	_character_xps = GLOBAL_DEF("ess/xp/character_xps", PoolIntArray());
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	_default_ess_material_cache_class = GLOBAL_DEF("ess/material_cache/default_ess_material_cache_class", "ESSMaterialCachePCM");
 #else
 	_default_ess_material_cache_class = GLOBAL_DEF("ess/material_cache/default_ess_material_cache_class", "ESSMaterialCache");
 #endif
 
-#ifdef TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	_texture_flags = GLOBAL_DEF("ess/material_cache/texture_flags", Texture::FLAG_MIPMAPS | Texture::FLAG_FILTER);
 
 	_max_atlas_size = GLOBAL_DEF("ess/material_cache/max_atlas_size", 1024);

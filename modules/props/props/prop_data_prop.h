@@ -27,7 +27,9 @@ SOFTWARE.
 
 #include "prop_data.h"
 
-#if TEXTURE_PACKER_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 #include "../../texture_packer/texture_packer.h"
 #endif
 
@@ -44,7 +46,7 @@ public:
 	Vector3 get_snap_axis();
 	void set_snap_axis(Vector3 value);
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	void _add_textures_into(Ref<TexturePacker> texture_packer);
 #endif
 

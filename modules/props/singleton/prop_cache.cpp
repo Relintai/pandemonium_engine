@@ -37,6 +37,8 @@ SOFTWARE.
 
 #include "core/containers/hashfuncs.h"
 
+#include "modules/modules_enabled.gen.h"
+
 #define VARIANT_ARRAY_GET(arr)             \
 	Vector<Variant> r;                     \
 	for (int i = 0; i < arr.size(); i++) { \
@@ -57,7 +59,7 @@ void PropCache::set_default_prop_material_cache_class(const StringName &cls_name
 	_default_prop_material_cache_class = cls_name;
 }
 
-#ifdef TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 int PropCache::get_texture_flags() const {
 	return _texture_flags;
 }
@@ -342,13 +344,13 @@ Ref<Resource> PropCache::load_resource(const String &path, const String &type_hi
 PropCache::PropCache() {
 	_instance = this;
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	_default_prop_material_cache_class = GLOBAL_DEF("props/default_prop_material_cache_class", "PropMaterialCachePCM");
 #else
 	_default_prop_material_cache_class = GLOBAL_DEF("props/default_prop_material_cache_class", "PropMaterialCache");
 #endif
 
-#ifdef TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	_texture_flags = GLOBAL_DEF("props/texture_flags", Texture::FLAG_MIPMAPS | Texture::FLAG_FILTER);
 
 	_max_atlas_size = GLOBAL_DEF("props/max_atlas_size", 1024);
@@ -369,7 +371,7 @@ void PropCache::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_default_prop_material_cache_class", "cls_name"), &PropCache::set_default_prop_material_cache_class);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "default_prop_material_cache_class"), "set_default_prop_material_cache_class", "get_default_prop_material_cache_class");
 
-#ifdef TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	ClassDB::bind_method(D_METHOD("get_texture_flags"), &PropCache::get_texture_flags);
 	ClassDB::bind_method(D_METHOD("set_texture_flags", "flags"), &PropCache::set_texture_flags);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "texture_flags", PROPERTY_HINT_FLAGS, "Mipmaps,Repeat,Filter,Anisotropic Linear,Convert to Linear,Mirrored Repeat,Video Surface"), "set_texture_flags", "get_texture_flags");

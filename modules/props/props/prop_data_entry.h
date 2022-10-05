@@ -25,6 +25,8 @@ SOFTWARE.
 #include "core/math/transform.h"
 #include "core/object/resource.h"
 
+#include "modules/modules_enabled.gen.h"
+
 class PropData;
 class PropMesher;
 class TexturePacker;
@@ -36,7 +38,7 @@ public:
 	Transform get_transform() const;
 	void set_transform(const Transform &value);
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	void add_textures_into(Ref<TexturePacker> texture_packer);
 #endif
 

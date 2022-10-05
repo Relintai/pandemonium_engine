@@ -29,7 +29,9 @@ SOFTWARE.
 #include "library/terrain_library_simple.h"
 #include "library/terrain_material_cache.h"
 
-#ifdef TEXTURE_PACKER_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 #include "library/terrain_library_merger.h"
 #include "library/terrain_library_merger_pcm.h"
 #include "library/terrain_material_cache_pcm.h"
@@ -80,7 +82,7 @@ void register_terraman_types() {
 
 	ClassDB::register_class<TerrainMaterialCache>();
 
-#ifdef TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	ClassDB::register_class<TerrainSurfaceMerger>();
 	ClassDB::register_class<TerrainLibraryMerger>();
 	ClassDB::register_class<TerrainLibraryMergerPCM>();

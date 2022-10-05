@@ -28,6 +28,8 @@ SOFTWARE.
 
 #include "scene/resources/material.h"
 
+#include "modules/modules_enabled.gen.h"
+
 class Prop2DData;
 class Prop2DMesher;
 class TexturePacker;
@@ -69,7 +71,7 @@ public:
 	bool get_use_parent_material() const;
 	void set_use_parent_material(const bool value);
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	void add_textures_into(Ref<TexturePacker> texture_packer);
 #endif
 

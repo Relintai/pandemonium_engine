@@ -40,6 +40,8 @@ SOFTWARE.
 
 #include "../material_cache/prop_2d_material_cache.h"
 
+#include "modules/modules_enabled.gen.h"
+
 const String TiledWall2DData::BINDING_STRING_TILED_WALL_TILING_TYPE = "None,Horizontal,Vertical,Both";
 
 TiledWall2DData::TiledWall2DTilingType TiledWall2DData::get_tiling_type() const {
@@ -159,7 +161,7 @@ void TiledWall2DData::material_set(const Ref<Material> &value) {
 	emit_changed();
 }
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 void TiledWall2DData::add_textures_into(Ref<TexturePacker> texture_packer) {
 	ERR_FAIL_COND(!texture_packer.is_valid());
 
@@ -278,7 +280,7 @@ void TiledWall2DData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("material_set", "value"), &TiledWall2DData::material_set);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "material", PROPERTY_HINT_RESOURCE_TYPE, "Material"), "material_set", "material_get");
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	ClassDB::bind_method(D_METHOD("add_textures_into", "texture_packer"), &TiledWall2DData::add_textures_into);
 #endif
 

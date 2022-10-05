@@ -62,7 +62,9 @@ SOFTWARE.
 
 #include "material_cache/prop_material_cache.h"
 
-#ifdef TEXTURE_PACKER_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 #include "material_cache/prop_material_cache_pcm.h"
 #endif
 
@@ -104,7 +106,7 @@ void register_props_types() {
 
 	ClassDB::register_class<PropMaterialCache>();
 
-#ifdef TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	ClassDB::register_class<PropMaterialCachePCM>();
 #endif
 

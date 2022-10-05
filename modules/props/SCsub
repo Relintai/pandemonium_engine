@@ -9,12 +9,6 @@ import version
 if os.path.isdir('../mesh_data_resource'):
     module_env.Append(CPPDEFINES=['MESH_DATA_RESOURCE_PRESENT'])
 
-has_texture_packer = False
-
-if os.path.isdir('../texture_packer'):
-    has_texture_packer = True
-    module_env.Append(CPPDEFINES=['TEXTURE_PACKER_PRESENT'])
-
 if os.path.isdir('../terraman'):
     module_env.Append(CPPDEFINES=['TERRAMAN_PRESENT'])
 
@@ -65,7 +59,7 @@ sources = [
 if version.minor >= 4:
     sources.append("props/prop_data_portal.cpp")
 
-if has_texture_packer:
+if env["module_texture_packer_enabled"]:
     sources.append("material_cache/prop_material_cache_pcm.cpp")
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':

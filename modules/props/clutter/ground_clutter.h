@@ -24,7 +24,9 @@ SOFTWARE.
 
 #include "core/object/resource.h"
 
-#ifdef TEXTURE_PACKER_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 #include "../../texture_packer/texture_packer.h"
 #endif
 
@@ -45,7 +47,7 @@ public:
 	void add_meshes_to(Ref<VoxelMesher> mesher, Ref<VoxelChunk> chunk, int x, int y, int z);
 #endif
 
-#ifdef TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	void add_textures_to(Ref<TexturePacker> packer);
 #endif
 

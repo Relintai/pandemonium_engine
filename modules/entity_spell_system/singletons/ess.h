@@ -31,6 +31,7 @@ SOFTWARE.
 #include "scene/main/node.h"
 
 #include "../defines.h"
+#include "modules/modules_enabled.gen.h"
 
 class ESSResourceDB;
 class ESSEntitySpawner;
@@ -171,7 +172,7 @@ public:
 	PoolIntArray get_class_xp_data();
 	void set_class_xp_data(const PoolIntArray &data);
 
-#ifdef TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	int get_texture_flags() const;
 	void set_texture_flags(const int flags);
 
@@ -277,7 +278,7 @@ private:
 
 	Map<uint64_t, Ref<ESSMaterialCache>> _material_cache;
 
-#ifdef TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	int _texture_flags;
 	int _max_atlas_size;
 	bool _keep_original_atlases;

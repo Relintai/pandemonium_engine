@@ -26,7 +26,9 @@ SOFTWARE.
 
 #include "scene/3d/spatial.h"
 
-#if TEXTURE_PACKER_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 #include "../../texture_packer/texture_packer.h"
 #endif
 
@@ -39,7 +41,7 @@ void PropDataEntry::set_transform(const Transform &value) {
 	_transform = value;
 }
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 void PropDataEntry::add_textures_into(Ref<TexturePacker> texture_packer) {
 	if (has_method("_add_textures_into"))
 		call("_add_textures_into", texture_packer);
@@ -81,7 +83,7 @@ void PropDataEntry::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_transform", "value"), &PropDataEntry::set_transform);
 	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM, "transform"), "set_transform", "get_transform");
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	BIND_VMETHOD(MethodInfo("_add_textures_into", PropertyInfo(Variant::OBJECT, "texture_packer", PROPERTY_HINT_RESOURCE_TYPE, "TexturePacker")));
 
 	ClassDB::bind_method(D_METHOD("add_textures_into", "texture_packer"), &PropDataEntry::add_textures_into);

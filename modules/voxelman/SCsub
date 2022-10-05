@@ -4,11 +4,6 @@ Import('env')
 
 module_env = env.Clone()
 
-has_texture_packer = False
-if os.path.isdir('../texture_packer'):
-    module_env.Append(CPPDEFINES=['TEXTURE_PACKER_PRESENT'])
-    has_texture_packer = True
-
 if os.path.isdir('../mesh_data_resource'):
     module_env.Append(CPPDEFINES=['MESH_DATA_RESOURCE_PRESENT'])
 
@@ -80,7 +75,7 @@ sources = [
     "world/jobs/voxel_prop_job.cpp",
 ]
 
-if has_texture_packer:
+if env["module_texture_packer_enabled"]:
     sources.append("library/voxel_library_merger.cpp")
     sources.append("library/voxel_surface_merger.cpp")
     sources.append("library/voxel_library_merger_pcm.cpp")

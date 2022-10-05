@@ -40,6 +40,8 @@ SOFTWARE.
 
 #include "../material_cache/prop_material_cache.h"
 
+#include "modules/modules_enabled.gen.h"
+
 const String TiledWallData::BINDING_STRING_TILED_WALL_TILING_TYPE = "None,Horizontal,Vertical,Both";
 const String TiledWallData::BINDING_STRING_TILED_WALL_COLLIDER_TYPE = "None,Plane,Box,Convex Mesh,Concave Mesh";
 
@@ -274,7 +276,7 @@ void TiledWallData::materials_set(const Vector<Variant> &materials) {
 	emit_changed();
 }
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 void TiledWallData::add_textures_into(Ref<TexturePacker> texture_packer) {
 	ERR_FAIL_COND(!texture_packer.is_valid());
 
@@ -567,7 +569,7 @@ void TiledWallData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("materials_set"), &TiledWallData::materials_set);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "23/19:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	ClassDB::bind_method(D_METHOD("add_textures_into", "texture_packer"), &TiledWallData::add_textures_into);
 #endif
 

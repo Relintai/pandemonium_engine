@@ -28,7 +28,9 @@ SOFTWARE.
 
 #include "prop_2d_data.h"
 
-#if TEXTURE_PACKER_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 #include "../../texture_packer/texture_packer.h"
 #endif
 
@@ -39,7 +41,7 @@ public:
 	Ref<Prop2DData> get_prop() const;
 	void set_prop(const Ref<Prop2DData> value);
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	void _add_textures_into(Ref<TexturePacker> texture_packer);
 #endif
 

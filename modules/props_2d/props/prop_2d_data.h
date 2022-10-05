@@ -32,7 +32,9 @@ SOFTWARE.
 
 #include "prop_2d_data_entry.h"
 
-#if TEXTURE_PACKER_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 #include "../../texture_packer/texture_packer.h"
 #endif
 
@@ -53,7 +55,7 @@ public:
 	Vector<Variant> get_props();
 	void set_props(const Vector<Variant> &props);
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	void add_textures_into(Ref<TexturePacker> texture_packer);
 #endif
 

@@ -22,11 +22,13 @@ SOFTWARE.
 
 #include "prop_texture_job.h"
 
-#if TEXTURE_PACKER_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 #include "../../texture_packer/texture_packer.h"
 #endif
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 Ref<TexturePacker> PropTextureJob::get_merger() {
 	return _merger;
 }
@@ -37,7 +39,7 @@ void PropTextureJob::set_merger(const Ref<TexturePacker> &merger) {
 #endif
 
 void PropTextureJob::_execute() {
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	if (!_merger.is_valid()) {
 		set_complete(true);
 		return;
@@ -56,7 +58,7 @@ PropTextureJob::~PropTextureJob() {
 }
 
 void PropTextureJob::_bind_methods() {
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	ClassDB::bind_method(D_METHOD("get_merger"), &PropTextureJob::get_merger);
 	ClassDB::bind_method(D_METHOD("set_merger", "value"), &PropTextureJob::set_merger);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "merger", PROPERTY_HINT_RESOURCE_TYPE, "TexturePacker"), "set_merger", "get_merger");

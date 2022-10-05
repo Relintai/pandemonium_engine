@@ -33,6 +33,8 @@ SOFTWARE.
 #include "servers/physics_server.h"
 #include "singleton/prop_cache.h"
 
+#include "modules/modules_enabled.gen.h"
+
 #ifdef MESH_DATA_RESOURCE_PRESENT
 #include "../mesh_data_resource/mesh_data_resource.h"
 #endif
@@ -41,7 +43,7 @@ SOFTWARE.
 #include "../mesh_utils/fast_quadratic_mesh_simplifier.h"
 #endif
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 #include "../texture_packer/texture_packer.h"
 #endif
 

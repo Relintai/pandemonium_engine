@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "ground_clutter.h"
 
+#include "modules/modules_enabled.gen.h"
+
 #ifdef VOXELMAN_PRESENT
 #include "../../voxelman/world/voxel_chunk.h"
 
@@ -38,7 +40,7 @@ void GroundClutter::add_meshes_to(Ref<VoxelMesher> mesher, Ref<VoxelChunk> chunk
 }
 #endif
 
-#ifdef TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 void GroundClutter::add_textures_to(Ref<TexturePacker> packer) {
 	if (has_method("_add_textures_to"))
 		call("_add_textures_to", packer);
@@ -52,7 +54,7 @@ GroundClutter::~GroundClutter() {
 }
 
 void GroundClutter::_bind_methods() {
-#ifdef TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	BIND_VMETHOD(MethodInfo("_add_textures_to", PropertyInfo(Variant::OBJECT, "packer", PROPERTY_HINT_RESOURCE_TYPE, "TexturePacker")));
 
 	ClassDB::bind_method(D_METHOD("add_textures_to", "packer"), &GroundClutter::add_textures_to);

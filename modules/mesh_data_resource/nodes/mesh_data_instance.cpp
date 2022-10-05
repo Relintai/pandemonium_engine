@@ -4,7 +4,9 @@
 
 #include "core/io/image.h"
 
-#if TEXTURE_PACKER_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 #include "../../texture_packer/texture_resource/packer_image_resource.h"
 #endif
 
@@ -165,7 +167,7 @@ void MeshDataInstance::setup_material_texture() {
 			return;
 		}
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 		Ref<PackerImageResource> r = _texture;
 
 		if (r.is_valid()) {

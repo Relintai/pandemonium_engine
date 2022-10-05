@@ -26,7 +26,9 @@ SOFTWARE.
 
 #include "scene/2d/node_2d.h"
 
-#if TEXTURE_PACKER_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 #include "../../texture_packer/texture_packer.h"
 #endif
 
@@ -108,7 +110,7 @@ void Prop2DDataEntry::set_use_parent_material(const bool value) {
 	_use_parent_material = value;
 }
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 void Prop2DDataEntry::add_textures_into(Ref<TexturePacker> texture_packer) {
 	if (has_method("_add_textures_into"))
 		call("_add_textures_into", texture_packer);
@@ -248,7 +250,7 @@ void Prop2DDataEntry::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_use_parent_material", "value"), &Prop2DDataEntry::set_use_parent_material);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_parent_material"), "set_use_parent_material", "get_use_parent_material");
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	BIND_VMETHOD(MethodInfo("_add_textures_into", PropertyInfo(Variant::OBJECT, "texture_packer", PROPERTY_HINT_RESOURCE_TYPE, "TexturePacker")));
 
 	ClassDB::bind_method(D_METHOD("add_textures_into", "texture_packer"), &Prop2DDataEntry::add_textures_into);

@@ -18,6 +18,10 @@
 
 #include "servers/rendering_server.h"
 
+#include "modules/modules_enabled.gen.h"
+
+#include "./singleton/prop_cache.h"
+
 #if MESH_DATA_RESOURCE_PRESENT
 //define PROPS_PRESENT, so things compile. That module's scsub will define this too while compiling,
 //but not when included from here.
@@ -35,7 +39,7 @@
 #include "scene/3d/camera.h"
 #include "scene/main/viewport.h"
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 #include "./singleton/prop_cache.h"
 #endif
 

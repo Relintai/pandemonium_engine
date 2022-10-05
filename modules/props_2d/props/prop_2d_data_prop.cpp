@@ -25,6 +25,8 @@ SOFTWARE.
 #include "../prop_2d_instance.h"
 #include "prop_2d_data.h"
 
+#include "modules/modules_enabled.gen.h"
+
 Ref<Prop2DData> Prop2DDataProp2D::get_prop() const {
 	return _prop;
 }
@@ -32,7 +34,7 @@ void Prop2DDataProp2D::set_prop(const Ref<Prop2DData> value) {
 	_prop = value;
 }
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 void Prop2DDataProp2D::_add_textures_into(Ref<TexturePacker> texture_packer) {
 	if (get_prop().is_valid()) {
 		get_prop()->add_textures_into(texture_packer);
@@ -92,7 +94,7 @@ void Prop2DDataProp2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_prop", "value"), &Prop2DDataProp2D::set_prop);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "prop", PROPERTY_HINT_RESOURCE_TYPE, "Prop2DData"), "set_prop", "get_prop");
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	ClassDB::bind_method(D_METHOD("_add_textures_into", "texture_packer"), &Prop2DDataProp2D::_add_textures_into);
 #endif
 }

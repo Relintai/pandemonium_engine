@@ -8,6 +8,10 @@
 
 #include "core/config/engine.h"
 
+#include "modules/modules_enabled.gen.h"
+
+#include "./singleton/prop_2d_cache.h"
+
 #define VARIANT_ARRAY_GET(arr)             \
 	Vector<Variant> r;                     \
 	for (int i = 0; i < arr.size(); i++) { \
@@ -32,7 +36,7 @@
 #include "material_cache/prop_2d_material_cache.h"
 #include "scene/3d/camera.h"
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 #include "./singleton/prop_2d_cache.h"
 #endif
 

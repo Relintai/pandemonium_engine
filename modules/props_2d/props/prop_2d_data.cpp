@@ -28,6 +28,8 @@ SOFTWARE.
 
 #include "servers/physics_server.h"
 
+#include "modules/modules_enabled.gen.h"
+
 int Prop2DData::get_id() const {
 	return _id;
 }
@@ -74,7 +76,7 @@ void Prop2DData::set_props(const Vector<Variant> &props) {
 	}
 }
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 void Prop2DData::add_textures_into(Ref<TexturePacker> texture_packer) {
 	ERR_FAIL_COND(!texture_packer.is_valid());
 
@@ -141,7 +143,7 @@ void Prop2DData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_props", "props"), &Prop2DData::set_props);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "props", PROPERTY_HINT_NONE, "23/19:Prop2DDataEntry", PROPERTY_USAGE_DEFAULT, "Prop2DDataEntry"), "set_props", "get_props");
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	ClassDB::bind_method(D_METHOD("add_textures_into", "texture_packer"), &Prop2DData::add_textures_into);
 #endif
 

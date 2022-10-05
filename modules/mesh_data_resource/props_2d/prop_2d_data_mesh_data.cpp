@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "prop_2d_data_mesh_data.h"
 
+#include "modules/modules_enabled.gen.h"
+
 #if PROPS_2D_PRESENT
 
 #include "../nodes/mesh_data_instance.h"
@@ -55,7 +57,7 @@ void Prop2DDataMeshData::set_snap_axis(Vector3 value) {
 	_snap_axis = value;
 }
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 void Prop2DDataMeshData::_add_textures_into(Ref<TexturePacker> texture_packer) {
 	if (get_texture().is_valid()) {
 		texture_packer->add_texture(get_texture());
@@ -129,7 +131,7 @@ void Prop2DDataMeshData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_snap_axis", "value"), &Prop2DDataMeshData::set_snap_axis);
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "snap_axis"), "set_snap_axis", "get_snap_axis");
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	ClassDB::bind_method(D_METHOD("_add_textures_into", "texture_packer"), &Prop2DDataMeshData::_add_textures_into);
 #endif
 }

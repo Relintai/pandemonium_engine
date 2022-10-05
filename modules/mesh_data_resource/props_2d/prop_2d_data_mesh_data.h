@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#include "modules/modules_enabled.gen.h"
+
 #if PROPS_2D_PRESENT
 
 #include "../../props_2d/props/prop_2d_data_entry.h"
@@ -31,7 +33,7 @@ SOFTWARE.
 
 #include "../mesh_data_resource.h"
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 #include "../../texture_packer/texture_packer.h"
 #endif
 
@@ -53,7 +55,7 @@ public:
 	Vector3 get_snap_axis();
 	void set_snap_axis(Vector3 value);
 
-#if TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	void _add_textures_into(Ref<TexturePacker> texture_packer);
 #endif
 

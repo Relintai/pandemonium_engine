@@ -35,6 +35,8 @@ SOFTWARE.
 
 #include "../props/prop_data.h"
 
+#include "modules/modules_enabled.gen.h"
+
 class PropMaterialCache;
 class TiledWallData;
 
@@ -47,7 +49,7 @@ public:
 	StringName get_default_prop_material_cache_class();
 	void set_default_prop_material_cache_class(const StringName &cls_name);
 
-#ifdef TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	int get_texture_flags() const;
 	void set_texture_flags(const int flags);
 
@@ -110,7 +112,7 @@ protected:
 	Mutex _tiled_wall_material_cache_mutex;
 	Mutex _custom_keyed_material_cache_mutex;
 
-#ifdef TEXTURE_PACKER_PRESENT
+#ifdef MODULE_TEXTURE_PACKER_ENABLED
 	int _texture_flags;
 	int _max_atlas_size;
 	bool _keep_original_atlases;
