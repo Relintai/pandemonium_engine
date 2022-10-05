@@ -35,7 +35,9 @@ SOFTWARE.
 
 #include "core/os/os.h"
 
-#if PROPS_2D_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_PROPS_2D_ENABLED
 #include "../../props_2d/props/prop_2d_data.h"
 #endif
 
@@ -176,7 +178,7 @@ public:
 	void generation_remove_index(const int index);
 	int generation_get_size() const;
 
-#if PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 	void prop_add(Transform transform, const Ref<Prop2DData> &prop, const bool apply_scale = true);
 #endif
 

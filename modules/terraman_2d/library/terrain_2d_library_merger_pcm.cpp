@@ -28,7 +28,7 @@ SOFTWARE.
 
 #include "modules/modules_enabled.gen.h"
 
-#ifdef PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 #include "../../props_2d/props/prop_2d_data.h"
 
 #include "../../props_2d/props/prop_2d_data_prop.h"
@@ -237,7 +237,7 @@ void Terrain2DLibraryMergerPCM::_prop_material_cache_get_key(Ref<Terrain2DChunk>
 	Vector<uint64_t> props;
 
 	/*
-	#ifdef PROPS_2D_PRESENT
+	#ifdef MODULE_PROPS_2D_ENABLED
 		for (int i = 0; i < chunk->prop_get_count(); ++i) {
 			Ref<Prop2DData> prop = chunk->prop_get(i);
 
@@ -340,7 +340,7 @@ void Terrain2DLibraryMergerPCM::_prop_material_cache_get_key(Ref<Terrain2DChunk>
 	}
 
 	/*
-	#ifdef PROPS_2D_PRESENT
+	#ifdef MODULE_PROPS_2D_ENABLED
 		for (int i = 0; i < chunk->prop_get_count(); ++i) {
 			Ref<Prop2DData> prop = chunk->prop_get(i);
 
@@ -528,7 +528,7 @@ void Terrain2DLibraryMergerPCM::set_terra_surfaces(const Vector<Variant> &surfac
 	}
 }
 
-#ifdef PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 Ref<Prop2DData> Terrain2DLibraryMergerPCM::get_prop(const int index) {
 	ERR_FAIL_INDEX_V(index, _props.size(), Ref<Prop2DData>());
 
@@ -639,7 +639,7 @@ void Terrain2DLibraryMergerPCM::refresh_rects() {
 		setup_material_albedo(MATERIAL_INDEX_LIQUID, tex);
 	}
 
-#ifdef PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 	//todo add this back
 	//texture_added = false;
 	for (int i = 0; i < _props.size(); i++) {
@@ -731,7 +731,7 @@ Terrain2DLibraryMergerPCM::~Terrain2DLibraryMergerPCM() {
 	_prop_packer.unref();
 }
 
-#ifdef PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 bool Terrain2DLibraryMergerPCM::process_prop_textures(Ref<Prop2DData> prop) {
 	/*
 	if (!prop.is_valid()) {
@@ -794,7 +794,7 @@ void Terrain2DLibraryMergerPCM::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_terra_surfaces"), &Terrain2DLibraryMergerPCM::set_terra_surfaces);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "terra_surfaces", PROPERTY_HINT_NONE, "23/19:Terrain2DSurfaceMerger", PROPERTY_USAGE_DEFAULT, "Terrain2DSurfaceMerger"), "set_terra_surfaces", "get_terra_surfaces");
 
-#ifdef PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 	ClassDB::bind_method(D_METHOD("get_props"), &Terrain2DLibraryMergerPCM::get_props);
 	ClassDB::bind_method(D_METHOD("set_props"), &Terrain2DLibraryMergerPCM::set_props);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "props", PROPERTY_HINT_NONE, "23/19:Prop2DData", PROPERTY_USAGE_DEFAULT, "Prop2DData"), "set_props", "get_props");

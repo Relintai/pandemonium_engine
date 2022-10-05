@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "modules/modules_enabled.gen.h"
 
-#if PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 
 #include "../nodes/mesh_data_instance.h"
 #include "scene/resources/material.h"

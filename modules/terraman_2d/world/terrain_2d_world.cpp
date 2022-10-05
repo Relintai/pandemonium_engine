@@ -30,7 +30,7 @@ SOFTWARE.
 
 #include "modules/modules_enabled.gen.h"
 
-#if PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 #include "../../props_2d/props/prop_2d_data.h"
 #include "../../props_2d/props/prop_2d_data_entry.h"
 #include "../../props_2d/props/prop_2d_data_light.h"
@@ -634,7 +634,7 @@ int Terrain2DWorld::generation_get_size() const {
 	return _generating.size();
 }
 
-#if PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 void Terrain2DWorld::prop_add(Transform transform, const Ref<Prop2DData> &prop, const bool apply_voxel_scale) {
 	//TODO
 	/*
@@ -1286,7 +1286,7 @@ void Terrain2DWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("is_position_walkable", "position"), &Terrain2DWorld::is_position_walkable);
 	ClassDB::bind_method(D_METHOD("on_chunk_mesh_generation_finished", "chunk"), &Terrain2DWorld::on_chunk_mesh_generation_finished);
 
-#if PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "apply_voxel_scale"), &Terrain2DWorld::prop_add, DEFVAL(true));
 #endif
 

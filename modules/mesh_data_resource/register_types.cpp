@@ -44,7 +44,7 @@ SOFTWARE.
 #include "props/prop_data_mesh_data.h"
 #endif
 
-#if PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 #include "../props_2d/singleton/prop_2d_utils.h"
 #include "props_2d/prop_2d_data_mesh_data.h"
 #endif
@@ -62,7 +62,7 @@ void register_mesh_data_resource_types() {
 	PropUtils::add_processor(processor);
 #endif
 
-#if PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 	ClassDB::register_class<Prop2DDataMeshData>();
 	Ref<Prop2DDataMeshData> prop_2d_processor = Ref<Prop2DDataMeshData>(memnew(Prop2DDataMeshData));
 	Prop2DUtils::add_processor(prop_2d_processor);

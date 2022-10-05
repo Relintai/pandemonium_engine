@@ -739,7 +739,7 @@ void Terrain2DChunk::clear_baked_lights() {
 		call("_clear_baked_lights");
 }
 
-#if PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 void Terrain2DChunk::prop_add(const Transform2D &tarnsform, const Ref<Prop2DData> &prop) {
 	ERR_FAIL_COND(!prop.is_valid());
 
@@ -798,7 +798,7 @@ int Terrain2DChunk::mesh_data_resource_addv(const Vector2 &local_data_pos, const
 		AABB mesh_aabb = e.transform.xform(mesh->get_aabb());
 		e.is_inside = aabb.encloses(mesh_aabb);
 
-	#if PROPS_2D_PRESENT
+	#ifdef MODULE_PROPS_2D_ENABLED
 		if (get_library().is_valid() && texture.is_valid()) {
 			e.uv_rect = get_library()->get_prop_uv_rect(texture);
 		} else {
@@ -845,7 +845,7 @@ int Terrain2DChunk::mesh_data_resource_add(const Transform2D &local_transform, c
 	AABB mesh_aabb = e.transform.xform(mesh->get_aabb());
 	e.is_inside = aabb.encloses(mesh_aabb);
 
-#if PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 	if (get_library().is_valid() && texture.is_valid())
 		e.uv_rect = get_library()->get_prop_uv_rect(texture);
 	else
@@ -1171,7 +1171,7 @@ Terrain2DChunk::~Terrain2DChunk() {
 		_library.unref();
 	}
 
-#if PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 	props_clear();
 #endif
 
@@ -1584,7 +1584,7 @@ void Terrain2DChunk::_bind_methods() {
 
 	//Meshes
 
-#if PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 	ClassDB::bind_method(D_METHOD("prop_add", "prop"), &Terrain2DChunk::prop_add);
 	ClassDB::bind_method(D_METHOD("prop_get", "index"), &Terrain2DChunk::prop_get);
 	ClassDB::bind_method(D_METHOD("prop_get_count"), &Terrain2DChunk::prop_get_count);

@@ -7,9 +7,6 @@
 #include "modules/modules_enabled.gen.h"
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
-//define PROPS_PRESENT, so things compile. That module's scsub will define this too while compiling,
-//but not when included from here.
-#define PROPS_2D_PRESENT 1
 #include "../mesh_data_resource/props_2d/prop_2d_data_mesh_data.h"
 #endif
 

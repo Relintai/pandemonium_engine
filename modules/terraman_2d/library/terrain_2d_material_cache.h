@@ -33,6 +33,8 @@ SOFTWARE.
 
 #include "../defines.h"
 
+#include "modules/modules_enabled.gen.h"
+
 class Terrain2DLibrary;
 
 class Terrain2DMaterialCache : public Resource {
@@ -74,7 +76,7 @@ public:
 	//Also do it for props
 	virtual Ref<Texture> texture_get_merged();
 
-#ifdef PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 	void prop_add_textures(const Ref<Prop2DData> &prop);
 	void prop_remove_textures(const Ref<Prop2DData> &prop);
 #endif

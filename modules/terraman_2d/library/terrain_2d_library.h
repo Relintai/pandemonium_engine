@@ -32,12 +32,14 @@ SOFTWARE.
 
 #include "../defines.h"
 
+#include "modules/modules_enabled.gen.h"
+
 class Terrain2DMaterialCache;
 class Terrain2DSurface;
 class Terrain2DMesher;
 class PackedScene;
 class Terrain2DChunk;
-#ifdef PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 class Prop2DData;
 #endif
 
@@ -111,7 +113,7 @@ public:
 	virtual int scene_get_num() const;
 	virtual void scenes_clear();
 
-#ifdef PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 	virtual Ref<Prop2DData> prop_get(const int id);
 	virtual void prop_add(Ref<Prop2DData> value);
 	virtual bool prop_has(const Ref<Prop2DData> &value) const;

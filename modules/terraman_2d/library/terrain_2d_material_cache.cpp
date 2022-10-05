@@ -26,7 +26,7 @@ SOFTWARE.
 
 #include "modules/modules_enabled.gen.h"
 
-#ifdef PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 #include "../../props_2d/props/prop_2d_data.h"
 #include "../../props_2d/props/prop_2d_data_prop.h"
 
@@ -161,7 +161,7 @@ Ref<Texture> Terrain2DMaterialCache::texture_get_merged() {
 	return Ref<Texture>();
 }
 
-#ifdef PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 void Terrain2DMaterialCache::prop_add_textures(const Ref<Prop2DData> &prop) {
 	if (!prop.is_valid()) {
 		return;
@@ -275,7 +275,7 @@ void Terrain2DMaterialCache::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("texture_get_merged"), &Terrain2DMaterialCache::texture_get_merged);
 
-#ifdef PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 	ClassDB::bind_method(D_METHOD("prop_add_textures", "prop"), &Terrain2DMaterialCache::prop_add_textures);
 	ClassDB::bind_method(D_METHOD("prop_remove_textures", "prop"), &Terrain2DMaterialCache::prop_remove_textures);
 #endif

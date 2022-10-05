@@ -45,7 +45,7 @@ SOFTWARE.
 
 #include "modules/modules_enabled.gen.h"
 
-#if PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 #include "../../props_2d/props/prop_2d_data.h"
 #endif
 
@@ -260,7 +260,7 @@ public:
 	void bake_light(Ref<Terrain2DLight> light);
 	void clear_baked_lights();
 
-#if PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 	void prop_add(const Transform2D &tarnsform, const Ref<Prop2DData> &prop);
 	Ref<Prop2DData> prop_get(const int index);
 	Transform2D prop_get_tarnsform(const int index);
@@ -359,7 +359,7 @@ protected:
 	virtual void _generation_physics_process(const float delta);
 
 protected:
-#if PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 	struct Prop2DDataStore {
 		Transform2D transform;
 		Ref<Prop2DData> prop;
@@ -440,7 +440,7 @@ protected:
 
 	Vector<Ref<Terrain2DStructure>> _voxel_structures;
 
-#if PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 	Vector<Prop2DDataStore> _props;
 #endif
 

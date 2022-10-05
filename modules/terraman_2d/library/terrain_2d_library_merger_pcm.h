@@ -34,6 +34,8 @@ SOFTWARE.
 
 #include "core/os/mutex.h"
 
+#include "modules/modules_enabled.gen.h"
+
 class Terrain2DSurfaceSimple;
 class Terrain2DMesher;
 class PackedScene;
@@ -80,7 +82,7 @@ public:
 	Vector<Variant> get_terra_surfaces();
 	void set_terra_surfaces(const Vector<Variant> &surfaces);
 
-#ifdef PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 	Ref<Prop2DData> get_prop(const int index);
 	void add_prop(Ref<Prop2DData> value);
 	bool has_prop(const Ref<Prop2DData> &value) const;
@@ -105,7 +107,7 @@ public:
 	~Terrain2DLibraryMergerPCM();
 
 protected:
-#ifdef PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 	bool process_prop_textures(Ref<Prop2DData> prop);
 #endif
 
@@ -115,7 +117,7 @@ protected:
 	Map<int, Ref<Terrain2DMaterialCachePCM>> _prop_material_cache;
 
 	Vector<Ref<Terrain2DSurfaceMerger>> _terra_surfaces;
-#ifdef PROPS_2D_PRESENT
+#ifdef MODULE_PROPS_2D_ENABLED
 	Vector<Ref<Prop2DData>> _props;
 #endif
 
