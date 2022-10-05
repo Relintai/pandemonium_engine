@@ -35,11 +35,13 @@ SOFTWARE.
 #include "scene/resources/material.h"
 #include "scene/resources/mesh.h"
 
+#include "modules/modules_enabled.gen.h"
+
 #ifdef MESH_DATA_RESOURCE_PRESENT
 #include "../mesh_data_resource/mesh_data_resource.h"
 #endif
 
-#ifdef TERRAMAN_PRESENT
+#ifdef MODULE_TERRAMAN_ENABLED
 #include "../terraman/data/terrain_light.h"
 #endif
 
@@ -157,7 +159,7 @@ public:
 	void bake_colors_lights_rao();
 	void bake_colors_lights();
 
-#ifdef TERRAMAN_PRESENT
+#ifdef MODULE_TERRAMAN_ENABLED
 	void bake_lights(MeshInstance *node, Vector<Ref<TerrainLight>> &lights);
 #endif
 

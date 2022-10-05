@@ -28,6 +28,8 @@ SOFTWARE.
 #include "material_cache/prop_material_cache.h"
 #include "tiled_wall/tiled_wall_data.h"
 
+#include "modules/modules_enabled.gen.h"
+
 const String PropMesher::BINDING_STRING_BUILD_FLAGS = "Use Lighting,Use AO,Use RAO,Bake Lights";
 
 bool PropMesher::Vertex::operator==(const Vertex &p_vertex) const {
@@ -1101,7 +1103,7 @@ void PropMesher::bake_colors_lights() {
 	}
 }
 
-#ifdef TERRAMAN_PRESENT
+#ifdef MODULE_TERRAMAN_ENABLED
 void PropMesher::bake_lights(MeshInstance *node, Vector<Ref<TerrainLight>> &lights) {
 	ERR_FAIL_COND(node == NULL);
 

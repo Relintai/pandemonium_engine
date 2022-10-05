@@ -9,9 +9,6 @@ import version
 if os.path.isdir('../mesh_data_resource'):
     module_env.Append(CPPDEFINES=['MESH_DATA_RESOURCE_PRESENT'])
 
-if os.path.isdir('../terraman'):
-    module_env.Append(CPPDEFINES=['TERRAMAN_PRESENT'])
-
 if os.path.isdir('../mesh_utils'):
     module_env.Append(CPPDEFINES=['MESH_UTILS_PRESENT'])
 

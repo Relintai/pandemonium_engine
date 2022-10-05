@@ -4,9 +4,6 @@ Import('env')
 
 module_env = env.Clone()
 
-if os.path.isdir('../terraman'):
-    module_env.Append(CPPDEFINES=['TERRAMAN_PRESENT'])
-
 sources = [
 
     "register_types.cpp",
