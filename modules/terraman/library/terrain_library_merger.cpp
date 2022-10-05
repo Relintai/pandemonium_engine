@@ -25,7 +25,9 @@ SOFTWARE.
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/texture.h"
 
-#ifdef PROPS_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_PROPS_ENABLED
 #include "../../props/props/prop_data.h"
 
 #include "../../props/props/prop_data_prop.h"
@@ -151,7 +153,7 @@ void TerrainLibraryMerger::set_terra_surfaces(const Vector<Variant> &surfaces) {
 	}
 }
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 Ref<PropData> TerrainLibraryMerger::get_prop(const int index) {
 	ERR_FAIL_INDEX_V(index, _props.size(), Ref<PropData>());
 
@@ -260,7 +262,7 @@ void TerrainLibraryMerger::refresh_rects() {
 		setup_material_albedo(MATERIAL_INDEX_LIQUID, tex);
 	}
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	//todo add this back
 	//texture_added = false;
 	for (int i = 0; i < _props.size(); i++) {
@@ -400,7 +402,7 @@ TerrainLibraryMerger::~TerrainLibraryMerger() {
 	_prop_packer.unref();
 }
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 bool TerrainLibraryMerger::process_prop_textures(Ref<PropData> prop) {
 	if (!prop.is_valid()) {
 		return false;
@@ -462,7 +464,7 @@ void TerrainLibraryMerger::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_terra_surfaces"), &TerrainLibraryMerger::set_terra_surfaces);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "terra_surfaces", PROPERTY_HINT_NONE, "23/19:TerrainSurfaceMerger", PROPERTY_USAGE_DEFAULT, "TerrainSurfaceMerger"), "set_terra_surfaces", "get_terra_surfaces");
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	ClassDB::bind_method(D_METHOD("get_props"), &TerrainLibraryMerger::get_props);
 	ClassDB::bind_method(D_METHOD("set_props"), &TerrainLibraryMerger::set_props);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "props", PROPERTY_HINT_NONE, "23/19:PropData", PROPERTY_USAGE_DEFAULT, "PropData"), "set_props", "get_props");

@@ -22,7 +22,9 @@ SOFTWARE.
 
 #include "prop_data_entity.h"
 
-#if PROPS_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_PROPS_ENABLED
 
 Ref<EntityData> PropDataEntity::get_entity_data() const {
 	return _entity_data;

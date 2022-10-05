@@ -26,7 +26,9 @@ SOFTWARE.
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/texture.h"
 
-#ifdef PROPS_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_PROPS_ENABLED
 #include "../../props/props/prop_data.h"
 
 #include "../../props/props/prop_data_prop.h"
@@ -208,7 +210,7 @@ void VoxelLibraryMergerPCM::_prop_material_cache_get_key(Ref<VoxelChunk> chunk) 
 	Vector<uint64_t> props;
 
 	/*
-	#ifdef PROPS_PRESENT
+	#ifdef MODULE_PROPS_ENABLED
 		for (int i = 0; i < chunk->prop_get_count(); ++i) {
 			Ref<PropData> prop = chunk->prop_get(i);
 
@@ -317,7 +319,7 @@ void VoxelLibraryMergerPCM::_prop_material_cache_get_key(Ref<VoxelChunk> chunk) 
 	}
 
 	/*
-	#ifdef PROPS_PRESENT
+	#ifdef MODULE_PROPS_ENABLED
 		for (int i = 0; i < chunk->prop_get_count(); ++i) {
 			Ref<PropData> prop = chunk->prop_get(i);
 
@@ -494,7 +496,7 @@ void VoxelLibraryMergerPCM::set_voxel_surfaces(const Vector<Variant> &surfaces) 
 	}
 }
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 Ref<PropData> VoxelLibraryMergerPCM::get_prop(const int index) {
 	ERR_FAIL_INDEX_V(index, _props.size(), Ref<PropData>());
 
@@ -603,7 +605,7 @@ void VoxelLibraryMergerPCM::refresh_rects() {
 		setup_material_albedo(MATERIAL_INDEX_LIQUID, tex);
 	}
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	//todo add this back
 	//texture_added = false;
 	for (int i = 0; i < _props.size(); i++) {
@@ -743,7 +745,7 @@ VoxelLibraryMergerPCM::~VoxelLibraryMergerPCM() {
 	_prop_packer.unref();
 }
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 bool VoxelLibraryMergerPCM::process_prop_textures(Ref<PropData> prop) {
 	if (!prop.is_valid()) {
 		return false;
@@ -803,7 +805,7 @@ void VoxelLibraryMergerPCM::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_voxel_surfaces"), &VoxelLibraryMergerPCM::set_voxel_surfaces);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "voxel_surfaces", PROPERTY_HINT_NONE, "23/19:VoxelSurfaceMerger", PROPERTY_USAGE_DEFAULT, "VoxelSurfaceMerger"), "set_voxel_surfaces", "get_voxel_surfaces");
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	ClassDB::bind_method(D_METHOD("get_props"), &VoxelLibraryMergerPCM::get_props);
 	ClassDB::bind_method(D_METHOD("set_props"), &VoxelLibraryMergerPCM::set_props);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "props", PROPERTY_HINT_NONE, "23/19:PropData", PROPERTY_USAGE_DEFAULT, "PropData"), "set_props", "get_props");

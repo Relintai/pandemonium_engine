@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "core/object/reference.h"
 #include "core/containers/vector.h"
+#include "core/object/reference.h"
 
 #include "core/math/rect2.h"
 #include "core/math/transform.h"
@@ -41,6 +41,9 @@ SOFTWARE.
 
 class PropMaterialCache;
 class PropMesher;
+#ifdef MODULE_ENTITY_SPELL_SYSTEM_ENABLED
+class ESSMaterialCache;
+#endif
 
 class TiledWallData : public Resource {
 	GDCLASS(TiledWallData, Resource);
@@ -97,7 +100,7 @@ public:
 	//textures
 	void add_tile(const Ref<Texture> &texture, const float y_size = 1, const float z_offset = 0, const int texture_scale = 1);
 	void remove_tile(const int index);
-  TextureEntry get_tile(const int index) const;
+	TextureEntry get_tile(const int index) const;
 
 	Ref<Texture> get_tile_texture(const int index) const;
 	void set_tile_texture(const int index, const Ref<Texture> &texture);
@@ -117,7 +120,7 @@ public:
 	//flavour_textures
 	void add_flavour_tile(const Ref<Texture> &texture, const float y_size = 1, const float z_offset = 0, const int texture_scale = 1);
 	void remove_flavour_tile(const int index);
-  TextureEntry get_flavour_tile(const int index) const;
+	TextureEntry get_flavour_tile(const int index) const;
 
 	Ref<Texture> get_flavour_tile_texture(const int index) const;
 	void set_flavour_tile_texture(const int index, const Ref<Texture> &texture);
@@ -153,6 +156,11 @@ public:
 
 	void setup_cache(Ref<PropMaterialCache> cache);
 	void _setup_cache(Ref<PropMaterialCache> cache);
+
+#ifdef MODULE_ENTITY_SPELL_SYSTEM_ENABLED
+	void setup_ess_cache(Ref<ESSMaterialCache> cache);
+	void _setup_ess_cache(Ref<ESSMaterialCache> cache);
+#endif
 
 	void copy_from(const Ref<TiledWallData> &tiled_wall_data);
 

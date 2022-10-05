@@ -25,7 +25,9 @@ SOFTWARE.
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/texture.h"
 
-#ifdef PROPS_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_PROPS_ENABLED
 #include "../../props/props/prop_data.h"
 
 #include "../../props/props/prop_data_prop.h"
@@ -151,7 +153,7 @@ void VoxelLibraryMerger::set_voxel_surfaces(const Vector<Variant> &surfaces) {
 	}
 }
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 Ref<PropData> VoxelLibraryMerger::get_prop(const int index) {
 	ERR_FAIL_INDEX_V(index, _props.size(), Ref<PropData>());
 
@@ -260,7 +262,7 @@ void VoxelLibraryMerger::refresh_rects() {
 		setup_material_albedo(MATERIAL_INDEX_LIQUID, tex);
 	}
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	//todo add this back
 	//texture_added = false;
 	for (int i = 0; i < _props.size(); i++) {
@@ -400,7 +402,7 @@ VoxelLibraryMerger::~VoxelLibraryMerger() {
 	_prop_packer.unref();
 }
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 bool VoxelLibraryMerger::process_prop_textures(Ref<PropData> prop) {
 	if (!prop.is_valid()) {
 		return false;
@@ -460,7 +462,7 @@ void VoxelLibraryMerger::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_voxel_surfaces"), &VoxelLibraryMerger::set_voxel_surfaces);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "voxel_surfaces", PROPERTY_HINT_NONE, "23/19:VoxelSurfaceMerger", PROPERTY_USAGE_DEFAULT, "VoxelSurfaceMerger"), "set_voxel_surfaces", "get_voxel_surfaces");
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	ClassDB::bind_method(D_METHOD("get_props"), &VoxelLibraryMerger::get_props);
 	ClassDB::bind_method(D_METHOD("set_props"), &VoxelLibraryMerger::set_props);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "props", PROPERTY_HINT_NONE, "23/19:PropData", PROPERTY_USAGE_DEFAULT, "PropData"), "set_props", "get_props");

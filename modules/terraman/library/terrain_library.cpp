@@ -26,7 +26,9 @@ SOFTWARE.
 
 #include "terrain_material_cache.h"
 
-#ifdef PROPS_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_PROPS_ENABLED
 #include "../../props/props/prop_data.h"
 #endif
 
@@ -311,7 +313,7 @@ int TerrainLibrary::scene_get_num() const {
 void TerrainLibrary::scenes_clear() {
 }
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 Ref<PropData> TerrainLibrary::prop_get(const int id) {
 	return Ref<PropData>();
 }
@@ -454,7 +456,7 @@ void TerrainLibrary::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("scene_get_num"), &TerrainLibrary::scene_get_num);
 	ClassDB::bind_method(D_METHOD("scenes_clear"), &TerrainLibrary::scenes_clear);
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	ClassDB::bind_method(D_METHOD("prop_get", "id"), &TerrainLibrary::prop_get);
 	ClassDB::bind_method(D_METHOD("prop_add", "value"), &TerrainLibrary::prop_add);
 	ClassDB::bind_method(D_METHOD("prop_has", "prop"), &TerrainLibrary::prop_has);

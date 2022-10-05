@@ -35,6 +35,8 @@ SOFTWARE.
 
 #include "core/os/thread_pool.h"
 
+#include "modules/modules_enabled.gen.h"
+
 _FORCE_INLINE_ bool TerrainChunk::get_process() const {
 	return _is_processing;
 }
@@ -701,7 +703,7 @@ void TerrainChunk::clear_baked_lights() {
 		call("_clear_baked_lights");
 }
 
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 void TerrainChunk::prop_add(const Transform &tarnsform, const Ref<PropData> &prop) {
 	ERR_FAIL_COND(!prop.is_valid());
 
@@ -757,7 +759,7 @@ int TerrainChunk::mesh_data_resource_addv(const Vector3 &local_data_pos, const R
 	AABB mesh_aabb = e.transform.xform(mesh->get_aabb());
 	e.is_inside = aabb.encloses(mesh_aabb);
 
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	if (get_library().is_valid() && texture.is_valid()) {
 		e.uv_rect = get_library()->get_prop_uv_rect(texture);
 	} else {
@@ -797,7 +799,7 @@ int TerrainChunk::mesh_data_resource_add(const Transform &local_transform, const
 	AABB mesh_aabb = e.transform.xform(mesh->get_aabb());
 	e.is_inside = aabb.encloses(mesh_aabb);
 
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	if (get_library().is_valid() && texture.is_valid())
 		e.uv_rect = get_library()->get_prop_uv_rect(texture);
 	else
@@ -1091,7 +1093,7 @@ TerrainChunk::~TerrainChunk() {
 		_library.unref();
 	}
 
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	props_clear();
 #endif
 
@@ -1460,7 +1462,7 @@ void TerrainChunk::_bind_methods() {
 
 	//Meshes
 
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	ClassDB::bind_method(D_METHOD("prop_add", "prop"), &TerrainChunk::prop_add);
 	ClassDB::bind_method(D_METHOD("prop_get", "index"), &TerrainChunk::prop_get);
 	ClassDB::bind_method(D_METHOD("prop_get_count"), &TerrainChunk::prop_get_count);

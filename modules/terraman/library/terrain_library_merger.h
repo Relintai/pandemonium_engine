@@ -32,6 +32,8 @@ SOFTWARE.
 #include "../data/terrain_light.h"
 #include "terrain_surface_merger.h"
 
+#include "modules/modules_enabled.gen.h"
+
 class TerrainSurfaceSimple;
 class TerrainMesher;
 class PackedScene;
@@ -65,7 +67,7 @@ public:
 	Vector<Variant> get_terra_surfaces();
 	void set_terra_surfaces(const Vector<Variant> &surfaces);
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	Ref<PropData> get_prop(const int index);
 	void add_prop(Ref<PropData> value);
 	bool has_prop(const Ref<PropData> &value) const;
@@ -90,14 +92,14 @@ public:
 	~TerrainLibraryMerger();
 
 protected:
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	bool process_prop_textures(Ref<PropData> prop);
 #endif
 
 	static void _bind_methods();
 
 	Vector<Ref<TerrainSurfaceMerger>> _terra_surfaces;
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	Vector<Ref<PropData>> _props;
 #endif
 

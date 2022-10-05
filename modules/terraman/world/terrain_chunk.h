@@ -43,7 +43,9 @@ SOFTWARE.
 
 #include "../meshers/terrain_mesher.h"
 
-#if PROPS_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_PROPS_ENABLED
 #include "../../props/props/prop_data.h"
 #endif
 
@@ -215,7 +217,7 @@ public:
 	void bake_light(Ref<TerrainLight> light);
 	void clear_baked_lights();
 
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	void prop_add(const Transform &tarnsform, const Ref<PropData> &prop);
 	Ref<PropData> prop_get(const int index);
 	Transform prop_get_tarnsform(const int index);
@@ -301,7 +303,7 @@ protected:
 	virtual void _generation_physics_process(const float delta);
 
 protected:
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	struct PropDataStore {
 		Transform transform;
 		Ref<PropData> prop;
@@ -383,7 +385,7 @@ protected:
 
 	Vector<Ref<TerrainStructure>> _voxel_structures;
 
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	Vector<PropDataStore> _props;
 #endif
 

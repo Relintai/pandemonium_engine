@@ -4,9 +4,6 @@ Import('env')
 
 module_env = env.Clone()
 
-if env["module_props_enabled"]:
-    module_env.Append(CPPDEFINES=['PROPS_PRESENT'])
-
 if env["module_props_2d_enabled"]:
     module_env.Append(CPPDEFINES=['PROPS_2D_PRESENT'])
 

@@ -30,12 +30,14 @@ SOFTWARE.
 #include "../data/terrain_light.h"
 #include "terrain_surface.h"
 
+#include "modules/modules_enabled.gen.h"
+
 class TerrainMaterialCache;
 class TerrainSurface;
 class TerrainMesher;
 class PackedScene;
 class TerrainChunk;
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 class PropData;
 #endif
 
@@ -127,7 +129,7 @@ public:
 	virtual int scene_get_num() const;
 	virtual void scenes_clear();
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	virtual Ref<PropData> prop_get(const int id);
 	virtual void prop_add(Ref<PropData> value);
 	virtual bool prop_has(const Ref<PropData> &value) const;

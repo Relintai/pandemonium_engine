@@ -48,11 +48,7 @@ SOFTWARE.
 #endif
 
 #if MESH_DATA_RESOURCE_PRESENT
-//define PROPS_PRESENT, so things compile. That module's scsub will define this too while compiling,
-//but not when included from here.
-#define PROPS_PRESENT 1
 #include "../mesh_data_resource/props/prop_data_mesh_data.h"
-#undef PROPS_PRESENT
 #endif
 
 #include "props/prop_data_tiled_wall.h"

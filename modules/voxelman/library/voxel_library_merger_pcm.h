@@ -34,6 +34,8 @@ SOFTWARE.
 
 #include "core/os/mutex.h"
 
+#include "modules/modules_enabled.gen.h"
+
 class VoxelSurfaceSimple;
 class VoxelMesher;
 class PackedScene;
@@ -82,7 +84,7 @@ public:
 	Vector<Variant> get_voxel_surfaces();
 	void set_voxel_surfaces(const Vector<Variant> &surfaces);
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	Ref<PropData> get_prop(const int index);
 	void add_prop(Ref<PropData> value);
 	bool has_prop(const Ref<PropData> &value) const;
@@ -107,7 +109,7 @@ public:
 	~VoxelLibraryMergerPCM();
 
 protected:
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	bool process_prop_textures(Ref<PropData> prop);
 #endif
 
@@ -117,7 +119,7 @@ protected:
 	Map<int, Ref<VoxelMaterialCachePCM>> _prop_material_cache;
 
 	Vector<Ref<VoxelSurfaceMerger>> _voxel_surfaces;
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	Vector<Ref<PropData>> _props;
 #endif
 

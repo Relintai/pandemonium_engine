@@ -24,7 +24,9 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#ifdef PROPS_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_PROPS_ENABLED
 #include "../../props/props/prop_data.h"
 #include "../../props/props/prop_data_prop.h"
 
@@ -196,7 +198,7 @@ Rect2 VoxelMaterialCache::additional_texture_get_uv_rect(const Ref<Texture> &tex
 	return Rect2(0, 0, 1, 1);
 }
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 void VoxelMaterialCache::prop_add_textures(const Ref<PropData> &prop) {
 	if (!prop.is_valid()) {
 		return;
@@ -315,7 +317,7 @@ void VoxelMaterialCache::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("additional_texture_get_atlas_tex", "index"), &VoxelMaterialCache::additional_texture_get_atlas_tex);
 	ClassDB::bind_method(D_METHOD("additional_texture_get_uv_rect", "texture"), &VoxelMaterialCache::additional_texture_get_uv_rect);
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	ClassDB::bind_method(D_METHOD("prop_add_textures", "prop"), &VoxelMaterialCache::prop_add_textures);
 	ClassDB::bind_method(D_METHOD("prop_remove_textures", "prop"), &VoxelMaterialCache::prop_remove_textures);
 #endif

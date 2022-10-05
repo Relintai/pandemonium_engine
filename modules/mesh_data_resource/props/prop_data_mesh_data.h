@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "modules/modules_enabled.gen.h"
 
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 
 #include "../../props/props/prop_data_entry.h"
 #include "core/math/vector3.h"

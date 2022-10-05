@@ -35,7 +35,9 @@ SOFTWARE.
 
 #include "core/os/os.h"
 
-#if PROPS_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_PROPS_ENABLED
 #include "../../props/props/prop_data.h"
 #endif
 
@@ -161,7 +163,7 @@ public:
 	void generation_remove_index(const int index);
 	int generation_get_size() const;
 
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	void prop_add(Transform transform, const Ref<PropData> &prop, const bool apply_voxel_scale = true);
 #endif
 

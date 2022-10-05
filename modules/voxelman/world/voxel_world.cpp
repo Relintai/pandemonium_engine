@@ -27,7 +27,9 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#if PROPS_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_PROPS_ENABLED
 #include "../../props/props/prop_data.h"
 #include "../../props/props/prop_data_entry.h"
 #include "../../props/props/prop_data_light.h"
@@ -543,7 +545,7 @@ int VoxelWorld::generation_get_size() const {
 	return _generating.size();
 }
 
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 void VoxelWorld::prop_add(Transform tarnsform, const Ref<PropData> &prop, const bool apply_voxel_scael) {
 	ERR_FAIL_COND(!prop.is_valid());
 
@@ -1157,7 +1159,7 @@ void VoxelWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("is_position_walkable", "position"), &VoxelWorld::is_position_walkable);
 	ClassDB::bind_method(D_METHOD("on_chunk_mesh_generation_finished", "chunk"), &VoxelWorld::on_chunk_mesh_generation_finished);
 
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "apply_voxel_scael"), &VoxelWorld::prop_add, DEFVAL(true));
 #endif
 

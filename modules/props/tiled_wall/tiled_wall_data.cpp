@@ -42,6 +42,10 @@ SOFTWARE.
 
 #include "modules/modules_enabled.gen.h"
 
+#ifdef MODULE_ENTITY_SPELL_SYSTEM_ENABLED
+#include "modules/entity_spell_system/material_cache/ess_material_cache.h"
+#endif
+
 const String TiledWallData::BINDING_STRING_TILED_WALL_TILING_TYPE = "None,Horizontal,Vertical,Both";
 const String TiledWallData::BINDING_STRING_TILED_WALL_COLLIDER_TYPE = "None,Plane,Box,Convex Mesh,Concave Mesh";
 
@@ -333,6 +337,43 @@ void TiledWallData::_setup_cache(Ref<PropMaterialCache> cache) {
 	}
 }
 
+#ifdef MODULE_ENTITY_SPELL_SYSTEM_ENABLED
+void TiledWallData::setup_ess_cache(Ref<ESSMaterialCache> cache) {
+	//Note: the caller should lock and unlock the cache!
+
+	call("_setup_ess_cache", cache);
+}
+void TiledWallData::_setup_ess_cache(Ref<ESSMaterialCache> cache) {
+	if (cache->material_get_num() == 0) {
+		for (int i = 0; i < _materials.size(); ++i) {
+			const Ref<Material> &m = _materials[i];
+
+			if (m.is_valid()) {
+				Ref<Material> nm = m->duplicate();
+
+				cache->material_add(nm);
+			}
+		}
+	}
+
+	for (int i = 0; i < _tiles.size(); ++i) {
+		const Ref<Texture> &t = _tiles[i].texture;
+
+		if (t.is_valid()) {
+			cache->texture_add(t);
+		}
+	}
+
+	for (int i = 0; i < _flavour_tiles.size(); ++i) {
+		const Ref<Texture> &t = _flavour_tiles[i].texture;
+
+		if (t.is_valid()) {
+			cache->texture_add(t);
+		}
+	}
+}
+#endif
+
 void TiledWallData::copy_from(const Ref<TiledWallData> &tiled_wall_data) {
 	ERR_FAIL_COND(!tiled_wall_data.is_valid());
 
@@ -577,6 +618,13 @@ void TiledWallData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("setup_cache", "cache"), &TiledWallData::setup_cache);
 	ClassDB::bind_method(D_METHOD("_setup_cache", "cache"), &TiledWallData::_setup_cache);
+
+#ifdef MODULE_ENTITY_SPELL_SYSTEM_ENABLED
+	BIND_VMETHOD(MethodInfo("_setup_ess_cache", PropertyInfo(Variant::OBJECT, "cache", PROPERTY_HINT_RESOURCE_TYPE, "ESSMaterialCache")));
+
+	ClassDB::bind_method(D_METHOD("setup_ess_cache", "cache"), &TiledWallData::setup_ess_cache);
+	ClassDB::bind_method(D_METHOD("_setup_ess_cache", "cache"), &TiledWallData::_setup_ess_cache);
+#endif
 
 	ClassDB::bind_method(D_METHOD("copy_from", "prop_data"), &TiledWallData::copy_from);
 

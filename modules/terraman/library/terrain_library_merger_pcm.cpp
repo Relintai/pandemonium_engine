@@ -26,7 +26,9 @@ SOFTWARE.
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/texture.h"
 
-#ifdef PROPS_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_PROPS_ENABLED
 #include "../../props/props/prop_data.h"
 
 #include "../../props/props/prop_data_prop.h"
@@ -388,7 +390,7 @@ void TerrainLibraryMergerPCM::_prop_material_cache_get_key(Ref<TerrainChunk> chu
 	Vector<uint64_t> props;
 
 	/*
-	#ifdef PROPS_PRESENT
+	#ifdef MODULE_PROPS_ENABLED
 		for (int i = 0; i < chunk->prop_get_count(); ++i) {
 			Ref<PropData> prop = chunk->prop_get(i);
 
@@ -497,7 +499,7 @@ void TerrainLibraryMergerPCM::_prop_material_cache_get_key(Ref<TerrainChunk> chu
 	}
 
 	/*
-	#ifdef PROPS_PRESENT
+	#ifdef MODULE_PROPS_ENABLED
 		for (int i = 0; i < chunk->prop_get_count(); ++i) {
 			Ref<PropData> prop = chunk->prop_get(i);
 
@@ -686,7 +688,7 @@ void TerrainLibraryMergerPCM::set_terra_surfaces(const Vector<Variant> &surfaces
 	}
 }
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 Ref<PropData> TerrainLibraryMergerPCM::get_prop(const int index) {
 	ERR_FAIL_INDEX_V(index, _props.size(), Ref<PropData>());
 
@@ -796,7 +798,7 @@ void TerrainLibraryMergerPCM::refresh_rects() {
 		setup_material_albedo(MATERIAL_INDEX_LIQUID, tex);
 	}
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	//todo add this back
 	//texture_added = false;
 	for (int i = 0; i < _props.size(); i++) {
@@ -938,7 +940,7 @@ TerrainLibraryMergerPCM::~TerrainLibraryMergerPCM() {
 	_prop_packer.unref();
 }
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 bool TerrainLibraryMergerPCM::process_prop_textures(Ref<PropData> prop) {
 	/*
 	if (!prop.is_valid()) {
@@ -1002,7 +1004,7 @@ void TerrainLibraryMergerPCM::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_terra_surfaces"), &TerrainLibraryMergerPCM::set_terra_surfaces);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "terra_surfaces", PROPERTY_HINT_NONE, "23/19:TerrainSurfaceMerger", PROPERTY_USAGE_DEFAULT, "TerrainSurfaceMerger"), "set_terra_surfaces", "get_terra_surfaces");
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	ClassDB::bind_method(D_METHOD("get_props"), &TerrainLibraryMergerPCM::get_props);
 	ClassDB::bind_method(D_METHOD("set_props"), &TerrainLibraryMergerPCM::set_props);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "props", PROPERTY_HINT_NONE, "23/19:PropData", PROPERTY_USAGE_DEFAULT, "PropData"), "set_props", "get_props");

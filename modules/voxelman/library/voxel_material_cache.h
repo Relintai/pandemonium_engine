@@ -33,6 +33,8 @@ SOFTWARE.
 
 #include "../defines.h"
 
+#include "modules/modules_enabled.gen.h"
+
 class VoxelLibrary;
 
 class VoxelMaterialCache : public Resource {
@@ -76,7 +78,7 @@ public:
 	virtual Ref<AtlasTexture> additional_texture_get_atlas_tex(const Ref<Texture> &texture);
 	virtual Rect2 additional_texture_get_uv_rect(const Ref<Texture> &texture);
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	void prop_add_textures(const Ref<PropData> &prop);
 	void prop_remove_textures(const Ref<PropData> &prop);
 #endif

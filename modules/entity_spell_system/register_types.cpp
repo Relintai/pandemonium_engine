@@ -138,7 +138,7 @@ SOFTWARE.
 #include "material_cache/ess_material_cache_pcm.h"
 #endif
 
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 #include "props/prop_data_entity.h"
 #endif
 
@@ -146,7 +146,7 @@ static ESS *entity_data_manager = NULL;
 static ProfileManager *profile_manager = NULL;
 
 void register_entity_spell_system_types() {
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	ClassDB::register_class<PropDataEntity>();
 #endif
 

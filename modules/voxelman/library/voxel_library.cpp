@@ -25,7 +25,9 @@ SOFTWARE.
 #include "../world/voxel_chunk.h"
 #include "voxel_material_cache.h"
 
-#ifdef PROPS_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_PROPS_ENABLED
 #include "../../props/props/prop_data.h"
 #endif
 
@@ -312,7 +314,7 @@ int VoxelLibrary::scene_get_num() const {
 void VoxelLibrary::scenes_clear() {
 }
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 Ref<PropData> VoxelLibrary::prop_get(const int id) {
 	return Ref<PropData>();
 }
@@ -455,7 +457,7 @@ void VoxelLibrary::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("scene_get_num"), &VoxelLibrary::scene_get_num);
 	ClassDB::bind_method(D_METHOD("scenes_clear"), &VoxelLibrary::scenes_clear);
 
-#ifdef PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	ClassDB::bind_method(D_METHOD("prop_get", "id"), &VoxelLibrary::prop_get);
 	ClassDB::bind_method(D_METHOD("prop_add", "value"), &VoxelLibrary::prop_add);
 	ClassDB::bind_method(D_METHOD("prop_has", "prop"), &VoxelLibrary::prop_has);

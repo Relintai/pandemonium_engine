@@ -28,7 +28,9 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#if PROPS_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_PROPS_ENABLED
 #include "../../props/props/prop_data.h"
 #include "../../props/props/prop_data_entry.h"
 #include "../../props/props/prop_data_light.h"
@@ -579,7 +581,7 @@ int TerrainWorld::generation_get_size() const {
 	return _generating.size();
 }
 
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, const bool apply_voxel_scale) {
 	ERR_FAIL_COND(!prop.is_valid());
 
@@ -1197,7 +1199,7 @@ void TerrainWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("is_position_walkable", "position"), &TerrainWorld::is_position_walkable);
 	ClassDB::bind_method(D_METHOD("on_chunk_mesh_generation_finished", "chunk"), &TerrainWorld::on_chunk_mesh_generation_finished);
 
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "apply_voxel_scale"), &TerrainWorld::prop_add, DEFVAL(true));
 #endif
 

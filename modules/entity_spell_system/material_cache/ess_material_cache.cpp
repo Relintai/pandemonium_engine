@@ -22,16 +22,16 @@ SOFTWARE.
 
 #include "ess_material_cache.h"
 
-#if PROPS_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_PROPS_ENABLED
 #include "../../props/props/prop_data.h"
 #include "../../props/props/prop_data_prop.h"
 #include "../../props/props/prop_data_tiled_wall.h"
 #include "../../props/tiled_wall/tiled_wall_data.h"
 
 #if MESH_DATA_RESOURCE_PRESENT
-#define PROPS_PRESENT 1
 #include "../../mesh_data_resource/props/prop_data_mesh_data.h"
-#undef PROPS_PRESENT
 #endif
 
 #endif
@@ -173,7 +173,7 @@ Rect2 ESSMaterialCache::texture_get_uv_rect(const Ref<Texture> &texture) {
 	return Rect2(0, 0, 1, 1);
 }
 
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 void ESSMaterialCache::prop_add_textures(const Ref<PropData> &prop) {
 	if (!prop.is_valid()) {
 		return;
@@ -203,7 +203,7 @@ void ESSMaterialCache::prop_add_textures(const Ref<PropData> &prop) {
 			if (!twd.is_valid())
 				continue;
 
-			twd->setup_cache(Ref<ESSMaterialCache>(this));
+			twd->setup_ess_cache(Ref<ESSMaterialCache>(this));
 
 			continue;
 		}
@@ -242,16 +242,16 @@ void ESSMaterialCache::prop_remove_textures(const Ref<PropData> &prop) {
 			if (!twd.is_valid())
 				continue;
 
-			for (int j = 0; j < twd->get_texture_count(); ++j) {
-				const Ref<Texture> &tex = twd->get_texture(j);
+			for (int j = 0; j < twd->get_tile_count(); ++j) {
+				const Ref<Texture> &tex = twd->get_tile_texture(j);
 
 				if (tex.is_valid()) {
 					texture_remove(tex);
 				}
 			}
 
-			for (int j = 0; j < twd->get_flavour_texture_count(); ++j) {
-				const Ref<Texture> &tex = twd->get_flavour_texture(j);
+			for (int j = 0; j < twd->get_flavour_tile_count(); ++j) {
+				const Ref<Texture> &tex = twd->get_flavour_tile_texture(j);
 
 				if (tex.is_valid()) {
 					texture_remove(tex);
@@ -349,7 +349,7 @@ void ESSMaterialCache::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("texture_get_atlas_tex", "index"), &ESSMaterialCache::texture_get_atlas_tex);
 	ClassDB::bind_method(D_METHOD("texture_get_uv_rect", "texture"), &ESSMaterialCache::texture_get_uv_rect);
 
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	ClassDB::bind_method(D_METHOD("prop_add_textures", "prop"), &ESSMaterialCache::prop_add_textures);
 	ClassDB::bind_method(D_METHOD("prop_remove_textures", "prop"), &ESSMaterialCache::prop_remove_textures);
 #endif

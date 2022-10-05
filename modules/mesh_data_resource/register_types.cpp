@@ -39,7 +39,7 @@ SOFTWARE.
 #include "./editor/mdi_ed_plugin.h"
 #endif
 
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 #include "../props/singleton/prop_utils.h"
 #include "props/prop_data_mesh_data.h"
 #endif
@@ -56,7 +56,7 @@ void register_mesh_data_resource_types() {
 	ClassDB::register_class<MeshDataInstance>();
 	ClassDB::register_class<MeshDataInstance2D>();
 
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	ClassDB::register_class<PropDataMeshData>();
 	Ref<PropDataMeshData> processor = Ref<PropDataMeshData>(memnew(PropDataMeshData));
 	PropUtils::add_processor(processor);

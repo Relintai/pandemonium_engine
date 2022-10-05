@@ -30,6 +30,8 @@ SOFTWARE.
 #include "core/os/mutex.h"
 #include "scene/resources/material.h"
 
+#include "modules/modules_enabled.gen.h"
+
 class PropData;
 
 class ESSMaterialCache : public Resource {
@@ -69,7 +71,7 @@ public:
 	virtual Ref<AtlasTexture> texture_get_atlas_tex(const Ref<Texture> &texture);
 	virtual Rect2 texture_get_uv_rect(const Ref<Texture> &texture);
 
-#if PROPS_PRESENT
+#ifdef MODULE_PROPS_ENABLED
 	void prop_add_textures(const Ref<PropData> &prop);
 	void prop_remove_textures(const Ref<PropData> &prop);
 #endif
