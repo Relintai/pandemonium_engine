@@ -36,7 +36,7 @@ SOFTWARE.
 #include "../mesh_data_resource/mesh_data_resource.h"
 #endif
 
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 #include "../mesh_utils/fast_quadratic_mesh_simplifier.h"
 #endif
 

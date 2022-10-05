@@ -43,7 +43,7 @@ SOFTWARE.
 
 #include "../../world/default/voxel_world_default.h"
 
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 #include "../../../mesh_utils/fast_quadratic_mesh_simplifier.h"
 #endif
 
@@ -375,7 +375,7 @@ void VoxelPropJob::phase_steps() {
 						++count;
 						break;
 					case VoxelMesherJobStep::TYPE_SIMPLIFY_MESH:
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 						count += step->get_simplification_steps();
 #endif
 						break;
@@ -562,7 +562,7 @@ void VoxelPropJob::step_type_bake_texture() {
 }
 
 void VoxelPropJob::step_type_simplify_mesh() {
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 
 	Ref<VoxelChunkDefault> chunk = _chunk;
 	Ref<VoxelMesherJobStep> step = _job_steps[_current_job_step];

@@ -24,7 +24,9 @@ SOFTWARE.
 
 #include "core/object/reference.h"
 
-#ifdef MESH_UTILS_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_MESH_UTILS_ENABLED
 #include "../../mesh_utils/fast_quadratic_mesh_simplifier.h"
 #endif
 
@@ -54,7 +56,7 @@ public:
 	int get_lod_index() const;
 	void set_lod_index(const int value);
 
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 	Ref<FastQuadraticMeshSimplifier> get_fqms();
 	void set_fqms(const Ref<FastQuadraticMeshSimplifier> &val);
 
@@ -77,7 +79,7 @@ protected:
 	PropMesherJobStepType _job_type;
 	int _lod_index;
 
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 	Ref<FastQuadraticMeshSimplifier> _fqms;
 	float _simplification_step_ratio;
 	int _simplification_steps;

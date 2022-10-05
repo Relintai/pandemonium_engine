@@ -42,7 +42,7 @@ SOFTWARE.
 
 #include "../../world/default/terrain_world_default.h"
 
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 #include "../../../mesh_utils/fast_quadratic_mesh_simplifier.h"
 #endif
 
@@ -374,7 +374,7 @@ void TerrainPropJob::phase_steps() {
 						++count;
 						break;
 					case TerrainMesherJobStep::TYPE_SIMPLIFY_MESH:
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 						count += step->get_simplification_steps();
 #endif
 						break;
@@ -561,7 +561,7 @@ void TerrainPropJob::step_type_bake_texture() {
 }
 
 void TerrainPropJob::step_type_simplify_mesh() {
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 
 	Ref<TerrainChunkDefault> chunk = _chunk;
 	Ref<TerrainMesherJobStep> step = _job_steps[_current_job_step];

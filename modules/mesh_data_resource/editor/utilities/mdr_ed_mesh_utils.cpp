@@ -27,6 +27,8 @@ SOFTWARE.
 #include "scene/resources/mesh.h"
 #include "scene/resources/surface_tool.h"
 
+#include "modules/modules_enabled.gen.h"
+
 int MDREDMeshUtils::SeamTriangleHelper::get_other_side_index(int index) const {
 	if (side_index_1 == index) {
 		return side_index_2;

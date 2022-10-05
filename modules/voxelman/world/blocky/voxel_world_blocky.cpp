@@ -31,7 +31,7 @@ SOFTWARE.
 #include "../jobs/voxel_prop_job.h"
 #include "../jobs/voxel_terrain_job.h"
 
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 #include "../../../mesh_utils/fast_quadratic_mesh_simplifier.h"
 #endif
 
@@ -64,7 +64,7 @@ Ref<VoxelChunk> VoxelWorldBlocky::_create_chunk(int x, int y, int z, Ref<VoxelCh
 		s->set_job_type(VoxelMesherJobStep::TYPE_BAKE_TEXTURE);
 		tj->add_jobs_step(s);
 
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 		s.instance();
 		Ref<FastQuadraticMeshSimplifier> fqms;
 		fqms.instance();
@@ -97,7 +97,7 @@ Ref<VoxelChunk> VoxelWorldBlocky::_create_chunk(int x, int y, int z, Ref<VoxelCh
 
 		s.instance();
 		s->set_job_type(VoxelMesherJobStep::TYPE_SIMPLIFY_MESH);
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 		fqms.instance();
 		s->set_fqms(fqms);
 		s->set_simplification_steps(2);

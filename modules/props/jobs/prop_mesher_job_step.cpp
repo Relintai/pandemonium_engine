@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "prop_mesher_job_step.h"
 
+#include "modules/modules_enabled.gen.h"
+
 const String PropMesherJobStep::BINDING_STRING_PROP_MESHER_JOB_STEP_TYPE = "Normal,Normal LOD,Drop UV2,Merge Verts,Bake Texture,Simplify Mesh";
 
 PropMesherJobStep::PropMesherJobStepType PropMesherJobStep::get_job_type() const {
@@ -38,7 +40,7 @@ void PropMesherJobStep::set_lod_index(const int value) {
 	_lod_index = value;
 }
 
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 Ref<FastQuadraticMeshSimplifier> PropMesherJobStep::get_fqms() {
 	return _fqms;
 }
@@ -73,7 +75,7 @@ PropMesherJobStep::PropMesherJobStep() {
 	_job_type = TYPE_NORMAL;
 	_lod_index = 0;
 
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 	_simplification_step_ratio = 0.8;
 	_simplification_steps = 2;
 	_simplification_agressiveness = 7;
@@ -81,7 +83,7 @@ PropMesherJobStep::PropMesherJobStep() {
 }
 
 PropMesherJobStep::~PropMesherJobStep() {
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 	_fqms.unref();
 #endif
 }
@@ -95,7 +97,7 @@ void PropMesherJobStep::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_lod_index", "value"), &PropMesherJobStep::set_lod_index);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "lod_index"), "set_lod_index", "get_lod_index");
 
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 	ClassDB::bind_method(D_METHOD("get_fqms"), &PropMesherJobStep::get_fqms);
 	ClassDB::bind_method(D_METHOD("set_fqms", "value"), &PropMesherJobStep::set_fqms);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "fqms", PROPERTY_HINT_RESOURCE_TYPE, "FastQuadraticMeshSimplifier"), "set_fqms", "get_fqms");

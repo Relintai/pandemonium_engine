@@ -36,7 +36,10 @@ SOFTWARE.
 #include "plugin_gltf/editor_plugin_gltf_mdr.h"
 #endif
 
+#ifdef MODULE_MESH_UTILS_ENABLED
 #include "./editor/mdi_ed_plugin.h"
+#endif
+
 #endif
 
 #ifdef MODULE_PROPS_ENABLED
@@ -69,10 +72,15 @@ void register_mesh_data_resource_types() {
 #endif
 
 #ifdef TOOLS_ENABLED
+
 #ifdef MODULE_GLTF_ENABLED
 	EditorPlugins::add_by_type<EditorPluginGLTFMdr>();
 #endif
+
+#ifdef MODULE_MESH_UTILS_ENABLED
 	EditorPlugins::add_by_type<MDIEdPlugin>();
+#endif
+
 #endif
 }
 

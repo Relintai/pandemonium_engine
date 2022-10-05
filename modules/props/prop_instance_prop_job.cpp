@@ -39,7 +39,7 @@ SOFTWARE.
 #include "../mesh_data_resource/mesh_data_resource.h"
 #endif
 
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 #include "../mesh_utils/fast_quadratic_mesh_simplifier.h"
 #endif
 
@@ -402,7 +402,7 @@ void PropInstancePropJob::phase_steps() {
 						++count;
 						break;
 					case PropMesherJobStep::TYPE_SIMPLIFY_MESH:
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 						count += step->get_simplification_steps();
 #endif
 						break;
@@ -559,7 +559,7 @@ void PropInstancePropJob::step_type_bake_texture() {
 }
 
 void PropInstancePropJob::step_type_simplify_mesh() {
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 
 	Ref<PropMesherJobStep> step = _job_steps[_current_job_step];
 	ERR_FAIL_COND(!step.is_valid());

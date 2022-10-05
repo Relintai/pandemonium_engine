@@ -32,7 +32,9 @@ SOFTWARE.
 #include "../default/voxel_chunk_default.h"
 #include "servers/physics_server.h"
 
-#ifdef MESH_UTILS_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_MESH_UTILS_ENABLED
 #include "../../../mesh_utils/fast_quadratic_mesh_simplifier.h"
 #endif
 
@@ -474,7 +476,7 @@ void VoxelTerrainJob::phase_terrain_mesh() {
 						++count;
 						break;
 					case VoxelMesherJobStep::TYPE_SIMPLIFY_MESH:
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 						count += step->get_simplification_steps();
 #endif
 						break;
@@ -841,7 +843,7 @@ void VoxelTerrainJob::step_type_bake_texture() {
 }
 
 void VoxelTerrainJob::step_type_simplify_mesh() {
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 
 	Ref<VoxelChunkDefault> chunk = _chunk;
 	Ref<VoxelMesherJobStep> step = _job_steps[_current_job_step];

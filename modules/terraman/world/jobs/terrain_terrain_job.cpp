@@ -32,7 +32,9 @@ SOFTWARE.
 #include "../default/terrain_chunk_default.h"
 #include "servers/physics_server.h"
 
-#ifdef MESH_UTILS_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_MESH_UTILS_ENABLED
 #include "../../../mesh_utils/fast_quadratic_mesh_simplifier.h"
 #endif
 
@@ -306,7 +308,7 @@ void TerrainTerrainJob::phase_terrain_mesh() {
 						++count;
 						break;
 					case TerrainMesherJobStep::TYPE_SIMPLIFY_MESH:
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 						count += step->get_simplification_steps();
 #endif
 						break;
@@ -633,7 +635,7 @@ void TerrainTerrainJob::step_type_bake_texture() {
 }
 
 void TerrainTerrainJob::step_type_simplify_mesh() {
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 
 	Ref<TerrainChunkDefault> chunk = _chunk;
 	Ref<TerrainMesherJobStep> step = _job_steps[_current_job_step];

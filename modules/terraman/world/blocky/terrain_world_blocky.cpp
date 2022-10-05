@@ -29,6 +29,8 @@ SOFTWARE.
 #include "../jobs/terrain_prop_job.h"
 #include "../jobs/terrain_terrain_job.h"
 
+#include "modules/modules_enabled.gen.h"
+
 Ref<TerrainChunk> TerrainWorldBlocky::_create_chunk(int x, int z, Ref<TerrainChunk> chunk) {
 	if (!chunk.is_valid()) {
 		chunk = Ref<TerrainChunk>(memnew(TerrainChunkBlocky));
@@ -90,7 +92,7 @@ Ref<TerrainChunk> TerrainWorldBlocky::_create_chunk(int x, int z, Ref<TerrainChu
 
 		s.instance();
 		s->set_job_type(TerrainMesherJobStep::TYPE_SIMPLIFY_MESH);
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 		Ref<FastQuadraticMeshSimplifier> fqms;
 		fqms.instance();
 		s->set_fqms(fqms);

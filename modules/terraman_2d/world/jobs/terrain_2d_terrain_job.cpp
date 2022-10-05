@@ -32,7 +32,9 @@ SOFTWARE.
 #include "../default/terrain_2d_chunk_default.h"
 #include "servers/physics_2d_server.h"
 
-#ifdef MESH_UTILS_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_MESH_UTILS_ENABLED
 #include "../../../mesh_utils/fast_quadratic_mesh_simplifier.h"
 #endif
 

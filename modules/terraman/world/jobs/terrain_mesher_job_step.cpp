@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "terrain_mesher_job_step.h"
 
+#include "modules/modules_enabled.gen.h"
+
 const String TerrainMesherJobStep::BINDING_STRING_TERRAIN_TERRAIN_JOB_STEP_TYPE = "Normal,Normal LOD,Drop UV2,Merge Verts,Bake Texture,Simplify Mesh";
 
 TerrainMesherJobStep::TerrainMesherJobStepType TerrainMesherJobStep::get_job_type() const {
@@ -38,7 +40,7 @@ void TerrainMesherJobStep::set_lod_index(const int value) {
 	_lod_index = value;
 }
 
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 Ref<FastQuadraticMeshSimplifier> TerrainMesherJobStep::get_fqms() {
 	return _fqms;
 }
@@ -73,7 +75,7 @@ TerrainMesherJobStep::TerrainMesherJobStep() {
 	_job_type = TYPE_NORMAL;
 	_lod_index = 0;
 
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 	_simplification_step_ratio = 0.8;
 	_simplification_steps = 2;
 	_simplification_agressiveness = 7;
@@ -81,7 +83,7 @@ TerrainMesherJobStep::TerrainMesherJobStep() {
 }
 
 TerrainMesherJobStep::~TerrainMesherJobStep() {
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 	_fqms.unref();
 #endif
 }
@@ -95,7 +97,7 @@ void TerrainMesherJobStep::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_lod_index", "value"), &TerrainMesherJobStep::set_lod_index);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "lod_index"), "set_lod_index", "get_lod_index");
 
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 	ClassDB::bind_method(D_METHOD("get_fqms"), &TerrainMesherJobStep::get_fqms);
 	ClassDB::bind_method(D_METHOD("set_fqms", "value"), &TerrainMesherJobStep::set_fqms);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "fqms", PROPERTY_HINT_RESOURCE_TYPE, "FastQuadraticMeshSimplifier"), "set_fqms", "get_fqms");

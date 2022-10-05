@@ -39,6 +39,8 @@ SOFTWARE.
 
 #include "scene/3d/mesh_instance.h"
 
+#include "modules/modules_enabled.gen.h"
+
 class MDRImportPluginBase : public EditorImportPlugin {
 	GDCLASS(MDRImportPluginBase, EditorImportPlugin);
 
@@ -62,7 +64,7 @@ public:
 
 	enum MDROptimizationType {
 		MDR_OPTIMIZATION_OFF = 0,
-#if MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 		MDR_OPTIMIZATION_REMOVE_DOUBLES,
 		MDR_OPTIMIZATION_REMOVE_DOUBLES_INTERPOLATE_NORMALS,
 #endif

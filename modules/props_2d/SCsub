@@ -9,9 +9,6 @@ import version
 if os.path.isdir('../terraman_2d'):
     module_env.Append(CPPDEFINES=['TERRAMAN_2D_PRESENT'])
 
-if os.path.isdir('../mesh_utils'):
-    module_env.Append(CPPDEFINES=['MESH_UTILS_PRESENT'])
-
 sources = [
 
     "register_types.cpp",

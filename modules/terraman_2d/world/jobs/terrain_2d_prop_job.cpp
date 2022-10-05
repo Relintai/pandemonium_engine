@@ -40,7 +40,7 @@ SOFTWARE.
 
 #include "../../world/default/terrain_2d_world_default.h"
 
-#ifdef MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 #include "../../../mesh_utils/fast_quadratic_mesh_simplifier.h"
 #endif
 

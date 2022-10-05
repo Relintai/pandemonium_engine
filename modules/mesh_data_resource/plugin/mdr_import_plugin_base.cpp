@@ -30,7 +30,9 @@ SOFTWARE.
 #include "scene/resources/shape.h"
 #include "scene/resources/sphere_shape.h"
 
-#if MESH_UTILS_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_MESH_UTILS_ENABLED
 #include "../../mesh_utils/mesh_utils.h"
 #endif
 
@@ -41,7 +43,7 @@ SOFTWARE.
 const String MDRImportPluginBase::BINDING_MDR_IMPORT_TYPE = "Single,Multiple";
 const String MDRImportPluginBase::BINDING_MDR_SURFACE_HANDLING_TYPE = "Only Use First,Create Separate MDRs,Merge";
 const String MDRImportPluginBase::BINDING_MDR_OPTIMIZATION_TYPE = "Off"
-#if MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 																  ",Remove Doubles,Remove Doubles Interpolate Normals"
 #endif
 		;
@@ -50,7 +52,7 @@ void MDRImportPluginBase::get_import_options(List<ImportOption> *r_options, int 
 	r_options->push_back(ImportOption(PropertyInfo(Variant::INT, "import_type", PROPERTY_HINT_ENUM, BINDING_MDR_IMPORT_TYPE), MDRImportPluginBase::MDR_IMPORT_TIME_SINGLE));
 	r_options->push_back(ImportOption(PropertyInfo(Variant::INT, "surface_handling", PROPERTY_HINT_ENUM, BINDING_MDR_SURFACE_HANDLING_TYPE), MDRImportPluginBase::MDR_SURFACE_HANDLING_TYPE_ONLY_USE_FIRST));
 
-#if MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 	//Normal remove doubles should be the default if mesh utils present as it shouldn't visibly change the mesh
 	r_options->push_back(ImportOption(PropertyInfo(Variant::INT, "optimization_type", PROPERTY_HINT_ENUM, BINDING_MDR_OPTIMIZATION_TYPE), MDRImportPluginBase::MDR_OPTIMIZATION_REMOVE_DOUBLES));
 #else
@@ -128,7 +130,7 @@ int MDRImportPluginBase::get_mesh_count(Node *n) {
 }
 
 Error MDRImportPluginBase::process_node_single(Node *n, const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
-#if MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 	MDRImportPluginBase::MDROptimizationType optimization_type = static_cast<MDRImportPluginBase::MDROptimizationType>(static_cast<int>(p_options["optimization_type"]));
 #endif
 
@@ -154,7 +156,7 @@ Error MDRImportPluginBase::process_node_single(Node *n, const String &p_source_f
 					continue;
 				}
 
-#if MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 				switch (optimization_type) {
 					case MDR_OPTIMIZATION_OFF:
 						break;
@@ -188,7 +190,7 @@ Error MDRImportPluginBase::process_node_single(Node *n, const String &p_source_f
 }
 
 Error MDRImportPluginBase::process_node_single_separated_bones(Node *n, const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
-#if MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 	MDRImportPluginBase::MDROptimizationType optimization_type = static_cast<MDRImportPluginBase::MDROptimizationType>(static_cast<int>(p_options["optimization_type"]));
 #endif
 
@@ -223,7 +225,7 @@ Error MDRImportPluginBase::process_node_single_separated_bones(Node *n, const St
 				if (!mdr.is_valid())
 					continue;
 
-#if MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 				switch (optimization_type) {
 					case MDR_OPTIMIZATION_OFF:
 						break;
@@ -273,7 +275,7 @@ Error MDRImportPluginBase::process_node_single_separated_bones(Node *n, const St
 }
 
 Error MDRImportPluginBase::process_node_multi(Node *n, const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata, Ref<MeshDataResourceCollection> coll, Ref<MeshDataResourceCollection> copy_coll, int node_count) {
-#if MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 	MDRImportPluginBase::MDROptimizationType optimization_type = static_cast<MDRImportPluginBase::MDROptimizationType>(static_cast<int>(p_options["optimization_type"]));
 #endif
 
@@ -298,7 +300,7 @@ Error MDRImportPluginBase::process_node_multi(Node *n, const String &p_source_fi
 					continue;
 				}
 
-#if MESH_UTILS_PRESENT
+#ifdef MODULE_MESH_UTILS_ENABLED
 				switch (optimization_type) {
 					case MDR_OPTIMIZATION_OFF:
 						break;
