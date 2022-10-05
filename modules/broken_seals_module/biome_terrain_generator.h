@@ -1,5 +1,5 @@
-#ifndef BIOME_TERRARIN_GENERATOR_H
-#define BIOME_TERRARIN_GENERATOR_H
+#ifndef BIOME_TERRAIN_GENERATOR_H
+#define BIOME_TERRAIN_GENERATOR_H
 /*
 Copyright (c) 2020-2022 Péter Magyar
 
@@ -28,8 +28,8 @@ SOFTWARE.
 class VoxelChunk;
 #endif
 
-class BiomeTerrarinGenerator : public Reference {
-	GDCLASS(BiomeTerrarinGenerator, Reference);
+class BiomeTerrainGenerator : public Reference {
+	GDCLASS(BiomeTerrainGenerator, Reference);
 
 public:
 	int get_current_seed();
@@ -39,8 +39,8 @@ public:
 	void generate_simple_terrarin(Ref<VoxelChunk> chunk, bool spawn_mobs);
 #endif
 
-	BiomeTerrarinGenerator();
-	~BiomeTerrarinGenerator();
+	BiomeTerrainGenerator();
+	~BiomeTerrainGenerator();
 
 protected:
 	static void _bind_methods();

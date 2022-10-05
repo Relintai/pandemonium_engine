@@ -14,7 +14,7 @@ sources = [
 
     "register_types.cpp",
 
-    "biome_terrarin_generator.cpp",
+    "biome_terrain_generator.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':

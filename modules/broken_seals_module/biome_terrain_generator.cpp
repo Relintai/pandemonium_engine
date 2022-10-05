@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "biome_terrarin_generator.h"
+#include "biome_terrain_generator.h"
 
 #include "core/config/engine.h"
 
@@ -35,15 +35,15 @@ SOFTWARE.
 #include "../entity_spell_system/spawners/ess_entity_spawner.h"
 #include "../opensimplex/open_simplex_noise.h"
 
-int BiomeTerrarinGenerator::get_current_seed() {
+int BiomeTerrainGenerator::get_current_seed() {
 	return _current_seed;
 }
-void BiomeTerrarinGenerator::set_current_seed(int value) {
+void BiomeTerrainGenerator::set_current_seed(int value) {
 	_current_seed = value;
 }
 
 #ifdef VOXELMAN_PRESENT
-void BiomeTerrarinGenerator::generate_simple_terrarin(Ref<VoxelChunk> chunk, bool spawn_mobs) {
+void BiomeTerrainGenerator::generate_simple_terrarin(Ref<VoxelChunk> chunk, bool spawn_mobs) {
 	Ref<OpenSimplexNoise> noise;
 	noise.instance();
 	noise->set_seed(10 * get_current_seed());
@@ -117,19 +117,19 @@ void BiomeTerrarinGenerator::generate_simple_terrarin(Ref<VoxelChunk> chunk, boo
 }
 #endif
 
-BiomeTerrarinGenerator::BiomeTerrarinGenerator() {
+BiomeTerrainGenerator::BiomeTerrainGenerator() {
 	_current_seed = 0;
 }
 
-BiomeTerrarinGenerator::~BiomeTerrarinGenerator() {
+BiomeTerrainGenerator::~BiomeTerrainGenerator() {
 }
 
-void BiomeTerrarinGenerator::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_current_seed"), &BiomeTerrarinGenerator::get_current_seed);
-	ClassDB::bind_method(D_METHOD("set_current_seed", "value"), &BiomeTerrarinGenerator::set_current_seed);
+void BiomeTerrainGenerator::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_current_seed"), &BiomeTerrainGenerator::get_current_seed);
+	ClassDB::bind_method(D_METHOD("set_current_seed", "value"), &BiomeTerrainGenerator::set_current_seed);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "current_seed"), "set_current_seed", "get_current_seed");
 
 #ifdef VOXELMAN_PRESENT
-	ClassDB::bind_method(D_METHOD("generate_simple_terrarin", "chunk", "spawn_mobs"), &BiomeTerrarinGenerator::generate_simple_terrarin);
+	ClassDB::bind_method(D_METHOD("generate_simple_terrarin", "chunk", "spawn_mobs"), &BiomeTerrainGenerator::generate_simple_terrarin);
 #endif
 }
