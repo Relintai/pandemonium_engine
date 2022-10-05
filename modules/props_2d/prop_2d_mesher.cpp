@@ -871,7 +871,7 @@ void Prop2DMesher::bake_colors_lights() {
 	}
 }
 
-#ifdef TERRAMAN_2D_PRESENT
+#ifdef MODULE_TERRAMAN_2D_ENABLED
 void Prop2DMesher::bake_lights(MeshInstance *node, Vector<Ref<Terrain2DLight>> &lights) {
 	/*
 	ERR_FAIL_COND(node == NULL);

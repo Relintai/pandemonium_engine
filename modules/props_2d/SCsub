@@ -6,9 +6,6 @@ module_env = env.Clone()
 
 import version
 
-if os.path.isdir('../terraman_2d'):
-    module_env.Append(CPPDEFINES=['TERRAMAN_2D_PRESENT'])
-
 sources = [
 
     "register_types.cpp",

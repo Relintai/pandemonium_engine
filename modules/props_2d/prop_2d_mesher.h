@@ -41,7 +41,7 @@ SOFTWARE.
 #include "../mesh_data_resource/mesh_data_resource.h"
 #endif
 
-#ifdef TERRAMAN_2D_PRESENT
+#ifdef MODULE_TERRAMAN_2D_ENABLED
 #include "../terraman_2d/data/terrain_2d_light.h"
 #endif
 
@@ -149,7 +149,7 @@ public:
 	void bake_colors_lights_rao();
 	void bake_colors_lights();
 
-#ifdef TERRAMAN_2D_PRESENT
+#ifdef MODULE_TERRAMAN_2D_ENABLED
 	void bake_lights(MeshInstance *node, Vector<Ref<Terrain2DLight>> &lights);
 #endif
 
