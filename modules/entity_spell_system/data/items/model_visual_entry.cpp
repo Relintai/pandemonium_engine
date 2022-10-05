@@ -24,6 +24,8 @@ SOFTWARE.
 
 #include "../../singletons/ess.h"
 
+#include "modules/modules_enabled.gen.h"
+
 const String ModelVisualEntry::BINDING_STRING_MODEL_VISUAL_ENTRY_TYPES = "Bone,Attachment";
 
 ModelVisualEntry::ModenVisualEntryType ModelVisualEntry::get_type() const {
@@ -61,7 +63,7 @@ void ModelVisualEntry::set_group(const int value) {
 	_group = value;
 }
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 Ref<MeshDataResource> ModelVisualEntry::get_mesh(const int index) {
 	ERR_FAIL_INDEX_V(index, _entries.size(), Ref<MeshDataResource>());
 
@@ -155,7 +157,7 @@ bool ModelVisualEntry::_set(const StringName &p_name, const Variant &p_value) {
 			_entries.write[index].texture = p_value;
 
 			return true;
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		} else if (p == "mesh") {
 			_entries.write[index].mesh = p_value;
 
@@ -194,7 +196,7 @@ bool ModelVisualEntry::_get(const StringName &p_name, Variant &r_ret) const {
 			r_ret = _entries[index].texture;
 
 			return true;
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		} else if (p == "mesh") {
 			r_ret = _entries[index].mesh;
 
@@ -220,7 +222,7 @@ bool ModelVisualEntry::_get(const StringName &p_name, Variant &r_ret) const {
 void ModelVisualEntry::_get_property_list(List<PropertyInfo> *p_list) const {
 	for (int i = 0; i < _entries.size(); ++i) {
 		if (_type == ModelVisualEntry::MODEL_VISUAL_ENTRY_TYPE_BONE) {
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 			p_list->push_back(PropertyInfo(Variant::OBJECT, "entry_" + itos(i) + "/mesh", PROPERTY_HINT_RESOURCE_TYPE, "MeshDataResource", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL));
 #endif
 			p_list->push_back(PropertyInfo(Variant::OBJECT, "entry_" + itos(i) + "/texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL));
@@ -282,7 +284,7 @@ void ModelVisualEntry::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_group", "value"), &ModelVisualEntry::set_group);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "group", PROPERTY_HINT_ENUM), "set_group", "get_group");
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	ClassDB::bind_method(D_METHOD("get_mesh", "index"), &ModelVisualEntry::get_mesh);
 	ClassDB::bind_method(D_METHOD("set_mesh", "index", "value"), &ModelVisualEntry::set_mesh);
 #endif

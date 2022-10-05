@@ -43,6 +43,8 @@ SOFTWARE.
 
 #include "../meshers/terrain_2d_mesher.h"
 
+#include "modules/modules_enabled.gen.h"
+
 #if PROPS_2D_PRESENT
 #include "../../props_2d/props/prop_2d_data.h"
 #endif
@@ -267,7 +269,7 @@ public:
 	void props_clear();
 #endif
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	int mesh_data_resource_addv(const Vector2 &local_data_pos, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture = Ref<Texture>(), const Color &color = Color(1, 1, 1, 1), const bool apply_scale = true);
 	int mesh_data_resource_add(const Transform2D &local_transform, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture = Ref<Texture>(), const Color &color = Color(1, 1, 1, 1), const bool apply_scale = true);
 
@@ -364,7 +366,7 @@ protected:
 	};
 #endif
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	struct MeshDataResourceEntry {
 		Ref<MeshDataResource> mesh;
 		Ref<Texture> texture;
@@ -442,7 +444,7 @@ protected:
 	Vector<Prop2DDataStore> _props;
 #endif
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	Vector<MeshDataResourceEntry> _mesh_data_resources;
 #endif
 

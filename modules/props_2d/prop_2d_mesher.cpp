@@ -29,6 +29,8 @@ SOFTWARE.
 #include "material_cache/prop_2d_material_cache.h"
 #include "tiled_wall/tiled_wall_2d_data.h"
 
+#include "modules/modules_enabled.gen.h"
+
 const String Prop2DMesher::BINDING_STRING_BUILD_FLAGS = "Use Lighting,Use AO,Use RAO,Bake Lights";
 
 bool Prop2DMesher::Vertex::operator==(const Vertex &p_vertex) const {
@@ -528,7 +530,7 @@ _FORCE_INLINE_ Vector2 Prop2DMesher::transform_uv(const Vector2 &uv, const Rect2
 	return ruv;
 }
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 void Prop2DMesher::add_mesh_data_resource(Ref<MeshDataResource> mesh, const Vector3 position, const Vector3 rotation, const Vector3 scale, const Rect2 uv_rect) {
 	Transform transform = Transform(Basis(rotation).scaled(scale), position);
 
@@ -1170,7 +1172,7 @@ void Prop2DMesher::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_tiled_wall_mesh_rect_simple", "x", "y", "transform", "texture_rect"), &Prop2DMesher::add_tiled_wall_mesh_rect_simple);
 	ClassDB::bind_method(D_METHOD("transform_uv", "uv", "rect"), &Prop2DMesher::transform_uv);
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	ClassDB::bind_method(D_METHOD("add_mesh_data_resource", "mesh", "position", "rotation", "scale", "uv_rect"), &Prop2DMesher::add_mesh_data_resource, DEFVAL(Rect2(0, 0, 1, 1)), DEFVAL(Vector3(1.0, 1.0, 1.0)), DEFVAL(Vector3()), DEFVAL(Vector3()));
 	ClassDB::bind_method(D_METHOD("add_mesh_data_resource_transform", "mesh", "transform", "uv_rect"), &Prop2DMesher::add_mesh_data_resource_transform, DEFVAL(Rect2(0, 0, 1, 1)));
 	ClassDB::bind_method(D_METHOD("add_mesh_data_resource_transform_colored", "mesh", "transform", "colors", "uv_rect"), &Prop2DMesher::add_mesh_data_resource_transform_colored, DEFVAL(Rect2(0, 0, 1, 1)));

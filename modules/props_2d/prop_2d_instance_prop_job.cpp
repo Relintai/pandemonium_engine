@@ -30,7 +30,9 @@ SOFTWARE.
 #include "scene/resources/shape.h"
 #include "singleton/prop_2d_cache.h"
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../mesh_data_resource/mesh_data_resource.h"
 #endif
 
@@ -42,7 +44,7 @@ SOFTWARE.
 #include "../texture_packer/texture_packer.h"
 #endif
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 //define PROPS_PRESENT, so things compile. That module's scsub will define this too while compiling,
 //but not when included from here.
 #define PROPS_2D_PRESENT 1
@@ -90,7 +92,7 @@ void Prop2DInstanceProp2DJob::set_prop_mesher(const Ref<Prop2DMesher> &mesher) {
 	_prop_mesher = mesher;
 }
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 void Prop2DInstanceProp2DJob::add_mesh(const Ref<Prop2DDataMeshData> &mesh_data, const Transform2D &base_transform) {
 	PMDREntry e;
 	e.mesh_data = mesh_data;
@@ -137,7 +139,7 @@ void Prop2DInstanceProp2DJob::_execute_phase() {
 		finished();
 	}
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	if (_prop_mesh_datas.size() == 0 && _prop_tiled_wall_datas.size() == 0) {
 		//reset_meshes();
 		set_complete(true);
@@ -172,8 +174,9 @@ void Prop2DInstanceProp2DJob::_reset() {
 	}
 
 	_prop_tiled_wall_datas.clear();
-
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	_prop_mesh_datas.clear();
+#endif
 	clear_collision_shapes();
 
 	set_build_phase_type(BUILD_PHASE_TYPE_PHYSICS_PROCESS);
@@ -267,14 +270,19 @@ void Prop2DInstanceProp2DJob::phase_prop() {
 	}
 
 	if (should_do()) {
-		if (_prop_mesh_datas.size() == 0 && _prop_tiled_wall_datas.size() == 0) {
+		if (
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
+				_prop_mesh_datas.size() == 0 &&
+#endif
+				_prop_tiled_wall_datas.size() == 0
+		) {
 			//reset_meshes();
 			reset_stages();
 			set_complete(true); //So threadpool knows it's done
 			return;
 		}
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		for (int i = 0; i < _prop_mesh_datas.size(); ++i) {
 			PMDREntry &e = _prop_mesh_datas.write[i];
 

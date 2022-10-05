@@ -25,12 +25,14 @@ SOFTWARE.
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/texture.h"
 
+#include "modules/modules_enabled.gen.h"
+
 #ifdef PROPS_2D_PRESENT
 #include "../../props_2d/props/prop_2d_data.h"
 
 #include "../../props_2d/props/prop_2d_data_prop.h"
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../../mesh_data_resource/props_2d/prop_2d_data_mesh_data.h"
 #endif
 #endif
@@ -363,7 +365,7 @@ bool Terrain2DLibraryMerger::process_prop_textures(Ref<Prop2DData> prop) {
 	bool texture_added = false;
 
 	for (int i = 0; i < prop->get_prop_count(); ++i) {
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		Ref<Prop2DDataMeshData> pdm = prop->get_prop(i);
 
 		if (pdm.is_valid()) {

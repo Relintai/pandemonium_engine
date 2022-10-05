@@ -4,7 +4,9 @@
 
 #include "scene/3d/light.h"
 
-#if MESH_DATA_RESOURCE_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../mesh_data_resource/props/prop_data_mesh_data.h"
 #endif
 
@@ -195,7 +197,7 @@ void PropInstance::_prop_preprocess(Transform transform, const Ref<PropData> &pr
 			continue;
 		}
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		Ref<PropDataMeshData> mesh_data = e;
 
 		if (mesh_data.is_valid()) {

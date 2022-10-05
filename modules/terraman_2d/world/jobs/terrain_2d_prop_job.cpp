@@ -32,7 +32,9 @@ SOFTWARE.
 #include "../../meshers/terrain_2d_mesher.h"
 #include "../default/terrain_2d_chunk_default.h"
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../../../mesh_data_resource/mesh_data_resource.h"
 #endif
 
@@ -62,7 +64,7 @@ void Terrain2DProp2DJob::phase_physics_process() {
 
 	chunk->colliders_clear();
 */
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 //TODO
 /*
 	for (int i = 0; i < chunk->mesh_data_resource_get_count(); ++i) {
@@ -114,7 +116,7 @@ void Terrain2DProp2DJob::phase_physics_process() {
 }
 
 void Terrain2DProp2DJob::phase_prop() {
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	Ref<Terrain2DChunkDefault> chunk = _chunk;
 
 	if (!get_prop_mesher().is_valid()) {
@@ -218,7 +220,7 @@ void Terrain2DProp2DJob::_execute_phase() {
 	Ref<Terrain2DChunkDefault> chunk = _chunk;
 
 	if (!chunk.is_valid()
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 			|| chunk->mesh_data_resource_get_count() == 0
 #endif
 	) {
@@ -282,7 +284,7 @@ void Terrain2DProp2DJob::phase_setup() {
 			OS::get_singleton()->delay_usec(100);
 		}
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		for (int i = 0; i < _chunk->mesh_data_resource_get_count(); ++i) {
 			Ref<Texture> tex = _chunk->mesh_data_resource_get_texture(i);
 

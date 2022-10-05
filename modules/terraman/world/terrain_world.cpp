@@ -38,7 +38,7 @@ SOFTWARE.
 #include "../../props/props/prop_data_scene.h"
 #endif
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../../mesh_data_resource/props/prop_data_mesh_data.h"
 #endif
 
@@ -656,7 +656,7 @@ void TerrainWorld::prop_add(Transform transform, const Ref<PropData> &prop, cons
 			continue;
 		}
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		Ref<PropDataMeshData> mesh_data = entry;
 
 		if (mesh_data.is_valid()) {

@@ -34,7 +34,9 @@ SOFTWARE.
 #include "scene/resources/mesh.h"
 #include "scene/resources/packed_scene.h"
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../../../mesh_data_resource/mesh_data_resource.h"
 #endif
 
@@ -65,7 +67,7 @@ public:
 	int get_group() const;
 	void set_group(const int value);
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	Ref<MeshDataResource> get_mesh(const int index);
 	void set_mesh(const int index, const Ref<MeshDataResource> &mesh);
 #endif
@@ -90,7 +92,7 @@ public:
 
 protected:
 	struct MVEE {
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		Ref<MeshDataResource> mesh;
 #endif
 		Ref<Texture> texture;
@@ -104,7 +106,7 @@ protected:
 		}
 
 		~MVEE() {
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 			mesh.unref();
 #endif
 			texture.unref();

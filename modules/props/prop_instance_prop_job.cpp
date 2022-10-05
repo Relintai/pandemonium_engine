@@ -35,7 +35,7 @@ SOFTWARE.
 
 #include "modules/modules_enabled.gen.h"
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../mesh_data_resource/mesh_data_resource.h"
 #endif
 
@@ -47,7 +47,7 @@ SOFTWARE.
 #include "../texture_packer/texture_packer.h"
 #endif
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../mesh_data_resource/props/prop_data_mesh_data.h"
 #endif
 
@@ -114,7 +114,7 @@ void PropInstancePropJob::set_prop_mesher(const Ref<PropMesher> &mesher) {
 	_prop_mesher = mesher;
 }
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 void PropInstancePropJob::add_mesh(const Ref<PropDataMeshData> &mesh_data, const Transform &base_transform) {
 	PMDREntry e;
 	e.mesh_data = mesh_data;
@@ -150,7 +150,7 @@ void PropInstancePropJob::clear_lights() {
 void PropInstancePropJob::_physics_process(float delta) {
 	if (_phase == 0) {
 		phase_physics_process();
-  }
+	}
 }
 
 void PropInstancePropJob::_execute_phase() {
@@ -161,7 +161,7 @@ void PropInstancePropJob::_execute_phase() {
 		finished();
 	}
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	if (_prop_mesh_datas.size() == 0 && _prop_tiled_wall_datas.size() == 0) {
 		//reset_meshes();
 		set_complete(true);
@@ -200,7 +200,9 @@ void PropInstancePropJob::_reset() {
 
 	_prop_tiled_wall_datas.clear();
 
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	_prop_mesh_datas.clear();
+#endif
 	clear_collision_shapes();
 
 	set_build_phase_type(BUILD_PHASE_TYPE_PHYSICS_PROCESS);
@@ -291,14 +293,18 @@ void PropInstancePropJob::phase_prop() {
 	}
 
 	if (should_do()) {
-		if (_prop_mesh_datas.size() == 0 && _prop_tiled_wall_datas.size() == 0) {
+		if (
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
+				_prop_mesh_datas.size() == 0 &&
+#endif
+				_prop_tiled_wall_datas.size() == 0) {
 			//reset_meshes();
 			reset_stages();
 			set_complete(true); //So threadpool knows it's done
 			return;
 		}
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		for (int i = 0; i < _prop_mesh_datas.size(); ++i) {
 			PMDREntry &e = _prop_mesh_datas.write[i];
 
@@ -419,7 +425,7 @@ void PropInstancePropJob::phase_steps() {
 
 				if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
 					RS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
-        }
+				}
 			}
 		}
 	}
@@ -605,7 +611,7 @@ Array PropInstancePropJob::merge_mesh_array(Array arr) const {
 
 			if (Math::is_equal_approx(v.x, vc.x) && Math::is_equal_approx(v.y, vc.y) && Math::is_equal_approx(v.z, vc.z)) {
 				equals.push_back(j);
-      }
+			}
 		}
 
 		for (int k = 0; k < equals.size(); ++k) {
@@ -616,22 +622,22 @@ Array PropInstancePropJob::merge_mesh_array(Array arr) const {
 
 			if (has_normals) {
 				normals.remove(remk);
-      }
+			}
 			if (has_uvs) {
 				uvs.remove(remk);
-      }
+			}
 			if (has_colors) {
 				colors.remove(remk);
-      }
+			}
 
 			for (int j = 0; j < indices.size(); ++j) {
 				int indx = indices[j];
 
 				if (indx == remk) {
 					indices.set(j, i);
-        }	else if (indx > remk) {
+				} else if (indx > remk) {
 					indices.set(j, indx - 1);
-        }
+				}
 			}
 		}
 
@@ -642,13 +648,13 @@ Array PropInstancePropJob::merge_mesh_array(Array arr) const {
 
 	if (has_normals) {
 		arr[RenderingServer::ARRAY_NORMAL] = normals;
-  }
+	}
 	if (has_uvs) {
 		arr[RenderingServer::ARRAY_TEX_UV] = uvs;
-  }
+	}
 	if (has_colors) {
 		arr[RenderingServer::ARRAY_COLOR] = colors;
-  }
+	}
 
 	arr[RenderingServer::ARRAY_INDEX] = indices;
 
@@ -669,7 +675,7 @@ Array PropInstancePropJob::bake_mesh_array_uv(Array arr, Ref<Texture> tex, const
 
 	if (colors.size() < uvs.size()) {
 		colors.resize(uvs.size());
-  }
+	}
 
 	img->lock();
 
@@ -706,7 +712,7 @@ void PropInstancePropJob::reset_meshes() {
 
 			if (RS::get_singleton()->mesh_get_surface_count(mesh_rid) > 0) {
 				RS::get_singleton()->mesh_remove_surface(mesh_rid, 0);
-      }
+			}
 		}
 	}
 }

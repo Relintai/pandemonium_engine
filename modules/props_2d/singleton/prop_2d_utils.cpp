@@ -32,7 +32,9 @@ SOFTWARE.
 
 #include "scene/3d/mesh_instance.h"
 
-#if MESH_DATA_RESOURCE_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../../mesh_data_resource/nodes/mesh_data_instance.h"
 #endif
 

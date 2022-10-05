@@ -233,7 +233,7 @@ public:
 	void props_clear();
 #endif
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	int mesh_data_resource_addv(const Vector3 &local_data_pos, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture = Ref<Texture>(), const Color &color = Color(1, 1, 1, 1), const bool apply_voxel_scale = true);
 	int mesh_data_resource_add(const Transform &local_transform, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture = Ref<Texture>(), const Color &color = Color(1, 1, 1, 1), const bool apply_voxel_scale = true);
 
@@ -315,7 +315,7 @@ protected:
 	};
 #endif
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	struct MeshDataResourceEntry {
 		Ref<MeshDataResource> mesh;
 		Ref<Texture> texture;
@@ -397,7 +397,7 @@ protected:
 	Vector<PropDataStore> _props;
 #endif
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	Vector<MeshDataResourceEntry> _mesh_data_resources;
 #endif
 

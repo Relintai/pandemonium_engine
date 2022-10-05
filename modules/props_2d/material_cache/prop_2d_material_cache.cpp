@@ -28,7 +28,9 @@ SOFTWARE.
 #include "../singleton/prop_2d_cache.h"
 #include "../tiled_wall/tiled_wall_2d_data.h"
 
-#if MESH_DATA_RESOURCE_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 //define PROPS_PRESENT, so things compile. That module's scsub will define this too while compiling,
 //but not when included from here.
 #define PROPS_2D_PRESENT 1
@@ -139,7 +141,7 @@ void Prop2DMaterialCache::prop_add_textures(const Ref<Prop2DData> &prop) {
 	}
 
 	for (int i = 0; i < prop->get_prop_count(); ++i) {
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		Ref<Prop2DDataMeshData> pdm = prop->get_prop(i);
 
 		if (pdm.is_valid()) {
@@ -180,7 +182,7 @@ void Prop2DMaterialCache::prop_remove_textures(const Ref<Prop2DData> &prop) {
 	}
 
 	for (int i = 0; i < prop->get_prop_count(); ++i) {
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		Ref<Prop2DDataMeshData> pdm = prop->get_prop(i);
 
 		if (pdm.is_valid()) {

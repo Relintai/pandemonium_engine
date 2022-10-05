@@ -30,7 +30,7 @@ SOFTWARE.
 #include "../../props/props/prop_data_tiled_wall.h"
 #include "../../props/tiled_wall/tiled_wall_data.h"
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../../mesh_data_resource/props/prop_data_mesh_data.h"
 #endif
 
@@ -180,7 +180,7 @@ void ESSMaterialCache::prop_add_textures(const Ref<PropData> &prop) {
 	}
 
 	for (int i = 0; i < prop->get_prop_count(); ++i) {
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		Ref<PropDataMeshData> pdm = prop->get_prop(i);
 
 		if (pdm.is_valid()) {
@@ -221,7 +221,7 @@ void ESSMaterialCache::prop_remove_textures(const Ref<PropData> &prop) {
 	}
 
 	for (int i = 0; i < prop->get_prop_count(); ++i) {
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		Ref<PropDataMeshData> pdm = prop->get_prop(i);
 
 		if (pdm.is_valid()) {

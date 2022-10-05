@@ -31,6 +31,8 @@ SOFTWARE.
 #include "scene/resources/rectangle_shape_2d.h"
 #include "servers/physics_2d_server.h"
 
+#include "modules/modules_enabled.gen.h"
+
 bool Terrain2DMesher::Vertex::operator==(const Vertex &p_vertex) const {
 	if (vertex != p_vertex.vertex)
 		return false;
@@ -482,7 +484,7 @@ void Terrain2DMesher::add_chunk(Ref<Terrain2DChunk> chunk) {
 	call("_add_chunk", chunk);
 }
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 void Terrain2DMesher::add_mesh_data_resource(Ref<MeshDataResource> mesh, const Vector3 position, const Vector3 rotation, const Vector3 scale, const Rect2 uv_rect) {
 	//Transform2D transform = Transform(Basis(rotation).scaled(scale), position);
 	//TODO
@@ -935,7 +937,7 @@ void Terrain2DMesher::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("add_chunk", "chunk"), &Terrain2DMesher::add_chunk);
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	ClassDB::bind_method(D_METHOD("add_mesh_data_resource", "mesh", "position", "rotation", "scale", "uv_rect"), &Terrain2DMesher::add_mesh_data_resource, DEFVAL(Rect2(0, 0, 1, 1)), DEFVAL(Vector3(1.0, 1.0, 1.0)), DEFVAL(Vector3()), DEFVAL(Vector3()));
 	ClassDB::bind_method(D_METHOD("add_mesh_data_resource_transform", "mesh", "transform", "uv_rect"), &Terrain2DMesher::add_mesh_data_resource_transform, DEFVAL(Rect2(0, 0, 1, 1)));
 	ClassDB::bind_method(D_METHOD("add_mesh_data_resource_transform_colored", "mesh", "transform", "colors", "uv_rect"), &Terrain2DMesher::add_mesh_data_resource_transform_colored, DEFVAL(Rect2(0, 0, 1, 1)));

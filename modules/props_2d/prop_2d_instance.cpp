@@ -4,7 +4,9 @@
 
 #include "scene/3d/light.h"
 
-#if MESH_DATA_RESOURCE_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 //define PROPS_PRESENT, so things compile. That module's scsub will define this too while compiling,
 //but not when included from here.
 #define PROPS_2D_PRESENT 1
@@ -193,7 +195,7 @@ void Prop2DInstance::_prop_preprocess(Transform2D transform, const Ref<Prop2DDat
 			continue;
 		}
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 //TODO
 /*
 		Ref<Prop2DDataMeshData> mesh_data = e;

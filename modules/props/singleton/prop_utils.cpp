@@ -31,8 +31,11 @@ SOFTWARE.
 #include "scene/3d/room_manager.h"
 
 #include "scene/3d/mesh_instance.h"
+#include "scene/resources/mesh.h"
 
-#if MESH_DATA_RESOURCE_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../../mesh_data_resource/nodes/mesh_data_instance.h"
 #endif
 
@@ -340,7 +343,7 @@ void PropUtils::get_mesh_arrays(Node *node, Vector<PoolVector<Vector3>> *arrs) {
 		}
 	}
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	{
 		MeshDataInstance *mdi = Object::cast_to<MeshDataInstance>(node);
 

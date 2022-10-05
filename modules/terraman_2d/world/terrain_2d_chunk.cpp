@@ -34,6 +34,8 @@ SOFTWARE.
 
 #include "core/os/thread_pool.h"
 
+#include "modules/modules_enabled.gen.h"
+
 _FORCE_INLINE_ bool Terrain2DChunk::get_process() const {
 	return _is_processing;
 }
@@ -770,7 +772,7 @@ void Terrain2DChunk::props_clear() {
 }
 #endif
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 int Terrain2DChunk::mesh_data_resource_addv(const Vector2 &local_data_pos, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture, const Color &color, const bool apply_voxel_scale) {
 	//TODO
 	/*
@@ -1173,7 +1175,7 @@ Terrain2DChunk::~Terrain2DChunk() {
 	props_clear();
 #endif
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	mesh_data_resource_clear();
 #endif
 
@@ -1590,7 +1592,7 @@ void Terrain2DChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("props_clear"), &Terrain2DChunk::props_clear);
 #endif
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_addv", "local_data_pos", "mesh", "texture", "color", "apply_voxel_scale"), &Terrain2DChunk::mesh_data_resource_addv, DEFVAL(Ref<Texture>()), DEFVAL(Color(1, 1, 1, 1)), DEFVAL(true));
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_add", "local_transform", "mesh", "texture", "color", "apply_voxel_scale"), &Terrain2DChunk::mesh_data_resource_add, DEFVAL(Ref<Texture>()), DEFVAL(Color(1, 1, 1, 1)), DEFVAL(true));
 

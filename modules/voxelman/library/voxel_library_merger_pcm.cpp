@@ -33,7 +33,7 @@ SOFTWARE.
 
 #include "../../props/props/prop_data_prop.h"
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../../mesh_data_resource/props/prop_data_mesh_data.h"
 #endif
 #endif
@@ -235,7 +235,7 @@ void VoxelLibraryMergerPCM::_prop_material_cache_get_key(Ref<VoxelChunk> chunk) 
 	#endif
 	*/
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	for (int i = 0; i < chunk->mesh_data_resource_get_count(); ++i) {
 		Ref<Texture> tex = chunk->mesh_data_resource_get_texture(i);
 
@@ -330,7 +330,7 @@ void VoxelLibraryMergerPCM::_prop_material_cache_get_key(Ref<VoxelChunk> chunk) 
 	#endif
 	*/
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	for (int i = 0; i < chunk->mesh_data_resource_get_count(); ++i) {
 		Ref<Texture> tex = chunk->mesh_data_resource_get_texture(i);
 
@@ -753,6 +753,7 @@ bool VoxelLibraryMergerPCM::process_prop_textures(Ref<PropData> prop) {
 
 	bool texture_added = false;
 
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	for (int i = 0; i < prop->get_prop_count(); ++i) {
 		Ref<PropDataMeshData> pdm = prop->get_prop(i);
 
@@ -775,6 +776,7 @@ bool VoxelLibraryMergerPCM::process_prop_textures(Ref<PropData> prop) {
 				texture_added = true;
 		}
 	}
+#endif
 
 	return texture_added;
 }

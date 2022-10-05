@@ -33,7 +33,7 @@ SOFTWARE.
 
 #include "../../props/props/prop_data_prop.h"
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../../mesh_data_resource/props/prop_data_mesh_data.h"
 #endif
 #endif
@@ -415,7 +415,7 @@ void TerrainLibraryMergerPCM::_prop_material_cache_get_key(Ref<TerrainChunk> chu
 	#endif
 	*/
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	for (int i = 0; i < chunk->mesh_data_resource_get_count(); ++i) {
 		Ref<Texture> tex = chunk->mesh_data_resource_get_texture(i);
 
@@ -510,7 +510,7 @@ void TerrainLibraryMergerPCM::_prop_material_cache_get_key(Ref<TerrainChunk> chu
 	#endif
 	*/
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	for (int i = 0; i < chunk->mesh_data_resource_get_count(); ++i) {
 		Ref<Texture> tex = chunk->mesh_data_resource_get_texture(i);
 

@@ -22,7 +22,7 @@
 
 #include "./singleton/prop_cache.h"
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../mesh_data_resource/props/prop_data_mesh_data.h"
 #endif
 
@@ -669,7 +669,7 @@ void PropInstanceMerger::_prop_preprocess(Transform transform, const Ref<PropDat
 			continue;
 		}
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		Ref<PropDataMeshData> mesh_data = e;
 
 		if (mesh_data.is_valid()) {

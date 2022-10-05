@@ -28,6 +28,8 @@ SOFTWARE.
 
 #include "../defines.h"
 
+#include "modules/modules_enabled.gen.h"
+
 #if PROPS_2D_PRESENT
 #include "../../props_2d/props/prop_2d_data.h"
 #include "../../props_2d/props/prop_2d_data_entry.h"
@@ -36,7 +38,7 @@ SOFTWARE.
 #include "../../props_2d/props/prop_2d_data_scene.h"
 #endif
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../../mesh_data_resource/props_2d/prop_2d_data_mesh_data.h"
 #endif
 
@@ -709,7 +711,7 @@ void Terrain2DWorld::prop_add(Transform transform, const Ref<Prop2DData> &prop, 
 			continue;
 		}
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		Ref<Prop2DDataMeshData> mesh_data = entry;
 
 		if (mesh_data.is_valid()) {

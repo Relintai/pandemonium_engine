@@ -29,6 +29,8 @@ SOFTWARE.
 #include "../world/default/terrain_chunk_default.h"
 #include "../world/terrain_chunk.h"
 
+#include "modules/modules_enabled.gen.h"
+
 bool TerrainMesher::Vertex::operator==(const Vertex &p_vertex) const {
 	if (vertex != p_vertex.vertex)
 		return false;
@@ -433,7 +435,7 @@ void TerrainMesher::add_chunk(Ref<TerrainChunk> chunk) {
 	call("_add_chunk", chunk);
 }
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 void TerrainMesher::add_mesh_data_resource(Ref<MeshDataResource> mesh, const Vector3 position, const Vector3 rotation, const Vector3 scale, const Rect2 uv_rect) {
 	Transform transform = Transform(Basis(rotation).scaled(scale), position);
 
@@ -992,7 +994,7 @@ void TerrainMesher::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("add_chunk", "chunk"), &TerrainMesher::add_chunk);
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	ClassDB::bind_method(D_METHOD("add_mesh_data_resource", "mesh", "position", "rotation", "scale", "uv_rect"), &TerrainMesher::add_mesh_data_resource, DEFVAL(Rect2(0, 0, 1, 1)), DEFVAL(Vector3(1.0, 1.0, 1.0)), DEFVAL(Vector3()), DEFVAL(Vector3()));
 	ClassDB::bind_method(D_METHOD("add_mesh_data_resource_transform", "mesh", "transform", "uv_rect"), &TerrainMesher::add_mesh_data_resource_transform, DEFVAL(Rect2(0, 0, 1, 1)));
 	ClassDB::bind_method(D_METHOD("add_mesh_data_resource_transform_colored", "mesh", "transform", "colors", "uv_rect"), &TerrainMesher::add_mesh_data_resource_transform_colored, DEFVAL(Rect2(0, 0, 1, 1)));

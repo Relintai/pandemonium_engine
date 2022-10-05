@@ -26,12 +26,14 @@ SOFTWARE.
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/texture.h"
 
+#include "modules/modules_enabled.gen.h"
+
 #ifdef PROPS_2D_PRESENT
 #include "../../props_2d/props/prop_2d_data.h"
 
 #include "../../props_2d/props/prop_2d_data_prop.h"
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../../mesh_data_resource/props_2d/prop_2d_data_mesh_data.h"
 #endif
 #endif
@@ -260,7 +262,7 @@ void Terrain2DLibraryMergerPCM::_prop_material_cache_get_key(Ref<Terrain2DChunk>
 	#endif
 	*/
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	for (int i = 0; i < chunk->mesh_data_resource_get_count(); ++i) {
 		Ref<Texture> tex = chunk->mesh_data_resource_get_texture(i);
 
@@ -349,7 +351,7 @@ void Terrain2DLibraryMergerPCM::_prop_material_cache_get_key(Ref<Terrain2DChunk>
 	#endif
 	*/
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	for (int i = 0; i < chunk->mesh_data_resource_get_count(); ++i) {
 		Ref<Texture> tex = chunk->mesh_data_resource_get_texture(i);
 

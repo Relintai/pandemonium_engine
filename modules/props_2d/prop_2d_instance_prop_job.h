@@ -26,6 +26,8 @@ SOFTWARE.
 
 #include "scene/resources/shape_2d.h"
 
+#include "modules/modules_enabled.gen.h"
+
 class Prop2DMesher;
 class Prop2DInstance;
 class Prop2DInstanceMerger;
@@ -35,7 +37,7 @@ class Shape;
 class Prop2DLight;
 class Prop2DDataTiledWall2D;
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 class Prop2DDataMeshData;
 #endif
 
@@ -56,7 +58,7 @@ public:
 	Ref<Prop2DMesher> get_prop_mesher() const;
 	void set_prop_mesher(const Ref<Prop2DMesher> &mesher);
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	void add_mesh(const Ref<Prop2DDataMeshData> &mesh_data, const Transform2D &base_transform);
 	void clear_meshes();
 #endif
@@ -90,7 +92,7 @@ protected:
 	static void _bind_methods();
 
 protected:
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	struct PMDREntry {
 		Ref<Prop2DDataMeshData> mesh_data;
 		Transform2D base_transform;
@@ -117,7 +119,7 @@ protected:
 	Ref<Prop2DMesher> _prop_mesher;
 	Prop2DInstanceMerger *_prop_instace;
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	Vector<PMDREntry> _prop_mesh_datas;
 #endif
 

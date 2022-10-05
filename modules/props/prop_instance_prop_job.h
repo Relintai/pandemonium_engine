@@ -24,6 +24,8 @@ SOFTWARE.
 
 #include "prop_instance_job.h"
 
+#include "modules/modules_enabled.gen.h"
+
 class PropMesher;
 class PropInstance;
 class PropInstanceMerger;
@@ -33,7 +35,7 @@ class Shape;
 class PropLight;
 class PropDataTiledWall;
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 class PropDataMeshData;
 #endif
 
@@ -60,7 +62,7 @@ public:
 	Ref<PropMesher> get_prop_mesher() const;
 	void set_prop_mesher(const Ref<PropMesher> &mesher);
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	void add_mesh(const Ref<PropDataMeshData> &mesh_data, const Transform &base_transform);
 	void clear_meshes();
 #endif
@@ -99,7 +101,7 @@ protected:
 	static void _bind_methods();
 
 protected:
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	struct PMDREntry {
 		Ref<PropDataMeshData> mesh_data;
 		Transform base_transform;
@@ -130,7 +132,7 @@ protected:
 	Ref<PropMesher> _prop_mesher;
 	PropInstanceMerger *_prop_instace;
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	Vector<PMDREntry> _prop_mesh_datas;
 #endif
 

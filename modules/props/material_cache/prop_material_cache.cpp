@@ -28,7 +28,9 @@ SOFTWARE.
 #include "../singleton/prop_cache.h"
 #include "../tiled_wall/tiled_wall_data.h"
 
-#if MESH_DATA_RESOURCE_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../../mesh_data_resource/props/prop_data_mesh_data.h"
 #endif
 
@@ -173,7 +175,7 @@ void PropMaterialCache::prop_add_textures(const Ref<PropData> &prop) {
 	}
 
 	for (int i = 0; i < prop->get_prop_count(); ++i) {
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		Ref<PropDataMeshData> pdm = prop->get_prop(i);
 
 		if (pdm.is_valid()) {
@@ -214,7 +216,7 @@ void PropMaterialCache::prop_remove_textures(const Ref<PropData> &prop) {
 	}
 
 	for (int i = 0; i < prop->get_prop_count(); ++i) {
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		Ref<PropDataMeshData> pdm = prop->get_prop(i);
 
 		if (pdm.is_valid()) {

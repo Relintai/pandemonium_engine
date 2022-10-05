@@ -32,7 +32,7 @@ SOFTWARE.
 
 #include "../../props/props/prop_data_prop.h"
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../../mesh_data_resource/props/prop_data_mesh_data.h"
 #endif
 #endif
@@ -411,7 +411,7 @@ bool TerrainLibraryMerger::process_prop_textures(Ref<PropData> prop) {
 	bool texture_added = false;
 
 	for (int i = 0; i < prop->get_prop_count(); ++i) {
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		Ref<PropDataMeshData> pdm = prop->get_prop(i);
 
 		if (pdm.is_valid()) {

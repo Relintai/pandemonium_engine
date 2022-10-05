@@ -21,7 +21,9 @@
 
 #include "servers/rendering_server.h"
 
-#if MESH_DATA_RESOURCE_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 //define PROPS_PRESENT, so things compile. That module's scsub will define this too while compiling,
 //but not when included from here.
 #define PROPS_2D_PRESENT 1
@@ -458,7 +460,7 @@ void Prop2DInstanceMerger::_prop_preprocess(Transform2D transform, const Ref<Pro
 			continue;
 		}
 
-#if MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 		Ref<Prop2DDataMeshData> mesh_data = e;
 
 		if (mesh_data.is_valid()) {

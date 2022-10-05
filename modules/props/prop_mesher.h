@@ -37,7 +37,7 @@ SOFTWARE.
 
 #include "modules/modules_enabled.gen.h"
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../mesh_data_resource/mesh_data_resource.h"
 #endif
 
@@ -136,7 +136,7 @@ public:
 	Vector2 transform_uv(const Vector2 &uv, const Rect2 &rect) const;
 	Vector2 transform_uv_scaled(const Vector2 &uv, const Rect2 &rect, const int x, const int y, const int texture_scale) const;
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	void add_mesh_data_resource(Ref<MeshDataResource> mesh, const Vector3 position = Vector3(0, 0, 0), const Vector3 rotation = Vector3(0, 0, 0), const Vector3 scale = Vector3(1.0, 1.0, 1.0), const Rect2 uv_rect = Rect2(0, 0, 1, 1));
 	void add_mesh_data_resource_transform(Ref<MeshDataResource> mesh, const Transform transform, const Rect2 uv_rect = Rect2(0, 0, 1, 1));
 	void add_mesh_data_resource_transform_colored(Ref<MeshDataResource> mesh, const Transform transform, const PoolColorArray &colors, const Rect2 uv_rect = Rect2(0, 0, 1, 1));

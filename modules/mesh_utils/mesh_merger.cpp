@@ -26,6 +26,8 @@ SOFTWARE.
 
 #include "scene/3d/mesh_instance.h"
 
+#include "modules/modules_enabled.gen.h"
+
 bool MeshMerger::Vertex::operator==(const Vertex &p_vertex) const {
 	if (vertex != p_vertex.vertex)
 		return false;
@@ -432,7 +434,7 @@ void MeshMerger::reset() {
 	_last_tangent = Plane();
 }
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 
 void MeshMerger::add_mesh_data_resource(Ref<MeshDataResource> mesh, const Transform transform, Rect2 uv_rect) {
 	ERR_FAIL_COND(mesh->get_array().size() == 0);
@@ -933,7 +935,7 @@ void MeshMerger::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_uv_margin", "value"), &MeshMerger::set_uv_margin);
 	ADD_PROPERTY(PropertyInfo(Variant::RECT2, "uv_margin"), "set_uv_margin", "get_uv_margin");
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	ClassDB::bind_method(D_METHOD("add_mesh_data_resource", "mesh", "transform", "uv_rect"), &MeshMerger::add_mesh_data_resource, DEFVAL(Transform()), DEFVAL(Rect2(0, 0, 1, 1)));
 	ClassDB::bind_method(D_METHOD("add_mesh_data_resource_bone", "mesh", "bones", "wrights", "transform", "uv_rect"), &MeshMerger::add_mesh_data_resource_bone, DEFVAL(Transform()), DEFVAL(Rect2(0, 0, 1, 1)));
 #endif
