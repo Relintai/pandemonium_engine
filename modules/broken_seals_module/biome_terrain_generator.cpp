@@ -26,7 +26,9 @@ SOFTWARE.
 
 #include "core/math/math_funcs.h"
 
-#ifdef VOXELMAN_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_VOXELMAN_ENABLED
 #include "../voxelman/world/default/voxel_chunk_default.h"
 #include "../voxelman/world/voxel_chunk.h"
 #endif
@@ -42,7 +44,7 @@ void BiomeTerrainGenerator::set_current_seed(int value) {
 	_current_seed = value;
 }
 
-#ifdef VOXELMAN_PRESENT
+#ifdef MODULE_VOXELMAN_ENABLED
 void BiomeTerrainGenerator::generate_simple_terrarin(Ref<VoxelChunk> chunk, bool spawn_mobs) {
 	Ref<OpenSimplexNoise> noise;
 	noise.instance();
@@ -129,7 +131,7 @@ void BiomeTerrainGenerator::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_current_seed", "value"), &BiomeTerrainGenerator::set_current_seed);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "current_seed"), "set_current_seed", "get_current_seed");
 
-#ifdef VOXELMAN_PRESENT
+#ifdef MODULE_VOXELMAN_ENABLED
 	ClassDB::bind_method(D_METHOD("generate_simple_terrarin", "chunk", "spawn_mobs"), &BiomeTerrainGenerator::generate_simple_terrarin);
 #endif
 }

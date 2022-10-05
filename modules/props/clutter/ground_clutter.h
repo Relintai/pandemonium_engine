@@ -30,7 +30,7 @@ SOFTWARE.
 #include "../../texture_packer/texture_packer.h"
 #endif
 
-#ifdef VOXELMAN_PRESENT
+#ifdef MODULE_VOXELMAN_ENABLED
 #include "../../voxelman/meshers/voxel_mesher.h"
 #endif
 
@@ -41,7 +41,7 @@ class GroundClutter : public Resource {
 	GDCLASS(GroundClutter, Resource);
 
 public:
-#ifdef VOXELMAN_PRESENT
+#ifdef MODULE_VOXELMAN_ENABLED
 	bool should_spawn(Ref<VoxelChunk> chunk, int x, int y, int z);
 
 	void add_meshes_to(Ref<VoxelMesher> mesher, Ref<VoxelChunk> chunk, int x, int y, int z);

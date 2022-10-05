@@ -4,9 +4,6 @@ Import('env')
 
 module_env = env.Clone()
 
-if os.path.isdir('../voxelman'):
-    module_env.Append(CPPDEFINES=['VOXELMAN_PRESENT'])
-
 if os.path.isdir('../terraman'):
     module_env.Append(CPPDEFINES=['TERRAMAN_PRESENT'])
 

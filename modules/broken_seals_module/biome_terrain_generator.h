@@ -24,7 +24,9 @@ SOFTWARE.
 
 #include "core/object/reference.h"
 
-#ifdef VOXELMAN_PRESENT
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_VOXELMAN_ENABLED
 class VoxelChunk;
 #endif
 
@@ -35,7 +37,7 @@ public:
 	int get_current_seed();
 	void set_current_seed(int value);
 
-#ifdef VOXELMAN_PRESENT
+#ifdef MODULE_VOXELMAN_ENABLED
 	void generate_simple_terrarin(Ref<VoxelChunk> chunk, bool spawn_mobs);
 #endif
 

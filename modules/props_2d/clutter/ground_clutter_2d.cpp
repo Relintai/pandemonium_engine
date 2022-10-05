@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "modules/modules_enabled.gen.h"
 
-#ifdef VOXELMAN_PRESENT
+#ifdef MODULE_VOXELMAN_ENABLED
 #include "../../voxelman/world/voxel_chunk.h"
 
 bool GroundClutter2D::should_spawn(Ref<VoxelChunk> chunk, int x, int y, int z) {
@@ -60,7 +60,7 @@ void GroundClutter2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_textures_to", "packer"), &GroundClutter2D::add_textures_to);
 #endif
 
-#ifdef VOXELMAN_PRESENT
+#ifdef MODULE_VOXELMAN_ENABLED
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "should"), "_should_spawn", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk"), PropertyInfo(Variant::INT, "x"), PropertyInfo(Variant::INT, "y"), PropertyInfo(Variant::INT, "z")));
 	BIND_VMETHOD(MethodInfo("_add_meshes_to", PropertyInfo(Variant::OBJECT, "mesher", PROPERTY_HINT_RESOURCE_TYPE, "VoxelMesher"), PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk"), PropertyInfo(Variant::INT, "x"), PropertyInfo(Variant::INT, "y"), PropertyInfo(Variant::INT, "z")));
 
