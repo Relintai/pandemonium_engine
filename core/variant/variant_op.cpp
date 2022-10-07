@@ -1114,6 +1114,9 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 					case PLANE: {
 						_RETURN(p_a._data._projection->xform(*(const Plane *)p_b._data._mem));
 					}
+					case PROJECTION: {
+						_RETURN(p_a._data._projection->operator*(*(const Projection *)p_b._data._mem));
+					}
 					default:
 						_RETURN_FAIL;
 				}
