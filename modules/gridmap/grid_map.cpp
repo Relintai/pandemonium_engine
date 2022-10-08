@@ -31,15 +31,15 @@
 #include "grid_map.h"
 
 #include "core/io/marshalls.h"
-#include "core/message_queue.h"
+#include "core/object/message_queue.h"
 #include "scene/3d/light.h"
-#include "scene/resources/mesh_library.h"
+#include "mesh_library.h"
 #include "scene/resources/physics_material.h"
 #include "scene/resources/primitive_meshes.h"
 #include "scene/resources/surface_tool.h"
 #include "scene/scene_string_names.h"
 #include "servers/navigation_server.h"
-#include "servers/visual_server.h"
+#include "servers/rendering_server.h"
 
 bool GridMap::_set(const StringName &p_name, const Variant &p_value) {
 	String name = p_name;
@@ -74,7 +74,7 @@ bool GridMap::_set(const StringName &p_name, const Variant &p_value) {
 			bm.mesh = meshes[i];
 			ERR_CONTINUE(!bm.mesh.is_valid());
 			bm.instance = RID_PRIME(VS::get_singleton()->instance_create());
-			VS::get_singleton()->instance_set_portal_mode(bm.instance, VisualServer::InstancePortalMode::INSTANCE_PORTAL_MODE_GLOBAL);
+			VS::get_singleton()->instance_set_portal_mode(bm.instance, RenderingServer::InstancePortalMode::INSTANCE_PORTAL_MODE_GLOBAL);
 			VS::get_singleton()->get_singleton()->instance_set_base(bm.instance, bm.mesh->get_rid());
 			VS::get_singleton()->instance_attach_object_instance_id(bm.instance, get_instance_id());
 			if (is_inside_tree()) {
@@ -355,10 +355,10 @@ void GridMap::set_cell_item(int p_x, int p_y, int p_z, int p_item, int p_rot) {
 		SceneTree *st = SceneTree::get_singleton();
 
 		if (st && st->is_debugging_collisions_hint()) {
-			g->collision_debug = RID_PRIME(VisualServer::get_singleton()->mesh_create());
-			g->collision_debug_instance = RID_PRIME(VisualServer::get_singleton()->instance_create());
-			VS::get_singleton()->instance_set_portal_mode(g->collision_debug_instance, VisualServer::InstancePortalMode::INSTANCE_PORTAL_MODE_GLOBAL);
-			VisualServer::get_singleton()->instance_set_base(g->collision_debug_instance, g->collision_debug);
+			g->collision_debug = RID_PRIME(RenderingServer::get_singleton()->mesh_create());
+			g->collision_debug_instance = RID_PRIME(RenderingServer::get_singleton()->instance_create());
+			VS::get_singleton()->instance_set_portal_mode(g->collision_debug_instance, RenderingServer::InstancePortalMode::INSTANCE_PORTAL_MODE_GLOBAL);
+			RenderingServer::get_singleton()->instance_set_base(g->collision_debug_instance, g->collision_debug);
 		}
 
 		octant_map[octantkey] = g;
@@ -613,7 +613,7 @@ bool GridMap::_octant_update(const OctantKey &p_key) {
 
 			RID instance = RID_PRIME(VS::get_singleton()->instance_create());
 			VS::get_singleton()->instance_set_base(instance, mm);
-			VS::get_singleton()->instance_set_portal_mode(instance, VisualServer::InstancePortalMode::INSTANCE_PORTAL_MODE_GLOBAL);
+			VS::get_singleton()->instance_set_portal_mode(instance, RenderingServer::InstancePortalMode::INSTANCE_PORTAL_MODE_GLOBAL);
 
 			if (is_inside_tree()) {
 				VS::get_singleton()->instance_set_scenario(instance, get_world()->get_scenario());
@@ -1171,7 +1171,7 @@ void GridMap::make_baked_meshes(bool p_gen_lightmap_uv, float p_lightmap_uv_texe
 		BakedMesh bm;
 		bm.mesh = mesh;
 		bm.instance = RID_PRIME(VS::get_singleton()->instance_create());
-		VS::get_singleton()->instance_set_portal_mode(bm.instance, VisualServer::InstancePortalMode::INSTANCE_PORTAL_MODE_GLOBAL);
+		VS::get_singleton()->instance_set_portal_mode(bm.instance, RenderingServer::InstancePortalMode::INSTANCE_PORTAL_MODE_GLOBAL);
 		VS::get_singleton()->get_singleton()->instance_set_base(bm.instance, bm.mesh->get_rid());
 		VS::get_singleton()->instance_attach_object_instance_id(bm.instance, get_instance_id());
 		if (is_inside_tree()) {

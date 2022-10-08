@@ -29,7 +29,7 @@
 /*************************************************************************/
 
 #include "grid_map_editor_plugin.h"
-#include "core/os/input.h"
+#include "core/input/input.h"
 #include "editor/editor_scale.h"
 #include "editor/editor_settings.h"
 #include "editor/plugins/spatial_editor_plugin.h"
@@ -268,8 +268,8 @@ void GridMapEditor::_update_cursor_transform() {
 	}
 
 	if (cursor_instance.is_valid()) {
-		VisualServer::get_singleton()->instance_set_transform(cursor_instance, cursor_transform);
-		VisualServer::get_singleton()->instance_set_visible(cursor_instance, cursor_visible);
+		RenderingServer::get_singleton()->instance_set_transform(cursor_instance, cursor_transform);
+		RenderingServer::get_singleton()->instance_set_visible(cursor_instance, cursor_visible);
 	}
 }
 
@@ -278,9 +278,9 @@ void GridMapEditor::_update_selection_transform() {
 	xf_zero.basis.set_zero();
 
 	if (!selection.active) {
-		VisualServer::get_singleton()->instance_set_transform(selection_instance, xf_zero);
+		RenderingServer::get_singleton()->instance_set_transform(selection_instance, xf_zero);
 		for (int i = 0; i < 3; i++) {
-			VisualServer::get_singleton()->instance_set_transform(selection_level_instance[i], xf_zero);
+			RenderingServer::get_singleton()->instance_set_transform(selection_level_instance[i], xf_zero);
 		}
 		return;
 	}
@@ -289,11 +289,11 @@ void GridMapEditor::_update_selection_transform() {
 	xf.scale((Vector3(1, 1, 1) + (selection.end - selection.begin)) * node->get_cell_size());
 	xf.origin = selection.begin * node->get_cell_size();
 
-	VisualServer::get_singleton()->instance_set_transform(selection_instance, node->get_global_transform() * xf);
+	RenderingServer::get_singleton()->instance_set_transform(selection_instance, node->get_global_transform() * xf);
 
 	for (int i = 0; i < 3; i++) {
 		if (i != edit_axis || (edit_floor[edit_axis] < selection.begin[edit_axis]) || (edit_floor[edit_axis] > selection.end[edit_axis] + 1)) {
-			VisualServer::get_singleton()->instance_set_transform(selection_level_instance[i], xf_zero);
+			RenderingServer::get_singleton()->instance_set_transform(selection_level_instance[i], xf_zero);
 		} else {
 			Vector3 scale = (selection.end - selection.begin + Vector3(1, 1, 1));
 			scale[edit_axis] = 1.0;
@@ -307,7 +307,7 @@ void GridMapEditor::_update_selection_transform() {
 			xf2.basis.scale(scale);
 			xf2.origin = pos;
 
-			VisualServer::get_singleton()->instance_set_transform(selection_level_instance[i], xf2);
+			RenderingServer::get_singleton()->instance_set_transform(selection_level_instance[i], xf2);
 		}
 	}
 }
@@ -508,7 +508,7 @@ void GridMapEditor::_fill_selection() {
 void GridMapEditor::_clear_clipboard_data() {
 	for (List<ClipboardItem>::Element *E = clipboard_items.front(); E; E = E->next()) {
 		if (E->get().instance.is_valid()) {
-			VisualServer::get_singleton()->free(E->get().instance);
+			RenderingServer::get_singleton()->free(E->get().instance);
 		}
 	}
 
@@ -534,7 +534,7 @@ void GridMapEditor::_set_clipboard_data() {
 				item.cell_item = itm;
 				item.grid_offset = Vector3(i, j, k) - selection.begin;
 				item.orientation = node->get_cell_item_orientation(i, j, k);
-				item.instance = VisualServer::get_singleton()->instance_create2(mesh->get_rid(), get_tree()->get_root()->get_world()->get_scenario());
+				item.instance = RenderingServer::get_singleton()->instance_create2(mesh->get_rid(), get_tree()->get_root()->get_world()->get_scenario());
 
 				clipboard_items.push_back(item);
 			}
@@ -546,7 +546,7 @@ void GridMapEditor::_update_paste_indicator() {
 	if (input_action != INPUT_PASTE) {
 		Transform xf;
 		xf.basis.set_zero();
-		VisualServer::get_singleton()->instance_set_transform(paste_instance, xf);
+		RenderingServer::get_singleton()->instance_set_transform(paste_instance, xf);
 		return;
 	}
 
@@ -560,7 +560,7 @@ void GridMapEditor::_update_paste_indicator() {
 	xf.basis = rot * xf.basis;
 	xf.translate((-center * node->get_cell_size()) / scale);
 
-	VisualServer::get_singleton()->instance_set_transform(paste_instance, node->get_global_transform() * xf);
+	RenderingServer::get_singleton()->instance_set_transform(paste_instance, node->get_global_transform() * xf);
 
 	for (List<ClipboardItem>::Element *E = clipboard_items.front(); E; E = E->next()) {
 		ClipboardItem &item = E->get();
@@ -574,7 +574,7 @@ void GridMapEditor::_update_paste_indicator() {
 		item_rot.set_orthogonal_index(item.orientation);
 		xf.basis = item_rot * xf.basis * node->get_cell_scale();
 
-		VisualServer::get_singleton()->instance_set_transform(item.instance, node->get_global_transform() * xf);
+		RenderingServer::get_singleton()->instance_set_transform(item.instance, node->get_global_transform() * xf);
 	}
 }
 
@@ -929,11 +929,11 @@ void GridMapEditor::edit(GridMap *p_gridmap) {
 	if (!node) {
 		set_process(false);
 		for (int i = 0; i < 3; i++) {
-			VisualServer::get_singleton()->instance_set_visible(grid_instance[i], false);
+			RenderingServer::get_singleton()->instance_set_visible(grid_instance[i], false);
 		}
 
 		if (cursor_instance.is_valid()) {
-			VisualServer::get_singleton()->instance_set_visible(cursor_instance, false);
+			RenderingServer::get_singleton()->instance_set_visible(cursor_instance, false);
 		}
 
 		return;
@@ -971,7 +971,7 @@ void GridMapEditor::update_grid() {
 	edit_grid_xform.basis = Basis();
 
 	for (int i = 0; i < 3; i++) {
-		VisualServer::get_singleton()->instance_set_visible(grid_instance[i], i == edit_axis);
+		RenderingServer::get_singleton()->instance_set_visible(grid_instance[i], i == edit_axis);
 	}
 
 	updating = true;
@@ -1027,8 +1027,8 @@ void GridMapEditor::_draw_grids(const Vector3 &cell_size) {
 		d.resize(VS::ARRAY_MAX);
 		d[VS::ARRAY_VERTEX] = grid_points[i];
 		d[VS::ARRAY_COLOR] = grid_colors[i];
-		VisualServer::get_singleton()->mesh_add_surface_from_arrays(grid[i], VisualServer::PRIMITIVE_LINES, d);
-		VisualServer::get_singleton()->mesh_surface_set_material(grid[i], 0, indicator_mat->get_rid());
+		RenderingServer::get_singleton()->mesh_add_surface_from_arrays(grid[i], RenderingServer::PRIMITIVE_LINES, d);
+		RenderingServer::get_singleton()->mesh_surface_set_material(grid[i], 0, indicator_mat->get_rid());
 	}
 }
 
@@ -1041,13 +1041,13 @@ void GridMapEditor::_notification(int p_what) {
 				grid[i] = RID_PRIME(VS::get_singleton()->mesh_create());
 				grid_instance[i] = VS::get_singleton()->instance_create2(grid[i], get_tree()->get_root()->get_world()->get_scenario());
 				VS::get_singleton()->instance_set_layer_mask(grid_instance[i], 1 << SpatialEditorViewport::MISC_TOOL_LAYER);
-				selection_level_instance[i] = VisualServer::get_singleton()->instance_create2(selection_level_mesh[i], get_tree()->get_root()->get_world()->get_scenario());
+				selection_level_instance[i] = RenderingServer::get_singleton()->instance_create2(selection_level_mesh[i], get_tree()->get_root()->get_world()->get_scenario());
 				VS::get_singleton()->instance_set_layer_mask(selection_level_instance[i], 1 << SpatialEditorViewport::MISC_TOOL_LAYER);
 			}
 
-			selection_instance = VisualServer::get_singleton()->instance_create2(selection_mesh, get_tree()->get_root()->get_world()->get_scenario());
+			selection_instance = RenderingServer::get_singleton()->instance_create2(selection_mesh, get_tree()->get_root()->get_world()->get_scenario());
 			VS::get_singleton()->instance_set_layer_mask(selection_instance, 1 << SpatialEditorViewport::MISC_TOOL_LAYER);
-			paste_instance = VisualServer::get_singleton()->instance_create2(paste_mesh, get_tree()->get_root()->get_world()->get_scenario());
+			paste_instance = RenderingServer::get_singleton()->instance_create2(paste_mesh, get_tree()->get_root()->get_world()->get_scenario());
 			VS::get_singleton()->instance_set_layer_mask(paste_instance, 1 << SpatialEditorViewport::MISC_TOOL_LAYER);
 
 			_update_selection_transform();
@@ -1142,7 +1142,7 @@ void GridMapEditor::_update_cursor_instance() {
 	}
 
 	if (cursor_instance.is_valid()) {
-		VisualServer::get_singleton()->free(cursor_instance);
+		RenderingServer::get_singleton()->free(cursor_instance);
 		cursor_instance = RID();
 	}
 
@@ -1150,8 +1150,8 @@ void GridMapEditor::_update_cursor_instance() {
 		if (node && !node->get_mesh_library().is_null()) {
 			Ref<Mesh> mesh = node->get_mesh_library()->get_item_mesh(selected_palette);
 			if (!mesh.is_null() && mesh->get_rid().is_valid()) {
-				cursor_instance = VisualServer::get_singleton()->instance_create2(mesh->get_rid(), get_tree()->get_root()->get_world()->get_scenario());
-				VisualServer::get_singleton()->instance_set_transform(cursor_instance, cursor_transform);
+				cursor_instance = RenderingServer::get_singleton()->instance_create2(mesh->get_rid(), get_tree()->get_root()->get_world()->get_scenario());
+				RenderingServer::get_singleton()->instance_set_transform(cursor_instance, cursor_transform);
 			}
 		}
 	}
@@ -1344,8 +1344,8 @@ GridMapEditor::GridMapEditor(EditorNode *p_editor) {
 	lock_view = false;
 	cursor_rot = 0;
 
-	selection_mesh = RID_PRIME(VisualServer::get_singleton()->mesh_create());
-	paste_mesh = RID_PRIME(VisualServer::get_singleton()->mesh_create());
+	selection_mesh = RID_PRIME(RenderingServer::get_singleton()->mesh_create());
+	paste_mesh = RID_PRIME(RenderingServer::get_singleton()->mesh_create());
 
 	{
 		// Selection mesh create.
@@ -1425,8 +1425,8 @@ GridMapEditor::GridMapEditor(EditorNode *p_editor) {
 		inner_mat->set_feature(SpatialMaterial::FEATURE_TRANSPARENT, true);
 
 		d[VS::ARRAY_VERTEX] = triangles;
-		VisualServer::get_singleton()->mesh_add_surface_from_arrays(selection_mesh, VS::PRIMITIVE_TRIANGLES, d);
-		VisualServer::get_singleton()->mesh_surface_set_material(selection_mesh, 0, inner_mat->get_rid());
+		RenderingServer::get_singleton()->mesh_add_surface_from_arrays(selection_mesh, VS::PRIMITIVE_TRIANGLES, d);
+		RenderingServer::get_singleton()->mesh_surface_set_material(selection_mesh, 0, inner_mat->get_rid());
 
 		outer_mat.instance();
 		outer_mat->set_albedo(Color(0.7, 0.7, 1.0, 0.8));
@@ -1442,22 +1442,22 @@ GridMapEditor::GridMapEditor(EditorNode *p_editor) {
 		selection_floor_mat->set_line_width(3.0);
 
 		d[VS::ARRAY_VERTEX] = lines;
-		VisualServer::get_singleton()->mesh_add_surface_from_arrays(selection_mesh, VS::PRIMITIVE_LINES, d);
-		VisualServer::get_singleton()->mesh_surface_set_material(selection_mesh, 1, outer_mat->get_rid());
+		RenderingServer::get_singleton()->mesh_add_surface_from_arrays(selection_mesh, VS::PRIMITIVE_LINES, d);
+		RenderingServer::get_singleton()->mesh_surface_set_material(selection_mesh, 1, outer_mat->get_rid());
 
 		d[VS::ARRAY_VERTEX] = triangles;
-		VisualServer::get_singleton()->mesh_add_surface_from_arrays(paste_mesh, VS::PRIMITIVE_TRIANGLES, d);
-		VisualServer::get_singleton()->mesh_surface_set_material(paste_mesh, 0, inner_mat->get_rid());
+		RenderingServer::get_singleton()->mesh_add_surface_from_arrays(paste_mesh, VS::PRIMITIVE_TRIANGLES, d);
+		RenderingServer::get_singleton()->mesh_surface_set_material(paste_mesh, 0, inner_mat->get_rid());
 
 		d[VS::ARRAY_VERTEX] = lines;
-		VisualServer::get_singleton()->mesh_add_surface_from_arrays(paste_mesh, VS::PRIMITIVE_LINES, d);
-		VisualServer::get_singleton()->mesh_surface_set_material(paste_mesh, 1, outer_mat->get_rid());
+		RenderingServer::get_singleton()->mesh_add_surface_from_arrays(paste_mesh, VS::PRIMITIVE_LINES, d);
+		RenderingServer::get_singleton()->mesh_surface_set_material(paste_mesh, 1, outer_mat->get_rid());
 
 		for (int i = 0; i < 3; i++) {
 			d[VS::ARRAY_VERTEX] = square[i];
 			selection_level_mesh[i] = RID_PRIME(VS::get_singleton()->mesh_create());
-			VisualServer::get_singleton()->mesh_add_surface_from_arrays(selection_level_mesh[i], VS::PRIMITIVE_LINES, d);
-			VisualServer::get_singleton()->mesh_surface_set_material(selection_level_mesh[i], 0, selection_floor_mat->get_rid());
+			RenderingServer::get_singleton()->mesh_add_surface_from_arrays(selection_level_mesh[i], VS::PRIMITIVE_LINES, d);
+			RenderingServer::get_singleton()->mesh_surface_set_material(selection_level_mesh[i], 0, selection_floor_mat->get_rid());
 		}
 	}
 
@@ -1478,33 +1478,33 @@ GridMapEditor::~GridMapEditor() {
 
 	for (int i = 0; i < 3; i++) {
 		if (grid[i].is_valid()) {
-			VisualServer::get_singleton()->free(grid[i]);
+			RenderingServer::get_singleton()->free(grid[i]);
 		}
 		if (grid_instance[i].is_valid()) {
-			VisualServer::get_singleton()->free(grid_instance[i]);
+			RenderingServer::get_singleton()->free(grid_instance[i]);
 		}
 		if (cursor_instance.is_valid()) {
-			VisualServer::get_singleton()->free(cursor_instance);
+			RenderingServer::get_singleton()->free(cursor_instance);
 		}
 		if (selection_level_instance[i].is_valid()) {
-			VisualServer::get_singleton()->free(selection_level_instance[i]);
+			RenderingServer::get_singleton()->free(selection_level_instance[i]);
 		}
 		if (selection_level_mesh[i].is_valid()) {
-			VisualServer::get_singleton()->free(selection_level_mesh[i]);
+			RenderingServer::get_singleton()->free(selection_level_mesh[i]);
 		}
 	}
 
 	if (selection_mesh.is_valid()) {
-		VisualServer::get_singleton()->free(selection_mesh);
+		RenderingServer::get_singleton()->free(selection_mesh);
 	}
 	if (selection_instance.is_valid()) {
-		VisualServer::get_singleton()->free(selection_instance);
+		RenderingServer::get_singleton()->free(selection_instance);
 	}
 	if (paste_mesh.is_valid()) {
-		VisualServer::get_singleton()->free(paste_mesh);
+		RenderingServer::get_singleton()->free(paste_mesh);
 	}
 	if (paste_instance.is_valid()) {
-		VisualServer::get_singleton()->free(paste_instance);
+		RenderingServer::get_singleton()->free(paste_instance);
 	}
 }
 

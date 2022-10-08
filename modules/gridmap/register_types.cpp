@@ -30,14 +30,16 @@
 
 #include "register_types.h"
 #ifndef _3D_DISABLED
-#include "core/class_db.h"
+#include "core/object/class_db.h"
 #include "grid_map.h"
 #include "grid_map_editor_plugin.h"
+#include "mesh_library.h"
 #endif
 
 void register_gridmap_types() {
 #ifndef _3D_DISABLED
 	ClassDB::register_class<GridMap>();
+	ClassDB::register_class<MeshLibrary>();
 #ifdef TOOLS_ENABLED
 	EditorPlugins::add_by_type<GridMapEditorPlugin>();
 #endif
