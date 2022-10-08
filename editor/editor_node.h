@@ -608,11 +608,8 @@ private:
 	EditorFileDialog *file;
 	ExportTemplateManager *export_template_manager;
 	EditorFileDialog *file_templates;
-	EditorFileDialog *file_export_lib;
 	EditorFileDialog *file_script;
 	EditorFileDialog *file_android_build_source;
-	CheckBox *file_export_lib_merge;
-	CheckBox *file_export_lib_apply_xforms;
 	String current_path;
 	MenuButton *update_spinner;
 
