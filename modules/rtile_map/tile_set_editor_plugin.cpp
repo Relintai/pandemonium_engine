@@ -48,6 +48,13 @@
 #include "scene/gui/separator.h"
 #include "scene/gui/spin_box.h"
 
+#include "scene/gui/check_box.h"
+#include "scene/gui/menu_button.h"
+#include "scene/gui/popup_menu.h"
+
+#include "editor/editor_file_dialog.h"
+#include "editor/editor_inspector.h"
+
 void RTileSetEditor::edit(const Ref<RTileSet> &p_tileset) {
 	tileset = p_tileset;
 	tileset->add_change_receptor(this);
@@ -3688,4 +3695,67 @@ RTileSetEditorPlugin::RTileSetEditorPlugin(EditorNode *p_node) {
 
 	tileset_editor_button = p_node->add_bottom_panel_item(TTR("RTileSet"), tileset_editor);
 	tileset_editor_button->hide();
+
+	file_export_lib = memnew(EditorFileDialog);
+	file_export_lib->set_title(TTR("Export RTileSet"));
+	file_export_lib->set_mode(EditorFileDialog::MODE_SAVE_FILE);
+	file_export_lib->connect("file_selected", this, "_dialog_action");
+	file_export_lib_merge = memnew(CheckBox);
+	file_export_lib_merge->set_text(TTR("Merge With Existing"));
+	file_export_lib_merge->set_h_size_flags(Control::SIZE_SHRINK_CENTER);
+	file_export_lib_merge->set_pressed(true);
+	file_export_lib->get_vbox()->add_child(file_export_lib_merge);
+	file_export_lib_apply_xforms = memnew(CheckBox);
+	file_export_lib_apply_xforms->set_text(TTR("Apply MeshInstance Transforms"));
+	file_export_lib_apply_xforms->set_h_size_flags(Control::SIZE_SHRINK_CENTER);
+	file_export_lib_apply_xforms->set_pressed(false);
+	file_export_lib->get_vbox()->add_child(file_export_lib_apply_xforms);
+	editor->get_gui_base()->add_child(file_export_lib);
+
+	List<String> extensions;
+	Ref<RTileSet> ml(memnew(RTileSet));
+	ResourceSaver::get_recognized_extensions(ml, &extensions);
+	file_export_lib->clear_filters();
+	for (List<String>::Element *E = extensions.front(); E; E = E->next()) {
+		file_export_lib->add_filter("*." + E->get());
+	}
+
+	p_node->add_convert_menu_item("RTileSet", this, "_convert_scene_to_tile_set", DEFVAL(Variant()));
+}
+
+void RTileSetEditorPlugin::_bind_methods() {
+	ClassDB::bind_method("_convert_scene_to_tile_set", &RTileSetEditorPlugin::_convert_scene_to_tile_set);
+	ClassDB::bind_method("_dialog_action", &RTileSetEditorPlugin::_dialog_action);
+}
+
+void RTileSetEditorPlugin::_convert_scene_to_tile_set(Variant p_null) {
+	if (!editor->get_editor_data().get_edited_scene_root()) {
+		editor->show_accept(TTR("This operation can't be done without a scene."), TTR("OK"));
+		return;
+	}
+
+	file_export_lib->popup_centered_ratio();
+}
+
+void RTileSetEditorPlugin::_dialog_action(String p_file) {
+	Ref<RTileSet> tileset;
+	if (FileAccess::exists(p_file) && file_export_lib_merge->is_pressed()) {
+		tileset = ResourceLoader::load(p_file, "RTileSet");
+
+		if (tileset.is_null()) {
+			editor->show_accept(TTR("Can't load TileSet for merging!"), TTR("OK"));
+			return;
+		}
+
+	} else {
+		tileset = Ref<RTileSet>(memnew(RTileSet));
+	}
+
+	RTileSetEditor::update_library_file(editor->get_editor_data().get_edited_scene_root(), tileset, true);
+
+	Error err = ResourceSaver::save(p_file, tileset);
+	if (err) {
+		editor->show_accept(TTR("Error saving RTileSet!"), TTR("OK"));
+		return;
+	}
 }

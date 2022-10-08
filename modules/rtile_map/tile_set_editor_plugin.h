@@ -49,6 +49,8 @@ class AcceptDialog;
 class EditorFileDialog;
 class ItemList;
 class PopupMenu;
+class EditorFileDialog;
+class CheckBox;
 
 class RTileSetEditor : public HSplitContainer {
 	friend class RTileSetEditorPlugin;
@@ -292,6 +294,10 @@ class RTileSetEditorPlugin : public EditorPlugin {
 	Button *tileset_editor_button;
 	EditorNode *editor;
 
+	EditorFileDialog *file_export_lib;
+	CheckBox *file_export_lib_merge;
+	CheckBox *file_export_lib_apply_xforms;
+
 public:
 	virtual String get_name() const { return "RTileSet"; }
 	bool has_main_screen() const { return false; }
@@ -302,6 +308,12 @@ public:
 	Dictionary get_state() const;
 
 	RTileSetEditorPlugin(EditorNode *p_node);
+
+protected:
+	static void _bind_methods();
+
+	void _convert_scene_to_tile_set(Variant p_null);
+	void _dialog_action(String p_file);
 };
 
 #endif // TILE_SET_EDITOR_PLUGIN_H
