@@ -75,7 +75,7 @@ protected:
 	Ref<EditorSpatialGizmo> create_gizmo(Spatial *p_spatial);
 
 public:
-	String get_name() const;
+	String get_gizmo_name() const;
 	int get_priority() const;
 	PathSpatialGizmoPlugin();
 };

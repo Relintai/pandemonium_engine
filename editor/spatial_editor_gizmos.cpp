@@ -2252,7 +2252,7 @@ bool ShapeCastGizmoPlugin::has_gizmo(Spatial *p_spatial) {
 	return Object::cast_to<ShapeCast>(p_spatial) != nullptr;
 }
 
-String ShapeCastGizmoPlugin::get_name() const {
+String ShapeCastGizmoPlugin::get_gizmo_name() const {
 	return "ShapeCast";
 }
 

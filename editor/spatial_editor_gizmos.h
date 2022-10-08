@@ -355,7 +355,7 @@ class ShapeCastGizmoPlugin : public EditorSpatialGizmoPlugin {
 
 public:
 	bool has_gizmo(Spatial *p_spatial);
-	String get_name() const;
+	String get_gizmo_name() const;
 	int get_priority() const;
 	void redraw(EditorSpatialGizmo *p_gizmo);
 
@@ -595,13 +595,12 @@ public:
 class RoomGizmoPlugin : public EditorSpatialGizmoPlugin {
 	GDCLASS(RoomGizmoPlugin, EditorSpatialGizmoPlugin);
 
-protected:
+public:
 	virtual bool has_gizmo(Spatial *p_spatial);
 	String get_gizmo_name() const;
 	int get_priority() const;
 	Ref<EditorSpatialGizmo> create_gizmo(Spatial *p_spatial);
 
-public:
 	RoomGizmoPlugin();
 };
 
@@ -627,13 +626,12 @@ public:
 class PortalGizmoPlugin : public EditorSpatialGizmoPlugin {
 	GDCLASS(PortalGizmoPlugin, EditorSpatialGizmoPlugin);
 
-protected:
+public:
 	virtual bool has_gizmo(Spatial *p_spatial);
 	String get_gizmo_name() const;
 	int get_priority() const;
 	Ref<EditorSpatialGizmo> create_gizmo(Spatial *p_spatial);
 
-public:
 	PortalGizmoPlugin();
 };
 
@@ -661,6 +659,7 @@ class OccluderSpatialGizmo : public EditorSpatialGizmo {
 	void _redraw_poly(bool p_hole, const Vector<Vector2> &p_pts, const PoolVector<Vector2> &p_pts_raw);
 
 public:
+	String get_gizmo_name() const;
 	virtual String get_handle_name(int p_id, bool p_secondary) const;
 	virtual Variant get_handle_value(int p_id, bool p_secondary);
 	virtual void set_handle(int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point);
