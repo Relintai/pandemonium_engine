@@ -575,7 +575,7 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 	}
 
 	@Keep
-	public GodotView getRenderView() { // used by native side to get renderView
+	public PandemoniumView getRenderView() { // used by native side to get renderView
 		return mView;
 	}
 
