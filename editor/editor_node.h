@@ -342,6 +342,10 @@ public:
 	void add_tool_submenu_item(const String &p_name, PopupMenu *p_submenu);
 	void remove_tool_menu_item(const String &p_name);
 
+	void add_convert_menu_item(const String &p_name, Object *p_handler, const String &p_callback, const Variant &p_ud = Variant());
+	void add_convert_submenu_item(const String &p_name, PopupMenu *p_submenu);
+	void remove_convert_menu_item(const String &p_name);
+
 	void save_all_scenes();
 	void save_scene_list(Vector<String> p_scene_filenames);
 	void restart_editor();
@@ -419,6 +423,7 @@ private:
 		FILE_CLOSE_ALL_AND_RELOAD_CURRENT_PROJECT,
 		FILE_QUIT,
 		FILE_EXTERNAL_OPEN_SCENE,
+		FILE_CONVERT_CUSTOM,
 		EDIT_UNDO,
 		EDIT_REDO,
 		EDIT_RELOAD_SAVED_SCENE,
@@ -541,6 +546,7 @@ private:
 	HBoxContainer *menu_hb;
 	Control *viewport;
 	MenuButton *file_menu;
+	PopupMenu *convert_menu;
 	MenuButton *project_menu;
 	MenuButton *debug_menu;
 	MenuButton *settings_menu;
@@ -752,6 +758,7 @@ private:
 	void _save_screenshot(NodePath p_path);
 
 	void _tool_menu_option(int p_idx);
+	void _convert_button_menu_option(int p_idx);
 	void _update_debug_options();
 	void _update_file_menu_opened();
 	void _update_file_menu_closed();

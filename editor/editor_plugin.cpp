@@ -555,6 +555,21 @@ void EditorPlugin::remove_tool_menu_item(const String &p_name) {
 	EditorNode::get_singleton()->remove_tool_menu_item(p_name);
 }
 
+void EditorPlugin::add_convert_menu_item(const String &p_name, Object *p_handler, const String &p_callback, const Variant &p_ud) {
+	EditorNode::get_singleton()->add_convert_menu_item(p_name, p_handler, p_callback, p_ud);
+}
+
+void EditorPlugin::add_convert_submenu_item(const String &p_name, Object *p_submenu) {
+	ERR_FAIL_NULL(p_submenu);
+	PopupMenu *submenu = Object::cast_to<PopupMenu>(p_submenu);
+	ERR_FAIL_NULL(submenu);
+	EditorNode::get_singleton()->add_convert_submenu_item(p_name, submenu);
+}
+
+void EditorPlugin::remove_convert_menu_item(const String &p_name) {
+	EditorNode::get_singleton()->remove_convert_menu_item(p_name);
+}
+
 void EditorPlugin::set_input_event_forwarding_always_enabled() {
 	input_event_forwarding_always_enabled = true;
 	EditorPluginList *always_input_forwarding_list = EditorNode::get_singleton()->get_editor_plugins_force_input_forwarding();
@@ -863,12 +878,19 @@ void EditorPlugin::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_control_to_container", "container", "control"), &EditorPlugin::add_control_to_container);
 	ClassDB::bind_method(D_METHOD("add_control_to_bottom_panel", "control", "title"), &EditorPlugin::add_control_to_bottom_panel);
 	ClassDB::bind_method(D_METHOD("add_control_to_dock", "slot", "control"), &EditorPlugin::add_control_to_dock);
+	
 	ClassDB::bind_method(D_METHOD("remove_control_from_docks", "control"), &EditorPlugin::remove_control_from_docks);
 	ClassDB::bind_method(D_METHOD("remove_control_from_bottom_panel", "control"), &EditorPlugin::remove_control_from_bottom_panel);
 	ClassDB::bind_method(D_METHOD("remove_control_from_container", "container", "control"), &EditorPlugin::remove_control_from_container);
+	
 	ClassDB::bind_method(D_METHOD("add_tool_menu_item", "name", "handler", "callback", "ud"), &EditorPlugin::add_tool_menu_item, DEFVAL(Variant()));
 	ClassDB::bind_method(D_METHOD("add_tool_submenu_item", "name", "submenu"), &EditorPlugin::add_tool_submenu_item);
 	ClassDB::bind_method(D_METHOD("remove_tool_menu_item", "name"), &EditorPlugin::remove_tool_menu_item);
+
+	ClassDB::bind_method(D_METHOD("add_convert_menu_item", "name", "handler", "callback", "ud"), &EditorPlugin::add_convert_menu_item, DEFVAL(Variant()));
+	ClassDB::bind_method(D_METHOD("add_convert_submenu_item", "name", "submenu"), &EditorPlugin::add_convert_submenu_item);
+	ClassDB::bind_method(D_METHOD("remove_convert_menu_item", "name"), &EditorPlugin::remove_convert_menu_item);
+	
 	ClassDB::bind_method(D_METHOD("add_custom_type", "type", "base", "script", "icon"), &EditorPlugin::add_custom_type);
 	ClassDB::bind_method(D_METHOD("remove_custom_type", "type"), &EditorPlugin::remove_custom_type);
 

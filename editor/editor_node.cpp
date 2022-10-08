@@ -2892,6 +2892,27 @@ void EditorNode::_tool_menu_option(int p_idx) {
 	}
 }
 
+void EditorNode::_convert_button_menu_option(int p_idx) {
+	switch (convert_menu->get_item_id(p_idx)) {
+		case FILE_CONVERT_CUSTOM: {
+			if (convert_menu->get_item_submenu(p_idx) == "") {
+				Array params = convert_menu->get_item_metadata(p_idx);
+
+				Object *handler = ObjectDB::get_instance(params[0]);
+				String callback = params[1];
+				Variant *ud = &params[2];
+				Variant::CallError ce;
+
+				handler->call(callback, (const Variant **)&ud, 1, ce);
+				if (ce.error != Variant::CallError::CALL_OK) {
+					String err = Variant::get_call_error_text(handler, callback, (const Variant **)&ud, 1, ce);
+					ERR_PRINT("Error calling function from convert menu: " + err);
+				}
+			} // else it's a submenu so don't do anything.
+		} break;
+	}
+}
+
 int EditorNode::_next_unsaved_scene(bool p_valid_filename, int p_start) {
 	for (int i = p_start; i < editor_data.get_edited_scene_count(); i++) {
 		if (!editor_data.get_edited_scene_root(i)) {
@@ -5307,6 +5328,46 @@ void EditorNode::remove_tool_menu_item(const String &p_name) {
 	}
 }
 
+void EditorNode::add_convert_menu_item(const String &p_name, Object *p_handler, const String &p_callback, const Variant &p_ud) {
+	ERR_FAIL_NULL(p_handler);
+	int idx = convert_menu->get_item_count();
+	convert_menu->add_item(p_name, FILE_CONVERT_CUSTOM);
+
+	Array parameters;
+	parameters.push_back(p_handler->get_instance_id());
+	parameters.push_back(p_callback);
+	parameters.push_back(p_ud);
+
+	convert_menu->set_item_metadata(idx, parameters);
+}
+
+void EditorNode::add_convert_submenu_item(const String &p_name, PopupMenu *p_submenu) {
+	ERR_FAIL_NULL(p_submenu);
+	ERR_FAIL_COND(p_submenu->get_parent() != nullptr);
+
+	convert_menu->add_child(p_submenu);
+	convert_menu->add_submenu_item(p_name, p_submenu->get_name(), FILE_CONVERT_CUSTOM);
+}
+
+void EditorNode::remove_convert_menu_item(const String &p_name) {
+	for (int i = 0; i < convert_menu->get_item_count(); i++) {
+		if (convert_menu->get_item_id(i) != FILE_CONVERT_CUSTOM) {
+			continue;
+		}
+
+		if (convert_menu->get_item_text(i) == p_name) {
+			if (convert_menu->get_item_submenu(i) != "") {
+				Node *n = convert_menu->get_node(convert_menu->get_item_submenu(i));
+				convert_menu->remove_child(n);
+				memdelete(n);
+			}
+			convert_menu->remove_item(i);
+			convert_menu->set_as_minsize();
+			return;
+		}
+	}
+}
+
 void EditorNode::_global_menu_action(const Variant &p_id, const Variant &p_meta) {
 	int id = (int)p_id;
 	if (id == GLOBAL_NEW_WINDOW) {
@@ -5564,6 +5625,7 @@ void EditorNode::_project_settings_changed() {
 void EditorNode::_bind_methods() {
 	ClassDB::bind_method("_menu_option", &EditorNode::_menu_option);
 	ClassDB::bind_method("_tool_menu_option", &EditorNode::_tool_menu_option);
+	ClassDB::bind_method("_convert_button_menu_option", &EditorNode::_convert_button_menu_option);
 	ClassDB::bind_method("_menu_confirm_current", &EditorNode::_menu_confirm_current);
 	ClassDB::bind_method("_dialog_action", &EditorNode::_dialog_action);
 	ClassDB::bind_method("_editor_select", &EditorNode::_editor_select);
@@ -6263,11 +6325,11 @@ EditorNode::EditorNode() {
 	p->add_shortcut(ED_SHORTCUT("editor/quick_open_script", TTR("Quick Open Script..."), KEY_MASK_ALT + KEY_MASK_CMD + KEY_O), FILE_QUICK_OPEN_SCRIPT);
 
 	p->add_separator();
-	PopupMenu *pm_export = memnew(PopupMenu);
-	pm_export->set_name("Export");
-	p->add_child(pm_export);
+	convert_menu = memnew(PopupMenu);
+	convert_menu->set_name("Export");
+	p->add_child(convert_menu);
 	p->add_submenu_item(TTR("Convert To..."), "Export");
-	pm_export->connect("id_pressed", this, "_menu_option");
+	convert_menu->connect("index_pressed", this, "_convert_button_menu_option");
 
 	p->add_separator();
 	p->add_shortcut(ED_SHORTCUT("editor/undo", TTR("Undo"), KEY_MASK_CMD + KEY_Z), EDIT_UNDO, true);
