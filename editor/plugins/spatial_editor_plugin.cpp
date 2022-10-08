@@ -6204,7 +6204,7 @@ void SpatialEditor::_update_gizmos_menu() {
 		if (!gizmo_plugins_by_name[i]->can_be_hidden()) {
 			continue;
 		}
-		String plugin_name = gizmo_plugins_by_name[i]->get_name();
+		String plugin_name = gizmo_plugins_by_name[i]->get_gizmo_name();
 		const int plugin_state = gizmo_plugins_by_name[i]->get_state();
 		gizmos_menu->add_multistate_item(TTR(plugin_name), 3, plugin_state, i);
 		const int idx = gizmos_menu->get_item_index(i);
