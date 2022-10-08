@@ -68,7 +68,6 @@ void CPUParticles2D::set_amount(int p_amount) {
 	// being sent to the visual server with set_as_bulk_array,
 	// if this is sent before being regularly updated.
 	particle_data.fill(0);
-	particle_data_prev.fill(0);
 
 	RS::get_singleton()->multimesh_allocate(multimesh, p_amount, RS::MULTIMESH_TRANSFORM_2D, RS::MULTIMESH_COLOR_8BIT, RS::MULTIMESH_CUSTOM_DATA_FLOAT);
 
