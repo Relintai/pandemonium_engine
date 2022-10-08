@@ -40,8 +40,13 @@ import net.relintai.pandemonium.pandemonium.config.RegularFallbackConfigChooser;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+
+import android.view.PointerIcon;
+
+import androidx.annotation.Keep;
 
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
@@ -85,6 +90,10 @@ public class PandemoniumView extends PandemoniumGLSurfaceView {
 		this.inputHandler = new PandemoniumInputHandler(this);
 		this.pandemoniumRenderer = new PandemoniumRenderer();
 
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+			setPointerIcon(PointerIcon.getSystemIcon(getContext(), PointerIcon.TYPE_DEFAULT));
+		}
+
 		init(p_translucent);
 	}
 
@@ -112,6 +121,24 @@ public class PandemoniumView extends PandemoniumGLSurfaceView {
 	@Override
 	public boolean onGenericMotionEvent(MotionEvent event) {
 		return inputHandler.onGenericMotionEvent(event) || super.onGenericMotionEvent(event);
+	}
+
+	/**
+	 * Called from JNI to change the pointer icon
+	 */
+	@Keep
+	private void setPointerIcon(int pointerType) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+			setPointerIcon(PointerIcon.getSystemIcon(getContext(), pointerType));
+		}
+	}
+
+	@Override
+	public PointerIcon onResolvePointerIcon(MotionEvent event, int pointerIndex) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+			return getPointerIcon();
+		}
+		return super.onResolvePointerIcon(event, pointerIndex);
 	}
 
 	private void init(boolean translucent) {

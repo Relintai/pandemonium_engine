@@ -41,6 +41,31 @@ class PandemoniumJavaWrapper;
 class PandemoniumIOJavaWrapper;
 
 class OS_Android : public OS_Unix {
+	// https://developer.android.com/reference/android/view/PointerIcon
+	// mapping between Godot's cursor shape to Android's'
+	int android_cursors[CURSOR_MAX] = {
+		1000, //CURSOR_ARROW
+		1008, //CURSOR_IBEAM
+		1002, //CURSOR_POINTIN
+		1007, //CURSOR_CROSS
+		1004, //CURSOR_WAIT
+		1004, //CURSOR_BUSY
+		1021, //CURSOR_DRAG
+		1021, //CURSOR_CAN_DRO
+		1000, //CURSOR_FORBIDD (no corresponding icon in Android's icon so fallback to default)
+		1015, //CURSOR_VSIZE
+		1014, //CURSOR_HSIZE
+		1017, //CURSOR_BDIAGSI
+		1016, //CURSOR_FDIAGSI
+		1020, //CURSOR_MOVE
+		1015, //CURSOR_VSPLIT
+		1014, //CURSOR_HSPLIT
+		1003, //CURSOR_HELP
+	};
+	const int CURSOR_TYPE_NULL = 0;
+	MouseMode mouse_mode = MouseMode::MOUSE_MODE_VISIBLE;
+	CursorShape cursor_shape = CursorShape::CURSOR_ARROW;
+
 	bool use_gl2;
 	bool use_apk_expansion;
 
@@ -100,9 +125,11 @@ public:
 
 	virtual Error open_dynamic_library(const String p_path, void *&p_library_handle, bool p_also_set_library_path = false);
 
-	virtual void set_mouse_show(bool p_show);
-	virtual void set_mouse_grab(bool p_grab);
-	virtual bool is_mouse_grab_enabled() const;
+	virtual void set_cursor_shape(CursorShape p_shape);
+	virtual CursorShape get_cursor_shape() const;
+	virtual void set_mouse_mode(MouseMode p_mode);
+	virtual MouseMode get_mouse_mode() const;
+
 	virtual Point2 get_mouse_position() const;
 	virtual int get_mouse_button_state() const;
 	virtual void set_window_title(const String &p_title);

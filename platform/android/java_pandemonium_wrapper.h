@@ -1,10 +1,11 @@
 #ifndef JAVA_PANDEMONIUM_WRAPPER_H
 #define JAVA_PANDEMONIUM_WRAPPER_H
+
 /*************************************************************************/
-/*  java_pandemonium_wrapper.h                                                 */
+/*  java_pandemonium_wrapper.h                                           */
 /*************************************************************************/
 /*                       This file is part of:                           */
-/*                           PANDEMONIUM ENGINE                                */
+/*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
 /* Copyright (c) 2007-2022 Juan Linietsky, Ariel Manzur.                 */
@@ -37,6 +38,7 @@
 #include <jni.h>
 
 #include "core/containers/list.h"
+#include "java_pandemonium_view_wrapper.h"
 #include "string_android.h"
 
 // Class that makes functions in java/src/org/pandemoniumengine/pandemonium/Pandemonium.java callable from C++
@@ -46,6 +48,8 @@ private:
 	jobject activity;
 	jclass pandemonium_class;
 	jclass activity_class;
+
+	PandemoniumJavaViewWrapper *pandemonium_view = NULL;
 
 	jmethodID _on_video_init = 0;
 	jmethodID _create_offscreen_gl = 0;
@@ -72,6 +76,7 @@ private:
 	jmethodID _get_class_loader = 0;
 	jmethodID _create_new_pandemonium_instance = 0;
 	jmethodID _request_framebuffer_swap = 0;
+	jmethodID _get_render_view = 0;
 
 public:
 	PandemoniumJavaWrapper(JNIEnv *p_env, jobject p_activity, jobject p_pandemonium_instance);
@@ -81,6 +86,7 @@ public:
 	jobject get_member_object(const char *p_name, const char *p_class, JNIEnv *p_env = NULL);
 
 	jobject get_class_loader();
+	PandemoniumJavaViewWrapper *get_pandemonium_view();
 
 	void gfx_init(bool gl2);
 	bool create_offscreen_gl(JNIEnv *p_env);

@@ -81,7 +81,7 @@ open class PandemoniumEditor : FullScreenPandemoniumApp() {
 		super.onCreate(savedInstanceState);
 
 		// Enable long press, panning and scaling gestures
-		pandemoniumFragment?.mView?.inputHandler?.apply {
+		pandemoniumFragment?.renderView?.inputHandler?.apply {
 			enableLongPress(enableLongPressGestures())
 			enablePanningAndScalingGestures(enablePanAndScaleGestures())
 		}

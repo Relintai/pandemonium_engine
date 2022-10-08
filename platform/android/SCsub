@@ -15,6 +15,7 @@ android_files = [
     "java_class_wrapper.cpp",
     "java_pandemonium_wrapper.cpp",
     "java_pandemonium_io_wrapper.cpp",
+    "java_pandemonium_view_wrapper.cpp",
     "jni_utils.cpp",
     "android_keys_utils.cpp",
     "plugin/pandemonium_plugin_jni.cpp",

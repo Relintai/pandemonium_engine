@@ -82,13 +82,23 @@ PandemoniumJavaWrapper::PandemoniumJavaWrapper(JNIEnv *p_env, jobject p_activity
 	_on_pandemonium_main_loop_started = p_env->GetMethodID(pandemonium_class, "onPandemoniumMainLoopStarted", "()V");
 	_create_new_pandemonium_instance = p_env->GetMethodID(pandemonium_class, "createNewPandemoniumInstance", "([Ljava/lang/String;)V");
 	_request_framebuffer_swap = p_env->GetMethodID(pandemonium_class, "requestFramebufferSwap", "()V");
+	_get_render_view = p_env->GetMethodID(pandemonium_class, "getRenderView", "()Ljava/src/org/pandemoniumengine/pandemonium/PandemoniumView;");
 
 	// get some Activity method pointers...
 	_get_class_loader = p_env->GetMethodID(activity_class, "getClassLoader", "()Ljava/lang/ClassLoader;");
 }
 
 PandemoniumJavaWrapper::~PandemoniumJavaWrapper() {
-	// nothing to do here for now
+	if (pandemonium_view) {
+		delete pandemonium_view;
+	}
+
+	JNIEnv *env = get_jni_env();
+	ERR_FAIL_NULL(env);
+	env->DeleteGlobalRef(pandemonium_instance);
+	env->DeleteGlobalRef(pandemonium_class);
+	env->DeleteGlobalRef(activity);
+	env->DeleteGlobalRef(activity_class);
 }
 
 jobject PandemoniumJavaWrapper::get_activity() {
@@ -125,6 +135,21 @@ void PandemoniumJavaWrapper::gfx_init(bool gl2) {
 	// but we're getting false if our GLES3 driver is initialised
 	// and true for our GLES2 driver
 	// Maybe we're supposed to communicate this back or store it?
+}
+
+PandemoniumJavaViewWrapper *PandemoniumJavaWrapper::get_pandemonium_view() {
+	if (pandemonium_view != nullptr) {
+		return pandemonium_view;
+	}
+	if (_get_render_view) {
+		JNIEnv *env = get_jni_env();
+		ERR_FAIL_NULL_V(env, nullptr);
+		jobject pandemonium_render_view = env->CallObjectMethod(pandemonium_instance, _get_render_view);
+		if (!env->IsSameObject(pandemonium_render_view, nullptr)) {
+			pandemonium_view = new PandemoniumJavaViewWrapper(pandemonium_render_view);
+		}
+	}
+	return pandemonium_view;
 }
 
 void PandemoniumJavaWrapper::on_video_init(JNIEnv *p_env) {

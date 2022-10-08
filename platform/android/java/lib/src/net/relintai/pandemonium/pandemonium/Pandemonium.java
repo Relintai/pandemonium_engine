@@ -574,6 +574,11 @@ public class Pandemonium extends Fragment implements SensorEventListener, IDownl
 		return mView.getHolder().getSurface();
 	}
 
+	@Keep
+	public GodotView getRenderView() { // used by native side to get renderView
+		return mView;
+	}
+
 	/**
 	 * Used by the native code (java_pandemonium_wrapper.h) to access the input fallback mapping.
 	 * @return The input fallback mapping for the current XR mode.
