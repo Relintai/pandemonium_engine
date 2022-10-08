@@ -173,7 +173,7 @@ const PandemoniumDisplayCursor = {
     $PandemoniumDisplayCursor__deps: ['$PandemoniumOS', '$PandemoniumConfig'],
     $PandemoniumDisplayCursor__postset: 'PandemoniumOS.atexit(function(resolve, reject) { PandemoniumDisplayCursor.clear(); resolve(); });',
     $PandemoniumDisplayCursor: {
-        shape: 'auto',
+        shape: 'default',
         visible: true,
         cursors: {},
         set_style: function(style) {
@@ -184,7 +184,7 @@ const PandemoniumDisplayCursor = {
             let css = shape;
             if (shape in PandemoniumDisplayCursor.cursors) {
                 const c = PandemoniumDisplayCursor.cursors[shape];
-                css = `url("${c.url}") ${c.x} ${c.y}, auto`;
+                css = `url("${c.url}") ${c.x} ${c.y}, default`;
             }
             if (PandemoniumDisplayCursor.visible) {
                 PandemoniumDisplayCursor.set_style(css);
@@ -192,7 +192,7 @@ const PandemoniumDisplayCursor = {
         },
         clear: function() {
             PandemoniumDisplayCursor.set_style('');
-            PandemoniumDisplayCursor.shape = 'auto';
+            PandemoniumDisplayCursor.shape = 'default';
             PandemoniumDisplayCursor.visible = true;
             Object.keys(PandemoniumDisplayCursor.cursors).forEach(function(key) {
                 URL.revokeObjectURL(PandemoniumDisplayCursor.cursors[key]);
