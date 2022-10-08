@@ -1299,7 +1299,7 @@ GridMapEditor::GridMapEditor(EditorNode *p_editor) {
 	settings_pick_distance->set_max(10000.0f);
 	settings_pick_distance->set_min(500.0f);
 	settings_pick_distance->set_step(1.0f);
-	settings_pick_distance->set_value(EDITOR_DEF("editors/grid_map/pick_distance", 5000.0));
+	settings_pick_distance->set_value(EDITOR_GET("editors/grid_map/pick_distance"));
 	settings_vbc->add_margin_child(TTR("Pick Distance:"), settings_pick_distance);
 
 	clip_mode = CLIP_DISABLED;
@@ -1566,7 +1566,10 @@ void GridMapEditorPlugin::make_visible(bool p_visible) {
 GridMapEditorPlugin::GridMapEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
+	EDITOR_DEF("editors/grid_map/preview_size", 64);
 	EDITOR_DEF("editors/grid_map/editor_side", 1);
+	EDITOR_DEF("editors/grid_map/pick_distance", 5000.0);
+
 	EditorSettings::get_singleton()->add_property_hint(PropertyInfo(Variant::INT, "editors/grid_map/editor_side", PROPERTY_HINT_ENUM, "Left,Right"));
 
 	grid_map_editor = memnew(GridMapEditor(editor));
