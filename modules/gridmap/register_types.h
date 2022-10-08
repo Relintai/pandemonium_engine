@@ -1,3 +1,6 @@
+#ifndef GRIDMAP_REGISTER_TYPES_H
+#define GRIDMAP_REGISTER_TYPES_H
+
 /*************************************************************************/
 /*  register_types.h                                                     */
 /*************************************************************************/
@@ -27,9 +30,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef GRIDMAP_REGISTER_TYPES_H
-#define GRIDMAP_REGISTER_TYPES_H
 
 void register_gridmap_types();
 void unregister_gridmap_types();

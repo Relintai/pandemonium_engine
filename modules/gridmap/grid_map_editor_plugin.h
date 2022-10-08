@@ -1,3 +1,6 @@
+#ifndef GRID_MAP_EDITOR_PLUGIN_H
+#define GRID_MAP_EDITOR_PLUGIN_H
+
 /*************************************************************************/
 /*  grid_map_editor_plugin.h                                             */
 /*************************************************************************/
@@ -27,9 +30,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef GRID_MAP_EDITOR_PLUGIN_H
-#define GRID_MAP_EDITOR_PLUGIN_H
 
 #include "editor/editor_node.h"
 #include "editor/editor_plugin.h"

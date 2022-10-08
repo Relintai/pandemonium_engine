@@ -38,7 +38,17 @@
 #include "scene/3d/physics_body.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/packed_scene.h"
-#include "spatial_editor_plugin.h"
+#include "editor/plugins/spatial_editor_plugin.h"
+
+#include "scene/gui/popup_menu.h"
+#include "scene/gui/menu_button.h"
+
+#include "editor/editor_inspector.h"
+#include "editor/editor_file_dialog.h"
+
+#include "mesh_library.h"
+
+#include "scene/resources/navigation_mesh.h"
 
 void MeshLibraryEditor::edit(const Ref<MeshLibrary> &p_mesh_library) {
 	mesh_library = p_mesh_library;
@@ -275,7 +285,7 @@ MeshLibraryEditor::MeshLibraryEditor(EditorNode *p_editor) {
 	SpatialEditor::get_singleton()->add_control_to_menu_panel(menu);
 	menu->set_position(Point2(1, 1));
 	menu->set_text(TTR("MeshLibrary"));
-	menu->set_icon(EditorNode::get_singleton()->get_gui_base()->get_icon("MeshLibrary", "EditorIcons"));
+	menu->set_icon(EditorNode::get_singleton()->get_gui_base()->get_theme_icon("MeshLibrary", "EditorIcons"));
 	menu->get_popup()->add_item(TTR("Add Item"), MENU_OPTION_ADD_ITEM);
 	menu->get_popup()->add_item(TTR("Remove Selected Item"), MENU_OPTION_REMOVE_ITEM);
 	menu->get_popup()->add_separator();

@@ -1,3 +1,6 @@
+#ifndef MESH_LIBRARY_EDITOR_PLUGIN_H
+#define MESH_LIBRARY_EDITOR_PLUGIN_H
+
 /*************************************************************************/
 /*  mesh_library_editor_plugin.h                                         */
 /*************************************************************************/
@@ -28,11 +31,10 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef MESH_LIBRARY_EDITOR_PLUGIN_H
-#define MESH_LIBRARY_EDITOR_PLUGIN_H
-
 #include "editor/editor_node.h"
-#include "scene/resources/mesh_library.h"
+#include "editor/editor_plugin.h"
+
+class MeshLibrary;
 
 class MeshLibraryEditor : public Control {
 	GDCLASS(MeshLibraryEditor, Control);

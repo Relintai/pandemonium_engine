@@ -1,3 +1,6 @@
+#ifndef GRID_MAP_H
+#define GRID_MAP_H
+
 /*************************************************************************/
 /*  grid_map.h                                                           */
 /*************************************************************************/
@@ -27,9 +30,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef GRID_MAP_H
-#define GRID_MAP_H
 
 #include "scene/3d/navigation.h"
 #include "scene/3d/spatial.h"

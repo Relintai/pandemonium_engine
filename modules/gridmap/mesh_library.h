@@ -1,3 +1,6 @@
+#ifndef MESH_LIBRARY_H
+#define MESH_LIBRARY_H
+
 /*************************************************************************/
 /*  mesh_library.h                                                       */
 /*************************************************************************/
@@ -27,9 +30,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#ifndef MESH_LIBRARY_H
-#define MESH_LIBRARY_H
 
 #include "core/containers/map.h"
 #include "core/object/resource.h"
