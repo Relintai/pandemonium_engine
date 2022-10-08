@@ -239,12 +239,12 @@ void EditorHelp::_add_type(const String &p_type, const String &p_enum) {
 
 void EditorHelp::_add_type_icon(const String &p_type, int p_size) {
 	Ref<Texture> icon;
-	if (has_icon(p_type, "EditorIcons")) {
-		icon = get_icon(p_type, "EditorIcons");
+	if (has_theme_icon(p_type, "EditorIcons")) {
+		icon = get_theme_icon(p_type, "EditorIcons");
 	} else if (ClassDB::class_exists(p_type) && ClassDB::is_parent_class(p_type, "Object")) {
-		icon = get_icon("Object", "EditorIcons");
+		icon = get_theme_icon("Object", "EditorIcons");
 	} else {
-		icon = get_icon("ArrowRight", "EditorIcons");
+		icon = get_theme_icon("ArrowRight", "EditorIcons");
 	}
 
 	Vector2i size = Vector2i(icon->get_width(), icon->get_height());
