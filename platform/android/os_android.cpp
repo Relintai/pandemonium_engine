@@ -235,7 +235,7 @@ Error OS_Android::open_dynamic_library(const String p_path, void *&p_library_han
 }
 
 void OS_Android::set_mouse_mode(MouseMode p_mode) {
-	if (!godot_java->get_godot_view()->can_update_pointer_icon()) {
+	if (!pandemonium_java->get_pandemonium_view()->can_update_pointer_icon()) {
 		return;
 	}
 	if (mouse_mode == p_mode || p_mode == MouseMode::MOUSE_MODE_CAPTURED) {
@@ -243,7 +243,7 @@ void OS_Android::set_mouse_mode(MouseMode p_mode) {
 	}
 
 	if (p_mode == MouseMode::MOUSE_MODE_HIDDEN) {
-		godot_java->get_godot_view()->set_pointer_icon(CURSOR_TYPE_NULL);
+		pandemonium_java->get_pandemonium_view()->set_pointer_icon(CURSOR_TYPE_NULL);
 	} else {
 		set_cursor_shape(cursor_shape);
 	}
@@ -256,7 +256,7 @@ OS::MouseMode OS_Android::get_mouse_mode() const {
 }
 
 void OS_Android::set_cursor_shape(CursorShape p_shape) {
-	if (!godot_java->get_godot_view()->can_update_pointer_icon()) {
+	if (!pandemonium_java->get_pandemonium_view()->can_update_pointer_icon()) {
 		return;
 	}
 	if (cursor_shape == p_shape) {
@@ -265,7 +265,7 @@ void OS_Android::set_cursor_shape(CursorShape p_shape) {
 
 	cursor_shape = p_shape;
 	if (mouse_mode == MouseMode::MOUSE_MODE_VISIBLE || mouse_mode == MouseMode::MOUSE_MODE_CONFINED) {
-		godot_java->get_godot_view()->set_pointer_icon(android_cursors[cursor_shape]);
+		pandemonium_java->get_pandemonium_view()->set_pointer_icon(android_cursors[cursor_shape]);
 	}
 }
 
