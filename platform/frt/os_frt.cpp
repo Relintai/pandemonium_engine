@@ -558,6 +558,9 @@ public:
 #ifdef JOYDEV_ENABLED
 			joystick->process_joypads();
 #endif
+
+			input->flush_buffered_events();
+
 			if (Main::iteration() == true)
 				break;
 			if (perfmon.is_valid())
