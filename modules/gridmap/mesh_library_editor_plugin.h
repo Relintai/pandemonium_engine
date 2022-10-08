@@ -84,6 +84,10 @@ class MeshLibraryEditorPlugin : public EditorPlugin {
 	MeshLibraryEditor *mesh_library_editor;
 	EditorNode *editor;
 
+	EditorFileDialog *file_export_lib;
+	CheckBox *file_export_lib_merge;
+	CheckBox *file_export_lib_apply_xforms;
+
 public:
 	virtual String get_name() const { return "MeshLibrary"; }
 	bool has_main_screen() const { return false; }
@@ -92,6 +96,12 @@ public:
 	virtual void make_visible(bool p_visible);
 
 	MeshLibraryEditorPlugin(EditorNode *p_node);
+
+protected:
+	static void _bind_methods();
+
+	void _convert_scene_to_mesh_library(Variant p_null);
+	void _dialog_action(String p_file);
 };
 
 #endif // MESH_LIBRARY_EDITOR_PLUGIN_H

@@ -32,19 +32,20 @@
 
 #include "editor/editor_node.h"
 #include "editor/editor_settings.h"
+#include "editor/plugins/spatial_editor_plugin.h"
 #include "main/main.h"
 #include "scene/3d/mesh_instance.h"
 #include "scene/3d/navigation_mesh_instance.h"
 #include "scene/3d/physics_body.h"
 #include "scene/main/viewport.h"
 #include "scene/resources/packed_scene.h"
-#include "editor/plugins/spatial_editor_plugin.h"
 
-#include "scene/gui/popup_menu.h"
+#include "scene/gui/check_box.h"
 #include "scene/gui/menu_button.h"
+#include "scene/gui/popup_menu.h"
 
-#include "editor/editor_inspector.h"
 #include "editor/editor_file_dialog.h"
+#include "editor/editor_inspector.h"
 
 #include "mesh_library.h"
 
@@ -76,6 +77,8 @@ void MeshLibraryEditor::_menu_update_confirm(bool p_apply_xforms) {
 }
 
 void MeshLibraryEditor::_import_scene(Node *p_scene, Ref<MeshLibrary> p_library, bool p_merge, bool p_apply_xforms) {
+	ERR_FAIL_NULL(p_scene);
+
 	if (!p_merge) {
 		p_library->clear();
 	}
@@ -189,10 +192,12 @@ void MeshLibraryEditor::_import_scene(Node *p_scene, Ref<MeshLibrary> p_library,
 
 	//generate previews!
 
-	if (true) {
+	Vector<int> ids = p_library->get_item_list();
+
+	if (ids.size() != 0) {
 		Vector<Ref<Mesh>> meshes;
 		Vector<Transform> transforms;
-		Vector<int> ids = p_library->get_item_list();
+		
 		for (int i = 0; i < ids.size(); i++) {
 			if (mesh_instances.find(ids[i])) {
 				meshes.push_back(p_library->get_item_mesh(ids[i]));
@@ -203,6 +208,10 @@ void MeshLibraryEditor::_import_scene(Node *p_scene, Ref<MeshLibrary> p_library,
 		Vector<Ref<Texture>> textures = EditorInterface::get_singleton()->make_mesh_previews(meshes, &transforms, EditorSettings::get_singleton()->get("editors/grid_map/preview_size"));
 		int j = 0;
 		for (int i = 0; i < ids.size(); i++) {
+			if (textures.size() <= j) {
+				break;
+			}
+
 			if (mesh_instances.find(ids[i])) {
 				p_library->set_item_preview(ids[i], textures[j]);
 				j++;
@@ -331,10 +340,76 @@ void MeshLibraryEditorPlugin::make_visible(bool p_visible) {
 }
 
 MeshLibraryEditorPlugin::MeshLibraryEditorPlugin(EditorNode *p_node) {
+	editor = p_node;
+
 	mesh_library_editor = memnew(MeshLibraryEditor(p_node));
 
 	p_node->get_viewport()->add_child(mesh_library_editor);
 	mesh_library_editor->set_anchors_and_margins_preset(Control::PRESET_TOP_WIDE);
 	mesh_library_editor->set_end(Point2(0, 22));
 	mesh_library_editor->hide();
+
+	file_export_lib = memnew(EditorFileDialog);
+	file_export_lib->set_title(TTR("Export Mesh Library"));
+	file_export_lib->set_mode(EditorFileDialog::MODE_SAVE_FILE);
+	file_export_lib->connect("file_selected", this, "_dialog_action");
+	file_export_lib_merge = memnew(CheckBox);
+	file_export_lib_merge->set_text(TTR("Merge With Existing"));
+	file_export_lib_merge->set_h_size_flags(Control::SIZE_SHRINK_CENTER);
+	file_export_lib_merge->set_pressed(true);
+	file_export_lib->get_vbox()->add_child(file_export_lib_merge);
+	file_export_lib_apply_xforms = memnew(CheckBox);
+	file_export_lib_apply_xforms->set_text(TTR("Apply MeshInstance Transforms"));
+	file_export_lib_apply_xforms->set_h_size_flags(Control::SIZE_SHRINK_CENTER);
+	file_export_lib_apply_xforms->set_pressed(false);
+	file_export_lib->get_vbox()->add_child(file_export_lib_apply_xforms);
+	editor->get_gui_base()->add_child(file_export_lib);
+
+	List<String> extensions;
+	Ref<MeshLibrary> ml(memnew(MeshLibrary));
+	ResourceSaver::get_recognized_extensions(ml, &extensions);
+	file_export_lib->clear_filters();
+	for (List<String>::Element *E = extensions.front(); E; E = E->next()) {
+		file_export_lib->add_filter("*." + E->get());
+	}
+
+	p_node->add_convert_menu_item("MeshLibrary", this, "_convert_scene_to_mesh_library", DEFVAL(Variant()));
+}
+
+void MeshLibraryEditorPlugin::_bind_methods() {
+	ClassDB::bind_method("_convert_scene_to_mesh_library", &MeshLibraryEditorPlugin::_convert_scene_to_mesh_library);
+	ClassDB::bind_method("_dialog_action", &MeshLibraryEditorPlugin::_dialog_action);
+}
+
+void MeshLibraryEditorPlugin::_convert_scene_to_mesh_library(Variant p_null) {
+	if (!editor->get_editor_data().get_edited_scene_root()) {
+		editor->show_accept(TTR("This operation can't be done without a scene."), TTR("OK"));
+		return;
+	}
+
+	file_export_lib->popup_centered_ratio();
+}
+
+void MeshLibraryEditorPlugin::_dialog_action(String p_file) {
+	Ref<MeshLibrary> ml;
+	if (file_export_lib_merge->is_pressed() && FileAccess::exists(p_file)) {
+		ml = ResourceLoader::load(p_file, "MeshLibrary");
+
+		if (ml.is_null()) {
+			editor->show_accept(TTR("Can't load MeshLibrary for merging!"), TTR("OK"));
+			return;
+		}
+	}
+
+	if (ml.is_null()) {
+		ml = Ref<MeshLibrary>(memnew(MeshLibrary));
+	}
+
+	MeshLibraryEditor::update_library_file(editor->get_editor_data().get_edited_scene_root(), ml, true, file_export_lib_apply_xforms->is_pressed());
+
+	Error err = ResourceSaver::save(p_file, ml);
+	if (err) {
+		editor->show_accept(TTR("Error saving MeshLibrary!"), TTR("OK"));
+		return;
+	}
 }
