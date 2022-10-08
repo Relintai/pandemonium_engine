@@ -26,13 +26,11 @@ jobs:
             cache-name: windows-editor-x86
             target: release_debug
             tools: true
-            arch: x86
             bin: "./bin/pandemonium.windows.opt.tools.32.exe"
 
           - name: Template (target=release, tools=no)
             cache-name: windows-template-x86
             target: release
-            arch: x86
             tools: false
 
     steps:
@@ -59,7 +57,6 @@ jobs:
           platform: windows
           target: ${{ matrix.target }}
           tools: ${{ matrix.tools }}
-          arch: ${{ matrix.arch }}
 
       - name: Prepare artifact
         run: |

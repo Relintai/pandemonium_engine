@@ -13,9 +13,6 @@ inputs:
   platform:
     description: The Pandemonium platform to build.
     required: false
-  arch:
-    description: Platform-dependent architecture (arm/arm64/x86/x64/mips/...).
-    default: "x64"
   sconsflags:
     default: ""
   scons-cache:
@@ -37,5 +34,5 @@ runs:
           SCONS_CACHE_LIMIT: ${{ inputs.scons-cache-limit }}
       run: |
         echo "Building with flags:" ${{ env.SCONSFLAGS }}
-        scons p=${{ inputs.platform }} target=${{ inputs.target }} tools=${{ inputs.tools }} arch=${{ inputs.arch }} tests=${{ inputs.tests }} --jobs=2 ${{ env.SCONSFLAGS }}
+        scons p=${{ inputs.platform }} target=${{ inputs.target }} tools=${{ inputs.tools }} tests=${{ inputs.tests }} --jobs=2 ${{ env.SCONSFLAGS }}
         ls -l bin/
