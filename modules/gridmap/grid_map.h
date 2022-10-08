@@ -165,10 +165,10 @@ class GridMap : public Spatial {
 	void _recreate_octant_data();
 
 	struct BakeLight {
-		VS::LightType type;
+		RS::LightType type;
 		Vector3 pos;
 		Vector3 dir;
-		float param[VS::LIGHT_PARAM_MAX];
+		float param[RS::LIGHT_PARAM_MAX];
 	};
 
 	_FORCE_INLINE_ Vector3 _octant_get_offset(const OctantKey &p_key) const {

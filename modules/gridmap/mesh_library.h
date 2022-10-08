@@ -33,9 +33,11 @@
 
 #include "core/containers/map.h"
 #include "core/object/resource.h"
-#include "scenes/resources/mesh.h"
+#include "scene/resources/mesh.h"
 #include "scene/3d/navigation_mesh_instance.h"
-#include "shape.h"
+#include "scene/resources/shape.h"
+
+class NavigationMesh;
 
 class MeshLibrary : public Resource {
 	GDCLASS(MeshLibrary, Resource);
