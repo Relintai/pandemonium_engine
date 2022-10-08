@@ -301,6 +301,14 @@ public: // OS
 	void _set_use_vsync(bool enable) FRT_OVERRIDE {
 		os_.set_use_vsync(enable);
 	}
+	void set_icon(const Ref<Image> &icon) FRT_OVERRIDE {
+		if (icon.is_null())
+			return;
+		Ref<Image> i = icon->duplicate();
+		i->convert(Image::FORMAT_RGBA8);
+		PoolVector<uint8_t>::Read r = i->get_data().read();
+		os_.set_icon(i->get_width(), i->get_height(), r.ptr());
+	}
 public: // EventHandler
 	void handle_resize_event(ivec2 size) FRT_OVERRIDE {
 		video_mode_.width = size.x;
@@ -375,6 +383,9 @@ public: // EventHandler
 	}
 	void handle_quit_event() FRT_OVERRIDE {
 		quit_ = true;
+	}
+	void handle_flush_events() FRT_OVERRIDE {
+		input_->flush_buffered_events();
 	}
 };
 

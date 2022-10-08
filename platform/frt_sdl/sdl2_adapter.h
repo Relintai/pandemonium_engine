@@ -143,6 +143,7 @@ struct EventHandler {
 	virtual void handle_js_axis_event(int id, int axis, float value) = 0;
 	virtual void handle_js_hat_event(int id, int mask) = 0;
 	virtual void handle_quit_event() = 0;
+	virtual void handle_flush_events() = 0;
 };
 
 EventHandler::~EventHandler() {
@@ -339,7 +340,7 @@ public:
 	void init(GraphicsAPI api, int width, int height, bool resizable, bool borderless, bool always_on_top) {
 		setenv("SDL_VIDEO_RPI_OPTIONS", "gravity=center,scale=letterbox,background=1", 0);
 		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK) < 0)
-			fatal("SDL_Init failed.");
+			fatal("SDL_Init failed: %s.", SDL_GetError());
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, api == API_OpenGL_ES2 ? 2 : 3);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
@@ -352,7 +353,7 @@ public:
 		if (always_on_top)
 			flags |= SDL_WINDOW_ALWAYS_ON_TOP;
 		if (!(window_ = SDL_CreateWindow("frt2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags)))
-			fatal("SDL_CreateWindow failed.");
+			fatal("SDL_CreateWindow failed: %s.", SDL_GetError());
 		context_ = SDL_GL_CreateContext(window_);
 		SDL_GL_MakeCurrent(window_, context_);
 	}
@@ -409,12 +410,23 @@ public:
 				break;
 			}
 		}
+		handler_->handle_flush_events();
 	}
 	const InputModifierState *get_modifier_state() const {
 		return &st_;
 	}
 	void set_title(const char *title) {
 		SDL_SetWindowTitle(window_, title);
+	}
+	void set_icon(int width, int height, const unsigned char *data) {
+		SDL_Surface *icon = SDL_CreateRGBSurfaceWithFormat(0, width, height, 32, SDL_PIXELFORMAT_ABGR8888);
+		if (!icon)
+			return;
+		SDL_LockSurface(icon);
+		memcpy(icon->pixels, data, width * height * 4);
+		SDL_UnlockSurface(icon);
+		SDL_SetWindowIcon(window_, icon);
+		SDL_FreeSurface(icon);
 	}
 	void set_pos(ivec2 pos) {
 		SDL_SetWindowPosition(window_, pos.x, pos.y);
