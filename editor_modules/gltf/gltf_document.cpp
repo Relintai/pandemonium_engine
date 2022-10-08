@@ -75,6 +75,10 @@
 #include "modules/regex/regex.h"
 #endif // MODULE_REGEX_ENABLED
 
+#ifdef MODULE_GRIDMAP_ENABLED
+#include "modules/gridmap/grid_map.h"
+#endif // MODULE_GRIDMAP_ENABLED
+
 Ref<ArrayMesh> _mesh_to_array_mesh(Ref<Mesh> p_mesh) {
 	Ref<ArrayMesh> array_mesh = p_mesh;
 	if (array_mesh.is_valid()) {
@@ -5457,6 +5461,11 @@ void GLTFDocument::_convert_scene_node(Ref<GLTFState> state, Node *p_current, co
 		// We ignore the Pandemonium Engine node that is the skeleton.
 		return;
 #endif
+#ifdef MODULE_GRIDMAP_ENABLED
+	} else if (cast_to<GridMap>(p_current)) {
+		GridMap *gridmap = Object::cast_to<GridMap>(p_current);
+		_convert_grid_map_to_gltf(gridmap, p_gltf_parent, p_gltf_root, gltf_node, state);
+#endif // MODULE_GRIDMAP_ENABLED
 	} else if (cast_to<MultiMeshInstance>(p_current)) {
 		MultiMeshInstance *multi = cast_to<MultiMeshInstance>(p_current);
 		_convert_mult_mesh_instance_to_gltf(multi, p_gltf_parent, p_gltf_root, gltf_node, state);
@@ -5530,6 +5539,36 @@ void GLTFDocument::_convert_light_to_gltf(Light *light, Ref<GLTFState> state, Re
 		gltf_node->light = light_index;
 	}
 }
+
+#ifdef MODULE_GRIDMAP_ENABLED
+void GLTFDocument::_convert_grid_map_to_gltf(GridMap *p_grid_map, GLTFNodeIndex p_parent_node_index, GLTFNodeIndex p_root_node_index, Ref<GLTFNode> gltf_node, Ref<GLTFState> state) {
+	Array cells = p_grid_map->get_used_cells();
+	for (int32_t k = 0; k < cells.size(); k++) {
+		GLTFNode *new_gltf_node = memnew(GLTFNode);
+		gltf_node->children.push_back(state->nodes.size());
+		state->nodes.push_back(new_gltf_node);
+		Vector3 cell_location = cells[k];
+		int32_t cell = p_grid_map->get_cell_item(
+				cell_location.x, cell_location.y, cell_location.z);
+		Transform cell_xform;
+		cell_xform.basis.set_orthogonal_index(
+				p_grid_map->get_cell_item_orientation(
+						cell_location.x, cell_location.y, cell_location.z));
+		cell_xform.basis.scale(Vector3(p_grid_map->get_cell_scale(),
+				p_grid_map->get_cell_scale(),
+				p_grid_map->get_cell_scale()));
+		cell_xform.set_origin(p_grid_map->map_to_world(
+				cell_location.x, cell_location.y, cell_location.z));
+		Ref<GLTFMesh> gltf_mesh;
+		gltf_mesh.instance();
+		gltf_mesh->set_mesh(_mesh_to_array_mesh(p_grid_map->get_mesh_library()->get_item_mesh(cell)));
+		new_gltf_node->mesh = state->meshes.size();
+		state->meshes.push_back(gltf_mesh);
+		new_gltf_node->xform = cell_xform * p_grid_map->get_transform();
+		new_gltf_node->set_name(_gen_unique_name(state, p_grid_map->get_mesh_library()->get_item_name(cell)));
+	}
+}
+#endif // MODULE_GRIDMAP_ENABLED
 
 void GLTFDocument::_convert_mult_mesh_instance_to_gltf(MultiMeshInstance *p_multi_mesh_instance, GLTFNodeIndex p_parent_node_index, GLTFNodeIndex p_root_node_index, Ref<GLTFNode> gltf_node, Ref<GLTFState> state) {
 	Ref<MultiMesh> multi_mesh = p_multi_mesh_instance->get_multimesh();

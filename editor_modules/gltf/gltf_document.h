@@ -47,6 +47,10 @@ class Skeleton;
 class BoneAttachment;
 #endif
 
+#ifdef MODULE_GRIDMAP_ENABLED
+class GridMap;
+#endif // MODULE_GRIDMAP_ENABLED
+
 class GLTFState;
 class GLTFSkin;
 class GLTFNode;
@@ -412,6 +416,13 @@ public:
 	void _check_visibility(Node *p_node, bool &retflag);
 	void _convert_camera_to_gltf(Camera *camera, Ref<GLTFState> state,
 			Ref<GLTFNode> gltf_node);
+#ifdef MODULE_GRIDMAP_ENABLED
+	void _convert_grid_map_to_gltf(
+			GridMap *p_grid_map,
+			GLTFNodeIndex p_parent_node_index,
+			GLTFNodeIndex p_root_node_index,
+			Ref<GLTFNode> gltf_node, Ref<GLTFState> state);
+#endif // MODULE_GRIDMAP_ENABLED
 	void _convert_mult_mesh_instance_to_gltf(
 			MultiMeshInstance *p_scene_parent,
 			GLTFNodeIndex p_parent_node_index,
