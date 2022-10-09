@@ -51,7 +51,7 @@ jobs:
           arch: x86
 
       - name: Compilation
-        uses: ./.github/actions/pandemonium-build
+        uses: ./.github/actions/pandemonium-build-win-x86
         with:
           sconsflags: ${{ env.SCONSFLAGS }}
           platform: windows
