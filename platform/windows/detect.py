@@ -192,7 +192,7 @@ def configure_msvc(env, manual_msvc_config):
             env.Append(LINKFLAGS=["/OPT:REF"])
 
     elif env["target"] == "debug":
-        env.AppendUnique(CCFLAGS=["/Zi", "/FS", "/Od", "/EHsc"])
+        env.AppendUnique(CCFLAGS=["/Zi", "/FS", "/Od"])
         # Allow big objects. Only needed for debug, see MinGW branch for rationale.
         env.Append(LINKFLAGS=["/DEBUG"])
 
@@ -215,7 +215,7 @@ def configure_msvc(env, manual_msvc_config):
     else:
         env.AppendUnique(CCFLAGS=["/MD"])
 
-    env.AppendUnique(CCFLAGS=["/Gd", "/GR", "/nologo"])
+    env.AppendUnique(CCFLAGS=["/Gd", "/nologo"])
     env.AppendUnique(CCFLAGS=["/utf-8"])  # Force to use Unicode encoding.
     env.AppendUnique(CXXFLAGS=["/TP"])  # assume all sources are C++
     # Once it was thought that only debug builds would be too large,

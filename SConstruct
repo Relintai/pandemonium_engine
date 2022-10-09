@@ -477,6 +477,10 @@ if selected_platform in platform_list:
             env.Prepend(CXXFLAGS=["/EHs-"])
             env.Prepend(CXXFLAGS=["/EHc-"])
             env.Prepend(CXXFLAGS=["/EHr-"])
+    else:
+        if env.msvc:
+            env_base.Prepend(CXXFLAGS=["/EHsc"])
+            env.Prepend(CXXFLAGS=["/EHsc"])
 
     # Handle renamed options.
     if "use_lto" in ARGUMENTS or "use_thinlto" in ARGUMENTS:
