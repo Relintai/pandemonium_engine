@@ -5460,7 +5460,7 @@ int64_t String::to_int(const CharType *p_str, int p_len, bool p_clamp) {
 				} else {
 					break;
 				}
-				FALLTHROUGH
+				FALLTHROUGH;
 			}
 			case READING_INT: {
 				if (is_digit(c)) {
