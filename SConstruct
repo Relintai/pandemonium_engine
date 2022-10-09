@@ -200,29 +200,6 @@ opts.Add("LINKFLAGS", "Custom flags for the linker")
 # in following code (especially platform and custom_modules).
 opts.Update(env_base)
 
-if env_base["use_rtti"]:
-    if not env.msvc:
-        env_base.Append(CXXFLAGS=["-frtti"])
-    else:
-        env_base.Append(CXXFLAGS=["/GR"])
-else:
-    if not env.msvc:
-        env_base.Append(CXXFLAGS=["-fno-rtti"])
-    else:
-        env_base.Append(CXXFLAGS=["/GR-"])
-    
-    # Don't use dynamic_cast, necessary with no-rtti.
-    env_base.Append(CPPDEFINES=["NO_SAFE_CAST"])
-
-if not env_base["use_exceptions"]:
-    if not env.msvc:
-        env_base.Append(CXXFLAGS=["-fno-exceptions"])
-    else:
-        env_base.Append(CXXFLAGS=["/EHa-"])
-        env_base.Append(CXXFLAGS=["/EHs-"])
-        env_base.Append(CXXFLAGS=["/EHc-"])
-        env_base.Append(CXXFLAGS=["/EHr-"])
-
 # Platform selection: validate input, and add options.
 
 selected_platform = ""
@@ -466,6 +443,40 @@ if selected_platform in platform_list:
         # MSVC doesn't have clear C standard support, /std only covers C++.
         # We apply it to CCFLAGS (both C and C++ code) in case it impacts C features.
         env.Prepend(CCFLAGS=["/std:c++14"])
+
+    if env_base["use_rtti"]:
+        if not env.msvc:
+            env_base.Prepend(CXXFLAGS=["-frtti"])
+            env.Prepend(CXXFLAGS=["-frtti"])
+        else:
+            env_base.Prepend(CXXFLAGS=["/GR"])
+            env.Prepend(CXXFLAGS=["/GR"])
+    else:
+        if not env.msvc:
+            env_base.Prepend(CXXFLAGS=["-fno-rtti"])
+            env.Prepend(CXXFLAGS=["-fno-rtti"])
+        else:
+            env_base.Prepend(CXXFLAGS=["/GR-"])
+            env.Prepend(CXXFLAGS=["/GR-"])
+        
+        # Don't use dynamic_cast, necessary with no-rtti.
+        env_base.Prepend(CPPDEFINES=["NO_SAFE_CAST"])
+        env.Prepend(CPPDEFINES=["NO_SAFE_CAST"])
+
+    if not env_base["use_exceptions"]:
+        if not env.msvc:
+            env_base.Prepend(CXXFLAGS=["-fno-exceptions"])
+            env.Prepend(CXXFLAGS=["-fno-exceptions"])
+        else:
+            env_base.Prepend(CXXFLAGS=["/EHa-"])
+            env_base.Prepend(CXXFLAGS=["/EHs-"])
+            env_base.Prepend(CXXFLAGS=["/EHc-"])
+            env_base.Prepend(CXXFLAGS=["/EHr-"])
+
+            env.Prepend(CXXFLAGS=["/EHa-"])
+            env.Prepend(CXXFLAGS=["/EHs-"])
+            env.Prepend(CXXFLAGS=["/EHc-"])
+            env.Prepend(CXXFLAGS=["/EHr-"])
 
     # Handle renamed options.
     if "use_lto" in ARGUMENTS or "use_thinlto" in ARGUMENTS:
