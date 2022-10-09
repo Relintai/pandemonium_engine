@@ -34,5 +34,5 @@ runs:
           SCONS_CACHE_LIMIT: ${{ inputs.scons-cache-limit }}
       run: |
         echo "Building with flags:" ${{ env.SCONSFLAGS }}
-        which link
-        link --version
+        scons p=${{ inputs.platform }} target=${{ inputs.target }} tools=${{ inputs.tools }} tests=${{ inputs.tests }} --jobs=2 ${{ env.SCONSFLAGS }}
+        ls -l bin/
