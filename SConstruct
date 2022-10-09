@@ -471,12 +471,12 @@ if selected_platform in platform_list:
             env_base.Prepend(CXXFLAGS=["/EHa-"])
             env_base.Prepend(CXXFLAGS=["/EHs-"])
             env_base.Prepend(CXXFLAGS=["/EHc-"])
-            env_base.Prepend(CXXFLAGS=["/EHr-"])
+            #env_base.Prepend(CXXFLAGS=["/EHr-"])
 
             env.Prepend(CXXFLAGS=["/EHa-"])
             env.Prepend(CXXFLAGS=["/EHs-"])
             env.Prepend(CXXFLAGS=["/EHc-"])
-            env.Prepend(CXXFLAGS=["/EHr-"])
+            #env.Prepend(CXXFLAGS=["/EHr-"])
     else:
         if env.msvc:
             env_base.Prepend(CXXFLAGS=["/EHsc"])
