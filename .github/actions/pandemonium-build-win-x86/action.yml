@@ -27,7 +27,7 @@ runs:
   using: "composite"
   steps:
     - name: Scons Build
-      shell: sh
+      shell: cmd
       env:
           SCONSFLAGS: ${{ inputs.sconsflags }}
           SCONS_CACHE: ${{ inputs.scons-cache }}
@@ -36,4 +36,4 @@ runs:
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x86
         echo "Building with flags:" ${{ env.SCONSFLAGS }}
         scons p=${{ inputs.platform }} target=${{ inputs.target }} tools=${{ inputs.tools }} tests=${{ inputs.tests }} --jobs=2 ${{ env.SCONSFLAGS }}
-        ls -l bin/
+        dir /a bin/
