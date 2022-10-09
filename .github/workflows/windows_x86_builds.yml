@@ -45,11 +45,6 @@ jobs:
       - name: Setup python and scons
         uses: ./.github/actions/pandemonium-deps
 
-      - name: Set up Visual Studio shell
-        uses: egor-tensin/vs-shell@v2
-        with:
-          arch: x86
-
       - name: Compilation
         uses: ./.github/actions/pandemonium-build
         with:
