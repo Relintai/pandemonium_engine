@@ -211,10 +211,10 @@ static _FORCE_INLINE_ uint32_t hash_murmur3_buffer(const void *key, int length, 
 	switch (length & 3) {
 		case 3:
 			k1 ^= tail[2] << 16;
-			[[fallthrough]];
+			FALLTHROUGH
 		case 2:
 			k1 ^= tail[1] << 8;
-			[[fallthrough]];
+			FALLTHROUGH
 		case 1:
 			k1 ^= tail[0];
 			k1 *= c1;
