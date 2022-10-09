@@ -30,7 +30,7 @@ SOFTWARE.
 #include "tile_set_editor_plugin.h"
 #endif
 
-void register_rtile_map_types() {
+void register_tile_map_types() {
 #ifdef TOOLS_ENABLED
 	EditorPlugins::add_by_type<TileMapEditorPlugin>();
 	EditorPlugins::add_by_type<TileSetEditorPlugin>();
@@ -40,5 +40,5 @@ void register_rtile_map_types() {
 	ClassDB::register_class<TileSet>();
 }
 
-void unregister_rtile_map_types() {
+void unregister_tile_map_types() {
 }

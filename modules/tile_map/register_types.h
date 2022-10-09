@@ -20,5 +20,5 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-void register_rtile_map_types();
-void unregister_rtile_map_types();
+void register_tile_map_types();
+void unregister_tile_map_types();
