@@ -7,15 +7,53 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="_add_meshes_to" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="mesher" type="VoxelMesher" />
+			<argument index="1" name="chunk" type="VoxelChunk" />
+			<argument index="2" name="x" type="int" />
+			<argument index="3" name="y" type="int" />
+			<argument index="4" name="z" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="_add_textures_to" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="packer" type="TexturePacker" />
 			<description>
 			</description>
 		</method>
+		<method name="_should_spawn" qualifiers="virtual">
+			<return type="bool" />
+			<argument index="0" name="chunk" type="VoxelChunk" />
+			<argument index="1" name="x" type="int" />
+			<argument index="2" name="y" type="int" />
+			<argument index="3" name="z" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="add_meshes_to">
+			<return type="void" />
+			<argument index="0" name="mesher" type="VoxelMesher" />
+			<argument index="1" name="chunk" type="VoxelChunk" />
+			<argument index="2" name="x" type="int" />
+			<argument index="3" name="y" type="int" />
+			<argument index="4" name="z" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="add_textures_to">
 			<return type="void" />
 			<argument index="0" name="packer" type="TexturePacker" />
+			<description>
+			</description>
+		</method>
+		<method name="should_spawn">
+			<return type="bool" />
+			<argument index="0" name="chunk" type="VoxelChunk" />
+			<argument index="1" name="x" type="int" />
+			<argument index="2" name="y" type="int" />
+			<argument index="3" name="z" type="int" />
 			<description>
 			</description>
 		</method>

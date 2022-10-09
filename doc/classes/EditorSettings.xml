@@ -274,10 +274,6 @@
 		<member name="editors/3d/grid_yz_plane" type="bool" setter="" getter="">
 			If [code]true[/code], render the grid on an YZ plane. This can be useful for 3D side-scrolling games.
 		</member>
-		<member name="editors/3d/lightmap_baking_number_of_cpu_threads" type="int" setter="" getter="">
-			The number of CPU threads to use for baking lightmaps with [BakedLightmap]. A value of [code]0[/code] will use all CPU logical cores, while positive values will set the maximum number of CPU threads that can be used when baking lightmaps. Negative values will use all CPU cores [i]minus[/i] the amount specified in the negative number.
-			Using less CPU cores than the total amount of cores available will slow down lightmap baking, but will allow other tasks on the PC to be more reactive while lightmaps are baking.
-		</member>
 		<member name="editors/3d/navigation/emulate_3_button_mouse" type="bool" setter="" getter="">
 			If [code]true[/code], enables 3-button mouse emulation mode. This is useful on laptops when using a trackpad.
 			When 3-button mouse emulation mode is enabled, the pan, zoom and orbit modifiers can always be used in the 3D editor viewport, even when not holding down any mouse button.
@@ -343,15 +339,6 @@
 		<member name="editors/3d/selection_box_color" type="Color" setter="" getter="">
 			The color to use for the selection box that surrounds selected nodes in the 3D editor viewport. The color's alpha channel influences the selection box's opacity.
 		</member>
-		<member name="editors/3d_gizmos/gizmo_colors/instanced" type="Color" setter="" getter="">
-			The color override to use for 3D editor gizmos if the [Spatial] in question is part of an instanced scene file (from the perspective of the current scene).
-		</member>
-		<member name="editors/3d_gizmos/gizmo_colors/joint" type="Color" setter="" getter="">
-			The 3D editor gizmo color for [Joint]s and [PhysicalBone]s.
-		</member>
-		<member name="editors/3d_gizmos/gizmo_colors/shape" type="Color" setter="" getter="">
-			The 3D editor gizmo color for [CollisionShape]s, [VehicleWheel]s, [RayCast]s and [SpringArm]s.
-		</member>
 		<member name="editors/animation/autorename_animation_tracks" type="bool" setter="" getter="">
 			If [code]true[/code], automatically updates animation tracks' target paths when renaming or reparenting nodes in the Scene tree dock.
 		</member>
@@ -369,12 +356,6 @@
 		</member>
 		<member name="editors/animation/onion_layers_past_color" type="Color" setter="" getter="">
 			The modulate color to use for "past" frames displayed in the animation editor's onion skinning feature.
-		</member>
-		<member name="editors/grid_map/pick_distance" type="float" setter="" getter="">
-			The maximum distance at which tiles can be placed on a GridMap, relative to the camera position (in 3D units).
-		</member>
-		<member name="editors/grid_map/preview_size" type="int" setter="" getter="">
-			The size of tiles in the GridMap editor sidebar (in pixels).
 		</member>
 		<member name="editors/poly_editor/point_grab_radius" type="int" setter="" getter="">
 			The radius of each point's clickable area in 2D and 3D polygon editors (in pixels). Increase this value if you are having trouble selecting points in polygon editors. However, increasing this value may make it more difficult to select points located close to each other.
@@ -527,14 +508,6 @@
 		<member name="network/debug/remote_port" type="int" setter="" getter="">
 			The port to listen to when starting the remote debugger. Godot will try to use port numbers above the configured number if the configured number is already taken by another application.
 		</member>
-		<member name="network/http_proxy/host" type="String" setter="" getter="">
-			The host to use to contact the HTTP and HTTPS proxy in the editor (for the asset library and export template downloads). See also [member network/http_proxy/port].
-			[b]Note:[/b] Godot currently doesn't automatically use system proxy settings, so you have to enter them manually here if needed.
-		</member>
-		<member name="network/http_proxy/port" type="int" setter="" getter="">
-			The port number to use to contact the HTTP and HTTPS proxy in the editor (for the asset library and export template downloads). See also [member network/http_proxy/host].
-			[b]Note:[/b] Godot currently doesn't automatically use system proxy settings, so you have to enter them manually here if needed.
-		</member>
 		<member name="network/ssl/editor_ssl_certificates" type="String" setter="" getter="">
 			The SSL certificate bundle to use for HTTP requests made within the editor (e.g. from the AssetLib tab). If left empty, the [url=https://github.com/godotengine/godot/blob/master/thirdparty/certs/ca-certificates.crt]included Mozilla certificate bundle[/url] will be used.
 		</member>
@@ -633,12 +606,6 @@
 		</member>
 		<member name="text_editor/cursor/scroll_past_end_of_file" type="bool" setter="" getter="">
 			If [code]true[/code], allows scrolling past the end of the file in the script editor.
-		</member>
-		<member name="text_editor/files/auto_reload_and_parse_scripts_on_save" type="bool" setter="" getter="">
-			If [code]true[/code], automatically reloads and parses scripts in the editor when they are saved. This is mainly relevant for [code]tool[/code] scripts which run in the editor.
-		</member>
-		<member name="text_editor/files/auto_reload_scripts_on_external_change" type="bool" setter="" getter="">
-			If [code]true[/code], automatically reloads scripts in the editor when they have been modified and saved by external editors.
 		</member>
 		<member name="text_editor/files/autosave_interval_secs" type="int" setter="" getter="">
 			If set to a value greater than [code]0[/code], automatically saves the current script following the specified interval (in seconds). This can be used to prevent data loss if the editor crashes.

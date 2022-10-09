@@ -1910,7 +1910,7 @@
 		<method name="multimesh_set_physics_interpolation_quality">
 			<return type="void" />
 			<argument index="0" name="multimesh" type="RID" />
-			<argument index="1" name="quality" type="int" enum="VisualServer.MultimeshPhysicsInterpolationQuality" />
+			<argument index="1" name="quality" type="int" enum="RenderingServer.MultimeshPhysicsInterpolationQuality" />
 			<description>
 				Sets the physics interpolation quality for the [MultiMesh].
 				A value of [code]0[/code] gives fast but low quality interpolation, a value of [code]1[/code] gives slower but higher quality interpolation.

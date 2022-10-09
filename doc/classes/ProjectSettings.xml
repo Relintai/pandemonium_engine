@@ -1910,6 +1910,8 @@
 		</member>
 		<member name="thread_pool/max_work_per_frame_percent" type="int" setter="" getter="" default="25">
 		</member>
+		<member name="thread_pool/target_fps" type="int" setter="" getter="" default="60">
+		</member>
 		<member name="thread_pool/thread_count" type="int" setter="" getter="" default="-1">
 		</member>
 		<member name="thread_pool/thread_fallback_count" type="int" setter="" getter="" default="4">

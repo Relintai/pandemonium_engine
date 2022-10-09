@@ -13,6 +13,12 @@
 			<description>
 			</description>
 		</method>
+		<method name="_setup_ess_cache" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="cache" type="ESSMaterialCache" />
+			<description>
+			</description>
+		</method>
 		<method name="add_flavour_tile">
 			<return type="void" />
 			<argument index="0" name="texture" type="Texture" />
@@ -191,6 +197,12 @@
 		<method name="setup_cache">
 			<return type="void" />
 			<argument index="0" name="cache" type="PropMaterialCache" />
+			<description>
+			</description>
+		</method>
+		<method name="setup_ess_cache">
+			<return type="void" />
+			<argument index="0" name="cache" type="ESSMaterialCache" />
 			<description>
 			</description>
 		</method>

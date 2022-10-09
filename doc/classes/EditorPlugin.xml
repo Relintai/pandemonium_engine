@@ -46,6 +46,22 @@
 				When your plugin is deactivated, make sure to remove your custom control with [method remove_control_from_docks] and free it with [method Node.queue_free].
 			</description>
 		</method>
+		<method name="add_convert_menu_item">
+			<return type="void" />
+			<argument index="0" name="name" type="String" />
+			<argument index="1" name="handler" type="Object" />
+			<argument index="2" name="callback" type="String" />
+			<argument index="3" name="ud" type="Variant" default="null" />
+			<description>
+			</description>
+		</method>
+		<method name="add_convert_submenu_item">
+			<return type="void" />
+			<argument index="0" name="name" type="String" />
+			<argument index="1" name="submenu" type="Object" />
+			<description>
+			</description>
+		</method>
 		<method name="add_custom_type">
 			<return type="void" />
 			<argument index="0" name="type" type="String" />
@@ -406,6 +422,12 @@
 			<argument index="0" name="control" type="Control" />
 			<description>
 				Removes the control from the dock. You have to manually [method Node.queue_free] the control.
+			</description>
+		</method>
+		<method name="remove_convert_menu_item">
+			<return type="void" />
+			<argument index="0" name="name" type="String" />
+			<description>
 			</description>
 		</method>
 		<method name="remove_custom_type">

@@ -84,6 +84,18 @@
 			<description>
 			</description>
 		</method>
+		<method name="prop_add_textures">
+			<return type="void" />
+			<argument index="0" name="prop" type="PropData" />
+			<description>
+			</description>
+		</method>
+		<method name="prop_remove_textures">
+			<return type="void" />
+			<argument index="0" name="prop" type="PropData" />
+			<description>
+			</description>
+		</method>
 		<method name="refresh_rects">
 			<return type="void" />
 			<description>
