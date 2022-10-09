@@ -1,5 +1,5 @@
-#ifndef RTILE_SET_EDITOR_PLUGIN_H
-#define RTILE_SET_EDITOR_PLUGIN_H
+#ifndef TILE_SET_EDITOR_PLUGIN_H
+#define TILE_SET_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  tile_set_editor_plugin.h                                             */
 /*************************************************************************/

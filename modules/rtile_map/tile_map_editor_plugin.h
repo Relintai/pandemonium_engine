@@ -1,5 +1,5 @@
-#ifndef RTILE_MAP_EDITOR_PLUGIN_H
-#define RTILE_MAP_EDITOR_PLUGIN_H
+#ifndef TILE_MAP_EDITOR_PLUGIN_H
+#define TILE_MAP_EDITOR_PLUGIN_H
 /*************************************************************************/
 /*  tile_map_editor_plugin.h                                             */
 /*************************************************************************/
