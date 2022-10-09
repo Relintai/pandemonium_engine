@@ -201,14 +201,27 @@ opts.Add("LINKFLAGS", "Custom flags for the linker")
 opts.Update(env_base)
 
 if env_base["use_rtti"]:
-    env_base.Append(CXXFLAGS=["-frtti"])
+    if not env.msvc:
+        env_base.Append(CXXFLAGS=["-frtti"])
+    else:
+        env_base.Append(CXXFLAGS=["/GR"])
 else:
-    env_base.Append(CXXFLAGS=["-fno-rtti"])
+    if not env.msvc:
+        env_base.Append(CXXFLAGS=["-fno-rtti"])
+    else:
+        env_base.Append(CXXFLAGS=["/GR-"])
+    
     # Don't use dynamic_cast, necessary with no-rtti.
     env_base.Append(CPPDEFINES=["NO_SAFE_CAST"])
 
 if not env_base["use_exceptions"]:
-    env_base.Append(CXXFLAGS=["-fno-exceptions"])
+    if not env.msvc:
+        env_base.Append(CXXFLAGS=["-fno-exceptions"])
+    else:
+        env_base.Append(CXXFLAGS=["/EHa-"])
+        env_base.Append(CXXFLAGS=["/EHs-"])
+        env_base.Append(CXXFLAGS=["/EHc-"])
+        env_base.Append(CXXFLAGS=["/EHr-"])
 
 # Platform selection: validate input, and add options.
 
