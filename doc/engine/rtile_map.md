@@ -1,4 +1,4 @@
-# RTileMap
+# TileMap
 
 Godot's TileMap but as an engine module, with a few smaller features added.
 

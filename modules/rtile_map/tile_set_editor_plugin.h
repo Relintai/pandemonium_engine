@@ -52,11 +52,11 @@ class PopupMenu;
 class EditorFileDialog;
 class CheckBox;
 
-class RTileSetEditor : public HSplitContainer {
-	friend class RTileSetEditorPlugin;
+class TileSetEditor : public HSplitContainer {
+	friend class TileSetEditorPlugin;
 	friend class RTilesetEditorContext;
 
-	GDCLASS(RTileSetEditor, HSplitContainer);
+	GDCLASS(TileSetEditor, HSplitContainer);
 
 	enum TextureToolButtons {
 		TOOL_TILESET_ADD_TEXTURE,
@@ -112,7 +112,7 @@ class RTileSetEditor : public HSplitContainer {
 		Ref<NavigationPolygon> navigation_shape;
 	};
 
-	Ref<RTileSet> tileset;
+	Ref<TileSet> tileset;
 	RTilesetEditorContext *helper;
 	EditorNode *editor;
 	UndoRedo *undo_redo;
@@ -181,8 +181,8 @@ class RTileSetEditor : public HSplitContainer {
 
 	Ref<Texture> get_current_texture();
 
-	static void _import_node(Node *p_node, Ref<RTileSet> p_library);
-	static void _import_scene(Node *p_scene, Ref<RTileSet> p_library, bool p_merge);
+	static void _import_node(Node *p_node, Ref<TileSet> p_library);
+	static void _import_scene(Node *p_scene, Ref<TileSet> p_library, bool p_merge);
 	void _undo_redo_import_scene(Node *p_scene, bool p_merge);
 
 	Variant get_drag_data_fw(const Point2 &p_point, Control *p_from);
@@ -194,11 +194,11 @@ protected:
 	void _notification(int p_what);
 
 public:
-	void edit(const Ref<RTileSet> &p_tileset);
-	static Error update_library_file(Node *p_base_scene, Ref<RTileSet> ml, bool p_merge = true);
+	void edit(const Ref<TileSet> &p_tileset);
+	static Error update_library_file(Node *p_base_scene, Ref<TileSet> ml, bool p_merge = true);
 
-	RTileSetEditor(EditorNode *p_editor);
-	~RTileSetEditor();
+	TileSetEditor(EditorNode *p_editor);
+	~TileSetEditor();
 
 private:
 	void _on_tileset_toolbar_button_pressed(int p_index);
@@ -263,16 +263,16 @@ private:
 };
 
 class RTilesetEditorContext : public Object {
-	friend class RTileSetEditor;
+	friend class TileSetEditor;
 	GDCLASS(RTilesetEditorContext, Object);
 
-	Ref<RTileSet> tileset;
-	RTileSetEditor *tileset_editor;
+	Ref<TileSet> tileset;
+	TileSetEditor *tileset_editor;
 	bool snap_options_visible;
 
 public:
 	bool _hide_script_from_inspector() { return true; }
-	void set_tileset(const Ref<RTileSet> &p_tileset);
+	void set_tileset(const Ref<TileSet> &p_tileset);
 
 private:
 	void set_snap_options_visible(bool p_visible);
@@ -284,13 +284,13 @@ protected:
 	static void _bind_methods();
 
 public:
-	RTilesetEditorContext(RTileSetEditor *p_tileset_editor);
+	RTilesetEditorContext(TileSetEditor *p_tileset_editor);
 };
 
-class RTileSetEditorPlugin : public EditorPlugin {
-	GDCLASS(RTileSetEditorPlugin, EditorPlugin);
+class TileSetEditorPlugin : public EditorPlugin {
+	GDCLASS(TileSetEditorPlugin, EditorPlugin);
 
-	RTileSetEditor *tileset_editor;
+	TileSetEditor *tileset_editor;
 	Button *tileset_editor_button;
 	EditorNode *editor;
 
@@ -299,7 +299,7 @@ class RTileSetEditorPlugin : public EditorPlugin {
 	CheckBox *file_export_lib_apply_xforms;
 
 public:
-	virtual String get_name() const { return "RTileSet"; }
+	virtual String get_name() const { return "TileSet"; }
 	bool has_main_screen() const { return false; }
 	virtual void edit(Object *p_node);
 	virtual bool handles(Object *p_node) const;
@@ -307,7 +307,7 @@ public:
 	void set_state(const Dictionary &p_state);
 	Dictionary get_state() const;
 
-	RTileSetEditorPlugin(EditorNode *p_node);
+	TileSetEditorPlugin(EditorNode *p_node);
 
 protected:
 	static void _bind_methods();

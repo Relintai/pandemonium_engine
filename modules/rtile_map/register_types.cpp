@@ -32,12 +32,12 @@ SOFTWARE.
 
 void register_rtile_map_types() {
 #ifdef TOOLS_ENABLED
-	EditorPlugins::add_by_type<RTileMapEditorPlugin>();
-	EditorPlugins::add_by_type<RTileSetEditorPlugin>();
+	EditorPlugins::add_by_type<TileMapEditorPlugin>();
+	EditorPlugins::add_by_type<TileSetEditorPlugin>();
 #endif
 
-	ClassDB::register_class<RTileMap>();
-	ClassDB::register_class<RTileSet>();
+	ClassDB::register_class<TileMap>();
+	ClassDB::register_class<TileSet>();
 }
 
 void unregister_rtile_map_types() {

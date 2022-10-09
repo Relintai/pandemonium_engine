@@ -32,7 +32,7 @@
 #include "core/variant/array.h"
 #include "core/config/engine.h"
 
-bool RTileSet::_set(const StringName &p_name, const Variant &p_value) {
+bool TileSet::_set(const StringName &p_name, const Variant &p_value) {
 	String n = p_name;
 	int slash = n.find("/");
 	if (slash == -1) {
@@ -208,7 +208,7 @@ bool RTileSet::_set(const StringName &p_name, const Variant &p_value) {
 	return true;
 }
 
-bool RTileSet::_get(const StringName &p_name, Variant &r_ret) const {
+bool TileSet::_get(const StringName &p_name, Variant &r_ret) const {
 	String n = p_name;
 	int slash = n.find("/");
 	if (slash == -1) {
@@ -323,7 +323,7 @@ bool RTileSet::_get(const StringName &p_name, Variant &r_ret) const {
 	return true;
 }
 
-void RTileSet::_get_property_list(List<PropertyInfo> *p_list) const {
+void TileSet::_get_property_list(List<PropertyInfo> *p_list) const {
 	for (Map<int, TileData>::Element *E = tile_map.front(); E; E = E->next()) {
 		int id = E->key();
 		String pre = itos(id) + "/";
@@ -368,154 +368,154 @@ void RTileSet::_get_property_list(List<PropertyInfo> *p_list) const {
 	}
 }
 
-void RTileSet::create_tile(int p_id) {
-	ERR_FAIL_COND_MSG(tile_map.has(p_id), vformat("The RTileSet already has a tile with ID '%d'.", p_id));
+void TileSet::create_tile(int p_id) {
+	ERR_FAIL_COND_MSG(tile_map.has(p_id), vformat("The TileSet already has a tile with ID '%d'.", p_id));
 	tile_map[p_id] = TileData();
 	tile_map[p_id].autotile_data = AutotileData();
 	_change_notify("");
 	emit_changed();
 }
 
-void RTileSet::autotile_set_bitmask_mode(int p_id, BitmaskMode p_mode) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::autotile_set_bitmask_mode(int p_id, BitmaskMode p_mode) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map[p_id].autotile_data.bitmask_mode = p_mode;
 	_change_notify("");
 	emit_changed();
 }
 
-RTileSet::BitmaskMode RTileSet::autotile_get_bitmask_mode(int p_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), BITMASK_2X2, vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+TileSet::BitmaskMode TileSet::autotile_get_bitmask_mode(int p_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), BITMASK_2X2, vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].autotile_data.bitmask_mode;
 }
 
-void RTileSet::tile_set_texture(int p_id, const Ref<Texture> &p_texture) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::tile_set_texture(int p_id, const Ref<Texture> &p_texture) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map[p_id].texture = p_texture;
 	emit_changed();
 	_change_notify("texture");
 }
 
-Ref<Texture> RTileSet::tile_get_texture(int p_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Ref<Texture>(), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+Ref<Texture> TileSet::tile_get_texture(int p_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Ref<Texture>(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].texture;
 }
 
-void RTileSet::tile_set_normal_map(int p_id, const Ref<Texture> &p_normal_map) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::tile_set_normal_map(int p_id, const Ref<Texture> &p_normal_map) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map[p_id].normal_map = p_normal_map;
 	emit_changed();
 }
 
-Ref<Texture> RTileSet::tile_get_normal_map(int p_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Ref<Texture>(), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+Ref<Texture> TileSet::tile_get_normal_map(int p_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Ref<Texture>(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].normal_map;
 }
 
-void RTileSet::tile_set_material(int p_id, const Ref<ShaderMaterial> &p_material) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::tile_set_material(int p_id, const Ref<ShaderMaterial> &p_material) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map[p_id].material = p_material;
 	emit_changed();
 }
 
-Ref<ShaderMaterial> RTileSet::tile_get_material(int p_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Ref<ShaderMaterial>(), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+Ref<ShaderMaterial> TileSet::tile_get_material(int p_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Ref<ShaderMaterial>(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].material;
 }
 
-void RTileSet::tile_set_modulate(int p_id, const Color &p_modulate) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::tile_set_modulate(int p_id, const Color &p_modulate) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map[p_id].modulate = p_modulate;
 	emit_changed();
 	_change_notify("modulate");
 }
 
-Color RTileSet::tile_get_modulate(int p_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Color(1, 1, 1), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+Color TileSet::tile_get_modulate(int p_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Color(1, 1, 1), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].modulate;
 }
 
-void RTileSet::tile_set_texture_offset(int p_id, const Vector2 &p_offset) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::tile_set_texture_offset(int p_id, const Vector2 &p_offset) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map[p_id].offset = p_offset;
 	emit_changed();
 }
 
-Vector2 RTileSet::tile_get_texture_offset(int p_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Vector2(), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+Vector2 TileSet::tile_get_texture_offset(int p_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Vector2(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].offset;
 }
 
-void RTileSet::tile_set_region(int p_id, const Rect2 &p_region) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::tile_set_region(int p_id, const Rect2 &p_region) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map[p_id].region = p_region;
 	emit_changed();
 	_change_notify("region");
 }
 
-Rect2 RTileSet::tile_get_region(int p_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Rect2(), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+Rect2 TileSet::tile_get_region(int p_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Rect2(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].region;
 }
 
-void RTileSet::tile_set_tile_mode(int p_id, TileMode p_tile_mode) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::tile_set_tile_mode(int p_id, TileMode p_tile_mode) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map[p_id].tile_mode = p_tile_mode;
 	emit_changed();
 	_change_notify("tile_mode");
 }
 
-RTileSet::TileMode RTileSet::tile_get_tile_mode(int p_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), SINGLE_TILE, vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+TileSet::TileMode TileSet::tile_get_tile_mode(int p_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), SINGLE_TILE, vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].tile_mode;
 }
 
-void RTileSet::autotile_set_icon_coordinate(int p_id, const Vector2 &coord) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::autotile_set_icon_coordinate(int p_id, const Vector2 &coord) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map[p_id].autotile_data.icon_coord = coord;
 	emit_changed();
 }
 
-Vector2 RTileSet::autotile_get_icon_coordinate(int p_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Vector2(), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+Vector2 TileSet::autotile_get_icon_coordinate(int p_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Vector2(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].autotile_data.icon_coord;
 }
 
-void RTileSet::autotile_set_spacing(int p_id, int p_spacing) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::autotile_set_spacing(int p_id, int p_spacing) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	ERR_FAIL_COND(p_spacing < 0);
 	tile_map[p_id].autotile_data.spacing = p_spacing;
 	emit_changed();
 }
 
-int RTileSet::autotile_get_spacing(int p_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), 0, vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+int TileSet::autotile_get_spacing(int p_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), 0, vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].autotile_data.spacing;
 }
 
-void RTileSet::autotile_set_size(int p_id, const Size2 &p_size) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::autotile_set_size(int p_id, const Size2 &p_size) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	ERR_FAIL_COND(p_size.x <= 0 || p_size.y <= 0);
 	tile_map[p_id].autotile_data.size = p_size;
 }
 
-Size2 RTileSet::autotile_get_size(int p_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Size2(), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+Size2 TileSet::autotile_get_size(int p_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Size2(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].autotile_data.size;
 }
 
-void RTileSet::autotile_clear_bitmask_map(int p_id) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::autotile_clear_bitmask_map(int p_id) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map[p_id].autotile_data.flags.clear();
 }
 
-void RTileSet::autotile_set_subtile_priority(int p_id, const Vector2 &p_coord, int p_priority) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::autotile_set_subtile_priority(int p_id, const Vector2 &p_coord, int p_priority) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	ERR_FAIL_COND(p_priority <= 0);
 	tile_map[p_id].autotile_data.priority_map[p_coord] = p_priority;
 }
 
-int RTileSet::autotile_get_subtile_priority(int p_id, const Vector2 &p_coord) {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), 1, vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+int TileSet::autotile_get_subtile_priority(int p_id, const Vector2 &p_coord) {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), 1, vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	if (tile_map[p_id].autotile_data.priority_map.has(p_coord)) {
 		return tile_map[p_id].autotile_data.priority_map[p_coord];
 	}
@@ -523,20 +523,20 @@ int RTileSet::autotile_get_subtile_priority(int p_id, const Vector2 &p_coord) {
 	return 1;
 }
 
-const Map<Vector2, int> &RTileSet::autotile_get_priority_map(int p_id) const {
+const Map<Vector2, int> &TileSet::autotile_get_priority_map(int p_id) const {
 	static Map<Vector2, int> dummy;
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), dummy, vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), dummy, vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].autotile_data.priority_map;
 }
 
-void RTileSet::autotile_set_z_index(int p_id, const Vector2 &p_coord, int p_z_index) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::autotile_set_z_index(int p_id, const Vector2 &p_coord, int p_z_index) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map[p_id].autotile_data.z_index_map[p_coord] = p_z_index;
 	emit_changed();
 }
 
-int RTileSet::autotile_get_z_index(int p_id, const Vector2 &p_coord) {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), 1, vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+int TileSet::autotile_get_z_index(int p_id, const Vector2 &p_coord) {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), 1, vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	if (tile_map[p_id].autotile_data.z_index_map.has(p_coord)) {
 		return tile_map[p_id].autotile_data.z_index_map[p_coord];
 	}
@@ -544,14 +544,14 @@ int RTileSet::autotile_get_z_index(int p_id, const Vector2 &p_coord) {
 	return 0;
 }
 
-const Map<Vector2, int> &RTileSet::autotile_get_z_index_map(int p_id) const {
+const Map<Vector2, int> &TileSet::autotile_get_z_index_map(int p_id) const {
 	static Map<Vector2, int> dummy;
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), dummy, vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), dummy, vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].autotile_data.z_index_map;
 }
 
-void RTileSet::autotile_set_bitmask(int p_id, const Vector2 &p_coord, uint32_t p_flag) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::autotile_set_bitmask(int p_id, const Vector2 &p_coord, uint32_t p_flag) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	if (p_flag == 0) {
 		if (tile_map[p_id].autotile_data.flags.has(p_coord)) {
 			tile_map[p_id].autotile_data.flags.erase(p_coord);
@@ -561,18 +561,18 @@ void RTileSet::autotile_set_bitmask(int p_id, const Vector2 &p_coord, uint32_t p
 	}
 }
 
-uint32_t RTileSet::autotile_get_bitmask(int p_id, const Vector2 &p_coord) {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), 0, vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+uint32_t TileSet::autotile_get_bitmask(int p_id, const Vector2 &p_coord) {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), 0, vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	if (!tile_map[p_id].autotile_data.flags.has(p_coord)) {
 		return 0;
 	}
 	return tile_map[p_id].autotile_data.flags[p_coord];
 }
 
-const Map<Vector2, uint32_t> &RTileSet::autotile_get_bitmask_map(int p_id) {
+const Map<Vector2, uint32_t> &TileSet::autotile_get_bitmask_map(int p_id) {
 	static Map<Vector2, uint32_t> dummy;
 	static Map<Vector2, uint32_t> dummy_atlas;
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), dummy, vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), dummy, vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	if (tile_get_tile_mode(p_id) == ATLAS_TILE) {
 		dummy_atlas = Map<Vector2, uint32_t>();
 		Rect2 region = tile_get_region(p_id);
@@ -589,8 +589,8 @@ const Map<Vector2, uint32_t> &RTileSet::autotile_get_bitmask_map(int p_id) {
 	}
 }
 
-Vector2 RTileSet::autotile_get_subtile_for_bitmask(int p_id, uint16_t p_bitmask, const Node *p_tilemap_node, const Vector2 &p_tile_location) {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Vector2(), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+Vector2 TileSet::autotile_get_subtile_for_bitmask(int p_id, uint16_t p_bitmask, const Node *p_tilemap_node, const Vector2 &p_tile_location) {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Vector2(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	//First try to forward selection to script
 	if (p_tilemap_node->get_class_name() == "TileMap") {
 		if (get_script_instance() != nullptr) {
@@ -650,8 +650,8 @@ Vector2 RTileSet::autotile_get_subtile_for_bitmask(int p_id, uint16_t p_bitmask,
 	}
 }
 
-Vector2 RTileSet::atlastile_get_subtile_by_priority(int p_id, const Node *p_tilemap_node, const Vector2 &p_tile_location) {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Vector2(), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+Vector2 TileSet::atlastile_get_subtile_by_priority(int p_id, const Node *p_tilemap_node, const Vector2 &p_tile_location) {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Vector2(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	//First try to forward selection to script
 	if (get_script_instance() != nullptr) {
 		if (get_script_instance()->has_method("_forward_atlas_subtile_selection")) {
@@ -680,25 +680,25 @@ Vector2 RTileSet::atlastile_get_subtile_by_priority(int p_id, const Node *p_tile
 	}
 }
 
-void RTileSet::tile_set_name(int p_id, const String &p_name) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::tile_set_name(int p_id, const String &p_name) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map[p_id].name = p_name;
 	emit_changed();
 	_change_notify("name");
 }
 
-String RTileSet::tile_get_name(int p_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), String(), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+String TileSet::tile_get_name(int p_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), String(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].name;
 }
 
-void RTileSet::tile_clear_shapes(int p_id) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::tile_clear_shapes(int p_id) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map[p_id].shapes_data.clear();
 }
 
-void RTileSet::tile_add_shape(int p_id, const Ref<Shape2D> &p_shape, const Transform2D &p_transform, bool p_one_way, const Vector2 &p_autotile_coord) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::tile_add_shape(int p_id, const Ref<Shape2D> &p_shape, const Transform2D &p_transform, bool p_one_way, const Vector2 &p_autotile_coord) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 
 	ShapeData new_data = ShapeData();
 	new_data.shape = p_shape;
@@ -709,13 +709,13 @@ void RTileSet::tile_add_shape(int p_id, const Ref<Shape2D> &p_shape, const Trans
 	tile_map[p_id].shapes_data.push_back(new_data);
 }
 
-int RTileSet::tile_get_shape_count(int p_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), 0, vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+int TileSet::tile_get_shape_count(int p_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), 0, vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].shapes_data.size();
 }
 
-void RTileSet::tile_set_shape(int p_id, int p_shape_id, const Ref<Shape2D> &p_shape) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::tile_set_shape(int p_id, int p_shape_id, const Ref<Shape2D> &p_shape) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	ERR_FAIL_COND(p_shape_id < 0);
 
 	if (p_shape_id >= tile_map[p_id].shapes_data.size()) {
@@ -726,8 +726,8 @@ void RTileSet::tile_set_shape(int p_id, int p_shape_id, const Ref<Shape2D> &p_sh
 	emit_changed();
 }
 
-Ref<Shape2D> RTileSet::tile_get_shape(int p_id, int p_shape_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Ref<Shape2D>(), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+Ref<Shape2D> TileSet::tile_get_shape(int p_id, int p_shape_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Ref<Shape2D>(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	ERR_FAIL_COND_V(p_shape_id < 0, Ref<Shape2D>());
 
 	if (p_shape_id < tile_map[p_id].shapes_data.size()) {
@@ -737,8 +737,8 @@ Ref<Shape2D> RTileSet::tile_get_shape(int p_id, int p_shape_id) const {
 	return Ref<Shape2D>();
 }
 
-void RTileSet::tile_set_shape_transform(int p_id, int p_shape_id, const Transform2D &p_offset) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::tile_set_shape_transform(int p_id, int p_shape_id, const Transform2D &p_offset) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	ERR_FAIL_COND(p_shape_id < 0);
 
 	if (p_shape_id >= tile_map[p_id].shapes_data.size()) {
@@ -748,8 +748,8 @@ void RTileSet::tile_set_shape_transform(int p_id, int p_shape_id, const Transfor
 	emit_changed();
 }
 
-Transform2D RTileSet::tile_get_shape_transform(int p_id, int p_shape_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Transform2D(), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+Transform2D TileSet::tile_get_shape_transform(int p_id, int p_shape_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Transform2D(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	ERR_FAIL_COND_V(p_shape_id < 0, Transform2D());
 
 	if (p_shape_id < tile_map[p_id].shapes_data.size()) {
@@ -759,18 +759,18 @@ Transform2D RTileSet::tile_get_shape_transform(int p_id, int p_shape_id) const {
 	return Transform2D();
 }
 
-void RTileSet::tile_set_shape_offset(int p_id, int p_shape_id, const Vector2 &p_offset) {
+void TileSet::tile_set_shape_offset(int p_id, int p_shape_id, const Vector2 &p_offset) {
 	Transform2D transform = tile_get_shape_transform(p_id, p_shape_id);
 	transform.set_origin(p_offset);
 	tile_set_shape_transform(p_id, p_shape_id, transform);
 }
 
-Vector2 RTileSet::tile_get_shape_offset(int p_id, int p_shape_id) const {
+Vector2 TileSet::tile_get_shape_offset(int p_id, int p_shape_id) const {
 	return tile_get_shape_transform(p_id, p_shape_id).get_origin();
 }
 
-void RTileSet::tile_set_shape_one_way(int p_id, int p_shape_id, const bool p_one_way) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::tile_set_shape_one_way(int p_id, int p_shape_id, const bool p_one_way) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	ERR_FAIL_COND(p_shape_id < 0);
 
 	if (p_shape_id >= tile_map[p_id].shapes_data.size()) {
@@ -780,8 +780,8 @@ void RTileSet::tile_set_shape_one_way(int p_id, int p_shape_id, const bool p_one
 	emit_changed();
 }
 
-bool RTileSet::tile_get_shape_one_way(int p_id, int p_shape_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), false, vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+bool TileSet::tile_get_shape_one_way(int p_id, int p_shape_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), false, vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	ERR_FAIL_COND_V(p_shape_id < 0, false);
 
 	if (p_shape_id < tile_map[p_id].shapes_data.size()) {
@@ -791,8 +791,8 @@ bool RTileSet::tile_get_shape_one_way(int p_id, int p_shape_id) const {
 	return false;
 }
 
-void RTileSet::tile_set_shape_one_way_margin(int p_id, int p_shape_id, float p_margin) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::tile_set_shape_one_way_margin(int p_id, int p_shape_id, float p_margin) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	ERR_FAIL_COND(p_shape_id < 0);
 
 	if (p_shape_id >= tile_map[p_id].shapes_data.size()) {
@@ -802,8 +802,8 @@ void RTileSet::tile_set_shape_one_way_margin(int p_id, int p_shape_id, float p_m
 	emit_changed();
 }
 
-float RTileSet::tile_get_shape_one_way_margin(int p_id, int p_shape_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), 0, vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+float TileSet::tile_get_shape_one_way_margin(int p_id, int p_shape_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), 0, vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	ERR_FAIL_COND_V(p_shape_id < 0, 0);
 
 	if (p_shape_id < tile_map[p_id].shapes_data.size()) {
@@ -813,18 +813,18 @@ float RTileSet::tile_get_shape_one_way_margin(int p_id, int p_shape_id) const {
 	return 0;
 }
 
-void RTileSet::tile_set_light_occluder(int p_id, const Ref<OccluderPolygon2D> &p_light_occluder) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::tile_set_light_occluder(int p_id, const Ref<OccluderPolygon2D> &p_light_occluder) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map[p_id].occluder = p_light_occluder;
 }
 
-Ref<OccluderPolygon2D> RTileSet::tile_get_light_occluder(int p_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Ref<OccluderPolygon2D>(), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+Ref<OccluderPolygon2D> TileSet::tile_get_light_occluder(int p_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Ref<OccluderPolygon2D>(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].occluder;
 }
 
-void RTileSet::autotile_set_light_occluder(int p_id, const Ref<OccluderPolygon2D> &p_light_occluder, const Vector2 &p_coord) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::autotile_set_light_occluder(int p_id, const Ref<OccluderPolygon2D> &p_light_occluder, const Vector2 &p_coord) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	if (p_light_occluder.is_null()) {
 		if (tile_map[p_id].autotile_data.occluder_map.has(p_coord)) {
 			tile_map[p_id].autotile_data.occluder_map.erase(p_coord);
@@ -834,8 +834,8 @@ void RTileSet::autotile_set_light_occluder(int p_id, const Ref<OccluderPolygon2D
 	}
 }
 
-Ref<OccluderPolygon2D> RTileSet::autotile_get_light_occluder(int p_id, const Vector2 &p_coord) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Ref<OccluderPolygon2D>(), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+Ref<OccluderPolygon2D> TileSet::autotile_get_light_occluder(int p_id, const Vector2 &p_coord) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Ref<OccluderPolygon2D>(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 
 	if (!tile_map[p_id].autotile_data.occluder_map.has(p_coord)) {
 		return Ref<OccluderPolygon2D>();
@@ -844,34 +844,34 @@ Ref<OccluderPolygon2D> RTileSet::autotile_get_light_occluder(int p_id, const Vec
 	}
 }
 
-void RTileSet::tile_set_navigation_polygon_offset(int p_id, const Vector2 &p_offset) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::tile_set_navigation_polygon_offset(int p_id, const Vector2 &p_offset) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map[p_id].navigation_polygon_offset = p_offset;
 }
 
-Vector2 RTileSet::tile_get_navigation_polygon_offset(int p_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Vector2(), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+Vector2 TileSet::tile_get_navigation_polygon_offset(int p_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Vector2(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].navigation_polygon_offset;
 }
 
-void RTileSet::tile_set_navigation_polygon(int p_id, const Ref<NavigationPolygon> &p_navigation_polygon) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::tile_set_navigation_polygon(int p_id, const Ref<NavigationPolygon> &p_navigation_polygon) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map[p_id].navigation_polygon = p_navigation_polygon;
 }
 
-Ref<NavigationPolygon> RTileSet::tile_get_navigation_polygon(int p_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Ref<NavigationPolygon>(), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+Ref<NavigationPolygon> TileSet::tile_get_navigation_polygon(int p_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Ref<NavigationPolygon>(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].navigation_polygon;
 }
 
-const Map<Vector2, Ref<OccluderPolygon2D>> &RTileSet::autotile_get_light_oclusion_map(int p_id) const {
+const Map<Vector2, Ref<OccluderPolygon2D>> &TileSet::autotile_get_light_oclusion_map(int p_id) const {
 	static Map<Vector2, Ref<OccluderPolygon2D>> dummy;
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), dummy, vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), dummy, vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].autotile_data.occluder_map;
 }
 
-void RTileSet::autotile_set_navigation_polygon(int p_id, const Ref<NavigationPolygon> &p_navigation_polygon, const Vector2 &p_coord) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::autotile_set_navigation_polygon(int p_id, const Ref<NavigationPolygon> &p_navigation_polygon, const Vector2 &p_coord) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	if (p_navigation_polygon.is_null()) {
 		if (tile_map[p_id].autotile_data.navpoly_map.has(p_coord)) {
 			tile_map[p_id].autotile_data.navpoly_map.erase(p_coord);
@@ -881,8 +881,8 @@ void RTileSet::autotile_set_navigation_polygon(int p_id, const Ref<NavigationPol
 	}
 }
 
-Ref<NavigationPolygon> RTileSet::autotile_get_navigation_polygon(int p_id, const Vector2 &p_coord) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Ref<NavigationPolygon>(), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+Ref<NavigationPolygon> TileSet::autotile_get_navigation_polygon(int p_id, const Vector2 &p_coord) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Ref<NavigationPolygon>(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	if (!tile_map[p_id].autotile_data.navpoly_map.has(p_coord)) {
 		return Ref<NavigationPolygon>();
 	} else {
@@ -890,24 +890,24 @@ Ref<NavigationPolygon> RTileSet::autotile_get_navigation_polygon(int p_id, const
 	}
 }
 
-const Map<Vector2, Ref<NavigationPolygon>> &RTileSet::autotile_get_navigation_map(int p_id) const {
+const Map<Vector2, Ref<NavigationPolygon>> &TileSet::autotile_get_navigation_map(int p_id) const {
 	static Map<Vector2, Ref<NavigationPolygon>> dummy;
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), dummy, vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), dummy, vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].autotile_data.navpoly_map;
 }
 
-void RTileSet::tile_set_occluder_offset(int p_id, const Vector2 &p_offset) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::tile_set_occluder_offset(int p_id, const Vector2 &p_offset) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map[p_id].occluder_offset = p_offset;
 }
 
-Vector2 RTileSet::tile_get_occluder_offset(int p_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Vector2(), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+Vector2 TileSet::tile_get_occluder_offset(int p_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Vector2(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].occluder_offset;
 }
 
-void RTileSet::tile_set_shapes(int p_id, const Vector<ShapeData> &p_shapes) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::tile_set_shapes(int p_id, const Vector<ShapeData> &p_shapes) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map[p_id].shapes_data = p_shapes;
 	for (int i = 0; i < p_shapes.size(); i++) {
 		_decompose_convex_shape(p_shapes[i].shape);
@@ -915,24 +915,24 @@ void RTileSet::tile_set_shapes(int p_id, const Vector<ShapeData> &p_shapes) {
 	emit_changed();
 }
 
-Vector<RTileSet::ShapeData> RTileSet::tile_get_shapes(int p_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Vector<ShapeData>(), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+Vector<TileSet::ShapeData> TileSet::tile_get_shapes(int p_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), Vector<ShapeData>(), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 
 	return tile_map[p_id].shapes_data;
 }
 
-int RTileSet::tile_get_z_index(int p_id) const {
-	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), 0, vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+int TileSet::tile_get_z_index(int p_id) const {
+	ERR_FAIL_COND_V_MSG(!tile_map.has(p_id), 0, vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	return tile_map[p_id].z_index;
 }
 
-void RTileSet::tile_set_z_index(int p_id, int p_z_index) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::tile_set_z_index(int p_id, int p_z_index) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map[p_id].z_index = p_z_index;
 	emit_changed();
 }
 
-void RTileSet::_tile_set_shapes(int p_id, const Array &p_shapes) {
+void TileSet::_tile_set_shapes(int p_id, const Array &p_shapes) {
 	ERR_FAIL_COND(!tile_map.has(p_id));
 	Vector<ShapeData> shapes_data;
 	Transform2D default_transform = tile_get_shape_transform(p_id, 0);
@@ -998,7 +998,7 @@ void RTileSet::_tile_set_shapes(int p_id, const Array &p_shapes) {
 	emit_changed();
 }
 
-Array RTileSet::_tile_get_shapes(int p_id) const {
+Array TileSet::_tile_get_shapes(int p_id) const {
 	ERR_FAIL_COND_V(!tile_map.has(p_id), Array());
 	Array arr;
 
@@ -1016,7 +1016,7 @@ Array RTileSet::_tile_get_shapes(int p_id) const {
 	return arr;
 }
 
-Array RTileSet::_get_tiles_ids() const {
+Array TileSet::_get_tiles_ids() const {
 	Array arr;
 
 	for (Map<int, TileData>::Element *E = tile_map.front(); E; E = E->next()) {
@@ -1026,7 +1026,7 @@ Array RTileSet::_get_tiles_ids() const {
 	return arr;
 }
 
-void RTileSet::_decompose_convex_shape(Ref<Shape2D> p_shape) {
+void TileSet::_decompose_convex_shape(Ref<Shape2D> p_shape) {
 	if (Engine::get_singleton()->is_editor_hint()) {
 		return;
 	}
@@ -1048,17 +1048,17 @@ void RTileSet::_decompose_convex_shape(Ref<Shape2D> p_shape) {
 	}
 }
 
-void RTileSet::get_tile_list(List<int> *p_tiles) const {
+void TileSet::get_tile_list(List<int> *p_tiles) const {
 	for (Map<int, TileData>::Element *E = tile_map.front(); E; E = E->next()) {
 		p_tiles->push_back(E->key());
 	}
 }
 
-bool RTileSet::has_tile(int p_id) const {
+bool TileSet::has_tile(int p_id) const {
 	return tile_map.has(p_id);
 }
 
-bool RTileSet::is_tile_bound(int p_drawn_id, int p_neighbor_id) {
+bool TileSet::is_tile_bound(int p_drawn_id, int p_neighbor_id) {
 	if (p_drawn_id == p_neighbor_id) {
 		return true;
 	} else if (get_script_instance() != nullptr) {
@@ -1072,14 +1072,14 @@ bool RTileSet::is_tile_bound(int p_drawn_id, int p_neighbor_id) {
 	return false;
 }
 
-void RTileSet::remove_tile(int p_id) {
-	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The RTileSet doesn't have a tile with ID '%d'.", p_id));
+void TileSet::remove_tile(int p_id) {
+	ERR_FAIL_COND_MSG(!tile_map.has(p_id), vformat("The TileSet doesn't have a tile with ID '%d'.", p_id));
 	tile_map.erase(p_id);
 	_change_notify("");
 	emit_changed();
 }
 
-int RTileSet::get_last_unused_tile_id() const {
+int TileSet::get_last_unused_tile_id() const {
 	if (tile_map.size()) {
 		return tile_map.back()->key() + 1;
 	} else {
@@ -1087,19 +1087,19 @@ int RTileSet::get_last_unused_tile_id() const {
 	}
 }
 
-void RTileSet::set_noise_params(const Ref<FastnoiseNoiseParams> &noise) {
+void TileSet::set_noise_params(const Ref<FastnoiseNoiseParams> &noise) {
 	_noise_params = noise;
 }
-Ref<FastnoiseNoiseParams> RTileSet::get_noise_params() {
+Ref<FastnoiseNoiseParams> TileSet::get_noise_params() {
 	return _noise_params;
 }
-void RTileSet::setup_noise(Ref<FastNoise> noise) {
+void TileSet::setup_noise(Ref<FastNoise> noise) {
 	if (_noise_params.is_valid()) {
 		_noise_params->setup_noise(noise);
 	}
 }
 
-int RTileSet::find_tile_by_name(const String &p_name) const {
+int TileSet::find_tile_by_name(const String &p_name) const {
 	for (Map<int, TileData>::Element *E = tile_map.front(); E; E = E->next()) {
 		if (p_name == E->get().name) {
 			return E->key();
@@ -1108,89 +1108,89 @@ int RTileSet::find_tile_by_name(const String &p_name) const {
 	return -1;
 }
 
-void RTileSet::clear() {
+void TileSet::clear() {
 	tile_map.clear();
 	_change_notify("");
 	emit_changed();
 }
 
-void RTileSet::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("create_tile", "id"), &RTileSet::create_tile);
-	ClassDB::bind_method(D_METHOD("autotile_clear_bitmask_map", "id"), &RTileSet::autotile_clear_bitmask_map);
-	ClassDB::bind_method(D_METHOD("autotile_set_icon_coordinate", "id", "coord"), &RTileSet::autotile_set_icon_coordinate);
-	ClassDB::bind_method(D_METHOD("autotile_get_icon_coordinate", "id"), &RTileSet::autotile_get_icon_coordinate);
-	ClassDB::bind_method(D_METHOD("autotile_set_subtile_priority", "id", "coord", "priority"), &RTileSet::autotile_set_subtile_priority);
-	ClassDB::bind_method(D_METHOD("autotile_get_subtile_priority", "id", "coord"), &RTileSet::autotile_get_subtile_priority);
-	ClassDB::bind_method(D_METHOD("autotile_set_z_index", "id", "coord", "z_index"), &RTileSet::autotile_set_z_index);
-	ClassDB::bind_method(D_METHOD("autotile_get_z_index", "id", "coord"), &RTileSet::autotile_get_z_index);
-	ClassDB::bind_method(D_METHOD("autotile_set_light_occluder", "id", "light_occluder", "coord"), &RTileSet::autotile_set_light_occluder);
-	ClassDB::bind_method(D_METHOD("autotile_get_light_occluder", "id", "coord"), &RTileSet::autotile_get_light_occluder);
-	ClassDB::bind_method(D_METHOD("autotile_set_navigation_polygon", "id", "navigation_polygon", "coord"), &RTileSet::autotile_set_navigation_polygon);
-	ClassDB::bind_method(D_METHOD("autotile_get_navigation_polygon", "id", "coord"), &RTileSet::autotile_get_navigation_polygon);
-	ClassDB::bind_method(D_METHOD("autotile_set_bitmask", "id", "bitmask", "flag"), &RTileSet::autotile_set_bitmask);
-	ClassDB::bind_method(D_METHOD("autotile_get_bitmask", "id", "coord"), &RTileSet::autotile_get_bitmask);
-	ClassDB::bind_method(D_METHOD("autotile_set_bitmask_mode", "id", "mode"), &RTileSet::autotile_set_bitmask_mode);
-	ClassDB::bind_method(D_METHOD("autotile_get_bitmask_mode", "id"), &RTileSet::autotile_get_bitmask_mode);
-	ClassDB::bind_method(D_METHOD("autotile_set_spacing", "id", "spacing"), &RTileSet::autotile_set_spacing);
-	ClassDB::bind_method(D_METHOD("autotile_get_spacing", "id"), &RTileSet::autotile_get_spacing);
-	ClassDB::bind_method(D_METHOD("autotile_set_size", "id", "size"), &RTileSet::autotile_set_size);
-	ClassDB::bind_method(D_METHOD("autotile_get_size", "id"), &RTileSet::autotile_get_size);
-	ClassDB::bind_method(D_METHOD("tile_set_name", "id", "name"), &RTileSet::tile_set_name);
-	ClassDB::bind_method(D_METHOD("tile_get_name", "id"), &RTileSet::tile_get_name);
-	ClassDB::bind_method(D_METHOD("tile_set_texture", "id", "texture"), &RTileSet::tile_set_texture);
-	ClassDB::bind_method(D_METHOD("tile_get_texture", "id"), &RTileSet::tile_get_texture);
-	ClassDB::bind_method(D_METHOD("tile_set_normal_map", "id", "normal_map"), &RTileSet::tile_set_normal_map);
-	ClassDB::bind_method(D_METHOD("tile_get_normal_map", "id"), &RTileSet::tile_get_normal_map);
-	ClassDB::bind_method(D_METHOD("tile_set_material", "id", "material"), &RTileSet::tile_set_material);
-	ClassDB::bind_method(D_METHOD("tile_get_material", "id"), &RTileSet::tile_get_material);
-	ClassDB::bind_method(D_METHOD("tile_set_modulate", "id", "color"), &RTileSet::tile_set_modulate);
-	ClassDB::bind_method(D_METHOD("tile_get_modulate", "id"), &RTileSet::tile_get_modulate);
-	ClassDB::bind_method(D_METHOD("tile_set_texture_offset", "id", "texture_offset"), &RTileSet::tile_set_texture_offset);
-	ClassDB::bind_method(D_METHOD("tile_get_texture_offset", "id"), &RTileSet::tile_get_texture_offset);
-	ClassDB::bind_method(D_METHOD("tile_set_region", "id", "region"), &RTileSet::tile_set_region);
-	ClassDB::bind_method(D_METHOD("tile_get_region", "id"), &RTileSet::tile_get_region);
-	ClassDB::bind_method(D_METHOD("tile_set_shape", "id", "shape_id", "shape"), &RTileSet::tile_set_shape);
-	ClassDB::bind_method(D_METHOD("tile_get_shape", "id", "shape_id"), &RTileSet::tile_get_shape);
-	ClassDB::bind_method(D_METHOD("tile_set_shape_offset", "id", "shape_id", "shape_offset"), &RTileSet::tile_set_shape_offset);
-	ClassDB::bind_method(D_METHOD("tile_get_shape_offset", "id", "shape_id"), &RTileSet::tile_get_shape_offset);
-	ClassDB::bind_method(D_METHOD("tile_set_shape_transform", "id", "shape_id", "shape_transform"), &RTileSet::tile_set_shape_transform);
-	ClassDB::bind_method(D_METHOD("tile_get_shape_transform", "id", "shape_id"), &RTileSet::tile_get_shape_transform);
-	ClassDB::bind_method(D_METHOD("tile_set_shape_one_way", "id", "shape_id", "one_way"), &RTileSet::tile_set_shape_one_way);
-	ClassDB::bind_method(D_METHOD("tile_get_shape_one_way", "id", "shape_id"), &RTileSet::tile_get_shape_one_way);
-	ClassDB::bind_method(D_METHOD("tile_set_shape_one_way_margin", "id", "shape_id", "one_way"), &RTileSet::tile_set_shape_one_way_margin);
-	ClassDB::bind_method(D_METHOD("tile_get_shape_one_way_margin", "id", "shape_id"), &RTileSet::tile_get_shape_one_way_margin);
-	ClassDB::bind_method(D_METHOD("tile_add_shape", "id", "shape", "shape_transform", "one_way", "autotile_coord"), &RTileSet::tile_add_shape, DEFVAL(false), DEFVAL(Vector2()));
-	ClassDB::bind_method(D_METHOD("tile_get_shape_count", "id"), &RTileSet::tile_get_shape_count);
-	ClassDB::bind_method(D_METHOD("tile_set_shapes", "id", "shapes"), &RTileSet::_tile_set_shapes);
-	ClassDB::bind_method(D_METHOD("tile_get_shapes", "id"), &RTileSet::_tile_get_shapes);
-	ClassDB::bind_method(D_METHOD("tile_set_tile_mode", "id", "tilemode"), &RTileSet::tile_set_tile_mode);
-	ClassDB::bind_method(D_METHOD("tile_get_tile_mode", "id"), &RTileSet::tile_get_tile_mode);
-	ClassDB::bind_method(D_METHOD("tile_set_navigation_polygon", "id", "navigation_polygon"), &RTileSet::tile_set_navigation_polygon);
-	ClassDB::bind_method(D_METHOD("tile_get_navigation_polygon", "id"), &RTileSet::tile_get_navigation_polygon);
-	ClassDB::bind_method(D_METHOD("tile_set_navigation_polygon_offset", "id", "navigation_polygon_offset"), &RTileSet::tile_set_navigation_polygon_offset);
-	ClassDB::bind_method(D_METHOD("tile_get_navigation_polygon_offset", "id"), &RTileSet::tile_get_navigation_polygon_offset);
-	ClassDB::bind_method(D_METHOD("tile_set_light_occluder", "id", "light_occluder"), &RTileSet::tile_set_light_occluder);
-	ClassDB::bind_method(D_METHOD("tile_get_light_occluder", "id"), &RTileSet::tile_get_light_occluder);
-	ClassDB::bind_method(D_METHOD("tile_set_occluder_offset", "id", "occluder_offset"), &RTileSet::tile_set_occluder_offset);
-	ClassDB::bind_method(D_METHOD("tile_get_occluder_offset", "id"), &RTileSet::tile_get_occluder_offset);
-	ClassDB::bind_method(D_METHOD("tile_set_z_index", "id", "z_index"), &RTileSet::tile_set_z_index);
-	ClassDB::bind_method(D_METHOD("tile_get_z_index", "id"), &RTileSet::tile_get_z_index);
+void TileSet::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("create_tile", "id"), &TileSet::create_tile);
+	ClassDB::bind_method(D_METHOD("autotile_clear_bitmask_map", "id"), &TileSet::autotile_clear_bitmask_map);
+	ClassDB::bind_method(D_METHOD("autotile_set_icon_coordinate", "id", "coord"), &TileSet::autotile_set_icon_coordinate);
+	ClassDB::bind_method(D_METHOD("autotile_get_icon_coordinate", "id"), &TileSet::autotile_get_icon_coordinate);
+	ClassDB::bind_method(D_METHOD("autotile_set_subtile_priority", "id", "coord", "priority"), &TileSet::autotile_set_subtile_priority);
+	ClassDB::bind_method(D_METHOD("autotile_get_subtile_priority", "id", "coord"), &TileSet::autotile_get_subtile_priority);
+	ClassDB::bind_method(D_METHOD("autotile_set_z_index", "id", "coord", "z_index"), &TileSet::autotile_set_z_index);
+	ClassDB::bind_method(D_METHOD("autotile_get_z_index", "id", "coord"), &TileSet::autotile_get_z_index);
+	ClassDB::bind_method(D_METHOD("autotile_set_light_occluder", "id", "light_occluder", "coord"), &TileSet::autotile_set_light_occluder);
+	ClassDB::bind_method(D_METHOD("autotile_get_light_occluder", "id", "coord"), &TileSet::autotile_get_light_occluder);
+	ClassDB::bind_method(D_METHOD("autotile_set_navigation_polygon", "id", "navigation_polygon", "coord"), &TileSet::autotile_set_navigation_polygon);
+	ClassDB::bind_method(D_METHOD("autotile_get_navigation_polygon", "id", "coord"), &TileSet::autotile_get_navigation_polygon);
+	ClassDB::bind_method(D_METHOD("autotile_set_bitmask", "id", "bitmask", "flag"), &TileSet::autotile_set_bitmask);
+	ClassDB::bind_method(D_METHOD("autotile_get_bitmask", "id", "coord"), &TileSet::autotile_get_bitmask);
+	ClassDB::bind_method(D_METHOD("autotile_set_bitmask_mode", "id", "mode"), &TileSet::autotile_set_bitmask_mode);
+	ClassDB::bind_method(D_METHOD("autotile_get_bitmask_mode", "id"), &TileSet::autotile_get_bitmask_mode);
+	ClassDB::bind_method(D_METHOD("autotile_set_spacing", "id", "spacing"), &TileSet::autotile_set_spacing);
+	ClassDB::bind_method(D_METHOD("autotile_get_spacing", "id"), &TileSet::autotile_get_spacing);
+	ClassDB::bind_method(D_METHOD("autotile_set_size", "id", "size"), &TileSet::autotile_set_size);
+	ClassDB::bind_method(D_METHOD("autotile_get_size", "id"), &TileSet::autotile_get_size);
+	ClassDB::bind_method(D_METHOD("tile_set_name", "id", "name"), &TileSet::tile_set_name);
+	ClassDB::bind_method(D_METHOD("tile_get_name", "id"), &TileSet::tile_get_name);
+	ClassDB::bind_method(D_METHOD("tile_set_texture", "id", "texture"), &TileSet::tile_set_texture);
+	ClassDB::bind_method(D_METHOD("tile_get_texture", "id"), &TileSet::tile_get_texture);
+	ClassDB::bind_method(D_METHOD("tile_set_normal_map", "id", "normal_map"), &TileSet::tile_set_normal_map);
+	ClassDB::bind_method(D_METHOD("tile_get_normal_map", "id"), &TileSet::tile_get_normal_map);
+	ClassDB::bind_method(D_METHOD("tile_set_material", "id", "material"), &TileSet::tile_set_material);
+	ClassDB::bind_method(D_METHOD("tile_get_material", "id"), &TileSet::tile_get_material);
+	ClassDB::bind_method(D_METHOD("tile_set_modulate", "id", "color"), &TileSet::tile_set_modulate);
+	ClassDB::bind_method(D_METHOD("tile_get_modulate", "id"), &TileSet::tile_get_modulate);
+	ClassDB::bind_method(D_METHOD("tile_set_texture_offset", "id", "texture_offset"), &TileSet::tile_set_texture_offset);
+	ClassDB::bind_method(D_METHOD("tile_get_texture_offset", "id"), &TileSet::tile_get_texture_offset);
+	ClassDB::bind_method(D_METHOD("tile_set_region", "id", "region"), &TileSet::tile_set_region);
+	ClassDB::bind_method(D_METHOD("tile_get_region", "id"), &TileSet::tile_get_region);
+	ClassDB::bind_method(D_METHOD("tile_set_shape", "id", "shape_id", "shape"), &TileSet::tile_set_shape);
+	ClassDB::bind_method(D_METHOD("tile_get_shape", "id", "shape_id"), &TileSet::tile_get_shape);
+	ClassDB::bind_method(D_METHOD("tile_set_shape_offset", "id", "shape_id", "shape_offset"), &TileSet::tile_set_shape_offset);
+	ClassDB::bind_method(D_METHOD("tile_get_shape_offset", "id", "shape_id"), &TileSet::tile_get_shape_offset);
+	ClassDB::bind_method(D_METHOD("tile_set_shape_transform", "id", "shape_id", "shape_transform"), &TileSet::tile_set_shape_transform);
+	ClassDB::bind_method(D_METHOD("tile_get_shape_transform", "id", "shape_id"), &TileSet::tile_get_shape_transform);
+	ClassDB::bind_method(D_METHOD("tile_set_shape_one_way", "id", "shape_id", "one_way"), &TileSet::tile_set_shape_one_way);
+	ClassDB::bind_method(D_METHOD("tile_get_shape_one_way", "id", "shape_id"), &TileSet::tile_get_shape_one_way);
+	ClassDB::bind_method(D_METHOD("tile_set_shape_one_way_margin", "id", "shape_id", "one_way"), &TileSet::tile_set_shape_one_way_margin);
+	ClassDB::bind_method(D_METHOD("tile_get_shape_one_way_margin", "id", "shape_id"), &TileSet::tile_get_shape_one_way_margin);
+	ClassDB::bind_method(D_METHOD("tile_add_shape", "id", "shape", "shape_transform", "one_way", "autotile_coord"), &TileSet::tile_add_shape, DEFVAL(false), DEFVAL(Vector2()));
+	ClassDB::bind_method(D_METHOD("tile_get_shape_count", "id"), &TileSet::tile_get_shape_count);
+	ClassDB::bind_method(D_METHOD("tile_set_shapes", "id", "shapes"), &TileSet::_tile_set_shapes);
+	ClassDB::bind_method(D_METHOD("tile_get_shapes", "id"), &TileSet::_tile_get_shapes);
+	ClassDB::bind_method(D_METHOD("tile_set_tile_mode", "id", "tilemode"), &TileSet::tile_set_tile_mode);
+	ClassDB::bind_method(D_METHOD("tile_get_tile_mode", "id"), &TileSet::tile_get_tile_mode);
+	ClassDB::bind_method(D_METHOD("tile_set_navigation_polygon", "id", "navigation_polygon"), &TileSet::tile_set_navigation_polygon);
+	ClassDB::bind_method(D_METHOD("tile_get_navigation_polygon", "id"), &TileSet::tile_get_navigation_polygon);
+	ClassDB::bind_method(D_METHOD("tile_set_navigation_polygon_offset", "id", "navigation_polygon_offset"), &TileSet::tile_set_navigation_polygon_offset);
+	ClassDB::bind_method(D_METHOD("tile_get_navigation_polygon_offset", "id"), &TileSet::tile_get_navigation_polygon_offset);
+	ClassDB::bind_method(D_METHOD("tile_set_light_occluder", "id", "light_occluder"), &TileSet::tile_set_light_occluder);
+	ClassDB::bind_method(D_METHOD("tile_get_light_occluder", "id"), &TileSet::tile_get_light_occluder);
+	ClassDB::bind_method(D_METHOD("tile_set_occluder_offset", "id", "occluder_offset"), &TileSet::tile_set_occluder_offset);
+	ClassDB::bind_method(D_METHOD("tile_get_occluder_offset", "id"), &TileSet::tile_get_occluder_offset);
+	ClassDB::bind_method(D_METHOD("tile_set_z_index", "id", "z_index"), &TileSet::tile_set_z_index);
+	ClassDB::bind_method(D_METHOD("tile_get_z_index", "id"), &TileSet::tile_get_z_index);
 
-	ClassDB::bind_method(D_METHOD("remove_tile", "id"), &RTileSet::remove_tile);
-	ClassDB::bind_method(D_METHOD("clear"), &RTileSet::clear);
-	ClassDB::bind_method(D_METHOD("get_last_unused_tile_id"), &RTileSet::get_last_unused_tile_id);
-	ClassDB::bind_method(D_METHOD("find_tile_by_name", "name"), &RTileSet::find_tile_by_name);
-	ClassDB::bind_method(D_METHOD("get_tiles_ids"), &RTileSet::_get_tiles_ids);
+	ClassDB::bind_method(D_METHOD("remove_tile", "id"), &TileSet::remove_tile);
+	ClassDB::bind_method(D_METHOD("clear"), &TileSet::clear);
+	ClassDB::bind_method(D_METHOD("get_last_unused_tile_id"), &TileSet::get_last_unused_tile_id);
+	ClassDB::bind_method(D_METHOD("find_tile_by_name", "name"), &TileSet::find_tile_by_name);
+	ClassDB::bind_method(D_METHOD("get_tiles_ids"), &TileSet::_get_tiles_ids);
 
-	ClassDB::bind_method(D_METHOD("set_noise_params", "noise"), &RTileSet::set_noise_params);
-	ClassDB::bind_method(D_METHOD("get_noise_params"), &RTileSet::get_noise_params);
+	ClassDB::bind_method(D_METHOD("set_noise_params", "noise"), &TileSet::set_noise_params);
+	ClassDB::bind_method(D_METHOD("get_noise_params"), &TileSet::get_noise_params);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "noise", PROPERTY_HINT_RESOURCE_TYPE, "FastnoiseNoiseParams"), "set_noise_params", "get_noise_params");
 
-	ClassDB::bind_method(D_METHOD("setup_noise", "noise"), &RTileSet::setup_noise);
+	ClassDB::bind_method(D_METHOD("setup_noise", "noise"), &TileSet::setup_noise);
 
 	BIND_VMETHOD(MethodInfo(Variant::BOOL, "_is_tile_bound", PropertyInfo(Variant::INT, "drawn_id"), PropertyInfo(Variant::INT, "neighbor_id")));
-	BIND_VMETHOD(MethodInfo(Variant::VECTOR2, "_forward_subtile_selection", PropertyInfo(Variant::INT, "autotile_id"), PropertyInfo(Variant::INT, "bitmask"), PropertyInfo(Variant::OBJECT, "tilemap", PROPERTY_HINT_NONE, "RTileMap"), PropertyInfo(Variant::VECTOR2, "tile_location")));
-	BIND_VMETHOD(MethodInfo(Variant::VECTOR2, "_forward_atlas_subtile_selection", PropertyInfo(Variant::INT, "atlastile_id"), PropertyInfo(Variant::OBJECT, "tilemap", PROPERTY_HINT_NONE, "RTileMap"), PropertyInfo(Variant::VECTOR2, "tile_location")));
+	BIND_VMETHOD(MethodInfo(Variant::VECTOR2, "_forward_subtile_selection", PropertyInfo(Variant::INT, "autotile_id"), PropertyInfo(Variant::INT, "bitmask"), PropertyInfo(Variant::OBJECT, "tilemap", PROPERTY_HINT_NONE, "TileMap"), PropertyInfo(Variant::VECTOR2, "tile_location")));
+	BIND_VMETHOD(MethodInfo(Variant::VECTOR2, "_forward_atlas_subtile_selection", PropertyInfo(Variant::INT, "atlastile_id"), PropertyInfo(Variant::OBJECT, "tilemap", PROPERTY_HINT_NONE, "TileMap"), PropertyInfo(Variant::VECTOR2, "tile_location")));
 
 	BIND_ENUM_CONSTANT(BITMASK_2X2);
 	BIND_ENUM_CONSTANT(BITMASK_3X3_MINIMAL);
@@ -1211,5 +1211,5 @@ void RTileSet::_bind_methods() {
 	BIND_ENUM_CONSTANT(ATLAS_TILE);
 }
 
-RTileSet::RTileSet() {
+TileSet::TileSet() {
 }

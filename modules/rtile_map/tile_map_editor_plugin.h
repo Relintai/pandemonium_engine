@@ -45,8 +45,8 @@ class PopupMenu;
 class ItemList;
 class VSeparator;
 
-class RTileMapEditor : public VBoxContainer {
-	GDCLASS(RTileMapEditor, VBoxContainer);
+class TileMapEditor : public VBoxContainer {
+	GDCLASS(TileMapEditor, VBoxContainer);
 
 	enum Tool {
 
@@ -71,7 +71,7 @@ class RTileMapEditor : public VBoxContainer {
 		OPTION_CUT
 	};
 
-	RTileMap *node;
+	TileMap *node;
 	bool manual_autotile;
 	bool priority_atlastile;
 	Vector2 manual_position;
@@ -138,7 +138,7 @@ class RTileMapEditor : public VBoxContainer {
 		Vector2 ac;
 
 		CellOp() :
-				idx(RTileMap::INVALID_CELL),
+				idx(TileMap::INVALID_CELL),
 				xf(false),
 				yf(false),
 				tr(false) {}
@@ -155,7 +155,7 @@ class RTileMapEditor : public VBoxContainer {
 		Point2i autotile_coord;
 
 		TileData() :
-				cell(RTileMap::INVALID_CELL),
+				cell(TileMap::INVALID_CELL),
 				flip_h(false),
 				flip_v(false),
 				transpose(false) {}
@@ -230,14 +230,14 @@ public:
 
 	void edit(Node *p_tile_map);
 
-	RTileMapEditor(EditorNode *p_editor);
-	~RTileMapEditor();
+	TileMapEditor(EditorNode *p_editor);
+	~TileMapEditor();
 };
 
-class RTileMapEditorPlugin : public EditorPlugin {
-	GDCLASS(RTileMapEditorPlugin, EditorPlugin);
+class TileMapEditorPlugin : public EditorPlugin {
+	GDCLASS(TileMapEditorPlugin, EditorPlugin);
 
-	RTileMapEditor *tile_map_editor;
+	TileMapEditor *tile_map_editor;
 
 protected:
 	void _notification(int p_what);
@@ -246,14 +246,14 @@ public:
 	virtual bool forward_canvas_gui_input(const Ref<InputEvent> &p_event) { return tile_map_editor->forward_gui_input(p_event); }
 	virtual void forward_canvas_draw_over_viewport(Control *p_overlay) { tile_map_editor->forward_canvas_draw_over_viewport(p_overlay); }
 
-	virtual String get_name() const { return "RTileMap"; }
+	virtual String get_name() const { return "TileMap"; }
 	bool has_main_screen() const { return false; }
 	virtual void edit(Object *p_object);
 	virtual bool handles(Object *p_object) const;
 	virtual void make_visible(bool p_visible);
 
-	RTileMapEditorPlugin(EditorNode *p_node);
-	~RTileMapEditorPlugin();
+	TileMapEditorPlugin(EditorNode *p_node);
+	~TileMapEditorPlugin();
 };
 
 #endif // TILE_MAP_EDITOR_PLUGIN_H

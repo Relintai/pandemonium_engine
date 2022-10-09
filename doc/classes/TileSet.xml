@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="RTileSet" inherits="Resource" version="3.8">
+<class name="TileSet" inherits="Resource" version="3.8">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -45,7 +45,7 @@
 			</description>
 		</method>
 		<method name="autotile_get_bitmask_mode" qualifiers="const">
-			<return type="int" enum="RTileSet.BitmaskMode" />
+			<return type="int" enum="TileSet.BitmaskMode" />
 			<argument index="0" name="id" type="int" />
 			<description>
 			</description>
@@ -107,7 +107,7 @@
 		<method name="autotile_set_bitmask_mode">
 			<return type="void" />
 			<argument index="0" name="id" type="int" />
-			<argument index="1" name="mode" type="int" enum="RTileSet.BitmaskMode" />
+			<argument index="1" name="mode" type="int" enum="TileSet.BitmaskMode" />
 			<description>
 			</description>
 		</method>
@@ -327,7 +327,7 @@
 			</description>
 		</method>
 		<method name="tile_get_tile_mode" qualifiers="const">
-			<return type="int" enum="RTileSet.TileMode" />
+			<return type="int" enum="TileSet.TileMode" />
 			<argument index="0" name="id" type="int" />
 			<description>
 			</description>
@@ -465,7 +465,7 @@
 		<method name="tile_set_tile_mode">
 			<return type="void" />
 			<argument index="0" name="id" type="int" />
-			<argument index="1" name="tilemode" type="int" enum="RTileSet.TileMode" />
+			<argument index="1" name="tilemode" type="int" enum="TileSet.TileMode" />
 			<description>
 			</description>
 		</method>

@@ -40,8 +40,8 @@
 
 class CollisionObject2D;
 
-class RTileMap : public Node2D {
-	GDCLASS(RTileMap, Node2D);
+class TileMap : public Node2D {
+	GDCLASS(TileMap, Node2D);
 
 public:
 	enum Mode {
@@ -70,7 +70,7 @@ private:
 		FORMAT_2
 	};
 
-	Ref<RTileSet> tile_set;
+	Ref<TileSet> tile_set;
 	Size2i cell_size;
 	int quadrant_size;
 	Mode mode;
@@ -214,7 +214,7 @@ private:
 
 	void _fix_cell_transform(Transform2D &xform, const Cell &p_cell, const Vector2 &p_offset, const Size2 &p_sc);
 
-	void _add_shape(int &shape_idx, const Quadrant &p_q, const Ref<Shape2D> &p_shape, const RTileSet::ShapeData &p_shape_data, const Transform2D &p_xform, const Vector2 &p_metadata);
+	void _add_shape(int &shape_idx, const Quadrant &p_q, const Ref<Shape2D> &p_shape, const TileSet::ShapeData &p_shape_data, const Transform2D &p_xform, const Vector2 &p_metadata);
 
 	Map<PosKey, Quadrant>::Element *_create_quadrant(const PosKey &p_qk);
 	void _erase_quadrant(Map<PosKey, Quadrant>::Element *Q);
@@ -258,8 +258,8 @@ public:
 	virtual Rect2 _edit_get_rect() const;
 #endif
 
-	void set_tileset(const Ref<RTileSet> &p_tileset);
-	Ref<RTileSet> get_tileset() const;
+	void set_tileset(const Ref<TileSet> &p_tileset);
+	Ref<TileSet> get_tileset() const;
 
 	void set_cell_size(const Size2 &p_size);
 	Size2 get_cell_size() const;
@@ -371,12 +371,12 @@ public:
 	void fix_invalid_tiles();
 	void clear();
 
-	RTileMap();
-	~RTileMap();
+	TileMap();
+	~TileMap();
 };
 
-VARIANT_ENUM_CAST(RTileMap::Mode);
-VARIANT_ENUM_CAST(RTileMap::HalfOffset);
-VARIANT_ENUM_CAST(RTileMap::TileOrigin);
+VARIANT_ENUM_CAST(TileMap::Mode);
+VARIANT_ENUM_CAST(TileMap::HalfOffset);
+VARIANT_ENUM_CAST(TileMap::TileOrigin);
 
 #endif // TILE_MAP_H

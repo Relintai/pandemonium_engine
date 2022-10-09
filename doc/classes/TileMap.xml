@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="RTileMap" inherits="Node2D" version="3.8">
+<class name="TileMap" inherits="Node2D" version="3.8">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -161,13 +161,13 @@
 		</member>
 		<member name="cell_custom_transform" type="Transform2D" setter="set_custom_transform" getter="get_custom_transform" default="Transform2D( 64, 0, 0, 64, 0, 0 )">
 		</member>
-		<member name="cell_half_offset" type="int" setter="set_half_offset" getter="get_half_offset" enum="RTileMap.HalfOffset" default="2">
+		<member name="cell_half_offset" type="int" setter="set_half_offset" getter="get_half_offset" enum="TileMap.HalfOffset" default="2">
 		</member>
 		<member name="cell_quadrant_size" type="int" setter="set_quadrant_size" getter="get_quadrant_size" default="16">
 		</member>
 		<member name="cell_size" type="Vector2" setter="set_cell_size" getter="get_cell_size" default="Vector2( 64, 64 )">
 		</member>
-		<member name="cell_tile_origin" type="int" setter="set_tile_origin" getter="get_tile_origin" enum="RTileMap.TileOrigin" default="0">
+		<member name="cell_tile_origin" type="int" setter="set_tile_origin" getter="get_tile_origin" enum="TileMap.TileOrigin" default="0">
 		</member>
 		<member name="cell_y_sort" type="bool" setter="set_y_sort_mode" getter="is_y_sort_mode_enabled" default="false">
 		</member>
@@ -187,7 +187,7 @@
 		</member>
 		<member name="compatibility_mode" type="bool" setter="set_compatibility_mode" getter="is_compatibility_mode_enabled" default="false">
 		</member>
-		<member name="mode" type="int" setter="set_mode" getter="get_mode" enum="RTileMap.Mode" default="0">
+		<member name="mode" type="int" setter="set_mode" getter="get_mode" enum="TileMap.Mode" default="0">
 		</member>
 		<member name="navigation_layers" type="int" setter="set_navigation_layers" getter="get_navigation_layers" default="1">
 		</member>
@@ -195,7 +195,7 @@
 		</member>
 		<member name="show_collision" type="bool" setter="set_show_collision" getter="is_show_collision_enabled" default="false">
 		</member>
-		<member name="tile_set" type="RTileSet" setter="set_tileset" getter="get_tileset">
+		<member name="tile_set" type="TileSet" setter="set_tileset" getter="get_tileset">
 		</member>
 		<member name="use_rao" type="bool" setter="set_use_rao" getter="get_use_rao" default="true">
 		</member>

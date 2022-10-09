@@ -40,8 +40,8 @@
 #include "scene/resources/shape_2d.h"
 #include "scene/resources/texture.h"
 
-class RTileSet : public Resource {
-	GDCLASS(RTileSet, Resource);
+class TileSet : public Resource {
+	GDCLASS(TileSet, Resource);
 
 public:
 	struct ShapeData {
@@ -266,11 +266,11 @@ public:
 	Ref<FastnoiseNoiseParams> get_noise_params();
 	void setup_noise(Ref<FastNoise> noise);
 
-	RTileSet();
+	TileSet();
 };
 
-VARIANT_ENUM_CAST(RTileSet::AutotileBindings);
-VARIANT_ENUM_CAST(RTileSet::BitmaskMode);
-VARIANT_ENUM_CAST(RTileSet::TileMode);
+VARIANT_ENUM_CAST(TileSet::AutotileBindings);
+VARIANT_ENUM_CAST(TileSet::BitmaskMode);
+VARIANT_ENUM_CAST(TileSet::TileMode);
 
 #endif // TILE_SET_H
