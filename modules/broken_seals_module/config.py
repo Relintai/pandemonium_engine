@@ -9,7 +9,7 @@ def configure(env):
 
 def get_doc_classes():
     return [
-      "BiomeTerrarinGenerator",
+      "BiomeTerrainGenerator",
     ]
 
 def get_doc_path():
