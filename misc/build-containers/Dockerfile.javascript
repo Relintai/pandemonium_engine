@@ -1,13 +1,12 @@
 ARG img_version
 FROM pandemonium-fedora:${img_version}
 
-ENV EMSCRIPTEN_CLASSICAL=3.1.14
+ENV EMSCRIPTEN_VERSION=3.1.18
 
 RUN dnf -y install --setopt=install_weak_deps=False \
       java-openjdk && \
-    git clone --branch ${EMSCRIPTEN_CLASSICAL} --progress https://github.com/emscripten-core/emsdk emsdk_${EMSCRIPTEN_CLASSICAL} && \
-    emsdk_${EMSCRIPTEN_CLASSICAL}/emsdk install ${EMSCRIPTEN_CLASSICAL} && \
-    emsdk_${EMSCRIPTEN_CLASSICAL}/emsdk activate ${EMSCRIPTEN_CLASSICAL}
-#    echo "source /root/emsdk_${EMSCRIPTEN_CLASSICAL}/emsdk_env.sh" >> /root/.bashrc
+    git clone --branch ${EMSCRIPTEN_CLASSICAL} --progress https://github.com/emscripten-core/emsdk emsdk && \
+    emsdk/emsdk install ${EMSCRIPTEN_CLASSICAL} && \
+    emsdk/emsdk activate ${EMSCRIPTEN_CLASSICAL}
 
 CMD /bin/bash
