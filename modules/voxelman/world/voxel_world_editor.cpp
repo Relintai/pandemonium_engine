@@ -334,7 +334,7 @@ void VoxelWorldEditor::_bind_methods() {
 
 void VoxelWorldEditorPlugin::_notification(int p_what) {
 	if (p_what == EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED) {
-		switch ((int)EditorSettings::get_singleton()->get("editors/voxel/editor_side")) {
+		switch ((int)EditorSettings::get_singleton()->get("editors/voxelman/editor_side")) {
 			case 0: { // Left.
 				SpatialEditor::get_singleton()->move_control_to_left_panel(voxel_world_editor);
 			} break;
@@ -374,11 +374,11 @@ void VoxelWorldEditorPlugin::make_visible(bool p_visible) {
 VoxelWorldEditorPlugin::VoxelWorldEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
-	EDITOR_DEF("editors/voxel/editor_side", 1);
-	EditorSettings::get_singleton()->add_property_hint(PropertyInfo(Variant::INT, "editors/voxel/editor_side", PROPERTY_HINT_ENUM, "Left,Right"));
+	EDITOR_DEF("editors/voxelman/editor_side", 1);
+	EditorSettings::get_singleton()->add_property_hint(PropertyInfo(Variant::INT, "editors/voxelman/editor_side", PROPERTY_HINT_ENUM, "Left,Right"));
 
 	voxel_world_editor = memnew(VoxelWorldEditor(editor));
-	switch ((int)EditorSettings::get_singleton()->get("editors/voxel/editor_side")) {
+	switch ((int)EditorSettings::get_singleton()->get("editors/voxelman/editor_side")) {
 		case 0: { // Left.
 			add_control_to_container(CONTAINER_SPATIAL_EDITOR_SIDE_LEFT, voxel_world_editor);
 		} break;
