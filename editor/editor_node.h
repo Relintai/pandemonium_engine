@@ -607,7 +607,6 @@ private:
 	ProjectSettingsEditor *project_settings;
 	EditorFileDialog *file;
 	ExportTemplateManager *export_template_manager;
-	EditorFileDialog *file_templates;
 	EditorFileDialog *file_script;
 	EditorFileDialog *file_android_build_source;
 	String current_path;

@@ -6822,15 +6822,6 @@ EditorNode::EditorNode() {
 	remove_android_build_template->connect("confirmed", this, "_menu_option", varray(FILE_EXPLORE_ANDROID_BUILD_TEMPLATES));
 	gui_base->add_child(remove_android_build_template);
 
-	file_templates = memnew(EditorFileDialog);
-	file_templates->set_title(TTR("Import Templates From ZIP File"));
-
-	gui_base->add_child(file_templates);
-	file_templates->set_mode(EditorFileDialog::MODE_OPEN_FILE);
-	file_templates->set_access(EditorFileDialog::ACCESS_FILESYSTEM);
-	file_templates->clear_filters();
-	file_templates->add_filter("*.tpz ; " + TTR("Template Package"));
-
 	file = memnew(EditorFileDialog);
 	gui_base->add_child(file);
 	file->set_current_dir("res://");
@@ -6854,7 +6845,6 @@ EditorNode::EditorNode() {
 	settings_menu->get_popup()->connect("id_pressed", this, "_menu_option");
 
 	file->connect("file_selected", this, "_dialog_action");
-	file_templates->connect("file_selected", this, "_dialog_action");
 
 	preview_gen = memnew(AudioStreamPreviewGenerator);
 	add_child(preview_gen);
