@@ -399,7 +399,7 @@ public:
 
 			custom_aabb = nullptr;
 			sorting_offset = 0.0f;
-			use_aabb_center = false;
+			use_aabb_center = true;
 		}
 
 		~Instance() {
