@@ -33,7 +33,7 @@ if [ ! -e files/MacOSX${OSX_SDK}.sdk.tar.xz ] || [ ! -e files/iPhoneOS${IOS_SDK}
 
   echo "Building OSX and iOS SDK packages. This will take a while"
   $podman_build -t pandemonium-xcode-packer:${img_version} -f Dockerfile.xcode . 2>&1 | tee logs/xcode.log
-  $podman run -it --rm -v ${files_root}:/root/files -e XCODE_SDKV="${XCODE_SDK}" -e OSX_SDKV="${OSX_SDK}" -e IOS_SDKV="${IOS_SDK}" godot-xcode-packer:${img_version} 2>&1 | tee logs/xcode_packer.log
+  $podman run -it --rm -v ${files_root}:/root/files -e XCODE_SDKV="${XCODE_SDK}" -e OSX_SDKV="${OSX_SDK}" -e IOS_SDKV="${IOS_SDK}" pandemonium-xcode-packer:${img_version} 2>&1 | tee logs/xcode_packer.log
 fi
 
 $podman_build -t pandemonium-osx:${img_version} -f Dockerfile.osx . 2>&1 | tee logs/osx.log
