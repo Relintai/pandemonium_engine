@@ -246,6 +246,9 @@ void Main::print_help(const char *p_binary) {
 	OS::get_singleton()->print("General options:\n");
 	OS::get_singleton()->print("  -h, --help                       Display this help message.\n");
 	OS::get_singleton()->print("  --version                        Display the version string.\n");
+#ifdef TOOLS_ENABLED
+	OS::get_singleton()->print("  --version-full-config            Display the full config version string (used by the export templates manager).\n");
+#endif
 	OS::get_singleton()->print("  -v, --verbose                    Use verbose stdout mode.\n");
 	OS::get_singleton()->print("  --quiet                          Quiet mode, silences stdout messages. Errors are still displayed.\n");
 	OS::get_singleton()->print("\n");
@@ -496,6 +499,13 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 			print_line(get_full_version_string());
 			exit_code = ERR_HELP; // Hack to force an early exit in `main()` with a success code.
 			goto error;
+
+#ifdef TOOLS_ENABLED
+		} else if (I->get() == "--version-full-config") {
+			print_line(String(VERSION_FULL_CONFIG));
+			exit_code = ERR_HELP; // Hack to force an early exit in `main()` with a success code.
+			goto error;
+#endif
 
 		} else if (I->get() == "-v" || I->get() == "--verbose") { // verbose output
 
