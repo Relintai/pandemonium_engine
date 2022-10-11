@@ -468,15 +468,26 @@ if selected_platform in platform_list:
             env_base.Prepend(CXXFLAGS=["-fno-exceptions"])
             env.Prepend(CXXFLAGS=["-fno-exceptions"])
         else:
-            env_base.Prepend(CXXFLAGS=["/EHa-"])
-            env_base.Prepend(CXXFLAGS=["/EHs-"])
-            env_base.Prepend(CXXFLAGS=["/EHc-"])
+            #env_base.Prepend(CXXFLAGS=["/EHa-"])
+            #env_base.Prepend(CXXFLAGS=["/EHs-"])
+            #env_base.Prepend(CXXFLAGS=["/EHc-"])
+            #not needed
             #env_base.Prepend(CXXFLAGS=["/EHr-"])
 
-            env.Prepend(CXXFLAGS=["/EHa-"])
-            env.Prepend(CXXFLAGS=["/EHs-"])
-            env.Prepend(CXXFLAGS=["/EHc-"])
+            #env.Prepend(CXXFLAGS=["/EHa-"])
+            #env.Prepend(CXXFLAGS=["/EHs-"])
+            #env.Prepend(CXXFLAGS=["/EHc-"])
+            #not needed
             #env.Prepend(CXXFLAGS=["/EHr-"])
+
+            # Apparently disabling exeptions when you also need to have stl containers 
+            # (Some of the 3rd party code needs them)
+            # is not as simple with msvc as I originally thought.
+            # So for now they are always enabled.
+            # TODO: Write drop-in replacement for them. (They should use error macros, etc)
+            # (I bet it will come handy having them in more ways later.)
+            env_base.Prepend(CXXFLAGS=["/EHsc"])
+            env.Prepend(CXXFLAGS=["/EHsc"])
     else:
         if env.msvc:
             env_base.Prepend(CXXFLAGS=["/EHsc"])
