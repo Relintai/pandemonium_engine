@@ -37,3 +37,11 @@ scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no p
 # Linux templates armhf
 scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 arch=armv7 CCFLAGS="-mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -mlittle-endian -munaligned-access" "$@" . 2>&1 | tee logs/linux_template_rd_armhf.log
 scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 arch=armv7 CCFLAGS="-mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -mlittle-endian -munaligned-access" "$@" . 2>&1 | tee logs/linux_template_r_armhf.log
+
+# Rename armhf to pi4
+# Todo think about a better naming convention, especially if FRT is added to the builds aswell
+
+mv bin/pandemonium.x11.opt.armv7 bin/pandemonium.x11.opt.pi4
+mv bin/pandemonium.x11.opt.debug.armv7 bin/pandemonium.x11.opt.debug.pi4
+mv bin/pandemonium.x11.opt.tools.armv7 bin/pandemonium.x11.opt.tools.pi4
+
