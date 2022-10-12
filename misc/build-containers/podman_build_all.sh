@@ -80,16 +80,16 @@ $podman run ${custom_envvars} -v ${project_root}:/root/project -w /root/project 
 $podman run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-android:${img_version} bash -c 'cd platform/android/java/;./gradlew generatePandemoniumTemplates' . 2>&1 | tee logs/android_template_r_assemble.log
 
 # OSX editor
-$podman run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-osx:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=osx arch=x86_64 "$@" osxcross_sdk=darwin20.4 . 2>&1 | tee logs/osx_editor_x86_64.log
-$podman run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-osx:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=osx arch=arm64 "$@" osxcross_sdk=darwin20.4 . 2>&1 | tee logs/sx_editor_arm64.log
+$podman run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-osx:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=osx arch=x86_64 "$@" osxcross_sdk=darwin21.4 . 2>&1 | tee logs/osx_editor_x86_64.log
+$podman run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-osx:${img_version} scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=osx arch=arm64 "$@" osxcross_sdk=darwin21.4 . 2>&1 | tee logs/sx_editor_arm64.log
 
 # OSX templates release_debug
-$podman run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-osx:${img_version} scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=osx arch=x86_64 "$@" osxcross_sdk=darwin20.4 . 2>&1 | tee logs/osx_template_rd_x86_64.log
-$podman run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-osx:${img_version} scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=osx arch=arm64 "$@" osxcross_sdk=darwin20.4 . 2>&1 | tee logs/osx_template_rd_arm64.log
+$podman run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-osx:${img_version} scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=osx arch=x86_64 "$@" osxcross_sdk=darwin21.4 . 2>&1 | tee logs/osx_template_rd_x86_64.log
+$podman run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-osx:${img_version} scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=osx arch=arm64 "$@" osxcross_sdk=darwin21.4 . 2>&1 | tee logs/osx_template_rd_arm64.log
 
 # OSX templates release
-$podman run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-osx:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=osx arch=x86_64 "$@" osxcross_sdk=darwin20.4 . 2>&1 | tee logs/osx_template_r_x86_64.log
-$podman run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-osx:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=osx arch=arm64 "$@" osxcross_sdk=darwin20.4 . 2>&1 | tee logs/osx_template_r_arm64.log
+$podman run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-osx:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=osx arch=x86_64 "$@" osxcross_sdk=darwin21.4 . 2>&1 | tee logs/osx_template_r_x86_64.log
+$podman run ${custom_envvars} -v ${project_root}:/root/project -w /root/project pandemonium-osx:${img_version} scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=osx arch=arm64 "$@" osxcross_sdk=darwin21.4 . 2>&1 | tee logs/osx_template_r_arm64.log
 
 # OSX lipo
 $podman run ${custom_envvars} -v ${project_root}:/root/project -w /root/project/misc/osx pandemonium-osx:${img_version} bash -c ./lipo.sh
