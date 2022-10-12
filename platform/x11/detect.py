@@ -289,8 +289,12 @@ def configure(env):
         env.ParseConfig("pkg-config theora theoradec --cflags --libs")
     else:
         list_of_x86 = ["x86_64", "x86", "i386", "i586"]
-        if any(platform.machine() in s for s in list_of_x86):
-            env["x86_libtheora_opt_gcc"] = True
+        if env["arch"] == "":
+            if any(platform.machine() in s for s in list_of_x86):
+                env["x86_libtheora_opt_gcc"] = True
+        else:
+            if any(env["arch"] in s for s in list_of_x86):
+                env["x86_libtheora_opt_gcc"] = True
 
     if not env["builtin_libvorbis"]:
         env["builtin_libogg"] = False  # Needed to link against system libvorbis
