@@ -117,12 +117,15 @@ files=(
   # Linux
   "pandemonium.x11.opt.64"
   "pandemonium.x11.opt.debug.64"
+  "pandemonium.x11.opt.pi4"
 
   "pandemonium.x11.opt.32"
   "pandemonium.x11.opt.debug.32"
+  "pandemonium.x11.opt.pi4"
 
   "pandemonium.x11.opt.tools.64"
   "pandemonium.x11.opt.tools.32"
+  "pandemonium.x11.opt.tools.pi4"
 
   # Server (Linux) - template
   "pandemonium_server.x11.opt.64"
