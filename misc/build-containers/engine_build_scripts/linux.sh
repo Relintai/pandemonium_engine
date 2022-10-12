@@ -41,7 +41,6 @@ scons tools=no target=release custom_modules_shared=no debug_symbols=no platform
 # Rename armhf to pi4
 # Todo think about a better naming convention, especially if FRT is added to the builds aswell
 
-mv bin/pandemonium.x11.opt.armv7 bin/pandemonium.x11.opt.pi4
-mv bin/pandemonium.x11.opt.debug.armv7 bin/pandemonium.x11.opt.debug.pi4
-mv bin/pandemonium.x11.opt.tools.armv7 bin/pandemonium.x11.opt.tools.pi4
-
+mv -f bin/pandemonium.x11.opt.armv7 bin/pandemonium.x11.opt.pi4
+mv -f bin/pandemonium.x11.opt.debug.armv7 bin/pandemonium.x11.opt.debug.pi4
+mv -f bin/pandemonium.x11.opt.tools.armv7 bin/pandemonium.x11.opt.tools.pi4
