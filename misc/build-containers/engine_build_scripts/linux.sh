@@ -31,9 +31,9 @@ scons tools=no target=release custom_modules_shared=no debug_symbols=no platform
 
 export PATH="${GODOT_SDK_LINUX_ARMHF}/bin:${BASE_PATH}"
 
-# Linux editor armhf
-scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 arch=armhf "$@" . 2>&1 | tee logs/linux_ed_32.log
+# Linux editor armhf (PI4)
+scons tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 arch=armv7 CCFLAGS="-mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -mlittle-endian -munaligned-access" "$@" . 2>&1 | tee logs/linux_ed_armhf.log
 
 # Linux templates armhf
-scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 arch=armhf "$@" . 2>&1 | tee logs/linux_template_rd_32.log
-scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 arch=armhf "$@" . 2>&1 | tee logs/linux_template_r_32.log
+scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 arch=armv7 CCFLAGS="-mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -mlittle-endian -munaligned-access" "$@" . 2>&1 | tee logs/linux_template_rd_armhf.log
+scons tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 arch=armv7 CCFLAGS="-mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -mlittle-endian -munaligned-access" "$@" . 2>&1 | tee logs/linux_template_r_armhf.log
