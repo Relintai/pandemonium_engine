@@ -75,6 +75,7 @@ gmon.out
 
 # Jetbrains IDEs
 .idea/
+.fleet/
 
 # Misc
 .DS_Store
