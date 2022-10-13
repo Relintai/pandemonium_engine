@@ -4,7 +4,149 @@ All notable changes to this project will be documented in this file.
 
 ## [Master] 
 
+
+## [3.9.0] 
+
+### Added
+
+#### Engine
+
 Backported everything up to and including https://github.com/godotengine/godot/commit/6812e66f33761ee4d02a7439af8fbea84e63e3f9 Merge commit: https://github.com/godotengine/godot/commit/3c39bc365fbfeda805aa87687422e9c9092c809b
+
+### WIP
+
+Added a strip script. 
+Fix jni class access string. 
+Also check whether the armhf builds have finished at the end of the build all script.
+Rename linux armhf executables at the end of the build all linux script.
+
+Fix the build commands for armhf x11. 
+Don't try to include x86 assembly into non-x86 based platforms when cross compiling the x11 platform on x86.
+
+Fix osx build commands in the build all script.
+Fixed the javascript build container. Also downgraded emscripten for now to avoid warning spam because of a deprecation on their end.
+Now the podman build all script has the ability to easily set the build name.
+
+Don't remove the module config file in the build all script anymore. 
+Fix voxelman's editor setting. 
+
+Fixed the osx docker container. 
+Replaces the default project editor icon, and the logo editor icon. 
+Moved podman linux build commands to a new script. 
+Initial update / small cleanup pass on the build all script. 
+Pass all arguments into the build commands in the podman builkd all file instead of the hardcoded -j4.
+Updated the build consatiners based on changes from godot's.
+
+Remove 32 bit linux dockerfle. 
+Set version to stable instead of release_candidate. 
+Added a new command line option to help with generating version.txt for tpz files.
+Remove unused code.
+
+Update hungarian translation from godot. 
+Added RTileMap and RTileSet compatibility classes. 
+Moved TileMap and TileSet's docs to their module. 
+
+Renamed RTileMap ro TileMap and RTileSet to TileSet, as it does not need to be able to live alongside Godot's TileMap anymore.
+Add msvc versions of the no-rtti and no-exceptions options. (They got disabled later temporarily)
+Use FALLTHROUGH macro instead on [[fallthrough]]; 
+Windows x86 github action. 
+
+Now all gozmo plugins return gizmo names properly. 
+Get gizmo names using the proper method for the toggle popup in the SpatialEditor.
+
+Fix errors on new scene creation. 
+Added back GridMap support for the NavigationMeshGenerator. 
+Added back GridMap support for the GLTF module. 
+Added back RTileSet export aswell. 
+
+Fix setting all EDITOR_DEFs for the gridmap editor. 
+Now MeshLibraryEditorPlugin registers itself to the export as menu. 
+Remove unused file selector from EditorNode. 
+Moved the gltf export to the convert scene menu. 
+Now menu items can be added to the convert menu in the editor. 
+
+Added back the GridMap module.
+Updated frt2 to the latest.
+Added nissing projection * projection Variant operator. 
+
+Moved from the TERRAMAN_2D_PRESENT define to the module system's equivalent define aswell.
+Replaced MESH_UTILS_PRESENT defines aswell. 
+Replaced PROPS_2D_PRESENT define for the module system's equivalent. 
+Moved away from the MESH_DATA_RESOURCE_PRESENT define aswell. 
+Also mvoed away from the TERRAMAN_PRESENT define. 
+Also moved away from the old VOXELMAN_PRESENT macro. 
+Also replaced the old PROPS_PRESENT defines with the module system's generated defines.
+
+Replaced the old TEXTURE_PACKER_PRESENT defines with the module system's generated defines.
+Fix the job name of the android editor's github action. 
+Fixed PluginRefresher when a project only has one addon. 
+Added an option to automatically reload or save instead of asking what to do after a file changed outside the editor.
+Now the target fps is customizable for ThreadPool when threading is not enabled.
+Fix race condition.
+
+Fix setter parameter types for ThreadPool. 
+Updated the example build config file. 
+Now ThreadPool should properly handle when use_threads changes. 
+Moved ThreadPool to core. Also it can change it's thread count now when it has time for it.
+Now ThreadPool uses a List internally as a queue inetad of a Vector. 
+
+Fix build when 3d is off. 
+Improved PaintWindow mouse emulation from touch support a bit more. 
+Fix PaintWindow with mouse emulation from touch. 
+Added a few getters and setters to the PaintWindow. 
+Small fixes to the World override system. Still needs work though. 
+Now only one override is allowed per World, as there is really no reason to have support for more than one per world pair. This fixes lots of issues with the system.
+
+Fix more issues with World overrides. 
+Now Cameras use Worlds directly instead of Viewports. 
+Work on fixing the remaining issues / error messages with World overrides.
+
+Don't apply World override in the editor. 
+Now CanvasItems work with World overrides aswell. 
+Move Cameras into the new 3d world on override. 
+More work on World override support. 
+Work on the ability for overriding Worlds. 
+Move World2D and World3D related things to World from Viewport. 
+Reordered Viewport. 
+Added a new World class and made Viewport inherit from it. 
+
+Added _3d postfix to the end of the World3D related getters and setters in Viewport.
+Renamed Environment to Environment3D, and WorldEnvironment to WorldEnvironment3D.
+Renamed World to World3D. 
+
+Fix build when the new skeleton 3d module is disabled. 
+Moved Skeleton and it's related classes to a module. 
+Add all doc classes to the new module's config.py. 
+Moved Skeleton2D and it's related classes into a module. 
+Now the project setup script's module folders are customizable. 
+
+Fix requesting write locks in WebNodes. 
+Now String and CharString Types properly move the null terminator on resize and remove.
+Small improvements to the simple web server. 
+Added enctype and multipart form helpers to HTMLTag. 
+Added rows and cols to HTMLTag. 
+
+Fix default argument for the binding of WebServerRequest::send_redirect. 
+Fix: WebPermission was meant to be a Resource. 
+Now get_global in Engine won't print an error if the global isn't exists, instead it will just return null.
+Now Camera2Ds handle being current properly, and also more intuituvely. 
+
+Also made it a singleton. 
+Added an extension api for the WebNodeEditor. 
+Renamed WebEditor* to WebNodeEditor*. 
+Renamed the web editor's files. 
+Actually register EditorInterface, SpatialEditor, CanvasItemEditor, and WebNodeEditor as globals.
+
+Now the Engine has methods to store globals (custom singletons). They are mostly meant for classes like EditorInterface, SpatialEditor, and plugin scripts that need a singleton for in-editor use. In essence it provides easy and side effect less access for classes that might not be present on every run. (For example gdscript recognizes normal singletons as keywords, but not these.)
+
+Now the return value discarded warning is disabled by default in gdscript and cscript.
+Put variables at the bottom of the Engine singleton. 
+Added proper multi part form parsing support for the simple web server. 
+Add quotes when passing the custom module folders parameter. 
+Now the app project helper build script supports custom module folders. 
+Fix mimetype handling in the simle server. Also added a few misisng ones.
+Fixed rendering the menu of the BrowsableFolderServeWebPage and StaticWebPage.
+
 
 ## [3.8.0]
 
