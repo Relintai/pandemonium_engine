@@ -3,7 +3,7 @@
 ## Core
 
 - Add a core binder class for Math. This would allow for simpler script to engine side code ports. Maybe it could also smplify scripting language code.
-- Maye threading could be de-modernized. So the implementation could use the old os level constructs. (like pthreads). An implementation that uses std::threads could be kept around though. (without it being compiled). 
+- Maye threading could be de-modernized. So the implementation could use the old os level constructs. (like pthreads). An implementation that uses std::threads could be kept around though. (without it being compiled). -> Just add back and update the old os api implementations (pthreads etc), keep the core classes, and make every single class that uses std threads overrideable similarly to what can be done with thread now (mutexes etc).
 - Maybe use NULLs again instead of nullptrs? TODO check if there is an actual difference, other than requiring cpp11.
 - Add error macro like methods to global scope for scripting
 - Add containers that are a drop in replacement for stl containers.
