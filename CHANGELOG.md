@@ -20,14 +20,14 @@ Backported everything up to and including https://github.com/godotengine/godot/c
 - Added msvc versions of the no-rtti and no-exceptions options. (They are disabled temporarily)
 - Use FALLTHROUGH macro instead on [[fallthrough]]; 
 
+#### Engine
+
+- Added a new World class and made Viewport inherit from it. Moved World2D and World3D related things to World from Viewport. Also added the ability for overriding Worlds. Still needs some work, it should be already usable. (Sometimes when changing world overrides, a few camera related errors are emitted.)
+
 #### Editor
 
 - Now menu items can be added to the convert menu in the editor.
 - Added an option to automatically reload or save instead of asking what to do after a file changed outside the editor.
-
-#### Engine
-
-- Added a new World class and made Viewport inherit from it. Moved World2D and World3D related things to World from Viewport. Also added the ability for overriding Worlds. Still needs some work, it should be already usable. (Sometimes when changing world overrides, a few camera related errors are emitted.)
 
 #### Modules
 
@@ -57,14 +57,6 @@ Backported everything up to and including https://github.com/godotengine/godot/c
 - Windows x86 github action.
 
 ### Changed
-
-#### Releases / Builds / CI
-
-- Now export templates are created in the .tpz format for easy installation. (Note that you can rename them to zip, and unpack them yourself if you need / want.)
-- Replaced the default project editor icon, and the logo editor icon.
-- Pass all arguments into the build commands in the podman build all file instead of the hardcoded -j4.
-- Now versions will be handled differently, unlike in godot, I'll commit version information to the repository.
-- Update hungarian translation from godot. 
 
 #### Core
 
@@ -128,21 +120,19 @@ Backported everything up to and including https://github.com/godotengine/godot/c
 - Add quotes when passing the custom module folders parameter. 
 - Now the app project helper build script supports custom module folders.
 
+#### Releases / Builds / CI
+
+- Now export templates are created in the .tpz format for easy installation. (Note that you can rename them to zip, and unpack them yourself if you need / want.)
+- Replaced the default project editor icon, and the logo editor icon.
+- Pass all arguments into the build commands in the podman build all file instead of the hardcoded -j4.
+- Now versions will be handled differently, unlike in godot, I'll commit version information to the repository.
+- Update hungarian translation from godot. 
+
 ### Fixed
 
 #### Core
 
 - Now String and CharString Types properly move the null terminator on resize and remove.
-
-#### Build System
-
-- Don't try to include x86 assembly into non-x86 based platforms when cross compiling the x11 platform on x86.
-- Fix build when 3d is off. 
-
-#### Releases / Builds / CI
-
-- Don't remove the module config file in the build all script anymore.
-- Fix the job name of the android editor's github action.
 
 #### Editor
 
@@ -178,6 +168,16 @@ Backported everything up to and including https://github.com/godotengine/godot/c
 - Fix: WebPermission was meant to be a Resource.
 - Fix mimetype handling in the simle server. Also added a few misisng ones.
 - Fixed rendering the menu of the BrowsableFolderServeWebPage and StaticWebPage.
+
+#### Build System
+
+- Don't try to include x86 assembly into non-x86 based platforms when cross compiling the x11 platform on x86.
+- Fix build when 3d is off. 
+
+#### Releases / Builds / CI
+
+- Don't remove the module config file in the build all script anymore.
+- Fix the job name of the android editor's github action.
 
 ## [3.8.0]
 
