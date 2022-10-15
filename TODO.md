@@ -6,6 +6,8 @@
 - Maye threading could be de-modernized. So the implementation could use the old os level constructs. (like pthreads). An implementation that uses std::threads could be kept around though. (without it being compiled). 
 - Maybe use NULLs again instead of nullptrs? TODO check if there is an actual difference, other than requiring cpp11.
 - Add error macro like methods to global scope for scripting
+- Add containers that are a drop in replacement for stl containers.
+- Add compiler traits header.
 
 ## WFC module
 
@@ -18,6 +20,7 @@
 - The bindings will likely need more improvements.
 - Would be nice, if the algorithm could be parametrized from gdscript aswell.
 - Maybe addding Array2D, and Array3D like classes to the engine would be a good idea.
+- Replace std::vectors to engine vectors.
 
 ## Physics
 
@@ -40,6 +43,8 @@
 ## Terraman, Voxelman
 
 - The rid storage API is using dicts currently, and it's pretty awful to mess with. A new mesh storage class should be added instead. Since more than one module needs it either should be core or a new module.  The api could just return a Ref<> to the storage class. And the class could be inherited from when needed. Should probably contain some generic api which allows you to store most things without really messing around too much. Like an api for mesh rids, navmesh rids, and collider rids, and generic rids.
+
+- Currently the library only supports images for the top, all 4 sides, and the bottom. It should have image support for all 6 sides at least. I think surface definitions should have a count variable, which sets the stored image count. It could work similarly to lod materials, so you can just use indexes, and it will return what it can. I might also be a good idea to make the image getter scriptable (Or provide one which is).
 
 ## Editor
 
@@ -153,11 +158,19 @@
 - Finish tiling types + z index support for other tiling that horizontal.
 - Flavours + y_size probably has quite a few bugs.
 
-## Ports
+## Platforms
 
-Currently the engine has everything that I wanted up to:
-https://github.com/godotengine/godot/commit/5eaf83f2d71fbaf825f9ceb6a1246d6b87be3729
-https://github.com/godotengine/godot/commit/5ea00ad3f05a367dfb3a076e48f241a03e973549
+- Add export platforms for frt, frt_sdl, and the linux server, so their binaries can be easily added and used from export template (tpz) files.
+
+## Binaries, Containers, Releases
+
+- Set up containers and build scripts to autmatically build frt and frt_sdl binaries.
+- Set up automatically building ios binaries aswell.
+- Try to set up godot's UWP platform again. Maybe.
+- Add all binaries to the project side export and release helper scripts.
+- Maybe split TPZ files, so you can install the export templates that you want.
+
+## Ports
 
 ### Enable type information on release
 
