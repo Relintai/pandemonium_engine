@@ -67,7 +67,7 @@ Backported everything up to and including https://github.com/godotengine/godot/c
 - Added _3d postfix to the end of the World3D related getters and setters in Viewport.
 - Renamed Environment to Environment3D, and WorldEnvironment to WorldEnvironment3D.
 - Renamed World to World3D. 
-- Now Camera2Ds handle being current properly, and also more intuituvely. 
+- Now Camera2Ds handle being current properly, and also more intuitively. 
 
 #### Platforms
 
@@ -94,7 +94,7 @@ Backported everything up to and including https://github.com/godotengine/godot/c
 
 - Now ThreadPool should properly handle when use_threads changes. 
 - Moved ThreadPool to core. Also it can change it's thread count now when it has time for it.
-- Now ThreadPool uses a List internally as a queue inetad of a Vector. 
+- Now ThreadPool uses a List internally as a queue instead of a Vector. 
 
 ##### Paint
 
@@ -136,7 +136,7 @@ Backported everything up to and including https://github.com/godotengine/godot/c
 
 #### Editor
 
-- Now all gozmo plugins return gizmo names properly. 
+- Now all gizmo plugins return gizmo names properly. 
 - Get gizmo names using the proper method for the toggle popup in the SpatialEditor.
 - Fix errors on new scene creation.
 - Remove unused file selector from EditorNode.
