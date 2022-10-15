@@ -136,6 +136,8 @@ zip -q ../pandemonium_v${version_snake_cased}_stable_linux_server64.zip ./pandem
 zip -q ../pandemonium_v${version_snake_cased}_stable_android.zip ./pandemonium_v${version_snake_cased}_stable_android.apk
 # OSX - Editor
 zip -r -q ../pandemonium_v${version_snake_cased}_stable_osx.app.zip ./pandemonium_v${version_snake_cased}_stable_osx.app
+# Sources
+zip -r -q ../pandemonium_v${version_snake_cased}_source.zip ./pandemonium_v${version_snake_cased}_source
 
 cd ..
 
