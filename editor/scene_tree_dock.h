@@ -276,9 +276,6 @@ class SceneTreeDock : public VBoxContainer {
 	void _create_remap_for_node(Node *p_node, Map<RES, RES> &r_remap);
 	void _create_remap_for_resource(RES p_resource, Map<RES, RES> &r_remap);
 
-	bool profile_allow_editing;
-	bool profile_allow_script_editing;
-
 	bool _update_node_path(Node *p_root_node, NodePath &r_node_path, Map<Node *, NodePath> *p_renames) const;
 	bool _check_node_path_recursive(Node *p_root_node, Variant &r_variant, Map<Node *, NodePath> *p_renames) const;
 
