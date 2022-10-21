@@ -108,14 +108,17 @@ logs/
 x64/
 build/
 
-# Do not ignore x86 folders anywhere under thirdparty libraries
-!thirdparty/**/x86/
-
 bld/
 [Bb]in/
 [Oo]bj/
 *.debug
 *.dSYM
+
+# Do not ignore arch-specific folders anywhere under thirdparty libraries
+!thirdparty/**/x64/
+!thirdparty/**/x86/
+!thirdparty/**/arm/
+!thirdparty/**/arm64/
 
 # Visual Studio cache/options directory
 .vs/
