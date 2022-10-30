@@ -369,3 +369,6 @@ compile_commands.json
 # https://clangd.llvm.org/ cache folder
 .clangd/
 .cache/
+
+# Ignored custom modules folder that the project setup script can use when needed
+custom_modules/
