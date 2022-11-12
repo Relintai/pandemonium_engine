@@ -267,6 +267,11 @@ task generatePandemoniumTemplates {
     finalizedBy 'zipCustomBuild'
 }
 
+task clean(type: Delete) {
+    dependsOn 'cleanPandemoniumEditor'
+    dependsOn 'cleanPandemoniumTemplates'
+}
+
 /**
  * Generates the same output as generatePandemoniumTemplates but with dev symbols
  */
@@ -296,8 +301,6 @@ task cleanPandemoniumEditor(type: Delete) {
     // Delete the Pandemonium editor apks in the Pandemonium bin directory
     delete("$binDir/android_editor.apk")
     delete("$binDir/android_editor_dev.apk")
-
-    finalizedBy getTasksByName("clean", true)
 }
 
 /**
@@ -324,6 +327,4 @@ task cleanPandemoniumTemplates(type: Delete) {
     delete("$binDir/pandemonium-lib.debug.aar")
     delete("$binDir/pandemonium-lib.dev.aar")
     delete("$binDir/pandemonium-lib.release.aar")
-
-    finalizedBy getTasksByName("clean", true)
 }
