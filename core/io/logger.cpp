@@ -34,6 +34,7 @@
 #include "core/os/os.h"
 #include "core/string/print_string.h"
 #include "core/config/project_settings.h"
+#include "core/os/time.h"
 
 // va_copy was defined in the C99, but not in C++ standards before C++11.
 // When you compile C++ without --std=c++<XX> option, compilers still define
@@ -169,11 +170,7 @@ void RotatedFileLogger::rotate_file() {
 
 	if (FileAccess::exists(base_path)) {
 		if (max_files > 1) {
-			char timestamp[21];
-			OS::Date date = OS::get_singleton()->get_date();
-			OS::Time time = OS::get_singleton()->get_time();
-			sprintf(timestamp, "_%04d-%02d-%02d_%02d.%02d.%02d", date.year, date.month, date.day, time.hour, time.min, time.sec);
-
+			String timestamp = Time::get_singleton()->get_datetime_string_from_system().replace(":", ".");
 			String backup_name = base_path.get_basename() + timestamp;
 			if (base_path.get_extension() != String()) {
 				backup_name += "." + base_path.get_extension();
