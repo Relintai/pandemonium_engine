@@ -42,10 +42,36 @@ PandemoniumJavaViewWrapper::PandemoniumJavaViewWrapper(jobject pandemonium_view)
 	if (android_device_api_level >= __ANDROID_API_N__) {
 		_set_pointer_icon = env->GetMethodID(_cls, "setPointerIcon", "(I)V");
 	}
+	if (android_device_api_level >= __ANDROID_API_O__) {
+		_request_pointer_capture = env->GetMethodID(_cls, "requestPointerCapture", "()V");
+		_release_pointer_capture = env->GetMethodID(_cls, "releasePointerCapture", "()V");
+	}
 }
 
 bool PandemoniumJavaViewWrapper::can_update_pointer_icon() const {
 	return _set_pointer_icon != nullptr;
+}
+
+bool PandemoniumJavaViewWrapper::can_capture_pointer() const {
+	return _request_pointer_capture != nullptr && _release_pointer_capture != nullptr;
+}
+
+void PandemoniumJavaViewWrapper::request_pointer_capture() {
+	if (_request_pointer_capture != nullptr) {
+		JNIEnv *env = get_jni_env();
+		ERR_FAIL_NULL(env);
+
+		env->CallVoidMethod(_pandemonium_view, _request_pointer_capture);
+	}
+}
+
+void PandemoniumJavaViewWrapper::release_pointer_capture() {
+	if (_release_pointer_capture != nullptr) {
+		JNIEnv *env = get_jni_env();
+		ERR_FAIL_NULL(env);
+
+		env->CallVoidMethod(_pandemonium_view, _release_pointer_capture);
+	}
 }
 
 void PandemoniumJavaViewWrapper::set_pointer_icon(int pointer_type) {

@@ -235,10 +235,11 @@ Error OS_Android::open_dynamic_library(const String p_path, void *&p_library_han
 }
 
 void OS_Android::set_mouse_mode(MouseMode p_mode) {
-	if (!pandemonium_java->get_pandemonium_view()->can_update_pointer_icon()) {
+	if (!pandemonium_java->get_pandemonium_view()->can_update_pointer_icon() || !pandemonium_java->get_pandemonium_view()->can_capture_pointer()) {
 		return;
 	}
-	if (mouse_mode == p_mode || p_mode == MouseMode::MOUSE_MODE_CAPTURED) {
+
+	if (mouse_mode == p_mode) {
 		return;
 	}
 
@@ -246,6 +247,12 @@ void OS_Android::set_mouse_mode(MouseMode p_mode) {
 		pandemonium_java->get_pandemonium_view()->set_pointer_icon(CURSOR_TYPE_NULL);
 	} else {
 		set_cursor_shape(cursor_shape);
+	}
+
+	if (p_mode == MouseMode::MOUSE_MODE_CAPTURED) {
+		pandemonium_java->get_pandemonium_view()->request_pointer_capture();
+	} else {
+		pandemonium_java->get_pandemonium_view()->release_pointer_capture();
 	}
 
 	mouse_mode = p_mode;

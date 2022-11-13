@@ -30,7 +30,9 @@
 
 package net.relintai.pandemonium.pandemonium.input
 
+import android.os.Build
 import android.view.GestureDetector.SimpleOnGestureListener
+import android.view.InputDevice
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.ScaleGestureDetector.OnScaleGestureListener
@@ -57,6 +59,7 @@ internal class PandemoniumGestureHandler : SimpleOnGestureListener(), OnScaleGes
 	private var dragInProgress = false
 	private var scaleInProgress = false
 	private var contextClickInProgress = false
+	private var pointerCaptureInProgress = false
 
 	override fun onDown(event: MotionEvent): Boolean {
 		// Don't send / register a down event while we're in the middle of a double-tap
@@ -77,7 +80,7 @@ internal class PandemoniumGestureHandler : SimpleOnGestureListener(), OnScaleGes
 	}
 
 	private fun contextClickRouter(event: MotionEvent) {
-		if (scaleInProgress) {
+		if (scaleInProgress || nextDownIsDoubleTap) {
 			return
 		}
 
@@ -100,6 +103,27 @@ internal class PandemoniumGestureHandler : SimpleOnGestureListener(), OnScaleGes
 		contextClickInProgress = true
 	}
 
+	fun onPointerCaptureChange(hasCapture: Boolean) {
+		if (pointerCaptureInProgress == hasCapture) {
+			return
+		}
+
+		if (!hasCapture) {
+			// Dispatch a mouse relative ACTION_UP event to signal the end of the capture
+			PandemoniumInputHandler.handleMouseEvent(
+				MotionEvent.ACTION_UP,
+				0,
+				0f,
+				0f,
+				0f,
+				0f,
+				false,
+				true
+			)
+		}
+		pointerCaptureInProgress = hasCapture
+	}
+
 	fun onMotionEvent(event: MotionEvent): Boolean {
 		return when (event.actionMasked) {
 			MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_BUTTON_RELEASE -> {
@@ -113,30 +137,61 @@ internal class PandemoniumGestureHandler : SimpleOnGestureListener(), OnScaleGes
 	}
 
 	private fun onActionUp(event: MotionEvent): Boolean {
-		if (dragInProgress) {
-			PandemoniumInputHandler.handleMotionEvent(event)
-			dragInProgress = false
+		if (event.actionMasked == MotionEvent.ACTION_CANCEL && pointerCaptureInProgress) {
+			// Don't dispatch the ACTION_CANCEL while a capture is in progress
 			return true
-		} else if (contextClickInProgress) {
-			PandemoniumInputHandler.handleMouseEvent(
-				event.actionMasked,
-				0,
-				event.x,
-				event.y
-			)
+		}
+
+		val sourceMouseRelative = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			event.isFromSource(InputDevice.SOURCE_MOUSE_RELATIVE)
+		} else {
+			false
+		}
+
+		if (pointerCaptureInProgress || dragInProgress || contextClickInProgress) {
+			if (contextClickInProgress || PandemoniumInputHandler.isMouseEvent(event)) {
+				// This may be an ACTION_BUTTON_RELEASE event which we don't handle,
+				// so we convert it to an ACTION_UP event.
+				PandemoniumInputHandler.handleMouseEvent(
+					MotionEvent.ACTION_UP,
+					event.buttonState,
+					event.x,
+					event.y,
+					0f,
+					0f,
+					false,
+					sourceMouseRelative
+				)
+			} else {
+				PandemoniumInputHandler.handleTouchEvent(event)
+			}
+
+			pointerCaptureInProgress = false
+			dragInProgress = false
 			contextClickInProgress = false
 			return true
 		}
+
 		return false
 	}
 
 	private fun onActionMove(event: MotionEvent): Boolean {
 		if (contextClickInProgress) {
+			val sourceMouseRelative = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+				event.isFromSource(InputDevice.SOURCE_MOUSE_RELATIVE)
+			} else {
+				false
+			}
+
 			PandemoniumInputHandler.handleMouseEvent(
 				event.actionMasked,
 				MotionEvent.BUTTON_SECONDARY,
 				event.x,
-				event.y
+				event.y,
+				0f,
+				0f,
+				false,
+				sourceMouseRelative
 			)
 			return true
 		}
@@ -160,6 +215,7 @@ internal class PandemoniumGestureHandler : SimpleOnGestureListener(), OnScaleGes
 			} else {
 				MotionEvent.BUTTON_PRIMARY
 			}
+
 		PandemoniumInputHandler.handleMouseEvent(MotionEvent.ACTION_DOWN, buttonMask, x, y, true)
 		PandemoniumInputHandler.handleMouseEvent(MotionEvent.ACTION_UP, 0, x, y, false)
 
@@ -191,7 +247,7 @@ internal class PandemoniumGestureHandler : SimpleOnGestureListener(), OnScaleGes
 
 		val x = terminusEvent.x
 		val y = terminusEvent.y
-		if (terminusEvent.pointerCount >= 2 && panningAndScalingEnabled) {
+		if (terminusEvent.pointerCount >= 2 && panningAndScalingEnabled && !pointerCaptureInProgress) {
 			PandemoniumLib.pan(x, y, distanceX / 5f, distanceY / 5f)
 		} else {
 			PandemoniumInputHandler.handleMotionEvent(terminusEvent)
@@ -200,7 +256,7 @@ internal class PandemoniumGestureHandler : SimpleOnGestureListener(), OnScaleGes
 	}
 
 	override fun onScale(detector: ScaleGestureDetector?): Boolean {
-		if (detector == null || !panningAndScalingEnabled) {
+		if (detector == null || !panningAndScalingEnabled && !pointerCaptureInProgress) {
 			return false
 		}
 		PandemoniumLib.magnify(
@@ -212,7 +268,7 @@ internal class PandemoniumGestureHandler : SimpleOnGestureListener(), OnScaleGes
 	}
 
 	override fun onScaleBegin(detector: ScaleGestureDetector?): Boolean {
-		if (detector == null || !panningAndScalingEnabled) {
+		if (detector == null || !panningAndScalingEnabled && !pointerCaptureInProgress) {
 			return false
 		}
 		scaleInProgress = true
