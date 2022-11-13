@@ -93,7 +93,7 @@ public class PandemoniumLib {
 	/**
 	 * Forward touch events
 	 */
-	public static native void dispatchTouchEvent(int event, int pointer, int pointerCount, float[] positions);
+	public static native void dispatchTouchEvent(int event, int pointer, int pointerCount, float[] positions, boolean doubleTap);
 
 	/**
 	 * Dispatch mouse events
