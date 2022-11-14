@@ -28,7 +28,7 @@ SOFTWARE.
 #include "scene/gui/box_container.h"
 
 class PaintWindow;
-class PaintCanvas;
+class PaintCanvasOld;
 class MenuButton;
 
 class PaintNavbar : public BoxContainer {
@@ -74,7 +74,7 @@ public:
 	~PaintNavbar();
 
 	PaintWindow *paint_window;
-	PaintCanvas *canvas;
+	PaintCanvasOld *canvas;
 
 	MenuButton *file_menu_button;
 	MenuButton *edit_menu_button;

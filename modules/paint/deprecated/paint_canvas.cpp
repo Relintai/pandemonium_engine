@@ -59,7 +59,7 @@ static Ref<Texture> make_icon(T p_src) {
 	return texture;
 }
 
-void PaintCanvas::_process(float delta) {
+void PaintCanvasOld::_process(float delta) {
 	if (!is_visible_in_tree()) {
 		return;
 	}
@@ -68,7 +68,7 @@ void PaintCanvas::_process(float delta) {
 	Rect2 rect = Rect2(Vector2(0, 0), get_size());
 	mouse_in_region = rect.has_point(mouse_position);
 }
-void PaintCanvas::_draw() {
+void PaintCanvasOld::_draw() {
 	for (int i = 0; i < layers.size(); ++i) {
 		Ref<PaintCanvasLayer> layer = layers[i];
 
@@ -81,11 +81,11 @@ void PaintCanvas::_draw() {
 	tool_layer->update_texture();
 }
 
-int PaintCanvas::get_pixel_size() const {
+int PaintCanvasOld::get_pixel_size() const {
 	return _pixel_size;
 }
 
-void PaintCanvas::set_pixel_size(const int size) {
+void PaintCanvasOld::set_pixel_size(const int size) {
 	_pixel_size = size;
 	set_grid_size(_grid_size);
 	set_big_grid_size(_big_grid_size);
@@ -93,10 +93,10 @@ void PaintCanvas::set_pixel_size(const int size) {
 	set_canvas_height(_canvas_height);
 }
 
-int PaintCanvas::get_grid_size() const {
+int PaintCanvasOld::get_grid_size() const {
 	return _grid_size;
 }
-void PaintCanvas::set_grid_size(const int size) {
+void PaintCanvasOld::set_grid_size(const int size) {
 	_grid_size = size;
 
 	if (grid) {
@@ -105,10 +105,10 @@ void PaintCanvas::set_grid_size(const int size) {
 	}
 }
 
-int PaintCanvas::get_big_grid_size() const {
+int PaintCanvasOld::get_big_grid_size() const {
 	return _big_grid_size;
 }
-void PaintCanvas::set_big_grid_size(const int size) {
+void PaintCanvasOld::set_big_grid_size(const int size) {
 	_big_grid_size = size;
 
 	if (big_grid) {
@@ -117,10 +117,10 @@ void PaintCanvas::set_big_grid_size(const int size) {
 	}
 }
 
-int PaintCanvas::get_canvas_width() const {
+int PaintCanvasOld::get_canvas_width() const {
 	return _canvas_width;
 }
-void PaintCanvas::set_canvas_width(const int val) {
+void PaintCanvasOld::set_canvas_width(const int val) {
 	_canvas_width = val;
 
 	Size2 s = get_size();
@@ -128,31 +128,31 @@ void PaintCanvas::set_canvas_width(const int val) {
 	set_size(s);
 }
 
-int PaintCanvas::get_canvas_height() const {
+int PaintCanvasOld::get_canvas_height() const {
 	return _canvas_height;
 }
-void PaintCanvas::set_canvas_height(const int val) {
+void PaintCanvasOld::set_canvas_height(const int val) {
 	_canvas_height = val;
 
 	Size2 s = get_size();
 	s.y = _canvas_height * _pixel_size;
 	set_size(s);
 }
-void PaintCanvas::toggle_alpha_locked(const String &layer_name) {
+void PaintCanvasOld::toggle_alpha_locked(const String &layer_name) {
 	Ref<PaintCanvasLayer> layer = find_layer_by_name(layer_name);
 
 	if (layer.is_valid()) {
 		layer->toggle_alpha_locked();
 	}
 }
-bool PaintCanvas::is_alpha_locked() {
+bool PaintCanvasOld::is_alpha_locked() {
 	if (!active_layer.is_valid()) {
 		return false;
 	}
 
 	return active_layer->alpha_locked;
 }
-Rect2 PaintCanvas::get_content_margin() {
+Rect2 PaintCanvasOld::get_content_margin() {
 	Rect2 rect = Rect2(999999, 999999, -999999, -999999);
 
 	for (int i = 0; i < layers.size(); ++i) {
@@ -181,7 +181,7 @@ Rect2 PaintCanvas::get_content_margin() {
 
 	return rect;
 }
-void PaintCanvas::crop_to_content() {
+void PaintCanvasOld::crop_to_content() {
 	/*
 	var rect = get_content_margin()
 
@@ -199,22 +199,22 @@ void PaintCanvas::crop_to_content() {
 #		layer.resize(width, height)
 	*/
 }
-Ref<PaintCanvasLayer> PaintCanvas::get_active_layer() {
+Ref<PaintCanvasLayer> PaintCanvasOld::get_active_layer() {
 	return active_layer;
 }
-Ref<PaintCanvasLayer> PaintCanvas::get_preview_layer() {
+Ref<PaintCanvasLayer> PaintCanvasOld::get_preview_layer() {
 	return preview_layer;
 }
-void PaintCanvas::clear_active_layer() {
+void PaintCanvasOld::clear_active_layer() {
 	if (active_layer.is_valid()) {
 		active_layer->clear();
 	}
 }
-void PaintCanvas::clear_preview_layer() {
+void PaintCanvasOld::clear_preview_layer() {
 	preview_layer->clear();
 }
 
-void PaintCanvas::clear_layer(const String &layer_name) {
+void PaintCanvasOld::clear_layer(const String &layer_name) {
 	for (int i = 0; i < layers.size(); ++i) {
 		Ref<PaintCanvasLayer> l = layers[i];
 
@@ -226,7 +226,7 @@ void PaintCanvas::clear_layer(const String &layer_name) {
 		}
 	}
 }
-Ref<PaintCanvasLayer> PaintCanvas::remove_layer(const String &layer_name) {
+Ref<PaintCanvasLayer> PaintCanvasOld::remove_layer(const String &layer_name) {
 	// change current layer if the active layer is removed
 	Ref<PaintCanvasLayer> del_layer = find_layer_by_name(layer_name);
 
@@ -255,7 +255,7 @@ Ref<PaintCanvasLayer> PaintCanvas::remove_layer(const String &layer_name) {
 
 	return active_layer;
 }
-Ref<PaintCanvasLayer> PaintCanvas::add_new_layer(const String &layer_name) {
+Ref<PaintCanvasLayer> PaintCanvasOld::add_new_layer(const String &layer_name) {
 	for (int i = 0; i < layers.size(); ++i) {
 		Ref<PaintCanvasLayer> layer = layers[i];
 
@@ -290,7 +290,7 @@ Ref<PaintCanvasLayer> PaintCanvas::add_new_layer(const String &layer_name) {
 
 	return layer;
 }
-Ref<PaintCanvasLayer> PaintCanvas::duplicate_layer(const String &layer_name, const String &new_layer_name) {
+Ref<PaintCanvasLayer> PaintCanvasOld::duplicate_layer(const String &layer_name, const String &new_layer_name) {
 	for (int i = 0; i < layers.size(); ++i) {
 		Ref<PaintCanvasLayer> layer = layers[i];
 
@@ -307,7 +307,7 @@ Ref<PaintCanvasLayer> PaintCanvas::duplicate_layer(const String &layer_name, con
 
 	return layer;
 }
-void PaintCanvas::toggle_layer_visibility(const String &layer_name) {
+void PaintCanvasOld::toggle_layer_visibility(const String &layer_name) {
 	for (int i = 0; i < layers.size(); ++i) {
 		Ref<PaintCanvasLayer> layer = layers[i];
 
@@ -319,7 +319,7 @@ void PaintCanvas::toggle_layer_visibility(const String &layer_name) {
 		}
 	}
 }
-Ref<PaintCanvasLayer> PaintCanvas::find_layer_by_name(const String &layer_name) {
+Ref<PaintCanvasLayer> PaintCanvasOld::find_layer_by_name(const String &layer_name) {
 	for (int i = 0; i < layers.size(); ++i) {
 		Ref<PaintCanvasLayer> layer = layers[i];
 
@@ -332,32 +332,32 @@ Ref<PaintCanvasLayer> PaintCanvas::find_layer_by_name(const String &layer_name) 
 
 	return Ref<PaintCanvasLayer>();
 }
-void PaintCanvas::toggle_lock_layer(const String &layer_name) {
+void PaintCanvasOld::toggle_lock_layer(const String &layer_name) {
 	find_layer_by_name(layer_name)->toggle_lock();
 }
-bool PaintCanvas::is_active_layer_locked() {
+bool PaintCanvasOld::is_active_layer_locked() {
 	return active_layer->locked;
 }
-void PaintCanvas::move_layer_forward(const String &layer_name) {
+void PaintCanvasOld::move_layer_forward(const String &layer_name) {
 	TextureRect *layer = find_layer_by_name(layer_name)->texture_rect_ref;
 	int new_idx = MAX(layer->get_index() - 1, 0);
 	canvas_layers->move_child(layer, new_idx);
 }
-void PaintCanvas::move_layer_back(const String &layer_name) {
+void PaintCanvasOld::move_layer_back(const String &layer_name) {
 	TextureRect *layer = find_layer_by_name(layer_name)->texture_rect_ref;
 	canvas_layers->move_child(layer, layer->get_index() + 1);
 }
 
-void PaintCanvas::select_layer(const String &layer_name) {
+void PaintCanvasOld::select_layer(const String &layer_name) {
 	active_layer = find_layer_by_name(layer_name);
 }
-void PaintCanvas::_on_mouse_entered() {
+void PaintCanvasOld::_on_mouse_entered() {
 	mouse_on_top = true;
 }
-void PaintCanvas::_on_mouse_exited() {
+void PaintCanvasOld::_on_mouse_exited() {
 	mouse_on_top = false;
 }
-bool PaintCanvas::is_inside_canvas(const int x, const int y) {
+bool PaintCanvasOld::is_inside_canvas(const int x, const int y) {
 	if (x < 0 || y < 0) {
 		return false;
 	}
@@ -371,7 +371,7 @@ bool PaintCanvas::is_inside_canvas(const int x, const int y) {
 //Note: Arrays are always passed by reference. To get a copy of an array which
 //      can be modified independently of the original array, use duplicate.
 // (https://docs.godotengine.org/en/stable/classes/class_array.html)
-void PaintCanvas::set_pixel_arr(const PoolVector2iArray &pixels, const Color &color) {
+void PaintCanvasOld::set_pixel_arr(const PoolVector2iArray &pixels, const Color &color) {
 	PoolVector2iArray::Read r = pixels.read();
 
 	for (int i = 0; i < pixels.size(); ++i) {
@@ -380,52 +380,52 @@ void PaintCanvas::set_pixel_arr(const PoolVector2iArray &pixels, const Color &co
 		_set_pixel(active_layer, pixel.x, pixel.y, color);
 	}
 }
-void PaintCanvas::set_pixel_v(const Vector2i &pos, const Color &color) {
+void PaintCanvasOld::set_pixel_v(const Vector2i &pos, const Color &color) {
 	set_pixel(pos.x, pos.y, color);
 }
-void PaintCanvas::set_pixel(const int x, const int y, const Color &color) {
+void PaintCanvasOld::set_pixel(const int x, const int y, const Color &color) {
 	_set_pixel(active_layer, x, y, color);
 }
-void PaintCanvas::_set_pixel_v(Ref<PaintCanvasLayer> layer, const Vector2i &v, const Color &color) {
+void PaintCanvasOld::_set_pixel_v(Ref<PaintCanvasLayer> layer, const Vector2i &v, const Color &color) {
 	_set_pixel(layer, v.x, v.y, color);
 }
-void PaintCanvas::_set_pixel(Ref<PaintCanvasLayer> layer, const int x, const int y, const Color &color) {
+void PaintCanvasOld::_set_pixel(Ref<PaintCanvasLayer> layer, const int x, const int y, const Color &color) {
 	if (!is_inside_canvas(x, y)) {
 		return;
 	}
 
 	layer->set_pixel(x, y, color);
 }
-Color PaintCanvas::get_pixel_v(const Vector2i &pos) {
+Color PaintCanvasOld::get_pixel_v(const Vector2i &pos) {
 	return get_pixel(pos.x, pos.y);
 }
-Color PaintCanvas::get_pixel(const int x, const int y) {
+Color PaintCanvasOld::get_pixel(const int x, const int y) {
 	if (active_layer.is_valid()) {
 		return active_layer->get_pixel(x, y);
 	}
 
 	return Color();
 }
-void PaintCanvas::set_preview_pixel_v(const Vector2i &pos, const Color &color) {
+void PaintCanvasOld::set_preview_pixel_v(const Vector2i &pos, const Color &color) {
 	set_preview_pixel(pos.x, pos.y, color);
 }
 
-void PaintCanvas::set_preview_pixel(const int x, const int y, const Color &color) {
+void PaintCanvasOld::set_preview_pixel(const int x, const int y, const Color &color) {
 	if (!is_inside_canvas(x, y)) {
 		return;
 	}
 
 	preview_layer->set_pixel(x, y, color);
 }
-Color PaintCanvas::get_preview_pixel_v(const Vector2i &pos) {
+Color PaintCanvasOld::get_preview_pixel_v(const Vector2i &pos) {
 	return get_preview_pixel(pos.x, pos.y);
 }
 
-Color PaintCanvas::get_preview_pixel(const int x, const int y) {
+Color PaintCanvasOld::get_preview_pixel(const int x, const int y) {
 	return preview_layer->get_pixel(x, y);
 }
 
-bool PaintCanvas::validate_pixel_v(const Vector2i &pos) const {
+bool PaintCanvasOld::validate_pixel_v(const Vector2i &pos) const {
 	if (active_layer.is_valid()) {
 		return active_layer->validate_pixel_v(pos);
 	}
@@ -433,17 +433,17 @@ bool PaintCanvas::validate_pixel_v(const Vector2i &pos) const {
 	return false;
 }
 
-void PaintCanvas::toggle_grid() {
+void PaintCanvasOld::toggle_grid() {
 	grid->set_visible(!grid->is_visible());
 }
-void PaintCanvas::show_grid() {
+void PaintCanvasOld::show_grid() {
 	grid->show();
 }
-void PaintCanvas::hide_grid() {
+void PaintCanvasOld::hide_grid() {
 	grid->hide();
 }
 
-PoolVector2iArray PaintCanvas::select_color(const int p_x, const int p_y) {
+PoolVector2iArray PaintCanvasOld::select_color(const int p_x, const int p_y) {
 	PoolVector2iArray same_color_pixels;
 
 	Color color = get_pixel(p_x, p_y);
@@ -458,14 +458,14 @@ PoolVector2iArray PaintCanvas::select_color(const int p_x, const int p_y) {
 
 	return same_color_pixels;
 }
-PoolVector2iArray PaintCanvas::select_same_color(const int p_x, const int p_y) {
+PoolVector2iArray PaintCanvasOld::select_same_color(const int p_x, const int p_y) {
 	return get_neighbouring_pixels(p_x, p_y);
 }
 
 // returns array of Vector2
 // yoinked from
 // https://www.geeksforgeeks.org/flood-fill-algorithm-implement-fill-paint/
-PoolVector2iArray PaintCanvas::get_neighbouring_pixels(const int pos_x, const int pos_y) {
+PoolVector2iArray PaintCanvasOld::get_neighbouring_pixels(const int pos_x, const int pos_y) {
 	PoolVector2iArray pixels;
 
 	PoolIntArray to_check_queue;
@@ -524,7 +524,7 @@ PoolVector2iArray PaintCanvas::get_neighbouring_pixels(const int pos_x, const in
 	return pixels;
 }
 
-void PaintCanvas::resize(int width, int height) {
+void PaintCanvasOld::resize(int width, int height) {
 	//if (get_canvas_width() == width && get_canvas_height() == height) {
 	//	return;
 	//	}
@@ -559,7 +559,7 @@ void PaintCanvas::resize(int width, int height) {
 	update();
 }
 
-void PaintCanvas::_notification(int p_what) {
+void PaintCanvasOld::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_POSTINITIALIZE: {
 			connect("mouse_entered", this, "_on_mouse_entered");
@@ -588,7 +588,7 @@ void PaintCanvas::_notification(int p_what) {
 	}
 }
 
-PaintCanvas::PaintCanvas() {
+PaintCanvasOld::PaintCanvasOld() {
 	big_grid = nullptr;
 
 	_pixel_size = 16;
@@ -646,10 +646,10 @@ PaintCanvas::PaintCanvas() {
 	tool_layer->create(tool_preview_layer_rect, _canvas_width, _canvas_height);
 }
 
-PaintCanvas::~PaintCanvas() {
+PaintCanvasOld::~PaintCanvasOld() {
 }
 
-void PaintCanvas::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_on_mouse_entered"), &PaintCanvas::_on_mouse_entered);
-	ClassDB::bind_method(D_METHOD("_on_mouse_exited"), &PaintCanvas::_on_mouse_exited);
+void PaintCanvasOld::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_on_mouse_entered"), &PaintCanvasOld::_on_mouse_entered);
+	ClassDB::bind_method(D_METHOD("_on_mouse_exited"), &PaintCanvasOld::_on_mouse_exited);
 }

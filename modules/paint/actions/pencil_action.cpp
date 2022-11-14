@@ -29,7 +29,7 @@ SOFTWARE.
 #include "../paint_utilities.h"
 #include "core/string/print_string.h"
 
-void PencilAction::do_action(PaintCanvas *canvas, const Array &data) {
+void PencilAction::do_action(PaintCanvasOld *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
 
 	Color c = data[2];
@@ -49,7 +49,7 @@ void PencilAction::do_action(PaintCanvas *canvas, const Array &data) {
 	}
 }
 
-void PencilAction::_set_pixel(PaintCanvas *canvas, Vector2i pixel, Color color) {
+void PencilAction::_set_pixel(PaintCanvasOld *canvas, Vector2i pixel, Color color) {
 	undo_colors.append(canvas->get_pixel_v(pixel));
 	undo_cells.append(pixel);
 

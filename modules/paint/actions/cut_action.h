@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "paint_action.h"
 
-class PaintCanvas;
+class PaintCanvasOld;
 
 class CutAction : public PaintAction {
 	GDCLASS(CutAction, PaintAction);
@@ -47,8 +47,8 @@ public:
 
 	bool can_commit();
 
-	void do_action(PaintCanvas *canvas, const Array &data);
-	void commit_action(PaintCanvas *canvas);
+	void do_action(PaintCanvasOld *canvas, const Array &data);
+	void commit_action(PaintCanvasOld *canvas);
 
 	CutAction();
 	~CutAction();

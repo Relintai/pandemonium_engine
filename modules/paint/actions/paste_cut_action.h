@@ -27,13 +27,13 @@ SOFTWARE.
 
 #include "paint_action.h"
 
-class PaintCanvas;
+class PaintCanvasOld;
 
 class PasteCutAction : public PaintAction {
 	GDCLASS(PasteCutAction, PaintAction);
 
 public:
-	void do_action(PaintCanvas *canvas, const Array &data);
+	void do_action(PaintCanvasOld *canvas, const Array &data);
 
 	PasteCutAction();
 	~PasteCutAction();

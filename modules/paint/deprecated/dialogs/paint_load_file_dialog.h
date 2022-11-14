@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "scene/gui/file_dialog.h"
 
-class PaintCanvas;
+class PaintCanvasOld;
 class PaintWindow;
 
 class PaintLoadFileDialog : public FileDialog {
@@ -46,7 +46,7 @@ public:
 
 	String file_path;
 
-	PaintCanvas *canvas;
+	PaintCanvasOld *canvas;
 	PaintWindow *window;
 
 protected:

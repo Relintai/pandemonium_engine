@@ -28,7 +28,7 @@ SOFTWARE.
 #include "../deprecated/paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
-void BucketAction::do_action(PaintCanvas *canvas, const Array &data) {
+void BucketAction::do_action(PaintCanvasOld *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
 
 	Vector2i pos = data[0];

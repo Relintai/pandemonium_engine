@@ -42,7 +42,7 @@ void LineAction::set_mouse_start_pos_set(const bool val) {
 	mouse_start_pos_set = val;
 }
 
-void LineAction::do_action(PaintCanvas *canvas, const Array &data) {
+void LineAction::do_action(PaintCanvasOld *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
 
 	if (!mouse_start_pos_set) {
@@ -74,7 +74,7 @@ void LineAction::do_action(PaintCanvas *canvas, const Array &data) {
 	}
 }
 
-void LineAction::commit_action(PaintCanvas *canvas) {
+void LineAction::commit_action(PaintCanvasOld *canvas) {
 	canvas->clear_preview_layer();
 
 	for (int i = 0; i < preview_cells.size(); ++i) {

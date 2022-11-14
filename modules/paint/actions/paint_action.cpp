@@ -105,18 +105,18 @@ void PaintAction::set_action_data(const Dictionary &val) {
 	action_data = val;
 }
 
-void PaintAction::do_action(PaintCanvas *canvas, const Array &data) {
+void PaintAction::do_action(PaintCanvasOld *canvas, const Array &data) {
 	layer = canvas->get_active_layer();
 }
-void PaintAction::commit_action(PaintCanvas *canvas) {
+void PaintAction::commit_action(PaintCanvasOld *canvas) {
 }
 
-void PaintAction::undo_action(PaintCanvas *canvas) {
+void PaintAction::undo_action(PaintCanvasOld *canvas) {
 	for (int idx = 0; idx < undo_cells.size(); ++idx) {
 		canvas->_set_pixel_v(layer, undo_cells[idx], undo_colors[idx]);
 	}
 }
-void PaintAction::redo_action(PaintCanvas *canvas) {
+void PaintAction::redo_action(PaintCanvasOld *canvas) {
 	for (int idx = 0; idx < redo_cells.size(); ++idx) {
 		canvas->_set_pixel_v(layer, redo_cells[idx], redo_colors[idx]);
 	}
@@ -171,7 +171,7 @@ PoolVector2iArray PaintAction::get_xy_sym_points(const int canvas_width, const i
 	return points;
 }
 
-PoolVector2iArray PaintAction::get_points(PaintCanvas *canvas, const Vector2i &pixel) {
+PoolVector2iArray PaintAction::get_points(PaintCanvasOld *canvas, const Vector2i &pixel) {
 	PoolVector2iArray points;
 
 	if (canvas->symmetry_x && canvas->symmetry_y) {
@@ -239,7 +239,7 @@ PoolVector2iArray PaintAction::get_points(PaintCanvas *canvas, const Vector2i &p
 	return points;
 }
 
-void PaintAction::draw_points(PaintCanvas *canvas, const PoolVector2iArray &point_arr, const PoolColorArray &color_arr) {
+void PaintAction::draw_points(PaintCanvasOld *canvas, const PoolVector2iArray &point_arr, const PoolColorArray &color_arr) {
 	for (int i = 0; i < point_arr.size(); ++i) {
 		Vector2i pixel = point_arr[i];
 

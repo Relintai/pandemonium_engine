@@ -34,7 +34,7 @@ SOFTWARE.
 
 class PaintAction;
 class PaintCanvasLayer;
-class PaintCanvas;
+class PaintCanvasOld;
 class InputEvent;
 class PaintCanvasDialog;
 class PaintChangeGridSizeDialog;
@@ -227,7 +227,7 @@ public:
 	PanelContainer *bottom_content_panel;
 
 	Control *paint_canvas_container;
-	PaintCanvas *paint_canvas;
+	PaintCanvasOld *paint_canvas;
 
 	Button *paint_tool_button;
 	Button *brush_tool_button;

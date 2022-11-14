@@ -1438,7 +1438,7 @@ PaintWindow::PaintWindow() {
 	paint_canvas_container->connect("mouse_exited", this, "_on_PaintCanvasContainer_mouse_exited");
 	app_mid_container->add_child(paint_canvas_container);
 
-	paint_canvas = memnew(PaintCanvas);
+	paint_canvas = memnew(PaintCanvasOld);
 	paint_canvas->set_pixel_size(4);
 	paint_canvas->set_canvas_width(64);
 	paint_canvas->set_canvas_height(64);

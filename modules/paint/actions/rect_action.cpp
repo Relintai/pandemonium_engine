@@ -42,7 +42,7 @@ void RectAction::set_mouse_start_pos_set(const bool val) {
 	mouse_start_pos_set = val;
 }
 
-void RectAction::do_action(PaintCanvas *canvas, const Array &data) {
+void RectAction::do_action(PaintCanvasOld *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
 
 	if (!mouse_start_pos_set) {
@@ -89,7 +89,7 @@ void RectAction::do_action(PaintCanvas *canvas, const Array &data) {
 		preview_colors.append(tc);
 	}
 }
-void RectAction::commit_action(PaintCanvas *canvas) {
+void RectAction::commit_action(PaintCanvasOld *canvas) {
 	canvas->clear_preview_layer();
 
 	for (int idx = 0; idx < preview_cells.size(); ++idx) {

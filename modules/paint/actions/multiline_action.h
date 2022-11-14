@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "paint_action.h"
 
-class PaintCanvas;
+class PaintCanvasOld;
 
 class MultiLineAction : public PaintAction {
 	GDCLASS(MultiLineAction, PaintAction);
@@ -35,8 +35,8 @@ class MultiLineAction : public PaintAction {
 public:
 	bool can_commit();
 
-	void do_action(PaintCanvas *canvas, const Array &data);
-	//void commit_action(PaintCanvas *canvas);
+	void do_action(PaintCanvasOld *canvas, const Array &data);
+	//void commit_action(PaintCanvasOld *canvas);
 
 	MultiLineAction();
 	~MultiLineAction();

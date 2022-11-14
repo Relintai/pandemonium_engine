@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "scene/gui/file_dialog.h"
 
-class PaintCanvas;
+class PaintCanvasOld;
 
 class PaintSaveFileDialog : public FileDialog {
 	GDCLASS(PaintSaveFileDialog, FileDialog);
@@ -44,7 +44,7 @@ public:
 
 	String file_path;
 
-	PaintCanvas *canvas;
+	PaintCanvasOld *canvas;
 
 protected:
 	void _notification(int p_what);

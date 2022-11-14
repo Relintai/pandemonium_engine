@@ -33,7 +33,7 @@ SOFTWARE.
 #include "core/containers/pool_vector.h"
 #include "core/variant/variant.h"
 
-class PaintCanvas;
+class PaintCanvasOld;
 class PaintCanvasLayer;
 
 class PaintAction : public Resource {
@@ -73,19 +73,19 @@ public:
 	Dictionary get_action_data();
 	void set_action_data(const Dictionary &val);
 
-	virtual void do_action(PaintCanvas *canvas, const Array &data);
-	virtual void commit_action(PaintCanvas *canvas);
+	virtual void do_action(PaintCanvasOld *canvas, const Array &data);
+	virtual void commit_action(PaintCanvasOld *canvas);
 
-	virtual void undo_action(PaintCanvas *canvas);
-	virtual void redo_action(PaintCanvas *canvas);
+	virtual void undo_action(PaintCanvasOld *canvas);
+	virtual void redo_action(PaintCanvasOld *canvas);
 	virtual bool can_commit();
 
 	virtual PoolVector2iArray get_x_sym_points(const int canvas_width, const Vector2i &pixel);
 	virtual PoolVector2iArray get_y_sym_points(const int canvas_height, const Vector2i &pixel);
 	virtual PoolVector2iArray get_xy_sym_points(const int canvas_width, const int canvas_height, const Vector2i &pixel);
-	virtual PoolVector2iArray get_points(PaintCanvas *canvas, const Vector2i &pixel);
+	virtual PoolVector2iArray get_points(PaintCanvasOld *canvas, const Vector2i &pixel);
 
-	void draw_points(PaintCanvas *canvas, const PoolVector2iArray &point_arr, const PoolColorArray &color_arr);
+	void draw_points(PaintCanvasOld *canvas, const PoolVector2iArray &point_arr, const PoolColorArray &color_arr);
 
 	PaintAction();
 	~PaintAction();

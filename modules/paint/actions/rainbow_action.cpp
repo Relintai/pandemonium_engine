@@ -28,7 +28,7 @@ SOFTWARE.
 #include "../deprecated/paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
-void RainbowAction::do_action(PaintCanvas *canvas, const Array &data) {
+void RainbowAction::do_action(PaintCanvasOld *canvas, const Array &data) {
 	PaintAction::do_action(canvas, data);
 
 	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);

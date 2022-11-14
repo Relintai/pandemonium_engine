@@ -1,5 +1,5 @@
-#ifndef PAINT_CANVAS_H
-#define PAINT_CANVAS_H
+#ifndef PAINT_CANVAS_OLD_H
+#define PAINT_CANVAS_OLD_H
 
 /*
 Copyright (c) 2019 Flairieve
@@ -39,8 +39,8 @@ class PaintCanvasLayer;
 class PaintCanvasBackground;
 
 //class_name GECanvas
-class PaintCanvas : public MarginContainer {
-	GDCLASS(PaintCanvas, MarginContainer);
+class PaintCanvasOld : public MarginContainer {
+	GDCLASS(PaintCanvasOld, MarginContainer);
 
 public:
 	void _process(float delta);
@@ -111,8 +111,8 @@ public:
 
 	void resize(int width, int height);
 
-	PaintCanvas();
-	~PaintCanvas();
+	PaintCanvasOld();
+	~PaintCanvasOld();
 
 	Vector<Ref<PaintCanvasLayer>> layers;
 	Ref<PaintCanvasLayer> active_layer;
