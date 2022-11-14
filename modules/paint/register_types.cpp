@@ -38,6 +38,12 @@ SOFTWARE.
 
 #include "deprecated/paint_window.h"
 
+#include "ui/paint_canvas_background.h"
+#include "ui/paint_canvas_outline.h"
+#include "ui/paint_color_grid.h"
+#include "ui/paint_selection_box.h"
+#include "ui/paint_visual_grid.h"
+
 #ifdef TOOLS_ENABLED
 #include "paint_editor_plugin.h"
 #endif
@@ -58,6 +64,12 @@ void register_paint_types() {
 	ClassDB::register_class<PencilAction>();
 	ClassDB::register_class<RainbowAction>();
 	ClassDB::register_class<RectAction>();
+
+	//ClassDB::register_class<PaintCanvasBackground>();
+	ClassDB::register_class<PaintCanvasOutline>();
+	ClassDB::register_class<PaintColorGrid>();
+	ClassDB::register_class<PaintSelectionBox>();
+	ClassDB::register_class<PaintVisualGrid>();
 
 #ifdef TOOLS_ENABLED
 	EditorPlugins::add_by_type<PaintEditorPlugin>();
