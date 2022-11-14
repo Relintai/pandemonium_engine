@@ -34,7 +34,7 @@ SOFTWARE.
 #include "scene/gui/margin_container.h"
 #include "scene/gui/texture_button.h"
 
-#include "../icons/paint_icons.h"
+#include "../paint_icons/paint_icons.h"
 
 static float scale = 1;
 

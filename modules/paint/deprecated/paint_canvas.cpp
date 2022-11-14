@@ -33,7 +33,7 @@ SOFTWARE.
 
 #include "paint_canvas_layer.h"
 
-#include "../icons/paint_icons.h"
+#include "../paint_icons/paint_icons.h"
 
 static float scale = 1;
 

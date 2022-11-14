@@ -67,7 +67,7 @@ SOFTWARE.
 #include "dialogs/paint_save_file_dialog.h"
 #include "paint_settings.h"
 
-#include "../icons/paint_icons.h"
+#include "../paint_icons/paint_icons.h"
 
 static float scale = 1;
 
