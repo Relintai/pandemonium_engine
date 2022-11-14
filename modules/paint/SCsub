@@ -33,6 +33,8 @@ module_env.add_source_files(env.modules_sources,"ui/paint_visual_grid.cpp")
 module_env.add_source_files(env.modules_sources,"paint_utilities.cpp")
 module_env.add_source_files(env.modules_sources,"bush_prefabs.cpp")
 
+module_env.add_source_files(env.modules_sources,"nodes/paint_node.cpp")
+
 module_env.add_source_files(env.modules_sources,"deprecated/paint_canvas_layer.cpp")
 module_env.add_source_files(env.modules_sources,"deprecated/paint_canvas.cpp")
 module_env.add_source_files(env.modules_sources,"deprecated/paint_layer_button.cpp")

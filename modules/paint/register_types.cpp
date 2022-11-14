@@ -44,6 +44,8 @@ SOFTWARE.
 #include "ui/paint_selection_box.h"
 #include "ui/paint_visual_grid.h"
 
+#include "nodes/paint_node.h"
+
 #ifdef TOOLS_ENABLED
 #include "paint_editor_plugin.h"
 #endif
@@ -70,6 +72,8 @@ void register_paint_types() {
 	ClassDB::register_class<PaintColorGrid>();
 	ClassDB::register_class<PaintSelectionBox>();
 	ClassDB::register_class<PaintVisualGrid>();
+
+	ClassDB::register_class<PaintNode>();
 
 #ifdef TOOLS_ENABLED
 	EditorPlugins::add_by_type<PaintEditorPlugin>();
