@@ -67,31 +67,7 @@ SOFTWARE.
 #include "dialogs/paint_save_file_dialog.h"
 #include "paint_settings.h"
 
-#include "../paint_icons/paint_icons.h"
-
-static float scale = 1;
-
-template <class T>
-static Ref<Texture> make_icon(T p_src) {
-	Ref<ImageTexture> texture(memnew(ImageTexture));
-	Ref<Image> img = memnew(Image(p_src));
-	if (scale > 1) {
-		Size2 orig_size = Size2(img->get_width(), img->get_height());
-
-		img->convert(Image::FORMAT_RGBA8);
-		img->expand_x2_hq2x();
-		if (scale != 2.0) {
-			img->resize(orig_size.x * scale, orig_size.y * scale);
-		}
-	} else if (scale < 1) {
-		Size2 orig_size = Size2(img->get_width(), img->get_height());
-		img->convert(Image::FORMAT_RGBA8);
-		img->resize(orig_size.x * scale, orig_size.y * scale);
-	}
-	texture->create_from_image(img, ImageTexture::FLAG_FILTER);
-
-	return texture;
-}
+#include "../paint_icons/icons.h"
 
 Control *PaintWindow::get_navbar() {
 	return navbar;
@@ -1366,29 +1342,29 @@ PaintWindow::PaintWindow() {
 	left_main_vbox_container->add_child(brush_container);
 
 	TextureButton *brush_rect_button = memnew(TextureButton);
-	brush_rect_button->set_normal_texture(make_icon(brush_rect_png));
-	brush_rect_button->set_hover_texture(make_icon(brush_rect_hovered_png));
+	brush_rect_button->set_normal_texture(PaintIcons::make_icon_brush_rect_png());
+	brush_rect_button->set_hover_texture(PaintIcons::make_icon_brush_rect_hovered_png());
 	brush_rect_button->set_custom_minimum_size(Size2(25, 25));
 	brush_rect_button->connect("pressed", this, "_on_BrushRect_pressed");
 	brush_container->add_child(brush_rect_button);
 
 	TextureButton *brush_circle_button = memnew(TextureButton);
-	brush_circle_button->set_normal_texture(make_icon(brush_circle_png));
-	brush_circle_button->set_hover_texture(make_icon(brush_circle_hovered_png));
+	brush_circle_button->set_normal_texture(PaintIcons::make_icon_brush_circle_png());
+	brush_circle_button->set_hover_texture(PaintIcons::make_icon_brush_circle_hovered_png());
 	brush_circle_button->set_custom_minimum_size(Size2(25, 25));
 	brush_circle_button->connect("pressed", this, "_on_BrushCircle_pressed");
 	brush_container->add_child(brush_circle_button);
 
 	TextureButton *brush_v_line_button = memnew(TextureButton);
-	brush_v_line_button->set_normal_texture(make_icon(brush_v_line_png));
-	brush_v_line_button->set_hover_texture(make_icon(brush_v_line_hovered_png));
+	brush_v_line_button->set_normal_texture(PaintIcons::make_icon_brush_v_line_png());
+	brush_v_line_button->set_hover_texture(PaintIcons::make_icon_brush_v_line_hovered_png());
 	brush_v_line_button->set_custom_minimum_size(Size2(25, 25));
 	brush_v_line_button->connect("pressed", this, "_on_BrushVLine_pressed");
 	brush_container->add_child(brush_v_line_button);
 
 	TextureButton *brush_h_line_button = memnew(TextureButton);
-	brush_h_line_button->set_normal_texture(make_icon(brush_h_line_png));
-	brush_h_line_button->set_hover_texture(make_icon(brush_h_line_hovered_png));
+	brush_h_line_button->set_normal_texture(PaintIcons::make_icon_brush_h_line_png());
+	brush_h_line_button->set_hover_texture(PaintIcons::make_icon_brush_h_line_hovered_png());
 	brush_h_line_button->set_custom_minimum_size(Size2(25, 25));
 	brush_h_line_button->connect("pressed", this, "_on_BrushHLine_pressed");
 	brush_container->add_child(brush_h_line_button);

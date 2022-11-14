@@ -33,31 +33,7 @@ SOFTWARE.
 
 #include "paint_canvas_layer.h"
 
-#include "../paint_icons/paint_icons.h"
-
-static float scale = 1;
-
-template <class T>
-static Ref<Texture> make_icon(T p_src) {
-	Ref<ImageTexture> texture(memnew(ImageTexture));
-	Ref<Image> img = memnew(Image(p_src));
-	if (scale > 1) {
-		Size2 orig_size = Size2(img->get_width(), img->get_height());
-
-		img->convert(Image::FORMAT_RGBA8);
-		img->expand_x2_hq2x();
-		if (scale != 2.0) {
-			img->resize(orig_size.x * scale, orig_size.y * scale);
-		}
-	} else if (scale < 1) {
-		Size2 orig_size = Size2(img->get_width(), img->get_height());
-		img->convert(Image::FORMAT_RGBA8);
-		img->resize(orig_size.x * scale, orig_size.y * scale);
-	}
-	texture->create_from_image(img, ImageTexture::FLAG_FILTER);
-
-	return texture;
-}
+#include "../paint_icons/icons.h"
 
 void PaintCanvasOld::_process(float delta) {
 	if (!is_visible_in_tree()) {

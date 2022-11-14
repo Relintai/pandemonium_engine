@@ -34,31 +34,7 @@ SOFTWARE.
 #include "scene/gui/margin_container.h"
 #include "scene/gui/texture_button.h"
 
-#include "../paint_icons/paint_icons.h"
-
-static float scale = 1;
-
-template <class T>
-static Ref<Texture> make_icon(T p_src) {
-	Ref<ImageTexture> texture(memnew(ImageTexture));
-	Ref<Image> img = memnew(Image(p_src));
-	if (scale > 1) {
-		Size2 orig_size = Size2(img->get_width(), img->get_height());
-
-		img->convert(Image::FORMAT_RGBA8);
-		img->expand_x2_hq2x();
-		if (scale != 2.0) {
-			img->resize(orig_size.x * scale, orig_size.y * scale);
-		}
-	} else if (scale < 1) {
-		Size2 orig_size = Size2(img->get_width(), img->get_height());
-		img->convert(Image::FORMAT_RGBA8);
-		img->resize(orig_size.x * scale, orig_size.y * scale);
-	}
-	texture->create_from_image(img, ImageTexture::FLAG_FILTER);
-
-	return texture;
-}
+#include "../paint_icons/icons.h"
 
 PaintLayerButton::PaintLayerButton() {
 	set_custom_minimum_size(Size2(0, 32));
@@ -112,8 +88,8 @@ PaintLayerButton::PaintLayerButton() {
 	// Visible Button
 	visible_button = memnew(CheckButton);
 	visible_button->set_pressed(true);
-	visible_button->set("custom_icons/off", make_icon(minidotta_invis_png));
-	visible_button->set("custom_icons/on", make_icon(minidotta_png));
+	visible_button->set("custom_icons/off", PaintIcons::make_icon_minidotta_invis_png());
+	visible_button->set("custom_icons/on", PaintIcons::make_icon_minidotta_png());
 	style_box.instance();
 	style_box->set("bg_color", Color(0.6, 0.6, 0.6));
 	layer_button->set("custom_styles/normal", style_box);
@@ -122,8 +98,8 @@ PaintLayerButton::PaintLayerButton() {
 	// Lock Button
 	lock_button = memnew(CheckButton);
 	lock_button->set_pressed(false);
-	lock_button->set("custom_icons/off", make_icon(unlock_layer_png));
-	lock_button->set("custom_icons/on", make_icon(lock_layer_1_png));
+	lock_button->set("custom_icons/off", PaintIcons::make_icon_unlock_layer_png());
+	lock_button->set("custom_icons/on", PaintIcons::make_icon_lock_layer_1_png());
 	style_box.instance();
 	style_box->set("bg_color", Color(0.6, 0.6, 0.6));
 	layer_button->set("custom_styles/normal", style_box);
@@ -138,8 +114,8 @@ PaintLayerButton::PaintLayerButton() {
 	up_button->set_stretch_mode(TextureButton::STRETCH_KEEP_CENTERED);
 	up_button->set_h_size_flags(SIZE_EXPAND_FILL);
 	up_button->set_v_size_flags(SIZE_EXPAND_FILL);
-	up_button->set_normal_texture(make_icon(arrow_up_png));
-	up_button->set_pressed_texture(make_icon(minidotta_png));
+	up_button->set_normal_texture(PaintIcons::make_icon_arrow_up_png());
+	up_button->set_pressed_texture(PaintIcons::make_icon_minidotta_png());
 	up_button->set_custom_minimum_size(Vector2(15, 15));
 	right_main_container->add_child(up_button);
 
@@ -148,8 +124,8 @@ PaintLayerButton::PaintLayerButton() {
 	down_button->set_stretch_mode(TextureButton::STRETCH_KEEP_CENTERED);
 	down_button->set_h_size_flags(SIZE_EXPAND_FILL);
 	down_button->set_v_size_flags(SIZE_EXPAND_FILL);
-	down_button->set_normal_texture(make_icon(arrow_down_png));
-	down_button->set_pressed_texture(make_icon(minidotta_png));
+	down_button->set_normal_texture(PaintIcons::make_icon_arrow_down_png());
+	down_button->set_pressed_texture(PaintIcons::make_icon_minidotta_png());
 	down_button->set_custom_minimum_size(Vector2(15, 15));
 	right_main_container->add_child(down_button);
 }
