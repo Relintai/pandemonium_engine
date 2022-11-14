@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "scene/gui/control.h"
 
-#include "bush_prefabs.h"
+#include "../bush_prefabs.h"
 #include "core/containers/hash_map.h"
 #include "core/object/reference.h"
 #include "core/os/keyboard.h"

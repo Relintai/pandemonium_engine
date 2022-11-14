@@ -28,25 +28,25 @@ SOFTWARE.
 #include "core/io/image.h"
 #include "scene/resources/texture.h"
 
-#include "actions/brighten_action.h"
-#include "actions/brush_action.h"
-#include "actions/bucket_action.h"
-#include "actions/cut_action.h"
-#include "actions/darken_action.h"
-#include "actions/line_action.h"
-#include "actions/multiline_action.h"
-#include "actions/paste_cut_action.h"
-#include "actions/pencil_action.h"
-#include "actions/rainbow_action.h"
-#include "actions/rect_action.h"
+#include "../actions/brighten_action.h"
+#include "../actions/brush_action.h"
+#include "../actions/bucket_action.h"
+#include "../actions/cut_action.h"
+#include "../actions/darken_action.h"
+#include "../actions/line_action.h"
+#include "../actions/multiline_action.h"
+#include "../actions/paste_cut_action.h"
+#include "../actions/pencil_action.h"
+#include "../actions/rainbow_action.h"
+#include "../actions/rect_action.h"
 
 #include "paint_canvas.h"
-#include "paint_canvas_background.h"
+#include "../ui/paint_canvas_background.h"
 #include "paint_canvas_layer.h"
-#include "paint_color_grid.h"
+#include "../ui/paint_color_grid.h"
 #include "paint_layer_button.h"
 #include "paint_navbar.h"
-#include "paint_utilities.h"
+#include "../paint_utilities.h"
 #include "scene/resources/style_box.h"
 
 #include "scene/gui/button.h"
@@ -67,7 +67,7 @@ SOFTWARE.
 #include "dialogs/paint_save_file_dialog.h"
 #include "paint_settings.h"
 
-#include "icons/paint_icons.h"
+#include "../icons/paint_icons.h"
 
 static float scale = 1;
 

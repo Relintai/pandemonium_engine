@@ -25,8 +25,8 @@ SOFTWARE.
 #include "brush_action.h"
 
 #include "../bush_prefabs.h"
-#include "../paint_canvas.h"
-#include "../paint_canvas_layer.h"
+#include "../deprecated/paint_canvas.h"
+#include "../deprecated/paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
 void BrushAction::do_action(PaintCanvas *canvas, const Array &data) {

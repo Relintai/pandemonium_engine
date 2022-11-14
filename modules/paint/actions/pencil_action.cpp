@@ -24,8 +24,8 @@ SOFTWARE.
 
 #include "pencil_action.h"
 
-#include "../paint_canvas.h"
-#include "../paint_canvas_layer.h"
+#include "../deprecated/paint_canvas.h"
+#include "../deprecated/paint_canvas_layer.h"
 #include "../paint_utilities.h"
 #include "core/string/print_string.h"
 

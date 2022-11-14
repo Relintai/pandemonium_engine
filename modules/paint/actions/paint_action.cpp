@@ -24,8 +24,8 @@ SOFTWARE.
 
 #include "paint_action.h"
 
-#include "../paint_canvas.h"
-#include "../paint_canvas_layer.h"
+#include "../deprecated/paint_canvas.h"
+#include "../deprecated/paint_canvas_layer.h"
 #include "core/object/object.h"
 
 Dictionary PaintAction::get_action_data_undo() {

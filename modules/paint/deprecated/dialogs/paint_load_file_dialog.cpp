@@ -27,7 +27,7 @@ SOFTWARE.
 #include "../paint_canvas.h"
 #include "../paint_canvas_layer.h"
 #include "../paint_window.h"
-#include "../paint_utilities.h"
+#include "../../paint_utilities.h"
 
 void PaintLoadFileDialog::load_img() {
 	Ref<Image> image;

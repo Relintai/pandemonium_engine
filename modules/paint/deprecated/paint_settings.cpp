@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "paint_settings.h"
 
-#include "paint_canvas_outline.h"
+#include "../ui/paint_canvas_outline.h"
 
 #include "scene/gui/box_container.h"
 #include "scene/gui/check_button.h"

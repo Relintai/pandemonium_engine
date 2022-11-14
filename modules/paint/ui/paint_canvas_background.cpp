@@ -27,7 +27,7 @@ SOFTWARE.
 #include "scene/resources/material.h"
 #include "scene/resources/shader.h"
 
-#include "shaders/shaders.h"
+#include "../shaders/shaders.h"
 
 float PaintCanvasBackground::get_pixel_size() const {
 	return _pixel_size;

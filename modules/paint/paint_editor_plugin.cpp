@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "paint_editor_plugin.h"
 
-#include "paint_window.h"
+#include "deprecated/paint_window.h"
 
 void PaintEditorPlugin::make_visible(const bool visible) {
 	window->set_visible(visible);

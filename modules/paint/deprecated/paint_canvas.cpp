@@ -24,16 +24,16 @@ SOFTWARE.
 
 #include "paint_canvas.h"
 
-#include "paint_canvas_background.h"
-#include "paint_canvas_outline.h"
-#include "paint_utilities.h"
-#include "paint_visual_grid.h"
+#include "../ui/paint_canvas_background.h"
+#include "../ui/paint_canvas_outline.h"
+#include "../paint_utilities.h"
+#include "../ui/paint_visual_grid.h"
 #include "scene/gui/control.h"
 #include "scene/gui/texture_rect.h"
 
 #include "paint_canvas_layer.h"
 
-#include "icons/paint_icons.h"
+#include "../icons/paint_icons.h"
 
 static float scale = 1;
 

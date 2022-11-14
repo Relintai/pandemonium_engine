@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "paint_canvas_layer.h"
 
-#include "paint_utilities.h"
+#include "../paint_utilities.h"
 #include "scene/gui/texture_rect.h"
 
 bool PaintCanvasLayer::get_visible() {

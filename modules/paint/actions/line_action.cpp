@@ -24,8 +24,8 @@ SOFTWARE.
 
 #include "line_action.h"
 
-#include "../paint_canvas.h"
-#include "../paint_canvas_layer.h"
+#include "../deprecated/paint_canvas.h"
+#include "../deprecated/paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
 Vector2i LineAction::get_mouse_start_pos() {
