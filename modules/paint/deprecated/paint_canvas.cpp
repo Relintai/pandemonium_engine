@@ -605,10 +605,6 @@ PaintCanvasOld::PaintCanvasOld() {
 	mouse_on_top = false;
 
 	canvas_background = memnew(PaintCanvasBackground);
-	canvas_background->set_texture(make_icon(grid_png));
-	canvas_background->set_expand(true);
-	canvas_background->set_stretch_mode(TextureRect::STRETCH_TILE);
-	//canvas_background->set_draw_behind_parent(true);
 	add_child(canvas_background);
 
 	canvas_layers = memnew(Control);

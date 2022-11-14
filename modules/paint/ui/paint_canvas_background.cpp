@@ -26,8 +26,36 @@ SOFTWARE.
 
 #include "scene/resources/material.h"
 #include "scene/resources/shader.h"
+#include "core/io/image.h"
+#include "scene/resources/texture.h"
 
 #include "../shaders/shaders.h"
+
+#include "../paint_icons/paint_icons.h"
+
+static float scale = 1;
+
+template <class T>
+static Ref<Texture> make_icon(T p_src) {
+	Ref<ImageTexture> texture(memnew(ImageTexture));
+	Ref<Image> img = memnew(Image(p_src));
+	if (scale > 1) {
+		Size2 orig_size = Size2(img->get_width(), img->get_height());
+
+		img->convert(Image::FORMAT_RGBA8);
+		img->expand_x2_hq2x();
+		if (scale != 2.0) {
+			img->resize(orig_size.x * scale, orig_size.y * scale);
+		}
+	} else if (scale < 1) {
+		Size2 orig_size = Size2(img->get_width(), img->get_height());
+		img->convert(Image::FORMAT_RGBA8);
+		img->resize(orig_size.x * scale, orig_size.y * scale);
+	}
+	texture->create_from_image(img, ImageTexture::FLAG_FILTER);
+
+	return texture;
+}
 
 float PaintCanvasBackground::get_pixel_size() const {
 	return _pixel_size;
@@ -41,6 +69,11 @@ void PaintCanvasBackground::set_pixel_size(const float val) {
 PaintCanvasBackground::PaintCanvasBackground() {
 	_pixel_size = 1;
 
+	set_expand(true);
+	set_stretch_mode(TextureRect::STRETCH_TILE);
+
+	set_texture(make_icon(grid_png));
+
 	_shader.instance();
 	_shader->set_code(background_shader_shader_code);
 
@@ -52,6 +85,8 @@ PaintCanvasBackground::PaintCanvasBackground() {
 }
 
 PaintCanvasBackground::~PaintCanvasBackground() {
+	_material.unref();
+	_shader.unref();
 }
 
 void PaintCanvasBackground::_bind_methods() {

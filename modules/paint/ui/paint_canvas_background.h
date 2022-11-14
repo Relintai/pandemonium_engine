@@ -31,6 +31,7 @@ SOFTWARE.
 
 class ShaderMaterial;
 class Shader;
+class Image;
 
 class PaintCanvasBackground : public TextureRect {
 	GDCLASS(PaintCanvasBackground, TextureRect);
