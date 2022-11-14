@@ -65,7 +65,7 @@ void register_paint_types() {
 	ClassDB::register_class<RainbowAction>();
 	ClassDB::register_class<RectAction>();
 
-	//ClassDB::register_class<PaintCanvasBackground>();
+	ClassDB::register_class<PaintCanvasBackground>();
 	ClassDB::register_class<PaintCanvasOutline>();
 	ClassDB::register_class<PaintColorGrid>();
 	ClassDB::register_class<PaintSelectionBox>();

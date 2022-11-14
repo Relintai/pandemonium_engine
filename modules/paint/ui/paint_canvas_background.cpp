@@ -24,9 +24,9 @@ SOFTWARE.
 
 #include "paint_canvas_background.h"
 
+#include "core/io/image.h"
 #include "scene/resources/material.h"
 #include "scene/resources/shader.h"
-#include "core/io/image.h"
 #include "scene/resources/texture.h"
 
 #include "../shaders/shaders.h"
@@ -39,7 +39,9 @@ float PaintCanvasBackground::get_pixel_size() const {
 void PaintCanvasBackground::set_pixel_size(const float val) {
 	_pixel_size = val;
 
-	_material->set_shader_param("pixel_size", _pixel_size);
+	if (_material.is_valid()) {
+		_material->set_shader_param("pixel_size", _pixel_size);
+	}
 }
 
 PaintCanvasBackground::PaintCanvasBackground() {
@@ -47,22 +49,31 @@ PaintCanvasBackground::PaintCanvasBackground() {
 
 	set_expand(true);
 	set_stretch_mode(TextureRect::STRETCH_TILE);
-
-	set_texture(PaintIcons::make_icon_grid_png());
-
-	_shader.instance();
-	_shader->set_code(background_shader_shader_code);
-
-	_material.instance();
-	_material->set_shader(_shader);
-	_material->set_shader_param("pixel_size", _pixel_size);
-
-	set_material(_material);
 }
 
 PaintCanvasBackground::~PaintCanvasBackground() {
-	_material.unref();
-	_shader.unref();
+}
+
+void PaintCanvasBackground::_notification(int p_what) {
+	switch (p_what) {
+		case NOTIFICATION_ENTER_TREE:
+			_shader.instance();
+			_shader->set_code(background_shader_shader_code);
+
+			_material.instance();
+			_material->set_shader(_shader);
+			_material->set_shader_param("pixel_size", _pixel_size);
+
+			set_material(_material);
+
+			set_texture(PaintIcons::make_icon_grid_png());
+			break;
+		case NOTIFICATION_EXIT_TREE:
+			set_material(Ref<Material>());
+			_shader.unref();
+			_material.unref();
+			break;
+	}
 }
 
 void PaintCanvasBackground::_bind_methods() {
