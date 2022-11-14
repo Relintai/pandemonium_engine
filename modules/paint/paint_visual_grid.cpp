@@ -109,4 +109,5 @@ PaintVisualGrid::~PaintVisualGrid() {
 }
 
 void PaintVisualGrid::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("set_grid_size", "size"), &PaintVisualGrid::set_grid_size);
 }

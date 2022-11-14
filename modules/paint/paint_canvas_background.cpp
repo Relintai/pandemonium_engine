@@ -55,4 +55,6 @@ PaintCanvasBackground::~PaintCanvasBackground() {
 }
 
 void PaintCanvasBackground::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_pixel_size"), &PaintCanvasBackground::get_pixel_size);
+	ClassDB::bind_method(D_METHOD("set_pixel_size"), &PaintCanvasBackground::set_pixel_size);
 }

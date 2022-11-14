@@ -65,4 +65,5 @@ void PaintColorGrid::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("color_change_request", PropertyInfo(Variant::COLOR, "color")));
 
 	ClassDB::bind_method(D_METHOD("change_color_to"), &PaintColorGrid::change_color_to);
+	ClassDB::bind_method(D_METHOD("add_color_prefab"), &PaintColorGrid::add_color_prefab);
 }

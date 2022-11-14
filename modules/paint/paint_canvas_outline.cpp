@@ -69,4 +69,5 @@ PaintCanvasOutline::~PaintCanvasOutline() {
 }
 
 void PaintCanvasOutline::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("draw_outline_box", "pos", "size", "color", "width"), &PaintCanvasOutline::draw_outline_box);
 }
