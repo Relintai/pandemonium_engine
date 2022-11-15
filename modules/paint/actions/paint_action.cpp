@@ -187,7 +187,7 @@ PoolVector2iArray PaintAction::get_xy_sym_points(const int canvas_width, const i
 	return points;
 }
 
-PoolVector2iArray PaintAction::get_points(PaintCanvasOld *canvas, const Vector2i &pixel) {
+PoolVector2iArray PaintAction::get_points_old(PaintCanvasOld *canvas, const Vector2i &pixel) {
 	PoolVector2iArray points;
 
 	if (canvas->symmetry_x && canvas->symmetry_y) {
@@ -255,7 +255,7 @@ PoolVector2iArray PaintAction::get_points(PaintCanvasOld *canvas, const Vector2i
 	return points;
 }
 
-void PaintAction::draw_points(PaintCanvasOld *canvas, const PoolVector2iArray &point_arr, const PoolColorArray &color_arr) {
+void PaintAction::draw_points_old(PaintCanvasOld *canvas, const PoolVector2iArray &point_arr, const PoolColorArray &color_arr) {
 	for (int i = 0; i < point_arr.size(); ++i) {
 		Vector2i pixel = point_arr[i];
 

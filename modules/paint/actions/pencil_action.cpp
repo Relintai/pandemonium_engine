@@ -39,7 +39,7 @@ void PencilAction::do_action_old(PaintCanvasOld *canvas, const Array &data) {
 	for (int i = 0; i < pixels.size(); ++i) {
 		Vector2i pixel = pixels[i];
 
-		PoolVector2iArray points = get_points(canvas, pixel);
+		PoolVector2iArray points = get_points_old(canvas, pixel);
 
 		for (int j = 0; j < points.size(); ++j) {
 			Vector2i p = points[j];
