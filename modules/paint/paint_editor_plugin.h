@@ -23,8 +23,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "editor/editor_plugin.h"
 #include "core/object/reference.h"
+#include "editor/editor_plugin.h"
 
 class PaintWindow;
 class Texture;
@@ -39,6 +39,13 @@ public:
 
 	void make_visible(const bool visible);
 	String get_name() const;
+	void edit(Object *p_object);
+	bool handles(Object *p_object) const;
+	void edited_scene_changed();
+
+	bool forward_canvas_gui_input(const Ref<InputEvent> &p_event);
+	void forward_canvas_draw_over_viewport(Control *p_overlay);
+	void forward_canvas_force_draw_over_viewport(Control *p_overlay);
 
 	PaintEditorPlugin(EditorNode *p_node);
 	~PaintEditorPlugin();

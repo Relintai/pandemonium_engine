@@ -29,6 +29,8 @@ SOFTWARE.
 #include "ui/paint_sidebar.h"
 #include "ui/sidebar_modules/paint_color_grid.h"
 
+#include "nodes/paint_node.h"
+
 PaintSidebar *PaintEditorPlugin::get_sidebar() {
 	return _sidebar;
 }
@@ -39,6 +41,24 @@ void PaintEditorPlugin::make_visible(const bool visible) {
 
 String PaintEditorPlugin::get_name() const {
 	return "Paint";
+}
+
+void PaintEditorPlugin::edit(Object *p_object) {
+	_sidebar->on_paint_node_selected(Object::cast_to<PaintNode>(p_object));
+	//make_visible(true);
+}
+bool PaintEditorPlugin::handles(Object *p_object) const {
+	return p_object->is_class("PaintNode");
+}
+void PaintEditorPlugin::edited_scene_changed() {
+}
+
+bool PaintEditorPlugin::forward_canvas_gui_input(const Ref<InputEvent> &p_event) {
+	return false;
+}
+void PaintEditorPlugin::forward_canvas_draw_over_viewport(Control *p_overlay) {
+}
+void PaintEditorPlugin::forward_canvas_force_draw_over_viewport(Control *p_overlay) {
 }
 
 PaintEditorPlugin::PaintEditorPlugin(EditorNode *p_node) {
