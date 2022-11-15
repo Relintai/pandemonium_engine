@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "paint_editor_plugin.h"
 
+#include "core/config/engine.h"
+
 void PaintEditorPlugin::make_visible(const bool visible) {
 }
 
@@ -33,9 +35,12 @@ PaintEditorPlugin::PaintEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
 	make_visible(false);
+
+	Engine::get_singleton()->add_global("PaintEditorPlugin", this);
 }
 
 PaintEditorPlugin::~PaintEditorPlugin() {
+	Engine::get_singleton()->remove_global("PaintEditorPlugin");
 }
 
 void PaintEditorPlugin::_bind_methods() {
