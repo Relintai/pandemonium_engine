@@ -153,10 +153,10 @@ PoolVector2iArray PaintCanvas::select_same_color(const int p_x, const int p_y) {
 PoolVector2iArray PaintCanvas::get_neighbouring_pixels(const int pos_x, const int pos_y) {
 	PoolVector2iArray pixels;
 
-	PoolIntArray to_check_queue;
-	PoolIntArray checked_queue;
+	Vector<int> to_check_queue;
+	Vector<int> checked_queue;
 
-	to_check_queue.append(PaintUtilities::to_1D(pos_x, pos_y, get_size().x));
+	to_check_queue.push_back(PaintUtilities::to_1D(pos_x, pos_y, get_size().x));
 
 	Color color = get_pixel(pos_x, pos_y);
 
@@ -165,44 +165,44 @@ PoolVector2iArray PaintCanvas::get_neighbouring_pixels(const int pos_x, const in
 		to_check_queue.remove(0);
 		Vector2i p = PaintUtilities::to_2D(idx, get_size().x);
 
-		if (checked_queue.contains(idx)) {
+		if (checked_queue.find(idx) != -1) {
 			continue;
 		}
 
-		checked_queue.append(idx);
+		checked_queue.push_back(idx);
 
 		if (get_pixel(p.x, p.y) != color) {
 			continue;
 		}
 
 		// add to result
-		pixels.append(p);
+		pixels.push_back(p);
 
 		// check neighbours
 		int x = p.x - 1;
 		int y = p.y;
 		if (is_inside_canvas(x, y)) {
 			idx = PaintUtilities::to_1D(x, y, get_size().x);
-			to_check_queue.append(idx);
+			to_check_queue.push_back(idx);
 		}
 
 		x = p.x + 1;
 		if (is_inside_canvas(x, y)) {
 			idx = PaintUtilities::to_1D(x, y, get_size().x);
-			to_check_queue.append(idx);
+			to_check_queue.push_back(idx);
 		}
 
 		x = p.x;
 		y = p.y - 1;
 		if (is_inside_canvas(x, y)) {
 			idx = PaintUtilities::to_1D(x, y, get_size().x);
-			to_check_queue.append(idx);
+			to_check_queue.push_back(idx);
 		}
 
 		y = p.y + 1;
 		if (is_inside_canvas(x, y)) {
 			idx = PaintUtilities::to_1D(x, y, get_size().x);
-			to_check_queue.append(idx);
+			to_check_queue.push_back(idx);
 		}
 	}
 
