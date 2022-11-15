@@ -35,6 +35,8 @@ class BrushAction : public PaintAction {
 public:
 	void do_action_old(PaintCanvasOld *canvas, const Array &data);
 
+	void _do_action(const Array &data);
+
 	BrushAction();
 	~BrushAction();
 
