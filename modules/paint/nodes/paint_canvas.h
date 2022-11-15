@@ -43,6 +43,9 @@ public:
 	void clear_preview();
 	void update_textures();
 
+	void resize(const int width, const int height);
+	void resize_image(Ref<Image> image);
+
 	PoolVector2iArray select_color(const int p_x, const int p_y);
 	PoolVector2iArray select_same_color(const int p_x, const int p_y);
 	PoolVector2iArray get_neighbouring_pixels(const int pos_x, const int pos_y);

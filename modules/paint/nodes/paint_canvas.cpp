@@ -128,6 +128,59 @@ void PaintCanvas::update_textures() {
 	update();
 }
 
+void PaintCanvas::resize(int width, int height) {
+	if (get_size().x == width && get_size().y == height) {
+		return;
+	}
+
+	if (width < 0) {
+		width = 1;
+	}
+
+	if (height < 0) {
+		height = 1;
+	}
+
+	set_size(Vector2i(width, height));
+
+	resize_image(_image_texture);
+	resize_image(_preview_image_texture);
+
+	update_textures();
+}
+
+void PaintCanvas::resize_image(Ref<Image> image) {
+	PoolColorArray pixel_colors;
+	int prev_width = image->get_size().x;
+	int prev_height = image->get_size().y;
+
+	image->lock();
+
+	for (int y = 0; y < prev_height; ++y) {
+		for (int x = 0; x < prev_width; ++x) {
+			pixel_colors.append(image->get_pixel(x, y));
+		}
+	}
+
+	image->unlock();
+
+	image->create(get_size().x, get_size().y, false, Image::FORMAT_RGBA8);
+
+	image->lock();
+
+	for (int x = 0; x < prev_width; ++x) {
+		for (int y = 0; y < prev_height; ++y) {
+			if (x >= get_size().x || y >= get_size().y) {
+				continue;
+			}
+
+			image->set_pixel(x, y, pixel_colors[PaintUtilities::to_1D(x, y, prev_width)]);
+		}
+	}
+
+	image->unlock();
+}
+
 PoolVector2iArray PaintCanvas::select_color(const int p_x, const int p_y) {
 	PoolVector2iArray same_color_pixels;
 
@@ -266,6 +319,9 @@ void PaintCanvas::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("clear"), &PaintCanvas::clear);
 	ClassDB::bind_method(D_METHOD("clear_preview"), &PaintCanvas::clear_preview);
 	ClassDB::bind_method(D_METHOD("update_textures"), &PaintCanvas::update_textures);
+
+	ClassDB::bind_method(D_METHOD("resize", "width", "height"), &PaintCanvas::resize);
+	ClassDB::bind_method(D_METHOD("resize_image", "image"), &PaintCanvas::resize_image);
 
 	ClassDB::bind_method(D_METHOD("select_color", "x", "y"), &PaintCanvas::select_color);
 	ClassDB::bind_method(D_METHOD("select_same_color", "x", "y"), &PaintCanvas::select_same_color);
