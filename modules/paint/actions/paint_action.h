@@ -104,9 +104,10 @@ public:
 	PoolVector2iArray get_x_sym_points(const int canvas_width, const Vector2i &pixel);
 	PoolVector2iArray get_y_sym_points(const int canvas_height, const Vector2i &pixel);
 	PoolVector2iArray get_xy_sym_points(const int canvas_width, const int canvas_height, const Vector2i &pixel);
-
+	PoolVector2iArray get_points(const Vector2i &pixel);
 	PoolVector2iArray get_points_old(PaintCanvasOld *canvas, const Vector2i &pixel);
 
+	void draw_points(const PoolVector2iArray &point_arr, const PoolColorArray &color_arr);
 	void draw_points_old(PaintCanvasOld *canvas, const PoolVector2iArray &point_arr, const PoolColorArray &color_arr);
 
 	PaintAction();

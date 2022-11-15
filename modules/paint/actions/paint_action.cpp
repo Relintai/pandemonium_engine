@@ -134,14 +134,6 @@ void PaintAction::redo_action_old(PaintCanvasOld *canvas) {
 	}
 }
 
-bool PaintAction::can_commit() {
-	return call("_can_commit");
-}
-
-bool PaintAction::_can_commit() {
-	return !redo_cells.empty();
-}
-
 PoolVector2iArray PaintAction::get_x_sym_points(const int canvas_width, const Vector2i &pixel) {
 	int p = canvas_width - pixel.x;
 
@@ -184,6 +176,74 @@ PoolVector2iArray PaintAction::get_xy_sym_points(const int canvas_width, const i
 		}
 	}
 
+	return points;
+}
+PoolVector2iArray PaintAction::get_points(const Vector2i &pixel) {
+	
+	PoolVector2iArray points;
+/* TODO enable
+	if (_paint_canvas->symmetry_x && _paint_canvas->symmetry_y) {
+		PoolVector2iArray sym_points = get_xy_sym_points(_paint_canvas->get_canvas_width(), _paint_canvas->get_canvas_height(), pixel);
+
+		for (int i = 0; i < sym_points.size(); ++i) {
+			Vector2i point = sym_points[i];
+
+			if (undo_cells.contains(point) || !_paint_canvas->validate_pixel_v(point)) {
+				continue;
+			}
+
+			if (_paint_canvas->is_alpha_locked() && _paint_canvas->get_pixel_v(pixel) == Color(0, 0, 0, 0)) {
+				continue;
+			}
+
+			points.append(point);
+		}
+	} else if (_paint_canvas->symmetry_y) {
+		PoolVector2iArray sym_points = get_y_sym_points(_paint_canvas->get_canvas_height(), pixel);
+
+		for (int i = 0; i < sym_points.size(); ++i) {
+			Vector2i point = sym_points[i];
+
+			if (undo_cells.contains(point) || !_paint_canvas->validate_pixel_v(point)) {
+				continue;
+			}
+
+			if (_paint_canvas->is_alpha_locked() && _paint_canvas->get_pixel_v(pixel) == Color(0, 0, 0, 0)) {
+				continue;
+			}
+
+			points.append(point);
+		}
+	} else if (_paint_canvas->symmetry_x) {
+		PoolVector2iArray sym_points = get_x_sym_points(_paint_canvas->get_canvas_width(), pixel);
+
+		for (int i = 0; i < sym_points.size(); ++i) {
+			Vector2i point = sym_points[i];
+
+			if (undo_cells.contains(point) || !_paint_canvas->validate_pixel_v(point)) {
+				continue;
+			}
+
+			if (_paint_canvas->is_alpha_locked() && _paint_canvas->get_pixel_v(pixel) == Color(0, 0, 0, 0)) {
+				continue;
+			}
+
+			points.append(point);
+		}
+	} else {
+		if (undo_cells.contains(pixel) || !_paint_canvas->validate_pixel_v(pixel)) {
+			//empty
+			return points;
+		}
+
+		if (_paint_canvas->is_alpha_locked() && _paint_canvas->get_pixel_v(pixel) == Color(0, 0, 0, 0)) {
+			//empty
+			return points;
+		}
+
+		points.append(pixel);
+	}
+*/
 	return points;
 }
 
@@ -255,6 +315,28 @@ PoolVector2iArray PaintAction::get_points_old(PaintCanvasOld *canvas, const Vect
 	return points;
 }
 
+void PaintAction::draw_points(const PoolVector2iArray &point_arr, const PoolColorArray &color_arr) {
+	/* TODO enable
+	for (int i = 0; i < point_arr.size(); ++i) {
+		Vector2i pixel = point_arr[i];
+
+		Color col = color_arr[i];
+
+		if (_paint_canvas->is_alpha_locked() && col.a < 0.00001) {
+			continue;
+		}
+
+		undo_cells.append(pixel);
+		undo_colors.append(col);
+
+		_paint_canvas->set_pixel_v(pixel, col);
+
+		redo_cells.append(pixel);
+		redo_colors.append(col);
+	}
+	*/
+}
+
 void PaintAction::draw_points_old(PaintCanvasOld *canvas, const PoolVector2iArray &point_arr, const PoolColorArray &color_arr) {
 	for (int i = 0; i < point_arr.size(); ++i) {
 		Vector2i pixel = point_arr[i];
@@ -297,6 +379,14 @@ void PaintAction::_commit_action() {
 void PaintAction::_undo_action() {
 }
 void PaintAction::_redo_action() {
+}
+
+bool PaintAction::can_commit() {
+	return call("_can_commit");
+}
+
+bool PaintAction::_can_commit() {
+	return !redo_cells.empty();
 }
 
 PaintAction::PaintAction() {
@@ -369,4 +459,12 @@ void PaintAction::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("can_commit"), &PaintAction::get_action_data);
 	ClassDB::bind_method(D_METHOD("_can_commit"), &PaintAction::get_action_data);
+
+	//helpers
+	ClassDB::bind_method(D_METHOD("get_x_sym_points", "canvas_width", "pixel"), &PaintAction::get_x_sym_points);
+	ClassDB::bind_method(D_METHOD("get_y_sym_points", "canvas_height", "pixel"), &PaintAction::get_y_sym_points);
+	ClassDB::bind_method(D_METHOD("get_xy_sym_points", "canvas_width", "canvas_height", "pixel"), &PaintAction::get_xy_sym_points);
+	ClassDB::bind_method(D_METHOD("get_points", "pixel"), &PaintAction::get_points);
+
+	ClassDB::bind_method(D_METHOD("draw_points", "point_arr", "color_arr"), &PaintAction::draw_points);
 }
