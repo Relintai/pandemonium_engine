@@ -33,6 +33,11 @@ class PaintColorGrid : public PaintSidebarModule {
 	GDCLASS(PaintColorGrid, PaintSidebarModule);
 
 public:
+	// TODO this should store settings in PaintProjects
+	// TODO the default settigns could be stored in the editor settings, so project specific pallettes can be done
+	// TODO It should get the project node for a given PaintNode
+	// NOTE The current color should be stored in PaintNodes
+
 	void change_color_to(const Color &color);
 	void add_color_prefab(const Color &color);
 
