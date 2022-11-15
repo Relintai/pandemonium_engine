@@ -51,4 +51,6 @@ void PaintNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_size"), &PaintNode::get_size);
 	ClassDB::bind_method(D_METHOD("set_size", "size"), &PaintNode::set_size);
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "size"), "set_size", "get_size");
+
+	ClassDB::bind_method(D_METHOD("get_paint_project"), &PaintNode::get_paint_project);
 }
