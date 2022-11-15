@@ -1,10 +1,28 @@
 #include "paint_node.h"
 
+#include "paint_project.h"
+
 Vector2i PaintNode::get_size() {
 	return _size;
 }
 void PaintNode::set_size(const Vector2i &size) {
 	_size = size;
+}
+
+PaintProject *PaintNode::get_paint_project() {
+	PaintNode *p = this;
+
+	while (p) {
+		PaintProject *pp = Object::cast_to<PaintProject>(p);
+
+		if (pp) {
+			return pp;
+		}
+
+		p = Object::cast_to<PaintNode>(p->get_parent());
+	}
+
+	return NULL;
 }
 
 PaintNode::PaintNode() {
