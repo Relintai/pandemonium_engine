@@ -73,11 +73,12 @@ public:
 	Dictionary get_action_data();
 	void set_action_data(const Dictionary &val);
 
-	virtual void do_action(PaintCanvasOld *canvas, const Array &data);
-	virtual void commit_action(PaintCanvasOld *canvas);
+	virtual void do_action_old(PaintCanvasOld *canvas, const Array &data);
+	virtual void commit_action_old(PaintCanvasOld *canvas);
 
-	virtual void undo_action(PaintCanvasOld *canvas);
-	virtual void redo_action(PaintCanvasOld *canvas);
+	virtual void undo_action_old(PaintCanvasOld *canvas);
+	virtual void redo_action_old(PaintCanvasOld *canvas);
+
 	virtual bool can_commit();
 
 	virtual PoolVector2iArray get_x_sym_points(const int canvas_width, const Vector2i &pixel);

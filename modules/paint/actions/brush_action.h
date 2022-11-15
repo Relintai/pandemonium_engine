@@ -33,7 +33,7 @@ class BrushAction : public PaintAction {
 	GDCLASS(BrushAction, PaintAction);
 
 public:
-	void do_action(PaintCanvasOld *canvas, const Array &data);
+	void do_action_old(PaintCanvasOld *canvas, const Array &data);
 
 	BrushAction();
 	~BrushAction();

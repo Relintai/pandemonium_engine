@@ -33,7 +33,7 @@ class RainbowAction : public PaintAction {
 	GDCLASS(RainbowAction, PaintAction);
 
 public:
-	void do_action(PaintCanvasOld *canvas, const Array &data);
+	void do_action_old(PaintCanvasOld *canvas, const Array &data);
 
 	RainbowAction();
 	~RainbowAction();

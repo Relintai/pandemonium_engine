@@ -60,8 +60,8 @@ bool CutAction::can_commit() {
 	return false; //ugly way of handling a cut
 }
 
-void CutAction::do_action(PaintCanvasOld *canvas, const Array &data) {
-	PaintAction::do_action(canvas, data);
+void CutAction::do_action_old(PaintCanvasOld *canvas, const Array &data) {
+	PaintAction::do_action_old(canvas, data);
 
 	if (!mouse_start_pos_set) {
 		mouse_start_pos = data[0];
@@ -91,7 +91,7 @@ void CutAction::do_action(PaintCanvasOld *canvas, const Array &data) {
 	}
 }
 
-void CutAction::commit_action(PaintCanvasOld *canvas) {
+void CutAction::commit_action_old(PaintCanvasOld *canvas) {
 	canvas->clear_preview_layer();
 	Vector2i p = mouse_start_pos;
 	Vector2i s = mouse_end_pos - mouse_start_pos;

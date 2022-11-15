@@ -47,8 +47,8 @@ public:
 
 	bool can_commit();
 
-	void do_action(PaintCanvasOld *canvas, const Array &data);
-	void commit_action(PaintCanvasOld *canvas);
+	void do_action_old(PaintCanvasOld *canvas, const Array &data);
+	void commit_action_old(PaintCanvasOld *canvas);
 
 	CutAction();
 	~CutAction();

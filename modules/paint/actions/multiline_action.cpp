@@ -32,8 +32,8 @@ bool MultiLineAction::can_commit() {
 	return false;
 }
 
-void MultiLineAction::do_action(PaintCanvasOld *canvas, const Array &data) {
-	PaintAction::do_action(canvas, data);
+void MultiLineAction::do_action_old(PaintCanvasOld *canvas, const Array &data) {
+	PaintAction::do_action_old(canvas, data);
 
 	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);
 

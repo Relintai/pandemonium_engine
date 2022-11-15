@@ -33,7 +33,7 @@ class PasteCutAction : public PaintAction {
 	GDCLASS(PasteCutAction, PaintAction);
 
 public:
-	void do_action(PaintCanvasOld *canvas, const Array &data);
+	void do_action_old(PaintCanvasOld *canvas, const Array &data);
 
 	PasteCutAction();
 	~PasteCutAction();

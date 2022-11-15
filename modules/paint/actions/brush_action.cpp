@@ -29,8 +29,8 @@ SOFTWARE.
 #include "../deprecated/paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
-void BrushAction::do_action(PaintCanvasOld *canvas, const Array &data) {
-	PaintAction::do_action(canvas, data);
+void BrushAction::do_action_old(PaintCanvasOld *canvas, const Array &data) {
+	PaintAction::do_action_old(canvas, data);
 
 	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);
 	int brush_type = data[3];

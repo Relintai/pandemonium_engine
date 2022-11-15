@@ -35,8 +35,8 @@ void BrightenAction::set_brighten_color(const float val) {
 	brighten_color = val;
 }
 
-void BrightenAction::do_action(PaintCanvasOld *canvas, const Array &data) {
-	PaintAction::do_action(canvas, data);
+void BrightenAction::do_action_old(PaintCanvasOld *canvas, const Array &data) {
+	PaintAction::do_action_old(canvas, data);
 
 	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);
 

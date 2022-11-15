@@ -36,7 +36,7 @@ public:
 	float get_brighten_color();
 	void set_brighten_color(const float val);
 
-	void do_action(PaintCanvasOld *canvas, const Array &data);
+	void do_action_old(PaintCanvasOld *canvas, const Array &data);
 
 	BrightenAction();
 	~BrightenAction();

@@ -33,7 +33,7 @@ class PencilAction : public PaintAction {
 	GDCLASS(PencilAction, PaintAction);
 
 public:
-	void do_action(PaintCanvasOld *canvas, const Array &data);
+	void do_action_old(PaintCanvasOld *canvas, const Array &data);
 
 	void _set_pixel(PaintCanvasOld *canvas, Vector2i pixel, Color color);
 

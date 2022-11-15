@@ -139,10 +139,10 @@ public:
 
 	void _on_Save_pressed();
 
-	void do_action(const Array &data);
-	void commit_action();
-	void redo_action();
-	void undo_action();
+	void do_action_old(const Array &data);
+	void commit_action_old();
+	void redo_action_old();
+	void undo_action_old();
 
 	Ref<PaintAction> get_action();
 

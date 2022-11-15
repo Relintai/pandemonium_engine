@@ -29,8 +29,8 @@ SOFTWARE.
 #include "../paint_utilities.h"
 #include "core/string/print_string.h"
 
-void PencilAction::do_action(PaintCanvasOld *canvas, const Array &data) {
-	PaintAction::do_action(canvas, data);
+void PencilAction::do_action_old(PaintCanvasOld *canvas, const Array &data) {
+	PaintAction::do_action_old(canvas, data);
 
 	Color c = data[2];
 

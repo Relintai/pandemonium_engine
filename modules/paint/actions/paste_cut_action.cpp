@@ -34,8 +34,8 @@ SOFTWARE.
 //arr.append(_selection_colors);
 //arr.append(_cut_pos);
 //arr.append(_cut_size);
-void PasteCutAction::do_action(PaintCanvasOld *canvas, const Array &data) {
-	PaintAction::do_action(canvas, data);
+void PasteCutAction::do_action_old(PaintCanvasOld *canvas, const Array &data) {
+	PaintAction::do_action_old(canvas, data);
 
 	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);
 	Vector2i cut_pos = data[4];

@@ -105,18 +105,18 @@ void PaintAction::set_action_data(const Dictionary &val) {
 	action_data = val;
 }
 
-void PaintAction::do_action(PaintCanvasOld *canvas, const Array &data) {
+void PaintAction::do_action_old(PaintCanvasOld *canvas, const Array &data) {
 	layer = canvas->get_active_layer();
 }
-void PaintAction::commit_action(PaintCanvasOld *canvas) {
+void PaintAction::commit_action_old(PaintCanvasOld *canvas) {
 }
 
-void PaintAction::undo_action(PaintCanvasOld *canvas) {
+void PaintAction::undo_action_old(PaintCanvasOld *canvas) {
 	for (int idx = 0; idx < undo_cells.size(); ++idx) {
 		canvas->_set_pixel_v(layer, undo_cells[idx], undo_colors[idx]);
 	}
 }
-void PaintAction::redo_action(PaintCanvasOld *canvas) {
+void PaintAction::redo_action_old(PaintCanvasOld *canvas) {
 	for (int idx = 0; idx < redo_cells.size(); ++idx) {
 		canvas->_set_pixel_v(layer, redo_cells[idx], redo_colors[idx]);
 	}

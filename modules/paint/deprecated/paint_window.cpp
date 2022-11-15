@@ -256,7 +256,7 @@ void PaintWindow::_input(const Ref<InputEvent> &event) {
 
 		if (brush_mode == Tools::CUT) {
 			if (iemb->get_button_index() == BUTTON_LEFT && !iemb->is_pressed()) {
-				commit_action();
+				commit_action_old();
 			}
 		}
 
@@ -273,7 +273,7 @@ void PaintWindow::_input(const Ref<InputEvent> &event) {
 						arr.append(last_cell_mouse_position);
 						arr.append(_selected_color);
 
-						do_action(arr);
+						do_action_old(arr);
 					}
 				} break;
 				case Tools::COLORPICKER: {
@@ -302,7 +302,7 @@ void PaintWindow::_input(const Ref<InputEvent> &event) {
 				} break;
 				case Tools::PASTECUT: {
 					if (iemb->get_button_index() == BUTTON_RIGHT && iemb->is_pressed()) {
-						commit_action();
+						commit_action_old();
 						set_brush(Tools::PAINT);
 					}
 				} break;
@@ -385,10 +385,10 @@ void PaintWindow::_process(float delta) {
 void PaintWindow::_handle_shortcuts(const int scancode) {
 	switch (scancode) {
 		case K_UNDO:
-			undo_action();
+			undo_action_old();
 			break;
 		case K_REDO:
-			redo_action();
+			redo_action_old();
 			break;
 		case K_PENCIL:
 			set_brush(Tools::PAINT);
@@ -595,7 +595,7 @@ void PaintWindow::brush_process() {
 				arr.append(last_cell_mouse_position);
 				arr.append(_selected_color);
 
-				do_action(arr);
+				do_action_old(arr);
 			} break;
 			case Tools::BRUSH: {
 				Array arr;
@@ -606,7 +606,7 @@ void PaintWindow::brush_process() {
 				arr.append(selected_brush_prefab);
 				arr.append(brush_size_slider->get_value());
 
-				do_action(arr);
+				do_action_old(arr);
 			} break;
 			case Tools::LINE: {
 				Array arr;
@@ -615,7 +615,7 @@ void PaintWindow::brush_process() {
 				arr.append(last_cell_mouse_position);
 				arr.append(_selected_color);
 
-				do_action(arr);
+				do_action_old(arr);
 			} break;
 			case Tools::RECT: {
 				Array arr;
@@ -624,7 +624,7 @@ void PaintWindow::brush_process() {
 				arr.append(last_cell_mouse_position);
 				arr.append(_selected_color);
 
-				do_action(arr);
+				do_action_old(arr);
 			} break;
 			case Tools::DARKEN: {
 				Array arr;
@@ -633,7 +633,7 @@ void PaintWindow::brush_process() {
 				arr.append(last_cell_mouse_position);
 				arr.append(_selected_color);
 
-				do_action(arr);
+				do_action_old(arr);
 			} break;
 			case Tools::BRIGHTEN: {
 				Array arr;
@@ -642,7 +642,7 @@ void PaintWindow::brush_process() {
 				arr.append(last_cell_mouse_position);
 				arr.append(_selected_color);
 
-				do_action(arr);
+				do_action_old(arr);
 			} break;
 			case Tools::COLORPICKER: {
 			} break;
@@ -653,7 +653,7 @@ void PaintWindow::brush_process() {
 				arr.append(last_cell_mouse_position);
 				arr.append(_selected_color);
 
-				do_action(arr);
+				do_action_old(arr);
 			} break;
 			case Tools::PASTECUT: {
 				Array arr;
@@ -665,7 +665,7 @@ void PaintWindow::brush_process() {
 				arr.append(_cut_pos);
 				arr.append(_cut_size);
 
-				do_action(arr);
+				do_action_old(arr);
 			} break;
 			case Tools::RAINBOW: {
 				Array arr;
@@ -673,7 +673,7 @@ void PaintWindow::brush_process() {
 				arr.append(cell_mouse_position);
 				arr.append(last_cell_mouse_position);
 
-				do_action(arr);
+				do_action_old(arr);
 			} break;
 			default: {
 			} break;
@@ -696,7 +696,7 @@ void PaintWindow::brush_process() {
 				arr.append(last_cell_mouse_position);
 				arr.append(Color(1, 1, 1, 0));
 
-				do_action(arr);
+				do_action_old(arr);
 			} break;
 			case Tools::BRUSH: {
 				Array arr;
@@ -707,14 +707,14 @@ void PaintWindow::brush_process() {
 				arr.append(selected_brush_prefab);
 				arr.append(brush_size_slider->get_value());
 
-				do_action(arr);
+				do_action_old(arr);
 			} break;
 			default: {
 			} break;
 		}
 	} else {
 		if (_current_action.is_valid() && _current_action->can_commit()) {
-			commit_action();
+			commit_action_old();
 			paint_canvas->update();
 		}
 	}
@@ -732,21 +732,21 @@ void PaintWindow::_on_Save_pressed() {
 	paint_save_file_dialog->popup_centered();
 }
 
-void PaintWindow::do_action(const Array &data) {
+void PaintWindow::do_action_old(const Array &data) {
 	if (_current_action.is_null()) {
 		//print("clear redo");
 		_redo_history.clear();
 	}
 
-	_current_action->do_action(paint_canvas, data);
+	_current_action->do_action_old(paint_canvas, data);
 }
-void PaintWindow::commit_action() {
+void PaintWindow::commit_action_old() {
 	if (!_current_action.is_valid()) {
 		return;
 	}
 
 	//print("commit action")
-	_current_action->commit_action(paint_canvas);
+	_current_action->commit_action_old(paint_canvas);
 	//Ref<PaintAction> action = _current_action->duplicate(true);
 	//action->layer = _current_action->layer;
 
@@ -773,7 +773,7 @@ void PaintWindow::commit_action() {
 		} break;
 	}
 }
-void PaintWindow::redo_action() {
+void PaintWindow::redo_action_old() {
 	if (_redo_history.empty()) {
 		//print("nothing to redo");
 		return;
@@ -787,12 +787,12 @@ void PaintWindow::redo_action() {
 	}
 
 	_actions_history.push_back(action);
-	action->redo_action(paint_canvas);
+	action->redo_action_old(paint_canvas);
 	paint_canvas->update();
 
 	//print("redo action");
 }
-void PaintWindow::undo_action() {
+void PaintWindow::undo_action_old() {
 	if (_actions_history.empty()) {
 		return;
 	}
@@ -805,7 +805,7 @@ void PaintWindow::undo_action() {
 	}
 
 	_redo_history.push_back(action);
-	action->undo_action(paint_canvas);
+	action->undo_action_old(paint_canvas);
 	update();
 	paint_canvas->update();
 
