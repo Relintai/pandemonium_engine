@@ -29,8 +29,17 @@ SOFTWARE.
 #include "scene/gui/scroll_container.h"
 #include "scene/resources/style_box.h"
 
+#include "../../nodes/paint_node.h"
+#include "../../nodes/paint_project.h"
+
 void PaintColorGrid::change_color_to(const Color &color) {
 	emit_signal("color_change_request", color);
+
+	PaintProject *proj = Object::cast_to<PaintProject>(ObjectDB::get_instance(_current_paint_project));
+
+	if (proj) {
+		proj->set_current_color(color);
+	}
 }
 void PaintColorGrid::add_color_prefab(const Color &color) {
 	Button *button = memnew(Button);
@@ -54,7 +63,29 @@ void PaintColorGrid::add_color_prefab(const Color &color) {
 	button->connect("pressed", this, "change_color_to", binds);
 }
 
+void PaintColorGrid::_on_paint_node_selected(Node *p_paint_node) {
+	PaintNode *paint_node = Object::cast_to<PaintNode>(p_paint_node);
+
+	_current_paint_node = 0;
+	_current_paint_project = 0;
+
+	if (!paint_node) {
+		return;
+	}
+
+	_current_paint_node = paint_node->get_instance_id();
+
+	PaintProject *proj = paint_node->get_paint_project();
+
+	if (proj) {
+		_current_paint_project = proj->get_instance_id();
+	}
+}
+
 PaintColorGrid::PaintColorGrid() {
+	_current_paint_node = 0;
+	_current_paint_project = 0;
+
 	ScrollContainer *scroll_container = memnew(ScrollContainer);
 	scroll_container->set_custom_minimum_size(Size2(0, 145));
 	scroll_container->set_enable_h_scroll(false);

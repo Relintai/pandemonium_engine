@@ -26,8 +26,11 @@ SOFTWARE.
 */
 
 #include "../paint_sidebar_module.h"
+#include "core/object/object_id.h"
 
 class GridContainer;
+class PaintNode;
+class PaintProject;
 
 class PaintColorGrid : public PaintSidebarModule {
 	GDCLASS(PaintColorGrid, PaintSidebarModule);
@@ -41,6 +44,8 @@ public:
 	void change_color_to(const Color &color);
 	void add_color_prefab(const Color &color);
 
+	void _on_paint_node_selected(Node *paint_node);
+
 	PaintColorGrid();
 	~PaintColorGrid();
 
@@ -48,6 +53,9 @@ protected:
 	static void _bind_methods();
 
 	GridContainer *_grid;
+
+	ObjectID _current_paint_node;
+	ObjectID _current_paint_project;
 };
 
 #endif
