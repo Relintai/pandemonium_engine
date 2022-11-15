@@ -28,11 +28,15 @@ SOFTWARE.
 
 class PaintWindow;
 class Texture;
+class PaintSidebar;
 
 class PaintEditorPlugin : public EditorPlugin {
 	GDCLASS(PaintEditorPlugin, EditorPlugin);
 
 public:
+	//maybe the plugin should have sidebars on both sides?
+	PaintSidebar *get_sidebar();
+
 	void make_visible(const bool visible);
 	String get_name() const;
 
@@ -42,7 +46,11 @@ public:
 	EditorNode *editor;
 
 protected:
+	void _notification(int p_what);
+
 	static void _bind_methods();
+
+	PaintSidebar *_sidebar;
 };
 
 #endif
