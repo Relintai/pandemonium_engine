@@ -27,6 +27,7 @@ SOFTWARE.
 #include "editor/plugins/canvas_item_editor_plugin.h"
 
 #include "ui/paint_sidebar.h"
+#include "ui/sidebar_modules/paint_color_grid.h"
 
 PaintSidebar *PaintEditorPlugin::get_sidebar() {
 	return _sidebar;
@@ -55,6 +56,9 @@ PaintEditorPlugin::PaintEditorPlugin(EditorNode *p_node) {
 			add_control_to_container(CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT, _sidebar);
 		} break;
 	}
+
+	PaintColorGrid *paint_color_grid = memnew(PaintColorGrid);
+	_sidebar->add_module(paint_color_grid);
 
 	make_visible(false);
 

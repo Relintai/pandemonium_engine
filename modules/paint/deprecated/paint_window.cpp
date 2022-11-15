@@ -43,7 +43,7 @@ SOFTWARE.
 #include "paint_canvas.h"
 #include "../ui/paint_canvas_background.h"
 #include "paint_canvas_layer.h"
-#include "../ui/paint_color_grid.h"
+#include "../ui/sidebar_modules/paint_color_grid.h"
 #include "paint_layer_button.h"
 #include "paint_navbar.h"
 #include "../paint_utilities.h"
@@ -60,6 +60,7 @@ SOFTWARE.
 #include "scene/gui/slider.h"
 #include "scene/gui/texture_button.h"
 #include "scene/gui/texture_rect.h"
+#include "scene/gui/grid_container.h"
 
 #include "dialogs/paint_canvas_dialog.h"
 #include "dialogs/paint_change_grid_size_dialog.h"
@@ -1322,7 +1323,7 @@ PaintWindow::PaintWindow() {
 	left_main_vbox_container->add_child(left_color_scroll_container);
 
 	color_grid = memnew(PaintColorGrid);
-	color_grid->set_columns(4);
+	//color_grid->set_columns(4);
 	color_grid->set_custom_minimum_size(Size2(0, 145));
 	color_grid->set_h_size_flags(SIZE_EXPAND_FILL);
 	color_grid->set_v_size_flags(SIZE_EXPAND_FILL);

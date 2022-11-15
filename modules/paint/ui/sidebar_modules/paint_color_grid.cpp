@@ -25,6 +25,7 @@ SOFTWARE.
 #include "paint_color_grid.h"
 
 #include "scene/gui/button.h"
+#include "scene/gui/grid_container.h"
 #include "scene/resources/style_box.h"
 
 void PaintColorGrid::change_color_to(const Color &color) {
@@ -32,13 +33,13 @@ void PaintColorGrid::change_color_to(const Color &color) {
 }
 void PaintColorGrid::add_color_prefab(const Color &color) {
 	Button *button = memnew(Button);
-	
+
 	button->set_custom_minimum_size(Size2(25, 25));
 	button->set_h_size_flags(SIZE_EXPAND_FILL);
 	button->set_v_size_flags(SIZE_EXPAND_FILL);
 
-	add_child(button);
-	move_child(button, 0);
+	_grid->add_child(button);
+	_grid->move_child(button, 0);
 
 	Ref<StyleBoxFlat> style_box;
 	style_box.instance();
@@ -53,9 +54,18 @@ void PaintColorGrid::add_color_prefab(const Color &color) {
 }
 
 PaintColorGrid::PaintColorGrid() {
+	_grid = memnew(GridContainer);
+	add_child(_grid);
+
+	_grid->set_columns(4);
+	//color_grid->set_custom_minimum_size(Size2(0, 145));
+	//color_grid->set_h_size_flags(SIZE_EXPAND_FILL);
+	//color_grid->set_v_size_flags(SIZE_EXPAND_FILL);
+
 	for (int i = 0; i < 24; ++i) {
 		add_color_prefab(Color(Math::randf(), Math::randf(), Math::randf()));
 	}
+	
 }
 
 PaintColorGrid::~PaintColorGrid() {

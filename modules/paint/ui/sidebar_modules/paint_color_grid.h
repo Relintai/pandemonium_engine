@@ -25,10 +25,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "scene/gui/grid_container.h"
+#include "../paint_sidebar_module.h"
 
-class PaintColorGrid : public GridContainer {
-	GDCLASS(PaintColorGrid, GridContainer);
+class GridContainer;
+
+class PaintColorGrid : public PaintSidebarModule {
+	GDCLASS(PaintColorGrid, PaintSidebarModule);
 
 public:
 	void change_color_to(const Color &color);
@@ -39,6 +41,8 @@ public:
 
 protected:
 	static void _bind_methods();
+
+	GridContainer *_grid;
 };
 
 #endif

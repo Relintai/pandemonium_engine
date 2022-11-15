@@ -40,7 +40,7 @@ SOFTWARE.
 
 #include "ui/paint_canvas_background.h"
 #include "ui/paint_canvas_outline.h"
-#include "ui/paint_color_grid.h"
+#include "ui/sidebar_modules/paint_color_grid.h"
 #include "ui/paint_selection_box.h"
 #include "ui/paint_visual_grid.h"
 
