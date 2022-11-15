@@ -44,8 +44,11 @@ SOFTWARE.
 #include "ui/paint_selection_box.h"
 #include "ui/paint_visual_grid.h"
 
-#include "nodes/paint_node.h"
+#include "ui/paint_sidebar.h"
+#include "ui/paint_sidebar_module.h"
+
 #include "nodes/paint_canvas.h"
+#include "nodes/paint_node.h"
 #include "nodes/paint_project.h"
 
 #ifdef TOOLS_ENABLED
@@ -75,6 +78,9 @@ void register_paint_types() {
 	ClassDB::register_class<PaintColorGrid>();
 	ClassDB::register_class<PaintSelectionBox>();
 	ClassDB::register_class<PaintVisualGrid>();
+
+	ClassDB::register_class<PaintSidebar>();
+	ClassDB::register_class<PaintSidebarModule>();
 
 	ClassDB::register_class<PaintNode>();
 	ClassDB::register_class<PaintCanvas>();

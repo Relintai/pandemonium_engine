@@ -27,7 +27,10 @@ def get_doc_classes():
 
       "PaintNode",
       "PaintCanvas",
-      "PaintProject"
+      "PaintProject", 
+
+      "PaintSidebar",
+      "PaintSidebarModule",
     ]
 
 def get_doc_path():
