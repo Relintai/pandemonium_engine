@@ -33,6 +33,7 @@ PaintSidebar *PaintEditorPlugin::get_sidebar() {
 }
 
 void PaintEditorPlugin::make_visible(const bool visible) {
+	_sidebar->set_visible(visible);
 }
 
 String PaintEditorPlugin::get_name() const {
