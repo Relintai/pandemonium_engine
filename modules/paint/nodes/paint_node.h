@@ -16,6 +16,8 @@ public:
 
 	PaintProject *get_paint_project();
 
+	String get_configuration_warning() const;
+
 	PaintNode();
 	~PaintNode();
 

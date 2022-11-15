@@ -25,6 +25,22 @@ PaintProject *PaintNode::get_paint_project() {
 	return NULL;
 }
 
+String PaintNode::get_configuration_warning() const {
+	const PaintNode *p = this;
+
+	while (p) {
+		const PaintProject *pp = Object::cast_to<PaintProject>(p);
+
+		if (pp) {
+			return "";
+		}
+
+		p = Object::cast_to<PaintNode>(p->get_parent());
+	}
+
+	return "This Node should be a child of a PaintProject!";
+}
+
 PaintNode::PaintNode() {
 }
 
