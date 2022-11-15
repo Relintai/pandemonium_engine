@@ -46,6 +46,7 @@ SOFTWARE.
 
 #include "nodes/paint_node.h"
 #include "nodes/paint_canvas.h"
+#include "nodes/paint_project.h"
 
 #ifdef TOOLS_ENABLED
 #include "paint_editor_plugin.h"
@@ -76,6 +77,7 @@ void register_paint_types() {
 
 	ClassDB::register_class<PaintNode>();
 	ClassDB::register_class<PaintCanvas>();
+	ClassDB::register_class<PaintProject>();
 
 #ifdef TOOLS_ENABLED
 	EditorPlugins::add_by_type<PaintEditorPlugin>();

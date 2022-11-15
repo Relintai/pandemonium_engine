@@ -26,7 +26,8 @@ def get_doc_classes():
       "PaintWindow",
 
       "PaintNode",
-      "PaintCanvas"
+      "PaintCanvas",
+      "PaintProject"
     ]
 
 def get_doc_path():
