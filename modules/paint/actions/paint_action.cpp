@@ -30,14 +30,14 @@ SOFTWARE.
 
 #include "../nodes/paint_canvas.h"
 
-PaintCanvas *PaintAction::get_canvas() {
-	return _canvas;
+PaintCanvas *PaintAction::get_paint_canvas() {
+	return _paint_canvas;
 }
-void PaintAction::set_canvas(PaintCanvas *canvas) {
-	_canvas = canvas;
+void PaintAction::set_paint_canvas(PaintCanvas *paint_canvas) {
+	_paint_canvas = paint_canvas;
 }
-void PaintAction::set_canvas_bind(Node *canvas) {
-	set_canvas(Object::cast_to<PaintCanvas>(canvas));
+void PaintAction::set_paint_canvas_bind(Node *paint_canvas) {
+	set_paint_canvas(Object::cast_to<PaintCanvas>(paint_canvas));
 }
 
 Dictionary PaintAction::get_action_data_undo() {
@@ -300,12 +300,17 @@ void PaintAction::_redo_action() {
 }
 
 PaintAction::PaintAction() {
+	_paint_canvas = NULL;
 }
 
 PaintAction::~PaintAction() {
 }
 
 void PaintAction::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_paint_canvas"), &PaintAction::get_paint_canvas);
+	ClassDB::bind_method(D_METHOD("set_paint_canvas", "canvas"), &PaintAction::set_paint_canvas_bind);
+	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "paint_canvas"), "set_paint_canvas", "get_paint_canvas");
+
 	ClassDB::bind_method(D_METHOD("get_action_data_undo"), &PaintAction::get_action_data_undo);
 	ClassDB::bind_method(D_METHOD("set_action_data_undo", "value"), &PaintAction::set_action_data_undo);
 	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "action_data_undo"), "set_action_data_undo", "get_action_data_undo");

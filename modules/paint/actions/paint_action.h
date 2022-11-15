@@ -42,9 +42,9 @@ class PaintAction : public Resource {
 	GDCLASS(PaintAction, Resource);
 
 public:
-	PaintCanvas *get_canvas();
-	void set_canvas(PaintCanvas *canvas);
-	void set_canvas_bind(Node *canvas);
+	PaintCanvas *get_paint_canvas();
+	void set_paint_canvas(PaintCanvas *paint_canvas);
+	void set_paint_canvas_bind(Node *paint_canvas);
 
 	Dictionary get_action_data_undo();
 	void set_action_data_undo(const Dictionary &val);
@@ -132,7 +132,7 @@ public:
 protected:
 	static void _bind_methods();
 
-	PaintCanvas *_canvas;
+	PaintCanvas *_paint_canvas;
 };
 
 #endif
