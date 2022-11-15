@@ -33,6 +33,7 @@ class PaintSidebarModule : public PanelContainer {
 public:
 	void on_paint_node_selected(PaintNode *paint_node);
 	void on_paint_node_selected_bind(Node *paint_node);
+	
 	virtual void _on_paint_node_selected(Node *paint_node);
 
 	PaintSidebarModule();

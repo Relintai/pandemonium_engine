@@ -6,7 +6,7 @@ Color PaintProject::get_current_color() {
 void PaintProject::set_current_color(const Color &color) {
 	_current_color = color;
 
-	emit_signal("current_color_changed", _current_color);
+	emit_signal("current_color_changed", _current_color);  
 }
 
 PaintProject::PaintProject() {

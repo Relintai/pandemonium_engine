@@ -45,7 +45,6 @@ String PaintEditorPlugin::get_name() const {
 
 void PaintEditorPlugin::edit(Object *p_object) {
 	_sidebar->on_paint_node_selected(Object::cast_to<PaintNode>(p_object));
-	//make_visible(true);
 }
 bool PaintEditorPlugin::handles(Object *p_object) const {
 	return p_object->is_class("PaintNode");

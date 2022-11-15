@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "paint_sidebar_module.h"
 
+#include "../nodes/paint_node.h"
+
 void PaintSidebarModule::on_paint_node_selected(PaintNode *paint_node) {
 	call("_on_paint_node_selected", paint_node);
 }
