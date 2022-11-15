@@ -179,11 +179,10 @@ PoolVector2iArray PaintAction::get_xy_sym_points(const int canvas_width, const i
 	return points;
 }
 PoolVector2iArray PaintAction::get_points(const Vector2i &pixel) {
-	
 	PoolVector2iArray points;
-/* TODO enable
-	if (_paint_canvas->symmetry_x && _paint_canvas->symmetry_y) {
-		PoolVector2iArray sym_points = get_xy_sym_points(_paint_canvas->get_canvas_width(), _paint_canvas->get_canvas_height(), pixel);
+
+	if (_paint_canvas->get_symmetry_x() && _paint_canvas->get_symmetry_y()) {
+		PoolVector2iArray sym_points = get_xy_sym_points(_paint_canvas->get_size().x, _paint_canvas->get_size().y, pixel);
 
 		for (int i = 0; i < sym_points.size(); ++i) {
 			Vector2i point = sym_points[i];
@@ -192,14 +191,14 @@ PoolVector2iArray PaintAction::get_points(const Vector2i &pixel) {
 				continue;
 			}
 
-			if (_paint_canvas->is_alpha_locked() && _paint_canvas->get_pixel_v(pixel) == Color(0, 0, 0, 0)) {
+			if (_paint_canvas->get_alpha_locked() && _paint_canvas->get_pixel_v(pixel).a < 0.00001) {
 				continue;
 			}
 
 			points.append(point);
 		}
-	} else if (_paint_canvas->symmetry_y) {
-		PoolVector2iArray sym_points = get_y_sym_points(_paint_canvas->get_canvas_height(), pixel);
+	} else if (_paint_canvas->get_symmetry_y()) {
+		PoolVector2iArray sym_points = get_y_sym_points(_paint_canvas->get_size().y, pixel);
 
 		for (int i = 0; i < sym_points.size(); ++i) {
 			Vector2i point = sym_points[i];
@@ -208,14 +207,14 @@ PoolVector2iArray PaintAction::get_points(const Vector2i &pixel) {
 				continue;
 			}
 
-			if (_paint_canvas->is_alpha_locked() && _paint_canvas->get_pixel_v(pixel) == Color(0, 0, 0, 0)) {
+			if (_paint_canvas->get_alpha_locked() && _paint_canvas->get_pixel_v(pixel).a < 0.00001) {
 				continue;
 			}
 
 			points.append(point);
 		}
-	} else if (_paint_canvas->symmetry_x) {
-		PoolVector2iArray sym_points = get_x_sym_points(_paint_canvas->get_canvas_width(), pixel);
+	} else if (_paint_canvas->get_symmetry_x()) {
+		PoolVector2iArray sym_points = get_x_sym_points(_paint_canvas->get_size().x, pixel);
 
 		for (int i = 0; i < sym_points.size(); ++i) {
 			Vector2i point = sym_points[i];
@@ -224,7 +223,7 @@ PoolVector2iArray PaintAction::get_points(const Vector2i &pixel) {
 				continue;
 			}
 
-			if (_paint_canvas->is_alpha_locked() && _paint_canvas->get_pixel_v(pixel) == Color(0, 0, 0, 0)) {
+			if (_paint_canvas->get_alpha_locked() && _paint_canvas->get_pixel_v(pixel).a < 0.00001) {
 				continue;
 			}
 
@@ -236,14 +235,14 @@ PoolVector2iArray PaintAction::get_points(const Vector2i &pixel) {
 			return points;
 		}
 
-		if (_paint_canvas->is_alpha_locked() && _paint_canvas->get_pixel_v(pixel) == Color(0, 0, 0, 0)) {
+		if (_paint_canvas->get_alpha_locked() && _paint_canvas->get_pixel_v(pixel).a < 0.00001) {
 			//empty
 			return points;
 		}
 
 		points.append(pixel);
 	}
-*/
+
 	return points;
 }
 
@@ -316,13 +315,12 @@ PoolVector2iArray PaintAction::get_points_old(PaintCanvasOld *canvas, const Vect
 }
 
 void PaintAction::draw_points(const PoolVector2iArray &point_arr, const PoolColorArray &color_arr) {
-	/* TODO enable
 	for (int i = 0; i < point_arr.size(); ++i) {
 		Vector2i pixel = point_arr[i];
 
 		Color col = color_arr[i];
 
-		if (_paint_canvas->is_alpha_locked() && col.a < 0.00001) {
+		if (_paint_canvas->get_alpha_locked() && col.a < 0.00001) {
 			continue;
 		}
 
@@ -334,7 +332,6 @@ void PaintAction::draw_points(const PoolVector2iArray &point_arr, const PoolColo
 		redo_cells.append(pixel);
 		redo_colors.append(col);
 	}
-	*/
 }
 
 void PaintAction::draw_points_old(PaintCanvasOld *canvas, const PoolVector2iArray &point_arr, const PoolColorArray &color_arr) {
