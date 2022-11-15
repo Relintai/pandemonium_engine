@@ -45,7 +45,7 @@ public:
 	bool get_mouse_start_pos_set();
 	void set_mouse_start_pos_set(const bool val);
 
-	bool can_commit();
+	bool _can_commit();
 
 	void do_action_old(PaintCanvasOld *canvas, const Array &data);
 	void commit_action_old(PaintCanvasOld *canvas);

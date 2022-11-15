@@ -56,7 +56,7 @@ void CutAction::set_mouse_start_pos_set(const bool val) {
 	mouse_start_pos_set = val;
 }
 
-bool CutAction::can_commit() {
+bool CutAction::_can_commit() {
 	return false; //ugly way of handling a cut
 }
 

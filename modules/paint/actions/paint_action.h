@@ -34,12 +34,18 @@ SOFTWARE.
 #include "core/variant/variant.h"
 
 class PaintCanvasOld;
+class PaintCanvas;
 class PaintCanvasLayer;
+class Node;
 
 class PaintAction : public Resource {
 	GDCLASS(PaintAction, Resource);
 
 public:
+	PaintCanvas *get_canvas();
+	void set_canvas(PaintCanvas *canvas);
+	void set_canvas_bind(Node *canvas);
+
 	Dictionary get_action_data_undo();
 	void set_action_data_undo(const Dictionary &val);
 
@@ -67,6 +73,7 @@ public:
 	PoolColorArray get_preview_colors();
 	void set_preview_colors(const PoolColorArray &val);
 
+	//deprecated
 	Ref<PaintCanvasLayer> get_layer();
 	void set_layer(const Ref<PaintCanvasLayer> &val);
 
@@ -79,7 +86,20 @@ public:
 	virtual void undo_action_old(PaintCanvasOld *canvas);
 	virtual void redo_action_old(PaintCanvasOld *canvas);
 
-	virtual bool can_commit();
+	void do_action(const Array &data);
+	void commit_action();
+
+	void undo_action();
+	void redo_action();
+
+	virtual void _do_action(const Array &data);
+	virtual void _commit_action();
+
+	virtual void _undo_action();
+	virtual void _redo_action();
+
+	bool can_commit();
+	virtual bool _can_commit();
 
 	virtual PoolVector2iArray get_x_sym_points(const int canvas_width, const Vector2i &pixel);
 	virtual PoolVector2iArray get_y_sym_points(const int canvas_height, const Vector2i &pixel);
@@ -110,6 +130,8 @@ public:
 
 protected:
 	static void _bind_methods();
+
+	PaintCanvas *_canvas;
 };
 
 #endif

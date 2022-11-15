@@ -98,7 +98,7 @@ void LineAction::commit_action_old(PaintCanvasOld *canvas) {
 	mouse_start_pos_set = false;
 }
 
-bool LineAction::can_commit() {
+bool LineAction::_can_commit() {
 	return true;
 }
 

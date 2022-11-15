@@ -28,6 +28,18 @@ SOFTWARE.
 #include "../deprecated/paint_canvas_layer.h"
 #include "core/object/object.h"
 
+#include "../nodes/paint_canvas.h"
+
+PaintCanvas *PaintAction::get_canvas() {
+	return _canvas;
+}
+void PaintAction::set_canvas(PaintCanvas *canvas) {
+	_canvas = canvas;
+}
+void PaintAction::set_canvas_bind(Node *canvas) {
+	set_canvas(Object::cast_to<PaintCanvas>(canvas));
+}
+
 Dictionary PaintAction::get_action_data_undo() {
 	return action_data_undo;
 }
@@ -123,6 +135,10 @@ void PaintAction::redo_action_old(PaintCanvasOld *canvas) {
 }
 
 bool PaintAction::can_commit() {
+	return call("_can_commit");
+}
+
+bool PaintAction::_can_commit() {
 	return !redo_cells.empty();
 }
 
@@ -259,6 +275,30 @@ void PaintAction::draw_points(PaintCanvasOld *canvas, const PoolVector2iArray &p
 	}
 }
 
+void PaintAction::do_action(const Array &data) {
+	call("_do_action", data);
+}
+void PaintAction::commit_action() {
+	call("_commit_action");
+}
+
+void PaintAction::undo_action() {
+	call("_undo_action");
+}
+void PaintAction::redo_action() {
+	call("_redo_action");
+}
+
+void PaintAction::_do_action(const Array &data) {
+}
+void PaintAction::_commit_action() {
+}
+
+void PaintAction::_undo_action() {
+}
+void PaintAction::_redo_action() {
+}
+
 PaintAction::PaintAction() {
 }
 
@@ -302,11 +342,26 @@ void PaintAction::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_preview_colors", "value"), &PaintAction::set_preview_colors);
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_COLOR_ARRAY, "preview_colors"), "set_preview_colors", "get_preview_colors");
 
-	//ClassDB::bind_method(D_METHOD("get_layer"), &PaintAction::get_layer);
-	//ClassDB::bind_method(D_METHOD("set_layer", "value"), &PaintAction::set_layer);
-	//ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "layer", PROPERTY_HINT_RESOURCE_TYPE, "PaintCanvasLayer", 0), "set_layer", "get_layer");
-
 	ClassDB::bind_method(D_METHOD("get_action_data"), &PaintAction::get_action_data);
 	ClassDB::bind_method(D_METHOD("set_action_data", "value"), &PaintAction::set_action_data);
 	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "action_data"), "set_action_data", "get_action_data");
+
+	BIND_VMETHOD(MethodInfo("_do_action", PropertyInfo(Variant::ARRAY, "data")));
+	BIND_VMETHOD(MethodInfo("_commit_action"));
+	BIND_VMETHOD(MethodInfo("_undo_action"));
+	BIND_VMETHOD(MethodInfo("_redo_action"));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_can_commit"));
+
+	ClassDB::bind_method(D_METHOD("do_action", "data"), &PaintAction::do_action);
+	ClassDB::bind_method(D_METHOD("commit_action"), &PaintAction::commit_action);
+	ClassDB::bind_method(D_METHOD("undo_action"), &PaintAction::undo_action);
+	ClassDB::bind_method(D_METHOD("redo_action"), &PaintAction::redo_action);
+
+	ClassDB::bind_method(D_METHOD("_do_action", "data"), &PaintAction::do_action);
+	ClassDB::bind_method(D_METHOD("_commit_action"), &PaintAction::commit_action);
+	ClassDB::bind_method(D_METHOD("_undo_action"), &PaintAction::undo_action);
+	ClassDB::bind_method(D_METHOD("_redo_action"), &PaintAction::redo_action);
+
+	ClassDB::bind_method(D_METHOD("can_commit"), &PaintAction::get_action_data);
+	ClassDB::bind_method(D_METHOD("_can_commit"), &PaintAction::get_action_data);
 }

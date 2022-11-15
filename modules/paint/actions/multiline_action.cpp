@@ -28,7 +28,7 @@ SOFTWARE.
 #include "../deprecated/paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
-bool MultiLineAction::can_commit() {
+bool MultiLineAction::_can_commit() {
 	return false;
 }
 

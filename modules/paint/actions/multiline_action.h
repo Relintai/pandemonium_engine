@@ -33,7 +33,7 @@ class MultiLineAction : public PaintAction {
 	GDCLASS(MultiLineAction, PaintAction);
 
 public:
-	bool can_commit();
+	bool _can_commit();
 
 	void do_action_old(PaintCanvasOld *canvas, const Array &data);
 	//void commit_action_old(PaintCanvasOld *canvas);

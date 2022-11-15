@@ -105,7 +105,7 @@ void RectAction::commit_action_old(PaintCanvasOld *canvas) {
 	mouse_start_pos_set = false;
 }
 
-bool RectAction::can_commit() {
+bool RectAction::_can_commit() {
 	return true;
 }
 

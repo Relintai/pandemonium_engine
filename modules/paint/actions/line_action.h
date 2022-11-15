@@ -41,7 +41,7 @@ public:
 
 	void do_action_old(PaintCanvasOld *canvas, const Array &data);
 	void commit_action_old(PaintCanvasOld *canvas);
-	bool can_commit();
+	bool _can_commit();
 
 	LineAction();
 	~LineAction();
