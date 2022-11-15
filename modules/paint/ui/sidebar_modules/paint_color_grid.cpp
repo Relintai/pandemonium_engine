@@ -26,6 +26,7 @@ SOFTWARE.
 
 #include "scene/gui/button.h"
 #include "scene/gui/grid_container.h"
+#include "scene/gui/scroll_container.h"
 #include "scene/resources/style_box.h"
 
 void PaintColorGrid::change_color_to(const Color &color) {
@@ -54,18 +55,22 @@ void PaintColorGrid::add_color_prefab(const Color &color) {
 }
 
 PaintColorGrid::PaintColorGrid() {
+	ScrollContainer *scroll_container = memnew(ScrollContainer);
+	scroll_container->set_custom_minimum_size(Size2(0, 145));
+	scroll_container->set_enable_h_scroll(false);
+	add_child(scroll_container);
+
 	_grid = memnew(GridContainer);
-	add_child(_grid);
+	scroll_container->add_child(_grid);
 
 	_grid->set_columns(4);
-	//color_grid->set_custom_minimum_size(Size2(0, 145));
-	//color_grid->set_h_size_flags(SIZE_EXPAND_FILL);
-	//color_grid->set_v_size_flags(SIZE_EXPAND_FILL);
+	//_grid->set_custom_minimum_size(Size2(0, 145));
+	_grid->set_h_size_flags(SIZE_EXPAND_FILL);
+	_grid->set_v_size_flags(SIZE_EXPAND_FILL);
 
 	for (int i = 0; i < 24; ++i) {
 		add_color_prefab(Color(Math::randf(), Math::randf(), Math::randf()));
 	}
-	
 }
 
 PaintColorGrid::~PaintColorGrid() {

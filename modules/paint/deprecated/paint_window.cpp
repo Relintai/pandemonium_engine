@@ -1318,17 +1318,17 @@ PaintWindow::PaintWindow() {
 	left_main_margin_container->add_child(left_main_vbox_container);
 
 	//Main Content Mid (App) -- Left Panel -- Margin container -- VBoxContainer -- Colors
-	ScrollContainer *left_color_scroll_container = memnew(ScrollContainer);
-	left_color_scroll_container->set_custom_minimum_size(Size2(0, 145));
-	left_main_vbox_container->add_child(left_color_scroll_container);
+	//ScrollContainer *left_color_scroll_container = memnew(ScrollContainer);
+	//left_color_scroll_container->set_custom_minimum_size(Size2(0, 145));
+	//left_main_vbox_container->add_child(left_color_scroll_container);
 
 	color_grid = memnew(PaintColorGrid);
 	//color_grid->set_columns(4);
 	color_grid->set_custom_minimum_size(Size2(0, 145));
-	color_grid->set_h_size_flags(SIZE_EXPAND_FILL);
-	color_grid->set_v_size_flags(SIZE_EXPAND_FILL);
+	//color_grid->set_h_size_flags(SIZE_EXPAND_FILL);
+	//color_grid->set_v_size_flags(SIZE_EXPAND_FILL);
 	color_grid->connect("color_change_request", this, "change_color");
-	left_color_scroll_container->add_child(color_grid);
+	left_main_vbox_container->add_child(color_grid);
 
 	//Main Content Mid (App) -- Left Panel -- Margin container -- VBoxContainer -- Lock Alpha Button
 	lock_alpha_button = memnew(CheckButton);
