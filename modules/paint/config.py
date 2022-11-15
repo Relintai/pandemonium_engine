@@ -24,6 +24,9 @@ def get_doc_classes():
       "RectAction",
 
       "PaintWindow",
+
+      "PaintNode",
+      "PaintCanvas"
     ]
 
 def get_doc_path():
