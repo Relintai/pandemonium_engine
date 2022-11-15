@@ -36,7 +36,7 @@ public:
 	bool _can_commit();
 
 	void do_action_old(PaintCanvasOld *canvas, const Array &data);
-	//void commit_action_old(PaintCanvasOld *canvas);
+	void _do_action(const Array &data);
 
 	MultiLineAction();
 	~MultiLineAction();

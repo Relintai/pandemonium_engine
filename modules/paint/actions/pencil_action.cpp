@@ -29,6 +29,8 @@ SOFTWARE.
 #include "../paint_utilities.h"
 #include "core/string/print_string.h"
 
+#include "../nodes/paint_canvas.h"
+
 void PencilAction::do_action_old(PaintCanvasOld *canvas, const Array &data) {
 	PaintAction::do_action_old(canvas, data);
 
@@ -44,16 +46,44 @@ void PencilAction::do_action_old(PaintCanvasOld *canvas, const Array &data) {
 		for (int j = 0; j < points.size(); ++j) {
 			Vector2i p = points[j];
 
-			_set_pixel(canvas, p, c);
+			_set_pixel_old(canvas, p, c);
 		}
 	}
 }
 
-void PencilAction::_set_pixel(PaintCanvasOld *canvas, Vector2i pixel, Color color) {
+void PencilAction::_set_pixel_old(PaintCanvasOld *canvas, Vector2i pixel, Color color) {
 	undo_colors.append(canvas->get_pixel_v(pixel));
 	undo_cells.append(pixel);
 
 	canvas->set_pixel_v(pixel, color);
+
+	redo_cells.append(pixel);
+	redo_colors.append(color);
+}
+
+void PencilAction::_do_action(const Array &data) {
+	Color c = data[2];
+
+	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);
+
+	for (int i = 0; i < pixels.size(); ++i) {
+		Vector2i pixel = pixels[i];
+
+		PoolVector2iArray points = get_points(pixel);
+
+		for (int j = 0; j < points.size(); ++j) {
+			Vector2i p = points[j];
+
+			_set_pixel(p, c);
+		}
+	}
+}
+
+void PencilAction::_set_pixel(Vector2i pixel, Color color) {
+	undo_colors.append(_paint_canvas->get_pixel_v(pixel));
+	undo_cells.append(pixel);
+
+	_paint_canvas->set_pixel_v(pixel, color);
 
 	redo_cells.append(pixel);
 	redo_colors.append(color);

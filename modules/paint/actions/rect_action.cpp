@@ -28,6 +28,8 @@ SOFTWARE.
 #include "../deprecated/paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
+#include "../nodes/paint_canvas.h"
+
 Vector2i RectAction::get_mouse_start_pos() {
 	return mouse_start_pos;
 }
@@ -97,6 +99,67 @@ void RectAction::commit_action_old(PaintCanvasOld *canvas) {
 		Color pcolor = preview_colors[idx];
 
 		canvas->set_pixel_v(pcell, pcolor);
+
+		redo_cells.append(pcell);
+		redo_colors.append(pcolor);
+	}
+
+	mouse_start_pos_set = false;
+}
+
+void RectAction::_do_action(const Array &data) {
+	if (!mouse_start_pos_set) {
+		mouse_start_pos = data[0];
+		//print("init:", mouse_start_pos)
+		mouse_start_pos_set = true;
+	}
+
+	undo_cells.clear();
+	undo_colors.clear();
+	preview_cells.clear();
+	preview_colors.clear();
+
+	_paint_canvas->clear_preview();
+
+	Vector2i p = mouse_start_pos;
+	Vector2i current_mouse_pos = data[0];
+	Vector2i s = current_mouse_pos - mouse_start_pos;
+
+	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(p, p + Vector2i(s.x, 0));
+	pixels.append_array(PaintUtilities::get_pixels_in_line(p, p + Vector2(0, s.y)));
+	pixels.append_array(PaintUtilities::get_pixels_in_line(p + s, p + s + Vector2(0, -s.y)));
+	pixels.append_array(PaintUtilities::get_pixels_in_line(p + s, p + s + Vector2(-s.x, 0)));
+
+	for (int i = 0; i < pixels.size(); ++i) {
+		Vector2i pixel = pixels[i];
+
+		if (!_paint_canvas->validate_pixel_v(pixel)) {
+			continue;
+		}
+
+		Color col = _paint_canvas->get_pixel_v(pixel);
+
+		if (_paint_canvas->get_alpha_locked() && col.a < 0.00001) {
+			continue;
+		}
+
+		Color tc = data[2];
+
+		_paint_canvas->set_preview_pixel_v(pixel, tc);
+		undo_cells.append(pixel);
+		undo_colors.append(col);
+		preview_cells.append(pixel);
+		preview_colors.append(tc);
+	}
+}
+void RectAction::_commit_action() {
+	_paint_canvas->clear_preview();
+
+	for (int idx = 0; idx < preview_cells.size(); ++idx) {
+		Vector2i pcell = preview_cells[idx];
+		Color pcolor = preview_colors[idx];
+
+		_paint_canvas->set_pixel_v(pcell, pcolor);
 
 		redo_cells.append(pcell);
 		redo_colors.append(pcolor);

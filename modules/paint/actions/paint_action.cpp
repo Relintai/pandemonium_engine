@@ -374,8 +374,14 @@ void PaintAction::_commit_action() {
 }
 
 void PaintAction::_undo_action() {
+	for (int idx = 0; idx < undo_cells.size(); ++idx) {
+		_paint_canvas->set_pixel_v(undo_cells[idx], undo_colors[idx]);
+	}
 }
 void PaintAction::_redo_action() {
+	for (int idx = 0; idx < redo_cells.size(); ++idx) {
+		_paint_canvas->set_pixel_v(redo_cells[idx], redo_colors[idx]);
+	}
 }
 
 bool PaintAction::can_commit() {

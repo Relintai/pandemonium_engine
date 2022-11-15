@@ -28,6 +28,8 @@ SOFTWARE.
 #include "../deprecated/paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
+#include "../nodes/paint_canvas.h"
+
 float DarkenAction::get_dark_factor() {
 	return dark_factor;
 }
@@ -56,6 +58,38 @@ void DarkenAction::do_action_old(PaintCanvasOld *canvas, const Array &data) {
 		Color darkened_color = col.darkened(dark_factor);
 
 		canvas->set_pixel_v(pixel, darkened_color);
+
+		redo_cells.append(pixel);
+		redo_colors.append(darkened_color);
+
+		if (undo_cells.contains(pixel)) {
+			continue;
+		}
+
+		undo_colors.append(col);
+		undo_cells.append(pixel);
+	}
+}
+
+void DarkenAction::_do_action(const Array &data) {
+	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);
+
+	for (int i = 0; i < pixels.size(); ++i) {
+		Vector2i pixel = pixels[i];
+
+		if (!_paint_canvas->validate_pixel_v(pixel)) {
+			continue;
+		}
+
+		Color col = _paint_canvas->get_pixel_v(pixel);
+
+		if (_paint_canvas->get_alpha_locked() && col.a < 0.001) {
+			continue;
+		}
+
+		Color darkened_color = col.darkened(dark_factor);
+
+		_paint_canvas->set_pixel_v(pixel, darkened_color);
 
 		redo_cells.append(pixel);
 		redo_colors.append(darkened_color);

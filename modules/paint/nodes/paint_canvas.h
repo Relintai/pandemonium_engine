@@ -36,11 +36,16 @@ public:
 
 	Color get_preview_pixel_v(const Vector2i &pos);
 	Color get_preview_pixel(const int x, const int y);
-	
+
 	bool validate_pixel_v(const Vector2i &pos) const;
 
 	void clear();
+	void clear_preview();
 	void update_textures();
+
+	PoolVector2iArray select_color(const int p_x, const int p_y);
+	PoolVector2iArray select_same_color(const int p_x, const int p_y);
+	PoolVector2iArray get_neighbouring_pixels(const int pos_x, const int pos_y);
 
 	PaintCanvas();
 	~PaintCanvas();

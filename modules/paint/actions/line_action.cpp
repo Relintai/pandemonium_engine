@@ -28,6 +28,8 @@ SOFTWARE.
 #include "../deprecated/paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
+#include "../nodes/paint_canvas.h"
+
 Vector2i LineAction::get_mouse_start_pos() {
 	return mouse_start_pos;
 }
@@ -90,6 +92,60 @@ void LineAction::commit_action_old(PaintCanvasOld *canvas) {
 		undo_colors.append(canvas->get_pixel_v(pc));
 
 		canvas->set_pixel_v(pc, pcol);
+
+		redo_cells.append(pc);
+		redo_colors.append(pcol);
+	}
+
+	mouse_start_pos_set = false;
+}
+
+void LineAction::_do_action(const Array &data) {
+	if (!mouse_start_pos_set) {
+		mouse_start_pos = data[0];
+		mouse_start_pos_set = true;
+	}
+
+	preview_cells.resize(0);
+	preview_colors.resize(0);
+	_paint_canvas->clear_preview();
+
+	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], mouse_start_pos);
+
+	for (int i = 0; i < pixels.size(); ++i) {
+		Vector2i pixel = pixels[i];
+
+		Color col = _paint_canvas->get_pixel_v(pixel);
+
+		if (_paint_canvas->get_alpha_locked() && col.a < 0.00001) {
+			continue;
+		}
+
+		Color nc = data[2];
+
+		_paint_canvas->set_preview_pixel_v(pixel, nc);
+
+		preview_cells.append(pixel);
+		preview_colors.append(nc);
+	}
+}
+
+void LineAction::_commit_action() {
+	_paint_canvas->clear_preview();
+
+	for (int i = 0; i < preview_cells.size(); ++i) {
+		Vector2i pc = preview_cells[i];
+
+		if (!_paint_canvas->validate_pixel_v(pc)) {
+			continue;
+		}
+
+		Color pcol = preview_colors[i];
+
+		undo_cells.append(pc);
+		undo_colors.append(_paint_canvas->get_pixel_v(pc));
+
+		_paint_canvas->set_pixel_v(pc, pcol);
 
 		redo_cells.append(pc);
 		redo_colors.append(pcol);

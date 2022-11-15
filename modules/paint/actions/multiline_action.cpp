@@ -28,6 +28,8 @@ SOFTWARE.
 #include "../deprecated/paint_canvas_layer.h"
 #include "../paint_utilities.h"
 
+#include "../nodes/paint_canvas.h"
+
 bool MultiLineAction::_can_commit() {
 	return false;
 }
@@ -52,6 +54,30 @@ void MultiLineAction::do_action_old(PaintCanvasOld *canvas, const Array &data) {
 		Color tpx = data[2];
 
 		canvas->set_pixel_v(pixel, tpx);
+
+		redo_cells.append(pixel);
+		redo_colors.append(tpx);
+	}
+}
+
+void MultiLineAction::_do_action(const Array &data) {
+	PoolVector2iArray pixels = PaintUtilities::get_pixels_in_line(data[0], data[1]);
+
+	for (int i = 0; i < pixels.size(); ++i) {
+		Vector2i pixel = pixels[i];
+
+		Color col = _paint_canvas->get_pixel_v(pixel);
+
+		if (undo_cells.contains(pixel) || !_paint_canvas->validate_pixel_v(pixel) || (_paint_canvas->get_alpha_locked() && col.a < 0.0001)) {
+			continue;
+		}
+
+		undo_colors.append(col);
+		undo_cells.append(pixel);
+
+		Color tpx = data[2];
+
+		_paint_canvas->set_pixel_v(pixel, tpx);
 
 		redo_cells.append(pixel);
 		redo_colors.append(tpx);

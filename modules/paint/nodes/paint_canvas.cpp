@@ -1,5 +1,6 @@
 #include "paint_canvas.h"
 
+#include "../paint_utilities.h"
 #include "core/io/image.h"
 #include "scene/resources/texture.h"
 
@@ -111,7 +112,13 @@ Color PaintCanvas::get_preview_pixel(const int x, const int y) {
 void PaintCanvas::clear() {
 	_image->fill(Color(1.00, 1.00, 1.00, 0.00));
 
-	update_textures();
+	_image_texture->create_from_image(_image, 0);
+}
+
+void PaintCanvas::clear_preview() {
+	_preview_image->fill(Color(1.00, 1.00, 1.00, 0.00));
+
+	_preview_image_texture->create_from_image(_preview_image, 0);
 }
 
 void PaintCanvas::update_textures() {
@@ -119,6 +126,87 @@ void PaintCanvas::update_textures() {
 	_preview_image_texture->create_from_image(_preview_image, 0);
 
 	update();
+}
+
+PoolVector2iArray PaintCanvas::select_color(const int p_x, const int p_y) {
+	PoolVector2iArray same_color_pixels;
+
+	Color color = get_pixel(p_x, p_y);
+	for (int x = 0; x < get_size().x; ++x) {
+		for (int y = 0; y < get_size().y; ++y) {
+			Color pixel_color = get_pixel(x, y);
+
+			if (pixel_color == color) {
+				same_color_pixels.append(Vector2i(x, y));
+			}
+		}
+	}
+
+	return same_color_pixels;
+}
+PoolVector2iArray PaintCanvas::select_same_color(const int p_x, const int p_y) {
+	return get_neighbouring_pixels(p_x, p_y);
+}
+
+// yoinked from
+// https://www.geeksforgeeks.org/flood-fill-algorithm-implement-fill-paint/
+PoolVector2iArray PaintCanvas::get_neighbouring_pixels(const int pos_x, const int pos_y) {
+	PoolVector2iArray pixels;
+
+	PoolIntArray to_check_queue;
+	PoolIntArray checked_queue;
+
+	to_check_queue.append(PaintUtilities::to_1D(pos_x, pos_y, get_size().x));
+
+	Color color = get_pixel(pos_x, pos_y);
+
+	while (!to_check_queue.empty()) {
+		int idx = to_check_queue[0];
+		to_check_queue.remove(0);
+		Vector2i p = PaintUtilities::to_2D(idx, get_size().x);
+
+		if (checked_queue.contains(idx)) {
+			continue;
+		}
+
+		checked_queue.append(idx);
+
+		if (get_pixel(p.x, p.y) != color) {
+			continue;
+		}
+
+		// add to result
+		pixels.append(p);
+
+		// check neighbours
+		int x = p.x - 1;
+		int y = p.y;
+		if (is_inside_canvas(x, y)) {
+			idx = PaintUtilities::to_1D(x, y, get_size().x);
+			to_check_queue.append(idx);
+		}
+
+		x = p.x + 1;
+		if (is_inside_canvas(x, y)) {
+			idx = PaintUtilities::to_1D(x, y, get_size().x);
+			to_check_queue.append(idx);
+		}
+
+		x = p.x;
+		y = p.y - 1;
+		if (is_inside_canvas(x, y)) {
+			idx = PaintUtilities::to_1D(x, y, get_size().x);
+			to_check_queue.append(idx);
+		}
+
+		y = p.y + 1;
+		if (is_inside_canvas(x, y)) {
+			idx = PaintUtilities::to_1D(x, y, get_size().x);
+			to_check_queue.append(idx);
+		}
+	}
+
+	return pixels;
 }
 
 PaintCanvas::PaintCanvas() {
@@ -176,5 +264,10 @@ void PaintCanvas::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("validate_pixel_v", "pos"), &PaintCanvas::validate_pixel_v);
 
 	ClassDB::bind_method(D_METHOD("clear"), &PaintCanvas::clear);
+	ClassDB::bind_method(D_METHOD("clear_preview"), &PaintCanvas::clear_preview);
 	ClassDB::bind_method(D_METHOD("update_textures"), &PaintCanvas::update_textures);
+
+	ClassDB::bind_method(D_METHOD("select_color", "x", "y"), &PaintCanvas::select_color);
+	ClassDB::bind_method(D_METHOD("select_same_color", "x", "y"), &PaintCanvas::select_same_color);
+	ClassDB::bind_method(D_METHOD("get_neighbouring_pixels", "x", "y"), &PaintCanvas::get_neighbouring_pixels);
 }

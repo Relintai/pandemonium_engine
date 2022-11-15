@@ -41,6 +41,9 @@ public:
 
 	void do_action_old(PaintCanvasOld *canvas, const Array &data);
 	void commit_action_old(PaintCanvasOld *canvas);
+
+	void _do_action(const Array &data);
+	void _commit_action();
 	bool _can_commit();
 
 	RectAction();
