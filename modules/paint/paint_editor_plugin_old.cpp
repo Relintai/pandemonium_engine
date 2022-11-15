@@ -1,6 +1,3 @@
-#ifndef PAINT_EDITOR__PLUGIN_H
-#define PAINT_EDITOR__PLUGIN_H
-
 /*
 Copyright (c) 2019-2022 Péter Magyar
 
@@ -23,26 +20,38 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "editor/editor_plugin.h"
-#include "core/object/reference.h"
+#include "paint_editor_plugin_old.h"
 
-class PaintWindow;
-class Texture;
+#include "deprecated/paint_window.h"
 
-class PaintEditorPlugin : public EditorPlugin {
-	GDCLASS(PaintEditorPlugin, EditorPlugin);
+void PaintEditorPluginOld::make_visible(const bool visible) {
+	window->set_visible(visible);
+}
 
-public:
-	void make_visible(const bool visible);
-	String get_name() const;
+String PaintEditorPluginOld::get_name() const {
+	return "Paint";
+}
 
-	PaintEditorPlugin(EditorNode *p_node);
-	~PaintEditorPlugin();
+const Ref<Texture> PaintEditorPluginOld::get_icon() const {
+	return _icon;
+}
+bool PaintEditorPluginOld::has_main_screen() const {
+	return true;
+}
 
-	EditorNode *editor;
+PaintEditorPluginOld::PaintEditorPluginOld(EditorNode *p_node) {
+	editor = p_node;
 
-protected:
-	static void _bind_methods();
-};
+	window = memnew(PaintWindow);
 
-#endif
+	get_editor_interface()->get_editor_viewport()->add_child(window);
+	window->set_owner(get_editor_interface()->get_editor_viewport());
+	make_visible(false);
+	_icon = get_editor_interface()->get_base_control()->get_theme_icon("CanvasModulate", "EditorIcons");
+}
+
+PaintEditorPluginOld::~PaintEditorPluginOld() {
+}
+
+void PaintEditorPluginOld::_bind_methods() {
+}

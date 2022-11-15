@@ -50,6 +50,7 @@ SOFTWARE.
 
 #ifdef TOOLS_ENABLED
 #include "paint_editor_plugin.h"
+#include "paint_editor_plugin_old.h"
 #endif
 
 void register_paint_types() {
@@ -81,6 +82,7 @@ void register_paint_types() {
 
 #ifdef TOOLS_ENABLED
 	EditorPlugins::add_by_type<PaintEditorPlugin>();
+	EditorPlugins::add_by_type<PaintEditorPluginOld>();
 #endif
 }
 

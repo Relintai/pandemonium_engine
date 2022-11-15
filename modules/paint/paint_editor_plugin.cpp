@@ -22,32 +22,17 @@ SOFTWARE.
 
 #include "paint_editor_plugin.h"
 
-#include "deprecated/paint_window.h"
-
 void PaintEditorPlugin::make_visible(const bool visible) {
-	window->set_visible(visible);
 }
 
 String PaintEditorPlugin::get_name() const {
 	return "Paint";
 }
 
-const Ref<Texture> PaintEditorPlugin::get_icon() const {
-	return _icon;
-}
-bool PaintEditorPlugin::has_main_screen() const {
-	return true;
-}
-
 PaintEditorPlugin::PaintEditorPlugin(EditorNode *p_node) {
 	editor = p_node;
 
-	window = memnew(PaintWindow);
-
-	get_editor_interface()->get_editor_viewport()->add_child(window);
-	window->set_owner(get_editor_interface()->get_editor_viewport());
 	make_visible(false);
-	_icon = get_editor_interface()->get_base_control()->get_theme_icon("CanvasModulate", "EditorIcons");
 }
 
 PaintEditorPlugin::~PaintEditorPlugin() {

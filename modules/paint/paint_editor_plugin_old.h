@@ -1,5 +1,5 @@
-#ifndef PAINT_EDITOR__PLUGIN_H
-#define PAINT_EDITOR__PLUGIN_H
+#ifndef PAINT_EDITOR_PLUGIN_OLD_H
+#define PAINT_EDITOR_PLUGIN_OLD_H
 
 /*
 Copyright (c) 2019-2022 Péter Magyar
@@ -29,20 +29,26 @@ SOFTWARE.
 class PaintWindow;
 class Texture;
 
-class PaintEditorPlugin : public EditorPlugin {
-	GDCLASS(PaintEditorPlugin, EditorPlugin);
+class PaintEditorPluginOld : public EditorPlugin {
+	GDCLASS(PaintEditorPluginOld, EditorPlugin);
 
 public:
 	void make_visible(const bool visible);
+	const Ref<Texture> get_icon() const;
+	bool has_main_screen() const;
 	String get_name() const;
 
-	PaintEditorPlugin(EditorNode *p_node);
-	~PaintEditorPlugin();
+	PaintEditorPluginOld(EditorNode *p_node);
+	~PaintEditorPluginOld();
 
 	EditorNode *editor;
 
+	PaintWindow *window;
+
 protected:
 	static void _bind_methods();
+
+	Ref<Texture> _icon;
 };
 
 #endif

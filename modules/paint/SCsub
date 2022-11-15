@@ -46,3 +46,4 @@ module_env.add_source_files(env.modules_sources,"deprecated/paint_settings.cpp")
 
 if 'TOOLS_ENABLED' in env["CPPDEFINES"]:
     module_env.add_source_files(env.modules_sources,"paint_editor_plugin.cpp")
+    module_env.add_source_files(env.modules_sources,"paint_editor_plugin_old.cpp")
