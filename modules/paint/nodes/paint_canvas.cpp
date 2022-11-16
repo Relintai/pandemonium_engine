@@ -143,8 +143,8 @@ void PaintCanvas::resize(int width, int height) {
 
 	set_size(Vector2i(width, height));
 
-	resize_image(_image_texture);
-	resize_image(_preview_image_texture);
+	resize_image(_image);
+	resize_image(_preview_image);
 
 	update_textures();
 }
@@ -154,15 +154,15 @@ void PaintCanvas::resize_image(Ref<Image> image) {
 	int prev_width = image->get_size().x;
 	int prev_height = image->get_size().y;
 
-	image->lock();
-
-	for (int y = 0; y < prev_height; ++y) {
-		for (int x = 0; x < prev_width; ++x) {
-			pixel_colors.append(image->get_pixel(x, y));
+	if (prev_width != 0 && prev_height != 0) {
+		image->lock();
+		for (int y = 0; y < prev_height; ++y) {
+			for (int x = 0; x < prev_width; ++x) {
+				pixel_colors.append(image->get_pixel(x, y));
+			}
 		}
+		image->unlock();
 	}
-
-	image->unlock();
 
 	image->create(get_size().x, get_size().y, false, Image::FORMAT_RGBA8);
 
