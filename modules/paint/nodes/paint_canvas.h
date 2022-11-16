@@ -41,6 +41,9 @@ public:
 	int get_brush_size() const;
 	void set_brush_size(const int val);
 
+	int get_current_tool() const;
+	void set_current_tool(const int val);
+
 	bool is_inside_canvas(const int x, const int y);
 
 	void set_pixel_arr(const PoolVector2iArray &pixels, const Color &color);
@@ -89,6 +92,7 @@ protected:
 	bool _alpha_locked;
 	int _brush_prefab;
 	int _brush_size;
+	int _current_tool;
 
 	Ref<Image> _image;
 	Ref<Image> _preview_image;

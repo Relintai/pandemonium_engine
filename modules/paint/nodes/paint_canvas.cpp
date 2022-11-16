@@ -39,6 +39,13 @@ void PaintCanvas::set_brush_size(const int val) {
 	_brush_size = val;
 }
 
+int PaintCanvas::get_current_tool() const {
+	return _current_tool;
+}
+void PaintCanvas::set_current_tool(const int val) {
+	_current_tool = val;
+}
+
 bool PaintCanvas::validate_pixel_v(const Vector2i &pos) const {
 	if (pos.x < 0 || pos.y < 0 || pos.x >= _image->get_width() || pos.y >= _image->get_height()) {
 		return false;
@@ -298,6 +305,7 @@ PaintCanvas::PaintCanvas() {
 	_alpha_locked = false;
 	_brush_prefab = 0;
 	_brush_size = 1;
+	_current_tool = 0;
 
 	_image.instance();
 	_preview_image.instance();
@@ -338,6 +346,10 @@ void PaintCanvas::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_brush_size"), &PaintCanvas::get_brush_size);
 	ClassDB::bind_method(D_METHOD("set_brush_size", "val"), &PaintCanvas::set_brush_size);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "brush_size"), "set_brush_size", "get_brush_size");
+
+	ClassDB::bind_method(D_METHOD("get_current_tool"), &PaintCanvas::get_current_tool);
+	ClassDB::bind_method(D_METHOD("set_current_tool", "val"), &PaintCanvas::set_current_tool);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "current_tool"), "set_current_tool", "get_current_tool");
 
 	ClassDB::bind_method(D_METHOD("is_inside_canvas", "x", "y"), &PaintCanvas::is_inside_canvas);
 	ClassDB::bind_method(D_METHOD("set_pixel_arr", "pixels", "color"), &PaintCanvas::set_pixel_arr);
