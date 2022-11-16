@@ -32,21 +32,22 @@ SOFTWARE.
 #include "nodes/paint_node.h"
 
 PaintSidebar *PaintEditorPlugin::get_sidebar() {
-	return _sidebar;
+	//return _sidebar;
+	return NULL;
 }
 
 void PaintEditorPlugin::make_visible(const bool visible) {
-	_sidebar->set_visible(visible);
+	//_sidebar->set_visible(visible);
 }
 
 String PaintEditorPlugin::get_name() const {
-	return "Paint";
+	return "PaintNodeEditor";
 }
 
 void PaintEditorPlugin::edit(Object *p_object) {
 	_active_node = Object::cast_to<PaintNode>(p_object);
 
-	_sidebar->on_paint_node_selected(_active_node);
+	//_sidebar->on_paint_node_selected(_active_node);
 }
 bool PaintEditorPlugin::handles(Object *p_object) const {
 	return p_object->is_class("PaintNode");
@@ -76,6 +77,7 @@ PaintEditorPlugin::PaintEditorPlugin(EditorNode *p_node) {
 
 	editor = p_node;
 
+/*
 	EDITOR_DEF("editors/paint/editor_side", 0);
 	EditorSettings::get_singleton()->add_property_hint(PropertyInfo(Variant::INT, "editors/paint/editor_side", PROPERTY_HINT_ENUM, "Left,Right"));
 
@@ -95,10 +97,11 @@ PaintEditorPlugin::PaintEditorPlugin(EditorNode *p_node) {
 	make_visible(false);
 
 	Engine::get_singleton()->add_global("PaintEditorPlugin", this);
+*/
 }
 
 PaintEditorPlugin::~PaintEditorPlugin() {
-	Engine::get_singleton()->remove_global("PaintEditorPlugin");
+	//Engine::get_singleton()->remove_global("PaintEditorPlugin");
 }
 
 void PaintEditorPlugin::on_node_removed(Node *node) {
@@ -108,6 +111,7 @@ void PaintEditorPlugin::on_node_removed(Node *node) {
 }
 
 void PaintEditorPlugin::_notification(int p_what) {
+	/*
 	if (p_what == EditorSettings::NOTIFICATION_EDITOR_SETTINGS_CHANGED) {
 		switch ((int)EditorSettings::get_singleton()->get("editors/paint/editor_side")) {
 			case 0: { // Left.
@@ -117,7 +121,9 @@ void PaintEditorPlugin::_notification(int p_what) {
 				CanvasItemEditor::get_singleton()->move_control_to_right_panel(_sidebar);
 			} break;
 		}
-	} else if (p_what == NOTIFICATION_READY) {
+	} else 
+	*/
+	if (p_what == NOTIFICATION_READY) {
 		if (!get_tree()->is_connected("node_removed", this, "on_node_removed")) {
 			get_tree()->connect("node_removed", this, "on_node_removed");
 		}

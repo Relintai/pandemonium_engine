@@ -60,7 +60,7 @@ protected:
 
 	static void _bind_methods();
 
-	PaintSidebar *_sidebar;
+	//PaintSidebar *_sidebar;
 	PaintNode *_active_node;
 };
 
