@@ -24,6 +24,9 @@ public:
 	Color util_random_color();
 	Color util_random_color_alt();
 
+	bool forward_canvas_gui_input(const Ref<InputEvent> &p_event);
+	bool _forward_canvas_gui_input(const Ref<InputEvent> &p_event);
+
 	PaintProject *get_paint_project();
 
 	String get_configuration_warning() const;

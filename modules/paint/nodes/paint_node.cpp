@@ -34,6 +34,13 @@ Color PaintNode::util_random_color_alt() {
 	return PaintUtilities::random_color_alt();
 }
 
+bool PaintNode::forward_canvas_gui_input(const Ref<InputEvent> &p_event) {
+	return call("_forward_canvas_gui_input", p_event);
+}
+bool PaintNode::_forward_canvas_gui_input(const Ref<InputEvent> &p_event) {
+	return false;
+}
+
 PaintProject *PaintNode::get_paint_project() {
 	PaintNode *p = this;
 
@@ -86,6 +93,10 @@ void PaintNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("util_color_from_array", "color_array"), &PaintNode::util_color_from_array);
 	ClassDB::bind_method(D_METHOD("util_random_color"), &PaintNode::util_random_color);
 	ClassDB::bind_method(D_METHOD("util_random_color_alt"), &PaintNode::util_random_color_alt);
+
+	BIND_VMETHOD(MethodInfo(Variant::BOOL, "_forward_canvas_gui_input", PropertyInfo(Variant::OBJECT, "event", PROPERTY_HINT_RESOURCE_TYPE, "InputEvent")));
+	ClassDB::bind_method(D_METHOD("forward_canvas_gui_input", "event"), &PaintNode::forward_canvas_gui_input);
+	ClassDB::bind_method(D_METHOD("_forward_canvas_gui_input", "event"), &PaintNode::_forward_canvas_gui_input);
 
 	ClassDB::bind_method(D_METHOD("get_paint_project"), &PaintNode::get_paint_project);
 }

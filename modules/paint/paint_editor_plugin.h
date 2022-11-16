@@ -29,6 +29,7 @@ SOFTWARE.
 class PaintWindow;
 class Texture;
 class PaintSidebar;
+class PaintNode;
 
 class PaintEditorPlugin : public EditorPlugin {
 	GDCLASS(PaintEditorPlugin, EditorPlugin);
@@ -53,11 +54,14 @@ public:
 	EditorNode *editor;
 
 protected:
+	void on_node_removed(Node *node);
+
 	void _notification(int p_what);
 
 	static void _bind_methods();
 
 	PaintSidebar *_sidebar;
+	PaintNode *_active_node;
 };
 
 #endif
