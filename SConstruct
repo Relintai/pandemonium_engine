@@ -166,6 +166,7 @@ opts.Add(
         ("pointers", "handles", "tracked_handles"),
     )
 )
+opts.Add(BoolVariable("editor_docs", "Whether to add docs to an editor build or not. Disabling this can significantly reduce incremental compile times. Only relevant for editor builds!", True))
 
 # Thirdparty libraries
 opts.Add(BoolVariable("builtin_certs", "Use the built-in SSL certificates bundles", True))

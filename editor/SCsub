@@ -46,23 +46,26 @@ if env["tools"]:
 
     # Core API documentation.
     docs = []
-    docs += Glob("#doc/classes/*.xml")
 
-    # Module API documentation.
-    module_dirs = []
-    for d in env.doc_class_path.values():
-        if d not in module_dirs:
-            module_dirs.append(d)
+    if env["editor_docs"]:
+        docs += Glob("#doc/classes/*.xml")
 
-    for d in module_dirs:
-        if not os.path.isabs(d):
-            docs += Glob("#" + d + "/*.xml")  # Built-in.
-        else:
-            docs += Glob(d + "/*.xml")  # Custom.
+        # Module API documentation.
+        module_dirs = []
+        for d in env.doc_class_path.values():
+            if d not in module_dirs:
+                module_dirs.append(d)
 
-    _make_doc_data_class_path(env.Dir("#editor/doc").abspath)
+        for d in module_dirs:
+            if not os.path.isabs(d):
+                docs += Glob("#" + d + "/*.xml")  # Built-in.
+            else:
+                docs += Glob(d + "/*.xml")  # Custom.
 
-    docs = sorted(docs)
+        _make_doc_data_class_path(env.Dir("#editor/doc").abspath)
+
+        docs = sorted(docs)
+
     env.Depends("#editor/doc_data_compressed.gen.h", docs)
     env.CommandNoCache("#editor/doc_data_compressed.gen.h", docs, run_in_subprocess(editor_builders.make_doc_header))
 
