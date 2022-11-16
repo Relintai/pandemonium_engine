@@ -29,21 +29,39 @@ int PaintCanvas::get_brush_prefab() const {
 	return _brush_prefab;
 }
 void PaintCanvas::set_brush_prefab(const int val) {
+	if (_brush_prefab == val) {
+		return;
+	}
+
 	_brush_prefab = val;
+
+	emit_signal("brush_prefab_changed");
 }
 
 int PaintCanvas::get_brush_size() const {
 	return _brush_size;
 }
 void PaintCanvas::set_brush_size(const int val) {
+	if (_brush_size == val) {
+		return;
+	}
+
 	_brush_size = val;
+
+	emit_signal("brush_size_changed");
 }
 
 int PaintCanvas::get_current_tool() const {
 	return _current_tool;
 }
 void PaintCanvas::set_current_tool(const int val) {
+	if (_current_tool == val) {
+		return;
+	}
+
 	_current_tool = val;
+
+	emit_signal("current_tool_changed");
 }
 
 bool PaintCanvas::validate_pixel_v(const Vector2i &pos) const {
@@ -327,6 +345,10 @@ void PaintCanvas::_notification(int p_what) {
 }
 
 void PaintCanvas::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("brush_prefab_changed"));
+	ADD_SIGNAL(MethodInfo("brush_size_changed"));
+	ADD_SIGNAL(MethodInfo("current_tool_changed"));
+
 	ClassDB::bind_method(D_METHOD("get_symmetry_x"), &PaintCanvas::get_symmetry_x);
 	ClassDB::bind_method(D_METHOD("set_symmetry_x", "val"), &PaintCanvas::set_symmetry_x);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "symmetry_x"), "set_symmetry_x", "get_symmetry_x");
