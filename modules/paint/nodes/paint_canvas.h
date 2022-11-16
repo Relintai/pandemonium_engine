@@ -12,6 +12,20 @@ class PaintCanvas : public PaintNode {
 	GDCLASS(PaintCanvas, PaintNode);
 
 public:
+	enum Tools {
+		PAINT = 0,
+		BRUSH,
+		BUCKET,
+		RAINBOW,
+		LINE,
+		RECT,
+		DARKEN,
+		BRIGHTEN,
+		COLORPICKER,
+		CUT,
+		PASTECUT,
+	};
+
 	bool get_symmetry_x() const;
 	void set_symmetry_x(const bool val);
 
@@ -82,5 +96,7 @@ protected:
 	Ref<ImageTexture> _image_texture;
 	Ref<ImageTexture> _preview_image_texture;
 };
+
+VARIANT_ENUM_CAST(PaintCanvas::Tools);
 
 #endif

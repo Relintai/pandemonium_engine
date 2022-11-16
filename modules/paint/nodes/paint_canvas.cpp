@@ -372,4 +372,16 @@ void PaintCanvas::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_image_texture"), &PaintCanvas::get_image_texture);
 	ClassDB::bind_method(D_METHOD("get_preview_image_texture"), &PaintCanvas::get_preview_image_texture);
+
+	BIND_ENUM_CONSTANT(PAINT);
+	BIND_ENUM_CONSTANT(BRUSH);
+	BIND_ENUM_CONSTANT(BUCKET);
+	BIND_ENUM_CONSTANT(RAINBOW);
+	BIND_ENUM_CONSTANT(LINE);
+	BIND_ENUM_CONSTANT(RECT);
+	BIND_ENUM_CONSTANT(DARKEN);
+	BIND_ENUM_CONSTANT(BRIGHTEN);
+	BIND_ENUM_CONSTANT(COLORPICKER);
+	BIND_ENUM_CONSTANT(CUT);
+	BIND_ENUM_CONSTANT(PASTECUT);
 }
