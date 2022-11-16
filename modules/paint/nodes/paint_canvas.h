@@ -21,6 +21,12 @@ public:
 	bool get_alpha_locked() const;
 	void set_alpha_locked(const bool val);
 
+	int get_brush_prefab() const;
+	void set_brush_prefab(const int val);
+
+	int get_brush_size() const;
+	void set_brush_size(const int val);
+
 	bool is_inside_canvas(const int x, const int y);
 
 	void set_pixel_arr(const PoolVector2iArray &pixels, const Color &color);
@@ -67,6 +73,8 @@ protected:
 	bool _symmetry_x;
 	bool _symmetry_y;
 	bool _alpha_locked;
+	int _brush_prefab;
+	int _brush_size;
 
 	Ref<Image> _image;
 	Ref<Image> _preview_image;

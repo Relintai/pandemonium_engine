@@ -25,6 +25,20 @@ void PaintCanvas::set_alpha_locked(const bool val) {
 	_alpha_locked = val;
 }
 
+int PaintCanvas::get_brush_prefab() const {
+	return _brush_prefab;
+}
+void PaintCanvas::set_brush_prefab(const int val) {
+	_brush_prefab = val;
+}
+
+int PaintCanvas::get_brush_size() const {
+	return _brush_size;
+}
+void PaintCanvas::set_brush_size(const int val) {
+	_brush_size = val;
+}
+
 bool PaintCanvas::validate_pixel_v(const Vector2i &pos) const {
 	if (pos.x < 0 || pos.y < 0 || pos.x >= _image->get_width() || pos.y >= _image->get_height()) {
 		return false;
@@ -282,6 +296,8 @@ PaintCanvas::PaintCanvas() {
 	_symmetry_x = false;
 	_symmetry_y = false;
 	_alpha_locked = false;
+	_brush_prefab = 0;
+	_brush_size = 1;
 
 	_image.instance();
 	_preview_image.instance();
@@ -314,6 +330,14 @@ void PaintCanvas::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_alpha_locked"), &PaintCanvas::get_alpha_locked);
 	ClassDB::bind_method(D_METHOD("set_alpha_locked", "val"), &PaintCanvas::set_alpha_locked);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "alpha_locked"), "set_alpha_locked", "get_alpha_locked");
+
+	ClassDB::bind_method(D_METHOD("get_brush_prefab"), &PaintCanvas::get_brush_prefab);
+	ClassDB::bind_method(D_METHOD("set_brush_prefab", "val"), &PaintCanvas::set_brush_prefab);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "brush_prefab"), "set_brush_prefab", "get_brush_prefab");
+
+	ClassDB::bind_method(D_METHOD("get_brush_size"), &PaintCanvas::get_brush_size);
+	ClassDB::bind_method(D_METHOD("set_brush_size", "val"), &PaintCanvas::set_brush_size);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "brush_size"), "set_brush_size", "get_brush_size");
 
 	ClassDB::bind_method(D_METHOD("is_inside_canvas", "x", "y"), &PaintCanvas::is_inside_canvas);
 	ClassDB::bind_method(D_METHOD("set_pixel_arr", "pixels", "color"), &PaintCanvas::set_pixel_arr);
