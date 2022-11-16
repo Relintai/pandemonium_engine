@@ -44,6 +44,8 @@ public:
 	int get_current_tool() const;
 	void set_current_tool(const int val);
 
+	int get_previous_tool() const;
+
 	bool is_inside_canvas(const int x, const int y);
 
 	void set_pixel_arr(const PoolVector2iArray &pixels, const Color &color);
@@ -93,6 +95,7 @@ protected:
 	int _brush_prefab;
 	int _brush_size;
 	int _current_tool;
+	int _previous_tool;
 
 	Ref<Image> _image;
 	Ref<Image> _preview_image;

@@ -59,9 +59,14 @@ void PaintCanvas::set_current_tool(const int val) {
 		return;
 	}
 
+	_previous_tool = _current_tool;
 	_current_tool = val;
 
 	emit_signal("current_tool_changed");
+}
+
+int PaintCanvas::get_previous_tool() const {
+	return _previous_tool;
 }
 
 bool PaintCanvas::validate_pixel_v(const Vector2i &pos) const {
@@ -324,6 +329,7 @@ PaintCanvas::PaintCanvas() {
 	_brush_prefab = 0;
 	_brush_size = 1;
 	_current_tool = 0;
+	_previous_tool = 0;
 
 	_image.instance();
 	_preview_image.instance();
@@ -372,6 +378,8 @@ void PaintCanvas::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_current_tool"), &PaintCanvas::get_current_tool);
 	ClassDB::bind_method(D_METHOD("set_current_tool", "val"), &PaintCanvas::set_current_tool);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "current_tool"), "set_current_tool", "get_current_tool");
+
+	ClassDB::bind_method(D_METHOD("get_previous_tool"), &PaintCanvas::get_previous_tool);
 
 	ClassDB::bind_method(D_METHOD("is_inside_canvas", "x", "y"), &PaintCanvas::is_inside_canvas);
 	ClassDB::bind_method(D_METHOD("set_pixel_arr", "pixels", "color"), &PaintCanvas::set_pixel_arr);
