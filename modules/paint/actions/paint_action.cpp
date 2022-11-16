@@ -455,13 +455,13 @@ void PaintAction::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("undo_action"), &PaintAction::undo_action);
 	ClassDB::bind_method(D_METHOD("redo_action"), &PaintAction::redo_action);
 
-	ClassDB::bind_method(D_METHOD("_do_action", "data"), &PaintAction::do_action);
-	ClassDB::bind_method(D_METHOD("_commit_action"), &PaintAction::commit_action);
-	ClassDB::bind_method(D_METHOD("_undo_action"), &PaintAction::undo_action);
-	ClassDB::bind_method(D_METHOD("_redo_action"), &PaintAction::redo_action);
+	ClassDB::bind_method(D_METHOD("_do_action", "data"), &PaintAction::_do_action);
+	ClassDB::bind_method(D_METHOD("_commit_action"), &PaintAction::_commit_action);
+	ClassDB::bind_method(D_METHOD("_undo_action"), &PaintAction::_undo_action);
+	ClassDB::bind_method(D_METHOD("_redo_action"), &PaintAction::_redo_action);
 
-	ClassDB::bind_method(D_METHOD("can_commit"), &PaintAction::get_action_data);
-	ClassDB::bind_method(D_METHOD("_can_commit"), &PaintAction::get_action_data);
+	ClassDB::bind_method(D_METHOD("can_commit"), &PaintAction::can_commit);
+	ClassDB::bind_method(D_METHOD("_can_commit"), &PaintAction::_can_commit);
 
 	//helpers
 	ClassDB::bind_method(D_METHOD("get_x_sym_points", "canvas_width", "pixel"), &PaintAction::get_x_sym_points);
