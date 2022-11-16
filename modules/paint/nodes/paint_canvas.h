@@ -50,6 +50,12 @@ public:
 	PoolVector2iArray select_same_color(const int p_x, const int p_y);
 	PoolVector2iArray get_neighbouring_pixels(const int pos_x, const int pos_y);
 
+	Ref<Image> get_image();
+	Ref<Image> get_preview_image();
+
+	Ref<ImageTexture> get_image_texture();
+	Ref<ImageTexture> get_preview_image_texture();
+
 	PaintCanvas();
 	~PaintCanvas();
 

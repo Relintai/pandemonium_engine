@@ -264,6 +264,20 @@ PoolVector2iArray PaintCanvas::get_neighbouring_pixels(const int pos_x, const in
 	return pixels;
 }
 
+Ref<Image> PaintCanvas::get_image() {
+	return _image;
+}
+Ref<Image> PaintCanvas::get_preview_image() {
+	return _preview_image;
+}
+
+Ref<ImageTexture> PaintCanvas::get_image_texture() {
+	return _image_texture;
+}
+Ref<ImageTexture> PaintCanvas::get_preview_image_texture() {
+	return _preview_image_texture;
+}
+
 PaintCanvas::PaintCanvas() {
 	_symmetry_x = false;
 	_symmetry_y = false;
@@ -328,4 +342,10 @@ void PaintCanvas::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("select_color", "x", "y"), &PaintCanvas::select_color);
 	ClassDB::bind_method(D_METHOD("select_same_color", "x", "y"), &PaintCanvas::select_same_color);
 	ClassDB::bind_method(D_METHOD("get_neighbouring_pixels", "x", "y"), &PaintCanvas::get_neighbouring_pixels);
+
+	ClassDB::bind_method(D_METHOD("get_image"), &PaintCanvas::get_image);
+	ClassDB::bind_method(D_METHOD("get_preview_image"), &PaintCanvas::get_preview_image);
+
+	ClassDB::bind_method(D_METHOD("get_image_texture"), &PaintCanvas::get_image_texture);
+	ClassDB::bind_method(D_METHOD("get_preview_image_texture"), &PaintCanvas::get_preview_image_texture);
 }
