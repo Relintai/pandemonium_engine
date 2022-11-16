@@ -150,6 +150,8 @@ void PaintCanvas::resize(int width, int height) {
 }
 
 void PaintCanvas::resize_image(Ref<Image> image) {
+	ERR_FAIL_COND(!image.is_valid());
+
 	PoolColorArray pixel_colors;
 	int prev_width = image->get_size().x;
 	int prev_height = image->get_size().y;
