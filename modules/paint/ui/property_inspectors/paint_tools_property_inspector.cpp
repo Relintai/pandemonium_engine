@@ -22,7 +22,6 @@ SOFTWARE.
 
 #include "paint_tools_property_inspector.h"
 
-#include "editor/editor_node.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/flow_container.h"
@@ -33,14 +32,22 @@ SOFTWARE.
 #include "../../nodes/paint_node.h"
 #include "../../nodes/paint_project.h"
 
+#ifdef TOOLS_ENABLED
+#include "editor/editor_node.h"
+#include "core/config/engine.h"
+#endif
+
 void PaintToolsPropertyInspector::add_button(int id, const String &hint, const String &icon, const String &theme_type) {
 	Button *button = memnew(Button);
 
 	Ref<Texture> icon_tex;
 
-	if (EditorNode::get_singleton()) {
+#ifdef TOOLS_ENABLED
+	if (EditorNode::get_singleton() && Engine::get_singleton()->is_editor_hint()) {
 		icon_tex = EditorNode::get_singleton()->get_gui_base()->get_theme_icon(icon, theme_type);
-	} else {
+	} else 
+#endif
+	{
 		icon_tex = get_theme_icon(icon, theme_type);
 	}
 
