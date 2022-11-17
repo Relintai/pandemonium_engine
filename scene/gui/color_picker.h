@@ -219,6 +219,7 @@ class ColorSelectorButton : public Button {
 
 protected:
 	void pressed();
+	void toggled(bool p_pressed);
 	void _gui_input(Ref<InputEvent> p_event);
 
 	void _notification(int);

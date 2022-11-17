@@ -1246,8 +1246,7 @@ void ColorSelectorButton::_update_picker() {
 		picker->connect("color_changed", this, "_color_changed");
 		popup->connect("modal_closed", this, "_modal_closed");
 		popup->connect("about_to_show", this, "_about_to_show");
-		popup->connect("popup_hide", this, "set_pressed", varray(false));
-		popup->connect("popup_hide", this, "set_toggle_mode", varray(false));
+		//popup->connect("popup_hide", this, "set_pressed", varray(false));
 		picker->set_pick_color(color);
 		picker->set_edit_alpha(edit_alpha);
 		picker->set_display_old_color(true);
@@ -1259,8 +1258,16 @@ void ColorSelectorButton::pressed() {
 	if (_button == BUTTON_LEFT) {
 		Button::pressed();
 	} else if (_button == BUTTON_RIGHT) {
-		set_toggle_mode(true);
 		popup_open_request();
+	}
+}
+void ColorSelectorButton::toggled(bool p_pressed) {
+	if (_button == BUTTON_LEFT) {
+		Button::toggled(p_pressed);
+	} else if (_button == BUTTON_RIGHT) {
+		if (p_pressed) {
+			popup_open_request();
+		}
 	}
 }
 void ColorSelectorButton::_gui_input(Ref<InputEvent> p_event) {
@@ -1302,4 +1309,5 @@ ColorSelectorButton::ColorSelectorButton() {
 	edit_alpha = true;
 
 	set_button_mask(BUTTON_MASK_LEFT | BUTTON_MASK_RIGHT);
+	//set_toggle_mode(true);
 }
