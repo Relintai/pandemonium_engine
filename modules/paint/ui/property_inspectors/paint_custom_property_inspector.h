@@ -1,5 +1,5 @@
-#ifndef PAINT_SIDEBAR_MODULE_H
-#define PAINT_SIDEBAR_MODULE_H
+#ifndef PAINT_CUSTOM_PROPERTY_INSPECTOR_H
+#define PAINT_CUSTOM_PROPERTY_INSPECTOR_H
 
 /*
 Copyright (c) 2022 Péter Magyar
@@ -27,8 +27,8 @@ SOFTWARE.
 
 class PaintNode;
 
-class PaintSidebarModule : public PanelContainer {
-	GDCLASS(PaintSidebarModule, PanelContainer);
+class PaintCustomPropertyInspector : public PanelContainer {
+	GDCLASS(PaintCustomPropertyInspector, PanelContainer);
 
 public:
 	void on_paint_node_selected(PaintNode *paint_node);
@@ -36,8 +36,8 @@ public:
 	
 	virtual void _on_paint_node_selected(Node *paint_node);
 
-	PaintSidebarModule();
-	~PaintSidebarModule();
+	PaintCustomPropertyInspector();
+	~PaintCustomPropertyInspector();
 
 protected:
 	static void _bind_methods();

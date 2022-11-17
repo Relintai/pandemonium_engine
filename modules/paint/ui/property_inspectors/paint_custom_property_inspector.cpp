@@ -20,28 +20,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "paint_sidebar_module.h"
+#include "paint_custom_property_inspector.h"
 
-#include "../nodes/paint_node.h"
+#include "../../nodes/paint_node.h"
 
-void PaintSidebarModule::on_paint_node_selected(PaintNode *paint_node) {
+void PaintCustomPropertyInspector::on_paint_node_selected(PaintNode *paint_node) {
 	call("_on_paint_node_selected", paint_node);
 }
-void PaintSidebarModule::on_paint_node_selected_bind(Node *paint_node) {
+void PaintCustomPropertyInspector::on_paint_node_selected_bind(Node *paint_node) {
 	call("_on_paint_node_selected", paint_node);
 }
-void PaintSidebarModule::_on_paint_node_selected(Node *paint_node) {
+void PaintCustomPropertyInspector::_on_paint_node_selected(Node *paint_node) {
 }
 
-PaintSidebarModule::PaintSidebarModule() {
+PaintCustomPropertyInspector::PaintCustomPropertyInspector() {
 }
 
-PaintSidebarModule::~PaintSidebarModule() {
+PaintCustomPropertyInspector::~PaintCustomPropertyInspector() {
 }
 
-void PaintSidebarModule::_bind_methods() {
+void PaintCustomPropertyInspector::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_on_paint_node_selected", PropertyInfo(Variant::OBJECT, "paint_node", PROPERTY_HINT_RESOURCE_TYPE, "PaintNode")));
 
-	ClassDB::bind_method(D_METHOD("on_paint_node_selected", "paint_node"), &PaintSidebarModule::on_paint_node_selected_bind);
-	ClassDB::bind_method(D_METHOD("_on_paint_node_selected", "paint_node"), &PaintSidebarModule::_on_paint_node_selected);
+	ClassDB::bind_method(D_METHOD("on_paint_node_selected", "paint_node"), &PaintCustomPropertyInspector::on_paint_node_selected_bind);
+	ClassDB::bind_method(D_METHOD("_on_paint_node_selected", "paint_node"), &PaintCustomPropertyInspector::_on_paint_node_selected);
 }

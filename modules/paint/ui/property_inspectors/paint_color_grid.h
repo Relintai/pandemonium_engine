@@ -25,15 +25,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "../paint_sidebar_module.h"
+#include "paint_custom_property_inspector.h"
 #include "core/object/object_id.h"
 
 class GridContainer;
 class PaintNode;
 class PaintProject;
 
-class PaintColorGrid : public PaintSidebarModule {
-	GDCLASS(PaintColorGrid, PaintSidebarModule);
+class PaintColorGrid : public PaintCustomPropertyInspector {
+	GDCLASS(PaintColorGrid, PaintCustomPropertyInspector);
 
 public:
 	// TODO this should store settings in PaintProjects
