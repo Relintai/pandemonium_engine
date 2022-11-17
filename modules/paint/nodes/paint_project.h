@@ -12,6 +12,12 @@ public:
 	Color get_current_color();
 	void set_current_color(const Color &color);
 
+	void add_preset_color(const Color &color);
+	void remove_preset_color(const int index);
+	Color get_preset_color(const int index);
+	void set_preset_color(const int index, const Color &color);
+	int get_preset_color_count();
+
 	PoolColorArray get_color_presets();
 	void set_color_presets(const PoolColorArray &colors);
 
