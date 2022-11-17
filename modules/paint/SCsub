@@ -32,6 +32,7 @@ module_env.add_source_files(env.modules_sources,"ui/paint_visual_grid.cpp")
 module_env.add_source_files(env.modules_sources,"ui/property_inspectors/paint_color_grid.cpp")
 module_env.add_source_files(env.modules_sources,"ui/property_inspectors/paint_custom_property_inspector.cpp")
 module_env.add_source_files(env.modules_sources,"ui/property_inspectors/paint_tools_property_inspector.cpp")
+module_env.add_source_files(env.modules_sources,"ui/property_inspectors/paint_project_property_inspector.cpp")
 
 module_env.add_source_files(env.modules_sources,"ui/paint_sidebar.cpp")
 module_env.add_source_files(env.modules_sources,"ui/paint_sidebar_module.cpp")

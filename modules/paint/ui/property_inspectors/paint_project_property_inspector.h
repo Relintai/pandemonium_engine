@@ -1,9 +1,7 @@
-#ifndef PAINT_COLOR_GRID_H
-#define PAINT_COLOR_GRID_H
+#ifndef PAINT_PROJECT_PROPERTY_INSPECTOR_H
+#define PAINT_PROJECT_PROPERTY_INSPECTOR_H
 
 /*
-Copyright (c) 2019 Flairieve
-Copyright (c) 2020-2022 cobrapitz
 Copyright (c) 2022 Péter Magyar
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,31 +23,32 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "paint_custom_property_inspector.h"
 #include "core/object/object_id.h"
-
-//TODO remove
+#include "paint_custom_property_inspector.h"
 
 class GridContainer;
 class PaintNode;
 class PaintProject;
+class HFlowContainer;
 
-class PaintColorGrid : public PaintCustomPropertyInspector {
-	GDCLASS(PaintColorGrid, PaintCustomPropertyInspector);
+class PaintProjectPropertyInspector : public PaintCustomPropertyInspector {
+	GDCLASS(PaintProjectPropertyInspector, PaintCustomPropertyInspector);
 
 public:
-	void change_color_to(const Color &color);
-	void add_color_prefab(const Color &color);
+	void add_grid_button(const Color &color);
 
 	void _on_paint_node_selected(Node *paint_node);
 
-	PaintColorGrid();
-	~PaintColorGrid();
+	PaintProjectPropertyInspector();
+	~PaintProjectPropertyInspector();
 
 protected:
+	void _on_grid_color_changed(const Color &color, const int index);
+	void _on_grid_color_selected(const int index);
+
 	static void _bind_methods();
 
-	GridContainer *_grid;
+	HFlowContainer *_color_grid;
 
 	ObjectID _current_paint_node;
 	ObjectID _current_paint_project;
