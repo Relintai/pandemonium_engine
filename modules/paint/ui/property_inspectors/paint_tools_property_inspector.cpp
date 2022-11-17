@@ -25,8 +25,12 @@ SOFTWARE.
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/flow_container.h"
+#include "scene/gui/texture_button.h"
+
 #include "scene/resources/style_box.h"
 #include "scene/resources/texture.h"
+#include "../../paint_icons/icons.h"
+#include "../../bush_prefabs.h"
 
 #include "../../nodes/paint_canvas.h"
 #include "../../nodes/paint_node.h"
@@ -59,6 +63,15 @@ void PaintToolsPropertyInspector::add_button(int id, const String &hint, const S
 	button->connect("toggled", this, "on_button_toggled", varray(id));
 
 	_grid->add_child(button);
+}
+
+void PaintToolsPropertyInspector::add_brush_prefab(int id, const Ref<Texture> &normal_texture, const Ref<Texture> &hover_texture) {
+	TextureButton *brush_button = memnew(TextureButton);
+	brush_button->set_normal_texture(normal_texture);
+	brush_button->set_hover_texture(hover_texture);
+	brush_button->set_custom_minimum_size(Size2(25, 25));
+	brush_button->connect("pressed", this, "_on_brush_prefab_button_pressed", varray(id));
+	_brush_prefabs->add_child(brush_button);
 }
 
 void PaintToolsPropertyInspector::_on_paint_node_selected(Node *p_paint_node) {
@@ -99,6 +112,14 @@ PaintToolsPropertyInspector::PaintToolsPropertyInspector() {
 	add_button(PaintCanvas::TOOL_COLORPICKER, "Colorpicker", "ColorPick", "EditorIcons");
 	add_button(PaintCanvas::TOOL_CUT, "Cut", "ActionCut", "EditorIcons");
 	add_button(PaintCanvas::TOOL_PASTECUT, "Pastecut", "ActionCopy", "EditorIcons");
+
+	_brush_prefabs = memnew(HFlowContainer);
+	box_container->add_child(_brush_prefabs);
+
+	add_brush_prefab(BrushPrefabs::RECT, PaintIcons::make_icon_brush_rect_png(), PaintIcons::make_icon_brush_rect_hovered_png());
+	add_brush_prefab(BrushPrefabs::CIRCLE, PaintIcons::make_icon_brush_circle_png(), PaintIcons::make_icon_brush_circle_hovered_png());
+	add_brush_prefab(BrushPrefabs::V_LINE, PaintIcons::make_icon_brush_v_line_png(), PaintIcons::make_icon_brush_v_line_hovered_png());
+	add_brush_prefab(BrushPrefabs::H_LINE, PaintIcons::make_icon_brush_h_line_png(), PaintIcons::make_icon_brush_h_line_hovered_png());
 }
 
 PaintToolsPropertyInspector::~PaintToolsPropertyInspector() {
@@ -139,7 +160,16 @@ void PaintToolsPropertyInspector::_on_tool_changed() {
 	}
 }
 
+void PaintToolsPropertyInspector::_on_brush_prefab_button_pressed(const int id) {
+	PaintCanvas *paint_canvas = Object::cast_to<PaintCanvas>(ObjectDB::get_instance(_paint_canvas));
+
+	ERR_FAIL_COND(!paint_canvas);
+
+	paint_canvas->set_brush_prefab(id);
+}
+
 void PaintToolsPropertyInspector::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("on_button_toggled"), &PaintToolsPropertyInspector::on_button_toggled);
 	ClassDB::bind_method(D_METHOD("_on_tool_changed"), &PaintToolsPropertyInspector::_on_tool_changed);
+	ClassDB::bind_method(D_METHOD("_on_brush_prefab_button_pressed"), &PaintToolsPropertyInspector::_on_brush_prefab_button_pressed);
 }

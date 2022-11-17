@@ -33,10 +33,10 @@ SOFTWARE.
 class BrushPrefabs {
 public:
 	enum Type {
-		V_LINE = 0,
-		H_LINE,
-		RECT,
+		RECT = 0,
 		CIRCLE,
+		H_LINE,
+		V_LINE,
 	};
 
 	static PoolVector2iArray get_brush(const Type type, int size);

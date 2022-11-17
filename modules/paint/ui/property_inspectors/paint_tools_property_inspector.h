@@ -23,9 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "paint_custom_property_inspector.h"
 #include "core/object/object_id.h"
 #include "core/object/reference.h"
+#include "paint_custom_property_inspector.h"
 
 class HFlowContainer;
 class PaintNode;
@@ -38,6 +38,7 @@ class PaintToolsPropertyInspector : public PaintCustomPropertyInspector {
 
 public:
 	void add_button(int id, const String &hint, const String &icon, const String &theme_type);
+	void add_brush_prefab(int id, const Ref<Texture> &normal_texture, const Ref<Texture> &hover_texture);
 
 	void _on_paint_node_selected(Node *paint_node);
 
@@ -47,10 +48,12 @@ public:
 protected:
 	void on_button_toggled(bool on, int id);
 	void _on_tool_changed();
+	void _on_brush_prefab_button_pressed(const int id);
 
 	static void _bind_methods();
 
 	HFlowContainer *_grid;
+	HFlowContainer *_brush_prefabs;
 
 	ObjectID _paint_canvas;
 
