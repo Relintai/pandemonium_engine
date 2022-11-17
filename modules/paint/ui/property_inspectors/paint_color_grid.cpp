@@ -94,7 +94,7 @@ PaintColorGrid::PaintColorGrid() {
 	_grid = memnew(GridContainer);
 	scroll_container->add_child(_grid);
 
-	_grid->set_columns(4);
+	_grid->set_columns(5);
 	//_grid->set_custom_minimum_size(Size2(0, 145));
 	_grid->set_h_size_flags(SIZE_EXPAND_FILL);
 	_grid->set_v_size_flags(SIZE_EXPAND_FILL);
