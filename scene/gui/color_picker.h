@@ -201,4 +201,42 @@ public:
 	ColorPickerButton();
 };
 
+class ColorSelectorButton : public Button {
+	GDCLASS(ColorSelectorButton, Button);
+
+	PopupPanel *popup;
+	ColorPicker *picker;
+	Color color;
+	bool edit_alpha;
+
+	void _about_to_show();
+	void _color_changed(const Color &p_color);
+	void _modal_closed();
+
+	virtual void popup_open_request();
+
+	void _update_picker();
+
+protected:
+	void pressed();
+	void _gui_input(Ref<InputEvent> p_event);
+
+	void _notification(int);
+	static void _bind_methods();
+
+	int _button;
+
+public:
+	void set_pick_color(const Color &p_color);
+	Color get_pick_color() const;
+
+	void set_edit_alpha(bool p_show);
+	bool is_editing_alpha() const;
+
+	ColorPicker *get_picker();
+	PopupPanel *get_popup();
+
+	ColorSelectorButton();
+};
+
 #endif // COLOR_PICKER_H

@@ -34,6 +34,7 @@
 #include "core/os/keyboard.h"
 #include "core/os/os.h"
 
+#include "core/input/shortcut.h"
 #include "scene/gui/check_button.h"
 #include "scene/gui/grid_container.h"
 #include "scene/gui/label.h"
@@ -41,7 +42,6 @@
 #include "scene/gui/popup.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/separator.h"
-#include "core/input/shortcut.h"
 #include "scene/gui/slider.h"
 #include "scene/gui/spin_box.h"
 #include "scene/gui/texture_rect.h"
@@ -1147,4 +1147,159 @@ ColorPresetButton::ColorPresetButton(Color p_color) {
 }
 
 ColorPresetButton::~ColorPresetButton() {
+}
+
+/////////////////
+
+void ColorSelectorButton::_about_to_show() {
+	set_pressed(true);
+	if (picker) {
+		picker->set_old_color(color);
+	}
+}
+
+void ColorSelectorButton::_color_changed(const Color &p_color) {
+	color = p_color;
+	update();
+	emit_signal("color_changed", color);
+}
+
+void ColorSelectorButton::_modal_closed() {
+	emit_signal("popup_closed");
+}
+
+void ColorSelectorButton::popup_open_request() {
+	_update_picker();
+	picker->_update_presets();
+	popup->set_position(get_global_position() - picker->get_combined_minimum_size() * get_global_transform().get_scale());
+	popup->set_scale(get_global_transform().get_scale());
+	popup->popup();
+	picker->set_focus_on_line_edit();
+}
+
+void ColorSelectorButton::_notification(int p_what) {
+	switch (p_what) {
+		case NOTIFICATION_DRAW: {
+			const Ref<StyleBox> normal = get_theme_stylebox("normal");
+			const Rect2 r = Rect2(normal->get_offset(), get_size() - normal->get_minimum_size());
+			draw_texture_rect(Control::get_theme_icon("bg", "ColorPickerButton"), r, true);
+			draw_rect(r, color);
+
+			if (color.r > 1 || color.g > 1 || color.b > 1) {
+				// Draw an indicator to denote that the color is "overbright" and can't be displayed accurately in the preview
+				draw_texture(Control::get_theme_icon("overbright_indicator", "ColorPicker"), normal->get_offset());
+			}
+		} break;
+		case MainLoop::NOTIFICATION_WM_QUIT_REQUEST: {
+			if (popup) {
+				popup->hide();
+			}
+		} break;
+	}
+
+	if (p_what == NOTIFICATION_VISIBILITY_CHANGED) {
+		if (popup && !is_visible_in_tree()) {
+			popup->hide();
+		}
+	}
+}
+
+void ColorSelectorButton::set_pick_color(const Color &p_color) {
+	color = p_color;
+	if (picker) {
+		picker->set_pick_color(p_color);
+	}
+
+	update();
+}
+Color ColorSelectorButton::get_pick_color() const {
+	return color;
+}
+
+void ColorSelectorButton::set_edit_alpha(bool p_show) {
+	edit_alpha = p_show;
+	if (picker) {
+		picker->set_edit_alpha(p_show);
+	}
+}
+
+bool ColorSelectorButton::is_editing_alpha() const {
+	return edit_alpha;
+}
+
+ColorPicker *ColorSelectorButton::get_picker() {
+	_update_picker();
+	return picker;
+}
+
+PopupPanel *ColorSelectorButton::get_popup() {
+	_update_picker();
+	return popup;
+}
+
+void ColorSelectorButton::_update_picker() {
+	if (!picker) {
+		popup = memnew(PopupPanel);
+		picker = memnew(ColorPicker);
+		popup->add_child(picker);
+		add_child(popup);
+		picker->connect("color_changed", this, "_color_changed");
+		popup->connect("modal_closed", this, "_modal_closed");
+		popup->connect("about_to_show", this, "_about_to_show");
+		popup->connect("popup_hide", this, "set_pressed", varray(false));
+		popup->connect("popup_hide", this, "set_toggle_mode", varray(false));
+		picker->set_pick_color(color);
+		picker->set_edit_alpha(edit_alpha);
+		picker->set_display_old_color(true);
+		emit_signal("picker_created");
+	}
+}
+
+void ColorSelectorButton::pressed() {
+	if (_button == BUTTON_LEFT) {
+		Button::pressed();
+	} else if (_button == BUTTON_RIGHT) {
+		set_toggle_mode(true);
+		popup_open_request();
+	}
+}
+void ColorSelectorButton::_gui_input(Ref<InputEvent> p_event) {
+	Ref<InputEventMouseButton> mouse_button = p_event;
+
+	if (mouse_button.is_valid()) {
+		_button = mouse_button->get_button_index();
+	}
+
+	BaseButton::_gui_input(p_event);
+}
+
+void ColorSelectorButton::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("set_pick_color", "color"), &ColorSelectorButton::set_pick_color);
+	ClassDB::bind_method(D_METHOD("get_pick_color"), &ColorSelectorButton::get_pick_color);
+	ClassDB::bind_method(D_METHOD("get_picker"), &ColorSelectorButton::get_picker);
+	ClassDB::bind_method(D_METHOD("get_popup"), &ColorSelectorButton::get_popup);
+	ClassDB::bind_method(D_METHOD("set_edit_alpha", "show"), &ColorSelectorButton::set_edit_alpha);
+	ClassDB::bind_method(D_METHOD("is_editing_alpha"), &ColorSelectorButton::is_editing_alpha);
+	ClassDB::bind_method(D_METHOD("_about_to_show"), &ColorSelectorButton::_about_to_show);
+	ClassDB::bind_method(D_METHOD("_color_changed"), &ColorSelectorButton::_color_changed);
+	ClassDB::bind_method(D_METHOD("_modal_closed"), &ColorSelectorButton::_modal_closed);
+
+	ADD_SIGNAL(MethodInfo("color_changed", PropertyInfo(Variant::COLOR, "color")));
+	ADD_SIGNAL(MethodInfo("popup_closed"));
+	ADD_SIGNAL(MethodInfo("picker_created"));
+	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "color"), "set_pick_color", "get_pick_color");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "edit_alpha"), "set_edit_alpha", "is_editing_alpha");
+}
+
+ColorSelectorButton::ColorSelectorButton() {
+	_button = 0;
+
+	// Initialization is now done deferred,
+	// this improves performance in the inspector as the color picker
+	// can be expensive to initialize.
+	picker = nullptr;
+	popup = nullptr;
+	edit_alpha = true;
+
+	set_button_mask(BUTTON_MASK_LEFT | BUTTON_MASK_RIGHT);
 }

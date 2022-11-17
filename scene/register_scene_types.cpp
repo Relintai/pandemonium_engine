@@ -133,8 +133,8 @@
 #include "scene/main/resource_preloader.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/timer.h"
-#include "scene/main/world.h"
 #include "scene/main/viewport.h"
+#include "scene/main/world.h"
 #include "scene/resources/audio_stream_sample.h"
 #include "scene/resources/bit_map.h"
 #include "scene/resources/box_shape.h"
@@ -155,6 +155,7 @@
 #include "scene/resources/material.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/mesh_data_tool.h"
+#include "scene/resources/multimesh.h"
 #include "scene/resources/navigation_mesh.h"
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/particles_material.h"
@@ -166,7 +167,6 @@
 #include "scene/resources/rectangle_shape_2d.h"
 #include "scene/resources/resource_format_text.h"
 #include "scene/resources/segment_shape_2d.h"
-#include "scene/resources/multimesh.h"
 
 #include "scene/resources/sky.h"
 #include "scene/resources/sphere_shape.h"
@@ -174,10 +174,9 @@
 #include "scene/resources/text_file.h"
 #include "scene/resources/texture.h"
 #include "scene/resources/video_stream.h"
-#include "scene/resources/world_3d.h"
 #include "scene/resources/world_2d.h"
+#include "scene/resources/world_3d.h"
 #include "scene/scene_string_names.h"
-
 
 #ifndef _3D_DISABLED
 #include "scene/3d/area.h"
@@ -362,6 +361,7 @@ void register_scene_types() {
 	ClassDB::register_class<SpinBox>();
 	ClassDB::register_class<ColorPicker>();
 	ClassDB::register_class<ColorPickerButton>();
+	ClassDB::register_class<ColorSelectorButton>();
 	ClassDB::register_class<RichTextLabel>();
 	ClassDB::register_class<RichTextEffect>();
 	ClassDB::register_class<CharFXTransform>();
