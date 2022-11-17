@@ -13,17 +13,17 @@ class PaintCanvas : public PaintNode {
 
 public:
 	enum Tools {
-		PAINT = 0,
-		BRUSH,
-		BUCKET,
-		RAINBOW,
-		LINE,
-		RECT,
-		DARKEN,
-		BRIGHTEN,
-		COLORPICKER,
-		CUT,
-		PASTECUT,
+		TOOL_PENCIL = 0,
+		TOOL_BRUSH,
+		TOOL_BUCKET,
+		TOOL_RAINBOW,
+		TOOL_LINE,
+		TOOL_RECT,
+		TOOL_DARKEN,
+		TOOL_BRIGHTEN,
+		TOOL_COLORPICKER,
+		TOOL_CUT,
+		TOOL_PASTECUT,
 	};
 
 	bool get_symmetry_x() const;
