@@ -25,7 +25,7 @@ module_env.add_source_files(env.modules_sources,"deprecated/dialogs/paint_load_f
 module_env.add_source_files(env.modules_sources,"deprecated/dialogs/paint_save_file_dialog.cpp")
 
 module_env.add_source_files(env.modules_sources,"ui/paint_canvas_outline.cpp")
-module_env.add_source_files(env.modules_sources,"ui/sidebar_modules/paint_color_grid.cpp")
+module_env.add_source_files(env.modules_sources,"ui/property_inspectors/paint_color_grid.cpp")
 module_env.add_source_files(env.modules_sources,"ui/paint_canvas_background.cpp")
 module_env.add_source_files(env.modules_sources,"ui/paint_selection_box.cpp")
 module_env.add_source_files(env.modules_sources,"ui/paint_visual_grid.cpp")

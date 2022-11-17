@@ -27,7 +27,7 @@ SOFTWARE.
 #include "editor/plugins/canvas_item_editor_plugin.h"
 
 #include "ui/paint_sidebar.h"
-#include "ui/sidebar_modules/paint_color_grid.h"
+#include "ui/property_inspectors/paint_color_grid.h"
 
 #include "nodes/paint_node.h"
 

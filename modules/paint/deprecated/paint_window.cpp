@@ -43,7 +43,7 @@ SOFTWARE.
 #include "paint_canvas.h"
 #include "../ui/paint_canvas_background.h"
 #include "paint_canvas_layer.h"
-#include "../ui/sidebar_modules/paint_color_grid.h"
+#include "../ui/property_inspectors/paint_color_grid.h"
 #include "paint_layer_button.h"
 #include "paint_navbar.h"
 #include "../paint_utilities.h"
