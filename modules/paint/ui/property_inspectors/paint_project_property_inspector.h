@@ -24,12 +24,14 @@ SOFTWARE.
 */
 
 #include "core/object/object_id.h"
+#include "core/object/reference.h"
 #include "paint_custom_property_inspector.h"
 
 class GridContainer;
 class PaintNode;
 class PaintProject;
 class HFlowContainer;
+class ColorSelectorButton;
 
 class PaintProjectPropertyInspector : public PaintCustomPropertyInspector {
 	GDCLASS(PaintProjectPropertyInspector, PaintCustomPropertyInspector);
@@ -43,12 +45,15 @@ public:
 	~PaintProjectPropertyInspector();
 
 protected:
-	void _on_grid_color_changed(const Color &color, const int index);
-	void _on_grid_color_selected(const int index);
+	void _on_grid_color_button_changed(const Color &color, const int index);
+	void _on_grid_color_button_pressed(const int index);
+	void _on_main_color_changed(const Color &color);
+	void _on_main_color_selected();
 
 	static void _bind_methods();
 
 	HFlowContainer *_color_grid;
+	ColorSelectorButton *_main_color_button;
 
 	ObjectID _current_paint_node;
 	ObjectID _current_paint_project;

@@ -22,6 +22,7 @@ SOFTWARE.
 
 #include "paint_project_property_inspector.h"
 
+#include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/color_picker.h"
 #include "scene/gui/flow_container.h"
@@ -38,8 +39,8 @@ void PaintProjectPropertyInspector::add_grid_button(const Color &color) {
 	_color_grid->add_child(color_selector_button);
 
 	color_selector_button->set_pick_color(color);
-	color_selector_button->connect("color_changed", this, "_on_grid_color_changed", varray(_color_grid->get_child_count() - 1));
-	color_selector_button->connect("pressed", this, "_on_grid_color_selected", varray(_color_grid->get_child_count() - 1));
+	color_selector_button->connect("color_changed", this, "_on_grid_color_button_changed", varray(_color_grid->get_child_count() - 1));
+	color_selector_button->connect("pressed", this, "_on_grid_color_button_pressed", varray(_color_grid->get_child_count() - 1));
 }
 
 void PaintProjectPropertyInspector::_on_paint_node_selected(Node *p_paint_node) {
@@ -56,28 +57,49 @@ void PaintProjectPropertyInspector::_on_paint_node_selected(Node *p_paint_node) 
 
 	PaintProject *proj = paint_node->get_paint_project();
 
-	if (proj) {
-		_current_paint_project = proj->get_instance_id();
+	if (!proj) {
+		return;
 	}
+	
+	_current_paint_project = proj->get_instance_id();
+	_main_color_button->set_pick_color(proj->get_current_color());
 }
 
-void PaintProjectPropertyInspector::_on_grid_color_changed(const Color &color, const int index) {
-	PaintProject *proj = Object::cast_to<PaintProject>(ObjectDB::get_instance(_current_paint_project));
-
-	if (proj) {
-		//proj->set_current_color(color);
-		//store
-	}
-}
-
-void PaintProjectPropertyInspector::_on_grid_color_selected(const int index) {
+void PaintProjectPropertyInspector::_on_grid_color_button_changed(const Color &color, const int index) {
 	PaintProject *proj = Object::cast_to<PaintProject>(ObjectDB::get_instance(_current_paint_project));
 
 	ColorSelectorButton *button = Object::cast_to<ColorSelectorButton>(_color_grid->get_child(index));
 	ERR_FAIL_COND(!button);
 
 	if (proj) {
-		proj->set_current_color(button->get_pick_color());
+		//store
+	}
+}
+
+void PaintProjectPropertyInspector::_on_grid_color_button_pressed(const int index) {
+	PaintProject *proj = Object::cast_to<PaintProject>(ObjectDB::get_instance(_current_paint_project));
+
+	ColorSelectorButton *button = Object::cast_to<ColorSelectorButton>(_color_grid->get_child(index));
+	ERR_FAIL_COND(!button);
+
+	if (proj) {
+		_main_color_button->set_pick_color(button->get_pick_color());
+		_on_main_color_changed(button->get_pick_color());
+	}
+}
+
+void PaintProjectPropertyInspector::_on_main_color_changed(const Color &color) {
+	PaintProject *proj = Object::cast_to<PaintProject>(ObjectDB::get_instance(_current_paint_project));
+
+	if (proj) {
+		proj->set_current_color(_main_color_button->get_pick_color());
+	}
+}
+void PaintProjectPropertyInspector::_on_main_color_selected() {
+	PaintProject *proj = Object::cast_to<PaintProject>(ObjectDB::get_instance(_current_paint_project));
+
+	if (proj) {
+		proj->set_current_color(_main_color_button->get_pick_color());
 	}
 }
 
@@ -85,16 +107,29 @@ PaintProjectPropertyInspector::PaintProjectPropertyInspector() {
 	_current_paint_node = 0;
 	_current_paint_project = 0;
 
+	VBoxContainer *main_container = memnew(VBoxContainer);
+	add_child(main_container);
+
 	ScrollContainer *scroll_container = memnew(ScrollContainer);
 	scroll_container->set_custom_minimum_size(Size2(0, 145));
 	scroll_container->set_enable_h_scroll(false);
-	add_child(scroll_container);
+	main_container->add_child(scroll_container);
 
 	_color_grid = memnew(HFlowContainer);
 	scroll_container->add_child(_color_grid);
-
 	_color_grid->set_h_size_flags(SIZE_EXPAND_FILL);
 	_color_grid->set_v_size_flags(SIZE_EXPAND_FILL);
+
+	HBoxContainer *row_container = memnew(HBoxContainer);
+	main_container->add_child(row_container);
+	_color_grid->set_h_size_flags(SIZE_EXPAND_FILL);
+
+	_main_color_button = memnew(ColorSelectorButton);
+	_main_color_button->set_custom_minimum_size(Size2(35, 30));
+	_main_color_button->set_h_size_flags(SIZE_EXPAND_FILL);
+	row_container->add_child(_main_color_button);
+	_main_color_button->connect("color_changed", this, "_on_main_color_changed");
+	_main_color_button->connect("pressed", this, "_on_main_color_selected");
 
 	//TODO add button
 	for (int i = 0; i < 30; ++i) {
@@ -106,6 +141,9 @@ PaintProjectPropertyInspector::~PaintProjectPropertyInspector() {
 }
 
 void PaintProjectPropertyInspector::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_on_grid_color_changed"), &PaintProjectPropertyInspector::_on_grid_color_changed);
-	ClassDB::bind_method(D_METHOD("_on_grid_color_selected"), &PaintProjectPropertyInspector::_on_grid_color_selected);
+	ClassDB::bind_method(D_METHOD("_on_grid_color_button_changed"), &PaintProjectPropertyInspector::_on_grid_color_button_changed);
+	ClassDB::bind_method(D_METHOD("_on_grid_color_button_pressed"), &PaintProjectPropertyInspector::_on_grid_color_button_pressed);
+
+	ClassDB::bind_method(D_METHOD("_on_main_color_changed"), &PaintProjectPropertyInspector::_on_main_color_changed);
+	ClassDB::bind_method(D_METHOD("_on_main_color_selected"), &PaintProjectPropertyInspector::_on_main_color_selected);
 }
