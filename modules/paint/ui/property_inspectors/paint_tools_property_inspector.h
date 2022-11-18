@@ -32,6 +32,8 @@ class PaintNode;
 class PaintCanvas;
 class PaintProject;
 class ButtonGroup;
+class HSlider;
+class Label;
 
 class PaintToolsPropertyInspector : public PaintCustomPropertyInspector {
 	GDCLASS(PaintToolsPropertyInspector, PaintCustomPropertyInspector);
@@ -46,18 +48,24 @@ public:
 	~PaintToolsPropertyInspector();
 
 protected:
-	void on_button_toggled(bool on, int id);
+	void _on_button_toggled(bool on, int id);
 	void _on_tool_changed();
 	void _on_brush_prefab_button_pressed(const int id);
+	void _on_brush_size_slider_value_changed(const float value);
+	void _on_brush_size_changed();
 
 	static void _bind_methods();
 
 	HFlowContainer *_grid;
 	HFlowContainer *_brush_prefabs;
+	HSlider *_brush_size_slider;
+	Label *_brush_size_label;
 
 	ObjectID _paint_canvas;
 
 	Ref<ButtonGroup> _group;
+
+	bool _ignore_signal;
 };
 
 #endif
