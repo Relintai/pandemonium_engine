@@ -82,6 +82,9 @@ void PaintProjectPropertyInspector::_on_paint_node_selected(Node *p_paint_node) 
 		return;
 	}
 
+	proj->connect("current_color_changed", this, "_on_project_color_changed");
+	proj->connect("color_presets_changed", this, "_on_project_color_preset_changed");
+
 	_current_paint_project = proj->get_instance_id();
 	_main_color_button->set_pick_color(proj->get_current_color());
 
@@ -98,9 +101,8 @@ void PaintProjectPropertyInspector::_on_grid_color_button_changed(const Color &c
 		_ignore_preset_changed_event = true;
 
 		int color_index = button->get_meta("color_index");
-
 		proj->set_preset_color(color_index, color);
-		
+
 		_ignore_preset_changed_event = false;
 	}
 }
@@ -121,14 +123,18 @@ void PaintProjectPropertyInspector::_on_main_color_changed(const Color &color) {
 	PaintProject *proj = Object::cast_to<PaintProject>(ObjectDB::get_instance(_current_paint_project));
 
 	if (proj) {
+		_ignore_color_event = true;
 		proj->set_current_color(_main_color_button->get_pick_color());
+		_ignore_color_event = false;
 	}
 }
 void PaintProjectPropertyInspector::_on_main_color_selected() {
 	PaintProject *proj = Object::cast_to<PaintProject>(ObjectDB::get_instance(_current_paint_project));
 
 	if (proj) {
+		_ignore_color_event = true;
 		proj->set_current_color(_main_color_button->get_pick_color());
+		_ignore_color_event = false;
 	}
 }
 
@@ -157,10 +163,19 @@ void PaintProjectPropertyInspector::_on_project_color_preset_changed() {
 	}
 }
 
+void PaintProjectPropertyInspector::_on_project_color_changed(const Color &color) {
+	if (_ignore_color_event) {
+		return;
+	}
+
+	_main_color_button->set_pick_color(color);
+}
+
 PaintProjectPropertyInspector::PaintProjectPropertyInspector() {
 	_current_paint_node = 0;
 	_current_paint_project = 0;
 	_ignore_preset_changed_event = false;
+	_ignore_color_event = false;
 
 	VBoxContainer *main_container = memnew(VBoxContainer);
 	add_child(main_container);
@@ -209,4 +224,7 @@ void PaintProjectPropertyInspector::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_on_main_color_selected"), &PaintProjectPropertyInspector::_on_main_color_selected);
 
 	ClassDB::bind_method(D_METHOD("_on_add_color_button_pressed"), &PaintProjectPropertyInspector::_on_add_color_button_pressed);
+
+	ClassDB::bind_method(D_METHOD("_on_project_color_changed"), &PaintProjectPropertyInspector::_on_project_color_changed);
+	ClassDB::bind_method(D_METHOD("_on_project_color_preset_changed"), &PaintProjectPropertyInspector::_on_project_color_preset_changed);
 }

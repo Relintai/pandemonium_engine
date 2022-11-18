@@ -53,6 +53,7 @@ protected:
 	void _on_main_color_changed(const Color &color);
 	void _on_main_color_selected();
 	void _on_add_color_button_pressed();
+	void _on_project_color_changed(const Color &color);
 	void _on_project_color_preset_changed();
 
 	void _notification(int p_what);
@@ -67,6 +68,7 @@ protected:
 	ObjectID _current_paint_project;
 
 	bool _ignore_preset_changed_event;
+	bool _ignore_color_event;
 };
 
 #endif
