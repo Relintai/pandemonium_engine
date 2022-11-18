@@ -58,6 +58,7 @@ public:
 
 	int get_node_count() const;
 	NodePath get_node(int p_index) const;
+	StringName get_edited_class_name() const;
 
 	void set_property_field(const StringName &p_property, const Variant &p_value, const String &p_field);
 
