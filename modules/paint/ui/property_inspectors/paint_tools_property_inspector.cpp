@@ -244,14 +244,14 @@ void PaintToolsPropertyInspector::_on_undo_pressed() {
 
 	ERR_FAIL_COND(!paint_canvas);
 
-	//paint_canvas->undo_action();
+	paint_canvas->undo_action();
 }
 void PaintToolsPropertyInspector::_on_redo_pressed() {
 	PaintCanvas *paint_canvas = Object::cast_to<PaintCanvas>(ObjectDB::get_instance(_paint_canvas));
 
 	ERR_FAIL_COND(!paint_canvas);
 
-	//paint_canvas->redo_action();
+	paint_canvas->redo_action();
 }
 
 void PaintToolsPropertyInspector::_bind_methods() {
