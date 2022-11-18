@@ -257,6 +257,7 @@ sql/
 *.Cache
 ClientBin/
 [Ss]tyle[Cc]op.*
+enc_temp_folder/
 ~$*
 *~
 *.dbmdl
